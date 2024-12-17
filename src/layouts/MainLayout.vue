@@ -32,7 +32,7 @@
         </q-item-label>
 
         <EssentialLink
-          v-for="link in linksList"
+          v-for="link in essentialLinks"
           :key="link.title"
           v-bind="link"
         />
@@ -45,8 +45,8 @@
   </q-layout>
 </template>
 
-<script setup>
-import { ref } from 'vue'
+<script>
+import { defineComponent, ref } from 'vue'
 import EssentialLink from 'components/EssentialLink.vue'
 
 const linksList = [
@@ -94,9 +94,23 @@ const linksList = [
   }
 ]
 
-const leftDrawerOpen = ref(false)
+export default defineComponent({
+  name: 'MainLayout',
 
-function toggleLeftDrawer () {
-  leftDrawerOpen.value = !leftDrawerOpen.value
-}
+  components: {
+    EssentialLink
+  },
+
+  setup () {
+    const leftDrawerOpen = ref(false)
+
+    return {
+      essentialLinks: linksList,
+      leftDrawerOpen,
+      toggleLeftDrawer () {
+        leftDrawerOpen.value = !leftDrawerOpen.value
+      }
+    }
+  }
+})
 </script>
