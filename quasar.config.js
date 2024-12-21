@@ -4,7 +4,7 @@
 import { defineConfig } from '#q-app/wrappers'
 
 export default defineConfig((ctx) => {
-  console.log('module', ctx)
+  // console.log('module', ctx)
   return {
     // https://v2.quasar.dev/quasar-cli-vite/prefetch-feature
     // preFetch: true,
@@ -39,13 +39,13 @@ export default defineConfig((ctx) => {
 
       env: {
         // NODE_OPTIONS: '--max-old-space-size=20480',
-        API: ctx.dev
+        API: ctx?.dev
           // ? 'http://192.168.20.37/api.laborat/public'
           ? 'http://localhost/api.laborat/public'
           : 'http://192.168.150.111:3507',
         // : 'http://192.168.150.111:3501',
 
-        WSHOST: ctx.dev
+        WSHOST: ctx?.dev
           // ? '192.168.20.37'
           ? 'localhost'
           : '192.168.150.111'
@@ -68,17 +68,28 @@ export default defineConfig((ctx) => {
       // polyfillModulePreload: true,
       // distDir
 
-      // extendViteConf (viteConf) {},
+      extendViteConf (viteConf) {
+        viteConf.build.chunkSizeWarningLimit = 5000,
+        viteConf.build.rollupOptions = {
+          output: {
+            manualChunks(id) {
+              if (id.includes('node_modules')) {
+                return 'vendor';
+              }
+            },
+          },
+        };
+      },
       // viteVuePluginOptions: {},
       
-      vitePlugins: [
-        ['vite-plugin-checker', {
-          eslint: {
-            lintCommand: 'eslint -c ./eslint.config.js "./src*/**/*.{js,mjs,cjs,vue}"',
-            useFlatConfig: true
-          }
-        }, { server: false }]
-      ]
+      // vitePlugins: [
+      //   ['vite-plugin-checker', {
+      //     eslint: {
+      //       lintCommand: 'eslint -c ./eslint.config.js "./src*/**/*.{js,mjs,cjs,vue}"',
+      //       useFlatConfig: true
+      //     }
+      //   }, { server: false }]
+      // ]
     },
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#devserver

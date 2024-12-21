@@ -10,7 +10,6 @@ const depo = {
     },
     {
       path: '/depo/farmasi',
-      name: 'depo.farmasi',
       component: () => import('pages/simrs/logistik/depo/farmasi/IndexPage.vue'),
       children: [
         { path: '', name: 'depo.farmasi', redirect: '/depo/farmasi/dashboard' },

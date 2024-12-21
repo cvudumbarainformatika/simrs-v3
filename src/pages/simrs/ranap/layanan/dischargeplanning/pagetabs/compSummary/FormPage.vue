@@ -83,7 +83,7 @@
       <div class="row q-col-gutter-sm">
         <div class="col-8">
           <div class="q-mt-md q-mb-xs">
-            <span class="text-weight-bold">JENIS OPERASI YG DILAKUKAN</span>  <span class="text-weight-normal">(Jika Ada)</span> :
+            <span class="text-weight-bold">JENIS OPERASI YG DILAKUKAN</span>  <span class="text-weight-normal">( Jika Ada )</span> :
           </div>
           <q-input
             v-model="store.form.operasi"
