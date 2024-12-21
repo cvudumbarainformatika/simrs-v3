@@ -9,3 +9,5 @@
     <div>Harap Tunggu ...</div>
   </div>
 </template>
+
+<script setup></script>

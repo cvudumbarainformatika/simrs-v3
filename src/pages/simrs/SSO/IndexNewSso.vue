@@ -13,4 +13,5 @@
 
 import { defineAsyncComponent } from 'vue'
 const NewSsoPage = defineAsyncComponent(() => import('./NewSsoPage.vue'))
+const AppLoading = defineAsyncComponent(() => import('src/components/~global/AppLoading.vue'))
 </script>

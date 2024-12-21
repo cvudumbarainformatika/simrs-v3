@@ -28,7 +28,7 @@ channel.subscribed(() => {
 })
 
 export default boot(({ store, app }) => {
-  console.log('sockets', channel)
+  console.log('sockets', channel);
 })
 
 export { channel }

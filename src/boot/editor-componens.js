@@ -2,7 +2,7 @@
 
 import _ from 'lodash'
 
-const globalComponents = import.meta.globEager('components/~componentEdior/*.vue')
+const globalComponents = import.meta.glob('components/~componentEdior/*.vue', { eager: true })
 
 export default async ({ app }) => {
   Object.entries(globalComponents).forEach(([path, m]) => {
@@ -10,7 +10,7 @@ export default async ({ app }) => {
       _.camelCase(path.split('/').pop().replace(/\.\w+$/, ''))
     )
     app.component(
-      `${componentName}`, m.default
+      `${componentName}`, m['default']
     )
   })
 }
