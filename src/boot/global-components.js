@@ -21,7 +21,7 @@ export default defineBoot(({ app }) => {
 
   
 
-  return new Promise((resolve, reject) => {
+  // return new Promise((resolve, reject) => {
     // do something
 
     const componentName = Object.keys(globalComponents).map(key => {
@@ -39,6 +39,6 @@ export default defineBoot(({ app }) => {
       app.component(`${val?.comp}`, val?.component)
       
     })
-  })
+  // })
   
 })

@@ -69,16 +69,16 @@ export default defineConfig((ctx) => {
       // distDir
 
       extendViteConf (viteConf) {
-        viteConf.build.chunkSizeWarningLimit = 5000,
-        viteConf.build.rollupOptions = {
-          output: {
-            manualChunks(id) {
-              if (id.includes('node_modules')) {
-                return 'vendor';
-              }
-            },
-          },
-        };
+        viteConf.build.chunkSizeWarningLimit = 5000
+        // viteConf.build.rollupOptions = {
+        //   output: {
+        //     manualChunks(id) {
+        //       if (id.includes('node_modules')) {
+        //         return 'vendor';
+        //       }
+        //     },
+        //   },
+        // };
       },
       // viteVuePluginOptions: {},
       
