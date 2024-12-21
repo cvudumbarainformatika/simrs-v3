@@ -943,7 +943,7 @@ const AutocompleteInput = defineAsyncComponent(() => import('../../../components
 const SelectInput = defineAsyncComponent(() => import('../../../components/SelectInput.vue'))
 
 const auth = useAplikasiStore()
- 
+// eslint-disable-next-line no-unused-vars
 const props = defineProps({
   pasien: {
     type: Object,
@@ -959,7 +959,7 @@ const props = defineProps({
   }
 })
 
- 
+// eslint-disable-next-line no-unused-vars
 const gruping = computed(() => {
   const nakes = auth?.user?.pegawai?.kdgroupnakes
   const dokter = nakes === '1' || nakes === 1

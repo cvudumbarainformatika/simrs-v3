@@ -172,7 +172,7 @@ defineProps({
   }
 })
 
- 
+// eslint-disable-next-line no-unused-vars
 const emits = defineEmits(['details', 'spri', 'cetakGelang', 'cetakIdentitas', 'halaman1', 'halaman2', 'buatSep', 'sepManual', 'cetakSep', 'editSep', 'hapusSep'])
 </script>
 

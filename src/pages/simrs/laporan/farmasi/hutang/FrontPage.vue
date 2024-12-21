@@ -36,7 +36,7 @@ const optionTabs = ref([
   { name: 'hutang', label: 'Hutang', compo: shallowRef(defineAsyncComponent(() => import('./comp/HutangPage.vue'))) },
   { name: 'konsi', label: 'Hutang Konsinyasi', compo: shallowRef(defineAsyncComponent(() => import('./comp/HutangKonsinyasi.vue'))) }
 ])
- 
+// eslint-disable-next-line no-unused-vars
 const cekPanel = () => {
   const val = tab.value
   const ganti = val.replace(/ /g, '')

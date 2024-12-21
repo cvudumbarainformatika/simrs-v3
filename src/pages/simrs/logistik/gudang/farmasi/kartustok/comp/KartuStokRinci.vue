@@ -364,7 +364,7 @@ const saldoAwal = computed(() => {
   return saldoAwal
 })
 
- 
+// eslint-disable-next-line no-unused-vars
 function carigudang (val) {
   // console.log(app)
   const gud = app?.gudangs?.find(a => a.kode === val)
@@ -372,7 +372,7 @@ function carigudang (val) {
   return gud ? gud?.nama ?? '-' : ruang?.uraian ?? '-'
 }
 
- 
+// eslint-disable-next-line no-unused-vars
 function cariHasilAkhirArray (i) {
   // const total = 0
   const arr = bentukArrBaru.value ?? []

@@ -46,7 +46,7 @@
 <script setup>
 import FromChatlab from './FromChatlab.vue'
 import ListCathlab from './ListCathlab.vue'
- 
+// eslint-disable-next-line no-unused-vars
 // import HistoryAnamnesis from './comanamnesis/HistoryAnamnesis.vue'
 // import HistoryKanan from './comanamnesis/HistoryKanan.vue'
 import { onMounted, onUnmounted, ref } from 'vue'

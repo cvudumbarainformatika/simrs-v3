@@ -80,7 +80,7 @@
 <script setup>
 import { usePoliSharingStore } from 'src/stores/simrs/pelayanan/poli/sharing'
 
- 
+// eslint-disable-next-line no-unused-vars
 const props = defineProps({
   pasien: {
     type: Object,

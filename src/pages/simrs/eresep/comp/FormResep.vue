@@ -804,7 +804,6 @@ function signaCreateValue (val, done) {
       const satu = anu[0]
       const temp = anu[1].slice(0, 4).split('')
       const num = temp.filter(a => !isNaN(parseFloat(a)))
-      // eslint-disable-next-line no-constant-binary-expression
       store.fromSigna.jumlah = satu * num[0] ?? 1
       // console.log('temp', temp, num, isNaN(parseFloat(temp[0])))
       const depan = anu[0] + ' x ' + anu[1]
@@ -873,7 +872,7 @@ function setJumlah (val) {
     }
   }
 }
- 
+// eslint-disable-next-line no-unused-vars
 function qtyEnter () {
   // if (parseFloat(store.form.jumlah_diminta) > 1)
   refSigna.value.focus()

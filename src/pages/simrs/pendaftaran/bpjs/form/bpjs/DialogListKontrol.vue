@@ -412,7 +412,7 @@ function pilihSuratKontrol(val) {
 
 // rencana kontrol
 
- 
+// eslint-disable-next-line no-unused-vars
 function pilihRencanaKontrol(val) {
   store.form.nosuratkontrol = val.noSuratKontrol
   // const findpoli = val.poliTujuan ? val.poliTujuan : ''

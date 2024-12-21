@@ -565,7 +565,7 @@ const rinciOpen = ref(false)
 const editRinci = shallowRef(defineAsyncComponent(() => import('./EditRinciComp.vue')))
 const dataRinci = ref({})
 /** edit rinci section end */
- 
+// eslint-disable-next-line no-unused-vars
 function toPrint (val) {
   store.dataToPrint = val
   val.expand = !val.expand
@@ -578,7 +578,7 @@ function onClick (val) {
   val.item.expand = !val.item.expand
   val.item.highlight = !val.item.highlight
 }
- 
+// eslint-disable-next-line no-unused-vars
 function kunci (val) {
   val.expand = !val.expand
   val.highlight = !val.highlight
@@ -586,7 +586,7 @@ function kunci (val) {
     if (!val.kunci) val.kunci = '1'
   })
 }
- 
+// eslint-disable-next-line no-unused-vars
 function info (val) {
   val.expand = !val.expand
   val.highlight = !val.highlight

@@ -428,7 +428,7 @@
 // eslint-disable-next-line no-unused-vars
 import { onMounted, ref, computed } from 'vue'
 import { usePemeriksaanFisik } from 'src/stores/simrs/pelayanan/poli/pemeriksaanfisik'
- 
+// eslint-disable-next-line no-unused-vars
 import { humanDate } from 'src/modules/formatter'
 import { pathImg } from 'src/boot/axios'
 
@@ -554,7 +554,7 @@ function tekananDarah (val) {
 
   return obj
 }
- 
+// eslint-disable-next-line no-unused-vars
 function tekananDarahDias (val) {
   const normal = val >= 60 && val <= 79
   const prahipertensi = val >= 80 && val <= 89

@@ -50,7 +50,7 @@ import { usePermintaanOperasiRanapStore } from 'src/stores/simrs/ranap/operasi'
 import { ref } from 'vue'
 
 const store = usePermintaanOperasiRanapStore()
- 
+// eslint-disable-next-line no-unused-vars
 const props = defineProps({
   pasien: {
     type: Object,

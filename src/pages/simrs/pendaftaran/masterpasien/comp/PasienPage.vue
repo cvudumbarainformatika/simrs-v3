@@ -308,7 +308,7 @@ import { useListPasien } from 'src/stores/simrs/pendaftaran/table/index'
 import { useDetailPasien } from 'src/stores/simrs/pendaftaran/table/details'
 import { usePendaftaranEditPasienStore } from 'src/stores/simrs/pendaftaran/table/editpasien'
 // import { useStyledStore } from 'src/stores/app/styled'
- 
+// eslint-disable-next-line no-unused-vars
 import PaginateBottom from './PaginateBottom.vue'
 import DataPasien from 'src/pages/simrs/pendaftaran/form/pasien/DataPasien.vue'
 import { date } from 'quasar'
@@ -327,7 +327,7 @@ onMounted(() => {
   store.getDataTable()
 })
 
- 
+// eslint-disable-next-line no-unused-vars
 function previewDetail(row) {
   pasien.value = row
   det.setDialogOpen()
@@ -335,7 +335,7 @@ function previewDetail(row) {
   // console.log(row)
 }
 
- 
+// eslint-disable-next-line no-unused-vars
 function editPasien(val) {
   // console.log('edit ', val)
   edit.openDialogEdit()

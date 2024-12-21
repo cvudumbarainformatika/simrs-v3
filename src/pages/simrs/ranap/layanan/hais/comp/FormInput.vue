@@ -233,7 +233,7 @@
 import { useHaisRanapStore } from 'src/stores/simrs/ranap/hais'
 import { computed, ref } from 'vue'
 
- 
+// eslint-disable-next-line no-unused-vars
 const props = defineProps({
   pasien: {
     type: Object,

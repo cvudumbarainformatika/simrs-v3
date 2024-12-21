@@ -69,7 +69,7 @@ const props = defineProps({
   }
 })
 console.log(props?.pasien)
- 
+// eslint-disable-next-line no-unused-vars
 // function updateSelection(val) {
 //   console.log(val)
 //   console.log(store.diets)

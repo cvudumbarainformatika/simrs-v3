@@ -90,7 +90,7 @@ export const useLaporanBukuTunaiStore = defineStore('laporan_bukutunai', {
     mapingData (tgl) {
       // console.log("www", tgl);
       // ===================================================NPKPanjar
-       
+      // eslint-disable-next-line camelcase
       const npk_Panjar = []
       for (let i = 0; i < this.items.npkpanjar.length; i++) {
         const el = this.items?.npkpanjar
@@ -136,7 +136,7 @@ export const useLaporanBukuTunaiStore = defineStore('laporan_bukutunai', {
             ? pjr?.map((x) => x.totalRincian).reduce((x, y) => x + y, 0)
             : 0
         }
-         
+        // eslint-disable-next-line camelcase
         npk_Panjar.push(obj)
       }
       // console.log("npkPanjar", npk_Panjar);
@@ -180,7 +180,7 @@ export const useLaporanBukuTunaiStore = defineStore('laporan_bukutunai', {
       // =====================================================
 
       // ===================================================Pergeseran BankKas
-       
+      // eslint-disable-next-line camelcase
       const Bank_Kas = []
       for (let i = 0; i < this.items.bankkekas.length; i++) {
         const el = this.items?.bankkekas
@@ -213,7 +213,7 @@ export const useLaporanBukuTunaiStore = defineStore('laporan_bukutunai', {
           pengeluaran: 0
         }
 
-         
+        // eslint-disable-next-line camelcase
         Bank_Kas.push(obj)
       }
       // console.log("jajas", Bank_Kas);
@@ -328,7 +328,7 @@ export const useLaporanBukuTunaiStore = defineStore('laporan_bukutunai', {
       // =====================================================
 
       // menggabungkan array
-       
+      // eslint-disable-next-line camelcase
       const gabungArray = Bank_Kas?.concat(
         npk_Panjar,
         kembalianpjr,
@@ -373,7 +373,7 @@ export const useLaporanBukuTunaiStore = defineStore('laporan_bukutunai', {
     },
 
     ambilDataUnik (x, f) {
-       
+      // eslint-disable-next-line no-sequences
       const unique = Object.values(x.reduce((a, b) => ((a[f(b)] = b), a), {}))
       return unique
     },

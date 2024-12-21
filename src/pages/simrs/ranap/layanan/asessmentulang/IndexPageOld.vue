@@ -24,7 +24,7 @@ const props = defineProps({
   }
 })
 
- 
+// eslint-disable-next-line no-undef
 // const store = useDiagnosaKeperawatan()
 
 onMounted(() => {

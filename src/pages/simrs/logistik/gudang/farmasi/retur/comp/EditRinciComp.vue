@@ -98,7 +98,7 @@
 import { ref } from 'vue'
 
 const emits = defineEmits(['close', 'simpan'])
- 
+// eslint-disable-next-line no-unused-vars
 const props = defineProps({
   data: { type: Object, default: () => {} }
 })

@@ -169,7 +169,7 @@ const props = defineProps({
   }
 })
 
- 
+// eslint-disable-next-line no-unused-vars
 const options = ref([store.listperawat])
 const listperawat = ref([])
 const pelsupir = ref(['Rujukan', 'Jenazah', 'Emergency'])

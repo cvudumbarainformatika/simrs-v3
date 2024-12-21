@@ -14,7 +14,7 @@ const ModalDiagnosaKeperawatan = defineAsyncComponent(() => import('src/pages/si
 const ModalDiagnosaKebidanan = defineAsyncComponent(() => import('src/pages/simrs/poli/tindakan/comptindakan/pagemenu/complayanan/compDiagnosaKebidanan/ModalDiagnosaKebidanan.vue'))
 // const FormComp = import('src/pages/simrs/ranap/layanan/pemeriksaan/comp/penilaian/FormComp.vue')
 
- 
+// eslint-disable-next-line no-unused-vars
 const props = defineProps({
   pasien: {
     type: Object,
@@ -41,7 +41,7 @@ const SET = reactive({
   classes: 'shadow-1 overflow-hidden q-mb-xs'
 })
 
- 
+// eslint-disable-next-line no-unused-vars
 const {
   storeAnamnesis, storePenilaian, storePemeriksaanUmum,
   settings, storeDiagnosaKeperawatan, storeDiagnosaKebidanan, store

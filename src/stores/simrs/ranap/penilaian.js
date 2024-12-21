@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { api } from 'src/boot/axios'
 import { useAplikasiStore } from 'src/stores/app/aplikasi'
 import { usePengunjungRanapStore } from './pengunjung'
- 
+// eslint-disable-next-line no-unused-vars
 import { notifSuccess } from 'src/modules/utils'
 
 export const usePenilaianRanapStore = defineStore('penilaian-ranap-store', {

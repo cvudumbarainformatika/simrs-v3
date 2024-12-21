@@ -298,7 +298,7 @@ function lihatPerubahan() {
   store.hitungNilaiSkor()
 }
 
- 
+// eslint-disable-next-line no-unused-vars
 function updateSelection(val) {
   // console.log(val.join(','))
   store.setForm('riwayatalergi', val.join(', '))

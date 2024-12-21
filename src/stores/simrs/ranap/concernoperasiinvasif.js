@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { api } from 'src/boot/axios'
 import { usePengunjungRanapStore } from './pengunjung'
- 
+// eslint-disable-next-line no-unused-vars
 import { notifErrVue, notifSuccess } from 'src/modules/utils'
 import { date } from 'quasar'
 
@@ -123,7 +123,7 @@ export const useConcernOperasiInvasifRanapStore = defineStore('concern-operasi-i
 
       console.log('save inform form', this.form)
 
-       
+      // eslint-disable-next-line no-unused-vars
       const storeRanap = usePengunjungRanapStore()
       // storeRanap.injectDataPasien(pasien?.noreg, this.form, 'informconcern')
 

@@ -64,7 +64,7 @@
 </template>
 
 <script setup>
- 
+// eslint-disable-next-line no-unused-vars
 import { useConcernOperasiInvasifRanapStore } from 'src/stores/simrs/ranap/concernoperasiinvasif'
 import { defineAsyncComponent, onMounted, ref, shallowRef } from 'vue'
 

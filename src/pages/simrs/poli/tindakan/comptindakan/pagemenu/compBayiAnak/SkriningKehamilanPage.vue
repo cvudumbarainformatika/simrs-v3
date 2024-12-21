@@ -205,10 +205,10 @@ import { useKandunganStore } from 'src/stores/simrs/pelayanan/poli/kandungan'
 import { computed, onMounted, ref } from 'vue'
 
 const store = useKandunganStore()
- 
+// eslint-disable-next-line no-unused-vars
 const gruping = ref(['I', 'II', 'III'])
 // const $q = useQuasar()
- 
+// eslint-disable-next-line no-unused-vars
 const props = defineProps({
   pasien: {
     type: Object,
@@ -220,7 +220,7 @@ onMounted(() => {
   store.getskrining(props.pasien)
 })
 
- 
+// eslint-disable-next-line no-unused-vars
 const filterSkriningByKehamilanNo = computed(() => {
   const arr = store.skriningAllFromServer
   const res = arr.length ? arr.filter(x => x.kehamilanNo === store.formSkrining.kehamilanNo).map(x => x.valueSingkat) : []

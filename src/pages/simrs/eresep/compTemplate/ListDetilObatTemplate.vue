@@ -146,7 +146,7 @@
 
 <script setup>
 import { getCssVar, useQuasar } from 'quasar'
- 
+// eslint-disable-next-line no-unused-vars
 import { notifErrVue } from 'src/modules/utils'
 import { useTemplateEResepStore } from 'src/stores/simrs/farmasi/permintaanresep/templateeresep'
 import { defineAsyncComponent, ref, watchEffect } from 'vue'

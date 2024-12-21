@@ -173,7 +173,7 @@ const props = defineProps({
   }
 })
 
- 
+// eslint-disable-next-line no-unused-vars
 const emits = defineEmits(['back'])
 
 const tab = ref('template')
@@ -241,7 +241,7 @@ function templateBaru () {
   tab.value = 'nonracikan'
 }
 
- 
+// eslint-disable-next-line no-unused-vars
 function awal () {
   if (!props.isCari) {
     store.templateSelected = null
@@ -271,7 +271,7 @@ function kirimOrder () {
 
   const non = store.items?.filter(item => !item.racikan)
   // console.log('non', non)
-   
+  // eslint-disable-next-line no-unused-vars
   const nonObat = non?.length
     ? non.map(x => {
       return {

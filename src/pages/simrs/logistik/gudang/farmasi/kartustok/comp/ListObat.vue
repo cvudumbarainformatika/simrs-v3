@@ -115,7 +115,7 @@ function hitungPenerimaan (arr) {
   const jmlterimafaktur = terimafaktur?.reduce((x, y) => parseFloat(x) + parseFloat(y.jml_terima_k), 0)
 
   // console.log('penerimaan', arr, jmlterimalangsung, jmlterimafaktur)
-   
+  // eslint-disable-next-line no-unused-vars
   const totalJml = jmlterimalangsung + jmlterimafaktur
 
   // return arr?.reduce((x, y) => parseFloat(x) + parseFloat(y.jml_terima_k), 0)

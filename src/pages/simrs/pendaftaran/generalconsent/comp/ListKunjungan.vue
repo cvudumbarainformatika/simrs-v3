@@ -169,7 +169,7 @@ const openGen = ref(false)
 const cetak = ref(false)
 const store = useGeneralConsentStore()
 
- 
+// eslint-disable-next-line no-unused-vars
 function genCon (row) {
   // console.log(row)
   pasien.value = row

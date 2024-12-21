@@ -173,7 +173,7 @@ export const useLaporanBukuBankStore = defineStore('laporan_bukubank', {
       // =====================================================
 
       // ===================================================Pergeseran BankKas
-       
+      // eslint-disable-next-line camelcase
       const Bank_Kas = []
       for (let i = 0; i < this.items.bankkekas.length; i++) {
         const el = this.items?.bankkekas
@@ -205,7 +205,7 @@ export const useLaporanBukuBankStore = defineStore('laporan_bukubank', {
             ? geserbank?.map((x) => x.nilai).reduce((x, y) => x + y, 0)
             : 0
         }
-         
+        // eslint-disable-next-line camelcase
         Bank_Kas.push(obj)
       }
       // console.log("jajas", Bank_Kas);
@@ -439,7 +439,7 @@ export const useLaporanBukuBankStore = defineStore('laporan_bukubank', {
     },
 
     ambilDataUnik (x, f) {
-       
+      // eslint-disable-next-line no-sequences
       const unique = Object.values(x.reduce((a, b) => ((a[f(b)] = b), a), {}))
       return unique
     },

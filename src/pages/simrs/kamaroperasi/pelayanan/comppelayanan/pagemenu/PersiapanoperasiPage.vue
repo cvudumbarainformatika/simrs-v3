@@ -46,7 +46,7 @@
 <script setup>
 import ListPersiapan from './comppersiapanoperasi/ListPersiapanoperasi.vue'
 import FormPersiapan from './comppersiapanoperasi/FormPersiapanoperasi.vue'
- 
+// eslint-disable-next-line no-unused-vars
 import { onMounted, onUnmounted, ref } from 'vue'
 
 // const store = useAnamnesis()

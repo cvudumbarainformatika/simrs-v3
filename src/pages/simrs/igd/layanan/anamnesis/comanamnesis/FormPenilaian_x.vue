@@ -157,7 +157,7 @@ import { ref } from 'vue'
 const storepenilaian = usePenilaianAnamnesisIgd()
 const refForm = ref(null)
 const refkategori = ref(null)
- 
+// eslint-disable-next-line no-unused-vars
 const props = defineProps({
   pasien: {
     type: Object,

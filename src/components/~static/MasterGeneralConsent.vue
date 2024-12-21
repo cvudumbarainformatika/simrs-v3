@@ -278,9 +278,9 @@ import { humanDate } from 'src/modules/formatter'
 // eslint-disable-next-line no-unused-vars
 import { api, pathImg } from 'src/boot/axios'
 import { computed, onMounted, ref, watch, watchEffect } from 'vue'
- 
+// eslint-disable-next-line no-unused-vars
 import { jsPDF } from 'jspdf'
- 
+// eslint-disable-next-line no-unused-vars
 import html2canvas from 'html2canvas'
 import { useGeneralConsentStore } from 'src/stores/simrs/pendaftaran/generalconsent'
 const app = useAplikasiStore()
@@ -342,10 +342,10 @@ function parse (val) {
   return str
 }
 
- 
+// eslint-disable-next-line no-unused-vars
 function createPdf () {
   // console.log(rePdfDoc.value.innerHTML)
-   
+  // eslint-disable-next-line new-cap
   const doc = new jsPDF({
     orientation: 'p',
     unit: 'px',
@@ -387,7 +387,7 @@ function blob2file (blobData) {
   return fd.get('a')
 }
 
- 
+// eslint-disable-next-line no-unused-vars
 async function simpanPdf (pdf) {
   const formData = new FormData()
   formData.append('pdf', pdf)

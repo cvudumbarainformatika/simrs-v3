@@ -1,4 +1,4 @@
-﻿ 
+﻿/* eslint-disable no-var */
 /*
 Copyright (c) 2008 Fred Palmer fred.palmer_at_gmail.com
 

@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { api } from 'src/boot/axios'
 import { dateDbFormat } from 'src/modules/formatter'
- 
+// eslint-disable-next-line no-unused-vars
 import { notifErrVue } from 'src/modules/utils'
 import { useListKunjunganBpjsStore } from 'src/stores/simrs/pendaftaran/kunjungan/bpjs/lists'
 import { useAplikasiStore } from 'src/stores/app/aplikasi'

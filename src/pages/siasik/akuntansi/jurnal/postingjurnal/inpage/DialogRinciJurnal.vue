@@ -161,7 +161,7 @@
 </template>
 <script setup>
 
- 
+// eslint-disable-next-line no-unused-vars
 import { formattanpaRp } from 'src/modules/formatter'
 import { postingJurnal } from 'src/stores/siasik/akuntansi/jurnal/postingjurnal'
 import { ref } from 'vue'

@@ -153,7 +153,7 @@ function tglSampai (val) {
 function setSampai (val) {
   store.display.sampai = val
 }
- 
+// eslint-disable-next-line no-unused-vars
 const printlo = ref(null)
 function cetakData () {
   store.dialogCetak = true

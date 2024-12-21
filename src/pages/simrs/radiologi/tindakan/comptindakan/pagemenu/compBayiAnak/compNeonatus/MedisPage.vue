@@ -53,9 +53,9 @@ import { useQuasar } from 'quasar'
 import { onMounted } from 'vue'
 
 const $q = useQuasar()
- 
+// eslint-disable-next-line no-unused-vars
 const store = useNeonatusMedisStore()
- 
+// eslint-disable-next-line no-unused-vars
 const props = defineProps({
   pasien: {
     type: Object,

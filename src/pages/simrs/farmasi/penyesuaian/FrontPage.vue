@@ -1811,7 +1811,7 @@ function textResep (val) {
       return 'Belum di definisikan'
   }
 }
- 
+// eslint-disable-next-line no-unused-vars
 function textOperasi (val) {
   switch (val) {
     case '0':

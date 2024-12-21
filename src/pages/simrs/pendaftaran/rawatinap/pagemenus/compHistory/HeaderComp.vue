@@ -319,7 +319,7 @@ import { ref } from 'vue'
 
 // const search = ref('')
 
- 
+// eslint-disable-next-line no-unused-vars
 const showMenuPeriode = ref(false)
 const showMenuRuangan = ref(false)
 // const showMenuStatus = ref(false)
@@ -327,7 +327,7 @@ const showMenuRuangan = ref(false)
 const store = useListHistoryPendaftaranRanapStore()
 // console.log(store)
 
- 
+// eslint-disable-next-line no-unused-vars
 function clearQ () {
   store.params.q = ''
   store.setPage(1)

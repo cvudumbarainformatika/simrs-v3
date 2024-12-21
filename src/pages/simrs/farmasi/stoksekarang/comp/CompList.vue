@@ -270,7 +270,7 @@ function rinciAlokasi (row) {
 // watch(() => apps?.user?.kdruangansim, (obj) => {
 
 // })
- 
+// eslint-disable-next-line no-unused-vars
 function editData (val) {
   store.editData(val)
   console.log('edit', val)

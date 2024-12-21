@@ -591,7 +591,7 @@
 
 <script setup>
 import { Dialog } from 'quasar'
- 
+// eslint-disable-next-line no-unused-vars
 import { api } from 'src/boot/axios'
 // eslint-disable-next-line no-unused-vars
 import { dateFullFormat, dateFull, formatDouble, formatRpDouble } from 'src/modules/formatter'

@@ -52,14 +52,14 @@
   </q-card>
 </template>
 <script setup>
- 
+// eslint-disable-next-line no-unused-vars
 import { formatRp } from 'src/modules/formatter'
 import { useInacbgIgd } from 'src/stores/simrs/igd/inacbg'
 // import { useLayananPoli } from 'src/stores/simrs/pelayanan/poli/layanan'
 // import { useDiagnosaDokter } from 'src/stores/simrs/igd/diagnosadokter'
 import { computed, watch } from 'vue'
 
- 
+// eslint-disable-next-line no-unused-vars
 // const store = useDiagnosaDokter()
 const ina = useInacbgIgd()
 const props = defineProps({
@@ -76,7 +76,7 @@ const props = defineProps({
 function hitungSelisih() {
   return ina.tarifIna - ina.tarifRs
 }
- 
+// eslint-disable-next-line no-unused-vars
 const minus = computed(() => {
   return ina.tarifIna - ina.tarifRs < 0
 })

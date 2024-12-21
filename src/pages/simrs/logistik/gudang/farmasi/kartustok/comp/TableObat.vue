@@ -130,7 +130,7 @@ import { onMounted, ref } from 'vue'
 const store = useKartuStokFarmasiStore()
 const $q = useQuasar()
 const bulan = ref('Januari')
-const bulans = ref(['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'Novermber', 'Desember'])
+const bulans = ref(['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'])
 const tahuns = ref([])
 const app = useAplikasiStore()
 const keteranganStok = ref('Stok Sekarang')
@@ -236,7 +236,7 @@ function hitungPenerimaan (arr) {
   const terimafaktur = arr?.filter((x) => x.jenis_penerimaan === 'Pesanan' && x.kunci === '1' && x.jenissurat === 'Faktur')
   const jmlterimafaktur = terimafaktur?.reduce((x, y) => parseFloat(x) + parseFloat(y.jml_terima_k), 0)
 
-   
+  // eslint-disable-next-line no-unused-vars
   const totalJml = jmlterimalangsung + jmlterimafaktur
   return totalJml
 }
@@ -373,16 +373,16 @@ function hitungTotal (row) {
   // console.log('masuk', hitungReturDistribusi(row?.persiapanretur))
   // console.log('keluar', hitungDistribusi(row?.distribusipersiapan))
 
-   
+  // eslint-disable-next-line no-unused-vars
   const awal = hitungSaldoAwal(row?.saldoawal)
-   
+  // eslint-disable-next-line no-unused-vars
   const masuk = hitungPenerimaan(row?.penerimaanrinci) + hitungMutasiMasuk(row?.mutasimasuk) + newReturResep(row?.returpenjualan) +
   hitungPenyesuaianMasuk(row?.penyesuaian) + hitungReturDistribusi(row?.persiapanretur) + hitungReturGudang(row?.returgudang)
-   
+  // eslint-disable-next-line no-unused-vars
   const keluar = hitungMutasiKeluar(row?.mutasikeluar) + hitungResepKeluar(row?.resepkeluar, row?.distribusipersiapan) +
   hitungResepRacikanKeluar(row?.resepkeluarracikan) + hitungPenyesuaianKeluar(row?.penyesuaian) + hitungDistribusi(row?.distribusipersiapan) +
   hitungBarangRusak(row?.barangrusak) + hitungReturDepo(row?.returdepo)
-   
+  // eslint-disable-next-line no-unused-vars
   const total = awal + masuk - keluar
   return total
   // return awal + ' ' + masuk + ' ' + keluar+ ' ' + total
@@ -394,7 +394,7 @@ function exportTable () {
     store.items?.map(row => columns.value.map(col => wrapCsvValue(
       typeof col.field === 'function'
         ? col.field(row)
-         
+        // eslint-disable-next-line no-void
         : row[col.field === void 0 ? col.name : col.field],
       col.format,
       row
@@ -424,12 +424,12 @@ function exportTable () {
 }
 
 function wrapCsvValue (val, formatFn, row) {
-   
+  // eslint-disable-next-line no-void
   let formatted = formatFn !== void 0
     ? formatFn(val, row)
     : val
 
-   
+  // eslint-disable-next-line no-void
   formatted = formatted === void 0 || formatted === null
     ? ''
     : String(formatted)
@@ -445,7 +445,7 @@ function wrapCsvValue (val, formatFn, row) {
   return `"${formatted}"`
 }
 
- 
+// eslint-disable-next-line no-unused-vars
 function onRowClick (row) {
   console.log('onRowClick', row)
   // store.setItem(row)

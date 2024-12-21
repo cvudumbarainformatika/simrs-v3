@@ -376,7 +376,7 @@
 </template>
 
 <script setup>
- 
+// eslint-disable-next-line no-unused-vars
 import { dateCppt, getNewLine, jamTnpDetik } from 'src/modules/formatter'
 import useCppt from './useCppt'
 import { computed } from 'vue'
@@ -471,7 +471,7 @@ const jenisPPA = (val) => {
   }
 }
 
- 
+// eslint-disable-next-line no-unused-vars
 const cariRowspan = (val) => {
   const dataBytgl = data?.cppt?.filter(x => dateCppt(x?.tgl) === val)?.length
   // console.log('cari rowspan', dataBytgl)

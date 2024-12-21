@@ -60,7 +60,7 @@ export const useVideoFormStore = defineStore('video_form', {
       this.loading = true
       // this.setForm('details', arr)
       const formData = new FormData()
-       
+      // eslint-disable-next-line no-unused-expressions
       this.form.id ? formData.append('id', this.form.id) : null
       formData.append('video', this.tempImg)
       formData.append('nama', this.form.nama)

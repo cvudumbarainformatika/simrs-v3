@@ -65,7 +65,7 @@
                 :loading="store.loading"
               />
             </div>
-            <div class="col-2">
+            <div class="col-1">
               <app-input
                 v-model="store.params.tahun"
                 label="Tahun"
@@ -76,22 +76,42 @@
             <div class="col-2">
               <app-btn
                 label="Ambil Data"
-                :disable="store.loading"
+                :disable="store.loading || !!store.ketProses"
                 :loading="store.loading"
                 @click="store.getInitialData(1)"
               />
             </div>
           </div>
         </div>
-        <div class="col-auto q-mr-md">
+
+        <div class="col-grow q-mr-md">
           <div class="row items-center">
             <q-btn
+              unelevated
+              color="primary"
+              round
+              size="sm"
+              icon="icon-mat-download"
+              :loading="!!store.ketProses || store?.loadingNext"
+              :disable="!!store.ketProses || store?.loadingNext"
+              @click="store.getAllData()"
+            >
+              <q-tooltip
+                class="primary"
+                :offset="[10, 10]"
+              >
+                Ambil Semua Data
+              </q-tooltip>
+            </q-btn>
+            <q-btn
+              class="q-ml-sm"
               ref="refPrint"
               v-print="printObj"
               unelevated
               color="dark"
               round
               size="sm"
+              :disable="!!store.ketProses"
               icon="icon-mat-print"
             >
               <q-tooltip
@@ -117,25 +137,28 @@
                   icon="icon-mat-download"
                   push
                   :loading="store.loadingDownload"
-                  :disable="store.loadingDownload"
+                  :disable="store.loadingDownload || !!store.ketProses"
                 >
                   <q-tooltip>Download Excel</q-tooltip>
                 </q-btn>
               </download-excel>
             </div>
-            <!-- test export langsung -->
-            <!-- <div class="q-ml-sm">
-              <app-btn
-                color="orange"
-                label="Download Excel"
-                icon="icon-mat-download"
-                push
-                :loading="store.loadingDownload"
-                :disable="store.loadingDownload"
-                @click="exportExcel"
-              />
-            </div> -->
           </div>
+        </div>
+      </div>
+      <div v-if="store.ketProses" class="row items-center justify-center print-hide">
+        <div class="col-1" />
+        <div class="col-1">
+          <q-spinner-pie color="negative" size="4em" />
+        </div>
+        <div class="col-grow q-ml-sm text-weight-bold f-18">
+          <p>
+            {{ store.ketProses }}
+            <span v-if="store?.meta" class="q-mx-sm f-20 text-blue">{{ store.meta?.current_page ? store.meta?.current_page + 1 : 1 }}</span>
+            <span v-if="store?.meta" class="q-mx-sm">dari</span>
+            <span v-if="store?.meta" class="q-mx-sm f-20 text-orange">{{ store.meta?.last_page ?? 1 }}</span>
+            <span v-if="store?.meta" class="q-mx-sm">halaman</span>
+          </p>
         </div>
       </div>
     </div>
@@ -189,6 +212,7 @@
           <TableComp />
         </div>
       </div>
+
       <div class="q-mt-md" ref="refTt">
         <div class="q-my-md">
           <div class="row q-mb-md">
@@ -426,7 +450,7 @@ import { defineAsyncComponent, onMounted, ref } from 'vue'
 const store = useLaporanMutasiFiFoFarmasiStore()
 
 const TableComp = defineAsyncComponent(() => import('./comp/TablePage.vue'))
- 
+// eslint-disable-next-line no-unused-vars
 function bulan () {
   const bul = store.bulans.find(a => a.value === store.params.bulan)
   return bul?.nama ?? '-'
@@ -445,7 +469,7 @@ function onScroll (pos) {
   const height = refScroll.value.clientHeight - (refTt.value.clientHeight + 30)
   const currPage = store.meta.current_page
   if ((store.meta.current_page < store.meta.last_page) && pos >= height) {
-    if (!store.loadingNext) store.setPage(currPage + 1)
+    if (!store.loadingNext && !store.ketProses) store.setPage(currPage + 1)
     // console.log('meta', store.meta)
     console.log('pos', pos, 'height', height, 'scroll client height', refScroll.value.clientHeight, 'tt height', refTt.value.clientHeight)
   }

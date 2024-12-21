@@ -328,9 +328,9 @@ import IdentitasPage from '../../comppoli/IdentitasPage.vue'
 import { defineProps, ref } from 'vue'
 import { useCatatanRawatJalanStore } from 'src/stores/simrs/dokumen/erm/catatanrawatjalan'
 
- 
+// eslint-disable-next-line no-unused-vars
 const store = useCatatanRawatJalanStore()
- 
+// eslint-disable-next-line no-unused-vars
 const props = defineProps({
   pasien: {
     type: Object,
@@ -338,9 +338,9 @@ const props = defineProps({
   }
 })
 
- 
+// eslint-disable-next-line no-use-before-define, no-undef
 const options = ref([])
- 
+// eslint-disable-next-line no-unused-vars
 const tahun = new Date().getFullYear()
 store.params.tahunawal = new Date().getFullYear()
 store.params.tahunakhir = new Date().getFullYear()
@@ -360,7 +360,7 @@ const printObj = {
   id: 'printMe',
   popTitle: ' '
 }
- 
+// eslint-disable-next-line no-undef
 // options.value = i
 // console.log('adsad', options)
 

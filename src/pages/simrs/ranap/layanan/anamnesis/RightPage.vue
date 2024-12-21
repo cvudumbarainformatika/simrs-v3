@@ -21,7 +21,7 @@ const props = defineProps({
 // eslint-disable-next-line no-unused-vars
 const min = ref(false)
 
- 
+// eslint-disable-next-line no-unused-vars
 const { store, settings, fields, nakes } = useRightPanel(props.pasien)
 
 const beforeEnter = (el) => {

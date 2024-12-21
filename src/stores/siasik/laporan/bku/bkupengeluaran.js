@@ -181,7 +181,7 @@ export const useLaporanBkuPengeluaranStore = defineStore(
         }
 
         // ===================================================NPKPanjar
-         
+        // eslint-disable-next-line camelcase
         const npk_Panjar = []
         for (let i = 0; i < this.items.npkpanjar.length; i++) {
           const el = this.items?.npkpanjar
@@ -227,7 +227,7 @@ export const useLaporanBkuPengeluaranStore = defineStore(
               : 0,
             pengeluaran: 0
           }
-           
+          // eslint-disable-next-line camelcase
           npk_Panjar.push(obj)
         }
         // console.log("npkPanjar", npk_Panjar);
@@ -285,7 +285,7 @@ export const useLaporanBkuPengeluaranStore = defineStore(
         // ==================================================
 
         // ===================================================spjpanjar
-         
+        // eslint-disable-next-line camelcase
         const spj_Panjar = []
         for (let i = 0; i < this.items.spjpanjar.length; i++) {
           const el = this.items?.spjpanjar
@@ -317,7 +317,7 @@ export const useLaporanBkuPengeluaranStore = defineStore(
                 .reduce((x, y) => x + y, 0)
               : 0
           }
-           
+          // eslint-disable-next-line camelcase
           spj_Panjar.push(obj)
         }
         console.log('spjPanjar', spj_Panjar)
@@ -652,7 +652,7 @@ export const useLaporanBkuPengeluaranStore = defineStore(
         return arr
       },
       ambilDataUnik (x, f) {
-         
+        // eslint-disable-next-line no-sequences
         const unique = Object.values(x.reduce((a, b) => ((a[f(b)] = b), a), {}))
         return unique
       },

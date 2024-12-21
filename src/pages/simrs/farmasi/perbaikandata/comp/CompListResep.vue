@@ -726,7 +726,7 @@ function cekNoper (val) {
   }
   // console.log('noper', nokur.includes(val), val)
 }
- 
+// eslint-disable-next-line no-unused-vars
 function fixMutasi (val) {
   console.log('fi', props.item)
   emits('fixResep', { obat: props.item?.kd_obat, tipe: val })

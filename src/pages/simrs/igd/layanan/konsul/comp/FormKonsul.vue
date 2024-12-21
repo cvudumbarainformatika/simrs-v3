@@ -50,7 +50,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useKonsulIgdStore } from 'src/stores/simrs/igd/konsul'
- 
+// eslint-disable-next-line no-unused-vars
 const props = defineProps({
   pasien: {
     type: Object,

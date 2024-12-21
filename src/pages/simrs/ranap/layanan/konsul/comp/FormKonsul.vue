@@ -50,7 +50,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useKonsulRanapStore } from 'src/stores/simrs/ranap/konsul'
- 
+// eslint-disable-next-line no-unused-vars
 const props = defineProps({
   pasien: {
     type: Object,

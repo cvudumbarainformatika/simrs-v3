@@ -70,7 +70,7 @@ import { onMounted, ref } from 'vue'
 import { useKonsulRanapStore } from 'src/stores/simrs/ranap/konsul'
 import { usePengunjungRanapStore } from 'src/stores/simrs/ranap/pengunjung'
 import { api } from 'src/boot/axios'
- 
+// eslint-disable-next-line no-unused-vars
 import { notifSuccess } from 'src/modules/utils'
 
 const props = defineProps({
@@ -174,7 +174,7 @@ function getNewLine (text) {
 }
 
 function onSubmit () {
-   
+  // eslint-disable-next-line prefer-const
   const { item, pasien } = props
   form.value.id = item?.id
   form.value.noreg = item?.noreg

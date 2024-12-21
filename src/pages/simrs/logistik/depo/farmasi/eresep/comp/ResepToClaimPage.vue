@@ -376,9 +376,9 @@
 <script setup>
 // eslint-disable-next-line no-unused-vars
 import { dateFullFormat, formatJam, dateFull, formatDouble } from 'src/modules/formatter'
- 
+// eslint-disable-next-line no-unused-vars
 import { jsPDF } from 'jspdf'
- 
+// eslint-disable-next-line no-unused-vars
 import html2canvas from 'html2canvas'
 // eslint-disable-next-line no-unused-vars
 import { computed, onMounted, ref } from 'vue'
@@ -398,7 +398,7 @@ const qrUrl = computed(() => {
 
 const adaAlergi = ref(false)
 const penyerahan = ref(false)
- 
+// eslint-disable-next-line no-unused-vars
 const komponenReseps = ref([
   { id: '1', value: 'tgl_resep', kode: '1.1', label: 'Tgl Resep', ada: false, tidak: false },
   { id: '2', value: 'rm_pasien', kode: '1.2', label: 'No RM Pasien', ada: false, tidak: false },
@@ -412,20 +412,20 @@ const komponenReseps = ref([
   { id: '10', value: 'nama_pasien', kode: '1.10', label: 'Nama Pasien', ada: false, tidak: false },
   { id: '11', value: 'umur_bb', kode: '1.11', label: 'Umur / BB pasien', ada: false, tidak: false }
 ])
- 
+// eslint-disable-next-line no-unused-vars
 const farmasiKlinises = ref([
   { id: '12', value: 'kontradiksi', kode: '2.1', label: 'Kontradiksi', ada: false, tidak: false },
   { id: '13', value: 'duplikasi', kode: '2.2', label: 'Duplikasi', ada: false, tidak: false },
   { id: '14', value: 'efek_samping', kode: '2.3', label: 'Efek Samping', ada: false, tidak: false },
   { id: '15', value: 'interaksi', kode: '2.4', label: 'Interaksi Obat', ada: false, tidak: false }
 ])
- 
+// eslint-disable-next-line no-unused-vars
 const content = ref(null)
 function printPage () {
   //   window.print()
   setTimeout(function () {
     console.log('cont', content.value?.innerHtml)
-     
+    // eslint-disable-next-line new-cap
     const doc = new jsPDF({
       orientation: 'p',
       unit: 'px',
@@ -462,7 +462,7 @@ function printPage () {
   }, 100)
 }
 
- 
+// eslint-disable-next-line no-unused-vars
 function afterPrint () {
   // const originalContents = document.body.innerHTML
 

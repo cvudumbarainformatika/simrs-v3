@@ -750,7 +750,7 @@
   </div>
 </template>
 <script setup>
- 
+// eslint-disable-next-line no-unused-vars
 import { computed, ref } from 'vue'
 import { date, Dialog } from 'quasar'
 import { dateFullFormat, dateFull } from 'src/modules/formatter'

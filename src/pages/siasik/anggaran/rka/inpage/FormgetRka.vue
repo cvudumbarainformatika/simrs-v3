@@ -107,7 +107,7 @@
 <script setup>
 import { useQuasar } from 'quasar'
 import { useRkaStore } from 'src/stores/siasik/anggaran/storerka'
- 
+// eslint-disable-next-line no-unused-vars
 import { defineAsyncComponent, ref, watchEffect } from 'vue'
 
 const CetakRka = defineAsyncComponent(() => import('../printRka/PrintDataRKA.vue'))

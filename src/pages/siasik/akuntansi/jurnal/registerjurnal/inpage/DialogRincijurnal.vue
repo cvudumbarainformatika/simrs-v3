@@ -100,6 +100,6 @@
 <script setup>
 import { registerJurnal } from 'src/stores/siasik/akuntansi/jurnal/regjurnal'
 
- 
+// eslint-disable-next-line no-unused-vars
 const store = registerJurnal()
 </script>

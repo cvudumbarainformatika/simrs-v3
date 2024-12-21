@@ -57,7 +57,7 @@ const barStyle = ref({
   opacity: 0.2
 })
 const page = useRoute()
- 
+// eslint-disable-next-line no-unused-vars
 const title = computed(() => {
   if (page.path === '/gudang/farmasi/rencanapemesanan/rencana') {
     return 'RENCANA'
@@ -67,7 +67,7 @@ const title = computed(() => {
     return 'Rencana'
   }
 })
- 
+// eslint-disable-next-line no-unused-vars
 const subtitle = computed(() => {
   if (page.path === '/gudang/farmasi/rencanapemesanan/rencana') {
     return 'Rencana Pemesanan Obat'

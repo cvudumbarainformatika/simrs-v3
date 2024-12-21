@@ -407,7 +407,7 @@ const refPenerimaan = ref(null)
 const refStatus = ref(null)
 // inp
 const refJumlah = ref(null)
- 
+// eslint-disable-next-line no-unused-vars
 function resetvalidasi () {
   refObat.value?.$refs?.refAuto?.resetValidation()
   refBatch.value?.$refs?.refAuto?.resetValidation()

@@ -893,7 +893,7 @@ function hitungscorenipsb () {
     store.form.ketscorenips = 'Nyeri Sedang - Berat'
   }
 }
- 
+// eslint-disable-next-line no-unused-vars
 function updateSelection (val) {
   store.setForm('riwayatalergi', val.join(', '))
 }

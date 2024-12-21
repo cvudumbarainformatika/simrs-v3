@@ -566,7 +566,7 @@
 
 <script setup>
 import { usePraAnastesiStore } from 'src/stores/simrs/pelayanan/poli/praanastesi'
- 
+// eslint-disable-next-line no-unused-vars
 import { ref, onMounted, watchEffect } from 'vue'
 
 const store = usePraAnastesiStore()

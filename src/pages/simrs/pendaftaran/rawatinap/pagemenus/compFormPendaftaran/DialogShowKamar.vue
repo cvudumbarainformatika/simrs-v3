@@ -242,7 +242,7 @@ function lihatItem () {
   return { terisi, kapasitas: ad.length }
 }
 
- 
+// eslint-disable-next-line no-unused-vars
 function getKelas (item) {
   const kamars = item.kamars.length ? item.kamars.map(x => x.rs5) : []
   const grup = [...new Set(kamars)]

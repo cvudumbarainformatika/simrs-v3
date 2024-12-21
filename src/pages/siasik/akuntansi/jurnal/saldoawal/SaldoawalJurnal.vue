@@ -19,7 +19,7 @@ import FormSaldoawal from './inpage/FormSaldoawal.vue'
 import ListSaldoawal from './inpage/ListSaldoawal.vue'
 // import { saldoawalJurnal } from 'src/stores/siasik/akuntansi/jurnal/saldoawal'
 // import { onMounted } from 'vue'
- 
+// eslint-disable-next-line no-unused-vars
 
 // const store = saldoawalJurnal()
 

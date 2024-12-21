@@ -4,7 +4,7 @@ import useRightPanel from '../use/useRightPanel'
 import gsap from 'gsap'
 import { dateFullFormat } from 'src/modules/formatter'
 
- 
+// eslint-disable-next-line no-unused-vars
 const BarComp = defineAsyncComponent(() => import('../../../components/BarComp.vue'))
 const ListIgd = defineAsyncComponent(() => import('../../../components/ListIgd.vue'))
 const InfoInputRanap = defineAsyncComponent(() => import('../../../components/InfoInputRanap.vue'))
@@ -23,7 +23,7 @@ const props = defineProps({
 // eslint-disable-next-line no-unused-vars
 const min = ref(false)
 
- 
+// eslint-disable-next-line no-unused-vars
 const { store, settings, hapusItem } = useRightPanel(props.pasien)
 
 const beforeEnter = (el) => {

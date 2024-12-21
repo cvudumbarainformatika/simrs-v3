@@ -227,11 +227,11 @@
 <script setup>
 import { useQuasar } from 'quasar'
 import { useBukubesarStore } from 'src/stores/siasik/akuntansi/bukubesar/bukubesar'
- 
+// eslint-disable-next-line no-unused-vars
 import { defineAsyncComponent, onMounted, ref, watchEffect } from 'vue'
 
 const CetakBukubesar = defineAsyncComponent(() => import('../printbukubesar/PrintBukubesar.vue'))
- 
+// eslint-disable-next-line no-unused-vars
 const $q = useQuasar()
 const store = useBukubesarStore()
 const berdasarrekap = ref('')

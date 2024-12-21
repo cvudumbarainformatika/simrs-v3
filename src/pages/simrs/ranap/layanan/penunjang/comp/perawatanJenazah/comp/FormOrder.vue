@@ -45,7 +45,7 @@
 import { usePermintaanPerawatanJenazahStore } from 'src/stores/simrs/ranap/perawatanjenazah'
 import { ref } from 'vue'
 
- 
+// eslint-disable-next-line no-unused-vars
 const props = defineProps({
   pasien: {
     type: Object,

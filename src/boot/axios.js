@@ -109,7 +109,7 @@ export default boot(({ app }) => {
   // getApp()
 })
 
- 
+// eslint-disable-next-line no-return-assign
 const setToken = (token) => {
   api.defaults.headers.common.Authorization = `Bearer ${token}`
 }

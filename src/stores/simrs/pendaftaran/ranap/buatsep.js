@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { api } from 'src/boot/axios'
 import { dateDbFormat } from 'src/modules/formatter'
- 
+// eslint-disable-next-line no-unused-vars
 import { useListHistoryPendaftaranRanapStore } from './history'
 // eslint-disable-next-line no-unused-vars
 import { notifCenterVue, notifErrVue, notifSuccessVue } from 'src/modules/utils'

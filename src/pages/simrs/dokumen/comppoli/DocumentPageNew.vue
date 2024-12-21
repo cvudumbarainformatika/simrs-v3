@@ -75,7 +75,7 @@
 import KumpulanSurat from './KumpulanSurat.vue'
 import { findWithAttr } from 'src/modules/utils'
 import { ref, defineAsyncComponent } from 'vue'
- 
+// eslint-disable-next-line no-unused-vars
 const props = defineProps({
   pasien: {
     type: Object,
@@ -183,7 +183,7 @@ const comp = [
   { nama: 'AsesmenAwalKeperawatan', page: defineAsyncComponent(() => import('../erm/poli/AsesmenAwalMedisRj.vue')) },
   { nama: 'AsesmenPraAnestesia', page: defineAsyncComponent(() => import('../erm/poli/AsesmenPraAnestesia.vue')) }
 ]
- 
+// eslint-disable-next-line no-unused-vars
 const cekPanel = () => {
   const val = doc.value
   const ganti = val.replace(/ /g, '')

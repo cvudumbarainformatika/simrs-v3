@@ -405,7 +405,7 @@
 // eslint-disable-next-line no-unused-vars
 import { onMounted, ref, computed, watchEffect } from 'vue'
 import { usePermintaanEResepStore } from 'src/stores/simrs/farmasi/permintaanresep/eresep'
- 
+// eslint-disable-next-line no-unused-vars
 import { humanDate } from 'src/modules/formatter'
 // import { pathImg } from 'src/boot/axios'
 // import { useAplikasiStore } from 'src/stores/app/aplikasi'
@@ -444,7 +444,7 @@ function pilihData (row) {
   store.pilihHistory(row)
 }
 
- 
+// eslint-disable-next-line no-unused-vars
 function copyResep (val, indexlist, tipe) {
   store.loading = true
   const permintaan = val?.permintaanresep

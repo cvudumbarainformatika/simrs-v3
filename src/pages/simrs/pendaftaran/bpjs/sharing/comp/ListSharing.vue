@@ -124,12 +124,12 @@ function buka(val) {
   dialog.value = true
   // simpanKunjungan()
 }
- 
+// eslint-disable-next-line no-unused-vars
 function setNumber(evt, form) {
   const num = !isNaN(parseFloat(evt)) ? parseFloat(evt) : 0
   store.setForm(form, num)
 }
- 
+// eslint-disable-next-line no-unused-vars
 function simpanForm() {
   console.log('form', store.form)
   store.simpan().then(() => {

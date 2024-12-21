@@ -328,9 +328,9 @@
 import { dateFullFormat, formatDouble } from 'src/modules/formatter'
 import { useListBastObatKonsinyasiStore } from 'src/stores/simrs/farmasi/konsinyasi/listbastkonsinyasi'
 import { ref } from 'vue'
- 
+// eslint-disable-next-line no-unused-vars
 import { jsPDF } from 'jspdf'
- 
+// eslint-disable-next-line no-unused-vars
 import html2canvas from 'html2canvas'
 
 const store = useListBastObatKonsinyasiStore()
@@ -342,13 +342,13 @@ function onClick (val) {
   val.item.highlight = !val.item.highlight
 }
 
- 
+// eslint-disable-next-line no-unused-vars
 const content = ref(null)
 // eslint-disable-next-line no-unused-vars
 function printToPdf () {
   setTimeout(function () {
     console.log('cont', content.value?.innerHtml)
-     
+    // eslint-disable-next-line new-cap
     const doc = new jsPDF({
       orientation: 'l',
       unit: 'px',

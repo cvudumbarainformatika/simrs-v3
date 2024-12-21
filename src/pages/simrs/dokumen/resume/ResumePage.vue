@@ -927,7 +927,7 @@ const store = useDokumenResumeStore()
 const fisik = usePemeriksaanFisik()
 store.setParams('noreg', props.pasien?.noreg)
 store.getData()
- 
+// eslint-disable-next-line no-unused-vars
 function getYT (val) {
   if (val === 1 || val === '1') {
     return 'Ya'
@@ -939,7 +939,7 @@ function getYT (val) {
     return '-'
   }
 }
- 
+// eslint-disable-next-line no-unused-vars
 function getKesadaran (val) {
   const temp = fisik.optionsTingkatkesadaran.filter(a => a.value === val)
   if (temp.length) {
@@ -949,7 +949,7 @@ function getKesadaran (val) {
     return '-'
   }
 }
- 
+// eslint-disable-next-line no-unused-vars
 function tekananDarah (val) {
   const normal = val >= 100 && val <= 120
   const prahipertensi = val >= 121 && val <= 139
@@ -978,7 +978,7 @@ function tekananDarah (val) {
 
   return obj
 }
- 
+// eslint-disable-next-line no-unused-vars
 function tekananDarahDias (val) {
   const normal = val >= 60 && val <= 79
   const prahipertensi = val >= 80 && val <= 89
@@ -1007,7 +1007,7 @@ function tekananDarahDias (val) {
 
   return obj
 }
- 
+// eslint-disable-next-line no-unused-vars
 function suhu (val) {
   const hipotermia = val < 35
   const normal = val >= 35 && val < 37
@@ -1033,7 +1033,7 @@ function suhu (val) {
 
   return obj
 }
- 
+// eslint-disable-next-line no-unused-vars
 function nadi (val) {
   const bradikardi = val < 60
   const normal = val >= 61 && val <= 100

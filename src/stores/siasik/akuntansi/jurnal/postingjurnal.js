@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { date } from 'quasar'
 import { api } from 'src/boot/axios'
- 
+// eslint-disable-next-line no-unused-vars
 import { notifErr, notifErrVue, notifSuccess } from 'src/modules/utils'
 
 export const postingJurnal = defineStore('posting_jurnal', {

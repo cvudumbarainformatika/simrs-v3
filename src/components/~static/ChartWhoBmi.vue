@@ -640,19 +640,19 @@ const cariPanduanBmi = (val) => {
 
 const getChartResult = () => {
   // const titikA = props?.draft
-  const { titkA, titikB, titikC } = props.draft
+  const { titkA, titikB, titikC } = props?.draft
 
   return [titkA, titikB, titikC]
 }
 
 const getScatterBmi = () => {
   // const titikA = props?.draft
-  const { titikD } = props.draft
+  const { titikD } = props?.draft
   // console.log('titikD', titikD)
   return [titikD]
 }
 
- 
+// eslint-disable-next-line no-unused-vars
 const getMaxBmi = (val) => {
   const masterTb = props?.draft?.masterBmi ?? []
   const o = masterTb.length ? masterTb.map(x => x[val]) : []

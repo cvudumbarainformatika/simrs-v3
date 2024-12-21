@@ -37,7 +37,7 @@ import useForm from './comp/useForm'
 const ListSoap = defineAsyncComponent(() => import('./comp/ListSoap.vue'))
 const DialogForm = defineAsyncComponent(() => import('./comp/DialogForm.vue'))
 
- 
+// eslint-disable-next-line no-unused-vars
 const props = defineProps({
   pasien: { type: Object, default: () => null },
   kasus: { type: Object, default: () => null },

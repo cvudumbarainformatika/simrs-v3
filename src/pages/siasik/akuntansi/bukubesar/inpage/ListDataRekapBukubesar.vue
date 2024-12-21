@@ -173,7 +173,7 @@
   </template>
 </template>
 <script setup>
- 
+// eslint-disable-next-line no-unused-vars
 import { formattanpaRp } from 'src/modules/formatter'
 import { useBukubesarStore } from 'src/stores/siasik/akuntansi/bukubesar/bukubesar'
 import { ref } from 'vue'
@@ -219,19 +219,19 @@ function totalSal () {
 }
 
 // TOTAL HASIL LEVEL 6
- 
+// eslint-disable-next-line no-unused-vars
 function Debitlevel6 () {
   const debit = store.hasilmapsLevel6.map((x) => x.debit)
   const totaldebit = debit.reduce((a, b) => a + b, 0)
   return totaldebit
 }
- 
+// eslint-disable-next-line no-unused-vars
 function Kreditlevel6 () {
   const kredit = store.hasilmapsLevel6.map((x) => x.kredit)
   const totalkredit = kredit.reduce((a, b) => a + b, 0)
   return totalkredit
 }
- 
+// eslint-disable-next-line no-unused-vars
 function Saldolevel6 () {
   const debit = store.hasilmapsLevel6.map((x) => x.debit)
   const totaldebit = debit.reduce((a, b) => a + b, 0)

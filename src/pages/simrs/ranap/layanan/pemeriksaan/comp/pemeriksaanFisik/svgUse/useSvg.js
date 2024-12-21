@@ -68,7 +68,7 @@ export default function useSvg (pasien) {
 
   const _initSVG = (_svg) => {
     getSvgEl(_svg)
-     
+    // eslint-disable-next-line no-unused-vars
 
     _svg.addEventListener('wheel', viewPortOnMouseWheel)
 
@@ -117,7 +117,7 @@ export default function useSvg (pasien) {
     }
   }
 
-   
+  // eslint-disable-next-line no-unused-vars
   const onMouseOver = (e) => {
     e.preventDefault()
     const targetId = document.getElementById(e?.target?.id)
@@ -216,7 +216,7 @@ export default function useSvg (pasien) {
       normalized = -(delta % 3 ? delta * 10 : delta / 3)
     }
 
-     
+    // eslint-disable-next-line no-unused-vars
     const scaleDelta = normalized > 0 ? 1 / svgViewBox.scale : svgViewBox.scale
     svgViewBox.scaleDelta = scaleDelta
     // console.log('gsap zoom', scaleDelta)

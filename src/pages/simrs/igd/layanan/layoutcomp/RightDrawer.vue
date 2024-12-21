@@ -3995,7 +3995,7 @@ function getKesadaran (val) {
     return '-'
   }
 }
- 
+// eslint-disable-next-line no-unused-vars
 function tekananDarah (val) {
   const normal = val >= 100 && val <= 120
   const prahipertensi = val >= 121 && val <= 139

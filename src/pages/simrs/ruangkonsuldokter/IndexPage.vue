@@ -86,7 +86,7 @@
 </template>
 
 <script setup>
- 
+// eslint-disable-next-line no-unused-vars
 // import { usePengunjungRanapStore } from 'src/stores/simrs/ranap/pengunjung'
 import { useRuangKonsulDokterStore } from 'src/stores/simrs/ranap/ruangkonsuldokter'
 import { defineAsyncComponent, onMounted, ref } from 'vue'

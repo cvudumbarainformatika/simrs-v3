@@ -91,7 +91,7 @@ const emits = defineEmits(['toggleLeftDrawer', 'gantidpjp', 'layananSelesai'])
 // const kodedpjp = ref(null)
 // const kdpegsimrs = ref(null)
 // const options = ref([])
- 
+// eslint-disable-next-line no-unused-vars
 const props = defineProps({
   pasien: {
     type: Object,

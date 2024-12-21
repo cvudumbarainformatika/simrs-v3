@@ -142,7 +142,7 @@ import { usePermintaanApheresisStore } from 'src/stores/simrs/ranap/apheresis'
 import { usePermintaanBankDarahStore } from 'src/stores/simrs/ranap/bankdarah'
 import { ref } from 'vue'
 
- 
+// eslint-disable-next-line no-unused-vars
 const props = defineProps({
   pasien: {
     type: Object,
@@ -155,7 +155,7 @@ const props = defineProps({
 })
 
 const store = usePermintaanApheresisStore()
- 
+// eslint-disable-next-line no-unused-vars
 const bankdarah = usePermintaanBankDarahStore()
 const formRef = ref(null)
 

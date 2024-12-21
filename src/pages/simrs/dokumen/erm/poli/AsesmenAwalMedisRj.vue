@@ -404,9 +404,9 @@ const printObj = {
 
 }
 const store = useDokumenpengkajianawalmedisrjStore()
- 
+// eslint-disable-next-line no-use-before-define
 store.setParams('noreg', props.pasien?.noreg)
- 
+// eslint-disable-next-line no-use-before-define
 // console.log('noreg', props.pasien?.noreg)
 store.getData()
 

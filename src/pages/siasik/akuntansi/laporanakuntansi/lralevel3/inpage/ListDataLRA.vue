@@ -376,7 +376,7 @@ const tables = [
     align: 'center'
   }
 ]
- 
+// eslint-disable-next-line no-unused-vars
 const columns = ref(tables)
 
 </script>

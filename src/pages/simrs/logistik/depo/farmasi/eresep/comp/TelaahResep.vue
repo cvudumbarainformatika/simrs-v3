@@ -223,7 +223,7 @@ import { notifErrVue } from 'src/modules/utils'
 import { ref } from 'vue'
 
 const emits = defineEmits(['close', 'simpan'])
- 
+// eslint-disable-next-line no-unused-vars
 const props = defineProps({
   item: { type: Object, default: () => {} },
   user: { type: Object, default: () => {} },
@@ -237,7 +237,7 @@ const tOptions = ref([
   { value: true, label: 'Ya' },
   { value: false, label: 'Tidak' }
 ])
- 
+// eslint-disable-next-line no-unused-vars
 const administrasi = ref([
   { id: '1', value: 'Sesuai', type_value: 'String', str_code: 'tgl_resep', kode: '1.1', question: 'Apakah tanggal resep sudah sesuai?', label: 'Tgl Resep' },
   { id: '2', value: 'Sesuai', type_value: 'String', str_code: 'nama_pasien', kode: '1.2', question: 'Apakah nama pasien sudah sesuai?', label: 'Nama Pasien' },
@@ -248,7 +248,7 @@ const administrasi = ref([
   { id: '7', value: 'Sesuai', type_value: 'String', str_code: 'ruangan_poli', kode: '1.7', question: 'Apakah ruangan/unit asal resep sudah sesuai?', label: 'Ruangan / poli' },
   { id: '8', value: 'Sesuai', type_value: 'String', str_code: 'status_pembiayaan', kode: '1.8', question: 'Apakah status pembiayaan pasien sudah sesuai?', label: 'Status Pembiayaan' }
 ])
- 
+// eslint-disable-next-line no-unused-vars
 const komponenReseps = ref([
   { id: '1', value: 'Sesuai', type_value: 'String', str_code: 'nama_obat_bentuk_sediaan', kode: '2.1', question: 'Apakah nama obat dan bentuk sediaan sudah sesuai?', label: 'Nama Obat, bentuk sediaan' },
   { id: '2', value: 'Sesuai', type_value: 'String', str_code: 'kuantitas_obat', kode: '2.2', question: 'Apakah jumlah obat sudah sesuai?', label: 'Kuantitas Obat' },
@@ -256,7 +256,7 @@ const komponenReseps = ref([
   { id: '4', value: 'Sesuai', type_value: 'String', str_code: 'aturan_pakai', kode: '2.4', question: 'Apakah aturan dan cara penggunaan obat sudah sesuai?', label: 'Aturan Pakai' },
   { id: '5', value: 'Sesuai', type_value: 'String', str_code: 'stabilitas_dan_inkompatibilitas_sediaan', kode: '2.5', question: 'Apakah stabilitas obat sudah sesuai?', label: 'Stabilitas dan inkompatibilitas sediaan' }
 ])
- 
+// eslint-disable-next-line no-unused-vars
 const farmasiKlinises = ref([
   { id: '1', value: false, type_value: 'valueBoolean', str_code: 'kontradiksi', kode: '3.1', question: 'Apakah terdapat kontraindikasi pengobatan?', label: 'Kontradiksi' },
   { id: '2', value: false, type_value: 'valueBoolean', str_code: 'duplikasi', kode: '3.2', question: 'Apakah terdapat duplikasi pengobatan?', label: 'Duplikasi' },

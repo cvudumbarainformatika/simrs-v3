@@ -452,7 +452,7 @@ import { formNotaPermintaanDanaLS } from 'src/stores/siasik/transaksi/ls/npdls/f
 import { useLaporanBkuPengeluaranStore } from 'src/stores/siasik/laporan/bku/bkupengeluaran'
 
 import { formattanpaRp } from 'src/modules/formatter'
- 
+// eslint-disable-next-line no-unused-vars
 import { terbilangRupiah } from 'src/modules/utils'
 
 const store = formNotaPermintaanDanaLS()

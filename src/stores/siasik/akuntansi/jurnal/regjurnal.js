@@ -615,7 +615,7 @@ export const registerJurnal = defineStore('register_jurnal', {
       // DATA CONTRAPOST //
       const unikcp = this.contrapost.map((x) => x.nocontrapost)
       const dataunik = unikcp.length ? [...new Set(unikcp)] : []
-       
+      // eslint-disable-next-line no-unused-vars
       const cp = []
 
       for (let c = 0; c < dataunik.length; c++) {
@@ -623,7 +623,7 @@ export const registerJurnal = defineStore('register_jurnal', {
         const arr = this.contrapost
         // console.log('arr', arr)
 
-         
+        // eslint-disable-next-line no-unused-vars
         const epsal = []
         const arrfilter = arr.filter((x) => x.nocontrapost === el).map((x) => x)
         for (let i = 0; i < arrfilter.length; i++) {

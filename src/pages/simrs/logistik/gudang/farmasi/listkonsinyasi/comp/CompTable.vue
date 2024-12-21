@@ -117,7 +117,7 @@ import { date } from 'quasar'
 import { computed } from 'vue'
 import { dateFullFormat, formatDouble } from 'src/modules/formatter'
 import { useListPemakaianObatKonsinyasiStore } from 'src/stores/simrs/farmasi/konsinyasi/listkonsinyasi'
- 
+// eslint-disable-next-line no-unused-vars
 import { notifErrVue } from 'src/modules/utils'
 const store = useListPemakaianObatKonsinyasiStore()
 const allChecked = computed({

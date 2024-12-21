@@ -173,7 +173,7 @@ const inputCari = (val) => {
   modVal.value = val
 }
 
- 
+// eslint-disable-next-line no-unused-vars
 function highlightText (text) {
   // Implement your text highlighting logic here
   // For example, you can wrap the matching text in <span> with a specific style

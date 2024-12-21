@@ -1,8 +1,8 @@
 import { defineStore } from 'pinia'
- 
+// eslint-disable-next-line no-unused-vars
 import { api } from 'src/boot/axios'
 import { useAnamnesisRanapStore } from './anamnesis'
- 
+// eslint-disable-next-line no-unused-vars
 import { usePengunjungRanapStore } from './pengunjung'
 import { usePemeriksaanUmumRanapStore } from './pemeriksaanumum'
 import { usePenilaianRanapStore } from './penilaian'

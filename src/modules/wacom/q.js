@@ -1,7 +1,7 @@
 /* eslint-disable no-shadow-restricted-names */
- 
- 
- 
+/* eslint-disable prefer-const */
+/* eslint-disable camelcase */
+/* eslint-disable no-var */
 /* eslint-disable no-empty */
 /* eslint-disable no-undef */
 (function (definition) {

@@ -1,4 +1,4 @@
- 
+/* eslint-disable space-before-function-paren */
 import { defineStore } from 'pinia'
 import { date } from 'quasar'
 import { api } from 'src/boot/axios'
@@ -68,7 +68,7 @@ export const useLaporanLraLaprealisasianggaranStore = defineStore('laporan_reali
       this.params.kegiatan = ''
     },
 
-     
+    // eslint-disable-next-line space-before-function-paren
     getDataBidang() {
       this.loading = true
       const params = { params: this.params }
@@ -1087,7 +1087,7 @@ export const useLaporanLraLaprealisasianggaranStore = defineStore('laporan_reali
       return unik
     },
     ambilDataUnik (x, f) {
-       
+      // eslint-disable-next-line no-sequences
       const unique = Object.values(x.reduce((a, b) => ((a[f(b)] = b), a), {}))
       return unique
     },

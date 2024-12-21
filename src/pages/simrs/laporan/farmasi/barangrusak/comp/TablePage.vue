@@ -185,7 +185,7 @@
 import { dateFullFormat, formatDouble } from 'src/modules/formatter'
 import { useLaporanBarangRusakStore } from 'src/stores/simrs/laporan/farmasi/barangrusak/barangrusak'
 
- 
+// eslint-disable-next-line no-unused-vars
 const store = useLaporanBarangRusakStore()
 </script>
 

@@ -35,7 +35,7 @@ import { findWithAttr } from 'src/modules/utils'
 import { defineAsyncComponent, ref } from 'vue'
 
 const headRef = ref(null)
- 
+// eslint-disable-next-line no-unused-vars
 const h = ref(64)
 const Header = defineAsyncComponent(() => import('./comp/PageHead.vue'))
 const head = ref('konsi')

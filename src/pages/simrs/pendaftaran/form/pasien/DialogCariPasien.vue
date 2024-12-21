@@ -191,7 +191,7 @@ function hiddenDialog () {
   emits('hide')
 }
 
- 
+// eslint-disable-next-line no-unused-vars
 function pilihPasienIni (val) {
   emits('gantiPasien')
   if (val === '' || val === null || val === undefined || !val) return

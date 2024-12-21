@@ -389,7 +389,7 @@
 <script setup>
 import { usePenilaianRanapStore } from 'src/stores/simrs/ranap/penilaian.js'
 import { computed, onMounted } from 'vue'
- 
+// eslint-disable-next-line no-unused-vars
 const props = defineProps({
   pasien: {
     type: Object,
@@ -405,7 +405,7 @@ const props = defineProps({
   }
 })
 
- 
+// eslint-disable-next-line no-unused-vars
 const store = usePenilaianRanapStore()
 
 const jnsKasusKep = computed(() => {
@@ -421,7 +421,7 @@ const jnsKasusKep = computed(() => {
 //   return (store?.humptys?.grupings?.includes(jnsKasusKep) && (store.usia < 18))
 // })
 
- 
+// eslint-disable-next-line no-unused-vars
 // console.log('humppp', store.humptys)
 
 onMounted(async () => {

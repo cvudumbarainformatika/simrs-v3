@@ -1,4 +1,4 @@
- 
+/* eslint-disable no-unreachable */
 import { defineStore } from 'pinia'
 import { api } from 'src/boot/axios'
 import { useKasirIgdStore } from '../kasir/igd/kasirigd'

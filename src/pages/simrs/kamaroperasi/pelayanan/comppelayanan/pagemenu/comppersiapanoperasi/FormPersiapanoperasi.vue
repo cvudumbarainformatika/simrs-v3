@@ -432,7 +432,7 @@
 </template>
 
 <script setup>
- 
+// eslint-disable-next-line no-unused-vars
 import { onMounted, ref, onUnmounted } from 'vue'
 import { usePersiapanOperasiStore } from 'src/stores/simrs/farmasi/kamaroperasi/resepsemntara'
 import { formatDouble } from 'src/modules/formatter'
@@ -611,7 +611,7 @@ function setJumlah (val) {
     }
   }
 }
- 
+// eslint-disable-next-line no-unused-vars
 // function qtyEnter() {
 //   // if (parseFloat(store.form.jumlah_minta) > 1)
 //   refSigna.value.focus()

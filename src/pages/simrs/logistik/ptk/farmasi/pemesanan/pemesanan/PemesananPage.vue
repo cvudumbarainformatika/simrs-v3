@@ -50,7 +50,7 @@ import { useTabelPemesananObatStore } from 'src/stores/simrs/farmasi/pemesanan/t
 import { defineAsyncComponent } from 'vue'
 
 const style = useStyledStore()
- 
+// eslint-disable-next-line no-unused-vars
 const store = usePemesananObatStore()
 const table = useTabelPemesananObatStore()
 

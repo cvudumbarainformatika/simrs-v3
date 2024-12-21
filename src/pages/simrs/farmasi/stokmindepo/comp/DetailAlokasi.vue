@@ -172,7 +172,7 @@ import { dateFullFormat } from 'src/modules/formatter'
 import { useAplikasiStore } from 'src/stores/app/aplikasi'
 import { UseFarmasiStokMinDepoTable } from 'src/stores/simrs/farmasi/stokmindepo/tabel'
 
- 
+// eslint-disable-next-line no-unused-vars
 const store = UseFarmasiStokMinDepoTable()
 const apps = useAplikasiStore()
 function ruangan (ruang) {

@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { api } from 'src/boot/axios'
 import { usePengunjungRanapStore } from './pengunjung'
- 
+// eslint-disable-next-line no-unused-vars
 import { notifErrVue, notifSuccess } from 'src/modules/utils'
 
 export const usePermintaanCathlabStore = defineStore('permintaan-cathlab-store', {

@@ -180,7 +180,7 @@
 
 <script setup>
 
- 
+// eslint-disable-next-line no-unused-vars
 import { formatRpDouble } from 'src/modules/formatter'
 import { formNotaPermintaanDanaLS } from 'src/stores/siasik/transaksi/ls/npdls/formnpdls'
 import { defineAsyncComponent, onMounted, ref } from 'vue'
@@ -196,7 +196,7 @@ onMounted(() => {
   store.listdatanpd()
 })
 
- 
+// eslint-disable-next-line no-unused-vars
 const clearSearch = () => {
   store.reqs.q = ''
   store.goToPage(1)
@@ -264,7 +264,7 @@ const listnpdls = [
 const columnsnpd = ref(listnpdls)
 
 const npd = ref(null)
- 
+// eslint-disable-next-line no-unused-vars
 function viewRincian (row) {
   store.openDialogRinci = true
   npd.value = row.rincian
@@ -275,7 +275,7 @@ const onRowClick = (row) =>
   alert([row?.nopencairan, row?.total])
 
 const datanpds = ref(null)
- 
+// eslint-disable-next-line no-unused-vars
 function viewDataNpdls (row) {
   store.dialogCetakNpd = true
   datanpds.value = row

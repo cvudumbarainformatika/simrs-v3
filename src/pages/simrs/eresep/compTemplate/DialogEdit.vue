@@ -80,7 +80,7 @@ const props = defineProps({
     default: false
   }
 })
- 
+// eslint-disable-next-line no-unused-vars
 const emits = defineEmits(['close'])
 const compCariObat = ref(null)
 const refQty = ref(null)

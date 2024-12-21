@@ -8,7 +8,7 @@ import { defineAsyncComponent, onMounted, ref } from 'vue'
 import AutocompleteNakesMulti from './AutocompleteNakesMulti.vue'
 
 const store = useTindakanRanapStore()
- 
+// eslint-disable-next-line no-unused-vars
 // const { listTindakan, listPetugas, setKdTindakan, saveTindakan } = store
 
 const options = ref([])

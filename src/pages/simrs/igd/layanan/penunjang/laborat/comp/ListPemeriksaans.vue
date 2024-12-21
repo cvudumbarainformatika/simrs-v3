@@ -210,7 +210,7 @@ function fillterTable (val) {
   return []
 }
 
- 
+// eslint-disable-next-line no-unused-vars
 function mapping (item) {
   const arr = item
   const arr2 = arr.length > 0
@@ -228,7 +228,7 @@ function mapping (item) {
   return groupped
 }
 
- 
+// eslint-disable-next-line no-unused-vars
 function hapusItem (item) {
   $q.dialog({
     dark: true,
@@ -247,7 +247,7 @@ function hapusItem (item) {
   })
 }
 
- 
+// eslint-disable-next-line no-unused-vars
 function groupBy (list, keyGetter) {
   const map = new Map()
   list.forEach((item) => {

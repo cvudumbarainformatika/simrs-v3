@@ -259,7 +259,7 @@
   </template>
 </template>
 <script setup>
- 
+// eslint-disable-next-line no-unused-vars
 import { formattanpaRp } from 'src/modules/formatter'
 import { useBukubesarStore } from 'src/stores/siasik/akuntansi/bukubesar/bukubesar'
 import { ref } from 'vue'

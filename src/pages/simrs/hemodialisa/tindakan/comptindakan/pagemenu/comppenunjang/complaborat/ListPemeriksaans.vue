@@ -207,7 +207,7 @@ function mapping(item) {
   return groupped
 }
 
- 
+// eslint-disable-next-line no-unused-vars
 function hapusItem(id) {
   $q.dialog({
     dark: true,
@@ -225,7 +225,7 @@ function hapusItem(id) {
   })
 }
 
- 
+// eslint-disable-next-line no-unused-vars
 function groupBy(list, keyGetter) {
   const map = new Map()
   list.forEach((item) => {

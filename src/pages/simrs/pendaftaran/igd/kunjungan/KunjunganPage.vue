@@ -50,7 +50,7 @@ import { useListKunjunganIgd } from 'src/stores/simrs/pendaftaran/kunjungan/igd/
 import { onMounted } from 'vue'
 // import KunjunganPage from 'src/pages/simrs/pendaftaran/igd/kunjungan/comp/ListKunjungan.vue';
 
- 
+// eslint-disable-next-line no-unused-vars
 const style = useStyledStore()
 const store = useListKunjunganIgd()
 

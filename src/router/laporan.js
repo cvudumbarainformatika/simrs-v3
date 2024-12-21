@@ -172,6 +172,12 @@ const laporan = {
             import('src/pages/siasik/akuntansi/laporanakuntansi/lpsal/IndexPage.vue')
         },
         {
+          path: '/laporan/akuntansi/lpe',
+          name: 'laporan.akuntansi.lpe',
+          component: () =>
+            import('src/pages/siasik/akuntansi/laporanakuntansi/lpe/IndexLpe.vue')
+        },
+        {
           path: '/laporan/akuntansi/neraca',
           name: 'laporan.akuntansi.neraca',
           component: () =>
@@ -257,10 +263,14 @@ const laporan = {
     },
     {
       path: '/laporan/farmasi/barang-rusak',
-      // name: 'laporan.farmasi.barang-rusak',
       component: () => import('pages/simrs/laporan/farmasi/barangrusak/IndexPage.vue')
     },
+    {
+      path: '/laporan/farmasi/pembelian-per-item',
+      component: () => import('pages/simrs/laporan/farmasi/pembelianPerItem/IndexPage.vue')
+    },
 
+    // ini Harus ada
     {
       path: '/laporan/notfound',
       component: () => import('pages/MidlewareNotFound.vue')

@@ -82,9 +82,9 @@ const imgTtd = computed(() => {
 let retry = 0
 const MAXRETRIES = 20
 const TIMEOUT_LONG = 1000
- 
+// eslint-disable-next-line no-unused-vars
 let tablet
- 
+// eslint-disable-next-line no-unused-vars
 const MIMGDATA = ref()
 const USBDEVICES = ref()
 
@@ -105,13 +105,13 @@ const WIDTH = ref('320px')
 const HEIGHT = ref('200px')
 const FORMTOP = ref('320px')
 const FORMLEFT = ref('200px')
- 
+// eslint-disable-next-line no-unused-vars
 const SIGNATUREIMAGE = ref(null)
 
 // const imgTtd = ref(null)
 
 const canvasRef = ref()
- 
+// eslint-disable-next-line no-unused-vars
 const ctx = ref()
 
 onMounted(() => {
@@ -151,7 +151,7 @@ function onDCAtimeout () {
   setTimeout(close, 0)
 }
 
- 
+// eslint-disable-next-line no-unused-vars
 function Point (x, y) {
   this.x = x
   this.y = y
@@ -169,7 +169,7 @@ function getImage () {
   return imgTtd.value
 }
 
- 
+// eslint-disable-next-line no-unused-vars
 function disconnect () {
   const deferred = Q.defer()
 
@@ -406,7 +406,7 @@ function tabletDemo () {
       const decrypted = function (report) {
         // console.log("decrypted: " + JSON.stringify(report));
       }
-       
+      // eslint-disable-next-line no-array-constructor
       // MPENDATA.value = new Array()
       reportHandler.onReportPenData = penData
       reportHandler.onReportPenDataOption = penData
@@ -441,11 +441,11 @@ function tabletDemo () {
 }
 
 function Button () {
-   
+  // eslint-disable-next-line no-unused-expressions
   this.Bounds // in Screen coordinates
-   
+  // eslint-disable-next-line no-unused-expressions
   this.Text
-   
+  // eslint-disable-next-line no-unused-expressions
   this.Click
 };
 
@@ -513,7 +513,7 @@ function drawButtons () {
   for (let i = 0; i < MBTNS.value.length; ++i) {
     // if (useColor)
     // // console.log('for draw', MBTNS.value[i].Bounds.width)
-     
+    // eslint-disable-next-line no-lone-blocks
     {
       ctx.value.fillStyle = 'lightgrey'
       ctx.value.fillRect(MBTNS.value[i].Bounds.x, MBTNS.value[i].Bounds.y, MBTNS.value[i].Bounds.width, MBTNS.value[i].Bounds.height)
@@ -559,7 +559,7 @@ function btnClearClick () {
 function clearScreen () {
   clearCanvas(canvasRef.value, ctx.value)
   drawButtons()
-   
+  // eslint-disable-next-line no-array-constructor
   MPENDATA.value = new Array()
   tablet?.writeImage(ENCODINGMODE.value, MIMGDATA.value)
   SIGNATUREIMAGE.value = null

@@ -984,7 +984,7 @@ function copyDataFromBpjs () {
   store.openDialogPeserta = false
 }
 
- 
+// eslint-disable-next-line no-unused-vars
 function pilihRuang (val) {
   store.pasien.kamar = null
   const arr = store.kamars

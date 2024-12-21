@@ -104,7 +104,7 @@
 <script setup>
 import { saldoawalJurnal } from 'src/stores/siasik/akuntansi/jurnal/saldoawal'
 import { onMounted, ref } from 'vue'
- 
+// eslint-disable-next-line no-unused-vars
 const refsaldo = ref([])
 const store = saldoawalJurnal()
 const options = ref([])

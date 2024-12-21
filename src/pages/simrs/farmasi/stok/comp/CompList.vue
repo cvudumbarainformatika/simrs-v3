@@ -276,7 +276,7 @@
   </div>
 </template>
 <script setup>
- 
+// eslint-disable-next-line no-unused-vars
 import { date } from 'quasar'
 import { dateFullFormat, formatDouble, formatRp } from 'src/modules/formatter'
 import { notifErrVue } from 'src/modules/utils'

@@ -1,13 +1,13 @@
- 
+/* eslint-disable no-new-object */
 /* eslint-disable no-unreachable */
- 
+/* eslint-disable no-throw-literal */
 /* eslint-disable no-undef */
- 
- 
- 
+/* eslint-disable camelcase */
+/* eslint-disable eqeqeq */
+/* eslint-disable no-var */
 /* eslint-disable no-unexpected-multiline */
- 
- 
+/* eslint-disable func-call-spacing */
+/* eslint-disable no-use-before-define */
 //= =============================================================================
 // wgssStuSdk.js
 // Copyright (c) 2015-2017 Wacom Co.,Ltd.

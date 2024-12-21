@@ -44,10 +44,10 @@ const BarComp = defineAsyncComponent(() => import('../../components/BarComp.vue'
 const FormPemeriksaanUmum = defineAsyncComponent(() => import('./pemeriksaanUmum/FormPemeriksaanUmum.vue'))
 const ListPemeriksaanUmum = defineAsyncComponent(() => import('./pemeriksaanUmum/ListPemeriksaanUmum.vue'))
 
- 
+// eslint-disable-next-line no-unused-vars
 const store = usePemeriksaanUmumRanapStore()
 
- 
+// eslint-disable-next-line no-unused-vars
 const props = defineProps({
   pasien: {
     type: Object,

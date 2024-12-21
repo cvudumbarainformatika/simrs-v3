@@ -267,7 +267,7 @@ import { useQuasar } from 'quasar'
 import { dataBastFarmasi } from 'src/stores/siasik/transaksi/ls/npdls/databast'
 import { formNotaPermintaanDanaLS } from 'src/stores/siasik/transaksi/ls/npdls/formnpdls'
 import { onMounted, ref } from 'vue'
- 
+// eslint-disable-next-line no-unused-vars
 import { formattanpaRp } from 'src/modules/formatter'
 import { notifErrVue } from 'src/modules/utils'
 
@@ -386,7 +386,7 @@ const tablebast = [
   }
 ]
 
- 
+// eslint-disable-next-line no-unused-vars
 const columns = ref(tablebast)
 const selected = ref([])
 
@@ -445,11 +445,11 @@ function deleteData (row) {
 //   store.rinci.nominalpembayaran = cari.subtotal
 // }
 
- 
+// eslint-disable-next-line no-unused-vars
 function simpanRinci (val) {
   store.reqs.rincianmanual = val
   // SIMPAN RINCIAN PAKAI LOCALSTORAGE JIKA OBJ RINCI KE REPLACE
-   
+  // eslint-disable-next-line no-unused-vars
   // const obj = form.value
   const obj = store.rinci
   const rinci = $q.localStorage.getItem('rincian_npd')
@@ -499,7 +499,7 @@ function simpanRinci (val) {
   console.log('rincian stlh push', store.form.rincians)
   store.disabled = true
 }
- 
+// eslint-disable-next-line no-unused-vars
 function simpanRinciBast (val) {
   // const obj = store.rinci = val
   // const obj = carisrt.reqs.rincianbast = val
@@ -559,7 +559,7 @@ function simpanRinciBast (val) {
 //   //   store.emptyForm()
 //   // })
 // }
- 
+// eslint-disable-next-line no-unused-vars
 function pilihRekening50 (val) {
   const arr = store.rekening50
   const obj = arr.length ? arr.find(x => x.rek50 === val) : null

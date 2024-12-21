@@ -1904,7 +1904,7 @@ const lahirValid = computed(() => {
 })
 let valid = false
 function validasi () {
-   
+  // eslint-disable-next-line no-undef, no-use-before-define
 
   const JenisPasien = refJenisPasien.value.$refs.refAuto.validate()
   const NoRM = refNoRM.value.$refs.refInput.validate()

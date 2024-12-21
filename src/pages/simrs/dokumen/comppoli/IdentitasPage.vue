@@ -121,11 +121,12 @@
 
 <script setup>
 import { defineProps } from 'vue'
+// eslint-disable-next-line import/named
 import { useDokumen } from 'src/stores/simrs/pelayanan/poli/dokument.js'
 
- 
+// eslint-disable-next-line no-unused-vars
 const store = useDokumen()
- 
+// eslint-disable-next-line no-unused-vars
 const props = defineProps({
   pasien: {
     type: Object,

@@ -137,7 +137,7 @@ function getNewLine (text) {
 }
 
 function onSubmit () {
-   
+  // eslint-disable-next-line prefer-const
   const { item, pasien } = props
   form.value.id = item?.id
   form.value.noreg = item?.noreg

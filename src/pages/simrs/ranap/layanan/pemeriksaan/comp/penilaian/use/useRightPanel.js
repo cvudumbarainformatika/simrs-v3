@@ -26,7 +26,7 @@ export default function useRightPanel (pasien) {
   })
 
   const getData = (pasien) => {
-     
+    // eslint-disable-next-line no-unused-vars
     // const params = {
     //   params: {
     //     noreg: pasien?.noreg

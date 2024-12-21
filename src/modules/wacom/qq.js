@@ -1,5 +1,3 @@
-/* eslint-disable no-undef */
-
 let qq = (definition) => {
     if (typeof bootstrap === "function") {
         bootstrap("promise", definition);
@@ -346,7 +344,7 @@ const qqq = () => {
             error.stack.indexOf(STACK_JUMP_SEPARATOR) === -1
         ) {
             var stacks = [];
-            for (var p = promise; p; p = p.source) {
+            for (var p = promise; !!p; p = p.source) {
                 if (p.stack) {
                     stacks.unshift(p.stack);
                 }

@@ -192,7 +192,7 @@ const qrUrl = computed(() => {
 onMounted(() => {
   myPrinting()
 })
- 
+// eslint-disable-next-line no-unused-vars
 function myPrinting () {
   console.log('print ')
   setTimeout(function () {

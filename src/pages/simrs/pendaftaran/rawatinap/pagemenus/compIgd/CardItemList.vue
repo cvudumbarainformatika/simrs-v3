@@ -99,7 +99,7 @@ defineProps({
   }
 })
 
- 
+// eslint-disable-next-line no-unused-vars
 const emits = defineEmits(['details', 'send'])
 </script>
 

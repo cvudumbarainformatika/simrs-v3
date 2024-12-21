@@ -65,7 +65,7 @@ import { useQuasar } from 'quasar'
 const store = usePediatriStore()
 const $q = useQuasar()
 
- 
+// eslint-disable-next-line no-unused-vars
 const props = defineProps({
   pasien: {
     type: Object,

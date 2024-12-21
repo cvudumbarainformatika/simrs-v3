@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { api } from 'src/boot/axios'
 import { usePengunjungIgdStore } from './pengunjung'
- 
+// eslint-disable-next-line no-unused-vars
 import { notifErr, notifSuccess } from 'src/modules/utils'
 // import { usePengunjungRanapStore } from '../../ranap/pengunjung'
 // import { notifSuccess } from 'src/modules/utils'

@@ -1652,7 +1652,7 @@ store.form.optionskriniggizi = 1
 store.form.metode = 'nrt'
 store.initGpa(props.triage)
 
- 
+// eslint-disable-next-line no-unused-vars
 const lists = computed(() => {
   const arr = props.pasien?.historyperkawinan
   return arr?.sort((a, b) => { return b.id - a.id })

@@ -1108,7 +1108,7 @@ export const useAnamnesisRanapStore = defineStore('anamnesis-ranap-store', {
         formDefault.skreeninggizi = null
         formDefault.keluhannyeri = null
       }
-       
+      // eslint-disable-next-line no-unused-vars
       const req = {
         noreg: pasien?.noreg ?? null,
         norm: pasien?.norm,

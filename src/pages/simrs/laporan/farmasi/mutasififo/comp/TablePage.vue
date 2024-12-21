@@ -484,7 +484,7 @@
 
 <script setup>
 
- 
+// eslint-disable-next-line no-unused-vars
 import { dateFullFormat, formatDouble } from 'src/modules/formatter'
 import { useLaporanMutasiFiFoFarmasiStore } from 'src/stores/simrs/laporan/farmasi/mutasififo/mutasi'
 

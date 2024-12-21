@@ -472,7 +472,7 @@
 import { date } from 'quasar'
 import { ref } from 'vue'
 import KopSuratPage from './KopSuratPage.vue'
- 
+// eslint-disable-next-line no-unused-vars
 const props = defineProps({
   pasien: {
     type: Object,

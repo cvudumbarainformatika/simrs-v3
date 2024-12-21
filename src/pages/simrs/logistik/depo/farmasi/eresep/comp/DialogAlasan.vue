@@ -54,7 +54,7 @@
 const emits = defineEmits(['close'])
 import { useEResepDepoFarmasiStore } from 'src/stores/simrs/farmasi/eresep/eresep'
 
- 
+// eslint-disable-next-line no-unused-vars
 const store = useEResepDepoFarmasiStore()
 let alasanlama = ''
 function simpan () {

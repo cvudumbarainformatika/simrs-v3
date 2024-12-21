@@ -114,7 +114,7 @@ export const useLaporanBkuPtkStore = defineStore('laporan_bkuptk', {
     },
     mapingData () {
       // ===================================================NPKPanjar
-       
+      // eslint-disable-next-line camelcase
       const npk_Panjar = []
       for (let i = 0; i < this.items.npkpanjar.length; i++) {
         const el = this.items?.npkpanjar
@@ -159,14 +159,14 @@ export const useLaporanBkuPtkStore = defineStore('laporan_bkuptk', {
             : 0,
           pengeluaran: 0
         }
-         
+        // eslint-disable-next-line camelcase
         npk_Panjar.push(obj)
       }
       // console.log("npkPanjar", npk_Panjar);
       // ==================================================
 
       // ===================================================spjpanjar
-       
+      // eslint-disable-next-line camelcase
       const spj_Panjar = []
       for (let i = 0; i < this.items.spjpanjar.length; i++) {
         const el = this.items?.spjpanjar
@@ -198,7 +198,7 @@ export const useLaporanBkuPtkStore = defineStore('laporan_bkuptk', {
               .reduce((x, y) => x + y, 0)
             : 0
         }
-         
+        // eslint-disable-next-line camelcase
         spj_Panjar.push(obj)
       }
       // console.log("spjPanjar", spj_Panjar);
@@ -392,7 +392,7 @@ export const useLaporanBkuPtkStore = defineStore('laporan_bkuptk', {
       }
       // console.log("pencairanLS", pencairanLS);
       // =====================================================
-       
+      // eslint-disable-next-line camelcase
       const gabungArray = npk_Panjar?.concat(
         spj_Panjar,
         kembalianpjr,
@@ -436,7 +436,7 @@ export const useLaporanBkuPtkStore = defineStore('laporan_bkuptk', {
       return arr
     },
     ambilDataUnik (x, f) {
-       
+      // eslint-disable-next-line no-sequences
       const unique = Object.values(x.reduce((a, b) => ((a[f(b)] = b), a), {}))
       return unique
     },

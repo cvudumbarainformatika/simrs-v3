@@ -196,7 +196,7 @@
 <script setup>
 import { date } from 'quasar'
 import { onMounted, ref } from 'vue'
- 
+// eslint-disable-next-line no-unused-vars
 const props = defineProps({
   pasien: {
     type: Object,
@@ -301,7 +301,7 @@ function setTgl (val) {
     else { return '-' }
   }
 }
- 
+// eslint-disable-next-line no-unused-vars
 const printObj = {
   id: 'printMe',
   popTitle: 'Surat Rencana Pasien'

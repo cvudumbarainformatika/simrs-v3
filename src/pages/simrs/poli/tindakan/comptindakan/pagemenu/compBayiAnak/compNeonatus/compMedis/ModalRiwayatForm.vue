@@ -117,7 +117,7 @@ const props = defineProps({
   }
 })
 
- 
+// eslint-disable-next-line no-unused-vars
 const store = useNeonatusMedisStore()
 
 const options = [

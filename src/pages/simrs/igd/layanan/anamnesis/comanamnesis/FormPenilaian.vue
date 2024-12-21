@@ -178,7 +178,7 @@
 <script setup>
 import { usePenilaianAnamnesisIgd } from 'src/stores/simrs/igd/penilaiananamnesis.js'
 import { onMounted } from 'vue'
- 
+// eslint-disable-next-line no-unused-vars
 const props = defineProps({
   pasien: {
     type: Object,
@@ -208,7 +208,7 @@ onMounted(async () => {
   store.initReset(props?.pasien)
 })
 
- 
+// eslint-disable-next-line no-unused-vars
 const store = usePenilaianAnamnesisIgd()
 
 </script>

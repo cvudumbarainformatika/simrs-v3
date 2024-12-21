@@ -639,7 +639,7 @@ import { usePerbaikanDataFarmasiStore } from 'src/stores/simrs/farmasi/perbaikan
 import { ref } from 'vue'
 const store = usePerbaikanDataFarmasiStore()
 const emits = defineEmits(['close', 'fixMutasi', 'fixResep'])
- 
+// eslint-disable-next-line no-unused-vars
 const props = defineProps({
   data: { type: Object, default: () => {} }
 })

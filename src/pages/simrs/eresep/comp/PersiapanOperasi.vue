@@ -126,7 +126,7 @@ function simpan () {
     store.simpan()
   }, 100)
 }
- 
+// eslint-disable-next-line no-unused-vars
 // function selesai() {
 //   console.log('form', store.form)
 //   store.selesai()

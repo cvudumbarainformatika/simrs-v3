@@ -94,7 +94,7 @@ export default function useForm (pasien) {
     //   formDefault.skreeninggizi = null
     //   formDefault.keluhannyeri = null
     // }
-     
+    // eslint-disable-next-line no-unused-vars
     const payload = {
 
       id: storeAnamnesis.form.id,

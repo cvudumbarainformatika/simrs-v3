@@ -26,7 +26,7 @@ import useCanvas from './canvasUse/useCanvas'
 //   }
 // })
 
- 
+// eslint-disable-next-line no-unused-vars
 const SvgComp = defineAsyncComponent(() => import('./SvgComp.vue'))
 // const SvgComp = import('./SvgComp.vue')
 

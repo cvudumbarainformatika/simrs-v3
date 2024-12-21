@@ -56,7 +56,7 @@ onMounted(() => {
   store.dataregisterjurnal()
 })
 
- 
+// eslint-disable-next-line no-unused-vars
 function ambilData () {
   store.getRegJurnal()
 }

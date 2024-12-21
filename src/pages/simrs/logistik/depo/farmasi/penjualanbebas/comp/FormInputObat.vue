@@ -229,7 +229,7 @@ function tambah () {
   // store.simpan()
 }
 
- 
+// eslint-disable-next-line no-unused-vars
 function simpan () {
   if (!store.form?.kode_identitas) return notifErrVue('silahkan isi terlebih dahulu identitas pembeli')
   const kode = store.form.details.map(m => m.kodeobat)

@@ -48,7 +48,7 @@
 // import { useAnamnesis } from 'src/stores/simrs/pelayanan/poli/anamnesis'
 import FromTriage from './comptriage/FromTriage.vue'
 import ListTriage from './comptriage/ListTriage.vue'
- 
+// eslint-disable-next-line no-unused-vars
 // import HistoryAnamnesis from './comanamnesis/HistoryAnamnesis.vue'
 // import HistoryKanan from './comanamnesis/HistoryKanan.vue'
 import { onMounted, onUnmounted, ref } from 'vue'

@@ -73,7 +73,7 @@ import { useQuasar } from 'quasar'
 const store = useUploadDokStore()
 const $q = useQuasar()
 
- 
+// eslint-disable-next-line no-unused-vars
 const props = defineProps({
   pasien: {
     type: Object,

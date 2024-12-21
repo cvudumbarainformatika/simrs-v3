@@ -198,7 +198,7 @@ import { useQuasar } from 'quasar'
 // import { usePengunjungPoliStore } from 'src/stores/simrs/pelayanan/poli/pengunjung'
 import { useDiagnosaStore } from 'src/stores/simrs/ranap/diagnosa'
 import { usePengunjungRanapStore } from 'src/stores/simrs/ranap/pengunjung'
- 
+// eslint-disable-next-line no-unused-vars
 import { onMounted, ref, watch } from 'vue'
 
 const props = defineProps({
@@ -214,7 +214,7 @@ const props = defineProps({
 
 const formRef = ref(null)
 const store = useDiagnosaStore()
- 
+// eslint-disable-next-line no-unused-vars
 const pengunjung = usePengunjungRanapStore()
 const emits = defineEmits(['savePemeriksaan'])
 

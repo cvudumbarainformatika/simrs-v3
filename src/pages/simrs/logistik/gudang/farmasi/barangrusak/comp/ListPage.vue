@@ -447,7 +447,7 @@
   />
 </template>
 <script setup>
- 
+// eslint-disable-next-line no-unused-vars
 import { dateFullFormat, formatRpDouble } from 'src/modules/formatter'
 import { notifSuccessVue } from 'src/modules/utils'
 import { useListBarangRusakStore } from 'src/stores/simrs/farmasi/barangrusak/list'

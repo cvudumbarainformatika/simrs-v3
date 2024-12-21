@@ -253,7 +253,7 @@ const qrUrl = computed(() => {
 // onMounted(() => {
 //   myPrinting()
 // })
- 
+// eslint-disable-next-line no-unused-vars
 // const cont = document.getElementById('endas')?.innerHTML
 // const originalContents = document.body.innerHTML
 function printPage () {

@@ -830,7 +830,7 @@ function printHeadResep (val) {
     idResp.value.printPage()
   }, 200)
 }
- 
+// eslint-disable-next-line no-unused-vars
 function printResepToPdf (val) {
   console.log(val)
   setResepToPdf(val)

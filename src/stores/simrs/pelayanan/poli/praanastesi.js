@@ -1,4 +1,4 @@
- 
+/* eslint-disable no-return-assign */
 import { defineStore } from 'pinia'
 // import { date } from 'quasar'
 import { api } from 'src/boot/axios'
@@ -208,7 +208,7 @@ export const usePraAnastesiStore = defineStore('pra-anastesi-store', {
         // baru
         for (let i = 0; i < item.teknikAnestesia.length; i++) {
           const el = item.teknikAnestesia[i]
-           
+          // eslint-disable-next-line array-callback-return
           this.teknikAnestesia.filter(x => x.nama === el.nama).map(x => {
             x.nama = el.nama
             x.check = el.check
@@ -223,7 +223,7 @@ export const usePraAnastesiStore = defineStore('pra-anastesi-store', {
         }
         for (let i = 0; i < item.teknikKhusus.length; i++) {
           const el = item.teknikKhusus[i]
-           
+          // eslint-disable-next-line array-callback-return
           this.teknikKhusus.filter(x => x.nama === el.nama).map(x => {
             x.nama = el.nama
             x.check = el.check
@@ -232,7 +232,7 @@ export const usePraAnastesiStore = defineStore('pra-anastesi-store', {
         }
         for (let i = 0; i < item.pascaAnastesi.length; i++) {
           const el = item.pascaAnastesi[i]
-           
+          // eslint-disable-next-line array-callback-return
           this.pascaAnastesi.filter(x => x.nama === el.nama).map(x => {
             x.nama = el.nama
             x.check = el.check

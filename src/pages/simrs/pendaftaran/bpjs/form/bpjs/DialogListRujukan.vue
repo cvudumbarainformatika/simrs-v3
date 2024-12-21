@@ -701,7 +701,7 @@ function pilihRujukan(val, jenis) {
 
   store.tampilRujukan = false
 }
- 
+// eslint-disable-next-line no-unused-vars
 function pilihRujukanRS(val) {
   store.rujukanPostMRS = false
   const param = {
@@ -720,7 +720,7 @@ function pilihRujukanRS(val) {
   store.display.jeniskunjungan = store.jenisKunjungans[idexKun].nilai
   emits('jenisKunjungan', store.jenisKunjungans[idexKun].nilai)
 }
- 
+// eslint-disable-next-line no-unused-vars
 function pilihRujukanPCare(val) {
   store.rujukanPostMRS = false
   const param = {

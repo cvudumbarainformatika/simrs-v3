@@ -106,7 +106,7 @@ function myPrinting () {
   // }, 100)
 }
 
- 
+// eslint-disable-next-line no-unused-vars
 function afterPrint () {
   // const r = confirm('Press a button!')
   // if (r === true) {

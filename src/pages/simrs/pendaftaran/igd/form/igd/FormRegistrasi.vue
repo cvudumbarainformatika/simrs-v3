@@ -195,7 +195,7 @@ const refDPJP = ref(null)
 const refPoliTujuan = ref(null)
 const refSistemBayar = ref(null)
 
- 
+// eslint-disable-next-line no-unused-vars
 const props = defineProps({
   pelayanan: { type: [String, Number], default: '' }
 })

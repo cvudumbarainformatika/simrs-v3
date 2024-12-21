@@ -22,7 +22,7 @@ const props = defineProps({
   }
 })
 
- 
+// eslint-disable-next-line no-unused-vars
 const { other } = useCppt(props?.pasien)
 
 </script>

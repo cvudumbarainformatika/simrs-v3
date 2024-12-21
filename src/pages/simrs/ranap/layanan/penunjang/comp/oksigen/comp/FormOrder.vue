@@ -50,7 +50,7 @@
 import { usePermintaanOksigenStore } from 'src/stores/simrs/ranap/oksigen'
 import { ref } from 'vue'
 
- 
+// eslint-disable-next-line no-unused-vars
 const props = defineProps({
   pasien: {
     type: Object,

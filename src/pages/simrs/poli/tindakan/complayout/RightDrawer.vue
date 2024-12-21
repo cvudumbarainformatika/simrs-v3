@@ -1390,6 +1390,7 @@
                         </q-card-section>
 
                         <q-separator />
+
                         <q-card-section
                           v-if="store?.metaEresep !== null"
                           class="q-pa-none"
@@ -1683,6 +1684,16 @@
                         </q-card-section>
                       </q-list>
                     </q-card>
+                    <!-- <q-card v-if="item?.praanastesi?.length">
+                      <q-card-section class="q-pa-none">
+                        <q-bar class="bg-accent text-white">
+                          PRA ANESTESI
+                        </q-bar>
+                        <div class="full-width">
+                          <PraAnestesi :pasien="item" :history="true" />
+                        </div>
+                      </q-card-section>
+                    </q-card> -->
                   </q-expansion-item>
                 </div>
                 <div
@@ -3905,6 +3916,8 @@ import { useHistoryPasien } from 'src/stores/simrs/pelayanan/poli/historypasien'
 import { onMounted, computed } from 'vue'
 import { pathImg } from 'src/boot/axios'
 
+// const PraAnestesi = defineAsyncComponent(() => import('src/pages/simrs/dokumen/erm/poli/AsesmenPraAnestesia.vue'))
+
 const props = defineProps({
   pasien: {
     type: Object,
@@ -3999,7 +4012,7 @@ function getKesadaran (val) {
     return '-'
   }
 }
- 
+// eslint-disable-next-line no-unused-vars
 function tekananDarah (val) {
   const normal = val >= 100 && val <= 120
   const prahipertensi = val >= 121 && val <= 139

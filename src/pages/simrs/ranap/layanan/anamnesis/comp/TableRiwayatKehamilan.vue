@@ -62,7 +62,7 @@ defineProps({
 
 const emits = defineEmits(['delete'])
 
- 
+// eslint-disable-next-line no-unused-vars
 const deleteData = (id) => {
   emits('delete', id)
 }

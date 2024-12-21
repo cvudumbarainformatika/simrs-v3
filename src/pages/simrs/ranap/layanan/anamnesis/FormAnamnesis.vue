@@ -1405,7 +1405,7 @@ const props = defineProps({
 
 const auth = useAplikasiStore()
 
- 
+// eslint-disable-next-line no-unused-vars
 const gruping = computed(() => {
   const nakes = auth?.user?.pegawai?.kdgroupnakes
   const dokter = nakes === '1'
@@ -1487,7 +1487,7 @@ onMounted(() => {
   ])
 })
 
- 
+// eslint-disable-next-line no-unused-vars
 const hitungSkorGizi = () => {
   store.hitungSkorSgd()
 }
@@ -1497,13 +1497,13 @@ function filterFn (val, update, abort, arr) {
   const stringOptions = arr
   let k = arr
   if (val.length < 1) {
-     
+    // eslint-disable-next-line dot-notation
     store['ketubans'] = k
   }
   update(() => {
     const needle = val.toLocaleLowerCase()
     k = stringOptions.filter(v => v.toLocaleLowerCase().indexOf(needle) > -1)
-     
+    // eslint-disable-next-line dot-notation
     store['ketubans'] = k
   })
 }

@@ -166,10 +166,10 @@
                               <div> - {{ item?.penilaian?.humpty_dumpty?.skorHumpty?.label }} ({{ item?.penilaian?.humpty_dumpty?.skorHumpty?.skor }})</div>
                             </div>
                           </div>
-                          <div v-if="item?.penilaian.morse_fall">
+                          <div v-if="item?.penilaian?.morse_fall">
                             <div class="column">
                               <b>Resiko Jatuh : </b>
-                              <div> - {{ item?.penilaian.morse_fall?.skorMorse?.label }} ({{ item?.penilaian.morse_fall?.skorMorse?.skor }})</div>
+                              <div> - {{ item?.penilaian?.morse_fall?.skorMorse?.label }} ({{ item?.penilaian?.morse_fall?.skorMorse?.skor }})</div>
                             </div>
                           </div>
                           <div v-if="item?.penilaian?.ontario">
@@ -462,10 +462,10 @@ const props = defineProps({
 
 })
 
- 
+// eslint-disable-next-line no-unused-vars
 const {
   settings, auth,
-   
+  // eslint-disable-next-line no-unused-vars
   editFormAnamnesis,
   editFormPemeriksaan,
   editFormAsessment,

@@ -78,7 +78,7 @@ function getDokter(item) {
   return '-'
 }
 
- 
+// eslint-disable-next-line no-unused-vars
 function namaTindakan(kode) {
   const arr = props?.pasien?.tindakan
   const target = arr.filter(x => x.rs4 === kode)

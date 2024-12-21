@@ -8,7 +8,7 @@ const FormPemeriksaanUmum = defineAsyncComponent(() => import('src/pages/simrs/r
 const FormComp = defineAsyncComponent(() => import('src/pages/simrs/ranap/layanan/pemeriksaan/comp/penilaian/FormComp.vue'))
 // const FormComp = import('src/pages/simrs/ranap/layanan/pemeriksaan/comp/penilaian/FormComp.vue')
 
- 
+// eslint-disable-next-line no-unused-vars
 const props = defineProps({
   pasien: {
     type: Object,
@@ -34,7 +34,7 @@ const SET = reactive({
   classes: 'shadow-1 overflow-hidden q-mb-xs'
 })
 
- 
+// eslint-disable-next-line no-unused-vars
 const { storeAnamnesis, storePenilaian, storePemeriksaanUmum } = useForm(props.pasien)
 
 onMounted(() => {

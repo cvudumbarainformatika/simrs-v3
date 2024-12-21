@@ -416,7 +416,7 @@ import { date } from 'quasar'
 import { useLaporanBarangRusakStore } from 'src/stores/simrs/laporan/farmasi/barangrusak/barangrusak'
 import { defineAsyncComponent, onMounted, ref, shallowRef } from 'vue'
 
- 
+// eslint-disable-next-line no-unused-vars
 const store = useLaporanBarangRusakStore()
 const TableComp = shallowRef(defineAsyncComponent(() => import('./comp/TablePage.vue')))
 

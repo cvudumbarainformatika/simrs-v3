@@ -243,7 +243,7 @@ defineProps({
   loadingH: { type: Boolean, default: false },
   items: { type: Array, default: () => [] }
 })
- 
+// eslint-disable-next-line no-unused-vars
 const emits = defineEmits(['hapus'])
 
 const temp = ref(null)

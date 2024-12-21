@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { api } from 'src/boot/axios'
 
- 
+// eslint-disable-next-line no-unused-vars
 export const useDokumen = defineStore('dokument', {
   state: () => ({
     meta: null,
