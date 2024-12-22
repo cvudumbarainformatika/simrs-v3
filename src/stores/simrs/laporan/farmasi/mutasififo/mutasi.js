@@ -18,7 +18,7 @@ export const useLaporanMutasiFiFoFarmasiStore = defineStore('laporan_mutasi_fifo
     meta: {},
     params: {
       q: '',
-      per_page: 20,
+      per_page: 100,
       page: 1,
       // bulan: '06',
       bulan: date.formatDate(Date.now(), 'MM'),
@@ -1303,7 +1303,7 @@ export const useLaporanMutasiFiFoFarmasiStore = defineStore('laporan_mutasi_fifo
     finishDownload () { this.loadingDownload = false },
     async getDataTable (val) {
       this.ketProses = null
-      this.setParams('per_page', 20)
+      // this.setParams('per_page', 50)
       if (this.params.page === 1) this.loading = true
       else this.loadingNext = true
       this.scrolling = true
