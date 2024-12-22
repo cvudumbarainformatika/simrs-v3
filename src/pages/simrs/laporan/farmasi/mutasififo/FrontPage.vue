@@ -1,144 +1,70 @@
 <template>
   <div class="bg-white q-pa-xs">
-    <div
-      ref="refTop"
-      class="fixed-top bg-white"
-      style="margin-top:50px; margin-left: 60px; z-index: 10"
-    >
-      <div
-        class="row bg-primary text-white q-pa-sm q-mb-sm print-hide"
-      >
+    <div ref="refTop" class="fixed-top bg-white" style="margin-top:50px; margin-left: 60px; z-index: 10">
+      <div class="row bg-primary text-white q-pa-sm q-mb-sm print-hide">
         <div class="f-14 text-weight-bold">
           Laporan Mutasi
         </div>
       </div>
 
-      <div
-        class="row no-wrap justify-between items-center print-hide"
-      >
+      <div class="row no-wrap justify-between items-center print-hide">
         <div class="col-grow">
           <div class="row q-col-gutter-sm q-my-sm">
             <div class="col-2">
-              <app-input
-                v-model="store.params.q"
-                label="Cari obat"
-                outlined
-                valid
-                :loading="store.loading"
-                @keyup.enter="store.setSearch"
-              />
+              <app-input v-model="store.params.q" label="Cari obat" outlined valid :loading="store.loading"
+                :disable="store.loading || !!store.ketProses" @keyup.enter="store.setSearch" />
             </div>
             <div class="col-2">
-              <app-autocomplete
-                v-model="store.params.jenis"
-                label="Jenis"
-                autocomplete="nama"
-                option-label="nama"
-                option-value="value"
-                outlined
-                :source="store.optionJenis"
-                :loading="store.loading"
-                @update:model-value="setJenis"
-              />
+              <app-autocomplete v-model="store.params.jenis" label="Jenis" autocomplete="nama" option-label="nama"
+                option-value="value" outlined :source="store.optionJenis" :loading="store.loading"
+                :disable="store.loading || !!store.ketProses" @update:model-value="setJenis" />
             </div>
             <div class="col-2">
-              <app-autocomplete
-                v-model="store.params.kode_ruang"
-                label="Pilih Gudang / Depo"
-                autocomplete="nama"
-                option-label="nama"
-                option-value="value"
-                outlined
-                :source="store.gudangs"
-                :loading="store.loading"
-              />
+              <app-autocomplete v-model="store.params.kode_ruang" label="Pilih Gudang / Depo" autocomplete="nama"
+                option-label="nama" option-value="value" outlined :source="store.gudangs" :loading="store.loading"
+                :disable="store.loading || !!store.ketProses" />
             </div>
             <div class="col-2">
-              <app-autocomplete
-                v-model="store.params.bulan"
-                label="Pilih Bulan"
-                autocomplete="nama"
-                option-label="nama"
-                option-value="value"
-                outlined
-                :source="store.bulans"
-                :loading="store.loading"
-              />
+              <app-autocomplete v-model="store.params.bulan" label="Pilih Bulan" autocomplete="nama" option-label="nama"
+                option-value="value" outlined :source="store.bulans" :loading="store.loading"
+                :disable="store.loading || !!store.ketProses" @update:model-value="() => {
+                  store.items = []
+                  store.meta = {}
+                  store.setParams('page', 1)
+                }" />
             </div>
             <div class="col-1">
-              <app-input
-                v-model="store.params.tahun"
-                label="Tahun"
-                outlined
-                :loading="store.loading"
-              />
+              <app-input v-model="store.params.tahun" label="Tahun" outlined :loading="store.loading"
+                :disable="store.loading || !!store.ketProses" />
             </div>
             <div class="col-2">
-              <app-btn
-                label="Ambil Data"
-                :disable="store.loading || !!store.ketProses"
-                :loading="store.loading"
-                @click="store.getInitialData(1)"
-              />
+              <app-btn label="Ambil Data" :disable="store.loading || !!store.ketProses" :loading="store.loading"
+                @click="store.getInitialData(1)" />
             </div>
           </div>
         </div>
 
         <div class="col-grow q-mr-md">
           <div class="row items-center">
-            <q-btn
-              unelevated
-              color="primary"
-              round
-              size="sm"
-              icon="icon-mat-download"
-              :loading="!!store.ketProses || store?.loadingNext"
-              :disable="!!store.ketProses || store?.loadingNext"
-              @click="store.getAllData()"
-            >
-              <q-tooltip
-                class="primary"
-                :offset="[10, 10]"
-              >
+            <q-btn unelevated color="primary" round size="sm" icon="icon-mat-download"
+              :loading="!!store.ketProses || store?.loadingNext" :disable="!!store.ketProses || store?.loadingNext"
+              @click="store.getAllData()">
+              <q-tooltip class="primary" :offset="[10, 10]">
                 Ambil Semua Data
               </q-tooltip>
             </q-btn>
-            <q-btn
-              class="q-ml-sm"
-              ref="refPrint"
-              v-print="printObj"
-              unelevated
-              color="dark"
-              round
-              size="sm"
-              :disable="!!store.ketProses"
-              icon="icon-mat-print"
-            >
-              <q-tooltip
-                class="primary"
-                :offset="[10, 10]"
-              >
+            <q-btn class="q-ml-sm" ref="refPrint" v-print="printObj" unelevated color="dark" round size="sm"
+              :disable="!!store.ketProses" icon="icon-mat-print">
+              <q-tooltip class="primary" :offset="[10, 10]">
                 Print
               </q-tooltip>
             </q-btn>
             <div class="q-ml-sm">
-              <download-excel
-                class="btn"
-                :fields="store.fields"
-                :fetch="store.fetch"
-                :before-generate="store.startDownload"
-                :before-finish="store.finishDownload"
-                :name="'Mutasi Obat Bulan ' + bulan() + ' '+ store.params.tahun +jenis()+'.xls'"
-              >
-                <q-btn
-                  color="green"
-                  round
-                  size="sm"
-                  icon="icon-mat-download"
-                  push
-                  :loading="store.loadingDownload"
-                  :disable="store.loadingDownload || !!store.ketProses"
-                >
+              <download-excel class="btn" :fields="store.fields" :fetch="store.fetch"
+                :before-generate="store.startDownload" :before-finish="store.finishDownload"
+                :name="'Mutasi Obat Bulan ' + bulan() + ' ' + store.params.tahun + jenis() + '.xls'">
+                <q-btn color="green" round size="sm" icon="icon-mat-download" push :loading="store.loadingDownload"
+                  :disable="store.loadingDownload || !!store.ketProses || store?.loadingNext">
                   <q-tooltip>Download Excel</q-tooltip>
                 </q-btn>
               </download-excel>
@@ -146,33 +72,67 @@
           </div>
         </div>
       </div>
-      <div v-if="store.ketProses" class="row items-center justify-center print-hide">
-        <div class="col-1" />
-        <div class="col-1">
-          <q-spinner-pie color="negative" size="4em" />
+      <div v-if="store.ketProses" class="row items-center justify-between print-hide q-mx-xl">
+        <!-- <div  class="row items-center justify-center print-hide"> -->
+
+        <div class="col-shrink">
+          <div class="row justify-between items-center">
+            <div class="col-shrink">
+              <q-spinner-pie color="orange" size="2em" />
+            </div>
+            <div class="col-shrink">
+              <q-spinner-pie color="orange" size="3em" />
+            </div>
+            <div class="col-shrink">
+              <q-spinner-pie color="orange" size="4em" />
+            </div>
+            <div class="col-shrink">
+              <q-spinner-pie color="orange" size="3em" />
+            </div>
+            <div class="col-shrink">
+              <q-spinner-pie color="orange" size="2em" />
+            </div>
+          </div>
         </div>
-        <div class="col-grow q-ml-sm text-weight-bold f-18">
+        <div class="col-shrink q-ml-sm text-weight-bold f-18 text-center">
           <p>
             {{ store.ketProses }}
-            <span v-if="store?.meta" class="q-mx-sm f-20 text-blue">{{ store.meta?.current_page ? store.meta?.current_page + 1 : 1 }}</span>
+            <span v-if="store?.meta" class="q-mx-sm f-20 text-blue">{{ store.meta?.current_page ?
+              store.meta?.current_page + 1 : 1 }}</span>
             <span v-if="store?.meta" class="q-mx-sm">dari</span>
             <span v-if="store?.meta" class="q-mx-sm f-20 text-orange">{{ store.meta?.last_page ?? 1 }}</span>
             <span v-if="store?.meta" class="q-mx-sm">halaman</span>
           </p>
         </div>
+        <div class="col-shrink">
+          <div class="row justify-between items-center">
+            <div class="col-shrink">
+              <q-spinner-pie color="orange" size="2em" />
+            </div>
+            <div class="col-shrink">
+              <q-spinner-pie color="orange" size="3em" />
+            </div>
+            <div class="col-shrink">
+              <q-spinner-pie color="orange" size="4em" />
+            </div>
+            <div class="col-shrink">
+              <q-spinner-pie color="orange" size="3em" />
+            </div>
+            <div class="col-shrink">
+              <q-spinner-pie color="orange" size="2em" />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
-    <div :style="`margin-top:${h+5}px;`" />
+    <div :style="`margin-top:${h + 5}px;`" />
 
     <div id="printMe">
       <div class="row items-center garis-bawah">
         <div class="col-2">
-          <q-img
-            src="~assets/images/logo-kota-grey.png"
-            spinner-color="white"
-            style="height: 3.56cm; max-width: 2.86cm"
-          />
+          <q-img src="~assets/images/logo-kota-grey.png" spinner-color="white"
+            style="height: 3.56cm; max-width: 2.86cm" />
         </div>
         <div class="col-8">
           <div class="row justify-center f-18">
@@ -191,20 +151,17 @@
             E-mail : rsudprob@probolinggokota.go.id
           </div>
           <div class="row justify-center f-14 text-weight-bold">
-            PROBOLINGGO  67219
+            PROBOLINGGO 67219
           </div>
         </div>
         <div class="col-2">
-          <q-img
-            src="~assets/logos/logo-rsud.png"
-            spinner-color="white"
-            style="height: 3cm; max-width: 3cm"
-          />
+          <q-img src="~assets/logos/logo-rsud.png" spinner-color="white" style="height: 3cm; max-width: 3cm" />
         </div>
       </div>
 
       <div class="row justify-center f-16 text-weight-bold q-my-sm">
-        Laporan Mutasi FIFO Farmasi periode {{ date.formatDate((store.params.tahun+'-'+store.params.bulan+'-02' ),'MMMM YYYY') }}
+        Laporan Mutasi FIFO Farmasi periode {{ date.formatDate((store.params.tahun + '-' + store.params.bulan + '-02'),
+          'MMMM YYYY') }}
       </div>
       <div>
         <!-- <q-scroll-observer @scroll="scrollHandler" /> -->
@@ -299,140 +256,75 @@
             <div class="col-4" />
             <div class="col-4">
               <div class="text-center f-10">
-                <app-input
-                  v-model="pojokKananAtas"
-                  label="tanggal"
-                  valid
-                  outlined
-                />
+                <app-input v-model="pojokKananAtas" label="tanggal" valid outlined />
               </div>
             </div>
           </div>
           <div class="row">
             <div class="col-4">
               <div class="text-center f-10">
-                <app-input
-                  v-model="kiriAtasSatu"
-                  label="kiri atas satu"
-                  valid
-                  outlined
-                />
+                <app-input v-model="kiriAtasSatu" label="kiri atas satu" valid outlined />
               </div>
             </div>
             <div class="col-4">
               <div class="text-center f-10">
-                <app-input
-                  v-model="tengahAtasSatu"
-                  label="tengah atas satu"
-                  valid
-                  outlined
-                />
+                <app-input v-model="tengahAtasSatu" label="tengah atas satu" valid outlined />
               </div>
             </div>
             <div class="col-4">
               <div class="text-center f-10">
-                <app-input
-                  v-model="kananAtasSatu"
-                  label="kanan atas satu"
-                  valid
-                  outlined
-                />
+                <app-input v-model="kananAtasSatu" label="kanan atas satu" valid outlined />
               </div>
             </div>
           </div>
           <div class="row">
             <div class="col-4">
               <div class="text-center f-10">
-                <app-input
-                  v-model="kiriAtasDua"
-                  label="kiri atas dua"
-                  valid
-                  outlined
-                />
+                <app-input v-model="kiriAtasDua" label="kiri atas dua" valid outlined />
               </div>
             </div>
             <div class="col-4">
               <div class="text-center f-10">
-                <app-input
-                  v-model="tengahAtasDua"
-                  label="tengah atas dua"
-                  valid
-                  outlined
-                />
+                <app-input v-model="tengahAtasDua" label="tengah atas dua" valid outlined />
               </div>
             </div>
             <div class="col-4">
               <div class="text-center f-10">
-                <app-input
-                  v-model="kananAtasDua"
-                  label="kanan atas dua"
-                  valid
-                  outlined
-                />
+                <app-input v-model="kananAtasDua" label="kanan atas dua" valid outlined />
               </div>
             </div>
           </div>
           <div class="row">
             <div class="col-4">
               <div class="text-center f-10">
-                <app-input
-                  v-model="kiriBawahSatu"
-                  label="kiri bawah satu"
-                  valid
-                  outlined
-                />
+                <app-input v-model="kiriBawahSatu" label="kiri bawah satu" valid outlined />
               </div>
             </div>
             <div class="col-4">
               <div class="text-center f-10">
-                <app-input
-                  v-model="tengahBawahSatu"
-                  label="tengah bawah satu"
-                  valid
-                  outlined
-                />
+                <app-input v-model="tengahBawahSatu" label="tengah bawah satu" valid outlined />
               </div>
             </div>
             <div class="col-4">
               <div class="text-center f-10">
-                <app-input
-                  v-model="kananBawahSatu"
-                  label="kanan bawah satu"
-                  valid
-                  outlined
-                />
+                <app-input v-model="kananBawahSatu" label="kanan bawah satu" valid outlined />
               </div>
             </div>
           </div>
           <div class="row">
             <div class="col-4">
               <div class="text-center f-10">
-                <app-input
-                  v-model="kiriBawahDua"
-                  label="kiri bawah dua"
-                  valid
-                  outlined
-                />
+                <app-input v-model="kiriBawahDua" label="kiri bawah dua" valid outlined />
               </div>
             </div>
             <div class="col-4">
               <div class="text-center f-10">
-                <app-input
-                  v-model="tengahBawahDua"
-                  label="tengah bawah dua"
-                  valid
-                  outlined
-                />
+                <app-input v-model="tengahBawahDua" label="tengah bawah dua" valid outlined />
               </div>
             </div>
             <div class="col-4">
               <div class="text-center f-10">
-                <app-input
-                  v-model="kananBawahDua"
-                  label="kanan bawah dua"
-                  valid
-                  outlined
-                />
+                <app-input v-model="kananBawahDua" label="kanan bawah dua" valid outlined />
               </div>
             </div>
           </div>
@@ -534,20 +426,24 @@ const pojokKananAtas = ref('Probolinggo, ' + date.formatDate(Date.now(), 'DD MMM
 <style scoped>
 .box-mini {
   white-space: normal !important;
-    inline-size: 50px;
-    overflow-wrap: break-word;
+  inline-size: 50px;
+  overflow-wrap: break-word;
 }
+
 .box {
   white-space: normal !important;
-    inline-size: 150px;
-    overflow-wrap: break-word;
+  inline-size: 150px;
+  overflow-wrap: break-word;
 }
+
 .q-table td box {
   white-space: normal !important;
-    inline-size: 100px;
-    overflow-wrap: break-word;
+  inline-size: 100px;
+  overflow-wrap: break-word;
 }
-.q-table--no-wrap th, .q-table--no-wrap td {
+
+.q-table--no-wrap th,
+.q-table--no-wrap td {
   white-space: normal !important;
 }
 </style>
