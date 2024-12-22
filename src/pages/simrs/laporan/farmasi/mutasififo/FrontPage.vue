@@ -72,7 +72,7 @@
           </div>
         </div>
       </div>
-      <div v-if="store.ketProses" class="row items-center justify-between print-hide q-mx-xl">
+      <div v-if="store.ketProses" class="row items-center justify-evenly print-hide q-mx-xl">
         <!-- <div  class="row items-center justify-center print-hide"> -->
 
         <div class="col-shrink">
