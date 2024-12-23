@@ -46,7 +46,7 @@ export const useLaporanMutasiFiFoFarmasiStore = defineStore('laporan_mutasi_fifo
       { nama: 'Gudang Farmasi (Floor Stok)', value: 'Gd-03010100' }
     ],
     optionJenis: [
-      // { nama: 'Detail', value: 'detail' },
+      { nama: 'Detail', value: 'detail' },
       { nama: 'Rekap', value: 'rekap' }
     ],
     total: 0,
@@ -236,6 +236,94 @@ export const useLaporanMutasiFiFoFarmasiStore = defineStore('laporan_mutasi_fifo
           }
           // console.log('masuk', masuk)
 
+          it?.resepkeluarok?.forEach(res => {
+            const temp = {
+              tgl: res?.tgl ?? this.params.tahun + '-' + this.params.bulan + '-31 23:00:00',
+              keluar: res,
+              ket: res?.header?.norm + ' ' + (res?.header?.datapasien?.rs2 ?? '')
+            }
+
+            it.data.push(temp)
+            keluar.push(res)
+            // let diminta = res.jumlah
+            // let nilaiDiminta = res.sub
+            // while (diminta > 0) {
+            //   const index = masuk.findIndex(a => a.jumlah > 0 && a.sub >= 0 && a.kdobat === res.kdobat && a.nopenerimaan === res.nopenerimaan)
+            //   if (index >= 0) {
+            //     if (masuk[index].jumlah >= diminta) {
+            //       const sisa = masuk[index].jumlah - diminta
+            //       masuk[index].jumlah = sisa
+            //       diminta = 0
+
+            //       const nilaiSisa = masuk[index].sub > 0 ? masuk[index].sub - nilaiDiminta : nilaiDiminta
+            //       masuk[index].sub = nilaiSisa
+            //       nilaiDiminta = 0
+            //     }
+            //     else {
+            //       const sisa = diminta - masuk[index].jumlah
+            //       diminta = sisa
+            //       masuk[index].jumlah = 0
+
+            //       const nilaiSisa = masuk[index].sub > 0 ? masuk[index].sub - nilaiDiminta : nilaiDiminta
+            //       nilaiDiminta = nilaiSisa
+            //       masuk[index].sub = 0
+            //     }
+            //   }
+            //   else {
+            //     const index1 = masuk.findIndex(a => a.jumlah > 0 && a.sub >= 0 && a.kdobat === res.kdobat && a.harga === res.harga)
+            //     // console.log('index res 1', index1)
+            //     if (index1 >= 0) {
+            //       if (masuk[index1].jumlah >= diminta) {
+            //         const sisa = masuk[index1].jumlah - diminta
+            //         masuk[index1].jumlah = sisa
+            //         diminta = 0
+
+            //         const nilaiSisa = masuk[index1].sub > 0 ? masuk[index1].sub - nilaiDiminta : nilaiDiminta
+            //         masuk[index1].sub = nilaiSisa
+            //         nilaiDiminta = 0
+            //       }
+            //       else {
+            //         const sisa = diminta - masuk[index1].jumlah
+            //         diminta = sisa
+            //         masuk[index1].jumlah = 0
+
+            //         const nilaiSisa = masuk[index1].sub > 0 ? masuk[index1].sub - nilaiDiminta : nilaiDiminta
+            //         nilaiDiminta = nilaiSisa
+            //         masuk[index1].sub = 0
+            //       }
+            //     }
+            //     else {
+            //       const index2 = masuk.findIndex(a => a.jumlah > 0 && a.sub >= 0 && a.kdobat === res.kdobat)
+            //       // console.log('index res 2', index2, masuk[index2], res)
+            //       if (index2 >= 0) {
+            //         if (masuk[index2].jumlah >= diminta) {
+            //           const sisa = masuk[index2].jumlah - diminta
+            //           masuk[index2].jumlah = sisa
+            //           diminta = 0
+
+            //           const nilaiSisa = masuk[index2].sub > 0 ? masuk[index2].sub - nilaiDiminta : nilaiDiminta
+            //           masuk[index2].sub = nilaiSisa
+            //           nilaiDiminta = 0
+            //         }
+            //         else {
+            //           const sisa = diminta - masuk[index2].jumlah
+            //           diminta = sisa
+            //           masuk[index2].jumlah = 0
+
+            //           const nilaiSisa = masuk[index2].sub > 0 ? masuk[index2].sub - nilaiDiminta : nilaiDiminta
+            //           nilaiDiminta = nilaiSisa
+            //           masuk[index2].sub = 0
+            //         }
+            //       }
+            //       // kalo sampe else coba cek mana yang ga match
+            //       else {
+            //         // console.log('index res 2', index2, masuk[index2], res)
+            //         diminta = 0
+            //       }
+            //     }
+            //   }
+            // }
+          })
           resep?.forEach(res => {
             const temp = {
               tgl: res?.tgl ?? this.params.tahun + '-' + this.params.bulan + '-31 23:00:00',
@@ -695,53 +783,6 @@ export const useLaporanMutasiFiFoFarmasiStore = defineStore('laporan_mutasi_fifo
 
             it.data[0].saldoawal = sala
           }
-          if (it?.penyesuaian?.length) {
-            const raw = {
-              tgl: it?.penyesuaian[0]?.tgl,
-              harga: 0,
-              kdobat: it?.penyesuaian[0]?.kdobat,
-              kd_obat: it?.penyesuaian[0]?.kd_obat,
-              jumlah: it?.penyesuaian?.reduce((a, b) => parseFloat(a) + parseFloat(b.jumlah), 0),
-              sub: it?.penyesuaian?.reduce((a, b) => parseFloat(a) + parseFloat(b.sub), 0),
-              ket: 'Penngembalian sisa pasien'
-            }
-            if (raw?.jumlah > 0) {
-              const index1 = masukx.findIndex(f => f.kd_obat === raw?.kdobat)
-              // console.log('Ada Peny  index1', raw, index1, masukx)
-              if (index1 >= 0) {
-                const jumM = masukx[index1].jumlah + raw.jumlah
-                const subM = masukx[index1].sub + raw.sub
-
-                masukx[index1].jumlah = jumM
-                masukx[index1].sub = subM
-              }
-
-              else masukx.push(raw)
-              masuk.push(raw)
-            }
-            else if (raw?.jumlah < 0) {
-              const jumlah = -raw.jumlah
-              const sub = -raw.sub
-
-              raw.jumlah = jumlah
-              raw.sub = sub
-
-              const index = keluar.findIndex(f => f.kd_obat === raw?.kdobat)
-              // console.log('Ada Peny  index', raw, index, keluar)
-              if (index >= 0) {
-                const jumM = keluar[index].jumlah + raw.jumlah
-                const subM = keluar[index].sub + raw.sub
-
-                keluar[index].jumlah = jumM
-                keluar[index].sub = subM
-              }
-
-              else keluar.push(raw)
-              keluarx.push(raw)
-            }
-            // console.log('Ada penyesuanag', masukx, masuk)
-            // console.log('penyesuaian', it?.penyesuaian, akhir)
-          }
           if (it?.terima?.length) {
             const jumlah = it?.terima?.reduce((a, b) => parseFloat(a) + parseFloat(b.jumlah), 0)
             const subt = it?.terima?.reduce((a, b) => parseFloat(a) + parseFloat(b.sub), 0)
@@ -817,6 +858,54 @@ export const useLaporanMutasiFiFoFarmasiStore = defineStore('laporan_mutasi_fifo
             }
             else masukx.push(raw)
             masuk.push(raw)
+          }
+
+          if (it?.penyesuaian?.length) {
+            const raw = {
+              tgl: it?.penyesuaian[0]?.tgl,
+              harga: 0,
+              kdobat: it?.penyesuaian[0]?.kdobat,
+              kd_obat: it?.penyesuaian[0]?.kd_obat,
+              jumlah: it?.penyesuaian?.reduce((a, b) => parseFloat(a) + parseFloat(b.jumlah), 0),
+              sub: it?.penyesuaian?.reduce((a, b) => parseFloat(a) + parseFloat(b.sub), 0),
+              ket: 'Penngembalian sisa pasien'
+            }
+            if (raw?.jumlah > 0) {
+              const index1 = masukx.findIndex(f => f.kd_obat === raw?.kdobat)
+              // console.log('Ada Peny  index1', raw, index1, masukx)
+              if (index1 >= 0) {
+                const jumM = masukx[index1].jumlah + raw.jumlah
+                const subM = masukx[index1].sub + raw.sub
+
+                masukx[index1].jumlah = jumM
+                masukx[index1].sub = subM
+              }
+
+              else masukx.push(raw)
+              masuk.push(raw)
+            }
+            else if (raw?.jumlah < 0) {
+              const jumlah = -raw.jumlah
+              const sub = -raw.sub
+
+              raw.jumlah = jumlah
+              raw.sub = sub
+
+              const index = keluar.findIndex(f => f.kd_obat === raw?.kdobat)
+              // console.log('Ada Peny  index', raw, index, keluar)
+              if (index >= 0) {
+                const jumM = keluar[index].jumlah + raw.jumlah
+                const subM = keluar[index].sub + raw.sub
+
+                keluar[index].jumlah = jumM
+                keluar[index].sub = subM
+              }
+
+              else keluar.push(raw)
+              keluarx.push(raw)
+            }
+            // console.log('Ada penyesuanag', masukx, masuk)
+            // console.log('penyesuaian', it?.penyesuaian, akhir)
           }
 
           if (it?.resepkeluarok?.length) {
@@ -1017,7 +1106,7 @@ export const useLaporanMutasiFiFoFarmasiStore = defineStore('laporan_mutasi_fifo
             s.tgl = this.params.tahun + '-' + this.params.bulan + '-31 23:59:50'
             const temp = {
               tgl: s.tgl,
-              ket: 'Saldo Akhir'
+              ket: 'Saldo Akhir (' + s.nopenerimaan + ')'
             }
             if (this.params.jenis === 'rekap' && it.data.filter(f => f.masuk)?.map(m => m.masuk)?.length > 1) {
               // temp.akhir = s
