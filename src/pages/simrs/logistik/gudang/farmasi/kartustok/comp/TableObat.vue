@@ -1,17 +1,7 @@
 <template>
-  <q-table
-    class="my-sticky-header"
-    flat
-    title="Treats"
-    :rows="store.items"
-    :columns="columns"
-    row-key="name"
-    @request="store.onRequest"
-    v-model:pagination="store.params"
-    :filter="store.params.q"
-    :loading="store.loading"
-    :rows-per-page-options="[10,20,50,100,500,1000]"
-  >
+  <q-table class="my-sticky-header" flat title="Treats" :rows="store.items" :columns="columns" row-key="name"
+    @request="store.onRequest" v-model:pagination="store.params" :filter="store.params.q" :loading="store.loading"
+    :rows-per-page-options="[10, 20, 50, 100, 500, 1000]">
     <template #top-left>
       <div class="flex q-qutter-sm z-top">
         <div>
@@ -22,55 +12,23 @@
           </q-input>
         </div>
         <div class="q-mx-sm">
-          <q-select
-            v-model="bulan"
-            :options="bulans"
-            outlined
-            dark
-            dense
-            color="white"
-            style="width:150px"
-            @update:model-value="changeMonth"
-          />
+          <q-select v-model="bulan" :options="bulans" outlined dark dense color="white" style="width:150px"
+            @update:model-value="changeMonth" />
         </div>
         <div>
-          <q-select
-            v-model="store.params.tahun"
-            :options="tahuns"
-            outlined
-            dark
-            dense
-            color="white"
-            style="width:100px"
-          />
+          <q-select v-model="store.params.tahun" :options="tahuns" outlined dark dense color="white"
+            style="width:100px" />
         </div>
       </div>
     </template>
     <template #top-right>
       <!-- refresh Ids -->
-      <q-btn
-        unelevated
-        round
-        size="sm"
-        icon="icon-mat-refresh"
-        @click="store.goToPage(1)"
-      >
-        <q-tooltip
-          class="primary"
-          :offset="[10, 10]"
-        >
+      <q-btn unelevated round size="sm" icon="icon-mat-refresh" @click="store.goToPage(1)">
+        <q-tooltip class="primary" :offset="[10, 10]">
           Refresh Table
         </q-tooltip>
       </q-btn>
-      <q-btn
-        flat
-        icon="icon-my-file-excel"
-        size="sm"
-        padding="sm"
-        round
-        no-caps
-        @click="exportTable"
-      >
+      <q-btn flat icon="icon-my-file-excel" size="sm" padding="sm" round no-caps @click="exportTable">
         <q-tooltip>Export Ke Excel</q-tooltip>
       </q-btn>
     </template>
@@ -82,7 +40,7 @@
             Data tidak ditemukan... {{ message }}
           </div>
           <div class="text-h4">
-            {{ filter? '🏷️': '🏷️' }}
+            {{ filter ? '🏷️' : '🏷️' }}
           </div>
         </div>
         <!-- <q-icon size="2em" :name="filter ? 'icon-mat-list' : icon" /> -->
@@ -160,7 +118,7 @@ const columnsx = [
     align: 'right',
     field: (row) => (hitungMutasiKeluar(row?.mutasikeluar) + hitungResepKeluar(row?.resepkeluar, row?.distribusipersiapan) +
       hitungResepRacikanKeluar(row?.resepkeluarracikan) + hitungPenyesuaianKeluar(row?.penyesuaian) + hitungDistribusi(row?.distribusipersiapan) +
-      hitungBarangRusak(row?.barangrusak) + hitungReturDepo(row?.returdepo)
+      hitungBarangRusak(row?.barangrusak) + hitungReturDepo(row?.returdepo) + returPbf(row?.returpbf)
     )
   },
   {
@@ -307,6 +265,11 @@ function newReturResep (arr) {
   // console.log('racikan', jmlRetur)
   return jmlRetur
 }
+function returPbf (arr) {
+  const jmlRetur = arr?.reduce((x, y) => parseFloat(x) + parseFloat(y.jumlah_retur), 0)
+  // console.log('racikan', jmlRetur)
+  return jmlRetur
+}
 // function returResep (arr, kodeObat) {
 //   const arrreturResep = arr?.length ? arr.map(x => x.retur)?.reduce((a, b) => a.concat(b), []) : []
 //   const rincianReturResep = arrreturResep?.length ? arrreturResep?.map(x => x?.rinci)?.reduce((a, b) => a.concat(b), []) : []
@@ -377,11 +340,11 @@ function hitungTotal (row) {
   const awal = hitungSaldoAwal(row?.saldoawal)
   // eslint-disable-next-line no-unused-vars
   const masuk = hitungPenerimaan(row?.penerimaanrinci) + hitungMutasiMasuk(row?.mutasimasuk) + newReturResep(row?.returpenjualan) +
-  hitungPenyesuaianMasuk(row?.penyesuaian) + hitungReturDistribusi(row?.persiapanretur) + hitungReturGudang(row?.returgudang)
+    hitungPenyesuaianMasuk(row?.penyesuaian) + hitungReturDistribusi(row?.persiapanretur) + hitungReturGudang(row?.returgudang)
   // eslint-disable-next-line no-unused-vars
   const keluar = hitungMutasiKeluar(row?.mutasikeluar) + hitungResepKeluar(row?.resepkeluar, row?.distribusipersiapan) +
-  hitungResepRacikanKeluar(row?.resepkeluarracikan) + hitungPenyesuaianKeluar(row?.penyesuaian) + hitungDistribusi(row?.distribusipersiapan) +
-  hitungBarangRusak(row?.barangrusak) + hitungReturDepo(row?.returdepo)
+    hitungResepRacikanKeluar(row?.resepkeluarracikan) + hitungPenyesuaianKeluar(row?.penyesuaian) + hitungDistribusi(row?.distribusipersiapan) +
+    hitungBarangRusak(row?.barangrusak) + hitungReturDepo(row?.returdepo) + returPbf(row?.returpbf)
   // eslint-disable-next-line no-unused-vars
   const total = awal + masuk - keluar
   return total
@@ -463,7 +426,9 @@ function onRowClick (row) {
   /* height or max-height is important */
   height: 100%;
 
-  div.q-table__top ,.q-table__bottom, tr:first-child th {
+  div.q-table__top,
+  .q-table__bottom,
+  tr:first-child th {
     background-color: $primary;
     color: $white;
     border-collapse: separate !important;
@@ -479,30 +444,30 @@ function onRowClick (row) {
 
   //   /* bg color is important for th; just specify one */
 
-  thead tr th{
+  thead tr th {
     position: sticky;
     z-index: 1;
   }
 
-  thead tr:first-child th{
+  thead tr:first-child th {
     top: 0;
   }
 
   // /* this is when the loading indicator appears */
-  &.q-table--loading thead tr:last-child th{
+  &.q-table--loading thead tr:last-child th {
     /* height of all previous header rows */
     top: 48px
   }
+
   // /* prevent scrolling behind sticky top row on focus */
-  tbody{
+  tbody {
     /* height of all previous header rows */
     scroll-margin-top: 100px !important;
   }
 
   .q-table__bottom .q-field__native,
   .q-table__bottom .q-field__inner .q-field__control .q-anchor--skip,
-  i.q-icon
-   {
+  i.q-icon {
     color: $grey-4;
   }
 

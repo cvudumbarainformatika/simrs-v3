@@ -1,25 +1,12 @@
 <template>
-  <q-dialog
-    persistent
-    :maximized="true"
-    transition-show="slide-up"
-    transition-hide="slide-down"
-  >
-    <q-card
-      class=""
-      style="overflow: hidden;"
-    >
+  <q-dialog persistent :maximized="true" transition-show="slide-up" transition-hide="slide-down">
+    <q-card class="" style="overflow: hidden;">
       <div class="column full-height scroll">
         <div class="col-auto">
           <div class="column">
             <q-bar class="bg-primary text-white">
               <q-space />
-              <q-btn
-                v-close-popup
-                dense
-                flat
-                icon="icon-mat-close"
-              >
+              <q-btn v-close-popup dense flat icon="icon-mat-close">
                 <q-tooltip class="bg-white text-primary">
                   Close
                 </q-tooltip>
@@ -53,7 +40,7 @@
                     Periode
                   </div>
                   <div>
-                    Bulan {{ bulans[parseInt(params?.bulan) - 1??0] }} Tahun {{ params?.tahun }}
+                    Bulan {{ bulans[parseInt(params?.bulan) - 1 ?? 0] }} Tahun {{ params?.tahun }}
                   </div>
                 </div>
               </div>
@@ -80,9 +67,7 @@
               </thead>
               <tbody>
                 <tr>
-                  <td
-                    colspan="4"
-                  >
+                  <td colspan="4">
                     <b>Saldo Awal</b>
                   </td>
                   <td class="text-end ">
@@ -90,21 +75,20 @@
                   </td>
                 </tr>
                 <template v-if="bentukArrBaru.length">
-                  <tr
-                    v-for="(rinci, n) in bentukArrBaru"
-                    :key="rinci"
-                  >
-                    <td :class="rinci?.masuk === 0 ? rinci?.keluar===0 ?'text-yellow-9': 'text-negative' : 'text-primary'">
-                      {{ rinci?.tanggal }} <span class="">  {{ rinci?.jam }}</span>
+                  <tr v-for="(rinci, n) in bentukArrBaru" :key="rinci">
+                    <td
+                      :class="rinci?.masuk === 0 ? rinci?.keluar === 0 ? 'text-yellow-9' : 'text-negative' : 'text-primary'">
+                      {{ rinci?.tanggal }} <span class=""> {{ rinci?.jam }}</span>
                     </td>
-                    <td :class="rinci?.masuk === 0 ? rinci?.keluar===0 ?'text-yellow-9': 'text-negative' : 'text-primary'">
+                    <td
+                      :class="rinci?.masuk === 0 ? rinci?.keluar === 0 ? 'text-yellow-9' : 'text-negative' : 'text-primary'">
                       {{ rinci?.keterangan }}
                     </td>
                     <td class="text-end">
                       {{ formatDouble((rinci?.masuk ?? 0), 1) }}
                     </td>
                     <td class="text-end">
-                      {{ formatDouble((rinci?.keluar ?? 0),1) }}
+                      {{ formatDouble((rinci?.keluar ?? 0), 1) }}
                     </td>
                     <td class="text-end">
                       {{ formatDouble((cariHasilAkhirArray(n) ?? 0), 1) }}
@@ -116,7 +100,7 @@
                     </td>
                     <td class="text-end">
                       <div style="min-height: 30px;" class="f-14">
-                        <b>{{ formatDouble((cariHasilAkhirArray(bentukArrBaru.length)?? 0), 1) }}</b>
+                        <b>{{ formatDouble((cariHasilAkhirArray(bentukArrBaru.length) ?? 0), 1) }}</b>
                       </div>
                     </td>
                   </tr>
@@ -301,6 +285,18 @@ const bentukArrBaru = computed(() => {
     }
     // const rincianReturResep = arrreturResep?.length ? arrreturResep?.map(x => x.rinci)?.reduce((a, b) => a.concat(b), []) : []
   })
+  const returpbf = props?.item?.returpbf?.map(x => {
+    return {
+      tgl: x?.tgl_retur,
+      tanggal: date.formatDate(x?.tgl_retur, 'DD, MMM YYYY'),
+      jam: date.formatDate(x?.tgl_retur, 'HH:mm'),
+      keterangan: 'Nomor retur PBF ' + x?.no_retur,
+      masuk: 0,
+      keluar: parseFloat(x?.jumlah_retur),
+      total: 0
+    }
+    // const rincianReturResep = arrreturResep?.length ? arrreturResep?.map(x => x.rinci)?.reduce((a, b) => a.concat(b), []) : []
+  })
   const penyesuaian = props?.item?.penyesuaian?.map(x => {
     // const arr = m
     // return arr.map(x => {
@@ -349,7 +345,7 @@ const bentukArrBaru = computed(() => {
 
   const gabung = [terimalangsung, terimapesan, mutasikeluar, mutasimasuk,
     resepkeluar, resepracikankeluar, returresep, penyesuaian,
-    distribusi, returdistribusi, barangrusak, returgudang, returdepo].flat(Infinity)
+    distribusi, returdistribusi, barangrusak, returgudang, returdepo, returpbf].flat(Infinity)
 
   // const hasil = gabung.length ? gabung?.filter(x => x.masuk !== x.keluar)?.sort((a, b) => new Date(a.tgl) - new Date(b.tgl)) : [] // ini jika yg aneh tdk dimasukkan
   const hasil = gabung.length ? gabung?.sort((a, b) => new Date(a.tgl) - new Date(b.tgl)) : []
@@ -406,10 +402,10 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
-
-.text-end{
+.text-end {
   text-align: end;
 }
+
 /* Standard Tables */
 
 table {
@@ -504,12 +500,11 @@ table:nth-of-type(2) th:not([scope=row]):first-child {
 
 /* Strictly for making the scrolling happen. */
 
-th[scope=row] + td {
+th[scope=row]+td {
   min-width: 24em;
 }
 
 th[scope=row] {
   min-width: 20em;
 }
-
 </style>
