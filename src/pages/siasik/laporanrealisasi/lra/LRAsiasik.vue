@@ -20,11 +20,8 @@
             <div class="row justify-center q-pt-md">
               <div class="row">
                 <div class="col-1">
-                  <q-img
-                    src="~assets/images/logo_kota_original.png"
-                    spinner-color="white"
-                    style="height: 3.3cm; width: 2.6cm"
-                  />
+                  <q-img src="~assets/images/logo_kota_original.png" spinner-color="white"
+                    style="height: 3.3cm; width: 2.6cm" />
                 </div>
                 <div class="col-10">
                   <div class="row justify-center text-h6">
@@ -45,18 +42,14 @@
                   </div>
                 </div>
                 <div class="col-1">
-                  <q-img
-                    src="~assets/logos/logo-rsud.png"
-                    spinner-color="white"
-                    style="height: 3cm; width: 3cm"
-                  />
+                  <q-img src="~assets/logos/logo-rsud.png" spinner-color="white" style="height: 3cm; width: 3cm" />
                 </div>
 
                 <div class="col-12 q-pt-md">
                   <div class="row justify-center text-weight-bold">
                     Laporan Realisasi Anggaran Periode {{ store.display.dari + ' - ' + store.display.sampai }}
                   </div>
-                <!-- <div class="row justify-center text-weight-bold">
+                  <!-- <div class="row justify-center text-weight-bold">
                   Periode Bulan {{ bulan(store.params.bulan) }} {{ store.params.tahun }}
                 </div> -->
                 </div>
@@ -66,74 +59,29 @@
           </q-card-section>
 
           <div class="print-hide row middle q-pa-md q-gutter-md">
-            <app-input-date-human
-              :model="store.params.tgl"
-              label="dari tangal"
-              outlined
-              :disable="store.loading"
-              :loading="store.loading"
-              @db-model="tglDari"
-              @set-display="setDari"
-            />
-            <app-input-date-human
-              :model="store.params.tglx"
-              label="sampai tangal"
-              outlined
-              :disable="store.loading"
-              :loading="store.loading"
-              @db-model="tglSampai"
-              @set-display="setSampai"
-            />
-            <app-autocomplete
-              v-model="store.params.bidang"
-              label="Pilih Bidang"
-              autocomplete="bidang"
-              option-label="bidang"
-              option-value="kodebidang"
-              outlined
-              :source="store.bidangs"
-              :loading="store.loading"
-              @selected="(val)=>{
+            <app-input-date-human :model="store.params.tgl" label="dari tangal" outlined :disable="store.loading"
+              :loading="store.loading" @db-model="tglDari" @set-display="setDari" />
+            <app-input-date-human :model="store.params.tglx" label="sampai tangal" outlined :disable="store.loading"
+              :loading="store.loading" @db-model="tglSampai" @set-display="setSampai" />
+            <app-autocomplete v-model="store.params.bidang" label="Pilih Bidang" autocomplete="bidang"
+              option-label="bidang" option-value="kodebidang" outlined :source="store.bidangs" :loading="store.loading"
+              @selected="(val) => {
                 const arr = store.bidangs
                 const obj = arr.length ? arr.find(x => x.kodebidang === val) : null
                 store.params.kodebidang = obj?.kodebidang ?? ''
                 store.params.kegiatan = ''
                 console.log('kode bidang', store.params.kodebidang)
                 store.filterKegiatan()
-              }"
-            />
-            <app-autocomplete
-              v-model="store.params.kegiatan"
-              label="Pilih Kegiatan"
-              autocomplete="kegiatan"
-              option-label="kegiatan"
-              option-value="kodekegiatan"
-              outlined
-              :source="store.kegiatans"
-              :loading="store.loading"
-            />
+              }" />
+            <app-autocomplete v-model="store.params.kegiatan" label="Pilih Kegiatan" autocomplete="kegiatan"
+              option-label="kegiatan" option-value="kodekegiatan" outlined :source="store.kegiatans"
+              :loading="store.loading" />
             <div>
-              <app-btn
-                label="Ambil Data"
-                :disable="store.loading"
-                :loading="store.loading"
-                @click="ambilData()"
-              />
+              <app-btn label="Ambil Data" :disable="store.loading" :loading="store.loading" @click="ambilData()" />
             </div>
             <div>
-              <q-btn
-                ref="refPrint"
-                v-print="printObj"
-                unelevated
-                color="dark"
-                round
-                size="sm"
-                icon="icon-mat-print"
-              >
-                <q-tooltip
-                  class="primary"
-                  :offset="[10, 10]"
-                >
+              <q-btn ref="refPrint" v-print="printObj" unelevated color="dark" round size="sm" icon="icon-mat-print">
+                <q-tooltip class="primary" :offset="[10, 10]">
                   Print
                 </q-tooltip>
               </q-btn>
@@ -144,21 +92,12 @@
 
       <div class="q-card q-mt-sm">
         <q-card class="q-pa-xs">
-          <template v-if="store.loading">
+          <template v-if="store.loadingdata">
             <div class="row justify-center">
               <div class="q-gutter-md">
-                <q-spinner-pie
-                  color="amber-13"
-                  size="40px"
-                />
-                <q-spinner-pie
-                  color="amber-13"
-                  size="60px"
-                />
-                <q-spinner-pie
-                  color="amber-13"
-                  size="40px"
-                />
+                <q-spinner-pie color="amber-13" size="40px" />
+                <q-spinner-pie color="amber-13" size="60px" />
+                <q-spinner-pie color="amber-13" size="40px" />
               </div>
             </div>
           </template>
@@ -173,10 +112,7 @@
 
           <template v-else>
             <div class="row flex flex-center" id="printMe">
-              <table
-                class="table table-responsive"
-                style="font-size: 13px"
-              >
+              <table class="table table-responsive" style="font-size: 13px">
                 <thead class="align-middle text-center display-block">
                   <tr style="font-size: 14px">
                     <th width="150px">
@@ -196,28 +132,34 @@
                 <tbody class="align-middle q-pl-sm">
                   <tr v-for="item in store.pendapatans" :key="item">
                     <td class="text-left q-pl-sm q-pr-sm">
-                      <div> {{ item.kodeall3 }}  </div>
+                      <div :class="item.kodeall3.length <= 12 ? 'text-bold' : ''"> {{ item.kodeall3 }} </div>
                     </td>
                     <td class="text-left q-pl-sm q-pr-sm">
-                      <div> {{ item.uraian }}  </div>
+                      <div :class="item.kodeall3.length <= 12 ? 'text-bold' : ''"> {{ item.uraian }} </div>
                     </td>
                     <td class="text-right q-pl-sm q-pr-sm">
-                      <div>{{ formattanpaRp(store.realisasipends?.totalPaguPendapatan) }}</div>
+                      <div :class="item.kodeall3.length <= 12 ? 'text-bold' : ''">{{
+                        formattanpaRp(store.realisasipends?.totalPaguPendapatan) }}</div>
                     </td>
                     <td class="text-right q-pl-sm q-pr-sm">
-                      <div>{{ formattanpaRp(store.realisasipends?.totalSebelumnya) }}</div>
+                      <div :class="item.kodeall3.length <= 12 ? 'text-bold' : ''">{{
+                        formattanpaRp(store.realisasipends?.totalSebelumnya) }}</div>
                     </td>
                     <td class="text-right q-pl-sm q-pr-sm">
-                      <div>{{ formattanpaRp(store.realisasipends?.totalSekarang) }}</div>
+                      <div :class="item.kodeall3.length <= 12 ? 'text-bold' : ''">{{
+                        formattanpaRp(store.realisasipends?.totalSekarang) }}</div>
                     </td>
                     <td class="text-right q-pl-sm q-pr-sm">
-                      <div>{{ formattanpaRp(store.realisasipends?.totalRealisasi) }}</div>
+                      <div :class="item.kodeall3.length <= 12 ? 'text-bold' : ''">{{
+                        formattanpaRp(store.realisasipends?.totalRealisasi) }}</div>
                     </td>
                     <td class="text-right q-pl-sm q-pr-sm">
-                      <div> {{ formattanpaRp(store.realisasipends?.selisih) }} </div>
+                      <div :class="item.kodeall3.length <= 12 ? 'text-bold' : ''"> {{
+                        formattanpaRp(store.realisasipends?.selisih) }} </div>
                     </td>
                     <td class="text-right q-pl-sm q-pr-sm">
-                      <div> {{ formattanpaRp(store.realisasipends?.persen) }} </div>
+                      <div :class="item.kodeall3.length <= 12 ? 'text-bold' : ''"> {{
+                        formattanpaRp(store.realisasipends?.persen) }} </div>
                     </td>
                   </tr>
                   <tr class="total text-bold">
@@ -245,34 +187,36 @@
                   </tr>
                   <tr v-for="item in store.items" :key="item">
                     <td class="text-left q-pl-sm q-pr-sm">
-                      <div> {{ item.kodeall3 }} </div>
+                      <div :class="item.kodeall3.length <= 12 ? 'text-bold' : ''"> {{ item.kodeall3 }} </div>
                     </td>
                     <td class="text-left q-pl-sm q-pr-sm">
-                      <div> {{ item.uraian }} </div>
+                      <div :class="item.kodeall3.length <= 12 ? 'text-bold' : ''"> {{ item.uraian }} </div>
                     </td>
                     <td class="text-right q-pl-sm q-pr-sm">
-                      <div>{{ formattanpaRp(item.totalPagu) }} </div>
+                      <div :class="item.kodeall3.length <= 12 ? 'text-bold' : ''">{{ formattanpaRp(item.totalPagu) }}
+                      </div>
                     </td>
                     <td class="text-right q-pl-sm q-pr-sm">
-                      <div>{{ formattanpaRp(item.totalRealisasiSebelumnya) }}</div>
+                      <div :class="item.kodeall3.length <= 12 ? 'text-bold' : ''">{{
+                        formattanpaRp(item.totalRealisasiSebelumnya) }}</div>
                     </td>
                     <td class="text-right q-pl-sm q-pr-sm">
-                      <div>
+                      <div :class="item.kodeall3.length <= 12 ? 'text-bold' : ''">
                         {{ formattanpaRp(item.totalRealisasi) }}
                       </div>
                     </td>
                     <td class="text-right q-pl-sm q-pr-sm">
-                      <div>
+                      <div :class="item.kodeall3.length <= 12 ? 'text-bold' : ''">
                         {{ formattanpaRp(item.RealisasiSemua) }}
                       </div>
                     </td>
                     <td class="text-right q-pl-sm q-pr-sm">
-                      <div>
+                      <div :class="item.kodeall3.length <= 12 ? 'text-bold' : ''">
                         {{ formattanpaRp(item.selisih) }}
                       </div>
                     </td>
                     <td class="text-right q-pl-sm q-pr-sm">
-                      <div>
+                      <div :class="item.kodeall3.length <= 12 ? 'text-bold' : ''">
                         {{ item.persen }}
                       </div>
                     </td>
@@ -326,28 +270,34 @@
                   </tr>
                   <tr v-for="rek in store.pembiayaans" :key="rek">
                     <td class="text-left q-pl-sm q-pr-sm">
-                      <div> {{ rek.kodeall3 }}  </div>
+                      <div :class="rek.kodeall3.length <= 12 ? 'text-bold' : ''"> {{ rek.kodeall3 }} </div>
                     </td>
                     <td class="text-left q-pl-sm q-pr-sm">
-                      <div> {{ rek.uraian }}  </div>
+                      <div :class="rek.kodeall3.length <= 12 ? 'text-bold' : ''"> {{ rek.uraian }} </div>
                     </td>
                     <td class="text-right q-pl-sm q-pr-sm">
-                      <div>{{ formattanpaRp(store.realisasiPembiayaans?.totalPaguPembiayaan) }}</div>
+                      <div :class="rek.kodeall3.length <= 12 ? 'text-bold' : ''">{{
+                        formattanpaRp(store.realisasiPembiayaans?.totalPaguPembiayaan) }}</div>
                     </td>
                     <td class="text-right q-pl-sm q-pr-sm">
-                      <div>{{ formattanpaRp(store.realisasiPembiayaans?.totalSebelumnya) }}</div>
+                      <div :class="rek.kodeall3.length <= 12 ? 'text-bold' : ''">{{
+                        formattanpaRp(store.realisasiPembiayaans?.totalSebelumnya) }}</div>
                     </td>
                     <td class="text-right q-pl-sm q-pr-sm">
-                      <div>{{ formattanpaRp(store.realisasiPembiayaans?.totalSekarang) }}</div>
+                      <div :class="rek.kodeall3.length <= 12 ? 'text-bold' : ''">{{
+                        formattanpaRp(store.realisasiPembiayaans?.totalSekarang) }}</div>
                     </td>
                     <td class="text-right q-pl-sm q-pr-sm">
-                      <div>{{ formattanpaRp(store.realisasiPembiayaans?.totalRealisasi) }}</div>
+                      <div :class="rek.kodeall3.length <= 12 ? 'text-bold' : ''">{{
+                        formattanpaRp(store.realisasiPembiayaans?.totalRealisasi) }}</div>
                     </td>
                     <td class="text-right q-pl-sm q-pr-sm">
-                      <div> {{ formattanpaRp(store.realisasiPembiayaans?.selisih) }} </div>
+                      <div :class="rek.kodeall3.length <= 12 ? 'text-bold' : ''"> {{
+                        formattanpaRp(store.realisasiPembiayaans?.selisih) }} </div>
                     </td>
                     <td class="text-right q-pl-sm q-pr-sm">
-                      <div> {{ formattanpaRp(store.realisasiPembiayaans?.persen) }} </div>
+                      <div :class="rek.kodeall3.length <= 12 ? 'text-bold' : ''"> {{
+                        formattanpaRp(store.realisasiPembiayaans?.persen) }} </div>
                     </td>
                   </tr>
                   <tr class="total text-bold">
@@ -437,16 +387,19 @@ onMounted(() => {
   store.getDataBidang()
   // store.getDataRealisasi()
 })
-function tglDari (val) {
+function tglDari(val) {
+  // console.log('val Parameter', val)
+  // this.getDataBidang()
   store.setParameter('tgl', val)
 }
-function setDari (val) {
+function setDari(val) {
   store.display.dari = val
 }
-function tglSampai (val) {
+function tglSampai(val) {
   store.setParameter('tglx', val)
+  store.getDataBidang()
 }
-function setSampai (val) {
+function setSampai(val) {
   store.display.sampai = val
 }
 
@@ -454,19 +407,19 @@ const printed = ref(false)
 const printObj = {
   id: 'printMe',
   popTitle: 'Laporan Realisasi Anggaran',
-  beforeOpenCallback (vue) {
+  beforeOpenCallback(vue) {
     printed.value = true
     console.log('wait...')
   },
-  openCallback (vue) {
+  openCallback(vue) {
     console.log('opened')
   },
-  closeCallback (vue) {
+  closeCallback(vue) {
     printed.value = false
     console.log('closePrint')
   }
 }
-function hitungPagu () {
+function hitungPagu() {
   const saldo = store.items
   const PaguBelanja = saldo[0]?.totalPagu
   const PaguPendapatan = store.realisasipends?.totalPaguPendapatan
@@ -479,7 +432,7 @@ function hitungPagu () {
     silpa
   }
 }
-function hitungSebelumnya () {
+function hitungSebelumnya() {
   const saldo = store.items
   const PaguBelanja = saldo[0]?.totalRealisasiSebelumnya
   const PaguPendapatan = store.realisasipends?.totalSebelumnya
@@ -492,7 +445,7 @@ function hitungSebelumnya () {
     silpa
   }
 }
-function hitungSekarang () {
+function hitungSekarang() {
   const saldo = store.items
   const PaguBelanja = saldo[0]?.totalRealisasi
   const PaguPendapatan = store.realisasipends?.totalSekarang
@@ -505,7 +458,7 @@ function hitungSekarang () {
     silpa
   }
 }
-function hitungTotalRealisasi () {
+function hitungTotalRealisasi() {
   const saldo = store.items
   const PaguBelanja = saldo[0]?.RealisasiSemua
   const PaguPendapatan = store.realisasipends?.totalRealisasi
@@ -518,7 +471,7 @@ function hitungTotalRealisasi () {
     silpa
   }
 }
-function hitungSelisih () {
+function hitungSelisih() {
   const saldo = store.items
   const PaguBelanja = saldo[0]?.selisih
   const PaguPendapatan = store.realisasipends?.selisih
@@ -531,7 +484,7 @@ function hitungSelisih () {
     silpa
   }
 }
-function HitungPersen () {
+function HitungPersen() {
   const saldo = store.items
   const PaguBelanja = parseFloat(saldo[0]?.persen)
   const PaguPendapatan = parseFloat(store.realisasipends?.persen)
@@ -545,7 +498,7 @@ function HitungPersen () {
   }
 }
 
-function ambilData () {
+function ambilData() {
   // store.hitungharidalamBulan();
   store.getDataRealisasi().then(() => {
     store.emptyForm()
@@ -555,14 +508,15 @@ function ambilData () {
 </script>
 
 <style>
-table{
+table {
   border-collapse: collapse;
   border-radius: 6px;
   max-width: 1500px;
   width: 100%;
   border: 1px solid rgb(163, 163, 163);
 }
-thead th{
+
+thead th {
   background: #ffed86;
   height: 50px;
   border-collapse: collapse;
@@ -570,7 +524,8 @@ thead th{
   border: 1px solid rgb(163, 163, 163);
   font-size: 1em;
 }
-tbody tr td{
+
+tbody tr td {
   height: 30px;
   max-height: 60px;
   border-collapse: collapse;
@@ -578,10 +533,12 @@ tbody tr td{
   border: 1px solid rgb(163, 163, 163);
   font-size: 1em;
 }
-.total{
+
+.total {
   background: #e6efff;
 }
-.ttd{
+
+.ttd {
   position: relative;
   top: 30px;
   left: 60%;
@@ -590,10 +547,12 @@ tbody tr td{
   width: 25%;
   height: 100px;
 }
-.underline{
+
+.underline {
   text-decoration-line: underline;
 }
-.kosong{
+
+.kosong {
   position: relative;
   padding-top: 100px;
   text-align: center;

@@ -3,12 +3,7 @@
     <q-card-section class="full-width">
       <div class="row justify-center">
         <div class="full-width">
-          <q-markup-table
-            class="my-sticky-table width:90%"
-            flat-bordered
-            wrap-cells
-            :separator="separator"
-          >
+          <q-markup-table class="width:90%" flat-bordered wrap-cells :separator="separator">
             <thead>
               <tr class="bg-dark text-white max-width">
                 <th>URAIAN</th>
@@ -17,7 +12,7 @@
             </thead>
             <tbody>
               <tr class="text-bold">
-                <td>
+                <td class="text-left">
                   {{ store.ekuitasawal.uraian }}
                 </td>
                 <td class="text-right">
@@ -25,7 +20,7 @@
                 </td>
               </tr>
               <tr>
-                <td>
+                <td class="text-left">
                   {{ store.surplusdefisit.uraian }}
                 </td>
                 <td class="text-right">
@@ -33,7 +28,7 @@
                 </td>
               </tr>
               <tr class="text-bold">
-                <td>
+                <td class="text-left">
                   Dampak Kumuatif Perubahan Kebijakan / Penyesuaian Ekuitas
                 </td>
                 <td class="text-right">
@@ -41,7 +36,7 @@
                 </td>
               </tr>
               <tr v-for="it in store.hasilkoreksi" :key="it">
-                <td>
+                <td class="text-left">
                   - {{ it.uraian }}
                 </td>
                 <td class="text-right">
@@ -49,7 +44,7 @@
                 </td>
               </tr>
               <tr>
-                <td>
+                <td class="text-left">
                   Sub Jumlah
                 </td>
                 <td class="text-right">
@@ -57,7 +52,7 @@
                 </td>
               </tr>
               <tr class="text-bold">
-                <td>
+                <td class="text-left">
                   Ekuitas Akhir
                 </td>
                 <td class="text-right">
@@ -79,12 +74,12 @@ import { ref } from 'vue'
 const store = useLPEStore()
 const separator = ref('cell')
 
-function totalKoreksi () {
+function totalKoreksi() {
   const total = store.hasilkoreksi.map((x) => parseFloat(x.nilai)).reduce((a, b) => a + b, 0)
   return total
 }
 
-function ekuitasAkhir () {
+function ekuitasAkhir() {
   const ekuitas = parseFloat(store.ekuitasawal.nilai)
   const surplusdef = parseFloat(store.surplusdefisit.nilai)
   const koreksi = store.hasilkoreksi.map((x) => parseFloat(x.nilai)).reduce((a, b) => a + b, 0)

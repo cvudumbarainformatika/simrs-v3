@@ -1,21 +1,14 @@
 <template>
-  <template
-    v-if="store.objsetarakas.length > 0 || store.objretribusi.length > 0 ||
-      store.objpiutang.length > 0 || store.objpenyisihan.length > 0 ||
-      store.objpersediaan.length > 0 || store.objinvestasi.length > 0 ||
-      store.objasettetap.length > 0 || store.objasetlainnya.length > 0 ||
-      store.objutang.length > 0 || store.objutangjkpanjang.length > 0 ||
-      store.objekuitas.length > 0"
-  >
+  <template v-if="store.objsetarakas.length > 0 || store.objretribusi.length > 0 ||
+    store.objpiutang.length > 0 || store.objpenyisihan.length > 0 ||
+    store.objpersediaan.length > 0 || store.objinvestasi.length > 0 ||
+    store.objasettetap.length > 0 || store.objasetlainnya.length > 0 ||
+    store.objutang.length > 0 || store.objutangjkpanjang.length > 0 ||
+    store.objekuitas.length > 0">
     <q-card-section class="full-width">
       <div class="row justify-center">
         <div class="full-width">
-          <q-markup-table
-            class="my-sticky-table"
-            flat-bordered
-            wrap-cells
-            :separator="separator"
-          >
+          <q-markup-table flat-bordered wrap-cells :separator="separator">
             <thead>
               <tr class="bg-dark text-white max-width">
                 <th>URAIAN</th>
@@ -24,27 +17,27 @@
             </thead>
             <tbody>
               <tr class="text-bold">
-                <td colspan="2">
+                <td colspan="2" class="text-left">
                   ASET
                 </td>
               </tr>
               <tr class="text-bold">
                 <td colspan="2">
-                  <div class="q-pl-sm">
+                  <div class="q-pl-sm text-left">
                     ASET LANCAR
                   </div>
                 </td>
               </tr>
               <tr>
                 <td colspan="2">
-                  <div class="q-pl-md">
+                  <div class="q-pl-md text-left">
                     Kas dan Setara Kas
                   </div>
                 </td>
               </tr>
               <tr v-for="it in store.objsetarakas" :key="it">
                 <td>
-                  <div class="q-pl-lg">
+                  <div class="q-pl-lg text-left">
                     - {{ it.uraian }}
                   </div>
                 </td>
@@ -54,7 +47,7 @@
               </tr>
               <tr>
                 <td>
-                  <div class="q-pl-md">
+                  <div class="q-pl-md text-left">
                     {{ store.objretribusi?.uraian }}
                   </div>
                 </td>
@@ -64,14 +57,14 @@
               </tr>
               <tr>
                 <td colspan="2">
-                  <div class="q-pl-md">
+                  <div class="q-pl-md text-left">
                     Piutang
                   </div>
                 </td>
               </tr>
               <tr v-for="it in store.objpiutang" :key="it">
                 <td>
-                  <div class="q-pl-lg">
+                  <div class="q-pl-lg text-left">
                     - {{ it.uraian }}
                   </div>
                 </td>
@@ -81,7 +74,7 @@
               </tr>
               <tr v-for="it in store.objpersediaan" :key="it">
                 <td>
-                  <div class="q-pl-md">
+                  <div class="q-pl-md text-left">
                     {{ it?.uraian }}
                   </div>
                 </td>
@@ -91,7 +84,7 @@
               </tr>
               <tr>
                 <td>
-                  <div class="q-pl-md">
+                  <div class="q-pl-md text-left">
                     {{ store.objinvestasi?.uraian }}
                   </div>
                 </td>
@@ -109,21 +102,21 @@
               </tr>
               <tr class="text-bold">
                 <td colspan="2">
-                  <div class="q-pl-sm">
+                  <div class="q-pl-sm text-left">
                     ASET TIDAK LANCAR
                   </div>
                 </td>
               </tr>
               <tr>
                 <td colspan="2">
-                  <div class="q-pl-md">
+                  <div class="q-pl-md text-left">
                     ASET TETAP
                   </div>
                 </td>
               </tr>
               <tr v-for="it in store.objasettetap" :key="it">
                 <td>
-                  <div class="q-pl-lg">
+                  <div class="q-pl-lg text-left">
                     - {{ it.uraian }}
                   </div>
                 </td>
@@ -141,14 +134,14 @@
               </tr>
               <tr>
                 <td colspan="2">
-                  <div class="q-pl-md">
+                  <div class="q-pl-md text-left">
                     ASET LAINNYA
                   </div>
                 </td>
               </tr>
               <tr v-for="it in store.objasetlainnya" :key="it">
                 <td>
-                  <div class="q-pl-lg">
+                  <div class="q-pl-lg text-left">
                     - {{ it.uraian }}
                   </div>
                 </td>
@@ -176,7 +169,7 @@
               </tr>
               <tr v-for="it in store.objutang" :key="it">
                 <td>
-                  <div class="q-pl-md">
+                  <div class="q-pl-md text-left">
                     {{ it.uraian }}
                   </div>
                 </td>
@@ -196,14 +189,14 @@
               </tr>
               <tr class="text-bold">
                 <td colspan="2">
-                  <div class="q-pl-sm">
+                  <div class="q-pl-sm text-left">
                     KEWAJIBAN JANGKA PANJANG
                   </div>
                 </td>
               </tr>
               <tr v-for="it in store.objutangjkpanjang" :key="it">
                 <td>
-                  <div class="q-pl-md">
+                  <div class="q-pl-md text-left">
                     {{ it.uraian }}
                   </div>
                 </td>
@@ -233,14 +226,14 @@
               </tr>
               <tr class="text-bold">
                 <td colspan="2">
-                  <div class="q-pl-sm">
+                  <div class="q-pl-sm text-left">
                     EKUITAS
                   </div>
                 </td>
               </tr>
               <tr v-for="it in store.objekuitas" :key="it">
                 <td>
-                  <div class="q-pl-md">
+                  <div class="q-pl-md text-left">
                     {{ it.uraian }}
                   </div>
                 </td>
@@ -283,7 +276,7 @@ import { ref } from 'vue'
 const separator = ref('cell')
 const store = useNeracaStore()
 
-function totalAsetlancar () {
+function totalAsetlancar() {
   const setarakas = store.objsetarakas.map((x) => parseFloat(x.nilai)).reduce((a, b) => a + b, 0)
   const retribusi = store.objretribusi.nilai
   const piutang = store.objpiutang.map((x) => parseFloat(x.nilai)).reduce((a, b) => a + b, 0)
@@ -292,23 +285,23 @@ function totalAsetlancar () {
   return setarakas + retribusi + piutang + persediaan + investasi
 }
 
-function totalAsettetap () {
+function totalAsettetap() {
   const asettetap = store.objasettetap.map((x) => parseFloat(x.nilai)).reduce((a, b) => a + b, 0)
   return asettetap
 }
-function totalAsetlainnya () {
+function totalAsetlainnya() {
   const asetlainnya = store.objasetlainnya.map((x) => parseFloat(x.nilai)).reduce((a, b) => a + b, 0)
   return asetlainnya
 }
 
-function jumlahAset () {
+function jumlahAset() {
   const asetlancar = parseFloat(totalAsetlancar())
   const asettetap = parseFloat(totalAsettetap())
   const asetlainnya = parseFloat(totalAsetlainnya())
   return asetlancar + asettetap + asetlainnya
 }
 
-function totalKewajiban () {
+function totalKewajiban() {
   const kewajibanjgkpendek = store.objutang.map((x) => parseFloat(x.nilai)).reduce((a, b) => a + b, 0)
   const kewajibanjgkpanjang = store.objutangjkpanjang.map((x) => parseFloat(x.nilai)).reduce((a, b) => a + b, 0)
   const jumlahkewajiban = parseFloat(kewajibanjgkpendek) + parseFloat(kewajibanjgkpanjang)
@@ -319,12 +312,12 @@ function totalKewajiban () {
   }
 }
 
-function totalEkuitas () {
+function totalEkuitas() {
   const ekuitas = store.objekuitas.map((x) => parseFloat(x.nilai)).reduce((a, b) => a + b, 0)
   return ekuitas
 }
 
-function jumlahKewajibanDanEkuitas () {
+function jumlahKewajibanDanEkuitas() {
   const kewajiban = parseFloat(totalKewajiban().jumlahkewajiban)
   const ekuitas = parseFloat(totalEkuitas())
   return kewajiban + ekuitas

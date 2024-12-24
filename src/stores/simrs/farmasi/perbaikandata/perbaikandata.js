@@ -14,12 +14,15 @@ export const usePerbaikanDataFarmasiStore = defineStore('perbaikan_data_farmasi'
     tidakBermasalahs: [],
     meta: { total: 2700 },
     params: {
+      // q: '0000367-FAR',
       q: '',
       page: 1,
       tahun: '2024',
       bulan: '06',
       per_page: 100,
-      pilihan: 'semua'
+      pilihan: 'semua',
+      kdruang: ''
+      // kdruang: 'Gd-04010103'
     },
     form: {},
     gudangs: [

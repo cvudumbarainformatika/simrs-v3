@@ -6,6 +6,7 @@ import { api } from 'src/boot/axios'
 export const useLaporanLraLaprealisasianggaranStore = defineStore('laporan_realisasi_anggaran', {
   state: () => ({
     loading: false,
+    loadingdata: false,
     items: [],
     kodeakun: [],
     kodekelompok: [],
@@ -19,7 +20,7 @@ export const useLaporanLraLaprealisasianggaranStore = defineStore('laporan_reali
       page: 1,
       tgl: date.formatDate(Date.now(), 'YYYY-MM-DD'),
       tglx: date.formatDate(Date.now(), 'YYYY-MM-DD'),
-      tahun: date.formatDate(Date.now(), 'YYYY'),
+      // tahun: date.formatDate(Date.now(), 'YYYY'),
       bidang: '',
       kegiatan: '',
       kodebidang: null
@@ -57,7 +58,7 @@ export const useLaporanLraLaprealisasianggaranStore = defineStore('laporan_reali
     ]
   }),
   actions: {
-    setParameter (key, val) {
+    setParameter(key, val) {
       this.params[key] = val
     },
     setForm(key, val) {
@@ -74,7 +75,7 @@ export const useLaporanLraLaprealisasianggaranStore = defineStore('laporan_reali
       const params = { params: this.params }
       return new Promise((resolve) => {
         api.get('v1/laporan/lra/bidang', params).then((resp) => {
-          // console.log('bidang', resp)
+          console.log('bidang', resp)
           if (resp.status === 200) {
             this.mapbidangptk = resp.data
             // this.bidangs = resp.data
@@ -139,7 +140,7 @@ export const useLaporanLraLaprealisasianggaranStore = defineStore('laporan_reali
       console.log('kegiatans', this.kegiatans)
     },
     getDataRealisasi() {
-      this.loading = true
+      this.loadingdata = true
       const params = { params: this.params }
       return new Promise(resolve => {
         api.get('v1/laporan/lra/laplra', params).then(resp => {
@@ -171,11 +172,11 @@ export const useLaporanLraLaprealisasianggaranStore = defineStore('laporan_reali
             this.realisasiPembiayaan()
             // this.paguPembiayaan()
             this.penggunaAnggaran = resp.data?.pa
-            this.loading = false
+            this.loadingdata = false
             resolve(resp)
           }
         }).catch(() => {
-          this.loading = false
+          this.loadingdata = false
           // this.items = []
         })
       })
@@ -288,7 +289,7 @@ export const useLaporanLraLaprealisasianggaranStore = defineStore('laporan_reali
       // }
     },
 
-    paguAnggaran () {
+    paguAnggaran() {
       // console.log('val', val)
       // this.items = []
       const anggaran = []
@@ -372,7 +373,7 @@ export const useLaporanLraLaprealisasianggaranStore = defineStore('laporan_reali
       // console.log('paguuuu', val)
       // return this.items
     },
-    mapRekening () {
+    mapRekening() {
       const pagu = this.realisasibelanja?.map((x) => x.totalPagu)
       const realisasiSebelumnya = this.realisasibelanja?.map((x) => x.totalRealisasiSebelumnya)
       const realisasi = this.realisasibelanja?.map((x) => x.totalRealisasi)
@@ -414,14 +415,14 @@ export const useLaporanLraLaprealisasianggaranStore = defineStore('laporan_reali
                   const tgl = new Date(x?.headerls?.npkrinci?.header?.tglpindahbuku).getTime()
                   return tgl < new Date(this.params.tgl).getTime()
                 }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalpembayaran), 0)) +
-                (x?.spjpanjar?.filter((x) => {
-                  const tgl = new Date(x?.spjheader?.tglspjpanjar).getTime()
-                  return tgl < new Date(this.params.tgl).getTime()
-                }).reduce((a, b) => parseFloat(a) + parseFloat(b?.jumlahbelanjapanjar), 0)) -
-                (x?.cp?.filter((x) => {
-                  const tgl = new Date(x?.tglcontrapost).getTime()
-                  return tgl < new Date(this.params.tgl).getTime()
-                }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalcontrapost), 0))
+                  (x?.spjpanjar?.filter((x) => {
+                    const tgl = new Date(x?.spjheader?.tglspjpanjar).getTime()
+                    return tgl < new Date(this.params.tgl).getTime()
+                  }).reduce((a, b) => parseFloat(a) + parseFloat(b?.jumlahbelanjapanjar), 0)) -
+                  (x?.cp?.filter((x) => {
+                    const tgl = new Date(x?.tglcontrapost).getTime()
+                    return tgl < new Date(this.params.tgl).getTime()
+                  }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalcontrapost), 0))
               }).reduce((x, y) => x + y, 0),
             totalRealisasi: this.realisasibelanja?.filter((s) => s?.kode2?.kodeall2 === a)
               .map((x) => {
@@ -429,14 +430,14 @@ export const useLaporanLraLaprealisasianggaranStore = defineStore('laporan_reali
                   const tgl = new Date(x?.headerls?.npkrinci?.header?.tglpindahbuku).getTime()
                   return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
                 }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalpembayaran), 0)) +
-                (x?.spjpanjar?.filter((x) => {
-                  const tgl = new Date(x?.spjheader?.tglspjpanjar).getTime()
-                  return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
-                }).reduce((a, b) => parseFloat(a) + parseFloat(b?.jumlahbelanjapanjar), 0)) -
-                (x?.cp?.filter((x) => {
-                  const tgl = new Date(x?.tglcontrapost).getTime()
-                  return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
-                }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalcontrapost), 0))
+                  (x?.spjpanjar?.filter((x) => {
+                    const tgl = new Date(x?.spjheader?.tglspjpanjar).getTime()
+                    return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
+                  }).reduce((a, b) => parseFloat(a) + parseFloat(b?.jumlahbelanjapanjar), 0)) -
+                  (x?.cp?.filter((x) => {
+                    const tgl = new Date(x?.tglcontrapost).getTime()
+                    return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
+                  }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalcontrapost), 0))
               }).reduce((x, y) => x + y, 0),
             RealisasiSemua: (this.realisasibelanja?.filter((s) => s?.kode2?.kodeall2 === a)
               .map((x) => {
@@ -444,29 +445,29 @@ export const useLaporanLraLaprealisasianggaranStore = defineStore('laporan_reali
                   const tgl = new Date(x?.headerls?.npkrinci?.header?.tglpindahbuku).getTime()
                   return tgl < new Date(this.params.tgl).getTime()
                 }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalpembayaran), 0)) +
-              (x?.spjpanjar?.filter((x) => {
-                const tgl = new Date(x?.spjheader?.tglspjpanjar).getTime()
-                return tgl < new Date(this.params.tgl).getTime()
-              }).reduce((a, b) => parseFloat(a) + parseFloat(b?.jumlahbelanjapanjar), 0)) -
-              (x?.cp?.filter((x) => {
-                const tgl = new Date(x?.tglcontrapost).getTime()
-                return tgl < new Date(this.params.tgl).getTime()
-              }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalcontrapost), 0))
+                  (x?.spjpanjar?.filter((x) => {
+                    const tgl = new Date(x?.spjheader?.tglspjpanjar).getTime()
+                    return tgl < new Date(this.params.tgl).getTime()
+                  }).reduce((a, b) => parseFloat(a) + parseFloat(b?.jumlahbelanjapanjar), 0)) -
+                  (x?.cp?.filter((x) => {
+                    const tgl = new Date(x?.tglcontrapost).getTime()
+                    return tgl < new Date(this.params.tgl).getTime()
+                  }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalcontrapost), 0))
               }).reduce((x, y) => x + y, 0)) + (this.realisasibelanja?.filter((s) => s?.kode2?.kodeall2 === a)
-              .map((x) => {
-                return (x?.npdls_rinci?.filter((x) => {
-                  const tgl = new Date(x?.headerls?.npkrinci?.header?.tglpindahbuku).getTime()
-                  return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
-                }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalpembayaran), 0)) +
-              (x?.spjpanjar?.filter((x) => {
-                const tgl = new Date(x?.spjheader?.tglspjpanjar).getTime()
-                return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
-              }).reduce((a, b) => parseFloat(a) + parseFloat(b?.jumlahbelanjapanjar), 0)) -
-              (x?.cp?.filter((x) => {
-                const tgl = new Date(x?.tglcontrapost).getTime()
-                return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
-              }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalcontrapost), 0))
-              }).reduce((x, y) => x + y, 0)),
+                .map((x) => {
+                  return (x?.npdls_rinci?.filter((x) => {
+                    const tgl = new Date(x?.headerls?.npkrinci?.header?.tglpindahbuku).getTime()
+                    return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
+                  }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalpembayaran), 0)) +
+                    (x?.spjpanjar?.filter((x) => {
+                      const tgl = new Date(x?.spjheader?.tglspjpanjar).getTime()
+                      return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
+                    }).reduce((a, b) => parseFloat(a) + parseFloat(b?.jumlahbelanjapanjar), 0)) -
+                    (x?.cp?.filter((x) => {
+                      const tgl = new Date(x?.tglcontrapost).getTime()
+                      return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
+                    }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalcontrapost), 0))
+                }).reduce((x, y) => x + y, 0)),
             selisih: this.realisasibelanja?.filter((s) => s?.kode2?.kodeall2 === a)
               .map((x) => {
                 return x?.anggaran.reduce((a, b) => parseFloat(a) + parseFloat(b.pagu), 0)
@@ -477,30 +478,30 @@ export const useLaporanLraLaprealisasianggaranStore = defineStore('laporan_reali
                     const tgl = new Date(x?.headerls?.npkrinci?.header?.tglpindahbuku).getTime()
                     return tgl < new Date(this.params.tgl).getTime()
                   }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalpembayaran), 0)) +
-              (x?.spjpanjar?.filter((x) => {
-                const tgl = new Date(x?.spjheader?.tglspjpanjar).getTime()
-                return tgl < new Date(this.params.tgl).getTime()
-              }).reduce((a, b) => parseFloat(a) + parseFloat(b?.jumlahbelanjapanjar), 0)) -
-              (x?.cp?.filter((x) => {
-                const tgl = new Date(x?.tglcontrapost).getTime()
-                return tgl < new Date(this.params.tgl).getTime()
-              }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalcontrapost), 0))
+                    (x?.spjpanjar?.filter((x) => {
+                      const tgl = new Date(x?.spjheader?.tglspjpanjar).getTime()
+                      return tgl < new Date(this.params.tgl).getTime()
+                    }).reduce((a, b) => parseFloat(a) + parseFloat(b?.jumlahbelanjapanjar), 0)) -
+                    (x?.cp?.filter((x) => {
+                      const tgl = new Date(x?.tglcontrapost).getTime()
+                      return tgl < new Date(this.params.tgl).getTime()
+                    }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalcontrapost), 0))
                 }).reduce((x, y) => x + y, 0) +
-              this.realisasibelanja?.filter((s) => s?.kode2?.kodeall2 === a)
-                .map((x) => {
-                  return (x?.npdls_rinci?.filter((x) => {
-                    const tgl = new Date(x?.headerls?.npkrinci?.header?.tglpindahbuku).getTime()
-                    return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
-                  }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalpembayaran), 0)) +
-              (x?.spjpanjar?.filter((x) => {
-                const tgl = new Date(x?.spjheader?.tglspjpanjar).getTime()
-                return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
-              }).reduce((a, b) => parseFloat(a) + parseFloat(b?.jumlahbelanjapanjar), 0)) -
-              (x?.cp?.filter((x) => {
-                const tgl = new Date(x?.tglcontrapost).getTime()
-                return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
-              }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalcontrapost), 0))
-                }).reduce((x, y) => x + y, 0)),
+                this.realisasibelanja?.filter((s) => s?.kode2?.kodeall2 === a)
+                  .map((x) => {
+                    return (x?.npdls_rinci?.filter((x) => {
+                      const tgl = new Date(x?.headerls?.npkrinci?.header?.tglpindahbuku).getTime()
+                      return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
+                    }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalpembayaran), 0)) +
+                      (x?.spjpanjar?.filter((x) => {
+                        const tgl = new Date(x?.spjheader?.tglspjpanjar).getTime()
+                        return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
+                      }).reduce((a, b) => parseFloat(a) + parseFloat(b?.jumlahbelanjapanjar), 0)) -
+                      (x?.cp?.filter((x) => {
+                        const tgl = new Date(x?.tglcontrapost).getTime()
+                        return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
+                      }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalcontrapost), 0))
+                  }).reduce((x, y) => x + y, 0)),
 
             persen: (((this.realisasibelanja?.filter((s) => s?.kode2?.kodeall2 === a)
               .map((x) => {
@@ -508,30 +509,30 @@ export const useLaporanLraLaprealisasianggaranStore = defineStore('laporan_reali
                   const tgl = new Date(x?.headerls?.npkrinci?.header?.tglpindahbuku).getTime()
                   return tgl < new Date(this.params.tgl).getTime()
                 }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalpembayaran), 0)) +
-              (x?.spjpanjar?.filter((x) => {
-                const tgl = new Date(x?.spjheader?.tglspjpanjar).getTime()
-                return tgl < new Date(this.params.tgl).getTime()
-              }).reduce((a, b) => parseFloat(a) + parseFloat(b?.jumlahbelanjapanjar), 0)) -
-              (x?.cp?.filter((x) => {
-                const tgl = new Date(x?.tglcontrapost).getTime()
-                return tgl < new Date(this.params.tgl).getTime()
-              }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalcontrapost), 0))
+                  (x?.spjpanjar?.filter((x) => {
+                    const tgl = new Date(x?.spjheader?.tglspjpanjar).getTime()
+                    return tgl < new Date(this.params.tgl).getTime()
+                  }).reduce((a, b) => parseFloat(a) + parseFloat(b?.jumlahbelanjapanjar), 0)) -
+                  (x?.cp?.filter((x) => {
+                    const tgl = new Date(x?.tglcontrapost).getTime()
+                    return tgl < new Date(this.params.tgl).getTime()
+                  }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalcontrapost), 0))
               }).reduce((x, y) => parseFloat(x) + parseFloat(y), 0) +
-            this.realisasibelanja?.filter((s) => s?.kode2?.kodeall2 === a)
-              .map((x) => {
-                return (x?.npdls_rinci?.filter((x) => {
-                  const tgl = new Date(x?.headerls?.npkrinci?.header?.tglpindahbuku).getTime()
-                  return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
-                }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalpembayaran), 0)) +
-                (x?.spjpanjar?.filter((x) => {
-                  const tgl = new Date(x?.spjheader?.tglspjpanjar).getTime()
-                  return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
-                }).reduce((a, b) => parseFloat(a) + parseFloat(b?.jumlahbelanjapanjar), 0)) -
-                (x?.cp?.filter((x) => {
-                  const tgl = new Date(x?.tglcontrapost).getTime()
-                  return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
-                }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalcontrapost), 0))
-              }).reduce((x, y) => parseFloat(x) + parseFloat(y), 0)) /
+              this.realisasibelanja?.filter((s) => s?.kode2?.kodeall2 === a)
+                .map((x) => {
+                  return (x?.npdls_rinci?.filter((x) => {
+                    const tgl = new Date(x?.headerls?.npkrinci?.header?.tglpindahbuku).getTime()
+                    return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
+                  }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalpembayaran), 0)) +
+                    (x?.spjpanjar?.filter((x) => {
+                      const tgl = new Date(x?.spjheader?.tglspjpanjar).getTime()
+                      return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
+                    }).reduce((a, b) => parseFloat(a) + parseFloat(b?.jumlahbelanjapanjar), 0)) -
+                    (x?.cp?.filter((x) => {
+                      const tgl = new Date(x?.tglcontrapost).getTime()
+                      return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
+                    }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalcontrapost), 0))
+                }).reduce((x, y) => parseFloat(x) + parseFloat(y), 0)) /
               this.realisasibelanja?.filter((s) => s?.kode2?.kodeall2 === a)
                 .map((x) => {
                   return x?.anggaran.reduce((a, b) => parseFloat(a) + parseFloat(b.pagu), 0)
@@ -573,14 +574,14 @@ export const useLaporanLraLaprealisasianggaranStore = defineStore('laporan_reali
                   const tgl = new Date(x?.headerls?.npkrinci?.header?.tglpindahbuku).getTime()
                   return tgl < new Date(this.params.tgl).getTime()
                 }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalpembayaran), 0)) +
-                (x?.spjpanjar?.filter((x) => {
-                  const tgl = new Date(x?.spjheader?.tglspjpanjar).getTime()
-                  return tgl < new Date(this.params.tgl).getTime()
-                }).reduce((a, b) => parseFloat(a) + parseFloat(b?.jumlahbelanjapanjar), 0)) -
-                (x?.cp?.filter((x) => {
-                  const tgl = new Date(x?.tglcontrapost).getTime()
-                  return tgl < new Date(this.params.tgl).getTime()
-                }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalcontrapost), 0))
+                  (x?.spjpanjar?.filter((x) => {
+                    const tgl = new Date(x?.spjheader?.tglspjpanjar).getTime()
+                    return tgl < new Date(this.params.tgl).getTime()
+                  }).reduce((a, b) => parseFloat(a) + parseFloat(b?.jumlahbelanjapanjar), 0)) -
+                  (x?.cp?.filter((x) => {
+                    const tgl = new Date(x?.tglcontrapost).getTime()
+                    return tgl < new Date(this.params.tgl).getTime()
+                  }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalcontrapost), 0))
               }).reduce((x, y) => x + y, 0),
             totalRealisasi: this.realisasibelanja?.filter((s) => s?.kode3?.kodeall2 === a)
               .map((x) => {
@@ -588,14 +589,14 @@ export const useLaporanLraLaprealisasianggaranStore = defineStore('laporan_reali
                   const tgl = new Date(x?.headerls?.npkrinci?.header?.tglpindahbuku).getTime()
                   return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
                 }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalpembayaran), 0)) +
-              (x?.spjpanjar?.filter((x) => {
-                const tgl = new Date(x?.spjheader?.tglspjpanjar).getTime()
-                return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
-              }).reduce((a, b) => parseFloat(a) + parseFloat(b?.jumlahbelanjapanjar), 0)) -
-              (x?.cp?.filter((x) => {
-                const tgl = new Date(x?.tglcontrapost).getTime()
-                return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
-              }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalcontrapost), 0))
+                  (x?.spjpanjar?.filter((x) => {
+                    const tgl = new Date(x?.spjheader?.tglspjpanjar).getTime()
+                    return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
+                  }).reduce((a, b) => parseFloat(a) + parseFloat(b?.jumlahbelanjapanjar), 0)) -
+                  (x?.cp?.filter((x) => {
+                    const tgl = new Date(x?.tglcontrapost).getTime()
+                    return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
+                  }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalcontrapost), 0))
               }).reduce((x, y) => x + y, 0),
             RealisasiSemua: (this.realisasibelanja?.filter((s) => s?.kode3?.kodeall2 === a)
               .map((x) => {
@@ -603,62 +604,62 @@ export const useLaporanLraLaprealisasianggaranStore = defineStore('laporan_reali
                   const tgl = new Date(x?.headerls?.npkrinci?.header?.tglpindahbuku).getTime()
                   return tgl < new Date(this.params.tgl).getTime()
                 }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalpembayaran), 0)) +
-              (x?.spjpanjar?.filter((x) => {
-                const tgl = new Date(x?.spjheader?.tglspjpanjar).getTime()
-                return tgl < new Date(this.params.tgl).getTime()
-              }).reduce((a, b) => parseFloat(a) + parseFloat(b?.jumlahbelanjapanjar), 0)) -
-              (x?.cp?.filter((x) => {
-                const tgl = new Date(x?.tglcontrapost).getTime()
-                return tgl < new Date(this.params.tgl).getTime()
-              }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalcontrapost), 0))
+                  (x?.spjpanjar?.filter((x) => {
+                    const tgl = new Date(x?.spjheader?.tglspjpanjar).getTime()
+                    return tgl < new Date(this.params.tgl).getTime()
+                  }).reduce((a, b) => parseFloat(a) + parseFloat(b?.jumlahbelanjapanjar), 0)) -
+                  (x?.cp?.filter((x) => {
+                    const tgl = new Date(x?.tglcontrapost).getTime()
+                    return tgl < new Date(this.params.tgl).getTime()
+                  }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalcontrapost), 0))
               }).reduce((x, y) => x + y, 0)) + (this.realisasibelanja?.filter((s) => s?.kode3?.kodeall2 === a)
-              .map((x) => {
-                return (x?.npdls_rinci?.filter((x) => {
-                  const tgl = new Date(x?.headerls?.npkrinci?.header?.tglpindahbuku).getTime()
-                  return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
-                }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalpembayaran), 0)) +
-              (x?.spjpanjar?.filter((x) => {
-                const tgl = new Date(x?.spjheader?.tglspjpanjar).getTime()
-                return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
-              }).reduce((a, b) => parseFloat(a) + parseFloat(b?.jumlahbelanjapanjar), 0)) -
-              (x?.cp?.filter((x) => {
-                const tgl = new Date(x?.tglcontrapost).getTime()
-                return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
-              }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalcontrapost), 0))
-              }).reduce((x, y) => x + y, 0)),
+                .map((x) => {
+                  return (x?.npdls_rinci?.filter((x) => {
+                    const tgl = new Date(x?.headerls?.npkrinci?.header?.tglpindahbuku).getTime()
+                    return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
+                  }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalpembayaran), 0)) +
+                    (x?.spjpanjar?.filter((x) => {
+                      const tgl = new Date(x?.spjheader?.tglspjpanjar).getTime()
+                      return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
+                    }).reduce((a, b) => parseFloat(a) + parseFloat(b?.jumlahbelanjapanjar), 0)) -
+                    (x?.cp?.filter((x) => {
+                      const tgl = new Date(x?.tglcontrapost).getTime()
+                      return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
+                    }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalcontrapost), 0))
+                }).reduce((x, y) => x + y, 0)),
             selisih: this.realisasibelanja?.filter((s) => s?.kode3?.kodeall2 === a)
               .map((x) => {
                 return x?.anggaran?.reduce((a, b) => parseFloat(a) + parseFloat(b?.pagu), 0)
               }).reduce((x, y) => x + y, 0) -
-                (this.realisasibelanja?.filter((s) => s?.kode3?.kodeall2 === a)
-                  .map((x) => {
-                    return (x?.npdls_rinci?.filter((x) => {
-                      const tgl = new Date(x?.headerls?.npkrinci?.header?.tglpindahbuku).getTime()
+              (this.realisasibelanja?.filter((s) => s?.kode3?.kodeall2 === a)
+                .map((x) => {
+                  return (x?.npdls_rinci?.filter((x) => {
+                    const tgl = new Date(x?.headerls?.npkrinci?.header?.tglpindahbuku).getTime()
+                    return tgl < new Date(this.params.tgl).getTime()
+                  }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalpembayaran), 0)) +
+                    (x?.spjpanjar?.filter((x) => {
+                      const tgl = new Date(x?.spjheader?.tglspjpanjar).getTime()
                       return tgl < new Date(this.params.tgl).getTime()
-                    }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalpembayaran), 0)) +
-                (x?.spjpanjar?.filter((x) => {
-                  const tgl = new Date(x?.spjheader?.tglspjpanjar).getTime()
-                  return tgl < new Date(this.params.tgl).getTime()
-                }).reduce((a, b) => parseFloat(a) + parseFloat(b?.jumlahbelanjapanjar), 0)) -
-                (x?.cp?.filter((x) => {
-                  const tgl = new Date(x?.tglcontrapost).getTime()
-                  return tgl < new Date(this.params.tgl).getTime()
-                }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalcontrapost), 0))
-                  }).reduce((x, y) => x + y, 0) +
+                    }).reduce((a, b) => parseFloat(a) + parseFloat(b?.jumlahbelanjapanjar), 0)) -
+                    (x?.cp?.filter((x) => {
+                      const tgl = new Date(x?.tglcontrapost).getTime()
+                      return tgl < new Date(this.params.tgl).getTime()
+                    }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalcontrapost), 0))
+                }).reduce((x, y) => x + y, 0) +
                 this.realisasibelanja?.filter((s) => s?.kode3?.kodeall2 === a)
                   .map((x) => {
                     return (x?.npdls_rinci?.filter((x) => {
                       const tgl = new Date(x?.headerls?.npkrinci?.header?.tglpindahbuku).getTime()
                       return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
                     }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalpembayaran), 0)) +
-              (x?.spjpanjar?.filter((x) => {
-                const tgl = new Date(x?.spjheader?.tglspjpanjar).getTime()
-                return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
-              }).reduce((a, b) => parseFloat(a) + parseFloat(b?.jumlahbelanjapanjar), 0)) -
-              (x?.cp?.filter((x) => {
-                const tgl = new Date(x?.tglcontrapost).getTime()
-                return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
-              }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalcontrapost), 0))
+                      (x?.spjpanjar?.filter((x) => {
+                        const tgl = new Date(x?.spjheader?.tglspjpanjar).getTime()
+                        return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
+                      }).reduce((a, b) => parseFloat(a) + parseFloat(b?.jumlahbelanjapanjar), 0)) -
+                      (x?.cp?.filter((x) => {
+                        const tgl = new Date(x?.tglcontrapost).getTime()
+                        return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
+                      }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalcontrapost), 0))
                   }).reduce((x, y) => x + y, 0)),
 
             persen: (((this.realisasibelanja?.filter((s) => s?.kode3?.kodeall2 === a)
@@ -667,30 +668,30 @@ export const useLaporanLraLaprealisasianggaranStore = defineStore('laporan_reali
                   const tgl = new Date(x?.headerls?.npkrinci?.header?.tglpindahbuku).getTime()
                   return tgl < new Date(this.params.tgl).getTime()
                 }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalpembayaran), 0)) +
-              (x?.spjpanjar?.filter((x) => {
-                const tgl = new Date(x?.spjheader?.tglspjpanjar).getTime()
-                return tgl < new Date(this.params.tgl).getTime()
-              }).reduce((a, b) => parseFloat(a) + parseFloat(b?.jumlahbelanjapanjar), 0)) -
-              (x?.cp?.filter((x) => {
-                const tgl = new Date(x?.tglcontrapost).getTime()
-                return tgl < new Date(this.params.tgl).getTime()
-              }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalcontrapost), 0))
+                  (x?.spjpanjar?.filter((x) => {
+                    const tgl = new Date(x?.spjheader?.tglspjpanjar).getTime()
+                    return tgl < new Date(this.params.tgl).getTime()
+                  }).reduce((a, b) => parseFloat(a) + parseFloat(b?.jumlahbelanjapanjar), 0)) -
+                  (x?.cp?.filter((x) => {
+                    const tgl = new Date(x?.tglcontrapost).getTime()
+                    return tgl < new Date(this.params.tgl).getTime()
+                  }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalcontrapost), 0))
               }).reduce((x, y) => parseFloat(x) + parseFloat(y), 0) +
-            this.realisasibelanja?.filter((s) => s?.kode3?.kodeall2 === a)
-              .map((x) => {
-                return (x?.npdls_rinci?.filter((x) => {
-                  const tgl = new Date(x?.headerls?.npkrinci?.header?.tglpindahbuku).getTime()
-                  return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
-                }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalpembayaran), 0)) +
-                (x?.spjpanjar?.filter((x) => {
-                  const tgl = new Date(x?.spjheader?.tglspjpanjar).getTime()
-                  return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
-                }).reduce((a, b) => parseFloat(a) + parseFloat(b?.jumlahbelanjapanjar), 0)) -
-                (x?.cp?.filter((x) => {
-                  const tgl = new Date(x?.tglcontrapost).getTime()
-                  return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
-                }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalcontrapost), 0))
-              }).reduce((x, y) => parseFloat(x) + parseFloat(y), 0)) /
+              this.realisasibelanja?.filter((s) => s?.kode3?.kodeall2 === a)
+                .map((x) => {
+                  return (x?.npdls_rinci?.filter((x) => {
+                    const tgl = new Date(x?.headerls?.npkrinci?.header?.tglpindahbuku).getTime()
+                    return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
+                  }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalpembayaran), 0)) +
+                    (x?.spjpanjar?.filter((x) => {
+                      const tgl = new Date(x?.spjheader?.tglspjpanjar).getTime()
+                      return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
+                    }).reduce((a, b) => parseFloat(a) + parseFloat(b?.jumlahbelanjapanjar), 0)) -
+                    (x?.cp?.filter((x) => {
+                      const tgl = new Date(x?.tglcontrapost).getTime()
+                      return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
+                    }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalcontrapost), 0))
+                }).reduce((x, y) => parseFloat(x) + parseFloat(y), 0)) /
               this.realisasibelanja?.filter((s) => s?.kode3?.kodeall2 === a)
                 .map((x) => {
                   return x?.anggaran.reduce((a, b) => parseFloat(a) + parseFloat(b.pagu), 0)
@@ -721,14 +722,14 @@ export const useLaporanLraLaprealisasianggaranStore = defineStore('laporan_reali
                   const tgl = new Date(x?.headerls?.npkrinci?.header?.tglpindahbuku).getTime()
                   return tgl < new Date(this.params.tgl).getTime()
                 }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalpembayaran), 0)) +
-                (x?.spjpanjar?.filter((x) => {
-                  const tgl = new Date(x?.spjheader?.tglspjpanjar).getTime()
-                  return tgl < new Date(this.params.tgl).getTime()
-                }).reduce((a, b) => parseFloat(a) + parseFloat(b?.jumlahbelanjapanjar), 0)) -
-                (x?.cp?.filter((x) => {
-                  const tgl = new Date(x?.tglcontrapost).getTime()
-                  return tgl < new Date(this.params.tgl).getTime()
-                }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalcontrapost), 0))
+                  (x?.spjpanjar?.filter((x) => {
+                    const tgl = new Date(x?.spjheader?.tglspjpanjar).getTime()
+                    return tgl < new Date(this.params.tgl).getTime()
+                  }).reduce((a, b) => parseFloat(a) + parseFloat(b?.jumlahbelanjapanjar), 0)) -
+                  (x?.cp?.filter((x) => {
+                    const tgl = new Date(x?.tglcontrapost).getTime()
+                    return tgl < new Date(this.params.tgl).getTime()
+                  }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalcontrapost), 0))
               }).reduce((x, y) => x + y, 0),
             totalRealisasi: this.realisasibelanja?.filter((s) => s?.kode4?.kodeall2 === a)
               .map((x) => {
@@ -736,14 +737,14 @@ export const useLaporanLraLaprealisasianggaranStore = defineStore('laporan_reali
                   const tgl = new Date(x?.headerls?.npkrinci?.header?.tglpindahbuku).getTime()
                   return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
                 }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalpembayaran), 0)) +
-              (x?.spjpanjar?.filter((x) => {
-                const tgl = new Date(x?.spjheader?.tglspjpanjar).getTime()
-                return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
-              }).reduce((a, b) => parseFloat(a) + parseFloat(b?.jumlahbelanjapanjar), 0)) -
-              (x?.cp?.filter((x) => {
-                const tgl = new Date(x?.tglcontrapost).getTime()
-                return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
-              }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalcontrapost), 0))
+                  (x?.spjpanjar?.filter((x) => {
+                    const tgl = new Date(x?.spjheader?.tglspjpanjar).getTime()
+                    return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
+                  }).reduce((a, b) => parseFloat(a) + parseFloat(b?.jumlahbelanjapanjar), 0)) -
+                  (x?.cp?.filter((x) => {
+                    const tgl = new Date(x?.tglcontrapost).getTime()
+                    return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
+                  }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalcontrapost), 0))
               }).reduce((x, y) => x + y, 0),
             RealisasiSemua: (this.realisasibelanja?.filter((s) => s?.kode4?.kodeall2 === a)
               .map((x) => {
@@ -751,29 +752,29 @@ export const useLaporanLraLaprealisasianggaranStore = defineStore('laporan_reali
                   const tgl = new Date(x?.headerls?.npkrinci?.header?.tglpindahbuku).getTime()
                   return tgl < new Date(this.params.tgl).getTime()
                 }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalpembayaran), 0)) +
-              (x?.spjpanjar?.filter((x) => {
-                const tgl = new Date(x?.spjheader?.tglspjpanjar).getTime()
-                return tgl < new Date(this.params.tgl).getTime()
-              }).reduce((a, b) => parseFloat(a) + parseFloat(b?.jumlahbelanjapanjar), 0)) -
-              (x?.cp?.filter((x) => {
-                const tgl = new Date(x?.tglcontrapost).getTime()
-                return tgl < new Date(this.params.tgl).getTime()
-              }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalcontrapost), 0))
+                  (x?.spjpanjar?.filter((x) => {
+                    const tgl = new Date(x?.spjheader?.tglspjpanjar).getTime()
+                    return tgl < new Date(this.params.tgl).getTime()
+                  }).reduce((a, b) => parseFloat(a) + parseFloat(b?.jumlahbelanjapanjar), 0)) -
+                  (x?.cp?.filter((x) => {
+                    const tgl = new Date(x?.tglcontrapost).getTime()
+                    return tgl < new Date(this.params.tgl).getTime()
+                  }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalcontrapost), 0))
               }).reduce((x, y) => x + y, 0)) + (this.realisasibelanja?.filter((s) => s?.kode4?.kodeall2 === a)
-              .map((x) => {
-                return (x?.npdls_rinci?.filter((x) => {
-                  const tgl = new Date(x?.headerls?.npkrinci?.header?.tglpindahbuku).getTime()
-                  return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
-                }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalpembayaran), 0)) +
-              (x?.spjpanjar?.filter((x) => {
-                const tgl = new Date(x?.spjheader?.tglspjpanjar).getTime()
-                return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
-              }).reduce((a, b) => parseFloat(a) + parseFloat(b?.jumlahbelanjapanjar), 0)) -
-              (x?.cp?.filter((x) => {
-                const tgl = new Date(x?.tglcontrapost).getTime()
-                return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
-              }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalcontrapost), 0))
-              }).reduce((x, y) => x + y, 0)),
+                .map((x) => {
+                  return (x?.npdls_rinci?.filter((x) => {
+                    const tgl = new Date(x?.headerls?.npkrinci?.header?.tglpindahbuku).getTime()
+                    return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
+                  }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalpembayaran), 0)) +
+                    (x?.spjpanjar?.filter((x) => {
+                      const tgl = new Date(x?.spjheader?.tglspjpanjar).getTime()
+                      return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
+                    }).reduce((a, b) => parseFloat(a) + parseFloat(b?.jumlahbelanjapanjar), 0)) -
+                    (x?.cp?.filter((x) => {
+                      const tgl = new Date(x?.tglcontrapost).getTime()
+                      return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
+                    }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalcontrapost), 0))
+                }).reduce((x, y) => x + y, 0)),
             selisih: this.realisasibelanja?.filter((s) => s?.kode4?.kodeall2 === a)
               .map((x) => {
                 return x?.anggaran?.reduce((a, b) => parseFloat(a) + parseFloat(b.pagu), 0)
@@ -784,60 +785,60 @@ export const useLaporanLraLaprealisasianggaranStore = defineStore('laporan_reali
                     const tgl = new Date(x?.headerls?.npkrinci?.header?.tglpindahbuku).getTime()
                     return tgl < new Date(this.params.tgl).getTime()
                   }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalpembayaran), 0)) +
-                (x?.spjpanjar?.filter((x) => {
-                  const tgl = new Date(x?.spjheader?.tglspjpanjar).getTime()
-                  return tgl < new Date(this.params.tgl).getTime()
-                }).reduce((a, b) => parseFloat(a) + parseFloat(b?.jumlahbelanjapanjar), 0)) -
-                (x?.cp?.filter((x) => {
-                  const tgl = new Date(x?.tglcontrapost).getTime()
-                  return tgl < new Date(this.params.tgl).getTime()
-                }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalcontrapost), 0))
+                    (x?.spjpanjar?.filter((x) => {
+                      const tgl = new Date(x?.spjheader?.tglspjpanjar).getTime()
+                      return tgl < new Date(this.params.tgl).getTime()
+                    }).reduce((a, b) => parseFloat(a) + parseFloat(b?.jumlahbelanjapanjar), 0)) -
+                    (x?.cp?.filter((x) => {
+                      const tgl = new Date(x?.tglcontrapost).getTime()
+                      return tgl < new Date(this.params.tgl).getTime()
+                    }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalcontrapost), 0))
                 }).reduce((x, y) => x + y, 0) +
-              this.realisasibelanja?.filter((s) => s?.kode4?.kodeall2 === a)
-                .map((x) => {
-                  return (x?.npdls_rinci?.filter((x) => {
-                    const tgl = new Date(x?.headerls?.npkrinci?.header?.tglpindahbuku).getTime()
-                    return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
-                  }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalpembayaran), 0)) +
-              (x?.spjpanjar?.filter((x) => {
-                const tgl = new Date(x?.spjheader?.tglspjpanjar).getTime()
-                return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
-              }).reduce((a, b) => parseFloat(a) + parseFloat(b?.jumlahbelanjapanjar), 0)) -
-              (x?.cp?.filter((x) => {
-                const tgl = new Date(x?.tglcontrapost).getTime()
-                return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
-              }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalcontrapost), 0))
-                }).reduce((x, y) => x + y, 0)),
+                this.realisasibelanja?.filter((s) => s?.kode4?.kodeall2 === a)
+                  .map((x) => {
+                    return (x?.npdls_rinci?.filter((x) => {
+                      const tgl = new Date(x?.headerls?.npkrinci?.header?.tglpindahbuku).getTime()
+                      return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
+                    }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalpembayaran), 0)) +
+                      (x?.spjpanjar?.filter((x) => {
+                        const tgl = new Date(x?.spjheader?.tglspjpanjar).getTime()
+                        return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
+                      }).reduce((a, b) => parseFloat(a) + parseFloat(b?.jumlahbelanjapanjar), 0)) -
+                      (x?.cp?.filter((x) => {
+                        const tgl = new Date(x?.tglcontrapost).getTime()
+                        return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
+                      }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalcontrapost), 0))
+                  }).reduce((x, y) => x + y, 0)),
             persen: (((this.realisasibelanja?.filter((s) => s?.kode4?.kodeall2 === a)
               .map((x) => {
                 return (x?.npdls_rinci?.filter((x) => {
                   const tgl = new Date(x?.headerls?.npkrinci?.header?.tglpindahbuku).getTime()
                   return tgl < new Date(this.params.tgl).getTime()
                 }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalpembayaran), 0)) +
-              (x?.spjpanjar?.filter((x) => {
-                const tgl = new Date(x?.spjheader?.tglspjpanjar).getTime()
-                return tgl < new Date(this.params.tgl).getTime()
-              }).reduce((a, b) => parseFloat(a) + parseFloat(b?.jumlahbelanjapanjar), 0)) -
-              (x?.cp?.filter((x) => {
-                const tgl = new Date(x?.tglcontrapost).getTime()
-                return tgl < new Date(this.params.tgl).getTime()
-              }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalcontrapost), 0))
+                  (x?.spjpanjar?.filter((x) => {
+                    const tgl = new Date(x?.spjheader?.tglspjpanjar).getTime()
+                    return tgl < new Date(this.params.tgl).getTime()
+                  }).reduce((a, b) => parseFloat(a) + parseFloat(b?.jumlahbelanjapanjar), 0)) -
+                  (x?.cp?.filter((x) => {
+                    const tgl = new Date(x?.tglcontrapost).getTime()
+                    return tgl < new Date(this.params.tgl).getTime()
+                  }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalcontrapost), 0))
               }).reduce((x, y) => parseFloat(x) + parseFloat(y), 0) +
-            this.realisasibelanja?.filter((s) => s?.kode4?.kodeall2 === a)
-              .map((x) => {
-                return (x?.npdls_rinci?.filter((x) => {
-                  const tgl = new Date(x?.headerls?.npkrinci?.header?.tglpindahbuku).getTime()
-                  return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
-                }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalpembayaran), 0)) +
-                (x?.spjpanjar?.filter((x) => {
-                  const tgl = new Date(x?.spjheader?.tglspjpanjar).getTime()
-                  return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
-                }).reduce((a, b) => parseFloat(a) + parseFloat(b?.jumlahbelanjapanjar), 0)) -
-                (x?.cp?.filter((x) => {
-                  const tgl = new Date(x?.tglcontrapost).getTime()
-                  return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
-                }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalcontrapost), 0))
-              }).reduce((x, y) => parseFloat(x) + parseFloat(y), 0)) /
+              this.realisasibelanja?.filter((s) => s?.kode4?.kodeall2 === a)
+                .map((x) => {
+                  return (x?.npdls_rinci?.filter((x) => {
+                    const tgl = new Date(x?.headerls?.npkrinci?.header?.tglpindahbuku).getTime()
+                    return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
+                  }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalpembayaran), 0)) +
+                    (x?.spjpanjar?.filter((x) => {
+                      const tgl = new Date(x?.spjheader?.tglspjpanjar).getTime()
+                      return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
+                    }).reduce((a, b) => parseFloat(a) + parseFloat(b?.jumlahbelanjapanjar), 0)) -
+                    (x?.cp?.filter((x) => {
+                      const tgl = new Date(x?.tglcontrapost).getTime()
+                      return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
+                    }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalcontrapost), 0))
+                }).reduce((x, y) => parseFloat(x) + parseFloat(y), 0)) /
               this.realisasibelanja?.filter((s) => s?.kode4?.kodeall2 === a)
                 .map((x) => {
                   return x?.anggaran.reduce((a, b) => parseFloat(a) + parseFloat(b.pagu), 0)
@@ -883,14 +884,14 @@ export const useLaporanLraLaprealisasianggaranStore = defineStore('laporan_reali
                   const tgl = new Date(x?.headerls?.npkrinci?.header?.tglpindahbuku).getTime()
                   return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
                 }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalpembayaran), 0)) +
-              (x?.spjpanjar?.filter((x) => {
-                const tgl = new Date(x?.spjheader?.tglspjpanjar).getTime()
-                return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
-              }).reduce((a, b) => parseFloat(a) + parseFloat(b?.jumlahbelanjapanjar), 0)) -
-              (x?.cp?.filter((x) => {
-                const tgl = new Date(x?.tglcontrapost).getTime()
-                return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
-              }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalcontrapost), 0))
+                  (x?.spjpanjar?.filter((x) => {
+                    const tgl = new Date(x?.spjheader?.tglspjpanjar).getTime()
+                    return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
+                  }).reduce((a, b) => parseFloat(a) + parseFloat(b?.jumlahbelanjapanjar), 0)) -
+                  (x?.cp?.filter((x) => {
+                    const tgl = new Date(x?.tglcontrapost).getTime()
+                    return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
+                  }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalcontrapost), 0))
               }).reduce((x, y) => x + y, 0),
             RealisasiSemua: (this.realisasibelanja?.filter((s) => s?.kode5?.kodeall2 === a)
               .map((x) => {
@@ -898,29 +899,29 @@ export const useLaporanLraLaprealisasianggaranStore = defineStore('laporan_reali
                   const tgl = new Date(x?.headerls?.npkrinci?.header?.tglpindahbuku).getTime()
                   return tgl < new Date(this.params.tgl).getTime()
                 }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalpembayaran), 0)) +
-              (x?.spjpanjar?.filter((x) => {
-                const tgl = new Date(x?.spjheader?.tglspjpanjar).getTime()
-                return tgl < new Date(this.params.tgl).getTime()
-              }).reduce((a, b) => parseFloat(a) + parseFloat(b?.jumlahbelanjapanjar), 0)) -
-              (x?.cp?.filter((x) => {
-                const tgl = new Date(x?.tglcontrapost).getTime()
-                return tgl < new Date(this.params.tgl).getTime()
-              }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalcontrapost), 0))
+                  (x?.spjpanjar?.filter((x) => {
+                    const tgl = new Date(x?.spjheader?.tglspjpanjar).getTime()
+                    return tgl < new Date(this.params.tgl).getTime()
+                  }).reduce((a, b) => parseFloat(a) + parseFloat(b?.jumlahbelanjapanjar), 0)) -
+                  (x?.cp?.filter((x) => {
+                    const tgl = new Date(x?.tglcontrapost).getTime()
+                    return tgl < new Date(this.params.tgl).getTime()
+                  }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalcontrapost), 0))
               }).reduce((x, y) => x + y, 0)) + (this.realisasibelanja?.filter((s) => s?.kode5?.kodeall2 === a)
-              .map((x) => {
-                return (x?.npdls_rinci?.filter((x) => {
-                  const tgl = new Date(x?.headerls?.npkrinci?.header?.tglpindahbuku).getTime()
-                  return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
-                }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalpembayaran), 0)) +
-              (x?.spjpanjar?.filter((x) => {
-                const tgl = new Date(x?.spjheader?.tglspjpanjar).getTime()
-                return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
-              }).reduce((a, b) => parseFloat(a) + parseFloat(b?.jumlahbelanjapanjar), 0)) -
-              (x?.cp?.filter((x) => {
-                const tgl = new Date(x?.tglcontrapost).getTime()
-                return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
-              }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalcontrapost), 0))
-              }).reduce((x, y) => x + y, 0)),
+                .map((x) => {
+                  return (x?.npdls_rinci?.filter((x) => {
+                    const tgl = new Date(x?.headerls?.npkrinci?.header?.tglpindahbuku).getTime()
+                    return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
+                  }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalpembayaran), 0)) +
+                    (x?.spjpanjar?.filter((x) => {
+                      const tgl = new Date(x?.spjheader?.tglspjpanjar).getTime()
+                      return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
+                    }).reduce((a, b) => parseFloat(a) + parseFloat(b?.jumlahbelanjapanjar), 0)) -
+                    (x?.cp?.filter((x) => {
+                      const tgl = new Date(x?.tglcontrapost).getTime()
+                      return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
+                    }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalcontrapost), 0))
+                }).reduce((x, y) => x + y, 0)),
             selisih: this.realisasibelanja?.filter((s) => s?.kode5?.kodeall2 === a)
               .map((x) => {
                 return x?.anggaran?.reduce((a, b) => parseFloat(a) + parseFloat(b?.pagu), 0)
@@ -931,30 +932,30 @@ export const useLaporanLraLaprealisasianggaranStore = defineStore('laporan_reali
                     const tgl = new Date(x?.headerls?.npkrinci?.header?.tglpindahbuku).getTime()
                     return tgl < new Date(this.params.tgl).getTime()
                   }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalpembayaran), 0)) +
-                (x?.spjpanjar?.filter((x) => {
-                  const tgl = new Date(x?.spjheader?.tglspjpanjar).getTime()
-                  return tgl < new Date(this.params.tgl).getTime()
-                }).reduce((a, b) => parseFloat(a) + parseFloat(b?.jumlahbelanjapanjar), 0)) -
-                (x?.cp?.filter((x) => {
-                  const tgl = new Date(x?.tglcontrapost).getTime()
-                  return tgl < new Date(this.params.tgl).getTime()
-                }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalcontrapost), 0))
+                    (x?.spjpanjar?.filter((x) => {
+                      const tgl = new Date(x?.spjheader?.tglspjpanjar).getTime()
+                      return tgl < new Date(this.params.tgl).getTime()
+                    }).reduce((a, b) => parseFloat(a) + parseFloat(b?.jumlahbelanjapanjar), 0)) -
+                    (x?.cp?.filter((x) => {
+                      const tgl = new Date(x?.tglcontrapost).getTime()
+                      return tgl < new Date(this.params.tgl).getTime()
+                    }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalcontrapost), 0))
                 }).reduce((x, y) => x + y, 0) +
-              this.realisasibelanja?.filter((s) => s?.kode5?.kodeall2 === a)
-                .map((x) => {
-                  return (x?.npdls_rinci?.filter((x) => {
-                    const tgl = new Date(x?.headerls?.npkrinci?.header?.tglpindahbuku).getTime()
-                    return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
-                  }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalpembayaran), 0)) +
-              (x?.spjpanjar?.filter((x) => {
-                const tgl = new Date(x?.spjheader?.tglspjpanjar).getTime()
-                return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
-              }).reduce((a, b) => parseFloat(a) + parseFloat(b?.jumlahbelanjapanjar), 0)) -
-              (x?.cp?.filter((x) => {
-                const tgl = new Date(x?.tglcontrapost).getTime()
-                return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
-              }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalcontrapost), 0))
-                }).reduce((x, y) => x + y, 0)),
+                this.realisasibelanja?.filter((s) => s?.kode5?.kodeall2 === a)
+                  .map((x) => {
+                    return (x?.npdls_rinci?.filter((x) => {
+                      const tgl = new Date(x?.headerls?.npkrinci?.header?.tglpindahbuku).getTime()
+                      return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
+                    }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalpembayaran), 0)) +
+                      (x?.spjpanjar?.filter((x) => {
+                        const tgl = new Date(x?.spjheader?.tglspjpanjar).getTime()
+                        return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
+                      }).reduce((a, b) => parseFloat(a) + parseFloat(b?.jumlahbelanjapanjar), 0)) -
+                      (x?.cp?.filter((x) => {
+                        const tgl = new Date(x?.tglcontrapost).getTime()
+                        return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
+                      }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalcontrapost), 0))
+                  }).reduce((x, y) => x + y, 0)),
 
             persen: (((this.realisasibelanja?.filter((s) => s?.kode5?.kodeall2 === a)
               .map((x) => {
@@ -962,30 +963,30 @@ export const useLaporanLraLaprealisasianggaranStore = defineStore('laporan_reali
                   const tgl = new Date(x?.headerls?.npkrinci?.header?.tglpindahbuku).getTime()
                   return tgl < new Date(this.params.tgl).getTime()
                 }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalpembayaran), 0)) +
-              (x?.spjpanjar?.filter((x) => {
-                const tgl = new Date(x?.spjheader?.tglspjpanjar).getTime()
-                return tgl < new Date(this.params.tgl).getTime()
-              }).reduce((a, b) => parseFloat(a) + parseFloat(b?.jumlahbelanjapanjar), 0)) -
-              (x?.cp?.filter((x) => {
-                const tgl = new Date(x?.tglcontrapost).getTime()
-                return tgl < new Date(this.params.tgl).getTime()
-              }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalcontrapost), 0))
+                  (x?.spjpanjar?.filter((x) => {
+                    const tgl = new Date(x?.spjheader?.tglspjpanjar).getTime()
+                    return tgl < new Date(this.params.tgl).getTime()
+                  }).reduce((a, b) => parseFloat(a) + parseFloat(b?.jumlahbelanjapanjar), 0)) -
+                  (x?.cp?.filter((x) => {
+                    const tgl = new Date(x?.tglcontrapost).getTime()
+                    return tgl < new Date(this.params.tgl).getTime()
+                  }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalcontrapost), 0))
               }).reduce((x, y) => parseFloat(x) + parseFloat(y), 0) +
-            this.realisasibelanja?.filter((s) => s?.kode5?.kodeall2 === a)
-              .map((x) => {
-                return (x?.npdls_rinci?.filter((x) => {
-                  const tgl = new Date(x?.headerls?.npkrinci?.header?.tglpindahbuku).getTime()
-                  return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
-                }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalpembayaran), 0)) +
-                (x?.spjpanjar?.filter((x) => {
-                  const tgl = new Date(x?.spjheader?.tglspjpanjar).getTime()
-                  return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
-                }).reduce((a, b) => parseFloat(a) + parseFloat(b?.jumlahbelanjapanjar), 0)) -
-                (x?.cp?.filter((x) => {
-                  const tgl = new Date(x?.tglcontrapost).getTime()
-                  return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
-                }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalcontrapost), 0))
-              }).reduce((x, y) => parseFloat(x) + parseFloat(y), 0)) /
+              this.realisasibelanja?.filter((s) => s?.kode5?.kodeall2 === a)
+                .map((x) => {
+                  return (x?.npdls_rinci?.filter((x) => {
+                    const tgl = new Date(x?.headerls?.npkrinci?.header?.tglpindahbuku).getTime()
+                    return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
+                  }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalpembayaran), 0)) +
+                    (x?.spjpanjar?.filter((x) => {
+                      const tgl = new Date(x?.spjheader?.tglspjpanjar).getTime()
+                      return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
+                    }).reduce((a, b) => parseFloat(a) + parseFloat(b?.jumlahbelanjapanjar), 0)) -
+                    (x?.cp?.filter((x) => {
+                      const tgl = new Date(x?.tglcontrapost).getTime()
+                      return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
+                    }).reduce((a, b) => parseFloat(a) + parseFloat(b?.nominalcontrapost), 0))
+                }).reduce((x, y) => parseFloat(x) + parseFloat(y), 0)) /
               this.realisasibelanja?.filter((s) => s?.kode5?.kodeall2 === a)
                 .map((x) => {
                   return x?.anggaran.reduce((a, b) => parseFloat(a) + parseFloat(b.pagu), 0)
@@ -1086,12 +1087,12 @@ export const useLaporanLraLaprealisasianggaranStore = defineStore('laporan_reali
       )
       return unik
     },
-    ambilDataUnik (x, f) {
+    ambilDataUnik(x, f) {
       // eslint-disable-next-line no-sequences
       const unique = Object.values(x.reduce((a, b) => ((a[f(b)] = b), a), {}))
       return unique
     },
-    totalAnggaran (arr) {
+    totalAnggaran(arr) {
       return arr
         .map((x) => x.pagu)
         .reduce((x, y) => parseInt(x) + parseInt(y), 0)
