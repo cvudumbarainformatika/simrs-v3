@@ -3,12 +3,7 @@
     <q-card-section class="full-width">
       <div class="row">
         <div class="full-width">
-          <q-markup-table
-            class="my-sticky-table"
-            flat-bordered
-            wrap-cells
-            :separator="separator"
-          >
+          <q-markup-table flat-bordered wrap-cells :separator="separator">
             <thead>
               <tr class="bg-dark text-white max-width">
                 <th>KODE REKENING</th>
@@ -36,10 +31,7 @@
               </tr>
             </thead>
             <tbody v-if="store.reqs.levelberapa === 6">
-              <tr
-                v-for="it in store.hasilpendapatan" :key="it"
-                :class="it.kode.length <= 12 ? 'text-bold' : '' "
-              >
+              <tr v-for="it in store.hasilpendapatan" :key="it" :class="it.kode.length <= 12 ? 'text-bold' : ''">
                 <td>
                   {{ it.kode }}
                 </td>
@@ -88,10 +80,7 @@
                   {{ formattanpaRp(totalPendapatan().totalpersen) }}
                 </td>
               </tr>
-              <tr
-                v-for="it in store.hasilbelanja" :key="it"
-                :class="it.kode.length <= 12 ? 'text-bold' : '' "
-              >
+              <tr v-for="it in store.hasilbelanja" :key="it" :class="it.kode.length <= 12 ? 'text-bold' : ''">
                 <td>
                   {{ it.kode }}
                 </td>
@@ -163,10 +152,7 @@
                   {{ formattanpaRp(surplusDefisit().totalpersen) }}
                 </td>
               </tr>
-              <tr
-                v-for="it in store.hasilsilpa" :key="it"
-                :class="it.kode.length <= 12 ? 'text-bold' : '' "
-              >
+              <tr v-for="it in store.hasilsilpa" :key="it" :class="it.kode.length <= 12 ? 'text-bold' : ''">
                 <td>
                   {{ it.kode }}
                 </td>
@@ -240,10 +226,7 @@
               </tr>
             </tbody>
             <tbody v-if="store.reqs.levelberapa === 5">
-              <tr
-                v-for="it in store.hasilpendapatan" :key="it"
-                :class="it.kode.length <= 9 ? 'text-bold' : '' "
-              >
+              <tr v-for="it in store.hasilpendapatan" :key="it" :class="it.kode.length <= 9 ? 'text-bold' : ''">
                 <td>
                   {{ it.kode }}
                 </td>
@@ -292,10 +275,7 @@
                   {{ formattanpaRp(totalPendapatan().totalpersen) }}
                 </td>
               </tr>
-              <tr
-                v-for="it in store.hasilbelanja" :key="it"
-                :class="it.kode.length <= 9 ? 'text-bold' : '' "
-              >
+              <tr v-for="it in store.hasilbelanja" :key="it" :class="it.kode.length <= 9 ? 'text-bold' : ''">
                 <td>
                   {{ it.kode }}
                 </td>
@@ -367,10 +347,7 @@
                   {{ formattanpaRp(surplusDefisit().totalpersen) }}
                 </td>
               </tr>
-              <tr
-                v-for="it in store.hasilsilpa" :key="it"
-                :class="it.kode.length <= 9 ? 'text-bold' : '' "
-              >
+              <tr v-for="it in store.hasilsilpa" :key="it" :class="it.kode.length <= 9 ? 'text-bold' : ''">
                 <td>
                   {{ it.kode }}
                 </td>
@@ -444,10 +421,7 @@
               </tr>
             </tbody>
             <tbody v-if="store.reqs.levelberapa === 4">
-              <tr
-                v-for="it in store.hasilpendapatan" :key="it"
-                :class="it.kode.length <= 6 ? 'text-bold' : '' "
-              >
+              <tr v-for="it in store.hasilpendapatan" :key="it" :class="it.kode.length <= 6 ? 'text-bold' : ''">
                 <td>
                   {{ it.kode }}
                 </td>
@@ -496,10 +470,7 @@
                   {{ formattanpaRp(totalPendapatan().totalpersen) }}
                 </td>
               </tr>
-              <tr
-                v-for="it in store.hasilbelanja" :key="it"
-                :class="it.kode.length <= 6 ? 'text-bold' : '' "
-              >
+              <tr v-for="it in store.hasilbelanja" :key="it" :class="it.kode.length <= 6 ? 'text-bold' : ''">
                 <td>
                   {{ it.kode }}
                 </td>
@@ -571,10 +542,7 @@
                   {{ formattanpaRp(surplusDefisit().totalpersen) }}
                 </td>
               </tr>
-              <tr
-                v-for="it in store.hasilsilpa" :key="it"
-                :class="it.kode.length <= 6 ? 'text-bold' : '' "
-              >
+              <tr v-for="it in store.hasilsilpa" :key="it" :class="it.kode.length <= 6 ? 'text-bold' : ''">
                 <td>
                   {{ it.kode }}
                 </td>
@@ -648,10 +616,7 @@
               </tr>
             </tbody>
             <tbody v-if="store.reqs.levelberapa === 3">
-              <tr
-                v-for="it in store.hasilpendapatan" :key="it"
-                :class="it.kode.length <= 3 ? 'text-bold' : '' "
-              >
+              <tr v-for="it in store.hasilpendapatan" :key="it" :class="it.kode.length <= 3 ? 'text-bold' : ''">
                 <td>
                   {{ it.kode }}
                 </td>
@@ -700,10 +665,7 @@
                   {{ formattanpaRp(totalPendapatan().totalpersen) }}
                 </td>
               </tr>
-              <tr
-                v-for="it in store.hasilbelanja" :key="it"
-                :class="it.kode.length <= 3 ? 'text-bold' : '' "
-              >
+              <tr v-for="it in store.hasilbelanja" :key="it" :class="it.kode.length <= 3 ? 'text-bold' : ''">
                 <td>
                   {{ it.kode }}
                 </td>
@@ -775,10 +737,7 @@
                   {{ formattanpaRp(surplusDefisit().totalpersen) }}
                 </td>
               </tr>
-              <tr
-                v-for="it in store.hasilsilpa" :key="it"
-                :class="it.kode.length <= 3 ? 'text-bold' : '' "
-              >
+              <tr v-for="it in store.hasilsilpa" :key="it" :class="it.kode.length <= 3 ? 'text-bold' : ''">
                 <td>
                   {{ it.kode }}
                 </td>
@@ -852,10 +811,7 @@
               </tr>
             </tbody>
             <tbody v-if="store.reqs.levelberapa === 2 || store.reqs.levelberapa === 1">
-              <tr
-                v-for="it in store.hasilpendapatan" :key="it"
-                :class="it.kode.length <= 1 ? 'text-bold' : '' "
-              >
+              <tr v-for="it in store.hasilpendapatan" :key="it" :class="it.kode.length <= 1 ? 'text-bold' : ''">
                 <td>
                   {{ it.kode }}
                 </td>
@@ -904,10 +860,7 @@
                   {{ formattanpaRp(totalPendapatan().totalpersen) }}
                 </td>
               </tr>
-              <tr
-                v-for="it in store.hasilbelanja" :key="it"
-                :class="it.kode.length <= 1 ? 'text-bold' : '' "
-              >
+              <tr v-for="it in store.hasilbelanja" :key="it" :class="it.kode.length <= 1 ? 'text-bold' : ''">
                 <td>
                   {{ it.kode }}
                 </td>
@@ -979,10 +932,7 @@
                   {{ formattanpaRp(surplusDefisit().totalpersen) }}
                 </td>
               </tr>
-              <tr
-                v-for="it in store.hasilsilpa" :key="it"
-                :class="it.kode.length <= 1 ? 'text-bold' : '' "
-              >
+              <tr v-for="it in store.hasilsilpa" :key="it" :class="it.kode.length <= 1 ? 'text-bold' : ''">
                 <td>
                   {{ it.kode }}
                 </td>
@@ -1079,7 +1029,7 @@ const store = useLRAjurnalStore()
 //   store.getDataLap()
 // })
 
-function totalPendapatan () {
+function totalPendapatan() {
   const totalpend = store.hasilpendapatan.map((x) => x.pagupend)[0]
   const totalsblm = store.hasilpendapatan.map((x) => x.nilaisblm)[0]
   const totalskg = store.hasilpendapatan.map((x) => x.nilaiskg)[0]
@@ -1095,7 +1045,7 @@ function totalPendapatan () {
     totalpersen
   }
 }
-function totalBelanja () {
+function totalBelanja() {
   const totalpagu = store.hasilbelanja.map((x) => x.pagu)[0]
   const totalsblm = store.hasilbelanja.map((x) => x.nilaisblm)[0]
   const totalskg = store.hasilbelanja.map((x) => x.nilaiskg)[0]
@@ -1111,7 +1061,7 @@ function totalBelanja () {
     totalpersen
   }
 }
-function totalSilpa () {
+function totalSilpa() {
   const totalpagu = store.hasilsilpa.map((x) => x.pagu)[0]
   const totalsblm = store.hasilsilpa.map((x) => x.nilaisblm)[0]
   const totalskg = store.hasilsilpa.map((x) => x.nilaiskg)[0]
@@ -1127,7 +1077,7 @@ function totalSilpa () {
     totalpersen
   }
 }
-function surplusDefisit () {
+function surplusDefisit() {
   const totalpagu = store.hasilpendapatan.map((x) => x.pagupend)[0] - store.hasilbelanja.map((x) => x.pagu)[0]
   const totalsblm = store.hasilpendapatan.map((x) => x.nilaisblm)[0] - store.hasilbelanja.map((x) => x.nilaisblm)[0]
   const totalskg = store.hasilpendapatan.map((x) => x.nilaiskg)[0] - store.hasilbelanja.map((x) => x.nilaiskg)[0]
@@ -1143,7 +1093,7 @@ function surplusDefisit () {
     totalpersen
   }
 }
-function sisaLebih () {
+function sisaLebih() {
   const totalpagu = (store.hasilpendapatan.map((x) => x.pagupend)[0] - store.hasilbelanja.map((x) => x.pagu)[0]) + store.hasilsilpa.map((x) => x.pagu)[0]
   const totalsblm = (store.hasilpendapatan.map((x) => x.nilaisblm)[0] - store.hasilbelanja.map((x) => x.nilaisblm)[0]) + store.hasilsilpa.map((x) => x.nilaisblm)[0]
   const totalskg = (store.hasilpendapatan.map((x) => x.nilaiskg)[0] - store.hasilbelanja.map((x) => x.nilaiskg)[0]) + store.hasilsilpa.map((x) => x.nilaiskg)[0]
@@ -1161,9 +1111,9 @@ function sisaLebih () {
 }
 </script>
 <style lang="scss">
-.my-sticky-table{
+.my-sticky-table {
 
-  thead tr th{
+  thead tr th {
     position: sticky;
     z-index: 1;
     font-weight: bold;

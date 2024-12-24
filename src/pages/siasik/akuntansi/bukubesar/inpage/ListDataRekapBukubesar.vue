@@ -3,11 +3,7 @@
     <q-card-section class="full-width">
       <div class="row">
         <div class="full-width">
-          <q-markup-table
-            flat-bordered
-            wrap-cells
-            :separator="separator"
-          >
+          <q-markup-table flat-bordered wrap-cells :separator="separator">
             <thead>
               <tr class="bg-dark text-white max-width">
                 <th>KODE REKENING</th>
@@ -57,11 +53,7 @@
     <q-card-section class="full-width">
       <div class="row">
         <div class="full-width">
-          <q-markup-table
-            flat-bordered
-            wrap-cells
-            :separator="separator"
-          >
+          <q-markup-table flat-bordered wrap-cells :separator="separator">
             <thead>
               <tr class="bg-dark text-white max-width">
                 <th>KODE REKENING</th>
@@ -111,11 +103,7 @@
     <q-card-section class="full-width">
       <div class="row">
         <div class="full-width">
-          <q-markup-table
-            flat-bordered
-            wrap-cells
-            :separator="separator"
-          >
+          <q-markup-table flat-bordered wrap-cells :separator="separator">
             <thead>
               <tr class="bg-dark text-white max-width">
                 <th>TANGGAL</th>
@@ -181,17 +169,17 @@ import { ref } from 'vue'
 const store = useBukubesarStore()
 const separator = ref('cell')
 
-function totalDebit () {
+function totalDebit() {
   const debit = store.hasilmapsLevel1.map((x) => x.debit)
   const totaldebit = debit.reduce((a, b) => a + b, 0)
   return totaldebit
 }
-function totalKredit () {
+function totalKredit() {
   const kredit = store.hasilmapsLevel1.map((x) => x.kredit)
   const totalkredit = kredit.reduce((a, b) => a + b, 0)
   return totalkredit
 }
-function totalSaldo () {
+function totalSaldo() {
   const debit = store.hasilmapsLevel1.map((x) => x.debit)
   const totaldebit = debit.reduce((a, b) => a + b, 0)
   const kredit = store.hasilmapsLevel1.map((x) => x.kredit)
@@ -200,17 +188,17 @@ function totalSaldo () {
 }
 
 // TOTAL HASIL LEVEL DIBAWAH 5
-function totalDeb () {
+function totalDeb() {
   const debit = store.hasilmapsLevel5.map((x) => x.debit)
   const totaldebit = debit.reduce((a, b) => a + b, 0)
   return totaldebit
 }
-function totalKred () {
+function totalKred() {
   const kredit = store.hasilmapsLevel5.map((x) => x.kredit)
   const totalkredit = kredit.reduce((a, b) => a + b, 0)
   return totalkredit
 }
-function totalSal () {
+function totalSal() {
   const debit = store.hasilmapsLevel5.map((x) => x.debit)
   const totaldebit = debit.reduce((a, b) => a + b, 0)
   const kredit = store.hasilmapsLevel5.map((x) => x.kredit)
@@ -220,19 +208,19 @@ function totalSal () {
 
 // TOTAL HASIL LEVEL 6
 // eslint-disable-next-line no-unused-vars
-function Debitlevel6 () {
+function Debitlevel6() {
   const debit = store.hasilmapsLevel6.map((x) => x.debit)
   const totaldebit = debit.reduce((a, b) => a + b, 0)
   return totaldebit
 }
 // eslint-disable-next-line no-unused-vars
-function Kreditlevel6 () {
+function Kreditlevel6() {
   const kredit = store.hasilmapsLevel6.map((x) => x.kredit)
   const totalkredit = kredit.reduce((a, b) => a + b, 0)
   return totalkredit
 }
 // eslint-disable-next-line no-unused-vars
-function Saldolevel6 () {
+function Saldolevel6() {
   const debit = store.hasilmapsLevel6.map((x) => x.debit)
   const totaldebit = debit.reduce((a, b) => a + b, 0)
   const kredit = store.hasilmapsLevel6.map((x) => x.kredit)

@@ -8,7 +8,7 @@
     <q-card-section class="full-width">
       <div class="row justify-center">
         <div class="full-width">
-          <q-markup-table class="my-sticky-table" flat-bordered wrap-cells :separator="separator">
+          <q-markup-table flat-bordered wrap-cells :separator="separator">
             <thead>
               <tr class="bg-dark text-white max-width">
                 <th>URAIAN</th>
@@ -17,27 +17,27 @@
             </thead>
             <tbody>
               <tr class="text-bold">
-                <td colspan="2">
+                <td colspan="2" class="text-left">
                   ASET
                 </td>
               </tr>
               <tr class="text-bold">
                 <td colspan="2">
-                  <div class="q-pl-sm">
+                  <div class="q-pl-sm text-left">
                     ASET LANCAR
                   </div>
                 </td>
               </tr>
               <tr>
                 <td colspan="2">
-                  <div class="q-pl-md">
+                  <div class="q-pl-md text-left">
                     Kas dan Setara Kas
                   </div>
                 </td>
               </tr>
               <tr v-for="it in store.objsetarakas" :key="it">
                 <td>
-                  <div class="q-pl-lg">
+                  <div class="q-pl-lg text-left">
                     - {{ it.uraian }}
                   </div>
                 </td>
@@ -47,7 +47,7 @@
               </tr>
               <tr>
                 <td>
-                  <div class="q-pl-md">
+                  <div class="q-pl-md text-left">
                     {{ store.objretribusi?.uraian }}
                   </div>
                 </td>
@@ -57,14 +57,14 @@
               </tr>
               <tr>
                 <td colspan="2">
-                  <div class="q-pl-md">
+                  <div class="q-pl-md text-left">
                     Piutang
                   </div>
                 </td>
               </tr>
               <tr v-for="it in store.objpiutang" :key="it">
                 <td>
-                  <div class="q-pl-lg">
+                  <div class="q-pl-lg text-left">
                     - {{ it.uraian }}
                   </div>
                 </td>
@@ -74,7 +74,7 @@
               </tr>
               <tr v-for="it in store.objpersediaan" :key="it">
                 <td>
-                  <div class="q-pl-md">
+                  <div class="q-pl-md text-left">
                     {{ it?.uraian }}
                   </div>
                 </td>
@@ -84,7 +84,7 @@
               </tr>
               <tr>
                 <td>
-                  <div class="q-pl-md">
+                  <div class="q-pl-md text-left">
                     {{ store.objinvestasi?.uraian }}
                   </div>
                 </td>
@@ -102,21 +102,21 @@
               </tr>
               <tr class="text-bold">
                 <td colspan="2">
-                  <div class="q-pl-sm">
+                  <div class="q-pl-sm text-left">
                     ASET TIDAK LANCAR
                   </div>
                 </td>
               </tr>
               <tr>
                 <td colspan="2">
-                  <div class="q-pl-md">
+                  <div class="q-pl-md text-left">
                     ASET TETAP
                   </div>
                 </td>
               </tr>
               <tr v-for="it in store.objasettetap" :key="it">
                 <td>
-                  <div class="q-pl-lg">
+                  <div class="q-pl-lg text-left">
                     - {{ it.uraian }}
                   </div>
                 </td>
@@ -134,14 +134,14 @@
               </tr>
               <tr>
                 <td colspan="2">
-                  <div class="q-pl-md">
+                  <div class="q-pl-md text-left">
                     ASET LAINNYA
                   </div>
                 </td>
               </tr>
               <tr v-for="it in store.objasetlainnya" :key="it">
                 <td>
-                  <div class="q-pl-lg">
+                  <div class="q-pl-lg text-left">
                     - {{ it.uraian }}
                   </div>
                 </td>
@@ -169,7 +169,7 @@
               </tr>
               <tr v-for="it in store.objutang" :key="it">
                 <td>
-                  <div class="q-pl-md">
+                  <div class="q-pl-md text-left">
                     {{ it.uraian }}
                   </div>
                 </td>
@@ -189,14 +189,14 @@
               </tr>
               <tr class="text-bold">
                 <td colspan="2">
-                  <div class="q-pl-sm">
+                  <div class="q-pl-sm text-left">
                     KEWAJIBAN JANGKA PANJANG
                   </div>
                 </td>
               </tr>
               <tr v-for="it in store.objutangjkpanjang" :key="it">
                 <td>
-                  <div class="q-pl-md">
+                  <div class="q-pl-md text-left">
                     {{ it.uraian }}
                   </div>
                 </td>
@@ -226,14 +226,14 @@
               </tr>
               <tr class="text-bold">
                 <td colspan="2">
-                  <div class="q-pl-sm">
+                  <div class="q-pl-sm text-left">
                     EKUITAS
                   </div>
                 </td>
               </tr>
               <tr v-for="it in store.objekuitas" :key="it">
                 <td>
-                  <div class="q-pl-md">
+                  <div class="q-pl-md text-left">
                     {{ it.uraian }}
                   </div>
                 </td>
