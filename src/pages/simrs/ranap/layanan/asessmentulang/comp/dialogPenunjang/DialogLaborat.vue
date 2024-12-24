@@ -1,10 +1,5 @@
 <template>
-  <q-dialog
-    persistent
-    transition-show="slide-up"
-    transition-hide="slide-down"
-    @show="onShow"
-  >
+  <q-dialog persistent transition-show="slide-up" transition-hide="slide-down" @show="onShow">
     <q-card class="bg-grey-4 column fit">
       <div class="bg-dark text-white col-auto">
         <div class="row justify-between items-center q-px-md q-py-xs">
@@ -20,7 +15,8 @@
       </div>
 
       <q-card-section class="col full-height q-pa-none">
-        <ListLaborat :pasien="props.pasien" :loading="store.loading" :bisa-hapus="false" :key="props?.pasien" />
+        <ListLaborat :pasien="props.pasien" :loading="store.loading" :bisa-hapus="false" :key="props?.pasien"
+          :ruang="props?.ruang" />
       </q-card-section>
     </q-card>
 
@@ -36,13 +32,17 @@ const ListLaborat = defineAsyncComponent(() => import('src/pages/simrs/poli/tind
 const props = defineProps({
   pasien: {
     type: Object,
-    default: () => {}
+    default: () => { }
   },
   kasus: {
     type: Object,
-    default: () => {}
+    default: () => { }
   },
   nakes: {
+    type: String,
+    default: null
+  },
+  ruang: {
     type: String,
     default: null
   }
@@ -58,7 +58,7 @@ onMounted(() => {
 })
 
 const onShow = () => {
-  const isRanap = true
+  const isRanap = props?.ruang === null ? true : false
   Promise.all([
     store.getNota(props?.pasien, isRanap),
     store.getData(props?.pasien, isRanap)
