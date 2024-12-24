@@ -8,11 +8,7 @@
       </q-card-section>
 
       <q-separator />
-      <q-form
-        ref="refForm"
-        @submit="onSubmit"
-        class="column full-height"
-      >
+      <q-form ref="refForm" @submit="onSubmit" class="column full-height">
         <q-card-section class="flat">
           <div class="row q-py-sm">
             <div class="col-12">
@@ -21,93 +17,37 @@
           </div>
           <div class="row q-pr-xs">
             <div class="col-12">
-              <q-select
-                v-model="store.form.satuan"
-                label="Satuan"
-                :options="options"
-                option-label="nama"
-                option-value="nama"
-                emit-value
-                map-options
-                outlined
-                dense
-              />
+              <q-select v-model="store.form.satuan" label="Satuan" :options="options" option-label="nama"
+                option-value="nama" emit-value map-options outlined dense />
             </div>
           </div>
           <div class="row" q-gutter-sm>
             <div class="col-12">
-              <q-checkbox v-model="store.form.pump" val="Ya" label="Pakai Pump" color="teal" @update:model-value="(val) => cekpemakaian(val)" />
+              <q-checkbox v-model="store.form.pump" val="Ya" label="Pakai Pump" color="teal"
+                @update:model-value="(val) => cekpemakaian(val)" />
             </div>
           </div>
           <div class="row q-gutter-sm">
             <div class="col-6" v-if="store.form.pump === true">
-              <app-input-date
-                :model="store.form.tglpump"
-                mask="date"
-                outlined
-                standout="bg-yellow-3"
-                label="Tanggal Pemakaian Pump"
-                @set-model="val=>store.form.tglpump=val"
-                :rules="[val => !!val || 'Harap Diisi terlebih dahulu']"
-              >
-                <template #append>
-                  <q-icon name="event" class="cursor-pointer">
-                    <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-                      <q-date v-model="date">
-                        <div class="row items-center justify-end">
-                          <q-btn v-close-popup label="Close" color="primary" flat />
-                        </div>
-                      </q-date>
-                    </q-popup-proxy>
-                  </q-icon>
-                </template>
-              </app-input-date>
+              <q-input v-model="store.form.jampump" label="Jam Pemakaian Pump" outlined dense mask="##.#"
+                type="number" /> /Jam
             </div>
             <div class="col-4" v-if="store.form.pump === true">
-              <app-input-date
-                :model="store.form.jampump"
-                :type-date="false"
-                outlined
-                standout="bg-yellow-3"
-                label="Jam Pemakaian Pump"
-                @set-model="val=>store.form.jampump=val"
-              >
-                <template #append>
-                  <q-icon name="event" class="cursor-pointer">
-                    <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-                      <q-date v-model="date">
-                        <div class="row items-center justify-end">
-                          <q-btn v-close-popup label="Close" color="primary" flat />
-                        </div>
-                      </q-date>
-                    </q-popup-proxy>
-                  </q-icon>
-                </template>
-              </app-input-date>
+              <q-input v-model="store.form.menitpump" label="Menit Pemakaian Pump" outlined dense mask="##.#"
+                type="number" /> /Menit
             </div>
           </div>
           <div class="row q-py-sm">
             <div class="col-12 q-pr-xs">
-              <q-select
-                v-model="store.form.routepemberianobat"
-                outlined
-                dense
-                label="Route Pemberian obat"
-                :options="optionroutepemberianobat"
-              />
+              <q-select v-model="store.form.routepemberianobat" outlined dense label="Route Pemberian obat"
+                :options="optionroutepemberianobat" />
             </div>
           </div>
           <div class="row q-gutter-sm">
             <div class="col-6">
-              <app-input-date
-                :model="store.form.tglpemberianobat"
-                mask="date"
-                outlined
-                standout="bg-yellow-3"
-                label="Tanggal Pemberian Obat"
-                @set-model="val=>store.form.tglpemberianobat=val"
-                :rules="[val => !!val || 'Harap Diisi terlebih dahulu']"
-              >
+              <app-input-date :model="store.form.tglpemberianobat" mask="date" outlined standout="bg-yellow-3"
+                label="Tanggal Pemberian Obat" @set-model="val => store.form.tglpemberianobat = val"
+                :rules="[val => !!val || 'Harap Diisi terlebih dahulu']">
                 <template #append>
                   <q-icon name="event" class="cursor-pointer">
                     <q-popup-proxy cover transition-show="scale" transition-hide="scale">
@@ -122,14 +62,8 @@
               </app-input-date>
             </div>
             <div class="col-4">
-              <app-input-date
-                :model="store.form.jampemberianobat"
-                :type-date="false"
-                outlined
-                standout="bg-yellow-3"
-                label="Jam Pemberian Obat"
-                @set-model="val=>store.form.jampemberianobat=val"
-              >
+              <app-input-date :model="store.form.jampemberianobat" :type-date="false" outlined standout="bg-yellow-3"
+                label="Jam Pemberian Obat" @set-model="val => store.form.jampemberianobat = val">
                 <template #append>
                   <q-icon name="event" class="cursor-pointer">
                     <q-popup-proxy cover transition-show="scale" transition-hide="scale">
@@ -181,7 +115,7 @@ const sekarang = Date.now()
 store.form.tglpemberianobat = date.formatDate(sekarang, 'YYYY-MM-DD')
 store.form.jampemberianobat = date.formatDate(sekarang, 'H:m')
 
-function cekpemakaian (val) {
+function cekpemakaian(val) {
   if (val === true) {
     const sekarang = Date.now()
     store.form.tglpump = date.formatDate(sekarang, 'YYYY-MM-DD')
@@ -196,7 +130,7 @@ function cekpemakaian (val) {
 // store.initReset()
 const options = ref(props?.satuan)
 
-function onSubmit () {
+function onSubmit() {
   store.saveData(props.pasien).then(() => {
     refForm.value.resetValidation()
   })

@@ -62,7 +62,7 @@ const formatRpDouble = (value, dg) => {
       .toFixed(dg)
       .replace('.', ',')
       .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')
-      // .replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, '$1.')
+    // .replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, '$1.')
   }
 }
 const formatDouble = (value, dg) => {
@@ -71,7 +71,7 @@ const formatDouble = (value, dg) => {
       .toFixed(dg)
       .replace('.', ',')
       .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')
-      // .replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, '$1.')
+    // .replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, '$1.')
   }
   else { return 0 }
 }
@@ -81,7 +81,7 @@ const formatDoubleKoma = (value, dg) => {
       .toFixed(dg)
       .replace('.', ',')
       .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1')
-      // .replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, '$1.')
+    // .replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, '$1.')
   }
   else { return 0 }
 }
@@ -113,7 +113,7 @@ const dateFilter = (val) => {
   return val ? date.formatDate(val, 'YYYY-MM-DD') : null
 }
 const dateFull = (val) => {
-  return date.formatDate(val, 'DD MMM YYYY HH:mm:ss')
+  return date.formatDate(val, 'DD MMMM YYYY HH:mm:ss')
 }
 const tglJamFormat = (val) => {
   return date.formatDate(val, 'YYYY-MM-DD HH:mm:ss')
@@ -131,7 +131,7 @@ const dayName = (val) => {
   return date.formatDate(val, 'dddd')
 }
 
-function titleCase (str) {
+function titleCase(str) {
   const splitStr = str.toLowerCase().split(' ')
   for (let i = 0; i < splitStr.length; i++) {
     // You do not need to check if i is larger than splitStr length, as your for does that for you
