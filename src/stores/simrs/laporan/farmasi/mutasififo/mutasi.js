@@ -17,12 +17,12 @@ export const useLaporanMutasiFiFoFarmasiStore = defineStore('laporan_mutasi_fifo
     items: [],
     meta: {},
     params: {
-      q: '0000200-FAR',
-      // q: '',
+      // q: '0000200-FAR',
+      q: '',
       per_page: 100,
       page: 1,
-      bulan: '11',
-      // bulan: date.formatDate(Date.now(), 'MM'),
+      // bulan: '11',
+      bulan: date.formatDate(Date.now(), 'MM'),
       tahun: date.formatDate(Date.now(), 'YYYY'),
       kode_ruang: 'all',
       jenis: 'rekap'
