@@ -1,9 +1,6 @@
 <template>
   <!-- <q-card> -->
-  <q-bar
-    class="bg-dark text-white z-top"
-    style="width: inherit;"
-  >
+  <q-bar class="bg-dark text-white z-top" style="width: inherit;">
     <div class="f-12 text-bold">
       Data Tinjauan Ulang
     </div>
@@ -17,10 +14,7 @@
     </div>
     <q-space />
   </q-bar>
-  <div
-    v-if="loadingaja"
-    class="column full-height flex-center"
-  >
+  <div v-if="loadingaja" class="column full-height flex-center">
     <div class="text-h5 text-dark">
       Harap Tunggu .....
     </div>
@@ -28,10 +22,7 @@
       Sinkron Data Ke DATABASE
     </div>
   </div>
-  <div
-    v-if="pasien?.tinjauanulang?.length <= 0"
-    class="column full-height flex-center"
-  >
+  <div v-if="pasien?.tinjauanulang?.length <= 0" class="column full-height flex-center">
     <div class="text-h5 text-dark">
       Belum Ada data tersimpan
     </div>
@@ -41,19 +32,15 @@
       <q-timeline-entry heading>
         <q-item-label> Tinjauan Ulang</q-item-label>
         <q-badge text-color="dark" color="indigo" outline>
-          <q-item-label> Kunjungan Pasien => {{ pasien?.noreg }} <br> Nama : {{ pasien?.nama }} <br> No. RM : {{ pasien?.norm }}</q-item-label>
+          <q-item-label> Kunjungan Pasien => {{ pasien?.noreg }} <br> Nama : {{ pasien?.nama }} <br> No. RM : {{
+            pasien?.norm }}</q-item-label>
         </q-badge>
       </q-timeline-entry>
 
-      <q-timeline-entry
-        v-for="(item , n) in lists"
-        :key="n"
-        :title="jamFullFormat(item.tgl)"
-        :subtitle="dateFullFormat(item?.tgl)"
-        icon="icon-mat-done_all"
-        :side="carinjilnap(n++)"
-      >
+      <q-timeline-entry v-for="(item, n) in lists" :key="n" :title="jamFullFormat(item.tgl)"
+        :subtitle="dateFullFormat(item?.tgl)" icon="icon-mat-done_all delete" :side="carinjilnap(n++)">
         <div>
+
           <q-card dark bordered class="bg-cyan-9 my-card full-width">
             <q-card-section>
               <div class="row">
@@ -63,7 +50,7 @@
               </div>
               <div class="row">
                 <div class="col-3">
-                  Nadi :  {{ item?.nadi }} ({{ item?.scorenadi }})
+                  Nadi : {{ item?.nadi }} ({{ item?.scorenadi }})
                 </div>
                 <div class="col-3">
                   Pernapasan : {{ item?.pernapasanx ?? '-' }} ({{ item?.scorepernapasanx ?? '-' }})
@@ -78,7 +65,7 @@
                   Suhu : {{ item?.suhu ?? '-' }} ({{ item?.scoresuhu ?? '-' }})
                 </div>
                 <div class="col-3">
-                  Spo2 :  {{ item?.spo2 ?? '-' }} ({{ item?.scorespo2 ?? '-' }})
+                  Spo2 : {{ item?.spo2 ?? '-' }} ({{ item?.scorespo2 ?? '-' }})
                 </div>
               </div>
               <q-separator dark inset />
@@ -107,7 +94,8 @@
                 </div>
                 <div class="row">
                   <div class="col-12">
-                    Skor Nyeri : {{ item?.tinjauanulangnips?.scroenips ?? '-' }} Keterangan : {{ item?.tinjauanulangnips?.ketscorenips ?? '-' }}
+                    Skor Nyeri : {{ item?.tinjauanulangnips?.scroenips ?? '-' }} Keterangan : {{
+                      item?.tinjauanulangnips?.ketscorenips ?? '-' }}
                   </div>
                 </div>
               </div>
@@ -121,12 +109,14 @@
                     Gerakan Tangan : {{ item?.tinjauanulangbps?.gerakantangan ?? '-' }}
                   </div>
                   <div class="col-12">
-                    Kepatuhan terhadap ventilasi mekanik : {{ item?.tinjauanulangbps?.kepatuhanventilasimekanik ?? '-' }}
+                    Kepatuhan terhadap ventilasi mekanik : {{ item?.tinjauanulangbps?.kepatuhanventilasimekanik ?? '-'
+                    }}
                   </div>
                 </div>
                 <div class="row">
                   <div class="col-12">
-                    Skor Nyeri : {{ item?.tinjauanulangbps?.skor ?? '-' }} Keterangan : {{ item?.tinjauanulangbps?.keterangan_skor ?? '-' }}
+                    Skor Nyeri : {{ item?.tinjauanulangbps?.skor ?? '-' }} Keterangan : {{
+                      item?.tinjauanulangbps?.keterangan_skor ?? '-' }}
                   </div>
                 </div>
               </div>
@@ -140,7 +130,7 @@
               <q-separator dark inset />
               <div class="row">
                 <div class="col-3">
-                  Kesadaran :    {{ item?.kesadaran ?? '-' }}
+                  Kesadaran : {{ item?.kesadaran ?? '-' }}
                 </div>
                 <div class="col-3">
                   Eye : {{ item?.eye ?? '-' }}
@@ -158,7 +148,7 @@
                   Keadaan Pupil : {{ item?.keadaan_pupil ?? '-' }}
                 </div>
                 <div class="col-6">
-                  Mata Kiri :  {{ item?.reflekcahaya_matakiri }}
+                  Mata Kiri : {{ item?.reflekcahaya_matakiri }}
                 </div>
                 <div class="col-6">
                   Mata Kanan : {{ item?.reflekcahaya_matakanan ?? '-' }}
@@ -181,6 +171,15 @@
                 </div>
               </div>
             </q-card-section>
+
+            <q-item-section>
+              <div class="q-gutter-sm">
+                <q-btn flat round size="sm" icon="icon-mat-delete" color="white" @click="hapusItem(item.id)">
+                  <q-tooltip class="bg-danger" :offset="[10, 10]">
+                    Delete
+                  </q-tooltip></q-btn>
+              </div>
+            </q-item-section>
           </q-card>
         </div>
       </q-timeline-entry>
@@ -194,7 +193,8 @@
 import { useTinjauanUlangStore } from 'src/stores/simrs/igd/tinjauanulang'
 import FormTinjauanUlangPage from './FormTinjauanUlangPage.vue'
 import { computed, ref } from 'vue'
-import { date } from 'quasar'
+import { date, useQuasar } from 'quasar'
+
 
 const props = defineProps({
   pasien: {
@@ -211,7 +211,7 @@ const layout = ref('loose')
 
 const store = useTinjauanUlangStore()
 
-function carinjilnap (val) {
+function carinjilnap(val) {
   // console.log('val', val)
   if (val % 2 === 0) {
     return 'left'
@@ -221,7 +221,7 @@ function carinjilnap (val) {
   }
 }
 
-function showdialog () {
+function showdialog() {
   store.basic = true
 }
 
@@ -236,4 +236,22 @@ const lists = computed(() => {
   const arr = props.pasien?.tinjauanulang
   return arr?.sort((a, b) => { return b.id - a.id })
 })
+
+const $q = useQuasar()
+
+function hapusItem(id) {
+  $q.dialog({
+    dark: true,
+    title: 'Peringatan',
+    message: 'Apakah Data ini akan dihapus?',
+    cancel: true,
+    persistent: true
+  }).onOk(() => {
+    store.deleteData(props.pasien, id)
+  }).onCancel(() => {
+    // console.log('Cancel')
+  }).onDismiss(() => {
+    // console.log('I am triggered on both OK and Cancel')
+  })
+}
 </script>

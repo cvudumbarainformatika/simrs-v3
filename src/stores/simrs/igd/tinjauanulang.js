@@ -53,7 +53,7 @@ export const useTinjauanUlangStore = defineStore('tinjauan_ulang_store', {
     }
   }),
   actions: {
-    async ambiltriage (noreg) {
+    async ambiltriage(noreg) {
       const params = { params: { noreg } }
       try {
         const resp = await api.get('v1/simrs/pelayanan/igd/getDataTriage', params)
@@ -73,7 +73,7 @@ export const useTinjauanUlangStore = defineStore('tinjauan_ulang_store', {
         notifErr(error)
       }
     },
-    async ambilanamnese (noreg) {
+    async ambilanamnese(noreg) {
       const params = { params: { noreg } }
       try {
         const resp = await api.get('v1/simrs/igd/anamnesis/listanamnesebynoreg', params)
@@ -101,7 +101,7 @@ export const useTinjauanUlangStore = defineStore('tinjauan_ulang_store', {
         notifErr(error)
       }
     },
-    async saveData (pasien) {
+    async saveData(pasien) {
       this.loadingForm = true
       this.form.norm = pasien ? pasien.norm : ''
       this.form.noreg = pasien ? pasien.noreg : ''
@@ -126,13 +126,13 @@ export const useTinjauanUlangStore = defineStore('tinjauan_ulang_store', {
         notifErr(error)
       }
     },
-    initReset () {
+    initReset() {
       this.form = {
         keluhan: '',
         nadi: ''
       }
     },
-    setKeteranganSkornyeri (val) {
+    setKeteranganSkornyeri(val) {
       if (val === 0) {
         this.form.keteranganscorenyeri = 'tidak ada nyeri'
       }
@@ -145,7 +145,21 @@ export const useTinjauanUlangStore = defineStore('tinjauan_ulang_store', {
       else if (val > 6 && val <= 10) {
         this.form.keteranganscorenyeri = 'nyeri berat'
       }
+    },
+    async deleteData(pasien, id) {
+      const payload = { id }
+      try {
+        const resp = await api.post('v1/simrs/igd/peninjauanulang/hapuspeninjauanulang', payload)
+        // console.log(resp)
+        if (resp.status === 200) {
+          const storePasien = usePengunjungIgdStore()
+          storePasien.hapustinjauanulang(pasien, id)
+          notifSuccess(resp)
+        }
+      }
+      catch (error) {
+        notifErr(error)
+      }
     }
-
   }
 })

@@ -1,89 +1,31 @@
 <template>
-  <q-dialog
-    ref="refDialog"
-    persistent
-    :maximized="true"
-    transition-show="slide-left"
-    transition-hide="slide-right"
-  >
-    <q-card
-      square
-      flat
-      class="container-no-header"
-    >
-      <q-layout
-        view="lHr Lpr lFf"
-        container
-        class="shadow-2 rounded-borders z-top"
-      >
-        <q-header
-          elevated
-          class="bg-primary"
-        >
-          <HeaderLayout
-            :pasien="pasien"
-            :loading-save-dpjp="store.loadingSaveGantiDpjp"
-            @toggle-left-drawer="()=> drawer = !drawer"
-            @gantidpjp="(val)=>store.gantiDpjp(val, pasien)"
-            @layanan-selesai="store.setLayananSelesai(pasien)"
-          />
+  <q-dialog ref="refDialog" persistent :maximized="true" transition-show="slide-left" transition-hide="slide-right">
+    <q-card square flat class="container-no-header">
+      <q-layout view="lHr Lpr lFf" container class="shadow-2 rounded-borders z-top">
+        <q-header elevated class="bg-primary">
+          <HeaderLayout :pasien="pasien" :loading-save-dpjp="store.loadingSaveGantiDpjp"
+            @toggle-left-drawer="() => drawer = !drawer" @gantidpjp="(val) => store.gantiDpjp(val, pasien)"
+            @layanan-selesai="store.setLayananSelesai(pasien)" />
         </q-header>
 
         <!-- LEFT DRAWER ======================================================================================-->
-        <q-drawer
-          v-model="drawer"
-          elevated
-          bordered
-          show-if-above
-          :width="230"
-          :breakpoint="400"
-        >
-          <LeftDrawer
-            :key="pasien"
-            :pasien="pasien"
-            :menus="menus"
-            :menu="menu"
-            @click-menu="(val)=> menuDiganti(val)"
-            @icare="getIcare"
-            @history-pasien="historyPasien"
-          />
+        <q-drawer v-model="drawer" elevated bordered show-if-above :width="230" :breakpoint="400">
+          <LeftDrawer :key="pasien" :pasien="pasien" :menus="menus" :menu="menu" @click-menu="(val) => menuDiganti(val)"
+            @icare="getIcare" @history-pasien="historyPasien" />
         </q-drawer>
 
         <!-- RIGHT DRAWER ======================================================================================-->
-        <q-drawer
-          v-model="drawerRight"
-          side="right"
-          show-if-above
-          overlay
-          bordered
-          :width="845"
-          :breakpoint="500"
-        >
-          <RightDrawer
-            :key="pasien"
-            :pasien="pasien"
-            @close="drawerRight = false"
-          />
+        <q-drawer v-model="drawerRight" side="right" show-if-above overlay bordered :width="845" :breakpoint="500">
+          <RightDrawer :key="pasien" :pasien="pasien" @close="drawerRight = false" />
         </q-drawer>
 
         <!-- CONTAINER ============================================================================================-->
         <q-page-container>
-          <q-page
-            class="contain bg-grey-3"
-          >
-            <Suspense
-              :key="menu.comp"
-              timeout="0"
-            >
+          <q-page class="contain bg-grey-3">
+            <Suspense :key="menu.comp" timeout="0">
               <template #default>
-                <component
-                  :is="menu.comp"
-                  :key="pasien"
-                  :pasien="pasien"
-                  :loadingaja="loadingaja"
-                  :ruangranap="store.ruangranaps"
-                  depo="igd"
-                />
+                <component :is="menu.comp" :key="pasien" :pasien="pasien" :loadingaja="loadingaja"
+                  :ruangranap="store.ruangranaps" depo="igd" />
               </template>
               <template #fallback>
                 <AppLoader />
@@ -195,21 +137,27 @@ const menus = ref([
     label: 'EResep',
     icon: 'icon-mat-receipt',
     comp: shallowRef(defineAsyncComponent(() => import('../../eresep/EresepPage.vue')))
+  },
+  {
+    name: 'e-dokumen-page',
+    label: 'Dokumen RM & Billing',
+    icon: 'icon-mat-print',
+    comp: shallowRef(defineAsyncComponent(() => import('../../igd/layanan/dokumen/DokumenPage.vue')))
   }
 ])
 const menu = ref(menus.value[0])
 
 const inacbg = useInacbgIgd()
 
-function menuDiganti (val) {
+function menuDiganti(val) {
   menu.value = val
 }
 
-function historyPasien () {
+function historyPasien() {
   drawerRight.value = !drawerRight.value
 }
 
-function getIcare () {
+function getIcare() {
   store.getDataIcare(props.pasien).then(resp => {
     if (resp) {
       window.open(resp?.response?.url, '_blank')
@@ -235,10 +183,10 @@ watchEffect(() => {
 
 </script>
 <style lang="scss">
-.contain{
-    display: flex;
-    flex-direction: column;
-    height: calc(100vh - 50px);
-    overflow: hidden;
+.contain {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 50px);
+  overflow: hidden;
 }
 </style>

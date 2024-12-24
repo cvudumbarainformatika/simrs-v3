@@ -3,12 +3,7 @@
     <q-card-section class="full-width">
       <div class="row">
         <div class="full-width">
-          <q-markup-table
-            class="my-sticky-table"
-            flat-bordered
-            wrap-cells
-            :separator="separator"
-          >
+          <q-markup-table flat-bordered wrap-cells :separator="separator">
             <thead>
               <tr class="bg-dark text-white max-width">
                 <th>URAIAN</th>
@@ -22,14 +17,12 @@
             </thead>
             <tbody v-if="store.reqs.jenislra === 2">
               <tr>
-                <td colspan="5" class="text-bold">
+                <td colspan="5" class="text-bold text-left">
                   PENDAPATAN
                 </td>
               </tr>
-              <tr
-                v-for="it in store.psappendapatan" :key="it"
-              >
-                <td>
+              <tr v-for="it in store.psappendapatan" :key="it">
+                <td class="text-left">
                   - {{ it.uraian }}
                 </td>
                 <td class="text-right">
@@ -46,7 +39,7 @@
                 </td>
               </tr>
               <tr class="text-bold">
-                <td>
+                <td class="text-left">
                   JUMLAH PENDAPATAN
                 </td>
                 <td class="text-right">
@@ -68,19 +61,17 @@
                 <!-- {{ formattanpaRp(totalBarjas().totalpagu) }} -->
               </tr>
               <tr>
-                <td colspan="5" class="text-bold">
+                <td colspan="5" class="text-bold text-left">
                   BELANJA
                 </td>
               </tr>
               <tr>
-                <td colspan="5" class="text-bold">
+                <td colspan="5" class="text-bold text-left">
                   BELANJA OPERASI
                 </td>
               </tr>
-              <tr
-                v-for="it in store.psapbarjas" :key="it"
-              >
-                <td>
+              <tr v-for="it in store.psapbarjas" :key="it">
+                <td class="text-left">
                   - {{ it.uraian }}
                 </td>
                 <td class="text-right">
@@ -97,7 +88,7 @@
                 </td>
               </tr>
               <tr class="text-bold">
-                <td>
+                <td class="text-left">
                   JUMLAH BELANJA OPERASI
                 </td>
                 <td class="text-right">
@@ -119,15 +110,12 @@
                 <!-- {{ formattanpaRp(totalBarjas().totalpagu) }} -->
               </tr>
               <tr>
-                <td colspan="4" class="text-bold">
+                <td colspan="4" class="text-bold text-left">
                   BELANJA MODAL
                 </td>
               </tr>
-              <tr
-                v-for="it in store.psapmodal" :key="it"
-                :class="it.kode.length <= 3 ? 'text-bold' : '' "
-              >
-                <td>
+              <tr v-for="it in store.psapmodal" :key="it" :class="it.kode.length <= 3 ? 'text-bold' : ''">
+                <td class="text-left">
                   - {{ it.uraian }}
                 </td>
                 <td class="text-right">
@@ -144,7 +132,7 @@
                 </td>
               </tr>
               <tr class="text-bold">
-                <td>
+                <td class="text-left">
                   JUMLAH BELANJA MODAL
                 </td>
                 <td class="text-right">
@@ -210,15 +198,12 @@
                 <!-- {{ formattanpaRp(totalBarjas().totalpagu) }} -->
               </tr>
               <tr>
-                <td colspan="4" class="text-bold">
+                <td colspan="4" class="text-bold text-left">
                   PEMBIAYAAN
                 </td>
               </tr>
-              <tr
-                v-for="it in store.psapsilpa" :key="it"
-                :class="it.kode.length <= 3 ? 'text-bold' : '' "
-              >
-                <td>
+              <tr v-for="it in store.psapsilpa" :key="it" :class="it.kode.length <= 3 ? 'text-bold' : ''">
+                <td class="text-left">
                   - {{ it.uraian }}
                 </td>
                 <td class="text-right">
@@ -292,7 +277,7 @@ import { ref } from 'vue'
 const separator = ref('cell')
 const store = useLRAjurnalStore()
 
-function totalPendapatan () {
+function totalPendapatan() {
   const totalpagu = store.psappendapatan.map((x) => parseFloat(x.pagu)).reduce((a, b) => a + b, 0)
   const totalrealisasi = store.psappendapatan.map((x) => parseFloat(x.realisasi)).reduce((a, b) => a + b, 0)
   const totalselisih = totalpagu - totalrealisasi
@@ -304,7 +289,7 @@ function totalPendapatan () {
     totalpersen
   }
 }
-function totalBarjas () {
+function totalBarjas() {
   const totalpagu = store.psapbarjas.map((x) => x.pagu).reduce((a, b) => a + b, 0)
   const totalrealisasi = store.psapbarjas.map((x) => x.nilaisemua).reduce((a, b) => a + b, 0)
   const totalselisih = totalpagu - totalrealisasi
@@ -316,7 +301,7 @@ function totalBarjas () {
     totalpersen
   }
 }
-function totalModal () {
+function totalModal() {
   const totalpagu = store.psapmodal.map((x) => x.pagu).reduce((a, b) => a + b, 0)
   const totalrealisasi = store.psapmodal.map((x) => x.nilaisemua).reduce((a, b) => a + b, 0)
   const totalselisih = totalpagu - totalrealisasi
@@ -329,7 +314,7 @@ function totalModal () {
   }
 }
 
-function totalBelanja () {
+function totalBelanja() {
   const totalpagu = store.psapbarjas.map((x) => x.pagu).reduce((a, b) => a + b, 0) + store.psapmodal.map((x) => x.pagu).reduce((a, b) => a + b, 0)
   const totalrealisasi = store.psapbarjas.map((x) => x.nilaisemua).reduce((a, b) => a + b, 0) + store.psapmodal.map((x) => x.nilaisemua).reduce((a, b) => a + b, 0)
   const totalselisih = totalpagu - totalrealisasi
@@ -342,7 +327,7 @@ function totalBelanja () {
   }
 }
 
-function totalSilpa () {
+function totalSilpa() {
   const totalpagu = store.psapsilpa.map((x) => x.pagu).reduce((a, b) => a + b, 0)
   const totalrealisasi = store.psapsilpa.map((x) => x.nilaisemua).reduce((a, b) => a + b, 0)
   const totalselisih = totalpagu - totalrealisasi
@@ -355,7 +340,7 @@ function totalSilpa () {
   }
 }
 
-function surplusDefisit () {
+function surplusDefisit() {
   const totalpagu = (store.psappendapatan.map((x) => parseFloat(x.pagu)).reduce((a, b) => a + b, 0)) - (store.psapbarjas.map((x) => x.pagu).reduce((a, b) => a + b, 0) + store.psapmodal.map((x) => x.pagu).reduce((a, b) => a + b, 0))
   const totalrealisasi = (store.psappendapatan.map((x) => parseFloat(x.realisasi)).reduce((a, b) => a + b, 0)) - (store.psapbarjas.map((x) => x.nilaisemua).reduce((a, b) => a + b, 0) + store.psapmodal.map((x) => x.nilaisemua).reduce((a, b) => a + b, 0))
   const totalselisih = totalpagu - totalrealisasi
@@ -368,11 +353,11 @@ function surplusDefisit () {
   }
 }
 
-function akhirSilpa () {
+function akhirSilpa() {
   const totalpagu = ((store.psappendapatan.map((x) => parseFloat(x.pagu)).reduce((a, b) => a + b, 0)) - (store.psapbarjas.map((x) => x.pagu).reduce((a, b) => a + b, 0) + store.psapmodal.map((x) => x.pagu).reduce((a, b) => a + b, 0))) +
-  (store.psapsilpa.map((x) => x.pagu).reduce((a, b) => a + b, 0))
+    (store.psapsilpa.map((x) => x.pagu).reduce((a, b) => a + b, 0))
   const totalrealisasi = ((store.psappendapatan.map((x) => parseFloat(x.realisasi)).reduce((a, b) => a + b, 0)) - (store.psapbarjas.map((x) => x.nilaisemua).reduce((a, b) => a + b, 0) + store.psapmodal.map((x) => x.nilaisemua).reduce((a, b) => a + b, 0))) +
-  (store.psapsilpa.map((x) => x.nilaisemua).reduce((a, b) => a + b, 0))
+    (store.psapsilpa.map((x) => x.nilaisemua).reduce((a, b) => a + b, 0))
 
   const totalselisih = parseFloat(totalpagu) - parseFloat(totalrealisasi)
   const totalpersen = (parseFloat(surplusDefisit().totalpersen) + parseFloat(totalSilpa().totalpersen)).toFixed(2)

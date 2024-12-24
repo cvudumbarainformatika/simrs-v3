@@ -1,28 +1,13 @@
 <template>
-  <q-card
-    flat
-    bordered
-    square
-    class="full-height bg-teal-2"
-    style="overflow: hidden;"
-  >
-    <q-bar
-      class="bg-teal text-white z-top"
-      style="width: inherit;"
-    >
+  <q-card flat bordered square class="full-height bg-teal-2" style="overflow: hidden;">
+    <q-bar class="bg-teal text-white z-top" style="width: inherit;">
       <div class="f-12">
         Data Pemaikaian Obat
       </div>
       <q-space />
     </q-bar>
-    <q-card-section
-      style="padding:0"
-      class="full-height bg-grey"
-    >
-      <div
-        v-if="loadingaja"
-        class="column full-height flex-center"
-      >
+    <q-card-section style="padding:0" class="full-height bg-grey">
+      <div v-if="loadingaja" class="column full-height flex-center">
         <div class="text-white">
           Harap Tunggu .....
         </div>
@@ -30,33 +15,21 @@
           Sinkron Data Ke DATABASE
         </div>
       </div>
-      <div
-        v-if="pasien?.pemberianobat?.length <= 0"
-        class="column full-height flex-center"
-      >
+      <div v-if="pasien?.pemberianobat?.length <= 0" class="column full-height flex-center">
         <div class="text-white">
           Belum Ada data tersimpan
         </div>
       </div>
-      <q-scroll-area
-        v-else
-        style="height:calc(100% - 32px);"
-      >
-        <q-list
-          class="bg-white"
-          separator
-        >
+      <q-scroll-area v-else style="height:calc(100% - 32px);">
+        <q-list class="bg-white" separator>
           <transition-group name="list">
-            <q-item
-              v-for="(item , n) in lists"
-              :key="n"
-              class="list-move"
-            >
+            <q-item v-for="(item, n) in lists" :key="n" class="list-move">
               <q-item-section>
                 <div class="row q-pb-sm">
                   <div class="col-12">
                     <q-item-label>
-                      <span class="">Nama Obat </span>: <span class="text-weight-bold">{{ item?.mobat?.nama_obat }}</span>
+                      <span class="">Nama Obat </span>: <span class="text-weight-bold">{{ item?.mobat?.nama_obat
+                        }}</span>
                       <span class="text-italic">({{ item?.kdobat }})</span>
                     </q-item-label>
                   </div>
@@ -83,7 +56,8 @@
                   </div>
                   <div class="col-6">
                     <q-item-label>
-                      <span class="">Waktu Pemakaian </span>: <span class="text-weight-bold">{{ item?.waktupump ?? '-' }}</span>
+                      <span class="">Waktu Pemakaian </span>: <span class="text-weight-bold">{{ item?.lamajam ?? '-' }}
+                        /Jam {{ item?.lamamenit ?? '-' }} /Mnt</span>
                     </q-item-label>
                   </div>
                 </div>
@@ -114,10 +88,7 @@
                 </div>
               </q-item-section>
 
-              <q-item-section
-                side
-                v-if="bisaEditHapus"
-              >
+              <q-item-section side v-if="bisaEditHapus">
                 <div class="q-gutter-sm">
                   <!-- <q-btn
                     flat
@@ -126,14 +97,7 @@
                     icon="icon-mat-edit"
                     @click="store.editForm(item)"
                   /> -->
-                  <q-btn
-                    flat
-                    round
-                    size="sm"
-                    icon="icon-mat-delete"
-                    color="negative"
-                    @click="hapusItem(item.id)"
-                  />
+                  <q-btn flat round size="sm" icon="icon-mat-delete" color="negative" @click="hapusItem(item.id)" />
                 </div>
               </q-item-section>
             </q-item>
@@ -172,7 +136,7 @@ const lists = computed(() => {
   return arr?.sort((a, b) => { return b.id - a.id })
 })
 
-function pump (val) {
+function pump(val) {
   if (val === '1' || val === 1) {
     return 'Ya'
   }
@@ -193,7 +157,7 @@ function pump (val) {
 //   }
 // }
 
-function hapusItem (id) {
+function hapusItem(id) {
   $q.dialog({
     dark: true,
     title: 'Peringatan',
