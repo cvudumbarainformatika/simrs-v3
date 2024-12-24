@@ -406,7 +406,7 @@ export const usePemeriksaanUmumRanapStore = defineStore('pemeriksaan-umum-ranap-
   },
   actions: {
 
-    async getData (pasien) {
+    async getData(pasien) {
       this.loading = true
       const params = {
         params: {
@@ -417,7 +417,7 @@ export const usePemeriksaanUmumRanapStore = defineStore('pemeriksaan-umum-ranap-
         const resp = await api.get('v1/simrs/ranap/layanan/pemeriksaan/pemeriksaanumum', params)
         // console.log('resp right pemeriksaan', resp)
         if (resp.status === 200) {
-        // store.items = resp.data
+          // store.items = resp.data
           this.PISAH_DATA_RANAP_IGD(resp.data, pasien)
         }
         this.loading = false
@@ -427,7 +427,7 @@ export const usePemeriksaanUmumRanapStore = defineStore('pemeriksaan-umum-ranap-
       }
     },
 
-    initReset (data) {
+    initReset(data) {
       this.form = {
         // ini untuk 4.1
 
@@ -670,7 +670,7 @@ export const usePemeriksaanUmumRanapStore = defineStore('pemeriksaan-umum-ranap-
       this.hitungSkorGlasgow()
     },
 
-    setForm (frm, data, $except = [], responseName) {
+    setForm(frm, data, $except = [], responseName) {
       // set form
       // console.groupCollapsed('[setForm]')
       // console.log(`frm: ${frm}`)
@@ -691,16 +691,16 @@ export const usePemeriksaanUmumRanapStore = defineStore('pemeriksaan-umum-ranap-
       // console.groupEnd()
     },
 
-    setAnotherForm (arr, data, key, frm) {
+    setAnotherForm(arr, data, key, frm) {
       let isData = null
       if (key === 'edukasi') isData = JSON.parse(data[key]) ?? null
       else isData = data[key]
-      console.log('isData: ', isData)
+      // console.log('isData: ', isData)
 
       if (isData) {
-        console.groupCollapsed('[setAnotherForm]')
-        console.log(`arr: ${arr}`)
-        console.log('data: ', isData)
+        // console.groupCollapsed('[setAnotherForm]')
+        // console.log(`arr: ${arr}`)
+        // console.log('data: ', isData)
 
         const frmX = {}
         for (let i = 0; i < arr.length; i++) {
@@ -709,11 +709,11 @@ export const usePemeriksaanUmumRanapStore = defineStore('pemeriksaan-umum-ranap-
         }
         this[frm][key] = frmX
 
-        console.log('frmX: ', this.form)
-        console.groupEnd()
+        // console.log('frmX: ', this.form)
+        // console.groupEnd()
       }
     },
-    hitungSkorApgar () {
+    hitungSkorApgar() {
       let skor = 0
       let ket = null
       // skor = parseInt(this.formNeonatal?.appearance?.value ?? 0) + parseInt(this.formNeonatal?.pulse?.value ?? 0) + parseInt(this.formNeonatal?.grimace?.value ?? 0) + parseInt(this.formNeonatal?.activity?.value ?? 0) + parseInt(this.formNeonatal?.respiration?.value ?? 0)
@@ -727,7 +727,7 @@ export const usePemeriksaanUmumRanapStore = defineStore('pemeriksaan-umum-ranap-
       this.formNeonatal.apgarScore = skor
       this.formNeonatal.apgarKet = ket
     },
-    hitungSkorGlasgow () {
+    hitungSkorGlasgow() {
       let skor = 0
       let ket = null
       // skor = parseInt(this.formNeonatal?.appearance?.value ?? 0) + parseInt(this.formNeonatal?.pulse?.value ?? 0) + parseInt(this.formNeonatal?.grimace?.value ?? 0) + parseInt(this.formNeonatal?.activity?.value ?? 0) + parseInt(this.formNeonatal?.respiration?.value ?? 0)
@@ -742,7 +742,7 @@ export const usePemeriksaanUmumRanapStore = defineStore('pemeriksaan-umum-ranap-
       this.formPediatrik.glasgowKet = ket
     },
 
-    async saveForm (jnsKasus, pasien) {
+    async saveForm(jnsKasus, pasien) {
       // console.log('jnsKasus', jnsKasus, pasien)
 
       this.loadingSave = true
@@ -785,11 +785,11 @@ export const usePemeriksaanUmumRanapStore = defineStore('pemeriksaan-umum-ranap-
       const pengunjung = usePengunjungRanapStore()
       pengunjung.injectDataPasien(pasien?.noreg, pushSementara, 'pemeriksaan')
 
-      console.log('form, jenis kasus', req, jnsKasus)
+      // console.log('form, jenis kasus', req, jnsKasus)
 
       try {
         const resp = await api.post('v1/simrs/ranap/layanan/pemeriksaan/simpan', req)
-        console.log('simpan pemeriksaan', resp)
+        // console.log('simpan pemeriksaan', resp)
         if (resp.status === 200) {
           notifSuccess(resp)
           const result = resp?.data?.result
@@ -808,7 +808,7 @@ export const usePemeriksaanUmumRanapStore = defineStore('pemeriksaan-umum-ranap-
       }
     },
 
-    PISAH_DATA_RANAP_IGD (arr, pasien) {
+    PISAH_DATA_RANAP_IGD(arr, pasien) {
       const auth = useAplikasiStore()
       const jns = auth?.user?.pegawai?.kdgroupnakes
 
@@ -842,10 +842,10 @@ export const usePemeriksaanUmumRanapStore = defineStore('pemeriksaan-umum-ranap-
       //   pengunjung.deleteInjectanNull(pasien?.noreg, 'pemeriksaan')
       // }
       this.initReset(form)
-      console.log('form', form)
+      // console.log('form', form)
     },
 
-    SPLICE_ITEMS_RANAP (arr) {
+    SPLICE_ITEMS_RANAP(arr) {
       const idx = arr?.findIndex(x => x.id === null)
       this.items.ranap = arr.splice(1, idx)
     }

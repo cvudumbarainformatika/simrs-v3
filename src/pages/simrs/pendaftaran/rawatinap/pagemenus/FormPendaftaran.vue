@@ -8,12 +8,10 @@
         </q-bar>
         <div class="row q-col-gutter-x-sm">
           <div class="col-2 q-pa-sm q-pl-md br-1">
-            <app-avatar-pasien v-if="store.pasien.usia && store.pasien.tanggallahir && store.pasien.kelamin" width="100%" :pasien="store.pasien" />
+            <app-avatar-pasien v-if="store.pasien.usia && store.pasien.tanggallahir && store.pasien.kelamin"
+              width="100%" :pasien="store.pasien" />
             <div v-else>
-              <q-img
-                src="~assets/images/nouser.png"
-                spinner-color="white"
-              />
+              <q-img src="~assets/images/nouser.png" spinner-color="white" />
             </div>
 
             <!-- STatus Bpjs -->
@@ -34,141 +32,79 @@
           <div class="col-3 q-pr-sm q-py-md br-1">
             <div class="flex q-gutter-sm full-width q-mb-sm">
               <div>Status Pasien : </div>
-              <q-radio
-                v-for="item in store.statusPasiens"
-                :key="item"
-                v-model="store.pasien.barulama"
-                :val="item"
-                :label="item"
-                dense
-                size="xs"
-                @update:model-value="(val)=>gantiBaruLama(val)"
-              />
+              <q-radio v-for="item in store.statusPasiens" :key="item" v-model="store.pasien.barulama" :val="item"
+                :label="item" dense size="xs" @update:model-value="(val) => gantiBaruLama(val)" />
             </div>
-            <app-input-simrs
-              ref="refNorm" v-model="store.pasien.norm" label="No. RM" :valid="{required: true, number: true}"
-              :error-from-server="store.errors.norm"
-              @update:model-value="store.errors.norm = null"
-              :lazy-rules="false"
-            />
+            <app-input-simrs ref="refNorm" v-model="store.pasien.norm" label="No. RM"
+              :valid="{ required: true, number: true }" :error-from-server="store.errors.norm"
+              @update:model-value="store.errors.norm = null" :lazy-rules="false" />
             <div class="flex q-gutter-sm full-width q-pb-sm q-pt-xs" style="margin-top: -12px;">
               <div>Kewarganegaraan : </div>
-              <q-radio
-                v-for="item in store.kewarganegaran"
-                :key="item"
-                v-model="store.pasien.kewarganegaraan"
-                :val="item"
-                :label="item"
-                dense
-                size="xs"
-                @update:model-value="gantiKewarganegaraan"
-              />
+              <q-radio v-for="item in store.kewarganegaran" :key="item" v-model="store.pasien.kewarganegaraan"
+                :val="item" :label="item" dense size="xs" @update:model-value="gantiKewarganegaraan" />
             </div>
-            <div v-if="store.pasien.kewarganegaraan==='WNI'">
-              <app-input-simrs
-                v-model="store.pasien.noktp" label="NIK / NO. KTP" :valid="{min: 16, number: true}" :autofocus="false"
-                :error-from-server="store.errors.noktp"
-                @update:model-value="store.errors.noktp = null"
-              />
+            <div v-if="store.pasien.kewarganegaraan === 'WNI'">
+              <app-input-simrs v-model="store.pasien.noktp" label="NIK / NO. KTP" :valid="{ min: 16, number: true }"
+                :autofocus="false" :error-from-server="store.errors.noktp"
+                @update:model-value="store.errors.noktp = null" />
             </div>
             <div v-else>
-              <app-input-simrs v-model="store.pasien.paspor" label="NO. Passport" :valid="{required: true}" :autofocus="false" />
+              <app-input-simrs v-model="store.pasien.paspor" label="NO. Passport" :valid="{ required: true }"
+                :autofocus="false" />
             </div>
             <app-input-simrs v-model="store.pasien.nokabpjs" label="NO KA BPJS" :autofocus="false" />
 
-            <app-input-simrs v-model="store.pasien.nama" label="Nama Lengkap" :valid="{required: true}" :autofocus="false" />
+            <app-input-simrs v-model="store.pasien.nama" label="Nama Lengkap" :valid="{ required: true }"
+              :autofocus="false" />
 
             <div class="row q-col-gutter-xs q-mb-xs">
               <div class="col-4">
-                <app-autocomplete
-                  ref="refSapaan"
-                  v-model="store.pasien.sapaan"
-                  label="Sapaan"
-                  autocomplete="sapaan"
-                  option-value="sapaan"
-                  option-label="sapaan"
-                  outlined
-                  :source="store.sapaans"
-                  :rules="[val => (!!val) || 'Harap diisi']"
-                />
+                <app-autocomplete ref="refSapaan" v-model="store.pasien.sapaan" label="Sapaan" autocomplete="sapaan"
+                  option-value="sapaan" option-label="sapaan" outlined :source="store.sapaans"
+                  :rules="[val => (!!val) || 'Harap diisi']" />
               </div>
               <div class="col-8">
-                <app-autocomplete
-                  ref="refKelamin"
-                  v-model="store.pasien.kelamin"
-                  label="Jenis kelamin"
-                  autocomplete="kelamin"
-                  option-value="kelamin"
-                  option-label="kelamin"
-                  outlined
-                  :source="store.kelamins"
-                  :rules="[val => (!!val) || 'Harap diisi',]"
-                  @update:model-value="(val)=>{
+                <app-autocomplete ref="refKelamin" v-model="store.pasien.kelamin" label="Jenis kelamin"
+                  autocomplete="kelamin" option-value="kelamin" option-label="kelamin" outlined :source="store.kelamins"
+                  :rules="[val => (!!val) || 'Harap diisi',]" @update:model-value="(val) => {
                     const cek = store.kelamins?.filter(el => el.kelamin === val)
                     store.pasien.kd_kelamin = cek[0]?.kode ?? ''
-                  }"
-                />
+                  }" />
               </div>
             </div>
 
-            <app-input-simrs v-model="store.pasien.ibukandung" label="Nama Ibu Kandung" :autofocus="false" :valid="{required: true}" />
-            <app-input-simrs v-model="store.pasien.tempatlahir" label="Tempat Lahir" :autofocus="false" :valid="{required: true}" />
-            <app-input-date
-              :model="store.pasien.tanggallahir"
-              label="tanggal Lahir"
-              outlined
-              @set-model="val=>store.pasien.tanggallahir=val"
-            />
+            <app-input-simrs v-model="store.pasien.ibukandung" label="Nama Ibu Kandung" :autofocus="false"
+              :valid="{ required: true }" />
+            <app-input-simrs v-model="store.pasien.tempatlahir" label="Tempat Lahir" :autofocus="false"
+              :valid="{ required: true }" />
+            <app-input-date :model="store.pasien.tanggallahir" label="tanggal Lahir" outlined
+              @set-model="val => store.pasien.tanggallahir = val" />
 
             <div class="q-pt-xs">
-              <app-autocomplete
-                ref="refKelamin"
-                v-model="store.pasien.pendidikan"
-                label="Pendidikan Terakhir"
-                autocomplete="pendidikan"
-                option-value="pendidikan"
-                option-label="pendidikan"
-                outlined
-                :source="store.pendidikans"
-                :rules="[val => (!!val) || 'Harap diisi',]"
-                @update:model-value="(val)=>{
+              <app-autocomplete ref="refKelamin" v-model="store.pasien.pendidikan" label="Pendidikan Terakhir"
+                autocomplete="pendidikan" option-value="pendidikan" option-label="pendidikan" outlined
+                :source="store.pendidikans" :rules="[val => (!!val) || 'Harap diisi',]" @update:model-value="(val) => {
                   const cek = store.pendidikans?.filter(el => el.pendidikan === val)
                   store.pasien.kd_pendidikan = cek[0]?.kode ?? ''
-                }"
-              />
+                }" />
             </div>
             <div class="row q-col-gutter-xs q-my-xs">
-              <app-autocomplete
-                v-model="store.pasien.agama"
-                label="Agama"
-                autocomplete="kode"
-                option-value="keterangan"
-                option-label="keterangan"
-                outlined
-                :source="store.agamas"
-                :rules="[val => (!!val) || 'Harap diisi',]"
-                class="col-6"
-                @update:model-value="(val)=>{
+              <app-autocomplete v-model="store.pasien.agama" label="Agama" autocomplete="kode" option-value="keterangan"
+                option-label="keterangan" outlined :source="store.agamas" :rules="[val => (!!val) || 'Harap diisi',]"
+                class="col-6" @update:model-value="(val) => {
                   const cek = store.agamas?.filter(el => el.keterangan === val)
                   store.pasien.kd_agama = cek[0]?.kodemapping ?? ''
-                }"
-              />
-              <app-input-simrs v-if="store.pasien.agama==='8'" v-model="store.pasien.agamalain" label="Jelaskan" :autofocus="false" :valid="{required: true}" class="col-6" />
+                }" />
+              <app-input-simrs v-if="store.pasien.agama === '8'" v-model="store.pasien.agamalain" label="Jelaskan"
+                :autofocus="false" :valid="{ required: true }" class="col-6" />
             </div>
 
             <div class="row q-col-gutter-xs">
-              <app-input-simrs v-model="store.pasien.suku" label="Suku" :autofocus="false" :valid="{required: true}" class="col-6" />
-              <app-autocomplete
-                v-model="store.pasien.bahasa"
-                label="Bahasa"
-                autocomplete="bahasa"
-                option-value="bahasa"
-                option-label="bahasa"
-                outlined
-                :source="store.bahasas"
-                :rules="[val => (!!val) || 'Harap diisi',]"
-                class="col-6"
-              />
+              <app-input-simrs v-model="store.pasien.suku" label="Suku" :autofocus="false" :valid="{ required: true }"
+                class="col-6" />
+              <app-autocomplete v-model="store.pasien.bahasa" label="Bahasa" autocomplete="bahasa" option-value="bahasa"
+                option-label="bahasa" outlined :source="store.bahasas" :rules="[val => (!!val) || 'Harap diisi',]"
+                class="col-6" />
             </div>
           </div>
 
@@ -177,177 +113,98 @@
           <div class="col-4 q-pr-sm q-pt-md br-1">
             <div class="flex q-gutter-sm full-width q-mb-sm">
               <div>Bisa Baca Tulis ? : </div>
-              <q-radio
-                v-for="item in store.bisabacatulis"
-                :key="item"
-                v-model="store.pasien.bisabacatulis"
-                :val="item"
-                :label="item"
-                dense
-                size="xs"
-              />
+              <q-radio v-for="item in store.bisabacatulis" :key="item" v-model="store.pasien.bisabacatulis" :val="item"
+                :label="item" dense size="xs" />
             </div>
 
             <div class="row q-col-gutter-xs q-mb-xs">
-              <app-autocomplete
-                v-model="store.pasien.statuspernikahan"
-                label="Status Pernikahan"
-                autocomplete="statuspernikahan"
-                option-value="statuspernikahan"
-                option-label="statuspernikahan"
-                outlined
-                :source="store.statuspernikahans"
-                :rules="[val => (!!val) || 'Harap diisi',]"
-                class="col-6"
-              />
-              <app-autocomplete
-                v-model="store.pasien.pekerjaan"
-                label="Pekerjaan"
-                autocomplete="pekerjaan"
-                option-value="pekerjaan"
-                option-label="pekerjaan"
-                outlined
-                :source="store.pekerjaans"
-                :rules="[val => (!!val) || 'Harap diisi',]"
-                class="col-6"
-                @update:model-value="(val)=>{
+              <app-autocomplete v-model="store.pasien.statuspernikahan" label="Status Pernikahan"
+                autocomplete="statuspernikahan" option-value="statuspernikahan" option-label="statuspernikahan" outlined
+                :source="store.statuspernikahans" :rules="[val => (!!val) || 'Harap diisi',]" class="col-6" />
+              <app-autocomplete v-model="store.pasien.pekerjaan" label="Pekerjaan" autocomplete="pekerjaan"
+                option-value="pekerjaan" option-label="pekerjaan" outlined :source="store.pekerjaans"
+                :rules="[val => (!!val) || 'Harap diisi',]" class="col-6" @update:model-value="(val) => {
                   const cek = store.pekerjaans?.filter(el => el.pekerjaan === val)
                   store.pasien.kd_pekerjaan = cek[0]?.kode ?? ''
-                }"
-              />
+                }" />
             </div>
 
             <div class="row q-mb-xs q-col-gutter-xs">
-              <app-input-simrs v-model="store.pasien.notelp" label="No. Telp" :autofocus="false" class-tambahan="col-6" />
-              <app-input-simrs v-model="store.pasien.nohp" label="No. HP" :autofocus="false" class-tambahan="col-6" :valid="{required: true, number: true}" />
+              <app-input-simrs v-model="store.pasien.notelp" label="No. Telp" :autofocus="false"
+                class-tambahan="col-6" />
+              <app-input-simrs v-model="store.pasien.nohp" label="No. HP" :autofocus="false" class-tambahan="col-6"
+                :valid="{ required: true, number: true }" />
             </div>
             <div class="text-weight-bold q-my-xs">
               Alamat (KTP / SIM / Paspor / Kitas)
             </div>
             <q-separator />
             <div class="row q-col-gutter-x-sm">
-              <app-input-simrs v-model="store.pasien.alamat" type="textarea" label="Alamat Lengkap" :autofocus="false" :valid="{required: true}" class-tambahan="col-12" />
+              <app-input-simrs v-model="store.pasien.alamat" type="textarea" label="Alamat Lengkap" :autofocus="false"
+                :valid="{ required: true }" class-tambahan="col-12" />
             </div>
-            <div v-if="store.pasien.kewarganegaraan==='WNI'" class="row q-col-gutter-x-xs">
-              <app-input-simrs v-model="store.pasien.rt" label="RT" :autofocus="false" :valid="{min: 3}" class-tambahan="col-3 q-my-xs" />
-              <app-input-simrs v-model="store.pasien.rw" label="RW" :autofocus="false" :valid="{min: 3}" class-tambahan="col-3 q-my-xs" />
-              <app-autocomplete-new
-                ref="refNegara"
-                :model="store.paramWilayah.kd_negara"
-                label="Negara"
-                autocomplete="wilayah"
-                option-value="kd_negara"
-                option-label="wilayah"
-                outlined
-                :source="store.negaras"
-                class="col-6 q-my-xs"
-                @on-select="(val)=> store.paramWilayah.kd_negara=val"
-              />
-              <app-autocomplete-new
-                ref="refPropinsi"
-                :model="store.paramWilayah.kd_propinsi"
-                label="Propinsi"
-                autocomplete="wilayah"
-                option-value="propinsi"
-                option-label="wilayah"
-                outlined
-                :source="store.propinsies"
-                class="col-10 q-my-xs"
-                @on-select="(val)=>autocompleteSelected(val, store.propinsies,'propinsi', 'refPropinsi', 'propinsi', 'wilayah')"
-                @clear="()=> {
-                  store.pasien.propinsi=null
-                  store.pasien.kota=null
-                  store.pasien.kecamatan=null
-                  store.pasien.kelurahan=null
-                  store.paramWilayah.kd_propinsi=null
-                  store.paramWilayah.kd_kotakabupaten=null
-                  store.paramWilayah.kd_kecamatan=null
-                  store.paramWilayah.kd_kelurahan=null
-                }"
-              />
-              <app-autocomplete-new
-                ref="refKabupaten"
-                :model="store.paramWilayah.kd_kotakabupaten"
-                label="kabupaten / kota"
-                autocomplete="wilayah"
-                option-value="kotakabupaten"
-                option-label="wilayah"
-                outlined
-                :source="store.kabupatens"
-                class="col-10 q-my-xs"
-                @on-select="(val)=>autocompleteSelected(val, store.kabupatens,'kotakabupaten', 'refPropinsi', 'kota', 'wilayah')"
-                @clear="()=> {
-                  store.pasien.kota=null
-                  store.pasien.kecamatan=null
-                  store.pasien.kelurahan=null
-                  store.paramWilayah.kd_kotakabupaten=null
-                  store.paramWilayah.kd_kecamatan=null
-                  store.paramWilayah.kd_kelurahan=null
-                }"
-              />
-              <app-autocomplete-new
-                ref="refKecamatan"
-                :model="store.paramWilayah.kd_kecamatan"
-                label="Kecamatan"
-                autocomplete="wilayah"
-                option-value="kotakabupaten"
-                option-label="wilayah"
-                outlined
-                :source="store.kecamatans"
-                class="col-6 q-my-xs"
-                @on-select="(val)=>autocompleteSelected(val, store.kecamatans,'kotakabupaten', 'refKecamatan', 'kecamatan', 'wilayah')"
-                @clear="()=> {
-                  store.pasien.kecamatan=null
-                  store.pasien.kelurahan=null
-                  store.paramWilayah.kd_kecamatan=null
-                  store.paramWilayah.kd_kelurahan=null
-                }"
-              />
-              <app-autocomplete-new
-                ref="refKelurahan"
-                :model="store.paramWilayah.kd_kelurahan"
-                label="Kelurahan"
-                autocomplete="wilayah"
-                option-value="kotakabupaten"
-                option-label="wilayah"
-                outlined
-                :source="store.kelurahans"
-                class="col-6 q-my-xs"
-                @on-select="(val)=>autocompleteSelected(val, store.kelurahans,'kotakabupaten', 'refKelurahan', 'kelurahan', 'wilayah')"
-                @clear="()=> {
-                  store.pasien.kelurahan=null
-                  store.paramWilayah.kd_kelurahan=null
-                }"
-              />
-              <app-input-simrs
-                v-model="store.pasien.kodepos" label="Kode Pos" :autofocus="false" class-tambahan="col-5" @update:model-value="(val)=> {
-                  if(store.domisiliSama) store.pasien.kodeposDomisili = val
-                }"
-              />
+            <div v-if="store.pasien.kewarganegaraan === 'WNI'" class="row q-col-gutter-x-xs">
+              <app-input-simrs v-model="store.pasien.rt" label="RT" :autofocus="false" :valid="{ min: 3 }"
+                class-tambahan="col-3 q-my-xs" />
+              <app-input-simrs v-model="store.pasien.rw" label="RW" :autofocus="false" :valid="{ min: 3 }"
+                class-tambahan="col-3 q-my-xs" />
+              <app-autocomplete-new ref="refNegara" :model="store.paramWilayah.kd_negara" label="Negara"
+                autocomplete="wilayah" option-value="kd_negara" option-label="wilayah" outlined :source="store.negaras"
+                class="col-6 q-my-xs" @on-select="(val) => store.paramWilayah.kd_negara = val" />
+              <app-autocomplete-new ref="refPropinsi" :model="store.paramWilayah.kd_propinsi" label="Propinsi"
+                autocomplete="wilayah" option-value="propinsi" option-label="wilayah" outlined
+                :source="store.propinsies" class="col-10 q-my-xs"
+                @on-select="(val) => autocompleteSelected(val, store.propinsies, 'propinsi', 'refPropinsi', 'propinsi', 'wilayah')"
+                @clear="() => {
+                  store.pasien.propinsi = null
+                  store.pasien.kota = null
+                  store.pasien.kecamatan = null
+                  store.pasien.kelurahan = null
+                  store.paramWilayah.kd_propinsi = null
+                  store.paramWilayah.kd_kotakabupaten = null
+                  store.paramWilayah.kd_kecamatan = null
+                  store.paramWilayah.kd_kelurahan = null
+                }" />
+              <app-autocomplete-new ref="refKabupaten" :model="store.paramWilayah.kd_kotakabupaten"
+                label="kabupaten / kota" autocomplete="wilayah" option-value="kotakabupaten" option-label="wilayah"
+                outlined :source="store.kabupatens" class="col-10 q-my-xs"
+                @on-select="(val) => autocompleteSelected(val, store.kabupatens, 'kotakabupaten', 'refPropinsi', 'kota', 'wilayah')"
+                @clear="() => {
+                  store.pasien.kota = null
+                  store.pasien.kecamatan = null
+                  store.pasien.kelurahan = null
+                  store.paramWilayah.kd_kotakabupaten = null
+                  store.paramWilayah.kd_kecamatan = null
+                  store.paramWilayah.kd_kelurahan = null
+                }" />
+              <app-autocomplete-new ref="refKecamatan" :model="store.paramWilayah.kd_kecamatan" label="Kecamatan"
+                autocomplete="wilayah" option-value="kotakabupaten" option-label="wilayah" outlined
+                :source="store.kecamatans" class="col-6 q-my-xs"
+                @on-select="(val) => autocompleteSelected(val, store.kecamatans, 'kotakabupaten', 'refKecamatan', 'kecamatan', 'wilayah')"
+                @clear="() => {
+                  store.pasien.kecamatan = null
+                  store.pasien.kelurahan = null
+                  store.paramWilayah.kd_kecamatan = null
+                  store.paramWilayah.kd_kelurahan = null
+                }" />
+              <app-autocomplete-new ref="refKelurahan" :model="store.paramWilayah.kd_kelurahan" label="Kelurahan"
+                autocomplete="wilayah" option-value="kotakabupaten" option-label="wilayah" outlined
+                :source="store.kelurahans" class="col-6 q-my-xs"
+                @on-select="(val) => autocompleteSelected(val, store.kelurahans, 'kotakabupaten', 'refKelurahan', 'kelurahan', 'wilayah')"
+                @clear="() => {
+                  store.pasien.kelurahan = null
+                  store.paramWilayah.kd_kelurahan = null
+                }" />
+              <app-input-simrs v-model="store.pasien.kodepos" label="Kode Pos" :autofocus="false" class-tambahan="col-5"
+                @update:model-value="(val) => {
+                  if (store.domisiliSama) store.pasien.kodeposDomisili = val
+                }" />
             </div>
             <div v-else>
-              <q-select
-                ref="refCity"
-                v-model="weather"
-                outlined
-                label="Pencarian Kota Luar Negeri"
-                dense
-                use-input
-                hide-selected
-                fill-input
-                input-debounce="200"
-                :options="store.countrys"
-                @filter="filterFn"
-                placeholder="Minimal 3 character"
-                autofocus
-                class="full-width"
-                hide-bottom-space
-                hide-dropdown-icon
-                no-error-icon
-                option-label="name"
-                option-value="name"
-                @update:model-value="citySelected"
-              >
+              <q-select ref="refCity" v-model="weather" outlined label="Pencarian Kota Luar Negeri" dense use-input
+                hide-selected fill-input input-debounce="200" :options="store.countrys" @filter="filterFn"
+                placeholder="Minimal 3 character" autofocus class="full-width" hide-bottom-space hide-dropdown-icon
+                no-error-icon option-label="name" option-value="name" @update:model-value="citySelected">
                 <template #prepend>
                   <q-icon name="icon-mat-search" />
                 </template>
@@ -363,9 +220,11 @@
                   <q-separator />
                 </template>
               </q-select>
-              <app-input-simrs v-model="store.pasien.country" label="Country" :autofocus="false" class-tambahan="col-12 q-mt-sm" />
+              <app-input-simrs v-model="store.pasien.country" label="Country" :autofocus="false"
+                class-tambahan="col-12 q-mt-sm" />
               <app-input-simrs v-model="store.pasien.city" label="City" :autofocus="false" class-tambahan="col-12" />
-              <app-input-simrs v-model="store.pasien.region" label="Region" :autofocus="false" class-tambahan="col-12" />
+              <app-input-simrs v-model="store.pasien.region" label="Region" :autofocus="false"
+                class-tambahan="col-12" />
             </div>
           </div>
 
@@ -380,87 +239,50 @@
               <q-checkbox v-model="store.domisiliSama" size="sm" @update:model-value="setDomisiliSama" />
             </div>
 
-            <app-input-simrs v-model="store.pasien.alamatDomisili" type="textarea" label="Alamat Lengkap" :autofocus="false" :valid="{required: true}" class-tambahan="col-12" />
-            <div v-if="store.pasien.kewarganegaraan==='WNI'" class="row q-col-gutter-x-xs">
-              <app-input-simrs v-model="store.pasien.rtDomisili" label="RT" :autofocus="false" :valid="{min: 3}" class-tambahan="col-6 q-my-xs" />
-              <app-input-simrs v-model="store.pasien.rwDomisili" label="RW" :autofocus="false" :valid="{min: 3}" class-tambahan="col-6 q-my-xs" />
-              <app-autocomplete-new
-                ref="refNegara"
-                :model="store.paramWilayahDomisili.kd_negara"
-                label="Negara"
-                autocomplete="wilayah"
-                option-value="kd_negara"
-                option-label="wilayah"
-                outlined
-                :source="store.negaras"
-                class="col-12 q-my-xs"
-                @on-select="(val)=>store.paramWilayahDomisili.kd_negara=val"
-              />
-              <app-autocomplete-new
-                ref="refPropinsi"
-                :model="store.paramWilayahDomisili.kd_propinsi"
-                label="Propinsi"
-                autocomplete="wilayah"
-                option-value="propinsi"
-                option-label="wilayah"
-                outlined
-                :source="store.propinsies"
-                class="col-12 q-my-xs"
-                @on-select="(val)=>autocompleteSelected(val, store.propinsies,'propinsi', 'refPropinsi', 'propinsiDomisili', 'wilayah')"
-                @clear="()=> {
-                  store.pasien.propinsiDomisili=null
-                  store.pasien.kotaDomisili=null
-                  store.pasien.kecamatanDomisili=null
-                  store.pasien.kelurahanDomisili=null
-                }"
-              />
-              <app-autocomplete-new
-                ref="refKabupaten"
-                :model="store.paramWilayahDomisili.kd_kotakabupaten"
-                label="kabupaten / kota"
-                autocomplete="wilayah"
-                option-value="kotakabupaten"
-                option-label="wilayah"
-                outlined
-                :source="store.kabupatens"
-                class="col-12 q-my-xs"
-                @on-select="(val)=>autocompleteSelected(val, store.kabupatens,'kotakabupaten', 'refKabupaten', 'kotaDomisili', 'wilayah')"
-                @clear="()=> {
-                  store.pasien.kotaDomisili=null
-                  store.pasien.kecamatanDomisili=null
-                  store.pasien.kelurahanDomisili=null
-                }"
-              />
-              <app-autocomplete-new
-                ref="refKecamatan"
-                :model="store.paramWilayahDomisili.kd_kecamatan"
-                label="Kecamatan"
-                autocomplete="wilayah"
-                option-value="kotakabupaten"
-                option-label="wilayah"
-                outlined
-                :source="store.kecamatans"
-                class="col-12 q-my-xs"
-                @on-select="(val)=>autocompleteSelected(val, store.kecamatans,'kotakabupaten', 'refKecamatan', 'kecamatanDomisili','wilayah')"
-                @clear="()=> {
-                  store.pasien.kecamatanDomisili=null
-                  store.pasien.kelurahanDomisili=null
-                }"
-              />
-              <app-autocomplete-new
-                ref="refKelurahan"
-                :model="store.paramWilayahDomisili.kd_kelurahan"
-                label="Kelurahan"
-                autocomplete="wilayah"
-                option-value="kotakabupaten"
-                option-label="wilayah"
-                outlined
-                :source="store.kelurahans"
-                class="col-8 q-my-xs"
-                @on-select="(val)=>autocompleteSelected(val, store.kelurahans,'kotakabupaten', 'refKelurahan', 'kelurahanDomisili', 'wilayah')"
-                @clear="store.pasien.kelurahanDomisili=null"
-              />
-              <app-input-simrs v-model="store.pasien.kodeposDomisili" label="Kode Pos" :autofocus="false" class-tambahan="col-4 q-my-xs" />
+            <app-input-simrs v-model="store.pasien.alamatDomisili" type="textarea" label="Alamat Lengkap"
+              :autofocus="false" :valid="{ required: true }" class-tambahan="col-12" />
+            <div v-if="store.pasien.kewarganegaraan === 'WNI'" class="row q-col-gutter-x-xs">
+              <app-input-simrs v-model="store.pasien.rtDomisili" label="RT" :autofocus="false" :valid="{ min: 3 }"
+                class-tambahan="col-6 q-my-xs" />
+              <app-input-simrs v-model="store.pasien.rwDomisili" label="RW" :autofocus="false" :valid="{ min: 3 }"
+                class-tambahan="col-6 q-my-xs" />
+              <app-autocomplete-new ref="refNegara" :model="store.paramWilayahDomisili.kd_negara" label="Negara"
+                autocomplete="wilayah" option-value="kd_negara" option-label="wilayah" outlined :source="store.negaras"
+                class="col-12 q-my-xs" @on-select="(val) => store.paramWilayahDomisili.kd_negara = val" />
+              <app-autocomplete-new ref="refPropinsi" :model="store.paramWilayahDomisili.kd_propinsi" label="Propinsi"
+                autocomplete="wilayah" option-value="propinsi" option-label="wilayah" outlined
+                :source="store.propinsies" class="col-12 q-my-xs"
+                @on-select="(val) => autocompleteSelected(val, store.propinsies, 'propinsi', 'refPropinsi', 'propinsiDomisili', 'wilayah')"
+                @clear="() => {
+                  store.pasien.propinsiDomisili = null
+                  store.pasien.kotaDomisili = null
+                  store.pasien.kecamatanDomisili = null
+                  store.pasien.kelurahanDomisili = null
+                }" />
+              <app-autocomplete-new ref="refKabupaten" :model="store.paramWilayahDomisili.kd_kotakabupaten"
+                label="kabupaten / kota" autocomplete="wilayah" option-value="kotakabupaten" option-label="wilayah"
+                outlined :source="store.kabupatens" class="col-12 q-my-xs"
+                @on-select="(val) => autocompleteSelected(val, store.kabupatens, 'kotakabupaten', 'refKabupaten', 'kotaDomisili', 'wilayah')"
+                @clear="() => {
+                  store.pasien.kotaDomisili = null
+                  store.pasien.kecamatanDomisili = null
+                  store.pasien.kelurahanDomisili = null
+                }" />
+              <app-autocomplete-new ref="refKecamatan" :model="store.paramWilayahDomisili.kd_kecamatan"
+                label="Kecamatan" autocomplete="wilayah" option-value="kotakabupaten" option-label="wilayah" outlined
+                :source="store.kecamatans" class="col-12 q-my-xs"
+                @on-select="(val) => autocompleteSelected(val, store.kecamatans, 'kotakabupaten', 'refKecamatan', 'kecamatanDomisili', 'wilayah')"
+                @clear="() => {
+                  store.pasien.kecamatanDomisili = null
+                  store.pasien.kelurahanDomisili = null
+                }" />
+              <app-autocomplete-new ref="refKelurahan" :model="store.paramWilayahDomisili.kd_kelurahan"
+                label="Kelurahan" autocomplete="wilayah" option-value="kotakabupaten" option-label="wilayah" outlined
+                :source="store.kelurahans" class="col-8 q-my-xs"
+                @on-select="(val) => autocompleteSelected(val, store.kelurahans, 'kotakabupaten', 'refKelurahan', 'kelurahanDomisili', 'wilayah')"
+                @clear="store.pasien.kelurahanDomisili = null" />
+              <app-input-simrs v-model="store.pasien.kodeposDomisili" label="Kode Pos" :autofocus="false"
+                class-tambahan="col-4 q-my-xs" />
             </div>
           </div>
         </div>
@@ -475,78 +297,40 @@
         <div class="row q-col-gutter-x-sm q-pa-sm">
           <div class="col-4">
             <!-- <app-input-simrs label="No. registrasi (automatis)" readonly /> -->
-            <app-autocomplete
-              ref="refAsalRujukan"
-              v-model="store.pasien.asalrujukan"
-              label="Asal Rujukan"
-              autocomplete="asalrujukan"
-              option-value="kode"
-              option-label="asalrujukan"
-              outlined
-              :source="store.asalrujukans"
-              class="q-mb-xs"
-              :rules="[val => (!!val) || 'Harap diisi',]"
-            />
+            <app-autocomplete ref="refAsalRujukan" v-model="store.pasien.asalrujukan" label="Asal Rujukan"
+              autocomplete="asalrujukan" option-value="kode" option-label="asalrujukan" outlined
+              :source="store.asalrujukans" class="q-mb-xs" :rules="[val => (!!val) || 'Harap diisi',]" />
             <app-input-simrs v-model="store.pasien.nama_penanggungjawab" label="Nama Penanggung Jawab" />
             <app-input-simrs v-model="store.pasien.notelp_penanggungjawab" label="No Telp Penang Jawab" />
-            <app-autocomplete
-              ref="refDokter"
-              v-model="store.pasien.kd_dokter_bpjs"
-              label="Dokter"
-              autocomplete="nama"
-              option-value="kddpjp"
-              option-label="nama"
-              outlined
-              :source="store.dokters"
-              class="q-mb-xs"
-              :rules="[val => (!!val) || 'Harap diisi',]"
-              @selected="(val)=>pilihDokter(val)"
-            />
+            <!-- <select-input v-model="store.pasien.hub_keluarga" :options="store.hubKeluargas" label="Hubungan Keluarga"
+              class="q-mb-xs" /> -->
+
+            <autocomplete-input v-model="store.pasien.hub_keluarga" :options="store.hubKeluargas"
+              label="Hubungan Keluarga" @set-model="(val) => store.pasien.hub_keluarga = val" class="q-mb-xs" />
+            <app-autocomplete ref="refDokter" v-model="store.pasien.kd_dokter_bpjs" label="Dokter" autocomplete="nama"
+              option-value="kddpjp" option-label="nama" outlined :source="store.dokters" class="q-mb-xs"
+              :rules="[val => (!!val) || 'Harap diisi',]" @selected="(val) => pilihDokter(val)" />
+
+
           </div>
           <div class="col-4">
             <div class="row q-col-gutter-x-xs">
-              <select-diagnosa v-model="store.pasien.diagnosaAwal" class="q-mb-xs" :model="store.pasien.diagnosaAwal" @clear="store.pasien.diagnosaAwal=null" />
+              <select-diagnosa v-model="store.pasien.diagnosaAwal" class="q-mb-xs" :model="store.pasien.diagnosaAwal"
+                @clear="store.pasien.diagnosaAwal = null" />
               <div class="col-5">
-                <app-autocomplete
-                  ref="refJnsSistemBayar"
-                  v-model="store.pasien.jnsBayar"
-                  label="Pilih Sistem Bayar"
-                  autocomplete="sistembayar"
-                  option-value="kode"
-                  option-label="sistembayar"
-                  outlined
-                  :source="store.jnsSistemBayars"
-                  class="q-mb-xs"
-                  :rules="[val => (!!val) || 'Harap diisi',]"
-                  @selected="(val)=>store.filterSistemBayar(val)"
-                />
+                <app-autocomplete ref="refJnsSistemBayar" v-model="store.pasien.jnsBayar" label="Pilih Sistem Bayar"
+                  autocomplete="sistembayar" option-value="kode" option-label="sistembayar" outlined
+                  :source="store.jnsSistemBayars" class="q-mb-xs" :rules="[val => (!!val) || 'Harap diisi',]"
+                  @selected="(val) => store.filterSistemBayar(val)" />
               </div>
               <div class="col-7">
-                <app-autocomplete
-                  ref="refSistemBayar"
-                  v-model="store.pasien.kodesistembayar"
-                  label="Sistem Bayar"
-                  autocomplete="sistembayar"
-                  option-value="kode"
-                  option-label="sistembayar"
-                  outlined
-                  :source="store.sistembayars"
-                  class="q-mb-xs"
-                  :rules="[val => (!!val) || 'Harap diisi',]"
-                />
+                <app-autocomplete ref="refSistemBayar" v-model="store.pasien.kodesistembayar" label="Sistem Bayar"
+                  autocomplete="sistembayar" option-value="kode" option-label="sistembayar" outlined
+                  :source="store.sistembayars" class="q-mb-xs" :rules="[val => (!!val) || 'Harap diisi',]" />
               </div>
-              <app-autocomplete
-                ref="refCategoryKasus"
-                v-model="store.pasien.kategoriKasus"
-                label="Kategori Kasus"
-                autocomplete="uraian"
-                option-value="kode"
-                option-label="uraian"
-                outlined
-                :source="store.categories"
-                class="q-mb-xs col-12"
-                :rules="[val => (!!val) || 'Harap diisi',]"
-              />
+              <app-autocomplete ref="refCategoryKasus" v-model="store.pasien.kategoriKasus" label="Kategori Kasus"
+                autocomplete="uraian" option-value="kode" option-label="uraian" outlined :source="store.categories"
+                class="q-mb-xs col-12" :rules="[val => (!!val) || 'Harap diisi',]" />
             </div>
           </div>
           <div class="col-4">
@@ -556,79 +340,35 @@
               <!-- <q-btn dense color="primary" class="col-12 full-width q-ma-xs" @click="previewListKamar">
                 Cari Ruangan
               </q-btn> -->
-              <app-autocomplete
-                ref="refHakRuang"
-                v-model="store.pasien.hakruang"
-                label="Hak Ruang"
-                autocomplete="rs2"
-                option-value="rs1"
-                option-label="rs2"
-                outlined
-                :source="store.kamars"
-                class="q-mb-xs col-12"
-                :rules="[val => (!!val) || 'Harap diisi',]"
-                @selected="(val)=>pilihRuang(val)"
-              />
+              <app-autocomplete ref="refHakRuang" v-model="store.pasien.hakruang" label="Hak Ruang" autocomplete="rs2"
+                option-value="rs1" option-label="rs2" outlined :source="store.kamars" class="q-mb-xs col-12"
+                :rules="[val => (!!val) || 'Harap diisi',]" @selected="(val) => pilihRuang(val)" />
               <div class="flex q-gutter-sm full-width q-mb-sm">
                 <div>Titipkan Pasien ? : </div>
-                <q-radio
-                  v-for="item in store.titipans"
-                  :key="item"
-                  v-model="store.pasien.isTitipan"
-                  :val="item"
-                  :label="item"
-                  dense
-                  size="xs"
-                  @update:model-value="(val)=>{
-                    if (val==='Ya') {
-                      store.pasien.kode_ruang= null
-                      store.pasien.kamar= null
-                      store.pasien.no_bed= null
+                <q-radio v-for="item in store.titipans" :key="item" v-model="store.pasien.isTitipan" :val="item"
+                  :label="item" dense size="xs" @update:model-value="(val) => {
+                    if (val === 'Ya') {
+                      store.pasien.kode_ruang = null
+                      store.pasien.kamar = null
+                      store.pasien.no_bed = null
                     } else {
-                      store.pasien.kode_ruang= store.pasien.hakruang
-                      if(store.pasien.hakruang !== null) pilihRuang(store.pasien.hakruang)
+                      store.pasien.kode_ruang = store.pasien.hakruang
+                      if (store.pasien.hakruang !== null) pilihRuang(store.pasien.hakruang)
                     }
-                  }"
-                />
+                  }" />
               </div>
-              <app-autocomplete
-                v-if="store.pasien.isTitipan ==='Ya'"
-                ref="refKodeRuang"
-                v-model="store.pasien.kode_ruang"
-                label="Pilih Ruangan"
-                autocomplete="rs2"
-                option-value="rs1"
-                option-label="rs2"
-                outlined
-                :source="store.kamars"
-                class="q-mb-xs col-12"
-                :rules="[val => (!!val) || 'Harap diisi',]"
-                @selected="(val)=>pilihRuang(val)"
-              />
-              <app-autocomplete
-                ref="refGrupKamar"
-                v-model="store.pasien.kamar"
-                label="Pilih Kamar"
-                autocomplete="label"
-                option-value="value"
-                option-label="label"
-                outlined
-                :source="grupKamar"
-                class="q-mb-xs col-8"
-                :rules="[val => (!!val) || 'Harap diisi',]"
-                @selected="(val)=>pilihKamar(val)"
-              />
+              <app-autocomplete v-if="store.pasien.isTitipan === 'Ya'" ref="refKodeRuang"
+                v-model="store.pasien.kode_ruang" label="Pilih Ruangan" autocomplete="rs2" option-value="rs1"
+                option-label="rs2" outlined :source="store.kamars" class="q-mb-xs col-12"
+                :rules="[val => (!!val) || 'Harap diisi',]" @selected="(val) => pilihRuang(val)" />
+              <app-autocomplete ref="refGrupKamar" v-model="store.pasien.kamar" label="Pilih Kamar" autocomplete="label"
+                option-value="value" option-label="label" outlined :source="grupKamar" class="q-mb-xs col-8"
+                :rules="[val => (!!val) || 'Harap diisi',]" @selected="(val) => pilihKamar(val)" />
 
-              <q-select
-                dense outlined standout="bg-yellow-3"
-                v-model="store.pasien.no_bed"
-                :options="kamars" label="NO BED"
-                option-value="rs2"
-                :option-label="opt=> Object(opt) === opt && 'rs2' in opt ? `${opt.rs2}  -  ${opt.kunjungan.length ? 'Terisi' : 'Kosong'}` : '- Null -'"
-                map-options
-                emit-value
-                class="q-mb-xs col-4"
-              />
+              <q-select dense outlined standout="bg-yellow-3" v-model="store.pasien.no_bed" :options="kamars"
+                label="NO BED" option-value="rs2"
+                :option-label="opt => Object(opt) === opt && 'rs2' in opt ? `${opt.rs2}  -  ${opt.kunjungan.length ? 'Terisi' : 'Kosong'}` : '- Null -'"
+                map-options emit-value class="q-mb-xs col-4" />
               <!-- <app-autocomplete
                 ref="refKamar"
                 v-model="store.pasien.no_bed"
@@ -671,7 +411,8 @@
     <!-- DIALOG PESERTA -->
     <dialog-peserta v-model="store.openDialogPeserta" :peserta="store.cekPeserta" @ok="copyDataFromBpjs()" />
     <!-- DIALOG KAMAR -->
-    <dialog-show-kamar v-model="store.openDialogShowKamar" :items="store.listKamars" :loading="store.loadingShowKamar" @close="store.openDialogShowKamar = false" />
+    <dialog-show-kamar v-model="store.openDialogShowKamar" :items="store.listKamars" :loading="store.loadingShowKamar"
+      @close="store.openDialogShowKamar = false" />
     <dialog-cari-pasien v-model="store.openDialogCariPasien" @selected="selectPasien" />
   </q-form>
 </template>
@@ -685,6 +426,7 @@ const DialogPeserta = defineAsyncComponent(() => import('./compFormPendaftaran/D
 const SelectDiagnosa = defineAsyncComponent(() => import('./compFormPendaftaran/SelectDiagnosa.vue'))
 const DialogShowKamar = defineAsyncComponent(() => import('./compFormPendaftaran/DialogShowKamar.vue'))
 const DialogCariPasien = defineAsyncComponent(() => import('./compFormPendaftaran/DialogCariPasien.vue'))
+const AutocompleteInput = defineAsyncComponent(() => import('src/pages/simrs/ranap/layanan/components/AutocompleteInput.vue'))
 const store = useFormPendaftaranRanapStore()
 
 const weather = ref(null)
@@ -726,7 +468,7 @@ const gantiKewarganegaraan = e => {
   }
 }
 
-function isNumber (input) {
+function isNumber(input) {
   return !isNaN(input) && !isNaN(parseFloat(input))
 }
 
@@ -933,7 +675,7 @@ const autocompleteSelected = (val, fromArr, objVal, el, model, key) => {
   }
 }
 
-async function filterFn (val, update, abort) {
+async function filterFn(val, update, abort) {
   if (val.length < 3) {
     abort()
     return
@@ -952,14 +694,14 @@ async function filterFn (val, update, abort) {
     store.countrys = resp.data
   })
 }
-function citySelected (val) {
+function citySelected(val) {
   console.log('val', val)
   store.pasien.city = val.name
   store.pasien.country = val.country
   store.pasien.region = val.region
 }
 
-function hitungUsia (tanggalLahir) {
+function hitungUsia(tanggalLahir) {
   tanggalLahir = new Date(tanggalLahir)
   const hariIni = new Date()
   let usia = hariIni.getFullYear() - tanggalLahir.getFullYear()
@@ -971,7 +713,7 @@ function hitungUsia (tanggalLahir) {
   return usia
 }
 
-function copyDataFromBpjs () {
+function copyDataFromBpjs() {
   store.pasien.nama = store.cekPeserta?.nama
   store.pasien.nokabpjs = store.cekPeserta?.noKartu
   store.pasien.norm = store.cekPeserta?.mr?.noMR ?? store.pasien.norm
@@ -985,7 +727,7 @@ function copyDataFromBpjs () {
 }
 
 // eslint-disable-next-line no-unused-vars
-function pilihRuang (val) {
+function pilihRuang(val) {
   store.pasien.kamar = null
   const arr = store.kamars
   const obj = arr.length ? arr.find(x => x.rs1 === val) : null
@@ -1038,7 +780,7 @@ function pilihRuang (val) {
   // cariBiayaKamar()
 }
 
-function pilihKamar (val) {
+function pilihKamar(val) {
   console.log('pilihKamar', val)
   const arr = store.listKamars?.find(x => x.groups === store.pasien.group)?.kamars || []
   // console.log('arr', arr)
@@ -1047,7 +789,7 @@ function pilihKamar (val) {
   kamars.value = lists
 }
 
-function pilihDokter (val) {
+function pilihDokter(val) {
   const arr = store.dokters
   const obj = arr.length ? arr.find(x => x.kddpjp === val) : null
   // console.log('pilihKamar', obj)
@@ -1148,7 +890,7 @@ function pilihDokter (val) {
 // }
 
 // eslint-disable-next-line no-unused-vars
-function previewListKamar () {
+function previewListKamar() {
   store.openDialogShowKamar = true
   store.showKamar()
 }

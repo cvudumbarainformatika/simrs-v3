@@ -49,14 +49,14 @@ export const usePasienPulangRanapStore = defineStore('pasien-pulang-ranap-store'
 
     //   this.prognosis = resp.data
     // },
-    async getmastercarakeluar () {
+    async getmastercarakeluar() {
       const resp = await api.get('v1/simrs/ranap/layanan/pulang/getmastercarakeluar')
       console.log('getmastercarakeluar', resp)
 
       this.carakeluars = resp.data
     },
 
-    async simpandata (pasien) {
+    async simpandata(pasien) {
       this.loadingOrder = true
 
       // const form = {
@@ -66,6 +66,7 @@ export const usePasienPulangRanapStore = defineStore('pasien-pulang-ranap-store'
       this.form.kodesistembayar = pasien?.kodesistembayar
       this.form.dokter = pasien?.dokter
       this.form.kdruang = pasien?.kdruangan
+      this.form.noSep = pasien?.sep
       // }
       // // this.form.isRanap = isRanap
 
@@ -117,7 +118,7 @@ export const usePasienPulangRanapStore = defineStore('pasien-pulang-ranap-store'
     //   }
     // },
 
-    initReset (pasien) {
+    initReset(pasien) {
       this.form = {
 
         prognosis: pasien?.prognosis ?? null,

@@ -91,6 +91,7 @@ export const useFormPendaftaranRanapStore = defineStore('pendaftaran-ranap-store
 
       nama_penanggungjawab: null,
       notelp_penanggungjawab: null,
+      hub_keluarga: null,
 
       // ini numpang gak usah di insert ke database
       usia: null
@@ -156,6 +157,7 @@ export const useFormPendaftaranRanapStore = defineStore('pendaftaran-ranap-store
     openDialogShowKamar: false,
     loadingShowKamar: true,
     openDialogCariPasien: false,
+    hubKeluargas: ['Diri Sendiri', 'Suami', 'Istri', 'Anak', 'Orang Tua'],
 
     errors: []
 
@@ -165,7 +167,7 @@ export const useFormPendaftaranRanapStore = defineStore('pendaftaran-ranap-store
   // },
   actions: {
 
-    initForm () {
+    initForm() {
       this.errors = []
       const keys = Object.keys(this.pasien)
       for (let i = 0; i < keys.length; i++) {
@@ -178,14 +180,16 @@ export const useFormPendaftaranRanapStore = defineStore('pendaftaran-ranap-store
       // this.pasien.noktp = 3574041305820002
       this.pasien.bisabacatulis = 'Ya'
       this.pasien.isTitipan = 'Tidak'
+      this.pasien.hub_keluarga = 'Diri Sendiri'
 
       this.paramWilayah.kd_negara = '62'
 
       this.cekPeserta = null
       this.openDialogPeserta = false
+
     },
 
-    setFormFromServer (val) {
+    setFormFromServer(val) {
       this.errors = []
       this.pasien = {
         barulama: val.baru ?? 'Baru',
@@ -298,18 +302,18 @@ export const useFormPendaftaranRanapStore = defineStore('pendaftaran-ranap-store
         this.domisiliSama = false
       }
 
-      console.log('form', val)
+      // console.log('form', val)
       this.openDialogCariPasien = false
       return new Promise((resolve, reject) => {
         resolve()
       })
     },
 
-    async cekPesertaBpjs (by, no) {
+    async cekPesertaBpjs(by, no) {
       const params = { params: { by, no } }
       await api.get('v1/simrs/pendaftaran/ranap/cek-peserta-bpjs', params)
         .then(resp => {
-          console.log('cekPesertaBpjs', resp)
+          // console.log('cekPesertaBpjs', resp)
           const bpjs = resp?.data?.bpjs
           const rs = resp?.data?.rs
           if (bpjs.metadata.code === '200') {
@@ -359,11 +363,11 @@ export const useFormPendaftaranRanapStore = defineStore('pendaftaran-ranap-store
           // }
         })
         .catch(err => {
-          console.log('cekPesertaBpjs', err)
+          // console.log('cekPesertaBpjs', err)
         })
     },
 
-    resetFormPasienIfnotExist () {
+    resetFormPasienIfnotExist() {
       this.pasien.barulama = null
       this.pasien.norm = null
       this.pasien.alamat = null
@@ -390,14 +394,14 @@ export const useFormPendaftaranRanapStore = defineStore('pendaftaran-ranap-store
       this.pasien.suku = null
       this.pasien.tempatlahir = null
     },
-    setForm (key, val) {
+    setForm(key, val) {
       this.pasien[key] = val
     },
-    async getKelamin () {
+    async getKelamin() {
       // this.loading = true
       await api.get('v1/simrs/master/kelamin')
         .then(resp => {
-          console.log('kelamin', resp.data)
+          // console.log('kelamin', resp.data)
           // this.loading = false
           this.kelamins = resp.data
           // this.autocompleteStore.setKelamin(resp.data)
@@ -411,12 +415,12 @@ export const useFormPendaftaranRanapStore = defineStore('pendaftaran-ranap-store
         })
     },
 
-    async getSapaan () {
+    async getSapaan() {
       // this.loading = true
       await api.get('v1/simrs/master/sapaan')
         .then(resp => {
           // this.loading = false
-          console.log('sapaan', resp.data)
+          // console.log('sapaan', resp.data)
           this.sapaans = resp.data
         })
         .catch(() => {
@@ -424,12 +428,12 @@ export const useFormPendaftaranRanapStore = defineStore('pendaftaran-ranap-store
         })
     },
 
-    async getNegara () {
+    async getNegara() {
       // this.loadingSelect = true
       const param = { params: this.paramWilayah }
       await api.get('v1/simrs/master/getnegara', param)
         .then((resp) => {
-          console.log('negara', resp.data)
+          // console.log('negara', resp.data)
           // this.loadingSelect = false
           // )
           this.negaras = resp.data[0]
@@ -449,37 +453,37 @@ export const useFormPendaftaranRanapStore = defineStore('pendaftaran-ranap-store
         })
     },
 
-    async getPendidikan () {
+    async getPendidikan() {
       // this.loading = true
       await api.get('v1/simrs/master/pendidikan')
         .then(resp => {
-          console.log('pendidikan', resp.data)
+          // console.log('pendidikan', resp.data)
           // this.loading = false
           this.pendidikans = resp.data
           // this.autocompleteStore.setPendidikan(resp.data)
         })
         .catch((err) => {
           // this.loading = false
-          console.log('get pendidikan', err)
+          // console.log('get pendidikan', err)
         })
     },
-    async getAgama () {
+    async getAgama() {
       this.loading = true
       await api.get('v1/simrs/master/agama')
         .then(resp => {
-          console.log('agama', resp.data)
+          // console.log('agama', resp.data)
           this.loading = false
           this.agamas = resp.data
           // this.autocompleteStore.setAgama(resp.data)
         })
         .catch(() => { this.loading = false })
     },
-    async getBahasa () {
+    async getBahasa() {
       this.loadingBahasa = true
       await api.get('v1/simrs/master/listbahasa')
         .then((resp) => {
           this.loadingBahasa = false
-          console.log('bahasa', resp.data)
+          // console.log('bahasa', resp.data)
           this.bahasas = resp.data
           // this.autocompleteStore.setBahasa(resp.data)
           // return new Promise(resolve => { resolve(resp) })
@@ -487,11 +491,11 @@ export const useFormPendaftaranRanapStore = defineStore('pendaftaran-ranap-store
           this.loadingBahasa = false
         })
     },
-    async getStatusPernikahan () {
+    async getStatusPernikahan() {
       this.loading = true
       await api.get('v1/simrs/master/statuspernikahan')
         .then(resp => {
-          console.log('status pernikahan', resp.data)
+          // console.log('status pernikahan', resp.data)
           this.loading = false
           // this.autocompleteStore.setStatusPenikahan(resp.data)
           this.statuspernikahans = resp.data
@@ -499,18 +503,18 @@ export const useFormPendaftaranRanapStore = defineStore('pendaftaran-ranap-store
         .catch(() => { this.loading = false })
     },
 
-    async getPekerjaan () {
+    async getPekerjaan() {
       this.loading = true
       await api.get('v1/simrs/master/pekerjaan')
         .then(resp => {
-          console.log('pekerjaan', resp.data)
+          // console.log('pekerjaan', resp.data)
           this.loading = false
           this.pekerjaans = resp.data
           // this.autocompleteStore.setPekerjaan(resp.data)
         })
         .catch(() => { this.loading = false })
     },
-    async getProvinces () {
+    async getProvinces() {
       this.loadingPropinsi = true
       const param = { params: this.paramWilayah }
       await api.get('v1/simrs/master/getpropinsi', param)
@@ -527,7 +531,7 @@ export const useFormPendaftaranRanapStore = defineStore('pendaftaran-ranap-store
           this.loadingPropinsi = false
         })
     },
-    async getKota () {
+    async getKota() {
       this.loadingKabupaten = true
       const param = { params: this.paramWilayah }
       await api.get('v1/simrs/master/getkotakabupaten', param)
@@ -539,13 +543,13 @@ export const useFormPendaftaranRanapStore = defineStore('pendaftaran-ranap-store
           this.loadingKabupaten = false
         })
     },
-    async getKec () {
+    async getKec() {
       this.loadingKecamatan = true
       const param = { params: this.paramWilayah }
       await api.get('v1/simrs/master/getkecamatan', param)
         .then((resp) => {
           // )
-          console.log('kecamatan', resp.data[0])
+          // console.log('kecamatan', resp.data[0])
           this.loadingKecamatan = false
           this.kecamatans = resp.data[0]
           return new Promise(resolve => { resolve(resp) })
@@ -553,13 +557,13 @@ export const useFormPendaftaranRanapStore = defineStore('pendaftaran-ranap-store
           this.loadingKecamatan = false
         })
     },
-    async getKels () {
+    async getKels() {
       this.loadingKelurahan = true
       const param = { params: this.paramWilayah }
       await api.get('v1/simrs/master/getkelurahan', param)
         .then((resp) => {
           // )
-          console.log('kelurahan', resp.data[0])
+          // console.log('kelurahan', resp.data[0])
           this.loadingKelurahan = false
           this.kelurahans = resp.data[0]
           return new Promise(resolve => { resolve(resp) })
@@ -568,14 +572,14 @@ export const useFormPendaftaranRanapStore = defineStore('pendaftaran-ranap-store
         })
     },
 
-    async getAsalRujukan () {
+    async getAsalRujukan() {
       this.loading = true
       await api.get('v1/simrs/master/listasalrujukan')
         .then(resp => {
           this.loading = false
           this.asalrujukans = resp.data
           // this.autocompleteStore.setAsalRujukan(resp.data)
-          console.log('asal rujukan', resp.data)
+          // console.log('asal rujukan', resp.data)
         })
         .catch(() => {
           this.loading = false
@@ -589,7 +593,7 @@ export const useFormPendaftaranRanapStore = defineStore('pendaftaran-ranap-store
     //       this.loading = false
     //       this.hakruangs = resp.data
     //       // this.autocompleteStore.setAsalRujukan(resp.data)
-    //       console.log('hak ruang', resp.data)
+    //       // console.log('hak ruang', resp.data)
     //     })
     //     .catch(() => {
     //       this.loading = false
@@ -603,23 +607,23 @@ export const useFormPendaftaranRanapStore = defineStore('pendaftaran-ranap-store
     //       this.loading = false
     //       this.jnssistembayars = resp.data
     //       // this.autocompleteStore.setSistemBayar(resp.data)
-    //       console.log('jenis sistem bayar', resp.data)
+    //       // console.log('jenis sistem bayar', resp.data)
     //     })
     //     .catch(() => {
     //       this.loading = false
     //     })
     // },
-    async getSistemBayar () {
+    async getSistemBayar() {
       this.loading = true
       await api.get('v1/simrs/master/allsistembayar')
         .then(resp => {
-          console.log('allsistembayar', resp.data)
+          // console.log('allsistembayar', resp.data)
           this.loading = false
           this.allSistemBayars = resp.data
           // mapping sistembayar
           const all = resp.data
           this.jnsSistemBayars = all.length ? all.filter(a => a.hidden === '') : []
-          // console.log('aljnsl', this.jnsSistemBayars)
+          // // console.log('aljnsl', this.jnsSistemBayars)
           this.filterSistemBayars('all')
         })
         .catch(() => {
@@ -627,7 +631,7 @@ export const useFormPendaftaranRanapStore = defineStore('pendaftaran-ranap-store
         })
     },
 
-    filterSistemBayar (kode) {
+    filterSistemBayar(kode) {
       const all = this.allSistemBayars
       let sb = []
       if (all.length > 0) {
@@ -641,11 +645,11 @@ export const useFormPendaftaranRanapStore = defineStore('pendaftaran-ranap-store
       }
     },
 
-    async getKamar () {
+    async getKamar() {
       this.loading = true
       await api.get('v1/simrs/master/kamar')
         .then(resp => {
-          console.log('kamar', resp.data)
+          // console.log('kamar', resp.data)
           this.loading = false
           this.kamars = resp.data
         })
@@ -654,11 +658,11 @@ export const useFormPendaftaranRanapStore = defineStore('pendaftaran-ranap-store
         })
     },
 
-    async getMasterTarif () {
+    async getMasterTarif() {
       this.loading = true
       await api.get('v1/simrs/master/gettigapuluhtarif')
         .then(resp => {
-          console.log('master tarif', resp.data)
+          // console.log('master tarif', resp.data)
           this.tarifs = resp.data
           // this.loading = false
           // this.kamars = resp.data
@@ -668,11 +672,11 @@ export const useFormPendaftaranRanapStore = defineStore('pendaftaran-ranap-store
         })
     },
 
-    async getDokter () {
+    async getDokter() {
       this.loading = true
       await api.get('v1/simrs/master/nakes/dokter')
         .then(resp => {
-          console.log('dokter', resp.data)
+          // console.log('dokter', resp.data)
           this.loading = false
           this.dokters = resp.data
 
@@ -685,11 +689,11 @@ export const useFormPendaftaranRanapStore = defineStore('pendaftaran-ranap-store
         })
     },
 
-    async showKamar () {
+    async showKamar() {
       this.loadingShowKamar = true
       await api.get('v1/simrs/master/listviewkamar')
         .then(resp => {
-          // console.log('show kamar resp', resp.data)
+          // // console.log('show kamar resp', resp.data)
           this.listKamars = []
           const data = resp.data
           for (let i = 0; i < data.length; i++) {
@@ -707,7 +711,7 @@ export const useFormPendaftaranRanapStore = defineStore('pendaftaran-ranap-store
             }
           }
           this.listKamars = data
-          console.log('show kamar', data)
+          // console.log('show kamar', data)
           this.loadingShowKamar = false
         })
         .catch(() => {
@@ -715,11 +719,11 @@ export const useFormPendaftaranRanapStore = defineStore('pendaftaran-ranap-store
         })
     },
 
-    async getJenisKasus () {
+    async getJenisKasus() {
       // this.loadingShowKamar = true
       await api.get('v1/simrs/master/jeniskasus')
         .then(resp => {
-          console.log('jenis kasus', resp.data)
+          // console.log('jenis kasus', resp.data)
           // this.loadingShowKamar = false
           this.categories = resp.data
         })
@@ -728,7 +732,7 @@ export const useFormPendaftaranRanapStore = defineStore('pendaftaran-ranap-store
         })
     },
 
-    async simpanPasien () {
+    async simpanPasien() {
       this.errors = []
       this.pasien.kd_negara = this.paramWilayah.kd_negara
       this.pasien.kd_propinsi = this.paramWilayah.kd_propinsi
@@ -742,7 +746,7 @@ export const useFormPendaftaranRanapStore = defineStore('pendaftaran-ranap-store
       this.pasien.kd_kecamatan_dom = this.paramWilayahDomisili.kd_kecamatan
       this.pasien.kd_kelurahan_dom = this.paramWilayahDomisili.kd_kelurahan
 
-      console.log('pasien', this.pasien)
+      // console.log('pasien', this.pasien)
 
       // const payload = {
       //   barulama: 'baru',
@@ -752,7 +756,7 @@ export const useFormPendaftaranRanapStore = defineStore('pendaftaran-ranap-store
 
       await api.post('v1/simrs/pendaftaran/ranap/simpanpendaftaran-byform', this.pasien)
         .then(resp => {
-          console.log('Simpan Pendaftaran', resp.data)
+          // console.log('Simpan Pendaftaran', resp.data)
           if (resp.status === 200) {
             notifSuccessVue('Pasien success didaftarkan ')
             this.initForm()
@@ -761,7 +765,7 @@ export const useFormPendaftaranRanapStore = defineStore('pendaftaran-ranap-store
         .catch((err) => {
           const bag = err.response?.status === 422 ? err.response?.data?.errors : []
           this.errors = bag
-          console.log('err', err.response)
+          // console.log('err', err.response)
         })
     }
 
