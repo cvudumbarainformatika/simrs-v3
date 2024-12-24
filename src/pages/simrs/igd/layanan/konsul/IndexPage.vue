@@ -1,30 +1,13 @@
 <template>
-  <div
-    class="full-height q-pa-sm"
-  >
+  <div class="full-height q-pa-sm">
     <div class="row q-col-gutter-x-xs full-height">
       <div class="col-6 full-height">
-        <FormKonsul
-          :key="props.pasien"
-          :pasien="props.pasien"
-          tooltip="History Pasien (Shift + H)"
-        />
+        <FormKonsul :key="props.pasien" :pasien="props.pasien" tooltip="History Pasien (Shift + H)" />
       </div>
       <div class="col-6 full-height">
-        <ListKonsul
-          v-if="!isDetail"
-          :key="props.pasien"
-          :pasien="props.pasien"
-          :loadingaja="loadingaja"
-          :auth="user" @detail="lihatDetail"
-        />
-        <DetailForm
-          v-else
-          :item="detail"
-          :auth="user"
-          :pasien="props.pasien"
-          @to-list="isDetail = false"
-        />
+        <ListKonsul v-if="!isDetail" :key="props.pasien" :pasien="props.pasien" :loadingaja="loadingaja" :auth="user"
+          @detail="lihatDetail" />
+        <DetailForm v-else :item="detail" :auth="user" :pasien="props.pasien" @to-list="isDetail = false" />
       </div>
     </div>
   </div>
@@ -35,13 +18,17 @@ import { useKonsulIgdStore } from 'src/stores/simrs/igd/konsul'
 import FormKonsul from './comp/FormKonsul.vue'
 import ListKonsul from './comp/ListKonsul.vue'
 import DetailForm from './comp/DetailForm.vue'
-import { onMounted, onUnmounted, ref } from 'vue'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
+import { useAplikasiStore } from 'src/stores/app/aplikasi'
 
 const seamless = ref(false)
 const store = useKonsulIgdStore()
 
 const detail = ref(null)
 const isDetail = ref(false)
+
+const auth = useAplikasiStore()
+const user = computed(() => auth.user?.pegawai?.kdpegsimrs)
 
 const lihatDetail = (data) => {
   // console.log('detail', data)

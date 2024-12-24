@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia'
+import { defineStore, acceptHMRUpdate } from 'pinia'
 import { api } from 'src/boot/axios'
 import { dateDbFormat } from 'src/modules/formatter'
 import { notifErrVue, notifSuccess } from 'src/modules/utils'
@@ -257,6 +257,16 @@ export const usePengunjungIgdStore = defineStore('pengunjung-igd', {
         const target = data[kode]?.find(x => !('id' in x))
         if (target) {
           data[kode]?.splice(target, 1)
+        }
+      }
+    },
+    injectUpdatean(noreg, id, val, kode) {
+      const findPasien = this.pasiens.filter(x => x?.noreg === noreg)
+      if (findPasien.length) {
+        const data = findPasien[0]
+        const target = data[kode]?.find(x => x?.id === id)
+        if (target) {
+          Object.assign(target, val)
         }
       }
     },
@@ -556,3 +566,8 @@ export const usePengunjungIgdStore = defineStore('pengunjung-igd', {
     }
   }
 })
+
+// make sure to pass the right store definition, useAuth in this case.
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(usePengunjungIgdStore, import.meta.hot))
+}

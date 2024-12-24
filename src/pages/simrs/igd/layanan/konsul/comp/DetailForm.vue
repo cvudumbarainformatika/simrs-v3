@@ -27,23 +27,21 @@
 
         <div class="q-mt-lg">
           <div>Dengan Hormat,</div>
-          <div>Mohon Bantuan Dokter <b>{{ namaPetugas(item?.kddokterkonsul) }}</b>, untuk konsultasi Masalah medik saat ini</div>
+          <div>Mohon Bantuan Dokter <b>{{ namaPetugas(item?.kddokterkonsul) }}</b>, untuk konsultasi Masalah medik saat
+            ini</div>
           <div>{{ item?.permintaan }}</div>
 
           <div class="q-mt-lg">
             Terimakasih Atas Kerjasamanya
           </div>
 
-          <q-form v-if="item?.kddokterkonsul === auth" ref="formRef" class="q-mt-lg" @submit="onSubmit">
-            <q-input
-              outlined standout="bg-yellow-3"
-              v-model="form.jawaban"
-              label="" type="textarea" rows="10"
-            />
+          <q-form v-if="cekYgMenjawab(item)" ref="formRef" class="q-mt-lg" @submit="onSubmit">
+            <q-input outlined standout="bg-yellow-3" v-model="form.jawaban" label="" type="textarea" rows="10" />
 
             <div class="text-right q-mt-lg q-gutter-md">
               <q-btn color="dark" label="Kembali" @click="emits('toList')" />
-              <q-btn :loading="loadingSave" :disable="loadingSave" color="primary" label="Simpan Jawaban" type="submit" />
+              <q-btn :loading="loadingSave" :disable="loadingSave" color="primary" label="Simpan Jawaban"
+                type="submit" />
             </div>
           </q-form>
 
@@ -61,10 +59,12 @@
 
 <script setup>
 import { onMounted, ref } from 'vue'
-import { useKonsulRanapStore } from 'src/stores/simrs/ranap/konsul'
-import { usePengunjungRanapStore } from 'src/stores/simrs/ranap/pengunjung'
+// import { useKonsulRanapStore } from 'src/stores/simrs/ranap/konsul'
+// import { usePengunjungRanapStore } from 'src/stores/simrs/ranap/pengunjung'
 import { api } from 'src/boot/axios'
 import { notifSuccess } from 'src/modules/utils'
+import { useKonsulIgdStore } from 'src/stores/simrs/igd/konsul'
+import { usePengunjungIgdStore } from 'src/stores/simrs/igd/pengunjung'
 
 const props = defineProps({
   pasien: {
@@ -83,23 +83,23 @@ const props = defineProps({
 
 const emits = defineEmits(['toList'])
 
-const store = useKonsulRanapStore()
-const kunjunganRanap = usePengunjungRanapStore()
+const store = useKonsulIgdStore()
+const kunjunganRanap = usePengunjungIgdStore()
 const formRef = ref(null)
 const form = ref({
   jawaban: 'Dengan Hormat, ' + '\n' + 'Sesuai Permintaan konsultasi pada Pemeriksaan pasien, kami dapati saat ini' + '\n' + '\n' + '\n' + 'Saran Tindakan medik / Pengobatan : ' + '\n'
 })
 const loadingSave = ref(false)
 
-function namaPetugas (item) {
+function namaPetugas(item) {
   // console.log('item', item)
   const petugas = store.dokters?.find(x => x.kdpegsimrs === item)?.nama ?? null
   return petugas
 }
 
 onMounted(() => {
-  console.log('item', props?.item)
-
+  // console.log('item', props?.item)
+  form.value.jawaban = props?.item?.jawaban ?? 'Dengan Hormat, ' + '\n' + 'Sesuai Permintaan konsultasi pada Pemeriksaan pasien, kami dapati saat ini' + '\n' + '\n' + '\n' + 'Saran Tindakan medik / Pengobatan : ' + '\n'
   if (props?.auth === props?.item?.kddokterkonsul) {
     Promise.all([
       updateFlagRanap(props?.item)
@@ -107,13 +107,13 @@ onMounted(() => {
   }
 })
 
-async function updateFlagRanap (item) {
+async function updateFlagRanap(item) {
   const findPasien = kunjunganRanap.pasiens?.find(x => x?.noreg === props?.pasien?.noreg) ?? null
   const konsultasis = findPasien?.konsultasi ?? []
   const target = konsultasis?.find(x => x?.id === item?.id) ?? null
   const targetIndex = konsultasis?.findIndex(x => x?.id === item?.id)
 
-  console.log('find pasien', targetIndex, target)
+  // console.log('find pasien', targetIndex, target)
   if (target) {
     if (target.flag === null || target.flag === '' || target.flag === undefined) {
       target.flag = '1'
@@ -132,11 +132,11 @@ async function updateFlagRanap (item) {
   }
 }
 
-function getNewLine (text) {
+function getNewLine(text) {
   return text?.replace(/\n/g, '<br/>')
 }
 
-function onSubmit () {
+function onSubmit() {
   // eslint-disable-next-line prefer-const
   const { item, pasien } = props
   form.value.id = item?.id
@@ -164,6 +164,50 @@ function onSubmit () {
         reject(err)
       })
   })
+}
+
+function cekYgMenjawab(item) {
+
+  let open = false
+  if (item?.kddokterkonsul === props?.auth) { // jika akun dokter konsulnya maka... jawaban terbuka
+    // tapi jika dokter sudah memverif
+
+    open = true
+  }
+  else if (item?.nakesminta?.kdgroupnakes === '2') { // jika yg konsultasi adalah perawat maka... jawaban terbuka
+    const ygJwbPerawat = (item?.kdminta === item?.user_jawab)
+    // console.log('ygJwbPerawat', ygJwbPerawat)
+    if (item?.user_jawab === null || item?.user_jawab === '') {
+      open = true
+    }
+    else {
+      if (ygJwbPerawat) {
+        open = true
+      }
+      else {
+        open = false
+      }
+    }
+  } else if (item?.nakesminta?.kdgroupnakes === '1' || item?.nakesminta?.statusspesialis === 'Umum') { // jika yg konsultasi adalah perawat maka... jawaban terbuka
+    const ygJwbPerawat = (item?.kdminta === item?.user_jawab)
+    // console.log('ygJwbPerawat', ygJwbPerawat)
+    if (item?.user_jawab === null || item?.user_jawab === '') {
+      open = true
+    }
+    else {
+      if (ygJwbPerawat) {
+        open = true
+      }
+      else {
+        open = false
+      }
+    }
+  }
+  else {
+    open = false
+  }
+
+  return open
 }
 
 </script>
