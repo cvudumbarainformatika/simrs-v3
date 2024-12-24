@@ -32,10 +32,10 @@
             </thead>
             <tbody v-if="store.reqs.levelberapa === 6">
               <tr v-for="it in store.hasilpendapatan" :key="it" :class="it.kode.length <= 12 ? 'text-bold' : ''">
-                <td>
+                <td class="text-left">
                   {{ it.kode }}
                 </td>
-                <td>
+                <td class="text-left">
                   {{ it.uraian }}
                 </td>
                 <td class="text-right">
@@ -81,10 +81,10 @@
                 </td>
               </tr>
               <tr v-for="it in store.hasilbelanja" :key="it" :class="it.kode.length <= 12 ? 'text-bold' : ''">
-                <td>
+                <td class="text-left">
                   {{ it.kode }}
                 </td>
-                <td>
+                <td class="text-left">
                   {{ it.uraian }}
                 </td>
                 <td class="text-right">
@@ -153,10 +153,10 @@
                 </td>
               </tr>
               <tr v-for="it in store.hasilsilpa" :key="it" :class="it.kode.length <= 12 ? 'text-bold' : ''">
-                <td>
+                <td class="text-left">
                   {{ it.kode }}
                 </td>
-                <td>
+                <td class="text-left">
                   {{ it.uraian }}
                 </td>
                 <td class="text-right">
@@ -227,10 +227,10 @@
             </tbody>
             <tbody v-if="store.reqs.levelberapa === 5">
               <tr v-for="it in store.hasilpendapatan" :key="it" :class="it.kode.length <= 9 ? 'text-bold' : ''">
-                <td>
+                <td class="text-left">
                   {{ it.kode }}
                 </td>
-                <td>
+                <td class="text-left">
                   {{ it.uraian }}
                 </td>
                 <td class="text-right">
@@ -276,10 +276,10 @@
                 </td>
               </tr>
               <tr v-for="it in store.hasilbelanja" :key="it" :class="it.kode.length <= 9 ? 'text-bold' : ''">
-                <td>
+                <td class="text-left">
                   {{ it.kode }}
                 </td>
-                <td>
+                <td class="text-left">
                   {{ it.uraian }}
                 </td>
                 <td class="text-right">
@@ -348,10 +348,10 @@
                 </td>
               </tr>
               <tr v-for="it in store.hasilsilpa" :key="it" :class="it.kode.length <= 9 ? 'text-bold' : ''">
-                <td>
+                <td class="text-left">
                   {{ it.kode }}
                 </td>
-                <td>
+                <td class="text-left">
                   {{ it.uraian }}
                 </td>
                 <td class="text-right">
@@ -422,10 +422,10 @@
             </tbody>
             <tbody v-if="store.reqs.levelberapa === 4">
               <tr v-for="it in store.hasilpendapatan" :key="it" :class="it.kode.length <= 6 ? 'text-bold' : ''">
-                <td>
+                <td class="text-left">
                   {{ it.kode }}
                 </td>
-                <td>
+                <td class="text-left">
                   {{ it.uraian }}
                 </td>
                 <td class="text-right">
@@ -471,10 +471,10 @@
                 </td>
               </tr>
               <tr v-for="it in store.hasilbelanja" :key="it" :class="it.kode.length <= 6 ? 'text-bold' : ''">
-                <td>
+                <td class="text-left">
                   {{ it.kode }}
                 </td>
-                <td>
+                <td class="text-left">
                   {{ it.uraian }}
                 </td>
                 <td class="text-right">
@@ -543,10 +543,10 @@
                 </td>
               </tr>
               <tr v-for="it in store.hasilsilpa" :key="it" :class="it.kode.length <= 6 ? 'text-bold' : ''">
-                <td>
+                <td class="text-left">
                   {{ it.kode }}
                 </td>
-                <td>
+                <td class="text-left">
                   {{ it.uraian }}
                 </td>
                 <td class="text-right">
@@ -617,10 +617,10 @@
             </tbody>
             <tbody v-if="store.reqs.levelberapa === 3">
               <tr v-for="it in store.hasilpendapatan" :key="it" :class="it.kode.length <= 3 ? 'text-bold' : ''">
-                <td>
+                <td class="text-left">
                   {{ it.kode }}
                 </td>
-                <td>
+                <td class="text-left">
                   {{ it.uraian }}
                 </td>
                 <td class="text-right">
@@ -666,10 +666,10 @@
                 </td>
               </tr>
               <tr v-for="it in store.hasilbelanja" :key="it" :class="it.kode.length <= 3 ? 'text-bold' : ''">
-                <td>
+                <td class="text-left">
                   {{ it.kode }}
                 </td>
-                <td>
+                <td class="text-left">
                   {{ it.uraian }}
                 </td>
                 <td class="text-right">
@@ -738,10 +738,10 @@
                 </td>
               </tr>
               <tr v-for="it in store.hasilsilpa" :key="it" :class="it.kode.length <= 3 ? 'text-bold' : ''">
-                <td>
+                <td class="text-left">
                   {{ it.kode }}
                 </td>
-                <td>
+                <td class="text-left">
                   {{ it.uraian }}
                 </td>
                 <td class="text-right">
@@ -812,10 +812,10 @@
             </tbody>
             <tbody v-if="store.reqs.levelberapa === 2 || store.reqs.levelberapa === 1">
               <tr v-for="it in store.hasilpendapatan" :key="it" :class="it.kode.length <= 1 ? 'text-bold' : ''">
-                <td>
+                <td class="text-left">
                   {{ it.kode }}
                 </td>
-                <td>
+                <td class="text-left">
                   {{ it.uraian }}
                 </td>
                 <td class="text-right">
@@ -861,10 +861,10 @@
                 </td>
               </tr>
               <tr v-for="it in store.hasilbelanja" :key="it" :class="it.kode.length <= 1 ? 'text-bold' : ''">
-                <td>
+                <td class="text-left">
                   {{ it.kode }}
                 </td>
-                <td>
+                <td class="text-left">
                   {{ it.uraian }}
                 </td>
                 <td class="text-right">
@@ -933,10 +933,10 @@
                 </td>
               </tr>
               <tr v-for="it in store.hasilsilpa" :key="it" :class="it.kode.length <= 1 ? 'text-bold' : ''">
-                <td>
+                <td class="text-left">
                   {{ it.kode }}
                 </td>
-                <td>
+                <td class="text-left">
                   {{ it.uraian }}
                 </td>
                 <td class="text-right">

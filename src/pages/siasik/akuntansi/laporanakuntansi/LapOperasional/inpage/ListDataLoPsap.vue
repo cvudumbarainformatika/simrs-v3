@@ -1,14 +1,9 @@
 <template>
-  <template v-if="store.psappendapatan.length > 0 ">
+  <template v-if="store.psappendapatan.length > 0">
     <q-card-section class="full-width">
       <div class="row">
         <div class="full-width">
-          <q-markup-table
-            class="my-sticky-table"
-            flat-bordered
-            wrap-cells
-            :separator="separator"
-          >
+          <q-markup-table class="my-sticky-table" flat-bordered wrap-cells :separator="separator">
             <thead>
               <tr class="bg-dark text-white max-width">
                 <th>URAIAN</th>
@@ -17,14 +12,12 @@
             </thead>
             <tbody v-if="store.reqs.jenislo === 2">
               <tr>
-                <td colspan="2" class="text-bold">
+                <td colspan="2" class="text-bold text-left">
                   PENDAPATAN
                 </td>
               </tr>
-              <tr
-                v-for="it in store.psappendapatan" :key="it"
-              >
-                <td>
+              <tr v-for="it in store.psappendapatan" :key="it">
+                <td class="text-left">
                   - {{ it.uraian }}
                 </td>
                 <td class="text-right">
@@ -32,7 +25,7 @@
                 </td>
               </tr>
               <tr class="text-bold">
-                <td>
+                <td class="text-left">
                   JUMLAH PENDAPATAN
                 </td>
                 <td class="text-right">
@@ -40,14 +33,12 @@
                 </td>
               </tr>
               <tr>
-                <td colspan="2" class="text-bold">
+                <td colspan="2" class="text-bold text-left">
                   BEBAN
                 </td>
               </tr>
-              <tr
-                v-for="it in store.psapbeban" :key="it"
-              >
-                <td>
+              <tr v-for="it in store.psapbeban" :key="it">
+                <td class="text-left">
                   - {{ it.uraian }}
                 </td>
                 <td class="text-right">
@@ -55,7 +46,7 @@
                 </td>
               </tr>
               <tr class="text-bold">
-                <td>
+                <td class="text-left">
                   JUMLAH BEBAN
                 </td>
                 <td class="text-right">
@@ -73,14 +64,12 @@
               </tr>
 
               <tr class="text-bold">
-                <td>
+                <td class="text-left">
                   KEGIATAN NON OPERASIONAL
                 </td>
               </tr>
-              <tr
-                v-for="it in store.psapnonoperasional" :key="it"
-              >
-                <td>
+              <tr v-for="it in store.psapnonoperasional" :key="it">
+                <td class="text-left">
                   - {{ it.uraian }}
                 </td>
                 <td class="text-right">
@@ -88,7 +77,7 @@
                 </td>
               </tr>
               <tr class="text-bold">
-                <td>
+                <td class="text-left">
                   JUMLAH SURPLUS / DEFISIT DARI KEGIATAN NON OPERASIONAL
                 </td>
                 <td class="text-right">
@@ -104,14 +93,12 @@
                 </td>
               </tr>
               <tr class="text-bold">
-                <td>
+                <td class="text-left">
                   POS LUAR BIASA
                 </td>
               </tr>
-              <tr
-                v-for="it in store.psapbebanluarbiasa" :key="it"
-              >
-                <td>
+              <tr v-for="it in store.psapbebanluarbiasa" :key="it">
+                <td class="text-left">
                   - {{ it.uraian }}
                 </td>
                 <td class="text-right">
@@ -119,7 +106,7 @@
                 </td>
               </tr>
               <tr class="text-bold">
-                <td>
+                <td class="text-left">
                   JUMLAH POS LUAR BIASA
                 </td>
                 <td class="text-right">
@@ -149,31 +136,31 @@ const separator = ref('cell')
 
 const store = useLaporanOperasionalStore()
 
-function totalPendapatan () {
+function totalPendapatan() {
   const totalrealisasi = store.psappendapatan?.map((x) => parseFloat(x.realisasi)).reduce((a, b) => a + b, 0).toFixed(2)
   // console.log('xssx', totalrealisasi)
   return parseFloat(totalrealisasi)
 }
 
-function totalBeban () {
+function totalBeban() {
   const totalrealisasi = store.psapbeban?.map((x) => parseFloat(x.realisasi)).reduce((a, b) => a + b, 0).toFixed(2)
   // console.log('xssx', totalrealisasi)
   return parseFloat(totalrealisasi)
 }
 
-function surplusDefisit () {
+function surplusDefisit() {
   const totalpendapatan = store.psappendapatan?.map((x) => parseFloat(x.realisasi)).reduce((a, b) => a + b, 0).toFixed(2)
   const totalbeban = store.psapbeban?.map((x) => parseFloat(x.realisasi)).reduce((a, b) => a + b, 0).toFixed(2)
   const totalrealisasi = parseFloat(totalpendapatan - totalbeban)
   return parseFloat(totalrealisasi)
 }
 
-function surplusDefisitnonOperasional () {
+function surplusDefisitnonOperasional() {
   const totalrealisasi = store.psapnonoperasional?.map((x) => parseFloat(x.realisasi)).reduce((a, b) => a + b, 0).toFixed(2)
   return parseFloat(totalrealisasi)
 }
 
-function surplusDefisitsblmPoslb () {
+function surplusDefisitsblmPoslb() {
   const totalpendapatan = store.psappendapatan?.map((x) => parseFloat(x.realisasi)).reduce((a, b) => a + b, 0).toFixed(2)
   const totalbeban = store.psapbeban?.map((x) => parseFloat(x.realisasi)).reduce((a, b) => a + b, 0).toFixed(2)
   const totalnonoper = store.psapnonoperasional?.map((x) => parseFloat(x.realisasi)).reduce((a, b) => a + b, 0).toFixed(2)
@@ -181,12 +168,12 @@ function surplusDefisitsblmPoslb () {
   return parseFloat(totalrealisasi)
 }
 
-function jmlPosLuarBiasa () {
+function jmlPosLuarBiasa() {
   const totalrealisasi = store.psapbebanluarbiasa?.map((x) => parseFloat(x.realisasi)).reduce((a, b) => a + b, 0).toFixed(2)
   return parseFloat(totalrealisasi)
 }
 
-function surplusDefisitLO () {
+function surplusDefisitLO() {
   const totalpendapatan = store.psappendapatan?.map((x) => parseFloat(x.realisasi)).reduce((a, b) => a + b, 0).toFixed(2)
   const totalbeban = store.psapbeban?.map((x) => parseFloat(x.realisasi)).reduce((a, b) => a + b, 0).toFixed(2)
   const totalnonoper = store.psapnonoperasional?.map((x) => parseFloat(x.realisasi)).reduce((a, b) => a + b, 0).toFixed(2)
