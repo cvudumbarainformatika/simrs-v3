@@ -118,7 +118,7 @@
         </tr>
         <tr>
           <td colspan="2">HPHT : {{ item?.haid ?? '-' }}</td>
-          <td colspan="4" rowspan="4" valign="top">Anamnesa :</td>
+          <td colspan="4" rowspan="4" valign="top">Anamnesa : {{ props.pasien?.anamnesis[0].rs4 ?? '-' }}</td>
         </tr>
         <tr>
           <td colspan="2">G : {{ item?.gravida ?? '-' }}</td>
