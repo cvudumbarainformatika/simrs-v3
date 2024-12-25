@@ -101,8 +101,8 @@
           <td colspan="2" rowspan="2" valign="top">BB : {{ item?.bb }} Kg</td>
           <td>Riwayat Alergi : </td>
           <td> {{ props.pasien?.anamnesis?.riwayatalergi ?? '-' }}</td>
-          <td rowspan="4">KATEGORI TRIASE </td>
-          <td rowspan="4"> P2</td>
+          <td rowspan="4" class="text-center text-h7">KATEGORI TRIASE </td>
+          <td rowspan="4" class="text-center text-bold text-h5"> {{ item?.kategoritriage }}</td>
         </tr>
         <tr>
           <td rowspan="1">Keterangan Alergi :</td>
