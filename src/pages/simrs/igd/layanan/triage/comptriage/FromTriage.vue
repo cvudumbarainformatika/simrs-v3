@@ -1,29 +1,13 @@
 <template>
-  <q-card
-    flat
-    bordered
-    square
-    class="full-height"
-    style="overflow: hidden;"
-  >
-    <q-form
-      ref="refForm"
-      class="full-height"
-      @submit="onSubmit"
-    >
+  <q-card flat bordered square class="full-height" style="overflow: hidden;">
+    <q-form ref="refForm" class="full-height" @submit="onSubmit">
       <q-card-section class="q-px-md q-py-xs bg-primary text-white">
         <div class="row items-center justify-between">
           <div class="f-12 text-weight-bold">
             Form Triage
           </div>
           <div>
-            <q-btn
-              flat
-              dense
-              size="md"
-              icon="icon-mat-history"
-              @click="historyOpen"
-            >
+            <q-btn flat dense size="md" icon="icon-mat-history" @click="historyOpen">
               <q-tooltip class="bg-dark text-white">
                 {{ tooltip }}
               </q-tooltip>
@@ -32,26 +16,14 @@
         </div>
       </q-card-section>
       <q-separator />
-      <q-card-section
-        class="full-height scroll"
-      >
-        <div
-          class="row items-center"
-        >
+      <q-card-section class="full-height scroll">
+        <div class="row items-center">
           <div class="col-2">
             Kategori D.O.A :
           </div>
           <div class="col-10">
-            <q-checkbox
-              v-for="(al, i) in store.doak"
-              :key="i"
-              v-model="store.doax"
-              :val="al"
-              :label="al"
-              color="primary"
-              @update:model-value="updateSelection"
-              @click="hidenall"
-            />
+            <q-checkbox v-for="(al, i) in store.doak" :key="i" v-model="store.doax" :val="al" :label="al"
+              color="primary" @update:model-value="updateSelection" @click="hidenall" />
             <!-- <q-checkbox ref="refdoa" size="md" v-model="store.form.doa" label="Tidak Ada Nafas" val="Tidak Ada Nafas" color="primary" @click="hidenall" @update:model-value="updateSelection" />
             <q-checkbox ref="refdoa" size="md" v-model="store.form.doa" label="Tidak Ada Nadi" val="Tidak Ada Nadi" color="primary" @click="hidenall" @update:model-value="updateSelection" />
             <q-checkbox ref="refdoa" size="md" v-model="store.form.doa" label="ECG Flat" val="ECG Flat" color="primary" @click="hidenall" @update:model-value="updateSelection" />
@@ -66,30 +38,16 @@
               Pasien Hamil...??
             </div>
             <div class="col-4">
-              <q-option-group
-                ref="refpasienhamil"
-                v-model="store.form.pasienhamil"
-                :options="optionhamil"
-                color="primary"
-                inline
-                dense
-                @update:model-value="flagstatus"
-              />
+              <q-option-group ref="refpasienhamil" v-model="store.form.pasienhamil" :options="optionhamil"
+                color="primary" inline dense @update:model-value="flagstatus" />
             </div>
           </div>
           <div v-if="store.form.pasienhamil === 1" class="q-pt-sm">
             <q-separator class="q-my-sm" />
             <div class="row q-col-gutter-sm">
               <div class="col-6 q-pb-sm">
-                <app-input-date
-                  ref="refhaid"
-                  :model="store.form.haid"
-                  mask="date"
-                  outlined
-                  standout="bg-yellow-3"
-                  label="Hari Pertama Haid Terakir"
-                  @set-model="val=>store.form.haid=val"
-                >
+                <app-input-date ref="refhaid" :model="store.form.haid" mask="date" outlined standout="bg-yellow-3"
+                  label="Hari Pertama Haid Terakir" @set-model="val => store.form.haid = val">
                   <template #append>
                     <q-icon name="event" class="cursor-pointer">
                       <q-popup-proxy cover transition-show="scale" transition-hide="scale">
@@ -104,87 +62,39 @@
                 </app-input-date>
               </div>
               <div class="col-6">
-                <q-input
-                  ref="refgravida"
-                  dense
-                  v-model="store.form.gravida"
-                  outlined
-                  standout="bg-yellow-3"
-                  label="Gravida"
-                  :rules="[val => !!val || 'Harap Diisi terlebih dahulu']"
-                />
+                <q-input ref="refgravida" dense v-model="store.form.gravida" outlined standout="bg-yellow-3"
+                  label="Gravida" :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" />
               </div>
             </div>
             <div class="row q-col-gutter-sm">
               <div class="col-6">
-                <q-input
-                  ref="refpartus"
-                  v-model="store.form.partus"
-                  outlined
-                  dense
-                  standout="bg-yellow-3"
-                  label="Partus"
-                  :rules="[val => !!val || 'Harap Diisi terlebih dahulu']"
-                />
+                <q-input ref="refpartus" v-model="store.form.partus" outlined dense standout="bg-yellow-3"
+                  label="Partus" :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" />
               </div>
               <div class="col-6">
-                <q-input
-                  ref="refabortus"
-                  v-model="store.form.abortus"
-                  outlined
-                  dense
-                  standout="bg-yellow-3"
-                  label="Abortus"
-                  :rules="[val => !!val || 'Harap Diisi terlebih dahulu']"
-                />
+                <q-input ref="refabortus" v-model="store.form.abortus" outlined dense standout="bg-yellow-3"
+                  label="Abortus" :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" />
               </div>
             </div>
 
             <div class="row q-col-gutter-sm q-pb-sm">
               <div class="col-4">
-                <q-select
-                  ref="refnyeri"
-                  v-model="store.form.nyeri"
-                  label="Nyeri"
-                  outlined
-                  standout="bg-yellow-3"
-                  dense
-                  transition-show="flip-up"
-                  transition-hide="flip-down"
-                  :options="nyeri"
+                <q-select ref="refnyeri" v-model="store.form.nyeri" label="Nyeri" outlined standout="bg-yellow-3" dense
+                  transition-show="flip-up" transition-hide="flip-down" :options="nyeri"
                   :rules="[val => !!val || 'Harap Diisi terlebih dahulu']"
-                  @update:model-value="(val) => scorenyeri(val)"
-                />
+                  @update:model-value="(val) => scorenyeri(val)" />
               </div>
               <div class="col-4">
-                <q-select
-                  ref="reflochea"
-                  v-model="store.form.lochea"
-                  label="Lochea"
-                  outlined
-                  standout="bg-yellow-3"
-                  dense
-                  transition-show="flip-up"
-                  transition-hide="flip-down"
-                  :options="lochea"
+                <q-select ref="reflochea" v-model="store.form.lochea" label="Lochea" outlined standout="bg-yellow-3"
+                  dense transition-show="flip-up" transition-hide="flip-down" :options="lochea"
                   :rules="[val => !!val || 'Harap Diisi terlebih dahulu']"
-                  @update:model-value="(val) => scoreloche(val)"
-                />
+                  @update:model-value="(val) => scoreloche(val)" />
               </div>
               <div class="col-4">
-                <q-select
-                  ref="refproteinurin"
-                  v-model="store.form.proteinurin"
-                  label="Protein Urin"
-                  outlined
-                  standout="bg-yellow-3"
-                  dense
-                  transition-show="flip-up"
-                  transition-hide="flip-down"
-                  :options="proteinurin"
-                  :rules="[val => !!val || 'Harap Diisi terlebih dahulu']"
-                  @update:model-value="(val) => scoreproteinurin(val)"
-                />
+                <q-select ref="refproteinurin" v-model="store.form.proteinurin" label="Protein Urin" outlined
+                  standout="bg-yellow-3" dense transition-show="flip-up" transition-hide="flip-down"
+                  :options="proteinurin" :rules="[val => !!val || 'Harap Diisi terlebih dahulu']"
+                  @update:model-value="(val) => scoreproteinurin(val)" />
               </div>
               <div class="col-4 text-bold q-pt-none q-mt-none">
                 Score Nyeri : {{ store.form.scorenyeri }}
@@ -201,75 +111,33 @@
           <div class="q-pt-sm">
             <div class="row q-col-gutter-sm q-pb-sm">
               <div class="col-6">
-                <q-select
-                  ref="refjalannafas"
-                  v-model="store.form.jalannafas"
-                  label="Jalan Nafas"
-                  outlined
-                  dense
-                  transition-show="flip-up"
-                  transition-hide="flip-down"
-                  standout="bg-yellow-3"
-                  fill-input
-                  :options="jalannafas"
-                  :rules="[val => !!val || 'Harap Diisi terlebih dahulu']"
-                  @update:model-value="cekjalannafas"
-                />
+                <q-select ref="refjalannafas" v-model="store.form.jalannafas" label="Jalan Nafas" outlined dense
+                  transition-show="flip-up" transition-hide="flip-down" standout="bg-yellow-3" fill-input
+                  :options="jalannafas" :rules="[val => !!val || 'Harap Diisi terlebih dahulu']"
+                  @update:model-value="cekjalannafas" />
               </div>
               <div class="col-6">
-                <q-select
-                  ref="refpernapasan"
-                  v-model="store.form.pernapasan"
-                  label="Pernapasan"
-                  outlined
-                  dense
-                  transition-show="flip-up"
-                  transition-hide="flip-down"
-                  standout="bg-yellow-3"
-                  fill-input
-                  :disable="store.form.jalannafas !== 'Bebas'"
-                  :options="pernapasan"
-                  :rules="[val => !!val || 'Harap Diisi terlebih dahulu']"
-                  @update:model-value="ceksirkulasi"
-                />
+                <q-select ref="refpernapasan" v-model="store.form.pernapasan" label="Pernapasan" outlined dense
+                  transition-show="flip-up" transition-hide="flip-down" standout="bg-yellow-3" fill-input
+                  :disable="store.form.jalannafas !== 'Bebas'" :options="pernapasan"
+                  :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" @update:model-value="ceksirkulasi" />
               </div>
             </div>
             <div class="row q-col-gutter-sm">
               <div class="col-6">
-                <q-select
-                  ref="refsirkulasi"
-                  v-model="store.form.sirkulasi"
-                  label="Sirkulasi"
-                  outlined
-                  dense
-                  transition-show="flip-up"
-                  transition-hide="flip-down"
-                  standout="bg-yellow-3"
-                  fill-input
+                <q-select ref="refsirkulasi" v-model="store.form.sirkulasi" label="Sirkulasi" outlined dense
+                  transition-show="flip-up" transition-hide="flip-down" standout="bg-yellow-3" fill-input
                   :disable="store.form.jalannafas !== 'Bebas' || store.form.pernapasan !== 'Normal'"
-                  :options="sirkulasi"
-                  :rules="[val => !!val || 'Harap Diisi terlebih dahulu']"
-                  @update:model-value="cekdisability"
-                />
+                  :options="sirkulasi" :rules="[val => !!val || 'Harap Diisi terlebih dahulu']"
+                  @update:model-value="cekdisability" />
               </div>
               <div class="col-6">
-                <q-select
-                  ref="refdisability"
-                  v-model="store.form.disability"
-                  label="Disability"
-                  outlined
-                  dense
-                  transition-show="flip-up"
-                  transition-hide="flip-down"
-                  standout="bg-yellow-3"
-                  fill-input
-                  :disable="store.form.jalannafas !== 'Bebas' || store.form.pernapasan !== 'Normal' || store.form.sirkulasi === 'Nadi Normal' || store.form.sirkulasi === 'CRT > 2 dtk' || store.form.sirkulasi === 'Akral Dingin'
+                <q-select ref="refdisability" v-model="store.form.disability" label="Disability" outlined dense
+                  transition-show="flip-up" transition-hide="flip-down" standout="bg-yellow-3" fill-input :disable="store.form.jalannafas !== 'Bebas' || store.form.pernapasan !== 'Normal' || store.form.sirkulasi === 'Nadi Normal' || store.form.sirkulasi === 'CRT > 2 dtk' || store.form.sirkulasi === 'Akral Dingin'
                     || store.form.sirkulasi === 'Pucat' || store.form.sirkulasi === 'Takikardia' || store.form.sirkulasi === 'Bradikardia' || store.form.sirkulasi === 'Nadi Teraba Lemah'
                     || store.form.sirkulasi === 'Nadi Tidak Teraba' || store.form.sirkulasi === 'Henti Jantung'"
-                  :options="disability"
-                  :rules="[val => !!val || 'Harap Diisi terlebih dahulu']"
-                  @update:model-value="disabilitycekhasilsurve"
-                />
+                  :options="disability" :rules="[val => !!val || 'Harap Diisi terlebih dahulu']"
+                  @update:model-value="disabilitycekhasilsurve" />
               </div>
             </div>
             <q-separator class="q-my-xs" />
@@ -277,84 +145,34 @@
           <div class="q-pt-sm">
             <div class="row q-col-gutter-sm q-pb-sm">
               <div class="col-2">
-                <q-input
-                  ref="refnadi"
-                  v-model="store.form.nadi"
-                  label="Nadi(x/mnt)"
-                  outlined
-                  dense
-                  type="number"
-                  standout="bg-yellow-3"
-                  :rules="[val => !!val || 'Harap Diisi terlebih dahulu']"
-                  :debounce="1000"
-                  @update:model-value="scorenadi()"
-                />
+                <q-input ref="refnadi" v-model="store.form.nadi" label="Nadi(x/mnt)" outlined dense type="number"
+                  standout="bg-yellow-3" :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" :debounce="1000"
+                  @update:model-value="scorenadi()" />
               </div>
               <div class="col-2">
-                <q-input
-                  ref="refpernapasanx"
-                  v-model="store.form.pernapasanx"
-                  label="Pernapasan(x/mnt)"
-                  outlined
-                  dense
-                  type="number"
-                  standout="bg-yellow-3"
-                  :rules="[val => !!val || 'Harap Diisi terlebih dahulu']"
-                  :debounce="1000"
-                  @update:model-value="scorepernapasanx()"
-                />
+                <q-input ref="refpernapasanx" v-model="store.form.pernapasanx" label="Pernapasan(x/mnt)" outlined dense
+                  type="number" standout="bg-yellow-3" :rules="[val => !!val || 'Harap Diisi terlebih dahulu']"
+                  :debounce="1000" @update:model-value="scorepernapasanx()" />
               </div>
               <div class="col-2">
-                <q-input
-                  ref="refsistole"
-                  v-model="store.form.sistole"
-                  label="Sistole(mmHg)"
-                  outlined
-                  dense
-                  type="number"
-                  standout="bg-yellow-3"
-                  :rules="[val => !!val || 'Harap Diisi terlebih dahulu']"
-                  @update:model-value="scoresistole()"
-                />
+                <q-input ref="refsistole" v-model="store.form.sistole" label="Sistole(mmHg)" outlined dense
+                  type="number" standout="bg-yellow-3" :rules="[val => !!val || 'Harap Diisi terlebih dahulu']"
+                  @update:model-value="scoresistole()" />
               </div>
               <div class="col-2">
-                <q-input
-                  ref="refdiastole"
-                  v-model="store.form.diastole"
-                  label="Diastole(mmHg)"
-                  outlined
-                  dense
-                  type="number"
-                  standout="bg-yellow-3"
-                  :rules="[val => !!val || 'Harap Diisi terlebih dahulu']"
-                  @update:model-value="scorediastole()"
-                />
+                <q-input ref="refdiastole" v-model="store.form.diastole" label="Diastole(mmHg)" outlined dense
+                  type="number" standout="bg-yellow-3" :rules="[val => !!val || 'Harap Diisi terlebih dahulu']"
+                  @update:model-value="scorediastole()" />
               </div>
               <div class="col-2">
-                <q-input
-                  ref="refsuhu"
-                  v-model="store.form.suhu"
-                  label="Suhu"
-                  outlined
-                  dense
-                  mask="##.#"
-                  standout="bg-yellow-3"
-                  :rules="[val => !!val || 'Harap Diisi terlebih dahulu']"
-                  @update:model-value="scoresuhu()"
-                />
+                <q-input ref="refsuhu" v-model="store.form.suhu" label="Suhu" outlined dense mask="##.#"
+                  standout="bg-yellow-3" :rules="[val => !!val || 'Harap Diisi terlebih dahulu']"
+                  @update:model-value="scoresuhu()" />
               </div>
               <div class="col-2">
-                <q-input
-                  ref="refspo2"
-                  v-model="store.form.spo2"
-                  label="SPo2(%)"
-                  outlined
-                  dense
-                  type="number"
-                  standout="bg-yellow-3"
-                  :rules="[val => !!val || 'Harap Diisi terlebih dahulu']"
-                  @update:model-value="scorespo2()"
-                />
+                <q-input ref="refspo2" v-model="store.form.spo2" label="SPo2(%)" outlined dense type="number"
+                  standout="bg-yellow-3" :rules="[val => !!val || 'Harap Diisi terlebih dahulu']"
+                  @update:model-value="scorespo2()" />
               </div>
               <div class="col-2 text-bold q-pt-none q-mt-none">
                 Score Nadi : {{ store.form.scorenadi }}
@@ -377,63 +195,25 @@
             </div>
             <div class="row q-col-gutter-sm q-pb-sm">
               <div class="col-6">
-                <q-select
-                  ref="refkesadaran"
-                  v-model="store.form.kesadaran"
-                  label="Kesadaran"
-                  emit-value
-                  map-options
-                  outlined
-                  standout="bg-yellow-3"
-                  dense
-                  transition-show="flip-up"
-                  transition-hide="flip-down"
-                  :options="kesadaran"
-                  :rules="[val => !!val || 'Harap Diisi terlebih dahulu']"
-                  @update:model-value="(val) => scorekesadaran(val)"
-                />
+                <q-select ref="refkesadaran" v-model="store.form.kesadaran" label="Kesadaran" emit-value map-options
+                  outlined standout="bg-yellow-3" dense transition-show="flip-up" transition-hide="flip-down"
+                  :options="kesadaran" :rules="[val => !!val || 'Harap Diisi terlebih dahulu']"
+                  @update:model-value="(val) => scorekesadaran(val)" />
               </div>
               <div class="col-2">
-                <q-select
-                  ref="refeye"
-                  v-model="store.form.eye"
-                  label="Eye"
-                  outlined
-                  standout="bg-yellow-3"
-                  dense
-                  transition-show="flip-up"
-                  transition-hide="flip-down"
-                  :options="eye"
-                  :rules="[val => !!val || 'Harap Diisi terlebih dahulu']"
-                />
+                <q-select ref="refeye" v-model="store.form.eye" label="Eye" outlined standout="bg-yellow-3" dense
+                  transition-show="flip-up" transition-hide="flip-down" :options="eye"
+                  :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" />
               </div>
               <div class="col-2">
-                <q-select
-                  ref="refverbal"
-                  v-model="store.form.verbal"
-                  label="Verbal"
-                  outlined
-                  standout="bg-yellow-3"
-                  dense
-                  transition-show="flip-up"
-                  transition-hide="flip-down"
-                  :options="verbal"
-                  :rules="[val => !!val || 'Harap Diisi terlebih dahulu']"
-                />
+                <q-select ref="refverbal" v-model="store.form.verbal" label="Verbal" outlined standout="bg-yellow-3"
+                  dense transition-show="flip-up" transition-hide="flip-down" :options="verbal"
+                  :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" />
               </div>
               <div class="col-2">
-                <q-select
-                  ref="refmotorik"
-                  v-model="store.form.motorik"
-                  label="Motorik"
-                  outlined
-                  standout="bg-yellow-3"
-                  dense
-                  transition-show="flip-up"
-                  transition-hide="flip-down"
-                  :options="motorik"
-                  :rules="[val => !!val || 'Harap Diisi terlebih dahulu']"
-                />
+                <q-select ref="refmotorik" v-model="store.form.motorik" label="Motorik" outlined standout="bg-yellow-3"
+                  dense transition-show="flip-up" transition-hide="flip-down" :options="motorik"
+                  :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" />
               </div>
               <div class="col-2 text-bold q-pt-none q-mt-none">
                 Score Kesadaran : {{ store.form.scorekesadaran }}
@@ -441,72 +221,32 @@
             </div>
             <div class="row q-col-gutter-sm q-pb-sm">
               <div class="col-6">
-                <q-input
-                  ref="refbb"
-                  v-model="store.form.bb"
-                  label="BB/Kg"
-                  mask="##.#"
-                  outlined
-                  standout="bg-yellow-3"
-                  dense
-                  :rules="[val => !!val || 'Harap Diisi terlebih dahulu']"
-                />
+                <q-input ref="refbb" v-model="store.form.bb" label="BB/Kg" mask="##.#" outlined standout="bg-yellow-3"
+                  dense :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" />
               </div>
               <div class="col-6">
-                <q-input
-                  ref="reftinggibadan"
-                  v-model="store.form.tinggibadan"
-                  label="Tinggi Badan/Cm"
-                  type="number"
-                  outlined
-                  standout="bg-yellow-3"
-                  dense
-                  :rules="[val => !!val || 'Harap Diisi terlebih dahulu']"
-                />
+                <q-input ref="reftinggibadan" v-model="store.form.tinggibadan" label="Tinggi Badan/Cm" type="number"
+                  outlined standout="bg-yellow-3" dense :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" />
               </div>
             </div>
             <div class="row q-col-gutter-sm q-pb-sm">
               <div class="col-6">
-                <q-select
-                  ref="refgangguanperilaku"
-                  dense
-                  v-model="store.form.gangguanperilaku"
-                  outlined
-                  standout="bg-yellow-3"
-                  transition-show="flip-up"
-                  transition-hide="flip-down"
-                  :options="gangguanperilaku"
-                  label="Gangguan Perilaku"
-                />
+                <q-select ref="refgangguanperilaku" dense v-model="store.form.gangguanperilaku" outlined
+                  standout="bg-yellow-3" transition-show="flip-up" transition-hide="flip-down"
+                  :options="gangguanperilaku" label="Gangguan Perilaku" />
               </div>
               <div class="col-6">
-                <q-checkbox
-                  ref="reffalsetriage"
-                  size="md"
-                  v-model="store.form.falsetriage"
-                  color="primary"
-                  val="False Triage"
-                  label="False Triage"
-                  @update:model-value="updateSelectionxx"
-                />
+                <q-checkbox ref="reffalsetriage" size="md" v-model="store.form.falsetriage" color="primary"
+                  val="False Triage" label="False Triage" @update:model-value="updateSelectionxx" />
               </div>
             </div>
             <q-separator class="q-my-xs" />
           </div>
         </div>
 
-        <div
-          class="text-right q-mt-md"
-          style="margin-bottom: 50px;"
-        >
-          <app-btn
-            color="primary"
-            label="Simpan Triage"
-            tooltip="Simpan Data"
-            type="submit"
-            tip
-            :loading="store.loadingForm"
-          />
+        <div class="text-right q-mt-md" style="margin-bottom: 50px;">
+          <app-btn color="primary" label="Simpan Triage" tooltip="Simpan Data" type="submit" tip
+            :loading="store.loadingForm" />
         </div>
       </q-card-section>
     </q-form>
@@ -553,7 +293,7 @@ const optionhamil = ref([
   { label: 'Tidak', value: 0 }
 ])
 
-function flagstatus (val) {
+function flagstatus(val) {
   resetscore()
   if (props.pasien.kelamin === 'Laki-laki') {
     store.form.pasienhamil = 0
@@ -570,7 +310,7 @@ function flagstatus (val) {
   }
 }
 
-function resetscore () {
+function resetscore() {
   store.form.nadi = ''
   store.form.pernapasanx = ''
   store.form.sistole = ''
@@ -586,7 +326,7 @@ function resetscore () {
   store.form.lochea = ''
   store.form.proteinurin = ''
 }
-function hidenall () {
+function hidenall() {
   // store.setForm('doa', val.join(', '))
   if (store.form.doa.length > 0) {
     store.hiddenall = 'MATI'
@@ -600,14 +340,14 @@ function hidenall () {
   }
 }
 
-function tutupall () {
+function tutupall() {
   if (store.hiddenall === 'MATI') {
     clearhamil()
     kuis1()
   }
 }
 
-function clearhamil () {
+function clearhamil() {
   // delete store.form.haid
   // delete store.form.gravida
   // delete store.form.partus
@@ -625,7 +365,7 @@ function clearhamil () {
   store.form.proteinurin = null
 }
 
-function kuis1 () {
+function kuis1() {
   // delete store.form.pasienhamil
   // delete store.form.jalannafas
   // delete store.form.pernapasan
@@ -665,7 +405,7 @@ function kuis1 () {
   store.form.motorik = 0
 }
 
-function cekjalannafas (val) {
+function cekjalannafas(val) {
   store.form.pernapasan = null
   store.form.sirkulasi = null
   store.form.disability = null
@@ -680,7 +420,7 @@ function cekjalannafas (val) {
   }
 }
 
-function ceksirkulasi (val) {
+function ceksirkulasi(val) {
   store.form.sirkulasi = null
   store.form.disability = null
 
@@ -695,7 +435,7 @@ function ceksirkulasi (val) {
   }
 }
 
-function cekdisability (val) {
+function cekdisability(val) {
   store.form.disability = null
 
   if (val === 'Henti Jantung' || val === 'Nadi Tidak Teraba' || val === 'Akral Dingin') {
@@ -709,7 +449,7 @@ function cekdisability (val) {
   }
 }
 
-function disabilitycekhasilsurve (val) {
+function disabilitycekhasilsurve(val) {
   if (val === 'Tidak Ada Respon' || val === 'Kejang' || val === 'GCS < 8') {
     store.form.hasilprimarysurve = 'Resusitasi'
   }
@@ -731,9 +471,9 @@ const props = defineProps({
     default: 'History Pasien'
   }
 })
-function onSubmit () {
+function onSubmit() {
   const totalscore = ref(parseInt(store.form.scorenadi) + parseInt(store.form.scorepernapasanx) + parseInt(store.form.scoresistole) +
-  parseInt(store.form.scorediastole) + parseInt(store.form.scoresuhu) + parseInt(store.form.scorespo2) + parseInt(store.form.scorekesadaran))
+    parseInt(store.form.scorediastole) + parseInt(store.form.scoresuhu) + parseInt(store.form.scorespo2) + parseInt(store.form.scorekesadaran))
 
   store.form.totalscore = totalscore.value
 
@@ -808,7 +548,7 @@ function onSubmit () {
 //   }
 // }
 
-function scorepernapasanx () {
+function scorepernapasanx() {
   const umurleng = props.pasien?.usia.split(' ')
   const umur = parseInt(umurleng[0])
   const umurbln = parseInt(umurleng[2])
@@ -951,7 +691,7 @@ function scorepernapasanx () {
   }
 }
 
-function scorespo2 () {
+function scorespo2() {
   const umurleng = props.pasien?.usia.split(' ')
   const umur = parseInt(umurleng[0])
   const umurbln = parseInt(umurleng[2])
@@ -1055,7 +795,7 @@ function scorespo2 () {
   }
 }
 
-function scoresistole () {
+function scoresistole() {
   const umurleng = props.pasien?.usia.split(' ')
   const umur = parseInt(umurleng[0])
   // const umurbln = parseInt(umurleng[2])
@@ -1154,11 +894,14 @@ function scoresistole () {
       else if (store.form.sistole >= 111 && store.form.sistole <= 219) {
         store.form.scoresistole = 0
       }
+    } else {
+      store.form.scoresistole = 0
     }
   }
 }
 
-function scorediastole () {
+
+function scorediastole() {
   // const umurleng = props.pasien?.usia.split(' ')
   // const umur = parseInt(umurleng[0])
   // const umurbln = parseInt(umurleng[2])
@@ -1185,7 +928,7 @@ function scorediastole () {
   }
 }
 
-function scoresuhu () {
+function scoresuhu() {
   const umurleng = props.pasien?.usia.split(' ')
   const umur = parseInt(umurleng[0])
   // const umurbln = parseInt(umurleng[2])
@@ -1226,7 +969,7 @@ function scoresuhu () {
   }
 }
 
-function scorenadi () {
+function scorenadi() {
   const umurleng = props.pasien?.usia.split(' ')
   const umur = parseInt(umurleng[0])
   const umurbln = parseInt(umurleng[2])
@@ -1376,7 +1119,7 @@ function scorenadi () {
   }
 }
 
-function scorekesadaran (val) {
+function scorekesadaran(val) {
   const umurleng = props.pasien?.usia.split(' ')
   const umur = parseInt(umurleng[0])
   const umurbln = parseInt(umurleng[2])
@@ -1456,7 +1199,7 @@ function scorekesadaran (val) {
   }
 }
 
-function scorenyeri (val) {
+function scorenyeri(val) {
   if (val === 'Normal') {
     store.form.scorenyeri = 0
   }
@@ -1465,7 +1208,7 @@ function scorenyeri (val) {
   }
 }
 
-function scoreloche (val) {
+function scoreloche(val) {
   if (val === 'Abnormal') {
     store.form.scorelochea = 3
   }
@@ -1474,7 +1217,7 @@ function scoreloche (val) {
   }
 }
 
-function scoreproteinurin (val) {
+function scoreproteinurin(val) {
   if (val === 'NA') {
     store.form.scoreproteinurin = 0
   }
@@ -1486,16 +1229,16 @@ function scoreproteinurin (val) {
   }
 }
 
-function updateSelection (val) {
+function updateSelection(val) {
   // console.log(val.join(','))
   store.setForm('doa', val.join(', '))
 }
 
-function updateSelectionxx (val) {
+function updateSelectionxx(val) {
   store.setForm('falsetriage', val)
 }
 
-function historyOpen () {
+function historyOpen() {
   emits('openHistory')
   // store.getHistory(props.pasien?.norm)
 }

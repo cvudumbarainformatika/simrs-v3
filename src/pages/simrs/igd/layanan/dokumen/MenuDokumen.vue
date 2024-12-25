@@ -5,12 +5,6 @@
         <q-tabs v-model="store.tab" inline-label outside-arrows mobile-arrows align="left" active-color="yellow"
           class="bg-grey-4 text-white shadow-2 text-grey-8" active-bg-color="primary">
           <q-tab v-for="(item, i) in store.tabs" :key="i" :name="item.page" :label="item.name" style="width: 100%;" />
-          <!-- <q-tab name="mails" label="Mails" />
-      <q-tab name="alarms" label="Alarms" />
-      <q-tab name="movies" label="Movies" />
-      <q-tab name="photos" label="Photos" />
-      <q-tab name="videos" label="Videos" />
-      <q-tab name="addressbook" label="Address Book" /> -->
         </q-tabs>
       </div>
       <div class="col full-height" style="overflow: hidden;">
@@ -18,14 +12,8 @@
           <q-tab-panel name="Billing" class="full-height q-pa-none">
             <BillingPage :judul="billing" :pasien="props?.pasien" />
           </q-tab-panel>
-          <q-tab-panel name="Tindakan Medik" class="full-height q-pa-none">
-            <TindakanPage :pasien="props.pasien" />
-          </q-tab-panel>
-          <q-tab-panel name="Diagnosa Keperawatan" class="full-height q-pa-none">
-            <DiagnosaKeperawatanPage :pasien="props.pasien" />
-          </q-tab-panel>
-          <q-tab-panel name="Diagnosa Kebidanan" class="full-height q-pa-none">
-            <DiagnosaKebidananPage :pasien="props.pasien" />
+          <q-tab-panel name="Triase" class="full-height q-pa-none">
+            <TriasePage :judul="triase" :pasien="props.pasien" />
           </q-tab-panel>
         </q-tab-panels>
       </div>
@@ -37,7 +25,9 @@ import { useDokumenIgdStore } from 'src/stores/simrs/igd/dokumen'
 import { ref } from 'vue'
 
 import BillingPage from './dokumenisi/Billing/BillingPage.vue';
+import TriasePage from './dokumenisi/triage/TriasePage.vue';
 const billing = ref('BILLING')
+const triase = ref('TRIASE')
 const store = useDokumenIgdStore()
 
 const props = defineProps({

@@ -75,7 +75,7 @@
 import { dateFullFormat, dateFull } from 'src/modules/formatter';
 const props = defineProps({
   judul: {
-    type: Object,
+    type: String,
     default: null
   },
   pasien: {
