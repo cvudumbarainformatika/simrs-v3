@@ -48,9 +48,11 @@
                         class="text-weight-bold">Jawaban</span>
                       -- {{ item?.jawaban ?? 'Belum Ada Jawaban' }}
                     </q-item-label>
-                    <!-- <q-item-label v-if="item?.tarif" caption lines="1" :class="{ 'text-red': item?.jawaban === null || item?.jawaban === ''}">
-                  <q-badge>Rp. {{ formatRp(item?.tarif?.subtotal) }}</q-badge>
-                </q-item-label> -->
+                    <q-item-label>
+                      <span v-if="item?.tindakan.length > 0" class="text-weight-bold">
+                        <q-badge color="red" outline>{{ formatRpDouble(item?.tindakan[0]?.subtotal) ?? '' }}</q-badge>
+                      </span>
+                    </q-item-label>
                   </q-item-section>
 
                   <q-item-section side>
@@ -184,5 +186,15 @@ function hapusItem(id) {
   }).onDismiss(() => {
     // console.log('I am triggered on both OK and Cancel')
   })
+}
+
+const formatRpDouble = (value, dg) => {
+  if (value !== null) {
+    return 'Rp. ' + Number(value)
+      .toFixed(dg)
+      .replace('.', ',')
+      .replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')
+    // .replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, '$1.')
+  }
 }
 </script>
