@@ -1,9 +1,10 @@
-import { defineStore } from 'pinia'
+import { defineStore, acceptHMRUpdate } from 'pinia'
 // eslint-disable-next-line no-unused-vars
-import { api } from 'src/boot/axios'
+import { api, pathImg } from 'src/boot/axios'
 import { usePengunjungRanapStore } from './pengunjung'
 // eslint-disable-next-line no-unused-vars
 import { notifErrVue, notifSuccess } from 'src/modules/utils'
+import { imageToBase64 } from 'src/modules/imgBase64'
 
 export const useSummaryDischargePlanningRanapStore = defineStore('summary-discharge-planning-ranap-store', {
   state: () => ({
@@ -22,6 +23,8 @@ export const useSummaryDischargePlanningRanapStore = defineStore('summary-discha
       ttdPasien: null
     },
 
+    ttdFromServer: null,
+
     dokters: [],
     perawats: [],
     nakes: [],
@@ -39,7 +42,7 @@ export const useSummaryDischargePlanningRanapStore = defineStore('summary-discha
   // },
   actions: {
 
-    async simpandata (pasien) {
+    async simpandata(pasien) {
       this.loadingOrder = true
 
       // const form = {
@@ -53,7 +56,7 @@ export const useSummaryDischargePlanningRanapStore = defineStore('summary-discha
 
       try {
         const resp = await api.post('v1/simrs/ranap/layanan/dischargeplanning/summary/simpandata', this.form)
-        // console.log('save permintaan summary discharge planning', resp.data)
+        console.log('save permintaan summary discharge planning', resp.data)
         if (resp.status === 200) {
           // const storePasien = usePengunjungPoliStore()
           const storeRanap = usePengunjungRanapStore()
@@ -71,7 +74,7 @@ export const useSummaryDischargePlanningRanapStore = defineStore('summary-discha
       }
     },
 
-    async hapusdata (pasien, id) {
+    async hapusdata(pasien, id) {
       this.loadingHapus = true
       const payload = { noreg: pasien?.noreg, id }
       try {
@@ -92,9 +95,34 @@ export const useSummaryDischargePlanningRanapStore = defineStore('summary-discha
       }
     },
 
-    initReset () {
+    editData(item) {
+      this.form = item
+      this.ttdFromServer = item?.ttdPasien ?? null
+      console.log('ttdFromServer', this.ttdFromServer);
+
+
+    },
+
+    checkImgIsBase64(data) {
+      try {
+        window.atob(data);
+        console.log('base64');
+
+      } catch (e) {
+        // something failed
+
+        // if you want to be specific and only catch the error which means
+        // the base 64 was invalid, then check for 'e.code === 5'.
+        // (because 'DOMException.INVALID_CHARACTER_ERR === 5')
+        console.log('not base64');
+
+      }
+    },
+
+    initReset() {
+
       this.form = {
-        s1: null,
+        rs1: null,
         rs2: null,
         rs4: null,
         rs5: null,
@@ -107,6 +135,8 @@ export const useSummaryDischargePlanningRanapStore = defineStore('summary-discha
         tglOperasi: null,
         ttdPasien: null
       }
+      this.ttdFromServer = null
+      console.log('reset form', this.form);
 
       const pengunjung = usePengunjungRanapStore()
       this.dokters = pengunjung?.nakes?.filter(x => x?.kdgroupnakes === '1') ?? []
@@ -119,3 +149,9 @@ export const useSummaryDischargePlanningRanapStore = defineStore('summary-discha
     }
   }
 })
+
+
+// make sure to pass the right store definition, `useAuth` in this case.
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useSummaryDischargePlanningRanapStore, import.meta.hot))
+}

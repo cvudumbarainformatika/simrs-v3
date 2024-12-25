@@ -40,7 +40,7 @@ export default defineConfig((ctx) => {
       env: {
         // NODE_OPTIONS: '--max-old-space-size=20480',
         API: ctx?.dev
-          // ? 'http://192.168.20.37/api.laborat/public'
+          // ? 'http://192.168.150.111:3507'
           ? 'http://localhost/api.laborat/public'
           : 'http://192.168.150.111:3507',
         // : 'http://192.168.150.111:3501',
@@ -68,7 +68,7 @@ export default defineConfig((ctx) => {
       // polyfillModulePreload: true,
       // distDir
 
-      extendViteConf (viteConf) {
+      extendViteConf(viteConf) {
         viteConf.build.chunkSizeWarningLimit = 5000
         // viteConf.build.rollupOptions = {
         //   output: {
@@ -81,7 +81,7 @@ export default defineConfig((ctx) => {
         // };
       },
       // viteVuePluginOptions: {},
-      
+
       // vitePlugins: [
       //   ['vite-plugin-checker', {
       //     eslint: {
@@ -143,7 +143,7 @@ export default defineConfig((ctx) => {
     // https://v2.quasar.dev/quasar-cli-vite/developing-ssr/configuring-ssr
     ssr: {
       prodPort: 3000, // The default port that the production server should use
-                      // (gets superseded if process.env.PORT is specified at runtime)
+      // (gets superseded if process.env.PORT is specified at runtime)
 
       middlewares: [
         'render' // keep this as last one
@@ -195,7 +195,7 @@ export default defineConfig((ctx) => {
       // extendPackageJson (json) {},
 
       // Electron preload scripts (if any) from /src-electron, WITHOUT file extension
-      preloadScripts: [ 'electron-preload' ],
+      preloadScripts: ['electron-preload'],
 
       // specify the debugging port to use for the Electron app when running in development mode
       inspectPort: 5858,
