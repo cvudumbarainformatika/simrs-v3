@@ -7,10 +7,7 @@
           <div class="col-12">
             <div class="flex justify-center">
               <div class="">
-                <img
-                  src="~assets/logos/logo-rsud.png"
-                  width="50"
-                >
+                <img src="~assets/logos/logo-rsud.png" width="50">
               </div>
               <div class="q-px-md">
                 <div class="text-center">
@@ -217,7 +214,20 @@
                     </div>
                   </td>
                 </tr>
-                <tr valign="top">
+                <tr v-if="ALERGI">
+                  <td>
+                    <div class="text-weight-bold">
+                      ALERGI
+                    </div>
+                  </td>
+                  <td>
+                    <div class="flex no-wrap q-gutter-md">
+                      <div>:</div>
+                      <div v-html="getNewLine(ALERGI)" />
+                    </div>
+                  </td>
+                </tr>
+                <tr v-if="DIAG_KEP" valign="top">
                   <td>
                     <div class="text-weight-bold">
                       DIAGNOSA KEPERAWATAN
@@ -228,6 +238,21 @@
                       <div>:</div>
                       <div class="flex flex-wrap">
                         {{ DIAG_KEP }}
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                <tr v-if="DIAG_KEB" valign="top">
+                  <td>
+                    <div class="text-weight-bold">
+                      DIAGNOSA KEBIDANAN
+                    </div>
+                  </td>
+                  <td>
+                    <div class="flex no-wrap q-gutter-md">
+                      <div>:</div>
+                      <div class="flex flex-wrap">
+                        {{ DIAG_KEB }}
                       </div>
                     </div>
                   </td>
@@ -397,24 +422,16 @@
             <div class="column flex-center">
               <div>Pasien / Keluarga</div>
               <div v-if="ttdPasien" class="flex-center relative-position" style="width: 60px;">
-                <vue-qrcode
-                  :value="qrPasien"
-                  tag="svg"
-                  :options="{
-                    errorCorrectionLevel: 'Q',
-                    width: 60,
-                    color: {
-                      dark: '#000000',
-                      light: '#ffffff',
-                    },
-                    margin:0
-                  }"
-                />
-                <img
-                  class="qrcode__image"
-                  src="~assets/logos/logo-rsud.png"
-                  alt="RSUD DOKTER MOHAMAD SALEH"
-                >
+                <vue-qrcode :value="qrPasien" tag="svg" :options="{
+                  errorCorrectionLevel: 'Q',
+                  width: 60,
+                  color: {
+                    dark: '#000000',
+                    light: '#ffffff',
+                  },
+                  margin: 0
+                }" />
+                <img class="qrcode__image" src="~assets/logos/logo-rsud.png" alt="RSUD DOKTER MOHAMAD SALEH">
               </div>
               <div v-else class="column flex-center" style="height: 60px;">
                 ttd
@@ -426,23 +443,15 @@
             <div class="column flex-center">
               <div>Perawat</div>
               <div class="flex-center relative-position" style="width: 60px;">
-                <vue-qrcode
-                  :value="qrPerawat"
-                  tag="svg"
-                  :options="{
-                    errorCorrectionLevel: 'Q',
-                    color: {
-                      dark: '#000000',
-                      light: '#ffffff',
-                    },
-                    margin:0
-                  }"
-                />
-                <img
-                  class="qrcode__image"
-                  src="~assets/logos/logo-rsud.png"
-                  alt="RSUD DOKTER MOHAMAD SALEH"
-                >
+                <vue-qrcode :value="qrPerawat" tag="svg" :options="{
+                  errorCorrectionLevel: 'Q',
+                  color: {
+                    dark: '#000000',
+                    light: '#ffffff',
+                  },
+                  margin: 0
+                }" />
+                <img class="qrcode__image" src="~assets/logos/logo-rsud.png" alt="RSUD DOKTER MOHAMAD SALEH">
               </div>
               <div class="f-10">
                 {{ perawat }}
@@ -451,23 +460,15 @@
             <div class="column flex-center">
               <div>Dokter</div>
               <div class="flex-center relative-position" style="width: 60px;">
-                <vue-qrcode
-                  :value="qrDokter"
-                  tag="svg"
-                  :options="{
-                    errorCorrectionLevel: 'Q',
-                    color: {
-                      dark: '#000000',
-                      light: '#ffffff',
-                    },
-                    margin:0
-                  }"
-                />
-                <img
-                  class="qrcode__image"
-                  src="~assets/logos/logo-rsud.png"
-                  alt="RSUD DOKTER MOHAMAD SALEH"
-                >
+                <vue-qrcode :value="qrDokter" tag="svg" :options="{
+                  errorCorrectionLevel: 'Q',
+                  color: {
+                    dark: '#000000',
+                    light: '#ffffff',
+                  },
+                  margin: 0
+                }" />
+                <img class="qrcode__image" src="~assets/logos/logo-rsud.png" alt="RSUD DOKTER MOHAMAD SALEH">
               </div>
               <div class="f-10">
                 {{ pasien?.dokter }}
@@ -519,12 +520,18 @@ const PRMRJ = computed(() => {
   return ket
 })
 
-// const NORM = computed(() => {
-//   const norm = props?.pasien?.norm
-//   return [...norm]
-// })
+const ALERGI = computed(() => {
+  const finder = props?.pasien?.anamnesis?.find(x => x?.awal === '1')?.riwayatalergi ?? []
+  const alergy = finder?.map((item) => item)?.join(', ') ?? null
+  const keterangan = props?.pasien?.anamnesis?.find(x => x?.awal === '1')?.keteranganalergi ?? null
+  return alergy + ' ' + (keterangan ?? null)
+})
 const DIAG_KEP = computed(() => {
   const diag = props?.pasien?.diagnosakeperawatan?.map((item) => item.nama)?.join(', ')
+  return diag
+})
+const DIAG_KEB = computed(() => {
+  const diag = props?.pasien?.diagnosakebidanan?.map((item) => item.nama)?.join(', ')
   return diag
 })
 const SUMMARY = computed(() => {
@@ -595,7 +602,6 @@ const qrDokter = computed(() => {
 </script>
 
 <style lang="scss" scoped>
-
 .qrcode__image {
   // background-color: #fff;
   border: 0.1rem solid #fff;
@@ -611,20 +617,28 @@ const qrDokter = computed(() => {
 }
 
 .model-1 {
-  tr, td {
+
+  tr,
+  td {
     padding-bottom: -5px !important;
   }
 }
+
 .model-2 {
-  tr, td {
+
+  tr,
+  td {
     padding-bottom: 5px !important;
     border-bottom: 1px solid rgb(139, 139, 139);
   }
 }
 
-table, tr, td {
-  border: none ;
+table,
+tr,
+td {
+  border: none;
 }
+
 td {
   text-align: left;
 }
@@ -642,7 +656,7 @@ td {
 }
 
 @media print {
-  .print-page{
+  .print-page {
     padding: 0px !important;
   }
 
@@ -650,6 +664,7 @@ td {
     // size: 8.5in 9in;
     size: letter;
     page-break-inside: avoid;
+
     @bottom-right {
       content: "Dokumen Sah dari RSUD MOH SALEH KOTA PROBOLINGGO | Hal Ke-" counter(page);
     }
@@ -661,5 +676,4 @@ td {
   }
 
 }
-
 </style>

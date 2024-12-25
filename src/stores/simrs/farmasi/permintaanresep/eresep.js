@@ -94,13 +94,13 @@ export const usePermintaanEResepStore = defineStore('permintaan_e_resep', {
     bypass: false
   }),
   actions: {
-    setForm (key, val) {
+    setForm(key, val) {
       this.form[key] = val
     },
-    setRacikan (key, val) {
+    setRacikan(key, val) {
       this.racikan[key] = val
     },
-    setPasien () {
+    setPasien() {
       const val = this?.pasien
       const temp = val?.diagnosa?.map(x => x?.rs3 + ' - ' + x?.masterdiagnosa?.rs4)
       const diag = temp?.length ? temp.join(', ') : '-'
@@ -115,7 +115,7 @@ export const usePermintaanEResepStore = defineStore('permintaan_e_resep', {
       // if (this?.depo === 'rnp') this.getBillRanap(val)
       // if (this?.depo === 'igd') this.getBillIgd(val)
     },
-    resetForm () {
+    resetForm() {
       this.namaObat = null
       const tagihanrs = this.form?.tagihanrs ?? 0
       const iterExpired = this.form?.iter_expired ?? ''
@@ -134,7 +134,7 @@ export const usePermintaanEResepStore = defineStore('permintaan_e_resep', {
       const tiperacikan = this.form?.tiperacikan ?? 'DTD'
       const keterangan = this.form?.keterangan ?? '-'
       const satuanRacik = this.form?.satuan_racik ?? '-'
-      // console.log('jenis resep', jenisresep)
+      // // console.log('jenis resep', jenisresep)
       this.form = {
         keterangan: '-',
         jumlah_diminta: 1,
@@ -168,7 +168,7 @@ export const usePermintaanEResepStore = defineStore('permintaan_e_resep', {
       }
       this.setPasien()
     },
-    resetObat () {
+    resetObat() {
       const tagihanrs = this.form?.tagihanrs ?? 0
       const kodeincbg = this.form?.kodeincbg ?? '-'
       const uraianinacbg = this.form?.uraianinacbg ?? '-'
@@ -186,7 +186,7 @@ export const usePermintaanEResepStore = defineStore('permintaan_e_resep', {
 
       this.setPasien()
     },
-    resetRacikan () {
+    resetRacikan() {
       const jen = this.racikan?.tiperacikan ?? '-'
       const nam = this.racikan?.namaracikan ?? '-'
       this.racikan = {
@@ -199,12 +199,12 @@ export const usePermintaanEResepStore = defineStore('permintaan_e_resep', {
         dosismaksimum: 1 // dosis resep
       }
     },
-    hapusList (obat) {
+    hapusList(obat) {
       const resep = this?.pasien?.newapotekrajal?.find(val => val.noresep === obat?.noresep)
       if (obat?.namaracikan) {
         // const racikan = this?.listRacikan?.filter(a => a.namaracikan === obat?.namaracikan)
         const racikan = this?.listRacikan?.find(a => a.namaracikan === obat?.namaracikan)
-        // console.log('rac', racikan)
+        // // console.log('rac', racikan)
         // if (racikan?.length) {
         if (racikan) {
           // if (racikan[0]?.rincian?.length > 1) {
@@ -212,7 +212,7 @@ export const usePermintaanEResepStore = defineStore('permintaan_e_resep', {
           //   if (index >= 0)racikan[0]?.rincian?.splice(index, 1)
           if (racikan?.rincian?.length > 1) {
             const index = racikan?.rincian?.findIndex(x => x.id === obat?.id)
-            if (index >= 0)racikan?.rincian?.splice(index, 1)
+            if (index >= 0) racikan?.rincian?.splice(index, 1)
           }
           else {
             const index = this?.listRacikan?.findIndex(x => x.namaracikan === obat?.namaracikan)
@@ -222,41 +222,41 @@ export const usePermintaanEResepStore = defineStore('permintaan_e_resep', {
 
         const indexLis = this?.listRincianRacikan?.findIndex(x => x.id === obat?.id)
         if (indexLis >= 0) this?.listRincianRacikan?.splice(indexLis, 1)
-        console.log('indexLis', indexLis)
+        // console.log('indexLis', indexLis)
 
         const index = resep?.permintaanracikan?.findIndex(x => x.id === obat?.id)
         if (index >= 0) resep?.permintaanracikan?.splice(index, 1)
-        // console.log('new', index)
+        // // console.log('new', index)
       }
       else {
         const index = this?.listPemintaanSementara?.findIndex(x => x.id === obat?.id)
         if (index >= 0) this?.listPemintaanSementara?.splice(index, 1)
         const indexp = resep?.permintaanresep?.findIndex(x => x.id === obat?.id)
         if (indexp >= 0) resep?.permintaanresep?.splice(indexp, 1)
-        // console.log('new', indexp)
+        // // console.log('new', indexp)
       }
       if (resep?.permintaanracikan.length <= 0 && resep?.permintaanresep.length <= 0) {
         this.noresep = 'BARU'
         const indexres = this?.noreseps?.findIndex(a => a === obat?.noresep)
         if (indexres >= 0) this?.noreseps?.splice(indexres, 1)
       }
-      console.log('pasien hapus obat', resep)
+      // console.log('pasien hapus obat', resep)
     },
-    setList (key) {
+    setList(key) {
       key.harga = (parseFloat(key?.jumlah) * parseFloat(key?.hargajual)) + parseFloat(key?.r)
       this.listPemintaanSementara.push(key)
     },
-    setListArray (array) {
+    setListArray(array) {
       array.forEach(arr => {
         this.setList(arr)
       })
     },
-    setListRacikan (key) {
-      // console.log('set list racikan', key)
+    setListRacikan(key) {
+      // // console.log('set list racikan', key)
       key.harga = (parseFloat(key?.jumlah) * parseFloat(key?.harga_jual)) + parseFloat(key?.r)
       // const adaRin = this.listRincianRacikan?.find(ri => ri.id === key.id && ri.namaracikan === this.form.namaracikan)
       // if (adaRin) this.listRincianRacikan?.push(key)
-      // console.log('adaRin', adaRin)
+      // // console.log('adaRin', adaRin)
 
       // const pasResRac = this.pasien.newapotekrajal.find(a => a.noresep === key.noresep)
       // const adaRacRin = this.pasResRac?.permintaanracikan?.find(ri => ri.id === key.id)
@@ -287,8 +287,8 @@ export const usePermintaanEResepStore = defineStore('permintaan_e_resep', {
         if (!adaLi) this.listRacikan.push(temp)
       }
 
-      // console.log('list racikan', this.listRacikan)
-      // console.log('list rincian racikan', this.listRincianRacikan)
+      // // console.log('list racikan', this.listRacikan)
+      // // console.log('list rincian racikan', this.listRincianRacikan)
       const rac = this.listRacikan.find(x => x.namaracikan === this.form.namaracikan)
       this.listRincianRacikan = rac?.rincian ?? []
       // this.tipeRacikan = [
@@ -296,19 +296,19 @@ export const usePermintaanEResepStore = defineStore('permintaan_e_resep', {
       //   { label: 'non-DTD', value: 'non-DTD', disable: true }
       // ]
     },
-    setListRacikanArray (array) {
+    setListRacikanArray(array) {
       array.forEach(arr => {
         this.setListRacikan(arr)
       })
     },
-    setNoreseps (reseps) {
+    setNoreseps(reseps) {
       this.noreseps = []
       reseps?.forEach(resep => {
         this.noreseps.unshift(resep?.noresep)
       })
       this.noreseps.unshift('BARU')
     },
-    setResep (val) {
+    setResep(val) {
       this.setForm('noresep', '')
       this.listRacikan = []
       this.listPemintaanSementara = []
@@ -332,9 +332,9 @@ export const usePermintaanEResepStore = defineStore('permintaan_e_resep', {
       else {
         if (resep?.flag !== '') this.setListResep(resep)
       }
-      console.log('set resep', val, resep, this.form)
+      // console.log('set resep', val, resep, this.form)
     },
-    setListResep (resep) {
+    setListResep(resep) {
       resep.listRacikan = []
       if (resep?.permintaanracikan?.length) {
         const rac = resep?.permintaanracikan
@@ -368,9 +368,9 @@ export const usePermintaanEResepStore = defineStore('permintaan_e_resep', {
         })
       }
     },
-    cariObat (val) {
+    cariObat(val) {
       const depo = this.depos.filter(pa => pa.jenis === this.depo)
-      // console.log('depo', this?.depo, depo)
+      // // console.log('depo', this?.depo, depo)
       if (depo.length) {
         this.dpPar = depo[0]?.value
       }
@@ -389,7 +389,7 @@ export const usePermintaanEResepStore = defineStore('permintaan_e_resep', {
             this.loadingObat = false
             this.nonFilteredObat = resp.data?.dataobat
             this.Obats = val?.length ? this.nonFilteredObat.filter(nfil => nfil?.namaobat.toLowerCase().includes(val?.toLowerCase())) : this.nonFilteredObat
-            // console.log('hasil', this.nonFilteredObat, this.Obats)
+            // // console.log('hasil', this.nonFilteredObat, this.Obats)
 
             resolve(resp)
           })
@@ -400,7 +400,7 @@ export const usePermintaanEResepStore = defineStore('permintaan_e_resep', {
       })
       // }
     },
-    async getSigna (val, update, abort) {
+    async getSigna(val, update, abort) {
       const params = {
         params: {
           q: val ?? ''
@@ -418,18 +418,18 @@ export const usePermintaanEResepStore = defineStore('permintaan_e_resep', {
 
       // .then(resp => {
       //   // this.loadingSigna = false
-      //   // console.log('signa', resp?.data)
+      //   // // console.log('signa', resp?.data)
       //   this.signas = resp?.data
       // })
       // .catch(() => { this.loadingSigna = false })
     },
-    seveSigna () {
+    seveSigna() {
       this.loadingSaveSigna = true
       return new Promise(resolve => {
         api.post('v1/simrs/master/signa/store-signa', this.fromSigna)
           .then(resp => {
             this.loadingSaveSigna = false
-            console.log('resp save signa', resp)
+            // console.log('resp save signa', resp)
             notifSuccess(resp)
             this.fromSigna = { signa: '', jumlah: 1 }
             this.signas.push(resp?.data?.data)
@@ -440,29 +440,29 @@ export const usePermintaanEResepStore = defineStore('permintaan_e_resep', {
           })
       })
     },
-    getBillRajal (val) {
+    getBillRajal(val) {
       this.setForm('kdruangan', val?.kodepoli)
       const kunjRajal = useKasirRajalListKunjunganStore()
       const param = { noreg: val?.noreg }
       kunjRajal.getBill(param).then(resp => {
         this.setForm('tagihanrs', resp?.data?.totalall)
-        // console.log('bill', resp?.data)
-        // console.log('form', this.form)
+        // // console.log('bill', resp?.data)
+        // // console.log('form', this.form)
       })
     },
-    getBillRanap (val) {
+    getBillRanap(val) {
       this.setForm('kdruangan', val?.kdruangan)
       // if (!!this.form?.dokter && !this.dokters?.length) this.cariDokter(this.form?.dokter)
     },
-    getBillIgd (val) {
+    getBillIgd(val) {
       this.setForm('kdruangan', val?.kodepoli)
       // if (!!this.form?.dokter && !this.dokters?.length) this.cariDokter(this.form?.dokter)
     },
-    getBillOk (val) {
+    getBillOk(val) {
       this.setForm('kdruangan', val?.kdruangan)
       // if (!!this.form?.dokter && !this.dokters?.length) this.cariDokter(this.form?.dokter)
     },
-    cariSimulasi (val) {
+    cariSimulasi(val) {
       this.setForm('kodeincbg', '-')
       this.setForm('uraianinacbg', '-')
       this.setForm('tarifina', 0)
@@ -474,7 +474,7 @@ export const usePermintaanEResepStore = defineStore('permintaan_e_resep', {
       //   api.get('v1/simrs/pelayanan/carisimulasi', param)
       //     .then(resp => {
       //       this.loadingSimulasi = false
-      //       console.log('cri simulasi', resp)
+      //       // console.log('cri simulasi', resp)
       //       const tarif = resp?.data?.response?.cbg?.base_tariff ?? (resp?.data?.response?.cbg?.tariff ?? 0)
       //       this.setForm('kodeincbg', resp?.data?.response?.cbg?.code ?? '-')
       //       this.setForm('uraianinacbg', resp?.data?.response?.cbg?.description ?? '-')
@@ -487,7 +487,7 @@ export const usePermintaanEResepStore = defineStore('permintaan_e_resep', {
       //     })
       // })
     },
-    async getNomor () {
+    async getNomor() {
       const param = {
         params: {
           noresep: this.form?.noresep
@@ -495,26 +495,26 @@ export const usePermintaanEResepStore = defineStore('permintaan_e_resep', {
       }
       await api.get('v1/simrs/farmasinew/depo/conterracikan', param)
         .then(resp => {
-          // console.log(resp?.data)
+          // // console.log(resp?.data)
           this.setForm('namaracikan', resp?.data)
         })
     },
-    simpanObat (payload) {
+    simpanObat(payload) {
       // const form = payload
       this.bypass = false
-      console.log('payload', this.form)
+      // console.log('payload', this.form)
       const resep = this?.pasien?.newapotekrajal?.find(val => val.noresep === this.form?.noresep)
       if (resep) {
         if (resep?.flag !== '') this.form.noresep = ''
       }
-      console.log('obat', this?.pasien?.newapotekrajal)
-      console.log('resep', resep)
+      // console.log('obat', this?.pasien?.newapotekrajal)
+      // console.log('resep', resep)
       this.loading = true
       return new Promise(resolve => {
         api.post('v1/simrs/farmasinew/depo/pembuatanresep', this.form)
           .then(resp => {
             this.loading = false
-            console.log('simpan ', resp?.data)
+            // console.log('simpan ', resp?.data)
             if (resp.status === 202) {
               this.openDialog(resp?.data)
             }
@@ -528,7 +528,7 @@ export const usePermintaanEResepStore = defineStore('permintaan_e_resep', {
               this.pasien.newapotekrajal = resp?.data?.newapotekrajal
               this.indexRacikan = this.pasien.newapotekrajal.findIndex(x => x.noresep === resp?.data?.nota)
 
-              console.log('NORESEP2', this.noresep)
+              // console.log('NORESEP2', this.noresep)
               this.setResep(this.noresep)
 
               this.resetForm()
@@ -541,13 +541,13 @@ export const usePermintaanEResepStore = defineStore('permintaan_e_resep', {
           })
           .catch((err) => {
             this.loading = false
-            console.log('error', err?.response?.data)
+            // console.log('error', err?.response?.data)
             this.bypass = err?.response?.data?.bypass === 1
           })
       })
     },
-    async selesaiResep () {
-      console.log('selesai', this.form)
+    async selesaiResep() {
+      // console.log('selesai', this.form)
       this.loadingkirim = true
       if (!this.form.noresep || this.form.noresep === '') {
         this.loadingkirim = false
@@ -556,7 +556,7 @@ export const usePermintaanEResepStore = defineStore('permintaan_e_resep', {
       }
       await api.post('v1/simrs/farmasinew/depo/kirimresep', this.form)
         .then(resp => {
-          console.log('selesai', resp?.data)
+          // console.log('selesai', resp?.data)
           // this.setForm('namaracikan', resp?.data)
           this.loadingkirim = false
           notifSuccess(resp)
@@ -585,8 +585,8 @@ export const usePermintaanEResepStore = defineStore('permintaan_e_resep', {
           }
           this.form.noresep = ''
           this.loadingkirim = false
-          console.log(err?.response?.data)
-          // console.log(err?.response?.data?.sudahAda)
+          // console.log(err?.response?.data)
+          // // console.log(err?.response?.data?.sudahAda)
           if (err?.response?.data?.sudahAda?.length) {
             const sudahAda = err?.response?.data?.sudahAda
             this.listPemintaanSementara?.forEach(mi => {
@@ -604,14 +604,14 @@ export const usePermintaanEResepStore = defineStore('permintaan_e_resep', {
           }
         })
     },
-    async hapusObat (val) {
-      // console.log('hapusObat', val)
+    async hapusObat(val) {
+      // // console.log('hapusObat', val)
       this.loadingHapus = true
       this.obatId = val?.id
       this.namaRacikan = val?.namaracikan ?? false
       await api.post('v1/simrs/farmasinew/depo/hapus-permintaan-obat', val)
         .then(resp => {
-          console.log('resp hapus', resp?.data)
+          // console.log('resp hapus', resp?.data)
           // hapus list
           this.hapusList(resp?.data?.obat)
           this.pasien.newapotekrajal = resp?.data?.newapotekrajal
@@ -629,17 +629,17 @@ export const usePermintaanEResepStore = defineStore('permintaan_e_resep', {
           this.obatId = null
         })
     },
-    async getHistory (norm) {
-      console.log(norm)
+    async getHistory(norm) {
+      // console.log(norm)
       this.loadingHistory = true
       const params = { params: { norm } }
       try {
         const resp = await api.get('v1/simrs/pelayanan/listresepbynorm', params)
-        console.log('history', resp)
+        // console.log('history', resp)
         if (resp.status === 200) {
           if (resp.data?.length) {
             const arr = resp.data
-            console.log('hisr', arr)
+            // console.log('hisr', arr)
 
             arr.forEach(hi => {
               const batas = this.batases.find(b => b.depo === hi.depo)
@@ -671,8 +671,8 @@ export const usePermintaanEResepStore = defineStore('permintaan_e_resep', {
         // notifErr(error)
       }
     },
-    openDialog (val) {
-      console.log('DIALOG', val)
+    openDialog(val) {
+      // console.log('DIALOG', val)
       Dialog.create({
         title: 'Konfirmasi',
         message: `Obat yang diberikan tgl ${dateFullFormat(val?.cek?.hasil[0]?.tgl)} yang direncakan untuk konsumsi selama ${val?.cek?.total} hari, baru dikonsumsi ${val?.cek?.selisih} hari. Apakah Akan tetal dilanjutkan?`,
@@ -696,12 +696,12 @@ export const usePermintaanEResepStore = defineStore('permintaan_e_resep', {
     },
 
     // BARU PUTRA DEV
-    cekObat (val, obat, indexlist, tipe) {
+    cekObat(val, obat, indexlist, tipe) {
       this.loadingObat = true
       let kdobatArray = ''
       let batas = 0
 
-      console.log('TIPE', tipe)
+      // console.log('TIPE', tipe)
       if (tipe === 'nonRacik') {
         const panjang = val?.permintaanresep.filter(fi => fi.checked)
 
@@ -762,7 +762,7 @@ export const usePermintaanEResepStore = defineStore('permintaan_e_resep', {
             this.loadingObat = false
             this.nonFilteredObat = resp.data?.dataobat
             this.Obats = val?.length ? this.nonFilteredObat.filter(nfil => nfil?.namaobat.toLowerCase().includes(val?.toLowerCase())) : this.nonFilteredObat
-            // console.log('hasil', this.nonFilteredObat, this.Obats)
+            // // console.log('hasil', this.nonFilteredObat, this.Obats)
 
             this.simpanCopyResep(val, resp.data?.dataobat, indexlist, tipe)
             resolve(resp)
@@ -773,9 +773,9 @@ export const usePermintaanEResepStore = defineStore('permintaan_e_resep', {
             this.Obats = []
           })
       })
-    // }
+      // }
     },
-    simpanCopyResep (val, obat, indexlist, tipe) {
+    simpanCopyResep(val, obat, indexlist, tipe) {
       this.permintaanresep = val?.permintaanresep
       this.permintaanresepracikan = val?.permintaanracikan
       const resep = []
@@ -933,7 +933,7 @@ export const usePermintaanEResepStore = defineStore('permintaan_e_resep', {
             this.loading = false
             notifSuccess(resp)
 
-            console.log('resp', resp?.data)
+            // console.log('resp', resp?.data)
             const nota = resp?.data.map(item => item?.nota)
             this.noreseps.push(nota[0])
             this.noresep = nota[0]
@@ -998,14 +998,14 @@ export const usePermintaanEResepStore = defineStore('permintaan_e_resep', {
           })
           .catch(error => {
             this.resetForm()
-            console.error('Error in simpanCopyResep:', error)
+            // console.error('Error in simpanCopyResep:', error)
             this.loading = false
             reject(error)
           })
       })
     },
 
-    simpanCopyResepKonfirmasi (val, tipe, indexlist) {
+    simpanCopyResepKonfirmasi(val, tipe, indexlist) {
       const racik = this.permintaanresep
       const resep = this.permintaanresepracikan
       const kirimResep = []
@@ -1172,8 +1172,8 @@ export const usePermintaanEResepStore = defineStore('permintaan_e_resep', {
             this.setForm('noresep', nota[0])
             resolve(resp)
 
-            console.log('RACIK', racik)
-            console.log('NON RACIK', resep)
+            // console.log('RACIK', racik)
+            // console.log('NON RACIK', resep)
 
             if (tipe === 'racik') {
               racik.forEach((dt, idt) => {
@@ -1221,14 +1221,14 @@ export const usePermintaanEResepStore = defineStore('permintaan_e_resep', {
           })
           .catch(error => {
             this.resetForm()
-            console.error('Error in simpanCopyResep:', error)
+            // console.error('Error in simpanCopyResep:', error)
             this.loading = false
             reject(error)
           })
       })
     },
-    openDialogDuplicateResep (val, permintaanResepDuplicate, tipe, indexlist) {
-      console.log('VALKONF', permintaanResepDuplicate)
+    openDialogDuplicateResep(val, permintaanResepDuplicate, tipe, indexlist) {
+      // console.log('VALKONF', permintaanResepDuplicate)
       Dialog.create({
         title: 'Konfirmasi',
         message: `Obat yang diberikan tgl ${dateFullFormat(val?.cek?.tgl)} yang direncakan untuk konsumsi selama ${val?.cek?.konsumsi} hari, baru dikonsumsi ${val?.cek?.selisih} hari. Apakah Akan tetal dilanjutkan?`,
