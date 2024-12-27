@@ -2,18 +2,8 @@
   <div class="row fit relative-position">
     <div class="absolute-top columm fit q-pa-xs" style="padding-bottom: 41px;">
       <div class="col-auto">
-        <q-tabs
-          v-model="tab"
-          dense
-          no-caps
-          inline-label
-          narrow-indicator
-          indicator-color="transparent"
-          align="left"
-          class=" bg-transparent text-grey-8"
-          active-color="white"
-          active-bg-color="dark"
-        >
+        <q-tabs v-model="tab" dense no-caps inline-label narrow-indicator indicator-color="transparent" align="left"
+          class=" bg-transparent text-grey-8" active-color="white" active-bg-color="dark">
           <q-tab v-for="tb in tabs" :key="tb.name" :ripple="true" :name="tb?.name" content-class="tab-classes">
             <template #default>
               <div class="row q-gutter-x-xs items-center q-px-sm" style="border-radius: 10px;">
@@ -80,7 +70,7 @@ const tabsxx = [
   //   label: 'Anatomi',
   //   name: 'fisik',
   //   icon: 'icon-my-human-back-svgrepo-com',
-  //   nakes: ['1'],
+  //   nakes: ['1', '2'],
   //   comp: defineAsyncComponent(() => import('./comp/PemeriksaanFisikPage.vue'))
   // }
 ]
