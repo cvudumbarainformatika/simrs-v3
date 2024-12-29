@@ -1,73 +1,45 @@
 <template>
   <div class="row full-width justify-center">
     <div class="q-pa-sm" style="width:25%">
-      <app-input
-        v-model="store.reqs.tahun" label="Tahun" outlined
-        @update:model-value="(val)=>{
-          console.log('Tahun berapa?', val)
-          store.getDataBidang()
-          store.reqs.bidang = ''
-          store.reqs.kegiatan = ''
-        }"
-      />
+      <app-input v-model="store.reqs.tahun" label="Tahun" outlined @update:model-value="(val) => {
+        console.log('Tahun berapa?', val)
+        store.getDataBidang()
+        store.reqs.bidang = ''
+        store.reqs.kegiatan = ''
+      }" />
     </div>
     <div class="q-pa-sm" style="width:25%">
-      <app-autocomplete
-        v-model="store.reqs.bidang"
-        label="Pilih Bidang"
-        autocomplete="bidang"
-        option-label="bidang"
-        option-value="kodebidang"
-        outlined
-        :source="store.bidangs"
-        :loading="store.loading"
-        @selected="(val)=>{
+      <app-autocomplete v-model="store.reqs.bidang" label="Pilih Bidang" autocomplete="bidang" option-label="bidang"
+        option-value="kodebidang" outlined :source="store.bidangs" :loading="store.loading" @selected="(val) => {
           const arr = store.bidangs
           const obj = arr.length ? arr.find(x => x.kodebidang === val) : null
           store.reqs.kodebidang = obj?.kodebidang ?? ''
           store.reqs.kegiatan = ''
           console.log('kode bidang', store.reqs.kodebidang)
           store.filterKegiatan()
-        }"
-      />
+        }" />
     </div>
     <div class="q-pa-sm" style="width:25%">
-      <app-autocomplete
-        v-model="store.reqs.kegiatan"
-        label="Pilih Kegiatan"
-        autocomplete="kegiatan"
-        option-label="kegiatan"
-        option-value="kodekegiatan"
-        outlined
-        :source="store.kegiatans"
-        :loading="store.loading"
+      <app-autocomplete v-model="store.reqs.kegiatan" label="Pilih Kegiatan" autocomplete="kegiatan"
+        option-label="kegiatan" option-value="kodekegiatan" outlined :source="store.kegiatans" :loading="store.loading"
         @selected="(val) => {
           const arr = store.kegiatans
           const obj = arr.length ? arr.find(x => x.kodekegiatan === val) : null
           const kegiatan = obj?.kegiatan
           store.kegiatanblud = kegiatan
 
-        }"
-      />
+        }" />
+    </div>
+    <div class="q-pa-sm" style="width:25%">
+      <app-input-date-human :model="store.tglcetak" label="Tanggal Cetak" outlined :disable="store.loading"
+        @set-display="setTglcetak" />
     </div>
     <div class="q-pa-sm">
-      <app-btn
-        label="Ambil Data"
-        :disable="store.loading"
-        :loading="store.loading"
-        @click="ambilData()"
-      />
+      <app-btn label="Ambil Data" :disable="store.loading" :loading="store.loading" @click="ambilData()" />
     </div>
     <div class="q-pa-sm">
-      <q-btn
-        icon="icon-mat-print"
-        color="orange"
-        round
-        size="sm"
-        :disable="store.loading"
-        :loading="store.loading"
-        @click="cetakData()"
-      >
+      <q-btn icon="icon-mat-print" color="orange" round size="sm" :disable="store.loading" :loading="store.loading"
+        @click="cetakData()">
         <q-tooltip class="bg-orange" :offset="[10, 10]">
           Cetak
         </q-tooltip>
@@ -82,27 +54,16 @@
       :before-finish="store.finishDownload"
       :name="'Buku Besar ' + store.reqs.tahun +'.xls'"
     > -->
-      <q-btn
-        icon="icon-mat-download"
-        color="green"
-        round
-        size="sm"
-        push
-        :disable="store.loading"
-        :loading="store.loading"
-        @click="store.exportExcel= !store.exportExcel"
-      >
+      <q-btn icon="icon-mat-download" color="green" round size="sm" push :disable="store.loading"
+        :loading="store.loading" @click="store.exportExcel = !store.exportExcel">
         <q-tooltip class="bg-green" :offset="[10, 10]">
           Export to Excel
         </q-tooltip>
       </q-btn>
-    <!-- </download-excel> -->
+      <!-- </download-excel> -->
     </div>
   </div>
-  <cetak-rka
-    v-model="store.dialogCetak"
-    :printrka="printrka"
-  />
+  <cetak-rka v-model="store.dialogCetak" :printrka="printrka" />
 </template>
 <script setup>
 import { useQuasar } from 'quasar'
@@ -115,13 +76,15 @@ const store = useRkaStore()
 const $q = useQuasar()
 // Model berdasarkan ref agar tidak updte
 // const berdasar = ref('')
-
-function ambilData () {
+function setTglcetak(val) {
+  store.tglcetak = val
+}
+function ambilData() {
   // console.log('ambil Data')
   store.getAnggaran()
 }
 const printrka = ref(null)
-function cetakData () {
+function cetakData() {
   store.dialogCetak = true
 }
 
@@ -139,7 +102,7 @@ function cetakData () {
 //     return store.kodejenis
 //   }
 // }
-function exportToExcel (tableId, filename) {
+function exportToExcel(tableId, filename) {
   // const el = document.getElementById(tableId)
   // const filenames = filename ? filename + '.xls' : 'KartuStokFarmasi.xls'
   // const columns = store.items

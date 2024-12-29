@@ -14,11 +14,8 @@
         <div class="row justify-center q-pt-md">
           <div class="row">
             <div class="col-1">
-              <q-img
-                src="~assets/images/logo_kota_original.png"
-                spinner-color="white"
-                style="height: 3.3cm; width: 2.6cm"
-              />
+              <q-img src="~assets/images/logo_kota_original.png" spinner-color="white"
+                style="height: 3.3cm; width: 2.6cm" />
             </div>
             <div class="col-10">
               <div class="row justify-center text-h6">
@@ -39,11 +36,7 @@
               </div>
             </div>
             <div class="col-1">
-              <q-img
-                src="~assets/logos/logo-rsud.png"
-                spinner-color="white"
-                style="height: 3cm; width: 3cm"
-              />
+              <q-img src="~assets/logos/logo-rsud.png" spinner-color="white" style="height: 3cm; width: 3cm" />
             </div>
 
             <div class="col-12 q-pt-md">
@@ -57,283 +50,77 @@
           </div>
         </div>
 
-        <div class="row q-col-gutter-sm q-my-sm q-pl-lg">
-          <div class="col-2">
-            <app-autocomplete
-              v-model="store.params.bulan"
-              label="Pilih Bulan"
-              autocomplete="nama"
-              option-label="nama"
-              option-value="value"
-              outlined
-              :source="store.bulans"
-            />
-          </div>
-          <div class="col-2">
-            <app-input
-              v-model="store.params.tahun"
-              label="Tahun"
-              outlined
-            />
-          </div>
-          <div>
-            <app-btn
-              label="Ambil Data"
-              :disable="store.loading"
-              :loading="store.loading"
-              @click="ambilData()"
-            />
-          </div>
-          <div class="items-center">
-            <q-btn
-              position="bottom"
-              color="dark"
-              round
-              size="sm"
-              icon="icon-mat-print"
-              @click=" () => {
-                store.dialogCetak = true}"
-            >
-              <q-tooltip
-                class="primary"
-                :offset="[10, 10]"
-              >
-                Print
-              </q-tooltip>
-            </q-btn>
-
-            <print-pdf
-              v-model="store.dialogCetak"
-            />
+        <div class="container items-center q-pa-sm full-width">
+          <div class="row">
+            <formgetData />
           </div>
         </div>
+
       </q-card>
     </div>
 
-    <div class="q-card q-mt-sm">
-      <q-card class="q-pa-xs">
+    <div class="q-mt-sm">
+      <q-card class="q-py-md">
         <template v-if="store.loading">
           <div class="row justify-center">
             <div class="q-gutter-md">
-              <q-spinner-pie
-                color="amber-13"
-                type="circle"
-                animation="pulse-x"
-                size="40px"
-              />
-              <q-spinner-pie
-                color="amber-13"
-                type="circle"
-                animation="pulse-x"
-                size="60px"
-              />
-              <q-spinner-pie
-                color="amber-13"
-                type="circle"
-                animation="pulse-x"
-                size="40px"
-              />
+              <q-spinner-pie color="amber-13" type="circle" animation="pulse-x" size="40px" />
+              <q-spinner-pie color="amber-13" type="circle" animation="pulse-x" size="60px" />
+              <q-spinner-pie color="amber-13" type="circle" animation="pulse-x" size="40px" />
             </div>
           </div>
         </template>
         <template v-else>
-          <div class="row flex flex-center">
-            <table
-              class="table table-responsive"
-              style="font-size: 13px"
-            >
-              <thead class="align-middle text-center display-block thead-sticky">
-                <tr style="font-size: 13px">
-                  <th width="50px">
-                    No
-                  </th>
-                  <th width="100px">
-                    Tanggal
-                  </th>
-                  <th width="200px">
-                    Register/Rekening
-                  </th>
-                  <th width="500px">
-                    Uraian
-                  </th>
-                  <th>Penerimaan (Rp.)</th>
-                  <th>Pengeluaran (Rp.)</th>
-                  <th>Saldo (Rp.)</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr
-                  v-for="(item, n) in store.hasilArray"
-                  :key="item"
-                >
-                  <td
-                    data-th="No"
-                    class="text-reguler"
-                  >
-                    {{ n + 1 }}
-                  </td>
-                  <td
-                    data-th="Tanggal"
-                    class="text-reguler"
-                  >
-                    {{ item?.tgl }}
-                  </td>
-
-                  <!-- REGISTER -->
-                  <td
-                    data-th="Register/Rekening"
-                    class="text-left q-pl-sm"
-                  >
-                    <div class="text-reguler">
-                      {{ item?.notrans }}
-                    </div>
-                  </td>
-
-                  <!-- URAIAN -->
-                  <td
-                    data-th="Uraian"
-                    class="text-left q-pl-sm"
-                  >
-                    <div class="text-reguler">
-                      {{ item?.uraian }}
-                    </div>
-                  </td>
-
-                  <!-- PENERIMAAN -->
-                  <td
-                    data-th="Penerimaan"
-                    class="text-right q-pr-sm"
-                  >
-                    <div class="text-reguler">
-                      {{ formattanpaRp(item?.penerimaan) }}
-                    </div>
-                  </td>
-
-                  <!-- PENGELUARAN -->
-                  <td
-                    data-th="Pengeluaran"
-                    class="text-right q-pr-sm"
-                  >
-                    <div class="text-reguler">
-                      {{ formattanpaRp(item?.pengeluaran) }}
-                    </div>
-                  </td>
-
-                  <!-- SALDO -->
-                  <td
-                    data-th="Saldo"
-                    class="text-right q-pr-sm text-bold"
-                  >
-                    {{ formattanpaRp(item.total) }}
-                  </td>
-                </tr>
-                <tr>
-                  <td colspan="4">
-                    TOTAL
-                  </td>
-                  <td class="text-right text-weight-bolder q-pr-sm">
-                    {{ formattanpaRp(totaldebit()) }}
-                  </td>
-                  <td class="text-right text-weight-bolder q-pr-sm">
-                    {{ formattanpaRp(totalkredit()) }}
-                  </td>
-                  <td class="text-right text-weight-bolder q-pr-sm">
-                    {{ formattanpaRp(totalsaldo()) }}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+          <div class="row flex-center">
+            <ListdataBku />
           </div>
+
           <div class="contaier q-pt-lg q-pl-xl">
-            <q-card
-              class="saldo bg-grey-3 q-py-xs q-px-xs"
-              style="width: 500px; height: 220px"
-            >
-              <div
-                class="row justify-center q-pt-sm q-py-xs q-px-xs"
-                style="font-size: 14px"
-              >
-                <table
-                  class="text-weight-bolder"
-                >
+            <q-card class="saldo bg-grey-3 q-py-xs q-px-xs" style="width: 400px; height: 220px">
+              <div class="row justify-center q-pt-sm q-py-xs q-px-xs" style="font-size: 14px">
+                <table class="text-weight-bolder">
                   <tbody style="width: 400px">
                     <tr class="no-border">
-                      <td
-                        class="text-left no-border"
-                        width="120px"
-                      >
+                      <td class="text-left no-border" width="150px">
                         Saldo Awal
                       </td>
-                      <td
-                        width="50px"
-                        class="no-border"
-                      >
+                      <td width="15px" class="no-border">
                         :
                       </td>
-                      <td
-                        class="text-right no-border"
-                        width="170px"
-                      >
-                        {{ formattanpaRp(0) }}
+                      <td class="text-right no-border" width="170px">
+                        {{ formattanpaRp(store.nilaisaldoawal) }}
                       </td>
                     </tr>
                     <tr>
-                      <td
-                        class="text-left no-border"
-                        width="120px"
-                      >
+                      <td class="text-left no-border" width="150px">
                         Masuk
                       </td>
-                      <td
-                        width="50px"
-                        class="no-border"
-                      >
+                      <td width="15px" class="no-border">
                         :
                       </td>
-                      <td
-                        class="text-right no-border"
-                        width="170px"
-                      >
+                      <td class="text-right no-border" width="170px">
                         {{ formattanpaRp(totaldebit()) }}
                       </td>
                     </tr>
                     <tr>
-                      <td
-                        class="text-left no-border"
-                        width="120px"
-                      >
+                      <td class="text-left no-border" width="150px">
                         Keluar
                       </td>
-                      <td
-                        width="50px"
-                        class="no-border"
-                      >
+                      <td width="15px" class="no-border">
                         :
                       </td>
-                      <td
-                        class="text-right no-border"
-                        width="170px"
-                      >
+                      <td class="text-right no-border" width="170px">
                         {{ formattanpaRp(totalkredit()) }}
                       </td>
                     </tr>
                     <tr>
-                      <td
-                        class="text-left no-border"
-                        width="120px"
-                      >
+                      <td class="text-left no-border" width="150px">
                         Saldo Akhir
                       </td>
-                      <td
-                        width="50px"
-                        class="no-border"
-                      >
+                      <td width="15px" class="no-border">
                         :
                       </td>
-                      <td
-                        class="text-right no-border"
-                        width="170px"
-                      >
+                      <td class="text-right no-border" width="170px">
                         {{ formattanpaRp(totalsaldo()) }}
                       </td>
                     </tr>
@@ -353,22 +140,21 @@
 import { formattanpaRp } from 'src/modules/formatter'
 import { useLaporanBkuPpkStore } from 'src/stores/siasik/laporan/bku/bkuppk'
 import { defineAsyncComponent, onMounted } from 'vue'
+import formgetData from './inpage/FormBkuppk.vue'
+import ListdataBku from './inpage/ListDatabkuppk.vue'
 // import VueHtml2pdf from 'vue-html2pdf'
 const PrintPdf = defineAsyncComponent(() => import('./inpage/PrintPdf.vue'))
 const store = useLaporanBkuPpkStore()
 onMounted(() => {
   store.getDataTable()
 })
-function bulan (val) {
+function bulan(val) {
   const bulan = store.bulans.find((x) => x.value === val)
   return bulan?.nama ?? '-'
 }
 
-function ambilData () {
-  // store.hitungharidalamBulan();
-  store.getDataTable()
-}
-function totaldebit () {
+
+function totaldebit() {
   const debit = store.hasilArray
   // console.log("njaaias", debit);
   const totaldebit = debit?.length
@@ -377,7 +163,7 @@ function totaldebit () {
   // console.log("debit", totaldebit);
   return totaldebit
 }
-function totalkredit () {
+function totalkredit() {
   const kredit = store.hasilArray
   // console.log("njaaias", debit);
   const totalkredit = kredit?.length
@@ -387,12 +173,12 @@ function totalkredit () {
   return totalkredit
 }
 
-function totalsaldo () {
+function totalsaldo() {
   const saldo = store.hasilArray
   // console.log("njaaias", debit);
   const totalsaldo = saldo?.length
     ? saldo?.map((x) => x.penerimaan).reduce((x, y) => x + y, 0) -
-      saldo?.map((x) => x.pengeluaran).reduce((x, y) => x + y, 0)
+    saldo?.map((x) => x.pengeluaran).reduce((x, y) => x + y, 0)
     : 0
   // console.log("debit", totaldebit);
   store.saldoakhir = totalsaldo
@@ -420,36 +206,7 @@ function totalsaldo () {
 </script>
 
 <style>
-table {
-  border-collapse: collapse;
-  border-radius: 6px;
-  max-width: 1500px;
-  width: 100%;
-}
-
-td,
-th {
-  border-collapse: collapse;
-  border: 1px solid rgb(163, 163, 163);
-  text-align: center;
-}
-
-thead tr {
-  height: 60px;
-  background: #ffed86;
-  font-size: 16px;
-}
-
 tbody tr {
   height: 48px;
-  border-bottom: 1px solid #e3f1d5;
-}
-
-td,
-th {
-  text-align: center;
-}
-.grs_bawah {
-  border-bottom: 1px solid grey;
 }
 </style>

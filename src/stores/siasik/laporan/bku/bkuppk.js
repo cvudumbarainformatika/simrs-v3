@@ -33,6 +33,7 @@ export const useLaporanBkuPpkStore = defineStore('laporan_bkuppk', {
       { nama: 'November', value: '11' },
       { nama: 'Desember', value: '12' }
     ],
+    nilaisaldoawal: 0,
     npkls: [],
     hasilArray: [],
     arrayTanggal: [],
@@ -52,7 +53,7 @@ export const useLaporanBkuPpkStore = defineStore('laporan_bkuppk', {
   }),
 
   actions: {
-    setParams (key, val) {
+    setParams(key, val) {
       this.params[key] = val
     },
     // defaultEndDate () {
@@ -61,10 +62,10 @@ export const useLaporanBkuPpkStore = defineStore('laporan_bkuppk', {
     //   now.setMonth(now.getMonth() - 1)
     //   return new Date(now.toJSON().slice(0, 10))
     // },
-    getInitialData () {
+    getInitialData() {
       this.getDataTable()
     },
-    async getDataTable () {
+    async getDataTable() {
       this.loading = true
       const params = { params: this.params }
       await api
@@ -93,7 +94,7 @@ export const useLaporanBkuPpkStore = defineStore('laporan_bkuppk', {
           this.loading = false
         })
     },
-    hitungharidalamBulan () {
+    hitungharidalamBulan() {
       const cariBulan = new Date(
         this.params.tahun,
         this.params.bulan,
@@ -110,13 +111,13 @@ export const useLaporanBkuPpkStore = defineStore('laporan_bkuppk', {
       this.loading = false
       // return cariBulan;
     },
-    buatTanggal (n) {
+    buatTanggal(n) {
       const tgl = n > 9 ? n : '0' + n
       const thn = this.params.tahun
       const bln = this.params.bulan
       return thn + '-' + bln + '-' + tgl
     },
-    mapingData (tgl) {
+    mapingData(tgl) {
       // console.log("www", tgl);
       // ===================================================Saldo
 
@@ -178,7 +179,8 @@ export const useLaporanBkuPpkStore = defineStore('laporan_bkuppk', {
           saldo.push(obj)
         }
       }
-      console.log('gggg', saldo)
+      this.nilaisaldoawal = saldo.map((x) => x.subtotal).reduce((a, b) => a + b, 0)
+      console.log('gggg', this.nilaisaldoawal)
       // =====================================================
       // ===================================================Nihil
       const silpa = []
@@ -436,7 +438,7 @@ export const useLaporanBkuPpkStore = defineStore('laporan_bkuppk', {
       console.log('hasil gabung', this.hasilArray)
     },
 
-    cariHasilAkhirArray (arr) {
+    cariHasilAkhirArray(arr) {
       let total = 0
       if (arr.length) {
         for (let i = 0; i < arr.length; i++) {
@@ -474,23 +476,23 @@ export const useLaporanBkuPpkStore = defineStore('laporan_bkuppk', {
     //   return arr;
     // },
 
-    ambilDataUnik (x, f) {
+    ambilDataUnik(x, f) {
       // eslint-disable-next-line no-sequences
       const unique = Object.values(x.reduce((a, b) => ((a[f(b)] = b), a), {}))
       return unique
     },
-    hitungTotalNpd (arr) {
+    hitungTotalNpd(arr) {
       return arr
         .map((x) => x.nominalpembayaran)
         .reduce((x, y) => parseFloat(x) + parseFloat(y), 0)
     },
-    hitungTBP (arr) {
+    hitungTBP(arr) {
       return arr.map((x) => x.nilai).reduce((x, y) => x + y, 0)
     },
-    hitungPlain (arr) {
+    hitungPlain(arr) {
       return arr.map((x) => x.plainlain.rs4).reduce((x, y) => x + y, 0)
     },
-    hitungjumlahAwal (arr) {
+    hitungjumlahAwal(arr) {
       // eslint-disable-next-line no-undef
       return arr.sum(penerimaan - pengeluaran)
     }

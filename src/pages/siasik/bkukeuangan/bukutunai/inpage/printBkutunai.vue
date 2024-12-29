@@ -46,86 +46,13 @@
           </div>
 
           <q-card-section class="q-pa-md full-width">
-            <template v-if="store.hasilArray">
-              <table class="full-width">
-                <thead class="align-middle text-center display-block thead-sticky">
-                  <tr style="font-size: 13px">
-                    <th width="50px">
-                      No
-                    </th>
-                    <th width="100px">
-                      Tanggal
-                    </th>
-                    <th width="200px">
-                      Register/Rekening
-                    </th>
-                    <th width="500px">
-                      Uraian
-                    </th>
-                    <th>Penerimaan (Rp.)</th>
-                    <th>Pengeluaran (Rp.)</th>
-                    <th>Saldo (Rp.)</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="(item, n) in store.hasilArray" :key="item">
-                    <td data-th="No" class="text-reguler">
-                      {{ n + 1 }}
-                    </td>
-                    <td data-th="Tanggal" class="text-reguler">
-                      {{ item?.tgl }}
-                    </td>
-
-                    <!-- REGISTER -->
-                    <td data-th="Register/Rekening" class="text-left q-pl-sm">
-                      <div class="text-reguler">
-                        {{ item?.notrans }}
-                      </div>
-                    </td>
-
-                    <!-- URAIAN -->
-                    <td data-th="Uraian" class="text-left q-pl-sm">
-                      <div class="text-reguler">
-                        {{ item?.uraian }}
-                      </div>
-                    </td>
-
-                    <!-- PENERIMAAN -->
-                    <td data-th="Penerimaan" class="text-right q-pr-sm">
-                      <div class="text-reguler">
-                        {{ formattanpaRp(item?.penerimaan) }}
-                      </div>
-                    </td>
-
-                    <!-- PENGELUARAN -->
-                    <td data-th="Pengeluaran" class="text-right q-pr-sm">
-                      <div class="text-reguler">
-                        {{ formattanpaRp(item?.pengeluaran) }}
-                      </div>
-                    </td>
-
-                    <!-- SALDO -->
-                    <td data-th="Saldo" class="text-right q-pr-sm text-bold">
-                      {{ formattanpaRp(item.total) }}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td colspan="4">
-                      TOTAL
-                    </td>
-                    <td class="text-right text-weight-bolder q-pr-sm">
-                      {{ formattanpaRp(totaldebit()) }}
-                    </td>
-                    <td class="text-right text-weight-bolder q-pr-sm">
-                      {{ formattanpaRp(totalkredit()) }}
-                    </td>
-                    <td class="text-right text-weight-bolder q-pr-sm">
-                      {{ formattanpaRp(totalsaldo()) }}
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </template>
+            <div class="col-auto">
+              <div class="row q-col-gutter-md full-width">
+                <div class="items-center full-width">
+                  <listData />
+                </div>
+              </div>
+            </div>
           </q-card-section>
           <q-card-section class="full-width">
             <div class="row justify-between full-width">
@@ -221,10 +148,10 @@ import { formattanpaRp } from 'src/modules/formatter'
 import { terbilangRupiah } from 'src/modules/utils'
 
 import { onMounted, ref } from 'vue'
-import { useLaporanBkuPpkStore } from 'src/stores/siasik/laporan/bku/bkuppk'
 import { useLaporanBkuPengeluaranStore } from 'src/stores/siasik/laporan/bku/bkupengeluaran'
+import { useLaporanBukuTunaiStore } from 'src/stores/siasik/laporan/buku_pembantu/bukutunai'
 
-const store = useLaporanBkuPpkStore()
+const store = useLaporanBukuTunaiStore()
 const pegawai = useLaporanBkuPengeluaranStore()
 onMounted(() => {
   pegawai.getDataTable()

@@ -18,6 +18,7 @@ export const useRkaStore = defineStore('store_rka_siasik', {
       tahunsekarang: date.formatDate(Date.now(), 'YYYY')
     },
     dialogCetak: false,
+    tglcetak: date.formatDate(Date.now(), 'DD MMMM YYYY'),
     mapbidangptk: [],
     bidangs: [],
     kegiatans: [],
@@ -39,17 +40,17 @@ export const useRkaStore = defineStore('store_rka_siasik', {
     targethasil: ''
   }),
   actions: {
-    setParameter (key, val) {
+    setParameter(key, val) {
       this.reqs[key] = val
     },
-    setForm (key, val) {
+    setForm(key, val) {
       this.reqs[key] = val
     },
-    emptyForm () {
+    emptyForm() {
       // this.reqs.bidang = ''
       this.reqs.kegiatan = ''
     },
-    getDataBidang () {
+    getDataBidang() {
       this.loading = true
       const params = { params: this.reqs }
       return new Promise((resolve) => {
@@ -69,7 +70,7 @@ export const useRkaStore = defineStore('store_rka_siasik', {
         }).catch(() => { this.loading = false })
       })
     },
-    filterBidang () {
+    filterBidang() {
       const data = this.mapbidangptk?.length
         ? this.mapbidangptk?.map((x) => {
           return {
@@ -88,7 +89,7 @@ export const useRkaStore = defineStore('store_rka_siasik', {
       this.bidangs = bid
       // console.log('bidangfilt', this.params.bidang)
     },
-    filterPtk () {
+    filterPtk() {
       const data = this.mapbidangptk?.length
         ? this.mapbidangptk?.map((x) => {
           return {
@@ -109,7 +110,7 @@ export const useRkaStore = defineStore('store_rka_siasik', {
       this.ptks = ptk
       // console.log('pptk', this.ptks)
     },
-    filterKegiatan () {
+    filterKegiatan() {
       const data = this.mapbidangptk?.length
         ? this.mapbidangptk?.filter(x =>
           x.kodebidang === this.reqs.kodebidang
@@ -118,7 +119,7 @@ export const useRkaStore = defineStore('store_rka_siasik', {
       this.kegiatans = data
       console.log('kegiatans', this.kegiatans)
     },
-    getAnggaran () {
+    getAnggaran() {
       this.loading = true
       const params = { params: this.reqs }
       return new Promise((resolve) => {
@@ -136,7 +137,7 @@ export const useRkaStore = defineStore('store_rka_siasik', {
         }).catch(() => { this.loading = false })
       })
     },
-    mapingData () {
+    mapingData() {
       const rka = []
       const totalrka = []
       const uniq1 = this.dataanggaran.map((x) => x.kode1)

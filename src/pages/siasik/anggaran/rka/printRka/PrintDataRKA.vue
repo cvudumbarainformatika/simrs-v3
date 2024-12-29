@@ -79,7 +79,7 @@
                         <div class="q-px-md" />
                         <div class="col-auto">
                           <div class="q-py-xs" style="height: 35px">
-                            : 1 -  URUSAN PEMERINTAHAN WAJIB YANG BERKAITAN DENGAN PELAYANAN DASAR
+                            : 1 - URUSAN PEMERINTAHAN WAJIB YANG BERKAITAN DENGAN PELAYANAN DASAR
                           </div>
                           <div class="q-py-xs" style="height: 35px">
                             : 1.02 - URUSAN PEMERINTAHAN BIDANG KESEHATAN
@@ -237,7 +237,8 @@
                               <div class="text-bold q-py-sm" style="height: 50px">
                                 {{ it.kode }}
                               </div>
-                              <div class="q-pl-md q-py-sm" style="height: 45px" v-for="rinci in it?.rincian" :key="rinci">
+                              <div class="q-pl-md q-py-sm" style="height: 45px" v-for="rinci in it?.rincian"
+                                :key="rinci">
                                 {{ rinci.kode108 }}
                               </div>
                             </td>
@@ -245,25 +246,29 @@
                               <div class="text-bold q-py-sm" style="height: 50px">
                                 {{ it.uraian }}
                               </div>
-                              <div class="q-pl-md q-py-sm" style="height: 45px" v-for="rinci in it?.rincian" :key="rinci">
+                              <div class="q-pl-md q-py-sm" style="height: 45px" v-for="rinci in it?.rincian"
+                                :key="rinci">
                                 - {{ rinci.usulan }}
                               </div>
                             </td>
                             <td class="text-right">
                               <div class="q-py-md" style="height: 50px" />
-                              <div class="q-pl-md q-py-sm" style="height: 45px" v-for="rinci in it?.rincian" :key="rinci">
+                              <div class="q-pl-md q-py-sm" style="height: 45px" v-for="rinci in it?.rincian"
+                                :key="rinci">
                                 {{ rinci.volume }}
                               </div>
                             </td>
                             <td>
                               <div class="q-py-md" style="height: 50px" />
-                              <div class="q-pl-md q-py-sm" style="height: 45px" v-for="rinci in it?.rincian" :key="rinci">
+                              <div class="q-pl-md q-py-sm" style="height: 45px" v-for="rinci in it?.rincian"
+                                :key="rinci">
                                 {{ rinci.satuan }}
                               </div>
                             </td>
                             <td class="text-right">
                               <div class="q-py-md" style="height: 50px" />
-                              <div class="q-pl-md q-py-sm" style="height: 45px" v-for="rinci in it?.rincian" :key="rinci">
+                              <div class="q-pl-md q-py-sm" style="height: 45px" v-for="rinci in it?.rincian"
+                                :key="rinci">
                                 {{ formattanpaRp(rinci.harga) }}
                               </div>
                             </td>
@@ -271,7 +276,8 @@
                               <div class="text-bold q-py-md" style="height: 50px">
                                 {{ formattanpaRp(it.pagu) }}
                               </div>
-                              <div class="q-pl-md q-py-sm" style="height: 45px" v-for="rinci in it?.rincian" :key="rinci">
+                              <div class="q-pl-md q-py-sm" style="height: 45px" v-for="rinci in it?.rincian"
+                                :key="rinci">
                                 {{ formattanpaRp(rinci.pagu) }}
                               </div>
                             </td>
@@ -286,7 +292,7 @@
                       <div class="col full-width" />
                       <div class="col text-center" v-for="it in tt.ttd" :key="it">
                         <div class="q-py-xs">
-                          Probolinggo {{ store.display.sekarang }}
+                          Probolinggo {{ store.tglcetak }}
                         </div>
                         <div class="text-bold">
                           Pengguna Anggaran
@@ -311,18 +317,8 @@
           <q-card-section class="q-pa-none bg-primary text-white">
             <div class="q-pa-md row justify-end items-end">
               <div class="items-end">
-                <q-btn
-                  v-print="printObj"
-                  unelevated
-                  color="dark"
-                  round
-                  size="sm"
-                  icon="icon-mat-print"
-                >
-                  <q-tooltip
-                    class="primary"
-                    :offset="[10, 10]"
-                  >
+                <q-btn v-print="printObj" unelevated color="dark" round size="sm" icon="icon-mat-print">
+                  <q-tooltip class="primary" :offset="[10, 10]">
                     Print
                   </q-tooltip>
                 </q-btn>
@@ -353,14 +349,14 @@ const printed = ref(false)
 const printObj = {
   id: 'printMe',
   popTitle: 'Rencana Kerja dan Anggaran | SIASIK',
-  beforeOpenCallback (vue) {
+  beforeOpenCallback(vue) {
     printed.value = true
     console.log('wait...')
   },
-  openCallback (vue) {
+  openCallback(vue) {
     console.log('opened')
   },
-  closeCallback (vue) {
+  closeCallback(vue) {
     printed.value = false
     console.log('closePrint')
   }
@@ -384,23 +380,28 @@ const printObj = {
   border-bottom-style: solid;
   border-width: 2px;
 }
+
 .b1 {
   border-style: solid;
   border-width: 2px;
 }
+
 .b2 {
   border-right-style: solid;
   border-width: 2px;
 }
+
 .b3 {
   border-bottom-style: solid;
   border-width: 2px;
 }
+
 .b4 {
   border-right-style: solid;
   border-left-style: solid;
   border-width: 2px;
 }
+
 .b5 {
   border-right-style: solid;
   border-left-style: solid;
@@ -414,13 +415,17 @@ const printObj = {
   border-top-style: solid;
   border-width: 2px;
 }
-table, th, td {
+
+table,
+th,
+td {
   border-width: 2px;
   border-style: solid;
   border-collapse: collapse;
   border-right-style: solid;
   border-left-style: solid;
 }
+
 td {
   padding-left: 10px;
   padding-right: 10px;
