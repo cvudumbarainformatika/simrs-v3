@@ -1,50 +1,20 @@
 <template>
-  <div
-    class="column full-height q-ma-sm"
-    style="overflow: hidden;"
-  >
+  <div class="column full-height q-ma-sm" style="overflow: hidden;">
     <div class="column full-height">
       <div class="col-auto bg-red">
-        <q-tabs
-          v-model="store.tab"
-          no-caps
-          inline-label
-          class="bg-primary text-white shadow-2"
-          align="left"
-          dense
-          active-color="yellow"
-          active-bg-color="dark"
-          @update:model-value="cekPanel"
-        >
-          <q-tab
-            v-for="(item, i) in store.tabs"
-            :key="i"
-            :name="item.page"
-            :label="item.name"
-          />
+        <q-tabs v-model="store.tab" no-caps inline-label class="bg-primary text-white shadow-2" align="left" dense
+          active-color="yellow" active-bg-color="dark" @update:model-value="cekPanel">
+          <q-tab v-for="(item, i) in store.tabs" :key="i" :name="item.page" :label="item.name" />
         </q-tabs>
       </div>
       <div class="col-grow bg-yellow">
-        <q-tab-panels
-          v-model="store.tab"
-          animated
-          class="full-height"
-        >
-          <q-tab-panel
-            v-for="(panel, n) in store.tabs"
-            :key="n"
-            :name="panel.page"
-            class="full-height q-pa-none"
-          >
+        <q-tab-panels v-model="store.tab" animated class="full-height">
+          <q-tab-panel v-for="(panel, n) in store.tabs" :key="n" :name="panel.page" class="full-height q-pa-none">
             <!-- <q-tab-panel
             name="Laborat"
             class="full-height q-pa-none"
           > -->
-            <component
-              :is="cekPanel()"
-              :key="props.pasien"
-              :pasien="props.pasien"
-            />
+            <component :is="cekPanel()" :key="props.pasien" :pasien="props.pasien" />
           </q-tab-panel>
         </q-tab-panels>
       </div>
@@ -88,6 +58,8 @@ const cekPanel = () => {
 }
 
 onMounted(() => {
+  console.log('coba');
+
   const isRanap = false
   lab.getMasterLaborat()
   lab.getNota(props.pasien, isRanap)
