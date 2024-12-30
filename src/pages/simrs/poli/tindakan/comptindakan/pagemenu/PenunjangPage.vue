@@ -58,7 +58,7 @@ const cekPanel = () => {
 }
 
 onMounted(() => {
-  console.log('coba');
+  // console.log('coba');
 
   const isRanap = false
   lab.getMasterLaborat()

@@ -143,7 +143,7 @@ export const useLaboratPoli = defineStore('laborat-poli', {
 
       const payload = { params: { noreg: pasien?.noreg, isRanap } }
       const resp = await api.get('v1/simrs/penunjang/laborat/getnota', payload)
-      console.log('notalaborat', resp)
+      // console.log('notalaborat', resp)
       if (resp.status === 200) {
         this.setNotas(resp?.data)
         // const arr = resp.data.map(x => x.nota)
