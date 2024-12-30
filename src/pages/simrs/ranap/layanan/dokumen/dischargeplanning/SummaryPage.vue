@@ -108,7 +108,7 @@
               </table>
             </div>
             <div class="col-6">
-              <table>
+              <table class="model-1">
                 <tbody>
                   <tr valign="top">
                     <td>
@@ -159,7 +159,7 @@
               </table>
             </div>
             <div class="col-12">
-              <table>
+              <table class="model-1">
                 <tbody>
                   <tr valign="top">
                     <td width="6%">
@@ -206,11 +206,38 @@
                     </div>
                   </td>
                   <td>
-                    <div class="flex no-wrap q-gutter-md">
-                      <div>:</div>
-                      <div class="flex flex-wrap">
-                        {{ PRMRJ }}
+                    <div class="flex justify-between">
+                      <div class="flex no-wrap q-gutter-md">
+                        <div>:</div>
+                        <div class="flex flex-wrap">
+                          {{ PRMRJ }}
+                        </div>
                       </div>
+                      <!-- <div>
+                        <span class="text-bold"> STATUS PULANG </span> <span class="q-mx-md"> : </span>
+                        <span>{{ pasien?.prognosa }}</span>
+                      </div> -->
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <div class="text-weight-bold">
+                      STATUS PULANG
+                    </div>
+                  </td>
+                  <td>
+                    <div class="flex justify-between">
+                      <div class="flex no-wrap q-gutter-md">
+                        <div>:</div>
+                        <div class="flex flex-wrap">
+                          {{ pasien?.prognosa }}
+                        </div>
+                      </div>
+                      <!-- <div>
+                        <span class="text-bold"> STATUS PULANG </span> <span class="q-mx-md"> : </span>
+                        <span>{{ pasien?.prognosa }}</span>
+                      </div> -->
                     </div>
                   </td>
                 </tr>
@@ -500,6 +527,9 @@ const props = defineProps({
   }
 })
 
+// console.log('props', props?.pasien);
+
+
 const pengunjung = usePengunjungRanapStore()
 const ttdPasien = ref(null)
 
@@ -587,6 +617,8 @@ const qrPerawat = computed(() => {
   const asal = 'RANAP'
   const petugas = SUMMARY?.value?.user_input ?? null
   const enc = btoa(`${noreg}|${dok}|${asal}|${petugas}`)
+  // console.log('enc', enc);
+
   return `https://rsud.probolinggokota.go.id/dokumen-simrs/legalitas/${enc}`
   // return `https://xenter.my.id/qr-document?noreg=${noreg}&dokumen=${dok}&asal=${asal}`
 })
@@ -604,11 +636,11 @@ const qrDokter = computed(() => {
 <style lang="scss" scoped>
 .qrcode__image {
   // background-color: #fff;
-  border: 0.1rem solid #fff;
-  border-radius: 0.25rem;
+  // border: 0.05rem solid #fff;
+  // border-radius: 0.25rem;
   // box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.25);
-  height: 30%;
-  width: 30%;
+  height: 20%;
+  width: 20%;
   left: 50%;
   overflow: hidden;
   position: absolute;
@@ -616,11 +648,16 @@ const qrDokter = computed(() => {
   transform: translate(-50%, -50%);
 }
 
+table {
+  border-collapse: collapse;
+  border-spacing: 50px 0;
+}
+
 .model-1 {
 
   tr,
   td {
-    padding-bottom: -5px !important;
+    padding: -3px 0 !important;
   }
 }
 
