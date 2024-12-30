@@ -17,7 +17,7 @@ export const usePengunjungRanapStore = defineStore('pengunjung-ranap', {
       per_page: 100,
       koderuangan: null
     },
-    periods: ['Hari Ini', 'Minggu Ini', 'Bulan Ini'],
+    periods: ['Hari ini', 'Minggu ini', 'Bulan ini', 'Custom'],
     periode: 'Hari Ini',
     ruangans: [],
     ruangan: null,
@@ -40,6 +40,18 @@ export const usePengunjungRanapStore = defineStore('pengunjung-ranap', {
   // persist: true,
 
   actions: {
+    setPeriode(val) {
+      this.periode = val
+      if (val === 'Hari ini') {
+        this.hariIni()
+      }
+      else if (val === 'Minggu ini') {
+        this.mingguIni()
+      }
+      else if (val === 'Bulan ini') {
+        this.bulanIni()
+      }
+    },
     async getData() {
       this.loading = true
       const params = { params: this.params }
@@ -62,6 +74,36 @@ export const usePengunjungRanapStore = defineStore('pengunjung-ranap', {
         this.loading = false
       }
     },
+
+    hariIni() {
+      const cDate = new Date()
+      this.params.to = dateDbFormat(cDate)
+      this.params.from = dateDbFormat(cDate)
+    },
+    bulanIni() {
+      const curr = new Date(), y = curr.getFullYear(), m = curr.getMonth()
+      // const firstday = date.formatDate(curr, 'YYYY') + '-' + date.formatDate(curr, 'MM') + '-01'
+      // const lastday = date.formatDate(curr, 'YYYY') + '-' + date.formatDate(curr, 'MM') + '-31'
+      const firstday = curr.setFullYear(y, m, 1)
+      const lastday = curr.setFullYear(y, m + 1, 0)
+      this.params.to = dateDbFormat(firstday)
+      this.params.from = dateDbFormat(lastday)
+    },
+    mingguIni() {
+      const curr = new Date()
+      const firstday = new Date(curr.setDate(curr.getDate() - curr.getDay()))
+      const lastday = new Date(curr.setDate(curr.getDate() - curr.getDay() + 6))
+      this.params.to = dateDbFormat(firstday)
+      this.params.from = dateDbFormat(lastday)
+    },
+    tahunIni() {
+      const curr = new Date()
+      const firstday = date.formatDate(curr, 'YYYY') + '-01' + '-01'
+      const lastday = date.formatDate(curr, 'YYYY') + '-12' + '-31'
+      this.params.to = dateDbFormat(firstday)
+      this.params.from = dateDbFormat(lastday)
+    },
+
 
     goToPage(val) {
       this.params.page = val

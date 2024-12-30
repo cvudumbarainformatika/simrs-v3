@@ -3,21 +3,9 @@
     <div class="absolute-top columm fit q-pa-xs" style="padding-bottom: 41px;">
       <div class="col-auto full-width">
         <div class="full-width">
-          <q-tabs
-            ref="tabsRef"
-            v-model="tab"
-            dense
-            no-caps
-            inline-label
-            narrow-indicator
-            indicator-color="transparent"
-            align="left"
-            class="bg-transparent text-grey-8 mytabs"
-            active-color="white"
-            active-bg-color="dark"
-            :mobile-arrows="false"
-            :outside-arrows="false"
-          >
+          <q-tabs ref="tabsRef" v-model="tab" dense no-caps inline-label narrow-indicator indicator-color="transparent"
+            align="left" class="bg-transparent text-grey-8 mytabs" active-color="white" active-bg-color="dark"
+            :mobile-arrows="false" :outside-arrows="false">
             <q-tab v-for="tb in tabs" :key="tb.name" :ripple="true" :name="tb?.name" content-class="tab-classes">
               <template #default>
                 <div class="row q-gutter-x-xs items-center q-px-sm no-wrap" style="border-radius: 10px;">
@@ -65,7 +53,7 @@ const props = defineProps({
 const nakes = computed(() => {
   return auth?.user?.pegawai?.kdgroupnakes
 })
-const tab = ref('edukasi')
+const tab = ref('perencanaan')
 
 const lab = useLaboratPoli()
 
@@ -73,27 +61,34 @@ const tabsRef = ref(null)
 
 onMounted(() => {
   tabsRef?.value?.$el?.classList?.remove('no-wrap')
-  console.log('qtabs', tabsRef.value.$el.classList.value)
+  // console.log('qtabs', tabsRef.value.$el.classList.value)
 
   tab.value = tabs.value[0]?.name
   lab.getNota(props.pasien)
 })
 
 const tabsxx = [
-  {
-    label: 'Edukasi',
-    name: 'edukasi',
-    icon: 'icon-my-stethoscope',
-    nakes: ['1', '2', '3'],
-    comp: defineAsyncComponent(() => import('./comp/edukasi/IndexPage.vue'))
-  }
   // {
-  //   label: 'Inform Consent',
-  //   name: 'inform-consent',
-  //   icon: 'icon-mat-description',
+  //   label: 'Edukasi',
+  //   name: 'edukasi',
+  //   icon: 'icon-my-stethoscope',
   //   nakes: ['1', '2', '3'],
-  //   comp: defineAsyncComponent(() => import('./comp/informconsent/IndexPage.vue'))
-  // }
+  //   comp: defineAsyncComponent(() => import('./comp/edukasi/IndexPage.vue'))
+  // },
+  {
+    label: 'Perencanaan',
+    name: 'perencanaan',
+    icon: 'icon-mat-description',
+    nakes: ['2', '3'],
+    comp: defineAsyncComponent(() => import('./comp/perencanaan/IndexPage.vue'))
+  },
+  {
+    label: 'Implementasi & Evaluasi',
+    name: 'implementasi',
+    icon: 'icon-mat-description',
+    // nakes: ['2', '3'],
+    comp: defineAsyncComponent(() => import('./comp/implementasi/IndexPage.vue'))
+  }
 
 ]
 
@@ -104,7 +99,10 @@ const menu = computed(() => {
 })
 
 const tabs = computed(() => {
-  return tabsxx.filter(i => i?.nakes.includes(nakes.value)) ?? tabsxx
+
+  // return tabsxx.filter(i => i?.nakes?.includes(nakes.value)) ?? tabsxx
+
+  return tabsxx
 })
 
 </script>
@@ -120,5 +118,4 @@ const tabs = computed(() => {
 //   //   flex-wrap: wrap !important;
 //   // }
 //   flex-wrap: wrap !important;
-// }
-</style>
+// }</style>
