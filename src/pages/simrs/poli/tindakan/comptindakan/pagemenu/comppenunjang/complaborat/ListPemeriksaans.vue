@@ -20,100 +20,54 @@
     </q-bar>
     <div class="col-grow bg-grey">
       <!-- jika belum ada pemeriksaan -->
-      <div
-        v-if="filterredTable.length === 0"
-        class="column full-height flex-center text-white"
-      >
+      <div v-if="filterredTable.length === 0" class="column full-height flex-center text-white">
         Belum Ada Permintaan Order ke Laborat
       </div>
-      <q-scroll-area
-        v-else
-        style="height:calc(100% - 1px)"
-      >
-        <q-list
-          separator
-        >
+      <q-scroll-area v-else style="height:calc(100% - 1px)">
+        <q-list separator>
           <transition-group>
-            <template
-              v-for="(item, i) in filterredTable"
-              :key="i"
-            >
-              <q-expansion-item
-                class="q-pa-xs bg-white"
-                style="margin-bottom:.2em"
-                hide-expand-icon
-              >
+            <template v-for="(item, i) in filterredTable" :key="i">
+              <q-expansion-item class="q-pa-xs bg-white" style="margin-bottom:.2em" hide-expand-icon>
                 <!-- <template #header>
                   {{ item }}
                 </template> -->
                 <template #header>
                   <q-item-section>
-                    <q-item-label
-                      lines="2"
-                      class="f-12"
-                    >
+                    <q-item-label lines="2" class="f-12">
                       <span class="">Nomor </span> : <span class="text-weight-bold text-accent">{{ item?.nota }} </span>
                     </q-item-label>
-                    <q-item-label
-                      lines="2"
-                      class="f-12"
-                    >
-                      <span
-                        class="text-weight-bold"
-                        :class="item?.details.length === 1 ? 'text-orange' : 'text-primary'"
-                      >{{ item?.details.length === 1 ? 'NON-PAKET' : 'PAKET' }}</span>
+                    <q-item-label lines="2" class="f-12">
+                      <span class="text-weight-bold"
+                        :class="item?.details.length === 1 ? 'text-orange' : 'text-primary'">{{ item?.details.length ===
+                          1 ? 'NON-PAKET' : 'PAKET' }}</span>
                     </q-item-label>
-                    <q-item-label
-                      lines="2"
-                      class="f-12"
-                    >
-                      <span class=""> {{ item?.details[0]?.pemeriksaanlab?.rs21 !== ''? item?.details[0]?.pemeriksaanlab?.rs21: item?.details[0]?.pemeriksaanlab?.rs2 }} </span>
+                    <q-item-label lines="2" class="f-12">
+                      <span class=""> {{ item?.details[0]?.pemeriksaanlab?.rs21 !== '' ?
+                        item?.details[0]?.pemeriksaanlab?.rs21 : item?.details[0]?.pemeriksaanlab?.rs2 }} </span>
                     </q-item-label>
                   </q-item-section>
-                  <q-item-section
-                    side
-                    top
-                  >
-                    <q-item-label
-                      lines="2"
-                      class="f-10"
-                    >
+                  <q-item-section side top>
+                    <q-item-label lines="2" class="f-10">
                       <span class="text-primary">{{ dateFullFormat(item?.tgl_order) }} </span>
                     </q-item-label>
 
                     <q-item-label>
-                      <q-badge
-                        outline
-                        color="primary"
-                        :label="`Rp. ${formatRp(parseInt(item?.details[0]?.rs6) + parseInt(item?.details[0]?.rs13))}`"
-                      />
+                      <q-badge outline color="primary"
+                        :label="`Rp. ${formatRp(parseInt(item?.details[0]?.rs6) + parseInt(item?.details[0]?.rs13))}`" />
                     </q-item-label>
                     <q-item-label>
                       <div class="row q-my-xs">
-                        <q-btn
-                          flat
-                          round
-                          size="sm"
-                          icon="icon-mat-delete"
-                          color="negative"
-                          class="z-top"
-                          @click="hapusItem(item?.id)"
-                        />
+                        <q-btn flat round size="sm" icon="icon-mat-delete" color="negative" class="z-top"
+                          @click="hapusItem(item?.id)" />
                       </div>
                     </q-item-label>
                   </q-item-section>
                 </template>
 
-                <q-card
-                  square
-                  flat
-                >
+                <q-card square flat>
                   <q-separator />
                   <q-card-section class="q-pa-none">
-                    <q-markup-table
-                      dense
-                      dark
-                    >
+                    <q-markup-table dense dark>
                       <thead class="bg-primary">
                         <tr>
                           <th class="text-left">
@@ -131,14 +85,8 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr
-                          v-for="(row, n) in item?.details"
-                          :key="n"
-                        >
-                          <td
-                            class="text-left ellipsis"
-                            style="max-width: 150px;"
-                          >
+                        <tr v-for="(row, n) in item?.details" :key="n">
+                          <td class="text-left ellipsis" style="max-width: 150px;">
                             {{ row?.pemeriksaanlab?.rs2 }}
                           </td>
                           <td class="text-left f-10">
@@ -183,6 +131,8 @@ const props = defineProps({
 const filterredTable = computed(() => {
   // const val = store.notalaborat
   const arr = props.pasien?.laborats
+  // console.log('pasien ', arr);
+
   // if (val === 'LIHAT SEMUA') {
   //   return mapping(arr)
   // }
@@ -192,15 +142,15 @@ const filterredTable = computed(() => {
 })
 
 // eslint-disable-next-line no-unused-vars
-function mapping (item) {
+function mapping(item) {
   const arr = item
   const arr2 = arr.length > 0
     ? arr.map(x =>
-      ({
-        gruper: x.pemeriksaanlab?.rs21 !== '' ? x.pemeriksaanlab?.rs21 : x.pemeriksaanlab?.rs2,
-        jenis: x.pemeriksaanlab?.rs21 !== '' ? 'PAKET' : 'NON-PAKET',
-        aslix: x
-      })
+    ({
+      gruper: x.pemeriksaanlab?.rs21 !== '' ? x.pemeriksaanlab?.rs21 : x.pemeriksaanlab?.rs2,
+      jenis: x.pemeriksaanlab?.rs21 !== '' ? 'PAKET' : 'NON-PAKET',
+      aslix: x
+    })
     )
     : []
   console.log('aslix', arr)
@@ -210,7 +160,7 @@ function mapping (item) {
 }
 
 // eslint-disable-next-line no-unused-vars
-function hapusItem (id) {
+function hapusItem(id) {
   $q.dialog({
     dark: true,
     title: 'Peringatan',
@@ -228,7 +178,7 @@ function hapusItem (id) {
 }
 
 // eslint-disable-next-line no-unused-vars
-function groupBy (list, keyGetter) {
+function groupBy(list, keyGetter) {
   const map = new Map()
   list.forEach((item) => {
     const key = keyGetter(item)
