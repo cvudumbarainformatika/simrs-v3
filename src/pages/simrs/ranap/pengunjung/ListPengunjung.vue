@@ -26,7 +26,7 @@
                   </div>
                 </q-badge>
                 <!-- <div class="absolute-bottom-right q-pa-md" v-if="cekReadmisi(item?.last_visit, item?.tglmasuk)"> -->
-                <q-badge v-if="cekReadmisi(item?.last_visit, item?.tglmasuk)" outline
+                <q-badge v-if="cekReadmisi(item?.last_visit, item?.tglmasuk) && item?.status !== '3'" outline
                   class="q-mt-sm q-px-sm cursor-pointer" dense color="negative">
                   <q-popup-proxy dark>
                     <q-banner dark>
