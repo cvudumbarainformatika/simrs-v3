@@ -110,8 +110,11 @@
             <div class="col-auto" style="width: 5%;">
               No
             </div>
-            <div class="col-3">
+            <div v-if="tipe == 'resep' || tipe == 'racikan'" class="col-3">
               Noresep
+            </div>
+            <div v-if="tipe == 'persiapan'" class="col-3">
+              Nopermintaan
             </div>
             <div class="col-3">
               Nopenerimaan
@@ -129,7 +132,7 @@
                 {{ i+1 }}
               </div>
               <div class="col-3">
-                {{ ku?.noresep }}
+                {{ ku?.noresep ?? ku?.nopermintaan }}
               </div>
               <div class="col-3">
                 {{ ku?.nopenerimaan }}
@@ -253,8 +256,11 @@
             </div>
           </div>
           <div class="row items-center bg-dark text-white">
-            <div class="col-3">
+            <div v-if="tipe == 'resep' || tipe == 'racikan'" class="col-3">
               Noresep
+            </div>
+            <div v-if="tipe == 'persiapan'" class="col-3">
+              Nopermintaan
             </div>
             <div class="col-4">
               Nopenerimaan
@@ -269,7 +275,7 @@
 
           <div class="row items-center q-my-xs">
             <div class="col-3">
-              {{ gantiData?.noresep }}
+              {{ gantiData?.noresep ?? gantiData?.nopermintaan }}
             </div>
             <div class="col-4">
               {{ gantiData?.nopenerimaan }}
@@ -477,6 +483,28 @@ function show () {
       harga: props.data.harga,
       tglexp: props.data.tglexp,
       nobatch: props.data.nobatch
+    })
+  }
+  else if (props.tipe === 'persiapan') {
+    newData.value.push({
+      id: props.data.id, // id nya untuk data lama jangan lupa dibawa
+      jumlah: jumlahBaru, // jumlah nya diganti
+      nopermintaan: props.data.nopermintaan,
+      nopenerimaan: props.data.nopenerimaan,
+      kd_obat: props.data.kd_obat,
+      nodistribusi: props.data.nodistribusi,
+      tgl_retur: props.data.tgl_retur,
+      jumlah_retur: props.data.jumlah_retur
+    })
+    newData.value.push({
+      id: null,
+      jumlah: maxJumlah, // jumlah nya diganti
+      nopermintaan: props.data.nopermintaan,
+      nopenerimaan: props.data.nopenerimaan,
+      kd_obat: props.data.kd_obat,
+      nodistribusi: props.data.nodistribusi,
+      tgl_retur: props.data.tgl_retur,
+      jumlah_retur: 0
     })
   }
 }
