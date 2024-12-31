@@ -33,7 +33,8 @@
           </div>
           <!-- Ews -->
           <div class="col-4">
-            <div v-ripple.early class="bg-orange-6 text-white q-pa-md items-center relative-position cursor-pointer" @click="emits('openEws')">
+            <div v-ripple.early class="bg-orange-6 text-white q-pa-md items-center relative-position cursor-pointer"
+              @click="emits('openEws')">
               <div class="kiri">
                 <div class="text-bold f-14">
                   Early Warning Score
@@ -137,7 +138,7 @@
                     </q-item-section>
                     <q-item-section class="q-pa-xs">
                       <q-item-label v-if="cppt?.nakes !== '5'" class="f-12">
-                        <div>N : {{ cppt?.pemeriksaan?.nadi }}  x/mnt</div>
+                        <div>N : {{ cppt?.pemeriksaan?.nadi }} x/mnt</div>
                         <div>Sis: {{ cppt?.pemeriksaan?.sistole }} mmHg</div>
                         <div>Dia: {{ cppt?.pemeriksaan?.diastole }} mmHg</div>
                         <div>RR: {{ cppt?.pemeriksaan?.pernapasan }} x/mnt</div>
@@ -146,7 +147,7 @@
                         <div>T/k: {{ cppt?.pemeriksaan?.tkKesadaran }} </div>
                         <div>BB: {{ cppt?.pemeriksaan?.bb }} Kg</div>
                         <div>TB: {{ cppt?.pemeriksaan?.tb }} Cm</div>
-                        <div>Nyeri:  {{ cppt?.anamnesis?.keluhannyeri?.skor }}</div>
+                        <div>Nyeri: {{ cppt?.anamnesis?.keluhannyeri?.skor }}</div>
                         <div>Jatuh: {{ lihatSkorJatuh(cppt?.penilaian) }}</div>
                         <div v-html="getNewLine(cppt?.o_sambung)" />
                       </q-item-label>
@@ -203,18 +204,14 @@
                 <span v-if="cppt?.nakes !== '5'" v-html="getNewLine(cppt?.instruksi ?? '-')" />
               </td>
               <td v-if="i === 0" :rowspan="cariRowspan(dateCppt(cppt?.tgl))" class="text-center f-12">
-                <vue-qrcode
-                  :value="qrUrl"
-                  tag="svg"
-                  :options="{
-                    errorCorrectionLevel: 'Q',
-                    color: {
-                      dark: '#000000',
-                      light: '#ffffff',
-                    },
-                    margin:0
-                  }"
-                />
+                <vue-qrcode :value="qrUrl" tag="svg" :options="{
+                  errorCorrectionLevel: 'Q',
+                  color: {
+                    dark: '#000000',
+                    light: '#ffffff',
+                  },
+                  margin: 0
+                }" />
               </td>
             </tr>
           </template>
@@ -256,7 +253,7 @@
                     </q-item-section>
                     <q-item-section class="q-pa-xs">
                       <q-item-label class="f-12">
-                        <div>N : {{ awal?.pemeriksaan?.nadi }}  x/mnt</div>
+                        <div>N : {{ awal?.pemeriksaan?.nadi }} x/mnt</div>
                         <div>Sis: {{ awal?.pemeriksaan?.sistole }} mmHg</div>
                         <div>Dia: {{ awal?.pemeriksaan?.diastole }} mmHg</div>
                         <div>RR: {{ awal?.pemeriksaan?.pernapasan }} x/mnt</div>
@@ -265,7 +262,7 @@
                         <div>T/k: {{ awal?.pemeriksaan?.tkKesadaran }} </div>
                         <div>BB: {{ awal?.pemeriksaan?.bb }} Kg</div>
                         <div>TB: {{ awal?.pemeriksaan?.tb }} Cm</div>
-                        <div>Nyeri:  {{ awal?.anamnesis?.keluhannyeri?.skor }}</div>
+                        <div>Nyeri: {{ awal?.anamnesis?.keluhannyeri?.skor }}</div>
                         <div>Jatuh: {{ lihatSkorJatuh(awal?.penilaian) }}</div>
                       </q-item-label>
                     </q-item-section>
@@ -352,18 +349,14 @@
               </td>
               <td class="text-center">
                 <div style="width:60px">
-                  <vue-qrcode
-                    :value="qrUrl"
-                    tag="svg"
-                    :options="{
-                      errorCorrectionLevel: 'Q',
-                      color: {
-                        dark: '#000000',
-                        light: '#ffffff',
-                      },
-                      margin:0
-                    }"
-                  />
+                  <vue-qrcode :value="qrUrl" tag="svg" :options="{
+                    errorCorrectionLevel: 'Q',
+                    color: {
+                      dark: '#000000',
+                      light: '#ffffff',
+                    },
+                    margin: 0
+                  }" />
                 </div>
               </td>
             </tr>
@@ -404,7 +397,7 @@ const listFilterredByDate = computed(() => {
 })
 
 const lihatResikoJatuh = computed(() => {
-  console.log('computed', data)
+  // console.log('computed', data)
   let resikoJatuh = '-'
   let val = data?.awal?.find(x => x?.nakes === '2')?.penilaian
   if (data?.cppt?.length) {
@@ -506,7 +499,7 @@ const qrUrl = computed(() => {
 </script>
 
 <style lang="scss" scoped>
-.my-sticky-header-tablex{
+.my-sticky-header-tablex {
   /* height or max-height is important */
   // height: 100%;
   width: 100%;
@@ -516,33 +509,32 @@ const qrUrl = computed(() => {
 
   .q-table__top,
   .q-table__bottom,
-  thead tr:first-child th{
+  thead tr:first-child th {
     /* bg color is important for th; just specify one */
     // background-color: $teal-5;
     // color: aliceblue;
   }
 
-  thead tr th{
+  thead tr th {
     // position: sticky;
     z-index: 1;
   }
 
-  thead tr:first-child th{
+  thead tr:first-child th {
     top: 0;
   }
 
   /* this is when the loading indicator appears */
-  &.q-table--loading thead tr:last-child th{
+  &.q-table--loading thead tr:last-child th {
     /* height of all previous header rows */
     top: 48px;
   }
 
   /* prevent scrolling behind sticky top row on focus */
-  tbody{
+  tbody {
     /* height of all previous header rows */
     scroll-margin-top: 48px;
   }
 
 }
-
 </style>

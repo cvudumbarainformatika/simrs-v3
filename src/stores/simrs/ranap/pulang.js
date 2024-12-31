@@ -5,6 +5,7 @@ import { usePengunjungRanapStore } from './pengunjung'
 import { notifErrVue, notifSuccess } from 'src/modules/utils'
 import { date } from 'quasar'
 import { useDischargePlanningRanapStore } from './dischargeplanning'
+import { jamTnpDetik } from 'src/modules/formatter'
 
 export const usePasienPulangRanapStore = defineStore('pasien-pulang-ranap-store', {
   state: () => ({
@@ -13,6 +14,7 @@ export const usePasienPulangRanapStore = defineStore('pasien-pulang-ranap-store'
       caraKeluar: null,
       tglKeluar: null,
       noSuratMeninggal: null,
+      jamMeninggal: null,
       noLp: null,
       diagnosaAkhir: null,
       diagnosaPenyebabMeninggal: null,
@@ -74,7 +76,7 @@ export const usePasienPulangRanapStore = defineStore('pasien-pulang-ranap-store'
 
       try {
         const resp = await api.post('v1/simrs/ranap/layanan/pulang/simpandata', this.form)
-        console.log('save pulang', resp.data)
+        // console.log('save pulang', resp.data)
         if (resp.status === 200) {
           // const storePasien = usePengunjungPoliStore()
           const storeRanap = usePengunjungRanapStore()
@@ -124,6 +126,8 @@ export const usePasienPulangRanapStore = defineStore('pasien-pulang-ranap-store'
         prognosis: pasien?.prognosis ?? null,
         caraKeluar: pasien?.carakeluar ?? null,
         tglKeluar: pasien?.tglKeluar ? date.formatDate(pasien?.tglKeluar, 'YYYY-MM-DD') : date.formatDate(Date.now(), 'YYYY-MM-DD'),
+
+        jamMeninggal: null,
         noSuratMeninggal: null,
         noLp: null,
         diagnosaAkhir: pasien?.diagakhir ?? null,

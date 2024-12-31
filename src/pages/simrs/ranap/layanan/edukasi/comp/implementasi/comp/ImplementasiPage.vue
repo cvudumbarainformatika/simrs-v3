@@ -21,6 +21,8 @@
 </template>
 
 <script setup>
+import { ref } from 'vue';
+
 defineProps({
   pasien: {
     type: Object,

@@ -1,12 +1,7 @@
 <template>
   <div class="fit q-pa-xs">
-    <q-splitter
-      v-model="splitterModel"
-      :limits="[0, 100]"
-      before-class="overflow-hidden"
-      after-class="overflow-hidden"
-      class="fit"
-    >
+    <q-splitter v-model="splitterModel" :limits="[0, 100]" before-class="overflow-hidden" after-class="overflow-hidden"
+      class="fit">
       <template #before>
         <div class="column full-height bg-white scroll">
           <FormPage :pasien="pasien" :menu="menu" />
