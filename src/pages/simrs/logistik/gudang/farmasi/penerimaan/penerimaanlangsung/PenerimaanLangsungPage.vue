@@ -287,18 +287,29 @@
         />
       </div>
       <div class="col-2">
-        <!-- <app-input
-          v-model="store.form.ppn"
-          label="PPN (%)"
-          outlined
-          valid
-          @update:model-value="adaPPN($event,det)"
-          /> -->
-        <q-checkbox
-          v-model="adaPPN"
-          label="PPN 11%"
-          @update:model-value="setPpn($event)"
-        />
+        <div class="row justify-between">
+          <div class="col-grow">
+            <q-checkbox
+              v-model="adaPPN"
+              label="PPN 12%"
+              @update:model-value="setPpn($event)"
+            />
+          </div>
+          <!-- <div class="col-grow">
+            <app-input
+              v-model="store.form.ppn"
+              label="PPN (%)"
+              outlined
+              valid
+              @update:model-value="()=>{
+                store.setForm('ppn', $event)
+                setHargaNetto()
+              }"
+              />
+          </div> -->
+
+        </div>
+
       </div>
       <div class="col-2">
         harga netto : <strong> {{ formatRp(store.form.harga_netto) }} </strong>
@@ -478,7 +489,7 @@ watch(() => apps?.user?.kdruangansim, (obj) => {
 })
 store.getInitialData()
 function setHargaNetto () {
-  if (adaPPN.value === true) store.setForm('ppn', 11)
+  if (adaPPN.value === true) store.setForm('ppn', 12)
   else store.setForm('ppn', 0)
   const isi = store.form.isi ?? 1
   const harga = store.form.harga ?? 0

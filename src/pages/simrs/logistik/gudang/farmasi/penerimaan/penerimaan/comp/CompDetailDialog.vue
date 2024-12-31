@@ -260,14 +260,24 @@
         </div>
       </div>
       <div class="row justify-between no-wrap items-center q-mb-xs">
-        <div class="col-12">
+        <div class="col-6">
           <q-checkbox
             v-model="store.details[i].adaPPN"
-            label="PPN 11%"
+            :label="'PPN '+ store.details[i].ppn+'%'"
             :disable="det.jml_all_penerimaan >= det.jumlahdpesan"
             @update:model-value="adaPPN($event,det)"
           />
         </div>
+        <!-- <div class="col-6">
+          <app-input
+            v-model="store.details[i].ppn"
+            label="PPN"
+            outlined
+            valid
+            :disable="det.jml_all_penerimaan >= det.jumlahdpesan"
+            @update:model-value="adaPPN($event,det)"
+          />
+        </div> -->
       </div>
       <div class="row justify-between no-wrap items-center q-mb-xs">
         <div class="q-mr-sm">
@@ -393,8 +403,8 @@ function tolak (index) {
   emits('tolak', index)
 }
 function adaPPN (evt, det) {
-  // console.log('ada ppn', evt, det)
-  if (evt) setHargaNetNew('11', det, 'ppn')
+  console.log('ada ppn', evt, det, det?.ppn)
+  if (evt) setHargaNetNew('12', det, 'ppn')
   if (!evt) setHargaNetNew('0', det, 'ppn')
 }
 let isiPrev = 0
@@ -410,7 +420,7 @@ function setHargaNetNew (evt, det, key) {
   let harga = det.harga ?? 0
   let hargaKcl = det.harga_kcl ?? 0
   const diskon = det.diskon ?? 0
-  const ppn = det.ppn ?? 11
+  const ppn = det.ppn ?? 12
   let jmlTerimaB = det.jml_terima_b ?? 0
   let jmlTerimaK = det.jml_terima_k ?? 0
   const diskonRp = harga * (diskon / 100)
