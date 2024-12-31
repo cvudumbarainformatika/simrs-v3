@@ -118,7 +118,7 @@
               </q-btn>
             </template>
             <template v-else>
-              <q-btn size="sm" color="teal-8" icon="icon-mat-done_all" :loading="store.loadingverif"
+              <q-btn size="sm" color="red-8" icon="icon-mat-cancel" :loading="store.loadingverif"
                 @click="store.unverifPosting(store?.rinci, store?.totaldebit, store?.totalkredit)">
                 <div class="q-pl-sm">
                   Batal Posting
