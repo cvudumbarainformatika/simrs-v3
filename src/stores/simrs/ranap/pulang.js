@@ -88,6 +88,10 @@ export const usePasienPulangRanapStore = defineStore('pasien-pulang-ranap-store'
           storeRanap.injectDataPasien(pasien?.noreg, resp?.data?.result[0]?.rs26, 'diagakhir')
           storeRanap.injectDataPasien(pasien?.noreg, resp?.data?.result[0]?.rs27, 'tindaklanjut')
           storeRanap.injectDataPasien(pasien?.noreg, resp?.data?.result[0]?.rs23, 'carakeluar')
+
+          storeRanap.injectDataPasien(pasien?.noreg, resp?.data?.surat[0]?.jamMeninggal, 'jamMeninggal')
+          storeRanap.injectDataPasien(pasien?.noreg, resp?.data?.surat[0]?.nosrtmeninggal, 'nosrtmeninggal')
+
           notifSuccess(resp)
           this.loadingOrder = false
           this.initReset(pasien)

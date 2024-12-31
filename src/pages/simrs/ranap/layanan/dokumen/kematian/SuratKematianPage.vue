@@ -142,7 +142,7 @@
           <div class="full-width q-mt-md">
             <div class="" style="text-indent: 20px;">
               Pada Tanggal <span class="text-bold"> {{ humanDate(pasien?.tglkeluar) }} </span>
-              tepatnya pada jam : <span class="text-bold"> {{ jamTnpDetik(pasien?.tglkeluar) }} WIB </span> ,
+              tepatnya pada jam : <span class="text-bold"> {{ jamTnpDetik(nomor?.jamMeninggal) ?? '-' }} WIB </span> ,
               dikarenakan <span class=""> {{ diagnosa }} </span> .
             </div>
           </div>
