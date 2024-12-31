@@ -39,7 +39,7 @@
 import { copyToClipboard } from 'quasar'
 import { notifErr } from 'src/modules/utils'
 import { ref, onMounted, computed } from 'vue'
-const iconLists = import.meta.glob('./../../custom-icons/svg/**/*.svg', { eager: true })
+const iconLists = import.meta.glob('./../../custom-icons/svg/**/*.svg', { eager: true, import: 'default' })
 
 const maximizedToggle = ref(true)
 const hovered = ref(0)
@@ -48,11 +48,18 @@ const search = ref('')
 const folders = computed(() => {
   const thumb = []
   Object.entries(iconLists).forEach(([path, m]) => {
-    const folder = path.split('/')[5]
+    // console.log('path', path?.split('/')[4]);
+
+    const folder = path.split('/')[4]
+    // console.log('folder', folder);
     const file = path.split('/').pop().replace(/\.\w+$/, '')
+    // console.log('file', file);
     const result = 'icon-' + folder + '-' + file
+    // console.log('result', result);
     thumb.push(result)
   })
+
+
 
   return thumb
 })
@@ -63,6 +70,8 @@ onMounted(() => {
 const emits = defineEmits(['copyText'])
 
 function filteredList() {
+  // console.log('folders', folders.value);
+
   return folders.value.filter((fruit) =>
     fruit.toLowerCase().includes(search.value.toLowerCase())
   )

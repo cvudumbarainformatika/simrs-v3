@@ -2,7 +2,7 @@
 import { defineAsyncComponent, onMounted } from 'vue'
 
 const BaseLayout = defineAsyncComponent(() => import('src/pages/simrs/ranap/layanan/components/BaseLayout.vue'))
-
+const ImplementasiPage = defineAsyncComponent(() => import('./comp/ImplementasiPage.vue'))
 const props = defineProps({
   pasien: {
     type: Object,
@@ -32,9 +32,10 @@ onMounted(() => {
     title-before="IMPLEMENTASI & EVALUASI" title-after="">
     <template #form>
       <!-- <FormPage :pasien="props.pasien" /> -->
-      <div class="fit column flex-center">
+      <!-- <div class="fit column flex-center">
         MASIH TAHAP PENGEMBANGAN
-      </div>
+      </div> -->
+      <ImplementasiPage :pasien="props.pasien" :nakes="props.nakes" />
     </template>
     <!-- <template #list>
       <div class="fit">
