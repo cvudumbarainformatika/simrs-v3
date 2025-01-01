@@ -15,6 +15,7 @@ export const usePasienPulangRanapStore = defineStore('pasien-pulang-ranap-store'
       tglKeluar: null,
       noSuratMeninggal: null,
       jamMeninggal: null,
+      kddrygmenyatakan: null,
       noLp: null,
       diagnosaAkhir: null,
       diagnosaPenyebabMeninggal: null,
@@ -53,7 +54,7 @@ export const usePasienPulangRanapStore = defineStore('pasien-pulang-ranap-store'
     // },
     async getmastercarakeluar() {
       const resp = await api.get('v1/simrs/ranap/layanan/pulang/getmastercarakeluar')
-      console.log('getmastercarakeluar', resp)
+      // console.log('getmastercarakeluar', resp)
 
       this.carakeluars = resp.data
     },
@@ -91,6 +92,7 @@ export const usePasienPulangRanapStore = defineStore('pasien-pulang-ranap-store'
 
           storeRanap.injectDataPasien(pasien?.noreg, resp?.data?.surat[0]?.jamMeninggal, 'jamMeninggal')
           storeRanap.injectDataPasien(pasien?.noreg, resp?.data?.surat[0]?.nosrtmeninggal, 'nosrtmeninggal')
+          storeRanap.injectDataPasien(pasien?.noreg, resp?.data?.surat[0]?.kddrygmenyatakan, 'kddrygmenyatakan')
 
           notifSuccess(resp)
           this.loadingOrder = false
@@ -131,8 +133,9 @@ export const usePasienPulangRanapStore = defineStore('pasien-pulang-ranap-store'
         caraKeluar: pasien?.carakeluar ?? null,
         tglKeluar: pasien?.tglKeluar ? date.formatDate(pasien?.tglKeluar, 'YYYY-MM-DD') : date.formatDate(Date.now(), 'YYYY-MM-DD'),
 
-        jamMeninggal: null,
-        noSuratMeninggal: null,
+        jamMeninggal: pasien?.jamMeninggal ?? null,
+        noSuratMeninggal: pasien?.nosrtmeninggal ?? null,
+        kddrygmenyatakan: pasien?.kddrygmenyatakan ?? null,
         noLp: null,
         diagnosaAkhir: pasien?.diagakhir ?? null,
         diagnosaPenyebabMeninggal: pasien?.sebabkematian ?? null,

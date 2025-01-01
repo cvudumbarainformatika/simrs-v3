@@ -60,6 +60,22 @@
         </div>
       </div>
     </div>
+    <div v-if="store.form.caraKeluar === 'C003'" class="row q-mt-sm">
+      <div class="col-3">
+        dokter yg menyatakan
+      </div>
+      <div class="col-9">
+        <div class="flex items-center">
+          <app-autocomplete-new ref="refDokter" :model="store.form.kddrygmenyatakan" label="Dokter" autocomplete="nama"
+            option-value="kdpegsimrs" option-label="nama" outlined :source="store.dokters" style="width: 50%;"
+            @on-select="(val) => {
+              // console.log('val', val);
+              store.form.kddrygmenyatakan = val
+            }" @clear="store.form.kddrygmenyatakan = ''" />
+          <span class="q-ml-md"> *. diisi jika pasien meninggal </span>
+        </div>
+      </div>
+    </div>
     <div class="row q-mt-sm">
       <div class="col-3">
         No. LP Manual
