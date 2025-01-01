@@ -1,8 +1,8 @@
 <template>
-  <div class="row q-col-gutter-xs full-width">
-    <div class="col">
+  <div class="fit column absolute">
+    <div class="col full-height ">
       <!-- humpty untuk usia < 18 tahun -->
-      <q-card v-if="store?.usia < 18 " flat bordered class="col-12">
+      <q-card v-if="store?.usia < 18" flat bordered class="col-12">
         <q-card-section class="q-pa-sm bg-primary text-white">
           <strong>{{ store?.humptys?.desc }}</strong>
         </q-card-section>
@@ -14,10 +14,9 @@
                 {{ obj?.label }}
               </div>
               <div class="col-9 q-gutter-sm">
-                <q-radio
-                  v-for="(item, i) in obj?.categories" :key="i" dense size="sm" v-model="store.formHumpty[obj.kode]" :val="item" :label="`${item?.label}`"
-                  @update:model-value="store.hitungSkorHumpty"
-                />
+                <q-radio v-for="(item, i) in obj?.categories" :key="i" dense size="sm"
+                  v-model="store.formHumpty[obj.kode]" :val="item" :label="`${item?.label}`"
+                  @update:model-value="store.hitungSkorHumpty" />
                 <!-- <div v-for="(item, i) in obj?.categories" :key="i">
                   {{ item }} {{ store.formHumpty[obj.kode] === item ? 'sama' : 'tidak' }} {{ store.formHumpty[obj.kode].skor }}
                 </div> -->
@@ -29,22 +28,14 @@
             <div>NILAI SKOR : {{ store.formHumpty.skorHumpty?.skor }} </div>
             <div>KET : {{ store.formHumpty.skorHumpty?.label }}</div>
           </div>
-          <div v-if="store.formHumpty.skorHumpty.kuning === true" class="full-width flex justify-end q-gutter-sm f-14 text-yellow-8 q-mt-xs">
+          <div v-if="store.formHumpty.skorHumpty.kuning === true"
+            class="full-width flex justify-end q-gutter-sm f-14 text-yellow-8 q-mt-xs">
             PASIEN DIHARAP PAKAI STICKER KUNING
           </div>
           <div class="col-12">
-            <div
-              class="text-right"
-              style="margin-bottom: 50px;"
-            >
-              <app-btn
-                color="primary"
-                label="Simpan Penilaian"
-                tooltip="Simpan Data"
-                type="submit"
-                tip
-                @click="store.saveData(props.pasien)"
-              />
+            <div class="text-right" style="margin-bottom: 50px;">
+              <app-btn color="primary" label="Simpan Penilaian" tooltip="Simpan Data" type="submit" tip
+                @click="store.saveData(props.pasien)" />
             </div>
           </div>
         </q-card-section>
@@ -63,10 +54,9 @@
                 {{ obj?.label }} :
               </div>
               <div class="col-9 q-gutter-sm">
-                <q-radio
-                  v-for="(item, i) in obj?.categories" :key="i" dense size="sm" v-model="store.formMorse[obj.kode]" :val="item" :label="`${item?.label}`"
-                  @update:model-value="store.hitungSkorMorse"
-                />
+                <q-radio v-for="(item, i) in obj?.categories" :key="i" dense size="sm"
+                  v-model="store.formMorse[obj.kode]" :val="item" :label="`${item?.label}`"
+                  @update:model-value="store.hitungSkorMorse" />
               </div>
             </div>
             <q-separator class="q-my-sm" />
@@ -75,22 +65,14 @@
             <div>NILAI SKOR : {{ store.formMorse?.skorMorse?.skor }} </div>
             <div>KET : {{ store.formMorse.skorMorse?.label }}</div>
           </div>
-          <div v-if="store.formMorse?.skorMorse?.kuning === true" class="full-width flex justify-end q-gutter-sm f-14 text-yellow-8 q-mt-xs">
+          <div v-if="store.formMorse?.skorMorse?.kuning === true"
+            class="full-width flex justify-end q-gutter-sm f-14 text-yellow-8 q-mt-xs">
             PASIEN DIHARAP PAKAI STICKER KUNING
           </div>
           <div class="col-12">
-            <div
-              class="text-right"
-              style="margin-bottom: 50px;"
-            >
-              <app-btn
-                color="primary"
-                label="Simpan Penilaian"
-                tooltip="Simpan Data"
-                type="submit"
-                tip
-                @click="store.saveData(props.pasien)"
-              />
+            <div class="text-right" style="margin-bottom: 50px;">
+              <app-btn color="primary" label="Simpan Penilaian" tooltip="Simpan Data" type="submit" tip
+                @click="store.saveData(props.pasien)" />
             </div>
           </div>
         </q-card-section>
@@ -117,10 +99,9 @@
                     </q-item-section>
                     <q-item-section side>
                       <div class="flex q-gutter-sm">
-                        <q-radio
-                          dense size="sm" v-for="n in item.categories" :key="n" v-model="store.formOntario[item.kode]" :val="n" :label="n?.label"
-                          @update:model-value="store.hitungSkorOntario()"
-                        />
+                        <q-radio dense size="sm" v-for="n in item.categories" :key="n"
+                          v-model="store.formOntario[item.kode]" :val="n" :label="n?.label"
+                          @update:model-value="store.hitungSkorOntario()" />
                       </div>
                     </q-item-section>
                   </q-item>
@@ -134,10 +115,8 @@
                 </div>
                 <div class="col-6">
                   <div class="column q-gutter-y-sm">
-                    <q-radio
-                      dense size="sm" v-for="n in obj.categories" :key="n" v-model="store.formOntario[obj.kode]" :val="n" :label="n?.label"
-                      @update:model-value="store.hitungSkorOntario()"
-                    />
+                    <q-radio dense size="sm" v-for="n in obj.categories" :key="n" v-model="store.formOntario[obj.kode]"
+                      :val="n" :label="n?.label" @update:model-value="store.hitungSkorOntario()" />
                   </div>
                 </div>
               </div>
@@ -151,23 +130,15 @@
             <div>NILAI SKOR : {{ store.formOntario?.skorOntario?.skor }} </div>
             <div>KET : {{ store.formOntario?.skorOntario?.label }}</div>
           </div>
-          <div v-if="store.formOntario?.skorOntario?.kuning === true" class="full-width flex justify-end q-gutter-sm f-14 text-yellow-9 q-mt-xs">
+          <div v-if="store.formOntario?.skorOntario?.kuning === true"
+            class="full-width flex justify-end q-gutter-sm f-14 text-yellow-9 q-mt-xs">
             PASIEN DIHARAP PAKAI STICKER KUNING
           </div>
         </div>
         <div class="col-12">
-          <div
-            class="text-right"
-            style="margin-bottom: 50px;"
-          >
-            <app-btn
-              color="primary"
-              label="Simpan Penilaian"
-              tooltip="Simpan Data"
-              type="submit"
-              tip
-              @click="store.saveData(props.pasien)"
-            />
+          <div class="text-right" style="margin-bottom: 50px;">
+            <app-btn color="primary" label="Simpan Penilaian" tooltip="Simpan Data" type="submit" tip
+              @click="store.saveData(props.pasien)" />
           </div>
         </div>
       </q-card>
