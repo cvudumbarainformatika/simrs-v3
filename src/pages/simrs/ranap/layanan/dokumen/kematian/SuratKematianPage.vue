@@ -1,6 +1,6 @@
 <template>
   <div id="pdfDoc" class="bg-white print-page">
-    <div class="page-1">
+    <div v-if="pasien?.carakeluar === 'C003'" class="page-1">
       <!-- KOP SURAT -->
       <div class="col-grow">
         <div class="row items-center">
@@ -52,9 +52,10 @@
             </div>
             <div class="col-grow">
               <div class="column">
-                <div> : {{ pasien?.dokter ?? '-' }}</div>
-                <div> : {{ dpjp?.golongan ?? '-' }} / {{ dpjp?.ket_golongan ?? '-' }}</div>
-                <div> : {{ dpjp?.ket_jabatan ?? '-' }}</div>
+                <div> : {{ dpjp?.nama ?? '' }}</div>
+                <div> : {{ dpjp?.golongan ?? '' }} {{ dpjp?.golongan ? ' / ' : '' }} {{ dpjp?.ket_golongan ?? '' }}
+                </div>
+                <div> : {{ dpjp?.ket_jabatan ?? '' }}</div>
               </div>
             </div>
           </div>
@@ -142,7 +143,7 @@
           <div class="full-width q-mt-md">
             <div class="" style="text-indent: 20px;">
               Pada Tanggal <span class="text-bold"> {{ humanDate(pasien?.tglkeluar) }} </span>
-              tepatnya pada jam : <span class="text-bold"> {{ jamTnpDetik(nomor?.jamMeninggal) ?? '-' }} WIB </span> ,
+              tepatnya pada jam : <span class="text-bold"> {{ nomor?.jamMeninggal ?? '-' }} WIB </span> ,
               dikarenakan <span class=""> {{ diagnosa }} </span> .
             </div>
           </div>
@@ -161,7 +162,7 @@
                 <div>Mengetahui</div>
                 <div class="q-mb-sm">Dokter, </div>
 
-                <div style="height: 80px;" class="relative-position">
+                <div v-if="dpjp?.nama" style="height: 80px;" class="relative-position">
                   <div class="absolute-center" style="width: 80px;">
                     <vue-qrcode :value="qrDokter" tag="svg" :options="{
                       errorCorrectionLevel: 'Q',
@@ -174,9 +175,14 @@
                     <img class="qrcode__image" src="~assets/logos/logo-rsud.png" alt="RSUD DOKTER MOHAMAD SALEH">
                   </div>
                 </div>
+                <div v-else style="height: 80px;" class="relative-position">
+                  <div class="column flex-center full-height" style="width: 80px;">
+                    <div>ttd</div>
+                  </div>
+                </div>
 
                 <div class="q-mt-md">
-                  {{ pasien?.dokter }}
+                  {{ dpjp?.nama || '................................' }}
                 </div>
               </div>
             </div>
@@ -190,6 +196,11 @@
 
         </div>
         <!-- end -->
+      </div>
+    </div>
+    <div v-else>
+      <div class="column flex-center" style="height: 500px;">
+        <div class="f-20">TIDAK ADA DOKUMEN</div>
       </div>
     </div>
   </div>
@@ -230,11 +241,7 @@ const props = defineProps({
 //   const enc = btoa(`${noreg}|${dok}|${asal}|${petugas}`)
 //   return `https://rsud.probolinggokota.go.id/dokumen-simrs/legalitas/${enc}`
 // })
-const qrDokter = computed(() => {
-  const petugas = 'Nama : ' + props?.pasien?.dokter ?? '' + 'NIP : ' + props?.pasien?.kddokter ?? ''
-  const enc = btoa(`${petugas}`)
-  return `${enc}`
-})
+
 
 const dpjp = ref(null)
 const nomor = ref(null)
@@ -242,14 +249,20 @@ const diagnosa = ref(null)
 
 const diag = useDiagnosaStore()
 
+const qrDokter = computed(() => {
+  const petugas = 'Nama : ' + dpjp?.value?.nama ?? '' + 'NIP : ' + dpjp?.value?.nip ?? ''
+  const enc = btoa(`${petugas}`)
+  return `${enc}`
+})
+
 onBeforeMount(() => {
-  // console.log('kddokter', props?.pasien?.kddokter);
-  Promise.all([getDpjpData(), getSurat()])
+  console.log('pasien', props?.pasien);
+  Promise.all([getSurat(), getDpjpData()])
   getDiag()
 })
 
 const getDpjpData = async () => {
-  const res = await api.get(`/v1/pegawai/master/pegawai-by-kdpegsimrs?kdpegsimrs=${props?.pasien?.kddokter}`)
+  const res = await api.get(`/v1/pegawai/master/pegawai-by-kdpegsimrs?kdpegsimrs=${props?.pasien?.kddrygmenyatakan}`)
   // console.log('res', res);
   if (res.status === 200) {
     dpjp.value = res.data
