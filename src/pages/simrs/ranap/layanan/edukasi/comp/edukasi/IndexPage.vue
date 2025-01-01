@@ -35,11 +35,8 @@ onMounted(() => {
 </script>
 
 <template>
-  <BaseLayout
-    :pasien="props.pasien" :kasus="props.kasus" :nakes="props.nakes" :split="60" nota
-    title-before="EDUKASI"
-    title-after="List Edukasi"
-  >
+  <BaseLayout :pasien="props.pasien" :kasus="props.kasus" :nakes="props.nakes" :split="60" nota title-before="EDUKASI"
+    title-after="List Edukasi">
     <template #form>
       <FormEdukasi :pasien="props.pasien" />
     </template>

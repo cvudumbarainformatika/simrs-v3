@@ -1,38 +1,52 @@
 <template>
   <div>
     <div style="margin-bottom: 100px;">
-      <q-list
-        square
-        separator
-      >
-        <q-item
-          v-for="item in store.pasiens"
-          :key="item"
-          v-ripple
-        >
+      <q-list square separator>
+        <q-item v-for="item in store.pasiens" :key="item" v-ripple>
           <q-item-section avatar top>
-            <app-avatar-pasien
-              :pasien="item"
-              width="80px"
-            />
+            <app-avatar-pasien :pasien="item" width="80px" />
           </q-item-section>
 
           <q-item-section class="q-col-gutter-xs relative-position">
             <div><b>{{ item?.nama }}</b></div>
             <div><b>NIK : {{ item?.nktp }}</b></div>
             <div><b>NOKA : {{ item?.noka }}</b></div>
-            <div>Norm|Reg : <span class="text-primary">{{ item?.norm }}</span> | <span class="text-orange">{{ item.noreg }}</span></div>
+            <div>Norm|Reg : <span class="text-primary">{{ item?.norm }}</span> | <span class="text-orange">{{ item.noreg
+                }}</span></div>
             <div>Usia : {{ item?.usia }} | <em class="text-grey">{{ item.kelamin }}</em></div>
             <div class="f-10">
               {{ item?.alamat }}
             </div>
             <div class="full-width row justify-between items-center">
               <!-- <div v-if="item?.groups !=='2'"> -->
-              <q-badge v-if="item?.groups !=='2'" outline class="q-mt-sm q-px-sm" dense :color="!item?.sep ? 'red' : 'primary'">
-                <div class="f-12">
-                  {{ !item?.sep ? 'SEP RANAP BELUM TERBIT' : 'SEP RANAP : ' + item?.sep }}
-                </div>
-              </q-badge>
+              <div v-if="item?.groups !== '2'" class="flex q-gutter-sm">
+                <q-badge outline class="q-mt-sm q-px-sm" dense :color="!item?.sep ? 'red' : 'primary'">
+                  <div class="f-12">
+                    {{ !item?.sep ? 'SEP RANAP BELUM TERBIT' : 'SEP RANAP : ' + item?.sep }}
+                  </div>
+                </q-badge>
+                <!-- <div class="absolute-bottom-right q-pa-md" v-if="cekReadmisi(item?.last_visit, item?.tglmasuk)"> -->
+                <q-badge v-if="cekReadmisi(item?.last_visit, item?.tglmasuk) && item?.status !== '3'" outline
+                  class="q-mt-sm q-px-sm cursor-pointer" dense color="negative">
+                  <q-popup-proxy dark>
+                    <q-banner dark>
+                      <template v-slot:avatar>
+                        <app-avatar-pasien :pasien="item" width="50px" />
+                      </template>
+                      <div class="column">
+                        <div>Terakhir Masuk </div>
+                        <div class="text-bold">{{ humanDate(item?.last_visit) }} </div>
+                      </div>
+                    </q-banner>
+                  </q-popup-proxy>
+                  <div class="f-12">
+                    {{ cekReadmisi(item?.last_visit, item?.tglmasuk) }}
+                  </div>
+                </q-badge>
+                <!-- </div> -->
+
+              </div>
+
               <!-- </div> -->
               <!-- <div v-else> -->
               <q-badge v-else outline class="q-mt-sm q-px-sm" dense color="teal">
@@ -43,7 +57,9 @@
               <!-- </div> -->
 
               <q-badge outline :color="item?.status === '2' || item?.status === '3' ? 'green' : 'orange'">
-                {{ (item?.status === '2' || item?.status === '3') ? 'Pulang' : 'Belum Pulang' }}  <span class="text-dark q-mx-sm">{{ item?.prognosa }}</span>
+                {{ (item?.status === '2' || item?.status === '3') ? 'Pulang' : 'Belum Pulang' }} <span
+                  class="text-dark q-mx-sm">{{
+                    item?.prognosa }}</span>
               </q-badge>
             </div>
 
@@ -53,17 +69,18 @@
               </q-badge>
             </div> -->
           </q-item-section>
-          <q-item-section class="q-col-gutter-xs">
+          <q-item-section class="q-col-gutter-xs relative-position">
             <div class="text-pink">
               DPJP : <b>{{ item?.dokter ?? '-' }}</b>
             </div>
-            <div><b>{{ item?.ruangan }}</b> | <b class="text-primary">{{ item?.ketruangan }}</b> | bed : <b>{{ item.nomorbed }}</b></div>
+            <div><b>{{ item?.ruangan }}</b> | <b class="text-primary">{{ item?.ketruangan }}</b> | bed : <b>{{
+              item.nomorbed }}</b></div>
             <div>Penjamin : <span class="text-primary">{{ item?.sistembayar }}</span></div>
             <div>
               Tgl Masuk : <span class="text-accent">{{ item?.tglmasuk }}</span>
               <!-- <b v-else class="text-dark">Tgl Keluar : {{ item?.tglkeluar }}</b> -->
             </div>
-            <div v-if="item.status===''">
+            <div v-if="item.status === ''">
               <b>Lama : {{ rangeDate(item?.tglmasuk) }}</b>
             </div>
             <div v-if="item?.status === '2' || item?.status === '3'">
@@ -76,37 +93,25 @@
                 </div>
               </q-badge>
             </div>
+
           </q-item-section>
           <q-item-section side>
-            <q-btn
-              dense
-              outline
-              size="sm"
-              no-caps
-              color="primary"
-              label="LIHAT LAYANAN"
-              class="q-mb-sm"
-              icon-right="icon-mat-eye"
-              style="min-width: 120px;"
-              @click="bukaLayananPage(item)"
-            />
+            <q-btn dense outline size="sm" no-caps color="primary" label="LIHAT LAYANAN" class="q-mb-sm"
+              icon-right="icon-mat-eye" style="min-width: 120px;" @click="bukaLayananPage(item)" />
           </q-item-section>
         </q-item>
       </q-list>
     </div>
 
     <!-- Layanan -->
-    <page-layanan-ranap
-      v-model="store.pageLayanan"
-      :pasien="pasien"
-      :loading="store.loadingLayanan"
-    />
+    <page-layanan-ranap v-model="store.pageLayanan" :pasien="pasien" :loading="store.loadingLayanan" />
   </div>
 </template>
 
 <script setup>
+import { date } from 'quasar'
 import PageLayananRanap from '../layanan/PageLayananRanap.vue'
-import { calcDate } from 'src/modules/formatter'
+import { calcDate, humanDate } from 'src/modules/formatter'
 import { useTriageIgd } from 'src/stores/simrs/igd/triage'
 import { usePengunjungRanapStore } from 'src/stores/simrs/ranap/pengunjung'
 import { onBeforeUnmount, ref } from 'vue'
@@ -116,7 +121,23 @@ const store = usePengunjungRanapStore()
 const currTime = ref(new Date())
 const pasien = ref(null)
 
-function rangeDate (val) {
+const cekReadmisi = (last_visit, tglmasuk) => {
+  // console.log('tgl', tgl);
+  let ada = null
+  if (last_visit) {
+    const selisih = date.getDateDiff(tglmasuk, last_visit, 'days') ?? null
+    if (selisih) {
+      if (selisih <= 30) {
+        ada = 'Re-Adm'
+      }
+    }
+  }
+
+  return ada
+
+}
+
+function rangeDate(val) {
   // console.log('lama', val)
   const d1 = currTime.value
 
@@ -126,7 +147,7 @@ function rangeDate (val) {
   return toHoursAndMinutes(res)
 }
 
-function toHoursAndMinutes (totalMinutes) {
+function toHoursAndMinutes(totalMinutes) {
   const secs = Math.floor(Math.abs(totalMinutes))
   const mins = Math.floor(secs / 60)
   const hours = Math.floor(mins / 60)
@@ -143,7 +164,7 @@ const timerJam = setInterval(() => {
   currTime.value = new Date()
 }, 1000)
 
-function bukaLayananPage (item) {
+function bukaLayananPage(item) {
   // console.log('item', item)
   pasien.value = item
   store.bukaLayanan(true, item)

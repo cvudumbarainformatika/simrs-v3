@@ -1,6 +1,6 @@
 import { onMounted, reactive } from 'vue'
 
-export default function useCppt (pasien) {
+export default function useCppt(pasien) {
   const data = reactive({
     awal: [],
     cppt: [],
@@ -18,7 +18,7 @@ export default function useCppt (pasien) {
     ambilEws(pasien)
   })
 
-  function kelompokkanDataAwalKeperawatan (pasien) {
+  function kelompokkanDataAwalKeperawatan(pasien) {
     const anamnesis = pasien?.anamnesis?.find((a) => a?.awal === '1' && a?.kdruang !== 'POL014' && a?.nakes !== '1') ?? null
     const pemeriksaan = pasien?.pemeriksaan?.find((a) => a?.awal === '1' && a?.kdruang !== 'POL014' && a?.nakes !== '1') ?? null
     const penilaian = pasien?.penilaian?.find((a) => a?.awal === '1' && a?.kdruang !== 'POL014' && a?.group_nakes !== '1') ?? null
@@ -40,7 +40,7 @@ export default function useCppt (pasien) {
 
     data.awal.push(obj)
   }
-  function kelompokkanDataAwalMedis (pasien) {
+  function kelompokkanDataAwalMedis(pasien) {
     const anamnesis = pasien?.anamnesis?.find((a) => a?.awal === '1' && a?.kdruang !== 'POL014' && a?.nakes === '1') ?? null
     const pemeriksaan = pasien?.pemeriksaan?.find((a) => a?.awal === '1' && a?.kdruang !== 'POL014' && a?.nakes === '1') ?? null
     const penilaian = pasien?.penilaian?.find((a) => a?.awal === '1' && a?.kdruang !== 'POL014' && a?.group_nakes === '1') ?? null
@@ -63,22 +63,22 @@ export default function useCppt (pasien) {
     data.awal.push(obj)
   }
 
-  function aturCppt (pasien) {
+  function aturCppt(pasien) {
     const cppt = pasien?.cppt
     data.cppt = cppt?.sort((a, b) => b?.id - a?.id) ?? []
   }
 
-  function ambilEws (pasien) {
+  function ambilEws(pasien) {
     const obj = pasien?.pemeriksaan
     const pemeriksaan = obj?.filter((a) => a?.kdruang !== 'POL014' && a?.nakes !== '1') ?? []
     data.ews = pemeriksaan?.sort((a, b) => a?.id - b?.id) ?? []
 
-    console.log('data', data)
+    // console.log('data', data)
   }
 
-  function toggleEws () {
+  function toggleEws() {
     other.openEws = !other.openEws
-    console.log('openEws', other.openEws)
+    // console.log('openEws', other.openEws)
   }
 
   return { data, other, toggleEws }

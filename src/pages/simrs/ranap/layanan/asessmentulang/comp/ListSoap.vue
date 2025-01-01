@@ -15,29 +15,31 @@
 
             <q-item-section caption>
               <div class="">
-                <span class="text-weight-bold">PPA</span> <span class="text-weight-medium">- {{ item?.petugas?.nama }}</span>
+                <span class="text-weight-bold">PPA</span> <span class="text-weight-medium">- {{ item?.petugas?.nama
+                  }}</span>
               </div>
             </q-item-section>
 
             <q-item-section side>
               <div class="flex q-gutter-lg items-center">
-                <div
-                  v-if="auth?.user?.pegawai?.kdpegsimrs === item?.user"
-                >
+                <div v-if="auth?.user?.pegawai?.kdpegsimrs === item?.user">
                   <q-btn round flat size="sm" icon="icon-mat-delete" color="negative" @click="deleteItem(item)">
                     <q-tooltip> Hapus </q-tooltip>
                   </q-btn>
                 </div>
                 <div>
                   <div class="text-grey-8">
-                    <span class="text-weight-bold">Tgl</span> <em class="text-weight-medium"> {{ dateFullFormat(item?.tgl) }}</em>
+                    <span class="text-weight-bold">Tgl</span> <em class="text-weight-medium"> {{
+                      dateFullFormat(item?.tgl) }}</em>
                   </div>
                   <div class="text-grey-8 q-mt-xs">
                     <q-badge class="q-px-sm q-py-xs" outline color="primary">
                       <div class="flex q-gutter-sm">
                         <div class="">
                           Jam
-                        </div> <div>:</div> <div class="text-weight-bold">
+                        </div>
+                        <div>:</div>
+                        <div class="text-weight-bold">
                           {{ jamTnpDetik(item?.tgl) }}
                         </div>
                       </div>
@@ -53,7 +55,8 @@
               <div class="row q-col-gutter-sm">
                 <!-- subjective adime(asessment)-->
                 <div class="col-3">
-                  <q-card flat bordered class="column full-height full-width" style="min-height: 300px; max-width: 100%;">
+                  <q-card flat bordered class="column full-height full-width"
+                    style="min-height: 300px; max-width: 100%;">
                     <q-card-section class="col-auto flex justify-between items-center">
                       <div v-if="nakes !== '5'" class="f-20">
                         Subjective
@@ -61,17 +64,15 @@
                       <div v-else class="f-20">
                         Assessment
                       </div>
-                      <q-btn
-                        v-if="nakes !== '4' && nakes !== '5' && nakes !== '6'"
-                        dense bordered outline round icon="icon-mat-edit" size="sm" color="primary" @click="()=> {
+                      <q-btn v-if="nakes !== '4' && nakes !== '5' && nakes !== '6'" dense bordered outline round
+                        icon="icon-mat-edit" size="sm" color="primary" @click="() => {
                           if (auth?.user?.pegawai?.kdpegsimrs !== item?.user) {
                             notifBottomVue('Maaf ... anda bukan USER Peng-input CPPT ini, Harap Edit Punya Sendiri...');
                             return
                           }
                           editFormAnamnesis(item)
                           // console.log('auth', auth?.user?.pegawai?.kdpegsimrs, item?.user)
-                        }"
-                      />
+                        }" />
                     </q-card-section>
 
                     <q-separator inset />
@@ -85,37 +86,30 @@
 
                         <div class="column q-mb-sm">
                           <div><b>Nyeri :</b></div>
-                          <item-nyeri :item="item?.anamnesis?.keluhannyeri?.pediatrik" v-if="item?.anamnesis?.keluhannyeri?.pediatrik" />
+                          <item-nyeri :item="item?.anamnesis?.keluhannyeri?.pediatrik"
+                            v-if="item?.anamnesis?.keluhannyeri?.pediatrik" />
                           <!-- neonatal -->
-                          <item-nyeri :item="item?.anamnesis?.keluhannyeri?.neonatal" v-else-if="item?.anamnesis?.keluhannyeri?.neonatal" />
-                          <item-nyeri :item="item?.anamnesis?.keluhannyeri?.kebidanan" v-else-if="item?.anamnesis?.keluhannyeri?.kebidanan" />
+                          <item-nyeri :item="item?.anamnesis?.keluhannyeri?.neonatal"
+                            v-else-if="item?.anamnesis?.keluhannyeri?.neonatal" />
+                          <item-nyeri :item="item?.anamnesis?.keluhannyeri?.kebidanan"
+                            v-else-if="item?.anamnesis?.keluhannyeri?.kebidanan" />
                           <item-nyeri :item="item?.anamnesis?.keluhannyeri?.dewasa" v-else />
                         </div>
                       </div>
-                      <q-input
-                        v-else
-                        ref="refInputSsambung"
-                        v-model="item.s_sambung"
-                        outlined
-                        type="textarea"
-                        stack-label
-                        standout="bg-yellow-3"
-                        :lazy-rules="true"
-                        rows="8"
-                        hide-bottom-space
-                        @blur="(val) => {
+                      <q-input v-else ref="refInputSsambung" v-model="item.s_sambung" outlined type="textarea"
+                        stack-label standout="bg-yellow-3" :lazy-rules="true" rows="8" hide-bottom-space @blur="(val) => {
                           // console.log('val', val?.target?.value);
                           const valuex = val?.target?.value
-                          updateSsambung(item,valuex,'s_sambung')
-                        }"
-                      />
+                          updateSsambung(item, valuex, 's_sambung')
+                        }" />
                     </q-card-section>
                   </q-card>
                 </div>
 
                 <!-- objective adime(diagnosa)-->
                 <div class="col-3">
-                  <q-card flat bordered class="column full-height full-width" style="min-height: 300px; max-width: 100%;">
+                  <q-card flat bordered class="column full-height full-width"
+                    style="min-height: 300px; max-width: 100%;">
                     <q-card-section class="col-auto flex justify-between items-center">
                       <div v-if="nakes !== '5'" class="f-20">
                         Objective
@@ -123,17 +117,14 @@
                       <div v-else class="f-20">
                         Diagnosa
                       </div>
-                      <q-btn
-
-                        v-if="nakes !== '4' && nakes !== '5' && nakes !== '6'"
-                        dense bordered outline round icon="icon-mat-edit" size="sm" color="primary" @click="()=> {
+                      <q-btn v-if="nakes !== '4' && nakes !== '5' && nakes !== '6'" dense bordered outline round
+                        icon="icon-mat-edit" size="sm" color="primary" @click="() => {
                           if (auth?.user?.pegawai?.kdpegsimrs !== item?.user && auth?.user?.pegawai?.kdpegsimrs !== 'sa') {
                             notifBottomVue('Maaf ... anda bukan USER Peng-input CPPT ini, Harap Edit Punya Sendiri...');
                             return
                           }
                           editFormPemeriksaan(item)
-                        }"
-                      />
+                        }" />
                     </q-card-section>
 
                     <q-separator inset />
@@ -163,47 +154,40 @@
                           <div v-if="item?.penilaian?.humpty_dumpty">
                             <div class="column">
                               <b>Resiko Jatuh : </b>
-                              <div> - {{ item?.penilaian?.humpty_dumpty?.skorHumpty?.label }} ({{ item?.penilaian?.humpty_dumpty?.skorHumpty?.skor }})</div>
+                              <div> - {{ item?.penilaian?.humpty_dumpty?.skorHumpty?.label }} ({{
+                                item?.penilaian?.humpty_dumpty?.skorHumpty?.skor }})</div>
                             </div>
                           </div>
                           <div v-if="item?.penilaian?.morse_fall">
                             <div class="column">
                               <b>Resiko Jatuh : </b>
-                              <div> - {{ item?.penilaian?.morse_fall?.skorMorse?.label }} ({{ item?.penilaian?.morse_fall?.skorMorse?.skor }})</div>
+                              <div> - {{ item?.penilaian?.morse_fall?.skorMorse?.label }} ({{
+                                item?.penilaian?.morse_fall?.skorMorse?.skor }})</div>
                             </div>
                           </div>
                           <div v-if="item?.penilaian?.ontario">
                             <div class="column">
                               <b>Resiko Jatuh : </b>
-                              <div> - {{ item?.penilaian?.ontario?.skorOntario?.label }} ({{ item?.penilaian?.ontario?.skorOntario?.skor }})</div>
+                              <div> - {{ item?.penilaian?.ontario?.skorOntario?.label }} ({{
+                                item?.penilaian?.ontario?.skorOntario?.skor }})</div>
                             </div>
                           </div>
                         </div>
                       </div>
-                      <q-input
-
-                        ref="refInputOsambung"
-                        v-model="item.o_sambung"
-                        outlined
-                        type="textarea"
-                        stack-label
-                        standout="bg-yellow-3"
-                        :lazy-rules="true"
-                        rows="5"
-                        hide-bottom-space
-                        @blur="(val) => {
+                      <q-input ref="refInputOsambung" v-model="item.o_sambung" outlined type="textarea" stack-label
+                        standout="bg-yellow-3" :lazy-rules="true" rows="5" hide-bottom-space @blur="(val) => {
                           // console.log('val', val?.target?.value);
                           const valuex = val?.target?.value
-                          updateOsambung(item,valuex,'o_sambung')
-                        }"
-                      />
+                          updateOsambung(item, valuex, 'o_sambung')
+                        }" />
                     </q-card-section>
                   </q-card>
                 </div>
 
                 <!-- asessment adime(intervensi) -->
                 <div class="col-3">
-                  <q-card flat bordered class="column full-height full-width" style="min-height: 300px; max-width: 100%;">
+                  <q-card flat bordered class="column full-height full-width"
+                    style="min-height: 300px; max-width: 100%;">
                     <q-card-section class="col-auto flex justify-between items-center">
                       <div v-if="nakes !== '5'" class="f-20">
                         Asessment
@@ -211,25 +195,22 @@
                       <div v-else class="f-20">
                         Intervensi
                       </div>
-                      <q-btn
-
-                        v-if="nakes !== '4' && nakes !== '5' && nakes !== '6'"
-                        dense bordered outline round icon="icon-mat-edit" size="sm" color="primary" @click="()=> {
+                      <q-btn v-if="nakes !== '4' && nakes !== '5' && nakes !== '6'" dense bordered outline round
+                        icon="icon-mat-edit" size="sm" color="primary" @click="() => {
 
                           if (auth?.user?.pegawai?.kdpegsimrs !== item?.user && auth?.user?.pegawai?.kdpegsimrs !== 'sa') {
                             notifBottomVue('Maaf ... anda bukan USER Peng-input CPPT ini, Harap Edit Punya Sendiri...');
                             return
                           }
 
-                          if (nakes==='2') {
+                          if (nakes === '2') {
                             store.initDiagnosaKeperawatan(item)
                             editFormAsessment(item)
-                          } else if (nakes==='3') {
+                          } else if (nakes === '3') {
                             store.initDiagnosaKebidanan(item)
                             editFormAsessment(item, 'asessmentKebidanan')
                           }
-                        }"
-                      />
+                        }" />
                     </q-card-section>
 
                     <q-separator inset />
@@ -238,28 +219,15 @@
                       <div class="column">
                         <div>
                           <span v-html="getNewLine(item?.asessment ?? 'Belum Terisi')" />
-                          <q-popup-edit
-                            fit
+                          <q-popup-edit fit
                             v-if="auth?.user?.pegawai?.kdpegsimrs === item?.user || auth?.user?.pegawai?.kdpegsimrs === 'sa'"
-                            buttons
-                            v-model="item.asessment"
-                            :cover="false"
-                            :offset="[0, 10]"
-                            v-slot="scope"
-                            :validate="validInput"
-                            @hide="validInput"
-                            @save="(val,initial)=> {
+                            buttons v-model="item.asessment" :cover="false" :offset="[0, 10]" v-slot="scope"
+                            :validate="validInput" @hide="validInput" @save="(val, initial) => {
                               // console.log('initial', initial); // before
                               // console.log('valid', isErrInput); //now
-                              updateAsPlanInst(item,val,initial,'asessment')
-                            }"
-                          >
-                            <q-input
-                              type="textarea"
-                              v-model="scope.value"
-                              autofocus
-                              @keyup.enter.stop
-                            />
+                              updateAsPlanInst(item, val, initial, 'asessment')
+                            }">
+                            <q-input type="textarea" v-model="scope.value" autofocus @keyup.enter.stop />
                           </q-popup-edit>
                         </div>
                       </div>
@@ -269,7 +237,8 @@
 
                 <!-- plann adime(monitoring) -->
                 <div class="col-3">
-                  <q-card flat bordered class="column full-height full-width" style="min-height: 300px; max-width: 100%;">
+                  <q-card flat bordered class="column full-height full-width"
+                    style="min-height: 300px; max-width: 100%;">
                     <q-card-section class="col-auto flex justify-between items-center">
                       <div v-if="nakes !== '5'" class="f-20">
                         Plan
@@ -277,25 +246,22 @@
                       <div v-else class="f-20">
                         Monitoring
                       </div>
-                      <q-btn
-
-                        v-if="nakes !== '4' && nakes !== '5' && nakes !== '6'"
-                        dense bordered outline round icon="icon-mat-edit" size="sm" color="primary" @click="()=> {
+                      <q-btn v-if="nakes !== '4' && nakes !== '5' && nakes !== '6'" dense bordered outline round
+                        icon="icon-mat-edit" size="sm" color="primary" @click="() => {
 
                           if (auth?.user?.pegawai?.kdpegsimrs !== item?.user && auth?.user?.pegawai?.kdpegsimrs !== 'sa') {
                             notifBottomVue('Maaf ... anda bukan USER Peng-input CPPT ini, Harap Edit Punya Sendiri...');
                             return
                           }
 
-                          if (nakes==='2') {
+                          if (nakes === '2') {
                             store.initDiagnosaKeperawatan(item)
                             editFormPlan(item)
-                          } else if (nakes==='3') {
+                          } else if (nakes === '3') {
                             store.initDiagnosaKebidanan(item)
                             editFormPlan(item, 'diagnosaKebidanan')
                           }
-                        }"
-                      />
+                        }" />
                     </q-card-section>
 
                     <q-separator inset />
@@ -306,26 +272,13 @@
                           <span v-html="getNewLine(item?.plann ?? 'Belum Terisi')" />
                           <q-popup-edit
                             v-if="auth?.user?.pegawai?.kdpegsimrs === item?.user || auth?.user?.pegawai?.kdpegsimrs === 'sa'"
-                            fit
-                            buttons
-                            v-model="item.plann"
-                            :cover="false"
-                            :offset="[0, 10]"
-                            v-slot="scope"
-                            :validate="validInput"
-                            @hide="validInput"
-                            @save="(val,initial)=> {
+                            fit buttons v-model="item.plann" :cover="false" :offset="[0, 10]" v-slot="scope"
+                            :validate="validInput" @hide="validInput" @save="(val, initial) => {
                               // console.log('initial', initial); // before
                               // console.log('val', val); //now
-                              updateAsPlanInst(item,val,initial,'plann')
-                            }"
-                          >
-                            <q-input
-                              type="textarea"
-                              v-model="scope.value"
-                              autofocus
-                              @keyup.enter.stop
-                            />
+                              updateAsPlanInst(item, val, initial, 'plann')
+                            }">
+                            <q-input type="textarea" v-model="scope.value" autofocus @keyup.enter.stop />
                           </q-popup-edit>
                         </div>
                       </div>
@@ -340,24 +293,22 @@
                         {{ nakes !== '5' ? 'Instruksi PPA' : 'Evaluasi' }}
                       </div>
 
-                      <q-btn
-                        v-if="nakes==='2' || nakes==='3'"
-                        dense bordered outline round icon="icon-mat-edit" size="sm" color="primary" @click="()=> {
+                      <q-btn v-if="nakes === '2' || nakes === '3'" dense bordered outline round icon="icon-mat-edit"
+                        size="sm" color="primary" @click="() => {
 
                           if (auth?.user?.pegawai?.kdpegsimrs !== item?.user && auth?.user?.pegawai?.kdpegsimrs !== 'sa') {
                             notifBottomVue('Maaf ... anda bukan USER Peng-input CPPT ini, Harap Edit Punya Sendiri...');
                             return
                           }
 
-                          if (nakes==='2') {
+                          if (nakes === '2') {
                             store.initDiagnosaKeperawatan(item)
                             editFormIntervensi(item)
-                          } else if (nakes==='3') {
+                          } else if (nakes === '3') {
                             store.initDiagnosaKebidanan(item)
                             editFormIntervensi(item, 'diagnosaKebidanan')
                           }
-                        }"
-                      />
+                        }" />
                     </q-card-section>
 
                     <q-separator inset />
@@ -368,28 +319,14 @@
                           <span v-html="getNewLine(item?.instruksi ?? 'Belum Terisi')" />
                           <q-popup-edit
                             v-if="auth?.user?.pegawai?.kdpegsimrs === item?.user || auth?.user?.pegawai?.kdpegsimrs === 'sa'"
-                            fit
-                            buttons
-                            v-model="item.instruksi"
-                            :cover="false"
-                            :offset="[0, 10]"
-                            class="full-width"
-                            v-slot="scope"
-                            @save="(val,initial)=> {
+                            fit buttons v-model="item.instruksi" :cover="false" :offset="[0, 10]" class="full-width"
+                            v-slot="scope" @save="(val, initial) => {
                               // console.log('initial', initial); // before
                               // console.log('val', val); //now
-                              updateAsPlanInst(item,val,initial,'instruksi')
-                            }"
-                          >
-                            <q-input
-                              type="textarea"
-                              rows="5"
-                              v-model="scope.value"
-                              autofocus
-                              :error="isErrInput"
-                              :error-message="errMsg"
-                              @keyup.enter.stop
-                            />
+                              updateAsPlanInst(item, val, initial, 'instruksi')
+                            }">
+                            <q-input type="textarea" rows="5" v-model="scope.value" autofocus :error="isErrInput"
+                              :error-message="errMsg" @keyup.enter.stop />
                           </q-popup-edit>
                         </div>
                       </div>
@@ -405,41 +342,33 @@
       </q-list>
     </q-card>
 
-    <DialogFormItem
-      v-model="settings.isChildForm"
-      :pasien="props.pasien" :kasus="props.kasus" :nakes="props.nakes" :settings="settings"
-      @on-hide="settings.isEdit=false"
-      @on-click="()=> {
+    <DialogFormItem v-model="settings.isChildForm" :pasien="props.pasien" :kasus="props.kasus" :nakes="props.nakes"
+      :settings="settings" @on-hide="settings.isEdit = false" @on-click="() => {
         // console.log('edit', settings);
         if (settings.formOpen === 'anamnesis') {
           updateToServerAnamnesis(props.kasus)
-        } else if(settings.formOpen === 'pemeriksaan') {
+        } else if (settings.formOpen === 'pemeriksaan') {
           updateToServerPemeriksaan(props.kasus)
-        } else if(settings.formOpen === 'asessment' || settings.formOpen === 'asessmentKebidanan') {
+        } else if (settings.formOpen === 'asessment' || settings.formOpen === 'asessmentKebidanan') {
           updateToServerAsessment(props.nakes)
-        } else if(settings.formOpen === 'diagnosaKeperawatan' && settings.categoryIntervensi === 'plann') {
+        } else if (settings.formOpen === 'diagnosaKeperawatan' && settings.categoryIntervensi === 'plann') {
           updateToServerPlan(props.nakes)
-        }else if(settings.formOpen === 'diagnosaKeperawatan' && settings.categoryIntervensi === 'intervensi') {
+        } else if (settings.formOpen === 'diagnosaKeperawatan' && settings.categoryIntervensi === 'intervensi') {
           updateToServerPlan(props.nakes)
-        } else if(settings.formOpen === 'diagnosaKebidanan' && settings.categoryIntervensi === 'plann') {
+        } else if (settings.formOpen === 'diagnosaKebidanan' && settings.categoryIntervensi === 'plann') {
           updateToServerPlan(props.nakes)
-        } else if(settings.formOpen === 'diagnosaKebidanan' && settings.categoryIntervensi === 'intervensi') {
+        } else if (settings.formOpen === 'diagnosaKebidanan' && settings.categoryIntervensi === 'intervensi') {
           updateToServerPlan(props.nakes)
         }
 
-      }"
-    />
+      }" />
 
     <!-- dialog diagnosa keperawatan -->
-    <modal-diagnosa-keperawatan
-      :key="props?.pasien"
-      v-model="storeDiagnosaKeperawatan.modalOpen"
-      :masters="storeDiagnosaKeperawatan.diagnosas"
-      @ok="()=> {
+    <modal-diagnosa-keperawatan :key="props?.pasien" v-model="storeDiagnosaKeperawatan.modalOpen"
+      :masters="storeDiagnosaKeperawatan.diagnosas" @ok="() => {
         console.log('storeDiagnosaKeperawatan', storeDiagnosaKeperawatan.selectDiagnosa);
 
-      }"
-    />
+      }" />
   </div>
 </template>
 
@@ -461,6 +390,8 @@ const props = defineProps({
   nakes: { type: String, default: null }
 
 })
+
+console.log('props', props?.pasien)
 
 // eslint-disable-next-line no-unused-vars
 const {
@@ -491,7 +422,7 @@ const items = computed(() => {
   return cppt?.sort((a, b) => b?.id - a?.id)
 })
 
-function getNewLine (text) {
+function getNewLine(text) {
   // console.log('text', text)
 
   return text?.replace(/\n/g, '<br/>')

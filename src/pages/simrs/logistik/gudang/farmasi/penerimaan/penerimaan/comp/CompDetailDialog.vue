@@ -1,92 +1,66 @@
 <template>
-  <div
-    class="row items-center q-mt-md justify-between no-wrap"
-    :class="parseFloat(det.jml_all_penerimaan)>0?(parseFloat(det.jml_all_penerimaan) < parseFloat(det.jumlahdpesan)?'bg-green-2':'bg-green'):''"
-  >
+  <div class="row items-center q-mt-md justify-between no-wrap"
+    :class="parseFloat(det.jml_all_penerimaan) > 0 ? (parseFloat(det.jml_all_penerimaan) < parseFloat(det.jumlahdpesan) ? 'bg-green-2' : 'bg-green') : ''">
     <div class="anu q-mr-sm">
-      {{ 'flag '+det?.flag }}
-      <div
-        v-if="det?.masterobat?.nama_obat"
-        class="row justify-between no-wrap items-center q-mb-xs"
-      >
+      {{ 'flag ' + det?.flag }}
+      <div v-if="det?.masterobat?.nama_obat" class="row justify-between no-wrap items-center q-mb-xs">
         <div class="q-mr-sm">
           Nama
         </div>
         <div class="text-purple">
-          {{ det.masterobat ? det.masterobat.nama_obat :'-' }}
+          {{ det.masterobat ? det.masterobat.nama_obat : '-' }}
         </div>
       </div>
-      <div
-        v-if="det?.masterobat?.kd_obat"
-        class="row justify-between no-wrap items-center q-mb-xs"
-      >
+      <div v-if="det?.masterobat?.kd_obat" class="row justify-between no-wrap items-center q-mb-xs">
         <div class="q-mr-sm">
           kode
         </div>
         <div class="text-deep-purple">
-          {{ det.masterobat ? det.masterobat.kd_obat :'-' }}
+          {{ det.masterobat ? det.masterobat.kd_obat : '-' }}
         </div>
       </div>
-      <div
-        v-if="det?.masterobat?.merk"
-        class="row justify-between no-wrap items-center q-mb-xs"
-      >
+      <div v-if="det?.masterobat?.merk" class="row justify-between no-wrap items-center q-mb-xs">
         <div class="q-mr-sm">
           Pabrikan
         </div>
         <div class="text-deep-orange">
-          {{ det.masterobat ? det.masterobat.merk :'-' }}
+          {{ det.masterobat ? det.masterobat.merk : '-' }}
         </div>
       </div>
-      <div
-        v-if="det?.masterobat?.bentuk_sediaan"
-        class="row justify-between no-wrap items-center q-mb-xs"
-      >
+      <div v-if="det?.masterobat?.bentuk_sediaan" class="row justify-between no-wrap items-center q-mb-xs">
         <div class="q-mr-sm">
           Bentuk Sediaan
         </div>
         <div class="text-deep-orange">
-          {{ det.masterobat ? det.masterobat.bentuk_sediaan :'-' }}
+          {{ det.masterobat ? det.masterobat.bentuk_sediaan : '-' }}
         </div>
       </div>
-      <div
-        v-if="det?.masterobat?.kekuatan_dosis"
-        class="row justify-between no-wrap items-center q-mb-xs"
-      >
+      <div v-if="det?.masterobat?.kekuatan_dosis" class="row justify-between no-wrap items-center q-mb-xs">
         <div class="q-mr-sm">
           Kekuatan Dosis
         </div>
         <div class="text-deep-orange">
-          {{ det.masterobat ? det.masterobat.kekuatan_dosis :'-' }}
+          {{ det.masterobat ? det.masterobat.kekuatan_dosis : '-' }}
         </div>
       </div>
-      <div
-        v-if="det?.masterobat?.kelas_terapi"
-        class="row justify-between no-wrap items-center q-mb-xs"
-      >
+      <div v-if="det?.masterobat?.kelas_terapi" class="row justify-between no-wrap items-center q-mb-xs">
         <div class="q-mr-sm">
           Kelas Terapi
         </div>
         <div class="text-deep-orange">
-          {{ det.masterobat ? det.masterobat.kelas_terapi :'-' }}
+          {{ det.masterobat ? det.masterobat.kelas_terapi : '-' }}
         </div>
       </div>
-      <div
-        v-if="det?.masterobat?.volumesediaan"
-        class="row justify-between no-wrap items-center q-mb-xs"
-      >
+      <div v-if="det?.masterobat?.volumesediaan" class="row justify-between no-wrap items-center q-mb-xs">
         <div class="q-mr-sm">
           Volume Sediaan
         </div>
         <div class="text-deep-orange">
-          {{ det.masterobat ? det.masterobat.volumesediaan :'-' }}
+          {{ det.masterobat ? det.masterobat.volumesediaan : '-' }}
         </div>
       </div>
     </div>
-    <div
-      v-if="det?.flag===''||det?.flag==='1'"
-      class="anu q-mr-sm"
-    >
+    <div v-if="det?.flag === '' || det?.flag === '1'" class="anu q-mr-sm">
       <div class="row justify-between no-wrap items-center q-mb-xs text-green-10">
         <div class="q-mr-sm">
           Dipesan
@@ -117,10 +91,8 @@
           {{ det.jml_terima_laluK ? det.jml_terima_laluK : 0 }}
         </div>
       </div>
-      <div
-        class="row justify-between no-wrap items-center q-mb-xs"
-        :class="det.jml_all_penerimaan <= parseFloat(det.jumlahdpesan) ?'text-green-10':'text-negative'"
-      >
+      <div class="row justify-between no-wrap items-center q-mb-xs"
+        :class="det.jml_all_penerimaan <= parseFloat(det.jumlahdpesan) ? 'text-green-10' : 'text-negative'">
         <div class="q-mr-sm">
           Seluruh Penerimaan
         </div>
@@ -129,53 +101,33 @@
         </div>
       </div>
     </div>
-    <div
-      v-if="det?.flag===''||det?.flag==='1'"
-      class="anu q-mr-sm"
-    >
+    <div v-if="det?.flag === '' || det?.flag === '1'" class="anu q-mr-sm">
       <div class="row justify-between no-wrap items-center q-mb-xs">
         <div class="col-12">
-          <app-input
-            ref="refIsi"
-            v-model="store.details[i].isi"
-            label="Isi"
-            outlined
+          <app-input ref="refIsi" v-model="store.details[i].isi" label="Isi" outlined
             :readonly="det.jml_all_penerimaan >= det.jumlahdpesan"
-            @update:model-value="setHargaNetNew($event, det,'isi')"
-          />
+            @update:model-value="setHargaNetNew($event, det, 'isi')" />
         </div>
       </div>
       <div class="row justify-between no-wrap items-center q-mb-xs">
         <div class="col-12">
-          <app-input
-            ref="refJmlDiterimaB"
-            v-model="store.details[i].jml_terima_b"
-            :label="'Diterima ('+ det.satuan_bsr+')'"
-            outlined
-            :readonly="det.jml_all_penerimaan >= det.jumlahdpesan"
+          <app-input ref="refJmlDiterimaB" v-model="store.details[i].jml_terima_b"
+            :label="'Diterima (' + det.satuan_bsr + ')'" outlined :readonly="det.jml_all_penerimaan >= det.jumlahdpesan"
             :rules="[
               val => !isNaN(val) || 'Harus pakai Nomor',
               val => !!val || 'Harap di isi',
-              val => parseFloat(det.jumlahdpesan)>=det.jml_all_penerimaan || 'Tidak Boleh Melebihi Pemesanan',
-            ]"
-            @update:model-value="setHargaNetNew($event, det,'jml_terima_b')"
-          />
+              val => parseFloat(det.jumlahdpesan) >= det.jml_all_penerimaan || 'Tidak Boleh Melebihi Pemesanan',
+            ]" @update:model-value="setHargaNetNew($event, det, 'jml_terima_b')" />
         </div>
       </div>
       <div class="row justify-between no-wrap items-center q-mb-xs">
         <div class="col-12">
-          <app-input
-            ref="refJmlDiterima"
-            v-model="store.details[i].jml_terima_k"
-            :label="'Diterima ('+ det.satuan_kcl+')'"
-            outlined
-            :disable="det.jml_all_penerimaan >= det.jumlahdpesan"
+          <app-input ref="refJmlDiterima" v-model="store.details[i].jml_terima_k"
+            :label="'Diterima (' + det.satuan_kcl + ')'" outlined :disable="det.jml_all_penerimaan >= det.jumlahdpesan"
             :rules="[
               val => !isNaN(val) || 'Harus pakai Nomor',
               val => !!val || 'Harap di isi',
-            ]"
-            @update:model-value="setHargaNetNew($event, det,'jml_terima_k')"
-          />
+            ]" @update:model-value="setHargaNetNew($event, det, 'jml_terima_k')" />
         </div>
       </div>
       <!-- <div class="row justify-between no-wrap items-center q-mb-xs">
@@ -188,93 +140,65 @@
             </div> -->
       <div class="row no-wrap items-center q-mb-xs">
         <div class="col-12">
-          <app-input
-            ref="refBatch"
-            v-model="store.details[i].no_batch"
-            label="No Batch"
-            outlined
-            :readonly="det.jml_all_penerimaan >= det.jumlahdpesan"
-          />
+          <app-input ref="refBatch" v-model="store.details[i].no_batch" label="No Batch" outlined
+            :readonly="det.jml_all_penerimaan >= det.jumlahdpesan" />
         </div>
       </div>
       <div class="row justify-between no-wrap items-center q-mb-xs">
         <div class="col-12">
-          <app-input-date
-            ref="refExp"
-            :model="det.tgl_exp"
-            label="Tanggal Kadalwarsa"
-            outlined
-            :readonly="det.jml_all_penerimaan >= det.jumlahdpesan"
-            @set-model="detKadal($event,det)"
-          />
+          <app-input-date ref="refExp" :model="det.tgl_exp" label="Tanggal Kadalwarsa" outlined
+            :readonly="det.jml_all_penerimaan >= det.jumlahdpesan" @set-model="detKadal($event, det)" />
         </div>
       </div>
     </div>
 
-    <div
-      v-if="det?.flag===''||det?.flag==='1'"
-      class="anu q-mr-sm"
-    >
+    <div v-if="det?.flag === '' || det?.flag === '1'" class="anu q-mr-sm">
       <div class="row justify-between no-wrap items-center q-mb-xs">
         <div class="col-12">
-          <app-input
-            ref="refHarga"
-            v-model="store.details[i].harga"
-            :label="'Harga' + ' per ' + det.satuan_bsr"
-            outlined
-            :readonly="det.jml_all_penerimaan >= det.jumlahdpesan"
-            :rules="[
+          <app-input ref="refHarga" v-model="store.details[i].harga" :label="'Harga' + ' per ' + det.satuan_bsr"
+            outlined :readonly="det.jml_all_penerimaan >= det.jumlahdpesan" :rules="[
               val => !isNaN(val) || 'Harus pakai Nomor'
-            ]"
-            @update:model-value="setHargaNetNew($event, det,'harga')"
-          />
+            ]" @update:model-value="setHargaNetNew($event, det, 'harga')" />
         </div>
       </div>
       <div class="row justify-between no-wrap items-center q-mb-xs">
         <div class="col-12">
-          <app-input
-            ref="refHargaKcl"
-            v-model="store.details[i].harga_kcl"
-            :label="'Harga' + ' per ' + det.satuan_kcl"
-            outlined
-            :readonly="det.jml_all_penerimaan >= det.jumlahdpesan"
-            :rules="[
+          <app-input ref="refHargaKcl" v-model="store.details[i].harga_kcl" :label="'Harga' + ' per ' + det.satuan_kcl"
+            outlined :readonly="det.jml_all_penerimaan >= det.jumlahdpesan" :rules="[
               val => !isNaN(val) || 'Harus pakai Nomor'
-            ]"
-            @update:model-value="setHargaNetNew($event, det,'harga_kcl')"
-          />
+            ]" @update:model-value="setHargaNetNew($event, det, 'harga_kcl')" />
         </div>
       </div>
       <div class="row justify-between no-wrap items-center q-mb-xs">
         <div class="col-12">
-          <app-input
-            v-model="store.details[i].diskon"
-            label="Diskon (%)"
-            outlined
-            :readonly="det.jml_all_penerimaan >= det.jumlahdpesan"
-            :rules="[
+          <app-input v-model="store.details[i].diskon" label="Diskon (%)" outlined
+            :readonly="det.jml_all_penerimaan >= det.jumlahdpesan" :rules="[
               val => !isNaN(val) || 'Harus pakai Nomor'
-            ]"
-            @update:model-value="setHargaNetNew($event, det,'diskon')"
-          />
+            ]" @update:model-value="setHargaNetNew($event, det, 'diskon')" />
         </div>
       </div>
       <div class="row justify-between no-wrap items-center q-mb-xs">
-        <div class="col-12">
-          <q-checkbox
-            v-model="store.details[i].adaPPN"
-            label="PPN 11%"
+        <div class="col-6">
+          <q-checkbox v-model="store.details[i].adaPPN" :label="'PPN ' + store.details[i].ppn + '%'"
+            :disable="det.jml_all_penerimaan >= det.jumlahdpesan" @update:model-value="adaPPN($event, det)" />
+        </div>
+        <!-- <div class="col-6">
+          <app-input
+            v-model="store.details[i].ppn"
+            label="PPN"
+            outlined
+            valid
             :disable="det.jml_all_penerimaan >= det.jumlahdpesan"
             @update:model-value="adaPPN($event,det)"
           />
-        </div>
+        </div> -->
       </div>
       <div class="row justify-between no-wrap items-center q-mb-xs">
         <div class="q-mr-sm">
           Harga Netto
         </div>
         <div class="">
-          {{ det.harga_netto ? formatRpDouble(det.harga_netto,2):0 }}
+          {{ det.harga_netto ? formatRpDouble(det.harga_netto, 2) : 0 }}
         </div>
       </div>
       <div class="row justify-between no-wrap items-center q-mb-xs">
@@ -282,51 +206,25 @@
           Sub Total
         </div>
         <div class="">
-          {{ det.subtotal ? formatRpDouble(det.subtotal,2) : 0 }}
+          {{ det.subtotal ? formatRpDouble(det.subtotal, 2) : 0 }}
         </div>
       </div>
     </div>
-    <div
-      v-if="det?.flag===''||det?.flag==='1'"
-      class="anu q-mr-sm"
-    >
-      <q-btn
-        flat
-        icon="icon-mat-save"
-        color="primary"
-        round
-        :disable="det.jml_all_penerimaan >= det.jumlahdpesan || det.loading"
-        :loading="det.loading"
-        @click="simpan(i)"
-      >
-        <q-tooltip
-          class="primary"
-          :offset="[10, 10]"
-        >
+    <div v-if="det?.flag === '' || det?.flag === '1'" class="anu q-mr-sm">
+      <q-btn flat icon="icon-mat-save" color="primary" round
+        :disable="det.jml_all_penerimaan >= det.jumlahdpesan || det.loading" :loading="det.loading" @click="simpan(i)">
+        <q-tooltip class="primary" :offset="[10, 10]">
           Simpan Rincian Penerimaan
         </q-tooltip>
       </q-btn>
-      <q-btn
-        flat
-        icon="icon-mat-hand-front-left"
-        color="negative"
-        round
-        :disable="det.jml_all_penerimaan >= det.jumlahdpesan || det.loading"
-        :loading="det.loading"
-        @click="tolak(i)"
-      >
-        <q-tooltip
-          class="primary"
-          :offset="[10, 10]"
-        >
+      <q-btn flat icon="icon-mat-hand-front-left" color="negative" round
+        :disable="det.jml_all_penerimaan >= det.jumlahdpesan || det.loading" :loading="det.loading" @click="tolak(i)">
+        <q-tooltip class="primary" :offset="[10, 10]">
           Tidak diterima
         </q-tooltip>
       </q-btn>
     </div>
-    <div
-      v-if="det?.flag==='2'"
-      class="anu q-mr-sm text-weight-bold f-18"
-    >
+    <div v-if="det?.flag === '2'" class="anu q-mr-sm text-weight-bold f-18">
       Sudah ditolak
     </div>
   </div>
@@ -340,7 +238,7 @@ import { notifErrVue } from 'src/modules/utils'
 
 const store = usePenerimaanFarmasiStore()
 defineProps({
-  det: { type: Object, default: () => {} },
+  det: { type: Object, default: () => { } },
   i: { type: Number, default: 0 }
 })
 
@@ -393,7 +291,7 @@ function tolak (index) {
   emits('tolak', index)
 }
 function adaPPN (evt, det) {
-  // console.log('ada ppn', evt, det)
+  console.log('ada ppn', evt, det, det?.ppn)
   if (evt) setHargaNetNew('11', det, 'ppn')
   if (!evt) setHargaNetNew('0', det, 'ppn')
 }

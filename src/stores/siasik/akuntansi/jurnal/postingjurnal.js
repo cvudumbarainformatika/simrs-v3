@@ -34,6 +34,7 @@ export const postingJurnal = defineStore('posting_jurnal', {
       { nama: 'Unposting', value: null },
       { nama: 'Posting', value: 1 }
     ],
+    unverif: '',
     verif: '',
     rinci: {},
     getjurnals: [],
@@ -42,7 +43,7 @@ export const postingJurnal = defineStore('posting_jurnal', {
     totalkredit: 0
   }),
   actions: {
-    openRinci (val) {
+    openRinci(val) {
       // console.log('val', val)
       this.dialogRinci = true
       this.rinci = val
@@ -57,7 +58,7 @@ export const postingJurnal = defineStore('posting_jurnal', {
     //   this.reqs.q = val
     //   if (!this.loading) this.getPostJurnal()
     // },
-    getPostJurnal () {
+    getPostJurnal() {
       this.loading = true
       const params = { params: this.reqs }
       return new Promise((resolve) => {
@@ -101,7 +102,7 @@ export const postingJurnal = defineStore('posting_jurnal', {
     //   }
     //   // })
     // },
-    mapData () {
+    mapData() {
       const uniknotrans = this.getjurnals.map((x) => x.notrans)
       const set = uniknotrans.length ? [...new Set(uniknotrans)] : []
       const jurnals = []
@@ -122,7 +123,7 @@ export const postingJurnal = defineStore('posting_jurnal', {
             notrans: arrs.filter((x) => x.keterangan === et)[0]?.notrans,
             keterangan: arrs.filter((x) => x.keterangan === et)[0]?.keterangan,
             kegiatan: arrs.filter((x) => x.keterangan === et)[0]?.kegiatan,
-            nilai: arrs.filter((x) => x.keterangan === et)?.map((x) => parseFloat(x.debit))[0] + arrs.filter((x) => x.keterangan === et)?.map((x) => parseFloat(x.debit))[1],
+            nilai: arrs.filter((x) => x.keterangan === et)[0]?.nilai,
             kode: arrs.filter((x) => x.keterangan === et)?.map((x) => x.kode),
             uraian: arrs.filter((x) => x.keterangan === et)?.map((x) => x.uraian),
             debit: arrs.filter((x) => x.keterangan === et)?.map((x) => parseFloat(x.debit)),
@@ -135,6 +136,7 @@ export const postingJurnal = defineStore('posting_jurnal', {
         }
         jurnals.push(...jurnal)
       }
+
       const sortByDate = (jurnals) =>
         jurnals.sort(({ tanggal: a }, { tanggal: b }) =>
           a < b ? -1 : a > b ? 1 : 0
@@ -143,7 +145,7 @@ export const postingJurnal = defineStore('posting_jurnal', {
       this.hasilmaps = arrJurnal
       console.log('HASIL POSTING', this.hasilmaps)
     },
-    async verifPosting (val, debit, kredit) {
+    async verifPosting(val, debit, kredit) {
       // console.log('valueeee', this.rinci.notrans)
       this.loadingverif = true
       if (debit !== kredit) {
@@ -171,6 +173,35 @@ export const postingJurnal = defineStore('posting_jurnal', {
           notifErr(error)
         }
       }
+    },
+    async unverifPosting(val, debit, kredit) {
+      // console.log('valueeee', this.rinci.notrans)
+      this.loadingverif = true
+      // if (debit !== kredit) {
+      //   notifErrVue('Maaf Debit Dan Kredit Harus Balance')
+      //   this.loadingverif = false
+      // }
+      // else {
+      const notrans = { notrans: val?.notrans }
+      try {
+        const resp = await api.post('v1/akuntansi/registerjurnal/cancelverif', notrans)
+        if (resp.status === 200) {
+          notifSuccess(resp)
+          this.unverif = ''
+          this.rinci = val
+          // this.reqs.notrans = notrans
+          // console.log('notrans', this.reqs.notrans)
+          this.getPostJurnal()
+          console.log('val e', this.rinci)
+          this.dialogRinci = false
+          this.loadingverif = false
+        }
+      }
+      catch (error) {
+        this.loadingverif = false
+        notifErr(error)
+      }
+      // }
     }
   }
 })

@@ -81,6 +81,9 @@
                   <div class="row">
                     Retur : {{ ku?.keluarnya?.retGud }}
                   </div>
+                  <div class="row">
+                    Operasi : {{ ku?.keluarnya?.distOp }}
+                  </div>
                 </div>
               </div>
             </div>
@@ -181,10 +184,10 @@
           <div v-if="loading" style="height: 300px;">
             <app-loading />
           </div>
-          <div v-if="!loading && (!data?.mutasi?.length && !data?.mutasiruangan?.length && !data?.resep?.length && !data?.resepracikan?.length && !data?.retur?.length)" style="height: 300px;">
+          <div v-if="!loading && (!data?.mutasi?.length && !data?.mutasiruangan?.length && !data?.resep?.length && !data?.resepracikan?.length && !data?.retur?.length && !data?.persiapanop?.length)" style="height: 300px;">
             <app-no-data />
           </div>
-          <div v-if="!loading && ((data?.mutasi?.length || data?.mutasiruangan?.length || data?.resep?.length || data?.resepracikan?.length || data?.retur?.length))" style="height: 300px;">
+          <div v-if="!loading && ((data?.mutasi?.length || data?.mutasiruangan?.length || data?.resep?.length || data?.resepracikan?.length || data?.retur?.length || data?.persiapanop?.length))" style="height: 300px;">
             <div v-if="data?.mutasiruangan?.length">
               <div class="row items-center ">
                 <div class="col-6 text-weight-bold f-14 ">
@@ -363,6 +366,110 @@
                     <div class="col-auto text-right" style="width: calc(20% / 2)">
                       {{ da?.harga_beli }}
                     </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Persiapan OP -->
+            <div v-if="data?.persiapanop?.length" class="q-mb-md">
+              <div class="row items-center ">
+                <div class="col-6 text-weight-bold f-14 ">
+                  Persiapan Operasi
+                </div>
+                <div class="col-4 text-right">
+                  <div class="row justify-end">
+                    <q-btn
+                      dense
+                      no-caps
+                      label="Fix Persiapan Operasi"
+                      color="orange"
+                      :loading="loadingFixMutasi"
+                      @click="fixMutasi('default')"
+                    />
+                  </div>
+                </div>
+                <div class="col-2 text-right">
+                  <div class="row justify-end">
+                    <q-btn
+                      v-if="!showPersiapan"
+                      dense
+                      no-caps
+                      label="Show"
+                      color="primary"
+                      :loading="loadingFixMutasi"
+                      @click="showPersiapan=true"
+                    />
+                    <q-btn
+                      v-if="showPersiapan"
+                      dense
+                      no-caps
+                      label="Hide"
+                      color="primary"
+                      :loading="loadingFixMutasi"
+                      @click="showPersiapan=false"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div v-if="showPersiapan">
+                <div class="row bg-dark text-white">
+                  <div class="col-auto" style="width: 5%;">
+                    No
+                  </div>
+                  <div class="col-auto" style="width: 22%;">
+                    Nomor Permintaan
+                  </div>
+                  <div class="col-auto" style="width: 22%;">
+                    Nomor Penerimaaan
+                  </div>
+                  <div class="col-auto" style="width: calc(30% / 2)">
+                    Tgl Distribusi
+                  </div>
+                  <div class="col-auto" style="width: calc(30% / 2)">
+                    Ruangan / Poli
+                  </div>
+                  <div class="col-auto text-right" style="width: calc(20% / 2)">
+                    Jumlah
+                  </div>
+                  <!-- <div class="col-auto text-right" style="width: calc(20% / 2)">
+                    Harga
+                  </div> -->
+                </div>
+                <div v-for="(da,i) in data?.persiapanop" :key="i">
+                  <div
+                    class="row items-center" :class="i%2==0?'bg-grey-2':'bg-grey-4'+ ' ' + (nokur.includes(da?.nopenerimaan)?'cursor-pointer bisa-hover':'')"
+                    @click="()=>{
+                      if(nokur.includes(da?.nopenerimaan)){
+                        console.log(nokur.includes(da?.nopenerimaan), da);
+                        bukaPecah=true
+                        dataResep=da
+                        kdobat=da?.kdobat
+                        tipeResep='persiapan'
+                      }
+
+                    }"
+                  >
+                    <div class="col-auto" style="width: 5%;">
+                      {{ i+1 }}
+                    </div>
+                    <div class="col-auto" style="width: 22%;">
+                      {{ da?.nopermintaan }}
+                    </div>
+                    <div class="col-auto" :class="cekNoper(da?.nopenerimaan)" style="width: 22%;">
+                      {{ da?.nopenerimaan }}
+                    </div>
+                    <div class="col-auto" style="width: calc(30% / 2)">
+                      {{ dateFull( da?.persiapan?.tgl_distribusi) }}
+                    </div>
+                    <div class="col-auto" style="width: calc(30% / 2)">
+                      {{ da?.persiapan?.list?.kunjunganranap?.relmasterruangranap?.rs2 ??da?.persiapan?.list?.kunjunganrajal?.relmpoli?.rs2 }}
+                    </div>
+                    <div class="col-auto text-right" style="width: calc(20% / 2)">
+                      {{ da?.jumlah }}
+                    </div>
+                    <!-- <div class="col-auto text-right" style="width: calc(20% / 2)">
+                      {{ da?.harga_beli }}
+                    </div> -->
                   </div>
                 </div>
               </div>
@@ -716,6 +823,7 @@ const showResep = ref(false)
 const showRacikan = ref(false)
 const showMutasiAntar = ref(false)
 const showRetur = ref(false)
+const showPersiapan = ref(false)
 
 const kur = ref([])
 const nokur = computed(() => props.item?.data?.data?.penKur.map((v) => v?.noper))
@@ -741,6 +849,7 @@ function hide () {
   showRacikan.value = false
   showMutasiAntar.value = false
   showRetur.value = false
+  showPersiapan.value = false
 
   bukaPecah.value = false
   dataResep.value = {}

@@ -1,31 +1,17 @@
 <template>
-  <div
-    class="fixed-top row no-wrap items-center justify-between q-mx-sm bg-white"
-    style="z-index: 10;"
-  >
+  <div class="fixed-top row no-wrap items-center justify-between q-mx-sm bg-white" style="z-index: 10;">
     <div>
       <div class="row items-center">
         <div class="q-mr-md">
           No Penerimaan:
         </div>
         <div class="q-mr-sm">
-          {{ store.form.nopenerimaan? store.form.nopenerimaan :'-' }}
+          {{ store.form.nopenerimaan ? store.form.nopenerimaan : '-' }}
         </div>
         <div class="q-ml-md">
-          <q-btn
-            v-if="store.form.nopenerimaan"
-            flat
-            icon="icon-mat-done"
-            dense
-            color="primary"
-            :loading="store.loadingKunci"
-            :disable="store.loadingKunci"
-            @click="kunci()"
-          >
-            <q-tooltip
-              class="primary"
-              :offset="[10, 10]"
-            >
+          <q-btn v-if="store.form.nopenerimaan" flat icon="icon-mat-done" dense color="primary"
+            :loading="store.loadingKunci" :disable="store.loadingKunci" @click="kunci()">
+            <q-tooltip class="primary" :offset="[10, 10]">
               Selesai dan Kunci Penerimaan
             </q-tooltip>
           </q-btn>
@@ -33,15 +19,9 @@
       </div>
     </div>
     <div>
-      <q-btn
-        flat
-        :icon="!style.componentfull ? 'icon-mat-open_in_full' : 'icon-mat-close_fullscreen'"
-        round
-        :color="style.componentfull ? 'green' : 'primary'"
-        size="12px"
-        class="q-ml-md"
-        @click="style.setComponentFull"
-      />
+      <q-btn flat :icon="!style.componentfull ? 'icon-mat-open_in_full' : 'icon-mat-close_fullscreen'" round
+        :color="style.componentfull ? 'green' : 'primary'" size="12px" class="q-ml-md"
+        @click="style.setComponentFull" />
     </div>
   </div>
   <!-- penerimaan -->
@@ -51,119 +31,59 @@
       <div class="col-6">
         <div class="row q-col-gutter-md no-wrap q-mb-xs">
           <div class="col-12">
-            <app-autocomplete-debounce-input
-              ref="refPbf"
-              v-model="store.form.kdpbf"
-              label="Cari Penyedia"
-              autocomplete="nama"
-              option-label="nama"
-              option-value="kode"
-              outlined
-              :loading="store.loadingPihakTiga"
-              :source="store.pihakTigas"
-              :rules="[
+            <app-autocomplete-debounce-input ref="refPbf" v-model="store.form.kdpbf" label="Cari Penyedia"
+              autocomplete="nama" option-label="nama" option-value="kode" outlined :loading="store.loadingPihakTiga"
+              :source="store.pihakTigas" :rules="[
                 val => !!val || 'tidak boleh kosong'
-              ]"
-              @buang="cariPihakTiga"
-            />
+              ]" @buang="cariPihakTiga" />
           </div>
         </div>
 
         <div class="row q-mb-xs">
           <div class="col-12">
-            <app-autocomplete-new
-              ref="refJnsPenerimaan"
-              :model="store.form.jenispenerimaan"
-              autocomplete="nama"
-              option-label="nama"
-              option-value="nama"
-              label="Jenis Penerimaan"
-              outlined
-              :source="store.jenisPenerimaans"
-              @on-select="store.jenisPenerimaanSelected"
-              @clear="store.clearJenisPenerimaan"
-            />
+            <app-autocomplete-new ref="refJnsPenerimaan" :model="store.form.jenispenerimaan" autocomplete="nama"
+              option-label="nama" option-value="nama" label="Jenis Penerimaan" outlined :source="store.jenisPenerimaans"
+              @on-select="store.jenisPenerimaanSelected" @clear="store.clearJenisPenerimaan" />
           </div>
         </div>
 
         <div class="row q-mb-xs">
           <div class="col-12">
-            <app-autocomplete-new
-              ref="refJenisSurat"
-              :model="store.form.jenissurat"
-              autocomplete="nama"
-              option-label="nama"
-              option-value="nama"
-              label="Pilih Jenis Surat"
-              outlined
-              :source="store.jenisSuratLs"
-              @on-select="store.jenisSuratSelected"
-              @clear="store.clearJenisSurat"
-            />
+            <app-autocomplete-new ref="refJenisSurat" :model="store.form.jenissurat" autocomplete="nama"
+              option-label="nama" option-value="nama" label="Pilih Jenis Surat" outlined :source="store.jenisSuratLs"
+              @on-select="store.jenisSuratSelected" @clear="store.clearJenisSurat" />
           </div>
         </div>
         <div class="row q-mb-xs">
           <div class="col-12">
-            <app-input
-              ref="refNoSurat"
-              v-model="store.form.nomorsurat"
-              label="Nomor Surat"
-              outlined
-            />
+            <app-input ref="refNoSurat" v-model="store.form.nomorsurat" label="Nomor Surat" outlined />
           </div>
         </div>
         <div class="row q-mb-xs">
           <div class="col-12">
-            <app-input
-              ref="refPengirim"
-              v-model="store.form.pengirim"
-              label="Nama Pengirim"
-              outlined
-            />
+            <app-input ref="refPengirim" v-model="store.form.pengirim" label="Nama Pengirim" outlined />
           </div>
         </div>
       </div>
       <div class="col-6">
         <div class="row q-mb-xs">
           <div class="col-12">
-            <app-autocomplete-new
-              ref="refGudang"
-              :model="store.form.gudang"
-              autocomplete="nama"
-              option-label="nama"
-              option-value="value"
-              label="Pilih Gudang"
-              outlined
-              :disable="apps?.user?.kdruangansim!==''"
-              :source="store.gudangs"
-              @on-select="store.gudangSelected"
-              @clear="store.clearGudang"
-            />
+            <app-autocomplete-new ref="refGudang" :model="store.form.gudang" autocomplete="nama" option-label="nama"
+              option-value="value" label="Pilih Gudang" outlined :disable="apps?.user?.kdruangansim !== ''"
+              :source="store.gudangs" @on-select="store.gudangSelected" @clear="store.clearGudang" />
           </div>
         </div>
 
         <div class="row q-mb-xs">
           <div class="col-12">
-            <app-input-date-human
-              ref="refTglTran"
-              :model="store.disp.tanggal"
-              label="Tanggal Transaksi"
-              outlined
-              @set-display="dispTanggal"
-              @db-model="setTanggal"
-            />
+            <app-input-date-human ref="refTglTran" :model="store.disp.tanggal" label="Tanggal Transaksi" outlined
+              @set-display="dispTanggal" @db-model="setTanggal" />
           </div>
         </div>
         <div class="row q-mb-xs">
           <div class="col-12">
-            <app-input-date-human
-              ref="refTglSurat"
-              :model="store.disp.surat"
-              label="Tanggal Surat"
-              outlined
-              @set-display="dispSurat"
-              @db-model="setSurat"
-            />
+            <app-input-date-human ref="refTglSurat" :model="store.disp.surat" label="Tanggal Surat" outlined
+              @set-display="dispSurat" @db-model="setSurat" />
           </div>
         </div>
         <!-- <div class="row q-mb-xs">
@@ -198,48 +118,27 @@
     <!-- detail -->
     <div class="row items-center q-col-gutter-sm">
       <div class="col-4">
-        <app-autocomplete-new
-          ref="refObat"
-          :model="store.form.kdobat"
-          autocomplete="namaobat"
-          option-label="namaobat"
-          option-value="kd_obat"
-          label="Pilih Obat"
-          outlined
-          :source="store.obats"
-          :loading="store.loadingCari"
-          @on-select="store.obatSelected"
-          @clear="store.clearObat"
-          @buang="cariObat"
-        />
+        <app-autocomplete-new ref="refObat" :model="store.form.kdobat" autocomplete="namaobat" option-label="namaobat"
+          option-value="kd_obat" label="Pilih Obat" outlined :source="store.obats" :loading="store.loadingCari"
+          @on-select="store.obatSelected" @clear="store.clearObat" @buang="cariObat" />
       </div>
       <div class="col-2">
-        <app-input
-          ref="refIsi"
-          v-model="store.form.isi"
-          label="konversi satuan besar ke kecil ( Isi )"
-          outlined
-          @update:model-value="setIsi($event)"
-        />
+        <app-input ref="refIsi" v-model="store.form.isi" label="konversi satuan besar ke kecil ( Isi )" outlined
+          @update:model-value="setIsi($event)" />
       </div>
       <div class="col-2">
         <div class="row text-italic f-10">
           satuan :
         </div>
         <div class="row">
-          <div
-            v-if="store.form.satuan_bsr"
-          >
+          <div v-if="store.form.satuan_bsr">
             <div class="text-weight-bold">
               1 {{ store.form.satuan_bsr }}
             </div>
           </div>
-          <div
-            v-if="store.form.satuan_kcl"
-            class="q-ml-xs"
-          >
+          <div v-if="store.form.satuan_kcl" class="q-ml-xs">
             <div class="text-weight-bold">
-              =  {{ store.form.isi }}  {{ store.form.satuan_kcl }}
+              = {{ store.form.isi }} {{ store.form.satuan_kcl }}
             </div>
           </div>
           <div v-else>
@@ -249,13 +148,8 @@
       </div>
 
       <div class="col-2">
-        <app-input
-          ref="refJumlah"
-          v-model="store.form.jml_terima_b"
-          label="Jumlah"
-          outlined
-          @update:model-value="setJumlah($event)"
-        />
+        <app-input ref="refJumlah" v-model="store.form.jml_terima_b" label="Jumlah" outlined
+          @update:model-value="setJumlah($event)" />
       </div>
       <div class="col-2">
         <div class="row">
@@ -263,42 +157,38 @@
             {{ store.form.satuan_bsr }}
           </div>
           <div class="text-weight-bold">
-            ({{ store.form.jml_terima_k }}  {{ store.form.satuan_kcl }})
+            ({{ store.form.jml_terima_k }} {{ store.form.satuan_kcl }})
           </div>
         </div>
       </div>
       <div class="col-2">
-        <app-input
-          ref="refHarga"
-          v-model="store.form.harga"
-          label="Harga (satuan besar)"
-          :valid="store.form.jenispenerimaan==='Sisa Pasien'"
-          outlined
-          @update:model-value="setHarga($event)"
-        />
+        <app-input ref="refHarga" v-model="store.form.harga" label="Harga (satuan besar)"
+          :valid="store.form.jenispenerimaan === 'Sisa Pasien'" outlined @update:model-value="setHarga($event)" />
       </div>
       <div class="col-2">
-        <app-input
-          v-model="store.form.diskon"
-          label="Diskon (%)"
-          outlined
-          valid
-          @update:model-value="setDiskon($event)"
-        />
+        <app-input v-model="store.form.diskon" label="Diskon (%)" outlined valid
+          @update:model-value="setDiskon($event)" />
       </div>
       <div class="col-2">
-        <!-- <app-input
-          v-model="store.form.ppn"
-          label="PPN (%)"
-          outlined
-          valid
-          @update:model-value="adaPPN($event,det)"
-          /> -->
-        <q-checkbox
-          v-model="adaPPN"
-          label="PPN 11%"
-          @update:model-value="setPpn($event)"
-        />
+        <div class="row justify-between">
+          <div class="col-grow">
+            <q-checkbox v-model="adaPPN" label="PPN 11%" @update:model-value="setPpn($event)" />
+          </div>
+          <!-- <div class="col-grow">
+            <app-input
+              v-model="store.form.ppn"
+              label="PPN (%)"
+              outlined
+              valid
+              @update:model-value="()=>{
+                store.setForm('ppn', $event)
+                setHargaNetto()
+              }"
+              />
+          </div> -->
+
+        </div>
+
       </div>
       <div class="col-2">
         harga netto : <strong> {{ formatRp(store.form.harga_netto) }} </strong>
@@ -310,30 +200,14 @@
         Total Nilai : <strong>{{ formatRp(store.form.total_faktur_pbf) }}</strong>
       </div>
       <div class="col-2">
-        <app-input
-          ref="refBatch"
-          v-model="store.form.no_batch"
-          label="No Batch"
-          outlined
-        />
+        <app-input ref="refBatch" v-model="store.form.no_batch" label="No Batch" outlined />
       </div>
       <div class="col-2">
-        <app-input-date-human
-          ref="refExp"
-          :model="store.disp.tgl_exp"
-          label="Tanggal Kadaluarsa"
-          outlined
-          @set-display="store.setDisp('tgl_exp', $event)"
-          @db-model="store.setForm('tgl_exp', $event)"
-        />
+        <app-input-date-human ref="refExp" :model="store.disp.tgl_exp" label="Tanggal Kadaluarsa" outlined
+          @set-display="store.setDisp('tgl_exp', $event)" @db-model="store.setForm('tgl_exp', $event)" />
       </div>
       <div class="col-2">
-        <app-input
-          v-model="store.form.no_retur_rs"
-          valid
-          label="No Retur Rs"
-          outlined
-        />
+        <app-input v-model="store.form.no_retur_rs" valid label="No Retur Rs" outlined />
       </div>
       <!-- <div class="col-3">
         <app-input
@@ -345,20 +219,9 @@
     </div>
     <div class="row items-center justify-end q-mr-sm q-mt-md">
       <div>
-        <q-btn
-          label="Simpan obat"
-          no-caps
-          icon="icon-mat-save"
-          color="primary"
-          push
-          :loading="store.loading"
-          :disable="store.loading"
-          @click="simpan()"
-        >
-          <q-tooltip
-            class="primary"
-            :offset="[10, 10]"
-          >
+        <q-btn label="Simpan obat" no-caps icon="icon-mat-save" color="primary" push :loading="store.loading"
+          :disable="store.loading" @click="simpan()">
+          <q-tooltip class="primary" :offset="[10, 10]">
             Simpan Rincian Penerimaan
           </q-tooltip>
         </q-btn>
@@ -366,13 +229,8 @@
     </div>
     <q-separator class="q-my-md" />
     <div v-if="store.rincis.length">
-      <q-list
-        bordered
-        separator
-      >
-        <q-item
-          class="row items-center q-col-gutter-sm"
-        >
+      <q-list bordered separator>
+        <q-item class="row items-center q-col-gutter-sm">
           <q-item-section>
             No
           </q-item-section>
@@ -396,14 +254,9 @@
           </q-item-section>
           <!-- {{ item }} -->
         </q-item>
-        <q-item
-          v-for="(item,i) in store.rincis"
-          :key="i"
-          v-ripple
-          class="row items-center q-col-gutter-sm"
-        >
+        <q-item v-for="(item, i) in store.rincis" :key="i" v-ripple class="row items-center q-col-gutter-sm">
           <q-item-section>
-            {{ i+1 }}
+            {{ i + 1 }}
           </q-item-section>
           <q-item-section>
             <div class="row">
@@ -439,10 +292,10 @@
           </q-item-section>
           <q-item-section>
             <div class="row">
-              {{ item?.diskon ?? 0 }} %  (Rp. {{ formatRp(item?.diskon_rp) }})
+              {{ item?.diskon ?? 0 }} % (Rp. {{ formatRp(item?.diskon_rp) }})
             </div>
             <div class="row">
-              {{ item?.ppn ??0 }} % (Rp. {{ formatRp(item?.ppn_rp) }})
+              {{ item?.ppn ?? 0 }} % (Rp. {{ formatRp(item?.ppn_rp) }})
             </div>
           </q-item-section>
           <q-item-section>

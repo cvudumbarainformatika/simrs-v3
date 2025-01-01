@@ -1,13 +1,7 @@
 <template>
   <div class="q-pa-md">
-    <q-dialog
-      v-model="store.dialogRinci"
-      persistent
-      full-width
-      backdrop-filter="blur(4px)"
-      transition-show="jump-up"
-      transition-hide="scale"
-    >
+    <q-dialog v-model="store.dialogRinci" persistent full-width backdrop-filter="blur(4px)" transition-show="jump-up"
+      transition-hide="scale">
       <q-card style="min-width:50vw;">
         <q-card-section class="row items-center">
           <div class="column">
@@ -19,13 +13,7 @@
             </div>
           </div>
           <q-space />
-          <q-btn
-            v-close-popup
-            icon="icon-mat-clear"
-            flat
-            round
-            dense
-          />
+          <q-btn v-close-popup icon="icon-mat-clear" flat round dense />
         </q-card-section>
         <q-separator />
         <q-card-section class="q-pa-sm full-width">
@@ -59,11 +47,7 @@
         <q-card-section>
           <div class="row">
             <div class="full-width">
-              <q-markup-table
-                flat bordered
-                :separator="separator"
-                :loading="store.loading"
-              >
+              <q-markup-table flat bordered :separator="separator" :loading="store.loading">
                 <thead>
                   <tr class="bg-dark text-white max-width">
                     <th>KODE</th>
@@ -111,13 +95,13 @@
                     </td>
                     <td class="text-right text-weight-bold">
                       <span><q-badge color="red-5">
-                        {{ formattanpaRp(store?.totaldebit) }}
-                      </q-badge></span>
+                          {{ formattanpaRp(store?.totaldebit) }}
+                        </q-badge></span>
                     </td>
                     <td class="text-right text-weight-bold">
                       <span><q-badge color="teal">
-                        {{ formattanpaRp(store?.totalkredit) }}
-                      </q-badge></span>
+                          {{ formattanpaRp(store?.totalkredit) }}
+                        </q-badge></span>
                     </td>
                   </tr>
                 </tbody>
@@ -126,26 +110,18 @@
           </div>
           <div class="row q-pt-md flex-center full-width">
             <template v-if="store.rinci?.verif === null">
-              <q-btn
-                size="sm"
-                color="light-green-8"
-                icon="icon-mat-done"
-                :loading="store.loadingverif"
-                @click="store.verifPosting(store?.rinci,store?.totaldebit,store?.totalkredit)"
-              >
+              <q-btn size="sm" color="light-green-8" icon="icon-mat-done" :loading="store.loadingverif"
+                @click="store.verifPosting(store?.rinci, store?.totaldebit, store?.totalkredit)">
                 <div class="q-pl-sm">
                   Posting
                 </div>
               </q-btn>
             </template>
             <template v-else>
-              <q-btn
-                size="sm"
-                color="teal-8"
-                icon="icon-mat-done_all"
-              >
+              <q-btn size="sm" color="red-8" icon="icon-mat-cancel" :loading="store.loadingverif"
+                @click="store.unverifPosting(store?.rinci, store?.totaldebit, store?.totalkredit)">
                 <div class="q-pl-sm">
-                  Sudah Terposting
+                  Batal Posting
                 </div>
               </q-btn>
             </template>

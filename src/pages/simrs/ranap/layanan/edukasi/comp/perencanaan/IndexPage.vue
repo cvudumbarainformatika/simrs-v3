@@ -1,10 +1,10 @@
 <script setup>
-// import { useTindakanRanapStore } from 'src/stores/simrs/ranap/tindakan'
 import { defineAsyncComponent, onMounted } from 'vue'
 
 const BaseLayout = defineAsyncComponent(() => import('src/pages/simrs/ranap/layanan/components/BaseLayout.vue'))
-// const FormTindakan = defineAsyncComponent(() => import('./comp/FormTindakan.vue'))
-// const ListTindakan = defineAsyncComponent(() => import('./comp/ListTindakan.vue'))
+
+const FormPage = defineAsyncComponent(() => import('./comp/FormPage.vue'))
+const ListPerencanaan = defineAsyncComponent(() => import('./comp/ListPerencanaan.vue'))
 
 const props = defineProps({
   pasien: {
@@ -21,29 +21,24 @@ const props = defineProps({
   }
 })
 
-// const store = useTindakanRanapStore()
+// const store = useEdukasiPoliStore()
 
 onMounted(() => {
   Promise.all([
-    // store.getNota(props?.pasien),
-    // store.getTindakan(props?.pasien)
   ])
 })
 
 </script>
 
 <template>
-  <BaseLayout
-    :pasien="props.pasien" :kasus="props.kasus" :nakes="props.nakes" :split="100" nota
-    title-before="INFORMENT CONSENT"
-    title-after="List Informent Consent"
-  >
+  <BaseLayout :pasien="props.pasien" :kasus="props.kasus" :nakes="props.nakes" :split="60" nota
+    title-before="PERENCANAAN" title-after="List Perencanaan Edukasi Tersimpan">
     <template #form>
-      <!-- <FormTindakan :pasien="props.pasien" :kasus="props.kasus" /> -->
+      <FormPage :pasien="props.pasien" />
     </template>
     <template #list>
       <div class="fit">
-        <!-- <ListTindakan :pasien="props.pasien" :kasus="props.kasus" :key="pasien?.tindakan" /> -->
+        <ListPerencanaan :pasien="props.pasien" />
       </div>
     </template>
 
