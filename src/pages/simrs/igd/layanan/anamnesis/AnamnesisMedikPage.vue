@@ -1,20 +1,23 @@
 <template>
   <div class="full-height full-width">
-    <div class="row full-height">
+    <div class="row full-height ">
       <q-card flat bordered square class="col-6 full-height">
-        <FormPenilaian :key="props.pasien" :pasien="props.pasien" tooltip="History Pasien (Shift + H)"
+        <FormAnamnesis :key="props.pasien" :pasien="props.pasien" tooltip="History Pasien (Shift + H)"
           @open-history="seamless = !seamless" />
       </q-card>
       <q-card flat bordered square class="col-6 full-height">
-        <ListPenilaian :key="props.pasien" :pasien="props.pasien" :loadingaja="loadingaja" />
+        <ListAnamnesis :key="props.pasien" :pasien="props.pasien" :loadingaja="loadingaja" />
       </q-card>
     </div>
   </div>
 </template>
 <script setup>
+import ListAnamnesis from './comanamnesis/ListAnamnesis.vue'
+import FormAnamnesis from './comanamnesis/FormAnamnesis.vue'
+
 import { onMounted, onUnmounted, ref } from 'vue'
-import FormPenilaian from './comanamnesis/FormPenilaian.vue'
-import ListPenilaian from './comanamnesis/ListPenilaian.vue'
+
+const seamless = ref(false)
 const props = defineProps({
   pasien: {
     type: Object,
@@ -25,8 +28,6 @@ const props = defineProps({
     default: false
   }
 })
-
-const seamless = ref(false)
 
 onMounted(() => {
   // console.log(text.value)
@@ -43,4 +44,8 @@ const handleKeypress = (evt) => {
   }
 }
 
+// const clickslideRight = () => {
+//   // console.log('ok')
+//   seamless.value = !seamless.value
+// }
 </script>
