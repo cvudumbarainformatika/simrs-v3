@@ -12,8 +12,8 @@
       Belum Ada data tersimpan
     </div>
   </div>
-  <div v-else>
-    <div v-for="(item, n) in lists" :key="n" class="list-move">
+  <div v-else class="full-height">
+    <div v-for="(item, n) in lists" :key="n" class="list-move full-height">
       <table class="q-mt-sm">
         <tr>
           <td>TANGGAL TRIASE</td>
@@ -109,9 +109,9 @@
           <td rowspan="1">{{ props.pasien?.anamnesis?.keteranganalergi ?? '-' }}</td>
         </tr>
         <tr>
-          <td colspan="2" rowspan="1">TB</td>
+          <td colspan="2" rowspan="1">TB : {{ item?.tb }} Cm</td>
           <td rowspan="2">Gangguan Perilaku :</td>
-          <td rowspan="2">{{ iten?.gangguanperilaku ?? '-' }}</td>
+          <td rowspan="2">{{ item?.gangguanperilaku ?? '-' }}</td>
         </tr>
         <tr>
           <td colspan="2">Hamil : {{ hamil(item?.flaghamil) }}</td>
@@ -133,12 +133,30 @@
           <td colspan="6">Jam Serah Terima : {{ item?.tanggal }}</td>
         </tr>
       </table>
+      <div class="row items-center no-wrap q-mt-xl">
+        <div class="col-6 text-right" />
+        <div class="col-6 text-weight-bold text-center">
+          Probolinggo, {{ date.formatDate(Date.now(), 'DD MMMM YYYY') }}
+        </div>
+      </div>
+      <div class="row items-center no-wrap">
+        <div class="col-6 text-right" />
+        <div class="col-6 text-weight-bold text-center">
+          Dokter
+        </div>
+      </div>
+      <div class="row items-center no-wrap q-mt-lg">
+        <div class="col-6 text-right" />
+        <div class="col-6 text-weight-bold text-center">
+          {{ pasien?.dokter }}
+        </div>
+      </div>
     </div>
   </div>
 
 </template>
 <script setup>
-
+import { date } from 'quasar';
 import { dateFullFormat } from 'src/modules/formatter';
 import { computed } from 'vue';
 

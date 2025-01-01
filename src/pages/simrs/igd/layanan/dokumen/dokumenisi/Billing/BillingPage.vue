@@ -5,7 +5,7 @@
         Print
       </q-tooltip>
     </q-btn>
-    <div id="printMe" style="width: 21cm;" class="q-pa-xs full-width">
+    <div id="printMe" style="width: 21cm;" class="q-pa-xs full-width full-height">
       <KopSurat :judul="props?.judul" :pasien="props?.pasien" />
 
       <IsiBillingPage :pasien="props?.pasien" />
