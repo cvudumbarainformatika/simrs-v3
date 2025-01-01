@@ -2,67 +2,22 @@
   <div class="row justify-between items-center q-pa-sm">
     <div class="row items-center">
       <div>
-        <q-input
-          v-model="store.params.q"
-          placeholder="Cari Pasien ..."
-          dense
-          outlined
-          dark
-          color="white"
-          style="min-width:200px"
-          debounce="800"
-          :loading="store.loading"
-          @update:model-value="store.search"
-        >
+        <q-input v-model="store.params.q" placeholder="Cari Pasien ..." dense outlined dark color="white"
+          style="min-width:200px" debounce="800" :loading="store.loading" @update:model-value="store.search">
           <template #prepend>
             <q-icon name="icon-mat-search" />
           </template>
         </q-input>
       </div>
-      <q-select
-        v-model="periode"
-        dense
-        outlined
-        dark
-        color="white"
-        :options="periods"
-        label="Periode"
-        class="q-ml-sm"
-        emit-value
-        map-options
-        style="min-width: 150px;"
-        @update:model-value="gantiPeriode"
-      />
-      <q-select
-        v-model="txt"
-        dense
-        outlined
-        dark
-        color="white"
-        :options="txts"
-        label="status pasien"
-        class="q-ml-sm"
-        emit-value
-        map-options
-        style="min-width: 150px;"
-        @update:model-value="gantiTxt"
-      />
+      <q-select v-model="periode" dense outlined dark color="white" :options="periods" label="Periode" class="q-ml-sm"
+        emit-value map-options style="min-width: 150px;" @update:model-value="gantiPeriode" />
+      <q-select v-model="txt" dense outlined dark color="white" :options="txts" label="status pasien" class="q-ml-sm"
+        emit-value map-options style="min-width: 150px;" @update:model-value="gantiTxt" />
     </div>
     <div>
-      <q-btn
-        class="q-ml-sm"
-        unelevated
-        color="orange"
-        flat
-        size="sm"
-        padding="xs"
-        icon="icon-mat-refresh"
-        @click="store.refresh"
-      >
-        <q-tooltip
-          class="primary"
-          :offset="[10, 10]"
-        >
+      <q-btn class="q-ml-sm" unelevated color="orange" flat size="sm" padding="xs" icon="icon-mat-refresh"
+        @click="store.refresh">
+        <q-tooltip class="primary" :offset="[10, 10]">
           Refresh Data
         </q-tooltip>
       </q-btn>
@@ -86,7 +41,8 @@ const periods = ref([
   { value: 1, label: 'Hari ini' },
   { value: 2, label: 'Minggu Ini' },
   { value: 3, label: 'Bulan Ini' },
-  { value: 4, label: 'Tahun Ini' }
+  { value: 4, label: 'Tahun Ini' },
+  { value: 5, label: 'Tahun Lalu' },
 ])
 
 function gantiPeriode(val) {
@@ -95,6 +51,7 @@ function gantiPeriode(val) {
   if (val === 2) mingguIni()
   if (val === 3) bulanIni()
   if (val === 4) tahunIni()
+  if (val === 5) tahunLalu()
 
   // console.log('asasa', txt.value)
   // console.log(from.value)
@@ -147,6 +104,24 @@ function tahunIni() {
   const curr = new Date()
   const firstday = date.formatDate(curr, 'YYYY') + '-01' + '-01'
   const lastday = date.formatDate(curr, 'YYYY') + '-12' + '-31'
+
+  to.value = dateDbFormat(firstday)
+  from.value = dateDbFormat(lastday)
+  // store.getData()
+}
+
+function tahunLalu() {
+
+  // let new_date = new Date(date);
+  // new_date.setFullYear(new_date.getFullYear() + years);
+  // return new_date;
+
+  const curr = new Date()
+  const firstday = date.formatDate(curr.setFullYear(curr.getFullYear() - 1), 'YYYY') + '-01' + '-01'
+  const lastday = date.formatDate(curr.setFullYear(curr.getFullYear()), 'YYYY') + '-12' + '-31'
+
+  // console.log('firstday', firstday)
+  // console.log('lastday', lastday)
 
   to.value = dateDbFormat(firstday)
   from.value = dateDbFormat(lastday)
