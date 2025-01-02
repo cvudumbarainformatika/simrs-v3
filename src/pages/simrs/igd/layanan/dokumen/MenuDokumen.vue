@@ -15,6 +15,9 @@
           <q-tab-panel name="Triase" class="full-height q-pa-none">
             <TriasePage :judul="triase" :pasien="props.pasien" />
           </q-tab-panel>
+          <q-tab-panel name="Surat Kematian" class="full-height q-pa-none">
+            <SuratKematianPage :judul="suratkematian" :pasien="props.pasien" />
+          </q-tab-panel>
         </q-tab-panels>
       </div>
     </div>
@@ -26,8 +29,10 @@ import { ref } from 'vue'
 
 import BillingPage from './dokumenisi/Billing/BillingPage.vue';
 import TriasePage from './dokumenisi/triage/TriasePage.vue';
+import SuratKematianPage from './dokumenisi/suratkematian/SuratKematianPage.vue';
 const billing = ref('BILLING')
 const triase = ref('TRIASE')
+const suratkematian = ref('Surat Kematian')
 const store = useDokumenIgdStore()
 
 const props = defineProps({

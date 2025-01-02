@@ -27,48 +27,51 @@
       <q-img src="~assets/logos/logo-rsud.png" spinner-color="white" style="height: 60px; max-width: 70px" />
     </div>
   </div>
-  <div class="row justify-center text-bold">
-    <span class="text-h5"> {{ props?.judul }} </span>
-  </div>
-  <div class="row q-mt-sm">
-    <div class="col-2">Nama</div>
-    <div class="col-1">:</div>
-    <div class="col-3 text-bold">{{ pasien?.nama }}</div>
-    <div class="col-2">No. RM</div>
-    <div class="col-1">:</div>
-    <div class="col-3 text-bold">{{ pasien?.norm }}</div>
-  </div>
-  <div class="row">
-    <div class="col-2">No. Reg</div>
-    <div class="col-1">:</div>
-    <div class="col-3 text-bold">{{ pasien?.noreg }}</div>
-    <div class="col-2">Ruangan</div>
-    <div class="col-1">:</div>
-    <div class="col-3 text-bold">{{ pasien?.poli }}</div>
-  </div>
-  <div class="row">
-    <div class="col-2">Umur</div>
-    <div class="col-1">:</div>
-    <div class="col-3 text-bold">{{ usia(pasien?.usia) }} Tahun</div>
-    <div class="col-2">Jenis Kelamin</div>
-    <div class="col-1">:</div>
-    <div class="col-3 text-bold">{{ pasien?.kelamin }}</div>
-  </div>
-  <div class="row">
-    <div class="col-2">Tanggal Masuk</div>
-    <div class="col-1">:</div>
-    <div class="col-3 text-bold">{{ dateFull(pasien?.tgl_kunjungan) }}</div>
-    <div class="col-2">Tanggal Keluar</div>
-    <div class="col-1">:</div>
-    <div class="col-3 text-bold">{{ dateFull(pasien?.tglpulang) }}</div>
-  </div>
-  <div class="row garis-bawah-double">
-    <div class="col-2">Sistem Bayar</div>
-    <div class="col-1">:</div>
-    <div class="col-3 text-bold">{{ pasien?.sistembayar }}</div>
-    <div class="col-2">DPJP</div>
-    <div class="col-1">:</div>
-    <div class="col-3 text-bold">{{ pasien?.dokter }}</div>
+
+  <div v-if="props?.jangantampil !== true">
+    <div class="row justify-center text-bold">
+      <span class="text-h5"> {{ props?.judul }} </span>
+    </div>
+    <div class="row q-mt-sm">
+      <div class="col-2">Nama</div>
+      <div class="col-1">:</div>
+      <div class="col-3 text-bold">{{ pasien?.nama }}</div>
+      <div class="col-2">No. RM</div>
+      <div class="col-1">:</div>
+      <div class="col-3 text-bold">{{ pasien?.norm }}</div>
+    </div>
+    <div class="row">
+      <div class="col-2">No. Reg</div>
+      <div class="col-1">:</div>
+      <div class="col-3 text-bold">{{ pasien?.noreg }}</div>
+      <div class="col-2">Ruangan</div>
+      <div class="col-1">:</div>
+      <div class="col-3 text-bold">{{ pasien?.poli }}</div>
+    </div>
+    <div class="row">
+      <div class="col-2">Umur</div>
+      <div class="col-1">:</div>
+      <div class="col-3 text-bold">{{ usia(pasien?.usia) }} Tahun</div>
+      <div class="col-2">Jenis Kelamin</div>
+      <div class="col-1">:</div>
+      <div class="col-3 text-bold">{{ pasien?.kelamin }}</div>
+    </div>
+    <div class="row">
+      <div class="col-2">Tanggal Masuk</div>
+      <div class="col-1">:</div>
+      <div class="col-3 text-bold">{{ dateFull(pasien?.tgl_kunjungan) }}</div>
+      <div class="col-2">Tanggal Keluar</div>
+      <div class="col-1">:</div>
+      <div class="col-3 text-bold">{{ dateFull(pasien?.tglpulang) }}</div>
+    </div>
+    <div class="row garis-bawah-double">
+      <div class="col-2">Sistem Bayar</div>
+      <div class="col-1">:</div>
+      <div class="col-3 text-bold">{{ pasien?.sistembayar }}</div>
+      <div class="col-2">DPJP</div>
+      <div class="col-1">:</div>
+      <div class="col-3 text-bold">{{ pasien?.dokter }}</div>
+    </div>
   </div>
 </template>
 <script setup>
@@ -81,7 +84,11 @@ const props = defineProps({
   pasien: {
     type: Object,
     default: null
-  }
+  },
+  jangantampil: {
+    type: String,
+    default: null
+  },
 })
 
 function usia(val) {

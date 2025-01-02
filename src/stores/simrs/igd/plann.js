@@ -12,6 +12,7 @@ export const usePlannStore = defineStore('plann-store', {
     loadingHistory: false,
     loadingSavePlann: false,
     notas: [],
+    isisuratkematian: [],
     tab: 'SkalaTransfer',
     tabs: [
       { name: 'Skala Transfer', page: 'SkalaTransfer' },
@@ -22,7 +23,7 @@ export const usePlannStore = defineStore('plann-store', {
     }
   }),
   actions: {
-    async savePlan (pasien) {
+    async savePlan(pasien) {
       if (!pasien?.kodedokter) {
         return notifErrVue('kode Dokter masih kosong, silahkan tutup dulu pasien ini kemudian tekan tombol refresh di pojok kanan atas')
       }
@@ -49,40 +50,22 @@ export const usePlannStore = defineStore('plann-store', {
         this.loadingSavePlann = false
       }
     },
-    async getNota (pasien) {
-      const payload = { params: { noreg: pasien?.noreg } }
-      const resp = await api.get('v1/simrs/penunjang/bankdarah/getnota', payload)
-      if (resp.status === 200) {
-        this.setNotas(resp?.data)
-        // const arr = resp.data.map(x => x.nota)
-        // this.notalaborats = arr.length ? arr : []
-        // this.notalaborats.push('BARU')
-        // this.notalaborat = this.notalaborats[0]
-      }
-    },
-
-    setNotas (array) {
-      const arr = array.map(x => x.nota)
-      this.notas = arr.length ? arr : []
-      this.notas.push('BARU')
-      this.form.nota = this.notas[0]
-    },
-    async hapusPermintaan (pasien, id) {
-      const payload = { noreg: pasien?.noreg, id }
-      try {
-        const resp = await api.post('v1/simrs/penunjang/bankdarah/hapusdataIgd', payload)
-        if (resp.status === 200) {
-          const storePasien = usePengunjungIgdStore()
-          storePasien.hapusDataBankdarah(pasien, id)
-          this.setNotas(resp?.data?.nota)
-          notifSuccess(resp)
-        }
-      }
-      catch (error) {
-        // console.log('hpus rad', error)
-      }
-    },
-    formattanggal () {
+    // async hapusPermintaan(pasien, id) {
+    //   const payload = { noreg: pasien?.noreg, id }
+    //   try {
+    //     const resp = await api.post('v1/simrs/penunjang/bankdarah/hapusdataIgd', payload)
+    //     if (resp.status === 200) {
+    //       const storePasien = usePengunjungIgdStore()
+    //       storePasien.hapusDataBankdarah(pasien, id)
+    //       this.setNotas(resp?.data?.nota)
+    //       notifSuccess(resp)
+    //     }
+    //   }
+    //   catch (error) {
+    //     // console.log('hpus rad', error)
+    //   }
+    // },
+    formattanggal() {
       if (this.form.operasi === 0) {
         this.form.tgloperasi = ''
       }
@@ -95,13 +78,28 @@ export const usePlannStore = defineStore('plann-store', {
         this.form.jammeninggal = date.formatDate(sekarang, 'H:m')
       }
     },
-    initReset () {
+    initReset() {
       this.form.panel = 'Rawat Inap'
       this.form.operasi = ''
       this.form.jenisoperasi = ''
       this.form.tgloperasi = ''
       this.form.ruangtujuan = ''
       this.form.keterangan = ''
-    }
+    },
+    async suratkematian(pasien) {
+      const payload = { params: { noreg: pasien?.noreg } }
+      return new Promise(resolve => {
+        api.get('v1/simrs/planing/igd/suratkematian', payload).then(resp => {
+          if (resp.status === 200) {
+            // console.log('bill', resp.data)
+            this.isisuratkematian = resp.data.data[0]
+          }
+          resolve(resp)
+          this.loading = false
+        }).catch(() => {
+          this.loading = false
+        })
+      })
+    },
   }
 })

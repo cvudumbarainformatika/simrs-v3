@@ -1,21 +1,20 @@
 <template>
   <div class="full-height full-height q-pa-sm">
 
-    <!-- <q-btn ref="refPrint" v-print="printObj" unelevated color="dark" round size="sm" icon="icon-mat-print">
+    <q-btn ref="refPrint" v-print="printObj" unelevated color="dark" round size="sm" icon="icon-mat-print">
       <q-tooltip class="primary" :offset="[10, 10]">
         Print
       </q-tooltip>
-    </q-btn> -->
+    </q-btn>
     <div id="printMe" style="width: 21cm;" class="q-pa-xs full-width full-height">
-      <KopSurat :judul="props?.judul" :pasien="props?.pasien" :jangantampil=false />
-
-      <IsitriagePage :pasien="props?.pasien" />
+      <KopSurat :judul="props?.judul" :pasien="props?.pasien" :jangantampil=true />
+      <IsiSuratKematianPage :pasien="props?.pasien" />
     </div>
   </div>
 </template>
 <script setup>
 import KopSurat from '../../KopSurat.vue';
-import IsitriagePage from './IsitriagePage.vue';
+import IsiSuratKematianPage from './IsiSuratKematianPage.vue';
 
 const printObj = {
   id: 'printMe',
