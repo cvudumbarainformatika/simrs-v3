@@ -1,6 +1,8 @@
 <template>
-  <div class="full-height full-height q-pa-sm">
-
+  <div v-if="store.nosurat === null || store.nosurat === ''">
+    <span class="text-bold text-h5"> Belum Ada Dokumen </span>
+  </div>
+  <div class="full-height full-height q-pa-sm" v-else>
     <q-btn ref="refPrint" v-print="printObj" unelevated color="dark" round size="sm" icon="icon-mat-print">
       <q-tooltip class="primary" :offset="[10, 10]">
         Print
@@ -15,6 +17,9 @@
 <script setup>
 import KopSurat from '../../KopSurat.vue';
 import IsiSuratKematianPage from './IsiSuratKematianPage.vue';
+import { usePlannStore } from 'src/stores/simrs/igd/plann';
+
+const store = usePlannStore()
 
 const printObj = {
   id: 'printMe',
@@ -31,4 +36,6 @@ const props = defineProps({
     default: null
   }
 })
+
+store.suratkematian(props?.pasien)
 </script>

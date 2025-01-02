@@ -6,7 +6,7 @@
       </q-tooltip>
     </q-btn>
     <div id="printMe" style="width: 21cm;" class="q-pa-xs full-width full-height">
-      <KopSurat :judul="props?.judul" :pasien="props?.pasien" />
+      <KopSurat :judul="props?.judul" :pasien="props?.pasien" :jangantampil=false />
 
       <IsiBillingPage :pasien="props?.pasien" />
     </div>

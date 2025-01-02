@@ -173,6 +173,7 @@ import { humanDate } from 'src/modules/formatter';
 import { usePlannStore } from 'src/stores/simrs/igd/plann';
 
 const store = usePlannStore()
+
 const props = defineProps({
   pasien: {
     type: Object,
@@ -184,5 +185,5 @@ const props = defineProps({
   }
 })
 
-store.suratkematian(props?.pasien)
+
 </script>

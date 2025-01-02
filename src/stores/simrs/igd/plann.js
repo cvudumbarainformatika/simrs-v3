@@ -12,6 +12,7 @@ export const usePlannStore = defineStore('plann-store', {
     loadingHistory: false,
     loadingSavePlann: false,
     notas: [],
+    nosurat: '',
     isisuratkematian: [],
     tab: 'SkalaTransfer',
     tabs: [
@@ -93,6 +94,7 @@ export const usePlannStore = defineStore('plann-store', {
           if (resp.status === 200) {
             // console.log('bill', resp.data)
             this.isisuratkematian = resp.data.data[0]
+            this.nosurat = this.isisuratkematian?.planheder[0]?.planpulang?.nosurat
           }
           resolve(resp)
           this.loading = false

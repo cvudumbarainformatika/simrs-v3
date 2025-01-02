@@ -86,8 +86,8 @@ const props = defineProps({
     default: null
   },
   jangantampil: {
-    type: String,
-    default: null
+    type: Boolean,
+    default: true
   },
 })
 
