@@ -15,11 +15,8 @@
         <div class="row justify-center q-pt-md">
           <div class="row">
             <div class="col-1">
-              <q-img
-                src="~assets/images/logo_kota_original.png"
-                spinner-color="white"
-                style="height: 3.3cm; width: 2.6cm"
-              />
+              <q-img src="~assets/images/logo_kota_original.png" spinner-color="white"
+                style="height: 3.3cm; width: 2.6cm" />
             </div>
             <div class="col-10">
               <div class="row justify-center text-h6">
@@ -40,11 +37,7 @@
               </div>
             </div>
             <div class="col-1">
-              <q-img
-                src="~assets/logos/logo-rsud.png"
-                spinner-color="white"
-                style="height: 3cm; width: 3cm"
-              />
+              <q-img src="~assets/logos/logo-rsud.png" spinner-color="white" style="height: 3cm; width: 3cm" />
             </div>
 
             <div class="col-12 q-pt-md">
@@ -61,42 +54,23 @@
 
         <div class="row q-col-gutter-sm q-my-sm q-pl-lg">
           <div class="col-2">
-            <app-autocomplete
-              v-model="store.params.bulan"
-              label="Pilih Bulan"
-              autocomplete="nama"
-              option-label="nama"
-              option-value="value"
-              outlined
-              :source="store.bulans"
-            />
+            <app-autocomplete v-model="store.params.bulan" label="Pilih Bulan" autocomplete="nama" option-label="nama"
+              option-value="value" outlined :source="store.bulans" />
           </div>
           <div class="col-2">
-            <app-input
-              v-model="store.params.tahun"
-              label="Tahun"
-              outlined
-            />
+            <app-input v-model="store.params.tahun" label="Tahun" outlined @update:model-value="(val) => {
+              console.log('Tahun berapa?', val)
+              store.getPtks()
+
+            }" />
           </div>
           <div class="col-2">
-            <app-autocomplete
-              v-model="store.params.ptk"
-              label="Pilih PTK"
-              autocomplete="nama"
-              option-label="nama"
-              option-value="nip"
-              outlined
-              :source="store.ptks"
-            />
+            <app-autocomplete v-model="store.params.ptk" label="Pilih PTK" autocomplete="nama" option-label="nama"
+              option-value="nip" outlined :source="store.ptks" />
             <!-- {{ store.params.ptk }} -->
           </div>
           <div>
-            <app-btn
-              label="Ambil Data"
-              :disable="store.loading"
-              :loading="store.loading"
-              @click="ambilData()"
-            />
+            <app-btn label="Ambil Data" :disable="store.loading" :loading="store.loading" @click="ambilData()" />
           </div>
         </div>
       </q-card>
@@ -106,37 +80,16 @@
         <template v-if="store.loading">
           <div class="row justify-center">
             <div class="q-gutter-md">
-              <q-spinner-pie
-                color="amber-13"
-                type="circle"
-                animation="pulse-x"
-                size="40px"
-              />
-              <q-spinner-pie
-                color="amber-13"
-                type="circle"
-                animation="pulse-x"
-                size="60px"
-              />
-              <q-spinner-pie
-                color="amber-13"
-                type="circle"
-                animation="pulse-x"
-                size="40px"
-              />
+              <q-spinner-pie color="amber-13" type="circle" animation="pulse-x" size="40px" />
+              <q-spinner-pie color="amber-13" type="circle" animation="pulse-x" size="60px" />
+              <q-spinner-pie color="amber-13" type="circle" animation="pulse-x" size="40px" />
             </div>
           </div>
         </template>
         <template v-else>
           <div class="row flex flex-center">
-            <table
-              class="table table-responsive"
-              style="font-size: 13px"
-            >
-              <thead
-                class="align-middle text-center display-block"
-                style="height: 40px"
-              >
+            <table class="table table-responsive" style="font-size: 13px">
+              <thead class="align-middle text-center display-block" style="height: 40px">
                 <tr style="font-size: 14px">
                   <th width="30px">
                     No
@@ -157,44 +110,23 @@
               </thead>
 
               <tbody>
-                <tr
-                  v-for="(item, n) in store.hasilArray"
-                  :key="item"
-                >
-                  <td
-                    data-th="No"
-                    class="text-bold"
-                    style="vertical-align: top"
-                  >
+                <tr v-for="(item, n) in store.hasilArray" :key="item">
+                  <td data-th="No" class="text-bold" style="vertical-align: top">
                     {{ n + 1 }}
                   </td>
-                  <td
-                    data-th="Tanggal"
-                    class="text-bold"
-                    style="vertical-align: top"
-                  >
+                  <td data-th="Tanggal" class="text-bold" style="vertical-align: top">
                     {{ item?.tgl }}
                   </td>
-                  <td
-                    data-th="Register/Rekening"
-                    class="text-left q-pl-sm"
-                    style="vertical-align: top"
-                  >
+                  <td data-th="Register/Rekening" class="text-left q-pl-sm" style="vertical-align: top">
                     <div class="text-bold">
                       {{ item?.notrans }}
                     </div>
                     <template v-if="item?.lsdebit?.length">
-                      <div
-                        v-for="npd in item?.lsdebit"
-                        :key="npd"
-                      >
+                      <div v-for="npd in item?.lsdebit" :key="npd">
                         <div style="font-size: 11px">
                           {{ npd?.nonpd }}
                         </div>
-                        <div
-                          v-for="rincian in npd?.rincian"
-                          :key="rincian"
-                        >
+                        <div v-for="rincian in npd?.rincian" :key="rincian">
                           <div style="font-size: 11px">
                             * {{ rincian?.koderek50 }}
                           </div>
@@ -202,17 +134,11 @@
                       </div>
                     </template>
                     <template v-if="item?.nonpd?.length">
-                      <div
-                        v-for="npd in item?.nonpd"
-                        :key="npd"
-                      >
+                      <div v-for="npd in item?.nonpd" :key="npd">
                         <div style="font-size: 11px">
                           {{ npd?.nonpd }}
                         </div>
-                        <div
-                          v-for="rincian in npd?.rincian"
-                          :key="rincian"
-                        >
+                        <div v-for="rincian in npd?.rincian" :key="rincian">
                           <div style="font-size: 11px">
                             * {{ rincian?.koderek50 }}
                           </div>
@@ -220,21 +146,12 @@
                       </div>
                     </template>
                     <template v-if="item?.pjr?.length">
-                      <div
-                        v-for="npd in item?.pjr"
-                        :key="npd"
-                      >
+                      <div v-for="npd in item?.pjr" :key="npd">
                         <div style="font-size: 11px">
                           {{ npd?.nonpd }}
                         </div>
-                        <div
-                          v-for="rincian in npd?.rincian"
-                          :key="rincian"
-                        >
-                          <div
-                            v-for="rek in rincian?.rincinpd"
-                            :key="rek"
-                          >
+                        <div v-for="rincian in npd?.rincian" :key="rincian">
+                          <div v-for="rek in rincian?.rincinpd" :key="rek">
                             <div style="font-size: 11px">
                               * {{ rek?.koderek50 }}
                             </div>
@@ -243,37 +160,25 @@
                       </div>
                     </template>
                     <template v-if="item?.spjpanjar?.length">
-                      <div
-                        v-for="spjp in item?.spjpanjar"
-                        :key="spjp"
-                      >
+                      <div v-for="spjp in item?.spjpanjar" :key="spjp">
                         <div style="font-size: 11px">
                           * {{ spjp?.koderek50 }}
                         </div>
                       </div>
                     </template>
                     <template v-if="item?.sisapanjar?.length">
-                      <div
-                        v-for="cp in item?.sisapanjar"
-                        :key="cp"
-                      >
+                      <div v-for="cp in item?.sisapanjar" :key="cp">
                         <div style="font-size: 11px">
                           * {{ cp?.koderek50 }}
                         </div>
                       </div>
                     </template>
                     <template v-if="item?.cppjr?.length">
-                      <div
-                        v-for="cp in item?.cppjr"
-                        :key="cp"
-                      >
+                      <div v-for="cp in item?.cppjr" :key="cp">
                         <div style="font-size: 11px">
                           {{ cp?.nonpd }}
                         </div>
-                        <div
-                          v-for="rincian in cp?.rincian"
-                          :key="rincian"
-                        >
+                        <div v-for="rincian in cp?.rincian" :key="rincian">
                           <div style="font-size: 11px">
                             * {{ rincian?.koderek50 }}
                           </div>
@@ -282,26 +187,16 @@
                     </template>
                   </td>
 
-                  <td
-                    data-th="Uraian"
-                    class="text-left q-pl-sm"
-                    style="vertical-align: top"
-                  >
+                  <td data-th="Uraian" class="text-left q-pl-sm" style="vertical-align: top">
                     <div class="text-bold">
                       {{ item?.uraian }}
                     </div>
                     <template v-if="item?.lsdebit?.length">
-                      <div
-                        v-for="npd in item?.lsdebit"
-                        :key="npd"
-                      >
+                      <div v-for="npd in item?.lsdebit" :key="npd">
                         <div style="font-size: 11px">
                           {{ npd?.uraianNPD }}
                         </div>
-                        <div
-                          v-for="rincian in npd?.rincian"
-                          :key="rincian"
-                        >
+                        <div v-for="rincian in npd?.rincian" :key="rincian">
                           <div style="font-size: 11px">
                             * {{ rincian?.rincianbelanja }}
                           </div>
@@ -309,17 +204,11 @@
                       </div>
                     </template>
                     <template v-if="item?.nonpd?.length">
-                      <div
-                        v-for="npd in item?.nonpd"
-                        :key="npd"
-                      >
+                      <div v-for="npd in item?.nonpd" :key="npd">
                         <div style="font-size: 11px">
                           {{ npd?.uraianNPD }}
                         </div>
-                        <div
-                          v-for="rincian in npd?.rincian"
-                          :key="rincian"
-                        >
+                        <div v-for="rincian in npd?.rincian" :key="rincian">
                           <div style="font-size: 11px">
                             * {{ rincian?.rincianbelanja }}
                           </div>
@@ -327,21 +216,12 @@
                       </div>
                     </template>
                     <template v-if="item?.pjr?.length">
-                      <div
-                        v-for="npd in item?.pjr"
-                        :key="npd"
-                      >
+                      <div v-for="npd in item?.pjr" :key="npd">
                         <div style="font-size: 11px">
                           {{ npd?.uraianNPD }}
                         </div>
-                        <div
-                          v-for="rincian in npd?.rincian"
-                          :key="rincian"
-                        >
-                          <div
-                            v-for="rek in rincian?.rincinpd"
-                            :key="rek"
-                          >
+                        <div v-for="rincian in npd?.rincian" :key="rincian">
+                          <div v-for="rek in rincian?.rincinpd" :key="rek">
                             <div style="font-size: 11px">
                               * {{ rek?.rincianbelanja }}
                             </div>
@@ -350,37 +230,25 @@
                       </div>
                     </template>
                     <template v-if="item?.spjpanjar?.length">
-                      <div
-                        v-for="spjp in item?.spjpanjar"
-                        :key="spjp"
-                      >
+                      <div v-for="spjp in item?.spjpanjar" :key="spjp">
                         <div style="font-size: 11px">
                           * {{ spjp?.rincianbelanja }}
                         </div>
                       </div>
                     </template>
                     <template v-if="item?.sisapanjar?.length">
-                      <div
-                        v-for="cp in item?.sisapanjar"
-                        :key="cp"
-                      >
+                      <div v-for="cp in item?.sisapanjar" :key="cp">
                         <div style="font-size: 11px">
                           * {{ cp?.rincianbelanja }}
                         </div>
                       </div>
                     </template>
                     <template v-if="item?.cppjr?.length">
-                      <div
-                        v-for="cp in item?.cppjr"
-                        :key="cp"
-                      >
+                      <div v-for="cp in item?.cppjr" :key="cp">
                         <div style="font-size: 11px">
                           {{ cp?.uraianNPD }}
                         </div>
-                        <div
-                          v-for="rincian in cp?.rincian"
-                          :key="rincian"
-                        >
+                        <div v-for="rincian in cp?.rincian" :key="rincian">
                           <div style="font-size: 11px">
                             * {{ rincian?.rincianbelanja }}
                           </div>
@@ -388,76 +256,42 @@
                       </div>
                     </template>
                   </td>
-                  <td
-                    data-th="Penerimaan"
-                    class="text-right q-pr-sm"
-                    style="vertical-align: top"
-                  >
+                  <td data-th="Penerimaan" class="text-right q-pr-sm" style="vertical-align: top">
                     <div class="text-bold">
                       {{ formattanpaRp(item?.penerimaan) }}
                     </div>
                     <template v-if="item?.lsdebit?.length">
-                      <div
-                        v-for="npd in item?.lsdebit"
-                        :key="npd"
-                      >
+                      <div v-for="npd in item?.lsdebit" :key="npd">
                         <div style="font-size: 11px">
                           {{ formattanpaRp(npd?.totalRincian) }}
                         </div>
-                        <div
-                          v-for="rincian in npd?.rincian"
-                          :key="rincian"
-                        >
-                          <div
-                            class="text invisible"
-                            style="font-size: 11px"
-                          >
+                        <div v-for="rincian in npd?.rincian" :key="rincian">
+                          <div class="text invisible" style="font-size: 11px">
                             {{ formattanpaRp(0) }}
                           </div>
                         </div>
                       </div>
                     </template>
                     <template v-if="item?.nonpd?.length">
-                      <div
-                        v-for="npd in item?.nonpd"
-                        :key="npd"
-                      >
+                      <div v-for="npd in item?.nonpd" :key="npd">
                         <div style="font-size: 11px">
                           {{ formattanpaRp(0) }}
                         </div>
-                        <div
-                          v-for="rincian in npd?.rincian"
-                          :key="rincian"
-                        >
-                          <div
-                            style="font-size: 11px"
-                            class="text invisible"
-                          >
+                        <div v-for="rincian in npd?.rincian" :key="rincian">
+                          <div style="font-size: 11px" class="text invisible">
                             {{ formattanpaRp(0) }}
                           </div>
                         </div>
                       </div>
                     </template>
                     <template v-if="item?.pjr?.length">
-                      <div
-                        v-for="npd in item?.pjr"
-                        :key="npd"
-                      >
+                      <div v-for="npd in item?.pjr" :key="npd">
                         <div style="font-size: 11px">
                           {{ formattanpaRp(npd?.totalRincian) }}
                         </div>
-                        <div
-                          v-for="rincian in npd?.rincian"
-                          :key="rincian"
-                        >
-                          <div
-                            v-for="rek in rincian?.rincinpd"
-                            :key="rek"
-                          >
-                            <div
-                              class="text invisible"
-                              style="font-size: 11px"
-                            >
+                        <div v-for="rincian in npd?.rincian" :key="rincian">
+                          <div v-for="rek in rincian?.rincinpd" :key="rek">
+                            <div class="text invisible" style="font-size: 11px">
                               {{ formattanpaRp(0) }}
                             </div>
                           </div>
@@ -465,117 +299,68 @@
                       </div>
                     </template>
                     <template v-if="item?.spjpanjar?.length">
-                      <div
-                        v-for="spjp in item?.spjpanjar"
-                        :key="spjp"
-                      >
+                      <div v-for="spjp in item?.spjpanjar" :key="spjp">
                         <div style="font-size: 11px">
                           {{ formattanpaRp(0) }}
                         </div>
                       </div>
                     </template>
                     <template v-if="item?.sisapanjar?.length">
-                      <div
-                        v-for="cp in item?.sisapanjar"
-                        :key="cp"
-                      >
+                      <div v-for="cp in item?.sisapanjar" :key="cp">
                         <div style="font-size: 11px">
                           {{ formattanpaRp(cp?.totalRincian) }}
                         </div>
                       </div>
                     </template>
                     <template v-if="item?.cppjr?.length">
-                      <div
-                        v-for="cp in item?.cppjr"
-                        :key="cp"
-                      >
+                      <div v-for="cp in item?.cppjr" :key="cp">
                         <div style="font-size: 11px">
                           {{ cp?.totalRincian }}
                         </div>
-                        <div
-                          v-for="rincian in cp?.rincian"
-                          :key="rincian"
-                        >
-                          <div
-                            class="text invisible"
-                            style="font-size: 11px"
-                          >
+                        <div v-for="rincian in cp?.rincian" :key="rincian">
+                          <div class="text invisible" style="font-size: 11px">
                             {{ formattanpaRp(0) }}
                           </div>
                         </div>
                       </div>
                     </template>
                   </td>
-                  <td
-                    data-th="Pengeluaran"
-                    class="text-right q-pr-sm"
-                    style="vertical-align: top"
-                  >
+                  <td data-th="Pengeluaran" class="text-right q-pr-sm" style="vertical-align: top">
                     <div class="text-bold">
                       {{ formattanpaRp(item?.pengeluaran) }}
                     </div>
                     <template v-if="item?.lsdebit?.length">
-                      <div
-                        v-for="npd in item?.lsdebit"
-                        :key="npd"
-                      >
+                      <div v-for="npd in item?.lsdebit" :key="npd">
                         <div style="font-size: 11px">
                           {{ formattanpaRp(0) }}
                         </div>
-                        <div
-                          v-for="rincian in npd?.rincian"
-                          :key="rincian"
-                        >
-                          <div
-                            class="text invisible"
-                            style="font-size: 11px"
-                          >
+                        <div v-for="rincian in npd?.rincian" :key="rincian">
+                          <div class="text invisible" style="font-size: 11px">
                             {{ formattanpaRp(0) }}
                           </div>
                         </div>
                       </div>
                     </template>
                     <template v-if="item?.nonpd?.length">
-                      <div
-                        v-for="npd in item?.nonpd"
-                        :key="npd"
-                      >
+                      <div v-for="npd in item?.nonpd" :key="npd">
                         <div style="font-size: 11px">
                           {{ formattanpaRp(npd.totalRincian) }}
                         </div>
-                        <div
-                          v-for="rincian in npd?.rincian"
-                          :key="rincian"
-                        >
-                          <div
-                            style="font-size: 11px"
-                            class="text invisible"
-                          >
+                        <div v-for="rincian in npd?.rincian" :key="rincian">
+                          <div style="font-size: 11px" class="text invisible">
                             {{ formattanpaRp(0) }}
                           </div>
                         </div>
                       </div>
                     </template>
                     <template v-if="item?.pjr?.length">
-                      <div
-                        v-for="npd in item?.pjr"
-                        :key="npd"
-                      >
+                      <div v-for="npd in item?.pjr" :key="npd">
                         <div style="font-size: 11px">
                           {{ formattanpaRp(0) }}
                         </div>
-                        <div
-                          v-for="rincian in npd?.rincian"
-                          :key="rincian"
-                        >
-                          <div
-                            v-for="rek in rincian?.rincinpd"
-                            :key="rek"
-                          >
-                            <div
-                              class="text invisible"
-                              style="font-size: 11px"
-                            >
+                        <div v-for="rincian in npd?.rincian" :key="rincian">
+                          <div v-for="rek in rincian?.rincinpd" :key="rek">
+                            <div class="text invisible" style="font-size: 11px">
                               {{ formattanpaRp(0) }}
                             </div>
                           </div>
@@ -583,52 +368,33 @@
                       </div>
                     </template>
                     <template v-if="item?.spjpanjar?.length">
-                      <div
-                        v-for="spjp in item?.spjpanjar"
-                        :key="spjp"
-                      >
+                      <div v-for="spjp in item?.spjpanjar" :key="spjp">
                         <div style="font-size: 11px">
                           {{ formattanpaRp(spjp.totalRincian) }}
                         </div>
                       </div>
                     </template>
                     <template v-if="item?.sisapanjar?.length">
-                      <div
-                        v-for="cp in item?.sisapanjar"
-                        :key="cp"
-                      >
+                      <div v-for="cp in item?.sisapanjar" :key="cp">
                         <div style="font-size: 11px">
                           {{ formattanpaRp(0) }}
                         </div>
                       </div>
                     </template>
                     <template v-if="item?.cppjr?.length">
-                      <div
-                        v-for="cp in item?.cppjr"
-                        :key="cp"
-                      >
+                      <div v-for="cp in item?.cppjr" :key="cp">
                         <div style="font-size: 11px">
                           {{ formattanpaRp(0) }}
                         </div>
-                        <div
-                          v-for="rincian in cp?.rincian"
-                          :key="rincian"
-                        >
-                          <div
-                            class="text invisible"
-                            style="font-size: 11px"
-                          >
+                        <div v-for="rincian in cp?.rincian" :key="rincian">
+                          <div class="text invisible" style="font-size: 11px">
                             {{ formattanpaRp(0) }}
                           </div>
                         </div>
                       </div>
                     </template>
                   </td>
-                  <td
-                    data-th="Saldo"
-                    class="text-right q-pr-sm text-bold"
-                    style="vertical-align: top"
-                  >
+                  <td data-th="Saldo" class="text-right q-pr-sm text-bold" style="vertical-align: top">
                     {{ formattanpaRp(item.total) }}
                   </td>
                 </tr>
@@ -650,95 +416,51 @@
             </table>
           </div>
           <div class="contaier q-pt-lg q-pl-xl">
-            <q-card
-              class="saldo bg-grey-3 q-pa-xs"
-              style="width: 500px; height: 220px"
-            >
-              <div
-                class="row justify-center q-pt-sm q-py-xs q-px-xs"
-                style="font-size: 14px"
-              >
-                <table
-                  class="text-weight-bolder"
-                >
+            <q-card class="saldo bg-grey-3 q-pa-xs" style="width: 500px; height: 220px">
+              <div class="row justify-center q-pt-sm q-py-xs q-px-xs" style="font-size: 14px">
+                <table class="text-weight-bolder">
                   <tbody style="width: 400px">
                     <tr class="no-border">
-                      <td
-                        class="text-left no-border"
-                        width="120px"
-                      >
+                      <td class="text-left no-border" width="120px">
                         Saldo Awal
                       </td>
-                      <td
-                        width="50px"
-                        class="no-border"
-                      >
+                      <td width="50px" class="no-border">
                         :
                       </td>
-                      <td
-                        class="text-right no-border"
-                        width="170px"
-                      >
+                      <td class="text-right no-border" width="170px">
                         {{ formattanpaRp(0) }}
                       </td>
                     </tr>
                     <tr>
-                      <td
-                        class="text-left no-border"
-                        width="120px"
-                      >
+                      <td class="text-left no-border" width="120px">
                         Masuk
                       </td>
-                      <td
-                        width="50px"
-                        class="no-border"
-                      >
+                      <td width="50px" class="no-border">
                         :
                       </td>
-                      <td
-                        class="text-right no-border"
-                        width="170px"
-                      >
+                      <td class="text-right no-border" width="170px">
                         {{ formattanpaRp(totaldebit()) }}
                       </td>
                     </tr>
                     <tr>
-                      <td
-                        class="text-left no-border"
-                        width="120px"
-                      >
+                      <td class="text-left no-border" width="120px">
                         Keluar
                       </td>
-                      <td
-                        width="50px"
-                        class="no-border"
-                      >
+                      <td width="50px" class="no-border">
                         :
                       </td>
-                      <td
-                        class="text-right no-border"
-                        width="170px"
-                      >
+                      <td class="text-right no-border" width="170px">
                         {{ formattanpaRp(totalkredit()) }}
                       </td>
                     </tr>
                     <tr>
-                      <td
-                        class="text-left no-border"
-                        width="120px"
-                      >
+                      <td class="text-left no-border" width="120px">
                         Saldo Akhir
                       </td>
-                      <td
-                        width="50px"
-                        class="no-border"
-                      >
+                      <td width="50px" class="no-border">
                         :
                       </td>
-                      <td
-                        class="text-right no-border"
-                        width="170px"
-                      >
+                      <td class="text-right no-border" width="170px">
                         {{ formattanpaRp(totalsaldo()) }}
                       </td>
                     </tr>
@@ -765,18 +487,19 @@ onMounted(() => {
   store.getDataTable()
   store.getPtks()
 })
-// function ptk() {
+
+// function cariPPTK() {
 //   store.getPtks()
 // }
-function bulan (val) {
+function bulan(val) {
   const bulan = store.bulans.find((x) => x.value === val)
   return bulan?.nama ?? '-'
 }
-function ambilData () {
+function ambilData() {
   // store.hitungharidalamBulan();
   store.getDataTable()
 }
-function totaldebit () {
+function totaldebit() {
   const debit = store.hasilArray
   // console.log("njaaias", debit);
   const totaldebit = debit?.length
@@ -785,7 +508,7 @@ function totaldebit () {
   // console.log("debit", totaldebit);
   return totaldebit
 }
-function totalkredit () {
+function totalkredit() {
   const kredit = store.hasilArray
   // console.log("njaaias", debit);
   const totalkredit = kredit?.length
@@ -795,12 +518,12 @@ function totalkredit () {
   return totalkredit
 }
 
-function totalsaldo () {
+function totalsaldo() {
   const saldo = store.hasilArray
   // console.log("njaaias", debit);
   const totalsaldo = saldo?.length
     ? saldo?.map((x) => x.penerimaan).reduce((x, y) => x + y, 0) -
-      saldo?.map((x) => x.pengeluaran).reduce((x, y) => x + y, 0)
+    saldo?.map((x) => x.pengeluaran).reduce((x, y) => x + y, 0)
     : 0
   // console.log("debit", totaldebit);
   return totalsaldo
@@ -837,6 +560,7 @@ td,
 th {
   text-align: center;
 }
+
 .grs_bawah {
   border-bottom: 1px solid grey;
 }
