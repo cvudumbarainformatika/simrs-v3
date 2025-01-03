@@ -1,12 +1,14 @@
 import { defineStore } from 'pinia'
 import { api } from 'src/boot/axios'
 import { formNotaPermintaanDanaLS } from './formnpdls'
+import { date } from 'quasar'
 
 export const dataBastFarmasi = defineStore('data_Bast_Farmasi', {
   state: () => ({
     loading: false,
     reqs: {
       q: '',
+      tgl: date.formatDate(Date.now(), 'YYYY-MM-DD'),
       page: 1,
       rowsPerPage: 10,
       rowsNumber: 0,
@@ -27,32 +29,33 @@ export const dataBastFarmasi = defineStore('data_Bast_Farmasi', {
     itembelanja: []
   }),
   actions: {
-    setParams (key, val) {
+    setParams(key, val) {
       this.reqs[key] = val
     },
-    getDataBast () {
+    getDataBast() {
       this.selectbastFarmasi()
       // this.bastfarmasis = true
       // this.konsinyasis = true
     },
-    refreshTable () {
+    refreshTable() {
       this.reqs.page = 1
       this.getDataBast()
     },
-    onRequest (props) {
+    onRequest(props) {
       // console.log('props', props)
       this.reqs.page = props?.pagination?.page ?? 1
       this.reqs.rowsPerPage = props?.pagination?.rowsPerPage ?? 10
       this.getDataBast()
     },
-    goToPage (val) {
+    goToPage(val) {
       this.reqs.page = val
       this.getDataBast()
     },
 
-    selectbastFarmasi () {
+    selectbastFarmasi() {
       this.loading = true
       const params = { params: this.reqs }
+      console.log('parameter', params)
       return new Promise((resolve) => {
         api.get('/v1/transaksi/belanja_ls/bastfarmasi', params)
           .then((resp) => {
@@ -86,7 +89,7 @@ export const dataBastFarmasi = defineStore('data_Bast_Farmasi', {
           })
       })
     },
-    filterRekening50 () {
+    filterRekening50() {
       if (this.bastfarmasis.length) {
         const dataPagu = []
         for (let i = 0; i < this.bastfarmasis.length; i++) {
@@ -95,7 +98,7 @@ export const dataBastFarmasi = defineStore('data_Bast_Farmasi', {
 
           const master = el.length
             ? el.map((x) => {
-            // const a = x.masterobat.pagu.koderek108
+              // const a = x.masterobat.pagu.koderek108
               return {
                 rek50: x.masterobat.pagu.koderek50,
                 uraian50: x.masterobat.pagu.uraian50,
@@ -113,8 +116,8 @@ export const dataBastFarmasi = defineStore('data_Bast_Farmasi', {
                 subtotal: parseFloat(x.subtotal),
                 nominalpembayaran: parseFloat(x.subtotal),
                 realisasi: parseFloat(x.masterobat?.pagu?.realisasi?.map(x => parseFloat(x.nominalpembayaran))?.reduce((a, b) => a + b, 0)) +
-                parseFloat(x.masterobat?.pagu?.realisasi_spjpanjar?.map(x => parseFloat(x.jumlahbelanjapanjar))?.reduce((a, b) => a + b, 0)) -
-                parseFloat(x.masterobat?.pagu?.contrapost?.map(x => parseFloat(x.nominalcontrapost))?.reduce((a, b) => a + b, 0)),
+                  parseFloat(x.masterobat?.pagu?.realisasi_spjpanjar?.map(x => parseFloat(x.jumlahbelanjapanjar))?.reduce((a, b) => a + b, 0)) -
+                  parseFloat(x.masterobat?.pagu?.contrapost?.map(x => parseFloat(x.nominalcontrapost))?.reduce((a, b) => a + b, 0)),
                 // spjpanjar: parseFloat(x.masterobat?.pagu?.realisasi_spjpanjar?.map(x => parseFloat(x.jumlahbelanjapanjar))?.reduce((a, b) => a + b, 0))
                 kode_lo: x.masterobat?.jurnal?.kode_lo,
                 uraian_lo: x.masterobat?.jurnal?.uraian_lo,
@@ -176,7 +179,7 @@ export const dataBastFarmasi = defineStore('data_Bast_Farmasi', {
             uraian_lak: dataPagu.filter((z) => z.rek108 === el)[0]?.uraian_lak
           }
           arr.push(obj)
-        // console.log('jjjj', arr)
+          // console.log('jjjj', arr)
         }
         this.itembelanja.push(...arr)
         console.log('DATA PENERIMAAN', this.itembelanja)
@@ -189,7 +192,7 @@ export const dataBastFarmasi = defineStore('data_Bast_Farmasi', {
 
           const master = el.length
             ? el.map((x) => {
-            // const a = x.masterobat.pagu.koderek108
+              // const a = x.masterobat.pagu.koderek108
               return {
                 rek50: x.obat.pagu.koderek50,
                 uraian50: x.obat.pagu.uraian50,
@@ -207,8 +210,8 @@ export const dataBastFarmasi = defineStore('data_Bast_Farmasi', {
                 subtotal: parseFloat(x.subtotal),
                 nominalpembayaran: parseFloat(x.subtotal),
                 realisasi: parseFloat(x.obat?.pagu?.realisasi?.map(x => parseFloat(x.nominalpembayaran))?.reduce((a, b) => a + b, 0)) +
-                parseFloat(x.obat?.pagu?.realisasi_spjpanjar?.map(x => parseFloat(x.jumlahbelanjapanjar))?.reduce((a, b) => a + b, 0)) -
-                parseFloat(x.obat?.pagu?.contrapost?.map(x => parseFloat(x.nominalcontrapost))?.reduce((a, b) => a + b, 0)),
+                  parseFloat(x.obat?.pagu?.realisasi_spjpanjar?.map(x => parseFloat(x.jumlahbelanjapanjar))?.reduce((a, b) => a + b, 0)) -
+                  parseFloat(x.obat?.pagu?.contrapost?.map(x => parseFloat(x.nominalcontrapost))?.reduce((a, b) => a + b, 0)),
                 kode_lo: x.obat?.jurnal?.kode_lo,
                 uraian_lo: x.obat?.jurnal?.uraian_lo,
                 kode_neraca1: x.obat?.jurnal?.kode_neraca1,
@@ -267,7 +270,7 @@ export const dataBastFarmasi = defineStore('data_Bast_Farmasi', {
 
           }
           arrkons.push(objkons)
-        // console.log('jjjj', arrkons)
+          // console.log('jjjj', arrkons)
         }
         this.itembelanja.push(...arrkons)
         console.log('DATA KONSINYASI', this.itembelanja)

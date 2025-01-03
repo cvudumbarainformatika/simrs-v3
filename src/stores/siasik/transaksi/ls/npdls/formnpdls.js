@@ -14,6 +14,8 @@ export const formNotaPermintaanDanaLS = defineStore('form_NPD_LS', {
     params: {
       q: '',
       tahun: date.formatDate(Date.now(), 'YYYY'),
+      tahunx: date.formatDate(Date.now(), 'YYYY'),
+      tgl: date.formatDate(Date.now(), 'YYYY-MM-DD'),
       bidang: '',
       kegiatan: ''
     },
@@ -23,6 +25,7 @@ export const formNotaPermintaanDanaLS = defineStore('form_NPD_LS', {
     reqs: {
       q: '',
       page: 1,
+      tgl: '',
       kodebidang: null,
       kodekegiatan: null,
       bast: null,
@@ -154,7 +157,7 @@ export const formNotaPermintaanDanaLS = defineStore('form_NPD_LS', {
     openDialogRinci: false
   }),
   actions: {
-    resetFORM () {
+    resetFORM() {
       const forms = Object.keys(this.form)
       for (let i = 0; i < forms.length; i++) {
         const el = forms[i]
@@ -171,28 +174,29 @@ export const formNotaPermintaanDanaLS = defineStore('form_NPD_LS', {
         this.setForm(el, null)
       }
     },
-    setParams (key, val) {
+    setParams(key, val) {
       this.reqs[key] = val
+      this.params[key] = val
     },
-    setForm (key, val) {
+    setForm(key, val) {
       this.form[key] = val
       this.rinci[key] = val
       this.reqs[key] = val
       // this.openDialogFarmasi = false
       // console.log('form', this.form)
     },
-    setFormInput (key, val) {
+    setFormInput(key, val) {
       this.rinci[key] = val
     },
-    emptyForm () {
+    emptyForm() {
       this.form = {}
       this.rinci = {}
       this.reqs = []
     },
-    dataTersimpan () {
+    dataTersimpan() {
       this.simpanNpdls()
     },
-    goToPage (val) {
+    goToPage(val) {
       this.reqs.page = val
       this.listdatanpd()
     },
@@ -206,11 +210,11 @@ export const formNotaPermintaanDanaLS = defineStore('form_NPD_LS', {
     //   this.reqs.page = val
     //   this.getInitialData()
     // },
-    getDataBidang () {
+    getDataBidang() {
       this.loading = true
       const params = { params: this.params }
       return new Promise((resolve) => {
-        api.get('v1/laporan/lra/bidang', params).then((resp) => {
+        api.get('/v1/transaksi/belanja_ls/bidang', params).then((resp) => {
           // console.log('bidang', resp.data)
           if (resp.status === 200) {
             this.bidangdanptk = resp.data
@@ -225,7 +229,7 @@ export const formNotaPermintaanDanaLS = defineStore('form_NPD_LS', {
         }).catch(() => { this.loading = false })
       })
     },
-    filterPtk () {
+    filterPtk() {
       const data = this.bidangdanptk?.length
         ? this.bidangdanptk?.map((x) => {
           return {
@@ -246,7 +250,7 @@ export const formNotaPermintaanDanaLS = defineStore('form_NPD_LS', {
       this.ptks = ptk
       // console.log('pptk', this.ptks)
     },
-    filterKegiatan () {
+    filterKegiatan() {
       const data = this.bidangdanptk?.length
         ? this.bidangdanptk?.filter(x =>
           x.kodepptk === this.reqs.nip
@@ -255,7 +259,7 @@ export const formNotaPermintaanDanaLS = defineStore('form_NPD_LS', {
       this.kegiatans = data
       // console.log('ddd', this.kegiatans)
     },
-    simpanNpdls () {
+    simpanNpdls() {
       console.log('fooorm', this.form)
       this.loading = true
       return new Promise((resolve, reject) => {
@@ -287,10 +291,11 @@ export const formNotaPermintaanDanaLS = defineStore('form_NPD_LS', {
           })
       })
     },
-    getRincianBelanja () {
+    getRincianBelanja() {
       // console.log('pagu', this.anggarans)
       this.loading = true
-      const params = { params: this.reqs }
+      // this.params.tgl = this.reqs.tgl
+      const params = { params: this.params }
       return new Promise((resolve) => {
         api.get('/v1/transaksi/belanja_ls/anggaran', params)
           .then((resp) => {
@@ -312,7 +317,7 @@ export const formNotaPermintaanDanaLS = defineStore('form_NPD_LS', {
           })
       })
     },
-    filterRekening50 () {
+    filterRekening50() {
       const data = this.anggarans?.length
         ? this.anggarans?.map((x) => {
           return {
@@ -320,8 +325,8 @@ export const formNotaPermintaanDanaLS = defineStore('form_NPD_LS', {
             rincianbelanja: x.uraian50,
             rek50: x.koderek50,
             realisasi: x.realisasi.map((x) => parseFloat(x.nominalpembayaran)).reduce((a, b) => a + b, 0) +
-            x.realisasi_spjpanjar.map((x) => parseFloat(x.jumlahbelanjapanjar)).reduce((a, b) => a + b, 0) -
-            x.contrapost.map((x) => parseFloat(x.nominalcontrapost)).reduce((a, b) => a + b, 0)
+              x.realisasi_spjpanjar.map((x) => parseFloat(x.jumlahbelanjapanjar)).reduce((a, b) => a + b, 0) -
+              x.contrapost.map((x) => parseFloat(x.nominalcontrapost)).reduce((a, b) => a + b, 0)
           }
         })
         : []
@@ -335,7 +340,7 @@ export const formNotaPermintaanDanaLS = defineStore('form_NPD_LS', {
       }, [])
       this.rekening50 = rek
     },
-    filterItemBelanja () {
+    filterItemBelanja() {
       // const fil50 = this.reqs.rekening50
       const data = this.anggarans?.length
         ? this.anggarans?.filter(x => x.koderek50 === this.reqs.rekening50).map((x) => {
@@ -351,11 +356,11 @@ export const formNotaPermintaanDanaLS = defineStore('form_NPD_LS', {
             volume: parseFloat(x.volume),
             pagu: parseFloat(x.pagu),
             realisasi: x.realisasi.map((x) => parseFloat(x.nominalpembayaran)).reduce((a, b) => a + b, 0) +
-            x.realisasi_spjpanjar.map((x) => parseFloat(x.jumlahbelanjapanjar)).reduce((a, b) => a + b, 0) -
-            x.contrapost.map((x) => parseFloat(x.nominalcontrapost)).reduce((a, b) => a + b, 0),
+              x.realisasi_spjpanjar.map((x) => parseFloat(x.jumlahbelanjapanjar)).reduce((a, b) => a + b, 0) -
+              x.contrapost.map((x) => parseFloat(x.nominalcontrapost)).reduce((a, b) => a + b, 0),
             sisapagu: parseFloat(x.pagu) - (x.realisasi.map((x) => parseFloat(x.nominalpembayaran)).reduce((a, b) => a + b, 0) +
-            x.realisasi_spjpanjar.map((x) => parseFloat(x.jumlahbelanjapanjar)).reduce((a, b) => a + b, 0) -
-            x.contrapost.map((x) => parseFloat(x.nominalcontrapost)).reduce((a, b) => a + b, 0)),
+              x.realisasi_spjpanjar.map((x) => parseFloat(x.jumlahbelanjapanjar)).reduce((a, b) => a + b, 0) -
+              x.contrapost.map((x) => parseFloat(x.nominalcontrapost)).reduce((a, b) => a + b, 0)),
 
             kode_lo: x?.jurnal?.kode_lo,
             uraian_lo: x?.jurnal?.uraian_lo,
@@ -374,9 +379,9 @@ export const formNotaPermintaanDanaLS = defineStore('form_NPD_LS', {
       console.log('item belanja', data)
     },
 
-    listdatanpd () {
+    listdatanpd() {
       this.loading = true
-      const params = { params: this.reqs }
+      const params = { params: this.params }
       return new Promise((resolve, reject) => {
         api.get('/v1/transaksi/belanja_ls/listnpdls', params)
           .then((resp) => {
@@ -394,7 +399,7 @@ export const formNotaPermintaanDanaLS = defineStore('form_NPD_LS', {
           })
       })
     },
-    rincianNpd () {
+    rincianNpd() {
       if (this.listnpdls.length) {
         const sas = []
         for (let i = 0; i < this.listnpdls.length; i++) {
@@ -441,7 +446,7 @@ export const formNotaPermintaanDanaLS = defineStore('form_NPD_LS', {
         console.log('rinciiii', this.datanpd)
       }
     },
-    hapusRinci (row) {
+    hapusRinci(row) {
       console.log('hapus rinci', row)
       this.loadingHapus = true
       return new Promise(resolve => {
