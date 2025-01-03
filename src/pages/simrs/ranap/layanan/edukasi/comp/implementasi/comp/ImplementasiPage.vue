@@ -1,10 +1,8 @@
 <template>
   <q-card flat bordered class="bg-transparent full-height column">
-    <div class="col-auto bg-primary text-white q-pa-md">
+    <div class="col-auto bg-primary text-white q-px-md q-py-sm">
       <div class="row justify-between items-center">
-        <div>
-          .
-        </div>
+        <div />
         <div>
           <q-btn rounded outline color="white" @click="isForm = !isForm">
             <q-icon name="icon-mat-add" size="xs" /><span class="q-ml-xs">Tambah</span>
@@ -16,12 +14,14 @@
       <!-- <ListSoap :pasien="pasien" :kasus="kasus" :nakes="nakes" :items="store.items" /> -->
     </div>
 
-    <!-- <DialogForm v-model="settings.isForm" :pasien="pasien" :kasus="kasus" :nakes="nakes" @exit="settings.isForm = false" /> -->
+    <DialogFormAdd v-model="isForm" :pasien="pasien" :kasus="kasus" :nakes="nakes" @exit="settings.isForm = false" />
   </q-card>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { defineAsyncComponent, ref } from 'vue';
+
+const DialogFormAdd = defineAsyncComponent(() => import('./DialogFormAdd.vue'))
 
 defineProps({
   pasien: {
@@ -30,6 +30,10 @@ defineProps({
   },
   nakes: {
     type: String,
+    default: null
+  },
+  kasus: {
+    type: Object,
     default: null
   }
 })
