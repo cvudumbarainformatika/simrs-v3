@@ -47,6 +47,10 @@ const isForm = ref(false)
 const store = useImplementasiEdukasiRanapStore()
 
 onMounted(() => {
+
+  // console.log('props', props?.pasien);
+
+
   store.getList(props?.pasien)
 })
 </script>
