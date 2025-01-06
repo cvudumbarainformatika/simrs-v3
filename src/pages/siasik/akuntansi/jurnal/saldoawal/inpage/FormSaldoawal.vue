@@ -18,40 +18,19 @@
             store.form.uraianpsap13 = cari.uraian
           }"
         /> -->
-        <q-select
-          v-model="store.form.kodepsap13"
-          label="Akun Rekening"
-          class="ellipsis-2-lines q-pt-sm"
-          use-input
-          outlined
-          standout="bg-yellow-3"
-          dense
-          emit-value
-          map-options
-          autocomplete="uraian"
-          option-value="kodeall3"
-          :disable="store.loading"
-          :loading="store.loading"
+        <q-select v-model="store.form.kodepsap13" label="Akun Rekening" class="ellipsis-2-lines q-pt-sm" use-input
+          outlined standout="bg-yellow-3" dense emit-value map-options autocomplete="uraian" option-value="kodeall3"
+          :disable="store.loading" :loading="store.loading"
           :option-label="opt => Object(opt) === opt && 'kodeall3' in opt ? opt.kodeall3 + ' - ' + opt.uraian : ''"
-          input-debounce="0"
-          :options="options"
-          @filter="filterFn"
-          @clear="store.setFormSaldo('kodepsap13', null)"
-          @update:model-value="(val)=>{
+          input-debounce="0" :options="options" @filter="filterFn" @clear="store.setFormSaldo('kodepsap13', null)"
+          @update:model-value="(val) => {
             const arr = store.akuns
             const cari = arr.find(x => x.kodeall3 === val)
             store.form.uraianpsap13 = cari.uraian
-          }"
-        >
-          <template
-            v-if="store.form.kodepsap13"
-            #append
-          >
-            <q-icon
-              name="icon-mat-cancel"
-              class="cursor-pointer"
-              @click.stop.prevent="store.setFormSaldo('kodepsap13', null)"
-            />
+          }">
+          <template v-if="store.form.kodepsap13" #append>
+            <q-icon name="icon-mat-cancel" class="cursor-pointer"
+              @click.stop.prevent="store.setFormSaldo('kodepsap13', null)" />
           </template>
           <template v-else #no-option>
             <q-item>
@@ -63,41 +42,33 @@
         </q-select>
       </div>
       <div class="q-pa-sm q-gutter-y-md" style="width:25%">
-        <app-input-simrs
-          class="q-pt-sm"
-          v-model="store.form.debit"
-          label="Debit"
-          :valid="{required:true, number:true}"
-          :autofocus="false"
-          @update:model-value="() => {
-            if( store.form.debit > 0){
+        <app-input-simrs class="q-pt-sm" v-model="store.form.debit" label="Debit"
+          :valid="{ required: true, number: true }" :autofocus="false" @update:model-value="() => {
+            if (store.form.debit > 0) {
               store.form.debetkredit = 'Debet'
             }
-          }"
-        />
+          }" />
       </div>
       <div class="q-pa-sm q-gutter-y-md" style="width:25%">
-        <app-input-simrs
-          class="q-pt-sm"
-          v-model="store.form.kredit"
-          label="Kredit"
-          :valid="{required:true, number:true}"
-          :autofocus="false"
-          @update:model-value="() => {
-            if( store.form.kredit > 0){
+        <app-input-simrs class="q-pt-sm" v-model="store.form.kredit" label="Kredit"
+          :valid="{ required: true, number: true }" :autofocus="false" @update:model-value="() => {
+            if (store.form.kredit > 0) {
               store.form.debetkredit = 'Kredit'
             }
-          }"
-        />
+          }" />
       </div>
     </div>
+
     <div class="row q-pa-sm flex-center">
-      <app-btn
-        label="Simpan Saldo"
-        :disable="store.loading"
-        :loading="store.loading"
-        type="submit"
-      />
+      <div class="q-pr-md q-gutter-y-md">
+        <app-input v-model="store.form.tahun" label="Tahun Saldo Awal" outlined @update:model-value="(val) => {
+          store.reqs.tahun = val
+          store.getDataTable()
+
+          console.log('Tahun berapa?', store.form.tahun)
+        }" />
+      </div>
+      <app-btn label="Simpan Saldo" :disable="store.loading" :loading="store.loading" type="submit" />
     </div>
   </q-form>
 </template>
@@ -114,7 +85,7 @@ onMounted(() => {
   store.getRekening()
   // store.getDataTable()
 })
-function filterFn (val, update) {
+function filterFn(val, update) {
   if (val === '') {
     update(() => {
       options.value = store.akuns

@@ -2,13 +2,7 @@
   <q-form class="fit" ref="formNpdLS" @submit="onSimpan" @reset="onReset">
     <div class="row">
       <div class="q-pa-sm q-gutter-y-md" style="width: 25%">
-        <app-input-simrs
-          v-model="store.form.nonpdls"
-          label="Nomor NPD-LS"
-          readonly
-          outlined
-          dense
-        />
+        <app-input-simrs v-model="store.form.nonpdls" label="Nomor NPD-LS" readonly outlined dense />
         <!-- <q-select
           v-model="store.form.kodepptk"
           label="Pejabat Teknis Kegiatan"
@@ -38,26 +32,18 @@
               @click.stop.prevent="store.setFormInput('kodepptk', null)"
             />
           </template>
-          <template #no-option>
+<template #no-option>
             <q-item>
               <q-item-section class="text-grey">
                 Tidak ditemukan
               </q-item-section>
             </q-item>
           </template>
-        </q-select> -->
-        <app-autocomplete
-          v-model="store.form.kodepptk"
-          label="Pejabat Teknis Kegiatan"
-          autocomplete="nama"
+</q-select> -->
+        <app-autocomplete v-model="store.form.kodepptk" label="Pejabat Teknis Kegiatan" autocomplete="nama"
           :option-label="opt => Object(opt) === opt && 'nip' in opt ? opt.nama + ' - ' + opt.nip : 'Silahkan Dipilih'"
-          option-value="nip"
-          outlined
-          :source="store.ptks"
-          @selected="(val)=>pilihPTK(val)"
-          :disable="store.disabled"
-          :loading="store.loading"
-        />
+          option-value="nip" outlined :source="store.ptks" @selected="(val) => pilihPTK(val)" :disable="store.disabled"
+          :loading="store.loading" />
         <!-- <app-autocomplete
           v-model="store.form.kodepptk"
           label="Pejabat Teknis Kegiatan"
@@ -75,15 +61,15 @@
         /> -->
       </div>
       <div class="q-pa-sm q-gutter-y-md" style="width: 25%">
-        <app-input-date
-          :model="store.form.tglnpdls"
-          label="Tanggal Transaksi"
-          icon="icon-mat-event"
-          outlined
-          @set-model="val=>store.form.tglnpdls=val"
-          :disable="store.disabled && store.loading"
-          :autofocus="false"
-        />
+        <!-- <app-input-date :model="store.form.tglnpdls" label="Tanggal Transaksi" icon="icon-mat-event" outlined
+          @set-model="val => store.form.tglnpdls = val" :disable="store.disabled && store.loading" :autofocus="false"
+          @update:model-value="(val) => {
+
+            store.form.tglnpdls = val
+
+          }" /> -->
+        <app-input-date-human :model="store.params.tgl" label="Tanggal Transaksi" icon="icon-mat-event" outlined
+          :disable="store.disabled && store.loading" @db-model="tglTransaksi" :autofocus="false" />
         <!-- <app-autocomplete
           v-model="store.form.kodekegiatanblud"
           label="Kegiatan BLUD"
@@ -95,20 +81,10 @@
           @db-model="kodeKeg"
           :key="store.reqs.kodebidang"
         /> -->
-        <app-autocomplete
-          v-model="store.form.kodekegiatanblud"
-          label="Kegiatan BLUD"
-          autocomplete="kegiatan"
-          option-label="kegiatan"
-          option-value="kodekegiatan"
-          outlined
-          :source="store.kegiatans"
-          @db-model="kodeKeg"
-          @selected="(val)=>pilihKegiatan(val)"
-          :key="store.reqs.kodebidang"
-          :disable="store.disabled"
-          :loading="store.loading"
-        />
+        <app-autocomplete v-model="store.form.kodekegiatanblud" label="Kegiatan BLUD" autocomplete="kegiatan"
+          option-label="kegiatan" option-value="kodekegiatan" outlined :source="store.kegiatans" @db-model="kodeKeg"
+          @selected="(val) => pilihKegiatan(val)" :key="store.reqs.kodebidang" :disable="store.disabled"
+          :loading="store.loading" />
       </div>
 
       <div class="q-pa-sm q-gutter-y-md " style="width: 50%">
@@ -127,97 +103,43 @@
           outlined
         /> -->
 
-        <app-autocomplete
-          v-model="store.form.kodepenerima"
-          label="Pihak Ketiga"
-          autocomplete="nama"
-          option-label="nama"
-          option-value="kode"
-          outlined
-          :source="ambil.pihaktigas"
-          @selected="(val)=>pilihPihaktiga(val)"
-          :disable="store.disabled"
-          :loading="store.loading"
-        />
+        <app-autocomplete v-model="store.form.kodepenerima" label="Pihak Ketiga" autocomplete="nama" option-label="nama"
+          option-value="kode" outlined :source="ambil.pihaktigas" @selected="(val) => pilihPihaktiga(val)"
+          :disable="store.disabled" :loading="store.loading" />
 
         <div class="row items-center">
           <div>
             Ada Serahterima ? :
-            <q-radio
-              class="q-pl-sm q-pr-lg"
-              v-for="item in store.serahterimas"
-              :key="item"
-              v-model="store.form.serahterimapekerjaan"
-              :val="item.value"
-              :label="item.ket"
-              dense
-              size="sm"
-            />
+            <q-radio class="q-pl-sm q-pr-lg" v-for="item in store.serahterimas" :key="item"
+              v-model="store.form.serahterimapekerjaan" :val="item.value" :label="item.ket" dense size="sm" />
           </div>
 
           <template v-if="store.form.serahterimapekerjaan === '3'">
             <div>
-              <app-autocomplete
-                v-model="store.form.bast"
-                label="Serah Terima Dari"
-                autocomplete="nama"
-                option-value="value"
-                option-label="nama"
-                outlined
-                :key="carisrt.reqs.kodepenerima"
-                :source="store.dariserahterima"
-                @update:model-value="(val)=>serahTerima(val)"
-              />
+              <app-autocomplete v-model="store.form.bast" label="Serah Terima Dari" autocomplete="nama"
+                option-value="value" option-label="nama" outlined :key="carisrt.reqs.kodepenerima"
+                :source="store.dariserahterima" @update:model-value="(val) => serahTerima(val)" />
             </div>
           </template>
         </div>
       </div>
 
-      <app-input-simrs
-        class="q-pa-sm q-gutter-y-xs"
-        style="width: 50%;"
-        v-model="store.form.keterangan"
-        label="Keterangan Belanja"
-        outlined
-        :autofocus="false"
-        :valid="{required:true}"
-      />
+      <app-input-simrs class="q-pa-sm q-gutter-y-xs" style="width: 50%;" v-model="store.form.keterangan"
+        label="Keterangan Belanja" outlined :autofocus="false" :valid="{ required: true }" />
       <template v-if="store.form.serahterimapekerjaan === '3'">
-        <app-input-simrs
-          class="q-pa-sm q-gutter-y-xs"
-          style="width: 40%;"
-          v-model="store.form.noserahterima"
-          label="Nomor Serahterima"
-          disable
-          outlined
-          :autofocus="false"
-          :valid="{required:true}"
-        />
+        <app-input-simrs class="q-pa-sm q-gutter-y-xs" style="width: 40%;" v-model="store.form.noserahterima"
+          label="Nomor Serahterima" disable outlined :autofocus="false" :valid="{ required: true }" />
 
         <div class="row items-center">
-          <q-btn
-            color="dark"
-            round
-            size="sm"
-            :loading="store.loading"
-            icon="icon-mat-add"
-            :source="store.dariserahterima"
-            :key="carisrt.reqs.kodepenerima"
-            @click=" () => {
+          <q-btn color="dark" round size="sm" :loading="store.loading" icon="icon-mat-add"
+            :source="store.dariserahterima" :key="carisrt.reqs.kodepenerima" @click="() => {
               carisrt.reqs.kodebast = ''
-              store.openDialogFarmasi = true}"
-          />
+              store.openDialogFarmasi = true
+            }" />
         </div>
       </template>
-      <app-input-simrs
-        class="q-pa-sm q-gutter-y-xs"
-        style="width: 50%;"
-        v-model="store.form.biayatransfer"
-        label="Biaya Administrasi"
-        outlined
-        :autofocus="false"
-        :valid="{required:true, number:true}"
-      />
+      <app-input-simrs class="q-pa-sm q-gutter-y-xs" style="width: 50%;" v-model="store.form.biayatransfer"
+        label="Biaya Administrasi" outlined :autofocus="false" :valid="{ required: true, number: true }" />
 
       <!-- <div class="float-right q-pa-sm q-gutter-y-xs">
         <app-btn
@@ -228,13 +150,8 @@
         />
       </div> -->
     </div>
-    <select-serahterima
-      v-model="store.openDialogFarmasi"
-      :key="carisrt.reqs.kodepenerima"
-    />
-    <select-serahterima
-      v-model="store.openDialogSiasik"
-    />
+    <select-serahterima v-model="store.openDialogFarmasi" :key="carisrt.reqs.kodepenerima" />
+    <select-serahterima v-model="store.openDialogSiasik" />
 
     <div class="q-card q-mt-sm">
       <div class="row bg-grey-4 text-primary q-pa-sm q-mb-xs q-mt-xs">
@@ -246,17 +163,8 @@
     </div>
     <template v-if="store.reqs.rincianmanual">
       <div>
-        <q-table
-          class="my-sticky-table"
-          :rows="store.form.rincians"
-          :columns="columns"
-          row-key="name"
-          hide-pagination
-          hide-bottom
-          wrap-cells
-          :rows-per-page-options="[0]"
-          :rows-number="[0]"
-        >
+        <q-table class="my-sticky-table" :rows="store.form.rincians" :columns="columns" row-key="name" hide-pagination
+          hide-bottom wrap-cells :rows-per-page-options="[0]" :rows-number="[0]">
           <template #body="props">
             <q-tr :props="props">
               <q-td key="rincianbelanja" :props="props" class="text-left">
@@ -277,27 +185,24 @@
       </div>
       <div class="subtotal">
         <table class="vertical-center">
-          <tr>
-            <td width="200px" class="text-bold q-pl-md">
-              SUBTOTAL
-            </td>
-            <td width="200px" class="text-bold">
-              :
-            </td>
-            <td width="200px" class="text-right text-bold q-pr-md">
-              {{ formattanpaRp(store.reqs.subtotal) }}
-            </td>
-          </tr>
+          <tbody>
+            <tr>
+              <td width="200px" class="text-bold q-pl-md">
+                SUBTOTAL
+              </td>
+              <td width="200px" class="text-bold">
+                :
+              </td>
+              <td width="200px" class="text-right text-bold q-pr-md">
+                {{ formattanpaRp(store.reqs.subtotal) }}
+              </td>
+            </tr>
+          </tbody>
         </table>
       </div>
     </template>
     <div class="row items-center float-left q-pt-md q-pa-sm q-gutter-y-xs">
-      <app-btn
-        label="Simpan NPD-LS"
-        :disable="store.loading"
-        :loading="store.loading"
-        @click="onSimpan()"
-      />
+      <app-btn label="Simpan NPD-LS" :disable="store.loading" :loading="store.loading" @click="onSimpan()" />
 
       <!-- <div class="q-pl-md">
         <q-btn
@@ -456,6 +361,13 @@ const onReset = () => {
   formNpdLS.value.resetValidation()
 }
 
+function tglTransaksi(val) {
+  console.log('val Parameter', val)
+  store.getRincianBelanja()
+  store.getDataBidang()
+  carisrt.getDataBast()
+  store.setParams('tgl', val)
+}
 // function hitungSubtotal () {
 //   const arr = store.form.rincians
 //   const obj = arr.length ? arr.map((x) => x.nominalpembayaran) : []
@@ -467,7 +379,7 @@ const onReset = () => {
 //   return subtotal
 // }
 
-function kodeKeg (val) {
+function kodeKeg(val) {
   store.setParams('kodekegiatan', val)
   console.log('kkkk', store.setParams)
 }
@@ -476,7 +388,7 @@ function kodeKeg (val) {
 //   console.log('tanggal', tgl)
 // }
 
-function onSimpan (val) {
+function onSimpan(val) {
   // if (store.reqs.subtotal > store.itembelanja.sisapagu) {
   //   return notifErrVue('Maaf Pengajuan Lebih dari Sisa Pagu')
   // }
@@ -543,7 +455,7 @@ const serahTerima = (val) => {
 //   // store.openDialogFarmasi = false
 // }
 
-function pilihPTK (val) {
+function pilihPTK(val) {
   const arr = store.ptks
   // console.log('ptk', arr)
   const obj = arr.length ? arr.find(x => x.nip === val) : null
@@ -575,7 +487,7 @@ function pilihPTK (val) {
   store.reqs.nip = obj?.nip ?? ''
   store.filterKegiatan()
 }
-function pilihKegiatan (val) {
+function pilihKegiatan(val) {
   const arr = store.kegiatans
   // console.log('arr', arr)
   const obj = arr.length ? arr.find(x => x.kodekegiatan === val) : null
@@ -602,7 +514,7 @@ function pilihKegiatan (val) {
   store.getRincianBelanja()
   // console.log('kodekegiatan', store.reqs.kodekegiatan)
 }
-function pilihPihaktiga (val) {
+function pilihPihaktiga(val) {
   const arr = ambil.pihaktigas
   const obj = arr.length ? arr.find(x => x.kode === val) : null
   // console.log('pilihPihaktiga', obj)
@@ -622,7 +534,7 @@ function pilihPihaktiga (val) {
 </script>
 
 <style lang="scss" scoped>
-.subtotal{
+.subtotal {
   position: relative;
   top: 20px;
   left: 70%;
@@ -631,6 +543,7 @@ function pilihPihaktiga (val) {
   background-color: rgb(245, 200, 0);
   border-radius: 5px;
 }
+
 .vertical-center {
   margin: 0;
   position: absolute;

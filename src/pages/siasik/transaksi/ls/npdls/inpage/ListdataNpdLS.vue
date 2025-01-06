@@ -1,52 +1,33 @@
 <template>
   <template v-if="store.datanpd">
     <div class="justify-content-center">
-      <q-table
-        class="my-sticky-table"
-        :rows="store.datanpd"
-        :columns="columnsnpd"
-        row-key="name"
-        dense
-        flat bordered
-        wrap-cells
-        :filter="store.reqs.q"
-        :loading="store.loading"
-        :rows-per-page-options="[10,50,100]"
-      >
+      <q-table class="my-sticky-table" :rows="store.datanpd" :columns="columnsnpd" row-key="name" dense flat bordered
+        wrap-cells :filter="store.params.q" :loading="store.loading" :rows-per-page-options="[10, 50, 100]">
         <template #loading>
           <q-inner-loading showing color="warning" />
         </template>
         <template #top-left>
           <div class="flex q-qutter-sm z-top">
             <div>
-              <q-input
-                v-model="store.reqs.q"
-                outlined
-                dark
-                color="warning"
-                dense
-                placeholder="Cari NPD-LS ..."
-                debounce="500"
-                style="min-width: 300px;"
-              >
-                <template
-                  v-if="store.reqs.q"
-                  #append
-                >
-                  <q-icon
-                    name="icon-mat-close"
-                    size="xs"
-                    class="cursor-pointer"
-                    @click.stop.prevent="clearSearch"
-                  />
+              <q-input v-model="store.params.q" outlined dark color="warning" dense placeholder="Cari NPD-LS ..."
+                debounce="500" style="min-width: 300px;">
+                <template v-if="store.params.q" #append>
+                  <q-icon name="icon-mat-close" size="xs" class="cursor-pointer" @click.stop.prevent="clearSearch" />
                 </template>
                 <template #prepend>
-                  <q-icon
-                    size="sm"
-                    name="icon-mat-search"
-                  />
+                  <q-icon size="sm" name="icon-mat-search" />
                 </template>
               </q-input>
+
+            </div>
+            <div class="q-pl-sm text-white">
+              <app-input class="bg-input text-white" v-model="store.params.tahun" label="Tahun" outlined
+                :disable="store.disabled && store.loading" :autofocus="false" @update:model-value="(val) => {
+                  console.log('Tahun berapa?', val)
+
+                  store.listdatanpd()
+
+                }" />
             </div>
           </div>
         </template>
@@ -94,14 +75,7 @@
             </q-td>
             <q-td>
               <div class="row justify-end">
-                <q-btn
-                  flat
-                  round
-                  class="bg-dark"
-                  size="sm"
-                  color="warning"
-                  icon="icon-fa-file-regular"
-                >
+                <q-btn flat round class="bg-dark" size="sm" color="warning" icon="icon-fa-file-regular">
                   <q-menu dark style="min-width: 150px">
                     <q-list style="min-width: 150px;">
                       <q-item clickable v-close-popup @click="viewRincian(props?.row)">
@@ -158,22 +132,10 @@
           </q-tr>
         </template>
       </q-table>
-      <app-dialog-rincian
-        v-model="store.openDialogRinci"
-        :npd="npd"
-      />
-      <printdi-npdls
-        v-model="store.dialogCetakNpd"
-        :datanpds="datanpds"
-      />
-      <editdata-npdls
-        v-model="store.dialogEditNpd"
-        :editnpds="editnpds"
-      />
-      <cetak-pencairan
-        v-model="store.dialogPrintPencairan"
-        :printcair="printcair"
-      />
+      <app-dialog-rincian v-model="store.openDialogRinci" :npd="npd" />
+      <printdi-npdls v-model="store.dialogCetakNpd" :datanpds="datanpds" />
+      <editdata-npdls v-model="store.dialogEditNpd" :editnpds="editnpds" />
+      <cetak-pencairan v-model="store.dialogPrintPencairan" :printcair="printcair" />
     </div>
   </template>
 </template>
@@ -193,12 +155,12 @@ const store = formNotaPermintaanDanaLS()
 onMounted(() => {
   // carisrt.resetFORM()
   // onReset()
-  store.listdatanpd()
+  // store.listdatanpd()
 })
 
 // eslint-disable-next-line no-unused-vars
 const clearSearch = () => {
-  store.reqs.q = ''
+  store.params.q = ''
   store.goToPage(1)
 }
 const listnpdls = [
@@ -265,7 +227,7 @@ const columnsnpd = ref(listnpdls)
 
 const npd = ref(null)
 // eslint-disable-next-line no-unused-vars
-function viewRincian (row) {
+function viewRincian(row) {
   store.openDialogRinci = true
   npd.value = row.rincian
   store.reqs.listrinci = npd.value
@@ -276,21 +238,21 @@ const onRowClick = (row) =>
 
 const datanpds = ref(null)
 // eslint-disable-next-line no-unused-vars
-function viewDataNpdls (row) {
+function viewDataNpdls(row) {
   store.dialogCetakNpd = true
   datanpds.value = row
   store.npddatasave = datanpds.value
   console.log('openNPD', store.npddatasave)
 }
 const editnpds = ref(null)
-function editNpdls (row) {
+function editNpdls(row) {
   store.dialogEditNpd = true
   editnpds.value = row
   store.form = editnpds.value
   console.log('Edit NPD', editnpds.value)
 }
 const printcair = ref(null)
-function PrintPencairan (row) {
+function PrintPencairan(row) {
   console.log('cetak Pencairan', row)
   store.dialogPrintPencairan = true
   printcair.value = row
@@ -353,45 +315,53 @@ function PrintPencairan (row) {
 </style> -->
 
 <style lang="scss">
-.my-sticky-table{
+.my-sticky-table {
   min-height: 510px;
 
   .q-table__top,
   .q-table__bottom,
-  thead tr:first-child th{
+  thead tr:first-child th {
     background-color: #000000;
     color: $white;
 
   }
 
-  thead tr th{
+  thead tr th {
     position: sticky;
     z-index: 1;
     font-weight: bold;
   }
 
   /* this will be the loading indicator */
-  thead tr:last-child th{
+  thead tr:last-child th {
     top: 48px;
 
   }
-    /* height of all previous header rows */
 
-  thead tr:first-child th{
+  /* height of all previous header rows */
+
+  thead tr:first-child th {
     top: 0;
   }
-  .q-td{
+
+  .q-td {
     font-size: 3mm;
   }
+
   /* prevent scrolling behind sticky top row on focus */
-  tbody{
+  tbody {
     scroll-margin-top: 48px;
     font-size: 1mm;
   }
+
+
+  .bg-input {
+    background: #4b4b4b;
+  }
+
   .q-table__bottom .q-field__native,
   .q-table__bottom .q-field__inner .q-field__control .q-anchor--skip,
-  i.q-icon
-   {
+  i.q-icon {
     color: $white;
   }
 }

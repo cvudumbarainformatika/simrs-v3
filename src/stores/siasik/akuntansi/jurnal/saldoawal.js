@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import { date } from 'quasar'
 import { api } from 'src/boot/axios'
 import { notifSuccess } from 'src/modules/utils'
 
@@ -10,11 +11,13 @@ export const saldoawalJurnal = defineStore('saldoawal_Jurnal', {
     dialogEdit: false,
     reqs: {
       q: '',
+      tahun: date.formatDate(Date.now(), 'YYYY'),
       simpanform: []
     },
     form: {
       kodepsap13: null,
       uraianpsap13: null,
+      tahun: null,
       debetkredit: null,
       debit: 0,
       kredit: 0
@@ -24,11 +27,11 @@ export const saldoawalJurnal = defineStore('saldoawal_Jurnal', {
     saldo: []
   }),
   actions: {
-    setSearch (val) {
+    setSearch(val) {
       this.reqs.q = val
       this.getRekening()
     },
-    emptyForm () {
+    emptyForm() {
       // this.form = {}
       // const columns = [
       //   'id'
@@ -48,16 +51,16 @@ export const saldoawalJurnal = defineStore('saldoawal_Jurnal', {
       this.form.kredit = 0
       console.log('kosong', this.form)
     },
-    getDataTable () {
+    getDataTable() {
       this.getSaldoAwal()
     },
-    refreshTable () {
+    refreshTable() {
       this.getDataTable()
     },
-    setFormSaldo (key, val) {
+    setFormSaldo(key, val) {
       this.form[key] = val
     },
-    getSaldoAwal () {
+    getSaldoAwal() {
       this.loading = true
       const params = { params: this.reqs }
       return new Promise((resolve) => {
@@ -73,7 +76,7 @@ export const saldoawalJurnal = defineStore('saldoawal_Jurnal', {
         }).catch(() => { this.loading = false })
       })
     },
-    nilaiSaldo () {
+    nilaiSaldo() {
       const arr = {
         debit: (this.datasaldo.length ? this.datasaldo.map((x) => parseFloat(x.debit)) : []).reduce((a, b) => a + b, 0),
         kredit: (this.datasaldo.length ? this.datasaldo.map((x) => parseFloat(x.kredit)) : []).reduce((a, b) => a + b, 0)
@@ -81,7 +84,7 @@ export const saldoawalJurnal = defineStore('saldoawal_Jurnal', {
       this.saldo = arr
       console.log('nilai Saldo', this.saldo)
     },
-    getRekening () {
+    getRekening() {
       this.loading = true
       const params = { params: this.reqs }
       return new Promise((resolve) => {
@@ -96,7 +99,7 @@ export const saldoawalJurnal = defineStore('saldoawal_Jurnal', {
         }).catch(() => { this.loading = false })
       })
     },
-    saveSaldo () {
+    saveSaldo() {
       this.loading = true
       return new Promise((resolve) => {
         api.post('v1/akuntansi/saldoawal/save', this.form).then((resp) => {
@@ -110,7 +113,7 @@ export const saldoawalJurnal = defineStore('saldoawal_Jurnal', {
         }).catch(() => { this.loading = false })
       })
     },
-    deleteSaldo (id) {
+    deleteSaldo(id) {
       const payload = id
       this.deleteloading = true
       return new Promise((resolve) => {

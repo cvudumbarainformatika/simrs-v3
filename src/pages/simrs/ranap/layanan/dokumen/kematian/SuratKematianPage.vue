@@ -53,8 +53,10 @@
             <div class="col-grow">
               <div class="column">
                 <div> : {{ dpjp?.nama ?? '' }}</div>
-                <div> : {{ dpjp?.golongan ?? '' }} {{ dpjp?.golongan ? ' / ' : '' }} {{ dpjp?.ket_golongan ?? '' }}
+                <div v-if="dpjp?.golruang"> : {{ dpjp?.golongan ?? '' }} {{ dpjp?.golongan ? ' / ' : '' }} {{
+                  dpjp?.ket_golongan ?? '' }}
                 </div>
+                <div v-else> : </div>
                 <div> : {{ dpjp?.ket_jabatan ?? '' }}</div>
               </div>
             </div>
