@@ -11,7 +11,7 @@
       </div>
     </div>
     <div class="col full-height">
-      <!-- <ListSoap :pasien="pasien" :kasus="kasus" :nakes="nakes" :items="store.items" /> -->
+      <ListImplementasi :pasien="pasien" :kasus="kasus" :nakes="nakes" :items="store.items" />
     </div>
 
     <DialogFormAdd v-model="isForm" :pasien="pasien" :kasus="kasus" :nakes="nakes" @exit="settings.isForm = false" />
@@ -19,11 +19,15 @@
 </template>
 
 <script setup>
-import { defineAsyncComponent, ref } from 'vue';
+import { useImplementasiEdukasiRanapStore } from 'src/stores/simrs/ranap/implementasiEdukasi';
+import { defineAsyncComponent, onMounted, ref } from 'vue';
 
 const DialogFormAdd = defineAsyncComponent(() => import('./DialogFormAdd.vue'))
 
-defineProps({
+const ListImplementasi = defineAsyncComponent(() => import('./ListImplementasi.vue'))
+
+
+const props = defineProps({
   pasien: {
     type: Object,
     default: null
@@ -39,4 +43,10 @@ defineProps({
 })
 
 const isForm = ref(false)
+
+const store = useImplementasiEdukasiRanapStore()
+
+onMounted(() => {
+  store.getList(props?.pasien)
+})
 </script>
