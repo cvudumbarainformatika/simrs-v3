@@ -1,28 +1,13 @@
 <template>
-  <q-card
-    flat
-    bordered
-    square
-    class="full-height bg-teal-2"
-    style="overflow: hidden;"
-  >
-    <q-bar
-      class="bg-teal text-white z-top"
-      style="width: inherit;"
-    >
+  <q-card flat bordered square class="full-height bg-teal-2" style="overflow: hidden;">
+    <q-bar class="bg-teal text-white z-top" style="width: inherit;">
       <div class="f-12">
         Data Triage
       </div>
       <q-space />
     </q-bar>
-    <q-card-section
-      style="padding:0"
-      class="full-height bg-grey"
-    >
-      <div
-        v-if="loadingaja"
-        class="column full-height flex-center"
-      >
+    <q-card-section style="padding:0" class="full-height bg-grey">
+      <div v-if="loadingaja" class="column full-height flex-center">
         <div class="text-white">
           Harap Tunggu .....
         </div>
@@ -30,41 +15,33 @@
           Sinkron Data Ke DATABASE
         </div>
       </div>
-      <div
-        v-if="pasien?.triage?.length <= 0"
-        class="column full-height flex-center"
-      >
+      <div v-if="pasien?.triage?.length <= 0" class="column full-height flex-center">
         <div class="text-white">
           Belum Ada data tersimpan
         </div>
       </div>
-      <q-scroll-area
-        v-else
-        style="height:calc(100% - 32px);"
-      >
-        <q-list
-          class="bg-white"
-          separator
-        >
+      <q-scroll-area v-else style="height:calc(100% - 32px);">
+        <q-list class="bg-white" separator>
           <transition-group name="list">
-            <q-item
-              v-for="(item , n) in lists"
-              :key="n"
-              class="list-move"
-            >
+            <q-item v-for="(item, n) in lists" :key="n" class="list-move">
               <q-item-section>
                 <div class="row">
                   <div class="col-7">
-                    <q-item-label
-                      class="f-12"
-                    >
+                    <q-item-label class="f-12">
+                      <span class="">Pasien Meninggal Di Luar RS </span> : <span class="text-weight-bold">{{
+                        item?.meninggaldiluarrs
+                        ?? '-' }}</span>
+                    </q-item-label>
+                    <q-item-label class="f-12">
                       <span class="">DOA </span> : <span class="text-weight-bold">{{ item?.doa ?? '-' }}</span>
                     </q-item-label>
                     <q-item-label>
-                      <span class="">Pasien Hamil </span>: <span class="text-weight-bold">{{ pasienhamil(item?.flaghamil) }}</span>
+                      <span class="">Pasien Hamil </span>: <span class="text-weight-bold">{{
+                        pasienhamil(item?.flaghamil) }}</span>
                     </q-item-label>
                     <q-item-label>
-                      <span class="">Hari Pertama Haid Terakhir : <span class="text-weight-bold">{{ item?.haid ?? '-' }}</span>
+                      <span class="">Hari Pertama Haid Terakhir : <span class="text-weight-bold">{{ item?.haid ?? '-'
+                          }}</span>
                       </span>
                     </q-item-label>
                     <q-item-label>
@@ -80,15 +57,18 @@
                       </span>
                     </q-item-label>
                     <q-item-label>
-                      <span class="">Nyeri : <span class="text-weight-bold">{{ item?.nyeri ?? '-' }} <span style="color: teal;"> ({{ item.scorenyeri }})</span></span>
+                      <span class="">Nyeri : <span class="text-weight-bold">{{ item?.nyeri ?? '-' }} <span
+                            style="color: teal;"> ({{ item.scorenyeri }})</span></span>
                       </span>
                     </q-item-label>
                     <q-item-label>
-                      <span class="">Lochea : <span class="text-weight-bold">{{ item?.lochea ?? '-' }}  <span style="color: teal;">({{ item.scorelochea }})</span></span>
+                      <span class="">Lochea : <span class="text-weight-bold">{{ item?.lochea ?? '-' }} <span
+                            style="color: teal;">({{ item.scorelochea }})</span></span>
                       </span>
                     </q-item-label>
                     <q-item-label>
-                      <span class="">Protein Urin : <span class="text-weight-bold">{{ item?.proteinurin ?? '-' }} <span style="color: teal;"> ({{ item.scoreproteinurin }})</span></span>
+                      <span class="">Protein Urin : <span class="text-weight-bold">{{ item?.proteinurin ?? '-' }} <span
+                            style="color: teal;"> ({{ item.scoreproteinurin }})</span></span>
                       </span>
                     </q-item-label>
                   </div>
@@ -104,7 +84,7 @@
                           <q-separator />
                           <q-card-actions vertical>
                             <q-btn flat style="font-size: 11px;" class="text-red text-weight-bold">
-                              Primary Surve  {{ primarysurvex(item.hasilprimarusurve) }}
+                              Primary Surve {{ primarysurvex(item.hasilprimarusurve) }}
                             </q-btn>
                             <q-separator inset />
                             <q-btn flat style="font-size: 11px;" class="text-red text-weight-bold">
@@ -121,7 +101,7 @@
                           <q-separator />
                           <q-card-actions vertical>
                             <q-btn flat style="font-size: 11px;" class="text-deep-orange text-weight-bold">
-                              Primary Surve  {{ primarysurvex(item.hasilprimarusurve) }}
+                              Primary Surve {{ primarysurvex(item.hasilprimarusurve) }}
                             </q-btn>
                             <q-separator inset />
                             <q-btn flat style="font-size: 11px;" class="text-deep-orange text-weight-bold">
@@ -138,7 +118,7 @@
                           <q-separator />
                           <q-card-actions vertical>
                             <q-btn flat style="font-size: 11px;" class="text-yellow-7 text-weight-bold">
-                              Primary Surve  {{ primarysurvex(item.hasilprimarusurve) }}
+                              Primary Surve {{ primarysurvex(item.hasilprimarusurve) }}
                             </q-btn>
                             <q-separator inset />
                             <q-btn flat style="font-size: 11px;" class="text-yellow-7 text-weight-bold">
@@ -155,7 +135,7 @@
                           <q-separator />
                           <q-card-actions vertical>
                             <q-btn flat style="font-size: 11px;" class="text-green text-weight-bold">
-                              Primary Surve  {{ primarysurvex(item.hasilprimarusurve) }}
+                              Primary Surve {{ primarysurvex(item.hasilprimarusurve) }}
                             </q-btn>
                             <q-separator inset />
                             <q-btn flat style="font-size: 11px;" class="text-green text-weight-bold">
@@ -172,7 +152,7 @@
                           <q-separator />
                           <q-card-actions vertical>
                             <q-btn flat style="font-size: 11px;" class="text-weight-bold">
-                              Primary Surve  {{ primarysurvex(item.hasilprimarusurve) }}
+                              Primary Surve {{ primarysurvex(item.hasilprimarusurve) }}
                             </q-btn>
                             <q-separator inset />
                             <q-btn flat style="font-size: 11px;" class="text-weight-bold">
@@ -193,7 +173,7 @@
                           <q-separator />
                           <q-card-actions vertical>
                             <q-btn flat style="font-size: 11px;" class="text-weight-bold">
-                              Primary Surve  {{ primarysurvex(item.hasilprimarusurve) }}
+                              Primary Surve {{ primarysurvex(item.hasilprimarusurve) }}
                             </q-btn>
                             <q-separator inset />
                             <q-btn flat style="font-size: 11px;" class="text-weight-bold">
@@ -214,7 +194,7 @@
                           <q-separator />
                           <q-card-actions vertical>
                             <q-btn flat style="font-size: 11px;" class="text-weight-bold">
-                              Primary Surve  {{ primarysurvex(item.hasilprimarusurve) }}
+                              Primary Surve {{ primarysurvex(item.hasilprimarusurve) }}
                             </q-btn>
                             <q-separator inset />
                             <q-btn flat style="font-size: 11px;" class="text-weight-bold">
@@ -235,7 +215,8 @@
                     <div class="row">
                       <div class="col-5">
                         <q-item-label>
-                          <span>Jalan Nafas </span> : <span class="text-weight-bold">{{ item?.jalannafas ?? '-' }}</span>
+                          <span>Jalan Nafas </span> : <span class="text-weight-bold">{{ item?.jalannafas ?? '-'
+                            }}</span>
                         </q-item-label>
                       </div>
                       <div class="col-5">
@@ -253,7 +234,8 @@
                       <div>
                         <div class="col-5">
                           <q-item-label>
-                            <span>Disability</span> : <span class="text-weight-bold">{{ item?.disability ?? '-' }}</span>
+                            <span>Disability</span> : <span class="text-weight-bold">{{ item?.disability ?? '-'
+                              }}</span>
                           </q-item-label>
                         </div>
                       </div>
@@ -265,18 +247,23 @@
                     <div class="row">
                       <div class="col-4">
                         <q-item-label avatar>
-                          <span>Nadi: <span class="text-weight-bold">{{ item?.nadi ?? '-' }} x/mnt  <span style="color: teal;">({{ item?.scorenadi }})</span></span></span>
+                          <span>Nadi: <span class="text-weight-bold">{{ item?.nadi ?? '-' }} x/mnt <span
+                                style="color: teal;">({{ item?.scorenadi }})</span></span></span>
                         </q-item-label>
                         <q-item-label avatar>
-                          <span class="">Pernapasan: <span class="text-weight-bold">  {{ item?.pernapasanx ?? '-' }} x/mnt
-                            <span style="color: teal;"> ({{ item?.scorepernapasanx }})</span></span></span>
+                          <span class="">Pernapasan: <span class="text-weight-bold"> {{ item?.pernapasanx ?? '-' }}
+                              x/mnt
+                              <span style="color: teal;"> ({{ item?.scorepernapasanx }})</span></span></span>
                         </q-item-label>
                         <q-item-label avatar>
-                          <span class="">Sistole/Diastole : <span class="text-weight-bold">{{ item?.sistole ?? '-' }}/{{ item?.diastole ?? '-' }} mmHg
-                            <span style="color: teal;">({{ item?.scoresistole }}/{{ item?.scorediastole }})</span></span></span>
+                          <span class="">Sistole/Diastole : <span class="text-weight-bold">{{ item?.sistole ?? '-' }}/{{
+                            item?.diastole ?? '-' }} mmHg
+                              <span style="color: teal;">({{ item?.scoresistole }}/{{ item?.scorediastole
+                                }})</span></span></span>
                         </q-item-label>
                         <q-item-label avatar>
-                          <span class="">Eye/Verbal/Motorik : <span class="text-weight-bold">{{ item?.eye ?? '-' }}/{{ item?.verbal ?? '-' }}/{{ item?.motorik ?? '-' }}</span></span>
+                          <span class="">Eye/Verbal/Motorik : <span class="text-weight-bold">{{ item?.eye ?? '-' }}/{{
+                            item?.verbal ?? '-' }}/{{ item?.motorik ?? '-' }}</span></span>
                         </q-item-label>
                         <!-- <q-item-label avatar>
                           <span class="">Verbal : <span class="text-weight-bold">{{ item?.verbal ?? '-' }}</span></span>
@@ -284,15 +271,18 @@
                       </div>
                       <div class="col-6">
                         <q-item-label avatar>
-                          <span class="">Suhu  : <span class="text-weight-bold">{{ item?.suhu ?? '-' }}&deg; C <span style="color: teal;">({{ item?.scoresuhu }}) </span></span>
+                          <span class="">Suhu : <span class="text-weight-bold">{{ item?.suhu ?? '-' }}&deg; C <span
+                                style="color: teal;">({{ item?.scoresuhu }}) </span></span>
                           </span>
                         </q-item-label>
                         <q-item-label avatar>
-                          <span class="">SPo2  :<span class="text-weight-bold"> {{ item?.spo2 ?? '-' }}% <span style="color: teal;">({{ item?.scorespo2 }})</span></span>
+                          <span class="">SPo2 :<span class="text-weight-bold"> {{ item?.spo2 ?? '-' }}% <span
+                                style="color: teal;">({{ item?.scorespo2 }})</span></span>
                           </span>
                         </q-item-label>
                         <q-item-label avatar>
-                          <span class="">Kesadaran  :<span class="text-weight-bold"> {{ item?.kesadaran ?? '-' }} <span style="color: teal;">({{ item?.scorekesadaran }})</span></span></span>
+                          <span class="">Kesadaran :<span class="text-weight-bold"> {{ item?.kesadaran ?? '-' }} <span
+                                style="color: teal;">({{ item?.scorekesadaran }})</span></span></span>
                         </q-item-label>
                         <!-- <q-item-label avatar>
                           <span class="">Motorik : <span class="text-weight-bold">{{ item?.motorik ?? '-' }}</span></span>
@@ -311,10 +301,12 @@
                       </div>
                       <div class="col-6">
                         <q-item-label avatar>
-                          <span>Gangguan Perilaku : <span class="text-weight-bold">{{ item?.gangguanperilaku ?? '-' }} </span></span>
+                          <span>Gangguan Perilaku : <span class="text-weight-bold">{{ item?.gangguanperilaku ?? '-' }}
+                            </span></span>
                         </q-item-label>
                         <q-item-label avatar>
-                          <span>False Triage : <span class="text-weight-bold">{{ item?.falsetriage === '0' ? 'Tidak' : 'Iya' }}</span></span>
+                          <span>False Triage : <span class="text-weight-bold">{{ item?.falsetriage === '0' ? 'Tidak' :
+                            'Iya' }}</span></span>
                         </q-item-label>
                       </div>
                     </div>
@@ -322,26 +314,10 @@
                 </div>
               </q-item-section>
 
-              <q-item-section
-                side
-                v-if="bisaEditHapus"
-              >
+              <q-item-section side v-if="bisaEditHapus">
                 <div class="q-gutter-sm">
-                  <q-btn
-                    flat
-                    round
-                    size="sm"
-                    icon="icon-mat-edit"
-                    @click="store.editForm(item)"
-                  />
-                  <q-btn
-                    flat
-                    round
-                    size="sm"
-                    icon="icon-mat-delete"
-                    color="negative"
-                    @click="hapusItem(item.id)"
-                  />
+                  <q-btn flat round size="sm" icon="icon-mat-edit" @click="store.editForm(item)" />
+                  <q-btn flat round size="sm" icon="icon-mat-delete" color="negative" @click="hapusItem(item.id)" />
                 </div>
               </q-item-section>
             </q-item>
@@ -380,7 +356,7 @@ const lists = computed(() => {
   return arr?.sort((a, b) => { return b.id - a.id })
 })
 
-function pasienhamil (val) {
+function pasienhamil(val) {
   if (val === '1' || val === 1) {
     return 'Ya'
   }
@@ -401,7 +377,7 @@ function pasienhamil (val) {
 //   }
 // }
 
-function hapusItem (id) {
+function hapusItem(id) {
   $q.dialog({
     dark: true,
     title: 'Peringatan',
@@ -418,7 +394,7 @@ function hapusItem (id) {
   })
 }
 
-function primarysurvex (val) {
+function primarysurvex(val) {
   if (val === '0' || val === 0) {
     return '-'
   }

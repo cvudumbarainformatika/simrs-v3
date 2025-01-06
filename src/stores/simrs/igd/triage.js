@@ -19,6 +19,7 @@ export const useTriageIgd = defineStore('triageigd', {
     },
     form: {
       id: null,
+      meninggaldiluarrs: 'Tidak',
       pasienhamil: 0,
       nadi: 0,
       pernapasan: '',
@@ -49,7 +50,7 @@ export const useTriageIgd = defineStore('triageigd', {
     }
   }),
   actions: {
-    formattanggal () {
+    formattanggal() {
       if (this.form.pasienhamil === 0) {
         this.form.haid = ''
       }
@@ -58,7 +59,7 @@ export const useTriageIgd = defineStore('triageigd', {
         this.form.haid = date.formatDate(sekarang, 'YYYY-MM-DD')
       }
     },
-    async saveData (pasien, hasilsecondsurve) {
+    async saveData(pasien, hasilsecondsurve) {
       // console.log('noreg', pasien.noreg)
       this.loadingForm = true
       this.form.noreg = pasien ? pasien.noreg : ''
@@ -82,10 +83,11 @@ export const useTriageIgd = defineStore('triageigd', {
         notifErr(error)
       }
     },
-    initReset () {
+    initReset() {
       this.form = null
       return new Promise((resolve, reject) => {
         this.form = {
+          meninggaldiluarrs: 'Tidak',
           falsetriage: false,
           doa: '',
           pasienhamil: 0
@@ -95,13 +97,13 @@ export const useTriageIgd = defineStore('triageigd', {
         resolve()
       })
     },
-    setForm (key, val) {
+    setForm(key, val) {
       this.form[key] = val
     },
     // hitungscore () {
     //   asdasd
     // }
-    async deleteData (pasien, id) {
+    async deleteData(pasien, id) {
       const payload = { id }
       try {
         const resp = await api.post('v1/simrs/pelayanan/igd/hapustriage', payload)
@@ -116,7 +118,7 @@ export const useTriageIgd = defineStore('triageigd', {
         notifErr(error)
       }
     },
-    async getDataTriage (val) {
+    async getDataTriage(val) {
       this.params.noreg = val
       const params = { params: this.params }
       await api
@@ -132,7 +134,7 @@ export const useTriageIgd = defineStore('triageigd', {
           // this.loading = false
         })
     },
-    editForm (val) {
+    editForm(val) {
       this.form.doak = val?.doa
       this.form.pasienhamil = parseInt(val?.flaghamil)
       this.form.haid = val?.haid
