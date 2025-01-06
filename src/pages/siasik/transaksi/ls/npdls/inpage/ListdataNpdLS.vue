@@ -20,8 +20,8 @@
               </q-input>
 
             </div>
-            <div class="q-pl-sm">
-              <app-input v-model="store.params.tahun" dark label="Tahun" icon="icon-mat-event" outlined
+            <div class="q-pl-sm text-white">
+              <app-input class="bg-input text-white" v-model="store.params.tahun" label="Tahun" outlined
                 :disable="store.disabled && store.loading" :autofocus="false" @update:model-value="(val) => {
                   console.log('Tahun berapa?', val)
 
@@ -352,6 +352,11 @@ function PrintPencairan(row) {
   tbody {
     scroll-margin-top: 48px;
     font-size: 1mm;
+  }
+
+
+  .bg-input {
+    background: #4b4b4b;
   }
 
   .q-table__bottom .q-field__native,
