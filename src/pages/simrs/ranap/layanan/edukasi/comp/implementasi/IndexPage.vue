@@ -35,7 +35,7 @@ onMounted(() => {
       <!-- <div class="fit column flex-center">
         MASIH TAHAP PENGEMBANGAN
       </div> -->
-      <ImplementasiPage :pasien="props.pasien" :nakes="props.nakes" />
+      <ImplementasiPage :pasien="props.pasien" :nakes="props.nakes" :kasus="props.kasus" />
     </template>
     <!-- <template #list>
       <div class="fit">

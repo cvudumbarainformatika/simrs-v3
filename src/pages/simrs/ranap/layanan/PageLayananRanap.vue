@@ -1,74 +1,27 @@
 <template>
-  <q-dialog
-    ref="refDialog"
-    persistent
-    :maximized="true"
-    transition-show="slide-left"
-    transition-hide="slide-right"
-    @show="onShow"
-  >
-    <q-card
-      square
-      flat
-      class="container-no-header"
-    >
-      <q-layout
-        view="lHr Lpr lFf"
-        container
-        class="shadow-2 rounded-borders z-top"
-      >
-        <q-header
-          elevated
-          class="bg-primary"
-        >
-          <HeaderLayout
-            :pasien="pasien"
-            @toggle-left-drawer="()=> drawer = !drawer"
-            @update:jeniskasus="(val)=> store.gantiJenisKasus(val, pasien)"
-            @gantidpjp="(val)=> store.gantiDpjp(val, pasien)"
-          />
+  <q-dialog ref="refDialog" persistent :maximized="true" transition-show="slide-left" transition-hide="slide-right"
+    @show="onShow">
+    <q-card square flat class="container-no-header">
+      <q-layout view="lHr Lpr lFf" container class="shadow-2 rounded-borders z-top">
+        <q-header elevated class="bg-primary">
+          <HeaderLayout :pasien="pasien" @toggle-left-drawer="() => drawer = !drawer"
+            @update:jeniskasus="(val) => store.gantiJenisKasus(val, pasien)"
+            @gantidpjp="(val) => store.gantiDpjp(val, pasien)" />
         </q-header>
         <!-- LEFT DRAWER ======================================================================================-->
-        <q-drawer
-          v-model="drawer"
-          elevated
-          bordered
-          show-if-above
-          :width="230"
-          :breakpoint="400"
-        >
-          <LeftDrawer
-            :key="pasien"
-            :pasien="pasien"
-            :menus="filterredMenus"
-            :menu="menu"
-            @click-menu="(val)=> menuDiganti(val)"
-            @history-pasien="historyPasien"
-          />
+        <q-drawer v-model="drawer" elevated bordered show-if-above :width="230" :breakpoint="400">
+          <LeftDrawer :key="pasien" :pasien="pasien" :menus="filterredMenus" :menu="menu"
+            @click-menu="(val) => menuDiganti(val)" @history-pasien="historyPasien" />
         </q-drawer>
 
         <!-- RIGHT DRAWER ======================================================================================-->
-        <q-drawer
-          v-model="drawerRight"
-          side="right"
-          show-if-above
-          overlay
-          bordered
-          :width="845"
-          :breakpoint="500"
-        >
-          <RightDrawer
-            :key="pasien"
-            :pasien="pasien"
-            @close="drawerRight = false"
-          />
+        <q-drawer v-model="drawerRight" side="right" show-if-above overlay bordered :width="845" :breakpoint="500">
+          <RightDrawer :key="pasien" :pasien="pasien" @close="drawerRight = false" />
         </q-drawer>
 
         <!-- CONTAINER ============================================================================================-->
         <q-page-container>
-          <q-page
-            class="contain bg-grey-3"
-          >
+          <q-page class="contain bg-grey-3">
             <!-- <div class="close-btn bg-dark text-white cursor-pointer q-pa-xs z-top">
               <div class="vertical-xxx">
                 History
@@ -83,39 +36,28 @@
               <AppLoader />
             </div>
             <div v-else class="fit">
-              <div
-                v-if="pasien?.dokter==='' || pasien?.dokter === null"
+              <div v-if="pasien?.dokter === '' || pasien?.dokter === null"
                 class="column full-height flex-center absolute-center z-top full-width"
-                style="background-color: black; opacity: .9;"
-              >
+                style="background-color: black; opacity: .9;">
                 <div class="text-white">
                   Maaf, DPJP Pasien Ini Belum Ada ... Harap Input DPJP Terlebih dahulu
                 </div>
               </div>
-              <div
-                v-else-if="pasien?.kd_jeniskasus==='' || pasien?.kd_jeniskasus === null"
+              <div v-else-if="pasien?.kd_jeniskasus === '' || pasien?.kd_jeniskasus === null"
                 class="column full-height flex-center absolute-center z-top full-width"
-                style="background-color: black; opacity: .9;"
-              >
+                style="background-color: black; opacity: .9;">
                 <div class="text-white">
                   MAAF, HARAP TENTUKAN DAHULU JENIS KASUS PASIEN
                 </div>
               </div>
-              <component
-                v-else
-                :is="menu.comp"
-                :key="pasien"
-                :pasien="pasien"
-                :kasus="store?.jnsKasusPasien"
-                :nakes="nakes"
-                depo="rnp"
-              />
+              <component v-else :is="menu?.comp" :key="pasien" :pasien="pasien" :kasus="store?.jnsKasusPasien"
+                :nakes="nakes" depo="rnp" />
             </div>
             <!-- </template>
-              <template #fallback>
+<template #fallback>
                 <AppLoader />
               </template>
-            </Suspense> -->
+</Suspense> -->
 
             <q-page-sticky position="bottom-right" :offset="[18, 18]">
               <q-btn @click="historyPasien" padding="xs" icon="icon-mat-history" color="dark">
@@ -174,7 +116,7 @@ const onShow = () => {
   ])
 }
 
-function historyPasien () {
+function historyPasien() {
   drawerRight.value = !drawerRight.value
 }
 // function getIcare () {
@@ -188,11 +130,11 @@ function historyPasien () {
 </script>
 
 <style lang="scss">
-.contain{
-    display: flex;
-    flex-direction: column;
-    height: calc(100vh - 50px);
-    overflow: hidden;
+.contain {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 50px);
+  overflow: hidden;
 }
 
 .close-btn {
@@ -210,7 +152,7 @@ function historyPasien () {
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
 
-  .vertical-xxx{
+  .vertical-xxx {
     // writing-mode:tb-rl;
     // -webkit-transform:rotate(180deg);
     // -moz-transform:rotate(180deg);

@@ -22,7 +22,7 @@
           <!-- PANEL -->
           <q-tab-panel :name="menu?.name" class="q-pa-none">
             <!-- <PemeriksaanUmumPage :pasien="props?.pasien" /> -->
-            <component :is="menu?.comp" :pasien="pasien" :kasus="kasus" />
+            <component :is="menu?.comp" :pasien="pasien" :kasus="kasus" :nakes="nakes" />
           </q-tab-panel>
         </q-tab-panels>
       </div>
@@ -48,11 +48,15 @@ const props = defineProps({
   kasus: {
     type: Object,
     default: null
+  },
+  nakes: {
+    type: String,
+    default: null
   }
 })
-const nakes = computed(() => {
-  return auth?.user?.pegawai?.kdgroupnakes
-})
+// const nakes = computed(() => {
+//   return auth?.user?.pegawai?.kdgroupnakes
+// })
 const tab = ref('perencanaan')
 
 const lab = useLaboratPoli()
@@ -86,7 +90,7 @@ const tabsxx = [
     label: 'Implementasi & Evaluasi',
     name: 'implementasi',
     icon: 'icon-mat-description',
-    // nakes: ['2', '3'],
+    nakes: ['1', '2', '3', '4', '5', '6', '', null],
     comp: defineAsyncComponent(() => import('./comp/implementasi/IndexPage.vue'))
   }
 
@@ -100,9 +104,9 @@ const menu = computed(() => {
 
 const tabs = computed(() => {
 
-  // return tabsxx.filter(i => i?.nakes?.includes(nakes.value)) ?? tabsxx
+  return tabsxx.filter(i => i?.nakes?.includes(props?.nakes))
 
-  return tabsxx
+  // return tabsxx
 })
 
 </script>
