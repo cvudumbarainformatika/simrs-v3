@@ -70,7 +70,7 @@ export const useImplementasiEdukasiRanapStore = defineStore('implementasi-edukas
         console.log('respon list implementasi', resp);
 
         if (resp?.status === 200) {
-
+          this.items = resp?.data
         }
       } catch (error) {
         console.log('implementasi error', error);

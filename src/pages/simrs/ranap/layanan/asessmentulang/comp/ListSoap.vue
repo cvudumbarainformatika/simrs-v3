@@ -391,7 +391,7 @@ const props = defineProps({
 
 })
 
-console.log('props', props?.pasien)
+// console.log('props', props?.pasien)
 
 // eslint-disable-next-line no-unused-vars
 const {
