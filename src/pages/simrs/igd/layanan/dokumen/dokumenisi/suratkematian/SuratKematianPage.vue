@@ -1,8 +1,10 @@
 <template>
-  <div v-if="store.nosurat === null || store.nosurat === ''">
+  <!-- <div v-if="store.nosurat === null || store.nosurat === ''"> -->
+  <div>
     <span class="text-bold text-h5"> Belum Ada Dokumen </span>
   </div>
-  <div class="full-height full-height q-pa-sm" v-else>
+  <!-- <div class="full-height full-height q-pa-sm" v-else> -->
+  <div class="full-height full-height q-pa-sm">
     <q-btn ref="refPrint" v-print="printObj" unelevated color="dark" round size="sm" icon="icon-mat-print">
       <q-tooltip class="primary" :offset="[10, 10]">
         Print
@@ -15,9 +17,9 @@
   </div>
 </template>
 <script setup>
-import KopSurat from '../../KopSurat.vue';
-import IsiSuratKematianPage from './IsiSuratKematianPage.vue';
-import { usePlannStore } from 'src/stores/simrs/igd/plann';
+import KopSurat from '../../KopSurat.vue'
+import IsiSuratKematianPage from './IsiSuratKematianPage.vue'
+import { usePlannStore } from 'src/stores/simrs/igd/plann'
 
 const store = usePlannStore()
 
