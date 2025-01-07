@@ -126,7 +126,8 @@ export const useImplementasiEdukasiRanapStore = defineStore('implementasi-edukas
         api.post('v1/simrs/pelayanan/simpanimplementasi-edukasi', this.form)
           .then(resp => {
             if (resp?.status === 200) {
-              this.items.unshift(resp.data?.result)
+              this.items.unshift(resp?.data?.result)
+              this.initReset()
               notifSuccess(resp)
             }
             this.loadingSave = false
@@ -138,21 +139,6 @@ export const useImplementasiEdukasiRanapStore = defineStore('implementasi-edukas
             reject(err)
           })
       })
-
-      // try {
-      //   const resp = await api.post('v1/simrs/pelayanan/simpanimplementasi-edukasi', this.form)
-      //   // console.log('respon implementasi', resp);
-
-      //   if (resp?.status === 200) {
-      //     this.items.unshift(...resp.data?.result)
-      //     notifSuccess(resp)
-      //   }
-      //   this.loadingSave = false
-      // } catch (error) {
-      //   console.log('save implementasi error', error);
-      //   this.loadingSave = false
-
-      // }
 
     },
 
