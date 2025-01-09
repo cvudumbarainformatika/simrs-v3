@@ -1330,11 +1330,14 @@ export const useLaporanMutasiFiFoFarmasiStore = defineStore('laporan_mutasi_fifo
         })
           .onOk(async () => {
             this.setParams('page', 1)
-            this.meta = {}
+            this.meta = {
+              current_page: 0,
+              last_page: 5
+            }
             this.ketProses = 'Mengambil data halaman '
 
             let currentPage = 1
-            let totalPages = 1
+            let totalPages = 5
             do {
               param.params.page = currentPage // Tambahkan parameter halaman
               const resp = await api.get('v1/simrs/laporan/farmasi/persediaan/get-mutasi', param)
@@ -1359,9 +1362,12 @@ export const useLaporanMutasiFiFoFarmasiStore = defineStore('laporan_mutasi_fifo
       } else {
         this.ketProses = 'Mengambil data halaman '
 
-
+        this.meta = {
+          current_page: 0,
+          last_page: 5
+        }
         let currentPage = this.meta?.current_page + 1 ?? 1
-        let totalPages = this.meta?.last_page ?? 1
+        let totalPages = this.meta?.last_page ?? 5
         do {
           param.params.page = currentPage // Tambahkan parameter halaman
           const resp = await api.get('v1/simrs/laporan/farmasi/persediaan/get-mutasi', param)
@@ -1483,8 +1489,12 @@ export const useLaporanMutasiFiFoFarmasiStore = defineStore('laporan_mutasi_fifo
         items = this.items
       } else {
         items = this.items
+        this.meta = {
+          current_page: 0,
+          last_page: 5
+        }
         let currentPage = this.meta?.current_page + 1 ?? 1
-        let totalPages = this.meta?.last_page ?? 1
+        let totalPages = this.meta?.last_page ?? 5
         do {
           param.params.page = currentPage // Tambahkan parameter halaman
           const resp = await api.get('v1/simrs/laporan/farmasi/persediaan/get-mutasi', param)
