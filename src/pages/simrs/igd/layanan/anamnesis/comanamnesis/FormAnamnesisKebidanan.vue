@@ -1,30 +1,15 @@
 <template>
   <div class="fit column absolute">
     <div class="col full-height ">
-      <q-card
-        flat
-        bordered
-        square
-        class="full-height "
-        style="overflow: hidden;"
-      >
-        <q-form
-          ref="refForm"
-          @submit="onSubmit"
-          class="column full-height"
-        >
+      <q-card flat bordered square class="full-height " style="overflow: hidden;">
+        <q-form ref="refForm" @submit="onSubmit" class="column full-height">
           <q-card-section class="q-px-md q-py-xs bg-primary text-white col-auto full-width">
             <div class="row items-center justify-between">
               <div class="f-12 text-weight-bold">
                 Form Anamnesis
               </div>
               <div>
-                <q-btn
-                  flat
-                  dense
-                  size="md"
-                  icon="icon-mat-history"
-                >
+                <q-btn flat dense size="md" icon="icon-mat-history">
                   <q-tooltip class="bg-dark text-white">
                     {{ tooltip }}
                   </q-tooltip>
@@ -34,62 +19,19 @@
           </q-card-section>
           <q-card-section class="col full-height scroll">
             <div class="row q-col-gutter-sm ">
-              <q-input
-                v-model="store.form.keluhanutama"
-                outlined
-                autogrow
-                stack-label
-                standout="bg-yellow-3"
-                label="Keluhan Utama"
-                :rules="[val => !!val || 'Harap Diisi terlebih dahulu']"
-                hide-bottom-space
-                style="width:50%"
-              />
-              <q-input
-                v-model="store.form.riwayatpenyakitsekarang"
-                outlined
-                autogrow
-                standout="bg-yellow-3"
-                label="Riwayat Penyakit Sekarang"
-                stack-label
-                style="width:50%"
-              />
-              <q-input
-                v-model="store.form.riwayatpenyakit"
-                outlined
-                autogrow
-                standout="bg-yellow-3"
-                label="Riwayat Penyakit (Dahulu)"
-                stack-label
-                style="width:50%"
-              />
-              <q-input
-                v-model="store.form.riwayatpengobatan"
-                outlined
-                autogrow
-                standout="bg-yellow-3"
-                style="width:50%"
-                label="Riwayat Pengobatan"
-                stack-label
-              />
-              <q-input
-                v-model="store.form.riwayatpenyakitkeluarga"
-                outlined
-                autogrow
-                standout="bg-yellow-3"
-                style="width:50%"
-                label="Riwayat Penyakit Keluarga"
-                stack-label
-              />
-              <q-input
-                v-model="store.form.riwayatpekerjaan"
-                outlined
-                autogrow
-                standout="bg-yellow-3"
-                style="width:50%"
-                label="Riwayat Pekerjaan yg berhubungan dgn zat berbahaya"
-                stack-label
-              />
+              <q-input v-model="store.form.keluhanutama" outlined autogrow stack-label standout="bg-yellow-3"
+                label="Keluhan Utama" :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" hide-bottom-space
+                style="width:50%" />
+              <q-input v-model="store.form.riwayatpenyakitsekarang" outlined autogrow standout="bg-yellow-3"
+                label="Riwayat Penyakit Sekarang" stack-label style="width:50%" />
+              <q-input v-model="store.form.riwayatpenyakit" outlined autogrow standout="bg-yellow-3"
+                label="Riwayat Penyakit (Dahulu)" stack-label style="width:50%" />
+              <q-input v-model="store.form.riwayatpengobatan" outlined autogrow standout="bg-yellow-3" style="width:50%"
+                label="Riwayat Pengobatan" stack-label />
+              <q-input v-model="store.form.riwayatpenyakitkeluarga" outlined autogrow standout="bg-yellow-3"
+                style="width:50%" label="Riwayat Penyakit Keluarga" stack-label />
+              <q-input v-model="store.form.riwayatpekerjaan" outlined autogrow standout="bg-yellow-3" style="width:50%"
+                label="Riwayat Pekerjaan yg berhubungan dgn zat berbahaya" stack-label />
               <div class="col-12">
                 <div class="text-weight-bold">
                   Riwayat Alergi
@@ -99,32 +41,12 @@
                   oleh pasien
                 </div>
                 <q-separator class="q-my-sm" />
-                <q-checkbox
-                  v-for="(al, i) in store.alergis"
-                  :key="i"
-                  v-model="store.selection"
-                  :val="al"
-                  :label="al"
-                  color="primary"
-                  @update:model-value="updateSelection"
-                />
-                <q-input
-                  v-model="store.form.riwayatalergi"
-                  outlined
-                  label="Riwayat"
-                  standout="bg-yellow-3"
-                  readonly
-                  class="q-mb-sm hidden"
-                  autogrow
-                />
-                <q-input
-                  v-model="store.form.keteranganalergi"
-                  outlined
-                  autogrow
-                  label="Keterangan Alergi"
-                  stack-label
-                  standout="bg-yellow-3"
-                />
+                <q-checkbox v-for="(al, i) in store.alergis" :key="i" v-model="store.selection" :val="al" :label="al"
+                  color="primary" @update:model-value="updateSelection" />
+                <q-input v-model="store.form.riwayatalergi" outlined label="Riwayat" standout="bg-yellow-3" readonly
+                  class="q-mb-sm hidden" autogrow />
+                <q-input v-model="store.form.keteranganalergi" outlined autogrow label="Keterangan Alergi" stack-label
+                  standout="bg-yellow-3" />
               </div>
               <div class="col-12 q-mt-xs">
                 <q-separator class="q-my-xs" />
@@ -132,7 +54,8 @@
                   Skreening Gizi :
                 </div>
                 <div class="col-12">
-                  <q-option-group :options="optionskriniggizi" v-model="store.form.optionskriniggizi" @update:model-value="metodeskrininggizi" />
+                  <q-option-group :options="optionskriniggizi" v-model="store.form.optionskriniggizi"
+                    @update:model-value="metodeskrininggizi" />
                 </div>
               </div>
               <div v-if="store.form.optionskriniggizi === 1">
@@ -143,14 +66,8 @@
                       Apakah Ada Penurunan Berat badan yang tidak diinginkan selama 6 Bulan terakhir ?
                     </div>
                     <div class="col-4">
-                      <q-option-group
-                        v-model="store.form.skreeninggizi"
-                        :options="optionSkreening"
-                        color="primary"
-                        inline
-                        dense
-                        @update:model-value="lihatPerubahan"
-                      />
+                      <q-option-group v-model="store.form.skreeninggizi" :options="optionSkreening" color="primary"
+                        inline dense @update:model-value="lihatPerubahan" />
                     </div>
                   </div>
                   <div class="row items-center">
@@ -158,14 +75,8 @@
                       Apakah Asupan Makan berkurang karena tidak nafsu makan ?
                     </div>
                     <div class="col-4">
-                      <q-option-group
-                        v-model="store.form.asupanmakan"
-                        :options="optionAsupanMakan"
-                        color="primary"
-                        inline
-                        dense
-                        @update:model-value="lihatPerubahan"
-                      />
+                      <q-option-group v-model="store.form.asupanmakan" :options="optionAsupanMakan" color="primary"
+                        inline dense @update:model-value="lihatPerubahan" />
                     </div>
                   </div>
                 </div>
@@ -176,17 +87,9 @@
                       Kondisi Khusus (Penyakit DM/Kemoterapi/haemodialisa/geriatri/imunitas menurun/lain-lain):
                     </div>
                     <div class="col-2">
-                      <q-select
-                        v-model="store.form.kondisikhusus"
-                        transition-show="flip-up"
-                        transition-hide="flip-down"
-                        option-label="label"
-                        option-value="optionKondisiKhusus.value"
-                        dense
-                        outlined
-                        :options="optionKondisiKhusus"
-                        @update:model-value="(val) => lihatPerubahan(val, 1)"
-                      />
+                      <q-select v-model="store.form.kondisikhusus" transition-show="flip-up" transition-hide="flip-down"
+                        option-label="label" option-value="optionKondisiKhusus.value" dense outlined
+                        :options="optionKondisiKhusus" @update:model-value="(val) => lihatPerubahan(val, 1)" />
                       <!-- <q-input
                         v-model="store.form.kondisikhusus"
                         outlined
@@ -208,7 +111,8 @@
                           <q-badge color="red" v-else>
                             {{ store.form.skor }}
                           </q-badge>
-                        </div> <div>
+                        </div>
+                        <div>
                           Keterangan :
                           <q-badge outline color="green" v-if="store.form.skor < 2">
                             {{ store.keteranganSkorGizi(store.form.skor) }}
@@ -230,14 +134,8 @@
                     Apakah Asupan Makan Berkurang Karena Tidak Nafsu Makan?
                   </div>
                   <div class="col-4">
-                    <q-option-group
-                      v-model="store.form.asupanmakanberkurang"
-                      :options="optionAsupanMakanx"
-                      color="primary"
-                      inline
-                      dense
-                      @update:model-value="lihatPerubahankasuskehamilan"
-                    />
+                    <q-option-group v-model="store.form.asupanmakanberkurang" :options="optionAsupanMakanx"
+                      color="primary" inline dense @update:model-value="lihatPerubahankasuskehamilan" />
                   </div>
                 </div>
                 <div class="row items-center">
@@ -245,14 +143,8 @@
                     Ada Gangguan Metabolisme (DM, Gangguan Fungsi Tiroid, Infeksi Kronis dll)
                   </div>
                   <div class="col-4">
-                    <q-option-group
-                      v-model="store.form.metabolisme"
-                      :options="optionMetabolisme"
-                      color="primary"
-                      inline
-                      dense
-                      @update:model-value="lihatPerubahankasuskehamilan"
-                    />
+                    <q-option-group v-model="store.form.metabolisme" :options="optionMetabolisme" color="primary" inline
+                      dense @update:model-value="lihatPerubahankasuskehamilan" />
                   </div>
                 </div>
                 <div class="row items-center">
@@ -260,14 +152,8 @@
                     Ada Penambahan Berat Badan Yang Kurang Atau Lebih Sesuai Dengan Usia Kehamilan?
                   </div>
                   <div class="col-4">
-                    <q-option-group
-                      v-model="store.form.penambahanbb"
-                      :options="optionPenambahanBB"
-                      color="primary"
-                      inline
-                      dense
-                      @update:model-value="lihatPerubahankasuskehamilan"
-                    />
+                    <q-option-group v-model="store.form.penambahanbb" :options="optionPenambahanBB" color="primary"
+                      inline dense @update:model-value="lihatPerubahankasuskehamilan" />
                   </div>
                 </div>
                 <div class="row items-center">
@@ -275,14 +161,8 @@
                     Nilai Hb Kurang Dari 10g/dL, atau HCT Kurang Dari 30%
                   </div>
                   <div class="col-4">
-                    <q-option-group
-                      v-model="store.form.nilaihbberkurang"
-                      :options="optionNilaiHb"
-                      color="primary"
-                      inline
-                      dense
-                      @update:model-value="lihatPerubahankasuskehamilan"
-                    />
+                    <q-option-group v-model="store.form.nilaihbberkurang" :options="optionNilaiHb" color="primary"
+                      inline dense @update:model-value="lihatPerubahankasuskehamilan" />
                   </div>
                 </div>
                 <div class="col-12">
@@ -296,7 +176,8 @@
                       <q-badge color="green" v-else>
                         {{ store.form.skorgizix }}
                       </q-badge>
-                    </div> <div>
+                    </div>
+                    <div>
                       Keterangan :
                       <q-badge outline color="red" v-if="store.form.skorgizix >= 2">
                         {{ store.keteranganSkorGizi(store.form.skorgizix) }}
@@ -311,16 +192,12 @@
               </div>
               <div class="col-12">
                 <span class="text-bold">Assesmen Nyeri</span>
-                <q-option-group
-                  v-model="store.form.metodenyeri"
-                  @update:model-value="(val) => chagngereset(val)"
-                  inline
+                <q-option-group v-model="store.form.metodenyeri" @update:model-value="(val) => chagngereset(val)" inline
                   :options="[
                     { label: 'Numeric Rating Scale', value: 'nrt' },
                     { label: 'Behavioral Pain Scale (BPS)', value: 'bps' },
                     { label: 'NIPS (Neonatus Infant Pain Scale)', value: 'nips' }
-                  ]"
-                />
+                  ]" />
                 <!-- <span class="text-bold">Asessment Nyeri</span>
                 <q-radio v-model="store.form.metode" val="nrt" label="Numeric Rating Scale" @update:model-value="(val) => chagngereset(val)" />
                 <q-radio v-model="store.form.metode" val="bps" label="Behavioral Pain Scale (BPS)" @update:model-value="(val) => chagngereset(val)" />
@@ -337,29 +214,14 @@
                     <div>
                       Keluhan Nyeri ? <em class="text-primary">{{ store.form.keteranganscorenyeri }}</em>
                       <span class="q-ml-sm">
-                        <q-icon
-                          size="lg"
-                          color="teal"
-                          :name="iconNyeri"
-                        />
+                        <q-icon size="lg" color="teal" :name="iconNyeri" />
                       </span>
                     </div>
                     <q-separator class="q-my-xs" />
-                    <q-slider
-                      v-model="store.form.skornyeri"
-                      color="primary"
-                      thumb-color="primary"
-                      label-color="primary"
-                      label-text-color="yellow"
-                      markers
-                      :marker-labels="(val)=> fnMarkerLabel"
-                      marker-labels-class="text-primary"
-                      label-always
-                      switch-label-side
-                      :min="0"
-                      :max="10"
-                      @update:model-value="store.setKeteranganSkornyeri"
-                    />
+                    <q-slider v-model="store.form.skornyeri" color="primary" thumb-color="primary" label-color="primary"
+                      label-text-color="yellow" markers :marker-labels="(val) => fnMarkerLabel"
+                      marker-labels-class="text-primary" label-always switch-label-side :min="0" :max="10"
+                      @update:model-value="store.setKeteranganSkornyeri" />
                   </div>
                 </div>
               </q-tab-panel>
@@ -373,41 +235,24 @@
                     - Ekspresi Wajah
                   </div>
                   <div class="col-9">
-                    <q-select
-                      v-model="store.form.ekspresiwajah"
-                      transition-show="flip-up"
-                      transition-hide="flip-down"
-                      dense
-                      outlined
-                      :options="ekspresiwajah"
-                      @update:model-value="(val) => nilaiexpresiwajah(val)"
-                    />
+                    <q-select v-model="store.form.ekspresiwajah" transition-show="flip-up" transition-hide="flip-down"
+                      dense outlined :options="ekspresiwajah" @update:model-value="(val) => nilaiexpresiwajah(val)" />
                   </div>
                   <div class="col-2">
                     - Gerakan Tangan
                   </div>
                   <div class="col-10">
-                    <q-select
-                      dense outlined
-                      v-model="store.form.gerakantangan"
-                      :options="gerakantangan"
-                      transition-show="flip-up"
-                      transition-hide="flip-down"
-                      @update:model-value="(val) => nilaigerakantangan(val)"
-                    />
+                    <q-select dense outlined v-model="store.form.gerakantangan" :options="gerakantangan"
+                      transition-show="flip-up" transition-hide="flip-down"
+                      @update:model-value="(val) => nilaigerakantangan(val)" />
                   </div>
                   <div class="col-4">
                     - Kepatuhan terhadap ventilasi mekanik
                   </div>
                   <div class="col-8">
-                    <q-select
-                      dense outlined
-                      v-model="store.form.kepatuhanventilasimekanik"
-                      :options="kepatuhanventilasimekanik"
-                      transition-show="flip-up"
-                      transition-hide="flip-down"
-                      @update:model-value="(val) => nilaikepatuhanventilasi(val)"
-                    />
+                    <q-select dense outlined v-model="store.form.kepatuhanventilasimekanik"
+                      :options="kepatuhanventilasimekanik" transition-show="flip-up" transition-hide="flip-down"
+                      @update:model-value="(val) => nilaikepatuhanventilasi(val)" />
                   </div>
                   <div class="col-12">
                     <q-separator class="q-my-xs" />
@@ -417,7 +262,8 @@
                         <q-badge :color="store.form.ketcolorbps">
                           {{ store.form.scroebps }}
                         </q-badge>
-                      </div> <div>
+                      </div>
+                      <div>
                         Keterangan : <q-badge outline :color="store.form.ketcolorbps">
                           {{ store.form.ketscorebps }}
                         </q-badge>
@@ -436,79 +282,46 @@
                     - Ekspresi Wajah
                   </div>
                   <div class="col-6">
-                    <q-select
-                      dense
-                      outlined
-                      v-model="store.form.ekspresiwajahnips"
-                      :options="ekspresiwajahnips"
-                      transition-show="flip-up"
-                      transition-hide="flip-down"
-                      @update:model-value="(val) => nilaiekspresiwajahnips(val)"
-                    />
+                    <q-select dense outlined v-model="store.form.ekspresiwajahnips" :options="ekspresiwajahnips"
+                      transition-show="flip-up" transition-hide="flip-down"
+                      @update:model-value="(val) => nilaiekspresiwajahnips(val)" />
                   </div>
                   <div class="col-6">
                     - Menangis
                   </div>
                   <div class="col-6">
-                    <q-select
-                      dense outlined
-                      v-model="store.form.menangis"
-                      :options="menangis"
-                      transition-show="flip-up"
-                      transition-hide="flip-down"
-                      @update:model-value="(val) => nilaimenangis(val)"
-                    />
+                    <q-select dense outlined v-model="store.form.menangis" :options="menangis" transition-show="flip-up"
+                      transition-hide="flip-down" @update:model-value="(val) => nilaimenangis(val)" />
                   </div>
                   <div class="col-6">
                     - Pola Nafas
                   </div>
                   <div class="col-6">
-                    <q-select
-                      dense outlined
-                      v-model="store.form.polanafas"
-                      :options="polanafas"
-                      transition-show="flip-up"
-                      transition-hide="flip-down"
-                      @update:model-value="(val) => nilaipolanafas(val)"
-                    />
+                    <q-select dense outlined v-model="store.form.polanafas" :options="polanafas"
+                      transition-show="flip-up" transition-hide="flip-down"
+                      @update:model-value="(val) => nilaipolanafas(val)" />
                   </div>
                   <div class="col-6">
                     - Lengan
                   </div>
                   <div class="col-6">
-                    <q-select
-                      dense outlined
-                      v-model="store.form.lengan"
-                      :options="lengan"
-                      transition-show="flip-up"
-                      transition-hide="flip-down" @update:model-value="(val) => nilailengan(val)"
-                    />
+                    <q-select dense outlined v-model="store.form.lengan" :options="lengan" transition-show="flip-up"
+                      transition-hide="flip-down" @update:model-value="(val) => nilailengan(val)" />
                   </div>
                   <div class="col-6">
                     - Kaki
                   </div>
                   <div class="col-6">
-                    <q-select
-                      dense outlined
-                      v-model="store.form.kaki"
-                      :options="kaki"
-                      transition-show="flip-up"
-                      transition-hide="flip-down"
-                      @update:model-value="(val) => nilaikaki(val)"
-                    />
+                    <q-select dense outlined v-model="store.form.kaki" :options="kaki" transition-show="flip-up"
+                      transition-hide="flip-down" @update:model-value="(val) => nilaikaki(val)" />
                   </div>
                   <div class="col-6">
                     - Keadaan Rangsangan
                   </div>
                   <div class="col-6">
-                    <q-select
-                      dense outlined
-                      v-model="store.form.keadaanrangsangan"
-                      :options="keadaanrangsangan"
-                      transition-show="flip-up"
-                      transition-hide="flip-down"
-                      @update:model-value="(val) => nilairangsangan(val)"
-                    />
+                    <q-select dense outlined v-model="store.form.keadaanrangsangan" :options="keadaanrangsangan"
+                      transition-show="flip-up" transition-hide="flip-down"
+                      @update:model-value="(val) => nilairangsangan(val)" />
                   </div>
                   <div class="col-12">
                     <q-separator class="q-my-xs" />
@@ -518,7 +331,8 @@
                         <q-badge :color="store.form.ketcolornips">
                           {{ store.form.scroenips }}
                         </q-badge>
-                      </div> <div>
+                      </div>
+                      <div>
                         Keterangan : <q-badge outline :color="store.form.ketcolornips">
                           {{ store.form.ketscorenips }}
                         </q-badge>
@@ -561,15 +375,9 @@
               </div>
               <div class="col-8">
                 <!-- <q-select dense outlined v-model="store.form.nyerihilang" :options="nyerihilang" /> -->
-                <q-checkbox
-                  v-for="(al, i) in nyerihilang"
-                  :key="i"
-                  v-model="store.pilihnyerihilang"
-                  :val="al"
-                  :label="al"
-                  color="primary"
-                  @update:model-value="updateNyerihilang"
-                /> <q-input label="Sebutkan" dense v-model="store.form.sebutkannyerihilang" v-if="store.pilihnyerihilang.includes('Lainnya')" />
+                <q-checkbox v-for="(al, i) in nyerihilang" :key="i" v-model="store.pilihnyerihilang" :val="al"
+                  :label="al" color="primary" @update:model-value="updateNyerihilang" /> <q-input label="Sebutkan" dense
+                  v-model="store.form.sebutkannyerihilang" v-if="store.pilihnyerihilang.includes('Lainnya')" />
               </div>
             </div>
             <q-separator class="q-my-xs" />
@@ -581,50 +389,33 @@
                 - Bicara
               </div>
               <div class="col-6">
-                <q-option-group
-                  v-model="store.form.kebutuhankomunikasidanedukasi"
-                  :options="optionkebutuhankomunikasidanedukasi"
-                  color="primary"
-                  inline
-                  dense
-                />
-                <q-input v-model="store.form.sebutkankomunaksilainnya" dense label="Sebutkan" v-if="store.form.kebutuhankomunikasidanedukasi === 'Lainnya'" />
+                <q-option-group v-model="store.form.kebutuhankomunikasidanedukasi"
+                  :options="optionkebutuhankomunikasidanedukasi" color="primary" inline dense />
+                <q-input v-model="store.form.sebutkankomunaksilainnya" dense label="Sebutkan"
+                  v-if="store.form.kebutuhankomunikasidanedukasi === 'Lainnya'" />
               </div>
               <div class="col-6">
                 - Dibutuhkan Penerjemah
               </div>
               <div class="col-6">
-                <q-option-group
-                  v-model="store.form.penerjemah"
-                  :options="optionpenerjemah"
-                  color="primary"
-                  inline
-                  dense
-                /><q-input v-model="store.form.sebutkanpenerjemah" dense label="Sebutkan" v-if="store.form.penerjemah === 'Ya'" />
+                <q-option-group v-model="store.form.penerjemah" :options="optionpenerjemah" color="primary" inline
+                  dense /><q-input v-model="store.form.sebutkanpenerjemah" dense label="Sebutkan"
+                  v-if="store.form.penerjemah === 'Ya'" />
               </div>
               <div class="col-6">
                 - Bahasa Isyarat
               </div>
               <div class="col-6">
-                <q-option-group
-                  v-model="store.form.bahasaisyarat"
-                  :options="optionbahasaisyarat"
-                  color="primary"
-                  inline
-                  dense
-                />
+                <q-option-group v-model="store.form.bahasaisyarat" :options="optionbahasaisyarat" color="primary" inline
+                  dense />
               </div>
               <div class="col-6">
                 - Hambatan
               </div>
               <div class="col-6">
-                <q-option-group
-                  v-model="store.form.hamabatan"
-                  :options="optionhamabatan"
-                  color="primary"
-                  inline
-                  dense
-                /><q-input v-model="store.form.sebutkanhambatan" dense label="Sebutkan" v-if="store.form.hamabatan === 'Ya'" />
+                <q-option-group v-model="store.form.hamabatan" :options="optionhamabatan" color="primary" inline
+                  dense /><q-input v-model="store.form.sebutkanhambatan" dense label="Sebutkan"
+                  v-if="store.form.hamabatan === 'Ya'" />
               </div>
             </div>
             <q-separator class="q-my-xs" />
@@ -636,77 +427,36 @@
                 - Pernah :
               </div>
               <div class="col-6">
-                <q-option-group
-                  v-model="store.form.alatkontrasepsi"
-                  :options="optionAlatkontrasepsi"
-                  color="primary"
-                  inline
-                  dense
-                />
+                <q-option-group v-model="store.form.alatkontrasepsi" :options="optionAlatkontrasepsi" color="primary"
+                  inline dense />
               </div>
               <div class="col-6">
                 - Jenis :
               </div>
               <div class="col-6">
-                <q-select
-                  outlined=""
-                  v-model="store.form.jeniskontasepsi"
-                  :options="optionJenisKOntasepsi"
-                  color="primary"
-                  inline
-                  dense
-                  transition-show="flip-up"
-                  transition-hide="flip-down"
-                />
+                <q-select outlined="" v-model="store.form.jeniskontasepsi" :options="optionJenisKOntasepsi"
+                  color="primary" inline dense transition-show="flip-up" transition-hide="flip-down" />
               </div>
               <div class="col-6 ">
                 - Lama Pemakaian :
               </div>
               <div class="col-6 ">
                 <div class="row q-col-gutter-sm">
-                  <q-input
-                    v-model="store.form.tahunlamapemakaiankontrasepsi"
-                    label="Tahun"
-                    type="number"
-                    dense
-                    outlined
-                    style="width: 80px;"
-                  />
-                  <q-input
-                    v-model="store.form.bulanlamapemakaiankontrasepsi"
-                    label="Bulan"
-                    type="number"
-                    dense
-                    outlined
-                    style="width: 80px;"
-                  />
-                  <q-input
-                    v-model="store.form.minggulamapemakaiankontrasepsi"
-                    label="Minggu"
-                    type="number"
-                    dense
-                    outlined
-                    style="width: 80px;"
-                  />
-                  <q-input
-                    v-model="store.form.harilamapemakaiankontrasepsi"
-                    label="Hari"
-                    type="number"
-                    dense
-                    outlined
-                    style="width: 80px;"
-                  />
+                  <q-input v-model="store.form.tahunlamapemakaiankontrasepsi" label="Tahun" type="number" dense outlined
+                    style="width: 80px;" />
+                  <q-input v-model="store.form.bulanlamapemakaiankontrasepsi" label="Bulan" type="number" dense outlined
+                    style="width: 80px;" />
+                  <q-input v-model="store.form.minggulamapemakaiankontrasepsi" label="Minggu" type="number" dense
+                    outlined style="width: 80px;" />
+                  <q-input v-model="store.form.harilamapemakaiankontrasepsi" label="Hari" type="number" dense outlined
+                    style="width: 80px;" />
                 </div>
               </div>
               <div class="col-6">
                 - Keluhan :
               </div>
               <div class="col-6">
-                <q-input
-                  v-model="store.form.keluhankontrasepsi"
-                  outlined
-                  dense
-                />
+                <q-input v-model="store.form.keluhankontrasepsi" outlined dense />
               </div>
             </div>
             <q-separator class="q-my-xs" />
@@ -719,15 +469,10 @@
               </div>
               <div class="col-6">
                 <div class="row q-col-gutter-sm">
-                  <q-select
-                    v-model="store.form.statuspernikahan"
-                    :options="optionStatusPernikahan"
-                    color="primary"
-                    outlined
-                    dense
-                    transition-show="flip-up"
-                    transition-hide="flip-down"
-                  /><q-input v-model="store.form.jumlahpernikahan" outlined type="number" dense label="Berapa Kali" v-if="store.form.statuspernikahan === 'Menikah'" />
+                  <q-select v-model="store.form.statuspernikahan" :options="optionStatusPernikahan" color="primary"
+                    outlined dense transition-show="flip-up" transition-hide="flip-down" /><q-input
+                    v-model="store.form.jumlahpernikahan" outlined type="number" dense label="Berapa Kali"
+                    v-if="store.form.statuspernikahan === 'Menikah'" />
                 </div>
               </div>
               <div class="col-6">
@@ -737,15 +482,13 @@
                 <q-input v-model="store.form.umurpertamanikah" outlined type="number" dense />
               </div>
               <div class="col-12 ">
-                - Kawin Dengan Suami Ke  <q-btn round color="primary" icon="icon-mat-post_add" size="sm" @click="opendialog()" />
+                - Kawin Dengan Suami Ke <q-btn round color="primary" icon="icon-mat-post_add" size="sm"
+                  @click="opendialog()" />
               </div>
               <div class="col-12">
                 <q-card>
                   <div v-if="lists?.length > 0">
-                    <q-list
-                      v-for="(item , n) in lists"
-                      :key="n"
-                    >
+                    <q-list v-for="(item, n) in lists" :key="n">
                       <q-item>
                         <q-item-section>
                           <q-item-label>Suami Ke :</q-item-label>
@@ -761,14 +504,8 @@
                         </q-item-section>
                         <q-separator vertical color="primary" />
                         <q-item-section side>
-                          <q-btn
-                            flat
-                            round
-                            size="sm"
-                            icon="icon-mat-delete"
-                            color="negative"
-                            @click="hapusItem(item.id)"
-                          />
+                          <q-btn flat round size="sm" icon="icon-mat-delete" color="negative"
+                            @click="hapusItem(item.id)" />
                         </q-item-section>
                       </q-item>
                       <q-separator />
@@ -801,10 +538,8 @@
                 - Keteraturan
               </div>
               <div class="col-6">
-                <q-select
-                  v-model="store.form.keteraturan" transition-show="flip-up"
-                  transition-hide="flip-down" outlined :options="keteraturan" dense
-                />
+                <q-select v-model="store.form.keteraturan" transition-show="flip-up" transition-hide="flip-down"
+                  outlined :options="keteraturan" dense />
               </div>
               <div class="col-6">
                 - Lama Hari
@@ -816,15 +551,10 @@
                 - Keluhan Haid
               </div>
               <div class="col-6">
-                <q-select
-                  v-model="store.form.keluhanhaid"
-                  transition-show="flip-up"
-                  transition-hide="flip-down"
-                  outlined
-                  :options="keluhan"
-                  dense
-                />
-                <q-input dense label="Jelaskan" v-model="store.form.sebutkankeluhanhaid" v-if="store.form.keluhanhaid === 'Ya'" />
+                <q-select v-model="store.form.keluhanhaid" transition-show="flip-up" transition-hide="flip-down"
+                  outlined :options="keluhan" dense />
+                <q-input dense label="Jelaskan" v-model="store.form.sebutkankeluhanhaid"
+                  v-if="store.form.keluhanhaid === 'Ya'" />
               </div>
               <div class="col-12 text-bold">
                 <q-separator class="q-mt-sm" />
@@ -834,40 +564,22 @@
                 - Apakah terdapat riwayat penyakit ginekologi?
               </div>
               <div class="col-6">
-                <q-select
-                  v-model="store.form.riwayatginekologi"
-                  transition-show="flip-up"
-                  transition-hide="flip-down"
-                  outlined
-                  :options="riwayatgonekologo"
-                  dense
-                  @update:model-value="(val) => riwayatgonekologi(val)"
-                />
+                <q-select v-model="store.form.riwayatginekologi" transition-show="flip-up" transition-hide="flip-down"
+                  outlined :options="riwayatgonekologo" dense @update:model-value="(val) => riwayatgonekologi(val)" />
               </div>
               <div class="col-12" v-if="store.form.riwayatginekologi === 'Ya'">
-                <q-checkbox
-                  v-for="(al, i) in store.ginekologis"
-                  :key="i"
-                  v-model="store.selectionginekologis"
-                  :val="al"
-                  :label="al"
-                  color="primary"
-                  @update:model-value="updateSelectionginekologis"
-                /> <q-input label="Sebutkan" dense v-model="store.form.sebutkanginekologis" v-if="store.selectionginekologis.includes('Lain-lain')" />
+                <q-checkbox v-for="(al, i) in store.ginekologis" :key="i" v-model="store.selectionginekologis" :val="al"
+                  :label="al" color="primary" @update:model-value="updateSelectionginekologis" /> <q-input
+                  label="Sebutkan" dense v-model="store.form.sebutkanginekologis"
+                  v-if="store.selectionginekologis.includes('Lain-lain')" />
                 <q-separator class="q-mt-sm" />
               </div>
               <div class="col-12 text-bold">
                 Riwayat Hamil
               </div>
               <div class="col-6">
-                <app-input-date
-                  :model="store.form.haid"
-                  mask="date"
-                  outlined
-                  standout="bg-yellow-3"
-                  label="Hari Pertama Haid Terakir"
-                  @set-model="val=>store.form.haid=val"
-                >
+                <app-input-date :model="store.form.haid" mask="date" outlined standout="bg-yellow-3"
+                  label="Hari Pertama Haid Terakir" @set-model="val => store.form.haid = val" valid>
                   <template #append>
                     <q-icon name="event" class="cursor-pointer">
                       <q-popup-proxy cover transition-show="scale" transition-hide="scale">
@@ -882,41 +594,17 @@
                 </app-input-date>
               </div>
               <div class="col-6">
-                <q-input
-                  dense
-                  v-model="store.form.gravida"
-                  outlined
-                  standout="bg-yellow-3"
-                  label="Gravida"
-                />
+                <q-input dense v-model="store.form.gravida" outlined standout="bg-yellow-3" label="Gravida" />
               </div>
               <div class="col-6">
-                <q-input
-                  v-model="store.form.partus"
-                  outlined
-                  dense
-                  standout="bg-yellow-3"
-                  label="Partus"
-                />
+                <q-input v-model="store.form.partus" outlined dense standout="bg-yellow-3" label="Partus" />
               </div>
               <div class="col-6">
-                <q-input
-                  v-model="store.form.abortus"
-                  outlined
-                  dense
-                  standout="bg-yellow-3"
-                  label="Abortus"
-                />
+                <q-input v-model="store.form.abortus" outlined dense standout="bg-yellow-3" label="Abortus" />
               </div>
               <div class="col-6">
-                <app-input-date
-                  :model="store.form.taksiranpartus"
-                  mask="date"
-                  outlined
-                  standout="bg-yellow-3"
-                  label="Taksiran Partus"
-                  @set-model="val=>store.form.taksiranpartus=val"
-                >
+                <app-input-date :model="store.form.taksiranpartus" mask="date" outlined standout="bg-yellow-3"
+                  label="Taksiran Partus" @set-model="val => store.form.taksiranpartus = val">
                   <template #append>
                     <q-icon name="event" class="cursor-pointer">
                       <q-popup-proxy cover transition-show="scale" transition-hide="scale">
@@ -931,64 +619,35 @@
                 </app-input-date>
               </div>
               <div class="col-6">
-                <q-select
-                  v-model="store.form.asupanantenatal"
-                  transition-show="flip-up"
-                  transition-hide="flip-down"
-                  label="Asuhan Antenatal "
-                  outlined
-                  :options="asupanantenatal"
-                  dense
-                  @update:model-value="(val) => fungsiasupanantenatal(val)"
-                />
+                <q-select v-model="store.form.asupanantenatal" transition-show="flip-up" transition-hide="flip-down"
+                  label="Asuhan Antenatal " outlined :options="asupanantenatal" dense
+                  @update:model-value="(val) => fungsiasupanantenatal(val)" />
               </div>
               <div class="col-12" v-if="store.form.asupanantenatal === 'Ya'">
-                <q-checkbox
-                  v-for="(alx, ix) in store.asupanantenatals"
-                  :key="ix"
-                  v-model="store.selectionasupanantenatal"
-                  :val="alx"
-                  :label="alx"
-                  color="primary"
-                  @update:model-value="updateasupanantenatal"
-                /> <q-input label="Sebutkan" dense v-model="store.form.sebutkanasupanantenatal" v-if="store.selectionasupanantenatal.includes('Lain-Lain')" />
+                <q-checkbox v-for="(alx, ix) in store.asupanantenatals" :key="ix"
+                  v-model="store.selectionasupanantenatal" :val="alx" :label="alx" color="primary"
+                  @update:model-value="updateasupanantenatal" /> <q-input label="Sebutkan" dense
+                  v-model="store.form.sebutkanasupanantenatal"
+                  v-if="store.selectionasupanantenatal.includes('Lain-Lain')" />
               </div>
               <div class="col-6">
-                <q-select
-                  v-model="store.form.frekuensi"
-                  transition-show="flip-up"
-                  transition-hide="flip-down"
-                  label="Frekuensi"
-                  outlined
-                  :options="frekuensi"
-                  dense
-                />
+                <q-select v-model="store.form.frekuensi" transition-show="flip-up" transition-hide="flip-down"
+                  label="Frekuensi" outlined :options="frekuensi" dense />
               </div>
               <div class="col-6">
-                <q-select
-                  v-model="store.form.imunisasitt"
-                  transition-show="flip-up"
-                  transition-hide="flip-down"
-                  label="Imunisasi TT"
-                  outlined
-                  :options="imunisasitt"
-                  dense
-                  @update:model-value="(val) => fungsiimunisasit(val)"
-                /> <q-input label="Berpa kali" type="number" dense v-model="store.form.sebutkanimunisasitt" v-if="store.form.imunisasitt === 'Ya'" />
+                <q-select v-model="store.form.imunisasitt" transition-show="flip-up" transition-hide="flip-down"
+                  label="Imunisasi TT" outlined :options="imunisasitt" dense
+                  @update:model-value="(val) => fungsiimunisasit(val)" /> <q-input label="Berpa kali" type="number"
+                  dense v-model="store.form.sebutkanimunisasitt" v-if="store.form.imunisasitt === 'Ya'" />
               </div>
               <div class="col-12 text-bold">
                 - Keluhan saat hamil
               </div>
               <div class="col-12">
-                <q-checkbox
-                  v-for="(al, i) in store.keluhanhamils"
-                  :key="i"
-                  v-model="store.selectionkeluhanhamils"
-                  :val="al"
-                  :label="al"
-                  color="primary"
-                  @update:model-value="updateSelectionkeluhanhamils"
-                /> <q-input label="Sebutkan" dense v-model="store.form.sebutkeluhanhamils" v-if="store.selectionkeluhanhamils.includes('Lain-lain')" />
+                <q-checkbox v-for="(al, i) in store.keluhanhamils" :key="i" v-model="store.selectionkeluhanhamils"
+                  :val="al" :label="al" color="primary" @update:model-value="updateSelectionkeluhanhamils" /> <q-input
+                  label="Sebutkan" dense v-model="store.form.sebutkeluhanhamils"
+                  v-if="store.selectionkeluhanhamils.includes('Lain-lain')" />
                 <q-separator class="q-mt-sm" />
               </div>
               <div class="col-12 text-bold">
@@ -1005,7 +664,8 @@
                 <q-separator class="q-mt-sm" />
               </div>
               <div class="col-12 text-bold">
-                Riwayat Kehamilan, Persalinan dan Nifas <q-btn round color="primary" icon="icon-mat-post_add" size="sm" @click="opendialogkehamilan()" />
+                Riwayat Kehamilan, Persalinan dan Nifas <q-btn round color="primary" icon="icon-mat-post_add" size="sm"
+                  @click="opendialogkehamilan()" />
               </div>
               <div class="col-12 full-width">
                 <div class="row" style="width: 800px;">
@@ -1046,14 +706,14 @@
                     <tbody>
                       <tr v-for="(xxx, x) in listskehamilan" :key="x">
                         <td class="text-center">
-                          {{ x+1 }}
+                          {{ x + 1 }}
                         </td>
                         <td class="text-rigth">
                           <span class="text-h7">{{ xxx?.tanggal_partus }} </span>
                           <br>
                           <q-badge outline color="primary">
                             Tempat
-                          </q-badge>  {{ xxx?.tempat }}
+                          </q-badge> {{ xxx?.tempat }}
                         </td>
                         <td class="text-center ">
                           {{ xxx?.umurkehamilan }}
@@ -1090,14 +750,8 @@
                           {{ xxx?.penyulit }}
                         </td>
                         <td class="text-center">
-                          <q-btn
-                            flat
-                            round
-                            size="sm"
-                            icon="icon-mat-delete"
-                            color="negative"
-                            @click="hapusItemKehamilan(xxx.id)"
-                          />
+                          <q-btn flat round size="sm" icon="icon-mat-delete" color="negative"
+                            @click="hapusItemKehamilan(xxx.id)" />
                         </td>
                       </tr>
                     </tbody>
@@ -1105,18 +759,9 @@
                 </div>
               </div>
               <div class="col-12">
-                <div
-                  class="text-right"
-                  style="margin-bottom: 50px;"
-                >
-                  <app-btn
-                    color="primary"
-                    label="Simpan"
-                    tooltip="Simpan Data"
-                    type="submit"
-                    tip
-                    :loading="store.loadingForm"
-                  />
+                <div class="text-right" style="margin-bottom: 50px;">
+                  <app-btn color="primary" label="Simpan" tooltip="Simpan Data" type="submit" tip
+                    :loading="store.loadingForm" />
                 </div>
               </div>
             </div>
@@ -1154,11 +799,11 @@ const optionKondisiKhusus = ref(
 const refForm = ref()
 const $q = useQuasar()
 
-function opendialog () {
+function opendialog() {
   storeHistoryPernikahan.fixed = true
 }
 
-function opendialogkehamilan () {
+function opendialogkehamilan() {
   storeHistorykehamilan.fixed = true
 }
 
@@ -1176,7 +821,7 @@ const props = defineProps({
     default: 'History Pasien'
   }
 })
-function onSubmit () {
+function onSubmit() {
   console.log('wew')
   store.saveData(props.pasien).then(() => {
     refForm.value.resetValidation()
@@ -1337,7 +982,7 @@ const optionAlatkontrasepsi = ref([
 
 const optionJenisKOntasepsi = ref(['Kondom', 'Pil KB', 'Suntik KB 1 Bulan', 'Suntik KB 3 Bulan', 'IUD', 'Implan', 'Vasektomi(MOP)', 'Tubektomi(MOW)'])
 
-function metodeskrininggizi (val) {
+function metodeskrininggizi(val) {
   store.form.optionskriniggizi = val
   if (val === 1) {
     store.form.ketmetodeskrininggizi = 'Pasien Dengan Masalah Ginekologi/Onkologi'
@@ -1355,7 +1000,7 @@ function metodeskrininggizi (val) {
     store.form.skor = 0
   }
 }
-function lihatPerubahan (val, x) {
+function lihatPerubahan(val, x) {
   if (x === 1) {
     store.form.kondisikhusus = val?.label
     store.form.skorkondisikhusus = val?.value
@@ -1363,40 +1008,40 @@ function lihatPerubahan (val, x) {
   store.hitungNilaiSkor()
 }
 
-function updateSelection (val) {
+function updateSelection(val) {
   // console.log(val.join(','))
   store.setForm('riwayatalergi', val.join(', '))
 }
 
-function updateNyerihilang (val) {
+function updateNyerihilang(val) {
   store.setForm('nyerihilang', val.join(', '))
 }
 
-function updateasupanantenatal (val) {
+function updateasupanantenatal(val) {
   if (!store.selectionasupanantenatal.includes('Lain-Lain')) {
     store.form.sebutkanasupanantenatal = ''
   }
   store.setForm('updateasupanantenatal', val.join(', '))
 }
 
-function updateSelectionginekologis (val) {
+function updateSelectionginekologis(val) {
   // console.log(val.join(','))
   store.setForm('ginekologis', val.join(', '))
 }
 
-function updateSelectionkeluhanhamils (val) {
+function updateSelectionkeluhanhamils(val) {
   if (!store.selectionkeluhanhamils.includes('Lain-lain')) {
     store.form.sebutkeluhanhamils = ''
   }
   store.setForm('keluhanhamil', val.join(', '))
 }
 
-function lihatPerubahankasuskehamilan () {
+function lihatPerubahankasuskehamilan() {
   const skor = parseInt(store.form.asupanmakanberkurang) + parseInt(store.form.metabolisme) + parseInt(store.form.penambahanbb) + parseInt(store.form.nilaihbberkurang)
   store.form.skorgizix = skor
 }
 
-function nilaiexpresiwajah (val) {
+function nilaiexpresiwajah(val) {
   if (val === 'Santai, Tanpa Ketegangan') {
     store.nilaiekspresiwajah = 1
   }
@@ -1413,7 +1058,7 @@ function nilaiexpresiwajah (val) {
   hitungscorebps()
 }
 
-function nilaigerakantangan (val) {
+function nilaigerakantangan(val) {
   if (val === 'Tidak Ada Gerakan') {
     store.nilaigerakantangan = 1
   }
@@ -1430,7 +1075,7 @@ function nilaigerakantangan (val) {
   hitungscorebps()
 }
 
-function nilaikepatuhanventilasi (val) {
+function nilaikepatuhanventilasi(val) {
   if (val === 'Toleran, Tidak Ada Perlawanan') {
     store.nilaikepatuhanventilasi = 1
   }
@@ -1447,7 +1092,7 @@ function nilaikepatuhanventilasi (val) {
   hitungscorebps()
 }
 
-function hitungscorebps () {
+function hitungscorebps() {
   // store.form.scroebps = parseInt(store.nilaiekspresiwajah) + parseInt(store.nilaigerakantangan) + parseInt(store.nilaikepatuhanventilasi)
 
   store.form.scroebps = parseInt(store.nilaiekspresiwajah) + parseInt(store.nilaigerakantangan) + parseInt(store.nilaikepatuhanventilasi)
@@ -1469,7 +1114,7 @@ function hitungscorebps () {
   }
 }
 
-function nilaiekspresiwajahnips (val) {
+function nilaiekspresiwajahnips(val) {
   if (val === 'Santai') {
     store.nilaiekspresiwajahnips = 0
   }
@@ -1479,7 +1124,7 @@ function nilaiekspresiwajahnips (val) {
   hitungscorenipsb()
 }
 
-function nilaimenangis (val) {
+function nilaimenangis(val) {
   if (val === 'Tidak Menangis') {
     store.nilaimenangis = 0
   }
@@ -1492,7 +1137,7 @@ function nilaimenangis (val) {
   hitungscorenipsb()
 }
 
-function nilaipolanafas (val) {
+function nilaipolanafas(val) {
   if (val === 'Santai') {
     store.nilaipolanafas = 0
   }
@@ -1502,7 +1147,7 @@ function nilaipolanafas (val) {
   hitungscorenipsb()
 }
 
-function nilailengan (val) {
+function nilailengan(val) {
   if (val === 'Santai') {
     store.nilailengan = 0
   }
@@ -1512,7 +1157,7 @@ function nilailengan (val) {
   hitungscorenipsb()
 }
 
-function nilaikaki (val) {
+function nilaikaki(val) {
   if (val === 'Santai') {
     store.nilaikaki = 0
   }
@@ -1522,7 +1167,7 @@ function nilaikaki (val) {
   hitungscorenipsb()
 }
 
-function nilairangsangan (val) {
+function nilairangsangan(val) {
   if (val === 'Tertidur/Bangun') {
     store.nilairangsangan = 0
   }
@@ -1532,9 +1177,9 @@ function nilairangsangan (val) {
   hitungscorenipsb()
 }
 
-function hitungscorenipsb () {
+function hitungscorenipsb() {
   store.form.scroenips = parseInt(store.nilaiekspresiwajahnips) + parseInt(store.nilaimenangis) + parseInt(store.nilaipolanafas) +
-  parseInt(store.nilailengan) + parseInt(store.nilaikaki) + parseInt(store.nilairangsangan)
+    parseInt(store.nilailengan) + parseInt(store.nilaikaki) + parseInt(store.nilairangsangan)
 
   if (store.form.scroenips === 0) {
     store.form.ketscorenips = 'Tidak Nyeri'
@@ -1554,7 +1199,7 @@ function hitungscorenipsb () {
   }
 }
 
-function chagngereset (val) {
+function chagngereset(val) {
   console.log('sasasa', val)
   if (val === 'bps') {
     resetnrt()
@@ -1570,14 +1215,14 @@ function chagngereset (val) {
   }
 }
 
-function riwayatgonekologi (val) {
+function riwayatgonekologi(val) {
   if (val === 'Tidak') {
     store.selectionginekologis = []
     store.form.sebutkanginekologis = ''
   }
 }
 
-function resetbps () {
+function resetbps() {
   store.form.ekspresiwajah = ''
   store.form.gerakantangan = ''
   store.form.kepatuhanventilasimekanik = ''
@@ -1585,12 +1230,12 @@ function resetbps () {
   store.form.ketscorebps = ''
 }
 
-function resetnrt () {
+function resetnrt() {
   store.form.keteranganscorenyeri = 'tidak ada nyeri'
   store.form.skornyeri = 0
 }
 
-function resetnips () {
+function resetnips() {
   store.form.ekspresiwajahnips = ''
   store.form.menangis = ''
   store.form.polanafas = ''
@@ -1601,7 +1246,7 @@ function resetnips () {
   store.form.ketscorenips = ''
 }
 
-function hapusItem (id) {
+function hapusItem(id) {
   $q.dialog({
     dark: true,
     title: 'Peringatan',
@@ -1618,7 +1263,7 @@ function hapusItem (id) {
   })
 }
 
-function hapusItemKehamilan (id) {
+function hapusItemKehamilan(id) {
   $q.dialog({
     dark: true,
     title: 'Peringatan',
@@ -1635,14 +1280,14 @@ function hapusItemKehamilan (id) {
   })
 }
 
-function fungsiasupanantenatal (val) {
+function fungsiasupanantenatal(val) {
   if (val === 'Tidak') {
     store.selectionasupanantenatal = []
     store.form.sebutkanasupanantenatal = ''
   }
 }
 
-function fungsiimunisasit (val) {
+function fungsiimunisasit(val) {
   if (val === 'Tidak') {
     store.form.sebutkanimunisasitt = ''
   }
