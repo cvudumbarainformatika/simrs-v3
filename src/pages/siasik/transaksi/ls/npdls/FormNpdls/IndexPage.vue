@@ -11,5 +11,5 @@
 <script setup>
 import { defineAsyncComponent } from 'vue'
 
-const AsyncComp = defineAsyncComponent(() => import('./PageNpdLS.vue'))
+const AsyncComp = defineAsyncComponent(() => import('./PageFormNpdLs.vue'))
 </script>

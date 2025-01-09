@@ -3,6 +3,7 @@ import { api } from 'src/boot/axios'
 import { date } from 'quasar'
 import { notifSuccess } from 'src/modules/utils'
 import { dataBastFarmasi } from './databast'
+import { reject } from 'q'
 // import ListdataNpdLS from 'src/pages/siasik/transaksi/ls/npdls/inpage/ListdataNpdLS.vue'
 // import { dataBastFarmasi } from 'src/stores/siasik/transaksi/ls/npdls/databast'
 
@@ -11,6 +12,8 @@ export const formNotaPermintaanDanaLS = defineStore('form_NPD_LS', {
     loading: false,
     loadingHapus: false,
     disabled: false,
+    disabledRow: false,
+    fixed: false,
     params: {
       q: '',
       tahun: date.formatDate(Date.now(), 'YYYY'),
@@ -25,7 +28,7 @@ export const formNotaPermintaanDanaLS = defineStore('form_NPD_LS', {
     reqs: {
       q: '',
       page: 1,
-      tgl: '',
+      tgl: date.formatDate(Date.now(), 'YYYY-MM-DD'),
       kodebidang: null,
       kodekegiatan: null,
       bast: null,
@@ -33,7 +36,7 @@ export const formNotaPermintaanDanaLS = defineStore('form_NPD_LS', {
       nip: null,
       volumels: null,
       rincianmanual: null,
-      subtotal: null,
+      subtotal: 0,
       jmlperkoderek108: [],
       listrinci: [],
       nonpdls: null
@@ -41,9 +44,12 @@ export const formNotaPermintaanDanaLS = defineStore('form_NPD_LS', {
       // rowsPerPage: 10,
       // rowsNumber: 0
     },
+    paramsrinci: {
+      nonpdls: ''
+    },
     form: {
       nonpdls: null,
-      tglnpdls: null,
+      tglnpdls: date.formatDate(Date.now(), 'YYYY-MM-DD'),
 
       // PPTK
       kodepptk: null,
@@ -72,8 +78,8 @@ export const formNotaPermintaanDanaLS = defineStore('form_NPD_LS', {
 
       keterangan: null,
       biayatransfer: 0,
-      rincians: [],
-      rincimanual: []
+      rincians: []
+      // rincimanual: []
     },
     rinci:
     {
@@ -134,6 +140,8 @@ export const formNotaPermintaanDanaLS = defineStore('form_NPD_LS', {
     // DATA NPD LS
     listnpdls: [],
     datanpd: [],
+    transall: [],
+    subtotalrinci: 0,
 
     bidangdanptk: [],
     bidangs: [],
@@ -145,6 +153,11 @@ export const formNotaPermintaanDanaLS = defineStore('form_NPD_LS', {
 
     npddatasave: [],
     editnpd: [],
+
+    //UNTUK VALIDASI JIKA JUMLAH MELEBIHI PAGU
+    jumlahitem: 0,
+    sisapagurinci: 0,
+
     // utuk list tersimpan
     rincians: [],
     dialogEditNpd: false,
@@ -157,6 +170,30 @@ export const formNotaPermintaanDanaLS = defineStore('form_NPD_LS', {
     openDialogRinci: false
   }),
   actions: {
+    initReset(data) {
+
+      if (data) {
+        return new Promise((resolve) => {
+          for (const key in this.form) {
+            // console.log(`${key}: ${this.form[key]}`);
+            // console.log(`${key}`);
+            this.form[key] = data[key]
+          }
+          this.form.nonpdls = data?.nonpdls
+          // console.log(this.form);
+
+
+          resolve()
+        })
+      } else {
+
+        for (const key in this.form) {
+          // console.log(`${key}: ${this.form[key]}`);
+          this.form[key] = null
+        }
+
+      }
+    },
     resetFORM() {
       const forms = Object.keys(this.form)
       for (let i = 0; i < forms.length; i++) {
@@ -196,9 +233,18 @@ export const formNotaPermintaanDanaLS = defineStore('form_NPD_LS', {
     dataTersimpan() {
       this.simpanNpdls()
     },
+    rowDisabled() {
+      this.disabledRow = true
+    },
     goToPage(val) {
       this.reqs.page = val
       this.listdatanpd()
+    },
+    refreshTable() {
+      this.reqs.page = 1
+      this.listrincians()
+      const bst = dataBastFarmasi()
+      bst.filterRekening50()
     },
     // onRequest (props) {
     //   console.log('props', props)
@@ -259,48 +305,85 @@ export const formNotaPermintaanDanaLS = defineStore('form_NPD_LS', {
       this.kegiatans = data
       // console.log('ddd', this.kegiatans)
     },
-    simpanNpdls() {
+    async simpanNpdls(add) {
       console.log('fooorm', this.form)
       this.loading = true
       return new Promise((resolve, reject) => {
         api.post('/v1/transaksi/belanja_ls/simpannpd', this.form)
           .then((resp) => {
-            console.log('nomer', this.form.nonpdls)
-            this.form = []
-            this.rinci = []
+            // console.log('nomer', this.form.nonpdls)
 
             this.reqs.subtotal = ''
             const bst = dataBastFarmasi()
+
             bst.itembelanja = []
-
-            // Ini Buat Memunculkan Nomer NPD di Front ketika disimpan
             this.form.nonpdls = resp.data?.result?.nonpdls
-            this.reqs.nonpdls = resp.data?.result?.nonpdls
-
-            this.form.nonpdls = ''
-            console.log('lihat nomer', this.form.nonpdls)
-
+            this.paramsrinci.nonpdls = resp.data?.result?.nonpdls
             this.loading = false
             notifSuccess(resp)
+            this.resetformrinci()
+            this.listrincians()
+            bst.filterRekening50()
+
             resolve(resp.data)
             // this.form.rincians = {}
           })
           .catch((err) => {
             this.loading = false
             reject(err)
+            this.form.rincians = []
           })
       })
+    },
+
+    //list di form NPDLSs
+    async listrincians() {
+      this.loading = true
+      const params = { params: this.paramsrinci }
+      return new Promise((resolve, reject) => {
+        api.get('/v1/transaksi/belanja_ls/getrincian', params).then((resp) => {
+          if (resp.status === 200) {
+            this.transall = resp.data
+            console.log('hasilall', this.transall)
+            this.loading = false
+            resolve(resp)
+          }
+        }).catch(() => { this.loading = false })
+      })
+    },
+    // async listrincians() {
+
+
+    //   try {
+    //     const resp = await api.get('/v1/transaksi/belanja_ls/getrincian', params)
+    //     // console.log('hasilall', resp);
+    //     if (resp.status === 200) {
+    //       this.transall = resp.data
+
+    //       console.log('hasilall', this.transall)
+
+
+    //       this.loading = false
+    //     }
+
+    //   }
+    //   catch (error) {
+    //     this.loading = false
+    //   }
+    // },
+    resetformrinci() {
+      this.form.rincians = []
     },
     getRincianBelanja() {
       // console.log('pagu', this.anggarans)
       this.loading = true
       // this.params.tgl = this.reqs.tgl
-      const params = { params: this.params }
+      const params = { params: this.reqs }
       return new Promise((resolve) => {
         api.get('/v1/transaksi/belanja_ls/anggaran', params)
           .then((resp) => {
             if (resp.status === 200) {
-              console.log('anggaran', resp.data)
+              // console.log('anggaran', resp.data)
               this.loading = false
               this.anggarans = resp.data
               // this.itembelanja = resp.data
@@ -330,7 +413,7 @@ export const formNotaPermintaanDanaLS = defineStore('form_NPD_LS', {
           }
         })
         : []
-      console.log('realisasi item', data)
+      // console.log('realisasi item', data)
       const rek = data.reduce((a, b) => {
         const yangsama = a.find(x => x.rek50 === b.rek50)
         if (!yangsama) {
@@ -362,21 +445,21 @@ export const formNotaPermintaanDanaLS = defineStore('form_NPD_LS', {
               x.realisasi_spjpanjar.map((x) => parseFloat(x.jumlahbelanjapanjar)).reduce((a, b) => a + b, 0) -
               x.contrapost.map((x) => parseFloat(x.nominalcontrapost)).reduce((a, b) => a + b, 0)),
 
-            kode_lo: x?.jurnal?.kode_lo,
-            uraian_lo: x?.jurnal?.uraian_lo,
-            kode_neraca1: x?.jurnal?.kode_neraca1,
-            uraian_neraca1: x?.jurnal?.uraian_neraca1,
-            kode_neraca2: x?.jurnal?.kode_neraca2,
-            uraian_neraca2: x?.jurnal?.uraian_neraca2,
-            kode_lpsal: x?.jurnal?.kode_lpsal,
-            uraian_lpsal: x?.jurnal?.uraian_lpsal,
-            kode_lak: x?.jurnal?.kode_lak,
-            uraian_lak: x?.jurnal?.uraian_lak
+            // kode_lo: x?.jurnal?.kode_lo,
+            // uraian_lo: x?.jurnal?.uraian_lo,
+            // kode_neraca1: x?.jurnal?.kode_neraca1,
+            // uraian_neraca1: x?.jurnal?.uraian_neraca1,
+            // kode_neraca2: x?.jurnal?.kode_neraca2,
+            // uraian_neraca2: x?.jurnal?.uraian_neraca2,
+            // kode_lpsal: x?.jurnal?.kode_lpsal,
+            // uraian_lpsal: x?.jurnal?.uraian_lpsal,
+            // kode_lak: x?.jurnal?.kode_lak,
+            // uraian_lak: x?.jurnal?.uraian_lak
           }
         })
         : []
       this.itembelanja = data
-      console.log('item belanja', data)
+      // console.log('item belanja', data)
     },
 
     listdatanpd() {
@@ -386,10 +469,10 @@ export const formNotaPermintaanDanaLS = defineStore('form_NPD_LS', {
         api.get('/v1/transaksi/belanja_ls/listnpdls', params)
           .then((resp) => {
             if (resp.status === 200) {
-              console.log('data NPD', resp)
+              // console.log('data NPD', resp)
               this.loading = false
               this.listnpdls = resp.data
-              this.rincianNpd(resp.data)
+              this.rincianNpd()
               resolve(resp.data)
             }
           })
@@ -443,20 +526,25 @@ export const formNotaPermintaanDanaLS = defineStore('form_NPD_LS', {
           sas.push(head)
         }
         this.datanpd = sas
-        console.log('rinciiii', this.datanpd)
+        // console.log('rinciiii', this.datanpd)
       }
     },
     hapusRinci(row) {
-      console.log('hapus rinci', row)
+      // console.log('hapus rinci', row)
       this.loadingHapus = true
       return new Promise(resolve => {
         api.post('/v1/transaksi/belanja_ls/deleterinci', row)
           .then(resp => {
             this.loadingHapus = false
-            console.log('hapus data', resp)
+            // console.log('hapus data', resp)
 
-            const bst = dataBastFarmasi()
-            bst.refreshTable()
+            // const bst = dataBastFarmasi()
+            // bst.filterRekening50()
+            this.transall = resp?.data?.data
+            this.listdatanpd()
+            if (this.transall.length < 0) {
+              this.resetFORM()
+            }
             // const index = row.rincian.findIndex(x => x.id === val.id)
             // if (index >= 0) {
             //   row.rincian.splice(index, 1)

@@ -1,11 +1,5 @@
 <template>
-  <q-dialog
-    class="q-mt-xl"
-    @hide="hiddenDialog()"
-    @show="init()"
-    backdrop-filter="blur(4px)"
-    persistent
-  >
+  <q-dialog class="q-mt-xl" @hide="hiddenDialog()" @show="init()" backdrop-filter="blur(4px)" persistent>
     <q-card style="min-width:50vw;">
       <q-card-section class="row items-center">
         <div class="column">
@@ -17,59 +11,26 @@
           </div>
         </div>
         <q-space />
-        <q-btn
-          v-close-popup
-          icon="icon-mat-clear"
-          flat
-          round
-          dense
-        />
+        <q-btn v-close-popup icon="icon-mat-clear" flat round dense />
       </q-card-section>
       <q-separator />
       <q-card-section>
         <q-list>
           <template v-if="carisrt.bastfarmasis.length">
-            <q-table
-              class="my-sticky-header"
-              :rows="carisrt.bastfarmasis"
-              :columns="columns"
-              row-key="name"
-              @request="carisrt.onRequest"
-              v-model:pagination="carisrt.reqs"
-              :filter="carisrt.reqs.q"
-              :loading="carisrt.loading"
-              :rows-per-page-options="[10,50,100,200,500]"
-            >
+            <q-table class="my-sticky-header" :rows="carisrt.bastfarmasis" :columns="columns" row-key="name"
+              @request="carisrt.onRequest" v-model:pagination="carisrt.reqs" :filter="carisrt.reqs.q"
+              :loading="carisrt.loading" :rows-per-page-options="[10, 50, 100, 200, 500]">
               <template #top-left>
                 <div class="flex q-qutter-sm z-top">
                   <div>
-                    <q-input
-                      v-model="carisrt.reqs.q"
-                      outlined
-                      dark
-                      color="white"
-                      dense
-                      placeholder="Cari BAST ..."
-                      debounce="500"
-                      style="min-width: 200px;"
-                      @keyup.enter="carisrt.goToPage(1)"
-                    >
-                      <template
-                        v-if="carisrt.reqs.q"
-                        #append
-                      >
-                        <q-icon
-                          name="icon-mat-close"
-                          size="xs"
-                          class="cursor-pointer"
-                          @click.stop.prevent="clearSearch"
-                        />
+                    <q-input v-model="carisrt.reqs.q" outlined dark color="white" dense placeholder="Cari BAST ..."
+                      debounce="500" style="min-width: 200px;" @keyup.enter="carisrt.goToPage(1)">
+                      <template v-if="carisrt.reqs.q" #append>
+                        <q-icon name="icon-mat-close" size="xs" class="cursor-pointer"
+                          @click.stop.prevent="clearSearch" />
                       </template>
                       <template #prepend>
-                        <q-icon
-                          size="sm"
-                          name="icon-mat-search"
-                        />
+                        <q-icon size="sm" name="icon-mat-search" />
                       </template>
                     </q-input>
                   </div>
@@ -85,13 +46,8 @@
                   </q-td>
                   <q-td>
                     <div class="row justify-end">
-                      <q-btn
-                        outline
-                        size="sm"
-                        class="q-px-md"
-                        label="Pilih"
-                        @click="pilihDataSerahterima(props?.row.nobast)"
-                      />
+                      <q-btn outline size="sm" class="q-px-md" label="Pilih"
+                        @click="pilihDataSerahterima(props?.row.nobast) && gantibotton(props?.row)" />
                     </div>
                   </q-td>
                 </q-tr>
@@ -99,46 +55,20 @@
             </q-table>
           </template>
           <template v-if="carisrt.konsinyasis.length">
-            <q-table
-              class="my-sticky-header"
-              :rows="carisrt.konsinyasis"
-              :columns="columnkonsinyasi"
-              row-key="name"
-              @request="carisrt.onRequest"
-              v-model:pagination="carisrt.reqs"
-              :filter="carisrt.reqs.q"
-              :loading="carisrt.loading"
-            >
+            <q-table class="my-sticky-header" :rows="carisrt.konsinyasis" :columns="columnkonsinyasi" row-key="name"
+              @request="carisrt.onRequest" v-model:pagination="carisrt.reqs" :filter="carisrt.reqs.q"
+              :loading="carisrt.loading">
               <template #top-left>
                 <div class="flex q-qutter-sm z-top">
                   <div>
-                    <q-input
-                      v-model="carisrt.reqs.q"
-                      outlined
-                      dark
-                      color="white"
-                      dense
-                      placeholder="Cari BAST ..."
-                      debounce="500"
-                      style="min-width: 200px;"
-                      @keyup.enter="carisrt.goToPage(1)"
-                    >
-                      <template
-                        v-if="carisrt.reqs.q"
-                        #append
-                      >
-                        <q-icon
-                          name="icon-mat-close"
-                          size="xs"
-                          class="cursor-pointer"
-                          @click.stop.prevent="clearSearch"
-                        />
+                    <q-input v-model="carisrt.reqs.q" outlined dark color="white" dense placeholder="Cari BAST ..."
+                      debounce="500" style="min-width: 200px;" @keyup.enter="carisrt.goToPage(1)">
+                      <template v-if="carisrt.reqs.q" #append>
+                        <q-icon name="icon-mat-close" size="xs" class="cursor-pointer"
+                          @click.stop.prevent="clearSearch" />
                       </template>
                       <template #prepend>
-                        <q-icon
-                          size="sm"
-                          name="icon-mat-search"
-                        />
+                        <q-icon size="sm" name="icon-mat-search" />
                       </template>
                     </q-input>
                   </div>
@@ -154,13 +84,8 @@
                   </q-td>
                   <q-td>
                     <div class="row justify-end">
-                      <q-btn
-                        outline
-                        size="sm"
-                        class="q-px-md"
-                        label="Pilih"
-                        @click="pilihDataSerahterima(props?.row.notranskonsi)"
-                      />
+                      <q-btn outline size="sm" class="q-px-md" label="Pilih"
+                        @click="pilihDataSerahterima(props?.row.notranskonsi)" />
                     </div>
                   </q-td>
                 </q-tr>
@@ -184,7 +109,7 @@ import { formattanpaRp } from 'src/modules/formatter'
 // const noBast = ref([])
 const carisrt = dataBastFarmasi()
 const store = formNotaPermintaanDanaLS()
-function hiddenDialog () {
+function hiddenDialog() {
   console.log('hidden dialog')
 }
 const columnsx = [
@@ -239,36 +164,47 @@ const clearSearch = () => {
   carisrt.reqs.q = ''
   carisrt.goToPage(1)
 }
-function pilihDataSerahterima (val) {
-  // noBast.value = val
+// function gantibotton(row) {
+//   const bast_id = row?.bast_r_id
+//   const transall = store.transall
+//   let simpandata = true
+//   const hasil = transall.find((x) => x?.bast_r_id === bast_id) ?? null
+//   if (hasil) {
+//     simpandata = false
+//   } else {
+//     simpandata = true
+//   }
+//   // console.log('row', bast_id, hasil)
+//   return simpandata
 
+// }
+function pilihDataSerahterima(val) {
   store.reqs.bast = val
   store.openDialogFarmasi = false
   store.form.noserahterima = store.reqs.bast
   carisrt.reqs.kodebast = val
   carisrt.selectbastFarmasi()
+  // console.log('bast', store.reqs.bast)
 
-  // store.rinci = val ?? ''
-  // console.log('kkode bast', store.reqs.bast)
-  console.log('cari bast', carisrt.reqs.kodebast)
+  // const b = store.transall
+  // b = a
+  // console.log('gagga', a);
+  // console.log('gabbbbgga', b);
+
+
+  // const hasil = b.find((x) => x?.bast_r_id === a) ?? null
+  // return hasil
 }
-// const pilihSerahterima = (val) => {
-//   storeform.setForm(val)
-//   console.log('pilih dialog', storeform.setForm)
-//   // .then(() => {
-//   //   const arr = store.bastfarmasis
-//   //   const obj = arr.length ? arr.find(x => x.nobast === val) : null
 
-//   //   storeform.form.noserahterima = obj.nobast ?? ''
-//   // })
-// }
 </script>
 <style lang="scss">
 .my-sticky-header {
   /* height or max-height is important */
   height: 100%;
 
-  div.q-table__top ,.q-table__bottom, tr:first-child th {
+  div.q-table__top,
+  .q-table__bottom,
+  tr:first-child th {
     background-color: $dark;
     color: $white;
     border-collapse: separate !important;
@@ -284,30 +220,30 @@ function pilihDataSerahterima (val) {
 
   //   /* bg color is important for th; just specify one */
 
-  thead tr th{
+  thead tr th {
     position: sticky;
     z-index: 1;
   }
 
-  thead tr:first-child th{
+  thead tr:first-child th {
     top: 0;
   }
 
   // /* this is when the loading indicator appears */
-  &.q-table--loading thead tr:last-child th{
+  &.q-table--loading thead tr:last-child th {
     /* height of all previous header rows */
     top: 48px
   }
+
   // /* prevent scrolling behind sticky top row on focus */
-  tbody{
+  tbody {
     /* height of all previous header rows */
     scroll-margin-top: 100px !important;
   }
 
   .q-table__bottom .q-field__native,
   .q-table__bottom .q-field__inner .q-field__control .q-anchor--skip,
-  i.q-icon
-   {
+  i.q-icon {
     color: $grey-4;
   }
 

@@ -52,32 +52,33 @@ export const dataBastFarmasi = defineStore('data_Bast_Farmasi', {
       this.getDataBast()
     },
 
-    selectbastFarmasi() {
+    selectbastFarmasi(row) {
       this.loading = true
       const params = { params: this.reqs }
-      console.log('parameter', params)
+      // console.log('parameter', params)
       return new Promise((resolve) => {
         api.get('/v1/transaksi/belanja_ls/bastfarmasi', params)
           .then((resp) => {
             if (resp.status === 200) {
               this.bastfarmasis = []
               this.konsinyasis = []
-
+              console.log('rowx', row)
               const sve = formNotaPermintaanDanaLS()
               this.reqs.nonpdls = sve.form.nonpdls
-              console.log('nomer npd', this.reqs.nonpdls)
 
-              console.log('farmasi', resp.data)
+              // console.log('nomer npd', this.reqs.nonpdls)
+
+              // console.log('farmasi', resp.data)
               this.loading = false
               this.bastfarmasis = resp.data.penerimaan
-              console.log('bast penerimaan', this.bastfarmasis)
+              // console.log('bast penerimaan', this.bastfarmasis)
               this.konsinyasis = resp.data.konsinyasi
-              console.log('konsinyasi', this.konsinyasis)
+              // console.log('konsinyasi', this.konsinyasis)
               this.reqs.rowsNumber = resp.data.total
               // this.rekening50 = resp.data.data
               this.filterRekening50(resp.data)
-              this.ambilRekeningFarmasi(resp.data)
-
+              // this.ambilRekeningFarmasi(resp.data)
+              // sve.transall = this.itembelanja
               resolve(resp.data)
             }
             else {
@@ -94,12 +95,12 @@ export const dataBastFarmasi = defineStore('data_Bast_Farmasi', {
         const dataPagu = []
         for (let i = 0; i < this.bastfarmasis.length; i++) {
           const el = this.bastfarmasis[i].rincianbast
-          console.log('val', el)
-
+          // console.log('kkk', el);
           const master = el.length
             ? el.map((x) => {
               // const a = x.masterobat.pagu.koderek108
               return {
+                nopenerimaan: x.nopenerimaan,
                 rek50: x.masterobat.pagu.koderek50,
                 uraian50: x.masterobat.pagu.uraian50,
                 itembelanja: x.masterobat.pagu.usulan,
@@ -110,6 +111,7 @@ export const dataBastFarmasi = defineStore('data_Bast_Farmasi', {
                 volume: parseFloat(x.masterobat.pagu.volume),
                 pagu: parseFloat(x.masterobat.pagu.pagu),
                 id_bast: x.masterobat.pagu.idpp,
+                bast_r_id: x.id,
                 nobast: x.nobast,
                 hargabast: parseFloat(x.harga_net),
                 volumebast: parseFloat(x.jumlah),
@@ -118,82 +120,101 @@ export const dataBastFarmasi = defineStore('data_Bast_Farmasi', {
                 realisasi: parseFloat(x.masterobat?.pagu?.realisasi?.map(x => parseFloat(x.nominalpembayaran))?.reduce((a, b) => a + b, 0)) +
                   parseFloat(x.masterobat?.pagu?.realisasi_spjpanjar?.map(x => parseFloat(x.jumlahbelanjapanjar))?.reduce((a, b) => a + b, 0)) -
                   parseFloat(x.masterobat?.pagu?.contrapost?.map(x => parseFloat(x.nominalcontrapost))?.reduce((a, b) => a + b, 0)),
-                // spjpanjar: parseFloat(x.masterobat?.pagu?.realisasi_spjpanjar?.map(x => parseFloat(x.jumlahbelanjapanjar))?.reduce((a, b) => a + b, 0))
-                kode_lo: x.masterobat?.jurnal?.kode_lo,
-                uraian_lo: x.masterobat?.jurnal?.uraian_lo,
-                kode_neraca1: x.masterobat?.jurnal?.kode_neraca1,
-                uraian_neraca1: x.masterobat?.jurnal?.uraian_neraca1,
-                kode_neraca2: x.masterobat?.jurnal?.kode_neraca2,
-                uraian_neraca2: x.masterobat?.jurnal?.uraian_neraca2,
-                kode_lpsal: x.masterobat?.jurnal?.kode_lpsal,
-                uraian_lpsal: x.masterobat?.jurnal?.uraian_lpsal,
-                kode_lak: x.masterobat?.jurnal?.kode_lak,
-                uraian_lak: x.masterobat?.jurnal?.uraian_lak
-
               }
             })
             : []
-          // const filter = master.filter((z, a) => z.rek108 === a.rek108)
-          //   .reduce((x, y) => x + y, 0)
           dataPagu.push(...master)
         }
         this.rekening50 = dataPagu
-        console.log('dataaaa', this.rekening50)
 
-        const unik108 = this.rekening50.map((s) => s.rek108)
-        const unik = unik108.length ? [...new Set(unik108)] : []
+        const uniknotrans = this.rekening50.map((s) => s.nopenerimaan)
+        const unik = uniknotrans.length ? [...new Set(uniknotrans)] : []
 
         // ITEM UNTUK FARMASI
         const arr = []
         for (let i = 0; i < unik.length; i++) {
           const el = unik[i]
-          const obj = {
-            koderek50: dataPagu.filter((z) => z.rek108 === el)[0]?.rek50,
-            rincianbelanja: dataPagu.filter((z) => z.rek108 === el)[0]?.uraian50,
-            idserahterima_rinci: dataPagu.filter((z) => z.rek108 === el)[0]?.id_bast,
-            nopenerimaan: dataPagu.filter((z) => z.rek108 === el)[0]?.nobast,
-            itembelanja: dataPagu.filter((z) => z.rek108 === el)[0]?.itembelanja,
-            koderek108: dataPagu.filter((z) => z.rek108 === el)[0]?.rek108,
-            uraian108: dataPagu.filter((z) => z.rek108 === el)[0]?.item,
-            harga: parseFloat(dataPagu.filter((z) => z.rek108 === el)[0]?.harga),
-            satuan: dataPagu.filter((z) => z.rek108 === el)[0]?.satuan,
-            volume: parseFloat(dataPagu.filter((z) => z.rek108 === el)[0]?.volume),
-            total: parseFloat(dataPagu.filter((z) => z.rek108 === el)[0]?.pagu),
-            // hargabast: dataPagu.filter((z) => z.rek108 === el).map((x) => x.hargabast)[i] * dataPagu.filter((z) => z.rek108 === el).map((x) => x.volumebast)[i],
-            hargals: parseFloat(dataPagu.filter((z) => z.rek108 === el).map((x) => x.subtotal).reduce((a, b) => a + b, 0)),
-            volumels: 1,
-            totalls: parseFloat(dataPagu.filter((z) => z.rek108 === el).map((x) => x.subtotal).reduce((a, b) => a + b, 0)),
-            nominalpembayaran: parseFloat(dataPagu.filter((z) => z.rek108 === el).map((x) => x.nominalpembayaran).reduce((a, b) => a + b, 0)),
-            realisasi: parseFloat(dataPagu.filter((z) => z.rek108 === el)[0]?.realisasi),
-            sisapagu: parseFloat(dataPagu.filter((z) => z.rek108 === el)[0]?.pagu) - parseFloat(dataPagu.filter((z) => z.rek108 === el)[0]?.realisasi),
-
-            kode_lo: dataPagu.filter((z) => z.rek108 === el)[0]?.kode_lo,
-            uraian_lo: dataPagu.filter((z) => z.rek108 === el)[0]?.uraian_lo,
-            kode_neraca1: dataPagu.filter((z) => z.rek108 === el)[0]?.kode_neraca1,
-            uraian_neraca1: dataPagu.filter((z) => z.rek108 === el)[0]?.uraian_neraca1,
-            kode_neraca2: dataPagu.filter((z) => z.rek108 === el)[0]?.kode_neraca2,
-            uraian_neraca2: dataPagu.filter((z) => z.rek108 === el)[0]?.uraian_neraca2,
-            kode_lpsal: dataPagu.filter((z) => z.rek108 === el)[0]?.kode_lpsal,
-            uraian_lpsal: dataPagu.filter((z) => z.rek108 === el)[0]?.uraian_lpsal,
-            kode_lak: dataPagu.filter((z) => z.rek108 === el)[0]?.kode_lak,
-            uraian_lak: dataPagu.filter((z) => z.rek108 === el)[0]?.uraian_lak
+          const data = dataPagu.filter((z) => z.nopenerimaan === el).map((x) => x)
+          // console.log('dataxxx BAST', data)
+          const unik108 = data.map((x) => x.rek108)
+          const uniks = unik108.length ? [...new Set(unik108)] : []
+          const arr108 = []
+          for (let z = 0; z < uniks.length; z++) {
+            const els = uniks[z];
+            const un = data
+            const objx = {
+              bast_r_id: un.filter((z) => z.rek108 === els)[0]?.bast_r_id,
+              nobast: un.filter((z) => z.rek108 === els)[0]?.nobast,
+              koderek50: un.filter((z) => z.rek108 === els)[0]?.rek50,
+              rincianbelanja: un.filter((z) => z.rek108 === els)[0]?.uraian50,
+              idserahterima_rinci: un.filter((z) => z.rek108 === els)[0]?.id_bast,
+              nopenerimaan: un.filter((z) => z.rek108 === els)[0]?.nopenerimaan,
+              itembelanja: un.filter((z) => z.rek108 === els)[0]?.itembelanja,
+              koderek108: un.filter((z) => z.rek108 === els)[0]?.rek108,
+              uraian108: un.filter((z) => z.rek108 === els)[0]?.item,
+              harga: parseFloat(un.filter((z) => z.rek108 === els)[0]?.harga),
+              satuan: un.filter((z) => z.rek108 === els)[0]?.satuan,
+              volume: parseFloat(un.filter((z) => z.rek108 === els)[0]?.volume),
+              total: parseFloat(un.filter((z) => z.rek108 === els)[0]?.pagu),
+              // hargabast: dataPagu.filter((z) => z.rek108 === el).map((x) => x.hargabast)[i] * dataPagu.filter((z) => z.rek108 === el).map((x) => x.volumebast)[i],
+              hargals: parseFloat(un.filter((z) => z.rek108 === els).map((x) => x.subtotal).reduce((a, b) => a + b, 0)),
+              volumels: 1,
+              totalls: parseFloat(un.filter((z) => z.rek108 === els).map((x) => x.subtotal).reduce((a, b) => a + b, 0)),
+              nominalpembayaran: parseFloat(un.filter((z) => z.rek108 === els).map((x) => x.nominalpembayaran).reduce((a, b) => a + b, 0)),
+              realisasi: parseFloat(un.filter((z) => z.rek108 === els)[0]?.realisasi),
+              sisapagu: parseFloat(un.filter((z) => z.rek108 === els)[0]?.pagu) - parseFloat(un.filter((z) => z.rek108 === els)[0]?.realisasi),
+            }
+            arr108.push(objx)
           }
-          arr.push(obj)
-          // console.log('jjjj', arr)
+          // console.log('unik BAST', arr108)
+          // console.log('unik BAST', unik108)
+          // const obj = {
+          //   notrans: dataPagu.filter((z) => z.notrans === el)[0]?.notrans,
+          //   koderek50: dataPagu.filter((z) => z.notrans === el)[0]?.rek50,
+          //   rincianbelanja: dataPagu.filter((z) => z.notrans === el)[0]?.uraian50,
+          //   idserahterima_rinci: dataPagu.filter((z) => z.notrans === el)[0]?.id_bast,
+          //   nopenerimaan: dataPagu.filter((z) => z.notrans === el)[0]?.nobast,
+          //   itembelanja: dataPagu.filter((z) => z.notrans === el)[0]?.itembelanja,
+          //   koderek108: dataPagu.filter((z) => z.notrans === el)[0]?.rek108,
+          //   uraian108: dataPagu.filter((z) => z.notrans === el)[0]?.item,
+          //   harga: parseFloat(dataPagu.filter((z) => z.notrans === el)[0]?.harga),
+          //   satuan: dataPagu.filter((z) => z.notrans === el)[0]?.satuan,
+          //   volume: parseFloat(dataPagu.filter((z) => z.notrans === el)[0]?.volume),
+          //   total: parseFloat(dataPagu.filter((z) => z.notrans === el)[0]?.pagu),
+          //   // hargabast: dataPagu.filter((z) => z.rek108 === el).map((x) => x.hargabast)[i] * dataPagu.filter((z) => z.rek108 === el).map((x) => x.volumebast)[i],
+          //   hargals: parseFloat(dataPagu.filter((z) => z.notrans === el).map((x) => x.subtotal).reduce((a, b) => a + b, 0)),
+          //   volumels: 1,
+          //   totalls: parseFloat(dataPagu.filter((z) => z.notrans === el).map((x) => x.subtotal).reduce((a, b) => a + b, 0)),
+          //   nominalpembayaran: parseFloat(dataPagu.filter((z) => z.notrans === el).map((x) => x.nominalpembayaran).reduce((a, b) => a + b, 0)),
+          //   realisasi: parseFloat(dataPagu.filter((z) => z.notrans === el)[0]?.realisasi),
+          //   sisapagu: parseFloat(dataPagu.filter((z) => z.notrans === el)[0]?.pagu) - parseFloat(dataPagu.filter((z) => z.rek108 === el)[0]?.realisasi),
+
+          //   // kode_lo: dataPagu.filter((z) => z.rek108 === el)[0]?.kode_lo,
+          //   // uraian_lo: dataPagu.filter((z) => z.rek108 === el)[0]?.uraian_lo,
+          //   // kode_neraca1: dataPagu.filter((z) => z.rek108 === el)[0]?.kode_neraca1,
+          //   // uraian_neraca1: dataPagu.filter((z) => z.rek108 === el)[0]?.uraian_neraca1,
+          //   // kode_neraca2: dataPagu.filter((z) => z.rek108 === el)[0]?.kode_neraca2,
+          //   // uraian_neraca2: dataPagu.filter((z) => z.rek108 === el)[0]?.uraian_neraca2,
+          //   // kode_lpsal: dataPagu.filter((z) => z.rek108 === el)[0]?.kode_lpsal,
+          //   // uraian_lpsal: dataPagu.filter((z) => z.rek108 === el)[0]?.uraian_lpsal,
+          //   // kode_lak: dataPagu.filter((z) => z.rek108 === el)[0]?.kode_lak,
+          //   // uraian_lak: dataPagu.filter((z) => z.rek108 === el)[0]?.uraian_lak
+          // }
+          arr.push(...arr108)
         }
         this.itembelanja.push(...arr)
-        console.log('DATA PENERIMAAN', this.itembelanja)
+        // console.log('DATA PENERIMAAN', this.itembelanja)
       }
       else {
         const kons = []
         for (let i = 0; i < this.konsinyasis.length; i++) {
           const el = this.konsinyasis[i].rinci
-          console.log('baaaaastKonsi', el)
 
           const master = el.length
             ? el.map((x) => {
               // const a = x.masterobat.pagu.koderek108
               return {
+                nopenerimaan: x.notranskonsi,
                 rek50: x.obat.pagu.koderek50,
                 uraian50: x.obat.pagu.uraian50,
                 itembelanja: x.obat.pagu.usulan,
@@ -204,7 +225,7 @@ export const dataBastFarmasi = defineStore('data_Bast_Farmasi', {
                 volume: parseFloat(x.obat.pagu.volume),
                 pagu: parseFloat(x.obat.pagu.pagu),
                 id_bast: x.obat.pagu.idpp,
-                nobast: x.notranskonsi,
+                nobast: x.nobast,
                 hargabast: parseFloat(x.harga_net),
                 volumebast: parseFloat(x.jumlah),
                 subtotal: parseFloat(x.subtotal),
@@ -212,76 +233,54 @@ export const dataBastFarmasi = defineStore('data_Bast_Farmasi', {
                 realisasi: parseFloat(x.obat?.pagu?.realisasi?.map(x => parseFloat(x.nominalpembayaran))?.reduce((a, b) => a + b, 0)) +
                   parseFloat(x.obat?.pagu?.realisasi_spjpanjar?.map(x => parseFloat(x.jumlahbelanjapanjar))?.reduce((a, b) => a + b, 0)) -
                   parseFloat(x.obat?.pagu?.contrapost?.map(x => parseFloat(x.nominalcontrapost))?.reduce((a, b) => a + b, 0)),
-                kode_lo: x.obat?.jurnal?.kode_lo,
-                uraian_lo: x.obat?.jurnal?.uraian_lo,
-                kode_neraca1: x.obat?.jurnal?.kode_neraca1,
-                uraian_neraca1: x.obat?.jurnal?.uraian_neraca1,
-                kode_neraca2: x.obat?.jurnal?.kode_neraca2,
-                uraian_neraca2: x.obat?.jurnal?.uraian_neraca2,
-                kode_lpsal: x.obat?.jurnal?.kode_lpsal,
-                uraian_lpsal: x.obat?.jurnal?.uraian_lpsal,
-                kode_lak: x.obat?.jurnal?.kode_lak,
-                uraian_lak: x.obat?.jurnal?.uraian_lak
               }
             })
             : []
           kons.push(...master)
         }
         this.rekening50 = kons
-        console.log('kons', this.rekening50)
 
-        const unik108 = this.rekening50.map((s) => s.rek108)
-        const unik = unik108.length ? [...new Set(unik108)] : []
-        console.log('unik', unik)
-
+        const uniknot = this.rekening50.map((s) => s.nopenerimaan)
+        const unik = uniknot.length ? [...new Set(uniknot)] : []
         const arrkons = []
         for (let i = 0; i < unik.length; i++) {
           const el = unik[i]
-          const objkons = {
-            koderek50: kons.filter((z) => z.rek108 === el)[0]?.rek50,
-            rincianbelanja: kons.filter((z) => z.rek108 === el)[0]?.uraian50,
-            idserahterima_rinci: kons.filter((z) => z.rek108 === el)[0]?.id_bast,
-            nopenerimaan: kons.filter((z) => z.rek108 === el)[0]?.nobast,
-            itembelanja: kons.filter((z) => z.rek108 === el)[0]?.itembelanja,
-            koderek108: kons.filter((z) => z.rek108 === el)[0]?.rek108,
-            uraian108: kons.filter((z) => z.rek108 === el)[0]?.item,
-            harga: parseFloat(kons.filter((z) => z.rek108 === el)[0]?.harga),
-            satuan: kons.filter((z) => z.rek108 === el)[0]?.satuan,
-            volume: parseFloat(kons.filter((z) => z.rek108 === el)[0]?.volume),
-            total: parseFloat(kons.filter((z) => z.rek108 === el)[0]?.pagu),
-            // hargabast: dataPagu.filter((z) => z.rek108 === el).map((x) => x.hargabast)[i] * dataPagu.filter((z) => z.rek108 === el).map((x) => x.volumebast)[i],
-            hargals: parseFloat(kons.filter((z) => z.rek108 === el).map((x) => x.subtotal).reduce((a, b) => a + b, 0)),
-            volumels: 1,
-            totalls: parseFloat(kons.filter((z) => z.rek108 === el).map((x) => x.subtotal).reduce((a, b) => a + b, 0)),
-            nominalpembayaran: parseFloat(kons.filter((z) => z.rek108 === el).map((x) => x.nominalpembayaran).reduce((a, b) => a + b, 0)),
-            realisasi: parseFloat(kons.filter((z) => z.rek108 === el)[0]?.realisasi),
-            sisapagu: parseFloat(kons.filter((z) => z.rek108 === el)[0]?.pagu) - parseFloat(kons.filter((z) => z.rek108 === el)[0]?.realisasi),
+          const datakons = kons.filter((z) => z.nopenerimaan === el).map((x) => x)
+          const unik108 = datakons.map((x) => x.rek108)
+          const uniks = unik108.length ? [...new Set(unik108)] : []
+          const arr108 = []
+          for (let r = 0; r < uniks.length; r++) {
+            const el = uniks[r];
+            const kons = datakons
+            const objkons = {
+              nobast: kons.filter((z) => z.rek108 === el)[0]?.nobast,
+              koderek50: kons.filter((z) => z.rek108 === el)[0]?.rek50,
+              rincianbelanja: kons.filter((z) => z.rek108 === el)[0]?.uraian50,
+              idserahterima_rinci: kons.filter((z) => z.rek108 === el)[0]?.id_bast,
+              nopenerimaan: kons.filter((z) => z.rek108 === el)[0]?.nopenerimaan,
+              itembelanja: kons.filter((z) => z.rek108 === el)[0]?.itembelanja,
+              koderek108: kons.filter((z) => z.rek108 === el)[0]?.rek108,
+              uraian108: kons.filter((z) => z.rek108 === el)[0]?.item,
+              harga: parseFloat(kons.filter((z) => z.rek108 === el)[0]?.harga),
+              satuan: kons.filter((z) => z.rek108 === el)[0]?.satuan,
+              volume: parseFloat(kons.filter((z) => z.rek108 === el)[0]?.volume),
+              total: parseFloat(kons.filter((z) => z.rek108 === el)[0]?.pagu),
+              // hargabast: dataPagu.filter((z) => z.rek108 === el).map((x) => x.hargabast)[i] * dataPagu.filter((z) => z.rek108 === el).map((x) => x.volumebast)[i],
+              hargals: parseFloat(kons.filter((z) => z.rek108 === el).map((x) => x.subtotal).reduce((a, b) => a + b, 0)),
+              volumels: 1,
+              totalls: parseFloat(kons.filter((z) => z.rek108 === el).map((x) => x.subtotal).reduce((a, b) => a + b, 0)),
+              nominalpembayaran: parseFloat(kons.filter((z) => z.rek108 === el).map((x) => x.nominalpembayaran).reduce((a, b) => a + b, 0)),
+              realisasi: parseFloat(kons.filter((z) => z.rek108 === el)[0]?.realisasi),
+              sisapagu: parseFloat(kons.filter((z) => z.rek108 === el)[0]?.pagu) - parseFloat(kons.filter((z) => z.rek108 === el)[0]?.realisasi),
 
-            kode_lo: kons.filter((z) => z.rek108 === el)[0]?.kode_lo,
-            uraian_lo: kons.filter((z) => z.rek108 === el)[0]?.uraian_lo,
-            kode_neraca1: kons.filter((z) => z.rek108 === el)[0]?.kode_neraca1,
-            uraian_neraca1: kons.filter((z) => z.rek108 === el)[0]?.uraian_neraca1,
-            kode_neraca2: kons.filter((z) => z.rek108 === el)[0]?.kode_neraca2,
-            uraian_neraca2: kons.filter((z) => z.rek108 === el)[0]?.uraian_neraca2,
-            kode_lpsal: kons.filter((z) => z.rek108 === el)[0]?.kode_lpsal,
-            uraian_lpsal: kons.filter((z) => z.rek108 === el)[0]?.uraian_lpsal,
-            kode_lak: kons.filter((z) => z.rek108 === el)[0]?.kode_lak,
-            uraian_lak: kons.filter((z) => z.rek108 === el)[0]?.uraian_lak
-
+            }
+            arr108.push(objkons)
           }
-          arrkons.push(objkons)
-          // console.log('jjjj', arrkons)
+          arrkons.push(...arr108)
         }
         this.itembelanja.push(...arrkons)
-        console.log('DATA KONSINYASI', this.itembelanja)
+        // console.log('DATA KONSINYASI', this.itembelanja)
       }
     }
-
-    // ambilRekeningFarmasi () {
-    //   const data = this.rekening50
-
-    //   console.log('rincian baru', data)
-    // }
-
   }
 })

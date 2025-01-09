@@ -27,7 +27,23 @@ const siasik = {
     {
       path: '/siasik/ls/npdls',
       name: 'siasik.ls.npdls',
-      component: () => import('pages/siasik/transaksi/ls/npdls/IndexPage.vue')
+      component: () => import('pages/siasik/transaksi/ls/npdls/IndexPage.vue'),
+      children: [
+        { path: '', name: 'npdls', redirect: '/siasik/ls/npdls/formnpd' },
+        {
+          path: '/siasik/ls/npdls/formnpd',
+          name: 'siasik.ls.npdls.formnpd',
+          component: () =>
+            import('src/pages/siasik/transaksi/ls/npdls/FormNpdls/IndexPage.vue')
+        },
+        {
+          path: '/siasik/ls/npdls/listnpd',
+          name: 'siasik.ls.npdls.listnpd',
+          component: () =>
+            import('src/pages/siasik/transaksi/ls/npdls/ListDataNpdls/IndexPage.vue')
+        },
+
+      ]
     },
     // {
     //   path: '/satset/kunjungan',
