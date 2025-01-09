@@ -42,11 +42,11 @@ export const usePenilaianRanapStore = defineStore('penilaian-ranap-store', {
   },
   actions: {
 
-    getMaster () {
+    getMaster() {
       return new Promise((resolve, reject) => {
         api.get('v1/simrs/master/penilaian')
           .then(resp => {
-            console.log('mster penilaian', resp)
+            // console.log('mster penilaian', resp)
 
             if (resp.status === 200) {
               const arr = resp.data
@@ -61,7 +61,7 @@ export const usePenilaianRanapStore = defineStore('penilaian-ranap-store', {
       })
     },
 
-    async getData (pasien) {
+    async getData(pasien) {
       const params = {
         params: {
           noreg: pasien?.noreg
@@ -75,7 +75,7 @@ export const usePenilaianRanapStore = defineStore('penilaian-ranap-store', {
       }
     },
 
-    getGroupArray (arr) {
+    getGroupArray(arr) {
       this.barthels = arr?.find(item => item.kode === 'barthel') ?? null
       this.nortons = arr?.find(item => item.kode === 'norton') ?? null
       this.humptys = arr?.find(item => item.kode === 'humpty_dumpty') ?? null
@@ -84,7 +84,7 @@ export const usePenilaianRanapStore = defineStore('penilaian-ranap-store', {
       this.downscores = arr?.find(item => item.kode === 'downscore') ?? null
     },
 
-    calculateAgeInMonths (birthdate, day) {
+    calculateAgeInMonths(birthdate, day) {
       if (!birthdate) return 0 // !birthdate return null
       const today = day ?? new Date()
       const birthdateObj = new Date(birthdate)
@@ -95,7 +95,7 @@ export const usePenilaianRanapStore = defineStore('penilaian-ranap-store', {
       return months
     },
 
-    getUsia (pasien) {
+    getUsia(pasien) {
       const ageInMonth = this.calculateAgeInMonths(pasien?.tgllahir ?? null)
       const usia = Math.floor(ageInMonth / 12)
       this.usia = usia
@@ -103,7 +103,7 @@ export const usePenilaianRanapStore = defineStore('penilaian-ranap-store', {
       // console.log('pasien: ', pasien)
     },
 
-    initReset (pasien, data) {
+    initReset(pasien, data) {
       const usia = this.usia
       // console.log('usia from store', usia)
 
@@ -202,7 +202,7 @@ export const usePenilaianRanapStore = defineStore('penilaian-ranap-store', {
       }
       this.formDownScore = formDownscore
 
-      console.log('formDownscore', this.formDownScore)
+      // console.log('formDownscore', this.formDownScore)
 
       this.hitungSkorBarthel()
       this.hitungSkorNorton()
@@ -214,7 +214,7 @@ export const usePenilaianRanapStore = defineStore('penilaian-ranap-store', {
       // console.log('form', this.formHumpty)
     },
 
-    hitungSkorBarthel () {
+    hitungSkorBarthel() {
       let ket = null
       let result = {
         label: ket,
@@ -256,7 +256,7 @@ export const usePenilaianRanapStore = defineStore('penilaian-ranap-store', {
 
       // console.log('formBarthel2', this.formBarthel)
     },
-    hitungSkorNorton () {
+    hitungSkorNorton() {
       let ket = null
       let result = {
         skor: 0,
@@ -284,7 +284,7 @@ export const usePenilaianRanapStore = defineStore('penilaian-ranap-store', {
       this.formNorton.skorNorton = result
     },
 
-    hitungSkorHumpty () {
+    hitungSkorHumpty() {
       let ket = null
       let kuning = false
       let result = {
@@ -315,7 +315,7 @@ export const usePenilaianRanapStore = defineStore('penilaian-ranap-store', {
       }
       this.formHumpty.skorHumpty = result
     },
-    hitungSkorMorse () {
+    hitungSkorMorse() {
       let ket = null
       let kuning = false
       let result = {
@@ -347,7 +347,7 @@ export const usePenilaianRanapStore = defineStore('penilaian-ranap-store', {
       }
       this.formMorse.skorMorse = result
     },
-    hitungSkorOntario () {
+    hitungSkorOntario() {
       let ket = null
       let kuning = false
       let result = {
@@ -414,7 +414,7 @@ export const usePenilaianRanapStore = defineStore('penilaian-ranap-store', {
       // console.log('result ontario', this.formOntario)
     },
 
-    hitungSkorDownscore () {
+    hitungSkorDownscore() {
       let ket = null
       let result = {
         skor: 0,
@@ -442,7 +442,7 @@ export const usePenilaianRanapStore = defineStore('penilaian-ranap-store', {
       this.formDownScore.skorDownscore = result
     },
 
-    async saveData (jnsKasus, pasien) {
+    async saveData(jnsKasus, pasien) {
       console.groupCollapsed('[setDataForm]')
       const frm = {
         barthel: (this.barthels.grupings?.includes(jnsKasus)) ? this.formBarthel : null,
@@ -505,7 +505,7 @@ export const usePenilaianRanapStore = defineStore('penilaian-ranap-store', {
       console.groupEnd()
     },
 
-    PISAH_DATA_RANAP_IGD (arr, pasien) {
+    PISAH_DATA_RANAP_IGD(arr, pasien) {
       const auth = useAplikasiStore()
       const jns = auth?.user?.pegawai?.kdgroupnakes
 

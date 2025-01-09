@@ -1,0 +1,97 @@
+<template>
+  <q-select dense standout="bg-yellow-3 text-black" outlined :label="label" :option-label="optionLabel"
+    placeholder="Harap Enter" :option-value="optionValue" :options="optionx" hide-selected fill-input use-input
+    input-debounce="0" hide-bottom-space hide-dropdown-icon @filter="filterFn" :rules="[requiredRule]"
+    @input-value="(val) => emits('setModel', val)" @new-value="createValue" />
+</template>
+<script setup>
+import { onMounted, ref } from 'vue';
+
+const props = defineProps({
+  label: {
+    type: String,
+    default: 'label'
+  },
+  options: {
+    type: Array,
+    default: () => []
+  },
+  valid: {
+    type: Object,
+    default: null
+  },
+  optionValue: {
+    type: String,
+    default: 'id'
+  },
+  optionLabel: {
+    type: String,
+    default: 'name'
+  },
+  minLength: {
+    type: Number,
+    default: 2
+  },
+  filtersBy: {
+    type: Array,
+    default: () => ['name']
+  }
+})
+
+const emits = defineEmits(['setModel'])
+
+const optionx = ref(props.options)
+
+onMounted(() => {
+  optionx.value = props.options
+})
+
+const requiredRule = (val) => {
+  if (props.valid === null) {
+    return true
+  }
+  return (!!val || props.valid?.required || val === 0) || 'Harap diisi'
+}
+
+const filterFn = (val, update, abort) => {
+  if (val.length < props.minLength) {
+    abort()
+    return
+  }
+  update(() => {
+    const needle = val?.toLowerCase()
+    const multiFilter = (data = [], filterKeys = [], value = '') =>
+      data.filter((item) =>
+        filterKeys.some(
+          (key) =>
+            item[key].toString().toLowerCase().includes(value.toLowerCase()) &&
+            item[key]
+        )
+      )
+    const filteredData = multiFilter(props.options, props.filtersBy, needle)
+    optionx.value = filteredData
+  })
+}
+
+const createValue = (val, done) => {
+  // Calling done(var) when new-value-mode is not set or "add", or done(var, "add") adds "var" content to the model
+  // and it resets the input textbox to empty string
+  // ----
+  // Calling done(var) when new-value-mode is "add-unique", or done(var, "add-unique") adds "var" content to the model
+  // only if is not already set
+  // and it resets the input textbox to empty string
+  // ----
+  // Calling done(var) when new-value-mode is "toggle", or done(var, "toggle") toggles the model with "var" content
+  // (adds to model if not already in the model, removes from model if already has it)
+  // and it resets the input textbox to empty string
+  // ----
+  // If "var" content is undefined/null, then it doesn't tampers with the model
+  // and only resets the input textbox to empty string
+
+  if (val.length > 2) {
+    if (!props.options.includes(val)) {
+      done(val, 'add-unique')
+    }
+  }
+}
+</script>

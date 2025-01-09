@@ -49,6 +49,13 @@ export default function useLayanan(pasien) {
       comp: shallowRef(defineAsyncComponent(() => import('./asessmentulang/IndexPage.vue')))
     },
     {
+      name: 'NurseNote',
+      label: 'Nurse Note',
+      icon: 'icon-mat-note_alt',
+      nakes: ['2', '3'],
+      comp: shallowRef(defineAsyncComponent(() => import('./nursenote/IndexPage.vue')))
+    },
+    {
       name: 'AsessmentPraBedah',
       label: 'Asessment Pembedahan',
       icon: 'icon-fa-book-medical-solid',

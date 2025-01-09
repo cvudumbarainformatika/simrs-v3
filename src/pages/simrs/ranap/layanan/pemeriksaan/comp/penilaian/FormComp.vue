@@ -13,10 +13,9 @@
               {{ obj?.label }} :
             </div>
             <div class="col-9 q-gutter-sm">
-              <q-radio
-                v-for="(item, i) in obj?.categories" :key="i" dense size="sm" v-model="store.formBarthel[obj.kode]" :val="item" :label="item?.label"
-                @update:model-value="store.hitungSkorBarthel"
-              />
+              <q-radio v-for="(item, i) in obj?.categories" :key="i" dense size="sm"
+                v-model="store.formBarthel[obj.kode]" :val="item" :label="item?.label"
+                @update:model-value="store.hitungSkorBarthel" />
             </div>
           </div>
           <q-separator class="q-my-sm" />
@@ -41,10 +40,9 @@
               {{ obj?.label }} :
             </div>
             <div class="col-9 q-gutter-sm">
-              <q-radio
-                v-for="(item, i) in obj?.categories" :key="i" dense size="sm" v-model="store.formNorton[obj.kode]" :val="item" :label="item?.label"
-                @update:model-value="store.hitungSkorNorton"
-              />
+              <q-radio v-for="(item, i) in obj?.categories" :key="i" dense size="sm"
+                v-model="store.formNorton[obj.kode]" :val="item" :label="item?.label"
+                @update:model-value="store.hitungSkorNorton" />
             </div>
           </div>
           <q-separator class="q-my-sm" />
@@ -69,10 +67,9 @@
               {{ obj?.label }} :
             </div>
             <div class="col-9 q-gutter-sm">
-              <q-radio
-                v-for="(item, i) in obj?.categories" :key="i" dense size="sm" v-model="store.formDownScore[obj.kode]" :val="item" :label="item?.label"
-                @update:model-value="store.hitungSkorDownscore"
-              />
+              <q-radio v-for="(item, i) in obj?.categories" :key="i" dense size="sm"
+                v-model="store.formDownScore[obj.kode]" :val="item" :label="item?.label"
+                @update:model-value="store.hitungSkorDownscore" />
             </div>
           </div>
           <q-separator class="q-my-sm" />
@@ -160,7 +157,7 @@
     </q-card> -->
 
     <!-- humpty untuk usia < 18 tahun -->
-    <q-card v-if="store?.humptys?.grupings?.includes(jnsKasusKep) && (store.usia < 18)" flat bordered class="col-12">
+    <q-card v-if="openSkoringJatuh === 'humpty'" flat bordered class="col-12">
       <q-card-section class="q-pa-sm bg-grey-4">
         <strong>{{ store?.humptys?.desc }}</strong>
       </q-card-section>
@@ -172,10 +169,9 @@
               {{ obj?.label }}
             </div>
             <div class="col-9 q-gutter-sm">
-              <q-radio
-                v-for="(item, i) in obj?.categories" :key="i" dense size="sm" v-model="store.formHumpty[obj.kode]" :val="item" :label="`${item?.label}`"
-                @update:model-value="store.hitungSkorHumpty"
-              />
+              <q-radio v-for="(item, i) in obj?.categories" :key="i" dense size="sm"
+                v-model="store.formHumpty[obj.kode]" :val="item" :label="`${item?.label}`"
+                @update:model-value="store.hitungSkorHumpty" />
               <!-- <div v-for="(item, i) in obj?.categories" :key="i">
                 {{ item }} {{ store.formHumpty[obj.kode] === item ? 'sama' : 'tidak' }} {{ store.formHumpty[obj.kode].skor }}
               </div> -->
@@ -187,113 +183,15 @@
           <div>NILAI SKOR : {{ store.formHumpty.skorHumpty?.skor }} </div>
           <div>KET : {{ store.formHumpty.skorHumpty?.label }}</div>
         </div>
-        <div v-if="store?.formHumpty?.skorHumpty?.kuning === true" class="full-width flex justify-end q-gutter-sm f-14 text-yellow-8 q-mt-xs">
+        <div v-if="store?.formHumpty?.skorHumpty?.kuning === true"
+          class="full-width flex justify-end q-gutter-sm f-14 text-yellow-8 q-mt-xs">
           PASIEN DIHARAP PAKAI STICKER KUNING
         </div>
       </q-card-section>
     </q-card>
 
-    <!-- <q-card flat bordered class="col-12">
-      <q-card-section class="q-pa-sm bg-grey-4">
-        <strong> {{ 'Resiko Jatuh Humpty Dumpty Fall Scale ( < 14 tahun) ' }}</strong>
-      </q-card-section>
-      <q-separator />
-      <q-card-section class="q-pa-sm row q-col-gutter-xs">
-        <div class="col-12">
-          <div class="row">
-            <div class="col-2">
-              Usia :
-            </div>
-            <div class="col-10 q-gutter-sm">
-              <q-radio
-                v-for="n in store.humpty?.usia" :key="n.value" dense size="sm" v-model="store.formHumpty.usia" :val="n" :label="n.label"
-                @update:model-value="store.hitungSkorHumpty()"
-              />
-            </div>
-          </div>
-          <q-separator class="q-my-sm" />
-          <div class="row">
-            <div class="col-2">
-              Kelamin :
-            </div>
-            <div class="col-10 q-gutter-sm">
-              <q-radio
-                v-for="n in store.humpty?.kelamin" :key="n.value" dense size="sm" v-model="store.formHumpty.kelamin" :val="n" :label="n.label"
-                @update:model-value="store.hitungSkorHumpty()"
-              />
-            </div>
-          </div>
-          <q-separator class="q-my-sm" />
-          <div class="row">
-            <div class="col-2">
-              Diagnosis :
-            </div>
-            <div class="col-10 q-gutter-sm">
-              <q-radio
-                v-for="n in store.humpty?.diagnosis" :key="n.value" dense size="sm" v-model="store.formHumpty.diagnosis" :val="n" :label="n.label"
-                @update:model-value="store.hitungSkorHumpty()"
-              />
-            </div>
-          </div>
-          <q-separator class="q-my-sm" />
-          <div class="row">
-            <div class="col-3">
-              Gangguan Kognitif :
-            </div>
-            <div class="col-9 q-gutter-sm">
-              <q-radio
-                v-for="n in store.humpty?.kognitif" :key="n.value" dense size="sm" v-model="store.formHumpty.kognitif" :val="n" :label="n.label"
-                @update:model-value="store.hitungSkorHumpty()"
-              />
-            </div>
-          </div>
-          <q-separator class="q-my-sm" />
-          <div class="row">
-            <div class="col-3">
-              Faktor Lingkungan :
-            </div>
-            <div class="col-9 q-gutter-sm">
-              <q-radio
-                v-for="n in store.humpty?.lingkungan" :key="n.value" dense size="sm" v-model="store.formHumpty.lingkungan" :val="n" :label="n.label"
-                @update:model-value="store.hitungSkorHumpty()"
-              />
-            </div>
-          </div>
-          <q-separator class="q-my-sm" />
-          <div class="row">
-            <div class="col-3">
-              Respon Pada Pembedahan/ Sedasi/Anastesi :
-            </div>
-            <div class="col-9 q-gutter-sm">
-              <q-radio
-                v-for="n in store.humpty?.responBedah" :key="n.value" dense size="sm" v-model="store.formHumpty.responBedah" :val="n" :label="n.label"
-                @update:model-value="store.hitungSkorHumpty()"
-              />
-            </div>
-          </div>
-          <q-separator class="q-my-sm" />
-          <div class="row">
-            <div class="col-2">
-              Pengobatan :
-            </div>
-            <div class="col-10 q-gutter-sm">
-              <q-radio
-                v-for="n in store.humpty?.pengobatan" :key="n.value" dense size="sm" v-model="store.formHumpty.pengobatan" :val="n" :label="n.label"
-                @update:model-value="store.hitungSkorHumpty()"
-              />
-            </div>
-          </div>
-          <q-separator class="q-my-sm" />
-          <div class="full-width flex justify-end q-gutter-sm f-14 text-accent">
-            <div>NILAI SKOR : {{ store.formHumpty.skorHumpty?.skor }} </div>
-            <div>KET : {{ store.formHumpty.skorHumpty?.label }}</div>
-          </div>
-        </div>
-      </q-card-section>
-    </q-card> -->
-
     <!-- Resiko Jatuh Morse Fall Scale (18 - 59 tahun) -->
-    <q-card v-else-if="store?.morses?.grupings?.includes(jnsKasusKep) && (store.usia >= 18 && store.usia < 60)" flat bordered class="col-12">
+    <q-card v-if="openSkoringJatuh === 'morse'" flat bordered class="col-12">
       <q-card-section class="q-pa-sm bg-grey-4">
         <strong>{{ store?.morses?.desc }}</strong>
       </q-card-section>
@@ -305,10 +203,8 @@
               {{ obj?.label }} :
             </div>
             <div class="col-9 q-gutter-sm">
-              <q-radio
-                v-for="(item, i) in obj?.categories" :key="i" dense size="sm" v-model="store.formMorse[obj.kode]" :val="item" :label="`${item?.label}`"
-                @update:model-value="store.hitungSkorMorse"
-              />
+              <q-radio v-for="(item, i) in obj?.categories" :key="i" dense size="sm" v-model="store.formMorse[obj.kode]"
+                :val="item" :label="`${item?.label}`" @update:model-value="store.hitungSkorMorse" />
             </div>
           </div>
           <q-separator class="q-my-sm" />
@@ -317,14 +213,15 @@
           <div>NILAI SKOR : {{ store.formMorse?.skorMorse?.skor }} </div>
           <div>KET : {{ store.formMorse.skorMorse?.label }}</div>
         </div>
-        <div v-if="store.formMorse?.skorMorse?.kuning === true" class="full-width flex justify-end q-gutter-sm f-14 text-yellow-8 q-mt-xs">
+        <div v-if="store.formMorse?.skorMorse?.kuning === true"
+          class="full-width flex justify-end q-gutter-sm f-14 text-yellow-8 q-mt-xs">
           PASIEN DIHARAP PAKAI STICKER KUNING
         </div>
       </q-card-section>
     </q-card>
 
     <!-- Resiko Jatuh Ontario / Sidney Scoring (geriatric dg usia >=60 tahun) -->
-    <q-card v-else-if="store?.ontarios?.grupings?.includes(jnsKasusKep) && (store.usia >= 60)" flat bordered class="col-12">
+    <q-card v-if="openSkoringJatuh === 'ontario'" flat bordered class="col-12">
       <q-card-section class="q-pa-sm bg-grey-4">
         <strong>{{ store?.ontarios?.desc }}</strong>
       </q-card-section>
@@ -344,10 +241,9 @@
                   </q-item-section>
                   <q-item-section side>
                     <div class="flex q-gutter-sm">
-                      <q-radio
-                        dense size="sm" v-for="n in item.categories" :key="n" v-model="store.formOntario[item.kode]" :val="n" :label="n?.label"
-                        @update:model-value="store.hitungSkorOntario()"
-                      />
+                      <q-radio dense size="sm" v-for="n in item.categories" :key="n"
+                        v-model="store.formOntario[item.kode]" :val="n" :label="n?.label"
+                        @update:model-value="store.hitungSkorOntario()" />
                     </div>
                   </q-item-section>
                 </q-item>
@@ -361,10 +257,8 @@
               </div>
               <div class="col-6">
                 <div class="column q-gutter-y-sm">
-                  <q-radio
-                    dense size="sm" v-for="n in obj.categories" :key="n" v-model="store.formOntario[obj.kode]" :val="n" :label="n?.label"
-                    @update:model-value="store.hitungSkorOntario()"
-                  />
+                  <q-radio dense size="sm" v-for="n in obj.categories" :key="n" v-model="store.formOntario[obj.kode]"
+                    :val="n" :label="n?.label" @update:model-value="store.hitungSkorOntario()" />
                 </div>
               </div>
             </div>
@@ -378,7 +272,8 @@
           <div>NILAI SKOR : {{ store.formOntario?.skorOntario?.skor }} </div>
           <div>KET : {{ store.formOntario?.skorOntario?.label }}</div>
         </div>
-        <div v-if="store.formOntario?.skorOntario?.kuning === true" class="full-width flex justify-end q-gutter-sm f-14 text-yellow-9 q-mt-xs">
+        <div v-if="store.formOntario?.skorOntario?.kuning === true"
+          class="full-width flex justify-end q-gutter-sm f-14 text-yellow-9 q-mt-xs">
           PASIEN DIHARAP PAKAI STICKER KUNING
         </div>
       </div>
@@ -408,13 +303,40 @@ const props = defineProps({
 // eslint-disable-next-line no-unused-vars
 const store = usePenilaianRanapStore()
 
+// console.log('store', store.humptys, store.usia);
+
+
 const jnsKasusKep = computed(() => {
+  // console.log('jnsKasusKep', props.kasus?.gruping)
+  // const humpty = store?.humptys?.grupings?.includes(props.kasus?.gruping) && (store.usia < 18)
+  // console.log('form jatuh', humpty);
   if (props.kasus) {
     return props.kasus?.gruping
   }
-  // console.log('jnsKasusKep', props.kasus?.gruping)
 
   return null
+})
+
+const openSkoringJatuh = computed(() => {
+  let open = null
+  const humpty = store?.humptys?.grupings?.includes(props.kasus?.gruping)
+  const morse = store?.morses?.grupings?.includes(props.kasus?.gruping)
+  const ontario = store?.ontarios?.grupings?.includes(props.kasus?.gruping)
+
+
+  if (store.usia >= 60) {
+    open = ontario ? 'ontario' : null
+  } else if (store.usia >= 18 && store.usia < 60) {
+    open = morse ? 'morse' : null
+  } else if (store.usia < 18) {
+    open = humpty ? 'humpty' : null
+  } else {
+    open = null
+  }
+
+  console.log('openSkoringJatuh', open);
+
+  return open
 })
 
 // const humptyOpen = computed(() => {

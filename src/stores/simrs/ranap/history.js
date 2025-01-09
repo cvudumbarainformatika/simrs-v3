@@ -11,7 +11,7 @@ export const useHistoryPasienRanapStore = defineStore('history-pasien-ranap-stor
 
   }),
   actions: {
-    async historyIgdBefore (pasien) {
+    async historyIgdBefore(pasien) {
       // this.loadingCall = false
       this.loading = true
       // console.log('load1', this.loadingTerima)
@@ -37,7 +37,7 @@ export const useHistoryPasienRanapStore = defineStore('history-pasien-ranap-stor
       }
     },
 
-    setPasienIgd (pas, hasil) {
+    setPasienIgd(pas, hasil) {
       const pasien = { ...pas }
       pasien.triage = hasil?.triage
       pasien.anamnesis = hasil?.anamnesis
