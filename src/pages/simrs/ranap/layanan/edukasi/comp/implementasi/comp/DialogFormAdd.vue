@@ -43,7 +43,7 @@
                 </q-bar>
                 <q-card-section class="q-pa-sm">
                   <q-list dense separator bordered>
-                    <q-item v-for="item in store.materiDpjp" :key="item" tag="label" v-ripple>
+                    <q-item v-for="item in materi" :key="item" tag="label" v-ripple>
                       <q-item-section avatar>
                         <q-checkbox v-model="store.form.materi" :val="item" size="sm" />
                       </q-item-section>
@@ -129,7 +129,8 @@
         <div class="col-auto bg-primary q-pa-md">
           <div class="row justify-between">
             <q-btn label="Kembali" color="dark" text-color="white" v-close-popup />
-            <q-btn type="submit" label="Simpan" color="yellow-3" text-color="dark" />
+            <q-btn type="submit" label="Simpan" color="yellow-3" text-color="dark" :loading="store.loadingSave"
+              :disable="store.loadingSave" />
           </div>
         </div>
       </q-form>
@@ -139,7 +140,7 @@
 
 <script setup>
 import { useImplementasiEdukasiRanapStore } from 'src/stores/simrs/ranap/implementasiEdukasi';
-import { defineAsyncComponent } from 'vue';
+import { computed, defineAsyncComponent } from 'vue';
 
 
 const store = useImplementasiEdukasiRanapStore()
@@ -158,15 +159,38 @@ const props = defineProps({
     default: null
   },
   nakes: {
-    type: Object,
+    type: String,
     default: null
   },
 })
 
+const materi = computed(() => {
+  if (props?.nakes === '1') {
+    return store.materiDpjp
+  } else if (props?.nakes === '2') {
+    return store.materiPerBid
+  } else if (props?.nakes === '3') {
+    return store.materiPerBid
 
+  } else if (props?.nakes === '4') {
+    return store.materiApoteker
+  } else if (props?.nakes === '5') {
+    return store.materiGizi
+  } else if (props?.nakes === '6') {
+    return store.materiFisio
+
+  } else {
+    return null
+  }
+})
+
+const emits = defineEmits(['exit'])
 const simpan = () => {
-  console.log('simpan');
-  store.simpanData(props.pasien)
+  // console.log('simpan');
+  store.simpanData(props.pasien, props.nakes)
+    .then(() => {
+      emits('exit')
+    })
 
 }
 

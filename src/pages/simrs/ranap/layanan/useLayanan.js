@@ -2,7 +2,7 @@ import { computed, defineAsyncComponent, onMounted, ref, shallowRef, watchEffect
 import { usePengunjungRanapStore } from 'src/stores/simrs/ranap/pengunjung'
 import { useAplikasiStore } from 'src/stores/app/aplikasi'
 
-export default function useLayanan (pasien) {
+export default function useLayanan(pasien) {
   const store = usePengunjungRanapStore()
   const auth = useAplikasiStore()
 
@@ -73,7 +73,7 @@ export default function useLayanan (pasien) {
       name: 'edukasi-page',
       label: 'Edukasi',
       icon: 'icon-mat-people_alt',
-      nakes: ['1', '2', '3'],
+      nakes: ['1', '2', '3', '4', '5', '6', '', null],
       comp: shallowRef(defineAsyncComponent(() => import('./edukasi/IndexPage.vue')))
     },
     {
@@ -125,6 +125,9 @@ export default function useLayanan (pasien) {
     return auth?.user?.pegawai?.kdgroupnakes
   })
 
+  // console.log('nakes', nakes.value);
+
+
   const filterredMenus = computed(() => {
     const byPass = ['sa']
     const user = auth?.user?.username
@@ -143,7 +146,7 @@ export default function useLayanan (pasien) {
     menu.value = filterredMenus.value[0]
   })
 
-  function menuDiganti (val) {
+  function menuDiganti(val) {
     menu.value = val
   }
 

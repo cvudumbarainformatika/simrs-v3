@@ -1,5 +1,5 @@
 <template>
-  <q-card flat bordered class="bg-transparent full-height column">
+  <q-card flat square bordered class="bg-transparent full-height column">
     <div class="col-auto bg-primary text-white q-px-md q-py-sm">
       <div class="row justify-between items-center">
         <div />
@@ -10,11 +10,11 @@
         </div>
       </div>
     </div>
-    <div class="col full-height">
+    <div class="col full-height bg-grey-4">
       <ListImplementasi :pasien="pasien" :kasus="kasus" :nakes="nakes" :items="store.items" />
     </div>
 
-    <DialogFormAdd v-model="isForm" :pasien="pasien" :kasus="kasus" :nakes="nakes" @exit="settings.isForm = false" />
+    <DialogFormAdd v-model="isForm" :pasien="pasien" :kasus="kasus" :nakes="nakes" @exit="isForm = false" />
   </q-card>
 </template>
 
@@ -48,7 +48,7 @@ const store = useImplementasiEdukasiRanapStore()
 
 onMounted(() => {
 
-  // console.log('props', props?.pasien);
+  // console.log('nakes', props?.nakes);
 
 
   store.getList(props?.pasien)

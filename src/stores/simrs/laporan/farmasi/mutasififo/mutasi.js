@@ -110,7 +110,7 @@ export const useLaporanMutasiFiFoFarmasiStore = defineStore('laporan_mutasi_fifo
               const temp = {
                 tgl: s.tgl,
                 saldoawal: s,
-                ket: 'Saldo Awal'
+                ket: 'Saldo Awal ( ' + s?.nopenerimaan + ' )'
               }
               it.data.push(temp)
             })
