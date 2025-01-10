@@ -303,6 +303,10 @@ const props = defineProps({
 // eslint-disable-next-line no-unused-vars
 const store = usePenilaianRanapStore()
 
+onMounted(() => {
+  store.getUsia(props.pasien)
+})
+
 // console.log('store', store.humptys, store.usia);
 
 
@@ -334,7 +338,7 @@ const openSkoringJatuh = computed(() => {
     open = null
   }
 
-  console.log('openSkoringJatuh', open);
+  console.log('openSkoringJatuh', open, store.usia);
 
   return open
 })
