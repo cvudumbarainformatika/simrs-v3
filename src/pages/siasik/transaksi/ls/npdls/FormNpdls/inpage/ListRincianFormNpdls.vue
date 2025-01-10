@@ -1,5 +1,5 @@
 <template>
-  <template v-if="store.reqs.rincianmanual || store.transall.length > 0">
+  <template v-if="store.reqs.rincianmanual">
     <q-card flat class="col full-height q-pt-sm">
       <div>
         <q-table class="my-sticky-table" :rows="store.transall" :columns="columns" row-key="name" hide-pagination

@@ -52,7 +52,7 @@ export const dataBastFarmasi = defineStore('data_Bast_Farmasi', {
       this.getDataBast()
     },
 
-    selectbastFarmasi(row) {
+    selectbastFarmasi() {
       this.loading = true
       const params = { params: this.reqs }
       // console.log('parameter', params)
@@ -62,14 +62,10 @@ export const dataBastFarmasi = defineStore('data_Bast_Farmasi', {
             if (resp.status === 200) {
               this.bastfarmasis = []
               this.konsinyasis = []
-              console.log('rowx', row)
+
               const sve = formNotaPermintaanDanaLS()
               this.reqs.nonpdls = sve.form.nonpdls
 
-              // console.log('nomer npd', this.reqs.nonpdls)
-
-              // console.log('farmasi', resp.data)
-              this.loading = false
               this.bastfarmasis = resp.data.penerimaan
               // console.log('bast penerimaan', this.bastfarmasis)
               this.konsinyasis = resp.data.konsinyasi
@@ -77,8 +73,13 @@ export const dataBastFarmasi = defineStore('data_Bast_Farmasi', {
               this.reqs.rowsNumber = resp.data.total
               // this.rekening50 = resp.data.data
               this.filterRekening50(resp.data)
+
+              const carinopenerimaan = this.itembelanja.map((x) => x.nopenerimaan)
+              sve.paramsrinci.nopenerimaan = carinopenerimaan
+              sve.listrincians()
               // this.ambilRekeningFarmasi(resp.data)
               // sve.transall = this.itembelanja
+              this.loading = false
               resolve(resp.data)
             }
             else {
@@ -203,6 +204,7 @@ export const dataBastFarmasi = defineStore('data_Bast_Farmasi', {
           arr.push(...arr108)
         }
         this.itembelanja.push(...arr)
+
         // console.log('DATA PENERIMAAN', this.itembelanja)
       }
       else {

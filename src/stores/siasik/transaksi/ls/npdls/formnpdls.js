@@ -45,7 +45,8 @@ export const formNotaPermintaanDanaLS = defineStore('form_NPD_LS', {
       // rowsNumber: 0
     },
     paramsrinci: {
-      nonpdls: ''
+      nonpdls: '',
+      nopenerimaan: []
     },
     form: {
       nonpdls: null,
@@ -536,14 +537,40 @@ export const formNotaPermintaanDanaLS = defineStore('form_NPD_LS', {
         api.post('/v1/transaksi/belanja_ls/deleterinci', row)
           .then(resp => {
             this.loadingHapus = false
-            // console.log('hapus data', resp)
 
-            // const bst = dataBastFarmasi()
-            // bst.filterRekening50()
             this.transall = resp?.data?.data
             this.listdatanpd()
             if (this.transall.length < 0) {
               this.resetFORM()
+              this.form = []
+              this.form.nonpdls = ''
+              this.form.kodepptk = ''
+              this.form.pptk = ''
+              this.form.kodebidang = ''
+              this.form.bidang = ''
+
+              this.form.bast = ''
+              // Data Kontrak
+              this.form.serahterimapekerjaan = ''
+              this.form.noserahterima = ''
+              this.form.nokontrak = ''
+
+              this.form.triwulan = ''
+
+              // kegiatan
+              this.form.kodekegiatanblud = ''
+              this.form.kegiatanblud = ''
+
+              // pihak ketiga
+              this.form.kodepenerima = ''
+              this.form.penerima = ''
+              this.form.bank = ''
+              this.form.rekening = ''
+              this.form.npwp = ''
+
+              this.form.keterangan = ''
+              this.form.biayatransfer = 0
+
             }
             // const index = row.rincian.findIndex(x => x.id === val.id)
             // if (index >= 0) {

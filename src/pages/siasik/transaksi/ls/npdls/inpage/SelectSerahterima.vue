@@ -184,8 +184,9 @@ function pilihDataSerahterima(val) {
   store.form.noserahterima = store.reqs.bast
   carisrt.reqs.kodebast = val
   carisrt.selectbastFarmasi()
-  // console.log('bast', store.reqs.bast)
 
+  // console.log('bast', store.paramsrinci.nopenerimaan)
+  // console.log('cari xx', store.transall)
   // const b = store.transall
   // b = a
   // console.log('gagga', a);

@@ -170,7 +170,7 @@ function gantibotton(row) {
   } else {
     simpandata = true
   }
-  console.log('row', transall)
+  // console.log('row', transall)
   return simpandata
 
 
@@ -299,24 +299,20 @@ function simpanRinciBast(val) {
       return notifErrVue('Maaf Pengajuan Lebih dari Sisa Pagu')
     }
     arr.push(obj)
-
   }
-  // store.rowDisabled(val)
-  // console.log('row', props?.data)
-  store.simpanNpdls(props.data)
-  // tersimpan.value = true
+  store.simpanNpdls(props.data).then(() => {
+    store.disabled = true
+  })
   const subtotal = arr.map((x) => x.jumlah).reduce((x, y) => x + y, 0)
   store.reqs.subtotal = subtotal
-  // .then(() => {
-  //   store.rowDisabled(props.data)
-  //   store.disabled = true
-  // })
 }
+
 function subtotal() {
   // console.log('get baru', store.transall)
   const subtotalrinci = store.transall.map((x) => parseFloat(x.nominalpembayaran)).reduce((a, b) => a + b, 0)
   return subtotalrinci
 }
+
 const selected = ref([])
 
 function deleteData(row) {
@@ -329,11 +325,15 @@ function deleteData(row) {
   }).onOk(() => {
 
     const payload = {
-      nonpdls: store.form.nonpdls,
+      nonpdls: store.paramsrinci.nonpdls,
       nopenerimaan: row,
     }
-    store.hapusRinci(payload)
-
+    store.hapusRinci(payload).then(() => {
+      if (store.transall.length < 0) {
+        store.resetFORM()
+        formNpdLS.value.resetValidation()
+      }
+    })
   }).onCancel(() => {
     console.log('Cancel')
     selected.value = []

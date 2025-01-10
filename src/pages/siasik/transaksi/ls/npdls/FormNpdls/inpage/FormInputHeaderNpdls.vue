@@ -1,9 +1,10 @@
 <template>
   <q-card flat class="col full-height">
-    <q-form class="full-height" @submit="onSubmit">
+    <q-form ref="formNpdLS" class="full-height" @submit="onSubmit">
       <div class="row q-pa-sm q-col-gutter-md">
         <div class="q-gutter-y-md" style="width: 25%">
-          <app-input-simrs label="Nomor NPD-LS" v-model="store.form.nonpdls" readonly outlined dense />
+          <app-input-simrs label="Nomor NPD-LS" v-model="store.form.nonpdls" readonly :disable="store.disabled" outlined
+            dense />
 
           <app-autocomplete label="Pejabat Teknis Kegiatan" v-model="store.form.kodepptk" autocomplete="nama" outlined
             :option-label="opt => Object(opt) === opt && 'nip' in opt ? opt.nama + ' - ' + opt.nip : 'Silahkan Dipilih'"
@@ -12,7 +13,7 @@
         </div>
         <div class="q-gutter-y-md" style="width: 25%">
           <app-input-date-human label="Tanggal Transaksi" :model="store.params.tgl" icon="icon-mat-event" outlined
-            :autofocus="false" :disable="store.disabled && store.loading" @db-model="tglTransaksi"
+            :autofocus="false" :disable="store.disabled" @db-model="tglTransaksi"
             :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" />
           <app-autocomplete label="Kegiatan BLUD" v-model="store.form.kodekegiatanblud" autocomplete="kegiatan" outlined
             option-label="kegiatan" option-value="kodekegiatan" :source="store.kegiatans"
@@ -35,7 +36,8 @@
               <div>
                 <app-autocomplete label="Serah Terima Dari" v-model="store.form.bast" autocomplete="nama"
                   option-value="value" option-label="nama" outlined :key="carisrt.reqs.kodepenerima"
-                  :source="store.dariserahterima" @update:model-value="(val) => serahTerima(val)" />
+                  :disable="store.disabled" :source="store.dariserahterima"
+                  @update:model-value="(val) => serahTerima(val)" />
               </div>
             </template>
           </div>
@@ -95,7 +97,7 @@ const SelectSerahterima = defineAsyncComponent(() => import('../../inpage/Select
 const store = formNotaPermintaanDanaLS()
 const carisrt = dataBastFarmasi()
 const ambil = formKontrakPekerjaan()
-const refForm = ref(null)
+const formNpdLS = ref(null)
 
 onMounted(() => {
   // store.initReset(props.data)
