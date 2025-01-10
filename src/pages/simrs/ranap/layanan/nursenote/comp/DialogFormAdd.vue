@@ -149,6 +149,7 @@
             </div>
           </div>
         </div>
+
         <div class="col-auto bg-primary q-pa-md">
           <div class="row justify-between">
             <q-btn rounded outline color="orange" icon="icon-mat-arrow_back" v-close-popup>
