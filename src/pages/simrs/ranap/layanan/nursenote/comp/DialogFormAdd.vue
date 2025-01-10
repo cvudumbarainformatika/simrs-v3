@@ -33,17 +33,17 @@
                     <div class="col-auto q-pa-sm text-bold bg-primary text-white">
                       <div class="f-14">TINDAKAN</div>
                     </div>
-                    <div class="col full-height scroll">
+                    <div class="col fit scroll">
                       <div class="row q-pa-md q-col-gutter-md">
                         <autocomplete-input-two v-model="store.form.tindakan" :options="store.tindakans"
                           option-label="tindakan" option-value="tindakan" :filters-by="['tindakan']" label="Tindakan"
-                          @set-model="(val) => {
+                          class="col-12" @set-model="(val) => {
                             // console.log('val', val);
 
                           }" />
                         <!-- <app-input-simrs label="Tindakan" /> -->
                         <q-input v-model="store.form.keterangan" type="textarea" outlined standout="bg-yellow-3"
-                          label="Keterangan" />
+                          label="Keterangan" class="col-12" />
                       </div>
                     </div>
                   </q-card>
@@ -149,12 +149,13 @@
             </div>
           </div>
         </div>
-        <div class="col-auto bg-white q-pa-md">
+
+        <div class="col-auto bg-primary q-pa-md">
           <div class="row justify-between">
             <q-btn rounded outline color="orange" icon="icon-mat-arrow_back" v-close-popup>
-              <span class="text-orange-9 q-ml-sm">Kembali </span>
+              <span class="text-orange q-ml-sm">Kembali </span>
             </q-btn>
-            <q-btn rounded outline color="primary" icon="icon-mat-save">
+            <q-btn rounded outline color="white" icon="icon-mat-save">
               <span class=" q-ml-sm">Simpan Catatan </span>
             </q-btn>
           </div>
