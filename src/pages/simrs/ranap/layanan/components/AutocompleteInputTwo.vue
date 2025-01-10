@@ -1,6 +1,6 @@
 <template>
-  <q-select dense standout="bg-yellow-3 text-black" outlined :label="label" :option-label="optionLabel"
-    placeholder="Harap Enter" :option-value="optionValue" :options="optionx" hide-selected fill-input use-input
+  <q-select :dense="dense" standout="bg-yellow-3 text-black" outlined :label="label" :option-label="optionLabel"
+    :placeholder="placeholder" :option-value="optionValue" :options="optionx" use-input :use-chips="useChips"
     input-debounce="0" hide-bottom-space hide-dropdown-icon @filter="filterFn" :rules="[requiredRule]"
     @input-value="(val) => emits('setModel', val)" @new-value="createValue" />
 </template>
@@ -35,6 +35,18 @@ const props = defineProps({
   filtersBy: {
     type: Array,
     default: () => ['name']
+  },
+  useChips: {
+    type: Boolean,
+    default: true
+  },
+  placeholder: {
+    type: String,
+    default: 'Harap Enter'
+  },
+  dense: {
+    type: Boolean,
+    default: false
   }
 })
 
