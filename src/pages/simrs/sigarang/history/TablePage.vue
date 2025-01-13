@@ -3,41 +3,22 @@
     <div :key="table.items">
       <app-card :is-header="false">
         <template #content>
-          <app-table-view
-            :key="table.items"
-            :title="`Data ${table.nama}`"
-            :columns="table.columns"
-            :column-hide="table.columnHide"
-            :items="table.items"
-            :meta="table.meta"
-            :per-page="table.params.per_page"
-            :order-by="table.params.order_by"
-            :sort="table.params.sort"
-            :loading="table.loading"
-            :to-search="table.params.q"
-            :ada-cari="false"
-            ada-detail
-            @goto="table.setPage"
-            @set-row="table.setPerPage"
-            @refresh="table.refreshTable"
-            @find="table.setSearch"
-            @set-order="table.setOder"
-            @delete="table.deletesData"
-            @detail="table.setDetails"
-          >
-            <template #cell-total="{row}">
+          <app-table-view :key="table.items" :title="`Data ${table.nama}`" :columns="table.columns"
+            :column-hide="table.columnHide" :items="table.items" :meta="table.meta" :per-page="table.params.per_page"
+            :order-by="table.params.order_by" :sort="table.params.sort" :loading="table.loading"
+            :to-search="table.params.q" :ada-cari="false" ada-detail @goto="table.setPage" @set-row="table.setPerPage"
+            @refresh="table.refreshTable" @find="table.setSearch" @set-order="table.setOder" @delete="table.deletesData"
+            @detail="table.setDetails">
+            <template #cell-total="{ row }">
               {{ formatRp(row.total) }}
             </template>
-            <template #cell-nomor="{row}">
+            <template #cell-nomor="{ row }">
               <!-- <div
                 style="width:10vw;"
                 class="cursor-pointer"
                 @click="table.setDetails(row)"
               > -->
-              <div
-                class="box cursor-pointer"
-                @click="table.setDetails(row)"
-              >
+              <div class="box cursor-pointer" @click="table.setDetails(row)">
                 <div class="">
                   <p>
                     {{ row.nomor }}
@@ -54,147 +35,119 @@
                 </q-tooltip> -->
               </div>
             </template>
-            <template #cell-kontrak="{row}">
+            <template #cell-kontrak="{ row }">
               <div style="width:10vw;">
                 <div class="ellipsis">
                   {{ row.kontrak }}
                 </div>
-                <q-tooltip
-                  anchor="top middle"
-                  self="center middle"
-                >
+                <q-tooltip anchor="top middle" self="center middle">
                   {{ row.kontrak }}
                 </q-tooltip>
               </div>
             </template>
-            <template #cell-no_penerimaan="{row}">
+            <template #cell-no_penerimaan="{ row }">
               <div style="width:10vw;">
                 <div class="ellipsis box">
                   {{ row.no_penerimaan }}
                 </div>
-                <q-tooltip
-                  anchor="top middle"
-                  self="center middle"
-                >
+                <q-tooltip anchor="top middle" self="center middle">
                   {{ row.no_penerimaan }}
                 </q-tooltip>
               </div>
             </template>
-            <template #cell-faktur="{row}">
+            <template #cell-faktur="{ row }">
               <div style="width:5vw;">
                 <div class="ellipsis">
                   {{ row.faktur }}
                 </div>
-                <q-tooltip
-                  anchor="top middle"
-                  self="center middle"
-                >
+                <q-tooltip anchor="top middle" self="center middle">
                   {{ row.faktur }}
                 </q-tooltip>
               </div>
             </template>
-            <template #cell-surat_jalan="{row}">
+            <template #cell-surat_jalan="{ row }">
               <div style="width:5vw;">
                 <div class="ellipsis">
                   {{ row.surat_jalan }}
                 </div>
-                <q-tooltip
-                  anchor="top middle"
-                  self="center middle"
-                >
+                <q-tooltip anchor="top middle" self="center middle">
                   {{ row.surat_jalan }}
                 </q-tooltip>
               </div>
             </template>
-            <template #cell-pengirim="{row}">
+            <template #cell-pengirim="{ row }">
               <div style="width:5vw;">
                 <div class="ellipsis">
                   {{ row.pengirim }}
                 </div>
-                <q-tooltip
-                  anchor="top middle"
-                  self="center middle"
-                >
+                <q-tooltip anchor="top middle" self="center middle">
                   {{ row.pengirim }}
                 </q-tooltip>
               </div>
             </template>
-            <template #cell-perusahaan="{row}">
+            <template #cell-perusahaan="{ row }">
               <div style="width:10vw;">
                 <div class="ellipsis">
-                  {{ row.perusahaan?row.perusahaan.nama:'-' }}
+                  {{ row.perusahaan ? row.perusahaan.nama : '-' }}
                 </div>
-                <q-tooltip
-                  anchor="top middle"
-                  self="center middle"
-                >
-                  {{ row.perusahaan?row.perusahaan.nama:'-' }}
+                <q-tooltip anchor="top middle" self="center middle">
+                  {{ row.perusahaan ? row.perusahaan.nama : '-' }}
                 </q-tooltip>
               </div>
             </template>
-            <template #cell-tanggal="{row}">
-              <div
-                class="row"
-                style="width:max-content;"
-              >
+            <template #cell-tanggal="{ row }">
+              <div class="row" style="width:max-content;">
                 {{ dateFullFormat(row.tanggal) }}
               </div>
             </template>
-            <template #cell-tanggal_verif="{row}">
+            <template #cell-tanggal_verif="{ row }">
               <div class="row">
                 {{ dateFull(row.tanggal_verif) }}
               </div>
             </template>
-            <template #cell-tanggal_distribusi="{row}">
+            <template #cell-tanggal_distribusi="{ row }">
               <div class="row">
                 {{ dateFull(row.tanggal_distribusi) }}
               </div>
             </template>
-            <template #cell-tanggal_surat="{row}">
-              <div
-                class="row"
-                style="width:max-content;"
-              >
+            <template #cell-tanggal_surat="{ row }">
+              <div class="row" style="width:max-content;">
                 {{ dateFullFormat(row.tanggal_surat) }}
               </div>
             </template>
-            <template #cell-tanggal_faktur="{row}">
-              <div
-                class="row"
-                style="width:max-content;"
-              >
+            <template #cell-tanggal_faktur="{ row }">
+              <div class="row" style="width:max-content;">
                 {{ dateFullFormat(row.tanggal_faktur) }}
               </div>
             </template>
-            <template #cell-asal="{row}">
-              {{ row.asal?row.asal.nama:'-' }}
+            <template #cell-asal="{ row }">
+              {{ row.asal ? row.asal.nama : '-' }}
             </template>
-            <template #cell-dibuat="{row}">
-              {{ row.dibuat?row.dibuat.nama:'-' }}
+            <template #cell-dibuat="{ row }">
+              {{ row.dibuat ? row.dibuat.nama : '-' }}
             </template>
-            <template #cell-tujuan="{row}">
-              {{ row.tujuan?row.tujuan.nama:'-' }}
+            <template #cell-tujuan="{ row }">
+              {{ row.tujuan ? row.tujuan.nama : '-' }}
             </template>
-            <template #cell-pengguna="{row}">
+            <template #cell-pengguna="{ row }">
               <div style="width:10vw;">
                 <div class="ellipsis">
-                  {{ row.pengguna?row.pengguna.jabatan:row.ruangpengguna?row.ruangpengguna.pengguna.jabatan:'-' }}
+                  {{ row.pengguna ? row.pengguna.jabatan : row.ruangpengguna ? row.ruangpengguna.pengguna.jabatan : '-'
+                  }}
                 </div>
-                <q-tooltip
-                  anchor="top middle"
-                  self="center middle"
-                >
-                  {{ row.pengguna?row.pengguna.jabatan:row.ruangpengguna?row.ruangpengguna.pengguna.jabatan:'-' }}
+                <q-tooltip anchor="top middle" self="center middle">
+                  {{ row.pengguna ? row.pengguna.jabatan : row.ruangpengguna ? row.ruangpengguna.pengguna.jabatan : '-'
+                  }}
                 </q-tooltip>
               </div>
             </template>
-            <template #cell-pj="{row}">
-              {{ row.pj?row.pj.jabatan:row.ruangpengguna?row.ruangpengguna.pj.jabatan:'-' }}
+            <template #cell-pj="{ row }">
+              {{ row.pj ? row.pj.jabatan : row.ruangpengguna ? row.ruangpengguna.pj.jabatan : '-' }}
             </template>
-            <template #cell-ruang="{row}">
-              {{ row.ruang?row.ruang.uraian:row.penggunaruang?row.penggunaruang.ruang.uraian:'-' }}
+            <template #cell-ruang="{ row }">
+              {{ row.ruang ? row.ruang.uraian : row.penggunaruang ? row.penggunaruang.ruang.uraian : '-' }}
             </template>
-            <template #cell-ruangan="{row}">
+            <template #cell-ruangan="{ row }">
               <!-- <q-chip
                 v-if="row.ruangan"
                 class="f-12"
@@ -202,30 +155,17 @@
                 text-color="white"
                 :label="row.ruangan.uraian"
               /> -->
-              <q-badge
-                v-if="row.ruangan"
-                color="primary"
-                text-color="white"
-                :label="row.ruangan.uraian"
-              />
-              <div
-                v-if="!row.ruangan"
-                class="text-center"
-              >
+              <q-badge v-if="row.ruangan" color="primary" text-color="white" :label="row.ruangan.uraian" />
+              <div v-if="!row.ruangan" class="text-center">
                 -
               </div>
             </template>
-            <template #cell-depo="{row}">
-              {{ row.depo?row.depo.nama:'-' }}
+            <template #cell-depo="{ row }">
+              {{ row.depo ? row.depo.nama : '-' }}
             </template>
-            <template #cell-status="{row}">
+            <template #cell-status="{ row }">
               <!-- {{row.status}} -->
-              <q-chip
-                class="f-12"
-                :color="color(row.status)"
-                text-color="white"
-                :label="label(row.status,row.nama)"
-              />
+              <q-chip class="f-12" :color="color(row.status)" text-color="white" :label="label(row.status, row.nama)" />
             </template>
             <template #col-total>
               Total
@@ -305,201 +245,91 @@
             <template #col-no_permintaan>
               Nomor Permintaan
             </template>
-            <template #left-action="{row,index}">
+            <template #left-action="{ row, index }">
               <q-btn
-                v-if="(role==='root' || role==='PTK' || role==='gizi' || role==='gudang' || role==='depo')
-                  && (row.nama === 'PEMESANAN' || row.nama === 'PENERIMAAN' || row.nama==='DISTRIBUSI DEPO' || row.nama==='PERMINTAAN RUANGAN')"
-                unelevated
-                color="dark"
-                round
-                size="sm"
-                icon="icon-mat-print"
-                @click="toPrint(row)"
-              >
-                <q-tooltip
-                  class="primary"
-                  :offset="[10, 10]"
-                >
+                v-if="(role === 'root' || role === 'PTK' || role === 'gizi' || role === 'gudang' || role === 'depo')
+                  && (row.nama === 'PEMESANAN' || row.nama === 'PENERIMAAN' || row.nama === 'DISTRIBUSI DEPO' || row.nama === 'PERMINTAAN RUANGAN')"
+                unelevated color="dark" round size="sm" icon="icon-mat-print" @click="toPrint(row)">
+                <q-tooltip class="primary" :offset="[10, 10]">
                   Print
                 </q-tooltip>
               </q-btn>
               <q-btn
-                v-if="row.status===1 && (role==='PTK' || role==='root'|| role==='gizi' || role==='ruangan')
-                  && (row.nama === 'PEMESANAN' || row.nama === 'PERMINTAAN RUANGAN'||row.nama === 'PENERIMAAN'||row.nama === 'PEMAKAIAN RUANGAN'||row.nama === 'DISTRIBUSI DEPO')"
-                color="primary"
-                round
-                icon="icon-mat-exit_to_app"
-                flat
-                size="sm"
-                @click="goTo(row)"
-              >
-                <q-tooltip
-                  anchor="top middle"
-                  self="center middle"
-                >
+                v-if="row.status === 1 && (role === 'PTK' || role === 'root' || role === 'gizi' || role === 'ruangan')
+                  && (row.nama === 'PEMESANAN' || row.nama === 'PERMINTAAN RUANGAN' || row.nama === 'PENERIMAAN' || row.nama === 'PEMAKAIAN RUANGAN' || row.nama === 'DISTRIBUSI DEPO')"
+                color="primary" round icon="icon-mat-exit_to_app" flat size="sm" @click="goTo(row)">
+                <q-tooltip anchor="top middle" self="center middle">
                   Buka link
                 </q-tooltip>
               </q-btn>
               <!-- || role==='PTK' || role==='gizi' -->
-              <q-btn
-                v-if="(role==='root' || role==='PTK' || role==='gizi')
-                  && (row.nama === 'PEMESANAN' && (row.status>=2 && row.status<=4))"
-                color="primary"
-                round
-                icon="icon-mat-edit"
-                flat
-                size="sm"
-                :loading="loadingEdit(index)"
-                @click="editRow(row,index)"
-              >
-                <q-tooltip
-                  anchor="top middle"
-                  self="center middle"
-                >
+              <q-btn v-if="(role === 'root' || role === 'PTK' || role === 'gizi')
+                && (row.nama === 'PEMESANAN' && (row.status >= 2 && row.status <= 4))" color="primary" round
+                icon="icon-mat-edit" flat size="sm" :loading="loadingEdit(index)" @click="editRow(row, index)">
+                <q-tooltip anchor="top middle" self="center middle">
                   Edit
                 </q-tooltip>
               </q-btn>
-              <q-btn
-                v-if="(role==='root' || role==='gudang' || role==='gizi')
-                  && (row.nama === 'PENERIMAAN' && row.status>=2 )"
-                color="primary"
-                round
-                icon="icon-mat-edit"
-                flat
-                size="sm"
-                :loading="loadingEdit(index)"
-                @click="editRowTerima(row,index)"
-              >
-                <q-tooltip
-                  anchor="top middle"
-                  self="center middle"
-                >
+              <q-btn v-if="(role === 'root' || role === 'gudang' || role === 'gizi')
+                && (row.nama === 'PENERIMAAN' && row.status >= 2)" color="primary" round icon="icon-mat-edit" flat
+                size="sm" :loading="loadingEdit(index)" @click="editRowTerima(row, index)">
+                <q-tooltip anchor="top middle" self="center middle">
                   Edit
                 </q-tooltip>
               </q-btn>
               <!--  -->
               <q-btn
-                v-if="row.status===1 && (role==='root'||role==='PTK' || role==='gizi'|| role==='ruangan')"
-                color="negative"
-                round
-                icon="icon-mat-delete_sweep"
-                flat
-                size="sm"
-                @click="hapus(row)"
-              >
-                <q-tooltip
-                  anchor="top middle"
-                  self="center middle"
-                >
+                v-if="row.status === 1 && (role === 'root' || role === 'PTK' || role === 'gizi' || role === 'ruangan')"
+                color="negative" round icon="icon-mat-delete_sweep" flat size="sm" @click="hapus(row)">
+                <q-tooltip anchor="top middle" self="center middle">
                   Hapus Draft
                 </q-tooltip>
               </q-btn>
               <!-- ||role==='PTK' || role==='gizi' -->
-              <q-btn
-                v-if="row.status===2 && ( role==='root')"
-                color="negative"
-                round
-                icon="icon-mat-delete_sweep"
-                flat
-                size="sm"
-                @click="hapus(row)"
-              >
-                <q-tooltip
-                  anchor="top middle"
-                  self="center middle"
-                >
+              <q-btn v-if="row.status === 2 && (role === 'root')" color="negative" round icon="icon-mat-delete_sweep"
+                flat size="sm" @click="hapus(row)">
+                <q-tooltip anchor="top middle" self="center middle">
                   Hapus
                 </q-tooltip>
               </q-btn>
+              <q-btn v-if="row.loading" round flat size="sm" :loading="row.loading" />
               <q-btn
-                v-if="row.loading"
-                round
-                flat
-                size="sm"
-                :loading="row.loading"
-              />
-              <q-btn
-                v-if="row.status===5 && (role==='gudang' || role==='root'|| role==='gizi') && !row.loading"
-                color="negative"
-                round
-                icon="icon-mat-undo"
-                flat
-                size="sm"
-                @click="backToVerif(row,index)"
-              >
-                <q-tooltip
-                  anchor="top middle"
-                  self="center middle"
-                >
+                v-if="row.status === 5 && (role === 'gudang' || role === 'root' || role === 'gizi') && !row.loading"
+                color="negative" round icon="icon-mat-undo" flat size="sm" @click="backToVerif(row, index)">
+                <q-tooltip anchor="top middle" self="center middle">
                   Kembali ke menunggu verivikasi
                 </q-tooltip>
               </q-btn>
             </template>
             <template #header-left-after-search>
               <div>
-                <q-input
-                  v-if="table.params.nama === 'Pemesanan'
-                    || table.params.nama === 'Penerimaan'
-                    || table.params.nama === 'Gudang'
-                    || table.params.nama === 'Penerimaan Ruangan'
-                    ||table.params.nama === 'Distribusi Ruangan'"
-                  v-model="table.params.q"
-                  class="search-big"
-                  borderless
-                  debounce="500"
-                  clearable
-                  dense
-                  :placeholder="reqQ(table.params.nama)"
-                  clear-icon="icon-mat-close"
-                  @update:model-value="table.setSearch"
-                >
+                <q-input v-if="table.params.nama === 'Pemesanan'
+                  || table.params.nama === 'Penerimaan'
+                  || table.params.nama === 'Gudang'
+                  || table.params.nama === 'Penerimaan Ruangan'
+                  || table.params.nama === 'Distribusi Ruangan'" v-model="table.params.q" class="search-big" borderless
+                  debounce="500" clearable dense :placeholder="reqQ(table.params.nama)" clear-icon="icon-mat-close"
+                  @update:model-value="table.setSearch">
                   <template #prepend>
-                    <q-icon
-                      name="icon-mat-search"
-                      size="20px"
-                    />
+                    <q-icon name="icon-mat-search" size="20px" />
                   </template>
                 </q-input>
               </div>
               <div>
-                <q-input
-                  v-if="table.params.nama === 'Pemesanan' || table.params.nama === 'Penerimaan'"
-                  v-model="table.params.kontrak"
-                  class="search-big"
-                  borderless
-                  debounce="500"
-                  clearable
-                  dense
-                  placeholder="Nomor Kontrak"
-                  clear-icon="icon-mat-close"
-                  @update:model-value="table.setKontrak"
-                >
+                <q-input v-if="table.params.nama === 'Pemesanan' || table.params.nama === 'Penerimaan'"
+                  v-model="table.params.kontrak" class="search-big" borderless debounce="500" clearable dense
+                  placeholder="Nomor Kontrak" clear-icon="icon-mat-close" @update:model-value="table.setKontrak">
                   <template #prepend>
-                    <q-icon
-                      name="icon-mat-search"
-                      size="20px"
-                    />
+                    <q-icon name="icon-mat-search" size="20px" />
                   </template>
                 </q-input>
               </div>
               <div>
-                <q-input
-                  v-if=" table.params.nama === 'Permintaan Ruangan'"
-                  v-model="table.params.ruang"
-                  class="search-big"
-                  borderless
-                  debounce="500"
-                  clearable
-                  dense
-                  placeholder="Cari ruangan"
-                  clear-icon="icon-mat-close"
-                  @update:model-value="table.setRuang"
-                >
+                <q-input v-if="table.params.nama === 'Permintaan Ruangan'" v-model="table.params.ruang"
+                  class="search-big" borderless debounce="500" clearable dense placeholder="Cari ruangan"
+                  clear-icon="icon-mat-close" @update:model-value="table.setRuang">
                   <template #prepend>
-                    <q-icon
-                      name="icon-mat-search"
-                      size="20px"
-                    />
+                    <q-icon name="icon-mat-search" size="20px" />
                   </template>
                 </q-input>
               </div>
@@ -512,38 +342,15 @@
                 <q-badge>
                   {{ table.params.to ? dateFullFormat(table.params.to) : '-' }}
                 </q-badge>
-                <q-popup-proxy
-                  cover
-                  transition-show="scale"
-                  transition-hide="scale"
-                >
-                  <q-date
-                    v-model="table.tanggal"
-                    range
-                    mask="YYYY-MM-DD"
-                    @update:model-value="table.searchTanggal"
-                  >
+                <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+                  <q-date v-model="table.tanggal" range mask="YYYY-MM-DD" @update:model-value="table.searchTanggal">
                     <div class="row items-center justify-end q-gutter-sm">
-                      <q-btn
-                        v-close-popup
-                        label="Cancel"
-                        color="primary"
-                        flat
-                        @click="table.searchTanggal"
-                      />
-                      <q-btn
-                        v-close-popup
-                        label="OK"
-                        color="primary"
-                        flat
-                      />
+                      <q-btn v-close-popup label="Cancel" color="primary" flat @click="table.searchTanggal" />
+                      <q-btn v-close-popup label="OK" color="primary" flat />
                     </div>
                   </q-date>
                 </q-popup-proxy>
-                <q-tooltip
-                  anchor="top middle"
-                  self="center middle"
-                >
+                <q-tooltip anchor="top middle" self="center middle">
                   pilih range tanggal
                 </q-tooltip>
               </div>
@@ -559,50 +366,24 @@
     <q-dialog v-model="openPrint">
       <q-card style="width:75vw; max-width:90vw;">
         <div class="print">
-          <q-btn
-            ref="refPrint"
-            v-print="printObj"
-            unelevated
-            color="dark"
-            round
-            size="sm"
-            icon="icon-mat-print"
-          >
-            <q-tooltip
-              class="primary"
-              :offset="[10, 10]"
-            >
+          <q-btn ref="refPrint" v-print="printObj" unelevated color="dark" round size="sm" icon="icon-mat-print">
+            <q-tooltip class="primary" :offset="[10, 10]">
               Print
             </q-tooltip>
           </q-btn>
-          <q-btn
-            color="primary"
-            round
-            size="sm"
-            icon="icon-my-print_setting"
-            @click="tandatangan.setOpen"
-          >
-            <q-tooltip
-              class="primary"
-              :offset="[10, 10]"
-            >
+          <q-btn color="primary" round size="sm" icon="icon-my-print_setting" @click="tandatangan.setOpen">
+            <q-tooltip class="primary" :offset="[10, 10]">
               Pilih tanda tangan
             </q-tooltip>
           </q-btn>
         </div>
-        <div
-          id="printMe"
-          style="width:210mm; height:310mm; margin:10mm; "
-        >
+        <div id="printMe" style="width:210mm; height:310mm; margin:10mm; ">
           <!-- heder -->
           <q-card-section>
             <div class="row garis-bawah">
               <div class="col-2">
-                <q-img
-                  src="~assets/images/logo-kota-grey.png"
-                  spinner-color="white"
-                  style="height: 3.56cm; max-width: 2.86cm"
-                />
+                <q-img src="~assets/images/logo-kota-grey.png" spinner-color="white"
+                  style="height: 3.56cm; max-width: 2.86cm" />
               </div>
               <div class="col-10">
                 <div class="row justify-center f-18">
@@ -621,7 +402,7 @@
                   E-mail : rsudprob@probolinggokota.go.id
                 </div>
                 <div class="row justify-center f-14 text-weight-bold">
-                  PROBOLINGGO  67219
+                  PROBOLINGGO 67219
                 </div>
               </div>
             </div>
@@ -635,7 +416,7 @@
                 NO. {{ item.nomor }}
               </div>
               <div class="row justify-start">
-                Kepada : Yth. Pemilik {{ item.perusahaan?item.perusahaan.nama:'-' }}
+                Kepada : Yth. Pemilik {{ item.perusahaan ? item.perusahaan.nama : '-' }}
               </div>
               <div class="row justify-start">
                 <div class="col-1" />
@@ -646,7 +427,7 @@
               <div class="row justify-start">
                 <div class="col-1" />
                 <div class="col-4">
-                  {{ item.perusahaan?item.perusahaan.alamat:'-' }}
+                  {{ item.perusahaan ? item.perusahaan.alamat : '-' }}
                 </div>
               </div>
               <div class="row justify-start q-mt-md q-mb-md">
@@ -673,24 +454,19 @@
                   </div>
                 </div>
                 <!-- body details -->
-                <div
-                  v-for="(det, i) in item.details"
-                  :key="i"
-                >
-                  <div
-                    class="row justify-between q-col-gutter-sm"
-                  >
+                <div v-for="(det, i) in item.details" :key="i">
+                  <div class="row justify-between q-col-gutter-sm">
                     <div class="col-7 border-bottom border-left">
-                      {{ i+1 }}. {{ det.barangrs?det.barangrs.nama:'Nama barang tidak ditemukan' }}
+                      {{ i + 1 }}. {{ det.barangrs ? det.barangrs.nama : 'Nama barang tidak ditemukan' }}
                     </div>
                     <div class="col-1 border-bottom border-left">
-                      {{ det.qty===null?0:det.qty }}
+                      {{ det.qty === null ? 0 : det.qty }}
                     </div>
                     <div class="col-1 border-bottom border-left">
-                      {{ det.satuan?det.satuan.nama:'-' }}
+                      {{ det.satuan ? det.satuan.nama : '-' }}
                     </div>
                     <div class="col-3 border-bottom border-left border-right">
-                      {{ det.merk?det.merk:'-' }}
+                      {{ det.merk ? det.merk : '-' }}
                     </div>
                   </div>
                   <q-separator />
@@ -705,12 +481,7 @@
                   Hari
                 </div>
                 <div class="col-11">
-                  <app-input
-                    v-model="table.dispPrint.hari"
-                    label="hari"
-                    class="print-hide"
-                    outlined
-                  />
+                  <app-input v-model="table.dispPrint.hari" label="hari" class="print-hide" outlined />
                   <div class="print-only">
                     : {{ table.dispPrint.hari }}
                   </div>
@@ -721,14 +492,8 @@
                   Tanggal
                 </div>
                 <div class="col-11">
-                  <app-input-date-human
-                    v-model="table.dispPrint.tanggal"
-                    label="tanggal"
-                    class="print-hide"
-                    outlined
-                    @set-model="setTanggal"
-                    @set-display="setTanggalDisp"
-                  />
+                  <app-input-date-human v-model="table.dispPrint.tanggal" label="tanggal" class="print-hide" outlined
+                    @set-model="setTanggal" @set-display="setTanggalDisp" />
                   <div class="print-only">
                     : {{ table.dispPrint.tanggalDisp }}
                   </div>
@@ -739,12 +504,7 @@
                   Waktu
                 </div>
                 <div class="col-11">
-                  <app-input
-                    v-model="table.dispPrint.waktu"
-                    label="waktu"
-                    class="print-hide"
-                    outlined
-                  />
+                  <app-input v-model="table.dispPrint.waktu" label="waktu" class="print-hide" outlined />
                   <div class="print-only">
                     : {{ table.dispPrint.waktu }}
                   </div>
@@ -755,12 +515,7 @@
                   Tempat
                 </div>
                 <div class="col-11">
-                  <app-input
-                    v-model="table.dispPrint.tempat"
-                    label="tempat"
-                    class="print-hide"
-                    outlined
-                  />
+                  <app-input v-model="table.dispPrint.tempat" label="tempat" class="print-hide" outlined />
                   <div class="print-only">
                     : {{ table.dispPrint.tempat }}
                   </div>
@@ -783,10 +538,15 @@
               </div>
 
               <div class="q-mb-md">
-                Pada hari ini <span class="text-weight-bold text-italic">{{ date.formatDate(item.tanggal,'dddd') }}</span>
-                tanggal <span class="text-weight-bold text-italic">{{ tanggalTerbilang(date.formatDate(item.tanggal,'DD')) }}</span>
-                bulan <span class="text-weight-bold text-italic">{{ date.formatDate(item.tanggal,'MMMM') }}</span>
-                tahun <span class="text-weight-bold text-italic">{{ tahunTerbilang(date.formatDate(item.tanggal,'YYYY')) }}</span>,
+                Pada hari ini <span class="text-weight-bold text-italic">{{ date.formatDate(item.tanggal, 'dddd')
+                  }}</span>
+                tanggal <span class="text-weight-bold text-italic">{{
+                  tanggalTerbilang(date.formatDate(item.tanggal, 'DD'))
+                }}</span>
+                bulan <span class="text-weight-bold text-italic">{{ date.formatDate(item.tanggal, 'MMMM') }}</span>
+                tahun <span class="text-weight-bold text-italic">{{ tahunTerbilang(date.formatDate(item.tanggal,
+                  'YYYY'))
+                  }}</span>,
                 <!-- tahun <span class="text-weight-bold text-italic">{{ tahunTerbilang('3211') }}</span>, -->
                 bertempat di UOBK RSUD Dokter Mohamad Saleh Kota Probolinggo, kami yang bertanda tangan di bawah ini:
               </div>
@@ -804,12 +564,7 @@
                   Nama
                 </div>
                 <div class="col-7">
-                  <app-input
-                    v-model="namaSupplier"
-                    label="Nama PIC penyedia"
-                    :filled="false"
-                    class="print-hide"
-                  />
+                  <app-input v-model="namaSupplier" label="Nama PIC penyedia" :filled="false" class="print-hide" />
                   <div class="print-only">
                     {{ namaSupplier }}
                   </div>
@@ -821,12 +576,8 @@
                   Jabatan
                 </div>
                 <div class="col-7">
-                  <app-input
-                    v-model="jabatanSupplier"
-                    label="Jabatan PIC penyedia"
-                    :filled="false"
-                    class="print-hide"
-                  />
+                  <app-input v-model="jabatanSupplier" label="Jabatan PIC penyedia" :filled="false"
+                    class="print-hide" />
                   <div class="print-only">
                     {{ jabatanSupplier }}
                   </div>
@@ -838,7 +589,7 @@
                   Instansi / Perusahaan
                 </div>
                 <div class="col-7">
-                  {{ item.perusahaan?item.perusahaan.nama:'Nama perusahaan tidak ditemukan' }}
+                  {{ item.perusahaan ? item.perusahaan.nama : 'Nama perusahaan tidak ditemukan' }}
                 </div>
               </div>
               <div class="fit row no-wrap justify-start items-center q-my-sm">
@@ -847,7 +598,7 @@
                   Alamat
                 </div>
                 <div class="col-7">
-                  {{ item.perusahaan?item.perusahaan.alamat:'Alamat perusahaan tidak ditemukan' }}
+                  {{ item.perusahaan ? item.perusahaan.alamat : 'Alamat perusahaan tidak ditemukan' }}
                 </div>
               </div>
               <div class="fit row no-wrap justify-start items-center q-my-sm">
@@ -884,7 +635,9 @@
                   NIP
                 </div>
                 <div class="col-7">
-                  {{ tandatangan?.data?.ppk?.nip_baru===''?tandatangan?.data?.ppk?.nip:tandatangan?.data?.ppk?.nip_baru }}
+                  {{ tandatangan?.data?.ppk?.nip_baru === '' ? tandatangan?.data?.ppk?.nip :
+                    tandatangan?.data?.ppk?.nip_baru
+                  }}
                 </div>
               </div>
               <div class="fit row no-wrap justify-start items-center q-my-sm">
@@ -893,7 +646,8 @@
                   Jabatan
                 </div>
                 <div class="col-7">
-                  {{ tandatangan?.data?.ppk?.relasi_jabatan?tandatangan?.data?.ppk?.relasi_jabatan?.jabatan:'jabatan tidak ditemukan' }}
+                  {{ tandatangan?.data?.ppk?.relasi_jabatan ? tandatangan?.data?.ppk?.relasi_jabatan?.jabatan :
+                    'jabatan tidak ditemukan' }}
                 </div>
               </div>
               <div class="fit row no-wrap justify-start items-center q-my-sm">
@@ -916,34 +670,43 @@
               </div>
               <div class="fit row no-wrap justify-start items-center q-my-sm">
                 <div class="col-1" />
-                <div class="col-11">
+                <!-- <div class="col-11">
                   yang ditugaskan sebagai Pejabat Penandatanganan Kontrak berdasarkan Keputusan Direktur UOBK RSUD Dokter Mohamad Saleh Kota Probolinggo Nomor : 100.3/01/KEP/425.102.8/{{ date.formatDate(Date.now(),'YYYY') }} tanggal 02 Januari {{ date.formatDate(Date.now(),'YYYY') }} Tentang Penunjukan dan Pengangkatan Pejabat Penandatangan Kontrak (PPK), Pejabat Teknis Kegiatan (PTK), dan Pembantu PTK Anggaran Badan Layanan Umum Daerah pada UOBK RSUD Dokter Mohamad Saleh Kota Probolinggo Tahun Anggaran {{ date.formatDate(Date.now(),'YYYY') }},
+                  yang selanjutnya disebut <span class="text-weight-bold">PIHAK KEDUA.</span>
+                </div> -->
+                <!-- yang ditugaskan sebagai Pejabat Penandatanganan Kontrak berdasarkan Keputusan Direktur UOBK RSUD Dokter Mohamad Saleh Kota Probolinggo Nomor: 100.3/89/KEP/425.102.8/2024 tanggal 31 Desember 2024 Tentang Pejabat Pengelolaan Keuangan dan Barang pada UOBK RSUD Dokter Mohamad Saleh Kota Probolinggo Tahun Anggaran 2025, yang selanjutnya disebut PIHAK KEDUA. -->
+                <div class="col-11">
+                  yang ditugaskan sebagai Pejabat Penandatanganan Kontrak berdasarkan Keputusan Direktur UOBK RSUD
+                  Dokter
+                  Mohamad Saleh Kota Probolinggo Nomor : 100.3/89/KEP/425.102.8/2024 tanggal 31 Desember 2024 Tentang
+                  Pejabat Pengelolaan Keuangan dan Barang pada UOBK RSUD Dokter Mohamad Saleh Kota Probolinggo Tahun
+                  Anggaran 2025,
                   yang selanjutnya disebut <span class="text-weight-bold">PIHAK KEDUA.</span>
                 </div>
               </div>
               <!-- Pihak kedua end -->
               <!-- {{ item }} -->
               <div class="print-hide">
-                <app-input
-                  v-model="namaRekeningBelanja"
-                  class="print-hide"
-                  label="nama rekening belanja"
-                  :filled="false"
-                />
+                <app-input v-model="namaRekeningBelanja" class="print-hide" label="nama rekening belanja"
+                  :filled="false" />
               </div>
               <p class="q-my-md">
-                <span class="q-mr-md" /> <span class="text-weight-bold">PIHAK PERTAMA</span> dan <span class="text-weight-bold">PIHAK KEDUA</span> bersepakat dan setuju untuk melaksanakan serah terima hasil pekerjaan
+                <span class="q-mr-md" /> <span class="text-weight-bold">PIHAK PERTAMA</span> dan <span
+                  class="text-weight-bold">PIHAK KEDUA</span> bersepakat dan setuju untuk melaksanakan serah terima
+                hasil
+                pekerjaan
                 <span class="text-weight-bold">{{ namaRekeningBelanja }}</span> yang dijelaskan sebagai berikut:
               </p>
               <div class="row no-wrap q-my-md">
-                <div
-                  class="col-shrink text-weight-bold"
-                  style="width:20px;"
-                >
+                <div class="col-shrink text-weight-bold" style="width:20px;">
                   a.
                 </div>
                 <div class="col">
-                  <span class="text-weight-bold">PIHAK PERTAMA</span> menyerahkan hasil pekerjaan <span class="text-weight-bold">{{ namaRekeningBelanja }}</span> kepada <span class="text-weight-bold">PIHAK KEDUA</span> sesuai dengan ketentuan yang tercantum dalam Surat Pesanan, dengan rincian sebagai berikut:
+                  <span class="text-weight-bold">PIHAK PERTAMA</span> menyerahkan hasil pekerjaan <span
+                    class="text-weight-bold">{{ namaRekeningBelanja }}</span> kepada <span
+                    class="text-weight-bold">PIHAK
+                    KEDUA</span> sesuai dengan ketentuan yang tercantum dalam Surat Pesanan, dengan rincian sebagai
+                  berikut:
                 </div>
               </div>
               <!-- no details -->
@@ -951,10 +714,7 @@
                 <app-no-data />
               </div>
               <!-- details -->
-              <div
-                v-if="item.details"
-                class="q-mt-md"
-              >
+              <div v-if="item.details" class="q-mt-md">
                 <!-- header detail -->
                 <div class="row justify-between q-col-gutter-sm">
                   <div class="col-7 text-weight-bold border-tb border-left">
@@ -971,42 +731,38 @@
                   </div>
                 </div>
                 <!-- body details -->
-                <div
-                  v-for="(det, i) in item.details"
-                  :key="i"
-                >
-                  <div
-                    class="row justify-between q-col-gutter-sm"
-                  >
+                <div v-for="(det, i) in item.details" :key="i">
+                  <div class="row justify-between q-col-gutter-sm">
                     <div class="col-7 border-bottom border-left">
-                      {{ i+1 }}. {{ det.barangrs?det.barangrs.nama:'Nama barang tidak ditemukan' }}
+                      {{ i + 1 }}. {{ det.barangrs ? det.barangrs.nama : 'Nama barang tidak ditemukan' }}
                     </div>
                     <div class="col-1 border-bottom border-left">
-                      {{ det.qty===null?0:det.qty }}
+                      {{ det.qty === null ? 0 : det.qty }}
                     </div>
                     <div class="col-1 border-bottom border-left">
-                      {{ det.satuan?det.satuan.nama:'-' }}
+                      {{ det.satuan ? det.satuan.nama : '-' }}
                     </div>
                     <div class="col-3 border-bottom border-left border-right">
-                      {{ det.merk?det.merk:'-' }}
+                      {{ det.merk ? det.merk : '-' }}
                     </div>
                   </div>
                   <q-separator />
                 </div>
                 <!-- penutup -->
                 <div class="row no-wrap q-my-md">
-                  <div
-                    class="col-shrink text-weight-bold"
-                    style="width:20px;"
-                  >
+                  <div class="col-shrink text-weight-bold" style="width:20px;">
                     b.
                   </div>
                   <div class="col">
-                    <span class="text-weight-bold">PIHAK KEDUA</span> menyatakan menerima hasil sebagaimana tersebut di atas pekerjaan <span class="text-weight-bold">{{ namaRekeningBelanja }}</span> dari <span class="text-weight-bold">PIHAK PERTAMA</span> dalam keadaan baik dan lengkap
+                    <span class="text-weight-bold">PIHAK KEDUA</span> menyatakan menerima hasil sebagaimana tersebut di
+                    atas
+                    pekerjaan <span class="text-weight-bold">{{ namaRekeningBelanja }}</span> dari <span
+                      class="text-weight-bold">PIHAK PERTAMA</span> dalam keadaan baik dan lengkap
                   </div>
                 </div>
                 <div>
-                  <span class="q-mr-md" />Demikian Berita Acara Serah Terima ini dibuat dalam rangkap 2 (dua) untuk dipergunakan sebagaimana mestinya.
+                  <span class="q-mr-md" />Demikian Berita Acara Serah Terima ini dibuat dalam rangkap 2 (dua) untuk
+                  dipergunakan sebagaimana mestinya.
                 </div>
               </div>
             </div>
@@ -1037,7 +793,7 @@
                 <p>
                   Telah dikirimkan ke
                   <span class="text-weight-bold">
-                    {{ item.depo?item.depo.nama:'-' }}
+                    {{ item.depo ? item.depo.nama : '-' }}
                   </span> barang dalam list dibawah ini :
                 </p>
               </div>
@@ -1064,26 +820,19 @@
                   </div>
                 </div>
                 <!-- body details -->
-                <div
-                  v-for="(det, i) in item.details"
-                  :key="i"
-                >
-                  <div
-                    class="row justify-between q-col-gutter-sm"
-                  >
+                <div v-for="(det, i) in item.details" :key="i">
+                  <div class="row justify-between q-col-gutter-sm">
                     <div class="col-5 border-bottom border-left">
-                      {{ i+1 }}. {{ det.barangrs?det.barangrs.nama:'Nama barang tidak ditemukan' }}
+                      {{ i + 1 }}. {{ det.barangrs ? det.barangrs.nama : 'Nama barang tidak ditemukan' }}
                     </div>
                     <div class="col-1 border-bottom border-left">
-                      {{ det.jumlah===null?0:det.jumlah }}
+                      {{ det.jumlah === null ? 0 : det.jumlah }}
                     </div>
-                    <div
-                      class="col-2 border-bottom border-left"
-                    >
-                      {{ det.satuan?det.satuan.nama:'-' }}
+                    <div class="col-2 border-bottom border-left">
+                      {{ det.satuan ? det.satuan.nama : '-' }}
                     </div>
                     <div class="col-4 border-bottom border-left border-right">
-                      {{ det.merk?det.merk:'-' }}
+                      {{ det.merk ? det.merk : '-' }}
                     </div>
                   </div>
                   <q-separator />
@@ -1102,49 +851,23 @@
             <!-- options -->
             <div class="row justify-between q-col-gutter-sm print-hide">
               <div class="col-6 text-center">
-                <app-autocomplete-new
-                  v-model="tandatangan.tt.kiri"
-                  label="pilih yang berdanda tangan"
-                  autocomplete="nama"
-                  option-label="nama"
-                  option-value="value"
-                  outlined
-                  valid
-                  :source="tandatangan?.optionTT"
-                  @on-select="tandatangan?.kiriSelected"
-                />
+                <app-autocomplete-new v-model="tandatangan.tt.kiri" label="pilih yang berdanda tangan"
+                  autocomplete="nama" option-label="nama" option-value="value" outlined valid
+                  :source="tandatangan?.optionTT" @on-select="tandatangan?.kiriSelected" />
               </div>
               <div class="col-6 text-center">
-                <app-autocomplete-new
-                  v-model="tandatangan.tt.kanan"
-                  label="pilih yang berdanda tangan"
-                  autocomplete="nama"
-                  option-label="nama"
-                  option-value="value"
-                  outlined
-                  valid
-                  :source="tandatangan?.optionTT"
-                  @on-select="tandatangan?.kananSelected"
-                />
+                <app-autocomplete-new v-model="tandatangan.tt.kanan" label="pilih yang berdanda tangan"
+                  autocomplete="nama" option-label="nama" option-value="value" outlined valid
+                  :source="tandatangan?.optionTT" @on-select="tandatangan?.kananSelected" />
               </div>
             </div>
             <!-- Input -->
             <div class="row justify-between q-col-gutter-sm print-hide">
               <div class="col-6 text-center">
-                <app-input
-                  v-model="tandatangan.kiri"
-                  outlined
-                  valid
-                  label="Text kiri"
-                />
+                <app-input v-model="tandatangan.kiri" outlined valid label="Text kiri" />
               </div>
               <div class="col-6 text-center">
-                <app-input
-                  v-model="tandatangan.kanan"
-                  outlined
-                  valid
-                  label="Text kanan"
-                />
+                <app-input v-model="tandatangan.kanan" outlined valid label="Text kanan" />
               </div>
             </div>
             <div class="row justify-between q-col-gutter-sm">
@@ -1166,16 +889,12 @@
             <div class="row justify-between q-col-gutter-sm">
               <div class="col-6 text-center">
                 <div v-if="!tandatangan?.onKiri?.ada">
-                  <div v-if="tandatangan?.tt?.kiri!==null">
+                  <div v-if="tandatangan?.tt?.kiri !== null">
                     <div class="print-hide">
-                      <app-input
-                        v-model="freeTextKiri"
-                        label="Nama"
-                        :filled="false"
-                      />
+                      <app-input v-model="freeTextKiri" label="Nama" :filled="false" />
                     </div>
                     <div class="print-only">
-                      {{ freeTextKiri===''?'(.......................................)':freeTextKiri }}
+                      {{ freeTextKiri === '' ? '(.......................................)' : freeTextKiri }}
                     </div>
                   </div>
                 </div>
@@ -1190,16 +909,12 @@
               </div>
               <div class="col-6 text-center">
                 <div v-if="!tandatangan?.onKanan?.ada">
-                  <div v-if="tandatangan?.tt?.kanan!==null">
+                  <div v-if="tandatangan?.tt?.kanan !== null">
                     <div class="print-hide">
-                      <app-input
-                        v-model="freeTextKanan"
-                        label="Nama"
-                        :filled="false"
-                      />
+                      <app-input v-model="freeTextKanan" label="Nama" :filled="false" />
                     </div>
                     <div class="print-only">
-                      {{ freeTextKanan===''?'(.......................................)':freeTextKanan }}
+                      {{ freeTextKanan === '' ? '(.......................................)' : freeTextKanan }}
                     </div>
                   </div>
                 </div>
@@ -1216,28 +931,15 @@
             <!-- option -->
             <div class="row justify-center q-col-gutter-sm print-hide">
               <div>
-                <app-autocomplete-new
-                  v-model="tandatangan.tt.tengah"
-                  label="pilih yang berdanda tangan"
-                  autocomplete="nama"
-                  option-label="nama"
-                  option-value="value"
-                  outlined
-                  valid
-                  :source="tandatangan.optionTT"
-                  @on-select="tandatangan.tengahSelected"
-                />
+                <app-autocomplete-new v-model="tandatangan.tt.tengah" label="pilih yang berdanda tangan"
+                  autocomplete="nama" option-label="nama" option-value="value" outlined valid
+                  :source="tandatangan.optionTT" @on-select="tandatangan.tengahSelected" />
               </div>
             </div>
             <!-- input -->
             <div class="row justify-center q-col-gutter-sm print-hide">
               <div>
-                <app-input
-                  v-model="tandatangan.tengah"
-                  outlined
-                  valid
-                  label="Text Tengah"
-                />
+                <app-input v-model="tandatangan.tengah" outlined valid label="Text Tengah" />
               </div>
             </div>
             <div class="row justify-center q-col-gutter-sm">
@@ -1247,19 +949,12 @@
               <div>{{ tandatangan.onTengah.acr }}</div>
             </div>
             <div v-if="!tandatangan.onTengah.ada">
-              <div
-                v-if="tandatangan.tt.tengah!==null"
-                class="row justify-center"
-              >
+              <div v-if="tandatangan.tt.tengah !== null" class="row justify-center">
                 <div class="print-hide">
-                  <app-input
-                    v-model="freeTextBawah"
-                    label="Nama"
-                    :filled="false"
-                  />
+                  <app-input v-model="freeTextBawah" label="Nama" :filled="false" />
                 </div>
                 <div class="print-only">
-                  {{ freeTextBawah===''?'(.......................................)':freeTextBawah }}
+                  {{ freeTextBawah === '' ? '(.......................................)' : freeTextBawah }}
                 </div>
               </div>
             </div>
@@ -1905,36 +1600,45 @@ watch(() => role.value, val => {
 <style scoped>
 .q-table td box {
   white-space: normal !important;
-    inline-size: 100px;
-    overflow-wrap: break-word;
+  inline-size: 100px;
+  overflow-wrap: break-word;
 }
-.q-table--no-wrap th, .q-table--no-wrap td {
+
+.q-table--no-wrap th,
+.q-table--no-wrap td {
   white-space: normal !important;
 }
-.print{
+
+.print {
   position: absolute;
-    right: 30px;
-    top: 5px;
-    z-index: 10;
+  right: 30px;
+  top: 5px;
+  z-index: 10;
 }
-.garis-bawah{
+
+.garis-bawah {
   border-bottom: 6px solid black;
   border-bottom-style: double;
 }
-.border-box{
+
+.border-box {
   border: 1px solid black;
 }
-.border-tb{
+
+.border-tb {
   border-top: 1px solid black;
   border-bottom: 1px solid black;
 }
-.border-left{
+
+.border-left {
   border-left: 1px solid black;
 }
-.border-right{
+
+.border-right {
   border-right: 1px solid black;
 }
-.border-bottom{
+
+.border-bottom {
   border-bottom: 1px solid black;
 }
 </style>
