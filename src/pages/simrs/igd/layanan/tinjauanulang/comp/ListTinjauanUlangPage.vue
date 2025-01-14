@@ -178,6 +178,10 @@
                   <q-tooltip class="bg-danger" :offset="[10, 10]">
                     Delete
                   </q-tooltip></q-btn>
+                <q-btn flat round size="sm" icon="icon-mat-edit" color="white" @click="edit(item)">
+                  <q-tooltip class="bg-danger" :offset="[10, 10]">
+                    Edit
+                  </q-tooltip></q-btn>
               </div>
             </q-item-section>
           </q-card>
@@ -222,6 +226,7 @@ function carinjilnap(val) {
 }
 
 function showdialog() {
+  store.initReset()
   store.basic = true
 }
 
@@ -238,6 +243,61 @@ const lists = computed(() => {
 })
 
 const $q = useQuasar()
+
+function edit(val) {
+  // console.log('val', val)
+  store.basic = true
+  store.form.id = val?.id
+  store.form.keluhan = val?.keluhan
+  store.form.nadi = val?.nadi
+  store.form.pernapasanx = val?.pernapasanx
+  store.form.sistole = val?.sistole
+  store.form.diastole = val?.diastole
+  store.form.suhu = val?.suhu
+  store.form.spo2 = val?.spo2
+  store.form.scorenadi = val?.scorenadi
+  store.form.scorepernapasanx = val?.scorepernapasanx
+  store.form.scoresistole = val?.scoresistole
+
+  store.form.scorediastole = val?.scorediastole
+  store.form.scoresuhu = val?.scoresuhu
+  store.form.scorespo2 = val?.scorespo2
+  store.form.kesadaran = val?.kesadaran
+  store.form.eye = val?.eye
+  store.form.verbal = val?.verbal
+  store.form.motorik = val?.motorik
+
+
+
+  if (store.form.metodenyeri === 'bps') {
+    store.form.ekspresiwajahbps = val?.ekspresiwajah
+    store.form.gerakantangan = val?.gerakantangan
+    store.form.kepatuhanventilasimekanik = val?.kepatuhanventilasimekanik
+    store.form.scroebps = val?.scroebps
+    store.form.ketscorebps = val?.ketscorebps
+  } else if (store.form.metodenyeri === 'nips') {
+    store.form.ekspresiwajahnips = val?.ekspresiwajahnips
+    store.form.menangis = val?.menangis
+    store.form.polanafas = val?.menangis
+    store.form.lengan = val?.menangis
+    store.form.kaki = val?.kaki
+    store.form.keadaanrangsangan = val?.keadaanrangsangan
+    store.form.scroenips = val?.scroenips
+    store.form.ketscorenips = val?.ketscorenips
+  } else {
+    store.form.skornyeri = val?.skornyeri
+    store.form.keteranganscorenyeri = val?.keteranganscorenyeri
+  }
+
+  store.form.keadaanpupil = val?.keadaan_pupil
+  store.form.reflekmatakirikecahaya = val?.reflekcahaya_matakiri
+  store.form.reflekmatakanankecahaya = val?.reflekcahaya_matakanan
+  store.form.diamterkiri = val?.diamter_matakiri
+  store.form.diamterkanan = val?.diamter_matakanan
+  store.form.output = val?.output
+  store.form.keterangan = val?.keterangan
+
+}
 
 function hapusItem(id) {
   $q.dialog({

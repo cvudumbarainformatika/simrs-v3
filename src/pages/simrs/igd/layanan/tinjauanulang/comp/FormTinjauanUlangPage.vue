@@ -7,11 +7,7 @@
         </div>
         <q-separator />
       </q-card-section>
-      <q-form
-        ref="refForm"
-        @submit="onSubmit"
-        class="column full-height"
-      >
+      <q-form ref="refForm" @submit="onSubmit" class="column full-height">
         <q-card-section class="flat">
           <div class="row">
             <div class="col-12 q-py-sm">
@@ -20,22 +16,28 @@
           </div>
           <div class="row ">
             <div class="col-2 q-pr-xs">
-              <q-input v-model="store.form.nadi" label="Nadi" dense outlined type="number" @update:model-value="scorenadi()" :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" />
+              <q-input v-model="store.form.nadi" label="Nadi" dense outlined type="number"
+                @update:model-value="scorenadi()" :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" />
             </div>
             <div class="col-2 q-pr-xs">
-              <q-input v-model="store.form.pernapasanx" label="Pernafasan" dense outlined type="number" @update:model-value="scorepernapasanx()" :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" />
+              <q-input v-model="store.form.pernapasanx" label="Pernafasan" dense outlined type="number"
+                @update:model-value="scorepernapasanx()" :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" />
             </div>
             <div class="col-2 q-pr-xs">
-              <q-input v-model="store.form.sistole" label="Sistole" dense outlined type="number" @update:model-value="scoresistole()" :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" />
+              <q-input v-model="store.form.sistole" label="Sistole" dense outlined type="number"
+                @update:model-value="scoresistole()" :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" />
             </div>
             <div class="col-2 q-pr-xs">
-              <q-input v-model="store.form.diastole" label="Diastole" dense outlined type="number" @update:model-value="scorediastole()" :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" />
+              <q-input v-model="store.form.diastole" label="Diastole" dense outlined type="number"
+                @update:model-value="scorediastole()" :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" />
             </div>
             <div class="col-2 q-pr-xs">
-              <q-input v-model="store.form.suhu" label="Suhu" dense outlined type="number" @update:model-value="scoresuhu()" :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" />
+              <q-input v-model="store.form.suhu" label="Suhu" dense outlined type="number"
+                @update:model-value="scoresuhu()" :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" />
             </div>
             <div class="col-2 q-pr-xs">
-              <q-input v-model="store.form.spo2" label="SPo2 (%)" dense outlined type="number" @update:model-value="scorespo2()" :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" />
+              <q-input v-model="store.form.spo2" label="SPo2 (%)" dense outlined type="number"
+                @update:model-value="scorespo2()" :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" />
             </div>
           </div>
           <div class="row ">
@@ -77,22 +79,17 @@
           <q-separator class="q-mt-sm q-mb-sm" />
           <div class="row" v-if="store.form.metodenyeri === 'bps'">
             <div class="col-12 q-mb-sm">
-              <q-select
-                v-model="store.form.ekspresiwajahbps"
-                label="Ekspresi Wajah"
-                transition-show="flip-up"
-                transition-hide="flip-down"
-                dense
-                outlined
-                :options="ekspresiwajah"
-                @update:model-value="(val) => nilaiexpresiwajah(val)"
-              />
+              <q-select v-model="store.form.ekspresiwajahbps" label="Ekspresi Wajah" transition-show="flip-up"
+                transition-hide="flip-down" dense outlined :options="ekspresiwajah"
+                @update:model-value="(val) => nilaiexpresiwajah(val)" />
             </div>
             <div class="col-12 q-mb-sm">
-              <q-select dense outlined v-model="store.form.gerakantangan" :options="gerakantangan" @update:model-value="(val) => nilaigerakantangan(val)" />
+              <q-select dense outlined v-model="store.form.gerakantangan" :options="gerakantangan"
+                @update:model-value="(val) => nilaigerakantangan(val)" />
             </div>
             <div class="col-12">
-              <q-select dense outlined v-model="store.form.kepatuhanventilasimekanik" :options="kepatuhanventilasimekanik" @update:model-value="(val) => nilaikepatuhanventilasi(val)" />
+              <q-select dense outlined v-model="store.form.kepatuhanventilasimekanik"
+                :options="kepatuhanventilasimekanik" @update:model-value="(val) => nilaikepatuhanventilasi(val)" />
             </div>
             <div class="col-12">
               <q-separator class="q-my-xs" />
@@ -102,7 +99,8 @@
                   <q-badge :color="store.form.colorscorebps">
                     {{ store.form.scroebps }}
                   </q-badge>
-                </div> <div>
+                </div>
+                <div>
                   Keterangan : <q-badge outline :color="store.form.colorscorebps">
                     {{ store.form.ketscorebps }}
                   </q-badge>
@@ -119,37 +117,43 @@
               - Eksprsi Wajah
             </div>
             <div class="col-6 q-py-sm">
-              <q-select dense outlined v-model="store.form.ekspresiwajahnips" :options="ekspresiwajahnips" @update:model-value="(val) => nilaiekspresiwajahnips(val)" />
+              <q-select dense outlined v-model="store.form.ekspresiwajahnips" :options="ekspresiwajahnips"
+                @update:model-value="(val) => nilaiekspresiwajahnips(val)" />
             </div>
             <div class="col-6">
               - Menangis
             </div>
             <div class="col-6 q-py-sm">
-              <q-select dense outlined v-model="store.form.menangis" :options="menangis" @update:model-value="(val) => nilaimenangis(val)" />
+              <q-select dense outlined v-model="store.form.menangis" :options="menangis"
+                @update:model-value="(val) => nilaimenangis(val)" />
             </div>
             <div class="col-6">
               - Pola Nafas
             </div>
             <div class="col-6 q-py-sm">
-              <q-select dense outlined v-model="store.form.polanafas" :options="polanafas" @update:model-value="(val) => nilaipolanafas(val)" />
+              <q-select dense outlined v-model="store.form.polanafas" :options="polanafas"
+                @update:model-value="(val) => nilaipolanafas(val)" />
             </div>
             <div class="col-6">
               - Lengan
             </div>
             <div class="col-6 q-py-sm">
-              <q-select dense outlined v-model="store.form.lengan" :options="lengan" @update:model-value="(val) => nilailengan(val)" />
+              <q-select dense outlined v-model="store.form.lengan" :options="lengan"
+                @update:model-value="(val) => nilailengan(val)" />
             </div>
             <div class="col-6">
               - Kaki
             </div>
             <div class="col-6 q-py-sm">
-              <q-select dense outlined v-model="store.form.kaki" :options="kaki" @update:model-value="(val) => nilaikaki(val)" />
+              <q-select dense outlined v-model="store.form.kaki" :options="kaki"
+                @update:model-value="(val) => nilaikaki(val)" />
             </div>
             <div class="col-6">
               - Keadaan Rangsangan
             </div>
             <div class="col-6">
-              <q-select dense outlined v-model="store.form.keadaanrangsangan" :options="keadaanrangsangan" @update:model-value="(val) => nilairangsangan(val)" />
+              <q-select dense outlined v-model="store.form.keadaanrangsangan" :options="keadaanrangsangan"
+                @update:model-value="(val) => nilairangsangan(val)" />
             </div>
             <div class="col-12">
               <q-separator class="q-my-xs" />
@@ -159,7 +163,8 @@
                   <q-badge :color="store.form.colorscorenips">
                     {{ store.form.scroenips }}
                   </q-badge>
-                </div> <div>
+                </div>
+                <div>
                   Keterangan : <q-badge outline :color="store.form.colorscorenips">
                     {{ store.form.ketscorenips }}
                   </q-badge>
@@ -173,44 +178,32 @@
               <div>
                 Keluhan Nyeri ? <em class="text-primary">{{ store.form.keteranganscorenyeri }}</em>
                 <span class="q-ml-sm">
-                  <q-icon
-                    size="lg"
-                    color="teal"
-                    :name="iconNyeri"
-                  />
+                  <q-icon size="lg" color="teal" :name="iconNyeri" />
                 </span>
               </div>
               <q-separator class="q-my-xs" />
-              <q-slider
-                v-model="store.form.skornyeri"
-                color="primary"
-                thumb-color="primary"
-                label-color="primary"
-                label-text-color="yellow"
-                markers
-                :marker-labels="(val)=> fnMarkerLabel"
-                marker-labels-class="text-primary"
-                label-always
-                switch-label-side
-                :min="0"
-                :max="10"
-                @update:model-value="store.setKeteranganSkornyeri"
-              />
+              <q-slider v-model="store.form.skornyeri" color="primary" thumb-color="primary" label-color="primary"
+                label-text-color="yellow" markers :marker-labels="(val) => fnMarkerLabel"
+                marker-labels-class="text-primary" label-always switch-label-side :min="0" :max="10"
+                @update:model-value="store.setKeteranganSkornyeri" />
             </div>
           </div>
           <!-- <q-separator class="q-mt-sm" /> -->
           <br>
           <div class="row">
             <div class="col-12 q-py-sm">
-              <q-select v-model="store.form.keadaanpupil" dense outlined label="Keadaan Pupil" :options="optionspupil" />
+              <q-select v-model="store.form.keadaanpupil" dense outlined label="Keadaan Pupil"
+                :options="optionspupil" />
             </div>
           </div>
           <div class="row">
             <div class="col-6 q-pr-xs">
-              <q-select v-model="store.form.reflekmatakirikecahaya" label="Mata Kiri" dense outlined :options="optionsyreflekcahaya" />
+              <q-select v-model="store.form.reflekmatakirikecahaya" label="Mata Kiri" dense outlined
+                :options="optionsyreflekcahaya" />
             </div>
             <div class="col-6 q-pr-xs">
-              <q-select v-model="store.form.reflekmatakanankecahaya" label="Mata Kanan" dense outlined :options="optionsyreflekcahaya" />
+              <q-select v-model="store.form.reflekmatakanankecahaya" label="Mata Kanan" dense outlined
+                :options="optionsyreflekcahaya" />
             </div>
           </div>
           <div class="row">
@@ -241,7 +234,7 @@
 </template>
 <script setup>
 import { useTinjauanUlangStore } from 'src/stores/simrs/igd/tinjauanulang'
-import { computed, ref } from 'vue'
+import { computed, onBeforeMount, ref } from 'vue'
 
 const store = useTinjauanUlangStore()
 
@@ -342,7 +335,7 @@ const iconNyeri = computed(() => {
 const optionspupil = ref(['Isokor', 'Anisokor', 'Medriasis', 'Miosis', 'Pin Poin'])
 const optionsyreflekcahaya = ref(['Positif', 'Negativ'])
 
-function scorenadi () {
+function scorenadi() {
   const umurleng = props.pasien?.usia.split(' ')
   const umur = parseInt(umurleng[0])
   const umurbln = parseInt(umurleng[2])
@@ -492,7 +485,7 @@ function scorenadi () {
   }
 }
 
-function scorepernapasanx () {
+function scorepernapasanx() {
   const umurleng = props.pasien?.usia.split(' ')
   const umur = parseInt(umurleng[0])
   const umurbln = parseInt(umurleng[2])
@@ -635,7 +628,7 @@ function scorepernapasanx () {
   }
 }
 
-function scoresistole () {
+function scoresistole() {
   const umurleng = props.pasien?.usia.split(' ')
   const umur = parseInt(umurleng[0])
   // const umurbln = parseInt(umurleng[2])
@@ -738,7 +731,7 @@ function scoresistole () {
   }
 }
 
-function scoresuhu () {
+function scoresuhu() {
   const umurleng = props.pasien?.usia.split(' ')
   const umur = parseInt(umurleng[0])
   // const umurbln = parseInt(umurleng[2])
@@ -779,7 +772,7 @@ function scoresuhu () {
   }
 }
 
-function scorediastole () {
+function scorediastole() {
   // const umurleng = props.pasien?.usia.split(' ')
   // const umur = parseInt(umurleng[0])
   // const umurbln = parseInt(umurleng[2])
@@ -806,7 +799,7 @@ function scorediastole () {
   }
 }
 
-function scorespo2 () {
+function scorespo2() {
   const umurleng = props.pasien?.usia.split(' ')
   const umur = parseInt(umurleng[0])
   const umurbln = parseInt(umurleng[2])
@@ -921,7 +914,7 @@ function scorespo2 () {
 //   }
 // })
 
-function nilaiekspresiwajahnips (val) {
+function nilaiekspresiwajahnips(val) {
   if (val === 'Santai') {
     store.nilaiekspresiwajahnips = 0
   }
@@ -931,7 +924,7 @@ function nilaiekspresiwajahnips (val) {
   hitungscorenipsb()
 }
 
-function nilaimenangis (val) {
+function nilaimenangis(val) {
   if (val === 'Tidak Menangis') {
     store.nilaimenangis = 0
   }
@@ -944,7 +937,7 @@ function nilaimenangis (val) {
   hitungscorenipsb()
 }
 
-function nilaipolanafas (val) {
+function nilaipolanafas(val) {
   if (val === 'Santai') {
     store.nilaipolanafas = 0
   }
@@ -954,7 +947,7 @@ function nilaipolanafas (val) {
   hitungscorenipsb()
 }
 
-function nilailengan (val) {
+function nilailengan(val) {
   if (val === 'Santai') {
     store.nilailengan = 0
   }
@@ -964,7 +957,7 @@ function nilailengan (val) {
   hitungscorenipsb()
 }
 
-function nilaikaki (val) {
+function nilaikaki(val) {
   if (val === 'Santai') {
     store.nilaikaki = 0
   }
@@ -974,7 +967,7 @@ function nilaikaki (val) {
   hitungscorenipsb()
 }
 
-function nilairangsangan (val) {
+function nilairangsangan(val) {
   if (val === 'Tertidur/Bangun') {
     store.nilairangsangan = 0
   }
@@ -984,9 +977,9 @@ function nilairangsangan (val) {
   hitungscorenipsb()
 }
 
-function hitungscorenipsb () {
+function hitungscorenipsb() {
   store.form.scroenips = parseInt(store.nilaiekspresiwajahnips) + parseInt(store.nilaimenangis) + parseInt(store.nilaipolanafas) +
-  parseInt(store.nilailengan) + parseInt(store.nilaikaki) + parseInt(store.nilairangsangan)
+    parseInt(store.nilailengan) + parseInt(store.nilaikaki) + parseInt(store.nilairangsangan)
 
   if (store.form.scroenips === 0) {
     store.form.ketscorenips = 'Tidak Nyeri'
@@ -1006,7 +999,7 @@ function hitungscorenipsb () {
   }
 }
 
-function nilaiexpresiwajah (val) {
+function nilaiexpresiwajah(val) {
   if (val === 'Santai, Tanpa Ketegangan') {
     store.nilaiekspresiwajah = 1
   }
@@ -1023,7 +1016,7 @@ function nilaiexpresiwajah (val) {
   hitungscorebps()
 }
 
-function nilaigerakantangan (val) {
+function nilaigerakantangan(val) {
   if (val === 'Tidak Ada Gerakan') {
     store.nilaigerakantangan = 1
   }
@@ -1040,7 +1033,7 @@ function nilaigerakantangan (val) {
   hitungscorebps()
 }
 
-function nilaikepatuhanventilasi (val) {
+function nilaikepatuhanventilasi(val) {
   if (val === 'Toleran, Tidak Ada Perlawanan') {
     store.nilaikepatuhanventilasi = 1
   }
@@ -1057,7 +1050,7 @@ function nilaikepatuhanventilasi (val) {
   hitungscorebps()
 }
 
-function hitungscorebps () {
+function hitungscorebps() {
   // store.form.scroebps = parseInt(store.nilaiekspresiwajah) + parseInt(store.nilaigerakantangan) + parseInt(store.nilaikepatuhanventilasi)
 
   store.form.scroebps = parseInt(store.nilaiekspresiwajah) + parseInt(store.nilaigerakantangan) + parseInt(store.nilaikepatuhanventilasi)
@@ -1079,7 +1072,7 @@ function hitungscorebps () {
   }
 }
 
-function onSubmit () {
+function onSubmit() {
   store.saveData(props.pasien).then(() => {
     refForm.value.resetValidation()
   })
