@@ -595,7 +595,7 @@ export const useLaporanMutasiFiFoFarmasiStore = defineStore('laporan_mutasi_fifo
             const temp = {
               tgl: res?.tgl ?? this.params.tahun + '-' + this.params.bulan + '-31 23:00:00',
               keluar: res,
-              ket: (res?.ruangan?.uraian + ' ' + res?.no_permintaan ?? '')
+              ket: ((res?.ruangan?.uraian ?? res?.depo?.nama ?? ' ') + ' ' + res?.no_permintaan ?? '')
             }
 
             it.data.push(temp)
