@@ -1,8 +1,8 @@
 <template>
   <q-select :dense="dense" standout="bg-yellow-3 text-black" outlined :label="label" :option-label="optionLabel"
     :placeholder="placeholder" :option-value="optionValue" :options="optionx" use-input :use-chips="useChips"
-    input-debounce="0" hide-bottom-space hide-dropdown-icon @filter="filterFn" :rules="[requiredRule]"
-    @input-value="(val) => emits('setModel', val)" @new-value="createValue" />
+    map-options emit-value input-debounce="0" hide-bottom-space hide-dropdown-icon @filter="filterFn"
+    :rules="[requiredRule]" @update:model-value="(val) => emits('setModel', val)" @new-value="createValue" />
 </template>
 <script setup>
 import { onMounted, ref } from 'vue';

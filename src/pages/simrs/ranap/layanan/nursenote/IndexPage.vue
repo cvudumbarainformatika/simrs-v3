@@ -23,18 +23,20 @@
       </div>
 
     </q-card>
-    <DialogFormAdd v-model="isForm" />
+    <DialogFormAdd v-model="isForm" :pasien="pasien" :kasus="kasus" :nakes="nakes" />
   </div>
 </template>
 
 <script setup>
 import { defineAsyncComponent, onMounted, ref } from 'vue'
 import { useTindakanRanapStore } from 'src/stores/simrs/ranap/tindakan'
+import { useNurseNoteRanapStore } from 'src/stores/simrs/ranap/nursenote';
 
 const ListPage = defineAsyncComponent(() => import('./comp/ListPage.vue'))
 const DialogFormAdd = defineAsyncComponent(() => import('./comp/DialogFormAdd.vue'))
 
 const tindakan = useTindakanRanapStore()
+const store = useNurseNoteRanapStore()
 
 const props = defineProps({
   pasien: { type: Object, default: () => null },
@@ -47,7 +49,8 @@ const isForm = ref(false)
 
 onMounted(() => {
   Promise.all([
-    tindakan.getTindakan(props?.pasien)
+    tindakan.getTindakan(props?.pasien),
+    store.getData(props?.pasien)
   ])
 })
 
