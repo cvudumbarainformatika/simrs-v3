@@ -3,67 +3,47 @@
     <div class="q-pb-xl">
       <LoadingList v-if="loading" />
       <empty-data v-else-if="!items.length && !loading" />
-      <q-list
-        v-else
-        separator
-      >
-        <q-item
-          v-for="(item, i) in items"
-          :key="i"
-        >
-          <q-item-section
-            avatar
-            top
-          >
-            <app-avatar-pasien
-              :pasien="item"
-              width="80px"
-            />
+      <q-list v-else separator>
+        <q-item v-for="(item, i) in items" :key="i">
+          <q-item-section avatar top>
+            <app-avatar-pasien :pasien="item" width="80px" />
           </q-item-section>
           <q-item-section>
             <q-item-label>
-              <span class="text-weight-bold">{{ item.nama }}</span> | <span class="text-primary text-weight-bold">{{ item.norm }}</span> <span v-if="item?.noka"> | </span> <span class="text-cyan text-weight-bold">{{ item?.noka ?? '-' }}</span>
+              <span class="text-weight-bold">{{ item.nama }}</span> | <span class="text-primary text-weight-bold">{{
+                item.norm }}</span> <span v-if="item?.noka"> | </span> <span class="text-cyan text-weight-bold">{{
+                  item?.noka ?? '-' }}</span>
             </q-item-label>
             <q-item-label>
-              <span class="text-weight-bold">{{ item.noreg }} </span> | Penjamin : <span class="text-weight-bold"> {{ item.sistembayar }}</span>
+              <span class="text-weight-bold">{{ item.noreg }} </span> | Penjamin : <span class="text-weight-bold"> {{
+                item.sistembayar }}</span>
             </q-item-label>
             <q-item-label>
-              NIK : <span class="text-negative text-weight-bold">{{ item?.nktp ?? '-' }}</span> | Telp : <span class="text-teal text-weight-bold"> {{ item?.nohp ?? '-' }}</span>
+              NIK : <span class="text-negative text-weight-bold">{{ item?.nktp ?? '-' }}</span> | Telp : <span
+                class="text-teal text-weight-bold"> {{ item?.nohp ?? '-' }}</span>
             </q-item-label>
             <q-item-label caption>
-              USIA : <span class="text-weight-bold">{{ item.usia }}</span>  | Kelamin : <span class="text-weight-bold">{{ item.kelamin }}</span>
+              USIA : <span class="text-weight-bold">{{ item.usia }}</span> | Kelamin : <span class="text-weight-bold">{{
+                item.kelamin }}</span>
             </q-item-label>
             <q-item-label>
               <span class="text-grey">alamat :</span> {{ item?.alamat }}
             </q-item-label>
-            <q-item-label
-              caption
-            >
-              status : <span :class="item.status !== ''?'text-primary':'text-negative'">{{ getStatus(item.status) }}</span>
+            <q-item-label caption>
+              status : <span :class="item.status !== '' ? 'text-primary' : 'text-negative'">{{ getStatus(item.status)
+                }}</span>
             </q-item-label>
-            <q-item-label
-              v-if="item?.planning?.length"
-              caption
-            >
+            <q-item-label v-if="item?.planning?.length" caption>
               rencana : <span class="text-primary">{{ item?.planning[0].rs4 }}</span>
-              <span
-                v-if="item?.planning[0].rs4==='Konsultasi'"
-                class="text-primary"
-              > ( {{ item?.planning[0].masterpoli?.rs2 }} )</span>
-              <span
-                v-if="item?.planning[1]"
-              > | <span class="text-secondary">{{ item?.planning[1].rs4 }}</span>
-                <span
-                  v-if="item?.planning[1].rs4==='Konsultasi'"
-                  class="text-secondary"
-                > ( {{ item?.planning[1].masterpoli?.rs2 }} )</span>
+              <span v-if="item?.planning[0].rs4 === 'Konsultasi'" class="text-primary"> ( {{
+                item?.planning[0].masterpoli?.rs2 }} )</span>
+              <span v-if="item?.planning[1]"> | <span class="text-secondary">{{ item?.planning[1].rs4 }}</span>
+                <span v-if="item?.planning[1].rs4 === 'Konsultasi'" class="text-secondary"> ( {{
+                  item?.planning[1].masterpoli?.rs2 }} )</span>
               </span>
             </q-item-label>
           </q-item-section>
-          <q-separator
-            vertical
-            class="q-mx-md"
-          />
+          <q-separator vertical class="q-mx-md" />
           <q-item-section>
             <!-- <q-item-label>
               <span class="text-weight-bold">{{ item.nama }}</span> | <span class="text-primary text-weight-bold">{{ item.norm }}</span>
@@ -79,104 +59,40 @@
             </q-item-label>
 
             <q-item-label>
-              Tanggal : <i class="text-weight-bold text-negative">{{ item.tgl_kunjungan? dateFullFormat(item.tgl_kunjungan) : '-' }}</i>  | Jam : <i class="text-weight-bold text-negative">{{ item.tgl_kunjungan? formatJam(item.tgl_kunjungan) : '-' }}</i>
+              Tanggal : <i class="text-weight-bold text-negative">{{ item.tgl_kunjungan ?
+                dateFullFormat(item.tgl_kunjungan) : '-' }}</i> | Jam : <i class="text-weight-bold text-negative">{{
+                  item.tgl_kunjungan ? formatJam(item.tgl_kunjungan) : '-' }}</i>
             </q-item-label>
             <q-item-label>
               No Antrian : <span class="text-teal text-weight-bold"> {{ item?.noantrian }}</span>
             </q-item-label>
 
-            <q-item-label
-              caption
-            >
-              <q-badge
-                v-if="item?.sep"
-                :label="item?.sep"
-              />
+            <q-item-label caption>
+              <q-badge v-if="item?.sep" :label="item?.sep" />
               <div v-if="!item?.sep">
-                <q-btn
-                  v-if="storeSep.loading && reg===item.noreg"
-                  size="8px"
-                  flat
-                  loading
-                />
-                <q-badge
-                  v-if="reg!==item.noreg && item.groups==='1'"
-                  label="SEP BELUM TERBIT"
-                  color="negative"
-                  class="cursor-pointer"
-                  @click="getSep(item)"
-                />
+                <q-btn v-if="storeSep.loading && reg === item.noreg" size="8px" flat loading />
+                <q-badge v-if="reg !== item.noreg && item.groups === '1'" label="SEP BELUM TERBIT" color="negative"
+                  class="cursor-pointer" @click="getSep(item)" />
               </div>
             </q-item-label>
           </q-item-section>
-          <q-item-section
-            side
-            top
-          >
-            <q-btn
-              v-if="item.status !== '3'"
-              dense
-              outline
-              size="sm"
-              no-caps
-              color="primary"
-              :label="labelLayanan(item?.status)"
-              class="q-mb-sm"
-              icon-right="icon-mat-edit"
-              style="min-width: 120px;"
-              :loading="loadingTerima && store.noreg === item?.noreg"
-              :disable="loadingTerima"
-              @click="emits('tindakan', item)"
-            />
-            <q-btn
-              v-if="item.status === '1'"
-              dense
-              size="sm"
-              no-caps
-              color="black"
-              label="KIRIM DATA KEPENJAMINAN"
-              class="q-mb-sm"
-              icon-right="icon-mat-attach_money"
-              style="min-width: 120px;"
-              :loading="loadingTerima && store.noreg === item?.noreg"
-              :disable="loadingTerima"
-              @click="emits('kirimkepenjaminan', item)"
-            />
-            <q-btn
-              dense
-              size="sm"
-              no-caps
-              color="accent"
-              label="PANGGIL"
-              class="q-mb-lg"
-              icon-right="icon-mat-volume_up"
-              style="min-width: 120px;"
+          <q-item-section side top>
+            <q-btn v-if="item.status !== '3'" dense outline size="sm" no-caps color="primary"
+              :label="labelLayanan(item?.status)" class="q-mb-sm" icon-right="icon-mat-edit" style="min-width: 120px;"
+              :loading="loadingTerima && store.noreg === item?.noreg" :disable="loadingTerima"
+              @click="emits('tindakan', item)" />
+            <q-btn v-if="item.status === '1' && item.kunjungancesmix !== '1'" dense size="sm" no-caps color="black"
+              label="KIRIM DATA KEPENJAMINAN" class="q-mb-sm" icon-right="icon-mat-attach_money"
+              style="min-width: 120px;" :loading="item?.loadingcasmix" @click="emits('kirimkepenjaminan', item)" />
+            <q-btn dense size="sm" no-caps color="accent" label="PANGGIL" class="q-mb-lg"
+              icon-right="icon-mat-volume_up" style="min-width: 120px;"
               :loading="loadingCall && store.noreg === item?.noreg"
-              :disable="loadingCall && store.noreg === item?.noreg"
-              @click="emits('panggilan', item)"
-            />
-            <q-btn
-              v-if="item.status === '' || item.status === '2'"
-              dense
-              size="sm"
-              no-caps
-              color="red"
-              label="TIDAK DATANG"
-              icon-right="icon-mat-hand-front-left"
-              style="min-width: 120px;"
-              :loading="store.loadingTidakhadir && store.noreg === item?.noreg"
-
-              @click="emits('tidakdatang', item)"
-            />
-            <q-btn
-              v-if="item.status === '3'"
-              dense
-              size="sm"
-              no-caps
-              color="red"
-              label="PASIEN TIDAK DATANG"
-              style="min-width: 120px;"
-            />
+              :disable="loadingCall && store.noreg === item?.noreg" @click="emits('panggilan', item)" />
+            <q-btn v-if="item.status === '' || item.status === '2'" dense size="sm" no-caps color="red"
+              label="TIDAK DATANG" icon-right="icon-mat-hand-front-left" style="min-width: 120px;"
+              :loading="store.loadingTidakhadir && store.noreg === item?.noreg" @click="emits('tidakdatang', item)" />
+            <q-btn v-if="item.status === '3'" dense size="sm" no-caps color="red" label="PASIEN TIDAK DATANG"
+              style="min-width: 120px;" />
           </q-item-section>
         </q-item>
         <q-separator />
@@ -215,10 +131,14 @@ defineProps({
   loadingTidakhadir: {
     type: Boolean,
     default: false
+  },
+  loadingcasmix: {
+    type: Boolean,
+    default: false
   }
 })
 
-function getStatus (val) {
+function getStatus(val) {
   // '' : 'Belum Terlayanani'
   // '1': 'Terlayani'
   // '2': 'Sudah diterima'
@@ -237,7 +157,7 @@ function getStatus (val) {
   }
 }
 
-function labelLayanan (val) {
+function labelLayanan(val) {
   if (val === '') {
     return 'TERIMA'
   }
@@ -255,7 +175,7 @@ function labelLayanan (val) {
 const store = usePengunjungPoliStore()
 const storeSep = useSepBpjsStore()
 const reg = ref(null)
-function getSep (val) {
+function getSep(val) {
   reg.value = val.noreg
   console.log('pasien', val)
   if (val.groups === '1') {

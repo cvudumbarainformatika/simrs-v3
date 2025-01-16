@@ -5,7 +5,7 @@ import { usePemeriksaanUmumRanapStore } from 'src/stores/simrs/ranap/pemeriksaan
 // import { usePasienPulangRanapStore } from 'src/stores/simrs/ranap/pulang'
 import { computed, onMounted, reactive } from 'vue'
 
-export default function useResume (pasien) {
+export default function useResume(pasien) {
   // const triage = useTriageIgd()
 
   const data = reactive({
@@ -29,18 +29,18 @@ export default function useResume (pasien) {
     return usia
   })
 
-  function calculateAgeInMonths (birthdate, day) {
+  function calculateAgeInMonths(birthdate, day) {
     if (!birthdate) return 0 // !birthdate return null
     const today = day ?? new Date()
     const birthdateObj = new Date(birthdate)
 
     // Menghitung jumlah bulan antara tanggal lahir dan tanggal saat ini
     const months = today.getFullYear() * 12 + today.getMonth() -
-          birthdateObj.getFullYear() * 12 - birthdateObj.getMonth()
+      birthdateObj.getFullYear() * 12 - birthdateObj.getMonth()
     return months
   }
 
-  function cariAnamnesisIgd (pasien) {
+  function cariAnamnesisIgd(pasien) {
     let xx = []
     const anamnesis = pasien?.anamnesis
     if (anamnesis?.length > 0) {
@@ -49,7 +49,7 @@ export default function useResume (pasien) {
 
     data.anamnesis_igd = xx
   }
-  function cariPemeriksaanIgd (pasien) {
+  function cariPemeriksaanIgd(pasien) {
     let xx = []
     const pemeriksaan = pasien?.pemeriksaan
     if (pemeriksaan?.length > 0) {
@@ -59,7 +59,7 @@ export default function useResume (pasien) {
     data.pemeriksaan_igd = xx
   }
 
-  function cariAnamnesis (pasien) {
+  function cariAnamnesis(pasien) {
     let xx = []
     const anamnesis = pasien?.anamnesis
     if (anamnesis?.length > 0) {
@@ -69,7 +69,7 @@ export default function useResume (pasien) {
     data.anamnesis = xx
   }
 
-  function cariPemeriksaan (pasien) {
+  function cariPemeriksaan(pasien) {
     let xx = []
     const pemeriksaan = pasien?.pemeriksaan
     if (pemeriksaan?.length > 0) {
@@ -79,16 +79,18 @@ export default function useResume (pasien) {
     data.pemeriksaan = xx
   }
 
-  function cariLaborats (pasien) {
-    let lab = []
-    const headx = pasien?.laborats
-    if (headx?.length) {
-      const det = headx?.map(x => x.details)?.flat()
-      lab = det
-    }
-    data.laborats = lab
+  function cariLaborats(pasien) {
+    //let lab = []
+    const headx = pasien?.laboratold
+    //console.log('datalaboratx', pasien)
+    // if (headx?.length) {
+    //   const det = headx?.map(x => x.details)?.flat()
+    //   lab = det
+    // }
+    data.laborats = pasien?.laboratold
+    console.log('datalaborat', data.laborats)
   }
-  function cariDiagnosis (pasien) {
+  function cariDiagnosis(pasien) {
     let diag = []
     const headx = pasien?.diagnosamedis?.length ? pasien?.diagnosamedis?.filter(x => x?.kdruang !== 'POL014') : []
     if (headx?.length) {
@@ -106,7 +108,7 @@ export default function useResume (pasien) {
     data.diagnosis = diag
   }
 
-  function cariResep (pasien) {
+  function cariResep(pasien) {
     let resep = []
     const headx = pasien?.newapotekrajal
     if (headx?.length) {
@@ -117,13 +119,13 @@ export default function useResume (pasien) {
     data.resep = Array.from(new Set(f))
     // console.log('resep', f)
   }
-  function cariCppt (pasien) {
+  function cariCppt(pasien) {
     const cpptPerawat = pasien?.cppt?.filter(x => x?.nakes === '2') ?? []
     const sorting = cpptPerawat?.sort((a, b) => a?.id - b?.id) ?? []
     data.cppt = sorting
     // console.log('data cppt', data.cppt)
   }
-  function cariTriageIgd (pasien) {
+  function cariTriageIgd(pasien) {
     const triage = pasien?.triageIgd?.length ? pasien?.triageIgd[0] : null
     data.triageIgd = triage
     // console.log('data cppt', data.cppt)
@@ -203,7 +205,7 @@ export default function useResume (pasien) {
         title: 'ANAMNESE RAWAT INAP',
         type: '1',
         isian: data?.anamnesis.length
-          ? ` 
+          ? `
             <div> - Keluhan Utama : ${data?.anamnesis[0]?.keluhanUtama} </div>
             <div> - Riwayat Penyakit Sekarang : ${data?.anamnesis[0]?.riwayatpenyakitsekarang} </div>
             <div> - Riwayat Penyakit Dahulu : ${data?.anamnesis[0]?.riwayatpenyakit} </div>
@@ -217,7 +219,7 @@ export default function useResume (pasien) {
         title: 'PEMERIKSAAN FISIK RAWAT INAP',
         type: '1',
         isian: data?.pemeriksaan?.length
-          ? ` 
+          ? `
             <div> - Keadaan Umum : ${data?.pemeriksaan[0]?.keadaanUmum ?? ''} </div>
             <div> - Tingkat Kesadaran : ${data?.masterTingkatKesadaran?.find((item) => item.value === data?.pemeriksaan[0]?.tkKesadaran)?.label} </div>
             <div> - BB : ${data?.pemeriksaan[0]?.bb} kg | TB : ${data?.pemeriksaan[0]?.tb} cm </div>
@@ -246,13 +248,13 @@ export default function useResume (pasien) {
             label: 'LABORAT',
             data: data?.laborats.length
               ? data?.laborats.map(lab => {
-                const tampil = (lab?.rs27 !== null && lab?.rs27 !== 'N' && lab?.rs21 !== '')
+                const tampil = (lab?.rs27 !== null && lab?.rs27 !== 'N')
                 if (tampil) {
                   // return {
                   //   nama: lab?.pemeriksaanlab?.rs2,
                   //   hasil: lab?.rs21 + ' (' + lab?.rs27 + ')'
                   // }
-                  return `${lab?.pemeriksaanlab?.rs2} : ${lab?.rs21} <b>(${lab?.rs27})</b>,  &nbsp;`
+                  return `${lab?.pemeriksaanlab?.rs2} : ${lab?.rs21} <b>(${lab?.rs27})</b>, &nbsp;`
                 }
                 return null
               })

@@ -1,67 +1,27 @@
 <template>
-  <q-page
-    class=""
-    :class="style.componentfull?'container-no-header':'container--q-header q-pa-xs'"
-  >
+  <q-page class="" :class="style.componentfull ? 'container-no-header' : 'container--q-header q-pa-xs'">
     <div class="header bg-primary text-white">
-      <HeaderComp
-        class="q-pa-xs"
-        :tanggal="store.params.tgl"
-        :search="store.params.q"
-        :per-page="store.params.per_page"
-        :full="style.componentfull"
-        :custom="store.custom"
-        @fullscreen="style.setComponentFull"
-        @set-tanggal="(val)=>store.setDate(val)"
-        @set-search="store.setQ"
-        @set-row="store.setPerPage"
-        @refresh="store.getData"
-        @set-periode="(val)=>store.setPeriodik(val)"
-        @filter="store.setFilters"
-        @normal="store.notCustom"
-        @set-poli="(val)=> store.setPolis(val)"
-      />
+      <HeaderComp class="q-pa-xs" :tanggal="store.params.tgl" :search="store.params.q" :per-page="store.params.per_page"
+        :full="style.componentfull" :custom="store.custom" @fullscreen="style.setComponentFull"
+        @set-tanggal="(val) => store.setDate(val)" @set-search="store.setQ" @set-row="store.setPerPage"
+        @refresh="store.getData" @set-periode="(val) => store.setPeriodik(val)" @filter="store.setFilters"
+        @normal="store.notCustom" @set-poli="(val) => store.setPolis(val)" />
     </div>
     <div class="footer absolute-bottom text-white z-top">
       <!-- <FooterComp :items="store.items" /> -->
-      <BottomComp
-        v-if="store.meta !==null"
-        :key="store.meta"
-        :meta="store.meta"
-        color="bg-dark"
-        @go-to="store.setPage"
-      />
+      <BottomComp v-if="store.meta !== null" :key="store.meta" :meta="store.meta" color="bg-dark"
+        @go-to="store.setPage" />
     </div>
-    <q-card
-      flat
-      no-shadow
-      class="my-flex-1 scroll"
-    >
-      <list-pengunjung
-        :key="store.items"
-        :items="store.items"
-        :loading="store.loading || setting.loading"
-        :loading-terima="store.loadingTerima"
-        :loading-call="speech.isLoading"
-        @tindakan="bukaTindakan"
-        @panggilan="panggil"
-        @tidakdatang="tidakdatangs"
-        @kirimkepenjaminan="kirimkepenjaminan"
-      />
+    <q-card flat no-shadow class="my-flex-1 scroll">
+      <list-pengunjung :key="store.items" :items="store.items" :loading="store.loading || setting.loading"
+        :loading-terima="store.loadingTerima" :loading-call="speech.isLoading" :loadingcasmix="store.loadingcasmix"
+        @tindakan="bukaTindakan" @panggilan="panggil" @tidakdatang="tidakdatangs"
+        @kirimkepenjaminan="kirimkepenjaminan" />
     </q-card>
 
-    <FilterPage
-      v-model="store.filters"
-      @close="store.setFilters"
-      @filter-data="store.filterData"
-    />
+    <FilterPage v-model="store.filters" @close="store.setFilters" @filter-data="store.filterData" />
 
-    <page-tindakan
-      :key="pasien"
-      v-model="store.pageTindakan"
-      :pasien="pasien"
-      :loading-terima="store?.loadingTerima"
-    />
+    <page-tindakan :key="pasien" v-model="store.pageTindakan" :pasien="pasien" :loading-terima="store?.loadingTerima" />
     <!-- <CetakRekapBilling
       v-model="printRekap"
       :pasien="pasien"
@@ -131,7 +91,7 @@ onMounted(() => {
   // console.log('setting', kdDisplay.value)
 })
 
-function getListVoices () {
+function getListVoices() {
   return new Promise(
     function (resolve, reject) {
       const synth = speech.synth
@@ -148,7 +108,7 @@ function getListVoices () {
   )
 }
 
-function settingsVoice () {
+function settingsVoice() {
   const voices = speech.voiceList
   if (voices.length) {
     const lang = voices?.map(x => x.lang)
@@ -165,7 +125,7 @@ function settingsVoice () {
   listenForSpeechEvents()
 }
 
-function listenForSpeechEvents () {
+function listenForSpeechEvents() {
   speech.utterance.onstart = () => {
     console.log('start...')
     speech.isLoading = true
@@ -176,7 +136,7 @@ function listenForSpeechEvents () {
   }
 }
 
-function setSpeech (txt) {
+function setSpeech(txt) {
   // console.log(speech.voiceList[indexVoices.value])
   const voice = speech.utterance
   voice.text = txt
@@ -189,7 +149,7 @@ function setSpeech (txt) {
   return voice
 }
 
-function panggil (row) {
+function panggil(row) {
   // console.log(row)
   const nama = (row?.nama_panggil) ? (row?.nama_panggil)?.toLowerCase() : ''
   const unit = row?.panggil_antrian
@@ -206,7 +166,7 @@ function panggil (row) {
   store.sendPanggil(row, `display${kdDisplay.value}`)
 }
 
-function bukaTindakan (val) {
+function bukaTindakan(val) {
   // console.log('buka tindakan', val)
   if (val?.groups === '1') {
     if (!val?.sep) {
@@ -225,7 +185,7 @@ function bukaTindakan (val) {
   store.setTerima(val)
 }
 
-function tidakdatangs (val) {
+function tidakdatangs(val) {
   if (val?.groups === '1') {
     if (!val?.sep) {
       $q.notify({
@@ -241,7 +201,7 @@ function tidakdatangs (val) {
   store.settidakdatang(val)
 }
 
-function subscribedChannel () {
+function subscribedChannel() {
   if (kdDisplay.value) {
     // ok persiiip
     // const channel = laravelEcho.join('presence.chat.display' + kdDisplay.value)
@@ -278,16 +238,26 @@ function subscribedChannel () {
 //   printRekap.value = false
 // }
 
-function kirimkepenjaminan (val) {
-  // if (val?.groups === '1') {
-  //   if (!val?.sep) {
-  $q.notify({
-    type: 'negative',
-    title: 'Peringatan',
-    message: 'INFO WARNING <b/> MAAF,<em><b>Fitur Masih Dalam Proses Pengembangan</b></em>',
-    html: true,
-    timeout: 1000
-  })
+function kirimkepenjaminan(val) {
+
+  if (val?.satatus === 1) {
+    $q.notify({
+      type: 'negative',
+      title: 'Peringatan',
+      message: 'INFO WARNING <b/> MAAF,<em><b>Pasien Ini Masih Belum Selese Palayanan</b></em>',
+      html: true,
+      timeout: 1000
+    })
+  } else {
+    store.kirimpenjaminan(val)
+  }
+  // $q.notify({
+  //   type: 'negative',
+  //   title: 'Peringatan',
+  //   message: 'INFO WARNING <b/> MAAF,<em><b>Fitur Masih Dalam Proses Pengembangan</b></em>',
+  //   html: true,
+  //   timeout: 1000
+  // })
 
   //   }
   // }
