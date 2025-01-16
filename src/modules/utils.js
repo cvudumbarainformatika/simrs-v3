@@ -88,8 +88,8 @@ const notifErr = (resp) => {
             actions: [
               { label: 'Dismiss', color: 'yellow', handler: () => { /* console.log('wooow') */ } }
             ]
-          // for (const key in msgs) {
-          // }
+            // for (const key in msgs) {
+            // }
           })
         }
       }
@@ -141,8 +141,8 @@ const notifErr = (resp) => {
             actions: [
               { label: 'Dismiss', color: 'yellow', handler: () => { /* console.log('wooow') */ } }
             ]
-          // for (const key in msgs) {
-          // }
+            // for (const key in msgs) {
+            // }
           })
         }
       }
@@ -180,7 +180,7 @@ const notifErr = (resp) => {
   }
 }
 const notifSuccess = (resp) => {
-  const msg = resp ? resp.data.message : 'Sucees!, Wow Kerja Bagus!'
+  const msg = resp?.data?.message ?? 'Sucees!, Wow Kerja Bagus!'
   Notify.create({
     message: msg || 'Sucees!, Wow Kerja Bagus!',
     icon: 'icon-mat-thumb_up_off_alt',
@@ -397,7 +397,7 @@ const loadingRes = (cond) => {
   }).listen('.antrean', (e) => {
     // console.log('util antrean', app.user.id, e.message)
     if (e.message.kode && e.message.user === app.user.id) {
-    // if (e.message.kode) {
+      // if (e.message.kode) {
       // console.log('util metadata', e.message.kode.metadata)
       if (e.message.url === 'antrean/add') {
         url = 'Tambah Antrean'
@@ -444,10 +444,10 @@ const loadingRes = (cond) => {
       if (cond === 'show') {
         Loading.show({
           message: mess + mess2 + mess3 + space +
-          mess01 + mess21 + mess31 + space +
-          mess02 + mess22 + mess32 + space +
-          mess03 + mess23 + mess33 + space +
-          dot,
+            mess01 + mess21 + mess31 + space +
+            mess02 + mess22 + mess32 + space +
+            mess03 + mess23 + mess33 + space +
+            dot,
           boxClass: 'bg-dark text-white box-anyar',
           html: true,
           spinner: QSpinnerCube,
@@ -479,7 +479,7 @@ const inputMustNumber = (value) => {
   return temp
 }
 
-function terbilangRupiah (nilai) {
+function terbilangRupiah(nilai) {
   nilai = Math.floor(Math.abs(nilai))
   const huruf = [
     '',
