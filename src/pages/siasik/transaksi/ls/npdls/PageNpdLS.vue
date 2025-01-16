@@ -100,9 +100,10 @@ const barStyle = ref({
 
 const page = useRoute()
 const title = computed(() => {
-  if (page.path === '/siasik/ls/npdls/listnpd') {
+  if (page.path === '/siasik/ls/npdls/newlistnpd') {
     return 'LIST NPD-LS'
   }
+
   // else if (page.path === '/akuntansi/jurnal/postingjurnal') {
   //   return 'POSTING JURNAL'
   // }
@@ -110,14 +111,15 @@ const title = computed(() => {
   // //   return 'LIST MOBILE JKN'
   // }
   else {
-    return 'FORM NPD-LS'
+    return 'NEW FORM NPD-LS'
   }
 })
 
 const subtitle = computed(() => {
-  if (page.path === '/siasik/ls/npdls/listnpd') {
+  if (page.path === '/siasik/ls/npdls/newlistnpd') {
     return 'List Data NPD-LS'
   }
+
   // else if (page.path === '/akuntansi/jurnal/postingjurnal') {
   //   return 'List Jurnal yang Terposting'
   // }

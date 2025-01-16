@@ -16,10 +16,7 @@
               <div class="row b1 justify-between full-width full-height ">
                 <div class="row q-pa-sm b2 q-pr-xl" style="width:50%">
                   <div class="row full-width flex-center">
-                    <q-img
-                      src="~assets/logos/logo-rsud.png"
-                      style="height: 1.5cm; width: 1.5cm"
-                    />
+                    <q-img src="~assets/logos/logo-rsud.png" style="height: 1.5cm; width: 1.5cm" />
                     <div class="row q-px-md flex-center text-center">
                       <div class="col-auto q-pa-sm text-weight-bold text-center">
                         <div>PEMERINTAH KOTA PROBOLINGGO</div>
@@ -243,7 +240,7 @@
                       <tr v-for="item, n in store.npddatasave.rincian" :key="item">
                         <td class="text-right">
                           <div>
-                            {{ n+1 }}.
+                            {{ n + 1 }}.
                           </div>
                         </td>
                         <td>
@@ -571,7 +568,7 @@
             <div class="container q-pa-md full-width">
               <q-card class="items-center bg-yellow-1 q-pa-xl full-width">
                 <div class="row flex-center">
-                  SABAR YA...   NPD-LS BELUM DICAIRKAN
+                  SABAR YA... NPD-LS BELUM DICAIRKAN
                 </div>
               </q-card>
             </div>
@@ -581,18 +578,8 @@
       <q-card-section class="q-pa-none bg-primary text-white">
         <div class="q-pa-md row justify-end items-end">
           <div class="items-end">
-            <q-btn
-              v-print="printObj"
-              unelevated
-              color="dark"
-              round
-              size="sm"
-              icon="icon-mat-print"
-            >
-              <q-tooltip
-                class="primary"
-                :offset="[10, 10]"
-              >
+            <q-btn v-print="printObj" unelevated color="dark" round size="sm" icon="icon-mat-print">
+              <q-tooltip class="primary" :offset="[10, 10]">
                 Print
               </q-tooltip>
             </q-btn>
@@ -603,30 +590,27 @@
   </q-dialog>
 </template>
 <script setup>
-import { formNotaPermintaanDanaLS } from 'src/stores/siasik/transaksi/ls/npdls/formnpdls'
+import { listDataNpdlsStore } from 'src/stores/siasik/transaksi/ls/newnpdls/listdatanpdls'
 import { useLaporanBkuPengeluaranStore } from 'src/stores/siasik/laporan/bku/bkupengeluaran'
-
-// eslint-disable-next-line no-unused-vars
 import { formattanpaRp } from 'src/modules/formatter'
-// eslint-disable-next-line no-unused-vars
 import { terbilangRupiah } from 'src/modules/utils'
 import { ref } from 'vue'
-const store = formNotaPermintaanDanaLS()
-// eslint-disable-next-line no-unused-vars
+
+const store = listDataNpdlsStore()
 const pegawai = useLaporanBkuPengeluaranStore()
 
 const printed = ref(false)
 const printObj = {
   id: 'printMe',
   popTitle: 'Nota Permintaan Dana Langsung (NPD-LS) | SIASIK',
-  beforeOpenCallback (vue) {
+  beforeOpenCallback(vue) {
     printed.value = true
     console.log('wait...')
   },
-  openCallback (vue) {
+  openCallback(vue) {
     console.log('opened')
   },
-  closeCallback (vue) {
+  closeCallback(vue) {
     printed.value = false
     console.log('closePrint')
   }
@@ -639,28 +623,36 @@ const printObj = {
   border-bottom-style: solid;
   border-width: 2px;
 }
+
 .b1 {
   border-style: solid;
   border-width: 2px;
 }
+
 .b2 {
   border-right-style: solid;
   border-width: 2px;
 }
+
 .b3 {
   border-bottom-style: solid;
   border-width: 2px;
 }
+
 .b4 {
   border-right-style: solid;
   border-left-style: solid;
   border-width: 2px;
 }
-table, th, td {
+
+table,
+th,
+td {
   border-width: 2px;
   border-style: solid;
   border-collapse: collapse;
 }
+
 td {
   padding-left: 10px;
   padding-right: 10px;

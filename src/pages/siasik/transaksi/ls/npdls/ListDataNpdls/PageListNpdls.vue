@@ -15,7 +15,14 @@
   </div> -->
 </template>
 <script setup>
+import { listDataNpdlsStore } from 'src/stores/siasik/transaksi/ls/newnpdls/listdatanpdls';
 import ListData from './inpage/ListDataNpdls.vue'
+import { onBeforeMount } from 'vue';
 // import listRegjurnal from './inpage/ListRegjurnal.vue'
 
+const store = listDataNpdlsStore()
+
+onBeforeMount(() => {
+  store.listdatanpd()
+})
 </script>

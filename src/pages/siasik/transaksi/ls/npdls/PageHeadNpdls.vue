@@ -18,10 +18,10 @@
 
     <div class="row items-center">
       <q-btn-group outline>
-        <q-btn :outline="path !== '/siasik/ls/npdls/formnpd'" glossy size="md" color="teal" label="Form NPD-LS"
-          @click="goTo('/siasik/ls/npdls/formnpd')" />
-        <q-btn :outline="path !== '/siasik/ls/npdls/listnpd'" glossy size="md" color="dark" label="List NPD-LS"
-          @click="goTo('/siasik/ls/npdls/listnpd')" />
+        <q-btn :outline="path !== '/siasik/ls/npdls/newformnpd'" glossy size="md" color="teal" label="Form NPD-LS"
+          @click="goTo('/siasik/ls/npdls/newformnpd')" />
+        <q-btn :outline="path !== '/siasik/ls/npdls/newlistnpd'" glossy size="md" color="dark" label="List NPD-LS"
+          @click="goTo('/siasik/ls/npdls/newlistnpd')" />
 
         <!-- <q-btn
           :outline="path!=='/akuntansi/laporan/lo'"

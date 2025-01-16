@@ -1,6 +1,6 @@
 <template>
   <q-card flat class="col full-height">
-    <q-form ref="formNpdLS" class="full-height" @submit="onSubmit">
+    <q-form @submit="onSubmit" ref="formNpdLS" class="full-height">
       <div class="row q-pa-sm q-col-gutter-md">
         <div class="q-gutter-y-md" style="width: 25%">
           <app-input-simrs label="Nomor NPD-LS" v-model="store.form.nonpdls" readonly :disable="store.disabled" outlined
@@ -15,11 +15,12 @@
           <app-input-date-human label="Tanggal Transaksi" :model="store.params.tgl" icon="icon-mat-event" outlined
             :autofocus="false" :disable="store.disabled" @db-model="tglTransaksi"
             :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" />
-          <app-autocomplete label="Kegiatan BLUD" v-model="store.form.kodekegiatanblud" autocomplete="kegiatan" outlined
-            option-label="kegiatan" option-value="kodekegiatan" :source="store.kegiatans"
+          <app-autocomplete label="Kegiatan BLUD" v-model="store.form.kegiatanblud" autocomplete="kegiatan" outlined
+            option-label="kegiatan" option-value="kegiatan" :source="store.kegiatans"
             @selected="(val) => pilihKegiatan(val)" :key="store.reqs.kodebidang" :disable="store.disabled"
             :loading="store.loading" />
         </div>
+
         <div class="q-gutter-y-md" style="width: 50%">
           <app-autocomplete label="Pihak Ketiga" v-model="store.form.kodepenerima" autocomplete="nama"
             option-label="nama" option-value="kode" outlined :source="ambil.pihaktigas"
@@ -35,17 +36,15 @@
             <template v-if="store.form.serahterimapekerjaan === '3'">
               <div>
                 <app-autocomplete label="Serah Terima Dari" v-model="store.form.bast" autocomplete="nama"
-                  option-value="value" option-label="nama" outlined :key="carisrt.reqs.kodepenerima"
+                  option-value="nama" option-label="nama" outlined :key="carisrt.reqs.kodepenerima"
                   :disable="store.disabled" :source="store.dariserahterima"
                   @update:model-value="(val) => serahTerima(val)" />
               </div>
             </template>
           </div>
         </div>
-        <!-- <div class="flex-end q-gutter-y-md"> -->
         <app-input-simrs label="Keterangan Belanja" style="width: 50%" v-model="store.form.keterangan" outlined
           :autofocus="false" :valid="{ required: true }" :disable="store.disabled" />
-        <!-- </div> -->
 
         <template v-if="store.form.serahterimapekerjaan === '3'">
           <div class="row items-center" style="width: 50%;">
@@ -63,15 +62,10 @@
         </template>
         <app-input-simrs style="width: 50%;" v-model="store.form.biayatransfer" label="Biaya Administrasi" outlined
           :autofocus="false" :valid="{ required: true, number: true }" :disable="store.disabled" />
-        <!-- <div class="row q-gutter-y-md" style="width: 100%">
-          <app-input-simrs style="width: 50%;" v-model="store.form.biayatransfer" label="Biaya Administrasi" outlined
-            :autofocus="false" :valid="{ required: true, number: true }" />
 
-        </div> -->
       </div>
       <select-serahterima v-model="store.openDialogFarmasi" :key="carisrt.reqs.kodepenerima" />
       <select-serahterima v-model="store.openDialogSiasik" />
-
       <div class="q-px-sm">
         <q-card class="full-width bg-grey-4 q-my-sm q-px-sm">
           <div class="row text-primary q-pa-sm q-my-sm q-px-sm">
@@ -87,26 +81,19 @@
 </template>
 <script setup>
 import { formKontrakPekerjaan } from 'src/stores/siasik/transaksi/ls/kontrak/formkontrak';
-import { dataBastFarmasi } from 'src/stores/siasik/transaksi/ls/npdls/databast';
-import { formNotaPermintaanDanaLS } from 'src/stores/siasik/transaksi/ls/npdls/formnpdls';
-import { defineAsyncComponent, onMounted, ref } from 'vue';
-import FormRincianNpdls from './FormRincianNpdls.vue'
+import { dataBastFarmasiStore } from 'src/stores/siasik/transaksi/ls/newnpdls/bastfarmasi';
+import { formInputNpdlsStore } from 'src/stores/siasik/transaksi/ls/newnpdls/formnpdls';
+import { defineAsyncComponent, ref } from 'vue';
+import FormRincianNpdls from './FormRincian.vue'
 
-const SelectSerahterima = defineAsyncComponent(() => import('../../inpage/SelectSerahterima.vue'))
 
-const store = formNotaPermintaanDanaLS()
-const carisrt = dataBastFarmasi()
+const SelectSerahterima = defineAsyncComponent(() => import('./selectbast/SelectBastFarmasi.vue'))
+const store = formInputNpdlsStore()
 const ambil = formKontrakPekerjaan()
+const carisrt = dataBastFarmasiStore()
 const formNpdLS = ref(null)
-
-onMounted(() => {
-  // store.initReset(props.data)
-  store.getDataBidang()
-  ambil.getPihaktiga()
-})
 function onSubmit() {
   store.fixed = true
-
 }
 function tglTransaksi(val) {
   console.log('val Parameter', val)
@@ -120,14 +107,14 @@ function tglTransaksi(val) {
 }
 const serahTerima = (val) => {
   console.log('serahTerima', val)
-  if (val === '2') {
+  if (val === 'Sigarang') {
     store.openDialogSigarang = false
   }
-  else if (val === '3') {
+  else if (val === 'Farmasi') {
     store.openDialogFarmasi = true
     carisrt.reqs.kodebast = ''
   }
-  else if (val === '4') {
+  else if (val === 'Siasik') {
     store.openDialogSiasik = false
   }
 }
@@ -153,6 +140,7 @@ function pilihPTK(val) {
   store.rinci.nominalpembayaran = ''
   // mengkosongkan form Kegiatan setelah milih ulang PTK
   store.form.kodekegiatanblud = ''
+  store.form.kegiatanblud = ''
   store.form.bidang = obj?.bagian ?? ''
 
   // filter kegiatan berdasarkan nip
@@ -161,10 +149,9 @@ function pilihPTK(val) {
 }
 function pilihKegiatan(val) {
   const arr = store.kegiatans
-  const obj = arr.length ? arr.find(x => x.kodekegiatan === val) : null
+  const obj = arr.length ? arr.find(x => x.kegiatan === val) : null
   store.form.kegiatanblud = obj?.kegiatan ?? ''
   store.form.kodekegiatanblud = obj?.kodekegiatan ?? ''
-
   // Mengosongkan Rincian Belanja setelah milih ulang kegiatan
   store.rinci.koderek50 = ''
   store.rinci.koderek108 = ''
@@ -178,22 +165,22 @@ function pilihKegiatan(val) {
   store.rinci.totalls = ''
   store.rinci.nominalpembayaran = ''
 
-  carisrt.reqs.kodekegiatan = val ?? ''
+  carisrt.reqs.kodekegiatanblud = obj?.kodekegiatan
   carisrt.selectbastFarmasi()
-  store.reqs.kodekegiatan = val ?? ''
+  store.reqs.kodekegiatan = obj?.kodekegiatan
   store.getRincianBelanja()
 }
-
 function pilihPihaktiga(val) {
+  console.log('val kodepenerima', val)
   const arr = ambil.pihaktigas
   const obj = arr.length ? arr.find(x => x.kode === val) : null
 
   store.form.penerima = obj?.nama ?? ''
   store.form.kodepenerima = obj?.kode ?? ''
-  carisrt.reqs.kodepenerima = val ?? ''
+  carisrt.reqs.kodepenerima = obj?.kode ?? ''
   store.form.serahterimapekerjaan = '2'
   carisrt.reqs.kodebast = '1'
-  store.form.bast = '1'
+  store.form.bast = '-'
   store.form.bank = obj?.bank ?? ''
   store.form.rekening = obj?.norek ?? ''
   store.form.npwp = obj?.npwp ?? ''

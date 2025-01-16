@@ -29,16 +29,16 @@ const siasik = {
       name: 'siasik.ls.npdls',
       component: () => import('pages/siasik/transaksi/ls/npdls/IndexPage.vue'),
       children: [
-        { path: '', name: 'npdls', redirect: '/siasik/ls/npdls/formnpd' },
+        { path: '', name: 'npdls', redirect: '/siasik/ls/npdls/newformnpd' },
         {
-          path: '/siasik/ls/npdls/formnpd',
-          name: 'siasik.ls.npdls.formnpd',
+          path: '/siasik/ls/npdls/newformnpd',
+          name: 'siasik.ls.npdls.newformnpd',
           component: () =>
-            import('src/pages/siasik/transaksi/ls/npdls/FormNpdls/IndexPage.vue')
+            import('src/pages/siasik/transaksi/ls/npdls/NewFormnpdls/IndexPage.vue')
         },
         {
-          path: '/siasik/ls/npdls/listnpd',
-          name: 'siasik.ls.npdls.listnpd',
+          path: '/siasik/ls/npdls/newlistnpd',
+          name: 'siasik.ls.npdls.newlistnpd',
           component: () =>
             import('src/pages/siasik/transaksi/ls/npdls/ListDataNpdls/IndexPage.vue')
         },

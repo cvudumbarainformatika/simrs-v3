@@ -1,60 +1,65 @@
 <template>
-  <template v-if="store.reqs.rincianmanual">
-    <q-card flat class="col full-height q-pt-sm">
-      <div>
-        <q-table class="my-sticky-table" :rows="store.transall" :columns="columns" row-key="name" hide-pagination
-          hide-bottom wrap-cells :rows-per-page-options="[0]" :rows-number="[0]">
-          <template #body="props">
-            <q-tr :props="props">
-              <q-td key="rincianbelanja" :props="props" class="text-left">
-                {{ props.row.rincianbelanja }}
-              </q-td>
-              <q-td key="koderek50" :props="props" class="text-left">
-                {{ props.row.koderek50 }}
-              </q-td>
-              <q-td key="itembelanja" :props="props" class="text-left">
-                {{ props.row.itembelanja }}
-              </q-td>
-              <q-td key="nominalpembayaran" :props="props" class="text-right">
-                {{ formattanpaRp(props.row.nominalpembayaran) }}
-              </q-td>
-              <q-td style="width: 5%">
-                <div class="row justify-center">
-                  <q-btn size="sm" class="q-pl-md" color="negative" icon="icon-mat-delete"
-                    @click="deleteData(props?.row?.id)" />
-                </div>
-              </q-td>
-            </q-tr>
-          </template>
-          <template #bottom-row>
-            <q-tr class="full-width text-bold">
-              <q-td colspan="3" class="text-center" style="font-size: 4em">
-                SUBTOTAL
-              </q-td>
-              <q-td colspan="2" class="text-right text-bold" style="font-size: 4em">
-                {{ formattanpaRp(subtotal()) }}
-              </q-td>
-            </q-tr>
-          </template>
-        </q-table>
-      </div>
-    </q-card>
-  </template>
+  <q-card flat class="col full-height q-pt-sm">
+
+    <q-table class="my-sticky-table" :rows="store.transall" :columns="columns" row-key="name" hide-pagination
+      hide-bottom wrap-cells :rows-per-page-options="[0]" :rows-number="[0]">
+      <template #body="props">
+        <q-tr :props="props">
+          <q-td key="rincianbelanja" :props="props" class="text-left">
+            <div class="text-bold">{{ props.row.nopenerimaan }}</div>
+            <div>{{ props.row.rincianbelanja }}</div>
+          </q-td>
+          <q-td key="koderek50" :props="props" class="text-left">
+            {{ props.row.koderek50 }}
+          </q-td>
+          <q-td key="itembelanja" :props="props" class="text-left">
+            {{ props.row.itembelanja }}
+          </q-td>
+          <q-td key="nominalpembayaran" :props="props" class="text-right">
+            {{ formattanpaRp(props.row.nominalpembayaran) }}
+          </q-td>
+          <q-td style="width: 5%">
+            <div class="row justify-center">
+              <q-btn size="sm" class="q-pl-md" color="negative" icon="icon-mat-delete"
+                @click="deleteData(props?.row?.id)" :loading="store.loadingHapus" />
+            </div>
+          </q-td>
+        </q-tr>
+      </template>
+      <template #bottom-row>
+        <q-tr class="full-width text-bold">
+          <q-td colspan="3" class="text-center" style="font-size: 4em">
+            SUBTOTAL
+          </q-td>
+          <q-td colspan="2" class="text-right text-bold" style="font-size: 4em">
+            {{ formattanpaRp(subtotal()) }}
+          </q-td>
+        </q-tr>
+      </template>
+    </q-table>
+
+  </q-card>
 </template>
 <script setup>
 import { useQuasar } from 'quasar';
 import { formattanpaRp } from 'src/modules/formatter';
-import { dataBastFarmasi } from 'src/stores/siasik/transaksi/ls/npdls/databast';
-import { formNotaPermintaanDanaLS } from 'src/stores/siasik/transaksi/ls/npdls/formnpdls';
-import { ref } from 'vue';
+import { notifSuccess } from 'src/modules/utils';
+import { formInputNpdlsStore } from 'src/stores/siasik/transaksi/ls/newnpdls/formnpdls';
+// import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 
 function subtotal() {
   const subtotalrinci = store.transall.map((x) => parseFloat(x.nominalpembayaran)).reduce((a, b) => a + b, 0)
   return subtotalrinci
 }
 
-const store = formNotaPermintaanDanaLS()
-const carisrt = dataBastFarmasi()
+onMounted(() => {
+  // console.log(compSigna.value)
+  // store.initForm()
+})
+
+
+const store = formInputNpdlsStore()
 const tablerinci = [
   {
     label: 'Rincian Belanja',
@@ -101,15 +106,19 @@ function deleteData(row) {
     const payload = {
       nonpdls: store.form.nonpdls,
       id: row,
+      nopenerimaan: store.form.noserahterima,
 
     }
     console.log('payload', payload)
     store.hapusRinci(payload).then(() => {
-      carisrt.refreshTable()
+      store.loadingHapus = true
+      // carisrt.refreshTable()
       store.refreshTable()
-      if (store.transall.length < 0) {
-        store.resetFORM()
+
+      if (store.transall.length === 0) {
+        store.initForm()
       }
+      console.log('data hapus', store.transall)
     })
     // store.setForm = props?.row
     // console.log('vv', store.hapusRinci(row))
@@ -122,6 +131,7 @@ function deleteData(row) {
     // console.log('I am triggered on both OK and Cancel')
   })
 }
+
 </script>
 <style lang="scss">
 .my-sticky-table {

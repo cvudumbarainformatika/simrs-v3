@@ -1,10 +1,5 @@
 <template>
-  <q-dialog
-    class="full-width q-mt-lg"
-    @hide="hiddenDialog()"
-    backdrop-filter="blur(4x)"
-    persistent
-  >
+  <q-dialog class="full-width q-mt-lg" @hide="hiddenDialog()" backdrop-filter="blur(4x)" persistent>
     <q-card style="min-width:50vw;">
       <q-card-section class="row items-center">
         <div class="column">
@@ -16,29 +11,15 @@
           </div>
         </div>
         <q-space />
-        <q-btn
-          v-close-popup
-          icon="icon-mat-clear"
-          flat
-          round
-          dense
-        />
+        <q-btn v-close-popup icon="icon-mat-clear" flat round dense />
       </q-card-section>
       <q-card-section>
-        <q-table
-          class="my-sticky-table"
-          :rows="store.reqs.listrinci"
-          :columns="columns"
-          row-key="name"
-          wrap-cells
-          :disable="store.loading"
-          :loading="store.loading"
-          :rows-per-page-options="[0]"
-          :rows-number="[0]"
-        >
+        <q-table class="my-sticky-table" :rows="store.listrinci" :columns="columns" row-key="name" wrap-cells
+          :disable="store.loading" :loading="store.loading" :rows-per-page-options="[0]" :rows-number="[0]">
           <template #body="props">
             <q-tr>
               <q-td key="rincian" :props="props">
+                {{ props.row?.nopenerimaan }}
                 <q-badge color="green">
                   {{ props.row?.koderek50 }}
                 </q-badge>
@@ -72,12 +53,12 @@
 <script setup>
 
 import { formattanpaRp } from 'src/modules/formatter'
-import { formNotaPermintaanDanaLS } from 'src/stores/siasik/transaksi/ls/npdls/formnpdls'
+import { listDataNpdlsStore } from 'src/stores/siasik/transaksi/ls/newnpdls/listdatanpdls'
 import { ref } from 'vue'
 
-const store = formNotaPermintaanDanaLS()
+const store = listDataNpdlsStore()
 
-function hiddenDialog () {
+function hiddenDialog() {
   console.log('hidden dialog')
 }
 const rincinpd = [
@@ -101,45 +82,48 @@ const columns = ref(rincinpd)
 </script>
 
 <style lang="scss">
-.my-sticky-table{
+.my-sticky-table {
   height: 510px;
 
   .q-table__top,
   .q-table__bottom,
-  thead tr:first-child th{
+  thead tr:first-child th {
     background-color: #000000;
     color: $white;
 
   }
 
-  thead tr th{
+  thead tr th {
     position: sticky;
     z-index: 1;
     font-weight: bold;
   }
 
   /* this will be the loading indicator */
-  thead tr:last-child th{
+  thead tr:last-child th {
     top: 48px;
 
   }
-    /* height of all previous header rows */
 
-  thead tr:first-child th{
+  /* height of all previous header rows */
+
+  thead tr:first-child th {
     top: 0;
   }
-  .q-td{
+
+  .q-td {
     font-size: 3mm;
   }
+
   /* prevent scrolling behind sticky top row on focus */
-  tbody{
+  tbody {
     scroll-margin-top: 48px;
     font-size: 1mm;
   }
+
   .q-table__bottom .q-field__native,
   .q-table__bottom .q-field__inner .q-field__control .q-anchor--skip,
-  i.q-icon
-   {
+  i.q-icon {
     color: $white;
   }
 }

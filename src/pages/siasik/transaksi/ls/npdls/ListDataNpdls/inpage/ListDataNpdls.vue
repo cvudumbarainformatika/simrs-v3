@@ -27,9 +27,7 @@
                 @update:model-value="(val) => {
                   console.log('Tahun berapa?', val)
                   store.params.tahun = val
-
                   store.listdatanpd()
-
                 }" />
             </div>
           </div>
@@ -83,10 +81,10 @@
                       <q-item clickable v-close-popup @click="viewRincian(props?.row)">
                         <q-item-section>Lihat Rincian</q-item-section>
                       </q-item>
-                      <q-item clickable v-close-popup @click="editNpdls(props?.row)">
+                      <q-item clickable @click="editNpdls(props?.row)">
                         <q-item-section>Edit NPD</q-item-section>
                       </q-item>
-                      <q-item clickable v-close-popup @click="viewDataNpdls(props?.row)">
+                      <q-item clickable v-close-popup @click="viewCetakDataNpdls(props?.row)">
                         <q-item-section>Cetak NPD</q-item-section>
                       </q-item>
                       <q-item clickable v-close-popup @click="PrintPencairan(props?.row)">
@@ -95,40 +93,6 @@
                     </q-list>
                   </q-menu>
                 </q-btn>
-                <!-- <q-btn-dropdown label="coba">
-                  <q-list>
-                    <q-btn
-                      flat
-                      round
-                      class="bg-dark"
-                      size="sm"
-                      color="warning"
-                      icon="icon-mat-visibility"
-                      @click="viewRincian(props?.row)"
-                    >
-                      <q-tooltip class="bg-accent">
-                        Lihat Rinci
-                      </q-tooltip>
-                    </q-btn>
-                    <div class="q-pl-md">
-                      <q-btn
-                        unelevated
-                        color="dark"
-                        round
-                        size="sm"
-                        icon="icon-mat-description"
-                        @click="viewDataNpdls(props?.row)"
-                      >
-                        <q-tooltip
-                          class="primary"
-                          :offset="[10, 10]"
-                        >
-                          Print
-                        </q-tooltip>
-                      </q-btn>
-                    </div>
-                  </q-list>
-                </q-btn-dropdown> -->
               </div>
             </q-td>
           </q-tr>
@@ -139,31 +103,33 @@
       </q-table>
       <app-dialog-rincian v-model="store.openDialogRinci" :npd="npd" />
       <printdi-npdls v-model="store.dialogCetakNpd" :datanpds="datanpds" />
-      <editdata-npdls v-model="store.dialogEditNpd" :editnpds="editnpds" />
+      <!-- <editdata-npdls v-model="store.dialogEditNpd" :editnpds="editnpds" /> -->
       <cetak-pencairan v-model="store.dialogPrintPencairan" :printcair="printcair" />
     </div>
   </template>
 </template>
 
 <script setup>
-
-// eslint-disable-next-line no-unused-vars
 import { formatRpDouble } from 'src/modules/formatter'
-import { formNotaPermintaanDanaLS } from 'src/stores/siasik/transaksi/ls/npdls/formnpdls'
+import { dataBastFarmasiStore } from 'src/stores/siasik/transaksi/ls/newnpdls/bastfarmasi'
+import { formInputNpdlsStore } from 'src/stores/siasik/transaksi/ls/newnpdls/formnpdls'
+import { listDataNpdlsStore } from 'src/stores/siasik/transaksi/ls/newnpdls/listdatanpdls'
 import { defineAsyncComponent, onMounted, ref } from 'vue'
-const AppDialogRincian = defineAsyncComponent(() => import('../../inpage/DialogRincian.vue'))
-const PrintdiNpdls = defineAsyncComponent(() => import('../../print/PrintdiListNPD.vue'))
-const EditdataNpdls = defineAsyncComponent(() => import('../../inpage/DialogEditnpdls.vue'))
-const CetakPencairan = defineAsyncComponent(() => import('../../print/DialogPrintPencairan.vue'))
-const store = formNotaPermintaanDanaLS()
+import { useRouter } from 'vue-router'
 
+
+
+const AppDialogRincian = defineAsyncComponent(() => import('./DialogViewRincian.vue'))
+const PrintdiNpdls = defineAsyncComponent(() => import('./DialogPrintData.vue'))
+const CetakPencairan = defineAsyncComponent(() => import('./DialogPrintPencairan.vue'))
+const store = listDataNpdlsStore()
+const form = formInputNpdlsStore()
+const router = useRouter()
+const carisrt = dataBastFarmasiStore()
 onMounted(() => {
-  // carisrt.resetFORM()
-  // onReset()
-  // store.listdatanpd()
+
 })
 
-// eslint-disable-next-line no-unused-vars
 const clearSearch = () => {
   store.params.q = ''
   store.goToPage(1)
@@ -176,11 +142,6 @@ const listnpdls = [
     align: 'center',
     headerStyle: 'width: 200px; height:50px'
   },
-  // {
-  //   name: 'total',
-  //   field: 'total',
-  //   headerStyle: 'width: 200px;'
-  // },
   {
     label: 'Tanggal',
     name: 'tglnpdls',
@@ -231,19 +192,18 @@ const listnpdls = [
 const columnsnpd = ref(listnpdls)
 
 const npd = ref(null)
-// eslint-disable-next-line no-unused-vars
 function viewRincian(row) {
   store.openDialogRinci = true
   npd.value = row.rincian
-  store.reqs.listrinci = npd.value
-  console.log('open', store.reqs.listrinci)
+  store.listrinci = npd.value
+  console.log('open', store.listrinci)
 }
 const onRowClick = (row) =>
   alert([row?.nopencairan, row?.total])
 
 const datanpds = ref(null)
-// eslint-disable-next-line no-unused-vars
-function viewDataNpdls(row) {
+function viewCetakDataNpdls(row) {
+
   store.dialogCetakNpd = true
   datanpds.value = row
   store.npddatasave = datanpds.value
@@ -251,10 +211,20 @@ function viewDataNpdls(row) {
 }
 const editnpds = ref(null)
 function editNpdls(row) {
-  store.dialogEditNpd = true
+  console.log('row cetak', row)
+  router.push({ path: '/siasik/ls/npdls/newformnpd', replace: true, query: { id: row.id } })
+  // store.dialogEditNpd = true
   editnpds.value = row
-  store.form = editnpds.value
-  console.log('Edit NPD', editnpds.value)
+  form.form = editnpds.value
+  carisrt.reqs.kodepenerima = editnpds.value?.kodepenerima
+  carisrt.reqs.kodekegiatanblud = editnpds.value?.kodekegiatanblud
+  form.transall = editnpds.value?.rincian
+  carisrt.selectbastFarmasi()
+  form.reqs.kodekegiatan = editnpds.value?.kodekegiatanblud
+  form.getRincianBelanja()
+  form.form.rincians = []
+  form.disabled = true
+  console.log('Edit NPD', form.form.rincians)
 }
 const printcair = ref(null)
 function PrintPencairan(row) {
@@ -265,59 +235,6 @@ function PrintPencairan(row) {
   console.log('openNPD', store.npddatasave)
 }
 </script>
-
-<!-- <style lang="scss">
-.my-sticky-header {
-  /* height or max-height is important */
-  height: 510px;
-
-  tr:first-child th {
-    background-color: $dark;
-    color: $white;
-    border-collapse: separate !important;
-    border-spacing: 0 !important;
-    height:fit-content;
-    font-weight: bold;
-    border-width: 0.5px;
-    border-style: dotted;
-  }
-
-  //   /* bg color is important for th; just specify one */
-
-  thead tr th{
-    position: sticky;
-    z-index: 1;
-  }
-
-  thead tr:first-child th{
-    top: 0;
-  }
-  .q-td{
-    font-size: 3mm;
-    border-width: 0.5px;
-    border-style:dotted;
-  }
-  // /* this is when the loading indicator appears */
-  &.q-table--loading thead tr:last-child th{
-    /* height of all previous header rows */
-    top: 48px
-  }
-  // /* prevent scrolling behind sticky top row on focus */
-  tbody{
-    /* height of all previous header rows */
-    scroll-margin-top: 100px !important;
-
-  }
-
-  .q-table__bottom .q-field__native,
-  .q-table__bottom .q-field__inner .q-field__control .q-anchor--skip,
-  i.q-icon
-   {
-    color: $grey-4;
-  }
-
-}
-</style> -->
 
 <style lang="scss">
 .my-sticky-table {

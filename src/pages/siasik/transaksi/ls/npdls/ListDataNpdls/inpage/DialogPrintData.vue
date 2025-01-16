@@ -13,10 +13,7 @@
       <div id="printMe" class="f-12 row justify-center q-pt-md">
         <div class="row">
           <div class="col-1 q-pl-md">
-            <q-img
-              src="~assets/images/Pemkot.svg"
-              style="height: 2.6cm; width: 2cm"
-            />
+            <q-img src="~assets/images/Pemkot.svg" style="height: 2.6cm; width: 2cm" />
           </div>
           <div class="col-10">
             <div class="row justify-center text-h6">
@@ -37,10 +34,7 @@
             </div>
           </div>
           <div class="col-1 logo_kanan">
-            <q-img
-              src="~assets/logos/logo-rsud.png"
-              style="height: 2.6cm; width: 2.6cm"
-            />
+            <q-img src="~assets/logos/logo-rsud.png" style="height: 2.6cm; width: 2.6cm" />
           </div>
 
           <div class="col-12 q-pt-md">
@@ -146,9 +140,7 @@
               </table>
             </template> -->
 
-            <table
-              class="float-center bordered"
-            >
+            <table class="float-center bordered">
               <thead>
                 <tr>
                   <th width="30%">
@@ -246,18 +238,8 @@
       <q-card-section class="q-pa-none bg-primary text-white">
         <div class="q-pa-md row justify-end items-end">
           <div class="items-end">
-            <q-btn
-              v-print="printObj"
-              unelevated
-              color="dark"
-              round
-              size="sm"
-              icon="icon-mat-print"
-            >
-              <q-tooltip
-                class="primary"
-                :offset="[10, 10]"
-              >
+            <q-btn v-print="printObj" unelevated color="dark" round size="sm" icon="icon-mat-print">
+              <q-tooltip class="primary" :offset="[10, 10]">
                 Print
               </q-tooltip>
             </q-btn>
@@ -268,17 +250,16 @@
   </q-dialog>
 </template>
 <script setup>
-import { formNotaPermintaanDanaLS } from 'src/stores/siasik/transaksi/ls/npdls/formnpdls'
 import { useLaporanBkuPengeluaranStore } from 'src/stores/siasik/laporan/bku/bkupengeluaran'
-
 import { formattanpaRp } from 'src/modules/formatter'
-// eslint-disable-next-line no-unused-vars
 import { terbilangRupiah } from 'src/modules/utils'
+import { onMounted, ref } from 'vue'
+import { listDataNpdlsStore } from 'src/stores/siasik/transaksi/ls/newnpdls/listdatanpdls'
 
-const store = formNotaPermintaanDanaLS()
+
+const store = listDataNpdlsStore()
 const pegawai = useLaporanBkuPengeluaranStore()
 
-import { onMounted, ref } from 'vue'
 
 onMounted(() => {
   pegawai.getDataTable()
@@ -289,14 +270,14 @@ const printed = ref(false)
 const printObj = {
   id: 'printMe',
   popTitle: 'Nota Permintaan Dana Langsung (NPD-LS) | SIASIK',
-  beforeOpenCallback (vue) {
+  beforeOpenCallback(vue) {
     printed.value = true
     console.log('wait...')
   },
-  openCallback (vue) {
+  openCallback(vue) {
     console.log('opened')
   },
-  closeCallback (vue) {
+  closeCallback(vue) {
     printed.value = false
     console.log('closePrint')
   }
@@ -315,25 +296,29 @@ const printObj = {
 // }
 </script>
 <style lang="scss" scoped>
-.daftarkegiatan{
+.daftarkegiatan {
   left: 120px;
   top: 200px;
   width: fit-content;
 }
-.kop{
+
+.kop {
   border-bottom: 1px solid grey;
   width: fit-content;
 }
-.logo_kanan{
+
+.logo_kanan {
   right: 5%;
   position: relative;
 }
-.subtotal{
+
+.subtotal {
   position: relative;
   width: 100%;
   height: 100px;
   border-radius: 5px;
 }
+
 .vertical-center {
   margin: 0;
   position: absolute;
@@ -341,17 +326,23 @@ const printObj = {
   -ms-transform: translateY(-50%);
   transform: translateY(-50%);
 }
-table, th, td {
+
+table,
+th,
+td {
   border: 1px solid black;
   border-collapse: collapse;
 }
-th, td {
+
+th,
+td {
   padding-top: 5px;
   padding-bottom: 5px;
   padding-left: 5px;
   padding-right: 5px;
 }
-.ttd-kanan{
+
+.ttd-kanan {
   position: relative;
   top: 50px;
   text-align: center;
@@ -360,7 +351,8 @@ th, td {
   height: 100px;
   left: 40%;
 }
-.ttd-kiri{
+
+.ttd-kiri {
   position: relative;
   bottom: 50px;
   text-align: center;
@@ -368,6 +360,7 @@ th, td {
   width: 50%;
   height: 100px;
 }
+
 .underline {
   text-decoration-line: underline;
 
