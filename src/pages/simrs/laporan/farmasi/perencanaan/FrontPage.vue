@@ -52,20 +52,20 @@
             </div>
             <div class="col-2">
               <app-btn label="Ambil Data" :disable="store.loading || !!store?.ketProses" :loading="store.loading"
-                @click="store.getInitialData(1)" />
+                @click="store.getAllData()" />
             </div>
           </div>
         </div>
 
         <div class="col-grow q-mr-md">
           <div class="row items-center">
-            <q-btn unelevated color="primary" round size="sm" icon="icon-mat-download"
+            <!-- <q-btn unelevated color="primary" round size="sm" icon="icon-mat-download"
               :loading="!!store?.ketProses || store?.loadingNext" :disable="!!store?.ketProses || store?.loadingNext"
               @click="store.getAllData()">
               <q-tooltip class="primary" :offset="[10, 10]">
                 Ambil Semua Data
               </q-tooltip>
-            </q-btn>
+            </q-btn> -->
             <q-btn class="q-ml-sm" ref="refPrint" v-print="printObj" unelevated color="dark" round size="sm"
               :disable="!!store?.ketProses" icon="icon-mat-print">
               <q-tooltip class="primary" :offset="[10, 10]">

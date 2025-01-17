@@ -134,6 +134,8 @@ export const useLaporanPerencanaanStore = defineStore('laporan_perencanaan', {
 
 
         const maxAll = Math.max(item.rencana?.length, item.pesan?.length, item.terima?.length)
+        console.log('maxAll', maxAll, item?.kd_obat)
+
         item.data = []
         for (let index = 0; index < maxAll; index++) {
           item.data[index] = {
@@ -143,11 +145,13 @@ export const useLaporanPerencanaanStore = defineStore('laporan_perencanaan', {
           }
         }
 
-        const indexItems = array.findIndex(f => f.kd_obat === item.kd_obat)
-        if (indexItems >= 0) array[indexItems] = item
-        else array.push(item)
+        if (maxAll > 1) {
+          const indexItems = array.findIndex(f => f.kd_obat === item.kd_obat)
+          if (indexItems >= 0) array[indexItems] = item
+          else array.push(item)
+        }
       })
-      console.log('array', array)
+      // console.log('array', array)
 
     },
     async getAllData () {
