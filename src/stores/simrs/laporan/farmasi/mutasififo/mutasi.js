@@ -1486,9 +1486,9 @@ export const useLaporanMutasiFiFoFarmasiStore = defineStore('laporan_mutasi_fifo
       // this.items = []
       // this.setParams('page', 1)
       if (this.meta?.current_page >= 1 && this?.meta.current_page === this?.meta.last_page) {
-        items = this.items
+        items = [...this.items]
       } else {
-        items = this.items
+        items = [...this.items]
         this.meta = {
           current_page: 0,
           last_page: 5
@@ -1582,9 +1582,9 @@ export const useLaporanMutasiFiFoFarmasiStore = defineStore('laporan_mutasi_fifo
           temp.satuan_k = item?.satuan_k
           if (this.params.jenis === 'rekap') temp.uraian50 = item?.uraian50
 
-          const indexAda = ada.findIndex(f => f.kd_obat === item?.kd_obat)
-          if (indexAda >= 0) data[indexAda] = ada
-          else data.push(ada)
+          const indexAda = temp.findIndex(f => f.kd_obat === item?.kd_obat)
+          if (indexAda >= 0) data[indexAda] = temp
+          else data.push(temp)
 
         }
       })
@@ -1603,7 +1603,7 @@ export const useLaporanMutasiFiFoFarmasiStore = defineStore('laporan_mutasi_fifo
       data.push(tot)
       console.log('items', data)
       this.ketProses = null
-      this.items = items
+      this.items = [...items]
       return data
     },
     startDownload () { this.loadingDownload = true },

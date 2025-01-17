@@ -1,35 +1,11 @@
 <template>
-  <q-select
-    ref="refAuto"
-    :options="optionx"
-    :label="label"
-    dense
-    :filled="!outlined?filled:!filled"
-    :outlined="outlined"
-    hide-bottom-space
-    no-error-icon
-    :input-debounce="!filterred?500:0"
-    emit-value
-    map-options
-    use-input
-    fill-input
-    hide-selected
-    :option-value="optionValue"
-    :option-label="optionLabel"
-    :disable="disable"
-    :loading="loading"
-    lazy-rules
-    :rules="[anotherValid]"
-    behavior="menu"
-    transition-show="jump-up"
-    transition-hide="jump-down"
-    :bottom-slots="hint !== null "
-    @update:model-value="updateModel"
-    @filter="filterFn"
-    @focus="getFocus"
-    @input-value="setModel"
-    @new-value="createValue"
-  >
+  <q-select ref="refAuto" :options="optionx" :label="label" dense :filled="!outlined ? filled : !filled"
+    :outlined="outlined" hide-bottom-space no-error-icon :input-debounce="!filterred ? 500 : 0" emit-value map-options
+    use-input fill-input hide-selected :hide-dropdown-icon="hideDropdownIcon" :option-value="optionValue"
+    :option-label="optionLabel" :disable="disable" :loading="loading" lazy-rules :rules="[anotherValid]" behavior="menu"
+    transition-show="jump-up" transition-hide="jump-down" :bottom-slots="hint !== null"
+    @update:model-value="updateModel" @filter="filterFn" @focus="getFocus" @input-value="setModel"
+    @new-value="createValue">
     <template #no-option>
       <q-item>
         <q-item-section class="text-grey">
@@ -57,7 +33,8 @@ const props = defineProps({
   outlined: { type: Boolean, default: false },
   valid: { type: Boolean, default: false },
   filterred: { type: Boolean, default: true },
-  hint: { type: String, default: null }
+  hint: { type: String, default: null },
+  hideDropdownIcon: { type: Boolean, default: false },
 })
 const refAuto = ref(null)
 const optionx = ref(props.source)
@@ -90,13 +67,13 @@ function filterFn (val, update) {
       }
     }
   },
-  ref => {
-    // console.log(ref)
-    if (val !== '' && ref.options.length > 0) {
-      ref.setOptionIndex(-1) // reset optionIndex in case there is something selected
-      ref.moveOptionSelection(1, true) // focus the first selectable option and do not update the input-value
-    }
-  })
+    ref => {
+      // console.log(ref)
+      if (val !== '' && ref.options.length > 0) {
+        ref.setOptionIndex(-1) // reset optionIndex in case there is something selected
+        ref.moveOptionSelection(1, true) // focus the first selectable option and do not update the input-value
+      }
+    })
 }
 function updateModel (val) {
   emits('selected', val)
@@ -121,7 +98,7 @@ function createValue (val, done) {
 </script>
 
 <style lang="scss" scoped>
-.q-item--active{
+.q-item--active {
   background-color: $grey-3;
 }
 </style>
