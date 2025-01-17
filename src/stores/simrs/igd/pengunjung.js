@@ -19,6 +19,7 @@ export const usePengunjungIgdStore = defineStore('pengunjung-igd', {
     loadingTerima: false,
     loadingTidakhadir: false,
     loadingCall: false,
+    loadingcesmix: false,
     noreg: null,
     flagpelayanan: null,
     params: {
@@ -563,6 +564,32 @@ export const usePengunjungIgdStore = defineStore('pengunjung-igd', {
         this.loadingSaveSistembayar = false
         // this.notifikasiError('Maaf.. Harap ulangi, Ada Kesalahan ')
       }
+    },
+    async kirimpenjaminan(val) {
+      // this.noreg = val?.noreg
+      val.loadingcesmix = true
+
+      const params = {
+        noreg: val?.noreg,
+        norm: val?.norm,
+        noka: val?.noka,
+        nosep: val?.sep,
+        kodepoli: val?.kodepoli,
+        flaging: 1,
+        kdsistembayar: val?.kodesistembayar,
+        kddpjp: val?.kodedokter
+      }
+      await api.post('v1/simrs/pelayanan/kirimpenjaminan', params)
+        .then((resp) => {
+          if (resp.status === 200) {
+            val.loadingcesmix = false
+            val.flagpelayanan = '1'
+            val.kunjungancesmix = '1'
+          }
+        }).catch((err) => {
+          console.log('call', err)
+          val.loadingcasmix = false
+        })
     }
   }
 })

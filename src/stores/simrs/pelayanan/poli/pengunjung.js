@@ -577,6 +577,8 @@ export const usePengunjungPoliStore = defineStore('pengunjung-poli-store', {
         nosep: val?.sep,
         kodepoli: val?.kodepoli,
         flaging: 1,
+        kdsistembayar: val?.kodesistembayar,
+        kddpjp: val?.kodedokter
       }
       await api.post('v1/simrs/pelayanan/kirimpenjaminan', params)
         .then((resp) => {

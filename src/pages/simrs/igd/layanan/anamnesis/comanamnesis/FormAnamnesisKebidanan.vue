@@ -604,7 +604,7 @@
               </div>
               <div class="col-6">
                 <app-input-date :model="store.form.taksiranpartus" mask="date" outlined standout="bg-yellow-3"
-                  label="Taksiran Partus" @set-model="val => store.form.taksiranpartus = val">
+                  label="Taksiran Partus" @set-model="val => store.form.taksiranpartus = val" valid>
                   <template #append>
                     <q-icon name="event" class="cursor-pointer">
                       <q-popup-proxy cover transition-show="scale" transition-hide="scale">

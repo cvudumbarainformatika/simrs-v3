@@ -8,8 +8,9 @@
 
     <q-card flat no-shadow square class="my-flex-1" style="overflow: hidden;">
       <q-scroll-area style="height: calc(100% - 1px);">
-        <list-pengunjung v-if="store.meta !== null" :key="store.items" :items="store.items" :loading="store.loading"
-          :loading-terima="store.loadingTerima" @terimapasien="terimapasien" @bukalayanan="bukaTindakan" />
+        <list-pengunjung v-if="store.meta !== null" :keloading-cesmixy="store.items" :items="store.items"
+          :loading="store.loading" :loading-terima="store.loadingTerima" :loadingcesmix="store.loadingcesmix"
+          @terimapasien="terimapasien" @bukalayanan="bukaTindakan" @kirimcasmix="kirimcasmix" />
       </q-scroll-area>
       <div class=" absolute-bottom bg-primary text-white z-top">
         <footer-page :meta="store.meta" @go-to="store.goToPage" />
@@ -44,6 +45,21 @@ function bukaTindakan(val) {
   // console.log('bukaTindakan', val)
   pasien.value = val
   store.bukaLayanan(val)
+}
+
+function kirimcasmix(val) {
+
+  if (val?.flagpelayanan === 1) {
+    $q.notify({
+      type: 'negative',
+      title: 'Peringatan',
+      message: 'INFO WARNING <b/> MAAF,<em><b>Pasien Ini Masih Belum Selese Palayanan</b></em>',
+      html: true,
+      timeout: 1000
+    })
+  } else {
+    store.kirimpenjaminan(val)
+  }
 }
 
 onMounted(() => {
