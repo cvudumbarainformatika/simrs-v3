@@ -1,5 +1,5 @@
 import { defineStore } from "pinia"
-import { date } from "quasar"
+import { date, Dialog } from "quasar"
 import { api } from "src/boot/axios"
 import { formatDoubleKoma } from "src/modules/formatter"
 
@@ -147,7 +147,7 @@ export const useLaporanPerencanaanStore = defineStore('laporan_perencanaan', {
         if (indexItems >= 0) array[indexItems] = item
         else array.push(item)
       })
-      // console.log('array', array)
+      console.log('array', array)
 
     },
     async getAllData () {
