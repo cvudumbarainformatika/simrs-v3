@@ -10,6 +10,7 @@ export const formInputNpdlsStore = defineStore('forminput_NPD_LS', {
     loading: false,
     loadingHapus: false,
     disabled: false,
+    hidden: false,
     openDialogFarmasi: false,
     fixed: false,
     params: {

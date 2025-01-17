@@ -53,9 +53,9 @@ export const dataBastFarmasiStore = defineStore('data_Bast_Farmasi_Store', {
               this.bastfarmasis = []
               this.konsinyasis = []
               this.bastfarmasis = resp.data.penerimaan
-              console.log('bast penerimaan', this.bastfarmasis)
+              // console.log('bast penerimaan', this.bastfarmasis)
               this.konsinyasis = resp.data.konsinyasi
-              console.log('konsinyasi', this.konsinyasis)
+              // console.log('konsinyasi', this.konsinyasis)
               this.reqs.rowsNumber = resp.data.total
               this.filterRekening50(resp.data)
 
@@ -155,7 +155,7 @@ export const dataBastFarmasiStore = defineStore('data_Bast_Farmasi_Store', {
           arr.push(...arr108)
         }
         this.itembelanja = arr
-        console.log('DATA PENERIMAAN', this.itembelanja)
+        // console.log('DATA PENERIMAAN', this.itembelanja)
       }
       else {
         const kons = []
@@ -232,9 +232,9 @@ export const dataBastFarmasiStore = defineStore('data_Bast_Farmasi_Store', {
           arrkons.push(...arr108)
         }
         this.itembelanja = arrkons
-        console.log('DATA KONSINYASI', this.itembelanja)
+        // console.log('DATA KONSINYASI', this.itembelanja)
       }
-      console.log('DATA BAST ALL', this.itembelanja)
+      // console.log('DATA BAST ALL', this.itembelanja)
     }
   }
 

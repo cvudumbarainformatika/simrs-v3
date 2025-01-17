@@ -37,7 +37,7 @@
                 </div>
               </template>
               <template #body="props">
-                <q-tr :props="props">
+                <q-tr :props="props" v-if="gantibotton(props?.row)">
                   <q-td key="nobast" :props="props">
                     <div class="text-teal text-bold">
                       Penerimaan : {{ props.row.nopenerimaan }}
@@ -207,6 +207,7 @@ function gantibotton(row) {
   const hasil = transall.find((x) => x?.bast_r_id === bast_id) ?? null
   if (hasil) {
     simpandata = false
+    store.hidden = true
   } else {
     simpandata = true
   }
