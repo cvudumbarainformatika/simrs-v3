@@ -147,7 +147,7 @@ export const useLaporanPerencanaanStore = defineStore('laporan_perencanaan', {
         if (indexItems >= 0) array[indexItems] = item
         else array.push(item)
       })
-      console.log('array', array)
+      // console.log('array', array)
 
     },
     async getAllData () {

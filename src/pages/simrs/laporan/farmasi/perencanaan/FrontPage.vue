@@ -3,7 +3,7 @@
     <div ref="refTop" class="fixed-top bg-white" style="margin-top:50px; margin-left: 60px; z-index: 10">
       <div class="row bg-primary text-white q-pa-sm q-mb-sm print-hide">
         <div class="f-14 text-weight-bold">
-          Laporan Mutasi
+          Laporan Perencanaan
         </div>
       </div>
 
@@ -75,7 +75,7 @@
             <div class="q-ml-sm">
               <download-excel class="btn" :fields="store.fields" :fetch="store.fetch"
                 :before-generate="store.startDownload" :before-finish="store.finishDownload"
-                :name="'Perencanaan Obat Bulan Periode ' + store.tanggal.from + ' sampai ' + store.tanggal.to + jenis() + '.xls'">
+                :name="'Perencanaan Obat Bulan Periode ' + periodTanggal() + ' ' + store.tanggal.from + ' sampai ' + store.tanggal.to + jenis() + '.xls'">
                 <q-btn color="green" round size="sm" icon="icon-mat-download" push :loading="store.loadingDownload"
                   :disable="store?.loadingDownload || !!store?.ketProses || store?.loadingNext">
                   <q-tooltip>Download Excel</q-tooltip>
@@ -361,6 +361,10 @@ const TableComp = defineAsyncComponent(() => import('./comp/TablePage.vue'))
 function jenis () {
   const jenis = store.optionJenis.find(a => a.value === store.params.jenis)
   return ' (' + jenis?.nama + ')'
+}
+function periodTanggal () {
+  const jenis = store.optionReferences.find(a => a.value === store.params.reference)
+  return ' (' + jenis?.label + ')'
 }
 function setJenis (val) {
   console.log(val)
