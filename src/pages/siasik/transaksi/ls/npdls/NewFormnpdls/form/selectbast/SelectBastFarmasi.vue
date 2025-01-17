@@ -123,7 +123,7 @@ const columnsx = [
     name: 'nobast',
     label: 'No BAST',
     align: 'left',
-    field: 'nobast'
+    field: row => [row.nobast, row.nopenerimaan]
   },
   {
     name: 'nominalpembayaran',

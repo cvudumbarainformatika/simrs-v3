@@ -95,7 +95,7 @@ const columns = ref(tablerinci)
 const $q = useQuasar()
 const selected = ref([])
 function deleteData(row) {
-  console.log('row', row)
+  // console.log('row', row)
   $q.dialog({
     title: 'Peringatan',
     message: 'Apakah Data ini akan dihapus?',
@@ -118,7 +118,7 @@ function deleteData(row) {
       if (store.transall.length === 0) {
         store.initForm()
       }
-      console.log('data hapus', store.transall)
+      // console.log('data hapus', store.transall)
     })
     // store.setForm = props?.row
     // console.log('vv', store.hapusRinci(row))

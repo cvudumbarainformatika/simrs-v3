@@ -47,7 +47,6 @@
             store.rinci.hargals = 0
             store.rinci.totalls = 0
             store.rinci.nominalpembayaran = 0
-            console.log('rinci', store.rinci)
           }" />
       </div>
       <app-input-simrs v-model="store.rinci.volume" class="q-pa-sm q-gutter-y-md" style="width: 15%" label="Volume Item"
@@ -135,13 +134,13 @@ async function filterFn(val, update) {
   })
 }
 function pilihRekening50(val) {
-  console.log('pilihrekening', val)
+  // console.log('pilihrekening', val)
   const arr = store.rekening50
 
 
   const obj = arr.length ? arr.find(x => x.rek50 === val) : null
   // Mengosongkan form rincian Belanja ketika request kegiatan blud
-  console.log('rekening50', obj)
+  // console.log('rekening50', obj)
   store.rinci.koderek50 = obj?.rek50 ?? ''
   store.rinci.rincianbelanja = obj?.rincianbelanja ?? ''
   store.reqs.kodekegiatan = obj?.kodekegiatan ?? ''
@@ -173,7 +172,7 @@ function saveNpd() {
   const objrincian = store.rinci
   // store.form.rincians.push(objrincian)
   store.form.rincians.push(objrincian)
-  console.log('storerincian', store.form.rincians)
+  // console.log('storerincian', store.form.rincians)
   const unikjumlah = store.form.rincians.map((x) => x.itembelanja)
   const unik = unikjumlah.length ? [...new Set(unikjumlah)] : []
 

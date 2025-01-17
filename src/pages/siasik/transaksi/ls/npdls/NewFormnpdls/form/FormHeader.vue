@@ -96,7 +96,7 @@ function onSubmit() {
   store.fixed = true
 }
 function tglTransaksi(val) {
-  console.log('val Parameter', val)
+  // console.log('val Parameter', val)
   store.reqs.tgl = val
   store.form.tglnpdls = val
   carisrt.reqs.tgl = val
@@ -106,7 +106,7 @@ function tglTransaksi(val) {
   carisrt.getDataBast()
 }
 const serahTerima = (val) => {
-  console.log('serahTerima', val)
+  // console.log('serahTerima', val)
   if (val === 'Sigarang') {
     store.openDialogSigarang = false
   }
@@ -171,7 +171,7 @@ function pilihKegiatan(val) {
   store.getRincianBelanja()
 }
 function pilihPihaktiga(val) {
-  console.log('val kodepenerima', val)
+  // console.log('val kodepenerima', val)
   const arr = ambil.pihaktigas
   const obj = arr.length ? arr.find(x => x.kode === val) : null
 

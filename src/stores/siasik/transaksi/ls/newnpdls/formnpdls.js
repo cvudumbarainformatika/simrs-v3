@@ -323,7 +323,7 @@ export const formInputNpdlsStore = defineStore('forminput_NPD_LS', {
         })
         : []
       this.itembelanja = data
-      console.log('item belanja', data)
+      // console.log('item belanja', data)
     },
     async simpanNpdls(add) {
       console.log('fooorm', this.form)
