@@ -1,52 +1,26 @@
 <template>
   <div class="q-pa-xs bg-white">
     <div v-if="apps?.user?.kdruangansim !== 'Gd-04010103'">
-      <div
-        class="bg-yellow-2 wrap columns content-center"
-        style="height: 90vh; width: 100%;"
-      >
+      <div class="bg-yellow-2 wrap columns content-center" style="height: 90vh; width: 100%;">
         <div class="text-negative text-center">
-          <q-icon
-            name="icon-mat-warning"
-            size="100px"
-          />
+          <q-icon name="icon-mat-warning" size="100px" />
         </div>
         <div class="text-negative f-20  text-center">
           Hanya untuk Depo OK
         </div>
       </div>
     </div>
-    <div
-      v-if="apps?.user?.kdruangansim === 'Gd-04010103'"
-      class="row bg-primary text-white q-pa-sm q-mb-sm rouded-border"
-    >
+    <div v-if="apps?.user?.kdruangansim === 'Gd-04010103'"
+      class="row bg-primary text-white q-pa-sm q-mb-sm rouded-border">
       <div class="f-16 text-weight-bold">
         Halaman Distribusi Permintaan Ruangan Untuk Persiapan Operasi
       </div>
     </div>
-    <app-table-extend
-      v-if="apps?.user?.kdruangansim === 'Gd-04010103'"
-      :columns="store.columns"
-      :items="store.items"
-      :meta="store.meta"
-      :per-page="store.params.per_page"
-      :loading="store.loading"
-      :to-search="store.params.no_permintaan"
-      :click-able="true"
-      :default-btn="false"
-      :ada-tambah="false"
-      :ada-filter="false"
-      :ada-cari="false"
-      row-no
-      simple-paginasi
-      use-full
-      text-cari="Cari ..."
-      @find="store.setSearch"
-      @goto="store.setPage"
-      @set-row="store.setPerPage"
-      @refresh="store.refreshTable"
-      @on-click="onClick"
-    >
+    <app-table-extend v-if="apps?.user?.kdruangansim === 'Gd-04010103'" :columns="store.columns" :items="store.items"
+      :meta="store.meta" :per-page="store.params.per_page" :loading="store.loading"
+      :to-search="store.params.no_permintaan" :click-able="true" :default-btn="false" :ada-tambah="false"
+      :ada-filter="false" :ada-cari="false" row-no simple-paginasi use-full text-cari="Cari ..." @find="store.setSearch"
+      @goto="store.setPage" @set-row="store.setPerPage" @refresh="store.refreshTable" @on-click="onClick">
       <!-- @edit-data="store.editData" -->
       <!--
             row-image="image"
@@ -64,55 +38,27 @@
               <div class="row text-amber q-pb-xs q-px-xs">
                 {{ dateFullFormat(store.params.to) }}
               </div>
-              <q-menu
-                @show="menuShow"
-                @hide="menuHide"
-              >
+              <q-menu @show="menuShow" @hide="menuHide">
                 <q-card flat>
                   <q-card-section>
-                    <app-input-date
-                      :model="store.params.from"
-                      outlined
-                      label="Dari tanggal"
-                      standout="bg-yellow-3"
-                      @set-model="store.setParams('from',$event)"
-                    />
+                    <app-input-date :model="store.params.from" outlined label="Dari tanggal" standout="bg-yellow-3"
+                      @set-model="store.setParams('from', $event)" />
                   </q-card-section>
                   <q-card-section>
-                    <app-input-date
-                      :model="store.params.to"
-                      outlined
-                      label="Sampai tanggal"
-                      standout="bg-yellow-3"
-                      @set-model="store.setParams('to',$event)"
-                    />
+                    <app-input-date :model="store.params.to" outlined label="Sampai tanggal" standout="bg-yellow-3"
+                      @set-model="store.setParams('to', $event)" />
                   </q-card-section>
                 </q-card>
               </q-menu>
             </div>
 
             <div class="q-mr-sm">
-              <q-input
-                v-model="store.params.q"
-                label="cari ..."
-                dense
-                outlined
-                dark
-                debounce="500"
-                @update:model-value="cariByQ"
-              />
+              <q-input v-model="store.params.q" label="cari ..." dense outlined dark debounce="500"
+                @update:model-value="cariByQ" />
             </div>
             <div class="q-mr-sm">
-              <q-option-group
-                v-model="store.params.flag"
-                :options="flagOptions"
-                color="primary"
-                class="q-ml-sm"
-                dense
-                type="checkbox"
-                inline
-                @update:model-value="gantiFlag"
-              />
+              <q-option-group v-model="store.params.flag" :options="flagOptions" color="primary" class="q-ml-sm" dense
+                type="checkbox" inline @update:model-value="gantiFlag" />
             </div>
           </div>
         </div>
@@ -149,7 +95,7 @@
             Distribusi
           </div>
           <div class="text-italic">
-            {{ row.tgl_distribusi ? dateFull(row.tgl_distribusi):'-' }}
+            {{ row.tgl_distribusi ? dateFull(row.tgl_distribusi) : '-' }}
           </div>
         </div>
         <div class="row justify-between no-wrap">
@@ -157,7 +103,7 @@
             Dibuatkan Resep
           </div>
           <div class="text-italic">
-            {{ row.tgl_resep ? dateFull(row.tgl_resep):'-' }}
+            {{ row.tgl_resep ? dateFull(row.tgl_resep) : '-' }}
           </div>
         </div>
       </template>
@@ -168,22 +114,17 @@
           </div>
         </div>
         <div class="row justify-between no-wrap text-italic f-10">
-          {{ row.tgl_permintaan ? dateFull(row.tgl_permintaan):'-' }}
+          {{ row.tgl_permintaan ? dateFull(row.tgl_permintaan) : '-' }}
         </div>
       </template>
       <template #cell-dari="{ row }">
         <div class="row justify-between no-wrap">
-          {{ row.dari?depo(row?.dari) :'-' }}
+          {{ row.dari ? depo(row?.dari) : '-' }}
         </div>
       </template>
       <template #cell-status="{ row }">
         <div class="row">
-          <q-chip
-            class="f-10"
-            :color="color(row.flag)"
-            :label="label(row.flag)"
-            text-color="white"
-          />
+          <q-chip class="f-10" :color="color(row.flag)" :label="label(row.flag)" text-color="white" />
         </div>
       </template>
       <template #cell-user="{ row }">
@@ -193,116 +134,61 @@
       </template>
       <template #cell-act="{ row }">
         <div class="row">
-          <div v-if="row.flag==='2' || row.flag==='4'" class="row items-center justify-between" :style="row.flag==='2'?'min-width: 200px;':'min-width: 100px;'">
+          <div v-if="row.flag === '2' || row.flag === '4'" class="row items-center justify-between"
+            :style="row.flag === '2' ? 'min-width: 200px;' : 'min-width: 100px;'">
             <!-- print -->
             <div class="col-auto">
-              <q-btn
-                round
-                icon="icon-mat-print"
-                dense
-                color="dark"
-                size="sm"
-                @click="toPrint(row)"
-              >
-                <q-tooltip
-                  class="primary"
-                  :offset="[10, 10]"
-                >
+              <q-btn round icon="icon-mat-print" dense color="dark" size="sm" @click="toPrint(row)">
+                <q-tooltip class="primary" :offset="[10, 10]">
                   Print
                 </q-tooltip>
               </q-btn>
             </div>
             <!-- tambah -->
-            <div v-if="row.flag==='2'" class="col-auto">
-              <q-btn
-                round
-                icon="icon-mat-add"
-                dense
-                color="primary"
-                size="sm"
-                @click="toAdd(row)"
-              >
-                <q-tooltip
-                  class="primary"
-                  :offset="[10, 10]"
-                >
+            <div v-if="row.flag === '2'" class="col-auto">
+              <q-btn round icon="icon-mat-add" dense color="primary" size="sm" @click="toAdd(row)">
+                <q-tooltip class="primary" :offset="[10, 10]">
                   Tambahkan Obat susulan
                 </q-tooltip>
               </q-btn>
             </div>
             <!-- batal -->
-            <div v-if="row.flag==='2'" class="col-auto">
+            <div v-if="row.flag === '2'" class="col-auto">
               <!-- batal -->
-              <q-btn
-                flat
-                icon="icon-mat-hand-front-left"
-                dense
-                color="negative"
-                :loading="store.batalOperasi && row.loading"
-                :disable="store.batalOperasi && row.loading"
-                @click="batalOperasi(row)"
-              >
-                <q-tooltip
-                  class="primary"
-                  :offset="[10, 10]"
-                >
+              <q-btn flat icon="icon-mat-hand-front-left" dense color="negative"
+                :loading="store.batalOperasi && row.loading" :disable="store.batalOperasi && row.loading"
+                @click="batalOperasi(row)">
+                <q-tooltip class="primary" :offset="[10, 10]">
                   Batal Operasi
                 </q-tooltip>
               </q-btn>
             </div>
-            <div v-if="row.flag==='4'" class="col-auto">
-              <q-btn
-                flat
-                icon="icon-mat-lock"
-                dense
-                color="negative"
-              >
+            <div v-if="row.flag === '4'" class="col-auto">
+              <q-btn flat icon="icon-mat-lock" dense color="negative">
                 <!-- @click="kunci(row)" -->
-                <q-tooltip
-                  class="primary"
-                  :offset="[10, 10]"
-                >
+                <q-tooltip class="primary" :offset="[10, 10]">
                   Sudah diterima
                 </q-tooltip>
               </q-btn>
             </div>
           </div>
-          <div v-if="row.flag==='1'">
+          <div v-if="row.flag === '1'">
             <div class="row justify-between" style="min-width: 150px;">
               <div class="col-auto">
                 <!-- kirim -->
-                <q-btn
-                  flat
-                  icon="icon-mat-send"
-                  dense
-                  color="primary"
-                  :loading="store.loadingDistribusi && row.loading"
-                  :disable="store.loadingDistribusi && row.loading"
-                  @click="distribusi(row)"
-                >
-                  <q-tooltip
-                    class="primary"
-                    :offset="[10, 10]"
-                  >
+                <q-btn flat icon="icon-mat-send" dense color="primary" :loading="store.loadingDistribusi && row.loading"
+                  :disable="row.loading" @click="distribusi(row)">
+                  <q-tooltip class="primary" :offset="[10, 10]">
                     Distribusikan
                   </q-tooltip>
                 </q-btn>
               </div>
               <div class="col-auto">
                 <!-- batal -->
-                <q-btn
-                  flat
-                  icon="icon-mat-hand-front-left"
-                  dense
-                  color="negative"
+                <q-btn flat icon="icon-mat-hand-front-left" dense color="negative"
                   :loading="store.loadingBatalOperasi && row.loading"
-                  :disable="store.loadingBatalOperasi && row.loading"
-                  @click="batalOperasi(row)"
-                >
-                  <q-tooltip
-                    class="primary"
-                    :offset="[10, 10]"
-                  >
+                  :disable="store.loadingBatalOperasi && row.loading" @click="batalOperasi(row)">
+                  <q-tooltip class="primary" :offset="[10, 10]">
                     Batal Operasi
                   </q-tooltip>
                 </q-btn>
@@ -310,34 +196,19 @@
             </div>
           </div>
 
-          <div v-if="row.flag==='3'">
+          <div v-if="row.flag === '3'">
             <!-- pengembalian -->
-            <q-btn
-              flat
-              icon="icon-mat-move_to_inbox"
-              dense
-              color="primary"
-              :loading="store.loadingSimpan && row.loading"
-              :disable="store.loadingSimpan && row.loading"
-              @click="teimaPengembalian(row)"
-            >
-              <q-tooltip
-                class="primary"
-                :offset="[10, 10]"
-              >
+            <q-btn flat icon="icon-mat-move_to_inbox" dense color="primary"
+              :loading="store.loadingSimpan && row.loading" :disable="store.loadingSimpan && row.loading"
+              @click="teimaPengembalian(row)">
+              <q-tooltip class="primary" :offset="[10, 10]">
                 Terima Pengembalian
               </q-tooltip>
             </q-btn>
           </div>
 
-          <div
-            v-else
-            class="text-primary text-weight-bold"
-          >
-            <q-tooltip
-              class="primary"
-              :offset="[10, 10]"
-            >
+          <div v-else class="text-primary text-weight-bold">
+            <q-tooltip class="primary" :offset="[10, 10]">
               Tidak Ada yang perlu dilakukan
             </q-tooltip>
           </div>
@@ -360,17 +231,11 @@
             </div>
           </div>
           <q-separator />
-          <div
-            v-for="(rin, i) in row.rinci"
-            :key="i"
-          >
+          <div v-for="(rin, i) in row.rinci" :key="i">
             <div class="row items-center q-col-gutter-sm anu">
               <div class="col-3">
                 <div class="row justify-between no-wrap q-mt-xs">
-                  <div
-                    class=" text-weight-bold"
-                    style="white-space: normal;"
-                  >
+                  <div class=" text-weight-bold" style="white-space: normal;">
                     {{ rin.obat ? rin.obat.nama_obat : '-' }}
                   </div>
                 </div>
@@ -428,10 +293,7 @@
                     {{ rin?.jumlah_minta }}
                   </div>
                 </div>
-                <div
-                  v-if="parseInt( row?.flag)>=2"
-                  class="row justify-between no-wrap q-mt-xs text-green"
-                >
+                <div v-if="parseInt(row?.flag) >= 2" class="row justify-between no-wrap q-mt-xs text-green">
                   <div class="q-mr-xs">
                     Di distribusikan
                   </div>
@@ -439,10 +301,7 @@
                     {{ rin?.jumlah_distribusi }}
                   </div>
                 </div>
-                <div
-                  v-if="parseInt( row?.flag)>=3"
-                  class="row justify-between no-wrap q-mt-xs text-green"
-                >
+                <div v-if="parseInt(row?.flag) >= 3" class="row justify-between no-wrap q-mt-xs text-green">
                   <div class="q-mr-xs">
                     <div class="row">
                       Diresepkan Dokter
@@ -455,10 +314,7 @@
                     {{ rin?.jumlah_resep }}
                   </div>
                 </div>
-                <div
-                  v-if="parseInt( row?.flag)>=4"
-                  class="row justify-between no-wrap q-mt-xs text-green"
-                >
+                <div v-if="parseInt(row?.flag) >= 4" class="row justify-between no-wrap q-mt-xs text-green">
                   <div class="q-mr-xs">
                     Dikembalikan
                   </div>
@@ -468,45 +324,23 @@
                 </div>
               </div>
               <div class="col-3">
-                <div
-                  v-if="row?.flag==='1'"
-                  class="row justify-between no-wrap q-mt-xs text-orange"
-                >
+                <div v-if="row?.flag === '1'" class="row justify-between no-wrap q-mt-xs text-orange">
                   <div class="col-12 q-mr-xs">
-                    <q-input
-                      ref="refDistribusi"
-                      v-model="rin.jumlah_distribusi"
-                      outlined
-                      label="Jumlah Distribusi"
-                      dense
-                      standout="bg-yellow-3"
-                      :rules="[
+                    <q-input ref="refDistribusi" v-model="rin.jumlah_distribusi" outlined label="Jumlah Distribusi"
+                      dense standout="bg-yellow-3" :rules="[
                         val => parseFloat(val) > 0 || 'Harus lebih lebih besar dari 0',
                         val => ((parseFloat(val) <= parseFloat(rin.jumlah_minta))) || 'Tidak Boleh Lebih dari Jumlah minta'
-                      ]"
-                      @update:model-value="setJumlah($event,rin,'jumlah_distribusi')"
-                    />
+                      ]" @update:model-value="setJumlah($event, rin, 'jumlah_distribusi')" />
                   </div>
                 </div>
 
-                <div
-                  v-if="row?.flag==='3'"
-                  class="row justify-between no-wrap q-mt-xs text-green"
-                >
+                <div v-if="row?.flag === '3'" class="row justify-between no-wrap q-mt-xs text-green">
                   <div class="col-12 q-mr-xs">
-                    <q-input
-                      ref="refKembali"
-                      v-model="rin.jumlah_kembali"
-                      outlined
-                      label="Jumlah Kembali"
-                      dense
-                      standout="bg-yellow-3"
-                      :rules="[
+                    <q-input ref="refKembali" v-model="rin.jumlah_kembali" outlined label="Jumlah Kembali" dense
+                      standout="bg-yellow-3" :rules="[
                         val => (parseFloat(val) <= (parseFloat(rin.jumlah_distribusi) - parseFloat(rin.jumlah_resep))) || 'Tidak Boleh Lebih dari Jumlah distribusi dikurangi jumlah diresepkan dokter',
                         // val => (parseFloat(val) >= (parseFloat(rin.jumlah_distribusi) - parseFloat(rin.jumlah_resep))) || 'Apakah ada obat yang hilang?'
-                      ]"
-                      @update:model-value="setJumlah($event,rin,'jumlah_kembali')"
-                    />
+                      ]" @update:model-value="setJumlah($event, rin, 'jumlah_kembali')" />
                   </div>
                 </div>
               </div>
@@ -523,32 +357,19 @@
       </template>
     </app-table-extend>
   </div>
-  <app-print-surat
-    ref="dialogPrint"
-    v-model="store.isOpen"
-    class="page-x"
-    :tanggal="store.dataToPrint?.flag==='2'?store.dataToPrint?.tgl_distribusi:store.dataToPrint?.tgl_retur"
-    @close="store.isOpen=false"
-  >
+  <app-print-surat ref="dialogPrint" v-model="store.isOpen" class="page-x"
+    :tanggal="store.dataToPrint?.flag === '2' ? store.dataToPrint?.tgl_distribusi : store.dataToPrint?.tgl_retur"
+    @close="store.isOpen = false">
     <template #isi>
       <!-- Top words -->
-      <div
-        v-if="store.dataToPrint?.flag==='2'"
-        class="row justify-center q-mt-md f-16 text-weight-bold"
-      >
+      <div v-if="store.dataToPrint?.flag === '2'" class="row justify-center q-mt-md f-16 text-weight-bold">
         DATA DISTRIBUSI
       </div>
-      <div
-        v-if="store.dataToPrint?.flag==='4'"
-        class="row justify-center q-mt-md f-16 text-weight-bold"
-      >
+      <div v-if="store.dataToPrint?.flag === '4'" class="row justify-center q-mt-md f-16 text-weight-bold">
         DATA RESEP DAN RETUR
       </div>
 
-      <div
-        v-if="store.dataToPrint?.flag==='2'"
-        class="row justify-center q-mb-sm default-font"
-      >
+      <div v-if="store.dataToPrint?.flag === '2'" class="row justify-center q-mb-sm default-font">
         <div class="col-2">
           Tanggal Distribusi
         </div>
@@ -559,10 +380,7 @@
           {{ dateFullFormat(store.dataToPrint?.tgl_distribusi) }}
         </div>
       </div>
-      <div
-        v-if="store.dataToPrint?.flag==='4'"
-        class="row justify-center q-mb-sm default-font"
-      >
+      <div v-if="store.dataToPrint?.flag === '4'" class="row justify-center q-mb-sm default-font">
         <div class="col-2">
           Tanggal Resep
         </div>
@@ -573,10 +391,7 @@
           {{ dateFullFormat(store.dataToPrint?.tgl_resep) }}
         </div>
       </div>
-      <div
-        v-if="store.dataToPrint?.flag==='4'"
-        class="row justify-center q-mb-sm default-font"
-      >
+      <div v-if="store.dataToPrint?.flag === '4'" class="row justify-center q-mb-sm default-font">
         <div class="col-2">
           Tanggal Retur
         </div>
@@ -598,31 +413,25 @@
           {{ store.dataToPrint?.nopermintaan }}
         </div>
       </div>
-      <div
-        v-if="store.dataToPrint?.flag==='2'"
-        class="row justify-start  default-font"
-      >
+      <div v-if="store.dataToPrint?.flag === '2'" class="row justify-start  default-font">
         <p>
           Telah dikirimkan Kepada
         </p>
       </div>
-      <div
-        v-if="store.dataToPrint?.flag==='4'"
-        class="row justify-start  default-font"
-      >
+      <div v-if="store.dataToPrint?.flag === '4'" class="row justify-start  default-font">
         <p>
           Telah diterima resep dan retur dari:
         </p>
       </div>
       <div class="row justify-start default-font q-ml-md">
-        {{ store.dataToPrint?.pasien?.rs2 }} -  {{ store.dataToPrint?.pasien?.rs1 }} - {{ store.dataToPrint?.list?.sistembayar?.rs2 }}
+        {{ store.dataToPrint?.pasien?.rs2 }} - {{ store.dataToPrint?.pasien?.rs1 }} - {{
+          store.dataToPrint?.list?.sistembayar?.rs2 }}
       </div>
       <div class="row justify-start default-font q-ml-md">
-        {{ store.dataToPrint?.list?.rs4 }} -  {{ store.dataToPrint?.list?.kunjunganranap?.relmasterruangranap?.rs2 ?? store.dataToPrint?.list?.kunjunganrajal?.relmpoli?.rs2 }}
+        {{ store.dataToPrint?.list?.rs4 }} - {{ store.dataToPrint?.list?.kunjunganranap?.relmasterruangranap?.rs2 ??
+          store.dataToPrint?.list?.kunjunganrajal?.relmpoli?.rs2 }}
       </div>
-      <div
-        class="row justify-start q-mb-md default-font"
-      >
+      <div class="row justify-start q-mb-md default-font">
         <p>
           <span class="text-weight-bold">
             Obat untuk Operasi
@@ -641,34 +450,19 @@
           <div class="col-1 border-tb border-left">
             No
           </div>
-          <div
-            v-if="store.dataToPrint?.flag==='2'"
-            class="col-7 text-weight-bold border-tb border-left"
-          >
+          <div v-if="store.dataToPrint?.flag === '2'" class="col-7 text-weight-bold border-tb border-left">
             Nama Barang
           </div>
-          <div
-            v-if="store.dataToPrint?.flag==='4'"
-            class="col-7 text-weight-bold border-tb border-left"
-          >
+          <div v-if="store.dataToPrint?.flag === '4'" class="col-7 text-weight-bold border-tb border-left">
             Nama Barang
           </div>
-          <div
-            v-if="store.dataToPrint?.flag==='2'"
-            class="col-2 text-weight-bold border-tb border-left"
-          >
+          <div v-if="store.dataToPrint?.flag === '2'" class="col-2 text-weight-bold border-tb border-left">
             Jumlah
           </div>
-          <div
-            v-if="store.dataToPrint?.flag==='4'"
-            class="col-1 text-weight-bold border-tb border-left"
-          >
+          <div v-if="store.dataToPrint?.flag === '4'" class="col-1 text-weight-bold border-tb border-left">
             Jumlah Resep
           </div>
-          <div
-            v-if="store.dataToPrint?.flag==='4'"
-            class="col-1 text-weight-bold border-tb border-left"
-          >
+          <div v-if="store.dataToPrint?.flag === '4'" class="col-1 text-weight-bold border-tb border-left">
             Jumlah Retur
           </div>
           <div class="col-2 text-weight-bold border-tb border-left">
@@ -679,50 +473,28 @@
           </div> -->
         </div>
         <!-- body details -->
-        <div
-          v-for="(det, i) in store.dataToPrint?.rinci"
-          :key="i"
-        >
-          <div
-            class="row justify-between q-col-gutter-sm default-font"
-          >
+        <div v-for="(det, i) in store.dataToPrint?.rinci" :key="i">
+          <div class="row justify-between q-col-gutter-sm default-font">
             <div class="col-1 border-bottom border-left">
-              {{ i+1 }}.
+              {{ i + 1 }}.
             </div>
-            <div
-              v-if="store.dataToPrint?.flag==='2'"
-              class="col-7 border-bottom border-left"
-            >
-              {{ det.obat?det.obat.nama_obat:'Nama barang tidak ditemukan' }}
+            <div v-if="store.dataToPrint?.flag === '2'" class="col-7 border-bottom border-left">
+              {{ det.obat ? det.obat.nama_obat : 'Nama barang tidak ditemukan' }}
             </div>
-            <div
-              v-if="store.dataToPrint?.flag==='4'"
-              class="col-7 border-bottom border-left"
-            >
-              {{ det.obat?det.obat.nama_obat:'Nama barang tidak ditemukan' }}
+            <div v-if="store.dataToPrint?.flag === '4'" class="col-7 border-bottom border-left">
+              {{ det.obat ? det.obat.nama_obat : 'Nama barang tidak ditemukan' }}
             </div>
-            <div
-              v-if="store.dataToPrint?.flag==='2'"
-              class="col-2 border-bottom border-left"
-            >
-              {{ det.jumlah_distribusi===null?0:det.jumlah_distribusi }}
+            <div v-if="store.dataToPrint?.flag === '2'" class="col-2 border-bottom border-left">
+              {{ det.jumlah_distribusi === null ? 0 : det.jumlah_distribusi }}
             </div>
-            <div
-              v-if="store.dataToPrint?.flag==='4'"
-              class="col-1 border-bottom border-left"
-            >
-              {{ det.jumlah_resep===null?0:det.jumlah_resep }}
+            <div v-if="store.dataToPrint?.flag === '4'" class="col-1 border-bottom border-left">
+              {{ det.jumlah_resep === null ? 0 : det.jumlah_resep }}
             </div>
-            <div
-              v-if="store.dataToPrint?.flag==='4'"
-              class="col-1 border-bottom border-left"
-            >
-              {{ det.jumlah_kembali===null?0:det.jumlah_kembali }}
+            <div v-if="store.dataToPrint?.flag === '4'" class="col-1 border-bottom border-left">
+              {{ det.jumlah_kembali === null ? 0 : det.jumlah_kembali }}
             </div>
-            <div
-              class="col-2 border-bottom border-left"
-            >
-              {{ det.obat?det.obat.satuan_k:'-' }}
+            <div class="col-2 border-bottom border-left">
+              {{ det.obat ? det.obat.satuan_k : '-' }}
             </div>
             <!-- <div class="col-4 border-bottom border-left border-right">
               <div class="print-only">
@@ -903,6 +675,7 @@ function teimaPengembalian (val) {
 function distribusi (val) {
   val.expand = !val.expand
   val.highlight = !val.highlight
+  val.loading = true
 
   // console.log('val', val, refDistribusi.value)
   console.log('ref', refDistribusi.value)
@@ -915,13 +688,19 @@ function distribusi (val) {
       })
       console.log('valid', valid.length)
       if (valid.length <= 0) store.simpanDistribusi(val)
-      else notifErrVue('periksa kembali jumlah distribusi')
+      else {
+        notifErrVue('periksa kembali jumlah distribusi')
+        val.loading = false
+      }
     }
     else {
       // console.log('else', val?.rinci)
       const ada = val?.rinci.filter(a => a.jumlah_distribusi <= 0)
       // console.log('ada', ada)
-      if (ada.length) return notifErrVue('periksa kembali jumlah distribusi, tidak boleh 0')
+      if (ada.length) {
+        val.loading = false
+        return notifErrVue('periksa kembali jumlah distribusi, tidak boleh 0')
+      }
       else store.simpanDistribusi(val)
     }
   }, 100)
@@ -1028,7 +807,7 @@ const label = (status) => {
 </script>
 
 <style lang="scss" scoped>
-.page-x{
+.page-x {
   display: block;
   margin-left: auto;
   margin-right: auto;
@@ -1037,44 +816,55 @@ const label = (status) => {
   padding: 1mm;
   // font-size: 10px !important;
 }
-.default-font{
+
+.default-font {
   font-size: 14px;
   font-weight: bold;
 }
+
 .box {
   white-space: normal !important;
   inline-size: 170px;
   overflow-wrap: break-word;
 }
-.rouded-border{
+
+.rouded-border {
   border-radius: 5px;
 }
-.waktu{
+
+.waktu {
   border: 1px solid rgb(255, 255, 255);
   border-radius: 5px;
   background-color: rgb(84, 139, 188);
 }
-.garis-bawah{
+
+.garis-bawah {
   border-bottom: 6px solid black;
   border-bottom-style: double;
 }
-.border-box{
+
+.border-box {
   border: 1px solid black;
 }
-.border-tb{
+
+.border-tb {
   border-top: 1px solid black;
   border-bottom: 1px solid black;
 }
-.border-left{
+
+.border-left {
   border-left: 1px solid black;
 }
-.border-right{
+
+.border-right {
   border-right: 1px solid black;
 }
-.border-bottom{
+
+.border-bottom {
   border-bottom: 1px solid black;
 }
-.border-top{
+
+.border-top {
   border-top: 1px solid black;
 }
 </style>
