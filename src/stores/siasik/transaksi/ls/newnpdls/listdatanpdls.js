@@ -1,6 +1,7 @@
 import { defineStore } from "pinia"
 import { date } from "quasar"
 import { api } from "src/boot/axios"
+import { notifErr, notifSuccess } from "src/modules/utils"
 
 export const listDataNpdlsStore = defineStore('list_data_npdls', {
   state: () => ({
@@ -58,6 +59,7 @@ export const listDataNpdlsStore = defineStore('list_data_npdls', {
             nonpdls: arr.nonpdls,
             tglnpdls: arr.tglnpdls,
             bidang: arr.bidang,
+            kodebidang: arr.kodebidang,
             pptk: arr.pptk,
             kodepptk: arr.kodepptk,
             kegiatanblud: arr.kegiatanblud,
@@ -72,6 +74,7 @@ export const listDataNpdlsStore = defineStore('list_data_npdls', {
             nopencairan: arr.nopencairan,
             nopenerimaan: arr.nopenerimaan,
             bast: arr.bast,
+            kunci: arr.kunci,
             serahterimapekerjaan: arr.serahterimapekerjaan,
             tglcair: arr.npkrinci?.header?.tglpindahbuku,
             total: arr.npdlsrinci?.map((x) => parseFloat(x.nominalpembayaran)).reduce((a, b) => a + b, 0),
@@ -87,5 +90,23 @@ export const listDataNpdlsStore = defineStore('list_data_npdls', {
 
       }
     },
+    kunciData(row) {
+      console.log('KUNCI', row)
+      this.loading = true;
+      return new Promise((resolve) => {
+        api.post('/v1/transaksi/belanja_ls/kuncinpd')
+          .then((resp) => {
+            console.log('resp', resp)
+            this.loading = false
+            notifSuccess(resp)
+            resolve(resp)
+          })
+          .catch((err) => {
+            console.error(err)
+            this.loading = false
+          });
+      });
+    }
+
   }
 })
