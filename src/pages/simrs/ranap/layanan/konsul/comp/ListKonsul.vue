@@ -35,9 +35,11 @@ const filterredTable = computed(() => {
   return arr
 })
 
-function namaPetugas (item) {
+function namaPetugas(item) {
   // console.log('item', item)
+
   const petugas = store.dokters?.find(x => x.kdpegsimrs === item)?.nama ?? null
+  // console.log('petugas', petugas)
   return petugas
 }
 
@@ -58,7 +60,7 @@ const PHOTO_USER = (item) => {
 
 const hoverredId = ref(null)
 
-function masihBisadiHapus (item) {
+function masihBisadiHapus(item) {
   // (item?.jawaban === null || item?.jawaban === '') && (item?.kdminta === auth || item?.user === auth)
   // console.log('item', item);
 
@@ -78,7 +80,7 @@ function masihBisadiHapus (item) {
   return hapus
 }
 
-function hapusItem (id) {
+function hapusItem(id) {
   // console.log('id', id)
 
   $q.dialog({
@@ -105,13 +107,9 @@ function hapusItem (id) {
       class="bg-white"
     > -->
     <transition-group name="list">
-      <q-card
-        flat bordered v-for="(item, i) in filterredTable" :key="i"
-        class="q-mb-xs cursor-pointer"
-        :class="{ 'bg-yellow-1': item?.nakesminta?.kdgroupnakes === '2' }"
-        @mouseover="hoverredId = item?.id"
-        @mouseleave="hoverredId = null"
-      >
+      <q-card flat bordered v-for="(item, i) in filterredTable" :key="i" class="q-mb-xs cursor-pointer"
+        :class="{ 'bg-yellow-1': item?.nakesminta?.kdgroupnakes === '2' }" @mouseover="hoverredId = item?.id"
+        @mouseleave="hoverredId = null">
         <div class="full-width">
           <q-card-section>
             <q-item class="list-move q-pa-none">
@@ -129,7 +127,7 @@ function hapusItem (id) {
                   To : {{ namaPetugas(item?.kddokterkonsul) }}
                 </q-item-label>
 
-                <q-item-label caption lines="1" :class="{ 'text-red': item?.jawaban === null || item?.jawaban === ''}">
+                <q-item-label caption lines="1" :class="{ 'text-red': item?.jawaban === null || item?.jawaban === '' }">
                   <span v-if="item?.jawaban !== null && item?.jawaban !== ''" class="text-weight-bold">Jawaban</span>
                   -- {{ item?.jawaban ?? 'Belum Ada Jawaban' }}
                 </q-item-label>
@@ -143,36 +141,20 @@ function hapusItem (id) {
                   {{ tglJamFormat(item?.created_at) }}
                 </div>
                 <div class="absolute-bottom-right">
-                  <q-icon
-                    :name="!item?.id ? 'icon-mat-done' : 'icon-mat-done_all'"
-                    :color="!item?.flag ? 'grey-5' : 'primary'"
-                    size="sm"
-                  />
+                  <q-icon :name="!item?.id ? 'icon-mat-done' : 'icon-mat-done_all'"
+                    :color="!item?.flag ? 'grey-5' : 'primary'" size="sm" />
                 </div>
               </q-item-section>
             </q-item>
           </q-card-section>
-          <div v-if="hoverredId === item?.id" class="absolute-top-right bg-white full-height column flex-center q-pa-md" style="border-left: 1px solid #ddd ;">
+          <div v-if="hoverredId === item?.id" class="absolute-top-right bg-white full-height column flex-center q-pa-md"
+            style="border-left: 1px solid #ddd ;">
             <div class="flex q-gutter-md">
-              <q-btn
-                v-if="masihBisadiHapus(item)"
-                flat
-                round
-                size="md"
-                icon="icon-mat-delete"
-                color="negative"
-                @click="hapusItem(item.id)"
-              >
+              <q-btn v-if="masihBisadiHapus(item)" flat round size="md" icon="icon-mat-delete" color="negative"
+                @click="hapusItem(item.id)">
                 <q-tooltip>Hapus </q-tooltip>
               </q-btn>
-              <q-btn
-                flat
-                round
-                size="md"
-                icon="icon-mat-sms_black"
-                color="primary"
-                @click="emits('detail', item)"
-              >
+              <q-btn flat round size="md" icon="icon-mat-sms_black" color="primary" @click="emits('detail', item)">
                 <q-tooltip>Lihat / Input Jawaban & Detail</q-tooltip>
               </q-btn>
             </div>

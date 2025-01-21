@@ -49,6 +49,7 @@ const isForm = ref(false)
 
 onMounted(() => {
   Promise.all([
+    store.getNakes(),
     tindakan.getTindakan(props?.pasien),
     store.getData(props?.pasien)
   ])

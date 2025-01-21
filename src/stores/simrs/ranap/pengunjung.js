@@ -476,11 +476,11 @@ export const usePengunjungRanapStore = defineStore('pengunjung-ranap', {
       // console.log('hapusDataInjectan', key, id, pasien)
 
       const findPasien = this.pasiens.filter(x => x?.noreg === pasien?.noreg)
-      console.log('find pasien', findPasien)
+      // console.log('find pasien', findPasien)
 
       if (findPasien.length) {
         const data = findPasien[0][key]
-        console.log('data', data)
+        // console.log('data', data)
 
         const pos = data.findIndex(el => el.id === id)
         if (pos >= 0) { data.splice(pos, 1) }

@@ -5,70 +5,23 @@
       <div class="f-10 text-weight-light">
         <em>form Diagnosa sekaligus pensimulasian INACBG </em>
       </div> -->
-      <q-btn
-        color="primary"
-        class="q-pa-none full-width"
-        flat
-        dense
-        no-caps
-      >
+      <q-btn color="primary" class="q-pa-none full-width" flat dense no-caps>
         MEMO : {{ pasien?.memodiagnosa ?? 'MEMO DOKTER' }}
-        <!-- <q-menu
-          fit
-        >
-          <div class="q-pa-sm">
-            <q-form @submit="gantiMemo">
-              <q-input
-                v-model="memoDokter"
-                label="Masukkan Memo Dokter untuk diagnosa"
-                outlined
-                standout="bg-yellow-3"
-                type="textarea"
-                row="5"
-                :rules="[val => !!val || 'Harap diisi']"
-                :autofocus="true"
-              />
-            </q-form>
-          </div>
-        </q-menu> -->
-        <q-popup-edit
-          fit
-          buttons
-          v-model="memoDokter"
-          :cover="false"
-          :offset="[0, 10]"
-          v-slot="scope"
-          @save="(val)=> {
-            gantiMemo(val)
-          }"
-        >
-          <q-input
-            type="textarea"
-            v-model="scope.value"
-            autofocus
-            @keyup.enter.stop
-          />
+        <q-popup-edit fit buttons v-model="memoDokter" :cover="false" :offset="[0, 10]" v-slot="scope" @save="(val) => {
+          gantiMemo(val)
+        }">
+          <q-input type="textarea" v-model="scope.value" autofocus @keyup.enter.stop />
         </q-popup-edit>
       </q-btn>
     </div>
     <q-separator style="margin-top:-10px" />
-    <q-form
-      ref="formRef"
-      class="row q-pa-md q-col-gutter-xs"
-      @submit="onSubmit"
-    >
+    <q-form ref="formRef" class="row q-pa-md q-col-gutter-xs" @submit="onSubmit">
       <div class="col-3">
         <div>Kasus Baru ?</div>
       </div>
       <div class="col-9 q-gutter-sm">
-        <q-option-group
-          v-model="store.formdiagnosa.kasus"
-          name="kasus"
-          :options="optionsKasus"
-          inline
-          dense
-          @update:model-value="kasusDiUbah"
-        />
+        <q-option-group v-model="store.formdiagnosa.kasus" name="kasus" :options="optionsKasus" inline dense
+          @update:model-value="kasusDiUbah" />
       </div>
       <div class="col-12">
         <q-separator class="q-my-sm" />
@@ -77,15 +30,9 @@
         <div>Diagnosis Utama ?</div>
       </div>
       <div class="col-9 q-gutter-sm">
-        <q-option-group
-          v-model="store.formdiagnosa.tipediagnosa"
-          name="tipediagnosa"
-          :options="optionsDiagutama"
-          inline
-          dense
-          @update:model-value="diagnosaUtamaDiubah"
-        />
-      <!-- <q-radio
+        <q-option-group v-model="store.formdiagnosa.tipediagnosa" name="tipediagnosa" :options="optionsDiagutama" inline
+          dense @update:model-value="diagnosaUtamaDiubah" />
+        <!-- <q-radio
         v-model="store.formdiagnosa.tipediagnosa"
         dense
         val="Primer"
@@ -103,24 +50,11 @@
       </div>
 
       <div class="col-12 q-mb-sm">
-        <q-select
-          v-model="store.searchdiagnosa"
-          use-input
-          hide-selected
-          fill-input
-          outlined
-          standout="bg-yellow-3"
-          dense
-          emit-value
-          map-options
-          option-value="kode"
-          :option-label="opt => Object(opt) === opt && 'keterangan' in opt ? opt.kode +' ~ '+ opt.keterangan : ' Cari Diagnosa '"
-          input-debounce="0"
-          :options="options"
-          label="Cari Diagnosa (ICD)"
-          @filter="filterFn"
-          @update:model-value="(val)=>store.setKode(val)"
-        >
+        <q-select v-model="store.searchdiagnosa" use-input hide-selected fill-input outlined standout="bg-yellow-3"
+          dense emit-value map-options option-value="kode"
+          :option-label="opt => Object(opt) === opt && 'keterangan' in opt ? opt.kode + ' ~ ' + opt.keterangan : ' Cari Diagnosa '"
+          input-debounce="0" :options="options" label="Cari Diagnosa (ICD)" @filter="filterFn"
+          @update:model-value="(val) => store.setKode(val)">
           <template #no-option>
             <q-item>
               <q-item-section class="text-grey">
@@ -134,59 +68,31 @@
         <div>Kode (ICD)</div>
       </div>
       <div class="col-9">
-        <q-input
-          v-model="store.formdiagnosa.kddiagnosa"
-          placeholder="Kode (Automatis)"
-          dense
-          outlined
-          standout="bg-yellow-3"
-          :rules="[val => !!val || 'Harus diisi']"
-          :lazy-rules="true"
-          hide-bottom-space
-          readonly
-          style="max-width: 150px;"
-        />
+        <q-input v-model="store.formdiagnosa.kddiagnosa" placeholder="Kode (Automatis)" dense outlined
+          standout="bg-yellow-3" :rules="[val => !!val || 'Harus diisi']" :lazy-rules="true" hide-bottom-space readonly
+          style="max-width: 150px;" />
       </div>
       <div class="col-3">
         <div>Diagnosa</div>
       </div>
       <div class="col-9">
-        <q-input
-          v-model="store.formdiagnosa.diagnosa"
-          placeholder="Diagnosa (Automatis)"
-          outlined
-          autogrow
-          standout="bg-yellow-3"
-          :rules="[val => !!val || 'Harus diisi']"
-          :lazy-rules="true"
-          hide-bottom-space
-          readonly
-        />
+        <q-input v-model="store.formdiagnosa.diagnosa" placeholder="Diagnosa (Automatis)" outlined autogrow
+          standout="bg-yellow-3" :rules="[val => !!val || 'Harus diisi']" :lazy-rules="true" hide-bottom-space
+          readonly />
       </div>
       <div class="col-3">
         <div>Keterangan</div>
       </div>
       <div class="col-9">
-        <q-input
-          v-model="store.formdiagnosa.keterangan"
-          autogrow
-          outlined
-          standout="bg-yellow-3"
-          hide-bottom-space
-        />
+        <q-input v-model="store.formdiagnosa.keterangan" autogrow outlined standout="bg-yellow-3" hide-bottom-space />
       </div>
 
       <div class="col-12">
         <q-separator class="q-my-lg" />
       </div>
       <div class="col-12">
-        <q-btn
-          label="Simpan Diagnosa"
-          color="primary"
-          type="submit"
-          :loading="store.loadingFormDiagnosa"
-          :disable="store.loadingFormDiagnosa"
-        />
+        <q-btn label="Simpan Diagnosa" color="primary" type="submit" :loading="store.loadingFormDiagnosa"
+          :disable="store.loadingFormDiagnosa" />
       </div>
     </q-form>
   </div>
@@ -244,7 +150,7 @@ const optionsDiagutama = ref([
 //   return true
 // }
 
-function onSubmit () {
+function onSubmit() {
   if (store.formdiagnosa.kasus === null || store.formdiagnosa.kasus === '') {
     $q.notify({
       color: 'red-5',
@@ -266,7 +172,7 @@ function onSubmit () {
   }
 }
 
-function resetValidation () {
+function resetValidation() {
   // formRef.value.resetValidation()
 }
 defineExpose({ resetValidation })
@@ -284,7 +190,7 @@ onMounted(() => {
   // console.log('onMounted', options.value)
 })
 
-function filterFn (val, update, abort) {
+function filterFn(val, update, abort) {
   if (val.length < 2) {
     abort()
     options.value = []
@@ -314,7 +220,7 @@ function filterFn (val, update, abort) {
       data.filter((item) => filterKeys.some(
         (key) =>
           item[key].toString().toLowerCase().includes(value.toLowerCase()) &&
-            item[key]
+          item[key]
       )
       )
     const filteredData = multiFilter(arr, filter, needle)
@@ -322,11 +228,11 @@ function filterFn (val, update, abort) {
   })
 }
 
-function kasusDiUbah (val) {
+function kasusDiUbah(val) {
   ganti(val)
 }
 
-function ganti (val) {
+function ganti(val) {
   // const arr = store.listDiagnosa
   // // console.log(arr)
   // listDiagnosa.value = arr
@@ -353,7 +259,7 @@ function ganti (val) {
   // console.log('diag', arr)
 }
 
-function diagnosaUtamaDiubah (val) {
+function diagnosaUtamaDiubah(val) {
   // console.log(props.pasien)
   if (store.formdiagnosa.kasus === null || store.formdiagnosa.kasus === '') {
     $q.notify({
@@ -368,7 +274,7 @@ function diagnosaUtamaDiubah (val) {
   }
 }
 
-function gantiMemo (val) {
+function gantiMemo(val) {
   // console.log('okkk')
   const form = {
     memo: val ?? '',
