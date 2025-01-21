@@ -1542,7 +1542,7 @@ export const registerJurnal = defineStore('register_jurnal', {
             kegiatan: er?.kegiatanblud,
             keterangan: 'Potongan Pajak',
             kode: '2.1.01.05.05.0001',
-            uraian: 'Utang Pasal 4 Ayat 2',
+            uraian: 'Utang PPh Pasal 4 ayat (2)',
             debit: 0,
             kredit: parseFloat(er.pasal4),
             nilai: arr.filter((x) => x.nonpdls === el).map((x) =>
@@ -1563,7 +1563,7 @@ export const registerJurnal = defineStore('register_jurnal', {
             kegiatan: er?.kegiatanblud,
             keterangan: 'Potongan Pajak',
             kode: '2.1.01.05.05.0001',
-            uraian: 'Utang Pasal 4 Ayat 2',
+            uraian: 'Utang PPh Pasal 4 ayat (2)',
             debit: parseFloat(er.pasal4),
             kredit: 0,
             nilai: arr.filter((x) => x.nonpdls === el).map((x) =>
