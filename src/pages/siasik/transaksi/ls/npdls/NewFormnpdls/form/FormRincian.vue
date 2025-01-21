@@ -78,17 +78,26 @@
         <app-btn label="Simpan Rincian" class="bg-black" type="submit" :disable="store.loading"
           :loading="store.loading" />
       </div>
+      <div class="row items-center q-pb-md q-pa-sm q-gutter-y-md">
+        <app-btn label="Tambah Pajak" class="bg-orange-8" :disable="store.loading" :loading="store.loading"
+          @click="tambahPajak()" />
+      </div>
     </div>
   </q-form>
+  <form-input-pajak v-model="store.openDialogPajak" />
 </template>
 <script setup>
 import { notifErrVue } from 'src/modules/utils';
 import { dataBastFarmasiStore } from 'src/stores/siasik/transaksi/ls/newnpdls/bastfarmasi';
 import { formInputNpdlsStore } from 'src/stores/siasik/transaksi/ls/newnpdls/formnpdls';
-import { ref } from 'vue';
+import { formInputPajakStore } from 'src/stores/siasik/transaksi/ls/newnpdls/formpajak';
+import { defineAsyncComponent, ref } from 'vue';
+const FormInputPajak = defineAsyncComponent(() => import('./formpajak/FormPajak.vue'))
+
 
 const store = formInputNpdlsStore()
 const carisrt = dataBastFarmasiStore()
+const pjk = formInputPajakStore()
 const options = ref([])
 const formNpdLS = ref(null)
 // const rincianNpd = ref([])
@@ -136,11 +145,8 @@ async function filterFn(val, update) {
 function pilihRekening50(val) {
   // console.log('pilihrekening', val)
   const arr = store.rekening50
-
-
   const obj = arr.length ? arr.find(x => x.rek50 === val) : null
   // Mengosongkan form rincian Belanja ketika request kegiatan blud
-  // console.log('rekening50', obj)
   store.rinci.koderek50 = obj?.rek50 ?? ''
   store.rinci.rincianbelanja = obj?.rincianbelanja ?? ''
   store.reqs.kodekegiatan = obj?.kodekegiatan ?? ''
@@ -157,7 +163,6 @@ function pilihRekening50(val) {
   store.rinci.totalls = ''
   store.rinci.nominalpembayaran = ''
   store.reqs.rekening50 = val
-  // console.log('rek50', store.reqs.rekening50)
   store.filterItemBelanja()
 }
 const props = defineProps({
@@ -167,12 +172,9 @@ const props = defineProps({
   }
 })
 function saveNpd() {
-  // store.reqs.rincianmanual = store.rinci
   // console.log('store.rinci', store.rinci)
   const objrincian = store.rinci
-  // store.form.rincians.push(objrincian)
   store.form.rincians.push(objrincian)
-  // console.log('storerincian', store.form.rincians)
   const unikjumlah = store.form.rincians.map((x) => x.itembelanja)
   const unik = unikjumlah.length ? [...new Set(unikjumlah)] : []
 
@@ -195,7 +197,6 @@ function saveNpd() {
     // const subtotal = arr.map((x) => x.jumlah).reduce((x, y) => x + y, 0)
     // store.reqs.subtotal = subtotal
   }
-  // console.log('save rincian', store.form.rincians);
   store.simpanNpdls(props.data).then(() => {
     store.rinci.koderek50 = ''
     store.rinci.itembelanja = ''
@@ -211,5 +212,13 @@ function saveNpd() {
     formNpdLS.value.resetValidation()
     store.disabled = true
   })
+}
+function tambahPajak() {
+  console.log('open Dialog')
+  store.openDialogPajak = true
+  pjk.form.nonpdls = store.form.nonpdls
+  pjk.reqs.nonpdls = store.form.nonpdls
+  pjk.getListpajak()
+  console.log('nonpdls pajak', pjk.form.nonpdls)
 }
 </script>

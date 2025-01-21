@@ -148,7 +148,8 @@ export const formInputNpdlsStore = defineStore('forminput_NPD_LS', {
     dialogCetakNpd: false,
     openDialogFarmasi: false,
     openDialogSiasik: false,
-    openDialogRinci: false
+    openDialogRinci: false,
+    openDialogPajak: false,
   }),
   actions: {
     resetFORM() {
