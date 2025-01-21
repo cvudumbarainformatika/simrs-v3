@@ -30,7 +30,10 @@
 
         <div class="col full-height bg-grey-4">
 
-          <card-column :pasien="pasien" :kasus="kasus" />
+          <card-column :pasien="pasien" :kasus="kasus" @open-reseps="() => {
+            contentPreview = 'Eresep'
+            store.dialogPreview = true
+          }" />
 
           <!-- <div class="row q-pa-md q-col-gutter-md justify-around">
 
@@ -199,13 +202,16 @@
 
 
     <!-- dialog dynamic -->
-    <dialog-preview v-model="store.dialogPreview" />
+    <dialog-preview v-model="store.dialogPreview" :pasien="pasien" :content="contentPreview" @on-selected-reseps="(val) => {
+      // console.log('val', val);
+      store.form.reseps = val
+    }" />
   </q-dialog>
 </template>
 
 <script setup>
 import { useNurseNoteRanapStore } from 'src/stores/simrs/ranap/nursenote';
-import { defineAsyncComponent } from 'vue';
+import { defineAsyncComponent, ref } from 'vue';
 
 const props = defineProps({
   pasien: {
@@ -227,6 +233,8 @@ const AutocompleteInputTwo = defineAsyncComponent(() => import('src/pages/simrs/
 const DialogPreview = defineAsyncComponent(() => import('./DialogPreview.vue'))
 
 const store = useNurseNoteRanapStore()
+
+const contentPreview = ref(null)
 
 const simpan = () => {
   // console.log('simpan');

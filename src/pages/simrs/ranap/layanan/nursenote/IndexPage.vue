@@ -12,7 +12,7 @@
             </div>
           </div>
           <div>
-            <q-btn rounded outline color="white" @click="isForm = !isForm">
+            <q-btn rounded outline color="white" @click="store.isForm = true">
               <q-icon name="icon-mat-add" size="xs" /><span class="q-ml-xs">Tambah</span>
             </q-btn>
           </div>
@@ -23,7 +23,7 @@
       </div>
 
     </q-card>
-    <DialogFormAdd v-model="isForm" :pasien="pasien" :kasus="kasus" :nakes="nakes" />
+    <DialogFormAdd v-model="store.isForm" :pasien="pasien" :kasus="kasus" :nakes="nakes" />
   </div>
 </template>
 
@@ -44,7 +44,7 @@ const props = defineProps({
   nakes: { type: String, default: null }
 })
 
-const isForm = ref(false)
+// const isForm = ref(false)
 
 
 onMounted(() => {

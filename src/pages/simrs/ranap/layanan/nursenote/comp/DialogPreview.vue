@@ -1,28 +1,52 @@
 <template>
-  <q-dialog>
-    <q-card>
+  <q-dialog persistent>
+    <q-card dark style="max-width: 60vw; width: 60vw">
       <q-card-section>
-        <div class="text-h6">Terms of Agreement</div>
+        <div class="text-h6">{{ content }}</div>
+        <!-- <div class="f-12">olaaa</div> -->
       </q-card-section>
 
-      <q-separator />
+      <q-separator dark />
 
-      <q-card-section style="max-height: 50vh" class="scroll">
-        <p v-for="n in 15" :key="n">Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum repellendus sit
-          voluptate voluptas eveniet porro. Rerum blanditiis perferendis totam, ea at omnis vel numquam exercitationem
-          aut, natus minima, porro labore.</p>
+      <q-card-section style="max-height: 70vh ; height: 70vh ; " class="q-pa-none scroll">
+        <!-- <div > -->
+        <ListEresep v-if="content === 'Eresep'" :pasien="pasien" @on-selected="(val) => {
+          // console.log('val', val);
+          emit('onSelectedReseps', val)
+        }" />
+        <!-- </div> -->
       </q-card-section>
 
-      <q-separator />
+      <q-separator dark />
 
       <q-card-actions align="right">
-        <q-btn flat label="Decline" color="primary" v-close-popup />
-        <q-btn flat label="Accept" color="primary" v-close-popup />
+        <q-btn dark label="Accept" v-close-popup />
       </q-card-actions>
     </q-card>
   </q-dialog>
 </template>
 
 <script setup>
+import { defineAsyncComponent } from 'vue';
 
+// import { computed, ref } from 'vue';
+
+
+const props = defineProps({
+  pasien: {
+    type: Object,
+    default: null
+  },
+  content: {
+    type: String,
+    default: null
+  }
+})
+
+const emit = defineEmits(['onSelectedReseps'])
+
+// console.log('props', props?.pasien);
+
+
+const ListEresep = defineAsyncComponent(() => import('./compDialogPreview/ListEresep.vue'))
 </script>
