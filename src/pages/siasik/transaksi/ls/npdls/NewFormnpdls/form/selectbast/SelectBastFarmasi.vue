@@ -19,7 +19,7 @@
           <template v-if="carisrt.bastfarmasis.length !== 0 || carisrt.konsinyasis.length !== 0">
             <q-table class="my-sticky-header" :rows="carisrt.itembelanja" :columns="columns" row-key="name"
               @request="carisrt.onRequest" v-model:pagination="carisrt.reqs" :filter="carisrt.reqs.q"
-              :loading="carisrt.loading" :rows-per-page-options="[10, 50, 100, 200, 500]">
+              :loading="carisrt.loading" :rows-per-page-options="[50, 100, 200, 500]">
               <template #top-left>
                 <div class="flex q-qutter-sm z-top">
                   <div>

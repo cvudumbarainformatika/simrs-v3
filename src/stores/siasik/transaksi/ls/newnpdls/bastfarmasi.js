@@ -10,7 +10,7 @@ export const dataBastFarmasiStore = defineStore('data_Bast_Farmasi_Store', {
       q: '',
       tgl: date.formatDate(Date.now(), 'YYYY-MM-DD'),
       page: 1,
-      rowsPerPage: 10,
+      rowsPerPage: 50,
       rowsNumber: 0,
       kodepenerima: null,
       kodekegiatanblud: null,
