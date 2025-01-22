@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia'
+import { acceptHMRUpdate, defineStore } from 'pinia'
 import { date } from 'quasar'
 import { api } from 'src/boot/axios'
 import { notifSuccess } from 'src/modules/utils'
@@ -567,7 +567,7 @@ export const useAnamnesisRanapStore = defineStore('anamnesis-ranap-store', {
   // },
   actions: {
 
-    async getData (pasien) {
+    async getData(pasien) {
       this.loading = true
       const params = {
         params: {
@@ -588,7 +588,7 @@ export const useAnamnesisRanapStore = defineStore('anamnesis-ranap-store', {
       }
     },
 
-    initReset (data) {
+    initReset(data) {
       // console.log('data init reset', data)
 
       this.form = {
@@ -918,7 +918,7 @@ export const useAnamnesisRanapStore = defineStore('anamnesis-ranap-store', {
       this.hitungSkorNyeri('pediatrik')
     },
 
-    hitungSkorNyeri (jns) {
+    hitungSkorNyeri(jns) {
       let skor = 0
       if (jns === 'formNeoNatal') {
         for (let i = 0; i < this.formNyeriNeonatals.length; i++) {
@@ -947,7 +947,7 @@ export const useAnamnesisRanapStore = defineStore('anamnesis-ranap-store', {
     // hitungWongBakerFaceScale (jns) {
     //   let skor = 0
     // },
-    setKeteranganSkornyeri (val, jns) {
+    setKeteranganSkornyeri(val, jns) {
       let ket = null
       if (jns === 'formNeoNatal') {
         if (val === 0) ket = 'Tidak nyeri'
@@ -977,20 +977,20 @@ export const useAnamnesisRanapStore = defineStore('anamnesis-ranap-store', {
       }
     },
 
-    hitungSkorSgd () {
+    hitungSkorSgd() {
       const skor = parseInt(this.form.skreeninggizi.form.bb.skor) + parseInt(this.form.skreeninggizi.form.am.skor) + parseInt(this.form.skreeninggizi.form.kk.skor)
       this.form.skreeninggizi.skor = skor
       this.form.skreeninggizi.ket = this.setSgdKet(skor)
       // this.form.sgdSkor = skor
       // this.form.sgdKet = this.setSgdKet(skor)
     },
-    hitungSkorSgk () {
+    hitungSkorSgk() {
       const skor = parseInt(this.formKebidanan?.skreeninggizi?.form?.am?.skor) + parseInt(this.formKebidanan?.skreeninggizi?.form?.bb?.skor) + parseInt(this.formKebidanan?.skreeninggizi?.form?.hb?.skor) + parseInt(this.formKebidanan?.skreeninggizi?.form?.metabolisme?.skor)
       this.formKebidanan.skreeninggizi.skor = skor
       this.formKebidanan.skreeninggizi.ket = this.setSgdKet(skor)
       // console.log('wwooii', this.formKebidanan.sgkSkor)
     },
-    hitungSkorSgn () {
+    hitungSkorSgn() {
       // const skor = parseInt(this.formNeoNatal.sgn.am) + parseInt(this.formNeoNatal.sgn.km) + parseInt(this.formNeoNatal.sgn.fs) + parseInt(this.formNeoNatal.sgn.bb)
       // this.formNeoNatal.sgnSkor = skor
       let skor = 0
@@ -1006,7 +1006,7 @@ export const useAnamnesisRanapStore = defineStore('anamnesis-ranap-store', {
       else if (skor >= 6) this.formNeoNatal.skreeninggizi.ket = 'Beresiko Tinggi Malnutrisi'
       // console.log('wwooii', this.formKebidanan.sgkSkor)
     },
-    hitungSkorSgp () {
+    hitungSkorSgp() {
       let skor = 0
       for (let i = 0; i < this.formGiziPediatrik.length; i++) {
         const el = this.formGiziPediatrik[i]
@@ -1019,7 +1019,7 @@ export const useAnamnesisRanapStore = defineStore('anamnesis-ranap-store', {
       else if (skor >= 2) this.formPediatrik.skreeninggizi.ket = 'Beresiko Malnutrisi'
       // console.log('wwooii', this.formKebidanan.sgkSkor)
     },
-    setSgdKet (nilai) {
+    setSgdKet(nilai) {
       let ket = null
       const skor = nilai || 0
       if (skor < 2) {
@@ -1030,7 +1030,7 @@ export const useAnamnesisRanapStore = defineStore('anamnesis-ranap-store', {
       }
       return ket
     },
-    getRiwayatKehamilan (pasien) {
+    getRiwayatKehamilan(pasien) {
       const params = { params: { norm: pasien?.norm } }
 
       return new Promise((resolve, reject) => {
@@ -1049,14 +1049,14 @@ export const useAnamnesisRanapStore = defineStore('anamnesis-ranap-store', {
           })
       })
     },
-    initFormRiwayatKehamilan (val) {
+    initFormRiwayatKehamilan(val) {
       this.formRiwayatKehamilan.pl = val ? val?.pl : null
       this.formRiwayatKehamilan.umurAnak = val ? val?.umurAnak : null
       this.formRiwayatKehamilan.kuAnak = val ? val?.kuAnak : null
       this.formRiwayatKehamilan.bbl = val ? val?.bbl : null
       this.formRiwayatKehamilan.riwayatKehamilan = val ? val?.riwayatKehamilan : null
     },
-    saveRiwayatKehamilan (pasien) {
+    saveRiwayatKehamilan(pasien) {
       this.formRiwayatKehamilan.noreg = pasien?.noreg
       this.formRiwayatKehamilan.norm = pasien?.norm
       return new Promise((resolve, reject) => {
@@ -1077,7 +1077,7 @@ export const useAnamnesisRanapStore = defineStore('anamnesis-ranap-store', {
       })
     },
 
-    deleteRiwayatKehamilan (pasien, id) {
+    deleteRiwayatKehamilan(pasien, id) {
       const payload = { id }
       return new Promise((resolve, reject) => {
         api.post('v1/simrs/pelayanan/kandungan/delete-obsetri', payload)
@@ -1097,7 +1097,7 @@ export const useAnamnesisRanapStore = defineStore('anamnesis-ranap-store', {
     },
 
     // KHUSUS KEPERAWATAN
-    async saveForm (jnsKasus, pasien) {
+    async saveForm(jnsKasus, pasien) {
       this.loadingSave = true
       const kasusKep = jnsKasus?.gruping
       let formDefault = this.form
@@ -1160,18 +1160,20 @@ export const useAnamnesisRanapStore = defineStore('anamnesis-ranap-store', {
       }
     },
 
-    PISAH_DATA_RANAP_IGD (arr, pasien) {
+    PISAH_DATA_RANAP_IGD(arr, pasien) {
       const auth = useAplikasiStore()
       const jns = auth?.user?.pegawai?.kdgroupnakes
       // console.groupCollapsed('[setForm : PISAH_DATA_RANAP_IGD]')
-      // console.log('jns auth', jns)
+      console.log('jns auth', jns)
 
       const igd = arr?.filter(x => x?.kdruang === 'POL014') ?? []
-      const ranap = arr?.filter(x => x?.kdruang !== 'POL014' && x?.awal === '1' && x?.jns === '1') ?? []
+      const ranap = arr?.filter(x => x?.kdruang !== 'POL014' && x?.awal === '1' && x?.nakes === '1') ?? [] // ini isian dokter
+      // const ranap = arr?.filter(x => x?.kdruang !== 'POL014' && x?.awal === '1' && x?.jns === '1') ?? []
       // console.log('ranap isianDokter:', ranap)
       // console.log('igd :', igd)
 
-      const isianKeperawatan = arr?.filter(x => x?.kdruang !== 'POL014' && x?.jns !== '1' && x?.awal === '1') ?? []
+      const isianKeperawatan = arr?.filter(x => x?.kdruang !== 'POL014' && x?.nakes !== '1' && x?.awal === '1') ?? []
+      // const isianDokter = arr?.filter(x => x?.kdruang !== 'POL014' && x?.awal === '1' && x?.nakes === '1') ?? []
       // console.log('isianKeperawatan :', isianKeperawatan)
 
       // baru ada penyesuaian nakes
@@ -1184,11 +1186,11 @@ export const useAnamnesisRanapStore = defineStore('anamnesis-ranap-store', {
 
       // jika dokter
       if (dokter) {
-        if (ranap.length) { form = ranap[0] } // form = ranap isianDokter jika ada
+        if (ranap?.length) { form = ranap[0] } // form = ranap isianDokter jika ada
         else { form = isianKeperawatan.length ? isianKeperawatan[0] : null } // form = isianKeperawatan jika blm ada isianDokter
       }
       else {
-        form = isianKeperawatan.length ? isianKeperawatan[0] : null
+        form = isianKeperawatan?.length ? isianKeperawatan[0] : null
       }
 
       // console.log('form', form)
@@ -1197,9 +1199,13 @@ export const useAnamnesisRanapStore = defineStore('anamnesis-ranap-store', {
       if (dokter) this.form.skreeninggizi = null
       // console.groupEnd()
     },
-    SPLICE_ITEMS_RANAP (arr) {
+    SPLICE_ITEMS_RANAP(arr) {
       const idx = arr?.findIndex(x => x.id === null)
       this.items.ranap = arr.splice(1, idx)
     }
   }
 })
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useAnamnesisRanapStore, import.meta.hot))
+}

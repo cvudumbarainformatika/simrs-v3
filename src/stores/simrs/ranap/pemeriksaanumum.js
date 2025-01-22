@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia'
+import { acceptHMRUpdate, defineStore } from 'pinia'
 // eslint-disable-next-line no-unused-vars
 import { api } from 'src/boot/axios'
 import { useAplikasiStore } from 'src/stores/app/aplikasi'
@@ -813,7 +813,7 @@ export const usePemeriksaanUmumRanapStore = defineStore('pemeriksaan-umum-ranap-
       const jns = auth?.user?.pegawai?.kdgroupnakes
 
       const igd = arr?.filter(x => x?.kdruang === 'POL014') ?? []
-      const ranap = arr?.filter(x => x?.kdruang !== 'POL014' && x?.awal === '1') ?? []
+      const ranap = arr?.filter(x => x?.kdruang !== 'POL014' && x?.awal === '1' && x?.nakes === '1') ?? []
       const isianKeperawatan = arr?.filter(x => x?.kdruang !== 'POL014' && x?.nakes !== '1' && x?.awal === '1') ?? []
 
       this.items.igd = igd
@@ -852,3 +852,7 @@ export const usePemeriksaanUmumRanapStore = defineStore('pemeriksaan-umum-ranap-
 
   }
 })
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(usePemeriksaanUmumRanapStore, import.meta.hot))
+}

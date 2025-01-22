@@ -80,6 +80,15 @@ const menus = ref([
     comp: shallowRef(defineAsyncComponent(() => import('./dischargeplanning/IndexPage.vue')))
   },
   {
+    name: 'edukasi-page',
+    label: 'Discharge Summary',
+    title: 'DISCHARGE SUMMARY',
+    desc: 'Ringkasan Pulang Pasien',
+    icon: 'icon-my-file_sign',
+    nakes: ['1', '2', '3'],
+    comp: shallowRef(defineAsyncComponent(() => import('./dischargeplanning/IndexPage.vue')))
+  },
+  {
     name: 'surat-kematian',
     label: 'Surat Kematian',
     title: 'SURAT KETERANGAN KEMATIAN',
