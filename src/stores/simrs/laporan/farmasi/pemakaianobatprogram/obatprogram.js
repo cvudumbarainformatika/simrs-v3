@@ -110,13 +110,10 @@ export const useLaporanPermakaianObatProgramStore = defineStore('laporan_pemakai
               const temp = {
                 tgl: s.tgl,
                 saldoawal: s,
-                ket: 'Saldo Awal ( ' + s?.nopenerimaan + ' )'
+                ket: 'Saldo Awal'// ( ' + s?.nopenerimaan + ' )'
               }
               it.data.push(temp)
             })
-            // it?.saldo?.forEach(sa => {
-            //   masuk.push(sa)
-            // })
           }
           it?.terima?.forEach(per => {
             masuk.push(per)
@@ -131,21 +128,6 @@ export const useLaporanPermakaianObatProgramStore = defineStore('laporan_pemakai
             it.data.push(temp)
           })
           it?.retur?.forEach(per => {
-            // const ada = masuk.findIndex(a => a.kdobat === per.kdobat && a.nopenerimaan === per.nopenerimaan)
-            // const adaH = masuk.findIndex(a => a.kdobat === per.kdobat && a.harga === per.harga)
-            // if (ada >= 0) {
-            //   const jum = parseFloat(masuk[ada].jumlah) + parseFloat(per.jumlah)
-            //   const sub = parseFloat(masuk[ada].sub) + parseFloat(per.sub)
-            //   masuk[ada].jumlah = jum
-            //   masuk[ada].sub = sub
-            // }
-            // else if (adaH >= 0) {
-            //   const jum = parseFloat(masuk[adaH].jumlah) + parseFloat(per.jumlah)
-            //   const sub = parseFloat(masuk[adaH].sub) + parseFloat(per.sub)
-            //   masuk[adaH].jumlah = jum
-            //   masuk[adaH].sub = sub
-            // }
-            // else masuk.push(per)
             masuk.push(per)
           })
 
@@ -165,48 +147,10 @@ export const useLaporanPermakaianObatProgramStore = defineStore('laporan_pemakai
             }
             it.data.push(temp)
 
-            // const ada = masuk.findIndex(a => a.kdobat === res.kdobat && a.nopenerimaan === res.nopenerimaan)
-            // const adaH = masuk.findIndex(a => a.kdobat === res.kdobat && a.harga === res.harga)
-            // if (ada >= 0) {
-            //   const jum = parseFloat(masuk[ada].jumlah) + parseFloat(res.jumlah)
-            //   const sub = parseFloat(masuk[ada].sub) + parseFloat(res.sub)
-            //   masuk[ada].jumlah = jum
-            //   masuk[ada].sub = sub
-            // }
-            // else if (adaH >= 0) {
-            //   const jum = parseFloat(masuk[adaH].jumlah) + parseFloat(res.jumlah)
-            //   const sub = parseFloat(masuk[adaH].sub) + parseFloat(res.sub)
-            //   masuk[adaH].jumlah = jum
-            //   masuk[adaH].sub = sub
-            // }
-            // else masuk.push(res)
             masuk.push(res)
           })
           if (it?.penyesuaian?.length) {
             it?.penyesuaian.forEach(p => {
-              // const index = masuk.findIndex(f => f.nopenerimaan === p.nopenerimaan)
-              // if (index >= 0) {
-              //   const jumM = masuk[index].jumlah + p.jumlah
-              //   const subM = masuk[index].sub + p.sub
-
-              //   masuk[index].jumlah = jumM
-              //   masuk[index].sub = subM
-              // }
-              // else {
-              //   const index2 = masuk.findIndex(f => parseFloat(f.harga) === parseFloat(p.harga))
-              //   if (index2 >= 0) {
-              //     // console.log('else 1', masuk[index2], p)
-
-              //     const jumEl = masuk[index2].jumlah + p.jumlah
-              //     const subEl = masuk[index2].sub + p.sub
-
-              //     masuk[index2].jumlah = jumEl
-              //     masuk[index2].sub = subEl
-              //   }
-              //   else {
-              //     console.log('else 2')
-              //   }
-              // }
               if (p?.jumlah > 0) {
                 const temp = {
                   tgl: p?.tgl ?? this.params.tahun + '-' + this.params.bulan + '-31 23:00:00',
@@ -248,84 +192,6 @@ export const useLaporanPermakaianObatProgramStore = defineStore('laporan_pemakai
 
             it.data.push(temp)
             keluar.push(res)
-            // let diminta = res.jumlah
-            // let nilaiDiminta = res.sub
-            // while (diminta > 0) {
-            //   const index = masuk.findIndex(a => a.jumlah > 0 && a.sub >= 0 && a.kdobat === res.kdobat && a.nopenerimaan === res.nopenerimaan)
-            //   if (index >= 0) {
-            //     if (masuk[index].jumlah >= diminta) {
-            //       const sisa = masuk[index].jumlah - diminta
-            //       masuk[index].jumlah = sisa
-            //       diminta = 0
-
-            //       const nilaiSisa = masuk[index].sub > 0 ? masuk[index].sub - nilaiDiminta : nilaiDiminta
-            //       masuk[index].sub = nilaiSisa
-            //       nilaiDiminta = 0
-            //     }
-            //     else {
-            //       const sisa = diminta - masuk[index].jumlah
-            //       diminta = sisa
-            //       masuk[index].jumlah = 0
-
-            //       const nilaiSisa = masuk[index].sub > 0 ? masuk[index].sub - nilaiDiminta : nilaiDiminta
-            //       nilaiDiminta = nilaiSisa
-            //       masuk[index].sub = 0
-            //     }
-            //   }
-            //   else {
-            //     const index1 = masuk.findIndex(a => a.jumlah > 0 && a.sub >= 0 && a.kdobat === res.kdobat && a.harga === res.harga)
-            //     // console.log('index res 1', index1)
-            //     if (index1 >= 0) {
-            //       if (masuk[index1].jumlah >= diminta) {
-            //         const sisa = masuk[index1].jumlah - diminta
-            //         masuk[index1].jumlah = sisa
-            //         diminta = 0
-
-            //         const nilaiSisa = masuk[index1].sub > 0 ? masuk[index1].sub - nilaiDiminta : nilaiDiminta
-            //         masuk[index1].sub = nilaiSisa
-            //         nilaiDiminta = 0
-            //       }
-            //       else {
-            //         const sisa = diminta - masuk[index1].jumlah
-            //         diminta = sisa
-            //         masuk[index1].jumlah = 0
-
-            //         const nilaiSisa = masuk[index1].sub > 0 ? masuk[index1].sub - nilaiDiminta : nilaiDiminta
-            //         nilaiDiminta = nilaiSisa
-            //         masuk[index1].sub = 0
-            //       }
-            //     }
-            //     else {
-            //       const index2 = masuk.findIndex(a => a.jumlah > 0 && a.sub >= 0 && a.kdobat === res.kdobat)
-            //       // console.log('index res 2', index2, masuk[index2], res)
-            //       if (index2 >= 0) {
-            //         if (masuk[index2].jumlah >= diminta) {
-            //           const sisa = masuk[index2].jumlah - diminta
-            //           masuk[index2].jumlah = sisa
-            //           diminta = 0
-
-            //           const nilaiSisa = masuk[index2].sub > 0 ? masuk[index2].sub - nilaiDiminta : nilaiDiminta
-            //           masuk[index2].sub = nilaiSisa
-            //           nilaiDiminta = 0
-            //         }
-            //         else {
-            //           const sisa = diminta - masuk[index2].jumlah
-            //           diminta = sisa
-            //           masuk[index2].jumlah = 0
-
-            //           const nilaiSisa = masuk[index2].sub > 0 ? masuk[index2].sub - nilaiDiminta : nilaiDiminta
-            //           nilaiDiminta = nilaiSisa
-            //           masuk[index2].sub = 0
-            //         }
-            //       }
-            //       // kalo sampe else coba cek mana yang ga match
-            //       else {
-            //         // console.log('index res 2', index2, masuk[index2], res)
-            //         diminta = 0
-            //       }
-            //     }
-            //   }
-            // }
           })
           resep?.forEach(res => {
             const temp = {
@@ -336,84 +202,6 @@ export const useLaporanPermakaianObatProgramStore = defineStore('laporan_pemakai
 
             it.data.push(temp)
             keluar.push(res)
-            // let diminta = res.jumlah
-            // let nilaiDiminta = res.sub
-            // while (diminta > 0) {
-            //   const index = masuk.findIndex(a => a.jumlah > 0 && a.sub >= 0 && a.kdobat === res.kdobat && a.nopenerimaan === res.nopenerimaan)
-            //   if (index >= 0) {
-            //     if (masuk[index].jumlah >= diminta) {
-            //       const sisa = masuk[index].jumlah - diminta
-            //       masuk[index].jumlah = sisa
-            //       diminta = 0
-
-            //       const nilaiSisa = masuk[index].sub > 0 ? masuk[index].sub - nilaiDiminta : nilaiDiminta
-            //       masuk[index].sub = nilaiSisa
-            //       nilaiDiminta = 0
-            //     }
-            //     else {
-            //       const sisa = diminta - masuk[index].jumlah
-            //       diminta = sisa
-            //       masuk[index].jumlah = 0
-
-            //       const nilaiSisa = masuk[index].sub > 0 ? masuk[index].sub - nilaiDiminta : nilaiDiminta
-            //       nilaiDiminta = nilaiSisa
-            //       masuk[index].sub = 0
-            //     }
-            //   }
-            //   else {
-            //     const index1 = masuk.findIndex(a => a.jumlah > 0 && a.sub >= 0 && a.kdobat === res.kdobat && a.harga === res.harga)
-            //     // console.log('index res 1', index1)
-            //     if (index1 >= 0) {
-            //       if (masuk[index1].jumlah >= diminta) {
-            //         const sisa = masuk[index1].jumlah - diminta
-            //         masuk[index1].jumlah = sisa
-            //         diminta = 0
-
-            //         const nilaiSisa = masuk[index1].sub > 0 ? masuk[index1].sub - nilaiDiminta : nilaiDiminta
-            //         masuk[index1].sub = nilaiSisa
-            //         nilaiDiminta = 0
-            //       }
-            //       else {
-            //         const sisa = diminta - masuk[index1].jumlah
-            //         diminta = sisa
-            //         masuk[index1].jumlah = 0
-
-            //         const nilaiSisa = masuk[index1].sub > 0 ? masuk[index1].sub - nilaiDiminta : nilaiDiminta
-            //         nilaiDiminta = nilaiSisa
-            //         masuk[index1].sub = 0
-            //       }
-            //     }
-            //     else {
-            //       const index2 = masuk.findIndex(a => a.jumlah > 0 && a.sub >= 0 && a.kdobat === res.kdobat)
-            //       // console.log('index res 2', index2, masuk[index2], res)
-            //       if (index2 >= 0) {
-            //         if (masuk[index2].jumlah >= diminta) {
-            //           const sisa = masuk[index2].jumlah - diminta
-            //           masuk[index2].jumlah = sisa
-            //           diminta = 0
-
-            //           const nilaiSisa = masuk[index2].sub > 0 ? masuk[index2].sub - nilaiDiminta : nilaiDiminta
-            //           masuk[index2].sub = nilaiSisa
-            //           nilaiDiminta = 0
-            //         }
-            //         else {
-            //           const sisa = diminta - masuk[index2].jumlah
-            //           diminta = sisa
-            //           masuk[index2].jumlah = 0
-
-            //           const nilaiSisa = masuk[index2].sub > 0 ? masuk[index2].sub - nilaiDiminta : nilaiDiminta
-            //           nilaiDiminta = nilaiSisa
-            //           masuk[index2].sub = 0
-            //         }
-            //       }
-            //       // kalo sampe else coba cek mana yang ga match
-            //       else {
-            //         // console.log('index res 2', index2, masuk[index2], res)
-            //         diminta = 0
-            //       }
-            //     }
-            //   }
-            // }
           })
           racikan?.forEach(res => {
             const temp = {
@@ -424,84 +212,6 @@ export const useLaporanPermakaianObatProgramStore = defineStore('laporan_pemakai
 
             it.data.push(temp)
             keluar.push(res)
-            // let diminta = res.jumlah
-            // let nilaiDiminta = res.sub
-            // while (diminta > 0) {
-            //   const index = masuk.findIndex(a => a.jumlah > 0 && a.sub >= 0 && a.kdobat === res.kdobat && a.nopenerimaan === res.nopenerimaan)
-            //   if (index >= 0) {
-            //     if (masuk[index].jumlah >= diminta) {
-            //       const sisa = masuk[index].jumlah - diminta
-            //       masuk[index].jumlah = sisa
-            //       diminta = 0
-
-            //       const nilaiSisa = masuk[index].sub > 0 ? masuk[index].sub - nilaiDiminta : nilaiDiminta
-            //       masuk[index].sub = nilaiSisa
-            //       nilaiDiminta = 0
-            //     }
-            //     else {
-            //       const sisa = diminta - masuk[index].jumlah
-            //       diminta = sisa
-            //       masuk[index].jumlah = 0
-
-            //       const nilaiSisa = masuk[index].sub > 0 ? masuk[index].sub - nilaiDiminta : nilaiDiminta
-            //       nilaiDiminta = nilaiSisa
-            //       masuk[index].sub = 0
-            //     }
-            //   }
-            //   else {
-            //     const index1 = masuk.findIndex(a => a.jumlah > 0 && a.sub >= 0 && a.kdobat === res.kdobat && a.harga === res.harga)
-            //     // console.log('index res 1', index1)
-            //     if (index1 >= 0) {
-            //       if (masuk[index1].jumlah >= diminta) {
-            //         const sisa = masuk[index1].jumlah - diminta
-            //         masuk[index1].jumlah = sisa
-            //         diminta = 0
-
-            //         const nilaiSisa = masuk[index1].sub > 0 ? masuk[index1].sub - nilaiDiminta : nilaiDiminta
-            //         masuk[index1].sub = nilaiSisa
-            //         nilaiDiminta = 0
-            //       }
-            //       else {
-            //         const sisa = diminta - masuk[index1].jumlah
-            //         diminta = sisa
-            //         masuk[index1].jumlah = 0
-
-            //         const nilaiSisa = masuk[index1].sub > 0 ? masuk[index1].sub - nilaiDiminta : nilaiDiminta
-            //         nilaiDiminta = nilaiSisa
-            //         masuk[index1].sub = 0
-            //       }
-            //     }
-            //     else {
-            //       const index2 = masuk.findIndex(a => a.jumlah > 0 && a.sub >= 0 && a.kdobat === res.kdobat)
-            //       // console.log('index res 2', index2, masuk[index2], res)
-            //       if (index2 >= 0) {
-            //         if (masuk[index2].jumlah >= diminta) {
-            //           const sisa = masuk[index2].jumlah - diminta
-            //           masuk[index2].jumlah = sisa
-            //           diminta = 0
-
-            //           const nilaiSisa = masuk[index2].sub > 0 ? masuk[index2].sub - nilaiDiminta : nilaiDiminta
-            //           masuk[index2].sub = nilaiSisa
-            //           nilaiDiminta = 0
-            //         }
-            //         else {
-            //           const sisa = diminta - masuk[index2].jumlah
-            //           diminta = sisa
-            //           masuk[index2].jumlah = 0
-
-            //           const nilaiSisa = masuk[index2].sub > 0 ? masuk[index2].sub - nilaiDiminta : nilaiDiminta
-            //           nilaiDiminta = nilaiSisa
-            //           masuk[index2].sub = 0
-            //         }
-            //       }
-            //       // kalo sampe else coba cek mana yang ga match
-            //       else {
-            //         // console.log('index res 2', index2, masuk[index2], res)
-            //         diminta = 0
-            //       }
-            //     }
-            //   }
-            // }
           })
           it?.distribusipersiapan?.forEach(res => {
             const temp = {
@@ -512,84 +222,6 @@ export const useLaporanPermakaianObatProgramStore = defineStore('laporan_pemakai
 
             it.data.push(temp)
             keluar.push(res)
-            // let diminta = res.jumlah
-            // let nilaiDiminta = res.sub
-            // while (diminta > 0) {
-            //   const index = masuk.findIndex(a => a.jumlah > 0 && a.sub >= 0 && a.kdobat === res.kdobat && a.nopenerimaan === res.nopenerimaan)
-            //   if (index >= 0) {
-            //     if (masuk[index].jumlah >= diminta) {
-            //       const sisa = masuk[index].jumlah - diminta
-            //       masuk[index].jumlah = sisa
-            //       diminta = 0
-
-            //       const nilaiSisa = masuk[index].sub > 0 ? masuk[index].sub - nilaiDiminta : nilaiDiminta
-            //       masuk[index].sub = nilaiSisa
-            //       nilaiDiminta = 0
-            //     }
-            //     else {
-            //       const sisa = diminta - masuk[index].jumlah
-            //       diminta = sisa
-            //       masuk[index].jumlah = 0
-
-            //       const nilaiSisa = masuk[index].sub > 0 ? masuk[index].sub - nilaiDiminta : nilaiDiminta
-            //       nilaiDiminta = nilaiSisa
-            //       masuk[index].sub = 0
-            //     }
-            //   }
-            //   else {
-            //     const index1 = masuk.findIndex(a => a.jumlah > 0 && a.sub >= 0 && a.kdobat === res.kdobat && a.harga === res.harga)
-            //     // console.log('index res 1', index1)
-            //     if (index1 >= 0) {
-            //       if (masuk[index1].jumlah >= diminta) {
-            //         const sisa = masuk[index1].jumlah - diminta
-            //         masuk[index1].jumlah = sisa
-            //         diminta = 0
-
-            //         const nilaiSisa = masuk[index1].sub > 0 ? masuk[index1].sub - nilaiDiminta : nilaiDiminta
-            //         masuk[index1].sub = nilaiSisa
-            //         nilaiDiminta = 0
-            //       }
-            //       else {
-            //         const sisa = diminta - masuk[index1].jumlah
-            //         diminta = sisa
-            //         masuk[index1].jumlah = 0
-
-            //         const nilaiSisa = masuk[index1].sub > 0 ? masuk[index1].sub - nilaiDiminta : nilaiDiminta
-            //         nilaiDiminta = nilaiSisa
-            //         masuk[index1].sub = 0
-            //       }
-            //     }
-            //     else {
-            //       const index2 = masuk.findIndex(a => a.jumlah > 0 && a.sub >= 0 && a.kdobat === res.kdobat)
-            //       // console.log('index res 2', index2, masuk[index2], res)
-            //       if (index2 >= 0) {
-            //         if (masuk[index2].jumlah >= diminta) {
-            //           const sisa = masuk[index2].jumlah - diminta
-            //           masuk[index2].jumlah = sisa
-            //           diminta = 0
-
-            //           const nilaiSisa = masuk[index2].sub > 0 ? masuk[index2].sub - nilaiDiminta : nilaiDiminta
-            //           masuk[index2].sub = nilaiSisa
-            //           nilaiDiminta = 0
-            //         }
-            //         else {
-            //           const sisa = diminta - masuk[index2].jumlah
-            //           diminta = sisa
-            //           masuk[index2].jumlah = 0
-
-            //           const nilaiSisa = masuk[index2].sub > 0 ? masuk[index2].sub - nilaiDiminta : nilaiDiminta
-            //           nilaiDiminta = nilaiSisa
-            //           masuk[index2].sub = 0
-            //         }
-            //       }
-            //       // kalo sampe else coba cek mana yang ga match
-            //       else {
-            //         // console.log('index res 2', index2, masuk[index2], res)
-            //         diminta = 0
-            //       }
-            //     }
-            //   }
-            // }
           })
           pak?.forEach(res => {
             const temp = {
@@ -600,85 +232,6 @@ export const useLaporanPermakaianObatProgramStore = defineStore('laporan_pemakai
 
             it.data.push(temp)
             keluar.push(res)
-            // let diminta = res.jumlah
-            // let nilaiDiminta = res.sub
-
-            // while (diminta > 0) {
-            //   const index = masuk.findIndex(a => (a.jumlah > 0 && a.sub >= 0) && a.kdobat === res.kdobat && a.nopenerimaan === res.nopenerimaan)
-            //   // console.log('index pak', index)
-            //   if (index >= 0) {
-            //     if (masuk[index].jumlah >= diminta) {
-            //       const sisa = masuk[index].jumlah - diminta
-            //       masuk[index].jumlah = sisa
-            //       diminta = 0
-
-            //       const nilaiSisa = masuk[index].sub - nilaiDiminta
-            //       masuk[index].sub = nilaiSisa
-            //       nilaiDiminta = 0
-            //     }
-            //     else {
-            //       const sisa = diminta - masuk[index].jumlah
-            //       diminta = sisa
-            //       masuk[index].jumlah = 0
-
-            //       const nilaiSisa = masuk[index].sub - nilaiDiminta
-            //       nilaiDiminta = nilaiSisa
-            //       masuk[index].sub = 0
-            //     }
-            //   }
-            //   else {
-            //     const index1 = masuk.findIndex(a => (a.jumlah > 0 && a.sub >= 0) && a.kdobat === res.kdobat && a.harga === res.harga)
-            //     // console.log('index pak 1', index1)
-            //     if (index1 >= 0) {
-            //       if (masuk[index1].jumlah >= diminta) {
-            //         const sisa = masuk[index1].jumlah - diminta
-            //         masuk[index1].jumlah = sisa
-            //         diminta = 0
-
-            //         const nilaiSisa = masuk[index1].sub - nilaiDiminta
-            //         masuk[index1].sub = nilaiSisa
-            //         nilaiDiminta = 0
-            //       }
-            //       else {
-            //         const sisa = diminta - masuk[index1].jumlah
-            //         diminta = sisa
-            //         masuk[index1].jumlah = 0
-
-            //         const nilaiSisa = masuk[index1].sub - nilaiDiminta
-            //         nilaiDiminta = nilaiSisa
-            //         masuk[index1].sub = 0
-            //       }
-            //     }
-            //     else {
-            //       const index2 = masuk.findIndex(a => (a.jumlah > 0 && a.sub >= 0) && a.kdobat === res.kdobat)
-            //       // console.log('index pak 2', index2)
-            //       if (index2 >= 0) {
-            //         if (masuk[index2].jumlah >= diminta) {
-            //           const sisa = masuk[index2].jumlah - diminta
-            //           masuk[index2].jumlah = sisa
-            //           diminta = 0
-
-            //           const nilaiSisa = masuk[index2].sub - nilaiDiminta
-            //           masuk[index2].sub = nilaiSisa
-            //           nilaiDiminta = 0
-            //         }
-            //         else {
-            //           const sisa = diminta - masuk[index2].jumlah
-            //           diminta = sisa
-            //           masuk[index2].jumlah = 0
-
-            //           const nilaiSisa = masuk[index2].sub - nilaiDiminta
-            //           nilaiDiminta = nilaiSisa
-            //           masuk[index2].sub = 0
-            //         }
-            //       }
-            //       else {
-            //         // console.log('kode obat tidak ada', res, masuk.filter(f => f.jumlah > 0))
-            //         diminta = 0
-            //       }
-            //     }
-            //   }
-            // }
           })
           it?.barangrusak?.forEach(res => {
             const temp = {
@@ -689,84 +242,6 @@ export const useLaporanPermakaianObatProgramStore = defineStore('laporan_pemakai
 
             it.data.push(temp)
             keluar.push(res)
-            // let diminta = res.jumlah
-            // let nilaiDiminta = res.sub
-            // while (diminta > 0) {
-            //   const index = masuk.findIndex(a => a.jumlah > 0 && a.kdobat === res.kdobat && a.nopenerimaan === res.nopenerimaan)
-            //   if (index >= 0) {
-            //     if (masuk[index].jumlah >= diminta) {
-            //       const sisa = masuk[index].jumlah - diminta
-            //       masuk[index].jumlah = sisa
-            //       diminta = 0
-
-            //       const nilaiSisa = masuk[index].sub > 0 ? masuk[index].sub - nilaiDiminta : nilaiDiminta
-            //       masuk[index].sub = nilaiSisa
-            //       nilaiDiminta = 0
-            //     }
-            //     else {
-            //       const sisa = diminta - masuk[index].jumlah
-            //       diminta = sisa
-            //       masuk[index].jumlah = 0
-
-            //       const nilaiSisa = masuk[index].sub > 0 ? masuk[index].sub - nilaiDiminta : nilaiDiminta
-            //       nilaiDiminta = nilaiSisa
-            //       masuk[index].sub = 0
-            //     }
-            //   }
-            //   else {
-            //     const index1 = masuk.findIndex(a => a.jumlah > 0 && a.kdobat === res.kdobat && a.harga === res.harga)
-            //     // console.log('index res 1', index1)
-            //     if (index1 >= 0) {
-            //       if (masuk[index1].jumlah >= diminta) {
-            //         const sisa = masuk[index1].jumlah - diminta
-            //         masuk[index1].jumlah = sisa
-            //         diminta = 0
-
-            //         const nilaiSisa = masuk[index1].sub > 0 ? masuk[index1].sub - nilaiDiminta : nilaiDiminta
-            //         masuk[index1].sub = nilaiSisa
-            //         nilaiDiminta = 0
-            //       }
-            //       else {
-            //         const sisa = diminta - masuk[index1].jumlah
-            //         diminta = sisa
-            //         masuk[index1].jumlah = 0
-
-            //         const nilaiSisa = masuk[index1].sub > 0 ? masuk[index1].sub - nilaiDiminta : nilaiDiminta
-            //         nilaiDiminta = nilaiSisa
-            //         masuk[index1].sub = 0
-            //       }
-            //     }
-            //     else {
-            //       const index2 = masuk.findIndex(a => a.jumlah > 0 && a.kdobat === res.kdobat)
-            //       // console.log('index res 2', index2, masuk[index2], res)
-            //       if (index2 >= 0) {
-            //         if (masuk[index2].jumlah >= diminta) {
-            //           const sisa = masuk[index2].jumlah - diminta
-            //           masuk[index2].jumlah = sisa
-            //           diminta = 0
-
-            //           const nilaiSisa = masuk[index2].sub > 0 ? masuk[index2].sub - nilaiDiminta : nilaiDiminta
-            //           masuk[index2].sub = nilaiSisa
-            //           nilaiDiminta = 0
-            //         }
-            //         else {
-            //           const sisa = diminta - masuk[index2].jumlah
-            //           diminta = sisa
-            //           masuk[index2].jumlah = 0
-
-            //           const nilaiSisa = masuk[index2].sub > 0 ? masuk[index2].sub - nilaiDiminta : nilaiDiminta
-            //           nilaiDiminta = nilaiSisa
-            //           masuk[index2].sub = 0
-            //         }
-            //       }
-            //       // kalo sampe else coba cek mana yang ga match
-            //       else {
-            //         // console.log('index res 2', index2, masuk[index2], res)
-            //         diminta = 0
-            //       }
-            //     }
-            //   }
-            // }
           })
           it?.returpbf?.forEach(res => {
             const temp = {
@@ -777,84 +252,6 @@ export const useLaporanPermakaianObatProgramStore = defineStore('laporan_pemakai
 
             it.data.push(temp)
             keluar.push(res)
-            // let diminta = res.jumlah
-            // let nilaiDiminta = res.sub
-            // while (diminta > 0) {
-            //   const index = masuk.findIndex(a => a.jumlah > 0 && a.kdobat === res.kdobat && a.nopenerimaan === res.nopenerimaan)
-            //   if (index >= 0) {
-            //     if (masuk[index].jumlah >= diminta) {
-            //       const sisa = masuk[index].jumlah - diminta
-            //       masuk[index].jumlah = sisa
-            //       diminta = 0
-
-            //       const nilaiSisa = masuk[index].sub > 0 ? masuk[index].sub - nilaiDiminta : nilaiDiminta
-            //       masuk[index].sub = nilaiSisa
-            //       nilaiDiminta = 0
-            //     }
-            //     else {
-            //       const sisa = diminta - masuk[index].jumlah
-            //       diminta = sisa
-            //       masuk[index].jumlah = 0
-
-            //       const nilaiSisa = masuk[index].sub > 0 ? masuk[index].sub - nilaiDiminta : nilaiDiminta
-            //       nilaiDiminta = nilaiSisa
-            //       masuk[index].sub = 0
-            //     }
-            //   }
-            //   else {
-            //     const index1 = masuk.findIndex(a => a.jumlah > 0 && a.kdobat === res.kdobat && a.harga === res.harga)
-            //     // console.log('index res 1', index1)
-            //     if (index1 >= 0) {
-            //       if (masuk[index1].jumlah >= diminta) {
-            //         const sisa = masuk[index1].jumlah - diminta
-            //         masuk[index1].jumlah = sisa
-            //         diminta = 0
-
-            //         const nilaiSisa = masuk[index1].sub > 0 ? masuk[index1].sub - nilaiDiminta : nilaiDiminta
-            //         masuk[index1].sub = nilaiSisa
-            //         nilaiDiminta = 0
-            //       }
-            //       else {
-            //         const sisa = diminta - masuk[index1].jumlah
-            //         diminta = sisa
-            //         masuk[index1].jumlah = 0
-
-            //         const nilaiSisa = masuk[index1].sub > 0 ? masuk[index1].sub - nilaiDiminta : nilaiDiminta
-            //         nilaiDiminta = nilaiSisa
-            //         masuk[index1].sub = 0
-            //       }
-            //     }
-            //     else {
-            //       const index2 = masuk.findIndex(a => a.jumlah > 0 && a.kdobat === res.kdobat)
-            //       // console.log('index res 2', index2, masuk[index2], res)
-            //       if (index2 >= 0) {
-            //         if (masuk[index2].jumlah >= diminta) {
-            //           const sisa = masuk[index2].jumlah - diminta
-            //           masuk[index2].jumlah = sisa
-            //           diminta = 0
-
-            //           const nilaiSisa = masuk[index2].sub > 0 ? masuk[index2].sub - nilaiDiminta : nilaiDiminta
-            //           masuk[index2].sub = nilaiSisa
-            //           nilaiDiminta = 0
-            //         }
-            //         else {
-            //           const sisa = diminta - masuk[index2].jumlah
-            //           diminta = sisa
-            //           masuk[index2].jumlah = 0
-
-            //           const nilaiSisa = masuk[index2].sub > 0 ? masuk[index2].sub - nilaiDiminta : nilaiDiminta
-            //           nilaiDiminta = nilaiSisa
-            //           masuk[index2].sub = 0
-            //         }
-            //       }
-            //       // kalo sampe else coba cek mana yang ga match
-            //       else {
-            //         // console.log('index res 2', index2, masuk[index2], res)
-            //         diminta = 0
-            //       }
-            //     }
-            //   }
-            // }
           })
         }
         else {
@@ -887,18 +284,6 @@ export const useLaporanPermakaianObatProgramStore = defineStore('laporan_pemakai
               ket: 'Penerimaan'
             }
 
-            // console.log('terima nya ', jumlah, subt, ms)
-
-            // const index1 = masukx.findIndex(f => f.kd_obat === it?.kd_obat)
-            // // console.log('terima nya index', index1)
-            // if (index1 >= 0) {
-            //   const jumM = masukx[index1].jumlah + jumlah
-            //   const subM = masukx[index1].sub + subt
-
-            //   masukx[index1].jumlah = jumM
-            //   masukx[index1].sub = subM
-            // }
-            // else masukx.push(ms)
             masuk.push(ms)
 
             // console.log('terima ', masukx)
@@ -915,18 +300,6 @@ export const useLaporanPermakaianObatProgramStore = defineStore('laporan_pemakai
               ket: 'Retur Persiapan'
             }
 
-            // console.log('terima nya ', jumlah, subt, ms)
-
-            // const index1 = masukx.findIndex(f => f.kd_obat === it?.kd_obat)
-            // // console.log('terima nya index', index1)
-            // if (index1 >= 0) {
-            //   const jumM = masukx[index1].jumlah + jumlah
-            //   const subM = masukx[index1].sub + subt
-
-            //   masukx[index1].jumlah = jumM
-            //   masukx[index1].sub = subM
-            // }
-            // else masukx.push(ms)
             masuk.push(ms)
 
             // console.log('terima ', masukx)
@@ -941,16 +314,6 @@ export const useLaporanPermakaianObatProgramStore = defineStore('laporan_pemakai
 
             }
 
-            // const index1 = masukx.findIndex(f => f.kd_obat === it?.kd_obat)
-            // if (index1 >= 0) {
-            //   const jumM = masukx[index1].jumlah + raw.jumlah
-            //   const subM = masukx[index1].sub + raw.sub
-            //   // console.log('ret ', masukx[index1].jumlah)
-
-            //   masukx[index1].jumlah = jumM
-            //   masukx[index1].sub = subM
-            // }
-            // else masukx.push(raw)
             masuk.push(raw)
           }
 
@@ -965,17 +328,6 @@ export const useLaporanPermakaianObatProgramStore = defineStore('laporan_pemakai
               ket: 'Penngembalian sisa pasien'
             }
             if (raw?.jumlah > 0) {
-              // const index1 = masukx.findIndex(f => f.kd_obat === raw?.kdobat)
-              // // console.log('Ada Peny  index1', raw, index1, masukx)
-              // if (index1 >= 0) {
-              //   const jumM = masukx[index1].jumlah + raw.jumlah
-              //   const subM = masukx[index1].sub + raw.sub
-
-              //   masukx[index1].jumlah = jumM
-              //   masukx[index1].sub = subM
-              // }
-
-              // else masukx.push(raw)
               masuk.push(raw)
             }
             else if (raw?.jumlah < 0) {
@@ -985,17 +337,6 @@ export const useLaporanPermakaianObatProgramStore = defineStore('laporan_pemakai
               raw.jumlah = jumlah
               raw.sub = sub
 
-              // const index = keluar.findIndex(f => f.kd_obat === raw?.kdobat)
-              // // console.log('Ada Peny  index', raw, index, keluar)
-              // if (index >= 0) {
-              //   const jumM = keluar[index].jumlah + raw.jumlah
-              //   const subM = keluar[index].sub + raw.sub
-
-              //   keluar[index].jumlah = jumM
-              //   keluar[index].sub = subM
-              // }
-
-              // else keluar.push(raw)
               keluarx.push(raw)
             }
             // console.log('Ada penyesuanag', masukx, masuk)
@@ -1011,17 +352,7 @@ export const useLaporanPermakaianObatProgramStore = defineStore('laporan_pemakai
               ket: 'Resep Keluar OK'
             }
 
-            // const index = keluar.findIndex(f => f.kd_obat === it?.kd_obat)
-            // if (index >= 0) {
-            //   const jumM = keluar[index].jumlah + raw.jumlah
-            //   const subM = keluar[index].sub + raw.sub
 
-            //   keluar[index].jumlah = jumM
-            //   keluar[index].sub = subM
-            // }
-            // else {
-            //   keluar.push(raw)
-            // }
             keluarx.push(raw)
           }
           if (it?.distribusipersiapan?.length) {
@@ -1033,17 +364,7 @@ export const useLaporanPermakaianObatProgramStore = defineStore('laporan_pemakai
               ket: 'Distribusi Persiapan'
             }
 
-            // const index = keluar.findIndex(f => f.kd_obat === it?.kd_obat)
-            // if (index >= 0) {
-            //   const jumM = keluar[index].jumlah + raw.jumlah
-            //   const subM = keluar[index].sub + raw.sub
 
-            //   keluar[index].jumlah = jumM
-            //   keluar[index].sub = subM
-            // }
-            // else {
-            //   keluar.push(raw)
-            // }
             keluarx.push(raw)
           }
           if (it?.resepkeluar?.length) {
@@ -1055,17 +376,7 @@ export const useLaporanPermakaianObatProgramStore = defineStore('laporan_pemakai
               ket: 'Resep Keluar'
             }
 
-            // const index = keluar.findIndex(f => f.kd_obat === it?.kd_obat)
-            // if (index >= 0) {
-            //   const jumM = keluar[index].jumlah + raw.jumlah
-            //   const subM = keluar[index].sub + raw.sub
 
-            //   keluar[index].jumlah = jumM
-            //   keluar[index].sub = subM
-            // }
-            // else {
-            //   keluar.push(raw)
-            // }
             keluarx.push(raw)
           }
           if (it?.resepkeluarracikan?.length) {
@@ -1077,17 +388,6 @@ export const useLaporanPermakaianObatProgramStore = defineStore('laporan_pemakai
               ket: 'Resep Keluar Racikan'
             }
 
-            // const index = keluar.findIndex(f => f.kd_obat === it?.kd_obat)
-            // if (index >= 0) {
-            //   const jumM = keluar[index].jumlah + raw.jumlah
-            //   const subM = keluar[index].sub + raw.sub
-
-            //   keluar[index].jumlah = jumM
-            //   keluar[index].sub = subM
-            // }
-            // else {
-            //   keluar.push(raw)
-            // }
             keluarx.push(raw)
           }
           if (it?.returpbf?.length) {
@@ -1099,17 +399,6 @@ export const useLaporanPermakaianObatProgramStore = defineStore('laporan_pemakai
               ket: 'Retur PBF'
             }
 
-            // const index = keluar.findIndex(f => f.kd_obat === it?.kd_obat)
-            // if (index >= 0) {
-            //   const jumM = keluar[index].jumlah + raw.jumlah
-            //   const subM = keluar[index].sub + raw.sub
-
-            //   keluar[index].jumlah = jumM
-            //   keluar[index].sub = subM
-            // }
-            // else {
-            //   keluar.push(raw)
-            // }
             keluarx.push(raw)
           }
           if (it?.barangrusak?.length) {
@@ -1121,17 +410,6 @@ export const useLaporanPermakaianObatProgramStore = defineStore('laporan_pemakai
               ket: 'Barang Rusak'
             }
 
-            // const index = keluar.findIndex(f => f.kd_obat === it?.kd_obat)
-            // if (index >= 0) {
-            //   const jumM = keluar[index].jumlah + raw.jumlah
-            //   const subM = keluar[index].sub + raw.sub
-
-            //   keluar[index].jumlah = jumM
-            //   keluar[index].sub = subM
-            // }
-            // else {
-            //   keluar.push(raw)
-            // }
             keluarx.push(raw)
           }
           if (it?.mutasikeluar?.length) {
@@ -1143,17 +421,7 @@ export const useLaporanPermakaianObatProgramStore = defineStore('laporan_pemakai
               ket: 'Mutasi Keluar'
             }
 
-            // const index = keluar.findIndex(f => f.kd_obat === it?.kd_obat)
-            // if (index >= 0) {
-            //   const jumM = keluar[index].jumlah + raw.jumlah
-            //   const subM = keluar[index].sub + raw.sub
 
-            //   keluar[index].jumlah = jumM
-            //   keluar[index].sub = subM
-            // }
-            // else {
-            //   keluar.push(raw)
-            // }
             keluarx.push(raw)
           }
         }
@@ -1208,9 +476,9 @@ export const useLaporanPermakaianObatProgramStore = defineStore('laporan_pemakai
           const npms = masuk.map(m => m.nopenerimaan)
           const nkms = keluar.map(m => m.nopenerimaan)
           const noper = filterDuplicateArrays([...new Set([...npms, ...nkms, ...aw])])
-          console.log('masuk', masuk)
-          console.log('keluar', keluar)
-          console.log('noper', noper)
+          // console.log('masuk', masuk)
+          // console.log('keluar', keluar)
+          // console.log('noper', noper)
 
           // const akhir = masuk.filter(f => f.jumlah !== 0)
           const akhir = []
@@ -1228,14 +496,14 @@ export const useLaporanPermakaianObatProgramStore = defineStore('laporan_pemakai
             }
             akhir.push(temp)
           })
-          console.log('akhir', akhir)
+          // console.log('akhir', akhir)
 
           it.akhir = akhir.filter(f => f.jumlah !== 0)
           it.akhir.forEach(s => {
             s.tgl = this.params.tahun + '-' + this.params.bulan + '-31 23:59:50'
             const temp = {
               tgl: s.tgl,
-              ket: 'Saldo Akhir (' + s.nopenerimaan + ')'
+              ket: 'Saldo Akhir'// (' + s.nopenerimaan + ')'
             }
             if (this.params.jenis === 'rekap' && it.data.filter(f => f.masuk)?.map(m => m.masuk)?.length > 1) {
               // temp.akhir = s
@@ -1296,7 +564,7 @@ export const useLaporanPermakaianObatProgramStore = defineStore('laporan_pemakai
       })
 
       // array = val
-      console.log('metani items', array)
+      // console.log('metani items', array)
     },
     getInitialData (val) {
       this.ketProses = null

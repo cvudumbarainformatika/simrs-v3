@@ -2,58 +2,42 @@
   <table style="width: calc(100vw - 80px);">
     <thead class="my-sticky-header-table">
       <tr>
-        <th width="5%" rowspan="2">
+        <th :rowspan="store.params.jenis === 'detail' ? '2' : '1'" width="5%">
           No
         </th>
-        <th rowspan="2">
+        <th :rowspan="store.params.jenis === 'detail' ? '2' : '1'">
           Obat
         </th>
-        <th v-if="store.params.jenis === 'rekap'" rowspan="2">
+        <th v-if="store.params.jenis === 'rekap'">
           Kode Belanja
         </th>
-        <th rowspan="2">
+        <th :rowspan="store.params.jenis === 'detail' ? '2' : '1'">
           Keterangan
         </th>
-        <th :colspan="store.params.jenis === 'detail' ? '3' : '2'">
+        <th :rowspan="store.params.jenis === 'detail' ? '2' : '1'">
           Saldo Awal
         </th>
-        <th :colspan="store.params.jenis === 'detail' ? '4' : '2'">
+        <th :colspan="store.params.jenis === 'detail' ? '2' : '1'">
           Masuk
         </th>
-        <th :colspan="store.params.jenis === 'detail' ? '4' : '2'">
+        <th :colspan="store.params.jenis === 'detail' ? '2' : '1'">
           Keluar
         </th>
-        <th :colspan="store.params.jenis === 'detail' ? '3' : '2'">
+        <th :rowspan="store.params.jenis === 'detail' ? '2' : '1'">
           Saldo Akhir
         </th>
       </tr>
       <tr>
-        <th>Jml</th>
-        <th v-if="store.params.jenis === 'detail'">
-          Harga
-        </th>
-        <th>Subtotal</th>
         <th v-if="store.params.jenis === 'detail'">
           Tgl Masuk
         </th>
-        <th>Jml</th>
-        <th v-if="store.params.jenis === 'detail'">
-          Harga
-        </th>
-        <th>Subtotal</th>
+        <th v-if="store.params.jenis === 'detail'">Jml</th>
+
         <th v-if="store.params.jenis === 'detail'">
           Tgl Keluar
         </th>
-        <th>Jml</th>
-        <th v-if="store.params.jenis === 'detail'">
-          Harga
-        </th>
-        <th>Subtotal</th>
-        <th>Jml</th>
-        <th v-if="store.params.jenis === 'detail'">
-          Harga
-        </th>
-        <th>Subtotal</th>
+        <th v-if="store.params.jenis === 'detail'">Jml</th>
+
       </tr>
     </thead>
     <tbody>
@@ -74,7 +58,7 @@
           <td v-if="store.params.jenis === 'detail'">
             <q-skeleton type="text" width="60px" height="25px" />
           </td>
-          <td v-if="store.params.jenis === 'detail'">
+          <!-- <td v-if="store.params.jenis === 'detail'">
             <q-skeleton type="text" width="60px" height="25px" />
           </td>
           <td v-if="store.params.jenis === 'detail'">
@@ -85,7 +69,7 @@
           </td>
           <td v-if="store.params.jenis === 'detail'">
             <q-skeleton type="text" width="60px" height="25px" />
-          </td>
+          </td> -->
           <td>
             <q-skeleton type="text" width="60px" height="25px" />
           </td>
@@ -101,7 +85,10 @@
           <td>
             <q-skeleton type="text" width="60px" height="25px" />
           </td>
-          <td>
+          <!-- <td>
+            <q-skeleton type="text" width="60px" height="25px" />
+          </td> -->
+          <!-- <td>
             <q-skeleton type="text" width="60px" height="25px" />
           </td>
           <td>
@@ -109,20 +96,17 @@
           </td>
           <td>
             <q-skeleton type="text" width="60px" height="25px" />
-          </td>
-          <td>
-            <q-skeleton type="text" width="60px" height="25px" />
-          </td>
+          </td> -->
         </tr>
       </template>
       <template v-else-if="!store.items.length">
         <tr v-if="store.params.jenis === 'rekap'">
-          <td colspan="12">
+          <td colspan="8">
             <app-no-data />
           </td>
         </tr>
         <tr v-else>
-          <td colspan="17">
+          <td colspan="9">
             <app-no-data />
           </td>
         </tr>
@@ -152,16 +136,16 @@
               {{ item?.uraian50 }}
             </td>
             <template v-if="!item?.data?.length">
+              <!-- <td v-if="store.params.jenis === 'detail'" /> -->
+              <!-- <td v-if="store.params.jenis === 'detail'" /> -->
+              <!-- <td v-if="store.params.jenis === 'detail'" /> -->
+              <!-- <td v-if="store.params.jenis === 'detail'" /> -->
               <td v-if="store.params.jenis === 'detail'" />
               <td v-if="store.params.jenis === 'detail'" />
-              <td v-if="store.params.jenis === 'detail'" />
-              <td v-if="store.params.jenis === 'detail'" />
-              <td v-if="store.params.jenis === 'detail'" />
-              <td v-if="store.params.jenis === 'detail'" />
-              <td />
-              <td />
-              <td />
-              <td />
+              <!-- <td /> -->
+              <!-- <td /> -->
+              <!-- <td /> -->
+              <!-- <td /> -->
               <td />
               <td />
               <td />
@@ -182,16 +166,16 @@
                   {{ cekNan(formatDouble(parseFloat(data?.saldoawal?.jumlah ?? data?.subAw?.jumlah), 2)) }}
                 </div>
               </td>
-              <td v-if="store.params.jenis === 'detail'">
+              <!-- <td v-if="store.params.jenis === 'detail'">
                 <div v-if="store.params.jenis === 'detail'" class="text-right q-mr-xs">
                   {{ cekNan(formatDouble(parseFloat(data?.saldoawal?.harga), 2)) }}
                 </div>
-              </td>
-              <td>
+              </td> -->
+              <!-- <td>
                 <div class="text-right q-mr-xs" :class="data?.subAw ? 'text-weight-bold' : ''">
                   {{ cekNan(formatDouble(parseFloat(data?.saldoawal?.sub ?? data?.subAw?.sub), 2)) }}
                 </div>
-              </td>
+              </td> -->
               <!-- masuk -->
               <td v-if="store.params.jenis === 'detail'">
                 <div v-if="store.params.jenis === 'detail'" class="text-right q-mr-xs">
@@ -203,16 +187,16 @@
                   {{ cekNan(formatDouble(parseFloat(data?.masuk?.jumlah ?? data?.subMs?.jumlah), 2)) }}
                 </div>
               </td>
-              <td v-if="store.params.jenis === 'detail'">
+              <!-- <td v-if="store.params.jenis === 'detail'">
                 <div v-if="store.params.jenis === 'detail'" class="text-right q-mr-xs">
                   {{ cekNan(formatDouble(parseFloat(data?.masuk?.harga), 2)) }}
                 </div>
-              </td>
-              <td>
+              </td> -->
+              <!-- <td>
                 <div class="text-right q-mr-xs" :class="data?.subMs ? 'text-weight-bold' : ''">
                   {{ cekNan(formatDouble(parseFloat(data?.masuk?.sub ?? data?.subMs?.sub), 2)) }}
                 </div>
-              </td>
+              </td> -->
               <!-- keluar -->
               <td v-if="store.params.jenis === 'detail'">
                 <div v-if="store.params.jenis === 'detail'" class="text-right q-mr-xs">
@@ -224,7 +208,7 @@
                   {{ cekNan(formatDouble(parseFloat(data?.keluar?.jumlah ?? data?.subKel?.jumlah), 2)) }}
                 </div>
               </td>
-              <td v-if="store.params.jenis === 'detail'">
+              <!-- <td v-if="store.params.jenis === 'detail'">
                 <div v-if="store.params.jenis === 'detail'" class="text-right q-mr-xs">
                   {{ cekNan(formatDouble(parseFloat(data?.keluar?.harga), 2)) }}
                 </div>
@@ -233,7 +217,7 @@
                 <div class="text-right q-mr-xs" :class="data?.subKel ? 'text-weight-bold' : ''">
                   {{ cekNan(formatDouble(parseFloat(data?.keluar?.sub ?? data?.subKel?.sub), 2)) }}
                 </div>
-              </td>
+              </td> -->
               <!-- saldo akhir-->
               <td>
                 <div class="text-right q-mr-xs"
@@ -241,13 +225,13 @@
                   {{ cekNan(formatDouble(parseFloat(data?.akhir?.jumlah ?? data?.subtotal?.jumlah), 2)) }}
                 </div>
               </td>
-              <td v-if="store.params.jenis === 'detail'">
+              <!-- <td v-if="store.params.jenis === 'detail'">
                 <div v-if="store.params.jenis === 'detail'" class="text-right q-mr-xs"
                   :class="data?.subtotal ? 'text-weight-bold' : ''">
                   {{ cekNan(formatDouble(parseFloat(data?.akhir?.harga), 2)) }}
                 </div>
-              </td>
-              <td>
+              </td> -->
+              <!-- <td>
                 <div class="text-right q-mr-xs row"
                   :class="data?.subtotal || store.params.jenis !== 'detail' ? 'text-weight-bold' : ''">
                   <div :class="item?.penyesuaian?.length ? 'col-11' : 'col-12'">
@@ -257,7 +241,7 @@
                     *
                   </div>
                 </div>
-              </td>
+              </td> -->
             </tr>
           </template>
         </template>
@@ -272,7 +256,7 @@
             <td>
               <q-skeleton type="text" width="60px" height="25px" />
             </td>
-            <td v-if="store.params.jenis === 'detail'">
+            <!-- <td v-if="store.params.jenis === 'detail'">
               <q-skeleton type="text" width="60px" height="25px" />
             </td>
             <td v-if="store.params.jenis === 'detail'">
@@ -283,7 +267,7 @@
             </td>
             <td v-if="store.params.jenis === 'detail'">
               <q-skeleton type="text" width="60px" height="25px" />
-            </td>
+            </td> -->
             <td v-if="store.params.jenis === 'detail'">
               <q-skeleton type="text" width="60px" height="25px" />
             </td>
@@ -305,7 +289,7 @@
             <td>
               <q-skeleton type="text" width="60px" height="25px" />
             </td>
-            <td>
+            <!-- <td>
               <q-skeleton type="text" width="60px" height="25px" />
             </td>
             <td>
@@ -316,7 +300,7 @@
             </td>
             <td>
               <q-skeleton type="text" width="60px" height="25px" />
-            </td>
+            </td> -->
           </tr>
         </template>
         <!-- <tr class="text-weight-bold">
