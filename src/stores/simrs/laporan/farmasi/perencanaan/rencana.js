@@ -245,6 +245,7 @@ export const useLaporanPerencanaanStore = defineStore('laporan_perencanaan', {
           'Kode Obat': 'kd_obat',
           'Nama Obat': 'nama_obat',
           Satuan: 'satuan_k',
+          Belanja: 'uraian50',
           'Jumlah Perencanann': 'jumlRenc',
           'Nilai Perencanaan': 'nilaiRenc',
           'Jumlah Pemesanan': 'jumlPesan',
@@ -259,6 +260,7 @@ export const useLaporanPerencanaanStore = defineStore('laporan_perencanaan', {
           'Kode Obat': 'kd_obat',
           'Nama Obat': 'nama_obat',
           Satuan: 'satuan_k',
+          Belanja: 'uraian50',
           'Tanggal Perencanaan': 'tglRenc',
           'Jumlah Perencanaan': 'jumlRenc',
           'Harga Perencanaan': 'harRenc',
@@ -346,6 +348,7 @@ export const useLaporanPerencanaanStore = defineStore('laporan_perencanaan', {
                 ada.kd_obat = item?.kd_obat
                 ada.nama_obat = item?.nama_obat
                 ada.satuan_k = item?.satuan_k
+                ada.uraian50 = item?.uraian50
 
                 ada.jumlRenc = this.cekNan(formatDoubleKoma(parseFloat(dat?.rencana?.jumlah), 2))
                 ada.nilaiRenc = this.cekNan(formatDoubleKoma(parseFloat(dat?.rencana?.subtotal), 2))
@@ -362,6 +365,7 @@ export const useLaporanPerencanaanStore = defineStore('laporan_perencanaan', {
                 ada.kd_obat = item?.kd_obat
                 ada.nama_obat = item?.nama_obat
                 ada.satuan_k = item?.satuan_k
+                ada.uraian50 = item?.uraian50
 
               }
               if (dat?.rencana?.tanggal === null && dat?.pesan?.tanggal === null && dat?.terima?.tanggal === null && d !== 0) ada.nama_obat = 'Subtotal'
@@ -395,6 +399,7 @@ export const useLaporanPerencanaanStore = defineStore('laporan_perencanaan', {
           temp.kd_obat = item?.kd_obat
           temp.nama_obat = item?.nama_obat
           temp.satuan_k = item?.satuan_k
+          temp.uraian50 = item?.uraian50
 
           const indexAda = temp.findIndex(f => f.kd_obat === temp?.kd_obat)
           if (indexAda >= 0) data[indexAda] = temp
