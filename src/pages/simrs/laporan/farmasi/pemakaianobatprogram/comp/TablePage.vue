@@ -8,22 +8,33 @@
         <th rowspan="2">
           Obat
         </th>
+        <th v-if="store.params.jenis === 'rekap'" rowspan="2">
+          Kode Belanja
+        </th>
         <th rowspan="2">
-          Belanja
+          Keterangan
+        </th>
+        <th :colspan="store.params.jenis === 'detail' ? '3' : '2'">
+          Saldo Awal
         </th>
         <th :colspan="store.params.jenis === 'detail' ? '4' : '2'">
-          Perencanaan
+          Masuk
         </th>
         <th :colspan="store.params.jenis === 'detail' ? '4' : '2'">
-          Pemesanan
+          Keluar
         </th>
-        <th :colspan="store.params.jenis === 'detail' ? '4' : '2'">
-          Penerimaan
+        <th :colspan="store.params.jenis === 'detail' ? '3' : '2'">
+          Saldo Akhir
         </th>
       </tr>
       <tr>
+        <th>Jml</th>
         <th v-if="store.params.jenis === 'detail'">
-          Tgl Rencana
+          Harga
+        </th>
+        <th>Subtotal</th>
+        <th v-if="store.params.jenis === 'detail'">
+          Tgl Masuk
         </th>
         <th>Jml</th>
         <th v-if="store.params.jenis === 'detail'">
@@ -31,16 +42,13 @@
         </th>
         <th>Subtotal</th>
         <th v-if="store.params.jenis === 'detail'">
-          Tgl Pesan
+          Tgl Keluar
         </th>
         <th>Jml</th>
         <th v-if="store.params.jenis === 'detail'">
           Harga
         </th>
         <th>Subtotal</th>
-        <th v-if="store.params.jenis === 'detail'">
-          Tgl Terima
-        </th>
         <th>Jml</th>
         <th v-if="store.params.jenis === 'detail'">
           Harga
@@ -96,17 +104,25 @@
           <td>
             <q-skeleton type="text" width="60px" height="25px" />
           </td>
-
+          <td>
+            <q-skeleton type="text" width="60px" height="25px" />
+          </td>
+          <td>
+            <q-skeleton type="text" width="60px" height="25px" />
+          </td>
+          <td>
+            <q-skeleton type="text" width="60px" height="25px" />
+          </td>
         </tr>
       </template>
       <template v-else-if="!store.items.length">
         <tr v-if="store.params.jenis === 'rekap'">
-          <td colspan="13">
+          <td colspan="12">
             <app-no-data />
           </td>
         </tr>
         <tr v-else>
-          <td colspan="18">
+          <td colspan="17">
             <app-no-data />
           </td>
         </tr>
@@ -132,11 +148,8 @@
                 </div>
               </div>
             </td>
-            <td :rowspan="rowspanObat(item)">
-              <div class="row">
-                {{ item?.uraian50 }}
-              </div>
-
+            <td v-if="store.params.jenis === 'rekap'" :rowspan="rowspanObat(item)">
+              {{ item?.uraian50 }}
             </td>
             <template v-if="!item?.data?.length">
               <td v-if="store.params.jenis === 'detail'" />
@@ -151,71 +164,98 @@
               <td />
               <td />
               <td />
+              <td />
+              <td />
+              <td />
             </template>
           </tr>
           <template v-if="item?.data?.length">
-            <tr v-for="(data) in filterItem(item?.data)" :key="data" :class="n % 2 === 0 ? 'even' : 'odd'" class="hv">
-              <!-- rencana -->
-              <td v-if="store.params.jenis === 'detail'">
-                <div v-if="store.params.jenis === 'detail'" class="text-right q-mr-xs">
-                  {{ dateFullFormat(data?.rencana?.tanggal) }}
+            <tr v-for="(data) in item?.data" :key="data" :class="n % 2 === 0 ? 'even' : 'odd'" class="hv">
+              <td>
+                <div class="text-right q-mr-xs"
+                  :class="data?.subtotal || (store.params.jenis !== 'detail' && data?.akhir) ? 'text-weight-bold' : ''">
+                  {{ data?.ket }}
                 </div>
               </td>
               <td>
-                <div class="text-right q-mr-xs" :class="data?.rencana?.tanggal === null ? 'text-weight-bold' : ''">
-                  {{ cekNan(formatDouble(parseFloat(data?.rencana?.jumlah), 2)) }}
-                </div>
-              </td>
-              <td v-if="store.params.jenis === 'detail'">
-                <div v-if="store.params.jenis === 'detail'" class="text-right q-mr-xs">
-                  {{ cekNan(formatDouble(parseFloat(data?.rencana?.harga), 2)) }}
-                </div>
-              </td>
-              <td>
-                <div class="text-right q-mr-xs" :class="data?.rencana?.tanggal === null ? 'text-weight-bold' : ''">
-                  {{ cekNan(formatDouble(parseFloat(data?.rencana?.subtotal), 2)) }}
-                </div>
-              </td>
-              <!-- pesan -->
-              <td v-if="store.params.jenis === 'detail'">
-                <div v-if="store.params.jenis === 'detail'" class="text-right q-mr-xs">
-                  {{ dateFullFormat(data?.pesan?.tanggal) }}
-                </div>
-              </td>
-              <td>
-                <div class="text-right q-mr-xs" :class="data?.pesan?.tanggal === null ? 'text-weight-bold' : ''">
-                  {{ cekNan(formatDouble(parseFloat(data?.pesan?.jumlah), 2)) }}
+                <div class="text-right q-mr-xs" :class="data?.subAw ? 'text-weight-bold' : ''">
+                  {{ cekNan(formatDouble(parseFloat(data?.saldoawal?.jumlah ?? data?.subAw?.jumlah), 2)) }}
                 </div>
               </td>
               <td v-if="store.params.jenis === 'detail'">
                 <div v-if="store.params.jenis === 'detail'" class="text-right q-mr-xs">
-                  {{ cekNan(formatDouble(parseFloat(data?.pesan?.harga), 2)) }}
+                  {{ cekNan(formatDouble(parseFloat(data?.saldoawal?.harga), 2)) }}
                 </div>
               </td>
               <td>
-                <div class="text-right q-mr-xs" :class="data?.pesan?.tanggal === null ? 'text-weight-bold' : ''">
-                  {{ cekNan(formatDouble(parseFloat(data?.pesan?.subtotal), 2)) }}
+                <div class="text-right q-mr-xs" :class="data?.subAw ? 'text-weight-bold' : ''">
+                  {{ cekNan(formatDouble(parseFloat(data?.saldoawal?.sub ?? data?.subAw?.sub), 2)) }}
                 </div>
               </td>
-              <!-- terima -->
+              <!-- masuk -->
               <td v-if="store.params.jenis === 'detail'">
                 <div v-if="store.params.jenis === 'detail'" class="text-right q-mr-xs">
-                  {{ dateFullFormat(data?.terima?.tanggal) }}
+                  {{ data?.masuk?.tgl ? dateFullFormat(data?.masuk?.tgl) : '' }}
                 </div>
               </td>
               <td>
-                <div class="text-right q-mr-xs" :class="data?.terima?.tanggal === null ? 'text-weight-bold' : ''">
-                  {{ cekNan(formatDouble(parseFloat(data?.terima?.jumlah), 2)) }}
+                <div class="text-right q-mr-xs" :class="data?.subMs ? 'text-weight-bold' : ''">
+                  {{ cekNan(formatDouble(parseFloat(data?.masuk?.jumlah ?? data?.subMs?.jumlah), 2)) }}
                 </div>
               </td>
               <td v-if="store.params.jenis === 'detail'">
                 <div v-if="store.params.jenis === 'detail'" class="text-right q-mr-xs">
-                  {{ cekNan(formatDouble(parseFloat(data?.terima?.harga), 2)) }}
+                  {{ cekNan(formatDouble(parseFloat(data?.masuk?.harga), 2)) }}
                 </div>
               </td>
               <td>
-                <div class="text-right q-mr-xs" :class="data?.terima?.tanggal === null ? 'text-weight-bold' : ''">
-                  {{ cekNan(formatDouble(parseFloat(data?.terima?.subtotal), 2)) }}
+                <div class="text-right q-mr-xs" :class="data?.subMs ? 'text-weight-bold' : ''">
+                  {{ cekNan(formatDouble(parseFloat(data?.masuk?.sub ?? data?.subMs?.sub), 2)) }}
+                </div>
+              </td>
+              <!-- keluar -->
+              <td v-if="store.params.jenis === 'detail'">
+                <div v-if="store.params.jenis === 'detail'" class="text-right q-mr-xs">
+                  {{ data?.keluar?.tgl ? dateFullFormat(data?.keluar?.tgl) : '' }}
+                </div>
+              </td>
+              <td>
+                <div class="text-right q-mr-xs" :class="data?.subKel ? 'text-weight-bold' : ''">
+                  {{ cekNan(formatDouble(parseFloat(data?.keluar?.jumlah ?? data?.subKel?.jumlah), 2)) }}
+                </div>
+              </td>
+              <td v-if="store.params.jenis === 'detail'">
+                <div v-if="store.params.jenis === 'detail'" class="text-right q-mr-xs">
+                  {{ cekNan(formatDouble(parseFloat(data?.keluar?.harga), 2)) }}
+                </div>
+              </td>
+              <td>
+                <div class="text-right q-mr-xs" :class="data?.subKel ? 'text-weight-bold' : ''">
+                  {{ cekNan(formatDouble(parseFloat(data?.keluar?.sub ?? data?.subKel?.sub), 2)) }}
+                </div>
+              </td>
+              <!-- saldo akhir-->
+              <td>
+                <div class="text-right q-mr-xs"
+                  :class="data?.subtotal || store.params.jenis !== 'detail' ? 'text-weight-bold' : ''">
+                  {{ cekNan(formatDouble(parseFloat(data?.akhir?.jumlah ?? data?.subtotal?.jumlah), 2)) }}
+                </div>
+              </td>
+              <td v-if="store.params.jenis === 'detail'">
+                <div v-if="store.params.jenis === 'detail'" class="text-right q-mr-xs"
+                  :class="data?.subtotal ? 'text-weight-bold' : ''">
+                  {{ cekNan(formatDouble(parseFloat(data?.akhir?.harga), 2)) }}
+                </div>
+              </td>
+              <td>
+                <div class="text-right q-mr-xs row"
+                  :class="data?.subtotal || store.params.jenis !== 'detail' ? 'text-weight-bold' : ''">
+                  <div :class="item?.penyesuaian?.length ? 'col-11' : 'col-12'">
+                    {{ cekNan(formatDouble(parseFloat(data?.akhir?.sub ?? data?.subtotal?.sub), 2)) }}
+                  </div>
+                  <div v-if="item?.penyesuaian?.length && data?.subtotal" class="print-hide col-1 text-right">
+                    *
+                  </div>
                 </div>
               </td>
             </tr>
@@ -294,25 +334,15 @@
 
 // eslint-disable-next-line no-unused-vars
 import { dateFullFormat, formatDouble } from 'src/modules/formatter'
-import { useLaporanPerencanaanStore } from 'src/stores/simrs/laporan/farmasi/perencanaan/rencana'
+import { useLaporanPermakaianObatProgramStore } from 'src/stores/simrs/laporan/farmasi/pemakaianobatprogram/obatprogram'
 
-
-const store = useLaporanPerencanaanStore()
+const store = useLaporanPermakaianObatProgramStore()
 
 function rowspanObat (val) {
-  const salLength = filterItem(val?.data)?.length
+  const salLength = val?.data?.length
   const panj = salLength + 1
 
   return panj
-}
-function filterItem (val) {
-  const item = []
-  if (store.params.jenis === 'rekap') {
-    const indexLength = val?.length
-    // console.log('index', indexLength, val[indexLength - 1])
-    item[0] = val[indexLength - 1]
-    return item
-  } else return val
 }
 function cekNan (val) {
   return isNaN(parseFloat(val)) ? '' : val

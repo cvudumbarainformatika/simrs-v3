@@ -134,7 +134,7 @@ export const useLaporanPerencanaanStore = defineStore('laporan_perencanaan', {
 
 
         const maxAll = Math.max(item.rencana?.length, item.pesan?.length, item.terima?.length)
-        console.log('maxAll', maxAll, item?.kd_obat)
+        // console.log('maxAll', maxAll, item?.kd_obat)
 
         item.data = []
         for (let index = 0; index < maxAll; index++) {
