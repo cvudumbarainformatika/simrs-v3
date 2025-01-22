@@ -81,12 +81,12 @@ const menus = ref([
   },
   {
     name: 'edukasi-page',
-    label: 'Discharge Summary',
-    title: 'DISCHARGE SUMMARY',
-    desc: 'Ringkasan Pulang Pasien',
+    label: 'Edukasi Pasien',
+    title: 'EDUKASI PASIEN',
+    desc: 'Edukasi KIE Pasien',
     icon: 'icon-my-file_sign',
     nakes: ['1', '2', '3'],
-    comp: shallowRef(defineAsyncComponent(() => import('./dischargeplanning/IndexPage.vue')))
+    comp: shallowRef(defineAsyncComponent(() => import('./edukasi/IndexPage.vue')))
   },
   {
     name: 'surat-kematian',
