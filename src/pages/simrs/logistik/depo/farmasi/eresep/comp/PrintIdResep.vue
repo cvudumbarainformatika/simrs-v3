@@ -1,23 +1,11 @@
 <template>
   <q-dialog id="endas" maximized>
     <div class="bg-white batang">
-      <div
-        id="printGueeee"
-        class="column items-center bg-white page-x f-12"
-      >
-        <div
-          class="col no-wrap garis2 text-center"
-        >
+      <div id="printGueeee" class="column items-center bg-white page-x f-12">
+        <div class="col no-wrap garis2 text-center">
           <div class="row no-wrap justify-center">
-            <div
-              class="q-mr-sm"
-              style="min-width: 1cm;"
-            >
-              <q-img
-                src="~assets/logos/logo-rsud.png"
-                spinner-color="white"
-                style="height: 0.9cm; max-width: 0.9cm"
-              />
+            <div class="q-mr-sm" style="min-width: 1cm;">
+              <q-img src="~assets/logos/logo-rsud.png" spinner-color="white" style="height: 0.9cm; max-width: 0.9cm" />
             </div>
             <div class="">
               <div class="f-12">
@@ -33,15 +21,20 @@
                 Fax. (0335) 432702
               </div>
             </div>
+
+            <div class="q-ml-sm text-right">
+              <span class="text-weight-bolder f-26">{{ item?.nomor }}</span>
+            </div>
           </div>
         </div>
         <div class="garis" />
         <div class="garis" />
         <div class=" q-mt-xs ">
-          <span class="text-weight-bolder f-14">{{ item?.noresep }}</span> ({{ item?.sistembayar?.rs2 }}) / {{ dateFull(item?.tgl_kirim) }}
+          <span class="text-weight-bolder f-14">{{ item?.noresep }}</span> ({{ item?.sistembayar?.rs2 }}) / {{
+            dateFull(item?.tgl_kirim) }}
         </div>
         <div class="f-12">
-          {{ item?.norm }}  -  {{ item?.datapasien?.noka??'tidak ada no BPJs' }}  -  {{ item?.datapasien?.nama }}
+          {{ item?.norm }} - {{ item?.datapasien?.noka ?? 'tidak ada no BPJs' }} - {{ item?.datapasien?.nama }}
         </div>
         <div class="f-12">
           {{ item?.sep?.rs8 ?? '-' }}
@@ -56,22 +49,13 @@
           <div class="col-shrink q-mr-xs">
             {{ item?.dokter?.nama }}
           </div>
-          <div
-            v-if="item?.poli"
-            class="col-shrink "
-          >
+          <div v-if="item?.poli" class="col-shrink ">
             - {{ item?.poli?.rs2 }}
           </div>
-          <div
-            v-if="item?.ruanganranap"
-            class="col-shrink "
-          >
+          <div v-if="item?.ruanganranap" class="col-shrink ">
             - {{ item?.ruanganranap?.rs2 }}
           </div>
-          <div
-            v-if="item?.kunjunganranap"
-            class="col-shrink"
-          >
+          <div v-if="item?.kunjunganranap" class="col-shrink">
             <div v-if="!item?.kunjunganranap?.titipan">
               - {{ item?.kunjunganranap?.rs6 }}
             </div>
@@ -80,10 +64,7 @@
             </div>
           </div>
         </div>
-        <div
-          v-if="item?.diagnosaigd && !head"
-          class="row q-mb-xs"
-        >
+        <div v-if="item?.diagnosaigd && !head" class="row q-mb-xs">
           <div class="col-shrink q-mr-xs">
             diagnosa IGD :
           </div>
@@ -91,10 +72,7 @@
             {{ item?.diagnosaigd }}
           </div>
         </div>
-        <div
-          v-if="item?.diagnosa && !head"
-          class="row q-mb-xs"
-        >
+        <div v-if="item?.diagnosa && !head" class="row q-mb-xs">
           <div class="col-shrink q-mr-xs">
             diagnosa :
           </div>
@@ -104,31 +82,28 @@
         </div>
         <div class="garis" />
         <div class="garis" />
-        <div
-          v-if="item?.permintaanresep?.length && !head"
-          class="q-mt-sm full-width"
-        >
+        <div v-if="item?.permintaanresep?.length && !head" class="q-mt-sm full-width">
           <div class="">
-            <div v-for="(rinc,i) in item?.permintaanresep" :key="i">
-              <div v-if="(item?.flag==='3' && rinc?.done) || parseInt(item?.flag)<=2">
-                <div class="row justify-between" :class="rinc?.keterangan_bypass?'':'q-mb-xs'">
+            <div v-for="(rinc, i) in item?.permintaanresep" :key="i">
+              <div v-if="(item?.flag === '3' && rinc?.done) || parseInt(item?.flag) <= 2">
+                <div class="row justify-between" :class="rinc?.keterangan_bypass ? '' : 'q-mb-xs'">
                   <div class="col-shrink">
-                    {{ i+1 }}
+                    {{ i + 1 }}
                   </div>
                   <div class="col-5 ">
                     {{ rinc?.mobat?.nama_obat }}
                   </div>
                   <div class="col-2">
-                    <i>{{ rinc?.aturan }}  </i>
+                    <i>{{ rinc?.aturan }} </i>
                   </div>
                   <div class="col-2">
-                    <i>{{ rinc?.jumlah }}  {{ rinc?.mobat?.satuan_k }}</i>
+                    <i>{{ rinc?.jumlah }} {{ rinc?.mobat?.satuan_k }}</i>
                   </div>
                   <div class="col-2 text-right">
-                    <i>{{ formatDouble(rinc?.harga,2) }}</i>
+                    <i>{{ formatDouble(rinc?.harga, 2) }}</i>
                   </div>
                 </div>
-                <div v-if="rinc?.keterangan !=='-' && rinc?.keterangan !==''" class="row q-mb-xs q-ml-sm">
+                <div v-if="rinc?.keterangan !== '-' && rinc?.keterangan !== ''" class="row q-mb-xs q-ml-sm">
                   Ket. : {{ rinc?.keterangan }}
                 </div>
                 <div v-if="rinc?.keterangan_bypass" class="row q-mb-xs q-ml-sm">
@@ -148,31 +123,24 @@
           </div>
         </div>
 
-        <div
-          v-if="item?.listRacikan?.length && !head"
-          class="full-width"
-        >
-          <div
-            v-for="(lirac,i) in item?.listRacikan"
-            :key="i"
-            class="full-width q-mb-xs"
-          >
+        <div v-if="item?.listRacikan?.length && !head" class="full-width">
+          <div v-for="(lirac, i) in item?.listRacikan" :key="i" class="full-width q-mb-xs">
             <!-- <div v-if="lirac?.done"> -->
             <div class="row items-center justify-between ">
               <div class="col-shrink ">
-                {{ item?.permintaanresep?.length+i+1 }}
+                {{ item?.permintaanresep?.length + i + 1 }}
               </div>
               <div class="col-5 ">
                 {{ lirac?.namaracikan }}
               </div>
               <div class="col-2 ">
-                <i>{{ lirac?.aturan }}  </i>
+                <i>{{ lirac?.aturan }} </i>
               </div>
               <div class="col-2 ">
-                <i>{{ lirac?.jumlahdibutuhkan }}  {{ lirac?.satuan_racik }}</i>
+                <i>{{ lirac?.jumlahdibutuhkan }} {{ lirac?.satuan_racik }}</i>
               </div>
               <div class="col-2 text-right">
-                <i>{{ formatDouble(lirac?.harga,2) }}</i>
+                <i>{{ formatDouble(lirac?.harga, 2) }}</i>
               </div>
             </div>
             <!-- <div v-if="parseInt(item?.flag)<=2" class="row q-ml-lg f-8">
@@ -182,9 +150,11 @@
               <div>* <i>{{ lirac?.jumlahdibutuhkan }}  {{ lirac?.satuan_racik }}</i></div>
               <div> <i>{{ formatDouble(lirac?.harga,2) }}</i></div>
             </div> -->
-            <div v-for="(rac,n) in lirac?.rincian" :key="n">
+            <div v-for="(rac, n) in lirac?.rincian" :key="n">
               <div class="row q-ml-lg f-12 items-end">
-                <div>* <i>{{ rac?.mobat?.nama_obat }} - <span v-if="parseInt(lirac?.flag)<=2" class="">(rsp : {{ rac?.jumlahresep }}) - </span> <span class="">{{ rac?.jumlahobat }} ({{ rac?.mobat?.satuan_k }})</span></i></div>
+                <div>* <i>{{ rac?.mobat?.nama_obat }} - <span v-if="parseInt(lirac?.flag) <= 2" class="">(rsp : {{
+                  rac?.jumlahresep }}) - </span> <span class="">{{ rac?.jumlahobat }} ({{ rac?.mobat?.satuan_k
+                      }})</span></i></div>
               </div>
               <div v-if="rac?.keterangan_bypass" class="row q-ml-xl items-end q-mb-xs">
                 <div>Ket. bypass : {{ rac?.keterangan_bypass }} </div>
@@ -199,7 +169,7 @@
         <div class="garis" v-if="!head" />
         <div v-if="!head" class="row justify-between  text-weight-bold">
           <div>Subtotal</div>
-          <div>{{ formatDouble(item?.subtotal,2) }}</div>
+          <div>{{ formatDouble(item?.subtotal, 2) }}</div>
         </div>
         <div v-if="!head" class="garis q-mt-xs" />
         <div v-if="!head" class="garis" />
@@ -210,18 +180,14 @@
           <div class="ttd-petugas">
             <div>{{ dateFullFormat(new Date()) }} : {{ formatJam(new Date()) }}</div>
             <div>
-              <vue-qrcode
-                :value="qrUrl"
-                tag="svg"
-                :options="{
-                  errorCorrectionLevel: 'Q',
-                  color: {
-                    dark: '#000000',
-                    light: '#ffffff',
-                  },
-                  margin:2
-                }"
-              />
+              <vue-qrcode :value="qrUrl" tag="svg" :options="{
+                errorCorrectionLevel: 'Q',
+                color: {
+                  dark: '#000000',
+                  light: '#ffffff',
+                },
+                margin: 2
+              }" />
             </div>
             <div class="text-center">
               Petugas RS
@@ -238,7 +204,7 @@ import { dateFullFormat, formatJam, dateFull, formatDouble } from 'src/modules/f
 import { computed, onMounted } from 'vue'
 const emits = defineEmits(['close'])
 const props = defineProps({
-  item: { type: Object, default: () => {} },
+  item: { type: Object, default: () => { } },
   head: { type: Boolean, default: false }
 })
 const qrUrl = computed(() => {
@@ -291,12 +257,11 @@ window.onafterprint = (event) => {
 defineExpose({ printPage })
 </script>
 <style lang="scss" scoped>
-
-.fnt-10{
+.fnt-10 {
   font-size: 10px !important;
-  }
+}
 
-.page-x{
+.page-x {
   display: block;
   margin-left: auto;
   margin-right: auto;
@@ -311,6 +276,7 @@ defineExpose({ printPage })
   border-top: 1px dashed black;
   margin-bottom: 2px;
 }
+
 .garis2 {
   width: 90%;
 }
