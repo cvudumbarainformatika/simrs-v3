@@ -1013,6 +1013,7 @@ const historyPage = defineAsyncComponent(() => import('src/pages/simrs/poli/tind
 
 function openRajal (val) {
   // console.log('refEtiketRajal', refEtiketRajal.value)
+  console.log('open rajal', val)
   rajalRinc.value = val
   rajalOpen.value = true
   setTimeout(() => {

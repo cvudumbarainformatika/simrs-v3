@@ -4,16 +4,10 @@
       <div class="column garis-luar q-pb-sm">
         <div class="col text-center">
           <div class="row no-wrap justify-center content-center q-pt-xs">
-            <div
-              class="col-auto q-mr-sm"
-              style="min-width: 1cm;"
-            >
+            <div class="col-auto q-mr-sm" style="min-width: 1cm;">
               <div class="q-mt-xs">
-                <q-img
-                  src="~assets/logos/logo-rsud.png"
-                  spinner-color="white"
-                  style="height: 0.9cm; max-width: 0.9cm"
-                />
+                <q-img src="~assets/logos/logo-rsud.png" spinner-color="white"
+                  style="height: 0.9cm; max-width: 0.9cm" />
               </div>
             </div>
             <div class="col-auto ">
@@ -32,24 +26,16 @@
             </div>
           </div>
         </div>
-        <q-separator
-          class="garis-atas"
-          color="dark"
-          size="1px"
-        />
+        <q-separator class="garis-atas" color="dark" size="1px" />
         <div class="col text-center f-10">
           {{ resep?.datapasien?.rs1 }} / {{ resep?.datapasien?.nama }}
         </div>
         <div class="col text-center f-10">
           {{ dateFullFormat(resep?.tgl_permintaan) }} / {{ resep?.noresep }}
         </div>
-        <q-separator
-          class="garis-atas"
-          color="dark"
-          size="1px"
-        />
+        <q-separator class="garis-atas" color="dark" size="1px" />
         <div class="col text-center f-10 q-mt-sm">
-          {{ rinci?.mobat?.nama_obat??rinci?.namaracikan }}
+          {{ rinci?.mobat?.nama_obat ?? rinci?.namaracikan }}
         </div>
         <div class="col text-center text-weight-bold">
           Sehari {{ rinci?.aturan }}
@@ -60,15 +46,15 @@
         <div class="col text-center f-10">
           {{ rinci?.keterangan }}
         </div>
-        <div
-          v-if="rinci?.namaracikan && rinci?.rincian?.length"
-          class="col text-center"
-        >
-          <div
-            v-for="(racikan,i) in rinci?.rincian"
-            :key="i"
-            class="f-8 text-italic"
-          >
+        <div v-if="rinci?.mobat?.indikasi?.length">
+          <div v-for="ind in rinci?.mobat?.indikasi" :key="ind">
+            <div class="col text-center f-10">
+              {{ ind?.indikasi }}
+            </div>
+          </div>
+        </div>
+        <div v-if="rinci?.namaracikan && rinci?.rincian?.length" class="col text-center">
+          <div v-for="(racikan, i) in rinci?.rincian" :key="i" class="f-8 text-italic">
             {{ racikan?.mobat?.nama_obat }} ({{ racikan?.jumlah }})
           </div>
         </div>
@@ -87,8 +73,8 @@
 import { dateFullFormat } from 'src/modules/formatter'
 const emits = defineEmits(['close'])
 defineProps({
-  rinci: { type: Object, default: () => {} },
-  resep: { type: Object, default: () => {} }
+  rinci: { type: Object, default: () => { } },
+  resep: { type: Object, default: () => { } }
 })
 function printPage () {
   // console.log('print ')
@@ -112,16 +98,17 @@ defineExpose({ printPage })
 </script>
 
 <style lang="scss" scoped>
-.garis-luar{
+.garis-luar {
   border: 1px solid black;
   // padding: 1px;
   margin: 3px;
 }
 
-.garis-atas{
+.garis-atas {
   border-top: 1px solid black;
   width: 100%;
 }
+
 .garis {
   width: 90%;
   border-top: 1px dashed black;

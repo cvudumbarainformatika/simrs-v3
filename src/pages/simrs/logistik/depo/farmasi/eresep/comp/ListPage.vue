@@ -27,75 +27,38 @@
     </thead>
     <tbody>
       <template v-if="store.loading">
-        <tr
-          v-for="n in store.params.per_page"
-          :key="n"
-        >
+        <tr v-for="n in store.params.per_page" :key="n">
           <td width="5%">
-            <q-skeleton
-              type="text"
-              width="20px"
-              height="14px"
-            />
+            <q-skeleton type="text" width="20px" height="14px" />
           </td>
           <td>
-            <q-skeleton
-              type="text"
-              width="50px"
-              height="14px"
-            />
-            <q-skeleton
-              type="text"
-              width="40px"
-              height="10px"
-            />
+            <q-skeleton type="text" width="50px" height="14px" />
+            <q-skeleton type="text" width="40px" height="10px" />
           </td>
           <td>
             <div class="row q-mb-xs q-col-gutter-sm">
-              <q-skeleton
-                type="text"
-                width="100px"
-                height="14px"
-              />
+              <q-skeleton type="text" width="100px" height="14px" />
             </div>
             <div class="row q-col-gutter-sm items-center">
-              <q-skeleton
-                type="text"
-                width="40px"
-                height="14px"
-              />
+              <q-skeleton type="text" width="40px" height="14px" />
               <div class="text-grey q-pt-none">
                 ||
               </div>
-              <q-skeleton
-                type="text"
-                width="40px"
-                height="14px"
-                class="q-ml-xs"
-              />
+              <q-skeleton type="text" width="40px" height="14px" class="q-ml-xs" />
             </div>
           </td>
           <td>
-            <q-skeleton
-              type="text"
-              width="100px"
-              height="14px"
-            />
+            <q-skeleton type="text" width="100px" height="14px" />
           </td>
           <td>
-            <q-skeleton
-              type="text"
-              width="100px"
-              height="14px"
-            />
+            <q-skeleton type="text" width="100px" height="14px" />
+          </td>
+          <td>
+            <q-skeleton type="text" width="100px" height="14px" />
           </td>
           <td class="text-end">
             <div class="row justify-end">
-              <q-skeleton
-                type="text"
-                width="100px"
-                height="14px"
-              />
+              <q-skeleton type="text" width="100px" height="14px" />
             </div>
           </td>
         </tr>
@@ -108,31 +71,26 @@
         </tr>
       </template>
       <template v-else>
-        <template
-          v-for="(item, n) in store.items"
-          :key="n"
-        >
-          <tr :class="item?.flag===''?'bg-red-2':(item?.flag==='1'?'bg-light-blue-2':(item?.sistembayar?.groups==='2' && item?.lunas ?( n%2 === 0 ? 'bg-green-2' :'bg-green-3' ):''))">
+        <template v-for="(item, n) in store.items" :key="n">
+          <tr
+            :class="item?.flag === '' ? 'bg-red-2' : (item?.flag === '1' ? 'bg-light-blue-2' : (item?.sistembayar?.groups === '2' && item?.lunas ? (n % 2 === 0 ? 'bg-green-2' : 'bg-green-3') : ''))">
             <!-- <tr :class="item?.flag===''?'bg-red-2':(item?.flag==='1'?'bg-light-blue-2':'')"> -->
             <td width="5%">
-              {{ n+1 }}
+              {{ n + 1 }}
             </td>
             <td>
               <div class="row ">
-                <span v-html="highlightText(item?.noresep)" /> ({{ item?.sistembayar?.rs2?? '-' }})
+                <span v-html="highlightText(item?.noresep)" /> ({{ item?.sistembayar?.rs2 ?? '-' }})
               </div>
               <div class="row text-grey f-10">
-                <div v-if="parseFloat(item?.flag)>0 && item?.tiperesep!=='iter'">
+                <div v-if="parseFloat(item?.flag) > 0 && item?.tiperesep !== 'iter'">
                   {{ dateFull(item?.tgl_kirim) }}
                 </div>
-                <div v-if="item?.flag==='' || (item?.tiperesep==='iter' && parseFloat(item?.flag)>0)">
+                <div v-if="item?.flag === '' || (item?.tiperesep === 'iter' && parseFloat(item?.flag) > 0)">
                   {{ dateFull(item?.tgl_permintaan) }}
                 </div>
-                <div
-                  v-if="item?.tiperesep==='iter' && item?.noresep_asal!==''"
-                  class="q-ml-sm"
-                >
-                  (copy - {{ dateFullFormat(item?.tgl) }}  )
+                <div v-if="item?.tiperesep === 'iter' && item?.noresep_asal !== ''" class="q-ml-sm">
+                  (copy - {{ dateFullFormat(item?.tgl) }} )
                 </div>
               </div>
               <div class="row text-green f-12 text-weight-bold">
@@ -140,101 +98,53 @@
                   {{ item?.antrian?.nomor }}
                 </div>
               </div>
-              <div
-                v-if="item?.tiperesep==='iter'"
-                class="row text-purple text-weight-bold f-10"
-              >
+              <div v-if="item?.tiperesep === 'iter'" class="row text-purple text-weight-bold f-10">
                 iter s/d {{ dateFullFormat(item?.iter_expired) }}
               </div>
-              <div
-                v-if="item?.tiperesep==='prb'"
-                class="row text-blue text-weight-bold f-10"
-              >
+              <div v-if="item?.tiperesep === 'prb'" class="row text-blue text-weight-bold f-10">
                 PRB
               </div>
-              <div
-                v-if="item?.adaKronis"
-                class="row text-negative text-weight-bold f-10"
-              >
+              <div v-if="item?.adaKronis" class="row text-negative text-weight-bold f-10">
                 {{ item?.adaKronis }}
               </div>
-              <div
-                v-if="item?.adaKronisR"
-                class="row text-negative text-weight-bold f-10"
-              >
+              <div v-if="item?.adaKronisR" class="row text-negative text-weight-bold f-10">
                 {{ item?.adaKronisR }}
               </div>
-              <div
-                v-if="item?.flag==='5'"
-                class="row  text-weight-bold f-10"
-              >
+              <div v-if="item?.flag === '5'" class="row  text-weight-bold f-10">
                 Diolak karena : {{ item?.alasan }}
               </div>
-              <div
-                v-if="(parseInt(item?.flag) === 3 && (!item?.semuaracik || !item?.semuaresep))"
-                class="row text-weight-bold f-10"
-              >
+              <div v-if="(parseInt(item?.flag) === 3 && (!item?.semuaracik || !item?.semuaresep))"
+                class="row text-weight-bold f-10">
                 Tidak diberikan semua karena : {{ item?.alasan }}
               </div>
               <!-- tgl pelayanan obat -->
               <div v-if="item?.addTglPelayanan" class="row items-center q-col-gutter-xs">
                 <div class="col-10">
-                  <app-input-date
-                    :model="item.tgl_pelayanan_obat"
-                    label="Tgl Pelayanan Obat"
-                    outlined
-                    valid
-                    :loading="item?.loading"
-                    :disable="item?.loading"
-                    @set-model="setTgl($event,item,'tgl_pelayanan_obat')"
-                  />
+                  <app-input-date :model="item.tgl_pelayanan_obat" label="Tgl Pelayanan Obat" outlined valid
+                    :loading="item?.loading" :disable="item?.loading"
+                    @set-model="setTgl($event, item, 'tgl_pelayanan_obat')" />
                 </div>
                 <div class="col-2">
-                  <q-btn
-                    flat
-                    dense
-                    color="green"
-                    size="sm"
-                    icon="icon-mat-save"
-                    :loading="item?.loading"
-                    :disable="item?.loading"
-                    @click="saveTglPelayanan(item)"
-                  >
-                    <q-tooltip
-                      class="primary"
-                      :offset="[10, 10]"
-                    >
+                  <q-btn flat dense color="green" size="sm" icon="icon-mat-save" :loading="item?.loading"
+                    :disable="item?.loading" @click="saveTglPelayanan(item)">
+                    <q-tooltip class="primary" :offset="[10, 10]">
                       Simpan Tanggal Pelayanan Obat
                     </q-tooltip>
                   </q-btn>
                 </div>
               </div>
-              <div v-if="!item?.addTglPelayanan && parseFloat(item?.flag)>=1" class="row items-center q-col-gutter-xs">
+              <div v-if="!item?.addTglPelayanan && parseFloat(item?.flag) >= 1" class="row items-center q-col-gutter-xs">
                 <div class="col-10 f-10 text-negative">
                   <div v-if="item?.tgl_pelayanan_obat">
                     Tgl Pelayanan Obat : <span class="f-12">{{ dateFullFormat(item?.tgl_pelayanan_obat) }}</span>
                   </div>
-                  <q-tooltip
-                    v-if="item?.tgl_pelayanan_obat"
-                    class="primary"
-                    :offset="[10, 10]"
-                  >
+                  <q-tooltip v-if="item?.tgl_pelayanan_obat" class="primary" :offset="[10, 10]">
                     Tanggal Pelayanan Obat
                   </q-tooltip>
                 </div>
                 <div class="col-2">
-                  <q-btn
-                    flat
-                    dense
-                    color="primary"
-                    size="sm"
-                    icon="icon-mat-add_circle"
-                    @click="addTglPelayanan(item)"
-                  >
-                    <q-tooltip
-                      class="primary"
-                      :offset="[10, 10]"
-                    >
+                  <q-btn flat dense color="primary" size="sm" icon="icon-mat-add_circle" @click="addTglPelayanan(item)">
+                    <q-tooltip class="primary" :offset="[10, 10]">
                       Tambah Tanggal Pelayanan Obat
                     </q-tooltip>
                   </q-btn>
@@ -247,7 +157,8 @@
                 <!-- {{ item?.datapasien?.nama }} -->
               </div>
               <div class="row">
-                <span v-html="highlightText(item?.noreg)" class="q-mr-sm" /> || <span v-html="highlightText(item?.norm)" class="q-ml-sm" />
+                <span v-html="highlightText(item?.noreg)" class="q-mr-sm" /> || <span v-html="highlightText(item?.norm)"
+                  class="q-ml-sm" />
                 <!-- {{ item?.noreg }}
                 ||
                 {{ item?.norm }} -->
@@ -266,18 +177,13 @@
               <div v-if="item?.ruanganranap">
                 {{ item?.ruanganranap?.rs2 }}
                 <div v-if="!item?.kunjunganranap?.ruangtitipan?.rs1" class="text-negative">
-                  Di Titipkan Di  {{ item?.kunjunganranap?.ruangtitipan?.rs2 }}
+                  Di Titipkan Di {{ item?.kunjunganranap?.ruangtitipan?.rs2 }}
                 </div>
               </div>
             </td>
             <td>
               <div class="row">
-                <q-chip
-                  square
-                  class="f-10"
-                  :color="color(item?.flag)"
-                  text-color="white"
-                >
+                <q-chip square class="f-10" :color="color(item?.flag)" text-color="white">
                   {{ status(item?.flag) }}
                 </q-chip>
               </div>
@@ -290,7 +196,7 @@
                 <!-- <div class="col-5">Selesai : </div>
                 <div class="col-7"></div> -->
               </div>
-              <div v-if="item?.flag==='3' || item?.flag==='4'" class="row f-10 text-italic">
+              <div v-if="item?.flag === '3' || item?.flag === '4'" class="row f-10 text-italic">
                 <div>
                   {{ responTime(item) }}
                 </div>
@@ -299,228 +205,101 @@
             <td class="q-mr-sm">
               <div class="row no-wrap text-end">
                 <!-- terima -->
-                <q-btn
-                  v-if="item?.flag==='1'"
-                  round
-                  class="f-10 q-mr-sm"
-                  :color="color(item?.flag)"
-                  text-color="white"
-                  icon="icon-mat-move_to_inbox"
-                  :disable="store.loadingTerima && item?.loading"
-                  :loading="store.loadingTerima && item?.loading"
-                  @click="terimaResep(item)"
-                >
-                  <q-tooltip
-                    class="primary"
-                    :offset="[10, 10]"
-                  >
+                <q-btn v-if="item?.flag === '1'" round class="f-10 q-mr-sm" :color="color(item?.flag)" text-color="white"
+                  icon="icon-mat-move_to_inbox" :disable="store.loadingTerima && item?.loading"
+                  :loading="store.loadingTerima && item?.loading" @click="terimaResep(item)">
+                  <q-tooltip class="primary" :offset="[10, 10]">
                     Terima
                   </q-tooltip>
                 </q-btn>
                 <!-- print id resep-->
-                <q-btn
-                  v-if="parseInt(item?.flag)<= 4"
-                  round
-                  class="f-10 q-mr-sm"
-                  color="green"
-                  text-color="white"
-                  icon="icon-mat-print"
-                  @click="printHeadResep(item)"
-                >
-                  <q-tooltip
-                    class="primary"
-                    :offset="[10, 10]"
-                  >
+                <q-btn v-if="parseInt(item?.flag) <= 4" round class="f-10 q-mr-sm" color="green" text-color="white"
+                  icon="icon-mat-print" @click="printHeadResep(item)">
+                  <q-tooltip class="primary" :offset="[10, 10]">
                     Print Id Resep
                   </q-tooltip>
                 </q-btn>
                 <!-- print  resep besar-->
-                <q-btn
-                  v-if="parseInt(item?.flag)<= 4"
-                  round
-                  class="f-10 q-mr-sm"
-                  color="yellow"
-                  text-color="white"
-                  icon="icon-mat-print"
-                  @click="printIdResep(item)"
-                >
-                  <q-tooltip
-                    class="primary"
-                    :offset="[10, 10]"
-                  >
+                <q-btn v-if="parseInt(item?.flag) <= 4" round class="f-10 q-mr-sm" color="yellow" text-color="white"
+                  icon="icon-mat-print" @click="printIdResep(item)">
+                  <q-tooltip class="primary" :offset="[10, 10]">
                     Print Resep Besar
                   </q-tooltip>
                 </q-btn>
                 <!-- print resep-->
-                <q-btn
-                  v-if="parseInt(item?.flag)<= 4"
-                  round
-                  class="f-10 q-mr-sm"
-                  color="dark"
-                  text-color="white"
-                  icon="icon-mat-print"
-                  @click="toPrint(item)"
-                >
-                  <q-tooltip
-                    class="primary"
-                    :offset="[10, 10]"
-                  >
+                <q-btn v-if="parseInt(item?.flag) <= 4" round class="f-10 q-mr-sm" color="dark" text-color="white"
+                  icon="icon-mat-print" @click="toPrint(item)">
+                  <q-tooltip class="primary" :offset="[10, 10]">
                     Print resep
                   </q-tooltip>
                 </q-btn>
                 <!-- print resep to pdf-->
-                <q-btn
-                  v-if="parseInt(item?.flag)<= 4"
-                  round
-                  class="f-10 q-mr-sm"
-                  color="primary"
-                  text-color="white"
-                  icon="icon-mat-download"
-                  @click="printResepToPdf(item)"
-                >
-                  <q-tooltip
-                    class="primary"
-                    :offset="[10, 10]"
-                  >
+                <q-btn v-if="parseInt(item?.flag) <= 4" round class="f-10 q-mr-sm" color="primary" text-color="white"
+                  icon="icon-mat-download" @click="printResepToPdf(item)">
+                  <q-tooltip class="primary" :offset="[10, 10]">
                     Download Resep
                   </q-tooltip>
                 </q-btn>
-                <q-btn
-                  v-if="parseInt(item?.flag)<= 4 && parseInt(item?.flag) >= 1 "
-                  round
-                  class="f-10 q-mr-sm"
-                  :color="item?.telaah?'green':'secondary'"
-                  text-color="white"
-                  :loading="item?.loadingTelaah"
-                  :disable="item?.loadingTelaah"
-                  @click="telaahResep(item)"
-                >
+                <q-btn v-if="parseInt(item?.flag) <= 4 && parseInt(item?.flag) >= 1" round class="f-10 q-mr-sm"
+                  :color="item?.telaah ? 'green' : 'secondary'" text-color="white" :loading="item?.loadingTelaah"
+                  :disable="item?.loadingTelaah" @click="telaahResep(item)">
                   Q
-                  <q-tooltip
-                    class="primary"
-                    :offset="[10, 10]"
-                  >
+                  <q-tooltip class="primary" :offset="[10, 10]">
                     Telaah Resep
                   </q-tooltip>
                 </q-btn>
                 <!-- selesai -->
-                <q-btn
-                  v-if="item?.flag==='2' && (item?.semuaresep && item?.semuaracik)"
-                  round
-                  class="f-10 q-mr-sm"
-                  :color="color(item?.flag)"
-                  text-color="white"
-                  icon="icon-mat-done_all"
-                  :disable="store.loadingSelesai && item?.loading"
-                  :loading="store.loadingSelesai && item?.loading"
-                  @click="store.resepSelesai(item)"
-                >
-                  <q-tooltip
-                    class="primary"
-                    :offset="[10, 10]"
-                  >
+                <q-btn v-if="item?.flag === '2' && (item?.semuaresep && item?.semuaracik)" round class="f-10 q-mr-sm"
+                  :color="color(item?.flag)" text-color="white" icon="icon-mat-done_all"
+                  :disable="store.loadingSelesai && item?.loading" :loading="store.loadingSelesai && item?.loading"
+                  @click="store.resepSelesai(item)">
+                  <q-tooltip class="primary" :offset="[10, 10]">
                     Selesai
                   </q-tooltip>
                 </q-btn>
 
                 <!-- alasan -->
                 <q-btn
-                  v-if="((parseInt(item?.flag) === 3 && (!item?.semuaracik || !item?.semuaresep)) || parseInt(item?.flag) === 5 ) "
-                  round
-                  class="f-10 q-mr-sm"
-                  color="primary"
-                  text-color="white"
-                  icon="icon-mat-edit"
-                  :disable="store.loadingTolak && item?.loading"
-                  :loading="store.loadingTolak && item?.loading"
-                  @click="alasan(item)"
-                >
-                  <q-tooltip
-                    v-if="parseInt(item?.flag) === 3"
-                    class="primary"
-                    :offset="[10, 10]"
-                  >
+                  v-if="((parseInt(item?.flag) === 3 && (!item?.semuaracik || !item?.semuaresep)) || parseInt(item?.flag) === 5)"
+                  round class="f-10 q-mr-sm" color="primary" text-color="white" icon="icon-mat-edit"
+                  :disable="store.loadingTolak && item?.loading" :loading="store.loadingTolak && item?.loading"
+                  @click="alasan(item)">
+                  <q-tooltip v-if="parseInt(item?.flag) === 3" class="primary" :offset="[10, 10]">
                     Alasan Resep tidak diberikan semua
                   </q-tooltip>
-                  <q-tooltip
-                    v-if="parseInt(item?.flag) === 5"
-                    class="primary"
-                    :offset="[10, 10]"
-                  >
+                  <q-tooltip v-if="parseInt(item?.flag) === 5" class="primary" :offset="[10, 10]">
                     Alasan Resep Ditolak
                   </q-tooltip>
                 </q-btn>
                 <!-- buka -->
-                <q-btn
-                  square
-                  class="f-10"
-                  color="primary"
-                  text-color="white"
-                  label="Buka"
-                  no-caps
-                  @click="buka(item)"
-                >
-                  <q-tooltip
-                    class="primary"
-                    :offset="[10, 10]"
-                  >
+                <q-btn square class="f-10" color="primary" text-color="white" label="Buka" no-caps @click="buka(item)">
+                  <q-tooltip class="primary" :offset="[10, 10]">
                     Buka Resep Pasien
                   </q-tooltip>
                 </q-btn>
                 <!-- info -->
-                <q-btn
-                  square
-                  class="f-10"
-                  color="yellow"
-                  text-color="green"
-                  label="Info"
-                  no-caps
-                  @click="info(item)"
-                >
-                  <q-tooltip
-                    class="primary"
-                    :offset="[10, 10]"
-                  >
+                <q-btn square class="f-10" color="yellow" text-color="green" label="Info" no-caps @click="info(item)">
+                  <q-tooltip class="primary" :offset="[10, 10]">
                     Pelayanan Informasi Obat
                   </q-tooltip>
                 </q-btn>
                 <!-- tolak -->
 
-                <q-btn
-                  v-if="(parseInt(item?.flag)<= 2 && (!item?.doneresep && !item?.doneracik)) || item?.flag===''"
-                  round
-                  class="f-10 q-mx-sm"
-                  color="negative"
-                  text-color="white"
-                  icon="icon-mat-hand-front-left"
-                  :disable="store.loadingTolak && item?.loading"
-                  :loading="store.loadingTolak && item?.loading"
-                  @click="tolakResep(item)"
-                >
-                  <q-tooltip
-                    class="primary"
-                    :offset="[10, 10]"
-                  >
+                <q-btn v-if="(parseInt(item?.flag) <= 2 && (!item?.doneresep && !item?.doneracik)) || item?.flag === ''"
+                  round class="f-10 q-mx-sm" color="negative" text-color="white" icon="icon-mat-hand-front-left"
+                  :disable="store.loadingTolak && item?.loading" :loading="store.loadingTolak && item?.loading"
+                  @click="tolakResep(item)">
+                  <q-tooltip class="primary" :offset="[10, 10]">
                     Tolak Resep
                   </q-tooltip>
                 </q-btn>
               </div>
               <div class="row no-wrap q-mt-sm">
                 <div class="col-6">
-                  <q-btn
-                    v-if="ruangan==='Gd-05010101'"
-                    dense
-                    size="sm"
-                    no-caps
-                    color="accent"
-                    label="PANGGIL"
-                    class="q-mb-lg"
-                    icon-right="icon-mat-volume_up"
-                    style="min-width: 120px;"
+                  <q-btn v-if="ruangan === 'Gd-05010101'" dense size="sm" no-caps color="accent" label="PANGGIL"
+                    class="q-mb-lg" icon-right="icon-mat-volume_up" style="min-width: 120px;"
                     :loading="loadingCall && store.noreg === item?.noreg"
-                    :disable="loadingCall && store.noreg === item?.noreg"
-                    @click="panggil( item)"
-                  />
+                    :disable="loadingCall && store.noreg === item?.noreg" @click="panggil(item)" />
                 </div>
                 <div v-if="item?.lunas" class="col-6 text-weight-bold f-22 text-blue text-italic">
                   LUNAS
@@ -552,35 +331,17 @@
       </template>
     </tbody>
   </table>
-  <commpIdResep
-    ref="idResp"
-    v-model="openIdPrint"
-    :item="itemPrintId"
-    :head="printHeadOnly"
-    @close="openIdPrint=false"
-  />
+  <commpIdResep ref="idResp" v-model="openIdPrint" :item="itemPrintId" :head="printHeadOnly"
+    @close="openIdPrint = false" />
 
-  <commpResepToPdf
-    ref="pdfResp"
-    v-model="openPrintPdf"
-    :item="itemToPrint"
-    :head="printHeadOnly"
-    @close="openPrintPdf=false"
-  />
-  <commpTelaahResep
-    ref="telaah"
-    v-model="openTelaah"
-    :item="itemToTelaah"
-    :user="user"
-    :apotekers="store.apotekers"
-    :head="printHeadOnly"
-    @close="CloseTelaahResep"
-    @simpan="(val)=>{
+  <commpResepToPdf ref="pdfResp" v-model="openPrintPdf" :item="itemToPrint" :head="printHeadOnly"
+    @close="openPrintPdf = false" />
+  <commpTelaahResep ref="telaah" v-model="openTelaah" :item="itemToTelaah" :user="user" :apotekers="store.apotekers"
+    :head="printHeadOnly" @close="CloseTelaahResep" @simpan="(val) => {
       console.log('val', val);
-      store.simpanTelaahResep(val?.item,val?.form)
+      store.simpanTelaahResep(val?.item, val?.form)
       CloseTelaahResep()
-    }"
-  />
+    }" />
 </template>
 
 <script setup>
@@ -603,7 +364,7 @@ defineProps({
   },
   user: {
     type: Object,
-    default: () => {}
+    default: () => { }
   },
   loadingCall: {
     type: Boolean,
@@ -764,7 +525,7 @@ function info (val) {
 }
 function alasan (val) {
   store.isAlasan = true
-  if (val.flag === '5')store.isTolak = true
+  if (val.flag === '5') store.isTolak = true
   store.toAlasan = val
   console.log(val)
 }
@@ -934,10 +695,10 @@ function CloseTelaahResep () {
 </script>
 
 <style lang="scss" scoped>
-
-.text-end{
+.text-end {
   text-align: end;
 }
+
 /* Standard Tables */
 
 table {
@@ -955,9 +716,11 @@ td {
   text-align: left;
   text-indent: -0.5em;
 }
+
 td {
   padding: 0.5em 0.5em 0.5em 1.5em;
 }
+
 th {
   padding: 0.5em 0.5em 0.5em 1em;
   vertical-align: bottom;
@@ -1020,12 +783,11 @@ table:nth-of-type(2) th:not([scope=row]):first-child {
 
 /* Strictly for making the scrolling happen. */
 
-th[scope=row] + td {
+th[scope=row]+td {
   min-width: 24em;
 }
 
 th[scope=row] {
   min-width: 20em;
 }
-
 </style>
