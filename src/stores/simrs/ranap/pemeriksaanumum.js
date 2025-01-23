@@ -813,8 +813,10 @@ export const usePemeriksaanUmumRanapStore = defineStore('pemeriksaan-umum-ranap-
       const jns = auth?.user?.pegawai?.kdgroupnakes
 
       const igd = arr?.filter(x => x?.kdruang === 'POL014') ?? []
-      const ranap = arr?.filter(x => x?.kdruang !== 'POL014' && x?.awal === '1' && x?.nakes === '1') ?? []
+      const ranap = arr?.filter(x => (x?.kdruang !== 'POL014' && x?.awal === '1')) ?? []
       const isianKeperawatan = arr?.filter(x => x?.kdruang !== 'POL014' && x?.nakes !== '1' && x?.awal === '1') ?? []
+
+      // console.log('isianKeperawatan :', isianKeperawatan);
 
       this.items.igd = igd
       this.items.ranap = ranap
@@ -823,18 +825,21 @@ export const usePemeriksaanUmumRanapStore = defineStore('pemeriksaan-umum-ranap-
 
       // const pengunjung = usePengunjungRanapStore()
 
+      const isianDokter = ranap.length ? ranap?.filter(x => x?.nakes === '1') : []
+      // console.log('isianDokter', isianDokter);
+
       // baru ada penyesuaian nakes
       let form = null
       const dokter = (jns === '1' || jns === 1)
       if (dokter) {
-        if (ranap.length) { form = ranap[0] }
-        else { form = isianKeperawatan.length ? isianKeperawatan[0] : null }
+        if (isianDokter.length) { form = isianDokter[0] } // jika ada isianDokter, form = isianDokter
+        else { form = isianKeperawatan.length ? isianKeperawatan[0] : null } // jika blm ada isianDokter, form = isianKeperawatan
       }
-      else {
-        form = ranap.length ? ranap[0] : null
+      else { // jika bukan dokter
+        form = isianKeperawatan.length ? isianKeperawatan[0] : null
       }
 
-      if (form) ranap.length ? form.id = ranap[0].id : form.id = null
+      if (form) ranap.length ? form.id = form?.id : form.id = null
       // const isianList = ranap.length ? ranap[0] : null
 
       // if (isianList) {
