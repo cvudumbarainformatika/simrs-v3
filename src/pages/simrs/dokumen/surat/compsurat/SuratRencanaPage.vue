@@ -254,7 +254,7 @@ function setTgl (val) {
 function setNama (val) {
   if (val?.rs4 === 'Konsultasi') {
     const nama = val?.listkonsul ? 'Konsultasi' : 'Rujukan Internal'
-    console.log(val, props.pasien)
+    // console.log(val, props.pasien)
     return nama
   } else {
     return val?.rs4

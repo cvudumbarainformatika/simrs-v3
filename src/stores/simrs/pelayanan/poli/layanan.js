@@ -7,8 +7,9 @@ import { notifErrVue, notifSuccess } from 'src/modules/utils'
 
 export const useLayananPoli = defineStore('layanan-poli', {
   state: () => ({
-    tab: 'Diagnosa Medik',
-    tabs: ['Diagnosa Medik', 'Tindakan Medik', 'Prosedur (Icd 9)', 'Diagnosa Keperawatan', 'Diagnosa Kebidanan', 'Laporan Tindakan', 'Pra Anestesia'],
+    tab: 'Tindakan Medik',
+    tabs: ['Tindakan Medik', 'Prosedur (Icd 9)', 'Diagnosa Keperawatan', 'Diagnosa Kebidanan', 'Laporan Tindakan', 'Pra Anestesia'],
+    // tabs: ['Diagnosa Medik', 'Tindakan Medik', 'Prosedur (Icd 9)', 'Diagnosa Keperawatan', 'Diagnosa Kebidanan', 'Laporan Tindakan', 'Pra Anestesia'], // diagnosa di hapus
     // diagnosa
     searchdiagnosa: '',
     listDiagnosa: [],
@@ -367,10 +368,11 @@ export const useLayananPoli = defineStore('layanan-poli', {
     },
 
     initReset (x) {
-      const tabbed = x ?? 'Diagnosa Medik'
+      const tabbed = x ?? 'Tindakan Medik'
       return new Promise((resolve, reject) => {
         this.tab = tabbed
-        this.tabs = ['Diagnosa Medik', 'Tindakan Medik', 'Prosedur (Icd 9)', 'Diagnosa Keperawatan', 'Diagnosa Kebidanan', 'Laporan Tindakan', 'Pra Anestesia']
+        // this.tabs = ['Diagnosa Medik', 'Tindakan Medik', 'Prosedur (Icd 9)', 'Diagnosa Keperawatan', 'Diagnosa Kebidanan', 'Laporan Tindakan', 'Pra Anestesia'] // diagnosa medik di hapus
+        this.tabs = ['Tindakan Medik', 'Prosedur (Icd 9)', 'Diagnosa Keperawatan', 'Diagnosa Kebidanan', 'Laporan Tindakan', 'Pra Anestesia']
 
         this.searchdiagnosa = ''
         this.formdiagnosa = {
