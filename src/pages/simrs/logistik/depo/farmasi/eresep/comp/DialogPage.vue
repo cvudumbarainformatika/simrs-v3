@@ -340,14 +340,11 @@
                       <div v-if="!rinc.done && store?.resep?.flag === '3'" class="text-negative">
                         Tidak diberikan
                       </div>
-                      <div
-                        v-if="apps?.user?.kdruangansim !== 'Gd-05010101' && apps?.user?.kdruangansim !== 'Gd-04010102'">
+                      <div v-if="apps?.user?.kdruangansim === 'Gd-04010103'">
                         Resep Sudah Selesai
                       </div>
-                      <q-btn
-                        v-if="apps?.user?.kdruangansim === 'Gd-05010101' || apps?.user?.kdruangansim === 'Gd-04010102'"
-                        round class="f-10 q-my-sm" color="dark" text-color="white" icon="icon-mat-print"
-                        @click="openRajal(rinc)">
+                      <q-btn v-if="apps?.user?.kdruangansim !== 'Gd-04010103'" round class="f-10 q-my-sm" color="dark"
+                        text-color="white" icon="icon-mat-print" @click="openRajal(rinc)">
                         <q-tooltip class="primary" :offset="[10, 10]">
                           Print Etiket Rajal
                         </q-tooltip>
