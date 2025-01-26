@@ -49,13 +49,13 @@
       </template>
       <template #body="props">
         <q-tr :props="props">
-          <q-td key="noregister" :props="props">
+          <q-td key="nokontrak" :props="props">
             {{ props.row.nokontrak }}
           </q-td>
           <q-td key="namaperusahaan" :props="props">
             {{ props.row.namaperusahaan }}
           </q-td>
-          <q-td key="tgltrans" :props="props">
+          <q-td key="nokontrakx" :props="props">
             {{ props.row.nokontrakx }}
           </q-td>
           <q-td key="tgltrans" :props="props">
@@ -107,10 +107,10 @@ const $q = useQuasar()
 const router = useRouter()
 const columnsx = [
   {
-    name: 'noregister',
+    name: 'nokontrak',
     label: 'Nomer Transaksi',
     align: 'left',
-    field: 'noregister'
+    field: 'nokontrak'
   },
   {
     name: 'namaperusahaan',

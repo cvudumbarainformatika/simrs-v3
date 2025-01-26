@@ -1,9 +1,9 @@
 <template>
-  <q-form class="fit" ref="formKP" @submit="onSimpan">
+  <q-form class="fit" ref="formKP" @submit="onSimpan" @reset="onReset">
     <div class="row">
       <div class="q-pa-md q-gutter-y-md" style="width: 50%;">
         <app-input-simrs v-model="store.form.nokontrakx" label="No. Kontrak" outlined :autofocus="false"
-          :valid="{ required: true }" />
+          :valid="{ required: false }" />
         <!-- <app-input-simrs v-model="store.form.nokontrak" label="No. Transaksi" readonly /> -->
         <app-input-date :model="store.form.tgltrans" label="Tanggal Transaksi" icon="icon-mat-event" outlined
           @set-model="val => {
@@ -34,7 +34,7 @@
           option-label="nama" option-value="kode" outlined :source="store.pihaktigas"
           @selected="(val) => pilihPihaktiga(val)" />
         <app-input-simrs label="Nilai Kontrak" v-model="store.form.nilaikontrak" outlined :autofocus="false"
-          :valid="{ required: true, number: true }" />
+          :valid="{ required: false, number: true }" />
         <div class="float-left">
           <app-btn label="Simpan" :disable="store.loading" :loading="store.loading" type="submit" />
         </div>
@@ -44,16 +44,36 @@
 </template>
 <script setup>
 import { formKontrakPekerjaan } from 'src/stores/siasik/transaksi/ls/kontrak/formkontrak'
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 
 const store = formKontrakPekerjaan()
 const formKP = ref(null)
-
-
+const onReset = () => {
+  formKP.value.resetValidation()
+}
+onMounted(() => {
+  onReset()
+  // Promise.all([
+  //   store.getDataBidang(),
+  //   store.filterPtk(),
+  //   store.getPihaktiga()
+  // ])
+})
 // onBeforeMount(() => {
 //   store.resetFORM()
 // })
-
+// const pilihTanggal = (val) => {
+//   store.setForm('tgltrans', val)
+// }
+// const tglMulai = (val) => {
+//   store.setForm('tglmulaikontrak', val)
+// }
+// const tglAkhir = (val) => {
+//   store.setForm('tglakhirkontrak', val)
+// }
+// const termin = (val) => {
+//   store.setForm('termin', val)
+// }
 const props = defineProps({
   data: {
     type: Object,
@@ -70,6 +90,19 @@ function onSimpan() {
       store.emptyForm()
     })
 }
+// const onSubmit = () => {
+//   // store.simpanKontrak()
+//   store.simpanKontrak().then(() => {
+//     if (formKP.value != null) {
+//       formKP.value.resetValidation()
+//     }
+//   })
+// }
+
+// function kodeKeg(val) {
+//   store.setParams('kodekegiatan', val)
+//   console.log('kkkk', store.setParams)
+// }
 
 function pilihPTK(val) {
   const arr = store.ptks
