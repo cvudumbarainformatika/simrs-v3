@@ -1,69 +1,81 @@
 <template>
-  <div class="container q-pl-sm q-pr-sm">
-    <div class="q-card q-mt-sm q-mt-ms">
-      <q-card class="q-pa-xs">
-        <div class="row bg-black text-white q-pa-sm q-mb-xs q-mt-xs">
-          <div class="f-14 text-weight-bold">
-            Kontrak Pekerjaan | SIASIK
-          </div>
-        </div>
-      </q-card>
+  <q-page ref="pageRef" class="column full-height full-width" :class="!style.componentfull ? 'q-pa-md' : 'q-pa-xs'">
+    <div class="col-auto">
+      <PageHead v-if="!style.componentfull" :title="title" :subtitle="subtitle" :path="page.path"
+        @togle-draw="togleDraw()" />
     </div>
-
-    <div class="q-card q-mt-sm q-mt-ms">
-      <q-tabs
-        v-model="tabdata"
-        dense
-        active-color="primary"
-        indicator-color="primary"
-        align="justify"
-        narrow-indicator
-      >
-        <q-tab name="forminput" label="Form Kontrak" />
-        <q-tab name="data" label="Data Kontrak" />
-      </q-tabs>
-      <q-separator />
-      <q-tab-panels v-model="tabdata" animated>
-        <q-tab-panel name="forminput">
-          <FormInputKP />
-        </q-tab-panel>
-
-        <q-tab-panel name="data">
-          <ListKontrakPekerjaan />
-        </q-tab-panel>
-      </q-tab-panels>
-
-      <!-- <q-page
-        class="q-pa-md"
-        :class="style.componentfull?'container-no-header':'container--q-header q-pa-xs relative-position'"
-      >
-        <q-card
-          flat
-          no-shadow
-          square
-          class="my-flex-1 scroll hide-scroll"
-          ref="refSaldoawal"
-        >
-
-          <TableSaldo />
-
-        </q-card>
-      </q-page> -->
-    </div>
-
-    <!-- <div class="q-card q-mt-sm">
-      <app-card title="Transaksi Saldo Awal" desc="Pejabat Penatausahaan Keuangan">
-        <template #content />
-      </app-card>
-    </div> -->
-  </div>
+    <q-card flat class="col full-width full-height bg-grey-6"
+      :style="`max-height: ${!style.componentfull ? h - 60 : h + 40}px; overflow:hidden`">
+      <q-scroll-area :style="`height: ${!style.componentfull ? h - 95 : h + 40}px; max-width: 100%;`"
+        :thumb-style="thumbStyle" :bar-style="barStyle">
+        <router-view v-slot="{ Component, route }">
+          <transition :name="route.meta.transition || 'fade'">
+            <component :is="Component" transition />
+          </transition>
+        </router-view>
+      </q-scroll-area>
+    </q-card>
+  </q-page>
 </template>
+
 <script setup>
-import { ref } from 'vue'
-import FormInputKP from './inpage/FormInputKP.vue'
-import ListKontrakPekerjaan from './inpage/ListKontrakPekerjaan.vue'
+import { useStyledStore } from 'src/stores/app/styled'
+import PageHead from './PageHeadKontrak.vue'
+import { computed, onMounted, ref } from 'vue'
+import { useRoute } from 'vue-router'
 
-const tabdata = ref('forminput')
-// const listdata = ref('listkontrak')
+const style = useStyledStore()
+const pageRef = ref()
+const h = ref(0)
+const thumbStyle = ref({
+  right: '0px',
+  borderRadius: '5px',
+  backgroundColor: '#027be3',
+  width: '2px',
+  opacity: 0.75
+})
+const barStyle = ref({
+  right: '0px',
+  borderRadius: '9px',
+  backgroundColor: '#027be3',
+  width: '5px',
+  opacity: 0.2
+})
 
+const page = useRoute()
+const title = computed(() => {
+  if (page.path === '/siasik/ls/kontrak/list') {
+    return 'LIST KONTRAK PEKERJAAN'
+  }
+
+  // else if (page.path === '/akuntansi/jurnal/postingjurnal') {
+  //   return 'POSTING JURNAL'
+  // }
+  // else if (page.path === '/pendaftaran/umum/listmjkn') {
+  // //   return 'LIST MOBILE JKN'
+  // }
+  else {
+    return 'NEW FORM KONTRAK PEKERJAAN'
+  }
+})
+
+const subtitle = computed(() => {
+  if (page.path === '/siasik/ls/kontrak/list') {
+    return 'List Data Kontrak Pekerjaan'
+  }
+
+  // else if (page.path === '/akuntansi/jurnal/postingjurnal') {
+  //   return 'List Jurnal yang Terposting'
+  // }
+  // // } else if (page.path === '/pendaftaran/umum/listmjkn') {
+  // //   return 'List Kunjungan dari m-JKN'
+  // }
+  else {
+    return 'Form Input Kontrak Pekerjaan'
+  }
+})
+
+onMounted(() => {
+  h.value = pageRef.value.$el.clientHeight
+})
 </script>

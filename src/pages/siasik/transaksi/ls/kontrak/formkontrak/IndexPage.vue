@@ -11,5 +11,5 @@
 <script setup>
 import { defineAsyncComponent } from 'vue'
 
-const AsyncComp = defineAsyncComponent(() => import('./PageKontrak.vue'))
+const AsyncComp = defineAsyncComponent(() => import('./PageFormKP.vue'))
 </script>
