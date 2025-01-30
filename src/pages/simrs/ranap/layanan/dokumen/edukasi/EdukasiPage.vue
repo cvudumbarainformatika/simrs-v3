@@ -22,29 +22,144 @@
               </div>
             </div>
           </div>
-          <!-- <div class="col-3">
-            <div class="flex justify-end items-center">
-              RM.
-            </div>
-            <div class="flex justify-end items-center">
-              <div v-for="n in NORM" :key="n" class="q-pa-sm f-14 text-bold" style="border: 1px solid black;">
-                {{ n }}
-              </div>
-            </div>
-          </div> -->
         </div>
       </div>
 
       <hr>
       <!-- CONTENT -->
-      <div class="text-center">
-        MASIH DITAHAP PENGGARAPAN
+      <div v-if="!EDUKASI.length" class="q-pa-md column full-height flex-center" style="min-height: 400px;">
+        <div class="text-weight-bold text-center ">
+          BELUM TERSEDIA LAPORAN EDUKASI
+        </div>
+      </div>
+      <div v-else class="full-width">
+        <table border="1" width="100%">
+          <thead>
+            <tr>
+              <th rowspan="2" class="t-vertical">
+                <div>Hari / Tanggal</div>
+                <div>Jam</div>
+              </th>
+              <th rowspan="2" class="t-vertical">Metode</th>
+              <th rowspan="2">Profesi</th>
+              <th rowspan="2">Materi Edukasi dan Informasi</th>
+              <th rowspan="2" class="t-vertical">
+                <div>Estimasi</div>
+                <div>Waktu</div>
+              </th>
+              <th rowspan="2" class="t-vertical">Media</th>
+              <th rowspan="2" class="t-vertical">
+                <div>Evaluasi</div>
+                <div>Respon</div>
+              </th>
+              <th rowspan="2" class="t-vertical">
+                <div>Tingkat</div>
+                <div>Pemahaman</div>
+              </th>
+              <th colspan="2">
+                <div>Nama & </div>
+                <div>Tanda Tangan </div>
+              </th>
+
+            </tr>
+            <tr>
+              <th>
+                <div>Penerima</div>
+                <div>Edukasi</div>
+              </th>
+              <th>
+                <div>Pemberi</div>
+                <div>Edukasi</div>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="item in EDUKASI" :key="item">
+              <td class="t-vertical">
+                <div class="text-right">{{ humanDate(item?.tgl) }}</div>
+                <div class="text-right"> jam {{ jamTnpDetik(item?.tgl) }}</div>
+              </td>
+              <td>
+                <div v-if="!item?.metode?.length">
+                  -
+                </div>
+                <div v-else>
+                  <div v-for="metode in item?.metode" :key="metode">
+                    <div class="flex no-wrap">-{{ metode }}</div>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div v-if="!item?.petugas?.kdgroupnakes !== ''">
+                  <div>{{ jenisPPA(item?.petugas?.kdgroupnakes) }}</div>
+                </div>
+              </td>
+              <td>
+                <div v-if="!item?.materi?.length">
+                  -
+                </div>
+                <div v-else>
+                  <div v-for="mat in item?.materi" :key="mat">
+                    <div class="flex no-wrap">{{ mat }}, </div>
+                  </div>
+                </div>
+              </td>
+              <td>{{ item?.estimasi }}</td>
+              <td>
+                <div v-if="!item?.media?.length">
+                  -
+                </div>
+                <div v-else>
+                  <div v-for="med in item?.media" :key="med">
+                    <div class="flex no-wrap">-{{ med }}</div>
+                  </div>
+                </div>
+              </td>
+              <td>{{ item?.evaluasi }}</td>
+              <td>-</td>
+              <td>
+                <div class="flex-center relative-position" style="width: 60px;">
+                  <vue-qrcode :value="qrPetugas(item?.petugas)" tag="svg" :options="{
+                    errorCorrectionLevel: 'Q',
+                    color: {
+                      dark: '#000000',
+                      light: '#ffffff',
+                    },
+                    margin: 0
+                  }" />
+                  <img class="qrcode__image" src="~assets/logos/logo-rsud.png" alt="RSUD DOKTER MOHAMAD SALEH">
+                </div>
+              </td>
+              <td>
+                <div v-if="item?.ttdPenerima" class="flex-center relative-position" style="width: 60px;">
+                  <vue-qrcode :value="qrPenerima(item?.ttdPenerima)" tag="svg" :options="{
+                    errorCorrectionLevel: 'Q',
+                    color: {
+                      dark: '#000000',
+                      light: '#ffffff',
+                    },
+                    margin: 0
+                  }" />
+                  <img class="qrcode__image" src="~assets/logos/logo-rsud.png" alt="RSUD DOKTER MOHAMAD SALEH">
+                </div>
+                <div v-else>
+                  -
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
+import { humanDate, jamTnpDetik } from 'src/modules/formatter';
+import { computed, onMounted } from 'vue';
+import { useImplementasiEdukasiRanapStore } from 'src/stores/simrs/ranap/implementasiEdukasi';
+import { pathImg } from 'src/boot/axios';
+
 
 const props = defineProps({
   pasien: {
@@ -56,6 +171,62 @@ const props = defineProps({
     default: null
   }
 })
+
+const store = useImplementasiEdukasiRanapStore()
+
+onMounted(() => {
+  store.getList(props?.pasien)
+})
+
+// console.log('props', props.pasien);
+const EDUKASI = computed(() => {
+  // console.log('props', props?.pasien?.edukasi);
+  return store.items
+})
+
+const jenisPPA = (val) => {
+  if (val === '1') {
+    return 'Dokter'
+  }
+  else if (val === '2') {
+    return 'Perawat'
+  }
+  else if (val === '3') {
+    return 'Bidan'
+  }
+  else if (val === '4') {
+    return 'Apoteker'
+  }
+  else if (val === '5') {
+    return 'Ahli Gizi'
+  }
+  else {
+    return 'Fisoterapis'
+  }
+}
+
+
+const qrPetugas = (user) => {
+  // console.log('user', user);
+  const noreg = props?.pasien?.noreg// noreg
+  const dok = 'KIE.png'
+  const asal = 'RANAP'
+  const petugas = user?.nik ?? null
+  const enc = btoa(`${noreg}|${dok}|${asal}|${petugas}`)
+  return `https://rsud.probolinggokota.go.id/dokumen-simrs/legalitas/${enc}`
+}
+const qrPenerima = (ttd) => {
+  // console.log('user', user);
+  const noreg = props?.pasien?.noreg// noreg
+  const dok = 'KIE.png'
+  const asal = 'RANAP'
+  const ttdPenerima = ttd ?? null
+  const enc = btoa(`${noreg}|${dok}|${asal}|${ttdPenerima}`)
+  return `https://rsud.probolinggokota.go.id/dokumen-simrs/legalitas/${enc}`
+}
+
+
+
 </script>
 
 <style lang="scss" scoped>
@@ -75,35 +246,41 @@ const props = defineProps({
 
 table {
   border-collapse: collapse;
-  border-spacing: 50px 0;
 }
 
-.model-1 {
-
-  tr,
-  td {
-    padding: -3px 0 !important;
-  }
-}
-
-.model-2 {
-
-  tr,
-  td {
-    padding-bottom: 5px !important;
-    border-bottom: 1px solid rgb(139, 139, 139);
-  }
-}
-
-table,
-tr,
+th,
 td {
-  border: none;
+  padding: 8px;
+  border: 1px solid black;
 }
 
-td {
-  text-align: left;
-}
+// .model-1 {
+
+//   tr,
+//   td {
+//     padding: -3px 0 !important;
+//   }
+// }
+
+// .model-2 {
+
+//   tr,
+//   td {
+//     padding-bottom: 5px !important;
+//     border-bottom: 1px solid rgb(139, 139, 139);
+//   }
+// }
+
+// table,
+// tr,
+// th,
+// td {
+//   padding: 0.25em !important;
+// }
+
+// td {
+//   text-align: left;
+// }
 
 .kotak {
   border: 1px solid black;
@@ -137,5 +314,10 @@ td {
     // break-after: page;
   }
 
+}
+
+.t-vertical {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
 }
 </style>
