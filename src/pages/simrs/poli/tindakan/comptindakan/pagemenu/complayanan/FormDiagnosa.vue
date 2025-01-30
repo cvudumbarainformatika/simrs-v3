@@ -41,7 +41,7 @@
       </q-btn>
     </div>
     <q-separator style="margin-top:-10px" />
-    <q-form ref="formRef" class="row q-pa-md q-col-gutter-xs" @submit="onSubmit">
+    <q-form v-if="!tutup" ref="formRef" class="row q-pa-md q-col-gutter-xs" @submit="onSubmit">
       <div class="col-3">
         <div>Kasus Baru ?</div>
       </div>
@@ -149,8 +149,14 @@ const props = defineProps({
   pasien: {
     type: Object,
     default: null
+  },
+  tutup: {
+    type: Boolean,
+    default: true
   }
 })
+
+// const tutup = ref(true)
 
 const formRef = ref(null)
 const store = useLayananPoli()
