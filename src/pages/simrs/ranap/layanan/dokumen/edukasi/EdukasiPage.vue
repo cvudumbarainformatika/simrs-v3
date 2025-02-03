@@ -137,7 +137,7 @@
                     }" />
                     <img class="qrcode__image" src="~assets/logos/logo-rsud.png" alt="RSUD DOKTER MOHAMAD SALEH">
                   </div>
-                  <div class="f-10 text-center">{{ item?.namaPenerima }}</div>
+                  <div class="f-8 text-wrap text-center">{{ item?.namaPenerima }}</div>
                 </div>
                 <div v-else>
                   -
@@ -160,7 +160,7 @@
                     }" />
                     <img class="qrcode__image" src="~assets/logos/logo-rsud.png" alt="RSUD DOKTER MOHAMAD SALEH">
                   </div>
-                  <div class="f-10 text-center">{{ item?.petugas?.nama }}</div>
+                  <div class="f-8 text-wrap text-center">{{ item?.petugas?.nama }}</div>
                 </div>
 
               </td>

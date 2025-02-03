@@ -7,7 +7,7 @@
       </div>
     </div>
     <div class="col full-height q-pa-md scroll">
-      <EdukasiPage id="resume" ref="refResume" :pasien="pasien" :menu="menu" />
+      <EdukasiPage id="kiemedis" ref="refResume" :pasien="pasien" :menu="menu" />
     </div>
   </div>
 </template>
