@@ -1,30 +1,12 @@
 <template>
   <div class="q-pa-xs" style="height: calc(100vh - 52px); overflow: hidden;">
-    <Header
-      ref="headRef"
-      :head="head"
-      :heads="heads"
-      title="List Konsinyasi"
-      subtitle="List Persediaan Konsinyasi Terpakai"
-      @ganti="gantiHead"
-    />
+    <Header ref="headRef" :head="head" :heads="heads" title="List Konsinyasi"
+      subtitle="List Persediaan Konsinyasi Terpakai" @ganti="gantiHead" />
 
     <div :style="`height: calc(100% - ${h}px); `">
-      <q-tab-panels
-        v-model="head"
-        animated
-        class="full-height"
-      >
-        <q-tab-panel
-          v-for="(panel, n) in heads"
-          :key="n"
-          :name="panel.page"
-          class="full-height q-pa-none q-mb-xl"
-        >
-          <component
-            :is="cekPanel()"
-            @ganti="gantiHead"
-          />
+      <q-tab-panels v-model="head" animated>
+        <q-tab-panel v-for="(panel, n) in heads" :key="n" :name="panel.page" class="full-height q-pa-none q-mb-xl">
+          <component :is="cekPanel()" @ganti="gantiHead" />
         </q-tab-panel>
       </q-tab-panels>
     </div>
@@ -32,11 +14,11 @@
 </template>
 <script setup>
 import { findWithAttr } from 'src/modules/utils'
-import { defineAsyncComponent, ref } from 'vue'
+import { defineAsyncComponent, onMounted, ref } from 'vue'
 
 const headRef = ref(null)
 // eslint-disable-next-line no-unused-vars
-const h = ref(64)
+const h = ref(70)
 const Header = defineAsyncComponent(() => import('./comp/PageHead.vue'))
 const head = ref('konsi')
 const heads = ref([
@@ -61,5 +43,11 @@ const cekPanel = () => {
   const arr = findWithAttr(comp, 'nama', value)
   return arr >= 0 ? comp[arr].page : ''
 }
+
+onMounted(() => {
+  // headRef.value?.setKeBulanIni()
+  console.log('headRef', headRef.value?.$el, headRef.value?.$el?.clientHeight)
+  h.value = headRef.value?.$el?.clientHeight + 16
+})
 
 </script>

@@ -91,11 +91,12 @@ function bulanIni () {
 
   const firstday = curr.setFullYear(y, m, 1)
   const lastday = curr.setFullYear(y, m + 1, 0)
-  // params.from = dateDbFormat(firstday)
-  // params.to = dateDbFormat(lastday)
 
-  from.value = dateDbFormat(firstday)
-  to.value = dateDbFormat(lastday)
+  // from.value = dateDbFormat(firstday)
+  // to.value = dateDbFormat(lastday)
+
+  from.value = dateDbFormat('2024-12-01')
+  to.value = dateDbFormat('2025-01-01')
 }
 function mingguIni () {
   const curr = new Date()

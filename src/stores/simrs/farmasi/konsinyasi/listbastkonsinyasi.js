@@ -17,6 +17,11 @@ export const useListBastObatKonsinyasiStore = defineStore('list_bast_obat_konsin
       { nama: 'Sudah', value: 'sudah' },
       { nama: 'Belum', value: 'belum' },
     ],
+    total: {
+      trans: 0,
+      bast: 0,
+      bayar: 0
+    },
     columns: [
       'penyedia',
       'nomor',
@@ -59,9 +64,16 @@ export const useListBastObatKonsinyasiStore = defineStore('list_bast_obat_konsin
       await api.get('v1/simrs/penunjang/farmasinew/bast-konsi/list-konsi', param)
         .then(resp => {
           this.loading = false
-          console.log('list kon', resp?.data)
+          // console.log('list kon', resp?.data)
           this.items = resp?.data?.data ?? resp?.data
           this.meta = resp?.data?.meta ?? resp?.data
+
+          if (this.items?.length) {
+            this.total.bast = this.items.reduce((a, b) => a + b.jumlah_bast, 0)
+            this.total.trans = this.items.reduce((a, b) => a + b.jumlah_konsi, 0)
+            this.total.bayar = this.items.reduce((a, b) => a + b.total_pembayaran, 0)
+          }
+          console.log('items', this.items)
         })
         .catch(() => {
           this.loading = false
