@@ -79,17 +79,17 @@
                 <div class="text-right">{{ humanDate(item?.tgl) }}</div>
                 <div class="text-right"> jam {{ jamTnpDetik(item?.tgl) }}</div>
               </td>
-              <td>
+              <td class="t-vertical">
                 <div v-if="!item?.metode?.length">
                   -
                 </div>
                 <div v-else>
                   <div v-for="metode in item?.metode" :key="metode">
-                    <div class="flex no-wrap">-{{ metode }}</div>
+                    <div class="text-right">{{ metode }}, </div>
                   </div>
                 </div>
               </td>
-              <td>
+              <td valign="top">
                 <div v-if="!item?.petugas?.kdgroupnakes !== ''">
                   <div>{{ jenisPPA(item?.petugas?.kdgroupnakes) }}</div>
                 </div>
@@ -103,48 +103,66 @@
                     <div class="flex no-wrap">{{ mat }}, </div>
                   </div>
                 </div>
+                <q-separator class="q-my-sm" />
+                <div v-html="getNewLine(item?.materiLain)" class="text-italic" />
               </td>
-              <td>{{ item?.estimasi }}</td>
-              <td>
+              <td class="t-vertical">
+                <div class="text-right">{{ item?.estimasi }}</div>
+              </td>
+              <td class="t-vertical">
                 <div v-if="!item?.media?.length">
                   -
                 </div>
                 <div v-else>
                   <div v-for="med in item?.media" :key="med">
-                    <div class="flex no-wrap">-{{ med }}</div>
+                    <div class="text-right"> {{ med }}, </div>
                   </div>
                 </div>
               </td>
-              <td>{{ item?.evaluasi }}</td>
-              <td>-</td>
-              <td>
-                <div class="flex-center relative-position" style="width: 60px;">
-                  <vue-qrcode :value="qrPetugas(item?.petugas)" tag="svg" :options="{
-                    errorCorrectionLevel: 'Q',
-                    color: {
-                      dark: '#000000',
-                      light: '#ffffff',
-                    },
-                    margin: 0
-                  }" />
-                  <img class="qrcode__image" src="~assets/logos/logo-rsud.png" alt="RSUD DOKTER MOHAMAD SALEH">
-                </div>
+              <td class="t-vertical">
+                <div class="text-right">{{ item?.evaluasi }}</div>
               </td>
-              <td>
-                <div v-if="item?.ttdPenerima" class="flex-center relative-position" style="width: 60px;">
-                  <vue-qrcode :value="qrPenerima(item?.ttdPenerima)" tag="svg" :options="{
-                    errorCorrectionLevel: 'Q',
-                    color: {
-                      dark: '#000000',
-                      light: '#ffffff',
-                    },
-                    margin: 0
-                  }" />
-                  <img class="qrcode__image" src="~assets/logos/logo-rsud.png" alt="RSUD DOKTER MOHAMAD SALEH">
+              <td valign="top">-</td>
+              <td valign="top">
+
+                <div v-if="item?.ttdPenerima" class="flex-center " style="width: 60px;">
+                  <div class="relative-position">
+                    <vue-qrcode :value="qrPenerima(item?.ttdPenerima)" tag="svg" :options="{
+                      errorCorrectionLevel: 'Q',
+                      color: {
+                        dark: '#000000',
+                        light: '#ffffff',
+                      },
+                      margin: 0
+                    }" />
+                    <img class="qrcode__image" src="~assets/logos/logo-rsud.png" alt="RSUD DOKTER MOHAMAD SALEH">
+                  </div>
+                  <div class="f-10 text-center">{{ item?.namaPenerima }}</div>
                 </div>
                 <div v-else>
                   -
                 </div>
+
+
+
+              </td>
+              <td valign="top">
+
+                <div class="flex-center " style="width: 60px;">
+                  <div class="relative-position">
+                    <vue-qrcode :value="qrPetugas(item?.petugas)" tag="svg" :options="{
+                      errorCorrectionLevel: 'Q',
+                      color: {
+                        dark: '#000000',
+                        light: '#ffffff',
+                      },
+                      margin: 0
+                    }" />
+                    <img class="qrcode__image" src="~assets/logos/logo-rsud.png" alt="RSUD DOKTER MOHAMAD SALEH">
+                  </div>
+                  <div class="f-10 text-center">{{ item?.petugas?.nama }}</div>
+                </div>
+
               </td>
             </tr>
           </tbody>
@@ -155,7 +173,7 @@
 </template>
 
 <script setup>
-import { humanDate, jamTnpDetik } from 'src/modules/formatter';
+import { getNewLine, humanDate, jamTnpDetik } from 'src/modules/formatter';
 import { computed, onMounted } from 'vue';
 import { useImplementasiEdukasiRanapStore } from 'src/stores/simrs/ranap/implementasiEdukasi';
 import { pathImg } from 'src/boot/axios';
