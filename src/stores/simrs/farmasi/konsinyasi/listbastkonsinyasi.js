@@ -9,8 +9,14 @@ export const useListBastObatKonsinyasiStore = defineStore('list_bast_obat_konsin
     params: {
       q: '',
       page: 1,
-      per_page: 10
+      per_page: 10,
+      bast: 'belum',
+      bayar: 'belum'
     },
+    filterSudah: [
+      { nama: 'Sudah', value: 'sudah' },
+      { nama: 'Belum', value: 'belum' },
+    ],
     columns: [
       'penyedia',
       'nomor',
