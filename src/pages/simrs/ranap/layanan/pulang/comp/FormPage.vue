@@ -176,6 +176,8 @@ const props = defineProps({
 })
 
 onMounted(() => {
+  // console.log('props', props?.pasien);
+
   options.value = diag.listDiagnosa
   store.getmastercarakeluar().then(() => {
     store.initReset(props?.pasien)
