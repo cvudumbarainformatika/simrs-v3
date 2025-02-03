@@ -3,10 +3,10 @@
     <Header ref="headRef" :head="head" :heads="heads" title="List Konsinyasi"
       subtitle="List Persediaan Konsinyasi Terpakai" @ganti="gantiHead" />
 
-    <div :style="`height: calc(100% - ${h}px); `">
-      <q-tab-panels v-model="head" animated>
-        <q-tab-panel v-for="(panel, n) in heads" :key="n" :name="panel.page" class="full-height q-pa-none q-mb-xl">
-          <component :is="cekPanel()" @ganti="gantiHead" />
+    <div :style="`height: calc(100% - ${h}px);`">
+      <q-tab-panels v-model="head" animated :style="`height: 100%`">
+        <q-tab-panel v-for="(panel, n) in heads" :key="n" :name="panel.page" class="q-pa-none">
+          <component :is="cekPanel()" />
         </q-tab-panel>
       </q-tab-panels>
     </div>
@@ -46,7 +46,7 @@ const cekPanel = () => {
 
 onMounted(() => {
   // headRef.value?.setKeBulanIni()
-  console.log('headRef', headRef.value?.$el, headRef.value?.$el?.clientHeight)
+  // console.log('headRef', headRef.value?.$el, headRef.value?.$el?.clientHeight)
   h.value = headRef.value?.$el?.clientHeight + 16
 })
 

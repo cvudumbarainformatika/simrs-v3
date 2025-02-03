@@ -10,7 +10,7 @@ export const useListBastObatKonsinyasiStore = defineStore('list_bast_obat_konsin
       q: '',
       page: 1,
       per_page: 10,
-      bast: 'belum',
+      bast: 'sudah',
       bayar: 'belum'
     },
     filterSudah: [
@@ -27,7 +27,8 @@ export const useListBastObatKonsinyasiStore = defineStore('list_bast_obat_konsin
       'nomor',
       'tanggal',
       'total',
-      'oleh'
+      'oleh',
+      'act',
     ],
     columnHide: []
   }),
@@ -59,6 +60,9 @@ export const useListBastObatKonsinyasiStore = defineStore('list_bast_obat_konsin
     },
     async getData () {
       this.items = []
+      this.total.bast = 0
+      this.total.trans = 0
+      this.total.bayar = 0
       this.loading = true
       const param = { params: this.params }
       await api.get('v1/simrs/penunjang/farmasinew/bast-konsi/list-konsi', param)

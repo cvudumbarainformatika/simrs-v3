@@ -1,5 +1,5 @@
 <template>
-  <div ref="content" class="q-pa-xs bg-white fullwidth">
+  <div ref="content" class="q-pa-xs bg-white fullwidth q-mb-md">
     <div class="row bg-white justify-end q-pr-md">
       <div class="row justify-between q-col-gutter-md">
         <div class="col-auto">
@@ -99,6 +99,9 @@
       <template #col-oleh>
         <div>Oleh</div>
       </template>
+      <template #col-act>
+        <div>#</div>
+      </template>
 
       <template #cell-tanggal="{ row }">
         <div class="row justify-between no-wrap">
@@ -127,7 +130,7 @@
         </div>
         <div class="row justify-between no-wrap">
           <div class="q-mr-sm">
-            Pembaayaran
+            Pembayaran
           </div>
           <div>
             {{ row.tgl_pembayaran ? dateFullFormat(row.tgl_pembayaran) : '-' }}
@@ -225,6 +228,14 @@
             {{ row?.bayar?.nama ?? '-' }}
           </div>
         </div>
+      </template>
+      <template #cell-act="{ row }">
+        <q-btn round class="f-10 q-mr-sm" color="primary" text-color="white" icon="icon-mat-print"
+          @click="openPrint(row)">
+          <q-tooltip class="primary" :offset="[10, 10]">
+            Print, pilih save as pdf
+          </q-tooltip>
+        </q-btn>
       </template>
 
       <template #expand="{ row }">
@@ -343,6 +354,7 @@
       </template>
     </app-table-extend>
   </div>
+  <DialogPrint v-model="isOpenPrint" :data="dataToPrint" @close="onClose" />
 </template>
 <script setup>
 import { dateFullFormat, formatDouble } from 'src/modules/formatter'
@@ -370,6 +382,9 @@ onMounted(() => {
 
 
 const BtnPeriode = defineAsyncComponent(() => import('./BtnPeriode.vue'))
+const DialogPrint = defineAsyncComponent(() => import('./DialogPrint.vue'))
+
+
 function gantiPeriode (val) {
   const keys = Object.keys(val)
   keys.forEach(a => {
@@ -383,7 +398,20 @@ function onClick (val) {
   val.item.expand = !val.item.expand
   val.item.highlight = !val.item.highlight
 }
+const isOpenPrint = ref(false)
+const dataToPrint = ref({})
+function openPrint (val) {
+  console.log('openPrint', val)
+  val.expand = !val.expand
+  val.highlight = !val.highlight
+  isOpenPrint.value = true
+  dataToPrint.value = val
+}
+function onClose () {
+  // console.log('onClose')
 
+  isOpenPrint.value = false
+}
 // eslint-disable-next-line no-unused-vars
 const content = ref(null)
 // eslint-disable-next-line no-unused-vars

@@ -63,7 +63,7 @@ const periods = ref(['Hari ini', 'Minggu ini', 'Bulan ini', 'Custom'])
 const periode = ref('Hari ini')
 
 function setPeriode (val) {
-  // console.log('set per', val)
+  console.log('set per', val)
 
   periode.value = val
   if (val === 'Hari ini') {
@@ -92,11 +92,9 @@ function bulanIni () {
   const firstday = curr.setFullYear(y, m, 1)
   const lastday = curr.setFullYear(y, m + 1, 0)
 
-  // from.value = dateDbFormat(firstday)
-  // to.value = dateDbFormat(lastday)
+  from.value = dateDbFormat(firstday)
+  to.value = dateDbFormat(lastday)
 
-  from.value = dateDbFormat('2024-12-01')
-  to.value = dateDbFormat('2025-01-01')
 }
 function mingguIni () {
   const curr = new Date()
@@ -109,7 +107,16 @@ function mingguIni () {
   to.value = dateDbFormat(lastday)
 }
 function setKeBulanIni () {
-  setPeriode('Bulan ini')
+  // setPeriode('Bulan ini') // ori
+
+  // tempoprary
+  from.value = dateDbFormat('2024-12-01')
+  to.value = dateDbFormat('2025-01-01')
+  const per = {
+    to: to.value,
+    from: from.value
+  }
+  emits('setPeriode', per)
 }
 defineExpose({ setKeBulanIni })
 // onMounted(() => {
