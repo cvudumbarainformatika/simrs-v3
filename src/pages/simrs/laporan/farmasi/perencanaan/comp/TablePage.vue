@@ -20,6 +20,9 @@
         <th :colspan="store.params.jenis === 'detail' ? '4' : '2'">
           Penerimaan
         </th>
+        <th rowspan="2">
+          Belum Dikirim
+        </th>
       </tr>
       <tr>
         <th v-if="store.params.jenis === 'detail'">
@@ -96,6 +99,9 @@
           <td>
             <q-skeleton type="text" width="60px" height="25px" />
           </td>
+          <td>
+            <q-skeleton type="text" width="60px" height="25px" />
+          </td>
 
         </tr>
       </template>
@@ -145,6 +151,7 @@
               <td v-if="store.params.jenis === 'detail'" />
               <td v-if="store.params.jenis === 'detail'" />
               <td v-if="store.params.jenis === 'detail'" />
+              <td />
               <td />
               <td />
               <td />
@@ -218,6 +225,12 @@
                   {{ cekNan(formatDouble(parseFloat(data?.terima?.subtotal), 2)) }}
                 </div>
               </td>
+              <!-- belum datang -->
+              <td>
+                <div class="text-right q-mr-xs" :class="data?.belumTerima?.tanggal === null ? 'text-weight-bold' : ''">
+                  {{ cekNan(formatDouble(parseFloat(data?.belumTerima?.jumlah), 2)) }}
+                </div>
+              </td>
             </tr>
           </template>
         </template>
@@ -248,6 +261,12 @@
               <q-skeleton type="text" width="60px" height="25px" />
             </td>
             <td v-if="store.params.jenis === 'detail'">
+              <q-skeleton type="text" width="60px" height="25px" />
+            </td>
+            <td>
+              <q-skeleton type="text" width="60px" height="25px" />
+            </td>
+            <td>
               <q-skeleton type="text" width="60px" height="25px" />
             </td>
             <td>
