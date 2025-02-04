@@ -107,16 +107,16 @@ function mingguIni () {
   to.value = dateDbFormat(lastday)
 }
 function setKeBulanIni () {
-  // setPeriode('Bulan ini') // ori
+  setPeriode('Bulan ini') // ori
 
   // tempoprary
-  from.value = dateDbFormat('2024-12-01')
-  to.value = dateDbFormat('2025-01-01')
-  const per = {
-    to: to.value,
-    from: from.value
-  }
-  emits('setPeriode', per)
+  // from.value = dateDbFormat('2024-12-01')
+  // to.value = dateDbFormat('2025-01-01')
+  // const per = {
+  //   to: to.value,
+  //   from: from.value
+  // }
+  // emits('setPeriode', per)
 }
 defineExpose({ setKeBulanIni })
 // onMounted(() => {

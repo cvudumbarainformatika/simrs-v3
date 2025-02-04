@@ -10,7 +10,7 @@ export const useListBastObatKonsinyasiStore = defineStore('list_bast_obat_konsin
       q: '',
       page: 1,
       per_page: 10,
-      bast: 'sudah',
+      bast: 'belum',
       bayar: 'belum'
     },
     filterSudah: [
