@@ -19,6 +19,10 @@ const props = defineProps({
   menu: {
     type: Object,
     default: null
+  },
+  kasus: {
+    type: Object,
+    default: null
   }
 })
 

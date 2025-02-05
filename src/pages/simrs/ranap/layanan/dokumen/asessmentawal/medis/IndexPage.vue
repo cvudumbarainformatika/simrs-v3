@@ -7,7 +7,7 @@
       </div>
     </div>
     <div class="col full-height q-pa-md scroll">
-      <SuratKematianPage id="resume" ref="refResume" :pasien="pasien" :menu="menu" />
+      <DokPage id="assessmentawalmedis" ref="refResume" :pasien="pasien" :menu="menu" :kasus="kasus" />
     </div>
   </div>
 </template>
@@ -15,13 +15,14 @@
 <script setup>
 import { defineAsyncComponent, ref } from 'vue'
 
-const SuratKematianPage = defineAsyncComponent(() => import('./SuratKematianPage.vue'))
+const DokPage = defineAsyncComponent(() => import('./DokPage.vue'))
 
 const refResume = ref()
 
 const printObj = {
-  id: 'resume',
-  popTitle: 'Surat Kematian'
+  id: 'assessmentawalmedis',
+  popTitle: 'Asessment Awal Medis'
+
 }
 
 defineProps({
@@ -30,6 +31,10 @@ defineProps({
     default: null
   },
   menu: {
+    type: Object,
+    default: null
+  },
+  kasus: {
     type: Object,
     default: null
   }
