@@ -1,88 +1,75 @@
 <template>
-  <div
-    ref="refPasien"
-    class="q-pa-xs"
-  >
+  <div ref="refPasien" class="q-pa-xs">
     <!-- :simpanData="simpanData" -->
-    <div
-      v-if="notEdit"
-      class="absolute-top row items-center justify-between bg-grey q-pa-sm"
-      style="z-index: 10;"
-    >
+    <div v-if="notEdit" class="absolute-top row items-center justify-between bg-grey q-pa-sm" style="z-index: 10;">
       <div class="f-14 text-weight-bold">
         Form Identitas Pasien I.1
       </div>
       <div>
-        <q-checkbox
-          v-model="store.edit"
-          label="Edit Form "
-          dense
-        />
-        <q-btn
-          v-if="bisaFull"
-          flat
-          :icon="!full?'icon-mat-open_in_full':'icon-mat-close_fullscreen'"
-          round
-          size="sm"
-          class="q-ml-md"
-          color="white"
-          @click="emits('fullScreen')"
-        />
+        <q-checkbox v-model="store.edit" label="Edit Form " dense />
+        <q-btn v-if="bisaFull" flat :icon="!full ? 'icon-mat-open_in_full' : 'icon-mat-close_fullscreen'" round
+          size="sm" class="q-ml-md" color="white" @click="emits('fullScreen')" />
       </div>
     </div>
-    <q-card
-      class="full-width"
-      flat
-      style="margin-top: 60px;"
-    >
+    <q-card class="full-width" flat style="margin-top: 60px;">
+      <q-card-section v-if="!!store.resRujukan || store.loadingCariRujukan">
+        <!-- <q-card-section> -->
+        <div v-if="store.loadingCariRujukan" class="f-14 text-weight-bold row items-center q-col-gutter-md">
+          <div class="col-auto">
+            <q-spinner-grid color="orange" size="2em" />
+          </div>
+          <div class="col-auto">
+            Sedang Mencari data Rujukan Keluar RS
+          </div>
+          <div class="col-auto">
+            <q-spinner-grid color="orange" size="2em" />
+          </div>
+        </div>
+        <div v-if="!!store.resRujukan">
+          <div class="f-14 text-weight-bold row text-negative q-col-gutter-sm">
+            <div class="col-auto">Pasien Sudah Dirujuk ke</div>
+            <div class="col-auto">
+              {{ store.resRujukan?.bpjsresponse?.respon?.response?.rujukan?.tujuanRujukan?.nama }}
+            </div>
+            <div class="col-auto">Poli</div>
+            <div class="col-auto">
+              {{ store.resRujukan?.bpjsresponse?.respon?.response?.rujukan?.poliTujuan?.nama }}
+            </div>
+            <div class="col-auto">Dengan Nomor Rujukan</div>
+            <div class="col-auto">
+              {{ store.resRujukan?.bpjsresponse?.respon?.response?.rujukan?.noRujukan }},
+            </div>
+            <div class="col-auto">Tanggal</div>
+            <div class="col-auto">
+              {{ dateFullFormat(store.resRujukan?.bpjsresponse?.respon?.response?.rujukan?.tglRujukan) }}
+            </div>
+            <div class="col-auto">dan Tanggal Rencana Kunjungan</div>
+            <div class="col-auto">
+              {{ dateFullFormat(store.resRujukan?.bpjsresponse?.respon?.response?.rujukan?.tglRencanaKunjungan) }}
+            </div>
+          </div>
+          <!-- {{ store.resRujukan?.bpjsresponse?.respon?.response }} -->
+        </div>
+      </q-card-section>
       <q-card-section no-padding>
-        <div
-          class="row fit q-col-gutter-md q-mb-md"
-        >
+        <div class=" row fit q-col-gutter-md q-mb-md">
           <!-- kiri -->
           <div class="col-4">
             <!-- lama / baru -->
-            <div
-              class="row justify-between items-center q-mb-xs"
-            >
-              <div :class="store.form.barulama==='baru'?'satu':'bagi-dua'">
-                <app-autocomplete-new
-                  ref="refJenisPasien"
-                  :model="store.form.barulama"
-                  label="Pasien baru / lama"
-                  autocomplete="value"
-                  option-value="value"
-                  option-label="nama"
-                  autofocus
-                  outlined
-                  :loading="store.loading"
-                  :disable="store.loading || !notEdit"
-                  :source="store.jenisPasiens"
-                  @on-select="setJenisPasien"
-                />
+            <div class="row justify-between items-center q-mb-xs">
+              <div :class="store.form.barulama === 'baru' ? 'satu' : 'bagi-dua'">
+                <app-autocomplete-new ref="refJenisPasien" :model="store.form.barulama" label="Pasien baru / lama"
+                  autocomplete="value" option-value="value" option-label="nama" autofocus outlined
+                  :loading="store.loading" :disable="store.loading || !notEdit" :source="store.jenisPasiens"
+                  @on-select="setJenisPasien" />
               </div>
-              <div
-                v-if="store.form.barulama==='lama'"
-              >
-                <q-btn
-                  dense
-                  flat
-                  round
-                  icon="icon-mat-search"
-                  color="grey"
-                  @click="store.cariPasienDialog=true"
-                >
-                  <q-tooltip
-                    anchor="top middle"
-                    self="center middle"
-                  >
+              <div v-if="store.form.barulama === 'lama'">
+                <q-btn dense flat round icon="icon-mat-search" color="grey" @click="store.cariPasienDialog = true">
+                  <q-tooltip anchor="top middle" self="center middle">
                     Cari pasien lain
                   </q-tooltip>
                   <template #loading>
-                    <q-spinner-hourglass
-                      class="on-left"
-                      size="18px"
-                    />
+                    <q-spinner-hourglass class="on-left" size="18px" />
                     <span class="f-12"> Loading </span>
                   </template>
                 </q-btn>
@@ -91,126 +78,63 @@
             <!-- no rm -->
             <div class="row q-col-gutter-sm items-center q-mb-xs">
               <div class="col-12">
-                <app-input
-                  ref="refNoRM"
-                  v-model="store.form.norm"
-                  label="Nomor RM"
-                  autofocus
-                  outlined
-                  :disable="store.form.barulama!=='baru'"
-                  :loading="store.loading || store.loadingNorm"
-                  :rules="[
+                <app-input ref="refNoRM" v-model="store.form.norm" label="Nomor RM" autofocus outlined
+                  :disable="store.form.barulama !== 'baru'" :loading="store.loading || store.loadingNorm" :rules="[
                     val => (!!val) || 'Harap diisi',
-                    val => val?val.length > 5:!val || 'Harus 6 Karakter',
-                    val=>regex.test(val)||'Hanya angka'
-                  ]"
-                  @keyup.enter="inputNoRmSelesai"
-                  @update:model-value="updateValNoRM"
-                  @blur="store.cekDulu($event,'norm')"
-                />
+                    val => val ? val.length > 5 : !val || 'Harus 6 Karakter',
+                    val => regex.test(val) || 'Hanya angka'
+                  ]" @keyup.enter="inputNoRmSelesai" @update:model-value="updateValNoRM"
+                  @blur="store.cekDulu($event, 'norm')" />
                 <!-- val => val?val.length < 7:!val || 'Harus 6 Karakter', -->
                 <div>
                   Kewarganegaraan :
-                  <q-radio
-                    v-for="item in store.kewarganegaran"
-                    :key="item"
-                    v-model="store.form.kewarganegaraan"
-                    :val="item"
-                    :label="item"
-                    dense
-                    size="xs"
-                    @update:model-value="gantiKewarganegaraan"
-                  />
+                  <q-radio v-for="item in store.kewarganegaran" :key="item" v-model="store.form.kewarganegaraan"
+                    :val="item" :label="item" dense size="xs" @update:model-value="gantiKewarganegaraan" />
                 </div>
               </div>
             </div>
             <!-- ktp -->
-            <div v-if="store.form.kewarganegaraan==='WNI'">
+            <div v-if="store.form.kewarganegaraan === 'WNI'">
               <div class="row q-col-gutter-sm items-center q-mb-xs">
                 <div class="col-12">
-                  <app-input
-                    ref="refKtp"
-                    v-model="store.form.nik"
-                    label="Nomor KTP"
-                    outlined
-                    :right-icon="!!bpjs"
-                    right-icon-name="icon-mat-dvr"
-                    :loading="store.loadingNik"
-                    :disable="store.form.barulama!=='baru'&&!store.edit&&(!store.form.nik?false:store.form.nik.length>=16)"
-                    right-icon-tooltip="Cek BPJS"
-                    :rules="[
-                      val=>( !store.form.nomoridentitaslain ? !!val : true)||'Harap di isi',
-                      val=>( (!store.form.nomoridentitaslain && val.length > 0) ? regex.test(val) : true)||'Hanya angka',
-                      val=> (!store.form.nomoridentitaslain && val.length >= 16) ||'Minimal 16 angka',
-                    ]"
-                    @icon-right-click="cekBpjsbyNik"
-                    @update:model-value="cekKtpKitas"
-                    @blur="store.cekDulu($event, 'nik')"
-                  />
+                  <app-input ref="refKtp" v-model="store.form.nik" label="Nomor KTP" outlined :right-icon="!!bpjs"
+                    right-icon-name="icon-mat-dvr" :loading="store.loadingNik"
+                    :disable="store.form.barulama !== 'baru' && !store.edit && (!store.form.nik ? false : store.form.nik.length >= 16)"
+                    right-icon-tooltip="Cek BPJS" :rules="[
+                      val => (!store.form.nomoridentitaslain ? !!val : true) || 'Harap di isi',
+                      val => ((!store.form.nomoridentitaslain && val.length > 0) ? regex.test(val) : true) || 'Hanya angka',
+                      val => (!store.form.nomoridentitaslain && val.length >= 16) || 'Minimal 16 angka',
+                    ]" @icon-right-click="cekBpjsbyNik" @update:model-value="cekKtpKitas"
+                    @blur="store.cekDulu($event, 'nik')" />
                 </div>
               </div>
             </div>
             <!-- kitas -->
             <div v-else>
-              <div
-                v-if="!bpjs"
-                class="row q-col-gutter-sm items-center q-mb-xs"
-              >
+              <div v-if="!bpjs" class="row q-col-gutter-sm items-center q-mb-xs">
                 <div class="col-12">
-                  <app-input
-                    ref="refKitas"
-                    v-model="store.form.nomoridentitaslain"
-                    label="Nomor Paspor / KITAS"
-                    outlined
-                    :disable="store.form.barulama!=='baru'&&!store.edit"
-                    :rules="[
-                      val=>( !store.form.nik ? !!val : true)||'Harap di isi',
-                      val => ( (!store.form.nik && val.length > 0)? regex.test(val) : true) || 'Hanya angka'
-                    ]"
-                    @update:model-value="cekKtpKitas"
-                  />
+                  <app-input ref="refKitas" v-model="store.form.nomoridentitaslain" label="Nomor Paspor / KITAS"
+                    outlined :disable="store.form.barulama !== 'baru' && !store.edit" :rules="[
+                      val => (!store.form.nik ? !!val : true) || 'Harap di isi',
+                      val => ((!store.form.nik && val.length > 0) ? regex.test(val) : true) || 'Hanya angka'
+                    ]" @update:model-value="cekKtpKitas" />
                 </div>
               </div>
-            <!-- KA BPJS -->
+              <!-- KA BPJS -->
             </div>
             <div class="row justify-between q-col-gutter-sm items-center q-mb-xs">
-              <div :class="bpjs || pelayanan?'bagi-tiga':'satu'">
-                <app-input
-                  ref="refNoKaBpjs"
-                  v-model="store.form.noka"
-                  label="Nomor KA BPJS"
-                  outlined
-                  :disable="store.form.barulama!=='baru'&&!store.edit"
-                  :loading="store.loadingNoka"
-                  :rules="[val=> (!!val ? regex.test( val ) : true) ||'Hanya angka']"
-                  @update:model-value="setNokaBPJS"
-                  @blur="store.cekDulu($event, 'noka')"
-                />
+              <div :class="bpjs || pelayanan ? 'bagi-tiga' : 'satu'">
+                <app-input ref="refNoKaBpjs" v-model="store.form.noka" label="Nomor KA BPJS" outlined
+                  :disable="store.form.barulama !== 'baru' && !store.edit" :loading="store.loadingNoka"
+                  :rules="[val => (!!val ? regex.test(val) : true) || 'Hanya angka']" @update:model-value="setNokaBPJS"
+                  @blur="store.cekDulu($event, 'noka')" />
               </div>
-              <div
-                v-if="bpjs || pelayanan"
-              >
-                <q-btn
-                  color="primary"
-                  dense
-                  flat
-                  label="BPJS"
-                  :loading="store.loadingNoka"
-                  @click="cekBpjsByNoka"
-                />
+              <div v-if="bpjs || pelayanan">
+                <q-btn color="primary" dense flat label="BPJS" :loading="store.loadingNoka" @click="cekBpjsByNoka" />
               </div>
-              <div
-                v-if="bpjs || pelayanan"
-              >
-                <q-btn
-                  no-caps
-                  color="primary"
-                  dense
-                  flat
-                  label="finger"
-                  :loading="store.loadingFinger"
-                  @click="cekFinger"
-                />
+              <div v-if="bpjs || pelayanan">
+                <q-btn no-caps color="primary" dense flat label="finger" :loading="store.loadingFinger"
+                  @click="cekFinger" />
               </div>
             </div>
 
@@ -223,30 +147,15 @@
               <div class="col-12">
                 <div class="row  q-col-gutter-sm items-center">
                   <div class="col-3">
-                    <app-autocomplete
-                      ref="refSapaan"
-                      v-model="store.form.sapaan"
-                      label="Sapaan"
-                      autocomplete="sapaan"
-                      option-value="sapaan"
-                      option-label="sapaan"
-                      outlined
-                      :source="store.sapaans"
-                      :loading="store.loading"
-                      :disable="store.form.barulama!=='baru'&&!store.edit"
-                      :rules="[val => (!!val) || 'Harap diisi',]"
-                      @selected="sapaanSelected"
-                      @keyup.enter="sapaanEnter"
-                    />
+                    <app-autocomplete ref="refSapaan" v-model="store.form.sapaan" label="Sapaan" autocomplete="sapaan"
+                      option-value="sapaan" option-label="sapaan" outlined :source="store.sapaans"
+                      :loading="store.loading" :disable="store.form.barulama !== 'baru' && !store.edit"
+                      :rules="[val => (!!val) || 'Harap diisi',]" @selected="sapaanSelected"
+                      @keyup.enter="sapaanEnter" />
                   </div>
                   <div class="col-9">
-                    <app-input
-                      ref="refNama"
-                      v-model="store.form.nama"
-                      label="Nama"
-                      outlined
-                      :disable="store.form.barulama!=='baru'&&!store.edit"
-                    />
+                    <app-input ref="refNama" v-model="store.form.nama" label="Nama" outlined
+                      :disable="store.form.barulama !== 'baru' && !store.edit" />
                   </div>
                 </div>
               </div>
@@ -254,13 +163,8 @@
             <!-- Nama ibu kandung -->
             <div class="row q-col-gutter-sm items-center q-mb-xs">
               <div class="col-12">
-                <app-input
-                  ref="refIbu"
-                  v-model="store.form.namaibukandung"
-                  label="Nama Ibu Kandung"
-                  outlined
-                  :disable="store.form.barulama!=='baru'&&!store.edit"
-                />
+                <app-input ref="refIbu" v-model="store.form.namaibukandung" label="Nama Ibu Kandung" outlined
+                  :disable="store.form.barulama !== 'baru' && !store.edit" />
               </div>
             </div>
             <!-- Gelar -->
@@ -268,22 +172,12 @@
               <div class="col-12">
                 <div class="row  q-col-gutter-sm items-center">
                   <div class="col-6">
-                    <app-input
-                      v-model="store.form.gelardepan"
-                      label="Gelar Depan"
-                      valid
-                      outlined
-                      :disable="store.form.barulama!=='baru'&&!store.edit"
-                    />
+                    <app-input v-model="store.form.gelardepan" label="Gelar Depan" valid outlined
+                      :disable="store.form.barulama !== 'baru' && !store.edit" />
                   </div>
                   <div class="col-6">
-                    <app-input
-                      v-model="store.form.gelarbelakang"
-                      label="Gelar Belakang"
-                      valid
-                      outlined
-                      :disable="store.form.barulama!=='baru'&&!store.edit"
-                    />
+                    <app-input v-model="store.form.gelarbelakang" label="Gelar Belakang" valid outlined
+                      :disable="store.form.barulama !== 'baru' && !store.edit" />
                   </div>
                 </div>
               </div>
@@ -295,13 +189,8 @@
               </div>
               <div class="col-8"> -->
               <div class="col-12">
-                <app-input
-                  ref="refTempatLahir"
-                  v-model="store.form.templahir"
-                  label="Tempat Lahir"
-                  outlined
-                  :disable="store.form.barulama!=='baru'&&!store.edit"
-                />
+                <app-input ref="refTempatLahir" v-model="store.form.templahir" label="Tempat Lahir" outlined
+                  :disable="store.form.barulama !== 'baru' && !store.edit" />
               </div>
             </div>
             <!-- tgl lahir -->
@@ -313,44 +202,21 @@
               <div class="col-12">
                 <div class="row q-col-gutter-sm no-wrap">
                   <div>
-                    <app-input
-                      ref="refHariLahir"
-                      v-model="store.tanggal.hari"
-                      label="Hari"
-                      outlined
-                      type="number"
-                      error-message="Periksa kembali tanggal lahir"
-                      :error="lahirValid"
-                      :disable="store.form.barulama!=='baru' && !store.edit"
-                      @update:model-value="setHariLahir"
-                      @focus="fokusHariLahir"
-                    />
+                    <app-input ref="refHariLahir" v-model="store.tanggal.hari" label="Hari" outlined type="number"
+                      error-message="Periksa kembali tanggal lahir" :error="lahirValid"
+                      :disable="store.form.barulama !== 'baru' && !store.edit" @update:model-value="setHariLahir"
+                      @focus="fokusHariLahir" />
                   </div>
                   <div>
-                    <app-input
-                      ref="refBulanLahir"
-                      v-model="store.tanggal.bulan"
-                      label="Bulan"
-                      outlined
-                      type="number"
-                      error-message="Periksa kembali tanggal lahir"
-                      :error="lahirValid"
-                      :disable="store.form.barulama!=='baru' && !store.edit"
-                      @update:model-value="setBulanLahir"
-                    />
+                    <app-input ref="refBulanLahir" v-model="store.tanggal.bulan" label="Bulan" outlined type="number"
+                      error-message="Periksa kembali tanggal lahir" :error="lahirValid"
+                      :disable="store.form.barulama !== 'baru' && !store.edit" @update:model-value="setBulanLahir" />
                   </div>
                   <div>
-                    <app-input
-                      ref="refTahunLahir"
-                      v-model="store.tanggal.tahun"
-                      label="Tahun"
-                      outlined
-                      type="number"
-                      :disable="store.form.barulama!=='baru' && !store.edit"
-                      error-message="Periksa kembali tanggal lahir"
-                      :error="lahirValid"
-                      @update:model-value="setTahunLahir"
-                    />
+                    <app-input ref="refTahunLahir" v-model="store.tanggal.tahun" label="Tahun" outlined type="number"
+                      :disable="store.form.barulama !== 'baru' && !store.edit"
+                      error-message="Periksa kembali tanggal lahir" :error="lahirValid"
+                      @update:model-value="setTahunLahir" />
                   </div>
                 </div>
               </div>
@@ -394,20 +260,10 @@
               </div>
               <div class="col-8"> -->
               <div class="col-12">
-                <app-autocomplete
-                  ref="refKelamin"
-                  v-model="store.form.kelamin"
-                  label="Jenis kelamin"
-                  autocomplete="kelamin"
-                  option-value="kelamin"
-                  option-label="kelamin"
-                  outlined
-                  :source="store.kelamins"
-                  :loading="store.loading"
-                  :disable="store.form.barulama!=='baru'&&!store.edit"
-                  :rules="[val => (!!val) || 'Harap diisi',]"
-                  @selected="kelaminSelected"
-                />
+                <app-autocomplete ref="refKelamin" v-model="store.form.kelamin" label="Jenis kelamin"
+                  autocomplete="kelamin" option-value="kelamin" option-label="kelamin" outlined :source="store.kelamins"
+                  :loading="store.loading" :disable="store.form.barulama !== 'baru' && !store.edit"
+                  :rules="[val => (!!val) || 'Harap diisi',]" @selected="kelaminSelected" />
               </div>
             </div>
             <!-- pendidikan -->
@@ -417,20 +273,11 @@
               </div>
               <div class="col-8"> -->
               <div class="col-12">
-                <app-autocomplete
-                  ref="refPendidikan"
-                  v-model="store.form.pendidikan"
-                  label="Pendidikan"
-                  autocomplete="pendidikan"
-                  option-value="pendidikan"
-                  option-label="pendidikan"
-                  outlined
-                  :source="store.pendidikans"
-                  :loading="store.loading"
-                  :disable="store.form.barulama!=='baru'&&!store.edit"
-                  :rules="[val => (!!val) || 'Harap diisi',]"
-                  @selected="pendidikanSelected"
-                />
+                <app-autocomplete ref="refPendidikan" v-model="store.form.pendidikan" label="Pendidikan"
+                  autocomplete="pendidikan" option-value="pendidikan" option-label="pendidikan" outlined
+                  :source="store.pendidikans" :loading="store.loading"
+                  :disable="store.form.barulama !== 'baru' && !store.edit" :rules="[val => (!!val) || 'Harap diisi',]"
+                  @selected="pendidikanSelected" />
               </div>
             </div>
             <!-- agama -->
@@ -442,33 +289,15 @@
               <div class="col-12">
                 <div class="row q-mb-xs">
                   <div class="col-12">
-                    <app-autocomplete-new
-                      ref="refAgama"
-                      v-model="store.display.kode"
-                      label="Agama"
-                      autocomplete="kode"
-                      option-value="kode"
-                      option-label="keterangan"
-                      outlined
-                      :source="store.agamas"
-                      :loading="store.loading"
-                      :disable="store.form.barulama!=='baru'&&!store.edit"
-                      :rules="[val => (!!val) || 'Harap diisi',]"
-                      @on-select="setAgama"
-                    />
+                    <app-autocomplete-new ref="refAgama" v-model="store.display.kode" label="Agama" autocomplete="kode"
+                      option-value="kode" option-label="keterangan" outlined :source="store.agamas"
+                      :loading="store.loading" :disable="store.form.barulama !== 'baru' && !store.edit"
+                      :rules="[val => (!!val) || 'Harap diisi',]" @on-select="setAgama" />
                   </div>
                 </div>
-                <div
-                  v-if="store.display.agama==='Lain-lain'"
-                  class="row"
-                >
+                <div v-if="store.display.agama === 'Lain-lain'" class="row">
                   <div class="col-12">
-                    <app-input
-                      ref="refTulisAgama"
-                      v-model="store.form.agama"
-                      label="Tulis Agama"
-                      outlined
-                    />
+                    <app-input ref="refTulisAgama" v-model="store.form.agama" label="Tulis Agama" outlined />
                   </div>
                 </div>
               </div>
@@ -480,13 +309,8 @@
               </div>
               <div class="col-8"> -->
               <div class="col-12">
-                <app-input
-                  ref="refSuku"
-                  v-model="store.form.suku"
-                  label="Suku"
-                  outlined
-                  :disable="store.form.barulama!=='baru' && !store.edit"
-                />
+                <app-input ref="refSuku" v-model="store.form.suku" label="Suku" outlined
+                  :disable="store.form.barulama !== 'baru' && !store.edit" />
               </div>
             </div>
             <!-- bahasa -->
@@ -496,19 +320,10 @@
               </div>
               <div class="col-8"> -->
               <div class="col-12">
-                <app-autocomplete
-                  ref="refBahasa"
-                  v-model="store.form.bahasa"
-                  label="Bahasa"
-                  autocomplete="bahasa"
-                  option-value="bahasa"
-                  option-label="bahasa"
-                  outlined
-                  :source="store.bahasas"
-                  :loading="store.loading"
-                  :disable="store.form.barulama!=='baru'&&!store.edit"
-                  :rules="[val => (!!val) || 'Harap diisi',]"
-                />
+                <app-autocomplete ref="refBahasa" v-model="store.form.bahasa" label="Bahasa" autocomplete="bahasa"
+                  option-value="bahasa" option-label="bahasa" outlined :source="store.bahasas" :loading="store.loading"
+                  :disable="store.form.barulama !== 'baru' && !store.edit"
+                  :rules="[val => (!!val) || 'Harap diisi',]" />
                 <!-- @selected="kelaminSelected" -->
                 <!-- <app-input
                   ref="refBahasa"
@@ -522,30 +337,16 @@
             <!-- Baca Tulis -->
             <div class="row q-col-gutter-sm items-center q-mb-xs">
               <div>
-                <q-radio
-                  v-model="store.form.bacatulis"
-                  :class="!!store.form.bacatulis?'dark':'merah'"
-                  :color="!!store.form.bacatulis?'primary':'negative'"
-                  :keep-color="!store.form.bacatulis"
-                  dense
-                  checked-icon="icon-mat-task_alt"
-                  unchecked-icon="icon-mat-panorama_fish_eye"
-                  val="YA"
-                  label="Bisa Baca & Tulis"
-                />
+                <q-radio v-model="store.form.bacatulis" :class="!!store.form.bacatulis ? 'dark' : 'merah'"
+                  :color="!!store.form.bacatulis ? 'primary' : 'negative'" :keep-color="!store.form.bacatulis" dense
+                  checked-icon="icon-mat-task_alt" unchecked-icon="icon-mat-panorama_fish_eye" val="YA"
+                  label="Bisa Baca & Tulis" />
               </div>
               <div>
-                <q-radio
-                  v-model="store.form.bacatulis"
-                  :class="!!store.form.bacatulis?'dark':'merah'"
-                  :color="!!store.form.bacatulis?'primary':'negative'"
-                  :keep-color="!store.form.bacatulis"
-                  dense
-                  checked-icon="icon-mat-task_alt"
-                  unchecked-icon="icon-mat-panorama_fish_eye"
-                  val="TIDAK"
-                  label="Tidak Bisa Baca & Tulis"
-                />
+                <q-radio v-model="store.form.bacatulis" :class="!!store.form.bacatulis ? 'dark' : 'merah'"
+                  :color="!!store.form.bacatulis ? 'primary' : 'negative'" :keep-color="!store.form.bacatulis" dense
+                  checked-icon="icon-mat-task_alt" unchecked-icon="icon-mat-panorama_fish_eye" val="TIDAK"
+                  label="Tidak Bisa Baca & Tulis" />
               </div>
             </div>
             <!-- status prnikahan -->
@@ -555,20 +356,11 @@
               </div>
               <div class="col-8"> -->
               <div class="col-12">
-                <app-autocomplete
-                  ref="refStatusPernikahan"
-                  v-model="store.form.statuspernikahan"
-                  label="Status Pernikahan"
-                  autocomplete="statuspernikahan"
-                  option-value="statuspernikahan"
-                  option-label="statuspernikahan"
-                  outlined
-                  :rules="[val => (!!val) || 'Harap diisi',]"
-                  :source="store.statuspernikahans"
-                  :loading="store.loading"
-                  :disable="store.form.barulama!=='baru' && !store.edit"
-                  @selected="statusPernikahanSelected"
-                />
+                <app-autocomplete ref="refStatusPernikahan" v-model="store.form.statuspernikahan"
+                  label="Status Pernikahan" autocomplete="statuspernikahan" option-value="statuspernikahan"
+                  option-label="statuspernikahan" outlined :rules="[val => (!!val) || 'Harap diisi',]"
+                  :source="store.statuspernikahans" :loading="store.loading"
+                  :disable="store.form.barulama !== 'baru' && !store.edit" @selected="statusPernikahanSelected" />
                 <!-- <app-autocomplete-new
                   ref="refStatusPernikahan"
                   :model="store.wilayah.kelurahan.kotakabupaten"
@@ -594,33 +386,16 @@
               <div class="col-12">
                 <div class="row q-mb-xs">
                   <div class="col-12">
-                    <app-autocomplete
-                      ref="refPekerjaan"
-                      v-model="store.display.pekerjaan"
-                      label="Pilih Pekerjaan"
-                      autocomplete="pekerjaan"
-                      option-value="pekerjaan"
-                      option-label="pekerjaan"
-                      outlined
-                      :rules="[val => (!!val) || 'Harap diisi',]"
-                      :source="store.pekerjaans"
-                      :loading="store.loading"
-                      :disable="store.form.barulama!=='baru' && !store.edit"
-                      @selected="setPekerjaan"
-                    />
+                    <app-autocomplete ref="refPekerjaan" v-model="store.display.pekerjaan" label="Pilih Pekerjaan"
+                      autocomplete="pekerjaan" option-value="pekerjaan" option-label="pekerjaan" outlined
+                      :rules="[val => (!!val) || 'Harap diisi',]" :source="store.pekerjaans" :loading="store.loading"
+                      :disable="store.form.barulama !== 'baru' && !store.edit" @selected="setPekerjaan" />
                   </div>
                 </div>
-                <div
-                  v-if="store.display.pekerjaan==='Lain-lain'"
-                  class="row"
-                >
+                <div v-if="store.display.pekerjaan === 'Lain-lain'" class="row">
                   <div class="col-12">
-                    <app-input
-                      ref="refInputPekerjaan"
-                      v-model="store.form.pekerjaan"
-                      label="tulis Pekerjaan"
-                      outlined
-                    />
+                    <app-input ref="refInputPekerjaan" v-model="store.form.pekerjaan" label="tulis Pekerjaan"
+                      outlined />
                   </div>
                 </div>
               </div>
@@ -633,16 +408,9 @@
               </div>
               <div class="col-8"> -->
               <div class="col-12">
-                <app-input
-                  ref="refNoTlpRumah"
-                  v-model="store.form.noteleponrumah"
-                  label="No telepon rumah"
-                  outlined
-                  valid
-                  type="number"
-                  :disable="store.form.barulama!=='baru'&&!store.edit"
-                  @update:model-value="setTlpRumah"
-                />
+                <app-input ref="refNoTlpRumah" v-model="store.form.noteleponrumah" label="No telepon rumah" outlined
+                  valid type="number" :disable="store.form.barulama !== 'baru' && !store.edit"
+                  @update:model-value="setTlpRumah" />
                 <!-- :prefix="'+'+(store.form.negara?store.form.negara:'62')" -->
               </div>
             </div>
@@ -653,14 +421,9 @@
               </div>
               <div class="col-8"> -->
               <div class="col-12">
-                <app-input
-                  ref="refNoTlp"
-                  v-model="store.form.noteleponhp"
-                  label="No Ponsel"
-                  outlined
-                  :disable=" store.form.barulama!=='baru' && !store.edit && (!!store.form.noteleponhp)"
-                  @blur="setTlpHP($event)"
-                />
+                <app-input ref="refNoTlp" v-model="store.form.noteleponhp" label="No Ponsel" outlined
+                  :disable="store.form.barulama !== 'baru' && !store.edit && (!!store.form.noteleponhp)"
+                  @blur="setTlpHP($event)" />
                 <!-- :prefix="'+'+(store.form.negara?store.form.negara:'62')" -->
                 <!-- @update:model-value="setTlpHP" -->
                 <!-- type="number" -->
@@ -688,20 +451,11 @@
             <!-- hambatan -->
             <div class="row q-col-gutter-sm items-center q-mb-xs">
               <div class="col-12">
-                <app-autocomplete
-                  ref="refHambatan"
-                  :key="store.form.kdhambatan"
-                  v-model="store.form.kdhambatan"
-                  label="Hambatan"
-                  autocomplete="hambatan"
-                  option-value="kdhambatan"
-                  option-label="hambatan"
-                  outlined
-                  :source="store.hambatans"
-                  :loading="store.loading"
-                  :disable="store.form.barulama!=='baru'&&!store.edit"
-                  :rules="[val => (!!val) || 'Harap diisi',]"
-                />
+                <app-autocomplete ref="refHambatan" :key="store.form.kdhambatan" v-model="store.form.kdhambatan"
+                  label="Hambatan" autocomplete="hambatan" option-value="kdhambatan" option-label="hambatan" outlined
+                  :source="store.hambatans" :loading="store.loading"
+                  :disable="store.form.barulama !== 'baru' && !store.edit"
+                  :rules="[val => (!!val) || 'Harap diisi',]" />
               </div>
             </div>
             <!-- alamat -->
@@ -711,18 +465,12 @@
               </div>
               <div class="col-8"> -->
               <div class="col-12">
-                <app-input
-                  ref="refAlamat"
-                  v-model="store.form.alamat"
-                  outlined
-                  label="Alamat"
-                  :disable="store.form.barulama!=='baru'&&!store.edit"
-                  @update:model-value="setAlamat"
-                />
+                <app-input ref="refAlamat" v-model="store.form.alamat" outlined label="Alamat"
+                  :disable="store.form.barulama !== 'baru' && !store.edit" @update:model-value="setAlamat" />
               </div>
             </div>
             <!-- RT / RW -->
-            <div v-if="store.form.kewarganegaraan==='WNI'">
+            <div v-if="store.form.kewarganegaraan === 'WNI'">
               <div class="row q-col-gutter-sm items-center q-mb-xs">
                 <!-- <div class="col-4">
                 RT / RW
@@ -731,29 +479,15 @@
                 <div class="col-12">
                   <div class="row items-center q-col-gutter-sm">
                     <div class="col-4">
-                      <app-input
-                        ref="refRT"
-                        v-model="store.form.rt"
-                        label="RT"
-                        outlined
-                        type="number"
-                        :disable="store.form.barulama!=='baru'&&!store.edit"
-                        @update:model-value="setRT"
-                      />
+                      <app-input ref="refRT" v-model="store.form.rt" label="RT" outlined type="number"
+                        :disable="store.form.barulama !== 'baru' && !store.edit" @update:model-value="setRT" />
                     </div>
                     <div class="col-1 text-center">
                       /
                     </div>
                     <div class="col-4">
-                      <app-input
-                        ref="refRW"
-                        v-model="store.form.rw"
-                        label="RW"
-                        outlined
-                        type="number"
-                        :disable="store.form.barulama!=='baru'&&!store.edit"
-                        @update:model-value="setRW"
-                      />
+                      <app-input ref="refRW" v-model="store.form.rw" label="RW" outlined type="number"
+                        :disable="store.form.barulama !== 'baru' && !store.edit" @update:model-value="setRW" />
                     </div>
                   </div>
                 </div>
@@ -765,20 +499,11 @@
               </div>
               <div class="col-8"> -->
                 <div class="col-12">
-                  <app-autocomplete-new
-                    ref="refNegara"
-                    :model="store.wilayah.kd_negara"
-                    label="Cari Negara"
-                    autocomplete="wilayah"
-                    option-value="kd_negara"
-                    option-label="wilayah"
-                    outlined
-                    :source="store.negaras"
-                    :loading="store.loadingSelect"
-                    :disable="store.form.barulama!=='baru'&&!store.edit"
-                    @on-select="negaraSelected"
-                    @clear="store.clearNegara"
-                  />
+                  <app-autocomplete-new ref="refNegara" :model="store.wilayah.kd_negara" label="Cari Negara"
+                    autocomplete="wilayah" option-value="kd_negara" option-label="wilayah" outlined
+                    :source="store.negaras" :loading="store.loadingSelect"
+                    :disable="store.form.barulama !== 'baru' && !store.edit" @on-select="negaraSelected"
+                    @clear="store.clearNegara" />
                 </div>
               </div>
               <!-- Propinsi -->
@@ -788,20 +513,11 @@
               </div>
               <div class="col-8"> -->
                 <div class="col-12">
-                  <app-autocomplete-new
-                    ref="refPropinsi"
-                    :model="store.wilayah.propinsi"
-                    label="Cari propinsi"
-                    autocomplete="wilayah"
-                    option-value="propinsi"
-                    option-label="wilayah"
-                    outlined
+                  <app-autocomplete-new ref="refPropinsi" :model="store.wilayah.propinsi" label="Cari propinsi"
+                    autocomplete="wilayah" option-value="propinsi" option-label="wilayah" outlined
                     :source="store.propinsies"
-                    :disable="!store.propinsies.length || (store.form.barulama!=='baru' && !store.edit)"
-                    :loading="store.loadingPropinsi"
-                    @on-select="propinsiSelected"
-                    @clear="store.clearPropinsi"
-                  />
+                    :disable="!store.propinsies.length || (store.form.barulama !== 'baru' && !store.edit)"
+                    :loading="store.loadingPropinsi" @on-select="propinsiSelected" @clear="store.clearPropinsi" />
                 </div>
               </div>
               <!-- kabupaten -->
@@ -811,20 +527,11 @@
               </div>
               <div class="col-8"> -->
                 <div class="col-12">
-                  <app-autocomplete-new
-                    ref="refKabupaten"
-                    :model="store.wilayah.kotakabupaten"
-                    label="Cari kabupaten / kota"
-                    autocomplete="wilayah"
-                    option-value="kotakabupaten"
-                    option-label="wilayah"
-                    outlined
-                    :source="store.kabupatens"
-                    :loading="store.loadingKabupaten"
-                    :disable="!store.kabupatens.length || (store.form.barulama!=='baru' && !store.edit)"
-                    @on-select="kabupatenSelected"
-                    @clear="store.clearKabupaten"
-                  />
+                  <app-autocomplete-new ref="refKabupaten" :model="store.wilayah.kotakabupaten"
+                    label="Cari kabupaten / kota" autocomplete="wilayah" option-value="kotakabupaten"
+                    option-label="wilayah" outlined :source="store.kabupatens" :loading="store.loadingKabupaten"
+                    :disable="!store.kabupatens.length || (store.form.barulama !== 'baru' && !store.edit)"
+                    @on-select="kabupatenSelected" @clear="store.clearKabupaten" />
                 </div>
               </div>
               <!-- kecamatan -->
@@ -834,20 +541,11 @@
               </div>
               <div class="col-8"> -->
                 <div class="col-12">
-                  <app-autocomplete-new
-                    ref="refKecamatan"
-                    :model="store.wilayah.kecamatan.kotakabupaten"
-                    label="Cari kecamatan"
-                    autocomplete="wilayah"
-                    option-value="kotakabupaten"
-                    option-label="wilayah"
-                    outlined
-                    :source="store.kecamatans"
-                    :loading="store.loadingKecamatan"
-                    :disable="!store.kecamatans.length || (store.form.barulama!=='baru' && !store.edit)"
-                    @on-select="kecamatanSelected"
-                    @clear="store.clearKecamatan"
-                  />
+                  <app-autocomplete-new ref="refKecamatan" :model="store.wilayah.kecamatan.kotakabupaten"
+                    label="Cari kecamatan" autocomplete="wilayah" option-value="kotakabupaten" option-label="wilayah"
+                    outlined :source="store.kecamatans" :loading="store.loadingKecamatan"
+                    :disable="!store.kecamatans.length || (store.form.barulama !== 'baru' && !store.edit)"
+                    @on-select="kecamatanSelected" @clear="store.clearKecamatan" />
                 </div>
               </div>
               <!-- kelurahan -->
@@ -857,20 +555,11 @@
               </div>
               <div class="col-8"> -->
                 <div class="col-12">
-                  <app-autocomplete-new
-                    ref="refKelurahan"
-                    :model="store.wilayah.kelurahan.kotakabupaten"
-                    label="Cari kelurahan"
-                    autocomplete="wilayah"
-                    option-value="kotakabupaten"
-                    option-label="wilayah"
-                    outlined
-                    :source="store.kelurahans"
-                    :loading="store.loadingKelurahan"
-                    :disable="!store.kelurahans.length || (store.form.barulama!=='baru' && !store.edit)"
-                    @on-select="kelurahanSelected"
-                    @clear="store.clearKelurahan"
-                  />
+                  <app-autocomplete-new ref="refKelurahan" :model="store.wilayah.kelurahan.kotakabupaten"
+                    label="Cari kelurahan" autocomplete="wilayah" option-value="kotakabupaten" option-label="wilayah"
+                    outlined :source="store.kelurahans" :loading="store.loadingKelurahan"
+                    :disable="!store.kelurahans.length || (store.form.barulama !== 'baru' && !store.edit)"
+                    @on-select="kelurahanSelected" @clear="store.clearKelurahan" />
                 </div>
               </div>
               <!-- kode pos -->
@@ -880,29 +569,17 @@
               </div>
               <div class="col-8"> -->
                 <div class="col-12">
-                  <app-input
-                    ref="refKodePos"
-                    v-model="store.form.kodepos"
-                    label="Kode Pos"
-                    type="number"
-                    outlined
-                    :disable="store.form.barulama!=='baru'&&!store.edit"
-                    @update:model-value="setKodepos"
-                  />
+                  <app-input ref="refKodePos" v-model="store.form.kodepos" label="Kode Pos" type="number" outlined
+                    :disable="store.form.barulama !== 'baru' && !store.edit" @update:model-value="setKodepos" />
                 </div>
               </div>
               <!-- Antrian -->
               <!-- Home care juga ga butuh antrian  -->
-              <div v-if="pelayanan === '' ">
+              <div v-if="pelayanan === ''">
                 <div class="row q-col-gutter-sm items-center q-mb-xs">
                   <div class="col-12">
-                    <app-input
-                      ref="refNoAntrian"
-                      v-model="store.form.noantrian"
-                      label="Nomor Antrian"
-                      outlined
-                      @blur="setNoAntrian($event)"
-                    />
+                    <app-input ref="refNoAntrian" v-model="store.form.noantrian" label="Nomor Antrian" outlined
+                      @blur="setNoAntrian($event)" />
                     <!-- @update:model-value="setNoAntrian" -->
                   </div>
                 </div>
@@ -911,28 +588,10 @@
             <div v-else>
               <div class="row q-col-gutter-sm items-center q-mb-xs">
                 <div class="col-12">
-                  <q-select
-                    ref="refCity"
-                    v-model="weather"
-                    outlined
-                    label="Pencarian Kota Luar Negeri"
-                    dense
-                    use-input
-                    hide-selected
-                    fill-input
-                    input-debounce="200"
-                    :options="store.countrys"
-                    @filter="filterFn"
-                    placeholder="Minimal 3 character"
-                    autofocus
-                    class="full-width"
-                    hide-bottom-space
-                    hide-dropdown-icon
-                    no-error-icon
-                    option-label="name"
-                    option-value="name"
-                    @update:model-value="citySelected"
-                  >
+                  <q-select ref="refCity" v-model="weather" outlined label="Pencarian Kota Luar Negeri" dense use-input
+                    hide-selected fill-input input-debounce="200" :options="store.countrys" @filter="filterFn"
+                    placeholder="Minimal 3 character" autofocus class="full-width" hide-bottom-space hide-dropdown-icon
+                    no-error-icon option-label="name" option-value="name" @update:model-value="citySelected">
                     <template #prepend>
                       <q-icon name="icon-mat-search" />
                     </template>
@@ -971,12 +630,8 @@
         <!-- check box alamat domisili sama -->
         <div class="row fit q-col-gutter-sm q-mb-md">
           <div class="col-12 text-right">
-            <q-checkbox
-              v-model="store.alamataDomisiliSama"
-              label="Alamat dan Alamat Domisili sama "
-              dense
-              @update:model-value="store.samakanAlamatDanDomisili"
-            />
+            <q-checkbox v-model="store.alamataDomisiliSama" label="Alamat dan Alamat Domisili sama " dense
+              @update:model-value="store.samakanAlamatDanDomisili" />
           </div>
         </div>
       </q-card-section>
@@ -998,17 +653,12 @@
                 Alamat
               </div>
               <div class="col-8">
-                <app-input
-                  ref="refAlamatDomisili"
-                  v-model="store.form.alamatdomisili"
-                  outlined
-                  label="Alamat"
-                  :disable="store.form.barulama!=='baru'&&!store.edit"
-                />
+                <app-input ref="refAlamatDomisili" v-model="store.form.alamatdomisili" outlined label="Alamat"
+                  :disable="store.form.barulama !== 'baru' && !store.edit" />
               </div>
             </div>
             <!-- RT / RW domisili -->
-            <div v-if="store.form.kewarganegaraan==='WNI'">
+            <div v-if="store.form.kewarganegaraan === 'WNI'">
               <div class="row q-col-gutter-sm items-center q-mb-xs">
                 <div class="col-4">
                   RT / RW
@@ -1016,27 +666,15 @@
                 <div class="col-8">
                   <div class="row items-center q-col-gutter-sm">
                     <div class="col-4">
-                      <app-input
-                        ref="refRTDomisili"
-                        v-model="store.form.rtdomisili"
-                        label="RT"
-                        outlined
-                        type="number"
-                        :disable="store.form.barulama!=='baru'&&!store.edit"
-                      />
+                      <app-input ref="refRTDomisili" v-model="store.form.rtdomisili" label="RT" outlined type="number"
+                        :disable="store.form.barulama !== 'baru' && !store.edit" />
                     </div>
                     <div class="col-1 text-center">
                       /
                     </div>
                     <div class="col-4">
-                      <app-input
-                        ref="refRWDomisili"
-                        v-model="store.form.rwdomisili"
-                        label="RW"
-                        outlined
-                        type="number"
-                        :disable="store.form.barulama!=='baru'&&!store.edit"
-                      />
+                      <app-input ref="refRWDomisili" v-model="store.form.rwdomisili" label="RW" outlined type="number"
+                        :disable="store.form.barulama !== 'baru' && !store.edit" />
                     </div>
                   </div>
                 </div>
@@ -1048,20 +686,11 @@
                   Negara
                 </div>
                 <div class="col-8">
-                  <app-autocomplete-new
-                    ref="refNegaraDomisili"
-                    :model="store.wilayahDomisili.kd_negara"
-                    label="Cari Negara"
-                    autocomplete="wilayah"
-                    option-value="kd_negara"
-                    option-label="wilayah"
-                    outlined
-                    :source="store.domisiliNegaras"
-                    :loading="store.loadingSelectDomisili"
-                    :disable="store.form.barulama!=='baru'&&!store.edit"
-                    @on-select="negaraDomisiliSelected"
-                    @clear="store.clearNegaraDomisili"
-                  />
+                  <app-autocomplete-new ref="refNegaraDomisili" :model="store.wilayahDomisili.kd_negara"
+                    label="Cari Negara" autocomplete="wilayah" option-value="kd_negara" option-label="wilayah" outlined
+                    :source="store.domisiliNegaras" :loading="store.loadingSelectDomisili"
+                    :disable="store.form.barulama !== 'baru' && !store.edit" @on-select="negaraDomisiliSelected"
+                    @clear="store.clearNegaraDomisili" />
                 </div>
               </div>
 
@@ -1071,46 +700,30 @@
                   Propinsi
                 </div>
                 <div class="col-8">
-                  <app-autocomplete-new
-                    ref="refPropinsiDomisili"
-                    :model="store.wilayahDomisili.propinsi"
-                    label="Cari propinsi"
-                    autocomplete="wilayah"
-                    option-value="propinsi"
-                    option-label="wilayah"
-                    outlined
+                  <app-autocomplete-new ref="refPropinsiDomisili" :model="store.wilayahDomisili.propinsi"
+                    label="Cari propinsi" autocomplete="wilayah" option-value="propinsi" option-label="wilayah" outlined
                     :source="store.domisiliPropinsies"
-                    :disable="!store.domisiliPropinsies.length || (store.form.barulama!=='baru' && !store.edit)"
-                    :loading="store.loadingPropinsiDomisili"
-                    @on-select="propinsiDomisiliSelected"
-                    @clear="store.clearPropinsiDomisili"
-                  />
+                    :disable="!store.domisiliPropinsies.length || (store.form.barulama !== 'baru' && !store.edit)"
+                    :loading="store.loadingPropinsiDomisili" @on-select="propinsiDomisiliSelected"
+                    @clear="store.clearPropinsiDomisili" />
                 </div>
               </div>
             </div>
           </div>
           <div class="col-6">
             <!-- kabupaten domisili -->
-            <div v-if="store.form.kewarganegaraan==='WNI'">
+            <div v-if="store.form.kewarganegaraan === 'WNI'">
               <div class="row q-col-gutter-sm items-center q-mb-xs">
                 <div class="col-4">
                   Kabupaten
                 </div>
                 <div class="col-8">
-                  <app-autocomplete-new
-                    ref="refKabupatenDomisili"
-                    :model="store.wilayahDomisili.kotakabupaten"
-                    label="Cari kabupaten / kota"
-                    autocomplete="wilayah"
-                    option-value="kotakabupaten"
-                    option-label="wilayah"
-                    outlined
-                    :source="store.domisiliKabupatens"
+                  <app-autocomplete-new ref="refKabupatenDomisili" :model="store.wilayahDomisili.kotakabupaten"
+                    label="Cari kabupaten / kota" autocomplete="wilayah" option-value="kotakabupaten"
+                    option-label="wilayah" outlined :source="store.domisiliKabupatens"
                     :loading="store.loadingKabupatenDomisili"
-                    :disable="!store.domisiliKabupatens.length || (store.form.barulama!=='baru' && !store.edit)"
-                    @on-select="kabupatenDomisiliSelected"
-                    @clear="store.clearKabupatenDomisili"
-                  />
+                    :disable="!store.domisiliKabupatens.length || (store.form.barulama !== 'baru' && !store.edit)"
+                    @on-select="kabupatenDomisiliSelected" @clear="store.clearKabupatenDomisili" />
                 </div>
               </div>
               <!-- kecamatan domisili -->
@@ -1119,20 +732,12 @@
                   Kecamatan
                 </div>
                 <div class="col-8">
-                  <app-autocomplete-new
-                    ref="refKecamatanDomisili"
-                    :model="store.wilayahDomisili.kecamatan.kotakabupaten"
-                    label="Cari kecamatan"
-                    autocomplete="wilayah"
-                    option-value="kotakabupaten"
-                    option-label="wilayah"
-                    outlined
-                    :source="store.domisiliKecamatans"
+                  <app-autocomplete-new ref="refKecamatanDomisili"
+                    :model="store.wilayahDomisili.kecamatan.kotakabupaten" label="Cari kecamatan" autocomplete="wilayah"
+                    option-value="kotakabupaten" option-label="wilayah" outlined :source="store.domisiliKecamatans"
                     :loading="store.loadingKecamatanDomisili"
-                    :disable="!store.domisiliKecamatans.length || (store.form.barulama!=='baru' && !store.edit)"
-                    @on-select="kecamatanDomisiliSelected"
-                    @clear="store.clearKecamatanDomisili"
-                  />
+                    :disable="!store.domisiliKecamatans.length || (store.form.barulama !== 'baru' && !store.edit)"
+                    @on-select="kecamatanDomisiliSelected" @clear="store.clearKecamatanDomisili" />
                 </div>
               </div>
               <!-- kelurahan domisili -->
@@ -1141,20 +746,12 @@
                   Kelurahan
                 </div>
                 <div class="col-8">
-                  <app-autocomplete-new
-                    ref="refKelurahanDomisili"
-                    :model="store.wilayahDomisili.kelurahan.kotakabupaten"
-                    label="Cari kelurahan"
-                    autocomplete="wilayah"
-                    option-value="kotakabupaten"
-                    option-label="wilayah"
-                    outlined
-                    :source="store.domisiliKelurahans"
+                  <app-autocomplete-new ref="refKelurahanDomisili"
+                    :model="store.wilayahDomisili.kelurahan.kotakabupaten" label="Cari kelurahan" autocomplete="wilayah"
+                    option-value="kotakabupaten" option-label="wilayah" outlined :source="store.domisiliKelurahans"
                     :loading="store.loadingKelurahanDomisili"
-                    :disable="!store.domisiliKelurahans.length || (store.form.barulama!=='baru' && !store.edit)"
-                    @on-select="kelurahanDomisiliSelected"
-                    @clear="store.clearKelurahanDomisili"
-                  />
+                    :disable="!store.domisiliKelurahans.length || (store.form.barulama !== 'baru' && !store.edit)"
+                    @on-select="kelurahanDomisiliSelected" @clear="store.clearKelurahanDomisili" />
                 </div>
               </div>
               <!-- kode pos domisili-->
@@ -1163,14 +760,8 @@
                   Kode Pos
                 </div>
                 <div class="col-8">
-                  <app-input
-                    ref="refKodePosDom"
-                    v-model="store.form.kodeposdomisili"
-                    label="Kode Pos"
-                    type="number"
-                    outlined
-                    :disable="store.form.barulama!=='baru'&&!store.edit"
-                  />
+                  <app-input ref="refKodePosDom" v-model="store.form.kodeposdomisili" label="Kode Pos" type="number"
+                    outlined :disable="store.form.barulama !== 'baru' && !store.edit" />
                 </div>
               </div>
             </div>
@@ -1178,61 +769,33 @@
         </div>
       </q-card-section>
     </q-card>
-    <dialogCariPasien
-      v-model="store.cariPasienDialog"
-      :bpjs="bpjs"
-      @hide="cariPasienHide"
-      @ganti-pasien="emits('gantiPasien')"
-    />
-    <app-dialog-not-full
-      v-model="store.alert"
-      :label="store.alertMsg.kode==='0'?'Status Finger Pasien':'Data Peserta BPJS'"
-      style="width:500px;"
-      @on-ok="dialogOk"
-      @keyup="store.alert=false"
-    >
+    <dialogCariPasien v-model="store.cariPasienDialog" :bpjs="bpjs" @hide="cariPasienHide"
+      @ganti-pasien="emits('gantiPasien')" />
+    <app-dialog-not-full v-model="store.alert"
+      :label="store.alertMsg.kode === '0' ? 'Status Finger Pasien' : 'Data Peserta BPJS'" style="width:500px;"
+      @on-ok="dialogOk" @keyup="store.alert = false">
       <template #default>
-        <div
-          v-if="store.alertMsg==='Tidak ditemukan'"
-        >
-          <app-no-selected-page
-            color="primary"
-            :text="store.alertMsg"
-          />
+        <div v-if="store.alertMsg === 'Tidak ditemukan'">
+          <app-no-selected-page color="primary" :text="store.alertMsg" />
         </div>
-        <div
-          v-if="store.alertMsg.peserta"
-          class="q-pa-md"
-        >
-          <q-card
-            flat
-            class="full-width"
-          >
+        <div v-if="store.alertMsg.peserta" class="q-pa-md">
+          <q-card flat class="full-width">
             <q-card-section>
               <div class="row flex-wrap">
-                <div
-                  class="foto bg-grey-4 col-3"
-                >
+                <div class="foto bg-grey-4 col-3">
                   <!-- <q-img
                         :src="foto"
                         :ratio="1"
                       /> -->
-                  <app-avatar-pasien
-                    :key="pasien"
-                    :pasien="pasien"
-                    width="150px"
-                  />
+                  <app-avatar-pasien :key="pasien" :pasien="pasien" width="150px" />
                   <div class="text-center">
                     <q-item-label class="f-16 text-weight-bold">
-                      {{ pasien? pasien.norm:'-' }}
+                      {{ pasien ? pasien.norm : '-' }}
                     </q-item-label>
                   </div>
                 </div>
                 <div class="col-9">
-                  <q-list
-                    dense
-                    separator
-                  >
+                  <q-list dense separator>
                     <q-item>
                       <q-item-label class="text-weight-bold">
                         {{ store.alertMsg.peserta.nama }}
@@ -1240,27 +803,27 @@
                     </q-item>
                     <q-item>
                       <q-item-label class="">
-                        {{ pasien? pasien.templahir: '-' }}, {{ pasien? dateFullFormat(pasien.tgllahir) : '-' }}
+                        {{ pasien ? pasien.templahir : '-' }}, {{ pasien ? dateFullFormat(pasien.tgllahir) : '-' }}
                       </q-item-label>
                     </q-item>
                     <q-item>
                       <q-item-label class="">
-                        💳 {{ pasien? pasien.nik:'-' }}
+                        💳 {{ pasien ? pasien.nik : '-' }}
                       </q-item-label>
                     </q-item>
                     <q-item>
                       <q-item-label class="">
-                        ⚥ {{ pasien? pasien.kelamin:'-' }} / ✒️ {{ pasien? pasien.usia:'-' }}
+                        ⚥ {{ pasien ? pasien.kelamin : '-' }} / ✒️ {{ pasien ? pasien.usia : '-' }}
                       </q-item-label>
                     </q-item>
                     <q-item>
                       <q-item-label class="">
-                        🏠 {{ pasien? pasien.alamat: '-' }}
+                        🏠 {{ pasien ? pasien.alamat : '-' }}
                       </q-item-label>
                     </q-item>
                     <q-item>
                       <q-item-label class="">
-                        ♡ ♥💕 {{ pasien? pasien.statuspernikahan:'-' }}
+                        ♡ ♥💕 {{ pasien ? pasien.statuspernikahan : '-' }}
                       </q-item-label>
                     </q-item>
                   </q-list>
@@ -1315,10 +878,8 @@
                   <q-item-label>
                     Status Peserta
                   </q-item-label>
-                  <q-item-label
-                    class="text-weight-bold"
-                    :class="store.alertMsg.peserta.statusPeserta.keterangan === 'AKTIF' ? ' text-primary': ' text-negative'"
-                  >
+                  <q-item-label class="text-weight-bold"
+                    :class="store.alertMsg.peserta.statusPeserta.keterangan === 'AKTIF' ? ' text-primary' : ' text-negative'">
                     {{ store.alertMsg.peserta.statusPeserta.keterangan }}
                   </q-item-label>
                 </q-item-section>
@@ -1348,13 +909,9 @@
             </q-list>
           </q-card>
         </div>
-        <div v-if="store.alertMsg.kode&&(store.alertMsg.kode!=='' && store.alertMsg.status!=='')">
-          <app-no-selected-page
-            class="q-mx-md"
-            color="primary"
-            :icon="store.alertMsg.kode==='1'?'icon-mat-done':'icon-mat-report'"
-            :text="store.alertMsg.status"
-          />
+        <div v-if="store.alertMsg.kode && (store.alertMsg.kode !== '' && store.alertMsg.status !== '')">
+          <app-no-selected-page class="q-mx-md" color="primary"
+            :icon="store.alertMsg.kode === '1' ? 'icon-mat-done' : 'icon-mat-report'" :text="store.alertMsg.status" />
         </div>
         <!-- {{ store.alertMsg }} -->
       </template>
@@ -1509,7 +1066,7 @@ function cekKtpKitas () {
 // validasi noka dan norm
 function validateNokaAndNorm () {
   if (refNoRM.value.$refs.refInput.validate() &&
-   refNoKaBpjs.value.$refs.refInput.validate()) {
+    refNoKaBpjs.value.$refs.refInput.validate()) {
     emits('surat', { nik: store.form.nik, noka: store.form.noka, norm: store.form.norm })
     return { nik: store.form.nik, noka: store.form.noka, norm: store.form.norm }
   }
@@ -1960,13 +1517,13 @@ function validasi () {
 
   if (
     JenisPasien && NoRM && Nama && Sapaan && Kelamin &&
-  TempatLahir && HariLahir && BulanLahir && TahunLahir && Ibu &&
-  Pendidikan && StatusPernikahan && Pekerjaan && InputPekerjaan &&
-  Agama && TulisAgama && Suku && NoTlp && Bahasa && KodePos && NoAntrian &&
-  Ktp && NoKaBpjs && Alamat && RT && RW && Negara && Propinsi &&
-  Kabupaten && Kecamatan && Kelurahan && RTDomisili && RWDomisili &&
-  NegaraDomisili && PropinsiDomisili && KabupatenDomisili &&
-  KecamatanDomisili && KodePosDom && KelurahanDomisili && Kitas && Hambatan && bacatulis
+    TempatLahir && HariLahir && BulanLahir && TahunLahir && Ibu &&
+    Pendidikan && StatusPernikahan && Pekerjaan && InputPekerjaan &&
+    Agama && TulisAgama && Suku && NoTlp && Bahasa && KodePos && NoAntrian &&
+    Ktp && NoKaBpjs && Alamat && RT && RW && Negara && Propinsi &&
+    Kabupaten && Kecamatan && Kelurahan && RTDomisili && RWDomisili &&
+    NegaraDomisili && PropinsiDomisili && KabupatenDomisili &&
+    KecamatanDomisili && KodePosDom && KelurahanDomisili && Kitas && Hambatan && bacatulis
   ) {
     valid = true
   }
@@ -2054,16 +1611,19 @@ function citySelected (val) {
 
 </script>
 <style lang="scss" scoped>
-.bagi-tiga{
-  width:70%;
+.bagi-tiga {
+  width: 70%;
 }
-.bagi-dua{
-  width:90%;
+
+.bagi-dua {
+  width: 90%;
 }
-.satu{
-  width:100%;
+
+.satu {
+  width: 100%;
 }
-.merah{
+
+.merah {
   color: $negative;
 }
 </style>

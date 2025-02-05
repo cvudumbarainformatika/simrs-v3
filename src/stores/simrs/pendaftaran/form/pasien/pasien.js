@@ -102,7 +102,11 @@ export const usePendaftaranPasienStore = defineStore('pendaftaran_pasien', {
     // WNA
     country: null,
     city: null,
-    region: null
+    region: null,
+
+    // rujukaan by norm
+    loadingCariRujukan: false,
+    resRujukan: null
 
   }),
   actions: {
@@ -1070,7 +1074,29 @@ export const usePendaftaranPasienStore = defineStore('pendaftaran_pasien', {
         notifErrVue('atas nama : ' + pasien.rs2)
         notifErrVue('Noka BPJS Sudah Ada ')
       }
-    }
+    },
     // -------
+
+    // cari rujukan keluar RS
+    async cariRujukanKeluar (val) {
+      // 266010
+      // console.log('val', val)
+
+      const payload = {
+        norm: val?.norm
+      }
+      this.loadingCariRujukan = true
+      this.resRujukan = null
+      await api.post('v1/simrs/pendaftaran/cari-rujukan-keluar', payload)
+        .then(resp => {
+          this.loadingCariRujukan = false
+          this.resRujukan = resp.data?.data ?? null
+          console.log('cari rujukan keluar', resp.data)
+        })
+        .catch(() => {
+          this.loadingCariRujukan = false
+        })
+
+    }
   }
 })
