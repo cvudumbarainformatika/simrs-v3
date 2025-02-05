@@ -3,7 +3,7 @@
     <div class="full-width">
       <q-markup-table class="full-width" flat-bordered wrap-cells :separator="separator">
         <thead>
-          <tr class="bg-yellow-5 max-width">
+          <tr class="max-width">
             <th>
               NO
             </th>
@@ -42,7 +42,7 @@
               {{ formattanpaRp(item?.pengeluaran) }}
             </td>
             <td class="text-right text-bold">
-              {{ formattanpaRp(item.total) }}
+              {{ formattanpaRp(item?.total) }}
             </td>
           </tr>
           <tr class="bg-grey-2">

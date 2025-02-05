@@ -1,13 +1,13 @@
 <template>
   <q-page>
-    <!-- <Suspense> -->
-    <!-- main content -->
-    <AsyncComp />
-    <!-- loading state -->
-    <template #fallback>
-      <!-- <app-loading /> -->
-    </template>
-    <!-- </Suspense> -->
+    <Suspense>
+      <!-- main content -->
+      <AsyncComp />
+      <!-- loading state -->
+      <template #fallback>
+        <app-loading />
+      </template>
+    </Suspense>
   </q-page>
 </template>
 <script setup>
