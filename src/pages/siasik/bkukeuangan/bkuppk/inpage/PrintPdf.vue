@@ -12,167 +12,61 @@
 
       <div id="printMe" class="f-12 row justify-center q-pt-md">
         <div class="row">
-          <div class="col-1 q-pl-md">
-            <q-img src="~assets/images/Pemkot.svg" style="height: 2.6cm; width: 2cm" />
-          </div>
-          <div class="col-10">
-            <div class="row justify-center text-h6">
-              PEMERINTAH KOTA PROBOLINGGO
-            </div>
-            <div class="row justify-center text-h7 text-weight-bold">
-              DINAS KESEHATAN, PENGENDALIAN PENDUDUK, DAN KELUARGA BERENCANA
-            </div>
-            <div class="row justify-center text-h5 text-weight-bold">
-              UOBK RSUD DOKTER MOHAMAD SALEH
-            </div>
-            <div class="row justify-center text-h8">
-              Jl. Mayjen Panjaitan No.65 Telp.(0335) 433119, 42118 Fax (0335)
-              432702
-            </div>
-            <div class="row justify-center text-h8 text-weight-bold">
-              PROBOLINGGO 67219
-            </div>
-          </div>
-          <div class="col-1 logo_kanan">
-            <q-img src="~assets/logos/logo-rsud.png" style="height: 2.6cm; width: 2.6cm" />
-          </div>
-          <div class="col-12 q-pt-md">
-            <div class="row justify-center text-weight-bold q-py-xs">
-              Buku Kas Umum Pejabat Pengelola Keuangan
-            </div>
-            <div class="row justify-center text-weight-bold">
-              Periode Bulan {{ bulan(store.params.bulan) }} {{ store.params.tahun }}
-            </div>
-          </div>
+          <q-card-section class="full-width">
+            <kopPage />
+          </q-card-section>
 
           <q-card-section class="q-pa-md full-width">
             <template v-if="store.hasilArray">
-              <table class="full-width">
-                <thead class="align-middle text-center display-block thead-sticky">
-                  <tr style="font-size: 13px">
-                    <th width="50px">
-                      No
-                    </th>
-                    <th width="100px">
-                      Tanggal
-                    </th>
-                    <th width="200px">
-                      Register/Rekening
-                    </th>
-                    <th width="500px">
-                      Uraian
-                    </th>
-                    <th>Penerimaan (Rp.)</th>
-                    <th>Pengeluaran (Rp.)</th>
-                    <th>Saldo (Rp.)</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="(item, n) in store.hasilArray" :key="item">
-                    <td data-th="No" class="text-reguler">
-                      {{ n + 1 }}
-                    </td>
-                    <td data-th="Tanggal" class="text-reguler">
-                      {{ item?.tgl }}
-                    </td>
-
-                    <!-- REGISTER -->
-                    <td data-th="Register/Rekening" class="text-left q-pl-sm">
-                      <div class="text-reguler">
-                        {{ item?.notrans }}
-                      </div>
-                    </td>
-
-                    <!-- URAIAN -->
-                    <td data-th="Uraian" class="text-left q-pl-sm">
-                      <div class="text-reguler">
-                        {{ item?.uraian }}
-                      </div>
-                    </td>
-
-                    <!-- PENERIMAAN -->
-                    <td data-th="Penerimaan" class="text-right q-pr-sm">
-                      <div class="text-reguler">
-                        {{ formattanpaRp(item?.penerimaan) }}
-                      </div>
-                    </td>
-
-                    <!-- PENGELUARAN -->
-                    <td data-th="Pengeluaran" class="text-right q-pr-sm">
-                      <div class="text-reguler">
-                        {{ formattanpaRp(item?.pengeluaran) }}
-                      </div>
-                    </td>
-
-                    <!-- SALDO -->
-                    <td data-th="Saldo" class="text-right q-pr-sm text-bold">
-                      {{ formattanpaRp(item.total) }}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td colspan="4">
-                      TOTAL
-                    </td>
-                    <td class="text-right text-weight-bolder q-pr-sm">
-                      {{ formattanpaRp(totaldebit()) }}
-                    </td>
-                    <td class="text-right text-weight-bolder q-pr-sm">
-                      {{ formattanpaRp(totalkredit()) }}
-                    </td>
-                    <td class="text-right text-weight-bolder q-pr-sm">
-                      {{ formattanpaRp(totalsaldo()) }}
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+              <listData />
             </template>
           </q-card-section>
           <q-card-section class="full-width">
             <div class="row justify-between full-width">
-              <div class="flex-start">
-                <table class="text-bold no-border" style="width:400px">
+              <div class="flex-start q-pl-md">
+                <table class="text-bold" style="width:400px">
                   <tbody>
-                    <tr class="no-border" style="height: 30px;">
-                      <td class="text-left no-border">
+                    <tr style="height: 30px;">
+                      <td style="border: none;" class="text-left">
                         Saldo Awal
                       </td>
-                      <td class="no-border">
+                      <td style="border: none;">
                         :
                       </td>
-                      <td class="text-right no-border">
+                      <td style="border: none;" class="text-right">
                         {{ formattanpaRp(store.nilaisaldoawal) }}
                       </td>
                     </tr>
-                    <tr class="no-border" style="height: 30px;">
-                      <td class="text-left no-border">
+                    <tr style="height: 30px;">
+                      <td style="border: none;" class="text-left">
                         Masuk
                       </td>
-                      <td class="no-border">
+                      <td style="border: none;">
                         :
                       </td>
-                      <td class="text-right no-border">
+                      <td style="border: none;" class="text-right">
                         {{ formattanpaRp(totaldebit()) }}
                       </td>
                     </tr>
-                    <tr class="no-border" style="height: 30px;">
-                      <td class="text-left no-border">
+                    <tr style="height: 30px;">
+                      <td style="border: none;" class="text-left">
                         Keluar
                       </td>
-                      <td class="no-border">
+                      <td style="border: none;">
                         :
                       </td>
-                      <td class="text-right no-border">
+                      <td style="border: none;" class="text-right">
                         {{ formattanpaRp(totalkredit()) }}
                       </td>
                     </tr>
-                    <tr class="no-border" style="height: 30px;">
-                      <td class="text-left no-border">
+                    <tr style="height: 30px;">
+                      <td style="border: none;" class="text-left">
                         Saldo Akhir
                       </td>
-                      <td class="no-border">
+                      <td style="border: none;">
                         :
                       </td>
-                      <td class="text-right no-border">
+                      <td style="border: none;" class="text-right">
                         {{ formattanpaRp(totalsaldo()) }}
                       </td>
                     </tr>
@@ -217,12 +111,11 @@
 </template>
 <script setup>
 import { formattanpaRp } from 'src/modules/formatter'
-// eslint-disable-next-line no-unused-vars
-import { terbilangRupiah } from 'src/modules/utils'
-
 import { onMounted, ref } from 'vue'
 import { useLaporanBkuPpkStore } from 'src/stores/siasik/laporan/bku/bkuppk'
 import { useLaporanBkuPengeluaranStore } from 'src/stores/siasik/laporan/bku/bkupengeluaran'
+import listData from './ListDatabkuppk.vue'
+import kopPage from './KopPage.vue'
 
 const store = useLaporanBkuPpkStore()
 const pegawai = useLaporanBkuPengeluaranStore()
@@ -230,10 +123,6 @@ onMounted(() => {
   pegawai.getDataTable()
 })
 
-function bulan(val) {
-  const bulan = store.bulans.find((x) => x.value === val)
-  return bulan?.nama ?? '-'
-}
 function totaldebit() {
   const debit = store.hasilArray
   // console.log("njaaias", debit);
@@ -295,7 +184,7 @@ const printObj = {
 </script>
 <style lang="scss" scoped>
 .kop {
-  border-bottom: 1px solid grey;
+  border-bottom: 1px solid rgb(7, 7, 7);
   width: fit-content;
 }
 

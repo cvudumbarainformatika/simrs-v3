@@ -74,25 +74,32 @@
               </q-badge>
             </q-td>
             <q-td>
-              <div class="row justify-end">
-                <q-btn flat round class="bg-dark" size="sm" color="warning" icon="icon-fa-file-regular">
-                  <q-menu dark style="min-width: 150px">
-                    <q-list style="min-width: 150px;">
-                      <q-item clickable v-close-popup @click="viewRincian(props?.row)">
-                        <q-item-section>Lihat Rincian</q-item-section>
-                      </q-item>
-                      <q-item clickable @click="editNpdls(props?.row)">
-                        <q-item-section>Edit NPD</q-item-section>
-                      </q-item>
-                      <q-item clickable v-close-popup @click="viewCetakDataNpdls(props?.row)">
-                        <q-item-section>Cetak NPD</q-item-section>
-                      </q-item>
-                      <q-item clickable v-close-popup @click="PrintPencairan(props?.row)">
-                        <q-item-section>Cetak Pencairan</q-item-section>
-                      </q-item>
-                    </q-list>
-                  </q-menu>
-                </q-btn>
+              <div class="row justify-center">
+                <div class="q-pr-xs">
+                  <q-btn v-if="gantiKunci(props?.row)" flat round size="xs" class="bg-red" icon="icon-mat-lock"
+                    @click="kunciData(props?.row?.nonpdls)" />
+                  <q-btn v-else flat round size="xs" class="bg-orange" icon="icon-mat-lock_open"
+                    @click="kunciData(props?.row?.nonpdls)" />
+                </div>
+                <div> <q-btn flat round class="bg-dark" size="xs" color="warning" icon="icon-fa-file-regular">
+                    <q-menu dark style="min-width: 150px">
+                      <q-list style="min-width: 150px;">
+                        <q-item clickable v-close-popup @click="viewRincian(props?.row)">
+                          <q-item-section>Lihat Rincian</q-item-section>
+                        </q-item>
+                        <q-item clickable @click="editNpdls(props?.row)">
+                          <q-item-section>Edit NPD</q-item-section>
+                        </q-item>
+                        <q-item clickable v-close-popup @click="viewCetakDataNpdls(props?.row)">
+                          <q-item-section>Cetak NPD</q-item-section>
+                        </q-item>
+                        <q-item clickable v-close-popup @click="PrintPencairan(props?.row)">
+                          <q-item-section>Cetak Pencairan</q-item-section>
+                        </q-item>
+                      </q-list>
+                    </q-menu>
+                  </q-btn> </div>
+
               </div>
             </q-td>
           </q-tr>
@@ -110,6 +117,7 @@
 </template>
 
 <script setup>
+import { useQuasar } from 'quasar'
 import { formatRpDouble } from 'src/modules/formatter'
 import { dataBastFarmasiStore } from 'src/stores/siasik/transaksi/ls/newnpdls/bastfarmasi'
 import { formInputNpdlsStore } from 'src/stores/siasik/transaksi/ls/newnpdls/formnpdls'
@@ -174,19 +182,20 @@ const listnpdls = [
     name: 'keterangan',
     align: 'center',
     field: 'keterangan',
-    headerStyle: 'width: 300px;'
+    headerStyle: 'width: 250px;'
   },
   {
     label: 'Status',
     name: 'nopencairan',
     align: 'center',
     field: row => [row.nopencairan, row.tglcair],
-    headerStyle: 'width: 100px;'
+    headerStyle: 'width: 120px;'
   },
   {
     label: 'Aksi',
     name: 'aksi',
-    align: 'center'
+    align: 'center',
+    headerStyle: 'width: 77px;'
   }
 ]
 const columnsnpd = ref(listnpdls)
@@ -196,26 +205,23 @@ function viewRincian(row) {
   store.openDialogRinci = true
   npd.value = row.rincian
   store.listrinci = npd.value
-  console.log('open', store.listrinci)
 }
 const onRowClick = (row) =>
   alert([row?.nopencairan, row?.total])
 
 const datanpds = ref(null)
 function viewCetakDataNpdls(row) {
-
   store.dialogCetakNpd = true
   datanpds.value = row
   store.npddatasave = datanpds.value
-  console.log('openNPD', store.npddatasave)
 }
+
 const editnpds = ref(null)
 function editNpdls(row) {
-  console.log('row cetak', row)
   router.push({ path: '/siasik/ls/npdls/newformnpd', replace: true, query: { id: row.id } })
-  // store.dialogEditNpd = true
   editnpds.value = row
   form.form = editnpds.value
+  console.log('formxx', form.form)
   carisrt.reqs.kodepenerima = editnpds.value?.kodepenerima
   carisrt.reqs.kodekegiatanblud = editnpds.value?.kodekegiatanblud
   form.transall = editnpds.value?.rincian
@@ -224,15 +230,47 @@ function editNpdls(row) {
   form.getRincianBelanja()
   form.form.rincians = []
   form.disabled = true
-  console.log('Edit NPD', form.form.rincians)
 }
 const printcair = ref(null)
 function PrintPencairan(row) {
-  console.log('cetak Pencairan', row)
   store.dialogPrintPencairan = true
   printcair.value = row
   store.npddatasave = printcair.value
-  console.log('openNPD', store.npddatasave)
+  // console.log('openNPD', store.npddatasave)
+}
+function gantiKunci(row) {
+  const nonpdls = row.kunci === "1"
+  let lockdata = true
+  if (nonpdls) {
+    lockdata = true
+  } else {
+    lockdata = false
+  }
+  return lockdata
+}
+
+const $q = useQuasar()
+const selected = ref([])
+function kunciData(row) {
+  $q.dialog({
+    title: 'Peringatan',
+    message: 'Apakah Data ini akan dikunci?',
+    cancel: true,
+    persistent: true
+  }).onOk(() => {
+    // const kunci = store.datanpd.find((x) => x.nonpdls === row)
+
+    const payload = {
+      nonpdls: row,
+      // kunci: kunci?.kunci
+    }
+    console.log('payload', payload)
+    store.kunciData(payload)
+  }).onCancel(() => {
+    console.log('Cancel')
+    selected.value = []
+  }).onDismiss(() => {
+  })
 }
 </script>
 

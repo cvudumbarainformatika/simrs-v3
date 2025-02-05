@@ -238,20 +238,17 @@
                     </thead>
                     <tbody class="align-middle q-pl-sm">
                       <tr v-for="item, n in store.npddatasave.rincian" :key="item">
-                        <td class="text-right">
+                        <td class="text-center">
                           <div>
                             {{ n + 1 }}.
                           </div>
                         </td>
-                        <td>
+                        <td class="text-left">
                           <div>
-                            {{ item.koderek50 }}
-                          </div>
-                          <div>
-                            {{ item.rincianbelanja }}
+                            {{ item.koderek50 }} - {{ item.rincianbelanja }}
                           </div>
                         </td>
-                        <td>
+                        <td class="text-left">
                           <div>
                             {{ item.itembelanja }}
                           </div>
@@ -301,12 +298,12 @@
                     </thead>
                     <tbody v-if="store.npddatasave.pajak" class=" align-middle q-pl-sm">
                       <tr>
-                        <td class="text-right">
+                        <td class="text-center">
                           <div>
                             1.
                           </div>
                         </td>
-                        <td>
+                        <td class="text-left">
                           <div>
                             PPN Pusat
                           </div>
@@ -326,12 +323,12 @@
                         </td>
                       </tr>
                       <tr>
-                        <td class="text-right">
+                        <td class="text-center">
                           <div>
                             2.
                           </div>
                         </td>
-                        <td>
+                        <td class="text-left">
                           <div>
                             PPh 21
                           </div>
@@ -350,12 +347,12 @@
                         </td>
                       </tr>
                       <tr>
-                        <td class="text-right">
+                        <td class="text-center">
                           <div>
                             3.
                           </div>
                         </td>
-                        <td>
+                        <td class="text-left">
                           <div>
                             PPh 22
                           </div>
@@ -374,12 +371,12 @@
                         </td>
                       </tr>
                       <tr>
-                        <td class="text-right">
+                        <td class="text-center">
                           <div>
                             4.
                           </div>
                         </td>
-                        <td>
+                        <td class="text-left">
                           <div>
                             PPh 23
                           </div>
@@ -398,12 +395,12 @@
                         </td>
                       </tr>
                       <tr>
-                        <td class="text-right">
+                        <td class="text-center">
                           <div>
                             5.
                           </div>
                         </td>
-                        <td>
+                        <td class="text-left">
                           <div>
                             PPh 25
                           </div>
@@ -422,12 +419,12 @@
                         </td>
                       </tr>
                       <tr>
-                        <td class="text-right">
+                        <td class="text-center">
                           <div>
                             6.
                           </div>
                         </td>
-                        <td>
+                        <td class="text-left">
                           <div>
                             Pajak Daerah (PPh Final)
                           </div>
@@ -467,7 +464,7 @@
                         </td>
                       </tr>
                       <tr>
-                        <td colspan="2">
+                        <td colspan="2" class="text-left">
                           <div>Jumlah yang Diminta</div>
                         </td>
                         <td class="text-right justify-between">
@@ -482,7 +479,7 @@
                         </td>
                       </tr>
                       <tr>
-                        <td colspan="2">
+                        <td colspan="2" class="text-left">
                           <div>Jumlah Potongan</div>
                         </td>
                         <td class="text-right justify-between">
@@ -515,10 +512,10 @@
                         <td class="text-right justify-between">
                           <div class="row">
                             <template v-if="store.npddatasave.pajak != null">
-                              <div class="col-auto">
+                              <div class="col-auto text-weight-bold">
                                 Rp.
                               </div>
-                              <div class="col">
+                              <div class="col text-weight-bold">
                                 {{ formattanpaRp(store.npddatasave.totalbayar) }}
                               </div>
                             </template>
@@ -703,6 +700,10 @@ function mapPajakBaru() {
   border-right-style: solid;
   border-left-style: solid;
   border-width: 2px;
+}
+
+table {
+  border-color: black;
 }
 
 table,

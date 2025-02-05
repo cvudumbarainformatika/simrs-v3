@@ -139,8 +139,8 @@ export const useLaporanBkuPpkStore = defineStore('laporan_bkuppk', {
         nilaisaldoKredit.push(...gabungsebelumkredit)
         console.log('spm guuuuu', nilaisaldoKredit)
       }
-      const totaldebitsebelum = nilaisaldoDebit.map(x => parseFloat(x.nilai)).reduce((x, y) => x + y, 0)
-      const totalkreditsebelum = nilaisaldoKredit.map(x => parseFloat(x.nilai)).reduce((x, y) => x + y, 0)
+      const totaldebitsebelum = nilaisaldoDebit.length ? nilaisaldoDebit.map(x => parseFloat(x.nilai)).reduce((x, y) => x + y, 0) : 0
+      const totalkreditsebelum = nilaisaldoKredit.length ? nilaisaldoKredit.map(x => parseFloat(x.nilai)).reduce((x, y) => x + y, 0) : 0
       const saldoAwal = totaldebitsebelum - totalkreditsebelum
       console.log('totaldebitsebelum', totaldebitsebelum)
       console.log('totalkreditsebelum', totalkreditsebelum)
@@ -161,23 +161,38 @@ export const useLaporanBkuPpkStore = defineStore('laporan_bkuppk', {
         }
         saldo.push(sal)
       }
-      else {
+      else if (this.items.saldo.length) {
         for (let i = 0; i < this.items.saldo.length; i++) {
           const el = this.items?.saldo
           const obj = {
             tgl: el[i].tanggal,
             notrans: el[i].rekening,
             nonpd: null,
-            category: 'sts',
+            category: 'Saldo Awal',
             uraian: 'Saldo Awal',
             uraianNPD: null,
             urutan: 1,
-            penerimaan: 0,
+            penerimaan: parseFloat(el[i].nilaisaldo),
             pengeluaran: 0,
-            subtotal: el[i].nilaisaldo
+            subtotal: 0
           }
           saldo.push(obj)
         }
+      } else {
+        const saldoaw = {
+          tgl: '',
+          notrans: '',
+          nonpd: '',
+          category: 'Saldo Awal',
+          uraian: 'Saldo Awal',
+          uraianNPD: '',
+          urutan: 1,
+          penerimaan: 0,
+          pengeluaran: 0,
+          subtotal: 0
+        }
+        saldo.push(saldoaw)
+
       }
       this.nilaisaldoawal = saldo.map((x) => x.subtotal).reduce((a, b) => a + b, 0)
       console.log('gggg', this.nilaisaldoawal)

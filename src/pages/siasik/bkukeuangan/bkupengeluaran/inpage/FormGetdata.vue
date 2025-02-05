@@ -19,16 +19,16 @@
       </q-btn>
     </div>
   </div>
-  <cetak-bkuppk v-model="store.dialogCetak" :printpdf="printpdf" />
+  <cetak-bku v-model="store.dialogCetak" :printpdf="printpdf" />
 </template>
+
 <script setup>
-import { useLaporanBkuPpkStore } from 'src/stores/siasik/laporan/bku/bkuppk';
+import { useLaporanBkuPengeluaranStore } from 'src/stores/siasik/laporan/bku/bkupengeluaran';
 import { defineAsyncComponent, ref } from 'vue';
-const CetakBkuppk = defineAsyncComponent(() => import('./PrintPdf.vue'))
 
-const store = useLaporanBkuPpkStore()
-
+const CetakBku = defineAsyncComponent(() => import('./CetakData.vue'))
 const printpdf = ref(null)
+const store = useLaporanBkuPengeluaranStore()
 function ambilData() {
   // store.hitungharidalamBulan();
   store.getDataTable()
