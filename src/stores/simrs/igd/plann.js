@@ -20,8 +20,17 @@ export const usePlannStore = defineStore('plann-store', {
       { name: 'Plann', page: 'Plann' }
     ],
     form: {
-      panel: 'Rawat Inap'
-    }
+      panel: 'Rawat Inap',
+      isi: ([])
+    },
+    fixednicu: false,
+
+    selection: [],
+    pilihatasx: ['Bayi yang memerlukan O2 < 60%', 'NKB 32-34 mg, kondisi stabil', 'BBL > 1500 gr', 'NKB 34-36 mg', 'kondisi stabil', 'reflek hisap lemah', 'Bayi yang dipuasakan / EKN',
+      'Bayi yang memerlukan tranfusi tukar', 'Bayi yang sering muntah', 'Bayi dengan kelainan kronik (CLD)', 'Bayi yang memerlukan foto terapi dengan masalah lain : dehidrasi, minum personde',
+      'Bayi dengan kelainan congenital ringan, missal celah bibir', 'Bayi dengan ibu DM', 'Bayi dengan asfiksia sesdang, nilai APGAR pada 5 menit < 7'
+    ],
+    selectionx: [],
   }),
   actions: {
     async savePlan(pasien) {
@@ -35,6 +44,7 @@ export const usePlannStore = defineStore('plann-store', {
       formamb.kodedokter = pasien?.kodedokter
       formamb.kodesistembayar = pasien?.kodesistembayar
       formamb.koderuang = pasien?.kodepoli
+      formamb.isi = this.form.isi
       try {
         const resp = await api.post('v1/simrs/planing/igd/simpanranap', formamb)
         if (resp.status === 200) {
@@ -43,6 +53,7 @@ export const usePlannStore = defineStore('plann-store', {
           storePasien.injectDataPasien(pasien, isi, 'planheder')
           notifSuccess(resp)
           this.initReset()
+          this.resetdialog()
           this.loadingSavePlann = false
         }
       }
@@ -87,6 +98,9 @@ export const usePlannStore = defineStore('plann-store', {
       this.form.ruangtujuan = ''
       this.form.keterangan = ''
     },
+    resetdialog() {
+      this.form.isi = []
+    },
     async suratkematian(pasien) {
       const payload = { params: { noreg: pasien?.noreg } }
       return new Promise(resolve => {
@@ -103,5 +117,9 @@ export const usePlannStore = defineStore('plann-store', {
         })
       })
     },
+    setForm(key, val) {
+      this.form[key] = val
+    },
+
   }
 })
