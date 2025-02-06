@@ -3,6 +3,7 @@ import { api } from 'src/boot/axios'
 import { dateDbFormat } from 'src/modules/formatter'
 import { notifErrVue, notifInfVue, notifSuccess } from 'src/modules/utils'
 import { usePengunjungPoliStore } from './pengunjung'
+import { date } from 'quasar'
 
 export const usePerencanaanPoliStore = defineStore('perencanaan-poli', {
   state: () => ({
@@ -230,7 +231,11 @@ export const usePerencanaanPoliStore = defineStore('perencanaan-poli', {
       this.formKonsul.kddokter_asal = pasien?.kodedokter
       this.formKonsul.kodesistembayar = pasien?.kodesistembayar
       this.formKonsul.planing = 'Konsultasi'
-      const url = this.formKonsul.kdSaran === '6' ? 'v1/simrs/pelayanan/simpanplaningpasien' : 'v1/simrs/rajal/poli/konsulpoli'
+      if (this.formKonsul.kdSaran === '9' && this.formKonsul.kdpoli_asal === this.formKonsul.kdpoli_tujuan) {
+        this.loadingSaveKonsul = false
+        return notifErrVue('Rujukan Internal Tidak Boleh Ke Poli Yang Sama')
+      }
+      const url = this.formKonsul.kdSaran === '3' && this.formKonsul.tgl_rencana_konsul === date.formatDate(Date.now(), 'YYYY-MM-DD') ? 'v1/simrs/rajal/poli/konsulpoli' : 'v1/simrs/pelayanan/simpanplaningpasien'
 
       // const resp = await api.post('v1/simrs/pelayanan/simpanplaningpasien', this.formKonsul)
       await api.post(url, this.formKonsul)
@@ -252,7 +257,7 @@ export const usePerencanaanPoliStore = defineStore('perencanaan-poli', {
           this.loadingSaveKonsul = false
         })
         .catch(() => {
-        // // console.log(error)
+          // // console.log(error)
           this.loadingSaveKonsul = false
         })
     },

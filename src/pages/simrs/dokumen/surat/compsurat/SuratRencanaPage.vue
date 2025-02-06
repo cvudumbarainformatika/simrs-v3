@@ -180,6 +180,12 @@ function setKepada (val) {
     }
     else { return '-' }
   }
+  else if (val?.rs4 === 'Rujukan Internal' || val?.rs4 === 'Konsultasi Internal') {
+    if (val?.masterpoli) {
+      return val?.masterpoli?.rs2
+    }
+    else { return '-' }
+  }
   else if (val?.rs4 === 'Rawat Inap') {
     if (props.pasien) {
       return props.pasien.dokter
@@ -201,6 +207,15 @@ function setNomor (val) {
     else { return '-' }
   }
   else if (val?.rs4 === 'Konsultasi') {
+    if (val?.listkonsul) {
+      return val?.listkonsul?.noreg_lama
+    }
+    else if (val?.rekomdpjp) {
+      return val?.rekomdpjp?.noreg
+    }
+    else { return '-' }
+  }
+  else if (val?.rs4 === 'Rujukan Internal' || val?.rs4 === 'Konsultasi Internal') {
     if (val?.listkonsul) {
       return val?.listkonsul?.noreg_lama
     }
@@ -238,6 +253,15 @@ function setTgl (val) {
     }
     else { return '-' }
   }
+  else if (val?.rs4 === 'Rujukan Internal' || val?.rs4 === 'Konsultasi Internal') {
+    if (val?.listkonsul) {
+      return date.formatDate(val?.listkonsul?.tgl_rencana_konsul, 'DD MMMM YYYY')
+    }
+    else if (val?.rekomdpjp) {
+      return date.formatDate(val?.rekomdpjp?.tglKontrol, 'DD MMMM YYYY')
+    }
+    else { return '-' }
+  }
   else if (val?.rs4 === 'Rawat Inap') {
     if (val?.spri) {
       return date.formatDate(val?.spri?.tglRencanaKontrol, 'DD MMMM YYYY')
@@ -253,7 +277,7 @@ function setTgl (val) {
 }
 function setNama (val) {
   if (val?.rs4 === 'Konsultasi') {
-    const nama = val?.listkonsul ? 'Konsultasi' : 'Rujukan Internal'
+    const nama = val?.listkonsul ? 'Konsultasi' : 'Konsultasi Internal'
     // console.log(val, props.pasien)
     return nama
   } else {
