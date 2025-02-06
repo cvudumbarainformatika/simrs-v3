@@ -42,6 +42,7 @@ export const usePerencanaanPoliStore = defineStore('perencanaan-poli', {
       tglrencanakunjungan: '',
       ppkdirujuk: '',
       ppkdirujukx: '',
+      namappkdirujuk: '',
       jenispelayanan: '2',
       catatan: '',
       diagnosarujukan: '',
@@ -106,6 +107,9 @@ export const usePerencanaanPoliStore = defineStore('perencanaan-poli', {
       tglawal: dateDbFormat(new Date()),
       tglakhir: dateDbFormat(new Date())
     },
+    // diagnosa / icd 10
+    optionDiagnosas: [],
+    loadingDiagnosa: false,
     // icd 9
     optionsIcd9: [],
     loadingIcd: false,
@@ -212,7 +216,17 @@ export const usePerencanaanPoliStore = defineStore('perencanaan-poli', {
       }
       // // console.log('master poli', resp)
     },
+    getDiagnosaDropdown () {
+      return new Promise(resolve => {
+        api.get('v1/simrs/pelayanan/listdiagnosa').then(resp => {
+          this.optionDiagnosas = resp?.data
+          // console.log('list diagnosa', this.optionDiagnosas)
+          resolve(this.optionDiagnosas)
+        })
 
+      })
+
+    },
     setFormKonsul (key, val) {
       this.formKonsul[key] = val
     },
@@ -431,8 +445,8 @@ export const usePerencanaanPoliStore = defineStore('perencanaan-poli', {
     },
     // ====================================================================================================================================================RUmah sakit lain
     async saveRsLain (pasien) {
-      const diag = pasien?.diagnosa?.length ? pasien.diagnosa[0].masterdiagnosa?.rs1 : false
-      if (!diag) {
+      // const diag = pasien?.diagnosa?.length ? pasien.diagnosa[0].masterdiagnosa?.rs1 : false
+      if (!this.formRsLain.diagnosarujukan) {
         return notifErrVue('Pasien tidak bisa di rujuk karena belum ada Diagnosa')
       }
       // this.formRsLain.diagnosarujukan = pasien?.diagnosa?.length ? pasien.diagnosa[0].masterdiagnosa?.rs1 : '-'
