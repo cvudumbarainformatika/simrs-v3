@@ -4,12 +4,13 @@
       <div class="row q-col-gutter-sm">
         <div class="col-4">
           <q-radio v-model="store.formKonsul.kdSaran" checked-icon="icon-mat-task_alt"
-            unchecked-icon="icon-mat-panorama_fish_eye" val="3" label="Konsul Antar Poli"
+            unchecked-icon="icon-mat-panorama_fish_eye" val="3" label="Konsul Internal Hari Ini"
             @update:model-value="seKonsul" />
         </div>
         <div class="col-4">
           <q-radio v-model="store.formKonsul.kdSaran" checked-icon="icon-mat-task_alt"
-            unchecked-icon="icon-mat-panorama_fish_eye" val="6" label="Konsul Internal" @update:model-value="seRujuk" />
+            unchecked-icon="icon-mat-panorama_fish_eye" val="6" label="Konsul Internal Hari Lain"
+            @update:model-value="seRujuk" />
         </div>
         <div class="col-4">
           <q-radio v-model="store.formKonsul.kdSaran" checked-icon="icon-mat-task_alt"
