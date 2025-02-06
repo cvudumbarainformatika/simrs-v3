@@ -36,7 +36,7 @@
               <q-tab-panels v-model="innerTab" animated swipeable vertical transition-prev="jump-up"
                 transition-next="jump-up" class="bg-indigo-1 fit">
                 <q-tab-panel v-for="menu in menus" :key="menu.name" :name="menu?.name" class="fit q-pa-none">
-                  <component :is="menu?.comp" :pasien="pasien" :menu="menu" />
+                  <component :is="menu?.comp" :pasien="pasien" :menu="menu" :kasus="kasus" />
                 </q-tab-panel>
               </q-tab-panels>
             </div>
@@ -52,6 +52,15 @@
 import { defineAsyncComponent, onMounted, ref, shallowRef } from 'vue'
 
 const menus = ref([
+  {
+    name: 'asessment-awal-medis',
+    label: 'ASESSMENT AWAL MEDIS',
+    title: 'ASESSMENT AWAL MEDIS',
+    desc: 'Asessment Awal Medis Pasien',
+    icon: 'icon-my-file_sign',
+    nakes: ['1', '2', '3'],
+    comp: shallowRef(defineAsyncComponent(() => import('./asessmentawal/medis/IndexPage.vue')))
+  },
   {
     name: 'cppt-page',
     label: 'CPPT & EWS',
@@ -80,6 +89,15 @@ const menus = ref([
     comp: shallowRef(defineAsyncComponent(() => import('./dischargeplanning/IndexPage.vue')))
   },
   {
+    name: 'edukasi-page',
+    label: 'Edukasi Pasien',
+    title: 'EDUKASI PASIEN',
+    desc: 'Edukasi KIE Pasien',
+    icon: 'icon-my-file_sign',
+    nakes: ['1', '2', '3'],
+    comp: shallowRef(defineAsyncComponent(() => import('./edukasi/IndexPage.vue')))
+  },
+  {
     name: 'surat-kematian',
     label: 'Surat Kematian',
     title: 'SURAT KETERANGAN KEMATIAN',
@@ -95,6 +113,10 @@ const props = defineProps({
   pasien: {
     type: Object,
     default: null
+  },
+  kasus: {
+    type: Object,
+    default: null
   }
 })
 
@@ -103,7 +125,7 @@ const splitterModel = ref(18)
 const innerTab = ref(menus.value[0].name)
 
 onMounted(() => {
-  // console.log('pasien', props?.pasien)
+  // console.log('pasien', props?.kasus)
   innerTab.value = menus.value[0].name
   Promise.all([
     // pengunjungRanap.getNakes(),

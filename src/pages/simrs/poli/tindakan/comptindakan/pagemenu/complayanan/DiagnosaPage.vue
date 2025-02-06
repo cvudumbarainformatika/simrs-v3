@@ -1,24 +1,15 @@
 <template>
   <div class="full-height full-width">
     <div class="row full-height">
-      <q-card
-        flat
-        bordered
-        square
-        class="col-6 full-height"
-      >
-        <FormDiagnosa
-          ref="refForm"
-          :pasien="props.pasien"
-          @save-pemeriksaan="savePemeriksaan"
-        />
+      <q-card flat bordered square class="col-6 full-height">
+        <FormDiagnosa ref="refForm" :pasien="props.pasien" :tutup="tutup" @save-pemeriksaan="savePemeriksaan" />
       </q-card>
       <div class="col-6 full-height ">
         <div class="column full-height">
-          <div class="col-6">
-            <DiagnosaTable :pasien="props.pasien" />
+          <div v-if="!tutup" class="col-6">
+            <DiagnosaTable :pasien="props.pasien" :tutup="tutup" />
           </div>
-          <div class="col-6">
+          <div :class="!tutup ? 'col-6' : 'col-12'">
             <SimulasiPage />
           </div>
         </div>
@@ -43,6 +34,8 @@ const props = defineProps({
 })
 
 const refForm = ref()
+
+const tutup = ref(true)
 function savePemeriksaan() {
   store.simpanDiagnosa(props.pasien).then(() => {
     // console.log(refForm.value)

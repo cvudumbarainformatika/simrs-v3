@@ -5,7 +5,8 @@
       <div :class="`${full ? 'col-12' : 'col-8'} full-height`">
         <div class="fit bg-white column">
           <div class="col-auto">
-            <BarComp title="ANAMNESSE" bg-color="bg-primary" text-color="text-white" :fullpage="full" @full="full = !full" />
+            <BarComp title="ANAMNESSE" bg-color="bg-primary" text-color="text-white" :fullpage="full"
+              @full="full = !full" />
             <q-separator />
           </div>
           <div class="col full-height scroll">
@@ -13,7 +14,8 @@
               <FormAnamnesis ref="formRef" :pasien="props.pasien" :kasus="props.kasus" :key="pasien" />
               <q-separator class="q-my-md" />
               <div class="flex justify-end">
-                <q-btn :loading="store.loadingSave" :disable="store.loadingSave" type="button" color="primary" label="Simpan" @click="validate" />
+                <q-btn :loading="store.loadingSave" :disable="store.loadingSave" type="button" color="primary"
+                  label="Simpan" @click="validate" />
               </div>
               <div style="margin-bottom: 100px;" />
             </q-form>
@@ -71,6 +73,9 @@ const myForm = ref(null)
 
 const full = ref(false)
 
+// console.log('props', props.pasien);
+
+
 const validate = () => {
   // console.log(formRef.value?.refInputKu)
 
@@ -91,7 +96,7 @@ const validate = () => {
 }
 
 // eslint-disable-next-line no-unused-vars
-function scrollToElement (el) {
+function scrollToElement(el) {
   const target = getScrollTarget(el)
   // console.log('target', target)
 

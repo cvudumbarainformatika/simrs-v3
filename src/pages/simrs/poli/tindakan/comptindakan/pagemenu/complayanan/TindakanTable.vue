@@ -1,105 +1,53 @@
 <template>
-  <q-card
-    flat
-    square
-    bordered
-    class="column full-height"
-  >
+  <q-card flat square bordered class="column full-height">
     <div class="col-auto">
-      <q-bar
-        class="bg-teal text-white q-pa-sm"
-        style="min-height: 45px;"
-      >
+      <q-bar class="bg-teal text-white q-pa-sm" style="min-height: 45px;">
         <div class="f-12">
           Table Tindakan
         </div>
         <q-space />
         <div class="q-py-xs">
-          <q-select
-            v-model="store.notaTindakan"
-            outlined
-            standout="bg-yellow-3"
-            bg-color="white"
-            dense
+          <q-select v-model="store.notaTindakan" outlined standout="bg-yellow-3" bg-color="white" dense
             :options="store.notaTindakans"
-            :display-value="`NOTA: ${store.notaTindakan==='' || store.notaTindakan === 'BARU'? 'BARU': store.notaTindakan}`"
-            style="min-width: 200px;"
-          />
+            :display-value="`NOTA: ${store.notaTindakan === '' || store.notaTindakan === 'BARU' ? 'BARU' : store.notaTindakan}`"
+            style="min-width: 200px;" />
         </div>
       </q-bar>
     </div>
     <div class="col-grow">
       <div class="full-height bg-grey">
-        <q-scroll-area
-          v-if="filterredTable?.length"
-          style="height:calc(100% - 1px)"
-        >
-          <q-list
-            separator
-            class="bg-white"
-          >
+        <q-scroll-area v-if="filterredTable?.length" style="height:calc(100% - 1px)">
+          <q-list separator class="bg-white">
             <transition-group name="list">
-              <template
-                v-for="(item, i) in filterredTable"
-                :key="i"
-              >
+              <template v-for="(item, i) in filterredTable" :key="i">
                 <q-item class="list-move">
                   <q-item-section>
-                    <q-item-label
-                      lines="2"
-                      class="f-12"
-                    >
+                    <q-item-label lines="2" class="f-12">
                       <span class="">Nota</span> : <span class="text-weight-bold text-accent">{{ item?.rs2 }} </span>
                     </q-item-label>
-                    <q-item-label
-                      lines="2"
-                      class="f-12"
-                    >
-                      <span class="">Tindakan x Jml</span> : <span class="text-weight-bold">{{ item.mastertindakan?.rs2 }} </span> x <span class="text-weight-bold text-negative">{{ item.rs5?item.rs5:0 }}</span>
+                    <q-item-label lines="2" class="f-12">
+                      <span class="">Tindakan x Jml</span> : <span class="text-weight-bold">{{ item.mastertindakan?.rs2
+                        }} </span> x <span class="text-weight-bold text-negative">{{ item.rs5 ? item.rs5 : 0 }}</span>
                     </q-item-label>
 
-                    <q-item-label
-                      lines="2"
-                      class="f-12"
-                    >
+                    <q-item-label lines="2" class="f-12">
                       <em class="text-accent">{{ dateFullFormat(item.rs3) }} </em>
                     </q-item-label>
-                    <q-item-label
-                      lines="2"
-                      class="f-10 text-italic"
-                    >
-                      <span class="">Keterangan</span> : <span class="">{{ item?.rs20 }} </span>
+                    <q-item-label lines="50" class="f-10 text-italic">
+                      <span class="">Keterangan</span> : <span class="" v-html="getNewLine(item?.sambungan ?
+                        item?.sambungan?.ket : item?.rs20)"></span>
                     </q-item-label>
-                    <q-item-label
-                      lines="2"
-                      class="f-10 text-italic"
-                    >
+                    <q-item-label lines="2" class="f-10 text-italic">
                       <span class="">oleh</span> : <span class="">{{ setPelaksana(item) }} </span>
                     </q-item-label>
                   </q-item-section>
 
-                  <q-item-section
-                    side
-                    top
-                  >
+                  <q-item-section side top>
                     <div class="row q-my-xs">
-                      <q-btn
-                        flat
-                        round
-                        size="sm"
-                        icon="icon-mat-cloud_upload"
-                        @click="bukaUploadan(item?.id)"
-                      >
+                      <q-btn flat round size="sm" icon="icon-mat-cloud_upload" @click="bukaUploadan(item?.id)">
                         <q-tooltip>Upload Gambar Dokumen</q-tooltip>
                       </q-btn>
-                      <q-btn
-                        flat
-                        round
-                        size="sm"
-                        icon="icon-mat-delete"
-                        color="negative"
-                        @click="hapusItem(item.id)"
-                      >
+                      <q-btn flat round size="sm" icon="icon-mat-delete" color="negative" @click="hapusItem(item.id)">
                         <q-tooltip>Hapus </q-tooltip>
                       </q-btn>
                     </div>
@@ -110,21 +58,11 @@
                       margin-bottom:10px; padding: 5px;
                     "
                   >{{ item.subtotal }}</span> -->
-                      <q-badge
-                        outline
-                        color="primary"
-                        :label="`Rp. ${formatRp(item.subtotal)}`"
-                      />
+                      <q-badge outline color="primary" :label="`Rp. ${formatRp(item.subtotal)}`" />
                     </q-item-label>
                     <q-item-label v-if="item.gambardokumens?.length">
-                      <q-btn
-                        label="lihat dokumen"
-                        class="q-px-md"
-                        dense
-                        color="info"
-                        size="sm"
-                        @click="lihatDokumen(item)"
-                      />
+                      <q-btn label="lihat dokumen" class="q-px-md" dense color="info" size="sm"
+                        @click="lihatDokumen(item)" />
                     </q-item-label>
                   </q-item-section>
                 </q-item>
@@ -133,10 +71,7 @@
             </transition-group>
           </q-list>
         </q-scroll-area>
-        <div
-          v-else
-          class="column full-height flex-center"
-        >
+        <div v-else class="column full-height flex-center">
           <div class=" text-white">
             Data Belum Ada
           </div>
@@ -145,19 +80,10 @@
     </div>
 
     <!-- upload tindakan -->
-    <dialog-uploadokumen
-      :id="idTindakan"
-      :key="idTindakan"
-      v-model="modalUpload"
-      :pasien="pasien"
-    />
+    <dialog-uploadokumen :id="idTindakan" :key="idTindakan" v-model="modalUpload" :pasien="pasien" />
 
     <!-- drawer -->
-    <dialog-dokumen
-      v-model="drawerRight"
-      :dokumen="dokumen"
-      @hapus-dokumen="(val)=> hapusDokumen(val)"
-    />
+    <dialog-dokumen v-model="drawerRight" :dokumen="dokumen" @hapus-dokumen="(val) => hapusDokumen(val)" />
   </q-card>
 </template>
 
@@ -165,7 +91,7 @@
 import DialogDokumen from './DialogDokumen.vue'
 import DialogUploadokumen from './DialogUploadokumen.vue'
 import { useQuasar } from 'quasar'
-import { dateFullFormat, formatRp } from 'src/modules/formatter'
+import { dateFullFormat, formatRp, getNewLine } from 'src/modules/formatter'
 import { useLayananPoli } from 'src/stores/simrs/pelayanan/poli/layanan'
 import { computed, ref } from 'vue'
 
@@ -188,7 +114,7 @@ const filterredTable = computed(() => {
   return arr?.filter(x => x.rs2 === val)
 })
 
-function hapusItem (id) {
+function hapusItem(id) {
   $q.dialog({
     dark: true,
     title: 'Peringatan',
@@ -205,17 +131,17 @@ function hapusItem (id) {
   })
 }
 
-function bukaUploadan (id) {
+function bukaUploadan(id) {
   idTindakan.value = id
   modalUpload.value = !modalUpload.value
 }
 
-function lihatDokumen (item) {
+function lihatDokumen(item) {
   dokumen.value = null
   dokumen.value = item
   drawerRight.value = !drawerRight.value
 }
-function hapusDokumen (id) {
+function hapusDokumen(id) {
   $q.dialog({
     dark: true,
     title: 'Peringatan',
@@ -237,7 +163,7 @@ function hapusDokumen (id) {
   })
 }
 
-function setPelaksana (item) {
+function setPelaksana(item) {
   const nota = item?.rs2
   const notaDariSimrsBaru = nota.includes('RJ')
 

@@ -674,7 +674,7 @@
           <div class="col-7">
             <div v-for="(item, i) in store.item?.tindakan" :key="i" class="row">
               <div v-if="item?.keterangan !== ''" class="col-12">
-                {{ item?.tindakan }} ({{ item?.keterangan }})
+                {{ item?.tindakan }} (<span v-html="getNewLine(item?.ket ? item?.ket : item?.keterangan)" />)
               </div>
               <div v-else class="col-12">
                 {{ item?.tindakan }}
@@ -749,6 +749,7 @@ import { date } from 'quasar'
 import { useDokumenResumeStore } from 'src/stores/simrs/dokumen/resume/resume'
 import { usePemeriksaanFisik } from 'src/stores/simrs/pelayanan/poli/pemeriksaanfisik'
 import KopSurat from '../comppoli/KopSurat.vue'
+import { getNewLine } from 'src/modules/formatter';
 const props = defineProps({
   pasien: {
     type: Object,

@@ -10,19 +10,17 @@ export const formKontrakPekerjaan = defineStore('form_KontrakPekerjaan', {
     params: {
       q: '',
       tahun: date.formatDate(Date.now(), 'YYYY'),
+      tgl: date.formatDate(Date.now(), 'YYYY-MM-DD'),
       bidang: '',
-      kegiatan: ''
-    },
-    reqs: {
-      q: '',
+      kegiatan: '',
       nip: null,
       kodebidang: null
     },
     form: {
       nokontrak: null,
-      tgltrans: null,
-      tglmulaikontrak: null,
-      tglakhirkontrak: null,
+      tgltrans: date.formatDate(Date.now(), 'YYYY-MM-DD'),
+      tglmulaikontrak: date.formatDate(Date.now(), 'YYYY-MM-DD'),
+      tglakhirkontrak: date.formatDate(Date.now(), 'YYYY-MM-DD'),
       // Perusahaan
       kodeperusahaan: null,
       namaperusahaan: null,
@@ -46,7 +44,7 @@ export const formKontrakPekerjaan = defineStore('form_KontrakPekerjaan', {
     ptks: []
   }),
   actions: {
-    resetFORM () {
+    resetFORM() {
       const forms = Object.keys(this.form)
       for (let i = 0; i < forms.length; i++) {
         const el = forms[i]
@@ -67,17 +65,35 @@ export const formKontrakPekerjaan = defineStore('form_KontrakPekerjaan', {
     // setAmbils (key, val) {
     //   this.reqs[key] = val
     // },
-    setParams (key, val) {
+    setParams(key, val) {
       this.reqs[key] = val
     },
-    setForm (key, val) {
+    setForm(key, val) {
       this.form[key] = val
+      this.form.termin = 1
+      this.form.nilaikontrak = 0
       // console.log('form', this.form)
     },
-    emptyForm () {
-      this.form = {}
+    emptyForm() {
+      this.form.nokontrak = ''
+      this.form.tgltrans = ''
+      this.form.tglmulaikontrak = ''
+      this.form.tglakhirkontrak = ''
+      this.form.kodeperusahaan = ''
+      this.form.namaperusahaan = ''
+      this.form.kodemapingrs = ''
+      this.form.namasuplier = ''
+      this.form.kodepptk = ''
+      this.form.namapptk = ''
+      this.form.kodeBagian = ''
+      this.form.kodekegiatanblud = ''
+      this.form.kegiatanblud = ''
+      this.form.nilaikontrak = 0
+      this.form.nokontrakx = ''
+      this.form.termin = 1
+
     },
-    getDataBidang () {
+    getDataBidang() {
       this.loading = true
       const params = { params: this.params }
       return new Promise((resolve) => {
@@ -89,14 +105,14 @@ export const formKontrakPekerjaan = defineStore('form_KontrakPekerjaan', {
             // this.ptks = resp.data
             this.loading = false
             // this.filterBidang(resp.data)
-            this.filterKegiatan(resp.data)
-            this.filterPtk(resp.data)
+            this.filterKegiatan()
+            this.filterPtk()
             resolve(resp)
           }
         }).catch(() => { this.loading = false })
       })
     },
-    filterPtk () {
+    filterPtk() {
       const data = this.bidangdanptk?.length
         ? this.bidangdanptk?.map((x) => {
           return {
@@ -117,16 +133,16 @@ export const formKontrakPekerjaan = defineStore('form_KontrakPekerjaan', {
       this.ptks = ptk
       // console.log('pptk', this.ptks)
     },
-    filterKegiatan () {
+    filterKegiatan() {
       const data = this.bidangdanptk?.length
         ? this.bidangdanptk?.filter(x =>
-          x.kodepptk === this.reqs.nip
+          x.kodepptk === this.params.nip
         )
         : []
       this.kegiatans = data
       // console.log('ddd', this.kegiatans)
     },
-    getPihaktiga () {
+    getPihaktiga() {
       this.loading = true
       return new Promise((resolve) => {
         api.get('v1/transaksi/belanja_ls/perusahaan').then((resp) => {
@@ -142,13 +158,15 @@ export const formKontrakPekerjaan = defineStore('form_KontrakPekerjaan', {
           })
       })
     },
-    simpanKontrak () {
+    simpanKontrak() {
       console.log('fooorm', this.form)
       this.loading = true
       return new Promise((resolve, reject) => {
         api.post('/v1/transaksi/kontrak/simpankontrak', this.form)
           .then((resp) => {
             console.log('isian', resp)
+            this.form.nokontrak = resp.data?.result?.nokontrak
+            // console.log('nokontrak', this.form.nokontrak)
             this.loading = false
             notifSuccess(resp)
 

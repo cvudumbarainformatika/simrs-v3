@@ -93,6 +93,7 @@ export const usePasienPulangRanapStore = defineStore('pasien-pulang-ranap-store'
           storeRanap.injectDataPasien(pasien?.noreg, resp?.data?.surat[0]?.jamMeninggal, 'jamMeninggal')
           storeRanap.injectDataPasien(pasien?.noreg, resp?.data?.surat[0]?.nosrtmeninggal, 'nosrtmeninggal')
           storeRanap.injectDataPasien(pasien?.noreg, resp?.data?.surat[0]?.kddrygmenyatakan, 'kddrygmenyatakan')
+          storeRanap.injectDataPasien(pasien?.noreg, resp?.data?.sambungan[0]?.ket, 'tindaklanjut_sambung')
 
           notifSuccess(resp)
           this.loadingOrder = false
@@ -139,7 +140,7 @@ export const usePasienPulangRanapStore = defineStore('pasien-pulang-ranap-store'
         noLp: null,
         diagnosaAkhir: pasien?.diagakhir ?? null,
         diagnosaPenyebabMeninggal: pasien?.sebabkematian ?? null,
-        tindakLanjut: pasien?.tindaklanjut ?? null
+        tindakLanjut: pasien?.tindaklanjut_sambung || pasien?.tindaklanjut || null
       }
       this.search1 = pasien?.diagakhir ?? null
       this.search2 = pasien?.sebabkematian ?? null

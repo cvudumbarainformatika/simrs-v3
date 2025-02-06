@@ -21,12 +21,21 @@
               <q-btn rounded outline color="orange" icon="icon-mat-arrow_back" v-close-popup>
                 <span class="text-orange-9 q-ml-sm">Kembali </span>
               </q-btn>
+              <q-btn rounded outline color="primary" @click="store.dialogPreview = true">
+                <span class="text-primary q-ml-sm">Lihat Eresep </span>
+              </q-btn>
             </div>
           </q-card-section>
         </div>
 
-        <div class="col full-height scroll bg-grey-4">
-          <div class="row q-pa-md q-col-gutter-md justify-around">
+        <div class="col full-height bg-grey-4">
+
+          <card-column :pasien="pasien" :kasus="kasus" @open-reseps="() => {
+            contentPreview = 'Eresep'
+            store.dialogPreview = true
+          }" />
+
+          <!-- <div class="row q-pa-md q-col-gutter-md justify-around">
 
             <div class="col-6">
               <div class="row q-col-gutter-md">
@@ -44,7 +53,6 @@
                             console.log('val', val);
 
                           }" />
-                        <!-- <app-input-simrs label="Tindakan" /> -->
                         <q-input v-model="store.form.keterangan" type="textarea" outlined standout="bg-yellow-3"
                           label="Keterangan" class="col-12" />
                       </div>
@@ -69,7 +77,6 @@
                         <app-input-simrs v-model="store.form.spo2" label="SPO2" class="col-3" />
                         <app-input-simrs v-model="store.form.nyeri" label="NYERI" class="col-6" />
                         <app-input-simrs v-model="store.form.skor" label="SKORING" class="col-6" />
-                        <!-- <q-input type="textarea" outlined standout="bg-yellow-3" label="Implementasi" class="col" /> -->
                         <div class="col-12">
                           <q-separator></q-separator>
                         </div>
@@ -134,10 +141,6 @@
                       class="col-grow" />
                     <div class="col-4">Obat-obatan </div> <app-input-simrs v-model="store.form.obat" label="mililiter"
                       class="col-grow" />
-                    <!-- <div class="col-4">Oral </div> <app-input-simrs v-model="store.form.oral" label="mililiter"
-                      class="col-grow" />
-                    <div class="col-4">Tetes </div> <app-input-simrs v-model="store.form.tetes" label="mililiter"
-                      class="col-grow" /> -->
                     <div class="col-4">Albumin </div> <app-input-simrs v-model="store.form.albumin" label="mililiter"
                       class="col-grow" />
                     <div class="col-4">Makan & Minum </div> <app-input-simrs v-model="store.form.mamin"
@@ -174,20 +177,11 @@
                       class="col-grow" />
                     <div class="col-4">Produksi GC </div> <app-input-simrs v-model="store.form.produksigc"
                       label="mililiter" class="col-grow" />
-                    <!-- <app-input-simrs label="Urine" class="col-12" />
-                    <app-input-simrs label="Drine" class="col-12" />
-                    <app-input-simrs label="Muntah" class="col-12" /> -->
-                    <!-- <app-input-simrs label="Feces" class="col-12" />
-                    <app-input-simrs label="IVVI" class="col-12" />
-                    <app-input-simrs label="Pendarahan" class="col-12" />
-                    <app-input-simrs label="UFG" class="col-12" />
-                    <app-input-simrs label="Produksi GC" class="col-12" /> -->
-                    <!-- <app-input-simrs label="Water Metabolism" class="col-12" /> -->
                   </div>
                 </div>
               </q-card>
             </div>
-          </div>
+          </div> -->
         </div>
 
         <div class="col-auto bg-primary q-pa-md">
@@ -195,19 +189,29 @@
             <q-btn rounded outline color="orange" icon="icon-mat-arrow_back" v-close-popup>
               <span class="text-orange q-ml-sm">Kembali </span>
             </q-btn>
-            <q-btn type="submit" rounded outline color="white" icon="icon-mat-save">
+            <q-btn :loading="store.loading" :disabled="store.loading" type="submit" rounded outline color="white"
+              icon="icon-mat-save">
               <span class=" q-ml-sm">Simpan Catatan </span>
             </q-btn>
           </div>
         </div>
       </q-form>
     </q-card>
+
+
+
+
+    <!-- dialog dynamic -->
+    <dialog-preview v-model="store.dialogPreview" :pasien="pasien" :content="contentPreview" @on-selected-reseps="(val) => {
+      // console.log('val', val);
+      store.form.reseps = val
+    }" />
   </q-dialog>
 </template>
 
 <script setup>
 import { useNurseNoteRanapStore } from 'src/stores/simrs/ranap/nursenote';
-import { defineAsyncComponent } from 'vue';
+import { defineAsyncComponent, ref } from 'vue';
 
 const props = defineProps({
   pasien: {
@@ -224,8 +228,14 @@ const props = defineProps({
   }
 })
 
+const CardColumn = defineAsyncComponent(() => import('./CardColumn.vue'))
 const AutocompleteInputTwo = defineAsyncComponent(() => import('src/pages/simrs/ranap/layanan/components/AutocompleteInputTwo.vue'))
+const DialogPreview = defineAsyncComponent(() => import('./DialogPreview.vue'))
+
 const store = useNurseNoteRanapStore()
+
+const contentPreview = ref(null)
+
 const simpan = () => {
   // console.log('simpan');
   store.simpanData(props.pasien)
@@ -233,7 +243,14 @@ const simpan = () => {
 }
 
 const onShow = () => {
+  previewDiagKeperawatan()
   store.initForm()
+}
+
+const previewDiagKeperawatan = () => {
+
+  const dxkep = props?.pasien?.diagnosakeperawatan || []
+  console.log('props', dxkep);
 }
 
 </script>

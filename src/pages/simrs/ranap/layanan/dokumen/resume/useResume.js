@@ -88,7 +88,7 @@ export default function useResume(pasien) {
     //   lab = det
     // }
     data.laborats = pasien?.laboratold
-    console.log('datalaborat', data.laborats)
+    // console.log('datalaborat', data.laborats)
   }
   function cariDiagnosis(pasien) {
     let diag = []
@@ -372,9 +372,10 @@ export default function useResume(pasien) {
       { // 13
         title: 'TINDAK LANJUT',
         type: '1', // 1 = html, 2 = belum
-        isian: (pasien?.tindaklanjut !== '' && pasien?.tindaklanjut !== null)
-          ? `${pasien?.tindaklanjut} `
-          : ''
+        isian: pasien?.tindaklanjut_sambung || pasien?.tindaklanjut || ''
+        // isian: (pasien?.tindaklanjut !== '' && pasien?.tindaklanjut !== null)
+        //   ? `${pasien?.tindaklanjut} `
+        //   : ''
         // isian: pasien?.dischargeplanning.length
         //   // ? `${pasien?.dischargeplanning[pasien?.dischargeplanning.length - 1]?.rs4} - ${pasien?.dischargeplanning[pasien?.dischargeplanning.length - 1]?.rs5}`
         //   ? `${pasien?.dischargeplanning[pasien?.dischargeplanning.length - 1]?.rs4}`

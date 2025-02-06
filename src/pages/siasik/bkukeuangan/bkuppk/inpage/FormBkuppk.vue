@@ -1,5 +1,5 @@
 <template>
-  <div class="row full-width justify-width">
+  <div class="row full-width justify-first">
     <div class="q-pa-sm" style="width:25%">
       <app-autocomplete v-model="store.params.bulan" label="Pilih Bulan" autocomplete="nama" option-label="nama"
         option-value="value" outlined :source="store.bulans" />
@@ -19,16 +19,21 @@
       </q-btn>
     </div>
   </div>
+  <cetak-bkuppk v-model="store.dialogCetak" :printpdf="printpdf" />
 </template>
 <script setup>
 import { useLaporanBkuPpkStore } from 'src/stores/siasik/laporan/bku/bkuppk';
-
+import { defineAsyncComponent, ref } from 'vue';
+const CetakBkuppk = defineAsyncComponent(() => import('./PrintPdf.vue'))
 
 const store = useLaporanBkuPpkStore()
 
-
+const printpdf = ref(null)
 function ambilData() {
   // store.hitungharidalamBulan();
   store.getDataTable()
+}
+function cetakData() {
+  store.dialogCetak = true
 }
 </script>

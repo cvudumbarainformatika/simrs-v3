@@ -345,7 +345,7 @@
                     <div class="flex no-wrap q-gutter-md">
                       <div>:</div>
                       <div>
-                        {{ pasien?.tindaklanjut }}
+                        {{ pasien?.tindaklanjut_sambung || pasien?.tindaklanjut || '-' }}
                       </div>
                     </div>
                   </td>

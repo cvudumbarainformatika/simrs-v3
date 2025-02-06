@@ -1,28 +1,13 @@
 <template>
-  <q-card
-    flat
-    bordered
-    square
-    class="full-height bg-teal-2"
-    style="overflow: hidden;"
-  >
-    <q-bar
-      class="bg-teal text-white z-top"
-      style="width: inherit;"
-    >
+  <q-card flat bordered square class="full-height bg-teal-2" style="overflow: hidden;">
+    <q-bar class="bg-teal text-white z-top" style="width: inherit;">
       <div class="f-12">
         Data Anamnesis
       </div>
       <q-space />
     </q-bar>
-    <q-card-section
-      style="padding:0"
-      class="full-height bg-grey"
-    >
-      <div
-        v-if="loadingaja"
-        class="column full-height flex-center"
-      >
+    <q-card-section style="padding:0" class="full-height bg-grey">
+      <div v-if="loadingaja" class="column full-height flex-center">
         <div class="text-white">
           Harap Tunggu .....
         </div>
@@ -30,51 +15,42 @@
           Sinkron Data Ke DATABASE
         </div>
       </div>
-      <div
-        v-if="pasien?.anamnesekebidanan?.length <= 0"
-        class="column full-height flex-center"
-      >
+      <div v-if="pasien?.anamnesekebidanan?.length <= 0" class="column full-height flex-center">
         <div class="text-white">
           Belum Ada data tersimpan
         </div>
       </div>
-      <q-scroll-area
-        v-else
-        style="height:calc(100% - 32px);"
-      >
-        <q-list
-          class="bg-white"
-          separator
-        >
+      <q-scroll-area v-else style="height:calc(100% - 32px);">
+        <q-list class="bg-white" separator>
           <transition-group name="list">
-            <q-item
-              v-for="(item , n) in lists"
-              :key="n"
-              class="list-move"
-            >
+            <q-item v-for="(item, n) in lists" :key="n" class="list-move">
               <q-item-section>
-                <q-item-label
-                  class="f-12"
-                >
+                <q-item-label class="f-12">
                   <span class="">Keluhan Utama </span> : <span class="text-weight-bold">{{ item?.keluhanutama }}</span>
                 </q-item-label>
                 <q-item-label>
-                  <span class="">Riwayat Penyakit (Sekarang) </span> : <span class="text-weight-bold">{{ item?.riwayatpenyakitsekarang }}</span>
+                  <span class="">Riwayat Penyakit (Sekarang) </span> : <span class="text-weight-bold">{{
+                    item?.riwayatpenyakitsekarang }}</span>
                 </q-item-label>
                 <q-item-label>
-                  <span class="">Riwayat Penyakit </span> : <span class="text-weight-bold">{{ item?.riwayatpenyakit }}</span>
+                  <span class="">Riwayat Penyakit </span> : <span class="text-weight-bold">{{ item?.riwayatpenyakit
+                    }}</span>
                 </q-item-label>
                 <q-item-label>
-                  <span class="">Riwayat Alergi </span> : <span class="text-weight-bold">{{ item?.riwayatalergi }}</span>
+                  <span class="">Riwayat Alergi </span> : <span class="text-weight-bold">{{ item?.riwayatalergi
+                    }}</span>
                 </q-item-label>
                 <q-item-label>
-                  <span class="">Reaksi berupa </span> : <span class="text-weight-bold">{{ item?.keteranganalergi }}</span>
+                  <span class="">Reaksi berupa </span> : <span class="text-weight-bold">{{ item?.keteranganalergi
+                    }}</span>
                 </q-item-label>
                 <q-item-label>
-                  <span class="">Riwayat Pengobatan</span> : <span class="text-weight-bold">{{ item?.riwayatpengobatan }}</span>
+                  <span class="">Riwayat Pengobatan</span> : <span class="text-weight-bold">{{ item?.riwayatpengobatan
+                    }}</span>
                 </q-item-label>
                 <q-item-label>
-                  <span class="">Riwayat Pekerjaan Yang Berhubungan Dengan Zat Berbahaya</span> : <span class="text-weight-bold">{{ item?.riwayatpekerjaan }}</span>
+                  <span class="">Riwayat Pekerjaan Yang Berhubungan Dengan Zat Berbahaya</span> : <span
+                    class="text-weight-bold">{{ item?.riwayatpekerjaan }}</span>
                 </q-item-label>
                 <q-separator class="q-my-md" />
                 <q-item-label>
@@ -82,7 +58,8 @@
                 </q-item-label>
                 <div v-if="item?.optionskriniggizi === 1">
                   <q-item-label>
-                    <span class="">- Apakah Pasian mengalami penurunan / peningkatan BB yang tidak diinginkan dalam 6 Bulan terakhir ? <b>{{ getYT(item?.skreeninggizi) }}</b></span>
+                    <span class="">- Apakah Pasian mengalami penurunan / peningkatan BB yang tidak diinginkan dalam 6
+                      Bulan terakhir ? <b>{{ getYT(item?.skreeninggizi) }}</b></span>
                     <div class="q-my-xs">
                       - Apakah Asupan Makan berkurang karena tidak nafsu makan ? <b>{{ getYT(item?.asupanmakan) }}</b>
                     </div>
@@ -111,12 +88,15 @@
                 </div>
                 <div v-if="item?.optionskriniggizi === 2">
                   <q-item-label>
-                    <div>- Apakah Asupan Makan Berkurang Karena Tidak Nafsu Makan? <b>{{ getYT(item?.asupanmakanberkurang) }}</b></div>
+                    <div>- Apakah Asupan Makan Berkurang Karena Tidak Nafsu Makan? <b>{{
+                      getYT(item?.asupanmakanberkurang) }}</b></div>
                     <div>
-                      - Ada Gangguan Metabolisme (DM, Gangguan Fungsi Tiroid, Infeksi Kronis dll)? <b>{{ getYT(item?.metabolisme) }}</b>
+                      - Ada Gangguan Metabolisme (DM, Gangguan Fungsi Tiroid, Infeksi Kronis dll)? <b>{{
+                        getYT(item?.metabolisme) }}</b>
                     </div>
                     <div>
-                      - Ada Penambahan Berat Badan Yang Kurang Atau Lebih Sesuai Dengan Usia Kehamilan? <b>{{ getYT(item?.penambahanbb) }}</b>
+                      - Ada Penambahan Berat Badan Yang Kurang Atau Lebih Sesuai Dengan Usia Kehamilan? <b>{{
+                        getYT(item?.penambahanbb) }}</b>
                     </div>
                     <div>
                       - Nilai Hb Kurang Dari 10g/dL, atau HCT Kurang Dari 30% <b>{{ getYT(item?.nilaihbberkurang) }}</b>
@@ -149,17 +129,10 @@
                   <div>
                     <div v-if="item?.metodenyeri === 'nrt'">
                       - Skor Nyeri :
-                      <b> {{ item?.skornyeri??'-' }} </b>
+                      <b> {{ item?.skornyeri ?? '-' }} </b>
 
-                      <span
-                        v-if="!isNaN(parseInt(item?.skornyeri))"
-                        class="q-mx-sm"
-                      >
-                        <q-icon
-                          size="xs"
-                          color="teal"
-                          :name="iconNyeri(item?.skornyeri)"
-                        />
+                      <span v-if="!isNaN(parseInt(item?.skornyeri))" class="q-mx-sm">
+                        <q-icon size="xs" color="teal" :name="iconNyeri(item?.skornyeri)" />
                       </span>
                       <em class="text-primary"> {{ item?.keteranganscorenyeri ?? '-' }}</em>
                       <q-separator class="q-my-xs" style="width: 300px;" />
@@ -167,7 +140,8 @@
                     <div v-if="item?.metodenyeri === 'bps'">
                       <q-item-label>- Ekspresi Wajah : {{ item?.ekspresiwajah }}</q-item-label>
                       <q-item-label>- Gerakan Tangan : {{ item?.gerakantangan }}</q-item-label>
-                      <q-item-label>- Kepatuhan terhadap ventilasi mekanik : {{ item?.kepatuhanventilasimekanik }}</q-item-label>
+                      <q-item-label>- Kepatuhan terhadap ventilasi mekanik : {{ item?.kepatuhanventilasimekanik
+                        }}</q-item-label>
                       <q-item-label>
                         <q-separator class="q-my-xs" style="width: 300px;" />
                         <div>
@@ -250,7 +224,7 @@
                   <q-item-label>
                     <span class="text-weight-bold"><b>Riwayat Pemakaian Alat Kontrasepsi</b></span>
                   </q-item-label>
-                  <q-item-label>- Pernah  : <b> {{ item?.alatkontrasepsi ?? '-' }}</b></q-item-label>
+                  <q-item-label>- Pernah : <b> {{ item?.alatkontrasepsi ?? '-' }}</b></q-item-label>
                   <q-item-label>- Jenis : <b>{{ item?.jeniskontasepsi ?? '-' }}</b></q-item-label>
                   <q-item-label>
                     - Lama Pemakaian : <b>{{ item?.tahunlamapemakaiankontrasepsi ?? '0' }} Tahun
@@ -259,7 +233,7 @@
                       {{ item?.harilamapemakaiankontrasepsi ?? '0' }} Hari
                     </b>
                   </q-item-label>
-                  <q-item-label>- Keluhan  : <b>{{ item?.keluhankontrasepsi ?? '-' }}</b></q-item-label>
+                  <q-item-label>- Keluhan : <b>{{ item?.keluhankontrasepsi ?? '-' }}</b></q-item-label>
                   <q-separator class="q-my-md" />
                 </div>
                 <div>
@@ -267,13 +241,14 @@
                     <span class="text-weight-bold"><b>Riwayat Pernikahan</b></span>
                   </q-item-label>
                   <q-item-label>
-                    - Status Pernikahan  : <b> {{ item?.statuspernikahan ?? '-' }},
+                    - Status Pernikahan : <b> {{ item?.statuspernikahan ?? '-' }},
                       <span v-if="item?.jumlahpernikahan !== null">
                         Jumlah Pernikahan {{ item?.jumlahpernikahan }}
                       </span>
                     </b>
                   </q-item-label>
-                  <q-item-label>- Umur Pertama Kali Kawin : <b>{{ item?.umurpertamanikah ?? '0' }} Tahun</b></q-item-label>
+                  <q-item-label>- Umur Pertama Kali Kawin : <b>{{ item?.umurpertamanikah ?? '0' }}
+                      Tahun</b></q-item-label>
                   <q-item-label>- Kawin Dengan Suami Ke : </q-item-label>
                   <q-separator class="q-my-md" />
                 </div>
@@ -281,7 +256,7 @@
                   <q-item-label>
                     <span class="text-weight-bold"><b>Riwayat Menstruasi</b></span>
                   </q-item-label>
-                  <q-item-label>- Menarche Umur  : <b> {{ item?.menarcheumur ?? '-' }} Tahun</b></q-item-label>
+                  <q-item-label>- Menarche Umur : <b> {{ item?.menarcheumur ?? '-' }} Tahun</b></q-item-label>
                   <q-item-label>- Siklus : <b>{{ item?.siklus ?? '-' }} Hari</b></q-item-label>
                   <q-item-label>- Keteraturan : <b>{{ item?.keteraturan ?? '-' }}</b></q-item-label>
                   <q-item-label>- Lama Hari : <b>{{ item?.lamahaririwayatmens ?? '-' }}</b></q-item-label>
@@ -298,7 +273,7 @@
                     <span class="text-weight-bold"><b>Riwayat Penyakit Ginekologi</b></span>
                   </q-item-label>
                   <q-item-label>
-                    -  Apakah terdapat riwayat penyakit ginekologi? : <b>{{ item?.riwayatginekologi ?? '-' }}</b>
+                    - Apakah terdapat riwayat penyakit ginekologi? : <b>{{ item?.riwayatginekologi ?? '-' }}</b>
                     <span v-if="item?.ginekologis !== null">
                       ({{ item?.ginekologis }})
                     </span>
@@ -356,25 +331,10 @@
                   <q-item-label>- Periksa Demam : <b>{{ item?.periksadalamginekologi ?? '-' }}</b></q-item-label>
                 </div>
               </q-item-section>
-              <q-item-section
-                side
-              >
+              <q-item-section side>
                 <div class="q-gutter-sm">
-                  <q-btn
-                    flat
-                    round
-                    size="sm"
-                    icon="icon-mat-edit"
-                    @click="store.editForm(item)"
-                  />
-                  <q-btn
-                    flat
-                    round
-                    size="sm"
-                    icon="icon-mat-delete"
-                    color="negative"
-                    @click="hapusItem(item.id)"
-                  />
+                  <!-- <q-btn flat round size="sm" icon="icon-mat-edit" @click="store.editForm(item)" /> -->
+                  <q-btn flat round size="sm" icon="icon-mat-delete" color="negative" @click="hapusItem(item.id)" />
                 </div>
               </q-item-section>
             </q-item>
@@ -387,9 +347,11 @@
 
 <script setup>
 import { useQuasar } from 'quasar'
+import { useAnamneseKebidananStore } from 'src/stores/simrs/igd/anamnesekebidanan'
 import { useAnamnesis } from 'src/stores/simrs/igd/anamnesis'
 import { computed } from 'vue'
 const store = useAnamnesis()
+const storekebidanan = useAnamneseKebidananStore()
 const $q = useQuasar()
 const props = defineProps({
   pasien: {
@@ -402,7 +364,7 @@ const props = defineProps({
   }
 })
 
-function ketcolorbps (val) {
+function ketcolorbps(val) {
   if (parseInt(val) === 3) {
     return 'light-green'
   }
@@ -423,7 +385,7 @@ const lists = computed(() => {
   return arr?.sort((a, b) => { return b.id - a.id })
 })
 
-function getYT (val) {
+function getYT(val) {
   if (val === 1 || val === '1') {
     return 'Ya'
   }
@@ -435,7 +397,7 @@ function getYT (val) {
   }
 }
 
-function hapusItem (id) {
+function hapusItem(id) {
   $q.dialog({
     dark: true,
     title: 'Peringatan',
@@ -444,7 +406,7 @@ function hapusItem (id) {
     persistent: true
   }).onOk(() => {
     // console.log('OK')
-    store.deleteData(props.pasien, id)
+    storekebidanan.deleteData(props.pasien, id)
   }).onCancel(() => {
     // console.log('Cancel')
   }).onDismiss(() => {
@@ -452,7 +414,7 @@ function hapusItem (id) {
   })
 }
 
-function iconNyeri (anu) {
+function iconNyeri(anu) {
   const val = typeof anu === 'string' ? (isNaN(parseInt(anu)) ? 0 : parseInt(anu)) : 0
   // console.log('val nyeri', val)
   // console.log('anu nyeri', anu)
@@ -479,7 +441,7 @@ function iconNyeri (anu) {
   return icon
 }
 
-function metodenyeri (val) {
+function metodenyeri(val) {
   console.log('val nyeri', val)
   if (val === 'nrt') {
     return 'Numeric Rating Scale'

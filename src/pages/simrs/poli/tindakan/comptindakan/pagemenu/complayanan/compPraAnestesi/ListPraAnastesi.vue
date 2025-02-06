@@ -8,15 +8,8 @@
       </div>
     </div>
     <div class="col full-height bg-transparent">
-      <q-scroll-area
-        v-if="items.length"
-        style="height:calc( 100% - 1px );"
-      >
-        <q-card
-          v-for="(item, i) in items"
-          :key="i"
-          class="q-ma-sm relative-position"
-        >
+      <q-scroll-area v-if="items.length" style="height:calc( 100% - 1px );">
+        <q-card v-for="(item, i) in items" :key="i" class="q-ma-sm relative-position">
           <q-card-section>
             <div class="row">
               <!-- KEADAAN UMUM -->
@@ -25,59 +18,60 @@
                   <b>KEADAAN UMUM</b>
                 </div>
                 <table class="column full-width">
-                  <tr class="column full-width">
-                    <td>
-                      <div class="flex">
-                        <div> <b>Skor Mallampati</b> </div>
-                        <div> : {{ item.skorMallampati }}</div>
-                      </div>
-                      <div class="flex">
-                        <div> <b>Jantung</b> </div>
-                        <div> : {{ item.jantung }}</div>
-                      </div>
-                      <div class="flex">
-                        <div> <b>Paru-paru</b> </div>
-                        <div> : {{ item.paruparu }}</div>
-                      </div>
-                      <div class="flex">
-                        <div> <b>Abdomen</b> </div>
-                        <div> : {{ item.abdomen }}</div>
-                      </div>
-                      <div class="flex">
-                        <div> <b>Tulang Belakang</b> </div>
-                        <div> : {{ item.tulangbelakang }}</div>
-                      </div>
-                      <div class="flex">
-                        <div> <b>Ektremitas</b> </div>
-                        <div> : {{ item.ekstremitas }}</div>
-                      </div>
-                      <div class="flex">
-                        <div> <b>Neurologi</b> </div>
-                        <div> : {{ item.neurologi }}</div>
-                      </div>
-                      <div class="flex">
-                        <div> <b>Keterangan</b> </div>
-                        <div> : {{ item.keterangan }}</div>
-                      </div>
-                    </td>
-                  </tr>
+                  <tbody>
+                    <tr class="column full-width">
+                      <td>
+                        <div class="flex">
+                          <div> <b>Skor Mallampati</b> </div>
+                          <div> : {{ item.skorMallampati }}</div>
+                        </div>
+                        <div class="flex">
+                          <div> <b>Jantung</b> </div>
+                          <div> : {{ item.jantung }}</div>
+                        </div>
+                        <div class="flex">
+                          <div> <b>Paru-paru</b> </div>
+                          <div> : {{ item.paruparu }}</div>
+                        </div>
+                        <div class="flex">
+                          <div> <b>Abdomen</b> </div>
+                          <div> : {{ item.abdomen }}</div>
+                        </div>
+                        <div class="flex">
+                          <div> <b>Tulang Belakang</b> </div>
+                          <div> : {{ item.tulangbelakang }}</div>
+                        </div>
+                        <div class="flex">
+                          <div> <b>Ektremitas</b> </div>
+                          <div> : {{ item.ekstremitas }}</div>
+                        </div>
+                        <div class="flex">
+                          <div> <b>Neurologi</b> </div>
+                          <div> : {{ item.neurologi }}</div>
+                        </div>
+                        <div class="flex">
+                          <div> <b>Keterangan</b> </div>
+                          <div> : {{ item.keterangan }}</div>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
                 </table>
 
                 <div class="q-ma-xs">
                   <b>ASA CLASIFICATION</b>
                 </div>
                 <table class="column full-width">
-                  <tr class="column full-width">
-                    <td>
-                      <div
-                        v-for="(asa, n) in item?.asaClasification"
-                        :key="n"
-                      >
-                        - {{ asa }}
-                      </div>
-                      <q-separator />
-                    </td>
-                  </tr>
+                  <tbody>
+                    <tr class="column full-width">
+                      <td>
+                        <div v-for="(asa, n) in item?.asaClasification" :key="n">
+                          - {{ asa }}
+                        </div>
+                        <q-separator />
+                      </td>
+                    </tr>
+                  </tbody>
                 </table>
               </div>
               <!-- KAJIAN SISTEM  -->
@@ -86,60 +80,54 @@
                   <b>KAJIAN SISTEM</b>
                 </div>
                 <table class="column full-width">
-                  <tr class="column full-width">
-                    <td>
-                      <div
-                        v-for="(kaj, n) in item?.kajianSistem"
-                        :key="n"
-                      >
-                        - {{ kaj }}
-                      </div>
-                      <q-separator />
-                      <div class="">
-                        Keterangan : {{ item.keteranganKajianSistem }}
-                      </div>
-                    </td>
-                  </tr>
+                  <tbody>
+                    <tr class="column full-width">
+                      <td>
+                        <div v-for="(kaj, n) in item?.kajianSistem" :key="n">
+                          - {{ kaj }}
+                        </div>
+                        <q-separator />
+                        <div class="">
+                          Keterangan : {{ item.keteranganKajianSistem }}
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
                 </table>
                 <!-- LABORATORIUM -->
                 <div class="q-ma-xs">
                   <b>LABORATORIUM</b>
                 </div>
                 <table class="column full-width">
-                  <tr class="column full-width">
-                    <td>
-                      <div
-                        v-for="(lab, n) in item?.laboratorium"
-                        :key="n"
-                      >
-                        - {{ lab.nama }} : {{ lab.model }}
-                      </div>
-                      <q-separator />
-                      <div class="">
-                        Keterangan : {{ item.keteranganLaborat }}
-                      </div>
-                    </td>
-                  </tr>
+                  <tbody>
+                    <tr class="column full-width">
+                      <td>
+                        <div v-for="(lab, n) in item?.laboratorium" :key="n">
+                          - {{ lab.nama }} : {{ lab.model }}
+                        </div>
+                        <q-separator />
+                        <div class="">
+                          Keterangan : {{ item.keteranganLaborat }}
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
                 </table>
                 <!-- PENYULIT -->
                 <div class="q-ma-xs">
                   <b>PENYULIT ANASTESI LAIN</b>
                 </div>
-                <table
-                  v-if="item?.penyuliAnastesi?.length"
-                  class="column full-width"
-                >
-                  <tr class="column full-width">
-                    <td>
-                      <div
-                        v-for="(peny, n) in item?.penyuliAnastesi"
-                        :key="n"
-                      >
-                        - {{ peny }}
-                      </div>
-                      <q-separator />
-                    </td>
-                  </tr>
+                <table v-if="item?.penyuliAnastesi?.length" class="column full-width">
+                  <tbody>
+                    <tr class="column full-width">
+                      <td>
+                        <div v-for="(peny, n) in item?.penyuliAnastesi" :key="n">
+                          - {{ peny }}
+                        </div>
+                        <q-separator />
+                      </td>
+                    </tr>
+                  </tbody>
                 </table>
                 <div v-else>
                   -
@@ -174,18 +162,16 @@
                   Teknik Khsusus
                 </div>
                 <table class="column full-width">
-                  <tr class="column full-width">
-                    <td>
-                      <div
-                        v-for="(tk, x) in item?.teknikKhusus"
-                        :key="x"
-                        class="flex"
-                      >
-                        <div> <b>{{ tk.nama }}</b> </div>
-                        <div> : {{ tk.keterangan }}</div>
-                      </div>
-                    </td>
-                  </tr>
+                  <tbody>
+                    <tr class="column full-width">
+                      <td>
+                        <div v-for="(tk, x) in item?.teknikKhusus" :key="x" class="flex">
+                          <div> <b>{{ tk.nama }}</b> </div>
+                          <div> : {{ tk.keterangan }}</div>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
                 </table>
               </div>
               <div class="col-6">
@@ -193,18 +179,16 @@
                   Teknik Anestesia
                 </div>
                 <table class="column full-width">
-                  <tr class="column full-width">
-                    <td>
-                      <div
-                        v-for="(ta, x) in item?.teknikAnestesia"
-                        :key="x"
-                        class="flex"
-                      >
-                        <div> <b>{{ ta.nama }}</b> </div>
-                        <div> : {{ ta.keterangan }}</div>
-                      </div>
-                    </td>
-                  </tr>
+                  <tbody>
+                    <tr class="column full-width">
+                      <td>
+                        <div v-for="(ta, x) in item?.teknikAnestesia" :key="x" class="flex">
+                          <div> <b>{{ ta.nama }}</b> </div>
+                          <div> : {{ ta.keterangan }}</div>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
                 </table>
               </div>
             </div>
@@ -217,18 +201,16 @@
                   Perawatan Pasca Anestesia
                 </div>
                 <table class="column full-width">
-                  <tr class="column full-width">
-                    <td>
-                      <div
-                        v-for="(pa, x) in item?.pascaAnastesi"
-                        :key="x"
-                        class="flex"
-                      >
-                        <div> <b>{{ pa.nama }}</b> </div>
-                        <div> : {{ pa.keterangan }}</div>
-                      </div>
-                    </td>
-                  </tr>
+                  <tbody>
+                    <tr class="column full-width">
+                      <td>
+                        <div v-for="(pa, x) in item?.pascaAnastesi" :key="x" class="flex">
+                          <div> <b>{{ pa.nama }}</b> </div>
+                          <div> : {{ pa.keterangan }}</div>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
                 </table>
               </div>
             </div>
@@ -240,38 +222,32 @@
                   Persiapan Pasca Anestesia
                 </div>
                 <table class="column full-width">
-                  <tr class="column full-width">
-                    <td>
-                      <div
-                        class="flex"
-                      >
-                        <div> <b>Puasa Mulai Jam</b> </div>
-                        <div> : {{ item.puasaMulaiJam }}</div>
-                        <div> <b>Tanggal</b> : {{ item.puasaMulaiTgl }}</div>
-                      </div>
-                      <div
-                        class="flex"
-                      >
-                        <div> <b>Pre Medikasi Jam</b> </div>
-                        <div> : {{ item.preMedikasiJam }}</div>
-                        <div> <b>Tanggal</b> : {{ item.preMedikasiTgl }}</div>
-                      </div>
-                      <div
-                        class="flex"
-                      >
-                        <div> <b>Trans ke Km Bedah  Jam</b> </div>
-                        <div> : {{ item.transKeKamarBedahJam }}</div>
-                        <div> <b>Tanggal</b> : {{ item.transKeKamarBedahTgl }}</div>
-                      </div>
-                      <div
-                        class="flex"
-                      >
-                        <div> <b>Rencana Operasi  Jam</b> </div>
-                        <div> : {{ item.rencanaOperasiJam }}</div>
-                        <div> <b>Tanggal</b> : {{ item.rencanaOperasiTgl }}</div>
-                      </div>
-                    </td>
-                  </tr>
+                  <tbody>
+                    <tr class="column full-width">
+                      <td>
+                        <div class="flex">
+                          <div> <b>Puasa Mulai Jam</b> </div>
+                          <div> : {{ item.puasaMulaiJam }}</div>
+                          <div> <b>Tanggal</b> : {{ item.puasaMulaiTgl }}</div>
+                        </div>
+                        <div class="flex">
+                          <div> <b>Pre Medikasi Jam</b> </div>
+                          <div> : {{ item.preMedikasiJam }}</div>
+                          <div> <b>Tanggal</b> : {{ item.preMedikasiTgl }}</div>
+                        </div>
+                        <div class="flex">
+                          <div> <b>Trans ke Km Bedah Jam</b> </div>
+                          <div> : {{ item.transKeKamarBedahJam }}</div>
+                          <div> <b>Tanggal</b> : {{ item.transKeKamarBedahTgl }}</div>
+                        </div>
+                        <div class="flex">
+                          <div> <b>Rencana Operasi Jam</b> </div>
+                          <div> : {{ item.rencanaOperasiJam }}</div>
+                          <div> <b>Tanggal</b> : {{ item.rencanaOperasiTgl }}</div>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
                 </table>
               </div>
             </div>
@@ -286,24 +262,11 @@
           <q-separator style="margin-top: -10px;" />
           <q-card-section>
             <div class="flex q-gutter-sm justify-end">
-              <q-btn
-                flat
-                size="sm"
-                icon="icon-mat-delete_sweep"
-                round
-                color="negative"
-                @click="emits('hapus', item?.id)"
-              >
+              <q-btn flat size="sm" icon="icon-mat-delete_sweep" round color="negative"
+                @click="emits('hapus', item?.id)">
                 <q-tooltip>Hapus Data</q-tooltip>
               </q-btn>
-              <q-btn
-                flat
-                size="sm"
-                icon="icon-mat-edit"
-                round
-                color="primary"
-                @click="emits('edit', item)"
-              >
+              <q-btn flat size="sm" icon="icon-mat-edit" round color="primary" @click="emits('edit', item)">
                 <q-tooltip>Edit Data</q-tooltip>
               </q-btn>
             </div>
@@ -337,28 +300,32 @@ table {
   width: 100%;
   border-spacing: 0px;
 
-  th, td {
+  th,
+  td {
     border: 1px solid gray;
     padding: 3px 10px;
     border-collapse: collapse !important;
 
   }
 
-  .vw-100{
+  .vw-100 {
     width: 100vw;
   }
-  .vw-60{
+
+  .vw-60 {
     width: 100vw;
   }
-  .vw-50{
+
+  .vw-50 {
     width: 100vw;
   }
-  .vw-40{
+
+  .vw-40 {
     width: 100vw;
   }
-  .vw-30{
+
+  .vw-30 {
     width: 100vw;
   }
 }
-
 </style>

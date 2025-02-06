@@ -1,9 +1,5 @@
 <template>
-  <q-dialog
-    position="top"
-    class="q-mt-lg"
-    @hide="hiddenDialog()"
-  >
+  <q-dialog position="top" class="q-mt-lg" @hide="hiddenDialog()">
     <q-card style="min-width:50vw;">
       <q-card-section class="row items-center q-pb-none">
         <div class="f-14 text-weight-bold">
@@ -13,32 +9,14 @@
           Dialog pencarian pasien
         </div> -->
         <q-space />
-        <q-btn
-          v-close-popup
-          icon="icon-mat-clear"
-          flat
-          round
-          dense
-        />
+        <q-btn v-close-popup icon="icon-mat-clear" flat round dense />
       </q-card-section>
       <q-separator />
       <q-card-section>
-        <q-select
-          v-model="dialog.search"
-          dense
-          outlined
-          label="Cari Pasien"
-          use-input
-          clearable
-          option-value="id"
-          option-label="nama"
-          :options="dialog.options"
-          behavior="menu"
-          hide-dropdown-icon
-          placeholder="Nik, Nama, Noka..."
-          @filter="dialog.filterOptions"
-          @update:model-value="(val)=>pilihPasienIni(val)"
-        >
+        <q-select v-model="dialog.search" dense outlined label="Cari Pasien" use-input clearable option-value="id"
+          option-label="nama" :options="dialog.options" behavior="menu" hide-dropdown-icon
+          placeholder="Nik, Nama, Noka..." @filter="dialog.filterOptions"
+          @update:model-value="(val) => pilihPasienIni(val)">
           <template #prepend>
             <q-icon name="icon-mat-search" />
           </template>
@@ -52,26 +30,22 @@
           <template #option="scope">
             <q-item v-bind="scope.itemProps">
               <q-item-section avatar>
-                <app-avatar-pasien
-                  :pasien="scope.opt"
-                  width="50px"
-                />
+                <app-avatar-pasien :pasien="scope.opt" width="50px" />
               </q-item-section>
               <q-item-section>
                 <q-item-label class="text-weight-bold">
                   {{ scope.opt.nama }} | <span class="text-primary"> {{ scope.opt.norm }}</span>
                 </q-item-label>
                 <q-item-label caption>
-                  🏡 {{ scope.opt.alamat?scope.opt.alamat:'-' }}
+                  🏡 {{ scope.opt.alamat ? scope.opt.alamat : '-' }}
                 </q-item-label>
-                <q-item-label
-                  caption
-                  class="text-weight-bold"
-                >
-                  💳 NIK :  <strong>{{ scope.opt.nik? scope.opt.nik:'-' }}</strong>
+                <q-item-label caption class="text-weight-bold">
+                  💳 NIK : <strong>{{ scope.opt.nik ? scope.opt.nik : '-' }}</strong>
                 </q-item-label>
                 <q-item-label caption>
-                  USIA : <strong>{{ scope.opt.usia? scope.opt.usia : '-' }} | {{ scope.opt.kelamin?scope.opt.kelamin:'-' }}</strong>
+                  USIA : <strong>{{ scope.opt.usia ? scope.opt.usia : '-' }} | {{ scope.opt.kelamin ? scope.opt.kelamin
+                    : '-'
+                    }}</strong>
                 </q-item-label>
               </q-item-section>
             </q-item>
@@ -346,6 +320,8 @@ function pilihPasienIni (val) {
     })
   }
   // metani kode2 dan alamat -- end --
+
+  store.cariRujukanKeluar(val)
   store.cariPasienDialog = false
 
   console.log('pasien terpilihxxxx', val)

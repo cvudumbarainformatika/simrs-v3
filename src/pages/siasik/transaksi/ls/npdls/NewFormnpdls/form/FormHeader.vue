@@ -44,12 +44,12 @@
           </div>
         </div>
         <app-input-simrs label="Keterangan Belanja" style="width: 50%" v-model="store.form.keterangan" outlined
-          :autofocus="false" :valid="{ required: true }" :disable="store.disabled" />
+          :autofocus="false" :valid="{ required: false }" :disable="store.disabled" />
 
         <template v-if="store.form.serahterimapekerjaan === '3'">
           <div class="row items-center" style="width: 50%;">
             <app-input-simrs label="Nomor Serahterima" class="q-gutter-y-md" style="width: 80%;"
-              v-model="store.form.noserahterima" disable outlined :autofocus="false" :valid="{ required: true }" />
+              v-model="store.form.noserahterima" disable outlined :autofocus="false" :valid="{ required: false }" />
 
             <div class="q-px-md">
               <q-btn color="dark" round size="sm" :loading="store.loading" icon="icon-mat-add"

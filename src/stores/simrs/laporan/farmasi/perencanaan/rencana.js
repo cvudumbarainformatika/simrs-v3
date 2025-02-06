@@ -34,6 +34,7 @@ export const useLaporanPerencanaanStore = defineStore('laporan_perencanaan', {
       { nama: 'Detail', value: 'detail' },
       { nama: 'Rekap', value: 'rekap' }
     ],
+    url: 'v1/simrs/laporan/farmasi/persediaan/get-perencanaan'
   }),
   actions: {
     setParams (key, val) {
@@ -71,6 +72,7 @@ export const useLaporanPerencanaanStore = defineStore('laporan_perencanaan', {
         item.rencana = []
         item.pesan = []
         item.terima = []
+        item.belumTerima = []
         // item?.hargapenerimaanrinci.sort(function (a, b) {
         //   const dateA = new Date(a.tanggal)
         //   const dateB = new Date(b.tanggal)
@@ -92,6 +94,25 @@ export const useLaporanPerencanaanStore = defineStore('laporan_perencanaan', {
         item?.pemesananrinci.forEach(rinci => {
           rinci.subtotal = rinci.harga * rinci.jumlah
           item.pesan.push(rinci)
+          // const penerimaanRinci = item?.penerimaanrinci?.filter(f => f.nopemesanan === rinci.nopemesanan)
+          // if (penerimaanRinci.length) {
+          //   const terima = penerimaanRinci.reduce((a, b) => a + b.jumlah, 0)
+          //   item.belumTerima.push({
+          //     tanggal: rinci?.tanggal,
+          //     harga: 0,
+          //     jumlah: rinci?.jumlah - terima,
+          //     subtotal: 0
+
+          //   })
+          // } else {
+          //   item.belumTerima.push({
+          //     tanggal: rinci?.tanggal,
+          //     harga: 0,
+          //     jumlah: 0,
+          //     subtotal: 0
+
+          //   })
+          // }
         })
 
         const max = Math.max(item.rencana?.length, item.pesan?.length, item.terima?.length)
@@ -99,17 +120,22 @@ export const useLaporanPerencanaanStore = defineStore('laporan_perencanaan', {
 
         if (item.rencana?.length < max && max > 0) {
           for (let index = item.rencana?.length; index < max; index++) {
-            item.rencana.push({ jumlah: 0, harga: 0, tanggal: null, subtotal: 0 })
+            item.rencana.push({ jumlah: 's', harga: 's', tanggal: null, subtotal: 's' })
           }
         }
         if (item.pesan?.length < max && max > 0) {
           for (let index = item.pesan?.length; index < max; index++) {
-            item.pesan.push({ jumlah: 0, harga: 0, tanggal: null, subtotal: 0 })
+            item.pesan.push({ jumlah: 's', harga: 's', tanggal: null, subtotal: 's' })
           }
         }
         if (item.terima?.length < max && max > 0) {
           for (let index = item.terima?.length; index < max; index++) {
-            item.terima.push({ jumlah: 0, harga: 0, tanggal: null, subtotal: 0 })
+            item.terima.push({ jumlah: 's', harga: 's', tanggal: null, subtotal: 's' })
+          }
+        }
+        if (item.belumTerima?.length < max && max > 0) {
+          for (let index = item.belumTerima?.length; index < max; index++) {
+            item.belumTerima.push({ jumlah: 's', harga: 's', tanggal: null, subtotal: 's' })
           }
         }
 
@@ -131,10 +157,16 @@ export const useLaporanPerencanaanStore = defineStore('laporan_perencanaan', {
           subtotal: item?.penerimaanrinci.reduce((a, b) => a + b.subtotal, 0),
         }
         item.terima.push(subTerima)
+        const subBelumTerima = {
+          tanggal: null,
+          jumlah: item?.pemesananrinci.reduce((a, b) => a + b.jumlah, 0) - item?.penerimaanrinci.reduce((a, b) => a + b.jumlah, 0),
+          subtotal: 0,
+        }
+        item.belumTerima.push(subBelumTerima)
 
 
         const maxAll = Math.max(item.rencana?.length, item.pesan?.length, item.terima?.length)
-        console.log('maxAll', maxAll, item?.kd_obat)
+        // console.log('maxAll', maxAll, item?.kd_obat)
 
         item.data = []
         for (let index = 0; index < maxAll; index++) {
@@ -142,6 +174,7 @@ export const useLaporanPerencanaanStore = defineStore('laporan_perencanaan', {
             terima: item.terima[index],
             rencana: item.rencana[index],
             pesan: item.pesan[index],
+            belumTerima: item.belumTerima[index],
           }
         }
 
@@ -188,7 +221,7 @@ export const useLaporanPerencanaanStore = defineStore('laporan_perencanaan', {
             let totalPages = 5
             do {
               param.params.page = currentPage // Tambahkan parameter halaman
-              const resp = await api.get('v1/simrs/laporan/farmasi/persediaan/get-mutasi', param)
+              const resp = await api.get(this.url, param)
               if (!resp?.data?.data?.length) {
                 if (currentPage === 1) {
                   this.ketProses = null
@@ -218,7 +251,7 @@ export const useLaporanPerencanaanStore = defineStore('laporan_perencanaan', {
         let totalPages = this.meta?.last_page ?? 5
         do {
           param.params.page = currentPage // Tambahkan parameter halaman
-          const resp = await api.get('v1/simrs/laporan/farmasi/persediaan/get-perencanaan', param)
+          const resp = await api.get(this.url, param)
           if (!resp?.data?.data?.length) {
             if (currentPage === 1) {
               this.ketProses = null
@@ -245,12 +278,14 @@ export const useLaporanPerencanaanStore = defineStore('laporan_perencanaan', {
           'Kode Obat': 'kd_obat',
           'Nama Obat': 'nama_obat',
           Satuan: 'satuan_k',
+          Belanja: 'uraian50',
           'Jumlah Perencanann': 'jumlRenc',
           'Nilai Perencanaan': 'nilaiRenc',
           'Jumlah Pemesanan': 'jumlPesan',
           'Nilai Pemesanan': 'nilaiPesan',
           'Jumlah Penerimaan': 'jumlTerima',
           'Nilai Penerimaan': 'nilaiTerima',
+          'Belum Diterima': 'belumTerima'
         }
       }
       else {
@@ -259,6 +294,7 @@ export const useLaporanPerencanaanStore = defineStore('laporan_perencanaan', {
           'Kode Obat': 'kd_obat',
           'Nama Obat': 'nama_obat',
           Satuan: 'satuan_k',
+          Belanja: 'uraian50',
           'Tanggal Perencanaan': 'tglRenc',
           'Jumlah Perencanaan': 'jumlRenc',
           'Harga Perencanaan': 'harRenc',
@@ -270,7 +306,8 @@ export const useLaporanPerencanaanStore = defineStore('laporan_perencanaan', {
           'Tanggal Penerimaan': 'tglTerima',
           'Jumlah Penerimaan': 'jumlTerima',
           'Harga Penerimaan': 'harTerima',
-          'Nilai Penerimaan': 'nilaiTerima'
+          'Nilai Penerimaan': 'nilaiTerima',
+          'Belum Diterima': 'belumTerima'
         }
       }
     },
@@ -301,7 +338,7 @@ export const useLaporanPerencanaanStore = defineStore('laporan_perencanaan', {
         let totalPages = this.meta?.last_page ?? 5
         do {
           param.params.page = currentPage // Tambahkan parameter halaman
-          const resp = await api.get('v1/simrs/laporan/farmasi/persediaan/get-perencanaan', param)
+          const resp = await api.get(this.url, param)
           if (!resp?.data?.data?.length) {
             if (currentPage === 1) {
               this.ketProses = null
@@ -337,6 +374,7 @@ export const useLaporanPerencanaanStore = defineStore('laporan_perencanaan', {
               tmpForTot.nilaiPesan = this.cekNan(parseFloat(dat?.pesan?.subtotal), 2)
               tmpForTot.jumlTerima = this.cekNan(parseFloat(dat?.terima?.jumlah), 2)
               tmpForTot.nilaiTerima = this.cekNan(parseFloat(dat?.terima?.subtotal), 2)
+              tmpForTot.belumTerima = this.cekNan(parseFloat(dat?.belumTerima?.jumlah), 2)
               // console.log('temfrot', tmpForTot)
             } else tmpForTot = null
             if (this.params.jenis === 'rekap') {
@@ -346,6 +384,7 @@ export const useLaporanPerencanaanStore = defineStore('laporan_perencanaan', {
                 ada.kd_obat = item?.kd_obat
                 ada.nama_obat = item?.nama_obat
                 ada.satuan_k = item?.satuan_k
+                ada.uraian50 = item?.uraian50
 
                 ada.jumlRenc = this.cekNan(formatDoubleKoma(parseFloat(dat?.rencana?.jumlah), 2))
                 ada.nilaiRenc = this.cekNan(formatDoubleKoma(parseFloat(dat?.rencana?.subtotal), 2))
@@ -353,6 +392,7 @@ export const useLaporanPerencanaanStore = defineStore('laporan_perencanaan', {
                 ada.nilaiPesan = this.cekNan(formatDoubleKoma(parseFloat(dat?.pesan?.subtotal), 2))
                 ada.jumlTerima = this.cekNan(formatDoubleKoma(parseFloat(dat?.terima?.jumlah), 2))
                 ada.nilaiTerima = this.cekNan(formatDoubleKoma(parseFloat(dat?.terima?.subtotal), 2))
+                ada.belumTerima = this.cekNan(formatDoubleKoma(parseFloat(dat?.belumTerima?.jumlah), 2))
                 // console.log('dat rekap', dat, ada)
               } else ada = null
             }
@@ -362,6 +402,7 @@ export const useLaporanPerencanaanStore = defineStore('laporan_perencanaan', {
                 ada.kd_obat = item?.kd_obat
                 ada.nama_obat = item?.nama_obat
                 ada.satuan_k = item?.satuan_k
+                ada.uraian50 = item?.uraian50
 
               }
               if (dat?.rencana?.tanggal === null && dat?.pesan?.tanggal === null && dat?.terima?.tanggal === null && d !== 0) ada.nama_obat = 'Subtotal'
@@ -377,6 +418,7 @@ export const useLaporanPerencanaanStore = defineStore('laporan_perencanaan', {
               ada.jumlTerima = this.cekNan(formatDoubleKoma(parseFloat(dat?.terima?.jumlah), 2))
               ada.harTerima = this.cekNan(formatDoubleKoma(parseFloat(dat?.terima?.harga), 2))
               ada.nilaiTerima = this.cekNan(formatDoubleKoma(parseFloat(dat?.terima?.subtotal), 2))
+              ada.belumTerima = this.cekNan(formatDoubleKoma(parseFloat(dat?.belumTerima?.jumlah), 2))
             }
             // console.log('d', ada)
             // const indexData = data.findIndex(f => f.kd_obat === ada?.kd_obat)
@@ -395,6 +437,7 @@ export const useLaporanPerencanaanStore = defineStore('laporan_perencanaan', {
           temp.kd_obat = item?.kd_obat
           temp.nama_obat = item?.nama_obat
           temp.satuan_k = item?.satuan_k
+          temp.uraian50 = item?.uraian50
 
           const indexAda = temp.findIndex(f => f.kd_obat === temp?.kd_obat)
           if (indexAda >= 0) data[indexAda] = temp
@@ -428,7 +471,7 @@ export const useLaporanPerencanaanStore = defineStore('laporan_perencanaan', {
     async getDataTable () {
       this.loading = true
       const param = { params: this.params }
-      await api.get('v1/simrs/laporan/farmasi/persediaan/get-perencanaan', param)
+      await api.get(this.url, param)
         .then(resp => {
           // console.log('rencana', resp?.data)
 

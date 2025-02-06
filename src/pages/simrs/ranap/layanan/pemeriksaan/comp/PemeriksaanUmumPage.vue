@@ -5,7 +5,8 @@
         <div class=" full-height" :class="full ? 'col-12' : 'col-8'">
           <q-card flat bordered class="column fit" style="overflow: hidden;">
             <div class="col-auto">
-              <BarComp title="Form Pemeriksaan Umum & Fisik" bg-color="bg-primary" text-color="text-white" @full="full = !full" />
+              <BarComp title="Form Pemeriksaan Umum & Fisik" bg-color="bg-primary" text-color="text-white"
+                @full="full = !full" />
             </div>
             <q-card-section class="col full-height scroll">
               <q-form ref="myForm" class="">
@@ -21,7 +22,8 @@
         <div v-if="!full" class="full-height" :class="full ? 'col-0' : 'col-4'">
           <q-card flat bordered class="fit column bg-transparent">
             <div class="col-auto">
-              <BarComp title="Informasi Pemeriksaan Umum & Fisik" bg-color="bg-dark" text-color="text-white" :btn-full="false" />
+              <BarComp title="Informasi Pemeriksaan Umum & Fisik" bg-color="bg-dark" text-color="text-white"
+                :btn-full="false" />
             </div>
             <div class="col full-height scroll">
               <ListPemeriksaanUmum :pasien="pasien" :kasus="kasus" />
@@ -67,6 +69,9 @@ const formRef = ref(null)
 //   console.log('submit')
 // }
 
+// console.log('props', props?.pasien);
+
+
 const validate = () => {
   // console.log(formRef.value?.refInputKu)
 
@@ -86,7 +91,7 @@ const validate = () => {
     }
   })
 }
-function scrollToElement (el) {
+function scrollToElement(el) {
   const target = getScrollTarget(el)
   // console.log('target', target)
 

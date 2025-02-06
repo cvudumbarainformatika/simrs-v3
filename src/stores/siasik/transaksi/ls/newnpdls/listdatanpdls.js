@@ -16,6 +16,7 @@ export const listDataNpdlsStore = defineStore('list_data_npdls', {
     params: {
       q: '',
       tahun: date.formatDate(Date.now(), 'YYYY'),
+      page: 1,
     },
     display: {
       sekarang: date.formatDate(Date.now(), 'DD MMMM YYYY')
@@ -28,6 +29,10 @@ export const listDataNpdlsStore = defineStore('list_data_npdls', {
     listrinci: []
   }),
   actions: {
+    goToPage(val) {
+      this.params.page = val
+      this.listdatanpd()
+    },
     listdatanpd() {
       this.loading = true
       const params = { params: this.params }
@@ -35,7 +40,7 @@ export const listDataNpdlsStore = defineStore('list_data_npdls', {
         api.get('/v1/transaksi/belanja_ls/listnpdls', params)
           .then((resp) => {
             if (resp.status === 200) {
-              // console.log('data NPD', resp)
+              console.log('data NPD', resp)
               this.loading = false
               this.listnpdls = resp.data
               this.rincianNpd()
@@ -80,7 +85,8 @@ export const listDataNpdlsStore = defineStore('list_data_npdls', {
             total: arr.npdlsrinci?.map((x) => parseFloat(x.nominalpembayaran)).reduce((a, b) => a + b, 0),
             rincian: arr.npdlsrinci,
             pajak: arr.pajak,
-            totalpajak: parseFloat(arr.pajak?.ppnpusat) + parseFloat(arr.pajak?.pph21) + parseFloat(arr.pajak?.pph22) + parseFloat(arr.pajak?.pph23) + parseFloat(arr.pajak?.pph25) + parseFloat(arr.pajak?.pajakdaerah) + parseFloat(arr.pajak?.pasal4),
+            newpajak: arr.newpajak,
+            totalpajak: (arr.newpajak.map((x) => parseFloat(x.nilai)).reduce((a, b) => a + b, 0)) + parseFloat(arr.pajak?.ppnpusat) + parseFloat(arr.pajak?.pph21) + parseFloat(arr.pajak?.pph22) + parseFloat(arr.pajak?.pph23) + parseFloat(arr.pajak?.pph25) + parseFloat(arr.pajak?.pajakdaerah) + parseFloat(arr.pajak?.pasal4),
             totalbayar: (arr.npdlsrinci?.map((x) => parseFloat(x.nominalpembayaran)).reduce((a, b) => a + b, 0)) - (parseFloat(arr.pajak?.ppnpusat) + parseFloat(arr.pajak?.pph21) + parseFloat(arr.pajak?.pph22) + parseFloat(arr.pajak?.pph23) + parseFloat(arr.pajak?.pph25) + parseFloat(arr.pajak?.pajakdaerah) + parseFloat(arr.pajak?.pasal4))
           }
 

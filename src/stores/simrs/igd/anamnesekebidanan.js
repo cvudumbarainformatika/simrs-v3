@@ -58,7 +58,7 @@ export const useAnamneseKebidananStore = defineStore('anamnese-kebidanan-store',
 
   }),
   actions: {
-    keteranganSkorGizi (nilai) {
+    keteranganSkorGizi(nilai) {
       const skor = nilai || 0
       if (skor < 2) {
         return 'tidak beresiko malnutrisi'
@@ -67,15 +67,15 @@ export const useAnamneseKebidananStore = defineStore('anamnese-kebidanan-store',
         return 'Beresiko malnutrisi'
       }
     },
-    setForm (key, val) {
+    setForm(key, val) {
       this.form[key] = val
     },
-    hitungNilaiSkor () {
+    hitungNilaiSkor() {
       const skorKondKhusus = this.form.skorkondisikhusus
       const skor = parseInt(this.form.skreeninggizi) + parseInt(this.form.asupanmakan) + parseInt(skorKondKhusus)
       this.form.skor = skor
     },
-    setKeteranganSkornyeri (val) {
+    setKeteranganSkornyeri(val) {
       if (val === 0) {
         this.form.keteranganscorenyeri = 'tidak ada nyeri'
       }
@@ -89,7 +89,7 @@ export const useAnamneseKebidananStore = defineStore('anamnese-kebidanan-store',
         this.form.keteranganscorenyeri = 'nyeri berat'
       }
     },
-    async saveData (pasien) {
+    async saveData(pasien) {
       this.loadingForm = true
       this.form.norm = pasien ? pasien.norm : ''
       this.form.noreg = pasien ? pasien.noreg : ''
@@ -120,11 +120,27 @@ export const useAnamneseKebidananStore = defineStore('anamnese-kebidanan-store',
         notifErr(error)
       }
     },
-    initGpa (val) {
+    initGpa(val) {
       this.form.gravida = val.gravida
       this.form.haid = val.haid
       this.form.partus = val.partus
       this.form.abortus = val.abortus
-    }
+    },
+    async deleteData(pasien, id) {
+      const payload = { id }
+      try {
+        const resp = await api.post('v1/simrs/igd/anamnesis/hapusanamnesiskebidanan', payload)
+        // console.log(resp)
+        if (resp.status === 200) {
+          const storePasien = usePengunjungIgdStore()
+          storePasien.hapusDataAnamnesiskebidanan(pasien, id)
+          notifSuccess(resp)
+        }
+      }
+      catch (error) {
+        notifErr(error)
+      }
+    },
+
   }
 })

@@ -22,7 +22,6 @@ const refResume = ref()
 const printObj = {
   id: 'resume',
   popTitle: 'Surat Kematian'
-
 }
 
 defineProps({

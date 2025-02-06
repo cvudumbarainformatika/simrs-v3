@@ -68,7 +68,7 @@ export default defineConfig((ctx) => {
       // polyfillModulePreload: true,
       // distDir
 
-      extendViteConf (viteConf) {
+      extendViteConf(viteConf) {
         viteConf.build.chunkSizeWarningLimit = 5000
         // viteConf.build.rollupOptions = {
         //   output: {
@@ -218,7 +218,7 @@ export default defineConfig((ctx) => {
       builder: {
         // https://www.electron.build/configuration/configuration
 
-        appId: 'simrs-v2'
+        appId: 'simrs-v3'
       }
     },
 

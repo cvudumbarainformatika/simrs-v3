@@ -8,6 +8,9 @@
         <th rowspan="2">
           Obat
         </th>
+        <th rowspan="2">
+          Belanja
+        </th>
         <th :colspan="store.params.jenis === 'detail' ? '4' : '2'">
           Perencanaan
         </th>
@@ -16,6 +19,9 @@
         </th>
         <th :colspan="store.params.jenis === 'detail' ? '4' : '2'">
           Penerimaan
+        </th>
+        <th rowspan="2">
+          Belum Dikirim
         </th>
       </tr>
       <tr>
@@ -93,17 +99,20 @@
           <td>
             <q-skeleton type="text" width="60px" height="25px" />
           </td>
+          <td>
+            <q-skeleton type="text" width="60px" height="25px" />
+          </td>
 
         </tr>
       </template>
       <template v-else-if="!store.items.length">
         <tr v-if="store.params.jenis === 'rekap'">
-          <td colspan="12">
+          <td colspan="13">
             <app-no-data />
           </td>
         </tr>
         <tr v-else>
-          <td colspan="17">
+          <td colspan="18">
             <app-no-data />
           </td>
         </tr>
@@ -129,6 +138,12 @@
                 </div>
               </div>
             </td>
+            <td :rowspan="rowspanObat(item)">
+              <div class="row">
+                {{ item?.uraian50 }}
+              </div>
+
+            </td>
             <template v-if="!item?.data?.length">
               <td v-if="store.params.jenis === 'detail'" />
               <td v-if="store.params.jenis === 'detail'" />
@@ -136,6 +151,7 @@
               <td v-if="store.params.jenis === 'detail'" />
               <td v-if="store.params.jenis === 'detail'" />
               <td v-if="store.params.jenis === 'detail'" />
+              <td />
               <td />
               <td />
               <td />
@@ -209,6 +225,12 @@
                   {{ cekNan(formatDouble(parseFloat(data?.terima?.subtotal), 2)) }}
                 </div>
               </td>
+              <!-- belum datang -->
+              <td>
+                <div class="text-right q-mr-xs" :class="data?.belumTerima?.tanggal === null ? 'text-weight-bold' : ''">
+                  {{ cekNan(formatDouble(parseFloat(data?.belumTerima?.jumlah), 2)) }}
+                </div>
+              </td>
             </tr>
           </template>
         </template>
@@ -239,6 +261,12 @@
               <q-skeleton type="text" width="60px" height="25px" />
             </td>
             <td v-if="store.params.jenis === 'detail'">
+              <q-skeleton type="text" width="60px" height="25px" />
+            </td>
+            <td>
+              <q-skeleton type="text" width="60px" height="25px" />
+            </td>
+            <td>
               <q-skeleton type="text" width="60px" height="25px" />
             </td>
             <td>

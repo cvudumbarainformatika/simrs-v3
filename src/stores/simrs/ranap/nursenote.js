@@ -1,6 +1,5 @@
 import { defineStore, acceptHMRUpdate } from 'pinia'
 import { api } from 'src/boot/axios'
-import { usePengunjungPoliStore } from 'src/stores/simrs/pelayanan/poli/pengunjung'
 import { notifSuccess } from 'src/modules/utils'
 import { usePengunjungRanapStore } from './pengunjung'
 import { useTindakanRanapStore } from 'src/stores/simrs/ranap/tindakan'
@@ -16,6 +15,7 @@ export const useNurseNoteRanapStore = defineStore('nursenote-ranap-store', {
       // implementasi
       dx: null,
       implementasi: null,
+      reseps: [],
 
       //ttv
       bb: 0,
@@ -67,6 +67,9 @@ export const useNurseNoteRanapStore = defineStore('nursenote-ranap-store', {
 
     },
     tindakans: [],
+    petugas: [],
+    isForm: false,
+    dialogPreview: false,
     loadingSave: false
   }),
   getters: {
@@ -74,7 +77,7 @@ export const useNurseNoteRanapStore = defineStore('nursenote-ranap-store', {
   },
   actions: {
     initForm() {
-      console.log('initForm');
+      // console.log('initForm');
 
       const tindakanStore = useTindakanRanapStore()
       this.tindakans = tindakanStore.listTindakan
@@ -87,8 +90,20 @@ export const useNurseNoteRanapStore = defineStore('nursenote-ranap-store', {
       this.form.tindakan = null
       this.form.ket = null
       this.form.dx = null
+      this.form.reseps = []
       this.form.implementasi = null
       this.form.mode = null
+
+
+
+    },
+
+    getNakes() {
+      const pengunjung = usePengunjungRanapStore()
+      const nakes = pengunjung?.nakes ?? []
+      const nonNakes = pengunjung?.nonNakes ?? []
+
+      this.petugas = [...nakes, ...nonNakes]
 
     },
 
@@ -107,6 +122,7 @@ export const useNurseNoteRanapStore = defineStore('nursenote-ranap-store', {
 
             this.loadingSave = false
             this.items.unshift(res?.data?.result)
+            this.initForm()
             notifSuccess('Simpan Data Berhasil')
             resolve(res)
           })
@@ -136,6 +152,24 @@ export const useNurseNoteRanapStore = defineStore('nursenote-ranap-store', {
 
       }
 
+    },
+
+    async deleteData(pasien, id) {
+      const payload = { id }
+      return new Promise((resolve, reject) => {
+        api.post('/v1/simrs/ranap/layanan/nursenote/hapus', payload)
+          .then((resp) => {
+            // const storeRanap = usePengunjungRanapStore()
+            // storeRanap.hapusDataInjectan(pasien, id, 'cppt')
+            let objekYangInginDihapus = this.items.find(obj => obj.id === id);
+            this.items = this.items.filter(item => item !== objekYangInginDihapus);
+            notifSuccess(resp)
+            resolve(resp)
+          })
+          .catch((err) => {
+            reject(err)
+          })
+      })
     }
 
   }

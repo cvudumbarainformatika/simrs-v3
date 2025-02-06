@@ -54,6 +54,10 @@
               <app-btn label="Ambil Data" :disable="store.loading || !!store?.ketProses" :loading="store.loading"
                 @click="store.getAllData()" />
             </div>
+            <!-- <div class="col-2">
+              <app-btn label="sehalaman" :disable="store.loading || !!store?.ketProses" :loading="store.loading"
+                @click="store.getDataTable()" />
+            </div> -->
           </div>
         </div>
 

@@ -2,7 +2,7 @@
   <div class="row items-center q-mt-md justify-between no-wrap"
     :class="parseFloat(det.jml_all_penerimaan) > 0 ? (parseFloat(det.jml_all_penerimaan) < parseFloat(det.jumlahdpesan) ? 'bg-green-2' : 'bg-green') : ''">
     <div class="anu q-mr-sm">
-      {{ 'flag ' + det?.flag }}
+      <!-- {{ 'flag ' + det?.flag }} -->
       <div v-if="det?.masterobat?.nama_obat" class="row justify-between no-wrap items-center q-mb-xs">
         <div class="q-mr-sm">
           Nama

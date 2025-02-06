@@ -30,7 +30,7 @@ export const useKonsulRanapStore = defineStore('konsul-ranap-store', {
   // },
   actions: {
 
-    async saveData (pasien) {
+    async saveData(pasien) {
       if (!pasien?.kodedokter) {
         return notifErrVue('kode Dokter masih kosong, silahkan tutup dulu pasien ini kemudian tekan tombol refresh di pojok kanan atas')
       }
@@ -44,7 +44,7 @@ export const useKonsulRanapStore = defineStore('konsul-ranap-store', {
       this.form.kdgroup_ruangan = pasien?.kdgroup_ruangan
       this.form.kelas_ruangan = pasien?.kelas_ruangan
 
-      console.log('form', this.form)
+      // console.log('form', this.form)
 
       const storeRanap = usePengunjungRanapStore()
       storeRanap.injectDataPasien(pasien?.noreg, this.form, 'konsultasi')
@@ -67,7 +67,7 @@ export const useKonsulRanapStore = defineStore('konsul-ranap-store', {
       }
     },
 
-    async hapusPermintaan (pasien, id) {
+    async hapusPermintaan(pasien, id) {
       this.loadingHapus = true
 
       if (!id) {
@@ -93,7 +93,7 @@ export const useKonsulRanapStore = defineStore('konsul-ranap-store', {
       }
     },
 
-    initReset () {
+    initReset() {
       this.form = {
         dokterkonsul: null,
         kduntuk: '1',

@@ -11,42 +11,9 @@
     </div>
     <div class="q-card q-mt-sm">
       <q-card class="q-pa-xs">
-        <div class="row justify-center q-pt-md">
+        <div class="q-px-sm q-py-sm full-width">
           <div class="row">
-            <div class="col-1">
-              <q-img src="~assets/images/logo_kota_original.png" spinner-color="white"
-                style="height: 3.3cm; width: 2.6cm" />
-            </div>
-            <div class="col-10">
-              <div class="row justify-center text-h6">
-                PEMERINTAH KOTA PROBOLINGGO
-              </div>
-              <div class="row justify-center text-h7 text-weight-bold">
-                DINAS KESEHATAN, PENGENDALIAN PENDUDUK, DAN KELUARGA BERENCANA
-              </div>
-              <div class="row justify-center text-h5 text-weight-bold">
-                UOBK RSUD DOKTER MOHAMAD SALEH
-              </div>
-              <div class="row justify-center text-h8">
-                Jl. Mayjen Panjaitan No.65 Telp.(0335) 433119, 42118 Fax (0335)
-                432702
-              </div>
-              <div class="row justify-center text-h8 text-weight-bold">
-                PROBOLINGGO 67219
-              </div>
-            </div>
-            <div class="col-1">
-              <q-img src="~assets/logos/logo-rsud.png" spinner-color="white" style="height: 3cm; width: 3cm" />
-            </div>
-
-            <div class="col-12 q-pt-md">
-              <div class="row justify-center text-weight-bold">
-                Buku Kas Umum Pejabat Pengelola Keuangan
-              </div>
-              <div class="row justify-center text-weight-bold">
-                Periode Bulan {{ bulan(store.params.bulan) }} {{ store.params.tahun }}
-              </div>
-            </div>
+            <kopPage />
           </div>
         </div>
 
@@ -76,7 +43,7 @@
           </div>
 
           <div class="contaier q-pt-lg q-pl-xl">
-            <q-card class="saldo bg-grey-3 q-py-xs q-px-xs" style="width: 400px; height: 220px">
+            <q-card class="saldo bg-grey-3 q-py-xs q-px-xs" style="width: 400px">
               <div class="row justify-center q-pt-sm q-py-xs q-px-xs" style="font-size: 14px">
                 <table class="text-weight-bolder">
                   <tbody style="width: 400px">
@@ -142,6 +109,7 @@ import { useLaporanBkuPpkStore } from 'src/stores/siasik/laporan/bku/bkuppk'
 import { defineAsyncComponent, onMounted } from 'vue'
 import formgetData from './inpage/FormBkuppk.vue'
 import ListdataBku from './inpage/ListDatabkuppk.vue'
+import kopPage from './inpage/KopPage.vue'
 // import VueHtml2pdf from 'vue-html2pdf'
 const PrintPdf = defineAsyncComponent(() => import('./inpage/PrintPdf.vue'))
 const store = useLaporanBkuPpkStore()
@@ -206,7 +174,61 @@ function totalsaldo() {
 </script>
 
 <style>
-tbody tr {
-  height: 48px;
+table {
+  border-collapse: collapse;
+  border-radius: 6px;
+  max-width: 1500px;
+  width: 100%;
+}
+
+td,
+th {
+  border-left: 5px #ffed86;
+  border-collapse: collapse;
+  border: 1px solid rgb(163, 163, 163);
+  text-align: center;
+}
+
+thead tr {
+  border-collapse: collapse;
+  background: #ffed86;
+}
+
+.tdbreak {
+  word-break: break-all;
+}
+
+.grs_bawah {
+  border-bottom: 1px solid grey;
+}
+
+.ttd-kanan {
+  position: relative;
+  top: 50px;
+  left: 60%;
+  text-align: center;
+  justify-content: center;
+  width: 25%;
+  height: 100px;
+}
+
+.ttd-kiri {
+  position: relative;
+  left: -10%;
+  top: 50px;
+  text-align: center;
+  justify-content: center;
+  width: 25%;
+  height: 100px;
+}
+
+.kosong {
+  position: relative;
+  padding-top: 100px;
+  text-align: center;
+  justify-content: center;
+  width: 25%;
+  height: 270px;
+  font-size: 1.5em;
 }
 </style>

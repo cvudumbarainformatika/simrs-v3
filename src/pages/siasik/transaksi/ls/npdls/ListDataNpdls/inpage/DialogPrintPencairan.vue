@@ -238,20 +238,17 @@
                     </thead>
                     <tbody class="align-middle q-pl-sm">
                       <tr v-for="item, n in store.npddatasave.rincian" :key="item">
-                        <td class="text-right">
+                        <td class="text-center">
                           <div>
                             {{ n + 1 }}.
                           </div>
                         </td>
-                        <td>
+                        <td class="text-left">
                           <div>
-                            {{ item.koderek50 }}
-                          </div>
-                          <div>
-                            {{ item.rincianbelanja }}
+                            {{ item.koderek50 }} - {{ item.rincianbelanja }}
                           </div>
                         </td>
-                        <td>
+                        <td class="text-left">
                           <div>
                             {{ item.itembelanja }}
                           </div>
@@ -299,137 +296,151 @@
                         </th>
                       </tr>
                     </thead>
-                    <tbody class="align-middle q-pl-sm">
+                    <tbody v-if="store.npddatasave.pajak" class=" align-middle q-pl-sm">
                       <tr>
-                        <td class="text-right">
+                        <td class="text-center">
                           <div>
                             1.
                           </div>
                         </td>
-                        <td>
+                        <td class="text-left">
                           <div>
                             PPN Pusat
                           </div>
                         </td>
                         <td class="text-right">
-                          <template v-if="store.npddatasave.pajak != null">
-                            <div>
-                              {{ formattanpaRp(store.npddatasave.pajak.ppnpusat) }}
-                            </div>
-                          </template>
-                          <template v-else>
-                            <div>{{ formattanpaRp(0) }} </div>
-                          </template>
+                          <!-- <div v-if="store.npddatasave.pajak != null">
+                            {{ formattanpaRp(store.npddatasave.pajak.ppnpusat) }}
+                          </div>
+                          <div
+                            v-else-if="store.npddatasave.newpajak.length !== 0 || store.npddatasave.newpajak.length > 0">
+                            {{ formattanpaRp(isNaN(mapPajakBaru().ppn?.nilai) ? 0 : mapPajakBaru().ppn?.nilai) }}
+                          </div> -->
+                          <div v-if="store.npddatasave.pajak != null || store.npddatasave.newpajak.length > 0">
+                            {{ formattanpaRp(mapPajakBaru().sumppn) }}
+                          </div>
+                          <div v-else>{{ formattanpaRp(0) }} </div>
                         </td>
                       </tr>
                       <tr>
-                        <td class="text-right">
+                        <td class="text-center">
                           <div>
                             2.
                           </div>
                         </td>
-                        <td>
+                        <td class="text-left">
                           <div>
                             PPh 21
                           </div>
                         </td>
                         <td class="text-right">
-                          <template v-if="store.npddatasave.pajak != null">
-                            <div>
-                              {{ formattanpaRp(store.npddatasave.pajak.pph21) }}
-                            </div>
-                          </template>
-                          <template v-else>
-                            <div>{{ formattanpaRp(0) }} </div>
-                          </template>
+                          <!-- <div v-if="store.npddatasave.pajak != null">
+                            {{ formattanpaRp(store.npddatasave.pajak.pph21) }}
+                          </div>
+                          <div v-if="store.npddatasave.newpajak.length > 0">
+                            {{ formattanpaRp(isNaN(mapPajakBaru().pph21?.nilai) ? 0 : mapPajakBaru().pph21?.nilai) }}
+                          </div> -->
+                          <div v-if="store.npddatasave.pajak != null || store.npddatasave.newpajak.length > 0">
+                            {{ formattanpaRp(mapPajakBaru().sumpph21) }}
+                          </div>
+                          <div v-else>{{ formattanpaRp(0) }} </div>
                         </td>
                       </tr>
                       <tr>
-                        <td class="text-right">
+                        <td class="text-center">
                           <div>
                             3.
                           </div>
                         </td>
-                        <td>
+                        <td class="text-left">
                           <div>
                             PPh 22
                           </div>
                         </td>
                         <td class="text-right">
-                          <template v-if="store.npddatasave.pajak != null">
-                            <div>
-                              {{ formattanpaRp(store.npddatasave.pajak.pph22) }}
-                            </div>
-                          </template>
-                          <template v-else>
-                            <div>{{ formattanpaRp(0) }} </div>
-                          </template>
+                          <!-- <div v-if="store.npddatasave.pajak != null">
+                            {{ formattanpaRp(store.npddatasave.pajak.pph22) }}
+                          </div>
+                          <div v-if="store.npddatasave.newpajak.length > 0">
+                            {{ formattanpaRp(isNaN(mapPajakBaru().pph22?.nilai) ? 0 : mapPajakBaru().pph22?.nilai) }}
+                          </div> -->
+                          <div v-if="store.npddatasave.pajak != null || store.npddatasave.newpajak.length > 0">
+                            {{ formattanpaRp(mapPajakBaru().sumpph22) }}
+                          </div>
+                          <div v-else>{{ formattanpaRp(0) }} </div>
                         </td>
                       </tr>
                       <tr>
-                        <td class="text-right">
+                        <td class="text-center">
                           <div>
                             4.
                           </div>
                         </td>
-                        <td>
+                        <td class="text-left">
                           <div>
                             PPh 23
                           </div>
                         </td>
                         <td class="text-right">
-                          <template v-if="store.npddatasave.pajak != null">
-                            <div>
-                              {{ formattanpaRp(store.npddatasave.pajak.pph23) }}
-                            </div>
-                          </template>
-                          <template v-else>
-                            <div>{{ formattanpaRp(0) }} </div>
-                          </template>
+                          <!-- <div v-if="store.npddatasave.pajak != null">
+                            {{ formattanpaRp(store.npddatasave.pajak.pph23) }}
+                          </div>
+                          <div v-if="store.npddatasave.newpajak.length > 0">
+                            {{ formattanpaRp(isNaN(mapPajakBaru().pph23?.nilai) ? 0 : mapPajakBaru().pph23?.nilai) }}
+                          </div> -->
+                          <div v-if="store.npddatasave.pajak != null || store.npddatasave.newpajak.length > 0">
+                            {{ formattanpaRp(mapPajakBaru().sumpph23) }}
+                          </div>
+                          <div v-else>{{ formattanpaRp(0) }} </div>
                         </td>
                       </tr>
                       <tr>
-                        <td class="text-right">
+                        <td class="text-center">
                           <div>
                             5.
                           </div>
                         </td>
-                        <td>
+                        <td class="text-left">
                           <div>
                             PPh 25
                           </div>
                         </td>
                         <td class="text-right">
-                          <template v-if="store.npddatasave.pajak != null">
-                            <div>
-                              {{ formattanpaRp(store.npddatasave.pajak.pph25) }}
-                            </div>
-                          </template>
-                          <template v-else>
-                            <div>{{ formattanpaRp(0) }} </div>
-                          </template>
+                          <!-- <div v-if="store.npddatasave.pajak != null">
+                            {{ formattanpaRp(store.npddatasave.pajak.pph25) }}
+                          </div>
+                          <div v-if="store.npddatasave.newpajak.length > 0">
+                            {{ formattanpaRp(isNaN(mapPajakBaru().pph25?.nilai) ? 0 : mapPajakBaru().pph25?.nilai) }}
+                          </div> -->
+                          <div v-if="store.npddatasave.pajak != null || store.npddatasave.newpajak.length > 0">
+                            {{ formattanpaRp(mapPajakBaru().sumpph25) }}
+                          </div>
+                          <div v-else>{{ formattanpaRp(0) }} </div>
                         </td>
                       </tr>
                       <tr>
-                        <td class="text-right">
+                        <td class="text-center">
                           <div>
                             6.
                           </div>
                         </td>
-                        <td>
+                        <td class="text-left">
                           <div>
                             Pajak Daerah (PPh Final)
                           </div>
                         </td>
                         <td class="text-right">
-                          <template v-if="store.npddatasave.pajak != null">
-                            <div>
-                              {{ formattanpaRp(store.npddatasave.pajak.pajakdaerah) }}
-                            </div>
-                          </template>
-                          <template v-else>
-                            <div>{{ formattanpaRp(0) }} </div>
-                          </template>
+                          <!-- <div v-if="store.npddatasave.pajak != null">
+                            {{ formattanpaRp(store.npddatasave.pajak.pajakdaerah) }}
+                          </div>
+                          <div v-if="store.npddatasave.newpajak.length > 0">
+                            {{ formattanpaRp(isNaN(mapPajakBaru().pajakdaerah?.nilai) ? 0 :
+                              mapPajakBaru().pajakdaerah?.nilai) }}
+                          </div> -->
+                          <div v-if="store.npddatasave.pajak != null || store.npddatasave.newpajak.length > 0">
+                            {{ formattanpaRp(mapPajakBaru().sumpajakdaerah) }}
+                          </div>
+                          <div v-else>{{ formattanpaRp(0) }} </div>
                         </td>
                       </tr>
                       <tr>
@@ -453,7 +464,7 @@
                         </td>
                       </tr>
                       <tr>
-                        <td colspan="2">
+                        <td colspan="2" class="text-left">
                           <div>Jumlah yang Diminta</div>
                         </td>
                         <td class="text-right justify-between">
@@ -468,7 +479,7 @@
                         </td>
                       </tr>
                       <tr>
-                        <td colspan="2">
+                        <td colspan="2" class="text-left">
                           <div>Jumlah Potongan</div>
                         </td>
                         <td class="text-right justify-between">
@@ -501,10 +512,10 @@
                         <td class="text-right justify-between">
                           <div class="row">
                             <template v-if="store.npddatasave.pajak != null">
-                              <div class="col-auto">
+                              <div class="col-auto text-weight-bold">
                                 Rp.
                               </div>
-                              <div class="col">
+                              <div class="col text-weight-bold">
                                 {{ formattanpaRp(store.npddatasave.totalbayar) }}
                               </div>
                             </template>
@@ -516,6 +527,18 @@
                                 {{ formattanpaRp(store.npddatasave.total) }}
                               </div>
                             </template>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                    <tbody>
+                      <tr v-for="(item, n) in store.npddatasave.newpajak" :key="n">
+                        <td>{{ n + 1 }}</td>
+                        <td>{{ item.uraian }}</td>
+                        <td class="text-right justify-between">
+                          <div class="row">
+                            <span class="col-auto">Rp.</span>
+                            <span class="col">{{ formattanpaRp(item.nilai) }}</span>
                           </div>
                         </td>
                       </tr>
@@ -615,6 +638,40 @@ const printObj = {
     console.log('closePrint')
   }
 }
+
+function mapPajakBaru() {
+  const ppnlama = parseFloat(store.npddatasave?.pajak?.ppnpusat)
+  const ppn = store.npddatasave?.newpajak?.find(x => x.koderekening === '2.1.01.06.01.0001')
+  const ppnbaru = parseFloat(isNaN(ppn?.nilai) ? 0 : ppn?.nilai)
+  const sumppn = ppnlama + ppnbaru
+
+  const pajakdaerahlama = parseFloat(store.npddatasave?.pajak?.pajakdaerah)
+  const pajakdaerah = store.npddatasave?.newpajak?.find(x => x.koderekening === '2.1.01.06.02.0001')
+  const pajakdaerahbaru = parseFloat(isNaN(pajakdaerah?.nilai) ? 0 : pajakdaerah?.nilai)
+  const sumpajakdaerah = pajakdaerahlama + pajakdaerahbaru
+
+  const pph21lama = parseFloat(store.npddatasave?.pajak?.pph21)
+  const arr21 = store.npddatasave?.newpajak?.find(x => x.koderekening === '2.1.01.05.01.0001')
+  const pph21 = parseFloat(isNaN(arr21?.nilai) ? 0 : arr21?.nilai)
+  const sumpph21 = pph21lama + pph21
+
+  const pph22lama = parseFloat(store.npddatasave?.pajak?.pph22)
+  const arr22 = store.npddatasave?.newpajak?.find(x => x.koderekening === '2.1.01.05.02.0001')
+  const pph22 = parseFloat(isNaN(arr22?.nilai) ? 0 : arr22?.nilai)
+  const sumpph22 = pph22lama + pph22
+
+  const pph23lama = parseFloat(store.npddatasave?.pajak?.pph23)
+  const arr23 = store.npddatasave?.newpajak?.find(x => x.koderekening === '2.1.01.05.03.0001')
+  const pph23 = parseFloat(isNaN(arr23?.nilai) ? 0 : arr23?.nilai)
+  const sumpph23 = pph23lama + pph23
+
+  const pph25lama = parseFloat(store.npddatasave?.pajak?.pph25)
+  const arr25 = store.npddatasave?.newpajak?.find(x => x.koderekening === '2.1.01.05.04.0001')
+  const pph25 = parseFloat(isNaN(arr25?.nilai) ? 0 : arr25?.nilai)
+  const sumpph25 = pph25lama + pph25
+
+  return { sumppn, sumpajakdaerah, sumpph21, sumpph22, sumpph23, sumpph25 }
+}
 </script>
 <style>
 .b {
@@ -643,6 +700,10 @@ const printObj = {
   border-right-style: solid;
   border-left-style: solid;
   border-width: 2px;
+}
+
+table {
+  border-color: black;
 }
 
 table,
