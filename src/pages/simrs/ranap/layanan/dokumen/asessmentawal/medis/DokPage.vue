@@ -57,7 +57,7 @@
     <!-- Anamnesis -->
 
     <div class="section">
-      <div class="section-title">Anamnesis</div>
+      <div class="section-title">Anamnesis : </div>
       <div class="data">
         <div class="data-item">1. Keluhan Utama / Chief Complaint : {{ anamnesisAwal?.keluhanUtama || '-' }}</div>
         <div class="data-item">2. Riwayat Penyakit Sekarang / Present Disease History : {{
@@ -85,8 +85,8 @@
     </div>
 
     <div class="section">
-      <div class="section-title">Pemeriksaan Umum</div>
-      <div class="data">
+      <div class="section-title">Pemeriksaan Umum : </div>
+      <!-- <div class="data">
         <div class="data-item">Kesadaran: ............................................</div>
         <div class="data-item">Tekanan Darah: ............................................ mmHg</div>
         <div class="data-item">Nadi: ............................................ x/menit</div>
@@ -94,7 +94,51 @@
         <div class="data-item">Pernapasan: ............................................ x/menit</div>
         <div class="data-item">Keadaan Umum: Baik / Sedang / Buruk</div>
         <div class="data-item">Keadaan Gizi: Baik / Sedang / Buruk</div>
-      </div>
+      </div> -->
+      <table border="0" style="border: none !important; margin-left: 10px; margin-top: -5px;">
+        <tbody>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td style="border: none !important; padding: 0px !important; width:15%;"> - Kesadaran</td>
+            <td style="border: none !important; padding: 0px !important; width: 35%;"> : {{
+              pemeriksaanUmum?.tkKesadaranKet || ' - ' }}</td>
+            <td style="border: none !important; padding: 0px !important; width: 15%;"> - Keadaan Umum </td>
+            <td style="border: none !important; padding: 0px !important;">: {{ pemeriksaanUmum?.keadaanUmum || ' - ' }}
+            </td>
+          </tr>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td style="border: none !important; padding: 0px !important;"> - Tekanan Darah</td>
+            <td style="border: none !important; padding: 0px !important;">: {{
+              pemeriksaanUmum?.sistole || ' -' }} / {{ pemeriksaanUmum?.diastole || ' -' }} mmHg</td>
+            <td style="border: none !important; padding: 0px !important;"> - Keadaan Gizi</td>
+            <td style="border: none !important; padding: 0px !important;">:
+              {{ anamnesisAwal?.skreeninggizi?.dewasa?.keterangan || ' - ' }}
+            </td>
+          </tr>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td style="border: none !important; padding: 0px !important;"> - Nadi</td>
+            <td style="border: none !important; padding: 0px !important;">: {{ pemeriksaanUmum?.nadi || ' - ' }} x/menit
+            </td>
+            <td style="border: none !important; padding: 0px !important;"></td>
+            <td style="border: none !important; padding: 0px !important;"></td>
+          </tr>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td style="border: none !important; padding: 0px !important;"> - Suhu </td>
+            <td style="border: none !important; padding: 0px !important;">: {{ pemeriksaanUmum?.suhu || ' - ' }} &deg;C
+            </td>
+            <td style="border: none !important; padding: 0px !important;"></td>
+            <td style="border: none !important; padding: 0px !important;"></td>
+          </tr>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td style="border: none !important; padding: 0px !important;"> - Pernapasan</td>
+            <td style="border: none !important; padding: 0px !important;">: {{ pemeriksaanUmum?.pernapasan || ' - ' }}
+              x/menit</td>
+            <td style="border: none !important; padding: 0px !important;"></td>
+            <td style="border: none !important; padding: 0px !important;"></td>
+          </tr>
+
+
+        </tbody>
+      </table>
     </div>
 
     <table>
@@ -108,66 +152,188 @@
       <tbody>
         <tr>
           <td>Kepala (Head)</td>
-          <td>............................................</td>
-          <td>............................................</td>
+          <td>{{ pemeriksaanUmum?.rs5?.toUpperCase() === 'TAK' ? 'TAK' : '' }}</td>
+          <td> {{ pemeriksaanUmum?.rs5?.toUpperCase() !== 'TAK' ? pemeriksaanUmum?.rs5 : '' }} </td>
         </tr>
-        <tr>
+        <!-- <tr>
           <td>Mata (Eyes)</td>
           <td>............................................</td>
           <td>............................................</td>
-        </tr>
-        <tr>
+        </tr> -->
+        <!-- <tr>
           <td>THT (ENT)</td>
           <td>............................................</td>
           <td>............................................</td>
-        </tr>
-        <tr>
+        </tr> -->
+        <!-- <tr>
           <td>Mulut (Mouth)</td>
           <td>............................................</td>
           <td>............................................</td>
-        </tr>
+        </tr> -->
         <tr>
           <td>Leher (Neck)</td>
-          <td>............................................</td>
-          <td>............................................</td>
+          <td>{{ pemeriksaanUmum?.rs6?.toUpperCase() === 'TAK' ? 'TAK' : '' }}</td>
+          <td> {{ pemeriksaanUmum?.rs6?.toUpperCase() !== 'TAK' ? pemeriksaanUmum?.rs6 : '' }} </td>
         </tr>
-        <tr>
+        <!-- <tr>
           <td>Jantung (Heart)</td>
           <td>............................................</td>
           <td>............................................</td>
-        </tr>
+        </tr> -->
         <tr>
           <td>Dada & Payudara (Chest & Breast)</td>
-          <td>............................................</td>
-          <td>............................................</td>
+          <td>{{ pemeriksaanUmum?.rs7?.toUpperCase() === 'TAK' ? 'TAK' : '' }}</td>
+          <td> {{ pemeriksaanUmum?.rs7?.toUpperCase() !== 'TAK' ? pemeriksaanUmum?.rs7 : '' }} </td>
+        </tr>
+        <tr>
+          <td>Punggung (Back)</td>
+          <td>{{ pemeriksaanUmum?.rs8?.toUpperCase() === 'TAK' ? 'TAK' : '' }}</td>
+          <td> {{ pemeriksaanUmum?.rs8?.toUpperCase() !== 'TAK' ? pemeriksaanUmum?.rs8 : '' }} </td>
         </tr>
         <tr>
           <td>Perut (Abdomen)</td>
-          <td>............................................</td>
-          <td>............................................</td>
+          <td>{{ pemeriksaanUmum?.rs9?.toUpperCase() === 'TAK' ? 'TAK' : '' }}</td>
+          <td> {{ pemeriksaanUmum?.rs9?.toUpperCase() !== 'TAK' ? pemeriksaanUmum?.rs9 : '' }} </td>
         </tr>
         <tr>
           <td>Urogenital</td>
-          <td>............................................</td>
-          <td>............................................</td>
+          <td>{{ pemeriksaanUmum?.rs13?.toUpperCase() === 'TAK' ? 'TAK' : '' }}</td>
+          <td> {{ pemeriksaanUmum?.rs13?.toUpperCase() !== 'TAK' ? pemeriksaanUmum?.rs13 : '' }} </td>
         </tr>
-        <tr>
+        <!-- <tr>
           <td>Anggota Gerak (Extremities)</td>
           <td>............................................</td>
           <td>............................................</td>
+        </tr> -->
+        <tr>
+          <td>Tangan (Hand)</td>
+          <td>{{ pemeriksaanUmum?.rs10?.toUpperCase() === 'TAK' ? 'TAK' : '' }}</td>
+          <td> {{ pemeriksaanUmum?.rs10?.toUpperCase() !== 'TAK' ? pemeriksaanUmum?.rs10 : '' }} </td>
+        </tr>
+        <tr>
+          <td>Kaki (Foot)</td>
+          <td>{{ pemeriksaanUmum?.rs11?.toUpperCase() === 'TAK' ? 'TAK' : '' }}</td>
+          <td> {{ pemeriksaanUmum?.rs11?.toUpperCase() !== 'TAK' ? pemeriksaanUmum?.rs11 : '' }} </td>
         </tr>
         <tr>
           <td>Status Neurologis (Neurological Status)</td>
-          <td>............................................</td>
-          <td>............................................</td>
+          <td>{{ pemeriksaanUmum?.rs12?.toUpperCase() === 'TAK' ? 'TAK' : '' }}</td>
+          <td> {{ pemeriksaanUmum?.rs12?.toUpperCase() !== 'TAK' ? pemeriksaanUmum?.rs12 : '' }} </td>
         </tr>
-        <tr>
+        <!-- <tr>
           <td>Muskuloskeletal</td>
           <td>............................................</td>
           <td>............................................</td>
-        </tr>
+        </tr> -->
       </tbody>
     </table>
+
+
+
+    <div class="section">
+      <table border="0" style="border: none !important; margin-left: 10px; margin-top: -5px;">
+        <tbody>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td style="border: none !important; padding: 0px !important; width: 35%">
+              <div class="text-weight-bold">PEMERIKSAAN PENUNJANG PRE-RAWAT INAP</div>
+              <div class="text-italic">PRE-INPATIENT SUPPORTING CHECKUP</div>
+            </td>
+            <td valign="top" style="border: none !important; padding: 0px !important;"> : ....................</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Asesmen</div>
+      <table style="margin-top: -5px;">
+        <thead>
+          <tr>
+            <th width="50%" class="text-center">MASALAH MEDIS</th>
+            <th width="50%">MASALAH KEPERAWATAN</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td width="50%">......</td>
+            <td width="50%">......</td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+
+
+    <div class="section">
+      <table border="0" style="border: none !important; margin-left: 10px; margin-top: -5px;">
+        <tbody>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td style="border: none !important; padding: 0px !important; width: 17%">
+              <div class="text-weight-bold">DIAGNOSIS KERJA</div>
+              <div class="text-italic">WORKING DIAGNOSIS</div>
+            </td>
+            <td valign="top" style="border: none !important; padding: 0px !important;"> : ....................</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section">
+      <table border="0" style="border: none !important; margin-left: 10px; margin-top: -5px;">
+        <tbody>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td style="border: none !important; padding: 0px !important; width: 17%">
+              <div class="text-weight-bold">PENGOBATAN</div>
+              <div class="text-italic">THERAPY</div>
+            </td>
+            <td valign="top" style="border: none !important; padding: 0px !important;"> : ....................</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section">
+      <table border="0" style="border: none !important; margin-left: 10px; margin-top: -5px;">
+        <tbody>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td style="border: none !important; padding: 0px !important; width: 17%">
+              <div class="text-weight-bold">RENCANA</div>
+              <div class="text-italic">PLANNING</div>
+            </td>
+            <td valign="top" style="border: none !important; padding: 0px !important;"> : ....................</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section">
+      <table border="0" style="border: none !important; margin-left: 10px; margin-top: -5px;">
+        <tbody>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td style="border: none !important; padding: 0px !important; width: 17%">
+              <div class="text-weight-bold">CATATAN KIE</div>
+              <div class="text-italic">EDUCATION NOTE</div>
+            </td>
+            <td valign="top" style="border: none !important; padding: 0px !important;"> : ....................</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section">
+      <table border="0" style="border: none !important; margin-left: 10px; margin-top: -5px;">
+        <tbody>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td style="border: none !important; padding: 0px !important; width: 17%">
+              <div class="text-weight-bold">TANGGAL / DATE</div>
+              <div class="text-italic">JAM / TIME</div>
+            </td>
+            <td valign="top" style="border: none !important; padding: 0px !important;"> : ....................</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
   </div>
 
 
@@ -263,6 +429,8 @@ td {
 th {
   background-color: #f2f2f2;
 }
+
+
 
 
 .print-page {
