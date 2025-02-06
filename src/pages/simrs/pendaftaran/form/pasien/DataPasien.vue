@@ -13,7 +13,7 @@
     </div>
     <q-card class="full-width" flat style="margin-top: 60px;">
       <q-card-section
-        v-if="store.resRujukan?.bpjsresponse || store.resRujukan?.rs4 === 'Rujukan Internal' || store.loadingCariRujukan">
+        v-if="store.resRujukan?.bpjsresponse || store.resRujukan?.rs4 === 'Rujukan Internal' || store.resRujukan?.rs4 === 'Konsultasi Internal' || store.loadingCariRujukan">
         <!-- <q-card-section> -->
         <div v-if="store.loadingCariRujukan" class="f-14 text-weight-bold row items-center q-col-gutter-md">
           <div class="col-auto">
@@ -26,9 +26,9 @@
             <q-spinner-grid color="orange" size="2em" />
           </div>
         </div>
-        <div v-if="store.resRujukan?.rs4 === 'Rujukan Internal'">
+        <div v-if="store.resRujukan?.rs4 === 'Rujukan Internal' || store.resRujukan?.rs4 === 'Konsultasi Internal'">
           <div class="f-14 text-weight-bold row text-negative q-col-gutter-sm">
-            <div class="col-auto">Pasien Mendapat Rujukan Internal dari</div>
+            <div class="col-auto">Pasien Mendapat {{ store.resRujukan?.rs4 }} dari</div>
             <div class="col-auto">
               {{ store.resRujukan?.rekomdpjp?.poli?.rs2 }}
             </div>
