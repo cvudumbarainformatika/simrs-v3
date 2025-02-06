@@ -12,20 +12,41 @@
       </div>
     </div>
     <q-card class="full-width" flat style="margin-top: 60px;">
-      <q-card-section v-if="!!store.resRujukan || store.loadingCariRujukan">
+      <q-card-section
+        v-if="store.resRujukan?.bpjsresponse || store.resRujukan?.rs4 === 'Rujukan Internal' || store.loadingCariRujukan">
         <!-- <q-card-section> -->
         <div v-if="store.loadingCariRujukan" class="f-14 text-weight-bold row items-center q-col-gutter-md">
           <div class="col-auto">
             <q-spinner-grid color="orange" size="2em" />
           </div>
           <div class="col-auto">
-            Sedang Mencari data Rujukan Keluar RS
+            Sedang Mencari data Rujukan Pasien
           </div>
           <div class="col-auto">
             <q-spinner-grid color="orange" size="2em" />
           </div>
         </div>
-        <div v-if="!!store.resRujukan">
+        <div v-if="store.resRujukan?.rs4 === 'Rujukan Internal'">
+          <div class="f-14 text-weight-bold row text-negative q-col-gutter-sm">
+            <div class="col-auto">Pasien Mendapat Rujukan Internal dari</div>
+            <div class="col-auto">
+              {{ store.resRujukan?.rekomdpjp?.poli?.rs2 }}
+            </div>
+            <div class="col-auto">Menuju</div>
+            <div class="col-auto">
+              {{ store.resRujukan?.masterpoli?.rs2 }}
+            </div>
+            <div class="col-auto">Pada tanggal</div>
+            <div class="col-auto">
+              {{ dateFullFormat(store.resRujukan?.rekomdpjp?.tglInsert) }}
+            </div>
+            <div class="col-auto">dengan tanggal rencana kontrol</div>
+            <div class="col-auto">
+              {{ dateFullFormat(store.resRujukan?.rekomdpjp?.tglKontrol) }}
+            </div>
+          </div>
+        </div>
+        <div v-if="store.resRujukan?.bpjsresponse">
           <div class="f-14 text-weight-bold row text-negative q-col-gutter-sm">
             <div class="col-auto">Pasien Sudah Dirujuk ke</div>
             <div class="col-auto">
