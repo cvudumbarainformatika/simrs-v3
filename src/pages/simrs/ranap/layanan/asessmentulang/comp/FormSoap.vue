@@ -34,6 +34,9 @@ const emits = defineEmits(['exit'])
 
 const myForm = ref(null)
 
+// console.log('formsoap');
+
+
 const SET = reactive({
   radius: '5px',
   headerClass: 'bg-grey-6 text-white',
@@ -167,7 +170,7 @@ watch(() => storeDiagnosaKebidanan.selectIntervensis, (val) => {
 })
 
 watch(() => props.pasien?.diagnosamedis, (val) => {
-  console.log('watch diagnosamedis', val)
+  // console.log('watch diagnosamedis', val)
   if (val) {
     store.initDiagnosaMedisToText(val)
   }
@@ -188,13 +191,11 @@ watch(() => props.pasien?.diagnosamedis, (val) => {
             <div v-else class="f-20">
               Assessment
             </div>
-            <q-btn
-              v-if="nakes !== '4' && nakes !== '5' && nakes !== '6'"
-              bordered outline round icon="icon-mat-edit" size="sm" color="primary" @click="()=> {
+            <q-btn v-if="nakes !== '4' && nakes !== '5' && nakes !== '6'" bordered outline round icon="icon-mat-edit"
+              size="sm" color="primary" @click="() => {
                 settings.formOpen = 'anamnesis'
                 settings.isChildForm = true
-              }"
-            />
+              }" />
           </q-card-section>
 
           <q-separator inset />
@@ -206,40 +207,14 @@ watch(() => props.pasien?.diagnosamedis, (val) => {
               </div>
               <div class="q-mt-sm">
                 <!-- <q-input v-model="storeAnamnesis.form.keluhanUtama" type="textarea" class="full-width" /> -->
-                <q-input
-                  v-if="!settings?.ppaTambahan?.includes(nakes)"
-                  ref="refInputKeluhanUtama"
-                  v-model="storeAnamnesis.form.keluhanUtama"
-                  outlined
-                  type="textarea"
-                  stack-label
-                  standout="bg-yellow-3"
-                  :rules="[val => !!val || 'Harap Diisi terlebih dahulu']"
-                  :lazy-rules="true"
-                  rows="10"
-                  hide-bottom-space
-                />
-                <q-input
-                  v-else
-                  ref="refSsambung"
-                  v-model="store.form.s_sambung"
-                  outlined
-                  type="textarea"
-                  stack-label
-                  standout="bg-yellow-3"
-                  :lazy-rules="true"
-                  rows="10"
-                  hide-bottom-space
-                />
+                <q-input v-if="!settings?.ppaTambahan?.includes(nakes)" ref="refInputKeluhanUtama"
+                  v-model="storeAnamnesis.form.keluhanUtama" outlined type="textarea" stack-label standout="bg-yellow-3"
+                  :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" :lazy-rules="true" rows="10"
+                  hide-bottom-space />
+                <q-input v-else ref="refSsambung" v-model="store.form.s_sambung" outlined type="textarea" stack-label
+                  standout="bg-yellow-3" :lazy-rules="true" rows="10" hide-bottom-space />
               </div>
             </div>
-            <!-- <div class="column q-mb-sm">
-              <div><b>Nyeri :</b></div>
-              <ItemNyeri :item="storeAnamnesis?.form?.keluhannyeri" v-if="kasus?.gruping === '4.1'" />
-              <ItemNyeri :item="storeAnamnesis?.formKebidanan?.keluhannyeri" v-if="kasus?.gruping === '4.2'" />
-              <ItemNyeri :item="storeAnamnesis?.formNeoNatal?.keluhannyeri" v-if="kasus?.gruping === '4.3'" />
-              <ItemNyeri :item="storeAnamnesis?.formPediatrik?.keluhannyeri" v-if="kasus?.gruping === '4.4'" />
-            </div> -->
           </q-card-section>
         </q-card>
       </div>
@@ -254,13 +229,11 @@ watch(() => props.pasien?.diagnosamedis, (val) => {
             <div v-else class="f-20">
               Diagnosa
             </div>
-            <q-btn
-              v-if="nakes !== '4' && nakes !== '5' && nakes !== '6'"
-              bordered outline round icon="icon-mat-edit" size="sm" color="primary" @click="()=> {
+            <q-btn v-if="nakes !== '4' && nakes !== '5' && nakes !== '6'" bordered outline round icon="icon-mat-edit"
+              size="sm" color="primary" @click="() => {
                 settings.formOpen = 'pemeriksaan'
                 settings.isChildForm = true
-              }"
-            />
+              }" />
           </q-card-section>
 
           <q-separator inset />
@@ -290,19 +263,23 @@ watch(() => props.pasien?.diagnosamedis, (val) => {
                 <div v-if="storePenilaian?.humptys?.grupings?.includes(jnsKasusKep) && (storePenilaian.usia < 18)">
                   <div class="column">
                     <b>Skor Humpty Dumpty : </b>
-                    <div> - {{ storePenilaian?.formHumpty?.skorHumpty?.label }} ({{ storePenilaian?.formHumpty?.skorHumpty?.skor }})</div>
+                    <div> - {{ storePenilaian?.formHumpty?.skorHumpty?.label }} ({{
+                      storePenilaian?.formHumpty?.skorHumpty?.skor }})</div>
                   </div>
                 </div>
-                <div v-if="storePenilaian?.morses?.grupings?.includes(jnsKasusKep) && (storePenilaian.usia >= 18 && storePenilaian.usia < 60)">
+                <div
+                  v-if="storePenilaian?.morses?.grupings?.includes(jnsKasusKep) && (storePenilaian.usia >= 18 && storePenilaian.usia < 60)">
                   <div class="column">
                     <b>Skor Morse Fall : </b>
-                    <div> - {{ storePenilaian?.formMorse?.skorMorse?.label }} ({{ storePenilaian?.formMorse?.skorMorse?.skor }})</div>
+                    <div> - {{ storePenilaian?.formMorse?.skorMorse?.label }} ({{
+                      storePenilaian?.formMorse?.skorMorse?.skor }})</div>
                   </div>
                 </div>
                 <div v-if="storePenilaian?.ontarios?.grupings?.includes(jnsKasusKep) && (storePenilaian.usia >= 60)">
                   <div class="column">
                     <b>Skor Ontario : </b>
-                    <div> - {{ storePenilaian?.formOntario?.skorOntario?.label }} ({{ storePenilaian?.formOntario?.skorOntario?.skor }})</div>
+                    <div> - {{ storePenilaian?.formOntario?.skorOntario?.label }} ({{
+                      storePenilaian?.formOntario?.skorOntario?.skor }})</div>
                   </div>
                 </div>
               </div>
@@ -317,30 +294,12 @@ watch(() => props.pasien?.diagnosamedis, (val) => {
               </div>
 
               <!-- free text tambahan objective-->
-              <q-input
-                ref="refInputOsambung"
-                v-model="store.form.o_sambung"
-                outlined
-                type="textarea"
-                stack-label
-                standout="bg-yellow-3"
-                :lazy-rules="true"
-                rows="5"
-                hide-bottom-space
-              />
+              <q-input ref="refInputOsambung" v-model="store.form.o_sambung" outlined type="textarea" stack-label
+                standout="bg-yellow-3" :lazy-rules="true" rows="5" hide-bottom-space />
             </div>
             <div v-if="nakes === '5' || nakes === '6' || nakes === '4'">
-              <q-input
-                ref="refInputOsambung"
-                v-model="store.form.o_sambung"
-                outlined
-                type="textarea"
-                stack-label
-                standout="bg-yellow-3"
-                :lazy-rules="true"
-                rows="8"
-                hide-bottom-space
-              />
+              <q-input ref="refInputOsambung" v-model="store.form.o_sambung" outlined type="textarea" stack-label
+                standout="bg-yellow-3" :lazy-rules="true" rows="8" hide-bottom-space />
             </div>
           </q-card-section>
         </q-card>
@@ -358,10 +317,8 @@ watch(() => props.pasien?.diagnosamedis, (val) => {
                 Intervensi
               </div>
               <div class="">
-                <q-btn
-                  v-if="nakes !== '4' && nakes !== '5' && nakes !== '6'"
-
-                  bordered outline round icon="icon-mat-edit" size="sm" color="primary" @click="()=> {
+                <q-btn v-if="nakes !== '4' && nakes !== '5' && nakes !== '6'" bordered outline round
+                  icon="icon-mat-edit" size="sm" color="primary" @click="() => {
                     if (nakes === '2') {
                       settings.formOpen = 'asessment'
                       storeDiagnosaKeperawatan.modalOpen = true
@@ -377,8 +334,7 @@ watch(() => props.pasien?.diagnosamedis, (val) => {
                     }
                     // console.log('settings.formOpen', settings.formOpen, nakes);
 
-                  }"
-                />
+                  }" />
               </div>
             </div>
           </q-card-section>
@@ -387,18 +343,9 @@ watch(() => props.pasien?.diagnosamedis, (val) => {
 
           <q-card-section class="col full-height scroll">
             <!-- {{ storeDiagnosaKeperawatan.selectDiagnosa }} -->
-            <q-input
-              ref="refInputAsessment"
-              v-model="store.form.asessment"
-              outlined
-              stack-label
-              type="textarea"
-              standout="bg-yellow-3"
-              :rules="[val => !!val || 'Harap Diisi terlebih dahulu']"
-              :lazy-rules="true"
-              rows="10"
-              hide-bottom-space
-            />
+            <q-input ref="refInputAsessment" v-model="store.form.asessment" outlined stack-label type="textarea"
+              standout="bg-yellow-3" :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" :lazy-rules="true"
+              rows="10" hide-bottom-space />
           </q-card-section>
         </q-card>
       </div>
@@ -415,9 +362,8 @@ watch(() => props.pasien?.diagnosamedis, (val) => {
                 Monitoring
               </div>
               <div class="">
-                <q-btn
-                  v-if="nakes !== '4' && nakes !== '5' && nakes !== '6' && nakes !== '1'"
-                  bordered outline round icon="icon-mat-edit" size="sm" color="primary" @click="()=> {
+                <q-btn v-if="nakes !== '4' && nakes !== '5' && nakes !== '6' && nakes !== '1'" bordered outline round
+                  icon="icon-mat-edit" size="sm" color="primary" @click="() => {
                     // settings.formOpen = nakes==='2'?'diagnosaKeperawatan': (nakes==='3'?'diagnosaKebidanan':'diagnosaMedik')
                     settings.isChildForm = true
                     if (nakes === '2') {
@@ -427,8 +373,7 @@ watch(() => props.pasien?.diagnosamedis, (val) => {
                       settings.formOpen = 'diagnosaKebidanan'
                       settings.categoryIntervensi = 'plann'
                     }
-                  }"
-                />
+                  }" />
               </div>
             </div>
           </q-card-section>
@@ -436,18 +381,9 @@ watch(() => props.pasien?.diagnosamedis, (val) => {
           <q-separator inset />
 
           <q-card-section class="col full-height scroll">
-            <q-input
-              ref="refInputPlann"
-              v-model="store.form.plann"
-              outlined
-              type="textarea"
-              rows="10"
-              stack-label
-              standout="bg-yellow-3"
-              :rules="[val => !!val || 'Harap Diisi terlebih dahulu']"
-              :lazy-rules="true"
-              hide-bottom-space
-            />
+            <q-input ref="refInputPlann" v-model="store.form.plann" outlined type="textarea" rows="10" stack-label
+              standout="bg-yellow-3" :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" :lazy-rules="true"
+              hide-bottom-space />
           </q-card-section>
         </q-card>
       </div>
@@ -464,9 +400,8 @@ watch(() => props.pasien?.diagnosamedis, (val) => {
                 Evaluasi
               </div>
               <div class="">
-                <q-btn
-                  v-if="nakes !== '4' && nakes !== '5' && nakes !== '6' && nakes !== '1'"
-                  bordered outline round icon="icon-mat-edit" size="sm" color="primary" @click="()=> {
+                <q-btn v-if="nakes !== '4' && nakes !== '5' && nakes !== '6' && nakes !== '1'" bordered outline round
+                  icon="icon-mat-edit" size="sm" color="primary" @click="() => {
                     // settings.formOpen = nakes==='2'?'diagnosaKeperawatan': (nakes==='3'?'diagnosaKebidanan':'diagnosaMedik')
                     settings.isChildForm = true
                     if (nakes === '2') {
@@ -476,8 +411,7 @@ watch(() => props.pasien?.diagnosamedis, (val) => {
                       settings.formOpen = 'diagnosaKebidanan'
                       settings.categoryIntervensi = null
                     }
-                  }"
-                />
+                  }" />
               </div>
             </div>
           </q-card-section>
@@ -485,18 +419,9 @@ watch(() => props.pasien?.diagnosamedis, (val) => {
           <q-separator inset />
 
           <q-card-section>
-            <q-input
-              ref="refInputInstruksi"
-              v-model="store.form.instruksi"
-              outlined
-              type="textarea"
-              rows="10"
-              stack-label
-              standout="bg-yellow-3"
-              :rules="[val => !!val || 'Harap Diisi terlebih dahulu']"
-              :lazy-rules="true"
-              hide-bottom-space
-            />
+            <q-input ref="refInputInstruksi" v-model="store.form.instruksi" outlined type="textarea" rows="10"
+              stack-label standout="bg-yellow-3" :rules="[val => !!val || 'Harap Diisi terlebih dahulu']"
+              :lazy-rules="true" hide-bottom-space />
           </q-card-section>
         </q-card>
       </div>
@@ -515,17 +440,12 @@ watch(() => props.pasien?.diagnosamedis, (val) => {
       <!-- <div class="col-12"> -->
       <q-card flat bordered class="q-pa-sm">
         <q-card-actions class="q-py-md row justify-between">
-          <q-btn
-            rounded
-            outline
-            color="orange"
-            icon="icon-mat-arrow_back"
-            v-close-popup
-          >
+          <q-btn rounded outline color="orange" icon="icon-mat-arrow_back" v-close-popup>
             <span class="text-orange-9 q-ml-sm">Kembali </span>
           </q-btn>
 
-          <q-btn :loading="store.loadingSave" :disabled="store.loadingSave" size="md" outline rounded color="primary" @click="validate">
+          <q-btn :loading="store.loadingSave" :disabled="store.loadingSave" size="md" outline rounded color="primary"
+            @click="validate">
             <div class="q-px-lg">
               Simpan Catatan Pasien
             </div>
@@ -536,28 +456,18 @@ watch(() => props.pasien?.diagnosamedis, (val) => {
     </div>
 
     <!-- dialog form -->
-    <DialogFormItem
-      v-model="settings.isChildForm" :pasien="props.pasien" :kasus="props.kasus" :nakes="props.nakes" :settings="settings"
-      @on-click="()=> {
+    <DialogFormItem v-model="settings.isChildForm" :pasien="props.pasien" :kasus="props.kasus" :nakes="props.nakes"
+      :settings="settings" @on-click="() => {
         // console.log('ok');
         settings.isChildForm = false
-      }"
-    />
+      }" />
 
     <!-- dialog diagnosa keperawatan -->
-    <modal-diagnosa-keperawatan
-      :key="props?.pasien"
-      v-model="storeDiagnosaKeperawatan.modalOpen"
-      :masters="storeDiagnosaKeperawatan.diagnosas"
-      @ok="storeDiagnosaKeperawatan.modalOpen=false"
-    />
+    <modal-diagnosa-keperawatan :key="props?.pasien" v-model="storeDiagnosaKeperawatan.modalOpen"
+      :masters="storeDiagnosaKeperawatan.diagnosas" @ok="storeDiagnosaKeperawatan.modalOpen = false" />
 
     <!-- modal diagnosa -->
-    <modal-diagnosa-kebidanan
-      :key="props?.pasien"
-      v-model="storeDiagnosaKebidanan.modalOpen"
-      :masters="storeDiagnosaKebidanan.diagnosas"
-      @ok="storeDiagnosaKebidanan.modalOpen=false"
-    />
+    <modal-diagnosa-kebidanan :key="props?.pasien" v-model="storeDiagnosaKebidanan.modalOpen"
+      :masters="storeDiagnosaKebidanan.diagnosas" @ok="storeDiagnosaKebidanan.modalOpen = false" />
   </q-form>
 </template>

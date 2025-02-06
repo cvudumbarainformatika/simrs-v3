@@ -1,30 +1,15 @@
 <template>
   <div class="fit column absolute">
     <div class="col full-height ">
-      <q-card
-        flat
-        bordered
-        square
-        class="full-height "
-        style="overflow: hidden;"
-      >
-        <q-form
-          ref="refForm"
-          @submit="onSubmit"
-          class="column full-height"
-        >
+      <q-card flat bordered square class="full-height " style="overflow: hidden;">
+        <q-form ref="refForm" @submit="onSubmit" class="column full-height">
           <q-card-section class="q-px-md q-py-xs bg-primary text-white col-auto full-width">
             <div class="row items-center justify-between">
               <div class="f-12 text-weight-bold">
                 Form Plann
               </div>
               <div>
-                <q-btn
-                  flat
-                  dense
-                  size="md"
-                  icon="icon-mat-history"
-                >
+                <q-btn flat dense size="md" icon="icon-mat-history">
                   <q-tooltip class="bg-dark text-white">
                     {{ tooltip }}
                   </q-tooltip>
@@ -36,58 +21,31 @@
             <div class="row q-col-gutter-sm">
               <div class="col-12">
                 <span class="text-bold">Plann</span>
-                <q-option-group
-                  v-model="store.form.panel"
-                  inline
-                  @update:model-value="kosongkanpanel"
-                  :options="[
-                    { label: 'Rawat Inap', value: 'Rawat Inap' },
-                    { label: 'Rujuk Ke Rumah Sakit Lain', value: 'Rujuk Ke Rumah Sakit Lain' },
-                    { label: 'Pulang', value: 'Pulang' }
-                  ]"
-                />
+                <q-option-group v-model="store.form.panel" inline @update:model-value="kosongkanpanel" :options="[
+                  { label: 'Rawat Inap', value: 'Rawat Inap' },
+                  { label: 'Rujuk Ke Rumah Sakit Lain', value: 'Rujuk Ke Rumah Sakit Lain' },
+                  { label: 'Pulang', value: 'Pulang' }
+                ]" />
               </div>
               <div class="col-12">
                 <q-tab-panels v-model="store.form.panel" animated class="shadow-2 rounded-borders">
                   <q-tab-panel name="Rawat Inap">
                     <div class="row q-col-gutter-sm">
                       <div class="col-6">
-                        <q-select
-                          v-model="store.form.operasi"
-                          label="Operasi"
-                          :options="optionoperasi"
-                          dense
-                          outlined
-                          standout="bg-yellow-3"
-                          transition-show="flip-up"
-                          transition-hide="flip-down"
+                        <q-select v-model="store.form.operasi" label="Operasi" :options="optionoperasi" dense outlined
+                          standout="bg-yellow-3" transition-show="flip-up" transition-hide="flip-down"
                           @update:model-value="resetklutidak"
-                          :rules="[val => !!val || 'Harap Diisi terlebih dahulu']"
-                        />
+                          :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" />
                       </div>
                       <div class="col-6" v-if="store.form.operasi === 'Ya'">
-                        <q-select
-                          v-model="store.form.jenisoperasi"
-                          label="Jenis Operasi"
-                          :options="optionjenisoperasi"
-                          dense
-                          standout="bg-yellow-3"
-                          outlined
-                          transition-show="flip-up"
-                          transition-hide="flip-down"
-                          :rules="[val => !!val || 'Harap Diisi terlebih dahulu']"
-                        />
+                        <q-select v-model="store.form.jenisoperasi" label="Jenis Operasi" :options="optionjenisoperasi"
+                          dense standout="bg-yellow-3" outlined transition-show="flip-up" transition-hide="flip-down"
+                          :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" />
                       </div>
                       <div class="col-6" v-if="store.form.operasi === 'Ya'">
-                        <app-input-date
-                          :model="store.form.tgloperasi"
-                          mask="date"
-                          outlined
-                          standout="bg-yellow-3"
-                          label="Tanggal Operasi"
-                          @set-model="val=>store.form.tgloperasi=val"
-                          :rules="[val => !!val || 'Harap Diisi terlebih dahulu']"
-                        >
+                        <app-input-date :model="store.form.tgloperasi" mask="date" outlined standout="bg-yellow-3"
+                          label="Tanggal Operasi" @set-model="val => store.form.tgloperasi = val"
+                          :rules="[val => !!val || 'Harap Diisi terlebih dahulu']">
                           <template #append>
                             <q-icon name="event" class="cursor-pointer">
                               <q-popup-proxy cover transition-show="scale" transition-hide="scale">
@@ -102,68 +60,32 @@
                         </app-input-date>
                       </div>
                       <div class="col-6">
-                        <q-select
-                          v-model="store.form.ruangtujuan"
-                          label="Ruang Tujuan"
-                          :options="props.ruangranap"
-                          map-options
-                          option-label="rs2"
-                          option-value="rs1"
-                          dense
-                          standout="bg-yellow-3"
-                          outlined
-                          emit-value
-                          transition-show="flip-up"
-                          transition-hide="flip-down"
+                        <q-select v-model="store.form.ruangtujuan" label="Ruang Tujuan" :options="props.ruangranap"
+                          map-options option-label="rs2" option-value="rs1" dense standout="bg-yellow-3" outlined
+                          emit-value transition-show="flip-up" transition-hide="flip-down"
                           :rules="[val => !!val || 'Harap Diisi terlebih dahulu']"
-                        />
+                          @update:model-value="(val) => cekindikasi(val)" />
                       </div>
                       <div class="col-12">
-                        <q-input
-                          v-model="store.form.keterangan"
-                          outlined
-                          standout="bg-yellow-3"
-                          label="Keterangan"
-                          :rules="[val => !!val || 'Harap Diisi terlebih dahulu']"
-                        />
+                        <q-input v-model="store.form.keterangan" outlined standout="bg-yellow-3" label="Keterangan"
+                          :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" />
                       </div>
                     </div>
                   </q-tab-panel>
                   <q-tab-panel name="Rujuk Ke Rumah Sakit Lain">
                     <div class="row q-col-gutter-sm">
                       <div class="col-6">
-                        <q-select
-                          v-model="store.form.atasdasar"
-                          label="Atas Dasar"
-                          :options="atasdasar"
-                          dense
-                          outlined
-                          standout="bg-yellow-3"
-                          transition-show="flip-up"
-                          transition-hide="flip-down"
-                        />
+                        <q-select v-model="store.form.atasdasar" label="Atas Dasar" :options="atasdasar" dense outlined
+                          standout="bg-yellow-3" transition-show="flip-up" transition-hide="flip-down" />
                       </div>
                       <div class="col-6">
-                        <q-select
-                          v-model="store.form.jenispelayanan"
-                          label="Jenis Pelayanan"
-                          :options="optionjenispelayanan"
-                          dense
-                          standout="bg-yellow-3"
-                          outlined
-                          transition-show="flip-up"
-                          transition-hide="flip-down"
-                        />
+                        <q-select v-model="store.form.jenispelayanan" label="Jenis Pelayanan"
+                          :options="optionjenispelayanan" dense standout="bg-yellow-3" outlined
+                          transition-show="flip-up" transition-hide="flip-down" />
                       </div>
                       <div class="col-6">
-                        <app-input-date
-                          :model="store.form.tglrujukan"
-                          mask="date"
-                          outlined
-                          standout="bg-yellow-3"
-                          label="Tanggal Rujukan"
-                          @set-model="val=>store.form.tglrujukan=val"
-                        >
+                        <app-input-date :model="store.form.tglrujukan" mask="date" outlined standout="bg-yellow-3"
+                          label="Tanggal Rujukan" @set-model="val => store.form.tglrujukan = val">
                           <template #append>
                             <q-icon name="event" class="cursor-pointer">
                               <q-popup-proxy cover transition-show="scale" transition-hide="scale">
@@ -178,14 +100,9 @@
                         </app-input-date>
                       </div>
                       <div class="col-6">
-                        <app-input-date
-                          :model="store.form.tglrencanakunjungan"
-                          mask="date"
-                          outlined
-                          standout="bg-yellow-3"
-                          label="Tanggal Rencana Kunjungan"
-                          @set-model="val=>store.form.tglrencanakunjungan=val"
-                        >
+                        <app-input-date :model="store.form.tglrencanakunjungan" mask="date" outlined
+                          standout="bg-yellow-3" label="Tanggal Rencana Kunjungan"
+                          @set-model="val => store.form.tglrencanakunjungan = val">
                           <template #append>
                             <q-icon name="event" class="cursor-pointer">
                               <q-popup-proxy cover transition-show="scale" transition-hide="scale">
@@ -200,86 +117,40 @@
                         </app-input-date>
                       </div>
                       <div class="col-2">
-                        <q-select
-                          v-model="store.form.typefaskes"
-                          label="Type Faskes"
-                          :options="optiontypefaskes"
-                          dense
-                          standout="bg-yellow-3"
-                          outlined
-                          emit-value
-                          transition-show="flip-up"
-                          transition-hide="flip-down"
-                        />
+                        <q-select v-model="store.form.typefaskes" label="Type Faskes" :options="optiontypefaskes" dense
+                          standout="bg-yellow-3" outlined emit-value transition-show="flip-up"
+                          transition-hide="flip-down" />
                       </div>
                       <div class="col-10">
-                        <q-select
-                          v-model="store.form.dirujukkers"
-                          label="di rujuk Ke"
-                          dense
-                          outlined
-                          standout="bg-yellow-3"
-                          use-input
-                          input-debounce="800"
-                          map-options
-                          :options="optionsFaskes2"
-                          option-value="kode"
-                          option-label="nama"
-                          hide-bottom-space
-                          clearable
-                          @filter="onFilterTest"
-                          @update:model-value="(val) => carinama(val)"
-                        />
+                        <q-select v-model="store.form.dirujukkers" label="di rujuk Ke" dense outlined
+                          standout="bg-yellow-3" use-input input-debounce="800" map-options :options="optionsFaskes2"
+                          option-value="kode" option-label="nama" hide-bottom-space clearable @filter="onFilterTest"
+                          @update:model-value="(val) => carinama(val)" />
                       </div>
                       <div class="-4">
-                        <q-select
-                          v-model="store.form.polirujukan"
-                          label="Poli Rujukan"
-                          dense
-                          outlined
-                          standout="bg-yellow-3"
-                          use-input
-                          input-debounce="800"
-                          :options="optionsPoli"
-                          option-value="kode"
-                          option-label="nama"
-                          map-options
-                          hide-bottom-space
-                          @filter="filterPoli"
-                          @update:model-value="(val) => caripoli(val)"
-                        />
+                        <q-select v-model="store.form.polirujukan" label="Poli Rujukan" dense outlined
+                          standout="bg-yellow-3" use-input input-debounce="800" :options="optionsPoli"
+                          option-value="kode" option-label="nama" map-options hide-bottom-space @filter="filterPoli"
+                          @update:model-value="(val) => caripoli(val)" />
                       </div>
                       <div class="col-8">
-                        <q-input v-model="store.form.keteranganrujuk" dense outlined standout="bg-yellow-3" label="Keterangan" />
+                        <q-input v-model="store.form.keteranganrujuk" dense outlined standout="bg-yellow-3"
+                          label="Keterangan" />
                       </div>
                     </div>
                   </q-tab-panel>
                   <q-tab-panel name="Pulang">
                     <div class="row q-col-gutter-sm">
                       <div class="col-6">
-                        <q-select
-                          v-model="store.form.atasdasarpulang"
-                          label="Atas Dasar"
-                          :options="optionpulangs"
-                          dense
-                          outlined
-                          standout="bg-yellow-3"
-                          transition-show="flip-up"
-                          transition-hide="flip-down"
+                        <q-select v-model="store.form.atasdasarpulang" label="Atas Dasar" :options="optionpulangs" dense
+                          outlined standout="bg-yellow-3" transition-show="flip-up" transition-hide="flip-down"
                           :rules="[val => !!val || 'Harap Diisi terlebih dahulu']"
-                          @update:model-value="(val) => cekpulang(val)"
-                        />
+                          @update:model-value="(val) => cekpulang(val)" />
                       </div>
                       <div class="col-3" v-if="store.form.atasdasarpulang === 'Meninggal'">
-                        <app-input-date
-                          :model="store.form.tglmeninggal"
-                          mask="date"
-                          outlined
-                          standout="bg-yellow-3"
-                          label="Tanggal Meninggal"
-                          @set-model="val=>store.form.tglmeninggal=val"
-                          :rules="[val => !!val || 'Harap Diisi terlebih dahulu']"
-                        >
+                        <app-input-date :model="store.form.tglmeninggal" mask="date" outlined standout="bg-yellow-3"
+                          label="Tanggal Meninggal" @set-model="val => store.form.tglmeninggal = val"
+                          :rules="[val => !!val || 'Harap Diisi terlebih dahulu']">
                           <template #append>
                             <q-icon name="event" class="cursor-pointer">
                               <q-popup-proxy cover transition-show="scale" transition-hide="scale">
@@ -294,14 +165,9 @@
                         </app-input-date>
                       </div>
                       <div class="col-3" v-if="store.form.atasdasarpulang === 'Meninggal'">
-                        <app-input-date
-                          :model="store.form.jammeninggal"
-                          :type-date="false"
-                          outlined
-                          standout="bg-yellow-3"
-                          label="Jam Meninggal"
-                          @set-model="val=>store.form.jammeninggal=val"
-                        >
+                        <app-input-date :model="store.form.jammeninggal" :type-date="false" outlined
+                          standout="bg-yellow-3" label="Jam Meninggal"
+                          @set-model="val => store.form.jammeninggal = val">
                           <template #append>
                             <q-icon name="event" class="cursor-pointer">
                               <q-popup-proxy cover transition-show="scale" transition-hide="scale">
@@ -316,25 +182,17 @@
                         </app-input-date>
                       </div>
                       <div class="col-12" v-if="store.form.atasdasarpulang === 'Meninggal'">
-                        <q-input v-model="store.form.alasanmeninggal" dense outlined standout="bg-yellow-3" label="Alasan Meninggal" />
+                        <q-input v-model="store.form.alasanmeninggal" dense outlined standout="bg-yellow-3"
+                          label="Alasan Meninggal" />
                       </div>
                     </div>
                   </q-tab-panel>
                 </q-tab-panels>
               </div>
               <div class="col-12">
-                <div
-                  class="text-right"
-                  style="margin-bottom: 50px;"
-                >
-                  <app-btn
-                    color="primary"
-                    label="Simpan"
-                    tooltip="Simpan Data"
-                    type="submit"
-                    tip
-                    :loading="store.loadingSavePlann"
-                  />
+                <div class="text-right" style="margin-bottom: 50px;">
+                  <app-btn color="primary" label="Simpan" tooltip="Simpan Data" type="submit" tip
+                    :loading="store.loadingSavePlann" />
                 </div>
               </div>
             </div>
@@ -343,11 +201,13 @@
       </q-card>
     </div>
   </div>
+  <form-plann-nicu />
 </template>
 <script setup>
 import { date } from 'quasar'
 import { api } from 'src/boot/axios'
 import { usePlannStore } from 'src/stores/simrs/igd/plann'
+import FormPlannNicu from './planpulang/FormPlannNicu..vue'
 import { ref } from 'vue'
 
 const store = usePlannStore()
@@ -428,14 +288,14 @@ const props = defineProps({
   }
 })
 
-function onSubmit () {
+function onSubmit() {
   store.savePlan(props.pasien).then(() => {
-    console.log('s')
+    // console.log('s')
     refForm.value.resetValidation()
   })
 }
 
-function resetklutidak (val) {
+function resetklutidak(val) {
   if (val === 'Tidak') {
     store.form.jenisoperasi = ''
     store.form.tgloperasi = ''
@@ -445,7 +305,7 @@ function resetklutidak (val) {
   }
 }
 
-function kosongkanpanel (val) {
+function kosongkanpanel(val) {
   if (val === 'Rujuk Ke Rumah Sakit Lain') {
     kosongkantabrawatinap()
     kosongkanpulang()
@@ -460,7 +320,7 @@ function kosongkanpanel (val) {
   }
 }
 
-function kosongkantabrawatinap () {
+function kosongkantabrawatinap() {
   store.form.operasi = ''
   store.form.jenisoperasi = ''
   store.form.tgloperasi = ''
@@ -468,7 +328,7 @@ function kosongkantabrawatinap () {
   store.form.keterangan = ''
 }
 
-function kosongkanrujukanRSlain () {
+function kosongkanrujukanRSlain() {
   store.form.atasdasar = ''
   store.form.jenispelayanan = ''
   store.form.tglrujukan = ''
@@ -479,24 +339,24 @@ function kosongkanrujukanRSlain () {
   store.form.keteranganrujuk = ''
 }
 
-function kosongkanpulang () {
+function kosongkanpulang() {
   store.form.atasdasarpulang = ''
   store.form.tglmeninggal = ''
   store.form.jammeninggal = ''
   store.form.keteranganrujuk = ''
 }
 
-function carinama (val) {
+function carinama(val) {
   store.form.koders = val?.kode
   store.form.dirujukkers = val?.nama
 }
 
-function caripoli (val) {
+function caripoli(val) {
   store.form.kodepoli = val?.kode
   store.form.polirujukan = val?.nama
 }
 
-function cekpulang (val) {
+function cekpulang(val) {
   if (val === 'Meninggal') {
     const sekarang = Date.now()
     store.form.tglmeninggal = date.formatDate(sekarang, 'YYYY-MM-DD')
@@ -506,6 +366,17 @@ function cekpulang (val) {
     store.form.tglmeninggal = ''
     store.form.jammeninggal = ''
     store.form.keteranganrujuk = ''
+  }
+}
+
+function cekindikasi(val) {
+  // console.log('sasas', val);
+  const ruangan = props.ruangranap;
+  const result = ruangan.filter((x) => x.rs1 === val);
+  // console.log('xxxx', result[0].rs3);
+  if (result[0].rs3 === 'NICU') {
+    store.fixednicu = true
+    store.resetdialog()
   }
 }
 
