@@ -362,5 +362,6 @@ export const useAsessmentUlangRanapStore = defineStore('asesment-ulang-ranap-sto
     }
   }
 })
-
-import.meta.hot.accept(acceptHMRUpdate(useAsessmentUlangRanapStore, import.meta.hot))
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useAsessmentUlangRanapStore, import.meta.hot))
+}
