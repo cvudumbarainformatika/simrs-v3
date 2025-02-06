@@ -238,7 +238,7 @@
               <div class="text-weight-bold">PEMERIKSAAN PENUNJANG PRE-RAWAT INAP</div>
               <div class="text-italic">PRE-INPATIENT SUPPORTING CHECKUP</div>
             </td>
-            <td valign="top" style="border: none !important; padding: 0px !important;"> : ....................</td>
+            <td valign="top" style="border: none !important; padding: 0px !important;"> : </td>
           </tr>
         </tbody>
       </table>
@@ -255,8 +255,12 @@
         </thead>
         <tbody>
           <tr>
-            <td width="50%">......</td>
-            <td width="50%">......</td>
+            <td width="50%">{{ pasien?.memodiagnosa }}</td>
+            <td width="50%">
+              <div v-for="(item, i) in pasien?.diagnosakeperawatan" :key="i">
+                <div> - {{ item?.nama }}</div>
+              </div>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -272,7 +276,22 @@
               <div class="text-weight-bold">DIAGNOSIS KERJA</div>
               <div class="text-italic">WORKING DIAGNOSIS</div>
             </td>
-            <td valign="top" style="border: none !important; padding: 0px !important;"> : ....................</td>
+            <td valign="top" style="border: none !important; padding: 0px !important;"> : {{
+              diagnosa?.masterdiagnosa?.rs4 || '-' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="section">
+      <table border="0" style="border: none !important; margin-left: 10px; margin-top: -5px;">
+        <tbody>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td style="border: none !important; padding: 0px !important; width: 20%">
+              <div class="text-weight-bold">DIAGNOSIS BANDING</div>
+              <div class="text-italic">DIFFERENTIAL DIAGNOSIS</div>
+            </td>
+            <td valign="top" style="border: none !important; padding: 0px !important;"> : {{
+              diagnosa?.rs6 || '-' }}</td>
           </tr>
         </tbody>
       </table>
@@ -286,7 +305,8 @@
               <div class="text-weight-bold">PENGOBATAN</div>
               <div class="text-italic">THERAPY</div>
             </td>
-            <td valign="top" style="border: none !important; padding: 0px !important;"> : ....................</td>
+            <td valign="top" style="border: none !important; padding: 0px !important;"> : {{
+              pasien?.planningdokter?.terapi }}</td>
           </tr>
         </tbody>
       </table>
@@ -300,7 +320,15 @@
               <div class="text-weight-bold">RENCANA</div>
               <div class="text-italic">PLANNING</div>
             </td>
-            <td valign="top" style="border: none !important; padding: 0px !important;"> : ....................</td>
+            <td valign="top" style="border: none !important; padding: 0px !important;">
+              <div class="flex">
+                <div class="q-mr-sm">: </div>
+                <div>
+                  <div>Monitoring : {{ pasien?.planningdokter?.monitor || '-' }}</div>
+                  <div>Target : {{ pasien?.planningdokter?.target || '-' }}</div>
+                </div>
+              </div>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -314,7 +342,7 @@
               <div class="text-weight-bold">CATATAN KIE</div>
               <div class="text-italic">EDUCATION NOTE</div>
             </td>
-            <td valign="top" style="border: none !important; padding: 0px !important;"> : ....................</td>
+            <td valign="top" style="border: none !important; padding: 0px !important;"> : - </td>
           </tr>
         </tbody>
       </table>
@@ -328,10 +356,53 @@
               <div class="text-weight-bold">TANGGAL / DATE</div>
               <div class="text-italic">JAM / TIME</div>
             </td>
-            <td valign="top" style="border: none !important; padding: 0px !important;"> : ....................</td>
+            <td valign="top" style="border: none !important; padding: 0px !important;"> : <b>Tanggal</b> {{
+              dateFullFormat(pasien?.tglmasuk) }} / <b>Jam</b> {{ jamTnpDetik(pasien?.tglmasuk) }}</td>
           </tr>
         </tbody>
       </table>
+    </div>
+
+
+    <div class="section">
+
+      <div class="flex justify-between q-mx-xl">
+        <!-- <div class="flex-center " style="width: 60px;">
+          <div class="relative-position">
+            <vue-qrcode :value="qrDokter" tag="svg" :options="{
+              errorCorrectionLevel: 'Q',
+              color: {
+                dark: '#000000',
+                light: '#ffffff',
+              },
+              margin: 0
+            }" />
+          </div>
+          <div class="f-8 text-wrap text-center">{{ dpjp?.nama }}</div>
+        </div> -->
+
+        <div></div>
+
+
+        <div class="column flex-center ">
+
+          <div>DOKTER</div>
+          <div style="margin-top: -5px; margin-bottom: 10px;">DOCTOR</div>
+
+          <div class="relative-position" style="width: 80px;">
+            <vue-qrcode :value="qrDokter" tag="svg" :options="{
+              errorCorrectionLevel: 'Q',
+              color: {
+                dark: '#000000',
+                light: '#ffffff',
+              },
+              margin: 0
+            }" />
+            <!-- <img class="qrcode__image" src="~assets/logos/logo-rsud.png" alt="RSUD DOKTER MOHAMAD SALEH"> -->
+          </div>
+          <div class="text-wrap text-center">{{ dpjp?.nama }}</div>
+        </div>
+      </div>
     </div>
 
   </div>
@@ -341,8 +412,9 @@
 </template>
 
 <script setup>
+import { api } from 'src/boot/axios';
 import { dateFullFormat, jamTnpDetik } from 'src/modules/formatter';
-import { computed } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 
 
 
@@ -362,9 +434,15 @@ const props = defineProps({
   }
 })
 
+const dpjp = ref(null)
+
+onMounted(() => {
+  getDpjpData()
+})
 
 
-console.log('props', props?.pasien);
+
+// console.log('props', props?.pasien);
 
 const anamnesisAwal = computed(() => {
   const awal = props?.pasien?.anamnesis?.find(x => x?.awal === '1' && x?.nakes === '1') || null
@@ -377,6 +455,54 @@ const pemeriksaanUmum = computed(() => {
   console.log('awal', awal);
 
   return awal
+})
+
+const diagnosa = computed(() => {
+  const primer = props?.pasien?.diagnosa?.find(x => x?.rs4 === 'Primer' && x?.rs13 === 'POL014') || null
+  console.log('awal', primer);
+
+  return primer
+})
+
+
+const getDpjpData = async () => {
+  const res = await api.get(`/v1/pegawai/master/pegawai-by-kdpegsimrs?kdpegsimrs=${props?.pasien?.kodedokter}`)
+  // console.log('res', res);
+  if (res.status === 200) {
+    dpjp.value = res.data
+
+  }
+
+}
+
+
+// const qrDokter = () => {
+//   // console.log('user', user);
+//   const noreg = props?.pasien?.noreg// noreg
+//   const dok = 'ASESSMENT-AWAL-MEDIS.png'
+//   const asal = 'RANAP'
+//   const petugas = user?.nik ?? null
+//   const enc = btoa(`${noreg}|${dok}|${asal}|${petugas}`)
+//   return `https://rsud.probolinggokota.go.id/dokumen-simrs/legalitas/${enc}`
+// }
+// const qrPenerima = (ttd) => {
+//   // console.log('user', user);
+//   const noreg = props?.pasien?.noreg// noreg
+//   const dok = 'KIE.png'
+//   const asal = 'RANAP'
+//   const ttdPenerima = ttd ?? null
+//   const enc = btoa(`${noreg}|${dok}|${asal}|${ttdPenerima}`)
+//   return `https://rsud.probolinggokota.go.id/dokumen-simrs/legalitas/${enc}`
+// }
+
+const qrDokter = computed(() => {
+  // const petugas = 'Nama : ' + dpjp?.value?.nama ?? '' + 'NIP : ' + dpjp?.value?.nip ?? ''
+  const noreg = props?.pasien?.noreg// noreg
+  const dok = 'ASESSMENT-AWAL-MEDIS.png'
+  const asal = 'RANAP'
+  const petugas = dpjp?.value?.nip || null
+  const enc = btoa(`${noreg}|${dok}|${asal}|${petugas}`)
+  return `${enc}`
 })
 
 </script>

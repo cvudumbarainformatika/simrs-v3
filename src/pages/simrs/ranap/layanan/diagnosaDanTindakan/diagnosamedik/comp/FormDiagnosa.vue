@@ -73,7 +73,7 @@
           style="max-width: 150px;" />
       </div>
       <div class="col-3">
-        <div>Diagnosa</div>
+        <div>Diagnosa Kerja</div>
       </div>
       <div class="col-9">
         <q-input v-model="store.formdiagnosa.diagnosa" placeholder="Diagnosa (Automatis)" outlined autogrow
@@ -81,7 +81,7 @@
           readonly />
       </div>
       <div class="col-3">
-        <div>Keterangan</div>
+        <div>Diagnosa Banding</div>
       </div>
       <div class="col-9">
         <q-input v-model="store.formdiagnosa.keterangan" autogrow outlined standout="bg-yellow-3" hide-bottom-space />
@@ -149,6 +149,8 @@ const optionsDiagutama = ref([
 //   errMsg.value = ''
 //   return true
 // }
+
+// console.log('props', store.formdiagnosa)
 
 function onSubmit() {
   if (store.formdiagnosa.kasus === null || store.formdiagnosa.kasus === '') {
@@ -286,7 +288,7 @@ function gantiMemo(val) {
 }
 
 watch(() => props.pasien?.memodiagnosa, (obj) => {
-  console.log('watch ganti memo', obj)
+  // console.log('watch ganti memo', obj)
   memoDokter.value = obj
 }, { deep: true })
 
