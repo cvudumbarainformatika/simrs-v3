@@ -93,7 +93,6 @@ const props = defineProps({
 
 function usia(val) {
   const x = val.split(' ')
-  console.log('val', x)
   return x[0]
 }
 </script>

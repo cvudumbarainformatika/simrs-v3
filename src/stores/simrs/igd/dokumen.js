@@ -6,7 +6,7 @@ export const useDokumenIgdStore = defineStore('dokumen-igd-store', {
       { name: 'Billing', page: 'Billing' },
       { name: 'Triase', page: 'Triase' },
       { name: 'Surat Kematian', page: 'Surat Kematian' },
-      // { name: 'Rehab Medik', page: 'Fisioterapi' },
+      { name: 'Indikasi Masuk Nicu & Intermediate', page: 'Indikasi Masuk Nicu & Intermediate' },
       // { name: 'Perawatan Jenazah', page: 'Jenazah' },
       // { name: 'Ambulan', page: 'Ambulan' },
       // { name: 'Bank Darah', page: 'BankDarah' },

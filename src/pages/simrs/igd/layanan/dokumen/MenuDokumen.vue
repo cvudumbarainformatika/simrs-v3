@@ -18,6 +18,9 @@
           <q-tab-panel name="Surat Kematian" class="full-height q-pa-none">
             <SuratKematianPage :judul="suratkematian" :pasien="props.pasien" />
           </q-tab-panel>
+          <q-tab-panel name="Indikasi Masuk Nicu & Intermediate" class="full-height q-pa-none">
+            <Indikasimasuknicudaninter :judul="indikasinicu" :pasien="props.pasien" />
+          </q-tab-panel>
         </q-tab-panels>
       </div>
     </div>
@@ -30,9 +33,11 @@ import { ref } from 'vue'
 import BillingPage from './dokumenisi/Billing/BillingPage.vue';
 import TriasePage from './dokumenisi/triage/TriasePage.vue';
 import SuratKematianPage from './dokumenisi/suratkematian/SuratKematianPage.vue';
+import Indikasimasuknicudaninter from './dokumenisi/inidakasimasuknicudaninter/indikasimasuknicudaninter.vue';
 const billing = ref('BILLING')
 const triase = ref('TRIASE')
 const suratkematian = ref('Surat Kematian')
+const indikasinicu = ref('Indikasi Pasien Masuk Ruang Nicu Dan Intermediate')
 const store = useDokumenIgdStore()
 
 const props = defineProps({

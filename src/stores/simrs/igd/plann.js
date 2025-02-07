@@ -14,6 +14,7 @@ export const usePlannStore = defineStore('plann-store', {
     notas: [],
     nosurat: '',
     isisuratkematian: [],
+    isiindikasimasuknicuinter: [],
     tab: 'SkalaTransfer',
     tabs: [
       { name: 'Skala Transfer', page: 'SkalaTransfer' },
@@ -117,6 +118,22 @@ export const usePlannStore = defineStore('plann-store', {
         })
       })
     },
+    async indikasimasuknicuinter(val) {
+      // console.log('valaaaaaaaaaaaa', val)
+      const payload = { params: { noreg: val?.noreg } }
+      return new Promise(resolve => {
+        api.get('v1/simrs/planing/igd/indikasimasuknicuinter', payload).then(resp => {
+          if (resp.status === 200) {
+            this.isiindikasimasuknicuinter = resp.data.data[0]
+          }
+          resolve(resp)
+          this.loading = false
+        }).catch(() => {
+          this.loading = false
+        })
+      })
+    },
+
     setForm(key, val) {
       this.form[key] = val
     },
