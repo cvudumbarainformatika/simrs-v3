@@ -4,44 +4,25 @@
       <div class="row q-col-gutter-md">
         <div class="col-12">
           <div><b>Mohon bantuan dokter : </b></div>
-          <app-autocomplete-new
-            ref="refPerawat"
-            :model="store.form.kddokterkonsul"
-            label="Dokter"
-            autocomplete="nama"
-            option-value="kdpegsimrs"
-            option-label="nama"
-            outlined
-            :source="store.dokters"
-            @on-select="(val)=> {
+          <app-autocomplete-new ref="refPerawat" :model="store.form.kddokterkonsul" label="Dokter" autocomplete="nama"
+            option-value="kdpegsimrs" option-label="nama" outlined :source="store.dokters" @on-select="(val) => {
               store.form.kddokterkonsul = val
-            }"
-            @clear="store.form.kddokterkonsul = null"
-          />
+            }" @clear="store.form.kddokterkonsul = null" />
           <div class="q-mt-lg">
             <b>Untuk : </b>
           </div>
-          <app-autocomplete-new
-            ref="refPerawat"
-            :model="store.form.kduntuk"
-            label="untuk"
-            autocomplete="label"
-            option-value="value"
-            option-label="label"
-            outlined
-            :source="store.untuks"
-            @on-select="(val)=> {
+          <app-autocomplete-new ref="refPerawat" :model="store.form.kduntuk" label="untuk" autocomplete="label"
+            option-value="value" option-label="label" outlined :source="store.untuks" @on-select="(val) => {
               store.form.kduntuk = val
               store.form.ketuntuk = store.untuks?.find(e => e?.value === val)?.label
-            }"
-            @clear="store.form.kduntuk = null"
-          />
+            }" @clear="store.form.kduntuk = null" />
           <q-input v-model="store.form.permintaan" type="textarea" outlined standout="bg-yellow-3" rows="8" />
         </div>
       </div>
       <q-separator class="q-my-md" />
       <div class="row full-width justify-end">
-        <q-btn :loading="store.loadingOrder" :disable="store.loadingOrder" label="Kirim Permintaan" type="submit" color="primary" />
+        <q-btn :loading="store.loadingOrder" :disable="store.loadingOrder" label="Kirim Permintaan" type="submit"
+          color="primary" />
       </div>
     </q-form>
   </div>
@@ -65,7 +46,10 @@ const props = defineProps({
 const store = useKonsulRanapStore()
 const formRef = ref(null)
 
-function onSubmit () {
+// console.log('store', store?.dokters);
+
+
+function onSubmit() {
   // console.log('onSubmit', store.form)
   store.saveData(props.pasien)
     .then(() => {

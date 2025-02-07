@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia'
+import { acceptHMRUpdate, defineStore } from 'pinia'
 // eslint-disable-next-line no-unused-vars
 import { api } from 'src/boot/axios'
 import { useAnamnesisRanapStore } from './anamnesis'
@@ -9,6 +9,7 @@ import { usePenilaianRanapStore } from './penilaian'
 import { useDiagnosaKeperawatan } from '../pelayanan/poli/diagnosakeperawatan'
 import { useDiagnosaKebidananStore } from '../pelayanan/poli/diagnosakebidanan'
 import { getNewLine } from 'src/modules/formatter'
+import { useAplikasiStore } from 'src/stores/app/aplikasi'
 
 export const useAsessmentUlangRanapStore = defineStore('asesment-ulang-ranap-store', {
   state: () => ({
@@ -48,11 +49,11 @@ export const useAsessmentUlangRanapStore = defineStore('asesment-ulang-ranap-sto
     //   }
     // },
 
-    getCppt (cppt) {
+    getCppt(cppt) {
       this.items = cppt ?? []
     },
 
-    getPreviousForm (pasien, nakes) {
+    getPreviousForm(pasien, nakes) {
       const dataAwal = {
         anamnesis: pasien?.anamnesis.length
           ? pasien.anamnesis?.filter((a) => a?.kdruang !== 'POL014')?.length
@@ -74,6 +75,7 @@ export const useAsessmentUlangRanapStore = defineStore('asesment-ulang-ranap-sto
       const storeAnamnesis = useAnamnesisRanapStore()
       const storePemeriksaan = usePemeriksaanUmumRanapStore()
       const storePenilaian = usePenilaianRanapStore()
+
       const cekTerbaru = this.items?.length
         ? this.items?.filter((a) => a?.nakes === nakes)?.length
           ? this.items?.filter((a) => a?.nakes === nakes)[0]
@@ -81,7 +83,17 @@ export const useAsessmentUlangRanapStore = defineStore('asesment-ulang-ranap-sto
         : null
       let dataSebelumnya = null
 
-      console.log('cek asessment terbaru', cekTerbaru)
+      const auth = useAplikasiStore()
+      const pegawai = auth?.user?.pegawai
+      const kdpegsimrs = pegawai?.kdpegsimrs
+      // console.log('user', kdpegsimrs);
+
+
+      const cekInputanSendiriTerbaru = this.items?.find((a) => a?.user === kdpegsimrs) || null
+      // console.log('cek inputan sendiri terbaru', cekInputanSendiriTerbaru);
+
+
+      // console.log('cek asessment terbaru', cekTerbaru)
 
       if (!cekTerbaru) {
         dataSebelumnya = dataAwal
@@ -90,14 +102,21 @@ export const useAsessmentUlangRanapStore = defineStore('asesment-ulang-ranap-sto
         storePenilaian.initReset(pasien, dataAwal?.penilaian)
       }
       else {
-        dataSebelumnya = cekTerbaru
-        storeAnamnesis.initReset(dataSebelumnya?.anamnesis)
-        storePemeriksaan.initReset(dataSebelumnya?.pemeriksaan)
-        storePenilaian.initReset(pasien, dataSebelumnya?.penilaian)
+        if (nakes === '1') {
+          dataSebelumnya = cekInputanSendiriTerbaru || cekTerbaru
+          storeAnamnesis.initReset(dataSebelumnya?.anamnesis)
+          storePemeriksaan.initReset(dataSebelumnya?.pemeriksaan)
+          storePenilaian.initReset(pasien, dataSebelumnya?.penilaian)
+        } else {
+          dataSebelumnya = cekTerbaru
+          storeAnamnesis.initReset(dataSebelumnya?.anamnesis)
+          storePemeriksaan.initReset(dataSebelumnya?.pemeriksaan)
+          storePenilaian.initReset(pasien, dataSebelumnya?.penilaian)
+        }
       }
       this.previousData = dataSebelumnya
 
-      console.log('data sebelumnya', dataSebelumnya)
+      // console.log('data sebelumnya', dataSebelumnya)
 
       // untuk diagnosa keperawatan
       if (nakes === '2') {
@@ -111,9 +130,11 @@ export const useAsessmentUlangRanapStore = defineStore('asesment-ulang-ranap-sto
       else if (nakes === '1') {
         // this.initDiagnosaMedisToText(pasien?.diagnosamedis)
         this.initMemoDiagnosaToText(pasien?.memodiagnosa)
+        this.form.asessment = dataSebelumnya?.asessment
+        this.form.plann = dataSebelumnya?.plann
+        this.form.instruksi = dataSebelumnya?.instruksi
         this.form.o_sambung = dataSebelumnya?.o_sambung
-        this.form.plann = null
-        this.form.instruksi = null
+        this.form.s_sambung = dataSebelumnya?.s_sambung
       }
       else if (nakes === '3') {
         this.initDiagnosaKebidanan(dataSebelumnya)
@@ -135,14 +156,14 @@ export const useAsessmentUlangRanapStore = defineStore('asesment-ulang-ranap-sto
       // console.log('pasien', pasien)
     },
 
-    initDiagnosaMedisToText (diag) {
+    initDiagnosaMedisToText(diag) {
       const diagnosa = diag?.length ? diag?.filter(x => x?.rs13 !== 'POL014') : []
       const text = diagnosa.length ? diagnosa.map(x => '* ' + x?.rs3 + ' - ' + x?.masterdiagnosa?.rs4).join('\n') : null
       // console.log('diagnosa', diagnosa)
 
       this.form.asessment = text
     },
-    initMemoDiagnosaToText (diag) {
+    initMemoDiagnosaToText(diag) {
       // const diagnosa = diag?.length ? diag?.filter(x => x?.rs13 !== 'POL014') : []
       const text = getNewLine(diag)
       // console.log('diagnosa', diagnosa)
@@ -150,7 +171,7 @@ export const useAsessmentUlangRanapStore = defineStore('asesment-ulang-ranap-sto
       this.form.asessment = text
     },
 
-    initDiagnosaKeperawatan (dataSebelumnya) {
+    initDiagnosaKeperawatan(dataSebelumnya) {
       const storeDiagnosaKeperawatan = useDiagnosaKeperawatan()
       const diagnosKep = dataSebelumnya?.asessment?.replace(/\n/g, '')
       // console.log('data sebelumnya', diagnosKep)
@@ -180,7 +201,7 @@ export const useAsessmentUlangRanapStore = defineStore('asesment-ulang-ranap-sto
       if (cariIntervensiKep.length) storeDiagnosaKeperawatan.selectIntervensis = intervensis
     },
 
-    initDiagnosaKebidanan (dataSebelumnya) {
+    initDiagnosaKebidanan(dataSebelumnya) {
       const storeDiagnosaKebidanan = useDiagnosaKebidananStore()
       const diagnosKep = dataSebelumnya?.asessment?.replace(/\n/g, '')
       // console.log('data sebelumnya', diagnosKep)
@@ -216,7 +237,7 @@ export const useAsessmentUlangRanapStore = defineStore('asesment-ulang-ranap-sto
     //   storeAnamnesis.initReset(item.anamnesis)
     // },
 
-    saveCppt (pasien, jnsKasus) {
+    saveCppt(pasien, jnsKasus) {
       this.loadingSave = true
       const kasusKep = jnsKasus?.gruping
 
@@ -325,7 +346,7 @@ export const useAsessmentUlangRanapStore = defineStore('asesment-ulang-ranap-sto
       })
     },
 
-    async deleteData (pasien, id) {
+    async deleteData(pasien, id) {
       const payload = { id }
       return new Promise((resolve, reject) => {
         api.post('v1/simrs/ranap/layanan/cppt/deletecppt', payload)
@@ -341,3 +362,6 @@ export const useAsessmentUlangRanapStore = defineStore('asesment-ulang-ranap-sto
     }
   }
 })
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useAsessmentUlangRanapStore, import.meta.hot))
+}

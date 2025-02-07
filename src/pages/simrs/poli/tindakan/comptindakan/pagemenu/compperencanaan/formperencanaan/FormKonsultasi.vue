@@ -19,7 +19,7 @@
         </div>
         <div class="col-5">
           <app-input-date :model="store.formKonsul.tgl_rencana_konsul" label="Tgl Rencana Konsul" outlined
-            @set-model="setTanggalKonsul" :readonly="store.formKonsul.kdSaran === '3'" />
+            @set-model="setTanggalKonsul" :disable="store.formKonsul.kdSaran === '3'" />
         </div>
         <div class="col-7">
           <q-select ref="refPoli" v-model="store.formKonsul.kdpoli_tujuan" label="Poli Tujuan" dense outlined
