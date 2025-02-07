@@ -45,25 +45,10 @@
                       <q-input v-model="store.form.implementasi" type="textarea" outlined standout="bg-yellow-3"
                         label="Implementasi" row="8" @focus="() => setSplitter('insideModel1a', 0)" />
 
-                      <q-btn dense class="q-mt-sm full-width" color="primary" @click="emits('openReseps')">
-                        <div class="flex q-gutter-x-md items-center">
-                          <div>Pemakaian Obat</div>
-                          <q-icon name="icon-mat-add" size="xs" />
-                        </div>
-                      </q-btn>
-                      <q-list bordered separator>
-                        <q-item v-if="!store.form.reseps.length" clickable v-ripple>
-                          <q-item-section>Belum Ada Pemakaian Obat</q-item-section>
-                        </q-item>
-                        <q-item v-else v-for="(item, index) in store.form.reseps" :key="index" clickable v-ripple>
-                          <q-item-section>
-                            <div class="f-10">{{ item?.nama_obat }}</div>
-                          </q-item-section>
-                          <q-item-section side class="text-bold">{{ item?.jumlah }} ml</q-item-section>
-                        </q-item>
 
 
-                      </q-list>
+                      <q-input v-model="store.form.reseps" type="textarea" outlined standout="bg-yellow-3"
+                        label="Pemakaian Obat" row="8" @focus="() => setSplitter('insideModel1a', 0)" class="q-mt-sm" />
                     </div>
                   </div>
                 </q-card>
