@@ -115,7 +115,10 @@ export const usePerencanaanPoliStore = defineStore('perencanaan-poli', {
     loadingIcd: false,
     // tindakans
     loadingTind: false,
-    optionsJenisTindakan: []
+    optionsJenisTindakan: [],
+
+    // diagnosa PRB
+    diagPrbs: []
   }),
   // getters: {
   //   doubleCount: (state) => state.counter * 2
@@ -215,6 +218,13 @@ export const usePerencanaanPoliStore = defineStore('perencanaan-poli', {
         this.poli = resp?.data
       }
       // // console.log('master poli', resp)
+    },
+    async getDiagPrb () {
+      const resp = await api.get('v1/simrs/pelayanan/diag-prb')
+      if (resp.status === 200) {
+        this.diagPrbs = resp?.data?.result?.list
+      }
+      // console.log('diag prb', resp, this.diagPrbs)
     },
     getDiagnosaDropdown () {
       return new Promise(resolve => {
@@ -454,7 +464,7 @@ export const usePerencanaanPoliStore = defineStore('perencanaan-poli', {
       this.formRsLain.noreg = pasien?.noreg
       this.formRsLain.planing = 'Rumah Sakit Lain'
       this.formRsLain.kodesistembayar = pasien?.kodesistembayar
-      console.log('this.formRsLain', this.formRsLain, diag)
+      console.log('this.formRsLain', this.formRsLain)
 
       this.loadingSave = true
       const url = this.editRsLain ? 'v1/simrs/pelayanan/update-planning-pasien' : 'v1/simrs/pelayanan/simpanplaningpasien'
@@ -487,14 +497,14 @@ export const usePerencanaanPoliStore = defineStore('perencanaan-poli', {
       }
     },
     async saveRujukBalik (pasien) {
-      const diag = pasien?.diagnosa?.length ? pasien.diagnosa[0].masterdiagnosa?.rs1 : false
-      if (!diag) {
-        return notifErrVue('Pasien tidak bisa di rujuk karena belum ada Diagnosa')
-      }
-      this.formPrb.diagnosarujukan = pasien?.diagnosa?.length ? pasien.diagnosa[0].masterdiagnosa?.rs1 : '-'
+      // const diag = pasien?.diagnosa?.length ? pasien.diagnosa[0].masterdiagnosa?.rs1 : false
+      // if (!diag) {
+      //   return notifErrVue('Pasien tidak bisa di rujuk karena belum ada Diagnosa')
+      // }
+      // this.formPrb.diagnosarujukan = pasien?.diagnosa?.length ? pasien.diagnosa[0].masterdiagnosa?.rs1 : '-'
       this.formPrb.norm = pasien?.norm
       this.formPrb.noreg = pasien?.noreg
-      this.formPrb.planing = 'Rumah Sakit Lain'
+      this.formPrb.planing = 'PRB'
       this.formPrb.kodesistembayar = pasien?.kodesistembayar
       this.loadingSave = true
       try {
