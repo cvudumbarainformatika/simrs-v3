@@ -59,13 +59,13 @@
               </template>
 </Suspense> -->
 
-            <q-page-sticky position="bottom-right" :offset="[18, 18]">
+            <!-- <q-page-sticky position="bottom-right" :offset="[18, 18]">
               <q-btn @click="historyPasien" padding="xs" icon="icon-mat-history" color="dark">
                 <q-tooltip class="bg-dark text-white">
                   History Pasien
                 </q-tooltip>
               </q-btn>
-            </q-page-sticky>
+            </q-page-sticky> -->
           </q-page>
           <!-- <q-page v-else>
             <AppLoader />

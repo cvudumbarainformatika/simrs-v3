@@ -42,23 +42,17 @@ const enter = (el, done) => {
 
 <template>
   <div class="fit column bg-grey-4 relative-position">
-    <q-splitter
-      v-model="settings.splitMin"
-      horizontal
-      :limits="[5, 94]"
-
-      style="height: 100%"
-      separator-class="bg-grey-9"
-      separator-style="height: 3px"
-    >
+    <q-splitter v-model="settings.splitMin" horizontal :limits="[5, 94]" style="height: 100%"
+      separator-class="bg-grey-9" separator-style="height: 3px">
       <template #before>
         <div class="bg-grey-4 q-pa-sm">
           <info-input-ranap :items="store.items.ranap">
             <transition-group appear tag="div" @before-enter="beforeEnter" @enter="enter">
-              <div v-for="(item, i) in store?.items?.ranap" :key="i" v-ripple class="q-card q-pa-md q-mb-sm cursor-pointer">
+              <div v-for="(item, i) in store?.items?.ranap" :key="i" v-ripple
+                class="q-card q-pa-md q-mb-sm cursor-pointer">
                 <q-item-section>
                   <q-item-label class="text-bold">
-                    {{ nakes?.dokter ? 'ASESMENT AWAL MEDIS' : 'ASESMENT AWAL KEPERAWATAN' }}
+                    {{ item?.nakes === '1' ? 'ASESMENT AWAL MEDIS' : 'ASESMENT AWAL KEPERAWATAN' }}
                   </q-item-label>
                   <q-item-label>Data Pemeriksaan Tersimpan</q-item-label>
                   <q-item-label caption>
@@ -72,7 +66,7 @@ const enter = (el, done) => {
                   </q-item-label>
                 </q-item-section>
                 <q-item-section side bottom>
-                  <q-icon :name="item?.id ? 'icon-mat-done_all':'icon-mat-done'" color="teal" />
+                  <q-icon :name="item?.id ? 'icon-mat-done_all' : 'icon-mat-done'" color="teal" />
                 </q-item-section>
               </div>
             </transition-group>
@@ -82,18 +76,12 @@ const enter = (el, done) => {
       </template>
 
       <template #after>
-        <div
-          class="column fit bg-grey-7 text-white"
-        >
+        <div class="column fit bg-grey-7 text-white">
           <div class="col-auto full-width">
-            <bar-comp
-              :btn-full="false" title="Pemeriksaan Umum IGD" bg-color="grey-10"
-              btn-min="icon-mat-expand_more"
-              :minimize="settings.splitMin > 50"
-              @min="()=> {
+            <bar-comp :btn-full="false" title="Pemeriksaan Umum IGD" bg-color="grey-10" btn-min="icon-mat-expand_more"
+              :minimize="settings.splitMin > 50" @min="() => {
                 settings.splitMin === 94 ? settings.splitMin = 50 : settings.splitMin = 95
-              }"
-            />
+              }" />
           </div>
           <div class="col full-height q-pa-sm scroll content">
             <list-igd :items="store.items.igd">
