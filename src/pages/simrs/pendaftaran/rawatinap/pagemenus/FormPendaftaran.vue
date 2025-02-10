@@ -320,8 +320,11 @@
               <div class="col-5">
                 <app-autocomplete ref="refJnsSistemBayar" v-model="store.pasien.jnsBayar" label="Pilih Sistem Bayar"
                   autocomplete="sistembayar" option-value="kode" option-label="sistembayar" outlined
-                  :source="store.jnsSistemBayars" class="q-mb-xs" :rules="[val => (!!val) || 'Harap diisi',]"
-                  @selected="(val) => store.filterSistemBayar(val)" />
+                  :source="store.jnsSistemBayars" class="q-mb-xs" :rules="[val => (!!val) || 'Harap diisi',]" @selected="(val) => {
+                    console.log('store.pasien.kodesistembayar', val);
+
+                    store.pasien.kodesistembayar = val
+                  }" />
               </div>
               <div class="col-7">
                 <app-autocomplete ref="refSistemBayar" v-model="store.pasien.kodesistembayar" label="Sistem Bayar"
@@ -357,38 +360,44 @@
                     }
                   }" />
               </div>
+
+
+
+
               <app-autocomplete v-if="store.pasien.isTitipan === 'Ya'" ref="refKodeRuang"
                 v-model="store.pasien.kode_ruang" label="Pilih Ruangan" autocomplete="rs2" option-value="rs1"
                 option-label="rs2" outlined :source="store.kamars" class="q-mb-xs col-12"
                 :rules="[val => (!!val) || 'Harap diisi',]" @selected="(val) => pilihRuang(val)" />
               <app-autocomplete ref="refGrupKamar" v-model="store.pasien.kamar" label="Pilih Kamar" autocomplete="label"
                 option-value="value" option-label="label" outlined :source="grupKamar" class="q-mb-xs col-8"
-                :rules="[val => (!!val) || 'Harap diisi',]" @selected="(val) => pilihKamar(val)" />
+                :rules="[val => (!!val) || 'Harap diisi',]" :loading="store.loadingShowKamar"
+                @selected="(val) => pilihKamar(val)" />
+
+
+              <!-- <app-autocomplete v-if="store.pasien.kode_ruang === 'ASK-HCU' && store.pasien.kodesistembayar === '2'"
+                ref="refKelasUntukRuanganASKHCU" v-model="store.pasien.hakKelasBpjs" label="Pilih Kelas"
+                autocomplete="rs2" option-value="rs1" option-label="rs2" outlined :source="store.kamars"
+                class="q-mb-xs col-12" :rules="[val => (!!val) || 'Harap diisi',]"
+                @selected="(val) => pilihRuang(val)" /> -->
+
+
 
               <q-select dense outlined standout="bg-yellow-3" v-model="store.pasien.no_bed" :options="kamars"
                 label="NO BED" option-value="rs2"
                 :option-label="opt => Object(opt) === opt && 'rs2' in opt ? `${opt.rs2}  -  ${opt.kunjungan.length ? 'Terisi' : 'Kosong'}` : '- Null -'"
                 map-options emit-value class="q-mb-xs col-4" />
-              <!-- <app-autocomplete
-                ref="refKamar"
-                v-model="store.pasien.no_bed"
-                label="NO BED"
-                autocomplete="rs2"
-                option-value="rs5"
-                option-label="rs2"
-                outlined
-                :source="kamars"
-                class="q-mb-xs col-4"
-                :rules="[val => (!!val) || 'Harap diisi',]"
-              /> -->
-              <!-- <app-input-simrs v-model="store.pasien.ruang" label="Ruang" class="col-12" readonly :valid="{ required: true }" />
-              <app-input-simrs v-model="store.pasien.kamar" label="Kamar" class="col-8" readonly :valid="{ required: true }" />
-              <app-input-simrs v-model="store.pasien.no_bed" label="BED" class="col-4" readonly :valid="{ required: true }" /> -->
-              <!-- <app-input-simrs
-                v-if="store.pasien.kelas !== store.pasien.hakKelasBpjs || !store.pasien.hakKelasBpjs === null" v-model="store.pasien.indikatorPerubahanKelas"
-                label="Indikator Perubahan Kelas"
-                class="col-6"
-              /> -->
+
+
+
+
+              <q-separator class="q-my-sm"></q-separator>
+              <div v-if="store.pasien.kode_ruang === 'ASK-HCU' && store.pasien.kodesistembayar === '2'"
+                class="row q-col-gutter-lg">
+                <div class="col-8">Khusus Ruang Asoka HCU dan Pasien Umum, Harap Pilih Kelas Terlebih Dahulu </div>
+                <q-select dense outlined standout="bg-yellow-3" v-model="store.pasien.hakKelasBpjs" :options="[1, 2, 3]"
+                  label="Pilih Kelas" class="q-mb-xs col-4" />
+              </div>
+
             </div>
           </div>
           <!-- <div class="col-2">
@@ -731,7 +740,7 @@ function pilihRuang(val) {
   store.pasien.kamar = null
   const arr = store.kamars
   const obj = arr.length ? arr.find(x => x.rs1 === val) : null
-  console.log('pilihRuang', obj)
+  console.log('pilihRuang', val)
   const group = obj?.rs4 ?? null
   // const kodeRuang = obj?.rs1 ?? null
   const kelas = obj?.rs3 ?? null
@@ -744,6 +753,8 @@ function pilihRuang(val) {
 
   store.pasien.kamar = null
   store.pasien.no_bed = null
+  // console.log('group', group);
+
 
   store.showKamar()
     .then(() => {
@@ -753,7 +764,7 @@ function pilihRuang(val) {
       console.log('pilihan', pilihan)
       const kamarsx = pilihan?.kamars?.length
         ? pilihan?.kamars?.filter(x => {
-          return x.rs6 === group && (x?.rs5 === `${group + kelas}` || x?.rs5 === '-')
+          return x.rs6 === group && ((x?.rs5 === `${group + kelas}` || x?.rs5 === `${group + '-' + kelas}`) || x?.rs5 === '-')
         })
         : []
       console.log('kamars', kamars)
