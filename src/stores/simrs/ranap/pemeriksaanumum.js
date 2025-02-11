@@ -841,17 +841,17 @@ export const usePemeriksaanUmumRanapStore = defineStore('pemeriksaan-umum-ranap-
         // if (isianDokter?.length) { form = ranap[0] } // form = ranap isianDokter jika ada
         // else { form = isianKeperawatan.length ? isianKeperawatan[0] : null } // form = isianKeperawatan jika blm ada isianDokter
         form = isianDokter[0] || isianKeperawatan[0] || isianKebidanan[0] || null
-        isianDokter.length ? form.id = form.id : form.id = null
+        if (form) isianDokter.length ? form.id = form.id : form.id = null
       }
       else if (perawat) {
         // form = isianKeperawatan?.length ? isianKeperawatan[0] : null
         form = isianKeperawatan[0] || isianKebidanan[0] || isianDokter[0] || null
-        isianKeperawatan.length ? form.id = form.id : form.id = null
+        if (form) isianKeperawatan.length ? form.id = form.id : form.id = null
 
       } else if (bidan) {
 
         form = isianKebidanan[0] || isianKeperawatan[0] || isianDokter[0] || null
-        isianKebidanan.length ? form.id = form.id : form.id = null
+        if (form) isianKebidanan.length ? form.id = form.id : form.id = null
       }
       // form = isianDokter[0] || isianKeperawatan[0] || isianKebidanan[0] || null
       // form.id = null

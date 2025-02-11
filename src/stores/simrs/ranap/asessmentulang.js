@@ -126,15 +126,23 @@ export const useAsessmentUlangRanapStore = defineStore('asesment-ulang-ranap-sto
         this.form.instruksi = dataSebelumnya?.instruksi
         this.form.o_sambung = dataSebelumnya?.o_sambung
         this.form.s_sambung = dataSebelumnya?.s_sambung
+
+
+        console.log('cek perawat', dataSebelumnya)
       }
       else if (nakes === '1') {
         // this.initDiagnosaMedisToText(pasien?.diagnosamedis)
-        this.initMemoDiagnosaToText(pasien?.memodiagnosa)
-        this.form.asessment = dataSebelumnya?.asessment
+        // this.initMemoDiagnosaToText(pasien?.memodiagnosa)
+        if (dataSebelumnya.asessment) { this.form.asessment = dataSebelumnya?.asessment }
+        else { this.initMemoDiagnosaToText(pasien?.memodiagnosa) }
         this.form.plann = dataSebelumnya?.plann
         this.form.instruksi = dataSebelumnya?.instruksi
         this.form.o_sambung = dataSebelumnya?.o_sambung
         this.form.s_sambung = dataSebelumnya?.s_sambung
+        // console.log('cek dokter', dataSebelumnya)
+        // console.log('cek memo', pasien?.memodiagnosa)
+        // console.log('cek form dokter', this.form)
+
       }
       else if (nakes === '3') {
         this.initDiagnosaKebidanan(dataSebelumnya)
@@ -152,7 +160,7 @@ export const useAsessmentUlangRanapStore = defineStore('asesment-ulang-ranap-sto
       }
 
       // if (cekTerbaru) dataSebelumnya = cekTerbaru
-      // console.log('data terbaru', dataSebelumnya)
+
       // console.log('pasien', pasien)
     },
 
