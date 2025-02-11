@@ -1,7 +1,7 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
 import { date } from 'quasar'
 import { api } from 'src/boot/axios'
-import { notifSuccess } from 'src/modules/utils'
+import { notifSuccess, notifSuccessVue } from 'src/modules/utils'
 import { useAplikasiStore } from 'src/stores/app/aplikasi'
 import { usePengunjungRanapStore } from './pengunjung'
 
@@ -590,6 +590,7 @@ export const useAnamnesisRanapStore = defineStore('anamnesis-ranap-store', {
 
     initReset(data) {
       // console.log('data init reset', data)
+      this.loadingSave = false
 
       this.form = {
         // ini untuk 4.1
@@ -1096,8 +1097,20 @@ export const useAnamnesisRanapStore = defineStore('anamnesis-ranap-store', {
       })
     },
 
+    select(item) {
+      console.log('item', item);
+      this.initReset(item)
+    },
+
+
+
+
     // KHUSUS KEPERAWATAN
     async saveForm(jnsKasus, pasien) {
+
+      // console.log('this.form', this.form);
+
+
       this.loadingSave = true
       const kasusKep = jnsKasus?.gruping
       let formDefault = this.form
@@ -1141,7 +1154,7 @@ export const useAnamnesisRanapStore = defineStore('anamnesis-ranap-store', {
 
       try {
         const resp = await api.post('v1/simrs/ranap/layanan/anamnesis/simpananamnesis', req)
-        console.log('resp', resp)
+        // console.log('resp', resp)
         if (resp.status === 200) {
           notifSuccess(resp)
           const result = resp?.data?.result
@@ -1158,6 +1171,7 @@ export const useAnamnesisRanapStore = defineStore('anamnesis-ranap-store', {
         this.SPLICE_ITEMS_RANAP(this.items.ranap)
         this.loadingSave = false
       }
+      // this.loadingSave = false
     },
 
     PISAH_DATA_RANAP_IGD(arr, pasien) {
@@ -1172,26 +1186,43 @@ export const useAnamnesisRanapStore = defineStore('anamnesis-ranap-store', {
       // console.log('ranap isianDokter:', ranap)
       // console.log('igd :', igd)
 
-      const isianKeperawatan = arr?.filter(x => x?.kdruang !== 'POL014' && x?.nakes !== '1' && x?.awal === '1') ?? []
+      const isianDokter = arr?.filter(x => x?.kdruang !== 'POL014' && x?.nakes === '1' && x?.awal === '1') ?? []
+      const isianKeperawatan = arr?.filter(x => x?.kdruang !== 'POL014' && x?.nakes === '2' && x?.awal === '1') ?? []
+      const isianKebidanan = arr?.filter(x => x?.kdruang !== 'POL014' && x?.nakes === '3' && x?.awal === '1') ?? []
       // const isianDokter = arr?.filter(x => x?.kdruang !== 'POL014' && x?.awal === '1' && x?.nakes === '1') ?? []
       // console.log('isianKeperawatan :', isianKeperawatan)
 
       // baru ada penyesuaian nakes
       let form = null
       const dokter = (jns === '1' || jns === 1)
+      const perawat = (jns === '2' || jns === 2)
+      const bidan = (jns === '3' || jns === 3)
       // console.log('dokter', dokter)
 
       this.items.igd = igd
-      this.items.ranap = dokter ? ranap : isianKeperawatan
+      this.items.ranap = arr?.filter(x => x?.kdruang !== 'POL014' && x?.awal === '1') ?? []
+      // this.items.ranap = dokter ? ranap : isianKeperawatan
 
       // jika dokter
       if (dokter) {
-        if (ranap?.length) { form = ranap[0] } // form = ranap isianDokter jika ada
-        else { form = isianKeperawatan.length ? isianKeperawatan[0] : null } // form = isianKeperawatan jika blm ada isianDokter
+        // if (isianDokter?.length) { form = ranap[0] } // form = ranap isianDokter jika ada
+        // else { form = isianKeperawatan.length ? isianKeperawatan[0] : null } // form = isianKeperawatan jika blm ada isianDokter
+        form = isianDokter[0] || isianKeperawatan[0] || isianKebidanan[0] || null
+        isianDokter.length ? form.id = form.id : form.id = null
       }
-      else {
-        form = isianKeperawatan?.length ? isianKeperawatan[0] : null
+      else if (perawat) {
+        // form = isianKeperawatan?.length ? isianKeperawatan[0] : null
+        form = isianKeperawatan[0] || isianKebidanan[0] || isianDokter[0] || null
+        isianKeperawatan.length ? form.id = form.id : form.id = null
+
+      } else if (bidan) {
+
+        form = isianKebidanan[0] || isianKeperawatan[0] || isianDokter[0] || null
+        isianKebidanan.length ? form.id = form.id : form.id = null
       }
+
+      // form = isianDokter[0] || isianKeperawatan[0] || isianKebidanan[0] || null
+      // form.id = null
 
       // console.log('form', form)
       this.initReset(form)

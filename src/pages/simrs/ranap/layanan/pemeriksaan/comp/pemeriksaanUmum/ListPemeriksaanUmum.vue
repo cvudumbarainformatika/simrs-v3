@@ -52,7 +52,10 @@ const enter = (el, done) => {
                 class="q-card q-pa-md q-mb-sm cursor-pointer">
                 <q-item-section>
                   <q-item-label class="text-bold">
-                    {{ item?.nakes === '1' ? 'ASESMENT AWAL MEDIS' : 'ASESMENT AWAL KEPERAWATAN' }}
+                    {{ item?.nakes === '1' ? 'ASESMENT AWAL MEDIS'
+                      : item?.nakes === '2' ? 'ASESMENT AWAL KEPERAWATAN'
+                        : item.nakes === '3' ? 'ASESMENT AWAL KEBIDANAN'
+                          : 'ASESMENT AWAL ???' }}
                   </q-item-label>
                   <q-item-label>Data Pemeriksaan Tersimpan</q-item-label>
                   <q-item-label caption>
