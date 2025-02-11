@@ -22,10 +22,10 @@ export const useHutangObatByTransaksi = defineStore('laporan_hutang_obat_by_tran
     }
   }),
   actions: {
-    async initAmbilData () {
+    async initAmbilData() {
       this.laporanobatbytransaksi()
     },
-    async laporanobatbytransaksi () {
+    async laporanobatbytransaksi() {
       this.loading = true
       this.kolom = ['NoPenerimaan', 'TglPenerimaan', 'NoPemesanan', 'TglPemesanan', 'Suplier', 'NoDokumen', 'JenisDokumen', 'TglSurat', 'TglJatuhTempo', 'Total']
       const params = { params: this.params }
@@ -41,7 +41,7 @@ export const useHutangObatByTransaksi = defineStore('laporan_hutang_obat_by_tran
           this.loading = false
         })
     },
-    async sethasil (val) {
+    async sethasil(val) {
       const hasilglobal = []
       val.forEach(x => {
         const nopenerimaan = x?.nopenerimaan
