@@ -54,16 +54,11 @@ export const usePerencanaanPoliStore = defineStore('perencanaan-poli', {
       norm: '',
       noka: '',
       nosep: '',
-      tglrujukan: '',
-      tglrencanakunjungan: '',
-      ppkdirujuk: '',
-      ppkdirujukx: '',
-      namapolirujukan: '',
-      jenispelayanan: '2',
-      catatan: '',
-      diagnosarujukan: '',
-      tiperujukan: '',
-      polirujukan: ''
+      diagnosa: '',
+      keterangan: '',
+      saran: '',
+      email: '',
+      obat: []
     },
     formRanap: {
       kdSaran: '3',
@@ -165,16 +160,11 @@ export const usePerencanaanPoliStore = defineStore('perencanaan-poli', {
         norm: '',
         noka: '',
         nosep: '',
-        tglrujukan: '',
-        tglrencanakunjungan: '',
-        ppkdirujuk: '',
-        ppkdirujukx: '',
-        namapolirujukan: '',
-        jenispelayanan: '2',
-        catatan: '',
-        diagnosarujukan: '',
-        tiperujukan: '',
-        polirujukan: ''
+        diagnosa: '',
+        keterangan: '',
+        saran: '',
+        email: '',
+        obat: []
       }
       this.formRanap = {
         kdSaran: '3',
@@ -424,6 +414,7 @@ export const usePerencanaanPoliStore = defineStore('perencanaan-poli', {
       try {
         const resp = await api.post('v1/simrs/pelayanan/hapusplaningpasien', payload)
         // // console.log(resp)
+        //
         if (resp.status === 200) {
           this.loadingHapus = false
           const storePasien = usePengunjungPoliStore()
@@ -464,7 +455,7 @@ export const usePerencanaanPoliStore = defineStore('perencanaan-poli', {
       this.formRsLain.noreg = pasien?.noreg
       this.formRsLain.planing = 'Rumah Sakit Lain'
       this.formRsLain.kodesistembayar = pasien?.kodesistembayar
-      console.log('this.formRsLain', this.formRsLain)
+      // console.log('this.formRsLain', this.formRsLain)
 
       this.loadingSave = true
       const url = this.editRsLain ? 'v1/simrs/pelayanan/update-planning-pasien' : 'v1/simrs/pelayanan/simpanplaningpasien'
@@ -509,7 +500,7 @@ export const usePerencanaanPoliStore = defineStore('perencanaan-poli', {
       this.loadingSave = true
       try {
         const resp = await api.post('v1/simrs/pelayanan/simpanplaningpasien', this.formPrb)
-        // // console.log('save rs lain', resp)
+        console.log('save PRS', resp)
         if (resp.status === 200) {
           const storePasien = usePengunjungPoliStore()
           const isi = resp?.data?.result ?? false
@@ -518,7 +509,7 @@ export const usePerencanaanPoliStore = defineStore('perencanaan-poli', {
             notifSuccess(resp)
           }
           else {
-            notifErrVue('Update Info Rujuk Balik Gagal')
+            notifErrVue('PRB Gagal Disimpan')
           }
           this.loadingSave = false
         }
@@ -555,8 +546,10 @@ export const usePerencanaanPoliStore = defineStore('perencanaan-poli', {
       this.formPrb.tglrencanakunjungan = dateDbFormat(new Date())
       this.formRsLain.tiperujukan = '0'
       this.formRsLain.tipefaskes = '2'
-      this.formPrb.tiperujukan = '2'
-      this.formPrb.tipefaskes = '1'
+
+      this.formPrb.kodedokterdpjp = pasien?.datasimpeg?.kddpjp
+      // this.formPrb.tiperujukan = '2'
+      // this.formPrb.tipefaskes = '1'
     },
     initPasienRanap (pasien) {
       this.formRanap.kdSaran = pasien?.kdSaran
