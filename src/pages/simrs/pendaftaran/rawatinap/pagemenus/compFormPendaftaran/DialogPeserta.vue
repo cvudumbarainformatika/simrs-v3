@@ -18,38 +18,42 @@
           <app-avatar-pasien :pasien="pasien" width="30%" />
           <div class="flex-">
             <table>
-              <tr>
-                <td>NAMA</td>
-                <td>:</td>
-                <td>{{ props.peserta?.nama }}</td>
-              </tr>
-              <tr>
-                <td>NIK</td>
-                <td>:</td>
-                <td>{{ props.peserta?.nik }}</td>
-              </tr>
-              <tr>
-                <td>No. BPJS</td>
-                <td>:</td>
-                <td>{{ props.peserta?.noKartu }}</td>
-              </tr>
-              <tr>
-                <td>Hak Kelas</td>
-                <td>:</td>
-                <td>{{ props.peserta?.hakKelas?.keterangan }}</td>
-              </tr>
-              <tr :class="`text-weight-bold ${props.peserta?.statusPeserta?.keterangan==='AKTIF' ? 'text-info' : 'text-red'}`">
-                <td>STATUS</td>
-                <td>:</td>
-                <td>{{ props.peserta?.statusPeserta?.keterangan }}</td>
-              </tr>
+              <tbody>
+                <tr>
+                  <td>NAMA</td>
+                  <td>:</td>
+                  <td>{{ props.peserta?.nama }}</td>
+                </tr>
+                <tr>
+                  <td>NIK</td>
+                  <td>:</td>
+                  <td>{{ props.peserta?.nik }}</td>
+                </tr>
+                <tr>
+                  <td>No. BPJS</td>
+                  <td>:</td>
+                  <td>{{ props.peserta?.noKartu }}</td>
+                </tr>
+                <tr>
+                  <td>Hak Kelas</td>
+                  <td>:</td>
+                  <td>{{ props.peserta?.hakKelas?.keterangan }}</td>
+                </tr>
+                <tr
+                  :class="`text-weight-bold ${props.peserta?.statusPeserta?.keterangan === 'AKTIF' ? 'text-info' : 'text-red'}`">
+                  <td>STATUS</td>
+                  <td>:</td>
+                  <td>{{ props.peserta?.statusPeserta?.keterangan }}</td>
+                </tr>
+              </tbody>
             </table>
           </div>
         </div>
       </q-card-section>
 
       <q-card-section class="q-pt-none">
-        <div>Data dari BPJS ditemukan, Apakah anda ingin mengganti data form dengan yang di dapat dari Bpjs ? jika ya silahkan klik tombol <b>OK</b> di bawah </div>
+        <div>Data dari BPJS ditemukan, Apakah anda ingin mengganti data form dengan yang di dapat dari Bpjs ? jika ya
+          silahkan klik tombol <b>OK</b> di bawah </div>
       </q-card-section>
       <q-separator />
       <q-card-actions class="justify-between">
