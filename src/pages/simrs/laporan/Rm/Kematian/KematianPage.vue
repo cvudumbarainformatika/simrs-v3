@@ -21,7 +21,17 @@
         </q-form>
       </template>
       <template #cell-Status="{ row }">
-        {{ row?.status }}
+        <div
+          v-if="row?.status === 'Sembuh' || row?.status === 'Paksa' || row?.status === 'Meninggal' || row?.status === 'Paksa'">
+          Pulang {{ row?.status }}
+        </div>
+        <div v-else-if="row?.status === 'Pulang'">
+          {{ row?.status }} (Keterangan Detail Tidak Terisi)
+        </div>
+        <div v-else>
+          {{ row?.status }}
+        </div>
+
       </template>
       <template #cell-Total="{ row }">
         <div class="row justify-end">
@@ -50,15 +60,12 @@
             <div class="col-1 text-center ">
               Tanggal Masuk
             </div>
-            <!-- <div class="col-1 text-right">
-              Harga
+            <div class="col-1 text-center">
+              KTP
             </div>
-            <div class="col-1 text-right">
-              PPN
+            <div class="col-1 text-center">
+              NOKA
             </div>
-            <div class="col-1 text-right ">
-              Subtotal
-            </div> -->
           </div>
           <div v-for="(rincix, i) in row.rinci" :key="rincix">
             <div class="row no-wrap " style="border-bottom: 1px solid black;">
@@ -79,15 +86,12 @@
               <div class="col-1 text-center ">
                 {{ rincix?.tglmasuk }}
               </div>
-              <!-- <div class="col-1 text-right ">
-                {{ formatDouble(rincix?.harga) }}
+              <div class="col-1 text-center ">
+                {{ rincix?.ktp }}
               </div>
-              <div class="col-1 text-right ">
-                {{ formatDouble(rincix?.ppn_rp) }}
+              <div class="col-1 text-center ">
+                {{ rincix?.noka }}
               </div>
-              <div class="col-1 text-right ">
-                {{ formatDouble(rincix?.subtotal) }}
-              </div> -->
             </div>
           </div>
         </div>
