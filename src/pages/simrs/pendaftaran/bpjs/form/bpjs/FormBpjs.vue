@@ -1,49 +1,19 @@
 <template>
   <div>
-    <DataPasien
-      ref="refDataPasien"
-      bpjs
-      :nik="registrasi.form.nik"
-      :noka="registrasi.form.noka"
-      :tglsep="registrasi.form.tglsep"
-      :full="style.componentfull"
-      @ganti-pasien="clearAllRegistrasi()"
-      @full-screen="style.setComponentFull"
-    />
-    <FormRegistrasi
-      ref="refRegistrasi"
-      @get-list-surat-kontrol="getListSuratKontrol"
-      @get-list-rujukan="getListRujukan"
-      @cek-suplesi="cekSuplesi"
-    />
-    <q-card
-      class="full-width q-pb-xl"
-      flat
-    >
+    <DataPasien ref="refDataPasien" bpjs :nik="registrasi.form.nik" :noka="registrasi.form.noka"
+      :tglsep="registrasi.form.tglsep" :full="style.componentfull" @ganti-pasien="clearAllRegistrasi()"
+      @full-screen="style.setComponentFull" />
+    <FormRegistrasi ref="refRegistrasi" @get-list-surat-kontrol="getListSuratKontrol" @get-list-rujukan="getListRujukan"
+      @cek-suplesi="cekSuplesi" />
+    <q-card class="full-width q-pb-xl" flat>
       <q-card-actions>
         <div class="">
-          <app-btn
-            label="Simpan Form"
-            :loading="loading"
-            :disable="loading"
-            @click="simpanData"
-          />
+          <app-btn label="Simpan Form" :loading="loading" :disable="loading" @click="simpanData" />
 
-          <app-btn
-            class="q-ml-xl"
-            label="SEP"
-            :loading="loading"
-            :disable="loading"
-            @click="preSEP"
-          />
+          <app-btn class="q-ml-xl" label="SEP" :loading="loading" :disable="loading" @click="preSEP" />
 
-          <app-btn
-            class="q-ml-xl"
-            label="Bersihkan Form"
-            :loading="loading"
-            :disable="loading"
-            @click="clearAllRegistrasi"
-          />
+          <app-btn class="q-ml-xl" label="Bersihkan Form" :loading="loading" :disable="loading"
+            @click="clearAllRegistrasi" />
           <!-- <app-btn
             class="q-ml-xl"
             label="Loading"
@@ -54,57 +24,24 @@
         </div>
       </q-card-actions>
     </q-card>
-    <DialogListRujukan
-      v-model="registrasi.tampilRujukan"
-      @kode-poli="setKodepoli"
-      @jenis-kunjungan="jenisKunjungan"
-    />
-    <DialogListKontrol
-      v-model="registrasi.tampilKontrol"
-      @kode-poli="setKodepoli"
-      @validasi-surat-kontrol="validasiSuratKontrol"
-      @jenis-kunjungan="jenisKunjungan"
-      @assign-surat="assignSurat"
-    />
-    <DialogListSuplesi
-      v-model="registrasi.tampilSuplesi"
-    />
-    <app-dialog-form
-      v-model="dialog"
-      :title="loadingFinger?'Masih mengambil data .... ':'Alasan Finger'"
-      :loading="loadingP"
-      @save-form="simpanPengajuan()"
-    >
+    <DialogListRujukan v-model="registrasi.tampilRujukan" @kode-poli="setKodepoli" @jenis-kunjungan="jenisKunjungan" />
+    <DialogListKontrol v-model="registrasi.tampilKontrol" @kode-poli="setKodepoli"
+      @validasi-surat-kontrol="validasiSuratKontrol" @jenis-kunjungan="jenisKunjungan" @assign-surat="assignSurat" />
+    <DialogListSuplesi v-model="registrasi.tampilSuplesi" />
+    <app-dialog-form v-model="dialog" :title="loadingFinger ? 'Masih mengambil data .... ' : 'Alasan Finger'"
+      :loading="loadingP" @save-form="simpanPengajuan()">
       <template #default>
         <div>
-          <div
-            v-if="pesanBPJS!==''"
-            class="row q-mb-sm"
-          >
+          <div v-if="pesanBPJS !== ''" class="row q-mb-sm">
             <p>{{ pesanBPJS }}</p>
           </div>
-          <div
-            v-if="!loadingFinger"
-            class="row"
-          >
+          <div v-if="!loadingFinger" class="row">
             <div class="col-12">
-              <app-input
-                v-model="keterangan"
-                label="keterangan"
-              />
+              <app-input v-model="keterangan" label="keterangan" />
             </div>
           </div>
-          <div
-            v-if="bisaBuatSep"
-            class="row justify-end q-mr-lg q-my-lg"
-          >
-            <app-btn
-              class="q-ml-xl"
-              label="Buat SEP"
-              :loading="loading"
-              :disable="loading"
-              @click="preSEP"
-            />
+          <div v-if="bisaBuatSep" class="row justify-end q-mr-lg q-my-lg">
+            <app-btn class="q-ml-xl" label="Buat SEP" :loading="loading" :disable="loading" @click="preSEP" />
           </div>
         </div>
       </template>
@@ -186,9 +123,9 @@ function simpanData () {
   const dataPasien = refDataPasien.value.set()
   const dataRegis = refRegistrasi.value.set()
   const form = { noka: pasien.form.noka, tglsep: registrasi.form.tglsep }
-  console.log('pasien', dataPasien,
-    'regis', dataRegis
-  )
+  // console.log('pasien', dataPasien,
+  //   'regis', dataRegis
+  // )
   if (dataPasien.save && dataRegis.save) {
     const keys = Object.keys(dataPasien.form)
     if (keys.length) {
