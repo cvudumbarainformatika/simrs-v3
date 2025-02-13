@@ -135,8 +135,13 @@ export const useAsessmentUlangRanapStore = defineStore('asesment-ulang-ranap-sto
         // this.initMemoDiagnosaToText(pasien?.memodiagnosa)
         if (dataSebelumnya.asessment) { this.form.asessment = dataSebelumnya?.asessment }
         else { this.initMemoDiagnosaToText(pasien?.memodiagnosa) }
-        this.form.plann = dataSebelumnya?.plann
-        this.form.instruksi = dataSebelumnya?.instruksi
+
+        if (dataSebelumnya?.plann) { this.form.plann = dataSebelumnya?.plann }
+        else { this.initPlannToText(pasien?.planningdokter) }
+        if (dataSebelumnya?.instruksi) { this.form.instruksi = dataSebelumnya?.instruksi }
+        else { this.initInstruksiToText(pasien?.planningdokter) }
+        // this.form.instruksi = this.initInstruksiToText(pasien?.planningdokter) ?? dataSebelumnya?.instruksi
+        // this.form.instruksi = dataSebelumnya?.instruksi
         this.form.o_sambung = dataSebelumnya?.o_sambung
         this.form.s_sambung = dataSebelumnya?.s_sambung
         // console.log('cek dokter', dataSebelumnya)
@@ -162,6 +167,16 @@ export const useAsessmentUlangRanapStore = defineStore('asesment-ulang-ranap-sto
       // if (cekTerbaru) dataSebelumnya = cekTerbaru
 
       // console.log('pasien', pasien)
+    },
+
+    initPlannToText(diag) {
+      const text = getNewLine(diag?.terapi)
+      this.form.plann = text
+    },
+    initInstruksiToText(data) {
+      const monitor = data?.monitor
+      const text = getNewLine(monitor)
+      this.form.instruksi = text
     },
 
     initDiagnosaMedisToText(diag) {

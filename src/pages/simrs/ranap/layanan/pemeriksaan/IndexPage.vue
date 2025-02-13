@@ -36,7 +36,7 @@ import { computed, defineAsyncComponent, ref } from 'vue'
 
 const auth = useAplikasiStore()
 
-defineProps({
+const props = defineProps({
   pasien: {
     type: Object,
     default: null
@@ -47,6 +47,8 @@ defineProps({
   }
 })
 const nakes = computed(() => {
+  console.log('props', props?.pasien);
+
   return auth?.user?.pegawai?.kdgroupnakes
 })
 const tab = ref('umum')
