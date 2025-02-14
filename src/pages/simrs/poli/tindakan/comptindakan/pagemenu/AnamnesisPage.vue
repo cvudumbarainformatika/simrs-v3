@@ -1,22 +1,12 @@
 <template>
-  <div
-    class="full-height q-pa-sm"
-  >
+  <div class="full-height q-pa-sm">
     <div class="row q-col-gutter-x-xs full-height">
       <div class="col-6 full-height">
-        <FormAnamnesis
-          :key="props.pasien"
-          :pasien="props.pasien"
-          tooltip="History Pasien (Shift + H)"
-          @open-history="seamless = !seamless"
-        />
+        <FormAnamnesis :key="props.pasien" :pasien="props.pasien" tooltip="History Pasien (Shift + H)"
+          @open-history="seamless = !seamless" />
       </div>
       <div class="col-6 full-height">
-        <ListAnamnesis
-          :key="props.pasien"
-          :pasien="props.pasien"
-          :loading-terima="loadingTerima"
-        />
+        <ListAnamnesis :key="props.pasien" :pasien="props.pasien" :loading-terima="loadingTerima" />
       </div>
     </div>
 
@@ -28,18 +18,9 @@
       :pasien="props.pasien"
       @close="seamless =!seamless"
     /> -->
-    <app-drawer-right-new
-      :key="props.pasien"
-      :seamless="seamless"
-      :pasien="props.pasien"
-      @click-btn="clickslideRight"
-    >
+    <app-drawer-right-new :key="props.pasien" :seamless="seamless" :pasien="props.pasien" @click-btn="clickslideRight">
       <template #content>
-        <HistoryKanan
-          :key="pasien"
-          :pasien="pasien"
-          title="HISTORY ANAMNESSIS LALU"
-        />
+        <HistoryKanan :key="pasien" :pasien="pasien" title="HISTORY ANAMNESSIS LALU" />
       </template>
     </app-drawer-right-new>
   </div>
