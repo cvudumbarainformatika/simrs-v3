@@ -1,23 +1,17 @@
 <template>
-  <q-card
-    class="my-card"
-    bordered
-  >
+  <q-card class="my-card" bordered>
     <q-item>
       <q-item-section avatar>
-        <q-avatar :color="`${pegawai.kelamin==='Laki-Laki'? 'orange':'secondary'}`">
-          <img :src="getImage(pegawai.kelamin,pegawai)">
+        <q-avatar :color="`${pegawai.kelamin === 'Laki-Laki' ? 'orange' : 'secondary'}`">
+          <img :src="getImage(pegawai.kelamin, pegawai)">
         </q-avatar>
       </q-item-section>
 
       <q-item-section>
         <q-item-label>{{ pegawai.nama }}</q-item-label>
-        <q-item-label
-          caption
-          class="f-10"
-        >
-          {{ pegawai.jenis_pegawai? pegawai.jenis_pegawai.jenispegawai: '-' }} :
-          {{ pegawai.ruangan? pegawai.ruangan.namaruang: '-' }}
+        <q-item-label caption class="f-10">
+          {{ pegawai.jenis_pegawai ? pegawai.jenis_pegawai.jenispegawai : '-' }} :
+          {{ pegawai.ruangan ? pegawai.ruangan.namaruang : '-' }}
         </q-item-label>
       </q-item-section>
     </q-item>
@@ -27,7 +21,7 @@
         Jadwal
       </div>
       <div class="f-12 text-primary">
-        {{ dayName(item? item.created_at:null) }} TANGGAL {{ item? item.tanggal:'-' }}
+        {{ dayName(item ? item.created_at : null) }} TANGGAL {{ item ? item.tanggal : '-' }}
       </div>
     </div>
     <q-separator />
@@ -39,18 +33,10 @@
           <div>Jam Pulang </div>
         </div>
         <div class="col-auto q-ml-sm">
-          <div> : {{ item? item.kategory.nama:'-' }}</div>
-          <q-badge
-            outline
-            color="primary"
-            :label="item? frTanpaDetik(item, 'masuk'):'-'"
-          />
+          <div> : {{ item ? item.kategory.nama : '-' }}</div>
+          <q-badge outline color="primary" :label="item ? frTanpaDetik(item, 'masuk') : '-'" />
           <div>
-            <q-badge
-              outline
-              color="negative"
-              :label="item? frTanpaDetik(item):'-'"
-            />
+            <q-badge outline color="negative" :label="item ? frTanpaDetik(item) : '-'" />
           </div>
         </div>
         <!-- {{ item }} -->
@@ -66,41 +52,33 @@
         icon="icon-mat-event"
         color="primary"
       /> -->
-      <q-btn
-        flat
-        color="primary"
-      >
+      <q-btn flat color="primary">
         <div class="column">
           <div class="txt-kcl mbm">
             masuk
           </div>
-          {{ jamTnpDetik(item.created_at) }}
+          {{ item?.masuk ? jamTnpDetik(item.created_at) : 'TAM' }}
           <div class="txt-kcl">
             {{ dateDbFormat(item.created_at) }}
           </div>
         </div>
       </q-btn>
-      <q-btn
-        flat
-        color="negative"
-      >
+      <q-btn flat color="negative">
         <div class="column">
           <div class="txt-kcl mbm">
             pulang
           </div>
-          {{ jamTnpDetik(item.updated_at) === jamTnpDetik(item.created_at) ? 'TAP' : jamTnpDetik(item.updated_at) }}
+          {{ !item?.pulang ? 'TAP' : jamTnpDetik(item?.updated_at) }}
           <div class="txt-kcl">
-            {{ dateDbFormat(item.updated_at) }}
+            {{ dateDbFormat(item?.updated_at) }}
           </div>
         </div>
       </q-btn>
     </q-card-actions>
     <q-separator />
-    <q-card-actions
-      align="center"
-      :class="`${hitungTerlambat(item) > 0? 'bg-negative text-white':'bg-primary text-white'}`"
-    >
-      <div>{{ hitungTerlambat(item) > 0? `TERLAMBAT ${toHoursAndMinutes(hitungTerlambat(item))}` : 'ON TIME' }}</div>
+    <q-card-actions align="center"
+      :class="`${hitungTerlambat(item) > 0 ? 'bg-negative text-white' : 'bg-primary text-white'}`">
+      <div>{{ hitungTerlambat(item) > 0 ? `TERLAMBAT ${toHoursAndMinutes(hitungTerlambat(item))}` : 'ON TIME' }}</div>
     </q-card-actions>
   </q-card>
 </template>
@@ -120,6 +98,10 @@ defineProps({
 })
 
 const frTanpaDetik = (val, jns) => {
+  console.log('val', {
+    val, jns
+  });
+
   const dt = val.tanggal
   const tm = jns === 'masuk' ? val.kategory.masuk : val.kategory.pulang
   const tgl = `${dt} ${tm}`
@@ -159,14 +141,15 @@ function getImage(kelamin, row) {
 </script>
 
 <style lang="scss" scoped>
-.my-card{
+.my-card {
   max-width: 250px;
 }
-.txt-kcl{
+
+.txt-kcl {
   font-size: 9px !important;
 }
-.mbm{
+
+.mbm {
   margin-bottom: -10px;
 }
-
 </style>
