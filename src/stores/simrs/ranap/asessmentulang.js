@@ -103,7 +103,8 @@ export const useAsessmentUlangRanapStore = defineStore('asesment-ulang-ranap-sto
       }
       else {
         if (nakes === '1') {
-          dataSebelumnya = cekInputanSendiriTerbaru || cekTerbaru
+          // dataSebelumnya = cekInputanSendiriTerbaru || cekTerbaru
+          dataSebelumnya = cekTerbaru
           storeAnamnesis.initReset(dataSebelumnya?.anamnesis)
           storePemeriksaan.initReset(dataSebelumnya?.pemeriksaan)
           storePenilaian.initReset(pasien, dataSebelumnya?.penilaian)
@@ -128,13 +129,14 @@ export const useAsessmentUlangRanapStore = defineStore('asesment-ulang-ranap-sto
         this.form.s_sambung = dataSebelumnya?.s_sambung
 
 
-        console.log('cek perawat', dataSebelumnya)
+        // console.log('cek perawat', dataSebelumnya)
       }
       else if (nakes === '1') {
         // this.initDiagnosaMedisToText(pasien?.diagnosamedis)
         // this.initMemoDiagnosaToText(pasien?.memodiagnosa)
-        if (dataSebelumnya.asessment) { this.form.asessment = dataSebelumnya?.asessment }
-        else { this.initMemoDiagnosaToText(pasien?.memodiagnosa) }
+        // if (dataSebelumnya.asessment) { this.form.asessment = dataSebelumnya?.asessment }
+        // else { this.initMemoDiagnosaToText(pasien?.memodiagnosa) }
+        this.initMemoDiagnosaToText(pasien?.memodiagnosa)
 
         if (dataSebelumnya?.plann) { this.form.plann = dataSebelumnya?.plann }
         else { this.initPlannToText(pasien?.planningdokter) }
@@ -191,7 +193,7 @@ export const useAsessmentUlangRanapStore = defineStore('asesment-ulang-ranap-sto
       const text = getNewLine(diag)
       // console.log('diagnosa', diagnosa)
 
-      this.form.asessment = text
+      this.form.asessment = text ?? null
     },
 
     initDiagnosaKeperawatan(dataSebelumnya) {
