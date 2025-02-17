@@ -60,6 +60,7 @@
 </template>
 
 <script setup>
+import { getNewLine } from 'src/modules/formatter';
 import { useNurseNoteRanapStore } from 'src/stores/simrs/ranap/nursenote';
 import { defineAsyncComponent, ref } from 'vue';
 
@@ -94,13 +95,66 @@ const simpan = () => {
 
 const onShow = () => {
   previewDiagKeperawatan()
-  store.initForm()
+  store.initForm(null, previewDiagKeperawatan())
 }
 
 const previewDiagKeperawatan = () => {
 
   const dxkep = props?.pasien?.diagnosakeperawatan || []
-  console.log('props', dxkep);
+  const justIntervensi = dxkep?.map(x => x?.intervensi)?.flat() || []
+  const intervensis = justIntervensi?.filter(x => x?.masterintervensi?.group !== 'plann').map(x => {
+    return {
+      group: x?.masterintervensi?.group,
+      nama: x?.masterintervensi?.nama,
+      kt_kerja: ubahKataBendaKeKerja(x?.masterintervensi?.nama)
+    }
+  }) || []
+  // console.log('props', dxkep);
+  // console.log('intervensi', justIntervensi);
+  // console.log('master', intervensis);
+  const jdText = intervensis?.map(x => '- ' + x?.kt_kerja)?.join('\n') || ''
+  return jdText
+
+}
+
+function ubahKataBendaKeKerja(kalimat) {
+
+  const kata = kalimat.toLowerCase().split(" ")[0];
+  let hsl = "";
+  console.log('kata', kata);
+
+  // Daftar aturan awalan berdasarkan huruf awal kata
+  const vokal = ["a", "e", "i", "o", "u"];
+  const aturan = [
+    { prefix: "ber", suffix: "kan", gantiAwalan: "me" }, // berikan -> memberikan
+    { prefix: "", gantiAwalan: "meng", startsWith: vokal }, // ambil -> mengambil
+    { prefix: "", gantiAwalan: "meng", startsWith: ["h", "k"] }, // hapus -> menghapus
+    { prefix: "", gantiAwalan: "men", startsWith: ["t", "d", "c", "j", "z"] }, // tulis -> menulis
+    { prefix: "", gantiAwalan: "mem", startsWith: ["b", "p", "f", "v"] }, // pakai -> memakai
+    { prefix: "", gantiAwalan: "meny", startsWith: ["s"] }, // sapu -> menyapu
+  ];
+  let kataDasar = kata.toLowerCase().trim(); // Normalisasi teks menjadi huruf kecil semua
+
+  // Cek aturan awalan "ber-...-kan"
+  if (kataDasar.startsWith("ber") && kataDasar.endsWith("kan")) {
+    hsl = "me" + kataDasar.slice(3); // Hapus "ber" dan ganti dengan "me"
+  }
+
+  // Cek aturan berdasarkan huruf pertama
+  for (let rule of aturan) {
+    if (rule.startsWith && rule.startsWith.includes(kataDasar[0])) {
+      hsl = rule.gantiAwalan + kataDasar;
+    }
+  }
+
+  // Jika tidak termasuk aturan khusus, kembalikan kata asal
+  // hsl = kataDasar;
+
+  let kataArray = kalimat.split(" ");
+  if (kataArray[0].toLowerCase()) {
+    kataArray[0] = hsl === "" ? kataArray[0] : hsl; // Ganti kata pertama dengan kataBaru
+  }
+  return kataArray.join(" ");
 }
 
 </script>

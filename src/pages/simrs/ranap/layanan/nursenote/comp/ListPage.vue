@@ -61,8 +61,13 @@
               </template>
 
               <q-card bordered flat class="bg-grey-4">
-                <div class="q-pa-md">
-                  {{ item }}
+                <div class="q-pa-xs">
+                  <div class="col full-height bg-grey-4">
+
+                    <card-column-edit :pasien="pasien" :kasus="kasus" :item="item" />
+
+
+                  </div>
                 </div>
               </q-card>
             </q-expansion-item>
@@ -79,9 +84,12 @@
 import { pathImg } from 'src/boot/axios';
 import { useNurseNoteRanapStore } from 'src/stores/simrs/ranap/nursenote';
 import { useAplikasiStore } from 'src/stores/app/aplikasi'
-import { ref } from 'vue';
+import { defineAsyncComponent, ref } from 'vue';
 import { dateFullFormat, jamTnpDetik } from 'src/modules/formatter';
 import { useQuasar } from 'quasar';
+
+
+const CardColumnEdit = defineAsyncComponent(() => import('./CardColumnEdit.vue'))
 
 const props = defineProps({
   pasien: {

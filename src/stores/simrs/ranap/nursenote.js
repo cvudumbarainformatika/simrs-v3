@@ -76,7 +76,7 @@ export const useNurseNoteRanapStore = defineStore('nursenote-ranap-store', {
     doubleCount: (state) => state.counter * 2
   },
   actions: {
-    initForm() {
+    initForm(data, dx) {
       // console.log('initForm');
 
       const tindakanStore = useTindakanRanapStore()
@@ -91,10 +91,10 @@ export const useNurseNoteRanapStore = defineStore('nursenote-ranap-store', {
       this.form.ket = null
       this.form.dx = null
       this.form.reseps = null
-      this.form.implementasi = null
       this.form.mode = null
 
 
+      this.form.implementasi = dx
 
     },
 
