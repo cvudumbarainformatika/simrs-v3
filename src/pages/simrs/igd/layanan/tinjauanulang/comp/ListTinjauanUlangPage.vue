@@ -45,6 +45,9 @@
             <q-card-section>
               <div class="row">
                 <div class="col-12">
+                  <q-badge outline color="yellow">{{ item.nama }}</q-badge>
+                </div>
+                <div class="col-12">
                   Keluhan : {{ item?.keluhan ?? '-' }}
                 </div>
               </div>
