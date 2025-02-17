@@ -4,9 +4,7 @@
       <q-card-section>
         <div class="full-width row justify-between items-center content-between">
           <div class="bg-white col-grow">
-            <div
-              class="flex flex-column items-center flex-center"
-            >
+            <div class="flex flex-column items-center flex-center">
               <div class="col text-left">
                 <div class="f-14 text-weight-bold">
                   Rekap Absensi Pegawai
@@ -22,57 +20,22 @@
       <q-separator />
       <q-card-section>
         <div class="row items-center q-mb-md">
-          <q-btn
-            outline
-            round
-            color="primary"
-            dense
-            icon="icon-mat-chevron_left"
-            size="sm"
-            @click="prevMonth()"
-          />
+          <q-btn outline round color="primary" dense icon="icon-mat-chevron_left" size="sm" @click="prevMonth()" />
           <div class="q-mx-sm">
             {{ bulanName }} {{ tahun }}
           </div>
-          <q-btn
-            outline
-            round
-            color="primary"
-            dense
-            icon="icon-mat-chevron_right"
-            size="sm"
-            @click="nextMonth()"
-          />
+          <q-btn outline round color="primary" dense icon="icon-mat-chevron_right" size="sm" @click="nextMonth()" />
           <div class="q-ml-md">
-            <q-toggle
-              v-model="store.rincian"
-              label="Laporan Rinci"
-            />
+            <q-toggle v-model="store.rincian" label="Laporan Rinci" />
           </div>
         </div>
-        <app-table-good
-          id="printMe"
-          title="Rekap Absens Pegawai"
-          :columns="store.columns"
-          :column-hide="store.columnHide"
-          :items="store.items"
-          :meta="store.meta"
-          :per-page="store.params.per_page"
-          :order-by="store.params.order_by"
-          :sort="store.params.sort"
-          :loading="store.loading"
-          :row-image="store.settingsTable.imageTampil?'foto':null"
-          :text-size="store.settingsTable.fontSize"
-          :default-btn="false"
-          :ada-tambah="false"
-          :to-search="store.params.q"
-          @set-order="sortingDynamis"
-          @set-row="store.setPerPage"
-          @goto="store.setPage"
-          @search="store.enterSearch"
-          @find="store.setSearch"
-          @refresh="store.refreshTable"
-        >
+        <app-table-good id="printMe" title="Rekap Absens Pegawai" :columns="store.columns"
+          :column-hide="store.columnHide" :items="store.items" :meta="store.meta" :per-page="store.params.per_page"
+          :order-by="store.params.order_by" :sort="store.params.sort" :loading="store.loading"
+          :row-image="store.settingsTable.imageTampil ? 'foto' : null" :text-size="store.settingsTable.fontSize"
+          :default-btn="false" :ada-tambah="false" :to-search="store.params.q" @set-order="sortingDynamis"
+          @set-row="store.setPerPage" @goto="store.setPage" @search="store.enterSearch" @find="store.setSearch"
+          @refresh="store.refreshTable">
           <template #header-for-print>
             <div class="column items-center q-my-md">
               <div class="f-12 text-weight-bold">
@@ -82,116 +45,52 @@
                 UOBK RSUD MOHAMAD SALEH KOTA PROBOLINGGO
               </div>
               <div class="f-12">
-                Periode Bulan {{ bulanName }} {{ tahun }} {{ store.ruanganPrint.length > 0? store.ruanganPrint[0].namaruang:'-' }}
+                Periode Bulan {{ bulanName }} {{ tahun }} {{ store.ruanganPrint.length > 0 ?
+                  store.ruanganPrint[0].namaruang : '-' }}
               </div>
             </div>
           </template>
           <template #header-left-after-search>
             <div class="q-ml-sm">
-              <q-select
-                v-model="flag"
-                dense
-                outlined
-                option-value="kode_jenis"
-                option-label="jenispegawai"
-                behavior="menu"
-                map-options
-                emit-value
-                :options="store.jenis_pegawai"
-                label="Jenis Pegawai"
-                style="min-width:150px"
-                @update:model-value="changeFlag"
-              />
+              <q-select v-model="flag" dense outlined option-value="kode_jenis" option-label="jenispegawai"
+                behavior="menu" map-options emit-value :options="store.jenis_pegawai" label="Jenis Pegawai"
+                style="min-width:150px" @update:model-value="changeFlag" />
             </div>
             <div class="q-ml-sm">
-              <q-select
-                v-model="ruang"
-                dense
-                outlined
-                option-value="koderuangan"
-                option-label="namaruang"
-                behavior="menu"
-                map-options
-                emit-value
-                :options="store.ruangan"
-                label="Ruangan"
-                style="min-width:150px"
-                @update:model-value="changeRuang"
-              />
+              <q-select v-model="ruang" dense outlined option-value="koderuangan" option-label="namaruang"
+                behavior="menu" map-options emit-value :options="store.ruangan" label="Ruangan" style="min-width:150px"
+                @update:model-value="changeRuang" />
             </div>
           </template>
           <template #header-right-before>
-            <q-btn
-              class="q-mr-sm"
-              unelevated
-              color="teal"
-              round
-              size="sm"
-              icon="icon-mat-settings"
-            >
-              <q-menu
-                transition-show="flip-right"
-                transition-hide="flip-left"
-              >
+            <q-btn class="q-mr-sm" unelevated color="teal" round size="sm" icon="icon-mat-settings">
+              <q-menu transition-show="flip-right" transition-hide="flip-left">
                 <q-list style="min-width: 100px">
-                  <q-item
-                    v-close-popup
-                    clickable
-                    dense
-                  >
+                  <q-item v-close-popup clickable dense>
                     <q-item-section>
-                      <q-checkbox
-                        v-model="store.settingsTable.imageTampil"
-                        size="xs"
-                        label="Foto Tampil"
-                      />
+                      <q-checkbox v-model="store.settingsTable.imageTampil" size="xs" label="Foto Tampil" />
                     </q-item-section>
                   </q-item>
                   <q-separator />
-                  <q-item
-                    v-close-popup
-                    clickable
-                    dense
-                  >
+                  <q-item v-close-popup clickable dense>
                     <q-item-section>
-                      <q-checkbox
-                        v-model="store.settingsTable.tampilNip"
-                        size="xs"
-                        label="Nik / Nip Tampil"
-                      />
+                      <q-checkbox v-model="store.settingsTable.tampilNip" size="xs" label="Nik / Nip Tampil" />
                     </q-item-section>
                   </q-item>
                   <q-separator />
-                  <q-item
-                    dense
-                    clickable
-                  >
+                  <q-item dense clickable>
                     <q-item-section>Ukuran Text</q-item-section>
                     <q-item-section side>
                       <q-icon name="icon-mat-keyboard_arrow_right" />
                     </q-item-section>
-                    <q-menu
-                      anchor="top end"
-                      self="top start"
-                    >
+                    <q-menu anchor="top end" self="top start">
                       <q-list style="min-width: 80px">
-                        <q-item
-                          v-for="n in 7"
-                          :key="n"
-                          v-close-popup
-                          dense
-                          clickable
-                        >
+                        <q-item v-for="n in 7" :key="n" v-close-popup dense clickable>
                           <q-item-section>
-                            <q-radio
-                              v-model="store.settingsTable.fontSize"
-                              :val="n+7"
-                              color="teal"
-                              size="xs"
-                            />
+                            <q-radio v-model="store.settingsTable.fontSize" :val="n + 7" color="teal" size="xs" />
                           </q-item-section>
                           <q-item-section>
-                            <q-item-label>{{ n+7 }} px</q-item-label>
+                            <q-item-label>{{ n + 7 }} px</q-item-label>
                           </q-item-section>
                         </q-item>
                       </q-list>
@@ -201,95 +100,77 @@
                 </q-list>
               </q-menu>
             </q-btn>
-            <q-btn
-              ref="refPrint"
-              v-print="printObj"
-              unelevated
-              color="dark"
-              round
-              size="sm"
-              icon="icon-mat-print"
-            >
-              <q-tooltip
-                class="primary"
-                :offset="[10, 10]"
-              >
+            <q-btn ref="refPrint" v-print="printObj" unelevated color="dark" round size="sm" icon="icon-mat-print">
+              <q-tooltip class="primary" :offset="[10, 10]">
                 Print model 2
               </q-tooltip>
             </q-btn>
           </template>
-          <template
-            #col-status
-          >
+          <template #col-status>
             <div class="">
               Status
             </div>
           </template>
-          <template #col-IJIN="{right}">
+          <template #col-IJIN="{ right }">
             <div :class="right">
               I
             </div>
           </template>
-          <template #col-SAKIT="{right}">
+          <template #col-SAKIT="{ right }">
             <div :class="right">
               S
             </div>
           </template>
-          <template #col-DL="{right}">
+          <template #col-DL="{ right }">
             <div :class="right">
               DL
             </div>
           </template>
-          <template #col-DSPEN="{right}">
+          <template #col-DSPEN="{ right }">
             <div :class="right">
               DISPEN
             </div>
           </template>
-          <template #col-CUTI="{right}">
+          <template #col-CUTI="{ right }">
             <div :class="right">
               CUTI
             </div>
           </template>
-          <template #col-A="{right}">
+          <template #col-A="{ right }">
             <div :class="right">
-              A <q-icon
-                v-if="store.sorting.head === 'A'"
-                :name="store.sorting.sortBy === 'desc'?'icon-mat-vertical_align_bottom':'icon-mat-vertical_align_top'"
-              />
+              A <q-icon v-if="store.sorting.head === 'A'"
+                :name="store.sorting.sortBy === 'desc' ? 'icon-mat-vertical_align_bottom' : 'icon-mat-vertical_align_top'" />
             </div>
           </template>
-          <template #col-th="{right}">
+          <template #col-th="{ right }">
             <div :class="right">
               TH
             </div>
           </template>
-          <template #col-masuk="{right}">
+          <template #col-masuk="{ right }">
             <div :class="right">
               Msk (Jam)
             </div>
           </template>
-          <template #col-hari="{right}">
+          <template #col-hari="{ right }">
             <div :class="right">
               MSK
             </div>
           </template>
-          <template #col-kurang="{right}">
+          <template #col-kurang="{ right }">
             <div :class="right">
               TL
             </div>
           </template>
-          <template #col-per-t="{right}">
+          <template #col-per-t="{ right }">
             <div :class="right">
               % POT
             </div>
           </template>
-          <template #cell-default-img="{row}">
+          <template #cell-default-img="{ row }">
             <div class="row">
-              <q-avatar
-                size="30px"
-                class="cursor-pointer"
-                :class="row.kelamin ==='Perempuan'?'bg-secondary':'bg-orange'"
-              >
+              <q-avatar size="30px" class="cursor-pointer"
+                :class="row.kelamin === 'Perempuan' ? 'bg-secondary' : 'bg-orange'">
                 <img :src="getImage(row.kelamin, row)">
                 <q-menu>
                   <div class="row no-wrap q-pa-md">
@@ -298,24 +179,20 @@
                         Detail Pegawai
                       </div>
                       <q-avatar size="100px">
-                        <img
-                          :ratio="1"
-                          fit="cover"
-                          :src="getImage(row.kelamin, row)"
-                        >
+                        <img :ratio="1" fit="cover" :src="getImage(row.kelamin, row)">
                       </q-avatar>
 
                       <div class=" q-mt-md">
                         {{ row.nama }}
                       </div>
                       <div class="text-primary">
-                        {{ row.relasi_jabatan? row.relasi_jabatan.jabatan:'-' }}
+                        {{ row.relasi_jabatan ? row.relasi_jabatan.jabatan : '-' }}
                       </div>
                       <div class="">
-                        {{ row.jenis_pegawai? `(${row.jenis_pegawai.keterangan})`:'-' }}
+                        {{ row.jenis_pegawai ? `(${row.jenis_pegawai.keterangan})` : '-' }}
                       </div>
                       <div class="text-grey">
-                        {{ row.ruangan? row.ruangan.namaruang:'-' }}
+                        {{ row.ruangan ? row.ruangan.namaruang : '-' }}
                       </div>
 
                       <!-- <q-btn
@@ -327,11 +204,7 @@
                       /> -->
                     </div>
 
-                    <q-separator
-                      vertical
-                      inset
-                      class="q-mx-lg"
-                    />
+                    <q-separator vertical inset class="q-mx-lg" />
 
                     <div class="column">
                       <div class=" q-mt-md">
@@ -352,15 +225,12 @@
               </q-avatar>
             </div>
           </template>
-          <template #cell-nama="{row}">
+          <template #cell-nama="{ row }">
             <div>
               {{ row.nama }}
-              <div
-                v-if="store.settingsTable.tampilNip"
-                :class="`text-gray`"
-                :style="`fonst-size: ${store.settingsTable.fontSize - 2}px !mportant`"
-              >
-                {{ row.flag ==='P01'? row.nip:row.nik }}
+              <div v-if="store.settingsTable.tampilNip" :class="`text-gray`"
+                :style="`fonst-size: ${store.settingsTable.fontSize - 2}px !mportant`">
+                {{ row.flag === 'P01' ? row.nip : row.nik }}
               </div>
               <!-- <q-linear-progress
                 class="q-mt-xs"
@@ -384,7 +254,7 @@
               </q-linear-progress> -->
             </div>
           </template>
-          <template #cell-status="{row}">
+          <template #cell-status="{ row }">
             <div class="">
               <!-- <div v-if="getStatus(row)"> -->
               <!-- <q-linear-progress
@@ -426,144 +296,101 @@
                   Blm Install
                 </div>
               </q-badge> -->
-              {{ row.jenis_pegawai? row.jenis_pegawai.jenispegawai:'-' }}
+              {{ row.jenis_pegawai ? row.jenis_pegawai.jenispegawai : '-' }}
             </div>
           </template>
-          <template #cell-IJIN="{row, right}">
+          <template #cell-IJIN="{ row, right }">
             <div :class="`${right}`">
-              {{ getIjin(row, 'IJIN')===0? '-': getIjin(row, 'IJIN') }}
+              {{ getIjin(row, 'IJIN') === 0 ? '-' : getIjin(row, 'IJIN') }}
             </div>
           </template>
-          <template #cell-SAKIT="{row,right}">
+          <template #cell-SAKIT="{ row, right }">
             <div :class="`${right}`">
-              {{ getIjin(row, 'SAKIT')===0? '-': getIjin(row, 'SAKIT') }}
+              {{ getIjin(row, 'SAKIT') === 0 ? '-' : getIjin(row, 'SAKIT') }}
             </div>
           </template>
-          <template #cell-DL="{row, right}">
+          <template #cell-DL="{ row, right }">
             <div :class="`${right}`">
-              {{ getIjin(row, 'DL')===0? '-': getIjin(row, 'DL') }}
+              {{ getIjin(row, 'DL') === 0 ? '-' : getIjin(row, 'DL') }}
             </div>
           </template>
-          <template #cell-DSPEN="{row,right}">
+          <template #cell-DSPEN="{ row, right }">
             <div :class="`${right}`">
-              {{ getIjin(row, 'DISPEN')===0? '-': getIjin(row, 'DISPEN') }}
+              {{ getIjin(row, 'DISPEN') === 0 ? '-' : getIjin(row, 'DISPEN') }}
             </div>
           </template>
-          <template #cell-CUTI="{row,right}">
+          <template #cell-CUTI="{ row, right }">
             <div :class="`${right}`">
-              {{ getIjin(row, 'CUTI')===0? '-': getIjin(row, 'CUTI') }}
+              {{ getIjin(row, 'CUTI') === 0 ? '-' : getIjin(row, 'CUTI') }}
             </div>
           </template>
-          <template #cell-A="{row,right}">
+          <template #cell-A="{ row, right }">
             <div :class="`${right} text-negative`">
-              {{ getAlpha(row)===0? '-': getAlpha(row) }}
+              {{ getAlpha(row) === 0 ? '-' : getAlpha(row) }}
             </div>
           </template>
-          <template #cell-th="{row,right}">
+          <template #cell-th="{ row, right }">
             <div :class="`${right}`">
               {{ getTerlambatHari(row) }}
             </div>
           </template>
 
-          <template #cell-masuk="{row}">
+          <template #cell-masuk="{ row }">
             <div style="max-width:50px">
               <div class="text-xs text-dark">
                 {{ toHoursAndMinutes(getMasuk(row) * 60) }}
               </div>
             </div>
           </template>
-          <template #cell-hari="{row, right}">
+          <template #cell-hari="{ row, right }">
             <!-- <div style="max-width:50px"> -->
             <div :class="`${right}`">
               {{ getMasukHari(row) }} hari
             </div>
             <!-- </div> -->
           </template>
-          <template #cell-percent="{row}">
-            <q-linear-progress
-              size="25px"
-              :value="hitungPercent(row)"
-              :color="hitungPercent(row) > 0.99 ? 'primary'
-                : hitungPercent(row) < 0.99 ? hitungPercent(row) < 0.5 ? 'negative' : 'orange'
-                  : 'secondary'"
-            >
+          <template #cell-percent="{ row }">
+            <q-linear-progress size="25px" :value="hitungPercent(row)" :color="hitungPercent(row) > 0.99 ? 'primary'
+              : hitungPercent(row) < 0.99 ? hitungPercent(row) < 0.5 ? 'negative' : 'orange'
+                : 'secondary'">
               <div class="absolute-full flex flex-center">
-                <q-badge
-                  color="white"
-                  text-color="accent"
-                  :label="`${(hitungPercent(row) * 100).toFixed(0)}%`"
-                />
+                <q-badge color="white" text-color="accent" :label="`${(hitungPercent(row) * 100).toFixed(0)}%`" />
               </div>
             </q-linear-progress>
           </template>
-          <template #cell-kurang="{row, right}">
+          <template #cell-kurang="{ row, right }">
             <div :class="`text-negative ${right}`">
               <!-- {{ getKurang(row) }} -  -->
               {{ getRekapTerlambatMinute(getRekapTerlambat(row)) }}
             </div>
           </template>
-          <template #cell-per-t="{row, right}">
-            <div :class="getRekapTerlambatPercent(getRekapTerlambat(row))?`text-negative ${right}`:`${right}`">
+          <template #cell-per-t="{ row, right }">
+            <div :class="getRekapTerlambatPercent(getRekapTerlambat(row)) ? `text-negative ${right}` : `${right}`">
               <!-- {{ getKurang(row) }} -  -->
               {{ getRekapTerlambatPercent(getRekapTerlambat(row)) }}%
             </div>
           </template>
 
           <!-- rincian -->
-          <template
-            v-for="(num, i) in daysInMonth(currentMonth, tahun)"
-            :key="i"
-            #[getSlotRinci(num)]="{row}"
-          >
-            <!-- <div v-if="row.transaksi_absen.length > 0 && !getIjinRinci(num, row) && !getAlphaRinci(num, row)">
+          <template v-for="(num, i) in daysInMonth(currentMonth, tahun)" :key="i" #[getSlotRinci(num)]="{ row }">
+
+            <div v-if="getTransaksiAbsens(num, row) === 'MSK'" class="cursor-pointer"
+              @click="lihatDetailAbsensi(num, row)">
               <div
-                class="columns flex-center items-center f-10"
-              >
-                <div>{{ getTransaksiAbsen(num, row.transaksi_absen, 'masuk') }}</div>
-                <div :class="getTransaksiAbsen(num, row.transaksi_absen, 'pulang') === 'TAP'? 'text-negative':''">
-                  {{ getTransaksiAbsen(num, row.transaksi_absen, 'pulang') }}
-                </div>
-              </div>
-            </div>
-            <div v-else-if="row.transaksi_absen.length > 0 && getIjinRinci(num, row)">
-              <div class="text-orange">
-                {{ getIjinRinci(num, row) }}
-              </div>
-            </div>
-            <div
-              v-else
-              class="text-negative"
-            >
-              {{ getAlphaRinci(num, row) }}
-            </div> -->
-            <div
-              v-if="getTransaksiAbsens(num, row) === 'MSK'"
-              class="cursor-pointer"
-              @click="lihatDetailAbsensi(num,row)"
-            >
-              <div class="f-10 ">
+                :class="getTransaksiAbsen(num, row.transaksi_absen, 'masuk') === 'TAM' ? 'text-negative f-10' : 'f-10'">
                 {{ getTransaksiAbsen(num, row.transaksi_absen, 'masuk') }}
               </div>
-              <div :class="getTransaksiAbsen(num, row.transaksi_absen, 'pulang') === 'TAP'? 'text-negative f-10':'f-10'">
+              <div
+                :class="getTransaksiAbsen(num, row.transaksi_absen, 'pulang') === 'TAP' ? 'text-negative f-10' : 'f-10'">
                 {{ getTransaksiAbsen(num, row.transaksi_absen, 'pulang') }}
               </div>
-              <q-popup-proxy
-                :offset="[10, 10]"
-                cover
-                :breakpoint="600"
-              >
-                <detai-rinci
-                  :item="detailAbsensi"
-                  :pegawai="detailOrang"
-                />
+              <q-popup-proxy :offset="[10, 10]" cover :breakpoint="600">
+                <detai-rinci :item="detailAbsensi" :pegawai="detailOrang" />
               </q-popup-proxy>
             </div>
-            <div
-              v-else
-              :class="getTransaksiAbsens(num, row) === 'A'? 'text-negative':
-                getTransaksiAbsens(num, row) === 'CB'? 'text-primary':'text-green'
-              "
-            >
+            <div v-else :class="getTransaksiAbsens(num, row) === 'A' ? 'text-negative' :
+              getTransaksiAbsens(num, row) === 'CB' ? 'text-primary' : 'text-green'
+              ">
               {{ getTransaksiAbsens(num, row) }}
             </div>
           </template>
@@ -573,21 +400,12 @@
     <div style="padding-bottom:180px;" />
 
     <!-- dialog print -->
-    <print-dialog
-      v-model="openDialog"
-      :loading="store.loadingDialog"
-      :current-month="currentMonth"
-      :tahun="tahun.toString()"
-      :month-name="bulanName"
-      :get-status="(val)=>getStatus(val)"
-      :hitung-percent="(val)=>hitungPercent(val)"
-      :get-ijin="(val,x)=>getIjin(val,x)"
-      :get-masuk="(val)=>toHoursAndMinutes(getMasuk(val) * 60)"
-      :get-masuk-hari="(val)=>getMasukHari(val)"
-      :get-kurang="(val)=>getKurang(val)"
-      :days-in-month="daysInMonth(currentMonth, tahun)"
-      :get-transaksi-absen="(x,y,z) => getTransaksiAbsen(x,y,z)"
-    />
+    <print-dialog v-model="openDialog" :loading="store.loadingDialog" :current-month="currentMonth"
+      :tahun="tahun.toString()" :month-name="bulanName" :get-status="(val) => getStatus(val)"
+      :hitung-percent="(val) => hitungPercent(val)" :get-ijin="(val, x) => getIjin(val, x)"
+      :get-masuk="(val) => toHoursAndMinutes(getMasuk(val) * 60)" :get-masuk-hari="(val) => getMasukHari(val)"
+      :get-kurang="(val) => getKurang(val)" :days-in-month="daysInMonth(currentMonth, tahun)"
+      :get-transaksi-absen="(x, y, z) => getTransaksiAbsen(x, y, z)" />
   </div>
   <!-- loading print -->
   <app-loading v-if="printed" />
@@ -672,11 +490,11 @@ onMounted(() => {
 
 // console.log('prota', lhb.value)
 // console.log('currentMoth', currentMonth.value)
-console.log('bulans', bulans(bulan))
+// console.log('bulans', bulans(bulan))
 // console.log('tahun', daysInMonth(currentMonth.value, tahun.value))
 // console.log('rumus', rumusTerkecil())
 
-function nextMonth () {
+function nextMonth() {
   const month = currentMonth.value
   if (month >= 12) {
     currentMonth.value = 1
@@ -690,7 +508,7 @@ function nextMonth () {
   const obj = store.rincian
   obj ? store.setColumns(daysInMonth(currentMonth.value, tahun.value)) : store.setColumns('default')
 }
-function prevMonth () {
+function prevMonth() {
   const month = currentMonth.value
   if (month <= 1) {
     currentMonth.value = 12
@@ -705,25 +523,32 @@ function prevMonth () {
   obj ? store.setColumns(daysInMonth(currentMonth.value, tahun.value)) : store.setColumns('default')
 }
 
-function getSlotRinci (num) {
+function getSlotRinci(num) {
   return num <= 9 ? 'cell-0' + num.toString() : 'cell-' + num.toString()
 }
 
-function getTransaksiAbsen (num, data, jns) {
+function getTransaksiAbsen(num, data, jns) {
+  // console.log('getTransaksiAbsen', { num, data, jns });
+
   const bulanX = currentMonth.value <= 9 ? '0' + currentMonth.value : (currentMonth.value).toString()
   const cellDate = num <= 9 ? tahun.value + '-' + bulanX + '-0' + num.toString() : tahun.value + '-' + bulanX + '-' + num.toString()
   const trans = data.filter(x => x.tanggal === cellDate)
   if (trans.length > 0) {
     if (jns === 'masuk') {
-      return jamTnpDetik(trans[0].created_at)
+      // console.log('masuk', { tgl: trans[0]?.tanggal, jns, trans: trans[0]?.masuk || null });
+      const am = trans[0]?.masuk || null
+      return am ? jamTnpDetik(trans[0].created_at) : 'TAM'
     }
     else {
-      return jamTnpDetik(trans[0].updated_at) === jamTnpDetik(trans[0].created_at) ? 'TAP' : jamTnpDetik(trans[0].updated_at)
+      // console.log('else', { tgl: trans[0]?.tanggal, jns, trans: trans[0]?.pulang || null });
+      const ap = trans[0]?.pulang || null
+      return ap ? jamTnpDetik(trans[0].updated_at) : 'TAP'
+      // return jamTnpDetik(trans[0].updated_at) === jamTnpDetik(trans[0].created_at) ? 'TAP' : jamTnpDetik(trans[0].updated_at)
     }
   }
   return ''
 }
-function getTransaksiAbsens (num, data) {
+function getTransaksiAbsens(num, data) {
   const bulanX = currentMonth.value <= 9 ? '0' + currentMonth.value : (currentMonth.value).toString()
   const cellDate = num <= 9 ? tahun.value + '-' + bulanX + '-0' + num.toString() : tahun.value + '-' + bulanX + '-' + num.toString()
   const trans = data.transaksi_absen.filter(x => x.tanggal === cellDate)
@@ -749,7 +574,7 @@ function getTransaksiAbsens (num, data) {
   }
 }
 
-function getAlpha (row) {
+function getAlpha(row) {
   // console.log('alpha', row)
   const days = daysInMonth(currentMonth.value, tahun.value)
   const bulanX = currentMonth.value <= 9 ? '0' + currentMonth.value : (currentMonth.value).toString()
@@ -789,7 +614,7 @@ function getAlpha (row) {
   return absensi
 }
 
-function getImage (kelamin, row) {
+function getImage(kelamin, row) {
   if (row.foto_pegawai === null || row.foto_pegawai === '') {
     return kelamin === 'Perempuan'
       ? new URL('../../../../../assets/images/actress.svg', import.meta.url).href
@@ -808,22 +633,22 @@ const changeRuang = (val) => {
   store.filterByRuang(val)
 }
 
-function hitungPercent (row) {
+function hitungPercent(row) {
   const hitung = (getMasuk(row) / rumusTerkecil(getIjin(row)))
   return hitung
 }
 
-function rumusTerkecil (libur) {
+function rumusTerkecil(libur) {
   const extra = libur + lhb.value
   const perbulan = (perwali.value * (daysInMonth(currentMonth.value, tahun.value) - extra)) / 7
   return perbulan.toFixed(1)
 }
 
-function getStatus (row) {
+function getStatus(row) {
   return !!row.user
 }
 
-function getIjin (row, fx) {
+function getIjin(row, fx) {
   const user = row.user
   if (user) {
     const ada = user.libur.length
@@ -840,7 +665,7 @@ function getIjin (row, fx) {
   return 0
 }
 
-function getAlphaRinci (num, row) {
+function getAlphaRinci(num, row) {
   // console.log('alpha', num)
   const bulanX = currentMonth.value <= 9 ? '0' + currentMonth.value : (currentMonth.value).toString()
   const cellDate = num <= 9 ? tahun.value + '-' + bulanX + '-0' + num.toString() : tahun.value + '-' + bulanX + '-' + num.toString()
@@ -851,7 +676,7 @@ function getAlphaRinci (num, row) {
   return 0
 }
 
-function getIjinRinci (num, row) {
+function getIjinRinci(num, row) {
   const bulanX = currentMonth.value <= 9 ? '0' + currentMonth.value : (currentMonth.value).toString()
   const cellDate = num <= 9 ? tahun.value + '-' + bulanX + '-0' + num.toString() : tahun.value + '-' + bulanX + '-' + num.toString()
   // console.log('cellDate', cellDate)
@@ -867,7 +692,7 @@ function getIjinRinci (num, row) {
 
   return 0
 }
-function getMasuk (row) {
+function getMasuk(row) {
   const ada = row.transaksi_absen.length
   if (ada > 0) {
     const data = row.transaksi_absen
@@ -896,7 +721,7 @@ function getMasuk (row) {
   return 0
 }
 
-function getKurang (row) {
+function getKurang(row) {
   const ada = row.transaksi_absen.length
   if (ada) {
     const data = row.transaksi_absen
@@ -922,7 +747,7 @@ function getKurang (row) {
   return toHoursAndMinutes(x)
 }
 
-function getRekapTerlambat (row) {
+function getRekapTerlambat(row) {
   // console.log('row', row)
   const days = daysInMonth(currentMonth.value, tahun.value)
   const bulanX = currentMonth.value <= 9 ? '0' + currentMonth.value : (currentMonth.value).toString()
@@ -956,7 +781,7 @@ function getRekapTerlambat (row) {
   return ijin.reduce((x, y) => parseInt(x + y))
 }
 
-function getTerlambatHari (x) {
+function getTerlambatHari(x) {
   const trans = x?.transaksi_absen
   let th = []
   if (trans?.length) {
@@ -989,7 +814,7 @@ function getTerlambatHari (x) {
   return th?.length ? th?.length + ' hr' : ''
 }
 
-function getRekapTerlambatPercent (e) {
+function getRekapTerlambatPercent(e) {
   if (e > 0 && e <= 60) {
     return 5
   }
@@ -1003,11 +828,11 @@ function getRekapTerlambatPercent (e) {
     return 0
   }
 }
-function getRekapTerlambatMinute (x) {
+function getRekapTerlambatMinute(x) {
   return toHoursAndMinutes(x)
 }
 
-function hitungTelat (x) {
+function hitungTelat(x) {
   const kategoryMasuk = x.kategory ? x.kategory.masuk : '00:00:00'
 
   let created = new Date(x?.created_at)
@@ -1026,21 +851,21 @@ function hitungTelat (x) {
   return hitung
 }
 
-function toHoursAndMinutes (totalMinutes) {
+function toHoursAndMinutes(totalMinutes) {
   const hours = Math.floor(totalMinutes / 60)
   const minutes = totalMinutes % 60
   return `${hours > 0 ? ` ${hours} jam` : ''}
         ${minutes > 0 ? ` ${minutes.toFixed(0)} mnt` : ''}`
 }
 
-function getMasukHari (row) {
+function getMasukHari(row) {
   const ada = row.transaksi_absen.length
   return ada
 }
 
 const detailAbsensi = ref(null)
 const detailOrang = ref(null)
-function lihatDetailAbsensi (num, row) {
+function lihatDetailAbsensi(num, row) {
   const trans = row.transaksi_absen
   const bulan = currentMonth.value.toString().length <= 1 ? `0${currentMonth.value}` : currentMonth.value.toString()
   const tanggal = num.toString().length <= 1 ? `0${num}` : num.toString()
@@ -1057,14 +882,14 @@ const printObj = {
   popTitle: 'print Absensi',
   // extraCss: 'https://cdn.bootcdn.net/ajax/libs/animate.css/4.1.1/animate.compat.css, https://cdn.bootcdn.net/ajax/libs/hover.css/2.3.1/css/hover-min.css',
   // extraHead: '<meta http-equiv="Content-Language"content="zh-cn"/>',
-  beforeOpenCallback (vue) {
+  beforeOpenCallback(vue) {
     printed.value = true
     console.log('wait...')
   },
-  openCallback (vue) {
+  openCallback(vue) {
     console.log('opened')
   },
-  closeCallback (vue) {
+  closeCallback(vue) {
     printed.value = false
     changePeriode()
     console.log('closePrint')
@@ -1077,9 +902,8 @@ const printObj = {
 
 watch(() => store.rincian, (obj) => {
   obj ? store.setColumns(daysInMonth(currentMonth.value, tahun.value)) : store.setColumns('default')
-  console.log('watch', store.columns)
+  // console.log('watch', store.columns)
 }, { deep: true })
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

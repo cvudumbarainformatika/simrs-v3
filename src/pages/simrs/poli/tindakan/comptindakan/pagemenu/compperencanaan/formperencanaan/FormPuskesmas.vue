@@ -1,5 +1,5 @@
 <template>
-  <q-form ref="formRef" @submit="simpan">
+  <q-form ref="formRef" @submit="simpan()">
     <div class="row q-col-gutter-sm">
       <div class="col-3">
         <q-input v-model="store.formPrb.norm" label="NORM (Automatis)" dense outlined standout="bg-yellow-3" readonly
@@ -18,10 +18,11 @@
         <q-input v-model="store.formPrb.email" label="Email" dense outlined standout="bg-yellow-3" />
       </div>
       <div class="col-6">
-        <q-select v-model="store.formPrb.diagnosa" use-input hide-selected fill-input outlined standout="bg-yellow-3"
-          dense emit-value map-options option-value="kode"
+        <q-select ref="refDiagnosa" v-model="store.formPrb.diagnosa" use-input hide-selected fill-input outlined
+          hide-bottom-space standout="bg-yellow-3" dense emit-value map-options option-value="kode"
           :option-label="opt => Object(opt) === opt && 'nama' in opt ? opt.kode + ' ~ ' + opt.nama : ' Cari Diagnosa '"
-          input-debounce="0" :options="optionDiagnosa" label="Cari Diagnosa PRB" @filter="onFilterDiagnosa">
+          input-debounce="0" :options="optionDiagnosa" label="Cari Diagnosa PRB" @filter="onFilterDiagnosa"
+          :rules="[val => !!val || 'Harus diisi']">
           <template #no-option>
             <q-item>
               <q-item-section class="text-grey">
@@ -91,6 +92,7 @@ const RincianObatPrbPage = defineAsyncComponent(() => import('./RincianObatPrbPa
 
 const refSaran = ref(null)
 const refKet = ref(null)
+const refDiagnosa = ref(null)
 const resep = ref(null)
 
 const ricianOpen = ref(false)
@@ -104,7 +106,7 @@ const ketBg = ref([])
 function setBg (val, item) {
   const i = val % 2
   ketBg.value = item?.permintaanresep?.map(m => m?.mobat)?.filter(f => !!f?.kode_bpjs)
-  console.log('item', ketBg.value)
+  // console.log('item', ketBg.value)
 
   return ketBg.value?.length <= 0 ? 'bg-red-3' : (i === 0 ? 'bg-grey-4' : '')
 }
@@ -126,15 +128,15 @@ async function getMasterPasien () {
 }
 const optionDiagnosa = ref([])
 const filterObatPrb = computed(() => {
-  // console.log(props.pasien?.newapotekrajal)
   const obat = props.pasien?.newapotekrajal?.filter(ob => ob?.tiperesep === 'prb')
+
   return obat
 })
-const filterObatPrbBelum = computed(() => {
-  console.log(props.pasien?.newapotekrajal)
-  const obat = props.pasien?.newapotekrajal?.filter(ob => ob?.tiperesep === 'prb' && ob?.flag?.includes('3', '4'))
-  return obat
-})
+// const filterObatPrbBelum = computed(() => {
+//   console.log(props.pasien?.newapotekrajal)
+//   const obat = props.pasien?.newapotekrajal?.filter(ob => ob?.tiperesep === 'prb' && ob?.flag?.includes('3', '4'))
+//   return obat
+// })
 
 function labelFlag (flag) {
   let hasil = ''
@@ -240,26 +242,79 @@ onMounted(() => {
   // })
 })
 
+function validasi () {
+  // console.log('refKet.value', refDiagnosa.value)
+
+  const diag = refDiagnosa.value.validate()
+  const ket = refKet.value.validate()
+  const saran = refSaran.value.validate()
+  if (ket && saran && diag) return true
+  else return false
+
+}
+function mapingObat () {
+  // "kdObat":"00196120124",
+  // "signa1":"1",
+  // "signa2":"1",
+  // "jmlObat":"11"
+  const obats = []
+  const reseps = []
+  filterObatPrb.value.forEach((resep) => {
+    resep?.permintaanresep?.forEach((item) => {
+      reseps.push(item)
+
+    })
+  })
+  console.log('reseps', reseps)
+  reseps?.forEach(item => {
+    const obat = {
+      'kdObat': item?.mobat?.kode_bpjs,
+      'jmlObat': item?.jumlah,
+      'signa1': '',
+      'signa2': '',
+    }
+    const signas = item?.aturan?.split('x')
+
+    if (signas?.length === 2) {
+      obat.signa1 = signas[0]?.trim()
+      obat.signa2 = signas[1]?.trim()
+    } else if (signas?.length === 1) {
+      obat.signa1 = signas[0]?.trim()
+    }
+    obats.push(obat)
+    // console.log('signas', signas, signas?.length)
+  })
+  store.formPrb.obat = obats
+  console.log('obat', obats)
+
+
+}
 function simpan () {
   console.log('ok', store.formPrb)
-  if (filterObatPrb.value.length <= 0) return notifErrVue('Maaf, Obat PRB belum dibuat')
-  if (props?.pasien?.groups === '1') {
-    if (filterObatPrbBelum.value.length <= 0) {
-      Dialog.create({
-        title: 'Konfirmasi',
-        message: 'Obat belum selesai, apakah akan dilanjutkan?',
-        ok: true,
-        cancel: true
-      })
-    }
-    // store.saveRujukBalik(props?.pasien)
-  } else {
-    $q.notify({
-      type: 'negative',
-      message: 'Maaf, Anda tidak terhubung ke BPJS',
-      position: 'top-right',
-      color: 'negative'
-    })
-  }
+  if (!validasi()) return notifErrVue('Data belum lengkap')
+  if (filterObatPrb.value?.length <= 0) return notifErrVue('Maaf, Obat PRB belum dibuat')
+  mapingObat()
+
+  store.saveRujukBalik(props?.pasien)
+
+  // if (props?.pasien?.groups === '1') {
+  //   // if (filterObatPrbBelum.value.length <= 0) {
+  //   //   Dialog.create({
+  //   //     title: 'Konfirmasi',
+  //   //     message: 'Obat belum selesai, apakah akan dilanjutkan?',
+  //   //     ok: true,
+  //   //     cancel: true
+  //   //   })
+  //   // }
+  //   // maping data resep sesuai dengan apa kode bpjs
+  //   // store.saveRujukBalik(props?.pasien)
+  // } else {
+  //   $q.notify({
+  //     type: 'negative',
+  //     message: 'Maaf, Anda tidak terhubung ke BPJS',
+  //     position: 'top-right',
+  //     color: 'negative'
+  //   })
+  // }
 }
 </script>

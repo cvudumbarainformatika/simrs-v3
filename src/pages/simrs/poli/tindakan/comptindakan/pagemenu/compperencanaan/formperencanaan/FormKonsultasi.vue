@@ -30,6 +30,10 @@
           <q-input v-model="store.formKonsul.ket" label="Keterangan" dense outlined standout="bg-yellow-3" />
         </div>
         <div class="col-12">
+          <q-input v-model="store.formKonsul.pertanyaan" label="Pengantar Konsul" outlined standout="bg-yellow-3"
+            type="textarea" autogrow />
+        </div>
+        <div class="col-12">
           <q-separator class=" q-my-md" />
           <div class="text-right q-gutter-sm">
             <q-btn label="Simpan" color="primary" type="submit" :loading="store.loadingSaveKonsul"
@@ -84,8 +88,10 @@ function setTanggalKonsul (val) {
 
 const formRef = ref()
 function simpan () {
-  console.log('ref ', refPoli.value.validate())
+  // console.log('ref ', refPoli.value.validate())
   if (refPoli.value.validate()) {
+    // console.log('form ', store.formKonsul)
+
     store.saveKonsul(props.pasien)
   }
 }

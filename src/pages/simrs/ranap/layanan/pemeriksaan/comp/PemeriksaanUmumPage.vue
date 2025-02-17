@@ -13,7 +13,8 @@
                 <FormPemeriksaanUmum ref="formRef" :pasien="pasien" :kasus="kasus" />
                 <q-separator class="q-my-md" />
                 <div class="flex justify-end">
-                  <q-btn label="Simpan" type="button" color="primary" @click="validate" />
+                  <q-btn :loading="store.loadingSave" :disable="store.loadingSave" label="Simpan" type="button"
+                    color="primary" @click="validate" />
                 </div>
               </q-form>
             </q-card-section>

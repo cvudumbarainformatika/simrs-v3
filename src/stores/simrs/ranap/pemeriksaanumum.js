@@ -398,7 +398,9 @@ export const usePemeriksaanUmumRanapStore = defineStore('pemeriksaan-umum-ranap-
     lengans: ['Fleksi', 'Ekstensi', 'Pergerakan Aktif', 'Pergerakan Tidak Aktif'],
     tungkals: ['Fleksi', 'Ekstensi', 'Pergerakan Aktif', 'Pergerakan Tidak Aktif'],
     rekoilTelingas: ['Rekoil Lambat', 'Rekoil Cepat', 'Rekoil Segera'],
-    grsTelapakKakis: ['Tipis', 'Garis Transversal Anterior', 'Garis 2/3 Anterior', 'Seluruh Telapak Kaki']
+    grsTelapakKakis: ['Tipis', 'Garis Transversal Anterior', 'Garis 2/3 Anterior', 'Seluruh Telapak Kaki'],
+
+    isEdit: false,
 
   }),
   getters: {
@@ -785,7 +787,7 @@ export const usePemeriksaanUmumRanapStore = defineStore('pemeriksaan-umum-ranap-
       const pengunjung = usePengunjungRanapStore()
       pengunjung.injectDataPasien(pasien?.noreg, pushSementara, 'pemeriksaan')
 
-      // console.log('form, jenis kasus', req, jnsKasus)
+      console.log('form, jenis kasus', req, jnsKasus)
 
       try {
         const resp = await api.post('v1/simrs/ranap/layanan/pemeriksaan/simpan', req)
@@ -814,7 +816,7 @@ export const usePemeriksaanUmumRanapStore = defineStore('pemeriksaan-umum-ranap-
 
       const igd = arr?.filter(x => x?.kdruang === 'POL014') ?? []
       const ranap = arr?.filter(x => (x?.kdruang !== 'POL014' && x?.awal === '1')) ?? []
-      const isianKeperawatan = arr?.filter(x => x?.kdruang !== 'POL014' && x?.nakes !== '1' && x?.awal === '1') ?? []
+      // const isianKeperawatan = arr?.filter(x => x?.kdruang !== 'POL014' && x?.nakes !== '1' && x?.awal === '1') ?? []
 
       // console.log('isianKeperawatan :', isianKeperawatan);
 
@@ -826,26 +828,42 @@ export const usePemeriksaanUmumRanapStore = defineStore('pemeriksaan-umum-ranap-
       // const pengunjung = usePengunjungRanapStore()
 
       const isianDokter = ranap.length ? ranap?.filter(x => x?.nakes === '1') : []
+      const isianKeperawatan = ranap.length ? ranap?.filter(x => x?.nakes === '2') : []
+      const isianKebidanan = ranap.length ? ranap?.filter(x => x?.nakes === '3') : []
       // console.log('isianDokter', isianDokter);
 
       // baru ada penyesuaian nakes
       let form = null
       const dokter = (jns === '1' || jns === 1)
+      const perawat = (jns === '2' || jns === 2)
+      const bidan = (jns === '3' || jns === 3)
       if (dokter) {
-        if (isianDokter.length) { form = isianDokter[0] } // jika ada isianDokter, form = isianDokter
-        else { form = isianKeperawatan.length ? isianKeperawatan[0] : null } // jika blm ada isianDokter, form = isianKeperawatan
+        // if (isianDokter?.length) { form = ranap[0] } // form = ranap isianDokter jika ada
+        // else { form = isianKeperawatan.length ? isianKeperawatan[0] : null } // form = isianKeperawatan jika blm ada isianDokter
+        form = isianDokter[0] || isianKeperawatan[0] || isianKebidanan[0] || null
+        if (form) isianDokter.length ? form.id = form.id : form.id = null
       }
-      else { // jika bukan dokter
-        form = isianKeperawatan.length ? isianKeperawatan[0] : null
-      }
+      else if (perawat) {
+        // form = isianKeperawatan?.length ? isianKeperawatan[0] : null
+        form = isianKeperawatan[0] || isianKebidanan[0] || isianDokter[0] || null
+        if (form) isianKeperawatan.length ? form.id = form.id : form.id = null
 
-      if (form) ranap.length ? form.id = form?.id : form.id = null
+      } else if (bidan) {
+
+        form = isianKebidanan[0] || isianKeperawatan[0] || isianDokter[0] || null
+        if (form) isianKebidanan.length ? form.id = form.id : form.id = null
+      }
+      // form = isianDokter[0] || isianKeperawatan[0] || isianKebidanan[0] || null
+      // form.id = null
+      // if (form) ranap.length ? form.id = form?.id : form.id = null
       // const isianList = ranap.length ? ranap[0] : null
 
       // if (isianList) {
       //   pengunjung.injectDataPasien(pasien?.noreg, isianList, 'pemeriksaan')
       //   pengunjung.deleteInjectanNull(pasien?.noreg, 'pemeriksaan')
       // }
+      console.log('form', form);
+
       this.initReset(form)
       // console.log('form', form)
     },

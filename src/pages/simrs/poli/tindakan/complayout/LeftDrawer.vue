@@ -1,55 +1,30 @@
 <template>
-  <q-scroll-area :style="`height: calc(100% - ${tinggiDetailPas + 150}px); margin-top: ${tinggiDetailPas}px; border-right: 1px solid #ddd`">
+  <q-scroll-area
+    :style="`height: calc(100% - ${tinggiDetailPas + 150}px); margin-top: ${tinggiDetailPas}px; border-right: 1px solid #ddd`">
     <q-separator />
-    <ListMenu
-      :key="menu"
-      :menus="menus"
-      :menu="menu"
-      @menu-click="(val) => emits('clickMenu', val)"
-    />
+    <ListMenu :key="menu" :menus="menus" :menu="menu" :pasien="pasien" @menu-click="(val) => emits('clickMenu', val)" />
 
     <div style="margin-bottom: 100px;" />
   </q-scroll-area>
 
-  <div
-    class="absolute-bottom"
-  >
+  <div class="absolute-bottom">
     <SimulasiPageTwo :pasien="pasien" />
   </div>
 
-  <div
-    class="absolute-top bg-dark text-white "
-    :style=" `height: ${tinggiDetailPas}px`"
-  >
+  <div class="absolute-top bg-dark text-white " :style="`height: ${tinggiDetailPas}px`">
     <div class="absolute-top-right">
       <div class="q-pa-sm">
-        <q-btn
-          outline
-          round
-          style="color: goldenrod;"
-          label="id"
-        />
+        <q-btn outline round style="color: goldenrod;" label="id" />
       </div>
     </div>
     <div class="absolute-top">
       <div class="q-pa-sm">
-        <q-badge
-          outline
-          color="orange"
-          :label="`${pasien?.sistembayar?? '-'}`"
-        />
+        <q-badge outline color="orange" :label="`${pasien?.sistembayar ?? '-'}`" />
       </div>
     </div>
     <div class="absolute-bottom">
-      <div
-        class="q-pa-md cursor-pointer"
-        @click="emits('showProfile')"
-      >
-        <app-avatar-pasien
-          :key="pasien"
-          :pasien="pasien"
-          width="50px"
-        />
+      <div class="q-pa-md cursor-pointer" @click="emits('showProfile')">
+        <app-avatar-pasien :key="pasien" :pasien="pasien" width="50px" />
         <div class="text-weight-bold f-12 q-mt-sm">
           {{ pasien ? pasien.nama : '-' }}
         </div>
@@ -57,43 +32,25 @@
           {{ pasien ? pasien.norm : '-' }}
         </div> -->
         <div class="text-teal">
-          {{ pasien ? pasien.noreg : '-' }} || {{ pasien?.norm??'-' }}
+          {{ pasien ? pasien.noreg : '-' }} || {{ pasien?.norm ?? '-' }}
         </div>
         <div class="text-yellow text-italic f-10">
-          {{ pasien?.usia?? '-' }}
+          {{ pasien?.usia ?? '-' }}
         </div>
       </div>
       <q-bar>
         <q-space />
-        <q-btn
-          dense
-          flat
-          icon="icon-mat-attach_money"
-          class="gt-xs"
-          @click="bukaBill"
-        >
+        <q-btn dense flat icon="icon-mat-attach_money" class="gt-xs" @click="bukaBill">
           <q-tooltip class="bg-dark text-white">
             Billing Pasien
           </q-tooltip>
         </q-btn>
-        <q-btn
-          dense
-          flat
-          icon="icon-mat-menu_book"
-          class="gt-xs"
-          @click="emits('icare')"
-        >
+        <q-btn dense flat icon="icon-mat-menu_book" class="gt-xs" @click="emits('icare')">
           <q-tooltip class="bg-dark text-white">
             i-care
           </q-tooltip>
         </q-btn>
-        <q-btn
-          dense
-          flat
-          icon="icon-mat-history"
-          class="gt-xs"
-          @click="emits('historyPasien')"
-        >
+        <q-btn dense flat icon="icon-mat-history" class="gt-xs" @click="emits('historyPasien')">
           <q-tooltip class="bg-dark text-white">
             History Pasien
           </q-tooltip>
@@ -101,13 +58,8 @@
       </q-bar>
     </div>
   </div>
-  <CetakRekapBilling
-    ref="refBilling"
-    v-model="printRekap"
-    :pasien="pasien"
-    style="z-index: 19000;"
-    @tutup="actPrintRekap"
-  />
+  <CetakRekapBilling ref="refBilling" v-model="printRekap" :pasien="pasien" style="z-index: 19000;"
+    @tutup="actPrintRekap" />
 </template>
 
 <script setup>
@@ -135,12 +87,12 @@ defineProps({
   }
 })
 const refBilling = ref(null)
-function bukaBill() {
+function bukaBill () {
   refBilling.value.openFaktur()
   // console.log('ref bill', refBilling.value)
   printRekap.value = true
 }
-function actPrintRekap() {
+function actPrintRekap () {
   printRekap.value = false
 }
 </script>

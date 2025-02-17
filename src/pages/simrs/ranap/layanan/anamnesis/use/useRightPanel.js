@@ -5,7 +5,7 @@ import { useAnamnesisRanapStore } from 'src/stores/simrs/ranap/anamnesis'
 // eslint-disable-next-line no-unused-vars
 import { onMounted, reactive, ref, watch, watchEffect } from 'vue'
 
-export default function useRightPanel (pasien) {
+export default function useRightPanel(pasien) {
   const store = useAnamnesisRanapStore()
   // const pengunjung = usePengunjungRanapStore()
   const auth = useAplikasiStore()
@@ -17,7 +17,8 @@ export default function useRightPanel (pasien) {
 
   const nakes = reactive({
     dokter: !!(auth?.user?.pegawai?.kdgroupnakes === '1' || auth?.user?.pegawai?.kdgroupnakes === 1),
-    perawat: !!(auth?.user?.pegawai?.kdgroupnakes === '2' || auth?.user?.pegawai?.kdgroupnakes === 2)
+    perawat: !!(auth?.user?.pegawai?.kdgroupnakes === '2' || auth?.user?.pegawai?.kdgroupnakes === 2),
+    bidan: !!(auth?.user?.pegawai?.kdgroupnakes === '3' || auth?.user?.pegawai?.kdgroupnakes === 3)
 
   })
 
