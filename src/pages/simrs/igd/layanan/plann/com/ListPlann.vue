@@ -74,6 +74,11 @@
                   </q-item-label>
                 </div>
               </q-item-section>
+              <q-item-section side>
+                <div class="q-gutter-sm">
+                  <q-btn flat round size="sm" icon="icon-mat-delete" color="negative" @click="hapusItem(item.id)" />
+                </div>
+              </q-item-section>
             </q-item>
           </transition-group>
         </q-list>
@@ -83,8 +88,12 @@
 </template>
 
 <script setup>
+import { useQuasar } from 'quasar'
+import { usePlannStore } from 'src/stores/simrs/igd/plann'
 import { computed } from 'vue'
 
+const $q = useQuasar()
+const store = usePlannStore()
 const props = defineProps({
   pasien: {
     type: Object,
@@ -101,21 +110,21 @@ const lists = computed(() => {
   return arr?.sort((a, b) => { return b.id - a.id })
 })
 
-// function hapusItem (id) {
-//   $q.dialog({
-//     dark: true,
-//     title: 'Peringatan',
-//     message: 'Apakah Data ini akan dihapus?',
-//     cancel: true,
-//     persistent: true
-//   }).onOk(() => {
-//     // console.log('OK')
-//     store.deleteData(props.pasien, id)
-//   }).onCancel(() => {
-//     // console.log('Cancel')
-//   }).onDismiss(() => {
-//     // console.log('I am triggered on both OK and Cancel')
-//   })
-// }
+function hapusItem(id) {
+  $q.dialog({
+    dark: true,
+    title: 'Peringatan',
+    message: 'Apakah Data ini akan dihapus?',
+    cancel: true,
+    persistent: true
+  }).onOk(() => {
+    // console.log('OK')
+    store.deleteData(props.pasien, id)
+  }).onCancel(() => {
+    // console.log('Cancel')
+  }).onDismiss(() => {
+    // console.log('I am triggered on both OK and Cancel')
+  })
+}
 
 </script>

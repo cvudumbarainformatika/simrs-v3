@@ -25,6 +25,7 @@ export const usePlannStore = defineStore('plann-store', {
       isi: ([])
     },
     fixednicu: false,
+    fixediccu: false,
 
     selection: [],
     pilihatasx: ['Bayi yang memerlukan O2 < 60%', 'NKB 32-34 mg, kondisi stabil', 'BBL > 1500 gr', 'NKB 34-36 mg', 'kondisi stabil', 'reflek hisap lemah', 'Bayi yang dipuasakan / EKN',
@@ -137,6 +138,21 @@ export const usePlannStore = defineStore('plann-store', {
     setForm(key, val) {
       this.form[key] = val
     },
+    async deleteData(pasien, id) {
+      const payload = { id }
+      try {
+        const resp = await api.post('v1/simrs/planing/igd/hapusplann', payload)
+        // console.log(resp)
+        if (resp.status === 200) {
+          const storePasien = usePengunjungIgdStore()
+          storePasien.hapusDataplanheder(pasien, id)
+          notifSuccess(resp)
+        }
+      }
+      catch (error) {
+        notifErr(error)
+      }
+    }
 
   }
 })

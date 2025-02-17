@@ -1,81 +1,40 @@
 <template>
   <q-dialog @before-show="clearCheck">
-    <q-card
-      style="min-width: 70vw; height: 100vh;"
-      class="full-height"
-    >
+    <q-card style="min-width: 70vw; height: 100vh;" class="full-height">
       <div class="column full-height">
         <div class="col-auto text-white">
           <div class="row items-center justify-between bg-dark q-py-xs q-px-sm">
             <div class="f-20">
               Daftar Pemeriksaan Laborat
             </div>
-            <q-btn
-              v-close-popup
-              icon="icon-mat-close"
-              size="sm"
-              padding="sm"
-              flat
-              rounded
-            />
+            <q-btn v-close-popup icon="icon-mat-close" size="sm" padding="sm" flat rounded />
           </div>
           <div class="row justify-between bg-grey-2 q-py-xs q-px-sm">
-            <q-input
-              v-model="search"
-              label="Cari Pemeriksaan..."
-              dense
-              standout="bg-yellow-3"
-              outlined
-              color="primary"
-              style="width: 40%;"
-            >
+            <q-input v-model="search" label="Cari Pemeriksaan..." dense standout="bg-yellow-3" outlined color="primary"
+              style="width: 40%;">
               <template #prepend>
                 <q-icon name="icon-mat-search" />
               </template>
             </q-input>
-            <q-option-group
-              v-model="group"
-              :options="groups"
-              color="primary"
-              inline
-              class="text-dark"
-            />
+            <q-option-group v-model="group" :options="groups" color="primary" inline class="text-dark" />
           </div>
         </div>
         <div class="col full-height bg-dark text-white">
           <q-scroll-area style="height:calc(100% - 1px);">
-            <q-list
-              bordered
-              separator
-              dark
-              dense
-            >
-              <q-item
-                v-for="item in filterred"
-                :key="item"
-                v-ripple
-                tag="label"
-              >
+            <q-list bordered separator dark dense>
+              <q-item v-for="item in filterred" :key="item" v-ripple tag="label">
                 <q-item-section avatar>
-                  <q-checkbox
-                    v-model="pemeriksaans"
-                    :val="item"
-                    color="teal"
-                    dark
-                    size="xs"
-                  />
+                  <q-checkbox v-model="pemeriksaans" :val="item" color="teal" dark size="xs" />
                 </q-item-section>
                 <q-item-section>
                   <q-item-label>{{ item?.name }}</q-item-label>
                   <q-item-label caption>
-                    <span :class="item?.value?.length > 1?'text-yellow':'text-red'">
-                      {{ item?.value?.length > 1? 'PAKET' : 'NON PAKET' }}
+                    <span :class="item?.value?.length > 1 ? 'text-yellow' : 'text-red'">
+                      {{ item?.value?.length > 1 ? 'PAKET' : 'NON PAKET' }}
                     </span>
                   </q-item-label>
                 </q-item-section>
-                <q-item-section
-                  side
-                >
+                <q-item-section side>
                   <q-item-label caption>
                     Rp. {{ formatRp(item?.value[0].biayapolispesialis) }}
                   </q-item-label>
@@ -84,22 +43,10 @@
             </q-list>
           </q-scroll-area>
         </div>
-        <div
-          class="col-auto"
-        >
+        <div class="col-auto">
           <div class="row items-center justify-end q-pa-sm q-gutter-sm">
-            <q-btn
-              v-close-popup
-              flat
-              label="Batal"
-              color="negative"
-            />
-            <q-btn
-              flat
-              label="Ok"
-              color="primary"
-              @click="submitPemeriksaans"
-            />
+            <q-btn v-close-popup flat label="Batal" color="negative" />
+            <q-btn flat label="Ok" color="primary" @click="submitPemeriksaans" />
           </div>
         </div>
       </div>
@@ -145,6 +92,7 @@ const groups = ref([
 
 const filterred = computed(() => {
   let arr = props?.masters
+  console.log('aaaa', arr)
   if (group.value === 'paket') {
     arr = arr?.filter(x => x.value?.length > 1)
   }
@@ -166,12 +114,12 @@ const filterred = computed(() => {
   return target
 })
 
-function submitPemeriksaans () {
+function submitPemeriksaans() {
   // console.log(pemeriksaans.value)
   emits('ok', pemeriksaans.value)
 }
 
-function clearCheck () {
+function clearCheck() {
   pemeriksaans.value = []
 }
 

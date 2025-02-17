@@ -23,7 +23,7 @@ export const useSkalaTransfer = defineStore('igd-skalatransfer', {
     }
   }),
   actions: {
-    async savePlan (pasien) {
+    async savePlan(pasien) {
       this.loadingForm = true
       this.form.noreg = pasien ? pasien.noreg : ''
       this.form.norm = pasien ? pasien.norm : ''
@@ -45,10 +45,10 @@ export const useSkalaTransfer = defineStore('igd-skalatransfer', {
         notifErr(error)
       }
     },
-    initReset () {
+    initReset() {
       this.form = {}
     },
-    async deleteData (pasien, id) {
+    async deleteData(pasien, id) {
       const payload = { id }
       try {
         const resp = await api.post('v1/simrs/planing/igd/hapusskalatransfer', payload)
@@ -62,6 +62,6 @@ export const useSkalaTransfer = defineStore('igd-skalatransfer', {
       catch (error) {
         notifErr(error)
       }
-    }
+    },
   }
 })
