@@ -19,7 +19,7 @@
             </div>
             <div class="full-width row justify-between items-center">
               <!-- <div v-if="item?.groups !=='2'"> -->
-              <div v-if="item?.groups !== '2'" class="flex q-gutter-sm">
+              <div v-if="item?.groups === '1'" class="flex q-gutter-sm">
                 <q-badge outline class="q-mt-sm q-px-sm" dense :color="!item?.sep ? 'red' : 'primary'">
                   <div class="f-12">
                     {{ !item?.sep ? 'SEP RANAP BELUM TERBIT' : 'SEP RANAP : ' + item?.sep }}
@@ -51,7 +51,7 @@
               <!-- <div v-else> -->
               <q-badge v-else outline class="q-mt-sm q-px-sm" dense color="teal">
                 <div class="f-12">
-                  PASIEN UMUM
+                  PASIEN {{ item?.sistembayar }}
                 </div>
               </q-badge>
               <!-- </div> -->
