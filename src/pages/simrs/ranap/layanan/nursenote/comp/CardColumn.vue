@@ -61,7 +61,7 @@
         <template v-slot:after>
           <q-splitter v-model="insideModel1b" horizontal>
 
-            <!-- form C IMPLEMENTASI -->
+            <!-- form C OBSERVASI -->
             <template v-slot:before>
               <div class="fit q-pa-xs">
                 <q-card flat class="fit column" @mouseleave="setSplitter('insideModel1b', 50)">
