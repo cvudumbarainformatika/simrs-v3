@@ -1,8 +1,9 @@
 <template>
   <div class="full-height q-pa-sm bg-white">
-
-
-    <q-list bordered class="rounded-borders">
+    <div v-if="!pasien?.jawabankonsul || pasien?.jawabankonsul.length == 0">
+      <app-no-data text="Belum ada data konsul" />
+    </div>
+    <q-list v-else bordered class="rounded-borders">
       <template v-for="(item, i) in pasien?.jawabankonsul" :key="item">
         <q-expansion-item expand-separator
           :class="(item?.dibaca_poli_asal === null && item?.jawaban !== null && item?.noreg_lama === pasien?.noreg) ? 'bg-blue-2' : (i % 2 == 0 ? 'bg-grey-4' : 'bg-grey-2')"
