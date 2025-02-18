@@ -1,11 +1,7 @@
 <template>
   <div class="fit ">
-    <template v-if="wip">
-      <div class="column full-height flex-center bg-primary text-white">
-        <div class="f-22 text-bold">MAAF ... MENU INI MASIH TAHAP PENGERJAAN</div>
-        <div class="f-22 text-bold">...</div>
-        <div class="f-22 text-bold">MOHON DIABAIKAN TERLEBIH DAHULU</div>
-      </div>
+    <template v-if="store.loading">
+      <app-loader></app-loader>
     </template>
     <template v-else>
       <div v-if="!store.items.length" class="column full-height flex-center ">
@@ -14,7 +10,7 @@
       <div v-else class="q-py-md column full-height scroll">
         <q-card v-for="item in store.items" :key="item?.id" class="q-mx-sm q-mb-sm" flat bordered>
           <q-list bordered class="rounded-borders">
-            <q-expansion-item>
+            <q-expansion-item hide-expand-icon>
               <template #header>
                 <q-item-section avatar>
                   <q-avatar color="primary" text-color="white">
@@ -32,12 +28,9 @@
 
                 <q-item-section side>
                   <div class="flex q-gutter-lg items-center">
-                    <div v-if="auth?.user?.pegawai?.kdpegsimrs === item?.user">
-                      <q-btn round flat size="sm" icon="icon-mat-delete" color="negative" @click="deleteItem(item)">
-                        <q-tooltip> Hapus </q-tooltip>
-                      </q-btn>
-                    </div>
-                    <div>
+
+
+                    <div class="column text-right">
                       <div class="text-grey-8">
                         <span class="text-weight-bold">Tgl</span> <em class="text-weight-medium"> {{
                           dateFullFormat(item?.created_at) }}</em>
@@ -55,6 +48,12 @@
                           </div>
                         </q-badge>
                       </div>
+                    </div>
+
+                    <div v-if="auth?.user?.pegawai?.kdpegsimrs === item?.user">
+                      <q-btn round flat size="sm" icon="icon-mat-delete" color="negative" @click="deleteItem(item)">
+                        <q-tooltip> Hapus </q-tooltip>
+                      </q-btn>
                     </div>
                   </div>
                 </q-item-section>
@@ -122,6 +121,8 @@ const PHOTO_USER = (row) => {
   return 'http://192.168.100.100/simpeg/foto/' + row?.nip + '/' + row?.foto
 
 }
+
+
 
 
 const $q = useQuasar()
