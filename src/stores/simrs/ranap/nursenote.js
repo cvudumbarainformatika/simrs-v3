@@ -9,7 +9,7 @@ export const useNurseNoteRanapStore = defineStore('nursenote-ranap-store', {
     items: [],
     form: {
       // tindakan
-      tindakan: null,
+      tindakan: [],
       ket: null,
 
       // implementasi
@@ -87,7 +87,7 @@ export const useNurseNoteRanapStore = defineStore('nursenote-ranap-store', {
         this.form[key] = 0
       }
 
-      this.form.tindakan = null
+      this.form.tindakan = []
       this.form.ket = null
       this.form.dx = null
       this.form.reseps = null

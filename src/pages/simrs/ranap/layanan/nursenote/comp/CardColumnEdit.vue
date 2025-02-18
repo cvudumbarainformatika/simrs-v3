@@ -5,13 +5,26 @@
         <q-card flat class="fit bg-white">
           <q-card-section class="q-pa-md">
             <div>
+              <div class="text-bold">TINDAKAN </div>
+              <q-separator class="q-my-sm"></q-separator>
               <div class="text-bold">Tindakan : </div>
-              <div class="q-ml-sm"> {{ item?.tindakan || '-' }}</div>
+              <div class="q-ml-sm"> {{ item?.tindakan?.join(', ') || '-' }}
+                <q-popup-edit fit buttons v-model="item.tindakan" :cover="false" :offset="[0, 10]" class="full-width"
+                  v-slot="scope"></q-popup-edit>
+
+              </div>
+              <autocomplete-input-two v-model="item.tindakan" :options="store.tindakans" option-label="tindakan"
+                option-value="tindakan" :filters-by="['tindakan']" label="Tindakan" multiple @set-model="(val) => {
+                  console.log('val', val);
+
+                }" />
             </div>
             <div>
               <div class="text-bold">Keterangan : </div>
               <div class="q-ml-sm"> {{ item?.keterangan || '-' }}</div>
             </div>
+            <q-separator class="q-my-sm"></q-separator>
+            <div class="text-bold">IMPLEMENTASI </div>
             <q-separator class="q-my-sm"></q-separator>
             <div>
               <div class="text-bold">Implementasi : </div>
@@ -203,6 +216,9 @@
           </q-card-section>
         </q-card>
       </div>
+      <div class="col-12 flex q-pa-sm bg-white q-mt-lg justify-end">
+        <q-btn label="Simpan Perubahan" color="primary"></q-btn>
+      </div>
     </div>
   </div>
 </template>
@@ -215,6 +231,7 @@ import { defineAsyncComponent, onMounted, ref, watchEffect } from 'vue'
 
 const AutocompleteInputTwo = defineAsyncComponent(() => import('src/pages/simrs/ranap/layanan/components/AutocompleteInputTwo.vue'))
 const store = useNurseNoteRanapStore()
+
 
 const props = defineProps({
   pasien: {

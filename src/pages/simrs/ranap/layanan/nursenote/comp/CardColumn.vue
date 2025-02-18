@@ -16,8 +16,7 @@
                   <div class="col fit scroll">
                     <div class="row q-pa-md q-col-gutter-sm">
                       <autocomplete-input-two v-model="store.form.tindakan" :options="store.tindakans"
-                        option-label="tindakan" option-value="tindakan" :filters-by="['tindakan']" label="Tindakan"
-                        @focus="() => {
+                        option-label="tindakan" option-value="tindakan" :filters-by="['tindakan']" multiple @focus="() => {
                           setSplitter('insideModel1a', 100)
                         }" class="col-12" @set-model="(val) => {
                           console.log('val', val);
