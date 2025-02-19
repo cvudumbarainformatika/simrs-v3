@@ -6,6 +6,7 @@ import { api } from 'src/boot/axios'
 export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
   state: () => ({
     loading: false,
+    disable: false,
     dialogCetak: false,
     exportExcel: false,
     loadingDownload: false,

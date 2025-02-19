@@ -23,7 +23,7 @@
         <template v-else>
           <div class="row q-pa-md full-width text-subtitle1 flex-center">
             <q-icon class="q-pr-sm" size="sm" name="icon-mat-warning" />
-            Silahkan Pilih Parameter Dulu
+            Tidak Ada Data! Silahkan Pilih Parameter Dulu!
           </div>
         </template>
       </div>
