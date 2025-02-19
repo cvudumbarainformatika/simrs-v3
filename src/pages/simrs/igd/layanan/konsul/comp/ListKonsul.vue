@@ -71,7 +71,7 @@
                 style="border-left: 1px solid #ddd ;">
                 <div class="flex q-gutter-md">
                   <q-btn v-if="masihBisadiHapus(item)" flat round size="md" icon="icon-mat-delete" color="negative"
-                    @click="hapusItem(item.id)">
+                    @click="hapusItem(item.id, item?.kddokterkonsul)">
                     <q-tooltip>Hapus </q-tooltip>
                   </q-btn>
                   <q-btn flat round size="md" icon="icon-mat-sms_black" color="primary" @click="emits('detail', item)">
@@ -169,7 +169,7 @@ function masihBisadiHapus(item) {
   return hapus
 }
 
-function hapusItem(id) {
+function hapusItem(id, kddokterkonsul) {
   // console.log('id', id)
 
   $q.dialog({
@@ -179,7 +179,7 @@ function hapusItem(id) {
     cancel: true,
     persistent: true
   }).onOk(() => {
-    store.hapusPermintaan(props?.pasien, id)
+    store.hapusPermintaan(props?.pasien, id, kddokterkonsul)
     // console.log('OK')
   }).onCancel(() => {
     // console.log('Cancel')

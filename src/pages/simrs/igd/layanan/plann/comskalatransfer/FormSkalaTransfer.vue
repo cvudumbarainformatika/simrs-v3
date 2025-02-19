@@ -1,30 +1,15 @@
 <template>
   <div class="fit column absolute">
     <div class="col full-height ">
-      <q-card
-        flat
-        bordered
-        square
-        class="full-height "
-        style="overflow: hidden;"
-      >
-        <q-form
-          ref="refForm"
-          @submit="onSubmit"
-          class="column full-height"
-        >
+      <q-card flat bordered square class="full-height " style="overflow: hidden;">
+        <q-form ref="refForm" @submit="onSubmit" class="column full-height">
           <q-card-section class="q-px-md q-py-xs bg-primary text-white col-auto full-width">
             <div class="row items-center justify-between">
               <div class="f-12 text-weight-bold">
                 Form Skala Transfer
               </div>
               <div>
-                <q-btn
-                  flat
-                  dense
-                  size="md"
-                  icon="icon-mat-history"
-                >
+                <q-btn flat dense size="md" icon="icon-mat-history">
                   <q-tooltip class="bg-dark text-white">
                     {{ tooltip }}
                   </q-tooltip>
@@ -36,153 +21,77 @@
             <q-card class="q-px-md q-py-md">
               <div class="row q-mb-sm">
                 <div class="col-6 q-pr-sm">
-                  <q-select
-                    v-model="store.form.haemodinamik"
-                    label="Haemodinamik"
-                    dense
-                    outlined
-                    :options="optionsHaemodinamik"
-                    @update:model-value="(val) => pilihhaemodinamik(val)"
-                    :rules="[val => !!val || 'Harap Diisi terlebih dahulu']"
-                  />
+                  <q-select v-model="store.form.haemodinamik" label="Haemodinamik" dense outlined
+                    :options="optionsHaemodinamik" @update:model-value="(val) => pilihhaemodinamik(val)"
+                    :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" />
                 </div>
                 <div class="col-6">
-                  <q-select
-                    v-model="store.form.cardio"
-                    label="Cardio"
-                    dense
-                    outlined
-                    :options="optionscardio"
+                  <q-select v-model="store.form.cardio" label="Cardio" dense outlined :options="optionscardio"
                     @update:model-value="(val) => pilihcardio(val)"
-                    :rules="[val => !!val || 'Harap Diisi terlebih dahulu']"
-                  />
+                    :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" />
                 </div>
               </div>
               <div class="row q-mb-sm">
                 <div class="col-6 q-pr-sm">
-                  <q-select
-                    v-model="store.form.ecgmonitor"
-                    label="ECG Monitor"
-                    dense
-                    outlined
-                    :options="optionsecgmonitor"
-                    @update:model-value="(val) => pilihecgmonitor(val)"
-                    :rules="[val => !!val || 'Harap Diisi terlebih dahulu']"
-                  />
+                  <q-select v-model="store.form.ecgmonitor" label="ECG Monitor" dense outlined
+                    :options="optionsecgmonitor" @update:model-value="(val) => pilihecgmonitor(val)"
+                    :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" />
                 </div>
                 <div class="col-6">
-                  <q-select
-                    v-model="store.form.intravenusline"
-                    label="Intravenusline"
-                    dense
-                    outlined
-                    :options="optionintravenusline"
-                    @update:model-value="(val) => pilihintravenusline(val)"
-                    :rules="[val => !!val || 'Harap Diisi terlebih dahulu']"
-                  />
+                  <q-select v-model="store.form.intravenusline" label="Intravenusline" dense outlined
+                    :options="optionintravenusline" @update:model-value="(val) => pilihintravenusline(val)"
+                    :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" />
                 </div>
               </div>
               <div class="row q-mb-sm">
                 <div class="col-6 q-pr-sm">
-                  <q-select
-                    v-model="store.form.provesionalpacemaker"
-                    label="Provesional Pacemaker"
-                    dense
-                    outlined
-                    :options="optionprovesionalpacameker"
-                    @update:model-value="(val) => pilihprovesionalpacemaker(val)"
-                    :rules="[val => !!val || 'Harap Diisi terlebih dahulu']"
-                  />
+                  <q-select v-model="store.form.provesionalpacemaker" label="Provesional Pacemaker" dense outlined
+                    :options="optionprovesionalpacameker" @update:model-value="(val) => pilihprovesionalpacemaker(val)"
+                    :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" />
                 </div>
                 <div class="col-6">
-                  <q-select
-                    v-model="store.form.respirasi"
-                    label="Respirasi"
-                    dense
-                    outlined
-                    :options="optioninRespirasi"
+                  <q-select v-model="store.form.respirasi" label="Respirasi" dense outlined :options="optioninRespirasi"
                     @update:model-value="(val) => pilihrespirasi(val)"
-                    :rules="[val => !!val || 'Harap Diisi terlebih dahulu']"
-                  />
+                    :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" />
                 </div>
               </div>
               <div class="row q-mb-sm">
                 <div class="col-6 q-pr-sm">
-                  <q-select
-                    label="Airways"
-                    v-model="store.form.airways"
-                    dense
-                    outlined
-                    :options="optionaitways"
+                  <q-select label="Airways" v-model="store.form.airways" dense outlined :options="optionaitways"
                     @update:model-value="(val) => pilihairways(val)"
-                    :rules="[val => !!val || 'Harap Diisi terlebih dahulu']"
-                  />
+                    :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" />
                 </div>
                 <div class="col-6">
-                  <q-select
-                    label="Respiratory Support"
-                    v-model="store.form.respritarorysupport"
-                    dense
-                    outlined
-                    :options="optioninRespiratory"
-                    @update:model-value="(val) => pilihrespiratory(val)"
-                    :rules="[val => !!val || 'Harap Diisi terlebih dahulu']"
-                  />
+                  <q-select label="Respiratory Support" v-model="store.form.respritarorysupport" dense outlined
+                    :options="optioninRespiratory" @update:model-value="(val) => pilihrespiratory(val)"
+                    :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" />
                 </div>
               </div>
               <div class="row q-mb-sm">
                 <div class="col-6 q-pr-sm">
-                  <q-select
-                    label="Kesadaran"
-                    v-model="store.form.kesadaran"
-                    dense
-                    outlined
-                    :options="optionkesadaran"
+                  <q-select label="Kesadaran" v-model="store.form.kesadaran" dense outlined :options="optionkesadaran"
                     @update:model-value="(val) => pilihkesadaran(val)"
-                    :rules="[val => !!val || 'Harap Diisi terlebih dahulu']"
-                  />
+                    :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" />
                 </div>
                 <div class="col-6">
-                  <q-select
-                    label="Prematuritas"
-                    v-model="store.form.prematurias"
-                    dense
-                    outlined
-                    :options="optioninprematuritas"
-                    @update:model-value="(val) => pilihprematurias(val)"
-                    :rules="[val => !!val || 'Harap Diisi terlebih dahulu']"
-                  />
+                  <q-select label="Prematuritas" v-model="store.form.prematurias" dense outlined
+                    :options="optioninprematuritas" @update:model-value="(val) => pilihprematurias(val)" />
                 </div>
               </div>
               <div class="row q-mb-sm">
                 <div class="col-6 q-pr-sm">
-                  <q-select
-                    label="Lanjut Usia"
-                    v-model="store.form.lanjutusia"
-                    dense
-                    outlined
-                    :options="optionLanjutusia"
-                    @update:model-value="(val) => pilihlanjutusia(val)"
-                    :rules="[val => !!val || 'Harap Diisi terlebih dahulu']"
-                  />
+                  <q-select label="Lanjut Usia" v-model="store.form.lanjutusia" dense outlined
+                    :options="optionLanjutusia" @update:model-value="(val) => pilihlanjutusia(val)" />
                 </div>
                 <div class="col-6">
-                  Total Score Skala Transfer = {{ store.form.scoretotal }} || Derajat Pasien = {{ store.form.drajattransfer }}
+                  Total Score Skala Transfer = {{ store.form.scoretotal }} || Derajat Pasien = {{
+                    store.form.drajattransfer }}
                 </div>
               </div>
             </q-card>
-            <div
-              class="text-right q-mt-md"
-              style="margin-bottom: 50px;"
-            >
-              <app-btn
-                color="primary"
-                label="Simpan"
-                tooltip="Simpan Data"
-                type="submit"
-                tip
-                :loading="store.loadingForm"
-              />
+            <div class="text-right q-mt-md" style="margin-bottom: 50px;">
+              <app-btn color="primary" label="Simpan" tooltip="Simpan Data" type="submit" tip
+                :loading="store.loadingForm" />
             </div>
           </q-card-section>
         </q-form>
@@ -231,7 +140,7 @@ const props = defineProps({
   }
 })
 
-function pilihhaemodinamik (val) {
+function pilihhaemodinamik(val) {
   console.log('val', val)
   if (val === 'Moderat (dengan terapi darah < 15 ml/mnt)') {
     store.form.scorehaemodinamik = 1
@@ -244,7 +153,7 @@ function pilihhaemodinamik (val) {
   }
   hitungscore()
 }
-function pilihcardio (val) {
+function pilihcardio(val) {
   if (val === 'Aritmia (tidak serius) atau IMA onset > 48 jam)') {
     store.form.scorecardio = 1
   }
@@ -256,7 +165,7 @@ function pilihcardio (val) {
   }
   hitungscore()
 }
-function pilihecgmonitor (val) {
+function pilihecgmonitor(val) {
   if (val === 'Perlu') {
     store.form.scoreecgmonitor = 1
   }
@@ -269,7 +178,7 @@ function pilihecgmonitor (val) {
   hitungscore()
 }
 
-function pilihintravenusline (val) {
+function pilihintravenusline(val) {
   if (val === 'Iya') {
     store.form.scoreintravenusline = 1
   }
@@ -282,7 +191,7 @@ function pilihintravenusline (val) {
   hitungscore()
 }
 
-function pilihprovesionalpacemaker (val) {
+function pilihprovesionalpacemaker(val) {
   if (val === 'Iya/Non Invasif') {
     store.form.scoreprovesionalpacemaker = 1
   }
@@ -295,7 +204,7 @@ function pilihprovesionalpacemaker (val) {
   hitungscore()
 }
 
-function pilihrespirasi (val) {
+function pilihrespirasi(val) {
   if (val === 'Antara 15-35 x/mnt') {
     store.form.scorerespirasi = 1
   }
@@ -308,7 +217,7 @@ function pilihrespirasi (val) {
   hitungscore()
 }
 
-function pilihairways (val) {
+function pilihairways(val) {
   if (val === 'Mayo Tube') {
     store.form.scoreairways = 1
   }
@@ -321,7 +230,7 @@ function pilihairways (val) {
   hitungscore()
 }
 
-function pilihrespiratory (val) {
+function pilihrespiratory(val) {
   if (val === 'Terapy O2') {
     store.form.scorerespiratorysupport = 1
   }
@@ -334,7 +243,7 @@ function pilihrespiratory (val) {
   hitungscore()
 }
 
-function pilihkesadaran (val) {
+function pilihkesadaran(val) {
   if (val === 'GCS 8-14') {
     store.form.scorekesadaran = 1
   }
@@ -347,7 +256,7 @@ function pilihkesadaran (val) {
   hitungscore()
 }
 
-function pilihprematurias (val) {
+function pilihprematurias(val) {
   if (val === 'Bayi baru lahir dengan BB antara 1200 - 2000 gr') {
     store.form.scoreprematurias = 1
   }
@@ -360,7 +269,7 @@ function pilihprematurias (val) {
   hitungscore()
 }
 
-function pilihlanjutusia (val) {
+function pilihlanjutusia(val) {
   if (val === 'Usia > 60 tahun') {
     store.form.scorelanjutusia = 1
   }
@@ -373,10 +282,10 @@ function pilihlanjutusia (val) {
   hitungscore()
 }
 
-function hitungscore () {
+function hitungscore() {
   store.form.scoretotal = parseInt(store.form.scorehaemodinamik) + parseInt(store.form.scorecardio) + parseInt(store.form.scoreecgmonitor) + parseInt(store.form.scoreintravenusline) + parseInt(store.form.scoreprovesionalpacemaker) +
-                          parseInt(store.form.scorerespirasi) + parseInt(store.form.scoreairways) + parseInt(store.form.scorerespiratorysupport) + parseInt(store.form.scorekesadaran) +
-                           parseInt(store.form.scoreprematurias) + parseInt(store.form.scorelanjutusia)
+    parseInt(store.form.scorerespirasi) + parseInt(store.form.scoreairways) + parseInt(store.form.scorerespiratorysupport) + parseInt(store.form.scorekesadaran) +
+    parseInt(store.form.scoreprematurias) + parseInt(store.form.scorelanjutusia)
   if (store.form.scoretotal >= 0 && store.form.scoretotal < 2) {
     store.form.drajattransfer = '0'
   }
@@ -394,7 +303,7 @@ function hitungscore () {
   }
 }
 
-function onSubmit () {
+function onSubmit() {
   // console.log(props.pasien)
   store.savePlan(props.pasien).then(() => {
     refForm.value.resetValidation()

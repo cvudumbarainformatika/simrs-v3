@@ -31,7 +31,7 @@ export const useKonsulIgdStore = defineStore('konsul-igd-store', {
   // },
   actions: {
 
-    async saveData (pasien) {
+    async saveData(pasien) {
       if (!pasien?.kodedokter) {
         return notifErrVue('kode Dokter masih kosong, silahkan tutup dulu pasien ini kemudian tekan tombol refresh di pojok kanan atas')
       }
@@ -65,16 +65,17 @@ export const useKonsulIgdStore = defineStore('konsul-igd-store', {
       }
     },
 
-    async hapusPermintaan (pasien, id) {
+    async hapusPermintaan(pasien, id, kddokterkonsul) {
+      // console.log('sasa', pasien)
       this.loadingHapus = true
 
       if (!id) {
         return notifErrVue('Tidak dapat dihapus')
       }
 
-      const payload = { noreg: pasien?.noreg, id }
+      const payload = { noreg: pasien?.noreg, id, kddokterkonsul }
       try {
-        const resp = await api.post('v1/simrs/ranap/layanan/konsultasi/hapusdata', payload)
+        const resp = await api.post('v1/simrs/konsuldokter/igd/hapusdata', payload)
         this.loadingHapus = false
         // console.log(resp)
         if (resp.status === 200) {
@@ -91,7 +92,7 @@ export const useKonsulIgdStore = defineStore('konsul-igd-store', {
       }
     },
 
-    initReset () {
+    initReset() {
       this.form = {
         dokterkonsul: null,
         kduntuk: '1',
