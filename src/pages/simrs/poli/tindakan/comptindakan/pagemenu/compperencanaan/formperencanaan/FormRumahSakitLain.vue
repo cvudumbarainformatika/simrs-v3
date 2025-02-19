@@ -170,6 +170,8 @@ async function getFaskesPasien () {
       }
       optionsRs.value.push(faskes)
       store.formRsLain.ppkdirujuk = faskes.kode
+      store.formRsLain.ppkdirujukx = faskes.nama
+      store.formRsLain.namappkdirujuk = faskes.nama
     })
 }
 const refCatat = ref(null)

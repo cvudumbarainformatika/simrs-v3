@@ -36,7 +36,7 @@
               <q-tab-panels v-model="innerTab" animated swipeable vertical transition-prev="jump-up"
                 transition-next="jump-up" class="bg-indigo-1 fit">
                 <q-tab-panel v-for="menu in menus" :key="menu.name" :name="menu?.name" class="fit q-pa-none">
-                  <component :is="menu?.comp" :pasien="pasien" :menu="menu" :kasus="kasus" />
+                  <component :is="menu?.comp" :pasien="pasien" :menu="menu" :kasus="kasus" :data-header="dataHeader" />
                 </q-tab-panel>
               </q-tab-panels>
             </div>
@@ -107,6 +107,16 @@ const menus = ref([
     comp: shallowRef(defineAsyncComponent(() => import('./kematian/IndexPage.vue')))
   }
 
+])
+
+
+const dataHeader = ref([
+  'PEMERINTAH KOTA PROBOLINGGO',
+  'DINAS KESEHATAN, PENGENDALIAN PENDUDUK DAN KELUARGA BERENCANA',
+  'RSUD DOKTER MOHAMMAD SALEH',
+  'Jalan Mayjend Panjaitan No.65 Telp : (0335) 433119,421118 Fax. (0335) 432705',
+  'e-mail : rsudprob@probolinggokota.go.id',
+  'PROBOLINGGO 67219'
 ])
 
 const props = defineProps({
