@@ -7,7 +7,10 @@
       </div>
     </div>
     <div class="col full-height q-pa-md scroll">
-      <DokPage id="assessmentawalmedis" ref="refResume" :pasien="pasien" :menu="menu" :kasus="kasus" />
+      <NeonatalPage v-if="kasus?.medis === '5.3'" id="assessmentawalmedis" ref="refResume" :pasien="pasien" :menu="menu"
+        :kasus="kasus" :data-header="dataHeader" />
+      <DokPage v-else id="assessmentawalmedis" ref="refResume" :pasien="pasien" :menu="menu" :kasus="kasus"
+        :data-header="dataHeader" />
     </div>
   </div>
 </template>
@@ -16,8 +19,10 @@
 import { defineAsyncComponent, ref } from 'vue'
 
 const DokPage = defineAsyncComponent(() => import('./DokPage.vue'))
+const NeonatalPage = defineAsyncComponent(() => import('./NeonatalPage.vue'))
 
 const refResume = ref()
+
 
 const printObj = {
   id: 'assessmentawalmedis',
@@ -25,7 +30,7 @@ const printObj = {
 
 }
 
-defineProps({
+const props = defineProps({
   pasien: {
     type: Object,
     default: null
@@ -37,7 +42,15 @@ defineProps({
   kasus: {
     type: Object,
     default: null
+  },
+  dataHeader: {
+    type: Array,
+    default: null
   }
 })
+
+
+
+console.log('props', props?.kasus);
 
 </script>
