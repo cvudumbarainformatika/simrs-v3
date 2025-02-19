@@ -100,7 +100,7 @@
           </div>
           <div class="row items-center justify-between q-mb-xs">
             <div class="col-3">
-              Tanggal Rencana {{ toItem?.rs4 }}
+              Tanggal Rencana {{ setNama(toItem) }}
             </div>
             <div class="col-9">
               : {{ setTgl(toItem) }}
@@ -194,7 +194,8 @@ function setKepada (val) {
   }
   else if (val?.rs4 === 'Rumah Sakit Lain') {
     if (val?.transrujukan) {
-      return 'Poli ' + val?.transrujukan?.poli + ', ' + val?.transrujukan?.rs7
+      if (val?.transrujukan?.rs11 == '2') return 'Faskes ' + val?.transrujukan?.rs7
+      else return 'Poli ' + val?.transrujukan?.poli + ', ' + val?.transrujukan?.rs7
     }
     else { return '-' }
   }
@@ -278,6 +279,15 @@ function setTgl (val) {
 function setNama (val) {
   if (val?.rs4 === 'Konsultasi') {
     const nama = val?.listkonsul ? 'Konsultasi' : 'Konsultasi Internal'
+    // console.log(val, props.pasien)
+    return nama
+  } if (val?.rs4 === 'Rumah Sakit Lain') {
+    // if (val?.transrujukan) {
+    //   if (val?.transrujukan?.rs11 == '2') return val?.transrujukan?.rs7
+    //   else return 'Poli ' + val?.transrujukan?.poli + ', ' + val?.transrujukan?.rs7
+    // }
+    // else { return '-' }
+    const nama = val?.transrujukan?.rs11 == '2' ? 'Rujuk Balik (Non PRB)' : val?.rs4
     // console.log(val, props.pasien)
     return nama
   } else {
