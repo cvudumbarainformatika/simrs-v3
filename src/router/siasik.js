@@ -38,8 +38,24 @@ const siasik = {
     },
     {
       path: '/siasik/ls/serahterima',
-      // name: 'siasik.saldo',
-      component: () => import('pages/siasik/transaksi/ls/serahterima/IndexPage.vue')
+      name: 'siasik.ls.serahterima',
+      component: () => import('pages/siasik/transaksi/ls/serahterima/IndexPage.vue'),
+      children: [
+        { path: '', name: 'serahterima', redirect: '/siasik/ls/serahterima/formserahterima' },
+        {
+          path: '/siasik/ls/serahterima/formserahterima',
+          name: 'siasik.ls.serahterima.formserahterima',
+          component: () =>
+            import('src/pages/siasik/transaksi/ls/serahterima/FormInput/IndexPage.vue')
+        },
+        {
+          path: '/siasik/ls/serahterima/listserahterima',
+          name: 'siasik.ls.serahterima.listserahterima',
+          component: () =>
+            import('src/pages/siasik/transaksi/ls/serahterima/ListData/IndexPage.vue')
+        },
+
+      ]
     },
     {
       path: '/siasik/ls/npdls',
