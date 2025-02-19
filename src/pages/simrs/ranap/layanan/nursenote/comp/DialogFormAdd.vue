@@ -29,10 +29,7 @@
         </div>
 
         <div class="col full-height bg-grey-4">
-
           <card-column :pasien="pasien" :kasus="kasus" />
-
-
         </div>
 
         <div class="col-auto bg-primary q-pa-md">
@@ -40,8 +37,8 @@
             <q-btn rounded outline color="orange" icon="icon-mat-arrow_back" v-close-popup>
               <span class="text-orange q-ml-sm">Kembali </span>
             </q-btn>
-            <q-btn :loading="store.loading" :disabled="store.loading" type="submit" rounded outline color="white"
-              icon="icon-mat-save">
+            <q-btn :loading="store.loadingSave" :disabled="store.loadingSave" type="submit" rounded outline
+              color="white" icon="icon-mat-save">
               <span class=" q-ml-sm">Simpan Catatan </span>
             </q-btn>
           </div>

@@ -7,113 +7,49 @@
       <q-separator class="q-my-md" />
       <div class="row full-width">
         <div class="row q-col-gutter-sm">
-          <app-input-date
-            :model="store.form.tanggal"
-            label="Tanggal"
-            icon="icon-mat-event"
-            outlined
-            @set-model="val=>store.form.tanggal=val"
-            :autofocus="true"
-            class="col-4"
-          />
-          <app-autocomplete-new
-            ref="refPerawat"
-            :model="store.form.kdDokter"
-            label="Pelaksana Tindakan"
-            autocomplete="nama"
-            option-value="kdpegsimrs"
-            option-label="nama"
-            outlined
-            :source="store.dokters"
-            class="col-8"
-            @on-select="(val)=> {
+          <app-input-date :model="store.form.tanggal" label="Tanggal" icon="icon-mat-event" outlined
+            @set-model="val => store.form.tanggal = val" :autofocus="true" class="col-4" />
+          <app-autocomplete-new ref="refPerawat" :model="store.form.kdDokter" label="Pelaksana Tindakan"
+            autocomplete="nama" option-value="kdpegsimrs" option-label="nama" outlined :source="store.dokters"
+            class="col-8" @on-select="(val) => {
               store.form.kdDokter = val
               store.form.pelaksana = store.dokters?.find(item => item.kdpegsimrs === val)?.nama
-            }"
-            @clear="()=> {
+            }" @clear="() => {
               store.form.kdDokter = null
               store.form.pelaksana = null
-            }"
-          />
-          <app-autocomplete-new
-            ref="refPerawat"
-            :model="store.form.kdPetugas"
-            label="Pemberi Informasi"
-            autocomplete="nama"
-            option-value="kdpegsimrs"
-            option-label="nama"
-            outlined
-            :source="store.nonNakes"
-            class="col-6"
-            @on-select="(val)=> {
+            }" />
+          <app-autocomplete-new ref="refPerawat" :model="store.form.kdPetugas" label="Pemberi Informasi"
+            autocomplete="nama" option-value="kdpegsimrs" option-label="nama" outlined :source="store.perawats"
+            class="col-6" @on-select="(val) => {
               store.form.kdPetugas = val
               store.form.pengedukasi = store.nonNakes?.find(item => item?.kdpegsimrs === val)?.nama
-            }"
-            @clear="()=> {
+            }" @clear="() => {
               store.form.kdPetugas = null
               store.form.pengedukasi = null
-            }"
-          />
+            }" />
 
-          <q-select
-            label="Pilih Penerima Informasi / Pemberi Persetujuan"
-            outlined
-            standout="bg-yellow-3"
-            dense
-            class="col-6"
-            :options="store.hubunganDgPasiens"
-            v-model="store.form.hubunganDgPasien"
-            @update:model-value="cekHubunganPasien"
-          />
-          <app-input-simrs
-            v-if="store.form.hubunganDgPasien === 'Keluarga'" v-model="store.form.keluarga"
-            label="Jelaskan Hubungan Keluarga dengan Pasien" class="col-12"
-          />
-          <app-input-simrs
-            v-model="store.form.nama"
-            label="Nama Penerima Informasi / Pemberi Persetujuan" class="col-8"
-          />
+          <q-select label="Pilih Penerima Informasi / Pemberi Persetujuan" outlined standout="bg-yellow-3" dense
+            class="col-6" :options="store.hubunganDgPasiens" v-model="store.form.hubunganDgPasien"
+            @update:model-value="cekHubunganPasien" />
+          <app-input-simrs v-if="store.form.hubunganDgPasien === 'Keluarga'" v-model="store.form.keluarga"
+            label="Jelaskan Hubungan Keluarga dengan Pasien" class="col-12" />
+          <app-input-simrs v-model="store.form.nama" label="Nama Penerima Informasi / Pemberi Persetujuan"
+            class="col-8" />
           <div class="col-4">
-            <q-radio class="q-ml-sm" size="md" v-model="store.form.lp" v-for="aa in store.jekels" :key="aa" :label="aa?.label" :val="aa?.value" />
+            <q-radio class="q-ml-sm" size="md" v-model="store.form.lp" v-for="aa in store.jekels" :key="aa"
+              :label="aa?.label" :val="aa?.value" />
           </div>
-          <app-input-simrs
-            v-model="store.form.noKtp"
-            label="Nik/SIM/PASSPORT" class="col-4"
-          />
-          <app-input-date
-            :model="store.form.tglLahir"
-            label="Tanggal Lahir"
-            icon="icon-mat-event"
-            outlined
-            @set-model="val=>store.form.tglLahir=val"
-            :autofocus="false"
-            class="col-4"
-          />
-          <app-input-simrs
-            v-model="store.form.telepon"
-            label="No Telp / Hp" class="col-4"
-          />
-          <q-input
-            v-model="store.form.alamat"
-            label="Alamat"
-            outlined
-            standout="bg-yellow-3"
-            rows="3"
-            type="textarea"
-            class="col-12"
-          />
+          <app-input-simrs v-model="store.form.noKtp" label="Nik/SIM/PASSPORT" class="col-4" />
+          <app-input-date :model="store.form.tglLahir" label="Tanggal Lahir" icon="icon-mat-event" outlined
+            @set-model="val => store.form.tglLahir = val" :autofocus="false" class="col-4" />
+          <app-input-simrs v-model="store.form.telepon" label="No Telp / Hp" class="col-4" />
+          <q-input v-model="store.form.alamat" label="Alamat" outlined standout="bg-yellow-3" rows="3" type="textarea"
+            class="col-12" />
 
           <!-- Diagnosis -->
 
-          <q-input
-            v-model="store.form.indikasi"
-            label="Pengertian"
-            outlined
-            standout="bg-yellow-3"
-            rows="3"
-            type="textarea"
-            class="col-12"
-          />
+          <q-input v-model="store.form.indikasi" label="Pengertian" outlined standout="bg-yellow-3" rows="3"
+            type="textarea" class="col-12" />
 
           <!-- <div class="text-bold">
             Pilih Tujuan Tindakan
@@ -204,11 +140,8 @@
             <q-radio class="q-ml-sm" size="md" v-model="store.form.setuju" v-for="aa in store.iyaTidaks" :key="aa" :label="aa" :val="aa" />
           </div> -->
 
-          <app-input-simrs
-            v-model="store.form.saksiPasien"
-            label="Nama Saksi Pasien" class="col-6"
-            :valid="{required:false}"
-          />
+          <app-input-simrs v-model="store.form.saksiPasien" label="Nama Saksi Pasien" class="col-6"
+            :valid="{ required: false }" />
 
           <!-- Tanda Tangan -->
 
@@ -282,13 +215,11 @@
                   <div v-if="!store.form.ttdYgMenyatakan" class="absolute-center">
                     Ttd yg Menyatakan
                   </div>
-                  <TtdWacom
-                    uuid="ttd-yg-menyatakan" :ttd-name="store.form.nama ?? 'yg menyatakan'"
-                    @signature:ttd-yg-menyatakan="(val)=> {
+                  <TtdWacom uuid="ttd-yg-menyatakan" :ttd-name="store.form.nama ?? 'yg menyatakan'"
+                    @signature:ttd-yg-menyatakan="(val) => {
                       // console.log('ttd yg menyatakan',val);
                       store.form.ttdYgMenyatakan = val
-                    }"
-                  />
+                    }" />
                 </div>
               </div>
               <div class="col-6" bordered style="min-height: 150px; border: 1px solid #ccc;">
@@ -296,13 +227,11 @@
                   <div v-if="!store.form.ttdSaksiPasien" class="absolute-center">
                     Ttd Saksi Pasien
                   </div>
-                  <TtdWacom
-                    uuid="ttd-saksi-pasien" :ttd-name="store.form.saksiPasien ?? 'saksi pasien'"
-                    @signature:ttd-saksi-pasien="(val)=> {
+                  <TtdWacom uuid="ttd-saksi-pasien" :ttd-name="store.form.saksiPasien ?? 'saksi pasien'"
+                    @signature:ttd-saksi-pasien="(val) => {
                       // console.log('ttd-saksi-pasien',val);
                       store.form.ttdSaksiPasien = val
-                    }"
-                  />
+                    }" />
                 </div>
               </div>
               <div class="col-6" bordered style="min-height: 150px; border: 1px solid #ccc;">
@@ -310,13 +239,10 @@
                   <div v-if="!store.form.ttdDokter" class="absolute-center">
                     Ttd Dokter
                   </div>
-                  <TtdWacom
-                    uuid="ttd-dokter" :ttd-name="store.form.pelaksana ?? 'nama dokter'"
-                    @signature:ttd-dokter="(val)=> {
-                      // console.log('ttd-dokter',val);
-                      store.form.ttdDokter = val
-                    }"
-                  />
+                  <TtdWacom uuid="ttd-dokter" :ttd-name="store.form.pelaksana ?? 'nama dokter'" @signature:ttd-dokter="(val) => {
+                    // console.log('ttd-dokter',val);
+                    store.form.ttdDokter = val
+                  }" />
                 </div>
               </div>
               <div class="col-6" bordered style="min-height: 150px; border: 1px solid #ccc;">
@@ -324,13 +250,11 @@
                   <div v-if="!store.form.ttdPetugas" class="absolute-center">
                     Ttd Saksi RS
                   </div>
-                  <TtdWacom
-                    uuid="ttd-saksi-rs" :ttd-name="store.form.pengedukasi ?? 'nama saksi rs'"
-                    @signature:ttd-saksi-rs="(val)=> {
+                  <TtdWacom uuid="ttd-saksi-rs" :ttd-name="store.form.pengedukasi ?? 'nama saksi rs'"
+                    @signature:ttd-saksi-rs="(val) => {
                       // console.log('ttd-saksi-rs',val);
                       store.form.ttdPetugas = val
-                    }"
-                  />
+                    }" />
                 </div>
               </div>
             </div>
@@ -340,15 +264,8 @@
     </q-card-section>
 
     <q-card-actions align="right" class="q-pa-md ">
-      <q-btn
-        :loading="store.loadingForm"
-        :disable="store.loadingForm"
-        label="Simpan Inform Concern"
-        type="button"
-        color="primary"
-        class="q-mb-xl"
-        @click="onSubmit"
-      />
+      <q-btn :loading="store.loadingForm" :disable="store.loadingForm" label="Simpan Inform Concern" type="button"
+        color="primary" class="q-mb-xl" @click="onSubmit" />
     </q-card-actions>
   </q-form>
 </template>
@@ -425,7 +342,7 @@ const cekHubunganPasien = () => {
 //   })
 // }
 
-function onSubmit () {
+function onSubmit() {
   store.saveData(props?.pasien, props?.menu?.name)
 }
 

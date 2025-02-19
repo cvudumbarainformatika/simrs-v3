@@ -2,7 +2,8 @@
   <q-select :dense="dense" standout="bg-yellow-3 text-black" outlined :label="label" :option-label="optionLabel"
     :placeholder="placeholder" :option-value="optionValue" :options="optionx" use-input :use-chips="useChips"
     map-options emit-value input-debounce="0" hide-bottom-space hide-dropdown-icon @filter="filterFn"
-    :rules="[requiredRule]" @update:model-value="(val) => emits('setModel', val)" @new-value="createValue" />
+    :rules="[requiredRule]" @update:model-value="(val) => emits('setModel', val)" @new-value="createValue"
+    :multiple="multiple" />
 </template>
 <script setup>
 import { onMounted, ref } from 'vue';
@@ -10,7 +11,7 @@ import { onMounted, ref } from 'vue';
 const props = defineProps({
   label: {
     type: String,
-    default: 'label'
+    default: ''
   },
   options: {
     type: Array,
@@ -45,6 +46,10 @@ const props = defineProps({
     default: 'Harap Enter'
   },
   dense: {
+    type: Boolean,
+    default: false
+  },
+  multiple: {
     type: Boolean,
     default: false
   }

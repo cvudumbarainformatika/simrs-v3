@@ -110,7 +110,7 @@ export const useConcernOperasiInvasifRanapStore = defineStore('concern-operasi-i
   // },
   actions: {
 
-    async saveData (pasien, jns) {
+    async saveData(pasien, jns) {
       // if (!pasien?.kodedokter) {
       //   return notifErrVue('kode Dokter masih kosong, silahkan tutup dulu pasien ini kemudian tekan tombol refresh di pojok kanan atas')
       // }
@@ -145,7 +145,7 @@ export const useConcernOperasiInvasifRanapStore = defineStore('concern-operasi-i
       }
     },
 
-    async deleteData (pasien, id) {
+    async deleteData(pasien, id) {
       this.loadingHapus = true
 
       if (!id) {
@@ -171,7 +171,7 @@ export const useConcernOperasiInvasifRanapStore = defineStore('concern-operasi-i
       }
     },
 
-    initReset (pasien) {
+    initReset(pasien) {
       const hariIni = date.formatDate(Date.now(), 'YYYY-MM-DD')
       this.form = {
         tanggal: hariIni,
@@ -245,6 +245,7 @@ export const useConcernOperasiInvasifRanapStore = defineStore('concern-operasi-i
 
       const pengunjung = usePengunjungRanapStore()
       this.dokters = pengunjung?.nakes?.filter(x => x?.kdgroupnakes === '1') ?? []
+      // this.perawats = pengunjung?.nakes
       this.perawats = pengunjung?.nakes?.filter(x => x?.kdgroupnakes === '2' || x?.kdgroupnakes === '3') ?? []
       this.nonNakes = pengunjung?.nonNakes
 
