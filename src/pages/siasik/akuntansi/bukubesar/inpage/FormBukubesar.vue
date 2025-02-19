@@ -60,7 +60,7 @@
       <q-select v-model="store.form.kode" use-input outlined standout="bg-yellow-3" dense emit-value map-options
         option-value="kodeall3" input-debounce="0" label="Pilih Rekening" class="ellipsis-2-lines" :options="options"
         :option-label="opt => Object(opt) === opt && 'kodeall3' in opt ? opt.kodeall3 + ' - ' + opt.uraian : ''"
-        :disable="store.loading || !store.alllevel.length || !store.optionrekening.length && store.reqs.jenisbukubesar === 1"
+        :disable="store.loading && !store.alllevel.length || !store.optionrekening.length && store.reqs.jenisbukubesar === 1"
         :loading="store.loading && !store.alllevel.length" @filter="filterFn"
         @clear="store.setFormRekening('kode', null)" @update:model-value="(val) => {
           store.reqs.rekenings = val
@@ -120,7 +120,7 @@
 import { useQuasar } from 'quasar'
 import { useBukubesarStore } from 'src/stores/siasik/akuntansi/bukubesar/bukubesar'
 // eslint-disable-next-line no-unused-vars
-import { defineAsyncComponent, onMounted, ref, watchEffect } from 'vue'
+import { defineAsyncComponent, onBeforeMount, onMounted, ref, watchEffect } from 'vue'
 
 const CetakBukubesar = defineAsyncComponent(() => import('../printbukubesar/PrintBukubesar.vue'))
 // eslint-disable-next-line no-unused-vars
@@ -163,15 +163,21 @@ const printbb = ref(null)
 function cetakData() {
   store.dialogCetak = true
 }
-onMounted(() => {
-  Promise.all([
-    store.getAkun(),
-    options.value = store.optionrekening
+onBeforeMount(() => {
+  store.getAkun()
+  options.value = store.optionrekening
 
 
-    // store.getDataBukubesar()
-  ])
 })
+// onMounted(() => {
+//   Promise.all([
+//     // store.getAkun(),
+
+
+
+//     // store.getDataBukubesar()
+//   ])
+// })
 
 function filterFn(val, update, abort) {
   console.log('val filter', val)
