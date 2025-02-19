@@ -1,40 +1,20 @@
 <template>
   <div>
-    <DataPasien
-      ref="refDataPasien"
-      :tglsep="register.paramDpjp.tglsep"
-      :full="style.componentfull"
-      :pelayanan="pelayanan"
-      :sistembayar="register.sistembayars"
-      @ganti-pasien="clearFormRegistrasi"
-      @full-screen="style.setComponentFull"
-    />
+    <DataPasien ref="refDataPasien" :tglsep="register.paramDpjp.tglsep" :full="style.componentfull"
+      :pelayanan="pelayanan" :sistembayar="register.sistembayars" :poli="POL014" @ganti-pasien="clearFormRegistrasi"
+      @full-screen="style.setComponentFull" />
     <!-- @bisa-simpan="bisaSimpan" -->
-    <FormRegistrasi
-      ref="refRegistrasi"
-      :pelayanan="pelayanan"
-    />
+    <FormRegistrasi ref="refRegistrasi" :pelayanan="pelayanan" />
     <!-- @bisa-simpan="simpanRegistrasi" -->
-    <q-card
-      class="full-width q-pb-xl"
-      flat
-    >
+    <q-card class="full-width q-pb-xl" flat>
       <q-card-actions align="right">
         <div class="q-mr-xl">
-          <app-btn
-            label="Simpan Form"
-            :loading="pasien.loading"
-            :disable="pasien.loading"
-            @click="simpanData"
-          />
+          <app-btn label="Simpan Form" :loading="pasien.loading" :disable="pasien.loading" @click="simpanData" />
         </div>
       </q-card-actions>
     </q-card>
   </div>
-  <gelang-pasien-page
-    v-model="cetakdialog"
-    :patien="patien"
-  />
+  <gelang-pasien-page v-model="cetakdialog" :patien="patien" />
 </template>
 <script setup>
 import DataPasien from 'src/pages/simrs/pendaftaran/form/pasien/DataPasien.vue'
@@ -53,13 +33,13 @@ const pelayanan = 'igd'
 
 const refDataPasien = ref(null)
 const refRegistrasi = ref(null)
-function clearFormRegistrasi () {
+function clearFormRegistrasi() {
   register.clearForm()
   refDataPasien.value.clearForm()
 }
 
 const style = useStyledStore()
-function simpanData (val) {
+function simpanData(val) {
   const dataPasien = refDataPasien.value.set()
   const dataRegis = refRegistrasi.value.set()
   console.log(
@@ -85,7 +65,7 @@ function simpanData (val) {
   // console.log('form pasien ', pasien.form)
 }
 
-function cetakgelang (val) {
+function cetakgelang(val) {
   patien.value = val
   cetakdialog.value = true
 }
@@ -121,7 +101,7 @@ const patien = ref(null)
 // }
 
 // eslint-disable-next-line no-unused-vars
-function cetakidentitas () {
+function cetakidentitas() {
   console.log('form registrasi', pasien.form)
   Dialog.value = false
 }
