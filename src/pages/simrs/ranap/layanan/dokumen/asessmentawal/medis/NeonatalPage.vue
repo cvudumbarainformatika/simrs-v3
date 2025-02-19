@@ -33,14 +33,8 @@
           </div>
         </div>
         <div class="col-3 f-14">
-          <div class="text-center text-bold">
-            {{ menu?.title }}
-          </div>
-          <div class="text-center text-bold">
-            RAWAT INAP
-          </div>
-          <div class="text-center text-bold">
-            {{ kasus?.uraian.toUpperCase() }}
+          <div class="flex q-gutter-x-sm">
+            <div>Nama</div>
           </div>
         </div>
       </div>

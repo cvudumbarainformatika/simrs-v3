@@ -64,13 +64,13 @@ export const useNurseNoteRanapStore = defineStore('nursenote-ranap-store', {
       ufg: 0,
       produksigc: 0,
 
-
     },
     tindakans: [],
     petugas: [],
     isForm: false,
     dialogPreview: false,
-    loadingSave: false
+    loadingSave: false,
+    loading: false
   }),
   getters: {
     doubleCount: (state) => state.counter * 2
@@ -107,23 +107,29 @@ export const useNurseNoteRanapStore = defineStore('nursenote-ranap-store', {
 
     },
 
-    simpanData(pasien) {
+    simpanData(pasien, update, balance) {
       this.loadingSave = true
       this.form.noreg = pasien?.noreg || null
       this.form.norm = pasien?.norm || null
       this.form.kdruang = pasien?.kdruangan || null
+      let form = this.form
+      if (update) {
+        form = update
+      }
 
       // console.log('this.form', this.form);
 
       return new Promise((resolve, reject) => {
-        api.post('/v1/simrs/ranap/layanan/nursenote/simpan', this.form)
+        api.post('/v1/simrs/ranap/layanan/nursenote/simpan', form)
           .then((res) => {
             console.log('res', res);
 
             this.loadingSave = false
-            this.items.unshift(res?.data?.result)
+
+            if (!update) { this.items.unshift(res?.data?.result) }
+
             this.initForm()
-            notifSuccess('Simpan Data Berhasil')
+            if (!balance) { notifSuccess('Simpan Data Berhasil') }
             resolve(res)
           })
           .catch((err) => {
@@ -135,7 +141,7 @@ export const useNurseNoteRanapStore = defineStore('nursenote-ranap-store', {
 
 
     async getData(pasien) {
-
+      this.loading = true
       const params = {
         params: {
           noreg: pasien?.noreg
@@ -143,12 +149,15 @@ export const useNurseNoteRanapStore = defineStore('nursenote-ranap-store', {
       }
       try {
         const resp = await api.get('v1/simrs/ranap/layanan/nursenote/list', params)
-        console.log('resp nursenote list', resp)
+        // console.log('resp nursenote list', resp)
         if (resp.status === 200) {
           this.items = resp.data
         }
+        this.loading = false
       } catch (error) {
         console.log('error', error);
+
+        this.loading = false
 
       }
 
