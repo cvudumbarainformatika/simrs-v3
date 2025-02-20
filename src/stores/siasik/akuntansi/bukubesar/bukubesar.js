@@ -6,6 +6,7 @@ import { api } from 'src/boot/axios'
 export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
   state: () => ({
     loading: false,
+    disable: false,
     dialogCetak: false,
     exportExcel: false,
     loadingDownload: false,
@@ -88,18 +89,18 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
     fields: {}
   }),
   actions: {
-    setParameter (key, val) {
+    setParameter(key, val) {
       this.reqs[key] = val
     },
-    setFormRekening (key, val) {
+    setFormRekening(key, val) {
       this.form[key] = val
     },
-    setPerPage (payload) {
+    setPerPage(payload) {
       this.reqs.per_page = payload
       this.reqs.page = 1
       this.getAkun()
     },
-    getAkun () {
+    getAkun() {
       this.loading = true
       const params = { params: this.reqs }
       return new Promise((resolve) => {
@@ -116,11 +117,11 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
         }).catch(() => { this.loading = false })
       })
     },
-    getTtd () {
+    getTtd() {
       this.loading = true
       return new Promise((resolve) => {
         api.get('v1/akuntansi/bukubesar/getpa').then((resp) => {
-          console.log('tandatangan', resp.data)
+          // console.log('tandatangan', resp.data)
           if (resp.status === 200) {
             this.ttd = resp.data
             this.loading = false
@@ -130,7 +131,7 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
         }).catch(() => { this.loading = false })
       })
     },
-    setField () {
+    setField() {
       if (this.params.jenis === 'rekap') {
         this.fields = {
           Kode: 'kode',
@@ -153,9 +154,9 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
         }
       }
     },
-    startDownload () { this.loadingDownload = true },
-    finishDownload () { this.loadingDownload = false },
-    getDataBukubesar () {
+    startDownload() { this.loadingDownload = true },
+    finishDownload() { this.loadingDownload = false },
+    getDataBukubesar() {
       this.loading = true
       const params = { params: this.reqs }
       return new Promise((resolve) => {
@@ -181,7 +182,7 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
         }).catch(() => { this.loading = false })
       })
     },
-    NilaiSebelumnya () {
+    NilaiSebelumnya() {
       const arr = []
       const buku6 = []
       const buku5 = []
@@ -334,7 +335,7 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
         setakhir6.push(obj)
       }
       this.hasilSal6 = setakhir6
-      console.log('SALDO 6', this.hasilSal6)
+      // console.log('SALDO 6', this.hasilSal6)
 
       // HASIL NILAI SALDO SEBELUMNYA LEVEL 5 kebawah//
       buku5.push(...kode5, ...kode4, ...kode3, ...kode2)
@@ -356,10 +357,10 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
         setakhir5.push(obj)
       }
       this.hasilSal5 = setakhir5
-      console.log('SALDO 5', this.hasilSal5)
+      // console.log('SALDO 5', this.hasilSal5)
     },
 
-    mapBukubesar () {
+    mapBukubesar() {
       const arr = []
       const buku6 = []
       const buku5 = []
@@ -685,7 +686,7 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
 
       this.hasilmapsLevel6 = this.hasilMapssaldo(arrJurnal)
 
-      console.log('HASIL LVL 6', this.hasilmapsLevel6)
+      // console.log('HASIL LVL 6', this.hasilmapsLevel6)
 
       // HASIL DATA BUKU BESAR LEVEL 5 kebawah//
       buku5.push(...kode5, ...kode4, ...kode3, ...kode2)
@@ -713,7 +714,7 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
         )
       const arrJurnal5 = sortByDate5(setakhir5)
       this.hasilmapsLevel5 = this.hasilMapssaldo(arrSaldo5.concat(arrJurnal5))
-      console.log('HASIL LVL5 kebwah', this.hasilmapsLevel5)
+      // console.log('HASIL LVL5 kebwah', this.hasilmapsLevel5)
 
       // HASIL DATA BUKU BESAR LEVEL 1 JURNAL + SALDO AWAL//
       buku1.push(...kode1, ...saldo1)
@@ -730,7 +731,7 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
           debit: es.filter((q) => q.kode === el).map((x) => parseFloat(x.debit)).reduce((a, b) => a + b, 0),
           kredit: es.filter((q) => q.kode === el).map((x) => parseFloat(x.kredit)).reduce((a, b) => a + b, 0),
           total: es.filter((q) => q.kode === el).map((x) => parseFloat(x.debit)).reduce((a, b) => a + b, 0) -
-          es.filter((q) => q.kode === el).map((x) => parseFloat(x.kredit)).reduce((a, b) => a + b, 0)
+            es.filter((q) => q.kode === el).map((x) => parseFloat(x.kredit)).reduce((a, b) => a + b, 0)
         }
         setakhir1.push(obj)
       }
@@ -740,18 +741,38 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
         )
       const arrJurnal1 = sortByDate1(setakhir1)
       this.hasilmapsLevel1 = arrJurnal1
-      console.log('HASIL LVL 1', this.hasilmapsLevel1)
+      // console.log('HASIL LVL 1', this.hasilmapsLevel1)
     },
-    mapRincianBukubesar () {
+    mapRincianBukubesar() {
+      const saldonol = []
+      const obj = {
+        tanggal: '',
+        kode1: '',
+        kode2: '',
+        kode3: '',
+        kode4: '',
+        kode5: '',
+        kode6: '',
+        uraian: '',
+        notrans: '',
+        kegiatan: 'SALDO AWAL PERIODE',
+        keterangan: '',
+        debit: parseFloat(0),
+        kredit: parseFloat(0)
+      }
+      saldonol.push(obj)
+
+
       const saldosebelum = []
       const arrsaldoawal = this.saldoawal
       const salotom = this.salotom
       const salmanual = this.salmanual
       const salsebelum = this.salsebelum
       saldosebelum.push(...arrsaldoawal, ...salsebelum, ...salotom, ...salmanual)
-
+      // console.log('salotom', salotom)
       const saldo6sebelumnya = []
       const saldounik6 = saldosebelum.filter(x => x.kode6 === this.reqs.rekenings).map((x) => x.kode6)
+
       const setunik6 = saldounik6.length ? [...new Set(saldounik6)] : []
       for (let q = 0; q < setunik6.length; q++) {
         const el = setunik6[q] ?? 0
@@ -770,6 +791,7 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
           debit: saldosebelum?.filter((x) => x.kode6 === el)?.map((x) => parseFloat(x.debit)).reduce((a, b) => a + b, 0),
           kredit: saldosebelum?.filter((x) => x.kode6 === el)?.map((x) => parseFloat(x.kredit)).reduce((a, b) => a + b, 0)
         }
+        // console.log('saldosebelum', saldosebelum?.filter((x) => x.kode6 === el))
         saldo6sebelumnya.push(obj)
       }
 
@@ -886,24 +908,7 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
         }
         saldo1sebelumnya.push(obj)
       }
-      const saldonol = []
-      const obj = {
-        tanggal: '',
-        kode1: '',
-        kode2: '',
-        kode3: '',
-        kode4: '',
-        kode5: '',
-        kode6: '',
-        uraian: '',
-        notrans: '',
-        kegiatan: 'SALDO AWAL PERIODE',
-        keterangan: '',
-        debit: parseFloat(0),
-        kredit: parseFloat(0)
-      }
-      saldonol.push(obj)
-      console.log('lll', saldonol)
+
       const arr6 = []
       const arr5 = []
       const arr4 = []
@@ -919,7 +924,7 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
       arr2.push(...saldo2sebelumnya, ...arrotom, ...arrmanual)
       arr1.push(...saldo1sebelumnya, ...arrotom, ...arrmanual)
 
-      console.log('arrrray3', arr3)
+      // console.log('arrrray6', arr6)
 
       const arrjurnal = []
       arrjurnal.push(...arrotom, ...arrmanual)
@@ -936,7 +941,7 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
           debit: parseFloat(el?.debit),
           kredit: parseFloat(el?.kredit)
         }
-        kode6.push(obj)
+        kode6.push(obj, ...saldonol)
       }
       const filter6 = kode6.filter(x => x.kodereqs === this.reqs.rekenings)
       const sortByDate6 = (filter6) =>
@@ -944,11 +949,13 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
           a < b ? -1 : a > b ? 1 : 0
         )
       const arrBuku6 = sortByDate6(filter6)
-      if (!saldo6sebelumnya.length) {
+      if (!saldo6sebelumnya.length && arrBuku6.length) {
         this.hasilRinci6 = this.hasilMapssaldo(saldonol.concat(arrBuku6))
+        // console.log('!saldo6sebelumnya', this.hasilRinci6)
       }
       else {
         this.hasilRinci6 = this.hasilMapssaldo(arrBuku6)
+        // console.log('BUKU BESAR KODE6', this.hasilRinci6)
       }
       console.log('BUKU BESAR KODE6', this.hasilRinci6)
 
@@ -973,7 +980,7 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
           a < b ? -1 : a > b ? 1 : 0
         )
       const arrBuku5 = sortByDate5(filter5)
-      if (!saldo5sebelumnya.length) {
+      if (!saldo5sebelumnya.length && arrBuku5.length) {
         this.hasilRinci5 = this.hasilMapssaldo(saldonol.concat(arrBuku5))
       }
       else {
@@ -1002,7 +1009,7 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
           a < b ? -1 : a > b ? 1 : 0
         )
       const arrBuku4 = sortByDate4(filter4)
-      if (!saldo4sebelumnya.length) {
+      if (!saldo4sebelumnya.length && arrBuku4.length) {
         this.hasilRinci4 = this.hasilMapssaldo(saldonol.concat(arrBuku4))
       }
       else {
@@ -1059,7 +1066,7 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
       //   const sumrinci = el.rinci
       //   this.hasilMapssaldo(sumrinci)
       // }
-      if (!saldo3sebelumnya.length) {
+      if (!saldo3sebelumnya.length && arrBuku3.length) {
         this.hasilRinci3 = this.hasilMapssaldo(saldonol.concat(arrBuku3))
       }
       else {
@@ -1088,7 +1095,7 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
           a < b ? -1 : a > b ? 1 : 0
         )
       const arrBuku2 = sortByDate2(filter2)
-      if (!saldo2sebelumnya.length) {
+      if (!saldo2sebelumnya.length && arrBuku2.length) {
         this.hasilRinci2 = this.hasilMapssaldo(saldonol.concat(arrBuku2))
       }
       else {
@@ -1109,15 +1116,16 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
           debit: parseFloat(el?.debit),
           kredit: parseFloat(el?.kredit)
         }
-        kode1.push(obj)
+        kode1.push(obj, ...saldonol)
       }
+      // console.log('xx', kode1)
       const filter1 = kode1.filter(x => x.kodereqs === this.reqs.rekenings)
       const sortByDate1 = (filter1) =>
         filter1.sort(({ tanggal: a }, { tanggal: b }) =>
           a < b ? -1 : a > b ? 1 : 0
         )
       const arrBuku1 = sortByDate1(filter1)
-      if (!saldo1sebelumnya.length) {
+      if (!saldo1sebelumnya.length && arrBuku1.length) {
         this.hasilRinci1 = this.hasilMapssaldo(saldonol.concat(arrBuku1))
       }
       else {
@@ -1125,7 +1133,7 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
       }
       console.log('BUKU BESAR KODE1', this.hasilRinci1)
     },
-    hasilMapssaldo (arr) {
+    hasilMapssaldo(arr) {
       let total = 0
       if (arr.length) {
         for (let i = 0; i < arr.length; i++) {
