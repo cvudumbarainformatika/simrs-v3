@@ -29,9 +29,16 @@
         <div class="col-12">
           <q-input v-model="store.formKonsul.ket" label="Keterangan" dense outlined standout="bg-yellow-3" />
         </div>
-        <div class="col-12">
-          <q-input v-model="store.formKonsul.pertanyaan" label="Pengantar Konsul" outlined standout="bg-yellow-3"
-            type="textarea" autogrow />
+        <div class="col-12 q-mt-sm" style="border: 1px solid rgba(0,0,0,0.2)">
+          <div class="row text-weight-bold q-my-sm">Pengantar Konsul:</div>
+          <span class="" v-html="getNewLine(store?.konsulText?.header)" />
+          <span class="text-weight-bold q-mx-xs">DPJP {{ poliTujuan() }}</span>
+          <span class="" v-html="getNewLine(store?.konsulText?.openingText)" />
+
+          <q-input v-model="store.konsulText.diagnosa" label=" " outlined standout="bg-yellow-3" type="textarea"
+            autogrow class="q-mb-xs" />
+          <div class="q-mt-lg" v-html="getNewLine(store?.konsulText?.closingText)" />
+
         </div>
         <div class="col-12">
           <q-separator class=" q-my-md" />
@@ -47,9 +54,10 @@
 
 <script setup>
 import { date } from 'quasar'
+import { getNewLine } from 'src/modules/formatter'
 import { notifErrVue } from 'src/modules/utils'
 import { usePerencanaanPoliStore } from 'src/stores/simrs/pelayanan/poli/perencanaan'
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 
 const store = usePerencanaanPoliStore()
 // eslint-disable-next-line no-unused-vars
@@ -62,6 +70,10 @@ const props = defineProps({
 const refPoli = ref(null)
 function seKonsul (val) {
   store.setFormKonsul('tgl_rencana_konsul', date.formatDate(Date.now(), 'YYYY-MM-DD'))
+}
+function poliTujuan () {
+  const poli = store.poli.find(item => item.rs1 === store.formKonsul.kdpoli_tujuan)
+  return poli?.rs2 ?? ''
 }
 function seRujuk (val) {
   const tgl = Date.now()
@@ -95,4 +107,9 @@ function simpan () {
     store.saveKonsul(props.pasien)
   }
 }
+onMounted(() => {
+  console.log('on mounted', props?.pasien?.memodiagnosa)
+  store.konsulText.diagnosa = props?.pasien?.memodiagnosa
+
+})
 </script>

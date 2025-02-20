@@ -1,5 +1,5 @@
 <template>
-  <div class="full-height q-pa-sm bg-white">
+  <div class="full-height q-pa-sm bg-white" style="overflow: scroll;">
     <div v-if="!pasien?.jawabankonsul || pasien?.jawabankonsul.length == 0">
       <app-no-data text="Belum ada data konsul" />
     </div>
@@ -11,28 +11,54 @@
           <template v-slot:header>
             <q-item-section>Konsul dari {{ item?.poli_asal?.rs2 }} ketika berkunjung tanggal {{
               dateFullFormat(item?.tgl_kunjungan)
-              }}</q-item-section>
-            <q-item-section>ke {{ item?.poli_tujuan?.rs2 }}</q-item-section>
+            }} dengan nomor registrasi {{ item?.noreg_lama }}</q-item-section>
+            <q-item-section>ke {{ item?.poli_tujuan?.rs2 }}
+              <span v-if="item?.noreg_baru != null">dengan nomor registrasi {{ item?.noreg_baru
+              }}</span>
+              <span v-else class="text-weight-bold">dengan tanggal rencana kunjungan {{
+                dateFullFormat(item?.tgl_rencana_konsul)
+                }}</span>
+            </q-item-section>
           </template>
           <div class="row q-pa-sm bg-white items-center">
-            <div class="col-5">
+            <!-- <div class="col-5">
               <div class="row text-weight-bold">Pengantar Konsul</div>
             </div>
             <div class="col-6">
               <div class="row text-weight-bold">Jawaban Konsul</div>
-            </div>
+            </div> -->
           </div>
-          <div class="row q-px-sm q-pb-sm bg-white items-center">
+          <div class="row q-px-sm q-pb-sm bg-white items-center q-col-gutter-sm">
             <div class="col-5">
-              <div class="row q-ml-sm" v-html="getNewLine(item?.pertanyaan)"></div>
+              <!-- <div class="row q-ml-sm" v-html="getNewLine(item?.pertanyaan)" /> -->
+              <div class="col-12 q-mt-sm" style="border: 1px solid rgba(0,0,0,0.2)">
+                <div class="row text-weight-bold q-my-sm">Pengantar Konsul:</div>
+                <span class="" v-html="getNewLine(store?.konsulText?.header)" />
+                <span class="text-weight-bold q-mx-xs">DPJP {{ item?.poli_tujuan?.rs2 }}</span>
+                <span class="" v-html="getNewLine(store?.konsulText?.openingText)" />
+                <div class="q-ml-xs text-weight-bold" v-html="getNewLine(item?.pertanyaan ?? '-')" />
+                <!--
+                <q-input v-model="store.konsulText.diagnosa" label=" " outlined standout="bg-yellow-3" type="textarea"
+                  autogrow class="q-mb-xs" /> -->
+                <div class="q-mt-lg" v-html="getNewLine(store?.konsulText?.closingText)" />
+
+              </div>
             </div>
             <div class="col-6">
-              <div v-if="pasien?.noreg !== item?.noreg_baru" class="row q-ml-sm" v-html="getNewLine(item?.jawaban)" />
+              <div v-if="pasien?.noreg !== item?.noreg_baru" class="col-12 q-mt-sm"
+                style="border: 1px solid rgba(0,0,0,0.2)">
+                <div class="row text-weight-bold q-my-sm">Jawaban Konsul:</div>
+                <span class="" v-html="getNewLine(store?.jawabanText?.header)" />
+                <div class="row q-ml-sm" v-html="getNewLine(item?.jawaban)" />
+              </div>
 
-              <div v-if="pasien?.noreg === item?.noreg_baru" class="row q-ml-sm full-width">
-                <q-input v-if="item?.edit" v-model="item.jawaban" class="full-width" label="Jawaban Konsul" outlined
+              <div v-if="pasien?.noreg === item?.noreg_baru" class="col-12 q-ml-sm full-width"
+                style="border: 1px solid rgba(0,0,0,0.2)">
+                <div class="row text-weight-bold q-my-sm">Jawaban Konsul:</div>
+                <span class="" v-html="getNewLine(store?.jawabanText?.header)" />
+                <q-input v-if="item?.edit" v-model="store.jawabanText.jawaban" class="full-width" label=" " outlined
                   standout="bg-yellow-3" type="textarea" autogrow />
-                <div v-if="!item?.edit" class="row q-ml-sm" v-html="getNewLine(item?.jawaban)" />
+                <div v-if="!item?.edit" class="row text-weight-bold" v-html="getNewLine(item?.jawaban)" />
               </div>
             </div>
             <div class="col-1 text-center">
@@ -95,7 +121,10 @@ function bisaEdit (item) {
   const diff = date.getDateDiff(date1, date2, unit)
   // console.log('diff', diff, props.pasien)
   if (diff > 30) return notifErrVue('Jawaban Konsul dapat di edit sampai 30 hari setelah tanggal kunjungan')
-  else item.edit = true
+  else {
+    item.edit = true
+    store.jawabanText.jawaban = item?.jawaban
+  }
 
 }
 function show (item) {
