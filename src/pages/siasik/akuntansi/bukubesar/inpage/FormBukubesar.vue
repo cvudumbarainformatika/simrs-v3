@@ -46,6 +46,7 @@
           store.reqs.levelberapa = parseInt(val)
           const arrBaru = store.alllevel?.filter(x => x?.kodeall3?.length === parseInt(val))
           store.optionrekening = arrBaru
+          store.form.kode = ''
           console.log('arrBaru', store.optionrekening)
         }" />
       <app-autocomplete v-model="berdasarrinci" label="Pilih Jenis Akun" autocomplete="nama" option-value="value"
@@ -55,6 +56,7 @@
           store.reqs.levelberapa = parseInt(val)
           const arrBaru = store.alllevel?.filter(x => x?.kodeall3?.length === parseInt(val))
           store.optionrekening = arrBaru
+          store.form.kode = ''
           console.log('arrBaru', store.optionrekening)
         }" />
     </div>
@@ -123,7 +125,7 @@
 import { useQuasar } from 'quasar'
 import { useBukubesarStore } from 'src/stores/siasik/akuntansi/bukubesar/bukubesar'
 // eslint-disable-next-line no-unused-vars
-import { defineAsyncComponent, onBeforeMount, onMounted, ref, watchEffect } from 'vue'
+import { defineAsyncComponent, ref, watchEffect } from 'vue'
 
 const CetakBukubesar = defineAsyncComponent(() => import('../printbukubesar/PrintBukubesar.vue'))
 // eslint-disable-next-line no-unused-vars
@@ -166,21 +168,6 @@ const printbb = ref(null)
 function cetakData() {
   store.dialogCetak = true
 }
-onBeforeMount(() => {
-  store.getAkun()
-  options.value = store.optionrekening
-
-
-})
-// onMounted(() => {
-//   Promise.all([
-//     // store.getAkun(),
-
-
-
-//     // store.getDataBukubesar()
-//   ])
-// })
 
 function filterFn(val, update, abort) {
   console.log('val filter', val)

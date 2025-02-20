@@ -215,7 +215,6 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
         const el = set5[z]
         const arrs = this.allsaldosebelum
         const filters = arrs.filter((x) => x.notrans === el).map((x) => x)
-        // console.log('kkkk', filters)
 
         const unikkode = filters.map((x) => x.kode6)
         const setunik = unikkode.length ? [...new Set(unikkode)] : []
@@ -318,13 +317,13 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
 
       // HASIL NILAI SALDO SEBELUMNYA LEVEL 6//
       buku6.push(...kode6)
-      const filter6 = buku6.filter(x => x.kodereqs === this.reqs.rekenings)
+      // const filter6 = buku6.filter(x => x.kodereqs === this.reqs.rekenings)
       const setakhir6 = []
-      const filterunik6 = filter6.map((x) => x.kodereqs)
+      const filterunik6 = buku6.map((x) => x.kodereqs)
       const setfil6 = filterunik6.length ? [...new Set(filterunik6)] : []
       for (let x = 0; x < setfil6.length; x++) {
         const el = setfil6[x]
-        const es = filter6
+        const es = buku6
         const obj = {
           kodereqs: es.filter((q) => q.kodereqs === el)[0]?.kodereqs,
           kode: '',
@@ -339,14 +338,14 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
 
       // HASIL NILAI SALDO SEBELUMNYA LEVEL 5 kebawah//
       buku5.push(...kode5, ...kode4, ...kode3, ...kode2)
-      const filter5 = buku5.filter(x => x.kodereqs === this.reqs.rekenings)
+      // const filter5 = buku5.filter(x => x.kodereqs === this.reqs.rekenings)
       // console.log('reksss', filter5)
-      const filterunik5 = filter5.map((x) => x.kodereqs)
+      const filterunik5 = buku5.map((x) => x.kodereqs)
       const setfil5 = filterunik5.length ? [...new Set(filterunik5)] : []
       const setakhir5 = []
       for (let x = 0; x < setfil5.length; x++) {
         const el = setfil5[x]
-        const es = filter5
+        const es = buku5
         const obj = {
           kodereqs: es.filter((q) => q.kodereqs === el)[0]?.kodereqs,
           kode: '',
@@ -421,7 +420,7 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
           tanggal: arrs?.filter((x) => x.kode6 === el)[0].tanggal,
           kodereqs: arrs?.filter((x) => x.kode6 === el)[0].kode4,
           kode: arrs?.filter((x) => x.kode6 === el)[0].kode5,
-          uraian: arrs?.filter((x) => x.kode6 === el).map((x) => x.lvl5)[0]?.uraian,
+          uraian: arrs?.filter((x) => x.kode6 === el)[0]?.uraian5,
           debit: arrs?.filter((x) => x.kode6 === el)?.map((x) => parseFloat(x.debit)).reduce((a, b) => a + b, 0),
           kredit: arrs?.filter((x) => x.kode6 === el)?.map((x) => parseFloat(x.kredit)).reduce((a, b) => a + b, 0)
         }
@@ -439,7 +438,7 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
           tanggal: arrs?.filter((x) => x.kode6 === el)[0].tanggal,
           kodereqs: arrs?.filter((x) => x.kode6 === el)[0].kode3,
           kode: arrs?.filter((x) => x.kode6 === el)[0].kode4,
-          uraian: arrs?.filter((x) => x.kode6 === el).map((x) => x.lvl4)[0]?.uraian,
+          uraian: arrs?.filter((x) => x.kode6 === el)[0]?.uraian4,
           debit: arrs?.filter((x) => x.kode6 === el)?.map((x) => parseFloat(x.debit)).reduce((a, b) => a + b, 0),
           kredit: arrs?.filter((x) => x.kode6 === el)?.map((x) => parseFloat(x.kredit)).reduce((a, b) => a + b, 0)
         }
@@ -456,7 +455,7 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
           tanggal: arrs?.filter((x) => x.kode6 === el)[0].tanggal,
           kodereqs: arrs?.filter((x) => x.kode6 === el)[0].kode2,
           kode: arrs?.filter((x) => x.kode6 === el)[0].kode3,
-          uraian: arrs?.filter((x) => x.kode6 === el).map((x) => x.lvl3)[0]?.uraian,
+          uraian: arrs?.filter((x) => x.kode6 === el)[0]?.uraian3,
           debit: arrs?.filter((x) => x.kode6 === el)?.map((x) => parseFloat(x.debit)).reduce((a, b) => a + b, 0),
           kredit: arrs?.filter((x) => x.kode6 === el)?.map((x) => parseFloat(x.kredit)).reduce((a, b) => a + b, 0)
         }
@@ -474,7 +473,7 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
           tanggal: arrs?.filter((x) => x.kode6 === el)[0].tanggal,
           kodereqs: arrs?.filter((x) => x.kode6 === el)[0].kode2,
           kode: arrs?.filter((x) => x.kode6 === el)[0].kode1,
-          uraian: arrs?.filter((x) => x.kode6 === el).map((x) => x.lvl1)[0]?.uraian,
+          uraian: arrs?.filter((x) => x.kode6 === el)[0]?.uraian1,
           debit: arrs?.filter((x) => x.kode6 === el)?.map((x) => parseFloat(x.debit)).reduce((a, b) => a + b, 0),
           kredit: arrs?.filter((x) => x.kode6 === el)?.map((x) => parseFloat(x.kredit)).reduce((a, b) => a + b, 0)
         }
@@ -588,7 +587,7 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
             tanggal: er?.filter((x) => x.kode6 === el)[0].tanggal,
             kodereqs: er?.filter((x) => x.kode6 === el)[0]?.kode4,
             kode: er?.filter((x) => x.kode6 === el)[0]?.kode5,
-            uraian: er?.filter((x) => x.kode6 === el).map((x) => x.lvl5)[0]?.uraian,
+            uraian: er?.filter((x) => x.kode6 === el)[0]?.uraian5,
             debit: er?.filter((x) => x.kode6 === el)?.map((x) => parseFloat(x.debit)).reduce((a, b) => a + b, 0),
             kredit: er?.filter((x) => x.kode6 === el)?.map((x) => parseFloat(x.kredit)).reduce((a, b) => a + b, 0)
           }
@@ -614,7 +613,7 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
             tanggal: er?.filter((x) => x.kode3 === el)[0].tanggal,
             kodereqs: er?.filter((x) => x.kode3 === el)[0]?.kode3,
             kode: er?.filter((x) => x.kode3 === el)[0]?.kode4,
-            uraian: er?.filter((x) => x.kode3 === el).map((x) => x.lvl4)[0]?.uraian,
+            uraian: er?.filter((x) => x.kode3 === el)[0]?.uraian4,
             debit: er?.filter((x) => x.kode3 === el)?.map((x) => parseFloat(x.debit)).reduce((a, b) => a + b, 0),
             kredit: er?.filter((x) => x.kode3 === el)?.map((x) => parseFloat(x.kredit)).reduce((a, b) => a + b, 0)
           }
@@ -640,7 +639,7 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
             tanggal: er?.filter((x) => x.kode6 === el)[0].tanggal,
             kodereqs: er?.filter((x) => x.kode6 === el)[0]?.kode2,
             kode: er?.filter((x) => x.kode6 === el)[0]?.kode3,
-            uraian: er?.filter((x) => x.kode6 === el).map((x) => x.lvl3)[0]?.uraian,
+            uraian: er?.filter((x) => x.kode6 === el)[0]?.uraian3,
             debit: er?.filter((x) => x.kode6 === el)?.map((x) => parseFloat(x.debit)).reduce((a, b) => a + b, 0),
             kredit: er?.filter((x) => x.kode6 === el)?.map((x) => parseFloat(x.kredit)).reduce((a, b) => a + b, 0)
           }
@@ -666,7 +665,7 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
             tanggal: er?.filter((x) => x.kode6 === el)[0].tanggal,
             kodereqs: er?.filter((x) => x.kode6 === el)[0]?.kode2,
             kode: er?.filter((x) => x.kode6 === el)[0]?.kode1,
-            uraian: er?.filter((x) => x.kode6 === el).map((x) => x.lvl1)[0]?.uraian,
+            uraian: er?.filter((x) => x.kode6 === el)[0]?.uraian1,
             debit: er?.filter((x) => x.kode6 === el)?.map((x) => parseFloat(x.debit)).reduce((a, b) => a + b, 0),
             kredit: er?.filter((x) => x.kode6 === el)?.map((x) => parseFloat(x.kredit)).reduce((a, b) => a + b, 0)
           }
@@ -769,7 +768,6 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
       const salmanual = this.salmanual
       const salsebelum = this.salsebelum
       saldosebelum.push(...arrsaldoawal, ...salsebelum, ...salotom, ...salmanual)
-      // console.log('salotom', salotom)
       const saldo6sebelumnya = []
       const saldounik6 = saldosebelum.filter(x => x.kode6 === this.reqs.rekenings).map((x) => x.kode6)
 
@@ -778,11 +776,6 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
         const el = setunik6[q] ?? 0
         const obj = {
           tanggal: '',
-          kode1: saldosebelum.filter((x) => x.kode6 === el)[0]?.kode1,
-          kode2: saldosebelum.filter((x) => x.kode6 === el)[0]?.kode2,
-          kode3: saldosebelum.filter((x) => x.kode6 === el)[0]?.kode3,
-          kode4: saldosebelum.filter((x) => x.kode6 === el)[0]?.kode4,
-          kode5: saldosebelum.filter((x) => x.kode6 === el)[0]?.kode5,
           kode6: saldosebelum.filter((x) => x.kode6 === el)[0]?.kode6,
           uraian: saldosebelum.filter((x) => x.kode6 === el)[0]?.uraian,
           notrans: '',
@@ -802,13 +795,8 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
         const el = setunik5[q] ?? 0
         const obj = {
           tanggal: '',
-          kode1: saldosebelum.filter((x) => x.kode5 === el)[0]?.kode1,
-          kode2: saldosebelum.filter((x) => x.kode5 === el)[0]?.kode2,
-          kode3: saldosebelum.filter((x) => x.kode5 === el)[0]?.kode3,
-          kode4: saldosebelum.filter((x) => x.kode5 === el)[0]?.kode4,
           kode5: saldosebelum.filter((x) => x.kode5 === el)[0]?.kode5,
-          kode6: saldosebelum.filter((x) => x.kode5 === el)[0]?.kode6,
-          uraian: saldosebelum?.filter(x => x.kode5 === el).map((x) => x.lvl5)[0]?.uraian,
+          uraian: saldosebelum?.filter(x => x.kode5 === el)[0]?.uraian5,
           notrans: '',
           kegiatan: 'SALDO AWAL PERIODE',
           keterangan: '',
@@ -825,13 +813,8 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
         const el = setunik4[q] ?? 0
         const obj = {
           tanggal: '',
-          kode1: saldosebelum.filter((x) => x.kode4 === el)[0]?.kode1,
-          kode2: saldosebelum.filter((x) => x.kode4 === el)[0]?.kode2,
-          kode3: saldosebelum.filter((x) => x.kode4 === el)[0]?.kode3,
           kode4: saldosebelum.filter((x) => x.kode4 === el)[0]?.kode4,
-          kode5: saldosebelum.filter((x) => x.kode4 === el)[0]?.kode5,
-          kode6: saldosebelum.filter((x) => x.kode4 === el)[0]?.kode6,
-          uraian: saldosebelum?.filter(x => x.kode4 === el).map((x) => x.lvl4)[0]?.uraian,
+          uraian: saldosebelum?.filter(x => x.kode4 === el)[0]?.uraian4,
           notrans: '',
           kegiatan: 'SALDO AWAL PERIODE',
           keterangan: '',
@@ -848,13 +831,8 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
         const el = setunik3[q] ?? 0
         const obj = {
           tanggal: '',
-          kode1: saldosebelum.filter((x) => x.kode3 === el)[0]?.kode1 ?? '',
-          kode2: saldosebelum.filter((x) => x.kode3 === el)[0]?.kode2 ?? '',
           kode3: saldosebelum.filter((x) => x.kode3 === el)[0]?.kode3 ?? '',
-          kode4: saldosebelum.filter((x) => x.kode3 === el)[0]?.kode4 ?? '',
-          kode5: saldosebelum.filter((x) => x.kode3 === el)[0]?.kode5 ?? '',
-          kode6: saldosebelum.filter((x) => x.kode3 === el)[0]?.kode6 ?? '',
-          uraian: saldosebelum?.filter(x => x.kode3 === el).map((x) => x.lvl3)[0]?.uraian ?? '',
+          uraian: saldosebelum?.filter(x => x.kode3 === el)[0]?.uraian3,
           notrans: '',
           kegiatan: 'SALDO AWAL PERIODE',
           keterangan: '',
@@ -873,11 +851,7 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
           tanggal: '',
           kode1: saldosebelum.filter((x) => x.kode2 === el)[0]?.kode1,
           kode2: saldosebelum.filter((x) => x.kode2 === el)[0]?.kode2,
-          kode3: saldosebelum.filter((x) => x.kode2 === el)[0]?.kode3,
-          kode4: saldosebelum.filter((x) => x.kode2 === el)[0]?.kode4,
-          kode5: saldosebelum.filter((x) => x.kode2 === el)[0]?.kode5,
-          kode6: saldosebelum.filter((x) => x.kode2 === el)[0]?.kode6,
-          uraian: saldosebelum?.filter(x => x.kode2 === el).map((x) => x.lvl2)[0]?.uraian,
+          uraian: saldosebelum?.filter(x => x.kode2 === el)[0]?.uraian2,
           notrans: '',
           kegiatan: 'SALDO AWAL PERIODE',
           keterangan: '',
@@ -894,12 +868,7 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
         const obj = {
           tanggal: '',
           kode1: saldosebelum.filter((x) => x.kode1 === el)[0]?.kode1,
-          kode2: saldosebelum.filter((x) => x.kode1 === el)[0]?.kode2,
-          kode3: saldosebelum.filter((x) => x.kode1 === el)[0]?.kode3,
-          kode4: saldosebelum.filter((x) => x.kode1 === el)[0]?.kode4,
-          kode5: saldosebelum.filter((x) => x.kode1 === el)[0]?.kode5,
-          kode6: saldosebelum.filter((x) => x.kode1 === el)[0]?.kode6,
-          uraian: saldosebelum?.filter(x => x.kode1 === el).map((x) => x.lvl1)[0]?.uraian,
+          uraian: saldosebelum?.filter(x => x.kode1 === el)[0]?.uraian1,
           notrans: '',
           kegiatan: 'SALDO AWAL PERIODE',
           keterangan: '',
@@ -941,7 +910,7 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
           debit: parseFloat(el?.debit),
           kredit: parseFloat(el?.kredit)
         }
-        kode6.push(obj, ...saldonol)
+        kode6.push(obj)
       }
       const filter6 = kode6.filter(x => x.kodereqs === this.reqs.rekenings)
       const sortByDate6 = (filter6) =>

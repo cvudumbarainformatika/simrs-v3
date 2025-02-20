@@ -35,6 +35,10 @@ import { useBukubesarStore } from 'src/stores/siasik/akuntansi/bukubesar/bukubes
 import FormBukubesar from './inpage/FormBukubesar.vue'
 import listDataRekap from './inpage/ListDataRekapBukubesar.vue'
 import listDataRinci from './inpage/ListDataRinciBukubesar.vue'
+import { onMounted } from 'vue'
 
 const store = useBukubesarStore()
+onMounted(() => {
+  store.getAkun()
+})
 </script>
