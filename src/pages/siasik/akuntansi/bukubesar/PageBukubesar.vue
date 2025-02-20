@@ -9,22 +9,21 @@
   <div class="container q-px-sm">
     <q-card class="items-center full-width">
       <div class="row">
-        <template v-if="store.reqs.jenisbukubesar === 1 && (store.hasilmapsLevel6.length || store.hasilmapsLevel5.length || store.hasilmapsLevel1.length)">
+        <template
+          v-if="store.reqs.jenisbukubesar === 1 && (store.hasilmapsLevel6.length || store.hasilmapsLevel5.length || store.hasilmapsLevel1.length)">
           <listDataRekap />
         </template>
-        <template
-          v-else-if="store.reqs.jenisbukubesar === 2 && (
-            store.hasilRinci1.length > 1 || store.hasilRinci2.length > 1
-            || store.hasilRinci3.length > 1 || store.hasilRinci4.length > 1
-            || store.hasilRinci5.length > 1 || store.hasilRinci6.length > 1
-          )"
-        >
+        <template v-else-if="store.reqs.jenisbukubesar === 2 && (
+          store.hasilRinci1.length > 0 || store.hasilRinci2.length > 0
+          || store.hasilRinci3.length > 0 || store.hasilRinci4.length > 0
+          || store.hasilRinci5.length > 0 || store.hasilRinci6.length > 0
+        )">
           <listDataRinci />
         </template>
         <template v-else>
           <div class="row q-pa-md full-width text-subtitle1 flex-center">
             <q-icon class="q-pr-sm" size="sm" name="icon-mat-warning" />
-            Silahkan Pilih Parameter Dulu
+            Tidak Ada Data! Silahkan Pilih Parameter Dulu!
           </div>
         </template>
       </div>

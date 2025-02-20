@@ -21,8 +21,8 @@
     </div>
     <div class="q-pa-sm" style="width:25%">
       <app-autocomplete v-model="jenisapa" label="Pilih Jenis Buku Besar" autocomplete="nama" option-value="value"
-        option-label="nama" outlined :disable="store.loading" :loading="store.loading" :source="store.jenis"
-        @update:model-value="(val) => {
+        option-label="nama" outlined :disable="store.loading || !store.alllevel.length"
+        :loading="store.loading || !store.alllevel.length" :source="store.jenis" @update:model-value="(val) => {
           store.hasilmapsLevel1 = []
           store.hasilmapsLevel5 = []
           store.hasilmapsLevel6 = []
@@ -40,16 +40,18 @@
     </div>
     <div class="q-pa-sm" style="width:25%">
       <app-autocomplete v-model="berdasarrekap" label="Pilih Jenis Akun" autocomplete="nama" option-value="value"
-        option-label="nama" outlined :disable="store.loading" :loading="store.loading"
-        v-if="store.reqs.jenisbukubesar < 2" :source="store.level" @update:model-value="(val) => {
+        option-label="nama" outlined :disable="store.loading || !store.alllevel.length"
+        :loading="store.loading || !store.alllevel.length" v-if="store.reqs.jenisbukubesar < 2" :source="store.level"
+        @update:model-value="(val) => {
           store.reqs.levelberapa = parseInt(val)
           const arrBaru = store.alllevel?.filter(x => x?.kodeall3?.length === parseInt(val))
           store.optionrekening = arrBaru
           console.log('arrBaru', store.optionrekening)
         }" />
       <app-autocomplete v-model="berdasarrinci" label="Pilih Jenis Akun" autocomplete="nama" option-value="value"
-        option-label="nama" outlined :disable="store.loading" :loading="store.loading"
-        v-if="store.reqs.jenisbukubesar === 2" :source="store.levelrinci" @update:model-value="(val) => {
+        option-label="nama" outlined :disable="store.loading || !store.alllevel.length"
+        :loading="store.loading || !store.alllevel.length" v-if="store.reqs.jenisbukubesar === 2"
+        :source="store.levelrinci" @update:model-value="(val) => {
           store.reqs.levelberapa = parseInt(val)
           const arrBaru = store.alllevel?.filter(x => x?.kodeall3?.length === parseInt(val))
           store.optionrekening = arrBaru
@@ -61,7 +63,7 @@
         option-value="kodeall3" input-debounce="0" label="Pilih Rekening" class="ellipsis-2-lines" :options="options"
         :option-label="opt => Object(opt) === opt && 'kodeall3' in opt ? opt.kodeall3 + ' - ' + opt.uraian : ''"
         :disable="store.loading || !store.alllevel.length || !store.optionrekening.length && store.reqs.jenisbukubesar === 1"
-        :loading="store.loading && !store.alllevel.length" @filter="filterFn"
+        :loading="store.loading || !store.alllevel.length" @filter="filterFn"
         @clear="store.setFormRekening('kode', null)" @update:model-value="(val) => {
           store.reqs.rekenings = val
           const arr = store.optionrekening
@@ -85,7 +87,8 @@
   <div class="row full-width justify-center">
     <div class="row q-pa-sm">
       <div class="q-pa-sm">
-        <app-btn label="Ambil Data" :disable="store.loading" :loading="store.loading" @click="ambilData()" />
+        <app-btn label="Ambil Data" :disable="store.loading || !store.alllevel.length"
+          :loading="store.loading || !store.alllevel.length" @click="ambilData()" />
       </div>
       <div class="q-pa-sm">
         <q-btn icon="icon-mat-print" color="orange" round size="sm" :disable="store.loading" :loading="store.loading"
@@ -120,7 +123,7 @@
 import { useQuasar } from 'quasar'
 import { useBukubesarStore } from 'src/stores/siasik/akuntansi/bukubesar/bukubesar'
 // eslint-disable-next-line no-unused-vars
-import { defineAsyncComponent, onMounted, ref, watchEffect } from 'vue'
+import { defineAsyncComponent, onBeforeMount, onMounted, ref, watchEffect } from 'vue'
 
 const CetakBukubesar = defineAsyncComponent(() => import('../printbukubesar/PrintBukubesar.vue'))
 // eslint-disable-next-line no-unused-vars
@@ -163,15 +166,21 @@ const printbb = ref(null)
 function cetakData() {
   store.dialogCetak = true
 }
-onMounted(() => {
-  Promise.all([
-    store.getAkun(),
-    options.value = store.optionrekening
+onBeforeMount(() => {
+  store.getAkun()
+  options.value = store.optionrekening
 
 
-    // store.getDataBukubesar()
-  ])
 })
+// onMounted(() => {
+//   Promise.all([
+//     // store.getAkun(),
+
+
+
+//     // store.getDataBukubesar()
+//   ])
+// })
 
 function filterFn(val, update, abort) {
   console.log('val filter', val)

@@ -6,10 +6,23 @@ import { notifSuccess } from "src/modules/utils"
 export const useJawabanKonsulStore = defineStore('jawaban-konsul', {
   state: () => ({
     storePasien: usePengunjungPoliStore(),
-    loading: false
+    loading: false,
+    konsulText: {
+      header: 'Dengan Hormat,\n Mohon bantuan',
+
+      diagnosa: '',
+      openingText: ' untuk konsultasi masalah medik saat ini, Atas pasien ini dengan kondisi',
+      closingText: 'Terima Kasih Atas Kejasamanya'
+    },
+    jawabanText: {
+      header: 'Dengan Hormat,\n Sesuai Permintaan konsultasi pada Pemeriksaan pasien, kami dapati saat ini\n\n Saran Tindakan medik / Pengobatan : ',
+
+      jawaban: '',
+    },
   }),
   actions: {
     simpanJawaban (pasien, item) {
+      item.jawaban = this.jawabanText.jawaban
       this.loading = true
       return new Promise(resolve => {
         api.post('v1/simrs/pelayanan/update-jawaban-konsul', item)

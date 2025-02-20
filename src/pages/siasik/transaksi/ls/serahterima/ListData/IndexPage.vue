@@ -1,9 +1,7 @@
 <template>
   <q-page>
     <Suspense>
-      <!-- main content -->
       <AsyncComp />
-      <!-- loading state -->
       <template #fallback>
         <app-loading />
       </template>
@@ -13,5 +11,5 @@
 <script setup>
 import { defineAsyncComponent } from 'vue'
 
-const AsyncComp = defineAsyncComponent(() => import('./PageSerahterima.vue'))
+const AsyncComp = defineAsyncComponent(() => import('./inpage/ListData.vue'))
 </script>

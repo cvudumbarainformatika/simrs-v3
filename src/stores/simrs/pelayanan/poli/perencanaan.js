@@ -15,6 +15,13 @@ export const usePerencanaanPoliStore = defineStore('perencanaan-poli', {
     loadingSaveSelesai: false,
     loadingHapus: false,
     loadingNoka: false,
+    konsulText: {
+      header: 'Dengan Hormat,\n Mohon bantuan',
+      // untuk: ' untuk konsultasi masalah medik berikut ini, ',
+      diagnosa: '',
+      openingText: ' untuk konsultasi masalah medik saat ini, Atas pasien ini dengan kondisi',
+      closingText: 'Terima Kasih Atas Kejasamanya'
+    },
     formKonsul: {
       kdSaran: '3',
       noreg_lama: '',
@@ -245,6 +252,7 @@ export const usePerencanaanPoliStore = defineStore('perencanaan-poli', {
       this.formKonsul.kddokter_asal = pasien?.kodedokter
       this.formKonsul.kodesistembayar = pasien?.kodesistembayar
       this.formKonsul.planing = 'Konsultasi'
+      this.formKonsul.pertanyaan = this.konsulText?.diagnosa
       if (this.formKonsul.kdSaran === '9' && this.formKonsul.kdpoli_asal === this.formKonsul.kdpoli_tujuan) {
         this.loadingSaveKonsul = false
         return notifErrVue('Rujukan Internal Tidak Boleh Ke Poli Yang Sama')
