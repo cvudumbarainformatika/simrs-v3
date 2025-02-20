@@ -9,6 +9,7 @@ export const usePengunjungIgdStore = defineStore('pengunjung-igd', {
     tabs: ['Diagnosa Medik', 'Tindakan Medik', 'Diagnosa Keperawatan', 'Diagnosa Kebidanan', 'Pra Anastesi'],
     items: [],
     ruangranaps: [],
+    loadingfinish: false,
     loading: false,
     loadingSaveGantiDpjp: false,
     loadingSaveSistembayar: false,
@@ -507,40 +508,31 @@ export const usePengunjungIgdStore = defineStore('pengunjung-igd', {
       }
     },
     async setLayananSelesai(pasien) {
-      // console.log('asd', pasien)
-      this.loadingTerima = true
-      // '' : 'Belum Terlayanani'
-      // '1': 'Terlayani'
-      // '2': 'Sudah diterima'
-      // '3': Batal
-      // if (!pasien?.anamnesis.length) {
-      //   this.loadingTerima = false
-      //   return this.notifikasiError('Maaf, Anamnesis Harap Diisi Dahulu...')
-      // }
+      this.loading = true
       if (!pasien?.diagnosa?.length) {
-        this.loadingTerima = false
+        this.loading = false
         return this.notifikasiError('Maaf, Diagnosa Harap Diisi Dahulu...')
       }
-      // if (!pasien?.planning?.length) {
-      //   return this.notifikasiError('Maaf, Planing Harap Diisi Dahulu...')
-      // }
+
       const form = {
-        noreg: pasien?.noreg
+        noreg: pasien?.noreg,
+        norm: pasien?.norm
       }
       try {
         const resp = await api.post('v1/simrs/pelayanan/igd/flagfinish', form)
         // console.log('rsp ', form, resp)
         if (resp.status === 200) {
+          pasien.flagpelayanan = 1
           const findPasien = this.items.filter(x => x === pasien)
           if (findPasien.length) {
             findPasien[0].status = '1'
           }
-          this.loadingTerima = false
+          this.loading = false
         }
       }
       catch (error) {
         console.log(error)
-        this.loadingTerima = false
+        this.loadingFinish = false
         // this.notifikasiError('Maaf.. Harap ulangi, Ada Kesalahan ')
       }
     },

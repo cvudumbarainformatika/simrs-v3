@@ -3,7 +3,7 @@
     <q-card square flat class="container-no-header">
       <q-layout view="lHr Lpr lFf" container class="shadow-2 rounded-borders z-top">
         <q-header elevated class="bg-primary">
-          <HeaderLayout :pasien="pasien" :loading-save-dpjp="store.loadingSaveGantiDpjp"
+          <HeaderLayout :pasien="pasien" :loading-save-dpjp="store.loadingSaveGantiDpjp" :loading-finish="store.loading"
             @toggle-left-drawer="() => drawer = !drawer" @gantidpjp="(val) => store.gantiDpjp(val, pasien)"
             @layanan-selesai="store.setLayananSelesai(pasien)" />
         </q-header>
