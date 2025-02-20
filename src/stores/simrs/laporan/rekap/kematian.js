@@ -49,7 +49,8 @@ export const uselaporankematianStore = defineStore('laporan-kematian', {
           nama: x?.nama,
           tglmasuk: x?.tglmasuk,
           noka: x?.noka,
-          ktp: x?.ktp
+          ktp: x?.ktp,
+          doa: x?.triage
         }
         hasilglobal.push(hasil)
       })

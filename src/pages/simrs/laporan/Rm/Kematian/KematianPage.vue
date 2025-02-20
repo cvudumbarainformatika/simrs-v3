@@ -66,6 +66,9 @@
             <div class="col-1 text-center">
               NOKA
             </div>
+            <div class="col-1 text-center">
+              DOA
+            </div>
           </div>
           <div v-for="(rincix, i) in row.rinci" :key="rincix">
             <div class="row no-wrap " style="border-bottom: 1px solid black;">
@@ -91,6 +94,9 @@
               </div>
               <div class="col-1 text-center ">
                 {{ rincix?.noka }}
+              </div>
+              <div class="col-1 text-center ">
+                {{ rincix?.doa.length > 0 ? 'DOA' : '-' }}
               </div>
             </div>
           </div>
