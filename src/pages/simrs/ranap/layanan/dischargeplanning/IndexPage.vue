@@ -2,18 +2,8 @@
   <div class="row fit relative-position">
     <div class="absolute-top columm fit q-pa-xs" style="padding-bottom: 41px;">
       <div class="col-auto">
-        <q-tabs
-          v-model="tab"
-          dense
-          no-caps
-          inline-label
-          narrow-indicator
-          indicator-color="transparent"
-          align="left"
-          class=" bg-transparent text-grey-8"
-          active-color="white"
-          active-bg-color="dark"
-        >
+        <q-tabs v-model="tab" dense no-caps inline-label narrow-indicator indicator-color="transparent" align="left"
+          class=" bg-transparent text-grey-8" active-color="white" active-bg-color="dark">
           <q-tab v-for="tb in tabs" :key="tb.name" :ripple="true" :name="tb?.name" content-class="tab-classes">
             <template #default>
               <div class="row q-gutter-x-xs items-center q-px-sm" style="border-radius: 10px;">
@@ -60,7 +50,7 @@ const props = defineProps({
 const tab = ref('diagnosaMedik')
 
 onMounted(() => {
-  tab.value = tabs.value[0].name
+  tab.value = tabs?.value[0]?.name
 })
 
 const tabsxx = [
@@ -82,13 +72,13 @@ const tabsxx = [
 
 const menu = computed(() => {
   // console.log('tab.value', tab.value)
-  const by = tab.value ?? null
+  const by = tab?.value ?? null
 
   return tabs.value.find(i => i?.name === by)
 })
 
 const tabs = computed(() => {
-  return tabsxx.filter(i => i?.nakes.includes(props?.nakes))
+  return tabsxx.filter(i => i?.nakes?.includes(props?.nakes))
 })
 
 </script>
