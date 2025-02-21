@@ -94,8 +94,7 @@
               Diagnosa
             </div>
             <div class="col-9">
-              : {{ pasien?.diagnosa.length ? pasien?.diagnosa[0].masterdiagnosa?.rs1 + ' - ' +
-                pasien?.diagnosa[0].masterdiagnosa?.rs4 : '-' }}
+              : {{ diagnosa(toItem) }}
             </div>
           </div>
           <div class="row items-center justify-between q-mb-xs">
@@ -112,6 +111,14 @@
             </div>
             <div class="col-9">
               : {{ ket }}
+            </div>
+          </div>
+          <div v-if="toItem?.rs4 === 'Rumah Sakit Lain'" class="row items-center justify-between q-mb-xs">
+            <div class="col-3">
+              Keterangan
+            </div>
+            <div class="col-9">
+              : {{ toItem?.transrujukan?.rs9 }}
             </div>
           </div>
           <div class="row items-center justify-between q-my-md">
@@ -167,6 +174,16 @@ onMounted(() => {
   toItem.value = props?.pasien?.planning[0]
   plan.value = props?.pasien?.planning[0].rs4
 })
+function diagnosa (item) {
+  console.log(item)
+
+  const dariPasien = props?.pasien?.diagnosa.length ? props?.pasien?.diagnosa[0].masterdiagnosa?.rs1 + ' - ' +
+    props?.pasien?.diagnosa[0].masterdiagnosa?.rs4 : null
+
+  const transrujukan = item?.transrujukan?.diagnosa?.rs1 + ' - ' + item?.transrujukan?.diagnosa?.rs4
+
+  return transrujukan ?? dariPasien
+}
 function setKepada (val) {
   if (val?.rs4 === 'Kontrol') {
     if (val?.kontrol) {
