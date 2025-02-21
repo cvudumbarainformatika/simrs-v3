@@ -4,6 +4,7 @@ import { dateDbFormat } from 'src/modules/formatter'
 import { notifErrVue, notifInfVue, notifSuccess } from 'src/modules/utils'
 import { usePengunjungPoliStore } from './pengunjung'
 import { date } from 'quasar'
+import { data } from 'autoprefixer'
 
 export const usePerencanaanPoliStore = defineStore('perencanaan-poli', {
   state: () => ({
@@ -39,7 +40,8 @@ export const usePerencanaanPoliStore = defineStore('perencanaan-poli', {
       tglrencanakunjungan: dateDbFormat(new Date()),
       kdpoli_asal: '',
       kdpoli_tujuan: '',
-      kddokter_asal: ''
+      kddokter_asal: '',
+      keterangan2: ''
     },
     formRsLain: {
       norm: '',
@@ -100,8 +102,10 @@ export const usePerencanaanPoliStore = defineStore('perencanaan-poli', {
     perujuk: null,
     loadingSave: false,
     jadwalDpjps: [],
+    keterangan: [],
     listSeps: [],
     loadingJadwalDokter: false,
+    loadingKeterangan: false,
     loadingListSep: false,
     openDialogSep: false,
     paramListSep: {
@@ -126,7 +130,7 @@ export const usePerencanaanPoliStore = defineStore('perencanaan-poli', {
   //   doubleCount: (state) => state.counter * 2
   // },
   actions: {
-    resetForm () {
+    resetForm() {
       this.editRanap = false
       this.editRsLain = false
       this.formKonsul = {
@@ -202,28 +206,28 @@ export const usePerencanaanPoliStore = defineStore('perencanaan-poli', {
 
       }
     },
-    async getMasterPlanning () {
+    async getMasterPlanning() {
       const resp = await api.get('v1/simrs/pelayanan/mpalningrajal')
       if (resp.status === 200) {
         this.plannings = resp?.data
       }
       // // console.log('master plann', resp)
     },
-    async getMasterPoli () {
+    async getMasterPoli() {
       const resp = await api.get('v1/simrs/pelayanan/mpoli')
       if (resp.status === 200) {
         this.poli = resp?.data
       }
       // // console.log('master poli', resp)
     },
-    async getDiagPrb () {
+    async getDiagPrb() {
       const resp = await api.get('v1/simrs/pelayanan/diag-prb')
       if (resp.status === 200) {
         this.diagPrbs = resp?.data?.result?.list
       }
       // console.log('diag prb', resp, this.diagPrbs)
     },
-    getDiagnosaDropdown () {
+    getDiagnosaDropdown() {
       return new Promise(resolve => {
         api.get('v1/simrs/pelayanan/listdiagnosa').then(resp => {
           this.optionDiagnosas = resp?.data
@@ -234,13 +238,13 @@ export const usePerencanaanPoliStore = defineStore('perencanaan-poli', {
       })
 
     },
-    setFormKonsul (key, val) {
+    setFormKonsul(key, val) {
       this.formKonsul[key] = val
     },
-    setFormKontrol (key, val) {
+    setFormKontrol(key, val) {
       this.formKontrol[key] = val
     },
-    async saveKonsul (pasien) {
+    async saveKonsul(pasien) {
       this.loadingSaveKonsul = true
       // // console.log(pasien)
       this.formKonsul.norm = pasien?.norm
@@ -283,7 +287,7 @@ export const usePerencanaanPoliStore = defineStore('perencanaan-poli', {
           this.loadingSaveKonsul = false
         })
     },
-    getjadwalDokterDpjp (pasien, tgl) {
+    getjadwalDokterDpjp(pasien, tgl) {
       this.jadwalDpjps = []
       this.loadingJadwalDokter = true
       // this.formKontrol.kodedokterdpjp = pasien?.kodedokterdpjp
@@ -318,7 +322,28 @@ export const usePerencanaanPoliStore = defineStore('perencanaan-poli', {
           })
       })
     },
-    initFormKontrol (pasien) {
+    getketerangan(pasien, tgl) {
+      this.keterangan = []
+      this.loadingKeterangan = true
+
+      return new Promise(resolve => {
+        api.get('v1/simrs/master/keterangankontrol')
+          .then(resp => {
+            this.loadingKeterangan = false
+            console.log('resp', resp)
+            this.keterangan = resp?.data
+            // this.listSeps = resp?.data?.result?.histori ?? []
+            // if (parseInt(resp?.data?.metadata?.code) !== 200) {
+            //   notifInfVue(resp?.data?.metadata?.message)
+            // }
+            resolve(resp)
+          })
+          .catch(() => {
+            this.loadingKeterangan = false
+          })
+      })
+    },
+    initFormKontrol(pasien) {
       this.formKontrol.nosep = pasien?.sep
       this.formKontrol.tgllahir = pasien?.tgllahir
       this.formKontrol.kelamin = pasien?.kelamin
@@ -335,7 +360,7 @@ export const usePerencanaanPoliStore = defineStore('perencanaan-poli', {
       // this.listSeps.push(pasien?.sep)
       // console.log('form kontrol', this.formKontrol)
     },
-    getListSep (pasien) {
+    getListSep(pasien) {
       this.loadingListSep = true
       this.paramListSep.noka = pasien?.noka
       const param = { params: this.paramListSep }
@@ -356,7 +381,7 @@ export const usePerencanaanPoliStore = defineStore('perencanaan-poli', {
           })
       })
     },
-    async saveKontrol (pasien) {
+    async saveKontrol(pasien) {
       this.loadingSaveKontrol = true
       // // console.log(pasien)
       // console.log('form kontrol', this.formKontrol)
@@ -385,7 +410,7 @@ export const usePerencanaanPoliStore = defineStore('perencanaan-poli', {
           this.loadingSaveKontrol = false
         })
     },
-    async saveSelesai (pasien) {
+    async saveSelesai(pasien) {
       this.loadingSaveSelesai = true
       // // console.log(pasien)
       const form = {}
@@ -416,7 +441,7 @@ export const usePerencanaanPoliStore = defineStore('perencanaan-poli', {
       }
     },
 
-    async hapusItem (pasien, item) {
+    async hapusItem(pasien, item) {
       this.loadingHapus = true
       const payload = { noreg: pasien?.noreg, id: item?.id, plan: item.rs4 }
       try {
@@ -436,7 +461,7 @@ export const usePerencanaanPoliStore = defineStore('perencanaan-poli', {
       }
     },
     // ===================================================================================================
-    cekPesertaByNoka (val) {
+    cekPesertaByNoka(val) {
       this.loadingNoka = true
       return new Promise(resolve => {
         api.post('v1/simrs/bridgingbpjs/pendaftaran/cekpsertabpjsbynoka', val)
@@ -453,7 +478,7 @@ export const usePerencanaanPoliStore = defineStore('perencanaan-poli', {
       })
     },
     // ====================================================================================================================================================RUmah sakit lain
-    async saveRsLain (pasien) {
+    async saveRsLain(pasien) {
       // const diag = pasien?.diagnosa?.length ? pasien.diagnosa[0].masterdiagnosa?.rs1 : false
       if (!this.formRsLain.diagnosarujukan) {
         return notifErrVue('Pasien tidak bisa di rujuk karena belum ada Diagnosa')
@@ -495,7 +520,7 @@ export const usePerencanaanPoliStore = defineStore('perencanaan-poli', {
         this.loadingSave = false
       }
     },
-    async saveRujukBalik (pasien) {
+    async saveRujukBalik(pasien) {
       // const diag = pasien?.diagnosa?.length ? pasien.diagnosa[0].masterdiagnosa?.rs1 : false
       // if (!diag) {
       //   return notifErrVue('Pasien tidak bisa di rujuk karena belum ada Diagnosa')
@@ -528,7 +553,7 @@ export const usePerencanaanPoliStore = defineStore('perencanaan-poli', {
         this.loadingSave = false
       }
     },
-    initPasien (pasien) {
+    initPasien(pasien) {
       // this.formRsLain.diagnosarujukan = pasien?.diagnosa?.length ? pasien.diagnosa[0].masterdiagnosa?.rs1 : '-'
       // this.formPrb.diagnosarujukan = pasien?.diagnosa?.length ? pasien.diagnosa[0].masterdiagnosa?.rs1 : '-'
       // this.formRsLain.diagnosa = pasien?.diagnosa?.length ? pasien.diagnosa[0].masterdiagnosa?.rs1 + ' ' + pasien.diagnosa[0].masterdiagnosa?.rs4 : '-'
@@ -559,7 +584,7 @@ export const usePerencanaanPoliStore = defineStore('perencanaan-poli', {
       // this.formPrb.tiperujukan = '2'
       // this.formPrb.tipefaskes = '1'
     },
-    initPasienRanap (pasien) {
+    initPasienRanap(pasien) {
       this.formRanap.kdSaran = pasien?.kdSaran
       this.formRanap.norm = pasien?.norm
       this.formRanap.noka = pasien?.noka
@@ -586,19 +611,19 @@ export const usePerencanaanPoliStore = defineStore('perencanaan-poli', {
       // this.formRanap.jenistindakan= pasien?.
       // this.formRanap.icd9= pasien?.
     },
-    setFormRsLain (key, val) {
+    setFormRsLain(key, val) {
       this.formRsLain[key] = val
     },
     // ==================================================
-    setFormPrb (key, val) {
+    setFormPrb(key, val) {
       this.formPrb[key] = val
     },
 
     // ====================================================================================================================================================RUmah sakit lain
-    setFormRanap (key, val) {
+    setFormRanap(key, val) {
       this.formRanap[key] = val
     },
-    async saveRanap (pasien) {
+    async saveRanap(pasien) {
       this.formRanap.tglrencanakontrol = this.formRanap.tglrencanakunjungan
       this.loadingSave = true
       const url = this.editRanap ? 'v1/simrs/pelayanan/update-planning-pasien' : 'v1/simrs/pelayanan/simpanplaningpasien'
@@ -626,7 +651,7 @@ export const usePerencanaanPoliStore = defineStore('perencanaan-poli', {
         this.loadingSave = false
       }
     },
-    async cariTindakan (val) {
+    async cariTindakan(val) {
       if (val.length < 3) {
         return
       }
@@ -648,7 +673,7 @@ export const usePerencanaanPoliStore = defineStore('perencanaan-poli', {
         this.loadingTind = false
       })
     },
-    async cariIcd9 (val) {
+    async cariIcd9(val) {
       if (val.length < 3) {
         return
       }

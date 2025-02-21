@@ -134,8 +134,8 @@
           </div>
           <div class="row items-center justify-between ">
             <div class="col-7 f-10">
-              Tgl Entri {{ date.formatDate(pasien.tgl_kunjungan, 'DD/MM/YYYY') }} | Tgl Cetak {{
-                date.formatDate(Date.now(), 'DD/MM/YYYY') }} <span class="text-italic">dari RS</span>
+              <!-- Tgl Entri {{ date.formatDate(pasien.tgl_kunjungan, 'DD/MM/YYYY') }} | Tgl Cetak {{
+                date.formatDate(Date.now(), 'DD/MM/YYYY') }} <span class="text-italic">dari RS</span> -->
             </div>
             <div class="col-4 text-center">
               {{ pasien?.dokter }}
@@ -163,7 +163,7 @@ const props = defineProps({
 const ket = ref('')
 const plan = ref('')
 const toItem = ref(null)
-function terpilih (val) {
+function terpilih(val) {
   const temp = props?.pasien?.planning?.filter(a => a.rs4 === val)
   if (temp.length) {
     toItem.value = temp[0]
@@ -174,7 +174,7 @@ onMounted(() => {
   toItem.value = props?.pasien?.planning[0]
   plan.value = props?.pasien?.planning[0].rs4
 })
-function diagnosa (item) {
+function diagnosa(item) {
   console.log(item)
 
   const dariPasien = props?.pasien?.diagnosa.length ? props?.pasien?.diagnosa[0].masterdiagnosa?.rs1 + ' - ' +
@@ -184,7 +184,7 @@ function diagnosa (item) {
 
   return transrujukan ?? dariPasien
 }
-function setKepada (val) {
+function setKepada(val) {
   if (val?.rs4 === 'Kontrol') {
     if (val?.kontrol) {
       return val?.kontrol?.namaDokter
@@ -217,7 +217,7 @@ function setKepada (val) {
     else { return '-' }
   }
 }
-function setNomor (val) {
+function setNomor(val) {
   if (val?.rs4 === 'Kontrol') {
     if (val?.kontrol) {
       return val?.kontrol?.noSuratKontrol
@@ -255,7 +255,7 @@ function setNomor (val) {
     else { return '-' }
   }
 }
-function setTgl (val) {
+function setTgl(val) {
   if (val?.rs4 === 'Kontrol') {
     if (val?.kontrol) {
       return date.formatDate(val?.kontrol?.tglRencanaKontrol, 'DD MMMM YYYY')
@@ -293,7 +293,7 @@ function setTgl (val) {
     else { return '-' }
   }
 }
-function setNama (val) {
+function setNama(val) {
   if (val?.rs4 === 'Konsultasi') {
     const nama = val?.listkonsul ? 'Konsultasi' : 'Konsultasi Internal'
     // console.log(val, props.pasien)
