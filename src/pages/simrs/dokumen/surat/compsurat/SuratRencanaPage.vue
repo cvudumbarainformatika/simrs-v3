@@ -134,8 +134,8 @@
           </div>
           <div class="row items-center justify-between ">
             <div class="col-7 f-10">
-              <!-- Tgl Entri {{ date.formatDate(pasien.tgl_kunjungan, 'DD/MM/YYYY') }} | Tgl Cetak {{
-                date.formatDate(Date.now(), 'DD/MM/YYYY') }} <span class="text-italic">dari RS</span> -->
+              Tgl Entri {{ date.formatDate(pasien.tgl_kunjungan, 'DD/MM/YYYY') }} | Tgl Cetak {{
+                date.formatDate(Date.now(), 'DD/MM/YYYY') }} <span class="text-italic">dari RS</span>
             </div>
             <div class="col-4 text-center">
               {{ pasien?.dokter }}

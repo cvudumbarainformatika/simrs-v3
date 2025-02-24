@@ -122,9 +122,9 @@
                     right-icon-name="icon-mat-dvr" :loading="store.loadingNik"
                     :disable="store.form.barulama !== 'baru' && !store.edit && (!store.form.nik ? false : store.form.nik.length >= 16)"
                     right-icon-tooltip="Cek BPJS" :rules="[
-                      val => (!store.form.nomoridentitaslain && !pelayanan ? !!val : true) || 'Harap di isi',
-                      val => ((!store.form.nomoridentitaslain && val.length > 0) ? regex.test(val) : true) || 'Hanya angka',
-                      val => (!store.form.nomoridentitaslain && val.length >= 16) || 'Minimal 16 angka',
+                      val => (pelayanan === 'igd' ? true : (!store.form.nomoridentitaslain && !pelayanan ? !!val : true)) || 'Harap di isi',
+                      val => (pelayanan === 'igd' ? true : ((!store.form.nomoridentitaslain && val.length > 0)) ? regex.test(val) : true) || 'Hanya angka',
+                      val => (pelayanan === 'igd' ? true : (!store.form.nomoridentitaslain && val.length >= 16)) || 'Minimal 16 angka',
                     ]" @icon-right-click="cekBpjsbyNik" @update:model-value="cekKtpKitas"
                     @blur="store.cekDulu($event, 'nik')" />
                 </div>
