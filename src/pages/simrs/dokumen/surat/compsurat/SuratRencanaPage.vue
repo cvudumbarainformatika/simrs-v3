@@ -177,12 +177,11 @@ onMounted(() => {
 function diagnosa (item) {
   console.log(item)
 
-  const dariPasien = props?.pasien?.diagnosa.length ? props?.pasien?.diagnosa[0].masterdiagnosa?.rs1 + ' - ' +
-    props?.pasien?.diagnosa[0].masterdiagnosa?.rs4 : null
+  const dariPasien = props?.pasien?.memodiagnosa ?? '-'
 
   const transrujukan = item?.transrujukan?.diagnosa?.rs1 + ' - ' + item?.transrujukan?.diagnosa?.rs4
 
-  return transrujukan ?? dariPasien
+  return item?.transrujukan ? transrujukan : dariPasien
 }
 function setKepada (val) {
   if (val?.rs4 === 'Kontrol') {
