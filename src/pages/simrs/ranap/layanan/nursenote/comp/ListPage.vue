@@ -1,15 +1,15 @@
 <template>
-  <div class="fit ">
-    <template v-if="store.loading">
+  <div class="fit" style="overflow: hidden;">
+    <div class="" v-if="store.loading">
       <app-loader></app-loader>
-    </template>
-    <template v-else>
+    </div>
+    <div v-else class="fit">
       <div v-if="!store.items.length" class="column full-height flex-center ">
         <div>Belum Ada Data Tersimpan ... 📋</div>
       </div>
-      <div v-else class="q-py-md column full-height scroll">
+      <div v-else class="full-height q-py-md scroll">
         <q-card v-for="item in store.items" :key="item?.id" class="q-mx-sm q-mb-sm" flat bordered>
-          <q-list bordered class="rounded-borders">
+          <q-list bordered class="rounded-borders" style="max-width: 100%;">
             <q-expansion-item hide-expand-icon>
               <template #header>
                 <q-item-section avatar>
@@ -73,14 +73,17 @@
 
             <q-separator />
           </q-list>
+
+
+
         </q-card>
       </div>
-    </template>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { pathImg } from 'src/boot/axios';
+// import { pathImg } from 'src/boot/axios';
 import { useNurseNoteRanapStore } from 'src/stores/simrs/ranap/nursenote';
 import { useAplikasiStore } from 'src/stores/app/aplikasi'
 import { defineAsyncComponent, ref } from 'vue';
@@ -89,6 +92,7 @@ import { useQuasar } from 'quasar';
 
 
 const CardColumnEdit = defineAsyncComponent(() => import('./CardColumnEdit.vue'))
+// const DialogKananResep = defineAsyncComponent(() => import('./DialogKananResep.vue'))
 
 const props = defineProps({
   pasien: {
@@ -147,3 +151,5 @@ const deleteItem = (item) => {
 }
 
 </script>
+
+<style lang="scss" scoped></style>

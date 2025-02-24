@@ -15,7 +15,7 @@ export const useNurseNoteRanapStore = defineStore('nursenote-ranap-store', {
       // implementasi
       dx: null,
       implementasi: null,
-      reseps: null,
+      reseps: [],
 
       //ttv
       bb: 0,
@@ -63,8 +63,23 @@ export const useNurseNoteRanapStore = defineStore('nursenote-ranap-store', {
       pendarahan: 0,
       ufg: 0,
       produksigc: 0,
+      flag: [],
 
     },
+    flagings: [
+      {
+        label: 'Catatan Pemakaian Obat',
+        value: '1'
+      },
+      {
+        label: 'Grafik TTV',
+        value: '2'
+      },
+      {
+        label: 'Balance Cairan',
+        value: '3'
+      }
+    ],
     tindakans: [],
     petugas: [],
     isForm: false,
@@ -88,9 +103,10 @@ export const useNurseNoteRanapStore = defineStore('nursenote-ranap-store', {
       }
 
       this.form.tindakan = []
+      this.form.flag = []
       this.form.ket = null
       this.form.dx = null
-      this.form.reseps = null
+      this.form.reseps = []
       this.form.mode = null
 
 
@@ -149,10 +165,17 @@ export const useNurseNoteRanapStore = defineStore('nursenote-ranap-store', {
       }
       try {
         const resp = await api.get('v1/simrs/ranap/layanan/nursenote/list', params)
-        // console.log('resp nursenote list', resp)
         if (resp.status === 200) {
-          this.items = resp.data
+          const data = resp?.data
+          this.items = data?.map(x => {
+            return {
+              ...x,
+              flag: x?.flag || [],  // Properti biasa
+              reseps: !Array.isArray(x?.reseps) ? [] : x?.reseps // Properti biasa
+            };
+          }) ?? []
         }
+        console.log('resp nursenote list', this.items)
         this.loading = false
       } catch (error) {
         console.log('error', error);

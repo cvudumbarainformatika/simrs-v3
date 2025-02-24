@@ -64,6 +64,7 @@ const adjustRows = () => {
 
 .editable-textarea {
   width: 100%;
+  min-width: 100%;
   /* padding: 4px; */
   border: none;
   outline: none;
