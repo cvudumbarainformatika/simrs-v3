@@ -449,7 +449,9 @@
           <div class="row">
             <div class="col-6">
               <CardPemakaianObat :pasien="pasien" :kasus="kasus" :nakes="nakes" :reseps="item?.reseps"
-                @add-resep="store.dialogPreview = true" @hapus-obat="(index) => hapusObat(index)" status="edit" />
+                @add-resep="store.dialogPreview = true" @hapus-obat="(index) => {
+                  item?.reseps?.splice(index, 1)
+                }" status="edit" />
             </div>
             <div class="col-6">
               <q-card class="black-ku q-ml-lg">
