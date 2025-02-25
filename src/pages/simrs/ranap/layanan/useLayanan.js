@@ -101,7 +101,7 @@ export default function useLayanan(pasien) {
       name: 'discharge-planning-page',
       label: 'Discharge Planning',
       icon: 'icon-mat-send_time_extension',
-      nakes: ['1', '2', '3'],
+      nakes: ['2', '3'],
       comp: shallowRef(defineAsyncComponent(() => import('./dischargeplanning/IndexPage.vue')))
     },
     {

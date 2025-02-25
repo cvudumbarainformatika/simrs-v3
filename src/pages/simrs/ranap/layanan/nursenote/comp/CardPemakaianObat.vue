@@ -33,7 +33,7 @@
               </q-item-section>
 
               <q-item-section side class="text-center">
-                <div class="text-bold text-white">{{ obat?.jumlah }} {{ obat?.satuan }}</div>
+                <div class="text-bold text-white">{{ obat?.jumlah }} {{ obat?.satuan_ambil }}</div>
 
                 <!-- Tombol Hapus Item -->
                 <q-btn icon="icon-mat-delete" size="xs" padding="sm" flat color="negative" round dense

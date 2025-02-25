@@ -28,9 +28,9 @@
               <div>
                 <div class="text-bold">Keterangan : </div>
                 <div class="q-ml-sm">
-                  <text-area-edit :model-value="item?.keterangan" @update:model-value="(val) => {
+                  <text-area-edit class="full-width" :model-value="item?.ket" @update:model-value="(val) => {
                     // console.log('val', val);
-                    item.keterangan = val
+                    item.ket = val
                   }" />
                 </div>
               </div>

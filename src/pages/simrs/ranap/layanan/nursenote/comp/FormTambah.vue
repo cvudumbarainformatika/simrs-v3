@@ -13,7 +13,7 @@
                 console.log('val', val);
 
               }" /> -->
-            <q-input v-model="store.form.keterangan" type="textarea" outlined standout="bg-yellow-3"
+            <q-input v-model="store.form.ket" type="textarea" outlined standout="bg-yellow-3"
               @focus="() => setSplitter('insideModel1a', 100)" label="Keterangan" class="col-12" />
           </div>
 
