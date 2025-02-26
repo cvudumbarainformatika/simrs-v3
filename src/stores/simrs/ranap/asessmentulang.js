@@ -338,6 +338,7 @@ export const useAsessmentUlangRanapStore = defineStore('asesment-ulang-ranap-sto
         form: this.form,
         kdgroup_ruangan: pasien?.kdgroup_ruangan,
         kelas_ruangan: pasien?.kelas_ruangan,
+        hak_kelas: pasien?.hak_kelas, // ini buat pasien HCU ASOKA
         kodesistembayar: pasien?.kodesistembayar
       }
 
