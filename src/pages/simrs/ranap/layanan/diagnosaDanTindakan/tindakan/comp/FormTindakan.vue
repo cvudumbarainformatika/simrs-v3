@@ -30,7 +30,7 @@ const props = defineProps({
 })
 
 onMounted(() => {
-  console.log('pasien', props.pasien)
+  // console.log('pasien', props.pasien)
   options.value = filterArrayTindakan(store.listTindakan, props.pasien)
 })
 
@@ -61,13 +61,13 @@ const onSubmit = () => {
     })
 }
 
-function updateSearchTindakan (val) {
-  store.setKdTindakan(val).then(() => {
+function updateSearchTindakan(val) {
+  store.setKdTindakan(val, props.pasien).then(() => {
     inpQtyRef.value.focus()
   })
 }
 
-function filterFn (val, update, abort) {
+function filterFn(val, update, abort) {
   if (val.length < 1) {
     abort()
     return
@@ -88,6 +88,7 @@ function filterFn (val, update, abort) {
       )
     const filteredData = multiFilter(arr, filter, needle)
     options.value = filteredData
+    // console.log('filteredData', filteredData)
   })
 }
 
@@ -97,46 +98,26 @@ function filterFn (val, update, abort) {
   <div class="fit column">
     <div class="col full-height scroll">
       <q-card flat>
-        <q-form
-          ref="formmRef"
-          class=""
-          @submit="onSubmit"
-        >
+        <q-form ref="formmRef" class="" @submit="onSubmit">
           <q-card-section class="row q-pa-lg q-col-gutter-sm">
             <div class="col-12 q-mb-sm">
               <div class="flex q-gutter-x-md items-center">
                 <div>Nota Tindakan :</div>
-                <q-select
-                  v-model="store.notaTindakan"
-                  outlined
-                  standout="bg-yellow-3"
-                  bg-color="white"
-                  dense
+                <q-select v-model="store.notaTindakan" outlined standout="bg-yellow-3" bg-color="white" dense
                   :options="store.notaTindakans"
-                  :display-value="`${store.notaTindakan==='' || store.notaTindakan === 'BARU'? 'BARU': store.notaTindakan}`"
-                  style="min-width: 200px;"
-                />
+                  :display-value="`${store.notaTindakan === '' || store.notaTindakan === 'BARU' ? 'BARU' : store.notaTindakan}`"
+                  style="min-width: 200px;" />
               </div>
             </div>
             <div class="col-12 q-mb-sm">
-              <q-select
-                v-model="store.searchtindakan"
-                use-input
-                hide-selected
-                fill-input
-                outlined
-                standout="bg-yellow-3"
-                dense
-                emit-value
-                map-options
-                option-value="kdtindakan"
-                :option-label="opt => Object(opt) === opt && 'tindakan' in opt ? opt.kdtindakan + ' ~ ' + opt.tindakan + ' --ICDCODE-- ' + opt.icd9 : ' Cari Tindakan '"
-                input-debounce="0"
-                :options="options"
-                label="Cari Tindakan"
-                @filter="filterFn"
-                @update:model-value="(val)=> updateSearchTindakan(val)"
-              >
+              <q-select v-model="store.searchtindakan" use-input hide-selected fill-input outlined
+                standout="bg-yellow-3" dense emit-value map-options option-value="kdtindakan"
+                :option-label="opt => Object(opt) === opt && 'tindakan' in opt ? opt.kdtindakan + ' ~ ' + opt.tindakan + ' -- ICD9 -- ' + opt.icd9 : ' Cari Tindakan '"
+                input-debounce="0" :options="options" label="Cari Tindakan" @filter="filterFn" @update:model-value="(val) => {
+                  // console.log('updateSearchTindakan', val);
+
+                  updateSearchTindakan(val)
+                }">
                 <template #no-option>
                   <q-item>
                     <q-item-section class="text-grey">
@@ -167,97 +148,44 @@ function filterFn (val, update, abort) {
             </div>
 
             <div class="col-9">
-              <q-input
-                v-model="store.formtindakan.tarif"
-                label="Biaya (Otomatis)"
-                dense
-                outlined
-                standout="bg-yellow-3"
-                :rules="[val => !!val || 'Harus diisi']"
-                hide-bottom-space
-                readonly
-              />
+              <q-input v-model="store.formtindakan.tarif" label="Biaya (Otomatis)" dense outlined standout="bg-yellow-3"
+                :rules="[val => !!val || 'Harus diisi']" hide-bottom-space readonly />
             </div>
             <div class="col-3">
-              <q-input
-                ref="inpQtyRef"
-                v-model="store.formtindakan.jmltindakan"
-                label="Qty"
-                dense
-                outlined
-                standout="bg-yellow-3"
-                :rules="[val => !!val || 'Harus diisi',
-                         val => !isNaN(val) || 'Harus pakai Nomor',
-                ]"
-                hide-bottom-space
-              />
+              <q-input ref="inpQtyRef" v-model="store.formtindakan.jmltindakan" label="Qty" dense outlined
+                standout="bg-yellow-3" :rules="[val => !!val || 'Harus diisi',
+                val => !isNaN(val) || 'Harus pakai Nomor',
+                ]" hide-bottom-space />
             </div>
             <div class="col-12">
-              <q-input
-                v-model="store.formtindakan.keterangan"
-                label="Keterangan"
-                autogrow
-                outlined
-                standout="bg-yellow-3"
-                hide-bottom-space
-              />
+              <q-input v-model="store.formtindakan.keterangan" label="Keterangan" autogrow outlined
+                standout="bg-yellow-3" hide-bottom-space />
             </div>
             <div class="col-12">
               <q-separator />
             </div>
 
-            <AutocompleteNakesMulti
-              v-model="store.formtindakan.pelaksanaSatu"
-              ref="pelaksanaSatuRef"
-              label="Pelaksana Satu"
-              placeholder="Pelaksana Satu"
-              class="col-12"
-              autocomplete="nama"
-              option-value="kdpegsimrs"
-              option-label="nama"
-              map-options
-              emit-value
-              use-chips
-              :model="store.formtindakan.pelaksanaSatu"
-              :source="store.listPetugas"
-              @update:model-value="(val)=> {
+            <AutocompleteNakesMulti v-model="store.formtindakan.pelaksanaSatu" ref="pelaksanaSatuRef"
+              label="Pelaksana Satu" placeholder="Pelaksana Satu" class="col-12" autocomplete="nama"
+              option-value="kdpegsimrs" option-label="nama" map-options emit-value use-chips
+              :model="store.formtindakan.pelaksanaSatu" :source="store.listPetugas" @update:model-value="(val) => {
                 // console.log('update model', val);
                 store.formtindakan.pelaksanaSatu = val
-              }"
-
-              :rules="[val => !!val?.length || 'Harap diisi']"
-            />
-            <AutocompleteNakesMulti
-              ref="pelaksanaDuaRef"
-              v-model="store.formtindakan.pelaksanaDua"
-              label="Pelaksana Dua"
-              placeholder="Pelaksana Dua"
-              class="col-12"
-              autocomplete="nama"
-              option-value="kdpegsimrs"
-              option-label="nama"
-              map-options
-              emit-value
-              use-chips
-              :model="store.formtindakan.pelaksanaDua"
-              :source="store.listPetugas"
-              @update:model-value="(val)=> {
+              }" :rules="[val => !!val?.length || 'Harap diisi']" />
+            <AutocompleteNakesMulti ref="pelaksanaDuaRef" v-model="store.formtindakan.pelaksanaDua"
+              label="Pelaksana Dua" placeholder="Pelaksana Dua" class="col-12" autocomplete="nama"
+              option-value="kdpegsimrs" option-label="nama" map-options emit-value use-chips
+              :model="store.formtindakan.pelaksanaDua" :source="store.listPetugas" @update:model-value="(val) => {
                 // console.log('update model', val);
                 store.formtindakan.pelaksanaDua = val
-              }"
-            />
+              }" />
           </q-card-section>
           <q-separator />
           <q-card-section align="right">
             <!-- <div class="col-12 text-right"> -->
-            <q-btn
-              label="Simpan Tindakan"
-              color="primary"
-              type="submit"
-              :loading="store.loadingFormTindakan"
-              :disable="store.loadingFormTindakan"
-            />
-          <!-- </div> -->
+            <q-btn label="Simpan Tindakan" color="primary" type="submit" :loading="store.loadingFormTindakan"
+              :disable="store.loadingFormTindakan" />
+            <!-- </div> -->
           </q-card-section>
         </q-form>
       </q-card>
