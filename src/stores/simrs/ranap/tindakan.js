@@ -70,7 +70,7 @@ export const useTindakanRanapStore = defineStore('tindakan-ranap-store', {
 
     async getTindakanDropdown() {
       const resp = await api.get('v1/simrs/pelayanan/dialogtindakanpoli')
-      console.log('dropdown tindakan', resp)
+      // console.log('dropdown tindakan', resp)
       if (resp.status === 200) {
         this.listTindakan = resp.data
       }
@@ -209,7 +209,7 @@ export const useTindakanRanapStore = defineStore('tindakan-ranap-store', {
         //   : this.formtindakan.subtotal = 0
       }
 
-      console.log('setKdTindakana', this.formtindakan)
+      // console.log('setKdTindakana', this.formtindakan)
       return new Promise((resolve, reject) => {
         resolve()
       })
@@ -302,7 +302,7 @@ export const useTindakanRanapStore = defineStore('tindakan-ranap-store', {
       }
 
       const resp = await api.get('v1/simrs/pelayanan/notatindakanranap', params)
-      console.log('notas', resp)
+      // console.log('notas', resp)
       if (resp.status === 200) {
         const arr = resp.data.map(x => x.nota)
         this.notaTindakans = arr.length ? arr : []
