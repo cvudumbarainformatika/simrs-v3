@@ -26,7 +26,7 @@ export const usePlannStore = defineStore('plann-store', {
     },
     fixednicu: false,
     fixediccu: false,
-
+    fixedhcu: false,
     selection: [],
     pilihatasx: ['Bayi yang memerlukan O2 < 60%', 'NKB 32-34 mg, kondisi stabil', 'BBL > 1500 gr', 'NKB 34-36 mg', 'kondisi stabil', 'reflek hisap lemah', 'Bayi yang dipuasakan / EKN',
       'Bayi yang memerlukan tranfusi tukar', 'Bayi yang sering muntah', 'Bayi dengan kelainan kronik (CLD)', 'Bayi yang memerlukan foto terapi dengan masalah lain : dehidrasi, minum personde',
@@ -125,7 +125,10 @@ export const usePlannStore = defineStore('plann-store', {
       return new Promise(resolve => {
         api.get('v1/simrs/planing/igd/indikasimasuknicuinter', payload).then(resp => {
           if (resp.status === 200) {
-            this.isiindikasimasuknicuinter = resp.data.data[0]
+            console.log('wew', resp?.data?.data)
+            const arr = JSON.parse(resp?.data?.data[0]?.isi)
+            this.isiindikasimasuknicuinter = { ...arr }
+            console.log('valaaaaaaaaaaaa', arr)
           }
           resolve(resp)
           this.loading = false
