@@ -380,12 +380,17 @@ function cekindikasi(val) {
   if (result[0].rs3 === 'NICU') {
     store.fixednicu = true
     store.resetdialog()
+    store.form.kelas = 'NICU'
   } else if (result[0].rs3 === 'ICC') {
     store.fixediccu = true
     store.resetdialog()
+    store.form.kelas = 'ICCU'
   } else if (result[0].rs3 === 'HCU') {
     store.fixedhcu = true
     store.resetdialog()
+    store.form.kelas = 'HCU'
+  } else {
+    store.form.kelas = 'null'
   }
 }
 

@@ -22,6 +22,7 @@ export const usePlannStore = defineStore('plann-store', {
     ],
     form: {
       panel: 'Rawat Inap',
+      kelas: '',
       isi: ([])
     },
     fixednicu: false,
@@ -99,6 +100,7 @@ export const usePlannStore = defineStore('plann-store', {
       this.form.tgloperasi = ''
       this.form.ruangtujuan = ''
       this.form.keterangan = ''
+      this.form.kelas = ''
     },
     resetdialog() {
       this.form.isi = []
