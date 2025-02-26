@@ -2,7 +2,7 @@
   <q-dialog v-model="store.fixediccu">
     <q-card>
       <q-card-section>
-        <div class="text-h6">Indikasi Masuk NICU dan Intermediatet</div>
+        <div class="text-h6">Indikasi Masuk ICCU</div>
       </q-card-section>
 
       <q-separator />

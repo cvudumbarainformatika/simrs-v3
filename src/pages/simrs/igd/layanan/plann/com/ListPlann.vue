@@ -37,9 +37,12 @@
                       }}</span></q-item-label>
                   <q-item-label>Ruang Tujuan : <span class="text-weight-bold">{{ item?.planranap?.ruangranap?.rs2
                       }}</span></q-item-label>
-                  <q-item-label>Indikasi Masuk NICU dan Intermediate : <span class="text-weight-bold">{{
-                    item?.planranap?.dokumentransfer?.isi
-                      }}</span></q-item-label>
+                  <!-- <div v-if="item?.planranap?.dokumentransfer !== ''">
+                    <q-item-label>Indikasi Masuk Ruang {{ item?.planranap?.dokumentransfer }} : <span
+                        class="text-weight-bold">{{
+                          item?.planranap?.dokumentransfer?.isi
+                        }}</span></q-item-label>
+                  </div> -->
                 </div>
                 <div v-if="item?.rs4 === 'Rujuk Ke Rumah Sakit'">
                   <q-item-label>Alasan Dirujuk : <span class="text-weight-bold">{{ item?.planrujukan?.atas_dasar

@@ -203,6 +203,7 @@
   </div>
   <form-plann-nicu />
   <form-plann-iccu />
+  <form-plan-hcu />
 </template>
 <script setup>
 import { date } from 'quasar'
@@ -210,6 +211,7 @@ import { api } from 'src/boot/axios'
 import { usePlannStore } from 'src/stores/simrs/igd/plann'
 import FormPlannNicu from './planpulang/FormPlannNicu.vue'
 import FormPlannIccu from './planpulang/FormPlannIccu.vue'
+import FormPlanHcu from './planpulang/FormPlanHcu.vue'
 import { ref } from 'vue'
 
 const store = usePlannStore()
@@ -372,16 +374,23 @@ function cekpulang(val) {
 }
 
 function cekindikasi(val) {
-  console.log('sasas', val);
   const ruangan = props.ruangranap;
   const result = ruangan.filter((x) => x.rs1 === val);
-  // console.log('xxxx', result[0].rs3);
+  console.log('xxxx', result[0].rs3);
   if (result[0].rs3 === 'NICU') {
     store.fixednicu = true
     store.resetdialog()
+    store.form.kelas = 'NICU'
   } else if (result[0].rs3 === 'ICC') {
     store.fixediccu = true
     store.resetdialog()
+    store.form.kelas = 'ICCU'
+  } else if (result[0].rs3 === 'HCU') {
+    store.fixedhcu = true
+    store.resetdialog()
+    store.form.kelas = 'HCU'
+  } else {
+    store.form.kelas = 'null'
   }
 }
 

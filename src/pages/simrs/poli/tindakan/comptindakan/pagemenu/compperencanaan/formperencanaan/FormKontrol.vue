@@ -28,7 +28,8 @@
             @update:model-value="isiketerangan(store.formKontrol.keterangan)" />
         </div>
         <div class="col-5">
-          <q-input v-model="store.formKontrol.keterangan2" filled type="textarea" />
+          <q-input v-model="store.formKontrol.keterangan2" filled type="textarea"
+            :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" />
         </div>
         <div class="col-12">
           <q-separator class=" q-my-md" />
@@ -64,7 +65,7 @@
                       item?.noKartu }}</span>
                   </q-item-label>
                   <q-item-label>
-                    <span class="">{{ item?.noRujukan }}</span> | <span class="text-secondary ">{{ item?.poli }}</span>
+                    <span class="">{{ item?.noRujukan }}</span> | <span class="text-secondary">{{ item?.poli }}</span>
                   </q-item-label>
                 </q-item-section>
                 <q-item-section>
