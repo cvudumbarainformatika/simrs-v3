@@ -1,18 +1,8 @@
 <template>
   <q-page class="bg-white full-height" ref="refPage">
-    <q-tabs
-      ref="refTabs"
-      v-model="tab"
-      dense
-      no-caps
-      inline-label
-      narrow-indicator
-      indicator-color="transparent"
-      align="left"
-      class=" bg-transparent text-grey-8"
-      active-color="white"
-      :active-bg-color="menu?.reference ? 'dark' : 'primary'"
-    >
+    <q-tabs ref="refTabs" v-model="tab" dense no-caps inline-label narrow-indicator indicator-color="transparent"
+      align="left" class=" bg-transparent text-grey-8" active-color="white"
+      :active-bg-color="menu?.reference ? 'dark' : 'primary'">
       <q-tab v-for="tb in tabs" :key="tb.name" :ripple="true" :name="tb?.name" content-class="tab-classes">
         <template #default>
           <div class="row q-gutter-x-xs items-center q-px-sm" style="border-radius: 10px;">
@@ -22,17 +12,10 @@
       </q-tab>
     </q-tabs>
 
-    <q-tab-panels
-      v-model="tab"
-      class="q-pa-sm"
-      animated
-    >
+    <q-tab-panels v-model="tab" class="q-pa-sm" animated>
       <q-tab-panel :name="menu?.name" class="q-pa-none">
         <q-scroll-area :style="`height: ${he}px;`">
-          <component
-            :is="menu?.comp"
-            @tambah="tambahRinciPengembalian"
-          />
+          <component :is="menu?.comp" @tambah="tambahRinciPengembalian" />
         </q-scroll-area>
       </q-tab-panel>
     </q-tab-panels>
@@ -87,22 +70,22 @@ function tambahRinciPengembalian (val) {
   tab.value = 'pengembalian'
 
   store.getNopenerimaans().then(() => {
-    if (val)store.penerimaanRinci = store.nopenerimaans.find(item => item.nopenerimaan === val?.nopenerimaan) ?? []
+    if (val) store.penerimaanRinci = store.nopenerimaans.find(item => item.nopenerimaan === val?.nopenerimaan) ?? []
     else store.penerimaanRinci = {}
   })
   console.log('tambah', val)
 }
 watch(() => apps?.user?.kdruangansim, (kod) => {
-  const gud = store.gudangs.find(a => a.value === kod)
+  const gud = store.gudangs?.find(a => a.value === kod)
+  list.setParams('kdruang', kod)
   if (gud) {
-    list.setParams('kdruang', kod)
     store.setForm('kdruang', kod)
   }
   else {
     notifErrVue('Hanya boleh Menampilkan Stok gudang')
-    list.setParams('kdruang', null)
+    // list.setParams('kdruang', null)
   }
-  // console.log('kode', gud)
+  console.log('kode', gud)
 })
 
 const refPage = ref(null)

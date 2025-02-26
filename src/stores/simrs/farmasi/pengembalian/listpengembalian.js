@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia'
+import { acceptHMRUpdate, defineStore } from 'pinia'
 import { api } from 'src/boot/axios'
 import { dateDbFormat } from 'src/modules/formatter'
 import { notifSuccess } from 'src/modules/utils'
@@ -24,7 +24,7 @@ export const useListPengembalianPinjamanStore = defineStore('list_pengembalian_p
       'noperkem',
       'pbf',
       'tgl',
-      'status'
+      'status',
     ],
     columnHide: [],
     gudangs: [
@@ -117,13 +117,24 @@ export const useListPengembalianPinjamanStore = defineStore('list_pengembalian_p
     kunciPengembalian (item) {
       item.loadingKunci = true
       const form = {
-        id: item.id
+        id: item.id,
+        // rincian: item?.rincian,
+        kdobat: item?.rincian?.map(m => m.kdobat),
+        kdruang: item?.kdruang
       }
       return new Promise(resolve => {
         api.post('v1/simrs/penunjang/farmasinew/pengembalian/kunci', form)
           .then(resp => {
             console.log('kunci', resp?.data)
             item.loadingKunci = false
+            const index = this.items.findIndex(x => x.id === item?.id)
+            const dataHeader = resp?.data?.header
+            if (dataHeader?.rincian?.length > 0) {
+              dataHeader.rincian.forEach(rincian => {
+                rincian.jmlstok = rincian?.stok?.reduce((a, b) => parseFloat(a) + parseFloat(b.jumlah), 0)
+              })
+            }
+            if (index >= 0) this.items[index] = dataHeader
             notifSuccess(resp)
             resolve(resp)
           })
@@ -181,3 +192,6 @@ export const useListPengembalianPinjamanStore = defineStore('list_pengembalian_p
     }
   }
 })
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useListPengembalianPinjamanStore, import.meta.hot))
+}
