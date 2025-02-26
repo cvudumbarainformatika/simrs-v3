@@ -58,14 +58,14 @@ const tabsxx = [
     label: 'SKRIINING',
     name: 'skriining',
     icon: 'icon-mat-health_and_safety',
-    nakes: ['2', '3'],
+    nakes: ['1', '2', '3'],
     comp: defineAsyncComponent(() => import('./pagetabs/SkriiningPage.vue'))
   },
   {
     label: 'SUMMARY',
     name: 'summary',
     icon: 'icon-mat-health_and_safety',
-    nakes: ['2', '3'],
+    nakes: ['1', '2', '3'],
     comp: defineAsyncComponent(() => import('./pagetabs/SummaryPage.vue'))
   }
 ]

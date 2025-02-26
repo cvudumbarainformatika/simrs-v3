@@ -13,10 +13,15 @@ export const useMasterObatTable = defineStore('master_Obat_table', {
       page: 1,
       per_page: 10,
       order_by: 'created_at',
-      sort: 'desc'
+      sort: 'desc',
+      status_prb: false
     },
     columns: [],
-    columnHide: ['id', 'created_at', 'updated_at', 'deleted_at']
+    columnHide: ['id', 'created_at', 'updated_at', 'deleted_at'],
+    mapingBpjs: {
+      isOpen: false,
+      item: null
+    }
   }),
   getters: {
     getterColumns (state) {

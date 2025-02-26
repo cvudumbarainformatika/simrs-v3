@@ -15,7 +15,7 @@
           </q-bar>
         </div>
 
-        <div class="col-auto bg-white">
+        <!-- <div class="col-auto bg-white">
           <q-card-section class="row justify-between">
             <div class="q-gutter-md">
               <q-btn rounded outline color="orange" icon="icon-mat-arrow_back" v-close-popup>
@@ -26,10 +26,11 @@
               </q-btn>
             </div>
           </q-card-section>
-        </div>
+        </div> -->
 
         <div class="col full-height bg-grey-4">
-          <card-column :pasien="pasien" :kasus="kasus" />
+          <!-- <card-column :pasien="pasien" :kasus="kasus" /> -->
+          <form-tambah :pasien="pasien" :kasus="kasus" :nakes="nakes" />
         </div>
 
         <div class="col-auto bg-primary q-pa-md">
@@ -44,6 +45,11 @@
           </div>
         </div>
       </q-form>
+
+
+
+      <dialog-kanan-resep :pasien="pasien" :kasus="kasus" :nakes="nakes" />
+
     </q-card>
 
 
@@ -53,6 +59,9 @@
     <!-- <dialog-preview v-model="store.dialogPreview" :pasien="pasien" :content="contentPreview" @on-selected-reseps="(val) => {
       store.form.reseps = val
     }" /> -->
+
+
+
   </q-dialog>
 </template>
 
@@ -77,6 +86,8 @@ const props = defineProps({
 })
 
 const CardColumn = defineAsyncComponent(() => import('./CardColumn.vue'))
+const FormTambah = defineAsyncComponent(() => import('./FormTambah.vue'))
+const DialogKananResep = defineAsyncComponent(() => import('./DialogKananResep.vue'))
 const AutocompleteInputTwo = defineAsyncComponent(() => import('src/pages/simrs/ranap/layanan/components/AutocompleteInputTwo.vue'))
 const DialogPreview = defineAsyncComponent(() => import('./DialogPreview.vue'))
 

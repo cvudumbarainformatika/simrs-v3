@@ -134,7 +134,7 @@
           </div>
           <div class="row items-center justify-between ">
             <div class="col-7 f-10">
-              Tgl Entri {{ date.formatDate(pasien.tgl_kunjungan, 'DD/MM/YYYY') }} | Tgl Cetak {{
+              Tgl Terbit {{ date.formatDate(toItem?.created_at, 'DD/MM/YYYY') }} | Tgl Cetak {{
                 date.formatDate(Date.now(), 'DD/MM/YYYY') }} <span class="text-italic">dari RS</span>
             </div>
             <div class="col-4 text-center">
@@ -163,7 +163,7 @@ const props = defineProps({
 const ket = ref('')
 const plan = ref('')
 const toItem = ref(null)
-function terpilih(val) {
+function terpilih (val) {
   const temp = props?.pasien?.planning?.filter(a => a.rs4 === val)
   if (temp.length) {
     toItem.value = temp[0]
@@ -174,7 +174,7 @@ onMounted(() => {
   toItem.value = props?.pasien?.planning[0]
   plan.value = props?.pasien?.planning[0].rs4
 })
-function diagnosa(item) {
+function diagnosa (item) {
   console.log(item)
 
   const dariPasien = props?.pasien?.memodiagnosa ?? '-'
@@ -183,7 +183,7 @@ function diagnosa(item) {
 
   return item?.transrujukan ? transrujukan : dariPasien
 }
-function setKepada(val) {
+function setKepada (val) {
   if (val?.rs4 === 'Kontrol') {
     if (val?.kontrol) {
       return val?.kontrol?.namaDokter
@@ -216,7 +216,7 @@ function setKepada(val) {
     else { return '-' }
   }
 }
-function setNomor(val) {
+function setNomor (val) {
   if (val?.rs4 === 'Kontrol') {
     if (val?.kontrol) {
       return val?.kontrol?.noSuratKontrol
@@ -254,7 +254,7 @@ function setNomor(val) {
     else { return '-' }
   }
 }
-function setTgl(val) {
+function setTgl (val) {
   if (val?.rs4 === 'Kontrol') {
     if (val?.kontrol) {
       return date.formatDate(val?.kontrol?.tglRencanaKontrol, 'DD MMMM YYYY')
@@ -292,7 +292,7 @@ function setTgl(val) {
     else { return '-' }
   }
 }
-function setNama(val) {
+function setNama (val) {
   if (val?.rs4 === 'Konsultasi') {
     const nama = val?.listkonsul ? 'Konsultasi' : 'Konsultasi Internal'
     // console.log(val, props.pasien)
@@ -310,6 +310,18 @@ function setNama(val) {
     return val?.rs4
   }
 }
+// function tglEntry (val) {
+//   // date.formatDate(pasien.tgl_kunjungan, 'DD/MM/YYYY')
+//   console.log('tglEntry', val)
+//   let tanggal = '-'
+//   if (val?.rs4 == 'Kontrol') tanggal = date.formatDate(val?.kontrol?.created_at, 'DD/MM/YYYY')
+//   else if (val?.rs4 == 'Konsultasi') tanggal = date.formatDate(val?.listkonsul?.created_at, 'DD/MM/YYYY')
+//   else if (val?.rs4 == 'Konsultasi Internal' || val?.rs4 == 'Rujukan Internal') tanggal = date.formatDate(val?.rekomdpjp?.tglInsert, 'DD/MM/YYYY')
+//   else if (val?.rs4 == 'Konsultasi') tanggal = date.formatDate(val?.listkonsul?.created_at, 'DD/MM/YYYY')
+
+//   return tanggal
+
+// }
 // eslint-disable-next-line no-unused-vars
 const printObj = {
   id: 'printMe',
