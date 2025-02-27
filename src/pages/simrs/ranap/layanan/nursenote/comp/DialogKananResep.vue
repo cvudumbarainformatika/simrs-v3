@@ -16,12 +16,13 @@
             class="futuristic-item">
             <q-item-section>
               <q-item-label class="text-bold">{{ obat?.nama_obat }}</q-item-label>
-              <q-item-label caption class="text-blue">{{ obat?.kandungan }}</q-item-label>
+              <q-item-label class="text-yellow">kandungan : {{ obat?.kandungan }}</q-item-label>
             </q-item-section>
             <q-item-section side>
               <q-item-label class="text-white">{{ obat?.jumlah }} {{ obat?.satuan }} ({{ obat?.sediaan
                 }})</q-item-label>
               <q-item-label caption class="text-white">aturan : {{ obat?.aturan }}</q-item-label>
+              <!-- <q-item-label caption class="text-white">tgl : {{ obat?.waktu }}</q-item-label> -->
             </q-item-section>
           </q-item>
         </q-list>
@@ -42,11 +43,11 @@
         <div class="f-14 text-info">{{ selectedObat?.kandungan }}, {{ selectedObat?.satuan }} , aturan : {{
           selectedObat?.aturan }}</div>
         <q-separator class="q-my-lg"></q-separator>
-        <div class="flex q-gutter-md">
-          <q-input v-model="selectedObat.jumlah" label="Jumlah Pemakaian" type="number" filled style="width: 30%;" />
-          <q-input v-model="selectedObat.satuan_ambil" label="Satuan" filled style="width: 30%;" />
-
-          <q-input v-model="selectedObat.sisa" label="Sisa Obat" type="number" filled style="width: 30%;" />
+        <div class="flex q-gutter-sm">
+          <q-input v-model="selectedObat.jumlah" label="jml Pemakaian" type="number" filled style="width: 23%;" />
+          <q-input v-model="selectedObat.sisa" label="Sisa Obat" type="number" filled style="width: 23%;" />
+          <q-input v-model="selectedObat.satuan_ambil" label="Satuan" filled style="width: 23%;" />
+          <q-input v-model="selectedObat.dosis" label="Dosis" filled style="width: 23%;" />
         </div>
         <div class="flex q-gutter-md">
 
@@ -64,6 +65,7 @@
 </template>
 
 <script setup>
+import { dateDbFormat, dateFull, dateFullFormat } from 'src/modules/formatter';
 import { useNurseNoteRanapStore } from 'src/stores/simrs/ranap/nursenote';
 import { ref, computed, onMounted } from 'vue';
 
@@ -114,13 +116,39 @@ const setitems = () => {
         jumlah: y?.jumlah,
         aturan: y?.aturan,
         created_at: y?.created_at,
+        waktu: dateFull(y?.created_at),
         uraian: y?.uraian,
         satuan: y?.mobat?.satuan_k,
         sediaan: y?.mobat?.bentuk_sediaan,
         jenis: y?.mobat?.jenis_perbekalan
       }
     }))?.flat()
-    arr = [...new Set(detailsResep)]
+    const newArr = [...new Set(detailsResep)]
+    newArr?.sort((a, b) => {
+      const tanggalA = new Date(a?.created_at);
+      const tanggalB = new Date(b?.created_at);
+      return tanggalA - tanggalB;
+    });
+    const result = newArr?.reduce((acc, current) => {
+      const existing = acc.find(item => item.kdobat === current.kdobat);
+      if (existing) {
+        existing.nama_obat = current.nama_obat;
+        existing.kandungan = current.kandungan;
+        existing.uraian = current.uraian;
+        existing.jumlah = current.jumlah;
+        existing.aturan = current.aturan;
+        existing.created_at = current.created_at;
+        existing.waktu = current.waktu;
+        existing.uraian108 = current.uraian108;
+        existing.satuan = current.satuan;
+        existing.sediaan = current.sediaan;
+        existing.jenis = current.jenis;
+      } else {
+        acc.push(current);
+      }
+      return acc;
+    }, []);
+    arr = result
   }
 
   // return arr
@@ -138,7 +166,7 @@ const filteredObat = computed(() => {
   const query = searchQuery?.value?.toLowerCase() || null;
   if (query !== '' && query !== null) {
     return daftarObat.value.filter(obat =>
-      obat?.nama?.toLowerCase()?.includes(query) || obat?.kandungan?.toLowerCase()?.includes(query)
+      obat?.nama_obat?.toLowerCase()?.includes(query) || obat?.kandungan?.toLowerCase()?.includes(query)
     );
   }
   else {
@@ -147,7 +175,7 @@ const filteredObat = computed(() => {
 });
 
 const selectObat = (obat) => {
-  selectedObat.value = { ...obat, satuan_ambil: obat?.satuan, flag: '1' }; // flag: 1 = obat resep
+  selectedObat.value = { ...obat, satuan_ambil: obat?.satuan, dosis: null, flag: '1' }; // flag: 1 = obat resep
 };
 
 const submitObat = () => {

@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia'
+import { acceptHMRUpdate, defineStore } from 'pinia'
 import { date } from 'quasar'
 import { api } from 'src/boot/axios'
 import { notifErrVue, notifSuccess } from 'src/modules/utils'
@@ -20,7 +20,11 @@ export const usePengembalianPinjamanStore = defineStore('pengembalian_pinjaman',
     },
     penyedias: [],
     nopenerimaans: [],
-    penerimaanRinci: {}
+    penerimaanRinci: {},
+    gudangs: [
+      { nama: 'Gudang Farmasi ( Kamar Obat )', value: 'Gd-05010100' },
+      { nama: 'Gudang Farmasi (Floor Stok)', value: 'Gd-03010100' }
+    ]
   }),
   actions: {
     setParams (key, val) {
@@ -109,3 +113,7 @@ export const usePengembalianPinjamanStore = defineStore('pengembalian_pinjaman',
 
   }
 })
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(usePengembalianPinjamanStore, import.meta.hot))
+}

@@ -26,10 +26,12 @@
 
               <q-item-section>
                 <q-item-label class="f-12 text-bold">{{ obat?.nama_obat }}</q-item-label>
-                <q-item-label caption class="text-grey">{{ obat?.kandungan }}</q-item-label>
-                <q-badge :color="obat.sisa > 10 ? 'transparent' : 'transparent'" class="text-white q-mt-xs">
-                  Sisa: {{ obat?.sisa }} {{ obat?.satuan_ambil }}
-                </q-badge>
+                <!-- <q-item-label caption class="text-grey">{{ obat?.kandungan }}</q-item-label> -->
+                <div class="text-white q-mt-xs">
+                  Sisa: {{ obat?.sisa }} {{ obat?.satuan_ambil }}, <span class="text-yellow q-ml-md"> Dosis: {{
+                    obat?.dosis
+                  }}</span>
+                </div>
               </q-item-section>
 
               <q-item-section side class="text-center">

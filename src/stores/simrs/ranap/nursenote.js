@@ -78,7 +78,11 @@ export const useNurseNoteRanapStore = defineStore('nursenote-ranap-store', {
       {
         label: 'Balance Cairan',
         value: '3'
-      }
+      },
+      {
+        label: 'EWS',
+        value: '4'
+      },
     ],
     tindakans: [],
     petugas: [],

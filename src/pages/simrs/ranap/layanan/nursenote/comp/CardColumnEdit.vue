@@ -517,6 +517,8 @@
 
 <script setup>
 import { getNewLine } from 'src/modules/formatter';
+import { notifBottomVue } from 'src/modules/utils';
+import { useAplikasiStore } from 'src/stores/app/aplikasi';
 import { useNurseNoteRanapStore } from 'src/stores/simrs/ranap/nursenote';
 import { defineAsyncComponent, onMounted, ref, watchEffect } from 'vue'
 
@@ -527,6 +529,7 @@ const TextAreaEdit = defineAsyncComponent(() => import('src/pages/simrs/ranap/la
 const CardPemakaianObat = defineAsyncComponent(() => import('./CardPemakaianObat.vue'))
 const DialogKananResep = defineAsyncComponent(() => import('./DialogKananResep.vue'))
 const store = useNurseNoteRanapStore()
+const auth = useAplikasiStore()
 
 
 const props = defineProps({
@@ -586,7 +589,15 @@ const showBalance = (item) => {
 
 
 const onSubmit = () => {
-  store.simpanData(props?.pasien, props?.item)
+  console.log('item', props?.item);
+
+  const ygPunya = auth?.user?.pegawai?.kdpegsimrs === props?.item?.user
+  if (!ygPunya) {
+    notifBottomVue('Maaf ... anda bukan USER Peng-input Nurse Note ini, Harap Edit Punya Sendiri...');
+  } else {
+
+    store.simpanData(props?.pasien, props?.item)
+  }
 }
 
 watchEffect(() => {

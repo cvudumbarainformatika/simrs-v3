@@ -118,7 +118,7 @@ const columnsx = [
     align: 'right',
     field: (row) => (hitungMutasiKeluar(row?.mutasikeluar) + hitungResepKeluar(row?.resepkeluar, row?.distribusipersiapan) +
       hitungResepRacikanKeluar(row?.resepkeluarracikan) + hitungPenyesuaianKeluar(row?.penyesuaian) + hitungDistribusi(row?.distribusipersiapan) +
-      hitungBarangRusak(row?.barangrusak) + hitungReturDepo(row?.returdepo) + returPbf(row?.returpbf)
+      hitungBarangRusak(row?.barangrusak) + hitungReturDepo(row?.returdepo) + returPbf(row?.returpbf) + pengembalian(row?.pengembalianrincififo)
     )
   },
   {
@@ -270,6 +270,11 @@ function returPbf (arr) {
   // console.log('racikan', jmlRetur)
   return jmlRetur
 }
+function pengembalian (arr) {
+  const pengembalian = arr?.reduce((x, y) => parseFloat(x) + parseFloat(y.jumlah), 0)
+  // console.log('pengembalian', arr, pengembalian)
+  return pengembalian
+}
 // function returResep (arr, kodeObat) {
 //   const arrreturResep = arr?.length ? arr.map(x => x.retur)?.reduce((a, b) => a.concat(b), []) : []
 //   const rincianReturResep = arrreturResep?.length ? arrreturResep?.map(x => x?.rinci)?.reduce((a, b) => a.concat(b), []) : []
@@ -344,7 +349,7 @@ function hitungTotal (row) {
   // eslint-disable-next-line no-unused-vars
   const keluar = hitungMutasiKeluar(row?.mutasikeluar) + hitungResepKeluar(row?.resepkeluar, row?.distribusipersiapan) +
     hitungResepRacikanKeluar(row?.resepkeluarracikan) + hitungPenyesuaianKeluar(row?.penyesuaian) + hitungDistribusi(row?.distribusipersiapan) +
-    hitungBarangRusak(row?.barangrusak) + hitungReturDepo(row?.returdepo) + returPbf(row?.returpbf)
+    hitungBarangRusak(row?.barangrusak) + hitungReturDepo(row?.returdepo) + returPbf(row?.returpbf) + pengembalian(row?.pengembalianrincififo)
   // eslint-disable-next-line no-unused-vars
   const total = awal + masuk - keluar
   return total

@@ -68,14 +68,14 @@ export const useTindakanRanapStore = defineStore('tindakan-ranap-store', {
   // },
   actions: {
 
-    async getTindakanDropdown () {
+    async getTindakanDropdown() {
       const resp = await api.get('v1/simrs/pelayanan/dialogtindakanpoli')
-      // console.log('list tindakan', resp)
+      // console.log('dropdown tindakan', resp)
       if (resp.status === 200) {
         this.listTindakan = resp.data
       }
     },
-    async getAllPetugas () {
+    async getAllPetugas() {
       const resp = await api.get('v1/simrs/ranap/ruangan/allNakes')
       // console.log('list pegawai', resp)
       if (resp.status === 200) {
@@ -135,7 +135,7 @@ export const useTindakanRanapStore = defineStore('tindakan-ranap-store', {
     // },
 
     //= ===
-    async cariIcd9 (val) {
+    async cariIcd9(val) {
       if (val.length < 3) {
         return
       }
@@ -157,34 +157,56 @@ export const useTindakanRanapStore = defineStore('tindakan-ranap-store', {
           this.loadingIcd = false
         })
     },
-    setFormTindakan (key, val) {
+    setFormTindakan(key, val) {
       this.formtindakan[key] = val
     },
     //= ===
 
-    setKdTindakan (val) {
+    setKdTindakan(val, pasien) {
       this.formtindakan.kdtindakan = val
       const ada = this.listTindakan.length > 0
       if (ada) {
         const target = this.listTindakan.filter(x => x.kdtindakan === val)
-        target.length
-          ? this.formtindakan.tindakan = target[0].tindakan
-          : this.formtindakan.tindakan = ''
-        target.length
-          ? this.formtindakan.tarif = target[0].tarif
-          : this.formtindakan.tarif = 0
-        target.length
-          ? this.formtindakan.hargasarana = target[0].sarana
-          : this.formtindakan.sarana = 0
-        target.length
-          ? this.formtindakan.hargapelayanan = target[0].pelayanan
-          : this.formtindakan.pelayanan = 0
-        target.length
-          ? this.formtindakan.biaya = (parseInt(target[0].pelayanan) + parseInt(target[0].sarana))
-          : this.formtindakan.biaya = 0
-        target.length
-          ? this.formtindakan.subtotal = parseInt(this.formtindakan.biaya) * this.formtindakan.jumlah
-          : this.formtindakan.subtotal = 0
+
+        // console.log('pasien', pasien);
+
+
+        this.formtindakan.tindakan = target[0]?.tindakan || ''
+
+        if (pasien?.kelas_ruangan === 'PS') { // jika presiden suite
+          this.formtindakan.tarif = target[0]?.tarifps || 0
+          this.formtindakan.hargasarana = target[0]?.pss || 0
+          this.formtindakan.hargapelayanan = target[0]?.psp || 0
+          this.formtindakan.biaya = (parseInt(target[0]?.psp) + parseInt(target[0]?.pss)) || 0
+          this.formtindakan.subtotal = parseInt(this.formtindakan.biaya) * this.formtindakan.jumlah || 0
+        } else {
+          this.formtindakan.tarif = target[0]?.tarif || 0
+          this.formtindakan.hargasarana = target[0]?.sarana || 0
+          this.formtindakan.hargapelayanan = target[0]?.pelayanan || 0
+          this.formtindakan.biaya = (parseInt(target[0]?.pelayanan) + parseInt(target[0]?.sarana)) || 0
+          this.formtindakan.subtotal = parseInt(this.formtindakan.biaya) * this.formtindakan.jumlah || 0
+        }
+
+
+
+        // target.length
+        //   ? this.formtindakan.tindakan = target[0].tindakan
+        //   : this.formtindakan.tindakan = ''
+        // target.length
+        //   ? this.formtindakan.tarif = target[0].tarif
+        //   : this.formtindakan.tarif = 0
+        // target.length
+        //   ? this.formtindakan.hargasarana = target[0].sarana
+        //   : this.formtindakan.sarana = 0
+        // target.length
+        //   ? this.formtindakan.hargapelayanan = target[0].pelayanan
+        //   : this.formtindakan.pelayanan = 0
+        // target.length
+        //   ? this.formtindakan.biaya = (parseInt(target[0].pelayanan) + parseInt(target[0].sarana))
+        //   : this.formtindakan.biaya = 0
+        // target.length
+        //   ? this.formtindakan.subtotal = parseInt(this.formtindakan.biaya) * this.formtindakan.jumlah
+        //   : this.formtindakan.subtotal = 0
       }
 
       // console.log('setKdTindakana', this.formtindakan)
@@ -195,7 +217,7 @@ export const useTindakanRanapStore = defineStore('tindakan-ranap-store', {
 
     // ==================================================================================== TINDAKAN =========================================================================
 
-    async getTindakan (pasien) {
+    async getTindakan(pasien) {
       try {
         const resp = await api.get('v1/simrs/ranap/layanan/tindakan/listtindakanranap', { params: { noreg: pasien?.noreg, kodepoli: pasien?.kodepoli } })
         // console.log('tindakan', resp)
@@ -212,7 +234,7 @@ export const useTindakanRanapStore = defineStore('tindakan-ranap-store', {
         console.log('err tindakan', error)
       }
     },
-    async saveTindakan (pasien) {
+    async saveTindakan(pasien) {
       if (!pasien?.kddokter) {
         return notifErrVue('kode Dokter masih kosong, silahkan tutup dulu pasien ini kemudian tekan tombol refresh di pojok kanan atas')
       }
@@ -262,7 +284,7 @@ export const useTindakanRanapStore = defineStore('tindakan-ranap-store', {
       })
     },
 
-    setNotas (array) {
+    setNotas(array) {
       const arr = array.map(x => x.nota)
       this.notaTindakans = arr.length ? arr : []
       this.notaTindakans.push('BARU')
@@ -270,7 +292,7 @@ export const useTindakanRanapStore = defineStore('tindakan-ranap-store', {
       this.notaTindakan = this.notaTindakans[0]
     },
 
-    async getNota (pasien) {
+    async getNota(pasien) {
       this.tanggal = dateFilter(Date.now())
       const params = {
         params: {
@@ -280,7 +302,7 @@ export const useTindakanRanapStore = defineStore('tindakan-ranap-store', {
       }
 
       const resp = await api.get('v1/simrs/pelayanan/notatindakanranap', params)
-      console.log('notas', resp)
+      // console.log('notas', resp)
       if (resp.status === 200) {
         const arr = resp.data.map(x => x.nota)
         this.notaTindakans = arr.length ? arr : []
@@ -291,7 +313,7 @@ export const useTindakanRanapStore = defineStore('tindakan-ranap-store', {
       }
     },
 
-    uploadImages (file, id, pasien) {
+    uploadImages(file, id, pasien) {
       const files = file
       // console.log('store upload image', id)
       const data = new FormData()
@@ -325,7 +347,7 @@ export const useTindakanRanapStore = defineStore('tindakan-ranap-store', {
       })
     },
 
-    hapusDokumen (pasien, id) {
+    hapusDokumen(pasien, id) {
       // hapusdokumentindakan
       const payload = { id }
 
@@ -346,7 +368,7 @@ export const useTindakanRanapStore = defineStore('tindakan-ranap-store', {
       })
     },
 
-    async hapusTindakan (pasien, id) {
+    async hapusTindakan(pasien, id) {
       const payload = { id, noreg: pasien?.noreg }
 
       try {
@@ -364,7 +386,7 @@ export const useTindakanRanapStore = defineStore('tindakan-ranap-store', {
       }
     },
 
-    initReset (x) {
+    initReset(x) {
       // return new Promise((resolve, reject) => {
       // tindakan
       this.searchtindakan = ''
@@ -391,10 +413,10 @@ export const useTindakanRanapStore = defineStore('tindakan-ranap-store', {
       // })
     },
     // =====
-    setFormIcd (key, val) {
+    setFormIcd(key, val) {
       this.formicd[key] = val
     },
-    saveIcd (pasien) {
+    saveIcd(pasien) {
       this.loadingSaveIcd = true
       // this.setFormIcd('noreg', pasien?.noreg)
       // console.log('form icd', this.formicd)
@@ -417,7 +439,7 @@ export const useTindakanRanapStore = defineStore('tindakan-ranap-store', {
           })
       })
     },
-    getListProsedur (pasien) {
+    getListProsedur(pasien) {
       const payload = {
         params: { noreg: pasien?.noreg }
       }
@@ -429,7 +451,7 @@ export const useTindakanRanapStore = defineStore('tindakan-ranap-store', {
           })
       })
     },
-    hapusProsedur (pasien, id) {
+    hapusProsedur(pasien, id) {
       this.loadingSaveIcd = true
       const payload = { id, noreg: pasien?.noreg }
       return new Promise(resolve => {

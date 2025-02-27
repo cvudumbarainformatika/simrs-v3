@@ -312,6 +312,21 @@ const bentukArrBaru = computed(() => {
     // })
     // const rincianReturResep = arrreturResep?.length ? arrreturResep?.map(x => x.rinci)?.reduce((a, b) => a.concat(b), []) : []
   })
+  const pengembalian = props?.item?.pengembalianrincififo?.map(x => {
+    // const arr = m
+    // return arr.map(x => {
+    return {
+      tgl: x?.tgl_kunci,
+      tanggal: date.formatDate(x?.tgl_kunci, 'DD, MMM YYYY'),
+      jam: date.formatDate(x?.tgl_kunci, 'HH:mm'),
+      keterangan: 'Pengambalian Obat Pinjaman ',
+      masuk: 0,
+      keluar: parseFloat(x?.jumlah),
+      total: 0
+    }
+    // })
+    // const rincianReturResep = arrreturResep?.length ? arrreturResep?.map(x => x.rinci)?.reduce((a, b) => a.concat(b), []) : []
+  })
 
   const distribusi = app?.user?.kdruangansim === 'Gd-04010103'
     ? props?.item?.distribusipersiapan?.map(x => {
@@ -345,7 +360,7 @@ const bentukArrBaru = computed(() => {
 
   const gabung = [terimalangsung, terimapesan, mutasikeluar, mutasimasuk,
     resepkeluar, resepracikankeluar, returresep, penyesuaian,
-    distribusi, returdistribusi, barangrusak, returgudang, returdepo, returpbf].flat(Infinity)
+    distribusi, returdistribusi, barangrusak, returgudang, returdepo, returpbf, pengembalian].flat(Infinity)
 
   // const hasil = gabung.length ? gabung?.filter(x => x.masuk !== x.keluar)?.sort((a, b) => new Date(a.tgl) - new Date(b.tgl)) : [] // ini jika yg aneh tdk dimasukkan
   const hasil = gabung.length ? gabung?.sort((a, b) => new Date(a.tgl) - new Date(b.tgl)) : []
