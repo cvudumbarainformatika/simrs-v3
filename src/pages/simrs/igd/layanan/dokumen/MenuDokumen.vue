@@ -18,7 +18,7 @@
           <q-tab-panel name="Surat Kematian" class="full-height q-pa-none">
             <SuratKematianPage :judul="suratkematian" :pasien="props.pasien" />
           </q-tab-panel>
-          <q-tab-panel name="Indikasi Masuk Nicu & Intermediate" class="full-height q-pa-none">
+          <q-tab-panel name="Indikasi Masuk Nicu" class="full-height q-pa-none">
             <Indikasimasuknicudaninter :judul="indikasinicu" :pasien="props.pasien" />
           </q-tab-panel>
         </q-tab-panels>
@@ -37,7 +37,7 @@ import Indikasimasuknicudaninter from './dokumenisi/inidakasimasuknicudaninter/i
 const billing = ref('BILLING')
 const triase = ref('TRIASE')
 const suratkematian = ref('Surat Kematian')
-const indikasinicu = ref('Indikasi Pasien Masuk Ruang Nicu Dan Intermediate')
+const indikasinicu = ref('Indikasi Pasien Masuk Ruang Nicu')
 const store = useDokumenIgdStore()
 
 const props = defineProps({

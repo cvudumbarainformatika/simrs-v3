@@ -1,4 +1,5 @@
 <template>
+
   <div class="full-height full-height q-pa-sm">
     <div id="printMe" style="width: 21cm;" class="q-pa-xs full-width full-height">
       <KopSurat :judul="props?.judul" :pasien="props?.pasien" :jangantampil=false />

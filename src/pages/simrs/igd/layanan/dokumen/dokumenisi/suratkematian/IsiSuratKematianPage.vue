@@ -38,78 +38,62 @@
     <div class=""><span class="text-bold">TELAH MENINGGAL DUNIA </span> , Saudara : </div>
 
     <div class="full-width">
-      <table class="model-1 q-ml-lg" style="width: 97%;">
-        <tbody>
-          <tr valign="top">
-            <td width="15%">
-              <div>
-                Nama Lengkap
-              </div>
-            </td>
-            <td>
-              <div class="flex flex-wrap">
-                <div class="q-mr-sm">: </div>
-                <div>{{ pasien?.nama }}</div>
-              </div>
-            </td>
-          </tr>
-          <tr valign="top">
-            <td width="15%">
-              <div>
-                Nomor KTP
-              </div>
-              <!-- <i>Address</i> -->
-            </td>
-            <td>
-              <div class="flex flex-wrap">
-                <div class="q-mr-sm">: </div>
-                <div>{{ pasien?.nktp }}</div>
-              </div>
-            </td>
-          </tr>
-          <tr valign="top">
-            <td width="15%">
-              <div>
-                Umur
-              </div>
-              <!-- <i>Address</i> -->
-            </td>
-            <td>
-              <div class="flex flex-wrap">
-                <div class="q-mr-sm">: </div>
-                <div>{{ pasien?.usia }}</div>
-              </div>
-            </td>
-          </tr>
-          <tr valign="top">
-            <td width="15%">
-              <div>
-                Jenis Kelamin
-              </div>
-              <!-- <i>Address</i> -->
-            </td>
-            <td>
-              <div class="flex flex-wrap">
-                <div class="q-mr-sm">: </div>
-                <div>{{ pasien?.kelamin }}</div>
-              </div>
-            </td>
-          </tr>
-          <tr valign="top">
-            <td width="15%">
-              <div>
-                Alamat
-              </div>
-            </td>
-            <td>
-              <div class="flex no-wrap q-gutter-sm">
-                <div class=""> : </div>
-                <div>{{ pasien?.alamat }}</div>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="row q-ml-lg">
+        <div class="col-2">
+          Nama Lengkap
+        </div>
+        <div class="col-1">
+          :
+        </div>
+        <div class="col-8">
+          {{ pasien?.nama }}
+        </div>
+      </div>
+      <div class="row q-ml-lg">
+        <div class="col-2">
+          Nomor KTP
+        </div>
+        <div class="col-1">
+          :
+        </div>
+        <div class="col-8">
+          {{ pasien?.nktp }}
+        </div>
+      </div>
+      <div class="row q-ml-lg">
+        <div class="col-2">
+          Umur
+        </div>
+        <div class="col-1">
+          :
+        </div>
+        <div class="col-8">
+          {{ pasien?.usia }}
+        </div>
+      </div>
+      <div class="row q-ml-lg">
+        <div class="col-2">
+          Jenis Kelamin
+        </div>
+        <div class="col-1">
+          :
+        </div>
+        <div class="col-8">
+          {{ pasien?.kelamin }}
+        </div>
+      </div>
+      <div class="row q-ml-lg">
+        <div class="col-2">
+          Alamat
+        </div>
+        <div class="col-1">
+          :
+        </div>
+        <div class="col-8">
+          {{ pasien?.alamat }}
+        </div>
+      </div>
+
     </div>
 
     <div class="full-width q-mt-md">

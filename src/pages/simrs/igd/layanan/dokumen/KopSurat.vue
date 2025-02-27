@@ -1,7 +1,7 @@
 <template>
   <div class="row q-col-gutter-xs items-center garis-bawah-double  q-pb-sm">
     <div class="col-1">
-      <q-img src="~assets/images/logo-kota-grey.png" spinner-color="white" style="height: 2cm; max-width: 1.5cm" />
+      <img src="~assets/images/logo-kota-grey.png" spinner-color="white" style="height: 2cm; max-width: 1.5cm" />
     </div>
     <div class="col-10 ">
       <div class="row justify-center">
@@ -23,8 +23,8 @@
         PROBOLINGGO 67219
       </div>
     </div>
-    <div class="col-1 text-right">
-      <q-img src="~assets/logos/logo-rsud.png" spinner-color="white" style="height: 60px; max-width: 70px" />
+    <div class="col-1">
+      <img src="~assets/logos/logo-rsud.png" spinner-color="white" style="height: 1.6cm; max-width: 1.6cm" />
     </div>
   </div>
 

@@ -14,7 +14,7 @@ export const usePlannStore = defineStore('plann-store', {
     notas: [],
     nosurat: '',
     isisuratkematian: [],
-    isiindikasimasuknicuinter: [],
+    isiindikasimasuknicu: [],
     tab: 'SkalaTransfer',
     tabs: [
       { name: 'Skala Transfer', page: 'SkalaTransfer' },
@@ -127,10 +127,10 @@ export const usePlannStore = defineStore('plann-store', {
       return new Promise(resolve => {
         api.get('v1/simrs/planing/igd/indikasimasuknicuinter', payload).then(resp => {
           if (resp.status === 200) {
-            console.log('wew', resp?.data?.data)
-            const arr = JSON.parse(resp?.data?.data[0]?.isi)
-            this.isiindikasimasuknicuinter = { ...arr }
-            console.log('valaaaaaaaaaaaa', arr)
+            // console.log('wew', resp?.data?.data)
+            //const arr = JSON.parse(resp?.data?.data[0]?.isi)
+            this.isiindikasimasuknicu = resp?.data?.data[0]
+            // console.log('valaaaaaaaaaaaa', arr)
           }
           resolve(resp)
           this.loading = false
