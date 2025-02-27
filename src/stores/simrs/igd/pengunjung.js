@@ -532,7 +532,7 @@ export const usePengunjungIgdStore = defineStore('pengunjung-igd', {
       }
       catch (error) {
         console.log(error)
-        this.loadingFinish = false
+        this.loading = false
         // this.notifikasiError('Maaf.. Harap ulangi, Ada Kesalahan ')
       }
     },
