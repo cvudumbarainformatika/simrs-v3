@@ -39,7 +39,14 @@ export const useLaporanOperasionalStore = defineStore('Laporan_Operasional', {
     ],
     pendhibah: [
       { kode: '4.1.04.16.03.0001', uraian: 'Pendapatan BLUD dari Hibah Terikat' },
-      { kode: '4.1.04.16.03.0002', uraian: 'Pendapatan BLUD dari Hibah Tidak Terikat' }
+      { kode: '4.1.04.16.03.0002', uraian: 'Pendapatan BLUD dari Hibah Tidak Terikat' },
+      { kode: '7.3.01.01.01.0001', uraian: 'Pendapatan Hibah dari Pemerintah Pusat' },
+      { kode: '7.3.01.02.01.0001', uraian: 'Pendapatan Hibah dari Pemerintah Daerah' },
+      { kode: '7.3.01.03.01.0001', uraian: 'Pendapatan Hibah dari Kelompok Masyarakat Dalam Negeri / Perorangan dalam Negeri' },
+      { kode: '7.3.01.04.01.0001', uraian: 'Pendapatan Hibah dari Badan / Lembaga / Organisasi Dalam Negeri' },
+      { kode: '7.3.01.04.02.0001', uraian: 'Pendapatan Hibah dari Badan / Lembaga / Organisasi Luar Negeri' },
+      { kode: '7.3.01.04.03.0001', uraian: 'Pendapatan Hibah dari Lembaga / Organisasi Swasta Dalam Negeri' },
+      { kode: '7.3.01.04.04.0001', uraian: 'Pendapatan Hibah dari Lembaga / Organisasi Swasta Luar Negeri' }
     ],
     pendjasagiro: [
       { kode: '4.1.04.16.06.0001', uraian: 'Pendapatan BLUD dari Jasa Giro' },
@@ -87,6 +94,7 @@ export const useLaporanOperasionalStore = defineStore('Laporan_Operasional', {
 
     psaprealisasipendapatan: [],
     psaprealisasipendapatanx: [],
+    psappendpatanhibah: [],
     psapbebanpegawai: [],
     psapbebanlain: [],
     psappenjualanaset: [],
@@ -101,14 +109,14 @@ export const useLaporanOperasionalStore = defineStore('Laporan_Operasional', {
     psapbebanluarbiasa: []
   }),
   actions: {
-    setParameter (key, val) {
+    setParameter(key, val) {
       this.reqs[key] = val
     },
     // emptyForm () {
     //   this.reqs.levelberapa = ''
     // },
 
-    getDataLap () {
+    getDataLap() {
       this.loading = true
       const params = { params: this.reqs }
       return new Promise((resolve) => {
@@ -127,6 +135,7 @@ export const useLaporanOperasionalStore = defineStore('Laporan_Operasional', {
 
             this.psaprealisasipendapatan = resp.data.psaprealisasipendapatan
             this.psaprealisasipendapatanx = resp.data.psaprealisasipendapatanx
+            this.psappendpatanhibah = resp.data.psappendpatanhibah
             this.psappenyesuaianpendp = resp.data.psappenyesuaianpendp
             this.psapbebanpegawai = resp.data.psapbebanpegawai
             this.psapbebanlain = resp.data.psapbebanlain
@@ -143,7 +152,7 @@ export const useLaporanOperasionalStore = defineStore('Laporan_Operasional', {
         }).catch(() => { this.loading = false })
       })
     },
-    mapData () {
+    mapData() {
       const pendapatan = this.datapendapatans
       const kode6 = []
       const kode5 = []
@@ -315,9 +324,10 @@ export const useLaporanOperasionalStore = defineStore('Laporan_Operasional', {
       const psappendapatan = []
       const penyspendpatan = this.psappenyesuaianpendp
       const realpostingotom = this.psaprealisasipendapatan
+      const psaphibah = this.psappendpatanhibah
       const realju = this.psaprealisasipendapatanx
-      const gabung = realpostingotom.concat(realju)
-
+      const gabung = realpostingotom.concat(realju, psaphibah)
+      // console.log('gabung', gabung)
       // PSAP 13 DATA PENDAPATAN JASA LAYANAN //
       const filterjs = this.pendjasalayanan?.map((x) => x.kode)
       const filpagujs = gabung.filter(x => filterjs.includes(x.kode)).map((x) => x.kode)
@@ -325,7 +335,7 @@ export const useLaporanOperasionalStore = defineStore('Laporan_Operasional', {
       const realisasi = realpostingotom.filter(x => filterjs.includes(x.kode)).map((x) => parseFloat(x.realisasi)).reduce((a, b) => a + b, 0).toFixed(2)
       const realisasix = realju.map((x) => parseFloat(x.realisasix)).reduce((a, b) => a + b, 0).toFixed(2)
       const penyesuaianpend = penyspendpatan.map((x) => parseFloat(x.nilaix)).reduce((a, b) => a + b, 0).toFixed(2)
-      console.log('penyesuaian pendapatan', penyesuaianpend)
+
       const jasalayanan = {
         kode: unikfilpagujs[0],
         uraian: 'Pendapatan Jasa Layanan dari Masyarakat',
@@ -347,12 +357,15 @@ export const useLaporanOperasionalStore = defineStore('Laporan_Operasional', {
       const filterhb = this.pendhibah?.map((x) => x.kode)
       const filhb = gabung.filter(x => filterhb.includes(x.kode)).map((x) => x.kode)
       const unikfilhb = filhb.length ? [...new Set(filhb)] : []
-      const realhb = realju.filter(x => filhb.includes(x.kode)).map((x) => parseFloat(x.realisasix)).reduce((a, b) => a + b, 0).toFixed(2)
+      const realhb = (realju.filter(x => filhb.includes(x.kode)).map((x) => parseFloat(x.realisasix)).reduce((a, b) => a + b, 0).toFixed(2))
+      const hbh = (psaphibah.filter(x => filhb.includes(x.kode)).map((x) => parseFloat(x.realisasix)).reduce((a, b) => a + b, 0).toFixed(2))
+      const total = parseFloat(realhb) + parseFloat(hbh)
       const hslhibah = {
         kode: unikfilhb,
         uraian: 'Pendapatan Hibah',
-        realisasi: isNaN(parseFloat(realhb)) ? parseFloat(0).toFixed(2) : parseFloat(realhb)
+        realisasi: isNaN(parseFloat(total)) ? parseFloat(0).toFixed(2) : parseFloat(total)
       }
+      console.log('total', total);
 
       // PSAP 13 DATA PENDAPATAN JASA GIRO //
       const filtergiro = this.pendjasagiro.map((x) => x.kode)
