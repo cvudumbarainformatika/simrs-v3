@@ -1,10 +1,16 @@
 <template>
 
   <div class="full-height full-height q-pa-sm">
+    <q-btn ref="refPrint" v-print="printObj" unelevated color="dark" round size="sm" icon="icon-mat-print">
+      <q-tooltip class="primary" :offset="[10, 10]">
+        Print
+      </q-tooltip>
+    </q-btn>
     <div id="printMe" style="width: 21cm;" class="q-pa-xs full-width full-height">
-      <KopSurat :judul="props?.judul" :pasien="props?.pasien" :jangantampil=false />
+      <KopSurat :judul="props?.judul" :pasien="props?.pasien" :jangantampil=false :kelas="props.kelas" />
 
-      <Isiindikasimasuknicudaninter :pasien="props?.pasien" />
+      <Isiindikasimasuknicudaninter :pasien="props?.pasien" :isi="props.isi" :kelas="props.kelas"
+        :keterangan="props.keterangan" :loading="props.loading" />
     </div>
   </div>
 </template>
@@ -27,8 +33,24 @@ const props = defineProps({
   pasien: {
     type: Object,
     default: null
-  }
+  },
+  isi: {
+    type: Array,
+    default: () => []
+  },
+  kelas: {
+    type: Object,
+    default: null
+  },
+  keterangan: {
+    type: Object,
+    default: null
+  },
+  loading: {
+    type: Boolean,
+    default: false
+  },
 })
 
-store.indikasimasuknicuinter(props.pasien)
+
 </script>

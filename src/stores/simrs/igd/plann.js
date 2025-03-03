@@ -7,6 +7,7 @@ import { date } from 'quasar'
 export const usePlannStore = defineStore('plann-store', {
   state: () => ({
     panel: 'Rawat Inap',
+    loading: false,
     loadingOrder: false,
     loadingForm: false,
     loadingHistory: false,

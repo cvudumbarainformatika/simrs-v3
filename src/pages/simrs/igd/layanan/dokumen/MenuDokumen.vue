@@ -18,8 +18,9 @@
           <q-tab-panel name="Surat Kematian" class="full-height q-pa-none">
             <SuratKematianPage :judul="suratkematian" :pasien="props.pasien" />
           </q-tab-panel>
-          <q-tab-panel name="Indikasi Masuk Nicu" class="full-height q-pa-none">
-            <Indikasimasuknicudaninter :judul="indikasinicu" :pasien="props.pasien" />
+          <q-tab-panel name="Indikasi Masuk Rawat Inap" class="full-height q-pa-none">
+            <Indikasimasuknicudaninter :judul="indikasinicu" :pasien="props.pasien" :isi="isi" :kelas="kelas"
+              :loading="storex?.loading" :keterangan="keterangan" />
           </q-tab-panel>
         </q-tab-panels>
       </div>
@@ -30,20 +31,33 @@
 import { useDokumenIgdStore } from 'src/stores/simrs/igd/dokumen'
 import { ref } from 'vue'
 
-import BillingPage from './dokumenisi/Billing/BillingPage.vue';
-import TriasePage from './dokumenisi/triage/TriasePage.vue';
-import SuratKematianPage from './dokumenisi/suratkematian/SuratKematianPage.vue';
-import Indikasimasuknicudaninter from './dokumenisi/inidakasimasuknicudaninter/indikasimasuknicudaninter.vue';
-const billing = ref('BILLING')
-const triase = ref('TRIASE')
-const suratkematian = ref('Surat Kematian')
-const indikasinicu = ref('Indikasi Pasien Masuk Ruang Nicu')
-const store = useDokumenIgdStore()
-
 const props = defineProps({
   pasien: {
     type: Object,
     default: null
   }
 })
+
+import BillingPage from './dokumenisi/Billing/BillingPage.vue';
+import TriasePage from './dokumenisi/triage/TriasePage.vue';
+import SuratKematianPage from './dokumenisi/suratkematian/SuratKematianPage.vue';
+import Indikasimasuknicudaninter from './dokumenisi/inidakasimasuknicudaninter/indikasimasuknicudaninter.vue';
+import { usePlannStore } from 'src/stores/simrs/igd/plann';
+const billing = ref('BILLING')
+const triase = ref('TRIASE')
+const suratkematian = ref('Surat Kematian')
+const indikasinicu = ref('Indikasi Pasien Masuk Ruang')
+const store = useDokumenIgdStore()
+// const storex = usePlannStore()
+// const isi = storex?.isiindikasimasuknicu?.planranap?.dokumentransfer?.isi ? JSON.parse(storex?.isiindikasimasuknicu?.planranap?.dokumentransfer?.isi) : '-'
+// const kelas = storex?.isiindikasimasuknicu?.planranap?.dokumentransfer?.kelas
+// const keterangan = storex?.isiindikasimasuknicu?.planranap?.keterangan
+
+const isi = props.pasien?.planheder[0]?.planranap.dokumentransfer?.isi ? JSON.parse(props.pasien?.planheder[0]?.planranap?.dokumentransfer?.isi) : '-'
+const kelas = props.pasien?.planheder[0]?.planranap.dokumentransfer?.kelas
+const keterangan = props.pasien?.planheder[0]?.planranap?.keterangan
+
+// console.log('sassa', props.pasien?.planheder[0]?.planranap)
+
+// storex.indikasimasuknicuinter(props.pasien)
 </script>

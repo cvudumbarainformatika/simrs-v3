@@ -30,7 +30,7 @@
 
   <div v-if="props?.jangantampil !== true">
     <div class="row justify-center text-bold">
-      <span class="text-h5"> {{ props?.judul }} </span>
+      <span class="text-h5"> {{ props?.judul }} {{ props.kelas }}</span>
     </div>
     <div class="row q-mt-sm">
       <div class="col-2">Nama</div>
@@ -88,6 +88,10 @@ const props = defineProps({
   jangantampil: {
     type: Boolean,
     default: true
+  },
+  kelas: {
+    type: Object,
+    default: null
   },
 })
 
