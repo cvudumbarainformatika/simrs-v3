@@ -144,8 +144,8 @@ export const usePlannStore = defineStore('plann-store', {
     setForm(key, val) {
       this.form[key] = val
     },
-    async deleteData(pasien, id) {
-      const payload = { id }
+    async deleteData(pasien, id, jenis) {
+      const payload = { id, jenis }
       try {
         const resp = await api.post('v1/simrs/planing/igd/hapusplann', payload)
         // console.log(resp)

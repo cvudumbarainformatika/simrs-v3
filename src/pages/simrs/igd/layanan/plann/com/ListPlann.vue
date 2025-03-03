@@ -43,9 +43,9 @@
                           item?.planranap?.dokumentransfer?.isi
                         }}</span></q-item-label>
                   </div>
-                  <div v-else>
+                  <!-- <div v-else>
                     wew
-                  </div>
+                  </div> -->
                 </div>
                 <div v-if="item?.rs4 === 'Rujuk Ke Rumah Sakit'">
                   <q-item-label>Alasan Dirujuk : <span class="text-weight-bold">{{ item?.planrujukan?.atas_dasar
@@ -82,7 +82,8 @@
               </q-item-section>
               <q-item-section side>
                 <div class="q-gutter-sm">
-                  <q-btn flat round size="sm" icon="icon-mat-delete" color="negative" @click="hapusItem(item.id)" />
+                  <q-btn flat round size="sm" icon="icon-mat-delete" color="negative"
+                    @click="hapusItem(item.id, item.rs4)" />
                 </div>
               </q-item-section>
             </q-item>
@@ -116,7 +117,7 @@ const lists = computed(() => {
   return arr?.sort((a, b) => { return b.id - a.id })
 })
 
-function hapusItem(id) {
+function hapusItem(id, jenis) {
   $q.dialog({
     dark: true,
     title: 'Peringatan',
@@ -125,7 +126,7 @@ function hapusItem(id) {
     persistent: true
   }).onOk(() => {
     // console.log('OK')
-    store.deleteData(props.pasien, id)
+    store.deleteData(props.pasien, id, jenis)
   }).onCancel(() => {
     // console.log('Cancel')
   }).onDismiss(() => {

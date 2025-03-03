@@ -53,8 +53,8 @@ const store = useDokumenIgdStore()
 // const kelas = storex?.isiindikasimasuknicu?.planranap?.dokumentransfer?.kelas
 // const keterangan = storex?.isiindikasimasuknicu?.planranap?.keterangan
 
-const isi = props.pasien?.planheder[0]?.planranap.dokumentransfer?.isi ? JSON.parse(props.pasien?.planheder[0]?.planranap?.dokumentransfer?.isi) : '-'
-const kelas = props.pasien?.planheder[0]?.planranap.dokumentransfer?.kelas
+const isi = props.pasien?.planheder[0]?.planranap?.dokumentransfer?.isi ? JSON.parse(props.pasien?.planheder[0]?.planranap?.dokumentransfer?.isi) : '-'
+const kelas = props.pasien?.planheder[0]?.planranap?.dokumentransfer?.kelas
 const keterangan = props.pasien?.planheder[0]?.planranap?.keterangan
 
 // console.log('sassa', props.pasien?.planheder[0]?.planranap)

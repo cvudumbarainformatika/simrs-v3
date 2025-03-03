@@ -1,10 +1,9 @@
 <template>
   <div class="contentx">
     <div class="f-16 text-center text-bold q-mb-xs" style="text-decoration: underline; text-underline-offset: 5px;">
-
     </div>
     <div class="f-12 text-center text-bold q-my-sm">
-      <span>NOMOR : <span>{{ store.isisuratkematian?.nosurat ||
+      <span>NOMOR : <span>{{ plannkematian?.nosurat ||
         '472.12/......../425.208/KEM/..../20....'
           }}</span></span>
     </div>
@@ -23,12 +22,12 @@
         </div>
         <div class="col-grow">
           <div class="column">
-            <div> : {{ store.isisuratkematian?.dokterpenangungjawabpulang?.nama }}</div>
-            <div> : {{ store.isisuratkematian?.dokterpenangungjawabpulang?.golongan ?? '' }} {{
-              store.isisuratkematian?.dokterpenangungjawabpulang?.golongan ? ' / ' : '' }} {{
-                store.isisuratkematian?.dokterpenangungjawabpulang?.ket_golongan ?? '' }}
+            <div> : {{ plannkematian?.dokterpenangungjawabpulang?.nama }}</div>
+            <div> : {{ plannkematian?.dokterpenangungjawabpulang?.golruang ?? '' }} {{
+              plannkematian?.dokterpenangungjawabpulang?.golruang ? ' / ' : '' }} {{
+                plannkematian?.dokterpenangungjawabpulang?.keterangan ?? '' }}
             </div>
-            <div> : {{ store.isisuratkematian?.dokterpenangungjawabpulang?.ket_jabatan ?? '' }}</div>
+            <div> : {{ plannkematian?.dokterpenangungjawabpulang?.jabatan ?? '' }}</div>
           </div>
         </div>
       </div>
@@ -99,12 +98,12 @@
     <div class="full-width q-mt-md">
       <div class="" style="text-indent: 20px;">
         Pada Tanggal <span class="text-bold"> {{
-          humanDate(store.isisuratkematian?.tgl_meninggal) }}
+          humanDate(plannkematian?.tgl_meninggal) }}
         </span>
         tepatnya pada jam : <span class="text-bold"> {{
-          store.isisuratkematian?.jam_meninggal
+          plannkematian?.jam_meninggal
           ?? '-' }} WIB </span> ,
-        dikarenakan <span class=""> {{ store.isisuratkematian?.alasan_meninggal }} </span> .
+        dikarenakan <span class=""> {{ plannkematian?.alasan_meninggal }} </span> .
       </div>
     </div>
     <div class="full-width">
@@ -118,12 +117,11 @@
       <div class="col-grow"></div>
       <div class="col-auto">
         <div class="column flex-center">
-          <div>Probolinggo, Tgl {{ humanDate(store.isisuratkematian?.tgl_meninggal) }}</div>
+          <div>Probolinggo, Tgl {{ humanDate(plannkematian?.tgl_meninggal) }}</div>
           <div>Mengetahui</div>
           <div class="q-mb-sm">Dokter, </div>
 
-          <div v-if="store.isisuratkematian?.dokterpenangungjawabpulang?.nama" style="height: 120px;"
-            class="relative-position">
+          <div v-if="plannkematian?.dokterpenangungjawabpulang?.nama" style="height: 120px;" class="relative-position">
             <div class="absolute-center" style="width: 80px;">
               <vue-qrcode :value="qrDokter" tag="svg" :options="{
                 errorCorrectionLevel: 'Q',
@@ -166,8 +164,14 @@ const props = defineProps({
   menu: {
     type: Object,
     default: null
-  }
+  },
+  plannkematian: {
+    type: Object,
+    default: null
+  },
 })
+
+
 
 
 </script>
