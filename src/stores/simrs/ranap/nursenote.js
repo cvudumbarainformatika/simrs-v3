@@ -80,8 +80,12 @@ export const useNurseNoteRanapStore = defineStore('nursenote-ranap-store', {
         value: '3'
       },
       {
-        label: 'EWS',
+        label: 'EWS / PEWS / MEOWS',
         value: '4'
+      },
+      {
+        label: 'Catatan Pemberian Infus',
+        value: '5'
       },
     ],
     tindakans: [],
