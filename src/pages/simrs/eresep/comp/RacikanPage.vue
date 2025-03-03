@@ -1,134 +1,65 @@
 <template>
-  <div
-    class="bg-white column"
-    style="height:90vh"
-  >
+  <div class="bg-white column" style="height:90vh">
     <!-- <div class="col-auto bg-primary text-white">
       <div class="q-pa-sm f-16">
         Input Obat Racikan
       </div>
     </div> -->
     <div class="col full-height relative-position">
-      <q-scroll-area
-        style="height: calc( 100% ); padding-bottom: 60px;"
-      >
-        <q-list
-          separator
-          bordered
-        >
+      <q-scroll-area style="height: calc( 100% ); padding-bottom: 60px;">
+        <q-list separator bordered>
           <!-- Header nya Racikan -->
-          <q-item
-            class="bg-dark text-white"
-          >
+          <q-item class="bg-dark text-white">
             <q-item-section style="width: 20%;">
               NAMA RACIKAN
             </q-item-section>
-            <q-item-section
-              side
-              style="width:80%"
-            >
+            <q-item-section side style="width:80%">
               <div class="text-white row items-center q-col-gutter-sm full-width">
-                <div
-                  class=" col-2"
-                >
+                <div class=" col-2">
                   Tipe Racikan
                 </div>
-                <div
-                  class="text-center col-2"
-                >
+                <div class="text-center col-2">
                   Jumlah
                 </div>
-                <div
-                  class="text-center col-2"
-                >
+                <div class="text-center col-2">
                   Satuan (Bungkus/Kapsul/pot)
                 </div>
 
-                <div
-                  class="col-2 "
-                >
+                <div class="col-2 ">
                   Atr Pakai
                 </div>
-                <div
-                  class="col text-right"
-                >
+                <div class="col text-right">
                   Keterangan
                 </div>
               </div>
             </q-item-section>
           </q-item>
           <!-- input nama Racikan -->
-          <q-item
-            class="q-my-sm"
-          >
+          <q-item class="q-my-sm">
             <q-item-section style="width: 20%;">
-              <app-input
-                v-model="store.form.namaracikan"
-                label="Nama Racikan"
-                outlined
-                readonly
-              />
+              <app-input v-model="store.form.namaracikan" label="Nama Racikan" outlined readonly />
             </q-item-section>
-            <q-item-section
-              side
-              style="width:80%"
-            >
+            <q-item-section side style="width:80%">
               <div class="row items-center q-col-gutter-sm full-width">
-                <div
-                  class="col-2"
-                >
+                <div class="col-2">
                   <!-- {{ store.tipeRacikan }} -->
-                  <q-option-group
-                    v-model="store.form.tiperacikan"
-                    :options="store.tipeRacikan "
-                    color="primary"
-                    class="q-ml-sm"
-                    dense
-                    inline
-                  />
+                  <q-option-group v-model="store.form.tiperacikan" :options="store.tipeRacikan" color="primary"
+                    class="q-ml-sm" dense inline />
                   <!-- <div class="row q-my-xs items-center">
                   </div> -->
                 </div>
-                <div
-                  class="text-right col-2"
-                >
-                  <q-input
-                    ref="refJmlButuh"
-                    v-model="store.form.jumlahdibutuhkan"
-                    label="Jumlah Racikan"
-                    standout="bg-yellow-3"
-                    dense
-                    outlined
-                    @update:model-value="setDosis($event,'jumlahdibutuhkan')"
-                    @keyup.enter.stop="enterJmlButuh"
-                    @focus="focusJmlButuh"
-                  />
+                <div class="text-right col-2">
+                  <q-input ref="refJmlButuh" v-model="store.form.jumlahdibutuhkan" label="Jumlah Racikan"
+                    standout="bg-yellow-3" dense outlined @update:model-value="setDosis($event, 'jumlahdibutuhkan')"
+                    @keyup.enter.stop="enterJmlButuh" @focus="focusJmlButuh" />
                 </div>
 
-                <div
-                  class="col-2 text-right"
-                >
-                  <q-select
-                    ref="refSat"
-                    v-model="store.form.satuan_racik"
-                    label="Satuan Racikan"
-                    use-input
-                    dense
-                    clearable
-                    standout="bg-yellow-3"
-                    outlined
-                    :rules="[satValid]"
-                    lazy-rules
-                    no-error-icon
-                    hide-bottom-space
-                    hide-dropdown-icon
-                    :options="store.satuanRaciks"
-                    @keyup.enter.stop="enterSat"
-                  />
+                <div class="col-2 text-right">
+                  <q-select ref="refSat" v-model="store.form.satuan_racik" label="Satuan Racikan" use-input dense
+                    clearable standout="bg-yellow-3" outlined :rules="[satValid]" lazy-rules no-error-icon
+                    hide-bottom-space hide-dropdown-icon :options="store.satuanRaciks" @keyup.enter.stop="enterSat" />
                 </div>
-                <div
-                  class="col-2 text-right"
-                >
+                <div class="col-2 text-right">
                   <!-- <q-select
                     ref="refSigna"
                     v-model="signa"
@@ -149,43 +80,14 @@
                     @update:model-value="signaSelected"
                     @keyup.enter.stop="enterSigna"
                   /> -->
-                  <q-select
-                    ref="refSigna"
-                    v-model="signa"
-                    label="Aturan Pakai"
-                    use-input
-                    fill-input
-                    hide-selected
-                    dense
-                    clearable
-                    standout="bg-yellow-3"
-                    option-label="signa"
-
-                    outlined
-                    :rules="[sigaValid]"
-                    lazy-rules
-                    no-error-icon
-                    hide-bottom-space
-                    hide-dropdown-icon
-                    @filter="store.getSigna"
-                    :options="store.signas"
-                    @new-value="signaCreateValue"
-                    @update:model-value="signaSelected"
-                    @keyup.enter.stop="signaEnter"
-                  />
+                  <q-select ref="refSigna" v-model="signa" label="Aturan Pakai" use-input fill-input hide-selected dense
+                    clearable standout="bg-yellow-3" option-label="signa" outlined :rules="[sigaValid]" lazy-rules
+                    no-error-icon hide-bottom-space hide-dropdown-icon @filter="store.getSigna" :options="store.signas"
+                    @new-value="signaCreateValue" @update:model-value="signaSelected" @keyup.enter.stop="signaEnter" />
                 </div>
-                <div
-                  class="col text-right"
-                >
-                  <q-input
-                    ref="refKet"
-                    v-model="store.form.keterangan"
-                    label="Keterangan"
-                    outlined
-                    standout="bg-yellow-3"
-                    dense
-                    @keyup.enter.stop="enterKet"
-                  />
+                <div class="col text-right">
+                  <q-input ref="refKet" v-model="store.form.keterangan" label="Keterangan" outlined
+                    standout="bg-yellow-3" dense @keyup.enter.stop="enterKet" />
                 </div>
               </div>
             </q-item-section>
@@ -194,158 +96,72 @@
             Bahan Obat Racikan
           </div>
           <!-- Header nya Obat DTD-->
-          <q-item
-            class="bg-dark text-white"
-          >
+          <q-item class="bg-dark text-white">
             <q-item-section style="width: 30%;">
               OBAT
             </q-item-section>
-            <q-item-section
-              side
-              style="width:70%"
-            >
+            <q-item-section side style="width:70%">
               <div class="text-white row items-center q-col-gutter-sm full-width">
-                <div
-
-                  class="col-2"
-                >
+                <div class="col-2">
                   Satuan
                 </div>
-                <div
-                  v-if="store.form.tiperacikan==='DTD'"
-                  class="col-2"
-                >
-                  Dosis obat
+                <div v-if="store.form.tiperacikan === 'DTD'" class="col-2">
+                  Kekuatan Sediaan obat
                 </div>
-                <div
-                  v-if="store.form.tiperacikan==='DTD'"
-                  class="col-2"
-                >
+                <div v-if="store.form.tiperacikan === 'DTD'" class="col-2">
                   Dosis resep
                 </div>
 
-                <div
-                  class="col-2"
-                >
+                <div class="col-2">
                   Jumlah
                 </div>
 
-                <div
-                  class="col text-right"
-                >
+                <div class="col text-right">
                   Keterangan
                 </div>
               </div>
             </q-item-section>
           </q-item>
           <!-- input nya Obat DTD-->
-          <q-item
-            class=""
-          >
+          <q-item class="">
             <q-item-section style="width: 30%;">
               <SelectRacikan v-model="store.namaObat" @tidak-bisa-simpan="noSimp" />
             </q-item-section>
-            <q-item-section
-              side
-              style="width:70%"
-            >
+            <q-item-section side style="width:70%">
               <div class="text-dark row items-center q-col-gutter-sm full-width">
-                <div
-                  class="col-2"
-                >
+                <div class="col-2">
                   {{ store.namaObat?.satuankecil }}
                 </div>
-                <div
-                  v-if="store.form.tiperacikan==='DTD'"
-                  class="col-2"
-                >
-                  <q-input
-                    ref="refDosis"
-                    v-model="store.form.dosisobat"
-                    label="Dosis Obat"
-                    outlined
-                    standout="bg-yellow-3"
-                    dense
-                    @update:model-value="setDosis($event,'dosisobat')"
-                    @keyup.enter.stop="enterDosis"
-                  />
+                <div v-if="store.form.tiperacikan === 'DTD'" class="col-2">
+                  <q-input ref="refDosis" v-model="store.form.dosisobat" label="Dosis Obat" outlined
+                    standout="bg-yellow-3" dense @update:model-value="setDosis($event, 'dosisobat')"
+                    @keyup.enter.stop="enterDosis" />
                 </div>
-                <div
-                  v-if="store.form.tiperacikan==='DTD'"
-                  class="col-2"
-                >
-                  <q-input
-                    ref="refDosisMax"
-                    v-model="store.form.dosismaksimum"
-                    label="Dosis resep"
-                    outlined
-                    standout="bg-yellow-3"
-                    dense
-                    @update:model-value="setDosis($event,'dosismaksimum')"
-                    @keyup.enter.stop="enterDosisMax"
-                  />
+                <div v-if="store.form.tiperacikan === 'DTD'" class="col-2">
+                  <q-input ref="refDosisMax" v-model="store.form.dosismaksimum" label="Dosis resep" outlined
+                    standout="bg-yellow-3" dense @update:model-value="setDosis($event, 'dosismaksimum')"
+                    @keyup.enter.stop="enterDosisMax" />
                 </div>
-                <div
-                  v-if="store.form.tiperacikan!=='DTD'"
-                  class="col-2"
-                >
-                  <q-input
-                    ref="refJumlah"
-                    v-model="store.form.jumlah"
-                    label="Jumlah Obat"
-                    outlined
-                    standout="bg-yellow-3"
-                    dense
-                    @update:model-value="setDosis($event,'jumlah')"
-                    @keyup.enter.stop="enterJumlah"
-                  />
+                <div v-if="store.form.tiperacikan !== 'DTD'" class="col-2">
+                  <q-input ref="refJumlah" v-model="store.form.jumlah" label="Jumlah Obat" outlined
+                    standout="bg-yellow-3" dense @update:model-value="setDosis($event, 'jumlah')"
+                    @keyup.enter.stop="enterJumlah" />
                 </div>
-                <div
-                  v-if="store.form.tiperacikan==='DTD'"
-                  class="col-2"
-                >
+                <div v-if="store.form.tiperacikan === 'DTD'" class="col-2">
                   {{ store.form.jumlah }}
                 </div>
 
-                <div
-                  class="col text-right"
-                >
-                  <q-input
-                    ref="refKetx"
-                    v-model="store.form.keteranganx"
-                    label="Keterangan Obat"
-                    outlined
-                    standout="bg-yellow-3"
-                    dense
-                    @keyup.enter.stop="enterKetx"
-                  />
+                <div class="col text-right">
+                  <q-input ref="refKetx" v-model="store.form.keteranganx" label="Keterangan Obat" outlined
+                    standout="bg-yellow-3" dense @keyup.enter.stop="enterKetx" />
                 </div>
-                <div
-                  v-if="store.bypass"
-                  class="col text-right"
-                >
-                  <q-input
-                    ref="refBypass"
-                    v-model="store.form.keterangan_bypass"
-                    label="Alasan By pass"
-                    outlined
-                    standout="bg-yellow-3"
-                    dense
-                    @keyup.enter.stop="enterKetx"
-                  />
+                <div v-if="store.bypass" class="col text-right">
+                  <q-input ref="refBypass" v-model="store.form.keterangan_bypass" label="Alasan By pass" outlined
+                    standout="bg-yellow-3" dense @keyup.enter.stop="enterKetx" />
                 </div>
-                <div
-                  class="col-shrink text-right"
-                >
-                  <q-btn
-                    color="dark"
-                    dense
-                    flat
-                    icon="icon-mat-save"
-                    :disable="store.loading || tidakBisaSimpan"
-                    :loading="store.loading"
-                    @click="simpanObat"
-                  >
+                <div class="col-shrink text-right">
+                  <q-btn color="dark" dense flat icon="icon-mat-save" :disable="store.loading || tidakBisaSimpan"
+                    :loading="store.loading" @click="simpanObat">
                     <q-tooltip class="bg-white text-primary">
                       Simpan Obat
                     </q-tooltip>
@@ -416,19 +232,12 @@
                 </q-item-section>
               </template>
 </q-expansion-item> -->
-            <q-item
-              v-for="(obat, j) in store?.listRincianRacikan"
-              :key="obat"
-              style="padding:4px 16px;"
-            >
+            <q-item v-for="(obat, j) in store?.listRincianRacikan" :key="obat" style="padding:4px 16px;">
               <!-- {{ j }} {{ obat }} -->
               <q-item-section style="width: 50%;">
                 <div class="row no-wrap">
-                  <div
-                    class="col-auto"
-                    style="width: 5%;"
-                  >
-                    {{ j+1 }}
+                  <div class="col-auto" style="width: 5%;">
+                    {{ j + 1 }}
                   </div>
                   <div class="col-auto">
                     <div class="row">
@@ -440,39 +249,22 @@
                   </div>
                 </div>
               </q-item-section>
-              <q-item-section
-                side
-                style="width:50%"
-              >
+              <q-item-section side style="width:50%">
                 <div class="row items-center q-col-gutter-sm full-width">
-                  <div
-                    class=" col-4"
-                  >
+                  <div class=" col-4">
                     {{ obat?.jumlah }}
                   </div>
-                  <div
-                    class="text-right col-3"
-                  >
+                  <div class="text-right col-3">
                     {{ formatDouble(obat?.harga) }}
                   </div>
 
-                  <div
-                    class="col text-right"
-                  >
+                  <div class="col text-right">
                     {{ obat?.keteranganx }}
                   </div>
                   <div class="col-shrink text-right">
-                    <q-btn
-                      color="negative"
-                      dense
-                      flat
-                      no-caps
-                      size="xs"
-                      icon="icon-mat-delete"
+                    <q-btn color="negative" dense flat no-caps size="xs" icon="icon-mat-delete"
                       :disable="store.loading || store.loadingkirim"
-                      :loading="store.loadingHapus && store.obatId === obat.id"
-                      @click="store.hapusObat(obat)"
-                    >
+                      :loading="store.loadingHapus && store.obatId === obat.id" @click="store.hapusObat(obat)">
                       <q-tooltip class="bg-white text-primary">
                         Hapus
                       </q-tooltip>
@@ -490,28 +282,15 @@
     </div>
   </div>
 
-  <q-dialog
-    v-model="signaNewVal"
-    @show="getFocus"
-    @hide="lostFocus"
-  >
-    <q-card
-      flat
-      style="min-width:50vw;"
-    >
+  <q-dialog v-model="signaNewVal" @show="getFocus" @hide="lostFocus">
+    <q-card flat style="min-width:50vw;">
       <q-bar class="bg-primary text-white">
         <div class="f-12">
           Lengkapi data Signa
         </div>
         <q-space />
 
-        <q-btn
-          v-close-popup
-          dense
-          flat
-          icon="icon-mat-close"
-          @click="lostFocus"
-        >
+        <q-btn v-close-popup dense flat icon="icon-mat-close" @click="lostFocus">
           <q-tooltip class="bg-white text-primary">
             Close
           </q-tooltip>
@@ -521,25 +300,12 @@
         <span class="text-weight-bold f-12">Masukkan jumlah konsumsi per hari berdasarkan aturan signa</span>
       </q-card-section>
       <q-card-section>
-        <q-input
-          ref="refJmlHarSig"
-          v-model="store.fromSigna.jumlah"
-          label="Jumlah konsumsi per hari"
-          outlined
-          standout="bg-yellow-3"
-          dense
-          @keyup.enter.stop="simpan"
-        />
+        <q-input ref="refJmlHarSig" v-model="store.fromSigna.jumlah" label="Jumlah konsumsi per hari" outlined
+          standout="bg-yellow-3" dense @keyup.enter.stop="simpan" />
       </q-card-section>
       <q-card-actions align="right">
-        <q-btn
-          label="Simpan"
-          flat
-          color="primary"
-          :loading="store.loadingSaveSigna"
-          :disable="store.loadingSaveSigna"
-          @click="simpan"
-        />
+        <q-btn label="Simpan" flat color="primary" :loading="store.loadingSaveSigna" :disable="store.loadingSaveSigna"
+          @click="simpan" />
       </q-card-actions>
     </q-card>
   </q-dialog>
@@ -686,7 +452,7 @@ function setDosis (evt, key) {
   store.setForm(key, nilai)
 
   if (store.form.tiperacikan === 'DTD') {
-  // jumlahdibutuhkan , jumlah, dosisobat, dosismaksimum
+    // jumlahdibutuhkan , jumlah, dosisobat, dosismaksimum
     const jumlahDiminta = store.form?.jumlahdibutuhkan ?? 1
     const dosisObat = store.form?.dosisobat ?? 1
     const dosisResep = store.form?.dosismaksimum ?? 1

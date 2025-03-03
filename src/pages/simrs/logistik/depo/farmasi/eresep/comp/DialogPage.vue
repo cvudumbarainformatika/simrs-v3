@@ -499,9 +499,9 @@
                           {{ rinc?.dosismaksimum }}
                         </div>
                       </div>
-                      <div v-if="item?.tiperacikan === 'DTD'" class="row text-black">
+                      <div v-if="item?.tiperacikan === 'DTD'" class="row text-black items-center">
                         <div class="col-4">
-                          Dosis Obat
+                          Kekuatan Sediaan Obat
                         </div>
                         <div class="col-8 ">
                           <span class="text-weight-bold text-deep-orange">{{ rinc?.dosisobat }}</span> <span
