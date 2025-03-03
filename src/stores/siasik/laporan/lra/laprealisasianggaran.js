@@ -278,7 +278,8 @@ export const useLaporanLraLaprealisasianggaranStore = defineStore('laporan_reali
         totalSebelumnya: realSebelumnya?.reduce((a, b) => a + b, 0),
         totalRealisasi: realsekarang?.reduce((a, b) => a + b, 0) + realSebelumnya?.reduce((a, b) => a + b, 0),
         selisih: totalPagu - (realSebelumnya?.reduce((a, b) => a + b, 0) + realsekarang?.reduce((a, b) => a + b, 0)),
-        persen: (((realSebelumnya?.reduce((a, b) => parseFloat(a) + parseFloat(b), 0) + realsekarang?.reduce((a, b) => parseFloat(a) + parseFloat(b), 0)) / parseFloat(totalPagu)) * 100).toFixed(2)
+        persen: isNaN((((realSebelumnya?.reduce((a, b) => parseFloat(a) + parseFloat(b), 0) + realsekarang?.reduce((a, b) => parseFloat(a) + parseFloat(b), 0)) / parseFloat(totalPagu)) * 100).toFixed(2)) ?
+          parseFloat(0).toFixed(2) : (((realSebelumnya?.reduce((a, b) => parseFloat(a) + parseFloat(b), 0) + realsekarang?.reduce((a, b) => parseFloat(a) + parseFloat(b), 0)) / parseFloat(totalPagu)) * 100).toFixed(2)
       }
 
       this.realisasiPembiayaans = total

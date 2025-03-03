@@ -228,16 +228,17 @@ export const registerJurnal = defineStore('register_jurnal', {
       }
 
       // DATA SERAHTERIMA FARMASI //
-      const bastfarm = []
-      const arr50bast = []
-      for (let i = 0; i < this.bastfarmasi.length; i++) {
-        const el = this.bastfarmasi
+      const bastfarm = [];
+      const arr50bast = [];
 
-        const ri = el[i].rincianbast
-        // console.log('xxxxxxxxxxxxxxxxx', ri)
+      for (let i = 0; i < this.bastfarmasi.length; i++) {
+        const el = this.bastfarmasi[i];
+        const ri = el.rincianbast;
+
+        // Map rincian data
         const rinci = ri.map((x) => {
           return {
-            tanggal: el[i].tgl_bast,
+            tanggal: el.tgl_bast,
             nobast: x.nobast,
             kode50: x.masterobat.jurnal.kode50,
             uraian: x.masterobat.jurnal.uraian50,
@@ -245,80 +246,103 @@ export const registerJurnal = defineStore('register_jurnal', {
             uraian_bast: x.masterobat.jurnal.uraian_bast,
             kode_bastx: x.masterobat.jurnal.kode_bastx,
             uraian_bastx: x.masterobat.jurnal.uraian_bastx,
-            nilai: parseFloat(x.subtotal)
-          }
-        })
-        arr50bast.push(...rinci)
-        // console.log('xnilai', arr50bast)
-        const unik50 = rinci.map((s) => s.nobast)
-        const unik = unik50.length ? [...new Set(unik50)] : []
-        // console.log('unik', unik)
-        const kode50x = []
-        for (let i = 0; i < unik.length; i++) {
-          const el = unik[i]
-          const ob = {
-            koderek50: arr50bast.filter((x) => x.nobast === el)[0]?.kode50,
-            uraian50: arr50bast.filter((x) => x.nobast === el)[0]?.uraian,
-            nilai: parseFloat(arr50bast.filter((x) => x.nobast === el)[0]?.nilai)
-          }
-          kode50x.push(ob)
-          // console.log('nilaaaaaaaai', kode50x)
-        }
-        const rincidebit = []
-        for (let i = 0; i < unik.length; i++) {
-          const el = unik[i]
-          const ob = {
-            tanggal: arr50bast.filter((x) => x.nobast === el)[0]?.tanggal,
-            notrans: arr50bast.filter((x) => x.nobast === el)[0]?.nobast,
-            keterangan: 'Serahteriama Pekerjaan',
-            kegiatan: 'Pelayanan Farmasi',
-            kode: arr50bast.filter((x) => x.nobast === el)[0]?.kode_bast,
-            uraian: arr50bast.filter((x) => x.nobast === el)[0]?.uraian_bast,
+            nilai: parseFloat(x.subtotal),
+          };
+        });
 
-            debit: arr50bast.filter((x) => x.nobast === el).map((x) => x.nilai).reduce((a, b) => a + b, 0),
-            kredit: 0,
-            nilai: arr50bast.filter((x) => x.nobast === el).map((x) => x.nilai).reduce((a, b) => a + b, 0),
+        arr50bast.push(...rinci);
+
+        // Ambil nilai unik dari nobast
+        const unik50 = rinci.map((s) => s.nobast);
+        const unik = unik50.length ? [...new Set(unik50)] : [];
+
+        // Buat rincian debit dan kredit
+        const rincidebit = [];
+        const rincikredit = [];
+
+        for (let j = 0; j < unik.length; j++) {
+          const elUnik = unik[j];
+          const items = arr50bast.filter((x) => x.nobast === elUnik);
+
+          const totalNilai = items.reduce((sum, item) => sum + item.nilai, 0);
+          // Kelompokkan berdasarkan kode_bast (debit)
+          const groupedByKodeBast = {};
+          for (const item of items) {
+            if (!groupedByKodeBast[item.kode_bast]) {
+              groupedByKodeBast[item.kode_bast] = [];
+            }
+            groupedByKodeBast[item.kode_bast].push(item);
           }
-          rincidebit.push(ob)
-        }
-        // console.log('nilaaaaaaaai', rincidebit)
-        const rincikredit = []
-        for (let i = 0; i < unik.length; i++) {
-          const el = unik[i]
-          const ob = {
-            tanggal: arr50bast.filter((x) => x.nobast === el)[0]?.tanggal,
-            notrans: arr50bast.filter((x) => x.nobast === el)[0]?.nobast,
-            keterangan: 'Serahteriama Pekerjaan',
-            kegiatan: 'Pelayanan Farmasi',
-            kode: arr50bast.filter((x) => x.nobast === el)[0]?.kode_bastx,
-            uraian: arr50bast.filter((x) => x.nobast === el)[0]?.uraian_bastx,
-            debit: 0,
-            kredit: arr50bast.filter((x) => x.nobast === el).map((x) => x.nilai).reduce((a, b) => a + b, 0),
-            nilai: arr50bast.filter((x) => x.nobast === el).map((x) => x.nilai).reduce((a, b) => a + b, 0),
+
+          // Kelompokkan berdasarkan kode_bastx (kredit)
+          const groupedByKodeBastx = {};
+          for (const item of items) {
+            if (!groupedByKodeBastx[item.kode_bastx]) {
+              groupedByKodeBastx[item.kode_bastx] = [];
+            }
+            groupedByKodeBastx[item.kode_bastx].push(item);
           }
-          rincikredit.push(ob)
-          // console.log('nilaaaaaaaai', ob.nilai)
+
+          // Buat rincian debit
+          for (const kode in groupedByKodeBast) {
+            const itemsDebit = groupedByKodeBast[kode];
+            const totalNilaiDebit = itemsDebit.reduce((sum, item) => sum + item.nilai, 0);
+
+            rincidebit.push({
+              tanggal: itemsDebit[0].tanggal,
+              notrans: itemsDebit[0].nobast,
+              keterangan: 'Serahteriama Pekerjaan',
+              kegiatan: 'Pelayanan Farmasi',
+              kode: kode,
+              uraian: itemsDebit[0].uraian_bast,
+              debit: totalNilaiDebit,
+              kredit: 0,
+              nilai: totalNilai,
+            });
+          }
+
+          // Buat rincian kredit
+          for (const kode in groupedByKodeBastx) {
+            const itemsKredit = groupedByKodeBastx[kode];
+            const totalNilaiKredit = itemsKredit.reduce((sum, item) => sum + item.nilai, 0);
+
+            rincikredit.push({
+              tanggal: itemsKredit[0].tanggal,
+              notrans: itemsKredit[0].nobast,
+              keterangan: 'Serahteriama Pekerjaan',
+              kegiatan: 'Pelayanan Farmasi',
+              kode: kode,
+              uraian: itemsKredit[0].uraian_bastx,
+              debit: 0,
+              kredit: totalNilaiKredit,
+              nilai: totalNilai,
+            });
+          }
         }
+
+        // Gabungkan hasil ke bastfarm
         const obj = {
-          tanggal: el[i].tgl_bast,
-          notrans: el[i].nobast,
-          nilai: parseFloat(kode50x.map((x) => x.nilai).reduce((a, b) => a + b, 0)),
+          tanggal: el.tgl_bast,
+          notrans: el.nobast,
+          nilai: rincidebit.reduce((sum, item) => sum + item.nilai, 0),
           keterangan: 'Serahteriama Pekerjaan',
           kegiatan: 'Pelayanan Farmasi',
-          koderek50: kode50x.map((x) => x.koderek50),
-          uraian50: kode50x.map((x) => x.uraian50),
+          koderek50: [...new Set(rinci.map((item) => item.kode50))],
+          uraian50: [...new Set(rinci.map((item) => item.uraian))],
           debit: rincidebit,
           kredit: rincikredit,
           d_pjk: null,
           k_pjk: null,
           d_pjk1: null,
-          k_pjk1: null
-        }
-        bastfarm.push(obj)
-        dataserahterima.push(...rincidebit, ...rincikredit)
-        // console.log('FARMASI', dataserahterima)
-        // console.log('rincibast', bastfarm)
+          k_pjk1: null,
+        };
+
+        bastfarm.push(obj);
+        dataserahterima.push(...rincidebit, ...rincikredit);
       }
+
+      console.log('FARMASI', bastfarm);
+      // console.log('rincibast', dataserahterima);
 
       // DATA PENCAIRAN TANPA STP //
       const uniks = this.cairnostp.map((x) => x.nonpdls)
