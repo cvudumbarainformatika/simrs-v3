@@ -1,4 +1,4 @@
-import { defineStore } from "pinia"
+import { acceptHMRUpdate, defineStore } from "pinia"
 import { usePengunjungPoliStore } from "./pengunjung"
 import { api } from "src/boot/axios"
 import { notifSuccess } from "src/modules/utils"
@@ -45,7 +45,6 @@ export const useJawabanKonsulStore = defineStore('jawaban-konsul', {
     },
     async updateDibaca (pasien, item) {
       console.log('set dibaca', item)
-
       await api.post('v1/simrs/pelayanan/update-dibaca', item)
         .then(resp => {
           const isi = resp?.data?.data ?? false
@@ -55,6 +54,27 @@ export const useJawabanKonsulStore = defineStore('jawaban-konsul', {
             // notifSuccess(resp)
           }
         })
-    }
+    },
+    async updateNoreg (pasien, item) {
+      const form = { noreg: pasien.noreg, id: item.id }
+      item.loading = true
+      console.log('set noreg', form)
+      await api.post('v1/simrs/pelayanan/update-noreg', form)
+        .then(resp => {
+          const isi = resp?.data?.data ?? false
+          console.log('simpan ', resp, isi)
+          if (isi) {
+            this.storePasien.injectDataPasien(pasien, isi, 'jawabankonsul')
+            // notifSuccess(resp)
+          }
+          delete item.loading
+        }).catch(() => {
+          delete item.loading
+        })
+    },
   }
 })
+
+// if (import.meta.hot) {
+//   import.meta.hot.accept(acceptHMRUpdate(useJawabanKonsulStore, import.meta.hot))
+// }

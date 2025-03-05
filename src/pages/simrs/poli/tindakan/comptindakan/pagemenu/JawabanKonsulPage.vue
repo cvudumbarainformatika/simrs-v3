@@ -5,7 +5,7 @@
     </div>
     <q-list v-else bordered class="rounded-borders">
       <template v-for="(item, i) in pasien?.jawabankonsul" :key="item">
-        <q-expansion-item expand-separator
+        <q-expansion-item v-model="item.expand" expand-separator
           :class="(item?.dibaca_poli_asal === null && item?.jawaban !== null && item?.noreg_lama === pasien?.noreg) ? 'bg-blue-2' : (i % 2 == 0 ? 'bg-grey-4' : 'bg-grey-2')"
           @show="show(item)">
           <template v-slot:header>
@@ -19,14 +19,18 @@
                 dateFullFormat(item?.tgl_rencana_konsul)
                 }}</span>
             </q-item-section>
+            <q-item-section side>
+              <q-btn
+                v-if="(item?.poli_tujuan?.rs1 == pasien?.kodepoli) && (date.formatDate(item?.tgl_rencana_konsul, 'YYYY-MM-DD') == date.formatDate(pasien?.tgl_kunjungan, 'YYYY-MM-DD')) && !item?.noreg_baru"
+                icon="icon-mat-comment" flat color="primary" :loading="item?.loading" :disable="item?.loading"
+                @click="bukajawaban(item)">
+                <q-tooltip class="primary" :offset="[10, 10]">
+                  Buka Edit Jawaban Konsul
+                </q-tooltip>
+              </q-btn>
+            </q-item-section>
           </template>
           <div class="row q-pa-sm bg-white items-center">
-            <!-- <div class="col-5">
-              <div class="row text-weight-bold">Pengantar Konsul</div>
-            </div>
-            <div class="col-6">
-              <div class="row text-weight-bold">Jawaban Konsul</div>
-            </div> -->
           </div>
           <div class="row q-px-sm q-pb-sm bg-white items-center q-col-gutter-sm">
             <div class="col-5">
@@ -128,9 +132,17 @@ function bisaEdit (item) {
 
 }
 function show (item) {
-  console.log('show', item)
+  // console.log('show', item)
   if (item?.dibaca_poli_asal === null && item?.jawaban !== null && item?.noreg_lama === props?.pasien?.noreg) {
     store.updateDibaca(props?.pasien, item)
   }
+}
+
+function bukajawaban (item) {
+  item.expand = !item.expand
+  store.updateNoreg(props?.pasien, item)
+  // console.log('buka jawaban', item) // tgl_rencana_konsul poli_tujuan?.rs1
+  // console.log('pasien', props.pasien) // kodepoli tgl_kunjungan
+
 }
 </script>
