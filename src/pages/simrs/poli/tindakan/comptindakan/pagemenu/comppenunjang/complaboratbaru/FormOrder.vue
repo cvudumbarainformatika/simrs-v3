@@ -7,61 +7,27 @@
     </q-bar>
     <div class="col full-height">
       <!-- <q-scroll-area style="height: calc(100% - 1px);"> -->
-      <q-form
-        ref="formRef"
-        class="row q-pa-md q-col-gutter-xs"
-        @submit="saveOrderLaborat"
-      >
+      <q-form ref="formRef" class="row q-pa-md q-col-gutter-xs" @submit="saveOrderLaborat">
         <div class="col-12">
-          <q-input
-            v-model="store.permintaanLaborats"
-            label="Permintaan (Klik Untuk Cari Pemeriksaan)"
-            autogrow
-            outlined
-            standout="bg-yellow-3"
-            icon="icon-mat-search"
-            :rules="[val => !!val || 'Harap cari pemeriksaan dahulu']"
-            lazy-rules="ondemand"
-            hide-bottom-space
-            @click="modalOpen = true"
-          />
+          <q-input v-model="store.permintaanLaborats" label="Permintaan (Klik Untuk Cari Pemeriksaan)" autogrow outlined
+            standout="bg-yellow-3" icon="icon-mat-search" :rules="[val => !!val || 'Harap cari pemeriksaan dahulu']"
+            lazy-rules="ondemand" hide-bottom-space @click="modalOpen = true" />
         </div>
         <div class="col-6">
-          <q-input
-            ref="diagnosaRef"
-            v-model="store.form.diagnosa_masalah"
-            label="Diagnosa / Masalah"
-            dense
-            outlined
-            standout="bg-yellow-3"
-          />
+          <q-input ref="diagnosaRef" v-model="store.form.diagnosa_masalah" label="Diagnosa / Masalah" dense outlined
+            standout="bg-yellow-3" />
         </div>
         <div class="col-6">
-          <q-input
-            v-model="store.form.catatan_permintaan"
-            label="Catatan"
-            dense
-            outlined
-            standout="bg-yellow-3"
-          />
+          <q-input v-model="store.form.catatan_permintaan" label="Catatan" dense outlined standout="bg-yellow-3" />
         </div>
-        <div v-if="unit==='ranap'" class="col-12">
-          <app-autocomplete-new
-            ref="refPerawat"
-            :model="store.form.kodedokter"
-            label="Dokter"
-            autocomplete="nama"
-            option-value="kdpegsimrs"
-            option-label="nama"
-            outlined
-            :source="store.dokters"
-            @on-select="(val)=> {
+        <div v-if="unit === 'ranap'" class="col-12">
+          <app-autocomplete-new ref="refPerawat" :model="store.form.kodedokter" label="Dokter" autocomplete="nama"
+            option-value="kdpegsimrs" option-label="nama" outlined :source="store.dokters" @on-select="(val) => {
               store.form.kodedokter = val
               const ceck = store.dokters.find(item => item.kdpegsimrs === val) ?? null
               // store.form.perawatyanmeminta = ceck?.nama
 
-            }"
-          />
+            }" />
         </div>
         <div class="col-12">
           <q-separator class="q-my-sm" />
@@ -72,20 +38,8 @@
               Pasien Puasa ?
             </div>
             <div class="q-gutter-sm">
-              <q-radio
-                v-model="store.form.puasa_pasien"
-                val="Tidak"
-                label="Tidak"
-                size="sm"
-                dense
-              />
-              <q-radio
-                v-model="store.form.puasa_pasien"
-                val="Iya"
-                label="Iya"
-                size="sm"
-                dense
-              />
+              <q-radio v-model="store.form.puasa_pasien" val="Tidak" label="Tidak" size="sm" dense />
+              <q-radio v-model="store.form.puasa_pasien" val="Iya" label="Iya" size="sm" dense />
             </div>
           </div>
         </div>
@@ -95,20 +49,8 @@
               Cito ?
             </div>
             <div class="q-gutter-sm">
-              <q-radio
-                v-model="store.form.prioritas_pemeriksaan"
-                val="Tidak"
-                label="Tidak"
-                size="sm"
-                dense
-              />
-              <q-radio
-                v-model="store.form.prioritas_pemeriksaan"
-                val="Iya"
-                label="Iya"
-                size="sm"
-                dense
-              />
+              <q-radio v-model="store.form.prioritas_pemeriksaan" val="Tidak" label="Tidak" size="sm" dense />
+              <q-radio v-model="store.form.prioritas_pemeriksaan" val="Iya" label="Iya" size="sm" dense />
             </div>
           </div>
         </div>
@@ -120,13 +62,8 @@
                 color="dark"
                 type="reset"
               /> -->
-            <q-btn
-              label="Simpan & Kirim Order"
-              color="primary"
-              type="submit"
-              :loading="store.loadingSaveLab"
-              :disable="store.loadingSaveLab"
-            />
+            <q-btn label="Simpan & Kirim Order" color="primary" type="submit" :loading="store.loadingSaveLab"
+              :disable="store.loadingSaveLab" />
           </div>
         </div>
       </q-form>
@@ -134,12 +71,8 @@
     </div>
 
     <!-- MODAL -->
-    <ModalPermintaan
-      v-model="modalOpen"
-      :masters="store.masterlaborat"
-      :headers="store.headerlaborats"
-      @ok="pilihPemeriksaans"
-    />
+    <ModalPermintaan v-model="modalOpen" :masters="store.masterlaborat" :headers="store.headerlaborats"
+      @ok="pilihPemeriksaans" />
   </div>
 </template>
 <script setup>
@@ -169,20 +102,16 @@ onMounted(() => {
   // console.log(formRef.value)
 })
 
-function saveOrderLaborat () {
+function saveOrderLaborat() {
   // INI diganti function baru
   // console.log('save', props.pasien)
   const isRanap = props?.unit === 'ranap'
   store.saveOrderLaboratBaru(props.pasien, isRanap).then(() => {
-    // console.log(formRef.value)
-    // store.permintaanLaborats = []
-    // store.kodedokter = null
-    // store.initReset()
     formRef.value.resetValidation()
   })
 }
 
-function pilihPemeriksaans (val) {
+function pilihPemeriksaans(val) {
   // console.log(val)
   modalOpen.value = false
   const arr = val.length ? val.map(x => x.name) : []
