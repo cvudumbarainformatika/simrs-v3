@@ -21,6 +21,8 @@ export const usePermintaanEResepStore = defineStore('permintaan_e_resep', {
       jumlah_diminta: 1,
       tiperesep: ''
     },
+    itemToEdit: null,
+    openEditItem: false,
     listPemintaanSementara: [],
     signas: [],
     fromSigna: { signa: '', jumlah: 1 },
@@ -486,6 +488,20 @@ export const usePermintaanEResepStore = defineStore('permintaan_e_resep', {
       //       this.loadingSimulasi = false
       //     })
       // })
+    },
+    cekAsalResep () {
+      const resepAktif = this.pasien?.newapotekrajal.find(x => x.noresep === this?.noresep)
+      // console.log('resep aktif', resepAktif)
+      if (resepAktif?.flag_dari === '2') return true
+      else return false
+    },
+    editItem (item) {
+      console.log('edit item', item)
+      console.log('listPemintaanSementara', this.listPemintaanSementara)
+      console.log('pasien', this.pasien?.newapotekrajal)
+      console.log('resep aktif', this.pasien?.newapotekrajal.find(x => x.noresep === this?.noresep))
+      this.openEditItem = true
+      this.itemToEdit = { ...item }
     },
     async getNomor () {
       const param = {
@@ -1252,6 +1268,6 @@ export const usePermintaanEResepStore = defineStore('permintaan_e_resep', {
   }
 })
 
-if (import.meta.hot) {
+if (import.meta?.hot) {
   import.meta.hot.accept(acceptHMRUpdate(usePermintaanEResepStore, import.meta.hot))
 }

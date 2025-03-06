@@ -1,17 +1,10 @@
 <template>
   <div class="bg-white full-height column">
     <div class="col-auto bg-primary text-white">
-      <!-- <div class="q-pa-sm">
-        <span>Form Resep Dokter</span> -->
-      <!-- -> <span class="text-yellow-3 text-weight-bold">{{ depo === 'rjl' ? 'Depo Rawat Jalan' : 'Depo Rawat Inap' }}</span> -->
-      <!-- </div> -->
       <div class="q-pa-sm row items-center justify-between">
         <div class="f-12">
           <sistem-bayar-ganti :pasien="pasien"
             :disabled="store.listPemintaanSementara.length > 0 || store.listRacikan.length > 0" :is-reset="isReset" />
-          <!-- <div v-else>
-            Form Resep Dokter
-          </div> -->
         </div>
         <div>
           <q-btn flat dense size="md" icon="icon-mat-history" @click="historyOpen">
@@ -23,10 +16,6 @@
       </div>
     </div>
     <div class="col full-height relative-position">
-      <!-- Option tipe Resep -->
-      <!-- <div class="row justify-between items-center">
-        sistem bayar
-      </div> -->
       <div class="row justify-between items-center q-px-xs q-py-xs">
         <div v-if="depo === 'rjl'" class="q-px-xs">
           <div v-if="!store.listPemintaanSementara.length && !store.listRacikan.length"
@@ -40,23 +29,15 @@
           </div>
         </div>
         <div v-if="depo === 'ok'">
-          <!-- depo Ok -->
           <div>
             <q-btn push dense color="green" no-caps label="obat permintaan operasi" @click="openPersiapanOperasi" />
           </div>
         </div>
         <div v-if="store?.form?.tiperesep === 'iter'">
-          <!-- <app-input-date
-            :model="store.form.iter_expired"
-            label="Iter Berlaku Sampai"
-            outlined
-            @set-model="store.setForm('iter_expired',$event)"
-          /> -->
           <app-input v-model="store.form.iter_jml" label="Jumlah Iter" outlined @update:model-value="setJumlahIter" />
         </div>
         <div v-else />
         <div class="flex items-center q-gutter-sm">
-          <!-- <div>cari</div> -->
           <q-btn v-if="store.form?.groupsistembayarlain !== '2'" push dense color="dark" label="Cari Template" no-caps
             @click="emits('openCariTemplate')" class="q-px-md glossy">
             <q-tooltip class="bg-white text-primary">
@@ -94,26 +75,6 @@
                         @focus="focusJumlah()" />
                     </div>
                     <div class="col-3">
-                      <!-- <q-select
-                        ref="refSigna"
-                        v-model="signa"
-                        label="Aturan Pakai"
-                        use-input
-                        dense
-                        clearable
-                        standout="bg-yellow-3"
-                        option-label="signa"
-                        outlined
-                        :rules="[sigaValid]"
-                        lazy-rules
-                        no-error-icon
-                        hide-bottom-space
-                        hide-dropdown-icon
-                        :options="store.signas"
-                        @new-value="signaCreateValue"
-                        @update:model-value="signaSelected"
-                        @keyup.enter.stop="signaEnter"
-                      /> -->
                       <q-select ref="refSigna" v-model="signa" label="Aturan Pakai" use-input fill-input hide-selected
                         dense clearable standout="bg-yellow-3" option-label="signa" outlined :rules="[sigaValid]"
                         lazy-rules no-error-icon hide-bottom-space hide-dropdown-icon @filter="store.getSigna"
@@ -148,7 +109,8 @@
 
           <!-- hasil Inputan -->
           <template v-if="store.listPemintaanSementara.length">
-            <q-item v-for="(item, i) in store.listPemintaanSementara" :key="i" :class="item?.sudahAda ? 'bg-red-2' : ''">
+            <q-item v-for="(item, i) in store.listPemintaanSementara" :key="i"
+              :class="item?.sudahAda ? 'bg-red-2' : ''">
               <!-- {{ item }} -->
               <q-item-section style="width: 50%;">
                 <div class="row items-center">
@@ -185,6 +147,14 @@
                     </div>
                   </div>
                   <div class="col-shrink text-right">
+                    <q-btn v-if="store.cekAsalResep()" color="primary" dense flat no-caps size="xs" icon="icon-mat-edit"
+                      :disable="store.loading || store.loadingkirim"
+                      :loading="store.loadingHapus && store.obatId === item.id && !store.namaRacikan"
+                      @click="store.editItem(item)">
+                      <q-tooltip class="bg-white text-primary">
+                        Edit
+                      </q-tooltip>
+                    </q-btn>
                     <q-btn color="negative" dense flat no-caps size="xs" icon="icon-mat-delete"
                       :disable="store.loading || store.loadingkirim"
                       :loading="store.loadingHapus && store.obatId === item.id && !store.namaRacikan"
@@ -385,15 +355,15 @@ const refKet = ref(null)
 
 const isReset = ref(false)
 
-function focusJumlah() {
+function focusJumlah () {
   // console.log('focus hy')
   refQty.value.select()
 }
-function setTipe(val) {
+function setTipe (val) {
   // console.log('tipe resep', val)
   store.cariObat('')
 }
-function setJumlahIter(val) {
+function setJumlahIter (val) {
   const kali = parseInt(val)
   if (!kali) return
   const sekarang = Date.now()
@@ -404,7 +374,7 @@ function setJumlahIter(val) {
   // console.log('val', expJadi)
   store.setForm('iter_expired', expJadi)
 }
-function setPasien() {
+function setPasien () {
   const val = props?.pasien
   // console.log('setPasien', val, props?.depo)
   if (!val) return
@@ -452,7 +422,7 @@ function setPasien() {
 }
 /// / set Racikan ------
 const racikanpage = shallowRef(defineAsyncComponent(() => import('./RacikanPage.vue')))
-function racikan() {
+function racikan () {
   // // console.log('ok')
   // alert('oooi')
   store.racikanOpen = true
@@ -466,7 +436,7 @@ function racikan() {
   ]
   // store.tipeRacikan = []
 }
-function racikanTambah(val) {
+function racikanTambah (val) {
   // // console.log('ok', val)
   if (!store?.signas?.length) return notifCenterVue('mohon tunggu sebentar, masih menunggu data Signa dari server')
   // alert('oooi')
@@ -485,14 +455,14 @@ function racikanTambah(val) {
     { label: 'non-DTD', value: 'non-DTD', disable: true }
   ]
 }
-function resetFormRacik() {
+function resetFormRacik () {
   store.setForm('jenisresep', '')
   store.resetForm()
 }
 /// / set Racikan end ------
 // perispan Operasi -----
 const persiapan = shallowRef(defineAsyncComponent(() => import('./PersiapanOperasi.vue')))
-function openPersiapanOperasi() {
+function openPersiapanOperasi () {
   permintaan.isOpen = true
   permintaan.setPasien(props.pasien)
   // // console.log('props pasien', props.pasien)
@@ -546,7 +516,7 @@ function openPersiapanOperasi() {
 const signa = ref('')
 const refJmlHarSig = ref(null)
 const signaNewVal = ref(false)
-function signaSelected(val) {
+function signaSelected (val) {
   // // console.log('signa', val)
   store.setForm('aturan', val?.signa)
   // const sign = store.signas.filter(sig => sig.signa === val?.signa)
@@ -559,7 +529,7 @@ function signaSelected(val) {
   refSigna.value.validate()
   // }
 }
-function signaCreateValue(val, done) {
+function signaCreateValue (val, done) {
   signaNewVal.value = true
   let newSigna = ''
   if (val.includes('x')) {
@@ -589,14 +559,14 @@ function signaCreateValue(val, done) {
 
   // // console.log('signa new val', signa.value)
 }
-function getFocus() {
+function getFocus () {
   refJmlHarSig.value?.focus()
   refJmlHarSig.value?.select()
 }
-function lostFocus() {
+function lostFocus () {
   signaNewVal.value = false
 }
-function simpan() {
+function simpan () {
   store.seveSigna().then((resp) => {
     signaNewVal.value = false
     signaSelected(resp.data)
@@ -604,7 +574,7 @@ function simpan() {
     refKet.value.select()
   })
 }
-function signaEnter() {
+function signaEnter () {
   if (!signaNewVal.value) {
     refKet.value.focus()
     refKet.value.select()
@@ -612,7 +582,7 @@ function signaEnter() {
   }
 }
 // jumlah
-function setJumlah(val) {
+function setJumlah (val) {
   let jumlah = parseFloat(val)
   // console.log('jumlah', jumlah)
   // console.log('alokasi', store.form.stokalokasi)
@@ -638,7 +608,7 @@ function setJumlah(val) {
   }
 }
 // eslint-disable-next-line no-unused-vars
-function qtyEnter() {
+function qtyEnter () {
   // if (parseFloat(store.form.jumlah_diminta) > 1)
   refSigna.value.focus()
   refSigna.value.showPopup()
@@ -646,10 +616,10 @@ function qtyEnter() {
 // function obatValid (val) {
 //   return (val !== null && val !== '') || ''
 // }
-function sigaValid(val) {
+function sigaValid (val) {
   return (val !== null && val !== '') || ''
 }
-function validate() {
+function validate () {
   if (!store?.form?.tiperesep && props.depo === 'rjl') {
     notifErrVue('Tipe Resep Belum Dipilih')
     return false
@@ -681,7 +651,7 @@ function validate() {
   if (refQty.value.validate() && refSigna.value.validate()) return true
   else return false
 }
-function ketEnter() {
+function ketEnter () {
   Dialog.create({
     title: 'Konfirmasi',
     message: 'Apakah Akan dilanjutkan untuk di simpan?',
@@ -702,7 +672,7 @@ function ketEnter() {
       simpanObat()
     })
 }
-function simpanObat() {
+function simpanObat () {
   // console.log('simpan obat', store.form)
   // // console.log('obat', refObat.value?.refObat)
 
@@ -717,7 +687,7 @@ function simpanObat() {
   }
 }
 
-function selesaiResep() {
+function selesaiResep () {
   const depo = store.depos.find(pa => pa.jenis === props.depo)
   if (depo) store.setForm('kodedepo', depo?.value)
   // console.log('depo', depo)
@@ -732,10 +702,11 @@ function selesaiResep() {
 }
 
 // add history eresep
-function historyOpen() {
+function historyOpen () {
   emits('openHistory')
   // store.getHistory(props.pasien?.norm)
 }
+
 
 // ==================================================================================khusus SISITEM BAYAR
 
