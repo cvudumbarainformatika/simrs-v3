@@ -68,9 +68,14 @@
               <adm-choice-ruangan :option="optionsRuangans" @set-gudang="emit('setGudang', $event)" />
             </q-btn>
           </div>
-          <q-btn flat round icon="icon-eva-bell-outline">
+          <q-btn flat round icon="icon-eva-bell-outline" class="relative-position">
+            <q-badge v-if="notifPermintaanLabBaru > 0" color="red" class="absolute-top-right" floating>{{
+              notifPermintaanLabBaru }}</q-badge>
+            <notification-menu @notif="(val) => {
+              console.log('notif', val);
 
-            <notification-menu />
+              notifPermintaanLabBaru = val
+            }" />
           </q-btn>
           <q-avatar size="40px" class="q-ml-sm cursor-pointer bg-grey">
             <img :src="PHOTO_USER">
@@ -87,11 +92,12 @@ import { useSettingsAplikasi } from 'src/stores/simrs/settings'
 import AdmHeaderMenuProfile from './AdmHeaderMenuProfile.vue'
 import AdmChoiceRuangan from './AdmChoiceRuangan.vue'
 import { useRoute } from 'vue-router'
-import { computed, defineAsyncComponent, onMounted } from 'vue'
+import { computed, defineAsyncComponent, onMounted, ref } from 'vue'
 
 
 const emit = defineEmits(['goToSso', 'setGudang'])
 const NotificationMenu = defineAsyncComponent(() => import('./NotificationMenu.vue'))
+const notifPermintaanLabBaru = ref(0)
 
 const route = useRoute()
 
