@@ -1,26 +1,12 @@
 <template>
-  <q-header
-    :bordered="!mobile"
-    reveal
-    :class="dark?'bg-dark':'bg-white text-dark'"
-    height-hint="60"
-  >
+  <q-header :bordered="!mobile" reveal :class="dark ? 'bg-dark' : 'bg-white text-dark'" height-hint="60">
     <!-- header class old
     :class="dark?'bg-dark':'bg-white text-dark'"
   -->
-    <div
-      class="q-px-sm flex items-center justify-between"
-      style="height:50px"
-    >
+    <div class="q-px-sm flex items-center justify-between" style="height:50px">
       <!-- LEFT -->
-      <div
-        class="row items-center"
-        @click="emit('goToSso')"
-      >
-        <q-avatar
-          size="35px"
-          class="cursor-pointer bg-white"
-        >
+      <div class="row items-center" @click="emit('goToSso')">
+        <q-avatar size="35px" class="cursor-pointer bg-white">
           <img src="~assets/logos/logo-rsud.png">
         </q-avatar>
         <div class="text q-ml-sm">
@@ -45,81 +31,48 @@
         </div>
       </div> -->
       <!-- RIGHT -->
-      <div :class="!mobile?'q-pr-md':'q-pr-sm'">
+      <div :class="!mobile ? 'q-pr-md' : 'q-pr-sm'">
         <div class="row items-center">
           <div class="text-right">
             <div class="q-mr-sm text-weight-bold">
               {{ user?.pegawai?.nama ?? '-' }}
             </div>
 
-            <div
-              v-if="!!user?.pegawai?.ruang?.uraian"
-              class="q-mr-sm  text-primary"
-            >
+            <div v-if="!!user?.pegawai?.ruang?.uraian" class="q-mr-sm  text-primary">
               {{ user?.pegawai?.ruang?.uraian }}
             </div>
-            <div
-              v-else-if="!!user?.pegawai?.depo"
-              class="q-mr-sm text-primary"
-            >
+            <div v-else-if="!!user?.pegawai?.depo" class="q-mr-sm text-primary">
               {{ user?.pegawai?.depo?.nama }}
             </div>
 
-            <div
-              v-else-if="(rsim?.length===1 && rsim[0]!=='') || (rsim?.length>1)"
-              class="q-mr-sm text-primary"
-            >
+            <div v-else-if="(rsim?.length === 1 && rsim[0] !== '') || (rsim?.length > 1)" class="q-mr-sm text-primary">
               <!-- style="max-width: 80%;" -->
               {{ poli(user?.pegawai) }}
             </div>
           </div>
-          <div
-            v-if="optionsGudang?.length >1"
-            class="q-mr-sm items-center"
-          >
+          <div v-if="optionsGudang?.length > 1" class="q-mr-sm items-center">
             <!-- :label="labelGd()" -->
-            <q-btn
-              no-caps
-              dense
-              color="primary"
-            >
+            <q-btn no-caps dense color="primary">
               <div class="f-10">
                 {{ labelGd() }}
               </div>
-              <adm-choice-ruangan
-                :option="optionsGudang"
-                @set-gudang="emit('setGudang',$event)"
-              />
+              <adm-choice-ruangan :option="optionsGudang" @set-gudang="emit('setGudang', $event)" />
             </q-btn>
           </div>
-          <div
-            v-if="optionsRuangans?.length >1"
-            class="q-mr-sm items-center"
-          >
+          <div v-if="optionsRuangans?.length > 1" class="q-mr-sm items-center">
             <!-- style="width: 180px;" -->
-            <q-btn
-              no-caps
-              dense
-              color="primary"
-            >
+            <q-btn no-caps dense color="primary">
               <div class="f-10">
                 {{ labelRu() }}
               </div>
-              <adm-choice-ruangan
-                :option="optionsRuangans"
-                @set-gudang="emit('setGudang',$event)"
-              />
+              <adm-choice-ruangan :option="optionsRuangans" @set-gudang="emit('setGudang', $event)" />
             </q-btn>
           </div>
-          <q-btn
-            flat
-            round
-            icon="icon-eva-bell-outline"
-          />
-          <q-avatar
-            size="40px"
-            class="q-ml-sm cursor-pointer bg-grey"
-          >
+          <q-btn flat round icon="icon-eva-bell-outline">
+
+            <notification-menu />
+          </q-btn>
+          <q-avatar size="40px" class="q-ml-sm cursor-pointer bg-grey">
             <img :src="PHOTO_USER">
             <adm-header-menu-profile :user="user" :photo="PHOTO_USER" />
           </q-avatar>
@@ -134,8 +87,11 @@ import { useSettingsAplikasi } from 'src/stores/simrs/settings'
 import AdmHeaderMenuProfile from './AdmHeaderMenuProfile.vue'
 import AdmChoiceRuangan from './AdmChoiceRuangan.vue'
 import { useRoute } from 'vue-router'
-import { computed, onMounted } from 'vue'
+import { computed, defineAsyncComponent, onMounted } from 'vue'
+
+
 const emit = defineEmits(['goToSso', 'setGudang'])
+const NotificationMenu = defineAsyncComponent(() => import('./NotificationMenu.vue'))
 
 const route = useRoute()
 
@@ -203,17 +159,17 @@ onMounted(() => {
   if (!props.user?.kdruangansim && temp?.length) emit('setGudang', ruang[0] ?? temp[0])
   // rsim.value = temp
 })
-function labelGd () {
+function labelGd() {
   const anu = props?.gudangs.filter(gud => gud.kode === props.user?.kdruangansim)
   if (anu.length) return anu[0]?.nama
   else return 'Gudang Tidak Dipilih'
 }
-function labelRu () {
+function labelRu() {
   const anu = props?.ruangs?.filter(gud => gud.kode === props.user?.kdruangansim)
   if (anu.length) return anu[0]?.uraian
   else return 'Ruangan Tidak Dipilih'
 }
-function poli (val) {
+function poli(val) {
   let fin = null
   let ruang = ''
   const temp = val.kdruangansim.split('|')
@@ -236,7 +192,7 @@ function poli (val) {
   return ruang
 }
 
-function namaPath (val) {
+function namaPath(val) {
   const stringdepan = val[0]
   let res = val
   if (stringdepan === '/') {
@@ -254,7 +210,7 @@ function namaPath (val) {
 }
 
 .glass {
-  background: rgba(255,255,255,.1);
+  background: rgba(255, 255, 255, .1);
   backdrop-filter: blur(20px);
 }
 </style>

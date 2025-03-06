@@ -158,6 +158,29 @@ const olahUang = (val) => {
   }
 }
 
+// **Format Waktu ke Bahasa Indonesia dengan Update Real-Time**
+const formatTime = (timestamp) => {
+  const now = new Date();
+  const past = new Date(timestamp);
+  const diffMs = now - past;
+  const diffSec = Math.floor(diffMs / 1000);
+  const diffMin = Math.floor(diffSec / 60);
+  const diffHour = Math.floor(diffMin / 60);
+  const diffDay = Math.floor(diffHour / 24);
+
+  if (diffSec < 60) return "baru saja";
+  if (diffMin < 60) return `${diffMin} menit yang lalu`;
+  if (diffHour < 24) return `${diffHour} jam yang lalu`;
+  if (diffDay < 7) return `${diffDay} hari yang lalu`;
+
+  return past.toLocaleDateString("id-ID", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+};
+
 const getNewLine = (text) => {
   return text?.replace(/\n/g, '<br/>')
 }
@@ -167,7 +190,7 @@ export {
   dateHalfFormat, dateCppt,
   dateDbFormat,
   humanDate,
-  diffDate, calcDate, tglJamFormat, formatJam, dateOnly, jamTnpDetik,
+  diffDate, calcDate, tglJamFormat, formatJam, dateOnly, jamTnpDetik, formatTime,
   dateBOD,
   dateUnix,
   formatRp,
