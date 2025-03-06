@@ -1,7 +1,7 @@
 <template>
   <q-menu v-if="punyaAkses" fit transition-show="scale" transition-hide="scale">
     <q-list style="min-width: 500px">
-      <q-item-label header class="text-primary flex justify-between" @click="cobaSendNotif">
+      <q-item-label header class="text-primary flex justify-between">
         Notifikasi Laborat
         <q-btn flat size="sm" color="primary" @click="clearNotif">Clear</q-btn>
       </q-item-label>
@@ -220,9 +220,9 @@ const subscribedChannel = () => {
   })
 }
 
-const cobaSendNotif = () => {
-  lab.cobaNotifikasi()
-}
+// const cobaSendNotif = () => {
+//   lab.cobaNotifikasi()
+// }
 
 const clearNotif = () => {
   notifications.value = []

@@ -7,10 +7,7 @@
             <img src="~assets/logos/logo-rsud.png">
           </q-avatar>
         </div>
-        <div
-          v-if="!isMobile"
-          class="q-ml-sm text-white"
-        >
+        <div v-if="!isMobile" class="q-ml-sm text-white">
           <div class="text-h6">
             UOBK RSUD MOHAMAD SALEH
           </div>
@@ -22,69 +19,38 @@
     </div>
     <div class="">
       <div class="row items-center text-white">
-        <div
-          class="q-mr-md text-subtitle"
-        >
-          <q-skeleton
-            v-if="loading"
-            type="text"
-            width="100px"
-          />
-          <div
-            v-else
-          >
-            {{ userLocal? userLocal?.nama:'-' }}
+        <div class="q-mr-md text-subtitle">
+          <q-skeleton v-if="loading" type="text" width="100px" />
+          <div v-else>
+            {{ userLocal ? userLocal?.nama : '-' }}
           </div>
         </div>
-        <q-avatar
-          size="40px"
-          class="cursor-pointer bg-grey"
-          @mouseover="()=>{
-            showing = true
-          }"
-        >
+        <q-avatar size="40px" class="cursor-pointer bg-grey" @mouseover="() => {
+          showing = true
+        }">
           <img :src="PHOTO_USER">
 
-          <q-menu
-            transition-show="fade"
-            transition-hide="fade"
-            :offset="[0,10]"
-            v-model="showing"
-          >
+          <q-menu transition-show="fade" transition-hide="fade" :offset="[0, 10]" v-model="showing">
             <q-card style="width:250px">
               <img :src="PHOTO_USER">
               <q-card-section class="bg-grey-2">
                 <div class="row no-wrap items-center">
                   <div class="col text-h6 ellipsis">
-                    {{ userLocal? userLocal?.nama:'-' }}
+                    {{ userLocal ? userLocal?.nama : '-' }}
                   </div>
                 </div>
               </q-card-section>
               <q-list>
-                <q-item
-                  v-close-popup
-                  clickable
-                  @click="emits('setting')"
-                >
+                <!-- <q-item v-close-popup clickable @click="emits('setting')">
                   <q-item-section avatar>
-                    <q-icon
-                      name="icon-mat-settings"
-                      size="16px"
-                    />
+                    <q-icon name="icon-mat-settings" size="16px" />
                   </q-item-section>
                   <q-item-section>Settings</q-item-section>
-                </q-item>
+                </q-item> -->
                 <q-separator />
-                <q-item
-                  v-close-popup
-                  clickable
-                  @click="emits('signOut')"
-                >
+                <q-item v-close-popup clickable @click="emits('signOut')">
                   <q-item-section avatar>
-                    <q-icon
-                      name="icon-mat-exit_to_app"
-                      size="16px"
-                    />
+                    <q-icon name="icon-mat-exit_to_app" size="16px" />
                   </q-item-section>
                   <q-item-section>Logout </q-item-section>
                 </q-item>
@@ -107,7 +73,7 @@ const emits = defineEmits(['signOut', 'setting'])
 const props = defineProps({
   userLocal: {
     type: Object,
-    default: () => {}
+    default: () => { }
   },
   loading: {
     type: Boolean,
