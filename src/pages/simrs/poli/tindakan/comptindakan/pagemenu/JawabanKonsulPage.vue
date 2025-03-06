@@ -11,18 +11,18 @@
           <template v-slot:header>
             <q-item-section>Konsul dari {{ item?.poli_asal?.rs2 }} ketika berkunjung tanggal {{
               dateFullFormat(item?.tgl_kunjungan)
-            }} dengan nomor registrasi {{ item?.noreg_lama }}</q-item-section>
+              }} dengan nomor registrasi {{ item?.noreg_lama }}</q-item-section>
             <q-item-section>ke {{ item?.poli_tujuan?.rs2 }}
               <span v-if="item?.noreg_baru != null">dengan nomor registrasi {{ item?.noreg_baru
-              }}</span>
+                }}</span>
               <span v-else class="text-weight-bold">dengan tanggal rencana kunjungan {{
                 dateFullFormat(item?.tgl_rencana_konsul)
-                }}</span>
+              }}</span>
             </q-item-section>
             <q-item-section side>
               <q-btn
                 v-if="(item?.poli_tujuan?.rs1 == pasien?.kodepoli) && (date.formatDate(item?.tgl_rencana_konsul, 'YYYY-MM-DD') == date.formatDate(pasien?.tgl_kunjungan, 'YYYY-MM-DD')) && !item?.noreg_baru"
-                icon="icon-mat-comment" flat color="primary" :loading="item?.loading" :disable="item?.loading"
+                icon="icon-mat-edit" color="primary" :loading="item?.loading" :disable="item?.loading"
                 @click="bukajawaban(item)">
                 <q-tooltip class="primary" :offset="[10, 10]">
                   Buka Edit Jawaban Konsul
