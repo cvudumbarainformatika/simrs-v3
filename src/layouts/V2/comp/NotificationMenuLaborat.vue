@@ -80,6 +80,9 @@ const notificationCito = ref(null);
 // **Muat Notifikasi dari Local Storage**
 const loadNotifications = () => {
   notifications.value = LocalStorage.getItem("notifications") || [];
+
+  // Hitung jumlah notifikasi belum dibaca
+  emit('notif', unreadCount.value)
 };
 
 // **Simpan Notifikasi ke Local Storage**
@@ -152,17 +155,23 @@ const viewAll = () => {
 onMounted(() => {
 
 
+  lihatAksesLaborat()
+
   timer.value = setInterval(() => {
     notifications.value = [...notifications.value];
   }, 1000);
 
-  Promise.all([
 
-    lihatAksesLaborat(),
+  if (punyaAkses.value) {
+    Promise.all([
 
-    subscribedChannel(),
-    loadNotifications()
-  ])
+
+      subscribedChannel(),
+      loadNotifications()
+    ])
+  }
+
+
 
 
 })
@@ -175,8 +184,21 @@ onUnmounted(() => {
 
 const lihatAksesLaborat = () => {
   const apps = auth?.items
-  console.log('user', apps);
-  const haveAkses = apps?.find(x => x?.aplikasi === 'laborat') ? true : false
+  const akses = auth?.aksesApps
+
+  // console.log('akses ke aplikasi laborat', akses);
+  const laborat = apps?.find(x => x?.aplikasi === 'laborat')?.id || null
+
+  let haveAkses = false
+  if (akses === 'all') {
+    haveAkses = true
+  } else {
+    haveAkses = akses?.find(x => x?.aplikasi_id === laborat) ? true : false
+
+  }
+
+
+  console.log('akses ke aplikasi laborat', haveAkses);
   punyaAkses.value = haveAkses
 }
 
@@ -188,8 +210,8 @@ const subscribedChannel = () => {
   }).listen('.notif-message', (e) => {
     // console.log('listen notif', e)
     const data = e?.message?.data || null
-    console.log('message', data);
-    if (data?.menu === 'permintaan-laborat') {
+    if (data?.menu === 'permintaan-laborat' && punyaAkses.value) {
+      console.log('message', data);
       const color = data.dari === 'RANAP' ? 'blue' : data.dari === 'IGD' ? 'orange' : 'red'
       addNotification(data?.title, data?.dari, data?.cito, data?.read, "icon-mat-medical_information", color);
     }
