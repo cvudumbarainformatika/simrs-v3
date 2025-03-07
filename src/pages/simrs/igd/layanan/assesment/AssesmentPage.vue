@@ -13,6 +13,9 @@
           <q-tab-panel name="Diagnosa Medik" class="full-height q-pa-none">
             <DiagnosaPage :pasien="props.pasien" :tipekhasusdiagnosa="store.listkhasusdiagnosa" />
           </q-tab-panel>
+          <q-tab-panel name="Rencana Terapi Dokter" class="full-height q-pa-none">
+            <RencanaTerapaiDokterPage :pasien="props.pasien" />
+          </q-tab-panel>
           <q-tab-panel name="Tindakan Medik" class="full-height q-pa-none">
             <TindakanPage :pasien="props.pasien" />
           </q-tab-panel>
@@ -39,6 +42,7 @@ import TindakanPage from '../assesment/tindakan/TindakanPage.vue'
 import DiagnosaKeperawatanPage from './diagnosakeperawatan/DiagnosaKeperawatanPage.vue'
 import DiagnosaKebidananPage from './diagnosakebidanan/DiagnosaKebidananPage.vue'
 import PraAnastesiPage from './praanastesi/PraAnastesiPage.vue'
+import RencanaTerapaiDokterPage from './rencanatrapidokter/RencanaTerapaiDokterPage.vue'
 
 import { onMounted } from 'vue'
 import { useDiagnosaDokter } from 'src/stores/simrs/igd/diagnosadokter'
