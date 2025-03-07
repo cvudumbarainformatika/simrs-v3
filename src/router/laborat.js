@@ -62,6 +62,12 @@ const laborat =
     },
 
     {
+      path: '/admin/laborat/settings',
+      name: 'lab.settings',
+      component: () => import('pages/simrs/laborat/IndexSettings.vue')
+    },
+
+    {
       path: '/admin/laborat/notfound',
       component: () => import('pages/MidlewareNotFound.vue')
     }

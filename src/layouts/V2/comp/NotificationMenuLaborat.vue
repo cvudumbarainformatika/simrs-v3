@@ -1,7 +1,7 @@
 <template>
   <q-menu v-if="punyaAkses" fit transition-show="scale" transition-hide="scale">
     <q-list style="min-width: 500px">
-      <q-item-label header class="text-primary flex justify-between">
+      <q-item-label header class="text-primary flex justify-between" @click="cobaSendNotif">
         Notifikasi Laborat
         <q-btn flat size="sm" color="primary" @click="clearNotif">Clear</q-btn>
       </q-item-label>
@@ -43,10 +43,10 @@
 
     <!-- Audio Element untuk Alarm -->
     <audio ref="notificationSound">
-      <source src="~assets/alarms/biasa.mp3" type="audio/mp3" />
+      <source :src="regularSoundUrl" type="audio/mp3" preload="auto" />
     </audio>
     <audio ref="notificationCito">
-      <source src="~assets/alarms/cito.mp3" type="audio/mp3" />
+      <source :src="citoSoundUrl" type="audio/mp3" preload="auto" />
     </audio>
   </q-menu>
 </template>
@@ -74,8 +74,69 @@ const routeLab = ref('/admin/laborat/table')
 // Data Notifikasi
 const notifications = ref([]);
 const timer = ref(null);
+
+// Sound files
+const regularSoundFile = ref(null)
+const citoSoundFile = ref(null)
+
+
+// Audio elements refs
 const notificationSound = ref(null);
 const notificationCito = ref(null);
+
+// Update path audio
+const regularSoundUrl = ref('/assets/alarms/biasa.mp3')
+const citoSoundUrl = ref('/assets/alarms/cito.mp3')
+
+
+// Tambahkan fungsi ini untuk check file
+const verifyAudioFile = (url) => {
+  fetch(url)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      console.log(`Audio file ${url} exists and is accessible`);
+    })
+    .catch(error => {
+      console.error(`Audio file ${url} error:`, error);
+    });
+}
+
+
+onMounted(() => {
+
+  verifyAudioFile(regularSoundUrl.value)
+  verifyAudioFile(citoSoundUrl.value)
+  // Inisialisasi audio elements
+  notificationSound.value = new Audio(regularSoundUrl.value)
+  notificationCito.value = new Audio(citoSoundUrl.value)
+
+  // Pre-load audio files
+  notificationSound.value.load()
+  notificationCito.value.load()
+
+
+  lihatAksesLaborat()
+
+  timer.value = setInterval(() => {
+    notifications.value = [...notifications.value];
+  }, 1000);
+
+
+  if (punyaAkses.value) {
+    Promise.all([
+
+
+      subscribedChannel(),
+      loadNotifications()
+    ])
+  }
+
+
+
+
+})
 
 // **Muat Notifikasi dari Local Storage**
 const loadNotifications = () => {
@@ -119,12 +180,28 @@ const unreadCount = computed(() => notifications.value.filter((n) => !n.read).le
 // **Putar Suara Notifikasi**
 const playNotificationSound = async (cito) => {
   await nextTick(); // Menunggu DOM siap
-  if (cito === 'Iya' && notificationCito.value) {
-    notificationCito.value.play().catch((err) => console.warn("Audio play error:", err));
-  } else if (cito !== 'Iya' && notificationSound.value) {
-    notificationSound.value.play().catch((err) => console.warn("Audio play error:", err));
+  // if (cito === 'Iya' && notificationCito.value) {
+  //   notificationCito.value.play().catch((err) => console.warn("Audio play error:", err));
+  // } else if (cito !== 'Iya' && notificationSound.value) {
+  //   notificationSound.value.play().catch((err) => console.warn("Audio play error:", err));
+  // }
+
+  const audioElement = cito === 'Iya' ? notificationCito.value : notificationSound.value
+  try {
+    await audioElement.play().catch(handlePlayError)
+  } catch (error) {
+    handlePlayError(error)
   }
-};
+}
+
+const handlePlayError = (error) => {
+  // Detailed error logging
+  console.error('Play error details:', {
+    message: error.message,
+    name: error.name,
+    stack: error.stack
+  })
+}
 
 
 // **Jalankan Interval Setiap Detik**
@@ -152,29 +229,7 @@ const viewAll = () => {
 };
 
 
-onMounted(() => {
 
-
-  lihatAksesLaborat()
-
-  timer.value = setInterval(() => {
-    notifications.value = [...notifications.value];
-  }, 1000);
-
-
-  if (punyaAkses.value) {
-    Promise.all([
-
-
-      subscribedChannel(),
-      loadNotifications()
-    ])
-  }
-
-
-
-
-})
 
 // **Hentikan Interval Saat Komponen Dilepas**
 onUnmounted(() => {
@@ -220,9 +275,9 @@ const subscribedChannel = () => {
   })
 }
 
-// const cobaSendNotif = () => {
-//   lab.cobaNotifikasi()
-// }
+const cobaSendNotif = () => {
+  lab.cobaNotifikasi()
+}
 
 const clearNotif = () => {
   notifications.value = []
