@@ -503,6 +503,27 @@ export const usePermintaanEResepStore = defineStore('permintaan_e_resep', {
       this.openEditItem = true
       this.itemToEdit = { ...item }
     },
+    async simpanEditObatHasilDuplicate () {
+      console.log('edit obat hasil duplicate', this.itemToEdit)
+      this.itemToEdit.loading = true
+      await api.post('v1/simrs/pelayanan/simpan-edit-obat', this.itemToEdit)
+        .then(resp => {
+          const noresep = this.itemToEdit?.noresep
+          const resep = this.pasien?.newapotekrajal.find(x => x.noresep === noresep)
+          const index = resep?.permintaanresep.findIndex(x => x.id === this.itemToEdit?.id)
+          if (index >= 0) resep.permintaanresep[index] = resp?.data?.data
+          console.log('index', index, resp?.data?.data)
+
+          this.itemToEdit = null
+          notifSuccess(resp)
+          this.openEditItem = false
+
+        })
+        .catch(() => {
+          this.itemToEdit.loading = false
+        })
+
+    },
     async getNomor () {
       const param = {
         params: {
@@ -1264,7 +1285,8 @@ export const usePermintaanEResepStore = defineStore('permintaan_e_resep', {
         .onOk(() => {
           this.simpanCopyResepKonfirmasi(permintaanResepDuplicate, tipe, indexlist)
         })
-    }
+    },
+
   }
 })
 

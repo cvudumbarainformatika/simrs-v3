@@ -1,6 +1,6 @@
 <template>
   <q-dialog persistent backdrop-filter="blur(4px)" @show="showMe">
-    <q-card style="min-width: 70vw;">
+    <q-card style="min-width: 70vw; ">
       <q-bar class="bg-primary">
         <q-space />
 
@@ -14,7 +14,7 @@
           </q-tooltip>
         </q-btn>
       </q-bar>
-      <q-card-section>
+      <q-card-section v-if="!store.itemToEdit?.loading">
         <div>
           <div class="row no-wrap items-center">
             <div class="col-11">
@@ -58,11 +58,15 @@
           <!-- {{ store.itemToEdit }} -->
         </div>
       </q-card-section>
+      <q-card-section v-if="store.itemToEdit?.loading" style="height: 100px;">
+        <app-loading />
+      </q-card-section>
     </q-card>
   </q-dialog>
 
 </template>
 <script setup>
+import { Dialog } from 'quasar'
 import { usePermintaanEResepStore } from 'src/stores/simrs/farmasi/permintaanresep/eresep'
 import { ref, watch } from 'vue'
 
@@ -82,7 +86,14 @@ function qtyEnter () {
   refSigna.value.showPopup()
 }
 function setJumlah (val) {
-  // let jumlah = parseFloat(val)
+  let jumlah = parseFloat(val)
+  if (signa.value) {
+    if (parseFloat(jumlah) > 0) {
+      const kons = jumlah / parseFloat(signa.value?.jumlah)
+      store.itemToEdit.konsumsi = kons
+    }
+  }
+  console.log('signa', jumlah, signa.value)
   // // console.log('jumlah', jumlah)
   // // console.log('alokasi', store.form.stokalokasi)
   // if (jumlah > parseFloat(store.form.stokalokasi)) {
@@ -148,6 +159,7 @@ function ketEnter () {
 }
 function simpanObat () {
   console.log('simpan obat', store.itemToEdit)
+  store.simpanEditObatHasilDuplicate()
   // // console.log('obat', refObat.value?.refObat)
 
   // if (validate()) {
@@ -168,7 +180,7 @@ function showMe () {
 }
 
 watch(() => store.signas, (val) => {
-  console.log('val', val, store.signas)
+  // console.log('val', val, store.signas)
   if (val.length && store.itemToEdit?.aturan) {
     signa.value = store.signas.find(sig => sig.signa === store.itemToEdit.aturan)
   }
