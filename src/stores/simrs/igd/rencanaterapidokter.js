@@ -26,7 +26,7 @@ export const useRencanaTerapiDokterStore = defineStore('rencana-terapi-dokter', 
         if (resp.status === 200) {
           const storePasien = usePengunjungIgdStore()
           const isi = resp?.data?.data
-          console.log('isi', isi)
+          // console.log('isi', isi)
           storePasien.injectDataPasien(pasien, isi, 'rencanaterapidokter')
           notifSuccess(resp?.data?.message)
           this.initReset()
