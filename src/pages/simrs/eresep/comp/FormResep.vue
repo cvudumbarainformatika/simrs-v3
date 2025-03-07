@@ -3,7 +3,7 @@
     <div class="col-auto bg-primary text-white">
       <div class="q-pa-sm row items-center justify-between">
         <div class="f-12">
-          <sistem-bayar-ganti :pasien="pasien"
+          <sistem-bayar-ganti v-if="depo !== 'ok'" :pasien="pasien"
             :disabled="store.listPemintaanSementara.length > 0 || store.listRacikan.length > 0" :is-reset="isReset" />
         </div>
         <div>
