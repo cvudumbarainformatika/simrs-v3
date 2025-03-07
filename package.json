@@ -12,7 +12,10 @@
     "build": "quasar build",
     "postinstall": "quasar prepare",
     "custom-icons": "fantasticon src/custom-icons/svg -o public/custom-icons --normalize -t woff woff2 -g css",
-    "custom-icons:watch": "watch \"npm run custom-icons\" src/custom-icons/svg"
+    "custom-icons:watch": "watch \"npm run custom-icons\" src/custom-icons/svg",
+    "audit-deps": "node scripts/audit-deps.js",
+    "monitor": "quasar dev --debug",
+    "analyze": "quasar build --analyze"
   },
   "dependencies": {
     "@chenfengyuan/vue-qrcode": "^2.0.0",
@@ -38,7 +41,7 @@
     "@tiptap/pm": "^2.0.3",
     "@tiptap/starter-kit": "^2.0.3",
     "@tiptap/vue-3": "^2.0.3",
-    "apexcharts": "^3.35.5",
+    "apexcharts": "^4.0.0",
     "axios": "^1.2.1",
     "echarts": "^5.5.0",
     "fabric": "^5.3.0",
@@ -62,9 +65,10 @@
     "vue-json-excel3": "^1.0.29",
     "vue-print-nb": "^1.0.3",
     "vue-router": "^4.0.0",
-    "vue3-apexcharts": "^1.4.1",
+    "vue3-apexcharts": "^1.8.0",
     "vue3-print-nb": "^0.1.4",
-    "watch": "^0.13.0"
+    "watch": "^0.13.0",
+    "web-vitals": "^4.2.4"
   },
   "devDependencies": {
     "@quasar/app-vite": "^2.0.0",

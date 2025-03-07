@@ -1,7 +1,7 @@
 <template>
   <q-menu v-if="punyaAkses" fit transition-show="scale" transition-hide="scale">
     <q-list style="min-width: 500px">
-      <q-item-label header class="text-primary flex justify-between">
+      <q-item-label header class="text-primary flex justify-between" @click="cobaSendNotif">
         Notifikasi Laborat
         <q-btn flat size="sm" color="primary" @click="clearNotif">Clear</q-btn>
       </q-item-label>
@@ -59,7 +59,7 @@ import { laravelEcho } from 'src/modules/newsockets'
 import { useAplikasiStore } from "src/stores/app/aplikasi";
 import { LocalStorage } from "quasar";
 import { formatTime } from "src/modules/formatter";
-
+import { useQuasar } from 'quasar';
 
 const emit = defineEmits(['notif'])
 
@@ -67,6 +67,7 @@ const router = useRouter()
 const route = useRoute()
 const lab = useTransaksiLaboratTable()
 const auth = useAplikasiStore()
+const $q = useQuasar()
 
 const punyaAkses = ref(false)
 const routeLab = ref('/admin/laborat/table')
@@ -74,11 +75,6 @@ const routeLab = ref('/admin/laborat/table')
 // Data Notifikasi
 const notifications = ref([]);
 const timer = ref(null);
-
-// Sound files
-const regularSoundFile = ref(null)
-const citoSoundFile = ref(null)
-
 
 // Audio elements refs
 const notificationSound = ref(null);
@@ -179,27 +175,22 @@ const unreadCount = computed(() => notifications.value.filter((n) => !n.read).le
 
 // **Putar Suara Notifikasi**
 const playNotificationSound = async (cito) => {
-  await nextTick(); // Menunggu DOM siap
-  // if (cito === 'Iya' && notificationCito.value) {
-  //   notificationCito.value.play().catch((err) => console.warn("Audio play error:", err));
-  // } else if (cito !== 'Iya' && notificationSound.value) {
-  //   notificationSound.value.play().catch((err) => console.warn("Audio play error:", err));
-  // }
-
-  const audioElement = cito === 'Iya' ? notificationCito.value : notificationSound.value
   try {
-    await audioElement.play().catch(handlePlayError)
+    await nextTick()
+    const audioElement = cito === 'Iya' ? notificationCito.value : notificationSound.value
+    console.log('Playing notification:', cito === 'Iya' ? 'cito sound' : 'regular sound')
+
+    await audioElement?.play().catch(handlePlayError)
   } catch (error) {
     handlePlayError(error)
   }
 }
 
 const handlePlayError = (error) => {
-  // Detailed error logging
-  console.error('Play error details:', {
+  console.error('Audio play error:', {
     message: error.message,
     name: error.name,
-    stack: error.stack
+    code: error.code
   })
 }
 
@@ -275,17 +266,12 @@ const subscribedChannel = () => {
   })
 }
 
-// const cobaSendNotif = () => {
-//   lab.cobaNotifikasi()
-// }
+const cobaSendNotif = () => {
+  lab.cobaNotifikasi()
+}
 
 const clearNotif = () => {
   notifications.value = []
   saveNotifications()
 }
 </script>
-
-<style lang="scss" scoped>
-// .notification-item:hover {
-//   background-color: #f5f5f5;
-// }</style>

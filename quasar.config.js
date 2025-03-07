@@ -12,7 +12,10 @@ export default defineConfig((ctx) => {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
     // https://v2.quasar.dev/quasar-cli-vite/boot-files
-    boot: ['axios', 'global-components', 'editor-componens', 'other-components', 'static-components', 'router'],
+    boot: ['axios', 'global-components', 'editor-componens', 'other-components', 'static-components', 'router',
+      // ini juga baru untuk optimasi dan monitoring
+      'performance', 'memory-monitor', 'error-tracking'
+    ],
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#css
     css: ['app.scss'],
@@ -48,7 +51,10 @@ export default defineConfig((ctx) => {
         WSHOST: ctx?.dev
           // ? '192.168.20.37'
           ? 'localhost'
-          : '192.168.150.111'
+          : '192.168.150.111',
+
+        ENABLE_MONITORING: ctx.dev, // Aktifkan hanya di development
+        MONITORING_LOG: true // Matikan console log
 
       },
 
@@ -68,17 +74,32 @@ export default defineConfig((ctx) => {
       // polyfillModulePreload: true,
       // distDir
 
+
+      // ini baru saya optimasi
+
+      // Tambahkan source maps untuk production debugging
+      sourcemap: true,
+      // Tambahkan performance budgets
+      performance: {
+        hints: 'warning',
+        maxEntrypointSize: 512000,
+        maxAssetSize: 512000
+      },
+      viteVuePluginOptions: {
+        reactivityTransform: true
+      },
+
       extendViteConf(viteConf) {
         viteConf.build.chunkSizeWarningLimit = 5000
-        // viteConf.build.rollupOptions = {
-        //   output: {
-        //     manualChunks(id) {
-        //       if (id.includes('node_modules')) {
-        //         return 'vendor';
-        //       }
-        //     },
-        //   },
-        // };
+        viteConf.build.rollupOptions = {
+          output: {
+            manualChunks(id) {
+              if (id.includes('node_modules')) {
+                return id.toString().split('node_modules/')[1].split('/')[0].toString();
+              }
+            }
+          }
+        };
       },
       // viteVuePluginOptions: {},
 
@@ -90,6 +111,8 @@ export default defineConfig((ctx) => {
       //     }
       //   }, { server: false }]
       // ]
+      // Monitor build size
+      analyze: true  // Gunakan webpack-bundle-analyzer
     },
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#devserver
