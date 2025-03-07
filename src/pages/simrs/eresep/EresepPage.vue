@@ -1,21 +1,11 @@
 <template>
-  <div
-    class="row full-height full-width bg-grey-4 shadow-1"
-  >
-    <Transition
-      enter-active-class="animated fadeIn faster"
-      leave-active-class="animated fadeOut faster"
-    >
+  <div class="row full-height full-width bg-grey-4 shadow-1">
+    <Transition enter-active-class="animated fadeIn faster" leave-active-class="animated fadeOut faster">
       <div v-if="!temp" class="fit row">
         <div class="col-8 full-height q-pa-xs">
-          <form-resep
-            :pasien="props?.pasien"
-            :depo="props?.depo"
-            tooltip="History EResep"
-            @open-history="seamless = !seamless"
-            @open-template="temp = !temp"
-            @open-cari-template="dialogCari = !dialogCari"
-          />
+          <form-resep :pasien="props?.pasien" :depo="props?.depo" tooltip="History EResep"
+            @open-history="seamless = !seamless" @open-template="temp = !temp"
+            @open-cari-template="dialogCari = !dialogCari" />
         </div>
         <div class="col-4 full-height q-pa-xs">
           <listpage />
@@ -23,28 +13,20 @@
       </div>
 
       <div v-else class="fit">
-        <EresepTemplatePage :pasien="props?.pasien" :depo="props?.depo" :key="pasien" :is-cari="template.cariTemplate !== null" @back="kosonginTemplate" />
+        <EresepTemplatePage :pasien="props?.pasien" :depo="props?.depo" :key="pasien"
+          :is-cari="template.cariTemplate !== null" @back="kosonginTemplate" />
       </div>
     </Transition>
 
-    <app-drawer-right-new
-      :key="props?.pasien"
-      style="width:60%;"
-      :seamless="seamless"
-      :pasien="props?.pasien"
-      @click-btn="clickslideRight"
-    >
+    <app-drawer-right-new :key="props?.pasien" style="width:60%;" :seamless="seamless" :pasien="props?.pasien"
+      @click-btn="clickslideRight">
       <template #content>
-        <HistoryEresep
-          :key="props?.pasien"
-          :pasien="props?.pasien"
-          :depo="props?.depo"
-          title="HISTORY E-RESEP"
-        />
+        <HistoryEresep :key="props?.pasien" :pasien="props?.pasien" :depo="props?.depo" title="HISTORY E-RESEP" />
       </template>
     </app-drawer-right-new>
 
     <dialogCariTemplate v-model="dialogCari" :depo="depo" @close="closeDialog" />
+    <formEditObat v-model="store.openEditItem" />
   </div>
 </template>
 
@@ -70,6 +52,8 @@ const dialogCari = ref(false)
 const listpage = shallowRef(defineAsyncComponent(() => import('./comp/LitsPage.vue')))
 const EresepTemplatePage = defineAsyncComponent(() => import('./EresepTemplatePage.vue'))
 const dialogCariTemplate = shallowRef(defineAsyncComponent(() => import('./comp/DialogCariTemplate.vue')))
+const formEditObat = shallowRef(defineAsyncComponent(() => import('./comp/FormEditObat.vue')))
+
 
 const store = usePermintaanEResepStore()
 const template = useTemplateEResepStore()
