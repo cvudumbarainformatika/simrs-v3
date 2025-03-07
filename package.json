@@ -15,7 +15,8 @@
     "custom-icons:watch": "watch \"npm run custom-icons\" src/custom-icons/svg",
     "audit-deps": "node scripts/audit-deps.js",
     "monitor": "quasar dev --debug",
-    "analyze": "quasar build --analyze"
+    "analyze": "quasar build --analyze",
+    "optimize-avatars": "node scripts/optimize-avatars.js"
   },
   "dependencies": {
     "@chenfengyuan/vue-qrcode": "^2.0.0",
@@ -73,7 +74,8 @@
   "devDependencies": {
     "@quasar/app-vite": "^2.0.0",
     "autoprefixer": "^10.4.2",
-    "postcss": "^8.4.14"
+    "postcss": "^8.4.14",
+    "sharp": "^0.33.5"
   },
   "engines": {
     "node": "^28 || ^26 || ^24 || ^22 || ^20 || ^18",

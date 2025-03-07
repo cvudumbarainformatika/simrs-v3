@@ -1,12 +1,10 @@
 <template>
-  <q-img
-    :src="foto"
-    :ratio="withRatio ? ratio : null"
-    :width="width"
-    style="max-width: 100%;"
-  >
-    <slot />
-  </q-img>
+  <picture>
+    <source :srcset="fotoWebp" type="image/webp">
+    <q-img :src="foto" :ratio="withRatio ? ratio : null" :width="width" style="max-width: 100%;" loading="lazy">
+      <slot />
+    </q-img>
+  </picture>
 </template>
 
 <script setup>
@@ -19,55 +17,52 @@ const props = defineProps({
   withRatio: { type: Boolean, default: false }
 })
 
-const foto = computed(() => {
-  const perempuan = props.pasien ? props.pasien?.kelamin === 'Perempuan' || props.pasien?.kelamin === 'perempuan' : false
+// Pisahkan logic untuk mendapatkan avatar path
+const getAvatarPath = (gender, age) => {
+  const paths = {
+    Perempuan: {
+      elder: 'Grandma',
+      adult: 'Woman',
+      young: 'YoungGirl',
+      child: 'Childgirl',
+      baby: 'Baby'
+    },
+    Laki: {
+      elder: 'Granpa',
+      adult: 'Man',
+      young: 'Youngman',
+      child: 'Childman',
+      baby: 'Baby'
+    }
+  }
+
+  const getAgeGroup = (age) => {
+    if (age <= 5) return 'baby'
+    if (age <= 15) return 'child'
+    if (age <= 25) return 'young'
+    if (age <= 59) return 'adult'
+    return 'elder'
+  }
+
+  const gender_key = gender === 'Perempuan' || gender === 'perempuan' ? 'Perempuan' : 'Laki'
+  const age_group = getAgeGroup(age)
+
+  return paths[gender_key][age_group]
+}
+
+const getImagePath = (filename, format = 'jpg') => {
+  const size = parseInt(props.width) <= 60 ? 'sm' : 'md'
+  return new URL(`../../assets/avatar/${filename}-${size}.${format}`, import.meta.url).href
+}
+
+const avatarName = computed(() => {
+  const perempuan = props.pasien?.kelamin === 'Perempuan' || props.pasien?.kelamin === 'perempuan'
   const usia = props.pasien?.usia
   const usiath = usia ? parseInt(usia.substring(0, 2)) : 25
-  if (perempuan) {
-    if (usiath <= 99 && usiath > 59) {
-      // return new URL('../../assets/images/grandma.png', import.meta.url).href
-      return new URL('../../assets/avatar/Grandma.jpg', import.meta.url).href
-    }
-    else if (usiath <= 59 && usiath > 25) {
-      // return new URL('../../assets/images/user-girl.svg', import.meta.url).href
-      return new URL('../../assets/avatar/Woman.jpg', import.meta.url).href
-    }
-    else if (usiath <= 25 && usiath > 15) {
-      // return new URL('../../assets/images/user-girl2.svg', import.meta.url).href
-      return new URL('../../assets/avatar/YoungGirl.jpg', import.meta.url).href
-    }
-    else if (usiath <= 15 && usiath > 5) {
-      return new URL('../../assets/avatar/Childgirl.jpg', import.meta.url).href
-    }
-    else if (usiath <= 5 && usiath >= 0) {
-      return new URL('../../assets/avatar/Baby.jpg', import.meta.url).href
-    }
-    else {
-      return new URL('../../assets/images/user-girl3.svg', import.meta.url).href
-    }
-  }
-  else {
-    if (usiath <= 99 && usiath > 59) {
-      return new URL('../../assets/avatar/Granpa.jpg', import.meta.url).href
-      // return new URL('../../assets/images/grandpa.svg', import.meta.url).href
-    }
-    else if (usiath <= 59 && usiath > 25) {
-      return new URL('../../assets/avatar/Man.jpg', import.meta.url).href
-      // return new URL('../../assets/images/user-man2.svg', import.meta.url).href
-    }
-    else if (usiath <= 25 && usiath > 15) {
-      return new URL('../../assets/avatar/Youngman.jpg', import.meta.url).href
-      // return new URL('../../assets/images/user-man.svg', import.meta.url).href
-    }
-    else if (usiath <= 15 && usiath > 5) {
-      return new URL('../../assets/avatar/Childman.jpg', import.meta.url).href
-    }
-    else if (usiath <= 5 && usiath >= 0) {
-      return new URL('../../assets/avatar/Baby.jpg', import.meta.url).href
-    }
-    else {
-      return new URL('../../assets/images/actor.svg', import.meta.url).href
-    }
-  }
+
+  return getAvatarPath(perempuan ? 'Perempuan' : 'Laki', usiath)
 })
+
+const foto = computed(() => getImagePath(avatarName.value, 'jpg'))
+const fotoWebp = computed(() => getImagePath(avatarName.value, 'webp'))
 </script>

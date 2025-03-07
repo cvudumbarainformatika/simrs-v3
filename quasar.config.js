@@ -77,6 +77,26 @@ export default defineConfig((ctx) => {
 
       // ini baru saya optimasi
 
+
+      vitePlugins: [
+        ['vite-plugin-imagemin', {
+          gifsicle: {
+            optimizationLevel: 7,
+            interlaced: false
+          },
+          optipng: {
+            optimizationLevel: 7
+          },
+          mozjpeg: {
+            quality: 70
+          },
+          pngquant: {
+            quality: [0.65, 0.9],
+            speed: 4
+          }
+        }]
+      ],
+
       // Tambahkan source maps untuk production debugging
       sourcemap: true,
       // Tambahkan performance budgets
