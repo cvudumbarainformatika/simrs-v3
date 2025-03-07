@@ -1,42 +1,14 @@
 <template>
   <div>
-    <svg
-      class="waves"
-      xmlns="http://www.w3.org/2000/svg"
-      xmlns:xlink="http://www.w3.org/1999/xlink"
-      viewBox="0 24 150 28"
-      preserveAspectRatio="none"
-      shape-rendering="auto"
-    >
-      <defs><path
-        id="gentle-wave"
-        d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z"
-      /></defs>
+    <svg class="waves" xmlns="http://www.w3.org/2000/svg" viewBox="0 24 150 28" preserveAspectRatio="none"
+      shape-rendering="auto">
+      <defs>
+        <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
+      </defs>
       <g class="parallax">
-        <use
-          xlink:href="#gentle-wave"
-          x="48"
-          y="0"
-          fill="rgba(255,255,255,0.7"
-        />
-        <use
-          xlink:href="#gentle-wave"
-          x="48"
-          y="3"
-          fill="rgba(255,255,255,0.5)"
-        />
-        <use
-          xlink:href="#gentle-wave"
-          x="48"
-          y="5"
-          fill="rgba(255,255,255,0.3)"
-        />
-        <use
-          xlink:href="#gentle-wave"
-          x="48"
-          y="7"
-          fill="#fff"
-        />
+        <!-- Kurangi jumlah wave layers -->
+        <use xlink:href="#gentle-wave" x="48" y="0" class="wave wave1" />
+        <use xlink:href="#gentle-wave" x="48" y="3" class="wave wave2" />
       </g>
     </svg>
   </div>
@@ -47,40 +19,29 @@
 
 <style lang="scss" scoped>
 .waves {
-  // position: relative;
-  // width: 100%;
-  // height: 10vh;
-  // margin-bottom: -30vh;
-  // min-height: 100px;
-  // max-height:100px;
   position: absolute;
   top: 0;
   width: 100%;
   height: 10vh;
   transform: scaleY(-1);
   opacity: .6;
-
+  will-change: transform; // Optimasi performance
 }
 
-.parallax > use {
-    animation: moveForever 25s cubic-bezier(.55, .5, .45, .5) infinite;
-  }
-  .parallax > use:nth-child(1) {
-    animation-delay: -1s;
-    animation-duration: 7s;
-  }
-  .parallax > use:nth-child(2) {
-    animation-delay: -2s;
-    animation-duration: 10s;
-  }
-  .parallax > use:nth-child(3) {
-    animation-delay: -3s;
-    animation-duration: 13s;
-  }
-  .parallax > use:nth-child(4) {
-    animation-delay: -5s;
-    animation-duration: 20s;
-  }
+.wave {
+  fill: rgba(255, 255, 255, 0.3);
+  animation: moveForever 15s cubic-bezier(.55, .5, .45, .5) infinite;
+  will-change: transform;
+}
+
+.wave1 {
+  animation-delay: -2s;
+}
+
+.wave2 {
+  animation-delay: -4s;
+  opacity: 0.5;
+}
 
 @keyframes moveForever {
   0% {
