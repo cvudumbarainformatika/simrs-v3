@@ -80,8 +80,13 @@
             {{ item?.diagnosa }}
           </div>
         </div>
+        <div class="garis q-mt-xs" />
         <div class="garis" />
-        <div class="garis" />
+        <div class="q-mt-xs text-weight-bold f-14" v-if="head">
+          BATAS WAKTU PENGAMBILAN OBAT MAKSIMAL 3 x 24 JAM
+        </div>
+        <div class="garis q-mt-xs" v-if="head" />
+        <div class="garis" v-if="head" />
         <div v-if="item?.permintaanresep?.length && !head" class="q-mt-sm full-width">
           <div class="">
             <div v-for="(rinc, i) in item?.permintaanresep" :key="i">
