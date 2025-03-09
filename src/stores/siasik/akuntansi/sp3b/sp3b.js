@@ -107,9 +107,8 @@ export const useSp3bStore = defineStore('laporan_sp3b', {
             this.loading = false
             resolve(resp.data)
           }
-        }).catch((err) => {
+        }).catch(() => {
           this.loading = false
-          reject(err)
         })
       })
     },
