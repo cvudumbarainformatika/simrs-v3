@@ -55,8 +55,8 @@
                       <q-item clickable v-close-popup @click="viewCetakDataNpdls(props?.row)">
                         <q-item-section>Cetak SP3B</q-item-section>
                       </q-item>
-                      <q-item clickable v-close-popup @click="PrintPencairan(props?.row)">
-                        <q-item-section>Cetak Pencairan</q-item-section>
+                      <q-item clickable v-close-popup @click="deleteData(props?.row)">
+                        <q-item-section>Delete SP3B</q-item-section>
                       </q-item>
                     </q-list>
                   </q-menu>
@@ -71,13 +71,14 @@
   <cetak-sp3b v-model="store.dialogCetak" :datarow="datarow" />
 </template>
 <script setup>
+import { useQuasar } from 'quasar';
 import { formattanpaRp } from 'src/modules/formatter';
 import { useSp3bStore } from 'src/stores/siasik/akuntansi/sp3b/sp3b';
 import { defineAsyncComponent, ref } from 'vue';
 
 const CetakSp3b = defineAsyncComponent(() => import('./DialogCetak.vue'))
 const store = useSp3bStore()
-
+const $q = useQuasar()
 
 const clearSearch = () => {
   store.reqs.q = ''
@@ -130,6 +131,32 @@ function viewCetakDataNpdls(row) {
   store.dialogCetak = true
   datarow.value = row
   store.viewData = datarow.value
+}
+
+const selected = ref([])
+function deleteData(row) {
+  // console.log('row', row)
+  $q.dialog({
+    title: 'Peringatan',
+    message: 'Apakah Data ini akan dihapus?',
+    cancel: true,
+    persistent: true
+  }).onOk(() => {
+
+    const payload = {
+      nosp3b: row.nosp3b,
+    }
+    console.log('payload', payload)
+    store.deleteData(payload).then(() => {
+      store.loading = true
+      store.refreshTable()
+    })
+  }).onCancel(() => {
+    console.log('Cancel')
+    selected.value = []
+  }).onDismiss(() => {
+    // console.log('I am triggered on both OK and Cancel')
+  })
 }
 </script>
 <style lang="scss">

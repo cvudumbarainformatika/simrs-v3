@@ -66,6 +66,10 @@ export const useSp3bStore = defineStore('laporan_sp3b', {
       this.reqs.page = val
       this.getData()
     },
+    refreshTable() {
+      this.reqs.page = 1
+      this.getList()
+    },
     create() {
       this.form.nosp3b = this.reqs.nosp3b
       this.form.bulan = this.reqs.bulan
@@ -107,6 +111,22 @@ export const useSp3bStore = defineStore('laporan_sp3b', {
           this.loading = false
           reject(err)
         })
+      })
+    },
+
+    deleteData(row) {
+      this.loading = true
+      return new Promise(resolve => {
+        api.post('v1/akuntansi/sp3b/delete', row)
+          .then(resp => {
+            console.log('resp delete', resp)
+            this.loading = false
+            notifSuccess(resp)
+            resolve(resp)
+          })
+          .catch(() => {
+            this.loading = false
+          })
       })
     },
     getData() {
