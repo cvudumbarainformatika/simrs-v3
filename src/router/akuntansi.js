@@ -36,6 +36,28 @@ const akuntansi = {
 
       ]
     },
+    {
+      path: '/akuntansi/sp3b',
+      // name: 'siasik.saldo',
+      component: () => import('pages/siasik/akuntansi/sp3b/IndexPage.vue'),
+      children: [
+        { path: '', redirect: '/akuntansi/sp3b/form' },
+        {
+          path: '/akuntansi/sp3b/form',
+          name: 'akuntansi.sp3b.form',
+          component: () =>
+            import('src/pages/siasik/akuntansi/sp3b/form/IndexPage.vue')
+        },
+        {
+          path: '/akuntansi/sp3b/listdata',
+          name: 'akuntansi.sp3b.listdata',
+          component: () =>
+            import('src/pages/siasik/akuntansi/sp3b/listdata/IndexPage.vue')
+        },
+
+
+      ]
+    },
     // {
     //   path: '/akuntansi/laporan',
     //   // name: 'laporan.rekap.datapasien',
