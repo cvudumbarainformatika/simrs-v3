@@ -26,7 +26,7 @@
 
               </div>
               <div>
-                <div class="text-bold">Keterangan : </div>
+                <div class="text-bold">Catatan Infus : </div>
                 <div class="q-ml-sm">
                   <text-area-edit class="full-width" :model-value="item?.ket" @update:model-value="(val) => {
                     // console.log('val', val);
