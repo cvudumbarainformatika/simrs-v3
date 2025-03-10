@@ -41,12 +41,13 @@
                 </div>
               </q-card-section>
               <q-list>
-                <!-- <q-item v-close-popup clickable @click="emits('setting')">
+                <!-- {{ userLocal }} -->
+                <q-item v-if="userLocal?.username == 'sa'" v-close-popup clickable @click="emits('setting')">
                   <q-item-section avatar>
                     <q-icon name="icon-mat-settings" size="16px" />
                   </q-item-section>
                   <q-item-section>Settings</q-item-section>
-                </q-item> -->
+                </q-item>
                 <q-separator />
                 <q-item v-close-popup clickable @click="emits('signOut')">
                   <q-item-section avatar>
