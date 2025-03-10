@@ -1,28 +1,13 @@
 <template>
-  <q-card
-    flat
-    bordered
-    square
-    class="full-height bg-teal-2"
-    style="overflow: hidden;"
-  >
-    <q-bar
-      class="bg-teal text-white z-top"
-      style="width: inherit;"
-    >
+  <q-card flat bordered square class="full-height bg-teal-2" style="overflow: hidden;">
+    <q-bar class="bg-teal text-white z-top" style="width: inherit;">
       <div class="f-12">
         Data Pemeriksaan Fisik
       </div>
       <q-space />
     </q-bar>
-    <q-card-section
-      style="padding:0"
-      class="full-height bg-grey"
-    >
-      <div
-        v-if="loadingaja"
-        class="column full-height flex-center"
-      >
+    <q-card-section style="padding:0" class="full-height bg-grey">
+      <div v-if="loadingaja" class="column full-height flex-center">
         <div class="text-white">
           Harap Tunggu .....
         </div>
@@ -30,27 +15,15 @@
           Sinkron Data Ke DATABASE
         </div>
       </div>
-      <div
-        v-if="pasien?.pemeriksaanfisikpsikologidll?.length <= 0"
-        class="column full-height flex-center"
-      >
+      <div v-if="pasien?.pemeriksaanfisikpsikologidll?.length <= 0" class="column full-height flex-center">
         <div class="text-white">
           Belum Ada data tersimpan
         </div>
       </div>
-      <q-scroll-area
-        v-else
-        style="height:calc(100% - 32px);"
-      >
-        <q-list
-          class="bg-white"
-          separator
-        >
+      <q-scroll-area v-else style="height:calc(100% - 32px);">
+        <q-list class="bg-white" separator>
           <transition-group name="list">
-            <q-item
-              v-for="(triage , x) in pasien?.triage"
-              :key="x"
-            >
+            <q-item v-for="(triage, x) in pasien?.triage" :key="x">
               <q-item-section>
                 <q-item-label>
                   <q-badge outline color="red">
@@ -77,7 +50,8 @@
                       - SPo2 : <span class="text-bold">{{ triage?.spo2 ?? '-' }} % </span>
                     </div>
                     <div class="col-3">
-                      - Sistole/Diastole : <span class="text-bold">{{ triage?.sistole ?? '-' }}/{{ triage?.diastole ?? '-' }} mmHg </span>
+                      - Sistole/Diastole : <span class="text-bold">{{ triage?.sistole ?? '-' }}/{{ triage?.diastole ??
+                        '-' }} mmHg </span>
                     </div>
                   </div>
                   <div class="row">
@@ -103,48 +77,57 @@
               </q-item-section>
             </q-item>
 
-            <q-item
-              v-for="(item , n) in lists"
-              :key="n"
-              class="list-move"
-            >
+            <q-item v-for="(item, n) in lists" :key="n" class="list-move">
               <q-item-section>
-                <q-item-label
-                  class="f-12"
-                >
-                  <q-badge outline color="primary">
-                    Pemeriksaan Psikologis, Sosial Ekonomi, Spiritual
-                  </q-badge>
-                </q-item-label>
+                <div class="row">
+                  <div class="col-6">
+                    <q-item-label class="f-12">
+                      <q-badge outline color="primary">
+                        Pemeriksaan Psikologis, Sosial Ekonomi, Spiritual
+                      </q-badge>
+                    </q-item-label>
+                  </div>
+                  <div class="col-6" align="right">
+                    <q-badge color="amber-10">{{ item?.nama }}</q-badge>
+                  </div>
+                </div>
                 <div class="row">
                   <div class="col-5">
                     <q-item-label>
-                      <span class="">- Status Psikologis </span> : <span class="text-weight-bold">{{ item?.pemerisaanpsikologidll?.status_psikologis_lain ?? item?.pemerisaanpsikologidll?.status_psikologis }}</span>
+                      <span class="">- Status Psikologis </span> : <span class="text-weight-bold">{{
+                        item?.pemerisaanpsikologidll?.status_psikologis_lain ??
+                        item?.pemerisaanpsikologidll?.status_psikologis }}</span>
                     </q-item-label>
                     <q-item-label>
-                      <span class="">- Sosial </span> : <span class="text-weight-bold">{{ item?.pemerisaanpsikologidll?.sosial ?? '-' }}</span>
+                      <span class="">- Sosial </span> : <span class="text-weight-bold">{{
+                        item?.pemerisaanpsikologidll?.sosial ?? '-' }}</span>
                     </q-item-label>
                     <q-item-label>
-                      <span class="">- Ekonomi </span> : <span class="text-weight-bold">{{ item?.pemerisaanpsikologidll?.ekonomi ?? '-' }}</span>
+                      <span class="">- Ekonomi </span> : <span class="text-weight-bold">{{
+                        item?.pemerisaanpsikologidll?.ekonomi ?? '-' }}</span>
                     </q-item-label>
                   </div>
                   <div class="col-5">
                     <q-item-label>
-                      <span class="">- Spiritual </span> : <span class="text-weight-bold">{{ item?.pemerisaanpsikologidll?.spiritual ?? '-' }}</span>
+                      <span class="">- Spiritual </span> : <span class="text-weight-bold">{{
+                        item?.pemerisaanpsikologidll?.spiritual ?? '-' }}</span>
                     </q-item-label>
                     <q-item-label>
-                      <span class="">- Nilai-nilai Kepercayaan & Budaya Yang Diyakini</span> : <span class="text-weight-bold">{{ item?.pemerisaanpsikologidll?.nilai_kepercayaan }}, {{ item?.pemerisaanpsikologidll?.ket_nilaikepercayaan }}</span>
+                      <span class="">- Nilai-nilai Kepercayaan & Budaya Yang Diyakini</span> : <span
+                        class="text-weight-bold">{{ item?.pemerisaanpsikologidll?.nilai_kepercayaan }}, {{
+                          item?.pemerisaanpsikologidll?.ket_nilaikepercayaan }}</span>
                     </q-item-label>
                   </div>
                 </div>
                 <q-separator class="q-my-sm" />
                 <q-item-label>
                   <span class=""><q-badge outline color="primary">
-                    Pemeriksaan Pupil
-                  </q-badge></span>
+                      Pemeriksaan Pupil
+                    </q-badge></span>
                 </q-item-label>
                 <q-item-label>
-                  <span class="">- Keadaan Pupil</span> : <span class="text-weight-bold">{{ item?.pemerisaanpsikologidll?.keadaan_pupil }}</span>
+                  <span class="">- Keadaan Pupil</span> : <span class="text-weight-bold">{{
+                    item?.pemerisaanpsikologidll?.keadaan_pupil }}</span>
                 </q-item-label>
                 <q-item-label>
                   <span class="">- Reflek Cahaya</span>
@@ -152,10 +135,12 @@
                 <q-item-label>
                   <div class="row q-ml-md">
                     <div class="col-4">
-                      <span class=""> Kiri</span> : <span class="text-weight-bold">{{ item?.pemerisaanpsikologidll?.reflek_cahaya_kiri }}</span>
+                      <span class=""> Kiri</span> : <span class="text-weight-bold">{{
+                        item?.pemerisaanpsikologidll?.reflek_cahaya_kiri }}</span>
                     </div>
                     <div class="col-4">
-                      <span class=""> Kanan</span> : <span class="text-weight-bold">{{ item?.pemerisaanpsikologidll?.reflek_cahaya_kanan }}</span>
+                      <span class=""> Kanan</span> : <span class="text-weight-bold">{{
+                        item?.pemerisaanpsikologidll?.reflek_cahaya_kanan }}</span>
                     </div>
                   </div>
                 </q-item-label>
@@ -165,10 +150,12 @@
                 <q-item-label>
                   <div class="row q-ml-md">
                     <div class="col-4">
-                      <span class=""> Kiri</span> : <span class="text-weight-bold">{{ item?.pemerisaanpsikologidll?.diameter_kiri }} mm</span>
+                      <span class=""> Kiri</span> : <span class="text-weight-bold">{{
+                        item?.pemerisaanpsikologidll?.diameter_kiri }} mm</span>
                     </div>
                     <div class="col-4">
-                      <span class=""> Kanan</span> : <span class="text-weight-bold">{{ item?.pemerisaanpsikologidll?.diameter_kanan }} mm</span>
+                      <span class=""> Kanan</span> : <span class="text-weight-bold">{{
+                        item?.pemerisaanpsikologidll?.diameter_kanan }} mm</span>
                     </div>
                   </div>
                 </q-item-label>
@@ -201,16 +188,14 @@
                   <span class="">- Kaki </span> : <span class="text-weight-bold">{{ item?.rs11 ?? '-' }}</span>
                 </q-item-label>
                 <q-item-label>
-                  <span class="">- Status Neurologis </span> : <span class="text-weight-bold">{{ item?.rs12 ?? '-' }}</span>
+                  <span class="">- Status Neurologis </span> : <span class="text-weight-bold">{{ item?.rs12 ?? '-'
+                    }}</span>
                 </q-item-label>
                 <q-item-label>
                   <span class="">- Genital </span> : <span class="text-weight-bold">{{ item?.rs13 ?? '-' }}</span>
                 </q-item-label>
               </q-item-section>
-              <q-item-section
-                v-if="bisaEditHapus"
-                side
-              >
+              <q-item-section v-if="bisaEditHapus" side>
                 <div class="q-gutter-sm">
                   <!-- <q-btn
                     flat
@@ -219,14 +204,8 @@
                     icon="icon-mat-edit"
                     @click="store.editForm(item)"
                   /> -->
-                  <q-btn
-                    flat
-                    round
-                    size="sm"
-                    icon="icon-mat-delete"
-                    color="negative"
-                    @click="hapusItem(item.id, item.rs1)"
-                  />
+                  <q-btn flat round size="sm" icon="icon-mat-delete" color="negative"
+                    @click="hapusItem(item?.id, item?.rs1, item?.kdpegsimrs)" />
                 </div>
               </q-item-section>
             </q-item>
@@ -263,7 +242,7 @@ const lists = computed(() => {
   return arr?.sort((a, b) => { return b.id - a.id })
 })
 
-function hapusItem (id, noreg) {
+function hapusItem(id, noreg, kdpegsimrs) {
   $q.dialog({
     dark: true,
     title: 'Peringatan',
@@ -272,7 +251,7 @@ function hapusItem (id, noreg) {
     persistent: true
   }).onOk(() => {
     // console.log('OK')
-    store.deleteData(props.pasien, id, noreg)
+    store.deleteData(props.pasien, id, noreg, kdpegsimrs)
   }).onCancel(() => {
     // console.log('Cancel')
   }).onDismiss(() => {

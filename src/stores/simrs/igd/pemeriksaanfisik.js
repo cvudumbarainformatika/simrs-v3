@@ -24,7 +24,7 @@ export const usePemeriksaanfisikStore = defineStore('pemeriksaan-fisik-store', {
     }
   }),
   actions: {
-    async saveData (pasien) {
+    async saveData(pasien) {
       this.loadingForm = true
       this.form.norm = pasien ? pasien.norm : ''
       this.form.noreg = pasien ? pasien.noreg : ''
@@ -48,7 +48,7 @@ export const usePemeriksaanfisikStore = defineStore('pemeriksaan-fisik-store', {
         notifErr(error)
       }
     },
-    initReset () {
+    initReset() {
       this.form.statuspsikologi = ''
       this.form.sebutkanstatuspsikologis = ''
       this.form.sosial = ''
@@ -72,9 +72,9 @@ export const usePemeriksaanfisikStore = defineStore('pemeriksaan-fisik-store', {
       this.form.anatomineurologis = 'Meningeal sign (-) kaku kuduk (-) reflek patologis (-/-) refek fisiologis = (+2/+2) MMT 55/55'
       this.form.anatomigenital = 'normal, hernia (-)'
     },
-    async deleteData (pasien, id, noreg) {
+    async deleteData(pasien, id, noreg, kdpegsimrs) {
       this.loadingForm = true
-      const payload = { id, noreg }
+      const payload = { id, noreg, kdpegsimrs }
       try {
         const resp = await api.post('v1/simrs/igd/pemeriksaanfisik/hapuspemeriksaanfisik', payload)
         // console.log(resp)
