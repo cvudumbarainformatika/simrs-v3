@@ -1,30 +1,12 @@
 <template>
   <div class="full-height full-width">
     <div class="row full-height ">
-      <q-card
-        flat
-        bordered
-        square
-        class="col-6 full-height"
-      >
-        <FormAnamnesis
-          :key="props.pasien"
-          :pasien="props.pasien"
-          tooltip="History Pasien (Shift + H)"
-          @open-history="seamless = !seamless"
-        />
+      <q-card flat bordered square class="col-6 full-height">
+        <FormAnamnesis :key="props.pasien" :pasien="props.pasien" tooltip="History Pasien (Shift + H)"
+          @open-history="seamless = !seamless" />
       </q-card>
-      <q-card
-        flat
-        bordered
-        square
-        class="col-6 full-height"
-      >
-        <ListAnamnesis
-          :key="props.pasien"
-          :pasien="props.pasien"
-          :loadingaja="loadingaja"
-        />
+      <q-card flat bordered square class="col-6 full-height">
+        <ListAnamnesis :key="props.pasien" :pasien="props.pasien" :loadingaja="loadingaja" />
       </q-card>
     </div>
     <!-- <app-drawer-right-new
@@ -40,7 +22,7 @@
           title="HISTORY ANAMNESSIS LALU"
         />
       </template>
-    </app-drawer-right-new> -->
+</app-drawer-right-new> -->
   </div>
 </template>
 <script setup>
