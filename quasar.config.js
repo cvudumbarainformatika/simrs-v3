@@ -93,6 +93,17 @@ export default defineConfig((ctx) => {
           pngquant: {
             quality: [0.65, 0.9],
             speed: 4
+          },
+          svgo: {
+            plugins: [
+              {
+                name: 'removeViewBox'
+              },
+              {
+                name: 'removeEmptyAttrs',
+                active: false
+              }
+            ]
           }
         }]
       ],
