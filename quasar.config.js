@@ -79,22 +79,22 @@ export default defineConfig((ctx) => {
 
 
       rollupOptions: {
-        plugins: [
-          {
-            name: 'optimize-images',
-            async generateBundle(options, bundle) {
-              // Optimize hanya file yang dibutuhkan
-              const imagePattern = /\.(jpg|jpeg|png|gif|webp)$/;
-              for (const fileName in bundle) {
-                if (imagePattern.test(fileName)) {
-                  // Gunakan sharp yang sudah ada
-                  const file = bundle[fileName];
-                  // Proses optimasi
-                }
-              }
-            }
-          }
-        ]
+        // plugins: [
+        //   {
+        //     name: 'optimize-images',
+        //     async generateBundle(options, bundle) {
+        //       // Optimize hanya file yang dibutuhkan
+        //       const imagePattern = /\.(jpg|jpeg|png|gif|webp)$/;
+        //       for (const fileName in bundle) {
+        //         if (imagePattern.test(fileName)) {
+        //           // Gunakan sharp yang sudah ada
+        //           const file = bundle[fileName];
+        //           // Proses optimasi
+        //         }
+        //       }
+        //     }
+        //   }
+        // ]
       },
 
       // Tambahkan source maps untuk production debugging
