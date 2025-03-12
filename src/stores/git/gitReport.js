@@ -16,7 +16,7 @@ export const useGitReportStore = defineStore('git-report', {
       owner: 'cvudumbarainformatika',
       repo: 'simrs-v3',
       baseURL: 'https://api.github.com',
-      token: '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'
+      token: import.meta.env.VITE_GITHUB_TOKEN
     }
   }),
 
