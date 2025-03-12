@@ -39,19 +39,19 @@
                   </q-item-label>
                   <q-item-label>
                     <span class="">Riwayat Penyakit </span> : <span class="text-weight-bold">{{ item?.riwayatpenyakit
-                      }}</span>
+                    }}</span>
                   </q-item-label>
                   <q-item-label>
                     <span class="">Riwayat Alergi </span> : <span class="text-weight-bold">{{ item?.riwayatalergi
-                      }}</span>
+                    }}</span>
                   </q-item-label>
                   <q-item-label>
                     <span class="">Reaksi berupa </span> : <span class="text-weight-bold">{{ item?.keteranganalergi
-                      }}</span>
+                    }}</span>
                   </q-item-label>
                   <q-item-label>
                     <span class="">Riwayat Pengobatan</span> : <span class="text-weight-bold">{{ item?.riwayatpengobatan
-                      }}</span>
+                    }}</span>
                   </q-item-label>
                   <q-item-label>
                     <span class="">Riwayat Pekerjaan Yang Berhubungan Dengan Zat Berbahaya</span> : <span
@@ -76,19 +76,19 @@
                   </q-item-label>
                   <q-item-label>
                     <span class="">Riwayat Penyakit </span> : <span class="text-weight-bold">{{ item?.riwayatpenyakit
-                      }}</span>
+                    }}</span>
                   </q-item-label>
                   <q-item-label>
                     <span class="">Riwayat Alergi </span> : <span class="text-weight-bold">{{ item?.riwayatalergi
-                      }}</span>
+                    }}</span>
                   </q-item-label>
                   <q-item-label>
                     <span class="">Reaksi berupa </span> : <span class="text-weight-bold">{{ item?.keteranganalergi
-                      }}</span>
+                    }}</span>
                   </q-item-label>
                   <q-item-label>
                     <span class="">Riwayat Pengobatan</span> : <span class="text-weight-bold">{{ item?.riwayatpengobatan
-                      }}</span>
+                    }}</span>
                   </q-item-label>
                   <q-item-label>
                     <span class="">Riwayat Pekerjaan Yang Berhubungan Dengan Zat Berbahaya</span> : <span
@@ -160,7 +160,7 @@
                     <q-item-label>- Lengan : {{ item?.anamnesenips?.lengan ?? '-' }}</q-item-label>
                     <q-item-label>- Kaki : {{ item?.anamnesenips?.kaki ?? '-' }}</q-item-label>
                     <q-item-label>- Keadaan Rangsangan : {{ item?.anamnesenips?.keadaan_rangsangan ?? '-'
-                      }}</q-item-label>
+                    }}</q-item-label>
                     <q-item-label>
                       <q-separator class="q-my-xs" style="width: 300px;" />
                       <div>
@@ -181,9 +181,9 @@
                     <q-item-label>- Lokasi Nyeri : {{ item?.anamnesetambahan[0]?.lokasi_nyeri ?? '-' }}</q-item-label>
                     <q-item-label>- Durasi Nyeri : {{ item?.anamnesetambahan[0]?.durasi_nyeri ?? '-' }}</q-item-label>
                     <q-item-label>- Penyebab Nyeri : {{ item?.anamnesetambahan[0]?.penyebab_nyeri ?? '-'
-                    }}</q-item-label>
-                    <q-item-label>- Frekwensi Nyeri : {{ item?.anamnesetambahan[0]?.frekwensi_nyeri ?? '-'
                       }}</q-item-label>
+                    <q-item-label>- Frekwensi Nyeri : {{ item?.anamnesetambahan[0]?.frekwensi_nyeri ?? '-'
+                    }}</q-item-label>
                     <q-item-label>
                       - Nyeri Hilang : {{ item?.anamnesetambahan[0]?.nyeri_hilang ?? '-' }}
                       <span v-if="item?.anamnesetambahan[0]?.sebutkannyerihilang !== null">
@@ -264,7 +264,8 @@
               <q-item-section v-if="bisaEditHapus" side>
                 <div class="q-gutter-sm">
                   <q-btn flat round size="sm" icon="icon-mat-edit" @click="store.editForm(item)" />
-                  <q-btn flat round size="sm" icon="icon-mat-delete" color="negative" @click="hapusItem(item.id)" />
+                  <q-btn flat round size="sm" icon="icon-mat-delete" color="negative"
+                    @click="hapusItem(item.id, item.user)" />
                 </div>
               </q-item-section>
             </q-item>
@@ -318,7 +319,7 @@ function getYT(val) {
   }
 }
 
-function hapusItem(id) {
+function hapusItem(id, user) {
   $q.dialog({
     dark: true,
     title: 'Peringatan',
@@ -327,7 +328,7 @@ function hapusItem(id) {
     persistent: true
   }).onOk(() => {
     // console.log('OK')
-    store.deleteData(props.pasien, id)
+    store.deleteData(props.pasien, id, user)
   }).onCancel(() => {
     // console.log('Cancel')
   }).onDismiss(() => {

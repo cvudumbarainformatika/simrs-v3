@@ -231,8 +231,8 @@ export const useAnamnesis = defineStore('anamnesis', {
       }
     },
 
-    async deleteData(pasien, id) {
-      const payload = { id }
+    async deleteData(pasien, id, user) {
+      const payload = { id, user }
       try {
         const resp = await api.post('v1/simrs/igd/anamnesis/hapusanamnesis', payload)
         // console.log(resp)
