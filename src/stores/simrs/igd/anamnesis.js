@@ -7,10 +7,10 @@ export const useAnamnesis = defineStore('anamnesis', {
   state: () => ({
     loadingForm: false,
     loadingHistory: false,
-    tab: 'AnamnesisKeperawatan',
+    tab: 'Anamnesis',
     tabs: [
       // { name: 'Anamnesis Medik', page: 'AnamnesisMedik' },
-      { name: 'Anamnesis Keperawatan', page: 'AnamnesisKeperawatan' },
+      { name: 'Anamnesis', page: 'Anamnesis' },
       { name: 'Anamnesis Kebidanan', page: 'AnamnesisKebidanan' },
       { name: 'Penilaian Kajian Resiko Jatuh', page: 'PenilaianKajianResikoJatuh' }
     ],
