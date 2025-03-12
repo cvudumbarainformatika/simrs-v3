@@ -64,9 +64,10 @@ export const useHistoryPasienRanapStore = defineStore('history-pasien-ranap-stor
       pasien.pemeriksaanfisikpsikologidll = hasil?.pemeriksaanfisikpsikologidll
       pasien.konsultasi = hasil?.konsuldokterspesialis
       pasien.tinjauanulang = hasil?.tinjauanulang
+      pasien.rencanaterapidokter = hasil?.rencanaterapidokter
       this.pasienIgd = { ...pasien }
 
-      // console.log('pasien igd', this.pasienIgd)
+      console.log('pasien igd', this.pasienIgd)
     }
   }
 })
