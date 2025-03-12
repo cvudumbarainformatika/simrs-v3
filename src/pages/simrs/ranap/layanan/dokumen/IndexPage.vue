@@ -98,6 +98,15 @@ const menus = ref([
     comp: shallowRef(defineAsyncComponent(() => import('./edukasi/IndexPage.vue')))
   },
   {
+    name: 'nursenote-page',
+    label: 'NURSE NOTE',
+    title: 'CATATAN KEPERAWATAN',
+    desc: 'Nursenote',
+    icon: 'icon-my-file_sign',
+    nakes: ['1', '2', '3'],
+    comp: shallowRef(defineAsyncComponent(() => import('./nursenote/IndexPage.vue')))
+  },
+  {
     name: 'surat-kematian',
     label: 'Surat Kematian',
     title: 'SURAT KETERANGAN KEMATIAN',

@@ -272,34 +272,6 @@ td {
   border: 1px solid black;
 }
 
-// .model-1 {
-
-//   tr,
-//   td {
-//     padding: -3px 0 !important;
-//   }
-// }
-
-// .model-2 {
-
-//   tr,
-//   td {
-//     padding-bottom: 5px !important;
-//     border-bottom: 1px solid rgb(139, 139, 139);
-//   }
-// }
-
-// table,
-// tr,
-// th,
-// td {
-//   padding: 0.25em !important;
-// }
-
-// td {
-//   text-align: left;
-// }
-
 .kotak {
   border: 1px solid black;
 }

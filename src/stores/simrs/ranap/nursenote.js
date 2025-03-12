@@ -146,7 +146,7 @@ export const useNurseNoteRanapStore = defineStore('nursenote-ranap-store', {
       return new Promise((resolve, reject) => {
         api.post('/v1/simrs/ranap/layanan/nursenote/simpan', form)
           .then((res) => {
-            console.log('res', res);
+            // console.log('res', res);
 
             this.loadingSave = false
 
@@ -183,7 +183,7 @@ export const useNurseNoteRanapStore = defineStore('nursenote-ranap-store', {
             };
           }) ?? []
         }
-        // console.log('resp nursenote list', this.items)
+        console.log('resp nursenote list', this.items)
         this.loading = false
       } catch (error) {
         console.log('error', error);
