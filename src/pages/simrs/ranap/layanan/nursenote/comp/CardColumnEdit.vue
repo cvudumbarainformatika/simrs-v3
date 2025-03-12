@@ -497,8 +497,14 @@
               </div>
             </div>
 
-            <q-btn :loading="store.loadingSave" :disable="store.loadingSave" type="submit" label="Simpan Perubahan"
-              color="primary"></q-btn>
+            <q-btn :loading="store.loadingSave"
+              :disable="store.loadingSave || (auth?.user?.pegawai?.kdpegsimrs !== item?.user)" type="submit"
+              label="Simpan Perubahan" color="primary">
+              <q-tooltip v-if="auth?.user?.pegawai?.kdpegsimrs !== item?.user" class="bg-dark text-yellow"
+                :offset="[10, 10]" anchor="top middle" self="center middle">
+                Maaf Anda Bukan USER Nurse Note ini
+              </q-tooltip>
+            </q-btn>
           </q-card>
 
 
