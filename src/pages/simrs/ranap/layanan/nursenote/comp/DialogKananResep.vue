@@ -152,7 +152,7 @@ const setitems = () => {
   }
 
   // return arr
-  console.log('arr', arr);
+  // console.log('arr', arr);
 
   daftarObat.value = arr
 }

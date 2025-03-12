@@ -448,7 +448,7 @@
 
           <div class="row">
             <div class="col-6">
-              <CardPemakaianObat :pasien="pasien" :kasus="kasus" :nakes="nakes" :reseps="item?.reseps"
+              <CardPemakaianObat :pasien="pasien" :kasus="kasus" :nakes="nakes" :reseps="item?.reseps" :key="item?.id"
                 @add-resep="store.dialogPreview = true" @hapus-obat="(index) => {
                   item?.reseps?.splice(index, 1)
                 }" status="edit" />
@@ -505,13 +505,18 @@
         </div>
       </div>
 
-      <dialog-kanan-resep :pasien="pasien" :kasus="kasus" :nakes="nakes" status="edit" class="z-top" @add-to-list="(val) => {
-        console.log(val);
+
+
+    </q-form>
+
+
+
+    <dialog-kanan-resep :key="item?.id" :pasien="pasien" :kasus="kasus" :nakes="nakes" status="edit" class="z-top"
+      @add-to-list="(val) => {
+        console.log(val, item);
 
         item?.reseps?.push(val)
       }" />
-
-    </q-form>
   </q-card>
 </template>
 
