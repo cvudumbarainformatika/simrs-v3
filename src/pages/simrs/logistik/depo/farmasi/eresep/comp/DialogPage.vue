@@ -144,11 +144,10 @@
       </q-btn>
     </div>
 
-    <div
-      v-if="parseFloat(store?.resep?.flag) >= 3 && store?.resep?.tiperesep === 'iter' && store?.resep?.noresep_asal === ''"
+    <div v-if="parseFloat(store?.resep?.flag) >= 3 && store?.resep?.tiperesep === 'iter'"
       class="row justify-end q-mr-md q-my-sm">
 
-      <div class="col-auto">
+      <div v-if="store?.resep?.noresep_asal === ''" class="col-auto">
         <q-btn rounded push label="History Resep Iter" class="f-12 q-mr-sm" color="yellow" text-color="blue"
           icon="icon-mat-access_time"
           :disable="store.loadingCopy || store?.resep?.loadingHistory || store?.resep?.loadingGetIter"
@@ -159,7 +158,7 @@
           </q-tooltip>
         </q-btn>
       </div>
-      <div class="col-auto">
+      <div v-if="store?.resep?.noresep_asal === ''" class="col-auto">
         <q-btn v-if="openIter" rounded push label="Copy resep Iter" class="f-12 q-mr-sm" color="green"
           text-color="white" icon="icon-mat-copy_all" :disable="store.loadingCopy || store?.resep?.loadingGetIter"
           :loading="store.loadingCopy || store?.resep?.loadingGetIter" @click="copyResep(store?.resep)">
@@ -743,7 +742,7 @@
                         </div>
                         <!-- anu -->
                         <div v-if="parseInt(store?.resep?.flag) >= 2">
-                          anu
+
                           <!-- <q-btn
                             v-if="!rinc?.obatkeluar && parseInt(store?.resep?.flag)<5"
                             round
