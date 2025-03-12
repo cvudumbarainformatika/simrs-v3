@@ -48,7 +48,7 @@
                 <q-input v-model="store.form.keteranganalergi" outlined autogrow label="Keterangan Alergi" stack-label
                   standout="bg-yellow-3" />
               </div>
-              <div v-if="appstore?.user?.pegawai?.kdgroupnakes !== '1'">
+              <div class="row" v-if="appstore?.user?.pegawai?.kdgroupnakes !== '1'">
                 <div class="col-12 q-mt-xs">
                   <div class="text-weight-bold">
                     Skreening Gizi
