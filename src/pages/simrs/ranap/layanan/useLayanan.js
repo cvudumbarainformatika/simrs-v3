@@ -119,6 +119,13 @@ export default function useLayanan(pasien) {
       comp: shallowRef(defineAsyncComponent(() => import('./dokumen/IndexPage.vue')))
     },
     {
+      name: 'mpp',
+      label: 'MPP',
+      icon: 'icon-fa-arrows-down-to-people-solid',
+      nakes: ['2', '3'],
+      comp: shallowRef(defineAsyncComponent(() => import('./mpp/IndexPage.vue')))
+    },
+    {
       name: 'page-pulang',
       label: 'Pulang / Pulangkan',
       icon: 'icon-eva-home',

@@ -108,7 +108,7 @@ const menus = ref([
     name: 'terapidokter',
     label: 'Terapi Dokter',
     icon: 'icon-my-file_sign',
-    comp: shallowRef(defineAsyncComponent(() => import('src/pages/simrs/igd/layanan/assesment/rencanatrapidokter/comp/ListRencanaTerapi.vue')))
+    comp: shallowRef(defineAsyncComponent(() => import('./compIgdSebelumnya/TerapiDokter.vue')))
   },
   {
     name: 'konsul',
@@ -120,7 +120,7 @@ const menus = ref([
     name: 'tinjauanulang',
     label: 'Tinjauan Ulang',
     icon: 'icon-my-file_sign',
-    comp: shallowRef(defineAsyncComponent(() => import('src/pages/simrs/igd/layanan/tinjauanulang/comp/ListTinjauanUlangPage.vue')))
+    comp: shallowRef(defineAsyncComponent(() => import('./compIgdSebelumnya/TinjauanUlang.vue')))
   },
 
 
