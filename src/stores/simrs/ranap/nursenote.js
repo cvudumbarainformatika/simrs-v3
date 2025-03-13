@@ -87,6 +87,10 @@ export const useNurseNoteRanapStore = defineStore('nursenote-ranap-store', {
         label: 'Catatan Pemberian Infus',
         value: '5'
       },
+      {
+        label: 'Ventilator Menu',
+        value: '6'
+      },
     ],
     tindakans: [],
     petugas: [],

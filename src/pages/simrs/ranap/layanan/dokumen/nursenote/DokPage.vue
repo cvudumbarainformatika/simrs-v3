@@ -108,63 +108,86 @@
 
           </thead>
           <tbody>
-            <tr v-for="item in store.items" :key="item.id">
-              <td valign="top">
-                <div class="column flex-center">
-                  <div>{{ dateFullFormat(item?.created_at) }}</div>
-                  <div class="text-grey-8">Jam : {{ jamTnpDetik(item?.created_at) }}</div>
-                </div>
-              </td>
-              <td valign="top">
-                <div class="full-width column">
-                  <div class="text-bold">Implementasi : </div>
-                  <div>{{ item?.implementasi || '-' }}</div>
-                  <div class="text-bold">Observasi : </div>
-                  <div>BB : {{ item?.bb }}, TB : {{ item?.tb }}, Nadi : {{ item?.nadi }}, Suhu : {{ item?.suhu }}, Sis :
-                    {{ item?.sis }}, Dia : {{ item?.dia }}, RR : {{ item?.rr }}, Spo2 : {{ item?.spo2 }}, Nyeri : {{
-                      item?.nyeri }}, Skor : {{ item?.skor }}</div>
-                  <!-- <q-separator></q-separator> -->
-                  <div>CVP : {{ item?.cvp }}, ICP : {{ item?.icp }}, GCS : {{ item?.gcs }}, Kejang, Durasi : {{
-                    item?.kejang
-                    }},</div>
-                  <!-- <q-separator></q-separator> -->
-                  <div class="text-bold">Ventilator Menu : </div>
-                  <div>
-                    MODE : {{ item?.mode }}, Fraksi O2 : {{ item?.fraksio2 }}, Frekuensi : {{ item?.frek }}, PEEP : {{
-                      item?.peep }}, P ins : {{ item?.pins }}, I:E Rasio : {{ item?.ratio }},
+            <template v-for="item in store.items" :key="item.id">
+              <tr v-if="item?.flag?.length">
+                <td valign="top">
+                  <div class="column flex-center">
+                    <div>{{ dateFullFormat(item?.created_at) }}</div>
+                    <div class="text-grey-8">Jam : {{ jamTnpDetik(item?.created_at) }}</div>
                   </div>
-                  <div class="text-bold">INTAKE : </div>
-                  <div>INFUS : {{ item?.infus }}, PUMP : {{ item?.pump }}, Obat2an : {{ item?.obat }}, Albumin : {{
-                    item?.albumin }}, Makmin : {{ item?.mamin }}, Zonde : {{ item?.zonde }}, Water : {{ item?.water }},
-                  </div>
-                  <div class="text-bold">OUTPUT : </div>
-                  <div>
-                    URINE : {{ item?.urine }}, DRAIN : {{ item?.drain }}, MUNTAH : {{ item?.muntah }}, Feces : {{
-                      item?.feces }}, IWL : {{ item?.iwl }}, Pendarahan : {{ item?.pendarahan }}, UFG : {{ item?.ufg }},
-                    Produksi GC : {{ item?.produksigc }},
-                  </div>
-                  <template v-if="item?.reseps.length">
-                    <div class="text-bold">Pemberian Obat : </div>
-                    <div v-for="(resep, r) in item?.reseps" :key="r">
-                      <div class="column full-width">
-                        <div class="q-ml-sm"> &#9673; <span class="text-italic text-grey-8">{{ resep?.jumlah }} {{
-                          resep?.satuan_ambil
-                            }}</span>,
-                          {{
-                            resep?.nama_obat }}, <span class="text-italic text-grey-8">sisa : {{ resep?.sisa || '...'
-                            }}</span>
-                          {{ resep?.satuan_ambil }}</div>
+                </td>
+                <td valign="top">
+                  <div class="full-width column">
+                    <div class="text-bold">Implementasi : </div>
+                    <div>{{ item?.implementasi || '-' }}</div>
+
+                    <template v-if="item?.flag.includes('2') || item?.flag.includes('4')">
+                      <div class="text-bold">Observasi : </div>
+                      <div>BB : {{ item?.bb }}, TB : {{ item?.tb }}, Nadi : {{ item?.nadi }}, Suhu : {{ item?.suhu }},
+                        Sis
+                        :
+                        {{ item?.sis }}, Dia : {{ item?.dia }}, RR : {{ item?.rr }}, Spo2 : {{ item?.spo2 }}, Nyeri : {{
+                          item?.nyeri }}, Skor : {{ item?.skor }}</div>
+                      <div>CVP : {{ item?.cvp }}, ICP : {{ item?.icp }}, GCS : {{ item?.gcs }}, Kejang, Durasi : {{
+                        item?.kejang
+                        }},</div>
+                    </template>
+
+
+                    <template v-if="item?.flag.includes('6')">
+                      <div class="text-bold">Ventilator Menu : </div>
+                      <div>
+                        MODE : {{ item?.mode }}, Fraksi O2 : {{ item?.fraksio2 }}, Frekuensi : {{ item?.frek }}, PEEP :
+                        {{
+                          item?.peep }}, P ins : {{ item?.pins }}, I:E Rasio : {{ item?.ratio }},
                       </div>
-                    </div>
-                  </template>
-                </div>
-              </td>
-              <td valign="top">
-                <div class="text-center">
-                  <div>{{ item?.petugas?.nama }}</div>
-                </div>
-              </td>
-            </tr>
+                    </template>
+
+                    <template v-if="item?.flag.includes('3')">
+                      <div class="text-bold">INTAKE : </div>
+                      <div>INFUS : {{ item?.infus }}, PUMP : {{ item?.pump }}, Obat2an : {{ item?.obat }}, Albumin : {{
+                        item?.albumin }}, Makmin : {{ item?.mamin }}, Zonde : {{ item?.zonde }}, Water : {{ item?.water
+                        }},
+                      </div>
+                      <div class="text-bold">OUTPUT : </div>
+                      <div>
+                        URINE : {{ item?.urine }}, DRAIN : {{ item?.drain }}, MUNTAH : {{ item?.muntah }}, Feces : {{
+                          item?.feces }}, IWL : {{ item?.iwl }}, Pendarahan : {{ item?.pendarahan }}, UFG : {{ item?.ufg
+                        }},
+                        Produksi GC : {{ item?.produksigc }},
+                      </div>
+                    </template>
+
+
+                    <template v-if="item?.flag.includes('1')">
+                      <div class="text-bold">Pemberian Obat : </div>
+                      <template v-if="item?.reseps?.length">
+                        <div v-for="(resep, r) in item?.reseps" :key="r">
+                          <div class="column full-width">
+                            <div class="q-ml-sm"> &#9673; <span class="text-italic text-grey-8">{{ resep?.jumlah }} {{
+                              resep?.satuan_ambil
+                                }}</span>,
+                              {{
+                                resep?.nama_obat }}, <span class="text-italic text-grey-8">sisa : {{ resep?.sisa || '...'
+                                }}</span>
+                              {{ resep?.satuan_ambil }}</div>
+                          </div>
+                        </div>
+                      </template>
+                      <template v-else>
+                        <div class="q-ml-sm"> &#9673; Tidak ada obat yang diberikan</div>
+                      </template>
+                    </template>
+                  </div>
+                </td>
+                <td valign="top">
+                  <div class="text-center">
+                    <div>{{ item?.petugas?.nama }}</div>
+                  </div>
+                </td>
+              </tr>
+            </template>
+
           </tbody>
         </table>
       </div>
@@ -204,6 +227,8 @@ onMounted(() => {
     store.getNakes(),
     store.getData(props?.pasien)
   ])
+
+  // console.log('store', store.items);
 })
 
 </script>
