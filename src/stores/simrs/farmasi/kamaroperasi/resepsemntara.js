@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia'
+import { acceptHMRUpdate, defineStore } from 'pinia'
 import { api } from 'src/boot/axios'
 import { notifErrVue, notifSuccess } from 'src/modules/utils'
 import { Dialog } from 'quasar'
@@ -410,3 +410,7 @@ export const usePersiapanOperasiStore = defineStore('resep_sementara', {
     }
   }
 })
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(usePersiapanOperasiStore, import.meta.hot))
+}
