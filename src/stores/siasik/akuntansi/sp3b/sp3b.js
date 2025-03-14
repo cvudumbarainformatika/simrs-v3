@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { date } from "quasar";
 import { api } from "src/boot/axios";
-import { notifErr, notifSuccess } from "src/modules/utils";
+import { notifSuccess } from "src/modules/utils";
 
 export const useSp3bStore = defineStore('laporan_sp3b', {
   state: () => ({
