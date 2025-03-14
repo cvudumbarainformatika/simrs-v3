@@ -422,7 +422,7 @@ const emits = defineEmits(['openHistory'])
 
 const refForm = ref()
 const appstore = useAplikasiStore()
-console.log('sa', appstore.getItems)
+//console.log('sa', appstore.user)
 // const metode = ref('nrt')
 
 const optionSkreening = ref([

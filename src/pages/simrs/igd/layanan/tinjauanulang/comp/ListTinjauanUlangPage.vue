@@ -53,13 +53,13 @@
               </div>
               <div class="row">
                 <div class="col-3">
-                  Nadi : {{ item?.nadi }} ({{ item?.scorenadi }})
+                  Nadi : {{ parseFloat(item?.nadi) }} ({{ item?.scorenadi }})
                 </div>
                 <div class="col-3">
-                  Pernapasan : {{ item?.pernapasanx ?? '-' }} ({{ item?.scorepernapasanx ?? '-' }})
+                  Pernapasan : {{ parseFloat(item?.pernapasanx) ?? '-' }} ({{ item?.scorepernapasanx ?? '-' }})
                 </div>
                 <div class="col-3">
-                  Sistole : {{ item?.sistole ?? '-' }} ({{ item?.scoresistole ?? '-' }})
+                  Sistole : {{ parseFloat(item?.sistole) ?? '-' }} ({{ item?.scoresistole ?? '-' }})
                 </div>
                 <div class="col-3">
                   Diastole : {{ item?.diastole ?? '-' }} ({{ item?.scorediastole ?? '-' }})
@@ -68,7 +68,7 @@
                   Suhu : {{ item?.suhu ?? '-' }} ({{ item?.scoresuhu ?? '-' }})
                 </div>
                 <div class="col-3">
-                  Spo2 : {{ item?.spo2 ?? '-' }} ({{ item?.scorespo2 ?? '-' }})
+                  Spo2 : {{ parseFloat(item?.spo2) ?? '-' }} ({{ item?.scorespo2 ?? '-' }})
                 </div>
               </div>
               <q-separator dark inset />
