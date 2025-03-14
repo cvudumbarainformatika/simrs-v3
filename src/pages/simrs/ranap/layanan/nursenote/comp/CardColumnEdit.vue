@@ -26,7 +26,7 @@
 
               </div>
               <div>
-                <div class="text-bold">Keterangan : </div>
+                <div class="text-bold">Catatan Infus : </div>
                 <div class="q-ml-sm">
                   <text-area-edit class="full-width" :model-value="item?.ket" @update:model-value="(val) => {
                     // console.log('val', val);
@@ -448,7 +448,7 @@
 
           <div class="row">
             <div class="col-6">
-              <CardPemakaianObat :pasien="pasien" :kasus="kasus" :nakes="nakes" :reseps="item?.reseps"
+              <CardPemakaianObat :pasien="pasien" :kasus="kasus" :nakes="nakes" :reseps="item?.reseps" :key="item?.id"
                 @add-resep="store.dialogPreview = true" @hapus-obat="(index) => {
                   item?.reseps?.splice(index, 1)
                 }" status="edit" />
@@ -497,21 +497,32 @@
               </div>
             </div>
 
-            <q-btn :loading="store.loadingSave" :disable="store.loadingSave" type="submit" label="Simpan Perubahan"
-              color="primary"></q-btn>
+            <q-btn :loading="store.loadingSave"
+              :disable="store.loadingSave || (auth?.user?.pegawai?.kdpegsimrs !== item?.user)" type="submit"
+              label="Simpan Perubahan" color="primary">
+              <q-tooltip v-if="auth?.user?.pegawai?.kdpegsimrs !== item?.user" class="bg-dark text-yellow"
+                :offset="[10, 10]" anchor="top middle" self="center middle">
+                Maaf Anda Bukan USER Nurse Note ini
+              </q-tooltip>
+            </q-btn>
           </q-card>
 
 
         </div>
       </div>
 
-      <dialog-kanan-resep :pasien="pasien" :kasus="kasus" :nakes="nakes" status="edit" class="z-top" @add-to-list="(val) => {
-        console.log(val);
+
+
+    </q-form>
+
+
+
+    <dialog-kanan-resep :key="item?.id" :pasien="pasien" :kasus="kasus" :nakes="nakes" status="edit" class="z-top"
+      @add-to-list="(val) => {
+        console.log(val, item);
 
         item?.reseps?.push(val)
       }" />
-
-    </q-form>
   </q-card>
 </template>
 

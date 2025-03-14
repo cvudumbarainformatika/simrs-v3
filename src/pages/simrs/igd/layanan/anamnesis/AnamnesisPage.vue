@@ -44,7 +44,7 @@ const props = defineProps({
 
 const comp = [
   // { nama: 'AnamnesisMedik', page: defineAsyncComponent(() => import('./AnamnesisMedikPage.vue')) },
-  { nama: 'AnamnesisKeperawatan', page: defineAsyncComponent(() => import('./AnamnesisKeperawatanPage.vue')) },
+  { nama: 'Anamnesis', page: defineAsyncComponent(() => import('./AnamnesisKeperawatanPage.vue')) },
   { nama: 'AnamnesisKebidanan', page: defineAsyncComponent(() => import('./AnamnesisKebidananPage.vue')) },
   { nama: 'PenilaianKajianResikoJatuh', page: defineAsyncComponent(() => import('./PenilaianPage.vue')) }
 ]

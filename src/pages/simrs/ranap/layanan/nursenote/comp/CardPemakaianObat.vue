@@ -30,7 +30,7 @@
                 <div class="text-white q-mt-xs">
                   Sisa: {{ obat?.sisa }} {{ obat?.satuan_ambil }}, <span class="text-yellow q-ml-md"> Dosis: {{
                     obat?.dosis
-                  }}</span>
+                    }}</span>
                 </div>
               </q-item-section>
 
@@ -89,7 +89,7 @@ const props = defineProps({
 })
 
 onMounted(() => {
-  console.log('props.pasien', props.pasien);
+  // console.log('props.pasien', props.pasien);
 
 })
 

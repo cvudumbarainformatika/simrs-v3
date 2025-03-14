@@ -144,11 +144,11 @@
       </q-btn>
     </div>
 
-    <div
-      v-if="parseFloat(store?.resep?.flag) >= 3 && store?.resep?.tiperesep === 'iter' && store?.resep?.noresep_asal === ''"
+    <div v-if="parseFloat(store?.resep?.flag) >= 3 && store?.resep?.tiperesep === 'iter'"
       class="row justify-end q-mr-md q-my-sm">
-      <div class="col-auto">
-        <q-btn rounded push label="History Resep Iter" class="f-12 q-mr-sm" color="green" text-color="white"
+
+      <div v-if="store?.resep?.noresep_asal === ''" class="col-auto">
+        <q-btn rounded push label="History Resep Iter" class="f-12 q-mr-sm" color="yellow" text-color="blue"
           icon="icon-mat-access_time"
           :disable="store.loadingCopy || store?.resep?.loadingHistory || store?.resep?.loadingGetIter"
           :loading="store.loadingCopy || store?.resep?.loadingHistory || store?.resep?.loadingGetIter"
@@ -158,12 +158,23 @@
           </q-tooltip>
         </q-btn>
       </div>
-      <div class="col-auto">
-        <q-btn rounded push label="Copy resep Iter" class="f-12 q-mr-sm" color="green" text-color="white"
-          icon="icon-mat-copy_all" :disable="store.loadingCopy || store?.resep?.loadingGetIter"
+      <div v-if="store?.resep?.noresep_asal === ''" class="col-auto">
+        <q-btn v-if="openIter" rounded push label="Copy resep Iter" class="f-12 q-mr-sm" color="green"
+          text-color="white" icon="icon-mat-copy_all" :disable="store.loadingCopy || store?.resep?.loadingGetIter"
           :loading="store.loadingCopy || store?.resep?.loadingGetIter" @click="copyResep(store?.resep)">
           <q-tooltip class="primary" :offset="[10, 10]">
             Copy resep iter
+          </q-tooltip>
+        </q-btn>
+      </div>
+      <div class="col-auto">
+        <q-btn rounded push :label="(openIter ? 'Tutup ' : 'Buka ') + 'Iter'" class="f-12 q-mr-sm" color="primary"
+          text-color="white"
+          :disable="store.loadingCopy || store?.resep?.loadingHistory || store?.resep?.loadingGetIter"
+          :loading="store.loadingCopy || store?.resep?.loadingHistory || store?.resep?.loadingGetIter"
+          @click="openIter = !openIter">
+          <q-tooltip class="primary" :offset="[10, 10]">
+            Buka Iter
           </q-tooltip>
         </q-btn>
       </div>
@@ -214,9 +225,7 @@
     </div>
     <div class="column q-pa-sm " :style="`height: calc(100vh - ${tinggiDetailPas + 125}px);`">
       <q-scroll-area style="height: 100%;">
-        <div
-          v-if="store?.resep?.permintaanresep?.length && ((store?.resep?.tiperesep === 'iter' && parseInt(store?.resep?.flag) <= 2) || (store?.resep?.tiperesep !== 'iter' && (parseInt(store?.resep?.flag) <= 8 || store?.resep?.flag === '')))"
-          class="q-mt-sm">
+        <div v-if="store?.resep?.permintaanresep?.length && !openIter" class="q-mt-sm">
           <div class="row items-center">
             <div class="col-shrink text-weight-bold">
               Non Racikan
@@ -396,9 +405,7 @@
             </q-item>
           </q-list>
         </div>
-        <div
-          v-if="store?.resep?.listRacikan?.length && ((store?.resep?.tiperesep === 'iter' && parseInt(store?.resep?.flag) <= 2) || (store?.resep?.tiperesep !== 'iter' && (parseInt(store?.resep?.flag) <= 5 || store?.resep?.flag === '')))"
-          class="q-mt-sm">
+        <div v-if="store?.resep?.listRacikan?.length && !openIter" class="q-mt-sm">
           <div class="row items-center">
             <div class="col-shrink text-weight-bold">
               Racikan
@@ -595,14 +602,14 @@
             </q-list>
           </div>
         </div>
-        <div v-if="(store?.resep?.flag === '3' || store?.resep?.flag === '4') && store?.resep?.tiperesep === 'iter'">
+        <div v-if="(store?.resep?.flag === '3' || store?.resep?.flag === '4') && openIter">
           <div v-if="store?.resep?.loadingGetIter || store.loadingCopy">
             <app-loading />
           </div>
           <div v-if="!store?.resep?.loadingGetIter && !store.loadingCopy">
             <!-- ini yang untuk tampilan copy resep iter -->
             <div
-              v-if="store?.resep?.rincian?.length && (store?.resep?.flag === '3' || store?.resep?.flag === '4') && store?.resep?.tiperesep === 'iter'"
+              v-if="store?.resep?.rincian?.length && (store?.resep?.flag === '3' || store?.resep?.flag === '4') && openIter"
               class="q-mt-sm">
               <div class="row items-center">
                 <div class="col-shrink text-weight-bold">
@@ -735,7 +742,7 @@
                         </div>
                         <!-- anu -->
                         <div v-if="parseInt(store?.resep?.flag) >= 2">
-                          anu
+
                           <!-- <q-btn
                             v-if="!rinc?.obatkeluar && parseInt(store?.resep?.flag)<5"
                             round
@@ -1001,6 +1008,8 @@ const ranapOpen = ref(false)
 const refEtiketRajal = ref(null)
 const refEtiketRanap = ref(null)
 const openHistory = ref(false)
+
+const openIter = ref(false)
 
 const SudahAdaCopy = defineAsyncComponent(() => import('./SudahAdaCopy.vue'))
 const HistoryResepIter = defineAsyncComponent(() => import('./HistoryResepIter.vue'))

@@ -1,16 +1,17 @@
 import { defineStore } from 'pinia'
 import { api } from 'src/boot/axios'
 import { usePengunjungIgdStore } from './pengunjung'
-import { notifErr, notifSuccess } from 'src/modules/utils'
+import { notifErr, notifErrVue, notifSuccess } from 'src/modules/utils'
+import { useAplikasiStore } from 'src/stores/app/aplikasi'
 
 export const useAnamnesis = defineStore('anamnesis', {
   state: () => ({
     loadingForm: false,
     loadingHistory: false,
-    tab: 'AnamnesisKeperawatan',
+    tab: 'Anamnesis',
     tabs: [
       // { name: 'Anamnesis Medik', page: 'AnamnesisMedik' },
-      { name: 'Anamnesis Keperawatan', page: 'AnamnesisKeperawatan' },
+      { name: 'Anamnesis', page: 'Anamnesis' },
       { name: 'Anamnesis Kebidanan', page: 'AnamnesisKebidanan' },
       { name: 'Penilaian Kajian Resiko Jatuh', page: 'PenilaianKajianResikoJatuh' }
     ],
@@ -121,73 +122,79 @@ export const useAnamnesis = defineStore('anamnesis', {
     },
 
     editForm(val) {
-      this.form = {
-        id: val?.id,
-        keluhanutama: val?.rs4,
-        riwayatpenyakit: val?.riwayatpenyakit,
-        riwayatpenyakitsekarang: val?.riwayatpenyakitsekarang,
-        selection: val?.riwayatalergi,
-        keteranganalergi: val?.keteranganalergi,
-        riwayatpengobatan: val?.riwayatpengobatan,
-        riwayatpekerjaan: val?.riwayat_pekerjaan_yang_berhubungan_dengan_zat_berbahaya,
-        // baru
-        riwayatpenyakitkeluarga: val?.riwayatpenyakitkeluarga,
-        skreeninggizi: val?.skreeninggizi,
-        asupanmakan: val?.asupanmakan,
-        kondisikhusus: val?.kondisikhusus,
-        skor: val?.skor,
-        keterangan_skor: val?.keterangan_skor,
+      const appstore = useAplikasiStore()
+      if (appstore.user?.pegawai?.kdpegsimrs !== val?.user) {
+        notifErrVue('Anda Tidak Berhak Merubah Data ini, karena Bukan Anda Yang Menginput...!!!')
+      } else {
+        this.form = {
+          id: val?.id,
+          keluhanutama: val?.rs4,
+          riwayatpenyakit: val?.riwayatpenyakit,
+          riwayatpenyakitsekarang: val?.riwayatpenyakitsekarang,
+          selection: val?.riwayatalergi,
+          keteranganalergi: val?.keteranganalergi,
+          riwayatpengobatan: val?.riwayatpengobatan,
+          riwayatpekerjaan: val?.riwayat_pekerjaan_yang_berhubungan_dengan_zat_berbahaya,
+          // baru
+          riwayatpenyakitkeluarga: val?.riwayatpenyakitkeluarga,
+          skreeninggizi: val?.skreeninggizi,
+          asupanmakan: val?.asupanmakan,
+          kondisikhusus: val?.kondisikhusus,
+          skor: val?.skor,
+          keterangan_skor: val?.keterangan_skor,
 
-        metode: val?.anamnesebps ? 'bps' : (val?.anamnesenips ? 'nips' : 'nrt'),
-        // baru lagi metode scalanyeri
-        skornyeri: isNaN(parseInt(val?.scorenyeri)) ? 0 : parseInt(val?.scorenyeri),
-        keteranganscorenyeri: val?.keteranganscorenyeri,
+          metode: val?.anamnesebps ? 'bps' : (val?.anamnesenips ? 'nips' : 'nrt'),
+          // baru lagi metode scalanyeri
+          skornyeri: isNaN(parseInt(val?.scorenyeri)) ? 0 : parseInt(val?.scorenyeri),
+          keteranganscorenyeri: val?.keteranganscorenyeri,
 
-        // baru lagi metode bps
-        ekspresiwajah: val?.anamnesebps?.ekspresi_wajah,
-        gerakantangan: val?.anamnesebps?.gerakan_tangan,
-        kepatuhanventilasimekanik: val?.anamnesebps?.kepatuhan_ventilasi_mekanik,
-        scroebps: val?.anamnesebps?.skor,
-        ketscorebps: val?.anamnesebps?.keterangan_skor,
+          // baru lagi metode bps
+          ekspresiwajah: val?.anamnesebps?.ekspresi_wajah,
+          gerakantangan: val?.anamnesebps?.gerakan_tangan,
+          kepatuhanventilasimekanik: val?.anamnesebps?.kepatuhan_ventilasi_mekanik,
+          scroebps: val?.anamnesebps?.skor,
+          ketscorebps: val?.anamnesebps?.keterangan_skor,
 
-        // baru lagi metode nips
-        ekspresiwajahnips: val?.anamnesenips?.ekspresi_wajah,
-        menangis: val?.anamnesenips?.menangis,
-        polanafas: val?.anamnesenips?.ekspresi_wajah,
-        lengan: val?.anamnesenips?.lengan,
-        kaki: val?.anamnesenips?.kaki,
-        keadaanrangsangan: val?.anamnesenips?.keadaan_rangsangan,
-        scroenips: val?.anamnesenips?.skor,
-        ketscorenips: val?.anamnesenips?.ket_skor
+          // baru lagi metode nips
+          ekspresiwajahnips: val?.anamnesenips?.ekspresi_wajah,
+          menangis: val?.anamnesenips?.menangis,
+          polanafas: val?.anamnesenips?.ekspresi_wajah,
+          lengan: val?.anamnesenips?.lengan,
+          kaki: val?.anamnesenips?.kaki,
+          keadaanrangsangan: val?.anamnesenips?.keadaan_rangsangan,
+          scroenips: val?.anamnesenips?.skor,
+          ketscorenips: val?.anamnesenips?.ket_skor
 
+        }
+        // tambahan
+        if (val?.anamnesetambahan[0]?.lokasi_nyeri !== null) this.form.lokasinyeri = val?.anamnesetambahan[0]?.lokasi_nyeri
+        if (val?.anamnesetambahan[0]?.durasi_nyeri !== null) this.form.durasinyeri = val?.anamnesetambahan[0]?.durasi_nyeri
+        if (val?.anamnesetambahan[0]?.durasi_nyeri !== null) this.form.penyebabnyeri = val?.anamnesetambahan[0]?.durasi_nyeri
+        if (val?.anamnesetambahan[0]?.penyebab_nyeri !== null) this.form.frekwensinyeri = val?.anamnesetambahan[0]?.penyebab_nyeri
+        if (val?.anamnesetambahan[0]?.nyeri_hilang !== null) this.form.nyerihilang = val?.anamnesetambahan[0]?.nyeri_hilang
+        if (val?.anamnesetambahan[0]?.sebutkannyerihilang !== null) this.form.sebutkannyerihilang = val?.anamnesetambahan[0]?.sebutkannyerihilang
+        if (val?.anamnesetambahan[0]?.aktifitas_mobilitas !== null) this.form.aktivitasmobilitas = val?.anamnesetambahan[0]?.aktifitas_mobilitas
+        if (val?.anamnesetambahan[0]?.sebutkanperlubanuan !== null) this.form.sebutkanperlubanuan = val?.anamnesetambahan[0]?.sebutkanperlubanuan
+        if (val?.anamnesetambahan[0]?.alat_bantu_jalan !== null) this.form.aktivitasAlatBnatujalan = val?.anamnesetambahan[0]?.alat_bantu_jalan
+        if (val?.anamnesetambahan[0]?.sebutkanalatbantujalan !== null) this.form.sebutkanalatbantujalan = val?.anamnesetambahan[0]?.sebutkanalatbantujalan
+        if (val?.anamnesetambahan[0]?.bicara !== null) this.form.kebutuhankomunikasidanedukasi = val?.anamnesetambahan[0]?.bicara
+        if (val?.anamnesetambahan[0]?.sebutkankomunaksilainnya !== null) this.form.sebutkankomunaksilainnya = val?.anamnesetambahan[0]?.sebutkankomunaksilainnya
+        if (val?.anamnesetambahan[0]?.penerjemah !== null) this.form.penerjemah = val?.anamnesetambahan[0]?.penerjemah
+        if (val?.anamnesetambahan[0]?.sebutkanpenerjemah !== null) this.form.sebutkanpenerjemah = val?.anamnesetambahan[0]?.sebutkanpenerjemah
+        if (val?.anamnesetambahan[0]?.bahasa_isyarat !== null) this.form.bahasaisyarat = val?.anamnesetambahan[0]?.bahasa_isyarat
+        if (val?.anamnesetambahan[0]?.hambatan !== null) this.form.hamabatan = val?.anamnesetambahan[0]?.hambatan
+        if (val?.anamnesetambahan[0]?.sebutkanhambatan !== null) this.form.sebutkanhambatan = val?.anamnesetambahan[0]?.sebutkanhambatan
+        if (val?.anamnesetambahan[0]?.riwayat_demam !== null) this.form.riwayatdemam = val?.anamnesetambahan[0]?.riwayat_demam
+        if (val?.anamnesetambahan[0]?.berkeringat_malam_hari !== null) this.form.berkeringat = val?.anamnesetambahan[0]?.berkeringat_malam_hari
+        if (val?.anamnesetambahan[0]?.riwayat_bepergian !== null) this.form.riwayatbepergian = val?.anamnesetambahan[0]?.riwayat_bepergian
+        if (val?.anamnesetambahan[0]?.riwayat_pemakaian_obat !== null) this.form.obatjangkapanjang = val?.anamnesetambahan[0]?.riwayat_pemakaian_obat
+        if (val?.anamnesetambahan[0]?.riwayat_bb_turun !== null) this.form.bbturun = val?.anamnesetambahan[0]?.riwayat_bb_turun
+        const kommatext = val?.riwayatalergi?.split(', ')
+        this.selection = kommatext?.length ? kommatext : []
+        const kommatextx = val?.anamnesetambahan[0]?.nyeri_hilang?.split(', ')
+        this.pilihnyerihilang = kommatextx?.length ? kommatextx : []
       }
-      // tambahan
-      if (val?.anamnesetambahan[0]?.lokasi_nyeri !== null) this.form.lokasinyeri = val?.anamnesetambahan[0]?.lokasi_nyeri
-      if (val?.anamnesetambahan[0]?.durasi_nyeri !== null) this.form.durasinyeri = val?.anamnesetambahan[0]?.durasi_nyeri
-      if (val?.anamnesetambahan[0]?.durasi_nyeri !== null) this.form.penyebabnyeri = val?.anamnesetambahan[0]?.durasi_nyeri
-      if (val?.anamnesetambahan[0]?.penyebab_nyeri !== null) this.form.frekwensinyeri = val?.anamnesetambahan[0]?.penyebab_nyeri
-      if (val?.anamnesetambahan[0]?.nyeri_hilang !== null) this.form.nyerihilang = val?.anamnesetambahan[0]?.nyeri_hilang
-      if (val?.anamnesetambahan[0]?.sebutkannyerihilang !== null) this.form.sebutkannyerihilang = val?.anamnesetambahan[0]?.sebutkannyerihilang
-      if (val?.anamnesetambahan[0]?.aktifitas_mobilitas !== null) this.form.aktivitasmobilitas = val?.anamnesetambahan[0]?.aktifitas_mobilitas
-      if (val?.anamnesetambahan[0]?.sebutkanperlubanuan !== null) this.form.sebutkanperlubanuan = val?.anamnesetambahan[0]?.sebutkanperlubanuan
-      if (val?.anamnesetambahan[0]?.alat_bantu_jalan !== null) this.form.aktivitasAlatBnatujalan = val?.anamnesetambahan[0]?.alat_bantu_jalan
-      if (val?.anamnesetambahan[0]?.sebutkanalatbantujalan !== null) this.form.sebutkanalatbantujalan = val?.anamnesetambahan[0]?.sebutkanalatbantujalan
-      if (val?.anamnesetambahan[0]?.bicara !== null) this.form.kebutuhankomunikasidanedukasi = val?.anamnesetambahan[0]?.bicara
-      if (val?.anamnesetambahan[0]?.sebutkankomunaksilainnya !== null) this.form.sebutkankomunaksilainnya = val?.anamnesetambahan[0]?.sebutkankomunaksilainnya
-      if (val?.anamnesetambahan[0]?.penerjemah !== null) this.form.penerjemah = val?.anamnesetambahan[0]?.penerjemah
-      if (val?.anamnesetambahan[0]?.sebutkanpenerjemah !== null) this.form.sebutkanpenerjemah = val?.anamnesetambahan[0]?.sebutkanpenerjemah
-      if (val?.anamnesetambahan[0]?.bahasa_isyarat !== null) this.form.bahasaisyarat = val?.anamnesetambahan[0]?.bahasa_isyarat
-      if (val?.anamnesetambahan[0]?.hambatan !== null) this.form.hamabatan = val?.anamnesetambahan[0]?.hambatan
-      if (val?.anamnesetambahan[0]?.sebutkanhambatan !== null) this.form.sebutkanhambatan = val?.anamnesetambahan[0]?.sebutkanhambatan
-      if (val?.anamnesetambahan[0]?.riwayat_demam !== null) this.form.riwayatdemam = val?.anamnesetambahan[0]?.riwayat_demam
-      if (val?.anamnesetambahan[0]?.berkeringat_malam_hari !== null) this.form.berkeringat = val?.anamnesetambahan[0]?.berkeringat_malam_hari
-      if (val?.anamnesetambahan[0]?.riwayat_bepergian !== null) this.form.riwayatbepergian = val?.anamnesetambahan[0]?.riwayat_bepergian
-      if (val?.anamnesetambahan[0]?.riwayat_pemakaian_obat !== null) this.form.obatjangkapanjang = val?.anamnesetambahan[0]?.riwayat_pemakaian_obat
-      if (val?.anamnesetambahan[0]?.riwayat_bb_turun !== null) this.form.bbturun = val?.anamnesetambahan[0]?.riwayat_bb_turun
-      const kommatext = val?.riwayatalergi?.split(', ')
-      this.selection = kommatext?.length ? kommatext : []
-      const kommatextx = val?.anamnesetambahan[0]?.nyeri_hilang?.split(', ')
-      this.pilihnyerihilang = kommatextx?.length ? kommatextx : []
+
     },
     copyForm(val) {
       this.form = {
@@ -231,8 +238,8 @@ export const useAnamnesis = defineStore('anamnesis', {
       }
     },
 
-    async deleteData(pasien, id) {
-      const payload = { id }
+    async deleteData(pasien, id, user) {
+      const payload = { id, user }
       try {
         const resp = await api.post('v1/simrs/igd/anamnesis/hapusanamnesis', payload)
         // console.log(resp)

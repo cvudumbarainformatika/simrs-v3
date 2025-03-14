@@ -58,6 +58,19 @@ const routes = [
       }
     ]
   },
+
+  {
+    path: '/git',
+    component: () => import('pages/simrs/settings/layout/MainLayout.vue'),
+    meta: { requireAuth: true },
+    children: [
+      {
+        path: 'report',
+        name: 'git.report',
+        component: () => import('pages/git/ReportPage.vue')
+      }
+    ]
+  },
   settings,
   pegawai,
   sigarang,
@@ -119,7 +132,8 @@ const routes = [
   {
     path: '/:catchAll(.*)*',
     component: () => import('pages/ErrorNotFound.vue')
-  }
+  },
+
 ]
 
 export default routes

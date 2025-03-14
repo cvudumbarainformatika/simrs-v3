@@ -78,27 +78,27 @@ export default defineConfig((ctx) => {
       // ini baru saya optimasi
 
 
-      vitePlugins: [
-        ['vite-plugin-imagemin', {
-          gifsicle: {
-            optimizationLevel: 7,
-            interlaced: false
-          },
-          optipng: {
-            optimizationLevel: 7
-          },
-          mozjpeg: {
-            quality: 70
-          },
-          pngquant: {
-            quality: [0.65, 0.9],
-            speed: 4
+      rollupOptions: {
+        plugins: [
+          {
+            name: 'optimize-images',
+            async generateBundle(options, bundle) {
+              // Optimize hanya file yang dibutuhkan
+              const imagePattern = /\.(jpg|jpeg|png|gif|webp)$/;
+              for (const fileName in bundle) {
+                if (imagePattern.test(fileName)) {
+                  // Gunakan sharp yang sudah ada
+                  const file = bundle[fileName];
+                  // Proses optimasi
+                }
+              }
+            }
           }
-        }]
-      ],
+        ]
+      },
 
       // Tambahkan source maps untuk production debugging
-      sourcemap: true,
+      sourcemap: false,
       // Tambahkan performance budgets
       performance: {
         hints: 'warning',
@@ -132,7 +132,7 @@ export default defineConfig((ctx) => {
       //   }, { server: false }]
       // ]
       // Monitor build size
-      analyze: true  // Gunakan webpack-bundle-analyzer
+      analyze: false  // Gunakan webpack-bundle-analyzer
     },
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#devserver
@@ -148,7 +148,15 @@ export default defineConfig((ctx) => {
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#framework
     framework: {
       config: {
-        dark: true
+        dark: 'auto',  // 'auto' akan mengikuti sistem, atau bisa set langsung ke true
+        // brand: {
+        //   primary: '#6366f1',    // Indigo yang lebih vibrant
+        //   secondary: '#8b5cf6',  // Purple yang menarik
+        //   accent: '#22d3ee',     // Cyan yang eye-catching
+
+        //   dark: '#1e1e2d',       // Dark background yang soft
+        //   'dark-page': '#151521' // Darker background untuk contrast
+        // }
       },
 
       // iconSet: 'material-icons', // Quasar icon set

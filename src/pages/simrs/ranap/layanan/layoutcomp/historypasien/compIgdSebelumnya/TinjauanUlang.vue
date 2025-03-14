@@ -4,14 +4,7 @@
     <div class="f-12 text-bold">
       Data Tinjauan Ulang
     </div>
-    <div class="f-12 text-bold">
-      <q-btn round color="dark" icon="icon-mat-post_add" size="sm" @click="showdialog()" />
-    </div>
-    <div class="f-12 text-bold">
-      <q-radio v-model="layout" label=" Dense layout" val="dense" />
-      <q-radio v-model="layout" label=" Comfortable layout" val="comfortable" />
-      <q-radio v-model="layout" label=" Loose layout" val="loose" />
-    </div>
+
     <q-space />
   </q-bar>
   <div v-if="loadingaja" class="column full-height flex-center">
@@ -53,13 +46,13 @@
               </div>
               <div class="row">
                 <div class="col-3">
-                  Nadi : {{ parseFloat(item?.nadi) }} ({{ item?.scorenadi }})
+                  Nadi : {{ item?.nadi }} ({{ item?.scorenadi }})
                 </div>
                 <div class="col-3">
-                  Pernapasan : {{ parseFloat(item?.pernapasanx) ?? '-' }} ({{ item?.scorepernapasanx ?? '-' }})
+                  Pernapasan : {{ item?.pernapasanx ?? '-' }} ({{ item?.scorepernapasanx ?? '-' }})
                 </div>
                 <div class="col-3">
-                  Sistole : {{ parseFloat(item?.sistole) ?? '-' }} ({{ item?.scoresistole ?? '-' }})
+                  Sistole : {{ item?.sistole ?? '-' }} ({{ item?.scoresistole ?? '-' }})
                 </div>
                 <div class="col-3">
                   Diastole : {{ item?.diastole ?? '-' }} ({{ item?.scorediastole ?? '-' }})
@@ -68,7 +61,7 @@
                   Suhu : {{ item?.suhu ?? '-' }} ({{ item?.scoresuhu ?? '-' }})
                 </div>
                 <div class="col-3">
-                  Spo2 : {{ parseFloat(item?.spo2) ?? '-' }} ({{ item?.scorespo2 ?? '-' }})
+                  Spo2 : {{ item?.spo2 ?? '-' }} ({{ item?.scorespo2 ?? '-' }})
                 </div>
               </div>
               <q-separator dark inset />
@@ -175,33 +168,21 @@
               </div>
             </q-card-section>
 
-            <q-item-section>
-              <div class="q-gutter-sm">
-                <q-btn flat round size="sm" icon="icon-mat-delete" color="white" @click="hapusItem(item.id)">
-                  <q-tooltip class="bg-danger" :offset="[10, 10]">
-                    Delete
-                  </q-tooltip></q-btn>
-                <q-btn flat round size="sm" icon="icon-mat-edit" color="white" @click="edit(item)">
-                  <q-tooltip class="bg-danger" :offset="[10, 10]">
-                    Edit
-                  </q-tooltip></q-btn>
-              </div>
-            </q-item-section>
+            <q-card-section style="margin-bottom: 80px;">
+
+            </q-card-section>
+
           </q-card>
         </div>
       </q-timeline-entry>
     </q-timeline>
   </div>
-  <!-- </q-card> -->
-  <FormTinjauanUlangPage :pasien="props.pasien" />
   <br>
 </template>
 <script setup>
 import { useTinjauanUlangStore } from 'src/stores/simrs/igd/tinjauanulang'
-import FormTinjauanUlangPage from './FormTinjauanUlangPage.vue'
 import { computed, ref } from 'vue'
 import { date, useQuasar } from 'quasar'
-
 
 const props = defineProps({
   pasien: {
@@ -211,10 +192,14 @@ const props = defineProps({
   loadingaja: {
     type: Boolean,
     default: false
+  },
+  bisaEditHapus: {
+    type: Boolean,
+    default: false
   }
 })
 
-const layout = ref('loose')
+const layout = ref('dense')
 
 const store = useTinjauanUlangStore()
 
@@ -244,77 +229,4 @@ const lists = computed(() => {
   const arr = props.pasien?.tinjauanulang
   return arr?.sort((a, b) => { return b.id - a.id })
 })
-
-const $q = useQuasar()
-
-function edit(val) {
-  // console.log('val', val)
-  store.basic = true
-  store.form.id = val?.id
-  store.form.keluhan = val?.keluhan
-  store.form.nadi = val?.nadi
-  store.form.pernapasanx = val?.pernapasanx
-  store.form.sistole = val?.sistole
-  store.form.diastole = val?.diastole
-  store.form.suhu = val?.suhu
-  store.form.spo2 = val?.spo2
-  store.form.scorenadi = val?.scorenadi
-  store.form.scorepernapasanx = val?.scorepernapasanx
-  store.form.scoresistole = val?.scoresistole
-
-  store.form.scorediastole = val?.scorediastole
-  store.form.scoresuhu = val?.scoresuhu
-  store.form.scorespo2 = val?.scorespo2
-  store.form.kesadaran = val?.kesadaran
-  store.form.eye = val?.eye
-  store.form.verbal = val?.verbal
-  store.form.motorik = val?.motorik
-
-
-
-  if (store.form.metodenyeri === 'bps') {
-    store.form.ekspresiwajahbps = val?.ekspresiwajah
-    store.form.gerakantangan = val?.gerakantangan
-    store.form.kepatuhanventilasimekanik = val?.kepatuhanventilasimekanik
-    store.form.scroebps = val?.scroebps
-    store.form.ketscorebps = val?.ketscorebps
-  } else if (store.form.metodenyeri === 'nips') {
-    store.form.ekspresiwajahnips = val?.ekspresiwajahnips
-    store.form.menangis = val?.menangis
-    store.form.polanafas = val?.menangis
-    store.form.lengan = val?.menangis
-    store.form.kaki = val?.kaki
-    store.form.keadaanrangsangan = val?.keadaanrangsangan
-    store.form.scroenips = val?.scroenips
-    store.form.ketscorenips = val?.ketscorenips
-  } else {
-    store.form.skornyeri = val?.skornyeri
-    store.form.keteranganscorenyeri = val?.keteranganscorenyeri
-  }
-
-  store.form.keadaanpupil = val?.keadaan_pupil
-  store.form.reflekmatakirikecahaya = val?.reflekcahaya_matakiri
-  store.form.reflekmatakanankecahaya = val?.reflekcahaya_matakanan
-  store.form.diamterkiri = val?.diamter_matakiri
-  store.form.diamterkanan = val?.diamter_matakanan
-  store.form.output = val?.output
-  store.form.keterangan = val?.keterangan
-
-}
-
-function hapusItem(id) {
-  $q.dialog({
-    dark: true,
-    title: 'Peringatan',
-    message: 'Apakah Data ini akan dihapus?',
-    cancel: true,
-    persistent: true
-  }).onOk(() => {
-    store.deleteData(props.pasien, id)
-  }).onCancel(() => {
-    // console.log('Cancel')
-  }).onDismiss(() => {
-    // console.log('I am triggered on both OK and Cancel')
-  })
-}
 </script>

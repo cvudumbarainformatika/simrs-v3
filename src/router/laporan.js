@@ -283,6 +283,10 @@ const laporan = {
       path: '/laporan/farmasi/perencanaan',
       component: () => import('pages/simrs/laporan/farmasi/perencanaan/IndexPage.vue')
     },
+    {
+      path: '/laporan/farmasi/deadstok',
+      component: () => import('pages/simrs/laporan/farmasi/deadStok/IndexPage.vue')
+    },
 
     // ini Harus ada
     {

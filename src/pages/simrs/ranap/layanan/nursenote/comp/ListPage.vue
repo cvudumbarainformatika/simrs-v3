@@ -10,7 +10,7 @@
       <div v-else class="full-height q-py-md scroll">
         <q-card v-for="item in store.items" :key="item?.id" class="q-mx-sm q-mb-sm" flat bordered>
           <q-list bordered class="rounded-borders" style="max-width: 100%;">
-            <q-expansion-item hide-expand-icon>
+            <q-expansion-item hide-expand-icon group="somegroup">
               <template #header>
                 <q-item-section avatar>
                   <q-avatar color="primary" text-color="white">
@@ -63,7 +63,7 @@
                 <div class="q-pa-xs">
                   <div class="col full-height bg-grey-4">
 
-                    <card-column-edit :pasien="pasien" :kasus="kasus" :item="item" />
+                    <card-column-edit :pasien="pasien" :kasus="kasus" :item="item" :key="item?.id" />
 
 
                   </div>
@@ -120,7 +120,7 @@ const initials = (petugas) => {
 }
 
 const PHOTO_USER = (row) => {
-  console.log('row', row);
+  // console.log('row', row);
 
   return 'http://192.168.100.100/simpeg/foto/' + row?.nip + '/' + row?.foto
 

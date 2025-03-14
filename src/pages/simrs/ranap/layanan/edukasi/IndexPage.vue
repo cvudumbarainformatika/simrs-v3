@@ -72,13 +72,6 @@ onMounted(() => {
 })
 
 const tabsxx = [
-  // {
-  //   label: 'Edukasi',
-  //   name: 'edukasi',
-  //   icon: 'icon-my-stethoscope',
-  //   nakes: ['1', '2', '3'],
-  //   comp: defineAsyncComponent(() => import('./comp/edukasi/IndexPage.vue'))
-  // },
   {
     label: 'Perencanaan',
     name: 'perencanaan',
@@ -116,10 +109,4 @@ const tabs = computed(() => {
   border-top-left-radius: 10px;
   border-bottom-right-radius: 10px;
 }
-
-// .q-tabs .no-wrap {
-//   // .no-wrap {
-//   //   flex-wrap: wrap !important;
-//   // }
-//   flex-wrap: wrap !important;
-// }</style>
+</style>

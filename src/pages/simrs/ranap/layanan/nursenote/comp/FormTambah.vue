@@ -14,7 +14,7 @@
 
               }" /> -->
             <q-input v-model="store.form.ket" type="textarea" outlined standout="bg-yellow-3"
-              @focus="() => setSplitter('insideModel1a', 100)" label="Keterangan" class="col-12" />
+              @focus="() => setSplitter('insideModel1a', 100)" label="Catatan Infus" class="col-12" />
           </div>
 
           <div class="col-12">

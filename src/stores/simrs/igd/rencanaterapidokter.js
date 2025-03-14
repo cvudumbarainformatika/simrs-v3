@@ -1,13 +1,15 @@
 import { defineStore } from 'pinia'
 import { api } from 'src/boot/axios'
 import { usePengunjungIgdStore } from './pengunjung'
-import { notifErr, notifSuccess } from 'src/modules/utils'
+import { notifErr, notifErrVue, notifSuccess } from 'src/modules/utils'
+import { useAplikasiStore } from 'src/stores/app/aplikasi'
 
 export const useRencanaTerapiDokterStore = defineStore('rencana-terapi-dokter', {
   state: () => ({
     loadingsimpan: false,
     loadingaja: false,
     form: {
+      id: '',
       ruangan: 'POL014'
     },
 
@@ -61,6 +63,23 @@ export const useRencanaTerapiDokterStore = defineStore('rencana-terapi-dokter', 
         notifErr(error)
       }
     },
-
+    editForm(val) {
+      console.log('val', val)
+      const appstore = useAplikasiStore()
+      if (appstore.user?.pegawai?.kdpegsimrs !== val?.user_id) {
+        notifErrVue('Anda Tidak Berhak Merubah Data ini, karena Bukan Anda Yang Menginput...!!!')
+      } else {
+        this.form = {
+          id: val?.id,
+          noreg: val?.noreg,
+          norm: val?.norm,
+          monitoringpasien: val?.monitoringpasien,
+          rencanaterapi: val?.rencanaterapi,
+          targetdokter: val?.targetdokter,
+          ruangan: val?.ruangan,
+          user_id: val?.user_id
+        }
+      }
+    }
   }
 })

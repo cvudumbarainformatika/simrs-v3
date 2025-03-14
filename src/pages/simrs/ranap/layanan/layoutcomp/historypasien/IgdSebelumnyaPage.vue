@@ -105,11 +105,24 @@ const menus = ref([
     comp: shallowRef(defineAsyncComponent(() => import('./compIgdSebelumnya/PengobatanPage.vue')))
   },
   {
+    name: 'terapidokter',
+    label: 'Terapi Dokter',
+    icon: 'icon-my-file_sign',
+    comp: shallowRef(defineAsyncComponent(() => import('./compIgdSebelumnya/TerapiDokter.vue')))
+  },
+  {
     name: 'konsul',
     label: 'Konsul Spesialis',
     icon: 'icon-my-file_sign',
     comp: shallowRef(defineAsyncComponent(() => import('./compIgdSebelumnya/KonsultasiPage.vue')))
-  }
+  },
+  {
+    name: 'tinjauanulang',
+    label: 'Tinjauan Ulang',
+    icon: 'icon-my-file_sign',
+    comp: shallowRef(defineAsyncComponent(() => import('./compIgdSebelumnya/TinjauanUlang.vue')))
+  },
+
 
 ])
 

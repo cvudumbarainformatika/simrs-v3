@@ -219,7 +219,7 @@
               <q-input mask="##.#" v-model="store.form.output" label="Output (Cc)" dense outlined />
             </div>
             <div class="col-9 q-py-sm">
-              <q-input v-model="store.form.keterangan" label="Keterangan" dense outlined />
+              <q-input v-model="store.form.keterangan" label="Keterangan" outlined type="textarea" />
             </div>
           </div>
         </q-card-section>
