@@ -128,11 +128,11 @@
         <div class="q-mt-lg" />
       </q-scroll-area>
       <div class="absolute-bottom q-pa-sm bg-yellow-3 row items-center justify-between">
-        <!-- <div class="q-gutter-sm">
-          <q-btn color="dark">
+        <div class="q-gutter-sm">
+          <!-- <q-btn color="dark" @click="tempOp.isOpen = true">
             Buka Pemplate
-          </q-btn>
-        </div> -->
+          </q-btn> -->
+        </div>
         <div>
           <q-btn color="primary" :loading="store.loadingkirim" :disable="store.loadingkirim"
             @click="store.selesaiResep">
@@ -142,29 +142,33 @@
       </div>
     </div>
   </div>
-
+  <app-fullscreen-blue v-model="tempOp.isOpen">
+    <template #default>
+      <frontTemplate />
+    </template>
+  </app-fullscreen-blue>
 </template>
 
 <script setup>
 // eslint-disable-next-line no-unused-vars
-import { onMounted, ref, onUnmounted } from 'vue'
+import { onMounted, ref, onUnmounted, defineAsyncComponent } from 'vue'
 import { usePersiapanOperasiStore } from 'src/stores/simrs/farmasi/kamaroperasi/resepsemntara'
 import { notifErrVue } from 'src/modules/utils'
+import { useTemplatePersiapanOperasiStore } from 'src/stores/simrs/farmasi/kamaroperasi/template'
 
 const props = defineProps({
   pasien: { type: Object, default: null },
   depo: { type: String, default: '' }
 })
 const store = usePersiapanOperasiStore()
+const tempOp = useTemplatePersiapanOperasiStore()
+
+const frontTemplate = defineAsyncComponent(() => import('src/pages/simrs/kamaroperasi/pelayanan/comppelayanan/pagemenu/comppersiapanoperasi/compTemplate/FrontTemplate.vue'))
 
 const refObat = ref(null)
 const refQty = ref(null)
-// const refSigna = ref(null)
-const refKet = ref(null)
-
 function setPasien () {
   store.setPasien()
-
 }
 
 function myDebounce (func, timeout = 800) {
