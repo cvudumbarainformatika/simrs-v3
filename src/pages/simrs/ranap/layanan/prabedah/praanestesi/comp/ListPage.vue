@@ -198,7 +198,7 @@
             <div class="row">
               <div class="col-12">
                 <div class="text-weight-bold">
-                  Perawatan Pasca Anestesia
+                  Perawatan Pre Anestesia
                 </div>
                 <table class="column full-width">
                   <tbody>
@@ -219,7 +219,7 @@
             <div class="row">
               <div class="col-12">
                 <div class="text-weight-bold">
-                  Persiapan Pasca Anestesia
+                  Persiapan Pre Anestesia
                 </div>
                 <table class="column full-width">
                   <tbody>

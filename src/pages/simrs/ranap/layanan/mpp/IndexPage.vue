@@ -4,8 +4,7 @@
     <div v-if="!isValid" class="fit flex flex-center">
       <q-card class="validation-card" flat bordered>
         <q-card-section class="bg-primary text-white">
-          <div class="text-h6">Validasi Data Pasien</div>
-          <div class="text-subtitle2">Mohon lengkapi data berikut</div>
+          <div class="text-h6">SKRINING</div>
         </q-card-section>
 
         <q-card-section class="q-pa-lg">
