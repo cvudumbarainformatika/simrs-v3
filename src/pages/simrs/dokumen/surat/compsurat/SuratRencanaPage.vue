@@ -2,7 +2,7 @@
   <div v-if="props?.pasien?.planning?.length">
     <div class="row q-mb-md">
       <div class="col-12">
-        <app-autocomplete v-model="plan" label="Pilih Surat" autocomplete="rs4" option-label="rs4" option-value="rs4"
+        <app-autocomplete v-model="plan" label="Pilih Surat" autocomplete="rs4" option-label="rs4" option-value="id"
           outlined :source="props?.pasien?.planning" @selected="terpilih" />
       </div>
     </div>
@@ -164,11 +164,11 @@ const ket = ref('')
 const plan = ref('')
 const toItem = ref(null)
 function terpilih (val) {
-  const temp = props?.pasien?.planning?.filter(a => a.rs4 === val)
-  if (temp.length) {
-    toItem.value = temp[0]
+  const temp = props?.pasien?.planning?.find(a => a.id === val)
+  if (temp) {
+    toItem.value = temp
   }
-  console.log('val', toItem.value)
+  console.log('val', toItem.value, val)
 }
 onMounted(() => {
   toItem.value = props?.pasien?.planning[0]
@@ -271,10 +271,7 @@ function setTgl (val) {
     else { return '-' }
   }
   else if (val?.rs4 === 'Rujukan Internal' || val?.rs4 === 'Konsultasi Internal') {
-    if (val?.listkonsul) {
-      return date.formatDate(val?.listkonsul?.tgl_rencana_konsul, 'DD MMMM YYYY')
-    }
-    else if (val?.rekomdpjp) {
+    if (val?.rekomdpjp) {
       return date.formatDate(val?.rekomdpjp?.tglKontrol, 'DD MMMM YYYY')
     }
     else { return '-' }
