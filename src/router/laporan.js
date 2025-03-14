@@ -205,13 +205,13 @@ const laporan = {
           name: 'laporan.anggaran.rka',
           component: () =>
             import('src/pages/siasik/anggaran/rka/IndexPage.vue')
+        },
+        {
+          path: '/laporan/anggaran/rba',
+          name: 'laporan.anggaran.rba',
+          component: () =>
+            import('src/pages/siasik/anggaran/rba/IndexPage.vue')
         }
-        // {
-        //   path: '/laporan/akuntansi/lra',
-        //   name: 'laporan.akuntansi.lra',
-        //   component: () =>
-        //     import('src/pages/siasik/akuntansi/laporanakuntansi/lralevel3/IndexPage.vue')
-        // },
         // {
         //   path: '/laporan/akuntansi/lo',
         //   name: 'laporan.akuntansi.l0',
