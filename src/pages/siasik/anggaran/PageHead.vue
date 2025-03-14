@@ -18,22 +18,10 @@
 
     <div class="row items-center">
       <q-btn-group outline>
-        <q-btn
-          :outline="path!=='/laporan/anggaran/rka'"
-          glossy
-          size="md"
-          color="lime-7"
-          label="RKA"
-          @click="goTo('/laporan/anggaran/rka')"
-        />
-        <q-btn
-          :outline="path!=='/laporan/anggaran/rba'"
-          glossy
-          size="md"
-          color="primary"
-          label="RBA"
-          @click="goTo('/laporan/anggaran/rba')"
-        />
+        <q-btn :outline="path !== '/laporan/anggaran/rka'" glossy size="md" color="lime-9" class="text-bold" label="RKA"
+          @click="goTo('/laporan/anggaran/rka')" />
+        <q-btn :outline="path !== '/laporan/anggaran/rba'" glossy size="md" color="lime-9" class="text-bold" label="RBA"
+          @click="goTo('/laporan/anggaran/rba')" />
       </q-btn-group>
     </div>
   </div>
@@ -60,7 +48,7 @@ defineProps({
   }
 })
 
-function goTo (val) {
+function goTo(val) {
   console.log('sasa', val)
   router.push({ path: val, replace: true })
 }

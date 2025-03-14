@@ -37,6 +37,7 @@ export const registerJurnal = defineStore('register_jurnal', {
       // jurnalall: []
     },
     bastfarmasi: [],
+    bastkonsinyasi: [],
     stp: [],
     cairnostp: [],
     cairstp: [],
@@ -136,6 +137,7 @@ export const registerJurnal = defineStore('register_jurnal', {
           if (resp.status === 200) {
             this.stp = resp.data.stp
             this.bastfarmasi = resp.data.bastfarmasi
+            this.bastkonsinyasi = resp.data.bastkonsinyasi
             this.cairnostp = resp.data.cair_nostp
             this.cairstp = resp.data.cair_stp
             this.contrapost = resp.data.contrapost
@@ -343,6 +345,114 @@ export const registerJurnal = defineStore('register_jurnal', {
 
       console.log('FARMASI', bastfarm);
       // console.log('rincibast', dataserahterima);
+
+      // DATA BAST KONSINYASI
+      const bastkons = []
+      const arr50kons = []
+      for (let x = 0; x < this.bastkonsinyasi.length; x++) {
+        const el = this.bastkonsinyasi[x];
+        const ri = el.rinci
+
+        const rinci = ri.map((x) => {
+          return {
+            tanggal: el.tgl_bast,
+            nobast: el.nobast,
+            kode50: x.obat.jurnal.kode50,
+            uraian: x.obat.jurnal.uraian50,
+            kode_bast: x.obat.jurnal.kode_bast,
+            uraian_bast: x.obat.jurnal.uraian_bast,
+            kode_bastx: x.obat.jurnal.kode_bastx,
+            uraian_bastx: x.obat.jurnal.uraian_bastx,
+            nilai: parseFloat(x.subtotal)
+          }
+        })
+        arr50kons.push(...rinci)
+
+        const unik50 = rinci.map((s) => s.nobast)
+        const unik = unik50.length ? [...new Set(unik50)] : []
+
+        const rincidebit = []
+        const rincikredit = []
+
+        for (let i = 0; i < unik.length; i++) {
+          const elUnik = unik[i];
+          const items = arr50kons.filter((x) => x.nobast === elUnik)
+
+          const totalNilai = items.reduce((sum, item) => sum + item.nilai, 0)
+          const groupedByKodeBast = {}
+          for (const item of items) {
+            if (!groupedByKodeBast[item.kode_bast]) {
+              groupedByKodeBast[item.kode_bast] = []
+            }
+            groupedByKodeBast[item.kode_bast].push(item)
+          }
+
+          const groupedByKodeBastx = {};
+          for (const item of items) {
+            if (!groupedByKodeBastx[item.kode_bastx]) {
+              groupedByKodeBastx[item.kode_bastx] = [];
+            }
+            groupedByKodeBastx[item.kode_bastx].push(item);
+          }
+          // Buat rincian debit
+          for (const kode in groupedByKodeBast) {
+            const itemsDebit = groupedByKodeBast[kode];
+            const totalNilaiDebit = itemsDebit.reduce((sum, item) => sum + item.nilai, 0);
+
+            rincidebit.push({
+              tanggal: itemsDebit[0].tanggal,
+              notrans: itemsDebit[0].nobast,
+              keterangan: 'Serahteriama Pekerjaan',
+              kegiatan: 'Pelayanan Farmasi',
+              kode: kode,
+              uraian: itemsDebit[0].uraian_bast,
+              debit: totalNilaiDebit,
+              kredit: 0,
+              nilai: totalNilai,
+            });
+          }
+
+          // Buat rincian kredit
+          for (const kode in groupedByKodeBastx) {
+            const itemsKredit = groupedByKodeBastx[kode];
+            const totalNilaiKredit = itemsKredit.reduce((sum, item) => sum + item.nilai, 0);
+
+            rincikredit.push({
+              tanggal: itemsKredit[0].tanggal,
+              notrans: itemsKredit[0].nobast,
+              keterangan: 'Serahteriama Pekerjaan',
+              kegiatan: 'Pelayanan Farmasi',
+              kode: kode,
+              uraian: itemsKredit[0].uraian_bastx,
+              debit: 0,
+              kredit: totalNilaiKredit,
+              nilai: totalNilai,
+            });
+          }
+        }
+        console.log('rincikredit', rincikredit)
+        console.log('rincidebit', rincidebit)
+        // Gabungkan hasil ke bastfarm
+        const obj = {
+          tanggal: el.tgl_bast,
+          notrans: el.nobast,
+          nilai: rincidebit.reduce((sum, item) => sum + item.nilai, 0),
+          keterangan: 'Serahteriama Pekerjaan',
+          kegiatan: 'Pelayanan Farmasi',
+          koderek50: [...new Set(rinci.map((item) => item.kode50))],
+          uraian50: [...new Set(rinci.map((item) => item.uraian))],
+          debit: rincidebit,
+          kredit: rincikredit,
+          d_pjk: null,
+          k_pjk: null,
+          d_pjk1: null,
+          k_pjk1: null,
+        };
+        bastkons.push(obj)
+        dataserahterima.push(...rincidebit, ...rincikredit);
+
+      }
+      console.log('KONSINYASI', bastkons)
 
       // DATA PENCAIRAN TANPA STP //
       const uniks = this.cairnostp.map((x) => x.nonpdls)
@@ -1742,7 +1852,7 @@ export const registerJurnal = defineStore('register_jurnal', {
       }
       // console.log('pajakls', pajakls)
       const gabungan = stp?.concat(
-        bastfarm, cairnonstp,
+        bastfarm, bastkons, cairnonstp,
         cairstpz, pajakls, cp, dataspmup,
         dataspmgu, spjpjr, datanihil, pendapatan
       )
