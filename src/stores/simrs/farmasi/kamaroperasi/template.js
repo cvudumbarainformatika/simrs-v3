@@ -88,12 +88,18 @@ export const useTemplatePersiapanOperasiStore = defineStore('template_persiapan_
         api.post('v1/simrs/penunjang/farmasinew/obatoperasi/simpan-template', this.form)
           .then(resp => {
             this.loading = false
-            console.log('simpan', resp?.data)
+            console.log('simpan a', resp?.data)
             this.resetObat()
             this.item = resp?.data?.data
-            this.items.edit = true
+            const index = this.items.findIndex(it => it.id === this.item.id)
+            if (index >= 0) {
+              this.items[index] = this.item
+            } else {
+              this.items.push(this.item)
+            }
+            console.log('item', this.item, resp?.data?.data?.id)
+            this.item.edit = true
             this.setForm('id', resp?.data?.data?.id)
-            console.log('item', item, resp?.data?.data?.id)
             notifSuccess(resp)
             resolve(resp)
           })
@@ -120,22 +126,26 @@ export const useTemplatePersiapanOperasiStore = defineStore('template_persiapan_
     },
     hapusObat (val) {
       console.log('hapusObat', val)
-      val.loadind = true
+      val.loading = true
       api.post('v1/simrs/penunjang/farmasinew/obatoperasi/hapus-rinci-template', val)
         .then(resp => {
 
           console.log('resp', resp?.data)
           // hapus list
-          const index = this.items?.rinci?.findIndex(x => x.id === val.id)
+          const index = this.item?.rinci?.findIndex(x => x.id === val.id)
           if (index >= 0) {
-            this.items?.rinci.splice(index, 1)
+            this.item?.rinci.splice(index, 1)
           } else {
-            delete val.loadind
+            delete val.loading
+          }
+          const indexItems = this.items?.findIndex(x => x.id === val.kamar_operasi_template_id)
+          if (indexItems >= 0) {
+            this.items[indexItems].rinci.splice(index, 1)
           }
           notifSuccess(resp)
         })
         .catch(() => {
-          delete val.loadind
+          delete val.loading
         })
     }
   }

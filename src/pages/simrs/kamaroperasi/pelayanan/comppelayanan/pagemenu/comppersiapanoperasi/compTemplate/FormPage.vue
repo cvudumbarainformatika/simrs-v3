@@ -1,5 +1,5 @@
 <template>
-  <div style="height: 80vh;">
+  <div style="height: 75vh;">
     <div class="col full-height relative-position">
 
       <!-- Nama header template -->
@@ -130,8 +130,21 @@
             </q-item>
           </template>
         </q-list>
-        <div class="q-mt-lg" />
       </q-scroll-area>
+      <div class="row q-mx-sm justify-between">
+        <q-btn color="primary" no-caps size="sm" label="Selesai" @click="() => {
+          store.item.edit = false
+          store.setForm('id', null)
+          store.setForm('nama', '')
+          store.setForm('user', 'private')
+        }" />
+        <q-btn color="dark" no-caps size="sm" label="Kirim" @click="store.kembali"> <q-tooltip
+            class="bg-white text-primary">
+            Kirim Template ke Depo
+          </q-tooltip>
+        </q-btn>
+      </div>
+
     </div>
   </div>
 </template>
@@ -186,8 +199,12 @@ function obatSelected (val) {
   // store.setForm('uraian50', val?.uraian50 ?? '-')
   // store.setForm('stokalokasi', val?.alokasi ?? '-')
   // store.setForm('kodedepo', 'Gd-04010103')
+  setTimeout(() => {
+    obatEnter()
+  }, 100)
 }
 function obatEnter () {
+  // refObat.value?.hidePopup()
   refQty.value.focus()
   refQty.value.select()
 }
@@ -208,7 +225,13 @@ function qtyEnter () {
   simpanObat()
 }
 function simpanObat () {
-  if (validate()) store.simpan()
+  if (validate()) {
+    refQty.value.blur()
+    console.log('simpan', refObat.value)
+    store.simpan().then(() => {
+      refObat.value?.focus()
+    })
+  }
   else console.log('simpan obat tidak valid', store.form)
   // store.simpanObat()
 }
