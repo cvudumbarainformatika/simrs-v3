@@ -5,27 +5,23 @@
         Template Obat Operasi
       </div>
     </div>
-    <div class="col full-height relative-position">
-      <!-- Nama header template -->
-      <div class="row items-center ">
-        <div class="col-6">
-          <q-input v-model="store.form.nama" label="Nama Template" dense :rules="[val => !!val || 'tidak boleh kosong']"
-            lazy-rules no-error-icon hide-bottom-space standout="bg-yellow-3" outlined />
-        </div>
-        <div class="col-6">
-          <app-autocomplete v-model="store.form.user" label="Jenis" autocomplete="nama" option-label="nama" outlined
-            option-value="value" :source="store.typeOptions" @update:model-value="logging" />
-        </div>
+    <div class="row q-col-gutter-sm">
+      <div class="col-6">
+        <formPage />
+      </div>
+      <div class="col-6">
+        <listPage />
       </div>
     </div>
   </div>
 </template>
 <script setup>
 import { useTemplatePersiapanOperasiStore } from 'src/stores/simrs/farmasi/kamaroperasi/template'
+import { defineAsyncComponent, ref } from 'vue'
 
 const store = useTemplatePersiapanOperasiStore()
+const formPage = defineAsyncComponent(() => import('./FormPage.vue'))
+const listPage = defineAsyncComponent(() => import('./ListPage.vue'))
 
-function logging (val) {
-  console.log(val)
-}
+
 </script>
