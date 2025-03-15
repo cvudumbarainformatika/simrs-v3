@@ -13,8 +13,8 @@
             outlined option-value="value" :source="store.typeOptions" />
         </div>
         <div class="col-4">
-          <app-autocomplete v-model="store.form.sistembayar" label="Sistem Bayar" autocomplete="nama"
-            option-label="nama" outlined option-value="value" :source="store.sistemBayarOptions" />
+          <app-autocomplete v-model="store.form.groups" label="Sistem Bayar" autocomplete="nama" option-label="nama"
+            outlined option-value="value" :source="store.sistemBayarOptions" />
         </div>
       </div>
       <q-scroll-area style="height: 100%; padding-bottom: 60px;">
@@ -96,7 +96,8 @@
           </q-item>
 
           <!-- hasil Inputan -->
-          <template v-if="store.item?.rinci?.length">
+
+          <template v-if="store.item?.rinci?.length && store.item?.edit">
             <q-item v-for="(item, i) in store.item?.rinci" :key="i">
               <!-- {{ item }} -->
               <q-item-section style="width: 50%;">
@@ -110,15 +111,14 @@
               <q-item-section side style="width:50%">
                 <div class="row items-center q-col-gutter-sm full-width">
                   <div class="text-right col-3">
-                    {{ item?.jumlah_minta }}
+                    {{ item?.jumlah }}
                   </div>
                   <div class="col text-right">
                     <!-- {{ item?.keterangan }} -->
                   </div>
                   <div class="col-shrink text-right">
                     <q-btn color="negative" dense flat no-caps size="xs" icon="icon-mat-delete"
-                      :disable="store.loading || store.loadingkirim"
-                      :loading="store.loadingHapus && store.obatId === item.id && !store.namaRacikan"
+                      :disable="item.loading || store.loadingkirim" :loading="item.loading"
                       @click="store.hapusObat(item)">
                       <q-tooltip class="bg-white text-primary">
                         Hapus
@@ -208,7 +208,7 @@ function qtyEnter () {
   simpanObat()
 }
 function simpanObat () {
-  if (validate()) console.log('simpan obat valid', store.form)
+  if (validate()) store.simpan()
   else console.log('simpan obat tidak valid', store.form)
   // store.simpanObat()
 }

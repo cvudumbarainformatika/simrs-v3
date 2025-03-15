@@ -17,11 +17,14 @@
 </template>
 <script setup>
 import { useTemplatePersiapanOperasiStore } from 'src/stores/simrs/farmasi/kamaroperasi/template'
-import { defineAsyncComponent, ref } from 'vue'
+import { defineAsyncComponent, onMounted } from 'vue'
 
 const store = useTemplatePersiapanOperasiStore()
 const formPage = defineAsyncComponent(() => import('./FormPage.vue'))
 const listPage = defineAsyncComponent(() => import('./ListPage.vue'))
 
-
+onMounted(() => {
+  store.cariObat('')
+  store.cariList()
+})
 </script>
