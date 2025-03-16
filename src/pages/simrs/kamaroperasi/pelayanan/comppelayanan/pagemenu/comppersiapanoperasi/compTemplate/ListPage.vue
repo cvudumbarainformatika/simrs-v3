@@ -137,10 +137,11 @@ function setTemplate (val, i) {
 function kirimOrder (val, i) {
   val.noreg = props.pasien?.noreg
   val.norm = props.pasien?.norm
+  val.groupsistembayar = props.pasien?.groups
   // duration.value = 0
   // if (val.expanded) refExpansion.value[i].show()
   // val.expanded = !val.expanded
-  // console.log('val', app?.user)
+  console.log('val', props?.pasien)
   store.kirimOrder(val)
   // setTimeout(() => {
   //   duration.value = 300
