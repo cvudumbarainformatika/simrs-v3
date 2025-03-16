@@ -144,7 +144,7 @@
   </div>
   <app-fullscreen-blue v-model="tempOp.isOpen">
     <template #default>
-      <frontTemplate />
+      <frontTemplate :pasien="pasien" />
     </template>
   </app-fullscreen-blue>
 </template>

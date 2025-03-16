@@ -14,7 +14,7 @@
         </div>
         <div class="col-4">
           <app-autocomplete v-model="store.form.groups" label="Sistem Bayar" autocomplete="nama" option-label="nama"
-            outlined option-value="value" :source="store.sistemBayarOptions" />
+            outlined option-value="value" :source="store.sistemBayarOptions" @update:model-value="store.cariObat('')" />
         </div>
       </div>
       <q-scroll-area style="height: 100%; padding-bottom: 60px;">
@@ -52,12 +52,12 @@
                       (<span v-html="highlightText(scope.opt?.kandungan)" />)
 
                     </div>
-                    <div v-if="scope.opt.alokasi > 0" class="q-ml-xs text-weight-bold text-green">
+                    <!-- <div v-if="scope.opt.alokasi > 0" class="q-ml-xs text-weight-bold text-green">
                       {{ scope.opt.alokasi }} <span class="f-8">(tersedia)</span>
-                    </div>
-                    <div v-if="scope.opt.alokasi <= 0" class="q-ml-xs text-weight-bold text-negative f-14">
+                    </div> -->
+                    <!-- <div v-if="scope.opt.alokasi <= 0" class="q-ml-xs text-weight-bold text-negative f-14">
                       {{ scope.opt.alokasi }} <span class="f-8">(habis)</span>
-                    </div>
+                    </div> -->
                     <div v-if="scope.opt.satuankecil" class="q-ml-xs text-primary">
                       {{ scope.opt.satuankecil }}
                     </div>
@@ -98,7 +98,7 @@
           <!-- hasil Inputan -->
 
           <template v-if="store.item?.rinci?.length && store.item?.edit">
-            <q-item v-for="(item, i) in store.item?.rinci" :key="i">
+            <q-item v-for="(item, i) in store.item?.rinci" :key="i" :class="item?.errMsg ? 'bg-red-1' : ''">
               <!-- {{ item }} -->
               <q-item-section style="width: 50%;">
                 <div class="row">
@@ -114,11 +114,11 @@
                     {{ item?.jumlah }}
                   </div>
                   <div class="col text-right">
-                    <!-- {{ item?.keterangan }} -->
+                    {{ item?.errMsg ?? item?.successMsg }}
                   </div>
                   <div class="col-shrink text-right">
                     <q-btn color="negative" dense flat no-caps size="xs" icon="icon-mat-delete"
-                      :disable="item.loading || store.loadingkirim" :loading="item.loading"
+                      :disable="item.loading || store.loadingKirim" :loading="item.loading"
                       @click="store.hapusObat(item)">
                       <q-tooltip class="bg-white text-primary">
                         Hapus
@@ -131,15 +131,15 @@
           </template>
         </q-list>
       </q-scroll-area>
-      <div class="row q-mx-sm justify-between">
+      <div class="row q-mx-sm justify-between" v-if="store.item">
         <q-btn color="primary" no-caps size="sm" label="Selesai" @click="() => {
-          store.item.edit = false
+          store.item = null
           store.setForm('id', null)
           store.setForm('nama', '')
           store.setForm('user', 'private')
         }" />
-        <q-btn color="dark" no-caps size="sm" label="Kirim" @click="store.kembali"> <q-tooltip
-            class="bg-white text-primary">
+        <q-btn color="dark" no-caps size="sm" label="Kirim" @click="kirimOrder" :loading="store.item.loading"
+          :disable="store.item.loading || store.loadingKirim"> <q-tooltip class="bg-white text-primary">
             Kirim Template ke Depo
           </q-tooltip>
         </q-btn>
@@ -152,7 +152,9 @@
 import { notifErrVue } from 'src/modules/utils'
 import { useTemplatePersiapanOperasiStore } from 'src/stores/simrs/farmasi/kamaroperasi/template'
 import { ref } from 'vue'
-
+const props = defineProps({
+  pasien: { type: Object, default: null }
+})
 const store = useTemplatePersiapanOperasiStore()
 const refNamaTemplate = ref(null)
 const refObat = ref(null)
@@ -160,8 +162,10 @@ const refQty = ref(null)
 
 const modVal = ref(null)
 
-function logging (val) {
-  console.log(val)
+function kirimOrder () {
+  store.item.noreg = props.pasien.noreg
+  store.item.norm = props.pasien.norm
+  store.kirimOrder(store.item)
 }
 function myDebounce (func, timeout = 800) {
   let timer

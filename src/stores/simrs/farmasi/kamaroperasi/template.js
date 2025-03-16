@@ -1,11 +1,13 @@
 import { acceptHMRUpdate, defineStore } from "pinia"
 import { api } from "src/boot/axios"
-import { notifSuccess } from "src/modules/utils"
+import { notifErrVue, notifSuccess } from "src/modules/utils"
+import { usePersiapanOperasiStore } from "./resepsemntara"
 
 export const useTemplatePersiapanOperasiStore = defineStore('template_persiapan_operasi', {
   state: () => ({
     loading: false,
     loadingCari: false,
+    loadingKirim: false,
     isOpen: false,
     namaObat: null,
     Obats: [],
@@ -17,7 +19,7 @@ export const useTemplatePersiapanOperasiStore = defineStore('template_persiapan_
       page: 1,
       per_page: 10,
       q: '',
-      sistembayar: '1',
+      sistembayar: 'all',
       user: 'private'
     },
     form: {
@@ -30,6 +32,11 @@ export const useTemplatePersiapanOperasiStore = defineStore('template_persiapan_
       { value: 'private', nama: 'Saya Saja' },
     ],
     sistemBayarOptions: [
+      { value: '1', nama: 'BPJS' },
+      { value: '0', nama: 'Non-BPJS' },
+    ],
+    sistemBayarTwoOptions: [
+      { value: 'all', nama: 'Semua' },
       { value: '1', nama: 'BPJS' },
       { value: '0', nama: 'Non-BPJS' },
     ]
@@ -57,7 +64,7 @@ export const useTemplatePersiapanOperasiStore = defineStore('template_persiapan_
     cariObat (val) {
 
       const param = {
-        groups: this?.pasien?.sistembayar?.groups,
+        groups: this?.form?.groups,
         kdruang: 'Gd-04010103',
         q: val,
         tiperesep: this.form.tiperesep
@@ -147,6 +154,56 @@ export const useTemplatePersiapanOperasiStore = defineStore('template_persiapan_
         .catch(() => {
           delete val.loading
         })
+    },
+    kirimOrder (item) {
+      this.loadingKirim = true
+      item.loading = true
+      item.expanded = true
+      return new Promise(resolve => {
+        api.post('v1/simrs/penunjang/farmasinew/obatoperasi/kirim-order', item)
+          .then(resp => {
+            this.loadingKirim = false
+            const hasil = resp?.data?.data
+            hasil.loading = false
+            const index = this.items.findIndex(it => it.id === hasil.id)
+            if (index >= 0) {
+              this.items[index] = hasil
+            }
+            if (this.item != null) this.item = hasil
+            // if (this.item != null) this.item = resp?.data?.data
+            if (resp?.data.status == 200) notifSuccess(resp)
+            else notifErrVue(resp?.data?.message)
+            const resepSementara = usePersiapanOperasiStore()
+            // insert nomer permintaan
+            resepSementara.nopermintaans.splice(0, 1)
+            resepSementara.nopermintaans.unshift(resp?.data?.nopermintaan)
+            resepSementara.nopermintaans.unshift('BARU')
+            resepSementara.nopermintaan = resp?.data?.nopermintaan
+            // inseert data
+            const res = resp?.data?.head
+            const reseps = resepSementara.pasien?.permintaanobatoperasi
+            const indexRes = reseps.findIndex(x => x.nopermintaan === res?.nopermintaan)
+            if (indexRes >= 0) {
+              resepSementara.pasien.permintaanobatoperasi[indexRes] = res
+            }
+            else {
+              resepSementara.pasien.permintaanobatoperasi.push(res)
+            }
+            if (resp?.data?.head?.flag == '1') {
+              resepSementara.listBelum = null
+              resepSementara.listSudah = res
+            } else {
+              resepSementara.listBelum = res
+              resepSementara.listSudah = null
+
+            }
+            resolve(resp)
+          })
+          .catch(() => {
+            item.loading = false
+            this.loadingKirim = false
+          })
+      })
     }
   }
 })

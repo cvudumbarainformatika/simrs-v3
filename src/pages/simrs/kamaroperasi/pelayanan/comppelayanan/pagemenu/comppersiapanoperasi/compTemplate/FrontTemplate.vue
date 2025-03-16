@@ -7,10 +7,10 @@
     </div>
     <div class="row q-col-gutter-sm">
       <div class="col-6">
-        <formPage />
+        <formPage :pasien="pasien" />
       </div>
       <div class="col-6">
-        <listPage />
+        <listPage :pasien="pasien" />
       </div>
     </div>
   </div>
@@ -23,6 +23,9 @@ const store = useTemplatePersiapanOperasiStore()
 const formPage = defineAsyncComponent(() => import('./FormPage.vue'))
 const listPage = defineAsyncComponent(() => import('./ListPage.vue'))
 
+const props = defineProps({
+  pasien: { type: Object, default: null }
+})
 onMounted(() => {
   store.cariObat('')
   store.cariList()
