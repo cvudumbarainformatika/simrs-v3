@@ -166,11 +166,11 @@
                 </div>
               </div>
               <div class="row">
-                <div class="col-6">
+                <div class="col-12">
                   Output : {{ item?.output ?? '-' }}
                 </div>
-                <div class="col-6">
-                  Keterangan: {{ item?.keterangan ?? '-' }}
+                <div class="col-12">
+                  Keterangan: <span v-html="getNewLine(item?.keterangan ?? '-')" />
                 </div>
               </div>
             </q-card-section>
@@ -201,6 +201,7 @@ import { useTinjauanUlangStore } from 'src/stores/simrs/igd/tinjauanulang'
 import FormTinjauanUlangPage from './FormTinjauanUlangPage.vue'
 import { computed, ref } from 'vue'
 import { date, useQuasar } from 'quasar'
+import { getNewLine } from 'src/modules/formatter'
 
 
 const props = defineProps({
