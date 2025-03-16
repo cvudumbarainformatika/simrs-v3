@@ -189,7 +189,7 @@
                 </q-item-label>
                 <q-item-label>
                   <span class="">- Status Neurologis </span> : <span class="text-weight-bold">{{ item?.rs12 ?? '-'
-                    }}</span>
+                  }}</span>
                 </q-item-label>
                 <q-item-label>
                   <span class="">- Genital </span> : <span class="text-weight-bold">{{ item?.rs13 ?? '-' }}</span>
@@ -197,13 +197,7 @@
               </q-item-section>
               <q-item-section v-if="bisaEditHapus" side>
                 <div class="q-gutter-sm">
-                  <!-- <q-btn
-                    flat
-                    round
-                    size="sm"
-                    icon="icon-mat-edit"
-                    @click="store.editForm(item)"
-                  /> -->
+                  <q-btn flat round size="sm" icon="icon-mat-edit" @click="store.editForm(item)" />
                   <q-btn flat round size="sm" icon="icon-mat-delete" color="negative"
                     @click="hapusItem(item?.id, item?.rs1, item?.kdpegsimrs)" />
                 </div>

@@ -44,6 +44,7 @@ export const useRencanaTerapiDokterStore = defineStore('rencana-terapi-dokter', 
       }
     },
     initReset() {
+      this.form.id = ''
       this.form.rencanaterapi = ''
       this.form.monitoringpasien = ''
       this.form.targetdokter = ''
@@ -64,7 +65,7 @@ export const useRencanaTerapiDokterStore = defineStore('rencana-terapi-dokter', 
       }
     },
     editForm(val) {
-      console.log('val', val)
+      // console.log('val', val)
       const appstore = useAplikasiStore()
       if (appstore.user?.pegawai?.kdpegsimrs !== val?.user_id) {
         notifErrVue('Anda Tidak Berhak Merubah Data ini, karena Bukan Anda Yang Menginput...!!!')
