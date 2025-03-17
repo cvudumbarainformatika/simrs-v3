@@ -121,6 +121,72 @@ export const useListPasienHemodialisaStore = defineStore('list-pasien-hemodialis
     },
     togglePageTindakan () {
       this.pageTindakan = !this.pageTindakan
-    }
+    },
+    injectDataPasien (noreg, val, kode, arr) {
+      const findPasien = this.items?.filter(x => x.noreg === noreg)
+      // console.log('inject pasien', findPasien)
+      if (findPasien.length) {
+        const data = findPasien[0]
+        // data[kode] = val
+        if (kode === 'kd_jeniskasus' ||
+          kode === 'status' || kode === 'carakeluar' || kode === 'prognosis' ||
+          kode === 'tindaklanjut' || kode === 'diagakhir' || kode === 'sebabkematian') {
+          data[kode] = val
+        }
+        else {
+          const target = data[kode]?.find(x => x.id === val?.id) ?? null
+          // console.log('inject target pasien', target, kode, val, data)
+          // console.log('inject kode pasien', kode)
+          // console.log('inject isi pasien', val)
+
+          if (target) {
+            Object.assign(target, val)
+          }
+          else {
+            data[kode]?.splice(0, 0, val)
+            // data[kode].push(val)
+          }
+        }
+      }
+    },
+    injectDataArray (noreg, arr, kode) {
+      const findPasien = this.items.filter(x => x?.noreg === noreg)
+      // console.log('inject pasien', findPasien)
+      if (findPasien.length) {
+        const data = findPasien[0]
+        data[kode] = arr
+      }
+    },
+
+    injectUpdatean (noreg, id, val, kode) {
+      const findPasien = this.items.filter(x => x?.noreg === noreg)
+      if (findPasien.length) {
+        const data = findPasien[0]
+        const target = data[kode]?.find(x => x?.id === id)
+        if (target) {
+          Object.assign(target, val)
+        }
+      }
+    },
+    deleteInjectanNull (noreg, kode) {
+      const findPasien = this.items.filter(x => x.noreg === noreg)
+      if (findPasien.length) {
+        const data = findPasien[0]
+        const target = data[kode]?.find(x => x?.id === null || x?.id === '' || x?.id === undefined || !('id' in x)) ?? null
+        if (target) {
+          data[kode]?.splice(data[kode]?.findIndex(x => x?.id === null), 1)
+        }
+      }
+    },
+    deleteInjectanNull2 (noreg, kode) {
+      const findPasien = this.items.filter(x => x.noreg === noreg)
+      if (findPasien.length) {
+        const data = findPasien[0]
+        const target = data[kode]?.find(x => !('id' in x))
+        if (target) {
+          data[kode]?.splice(target, 1)
+        }
+      }
+    },
   }
 })

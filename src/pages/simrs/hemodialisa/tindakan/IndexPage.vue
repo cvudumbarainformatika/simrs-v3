@@ -90,6 +90,13 @@ const menus = ref([
   //   icon: 'icon-mat-medical_information',
   //   comp: shallowRef(defineAsyncComponent(() => import('./comptindakan/pagemenu/AnamnesisPage.vue'))) // HAPUS
   // },
+  {
+    name: 'AnamnesisPage',
+    label: 'Anamnesse $ Riwayat',
+    icon: 'icon-mat-medical_information',
+    nakes: ['1', '2', '3'],
+    comp: shallowRef(defineAsyncComponent(() => import('../layanan/anamnesis/IndexPage.vue')))
+  },
   // {
   //   name: 'PemeriksaanPage',
   //   label: 'Pemeriksaan Umum & Fisik',
