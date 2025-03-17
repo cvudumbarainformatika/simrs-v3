@@ -1,99 +1,38 @@
 <template>
-  <q-dialog
-    ref="refDialog"
-    persistent
-    :maximized="true"
-    transition-hide="slide-right"
-    @hide="lihatSebelumTertutup"
-  >
-    <q-card
-      v-if="pasien?.dokter !== '' || pasien?.dokter !== null"
-      flat
-    >
-      <q-layout
-        view="lHr Lpr lFf"
-        container
-        class="shadow-2 rounded-borders z-top"
-      >
-        <q-header
-          elevated
-          class="bg-primary"
-        >
-          <HeaderLayout
-            :pasien="pasien"
-            :loading-save-dpjp="store.loadingSaveGantiDpjp"
-            :loading-finish="store.loadingTerima"
-            @toggle-left-drawer="drawer = !drawer"
-            @gantidpjp="(val)=>store.gantiDpjp(val, pasien)"
-            @layanan-selesai="store.setLayananSelesai(pasien)"
-          />
+  <q-dialog ref="refDialog" persistent :maximized="true" transition-hide="slide-right" @hide="lihatSebelumTertutup">
+    <q-card v-if="pasien?.dokter !== '' || pasien?.dokter !== null" flat>
+      <q-layout view="lHr Lpr lFf" container class="shadow-2 rounded-borders z-top">
+        <q-header elevated class="bg-primary">
+          <HeaderLayout :pasien="pasien" :loading-save-dpjp="store.loadingSaveGantiDpjp"
+            :loading-finish="store.loadingTerima" @toggle-left-drawer="drawer = !drawer"
+            @gantidpjp="(val) => store.gantiDpjp(val, pasien)" @layanan-selesai="store.setLayananSelesai(pasien)" />
         </q-header>
         <!-- LEFT DRAWER ======================================================================================-->
-        <q-drawer
-          v-model="drawer"
-          elevated
-          bordered
-          show-if-above
-          :width="230"
-          :breakpoint="400"
-        >
-          <LeftDrawer
-            :key="pasien"
-            :pasien="pasien"
-            :menus="menus"
-            :menu="menu"
-            @click-menu="(val)=> menuDiganti(val)"
-            @history-pasien="historyPasien"
-            @print-rekap="emits('printRekapBill')"
-            @icare="getIcare"
-            @show-profile="profile = !profile"
-          />
+        <q-drawer v-model="drawer" elevated bordered show-if-above :width="230" :breakpoint="400">
+          <LeftDrawer :key="pasien" :pasien="pasien" :menus="menus" :menu="menu" @click-menu="(val) => menuDiganti(val)"
+            @history-pasien="historyPasien" @print-rekap="emits('printRekapBill')" @icare="getIcare"
+            @show-profile="profile = !profile" />
         </q-drawer>
 
         <!-- RIGHT DRAWER ======================================================================================-->
-        <q-drawer
-          v-model="drawerRight"
-          side="right"
-          show-if-above
-          overlay
-          bordered
-          :width="845"
-          :breakpoint="500"
-        >
-          <RightDrawer
-            :key="pasien"
-            :pasien="pasien"
-            @close="drawerRight = false"
-          />
+        <q-drawer v-model="drawerRight" side="right" show-if-above overlay bordered :width="845" :breakpoint="500">
+          <RightDrawer :key="pasien" :pasien="pasien" @close="drawerRight = false" />
         </q-drawer>
 
         <!-- CONTAINER ============================================================================================-->
         <q-page-container>
-          <q-page
-            class="contain bg-grey-3"
-          >
-            <Suspense
-              :key="menu.comp"
-              timeout="0"
-            >
+          <q-page class="contain bg-grey-3">
+            <Suspense :key="menu.comp" timeout="0">
               <template #default>
-                <div
-                  v-if="pasien?.dokter==='' || pasien?.dokter === null"
+                <div v-if="pasien?.dokter === '' || pasien?.dokter === null"
                   class="column full-height flex-center absolute-center z-top full-width"
-                  style="background-color: black; opacity: .9;"
-                >
+                  style="background-color: black; opacity: .9;">
                   <div class="text-white">
                     Maaf, DPJP Pasien Ini Belum Ada ... Harap Input DPJP Terlebih dahulu
                   </div>
                 </div>
-                <component
-                  :is="menu.comp"
-                  v-else
-                  :key="pasien"
-                  :pasien="pasien"
-                  :loading-terima="store.loadingTerima"
-                  depo="rnp"
-                />
+                <component :is="menu.comp" v-else :key="pasien" :pasien="pasien" :loading-terima="store.loadingTerima"
+                  depo="rnp" />
               </template>
               <template #fallback>
                 <AppLoader />
@@ -105,11 +44,7 @@
     </q-card>
 
     <!-- dialogProfile -->
-    <DialogProfile
-      :key="pasien"
-      v-model="profile"
-      :pasien="pasien"
-    />
+    <DialogProfile :key="pasien" v-model="profile" :pasien="pasien" />
   </q-dialog>
 </template>
 
@@ -153,62 +88,61 @@ const menus = ref([
   //   name: 'AnamnesisPage',
   //   label: 'Anamnesis & Riwayat',
   //   icon: 'icon-mat-medical_information',
-  //   comp: shallowRef(defineAsyncComponent(() => import('./comptindakan/pagemenu/AnamnesisPage.vue')))
+  //   comp: shallowRef(defineAsyncComponent(() => import('./comptindakan/pagemenu/AnamnesisPage.vue'))) // HAPUS
   // },
   // {
   //   name: 'PemeriksaanPage',
   //   label: 'Pemeriksaan Umum & Fisik',
   //   icon: 'icon-my-stethoscope',
-  //   comp: shallowRef(defineAsyncComponent(() => import('./comptindakan/pagemenu/PemeriksaanPageBaru.vue')))
+  //   comp: shallowRef(defineAsyncComponent(() => import('./comptindakan/pagemenu/PemeriksaanPageBaru.vue')))  // hapus
   // },
   // {
   //   name: 'PsikiatriPage',
   //   label: 'Pemeriksaan Psikologi',
   //   icon: 'icon-mat-health_and_safety',
-  //   comp: shallowRef(defineAsyncComponent(() => import('./comptindakan/pagemenu/PsikiatriPage.vue')))
+  //   comp: shallowRef(defineAsyncComponent(() => import('./comptindakan/pagemenu/PsikiatriPage.vue'))) // hapus
   // },
   // {
   //   name: 'LayananPage',
   //   label: 'Assesment',
   //   icon: 'icon-mat-analytics',
-  //   comp: shallowRef(defineAsyncComponent(() => import('./comptindakan/pagemenu/LayananPage.vue')))
+  //   comp: shallowRef(defineAsyncComponent(() => import('./comptindakan/pagemenu/LayananPage.vue'))) // hapus
   // },
   // {
   //   name: 'BayiAnakPage',
   //   label: 'Bayi & Anak',
   //   icon: 'icon-my-baby-head',
-  //   comp: shallowRef(defineAsyncComponent(() => import('./comptindakan/pagemenu/BayiAnakPage.vue')))
+  //   comp: shallowRef(defineAsyncComponent(() => import('./comptindakan/pagemenu/BayiAnakPage.vue'))) // hapus
   // },
   // {
   //   name: 'penunjang-page',
   //   label: 'Penunjang',
   //   icon: 'icon-my-local_hospital',
-  //   comp: shallowRef(defineAsyncComponent(() => import('./comptindakan/pagemenu/PenunjangPage.vue')))
+  //   comp: shallowRef(defineAsyncComponent(() => import('./comptindakan/pagemenu/PenunjangPage.vue'))) // hapus
   // },
   // {
   //   name: 'perencanaan-page',
   //   label: 'Plann',
   //   icon: 'icon-mat-style',
-  //   comp: shallowRef(defineAsyncComponent(() => import('./comptindakan/pagemenu/PerencanaanPage.vue')))
+  //   comp: shallowRef(defineAsyncComponent(() => import('./comptindakan/pagemenu/PerencanaanPage.vue'))) // hapus
   // },
   // {
   //   name: 'edukasi-page',
   //   label: 'Edukasi',
   //   icon: 'icon-mat-tungsten',
-  //   comp: shallowRef(defineAsyncComponent(() => import('./comptindakan/pagemenu/EdukasiPage.vue')))
+  //   comp: shallowRef(defineAsyncComponent(() => import('./comptindakan/pagemenu/EdukasiPage.vue'))) // hapus
   // },
   {
     name: 'e-resep-page',
     label: 'EResep',
     icon: 'icon-mat-receipt',
     comp: shallowRef(defineAsyncComponent(() => import('../../eresep/EresepPage.vue')))
-    // comp: shallowRef(defineAsyncComponent(() => import('./comptindakan/pagemenu/EResepPage.vue')))
   }
   // {
   //   name: 'sharing-bpjs-page',
   //   label: 'Sharing',
   //   icon: 'icon-my-bpjs',
-  //   comp: shallowRef(defineAsyncComponent(() => import('./comptindakan/pagemenu/SharingBpjsPage.vue')))
+  //   comp: shallowRef(defineAsyncComponent(() => import('./comptindakan/pagemenu/SharingBpjsPage.vue'))) // hapus
   // },
   // {
   //   name: 'upload-dok-page',
@@ -318,10 +252,10 @@ watchEffect(() => {
 </script>
 
 <style lang="scss">
-.contain{
-    display: flex;
-    flex-direction: column;
-    height: calc(100vh - 50px);
-    overflow: hidden;
+.contain {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 50px);
+  overflow: hidden;
 }
 </style>
