@@ -170,6 +170,12 @@
                     <div class="col">
                       <div class="text-weight-bold text-primary">{{ commit.message }}</div>
 
+                      <!-- Add author name -->
+                      <div class="text-caption q-mt-xs">
+                        <q-icon name="icon-mat-person" size="xs" class="q-mr-xs" />
+                        <span class="text-weight-medium">{{ commit.author }}</span>
+                      </div>
+
                       <!-- Stats -->
                       <div class="row q-gutter-x-md q-mt-sm">
                         <div class="stats-chip">
@@ -485,7 +491,7 @@ async function onRepoChange(newRepo) {
     store.params.branch = 'sigarang'
   }
   await store.getBranches() // Get new branches for selected repo
-  store.getGitReport() // Refresh report data
+  // store.getGitReport() // Refresh report data
 }
 </script>
 <style lang="scss" scoped>
