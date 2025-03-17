@@ -72,7 +72,7 @@ export const useNurseNoteRanapStore = defineStore('nursenote-ranap-store', {
         value: '1'
       },
       {
-        label: 'Grafik TTV',
+        label: 'Grafik TTV ( khusus NICU,ICU,ICCU )',
         value: '2'
       },
       {

@@ -109,7 +109,7 @@
           </thead>
           <tbody>
             <template v-for="item in store.items" :key="item.id">
-              <tr v-if="item?.flag?.length">
+              <tr>
                 <td valign="top">
                   <div class="column flex-center">
                     <div>{{ dateFullFormat(item?.created_at) }}</div>
@@ -131,6 +131,10 @@
                       <div>CVP : {{ item?.cvp }}, ICP : {{ item?.icp }}, GCS : {{ item?.gcs }}, Kejang, Durasi : {{
                         item?.kejang
                         }},</div>
+                    </template>
+                    <template v-if="item?.flag.includes('5')">
+                      <div class="text-bold">Catatan Pemberian Infus : </div>
+                      <div> - {{ item?.ket }}</div>
                     </template>
 
 
@@ -177,6 +181,10 @@
                       <template v-else>
                         <div class="q-ml-sm"> &#9673; Tidak ada obat yang diberikan</div>
                       </template>
+                    </template>
+                    <template v-if="item?.flag_balance === '1'">
+                      <div class="text-bold">Balance Cairan : <em>{{ item?.balance }}</em></div>
+
                     </template>
                   </div>
                 </td>

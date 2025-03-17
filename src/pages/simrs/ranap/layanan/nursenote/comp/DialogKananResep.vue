@@ -17,12 +17,15 @@
             <q-item-section>
               <q-item-label class="text-bold">{{ obat?.nama_obat }}</q-item-label>
               <q-item-label class="text-yellow">kandungan : {{ obat?.kandungan }}</q-item-label>
+              <template v-if="obat?.rincian?.length">
+                <div v-for="rinci in obat?.rincian" :key="rinci" class="text-white">{{ rinci }}</div>
+              </template>
             </q-item-section>
             <q-item-section side>
               <q-item-label class="text-white">{{ obat?.jumlah }} {{ obat?.satuan }} ({{ obat?.sediaan
                 }})</q-item-label>
               <q-item-label caption class="text-white">aturan : {{ obat?.aturan }}</q-item-label>
-              <!-- <q-item-label caption class="text-white">tgl : {{ obat?.waktu }}</q-item-label> -->
+
             </q-item-section>
           </q-item>
         </q-list>
@@ -105,6 +108,7 @@ const daftarObat = ref([])
 const setitems = () => {
   let arr = []
   const reseps = props?.pasien?.newapotekrajal ?? []
+  // console.log('reseps', reseps);
 
   if (reseps.length) {
     const detailsResep = reseps?.map(x => x?.permintaanresep?.filter?.(y => y?.mobat?.jenis_perbekalan === 'Obat').map(y => {
@@ -112,7 +116,7 @@ const setitems = () => {
         kdobat: y?.kdobat,
         nama_obat: y?.mobat?.nama_obat,
         kandungan: y?.kandungan,
-        uraian: y?.uraian108,
+        uraian108: y?.uraian108,
         jumlah: y?.jumlah,
         aturan: y?.aturan,
         created_at: y?.created_at,
@@ -120,7 +124,8 @@ const setitems = () => {
         uraian: y?.uraian,
         satuan: y?.mobat?.satuan_k,
         sediaan: y?.mobat?.bentuk_sediaan,
-        jenis: y?.mobat?.jenis_perbekalan
+        jenis: y?.mobat?.jenis_perbekalan,
+        rincian: []
       }
     }))?.flat()
     const newArr = [...new Set(detailsResep)]
@@ -143,12 +148,64 @@ const setitems = () => {
         existing.satuan = current.satuan;
         existing.sediaan = current.sediaan;
         existing.jenis = current.jenis;
+        existing.rincian = current.rincian;
       } else {
         acc.push(current);
       }
       return acc;
     }, []);
-    arr = result
+    // arr = result
+
+
+    // ini racikan
+
+    const racikan = reseps?.filter(x => x?.permintaanracikan)?.map(r => r?.permintaanracikan)?.flat() || []
+    const kandungans = racikan?.map(x => x?.kandungan)?.join(', ') || null
+    const rincianNamaObats = racikan?.map(x => x?.mobat?.nama_obat)
+    const rrr = racikan?.length
+      ? racikan?.map(y => {
+        return {
+          kdobat: y?.namaracikan,
+          nama_obat: y?.namaracikan,
+          kandungan: kandungans,
+          uraian108: racikan?.map(x => x?.uraian108)?.join(', ') || null,
+          jumlah: y?.jumlahdibutuhkan,
+          aturan: y?.aturan,
+          created_at: y?.created_at,
+          waktu: dateFull(y?.created_at),
+          uraian: y?.uraian,
+          satuan: y?.satuan_racik,
+          sediaan: y?.satuan_racik,
+          jenis: y?.mobat?.jenis_perbekalan,
+          rincian: rincianNamaObats
+        }
+      })?.flat() : []
+    // console.log('racikan', racikan);
+    const res = rrr.reduce((acc, current) => {
+      const existing = acc.find(item => item.nama_obat === current.nama_obat);
+      if (existing) {
+        // Update with the latest values while keeping the same structure
+        existing.kandungan = current.kandungan;
+        existing.uraian108 = current.uraian108;
+        existing.jumlah = current.jumlah;
+        existing.aturan = current.aturan;
+        existing.created_at = current.created_at;
+        existing.waktu = current.waktu;
+        existing.satuan = current.satuan;
+        existing.sediaan = current.sediaan;
+        existing.jenis = current.jenis;
+        existing.rincian = current.rincian;
+      } else {
+        acc.push(current);
+      }
+      return acc;
+    }, []);
+
+
+    const combinedArray = [...result, ...res];
+    arr = combinedArray
+    // console.log('res', arr);
+
   }
 
   // return arr
