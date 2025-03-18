@@ -323,7 +323,7 @@ const submitObatNonResep = () => {
   formNonResep.value.kdobat = kdobat
   formNonResep.value.created_at = created_at
   formNonResep.value.waktu = dateFull(created_at)
-  console.log('formNonResep.value', formNonResep.value);
+  // console.log('formNonResep.value', formNonResep.value);
 
 
   if (props.status === 'add') {

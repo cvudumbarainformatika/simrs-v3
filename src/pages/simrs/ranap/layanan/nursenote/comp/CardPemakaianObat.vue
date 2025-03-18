@@ -30,7 +30,7 @@
                 <div class="text-white q-mt-xs">
                   Sisa: {{ obat?.sisa }} {{ obat?.satuan_ambil }}, <span class="text-yellow q-ml-md"> Dosis: {{
                     obat?.dosis
-                  }}</span>
+                    }}</span>
                 </div>
               </q-item-section>
 
@@ -120,7 +120,7 @@ const hapusObat = (index) => {
     // const params = { id: selected.value }
     emits('hapusObat', index)
   }).onCancel(() => {
-    console.log('Cancel')
+    // console.log('Cancel')
     // selected.value = []
   }).onDismiss(() => {
     // console.log('I am triggered on both OK and Cancel')

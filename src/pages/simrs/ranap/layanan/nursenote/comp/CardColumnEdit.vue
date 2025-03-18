@@ -465,8 +465,8 @@
                   store.typePemakaianObat = val
                   store.dialogPreview = true
                 }" @hapus-obat="(index) => {
-                item?.reseps?.splice(index, 1)
-              }" status="edit" />
+                  item?.reseps?.splice(index, 1)
+                }" status="edit" />
             </div>
             <div class="col-6">
               <q-card class="black-ku q-ml-lg">
@@ -534,7 +534,7 @@
 
     <dialog-kanan-resep :key="item?.id" :pasien="pasien" :kasus="kasus" :nakes="nakes" status="edit"
       :type="store.typePemakaianObat" class="z-top" @add-to-list="(val) => {
-        console.log(val, item);
+        // console.log(val, item);
 
         item?.reseps?.push(val)
       }" />
@@ -615,7 +615,7 @@ const showBalance = (item) => {
 
 
 const onSubmit = () => {
-  console.log('item', props?.item);
+  // console.log('item', props?.item);
 
   const ygPunya = auth?.user?.pegawai?.kdpegsimrs === props?.item?.user
   if (!ygPunya) {
