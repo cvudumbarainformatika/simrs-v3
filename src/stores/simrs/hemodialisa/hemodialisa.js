@@ -188,6 +188,22 @@ export const useListPasienHemodialisaStore = defineStore('list-pasien-hemodialis
         }
       }
     },
+    terimapasien (pas) {
+      return new Promise((resolve, reject) => {
+        api.post('v1/simrs/hemodialisa/hemodialisa/terima-pasien', pas)
+          .then((resp) => {
+            console.log('resp', resp)
+            const findPasien = this.items.find(x => x?.noreg === pas?.noreg)
+            if (findPasien) {
+              findPasien.anamnesis = resp?.data?.anamnesis
+            }
+            resolve(resp)
+          })
+          .catch((err) => {
+            reject(err)
+          })
+      })
+    }
   }
 })
 
