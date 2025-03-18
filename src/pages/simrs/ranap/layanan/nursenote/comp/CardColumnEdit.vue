@@ -38,7 +38,7 @@
               <div class="text-bold">IMPLEMENTASI </div>
               <q-separator class="q-my-sm"></q-separator>
               <div>
-                <div class="text-bold">Implementasi : </div>
+                <div class="text-bold">Catatan : </div>
                 <!-- <div class="q-ml-sm column">
                 <div v-html="getNewLine(item?.implementasi)" />
                 <q-popup-edit fit buttons v-model="item.implementasi" :cover="true" class="" v-slot="scope">
@@ -279,6 +279,15 @@
                   <div></div>
                 </div>
               </div>
+              <div class="q-ml-sm flex">
+                <div class="text-bold">FLOW : </div>
+                <div class="flex items-center q-gutter-x-xs">
+                  <text-edit style="max-width: 80px;" :model-value="item.flow" type="number" @update:model-value="(val) => {
+                    item.flow = val
+                  }" />
+                  <div></div>
+                </div>
+              </div>
 
 
 
@@ -449,9 +458,15 @@
           <div class="row">
             <div class="col-6">
               <CardPemakaianObat :pasien="pasien" :kasus="kasus" :nakes="nakes" :reseps="item?.reseps" :key="item?.id"
-                @add-resep="store.dialogPreview = true" @hapus-obat="(index) => {
-                  item?.reseps?.splice(index, 1)
-                }" status="edit" />
+                @add-non-resep="(val) => {
+                  store.typePemakaianObat = val
+                  store.dialogPreview = true
+                }" @add-resep="(val) => {
+                  store.typePemakaianObat = val
+                  store.dialogPreview = true
+                }" @hapus-obat="(index) => {
+                item?.reseps?.splice(index, 1)
+              }" status="edit" />
             </div>
             <div class="col-6">
               <q-card class="black-ku q-ml-lg">
@@ -517,8 +532,8 @@
 
 
 
-    <dialog-kanan-resep :key="item?.id" :pasien="pasien" :kasus="kasus" :nakes="nakes" status="edit" class="z-top"
-      @add-to-list="(val) => {
+    <dialog-kanan-resep :key="item?.id" :pasien="pasien" :kasus="kasus" :nakes="nakes" status="edit"
+      :type="store.typePemakaianObat" class="z-top" @add-to-list="(val) => {
         console.log(val, item);
 
         item?.reseps?.push(val)

@@ -19,7 +19,7 @@
           <template v-if="reseps.length">
             <q-item v-for="(obat, index) in reseps" :key="index" class="q-hoverable futuristic-item q-mb-xs">
               <q-item-section avatar>
-                <q-avatar :color="obat?.resep ? 'primary' : 'secondary'" text-color="white" size="md">
+                <q-avatar :color="obat?.flag !== '1' ? 'orange' : 'secondary'" text-color="white" size="md">
                   {{ obat?.nama_obat.charAt(0) }}
                 </q-avatar>
               </q-item-section>
@@ -30,7 +30,7 @@
                 <div class="text-white q-mt-xs">
                   Sisa: {{ obat?.sisa }} {{ obat?.satuan_ambil }}, <span class="text-yellow q-ml-md"> Dosis: {{
                     obat?.dosis
-                    }}</span>
+                  }}</span>
                 </div>
               </q-item-section>
 
@@ -97,12 +97,12 @@ const emits = defineEmits(['addResep', 'addNonResep', 'hapusObat'])
 
 // Fungsi untuk menambahkan obat resep
 const addResep = () => {
-  emits('addResep')
+  emits('addResep', 'resep')
 }
 
 // Fungsi untuk menambahkan obat non-resep
 const addNonResep = () => {
-  emits('addNonResep')
+  emits('addNonResep', 'non-resep')
 }
 
 

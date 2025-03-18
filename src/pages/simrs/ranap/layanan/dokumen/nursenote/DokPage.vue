@@ -118,7 +118,7 @@
                 </td>
                 <td valign="top">
                   <div class="full-width column">
-                    <div class="text-bold">Implementasi : </div>
+                    <div class="text-bold">Catatan : </div>
                     <div>{{ item?.implementasi || '-' }}</div>
 
                     <template v-if="item?.flag.includes('2') || item?.flag.includes('4')">
@@ -130,7 +130,7 @@
                           item?.nyeri }}, Skor : {{ item?.skor }}</div>
                       <div>CVP : {{ item?.cvp }}, ICP : {{ item?.icp }}, GCS : {{ item?.gcs }}, Kejang, Durasi : {{
                         item?.kejang
-                        }},</div>
+                      }},</div>
                     </template>
                     <template v-if="item?.flag.includes('5')">
                       <div class="text-bold">Catatan Pemberian Infus : </div>

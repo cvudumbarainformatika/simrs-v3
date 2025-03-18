@@ -361,7 +361,7 @@ onMounted(() => {
 
 // Restore previous dark mode setting when leaving the page
 onUnmounted(() => {
-  $q.dark.set('auto') // atau sesuai setting default aplikasi
+  $q.dark.set(false) // atau sesuai setting default aplikasi
 })
 
 // Fungsi untuk export ke Excel

@@ -48,7 +48,7 @@
 
 
 
-      <dialog-kanan-resep :pasien="pasien" :kasus="kasus" :nakes="nakes" />
+      <dialog-kanan-resep :pasien="pasien" :kasus="kasus" :nakes="nakes" :type="store.typePemakaianObat" />
 
     </q-card>
 
