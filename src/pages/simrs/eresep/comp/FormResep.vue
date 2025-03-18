@@ -33,6 +33,12 @@
             <q-btn push dense color="green" no-caps label="obat permintaan operasi" @click="openPersiapanOperasi" />
           </div>
         </div>
+        <div v-if="depo === 'rnp'">
+          <div>
+            <!-- <q-btn push dense color="green" no-caps label="obat permintaan operasi" @click="openPersiapanOperasi" /> -->
+            <q-checkbox v-model="store.form.respkrs" label="Resep KRS" />
+          </div>
+        </div>
         <div v-if="store?.form?.tiperesep === 'iter'">
           <app-input v-model="store.form.iter_jml" label="Jumlah Iter" outlined @update:model-value="setJumlahIter" />
         </div>

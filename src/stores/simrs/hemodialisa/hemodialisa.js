@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia'
+import { acceptHMRUpdate, defineStore } from 'pinia'
 import { api } from 'boot/axios'
 import { dateDbFormat } from 'src/modules/formatter'
 import { date } from 'quasar'
@@ -190,3 +190,7 @@ export const useListPasienHemodialisaStore = defineStore('list-pasien-hemodialis
     },
   }
 })
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useListPasienHemodialisaStore, import.meta.hot))
+}
