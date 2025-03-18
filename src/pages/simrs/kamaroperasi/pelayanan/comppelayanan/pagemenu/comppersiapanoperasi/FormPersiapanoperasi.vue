@@ -130,7 +130,7 @@
       <div class="absolute-bottom q-pa-sm bg-yellow-3 row items-center justify-between">
         <div class="q-gutter-sm">
           <q-btn color="dark" @click="tempOp.isOpen = true">
-            Buka Pemplate
+            Buka Template
           </q-btn>
         </div>
         <div>

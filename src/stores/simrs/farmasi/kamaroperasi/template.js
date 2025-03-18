@@ -173,28 +173,31 @@ export const useTemplatePersiapanOperasiStore = defineStore('template_persiapan_
             // if (this.item != null) this.item = resp?.data?.data
             if (resp?.data.status == 200) notifSuccess(resp)
             else notifErrVue(resp?.data?.message)
-            const resepSementara = usePersiapanOperasiStore()
-            // insert nomer permintaan
-            resepSementara.nopermintaans.splice(0, 1)
-            resepSementara.nopermintaans.unshift(resp?.data?.nopermintaan)
-            resepSementara.nopermintaans.unshift('BARU')
-            resepSementara.nopermintaan = resp?.data?.nopermintaan
-            // inseert data
-            const res = resp?.data?.head
-            const reseps = resepSementara.pasien?.permintaanobatoperasi
-            const indexRes = reseps.findIndex(x => x.nopermintaan === res?.nopermintaan)
-            if (indexRes >= 0) {
-              resepSementara.pasien.permintaanobatoperasi[indexRes] = res
-            }
-            else {
-              resepSementara.pasien.permintaanobatoperasi.push(res)
-            }
-            if (resp?.data?.head?.flag == '1') {
-              resepSementara.listBelum = null
-              resepSementara.listSudah = res
-            } else {
-              resepSementara.listBelum = res
-              resepSementara.listSudah = null
+            if (resp?.data.status != 442) {
+              const resepSementara = usePersiapanOperasiStore()
+              // insert nomer permintaan
+              resepSementara.nopermintaans.splice(0, 1)
+              resepSementara.nopermintaans.unshift(resp?.data?.nopermintaan)
+              resepSementara.nopermintaans.unshift('BARU')
+              if (resp?.data?.nopermintaan) resepSementara.nopermintaan = resp?.data?.nopermintaan
+              // inseert data
+              const res = resp?.data?.head
+              const reseps = resepSementara.pasien?.permintaanobatoperasi
+              const indexRes = reseps.findIndex(x => x.nopermintaan === res?.nopermintaan)
+              if (indexRes >= 0) {
+                resepSementara.pasien.permintaanobatoperasi[indexRes] = res
+              }
+              else {
+                resepSementara.pasien.permintaanobatoperasi.push(res)
+              }
+              if (resp?.data?.head?.flag == '1') {
+                resepSementara.listBelum = null
+                resepSementara.listSudah = res
+              } else {
+                resepSementara.listBelum = res
+                resepSementara.listSudah = null
+
+              }
 
             }
             resolve(resp)
