@@ -1,5 +1,5 @@
 <template>
-  <template v-if="store.psappendapatan.length > 0 && store.psapbarjas.length > 0 && store.psapsilpa.length > 0">
+  <template v-if="store.psappendapatan.length || store.psapbarjas.length || store.psapsilpa.length">
     <q-card-section class="full-width">
       <div class="row">
         <div class="full-width">
@@ -331,7 +331,7 @@ function totalSilpa() {
   const totalpagu = store.psapsilpa.map((x) => x.pagu).reduce((a, b) => a + b, 0)
   const totalrealisasi = store.psapsilpa.map((x) => x.nilaisemua).reduce((a, b) => a + b, 0)
   const totalselisih = totalpagu - totalrealisasi
-  const totalpersen = ((totalrealisasi / totalpagu) * 100).toFixed(2)
+  const totalpersen = isNaN((totalrealisasi / totalpagu) * 100) ? parseFloat(0).toFixed(2) : ((totalrealisasi / totalpagu) * 100).toFixed(2)
   return {
     totalpagu,
     totalrealisasi,
@@ -360,7 +360,7 @@ function akhirSilpa() {
     (store.psapsilpa.map((x) => x.nilaisemua).reduce((a, b) => a + b, 0))
 
   const totalselisih = parseFloat(totalpagu) - parseFloat(totalrealisasi)
-  const totalpersen = (parseFloat(surplusDefisit().totalpersen) + parseFloat(totalSilpa().totalpersen)).toFixed(2)
+  const totalpersen = isNaN(parseFloat(surplusDefisit().totalpersen) + parseFloat(totalSilpa().totalpersen)) ? parseFloat(0).toFixed(2) : (parseFloat(surplusDefisit().totalpersen) + parseFloat(totalSilpa().totalpersen)).toFixed(2)
   return {
     totalpagu,
     totalrealisasi,

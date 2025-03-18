@@ -459,7 +459,11 @@ export const useLRAjurnalStore = defineStore('lap_realisasi_anggaran', {
         silpa3.push(obj1, obj2, obj3)
         silpa2.push(obj1, obj2)
         silpa1.push(obj1)
+
+
         psapsilpa.push(obj3)
+
+
       } console.log('SILPA', silpa6)
 
       const psappendapatan = []
@@ -674,6 +678,23 @@ export const useLRAjurnalStore = defineStore('lap_realisasi_anggaran', {
         this.psapbarjas = psapbarjas
         this.psapmodal = psapmodal
         this.psapsilpa = psapsilpa
+        // const psap0 = {
+        //   kode: null,
+        //   uraian: 'Sisa Lebih Perhitungan Anggaran Tahun Sebelumnya',
+        //   pagu: 0,
+        //   nilaisblm: 0,
+        //   nilaiskg: 0,
+        //   nilaisemua: 0,
+        //   selisih: 0,
+        //   persen: 0
+        // }
+
+
+        // if (!this.pagusilpa.length || !this.silpasblm.length || !this.silpaskg.length) {
+        //   this.psapsilpa.push(psap0)
+        // } else {
+
+        // }
         console.log('psappendapatan', this.psappendapatan)
         console.log('psapbarjas', this.psapbarjas)
         console.log('psapmodal', this.psapmodal)

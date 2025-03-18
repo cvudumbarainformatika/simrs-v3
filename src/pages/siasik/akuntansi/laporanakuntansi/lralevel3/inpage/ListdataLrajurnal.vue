@@ -1,5 +1,5 @@
 <template>
-  <template v-if="store.hasilpendapatan.length > 0 && store.hasilbelanja.length > 0 && store.hasilsilpa.length > 0">
+  <template v-if="store.hasilpendapatan.length || store.hasilbelanja.length || store.hasilsilpa.length">
     <q-card-section class="full-width">
       <div class="row">
         <div class="full-width">
