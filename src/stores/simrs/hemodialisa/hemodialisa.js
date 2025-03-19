@@ -26,7 +26,9 @@ export const useListPasienHemodialisaStore = defineStore('list-pasien-hemodialis
     isViewList: false,
     pasien: null,
     pageTindakan: false,
-    loadingTerima: false
+    loadingTerima: false,
+    jeniskasus: [],
+    jnsKasusPasien: null
   }),
   getters: {
     // doubleCount: (state) => state.counter * 2
@@ -122,6 +124,13 @@ export const useListPasienHemodialisaStore = defineStore('list-pasien-hemodialis
     togglePageTindakan () {
       this.pageTindakan = !this.pageTindakan
     },
+    async getJenisKasus () {
+      const resp = await api.get('v1/simrs/ranap/ruangan/listjeniskasus')
+      console.log('jns kasus', resp.data)
+      if (resp.status === 200) {
+        this.jeniskasus = resp.data
+      }
+    },
     injectDataPasien (noreg, val, kode, arr) {
       const findPasien = this.items?.filter(x => x.noreg === noreg)
       // console.log('inject pasien', findPasien)
@@ -188,6 +197,23 @@ export const useListPasienHemodialisaStore = defineStore('list-pasien-hemodialis
         }
       }
     },
+
+    async getNakes () {
+      const resp = await api.get('/v1/simrs/master/pegawai/listnakes')
+      // console.log('nakes', resp)
+
+      if (resp.status === 200) {
+        this.nakes = resp.data
+      }
+    },
+    async getNonNakes () {
+      const resp = await api.get('/v1/simrs/master/pegawai/listnonnakes')
+      // console.log('non nakes', resp)
+
+      if (resp.status === 200) {
+        this.nonNakes = resp.data
+      }
+    },
     terimapasien (pas) {
       return new Promise((resolve, reject) => {
         api.post('v1/simrs/hemodialisa/hemodialisa/terima-pasien', pas)
@@ -195,8 +221,19 @@ export const useListPasienHemodialisaStore = defineStore('list-pasien-hemodialis
             console.log('resp', resp)
             const findPasien = this.items.find(x => x?.noreg === pas?.noreg)
             if (findPasien) {
+              findPasien.kd_jeniskasus = resp?.data?.kd_jeniskasus
               findPasien.anamnesis = resp?.data?.anamnesis
+              findPasien.newapotekrajal = resp?.data?.newapotekrajal
+              findPasien.diagnosa = resp?.data?.diagnosa
+              findPasien.pemeriksaan = resp?.data?.pemeriksaan
+              findPasien.penilaian = resp?.data?.penilaian
+              this.pasien = findPasien
             }
+            const jnsKasus = resp?.data?.kd_jeniskasus
+            if (this.jeniskasus.length && jnsKasus) {
+              this.jnsKasusPasien = this.jeniskasus.find(x => x.kode === jnsKasus) ?? null
+            }
+            console.log('resp pas', this.jnsKasusPasien, jnsKasus)
             resolve(resp)
           })
           .catch((err) => {

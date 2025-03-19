@@ -48,11 +48,25 @@ import { onMounted } from 'vue'
 import ListPasien from '../pengunjung/comp/ListPasien.vue'
 // import DetailsPasien from '../pengunjung/comp/DetailsPasien.vue'
 import PageTindakan from '../tindakan/IndexPage.vue'
+import { usePenilaianHemodialisaStore } from 'src/stores/simrs/hemodialisa/penilaian'
+import { useAnatommyHemodialisaStore } from 'src/stores/simrs/hemodialisa/anatomy'
 
 const store = useListPasienHemodialisaStore()
-
+const penilaian = usePenilaianHemodialisaStore()
+const anatomy = useAnatommyHemodialisaStore()
 onMounted(() => {
-  store.getDataTable()
+  Promise.all([
+    store.getDataTable(),
+    penilaian.getMaster(),
+    anatomy.getmasteranatomys(),
+
+
+
+    store.getNakes(),
+    store.getNonNakes(),
+    store.getJenisKasus(),
+
+  ])
 })
 
 function bukaTindakan (val) {

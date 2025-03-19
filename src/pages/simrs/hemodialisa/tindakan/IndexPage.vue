@@ -9,9 +9,9 @@
         </q-header>
         <!-- LEFT DRAWER ======================================================================================-->
         <q-drawer v-model="drawer" elevated bordered show-if-above :width="230" :breakpoint="400">
-          <LeftDrawer :key="pasien" :pasien="pasien" :menus="menus" :menu="menu" @click-menu="(val) => menuDiganti(val)"
-            @history-pasien="historyPasien" @print-rekap="emits('printRekapBill')" @icare="getIcare"
-            @show-profile="profile = !profile" />
+          <LeftDrawer :key="pasien" :pasien="pasien" :menus="filterredMenus" :menu="menu"
+            @click-menu="(val) => menuDiganti(val)" @history-pasien="historyPasien"
+            @print-rekap="emits('printRekapBill')" @icare="getIcare" @show-profile="profile = !profile" />
         </q-drawer>
 
         <!-- RIGHT DRAWER ======================================================================================-->
@@ -32,7 +32,7 @@
                   </div>
                 </div>
                 <component :is="menu.comp" v-else :key="pasien" :pasien="pasien" :loading-terima="store.loadingTerima"
-                  depo="rnp" />
+                  :kasus="store?.jnsKasusPasien" :nakes="nakes" depo="rnp" />
               </template>
               <template #fallback>
                 <AppLoader />
@@ -53,25 +53,24 @@ import LeftDrawer from './complayout/LeftDrawer.vue'
 import RightDrawer from './complayout/RightDrawer.vue'
 import HeaderLayout from './complayout/HeaderLayout.vue'
 import DialogProfile from './DialogProfile.vue'
-// import LoaderPage from './LoaderPage.vue'
 import { useInacbgPoli } from 'src/stores/simrs/pelayanan/poli/inacbg'
-import { usePengunjungPoliStore } from 'src/stores/simrs/pelayanan/poli/pengunjung'
-import { usePemeriksaanFisik } from 'src/stores/simrs/pelayanan/poli/pemeriksaanfisik'
-// import { useMasterPemeriksaanFisik } from 'src/stores/simrs/master/poliklinik/pemeriksaanfisik'
 import { defineAsyncComponent, onBeforeMount, onBeforeUnmount, onMounted, onUnmounted, ref, shallowRef, watchEffect } from 'vue'
-// import { useAnamnesis } from 'src/stores/simrs/pelayanan/poli/anamnesis'
+
 import { useQuasar } from 'quasar'
 
 import { useListPasienHemodialisaStore } from 'src/stores/simrs/hemodialisa/hemodialisa'
+import useLayanan from '../layanan/useLayanan'
 
 const $q = useQuasar()
 
 const hemodialisa = useListPasienHemodialisaStore()
 
-const store = usePengunjungPoliStore()
+
+const { filterredMenus, menu, store, nakes, menuDiganti } = useLayanan()
+// const store = usePengunjungPoliStore()
 // const master = useMasterPemeriksaanFisik()
 // const anamnesis = useAnamnesis()
-const fisik = usePemeriksaanFisik()
+// const fisik = usePemeriksaanFisik()
 const drawer = ref(false)
 const drawerRight = ref(false)
 const profile = ref(false)
@@ -82,117 +81,6 @@ const props = defineProps({
   }
 })
 const emits = defineEmits(['printRekapBill'])
-
-const menus = ref([
-  // {
-  //   name: 'AnamnesisPage',
-  //   label: 'Anamnesis & Riwayat',
-  //   icon: 'icon-mat-medical_information',
-  //   comp: shallowRef(defineAsyncComponent(() => import('./comptindakan/pagemenu/AnamnesisPage.vue'))) // HAPUS
-  // },
-  {
-    name: 'AnamnesisPage',
-    label: 'Anamnesse $ Riwayat',
-    icon: 'icon-mat-medical_information',
-    nakes: ['1', '2', '3'],
-    comp: shallowRef(defineAsyncComponent(() => import('../layanan/anamnesis/IndexPage.vue')))
-  },
-  // {
-  //   name: 'PemeriksaanPage',
-  //   label: 'Pemeriksaan Umum & Fisik',
-  //   icon: 'icon-my-stethoscope',
-  //   comp: shallowRef(defineAsyncComponent(() => import('./comptindakan/pagemenu/PemeriksaanPageBaru.vue')))  // hapus
-  // },
-  // {
-  //   name: 'PsikiatriPage',
-  //   label: 'Pemeriksaan Psikologi',
-  //   icon: 'icon-mat-health_and_safety',
-  //   comp: shallowRef(defineAsyncComponent(() => import('./comptindakan/pagemenu/PsikiatriPage.vue'))) // hapus
-  // },
-  // {
-  //   name: 'LayananPage',
-  //   label: 'Assesment',
-  //   icon: 'icon-mat-analytics',
-  //   comp: shallowRef(defineAsyncComponent(() => import('./comptindakan/pagemenu/LayananPage.vue'))) // hapus
-  // },
-  // {
-  //   name: 'BayiAnakPage',
-  //   label: 'Bayi & Anak',
-  //   icon: 'icon-my-baby-head',
-  //   comp: shallowRef(defineAsyncComponent(() => import('./comptindakan/pagemenu/BayiAnakPage.vue'))) // hapus
-  // },
-  // {
-  //   name: 'penunjang-page',
-  //   label: 'Penunjang',
-  //   icon: 'icon-my-local_hospital',
-  //   comp: shallowRef(defineAsyncComponent(() => import('./comptindakan/pagemenu/PenunjangPage.vue'))) // hapus
-  // },
-  // {
-  //   name: 'perencanaan-page',
-  //   label: 'Plann',
-  //   icon: 'icon-mat-style',
-  //   comp: shallowRef(defineAsyncComponent(() => import('./comptindakan/pagemenu/PerencanaanPage.vue'))) // hapus
-  // },
-  // {
-  //   name: 'edukasi-page',
-  //   label: 'Edukasi',
-  //   icon: 'icon-mat-tungsten',
-  //   comp: shallowRef(defineAsyncComponent(() => import('./comptindakan/pagemenu/EdukasiPage.vue'))) // hapus
-  // },
-  {
-    name: 'e-resep-page',
-    label: 'EResep',
-    icon: 'icon-mat-receipt',
-    comp: shallowRef(defineAsyncComponent(() => import('../../eresep/EresepPage.vue')))
-  }
-  // {
-  //   name: 'sharing-bpjs-page',
-  //   label: 'Sharing',
-  //   icon: 'icon-my-bpjs',
-  //   comp: shallowRef(defineAsyncComponent(() => import('./comptindakan/pagemenu/SharingBpjsPage.vue'))) // hapus
-  // },
-  // {
-  //   name: 'upload-dok-page',
-  //   label: 'Upload Dokumen',
-  //   icon: 'icon-mat-cloud_upload',
-  //   comp: shallowRef(defineAsyncComponent(() => import('./comptindakan/pagemenu/UploadDokPage.vue')))
-  // },
-  // {
-  //   name: 'penerbitan-surat-page',
-  //   label: 'Dokumen',
-  //   icon: 'icon-mat-email',
-  //   comp: shallowRef(defineAsyncComponent(() => import('./comptindakan/pagemenu/PenerbitanSuratPage.vue')))
-  // }
-])
-const menu = ref(menus.value[0])
-
-// eslint-disable-next-line no-unused-vars
-const inacbg = useInacbgPoli()
-onMounted(() => {
-  console.log('pasien', props?.pasien)
-  menu.value = menus.value[0]
-
-  // master.getData()
-  // fisik.initReset(false, props?.pasien)
-})
-
-onBeforeMount(() => {
-  menu.value = menus.value[0]
-  // fisik.setFullCanvasFalse()
-})
-
-onBeforeUnmount(() => {
-  // console.log('beforeunmount')
-  menu.value = menus.value[0]
-  // fisik.setFullCanvasFalse()
-  // fisik.initReset(true)
-})
-
-onUnmounted(() => {
-  // console.log('pasien', props.pasien)
-  menu.value = menus.value[0]
-  // fisik.setFullCanvasFalse()
-})
 
 function historyPasien () {
   drawerRight.value = !drawerRight.value
@@ -207,46 +95,44 @@ function getIcare () {
 }
 
 function lihatSebelumTertutup () {
-  // console.log('ini sebelum halama di close')
-  // anamnesis.initReset()
   hemodialisa.pasien = null
   hemodialisa.pageTindakan = true
 }
 
-function menuDiganti (val) {
-  if (menu.value.name === 'PemeriksaanPage') {
-    if (fisik.edited) {
-      // console.log('ada yg blm diupdate')
-      harapSimpanPerubahanPemeriksaanFisik(val)
-    }
-    else {
-      menu.value = val
-    }
-  }
-  else {
-    menu.value = val
-  }
-}
+// function menuDiganti (val) {
+//   if (menu.value.name === 'PemeriksaanPage') {
+//     if (fisik.edited) {
+//       // console.log('ada yg blm diupdate')
+//       harapSimpanPerubahanPemeriksaanFisik(val)
+//     }
+//     else {
+//       menu.value = val
+//     }
+//   }
+//   else {
+//     menu.value = val
+//   }
+// }
 
-function harapSimpanPerubahanPemeriksaanFisik (val) {
-  $q.dialog({
-    dark: true,
-    title: 'Peringatan',
-    message: 'Perubahan Belum disimpan , Harap disimpan terlebih dahulu',
-    cancel: true,
-    persistent: true
-  }).onOk(() => {
-    console.log('OK')
-    menu.value = menus.value[1]
-  }).onCancel(() => {
-    // console.log('Cancel')
-    fisik.initReset(false, props?.pasien)
-    // fisik.setNotEdit()
-    menu.value = val
-  }).onDismiss(() => {
-    // console.log('I am triggered on both OK and Cancel')
-  })
-}
+// function harapSimpanPerubahanPemeriksaanFisik (val) {
+//   $q.dialog({
+//     dark: true,
+//     title: 'Peringatan',
+//     message: 'Perubahan Belum disimpan , Harap disimpan terlebih dahulu',
+//     cancel: true,
+//     persistent: true
+//   }).onOk(() => {
+//     console.log('OK')
+//     menu.value = menus.value[1]
+//   }).onCancel(() => {
+//     // console.log('Cancel')
+//     fisik.initReset(false, props?.pasien)
+//     // fisik.setNotEdit()
+//     menu.value = val
+//   }).onDismiss(() => {
+//     // console.log('I am triggered on both OK and Cancel')
+//   })
+// }
 
 watchEffect(() => {
   // console.log('watch effect', store.loadingTerima)
