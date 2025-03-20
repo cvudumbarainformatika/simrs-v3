@@ -192,7 +192,9 @@ function getDailyCount(kode, index, jenis) {
   // console.log('kode', kode, formattedIndex, jenis);
 
   // const key = `${kode}-${store.processedData[kode]?.nama_pemeriksaan}`
-  // return store.processedData[key]?.dates[tanggal]?.[jenis] || 0
+  // const coba = store.processedData[key]?.dates[tanggal]?.[jenis] || 0
+  // console.log('coba', key);
+
 
   // const coba = store.rawData?.filter(x => x?.kode === kode && x?.tgl_order === `2024-01-${formattedIndex}`)
   // console.log('coba', coba);
