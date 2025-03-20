@@ -11,6 +11,9 @@
           <q-td key="name" :props="props" :class="props.row.isCategory ? 'bg-grey-2 text-weight-bold' : ''">
             {{ props.row.name }}
           </q-td>
+          <q-td v-for="day in 31" :key="day">
+            1
+          </q-td>
         </q-tr>
       </template>
     </q-table>
@@ -36,7 +39,13 @@ const columns = [
     label: 'PEMERIKSAAN',
     field: 'name',
     align: 'left'
-  }
+  },
+  ...Array.from({ length: 31 }, (_, i) => ({
+    name: `day${i + 1}`,
+    label: `${i + 1}`,
+    field: row => `${row.dailyData[i + 1].L}/${row.dailyData[i + 1].P}`,
+    align: 'center'
+  }))
 ]
 
 onMounted(() => {
