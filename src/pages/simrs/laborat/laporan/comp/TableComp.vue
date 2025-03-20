@@ -99,7 +99,13 @@ const formattedData = computed(() => {
   let result = [];
   let categoryIndex = 65; // ASCII 'A'
 
-  // Mendefinisikan urutan yang diinginkan
+  // Mendefinisikan urutan yang diinginkan dan mapping nama kategori
+  const categoryMapping = {
+    'PK': 'PATOLOGI KLINIK',
+    'PA': 'PATOLOGI ANATOMI',
+    'Uncategorized': 'Uncategorized'
+  };
+
   const desiredOrder = ['PK', 'PA', 'Uncategorized'];
 
   // Membuat array entries yang diurutkan
@@ -111,7 +117,12 @@ const formattedData = computed(() => {
 
   sortedEntries.forEach(([category, subcategories]) => {
     let categoryCode = String.fromCharCode(categoryIndex);
-    result.push({ no: categoryCode, name: category, isCategory: true });
+    // Menggunakan nama kategori yang sudah dimapping
+    result.push({
+      no: categoryCode,
+      name: categoryMapping[category] || category,
+      isCategory: true
+    });
 
     let subIndex = 1;
 
