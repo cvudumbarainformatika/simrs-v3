@@ -3,6 +3,26 @@
     <q-table flat dense bordered :loading="store.loading" :rows="formattedData" :columns="columns"
       :pagination="{ rowsPerPage: 0 }" row-key="no" separator="cell" :rows-per-page-options="[0]"
       class="pemeriksaan-table">
+      <!-- Custom header -->
+      <template #header="props">
+        <q-tr :props="props">
+          <q-th auto-width rowspan="2" class="text-center">NO</q-th>
+          <q-th auto-width rowspan="2" class="text-center">PEMERIKSAAN</q-th>
+          <!-- Tanggal header -->
+          <template v-for="i in 31" :key="`date-${i}`">
+            <q-th colspan="2" class="text-center">{{ i }}</q-th>
+          </template>
+          <q-th auto-width rowspan="2" class="text-center">Total</q-th>
+        </q-tr>
+        <q-tr :props="props">
+          <!-- L/P header -->
+          <template v-for="i in 31" :key="i">
+            <q-th class="text-center">L</q-th>
+            <q-th class="text-center">P</q-th>
+          </template>
+        </q-tr>
+      </template>
+
       <!-- Loading slot -->
       <template #loading>
         <div class="row full-width flex-center q-pa-lg">
@@ -15,25 +35,7 @@
         </div>
       </template>
 
-      <!-- Header template -->
-      <template #header="props">
-        <q-tr :props="props">
-          <q-th auto-width rowspan="2" class="text-center text-weight-bold no-column">NO</q-th>
-          <q-th rowspan="2" class="text-center text-weight-bold pemeriksaan-column">PEMERIKSAAN</q-th>
-          <template v-for="i in 31" :key="i">
-            <q-th colspan="2" class="text-center text-weight-bold">{{ i }}</q-th>
-          </template>
-          <q-th rowspan="2" class="text-center text-weight-bold">TOTAL</q-th>
-        </q-tr>
-        <q-tr :props="props">
-          <template v-for="i in 31" :key="i">
-            <q-th class="text-center text-weight-bold">L</q-th>
-            <q-th class="text-center text-weight-bold">P</q-th>
-          </template>
-        </q-tr>
-      </template>
-
-      <!-- Rest of your template remains the same -->
+      <!-- Body template -->
       <template #body="props">
         <q-tr :props="props">
           <q-td key="no" :props="props" :class="props.row.isCategory ? 'bg-grey-2 text-weight-bold' : ''"
@@ -55,7 +57,6 @@
   </div>
 </template>
 
-
 <script setup>
 import { useLaporanLaboratStore } from 'src/stores/simrs/penunjang/laborat/laporan';
 import { onMounted, computed, ref } from 'vue';
@@ -73,7 +74,8 @@ const columns = [
     name: 'name',
     label: 'PEMERIKSAAN',
     field: 'name',
-    align: 'left'
+    align: 'left',
+    style: 'width: 200px; min-width: 200px; max-width: 200px'
   },
   ...Array.from({ length: 31 }, (_, i) => [
     {
@@ -135,7 +137,6 @@ const formattedData = computed(() => {
 
   sortedEntries.forEach(([category, subcategories]) => {
     let categoryCode = String.fromCharCode(categoryIndex);
-    // Menggunakan nama kategori yang sudah dimapping
     result.push({
       no: categoryCode,
       name: categoryMapping[category] || category,
@@ -144,14 +145,11 @@ const formattedData = computed(() => {
 
     let subIndex = 1;
 
-    // Urutkan subcategories
     const sortedSubcategories = Object.entries(subcategories).sort(([a, _], [b, __]) => {
-      // Jika di dalam kategori PK, taruh Uncategorized di belakang
       if (category === 'PK') {
         if (a === 'Uncategorized') return 1;
         if (b === 'Uncategorized') return -1;
       }
-      // Untuk kategori lain, urutkan berdasarkan abjad
       return a.localeCompare(b);
     });
 
@@ -177,8 +175,10 @@ const formattedData = computed(() => {
 <style lang="scss">
 .table-container {
   width: 100%;
+  overflow-x: auto;
 
   .pemeriksaan-table {
+    table-layout: fixed;
     height: 100%;
 
     /* Reset default padding/margin */
@@ -190,61 +190,107 @@ const formattedData = computed(() => {
     /* Sticky header */
     thead tr th {
       position: sticky;
-      z-index: 2;
+      background: white;
+    }
+
+    thead {
+
+      /* Sticky column headers (NO dan PEMERIKSAAN) */
+      tr:first-child,
+      tr:nth-child(2) {
+
+        th:first-child,
+        th:nth-child(2) {
+          position: sticky;
+          z-index: 21 !important;
+          background: white;
+        }
+      }
+
+      tr:first-child th {
+        top: 0;
+      }
+
+      tr:nth-child(2) th {
+        top: 36px;
+      }
+    }
+
+    /* Sticky columns in body */
+    tbody {
+
+      td:first-child,
+      td:nth-child(2) {
+        position: sticky;
+        background: white;
+      }
+
+      td:first-child {
+        left: 0;
+      }
+
+      td:nth-child(2) {
+        left: 48px;
+        box-shadow: 4px 0 4px -2px rgba(0, 0, 0, 0.15);
+      }
+    }
+
+    /* Base z-index for all cells */
+    td,
+    th {
       background: white;
       padding: 8px;
-      /* Consistent padding */
+      border: 1px solid #ddd;
     }
 
-    thead tr:first-child th {
-      top: 0;
+    /* Sticky columns (NO and PEMERIKSAAN) */
+    td:first-child,
+    td:nth-child(2),
+    th:first-child {
+      position: sticky;
+      left: 0;
+      z-index: 20 !important;
+      background: white;
     }
 
-    thead tr:nth-child(2) th {
-      top: 36px;
-      /* Sesuaikan dengan tinggi aktual header pertama */
+    td:nth-child(2),
+    th:nth-child(2) {
+      position: sticky;
+      left: 48px;
+      background: white;
+      box-shadow: 4px 0 4px -2px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Header z-index adjustments for sticky columns */
+    thead {
+
+      tr:nth-child(2) {
+
+        th:first-child,
+        th:nth-child(2) {
+          z-index: 2 !important;
+        }
+
+        /* Fix for first day L/P headers */
+        th:nth-child(3),
+        th:nth-child(4) {
+          z-index: 2 !important;
+        }
+      }
+
+      /* All other date headers */
+      tr:first-child th:not(:first-child):not(:nth-child(2)),
+      tr:nth-child(2) th:not(:first-child):not(:nth-child(2)) {
+        z-index: 2 !important;
+      }
     }
 
     /* Sticky columns */
     .no-column {
       width: 48px;
-      /* Fixed width for NO column */
     }
 
-    th:nth-child(1),
-    td:nth-child(1) {
-      position: sticky;
-      left: 0;
-      z-index: 1;
-      background: white;
-    }
 
-    th:nth-child(2),
-    td:nth-child(2) {
-      position: sticky;
-      left: 48px;
-      z-index: 1;
-      background: white;
-    }
-
-    /* Z-index untuk overlap */
-    thead th:nth-child(1),
-    thead th:nth-child(2) {
-      z-index: 3;
-    }
-
-    /* Shadow effect */
-    th:nth-child(2),
-    td:nth-child(2) {
-      box-shadow: 4px 0 4px -2px rgba(0, 0, 0, 0.15);
-    }
-
-    /* Row styling */
-    td,
-    th {
-      padding: 8px;
-      border: 1px solid #ddd;
-    }
 
     td.bg-grey-2 {
       background: #f5f5f5 !important;
@@ -253,6 +299,7 @@ const formattedData = computed(() => {
     /* Column width control */
     .pemeriksaan-column {
       width: 200px;
+      min-width: 200px;
       max-width: 200px;
       white-space: normal;
       word-wrap: break-word;
