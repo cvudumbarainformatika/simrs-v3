@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-primary rounded-borders q-pa-md">
+  <div class="bg-primary q-pa-md">
     <div class="row items-center justify-between">
       <!-- Left side -->
       <div class="col-12 col-md-8">

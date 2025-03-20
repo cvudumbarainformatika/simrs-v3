@@ -1,16 +1,18 @@
 <template>
-  <q-page class="column no-wrap q-pa-sm">
-    <!-- Fixed header - hapus margin bottom -->
-    <div class="col-auto">
-      <HeaderComp @set-periode="setPeriode" @refresh="refreshData" @print="printReport" />
+  <q-page class="container--q-header q-pa-sm">
+    <div class="column full-height">
+      <div class="col-auto header">
+        <div>
+          <HeaderComp @set-periode="setPeriode" @refresh="refreshData" @print="printReport" />
+        </div>
+      </div>
+      <div class="col full-height relative-position">
+        <div class="absolute-top full-height scroll">
+          <TableComp ref="tableRef" />
+        </div>
+      </div>
     </div>
 
-    <!-- Scrollable table container - tambahkan padding horizontal saja -->
-    <div class="col relative-position">
-      <q-scroll-area class="fit">
-        <TableComp ref="tableRef" />
-      </q-scroll-area>
-    </div>
   </q-page>
 </template>
 
@@ -36,7 +38,6 @@ function printReport() {
 </script>
 
 <style lang="scss" scoped>
-.q-page {
-  height: calc(100vh - 100px);
-}
-</style>
+// .q-page {
+//   height: calc(100% - 140px);
+// }</style>

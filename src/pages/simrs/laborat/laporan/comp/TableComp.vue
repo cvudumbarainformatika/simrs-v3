@@ -1,40 +1,58 @@
 <template>
-  <q-table flat dense bordered :rows="formattedData" :columns="columns" :pagination="{ rowsPerPage: 0 }" row-key="no"
-    separator="cell" :rows-per-page-options="[0]" class="pemeriksaan-table">
-    <template #header="props">
-      <q-tr :props="props">
-        <q-th auto-width rowspan="2" class="text-center text-weight-bold">NO</q-th>
-        <q-th rowspan="2" class="text-center text-weight-bold pemeriksaan-column">PEMERIKSAAN</q-th>
-        <template v-for="i in 31" :key="i">
-          <q-th colspan="2" class="text-center text-weight-bold">{{ i }}</q-th>
-        </template>
-        <q-th rowspan="2" class="text-center text-weight-bold">TOTAL</q-th>
-      </q-tr>
-      <q-tr :props="props">
-        <template v-for="i in 31" :key="i">
-          <q-th class="text-center text-weight-bold">L</q-th>
-          <q-th class="text-center text-weight-bold">P</q-th>
-        </template>
-      </q-tr>
-    </template>
-    <template #body="props">
-      <q-tr :props="props">
-        <q-td key="no" :props="props" :class="props.row.isCategory ? 'bg-grey-2 text-weight-bold' : ''"
-          class="text-center">
-          {{ props.row.no }}
-        </q-td>
-        <q-td key="name" :props="props"
-          :class="[props.row.isCategory ? 'bg-grey-2 text-weight-bold' : '', 'pemeriksaan-column']">
-          {{ props.row.name }}
-        </q-td>
-        <template v-for="i in 31" :key="i">
-          <q-td class="text-center">{{ props.row[`day${i}L`] || '' }}</q-td>
-          <q-td class="text-center">{{ props.row[`day${i}P`] || '' }}</q-td>
-        </template>
-        <q-td class="text-center text-weight-bold">{{ calculateTotal(props.row) }}</q-td>
-      </q-tr>
-    </template>
-  </q-table>
+  <div class="table-container q-mt-none">
+    <q-table flat dense bordered :loading="store.loading" :rows="formattedData" :columns="columns"
+      :pagination="{ rowsPerPage: 0 }" row-key="no" separator="cell" :rows-per-page-options="[0]" virtual-scroll
+      :virtual-scroll-sticky-size-start="48" class="pemeriksaan-table">
+      <!-- Loading slot -->
+      <template #loading>
+        <div class="row full-width flex-center q-pa-lg">
+          <div class="column items-center">
+            <!-- <q-spinner-cube color="primary" size="40px" /> -->
+            <!-- <div class="text-primary q-mt-sm">
+              harap bersabar, menunggu...
+            </div> -->
+          </div>
+        </div>
+      </template>
+
+      <!-- Existing header template -->
+      <template #header="props">
+        <q-tr :props="props">
+          <q-th auto-width rowspan="2" class="text-center text-weight-bold">NO</q-th>
+          <q-th rowspan="2" class="text-center text-weight-bold pemeriksaan-column">PEMERIKSAAN</q-th>
+          <template v-for="i in 31" :key="i">
+            <q-th colspan="2" class="text-center text-weight-bold">{{ i }}</q-th>
+          </template>
+          <q-th rowspan="2" class="text-center text-weight-bold">TOTAL</q-th>
+        </q-tr>
+        <q-tr :props="props">
+          <template v-for="i in 31" :key="i">
+            <q-th class="text-center text-weight-bold">L</q-th>
+            <q-th class="text-center text-weight-bold">P</q-th>
+          </template>
+        </q-tr>
+      </template>
+
+      <!-- Rest of your existing template remains the same -->
+      <template #body="props">
+        <q-tr :props="props">
+          <q-td key="no" :props="props" :class="props.row.isCategory ? 'bg-grey-2 text-weight-bold' : ''"
+            class="text-center">
+            {{ props.row.no }}
+          </q-td>
+          <q-td key="name" :props="props"
+            :class="[props.row.isCategory ? 'bg-grey-2 text-weight-bold' : '', 'pemeriksaan-column']">
+            {{ props.row.name }}
+          </q-td>
+          <template v-for="i in 31" :key="i">
+            <q-td class="text-center">{{ props.row[`day${i}L`] || '' }}</q-td>
+            <q-td class="text-center">{{ props.row[`day${i}P`] || '' }}</q-td>
+          </template>
+          <q-td class="text-center text-weight-bold">{{ calculateTotal(props.row) }}</q-td>
+        </q-tr>
+      </template>
+    </q-table>
+  </div>
 </template>
 
 
@@ -156,38 +174,70 @@ const formattedData = computed(() => {
 });
 </script>
 
-<style lang="scss" scoped>
-.pemeriksaan-table {
-  .q-table th {
-    font-size: 12px;
-    padding: 4px 8px;
-  }
+<style lang="scss">
+.table-container {
+  width: 100%;
 
-  .q-table td {
-    padding: 4px 8px;
-  }
+  .pemeriksaan-table {
+    height: 100%;
 
-  /* Menambahkan style untuk vertical alignment pada header */
-  .q-table th[rowspan="2"] {
-    vertical-align: middle;
-  }
+    /* Sticky header */
+    thead tr th {
+      position: sticky;
+      z-index: 2;
+      background: white;
+    }
 
-  /* Style untuk kolom pemeriksaan */
-  .pemeriksaan-column {
-    max-width: 200px !important;
-    width: 200px !important;
-    min-width: 200px !important;
-    white-space: normal !important;
-    word-wrap: break-word !important;
-    overflow-wrap: break-word !important;
-  }
+    thead tr:first-child th {
+      top: 0;
+    }
 
-  /* Memastikan konten dalam sel tidak overflow */
-  td.pemeriksaan-column,
-  th.pemeriksaan-column {
-    max-width: 200px !important;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
+    thead tr:nth-child(2) th {
+      top: 49px;
+      /* Sesuaikan dengan tinggi row header pertama */
+    }
+
+    /* Sticky columns (NO dan PEMERIKSAAN) */
+    th:nth-child(1),
+    td:nth-child(1) {
+      position: sticky;
+      left: 0;
+      z-index: 1;
+      background: white;
+    }
+
+    th:nth-child(2),
+    td:nth-child(2) {
+      position: sticky;
+      left: 48px;
+      /* Sesuaikan dengan lebar kolom NO */
+      z-index: 1;
+      background: white;
+    }
+
+    /* Z-index lebih tinggi untuk header yang sticky di kedua arah */
+    thead th:nth-child(1),
+    thead th:nth-child(2) {
+      z-index: 3;
+    }
+
+    /* Tambahkan shadow untuk indikator scroll */
+    th:nth-child(2),
+    td:nth-child(2) {
+      box-shadow: 4px 0 4px -2px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Style untuk row kategori */
+    td.bg-grey-2 {
+      background: #f5f5f5 !important;
+    }
+
+    /* Memastikan konten dalam sel tidak overflow */
+    .pemeriksaan-column {
+      max-width: 200px;
+      white-space: normal;
+      word-wrap: break-word;
+    }
   }
 }
 </style>
