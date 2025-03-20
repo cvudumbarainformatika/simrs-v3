@@ -1,10 +1,10 @@
 <template>
   <q-table flat dense bordered :rows="formattedData" :columns="columns" :pagination="{ rowsPerPage: 0 }" row-key="no"
-    separator="cell" :rows-per-page-options="[0]">
+    separator="cell" :rows-per-page-options="[0]" class="pemeriksaan-table">
     <template #header="props">
       <q-tr :props="props">
         <q-th auto-width rowspan="2" class="text-center text-weight-bold">NO</q-th>
-        <q-th rowspan="2" class="text-center text-weight-bold">PEMERIKSAAN</q-th>
+        <q-th rowspan="2" class="text-center text-weight-bold pemeriksaan-column">PEMERIKSAAN</q-th>
         <template v-for="i in 31" :key="i">
           <q-th colspan="2" class="text-center text-weight-bold">{{ i }}</q-th>
         </template>
@@ -23,7 +23,8 @@
           class="text-center">
           {{ props.row.no }}
         </q-td>
-        <q-td key="name" :props="props" :class="props.row.isCategory ? 'bg-grey-2 text-weight-bold' : ''">
+        <q-td key="name" :props="props"
+          :class="[props.row.isCategory ? 'bg-grey-2 text-weight-bold' : '', 'pemeriksaan-column']">
           {{ props.row.name }}
         </q-td>
         <template v-for="i in 31" :key="i">
@@ -48,8 +49,7 @@ const columns = [
     name: 'no',
     label: 'NO',
     field: 'no',
-    align: 'right',
-    style: 'width: 100px'
+    align: 'right'
   },
   {
     name: 'name',
@@ -146,18 +146,37 @@ const formattedData = computed(() => {
 </script>
 
 <style lang="scss" scoped>
-.q-table th {
-  font-size: 12px;
+.pemeriksaan-table {
+  .q-table th {
+    font-size: 12px;
+    padding: 4px 8px;
+  }
 
-  padding: 4px 8px;
-}
+  .q-table td {
+    padding: 4px 8px;
+  }
 
-.q-table td {
-  padding: 4px 8px;
-}
+  /* Menambahkan style untuk vertical alignment pada header */
+  .q-table th[rowspan="2"] {
+    vertical-align: middle;
+  }
 
-/* Menambahkan style untuk vertical alignment pada header */
-.q-table th[rowspan="2"] {
-  vertical-align: middle;
+  /* Style untuk kolom pemeriksaan */
+  .pemeriksaan-column {
+    max-width: 200px !important;
+    width: 200px !important;
+    min-width: 200px !important;
+    white-space: normal !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+  }
+
+  /* Memastikan konten dalam sel tidak overflow */
+  td.pemeriksaan-column,
+  th.pemeriksaan-column {
+    max-width: 200px !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
 }
 </style>
