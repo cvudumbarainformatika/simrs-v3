@@ -2,7 +2,7 @@
   <div class="table-container q-mt-none">
     <q-table flat dense bordered :loading="store.loading" :rows="formattedData" :columns="columns"
       :pagination="{ rowsPerPage: 0 }" row-key="no" separator="cell" :rows-per-page-options="[0]"
-      class="pemeriksaan-table">
+      class="pemeriksaan-table" virtual-scroll :virtual-scroll-item-size="48" :virtual-scroll-sticky-size-start="48">
       <!-- Custom header -->
       <template #header="props">
         <q-tr :props="props">
@@ -176,6 +176,7 @@ const formattedData = computed(() => {
 .table-container {
   width: 100%;
   overflow-x: auto;
+  height: calc(100vh - 100px);
 
   .pemeriksaan-table {
     table-layout: fixed;
