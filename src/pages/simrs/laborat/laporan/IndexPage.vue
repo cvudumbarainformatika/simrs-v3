@@ -1,13 +1,11 @@
 <template>
-  <q-page class="container--q-header q-pa-sm">
-    <div class="column full-height">
+  <q-page class="container--q-header q-pa-sm relative-position overflow-hidden">
+    <div class="full-height full-width ">
       <div class="col-auto header">
-        <div>
-          <HeaderComp @set-periode="setPeriode" @refresh="refreshData" @print="printReport" />
-        </div>
+        <HeaderComp @set-periode="setPeriode" @refresh="refreshData" @print="printReport" />
       </div>
       <div class="col full-height relative-position">
-        <div class="absolute-top full-height scroll">
+        <div class="absolute-top full-height">
           <TableComp ref="tableRef" />
         </div>
       </div>

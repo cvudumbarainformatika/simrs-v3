@@ -1,24 +1,24 @@
 <template>
   <div class="table-container q-mt-none">
     <q-table flat dense bordered :loading="store.loading" :rows="formattedData" :columns="columns"
-      :pagination="{ rowsPerPage: 0 }" row-key="no" separator="cell" :rows-per-page-options="[0]" virtual-scroll
-      :virtual-scroll-sticky-size-start="48" class="pemeriksaan-table">
+      :pagination="{ rowsPerPage: 0 }" row-key="no" separator="cell" :rows-per-page-options="[0]"
+      class="pemeriksaan-table">
       <!-- Loading slot -->
       <template #loading>
         <div class="row full-width flex-center q-pa-lg">
           <div class="column items-center">
-            <!-- <q-spinner-cube color="primary" size="40px" /> -->
-            <!-- <div class="text-primary q-mt-sm">
+            <q-spinner-cube color="primary" size="40px" />
+            <div class="text-primary q-mt-sm">
               harap bersabar, menunggu...
-            </div> -->
+            </div>
           </div>
         </div>
       </template>
 
-      <!-- Existing header template -->
+      <!-- Header template -->
       <template #header="props">
         <q-tr :props="props">
-          <q-th auto-width rowspan="2" class="text-center text-weight-bold">NO</q-th>
+          <q-th auto-width rowspan="2" class="text-center text-weight-bold no-column">NO</q-th>
           <q-th rowspan="2" class="text-center text-weight-bold pemeriksaan-column">PEMERIKSAAN</q-th>
           <template v-for="i in 31" :key="i">
             <q-th colspan="2" class="text-center text-weight-bold">{{ i }}</q-th>
@@ -33,7 +33,7 @@
         </q-tr>
       </template>
 
-      <!-- Rest of your existing template remains the same -->
+      <!-- Rest of your template remains the same -->
       <template #body="props">
         <q-tr :props="props">
           <q-td key="no" :props="props" :class="props.row.isCategory ? 'bg-grey-2 text-weight-bold' : ''"
@@ -181,11 +181,19 @@ const formattedData = computed(() => {
   .pemeriksaan-table {
     height: 100%;
 
+    /* Reset default padding/margin */
+    .q-table__middle {
+      margin-top: 0;
+      padding-top: 0;
+    }
+
     /* Sticky header */
     thead tr th {
       position: sticky;
       z-index: 2;
       background: white;
+      padding: 8px;
+      /* Consistent padding */
     }
 
     thead tr:first-child th {
@@ -193,11 +201,16 @@ const formattedData = computed(() => {
     }
 
     thead tr:nth-child(2) th {
-      top: 49px;
-      /* Sesuaikan dengan tinggi row header pertama */
+      top: 36px;
+      /* Sesuaikan dengan tinggi aktual header pertama */
     }
 
-    /* Sticky columns (NO dan PEMERIKSAAN) */
+    /* Sticky columns */
+    .no-column {
+      width: 48px;
+      /* Fixed width for NO column */
+    }
+
     th:nth-child(1),
     td:nth-child(1) {
       position: sticky;
@@ -210,33 +223,47 @@ const formattedData = computed(() => {
     td:nth-child(2) {
       position: sticky;
       left: 48px;
-      /* Sesuaikan dengan lebar kolom NO */
       z-index: 1;
       background: white;
     }
 
-    /* Z-index lebih tinggi untuk header yang sticky di kedua arah */
+    /* Z-index untuk overlap */
     thead th:nth-child(1),
     thead th:nth-child(2) {
       z-index: 3;
     }
 
-    /* Tambahkan shadow untuk indikator scroll */
+    /* Shadow effect */
     th:nth-child(2),
     td:nth-child(2) {
       box-shadow: 4px 0 4px -2px rgba(0, 0, 0, 0.15);
     }
 
-    /* Style untuk row kategori */
+    /* Row styling */
+    td,
+    th {
+      padding: 8px;
+      border: 1px solid #ddd;
+    }
+
     td.bg-grey-2 {
       background: #f5f5f5 !important;
     }
 
-    /* Memastikan konten dalam sel tidak overflow */
+    /* Column width control */
     .pemeriksaan-column {
+      width: 200px;
       max-width: 200px;
       white-space: normal;
       word-wrap: break-word;
+    }
+
+    /* Remove any unwanted spacing */
+    .q-table__container {
+      >* {
+        margin: 0;
+        padding: 0;
+      }
     }
   }
 }
