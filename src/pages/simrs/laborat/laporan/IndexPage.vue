@@ -4,15 +4,14 @@
       separator="cell" :rows-per-page-options="[0]">
       <template #header="props">
         <q-tr :props="props">
-          <q-th auto-width>NO</q-th>
-          <q-th>PEMERIKSAAN</q-th>
+          <q-th auto-width rowspan="2" class="text-center">NO</q-th>
+          <q-th rowspan="2" class="text-center">PEMERIKSAAN</q-th>
           <template v-for="i in 31" :key="i">
             <q-th colspan="2" class="text-center">{{ i }}</q-th>
           </template>
+          <q-th rowspan="2" class="text-center">TOTAL</q-th>
         </q-tr>
-        <q-tr>
-          <q-th auto-width></q-th>
-          <q-th></q-th>
+        <q-tr :props="props">
           <template v-for="i in 31" :key="i">
             <q-th class="text-center">L</q-th>
             <q-th class="text-center">P</q-th>
@@ -32,6 +31,7 @@
             <q-td class="text-center">{{ props.row[`day${i}L`] || '' }}</q-td>
             <q-td class="text-center">{{ props.row[`day${i}P`] || '' }}</q-td>
           </template>
+          <q-td class="text-center text-weight-bold">{{ calculateTotal(props.row) }}</q-td>
         </q-tr>
       </template>
     </q-table>
@@ -71,8 +71,25 @@ const columns = [
       field: row => row.dailyData?.[i + 1]?.P || '',
       align: 'center'
     }
-  ]).flat()
+  ]).flat(),
+  {
+    name: 'total',
+    label: 'Total',
+    field: 'total',
+    align: 'center'
+  }
 ]
+
+// Function to calculate total for a row (L + P)
+const calculateTotal = (row) => {
+  let total = 0;
+  for (let i = 1; i <= 31; i++) {
+    const valueL = parseInt(row[`day${i}L`]) || 0;
+    const valueP = parseInt(row[`day${i}P`]) || 0;
+    total += valueL + valueP;
+  }
+  return total || '';
+}
 
 onMounted(() => {
   store.getMaster()
@@ -137,5 +154,10 @@ const formattedData = computed(() => {
 
 .q-table td {
   padding: 4px 8px;
+}
+
+/* Menambahkan style untuk vertical alignment pada header */
+.q-table th[rowspan="2"] {
+  vertical-align: middle;
 }
 </style>
