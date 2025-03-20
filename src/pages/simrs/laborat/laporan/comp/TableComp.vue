@@ -1,8 +1,8 @@
 <template>
-  <div class="table-container q-mt-none">
+  <div class="table-container">
     <q-table flat dense bordered :loading="store.loading" :rows="formattedData" :columns="columns"
-      :pagination="{ rowsPerPage: 0 }" row-key="no" separator="cell" :rows-per-page-options="[0]"
-      class="pemeriksaan-table" virtual-scroll :virtual-scroll-item-size="48" :virtual-scroll-sticky-size-start="48">
+      :pagination="{ rowsPerPage: 0 }" hide-pagination height="500px" :virtual-scroll="false"
+      :rows-per-page-options="[0]" class="pemeriksaan-table">
       <!-- Custom header -->
       <template #header="props">
         <q-tr :props="props">
