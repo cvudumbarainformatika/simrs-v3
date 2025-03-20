@@ -90,6 +90,7 @@ onMounted(() => {
   yearSelected.value = currentYear
   periode.value = parseInt(date.formatDate(Date.now(), 'M')) - 1
 
+
   emitPeriode()
 })
 </script>

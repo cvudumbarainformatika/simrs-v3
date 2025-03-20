@@ -24,16 +24,7 @@
       </template>
 
       <!-- Loading slot -->
-      <template #loading>
-        <div class="row full-width flex-center q-pa-lg">
-          <div class="column items-center">
-            <q-spinner-cube color="primary" size="40px" />
-            <div class="text-primary q-mt-sm">
-              harap bersabar, menunggu...
-            </div>
-          </div>
-        </div>
-      </template>
+
 
       <!-- Body template -->
       <template #body="props">
@@ -47,7 +38,7 @@
             {{ props.row.name }}
           </q-td>
           <template v-for="i in 31" :key="i">
-            <q-td class="text-center">{{ props.row[`day${i}L`] || '' }}</q-td>
+            <q-td class="text-center">{{ getDailyCount(props.row, i, 'laki') }}</q-td>
             <q-td class="text-center">{{ props.row[`day${i}P`] || '' }}</q-td>
           </template>
           <q-td class="text-center text-weight-bold">{{ calculateTotal(props.row) }}</q-td>
@@ -59,7 +50,7 @@
 
 <script setup>
 import { useLaporanLaboratStore } from 'src/stores/simrs/penunjang/laborat/laporan';
-import { onMounted, computed, ref } from 'vue';
+import { onMounted, computed, ref, watch } from 'vue';
 
 const store = useLaporanLaboratStore()
 
@@ -110,9 +101,22 @@ const calculateTotal = (row) => {
   return total || '';
 }
 
-onMounted(() => {
-  store.getMaster()
+onMounted(async () => {
+  Promise.all([
+    store.getMaster(),
+    store.getData()
+  ])
+
 })
+
+watch(() => store.rawData, (newVal, oldVal) => {
+  if (newVal !== oldVal) {
+
+    console.log('store', store.rawData?.filter(x => x?.kode === 'LAB023' && x?.tgl_order === '2024-01-26'))
+    // console.log('range', store.getDatesInRange());
+
+  }
+}, { deep: true })
 
 // Mengubah data menjadi format No - Pemeriksaan sesuai permintaan
 const formattedData = computed(() => {
@@ -129,6 +133,8 @@ const formattedData = computed(() => {
   const desiredOrder = ['PK', 'PA', 'Uncategorized'];
 
   // Membuat array entries yang diurutkan
+  // console.log('group', store.groupedItems);
+
   const sortedEntries = Object.entries(store.groupedItems).sort(([a], [b]) => {
     const indexA = desiredOrder.indexOf(a);
     const indexB = desiredOrder.indexOf(b);
@@ -139,9 +145,13 @@ const formattedData = computed(() => {
     let categoryCode = String.fromCharCode(categoryIndex);
     result.push({
       no: categoryCode,
+      kode: null,
       name: categoryMapping[category] || category,
       isCategory: true
     });
+
+    // console.log('sub', result);
+
 
     let subIndex = 1;
 
@@ -155,28 +165,47 @@ const formattedData = computed(() => {
 
     sortedSubcategories.forEach(([subcategory, items]) => {
       let subCategoryCode = `${subIndex}`;
-      result.push({ no: subCategoryCode, name: subcategory, isCategory: true });
+      result.push({ no: subCategoryCode, name: subcategory, kode: null, isCategory: true });
 
       items.forEach((item, itemIndex) => {
         let itemCode = `${subCategoryCode}.${itemIndex + 1}`;
-        result.push({ no: itemCode, name: item.pemeriksaan, isCategory: false });
+        result.push({ no: itemCode, name: item.pemeriksaan, kode: item?.kode, isCategory: false });
       });
+
 
       subIndex++;
     });
+
+    // console.log('sub', sortedSubcategories); 
 
     categoryIndex++;
   });
 
   return result;
 });
+
+
+function getDailyCount(kode, index, jenis) {
+  // Format index menjadi 2 digit dengan leading zero
+  const formattedIndex = index < 10 ? `0${index}` : `${index}`
+
+  // console.log('kode', kode, formattedIndex, jenis);
+
+  // const key = `${kode}-${store.processedData[kode]?.nama_pemeriksaan}`
+  // return store.processedData[key]?.dates[tanggal]?.[jenis] || 0
+
+  // const coba = store.rawData?.filter(x => x?.kode === kode && x?.tgl_order === `2024-01-${formattedIndex}`)
+  // console.log('coba', coba);
+
+  return 0
+}
 </script>
 
 <style lang="scss">
 .table-container {
   width: 100%;
   overflow-x: auto;
-  height: calc(100vh - 100px);
+  height: calc(100vh - 140px);
 
   .pemeriksaan-table {
     table-layout: fixed;
