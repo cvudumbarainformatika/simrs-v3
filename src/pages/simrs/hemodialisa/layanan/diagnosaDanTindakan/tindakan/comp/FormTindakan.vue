@@ -36,7 +36,9 @@ onMounted(() => {
 })
 
 const filterArrayTindakan = (arr, pasien) => {
-  const val = arr?.filter(x => x.kdpoli?.includes(pasien?.kdgroup_ruangan))
+  console.log('filterArrayTindakan', arr, pasien)
+
+  const val = arr?.filter(x => x.kdpoli?.includes(pasien?.kdruangan))
   // let val = arr
   // if (pasien?.kodepoli === 'POL041') val = arr
   // else val = arr?.filter(x => x.kdpoli?.includes(pasien?.kdgroup_ruangan))
@@ -77,7 +79,7 @@ function filterFn (val, update, abort) {
   update(() => {
     const needle = val.toLowerCase()
     // const arr = props.pasien.kodepoli === 'POL041' ? store.listTindakan : store.listTindakan?.filter(x => x?.kdpoli?.includes(props.pasien?.kdgroup_ruangan))
-    const arr = store.listTindakan?.filter(x => x?.kdpoli?.includes(props.pasien?.kdgroup_ruangan))
+    const arr = store.listTindakan?.filter(x => x?.kdpoli?.includes(props.pasien?.kdruangan))
     // console.log('arr', arr)
     const filter = ['kdtindakan', 'tindakan', 'icd9']
     const multiFilter = (data = [], filterKeys = [], value = '') =>
