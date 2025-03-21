@@ -51,11 +51,13 @@ import PageTindakan from '../tindakan/IndexPage.vue'
 import { usePenilaianHemodialisaStore } from 'src/stores/simrs/hemodialisa/penilaian'
 import { useAnatommyHemodialisaStore } from 'src/stores/simrs/hemodialisa/anatomy'
 import { useTindakanHemodialisaStore } from 'src/stores/simrs/hemodialisa/tindakan'
+import { useDiagnosaHDStore } from 'src/stores/simrs/hemodialisa/diagnosa'
 
 const store = useListPasienHemodialisaStore()
 const penilaian = usePenilaianHemodialisaStore()
 const anatomy = useAnatommyHemodialisaStore()
 const tindakan = useTindakanHemodialisaStore()
+const diagnosa = useDiagnosaHDStore()
 onMounted(() => {
   Promise.all([
     store.getDataTable(),
@@ -63,6 +65,7 @@ onMounted(() => {
     anatomy.getmasteranatomys(),
 
     tindakan.getTindakanDropdown(),
+    diagnosa.getDiagnosaDropdown(),
 
 
     store.getNakes(),

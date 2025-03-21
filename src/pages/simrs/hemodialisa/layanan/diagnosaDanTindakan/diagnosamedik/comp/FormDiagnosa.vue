@@ -100,10 +100,10 @@
 
 <script setup>
 import { useQuasar } from 'quasar'
+import { useDiagnosaHDStore } from 'src/stores/simrs/hemodialisa/diagnosa'
+import { useListPasienHemodialisaStore } from 'src/stores/simrs/hemodialisa/hemodialisa'
 // import { useLayananPoli } from 'src/stores/simrs/pelayanan/poli/layanan'
 // import { usePengunjungPoliStore } from 'src/stores/simrs/pelayanan/poli/pengunjung'
-import { useDiagnosaStore } from 'src/stores/simrs/ranap/diagnosa'
-import { usePengunjungRanapStore } from 'src/stores/simrs/ranap/pengunjung'
 // eslint-disable-next-line no-unused-vars
 import { onMounted, ref, watch } from 'vue'
 
@@ -119,9 +119,9 @@ const props = defineProps({
 })
 
 const formRef = ref(null)
-const store = useDiagnosaStore()
+const store = useDiagnosaHDStore()
 // eslint-disable-next-line no-unused-vars
-const pengunjung = usePengunjungRanapStore()
+const pengunjung = useListPasienHemodialisaStore()
 const emits = defineEmits(['savePemeriksaan'])
 
 const memoDokter = ref('')
