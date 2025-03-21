@@ -227,6 +227,7 @@ export const useListPasienHemodialisaStore = defineStore('list-pasien-hemodialis
               findPasien.diagnosa = resp?.data?.diagnosa
               findPasien.pemeriksaan = resp?.data?.pemeriksaan
               findPasien.penilaian = resp?.data?.penilaian
+              findPasien.memodiagnosa = resp?.data?.memodiagnosa
               this.pasien = findPasien
             }
             const jnsKasus = resp?.data?.kd_jeniskasus

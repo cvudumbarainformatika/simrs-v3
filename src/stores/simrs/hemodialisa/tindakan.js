@@ -11,23 +11,6 @@ import { useListPasienHemodialisaStore } from './hemodialisa'
 export const useTindakanHemodialisaStore = defineStore('tindakan-hemodialisa-store', {
   state: () => ({
 
-    // diagnosa
-    // items: {
-    //   ranap: [],
-    //   igd: []
-    // },
-
-    // searchdiagnosa: '',
-    // listDiagnosa: [],
-    // loadingFormDiagnosa: false,
-    // formdiagnosa: {
-    //   kddiagnosa: '',
-    //   diagnosa: '',
-    //   keterangan: '',
-    //   kasus: '',
-    //   tipediagnosa: '',
-    //   dtd: ''
-    // },
 
     // tindakan
     listTindakan: [],
@@ -85,56 +68,6 @@ export const useTindakanHemodialisaStore = defineStore('tindakan-hemodialisa-sto
       }
     },
 
-    // setPetugasBayang (arr) {
-    //   const byg = [
-    //     {
-    //       id: null,
-    //       nik: null,
-    //       nip: null,
-    //       nama: 'Perawat Kemuning',
-    //       jabatan: null,
-    //       kdpegsimrs: 'D912',
-    //       aktif: 'AKTIF',
-    //       kddpjp: null,
-    //       kdgroupnakes: '2'
-    //     },
-    //     {
-    //       id: null,
-    //       nik: null,
-    //       nip: null,
-    //       nama: 'Perawat Mawar',
-    //       jabatan: null,
-    //       kdpegsimrs: 'D913',
-    //       aktif: 'AKTIF',
-    //       kddpjp: null,
-    //       kdgroupnakes: '2'
-    //     },
-    //     {
-    //       id: null,
-    //       nik: null,
-    //       nip: null,
-    //       nama: 'Perawat Dahlia',
-    //       jabatan: null,
-    //       kdpegsimrs: 'D914',
-    //       aktif: 'AKTIF',
-    //       kddpjp: null,
-    //       kdgroupnakes: '2'
-    //     },
-    //     {
-    //       id: null,
-    //       nik: null,
-    //       nip: null,
-    //       nama: 'Perawat Dahlia',
-    //       jabatan: null,
-    //       kdpegsimrs: 'D914',
-    //       aktif: 'AKTIF',
-    //       kddpjp: null,
-    //       kdgroupnakes: '2'
-    //     },
-
-    //   ]
-    // },
-
     //= ===
     async cariIcd9 (val) {
       if (val.length < 3) {
@@ -189,25 +122,6 @@ export const useTindakanHemodialisaStore = defineStore('tindakan-hemodialisa-sto
         }
 
 
-
-        // target.length
-        //   ? this.formtindakan.tindakan = target[0].tindakan
-        //   : this.formtindakan.tindakan = ''
-        // target.length
-        //   ? this.formtindakan.tarif = target[0].tarif
-        //   : this.formtindakan.tarif = 0
-        // target.length
-        //   ? this.formtindakan.hargasarana = target[0].sarana
-        //   : this.formtindakan.sarana = 0
-        // target.length
-        //   ? this.formtindakan.hargapelayanan = target[0].pelayanan
-        //   : this.formtindakan.pelayanan = 0
-        // target.length
-        //   ? this.formtindakan.biaya = (parseInt(target[0].pelayanan) + parseInt(target[0].sarana))
-        //   : this.formtindakan.biaya = 0
-        // target.length
-        //   ? this.formtindakan.subtotal = parseInt(this.formtindakan.biaya) * this.formtindakan.jumlah
-        //   : this.formtindakan.subtotal = 0
       }
 
       // console.log('setKdTindakana', this.formtindakan)
