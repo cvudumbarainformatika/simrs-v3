@@ -21,6 +21,10 @@
           <q-btn flat color="white" icon="icon-mat-refresh" @click="emits('refresh')">
             <q-tooltip>Refresh Data</q-tooltip>
           </q-btn>
+          <q-btn flat color="white" icon="icon-mat-download" @click="emits('export')" :loading="loadingDownload"
+            :disable="loadingDownload">
+            <q-tooltip>Export Excel</q-tooltip>
+          </q-btn>
           <q-btn flat color="white" icon="icon-mat-print" @click="emits('print')">
             <q-tooltip>Cetak Laporan</q-tooltip>
           </q-btn>
@@ -34,7 +38,11 @@
 import { ref, onMounted } from 'vue'
 import { date } from 'quasar'
 
-const emits = defineEmits(['setPeriode', 'refresh', 'print'])
+const emits = defineEmits(['setPeriode', 'refresh', 'print', 'export'])
+
+defineProps({
+  loadingDownload: { type: Boolean, default: false }
+})
 
 const yearSelected = ref('')
 const periode = ref(null)

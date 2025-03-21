@@ -38,8 +38,8 @@
             {{ props.row.name }}
           </q-td>
           <template v-for="i in 31" :key="i">
-            <q-td class="text-center">{{ getDailyCount(props.row, i, 'laki') }}</q-td>
-            <q-td class="text-center">{{ props.row[`day${i}P`] || '' }}</q-td>
+            <q-td class="text-center">{{ getDailyCount(props.row.kode, i, 'laki') }}</q-td>
+            <q-td class="text-center">{{ getDailyCount(props.row.kode, i, 'perempuan') }}</q-td>
           </template>
           <q-td class="text-center text-weight-bold">{{ calculateTotal(props.row) }}</q-td>
         </q-tr>
@@ -90,16 +90,7 @@ const columns = [
   }
 ]
 
-// Function to calculate total for a row (L + P)
-const calculateTotal = (row) => {
-  let total = 0;
-  for (let i = 1; i <= 31; i++) {
-    const valueL = parseInt(row[`day${i}L`]) || 0;
-    const valueP = parseInt(row[`day${i}P`]) || 0;
-    total += valueL + valueP;
-  }
-  return total || '';
-}
+
 
 onMounted(async () => {
   Promise.all([
@@ -111,10 +102,6 @@ onMounted(async () => {
 
 watch(() => store.rawData, (newVal, oldVal) => {
   if (newVal !== oldVal) {
-
-    console.log('store', store.rawData?.filter(x => x?.kode === 'LAB023' && x?.tgl_order === '2024-01-26'))
-    // console.log('range', store.getDatesInRange());
-
   }
 }, { deep: true })
 
@@ -187,19 +174,31 @@ const formattedData = computed(() => {
 
 function getDailyCount(kode, index, jenis) {
   // Format index menjadi 2 digit dengan leading zero
+
+  // console.log('range', store.getMonthAndYear());
+  const month = store.getMonthAndYear()?.month < 10 ? `0${store.getMonthAndYear()?.month}` : `${store.getMonthAndYear()?.month}`;
+  const year = store.getMonthAndYear()?.year
+
   const formattedIndex = index < 10 ? `0${index}` : `${index}`
+  const coba = store.processedData[kode]?.dates[`${year}-${month}-${formattedIndex}`] ? store.processedData[kode]?.dates[`${year}-${month}-${formattedIndex}`][jenis] : ''
 
-  // console.log('kode', kode, formattedIndex, jenis);
+  return coba
+}
 
-  // const key = `${kode}-${store.processedData[kode]?.nama_pemeriksaan}`
-  // const coba = store.processedData[key]?.dates[tanggal]?.[jenis] || 0
-  // console.log('coba', key);
+// Function to calculate total for a row (L + P)
+const calculateTotal = (row) => {
+  const key = row.kode;
+  let total = 0;
 
+  const month = store.getMonthAndYear()?.month < 10 ? `0${store.getMonthAndYear()?.month}` : `${store.getMonthAndYear()?.month}`;
+  const year = store.getMonthAndYear()?.year
+  for (let i = 1; i <= 31; i++) {
+    const formattedIndex = i < 10 ? `0${i}` : `${i}`
+    const tot = store.processedData[key]?.dates[`${year}-${month}-${formattedIndex}`] ? store.processedData[key]?.dates[`${year}-${month}-${formattedIndex}`].total : 0
 
-  // const coba = store.rawData?.filter(x => x?.kode === kode && x?.tgl_order === `2024-01-${formattedIndex}`)
-  // console.log('coba', coba);
-
-  return 0
+    total += tot;
+  }
+  return total || '';
 }
 </script>
 
