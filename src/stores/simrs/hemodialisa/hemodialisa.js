@@ -228,6 +228,11 @@ export const useListPasienHemodialisaStore = defineStore('list-pasien-hemodialis
               findPasien.pemeriksaan = resp?.data?.pemeriksaan
               findPasien.penilaian = resp?.data?.penilaian
               findPasien.memodiagnosa = resp?.data?.memodiagnosa
+              findPasien.diagnosamedis = resp?.data?.diagnosamedis
+              findPasien.diagnosakeperawatan = resp?.data?.diagnosakeperawatan
+              findPasien.diagnosakebidanan = resp?.data?.diagnosakebidanan
+              findPasien.diagnosagizi = resp?.data?.diagnosagizi
+              findPasien.tindakan = resp?.data?.tindakan
               this.pasien = findPasien
             }
             const jnsKasus = resp?.data?.kd_jeniskasus
