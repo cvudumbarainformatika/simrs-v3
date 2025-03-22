@@ -31,6 +31,10 @@ const kasir = {
 
       ]
     },
+    {
+      path: '/kasir/flagingva',
+      component: () => import('src/pages/simrs/kasir/flagingva/IndexPage.vue')
+    },
 
     {
       path: '/kasir/notfound',
