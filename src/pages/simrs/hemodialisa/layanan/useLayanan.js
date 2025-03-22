@@ -27,13 +27,13 @@ export default function useLayanan (pasien) {
       nakes: ['1', '2', '3'],
       comp: shallowRef(defineAsyncComponent(() => import('./pemeriksaan/IndexPage.vue')))
     },
-    // {
-    //   name: 'DiagTindPage',
-    //   label: 'Diagnosa & Tindakan',
-    //   icon: 'icon-mat-health_and_safety',
-    //   nakes: ['1', '2', '3', '4', '5', '6'],
-    //   comp: shallowRef(defineAsyncComponent(() => import('./diagnosaDanTindakan/IndexPage.vue')))
-    // },
+    {
+      name: 'DiagTindPage',
+      label: 'Diagnosa & Tindakan',
+      icon: 'icon-mat-health_and_safety',
+      nakes: ['1', '2', '3', '4', '5', '6'],
+      comp: shallowRef(defineAsyncComponent(() => import('./diagnosaDanTindakan/IndexPage.vue')))
+    },
     // {
     //   name: 'Penunjang',
     //   label: 'Penunjang',

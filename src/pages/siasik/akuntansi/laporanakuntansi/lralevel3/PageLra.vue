@@ -9,12 +9,12 @@
   <div class="container q-px-sm">
     <q-card class="items-center full-width">
       <div class="row">
-        <template v-if="store.reqs.jenislra === 1">
+        <template v-if="store.hasilpendapatan.length || store.hasilbelanja.length || store.hasilsilpa.length">
           <listData />
         </template>
-        <template v-else-if="store.reqs.jenislra === 2">
+        <!-- <template v-else-if="store.reqs.jenislra === 2">
           <listDataPsap />
-        </template>
+        </template> -->
         <template v-else>
           <div class="row q-pa-md full-width text-subtitle1 flex-center">
             <q-icon class="q-pr-sm" size="sm" name="icon-mat-warning" />
