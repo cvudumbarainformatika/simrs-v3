@@ -2,18 +2,8 @@
   <div class="row fit relative-position">
     <div class="absolute-top columm fit q-pa-xs" style="padding-bottom: 41px;">
       <div class="col-auto">
-        <q-tabs
-          v-model="tab"
-          dense
-          no-caps
-          inline-label
-          narrow-indicator
-          indicator-color="transparent"
-          align="left"
-          class=" bg-transparent text-grey-8"
-          active-color="white"
-          active-bg-color="dark"
-        >
+        <q-tabs v-model="tab" dense no-caps inline-label narrow-indicator indicator-color="transparent" align="left"
+          class=" bg-transparent text-grey-8" active-color="white" active-bg-color="dark">
           <q-tab v-for="tb in tabs" :key="tb.name" :ripple="true" :name="tb?.name" content-class="tab-classes">
             <template #default>
               <div class="row q-gutter-x-xs items-center q-px-sm" style="border-radius: 10px;">
@@ -78,13 +68,13 @@ const tabsxx = [
     nakes: ['2', '3'],
     comp: defineAsyncComponent(() => import('./diagnosakeperawatan/DiagnosaKeperawatanPage.vue'))
   },
-  {
-    label: 'Diagnosa Kebidanan',
-    name: 'diagnosaKebidanan',
-    icon: 'icon-mat-health_and_safety',
-    nakes: ['2', '3'],
-    comp: defineAsyncComponent(() => import('./diagnosakebidanan/IndexPage.vue'))
-  },
+  // {
+  //   label: 'Diagnosa Kebidanan',
+  //   name: 'diagnosaKebidanan',
+  //   icon: 'icon-mat-health_and_safety',
+  //   nakes: ['2', '3'],
+  //   comp: defineAsyncComponent(() => import('./diagnosakebidanan/IndexPage.vue'))
+  // },
   {
     label: 'Diagnosa Gizi',
     name: 'diagnosaGizi',
