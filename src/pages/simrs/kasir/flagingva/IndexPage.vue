@@ -30,7 +30,7 @@ const style = useStyledStore()
 const pasien = ref(null)
 
 function flagingmanual(val) {
-  console.log('terimapasien', val)
+  // console.log('terimapasien', val)
   store.simpanflaging(val)
 }
 

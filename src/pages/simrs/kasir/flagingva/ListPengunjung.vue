@@ -7,44 +7,36 @@
         <q-item v-for="(item, i) in items" :key="i">
           <q-item-section class="q-col-gutter-xs">
             <q-item-label>
-              <span class="text-weight-bold">{{ item?.mpasien?.rs2 }}</span>
+              NO. VA : <span class="text-negative text-weight-bold">{{ item?.nova }}</span> || Nama : <span
+                class="text-weight-bold">{{ item?.nama }}</span>
             </q-item-label>
             <q-item-label>
-              <span class="text-weight-bold">{{ item?.rs1 }} </span> | <span class="text-cyan text-weight-bold">{{
+              <span class="text-weight-bold">{{ item?.nota }} </span> | <span class="text-cyan text-weight-bold">{{
                 item?.rs3 }}</span>
             </q-item-label>
             <q-item-label>
-              NIK : <span class="text-negative text-weight-bold">{{ item?.mpasien?.rs49 ?? '-' }}</span> | Telp : <span
-                class="text-teal text-weight-bold"> {{ item?.mpasien?.rs55 ?? '-' }}</span>
-            </q-item-label>
-            <q-item-label caption>
-              Kelamin : <span class="text-weight-bold">{{
-                item?.mpasien?.rs17 }}</span>
+              Tanggal Expired Date : <span class="text-teal text-weight-bold"> {{ item?.tgled }}</span>
             </q-item-label>
           </q-item-section>
           <q-separator vertical class="q-mx-md" />
           <q-item-section class="q-col-gutter-xs">
-            <q-item-label>
-              NO. VA : <span class="text-negative text-weight-bold">{{ item?.rs4 }}</span>
-            </q-item-label>
-            <q-item-label>
-              Tanggal Expired Date : <span class="text-teal text-weight-bold"> {{ item?.rs6 }}</span>
-            </q-item-label>
-            <q-item-label>
-              Total VA : <span class="text-teal text-weight-bold"><q-badge color="red"> {{ formatRpDouble(item?.rs9) ??
+            <q-item-label class="text-weight-bold">
+              Total VA : <span class="text-weight-bold"><q-badge color="red"> {{ formatRpDouble(item?.nominal) ??
                 '-'
-                  }}</q-badge></span> |<span> Tanggal Bayar : <q-badge outline color="red">{{ item?.flagbayar[0]?.rs2 ??
-                    '-'
                   }}</q-badge></span>
+            </q-item-label>
+            <q-item-label>
+              Tanggal Bayar : <span class="text-teal text-weight-bold"> {{ item?.tglbayar ??
+                '-' }}</span>
             </q-item-label>
             <div>
               <q-badge outline color="primary">
-                {{ item?.rs10 }}
+                {{ item?.kasir }}
               </q-badge>
             </div>
           </q-item-section>
           <q-item-section side>
-            <div v-if="item?.flagbayar?.length > 0">
+            <div v-if="item?.tglbyr != null">
               <q-btn dense size="sm" no-caps color="purple" label="Lunas" class="q-mb-sm" style="min-width: 100px;" />
             </div>
             <div v-else>

@@ -37,15 +37,15 @@ const emits = defineEmits(['fullscreen', 'setTanggal', 'setSearch', 'setRow', 's
 
 
 function gantiStatus(val) {
+  console.log('val', val)
   if (val === 'BELUM TERBAYAR') {
-    return ''
+    store.params.status = ''
   } else if (val === 'SUDAH TERBAYAR') {
-    return '1'
+    store.params.status = '1'
   } else {
-    return 'all'
+    store.params.status = 'all'
   }
-  const xxx = useFlagingVaStore()
-  xxx.getDataVa()
+  store.getDataVa()
 }
 
 onMounted(() => {

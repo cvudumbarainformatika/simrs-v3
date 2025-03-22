@@ -35,8 +35,8 @@ export const useFlagingVaStore = defineStore('flaging-va', {
       val.loadingbayar = true
 
       const payload = {
-        nova: val?.rs4,
-        total: val?.rs9,
+        nova: val?.nova,
+        total: val?.nominal,
       }
       try {
         const resp = await api.post('v1/simrs/kasir/va/flagingmanualva', payload)
