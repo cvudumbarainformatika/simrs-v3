@@ -173,6 +173,23 @@ const masters = {
         }
       ]
     },
+    {
+      path: '/master/arsip',
+      component: () => import('src/pages/simrs/master/arsip/IndexPage.vue'),
+      children: [
+        { path: '', redirect: '/master/arsip/kelasifikasi' },
+        {
+          path: '/master/arsip/kelasifikasi',
+          name: 'master.arsip.kelasifikasi',
+          component: () => import('pages/simrs/master/arsip/kelasifikasi/IndexPage.vue')
+        },
+        {
+          path: '/master/arsip/lokasi',
+          name: 'master.arsip.lokasi',
+          component: () => import('pages/simrs/master/arsip/lokasi/IndexPage.vue')
+        }
+      ]
+    },
     // {
     //   path: '/master/pasien',
     //   component: () => import('src/pages/simrs/master/pasien/IndexPage.vue')
