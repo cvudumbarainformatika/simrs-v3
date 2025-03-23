@@ -9,45 +9,77 @@
       </div>
 
 
-      <!-- List Obat yang Bisa Di-Scroll -->
-      <div v-if="filteredObat.length > 0" class="scrollable-list">
-        <q-list bordered class="futuristic-list">
-          <q-item v-for="obat in filteredObat" :key="obat.id" clickable @click="selectObat(obat)"
-            class="futuristic-item">
-            <q-item-section>
-              <q-item-label class="text-bold">{{ obat?.nama_obat }}</q-item-label>
-              <q-item-label class="text-yellow">kandungan : {{ obat?.kandungan }}</q-item-label>
-            </q-item-section>
-            <q-item-section side>
-              <q-item-label class="text-white">{{ obat?.jumlah }} {{ obat?.satuan }} ({{ obat?.sediaan
-                }})</q-item-label>
-              <q-item-label caption class="text-white">aturan : {{ obat?.aturan }}</q-item-label>
-              <!-- <q-item-label caption class="text-white">tgl : {{ obat?.waktu }}</q-item-label> -->
-            </q-item-section>
-          </q-item>
-        </q-list>
-      </div>
-      <div v-else class="q-pa-lg full-height">
-        <div class="empty-state flex flex-center column q-pa-lg full-height">
-          <!-- <q-icon name="medical_services" size="64px" color="grey-5" /> -->
-          <div class="text-grey" style="font-size: 4rem;">⚕️</div>
-          <div class="text-subtitle1 text-grey-5 q-mt-md">
-            Obat Belum Resep
+      <div v-if="type === 'resep'" class="slide-panel-2">
+        <!-- List Obat yang Bisa Di-Scroll -->
+        <div v-if="filteredObat.length > 0" class="scrollable-list">
+          <q-list bordered class="futuristic-list">
+            <q-item v-for="obat in filteredObat" :key="obat.id" clickable @click="selectObat(obat)"
+              class="futuristic-item">
+              <q-item-section>
+                <q-item-label class="text-bold">{{ obat?.nama_obat }}</q-item-label>
+                <q-item-label class="text-yellow">kandungan : {{ obat?.kandungan }}</q-item-label>
+                <template v-if="obat?.rincian?.length">
+                  <div v-for="rinci in obat?.rincian" :key="rinci" class="text-white">{{ rinci }}</div>
+                </template>
+              </q-item-section>
+              <q-item-section side>
+                <q-item-label class="text-white">{{ obat?.jumlah }} {{ obat?.satuan }} ({{ obat?.sediaan
+                  }})</q-item-label>
+                <q-item-label caption class="text-white">aturan : {{ obat?.aturan }}</q-item-label>
+
+              </q-item-section>
+            </q-item>
+          </q-list>
+        </div>
+        <div v-else class="q-pa-lg full-height">
+          <div class="empty-state flex flex-center column q-pa-lg full-height">
+            <!-- <q-icon name="medical_services" size="64px" color="grey-5" /> -->
+            <div class="text-grey" style="font-size: 4rem;">⚕️</div>
+            <div class="text-subtitle1 text-grey-5 q-mt-md">
+              Obat Belum Resep
+            </div>
+          </div>
+        </div>
+
+        <!-- Input Section Muncul Saat Obat Dipilih -->
+        <div v-if="selectedObat" class="input-section distinct-input-section">
+          <div class="f-20 text-dark text-bold">{{ selectedObat?.nama_obat }}</div>
+          <div class="f-14 text-info">{{ selectedObat?.kandungan }}, {{ selectedObat?.satuan }} , aturan : {{
+            selectedObat?.aturan }}</div>
+          <q-separator class="q-my-lg"></q-separator>
+          <div class="flex q-gutter-sm">
+            <q-input v-model="selectedObat.jumlah" label="jml Pemakaian" type="number" filled style="width: 23%;" />
+            <q-input v-model="selectedObat.sisa" label="Sisa Obat" type="number" filled style="width: 23%;" />
+            <q-input v-model="selectedObat.satuan_ambil" label="Satuan" filled style="width: 23%;" />
+            <q-input v-model="selectedObat.dosis" label="Dosis" filled style="width: 23%;" />
+          </div>
+          <div class="flex q-gutter-md">
+
+            <!-- <q-input v-model="selectedObat.sisa" label="Sisa Obat" type="number" filled style="width: 30%;" /> -->
+            <!-- <q-input v-model="selectedObat.satuan" label="Satuan" filled style="width: 30%;" /> -->
+          </div>
+          <q-separator class="q-my-lg"></q-separator>
+          <div class="button-group">
+            <q-btn label="Kirim" color="positive" @click="submitObat" class="futuristic-button" />
+            <q-btn label="Tutup" color="negative" @click="closeForm" class="futuristic-button" />
           </div>
         </div>
       </div>
-
-      <!-- Input Section Muncul Saat Obat Dipilih -->
-      <div v-if="selectedObat" class="input-section distinct-input-section">
-        <div class="f-20 text-dark text-bold">{{ selectedObat?.nama_obat }}</div>
-        <div class="f-14 text-info">{{ selectedObat?.kandungan }}, {{ selectedObat?.satuan }} , aturan : {{
-          selectedObat?.aturan }}</div>
+      <div v-else class="input-section distinct-input-section">
+        <div class="f-20 text-dark text-bold">Obat Non Resep</div>
         <q-separator class="q-my-lg"></q-separator>
         <div class="flex q-gutter-sm">
-          <q-input v-model="selectedObat.jumlah" label="jml Pemakaian" type="number" filled style="width: 23%;" />
-          <q-input v-model="selectedObat.sisa" label="Sisa Obat" type="number" filled style="width: 23%;" />
-          <q-input v-model="selectedObat.satuan_ambil" label="Satuan" filled style="width: 23%;" />
-          <q-input v-model="selectedObat.dosis" label="Dosis" filled style="width: 23%;" />
+          <q-input ref="refNamaObat" v-model="formNonResep.nama_obat" label="Nama Obat" filled style="width: 50%;"
+            :rules="[validateNamaObat]" />
+          <q-input ref="refNamaObat" v-model="formNonResep.kandungan" label="Kandungan Obat" filled
+            style="width: 45%;" />
+        </div>
+        <q-separator class="q-mb-lg"></q-separator>
+        <div class="flex q-gutter-sm">
+          <q-input v-model="formNonResep.jumlah" label="jml Pemakaian" type="number" filled style="width: 23%;" />
+          <q-input v-model="formNonResep.sisa" label="Sisa Obat" type="number" filled style="width: 23%;" />
+          <q-input v-model="formNonResep.satuan_ambil" label="Satuan" filled style="width: 23%;" />
+          <q-input v-model="formNonResep.dosis" label="Dosis" filled style="width: 23%;" />
         </div>
         <div class="flex q-gutter-md">
 
@@ -56,8 +88,8 @@
         </div>
         <q-separator class="q-my-lg"></q-separator>
         <div class="button-group">
-          <q-btn label="Kirim" color="positive" @click="submitObat" class="futuristic-button" />
-          <q-btn label="Tutup" color="negative" @click="closeForm" class="futuristic-button" />
+          <q-btn label="Kirim" color="positive" @click="submitObatNonResep" class="futuristic-button" />
+          <q-btn label="Tutup" color="negative" @click="store.dialogPreview = false" class="futuristic-button" />
         </div>
       </div>
     </div>
@@ -65,7 +97,7 @@
 </template>
 
 <script setup>
-import { dateDbFormat, dateFull, dateFullFormat } from 'src/modules/formatter';
+import { dateFull, tglJamFormat } from 'src/modules/formatter';
 import { useNurseNoteRanapStore } from 'src/stores/simrs/ranap/nursenote';
 import { ref, computed, onMounted } from 'vue';
 
@@ -87,6 +119,10 @@ const props = defineProps({
   status: {
     type: String,
     default: 'add'
+  },
+  type: {
+    type: String,
+    default: 'resep'
   }
 })
 
@@ -95,6 +131,7 @@ const emits = defineEmits(['addToList'])
 
 onMounted(() => {
   setitems()
+  cleanFormNonResep()
 })
 
 
@@ -105,6 +142,7 @@ const daftarObat = ref([])
 const setitems = () => {
   let arr = []
   const reseps = props?.pasien?.newapotekrajal ?? []
+  // console.log('reseps', reseps);
 
   if (reseps.length) {
     const detailsResep = reseps?.map(x => x?.permintaanresep?.filter?.(y => y?.mobat?.jenis_perbekalan === 'Obat').map(y => {
@@ -112,7 +150,7 @@ const setitems = () => {
         kdobat: y?.kdobat,
         nama_obat: y?.mobat?.nama_obat,
         kandungan: y?.kandungan,
-        uraian: y?.uraian108,
+        uraian108: y?.uraian108,
         jumlah: y?.jumlah,
         aturan: y?.aturan,
         created_at: y?.created_at,
@@ -120,7 +158,8 @@ const setitems = () => {
         uraian: y?.uraian,
         satuan: y?.mobat?.satuan_k,
         sediaan: y?.mobat?.bentuk_sediaan,
-        jenis: y?.mobat?.jenis_perbekalan
+        jenis: y?.mobat?.jenis_perbekalan,
+        rincian: [],
       }
     }))?.flat()
     const newArr = [...new Set(detailsResep)]
@@ -143,12 +182,64 @@ const setitems = () => {
         existing.satuan = current.satuan;
         existing.sediaan = current.sediaan;
         existing.jenis = current.jenis;
+        existing.rincian = current.rincian;
       } else {
         acc.push(current);
       }
       return acc;
     }, []);
-    arr = result
+    // arr = result
+
+
+    // ini racikan
+
+    const racikan = reseps?.filter(x => x?.permintaanracikan)?.map(r => r?.permintaanracikan)?.flat() || []
+    const kandungans = racikan?.map(x => x?.kandungan)?.join(', ') || null
+    const rincianNamaObats = racikan?.map(x => x?.mobat?.nama_obat)
+    const rrr = racikan?.length
+      ? racikan?.map(y => {
+        return {
+          kdobat: y?.namaracikan,
+          nama_obat: y?.namaracikan,
+          kandungan: kandungans,
+          uraian108: racikan?.map(x => x?.uraian108)?.join(', ') || null,
+          jumlah: y?.jumlahdibutuhkan,
+          aturan: y?.aturan,
+          created_at: y?.created_at,
+          waktu: dateFull(y?.created_at),
+          uraian: y?.uraian,
+          satuan: y?.satuan_racik,
+          sediaan: y?.satuan_racik,
+          jenis: y?.mobat?.jenis_perbekalan,
+          rincian: rincianNamaObats,
+        }
+      })?.flat() : []
+    // console.log('racikan', racikan);
+    const res = rrr.reduce((acc, current) => {
+      const existing = acc.find(item => item.nama_obat === current.nama_obat);
+      if (existing) {
+        // Update with the latest values while keeping the same structure
+        existing.kandungan = current.kandungan;
+        existing.uraian108 = current.uraian108;
+        existing.jumlah = current.jumlah;
+        existing.aturan = current.aturan;
+        existing.created_at = current.created_at;
+        existing.waktu = current.waktu;
+        existing.satuan = current.satuan;
+        existing.sediaan = current.sediaan;
+        existing.jenis = current.jenis;
+        existing.rincian = current.rincian;
+      } else {
+        acc.push(current);
+      }
+      return acc;
+    }, []);
+
+
+    const combinedArray = [...result, ...res];
+    arr = combinedArray
+    // console.log('res', arr);
+
   }
 
   // return arr
@@ -159,6 +250,26 @@ const setitems = () => {
 
 const searchQuery = ref('');
 const selectedObat = ref(null);
+const formNonResep = ref(null);
+const cleanFormNonResep = () => {
+  const form = {
+    kdobat: null,
+    nama_obat: null,
+    kandungan: null,
+    uraian108: null,
+    jumlah: 0,
+    aturan: null,
+    created_at: null,
+    waktu: null,
+    uraian: 'Obat Non Resep',
+    satuan: null,
+    sediaan: null,
+    jenis: null,
+    rincian: [],
+    flag: null // flag: 1 = obat non resep
+  }
+  formNonResep.value = form
+}
 
 
 
@@ -179,11 +290,6 @@ const selectObat = (obat) => {
 };
 
 const submitObat = () => {
-  // const index = daftarObat.value.findIndex(o => o.id === selectedObat.value.id);
-  // if (index !== -1) {
-  //   daftarObat.value[index] = { ...selectedObat.value };
-  // }
-  // console.log('selectedObat.value', selectedObat.value);
 
   if (props.status === 'add') {
     store.form.reseps.push(selectedObat.value)
@@ -196,9 +302,51 @@ const submitObat = () => {
 
 };
 
+
+const refNamaObat = ref(null)
+
+const submitObatNonResep = () => {
+  // console.log('formNonResep.value', refNamaObat.value.validate());
+
+  const namaObatValid = refNamaObat.value?.validate()
+
+  if (!namaObatValid) {
+    return false
+  }
+
+  const timestamp = Date.now()
+  const randomStr = Math.random().toString(36).substring(2, 9)
+
+  const kdobat = `NR${timestamp}${randomStr}`
+  const created_at = tglJamFormat(timestamp)
+
+  formNonResep.value.kdobat = kdobat
+  formNonResep.value.created_at = created_at
+  formNonResep.value.waktu = dateFull(created_at)
+  // console.log('formNonResep.value', formNonResep.value);
+
+
+  if (props.status === 'add') {
+    store.form.reseps.push(formNonResep.value)
+  } else {
+    emits('addToList', formNonResep.value)
+  }
+
+  selectedObat.value = null;
+  cleanFormNonResep()
+  store.dialogPreview = false
+};
+
 const closeForm = () => {
   selectedObat.value = null;
 };
+
+const validateNamaObat = (val) => {
+  if (!val || val.trim() === '') {
+    return 'Nama Obat harus diisi'
+  }
+  return true
+}
 
 </script>
 
@@ -210,6 +358,23 @@ const closeForm = () => {
   width: 60%;
   /* 3/4 dari komponen utama */
   height: 100%;
+  background: #1e293b;
+  color: white;
+  box-shadow: -4px 0 20px rgba(0, 0, 0, 0.4);
+  padding: 0;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(0);
+}
+
+.slide-panel-2 {
+  // position: fixed;
+  // top: 0;
+  // right: 0;
+  width: 100%;
+  /* 3/4 dari komponen utama */
+  height: calc(100% - 91px);
   background: #1e293b;
   color: white;
   box-shadow: -4px 0 20px rgba(0, 0, 0, 0.4);

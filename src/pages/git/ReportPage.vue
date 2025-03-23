@@ -25,6 +25,14 @@
           <q-card-section>
             <div class="row q-col-gutter-md items-center">
               <div class="col-md-3 col-sm-6 col-xs-12">
+                <q-select v-model="store.repoConfig.repo" :options="store.repos" option-label="label"
+                  option-value="value" label="Repository" map-options outlined dense @update:model-value="onRepoChange">
+                  <template v-slot:prepend>
+                    <q-icon name="icon-mat-code" />
+                  </template>
+                </q-select>
+              </div>
+              <div class="col-md-3 col-sm-6 col-xs-12">
                 <q-input v-model="store.params.from" label="From Date" type="date" outlined dense>
                   <template v-slot:prepend>
                     <q-icon name="icon-mat-event" />
@@ -39,19 +47,19 @@
                 </q-input>
               </div>
               <div class="col-md-3 col-sm-6 col-xs-12">
-                <q-select v-model="store.params.branch" label="Branch" :options="['main', 'master', 'development']"
-                  outlined dense>
+                <q-select v-model="store.params.branch" label="Branch" :options="store.branch" outlined dense>
                   <template v-slot:prepend>
                     <q-icon name="icon-mat-account_tree" />
                   </template>
                 </q-select>
               </div>
-              <div class="col-md-3 col-sm-6 col-xs-12">
-                <q-btn unelevated color="primary" label="Refresh Data" :loading="store.loading"
-                  @click="store.getGitReport()" class="full-width">
-                  <q-icon name="icon-mat-refresh" class="q-mr-sm" />
-                </q-btn>
-              </div>
+            </div>
+            <!-- Refresh Button -->
+            <div class="row justify-end q-mt-md">
+              <q-btn color="primary" icon="icon-mat-refresh" label="Refresh Data" @click="store.getGitReport"
+                :loading="store.loading">
+                <q-tooltip>Refresh data git berdasarkan filter</q-tooltip>
+              </q-btn>
             </div>
           </q-card-section>
         </q-card>
@@ -161,6 +169,12 @@
                     <!-- Middle: Commit info -->
                     <div class="col">
                       <div class="text-weight-bold text-primary">{{ commit.message }}</div>
+
+                      <!-- Add author name -->
+                      <div class="text-caption q-mt-xs">
+                        <q-icon name="icon-mat-person" size="xs" class="q-mr-xs" />
+                        <span class="text-weight-medium">{{ commit.author }}</span>
+                      </div>
 
                       <!-- Stats -->
                       <div class="row q-gutter-x-md q-mt-sm">
@@ -333,18 +347,21 @@ const sortedContributors = computed(() => {
 })
 
 // Load initial data
-store.getGitReport()
 
 // Set dark mode for this page only
 onMounted(() => {
   $q.dark.set(false) // Memastikan mode light aktif
-  console.log('store', store.commits);
+  // Promise.all([
+  store.initGit()
+  store.getBranches()
+  store.getGitReport()
+  // ])
 
 })
 
 // Restore previous dark mode setting when leaving the page
 onUnmounted(() => {
-  $q.dark.set('auto') // atau sesuai setting default aplikasi
+  $q.dark.set(false) // atau sesuai setting default aplikasi
 })
 
 // Fungsi untuk export ke Excel
@@ -465,6 +482,16 @@ async function exportToPDF() {
   } finally {
     exporting.value = false
   }
+}
+
+async function onRepoChange(newRepo) {
+  // console.log('newRepo', newRepo);
+  store.repoConfig.repo = newRepo?.value
+  if (store.repoConfig.repo === 'api.laborat') {
+    store.params.branch = 'sigarang'
+  }
+  await store.getBranches() // Get new branches for selected repo
+  // store.getGitReport() // Refresh report data
 }
 </script>
 <style lang="scss" scoped>

@@ -129,9 +129,9 @@
       </q-scroll-area>
       <div class="absolute-bottom q-pa-sm bg-yellow-3 row items-center justify-between">
         <div class="q-gutter-sm">
-          <!-- <q-btn color="dark" @click="tempOp.isOpen = true">
-            Buka Pemplate
-          </q-btn> -->
+          <q-btn color="dark" @click="tempOp.isOpen = true">
+            Buka Template
+          </q-btn>
         </div>
         <div>
           <q-btn color="primary" :loading="store.loadingkirim" :disable="store.loadingkirim"
@@ -144,7 +144,7 @@
   </div>
   <app-fullscreen-blue v-model="tempOp.isOpen">
     <template #default>
-      <frontTemplate />
+      <frontTemplate :pasien="pasien" />
     </template>
   </app-fullscreen-blue>
 </template>

@@ -19,7 +19,8 @@ export const usePermintaanEResepStore = defineStore('permintaan_e_resep', {
     form: {
       keterangan: '-',
       jumlah_diminta: 1,
-      tiperesep: ''
+      tiperesep: '',
+      respkrs: false,
     },
     itemToEdit: null,
     openEditItem: false,
@@ -136,6 +137,7 @@ export const usePermintaanEResepStore = defineStore('permintaan_e_resep', {
       const tiperacikan = this.form?.tiperacikan ?? 'DTD'
       const keterangan = this.form?.keterangan ?? '-'
       const satuanRacik = this.form?.satuan_racik ?? '-'
+      const respkrs = this.form?.respkrs ?? false
       // // console.log('jenis resep', jenisresep)
       this.form = {
         keterangan: '-',
@@ -146,7 +148,8 @@ export const usePermintaanEResepStore = defineStore('permintaan_e_resep', {
         uraianinacbg,
         tarifina,
         jenisresep,
-        kdruangan
+        kdruangan,
+        respkrs
       }
       this.setForm('iter_expired', iterExpired)
       this.setForm('iter_jml', iterJml)
@@ -176,6 +179,7 @@ export const usePermintaanEResepStore = defineStore('permintaan_e_resep', {
       const uraianinacbg = this.form?.uraianinacbg ?? '-'
       const tarifina = this.form?.tarifina ?? 0
       const tiperesep = this.form?.tiperesep ?? 'normal'
+      const respkrs = this.form?.respkrs ?? false
       this.form = {
         keterangan: '-',
         jumlah_diminta: 1,
@@ -183,7 +187,8 @@ export const usePermintaanEResepStore = defineStore('permintaan_e_resep', {
         tagihanrs,
         kodeincbg,
         uraianinacbg,
-        tarifina
+        tarifina,
+        respkrs
       }
 
       this.setPasien()

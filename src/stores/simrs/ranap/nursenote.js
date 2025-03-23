@@ -41,6 +41,7 @@ export const useNurseNoteRanapStore = defineStore('nursenote-ranap-store', {
       peep: 0,
       pins: 0,
       ratio: 0,
+      flow: 0,
 
       // intake
       infus: 0,
@@ -72,7 +73,7 @@ export const useNurseNoteRanapStore = defineStore('nursenote-ranap-store', {
         value: '1'
       },
       {
-        label: 'Grafik TTV',
+        label: 'Grafik TTV ( khusus NICU,ICU,ICCU )',
         value: '2'
       },
       {
@@ -96,6 +97,7 @@ export const useNurseNoteRanapStore = defineStore('nursenote-ranap-store', {
     petugas: [],
     isForm: false,
     dialogPreview: false,
+    typePemakaianObat: 'resep',
     loadingSave: false,
     loading: false
   }),
@@ -187,7 +189,7 @@ export const useNurseNoteRanapStore = defineStore('nursenote-ranap-store', {
             };
           }) ?? []
         }
-        // console.log('resp nursenote list', this.items)
+        console.log('resp nursenote list', this.items)
         this.loading = false
       } catch (error) {
         console.log('error', error);

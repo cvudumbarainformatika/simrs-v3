@@ -66,6 +66,11 @@ const laborat =
       name: 'lab.settings',
       component: () => import('pages/simrs/laborat/IndexSettings.vue')
     },
+    {
+      path: '/admin/laborat/laporan',
+      name: 'lab.settings',
+      component: () => import('pages/simrs/laborat/laporan/IndexPage.vue')
+    },
 
     {
       path: '/admin/laborat/notfound',

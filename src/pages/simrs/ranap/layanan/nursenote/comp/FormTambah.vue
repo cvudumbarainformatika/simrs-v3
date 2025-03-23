@@ -23,9 +23,9 @@
 
           <!-- Implementasi -->
           <div class="column gap-2 q-mt-sm">
-            <div class="text-lg text-subtitle1 text-bold">IMPLEMENTASI</div>
-            <q-input v-model="store.form.implementasi" type="textarea" outlined standout="bg-yellow-3"
-              label="Implementasi" :rows="15" @focus="() => setSplitter('insideModel1a', 0)" />
+            <div class="text-lg text-subtitle1 text-bold">CATATAN</div>
+            <q-input v-model="store.form.implementasi" type="textarea" outlined standout="bg-yellow-3" label="Catatan"
+              :rows="15" @focus="() => setSplitter('insideModel1a', 0)" />
 
             <!-- <q-btn class="full-width" color="teal">Tambah Pemakaian Obat Reseps</q-btn>
             <q-btn class="full-width" color="orange">Tambah Pemakaian Obat Non Reseps</q-btn> -->
@@ -76,7 +76,13 @@
 </q-card-section>
 </q-card> -->
             <CardPemakaianObat :pasien="pasien" :kasus="kasus" :nakes="nakes" :reseps="store.form.reseps"
-              @add-resep="store.dialogPreview = true" @hapus-obat="(index) => hapusObat(index)" />
+              @add-non-resep="(val) => {
+                store.typePemakaianObat = val
+                store.dialogPreview = true
+              }" @add-resep="(val) => {
+                store.typePemakaianObat = val
+                store.dialogPreview = true
+              }" @hapus-obat="(index) => hapusObat(index)" />
           </div>
 
 
@@ -143,6 +149,7 @@
                   <app-input-simrs v-model="store.form.peep" label="PEEP" class="col-6" />
                   <app-input-simrs v-model="store.form.pins" label="P ins" class="col-6" />
                   <app-input-simrs v-model="store.form.ratio" label="I:E Rasio" class="col-6" />
+                  <app-input-simrs v-model="store.form.flow" label="Flow" class="col-6" />
                 </div>
               </div>
 
@@ -283,6 +290,7 @@ const insideModel1a = ref(50)
 const insideModel1aRef = ref(null)
 const insideModel1b = ref(50)
 const insideModel2 = ref(50)
+
 
 const focusing = ref(null)
 

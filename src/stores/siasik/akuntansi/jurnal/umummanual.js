@@ -35,7 +35,7 @@ export const usejurnalumummanual = defineStore('jurnal_umum_manual', {
     tahun: []
   }),
   actions: {
-    getRekenining50 () {
+    getRekenining50() {
       // this.loading = true
       const params = { params: this.reqs }
       return new Promise((resolve) => {
@@ -48,7 +48,7 @@ export const usejurnalumummanual = defineStore('jurnal_umum_manual', {
         }).catch(() => { this.loading = false })
       })
     },
-    async getJurnalUmum () {
+    async getJurnalUmum() {
       this.loading = true
       const params = { params: this.params }
       try {
@@ -64,7 +64,7 @@ export const usejurnalumummanual = defineStore('jurnal_umum_manual', {
         this.loading = false
       }
     },
-    async gettotal (val) {
+    async gettotal(val) {
       const hasil = []
       val.forEach(x => {
         const rinci = x?.rincianjurnalumum
@@ -79,7 +79,7 @@ export const usejurnalumummanual = defineStore('jurnal_umum_manual', {
       this.totald = hasil.reduce((a, b) => parseFloat(a) + parseFloat(b.totdebet), 0)
       this.totalk = hasil.reduce((a, b) => parseFloat(a) + parseFloat(b.totkredit), 0)
     },
-    async saveData () {
+    async saveData() {
       console.log('no', this.form.nobukti)
       this.loading = true
       try {
@@ -100,26 +100,27 @@ export const usejurnalumummanual = defineStore('jurnal_umum_manual', {
         notifErr(error)
       }
     },
-    resetformrinci () {
+    resetformrinci() {
       this.form.koderekening = ''
       this.form.uraian = ''
       this.form.jenis = ''
     },
-    async getrincians () {
+    async getrincians() {
       this.loading = true
       const params = { params: this.paramsrinci }
       try {
         const resp = await api.get('v1/akuntansi/jurnalumum/getrincian', params)
         if (resp.status === 200) {
           this.transall = resp.data
+          console.log('transrinci', this.transall)
           const hasilglobal = []
           this.loading = false
           this.transall?.forEach(x => {
             const nobukti = x?.nobukti
             const verif = x?.verif
             // const rincisx = x?.rincianjurnalumum
-            const debet = x?.rincianjurnalumum.reduce((x, y) => parseFloat(x) + parseFloat(y.debet), 0)
-            const kredit = x?.rincianjurnalumum?.reduce((a, b) => parseFloat(a) + parseFloat(b.kredit), 0)
+            const debet = (x?.rincianjurnalumum.reduce((x, y) => parseFloat(x) + parseFloat(y.debet), 0)).toFixed(2)
+            const kredit = (x?.rincianjurnalumum?.reduce((a, b) => parseFloat(a) + parseFloat(b.kredit), 0)).toFixed(2)
             const hasil = {
               nobukti,
               verif,
@@ -129,7 +130,8 @@ export const usejurnalumummanual = defineStore('jurnal_umum_manual', {
             }
             this.totalrincid = hasil?.debet
             this.totalrincik = hasil?.kredit
-
+            console.log('debit', this.totalrincid)
+            console.log('kredit', this.totalrincik)
             hasilglobal.push(hasil)
           })
         }
@@ -138,7 +140,7 @@ export const usejurnalumummanual = defineStore('jurnal_umum_manual', {
         this.loading = false
       }
     },
-    async hapusrincians (val) {
+    async hapusrincians(val) {
       this.loading = true
       const id = { id: val?.id, nobukti: val?.nobukti }
       try {
@@ -156,7 +158,7 @@ export const usejurnalumummanual = defineStore('jurnal_umum_manual', {
         notifErr(error)
       }
     },
-    editForm (val) {
+    editForm(val) {
       this.dialog = true
       this.form.nobukti = val?.nobukti
       this.form.tanggal = val?.tanggal
@@ -165,7 +167,7 @@ export const usejurnalumummanual = defineStore('jurnal_umum_manual', {
       this.flagVerif = val?.verif
       this.getrincians()
     },
-    async VerifData (val, debet, kredit) {
+    async VerifData(val, debet, kredit) {
       this.loadingverif = true
       if (debet !== kredit) {
         notifErrVue('Maaf Debet Dan Kredit Harus Balance')

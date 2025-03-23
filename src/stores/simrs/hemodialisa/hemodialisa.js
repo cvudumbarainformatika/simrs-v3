@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia'
+import { acceptHMRUpdate, defineStore } from 'pinia'
 import { api } from 'boot/axios'
 import { dateDbFormat } from 'src/modules/formatter'
 import { date } from 'quasar'
@@ -26,7 +26,9 @@ export const useListPasienHemodialisaStore = defineStore('list-pasien-hemodialis
     isViewList: false,
     pasien: null,
     pageTindakan: false,
-    loadingTerima: false
+    loadingTerima: false,
+    jeniskasus: [],
+    jnsKasusPasien: null
   }),
   getters: {
     // doubleCount: (state) => state.counter * 2
@@ -121,6 +123,151 @@ export const useListPasienHemodialisaStore = defineStore('list-pasien-hemodialis
     },
     togglePageTindakan () {
       this.pageTindakan = !this.pageTindakan
+    },
+    async getJenisKasus () {
+      const resp = await api.get('v1/simrs/ranap/ruangan/listjeniskasus')
+      console.log('jns kasus', resp.data)
+      if (resp.status === 200) {
+        this.jeniskasus = resp.data
+      }
+    },
+    injectDataPasien (noreg, val, kode, arr) {
+      const findPasien = this.items?.filter(x => x.noreg === noreg)
+      // console.log('inject pasien', findPasien)
+      if (findPasien.length) {
+        const data = findPasien[0]
+        // data[kode] = val
+        if (kode === 'kd_jeniskasus' ||
+          kode === 'status' || kode === 'carakeluar' || kode === 'prognosis' ||
+          kode === 'tindaklanjut' || kode === 'diagakhir' || kode === 'sebabkematian') {
+          data[kode] = val
+        }
+        else {
+          const target = data[kode]?.find(x => x.id === val?.id) ?? null
+          // console.log('inject target pasien', target, kode, val, data)
+          // console.log('inject kode pasien', kode)
+          // console.log('inject isi pasien', val)
+
+          if (target) {
+            Object.assign(target, val)
+          }
+          else {
+            data[kode]?.splice(0, 0, val)
+            // data[kode].push(val)
+          }
+        }
+      }
+    },
+    injectDataArray (noreg, arr, kode) {
+      const findPasien = this.items.filter(x => x?.noreg === noreg)
+      // console.log('inject pasien', findPasien)
+      if (findPasien.length) {
+        const data = findPasien[0]
+        data[kode] = arr
+      }
+    },
+
+    injectUpdatean (noreg, id, val, kode) {
+      const findPasien = this.items.filter(x => x?.noreg === noreg)
+      if (findPasien.length) {
+        const data = findPasien[0]
+        const target = data[kode]?.find(x => x?.id === id)
+        if (target) {
+          Object.assign(target, val)
+        }
+      }
+    },
+    deleteInjectanNull (noreg, kode) {
+      const findPasien = this.items.filter(x => x.noreg === noreg)
+      if (findPasien.length) {
+        const data = findPasien[0]
+        const target = data[kode]?.find(x => x?.id === null || x?.id === '' || x?.id === undefined || !('id' in x)) ?? null
+        if (target) {
+          data[kode]?.splice(data[kode]?.findIndex(x => x?.id === null), 1)
+        }
+      }
+    },
+    deleteInjectanNull2 (noreg, kode) {
+      const findPasien = this.items.filter(x => x.noreg === noreg)
+      if (findPasien.length) {
+        const data = findPasien[0]
+        const target = data[kode]?.find(x => !('id' in x))
+        if (target) {
+          data[kode]?.splice(target, 1)
+        }
+      }
+    },
+
+    async getNakes () {
+      const resp = await api.get('/v1/simrs/master/pegawai/listnakes')
+      // console.log('nakes', resp)
+
+      if (resp.status === 200) {
+        this.nakes = resp.data
+      }
+    },
+    async getNonNakes () {
+      const resp = await api.get('/v1/simrs/master/pegawai/listnonnakes')
+      // console.log('non nakes', resp)
+
+      if (resp.status === 200) {
+        this.nonNakes = resp.data
+      }
+    }, gantiMemo (form, pasien) {
+      // console.log(form)
+      return new Promise((resolve, reject) => {
+        api.post('/v1/simrs/pelayanan/gantimemo', form)
+          .then(resp => {
+            // console.log(resp)
+            if (resp.status === 200) {
+              const findPasien = this.items.filter(x => x.noreg === pasien?.noreg)
+              if (findPasien.length) {
+                const data = findPasien[0]
+                data.memodiagnosa = resp?.data?.result?.diagnosa
+              }
+            }
+            resolve(resp)
+          }).catch(err => {
+            console.log(err)
+          })
+      })
+    },
+    terimapasien (pas) {
+      return new Promise((resolve, reject) => {
+        api.post('v1/simrs/hemodialisa/hemodialisa/terima-pasien', pas)
+          .then((resp) => {
+            console.log('resp', resp)
+            const findPasien = this.items.find(x => x?.noreg === pas?.noreg)
+            if (findPasien) {
+              findPasien.kd_jeniskasus = resp?.data?.kd_jeniskasus
+              findPasien.anamnesis = resp?.data?.anamnesis
+              findPasien.newapotekrajal = resp?.data?.newapotekrajal
+              findPasien.diagnosa = resp?.data?.diagnosa
+              findPasien.pemeriksaan = resp?.data?.pemeriksaan
+              findPasien.penilaian = resp?.data?.penilaian
+              findPasien.memodiagnosa = resp?.data?.memodiagnosa
+              findPasien.diagnosamedis = resp?.data?.diagnosamedis
+              findPasien.diagnosakeperawatan = resp?.data?.diagnosakeperawatan
+              findPasien.diagnosakebidanan = resp?.data?.diagnosakebidanan
+              findPasien.diagnosagizi = resp?.data?.diagnosagizi
+              findPasien.tindakan = resp?.data?.tindakan
+              this.pasien = findPasien
+            }
+            const jnsKasus = resp?.data?.kd_jeniskasus
+            if (this.jeniskasus.length && jnsKasus) {
+              this.jnsKasusPasien = this.jeniskasus.find(x => x.kode === jnsKasus) ?? null
+            }
+            console.log('resp pas', this.jnsKasusPasien, jnsKasus)
+            resolve(resp)
+          })
+          .catch((err) => {
+            reject(err)
+          })
+      })
     }
   }
 })
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useListPasienHemodialisaStore, import.meta.hot))
+}

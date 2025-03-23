@@ -19,7 +19,7 @@
           <template v-if="reseps.length">
             <q-item v-for="(obat, index) in reseps" :key="index" class="q-hoverable futuristic-item q-mb-xs">
               <q-item-section avatar>
-                <q-avatar :color="obat?.resep ? 'primary' : 'secondary'" text-color="white" size="md">
+                <q-avatar :color="obat?.flag !== '1' ? 'orange' : 'secondary'" text-color="white" size="md">
                   {{ obat?.nama_obat.charAt(0) }}
                 </q-avatar>
               </q-item-section>
@@ -97,12 +97,12 @@ const emits = defineEmits(['addResep', 'addNonResep', 'hapusObat'])
 
 // Fungsi untuk menambahkan obat resep
 const addResep = () => {
-  emits('addResep')
+  emits('addResep', 'resep')
 }
 
 // Fungsi untuk menambahkan obat non-resep
 const addNonResep = () => {
-  emits('addNonResep')
+  emits('addNonResep', 'non-resep')
 }
 
 
@@ -120,7 +120,7 @@ const hapusObat = (index) => {
     // const params = { id: selected.value }
     emits('hapusObat', index)
   }).onCancel(() => {
-    console.log('Cancel')
+    // console.log('Cancel')
     // selected.value = []
   }).onDismiss(() => {
     // console.log('I am triggered on both OK and Cancel')
