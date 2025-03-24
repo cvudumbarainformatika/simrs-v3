@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import { api } from "src/boot/axios";
 import { notifSuccess } from "src/modules/utils";
 
-export const useArsipMasterKelasifikasiStore = defineStore('arsip-master-kelasifikasi', {
+export const useArsipMasterMediaStore = defineStore('arsip-master-media', {
   state: () => ({
     items: [],
     loading: false,
@@ -16,7 +16,7 @@ export const useArsipMasterKelasifikasiStore = defineStore('arsip-master-kelasif
   actions: {
     async simpanMaster() {
       try {
-        const resp = await api.post('v1/arsip/master/simpankelasifikasi', this.form)
+        const resp = await api.post('v1/arsip/master/simpanmedia', this.form)
         if (resp.status === 200) {
           //this.items.push(resp?.data?.result)
           // const data = resp?.data?.result
@@ -24,9 +24,7 @@ export const useArsipMasterKelasifikasiStore = defineStore('arsip-master-kelasif
           notifSuccess(resp)
           this.loadingSave = false
           this.form.id = ''
-          this.form.kode = ''
-          this.form.kelasifikasi = ''
-          this.form.retensi = ''
+          this.form.media = ''
         }
         this.loadingSave = false
       } catch (error) {
@@ -34,10 +32,10 @@ export const useArsipMasterKelasifikasiStore = defineStore('arsip-master-kelasif
         this.loadingSave = false
       }
     },
-    async getMkelasifikasi() {
+    async getMastermedia() {
       this.loading = true
       const params = { params: this.params }
-      const resp = await api.get('/v1/arsip/master/getmasterarsip', params)
+      const resp = await api.get('/v1/arsip/master/getmastermedia', params)
       if (resp.status === 200) {
         this.items = resp.data
         this.loading = false
@@ -46,14 +44,12 @@ export const useArsipMasterKelasifikasiStore = defineStore('arsip-master-kelasif
     },
     editForm(val) {
       this.form.id = val?.id
-      this.form.kode = val?.kode
-      this.form.kelasifikasi = val?.nama
-      this.form.retensi = val?.retensi
+      this.form.media = val?.nama_media
     },
     async deleteData(id) {
       const payload = { id }
       try {
-        const resp = await api.post('/v1/arsip/master/deletekelasifikasi', payload)
+        const resp = await api.post('/v1/arsip/master/deletemastermedia', payload)
         if (resp.status === 200) {
           this.items = resp?.data?.result
           notifSuccess(resp)
@@ -65,7 +61,7 @@ export const useArsipMasterKelasifikasiStore = defineStore('arsip-master-kelasif
     },
     search(val) {
       this.params.q = val
-      this.getMkelasifikasi()
+      this.getMastermedia()
     },
   }
 })
