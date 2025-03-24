@@ -173,7 +173,7 @@
       <div>
         <!-- <q-scroll-observer @scroll="scrollHandler" /> -->
         <div ref="refScroll" class="q-pa-sm" v-scroll="onScroll">
-          <TableComp />
+          <TablePage />
         </div>
       </div>
 
@@ -346,9 +346,10 @@ import { date } from 'quasar'
 import { useLaporanDataResepStore } from 'src/stores/simrs/laporan/farmasi/dataresep/dataresep'
 import { defineAsyncComponent, onMounted, ref } from 'vue'
 
+
 const store = useLaporanDataResepStore()
 
-const TableComp = defineAsyncComponent(() => import('./comp/TablePage.vue'))
+const TablePage = defineAsyncComponent(() => import('src/pages/simrs/laporan/farmasi/dataResep/comp/TablePage.vue'))
 // eslint-disable-next-line no-unused-vars
 function bulan () {
   const bul = store.bulans.find(a => a.value === store.params.bulan)
