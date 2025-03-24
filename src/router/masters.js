@@ -184,9 +184,9 @@ const masters = {
           component: () => import('pages/simrs/master/arsip/kelasifikasi/IndexPage.vue')
         },
         {
-          path: '/master/arsip/lokasi',
-          name: 'master.arsip.lokasi',
-          component: () => import('pages/simrs/master/arsip/lokasi/IndexPage.vue')
+          path: '/master/arsip/media',
+          name: 'master.arsip.media',
+          component: () => import('pages/simrs/master/arsip/media/IndexPage.vue')
         }
       ]
     },
