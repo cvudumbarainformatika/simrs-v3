@@ -16,7 +16,12 @@
             </div>
           </div>
           <div class="flex q-gutter-sm">
-            <q-input label="Cari Kelasifikasi" outlined dense standout="bg-yellow-3" clearable style="width: 200px;" />
+            <q-input v-model="store.params.q" placeholder="Cari Kelasifikasi ..." dense outlined style="min-width:200px"
+              debounce="800" :loading="store.loading" @update:model-value="store.search" standout="bg-yellow-3">
+              <template #prepend>
+                <q-icon name="icon-mat-search" />
+              </template>
+            </q-input>
           </div>
         </div>
       </q-card-section>
@@ -28,7 +33,8 @@
               <FormPage />
             </div>
             <div class="col-8 full-height bg-grey scroll q-pa-sm">
-              <ListPage />
+              <ListPage :listmaster="store.items" @edit="(val) => store.editForm(val)"
+                @delete="(val) => hapuskelasifikasi(val)" />
             </div>
           </div>
         </div>
@@ -38,6 +44,62 @@
 </template>
 
 <script setup>
+import { onMounted, ref } from 'vue';
 import FormPage from './comp/FormPage.vue';
 import ListPage from './comp/ListPage.vue';
+import { useArsipMasterKelasifikasiStore } from 'src/stores/arsip/master/mkelasifikasi';
+import { useQuasar } from 'quasar';
+
+const $q = useQuasar()
+const options = ref([])
+
+function hapuskelasifikasi(id) {
+  $q.dialog({
+    dark: true,
+    title: 'Peringatan',
+    message: 'Apakah Data ini akan dihapus?',
+    cancel: true,
+    persistent: true
+  }).onOk(() => {
+    store.deleteData(id)
+  }).onCancel(() => {
+  }).onDismiss(() => {
+    // console.log('I am triggered on both OK and Cancel')
+  })
+}
+
+const store = useArsipMasterKelasifikasiStore()
+onMounted(() => {
+  store.getMkelasifikasi()
+})
+
+function filterFn(val, update) {
+  if (val === '') {
+    update(() => {
+      options.value = store.items
+      // console.log('opti', options.value)
+    })
+    return
+  }
+  update(() => {
+    const needle = val.toLowerCase()
+    const arr = options.value
+
+    const filter = ['kode', 'nama']
+
+    const multiFilter = (data = [], filterKeys = [], value = '') =>
+      data.filter((item) => filterKeys.some(
+        (key) =>
+          item[key].toString().toLowerCase().includes(value.toLowerCase()) &&
+          item[key]
+      )
+      )
+    const filteredData = multiFilter(arr, filter, needle)
+    console.log('filterdata', filteredData)
+    options.value = filteredData
+    // options.value = store.optionrekening.filter(
+    //   (v) => v.uraian.toLowerCase().indexOf(needle) > -1 || v.kodeall3.toLowerCase().indexOf(needle) > -1
+    // )
+  })
+}
 </script>
