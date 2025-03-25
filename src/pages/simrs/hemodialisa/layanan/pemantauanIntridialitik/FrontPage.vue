@@ -1,0 +1,3 @@
+<template>
+  Pemantauan Intridialitik
+</template>
