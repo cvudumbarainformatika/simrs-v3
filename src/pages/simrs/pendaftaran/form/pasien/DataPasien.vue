@@ -13,7 +13,7 @@
     </div>
     <q-card class="full-width" flat style="margin-top: 60px;">
       <q-card-section
-        v-if="store.resRujukan?.bpjsresponse || store.resRujukan?.rs4 === 'Rujukan Internal' || store.resRujukan?.rs4 === 'Konsultasi Internal' || store.loadingCariRujukan">
+        v-if="store.resRujukan?.bpjsresponse || store.resRujukan?.rs4 === 'Rujukan Internal' || store.resRujukan?.rs4 === 'Konsultasi Internal' || store.loadingCariRujukan || store.resRujukan?.kontrol">
         <!-- <q-card-section> -->
         <div v-if="store.loadingCariRujukan" class="f-14 text-weight-bold row items-center q-col-gutter-md">
           <div class="col-auto">
@@ -70,6 +70,19 @@
             </div>
           </div>
           <!-- {{ store.resRujukan?.bpjsresponse?.respon?.response }} -->
+        </div>
+        <div v-if="store.resRujukan?.kontrol">
+          <div class="f-14 text-weight-bold row q-col-gutter-sm">
+            <div class="col-auto text-grey">Pasien dibuatkan Surat kontrol pada tanggal</div>
+            <div class="col-auto">
+              {{ date.formatDate(store.resRujukan?.kontrol?.updated_at, 'DD MMMM YYYY') }}
+            </div>
+            <div class="col-auto text-orange">dengan tanggal rencana kontrol</div>
+            <div class="col-auto text-negative">
+              {{ date.formatDate(store.resRujukan?.kontrol?.tglRencanaKontrol, 'DD MMMM YYYY') }}
+            </div>
+          </div>
+          <!-- {{ store.resRujukan?.kontrol }} -->
         </div>
       </q-card-section>
       <q-card-section no-padding>
@@ -989,11 +1002,11 @@ const pasien = computed(() => {
 })
 
 // set noka bpjs
-function setNokaBPJS(val) {
+function setNokaBPJS (val) {
   store.setForm('nokabpjs', val)
 }
 // cek BPJS
-function cekBpjsbyNik() {
+function cekBpjsbyNik () {
   if (refKtp.value.$refs.refInput.validate()) {
     const form = { nik: store.form.nik, tglsep: props.tglsep }
     store.cekPesertaByNik(form).then(resp => {
@@ -1006,7 +1019,7 @@ function cekBpjsbyNik() {
     notifErrVue('Nomor KTP Kosong')
   }
 }
-function cekBpjsByNoka() {
+function cekBpjsByNoka () {
   if (refNoKaBpjs.value.$refs.refInput.validate() && !!store.form.noka) {
     const form = { noka: store.form.noka, tglsep: props.tglsep }
     store.cekPesertaByNoka(form).then(resp => {
@@ -1019,7 +1032,7 @@ function cekBpjsByNoka() {
     notifErrVue('Nomor BPJS Kosong')
   }
 }
-function cekFinger() {
+function cekFinger () {
   if (refNoKaBpjs.value.$refs.refInput.validate() && !!store.form.noka) {
     const form = { noka: store.form.noka, tglsep: props.tglsep }
     store.cekPesertaFinger(form).then(resp => {
@@ -1031,7 +1044,7 @@ function cekFinger() {
     notifErrVue('Nomor BPJS Kosong')
   }
 }
-function dialogOk() {
+function dialogOk () {
   store.alert = false
 }
 // -----
@@ -1078,7 +1091,7 @@ const refKecamatan = ref(null)
 const refKelurahan = ref(null)
 const refHambatan = ref(null)
 // validasi ktp dan kitas
-function cekKtpKitas() {
+function cekKtpKitas () {
   if (store.form.kewarganegaraan === 'WNI') {
     refKtp.value.$refs.refInput.validate()
   }
@@ -1086,7 +1099,7 @@ function cekKtpKitas() {
 }
 
 // validasi noka dan norm
-function validateNokaAndNorm() {
+function validateNokaAndNorm () {
   if (refNoRM.value.$refs.refInput.validate() &&
     refNoKaBpjs.value.$refs.refInput.validate()) {
     emits('surat', { nik: store.form.nik, noka: store.form.noka, norm: store.form.norm })
@@ -1098,7 +1111,7 @@ function validateNokaAndNorm() {
     return false
   }
 }
-function validateNoka() {
+function validateNoka () {
   if (refNoKaBpjs.value.$refs.refInput.validate()) {
     return { noka: store.form.noka }
   }
@@ -1107,7 +1120,7 @@ function validateNoka() {
   }
 }
 // reset validasi
-function resetValidation() {
+function resetValidation () {
   // reset validation
   refJenisPasien.value.$refs.refAuto.resetValidation()
   refNoRM.value.$refs.refInput.resetValidation()
@@ -1154,7 +1167,7 @@ function resetValidation() {
 // hari ini
 const hariIni = Date.now()
 // jenis pasien lama / baru
-function setJenisPasien(val) {
+function setJenisPasien (val) {
   store.clearForm()
   emits('gantiPasien')
   store.setForm('barulama', val)
@@ -1178,22 +1191,22 @@ function setJenisPasien(val) {
   }
 }
 // -- dialog cari pasien, untuk pasien lama--start--
-function cariPasienHide(val) {
+function cariPasienHide (val) {
   console.log('cari pasien sembunyi', store.cariPasienDialog)
 }
 // alamat
-function setAlamat(val) {
+function setAlamat (val) {
   if (store.alamataDomisiliSama) { store.setForm('alamatdomisili', val) }
 }
 // set RT / RW
-function setRT(val) {
+function setRT (val) {
   if (store.alamataDomisiliSama) { store.setForm('rtdomisili', val) }
   if (val.length === 3) {
     refRT.value.$refs.refInput.blur()
     refRW.value.$refs.refInput.focus()
   }
 }
-function setRW(val) {
+function setRW (val) {
   if (store.alamataDomisiliSama) { store.setForm('rwdomisili', val) }
   if (val.length === 3) {
     refRW.value.$refs.refInput.blur()
@@ -1201,20 +1214,20 @@ function setRW(val) {
   }
 }
 // set nomor Antrian
-function setNoAntrian(evt) {
+function setNoAntrian (evt) {
   const val = evt.target.value
   store.noantrian = val
   store.setNoAntrian(val)
 }
 // -- dialog cari pasien, untuk pasien lama--end--
 // input no rm
-function inputNoRmSelesai(val) {
+function inputNoRmSelesai (val) {
   // console.log('input selesai', val)
   refNoRM.value.$refs.refInput.blur()
   refKtp.value.$refs.refInput.focus()
   // refSapaan.value.$refs.refAuto.focus()
 }
-function updateValNoRM(val) {
+function updateValNoRM (val) {
   store.setForm('norm', val)
   // console.log('ref sapaan', refSapaan.value.$refs.refAuto)
 
@@ -1228,19 +1241,19 @@ function updateValNoRM(val) {
   // }
 }
 // input sapaan dan nama
-function sapaanSelected(val) {
+function sapaanSelected (val) {
   refSapaan.value.$refs.refAuto.blur()
   refNama.value.$refs.refInput.focus()
   console.log('sapaan selected', val)
 }
-function sapaanEnter() {
+function sapaanEnter () {
   refSapaan.value.$refs.refAuto.blur()
   refNama.value.$refs.refInput.focus()
   console.log('sapaan selesai')
 }
 
 // refkelamin
-function kelaminSelected(val) {
+function kelaminSelected (val) {
   const index = findWithAttr(store.kelamins, 'kelamin', val)
 
   if (index >= 0) {
@@ -1253,7 +1266,7 @@ function kelaminSelected(val) {
 }
 
 // ref pendidikan
-function pendidikanSelected(val) {
+function pendidikanSelected (val) {
   const index = findWithAttr(store.pendidikans, 'pendidikan', val)
   if (index >= 0) {
     store.setForm('kodependidikan', store.pendidikans[index].kode)
@@ -1264,7 +1277,7 @@ function pendidikanSelected(val) {
 
 // ref agama
 const refTulisAgama = ref(null)
-function setAgama(val) {
+function setAgama (val) {
   const index = findWithAttr(store.agamas, 'kode', val)
   if (index >= 0) {
     const temp = store.agamas[index]
@@ -1291,13 +1304,13 @@ function setAgama(val) {
 }
 
 // status pernikahan
-function statusPernikahanSelected(val) {
+function statusPernikahanSelected (val) {
   refStatusPernikahan.value.$refs.refAuto.blur()
   refPekerjaan.value.$refs.refAuto.focus()
 }
 // ---tanggal lahir start--
 
-function setTanggalLahir() {
+function setTanggalLahir () {
   const tanggal = store.tanggal.tahun + '-' + store.tanggal.bulan + '-' + store.tanggal.hari
   const tahunini = parseInt(date.formatDate(hariIni, 'YYYY'))
   const bulahini = parseInt(date.formatDate(hariIni, 'MM'))
@@ -1320,10 +1333,10 @@ function setTanggalLahir() {
   console.log('perbedaan ', yearsDiff, monthsDiff, daysDiff)
   console.log('perbedaan umur asem', store.form.umurthn, store.form.umurbln, store.form.umurhari)
 }
-function fokusHariLahir() {
+function fokusHariLahir () {
   refHariLahir.value.$refs.refInput.select()
 }
-function setHariLahir(val) {
+function setHariLahir (val) {
   if (val.length === 2) {
     refHariLahir.value.$refs.refInput.blur()
     refBulanLahir.value.$refs.refInput.focus()
@@ -1332,7 +1345,7 @@ function setHariLahir(val) {
   setTanggalLahir()
 }
 
-function setBulanLahir(val) {
+function setBulanLahir (val) {
   if (val.length === 2) {
     refBulanLahir.value.$refs.refInput.blur()
     refTahunLahir.value.$refs.refInput.focus()
@@ -1341,7 +1354,7 @@ function setBulanLahir(val) {
   setTanggalLahir()
 }
 
-function setTahunLahir(val) {
+function setTahunLahir (val) {
   if (val.length === 4) {
     refTahunLahir.value.$refs.refInput.blur()
     refKelamin.value.$refs.refAuto.focus()
@@ -1353,7 +1366,7 @@ function setTahunLahir(val) {
 
 // ---get negara to kelurahah start----
 
-function negaraSelected(val) {
+function negaraSelected (val) {
   store.negaraSelected(val)
   store.getProvinces().then(() => {
     refNegara.value.$refs.refAuto.blur()
@@ -1361,7 +1374,7 @@ function negaraSelected(val) {
     refPropinsi.value.$refs.refAuto.showPopup()
   })
 }
-function propinsiSelected(val) {
+function propinsiSelected (val) {
   store.propinsiSelected(val)
   store.getKota().then(() => {
     refPropinsi.value.$refs.refAuto.blur()
@@ -1369,7 +1382,7 @@ function propinsiSelected(val) {
     refKabupaten.value.$refs.refAuto.showPopup()
   })
 }
-function kabupatenSelected(val) {
+function kabupatenSelected (val) {
   store.kabupatenSelected(val)
   store.getKec().then(() => {
     refKabupaten.value.$refs.refAuto.blur()
@@ -1377,7 +1390,7 @@ function kabupatenSelected(val) {
     refKecamatan.value.$refs.refAuto.showPopup()
   })
 }
-function kecamatanSelected(val) {
+function kecamatanSelected (val) {
   store.kecamatanSelected(val)
   store.getKels().then(() => {
     refKecamatan.value.$refs.refAuto.blur()
@@ -1385,13 +1398,13 @@ function kecamatanSelected(val) {
     refKelurahan.value.$refs.refAuto.showPopup()
   })
 }
-function kelurahanSelected(val) {
+function kelurahanSelected (val) {
   store.kelurahanSelected(val)
   refKelurahan.value.$refs.refAuto.blur()
   refKodePos.value.$refs.refInput.focus()
 }
 // ---get negara to kelurahah end----
-function setKodepos(val) {
+function setKodepos (val) {
   console.log('kodepos', val)
   if (store.alamataDomisiliSama) {
     store.setForm('kodeposdomisili', val)
@@ -1399,7 +1412,7 @@ function setKodepos(val) {
 }
 // ---get negara to kelurahah domisili start----
 
-function negaraDomisiliSelected(val) {
+function negaraDomisiliSelected (val) {
   store.negaraDomisiliSelected(val)
   store.getProvincesDomisili().then(() => {
     refNegaraDomisili.value.$refs.refAuto.blur()
@@ -1407,7 +1420,7 @@ function negaraDomisiliSelected(val) {
     refPropinsiDomisili.value.$refs.refAuto.showPopup()
   })
 }
-function propinsiDomisiliSelected(val) {
+function propinsiDomisiliSelected (val) {
   store.propinsiDomisiliSelected(val)
   store.getKotaDomisili().then(() => {
     refPropinsiDomisili.value.$refs.refAuto.blur()
@@ -1415,7 +1428,7 @@ function propinsiDomisiliSelected(val) {
     refKabupatenDomisili.value.$refs.refAuto.showPopup()
   })
 }
-function kabupatenDomisiliSelected(val) {
+function kabupatenDomisiliSelected (val) {
   store.kabupatenDomisiliSelected(val)
   store.getKecDomisili().then(() => {
     refKabupatenDomisili.value.$refs.refAuto.blur()
@@ -1423,7 +1436,7 @@ function kabupatenDomisiliSelected(val) {
     refKecamatanDomisili.value.$refs.refAuto.showPopup()
   })
 }
-function kecamatanDomisiliSelected(val) {
+function kecamatanDomisiliSelected (val) {
   store.kecamatanDomisiliSelected(val)
   store.getKelsDomisili().then(() => {
     refKecamatanDomisili.value.$refs.refAuto.blur()
@@ -1431,14 +1444,14 @@ function kecamatanDomisiliSelected(val) {
     refKelurahanDomisili.value.$refs.refAuto.showPopup()
   })
 }
-function kelurahanDomisiliSelected(val) {
+function kelurahanDomisiliSelected (val) {
   store.kelurahanDomisiliSelected(val)
   refKelurahanDomisili.value.$refs.refAuto.blur()
   // refBahasa.value.$refs.refInput.focus()
 }
 // ---get negara to kelurahah domisili end----
 
-function setTlpRumah(val) {
+function setTlpRumah (val) {
   // console.log('form', store.form)
   // if (val.charAt(0) === '0') {
   //   // console.log('val', val.charAt(0), val.slice(1, val.length))
@@ -1448,7 +1461,7 @@ function setTlpRumah(val) {
   //   store.setForm('noteleponrumah', '+' + (store.form.negara ? store.form.negara : '62') + val)
   // }
 }
-function setTlpHP(evt) {
+function setTlpHP (evt) {
   // const val = evt.target.value
   // console.log('val', val)
   // if (val.charAt(0) === '0' || val.charAt(0) === '+') {
@@ -1460,7 +1473,7 @@ function setTlpHP(evt) {
   // }
   // console.log('form', store.form)
 }
-function setPekerjaan(val) {
+function setPekerjaan (val) {
   // console.log(val)
   if (val === 'Lain-lain') {
     if (store.form.pekerjaan) delete store.form.pekerjaan
@@ -1482,7 +1495,7 @@ const lahirValid = computed(() => {
   return date.isSameDate(hariIni, tanggal, 'days')
 })
 let valid = false
-function validasi() {
+function validasi () {
   // eslint-disable-next-line no-undef, no-use-before-define
 
   const JenisPasien = refJenisPasien.value.$refs.refAuto.validate()
@@ -1551,7 +1564,7 @@ function validasi() {
   }
   else { valid = false }
 }
-function set() {
+function set () {
   validasi()
   // console.log('Baru', baru)
   if (valid) {
@@ -1567,7 +1580,7 @@ function set() {
   }
 }
 
-function cekBpjs() {
+function cekBpjs () {
   console.log('Cek bpjs awal')
   if (refNoKaBpjs.value.$refs.refInput.validate() && !!store.form.noka) {
     const form = { noka: store.form.noka, tglsep: props.tglsep }
@@ -1580,7 +1593,7 @@ function cekBpjs() {
   }
 }
 
-function clearForm() {
+function clearForm () {
   store.clearForm()
   return store.form
 }
@@ -1601,7 +1614,7 @@ onBeforeUpdate(() => {
   // console.log('jenis pasien', refJenisPasien.value)
 })
 
-async function filterFn(val, update, abort) {
+async function filterFn (val, update, abort) {
   if (val.length < 3) {
     abort()
     return
@@ -1621,7 +1634,7 @@ async function filterFn(val, update, abort) {
   })
 }
 
-function citySelected(val) {
+function citySelected (val) {
   store.setForm('city', val.name)
   store.setForm('country', val.country)
   store.setForm('region', val.region)
