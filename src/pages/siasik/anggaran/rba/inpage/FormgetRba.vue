@@ -1,9 +1,13 @@
 <template>
   <div class="row full-width justify-center">
-    <div class="q-pa-sm" style="width:50%">
+    <div class="q-pa-sm" style="width:30%">
+      <app-autocomplete v-model="store.reqs.jenis" label="Pilih Jenis RBA" autocomplete="jenis" option-label="jenis"
+        option-value="value" outlined :source="store.jenis" @selected="() => { store.items = [] }" />
+    </div>
+    <div class=" q-pa-sm" style="width:25%">
       <app-input v-model="store.reqs.tahun" label="Tahun" outlined />
     </div>
-    <div class="q-pa-sm" style="width:50%">
+    <div class="q-pa-sm" style="width:30%">
       <app-input-date-human :model="store.tglcetak" label="Tanggal Cetak" outlined @set-display="setTglcetak"
         :disable="store.loading" />
     </div>
