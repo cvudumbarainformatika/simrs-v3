@@ -18,7 +18,7 @@
   </template>
   <template v-else>
     <div class="row q-px-md full-width flex-center">
-      <table class="bordered-table" style="width: 100%;" wrap-cells>
+      <table class="bordered_table" style="width: 100%;" wrap-cells>
         <thead>
           <tr class="text-bold">
             <td class="text-center">No</td>
@@ -296,8 +296,10 @@ function totalsaldo() {
 </script>
 <style>
 /* Tambahkan border pada setiap td dan th */
-.bordered-table th,
-.bordered-table td {
+.bordered_table table,
+.bordered_table tr,
+.bordered_table td {
+  border-collapse: collapse;
   border: 1px solid #000000;
   height: 30px;
   /* Garis hitam dengan ketebalan 1px */

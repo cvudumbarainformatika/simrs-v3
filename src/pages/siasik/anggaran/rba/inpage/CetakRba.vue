@@ -20,6 +20,26 @@
             <div class="q-px-md full-width">
               <data-rba />
             </div>
+            <div class="row q-pt-md justify-between full-width">
+
+              <div class="col"></div>
+              <div v-for="it in ttd.ttd" :key="it" class="flex-end text-center" style="width:50%">
+                <div>
+                  Probolinggo {{ store.tglcetak }}
+                </div>
+                <div class="text-bold">
+                  Pengguna Anggaran
+                </div>
+                <div style="padding-bottom: 40px" />
+                <div class="underline text-bold">
+                  {{ it.nama }}
+                  <div class="garis-bawah" style="text-decoration-line: underline;" />
+                </div>
+                <div>
+                  NIP. {{ it.nip }}
+                </div>
+              </div>
+            </div>
           </q-card-section>
         </q-page-container>
         <q-footer>
@@ -40,10 +60,19 @@
   </q-dialog>
 </template>
 <script setup>
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import KopCetak from './KopCetak.vue'
 import DataRba from './ListDataRBA.vue'
+import { useBukubesarStore } from 'src/stores/siasik/akuntansi/bukubesar/bukubesar'
+import { useRbaStore } from 'src/stores/siasik/anggaran/storerba'
 
+
+const ttd = useBukubesarStore()
+const store = useRbaStore()
+
+onMounted(() => {
+  ttd?.getTtd()
+})
 const printed = ref(false)
 const printObj = {
   id: 'printMe',
