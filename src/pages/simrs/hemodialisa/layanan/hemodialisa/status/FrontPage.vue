@@ -1,3 +1,3 @@
 <template>
-  status hemodialisa
+  status
 </template>

@@ -1,3 +1,0 @@
-<template>
-  pengkajian hemodialisa
-</template>

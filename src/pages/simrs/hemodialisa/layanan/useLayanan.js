@@ -34,6 +34,13 @@ export default function useLayanan (pasien) {
       nakes: ['1', '2', '3', '4', '5', '6'],
       comp: shallowRef(defineAsyncComponent(() => import('./diagnosaDanTindakan/IndexPage.vue')))
     },
+    {
+      name: 'hemodialisa',
+      label: 'Hemodialisa',
+      icon: 'icon-mat-note_alt',
+      nakes: ['1', '2'],
+      comp: shallowRef(defineAsyncComponent(() => import('./hemodialisa/IndexPage.vue')))
+    },
     // {
     //   name: 'Penunjang',
     //   label: 'Penunjang',
