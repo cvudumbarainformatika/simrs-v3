@@ -11,12 +11,16 @@ export const useLaporanDataResepStore = defineStore('laporan_data_resep', {
     ketProses: null,
     items: [],
     meta: {},
+    disp: {
+      from: date.formatDate(Date.now(), '01 MMMM YYYY'),
+      to: date.formatDate(Date.now(), 'DD MMMM YYYY'),
+    },
     params: {
       q: '',
       per_page: 100,
       page: 1,
-      bulan: date.formatDate(Date.now(), 'MM'),
-      tahun: date.formatDate(Date.now(), 'YYYY'),
+      from: date.formatDate(Date.now(), 'YYYY-MM-01'),
+      to: date.formatDate(Date.now(), 'YYYY-MM-DD'),
       jenis: 'detail',
       tipe: 'iter',
       kode_ruang: 'Gd-05010101',

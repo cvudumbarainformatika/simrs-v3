@@ -29,18 +29,28 @@
                 option-label="nama" option-value="value" outlined :source="store.gudangs" :loading="store.loading"
                 :disable="store.loading || !!store.ketProses" />
             </div>
-            <div class="col-1">
-              <app-autocomplete v-model="store.params.bulan" label="Pilih Bulan" autocomplete="nama" option-label="nama"
+            <div class="col-2">
+              <!-- <app-autocomplete v-model="store.params.bulan" label="Pilih Bulan" autocomplete="nama" option-label="nama"
                 option-value="value" outlined :source="store.bulans" :loading="store.loading"
                 :disable="store.loading || !!store.ketProses" @update:model-value="() => {
                   store.items = []
                   store.meta = {}
                   store.setParams('page', 1)
-                }" />
+                }" /> -->
+              <app-input-date-human :model="store.disp.from" label="sampai tanggal" outlined @db-model="(val) => {
+                store.params.from = val
+              }" @set-display="(val) => {
+                store.disp.from = val
+              }" />
             </div>
-            <div class="col-1">
-              <app-input v-model="store.params.tahun" label="Tahun" outlined :loading="store.loading"
-                :disable="store.loading || !!store.ketProses" />
+            <div class="col-2">
+              <!-- <app-input v-model="store.params.tahun" label="Tahun" outlined :loading="store.loading"
+                :disable="store.loading || !!store.ketProses" /> -->
+              <app-input-date-human :model="store.disp.to" label="dari tanggal" outlined @db-model="(val) => {
+                store.params.to = val
+              }" @set-display="(val) => {
+                store.disp.to = val
+              }" />
             </div>
             <div class="col-2">
               <app-btn label="Ambil Data" :disable="store.loading || !!store.ketProses" :loading="store.loading"
