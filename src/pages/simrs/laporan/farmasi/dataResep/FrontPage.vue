@@ -30,13 +30,6 @@
                 :disable="store.loading || !!store.ketProses" />
             </div>
             <div class="col-2">
-              <!-- <app-autocomplete v-model="store.params.bulan" label="Pilih Bulan" autocomplete="nama" option-label="nama"
-                option-value="value" outlined :source="store.bulans" :loading="store.loading"
-                :disable="store.loading || !!store.ketProses" @update:model-value="() => {
-                  store.items = []
-                  store.meta = {}
-                  store.setParams('page', 1)
-                }" /> -->
               <app-input-date-human :model="store.disp.from" label="sampai tanggal" outlined @db-model="(val) => {
                 store.params.from = val
               }" @set-display="(val) => {
@@ -44,8 +37,6 @@
               }" />
             </div>
             <div class="col-2">
-              <!-- <app-input v-model="store.params.tahun" label="Tahun" outlined :loading="store.loading"
-                :disable="store.loading || !!store.ketProses" /> -->
               <app-input-date-human :model="store.disp.to" label="dari tanggal" outlined @db-model="(val) => {
                 store.params.to = val
               }" @set-display="(val) => {
@@ -78,7 +69,7 @@
             <div class="q-ml-sm">
               <download-excel class="btn" :fields="store.fields" :fetch="store.fetch"
                 :before-generate="store.startDownload" :before-finish="store.finishDownload"
-                :name="'Data Resep Bulan ' + bulan() + ' ' + store.params.tahun + jenis() + '.xls'">
+                :name="'Data Resep Bulan Periode ' + store.disp.from + ' s/d ' + store.disp.to + jenis() + '.xls'">
                 <q-btn color="green" round size="sm" icon="icon-mat-download" push :loading="store.loadingDownload"
                   :disable="store.loadingDownload || !!store.ketProses || store?.loadingNext">
                   <q-tooltip>Download Excel</q-tooltip>
@@ -176,9 +167,7 @@
       </div>
 
       <div class="row justify-center f-16 text-weight-bold q-my-sm">
-        Laporan Pemakaian Obat Program periode {{ date.formatDate((store.params.tahun + '-' + store.params.bulan +
-          '-02'),
-          'MMMM YYYY') }}
+        Laporan Pemakaian Obat Program periode {{ store.disp.from }} s/d {{ store.disp.to }}
       </div>
       <div>
         <!-- <q-scroll-observer @scroll="scrollHandler" /> -->
