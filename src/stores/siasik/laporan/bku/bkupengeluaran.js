@@ -36,7 +36,19 @@ export const useLaporanBkuPengeluaranStore = defineStore(
       hasilArray: [],
       arrayTanggal: [],
       pegawais: [],
-      dialogCetak: false
+      dialogCetak: false,
+
+      sblmnpk: [],
+      sblmpencairan: [],
+      sblmcp: [],
+      sblmspm: [],
+      sblmspmgu: [],
+      sblmnpkpanjar: [],
+      sblmspjpanjar: [],
+      sblmpengembalianpjr: [],
+      sblmcpsisapjr: [],
+      sblmpergeserankas: [],
+      sblmnihil: [],
     }),
     actions: {
       setParams(key, val) {
@@ -56,6 +68,18 @@ export const useLaporanBkuPengeluaranStore = defineStore(
               this.hasilArray = []
               this.items = resp.data
               this.pegawais = resp.data?.pegawai
+
+              this.sblmnpk = resp.data?.sblmnpk
+              this.sblmpencairan = resp.data?.sblmpencairan
+              this.sblmcp = resp.data?.sblmcp
+              this.sblmspm = resp.data?.sblmspm
+              this.sblmspmgu = resp.data?.sblmspmgu
+              this.sblmnpkpanjar = resp.data?.sblmnpkpanjar
+              this.sblmspjpanjar = resp.data?.sblmspjpanjar
+              this.sblmpengembalianpjr = resp.data?.sblmpengembalianpjr
+              this.sblmcpsisapjr = resp.data?.sblmcpsisapjr
+              this.sblmpergeserankas = resp.data?.sblmpergeserankas
+              this.sblmnihil = resp.data?.sblmnihil
               this.hitungharidalamBulan()
               this.loading = false
             }
@@ -89,6 +113,56 @@ export const useLaporanBkuPengeluaranStore = defineStore(
       },
 
       mapingData() {
+        // ======================== SALDO
+        const saldoawal = []
+        const sblmdebit = this.sblmnpk.concat(this.sblmcp, this.sblmspm, this.sblmpergeserankas, this.sblmnpkpanjar, this.sblmpengembalianpjr, this.sblmcpsisapjr, this.sblmspmgu)
+        const sblmkredit = this.sblmpencairan.concat(this.sblmpergeserankas, this.sblmnpkpanjar, this.sblmspjpanjar, this.sblmcpsisapjr, this.sblmnihil)
+
+        const totaldebitsebelumnya = sblmdebit.map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0)
+        const totalkreditsebelumnya = sblmkredit.map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0)
+
+        const totalsaldoawal = totaldebitsebelumnya - totalkreditsebelumnya
+
+        if (this.params.bulan !== '01') {
+          const sal = {
+            tgl: '',
+            notrans: '',
+            nonpd: '',
+            pjr: '',
+            spjpanjar: '',
+            pergeseran: '',
+            cppjr: '',
+            sisapanjar: '',
+            uraian: 'SALDO AWAL',
+            uraianNPD: '',
+            penerimaan: 0,
+            pengeluaran: 0,
+            subtotal: totalsaldoawal
+          }
+          saldoawal.push(sal)
+        } else {
+          const saldo = {
+            tgl: '',
+            notrans: '',
+            nonpd: '',
+            pjr: '',
+            spjpanjar: '',
+            pergeseran: '',
+            cppjr: '',
+            sisapanjar: '',
+            uraian: 'SALDO AWAL',
+            uraianNPD: '',
+            penerimaan: 0,
+            pengeluaran: 0,
+            subtotal: 0
+          }
+          saldoawal.push(saldo)
+        }
+
+
+
+
+
         // ===================================================SPM
         const spm = []
         for (let i = 0; i < this.items.spm.length; i++) {
@@ -448,7 +522,7 @@ export const useLaporanBkuPengeluaranStore = defineStore(
             )
             : []
           const obj = {
-            tgl: el[i].tglnpk,
+            tgl: el[i].tglpencairan,
             notrans: el[i].nonpk,
             nonpd: null,
             pjr: null,
@@ -603,7 +677,8 @@ export const useLaporanBkuPengeluaranStore = defineStore(
         // console.log("spmgu", spmgu);
         // console.log("nihil", nihil);
 
-        const gabungArray = spm?.concat(
+        const gabungArray = saldoawal?.concat(
+          spm,
           spmgu,
           npk_Panjar,
           geserDebit,
@@ -617,6 +692,7 @@ export const useLaporanBkuPengeluaranStore = defineStore(
           cp,
           nihil
         )
+        console.log('gabung', gabungArray)
         // urutan by tanggal
         const sortByDate = (gabungArray) =>
           gabungArray.sort(({ tgl: a }, { tgl: b }) =>
@@ -636,13 +712,13 @@ export const useLaporanBkuPengeluaranStore = defineStore(
         if (arr.length) {
           for (let i = 0; i < arr.length; i++) {
             if (i === 0) {
-              total = arr[0]?.penerimaan - arr[0]?.pengeluaran
+              total = arr[0]?.subtotal + arr[0]?.penerimaan - arr[0]?.pengeluaran
               arr[0].total = total
             }
             else {
               const hinggaKeIndex = i + 1
               const arrBaru = arr.slice(1, hinggaKeIndex)
-              const awal = arr[0]?.penerimaan - arr[0]?.pengeluaran
+              const awal = arr[0]?.subtotal + arr[0]?.penerimaan - arr[0]?.pengeluaran
               // const subT = arr[i]?.penerimaan - arr[i]?.pengeluaran;
               const obj = arrBaru.map((x) => x.penerimaan - x.pengeluaran)
               const skrg = obj?.reduce((x, y) => x + y, 0)
