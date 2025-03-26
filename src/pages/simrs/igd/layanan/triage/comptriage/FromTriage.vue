@@ -17,16 +17,34 @@
       </q-card-section>
       <q-separator />
       <q-card-section class="full-height scroll">
-        <div class="row items-center q-pt-sm">
+        <div class="text-bold">PASIEN MENINGGAL KATEGORI KHUSUS (Tanpa Triage)</div>
+        <q-separator class="q-my-sm" />
+        <div class="row items-center q-mb-sm">
           <div class="col-4">
             Pasien Meninggal Di Luar RS
           </div>
-          <div class="col-4">
+          <div class="col-8">
             <q-option-group ref="refmeninggaldiluarrs" v-model="store.form.meninggaldiluarrs" :options="optionmeninggal"
               color="primary" inline dense @update:model-value="meninggaldiluarrs" />
           </div>
+
         </div>
-        <div class="row items-center" v-if="store.form.meninggaldiluarrs === 'Tidak'">
+        <div class="row items-center">
+          <div class="col-4">
+            Bayi Baru Lahir Meninggal
+          </div>
+          <div class="col-8">
+            <q-option-group ref="refbayibarulahirmeninggal" v-model="store.form.barulahirmeninggal"
+              :options="optionmeninggal" color="primary" inline dense @update:model-value="meninggaldiluarrs" />
+          </div>
+        </div>
+        <q-separator class="q-my-sm" />
+
+
+
+
+        <div class="row items-center"
+          v-if="store.form.meninggaldiluarrs === 'Tidak' && store.form.barulahirmeninggal === 'Tidak'">
           <div class="col-2">
             Kategori D.O.A :
           </div>
@@ -40,7 +58,7 @@
             <q-checkbox ref="refdoa" size="md" v-model="store.form.doa" label="Reflek Cahaya Pupil" val="Reflek Cahaya Pupil" color="primary" @click="hidenall" @update:model-value="updateSelection" /> -->
           </div>
         </div>
-        <div v-if="store.form.meninggaldiluarrs === 'Tidak'">
+        <div v-if="store.form.meninggaldiluarrs === 'Tidak' && store.form.barulahirmeninggal === 'Tidak'">
           <q-separator />
           <div v-if="store.hiddenall === 'HIDUP'">
             <div class="row items-center q-pt-sm">
@@ -513,7 +531,10 @@ function onSubmit() {
   const hasilsecondsurvex = ref('')
   if (store.form.meninggaldiluarrs === 'Iya') {
     store.form.kategoritriage = 'Pasien Meninggal DiLuar Rumah Sakit'
-  } else {
+  } else if (store.form.barulahirmeninggal === 'Iya') {
+    store.form.kategoritriage = 'Bayi Baru Lahir Meninggal'
+  }
+  else {
     if (totalscore.value >= 7) {
       hasilsecondsurvex.value = 'Resusitasi'
     }
@@ -1288,10 +1309,12 @@ function meninggaldiluarrs(val) {
   }
 
 }
+
 store.formattanggal()
 
 onBeforeMount(() => {
   store.form.meninggaldiluarrs = 'Tidak'
+  store.form.barulahirmeninggal = 'Tidak'
   store.form.falsetriage = false
   store.form.pasienhamil = 0
   store.doax = []

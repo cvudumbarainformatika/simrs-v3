@@ -20,6 +20,7 @@ export const useTriageIgd = defineStore('triageigd', {
     form: {
       id: null,
       meninggaldiluarrs: 'Tidak',
+      barulahirmeninggal: 'Tidak',
       pasienhamil: 0,
       nadi: 0,
       pernapasan: '',
@@ -88,6 +89,7 @@ export const useTriageIgd = defineStore('triageigd', {
       return new Promise((resolve, reject) => {
         this.form = {
           meninggaldiluarrs: 'Tidak',
+          barulahirmeninggal: 'Tidak',
           falsetriage: false,
           doa: '',
           pasienhamil: 0

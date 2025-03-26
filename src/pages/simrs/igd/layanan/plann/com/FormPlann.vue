@@ -184,6 +184,12 @@
                       <div class="col-12" v-if="store.form.atasdasarpulang === 'Meninggal'">
                         <q-input v-model="store.form.alasanmeninggal" dense outlined standout="bg-yellow-3"
                           label="Alasan Meninggal" />
+
+                        <!-- <q-separator class="q-my-md" />
+                        <div class="text-bold">KONDISI KHUSUS</div>
+                        <div class="q-gutter-sm">
+                          <q-option-group v-model="group" :options="optionKondisiKhusus" color="primary" inline dense />
+                        </div> -->
                       </div>
                     </div>
                   </q-tab-panel>
@@ -224,6 +230,24 @@ const optiontypefaskes = ref(['Penuh', 'Partial'])
 const optionsFaskes2 = ref([])
 const optionsPoli = ref([])
 const optionpulangs = ref(['Sembuh', 'Paksa', 'Meninggal'])
+// const optionKondisiKhusus = ref([
+//   {
+//     label: 'Tidak Ada',
+//     value: ''
+//   },
+//   {
+//     label: 'Bayi Baru Lahir Meninggal',
+//     value: 'bayi baru lahir meninggal'
+//   },
+//   {
+//     label: 'Mr.X Meninggal',
+//     value: 'mr.x meninggal'
+//   },
+//   {
+//     label: 'Jenazah Luar',
+//     value: 'jenazah luar'
+//   }
+// ])
 
 // function updateModelPpk (val) {
 //   store.formRsLain.ppkdirujuk = val.kode
