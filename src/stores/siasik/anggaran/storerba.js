@@ -8,6 +8,7 @@ export const useRbaStore = defineStore('store_rba_siasik', {
     reqs: {
       q: '',
       tahun: date.formatDate(Date.now(), 'YYYY'),
+      jenis: null,
     },
     display: {
       sekarang: date.formatDate(Date.now(), 'DD MMMM YYYY'),
@@ -16,7 +17,8 @@ export const useRbaStore = defineStore('store_rba_siasik', {
     dialogCetak: false,
     tglcetak: date.formatDate(Date.now(), 'DD MMMM YYYY'),
     datarba: [],
-    items: []
+    items: [],
+    jenis: [{ jenis: 'Rinci Kegiatan', value: '1' }, { jenis: 'Rinci Item', value: '2' }]
   }),
   actions: {
     getData() {
