@@ -5,6 +5,7 @@ import { api } from 'src/boot/axios'
 export const useLaporanBukuBankStore = defineStore('laporan_bukubank', {
   state: () => ({
     loading: false,
+    dialogCetak: false,
     items: [],
     meta: {},
     params: {
@@ -37,14 +38,14 @@ export const useLaporanBukuBankStore = defineStore('laporan_bukubank', {
   }),
 
   actions: {
-    setParams (key, val) {
+    setParams(key, val) {
       this.params[key] = val
     },
 
-    getInitialData () {
+    getInitialData() {
       this.getDataTable()
     },
-    async getDataTable () {
+    async getDataTable() {
       this.loading = true
       const params = { params: this.params }
       await api
@@ -64,7 +65,7 @@ export const useLaporanBukuBankStore = defineStore('laporan_bukubank', {
           this.loading = false
         })
     },
-    hitungharidalamBulan () {
+    hitungharidalamBulan() {
       const cariBulan = new Date(
         this.params.tahun,
         this.params.bulan,
@@ -81,14 +82,14 @@ export const useLaporanBukuBankStore = defineStore('laporan_bukubank', {
       this.loading = false
       // return cariBulan;
     },
-    buatTanggal (n) {
+    buatTanggal(n) {
       const tgl = n > 9 ? n : '0' + n
       const thn = this.params.tahun
       const bln = this.params.bulan
       return thn + '-' + bln + '-' + tgl
     },
 
-    mapingData (tgl) {
+    mapingData(tgl) {
       // console.log("www", tgl);
 
       // ===================================================SPM
@@ -416,7 +417,7 @@ export const useLaporanBukuBankStore = defineStore('laporan_bukubank', {
       console.log('hasil gabung', this.hasilArray)
     },
 
-    cariHasilAkhirArray (arr) {
+    cariHasilAkhirArray(arr) {
       let total = 0
       if (arr.length) {
         for (let i = 0; i < arr.length; i++) {
@@ -438,23 +439,23 @@ export const useLaporanBukuBankStore = defineStore('laporan_bukubank', {
       return arr
     },
 
-    ambilDataUnik (x, f) {
+    ambilDataUnik(x, f) {
       // eslint-disable-next-line no-sequences
       const unique = Object.values(x.reduce((a, b) => ((a[f(b)] = b), a), {}))
       return unique
     },
-    hitungPergeseran (arr) {
+    hitungPergeseran(arr) {
       return arr
         .map((x) => x.jumlah)
         .reduce((x, y) => parseInt(x) + parseInt(y), 0)
     },
-    hitungTotalNpd (arr) {
+    hitungTotalNpd(arr) {
       return arr
         .map((x) => x.nominalpembayaran)
         .reduce((x, y) => parseInt(x) + parseInt(y), 0)
     },
 
-    sumObjectsByKey (...objs) {
+    sumObjectsByKey(...objs) {
       return objs.reduce((a, b) => {
         for (const k in b) {
           // eslint-disable-next-line no-prototype-builtins
@@ -464,7 +465,7 @@ export const useLaporanBukuBankStore = defineStore('laporan_bukubank', {
       }, {})
     },
 
-    sum (penerimaan, pengeluaran) {
+    sum(penerimaan, pengeluaran) {
       const sum = {}
 
       Object.keys(penerimaan).forEach((key) => {
