@@ -142,9 +142,9 @@ export const useLaporanBkuPpkStore = defineStore('laporan_bkuppk', {
       const totaldebitsebelum = nilaisaldoDebit.length ? nilaisaldoDebit.map(x => parseFloat(x.nilai)).reduce((x, y) => x + y, 0) : 0
       const totalkreditsebelum = nilaisaldoKredit.length ? nilaisaldoKredit.map(x => parseFloat(x.nilai)).reduce((x, y) => x + y, 0) : 0
       const saldoAwal = totaldebitsebelum - totalkreditsebelum
-      console.log('totaldebitsebelum', totaldebitsebelum)
-      console.log('totalkreditsebelum', totalkreditsebelum)
-      console.log('saldoawal', saldoAwal)
+      // console.log('totaldebitsebelum', totaldebitsebelum)
+      // console.log('totalkreditsebelum', totalkreditsebelum)
+      // console.log('saldoawal', saldoAwal)
 
       if (this.params.bulan !== '01') {
         const sal = {
@@ -155,9 +155,8 @@ export const useLaporanBkuPpkStore = defineStore('laporan_bkuppk', {
           uraian: 'Saldo Awal',
           uraianNPD: '',
           urutan: 1,
-          penerimaan: 0,
+          penerimaan: saldoAwal,
           pengeluaran: 0,
-          subtotal: saldoAwal
         }
         saldo.push(sal)
       }
@@ -174,7 +173,6 @@ export const useLaporanBkuPpkStore = defineStore('laporan_bkuppk', {
             urutan: 1,
             penerimaan: parseFloat(el[i].nilaisaldo),
             pengeluaran: 0,
-            subtotal: 0
           }
           saldo.push(obj)
         }
@@ -189,13 +187,12 @@ export const useLaporanBkuPpkStore = defineStore('laporan_bkuppk', {
           urutan: 1,
           penerimaan: 0,
           pengeluaran: 0,
-          subtotal: 0
         }
         saldo.push(saldoaw)
 
       }
-      this.nilaisaldoawal = saldo.map((x) => x.subtotal).reduce((a, b) => a + b, 0)
-      console.log('gggg', this.nilaisaldoawal)
+      this.nilaisaldoawal = saldo.map((x) => x.penerimaan).reduce((a, b) => a + b, 0)
+      // console.log('gggg', this.nilaisaldoawal)
       // =====================================================
       // ===================================================Nihil
       const silpa = []
@@ -436,8 +433,8 @@ export const useLaporanBkuPpkStore = defineStore('laporan_bkuppk', {
 
       // menggabungkan array
       const gabungArray = saldo?.concat(silpa, setor, spm, spmgu, npkls, nihil, kurangikaskecil)
-      const aaa = gabungArray.map((x) => parseFloat(x.penerimaan))
-      console.log('cek hasil debit', aaa)
+      // const aaa = gabungArray.map((x) => parseFloat(x.penerimaan))
+      // console.log('cek hasil debit', aaa)
 
       // urutan by tanggal
       const sortByDate = (gabungArray) =>
@@ -458,13 +455,13 @@ export const useLaporanBkuPpkStore = defineStore('laporan_bkuppk', {
       if (arr.length) {
         for (let i = 0; i < arr.length; i++) {
           if (i === 0) {
-            total = arr[0]?.subtotal + arr[0]?.penerimaan - arr[0]?.pengeluaran
+            total = arr[0]?.penerimaan - arr[0]?.pengeluaran
             arr[0].total = total
           }
           else {
             const hinggaKeIndex = i + 1
             const arrBaru = arr.slice(1, hinggaKeIndex)
-            const awal = arr[0]?.subtotal + arr[0]?.penerimaan - arr[0]?.pengeluaran
+            const awal = arr[0]?.penerimaan - arr[0]?.pengeluaran
             // const subT = arr[i]?.penerimaan - arr[i]?.pengeluaran;
             const obj = arrBaru.map((x) => x.penerimaan - x.pengeluaran)
             const skrg = obj?.reduce((x, y) => x + y, 0)

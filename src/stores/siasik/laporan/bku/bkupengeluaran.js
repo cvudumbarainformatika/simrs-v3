@@ -130,14 +130,14 @@ export const useLaporanBkuPengeluaranStore = defineStore(
             nonpd: '',
             pjr: '',
             spjpanjar: '',
-            pergeseran: '',
+            bank_kas: '',
+            kas_bank: '',
             cppjr: '',
             sisapanjar: '',
             uraian: 'SALDO AWAL',
             uraianNPD: '',
-            penerimaan: 0,
+            penerimaan: totalsaldoawal,
             pengeluaran: 0,
-            subtotal: totalsaldoawal
           }
           saldoawal.push(sal)
         } else {
@@ -147,14 +147,14 @@ export const useLaporanBkuPengeluaranStore = defineStore(
             nonpd: '',
             pjr: '',
             spjpanjar: '',
-            pergeseran: '',
+            bank_kas: '',
+            kas_bank: '',
             cppjr: '',
             sisapanjar: '',
             uraian: 'SALDO AWAL',
             uraianNPD: '',
             penerimaan: 0,
             pengeluaran: 0,
-            subtotal: 0
           }
           saldoawal.push(saldo)
         }
@@ -173,7 +173,8 @@ export const useLaporanBkuPengeluaranStore = defineStore(
             nonpd: null,
             pjr: null,
             spjpanjar: null,
-            pergeseran: null,
+            bank_kas: null,
+            kas_bank: null,
             cppjr: null,
             sisapanjar: null,
             uraian: el[i].uraian,
@@ -194,19 +195,19 @@ export const useLaporanBkuPengeluaranStore = defineStore(
               return {
                 nonpd: x.nonpk,
                 uraianNPD: x.keterangan,
-                nilai: el[i].kasrinci?.length
-                  ? this.hitungPergeseran(el[i].kasrinci)
-                  : 0
+                nilai: parseFloat(x.jumlah)
               }
             })
             : []
+          // console.log('geserbank', geserbank)
           const obj = {
             tgl: el[i].tgltrans,
             notrans: el[i].notrans,
             nonpd: null,
             pjr: null,
             spjpanjar: null,
-            pergeseran: geserbank,
+            bank_kas: geserbank,
+            kas_bank: null,
             cppjr: null,
             sisapanjar: null,
             uraian: 'Pergeseran Saldo ' + el[i].jenis,
@@ -224,14 +225,13 @@ export const useLaporanBkuPengeluaranStore = defineStore(
         const geserKredit = []
         for (let i = 0; i < this.items.pergeserankas.length; i++) {
           const el = this.items?.pergeserankas
+          console.log('geseeer', el)
           const geserbank = el[i].kasrinci?.length
             ? el[i].kasrinci?.map((x) => {
               return {
                 nonpd: x.nonpk,
                 uraianNPD: x.keterangan,
-                nilai: el[i].kasrinci?.length
-                  ? this.hitungPergeseran(el[i].kasrinci)
-                  : 0
+                nilai: parseFloat(x.jumlah)
               }
             })
             : []
@@ -241,7 +241,8 @@ export const useLaporanBkuPengeluaranStore = defineStore(
             nonpd: null,
             pjr: null,
             spjpanjar: null,
-            pergeseran: geserbank,
+            bank_kas: null,
+            kas_bank: geserbank,
             cppjr: null,
             sisapanjar: null,
             uraian: 'Pergeseran Saldo ' + el[i].jenis,
@@ -292,7 +293,8 @@ export const useLaporanBkuPengeluaranStore = defineStore(
             nonpd: null,
             pjr: null,
             spjpanjar: null,
-            pergeseran: null,
+            bank_kas: null,
+            kas_bank: null,
             cppjr: null,
             sisapanjar: null,
             uraian: 'Penerimaan Panjar Kegiatan Pelayanan dan Penunjang BLUD',
@@ -344,7 +346,8 @@ export const useLaporanBkuPengeluaranStore = defineStore(
             nonpd: null,
             pjr,
             spjpanjar: null,
-            pergeseran: null,
+            bank_kas: null,
+            kas_bank: null,
             cppjr: null,
             sisapanjar: null,
             uraian: 'Pengeluaran Panjar Kegiatan Pelayanan dan Penunjang BLUD',
@@ -381,7 +384,8 @@ export const useLaporanBkuPengeluaranStore = defineStore(
             nonpd: null,
             pjr: null,
             spjpanjar: spjnyaPanjar,
-            pergeseran: null,
+            bank_kas: null,
+            kas_bank: null,
             cppjr: null,
             uraian: el[i].kegiatanblud,
             uraianNPD: null,
@@ -436,7 +440,8 @@ export const useLaporanBkuPengeluaranStore = defineStore(
             nonpd: null,
             pjr: null,
             spjpanjar: null,
-            pergeseran: null,
+            bank_kas: null,
+            kas_bank: null,
             cppjr: cpallpjr,
             sisapanjar: null,
             uraian: el[i].keterangan,
@@ -471,7 +476,8 @@ export const useLaporanBkuPengeluaranStore = defineStore(
             nonpd: null,
             pjr: null,
             spjpanjar: null,
-            pergeseran: null,
+            bank_kas: null,
+            kas_bank: null,
             cppjr: null,
             sisapanjar,
             uraian: 'Pengembalian Sisa Panjar',
@@ -527,7 +533,8 @@ export const useLaporanBkuPengeluaranStore = defineStore(
             nonpd: null,
             pjr: null,
             spjpanjar: null,
-            pergeseran: null,
+            bank_kas: null,
+            kas_bank: null,
             cppjr: null,
             sisapanjar: null,
             uraian: 'Penerimaan Kegiatan Pelayanan dan Penunjang BLUD',
@@ -578,7 +585,8 @@ export const useLaporanBkuPengeluaranStore = defineStore(
             nonpd,
             pjr: null,
             spjpanjar: null,
-            pergeseran: null,
+            bank_kas: null,
+            kas_bank: null,
             cppjr: null,
             sisapanjar: null,
             uraian: 'Pengeluaran Kegiatan Pelayanan dan Penunjang BLUD',
@@ -606,7 +614,8 @@ export const useLaporanBkuPengeluaranStore = defineStore(
             nonpd: null,
             pjr: null,
             spjpanjar: null,
-            pergeseran: null,
+            bank_kas: null,
+            kas_bank: null,
             cppjr: null,
             sisapanjar: null,
             uraian: 'Contrapost',
@@ -629,7 +638,8 @@ export const useLaporanBkuPengeluaranStore = defineStore(
             nonpd: null,
             pjr: null,
             spjpanjar: null,
-            pergeseran: null,
+            bank_kas: null,
+            kas_bank: null,
             cppjr: null,
             sisapanjar: null,
             uraian: el[i].uraian,
@@ -651,7 +661,8 @@ export const useLaporanBkuPengeluaranStore = defineStore(
             nonpd: null,
             pjr: null,
             spjpanjar: null,
-            pergeseran: null,
+            bank_kas: null,
+            kas_bank: null,
             cppjr: null,
             sisapanjar: null,
             uraian: 'Pengembalian Nihil',
@@ -712,13 +723,13 @@ export const useLaporanBkuPengeluaranStore = defineStore(
         if (arr.length) {
           for (let i = 0; i < arr.length; i++) {
             if (i === 0) {
-              total = arr[0]?.subtotal + arr[0]?.penerimaan - arr[0]?.pengeluaran
+              total = arr[0]?.penerimaan - arr[0]?.pengeluaran
               arr[0].total = total
             }
             else {
               const hinggaKeIndex = i + 1
               const arrBaru = arr.slice(1, hinggaKeIndex)
-              const awal = arr[0]?.subtotal + arr[0]?.penerimaan - arr[0]?.pengeluaran
+              const awal = arr[0]?.penerimaan - arr[0]?.pengeluaran
               // const subT = arr[i]?.penerimaan - arr[i]?.pengeluaran;
               const obj = arrBaru.map((x) => x.penerimaan - x.pengeluaran)
               const skrg = obj?.reduce((x, y) => x + y, 0)

@@ -6,20 +6,20 @@
       </div>
     </div>
     <div class="col-6">
-      <div class="row justify-center text-h6">
+      <div class="row justify-center text-center text-h6">
         PEMERINTAH KOTA PROBOLINGGO
       </div>
-      <div class="row justify-center text-h7 text-weight-bold">
+      <div class="row justify-center text-center text-h7 text-weight-bold">
         DINAS KESEHATAN, PENGENDALIAN PENDUDUK, DAN KELUARGA BERENCANA
       </div>
-      <div class="row justify-center text-h5 text-weight-bold">
+      <div class="row justify-center text-center text-h5 text-weight-bold">
         UOBK RSUD DOKTER MOHAMAD SALEH
       </div>
-      <div class="row justify-center text-h8">
+      <div class="row justify-center text-center text-h8">
         Jl. Mayjen Panjaitan No.65 Telp.(0335) 433119, 42118 Fax (0335)
         432702
       </div>
-      <div class="row justify-center text-h8 text-weight-bold">
+      <div class="row justify-center text-center text-h8 text-weight-bold">
         PROBOLINGGO 67219
       </div>
     </div>

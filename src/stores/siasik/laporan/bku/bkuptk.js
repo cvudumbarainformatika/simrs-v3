@@ -5,6 +5,8 @@ import { api } from 'src/boot/axios'
 export const useLaporanBkuPtkStore = defineStore('laporan_bkuptk', {
   state: () => ({
     loading: false,
+    loadingptk: false,
+    dialogCetak: false,
     items: [],
     meta: {},
     params: {
@@ -14,6 +16,9 @@ export const useLaporanBkuPtkStore = defineStore('laporan_bkuptk', {
       tahun: date.formatDate(Date.now(), 'YYYY'),
       ptk: ''
       // per_page: 10,
+    },
+    display: {
+      sekarang: date.formatDate(Date.now(), 'DD MMMM YYYY')
     },
     bulans: [
       { nama: 'Januari', value: '01' },
@@ -29,23 +34,8 @@ export const useLaporanBkuPtkStore = defineStore('laporan_bkuptk', {
       { nama: 'November', value: '11' },
       { nama: 'Desember', value: '12' }
     ],
-    ptks: [
-      // { nama: 'ENDAH NINGRUM, S.H', value: '19681031 199203 2 005' },
-      // { nama: 'YULIANA, S.A.P', value: '19740304 200801 2 005' },
-      // { nama: 'RIKE DWI ARYANTI, S.E., M.M.', value: '19670624 199203 2 004' },
-      // { nama: 'ELLY YUNIAR, S.Sos.M.Si', value: '19670624 199203 2 004' },
-      // { nama: 'HERDIANTO, S.Kom', value: '19790102 200903 1 001' },
-      // { nama: 'BAGUS RAHMAT SOLIKIN, SE, MM', value: '19870326 201101 1 006' },
-      // { nama: 'ANDJAR SUPADMAWATI, S.Kep, MM', value: '19660410 199203 2 010' },
-      // { nama: 'ATIEK RACHMAWATI, S.E.', value: '19740923 200701 2 006' },
-      // { nama: 'RUMPOKO, S. Sos, M.Si', value: '19660128 199010 1 001' },
-      // { nama: 'USWATUN KHASANAH, S.Kep, Ns', value: '19810525 200903 2 002' },
-      // { nama: 'SUYANI, S. Sos', value: '19661125 199603 2 003' },
-      // { nama: 'RITA TRISSIANA, S.K.M.', value: '19690722 199503 2 002' },
-      // { nama: 'UMI KUSUMA WARDANI, S.Kep, Ns', value: '19780512 200312 2 016' },
-      // { nama: 'EKO HARTONO SETIAWAN, S.KM', value: '19780522 200012 1 002' },
-      // { nama: 'TATY SETYA R, S.Ak', value: '19820306 201001 2 026' }
-    ]
+    ptks: [],
+    pilihptk: []
 
   }),
 
@@ -77,7 +67,7 @@ export const useLaporanBkuPtkStore = defineStore('laporan_bkuptk', {
         })
     },
     getPtks() {
-      this.loading = true
+      this.loadingptk = true
       const params = { params: this.params }
       return new Promise((resolve) => {
         api.get('v1/laporan/laporan_bku/ptk', params).then((resp) => {
@@ -85,6 +75,7 @@ export const useLaporanBkuPtkStore = defineStore('laporan_bkuptk', {
           if (resp.status === 200) {
             this.ptks = resp.data
             resolve(resp)
+            this.loadingptk = false
           }
         })
       })

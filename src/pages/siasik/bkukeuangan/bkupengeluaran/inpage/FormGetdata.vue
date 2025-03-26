@@ -1,5 +1,5 @@
 <template>
-  <div class="row full-width justify-first">
+  <div class="row full-width justify-center">
     <div class="q-pa-sm" style="width:25%">
       <app-autocomplete v-model="store.params.bulan" label="Pilih Bulan" autocomplete="nama" option-label="nama"
         option-value="value" outlined :source="store.bulans" />

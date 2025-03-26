@@ -2,7 +2,7 @@
   <q-dialog persistent backdrop-filter="blur(4px)">
     <q-card style="min-width:80vw; max-width: 80vw;">
       <q-bar class="bg-black text-white">
-        <div>Cetak NPD-LS</div>
+        <div>Cetak BKU PPK</div>
         <q-space />
 
         <q-btn dense flat icon="icon-mat-close" v-close-popup>

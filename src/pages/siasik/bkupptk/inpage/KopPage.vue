@@ -30,21 +30,19 @@
     </div>
 
     <div class="full-width q-pt-md">
-      <div class="row justify-center text-center text-weight-bold">
-        Buku Kas Umum Bendahara Pengeluaran
+      <div class="row justify-center text-weight-bold">
+        Buku Kas Umum Pelaksana Teknis Kegiatan
       </div>
-      <div class="row justify-center text-center text-weight-bold">
+      <div class="row justify-center text-weight-bold">
         Periode Bulan {{ bulan(store.params.bulan) }} {{ store.params.tahun }}
       </div>
     </div>
   </div>
 </template>
 <script setup>
-import { useLaporanBkuPengeluaranStore } from 'src/stores/siasik/laporan/bku/bkupengeluaran';
+import { useLaporanBkuPtkStore } from 'src/stores/siasik/laporan/bku/bkuptk';
 
-
-
-const store = useLaporanBkuPengeluaranStore()
+const store = useLaporanBkuPtkStore()
 function bulan(val) {
   const bulan = store.bulans.find((x) => x.value === val)
   return bulan?.nama ?? '-'

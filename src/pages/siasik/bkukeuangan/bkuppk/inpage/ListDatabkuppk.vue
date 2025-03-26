@@ -1,24 +1,24 @@
 <template>
   <div class="row justify-center">
-    <div class="full-width">
-      <q-markup-table class="full-width" flat-bordered wrap-cells :separator="separator">
+    <div class="full-width q-px-sm">
+      <q-markup-table class="full-width" flat bordered wrap-cells :separator="separator">
         <thead>
           <tr class="max-width">
-            <th>
-              NO
+            <th class="text-bold">
+              <span class="text-bold">NO</span>
             </th>
             <th width="150px">
-              TANGGAL
+              <span class="text-bold">TANGGAL</span>
             </th>
             <th width="220px">
-              REGISTER/REKENING
+              <span class="text-bold">REGISTER/REKENING</span>
             </th>
             <th width="530px">
-              URAIAN
+              <span class="text-bold">URAIAN</span>
             </th>
-            <th>PENERIMAAN (Rp.)</th>
-            <th>PENGELUARAN (Rp.)</th>
-            <th>SALDO (Rp.)</th>
+            <th> <span class="text-bold">PENERIMAAN (Rp.)</span></th>
+            <th><span class="text-bold">PENGELUARAN (Rp.)</span></th>
+            <th><span class="text-bold">SALDO (Rp.)</span></th>
           </tr>
         </thead>
         <tbody>
@@ -41,7 +41,7 @@
             <td class="text-right">
               {{ formattanpaRp(item?.pengeluaran) }}
             </td>
-            <td class="text-right text-bold">
+            <td class="text-right">
               {{ formattanpaRp(item?.total) }}
             </td>
           </tr>
