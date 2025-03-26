@@ -1,24 +1,25 @@
 /**
- * Field   Type          Collation          Null    Key     Default  Extra           Privileges                       Comment
-------  ------------  -----------------  ------  ------  -------  --------------  -------------------------------  ---------------
-id      bigint(12)    (NULL)             NO      PRI     (NULL)   auto_increment  select,insert,update,references
-rs1     varchar(100)  latin1_swedish_ci  YES             (NULL)                   select,insert,update,references  noreg
-rs2     varchar(50)   latin1_swedish_ci  YES             (NULL)                   select,insert,update,references  norm
-rs3     datetime      (NULL)             YES             (NULL)                   select,insert,update,references
-rs4     varchar(10)   latin1_swedish_ci  YES             (NULL)                   select,insert,update,references  jam ke
-rs5     varchar(255)  latin1_swedish_ci  YES             (NULL)                   select,insert,update,references  keluhan
-rs6     varchar(255)  latin1_swedish_ci  YES             (NULL)                   select,insert,update,references  bb
-rs7     varchar(255)  latin1_swedish_ci  YES             (NULL)                   select,insert,update,references  kesadaran
-rs8     varchar(255)  latin1_swedish_ci  YES             (NULL)                   select,insert,update,references  tekanan darah
-rs9     varchar(255)  latin1_swedish_ci  YES             (NULL)                   select,insert,update,references  napas
-rs10    varchar(255)  latin1_swedish_ci  YES             (NULL)                   select,insert,update,references  suhu
-rs11    varchar(255)  latin1_swedish_ci  YES             (NULL)                   select,insert,update,references  qb
-rs12    varchar(255)  latin1_swedish_ci  YES             (NULL)                   select,insert,update,references  qd
-rs13    varchar(255)  latin1_swedish_ci  YES             (NULL)                   select,insert,update,references  tekanan vena
-rs14    varchar(255)  latin1_swedish_ci  YES             (NULL)                   select,insert,update,references  tmp
-rs15    varchar(255)  latin1_swedish_ci  YES             (NULL)                   select,insert,update,references  uf
-rs16    varchar(255)  latin1_swedish_ci  YES             (NULL)                   select,insert,update,references  assesment
-rs17    varchar(255)  latin1_swedish_ci  YES             (NULL)                   select,insert,update,references  perawat
+ *
+Field   Type          Null    Default  Comment
+------  ------------  ------  -------  ---------------
+id      bigint(12)    NO      (NULL)   id
+rs1     varchar(100)  YES     (NULL)   noreg
+rs2     varchar(50)   YES     (NULL)   norm
+rs3     datetime      YES     (NULL)   tgl
+rs4     varchar(10)   YES     (NULL)   jam ke
+rs5     varchar(255)  YES     (NULL)   keluhan
+rs6     varchar(255)  YES     (NULL)   bb
+rs7     varchar(255)  YES     (NULL)   kesadaran
+rs8     varchar(255)  YES     (NULL)   tekanan darah
+rs9     varchar(255)  YES     (NULL)   napas
+rs10    varchar(255)  YES     (NULL)   suhu
+rs11    varchar(255)  YES     (NULL)   qb
+rs12    varchar(255)  YES     (NULL)   qd
+rs13    varchar(255)  YES     (NULL)   tekanan vena
+rs14    varchar(255)  YES     (NULL)   tmp
+rs15    varchar(255)  YES     (NULL)   uf
+rs16    varchar(255)  YES     (NULL)   assesment
+rs17    varchar(255)  YES     (NULL)   perawat
 
  */
 
@@ -81,14 +82,22 @@ export const useIntridialitikHemodialisaStore = defineStore('intridialitik-hemod
         assasement: ''
       }
     },
+
     simpan () {
       this.loading = true
       return new Promise(resolve => {
         api.post('v1/simrs/hemodialisa/layanan/intradialitik/simpan', this.form)
           .then(resp => {
             this.loading = false
-            this.pengunjung.injectDataPasien(this.pengunjung?.pasien?.noreg, resp?.data?.data, 'intradialitik')
-            console.log('resp', resp?.data, this.pengunjung?.pasien)
+            const data = resp?.data?.data
+            // this.pengunjung.injectDataPasien(this.pengunjung?.pasien?.noreg, resp?.data?.data, 'intradialitik')
+            const index = this.pengunjung?.pasien?.intradialitik?.findIndex(item => item.id === data?.id)
+
+            if (index >= 0) {
+              this.pengunjung.pasien.intradialitik[index] = data
+            }
+            else this.pengunjung.pasien.intradialitik?.push(data)
+            console.log('resp', index, data, this.pengunjung?.pasien)
             notifSuccess(resp)
             resolve(resp?.data)
           })

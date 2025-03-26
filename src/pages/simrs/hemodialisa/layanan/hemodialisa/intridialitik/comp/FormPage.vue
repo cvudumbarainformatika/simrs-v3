@@ -97,7 +97,8 @@
     <div class="col-1 text-center">ml</div>
   </div>
   <div class="row q-mt-md justify-end">
-    <q-btn label="Simpan" no-caps dense color="primary" @click="simpan"> <q-tooltip>Simpan</q-tooltip></q-btn>
+    <q-btn label="Simpan" no-caps dense color="primary" @click="simpan" :loading="store.loading"
+      :disable="store.loading"> <q-tooltip>Simpan</q-tooltip></q-btn>
   </div>
   <!-- Pelaksana -->
 </template>
@@ -107,13 +108,6 @@ import { useIntridialitikHemodialisaStore } from 'src/stores/simrs/hemodialisa/i
 import { onMounted, onUnmounted, ref } from 'vue'
 
 const store = useIntridialitikHemodialisaStore()
-
-const props = defineProps({
-  pasien: {
-    type: Object,
-    default: null
-  },
-})
 
 const refKeluhan = ref(null)
 function setKeluhan (val) {
@@ -152,7 +146,7 @@ function simpan () {
   })
 }
 onMounted(() => {
-  // console.log('pasien', props.pasien)
+
   store.initPasien()
   setTimeout(() => {
     resetValidasi()
