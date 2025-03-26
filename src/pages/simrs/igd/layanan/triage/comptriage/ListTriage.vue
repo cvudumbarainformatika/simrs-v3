@@ -33,6 +33,11 @@
                         ?? '-' }}</span>
                     </q-item-label>
                     <q-item-label class="f-12">
+                      <span class="">Bayi Baru Lahir Meninggal </span> : <span class="text-weight-bold">{{
+                        item?.barulahirmeninggal
+                        ?? '-' }}</span>
+                    </q-item-label>
+                    <q-item-label class="f-12">
                       <span class="">DOA </span> : <span class="text-weight-bold">{{ item?.doa ?? '-' }}</span>
                     </q-item-label>
                     <q-item-label>
