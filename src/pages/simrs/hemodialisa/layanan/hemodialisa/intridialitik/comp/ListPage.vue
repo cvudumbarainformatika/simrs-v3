@@ -1,7 +1,7 @@
 <template>
-  <div class="fit column bg-grey-4 relative-position q-mb-xl">
+  <div class="fit column bg-grey-4 relative-position q-mb-xl ">
     <div class="bg-grey-4 q-pa-sm">
-      <info-input-ranap :items="store?.pasien?.intradialitik">
+      <info-input-ranap :items="store?.pasien?.intradialitik" class="scroll">
         <transition-group appear tag="div" @before-enter="beforeEnter" @enter="enter">
           <div v-for="(item, i) in store?.pasien?.intradialitik" :key="item" v-ripple
             class="q-card q-pa-md q-mb-sm cursor-pointer">

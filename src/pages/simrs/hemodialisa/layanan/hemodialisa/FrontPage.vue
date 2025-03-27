@@ -16,7 +16,8 @@
       </div>
       <div class="col full-height">
         <q-tab-panels v-model="tab" animated class="bg-transparent q-pa-none relative-position fit">
-          <q-tab-panel :name="menu?.name" class="q-pa-none">
+          <q-tab-panel ref="refPanel" :name="menu?.name" class="q-pa-none"
+            style="overflow: hidden; max-height: calc(100vh - 95px);">
             <component :is="menu?.comp" />
           </q-tab-panel>
         </q-tab-panels>
@@ -28,13 +29,16 @@
 
 <script setup>
 import { useAplikasiStore } from 'src/stores/app/aplikasi'
-import { computed, defineAsyncComponent, ref } from 'vue'
+import { computed, defineAsyncComponent, onMounted, ref } from 'vue'
 
 const auth = useAplikasiStore()
-
+const props = defineProps({
+  headheight: {
+    type: Number,
+    default: 0
+  }
+})
 const nakes = computed(() => {
-
-
   return auth?.user?.pegawai?.kdgroupnakes
 })
 const tab = ref('intridialitik')
@@ -72,7 +76,18 @@ const menu = computed(() => {
 const tabs = computed(() => {
   return tabsxx.filter(i => i.nakes.includes(nakes.value))
 })
-
+const tingginya = computed(() => {
+  console.log('head ti', props.headheight)
+  return props.headheight
+})
+const refPanel = ref(null)
+onMounted(() => {
+  console.log('refPanel', refPanel.value.clientHeight)
+  setTimeout(() => {
+    console.log('tingginya', tingginya.value)
+  }, 100)
+  // console.log('head', props.headheight)
+})
 </script>
 
 <style lang="scss" scoped>

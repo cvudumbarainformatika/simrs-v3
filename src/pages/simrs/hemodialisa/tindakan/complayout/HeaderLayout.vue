@@ -1,5 +1,5 @@
 <template>
-  <q-toolbar>
+  <q-toolbar class="glossy">
     <q-btn flat dense icon="icon-mat-sort" @click="emits('toggleLeftDrawer')" />
     <q-toolbar-title class="f-14">
       <div class="row items-center q-gutter-md">
