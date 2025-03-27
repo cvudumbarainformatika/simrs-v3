@@ -67,6 +67,13 @@
                 </div>
               </div>
             </div>
+            <div class="row justify-end q-ma-xs q-col-gutter-x-xs">
+
+              <q-btn flat dense color="primary" icon="icon-mat-edit"
+                @click="edit(item)"><q-tooltip>edit</q-tooltip></q-btn>
+              <q-btn flat dense color="red" icon="icon-mat-delete"
+                @click="remove(item)"><q-tooltip>hapus</q-tooltip></q-btn>
+            </div>
           </div>
         </transition-group>
 
@@ -78,11 +85,34 @@
 import { useListPasienHemodialisaStore } from "src/stores/simrs/hemodialisa/hemodialisa"
 import { defineAsyncComponent, onMounted } from "vue"
 import { gsap } from 'gsap'
+import { useIntridialitikHemodialisaStore } from "src/stores/simrs/hemodialisa/intridialitik"
 
 const store = useListPasienHemodialisaStore()
-
+const storeForm = useIntridialitikHemodialisaStore()
 const InfoInputRanap = defineAsyncComponent(() => import('../../../components/InfoInputRanap.vue'))
 
+function edit (item) {
+  console.log('edit', item)
+  storeForm.setForm('id', item.id)
+  storeForm.setForm('tgl', item.rs3)
+  storeForm.setForm('jamKe', item.rs4)
+  storeForm.setForm('keluhan', item.rs5)
+  storeForm.setForm('bb', item.rs6)
+  storeForm.setForm('kesadaran', item.rs7)
+  storeForm.setForm('tkDarah', item.rs8)
+  storeForm.setForm('napas', item.rs9)
+  storeForm.setForm('suhu', item.rs10)
+  storeForm.setForm('qb', item.rs11)
+  storeForm.setForm('qd', item.rs12)
+  storeForm.setForm('tkVena', item.rs13)
+  storeForm.setForm('tmp', item.rs14)
+  storeForm.setForm('uf', item.rs15)
+  storeForm.setForm('assasement', item.rs16)
+}
+function remove (item) {
+  console.log('remove', item)
+  // storeForm.remove(item)
+}
 const beforeEnter = (el) => {
   el.style.opacity = 0
   el.style.transform = 'translateX(200px)'
