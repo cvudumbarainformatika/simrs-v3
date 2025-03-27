@@ -105,6 +105,22 @@ export const useIntridialitikHemodialisaStore = defineStore('intridialitik-hemod
             this.loading = false
           })
       })
+    },
+    hapus (item) {
+      item.loading = true
+      return new Promise(resolve => {
+        api.post('v1/simrs/hemodialisa/layanan/intradialitik/hapus', item)
+          .then(resp => {
+            const index = this.pengunjung?.pasien?.intradialitik?.findIndex(it => it.id === item.id)
+            if (index >= 0) this.pengunjung.pasien.intradialitik.splice(index, 1)
+            notifSuccess(resp)
+            resolve(resp)
+          })
+          .catch(() => {
+            delete item.loading
+          })
+      })
+
     }
   }
 })

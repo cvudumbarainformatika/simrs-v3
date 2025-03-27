@@ -71,8 +71,8 @@
 
               <q-btn flat dense color="primary" icon="icon-mat-edit"
                 @click="edit(item)"><q-tooltip>edit</q-tooltip></q-btn>
-              <q-btn flat dense color="red" icon="icon-mat-delete"
-                @click="remove(item)"><q-tooltip>hapus</q-tooltip></q-btn>
+              <q-btn flat dense color="red" icon="icon-mat-delete" @click="remove(item)" :loading="item.loading"
+                :disable="item.loading"><q-tooltip>hapus</q-tooltip></q-btn>
             </div>
           </div>
         </transition-group>
@@ -111,7 +111,7 @@ function edit (item) {
 }
 function remove (item) {
   console.log('remove', item)
-  // storeForm.remove(item)
+  storeForm.hapus(item)
 }
 const beforeEnter = (el) => {
   el.style.opacity = 0
