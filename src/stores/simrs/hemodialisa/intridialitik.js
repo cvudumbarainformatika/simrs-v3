@@ -90,7 +90,6 @@ export const useIntridialitikHemodialisaStore = defineStore('intridialitik-hemod
           .then(resp => {
             this.loading = false
             const data = resp?.data?.data
-            // this.pengunjung.injectDataPasien(this.pengunjung?.pasien?.noreg, resp?.data?.data, 'intradialitik')
             const index = this.pengunjung?.pasien?.intradialitik?.findIndex(item => item.id === data?.id)
 
             if (index >= 0) {

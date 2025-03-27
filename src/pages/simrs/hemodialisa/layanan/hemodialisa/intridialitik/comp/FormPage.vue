@@ -27,7 +27,7 @@
 
     <div class="col-6">
       <app-input-simrs ref="refKeluhan" v-model="store.form.keluhan"
-        :label="'Keluhan ' + panjangChar(store.form.keluhan, 250)" type="textarea" :valid="{ max: 255 }"
+        :label="'Keluhan ' + panjangChar(store.form.keluhan, 250)" type="textarea" :valid="{ max: 255, canEmpty: true }"
         @update:model-value="setKeluhan" />
     </div>
 
@@ -35,8 +35,8 @@
 
     <div class="col-6">
       <app-input-simrs ref="refKesadaran" v-model="store.form.kesadaran"
-        :label="'Kesadaran ' + panjangChar(store.form.kesadaran, 250)" type="textarea" :valid="{ max: 255 }"
-        @update:model-value="setKesadaran" />
+        :label="'Kesadaran ' + panjangChar(store.form.kesadaran, 250)" type="textarea"
+        :valid="{ max: 255, canEmpty: true }" @update:model-value="setKesadaran" />
     </div>
 
     <!-- tekanan darah -->
@@ -82,14 +82,14 @@
 
     <!-- TMP -->
     <div class="col-6"> <app-input-simrs ref="refTmp" v-model="store.form.tmp"
-        :label="'TMP ' + panjangChar(store.form.tmp, 250)" type="textarea" :valid="{ max: 255 }"
+        :label="'TMP ' + panjangChar(store.form.tmp, 250)" type="textarea" :valid="{ max: 255, canEmpty: true }"
         @update:model-value="setTmp" /></div>
 
 
     <!-- Assasement / intervensi -->
     <div class="col-6"> <app-input-simrs ref="refAssasement" v-model="store.form.assasement"
         :label="'Assasement / Intervensi ' + panjangChar(store.form.assasement, 250)" type="textarea"
-        :valid="{ max: 255 }" @update:model-value="setAssasement" /></div>
+        :valid="{ max: 255, canEmpty: true }" @update:model-value="setAssasement" /></div>
     <!-- UF -->
     <div class="col-5">
       <app-input-simrs v-model="store.form.uf" label="UF" />
@@ -104,6 +104,7 @@
 </template>
 <script setup>
 import { date } from 'quasar'
+import { notifErrVue } from 'src/modules/utils'
 import { useIntridialitikHemodialisaStore } from 'src/stores/simrs/hemodialisa/intridialitik'
 import { onMounted, onUnmounted, ref } from 'vue'
 
@@ -138,7 +139,17 @@ function resetValidasi () {
   refAssasement.value?.appInputSimrs.resetValidation()
 
 }
+function validasi () {
+
+  if (refKeluhan.value?.appInputSimrs.validate() &&
+    refKesadaran.value?.appInputSimrs.validate() &&
+    refTmp.value?.appInputSimrs.validate() &&
+    refAssasement.value?.appInputSimrs.validate()) return true
+  else return false
+}
+
 function simpan () {
+  if (!validasi()) return notifErrVue('Silahkan lengkapi form terlebih dahulu')
   store.simpan().then(() => {
     store.resetForm()
     resetValidasi()
