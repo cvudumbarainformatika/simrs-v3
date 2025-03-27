@@ -86,9 +86,8 @@
                         Pengguna Anggaran
                       </div>
                       <div style="padding-bottom: 40px" />
-                      <div class="underline text-bold text-center">
+                      <div class="text-bold text-center" style="text-decoration-line: underline;">
                         {{ store.pegawais[1]?.nama }}
-                        <div class="garis-bawah" style="text-decoration-line: underline;" />
                       </div>
                       <div class="text-center">
                         NIP. {{ store.pegawais[1]?.nip }}
@@ -102,9 +101,8 @@
                         Bendahara Pengeluaran
                       </div>
                       <div style="padding-bottom: 40px" />
-                      <div class="underline text-center text-bold">
+                      <div class="underline text-center text-bold" style="text-decoration-line: underline;">
                         {{ store.pegawais[0]?.nama }}
-                        <div class="garis-bawah" style="text-decoration-line: underline;" />
                       </div>
                       <div class="text-center">
                         NIP. {{ store.pegawais[0]?.nip }}

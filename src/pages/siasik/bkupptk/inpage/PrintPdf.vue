@@ -85,9 +85,8 @@
                       Pejabat Penatausahaan Keuangan
                     </div>
                     <div style="padding-bottom: 40px" />
-                    <div class="underline text-bold q-py-xs">
+                    <div class="text-bold q-py-xs" style="text-decoration-line: underline;">
                       {{ ptk?.nama }}
-                      <div class="garis-bawah" style="text-decoration-line: underline;" />
                     </div>
                     <div>
                       NIP. {{ ptk?.nip }}
