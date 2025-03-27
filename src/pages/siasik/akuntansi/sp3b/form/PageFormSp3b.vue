@@ -18,10 +18,13 @@
 import { onBeforeMount } from 'vue';
 import FormHeader from './inpage/FormHeader.vue'
 import ListRincian from './inpage/ListRinciandata.vue'
+import { useSp3bStore } from 'src/stores/siasik/akuntansi/sp3b/sp3b';
 
+const store = useSp3bStore()
 onBeforeMount(() => {
-  // store.initReset(props.data)
-
+  store.pendapatans = []
+  store.belanjas = []
+  store.pembiayaans = []
 })
 // onMounted(() => {
 //   // console.log(compSigna.value)
