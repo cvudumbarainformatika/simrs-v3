@@ -168,10 +168,6 @@ thead tr {
   word-break: break-all;
 }
 
-.grs_bawah {
-  border-bottom: 1px solid grey;
-}
-
 .ttd-kanan {
   position: relative;
   top: 50px;
