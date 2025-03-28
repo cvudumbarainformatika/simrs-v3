@@ -30,6 +30,13 @@ import { useLRAjurnalStore } from 'src/stores/siasik/laporan/lra/lrajurnal.'
 import FormLapOperasional from './inpage/FormGetdata.vue'
 import listData from './inpage/ListdataLrajurnal.vue'
 import listDataPsap from './inpage/ListdataLraPsap.vue'
+import { onBeforeMount } from 'vue'
 
 const store = useLRAjurnalStore()
+
+onBeforeMount(() => {
+  store.hasilpendapatan = []
+  store.hasilbelanja = []
+  store.hasilsilpa = []
+})
 </script>

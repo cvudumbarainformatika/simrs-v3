@@ -69,13 +69,13 @@ export const useLRAjurnalStore = defineStore('lap_realisasi_anggaran', {
     silpasblm: [],
     silpaskg: [],
 
-    psappagupendapatan: [],
-    psaprealisasipendapatan: [],
-    psaprealisasipendapatanx: [],
-    psappagubarjas: [],
-    psappagumodal: [],
-    psaprealisasibarjas: [],
-    psaprealisasimodal: [],
+    // psappagupendapatan: [],
+    // psaprealisasipendapatan: [],
+    // psaprealisasipendapatanx: [],
+    // psappagubarjas: [],
+    // psappagumodal: [],
+    // psaprealisasibarjas: [],
+    // psaprealisasimodal: [],
 
     hasilpendapatan: [],
     hasilbelanja: [],
@@ -129,13 +129,13 @@ export const useLRAjurnalStore = defineStore('lap_realisasi_anggaran', {
             this.datareklas = resp.data.datareklas
             this.datareklas_sblm = resp.data.datareklas_sblm
 
-            this.psappagupendapatan = resp.data.psappagupendapatan
-            this.psaprealisasipendapatan = resp.data.psaprealisasipendapatan
-            this.psaprealisasipendapatanx = resp.data.psaprealisasipendapatanx
-            this.psappagubarjas = resp.data.psappagubarjas
-            this.psappagumodal = resp.data.psappagumodal
-            this.psaprealisasibarjas = resp.data.psaprealisasibarjas
-            this.psaprealisasimodal = resp.data.psaprealisasimodal
+            // this.psappagupendapatan = resp.data.psappagupendapatan
+            // this.psaprealisasipendapatan = resp.data.psaprealisasipendapatan
+            // this.psaprealisasipendapatanx = resp.data.psaprealisasipendapatanx
+            // this.psappagubarjas = resp.data.psappagubarjas
+            // this.psappagumodal = resp.data.psappagumodal
+            // this.psaprealisasibarjas = resp.data.psaprealisasibarjas
+            // this.psaprealisasimodal = resp.data.psaprealisasimodal
 
             this.mapData()
 
@@ -425,7 +425,7 @@ export const useLRAjurnalStore = defineStore('lap_realisasi_anggaran', {
         const totalnilaisblm = (isNaN(parseFloat(bljsblm) + parseFloat(totalpenysblm)) ? parseFloat(0) : parseFloat(bljsblm) + parseFloat(totalpenysblm)).toFixed(2)
         const obj = {
           kode: belanja.filter((x) => x.kode5 === el)[0].kode5,
-          uraian: belanja.filter((x) => x.kode5 === el).map((x) => x.lvl5)[0]?.uraian,
+          uraian: belanja.filter((x) => x.kode5 === el)[0]?.uraian5,
           pagu: parseFloat(pagu),
           nilaiskg: parseFloat(totalnilaiskg),
           nilaisblm: parseFloat(totalnilaisblm),
@@ -452,7 +452,7 @@ export const useLRAjurnalStore = defineStore('lap_realisasi_anggaran', {
         const totalnilaisblm = (isNaN(parseFloat(bljsblm) + parseFloat(totalpenysblm)) ? parseFloat(0) : parseFloat(bljsblm) + parseFloat(totalpenysblm)).toFixed(2)
         const obj = {
           kode: belanja.filter((x) => x.kode4 === el)[0].kode4,
-          uraian: belanja.filter((x) => x.kode4 === el).map((x) => x.lvl4)[0]?.uraian,
+          uraian: belanja.filter((x) => x.kode4 === el)[0]?.uraian4,
           pagu: parseFloat(pagu),
           nilaiskg: parseFloat(totalnilaiskg),
           nilaisblm: parseFloat(totalnilaisblm),
@@ -479,7 +479,7 @@ export const useLRAjurnalStore = defineStore('lap_realisasi_anggaran', {
         const totalnilaisblm = (isNaN(parseFloat(bljsblm) + parseFloat(totalpenysblm)) ? parseFloat(0) : parseFloat(bljsblm) + parseFloat(totalpenysblm)).toFixed(2)
         const obj = {
           kode: belanja.filter((x) => x.kode3 === el)[0].kode3,
-          uraian: belanja.filter((x) => x.kode3 === el).map((x) => x.lvl3)[0]?.uraian,
+          uraian: belanja.filter((x) => x.kode3 === el)[0]?.uraian3,
           pagu: parseFloat(pagu),
           nilaiskg: parseFloat(totalnilaiskg),
           nilaisblm: parseFloat(totalnilaisblm),
@@ -506,7 +506,7 @@ export const useLRAjurnalStore = defineStore('lap_realisasi_anggaran', {
         const totalnilaisblm = (isNaN(parseFloat(bljsblm) + parseFloat(totalpenysblm)) ? parseFloat(0) : parseFloat(bljsblm) + parseFloat(totalpenysblm)).toFixed(2)
         const obj = {
           kode: belanja.filter((x) => x.kode2 === el)[0].kode2,
-          uraian: belanja.filter((x) => x.kode2 === el).map((x) => x.lvl2)[0]?.uraian,
+          uraian: belanja.filter((x) => x.kode2 === el)[0]?.uraian2,
           pagu: parseFloat(pagu),
           nilaiskg: parseFloat(totalnilaiskg),
           nilaisblm: parseFloat(totalnilaisblm),
@@ -533,7 +533,7 @@ export const useLRAjurnalStore = defineStore('lap_realisasi_anggaran', {
         const totalnilaisblm = (isNaN(parseFloat(bljsblm) + parseFloat(totalpenysblm)) ? parseFloat(0) : parseFloat(bljsblm) + parseFloat(totalpenysblm)).toFixed(2)
         const obj = {
           kode: belanja.filter((x) => x.kode1 === el)[0].kode1,
-          uraian: belanja.filter((x) => x.kode1 === el).map((x) => x.lvl1)[0]?.uraian,
+          uraian: belanja.filter((x) => x.kode1 === el)[0]?.uraian1,
           pagu: parseFloat(pagu),
           nilaiskg: parseFloat(totalnilaiskg),
           nilaisblm: parseFloat(totalnilaisblm),
@@ -612,7 +612,7 @@ export const useLRAjurnalStore = defineStore('lap_realisasi_anggaran', {
         }
         const obj5 = {
           kode: el?.kode5,
-          uraian: el?.lvl5?.uraian,
+          uraian: el?.uraian5,
           pagu: parseFloat(el?.pagu),
           nilaisblm: sblm ? parseFloat(sblm?.nilaisblm) : 0,
           nilaiskg: skg ? parseFloat(skg?.nilaiskg) : 0,
@@ -622,7 +622,7 @@ export const useLRAjurnalStore = defineStore('lap_realisasi_anggaran', {
         }
         const obj4 = {
           kode: el?.kode4,
-          uraian: el?.lvl4?.uraian,
+          uraian: el?.uraian4,
           pagu: parseFloat(el?.pagu),
           nilaisblm: sblm ? parseFloat(sblm?.nilaisblm) : 0,
           nilaiskg: skg ? parseFloat(skg?.nilaiskg) : 0,
@@ -632,7 +632,7 @@ export const useLRAjurnalStore = defineStore('lap_realisasi_anggaran', {
         }
         const obj3 = {
           kode: el?.kode3,
-          uraian: el?.lvl3?.uraian,
+          uraian: el?.uraian3,
           pagu: parseFloat(el?.pagu),
           nilaisblm: sblm ? parseFloat(sblm?.nilaisblm) : 0,
           nilaiskg: skg ? parseFloat(skg?.nilaiskg) : 0,
@@ -642,7 +642,7 @@ export const useLRAjurnalStore = defineStore('lap_realisasi_anggaran', {
         }
         const obj2 = {
           kode: el?.kode2,
-          uraian: el?.lvl2?.uraian,
+          uraian: el?.uraian2,
           pagu: parseFloat(el?.pagu),
           nilaisblm: sblm ? parseFloat(sblm?.nilaisblm) : 0,
           nilaiskg: skg ? parseFloat(skg?.nilaiskg) : 0,
@@ -652,7 +652,7 @@ export const useLRAjurnalStore = defineStore('lap_realisasi_anggaran', {
         }
         const obj1 = {
           kode: el?.kode1,
-          uraian: el?.lvl1?.uraian,
+          uraian: el?.uraian1,
           pagu: parseFloat(el?.pagu),
           nilaisblm: sblm ? parseFloat(sblm?.nilaisblm) : 0,
           nilaiskg: skg ? parseFloat(skg?.nilaiskg) : 0,
@@ -673,181 +673,181 @@ export const useLRAjurnalStore = defineStore('lap_realisasi_anggaran', {
 
       } console.log('SILPA', silpa6)
 
-      const psappendapatan = []
-      const pagup = this.psappagupendapatan
-      const realpostingotom = this.psaprealisasipendapatan
-      const realju = this.psaprealisasipendapatanx
-      const nilaipenyes = []
-      for (let x = 0; x < realpostingotom.length; x++) {
-        const el = realpostingotom[x];
-        const nilaipx = el?.penyesuaian.length ? el?.penyesuaian?.map(x => parseFloat(x?.totalpenyesuaian)) : 0
-        nilaipenyes.push(nilaipx)
-      }
+      // const psappendapatan = []
+      // const pagup = this.psappagupendapatan
+      // const realpostingotom = this.psaprealisasipendapatan
+      // const realju = this.psaprealisasipendapatanx
+      // const nilaipenyes = []
+      // for (let x = 0; x < realpostingotom.length; x++) {
+      //   const el = realpostingotom[x];
+      //   const nilaipx = el?.penyesuaian.length ? el?.penyesuaian?.map(x => parseFloat(x?.totalpenyesuaian)) : 0
+      //   nilaipenyes.push(nilaipx)
+      // }
 
-      // PSAP 13 DATA PENDAPATAN JASA LAYANAN //
-      const filterjs = this.pendjasalayanan?.map((x) => x.kode)
-      const filpagujs = pagup.filter(x => filterjs.includes(x.kode)).map((x) => x.kode)
-      const unikfilpagujs = filpagujs.length ? [...new Set(filpagujs)] : []
-      const pagujs = pagup.filter(x => filterjs.includes(x.kode)).map((x) => parseFloat(x.pagu)).reduce((a, b) => a + b, 0)
-      const realisasi = realpostingotom.filter(x => filterjs.includes(x.kode)).map((x) => parseFloat(x.realisasi)).reduce((a, b) => a + b, 0).toFixed(2)
-      const realisasix = realju.map((x) => parseFloat(x.realisasix)).reduce((a, b) => a + b, 0).toFixed(2)
-      const totalpenyesuai = nilaipenyes.map((x) => parseFloat(x)).reduce((a, b) => a + b, 0).toFixed(2)
+      // // PSAP 13 DATA PENDAPATAN JASA LAYANAN //
+      // const filterjs = this.pendjasalayanan?.map((x) => x.kode)
+      // const filpagujs = pagup.filter(x => filterjs.includes(x.kode)).map((x) => x.kode)
+      // const unikfilpagujs = filpagujs.length ? [...new Set(filpagujs)] : []
+      // const pagujs = pagup.filter(x => filterjs.includes(x.kode)).map((x) => parseFloat(x.pagu)).reduce((a, b) => a + b, 0)
+      // const realisasi = realpostingotom.filter(x => filterjs.includes(x.kode)).map((x) => parseFloat(x.realisasi)).reduce((a, b) => a + b, 0).toFixed(2)
+      // const realisasix = realju.map((x) => parseFloat(x.realisasix)).reduce((a, b) => a + b, 0).toFixed(2)
+      // const totalpenyesuai = nilaipenyes.map((x) => parseFloat(x)).reduce((a, b) => a + b, 0).toFixed(2)
 
-      // console.log('realxxx', totalpenyesuai)
-      const prsenjs = (((realisasi - realisasix) / pagujs) * 100).toFixed(2)
-      const jasalayanan = {
-        kode: unikfilpagujs[0],
-        uraian: 'Pendapatan Jasa Layanan dari Masyarakat',
-        pagu: isNaN(pagujs) ? parseFloat(0).toFixed(2) : pagujs,
-        realisasi: isNaN(realisasi - realisasix + parseFloat(totalpenyesuai)) ? parseFloat(0).toFixed(2) : realisasi - realisasix + parseFloat(totalpenyesuai),
-        selisih: isNaN(pagujs - (realisasi - realisasix)) ? parseFloat(0).toFixed(2) : pagujs - (realisasi - realisasix),
-        persen: isNaN(prsenjs) ? parseFloat(0).toFixed(2) : prsenjs
-      }
+      // // console.log('realxxx', totalpenyesuai)
+      // const prsenjs = (((realisasi - realisasix) / pagujs) * 100).toFixed(2)
+      // const jasalayanan = {
+      //   kode: unikfilpagujs[0],
+      //   uraian: 'Pendapatan Jasa Layanan dari Masyarakat',
+      //   pagu: isNaN(pagujs) ? parseFloat(0).toFixed(2) : pagujs,
+      //   realisasi: isNaN(realisasi - realisasix + parseFloat(totalpenyesuai)) ? parseFloat(0).toFixed(2) : realisasi - realisasix + parseFloat(totalpenyesuai),
+      //   selisih: isNaN(pagujs - (realisasi - realisasix)) ? parseFloat(0).toFixed(2) : pagujs - (realisasi - realisasix),
+      //   persen: isNaN(prsenjs) ? parseFloat(0).toFixed(2) : prsenjs
+      // }
 
-      // PSAP 13 DATA PENDAPATAN KERJA SAMA //
-      const filterks = this.pendhasilkerjasama?.map((x) => x.kode)
-      const filks = pagup.filter(x => filterks.includes(x.kode)).map((x) => x.kode)
-      const unikfilks = filks.length ? [...new Set(filks)] : []
-      const paguks = pagup.filter(x => filks.includes(x.kode)).map((x) => parseFloat(x.pagu)).reduce((a, b) => a + b, 0).toFixed(2)
-      const realks = realju.filter(x => filks.includes(x.kode)).map((x) => parseFloat(x.realisasix)).reduce((a, b) => a + b, 0).toFixed(2)
-      const persenks = ((realks / paguks) * 100).toFixed(2)
-      const hslkerjasama = {
-        kode: unikfilks[0],
-        uraian: 'Pendapatan Hasil Kerja Sama',
-        pagu: isNaN(paguks) ? parseFloat(0).toFixed(2) : paguks,
-        realisasi: isNaN(realks) ? parseFloat(0).toFixed(2) : realks,
-        selisih: isNaN(paguks - realks) ? parseFloat(0).toFixed(2) : paguks - realks,
-        persen: isNaN(persenks) ? parseFloat(0).toFixed(2) : persenks
-      }
+      // // PSAP 13 DATA PENDAPATAN KERJA SAMA //
+      // const filterks = this.pendhasilkerjasama?.map((x) => x.kode)
+      // const filks = pagup.filter(x => filterks.includes(x.kode)).map((x) => x.kode)
+      // const unikfilks = filks.length ? [...new Set(filks)] : []
+      // const paguks = pagup.filter(x => filks.includes(x.kode)).map((x) => parseFloat(x.pagu)).reduce((a, b) => a + b, 0).toFixed(2)
+      // const realks = realju.filter(x => filks.includes(x.kode)).map((x) => parseFloat(x.realisasix)).reduce((a, b) => a + b, 0).toFixed(2)
+      // const persenks = ((realks / paguks) * 100).toFixed(2)
+      // const hslkerjasama = {
+      //   kode: unikfilks[0],
+      //   uraian: 'Pendapatan Hasil Kerja Sama',
+      //   pagu: isNaN(paguks) ? parseFloat(0).toFixed(2) : paguks,
+      //   realisasi: isNaN(realks) ? parseFloat(0).toFixed(2) : realks,
+      //   selisih: isNaN(paguks - realks) ? parseFloat(0).toFixed(2) : paguks - realks,
+      //   persen: isNaN(persenks) ? parseFloat(0).toFixed(2) : persenks
+      // }
 
-      // PSAP 13 DATA PENDAPATAN HIBAH //
-      const filterhb = this.pendhibah?.map((x) => x.kode)
-      const filhb = pagup.filter(x => filterhb.includes(x.kode)).map((x) => x.kode)
-      const unikfilhb = filhb.length ? [...new Set(filhb)] : []
-      const paguhb = pagup.filter(x => filhb.includes(x.kode)).map((x) => parseFloat(x.pagu)).reduce((a, b) => a + b, 0).toFixed(2)
-      const realhb = realju.filter(x => filhb.includes(x.kode)).map((x) => parseFloat(x.realisasix)).reduce((a, b) => a + b, 0).toFixed(2)
-      const persenhb = ((realhb / paguhb) * 100).toFixed(2)
-      const hslhibah = {
-        kode: unikfilhb,
-        uraian: 'Pendapatan Hibah',
-        pagu: isNaN(paguhb) ? parseFloat(0).toFixed(2) : paguhb,
-        realisasi: isNaN(realhb) ? parseFloat(0).toFixed(2) : realhb,
-        selisih: isNaN(paguhb - realhb) ? parseFloat(0).toFixed(2) : (paguhb - realhb),
-        persen: isNaN(persenhb) ? parseFloat(0).toFixed(2) : persenhb
-      }
+      // // PSAP 13 DATA PENDAPATAN HIBAH //
+      // const filterhb = this.pendhibah?.map((x) => x.kode)
+      // const filhb = pagup.filter(x => filterhb.includes(x.kode)).map((x) => x.kode)
+      // const unikfilhb = filhb.length ? [...new Set(filhb)] : []
+      // const paguhb = pagup.filter(x => filhb.includes(x.kode)).map((x) => parseFloat(x.pagu)).reduce((a, b) => a + b, 0).toFixed(2)
+      // const realhb = realju.filter(x => filhb.includes(x.kode)).map((x) => parseFloat(x.realisasix)).reduce((a, b) => a + b, 0).toFixed(2)
+      // const persenhb = ((realhb / paguhb) * 100).toFixed(2)
+      // const hslhibah = {
+      //   kode: unikfilhb,
+      //   uraian: 'Pendapatan Hibah',
+      //   pagu: isNaN(paguhb) ? parseFloat(0).toFixed(2) : paguhb,
+      //   realisasi: isNaN(realhb) ? parseFloat(0).toFixed(2) : realhb,
+      //   selisih: isNaN(paguhb - realhb) ? parseFloat(0).toFixed(2) : (paguhb - realhb),
+      //   persen: isNaN(persenhb) ? parseFloat(0).toFixed(2) : persenhb
+      // }
 
-      // PSAP 13 DATA PENDAPATAN JASA GIRO //
-      const filtergiro = this.pendjasagiro.map((x) => x.kode)
-      const filgiro = pagup.filter(x => filtergiro.includes(x.kode)).map((x) => x.kode)
-      const unikgiro = filgiro.length ? [...new Set(filgiro)] : []
-      const pagugiro = pagup.filter(x => filgiro.includes(x.kode)).map((x) => parseFloat(x.pagu)).reduce((a, b) => a + b, 0).toFixed(2)
-      const realgiro = realju.filter(x => filgiro.includes(x.kode)).map((x) => parseFloat(x.realisasix)).reduce((a, b) => a + b, 0).toFixed(2)
-      const persengiro = ((realgiro / pagugiro) * 100).toFixed(2)
-      const hslgiro = {
-        kode: unikgiro,
-        uraian: 'Pendapatan Jasa Giro / Bunga Bank',
-        pagu: isNaN(pagugiro) ? parseFloat(0).toFixed(2) : pagugiro,
-        realisasi: isNaN(realgiro) ? parseFloat(0).toFixed(2) : realgiro,
-        selisih: isNaN(pagugiro - realgiro) ? parseFloat(0).toFixed(2) : pagugiro - realgiro,
-        persen: isNaN(persengiro) ? parseFloat(0).toFixed(2) : persengiro
-      }
+      // // PSAP 13 DATA PENDAPATAN JASA GIRO //
+      // const filtergiro = this.pendjasagiro.map((x) => x.kode)
+      // const filgiro = pagup.filter(x => filtergiro.includes(x.kode)).map((x) => x.kode)
+      // const unikgiro = filgiro.length ? [...new Set(filgiro)] : []
+      // const pagugiro = pagup.filter(x => filgiro.includes(x.kode)).map((x) => parseFloat(x.pagu)).reduce((a, b) => a + b, 0).toFixed(2)
+      // const realgiro = realju.filter(x => filgiro.includes(x.kode)).map((x) => parseFloat(x.realisasix)).reduce((a, b) => a + b, 0).toFixed(2)
+      // const persengiro = ((realgiro / pagugiro) * 100).toFixed(2)
+      // const hslgiro = {
+      //   kode: unikgiro,
+      //   uraian: 'Pendapatan Jasa Giro / Bunga Bank',
+      //   pagu: isNaN(pagugiro) ? parseFloat(0).toFixed(2) : pagugiro,
+      //   realisasi: isNaN(realgiro) ? parseFloat(0).toFixed(2) : realgiro,
+      //   selisih: isNaN(pagugiro - realgiro) ? parseFloat(0).toFixed(2) : pagugiro - realgiro,
+      //   persen: isNaN(persengiro) ? parseFloat(0).toFixed(2) : persengiro
+      // }
 
-      // PSAP 13 DATA PENDAPATAN USAHA LAINNYA //
-      const filterlainya = this.pendusahalain.map((x) => x.kode)
-      const fillainnya = pagup.filter(x => filterlainya.includes(x.kode)).map((x) => x.kode)
-      const uniklainnya = fillainnya.length ? [...new Set(fillainnya)] : []
-      const pagulainnya = pagup.filter(x => fillainnya.includes(x.kode)).map((x) => parseFloat(x.pagu)).reduce((a, b) => a + b, 0).toFixed(2)
-      const reallainnya = realju.filter(x => fillainnya.includes(x.kode)).map((x) => parseFloat(x.realisasix)).reduce((a, b) => a + b, 0).toFixed(2)
-      const persenlainnya = ((reallainnya / pagulainnya) * 100).toFixed(2)
-      const hsllainnya = {
-        kode: uniklainnya,
-        uraian: 'Pendapatan Usaha Lainnya',
-        pagu: isNaN(pagulainnya) ? parseFloat(0).toFixed(2) : pagulainnya,
-        realisasi: isNaN(reallainnya) ? parseFloat(0).toFixed(2) : reallainnya,
-        selisih: isNaN(pagulainnya - reallainnya) ? parseFloat(0).toFixed(2) : pagulainnya - reallainnya,
-        persen: isNaN(persenlainnya) ? parseFloat(0).toFixed(2) : persenlainnya
-      }
-      psappendapatan.push(jasalayanan, hslkerjasama, hslhibah, hslgiro, hsllainnya)
+      // // PSAP 13 DATA PENDAPATAN USAHA LAINNYA //
+      // const filterlainya = this.pendusahalain.map((x) => x.kode)
+      // const fillainnya = pagup.filter(x => filterlainya.includes(x.kode)).map((x) => x.kode)
+      // const uniklainnya = fillainnya.length ? [...new Set(fillainnya)] : []
+      // const pagulainnya = pagup.filter(x => fillainnya.includes(x.kode)).map((x) => parseFloat(x.pagu)).reduce((a, b) => a + b, 0).toFixed(2)
+      // const reallainnya = realju.filter(x => fillainnya.includes(x.kode)).map((x) => parseFloat(x.realisasix)).reduce((a, b) => a + b, 0).toFixed(2)
+      // const persenlainnya = ((reallainnya / pagulainnya) * 100).toFixed(2)
+      // const hsllainnya = {
+      //   kode: uniklainnya,
+      //   uraian: 'Pendapatan Usaha Lainnya',
+      //   pagu: isNaN(pagulainnya) ? parseFloat(0).toFixed(2) : pagulainnya,
+      //   realisasi: isNaN(reallainnya) ? parseFloat(0).toFixed(2) : reallainnya,
+      //   selisih: isNaN(pagulainnya - reallainnya) ? parseFloat(0).toFixed(2) : pagulainnya - reallainnya,
+      //   persen: isNaN(persenlainnya) ? parseFloat(0).toFixed(2) : persenlainnya
+      // }
+      // psappendapatan.push(jasalayanan, hslkerjasama, hslhibah, hslgiro, hsllainnya)
 
-      const psapbarjas = []
-      const a = this.psappagubarjas
-      const b = this.psaprealisasibarjas
-      const databarjas = a.concat(b)
-      const filkode = this.barjas?.map((x) => x.kode)
-      const filbarjas = databarjas.filter(x => filkode.includes(x.kode)).map((x) => x.kode)
-      // const filbarjas = databarjas.map((x) => x.kode)
+      // const psapbarjas = []
+      // const a = this.psappagubarjas
+      // const b = this.psaprealisasibarjas
+      // const databarjas = a.concat(b)
+      // const filkode = this.barjas?.map((x) => x.kode)
+      // const filbarjas = databarjas.filter(x => filkode.includes(x.kode)).map((x) => x.kode)
+      // // const filbarjas = databarjas.map((x) => x.kode)
 
-      const unikbarjas = filbarjas.length ? [...new Set(filbarjas)] : []
-      for (let i = 0; i < unikbarjas.length; i++) {
-        const el = unikbarjas[i]
-        // const obj = {
-        //   kode: belanja.filter((x) => x.kode3 === el)[0].kode3,
-        //   uraian: belanja.filter((x) => x.kode3 === el).map((x) => x.lvl3)[0]?.uraian,
-        //   pagu: belanja.filter((x) => x.kode3 === el)?.map((x) => parseFloat(x.pagu)).reduce((a, b) => a + b, 0),
-        //   nilaisemua: nilaiskg.filter((x) => x.kode3 === el).map((x) => parseFloat(x.subtotalx)).reduce((a, b) => a + b, 0) + nilaisblm.filter((x) => x.kode3 === el).map((x) => parseFloat(x.nilaisebelumnya)).reduce((a, b) => a + b, 0),
-        //   persen: ((nilaiskg.filter((x) => x.kode3 === el).map((x) => parseFloat(x.subtotalx)).reduce((a, b) => a + b, 0) + nilaisblm.filter((x) => x.kode3 === el).map((x) => parseFloat(x.nilaisebelumnya)).reduce((a, b) => a + b, 0)) / belanja.filter((x) => x.kode3 === el).map((x) => parseFloat(x.pagu)).reduce((a, b) => a + b, 0) * 100).toFixed(2)
-        // }
-        const obj = {
-          kode: databarjas.filter((x) => x.kode === el)[0].kode,
-          uraian: databarjas.filter((x) => x.kode === el).map((x) => x.kode3)[0]?.uraian,
-          pagu: a.filter((x) => x.kode === el)?.map((x) => parseFloat(x.pagu)).reduce((a, b) => a + b, 0),
-          nilaisemua: b.filter((x) => x.kode === el)?.map((x) => parseFloat(x.realisasi)).reduce((a, b) => a + b, 0),
-          selisih: a.filter((x) => x.kode === el)?.map((x) => parseFloat(x.pagu)).reduce((a, b) => a + b, 0) -
-            b.filter((x) => x.kode === el)?.map((x) => parseFloat(x.realisasi)).reduce((a, b) => a + b, 0),
-          persen: isNaN(((b.filter((x) => x.kode === el)?.map((x) => parseFloat(x.realisasi)).reduce((a, b) => a + b, 0)) / (a.filter((x) => x.kode === el)?.map((x) => parseFloat(x.pagu)).reduce((a, b) => a + b, 0)) * 100).toFixed(2))
-            ? 0
-            : (((b.filter((x) => x.kode === el)?.map((x) => parseFloat(x.realisasi)).reduce((a, b) => a + b, 0)) / (a.filter((x) => x.kode === el)?.map((x) => parseFloat(x.pagu)).reduce((a, b) => a + b, 0)) * 100).toFixed(2))
-        }
-        psapbarjas.push(obj)
-      }
-      // const barjaslain = []
-      const fillain = this.lainlain?.map((x) => x.kode)
-      const filbarjaslain = databarjas.filter(x => fillain.includes(x.kode)).map((x) => x.kode)
-      const pagulainlain = a.filter(x => fillain.includes(x.kode)).map((x) => parseFloat(x.pagu)).reduce((a, b) => a + b, 0)
-      const realisasilainlain = b.filter(x => fillain.includes(x.kode)).map((x) => parseFloat(x.realisasi)).reduce((a, b) => a + b, 0)
-      const selisihlain = pagulainlain - realisasilainlain
-      const persentase = ((b.filter(x => fillain.includes(x.kode)).map((x) => parseFloat(x.realisasi)).reduce((a, b) => a + b, 0) /
-        a.filter(x => fillain.includes(x.kode)).map((x) => parseFloat(x.pagu)).reduce((a, b) => a + b, 0)) * 100).toFixed(2)
-      const unikbarjaslain = filbarjaslain.length ? [...new Set(filbarjaslain)] : []
-      const barjaslain = {
-        kode: unikbarjaslain,
-        uraian: 'Belanja Lain-lain',
-        pagu: pagulainlain,
-        nilaisemua: realisasilainlain,
-        selisih: selisihlain,
-        persen: isNaN(persentase) ? parseFloat(0).toFixed(2) : persentase
-      }
-      psapbarjas.push(barjaslain)
+      // const unikbarjas = filbarjas.length ? [...new Set(filbarjas)] : []
+      // for (let i = 0; i < unikbarjas.length; i++) {
+      //   const el = unikbarjas[i]
+      //   // const obj = {
+      //   //   kode: belanja.filter((x) => x.kode3 === el)[0].kode3,
+      //   //   uraian: belanja.filter((x) => x.kode3 === el).map((x) => x.lvl3)[0]?.uraian,
+      //   //   pagu: belanja.filter((x) => x.kode3 === el)?.map((x) => parseFloat(x.pagu)).reduce((a, b) => a + b, 0),
+      //   //   nilaisemua: nilaiskg.filter((x) => x.kode3 === el).map((x) => parseFloat(x.subtotalx)).reduce((a, b) => a + b, 0) + nilaisblm.filter((x) => x.kode3 === el).map((x) => parseFloat(x.nilaisebelumnya)).reduce((a, b) => a + b, 0),
+      //   //   persen: ((nilaiskg.filter((x) => x.kode3 === el).map((x) => parseFloat(x.subtotalx)).reduce((a, b) => a + b, 0) + nilaisblm.filter((x) => x.kode3 === el).map((x) => parseFloat(x.nilaisebelumnya)).reduce((a, b) => a + b, 0)) / belanja.filter((x) => x.kode3 === el).map((x) => parseFloat(x.pagu)).reduce((a, b) => a + b, 0) * 100).toFixed(2)
+      //   // }
+      //   const obj = {
+      //     kode: databarjas.filter((x) => x.kode === el)[0].kode,
+      //     uraian: databarjas.filter((x) => x.kode === el).map((x) => x.kode3)[0]?.uraian,
+      //     pagu: a.filter((x) => x.kode === el)?.map((x) => parseFloat(x.pagu)).reduce((a, b) => a + b, 0),
+      //     nilaisemua: b.filter((x) => x.kode === el)?.map((x) => parseFloat(x.realisasi)).reduce((a, b) => a + b, 0),
+      //     selisih: a.filter((x) => x.kode === el)?.map((x) => parseFloat(x.pagu)).reduce((a, b) => a + b, 0) -
+      //       b.filter((x) => x.kode === el)?.map((x) => parseFloat(x.realisasi)).reduce((a, b) => a + b, 0),
+      //     persen: isNaN(((b.filter((x) => x.kode === el)?.map((x) => parseFloat(x.realisasi)).reduce((a, b) => a + b, 0)) / (a.filter((x) => x.kode === el)?.map((x) => parseFloat(x.pagu)).reduce((a, b) => a + b, 0)) * 100).toFixed(2))
+      //       ? 0
+      //       : (((b.filter((x) => x.kode === el)?.map((x) => parseFloat(x.realisasi)).reduce((a, b) => a + b, 0)) / (a.filter((x) => x.kode === el)?.map((x) => parseFloat(x.pagu)).reduce((a, b) => a + b, 0)) * 100).toFixed(2))
+      //   }
+      //   psapbarjas.push(obj)
+      // }
+      // // const barjaslain = []
+      // const fillain = this.lainlain?.map((x) => x.kode)
+      // const filbarjaslain = databarjas.filter(x => fillain.includes(x.kode)).map((x) => x.kode)
+      // const pagulainlain = a.filter(x => fillain.includes(x.kode)).map((x) => parseFloat(x.pagu)).reduce((a, b) => a + b, 0)
+      // const realisasilainlain = b.filter(x => fillain.includes(x.kode)).map((x) => parseFloat(x.realisasi)).reduce((a, b) => a + b, 0)
+      // const selisihlain = pagulainlain - realisasilainlain
+      // const persentase = ((b.filter(x => fillain.includes(x.kode)).map((x) => parseFloat(x.realisasi)).reduce((a, b) => a + b, 0) /
+      //   a.filter(x => fillain.includes(x.kode)).map((x) => parseFloat(x.pagu)).reduce((a, b) => a + b, 0)) * 100).toFixed(2)
+      // const unikbarjaslain = filbarjaslain.length ? [...new Set(filbarjaslain)] : []
+      // const barjaslain = {
+      //   kode: unikbarjaslain,
+      //   uraian: 'Belanja Lain-lain',
+      //   pagu: pagulainlain,
+      //   nilaisemua: realisasilainlain,
+      //   selisih: selisihlain,
+      //   persen: isNaN(persentase) ? parseFloat(0).toFixed(2) : persentase
+      // }
+      // psapbarjas.push(barjaslain)
 
-      const psapmodal = []
-      const c = this.psappagumodal
-      const d = this.psaprealisasimodal
-      const datamodal = c.concat(d)
-      const filmodal = datamodal.map((x) => x.kode)
-      console.log('xklxxlx', datamodal)
-      const unikmodal = filmodal.length ? [...new Set(filmodal)] : []
-      for (let i = 0; i < unikmodal.length; i++) {
-        const el = unikmodal[i]
-        // const obj = {
-        //   kode: belanja.filter((x) => x.kode3 === el)[0].kode3,
-        //   uraian: belanja.filter((x) => x.kode3 === el).map((x) => x.lvl3)[0]?.uraian,
-        //   pagu: belanja.filter((x) => x.kode3 === el)?.map((x) => parseFloat(x.pagu)).reduce((a, b) => a + b, 0),
-        //   nilaisemua: nilaiskg.filter((x) => x.kode3 === el).map((x) => parseFloat(x.subtotalx)).reduce((a, b) => a + b, 0) + nilaisblm.filter((x) => x.kode3 === el).map((x) => parseFloat(x.nilaisebelumnya)).reduce((a, b) => a + b, 0),
-        //   persen: ((nilaiskg.filter((x) => x.kode3 === el).map((x) => parseFloat(x.subtotalx)).reduce((a, b) => a + b, 0) + nilaisblm.filter((x) => x.kode3 === el).map((x) => parseFloat(x.nilaisebelumnya)).reduce((a, b) => a + b, 0)) / belanja.filter((x) => x.kode3 === el).map((x) => parseFloat(x.pagu)).reduce((a, b) => a + b, 0) * 100).toFixed(2)
-        // }
-        const obj = {
-          kode: datamodal.filter((x) => x.kode === el)[0].kode,
-          uraian: datamodal.filter((x) => x.kode === el).map((x) => x.kode3)[0]?.uraian,
-          pagu: c.filter((x) => x.kode === el)?.map((x) => parseFloat(x.pagu)).reduce((a, b) => a + b, 0),
-          nilaisemua: d.filter((x) => x.kode === el)?.map((x) => parseFloat(x.realisasi)).reduce((a, b) => a + b, 0),
-          selisih: c.filter((x) => x.kode === el)?.map((x) => parseFloat(x.pagu)).reduce((a, b) => a + b, 0) -
-            d.filter((x) => x.kode === el)?.map((x) => parseFloat(x.realisasi)).reduce((a, b) => a + b, 0),
-          persen: isNaN(((d.filter((x) => x.kode === el)?.map((x) => parseFloat(x.realisasi)).reduce((a, b) => a + b, 0)) / (c.filter((x) => x.kode === el)?.map((x) => parseFloat(x.pagu)).reduce((a, b) => a + b, 0)) * 100).toFixed(2))
-            ? 0
-            : (((d.filter((x) => x.kode === el)?.map((x) => parseFloat(x.realisasi)).reduce((a, b) => a + b, 0)) / (c.filter((x) => x.kode === el)?.map((x) => parseFloat(x.pagu)).reduce((a, b) => a + b, 0)) * 100).toFixed(2))
-        }
-        psapmodal.push(obj)
-      }
+      // const psapmodal = []
+      // const c = this.psappagumodal
+      // const d = this.psaprealisasimodal
+      // const datamodal = c.concat(d)
+      // const filmodal = datamodal.map((x) => x.kode)
+      // console.log('xklxxlx', datamodal)
+      // const unikmodal = filmodal.length ? [...new Set(filmodal)] : []
+      // for (let i = 0; i < unikmodal.length; i++) {
+      //   const el = unikmodal[i]
+      //   // const obj = {
+      //   //   kode: belanja.filter((x) => x.kode3 === el)[0].kode3,
+      //   //   uraian: belanja.filter((x) => x.kode3 === el).map((x) => x.lvl3)[0]?.uraian,
+      //   //   pagu: belanja.filter((x) => x.kode3 === el)?.map((x) => parseFloat(x.pagu)).reduce((a, b) => a + b, 0),
+      //   //   nilaisemua: nilaiskg.filter((x) => x.kode3 === el).map((x) => parseFloat(x.subtotalx)).reduce((a, b) => a + b, 0) + nilaisblm.filter((x) => x.kode3 === el).map((x) => parseFloat(x.nilaisebelumnya)).reduce((a, b) => a + b, 0),
+      //   //   persen: ((nilaiskg.filter((x) => x.kode3 === el).map((x) => parseFloat(x.subtotalx)).reduce((a, b) => a + b, 0) + nilaisblm.filter((x) => x.kode3 === el).map((x) => parseFloat(x.nilaisebelumnya)).reduce((a, b) => a + b, 0)) / belanja.filter((x) => x.kode3 === el).map((x) => parseFloat(x.pagu)).reduce((a, b) => a + b, 0) * 100).toFixed(2)
+      //   // }
+      //   const obj = {
+      //     kode: datamodal.filter((x) => x.kode === el)[0].kode,
+      //     uraian: datamodal.filter((x) => x.kode === el).map((x) => x.kode3)[0]?.uraian,
+      //     pagu: c.filter((x) => x.kode === el)?.map((x) => parseFloat(x.pagu)).reduce((a, b) => a + b, 0),
+      //     nilaisemua: d.filter((x) => x.kode === el)?.map((x) => parseFloat(x.realisasi)).reduce((a, b) => a + b, 0),
+      //     selisih: c.filter((x) => x.kode === el)?.map((x) => parseFloat(x.pagu)).reduce((a, b) => a + b, 0) -
+      //       d.filter((x) => x.kode === el)?.map((x) => parseFloat(x.realisasi)).reduce((a, b) => a + b, 0),
+      //     persen: isNaN(((d.filter((x) => x.kode === el)?.map((x) => parseFloat(x.realisasi)).reduce((a, b) => a + b, 0)) / (c.filter((x) => x.kode === el)?.map((x) => parseFloat(x.pagu)).reduce((a, b) => a + b, 0)) * 100).toFixed(2))
+      //       ? 0
+      //       : (((d.filter((x) => x.kode === el)?.map((x) => parseFloat(x.realisasi)).reduce((a, b) => a + b, 0)) / (c.filter((x) => x.kode === el)?.map((x) => parseFloat(x.pagu)).reduce((a, b) => a + b, 0)) * 100).toFixed(2))
+      //   }
+      //   psapmodal.push(obj)
+      // }
       // console.log('psapxxxxx', psapmodal)
 
       if (this.reqs.levelberapa === 6) {
@@ -880,33 +880,17 @@ export const useLRAjurnalStore = defineStore('lap_realisasi_anggaran', {
         this.hasilbelanja = level1
         this.hasilsilpa = silpa1
       }
-      else if (this.reqs.jenislra === 2) {
-        this.psappendapatan = psappendapatan
-        this.psapbarjas = psapbarjas
-        this.psapmodal = psapmodal
-        this.psapsilpa = psapsilpa
-        // const psap0 = {
-        //   kode: null,
-        //   uraian: 'Sisa Lebih Perhitungan Anggaran Tahun Sebelumnya',
-        //   pagu: 0,
-        //   nilaisblm: 0,
-        //   nilaiskg: 0,
-        //   nilaisemua: 0,
-        //   selisih: 0,
-        //   persen: 0
-        // }
+      // else if (this.reqs.jenislra === 2) {
+      //   this.psappendapatan = psappendapatan
+      //   this.psapbarjas = psapbarjas
+      //   this.psapmodal = psapmodal
+      //   this.psapsilpa = psapsilpa
 
-
-        // if (!this.pagusilpa.length || !this.silpasblm.length || !this.silpaskg.length) {
-        //   this.psapsilpa.push(psap0)
-        // } else {
-
-        // }
-        console.log('psappendapatan', this.psappendapatan)
-        console.log('psapbarjas', this.psapbarjas)
-        console.log('psapmodal', this.psapmodal)
-        console.log('psapsilpa', this.psapsilpa)
-      }
+      //   console.log('psappendapatan', this.psappendapatan)
+      //   console.log('psapbarjas', this.psapbarjas)
+      //   console.log('psapmodal', this.psapmodal)
+      //   console.log('psapsilpa', this.psapsilpa)
+      // }
 
       // const totalbarjas = {
       //   totalpagu: this.psapbarjas.map((x) => x.pagu).reduce((a, b) => a + b, 0),

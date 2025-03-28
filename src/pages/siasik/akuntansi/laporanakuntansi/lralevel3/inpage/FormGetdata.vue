@@ -25,6 +25,9 @@
         :key="ambilData" @update:model-value="(val) => {
           const valx = parseInt(val)
           store.reqs.levelberapa = valx
+          store.hasilpendapatan = []
+          store.hasilbelanja = []
+          store.hasilsilpa = []
           console.log('ref', store.reqs.levelberapa)
         }" />
     </div>

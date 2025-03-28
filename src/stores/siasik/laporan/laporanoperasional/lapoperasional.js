@@ -87,26 +87,28 @@ export const useLaporanOperasionalStore = defineStore('Laporan_Operasional', {
       { kode: '8.1.07.06', uraian: 'Beban Penyisihan Piutang Transfer Antar Daerah' },
       { kode: '8.1.07.07', uraian: 'Beban Penyisihan Piutang Lainnya' }
     ],
+    pagupendapatan: [],
+    penyesuaian: [],
     datapendapatans: [],
     databebans: [],
     hasilpendapatan: [],
     hasilbeban: [],
 
-    psaprealisasipendapatan: [],
-    psaprealisasipendapatanx: [],
-    psappendpatanhibah: [],
-    psapbebanpegawai: [],
-    psapbebanlain: [],
-    psappenjualanaset: [],
-    psapkerugian: [],
-    psapnonope: [],
-    psappendapatanluarbiasa: [],
-    bebanluarbiasa: [],
+    // psaprealisasipendapatan: [],
+    // psaprealisasipendapatanx: [],
+    // psappendpatanhibah: [],
+    // psapbebanpegawai: [],
+    // psapbebanlain: [],
+    // psappenjualanaset: [],
+    // psapkerugian: [],
+    // psapnonope: [],
+    // psappendapatanluarbiasa: [],
+    // bebanluarbiasa: [],
 
-    psappendapatan: [],
-    psapbeban: [],
-    psapnonoperasional: [],
-    psapbebanluarbiasa: []
+    // psappendapatan: [],
+    // psapbeban: [],
+    // psapnonoperasional: [],
+    // psapbebanluarbiasa: []
   }),
   actions: {
     setParameter(key, val) {
@@ -123,27 +125,28 @@ export const useLaporanOperasionalStore = defineStore('Laporan_Operasional', {
         api.get('v1/laporan/lapoperasional/getlo', params).then((resp) => {
           console.log('data LO', resp.data)
           if (resp.status === 200) {
-            // this.hasilpendapatan = []
-            // this.hasilbeban = []
+            this.hasilpendapatan = []
+            this.hasilbeban = []
             // this.psappendapatan = []
             // this.psapbeban = []
             // this.psapnonoperasional = []
             // this.psapbebanluarbiasa = []
-
+            this.pagupendapatan = resp.data.pagupendapatan
+            this.penyesuaian = resp.data.penyesuaian
             this.datapendapatans = resp.data.pendapatan
             this.databebans = resp.data.beban
 
-            this.psaprealisasipendapatan = resp.data.psaprealisasipendapatan
-            this.psaprealisasipendapatanx = resp.data.psaprealisasipendapatanx
-            this.psappendpatanhibah = resp.data.psappendpatanhibah
-            this.psappenyesuaianpendp = resp.data.psappenyesuaianpendp
-            this.psapbebanpegawai = resp.data.psapbebanpegawai
-            this.psapbebanlain = resp.data.psapbebanlain
-            this.psappenjualanaset = resp.data.psappenjualanaset
-            this.psapkerugian = resp.data.psapkerugian
-            this.psapnonope = resp.data.psapnonoperasional
-            this.psappendapatanluarbiasa = resp.data.psappendapatanluarbiasa
-            this.bebanluarbiasa = resp.data.psapbebanluarbiasa
+            // this.psaprealisasipendapatan = resp.data.psaprealisasipendapatan
+            // this.psaprealisasipendapatanx = resp.data.psaprealisasipendapatanx
+            // this.psappendpatanhibah = resp.data.psappendpatanhibah
+            // this.psappenyesuaianpendp = resp.data.psappenyesuaianpendp
+            // this.psapbebanpegawai = resp.data.psapbebanpegawai
+            // this.psapbebanlain = resp.data.psapbebanlain
+            // this.psappenjualanaset = resp.data.psappenjualanaset
+            // this.psapkerugian = resp.data.psapkerugian
+            // this.psapnonope = resp.data.psapnonoperasional
+            // this.psappendapatanluarbiasa = resp.data.psappendapatanluarbiasa
+            // this.bebanluarbiasa = resp.data.psapbebanluarbiasa
             this.mapData()
 
             this.loading = false
@@ -153,57 +156,136 @@ export const useLaporanOperasionalStore = defineStore('Laporan_Operasional', {
       })
     },
     mapData() {
-      const pendapatan = this.datapendapatans
+      const koderekpend = this.pagupendapatan.map((x) => x.kode6)
+      const newsetpend = koderekpend.length ? [...new Set(koderekpend)] : []
+
+      const pendapatan = this.datapendapatans.filter(x => koderekpend.includes(x.kode6))
+      const penyepend = this.penyesuaian.filter(x => koderekpend.includes(x.kode6))
+
+      const allpendpatan = pendapatan.concat(penyepend)
+      console.log('allpendpatan', allpendpatan)
       const kode6 = []
       const kode5 = []
       const kode4 = []
       const kode3 = []
       const kode2 = []
       const kode1 = []
-      for (let i = 0; i < pendapatan.length; i++) {
-        const el = pendapatan[i]
-        const nilaip = el?.penyesuaian.map(x => parseFloat(x.totalpenyesuaian)).reduce((a, b) => a + b, 0)
-        // console.log('nilaip', nilaip)
+
+      for (let i = 0; i < newsetpend.length; i++) {
+        const el = newsetpend[i]
+
         const obj6 = {
-          kode: el?.kode6,
-          uraian: el?.uraian,
-          nilai: parseFloat(el?.subtotal) + parseFloat(nilaip)
+          kode: allpendpatan.filter((x) => x.kode6 === el)[0].kode6,
+          uraian: allpendpatan.filter((x) => x.kode6 === el)[0].uraian,
+          nilai: allpendpatan.filter((x) => x.kode6 === el).map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0),
         }
+        kode6.push(obj6)
+      }
+
+      const pend5 = this.pagupendapatan.length ? [...new Set(this.pagupendapatan.map((x) => x.kode5))] : []
+      for (let i = 0; i < pend5.length; i++) {
+        const el = pend5[i]
+
         const obj5 = {
-          kode: el?.kode5,
-          uraian: el?.lvl5?.uraian,
-          nilai: parseFloat(el?.subtotal) + parseFloat(nilaip)
+          kode: allpendpatan.filter((x) => x.kode5 === el)[0].kode5,
+          uraian: allpendpatan.filter((x) => x.kode5 === el)[0].uraian5,
+          nilai: allpendpatan.filter((x) => x.kode5 === el).map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0),
         }
+        kode5.push(obj5)
+      }
+
+      const pend4 = this.pagupendapatan.length ? [...new Set(this.pagupendapatan.map((x) => x.kode4))] : []
+      for (let i = 0; i < pend4.length; i++) {
+        const el = pend4[i]
+
         const obj4 = {
-          kode: el?.kode4,
-          uraian: el?.lvl4?.uraian,
-          nilai: parseFloat(el?.subtotal) + parseFloat(nilaip)
+          kode: allpendpatan.filter((x) => x.kode4 === el)[0].kode4,
+          uraian: allpendpatan.filter((x) => x.kode4 === el)[0].uraian4,
+          nilai: allpendpatan.filter((x) => x.kode4 === el).map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0),
         }
+        kode4.push(obj4)
+      }
+      const pend3 = this.pagupendapatan.length ? [...new Set(this.pagupendapatan.map((x) => x.kode3))] : []
+      for (let i = 0; i < pend3.length; i++) {
+        const el = pend3[i]
+
         const obj3 = {
-          kode: el?.kode3,
-          uraian: el?.lvl3?.uraian,
-          nilai: parseFloat(el?.subtotal) + parseFloat(nilaip)
+          kode: allpendpatan.filter((x) => x.kode3 === el)[0].kode3,
+          uraian: allpendpatan.filter((x) => x.kode3 === el)[0].uraian3,
+          nilai: allpendpatan.filter((x) => x.kode3 === el).map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0),
         }
+        kode3.push(obj3)
+      }
+
+      const pend2 = this.pagupendapatan.length ? [...new Set(this.pagupendapatan.map((x) => x.kode2))] : []
+      for (let i = 0; i < pend2.length; i++) {
+        const el = pend2[i]
+
         const obj2 = {
-          kode: el?.kode2,
-          uraian: el?.lvl2?.uraian,
-          nilai: parseFloat(el?.subtotal) + parseFloat(nilaip)
+          kode: allpendpatan.filter((x) => x.kode2 === el)[0].kode2,
+          uraian: allpendpatan.filter((x) => x.kode2 === el)[0].uraian2,
+          nilai: allpendpatan.filter((x) => x.kode2 === el).map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0),
         }
+        kode2.push(obj2)
+      }
+
+      const pend1 = this.pagupendapatan.length ? [...new Set(this.pagupendapatan.map((x) => x.kode1))] : []
+      for (let i = 0; i < pend1.length; i++) {
+        const el = pend1[i]
+
         const obj1 = {
-          kode: el?.kode1,
-          uraian: el?.lvl1?.uraian,
-          nilai: parseFloat(el?.subtotal) + parseFloat(nilaip)
+          kode: allpendpatan.filter((x) => x.kode1 === el)[0].kode1,
+          uraian: allpendpatan.filter((x) => x.kode1 === el)[0].uraian1,
+          nilai: allpendpatan.filter((x) => x.kode1 === el).map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0),
         }
-        // console.log('obj1', obj1)
-        kode6.push(obj1, obj2, obj3, obj4, obj5, obj6)
-        kode5.push(obj1, obj2, obj3, obj4, obj5)
-        kode4.push(obj1, obj2, obj3, obj4)
-        kode3.push(obj1, obj2, obj3)
-        kode2.push(obj1, obj2)
         kode1.push(obj1)
       }
 
+
+      kode6.push(...kode1, ...kode2, ...kode3, ...kode4, ...kode5)
+      const sortKode6 = (kode6) =>
+        kode6.sort(({ kode: a }, { kode: b }) =>
+          a < b ? -1 : a > b ? 1 : 0
+        )
+      const pendapatan6 = sortKode6(kode6)
+
+
+      kode5.push(...kode1, ...kode2, ...kode3, ...kode4)
+      const sortKode5 = (kode5) =>
+        kode5.sort(({ kode: a }, { kode: b }) =>
+          a < b ? -1 : a > b ? 1 : 0
+        )
+      const pendapatan5 = sortKode5(kode5)
+
+      kode4.push(...kode1, ...kode2, ...kode3)
+      const sortKode4 = (kode4) =>
+        kode4.sort(({ kode: a }, { kode: b }) =>
+          a < b ? -1 : a > b ? 1 : 0
+        )
+      const pendapatan4 = sortKode4(kode4)
+
+      kode3.push(...kode1, ...kode2)
+      const sortKode3 = (kode3) =>
+        kode3.sort(({ kode: a }, { kode: b }) =>
+          a < b ? -1 : a > b ? 1 : 0
+        )
+      const pendapatan3 = sortKode3(kode3)
+
+      kode2.push(...kode1)
+      const sortKode2 = (kode2) =>
+        kode2.sort(({ kode: a }, { kode: b }) =>
+          a < b ? -1 : a > b ? 1 : 0
+        )
+      const pendapatan2 = sortKode2(kode2)
+
+
+      // DATA BEBAN
       const beban = this.databebans
+      const rekbeban = beban.map((x) => x.kode6)
+      const penyebeban = this.penyesuaian.filter(x => rekbeban.includes(x.kode6))
+
+      const allbeban = beban.concat(penyebeban)
+
       const beban6 = []
       const beban5 = []
       const beban4 = []
@@ -211,72 +293,74 @@ export const useLaporanOperasionalStore = defineStore('Laporan_Operasional', {
       const beban2 = []
       const beban1 = []
 
-      for (let i = 0; i < beban.length; i++) {
-        const el = beban[i]
+      const fil6 = allbeban.map((x) => x.kode6)
+      const unik6 = fil6.length ? [...new Set(fil6)] : []
+      for (let i = 0; i < unik6.length; i++) {
+        const el = unik6[i]
         const obj6 = {
-          kode: el?.kode6,
-          uraian: el?.uraian,
-          nilai: parseFloat(el?.subtotalx)
+          kode: allbeban.filter((x) => x.kode6 === el)[0].kode6,
+          uraian: allbeban.filter((x) => x.kode6 === el)[0]?.uraian,
+          nilai: allbeban.filter((x) => x.kode6 === el)?.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0)
         }
         beban6.push(obj6)
       }
 
-      const fil5 = beban.map((x) => x.kode5)
+      const fil5 = allbeban.map((x) => x.kode5)
       const unik5 = fil5.length ? [...new Set(fil5)] : []
       for (let i = 0; i < unik5.length; i++) {
         const el = unik5[i]
         const obj = {
-          kode: beban.filter((x) => x.kode5 === el)[0].kode5,
-          uraian: beban.filter((x) => x.kode5 === el).map((x) => x.lvl5)[0]?.uraian,
-          nilai: beban.filter((x) => x.kode5 === el)?.map((x) => parseFloat(x.subtotalx)).reduce((a, b) => a + b, 0)
+          kode: allbeban.filter((x) => x.kode5 === el)[0].kode5,
+          uraian: allbeban.filter((x) => x.kode5 === el)[0]?.uraian5,
+          nilai: allbeban.filter((x) => x.kode5 === el)?.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0)
         }
         beban5.push(obj)
       }
 
-      const fil4 = beban.map((x) => x.kode4)
+      const fil4 = allbeban.map((x) => x.kode4)
       const unik4 = fil4.length ? [...new Set(fil4)] : []
       for (let i = 0; i < unik4.length; i++) {
         const el = unik4[i]
         const obj = {
-          kode: beban.filter((x) => x.kode4 === el)[0].kode4,
-          uraian: beban.filter((x) => x.kode4 === el).map((x) => x.lvl4)[0]?.uraian,
-          nilai: beban.filter((x) => x.kode4 === el)?.map((x) => parseFloat(x.subtotalx)).reduce((a, b) => a + b, 0)
+          kode: allbeban.filter((x) => x.kode4 === el)[0].kode4,
+          uraian: allbeban.filter((x) => x.kode4 === el)[0]?.uraian4,
+          nilai: allbeban.filter((x) => x.kode4 === el)?.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0)
         }
         beban4.push(obj)
       }
 
-      const fil3 = beban.map((x) => x.kode3)
+      const fil3 = allbeban.map((x) => x.kode3)
       const unik3 = fil3.length ? [...new Set(fil3)] : []
       for (let i = 0; i < unik3.length; i++) {
         const el = unik3[i]
         const obj = {
-          kode: beban.filter((x) => x.kode3 === el)[0].kode3,
-          uraian: beban.filter((x) => x.kode3 === el).map((x) => x.lvl3)[0]?.uraian,
-          nilai: beban.filter((x) => x.kode3 === el)?.map((x) => parseFloat(x.subtotalx)).reduce((a, b) => a + b, 0)
+          kode: allbeban.filter((x) => x.kode3 === el)[0].kode3,
+          uraian: allbeban.filter((x) => x.kode3 === el)[0]?.uraian3,
+          nilai: allbeban.filter((x) => x.kode3 === el)?.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0)
         }
         beban3.push(obj)
       }
 
-      const fil2 = beban.map((x) => x.kode2)
+      const fil2 = allbeban.map((x) => x.kode2)
       const unik2 = fil2.length ? [...new Set(fil2)] : []
       for (let i = 0; i < unik2.length; i++) {
         const el = unik2[i]
         const obj = {
-          kode: beban.filter((x) => x.kode2 === el)[0].kode2,
-          uraian: beban.filter((x) => x.kode2 === el).map((x) => x.lvl2)[0]?.uraian,
-          nilai: beban.filter((x) => x.kode2 === el)?.map((x) => parseFloat(x.subtotalx)).reduce((a, b) => a + b, 0)
+          kode: allbeban.filter((x) => x.kode2 === el)[0].kode2,
+          uraian: allbeban.filter((x) => x.kode2 === el)[0]?.uraian2,
+          nilai: allbeban.filter((x) => x.kode2 === el)?.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0)
         }
         beban2.push(obj)
       }
 
-      const fil1 = beban.map((x) => x.kode1)
+      const fil1 = allbeban.map((x) => x.kode1)
       const unik1 = fil1.length ? [...new Set(fil1)] : []
       for (let i = 0; i < unik1.length; i++) {
         const el = unik1[i]
         const obj = {
-          kode: beban.filter((x) => x.kode1 === el)[0].kode1,
-          uraian: beban.filter((x) => x.kode1 === el).map((x) => x.lvl1)[0]?.uraian,
-          nilai: beban.filter((x) => x.kode1 === el)?.map((x) => parseFloat(x.subtotalx)).reduce((a, b) => a + b, 0)
+          kode: allbeban.filter((x) => x.kode1 === el)[0].kode1,
+          uraian: beban.filter((x) => x.kode1 === el)[0]?.uraian1,
+          nilai: allbeban.filter((x) => x.kode1 === el)?.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0)
         }
         beban1.push(obj)
       }
@@ -287,7 +371,6 @@ export const useLaporanOperasionalStore = defineStore('Laporan_Operasional', {
           a < b ? -1 : a > b ? 1 : 0
         )
       const level6 = sortBeban6(beban6)
-      console.log('level6', level6)
 
       beban5.push(...beban1, ...beban2, ...beban3, ...beban4)
       const sortBeban5 = (beban5) =>
@@ -295,7 +378,6 @@ export const useLaporanOperasionalStore = defineStore('Laporan_Operasional', {
           a < b ? -1 : a > b ? 1 : 0
         )
       const level5 = sortBeban5(beban5)
-      console.log('level5', level5)
 
       beban4.push(...beban1, ...beban2, ...beban3)
       const sortBeban4 = (beban4) =>
@@ -303,7 +385,6 @@ export const useLaporanOperasionalStore = defineStore('Laporan_Operasional', {
           a < b ? -1 : a > b ? 1 : 0
         )
       const level4 = sortBeban4(beban4)
-      console.log('level4', level4)
 
       beban3.push(...beban1, ...beban2)
       const sortBeban3 = (beban3) =>
@@ -311,7 +392,6 @@ export const useLaporanOperasionalStore = defineStore('Laporan_Operasional', {
           a < b ? -1 : a > b ? 1 : 0
         )
       const level3 = sortBeban3(beban3)
-      console.log('level3', level3)
 
       beban2.push(...beban1)
       const sortBeban2 = (beban2) =>
@@ -319,246 +399,247 @@ export const useLaporanOperasionalStore = defineStore('Laporan_Operasional', {
           a < b ? -1 : a > b ? 1 : 0
         )
       const level2 = sortBeban2(beban2)
-      console.log('level2', level2)
 
-      const psappendapatan = []
-      const penyspendpatan = this.psappenyesuaianpendp
-      const realpostingotom = this.psaprealisasipendapatan
-      const psaphibah = this.psappendpatanhibah
-      const realju = this.psaprealisasipendapatanx
-      const gabung = realpostingotom.concat(realju, psaphibah)
-      // console.log('gabung', gabung)
-      // PSAP 13 DATA PENDAPATAN JASA LAYANAN //
-      const filterjs = this.pendjasalayanan?.map((x) => x.kode)
-      const filpagujs = gabung.filter(x => filterjs.includes(x.kode)).map((x) => x.kode)
-      const unikfilpagujs = filpagujs.length ? [...new Set(filpagujs)] : []
-      const realisasi = realpostingotom.filter(x => filterjs.includes(x.kode)).map((x) => parseFloat(x.realisasi)).reduce((a, b) => a + b, 0).toFixed(2)
-      const realisasix = realju.map((x) => parseFloat(x.realisasix)).reduce((a, b) => a + b, 0).toFixed(2)
-      const penyesuaianpend = penyspendpatan.map((x) => parseFloat(x.nilaix)).reduce((a, b) => a + b, 0).toFixed(2)
 
-      const jasalayanan = {
-        kode: unikfilpagujs[0],
-        uraian: 'Pendapatan Jasa Layanan dari Masyarakat',
-        realisasi: isNaN(parseFloat(realisasi - realisasix - penyesuaianpend)) ? parseFloat(0).toFixed(2) : parseFloat(realisasi - realisasix - penyesuaianpend)
-      }
+      // // PSAP 13
+      // const psappendapatan = []
+      // const penyspendpatan = this.psappenyesuaianpendp
+      // const realpostingotom = this.psaprealisasipendapatan
+      // const psaphibah = this.psappendpatanhibah
+      // const realju = this.psaprealisasipendapatanx
+      // const gabung = realpostingotom.concat(realju, psaphibah)
+      // // console.log('gabung', gabung)
+      // // PSAP 13 DATA PENDAPATAN JASA LAYANAN //
+      // const filterjs = this.pendjasalayanan?.map((x) => x.kode)
+      // const filpagujs = gabung.filter(x => filterjs.includes(x.kode)).map((x) => x.kode)
+      // const unikfilpagujs = filpagujs.length ? [...new Set(filpagujs)] : []
+      // const realisasi = realpostingotom.filter(x => filterjs.includes(x.kode)).map((x) => parseFloat(x.realisasi)).reduce((a, b) => a + b, 0).toFixed(2)
+      // const realisasix = realju.map((x) => parseFloat(x.realisasix)).reduce((a, b) => a + b, 0).toFixed(2)
+      // const penyesuaianpend = penyspendpatan.map((x) => parseFloat(x.nilaix)).reduce((a, b) => a + b, 0).toFixed(2)
 
-      // PSAP 13 DATA PENDAPATAN KERJA SAMA //
-      const filterks = this.pendhasilkerjasama?.map((x) => x.kode)
-      const filks = gabung.filter(x => filterks.includes(x.kode)).map((x) => x.kode)
-      const unikfilks = filks.length ? [...new Set(filks)] : []
-      const realks = realju.filter(x => filks.includes(x.kode)).map((x) => parseFloat(x.realisasix)).reduce((a, b) => a + b, 0).toFixed(2)
-      const hslkerjasama = {
-        kode: unikfilks[0],
-        uraian: 'Pendapatan Hasil Kerja Sama',
-        realisasi: isNaN(parseFloat(realks)) ? parseFloat(0).toFixed(2) : parseFloat(realks)
-      }
+      // const jasalayanan = {
+      //   kode: unikfilpagujs[0],
+      //   uraian: 'Pendapatan Jasa Layanan dari Masyarakat',
+      //   realisasi: isNaN(parseFloat(realisasi - realisasix - penyesuaianpend)) ? parseFloat(0).toFixed(2) : parseFloat(realisasi - realisasix - penyesuaianpend)
+      // }
 
-      // PSAP 13 DATA PENDAPATAN HIBAH //
-      const filterhb = this.pendhibah?.map((x) => x.kode)
-      const filhb = gabung.filter(x => filterhb.includes(x.kode)).map((x) => x.kode)
-      const unikfilhb = filhb.length ? [...new Set(filhb)] : []
-      const realhb = (realju.filter(x => filhb.includes(x.kode)).map((x) => parseFloat(x.realisasix)).reduce((a, b) => a + b, 0).toFixed(2))
-      const hbh = (psaphibah.filter(x => filhb.includes(x.kode)).map((x) => parseFloat(x.realisasix)).reduce((a, b) => a + b, 0).toFixed(2))
-      const total = parseFloat(realhb) + parseFloat(hbh)
-      const hslhibah = {
-        kode: unikfilhb,
-        uraian: 'Pendapatan Hibah',
-        realisasi: isNaN(parseFloat(total)) ? parseFloat(0).toFixed(2) : parseFloat(total)
-      }
-      console.log('total', total);
+      // // PSAP 13 DATA PENDAPATAN KERJA SAMA //
+      // const filterks = this.pendhasilkerjasama?.map((x) => x.kode)
+      // const filks = gabung.filter(x => filterks.includes(x.kode)).map((x) => x.kode)
+      // const unikfilks = filks.length ? [...new Set(filks)] : []
+      // const realks = realju.filter(x => filks.includes(x.kode)).map((x) => parseFloat(x.realisasix)).reduce((a, b) => a + b, 0).toFixed(2)
+      // const hslkerjasama = {
+      //   kode: unikfilks[0],
+      //   uraian: 'Pendapatan Hasil Kerja Sama',
+      //   realisasi: isNaN(parseFloat(realks)) ? parseFloat(0).toFixed(2) : parseFloat(realks)
+      // }
 
-      // PSAP 13 DATA PENDAPATAN JASA GIRO //
-      const filtergiro = this.pendjasagiro.map((x) => x.kode)
-      const filgiro = gabung.filter(x => filtergiro.includes(x.kode)).map((x) => x.kode)
-      const unikgiro = filgiro.length ? [...new Set(filgiro)] : []
-      const realgiro = realju.filter(x => filgiro.includes(x.kode)).map((x) => parseFloat(x.realisasix)).reduce((a, b) => a + b, 0).toFixed(2)
-      const hslgiro = {
-        kode: unikgiro,
-        uraian: 'Pendapatan Jasa Giro / Bunga Bank',
-        realisasi: isNaN(parseFloat(realgiro)) ? parseFloat(0).toFixed(2) : parseFloat(realgiro)
-      }
+      // // PSAP 13 DATA PENDAPATAN HIBAH //
+      // const filterhb = this.pendhibah?.map((x) => x.kode)
+      // const filhb = gabung.filter(x => filterhb.includes(x.kode)).map((x) => x.kode)
+      // const unikfilhb = filhb.length ? [...new Set(filhb)] : []
+      // const realhb = (realju.filter(x => filhb.includes(x.kode)).map((x) => parseFloat(x.realisasix)).reduce((a, b) => a + b, 0).toFixed(2))
+      // const hbh = (psaphibah.filter(x => filhb.includes(x.kode)).map((x) => parseFloat(x.realisasix)).reduce((a, b) => a + b, 0).toFixed(2))
+      // const total = parseFloat(realhb) + parseFloat(hbh)
+      // const hslhibah = {
+      //   kode: unikfilhb,
+      //   uraian: 'Pendapatan Hibah',
+      //   realisasi: isNaN(parseFloat(total)) ? parseFloat(0).toFixed(2) : parseFloat(total)
+      // }
+      // console.log('total', total);
 
-      // PSAP 13 DATA PENDAPATAN USAHA LAINNYA //
-      const filterlainya = this.pendusahalain.map((x) => x.kode)
-      const fillainnya = gabung.filter(x => filterlainya.includes(x.kode)).map((x) => x.kode)
-      const uniklainnya = fillainnya.length ? [...new Set(fillainnya)] : []
-      const reallainnya = realju.filter(x => fillainnya.includes(x.kode)).map((x) => parseFloat(x.realisasix)).reduce((a, b) => a + b, 0).toFixed(2)
-      const hsllainnya = {
-        kode: uniklainnya,
-        uraian: 'Pendapatan Usaha Lainnya',
-        realisasi: isNaN(parseFloat(reallainnya)) ? parseFloat(0).toFixed(2) : parseFloat(reallainnya)
-      }
-      psappendapatan.push(jasalayanan, hslkerjasama, hslhibah, hslgiro, hsllainnya)
+      // // PSAP 13 DATA PENDAPATAN JASA GIRO //
+      // const filtergiro = this.pendjasagiro.map((x) => x.kode)
+      // const filgiro = gabung.filter(x => filtergiro.includes(x.kode)).map((x) => x.kode)
+      // const unikgiro = filgiro.length ? [...new Set(filgiro)] : []
+      // const realgiro = realju.filter(x => filgiro.includes(x.kode)).map((x) => parseFloat(x.realisasix)).reduce((a, b) => a + b, 0).toFixed(2)
+      // const hslgiro = {
+      //   kode: unikgiro,
+      //   uraian: 'Pendapatan Jasa Giro / Bunga Bank',
+      //   realisasi: isNaN(parseFloat(realgiro)) ? parseFloat(0).toFixed(2) : parseFloat(realgiro)
+      // }
 
-      const bebanpsap = []
-      const bpegawai = this.psapbebanpegawai
-      for (let i = 0; i < bpegawai.length; i++) {
-        const el = bpegawai.map((x) => {
-          return {
-            kode: x.kode,
-            uraian: x.uraian,
-            realisasi: parseFloat(x.realisasi)
-          }
-        })
+      // // PSAP 13 DATA PENDAPATAN USAHA LAINNYA //
+      // const filterlainya = this.pendusahalain.map((x) => x.kode)
+      // const fillainnya = gabung.filter(x => filterlainya.includes(x.kode)).map((x) => x.kode)
+      // const uniklainnya = fillainnya.length ? [...new Set(fillainnya)] : []
+      // const reallainnya = realju.filter(x => fillainnya.includes(x.kode)).map((x) => parseFloat(x.realisasix)).reduce((a, b) => a + b, 0).toFixed(2)
+      // const hsllainnya = {
+      //   kode: uniklainnya,
+      //   uraian: 'Pendapatan Usaha Lainnya',
+      //   realisasi: isNaN(parseFloat(reallainnya)) ? parseFloat(0).toFixed(2) : parseFloat(reallainnya)
+      // }
+      // psappendapatan.push(jasalayanan, hslkerjasama, hslhibah, hslgiro, hsllainnya)
 
-        bebanpsap.push(...el)
-      }
+      // const bebanpsap = []
+      // const bpegawai = this.psapbebanpegawai
+      // for (let i = 0; i < bpegawai.length; i++) {
+      //   const el = bpegawai.map((x) => {
+      //     return {
+      //       kode: x.kode,
+      //       uraian: x.uraian,
+      //       realisasi: parseFloat(x.realisasi)
+      //     }
+      //   })
 
-      const bebanlain = this.psapbebanlain
-      const filla = this.bebanpersediaan?.map((x) => x.kode)
-      const kodeuniks = bebanlain.filter(x => filla.includes(x.kode)).map((x) => x.kode)
-      const uniks = kodeuniks.length ? [...new Set(kodeuniks)] : []
-      const realisasipersed = bebanlain.filter(x => filla.includes(x.kode)).map((x) => parseFloat(x.realisasi)).reduce((a, b) => a + b, 0)
-      const psappersediaan = {
-        kode: uniks,
-        uraian: 'Beban Persediaan',
-        realisasi: realisasipersed
-      }
+      //   bebanpsap.push(...el)
+      // }
 
-      const fillb = this.bebanjasa?.map((x) => x.kode)
-      const kodeuniksb = bebanlain.filter(x => fillb.includes(x.kode)).map((x) => x.kode)
-      const unikskode = kodeuniksb.length ? [...new Set(kodeuniksb)] : []
-      const realisasijasa = bebanlain.filter(x => fillb.includes(x.kode)).map((x) => parseFloat(x.realisasi)).reduce((a, b) => a + b, 0)
-      const psapjasa = {
-        kode: unikskode,
-        uraian: 'Beban Jasa',
-        realisasi: realisasijasa
-      }
-      const fillc = this.bebanpemeliharaan?.map((x) => x.kode)
-      const kodeuniksc = bebanlain.filter(x => fillc.includes(x.kode)).map((x) => x.kode)
-      const unikskodec = kodeuniksc.length ? [...new Set(kodeuniksc)] : []
-      const realisasipemeliharaan = bebanlain.filter(x => fillc.includes(x.kode)).map((x) => parseFloat(x.realisasi)).reduce((a, b) => a + b, 0)
-      const psappemeliharaan = {
-        kode: unikskodec,
-        uraian: 'Beban Pemeliharaan',
-        realisasi: realisasipemeliharaan
-      }
-      const filld = this.bebanperdin?.map((x) => x.kode)
-      const kodeuniksd = bebanlain.filter(x => filld.includes(x.kode)).map((x) => x.kode)
-      const unikskoded = kodeuniksd.length ? [...new Set(kodeuniksd)] : []
-      const realisasiperdin = bebanlain.filter(x => filld.includes(x.kode)).map((x) => parseFloat(x.realisasi)).reduce((a, b) => a + b, 0)
-      const psapperdin = {
-        kode: unikskoded,
-        uraian: 'Beban Perjalanan Dinas',
-        realisasi: realisasiperdin
-      }
-      const fille = this.bebanpenyusutan?.map((x) => x.kode)
-      const kodeunikse = bebanlain.filter(x => fille.includes(x.kode)).map((x) => x.kode)
-      const unikskodee = kodeunikse.length ? [...new Set(kodeunikse)] : []
-      const realisasipenyusutan = bebanlain.filter(x => fille.includes(x.kode)).map((x) => parseFloat(x.realisasi)).reduce((a, b) => a + b, 0)
-      const psappenyusutan = {
-        kode: unikskodee,
-        uraian: 'Beban Penyusutan',
-        realisasi: realisasipenyusutan
-      }
-      const fillf = this.bebanamortisasi?.map((x) => x.kode)
-      const kodeuniksf = bebanlain.filter(x => fillf.includes(x.kode)).map((x) => x.kode)
-      const unikskodef = kodeuniksf.length ? [...new Set(kodeuniksf)] : []
-      const realisasiamortisasi = bebanlain.filter(x => fillf.includes(x.kode)).map((x) => parseFloat(x.realisasi)).reduce((a, b) => a + b, 0)
-      const psapamortisasi = {
-        kode: unikskodef,
-        uraian: 'Beban Amortisasi',
-        realisasi: realisasiamortisasi
-      }
-      const fillg = this.bebanamortisasi?.map((x) => x.kode)
-      const kodeuniksg = bebanlain.filter(x => fillg.includes(x.kode)).map((x) => x.kode)
-      const unikskodeg = kodeuniksg.length ? [...new Set(kodeuniksg)] : []
-      const realisasipenyisihan = bebanlain.filter(x => fillg.includes(x.kode)).map((x) => parseFloat(x.realisasi)).reduce((a, b) => a + b, 0)
-      const psapapenyisihan = {
-        kode: unikskodeg,
-        uraian: 'Beban Penyisihan Piutang',
-        realisasi: realisasipenyisihan
-      }
+      // const bebanlain = this.psapbebanlain
+      // const filla = this.bebanpersediaan?.map((x) => x.kode)
+      // const kodeuniks = bebanlain.filter(x => filla.includes(x.kode)).map((x) => x.kode)
+      // const uniks = kodeuniks.length ? [...new Set(kodeuniks)] : []
+      // const realisasipersed = bebanlain.filter(x => filla.includes(x.kode)).map((x) => parseFloat(x.realisasi)).reduce((a, b) => a + b, 0)
+      // const psappersediaan = {
+      //   kode: uniks,
+      //   uraian: 'Beban Persediaan',
+      //   realisasi: realisasipersed
+      // }
 
-      bebanpsap.push(psappersediaan, psapjasa, psappemeliharaan, psapperdin,
-        psappenyusutan, psapamortisasi, psapapenyisihan)
+      // const fillb = this.bebanjasa?.map((x) => x.kode)
+      // const kodeuniksb = bebanlain.filter(x => fillb.includes(x.kode)).map((x) => x.kode)
+      // const unikskode = kodeuniksb.length ? [...new Set(kodeuniksb)] : []
+      // const realisasijasa = bebanlain.filter(x => fillb.includes(x.kode)).map((x) => parseFloat(x.realisasi)).reduce((a, b) => a + b, 0)
+      // const psapjasa = {
+      //   kode: unikskode,
+      //   uraian: 'Beban Jasa',
+      //   realisasi: realisasijasa
+      // }
+      // const fillc = this.bebanpemeliharaan?.map((x) => x.kode)
+      // const kodeuniksc = bebanlain.filter(x => fillc.includes(x.kode)).map((x) => x.kode)
+      // const unikskodec = kodeuniksc.length ? [...new Set(kodeuniksc)] : []
+      // const realisasipemeliharaan = bebanlain.filter(x => fillc.includes(x.kode)).map((x) => parseFloat(x.realisasi)).reduce((a, b) => a + b, 0)
+      // const psappemeliharaan = {
+      //   kode: unikskodec,
+      //   uraian: 'Beban Pemeliharaan',
+      //   realisasi: realisasipemeliharaan
+      // }
+      // const filld = this.bebanperdin?.map((x) => x.kode)
+      // const kodeuniksd = bebanlain.filter(x => filld.includes(x.kode)).map((x) => x.kode)
+      // const unikskoded = kodeuniksd.length ? [...new Set(kodeuniksd)] : []
+      // const realisasiperdin = bebanlain.filter(x => filld.includes(x.kode)).map((x) => parseFloat(x.realisasi)).reduce((a, b) => a + b, 0)
+      // const psapperdin = {
+      //   kode: unikskoded,
+      //   uraian: 'Beban Perjalanan Dinas',
+      //   realisasi: realisasiperdin
+      // }
+      // const fille = this.bebanpenyusutan?.map((x) => x.kode)
+      // const kodeunikse = bebanlain.filter(x => fille.includes(x.kode)).map((x) => x.kode)
+      // const unikskodee = kodeunikse.length ? [...new Set(kodeunikse)] : []
+      // const realisasipenyusutan = bebanlain.filter(x => fille.includes(x.kode)).map((x) => parseFloat(x.realisasi)).reduce((a, b) => a + b, 0)
+      // const psappenyusutan = {
+      //   kode: unikskodee,
+      //   uraian: 'Beban Penyusutan',
+      //   realisasi: realisasipenyusutan
+      // }
+      // const fillf = this.bebanamortisasi?.map((x) => x.kode)
+      // const kodeuniksf = bebanlain.filter(x => fillf.includes(x.kode)).map((x) => x.kode)
+      // const unikskodef = kodeuniksf.length ? [...new Set(kodeuniksf)] : []
+      // const realisasiamortisasi = bebanlain.filter(x => fillf.includes(x.kode)).map((x) => parseFloat(x.realisasi)).reduce((a, b) => a + b, 0)
+      // const psapamortisasi = {
+      //   kode: unikskodef,
+      //   uraian: 'Beban Amortisasi',
+      //   realisasi: realisasiamortisasi
+      // }
+      // const fillg = this.bebanamortisasi?.map((x) => x.kode)
+      // const kodeuniksg = bebanlain.filter(x => fillg.includes(x.kode)).map((x) => x.kode)
+      // const unikskodeg = kodeuniksg.length ? [...new Set(kodeuniksg)] : []
+      // const realisasipenyisihan = bebanlain.filter(x => fillg.includes(x.kode)).map((x) => parseFloat(x.realisasi)).reduce((a, b) => a + b, 0)
+      // const psapapenyisihan = {
+      //   kode: unikskodeg,
+      //   uraian: 'Beban Penyisihan Piutang',
+      //   realisasi: realisasipenyisihan
+      // }
 
-      const nonoperasional = []
-      const pjualaset = []
-      const penjualanasset = this.psappenjualanaset
-      for (let i = 0; i < penjualanasset.length; i++) {
-        const el = penjualanasset.map((x) => {
-          return {
-            kode: x.kode,
-            uraian: 'Surplus/Defisit Penjualan Aset Non Lancar',
-            realisasi: parseFloat(x.realisasi)
-          }
-        })
-        pjualaset.push(...el)
-      }
+      // bebanpsap.push(psappersediaan, psapjasa, psappemeliharaan, psapperdin,
+      //   psappenyusutan, psapamortisasi, psapapenyisihan)
 
-      const psapkerugian = []
-      const kerugian = this.psapkerugian
-      for (let i = 0; i < kerugian.length; i++) {
-        const el = kerugian.map((x) => {
-          return {
-            kode: x.kode,
-            uraian: '(Kerugian) Penurunan Nilai Aset',
-            realisasi: parseFloat(x.realisasi)
-          }
-        })
-        psapkerugian.push(...el)
-      }
-      // const psapnonoper = []
-      const nonoper = this.psapnonope
-      const objnonoper = {
-        kode: nonoper.map((x) => x.kode),
-        uraian: 'Surplus/Defisit dari Kegiatan Non Operasional Lainnya',
-        realisasi: nonoper.map((x) => parseFloat(x.realisasi)).reduce((a, b) => a + b, 0)
-      }
-      nonoperasional.push(...pjualaset, ...psapkerugian, objnonoper)
+      // const nonoperasional = []
+      // const pjualaset = []
+      // const penjualanasset = this.psappenjualanaset
+      // for (let i = 0; i < penjualanasset.length; i++) {
+      //   const el = penjualanasset.map((x) => {
+      //     return {
+      //       kode: x.kode,
+      //       uraian: 'Surplus/Defisit Penjualan Aset Non Lancar',
+      //       realisasi: parseFloat(x.realisasi)
+      //     }
+      //   })
+      //   pjualaset.push(...el)
+      // }
 
-      const bebanluarbiasa = []
-      const pendluarbiasa = this.psappendapatanluarbiasa
-      for (let i = 0; i < pendluarbiasa.length; i++) {
-        const el = pendluarbiasa.map((x) => {
-          return {
-            kode: x.kode,
-            uraian: 'Pendapatan Luar Biasa',
-            realisasi: parseFloat(x.realisasi)
-          }
-        })
-        bebanluarbiasa.push(...el)
-      }
+      // const psapkerugian = []
+      // const kerugian = this.psapkerugian
+      // for (let i = 0; i < kerugian.length; i++) {
+      //   const el = kerugian.map((x) => {
+      //     return {
+      //       kode: x.kode,
+      //       uraian: '(Kerugian) Penurunan Nilai Aset',
+      //       realisasi: parseFloat(x.realisasi)
+      //     }
+      //   })
+      //   psapkerugian.push(...el)
+      // }
+      // // const psapnonoper = []
+      // const nonoper = this.psapnonope
+      // const objnonoper = {
+      //   kode: nonoper.map((x) => x.kode),
+      //   uraian: 'Surplus/Defisit dari Kegiatan Non Operasional Lainnya',
+      //   realisasi: nonoper.map((x) => parseFloat(x.realisasi)).reduce((a, b) => a + b, 0)
+      // }
+      // nonoperasional.push(...pjualaset, ...psapkerugian, objnonoper)
 
-      const bbluarbiasa = this.bebanluarbiasa
-      const objbebanlb = {
-        kode: bbluarbiasa.map((x) => x.kode),
-        uraian: 'Beban Luar Biasa',
-        realisasi: bbluarbiasa.map((x) => parseFloat(x.realisasi)).reduce((a, b) => a + b, 0)
-      }
-      bebanluarbiasa.push(objbebanlb)
+      // const bebanluarbiasa = []
+      // const pendluarbiasa = this.psappendapatanluarbiasa
+      // for (let i = 0; i < pendluarbiasa.length; i++) {
+      //   const el = pendluarbiasa.map((x) => {
+      //     return {
+      //       kode: x.kode,
+      //       uraian: 'Pendapatan Luar Biasa',
+      //       realisasi: parseFloat(x.realisasi)
+      //     }
+      //   })
+      //   bebanluarbiasa.push(...el)
+      // }
+
+      // const bbluarbiasa = this.bebanluarbiasa
+      // const objbebanlb = {
+      //   kode: bbluarbiasa.map((x) => x.kode),
+      //   uraian: 'Beban Luar Biasa',
+      //   realisasi: bbluarbiasa.map((x) => parseFloat(x.realisasi)).reduce((a, b) => a + b, 0)
+      // }
+      // bebanluarbiasa.push(objbebanlb)
 
       if (this.reqs.levelberapa === 6) {
-        this.hasilpendapatan = kode6
-        this.hasilbeban = beban6
+        this.hasilpendapatan = pendapatan6
+        this.hasilbeban = level6
       }
       else if (this.reqs.levelberapa === 5) {
-        this.hasilpendapatan = kode5
-        this.hasilbeban = beban5
+        this.hasilpendapatan = pendapatan5
+        this.hasilbeban = level5
       }
       else if (this.reqs.levelberapa === 4) {
-        this.hasilpendapatan = kode4
-        this.hasilbeban = beban4
+        this.hasilpendapatan = pendapatan4
+        this.hasilbeban = level4
       }
       else if (this.reqs.levelberapa === 3) {
-        this.hasilpendapatan = kode3
-        this.hasilbeban = beban3
+        this.hasilpendapatan = pendapatan3
+        this.hasilbeban = level3
       }
       else if (this.reqs.levelberapa === 2) {
-        this.hasilpendapatan = kode2
-        this.hasilbeban = beban2
+        this.hasilpendapatan = pendapatan2
+        this.hasilbeban = level2
       }
-      else if (this.reqs.jenislo === 2) {
-        this.psappendapatan = psappendapatan
-        this.psapbeban = bebanpsap
-        this.psapnonoperasional = nonoperasional
-        this.psapbebanluarbiasa = bebanluarbiasa
-        console.log('psappendapatan', this.psappendapatan)
-        console.log('psapbeban', this.psapbeban)
-        console.log('nonoperasional', this.psapnonoperasional)
-        console.log('psapbbluarbiasa', this.psapbebanluarbiasa)
-      }
+      // else if (this.reqs.jenislo === 2) {
+      //   this.psappendapatan = psappendapatan
+      //   this.psapbeban = bebanpsap
+      //   this.psapnonoperasional = nonoperasional
+      //   this.psapbebanluarbiasa = bebanluarbiasa
+      //   console.log('psappendapatan', this.psappendapatan)
+      //   console.log('psapbeban', this.psapbeban)
+      //   console.log('nonoperasional', this.psapnonoperasional)
+      //   console.log('psapbbluarbiasa', this.psapbebanluarbiasa)
+      // }
       else {
         this.hasilpendapatan = kode1
         this.hasilbeban = beban1

@@ -1,6 +1,6 @@
 <template>
-  <div class="row full-width">
-    <div class="q-pa-sm" style="width:25%">
+  <div class="row full-width justify-center">
+    <!-- <div class="q-pa-sm" style="width:25%">
       <app-autocomplete v-model="refJenis" label="Pilih Jenis LO" autocomplete="nama" option-value="value"
         option-label="nama" outlined :disable="store.loading" :loading="store.loading" :source="store.jenis"
         @update:model-value="(val) => {
@@ -9,14 +9,13 @@
           refData = ''
           store.reqs.levelberapa = ''
         }" />
-    </div>
+    </div> -->
     <div class="q-pa-sm" style="width:25%">
       <app-autocomplete v-model="refData" label="Pilih Jenis Rekening" autocomplete="nama" option-value="value"
         option-label="nama" outlined :disable="store.loading || store.reqs.jenislo === 2" :loading="store.loading"
         :source="store.level" @update:model-value="(val) => {
           const aa = parseInt(val)
           store.reqs.levelberapa = aa
-
           console.log('lvl', store.reqs.levelberapa)
         }" />
     </div>
@@ -79,11 +78,12 @@ const refData = ref('')
 //   ])
 // })
 function ambilData() {
-  store.getDataLap().then(() => {
-    if (refData.value != null) {
-      refData.value.resetValidation()
-    }
-  })
+  store.getDataLap()
+  // .then(() => {
+  //   if (refData.value != null) {
+  //     refData.value.resetValidation()
+  //   }
+  // })
   // store.hasillevel()
 }
 function tglDari(val) {
