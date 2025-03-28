@@ -62,6 +62,7 @@
 </template>
 <script setup>
 import { useQuasar } from 'quasar'
+import { notifErrVue } from 'src/modules/utils'
 import { useLaporanOperasionalStore } from 'src/stores/siasik/laporan/laporanoperasional/lapoperasional'
 // eslint-disable-next-line no-unused-vars
 import { defineAsyncComponent, onMounted, ref, watchEffect } from 'vue'
@@ -78,13 +79,11 @@ const refData = ref('')
 //   ])
 // })
 function ambilData() {
-  store.getDataLap()
-  // .then(() => {
-  //   if (refData.value != null) {
-  //     refData.value.resetValidation()
-  //   }
-  // })
-  // store.hasillevel()
+  if (refData.value === '') {
+    notifErrVue('Harap Pilih Jenis Rekening Dulu!')
+  } else {
+    store.getDataLap()
+  }
 }
 function tglDari(val) {
   store.setParameter('tgl', val)

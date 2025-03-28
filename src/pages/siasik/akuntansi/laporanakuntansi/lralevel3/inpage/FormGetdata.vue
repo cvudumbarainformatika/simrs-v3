@@ -74,6 +74,7 @@
 </template>
 <script setup>
 import { useQuasar } from 'quasar'
+import { notifErrVue } from 'src/modules/utils'
 import { useLRAjurnalStore } from 'src/stores/siasik/laporan/lra/lrajurnal.'
 import { ref, defineAsyncComponent, watchEffect } from 'vue'
 
@@ -98,7 +99,12 @@ function setSampai(val) {
   store.display.sampai = val
 }
 function ambilData() {
-  store.getDataLap()
+  if (refData.value === '') {
+    notifErrVue('Harap Pilih Jenis Rekening Dulu!')
+  } else {
+    store.getDataLap()
+  }
+
 }
 const printlra = ref(null)
 function cetakData() {
