@@ -1,69 +1,73 @@
 <template>
   <div class="fit column bg-grey-4 relative-position q-mb-xl ">
     <div class="bg-grey-4 q-pa-sm">
-      <info-input-ranap :items="store?.pasien?.intradialitik" class="scroll">
+      <info-input-ranap :items="store?.pasien?.pengkajian" class="scroll">
         <transition-group appear tag="div" @before-enter="beforeEnter" @enter="enter">
-          <div v-for="(item, i) in store?.pasien?.intradialitik" :key="item" v-ripple
+          <div v-for="(item, i) in store?.pasien?.pengkajian" :key="item" v-ripple
             class="q-card q-pa-md q-mb-sm cursor-pointer">
             <div class="row items-center">
               <div class="col-1">{{ i + 1 }}</div>
               <div class="col-11">
-                <div class="row items-end">
-                  <div class="col-4">Jam Ke</div>
-                  <div class="col-2">{{ item?.rs4 }}</div>
-                  <div class="col-6 f-10 text-italic">{{ item?.rs3 }}</div>
+
+                <div class="row items-center">
+                  <div class="col-4">Alasan</div>
+                  <div class="col-8">{{ item?.rs4 }}</div>
                 </div>
                 <div class="row items-center bg-blue-2">
-                  <div class="col-4">Keluhan</div>
+                  <div class="col-4">Riwayat Psikososial</div>
                   <div class="col-8">{{ item?.rs5 }}</div>
                 </div>
                 <div class="row items-center ">
-                  <div class="col-4">BB</div>
+                  <div class="col-4">Hubungan Keluarga</div>
                   <div class="col-8">{{ item?.rs6 }}</div>
                 </div>
                 <div class="row items-center bg-blue-2">
-                  <div class="col-4">Kesadaran</div>
+                  <div class="col-4">Psikologis</div>
                   <div class="col-8">{{ item?.rs7 }}</div>
+                </div>
+                <div v-if="item?.rs7 == 'Lain-lain'" class="row items-center bg-blue-2">
+                  <div class="col-4">yaitu</div>
+                  <div class="col-8">{{ item?.rs8 }}</div>
                 </div>
                 <div class="row items-center ">
                   <div class="col-4 f-12">Tekanan Darah</div>
-                  <div class="col-8">{{ item?.rs8 }}</div>
+                  <div class="col-8">{{ item?.rs9 }}</div>
                 </div>
                 <div class="row items-center bg-blue-2">
-                  <div class="col-4">Napas</div>
-                  <div class="col-8">{{ item?.rs9 }}</div>
+                  <div class="col-4">Nadi</div>
+                  <div class="col-8">{{ item?.rs10 }}</div>
                 </div>
                 <div class="row items-center ">
                   <div class="col-4">Suhu</div>
-                  <div class="col-8">{{ item?.rs10 }}</div>
-                </div>
-                <div class="row items-center bg-blue-2">
-                  <div class="col-4">QB</div>
                   <div class="col-8">{{ item?.rs11 }}</div>
                 </div>
-                <div class="row items-center ">
-                  <div class="col-4">QD</div>
+                <div class="row items-center bg-blue-2">
+                  <div class="col-4">Tinggi Badan</div>
                   <div class="col-8">{{ item?.rs12 }}</div>
                 </div>
-                <div class="row items-center bg-blue-2">
-                  <div class="col-4">Tekanan Vena</div>
+                <div class="row items-center ">
+                  <div class="col-4">Berat Badan</div>
                   <div class="col-8">{{ item?.rs13 }}</div>
                 </div>
-                <div class="row items-center ">
-                  <div class="col-4">TMP</div>
+                <div class="row items-center bg-blue-2">
+                  <div class="col-4">Penuruan Berat Badan</div>
                   <div class="col-8">{{ item?.rs14 }}</div>
                 </div>
-                <div class="row items-center bg-blue-2">
-                  <div class="col-4">UF</div>
+                <div class="row items-center ">
+                  <div class="col-4">Diagnosa Khusus</div>
                   <div class="col-8">{{ item?.rs15 }}</div>
                 </div>
-                <div class="row items-center ">
-                  <div class="col-4">Assesment</div>
-                  <div class="col-8">{{ item?.rs16 }}</div>
-                </div>
                 <div class="row items-center bg-blue-2">
-                  <div class="col-4">Perawat</div>
-                  <div class="col-8">{{ item?.user?.nama }}</div>
+                  <div class="col-4">Berkurang asupan akibat Nafsu makan</div>
+                  <div class="col-8"><span class="q-ml-xs">{{ item?.rs16 }}</span></div>
+                </div>
+                <div class="row items-center ">
+                  <div class="col-4">Status Fungsional</div>
+                  <div class="col-8">{{ item?.rs17 }}</div>
+                </div>
+                <div v-if="item?.rs17 == 'Perlu Bantuan'" class="row items-center ">
+                  <div class="col-4">Dibantu dengan</div>
+                  <div class="col-8">{{ item?.rs18 }}</div>
                 </div>
               </div>
             </div>
@@ -85,29 +89,30 @@
 import { useListPasienHemodialisaStore } from "src/stores/simrs/hemodialisa/hemodialisa"
 import { defineAsyncComponent, onMounted } from "vue"
 import { gsap } from 'gsap'
-import { useIntridialitikHemodialisaStore } from "src/stores/simrs/hemodialisa/intridialitik"
+import { usePengkajianHemodialisaStore } from "src/stores/simrs/hemodialisa/pengkajian"
 
 const store = useListPasienHemodialisaStore()
-const storeForm = useIntridialitikHemodialisaStore()
+const storeForm = usePengkajianHemodialisaStore()
 const InfoInputRanap = defineAsyncComponent(() => import('../../../components/InfoInputRanap.vue'))
 
 function edit (item) {
-  console.log('edit', item)
+  // console.log('edit', item)
   storeForm.setForm('id', item.id)
-  storeForm.setForm('tgl', item.rs3)
-  storeForm.setForm('jamKe', item.rs4)
-  storeForm.setForm('keluhan', item.rs5)
-  storeForm.setForm('bb', item.rs6)
-  storeForm.setForm('kesadaran', item.rs7)
-  storeForm.setForm('tkDarah', item.rs8)
-  storeForm.setForm('napas', item.rs9)
-  storeForm.setForm('suhu', item.rs10)
-  storeForm.setForm('qb', item.rs11)
-  storeForm.setForm('qd', item.rs12)
-  storeForm.setForm('tkVena', item.rs13)
-  storeForm.setForm('tmp', item.rs14)
-  storeForm.setForm('uf', item.rs15)
-  storeForm.setForm('assasement', item.rs16)
+  storeForm.setForm('alasan', item.rs4)
+  storeForm.setForm('riwayat', item.rs5)
+  storeForm.setForm('hubungan', item.rs6)
+  storeForm.setForm('psikologis', item.rs7)
+  storeForm.setForm('lain', item.rs8)
+  storeForm.setForm('td', item.rs9)
+  storeForm.setForm('nadi', item.rs10)
+  storeForm.setForm('suhu', item.rs11)
+  storeForm.setForm('tb', item.rs12)
+  storeForm.setForm('bb', item.rs13)
+  storeForm.setForm('penurunanBB', item.rs14)
+  storeForm.setForm('asupanNafsu', item.rs15)
+  storeForm.setForm('diagKhus', item.rs16)
+  storeForm.setForm('fungsional', item.rs17)
+  storeForm.setForm('lainx', item.rs18)
 }
 function remove (item) {
   console.log('remove', item)

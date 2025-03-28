@@ -74,7 +74,7 @@
 import { useQuasar } from 'quasar';
 import { formattanpaRp } from 'src/modules/formatter';
 import { useSp3bStore } from 'src/stores/siasik/akuntansi/sp3b/sp3b';
-import { defineAsyncComponent, ref } from 'vue';
+import { defineAsyncComponent, onMounted, ref } from 'vue';
 
 const CetakSp3b = defineAsyncComponent(() => import('./DialogCetak.vue'))
 const store = useSp3bStore()
@@ -84,7 +84,9 @@ const clearSearch = () => {
   store.reqs.q = ''
 
 }
-
+onMounted(() => {
+  store.getList()
+})
 const listdata = [
   {
     label: 'No. SP3B',

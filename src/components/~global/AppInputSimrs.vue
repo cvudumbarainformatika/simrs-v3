@@ -1,26 +1,12 @@
 <template>
-  <q-input
-    ref="appInputSimrs"
-    :label="label"
-    :dense="type !== 'textarea'"
-    :autogrow="type === 'textarea'"
-    outlined
-    standout="bg-yellow-3"
-    :class="`q-mb-xs ${classTambahan}`"
-    :autofocus="autofocus"
-    :readonly="readonly"
-    :disable="disable"
-    :type="type"
-    :rules="[requiredRule, minRule, maxRule, emailRule, isNumberRule]"
-    :lazy-rules="lazyRules"
-    :hide-bottom-space="true"
-
-    :error="errorFromServer?.length > 0"
-    :error-message="errorFromServer?.length ? errorFromServer[0]: null"
-    @update:model-value="updatedModel"
-  >
+  <q-input ref="appInputSimrs" :label="label" :dense="type !== 'textarea'" :autogrow="type === 'textarea'" outlined
+    standout="bg-yellow-3" :class="`q-mb-xs ${classTambahan}`" :autofocus="autofocus" :readonly="readonly"
+    :disable="disable" :type="type" :rules="[requiredRule, minRule, maxRule, emailRule, isNumberRule]"
+    :lazy-rules="lazyRules" :hide-bottom-space="true" :error="errorFromServer?.length > 0"
+    :error-message="errorFromServer?.length ? errorFromServer[0] : null" @update:model-value="updatedModel">
     <template v-if="append" #append>
-      <q-icon v-if="!appendBtn" :name="appendIcon" size="xs" class="cursor-pointer" v-ripple @click="emits('appendClick')" />
+      <q-icon v-if="!appendBtn" :name="appendIcon" size="xs" class="cursor-pointer" v-ripple
+        @click="emits('appendClick')" />
       <q-btn v-if="appendBtn" label="cek" outline color="primary" size="sm" v-ripple @click="emits('appendClick')" />
     </template>
   </q-input>
@@ -99,6 +85,9 @@ const requiredRule = (val) => {
   if (props.valid === null) {
     return true
   }
+  if (props.valid?.canEmpty) {
+    return true
+  }
   return (!!val || props.valid?.required || val === 0) || 'Harap diisi'
 }
 
@@ -116,7 +105,7 @@ const maxRule = (val) => {
   if (props.valid === null) {
     return true
   }
-  if (!props.valid?.max) {
+  if (!props.valid?.max || val.length === 0) {
     return true
   }
   return (val && val.length <= parseInt(props.valid?.max)) || `Max ${props.valid?.max} char`
@@ -155,15 +144,14 @@ const updatedModel = (e) => {
 
 <style lang="scss" scoped>
 .q-field--dense .q-field__bottom {
-    display:none;
+  display: none;
 }
 
 .q-field--error .q-field--highligted {
   background: none;
 }
+
 // .q-field--standout.q-field--highlighted .q-field__control {
 //     box-shadow: 0 1px 5px rgb(0 0 0 / 20%), 0 2px 2px rgb(0 0 0 / 14%), 0 3px 1px -2px rgb(0 0 0 / 12%);
 //     background: rgb(250, 173, 173);
-// }
-
-</style>
+// }</style>

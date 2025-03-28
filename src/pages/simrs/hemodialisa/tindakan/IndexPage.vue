@@ -2,7 +2,7 @@
   <q-dialog ref="refDialog" persistent :maximized="true" transition-hide="slide-right" @hide="lihatSebelumTertutup">
     <q-card v-if="pasien?.dokter !== '' || pasien?.dokter !== null" flat>
       <q-layout view="lHr Lpr lFf" container class="shadow-2 rounded-borders z-top">
-        <q-header elevated class="bg-primary">
+        <q-header ref="refHeader" elevated class="bg-primary">
           <HeaderLayout :pasien="pasien" :loading-save-dpjp="store.loadingSaveGantiDpjp"
             :loading-finish="store.loadingTerima" @toggle-left-drawer="drawer = !drawer"
             @gantidpjp="(val) => store.gantiDpjp(val, pasien)" @layanan-selesai="store.setLayananSelesai(pasien)" />
@@ -32,7 +32,7 @@
                   </div>
                 </div>
                 <component :is="menu.comp" v-else :key="pasien" :pasien="pasien" :loading-terima="store.loadingTerima"
-                  :kasus="store?.jnsKasusPasien" :nakes="nakes" depo="rnp" />
+                  :kasus="store?.jnsKasusPasien" :nakes="nakes" depo="rnp" :headheight='headerHeight' />
               </template>
               <template #fallback>
                 <AppLoader />
@@ -54,7 +54,7 @@ import RightDrawer from './complayout/RightDrawer.vue'
 import HeaderLayout from './complayout/HeaderLayout.vue'
 import DialogProfile from './DialogProfile.vue'
 import { useInacbgPoli } from 'src/stores/simrs/pelayanan/poli/inacbg'
-import { defineAsyncComponent, onBeforeMount, onBeforeUnmount, onMounted, onUnmounted, ref, shallowRef, watchEffect } from 'vue'
+import { computed, defineAsyncComponent, onBeforeMount, onBeforeUnmount, onMounted, onUnmounted, ref, shallowRef, watchEffect } from 'vue'
 
 import { useQuasar } from 'quasar'
 
@@ -67,10 +67,7 @@ const hemodialisa = useListPasienHemodialisaStore()
 
 
 const { filterredMenus, menu, store, nakes, menuDiganti } = useLayanan()
-// const store = usePengunjungPoliStore()
-// const master = useMasterPemeriksaanFisik()
-// const anamnesis = useAnamnesis()
-// const fisik = usePemeriksaanFisik()
+
 const drawer = ref(false)
 const drawerRight = ref(false)
 const profile = ref(false)
@@ -98,42 +95,18 @@ function lihatSebelumTertutup () {
   hemodialisa.pasien = null
   hemodialisa.pageTindakan = true
 }
+const refHeader = ref(null)
+const headerHeight = computed(() => {
+  // console.log('refHeader', refHeader.value?.$el?.clientHeight)
+  return refHeader.value?.$el?.clientHeight
+})
+onMounted(() => {
+  // setTimeout(() => {
+  //   headerHeight.value = refHeader.value?.$el?.clientHeight
+  //   console.log('refHeader', headerHeight.value)
 
-// function menuDiganti (val) {
-//   if (menu.value.name === 'PemeriksaanPage') {
-//     if (fisik.edited) {
-//       // console.log('ada yg blm diupdate')
-//       harapSimpanPerubahanPemeriksaanFisik(val)
-//     }
-//     else {
-//       menu.value = val
-//     }
-//   }
-//   else {
-//     menu.value = val
-//   }
-// }
-
-// function harapSimpanPerubahanPemeriksaanFisik (val) {
-//   $q.dialog({
-//     dark: true,
-//     title: 'Peringatan',
-//     message: 'Perubahan Belum disimpan , Harap disimpan terlebih dahulu',
-//     cancel: true,
-//     persistent: true
-//   }).onOk(() => {
-//     console.log('OK')
-//     menu.value = menus.value[1]
-//   }).onCancel(() => {
-//     // console.log('Cancel')
-//     fisik.initReset(false, props?.pasien)
-//     // fisik.setNotEdit()
-//     menu.value = val
-//   }).onDismiss(() => {
-//     // console.log('I am triggered on both OK and Cancel')
-//   })
-// }
-
+  // }, 100)
+})
 watchEffect(() => {
   // console.log('watch effect', store.loadingTerima)
   // if (store.loadingTerima === false) {

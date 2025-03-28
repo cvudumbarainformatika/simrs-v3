@@ -18,7 +18,7 @@
   </template>
   <template v-else>
     <div class="row q-px-sm q-py-sm full-width flex-center">
-      <table class="bordered_table" style="width: 100%;" wrap-cells>
+      <q-markup-table flat bordered style="width: 100%;" wrap-cells :separator="separator">
         <thead>
           <tr class="text-bold">
             <td class="text-center" style="font-size: 12px">NO</td>
@@ -208,7 +208,7 @@
             </td>
           </tr>
         </tbody>
-      </table>
+      </q-markup-table>
 
     </div>
   </template>

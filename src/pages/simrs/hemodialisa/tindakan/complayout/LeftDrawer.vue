@@ -65,7 +65,7 @@ import ListMenu from './ListMenu.vue'
 
 import CetakRekapBilling from 'src/pages/simrs/kasir/rajal/listkunjungan/comp/CetakRekapBilling.vue'
 import { ref } from 'vue'
-const tinggiDetailPas = ref(180)
+const tinggiDetailPas = ref(200)
 const printRekap = ref(false)
 // const tinggiBot = ref(180)
 const emits = defineEmits(['clickMenu', 'historyPasien', 'printRekap', 'icare', 'showProfile'])

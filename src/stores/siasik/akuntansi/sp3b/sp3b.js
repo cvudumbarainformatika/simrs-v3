@@ -50,7 +50,7 @@ export const useSp3bStore = defineStore('laporan_sp3b', {
     belanjas: [],
     pembiayaans: [],
 
-    saldoawal: {},
+    saldoawal: 0,
 
     listdataSp3b: [],
 
@@ -138,7 +138,7 @@ export const useSp3bStore = defineStore('laporan_sp3b', {
             this.pendapatans = []
             this.belanjas = []
             this.pembiayaans = []
-            this.saldoawal = []
+            this.saldoawal = 0
 
             this.allitems = resp.data
 
@@ -150,52 +150,54 @@ export const useSp3bStore = defineStore('laporan_sp3b', {
       })
     },
     dataSp3b() {
+      const pagupendapatan = this.allitems?.pagupendapatan
+
+
       //SALDO AWAL
       const pendx = this.allitems?.sebelumpendapatan
       const bljx = this.allitems?.sebelumbelanja
       const biayax = this.allitems?.sebelumpembiayaan
-      const pendapatanx = []
-      for (let i = 0; i < pendx.length; i++) {
-        const el = pendx[i];
-        const obj = parseFloat(el.total).toFixed(2)
-        pendapatanx.push(obj)
-      }
-      const totalpendapatanx = parseFloat(pendapatanx) || 0
+      const penyesuaianx = this.allitems?.sebelumpenyesuaian
 
-      const belanjax = []
-      const unx = bljx.map((x) => x.kode)
-      const hslunikx = unx.length ? [...new Set(unx)] : []
-      for (let i = 0; i < hslunikx.length; i++) {
-        const el = hslunikx[i];
-        const obj = bljx.filter((x) => x.kode === el).map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0)
-        belanjax.push(obj)
-      }
-      const totalbljx = belanjax.reduce((a, b) => a + b, 0) || 0
 
-      const pmbiayax = []
-      for (let i = 0; i < biayax.length; i++) {
-        const el = biayax[i];
-        const obj = parseFloat(el.total).toFixed(2)
-        pmbiayax.push(obj)
-      }
-      const totalbiayax = parseFloat(pmbiayax) || 0
-      const saldoawalx = ((totalpendapatanx - totalbljx) + totalbiayax).toFixed(2)
+      const koderekpend = pagupendapatan.map((x) => x.kode)
+      const koderekblja = bljx.map(x => x.kode)
+
+      //Filter pendapatan berdasarkan data pagu pendapatan
+      const filterpendpatan = pendx.filter(x => koderekpend.includes(x.kode))
+      const filterpenyesuaian = penyesuaianx.filter(x => koderekpend.includes(x.kode))
+      const salawalpendapatan = filterpendpatan.concat(filterpenyesuaian)
+      const pendapatanx = salawalpendapatan.reduce((a, b) => parseFloat(a) + parseFloat(b.subtotal), 0)
+
+      //filter penyesuaian berdasarkan belanja
+      const filterpnye = penyesuaianx.filter(x => koderekblja.includes(x.kode))
+      const saldoawalbelanja = bljx.concat(filterpnye)
+      const totalbelanjax = saldoawalbelanja.reduce((a, b) => parseFloat(a) + parseFloat(b.subtotal), 0)
+
+      const totalbiayax = biayax.map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0)
+
+      const saldoawalx = ((pendapatanx - totalbelanjax) + totalbiayax).toFixed(2)
 
       this.saldoawal = saldoawalx
-      console.log('saldo awal', totalpendapatanx, totalbljx, totalbiayax)
-
-
       console.log('saldo awal', this.saldoawal)
 
       // DATA PENDAPATAN
-      const pend = this.allitems?.pendapatan
+      const pendapatanall = this.allitems?.pendapatan
+      const pend = pendapatanall.filter(x => koderekpend.includes(x.kode))
+      const penye = this.allitems?.penyesuaian.filter(x => koderekpend.includes(x.kode))
+
+      const datapendapatan = pend.concat(penye)
+
+      const unikpend = pagupendapatan.map((x) => x.kode)
+      const newsetpend = unikpend.length ? [...new Set(unikpend)] : []
+      console.log('dadatan', newsetpend)
       const pendapatan = []
-      for (let i = 0; i < pend.length; i++) {
-        const el = pend[i];
+      for (let i = 0; i < newsetpend.length; i++) {
+        const el = newsetpend[i];
         const obj = {
-          kode: el.kode,
-          uraian: el.uraian,
-          total: parseFloat(el.total).toFixed(2),
+          kode: datapendapatan.filter((x) => x.kode === el)[0].kode,
+          uraian: datapendapatan.filter((x) => x.kode === el)[0].uraian,
+          total: datapendapatan.filter((x) => x.kode === el).map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0),
           keterangan: 'PENDAPATAN'
         }
         pendapatan.push(obj)
@@ -203,20 +205,24 @@ export const useSp3bStore = defineStore('laporan_sp3b', {
 
       this.pendapatans.push(...pendapatan)
       // const peny = penyesuaian.map((x) => parseFloat(x.totalpenyesuaian))
-
+      console.log('data pendapatan', this.pendapatans)
 
       // DATA BELANJA
       const blj = this.allitems?.belanja
-      const un = blj.map((x) => x.kode)
-      const hslunik = un.length ? [...new Set(un)] : []
+      const uniks = blj.map((x) => x.kode)
+      const penyesbelanja = this.allitems?.penyesuaian.filter(x => uniks.includes(x.kode))
+
+      const databelanja = blj.concat(penyesbelanja)
+
+      const hslunik = uniks.length ? [...new Set(uniks)] : []
 
       const belanja = []
       for (let i = 0; i < hslunik.length; i++) {
         const el = hslunik[i];
         const obj = {
-          kode: blj.filter((x) => x.kode === el)[0].kode,
-          uraian: blj.filter((x) => x.kode === el)[0].uraian,
-          total: blj.filter((x) => x.kode === el).map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0),
+          kode: databelanja.filter((x) => x.kode === el)[0].kode,
+          uraian: databelanja.filter((x) => x.kode === el)[0].uraian,
+          total: databelanja.filter((x) => x.kode === el).map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0),
           keterangan: 'REALISASI'
         }
         belanja.push(obj)
