@@ -139,6 +139,12 @@ const menus = ref([
     comp: shallowRef(defineAsyncComponent(() => import('../../eresep/EresepPage.vue')))
   },
   {
+    name: 'upload-dokomen',
+    label: 'Upload Dokumen',
+    icon: 'icon-fa-folder-tree-solid',
+    comp: shallowRef(defineAsyncComponent(() => import('../layanan/uploaddokumen/IndexPage.vue')))
+  },
+  {
     name: 'e-dokumen-page',
     label: 'Dokumen RM & Billing',
     icon: 'icon-mat-print',
