@@ -28,11 +28,13 @@ import rekammedik from './rekammedik'
 import cathlab from './cathlab'
 import akuntansi from './akuntansi'
 import ruangkonsul from './ruangkonsul'
+import unitpengelolaharsip from './unitpengelolaharsip'
+
 
 export {
   pegawai, sigarang, antrian, laborat, laporan, settings,
   masters, pendaftaran, percobaan, farmasi, poli, monitoring,
   kasir, dokumen, gudang, ptk, depo, ruangan, igd, ranap, satset,
   kamaroperasi, rehabmedik, hemodialisa, siasik, radiologi, rekammedik, cathlab, akuntansi,
-  ruangkonsul
+  ruangkonsul, unitpengelolaharsip
 }
