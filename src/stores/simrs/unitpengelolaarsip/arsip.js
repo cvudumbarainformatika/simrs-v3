@@ -20,6 +20,7 @@ export const useUnitPengelolahArsipStore = defineStore('unit-pengelolah-arsip-st
     tanggal: {
       tgl: date.formatDate(Date.now(), 'DD MMMM YYYY'),
     },
+    form: {}
   }),
   actions: {
     setParams(key, val) {

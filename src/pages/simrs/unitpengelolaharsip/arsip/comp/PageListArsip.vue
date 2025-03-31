@@ -12,7 +12,7 @@
         <footer-page />
       </div>
     </q-card>
-    <DialogFormPage :klasifikasi="storeklasifikasi.items" />
+    <DialogFormPage :klasifikasi="storeklasifikasi.items" :media="storemedia.items" />
     <!-- <page-layanan-igd :key="pasien" v-model="store.pageLayanan" :pasien="pasien" :loadingaja="store.loadingTerima" /> -->
   </q-page>
 </template>
@@ -25,10 +25,12 @@ import DialogFormPage from './DialogFormPage.vue';
 import { useUnitPengelolahArsipStore } from 'src/stores/simrs/unitpengelolaarsip/arsip';
 import { onMounted } from 'vue';
 import { useArsipMasterKelasifikasiStore } from 'src/stores/arsip/master/mkelasifikasi';
+import { useArsipMasterMediaStore } from 'src/stores/arsip/master/mmedia';
 
 const style = useStyledStore()
 const store = useUnitPengelolahArsipStore()
 const storeklasifikasi = useArsipMasterKelasifikasiStore()
+const storemedia = useArsipMasterMediaStore()
 
 function tambaharsip() {
   store.dialog = true
@@ -37,5 +39,6 @@ function tambaharsip() {
 onMounted(() => {
   store.getData()
   storeklasifikasi.getMkelasifikasi()
+  storemedia.getMastermedia()
 })
 </script>
