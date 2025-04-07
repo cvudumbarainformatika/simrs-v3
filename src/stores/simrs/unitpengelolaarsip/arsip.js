@@ -6,6 +6,7 @@ import { notifErrVue, notifSuccess } from 'src/modules/utils'
 export const useUnitPengelolahArsipStore = defineStore('unit-pengelolah-arsip-store', {
   state: () => ({
     items: [],
+    itemsorganisasi: [],
     loading: false,
     meta: null,
     dialog: false,
@@ -13,20 +14,27 @@ export const useUnitPengelolahArsipStore = defineStore('unit-pengelolah-arsip-st
       q: '',
       page: 1,
       per_page: 10,
+      bidangbagian: ''
     },
     from: {
-      tglbuat: date.formatDate(Date.now(), 'YYYY-MM-DD'),
+      tgl: date.formatDate(Date.now(), 'YYYY-MM-DD'),
     },
     tanggal: {
       tgl: date.formatDate(Date.now(), 'DD MMMM YYYY'),
     },
-    form: {}
+    form: {
+      noarsip: '',
+      tgl: date.formatDate(Date.now(), 'YYYY-MM-DD'),
+      dokumen: []
+    },
+    loadingForm: false
   }),
   actions: {
     setParams(key, val) {
       this.params[key] = val
     },
     goToPage(val) {
+      console.log('go', val)
       this.params.page = val
       this.getData()
     },
@@ -50,29 +58,45 @@ export const useUnitPengelolahArsipStore = defineStore('unit-pengelolah-arsip-st
         })
         .catch(() => { this.loading = false })
     },
-    async gantiDpjp(form, pasien) {
-      // console.log(form)
-      this.loadingSaveGantiDpjp = true
-      try {
-        const resp = await api.post('/v1/simrs/pelayanan/gantidpjp', form)
-        if (resp.status === 200) {
-          const findPasien = this.items.filter(x => x === pasien)
-          if (findPasien.length) {
-            const data = findPasien[0]
-            data.datasimpeg = resp?.data?.result?.datasimpeg
-            data.dokter = resp?.data?.result?.datasimpeg?.nama
-            data.kodedokter = resp?.data?.result?.datasimpeg?.kdpegsimrs
-            this.loadingSaveGantiDpjp = false
-          }
+    async getDataorganisasi() {
+      await api.get('v1/simrs/master/listorganisasi')
+        .then(resp => {
+          this.itemsorganisasi = resp?.data
 
-          this.loadingSaveGantiDpjp = false
-        }
-        this.loadingSaveGantiDpjp = false
+        })
+        .catch(() => { })
+    },
+    saveData() {
+      this.loadingForm = true
+      const data = new FormData()
+      for (let i = 0; i < this.form.dokumen; i++) {
+        const images = this.form.dokumen[i]
+        data.append(`dokumen[${i}]`, images)
       }
-      catch (error) {
-        console.log(error)
-        this.loadingSaveGantiDpjp = false
-      }
+
+      return new Promise((resolve, reject) => {
+        api.post('v1/simrs/unitpengelolaharsip/arsip/simpanarsip', this.form, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        })
+          .then((resp) => {
+            if (resp.status === 200) {
+              const datax = resp?.data?.result[0]
+              this.form.noarsip = data?.noarsip
+              this.items.unshift(datax)
+              notifSuccess(resp)
+              //this.initForm()
+              this.loadingForm = false
+            }
+            this.loadingForm = false
+          })
+          .catch((err) => {
+            console.log(err)
+            this.loadingForm = false
+            reject(err)
+          })
+      })
     },
     setPeriodik(val) {
       // console.log('wew', val)
@@ -100,6 +124,13 @@ export const useUnitPengelolahArsipStore = defineStore('unit-pengelolah-arsip-st
     },
     setFilters() {
       this.filters = !this.filters
+    },
+    selectFiles(files) {
+      for (let i = 0; i < files.length; i++) {
+        const images = files[i]
+        this.form.dokumen.push(images)
+      }
+      // console.log('masukkan ke form', this.form)
     },
   }
 })

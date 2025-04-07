@@ -1,7 +1,8 @@
 <template>
   <q-page class="" :class="style.componentfull ? 'container-no-header' : 'container--q-header q-pa-xs'">
     <div class="header bg-primary text-white">
-      <header-page @fullscreen="style.setComponentFull" @tambaharsip="tambaharsip" />
+      <header-page @fullscreen="style.setComponentFull" @tambaharsip="tambaharsip"
+        :users="appstore?.user?.pegawai?.kdarteri" :organisasi="store.itemsorganisasi" />
     </div>
 
     <q-card flat no-shadow square class="my-flex-1" style="overflow: hidden;">
@@ -9,7 +10,7 @@
         <ListArsip :items="store.items" :loading="store.loading" />
       </q-scroll-area>
       <div class=" absolute-bottom bg-primary text-white z-top">
-        <footer-page />
+        <footer-page :meta="store.meta" @go-to="store.goToPage" />
       </div>
     </q-card>
     <DialogFormPage :klasifikasi="storeklasifikasi.items" :media="storemedia.items" />
@@ -26,18 +27,22 @@ import { useUnitPengelolahArsipStore } from 'src/stores/simrs/unitpengelolaarsip
 import { onMounted } from 'vue';
 import { useArsipMasterKelasifikasiStore } from 'src/stores/arsip/master/mkelasifikasi';
 import { useArsipMasterMediaStore } from 'src/stores/arsip/master/mmedia';
+import { useAplikasiStore } from 'src/stores/app/aplikasi';
 
 const style = useStyledStore()
 const store = useUnitPengelolahArsipStore()
 const storeklasifikasi = useArsipMasterKelasifikasiStore()
 const storemedia = useArsipMasterMediaStore()
+const appstore = useAplikasiStore()
 
 function tambaharsip() {
   store.dialog = true
 }
 
 onMounted(() => {
+  store.params.bidangbagian = appstore?.user?.pegawai?.kdarteri
   store.getData()
+  store.getDataorganisasi()
   storeklasifikasi.getMkelasifikasi()
   storemedia.getMastermedia()
 })

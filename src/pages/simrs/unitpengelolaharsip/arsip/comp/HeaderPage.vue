@@ -9,6 +9,11 @@
           </template>
         </q-input>
       </div>
+      <div v-if="users === 'sa'">
+        <q-select v-model="store.params.unit" dense outlined dark color="white" :options="organisasi"
+          label="Unit Pengelolah.." option-label="nama" option-value="kode" class="q-ml-sm" emit-value map-options
+          style="min-width: 300px;" />
+      </div>
       <!-- <q-select v-model="periode" dense outlined dark color="white" :options="periods" label="Periode" class="q-ml-sm"
         emit-value map-options style="min-width: 150px;" @update:model-value="gantiPeriode" />
       <q-select v-model="txt" dense outlined dark color="white" :options="txts" label="status pasien" class="q-ml-sm"
@@ -36,12 +41,23 @@ import { dateDbFormat } from 'src/modules/formatter'
 import { ref } from 'vue'
 import { useUnitPengelolahArsipStore } from 'src/stores/simrs/unitpengelolaarsip/arsip'
 const store = useUnitPengelolahArsipStore()
-const txt = ref('BELUM TERLAYANI')
-const txts = ref(['SEMUA', 'BELUM TERLAYANI', 'MASIH DILAYANI', 'SUDAH TERLAYANI'])
-const periode = ref(1)
-const to = ref(dateDbFormat(new Date()))
-const from = ref(dateDbFormat(new Date()))
+// const txt = ref('BELUM TERLAYANI')
+// const txts = ref(['SEMUA', 'BELUM TERLAYANI', 'MASIH DILAYANI', 'SUDAH TERLAYANI'])
+// const periode = ref(1)
+// const to = ref(dateDbFormat(new Date()))
+// const from = ref(dateDbFormat(new Date()))
 const emits = defineEmits(['fullscreen', 'tambaharsip'])
+
+defineProps({
+  users: {
+    type: String,
+    default: ""
+  },
+  organisasi: {
+    type: Array,
+    default: () => []
+  },
+})
 
 // onMounted(() => {
 //   store.getData()
