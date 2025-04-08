@@ -151,6 +151,9 @@ export const usePengunjungIgdStore = defineStore('pengunjung-igd', {
         this.notifikasiError('Maaf.. Harap ulangi, Ada Kesalahan ')
       }
     },
+    notifikasiError(msg) {
+      notifErrVue(msg)
+    },
     async bukaLayanan(pasien) {
       // this.loadingCall = false
       this.loadingTerima = true
@@ -525,10 +528,18 @@ export const usePengunjungIgdStore = defineStore('pengunjung-igd', {
         return this.notifikasiError('Maaf, Diagnosa Harap Diisi Dahulu...')
       }
 
+      const triage = pasien?.triage ? pasien?.triage[0] : null
+      const meninggaldiluarrs = triage?.meninggaldiluarrs || null
+      const barulahirmeninggal = triage?.barulahirmeninggal || null
+
       const form = {
         noreg: pasien?.noreg,
-        norm: pasien?.norm
+        norm: pasien?.norm,
+        meninggaldiluarrs,
+        barulahirmeninggal
       }
+      console.log('form', form)
+      // console.log('pasien', pasien)
       try {
         const resp = await api.post('v1/simrs/pelayanan/igd/flagfinish', form)
         // console.log('rsp ', form, resp)
