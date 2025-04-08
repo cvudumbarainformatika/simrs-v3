@@ -7,12 +7,6 @@ export default function useLayanan (pasien) {
   const auth = useAplikasiStore()
 
   const menus = ref([
-    // {
-    //   name: 'asessment-awal-page',
-    //   label: 'Asessment Awal',
-    //   icon: 'icon-mat-medical_information',
-    //   comp: shallowRef(defineAsyncComponent(() => import('./asessmentAwal/IndexPage.vue')))
-    // },
     {
       name: 'AnamnesisPage',
       label: 'Anamnesse $ Riwayat',
@@ -41,55 +35,27 @@ export default function useLayanan (pasien) {
       nakes: ['1', '2'],
       comp: shallowRef(defineAsyncComponent(() => import('./hemodialisa/IndexPage.vue')))
     },
-    // {
-    //   name: 'Penunjang',
-    //   label: 'Penunjang',
-    //   icon: 'icon-mat-post_add',
-    //   nakes: ['1', '2', '3'],
-    //   comp: shallowRef(defineAsyncComponent(() => import('./penunjang/IndexPage.vue')))
-    // },
-    // {
-    //   name: 'AsessmentUlang',
-    //   label: 'Asessment Ulang',
-    //   icon: 'icon-fa-book-medical-solid',
-    //   nakes: ['1', '2', '3', '4', '5', '6'],
-    //   comp: shallowRef(defineAsyncComponent(() => import('./asessmentulang/IndexPage.vue')))
-    // },
-    // {
-    //   name: 'NurseNote',
-    //   label: 'Nurse Note',
-    //   icon: 'icon-mat-note_alt',
-    //   nakes: ['2', '3'],
-    //   comp: shallowRef(defineAsyncComponent(() => import('./nursenote/IndexPage.vue')))
-    // },
-    // {
-    //   name: 'AsessmentPraBedah',
-    //   label: 'Asessment Pembedahan',
-    //   icon: 'icon-fa-book-medical-solid',
-    //   nakes: ['1', '2', '3'],
-    //   comp: shallowRef(defineAsyncComponent(() => import('./prabedah/IndexPage.vue')))
-    // },
-    // {
-    //   name: 'hais',
-    //   label: 'HAIs',
-    //   icon: 'icon-my-artboard',
-    //   nakes: ['2', '3'],
-    //   comp: shallowRef(defineAsyncComponent(() => import('./hais/IndexPage.vue')))
-    // },
-    // {
-    //   name: 'konsulspesialis',
-    //   label: 'Konsul Spesialis',
-    //   icon: 'icon-mat-textsms',
-    //   nakes: ['1', '2', '3'],
-    //   comp: shallowRef(defineAsyncComponent(() => import('./konsul/IndexPage.vue')))
-    // },
-    // {
-    //   name: 'edukasi-page',
-    //   label: 'Edukasi',
-    //   icon: 'icon-mat-people_alt',
-    //   nakes: ['1', '2', '3', '4', '5', '6', '', null],
-    //   comp: shallowRef(defineAsyncComponent(() => import('./edukasi/IndexPage.vue')))
-    // },
+    {
+      name: 'Penunjang',
+      label: 'Penunjang',
+      icon: 'icon-mat-post_add',
+      nakes: ['1', '2', '3'],
+      comp: shallowRef(defineAsyncComponent(() => import('./penunjang/IndexPage.vue')))
+    },
+    {
+      name: 'konsulspesialis',
+      label: 'Konsul Spesialis',
+      icon: 'icon-mat-textsms',
+      nakes: ['1', '2', '3'],
+      comp: shallowRef(defineAsyncComponent(() => import('./konsul/IndexPage.vue')))
+    },
+    {
+      name: 'edukasi-page',
+      label: 'Edukasi',
+      icon: 'icon-mat-people_alt',
+      nakes: ['1', '2', '3', '4', '5', '6', '', null],
+      comp: shallowRef(defineAsyncComponent(() => import('./edukasi/IndexPage.vue')))
+    },
     {
       name: 'e-resep-page',
       label: 'EResep',
@@ -97,13 +63,6 @@ export default function useLayanan (pasien) {
       nakes: ['1'],
       comp: shallowRef(defineAsyncComponent(() => import('../../eresep/EresepPage.vue')))
     },
-    // {
-    //   name: 'inform-consent-page',
-    //   label: 'Informed Consent',
-    //   icon: 'icon-mat-app_registration',
-    //   nakes: ['1', '2', '3'],
-    //   comp: shallowRef(defineAsyncComponent(() => import('./informconsent/IndexPage.vue')))
-    // },
     // {
     //   name: 'discharge-planning-page',
     //   label: 'Discharge Planning',

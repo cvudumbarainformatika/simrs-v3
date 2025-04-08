@@ -28,7 +28,9 @@ export const useListPasienHemodialisaStore = defineStore('list-pasien-hemodialis
     pageTindakan: false,
     loadingTerima: false,
     jeniskasus: [],
-    jnsKasusPasien: null
+    jnsKasusPasien: null,
+    dokters: [],
+    nakes: [],
   }),
   getters: {
     // doubleCount: (state) => state.counter * 2
@@ -132,10 +134,10 @@ export const useListPasienHemodialisaStore = defineStore('list-pasien-hemodialis
       }
     },
     injectDataPasien (noreg, val, kode, arr) {
-      const findPasien = this.items?.filter(x => x.noreg === noreg)
+      const findPasien = this.items?.find(x => x.noreg === noreg)
       // console.log('inject pasien', findPasien)
-      if (findPasien.length) {
-        const data = findPasien[0]
+      if (findPasien) {
+        const data = findPasien
         // data[kode] = val
         if (kode === 'kd_jeniskasus' ||
           kode === 'status' || kode === 'carakeluar' || kode === 'prognosis' ||
@@ -159,10 +161,10 @@ export const useListPasienHemodialisaStore = defineStore('list-pasien-hemodialis
       }
     },
     injectDataArray (noreg, arr, kode) {
-      const findPasien = this.items.filter(x => x?.noreg === noreg)
+      const findPasien = this.items.find(x => x?.noreg === noreg)
       // console.log('inject pasien', findPasien)
-      if (findPasien.length) {
-        const data = findPasien[0]
+      if (findPasien) {
+        const data = findPasien
         data[kode] = arr
       }
     },
@@ -195,6 +197,21 @@ export const useListPasienHemodialisaStore = defineStore('list-pasien-hemodialis
         if (target) {
           data[kode]?.splice(target, 1)
         }
+      }
+    },
+
+    hapusDataInjectan (pasien, id, key) {
+      // console.log('hapusDataInjectan', key, id, pasien)
+
+      const findPasien = this.items.find(x => x?.noreg === pasien?.noreg)
+      // console.log('find pasien', findPasien)
+
+      if (findPasien) {
+        const data = findPasien[key]
+        // console.log('data', data)
+
+        const pos = data.findIndex(el => el.id === id)
+        if (pos >= 0) { data.splice(pos, 1) }
       }
     },
 
@@ -239,20 +256,31 @@ export const useListPasienHemodialisaStore = defineStore('list-pasien-hemodialis
             console.log('resp', resp)
             const findPasien = this.items.find(x => x?.noreg === pas?.noreg)
             if (findPasien) {
-              findPasien.kd_jeniskasus = resp?.data?.kd_jeniskasus
-              findPasien.anamnesis = resp?.data?.anamnesis
-              findPasien.newapotekrajal = resp?.data?.newapotekrajal
-              findPasien.diagnosa = resp?.data?.diagnosa
-              findPasien.pemeriksaan = resp?.data?.pemeriksaan
-              findPasien.penilaian = resp?.data?.penilaian
-              findPasien.memodiagnosa = resp?.data?.memodiagnosa
-              findPasien.diagnosamedis = resp?.data?.diagnosamedis
-              findPasien.diagnosakeperawatan = resp?.data?.diagnosakeperawatan
-              findPasien.diagnosakebidanan = resp?.data?.diagnosakebidanan
-              findPasien.diagnosagizi = resp?.data?.diagnosagizi
-              findPasien.tindakan = resp?.data?.tindakan
-              findPasien.intradialitik = resp?.data?.intradialitik
-              findPasien.pengkajian = resp?.data?.pengkajian
+              const objectName = Object.keys(resp?.data)
+              // console.log('objectName', objectName)
+              objectName.forEach((key) => {
+                findPasien[key] = resp?.data[key]
+              })
+              // findPasien.noreg = resp?.data?.noreg
+              // findPasien.kd_jeniskasus = resp?.data?.kd_jeniskasus
+              // findPasien.anamnesis = resp?.data?.anamnesis
+              // findPasien.newapotekrajal = resp?.data?.newapotekrajal
+              // findPasien.diagnosa = resp?.data?.diagnosa
+              // findPasien.pemeriksaan = resp?.data?.pemeriksaan
+              // findPasien.penilaian = resp?.data?.penilaian
+              // findPasien.memodiagnosa = resp?.data?.memodiagnosa
+              // findPasien.diagnosamedis = resp?.data?.diagnosamedis
+              // findPasien.diagnosakeperawatan = resp?.data?.diagnosakeperawatan
+              // findPasien.diagnosakebidanan = resp?.data?.diagnosakebidanan
+              // findPasien.diagnosagizi = resp?.data?.diagnosagizi
+              // findPasien.tindakan = resp?.data?.tindakan
+              // findPasien.intradialitik = resp?.data?.intradialitik
+              // findPasien.pengkajian = resp?.data?.pengkajian
+              // findPasien.laborats = resp?.data?.laborats
+              // findPasien.laboratold = resp?.data?.laboratold
+              // findPasien.radiologi = resp?.data?.radiologi
+              // findPasien.hasilradiologi = resp?.data?.hasilradiologi
+              // findPasien.bankdarah = resp?.data?.bankdarah
               this.pasien = findPasien
             }
             const jnsKasus = resp?.data?.kd_jeniskasus

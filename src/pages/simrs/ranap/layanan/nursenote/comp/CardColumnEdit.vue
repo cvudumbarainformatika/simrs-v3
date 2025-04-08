@@ -203,7 +203,7 @@
               <div class="q-ml-sm flex">
                 <div class="text-bold">GCS : </div>
                 <div class="flex items-center q-gutter-x-xs">
-                  <text-edit style="max-width: 80px;" :model-value="item.gcs" type="number" @update:model-value="(val) => {
+                  <text-edit style="max-width: 80px;" :model-value="item.gcs" @update:model-value="(val) => {
                     item.gcs = val
                   }" />
                   <div></div>
