@@ -27,7 +27,8 @@
 
         <div class="q-mt-lg">
           <div>Dengan Hormat,</div>
-          <div>Mohon Bantuan Dokter <b>{{ namaPetugas(item?.kddokterkonsul) }}</b>, untuk konsultasi Masalah medik saat ini</div>
+          <div>Mohon Bantuan Dokter <b>{{ namaPetugas(item?.kddokterkonsul) }}</b>, untuk konsultasi Masalah medik saat
+            ini</div>
           <div>{{ item?.permintaan }}</div>
 
           <div class="q-mt-lg">
@@ -35,15 +36,12 @@
           </div>
 
           <q-form v-if="cekYgMenjawab(item)" ref="formRef" class="q-mt-lg" @submit="onSubmit">
-            <q-input
-              outlined standout="bg-yellow-3"
-              v-model="form.jawaban"
-              label="" type="textarea" rows="10"
-            />
+            <q-input outlined standout="bg-yellow-3" v-model="form.jawaban" label="" type="textarea" rows="10" />
 
             <div class="text-right q-mt-lg q-gutter-md">
               <q-btn color="dark" label="Kembali" @click="emits('toList')" />
-              <q-btn :loading="loadingSave" :disable="loadingSave" color="primary" label="Simpan Jawaban" type="submit" />
+              <q-btn :loading="loadingSave" :disable="loadingSave" color="primary" label="Simpan Jawaban"
+                type="submit" />
             </div>
           </q-form>
 
@@ -67,11 +65,11 @@
 
 <script setup>
 import { onMounted, ref } from 'vue'
-import { useKonsulRanapStore } from 'src/stores/simrs/ranap/konsul'
-import { usePengunjungRanapStore } from 'src/stores/simrs/ranap/pengunjung'
 import { api } from 'src/boot/axios'
 // eslint-disable-next-line no-unused-vars
 import { notifSuccess } from 'src/modules/utils'
+import { useKonsulHDtore } from 'src/stores/simrs/hemodialisa/konsul'
+import { useListPasienHemodialisaStore } from 'src/stores/simrs/hemodialisa/hemodialisa'
 
 const props = defineProps({
   pasien: {
@@ -90,8 +88,8 @@ const props = defineProps({
 
 const emits = defineEmits(['toList'])
 
-const store = useKonsulRanapStore()
-const kunjunganRanap = usePengunjungRanapStore()
+const store = useKonsulHDtore()
+const pengunjung = useListPasienHemodialisaStore()
 const formRef = ref(null)
 const form = ref({
   jawaban: 'Dengan Hormat, ' + '\n' + 'Sesuai Permintaan konsultasi pada Pemeriksaan pasien, kami dapati saat ini' + '\n' + '\n' + '\n' + 'Saran Tindakan medik / Pengobatan : ' + '\n'
@@ -145,7 +143,7 @@ function cekYgMenjawab (item) {
 }
 
 async function updateFlagRanap (item) {
-  const findPasien = kunjunganRanap.pasiens?.find(x => x?.noreg === props?.pasien?.noreg) ?? null
+  const findPasien = pengunjung.items?.find(x => x?.noreg === props?.pasien?.noreg) ?? null
   const konsultasis = findPasien?.konsultasi ?? []
   const target = konsultasis?.find(x => x?.id === item?.id) ?? null
   // const targetIndex = konsultasis?.findIndex(x => x?.id === item?.id)
@@ -192,7 +190,7 @@ function onSubmit () {
       .then(resp => {
         console.log('resp', resp)
         if (resp.status === 200) {
-          kunjunganRanap.injectUpdatean(pasien?.noreg, item?.id, resp.data.result, 'konsultasi')
+          pengunjung.injectUpdatean(pasien?.noreg, item?.id, resp.data.result, 'konsultasi')
           loadingSave.value = false
           notifSuccess(resp)
         }

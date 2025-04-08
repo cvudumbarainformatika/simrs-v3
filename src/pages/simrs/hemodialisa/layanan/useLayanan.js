@@ -42,13 +42,13 @@ export default function useLayanan (pasien) {
       nakes: ['1', '2', '3'],
       comp: shallowRef(defineAsyncComponent(() => import('./penunjang/IndexPage.vue')))
     },
-    // {
-    //   name: 'konsulspesialis',
-    //   label: 'Konsul Spesialis',
-    //   icon: 'icon-mat-textsms',
-    //   nakes: ['1', '2', '3'],
-    //   comp: shallowRef(defineAsyncComponent(() => import('./konsul/IndexPage.vue')))
-    // },
+    {
+      name: 'konsulspesialis',
+      label: 'Konsul Spesialis',
+      icon: 'icon-mat-textsms',
+      nakes: ['1', '2', '3'],
+      comp: shallowRef(defineAsyncComponent(() => import('./konsul/IndexPage.vue')))
+    },
     // {
     //   name: 'edukasi-page',
     //   label: 'Edukasi',

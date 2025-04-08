@@ -3,9 +3,9 @@ import { useQuasar } from 'quasar'
 // eslint-disable-next-line no-unused-vars
 import { formatRp, tglJamFormat } from 'src/modules/formatter'
 import { computed, ref } from 'vue'
-import { useKonsulRanapStore } from 'src/stores/simrs/ranap/konsul'
+import { useKonsulHDtore } from 'src/stores/simrs/hemodialisa/konsul'
 
-const store = useKonsulRanapStore()
+const store = useKonsulHDtore()
 
 const $q = useQuasar()
 
@@ -35,7 +35,7 @@ const filterredTable = computed(() => {
   return arr
 })
 
-function namaPetugas(item) {
+function namaPetugas (item) {
   // console.log('item', item)
 
   const petugas = store.dokters?.find(x => x.kdpegsimrs === item)?.nama ?? null
@@ -60,7 +60,7 @@ const PHOTO_USER = (item) => {
 
 const hoverredId = ref(null)
 
-function masihBisadiHapus(item) {
+function masihBisadiHapus (item) {
   // (item?.jawaban === null || item?.jawaban === '') && (item?.kdminta === auth || item?.user === auth)
   // console.log('item', item);
 
@@ -80,7 +80,7 @@ function masihBisadiHapus(item) {
   return hapus
 }
 
-function hapusItem(id) {
+function hapusItem (id) {
   // console.log('id', id)
 
   $q.dialog({
