@@ -12,7 +12,7 @@
           <div class=" q-gutter-sm">
             <div class="row q-gutter-sm">
               <div class="col-12">
-                <q-input v-model="store.form.noarsip" label="No. Arsip" outlined dense />
+                <q-input v-model="store.form.noarsip" label="No. Arsip" outlined dense disable />
               </div>
               <div class="col-12">
                 <app-input-date-human :model="store.tanggal.tgl" label="Tanggal" outlined @db-model="setFrom"
@@ -44,7 +44,8 @@
                 <q-input type="textarea" v-model="store.form.uraian" label="Uraian" outlined />
               </div>
               <div class="col-12">
-                <q-input v-model="store.form.lokasi" label="Lokasi Arsip" outlined dense />
+                <q-select v-model="store.form.lokasi" label="Lokasi Arsip" outlined dense :options="lokasiarsip"
+                  option-value="id" option-label="nama_lokasi" emit-value map-options />
               </div>
               <div class="col-12">
                 <q-select label="Jenis Media" v-model="store.form.media" outlined dense :options="optionsmedia"
@@ -150,6 +151,10 @@ const props = defineProps({
     type: Object,
     default: null
   },
+  lokasiarsip: {
+    type: Object,
+    default: null
+  },
 })
 
 const keaslian = ref([
@@ -163,7 +168,7 @@ function filterFn(val, update) {
 
   if (val === "") {
     update(() => {
-      options.value = []
+      options.value = props.klasifikasi
     })
     return
   }
@@ -184,7 +189,7 @@ function filterFnmedia(val, update) {
 
   if (val === "") {
     update(() => {
-      optionsmedia.value = []
+      optionsmedia.value = props.media
     })
     return
   }

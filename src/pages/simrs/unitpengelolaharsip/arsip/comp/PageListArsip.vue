@@ -13,7 +13,8 @@
         <footer-page :meta="store.meta" @go-to="store.goToPage" />
       </div>
     </q-card>
-    <DialogFormPage :klasifikasi="storeklasifikasi.items" :media="storemedia.items" />
+    <DialogFormPage :klasifikasi="storeklasifikasi.items" :media="storemedia.items"
+      :lokasiarsip="storelokasiarsip.items" />
     <!-- <page-layanan-igd :key="pasien" v-model="store.pageLayanan" :pasien="pasien" :loadingaja="store.loadingTerima" /> -->
   </q-page>
 </template>
@@ -28,10 +29,12 @@ import { onMounted } from 'vue';
 import { useArsipMasterKelasifikasiStore } from 'src/stores/arsip/master/mkelasifikasi';
 import { useArsipMasterMediaStore } from 'src/stores/arsip/master/mmedia';
 import { useAplikasiStore } from 'src/stores/app/aplikasi';
+import { useArsipMasterlokasiArsipStore } from 'src/stores/arsip/master/mlokasiarsip';
 
 const style = useStyledStore()
 const store = useUnitPengelolahArsipStore()
 const storeklasifikasi = useArsipMasterKelasifikasiStore()
+const storelokasiarsip = useArsipMasterlokasiArsipStore()
 const storemedia = useArsipMasterMediaStore()
 const appstore = useAplikasiStore()
 
@@ -45,5 +48,6 @@ onMounted(() => {
   store.getDataorganisasi()
   storeklasifikasi.getMkelasifikasi()
   storemedia.getMastermedia()
+  storelokasiarsip.getMlokasiArsip()
 })
 </script>
