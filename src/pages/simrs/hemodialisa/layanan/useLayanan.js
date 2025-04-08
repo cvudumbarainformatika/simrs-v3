@@ -41,13 +41,13 @@ export default function useLayanan (pasien) {
       nakes: ['1', '2'],
       comp: shallowRef(defineAsyncComponent(() => import('./hemodialisa/IndexPage.vue')))
     },
-    // {
-    //   name: 'Penunjang',
-    //   label: 'Penunjang',
-    //   icon: 'icon-mat-post_add',
-    //   nakes: ['1', '2', '3'],
-    //   comp: shallowRef(defineAsyncComponent(() => import('./penunjang/IndexPage.vue')))
-    // },
+    {
+      name: 'Penunjang',
+      label: 'Penunjang',
+      icon: 'icon-mat-post_add',
+      nakes: ['1', '2', '3'],
+      comp: shallowRef(defineAsyncComponent(() => import('./penunjang/IndexPage.vue')))
+    },
     // {
     //   name: 'AsessmentUlang',
     //   label: 'Asessment Ulang',

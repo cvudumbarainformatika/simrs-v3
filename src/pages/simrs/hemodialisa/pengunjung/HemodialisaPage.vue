@@ -53,6 +53,9 @@ import { useAnatommyHemodialisaStore } from 'src/stores/simrs/hemodialisa/anatom
 import { useTindakanHemodialisaStore } from 'src/stores/simrs/hemodialisa/tindakan'
 import { useDiagnosaHDStore } from 'src/stores/simrs/hemodialisa/diagnosa'
 import { useDiagnosaKeperawatan } from 'src/stores/simrs/pelayanan/poli/diagnosakeperawatan'
+import { useLaboratPoli } from 'src/stores/simrs/pelayanan/poli/laborat'
+import { useRadiologiPoli } from 'src/stores/simrs/pelayanan/poli/radiologi'
+import { usePermintaanBankDarahHDStore } from 'src/stores/simrs/hemodialisa/bankdarah'
 
 const store = useListPasienHemodialisaStore()
 const penilaian = usePenilaianHemodialisaStore()
@@ -60,6 +63,10 @@ const anatomy = useAnatommyHemodialisaStore()
 const tindakan = useTindakanHemodialisaStore()
 const diagnosa = useDiagnosaHDStore()
 const diagnosakeperawatan = useDiagnosaKeperawatan()
+
+const lab = useLaboratPoli()
+const radiologi = useRadiologiPoli()
+const bankdarah = usePermintaanBankDarahHDStore()
 onMounted(() => {
   Promise.all([
     store.getDataTable(),
@@ -70,6 +77,12 @@ onMounted(() => {
     diagnosa.getDiagnosaDropdown(),
 
     diagnosakeperawatan.getData(),
+
+
+    lab.getMasterLaborat(),
+    radiologi.getRadiologi(),
+    radiologi.getJenisRadiologi(),
+    bankdarah.getMaster(),
 
     store.getNakes(),
     store.getNonNakes(),
