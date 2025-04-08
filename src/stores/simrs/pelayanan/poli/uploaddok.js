@@ -26,13 +26,14 @@ export const useUploadDokStore = defineStore('upload-dok-poli', {
       return new Promise((resolve, reject) => {
         api.get('v1/simrs/pelayanan/dokumenupload/master', params)
           .then((resp) => {
-            console.log(resp)
+            // console.log(resp)
             if (resp.status === 200) {
               this.masters = resp.data
             }
+            resolve(resp?.data)
           })
           .catch((err) => {
-            console.log(err)
+            // console.log(err)
             reject(err)
           })
       })

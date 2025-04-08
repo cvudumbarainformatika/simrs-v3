@@ -37,12 +37,15 @@ const props = defineProps({
 })
 
 onMounted(() => {
-  // const isRanap = true
+  const isRanap = true
   Promise.all([
     store.initForm(),
-    store.masters = ['Hemodialisa'],
-    store.form.nama = 'Hemodialisa'
-    // store.getMaster(isRanap)
+    store.getMaster(isRanap).then(() => {
+      store.masters = ['Hemodialisa']
+      store.form.nama = 'Hemodialisa'
+      // setTimeout(() => {
+      // }, 100)
+    })
   ])
 })
 
