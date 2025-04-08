@@ -3,6 +3,7 @@ import { api } from 'src/boot/axios'
 import { usePengunjungPoliStore } from './pengunjung'
 import { notifErrVue, notifSuccess } from 'src/modules/utils'
 import { usePengunjungRanapStore } from '../../ranap/pengunjung'
+import { useListPasienHemodialisaStore } from '../../hemodialisa/hemodialisa'
 // import { dateDbFormat } from 'src/modules/formatter'
 
 export const useRadiologiPoli = defineStore('poli-radiologi', {
@@ -72,9 +73,11 @@ export const useRadiologiPoli = defineStore('poli-radiologi', {
         if (resp.status === 200) {
           const storePasien = usePengunjungPoliStore()
           const storeRanap = usePengunjungRanapStore()
+          const storeHD = useListPasienHemodialisaStore()
           const isi = resp?.data?.result
           storePasien.injectDataPasien(pasien, isi, 'radiologi')
           storeRanap.injectDataPasien(pasien?.noreg, isi, 'radiologi')
+          storeHD.injectDataPasien(pasien?.noreg, isi, 'radiologi')
           this.setNotas(resp?.data?.nota)
           notifSuccess(resp)
           this.loadingSave = false
@@ -107,6 +110,8 @@ export const useRadiologiPoli = defineStore('poli-radiologi', {
 
           const storeRanap = usePengunjungRanapStore()
           storeRanap.injectDataPasien(pasien?.noreg, isi, 'radiologi')
+          const storeHD = useListPasienHemodialisaStore()
+          storeHD.injectDataPasien(pasien?.noreg, isi, 'radiologi')
         }
       }
     },
@@ -124,8 +129,10 @@ export const useRadiologiPoli = defineStore('poli-radiologi', {
         if (resp.status === 200) {
           const storePasien = usePengunjungPoliStore()
           const storeRanap = usePengunjungRanapStore()
+          const storeHD = useListPasienHemodialisaStore()
           storePasien.hapusDataRadiologi(pasien, id)
           storeRanap.hapusDataInjectan(pasien, id, 'radiologi')
+          storeHD.hapusDataInjectan(pasien, id, 'radiologi')
           this.setNotas(resp?.data?.nota)
           notifSuccess(resp)
         }
