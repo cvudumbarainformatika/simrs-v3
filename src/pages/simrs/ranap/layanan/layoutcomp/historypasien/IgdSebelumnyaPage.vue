@@ -65,8 +65,8 @@ const menus = ref([
     name: 'anamnesis',
     label: 'Anamnesis',
     icon: 'icon-my-file_sign',
-    // comp: shallowRef(defineAsyncComponent(() => import('./compIgdSebelumnya/AnamnesisPage.vue')))
-    comp: shallowRef(defineAsyncComponent(() => import('src/pages/simrs/igd/layanan/anamnesis/comanamnesis/ListAnamnesis.vue')))
+    comp: shallowRef(defineAsyncComponent(() => import('./compIgdSebelumnya/AnamnesisPage.vue')))
+    // comp: shallowRef(defineAsyncComponent(() => import('src/pages/simrs/igd/layanan/anamnesis/comanamnesis/ListAnamnesis.vue')))
   },
   {
     name: 'pemeriksaanfisik',

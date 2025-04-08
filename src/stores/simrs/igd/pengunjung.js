@@ -538,7 +538,7 @@ export const usePengunjungIgdStore = defineStore('pengunjung-igd', {
         meninggaldiluarrs,
         barulahirmeninggal
       }
-      console.log('form', form)
+      // console.log('form', form)
       // console.log('pasien', pasien)
       try {
         const resp = await api.post('v1/simrs/pelayanan/igd/flagfinish', form)
