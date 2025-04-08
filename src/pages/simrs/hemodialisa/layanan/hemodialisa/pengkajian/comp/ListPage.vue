@@ -1,5 +1,5 @@
 <template>
-  <div class="fit column bg-grey-4 relative-position q-mb-xl ">
+  <div class="fit column bg-grey-4 relative-position ">
     <div class="bg-grey-4 q-pa-sm">
       <info-input-ranap :items="store?.pasien?.pengkajian" class="scroll">
         <transition-group appear tag="div" @before-enter="beforeEnter" @enter="enter">
