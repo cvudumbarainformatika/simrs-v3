@@ -1,10 +1,7 @@
 <template>
   <div class="fit column">
     <div v-if="items?.length" class="fit scroll q-pa-sm">
-      <q-card
-        v-for="item in filterredTable" :key="item"
-        flat bordered class="full-width q-mb-sm"
-      >
+      <q-card v-for="item in filterredTable" :key="item" flat bordered class="full-width q-mb-sm">
         <q-card-section>
           <div class="row items-center full-width justify-between relative-position">
             <div class="col-auto" style="max-width: 85%;">
@@ -13,7 +10,7 @@
               <div><b>Golongan :</b> <em>{{ item?.rs5 ?? '-' }} {{ item?.rs15 }}</em></div>
               <div><b>u/p :</b> <em>{{ item?.rs7 }}</em></div>
               <div><em>Qty :</em> <b>{{ item?.rs6 }}</b> <em>Transfusi Ke -</em> <b>{{ item?.rs13 }}</b></div>
-              <div><em>Reaksi :</em> <b>{{ store?.reaksis?.find(x => x?.value === item?.rs9)?.label }}</b> </div>
+              <div><em>Reaksi :</em> <b>{{store?.reaksis?.find(x => x?.value === item?.rs9)?.label}}</b> </div>
               <div><em>Keterangan :</em> <b>{{ item?.ket ?? '-' }}</b> </div>
               <div class="">
                 <!-- <div>by : <em>{{ item?.petugas?.nama }}</em></div> -->
@@ -23,7 +20,8 @@
               <div class="row reverse">
                 <div class="column ">
                   <div class="self-end q-mb-sm">
-                    <q-btn icon="icon-mat-delete" outline color="negative" round size="sm" @click="hapusItem(item?.id)" />
+                    <q-btn icon="icon-mat-delete" outline color="negative" round size="sm"
+                      @click="hapusItem(item?.id)" />
                   </div>
                   <div class="self-end q-mb-sm">
                     <q-btn icon="icon-mat-print" outline color="dark" round size="sm" @click="printItem(item)" />
@@ -48,13 +46,14 @@
     </div>
 
     <!-- Dialog Print -->
-    <dialog-cetak v-model="openDialogCetak" :item="itemx" :pasien="pasien" :dokters="store?.dokters" :perawats="store?.perawats" />
+    <dialog-cetak v-model="openDialogCetak" :item="itemx" :pasien="pasien" :dokters="store?.dokters"
+      :perawats="store?.perawats" />
   </div>
 </template>
 
 <script setup>
 import { useQuasar } from 'quasar'
-import { usePermintaanBankDarahStore } from 'src/stores/simrs/ranap/bankdarah.js'
+import { usePermintaanBankDarahHDStore } from 'src/stores/simrs/hemodialisa/bankdarah'
 import { computed, defineAsyncComponent, ref } from 'vue'
 
 const props = defineProps({
@@ -71,7 +70,7 @@ const props = defineProps({
     default: null
   }
 })
-const store = usePermintaanBankDarahStore()
+const store = usePermintaanBankDarahHDStore()
 const DialogCetak = defineAsyncComponent(() => import('./DialogCetak.vue'))
 const openDialogCetak = ref(false)
 const itemx = ref(null)
