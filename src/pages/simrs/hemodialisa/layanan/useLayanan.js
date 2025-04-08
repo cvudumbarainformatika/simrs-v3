@@ -70,13 +70,13 @@ export default function useLayanan (pasien) {
     //   nakes: ['2', '3'],
     //   comp: shallowRef(defineAsyncComponent(() => import('./dischargeplanning/IndexPage.vue')))
     // },
-    // {
-    //   name: 'upload-page',
-    //   label: 'Upload Dokumen Luar',
-    //   icon: 'icon-mat-cloud_upload',
-    //   nakes: ['1', '2', '3', '4', '5', '6'],
-    //   comp: shallowRef(defineAsyncComponent(() => import('./upload/IndexPage.vue')))
-    // },
+    {
+      name: 'upload-page',
+      label: 'Upload Dokumen Luar',
+      icon: 'icon-mat-cloud_upload',
+      nakes: ['1', '2', '3', '4', '5', '6'],
+      comp: shallowRef(defineAsyncComponent(() => import('./upload/IndexPage.vue')))
+    },
     // {
     //   name: 'catatan-dan-dokumen',
     //   label: 'Catatan / Dokumen',
