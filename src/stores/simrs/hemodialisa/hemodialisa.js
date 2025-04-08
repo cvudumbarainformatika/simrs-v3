@@ -257,7 +257,7 @@ export const useListPasienHemodialisaStore = defineStore('list-pasien-hemodialis
             const findPasien = this.items.find(x => x?.noreg === pas?.noreg)
             if (findPasien) {
               const objectName = Object.keys(resp?.data)
-              console.log('objectName', objectName)
+              // console.log('objectName', objectName)
               objectName.forEach((key) => {
                 findPasien[key] = resp?.data[key]
               })

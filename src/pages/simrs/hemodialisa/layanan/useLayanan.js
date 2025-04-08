@@ -49,13 +49,13 @@ export default function useLayanan (pasien) {
       nakes: ['1', '2', '3'],
       comp: shallowRef(defineAsyncComponent(() => import('./konsul/IndexPage.vue')))
     },
-    // {
-    //   name: 'edukasi-page',
-    //   label: 'Edukasi',
-    //   icon: 'icon-mat-people_alt',
-    //   nakes: ['1', '2', '3', '4', '5', '6', '', null],
-    //   comp: shallowRef(defineAsyncComponent(() => import('./edukasi/IndexPage.vue')))
-    // },
+    {
+      name: 'edukasi-page',
+      label: 'Edukasi',
+      icon: 'icon-mat-people_alt',
+      nakes: ['1', '2', '3', '4', '5', '6', '', null],
+      comp: shallowRef(defineAsyncComponent(() => import('./edukasi/IndexPage.vue')))
+    },
     {
       name: 'e-resep-page',
       label: 'EResep',

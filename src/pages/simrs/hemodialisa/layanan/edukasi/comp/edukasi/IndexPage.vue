@@ -2,7 +2,7 @@
 import { useEdukasiPoliStore } from 'src/stores/simrs/pelayanan/poli/edukasi'
 import { defineAsyncComponent, onMounted } from 'vue'
 
-const BaseLayout = defineAsyncComponent(() => import('src/pages/simrs/ranap/layanan/components/BaseLayout.vue'))
+const BaseLayout = defineAsyncComponent(() => import('src/pages/simrs/hemodialisa/layanan/components/BaseLayout.vue'))
 const FormEdukasi = defineAsyncComponent(() => import('src/pages/simrs/poli/tindakan/comptindakan/pagemenu/compedukasi/FormEdukasi.vue'))
 const ListEdukasi = defineAsyncComponent(() => import('src/pages/simrs/poli/tindakan/comptindakan/pagemenu/compedukasi/ListEdukasi.vue'))
 // const ListTindakan = defineAsyncComponent(() => import('./comp/ListTindakan.vue'))
