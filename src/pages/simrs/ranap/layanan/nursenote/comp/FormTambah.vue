@@ -130,8 +130,7 @@
                 @focus="() => setSplitter('insideModel1b', 100)" />
               <app-input-simrs v-model="store.form.icp" label="ICP" class="col-4"
                 @focus="() => setSplitter('insideModel1b', 100)" />
-              <app-input-simrs v-model="store.form.gcs" label="GCS" class="col-4"
-                @focus="() => setSplitter('insideModel1b', 100)" />
+              <app-input-simrs v-model="store.form.gcs" label="GCS" class="col-4" />
               <div class="col-6">Kejang, Durasi </div> <app-input-simrs v-model="store.form.kejang" label="terjadi"
                 class="col-6" @focus="() => setSplitter('insideModel1b', 100)" />
 
