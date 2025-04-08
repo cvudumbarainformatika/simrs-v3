@@ -25,6 +25,7 @@ export const useUnitPengelolahArsipStore = defineStore('unit-pengelolah-arsip-st
     form: {
       noarsip: '',
       tgl: date.formatDate(Date.now(), 'YYYY-MM-DD'),
+      jumlah: 1,
       dokumen: []
     },
     loadingForm: false
