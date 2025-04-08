@@ -8,12 +8,12 @@
 
         <q-separator />
 
-        <q-card-section style="max-height: 50vh" class="scroll">
+        <q-card-section style="max-height: 80vh" class="scroll">
           <div class=" q-gutter-sm">
             <div class="row q-gutter-sm">
-              <div class="col-12">
+              <!-- <div class="col-12">
                 <q-input v-model="store.form.noarsip" label="No. Arsip" outlined dense disable />
-              </div>
+              </div> -->
               <div class="col-12">
                 <app-input-date-human :model="store.tanggal.tgl" label="Tanggal" outlined @db-model="setFrom"
                   @set-display="setToFromDisp" />
@@ -72,14 +72,15 @@
                 <q-option-group v-model="store.form.keaslian" :options="keaslian" color="primary" inline dense />
               </div>
               <div class="col-12">
-                <q-input v-model="store.form.jumlah" label="Jumlah" outlined dense type="number" />
+                <q-input v-model="store.form.jumlah" label="Jumlah" input-class="text-right" outlined dense
+                  type="number" />
               </div>
               <div class="col-12">
                 <q-input v-model="store.form.nobox" label="No. Box" outlined dense />
               </div>
               <div class="col-12">
                 <q-uploader ref="uploader" :factory="uploadFiles" :loading="uploadPercent" bordered flat
-                  :label="`Upload Dokumen/ Arsip`" accept=".pdf" class="fit" multiple max-files="9" auto-upload
+                  :label="`Upload Dokumen/ Arsip`" accept=".pdf" class="fit" multiple max-files="1" auto-upload
                   @finish="finished" @rejected="onRejected">
                   <template #list="scope">
                     <div class="full-height full-width">
