@@ -1,8 +1,7 @@
 <template>
   <div class="justify-content-center full-width">
-    <q-table class="my-stickey-table" style="height: 100%" :rows="store.listdataSp3b" :columns="columnsp3b"
-      row-key="name" dense flat bordered wrap-cells :filter="store.reqs.q" :loading="store.loading"
-      :rows-per-page-options="[10, 50, 100]">
+    <q-table style="height: 100%" :rows="store.listdataSp3b" :columns="columnsp3b" row-key="name" dense flat bordered
+      wrap-cells :filter="store.reqs.q" :loading="store.loading" :rows-per-page-options="[10, 50, 100]">
 
       <template #loading>
         <q-inner-loading showing color="warning" />
@@ -162,7 +161,7 @@ function deleteData(row) {
 }
 </script>
 <style lang="scss">
-.my-sticky-table {
+.my-stickey-table {
 
 
   .q-table__top,
