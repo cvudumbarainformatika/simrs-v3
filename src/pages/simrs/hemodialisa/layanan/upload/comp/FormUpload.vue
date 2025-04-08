@@ -1,40 +1,21 @@
 <template>
   <div class="fit">
-    <q-form
-      class="fit q-pa-sm"
-      @submit="onSubmit"
-    >
+    <q-form class="fit q-pa-sm" @submit="onSubmit">
       <div class="full-height scroll">
         <div class="bg-white q-pa-sm q-mb-sm">
           <div>Dokumen apa yang akan di Upload? </div>
           <q-separator class="q-my-sm" />
           <div class="q-gutter-sm">
-            <q-radio
-              v-for="item in store.masters"
-              :key="item"
-              v-model="store.form.nama"
-              :val="item"
-              :label="item"
-              dense
-              size="xs"
-            />
+            <q-radio v-for="item in store.masters" :key="item" v-model="store.form.nama" :val="item" :label="item" dense
+              size="xs" />
           </div>
         </div>
-        <FormComp
-          v-if="store.form.nama"
-          :pasien="pasien"
-        />
+        <FormComp v-if="store.form.nama" :pasien="pasien" />
       </div>
       <div class="absolute-bottom bg-primary q-pa-md">
         <div class="row justify-end">
-          <q-btn
-            label="Simpan"
-            type="submit"
-            class="bg-white text-dark q-px-lg"
-            :loading="store.loadingSave"
-            :disable="store.loadingSave"
-            dense
-          />
+          <q-btn label="Simpan" type="submit" class="bg-white text-dark q-px-lg" :loading="store.loadingSave"
+            :disable="store.loadingSave" dense />
         </div>
       </div>
     </q-form>
@@ -56,22 +37,25 @@ const props = defineProps({
 })
 
 onMounted(() => {
-  const isRanap = true
+  // const isRanap = true
   Promise.all([
     store.initForm(),
-    store.getMaster(isRanap)
+    store.masters = ['Hemodialisa'],
+    store.form.nama = 'Hemodialisa'
+    // store.getMaster(isRanap)
   ])
 })
 
 function onSubmit () {
-  const isRanap = true
-  store.saveData(props?.pasien, isRanap)
+  // const isRanap = true
+  store.saveData(props?.pasien, isRanap).then(() => {
+    store.form.nama = 'Hemodialisa'
+  })
+    .catch((err) => {
+      console.log('error', err)
+    })
 }
 
 </script>
 
-<style lang="scss" scoped>
-.q-uploader {
-    // max-height: 500px !important;
-}
-</style>
+<style lang="scss" scoped></style>

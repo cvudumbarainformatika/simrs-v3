@@ -72,15 +72,18 @@ export const useUploadDokStore = defineStore('upload-dok-poli', {
             if (resp.status === 200) {
               const storePasien = usePengunjungPoliStore()
               const storeRananp = usePengunjungRanapStore()
+              const storeHD = useListPasienHemodialisaStore()
               for (let i = 0; i < resp?.data?.result?.length; i++) {
                 const isi = resp.data.result[i]
                 storePasien.injectDataPasien(pasien, isi, 'dokumenluar')
                 storeRananp.injectDataPasien(pasien?.noreg, isi, 'dokumenluar')
+                storeHD.injectDataPasien(pasien?.noreg, isi, 'dokumenluar')
               }
               notifSuccess(resp)
               this.initForm()
               this.loadingSave = false
             }
+            resolve(resp?.data)
             this.loadingSave = false
           })
           .catch((err) => {
