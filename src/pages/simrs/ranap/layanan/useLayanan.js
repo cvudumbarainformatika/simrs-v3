@@ -1,18 +1,15 @@
 import { computed, defineAsyncComponent, onMounted, ref, shallowRef, watchEffect } from 'vue'
 import { usePengunjungRanapStore } from 'src/stores/simrs/ranap/pengunjung'
 import { useAplikasiStore } from 'src/stores/app/aplikasi'
+import { useRoute } from 'vue-router'
 
-export default function useLayanan(pasien) {
+export default function useLayanan(pasien, mpp) {
   const store = usePengunjungRanapStore()
   const auth = useAplikasiStore()
+  const route = useRoute()
 
   const menus = ref([
-    // {
-    //   name: 'asessment-awal-page',
-    //   label: 'Asessment Awal',
-    //   icon: 'icon-mat-medical_information',
-    //   comp: shallowRef(defineAsyncComponent(() => import('./asessmentAwal/IndexPage.vue')))
-    // },
+
     {
       name: 'AnamnesisPage',
       label: 'Anamnesse $ Riwayat',
@@ -115,7 +112,7 @@ export default function useLayanan(pasien) {
       name: 'catatan-dan-dokumen',
       label: 'Catatan / Dokumen',
       icon: 'icon-my-file_sign',
-      nakes: ['1', '2', '3', '4', '5', '6'],
+      nakes: ['1', '2', '3', '4', '5', '6', 'mpp'],
       comp: shallowRef(defineAsyncComponent(() => import('./dokumen/IndexPage.vue')))
     },
     {
@@ -131,9 +128,24 @@ export default function useLayanan(pasien) {
       icon: 'icon-eva-home',
       nakes: ['1', '2', '3'],
       comp: shallowRef(defineAsyncComponent(() => import('./pulang/IndexPage.vue')))
+    },
+
+
+
+
+
+    // INI PAGENYA MPP
+    {
+      name: 'mpp-page',
+      label: 'FORM MPP',
+      icon: 'icon-mat-medical_information',
+      nakes: ['mpp'],
+      comp: shallowRef(defineAsyncComponent(() => import('../../mpp/ranap/layanan/FORM/IndexPage.vue')))
     }
 
   ])
+
+
 
   const nakes = computed(() => {
     return auth?.user?.pegawai?.kdgroupnakes
@@ -143,13 +155,20 @@ export default function useLayanan(pasien) {
 
 
   const filterredMenus = computed(() => {
-    const byPass = ['sa']
-    const user = auth?.user?.username
-    if (byPass.includes(user)) {
-      return menus.value
-    }
+    const mpp = route.matched?.map(a => a.path)?.includes('/mpp') ?? false
+    console.log('mpp', mpp)
+    if (!mpp) {
+      const byPass = ['sa']
+      const user = auth?.user?.username
+      if (byPass.includes(user)) {
+        return menus.value
+      }
 
-    return menus.value.filter(menu => menu.nakes.includes(nakes.value))
+      return menus.value.filter(menu => menu.nakes.includes(nakes.value))
+    }
+    else {
+      return menus.value.filter(menu => menu.nakes.includes('mpp'))
+    }
   })
 
   const menu = ref(null)
