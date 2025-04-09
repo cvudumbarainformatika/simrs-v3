@@ -4,7 +4,7 @@
       <q-layout view="lHh Lpr lFf" container class="shadow-2 rounded-borders">
         <q-header elevated>
           <q-bar class="bg-black text-white">
-            <div>Cetak BKU Pelaksana Teknis Kegiatan</div>
+            <div>Cetak Buku Tunai Bendahara Pengeluaran</div>
             <q-space />
 
             <q-btn dense flat icon="icon-mat-close" v-close-popup>
@@ -77,21 +77,39 @@
                       </tbody>
                     </table>
                   </div>
-                  <div v-for="ptk in store.pilihptk" :key="ptk" class="flex-end text-center q-pr-xl q-pt-md">
-                    <div class="q-py-xs">
-                      Probolinggo {{ store.display.sekarang }}
+                  <div class="row justify-between full-width q-pt-md">
+                    <div class="col flex-start justify-center content-center">
+                      <div class="invisible">
+                        .
+                      </div>
+                      <div class="text-bold text-center">
+                        Pengguna Anggaran
+                      </div>
+                      <div style="padding-bottom: 40px" />
+                      <div class="text-bold text-center" style="text-decoration-line: underline;">
+                        {{ store.pegawais[1]?.nama }}
+                      </div>
+                      <div class="text-center">
+                        NIP. {{ store.pegawais[1]?.nip }}
+                      </div>
                     </div>
-                    <div class="text-bold">
-                      Pejabat Penatausahaan Keuangan
-                    </div>
-                    <div style="padding-bottom: 40px" />
-                    <div class="text-bold q-py-xs" style="text-decoration-line: underline;">
-                      {{ ptk?.nama }}
-                    </div>
-                    <div>
-                      NIP. {{ ptk?.nip }}
+                    <div class="col flex-end justify-center content-center">
+                      <div class="text-center">
+                        Probolinggo {{ store.display.sekarang }}
+                      </div>
+                      <div class="text-center text-bold">
+                        Bendahara Pengeluaran
+                      </div>
+                      <div style="padding-bottom: 40px" />
+                      <div class="underline text-center text-bold" style="text-decoration-line: underline;">
+                        {{ store.pegawais[0]?.nama }}
+                      </div>
+                      <div class="text-center">
+                        NIP. {{ store.pegawais[0]?.nip }}
+                      </div>
                     </div>
                   </div>
+                  <div style="padding-bottom: 100px" />
                 </div>
               </q-card-section>
             </div>
@@ -117,13 +135,13 @@
 <script setup>
 import { formattanpaRp } from 'src/modules/formatter'
 import { onMounted, ref } from 'vue'
-import { useLaporanBkuPtkStore } from 'src/stores/siasik/laporan/bku/bkuptk'
 import { useLaporanBkuPengeluaranStore } from 'src/stores/siasik/laporan/bku/bkupengeluaran'
-import listData from './ListDatabkuptk.vue'
+import listData from './ListDatabkutunai.vue'
 import kopPage from './KopPage.vue'
+import { useLaporanBukuTunaiStore } from 'src/stores/siasik/laporan/buku_pembantu/bukutunai'
 
 
-const store = useLaporanBkuPtkStore()
+const store = useLaporanBukuTunaiStore()
 const pegawai = useLaporanBkuPengeluaranStore()
 onMounted(() => {
   pegawai.getDataTable()
@@ -161,7 +179,7 @@ function totalsaldo() {
 const printed = ref(false)
 const printObj = {
   id: 'printMe',
-  popTitle: 'BKU Pelaksana Teknis Kegiatan | SIASIK',
+  popTitle: 'Buku Tunai Bendahara Pengeluaran | SIASIK',
   beforeOpenCallback(vue) {
     printed.value = true
     console.log('wait...')
@@ -209,5 +227,11 @@ const printObj = {
 .underline {
   text-decoration-line: underline;
 
+}
+
+table,
+tr,
+td {
+  border: none;
 }
 </style>

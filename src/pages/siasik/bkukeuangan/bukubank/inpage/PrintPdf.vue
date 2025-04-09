@@ -28,49 +28,49 @@
               <q-card-section class="full-width">
                 <div class="row justify-between full-width">
                   <div class="flex-start q-pl-md">
-                    <table class="text-weight-bolder no-border">
-                      <tbody style="width: 400px">
-                        <tr class="no-border">
-                          <td class="text-left no-border" width="120px">
+                    <table class="text-weight-bolder" style="width: 400px">
+                      <tbody>
+                        <tr style="height: 30px;">
+                          <td style="border: none;" class="text-left">
                             Saldo Awal
                           </td>
-                          <td width="50px" class="no-border">
+                          <td style="border: none;">
                             :
                           </td>
-                          <td class="text-right no-border" width="170px">
+                          <td style="border: none;" class="text-right">
                             {{ formattanpaRp(0) }}
                           </td>
                         </tr>
-                        <tr>
-                          <td class="text-left no-border" width="120px">
+                        <tr style="height: 30px;">
+                          <td style="border: none;" class="text-left">
                             Masuk
                           </td>
-                          <td width="50px" class="no-border">
+                          <td style="border: none;">
                             :
                           </td>
-                          <td class="text-right no-border" width="170px">
+                          <td style="border: none;" class="text-right">
                             {{ formattanpaRp(totaldebit()) }}
                           </td>
                         </tr>
-                        <tr>
-                          <td class="text-left no-border" width="120px">
+                        <tr style="height: 30px;">
+                          <td style="border: none;" class="text-left">
                             Keluar
                           </td>
-                          <td width="50px" class="no-border">
+                          <td style="border: none;">
                             :
                           </td>
-                          <td class="text-right no-border" width="170px">
+                          <td style="border: none;" class="text-right">
                             {{ formattanpaRp(totalkredit()) }}
                           </td>
                         </tr>
-                        <tr>
-                          <td class="text-left no-border" width="120px">
+                        <tr style="height: 30px;">
+                          <td style="border: none;" class="text-left">
                             Saldo Akhir
                           </td>
-                          <td width="50px" class="no-border">
+                          <td style="border: none;">
                             :
                           </td>
-                          <td class="text-right no-border" width="170px">
+                          <td style="border: none;" class="text-right">
                             {{ formattanpaRp(totalsaldo()) }}
                           </td>
                         </tr>
@@ -179,7 +179,7 @@ function totalsaldo() {
 const printed = ref(false)
 const printObj = {
   id: 'printMe',
-  popTitle: 'BKU Pelaksana Teknis Kegiatan | SIASIK',
+  popTitle: 'Buku Bank Bendahara Pengeluaran | SIASIK',
   beforeOpenCallback(vue) {
     printed.value = true
     console.log('wait...')

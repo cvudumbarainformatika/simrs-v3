@@ -143,9 +143,9 @@ import { formattanpaRp } from 'src/modules/formatter';
 
 const store = useLaporanBkuPengeluaranStore()
 
-onMounted(() => {
-  store.getDataTable()
-})
+// onMounted(() => {
+//   // store.getDataTable()
+// })
 
 function totaldebit() {
   const debit = store.hasilArray
