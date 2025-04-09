@@ -1,5 +1,5 @@
 <template>
-  <div class="col q-px-md full-width">
+  <div class="col q-px-md q-pt-md full-width">
     <div class="row content-center q-pb-xs">
       <div class="col-2 text-weight-bold">
         Kepala SKPD
@@ -174,20 +174,20 @@
     </div>
   </div>
   <div class="q-pa-sm full-width">
-    <q-markup-table wrap-cells flat bordered :separator="separator">
+    <q-markup-table class="custom-table" wrap-cells flat bordered :separator="separator">
       <thead>
         <tr class="max-width">
           <th colspan="2"><span class="text-bold">PENDAPATAN</span></th>
           <th colspan="4"><span class="text-bold">BELANJA</span></th>
         </tr>
-        <tr class="max-width">
+        <tr>
           <th>
             <span class="text-bold">Kode Rekening</span>
           </th>
-          <th><span class="text-bold">Jumlah</span></th>
+          <th style="width: 20%"><span class="text-bold">Jumlah</span></th>
           <th colspan="2"><span class="text-bold">Program/Kegiatan/Rekening</span></th>
           <th><span class="text-bold">Uraian</span></th>
-          <th><span class="text-bold">Jumlah</span></th>
+          <th style="width: 20%"><span class="text-bold">Jumlah</span></th>
         </tr>
       </thead>
       <tbody>
@@ -230,8 +230,8 @@
       </tbody>
     </q-markup-table>
   </div>
-  <div class="row q-px-sm full-width justify-between">
-    <q-markup-table class="flex-start" wrap-cells flat bordered :separator="separator">
+  <div class="row q-px-sm q-py-md full-width justify-between">
+    <q-markup-table class="flex-start custom-table" wrap-cells flat bordered :separator="separator">
       <thead>
         <tr class="max-width">
           <th colspan="2"><span class="text-bold">PENERIMAAN PEMBIAYAAN</span></th>
@@ -317,3 +317,30 @@ const cariDataPembiayaan = computed(() => {
   return store.viewData?.rincians?.filter(item => item.keterangan === 'PEMBIAYAAN');
 });
 </script>
+
+<style scoped>
+/* Mengatur warna garis pada seluruh tabel termasuk garis luar */
+.custom-table {
+  border-color: #555555 !important;
+}
+
+/* Menargetkan tabel di dalam komponen q-markup-table */
+.custom-table table {
+  border-color: #555555 !important;
+}
+
+/* Mengatur warna garis pada sel header */
+.custom-table th {
+  border-color: #555555 !important;
+}
+
+/* Mengatur warna garis pada sel data */
+.custom-table td {
+  border-color: #555555 !important;
+}
+
+/* Pastikan garis tidak dobel */
+.custom-table table {
+  border-collapse: collapse;
+}
+</style>

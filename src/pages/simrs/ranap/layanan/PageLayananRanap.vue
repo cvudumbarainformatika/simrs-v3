@@ -106,7 +106,7 @@ const props = defineProps({
   }
 })
 
-const { filterredMenus, menu, store, nakes, menuDiganti } = useLayanan()
+const { filterredMenus, menu, store, nakes, menuDiganti } = useLayanan(props.pasien)
 
 const onShow = () => {
   // console.log('pasien pageLayananRanap', props.pasien)

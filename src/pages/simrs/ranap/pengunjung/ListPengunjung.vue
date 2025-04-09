@@ -167,6 +167,10 @@ const timerJam = setInterval(() => {
 function bukaLayananPage(item) {
   // console.log('item', item)
   pasien.value = item
+
+  // console.log('route', pageMpp);
+
+
   store.bukaLayanan(true, item)
     .then((val) => {
       pasien.value = val
