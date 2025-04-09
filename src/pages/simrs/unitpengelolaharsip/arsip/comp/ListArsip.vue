@@ -5,11 +5,22 @@
       <empty-data v-else-if="!items.length && !loading" />
       <q-list v-else separator>
         <q-item v-for="(item, i) in items" :key="i">
-          <!-- <q-item-section avatar>
-            <app-avatar-pasien :pasien="item" />
-          </q-item-section> -->
+          <q-item-section avatar>
+            <q-img :src="getImg(item?.url)" :key="item.url" style="width: 100px;">
+              <div class="absolute-bottom">
+                <div class="row items-center justify-between">
+                  <q-btn class="gt-xs" size="md" color="yellow" flat dense round icon="icon-mat-visibility"
+                    :href="pathImg + item.url" target="_blank" />
+
+                </div>
+              </div>
+            </q-img>
+          </q-item-section>
 
           <q-item-section class="q-col-gutter-xs">
+            <q-item-label>
+              <span class="text-weight-bold">{{ item.noarsip }}</span>
+            </q-item-label>
             <q-item-label>
               <span class="text-weight-bold">{{ item.noarsip }}</span>
             </q-item-label>
@@ -50,6 +61,7 @@
 </template>
 
 <script setup>
+import { pathImg } from 'src/boot/axios'
 // eslint-disable-next-line no-unused-vars
 import ListLoading from './ListLoading.vue'
 import EmptyData from './EmptyData.vue'
@@ -78,6 +90,19 @@ defineProps({
     default: false
   }
 })
+
+const getImg = (file) => {
+  const spl = file.split('.')
+  const ext = spl[spl.length - 1]
+  // console.log(ext)
+
+  if (ext === 'pdf') {
+    return new URL('../../../../../assets/images/PDF_file_icon.png', import.meta.url).href
+  }
+  else {
+    return pathImg + file
+  }
+}
 
 function colortriage(val) {
   if (val === 'Resusitasi') {
