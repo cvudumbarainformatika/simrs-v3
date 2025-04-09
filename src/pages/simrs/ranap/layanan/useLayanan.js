@@ -140,6 +140,7 @@ export default function useLayanan(pasien, mpp) {
       label: 'FORM MPP',
       icon: 'icon-mat-medical_information',
       nakes: ['mpp'],
+      mpp: true,
       comp: shallowRef(defineAsyncComponent(() => import('../../mpp/ranap/layanan/FORM/IndexPage.vue')))
     }
 
@@ -156,15 +157,15 @@ export default function useLayanan(pasien, mpp) {
 
   const filterredMenus = computed(() => {
     const mpp = route.matched?.map(a => a.path)?.includes('/mpp') ?? false
-    console.log('mpp', mpp)
+    // console.log('mpp', mpp)
     if (!mpp) {
       const byPass = ['sa']
       const user = auth?.user?.username
       if (byPass.includes(user)) {
-        return menus.value
+        return menus.value.filter(menu => menu?.mpp !== true)
       }
 
-      return menus.value.filter(menu => menu.nakes.includes(nakes.value))
+      return menus.value.filter(menu => menu.nakes.includes(nakes.value) && menu?.mpp !== true)
     }
     else {
       return menus.value.filter(menu => menu.nakes.includes('mpp'))
