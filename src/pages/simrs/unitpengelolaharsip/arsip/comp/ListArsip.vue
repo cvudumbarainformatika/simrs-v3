@@ -22,14 +22,15 @@
               <span class="text-weight-bold">{{ item.noarsip }}</span>
             </q-item-label>
             <q-item-label>
-              <span class="text-weight-bold">{{ item.noarsip }}</span>
-            </q-item-label>
-            <q-item-label>
               <span class="text-weight-bold">{{ item.kodeklasifikasi }} || </span>
               <span class="text-cyan text-weight-bold">{{ item?.namakelasifikasi }}</span>
             </q-item-label>
             <q-item-label>
               Uraian : <span class="text-negative text-weight-bold">{{ item?.uraian ?? '-' }}</span>
+            </q-item-label>
+            <q-item-label>
+              Jenis Arsip : <span class=" text-weight-bold"><q-badge outline color="teal">{{ item?.ket ?? '-'
+              }}</q-badge></span>
             </q-item-label>
           </q-item-section>
           <q-separator vertical class="q-mx-md" />
@@ -65,12 +66,11 @@ import { pathImg } from 'src/boot/axios'
 // eslint-disable-next-line no-unused-vars
 import ListLoading from './ListLoading.vue'
 import EmptyData from './EmptyData.vue'
-// import { defineAsyncComponent, ref } from 'vue'
-import { usePengunjungIgdStore } from 'src/stores/simrs/igd/pengunjung'
+
 import { dateFullFormat, formatJam } from 'src/modules/formatter'
 
 const emits = defineEmits(['terimapasien', 'bukalayanan', 'kirimcasmix'])
-const store = usePengunjungIgdStore()
+
 
 // const PageLayananIgd = defineAsyncComponent(() => import('src/pages/simrs/igd/layanan/PageLayananIgd.vue'))
 // const pasien = ref(null)
@@ -104,21 +104,4 @@ const getImg = (file) => {
   }
 }
 
-function colortriage(val) {
-  if (val === 'Resusitasi') {
-    return 'red'
-  }
-  else if (val === 'P1') {
-    return 'deep-orange'
-  }
-  else if (val === 'P2') {
-    return 'yellow-7'
-  }
-  else if (val === 'P3') {
-    return 'green'
-  }
-  else {
-    return 'black'
-  }
-}
 </script>
