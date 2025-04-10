@@ -13,6 +13,7 @@ export const useSettingsAplikasi = defineStore('settings_aplikasi', {
     loadingRuang: false,
     loadingRuangSim: false,
     loadingGudang: false,
+    loadingUnitPengolahArsip: false,
     currentApp: '',
     roles: [],
     polis: [],
@@ -29,32 +30,32 @@ export const useSettingsAplikasi = defineStore('settings_aplikasi', {
   // },
   actions: {
 
-    addNew (val) {
+    addNew(val) {
       this.items.unshift(val)
     },
-    deleteNew (idx) {
+    deleteNew(idx) {
       this.items.splice(idx, 1)
     },
-    deleteNewMenu (idx) {
+    deleteNewMenu(idx) {
       this.items[idx.i].menus.splice(idx.n, 1)
     },
-    deleteNewSubMenu (idx) {
+    deleteNewSubMenu(idx) {
       this.items[idx.i].menus[idx.n].submenus.splice(idx.x, 1)
     },
-    changeAppIcon (idx, val) {
+    changeAppIcon(idx, val) {
       return new Promise((resolve, reject) => {
         this.items[idx].icon = val
         resolve(val)
       })
     },
-    changeMenuIcon (idx, men, val) {
+    changeMenuIcon(idx, men, val) {
       return new Promise((resolve, reject) => {
         this.items[idx].menus[men].icon = val
         resolve(val)
       })
     },
 
-    addMenu (idx) {
+    addMenu(idx) {
       const menus = this.items[idx]
       if (menus.length) {
         const key0 = Object.keys(menus.menus[0])
@@ -92,7 +93,7 @@ export const useSettingsAplikasi = defineStore('settings_aplikasi', {
         // console.log('addMenu', menus)
       }
     },
-    addSubMenu (idx) {
+    addSubMenu(idx) {
       const menus = this.items[idx.i].menus[idx.n]
       // console.log(menus)
       if (menus.submenus.length) {
@@ -130,11 +131,11 @@ export const useSettingsAplikasi = defineStore('settings_aplikasi', {
       // console.log('addSubMenu', menus)
     },
 
-    setPegawai (val) {
+    setPegawai(val) {
       this.pegawai = val
     },
     // api related function
-    async getData () {
+    async getData() {
       this.loading = true
       await api.get('/v1/settings/appmenu/aplikasi').then(resp => {
         // console.log('settings aplikasi :', resp)
@@ -149,14 +150,14 @@ export const useSettingsAplikasi = defineStore('settings_aplikasi', {
       })
     },
 
-    async getRole () {
+    async getRole() {
       await api.get('v1/settings/appakses/role')
         .then(resp => {
           // console.log('role', resp.data)
           this.roles = resp.data
         })
     },
-    async getPoli () {
+    async getPoli() {
       await api.get('v1/settings/appakses/poli')
         .then(resp => {
           // console.log('Poli', resp.data)
@@ -164,7 +165,7 @@ export const useSettingsAplikasi = defineStore('settings_aplikasi', {
           return Promise.resolve(resp.data)
         })
     },
-    async getPenunjang () {
+    async getPenunjang() {
       await api.get('v1/settings/appakses/penunjang')
         .then(resp => {
           // console.log('Poli', resp.data)
@@ -172,7 +173,7 @@ export const useSettingsAplikasi = defineStore('settings_aplikasi', {
           return Promise.resolve(resp.data)
         })
     },
-    getHeaderPoli () {
+    getHeaderPoli() {
       this.loading = true
       return new Promise((resolve, reject) => {
         api.get('v1/settings/appakses/poli')
@@ -188,7 +189,7 @@ export const useSettingsAplikasi = defineStore('settings_aplikasi', {
           })
       })
     },
-    setRole (val) {
+    setRole(val) {
       const form = {
         id: this.pegawai.id,
         role_id: val.id
@@ -196,7 +197,7 @@ export const useSettingsAplikasi = defineStore('settings_aplikasi', {
       // console.log('val', val, 'form', form)
       this.simpanRole(form)
     },
-    async simpanRole (val) {
+    async simpanRole(val) {
       this.loadingRole = true
       await api.post('v1/settings/appakses/store-role', val)
         .then(resp => {
@@ -206,7 +207,7 @@ export const useSettingsAplikasi = defineStore('settings_aplikasi', {
         })
         .catch(() => { this.loadingRole = false })
     },
-    setPoli (val) {
+    setPoli(val) {
       // console.log('val', val)
       const form = {
         id: this.pegawai.id,
@@ -215,7 +216,7 @@ export const useSettingsAplikasi = defineStore('settings_aplikasi', {
       // console.log('val', val, 'form', form)
       this.simpanPoli(form)
     },
-    async simpanPoli (val) {
+    async simpanPoli(val) {
       const form = {
         id: this.pegawai.id,
         kodepoli: val
@@ -231,7 +232,7 @@ export const useSettingsAplikasi = defineStore('settings_aplikasi', {
         })
         .catch(() => { this.loadingPoli = false })
     },
-    async getRuanganSim () {
+    async getRuanganSim() {
       this.loadingRuangSim = true
       const param = { params: this.par }
       await api.get('v1/ruang/ruang', param)
@@ -243,7 +244,7 @@ export const useSettingsAplikasi = defineStore('settings_aplikasi', {
         })
         .catch(() => { this.loadingRuangSim = false })
     },
-    async getRuang () {
+    async getRuang() {
       this.loadingRuang = true
       const param = { params: this.par }
       await api.get('v1/ruang/cari-ruang', param)
@@ -254,7 +255,7 @@ export const useSettingsAplikasi = defineStore('settings_aplikasi', {
         })
         .catch(() => { this.loadingRuang = false })
     },
-    setRuang (val) {
+    setRuang(val) {
       const form = {
         id: this.pegawai.id,
         kode_ruang: val.kode
@@ -262,17 +263,36 @@ export const useSettingsAplikasi = defineStore('settings_aplikasi', {
       // console.log('val', val, 'form', form)
       this.simpanRuang(form)
     },
-    async simpanRuang (val) {
+    async simpanRuang(val) {
       this.loadingRuang = true
       await api.post('v1/settings/appakses/store-ruang', val)
         .then(resp => {
-          // console.log('simpan role', resp.data)
+          console.log('simpan role', resp.data)
           this.loadingRuang = false
           this.pegawai.ruang = resp.data
         })
         .catch(() => { this.loadingRuang = false })
     },
-    async getGudang () {
+    setUnitpengolaharsip(val) {
+      const form = {
+        id: this.pegawai.id,
+        kode_ruang: val
+      }
+      //console.log('form', form)
+      this.simpanUnitPengeloaharsip(form)
+    },
+    async simpanUnitPengeloaharsip(val) {
+      this.loadingUnitPengolahArsip = true
+      await api.post('v1/settings/appakses/store-unitpengolaharsip', val)
+        .then(resp => {
+          console.log('simpan role', resp.data)
+          this.loadingUnitPengolahArsip = false
+          this.pegawai.kdarteri = resp.data?.kdarteri
+          this.pegawai.unitpengelolaharsip = resp.data?.unitpengelolaharsip
+        })
+        .catch(() => { this.loadingUnitPengolahArsip = false })
+    },
+    async getGudang() {
       this.loadingGudang = true
       const param = { params: this.par }
       await api.get('v1/gudang/gudang', param)
@@ -284,7 +304,7 @@ export const useSettingsAplikasi = defineStore('settings_aplikasi', {
         })
         .catch(() => { this.loadingGudang = false })
     },
-    setGudang (val) {
+    setGudang(val) {
       const form = {
         id: this.pegawai.id,
         kodepoli: val
@@ -293,7 +313,7 @@ export const useSettingsAplikasi = defineStore('settings_aplikasi', {
       this.simpanGudang(form)
     },
 
-    async simpanGudang (val) {
+    async simpanGudang(val) {
       const form = {
         id: this.pegawai.id,
         kodepoli: val
@@ -308,7 +328,7 @@ export const useSettingsAplikasi = defineStore('settings_aplikasi', {
         })
         .catch(() => { this.loadingGudang = false })
     },
-    async simpanRuanganSim (val) {
+    async simpanRuanganSim(val) {
       const form = {
         id: this.pegawai.id,
         kodepoli: val
@@ -323,7 +343,7 @@ export const useSettingsAplikasi = defineStore('settings_aplikasi', {
         })
         .catch(() => { this.loadingRuangSim = false })
     },
-    async saveNew (idx) {
+    async saveNew(idx) {
       const params = this.items[idx]
       delete params.id
       if (params.icon === null || params.icon === '') {
@@ -338,7 +358,7 @@ export const useSettingsAplikasi = defineStore('settings_aplikasi', {
           })
         })
     },
-    editApp (val) {
+    editApp(val) {
       const form = val.item
       // console.log('form', form)
       this.loading = true
@@ -352,7 +372,7 @@ export const useSettingsAplikasi = defineStore('settings_aplikasi', {
           .catch(() => { this.loading = false })
       })
     },
-    saveNewMenu (val) {
+    saveNewMenu(val) {
       // console.log('new menu', val)
       const menu = val.menu
       const key = Object.keys(menu)
@@ -376,7 +396,7 @@ export const useSettingsAplikasi = defineStore('settings_aplikasi', {
         })
       }
     },
-    saveEditMenu (val) {
+    saveEditMenu(val) {
       // console.log('edit menu', val)
       const menu = val.menu
       this.loading = true
@@ -389,7 +409,7 @@ export const useSettingsAplikasi = defineStore('settings_aplikasi', {
           }).catch(() => { this.loading = false })
       })
     },
-    saveNewSubMenu (val) {
+    saveNewSubMenu(val) {
       // console.log('new sub menu', val)
       const sub = val.sub
       const key = Object.keys(sub)
@@ -412,7 +432,7 @@ export const useSettingsAplikasi = defineStore('settings_aplikasi', {
         })
       }
     },
-    saveEditSubMenu (val) {
+    saveEditSubMenu(val) {
       // console.log('edit sub menu', val)
       const sub = val.sub
       this.loading = true
@@ -425,7 +445,7 @@ export const useSettingsAplikasi = defineStore('settings_aplikasi', {
           }).catch(() => { this.loading = false })
       })
     },
-    simpanAksesMenu (act, type, array) {
+    simpanAksesMenu(act, type, array) {
       const form = {
         user_id: this.pegawai.user.id,
         action: act,
