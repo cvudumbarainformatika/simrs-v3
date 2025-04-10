@@ -37,6 +37,14 @@
             </div>
           </div>
         </template>
+        <template v-else-if="store.hasilArray.length === 0">
+          <div class="row flex flex-center">
+            <div class="kosong">
+              <div>Data Belum Ada</div>
+              <div>Silahkan Pilih Parameter</div>
+            </div>
+          </div>
+        </template>
         <template v-else>
           <div class="row flex-center">
             <ListdataBku />
@@ -106,15 +114,13 @@
 <script setup>
 import { formattanpaRp } from 'src/modules/formatter'
 import { useLaporanBkuPpkStore } from 'src/stores/siasik/laporan/bku/bkuppk'
-import { defineAsyncComponent, onMounted } from 'vue'
+import { onMounted } from 'vue'
 import formgetData from './inpage/FormBkuppk.vue'
 import ListdataBku from './inpage/ListDatabkuppk.vue'
 import kopPage from './inpage/KopPage.vue'
-// import VueHtml2pdf from 'vue-html2pdf'
-const PrintPdf = defineAsyncComponent(() => import('./inpage/PrintPdf.vue'))
 const store = useLaporanBkuPpkStore()
 onMounted(() => {
-  store.getDataTable()
+  // store.getDataTable()
 })
 function bulan(val) {
   const bulan = store.bulans.find((x) => x.value === val)
@@ -172,56 +178,7 @@ function totalsaldo() {
 //   return saldototal;
 // }
 </script>
-
 <style>
-table {
-  border-collapse: collapse;
-  border-radius: 6px;
-  max-width: 1500px;
-  width: 100%;
-}
-
-td,
-th {
-  border-left: 5px #ffed86;
-  border-collapse: collapse;
-  border: 1px solid rgb(163, 163, 163);
-  text-align: center;
-}
-
-thead tr {
-  border-collapse: collapse;
-  background: #ffed86;
-}
-
-.tdbreak {
-  word-break: break-all;
-}
-
-.grs_bawah {
-  border-bottom: 1px solid grey;
-}
-
-.ttd-kanan {
-  position: relative;
-  top: 50px;
-  left: 60%;
-  text-align: center;
-  justify-content: center;
-  width: 25%;
-  height: 100px;
-}
-
-.ttd-kiri {
-  position: relative;
-  left: -10%;
-  top: 50px;
-  text-align: center;
-  justify-content: center;
-  width: 25%;
-  height: 100px;
-}
-
 .kosong {
   position: relative;
   padding-top: 100px;

@@ -1,220 +1,201 @@
 <template>
-  <template v-if="store.loading">
-    <div class="row justify-center">
-      <div class="q-gutter-md">
-        <q-spinner-pie color="amber-13" type="circle" animation="pulse-x" size="40px" />
-        <q-spinner-pie color="amber-13" type="circle" animation="pulse-x" size="60px" />
-        <q-spinner-pie color="amber-13" type="circle" animation="pulse-x" size="40px" />
-      </div>
-    </div>
-  </template>
-  <template v-else-if="store.items.length === 0">
-    <div class="row flex flex-center">
-      <div class="kosong">
-        <div>Data Belum Ada</div>
-        <div>Silahkan Pilih Parameter</div>
-      </div>
-    </div>
-  </template>
-  <template v-else>
-    <div class="row q-px-md full-width flex-center">
-      <q-markup-table flat bordered style="width: 100%;" wrap-cells :separator="separator">
-        <thead>
-          <tr class="text-bold">
-            <td class="text-center" style="font-size: 12px">NO</td>
-            <td class="text-center" style="font-size: 12px">TANGGAL</td>
-            <td class="text-center" style="font-size: 12px">REGISTER/REKENING</td>
-            <td class="text-center" style="font-size: 12px">URAIAN</td>
-            <td class="text-center" style="font-size: 12px">PENERIMAAN (Rp.)</td>
-            <td class="text-center" style="font-size: 12px">PENGELUARAN (Rp.)</td>
-            <td class="text-center" style="font-size: 12px">SALDO (Rp.)</td>
+
+  <div class="row q-px-md full-width flex-center">
+    <q-markup-table class="custom-table" flat bordered style="width: 100%;" wrap-cells :separator="separator">
+      <thead>
+        <tr class="text-bold">
+          <th class="text-center" style="font-size: 12px">NO</th>
+          <th class="text-center" style="font-size: 12px">TANGGAL</th>
+          <th class="text-center" style="font-size: 12px">REGISTER/REKENING</th>
+          <th class="text-center" style="font-size: 12px">URAIAN</th>
+          <th class="text-center" style="font-size: 12px">PENERIMAAN (Rp.)</th>
+          <th class="text-center" style="font-size: 12px">PENGELUARAN (Rp.)</th>
+          <th class="text-center" style="font-size: 12px">SALDO (Rp.)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <template v-for="(item, n) in store.hasilArray" :key="n">
+          <tr>
+            <td class="text-bold">
+              {{ n + 1 }}
+            </td>
+            <td class="text-bold">
+              {{ item?.tgl }}
+            </td>
+            <td class="text-left text-bold q-pl-sm q-pr-sm">
+              {{ item?.notrans }}
+            </td>
+            <td class="text-left text-bold q-pl-sm q-pr-sm">
+              {{ item?.uraian }}
+            </td>
+            <td class="text-right text-bold q-pl-sm q-pr-sm">
+              {{ formattanpaRp(item?.penerimaan) }}
+            </td>
+            <td class="text-right text-bold q-pl-sm q-pr-sm">
+              {{ formattanpaRp(item?.pengeluaran) }}
+            </td>
+            <td class="text-right text-bold q-pl-sm q-pr-sm">
+              {{ formattanpaRp(item?.total) }}
+            </td>
           </tr>
-        </thead>
-        <tbody>
-          <template v-for="(item, n) in store.hasilArray" :key="n">
-            <tr>
-              <td class="text-bold">
-                {{ n + 1 }}
-              </td>
-              <td class="text-bold">
-                {{ item?.tgl }}
-              </td>
-              <td class="text-left text-bold q-pl-sm q-pr-sm">
-                {{ item?.notrans }}
-              </td>
-              <td class="text-left text-bold q-pl-sm q-pr-sm">
-                {{ item?.uraian }}
-              </td>
-              <td class="text-right text-bold q-pl-sm q-pr-sm">
-                {{ formattanpaRp(item?.penerimaan) }}
-              </td>
-              <td class="text-right text-bold q-pl-sm q-pr-sm">
-                {{ formattanpaRp(item?.pengeluaran) }}
-              </td>
-              <td class="text-right text-bold q-pl-sm q-pr-sm">
-                {{ formattanpaRp(item?.total) }}
-              </td>
-            </tr>
-            <template v-if="item?.nonpd?.length">
-              <template v-for="it in item?.nonpd" :key="it">
+          <template v-if="item?.nonpd?.length">
+            <template v-for="it in item?.nonpd" :key="it">
+              <tr>
+                <td colspan="2"></td>
+                <td class="text-left q-pl-sm q-pr-sm" style="font-size: 11px"> {{ it?.nonpd }}</td>
+                <td class="text-left q-pl-sm q-pr-sm" style="font-size: 11px">{{ it?.uraianNPD }} </td>
+                <td class="text-right q-pl-sm q-pr-sm" style="font-size: 11px">
+                  {{ formattanpaRp(0) }}
+                </td>
+                <td class="text-right q-pl-sm q-pr-sm" style="font-size: 11px">
+                  {{ formattanpaRp(it?.totalRincian) }}
+                </td>
+                <td></td>
+              </tr>
+              <template v-for="rek in it.rincian" :key="rek">
                 <tr>
                   <td colspan="2"></td>
-                  <td class="text-left q-pl-sm q-pr-sm" style="font-size: 11px"> {{ it?.nonpd }}</td>
-                  <td class="text-left q-pl-sm q-pr-sm" style="font-size: 11px">{{ it?.uraianNPD }} </td>
-                  <td class="text-right q-pl-sm q-pr-sm" style="font-size: 11px">
-                    {{ formattanpaRp(0) }}
-                  </td>
-                  <td class="text-right q-pl-sm q-pr-sm" style="font-size: 11px">
-                    {{ formattanpaRp(it?.totalRincian) }}
-                  </td>
+                  <td class="text-left q-pl-sm q-pr-sm" style="font-size: 11px;"> * {{ rek?.koderek50 }}</td>
+                  <td class="text-left q-pl-sm q-pr-sm" style="font-size: 11px;"> * {{ rek?.rincianbelanja }}</td>
+                  <td></td>
+                  <td></td>
                   <td></td>
                 </tr>
-                <template v-for="rek in it.rincian" :key="rek">
-                  <tr>
-                    <td colspan="2"></td>
-                    <td class="text-left q-pl-sm q-pr-sm" style="font-size: 11px;"> * {{ rek?.koderek50 }}</td>
-                    <td class="text-left q-pl-sm q-pr-sm" style="font-size: 11px;"> * {{ rek?.rincianbelanja }}</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                </template>
-              </template>
-            </template>
-            <template v-if="item?.bank_kas?.length">
-              <template v-for="it in item?.bank_kas" :key="it">
-                <tr>
-                  <td colspan="2"></td>
-                  <td class="text-left q-pl-sm q-pr-sm" style="font-size: 11px"> {{ it?.nonpd }}</td>
-                  <td class="text-left q-pl-sm q-pr-sm" style="font-size: 11px">{{ it?.uraianNPD }} </td>
-                  <td class="text-right q-pl-sm q-pr-sm" style="font-size: 11px">
-                    {{ formattanpaRp(it?.nilai) }}
-                  </td>
-                  <td class="text-right q-pl-sm q-pr-sm" style="font-size: 11px">
-                    {{ formattanpaRp(0) }}
-                  </td>
-                  <td></td>
-                </tr>
-              </template>
-            </template>
-            <template v-if="item?.kas_bank?.length">
-              <template v-for="it in item?.kas_bank" :key="it">
-                <tr>
-                  <td colspan="2"></td>
-                  <td class="text-left q-pl-sm q-pr-sm" style="font-size: 11px"> {{ it?.nonpd }}</td>
-                  <td class="text-left q-pl-sm q-pr-sm" style="font-size: 11px">{{ it?.uraianNPD }} </td>
-                  <td class="text-right q-pl-sm q-pr-sm" style="font-size: 11px">
-                    {{ formattanpaRp(0) }}
-                  </td>
-                  <td class="text-right q-pl-sm q-pr-sm" style="font-size: 11px">
-                    {{ formattanpaRp(it?.nilai) }}
-                  </td>
-                  <td></td>
-                </tr>
-              </template>
-            </template>
-            <template v-if="item?.pjr?.length">
-              <template v-for="it in item?.pjr" :key="it">
-                <tr>
-                  <td colspan="2"></td>
-                  <td class="text-left q-pl-sm q-pr-sm" style="font-size: 11px"> {{ it?.nonpd }}</td>
-                  <td class="text-left q-pl-sm q-pr-sm" style="font-size: 11px">{{ it?.uraianNPD }} </td>
-                  <td class="text-right q-pl-sm q-pr-sm" style="font-size: 11px">
-                    {{ formattanpaRp(0) }}
-                  </td>
-                  <td class="text-right q-pl-sm q-pr-sm" style="font-size: 11px">
-                    {{ formattanpaRp(it?.totalRincian) }}
-                  </td>
-                  <td></td>
-                </tr>
-                <template v-for="rek in it.rincian" :key="rek">
-                  <tr>
-                    <td colspan="2"></td>
-                    <td class="text-left q-pl-sm q-pr-sm" style="font-size: 11px;"> * {{ rek?.koderek50 }}</td>
-                    <td class="text-left q-pl-sm q-pr-sm" style="font-size: 11px;"> * {{ rek?.rincianbelanja }}</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                </template>
-              </template>
-            </template>
-            <template v-if="item?.spjpanjar?.length">
-              <template v-for="it in item?.spjpanjar" :key="it">
-                <tr>
-                  <td colspan="2"></td>
-                  <td class="text-left q-pl-sm q-pr-sm" style="font-size: 11px">* {{ it?.koderek50 }}</td>
-                  <td class="text-left q-pl-sm q-pr-sm" style="font-size: 11px">* {{ it?.rincianbelanja }}</td>
-                  <td class="text-right q-pl-sm q-pr-sm" style="font-size: 11px">
-                    {{ formattanpaRp(0) }}
-                  </td>
-                  <td class="text-right q-pl-sm q-pr-sm" style="font-size: 11px">
-                    {{ formattanpaRp(it?.totalRincian) }}
-                  </td>
-                  <td></td>
-                </tr>
-              </template>
-            </template>
-            <template v-if="item?.sisapanjar?.length">
-              <template v-for="it in item?.sisapanjar" :key="it">
-                <tr>
-                  <td colspan="2"></td>
-                  <td class="text-left q-pl-sm q-pr-sm" style="font-size: 11px">* {{ it?.koderek50 }}</td>
-                  <td class="text-left q-pl-sm q-pr-sm" style="font-size: 11px">* {{ it?.rincianbelanja }}</td>
-                  <td class="text-right q-pl-sm q-pr-sm" style="font-size: 11px">
-                    {{ formattanpaRp(it?.totalRincian) }}
-                  </td>
-                  <td class="text-right q-pl-sm q-pr-sm" style="font-size: 11px">
-                    {{ formattanpaRp(it?.totalRincian) }}
-                  </td>
-                  <td></td>
-                </tr>
-              </template>
-            </template>
-            <template v-if="item?.cppjr?.length">
-              <template v-for="it in item?.cppjr" :key="it">
-                <tr>
-                  <td colspan="2"></td>
-                  <td class="text-left q-pl-sm q-pr-sm" style="font-size: 11px">* {{ it?.nonpd }}</td>
-                  <td class="text-left q-pl-sm q-pr-sm" style="font-size: 11px">* {{ it?.uraianNPD }} </td>
-                  <td class="text-right q-pl-sm q-pr-sm" style="font-size: 11px">
-                    {{ formattanpaRp(it?.totalRincian) }}
-                  </td>
-                  <td class="text-right q-pl-sm q-pr-sm" style="font-size: 11px">
-                    {{ formattanpaRp(0) }}
-                  </td>
-                  <td></td>
-                </tr>
-                <template v-for="rek in it.rincian" :key="rek">
-                  <tr>
-                    <td colspan="2"></td>
-                    <td class="text-left q-pl-sm q-pr-sm" style="font-size: 11px;"> * {{ rek?.koderek50 }}</td>
-                    <td class="text-left q-pl-sm q-pr-sm" style="font-size: 11px;"> * {{ rek?.rincianbelanja }}</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                </template>
               </template>
             </template>
           </template>
-          <tr>
-            <td colspan="4" class="text-bold">TOTAL</td>
-            <td class="text-right text-weight-bolder q-pl-sm q-pr-sm">
-              {{ formattanpaRp(totaldebit()) }}
-            </td>
-            <td class="text-right text-weight-bolder q-pl-sm q-pr-sm">
-              {{ formattanpaRp(totalkredit()) }}
-            </td>
-            <td class="text-right text-weight-bolder q-pl-sm q-pr-sm">
-              {{ formattanpaRp(totalsaldo()) }}
-            </td>
-          </tr>
-        </tbody>
-      </q-markup-table>
-
-    </div>
-  </template>
+          <template v-if="item?.bank_kas?.length">
+            <template v-for="it in item?.bank_kas" :key="it">
+              <tr>
+                <td colspan="2"></td>
+                <td class="text-left q-pl-sm q-pr-sm" style="font-size: 11px"> {{ it?.nonpd }}</td>
+                <td class="text-left q-pl-sm q-pr-sm" style="font-size: 11px">{{ it?.uraianNPD }} </td>
+                <td class="text-right q-pl-sm q-pr-sm" style="font-size: 11px">
+                  {{ formattanpaRp(it?.nilai) }}
+                </td>
+                <td class="text-right q-pl-sm q-pr-sm" style="font-size: 11px">
+                  {{ formattanpaRp(0) }}
+                </td>
+                <td></td>
+              </tr>
+            </template>
+          </template>
+          <template v-if="item?.kas_bank?.length">
+            <template v-for="it in item?.kas_bank" :key="it">
+              <tr>
+                <td colspan="2"></td>
+                <td class="text-left q-pl-sm q-pr-sm" style="font-size: 11px"> {{ it?.nonpd }}</td>
+                <td class="text-left q-pl-sm q-pr-sm" style="font-size: 11px">{{ it?.uraianNPD }} </td>
+                <td class="text-right q-pl-sm q-pr-sm" style="font-size: 11px">
+                  {{ formattanpaRp(0) }}
+                </td>
+                <td class="text-right q-pl-sm q-pr-sm" style="font-size: 11px">
+                  {{ formattanpaRp(it?.nilai) }}
+                </td>
+                <td></td>
+              </tr>
+            </template>
+          </template>
+          <template v-if="item?.pjr?.length">
+            <template v-for="it in item?.pjr" :key="it">
+              <tr>
+                <td colspan="2"></td>
+                <td class="text-left q-pl-sm q-pr-sm" style="font-size: 11px"> {{ it?.nonpd }}</td>
+                <td class="text-left q-pl-sm q-pr-sm" style="font-size: 11px">{{ it?.uraianNPD }} </td>
+                <td class="text-right q-pl-sm q-pr-sm" style="font-size: 11px">
+                  {{ formattanpaRp(0) }}
+                </td>
+                <td class="text-right q-pl-sm q-pr-sm" style="font-size: 11px">
+                  {{ formattanpaRp(it?.totalRincian) }}
+                </td>
+                <td></td>
+              </tr>
+              <template v-for="rek in it.rincian" :key="rek">
+                <tr>
+                  <td colspan="2"></td>
+                  <td class="text-left q-pl-sm q-pr-sm" style="font-size: 11px;"> * {{ rek?.koderek50 }}</td>
+                  <td class="text-left q-pl-sm q-pr-sm" style="font-size: 11px;"> * {{ rek?.rincianbelanja }}</td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+              </template>
+            </template>
+          </template>
+          <template v-if="item?.spjpanjar?.length">
+            <template v-for="it in item?.spjpanjar" :key="it">
+              <tr>
+                <td colspan="2"></td>
+                <td class="text-left q-pl-sm q-pr-sm" style="font-size: 11px">* {{ it?.koderek50 }}</td>
+                <td class="text-left q-pl-sm q-pr-sm" style="font-size: 11px">* {{ it?.rincianbelanja }}</td>
+                <td class="text-right q-pl-sm q-pr-sm" style="font-size: 11px">
+                  {{ formattanpaRp(0) }}
+                </td>
+                <td class="text-right q-pl-sm q-pr-sm" style="font-size: 11px">
+                  {{ formattanpaRp(it?.totalRincian) }}
+                </td>
+                <td></td>
+              </tr>
+            </template>
+          </template>
+          <template v-if="item?.sisapanjar?.length">
+            <template v-for="it in item?.sisapanjar" :key="it">
+              <tr>
+                <td colspan="2"></td>
+                <td class="text-left q-pl-sm q-pr-sm" style="font-size: 11px">* {{ it?.koderek50 }}</td>
+                <td class="text-left q-pl-sm q-pr-sm" style="font-size: 11px">* {{ it?.rincianbelanja }}</td>
+                <td class="text-right q-pl-sm q-pr-sm" style="font-size: 11px">
+                  {{ formattanpaRp(it?.totalRincian) }}
+                </td>
+                <td class="text-right q-pl-sm q-pr-sm" style="font-size: 11px">
+                  {{ formattanpaRp(it?.totalRincian) }}
+                </td>
+                <td></td>
+              </tr>
+            </template>
+          </template>
+          <template v-if="item?.cppjr?.length">
+            <template v-for="it in item?.cppjr" :key="it">
+              <tr>
+                <td colspan="2"></td>
+                <td class="text-left q-pl-sm q-pr-sm" style="font-size: 11px">* {{ it?.nonpd }}</td>
+                <td class="text-left q-pl-sm q-pr-sm" style="font-size: 11px">* {{ it?.uraianNPD }} </td>
+                <td class="text-right q-pl-sm q-pr-sm" style="font-size: 11px">
+                  {{ formattanpaRp(it?.totalRincian) }}
+                </td>
+                <td class="text-right q-pl-sm q-pr-sm" style="font-size: 11px">
+                  {{ formattanpaRp(0) }}
+                </td>
+                <td></td>
+              </tr>
+              <template v-for="rek in it.rincian" :key="rek">
+                <tr>
+                  <td colspan="2"></td>
+                  <td class="text-left q-pl-sm q-pr-sm" style="font-size: 11px;"> * {{ rek?.koderek50 }}</td>
+                  <td class="text-left q-pl-sm q-pr-sm" style="font-size: 11px;"> * {{ rek?.rincianbelanja }}</td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+              </template>
+            </template>
+          </template>
+        </template>
+        <tr class="bg-grey-2">
+          <td colspan="4" class="text-bold text-center">TOTAL</td>
+          <td class="text-right text-weight-bolder q-pl-sm q-pr-sm">
+            {{ formattanpaRp(totaldebit()) }}
+          </td>
+          <td class="text-right text-weight-bolder q-pl-sm q-pr-sm">
+            {{ formattanpaRp(totalkredit()) }}
+          </td>
+          <td class="text-right text-weight-bolder q-pl-sm q-pr-sm">
+            {{ formattanpaRp(totalsaldo()) }}
+          </td>
+        </tr>
+      </tbody>
+    </q-markup-table>
+  </div>
 </template>
 
 <script setup>
@@ -326,14 +307,35 @@ function totalsaldo() {
 //   rowsPerPage: 0
 // }
 </script>
-<style>
-/* Tambahkan border pada setiap td dan th */
-.bordered_table table,
-.bordered_table tr,
-.bordered_table td {
+<style scoped>
+/* Mengatur warna garis pada seluruh tabel termasuk garis luar */
+.custom-table {
+  border-color: #555555 !important;
+}
+
+/* Menargetkan tabel di dalam komponen q-markup-table */
+.custom-table table {
+  border-color: #555555 !important;
+}
+
+/* Mengatur warna garis pada sel header */
+.custom-table th {
+  border-color: #555555 !important;
+  font-weight: bold;
+}
+
+/* Mengatur warna garis pada sel data */
+.custom-table td {
+  border-color: #555555 !important;
+}
+
+/* Pastikan garis tidak dobel */
+.custom-table table {
   border-collapse: collapse;
-  border: 1px solid #000000;
-  height: 30px;
-  /* Garis hitam dengan ketebalan 1px */
+}
+
+.custom-table thead tr {
+  background: #ffed86;
+  border-color: #555555 !important;
 }
 </style>

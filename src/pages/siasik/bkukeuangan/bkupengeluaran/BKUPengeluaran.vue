@@ -1,5 +1,4 @@
 <template>
-
   <div class="container q-pl-sm q-pr-sm">
     <div class="q-card q-mt-xs q-mt-ms">
       <q-card class="q-pa-xs">
@@ -36,11 +35,18 @@
             </div>
           </div>
         </template>
+        <template v-else-if="store.hasilArray.length === 0">
+          <div class="row flex-center">
+            <div class="kosong">
+              <div>Data Belum Ada</div>
+              <div>Silahkan Pilih Parameter</div>
+            </div>
+          </div>
+        </template>
         <template v-else>
           <div class="row flex-center">
             <ListdataBku />
           </div>
-
           <div class="contaier q-pt-lg q-pl-xl">
             <q-card class="saldo bg-grey-3 q-py-xs q-px-xs" style="width: 400px">
               <div class="row justify-center q-pt-sm q-py-xs q-px-xs" style="font-size: 14px">
@@ -100,8 +106,6 @@
       </q-card>
     </div>
   </div>
-
-
 </template>
 
 <script setup>
@@ -144,50 +148,6 @@ function totalsaldo() {
 
 </script>
 <style>
-table {
-  border-collapse: collapse;
-  border-radius: 6px;
-  max-width: 1500px;
-  width: 100%;
-}
-
-td,
-th {
-  border-left: 5px #ffed86;
-  border-collapse: collapse;
-  border: 1px solid rgb(163, 163, 163);
-  text-align: center;
-}
-
-thead tr {
-  border-collapse: collapse;
-  background: #ffed86;
-}
-
-.tdbreak {
-  word-break: break-all;
-}
-
-.ttd-kanan {
-  position: relative;
-  top: 50px;
-  left: 60%;
-  text-align: center;
-  justify-content: center;
-  width: 25%;
-  height: 100px;
-}
-
-.ttd-kiri {
-  position: relative;
-  left: -10%;
-  top: 50px;
-  text-align: center;
-  justify-content: center;
-  width: 25%;
-  height: 100px;
-}
-
 .kosong {
   position: relative;
   padding-top: 100px;

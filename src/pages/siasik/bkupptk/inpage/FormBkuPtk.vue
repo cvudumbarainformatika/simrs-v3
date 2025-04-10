@@ -2,7 +2,7 @@
   <div class="row full-width justify-center">
     <div class="q-pa-sm" style="width:25%">
       <app-autocomplete v-model="store.params.bulan" label="Pilih Bulan" autocomplete="nama" option-label="nama"
-        option-value="value" outlined :source="store.bulans" />
+        option-value="value" outlined :source="store.bulans" @update:model-value="store.hasilArray = []" />
     </div>
     <div class="q-pa-sm" style="width:25%">
       <app-input v-model="store.params.tahun" label="Tahun" outlined @update:model-value="(val) => {
@@ -10,6 +10,7 @@
         store.params.ptk = ''
         store.getPtks()
         store.loading = false
+        store.hasilArray = []
       }" />
     </div>
     <div class="q-pa-sm" style="width:25%">
@@ -20,11 +21,10 @@
         }" />
     </div>
     <div class="q-pa-sm">
-      <app-btn label="Ambil Data" :disable="store.loading" :loading="store.loading" @click="ambilData()" />
+      <app-btn label="Ambil Data" :loading="store.loading" @click="ambilData()" />
     </div>
     <div class="q-pa-sm">
-      <q-btn icon="icon-mat-print" color="orange" round size="sm" :disable="store.loading" :loading="store.loading"
-        @click="cetakData()">
+      <q-btn icon="icon-mat-print" color="orange" round size="sm" :loading="store.loading" @click="cetakData()">
         <q-tooltip class="bg-orange" :offset="[10, 10]">
           Cetak
         </q-tooltip>

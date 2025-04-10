@@ -1,5 +1,5 @@
 <template>
-  <div id="printMe">
+  <div>
     <div class="container q-pl-sm q-pr-sm">
       <div class="q-card q-mt-xs q-mt-ms">
         <q-card class="q-pa-xs">
@@ -37,7 +37,7 @@
               </div>
             </div>
           </template>
-          <template v-else-if="store.items.length === 0">
+          <template v-else-if="store.hasilArray.length === 0">
             <div class="row flex flex-center">
               <div class="kosong">
                 <div>Data Belum Ada</div>
@@ -46,97 +46,62 @@
             </div>
           </template>
           <template v-else>
-            <div class="row flex flex-center">
+            <div class="row flex-center">
               <listdataBku />
             </div>
-            <div style="padding-bottom: 30px" />
-            <div class="row flex flex-right">
-              <div class="contaier q-pt-lg q-pl-xl">
-                <q-card class="saldo bg-grey-3 q-pa-xs" style="width: 500px; height: 220px">
-                  <div class="row justify-center q-pt-sm q-py-xs q-px-xs" style="font-size: 14px">
-                    <table class="text-weight-bolder no-border">
-                      <tbody style="width: 400px">
-                        <tr class="no-border">
-                          <td class="text-left no-border" width="120px">
-                            Saldo Awal
-                          </td>
-                          <td width="50px" class="no-border">
-                            :
-                          </td>
-                          <td class="text-right no-border" width="170px">
-                            {{ formattanpaRp(0) }}
-                          </td>
-                        </tr>
-                        <tr>
-                          <td class="text-left no-border" width="120px">
-                            Masuk
-                          </td>
-                          <td width="50px" class="no-border">
-                            :
-                          </td>
-                          <td class="text-right no-border" width="170px">
-                            {{ formattanpaRp(totaldebit()) }}
-                          </td>
-                        </tr>
-                        <tr>
-                          <td class="text-left no-border" width="120px">
-                            Keluar
-                          </td>
-                          <td width="50px" class="no-border">
-                            :
-                          </td>
-                          <td class="text-right no-border" width="170px">
-                            {{ formattanpaRp(totalkredit()) }}
-                          </td>
-                        </tr>
-                        <tr>
-                          <td class="text-left no-border" width="120px">
-                            Saldo Akhir
-                          </td>
-                          <td width="50px" class="no-border">
-                            :
-                          </td>
-                          <td class="text-right no-border" width="170px">
-                            {{ formattanpaRp(totalsaldo()) }}
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </q-card>
-              </div>
-            </div>
-            <div class="row">
-              <div class="ttd-kanan">
-                <div>
-                  Probolinggo {{ store.display.sekarang }}
+            <div class="contaier q-pt-lg q-pl-xl">
+              <q-card class="saldo bg-grey-3 q-py-xs q-px-xs" style="width: 400px">
+                <div class="row justify-center q-pt-sm q-py-xs q-px-xs" style="font-size: 14px">
+                  <table class="text-weight-bolder">
+                    <tbody style="width: 400px">
+                      <tr class="no-border">
+                        <td class="text-left no-border" width="150px">
+                          Saldo Awal
+                        </td>
+                        <td width="15px" class="no-border">
+                          :
+                        </td>
+                        <td class="text-right no-border" width="170px">
+                          {{ formattanpaRp(0) }}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="text-left no-border" width="150px">
+                          Masuk
+                        </td>
+                        <td width="15px" class="no-border">
+                          :
+                        </td>
+                        <td class="text-right no-border" width="170px">
+                          {{ formattanpaRp(totaldebit()) }}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="text-left no-border" width="150px">
+                          Keluar
+                        </td>
+                        <td width="15px" class="no-border">
+                          :
+                        </td>
+                        <td class="text-right no-border" width="170px">
+                          {{ formattanpaRp(totalkredit()) }}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="text-left no-border" width="150px">
+                          Saldo Akhir
+                        </td>
+                        <td width="15px" class="no-border">
+                          :
+                        </td>
+                        <td class="text-right no-border" width="170px">
+                          {{ formattanpaRp(totalsaldo()) }}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
-                <div class="text-bold">
-                  Bendahara Pengeluaran
-                </div>
-                <div style="padding-bottom: 40px" />
-                <div class="underline text-bold" style="text-decoration-line: underline;">
-                  {{ store.pegawais[0]?.nama }}
-                </div>
-                <div>
-                  NIP. {{ store.pegawais[0]?.nip }}
-                </div>
-              </div>
-              <div class="ttd-kiri">
-                <div class="invisible">
-                  .
-                </div>
-                <div class="text-bold">
-                  Pengguna Anggaran
-                </div>
-                <div style="padding-bottom: 40px" />
-                <div class="underline text-bold" style="text-decoration-line: underline;">
-                  {{ store.pegawais[1]?.nama }}
-                </div>
-                <div>
-                  NIP. {{ store.pegawais[1]?.nip }}
-                </div>
-              </div>
+              </q-card>
             </div>
             <div style="padding-bottom: 100px" />
           </template>
@@ -188,60 +153,6 @@ function totalsaldo() {
 </script>
 
 <style>
-table {
-  border-collapse: collapse;
-  border-radius: 6px;
-  max-width: 1500px;
-  width: 100%;
-}
-
-td,
-th {
-  border-collapse: collapse;
-  border: 1px solid rgb(163, 163, 163);
-  text-align: center;
-}
-
-thead tr {
-  height: 60px;
-  background: #ffed86;
-  font-size: 16px;
-}
-
-tbody tr {
-  height: 48px;
-  border-bottom: 1px solid #e3f1d5;
-}
-
-td,
-th {
-  text-align: center;
-}
-
-.grs_bawah {
-  border-bottom: 1px solid grey;
-}
-
-.ttd-kanan {
-  position: relative;
-  top: 50px;
-  left: 60%;
-  text-align: center;
-  justify-content: center;
-  width: 25%;
-  height: 100px;
-}
-
-.ttd-kiri {
-  position: relative;
-  left: -10%;
-  top: 50px;
-  text-align: center;
-  justify-content: center;
-  width: 25%;
-  height: 100px;
-}
-
 .kosong {
   position: relative;
   padding-top: 100px;

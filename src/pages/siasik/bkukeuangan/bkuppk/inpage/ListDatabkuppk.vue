@@ -1,7 +1,7 @@
 <template>
   <div class="row justify-center">
     <div class="full-width q-px-sm">
-      <q-markup-table class="full-width" flat bordered wrap-cells :separator="separator">
+      <q-markup-table class="custom-table" flat bordered wrap-cells :separator="separator">
         <thead>
           <tr class="max-width">
             <th class="text-bold">
@@ -102,9 +102,35 @@ function totalsaldo() {
   return totalsaldo
 }
 </script>
-<!-- <style>
-thead tr {
-  height: 60px;
-  background: #ffed86;
+<style scoped>
+/* Mengatur warna garis pada seluruh tabel termasuk garis luar */
+.custom-table {
+  border-color: #555555 !important;
 }
-</style> -->
+
+/* Menargetkan tabel di dalam komponen q-markup-table */
+.custom-table table {
+  border-color: #555555 !important;
+}
+
+/* Mengatur warna garis pada sel header */
+.custom-table th {
+  border-color: #555555 !important;
+  font-weight: bold;
+}
+
+/* Mengatur warna garis pada sel data */
+.custom-table td {
+  border-color: #555555 !important;
+}
+
+/* Pastikan garis tidak dobel */
+.custom-table table {
+  border-collapse: collapse;
+}
+
+.custom-table thead tr {
+  background: #ffed86;
+  border-color: #555555 !important;
+}
+</style>
