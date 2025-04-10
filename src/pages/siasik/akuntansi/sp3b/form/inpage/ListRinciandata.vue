@@ -1,5 +1,5 @@
 <template>
-  <template v-if="store.pendapatans?.length > 0 && store.belanjas?.length > 0">
+  <template v-if="store.pendapatans?.length > 0 || store.belanjas?.length > 0">
     <div class="q-pa-sm full-width">
       <q-markup-table wrap-cells flat bordered :separator="separator">
         <thead>
