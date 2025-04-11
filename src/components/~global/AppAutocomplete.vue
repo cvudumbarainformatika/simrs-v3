@@ -1,11 +1,11 @@
 <template>
   <q-select ref="refAuto" :options="optionx" :label="label" dense :filled="!outlined ? filled : !filled"
     :outlined="outlined" hide-bottom-space no-error-icon :input-debounce="!filterred ? 500 : 0" emit-value map-options
-    use-input fill-input hide-selected :hide-dropdown-icon="hideDropdownIcon" :option-value="optionValue"
-    :option-label="optionLabel" :disable="disable" :loading="loading" lazy-rules :rules="[anotherValid]" behavior="menu"
-    transition-show="jump-up" transition-hide="jump-down" :bottom-slots="hint !== null"
-    @update:model-value="updateModel" @filter="filterFn" @focus="getFocus" @input-value="setModel"
-    @new-value="createValue">
+    use-input fill-input :hide-selected="hideSelected" :hide-dropdown-icon="hideDropdownIcon"
+    :option-value="optionValue" :option-label="optionLabel" :disable="disable" :loading="loading" lazy-rules
+    :rules="[anotherValid]" behavior="menu" transition-show="jump-up" transition-hide="jump-down"
+    :bottom-slots="hint !== null" @update:model-value="updateModel" @filter="filterFn" @focus="getFocus"
+    @input-value="setModel" @new-value="createValue">
     <template #no-option>
       <q-item>
         <q-item-section class="text-grey">
@@ -35,6 +35,7 @@ const props = defineProps({
   filterred: { type: Boolean, default: true },
   hint: { type: String, default: null },
   hideDropdownIcon: { type: Boolean, default: false },
+  hideSelected: { type: Boolean, default: true },
 })
 const refAuto = ref(null)
 const optionx = ref(props.source)

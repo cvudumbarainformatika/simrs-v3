@@ -274,6 +274,10 @@ const laporan = {
       path: '/laporan/farmasi/data-resep',
       component: () => import('pages/simrs/laporan/farmasi/dataResep/IndexPage.vue')
     },
+    {
+      path: '/laporan/farmasi/spm',
+      component: () => import('pages/simrs/laporan/farmasi/spm/IndexPage.vue')
+    },
 
     // ini Harus ada
     {

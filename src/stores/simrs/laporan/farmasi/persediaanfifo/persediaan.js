@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia'
+import { acceptHMRUpdate, defineStore } from 'pinia'
 import { date } from 'quasar'
 import { api } from 'src/boot/axios'
 
@@ -106,6 +106,7 @@ export const useLaporanPersediaanFiFoFarmasiStore = defineStore('laporan_persedi
       this.items = []
       this.loading = true
       const param = { params: this.params }
+
       await api.get('v1/simrs/laporan/farmasi/persediaan/get-persediaan', param)
         .then(resp => {
           this.loading = false
@@ -118,3 +119,7 @@ export const useLaporanPersediaanFiFoFarmasiStore = defineStore('laporan_persedi
     }
   }
 })
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useLaporanPersediaanFiFoFarmasiStore, import.meta.hot))
+}

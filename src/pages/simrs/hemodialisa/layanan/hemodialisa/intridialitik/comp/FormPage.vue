@@ -4,13 +4,13 @@
 
     <div class="col-2">
       <app-autocomplete v-model="store.form.jamKe" :source="store.jamKeOptions" label="Jam Ke" outlined
-        hide-dropdown-icon />
+        hide-dropdown-icon :disable="!!store.form.id" />
     </div>
     <div class="col-3">
-      <app-input-simrs v-model="store.form.tgl" label="format (Th-bln-tgl jam:men:det)" />
+      <app-input-simrs v-model="store.form.tgl" label="format (Th-bln-tgl jam:men:det)" :disable="!!store.form.id" />
     </div>
     <div class="col-1">
-      <q-btn flat icon="icon-mat-refresh" size="xs" dense @click="() => {
+      <q-btn v-if="!store.form.id" flat icon="icon-mat-refresh" size="xs" dense @click="() => {
         store.setForm('tgl', date.formatDate(Date.now(), 'YYYY-MM-DD HH:mm:ss'))
       }">
         <q-tooltip>set ke waktu sekarang</q-tooltip>
