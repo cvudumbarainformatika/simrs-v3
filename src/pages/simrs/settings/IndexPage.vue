@@ -1,103 +1,45 @@
 <template>
-  <q-page
-    ref="main"
-    class=""
-  >
-    <div
-      :class="store.pegawai !== null?'padding-right q-pt-md':'padding-xxxl q-pt-md'"
-    >
-      <q-card
-        class="card-my shadow-22"
-        :style="`height:${h}px`"
-      >
-        <div
-          style="height:70px"
-          class="q-px-lg q-py-md row justify-between"
-        >
-          <div @click="()=>router.push({path:'/admin/sso', replace:true})">
-            <q-avatar
-              size="35px"
-              class="cursor-pointer bg-white"
-            >
+  <q-page ref="main" class="">
+    <div :class="store.pegawai !== null ? 'padding-right q-pt-md' : 'padding-xxxl q-pt-md'">
+      <q-card class="card-my shadow-22" :style="`height:${h}px`">
+        <div style="height:70px" class="q-px-lg q-py-md row justify-between">
+          <div @click="() => router.push({ path: '/admin/sso', replace: true })">
+            <q-avatar size="35px" class="cursor-pointer bg-white">
               <img src="~assets/logos/logo-rsud.png">
             </q-avatar>
           </div>
-          <app-input
-            class="col-10"
-            dense
-            valid
-            label="search"
-          />
+          <app-input class="col-10" dense valid label="search" />
         </div>
         <q-scroll-area :style="`height:${hScroll}px`">
-          <list-items
-            :items="store.items"
-            :loading="store.loading"
-            :edited="edited"
-            @add="newData()"
-            @save-new="(val)=> saveNew(val)"
-            @save-new-menu="(val)=> saveNewMenu(val)"
-            @save-edit-menu="(val)=> saveEditMenu(val)"
-            @save-new-sub-menu="(val)=> saveNewSubMenu(val)"
-            @save-edit-sub-menu="(val)=> saveEditSubMenu(val)"
-            @edit-app="(val)=> editApp(val)"
-            @icon-app-change="(val)=>iconAppClick(val)"
-            @icon-menu-change="(val)=>iconMenuClick(val)"
-            @delete-new="(val)=>store.deleteNew(val)"
-            @delete-new-menu="(val)=>store.deleteNewMenu(val)"
-            @delete-new-sub-menu="(val)=>store.deleteNewSubMenu(val)"
-            @add-menu="(val)=>store.addMenu(val)"
-            @add-sub-menu="(val)=>store.addSubMenu(val)"
-          />
+          <list-items :items="store.items" :loading="store.loading" :edited="edited" @add="newData()"
+            @save-new="(val) => saveNew(val)" @save-new-menu="(val) => saveNewMenu(val)"
+            @save-edit-menu="(val) => saveEditMenu(val)" @save-new-sub-menu="(val) => saveNewSubMenu(val)"
+            @save-edit-sub-menu="(val) => saveEditSubMenu(val)" @edit-app="(val) => editApp(val)"
+            @icon-app-change="(val) => iconAppClick(val)" @icon-menu-change="(val) => iconMenuClick(val)"
+            @delete-new="(val) => store.deleteNew(val)" @delete-new-menu="(val) => store.deleteNewMenu(val)"
+            @delete-new-sub-menu="(val) => store.deleteNewSubMenu(val)" @add-menu="(val) => store.addMenu(val)"
+            @add-sub-menu="(val) => store.addSubMenu(val)" />
         </q-scroll-area>
-        <div
-          ref="bot"
-          style="height:72px"
-          class="absolute-bottom bg-primary text-white q-px-lg q-py-md"
-        >
+        <div ref="bot" style="height:72px" class="absolute-bottom bg-primary text-white q-px-lg q-py-md">
           <div class="row">
-            <q-avatar
-              size="40px"
-              font-size="20px"
-              color="dark"
-              text-color="white"
-              icon="icon-mat-person"
-              @click="modalSearch = true"
-            />
+            <q-avatar size="40px" font-size="20px" color="dark" text-color="white" icon="icon-mat-person"
+              @click="modalSearch = true" />
             <q-space />
-            <q-btn
-              flat
-              padding="sm"
-              icon="icon-mat-settings"
-            >
+            <q-btn flat padding="sm" icon="icon-mat-settings">
               <q-menu>
                 <q-list style="min-width: 100px">
-                  <q-item
-                    v-close-popup
-                    clickable
-                    @click="modalSearch = true"
-                  >
+                  <q-item v-close-popup clickable @click="modalSearch = true">
                     <q-item-section>Hak Akses User</q-item-section>
                   </q-item>
-                  <q-item
-                    v-close-popup
-                    clickable
-                    to="/settings/datacache"
-                  >
+                  <q-item v-close-popup clickable to="/settings/datacache">
                     <q-item-section>Pengaturan Cache</q-item-section>
                   </q-item>
                   <q-separator />
-                  <q-item
-                    v-close-popup
-                    clickable
-                  >
+                  <q-item v-close-popup clickable>
                     <q-item-section>Settings</q-item-section>
                   </q-item>
                   <q-separator />
-                  <q-item
-                    v-close-popup
-                    clickable
-                  >
+                  <q-item v-close-popup clickable>
                     <q-item-section>Help &amp; Feedback</q-item-section>
                   </q-item>
                 </q-list>
@@ -113,37 +55,18 @@
       class="absolute-left q-pa-md"
       style="width:20%"
     > -->
-    <div
-      v-if="store.pegawai !== null"
-      class="absolute-left q-pa-md"
-      style="width:39%"
-    >
-      <card-pegawai
-        :item="store.pegawai"
-        :menus="menus"
-        :loading="store.loading"
-        @simpan="onSimpanUserMenu"
-        @all-check="allCheck"
-        @app-check="appCheck"
-        @menu-check="menuCheck"
-        @submenu-check="submenuCheck"
-      />
+    <div v-if="store.pegawai !== null" class="absolute-left q-pa-md" style="width:39%">
+      <card-pegawai :item="store.pegawai" :menus="menus" :loading="store.loading" @simpan="onSimpanUserMenu"
+        @all-check="allCheck" @app-check="appCheck" @menu-check="menuCheck" @submenu-check="submenuCheck"
+        :unitpengelolah="organisasi.items" />
     </div>
 
     <!-- modal -->
-    <app-get-icon
-      v-model="modalIcon"
-      @copy-text="(val)=>changeIconApp(val)"
-    />
-    <app-get-icon
-      v-model="modalMenuIcon"
-      @copy-text="(val)=>changeIconMenu(val)"
-    />
-    <DialogSearchUser
-      v-model="modalSearch"
-      @updated="(val)=>setPegawai(val)"
-    />
+    <app-get-icon v-model="modalIcon" @copy-text="(val) => changeIconApp(val)" />
+    <app-get-icon v-model="modalMenuIcon" @copy-text="(val) => changeIconMenu(val)" />
+    <DialogSearchUser v-model="modalSearch" @updated="(val) => setPegawai(val)" />
   </q-page>
+  <!-- {{ store.pegawai }} -->
 </template>
 
 <script setup>
@@ -155,8 +78,10 @@ import { findWithAttr, notifErrVue } from 'src/modules/utils'
 
 import { useSettingsAplikasi } from 'src/stores/simrs/settings'
 import { useRouter } from 'vue-router'
+import { useUnitPengelolahArsip } from 'src/stores/arsip/master/unitpengelolaharsip'
 const store = useSettingsAplikasi()
 const router = useRouter()
+const organisasi = useUnitPengelolahArsip()
 
 const main = ref(null)
 const h = ref()
@@ -193,9 +118,10 @@ onMounted(() => {
   store.getPoli()
   store.getGudang()
   store.getRuanganSim()
+  organisasi.getMunitpengelolah()
 })
 
-function newData () {
+function newData() {
   console.log(store.items)
   const ada = store.items.filter(anu => anu.itemId === 0)
   if (ada.length) {
@@ -206,13 +132,13 @@ function newData () {
   }
 }
 
-function saveNew (val) {
+function saveNew(val) {
   store.saveNew(val).then(() => {
     edited.value = null
     indexApp.value = null
   })
 }
-function editApp (val) {
+function editApp(val) {
   console.log(val)
   store.editApp(val).then(() => {
     edited.value = null
@@ -221,7 +147,7 @@ function editApp (val) {
   })
 }
 
-function saveNewMenu (val) {
+function saveNewMenu(val) {
   console.log('new Menu', val)
   store.saveNewMenu(val)
     .then(() => {
@@ -229,7 +155,7 @@ function saveNewMenu (val) {
       indexApp.value = null
     })
 }
-function saveEditMenu (val) {
+function saveEditMenu(val) {
   console.log('edit Menu', val)
   store.saveEditMenu(val)
     .then(() => {
@@ -238,7 +164,7 @@ function saveEditMenu (val) {
     })
 }
 
-function saveNewSubMenu (val) {
+function saveNewSubMenu(val) {
   console.log('new Menu', val)
   store.saveNewSubMenu(val)
     .then(() => {
@@ -246,7 +172,7 @@ function saveNewSubMenu (val) {
       indexApp.value = null
     })
 }
-function saveEditSubMenu (val) {
+function saveEditSubMenu(val) {
   console.log('edit Menu', val)
   store.saveEditSubMenu(val)
     .then(() => {
@@ -255,13 +181,13 @@ function saveEditSubMenu (val) {
     })
 }
 
-function iconAppClick (index) {
+function iconAppClick(index) {
   modalIcon.value = true
   indexApp.value = index
   console.log('index app', index)
 }
 
-function changeIconApp (val) {
+function changeIconApp(val) {
   modalIcon.value = false
   console.log(val)
   store.changeAppIcon(indexApp.value, val).then(() => {
@@ -270,14 +196,14 @@ function changeIconApp (val) {
   })
 }
 const indexMenu = ref(null)
-function iconMenuClick (index) {
+function iconMenuClick(index) {
   console.log('icon menu', index)
   modalMenuIcon.value = true
   indexApp.value = index.app
   indexMenu.value = index.menu
   console.log('index app', index)
 }
-function changeIconMenu (val) {
+function changeIconMenu(val) {
   console.log('change icon', val)
   modalMenuIcon.value = false
   console.log(val)
@@ -287,7 +213,7 @@ function changeIconMenu (val) {
   })
 }
 
-function setPegawai (val) {
+function setPegawai(val) {
   console.log('items', store?.items)
   console.log('set', val)
   if (val !== null) {
@@ -310,7 +236,7 @@ function setPegawai (val) {
     })
     const userMenu = val?.user?.akses
     if (userMenu?.length) {
-    // const anu = []
+      // const anu = []
       const menu = menus
       userMenu.forEach(dat => {
         const appInd = findWithAttr(menu, 'id', dat.aplikasi_id)
@@ -333,7 +259,7 @@ function setPegawai (val) {
   store.setPegawai(val)
 }
 
-function onSimpanUserMenu (val) {
+function onSimpanUserMenu(val) {
   const app = val.filter(app => app.checked)
   const menu = app.map(app => {
     const men = app.menus.filter(men => men.checked)
@@ -350,7 +276,7 @@ function onSimpanUserMenu (val) {
   store.simpanAksesMenu(menu)
 }
 
-function allCheck (val) {
+function allCheck(val) {
   const all = store.pegawai.menus
   let data = []
   if (val === true) {
@@ -390,7 +316,7 @@ function allCheck (val) {
   store.simpanAksesMenu('all', val, data)
   // console.log('all menus', val, all)
 }
-function appCheck (val) {
+function appCheck(val) {
   const app = store.pegawai.menus[val.i]
   const menus = app.menus
   let data = []
@@ -429,7 +355,7 @@ function appCheck (val) {
   }
   store.simpanAksesMenu('app', app.checked, data)
 }
-function menuCheck (val) {
+function menuCheck(val) {
   const app = store.pegawai.menus[val.i]
   const sub = val.menu.submenus
   let data = []
@@ -470,7 +396,7 @@ function menuCheck (val) {
   }
   store.simpanAksesMenu('menu', val.menu.checked, data)
 }
-function submenuCheck (val) {
+function submenuCheck(val) {
   const app = store.pegawai.menus[val.i]
   const menu = app.menus[val.n]
   console.log('app ', app)
@@ -502,6 +428,7 @@ function submenuCheck (val) {
   padding-left: 20%;
   padding-right: 20%;
 }
+
 .padding-right {
   padding-left: 39%;
   padding-right: 1%;

@@ -152,60 +152,69 @@ export const useSp3bStore = defineStore('laporan_sp3b', {
     dataSp3b() {
       const pagupendapatan = this.allitems?.pagupendapatan
 
-
       //SALDO AWAL
       const pendx = this.allitems?.sebelumpendapatan
       const bljx = this.allitems?.sebelumbelanja
       const biayax = this.allitems?.sebelumpembiayaan
       const penyesuaianx = this.allitems?.sebelumpenyesuaian
 
-
       const koderekpend = pagupendapatan.map((x) => x.kode)
       const koderekblja = bljx.map(x => x.kode)
 
       //Filter pendapatan berdasarkan data pagu pendapatan
       const filterpendpatan = pendx.filter(x => koderekpend.includes(x.kode))
-      const filterpenyesuaian = penyesuaianx.filter(x => koderekpend.includes(x.kode))
+      const filterpenyesuaian = penyesuaianx && penyesuaianx.length > 0 ?
+        penyesuaianx.filter(x => koderekpend.includes(x.kode)) : []
       const salawalpendapatan = filterpendpatan.concat(filterpenyesuaian)
-      const pendapatanx = salawalpendapatan.reduce((a, b) => parseFloat(a) + parseFloat(b.subtotal), 0)
+      const pendapatanx = salawalpendapatan.length > 0 ?
+        salawalpendapatan.reduce((a, b) => parseFloat(a) + parseFloat(b.subtotal), 0) : 0
 
       //filter penyesuaian berdasarkan belanja
-      const filterpnye = penyesuaianx.filter(x => koderekblja.includes(x.kode))
+      const filterpnye = penyesuaianx && penyesuaianx.length ?
+        penyesuaianx.filter(x => koderekblja.includes(x.kode)) : []
       const saldoawalbelanja = bljx.concat(filterpnye)
-      const totalbelanjax = saldoawalbelanja.reduce((a, b) => parseFloat(a) + parseFloat(b.subtotal), 0)
-
-      const totalbiayax = biayax.map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0)
-
+      const totalbelanjax = saldoawalbelanja.length > 0 ?
+        saldoawalbelanja.reduce((a, b) => parseFloat(a) + parseFloat(b.subtotal), 0) : 0
+      const totalbiayax = biayax.length > 0 ?
+        biayax.map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0) : 0
       const saldoawalx = ((pendapatanx - totalbelanjax) + totalbiayax).toFixed(2)
-
       this.saldoawal = saldoawalx
-      console.log('saldo awal', this.saldoawal)
 
       // DATA PENDAPATAN
-      const pendapatanall = this.allitems?.pendapatan
+      const pendapatanall = this.allitems?.pendapatan || []
       const pend = pendapatanall.filter(x => koderekpend.includes(x.kode))
-      const penye = this.allitems?.penyesuaian.filter(x => koderekpend.includes(x.kode))
-
+      const penye = this.allitems?.penyesuaian && this.allitems?.penyesuaian.length > 0 ?
+        this.allitems.penyesuaian.filter(x => koderekpend.includes(x.kode)) : []
       const datapendapatan = pend.concat(penye)
 
       const unikpend = pagupendapatan.map((x) => x.kode)
       const newsetpend = unikpend.length ? [...new Set(unikpend)] : []
-      console.log('dadatan', newsetpend)
       const pendapatan = []
       for (let i = 0; i < newsetpend.length; i++) {
         const el = newsetpend[i];
-        const obj = {
-          kode: datapendapatan.filter((x) => x.kode === el)[0].kode,
-          uraian: datapendapatan.filter((x) => x.kode === el)[0].uraian,
-          total: datapendapatan.filter((x) => x.kode === el).map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0),
-          keterangan: 'PENDAPATAN'
+        console.log('el', el)
+        // Ambil kode dan uraian dari pagupendapatan
+        const paguData = pagupendapatan.find((x) => x.kode === el)
+
+        if (paguData) {
+          // Filter data pendapatan untuk menghitung total
+          const filteredData = datapendapatan.filter((x) => x.kode === el)
+          const total = filteredData.length > 0 ?
+            filteredData.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0) : 0
+
+          const obj = {
+            kode: paguData.kode,
+            uraian: paguData.uraian,
+            total: total,
+            keterangan: 'PENDAPATAN'
+          }
+          pendapatan.push(obj)
         }
-        pendapatan.push(obj)
       }
 
       this.pendapatans.push(...pendapatan)
       // const peny = penyesuaian.map((x) => parseFloat(x.totalpenyesuaian))
-      console.log('data pendapatan', this.pendapatans)
+      console.log('this.pendapatans', this.pendapatans)
 
       // DATA BELANJA
       const blj = this.allitems?.belanja
@@ -228,9 +237,9 @@ export const useSp3bStore = defineStore('laporan_sp3b', {
         belanja.push(obj)
       }
       this.belanjas = belanja
-
+      console.log('this.belanjas', this.belanjas)
       //DATA PEMBIAYAAN
-      const pmbiaya = this.allitems?.pembiayaan
+      const pmbiaya = this.allitems?.pembiayaan || []
       const pembiayaan = []
       for (let i = 0; i < pmbiaya.length; i++) {
         const el = pmbiaya[i];
@@ -245,8 +254,14 @@ export const useSp3bStore = defineStore('laporan_sp3b', {
 
       this.pembiayaans.push(...pembiayaan)
 
-      this.saveall = pendapatan.concat(belanja, ...pembiayaan)
-      console.log('saveall', this.pembiayaans)
+      this.saveall = pendapatan.concat(belanja)
+      if (pembiayaan.length > 0) {
+        this.saveall = this.saveall.concat(pembiayaan)
+      }
+      console.log('this.pembiayaans', this.pembiayaans)
+      console.log('this.saveall', this.saveall)
+
+
     }
 
   }

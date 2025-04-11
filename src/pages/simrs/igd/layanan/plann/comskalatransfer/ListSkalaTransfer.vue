@@ -1,30 +1,15 @@
 <template>
   <div class="fit column absolute">
     <div class="col full-height ">
-      <q-card
-        flat
-        bordered
-        square
-        class="full-height "
-        style="overflow: hidden;"
-      >
-        <q-bar
-          class="bg-teal text-white z-top"
-          style="width: inherit;"
-        >
+      <q-card flat bordered square class="full-height " style="overflow: hidden;">
+        <q-bar class="bg-teal text-white z-top" style="width: inherit;">
           <div class="f-12">
             Data Skala Transfer
           </div>
           <q-space />
         </q-bar>
-        <q-card-section
-          style="padding:0"
-          class="full-height bg-grey"
-        >
-          <div
-            v-if="loadingaja"
-            class="column full-height flex-center"
-          >
+        <q-card-section style="padding:0" class="full-height bg-grey">
+          <div v-if="loadingaja" class="column full-height flex-center">
             <div class="text-white">
               Harap Tunggu .....
             </div>
@@ -32,33 +17,21 @@
               Sinkron Data Ke DATABASE
             </div>
           </div>
-          <div
-            v-if="pasien?.skalatransfer?.length <= 0"
-            class="column full-height flex-center"
-          >
+          <div v-if="pasien?.skalatransfer?.length <= 0" class="column full-height flex-center">
             <div class="text-white">
               Belum Ada data tersimpan
             </div>
           </div>
-          <q-scroll-area
-            v-else
-            style="height:calc(100% - 32px);"
-          >
-            <q-list
-              class="bg-white"
-              separator
-            >
+          <q-scroll-area v-else style="height:calc(100% - 32px);">
+            <q-list class="bg-white" separator>
               <transition-group name="list">
-                <q-item
-                  v-for="(item , n) in lists"
-                  :key="n"
-                  class="list-move"
-                >
+                <q-item v-for="(item, n) in lists" :key="n" class="list-move">
                   <q-item-section>
                     <div class="row">
                       <div class="col-6">
                         <q-item-label>
-                          <span class="">Tanggal </span> : <span class="text-weight-bold">{{ dateFullFormat(item.tgl) }}</span>
+                          <span class="">Tanggal </span> : <span class="text-weight-bold">{{ dateFullFormat(item.tgl)
+                          }}</span>
                         </q-item-label>
                       </div>
                       <div class="col-6">
@@ -75,19 +48,22 @@
                       </div>
                       <div class="col-6">
                         <q-item-label>
-                          <span class="">Ecg monitor </span> : <span class="text-weight-bold">{{ item.ecgmonitor }}</span>
+                          <span class="">Ecg monitor </span> : <span class="text-weight-bold">{{ item.ecgmonitor
+                          }}</span>
                         </q-item-label>
                       </div>
                     </div>
                     <div class="row">
                       <div class="col-6">
                         <q-item-label>
-                          <span class="">Haemo Dinamik </span> : <span class="text-weight-bold">{{ item.haemodinamik }}</span>
+                          <span class="">Haemo Dinamik </span> : <span class="text-weight-bold">{{ item.haemodinamik
+                          }}</span>
                         </q-item-label>
                       </div>
                       <div class="col-6">
                         <q-item-label>
-                          <span class="">Intravenusline </span> : <span class="text-weight-bold">{{ item.intravenusline }}</span>
+                          <span class="">Intravenusline </span> : <span class="text-weight-bold">{{ item.intravenusline
+                          }}</span>
                         </q-item-label>
                       </div>
                     </div>
@@ -99,19 +75,22 @@
                       </div>
                       <div class="col-6">
                         <q-item-label>
-                          <span class="">Lanjut Usia </span> : <span class="text-weight-bold">{{ item.lanjutusia }}</span>
+                          <span class="">Lanjut Usia </span> : <span class="text-weight-bold">{{ item.lanjutusia
+                          }}</span>
                         </q-item-label>
                       </div>
                     </div>
                     <div class="row">
                       <div class="col-6">
                         <q-item-label>
-                          <span class="">Prematuritas </span> : <span class="text-weight-bold">{{ item.prematurias }}</span>
+                          <span class="">Prematuritas </span> : <span class="text-weight-bold">{{ item.prematurias
+                          }}</span>
                         </q-item-label>
                       </div>
                       <div class="col-6">
                         <q-item-label>
-                          <span class="">Provesional Pacemaker </span> : <span class="text-weight-bold">{{ item.provesionalpacemaker }}</span>
+                          <span class="">Provesional Pacemaker </span> : <span class="text-weight-bold">{{
+                            item.provesionalpacemaker }}</span>
                         </q-item-label>
                       </div>
                     </div>
@@ -123,30 +102,29 @@
                       </div>
                       <div class="col-6">
                         <q-item-label>
-                          <span class="">Respritarory Support </span> : <span class="text-weight-bold">{{ item.respritarorysupport }}</span>
+                          <span class="">Respritarory Support </span> : <span class="text-weight-bold">{{
+                            item.respritarorysupport }}</span>
                         </q-item-label>
                       </div>
                     </div>
                     <q-separator />
                     <div class="row">
-                      <q-item-label class="q-mt-sm q-mb-sm">
-                        <span>Skor : {{ item.scoretotal }} || Derajat Transfer : {{ item.drajattransfer }}</span>
-                      </q-item-label>
+                      <div class="col-6">
+                        <q-item-label class="q-mt-sm q-mb-sm">
+                          <span>Skor : {{ item.scoretotal }} || Derajat Transfer : {{ item.drajattransfer }}</span>
+                        </q-item-label>
+                      </div>
+                      <div class="col-6">
+                        <q-item-label class="q-mt-sm q-mb-sm">
+                          <span>Tanggal : <q-badge color="teal"> {{ item?.tgl }}</q-badge></span>
+                        </q-item-label>
+                      </div>
                     </div>
                     <q-separator />
                   </q-item-section>
-                  <q-item-section
-                    side
-                  >
+                  <q-item-section side>
                     <div class="q-gutter-sm">
-                      <q-btn
-                        flat
-                        round
-                        size="sm"
-                        icon="icon-mat-delete"
-                        color="negative"
-                        @click="hapusItem(item.id)"
-                      />
+                      <q-btn flat round size="sm" icon="icon-mat-delete" color="negative" @click="hapusItem(item.id)" />
                     </div>
                   </q-item-section>
                 </q-item>
@@ -184,7 +162,7 @@ const dateFullFormat = (val) => {
   return date.formatDate(val, 'DD MMMM YYYY H:m:s')
 }
 
-function hapusItem (id) {
+function hapusItem(id) {
   $q.dialog({
     dark: true,
     title: 'Peringatan',
