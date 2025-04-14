@@ -165,7 +165,7 @@
       </div>
 
       <div class="q-pa-sm">
-        <component :is="menu.comp" />
+        <component ref="refTable" :is="menu.comp" :h="h" :bottom="menu.bottom" :depo="store.params?.depo" />
       </div>
 
       <div class="q-mt-md">
@@ -336,6 +336,7 @@
 </template>
 <script setup>
 import { date } from 'quasar'
+import depo from 'src/router/depo'
 import { useAplikasiStore } from 'src/stores/app/aplikasi'
 import { useLaporanSpmFarmasiStore } from 'src/stores/simrs/laporan/farmasi/spm/spm'
 import { defineAsyncComponent, onMounted, ref, shallowRef } from 'vue'
@@ -344,6 +345,7 @@ const store = useLaporanSpmFarmasiStore()
 const apps = useAplikasiStore()
 
 const refTop = ref(null)
+const refTable = ref(null)
 const h = ref(0)
 onMounted(() => {
   store.getOptionKelompok()
@@ -363,14 +365,17 @@ const printObj = {
 const menus = ref([
   {
     name: 'Generik',
+    bottom: 164,
     comp: shallowRef(defineAsyncComponent(() => import('./comp/TabelGenerik.vue')))
   },
   {
     name: 'Response Time',
+    bottom: 0,
     comp: shallowRef(defineAsyncComponent(() => import('./comp/TabelResponsTime.vue')))
   },
   {
     name: 'Kesesuaian Obat',
+    bottom: 0,
     comp: shallowRef(defineAsyncComponent(() => import('./comp/TabelKesesuaian.vue')))
   },
 ])
@@ -398,7 +403,7 @@ function setSitermbayar (val) {
 }
 
 function setFormularium (val) {
-
+  store.items = []
   const items = [...store.rawItems]
   store.items = items.filter((item) => {
     if (store.params.generik === 'Generik') {
@@ -422,13 +427,17 @@ function setFormularium (val) {
 }
 
 function setTipe (val) {
-  console.log('set tipe', val)
   if (store.jenisLaporan == 'Generik') {
     if (val === 'Rinci') setFormularium()
     if (val === 'Rekap') store.setRekapGenerik()
   }
-
+  setTimeout(() => {
+    console.log('set tipe', val, refTop.value?.clientHeight)
+    h.value = refTop.value?.clientHeight
+    refTable.value?.calculateOffset()
+  }, 200)
 }
+
 // text tanda tangan start
 
 const kiriAtasSatu = ref('')

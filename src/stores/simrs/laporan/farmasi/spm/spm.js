@@ -58,7 +58,6 @@ export const useLaporanSpmFarmasiStore = defineStore('laporan_spm_farmasi', {
       { nama: 'Depo Rawat Jalan', value: 'Gd-05010101' },
       { nama: 'Depo IGD', value: 'Gd-02010104' },
       { nama: 'Depo OK', value: 'Gd-04010103' },
-
     ],
     optionKelompoks: [],   // ini kelompok penyimpanan di master obat
     optionSistemBayars: [],   // ini kelompok penyimpanan di master sistem bayar
@@ -218,9 +217,40 @@ export const useLaporanSpmFarmasiStore = defineStore('laporan_spm_farmasi', {
       return chunked
     },
     setRekapGenerik () {
+      this.items = []
       const rawDates = this.reseps.map(item => date.formatDate(item.tgl_permintaan, 'YYYY-MM-DD'))
       const uniqueDates = [...new Set(rawDates)]
-      console.log('rawDates', rawDates, uniqueDates, this.reseps)
+
+      uniqueDates.forEach(tangg => {
+        const noreseps = this.reseps.filter(item => tangg === date.formatDate(item.tgl_permintaan, 'YYYY-MM-DD'))
+        const resepnya = noreseps.map(item => item.noresep)
+        const uniqueNoreseps = [...new Set(resepnya)]
+        const permintaan = this.rawItems.filter(item => (tangg === date.formatDate(item.tgl, 'YYYY-MM-DD') && item.jumlah_resep > 0))
+        const dilayani = this.rawItems.filter(item => (tangg === date.formatDate(item.tgl, 'YYYY-MM-DD') && item.jumlah_dilayani > 0))
+        // console.log('permintaan', permintaan)
+
+        const item = {
+          tgl: tangg,
+          jml_lembar_resep: uniqueNoreseps?.length,
+          ditulis: {
+            jml_fornas_generik: permintaan.filter(item => item.status_fornas == '1' && (item.status_generik == '1' || item.obat_program == '1'))?.length,
+            jml_fornas_non_generik: permintaan.filter(item => item.status_fornas == '1' && item.status_generik != '1')?.length,
+            jml_forkit_generik: permintaan.filter(item => item.status_fornas != '1' && item.status_forkit == '1' && (item.status_generik == '1' || item.obat_program == '1'))?.length,
+            jml_forkit_non_generik: permintaan.filter(item => item.status_fornas != '1' && item.status_forkit == '1' && item.status_generik != '1')?.length,
+            non_formulaium: permintaan.filter(item => item.status_fornas != '1' && item.status_forkit != '1' && item.status_generik != '1')?.length,
+          },
+          dilayani: {
+            jml_fornas_generik: dilayani.filter(item => item.status_fornas == '1' && (item.status_generik == '1' || item.obat_program == '1'))?.length,
+            jml_fornas_non_generik: dilayani.filter(item => item.status_fornas == '1' && item.status_generik != '1')?.length,
+            jml_forkit_generik: dilayani.filter(item => item.status_fornas != '1' && item.status_forkit == '1' && (item.status_generik == '1' || item.obat_program == '1'))?.length,
+            jml_forkit_non_generik: dilayani.filter(item => item.status_fornas != '1' && item.status_forkit == '1' && item.status_generik != '1')?.length,
+            non_formulaium: permintaan.filter(item => item.status_fornas != '1' && item.status_forkit != '1' && item.status_generik != '1')?.length,
+          },
+        }
+        this.items.push(item)
+      })
+      console.log('items', this.items)
+      // console.log('rawDates', rawDates, uniqueDates, this.reseps)
 
     },
     async getOptionKelompok () {

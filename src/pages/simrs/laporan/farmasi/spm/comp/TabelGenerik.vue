@@ -50,10 +50,10 @@
         </tr>
         <tr>
           <th colspan="5">
-            * Rawat Jalan / Rawat Inap / IGD
+            * {{ ambilDepo() }}
           </th>
           <th colspan="5">
-            * Rawat Jalan / Rawat Inap / IGD
+            * {{ ambilDepo() }}
           </th>
         </tr>
         <tr>
@@ -263,53 +263,62 @@
               </td>
               <td style="white-space: normal; max-width: 150px;">
                 <div class="row items-center">
-                  {{ item?.noresep }}
+                  {{ item?.jml_lembar_resep }}
                 </div>
               </td>
+              <!-- ditulis -->
               <td style="white-space: normal; max-width: 250px;">
-                <div class="row text-weight-bold">
-                  {{ item?.nama_obat }}
-                </div>
-                <div class="row">
-                  <div class="col-auto f-10 q-mr-md">
-                    {{ item?.kdobat }}
-                  </div>
-                  <div class="col-auto q-mr-md f-10">
-                    {{ item?.kelompok }}
-                  </div>
-                  <div class="col-auto q-mr-md f-10">
-                    {{ item?.generik }}
-                  </div>
-                  <div class="col-auto q-mr-md f-10">
-                    {{ item?.fornas }}
-                  </div>
-                  <div class="col-auto q-mr-md f-10">
-                    {{ item?.forkit }}
-                  </div>
-                  <div class="col-auto q-mr-md f-10">
-                    {{ item?.nama_sistembayar }}
-                  </div>
+                <div class="row ">
+                  {{ item?.ditulis?.jml_fornas_generik }}
                 </div>
               </td>
 
               <td style="white-space: normal; max-width: 150px;">
                 <div class="row items-center">
-                  {{ item?.nama_dokter }}
+                  {{ item?.ditulis?.jml_fornas_non_generik }}
                 </div>
               </td>
               <td style="white-space: normal; max-width: 150px;">
                 <div class="row items-center">
-                  {{ item?.depo }}
+                  {{ item?.ditulis?.jml_forkit_generik }}
                 </div>
               </td>
               <td style="white-space: normal; max-width: 150px;">
                 <div class="row items-center">
-                  {{ item?.jumlah_resep }}
+                  {{ item?.ditulis?.jml_forkit_non_generik }}
                 </div>
               </td>
               <td style="white-space: normal; max-width: 150px;">
                 <div class="row items-center">
-                  {{ item?.jumlah_dilayani }}
+                  {{ item?.ditulis?.non_formulaium }}
+                </div>
+              </td>
+              <!-- dilayani -->
+
+              <td style="white-space: normal; max-width: 250px;">
+                <div class="row ">
+                  {{ item?.dilayani?.jml_fornas_generik }}
+                </div>
+              </td>
+
+              <td style="white-space: normal; max-width: 150px;">
+                <div class="row items-center">
+                  {{ item?.dilayani?.jml_fornas_non_generik }}
+                </div>
+              </td>
+              <td style="white-space: normal; max-width: 150px;">
+                <div class="row items-center">
+                  {{ item?.dilayani?.jml_forkit_generik }}
+                </div>
+              </td>
+              <td style="white-space: normal; max-width: 150px;">
+                <div class="row items-center">
+                  {{ item?.dilayani?.jml_forkit_non_generik }}
+                </div>
+              </td>
+              <td style="white-space: normal; max-width: 150px;">
+                <div class="row items-center">
+                  {{ item?.dilayani?.non_formulaium }}
                 </div>
               </td>
 
@@ -328,14 +337,35 @@ import { ref, onMounted, onUnmounted } from 'vue'
 
 const store = useLaporanSpmFarmasiStore()
 const headerOffset = ref(0)
-
-const calculateOffset = () => {
-  const tableElement = document.querySelector('table')
-  if (tableElement) {
-    headerOffset.value = tableElement.getBoundingClientRect().top - 25
-    console.log('header offset', headerOffset.value)
-
+const props = defineProps({
+  h: {
+    type: Number,
+    default: 0
+  },
+  bottom: {
+    type: Number,
+    default: 0
+  },
+  depo: {
+    type: Array,
+    default: () => []
   }
+})
+const depos = [
+  { nama: 'Depo Rawat inap', value: 'Gd-04010102' },
+  { nama: 'Depo Rawat Jalan', value: 'Gd-05010101' },
+  { nama: 'Depo IGD', value: 'Gd-02010104' },
+  { nama: 'Depo OK', value: 'Gd-04010103' },
+]
+function ambilDepo () {
+  const depo = depos.filter((item) => props.depo.includes(item.value))?.map((item) => item.nama)?.join(' / ')
+  console.log('depo', depo)
+  return depo ?? ''
+}
+const calculateOffset = () => {
+
+  headerOffset.value = props.bottom + (props.bottom - props.h)
+  console.log('header offset', headerOffset.value)
 }
 
 onMounted(() => {
@@ -345,6 +375,9 @@ onMounted(() => {
 
 onUnmounted(() => {
   window.removeEventListener('resize', calculateOffset)
+})
+defineExpose({
+  calculateOffset
 })
 </script>
 
