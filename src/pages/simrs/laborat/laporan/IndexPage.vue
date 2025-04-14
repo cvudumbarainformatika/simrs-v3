@@ -28,7 +28,7 @@ const store = useLaporanLaboratStore()
 const tableRef = ref(null)
 
 function setPeriode(period) {
-  console.log('Period changed:', period)
+  // console.log('Period changed:', period)
   store.setPeriod(period)
 }
 
