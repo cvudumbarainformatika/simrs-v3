@@ -43,6 +43,7 @@ export const useLaporanLaboratStore = defineStore('laporan_laborat', {
       this.params.to = period.to
       this.display.from = date.formatDate(period.from, 'DD MMMM YYYY')
       this.display.to = date.formatDate(period.to, 'DD MMMM YYYY')
+      this.getData()
     },
 
     async getMaster() {
