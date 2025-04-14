@@ -70,6 +70,16 @@
                 Print
               </q-tooltip>
             </q-btn>
+            <div class="q-ml-xs">
+              <download-excel class="btn" :fields="store.fields" :fetch="store.fetch"
+                :before-generate="store.startDownload" :before-finish="store.finishDownload"
+                :name="'Laporan SPM ' + laporan() + ' Bulan ' + bulan() + ' ' + store.params.tahun + jenis() + '.xls'">
+                <q-btn color="green" round size="sm" icon="icon-mat-download" push :loading="store.loadingDownload"
+                  :disable="store.loadingDownload || !!store.ketProses || store?.loadingNext">
+                  <q-tooltip>Download Excel</q-tooltip>
+                </q-btn>
+              </download-excel>
+            </div>
           </div>
         </div>
       </div>
@@ -353,7 +363,18 @@ onMounted(() => {
   console.log('h', refTop.value?.clientHeight)
   h.value = refTop.value?.clientHeight
 })
-
+function bulan () {
+  const bul = store.bulans.find(a => a.value === store.params.bulan)
+  return bul?.nama ?? '-'
+}
+function jenis () {
+  const bul = store.optionTipes.find(a => a === store.tipe)
+  return ' (' + bul + ')' ?? '-'
+}
+function laporan () {
+  const bul = store.optionJenisLaporans.find(a => a === store.jenisLaporan)
+  return ' (' + bul + ')' ?? '-'
+}
 const printObj = {
   id: 'printMe',
   popTitle: 'Laporan SPM Farmasi'

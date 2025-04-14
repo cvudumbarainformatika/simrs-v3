@@ -89,6 +89,7 @@ function createDataObject (item, keluar, data, depo) {
     jumlah_dilayani: keluar?.reduce((acc, curr) => acc + curr.jumlah, 0) || 0,
     kdobat: item.kdobat,
     kelompok: item.kelompok_penyimpanan,
+    perbekalan: item.jenis_perbekalan,
     nama_obat: item?.mobat?.nama_obat,
     generik: item?.mobat?.status_generik == '1' ? 'Generik' : '',
     status_generik: item?.mobat?.status_generik,
