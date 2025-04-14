@@ -36,7 +36,7 @@
                 option-value="value" multiple outlined :source="store.depos" :hide-selected="false" hide-dropdown-icon
                 :disable="store.loading" />
             </div>
-            <div class="col-2">
+            <div v-if="store.jenisLaporan == 'Generik'" class="col-2">
               <app-autocomplete v-model="store.params.kelompok" label="Pilih Kelompok Obat" autocomplete="nama"
                 option-label="nama" option-value="kode" multiple outlined :source="store.optionKelompoks"
                 :hide-selected="false" hide-dropdown-icon :disable="store.loading" />
@@ -408,6 +408,8 @@ function setJenisLaporan (val) {
   } else {
     menu.value = menus.value[0]
   }
+  const url = store.urls.find((item) => item.nama === val)
+  if (url) store.url = url.url
   console.log('val', val)
 
 }

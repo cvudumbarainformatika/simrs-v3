@@ -1,3 +1,5 @@
+
+
 let allChunks = []
 
 self.onmessage = function (e) {
@@ -19,11 +21,15 @@ self.onmessage = function (e) {
       unProcessedData.push(...chunk)
 
       chunk.forEach(item => {
-        if (item?.permintaanresep) {
-          processedData.push(...processResep(item))
-        }
-        if (item?.permintaanracikan) {
-          processedData.push(...processRacikan(item))
+        if (jenisLaporan === 'Generik') {
+          if (item?.permintaanresep) {
+            processedData.push(...processResep(item))
+          }
+          if (item?.permintaanracikan) {
+            processedData.push(...processRacikan(item))
+          }
+        } else if (jenisLaporan === 'Response Time') {
+          processedData.push(...processResponseTime(item))
         }
         processed++
         if (processed % 100 === 0) {
@@ -42,7 +48,24 @@ self.onmessage = function (e) {
     allChunks = []
   }
 }
-
+function processResponseTime (data) {
+  const results = []
+  const adaRacikan = data.rincianracik?.filter(k => k.jumlah > 0)
+  results.push(createDataResposeTime(data, adaRacikan.length > 0 ? 'Racikan' : 'Obat Jadi', data.sistembayar?.rs2))
+  return results
+}
+function createDataResposeTime (item, jenis, sistembayar) {
+  return {
+    noresep: item.noresep,
+    tgl: item.tgl_permintaan,
+    tgl_kirim: item.tgl_kirim,
+    tgl_selesai: item.tgl_selesai,
+    tgl_diterima: item.tgl_diterima,
+    menit: item.rt_menit,
+    jenis: jenis,
+    sistembayar: sistembayar,
+  }
+}
 function processResep (data) {
   const results = []
   data.permintaanresep.forEach(item => {

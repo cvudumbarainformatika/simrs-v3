@@ -1,6 +1,7 @@
 import { acceptHMRUpdate, defineStore } from "pinia"
 import { date } from "quasar"
 import { api } from "src/boot/axios"
+import { notifErrVue } from "src/modules/utils"
 
 export const useLaporanSpmFarmasiStore = defineStore('laporan_spm_farmasi', {
   state: () => ({
@@ -99,7 +100,8 @@ export const useLaporanSpmFarmasiStore = defineStore('laporan_spm_farmasi', {
           } else if (e.data?.type === 'complete') {
             this.rawItems.push(...e.data?.processedData)
             this.reseps.push(...e.data?.unProcessedData)
-            this.filterAndSetItems()
+            if (this.jenisLaporan === 'Generik') this.filterAndSetItems()
+            else if (this.jenisLaporan === 'Response Time') this.filterAndSetItemRespons()
             worker.terminate()
           }
         }
@@ -142,7 +144,7 @@ export const useLaporanSpmFarmasiStore = defineStore('laporan_spm_farmasi', {
             // this.reseps.push(...resp.data.data)
 
             // totalPages = Math.min(resp.data?.meta?.last_page || totalPages)
-            totalPages = 10
+            totalPages = 30
             this.meta = resp.data?.meta
 
             const chunks = this.chunkArray(resp.data?.data, 100)
@@ -171,7 +173,7 @@ export const useLaporanSpmFarmasiStore = defineStore('laporan_spm_farmasi', {
 
         this.ketProses = null
         if (this.tipe === 'Rekap') {
-          this.setRekapGenerik()
+          if (this.jenisLaporan === 'Generik') this.setRekapGenerik()
         }
 
       } catch (error) {
@@ -182,6 +184,11 @@ export const useLaporanSpmFarmasiStore = defineStore('laporan_spm_farmasi', {
       }
     },
 
+    filterAndSetItemRespons () {
+      this.items = [...this.rawItems]
+      console.log('items', this.items)
+
+    },
     filterAndSetItems () {
       if (this.params.generik === 'Semua' && this.params.formularium === 'Semua') {
         this.items = [...this.rawItems]

@@ -13,19 +13,19 @@
             Nomor Resep
           </th>
           <th>
-            Obat
+            Jam Masuk Resep
           </th>
           <th>
-            Dokter
+            Jam Selesai Obat
           </th>
           <th>
-            Depo
+            Waktu Tunggu (Menit)
           </th>
           <th>
-            Jumlah Ditulis
+            Jenis Obat
           </th>
           <th>
-            Jumlah Dilayani
+            Sistem Bayar
           </th>
         </tr>
       </template>
@@ -189,59 +189,40 @@
                 </div>
               </td>
               <td style="white-space: normal; max-width: 150px;">
-                <div class="row items-center">
+                <div class="row  justify-center">
                   {{ dateFullFormat(item?.tgl) }}
                 </div>
               </td>
               <td style="white-space: normal; max-width: 150px;">
-                <div class="row items-center">
+                <div class="row  justify-center">
                   {{ item?.noresep }}
                 </div>
               </td>
               <td style="white-space: normal; max-width: 250px;">
-                <div class="row text-weight-bold">
-                  {{ item?.nama_obat }}
-                </div>
-                <div class="row">
-                  <div class="col-auto f-10 q-mr-md">
-                    {{ item?.kdobat }}
-                  </div>
-                  <div class="col-auto q-mr-md f-10">
-                    {{ item?.kelompok }}
-                  </div>
-                  <div class="col-auto q-mr-md f-10">
-                    {{ item?.generik }}
-                  </div>
-                  <div class="col-auto q-mr-md f-10">
-                    {{ item?.fornas }}
-                  </div>
-                  <div class="col-auto q-mr-md f-10">
-                    {{ item?.forkit }}
-                  </div>
-                  <div class="col-auto q-mr-md f-10">
-                    {{ item?.nama_sistembayar }}
-                  </div>
+                <div class="row justify-center">
+
+                  {{ date.formatDate(item?.tgl_kirim, 'HH:mm:ss') }}
                 </div>
               </td>
 
               <td style="white-space: normal; max-width: 150px;">
-                <div class="row items-center">
-                  {{ item?.nama_dokter }}
+                <div class="row  justify-center">
+                  {{ date.formatDate(item?.tgl_selesai, 'HH:mm:ss') }}
                 </div>
               </td>
               <td style="white-space: normal; max-width: 150px;">
-                <div class="row items-center">
-                  {{ item?.depo }}
+                <div class="row  justify-center">
+                  {{ item?.menit }}
                 </div>
               </td>
               <td style="white-space: normal; max-width: 150px;">
-                <div class="row items-center">
-                  {{ item?.jumlah_resep }}
+                <div class="row  justify-center">
+                  {{ item?.jenis }}
                 </div>
               </td>
               <td style="white-space: normal; max-width: 150px;">
-                <div class="row items-center">
-                  {{ item?.jumlah_dilayani }}
+                <div class="row  justify-center">
+                  {{ item?.sistembayar }}
                 </div>
               </td>
 
@@ -331,6 +312,7 @@
 </template>
 
 <script setup>
+import { date } from 'quasar'
 import { dateFullFormat, formatDouble } from 'src/modules/formatter'
 import { useLaporanSpmFarmasiStore } from 'src/stores/simrs/laporan/farmasi/spm/spm'
 import { ref, onMounted, onUnmounted } from 'vue'
