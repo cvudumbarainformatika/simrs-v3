@@ -14,11 +14,15 @@ export const useKasirRajalListKunjunganStore = defineStore('kasir_rajal_list_kun
       order_by: 'id',
       tgl: dateDbFormat(new Date())
     },
+    getparams: {
+      noreg: ''
+    },
     golongan: '',
     loading: false,
     rekapBill: {},
     notas: {},
-    qris: 'asd'
+    qris: 'asd',
+    jenispembayaran: ''
   }),
   // getters: {
   //   doubleCount: (state) => state.counter * 2
@@ -47,35 +51,30 @@ export const useKasirRajalListKunjunganStore = defineStore('kasir_rajal_list_kun
       this.params.per_page = payload
       this.getLists()
     },
+    goToPage(val) {
+      this.params.page = val
+      this.getLists()
+    },
     async getLists() {
       this.loading = true
       const params = { params: this.params }
-      // const resp = await api.get('/v1/simrs/pendaftaran/umum/kunjunganpasienumum', params)
       const resp = await api.get('/v1/simrs/kasir/rajal/kunjunganpoli', params)
       if (resp.status === 200) {
-        // console.log('kunjungan', resp)
+        console.log('kunjungan', resp)
         this.items = resp.data.data
         this.meta = resp.data
         this.loading = false
       }
       this.loading = false
     },
-    getBill(val) {
-      this.rekapBill = {}
+    async getBill() {
       this.loading = true
-      const params = { params: val }
-      return new Promise(resolve => {
-        api.get('/v1/simrs/kasir/rajal/billbynoreg', params).then(resp => {
-          if (resp.status === 200) {
-            // console.log('bill', resp.data)
-            this.rekapBill = resp.data
-          }
-          resolve(resp)
-          this.loading = false
-        }).catch(() => {
-          this.loading = false
-        })
-      })
+      const params = { params: this.getparams }
+      const resp = await api.get('/v1/simrs/kasir/rajal/billbynoreg', params)
+      if (resp.status === 200) {
+        this.rekapBill = resp.data
+      }
+      this.loading = false
     },
     async getNotas(val) {
       this.notas = {}

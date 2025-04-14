@@ -11,26 +11,31 @@ const kasir = {
     },
     {
       path: '/kasir/rawatjalan',
-      component: () => import('src/pages/simrs/kasir/rajal/IndexPage.vue'),
-      children: [
-        { path: '', redirect: '/kasir/rajal/listkunjungan' },
-        {
-          path: '/kasir/rajal/listkunjungan',
-          name: 'kasir.rajal.listkunjungan',
-          meta: { transition: 'slide-up' },
-          component: () =>
-            import('pages/simrs/kasir/rajal/listkunjungan/IndexPage.vue')
-        }
-        // {
-        //   path: '/kasir/rajal/billing',
-        //   name: 'kasir.rajal.billing',
-        //   meta: { transition: 'slide-up' },
-        //   component: () =>
-        //     import('pages/simrs/kasir/rajal/rajal/IndexPage.vue')
-        // }
-
-      ]
+      name: 'kasir.rawatjalan',
+      component: () => import('pages/simrs/kasir/rajal/listkunjungan/IndexPage.vue')
     },
+    // {
+    //   path: '/kasir/rawatjalan',
+    //   component: () => import('src/pages/simrs/kasir/rajal/IndexPage.vue'),
+    //   children: [
+    //     { path: '', redirect: '/kasir/rajal/listkunjungan' },
+    //     {
+    //       path: '/kasir/rajal/listkunjungan',
+    //       name: 'kasir.rajal.listkunjungan',
+    //       meta: { transition: 'slide-up' },
+    //       component: () =>
+    //         import('pages/simrs/kasir/rajal/listkunjungan/IndexPage.vue')
+    //     }
+    //     // {
+    //     //   path: '/kasir/rajal/billing',
+    //     //   name: 'kasir.rajal.billing',
+    //     //   meta: { transition: 'slide-up' },
+    //     //   component: () =>
+    //     //     import('pages/simrs/kasir/rajal/rajal/IndexPage.vue')
+    //     // }
+
+    //   ]
+    // },
     {
       path: '/kasir/flagingva',
       component: () => import('src/pages/simrs/kasir/flagingva/IndexPage.vue')

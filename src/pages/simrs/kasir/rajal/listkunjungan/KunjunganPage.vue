@@ -1,20 +1,36 @@
 <template>
-  <div class="column full-height">
-    <div class="col-auto fixed-top" style="z-index:1">
+  <!-- <q-page class="" :class="style.componentfull ? 'container-no-header' : 'container--q-header q-pa-xs'">
+    <div class="header bg-primary text-white">
       <HeaderComp :tanggal="store.params.tgl" :search="store.params.q" :per-page="store.params.per_page"
         @fullscreen="style.setComponentFull" @set-tanggal="(val) => store.setDate(val)" @set-search="store.setQ"
         @set-row="store.setPerPage" />
     </div>
-    <div class="col full-height" style="padding-bottom: 60px; padding-top:60px">
-      <ListKunjungan :key="store.items" :items="store.items" :loading="store.loading" />
+
+    <q-card flat no-shadow square class="my-flex-1" style="overflow: hidden;">
+      <q-scroll-area style="height: calc(100% - 1px);">
+        <ListKunjungan :key="store.items" :items="store.items" :loading="store.loading" />
+      </q-scroll-area>
+      <div class=" absolute-bottom bg-primary text-white z-top">
+        <BottomComp :meta="store.meta" @go-to="store.goToPage" />
+      </div>
+    </q-card>
+  </q-page> -->
+  <q-page class="" :class="style.componentfull ? 'container-no-header' : 'container--q-header q-pa-xs'">
+    <div class="header bg-primary text-white">
+      <HeaderComp :tanggal="store.params.tgl" :search="store.params.q" :per-page="store.params.per_page"
+        @fullscreen="style.setComponentFull" @set-tanggal="(val) => store.setDate(val)" @set-search="store.setQ"
+        @set-row="store.setPerPage" />
     </div>
-    <!-- <div class=" absolute-bottom bg-primary text-white z-top">
-      <footer-page :meta="store.meta" @go-to="store.goToPage" />
-    </div> -->
-    <div class="absolute-bottom bg-primary text-white z-top">
-      <BottomComp @go-to="store.setPage" />
-    </div>
-  </div>
+
+    <q-card flat no-shadow square class="my-flex-1" style="overflow: hidden;">
+      <q-scroll-area style="height: calc(100% - 1px);">
+        <ListKunjungan :key="store.items" :items="store.items" :loading="store.loading" />
+      </q-scroll-area>
+      <div class=" absolute-bottom bg-primary text-white z-top">
+        <BottomComp :meta="store?.meta" @go-to="store.goToPage" />
+      </div>
+    </q-card>
+  </q-page>
 </template>
 
 <script setup>
