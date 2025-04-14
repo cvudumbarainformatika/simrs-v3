@@ -272,48 +272,51 @@ export const useLaporanSpmFarmasiStore = defineStore('laporan_spm_farmasi', {
       }
     },
     setField () {
-      if (this.tipe === 'Rekap') {
-        this.fields = {
-          No: 'no',
-          'Tanggal': 'tgl',
-          'Lembar Resep': 'jml_lembar_resep',
-          'Ditulis Fornas Generik': 'ditulis.jml_fornas_generik',
-          'Ditulis Fornas Non Generik': 'ditulis.jml_fornas_non_generik',
-          'Ditulis Forkit Generik': 'ditulis.jml_forkit_generik',
-          'Ditulis Forkit Non Generik': 'ditulis.jml_forkit_non_generik',
-          'Ditulis Non Formulaium': 'ditulis.non_formulaium',
+      if (this.jenisLaporan === 'Generik') {
+        if (this.tipe === 'Rekap') {
+          this.fields = {
+            No: 'no',
+            'Tanggal': 'tgl',
+            'Lembar Resep': 'jml_lembar_resep',
+            'Ditulis Fornas Generik': 'ditulis.jml_fornas_generik',
+            'Ditulis Fornas Non Generik': 'ditulis.jml_fornas_non_generik',
+            'Ditulis Forkit Generik': 'ditulis.jml_forkit_generik',
+            'Ditulis Forkit Non Generik': 'ditulis.jml_forkit_non_generik',
+            'Ditulis Non Formulaium': 'ditulis.non_formulaium',
 
-          'Dilayani Fornas Generik': 'dilayani.jml_fornas_generik',
-          'Dilayani Fornas Non Generik': 'dilayani.jml_fornas_non_generik',
-          'Dilayani Forkit Generik': 'dilayani.jml_forkit_generik',
-          'Dilayani Forkit Non Generik': 'dilayani.jml_forkit_non_generik',
-          'Dilayani Non Formulaium': 'dilayani.non_formulaium',
+            'Dilayani Fornas Generik': 'dilayani.jml_fornas_generik',
+            'Dilayani Fornas Non Generik': 'dilayani.jml_fornas_non_generik',
+            'Dilayani Forkit Generik': 'dilayani.jml_forkit_generik',
+            'Dilayani Forkit Non Generik': 'dilayani.jml_forkit_non_generik',
+            'Dilayani Non Formulaium': 'dilayani.non_formulaium',
+          }
         }
-      }
-      else {
-        this.fields = {
-          No: 'no',
-          'Kode Obat': 'kdobat',
-          'Nama Obat': 'nama_obat',
-          'Nomor Resep': 'noresep',
-          'Tanggal': 'tgl',
-          'Jumah Resep': 'jumlah_resep',
-          'Jumlah Dilayani': 'jumlah_dilayani',
-          'Kelompok Obat': 'kelompok',
-          'Jenis Perbekalan': 'perbekalan',
-          'Generik ?': 'generik',
-          'Status Generik': 'status_generik',
-          'Fornas ?': 'fornas',
-          'Status Fornas': 'status_fornas',
-          'Forkit ?': 'forkit',
-          'Status Forkit': 'status_forkit',
-          'Status Obat Program': 'obat_program',
-          'Depo': 'depo',
-          'Nama Dokter': 'nama_dokter',
-          'Kode Sistem Bayar': 'kode_sistembayar',
-          'Nama Sistem Bayar': 'nama_sistembayar'
+        else {
+          this.fields = {
+            No: 'no',
+            'Kode Obat': 'kdobat',
+            'Nama Obat': 'nama_obat',
+            'Nomor Resep': 'noresep',
+            'Tanggal': 'tgl',
+            'Jumah Resep': 'jumlah_resep',
+            'Jumlah Dilayani': 'jumlah_dilayani',
+            'Kelompok Obat': 'kelompok',
+            'Jenis Perbekalan': 'perbekalan',
+            'Generik ?': 'generik',
+            'Status Generik': 'status_generik',
+            'Fornas ?': 'fornas',
+            'Status Fornas': 'status_fornas',
+            'Forkit ?': 'forkit',
+            'Status Forkit': 'status_forkit',
+            'Status Obat Program': 'obat_program',
+            'Depo': 'depo',
+            'Nama Dokter': 'nama_dokter',
+            'Kode Sistem Bayar': 'kode_sistembayar',
+            'Nama Sistem Bayar': 'nama_sistembayar'
+          }
         }
-      }
+
+      } else if (this.jenisLaporan === 'Response Time') { } else { }
     },
     fetch () {
       if (!this.items.length) {
