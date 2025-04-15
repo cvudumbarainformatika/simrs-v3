@@ -364,8 +364,8 @@ function ambilDepo () {
 }
 const calculateOffset = () => {
 
-  headerOffset.value = props.bottom + (props.bottom - props.h)
-  console.log('header offset', headerOffset.value)
+  headerOffset.value = props.bottom + (props.bottom > props.h ? (props.bottom - props.h) : (props.h - props.bottom))
+  console.log('header offset kesesu', headerOffset.value)
 }
 
 onMounted(() => {

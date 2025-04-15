@@ -1,4 +1,5 @@
 <template>
+
   <table style="width: calc(100vw - 80px);">
     <thead class="" :style="{ top: `${headerOffset}px` }">
       <template v-if="store.tipe === 'Rinci'">
@@ -19,7 +20,7 @@
             Jam Selesai Obat
           </th>
           <th>
-            Waktu Tunggu (Menit)
+            Total Menit
           </th>
           <th>
             Jenis Obat
@@ -31,76 +32,27 @@
       </template>
       <template v-else>
         <tr>
-          <th width="5%" rowspan="4">
+          <th width="5%">
             No
           </th>
-          <th rowspan="4">
+          <th>
             Tanggal
           </th>
-          <th rowspan="4">
+          <th>
             Lembar Resep
           </th>
-          <th colspan="5">
-            Resep yang ditulis dokter
+          <th>
+            Total Menit
           </th>
-          <th colspan="5">
-            Resep yang dilayani famasi
+          <th>
+            Response Time > 30 Menit
+          </th>
+          <th>
+            Response Time {{ '=<' }} 30 Menit </th>
+          <th>
+            Jenis Obat
           </th>
 
-        </tr>
-        <tr>
-          <th colspan="5">
-            * {{ ambilDepo() }}
-          </th>
-          <th colspan="5">
-            * {{ ambilDepo() }}
-          </th>
-        </tr>
-        <tr>
-          <th colspan="2">
-            Fornas
-          </th>
-          <th colspan="2">
-            Formularium RS
-          </th>
-          <th rowspan="2">
-            Non Formularium
-          </th>
-          <th colspan="2">
-            Fornas
-          </th>
-          <th colspan="2">
-            Formularium RS
-          </th>
-          <th rowspan="2">
-            Non Formularium
-          </th>
-        </tr>
-        <tr>
-          <th>
-            Generik
-          </th>
-          <th>
-            Non Generik
-          </th>
-          <th>
-            Generik
-          </th>
-          <th>
-            Non Generik
-          </th>
-          <th>
-            Generik
-          </th>
-          <th>
-            Non Generik
-          </th>
-          <th>
-            Generik
-          </th>
-          <th>
-            Non Generik
-          </th>
         </tr>
       </template>
     </thead>
@@ -173,7 +125,7 @@
         </template>
         <template v-else>
           <tr>
-            <td colspan="13">
+            <td colspan="7">
               <app-no-data />
             </td>
           </tr>
@@ -189,39 +141,38 @@
                 </div>
               </td>
               <td style="white-space: normal; max-width: 150px;">
-                <div class="row  justify-center">
+                <div class="row items-center">
                   {{ dateFullFormat(item?.tgl) }}
                 </div>
               </td>
               <td style="white-space: normal; max-width: 150px;">
-                <div class="row  justify-center">
+                <div class="row items-center">
                   {{ item?.noresep }}
                 </div>
               </td>
               <td style="white-space: normal; max-width: 250px;">
-                <div class="row justify-center">
-
+                <div class="row ">
                   {{ date.formatDate(item?.tgl_kirim, 'HH:mm:ss') }}
                 </div>
               </td>
 
               <td style="white-space: normal; max-width: 150px;">
-                <div class="row  justify-center">
+                <div class="row items-center">
                   {{ date.formatDate(item?.tgl_selesai, 'HH:mm:ss') }}
                 </div>
               </td>
               <td style="white-space: normal; max-width: 150px;">
-                <div class="row  justify-center">
+                <div class="row items-center">
                   {{ item?.menit }}
                 </div>
               </td>
               <td style="white-space: normal; max-width: 150px;">
-                <div class="row  justify-center">
+                <div class="row items-center">
                   {{ item?.jenis }}
                 </div>
               </td>
               <td style="white-space: normal; max-width: 150px;">
-                <div class="row  justify-center">
+                <div class="row items-center">
                   {{ item?.sistembayar }}
                 </div>
               </td>
@@ -247,59 +198,25 @@
                   {{ item?.jml_lembar_resep }}
                 </div>
               </td>
-              <!-- ditulis -->
               <td style="white-space: normal; max-width: 250px;">
                 <div class="row ">
-                  {{ item?.ditulis?.jml_fornas_generik }}
+                  {{ item?.total_menit }}
                 </div>
               </td>
 
               <td style="white-space: normal; max-width: 150px;">
                 <div class="row items-center">
-                  {{ item?.ditulis?.jml_fornas_non_generik }}
+                  {{ item?.more30 }}
                 </div>
               </td>
               <td style="white-space: normal; max-width: 150px;">
                 <div class="row items-center">
-                  {{ item?.ditulis?.jml_forkit_generik }}
+                  {{ item?.less30 }}
                 </div>
               </td>
               <td style="white-space: normal; max-width: 150px;">
                 <div class="row items-center">
-                  {{ item?.ditulis?.jml_forkit_non_generik }}
-                </div>
-              </td>
-              <td style="white-space: normal; max-width: 150px;">
-                <div class="row items-center">
-                  {{ item?.ditulis?.non_formulaium }}
-                </div>
-              </td>
-              <!-- dilayani -->
-
-              <td style="white-space: normal; max-width: 250px;">
-                <div class="row ">
-                  {{ item?.dilayani?.jml_fornas_generik }}
-                </div>
-              </td>
-
-              <td style="white-space: normal; max-width: 150px;">
-                <div class="row items-center">
-                  {{ item?.dilayani?.jml_fornas_non_generik }}
-                </div>
-              </td>
-              <td style="white-space: normal; max-width: 150px;">
-                <div class="row items-center">
-                  {{ item?.dilayani?.jml_forkit_generik }}
-                </div>
-              </td>
-              <td style="white-space: normal; max-width: 150px;">
-                <div class="row items-center">
-                  {{ item?.dilayani?.jml_forkit_non_generik }}
-                </div>
-              </td>
-              <td style="white-space: normal; max-width: 150px;">
-                <div class="row items-center">
-                  {{ item?.dilayani?.non_formulaium }}
+                  {{ item?.jenis }}
                 </div>
               </td>
 
@@ -341,13 +258,13 @@ const depos = [
 ]
 function ambilDepo () {
   const depo = depos.filter((item) => props.depo.includes(item.value))?.map((item) => item.nama)?.join(' / ')
-  console.log('depo', depo)
+  // console.log('depo', depo)
   return depo ?? ''
 }
 const calculateOffset = () => {
 
-  headerOffset.value = props.bottom + (props.bottom - props.h)
-  console.log('header offset', headerOffset.value)
+  headerOffset.value = props.bottom + (props.bottom > props.h ? (props.bottom - props.h) : (props.h - props.bottom))
+  console.log('header offset Res', headerOffset.value, props.bottom, props.h)
 }
 
 onMounted(() => {
