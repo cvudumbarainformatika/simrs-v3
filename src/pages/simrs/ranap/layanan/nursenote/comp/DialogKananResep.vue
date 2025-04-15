@@ -266,7 +266,7 @@ const cleanFormNonResep = () => {
     sediaan: null,
     jenis: null,
     rincian: [],
-    flag: null // flag: 1 = obat non resep
+    flag: null // flag: 1 = obat resep
   }
   formNonResep.value = form
 }
