@@ -1,6 +1,7 @@
 import { acceptHMRUpdate, defineStore } from "pinia"
 import { date } from "quasar"
 import { api } from "src/boot/axios"
+import { notifErrVue } from "src/modules/utils"
 
 export const useLaporanSpmFarmasiStore = defineStore('laporan_spm_farmasi', {
   state: () => ({
@@ -70,6 +71,8 @@ export const useLaporanSpmFarmasiStore = defineStore('laporan_spm_farmasi', {
     url: 'v1/simrs/laporan/farmasi/spm/laporan-generik',
     progress: 0,
     fields: {},
+    tipeObat: 'Semua',
+    optionTipeObats: ['Semua', 'Racikan', 'Obat Jadi'],
   }),
   actions: {
     setParams (key, val) {
@@ -99,7 +102,8 @@ export const useLaporanSpmFarmasiStore = defineStore('laporan_spm_farmasi', {
           } else if (e.data?.type === 'complete') {
             this.rawItems.push(...e.data?.processedData)
             this.reseps.push(...e.data?.unProcessedData)
-            this.filterAndSetItems()
+            if (this.jenisLaporan === 'Generik') this.filterAndSetItems()
+            else if (this.jenisLaporan === 'Response Time') this.filterAndSetItemRespons()
             worker.terminate()
           }
         }
@@ -141,8 +145,8 @@ export const useLaporanSpmFarmasiStore = defineStore('laporan_spm_farmasi', {
             // Simpan data mentah ke reseps
             // this.reseps.push(...resp.data.data)
 
-            // totalPages = Math.min(resp.data?.meta?.last_page || totalPages)
-            totalPages = 10
+            totalPages = Math.min(resp.data?.meta?.last_page || totalPages)
+            // totalPages = 30
             this.meta = resp.data?.meta
 
             const chunks = this.chunkArray(resp.data?.data, 100)
@@ -171,7 +175,7 @@ export const useLaporanSpmFarmasiStore = defineStore('laporan_spm_farmasi', {
 
         this.ketProses = null
         if (this.tipe === 'Rekap') {
-          this.setRekapGenerik()
+          if (this.jenisLaporan === 'Generik') this.setRekapGenerik()
         }
 
       } catch (error) {
@@ -182,6 +186,37 @@ export const useLaporanSpmFarmasiStore = defineStore('laporan_spm_farmasi', {
       }
     },
 
+    filterAndSetItemRespons () {
+      this.items = []
+      if (this.tipe === 'Rinci') {
+        if (this.tipeObat == 'Semua') this.items = [...this.rawItems]
+        else this.items = [...this.rawItems].filter(item => item.jenis === this.tipeObat)
+      } else this.setRekapResponseTime()
+
+      console.log('items', this.items)
+
+    },
+    setRekapResponseTime () {
+      const rawDates = this.tipeObat === 'Semua' ? this.rawItems.map(item => date.formatDate(item.tgl, 'YYYY-MM-DD')) : this.rawItems?.filter(item => item.jenis === this.tipeObat)?.map(item => date.formatDate(item.tgl, 'YYYY-MM-DD'))
+      const uniqueDates = [...new Set(rawDates)]
+
+      uniqueDates.forEach(tangg => {
+        const allReseps = this.tipeObat === 'Semua' ? this.rawItems.filter(item => date.formatDate(item.tgl, 'YYYY-MM-DD') === tangg) : this.rawItems.filter(item => tangg === date.formatDate(item.tgl, 'YYYY-MM-DD') && item.jenis === this.tipeObat)
+        const resepnya = allReseps.map(item => item.noresep)
+        const uniqueNoreseps = [...new Set(resepnya)]
+        const TotalMenit = allReseps.reduce((acc, item) => acc + parseFloat(item.menit), 0)
+        const less30 = allReseps.filter(item => parseFloat(item.menit) <= 30)?.length
+        const more30 = allReseps.filter(item => parseFloat(item.menit) > 30)?.length
+        this.items.push({
+          tgl: tangg,
+          jml_lembar_resep: uniqueNoreseps?.length,
+          total_menit: TotalMenit,
+          less30,
+          more30,
+          jenis: this.tipeObat,
+        })
+      })
+    },
     filterAndSetItems () {
       if (this.params.generik === 'Semua' && this.params.formularium === 'Semua') {
         this.items = [...this.rawItems]
@@ -316,14 +351,55 @@ export const useLaporanSpmFarmasiStore = defineStore('laporan_spm_farmasi', {
           }
         }
 
-      } else if (this.jenisLaporan === 'Response Time') { } else { }
+      } else if (this.jenisLaporan === 'Response Time') {
+        if (this.tipe === 'Rekap') {
+          this.fields = {
+            No: 'no',
+            'Tanggal': 'tgl',
+            'Lembar Resep': 'jml_lembar_resep',
+            'Total Menit': 'total_menit',
+            'Response Time > 30 menit': 'more30',
+            'Response Time <= 30 menit': 'less30',
+            'Jenis Obat': 'jenis',
+
+          }
+        }
+        else {
+          this.fields = {
+            No: 'no',
+            'Tanggal': 'tgl',
+            'Nomor Resep': 'noresep',
+            'Jam Masuk Resep': 'jam_masuk',
+            'Jam Selesai Obat': 'jam_selesai',
+            'Total Menit': 'menit',
+            'Jenis Obat': 'jenis',
+            'Sistem Bayar': 'sistembayar',
+          }
+        }
+      } else { }
     },
     fetch () {
       if (!this.items.length) {
         this.getDataTable()
       }
       this.setField()
-      const data = [...this.items]
+      let data = []
+      if (this.jenisLaporan === 'Response Time') {
+        if (this.tipe === 'Rekap') data = [...this.items]
+        else this.items.forEach((item, i) => {
+          data.push({
+            no: i + 1,
+            tgl: item.tgl,
+            noresep: item.noresep,
+            menit: item.menit,
+            jenis: item.jenis,
+            sistembayar: item.sistembayar,
+            jam_masuk: date.formatDate(item?.tgl_kirim, 'HH:mm:ss'),
+            jam_selesai: date.formatDate(item?.tgl_selesai, 'HH:mm:ss'),
+          })
+        })
+      }
+      else data = [...this.items]
       // console.log('data', data)
 
       return data

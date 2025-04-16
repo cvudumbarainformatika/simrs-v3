@@ -36,7 +36,12 @@
                 option-value="value" multiple outlined :source="store.depos" :hide-selected="false" hide-dropdown-icon
                 :disable="store.loading" />
             </div>
-            <div class="col-2">
+            <div v-if="store.jenisLaporan == 'Response Time'" class="col-2">
+              <app-autocomplete v-model="store.tipeObat" label="Pilih Tipe Obat" autocomplete="nama" option-label="nama"
+                option-value="value" outlined :source="store.optionTipeObats" hide-selected hide-dropdown-icon
+                :disable="store.loading" @update:model-value="store.filterAndSetItemRespons()" />
+            </div>
+            <div v-if="store.jenisLaporan == 'Generik'" class="col-2">
               <app-autocomplete v-model="store.params.kelompok" label="Pilih Kelompok Obat" autocomplete="nama"
                 option-label="nama" option-value="kode" multiple outlined :source="store.optionKelompoks"
                 :hide-selected="false" hide-dropdown-icon :disable="store.loading" />
@@ -391,12 +396,12 @@ const menus = ref([
   },
   {
     name: 'Response Time',
-    bottom: 0,
+    bottom: 145,
     comp: shallowRef(defineAsyncComponent(() => import('./comp/TabelResponsTime.vue')))
   },
   {
     name: 'Kesesuaian Obat',
-    bottom: 0,
+    bottom: 164,
     comp: shallowRef(defineAsyncComponent(() => import('./comp/TabelKesesuaian.vue')))
   },
 ])
@@ -408,6 +413,8 @@ function setJenisLaporan (val) {
   } else {
     menu.value = menus.value[0]
   }
+  const url = store.urls.find((item) => item.nama === val)
+  if (url) store.url = url.url
   console.log('val', val)
 
 }
@@ -451,13 +458,15 @@ function setTipe (val) {
   if (store.jenisLaporan == 'Generik') {
     if (val === 'Rinci') setFormularium()
     if (val === 'Rekap') store.setRekapGenerik()
-  }
+  } else if (store.jenisLaporan == 'Response Time') store.filterAndSetItemRespons()
   setTimeout(() => {
     console.log('set tipe', val, refTop.value?.clientHeight)
     h.value = refTop.value?.clientHeight
     refTable.value?.calculateOffset()
   }, 200)
 }
+
+
 
 // text tanda tangan start
 
