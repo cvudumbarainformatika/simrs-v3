@@ -170,50 +170,53 @@ function cetakData() {
 }
 
 function filterFn(val, update, abort) {
-  console.log('val filter', val)
-  // if (val.length < 1) {
-  //   abort()
-  //   return
-  // }
-  // if (store.optionrekening.kodeall3 === null || store.optionrekening.uraian === '') {
-  //   $q.notify({
-  //     color: 'negative',
-  //     textColor: 'white',
-  //     icon: 'icon-mat-warning',
-  //     message: 'Maaf Rekening harus dipilih',
-  //     position: 'top-left'
-  //   })
-  //   abort()
-  //   return
-  // }
 
-  if (val === '') {
-    update(() => {
-      options.value = store.optionrekening
-      // console.log('opti', options.value)
-    })
-    return
-  }
   update(() => {
-    const needle = val.toLowerCase()
-    const arr = options.value
+    if (val === '') {
+      options.value = store.optionrekening;
+    } else {
+      const needle = val.toLowerCase();
+      const filter = ['kodeall3', 'uraian'];
 
-    const filter = ['kodeall3', 'uraian']
+      // Selalu filter dari data asal (store.rekening50), bukan dari options yang sudah difilter
+      const multiFilter = (data = [], filterKeys = [], value = '') =>
+        data.filter((item) => filterKeys.some(
+          (key) =>
+            item[key].toString().toLowerCase().includes(value.toLowerCase()) &&
+            item[key]
+        ));
 
-    const multiFilter = (data = [], filterKeys = [], value = '') =>
-      data.filter((item) => filterKeys.some(
-        (key) =>
-          item[key].toString().toLowerCase().includes(value.toLowerCase()) &&
-          item[key]
-      )
-      )
-    const filteredData = multiFilter(arr, filter, needle)
-    console.log('filterdata', filteredData)
-    options.value = filteredData
-    // options.value = store.optionrekening.filter(
-    //   (v) => v.uraian.toLowerCase().indexOf(needle) > -1 || v.kodeall3.toLowerCase().indexOf(needle) > -1
-    // )
-  })
+      options.value = multiFilter(store.optionrekening, filter, needle);
+    }
+  });
+
+  // if (val === '') {
+  //   update(() => {
+  //     options.value = store.optionrekening
+  //     // console.log('opti', options.value)
+  //   })
+  //   return
+  // }
+  // update(() => {
+  //   const needle = val.toLowerCase()
+  //   const arr = options.value
+
+  //   const filter = ['kodeall3', 'uraian']
+
+  //   const multiFilter = (data = [], filterKeys = [], value = '') =>
+  //     data.filter((item) => filterKeys.some(
+  //       (key) =>
+  //         item[key].toString().toLowerCase().includes(value.toLowerCase()) &&
+  //         item[key]
+  //     )
+  //     )
+  //   const filteredData = multiFilter(arr, filter, needle)
+  //   console.log('filterdata', filteredData)
+  //   options.value = filteredData
+  //   // options.value = store.optionrekening.filter(
+  //   //   (v) => v.uraian.toLowerCase().indexOf(needle) > -1 || v.kodeall3.toLowerCase().indexOf(needle) > -1
+  //   // )
+  // })
 }
 function exportToExcel(tableId, filename) {
   // const el = document.getElementById(tableId)

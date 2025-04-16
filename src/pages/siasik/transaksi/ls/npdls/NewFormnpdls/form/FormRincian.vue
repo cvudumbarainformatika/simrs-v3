@@ -118,29 +118,24 @@ const formNpdLS = ref(null)
 
 async function filterFn(val, update) {
   // console.log('val filter', val)
-  if (val === '') {
-    update(() => {
-      options.value = store.rekening50
-    })
-    return
-  }
-
   update(() => {
-    const needle = val.toLowerCase()
-    const arr = options.value
-    const filter = ['rek50', 'rincianbelanja']
+    if (val === '') {
+      options.value = store.rekening50;
+    } else {
+      const needle = val.toLowerCase();
+      const filter = ['rek50', 'rincianbelanja'];
 
-    const multiFilter = (data = [], filterKeys = [], value = '') =>
-      data.filter((item) => filterKeys.some(
-        (key) =>
-          item[key].toString().toLowerCase().includes(value.toLowerCase()) &&
-          item[key]
-      )
-      )
-    const filteredData = multiFilter(arr, filter, needle)
-    // console.log('filterdata', filteredData)
-    options.value = filteredData
-  })
+      // Selalu filter dari data asal (store.rekening50), bukan dari options yang sudah difilter
+      const multiFilter = (data = [], filterKeys = [], value = '') =>
+        data.filter((item) => filterKeys.some(
+          (key) =>
+            item[key].toString().toLowerCase().includes(value.toLowerCase()) &&
+            item[key]
+        ));
+
+      options.value = multiFilter(store.rekening50, filter, needle);
+    }
+  });
 }
 function pilihRekening50(val) {
   // console.log('pilihrekening', val)
