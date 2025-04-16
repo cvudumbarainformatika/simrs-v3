@@ -44,7 +44,7 @@
             </div>
             <div class="row q-gutter-xs">
               <div class="col-10">
-                <q-input type="textarea" v-model="store.form.uraian" label="Uraian" outlined
+                <q-input type="textarea" v-model="store.form.uraian" label="Deskripsi" outlined
                   :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" />
               </div>
             </div>
