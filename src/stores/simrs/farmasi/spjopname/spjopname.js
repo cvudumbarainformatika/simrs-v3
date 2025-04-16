@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia'
+import { acceptHMRUpdate, defineStore } from 'pinia'
 import { date } from 'quasar'
 import { api } from 'src/boot/axios'
 import { notifErrVue, notifSuccess } from 'src/modules/utils'
@@ -38,6 +38,7 @@ export const useSPJOPNameStore = defineStore('spjopname', {
     formBa: {
       no_surat: ''
     },
+    tempPeg: null,
     periodeOpname: {
       tgl_ba: date.formatDate(Date.now(), 'DD MMMM YYYY'),
       tgl_mulai: date.formatDate(Date.now(), 'DD MMMM YYYY'),
@@ -66,12 +67,27 @@ export const useSPJOPNameStore = defineStore('spjopname', {
       { nama: 'Depo OK', kode: 'Gd-04010103', opname: [] },
       { nama: 'Floor Stock 1 (AKHP)', kode: 'Gd-03010101', opname: [] }
     ],
+    optionGudangs: [
+      { label: 'Gudang Farmasi ( Kamar Obat )', value: 'Gd-05010100' },
+      { label: 'Gudang Farmasi (Floor Stok)', value: 'Gd-03010100' },
+      { label: 'Depo Rawat Jalan', value: 'Gd-05010101' },
+      { label: 'Depo Rawat inap', value: 'Gd-04010102' },
+      { label: 'Depo IGD', value: 'Gd-02010104' },
+      { label: 'Depo OK', value: 'Gd-04010103' },
+      { label: 'Floor Stock 1 (AKHP)', value: 'Gd-03010101' }
+    ],
+    gudangModel: null,
+    gudangSelected: null,
     KaUang: {},
     KaFarmasi: {}
   }),
   actions: {
     setParams (key, val) {
       this.params[key] = val
+    },
+    selectGudang (val) {
+      console.log('val', val)
+      this.gudangSelected = this.gudangs.find(item => item.kode === val)
     },
     getInitialData () {
       this.getKepala()
@@ -157,6 +173,20 @@ export const useSPJOPNameStore = defineStore('spjopname', {
           .catch(() => { this.loading = false })
       })
     },
+    tambahPelaksana () {
+      // console.log('this.tempPeg', this.tempPeg)
+      // console.log('this.form.pelaksanas', this.form.pelaksanas)
+      if (this.tempPeg) {
+        const index = this.form.pelaksanas.findIndex(item => item === this.tempPeg)
+        // console.log('index', index)
+        if (index >= 0) notifErrVue('Pegawai sudah ada di daftar pelaksana')
+        else {
+          this.form.pelaksanas.push(this.tempPeg)
+          this.tempPeg = null
+        }
+      }
+
+    },
     getKepala () {
       this.loading = true
       return new Promise(resolve => {
@@ -216,3 +246,7 @@ export const useSPJOPNameStore = defineStore('spjopname', {
 
   }
 })
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useSPJOPNameStore, import.meta.hot))
+}

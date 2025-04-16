@@ -1,18 +1,8 @@
 <template>
   <q-page class="bg-white full-height" ref="refPage">
-    <q-tabs
-      ref="refTabs"
-      v-model="tab"
-      dense
-      no-caps
-      inline-label
-      narrow-indicator
-      indicator-color="transparent"
-      align="left"
-      class=" bg-transparent text-grey-8"
-      active-color="white"
-      :active-bg-color="menu?.reference ? 'dark' : 'primary'"
-    >
+    <q-tabs ref="refTabs" v-model="tab" dense no-caps inline-label narrow-indicator indicator-color="transparent"
+      align="left" class=" bg-transparent text-grey-8" active-color="white"
+      :active-bg-color="menu?.reference ? 'dark' : 'primary'">
       <q-tab v-for="tb in tabs" :key="tb.name" :ripple="true" :name="tb?.name" content-class="tab-classes">
         <template #default>
           <div class="row q-gutter-x-xs items-center q-px-sm" style="border-radius: 10px;">
@@ -26,30 +16,15 @@
         <div class="col-6">
           <div class="row">
             <div class="col-2">
-              <app-input
-                v-model="store.params.tahun"
-                label="Tahun"
-                outlined
-              />
+              <app-input v-model="store.params.tahun" label="Tahun" outlined />
             </div>
             <div class="q-ml-sm col-4">
-              <app-autocomplete
-                v-model="store.params.bulan"
-                label="Bulan"
-                :source="store.bulans"
-                option-label="nama"
-                option-value="value"
-                outlined
-              />
+              <app-autocomplete v-model="store.params.bulan" label="Bulan" :source="store.bulans" option-label="nama"
+                option-value="value" outlined />
             </div>
             <div class="q-ml-sm col-2">
-              <app-btn
-                class="q-mr-xs"
-                label="Ambil Data"
-                :loading="store.loading"
-                :disable="store.loading || store.loadingBa || store.loadingSp"
-                @click="store.getListOpname"
-              />
+              <app-btn class="q-mr-xs" label="Ambil Data" :loading="store.loading"
+                :disable="store.loading || store.loadingBa || store.loadingSp" @click="store.getListOpname" />
             </div>
           </div>
         </div>
@@ -57,32 +32,19 @@
           Tidak ada tanggal opname
         </div>
         <div class="col-auto q-mr-md">
-          <app-btn
-            class="q-mr-xs"
-            label="Simpan Pernyataan"
-            :loading="store.loadingSp"
+          <app-btn class="q-mr-xs" label="Simpan Pernyataan" :loading="store.loadingSp"
             :disable="store.loading || store.loadingBa || store.loadingSp || !store.form?.tglopname"
-            @click="store.simpanPernyataan"
-          />
-          <app-btn
-            label="Simpan Berita Acara"
-            :loading="store.loadingBa"
+            @click="store.simpanPernyataan" />
+          <app-btn label="Simpan Berita Acara" :loading="store.loadingBa"
             :disable="store.loading || store.loadingBa || store.loadingSp || !store.form?.tglopname"
-            @click="store.simpanBA"
-          />
+            @click="store.simpanBA" />
         </div>
       </div>
     </div>
-    <q-tab-panels
-      v-model="tab"
-      class="q-pa-sm"
-      animated
-    >
+    <q-tab-panels v-model="tab" class="q-pa-sm" animated>
       <q-tab-panel :name="menu?.name" class="q-pa-none">
         <q-scroll-area :style="`height: ${he}px;`">
-          <component
-            :is="menu?.comp"
-          />
+          <component :is="menu?.comp" />
         </q-scroll-area>
       </q-tab-panel>
     </q-tab-panels>
@@ -90,6 +52,7 @@
 </template>
 
 <script setup>
+// catatan : Petugas yang tercantun di pilihan petugas adalah petugas yang memiliki satset uuid
 import { useSPJOPNameStore } from 'src/stores/simrs/farmasi/spjopname/spjopname'
 import { computed, defineAsyncComponent, onMounted, ref, shallowRef } from 'vue'
 
