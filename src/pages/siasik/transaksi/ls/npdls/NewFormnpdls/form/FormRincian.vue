@@ -53,11 +53,11 @@
         outlined readonly />
       <app-input-simrs v-model="store.rinci.satuan" class="q-pa-sm q-gutter-y-md" style="width: 15%" label="Satuan Item"
         outlined readonly />
-      <app-input-simrs v-model="store.rinci.harga" class="q-pa-sm q-gutter-y-md" style="width: 20%" label="Harga Item"
+      <app-input-simrs :model-value="formattanpaRp(store.rinci.harga)" class="q-pa-sm q-gutter-y-md" style="width: 20%" label="Harga Item"
         outlined readonly />
-      <app-input-simrs v-model="store.rinci.total" class="q-pa-sm q-gutter-y-md" style="width: 25%" label="Total Pagu"
+      <app-input-simrs :model-value="formattanpaRp(store.rinci.total)" class="q-pa-sm q-gutter-y-md" style="width: 25%" label="Total Pagu"
         outlined readonly />
-      <app-input-simrs v-model="store.rinci.sisapagu" class="q-pa-sm q-gutter-y-md" style="width: 25%" label="Sisa Pagu"
+      <app-input-simrs :model-value="formattanpaRp(store.rinci.sisapagu)" class="q-pa-sm q-gutter-y-md" style="width: 25%" label="Sisa Pagu"
         outlined readonly />
 
       <app-input-simrs v-model="store.rinci.volumels" class="q-pa-sm q-gutter-y-md" style="width: 25%"
@@ -72,7 +72,7 @@
           store.rinci.totalls = parseFloat(store.rinci.volumels) * parseFloat(val)
           store.rinci.nominalpembayaran = parseFloat(store.rinci.volumels) * parseFloat(val)
         }" />
-      <app-input-simrs v-model="store.rinci.nominalpembayaran" class="q-pa-sm q-gutter-y-md" style="width: 25%"
+      <app-input-simrs :model-value="formattanpaRp(store.rinci.nominalpembayaran)"  class="q-pa-sm q-gutter-y-md" style="width: 25%"
         label="Total Permintaan" outlined readonly />
       <div class="row items-center q-pb-md q-pa-sm q-gutter-y-md">
         <app-btn label="Simpan Rincian" class="bg-black" type="submit" :disable="store.loading"
@@ -92,6 +92,7 @@ import { dataBastFarmasiStore } from 'src/stores/siasik/transaksi/ls/newnpdls/ba
 import { formInputNpdlsStore } from 'src/stores/siasik/transaksi/ls/newnpdls/formnpdls';
 import { formInputPajakStore } from 'src/stores/siasik/transaksi/ls/newnpdls/formpajak';
 import { defineAsyncComponent, ref } from 'vue';
+import { formattanpaRp } from 'src/modules/formatter'
 const FormInputPajak = defineAsyncComponent(() => import('./formpajak/FormPajak.vue'))
 
 
@@ -118,6 +119,10 @@ const formNpdLS = ref(null)
 
 async function filterFn(val, update) {
   // console.log('val filter', val)
+  if (!store.rekening50 || store.rekening50.length === 0) {
+    // Jika data rekening kosong, muat ulang data
+    await store.getRincianBelanja();
+  }
   update(() => {
     if (val === '') {
       options.value = store.rekening50;
@@ -138,27 +143,39 @@ async function filterFn(val, update) {
   });
 }
 function pilihRekening50(val) {
-  // console.log('pilihrekening', val)
-  const arr = store.rekening50
-  const obj = arr.length ? arr.find(x => x.rek50 === val) : null
-  // Mengosongkan form rincian Belanja ketika request kegiatan blud
-  store.rinci.koderek50 = obj?.rek50 ?? ''
-  store.rinci.rincianbelanja = obj?.rincianbelanja ?? ''
-  store.reqs.kodekegiatan = obj?.kodekegiatan ?? ''
-  carisrt.filterRekening50()
+  if (!val) return; // Tambahkan pengecekan nilai kosong
 
-  store.rinci.itembelanja = ''
-  store.rinci.volume = ''
-  store.rinci.satuan = ''
-  store.rinci.harga = ''
-  store.rinci.total = ''
-  store.rinci.sisapagu = ''
-  store.rinci.volumels = ''
-  store.rinci.hargals = ''
-  store.rinci.totalls = ''
-  store.rinci.nominalpembayaran = ''
-  store.reqs.rekening50 = val
-  store.filterItemBelanja()
+  const arr = store.rekening50;
+  if (!arr || arr.length === 0) {
+    console.error('Data rekening50 kosong');
+    return;
+  }
+
+  const obj = arr.find(x => x.rek50 === val);
+  if (!obj) {
+    console.error('Rekening tidak ditemukan');
+    return;
+  }
+
+  // Reset nilai sebelumnya
+  store.rinci = {
+    ...store.rinci,
+    koderek50: obj.rek50,
+    rincianbelanja: obj.rincianbelanja,
+    itembelanja: '',
+    volume: '',
+    satuan: '',
+    harga: '',
+    total: '',
+    sisapagu: '',
+    volumels: '',
+    hargals: '',
+    totalls: '',
+    nominalpembayaran: ''
+  };
+
+  store.reqs.rekening50 = val;
+  store.filterItemBelanja();
 }
 const props = defineProps({
   data: {

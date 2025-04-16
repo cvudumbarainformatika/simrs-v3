@@ -23,6 +23,8 @@ import { formKontrakPekerjaan } from 'src/stores/siasik/transaksi/ls/kontrak/for
 import { onBeforeMount } from 'vue';
 import FormHeader from './form/FormHeader.vue'
 import ListRincian from './form/listrincian/ListRincian.vue'
+import { onUnmounted } from 'vue';
+import { date } from 'quasar';
 const store = formInputNpdlsStore()
 const ambil = formKontrakPekerjaan()
 onBeforeMount(() => {
@@ -30,6 +32,24 @@ onBeforeMount(() => {
   store.getDataBidang()
   ambil.getPihaktiga()
 })
+
+onUnmounted(() => {
+  resetFormData()
+})
+
+
+function resetFormData() {
+  // Call the resetFORM method from your store
+  store.resetFORM()
+
+  // Set initial values after reset
+  store.params.tgl = date.formatDate(Date.now(), 'YYYY-MM-DD')
+  store.form.tglnpdls = date.formatDate(Date.now(), 'YYYY-MM-DD')
+  store.reqs.tgl = date.formatDate(Date.now(), 'YYYY-MM-DD')
+
+  // Load initial data
+  store.getDataBidang()
+}
 // onMounted(() => {
 //   // console.log(compSigna.value)
 //   initForm()
