@@ -3,9 +3,9 @@
     <q-card-section class="full-width">
       <div class="row">
         <div class="full-width">
-          <q-markup-table flat-bordered wrap-cells :separator="separator">
+          <q-markup-table class="custom-table" flat bordered wrap-cells :separator="separator">
             <thead>
-              <tr class="bg-dark text-white max-width">
+              <tr class="bg-grey-4">
                 <th>KODE REKENING</th>
                 <th style="width: 40%;">
                   URAIAN
@@ -1110,14 +1110,34 @@ function sisaLebih() {
   }
 }
 </script>
-<style lang="scss">
-.my-sticky-table {
+<style scoped>
+/* Mengatur warna garis pada seluruh tabel termasuk garis luar */
+.custom-table {
+  border-color: #555555 !important;
+}
 
-  thead tr th {
-    position: sticky;
-    z-index: 1;
-    font-weight: bold;
-  }
+/* Menargetkan tabel di dalam komponen q-markup-table */
+.custom-table table {
+  border-color: #555555 !important;
+}
 
+/* Mengatur warna garis pada sel header */
+.custom-table th {
+  border-color: #555555 !important;
+  font-weight: bold;
+}
+
+/* Mengatur warna garis pada sel data */
+.custom-table td {
+  border-color: #555555 !important;
+}
+
+/* Pastikan garis tidak dobel */
+.custom-table table {
+  border-collapse: collapse;
+}
+
+.custom-table thead tr {
+  border-color: #555555 !important;
 }
 </style>

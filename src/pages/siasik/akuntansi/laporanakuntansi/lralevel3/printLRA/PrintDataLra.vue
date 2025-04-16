@@ -13,84 +13,85 @@
           </q-bar>
         </q-header>
         <q-page-container>
-          <div id="printMe" class="f-12 row justify-center q-pt-md q-pb-md">
-            <div class="row">
-              <div class="col-1 q-pl-md">
-                <q-img src="~assets/images/Pemkot.svg" style="height: 2.6cm; width: 2cm" />
+          <div id="printMe" class="row justify-between full-width q-pt-md">
+            <!-- <div class="row"> -->
+            <div class="col-2 flex-start">
+              <div class="row justify-center">
+                <q-img src="~assets/images/logo_kota_original.png" spinner-color="white"
+                  style="height: 3.3cm; width: 2.6cm" />
               </div>
-              <div class="col-10">
-                <div class="row justify-center text-h6">
-                  PEMERINTAH KOTA PROBOLINGGO
-                </div>
-                <div class="row justify-center text-h7 text-weight-bold">
-                  DINAS KESEHATAN, PENGENDALIAN PENDUDUK, DAN KELUARGA BERENCANA
-                </div>
-                <div class="row justify-center text-h5 text-weight-bold">
-                  UOBK RSUD DOKTER MOHAMAD SALEH
-                </div>
-                <div class="row justify-center text-h8">
-                  Jl. Mayjen Panjaitan No.65 Telp.(0335) 433119, 42118 Fax (0335)
-                  432702
-                </div>
-                <div class="row justify-center text-h8 text-weight-bold">
-                  PROBOLINGGO 67219
-                </div>
+            </div>
+            <div class="col-6">
+              <div class="row justify-center text-center text-h6">
+                PEMERINTAH KOTA PROBOLINGGO
               </div>
-              <div class="col-1 logo_kanan">
-                <q-img src="~assets/logos/logo-rsud.png" style="height: 2.6cm; width: 2.6cm" />
+              <div class="row justify-center text-center text-h7 text-weight-bold">
+                DINAS KESEHATAN, PENGENDALIAN PENDUDUK, DAN KELUARGA BERENCANA
               </div>
+              <div class="row justify-center text-center text-h5 text-weight-bold">
+                UOBK RSUD DOKTER MOHAMAD SALEH
+              </div>
+              <div class="row justify-center text-center text-h8">
+                Jl. Mayjen Panjaitan No.65 Telp.(0335) 433119, 42118 Fax (0335)
+                432702
+              </div>
+              <div class="row justify-center text-center text-h8 text-weight-bold">
+                PROBOLINGGO 67219
+              </div>
+            </div>
+            <div class="col-2 flex-end">
+              <div class="row justify-center">
+                <q-img src="~assets/logos/logo-rsud.png" spinner-color="white" style="height: 3cm; width: 3cm" />
+              </div>
+            </div>
 
-              <div class="col-12 q-pt-md">
-                <div class="row justify-center text-weight-bold q-py-xs">
-                  LAPORAN REALISASI ANGGARAN
-                </div>
-                <div class="row justify-center text-weight-bold q-py-xs">
-                  Periode {{ store.display.dari + ' - ' + store.display.sampai }}
-                </div>
+            <div class="col-12 q-pt-md">
+              <div class="row justify-center text-weight-bold q-py-xs">
+                LAPORAN REALISASI ANGGARAN
               </div>
+              <div class="row justify-center text-weight-bold q-py-xs">
+                Periode {{ store.display.dari + ' - ' + store.display.sampai }}
+              </div>
+            </div>
 
-              <q-separator style="margin-top: -10px;" />
-
-              <q-card-section class="q-pa-sm full-width">
-                <div class="col-auto">
-                  <div class="row q-col-gutter-md full-width">
-                    <div class="items-center full-width">
-                      <template
-                        v-if="store.reqs.jenislra === 1 || (store.hasilpendapatan.length > 0 && store.hasilbelanja.length > 0 && store.hasilsilpa.length > 0)">
-                        <listData />
-                      </template>
-                      <template
-                        v-else-if="store.reqs.jenislra === 2 || (store.psapbarjas.length > 0 && store.psapmodal.length > 0 && store.psapsilpa.length > 0)">
-                        <listDataPsap />
-                      </template>
-                      <template v-else>
-                        <div class="row q-pa-md full-width text-subtitle1 flex-center">
-                          <q-icon class="q-pr-sm" size="sm" name="icon-mat-warning" />
-                          Silahkan Pilih Parameter Dulu
-                        </div>
-                      </template>
+            <q-card-section>
+              <div class="row full-width">
+                <div class="items-center full-width">
+                  <template
+                    v-if="store.reqs.jenislra === 1 || (store.hasilpendapatan.length > 0 && store.hasilbelanja.length > 0 && store.hasilsilpa.length > 0)">
+                    <listData />
+                  </template>
+                  <template
+                    v-else-if="store.reqs.jenislra === 2 || (store.psapbarjas.length > 0 && store.psapmodal.length > 0 && store.psapsilpa.length > 0)">
+                    <listDataPsap />
+                  </template>
+                  <template v-else>
+                    <div class="row q-pa-md full-width text-subtitle1 flex-center">
+                      <q-icon class="q-pr-sm" size="sm" name="icon-mat-warning" />
+                      Silahkan Pilih Parameter Dulu
                     </div>
-                  </div>
-                </div>
-              </q-card-section>
-
-              <div class="row q-pa-xl full-width justify-end">
-                <div class="q-py-xs text-center" v-for="it in tt.ttd" :key="it">
-                  Probolinggo {{ store.display.sekarang }}
-                  <div class="text-bold">
-                    Pengguna Anggaran
-                  </div>
-                  <div style="padding-bottom: 40px" />
-                  <div class="underline text-bold q-py-xs">
-                    {{ it.nama }}
-                    <div class="garis-bawah" style="text-decoration-line: underline;" />
-                  </div>
-                  <div>
-                    {{ it.nip }}
-                  </div>
+                  </template>
                 </div>
               </div>
-              <!-- <div class="ttd-kiri">
+            </q-card-section>
+
+            <div class="row q-pa-xl full-width justify-end">
+              <div class="q-py-xs text-center" v-for="it in tt.ttd" :key="it">
+                Probolinggo {{ store.display.sekarang }}
+                <div class="text-bold">
+                  Pengguna Anggaran
+                </div>
+                <div style="padding-bottom: 40px" />
+                <div class="underline text-bold q-py-xs">
+                  {{ it.nama }}
+                  <div class="garis-bawah" style="text-decoration-line: underline;" />
+                </div>
+                <div>
+                  {{ it.nip }}
+                </div>
+              </div>
+            </div>
+            <!-- <div class="ttd-kiri">
             <div class="invisible">
               .
             </div>
@@ -106,7 +107,7 @@
               NIP
             </div>
           </div> -->
-            </div>
+            <!-- </div> -->
           </div>
         </q-page-container>
 
