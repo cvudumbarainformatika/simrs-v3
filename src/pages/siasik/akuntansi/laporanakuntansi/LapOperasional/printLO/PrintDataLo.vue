@@ -16,10 +16,7 @@
           <div id="printMe" class="f-12 row justify-center q-pt-md q-pb-md">
             <div class="row">
               <div class="col-1 q-pl-md">
-                <q-img
-                  src="~assets/images/Pemkot.svg"
-                  style="height: 2.6cm; width: 2cm"
-                />
+                <q-img src="~assets/images/Pemkot.svg" style="height: 2.6cm; width: 2cm" />
               </div>
               <div class="col-10">
                 <div class="row justify-center text-h6">
@@ -40,10 +37,7 @@
                 </div>
               </div>
               <div class="col-1 logo_kanan">
-                <q-img
-                  src="~assets/logos/logo-rsud.png"
-                  style="height: 2.6cm; width: 2.6cm"
-                />
+                <q-img src="~assets/logos/logo-rsud.png" style="height: 2.6cm; width: 2.6cm" />
               </div>
 
               <div class="col-12 q-pt-md">
@@ -59,10 +53,12 @@
                 <div class="col-auto">
                   <div class="row q-col-gutter-md full-width">
                     <div class="items-center full-width">
-                      <template v-if="store.reqs.jenislo === 1 && (store.hasilpendapatan.length > 0 && store.hasilbeban.length > 0)">
+                      <template
+                        v-if="store.reqs.jenislo === 1 || (store.hasilpendapatan.length > 0 && store.hasilbeban.length > 0)">
                         <listData />
                       </template>
-                      <template v-else-if="store.reqs.jenislo === 2 && (store.psappendapatan.length > 0 || store.psapbeban.length > 0 || store.psapnonoperasional > 0 || store.psapbebanluarbiasa > 0 )">
+                      <template
+                        v-else-if="store.reqs.jenislo === 2 || (store.psappendapatan.length > 0 || store.psapbeban.length > 0 || store.psapnonoperasional > 0 || store.psapbebanluarbiasa > 0)">
                         <listDataPsap />
                       </template>
                     </div>
@@ -93,18 +89,8 @@
           <q-card-section class="q-pa-none bg-primary text-white">
             <div class="q-pa-md row justify-end items-end">
               <div class="items-end">
-                <q-btn
-                  v-print="printObj"
-                  unelevated
-                  color="dark"
-                  round
-                  size="sm"
-                  icon="icon-mat-print"
-                >
-                  <q-tooltip
-                    class="primary"
-                    :offset="[10, 10]"
-                  >
+                <q-btn v-print="printObj" unelevated color="dark" round size="sm" icon="icon-mat-print">
+                  <q-tooltip class="primary" :offset="[10, 10]">
                     Print
                   </q-tooltip>
                 </q-btn>
@@ -133,14 +119,14 @@ const printed = ref(false)
 const printObj = {
   id: 'printMe',
   popTitle: 'Laporan Operasional | SIASIK',
-  beforeOpenCallback (vue) {
+  beforeOpenCallback(vue) {
     printed.value = true
     console.log('wait...')
   },
-  openCallback (vue) {
+  openCallback(vue) {
     console.log('opened')
   },
-  closeCallback (vue) {
+  closeCallback(vue) {
     printed.value = false
     console.log('closePrint')
   }
@@ -160,12 +146,12 @@ const printObj = {
 // }
 </script>
 <style lang="scss" scoped>
-
-.kop{
+.kop {
   border-bottom: 1px solid grey;
   width: fit-content;
 }
-.logo_kanan{
+
+.logo_kanan {
   right: 5%;
   position: relative;
 }
@@ -177,11 +163,16 @@ const printObj = {
   -ms-transform: translateY(-50%);
   transform: translateY(-50%);
 }
-table, th, td {
+
+table,
+th,
+td {
   border: 1px solid black;
   border-collapse: collapse;
 }
-th, td {
+
+th,
+td {
   padding-top: 5px;
   padding-bottom: 5px;
   padding-left: 5px;
