@@ -67,9 +67,9 @@ export const useKasirRajalListKunjunganStore = defineStore('kasir_rajal_list_kun
       }
       this.loading = false
     },
-    async getBill() {
+    async getBill(par) {
       this.loading = true
-      const params = { params: this.getparams }
+      const params = { params: par ?? this.getparams }
       const resp = await api.get('/v1/simrs/kasir/rajal/billbynoreg', params)
       if (resp.status === 200) {
         this.rekapBill = resp.data

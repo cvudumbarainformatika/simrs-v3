@@ -30,7 +30,7 @@
             </q-item-label>
             <q-item-label>
               Jenis Arsip : <span class=" text-weight-bold"><q-badge outline color="teal">{{ item?.ket ?? '-'
-                  }}</q-badge></span>
+              }}</q-badge></span>
             </q-item-label>
           </q-item-section>
           <q-separator vertical class="q-mx-md" />
@@ -50,7 +50,7 @@
               Tanggal : <i class="text-weight-bold text-green">{{ dateFullFormat(item.tanggal) }}</i>
             </q-item-label>
             <q-item-label>
-              Keterangan : <span class="text-negative text-weight-bold">{{ item?.ket ?? '-' }}</span>
+              Keterangan : <span class="text-negative text-weight-bold">{{ item?.keterangan ?? '-' }}</span>
             </q-item-label>
           </q-item-section>
         </q-item>
