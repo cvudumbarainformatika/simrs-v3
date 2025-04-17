@@ -49,21 +49,41 @@ self.onmessage = function (e) {
   }
 }
 function processResponseTime (data) {
+
   const results = []
-  const adaRacikan = data.rincianracik?.filter(k => k.jumlah > 0)
-  results.push(createDataResposeTime(data, adaRacikan.length > 0 ? 'Racikan' : 'Obat Jadi', data.sistembayar?.rs2))
+  results.push(createDataResposeTime(data))
   return results
 }
-function createDataResposeTime (item, jenis, sistembayar) {
-  return {
-    noresep: item.noresep,
-    tgl: item.tgl_permintaan,
-    tgl_kirim: item.tgl_kirim,
-    tgl_selesai: item.tgl_selesai,
-    tgl_diterima: item.tgl_diterima,
-    menit: item.rt_menit,
-    jenis: jenis,
-    sistembayar: sistembayar,
+function createDataResposeTime (item) {
+
+  const keys = Object.keys(item)
+  const obat = keys.find(k => k === 'noresep')
+  console.log('keys ', obat)
+  if (!obat) {
+    return {
+      no_permintaan: item.no_permintaan,
+      tgl: item.tgl_permintaan,
+      tgl_kirim: item.tgl_kirim,
+      tgl_terima: item.tgl_terima,
+      tgl_kirim_depo: item.tgl_kirim_depo, // tanggal gudang mengrim ke depo
+      tgl_selesai: item.tgl_terima_depo,
+      dari: item.dari,
+      menit: item.tt_menit,
+      unit: item?.ruangan?.nama ?? item?.asal?.nama
+    }
+  }
+  else {
+    const adaRacikan = item.rincianracik?.filter(k => k.jumlah > 0)
+    return {
+      noresep: item.noresep,
+      tgl: item.tgl_permintaan,
+      tgl_kirim: item.tgl_kirim,
+      tgl_selesai: item.tgl_selesai,
+      tgl_diterima: item.tgl_diterima,
+      menit: item.rt_menit,
+      jenis: adaRacikan?.length > 0 ? 'Racikan' : 'Obat Jadi',
+      sistembayar: item.sistembayar?.rs2,
+    }
   }
 }
 function processResep (data) {
@@ -111,8 +131,8 @@ function createDataObject (item, keluar, data, depo) {
     jumlah_resep: item.jumlah,
     jumlah_dilayani: keluar?.reduce((acc, curr) => acc + curr.jumlah, 0) || 0,
     kdobat: item.kdobat,
-    kelompok: item.kelompok_penyimpanan,
-    perbekalan: item.jenis_perbekalan,
+    kelompok: item?.mobat?.kelompok_penyimpanan,
+    perbekalan: item?.mobat?.jenis_perbekalan,
     nama_obat: item?.mobat?.nama_obat,
     generik: item?.mobat?.status_generik == '1' ? 'Generik' : '',
     status_generik: item?.mobat?.status_generik,

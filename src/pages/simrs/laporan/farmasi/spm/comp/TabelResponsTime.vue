@@ -11,21 +11,24 @@
             Tanggal
           </th>
           <th>
-            Nomor Resep
+            {{ store.params.response_time == 'Obat' ? 'Nomor Resep' : 'Nomor Permintaan' }}
           </th>
           <th>
-            Jam Masuk Resep
+            {{ store.params.response_time == 'Obat' ? 'Jam Masuk Resep' : 'Jam Pengajuan Permintaan' }}
+
           </th>
           <th>
-            Jam Selesai Obat
+            {{ store.params.response_time == 'Obat' ? 'Jam Selesai Obat' : 'Jam Diterima ' +
+              (store.tujuanMinta == 'Depo' ? 'Ruangan' : 'Depo') }}
           </th>
           <th>
             Total Menit
           </th>
           <th>
-            Jenis Obat
+            {{ store.params.response_time == 'Obat' ? 'Jenis Obat' : 'Unit yang mengajukan' }}
+
           </th>
-          <th>
+          <th v-if="store.params.response_time == 'Obat'">
             Sistem Bayar
           </th>
         </tr>
@@ -39,16 +42,18 @@
             Tanggal
           </th>
           <th>
-            Lembar Resep
+            {{ store.params.response_time == 'Obat' ? 'Lembar Resep' : 'Jumlah Permintaan' }}
           </th>
           <th>
             Total Menit
           </th>
           <th>
-            Response Time > 30 Menit
+            Response Time > {{ store.tipeObat == 'Obat Jadi' && store.params.response_time == 'Obat' ? '30 Menit' :
+              '60 Menit' }}
           </th>
           <th>
-            Response Time {{ '=<' }} 30 Menit </th>
+            Response Time {{ store.tipeObat == 'Obat Jadi' && store.params.response_time == 'Obat' ? '=< 30 Menit'
+              : '=< 60 Menit' }} </th>
           <th>
             Jenis Obat
           </th>
@@ -221,7 +226,25 @@
               </td>
 
             </tr>
+
           </template>
+          <tr class="text-weight-bold">
+            <td colspan="2">
+              Rata-Rata
+            </td>
+            <td>
+              {{formatDouble(store.items?.reduce((a, b) => a + b.jml_lembar_resep, 0))}}
+            </td>
+            <td>
+              {{formatDouble(store.items?.reduce((a, b) => a + b.total_menit, 0))}}
+            </td>
+            <td colspan="3">
+              {{
+                formatDouble(store.items?.reduce((a, b) => a + b.total_menit, 0) /
+                  store.items?.reduce((a, b) => a + b.jml_lembar_resep, 0))
+              }} Menit
+            </td>
+          </tr>
         </template>
       </template>
     </tbody>
