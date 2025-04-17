@@ -164,8 +164,8 @@ export const useLaporanSpmFarmasiStore = defineStore('laporan_spm_farmasi', {
             // Simpan data mentah ke reseps
             // this.reseps.push(...resp.data.data)
 
-            // totalPages = Math.min(resp.data?.meta?.last_page || totalPages)
-            totalPages = 10
+            totalPages = Math.min(resp.data?.meta?.last_page || totalPages)
+            // totalPages = 10
             this.meta = resp.data?.meta
 
             const chunks = this.chunkArray(resp.data?.data, 100)

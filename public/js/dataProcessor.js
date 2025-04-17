@@ -58,7 +58,7 @@ function createDataResposeTime (item) {
 
   const keys = Object.keys(item)
   const obat = keys.find(k => k === 'noresep')
-  console.log('keys ', obat)
+
   if (!obat) {
     return {
       no_permintaan: item.no_permintaan,
