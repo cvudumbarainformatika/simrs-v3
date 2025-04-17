@@ -164,8 +164,8 @@ export const useLaporanSpmFarmasiStore = defineStore('laporan_spm_farmasi', {
             // Simpan data mentah ke reseps
             // this.reseps.push(...resp.data.data)
 
-            totalPages = Math.min(resp.data?.meta?.last_page || totalPages)
-            // totalPages = 10
+            // totalPages = Math.min(resp.data?.meta?.last_page || totalPages)
+            totalPages = 10
             this.meta = resp.data?.meta
 
             const chunks = this.chunkArray(resp.data?.data, 100)
@@ -209,10 +209,8 @@ export const useLaporanSpmFarmasiStore = defineStore('laporan_spm_farmasi', {
       this.items = []
       if (this.params.response_time === 'Obat') {
         if (this.tipe === 'Rinci') {
-          if (this.tipeObat == 'Semua') this.items = [...this.rawItems]
-          else this.items = [...this.rawItems].filter(item => item.dari === this.tipeObat)
+          this.items = [...this.rawItems].filter(item => item.jenis === this.tipeObat)
         } else this.setRekapResponseTime()
-
       } else {
         if (this.tipe === 'Rinci') {
           if (this.tujuanMinta == 'Gudang') this.items = [...this.rawItems.filter(item => this.params.depo.includes(item.dari))]
@@ -220,7 +218,7 @@ export const useLaporanSpmFarmasiStore = defineStore('laporan_spm_farmasi', {
         } else this.setRekapResponseTime()
       }
 
-      // console.log('items', this.items)
+      console.log('items', this.rawItems, this.items)
 
     },
     setRekapResponseTime () {
@@ -470,8 +468,8 @@ export const useLaporanSpmFarmasiStore = defineStore('laporan_spm_farmasi', {
               menit: item.menit,
               jenis: this.params.response_time == 'Obat' ? item?.jenis : item?.unit,
               sistembayar: item.sistembayar,
-              jam_masuk: date.formatDate(item?.tgl_kirim, 'HH:mm:ss'),
-              jam_selesai: date.formatDate(item?.tgl_selesai, 'HH:mm:ss'),
+              jam_masuk: this.params.response_time === 'Obat' ? date.formatDate(item?.tgl_kirim, 'HH:mm:ss') : date.formatDate(item?.tgl_kirim, 'DD MMMM / HH:mm:ss'),
+              jam_selesai: this.params.response_time === 'Obat' ? date.formatDate(item?.tgl_selesai, 'HH:mm:ss') : date.formatDate(item?.tgl_selesai, 'DD MMMM / HH:mm:ss'),
             })
           })
         }

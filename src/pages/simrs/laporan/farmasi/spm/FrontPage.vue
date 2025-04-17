@@ -96,7 +96,8 @@
             <div class="q-ml-xs">
               <download-excel class="btn" :fields="store.fields" :fetch="store.fetch"
                 :before-generate="store.startDownload" :before-finish="store.finishDownload"
-                :name="'Laporan SPM ' + laporan() + ' Bulan ' + bulan() + ' ' + store.params.tahun + jenis() + '.xls'">
+                :name="'Laporan SPM ' + store.jenisLaporan + ' ' + (store.jenisLaporan == 'Response Time' ?
+                  store.tujuanMinta + ' ' + store.params.response_time + ' ' : '') + ' Bulan ' + bulan() + ' ' + store.params.tahun + '(' + store.tipe + ').xls'">
                 <q-btn color="green" round size="sm" icon="icon-mat-download" push :loading="store.loadingDownload"
                   :disable="store.loadingDownload || !!store.ketProses || store?.loadingNext">
                   <q-tooltip>Download Excel</q-tooltip>
@@ -391,14 +392,14 @@ function bulan () {
   const bul = store.bulans.find(a => a.value === store.params.bulan)
   return bul?.nama ?? '-'
 }
-function jenis () {
-  const bul = store.optionTipes.find(a => a === store.tipe)
-  return ' (' + bul + ')' ?? '-'
-}
-function laporan () {
-  const bul = store.optionJenisLaporans.find(a => a === store.jenisLaporan)
-  return ' (' + bul + ')' ?? '-'
-}
+// function jenis () {
+//   const bul = store.optionTipes.find(a => a === store.tipe)
+//   return ' (' + bul + ')' ?? '-'
+// }
+// function laporan () {
+//   const bul = store.optionJenisLaporans.find(a => a === store.jenisLaporan)
+//   return ' (' + bul + ')' ?? '-'
+// }
 const printObj = {
   id: 'printMe',
   popTitle: 'Laporan SPM Farmasi'
