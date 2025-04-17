@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia'
+import { acceptHMRUpdate, defineStore } from 'pinia'
 // import { date } from 'quasar'
 import { api } from 'src/boot/axios'
 import { dateDbFormat } from 'src/modules/formatter'
@@ -172,6 +172,33 @@ export const useListPenerimaanStore = defineStore('list_penerimaan_store', {
             delete row.loading
           })
       })
+    },
+    simpanEditNomorFaktur (val) {
+
+      const form = {
+        id: val?.id,
+        nomorsurat: val?.noSuratEdit
+      }
+      val.loading = true
+      return new Promise(resolve => {
+        api.post('v1/simrs/farmasinew/penerimaan/simpaneditnomorfaktur', form)
+          .then(resp => {
+            delete val.loading
+            console.log('simpan', resp)
+            val.nomorsurat = resp?.data?.data?.nomorsurat
+            notifSuccess(resp)
+            resolve(resp)
+          })
+          .catch((err) => {
+            console.log('err', err)
+
+            delete val.loading
+          })
+      })
     }
   }
 })
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useListPenerimaanStore, import.meta.hot))
+}

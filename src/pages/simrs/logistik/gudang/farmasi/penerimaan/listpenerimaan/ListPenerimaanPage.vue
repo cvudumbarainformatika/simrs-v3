@@ -16,109 +16,51 @@
     </div>
   </div> -->
   <div class="q-mr-sm" style="white-space: normal !important;">
-    <app-table-extend
-      :columns="store.columns"
-      :column-hide="store.columnHide"
-      :items="store.items"
-      :meta="store.meta"
-      :per-page="store.param.per_page"
-      :loading="store.loading"
-      :to-search="store.param.cari"
-      :click-able="true"
-      :default-btn="false"
-      :ada-tambah="false"
-      :ada-filter="false"
-      row-no
-      use-full
-      @find="store.setSearch"
-      @goto="store.setPage"
-      @set-row="store.setPerPage"
-      @refresh="store.refreshTable"
-      @on-click="onClick"
-    >
+    <app-table-extend :columns="store.columns" :column-hide="store.columnHide" :items="store.items" :meta="store.meta"
+      :per-page="store.param.per_page" :loading="store.loading" :to-search="store.param.cari" :click-able="true"
+      :default-btn="false" :ada-tambah="false" :ada-filter="false" row-no use-full @find="store.setSearch"
+      @goto="store.setPage" @set-row="store.setPerPage" @refresh="store.refreshTable" @on-click="onClick">
       <template #header-left-after-search>
         <div class="q-ml-sm row">
           <div class="col-auto">
-            <app-autocomplete-new
-              :model="store.param.jenispenerimaan"
-              autocomplete="nama"
-              option-label="nama"
-              option-value="nama"
-              label="Jenis Penerimaan"
-              outlined
-              dark
-              valid
-              :source="store.jenisPenerimaans"
-              @on-select="store.jenisPenerimaanSelected"
-              @clear="store.clearJenisPenerimaan"
-            />
+            <app-autocomplete-new :model="store.param.jenispenerimaan" autocomplete="nama" option-label="nama"
+              option-value="nama" label="Jenis Penerimaan" outlined dark valid :source="store.jenisPenerimaans"
+              @on-select="store.jenisPenerimaanSelected" @clear="store.clearJenisPenerimaan" />
           </div>
           <div class="col-auto q-ml-sm">
-            <q-btn
-              outline
-              color="white"
-              class="bg-primary"
-              no-caps
-            >
+            <q-btn outline color="white" class="bg-primary" no-caps>
               <div class="flex items-center q-mx-xs">
                 <div class="f-12 q-mr-sm">
                   {{ store.header.periode }}
                 </div>
                 <transition>
-                  <q-icon
-                    :name="`${showMenuPeriode?'icon-mat-keyboard_arrow_up':'icon-mat-keyboard_arrow_down'}`"
-                    size="16px"
-                  />
+                  <q-icon :name="`${showMenuPeriode ? 'icon-mat-keyboard_arrow_up' : 'icon-mat-keyboard_arrow_down'}`"
+                    size="16px" />
                 </transition>
               </div>
 
-              <q-menu
-                @show="showMenuPeriode=true"
-                @hide="showMenuPeriode=false"
-              >
+              <q-menu @show="showMenuPeriode = true" @hide="showMenuPeriode = false">
                 <div class="row no-wrap q-pa-sms">
                   <q-list style="min-width: 100px">
-                    <q-item
-                      v-for="item in store.periods"
-                      :key="item"
-                      clickable
-                      :active="item === store.header.periode"
-                      active-class="bg-primary text-white"
-                      :disable="item === 'Custom'"
-                      @click="store.setPeriode(item)"
-                    >
+                    <q-item v-for="item in store.periods" :key="item" clickable :active="item === store.header.periode"
+                      active-class="bg-primary text-white" :disable="item === 'Custom'" @click="store.setPeriode(item)">
                       <q-item-section>{{ item }}</q-item-section>
                     </q-item>
                   </q-list>
-                  <q-separator
-                    vertical
-                    inset
-                  />
+                  <q-separator vertical inset />
 
                   <div class="column">
                     <div class="row q-pa-sm q-col-gutter-sm">
                       <div class="col">
-                        <q-date
-                          v-model="store.param.from"
-                          minimal
-                          bordered
-                          flat
-                          mask="YYYY-MM-DD"
-                          @update:model-value="store.setPeriode('Custom')"
-                        />
+                        <q-date v-model="store.param.from" minimal bordered flat mask="YYYY-MM-DD"
+                          @update:model-value="store.setPeriode('Custom')" />
                         <div class="f-10 text-grey-8 q-mt-xs">
                           DARI TANGGAL : <b>{{ store.param.from }}</b>
                         </div>
                       </div>
                       <div class="col">
-                        <q-date
-                          v-model="store.param.to"
-                          minimal
-                          bordered
-                          flat
-                          mask="YYYY-MM-DD"
-                          @update:model-value="store.setPeriode('Custom')"
-                        />
+                        <q-date v-model="store.param.to" minimal bordered flat mask="YYYY-MM-DD"
+                          @update:model-value="store.setPeriode('Custom')" />
                         <div class="f-10 text-grey-8 q-mt-xs">
                           SAMPAI TANGGAL : <b>{{ store.param.to }}</b>
                         </div>
@@ -126,14 +68,8 @@
                     </div>
                     <q-separator />
                     <div class="row q-pa-sm justify-end">
-                      <q-btn
-                        v-close-popup
-                        color="primary"
-                        label="Terapkan"
-                        push
-                        size="sm"
-                        @click="store.cariRencanaBeli"
-                      />
+                      <q-btn v-close-popup color="primary" label="Terapkan" push size="sm"
+                        @click="store.cariRencanaBeli" />
                     </div>
                   </div>
                 </div>
@@ -142,19 +78,9 @@
           </div>
           <div class="col-auto q-ml-sm">
             <div v-if="store.items.length">
-              <download-excel
-                class="btn"
-                :data="store.items"
-                :fields="jsonFields"
-                :fetch="fetch"
-                :name="'Penerimaan '+ (store?.param?.jenispenerimaan ?? '') + ' '+ store?.param?.from + ' sd ' + store?.param?.to+'.xls'"
-              >
-                <app-btn
-                  color="orange"
-                  label="Download Excel"
-                  icon="icon-mat-download"
-                  push
-                />
+              <download-excel class="btn" :data="store.items" :fields="jsonFields" :fetch="fetch"
+                :name="'Penerimaan ' + (store?.param?.jenispenerimaan ?? '') + ' ' + store?.param?.from + ' sd ' + store?.param?.to + '.xls'">
+                <app-btn color="orange" label="Download Excel" icon="icon-mat-download" push />
               </download-excel>
             </div>
           </div>
@@ -208,17 +134,12 @@
         <div>{{ row.pihakketiga?.nama ? row.pihakketiga?.nama : '-' }}</div>
       </template>
       <template #cell-total="{ row }">
-        <div
-          v-if="row?.faktur && row?.jenissurat==='Surat Jalan'"
-          class="text-weight-bold"
-        >
-          {{ formatDouble(parseFloat(row?.faktur?.total_faktur),2) ??'-' }}
+        <div v-if="row?.faktur && row?.jenissurat === 'Surat Jalan'" class="text-weight-bold">
+          {{ formatDouble(parseFloat(row?.faktur?.total_faktur), 2) ?? '-' }}
         </div>
-        <div
-          v-else
-          class="text-weight-bold"
-        >
-          {{ row.total_faktur_pbf? formatDouble(parseFloat(row.total_faktur_pbf),2) : (row.total?formatDouble(parseFloat(row.total),2):'-') }}
+        <div v-else class="text-weight-bold">
+          {{ row.total_faktur_pbf ? formatDouble(parseFloat(row.total_faktur_pbf), 2) :
+            (row.total ? formatDouble(parseFloat(row.total), 2) : '-') }}
         </div>
       </template>
       <template #cell-surat="{ row }">
@@ -227,7 +148,7 @@
             Nomor
           </div>
           <div class="q-mr-xs text-weight-bold">
-            {{ row.nomorsurat ?row.nomorsurat : '-' }}
+            {{ row.nomorsurat ? row.nomorsurat : '-' }}
           </div>
         </div>
         <div class="row items-center justify-between no-wrap q-mb-xs">
@@ -235,16 +156,16 @@
             Jenis
           </div>
           <div class="q-mr-xs text-weight-bold">
-            {{ row.jenissurat ?row.jenissurat : '-' }}
+            {{ row.jenissurat ? row.jenissurat : '-' }}
           </div>
         </div>
-        <div v-if="row?.faktur && row?.jenissurat==='Surat Jalan'">
+        <div v-if="row?.faktur && row?.jenissurat === 'Surat Jalan'">
           <div class="row items-center justify-between no-wrap q-mb-xs">
             <div class="q-mr-sm">
               Nomor Faktur
             </div>
             <div class="q-mr-xs text-weight-bold">
-              {{ row?.faktur?.no_faktur??'-' }}
+              {{ row?.faktur?.no_faktur ?? '-' }}
             </div>
           </div>
           <div class="row items-center justify-between no-wrap q-mb-xs">
@@ -252,7 +173,7 @@
               Tanggal Faktur
             </div>
             <div class="q-mr-xs text-weight-bold">
-              {{ dateFullFormat(row?.faktur?.tgl_faktur)??'-' }}
+              {{ dateFullFormat(row?.faktur?.tgl_faktur) ?? '-' }}
             </div>
           </div>
         </div>
@@ -274,10 +195,7 @@
             {{ row.tglsurat ? dateFullFormat(row.tglsurat) : '-' }}
           </div>
         </div>
-        <div
-          v-if="row.batasbayar"
-          class="row items-center justify-between no-wrap q-mb-xs text-deep-orange"
-        >
+        <div v-if="row.batasbayar" class="row items-center justify-between no-wrap q-mb-xs text-deep-orange">
           <div class="q-mr-sm">
             Batas Bayar
           </div>
@@ -308,10 +226,7 @@
               #
             </div>
           </div>
-          <div
-            v-for="(rin, i) in row.penerimaanrinci"
-            :key="i"
-          >
+          <div v-for="(rin, i) in row.penerimaanrinci" :key="i">
             <div class="row items-center q-col-gutter-sm anu">
               <div class="col-3">
                 <div class="row justify-between no-wrap">
@@ -326,11 +241,8 @@
                   <div class="q-mr-sm">
                     Nama
                   </div>
-                  <div
-                    class="text-weight-bold text-right"
-                    style="white-space: normal;"
-                  >
-                    {{ rin.masterobat? rin.masterobat.nama_obat:'-' }}
+                  <div class="text-weight-bold text-right" style="white-space: normal;">
+                    {{ rin.masterobat ? rin.masterobat.nama_obat : '-' }}
                   </div>
                 </div>
               </div>
@@ -366,7 +278,7 @@
                     Harga
                   </div>
                   <div class="text-weight-bold">
-                    {{ formatDouble( rin.harga,2) }}
+                    {{ formatDouble(rin.harga, 2) }}
                   </div>
                 </div>
                 <div class="row justify-between no-wrap">
@@ -390,7 +302,7 @@
                     Netto
                   </div>
                   <div class="text-weight-bold">
-                    {{ formatDouble( rin.harga_netto,2) }}
+                    {{ formatDouble(rin.harga_netto, 2) }}
                   </div>
                 </div>
               </div>
@@ -400,7 +312,7 @@
                     Besar
                   </div>
                   <div class="text-weight-bold">
-                    {{ rin.satuan_bsr?? rin.satuan }}
+                    {{ rin.satuan_bsr ?? rin.satuan }}
                   </div>
                 </div>
                 <div class="row justify-between no-wrap">
@@ -434,25 +346,14 @@
                     Expired
                   </div>
                   <div class="text-weight-bold">
-                    {{ dateFullFormat( rin.tgl_exp) }}
+                    {{ dateFullFormat(rin.tgl_exp) }}
                   </div>
                 </div>
               </div>
               <div class="col-1 text-right">
-                <q-btn
-                  v-if="!row.kunci"
-                  flat
-                  icon="icon-mat-delete"
-                  dense
-                  size="sm"
-                  color="negative"
-                  :loading="penerimaan.loadingDelete && rin.loading"
-                  @click="penerimaan.deleteRinci(rin)"
-                >
-                  <q-tooltip
-                    class="primary"
-                    :offset="[10, 10]"
-                  >
+                <q-btn v-if="!row.kunci" flat icon="icon-mat-delete" dense size="sm" color="negative"
+                  :loading="penerimaan.loadingDelete && rin.loading" @click="penerimaan.deleteRinci(rin)">
+                  <q-tooltip class="primary" :offset="[10, 10]">
                     Hapus
                   </q-tooltip>
                 </q-btn>
@@ -465,98 +366,82 @@
         </div>
       </template>
       <template #left-acttion="{ row }">
-        <div
-          v-if="!row.kunci"
-          class="row items-center"
-        >
-          <q-btn
-            class="q-mr-md"
-            flat
-            icon="icon-mat-add_circle"
-            dense
-            color="primary"
-            :loading=" row.loading || penerimaan.loading"
-            @click="tambahPenerimaan(row)"
-          >
-            <q-tooltip
-              class="primary"
-              :offset="[10, 10]"
-            >
-              Tambah Penerimaan
-            </q-tooltip>
-          </q-btn>
-          <q-btn
-            flat
-            icon="icon-mat-delete"
-            dense
-            size="sm"
-            color="negative"
-            :loading="penerimaan.loadingDelete && row.loading"
-            @click="penerimaan.deleteHeader(row)"
-          >
-            <q-tooltip
-              class="primary"
-              :offset="[10, 10]"
-            >
-              Hapus
-            </q-tooltip>
-          </q-btn>
-          <q-btn
-            flat
-            icon="icon-mat-lock_open"
-            dense
-            color="green"
-            :loading="penerimaan.loadingKunci && row.nopenerimaan === toloadBeli"
-            @click="kunci(row)"
-          >
-            <q-tooltip
-              class="primary"
-              :offset="[10, 10]"
-            >
-              Rencana Pemesanan sudah selesai dan siap di kunci
-            </q-tooltip>
-          </q-btn>
-        </div>
-        <div v-if="row.kunci">
-          <q-btn
-            flat
-            icon="icon-mat-lock"
-            dense
-            color="negative"
-            :loading="row.loading"
-            :disable="row.loading"
-            @click="bukakunci(row)"
-          >
-            <q-tooltip
-              class="primary"
-              :offset="[10, 10]"
-            >
-              Buka Kunci
-            </q-tooltip>
-          </q-btn>
-          <q-btn
-            round
-            icon="icon-mat-print"
-            dense
-            color="dark"
-            size="sm"
-            @click="viewcetak(row)"
-          >
-            <q-tooltip
-              class="primary"
-              :offset="[10, 10]"
-            >
-              Cetak Penerimaan
-            </q-tooltip>
-          </q-btn>
+        <div class="row no-wrap items-center q-col-gutter-x-sm">
+          <div v-if="!row.kunci" class="col-auto ">
+            <div class="row items-center">
+              <q-btn class="q-mr-md" flat icon="icon-mat-add_circle" dense color="primary"
+                :loading="row.loading || penerimaan.loading" @click="tambahPenerimaan(row)">
+                <q-tooltip class="primary" :offset="[10, 10]">
+                  Tambah Penerimaan
+                </q-tooltip>
+              </q-btn>
+              <q-btn flat icon="icon-mat-delete" dense size="sm" color="negative"
+                :loading="penerimaan.loadingDelete && row.loading" @click="penerimaan.deleteHeader(row)">
+                <q-tooltip class="primary" :offset="[10, 10]">
+                  Hapus
+                </q-tooltip>
+              </q-btn>
+              <q-btn flat icon="icon-mat-lock_open" dense color="green"
+                :loading="penerimaan.loadingKunci && row.nopenerimaan === toloadBeli" @click="kunci(row)">
+                <q-tooltip class="primary" :offset="[10, 10]">
+                  Rencana Pemesanan sudah selesai dan siap di kunci
+                </q-tooltip>
+              </q-btn>
+
+            </div>
+          </div>
+          <div v-if="row.kunci" class="col-auto ">
+            <q-btn flat icon="icon-mat-lock" dense color="negative" :loading="row.loading" :disable="row.loading"
+              @click="bukakunci(row)">
+              <q-tooltip class="primary" :offset="[10, 10]">
+                Buka Kunci
+              </q-tooltip>
+            </q-btn>
+            <q-btn round icon="icon-mat-print" dense color="dark" size="sm" @click="viewcetak(row)">
+              <q-tooltip class="primary" :offset="[10, 10]">
+                Cetak Penerimaan
+              </q-tooltip>
+            </q-btn>
+          </div>
+          <div class="col-auto">
+            <q-btn round icon="icon-mat-edit" dense color="yellow" size="sm" @click="editNomorFaktur(row)"
+              :loading="row.loading || penerimaan.loading">
+              <q-tooltip class="primary" :offset="[10, 10]">
+                Edit Nomor Faktur
+              </q-tooltip>
+            </q-btn>
+          </div>
+
         </div>
       </template>
     </app-table-extend>
   </div>
-  <cetak-penerimaan-comp
-    ref="refCetakPenerimaan"
-    v-model="printCetakPenerimaan"
-  />
+  <cetak-penerimaan-comp ref="refCetakPenerimaan" v-model="printCetakPenerimaan" />
+  <dialog-edit-faktur v-model="editFaktur" labelBtnOk="Simpan" labelBtnClose="Batal" @on-ok="() => {
+    store.simpanEditNomorFaktur(dataPenerimaan)
+    editFaktur = false
+  }
+  ">
+    <template #default>
+      <div class="row text-weight-bold f-14 q-mb-sm">Edit Nomor Faktur</div>
+      <div v-if="dataPenerimaan.faktur == null" class="row full-width justify-center">
+        <div class="col-11">
+          <app-input v-model="dataPenerimaan.noSuratEdit" label="Nomor Faktur" valid outlined @keyup.prevent.enter="() => {
+            store.simpanEditNomorFaktur(dataPenerimaan)
+            editFaktur = false
+          }" />
+        </div>
+      </div>
+      <div v-else>
+        <div class="row full-width justify-center">
+          <!-- <div class="col-11">
+            <app-input v-model="dataPenerimaan.nomorsurat" label="Nomor Surat" valid outlined />
+          </div> -->
+          Belum ada contoh untuk edit Faktur jenis ini, silahkan hubungi tim IT untuk informasi lebih lanjut
+        </div>
+      </div>
+    </template>
+  </dialog-edit-faktur>
 </template>
 <script setup>
 import { dateFullFormat, formatDouble, formatDoubleKoma } from 'src/modules/formatter'
@@ -565,9 +450,11 @@ import { useListPenerimaanStore } from 'src/stores/simrs/farmasi/penerimaan/list
 import { usePenerimaanFarmasiStore } from 'src/stores/simrs/farmasi/penerimaan/penerimaan'
 import CetakPenerimaanComp from './comp/CetakPenerimaanComp.vue'
 
+const DialogEditFaktur = defineAsyncComponent(() => import('./comp/DialogEditFaktur.vue'))
+
 import { useRouter } from 'vue-router'
 
-import { ref, watch } from 'vue'
+import { defineAsyncComponent, ref, watch } from 'vue'
 import { useAplikasiStore } from 'src/stores/app/aplikasi'
 import { usePenerimaanLangsungFarmasiStore } from 'src/stores/simrs/farmasi/penerimaan/penerimaanlangsung'
 import { Dialog } from 'quasar'
@@ -631,7 +518,7 @@ function tambahPenerimaan (val) {
   // val.rinci = val?.penerimaanrinci
   if (val.jenis_penerimaan === 'Pesanan') {
     penerimaan.ambilPemesanan().then(resp => {
-    // setTimeout(()=>{
+      // setTimeout(()=>{
 
       // },200)
       console.log('list resolve', resp)
@@ -732,6 +619,17 @@ const apps = useAplikasiStore()
 function getGudang (val) {
   const gud = store.gudangs?.find(a => a.value === val)
   return gud?.nama ?? '-'
+}
+const editFaktur = ref(false)
+const dataPenerimaan = ref({})
+function editNomorFaktur (val) {
+  val.expand = !val.expand
+  val.highlight = !val.highlight
+  val.noSuratEdit = val?.nomorsurat
+  editFaktur.value = true
+  dataPenerimaan.value = val
+  console.log('editNomorFaktur', val)
+
 }
 store.setParam('gudang', apps?.user?.kdruangansim)
 store.getInitialData()
