@@ -26,11 +26,11 @@
               <span class="text-cyan text-weight-bold">{{ item?.namakelasifikasi }}</span>
             </q-item-label>
             <q-item-label>
-              Uraian : <span class="text-negative text-weight-bold">{{ item?.uraian ?? '-' }}</span>
+              Deskripsi : <span class="text-weight-bold">{{ item?.uraian ?? '-' }}</span>
             </q-item-label>
             <q-item-label>
               Jenis Arsip : <span class=" text-weight-bold"><q-badge outline color="teal">{{ item?.ket ?? '-'
-              }}</q-badge></span>
+                  }}</q-badge></span>
             </q-item-label>
           </q-item-section>
           <q-separator vertical class="q-mx-md" />
@@ -39,7 +39,7 @@
               Lokasi : <span class="text-negative text-weight-bold">{{ item?.nama_lokasi ?? '-' }}</span>
             </q-item-label>
             <q-item-label>
-              No. Box :
+              No. Laci :
               <span class="text-teal text-weight-bold"> {{ item?.nobox ?? '-' }}</span>
             </q-item-label>
             <q-item-label>

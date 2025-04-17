@@ -16,6 +16,8 @@
         :source="store.level" @update:model-value="(val) => {
           const aa = parseInt(val)
           store.reqs.levelberapa = aa
+          store.hasilpendapatan = []
+          store.hasilbeban = []
           console.log('lvl', store.reqs.levelberapa)
         }" />
     </div>
