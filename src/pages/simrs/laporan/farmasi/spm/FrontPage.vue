@@ -11,7 +11,8 @@
               v-model="store.tujuanMinta" label="Pilih Tujuan Permintaan" autocomplete="nama" option-label="nama"
               option-value="value" outlined :source="store.optionTujuanMinta" :disable="store.loading" bg-color="white"
               @update:model-value="() => {
-                store.items = []
+                store.filterAndSetItemRespons()
+
               }" hide-dropdown-icon />
             <app-autocomplete v-if="store.jenisLaporan == 'Response Time'" v-model="store.params.response_time"
               label="Pilih Response Time" autocomplete="nama" option-label="nama" option-value="value" outlined

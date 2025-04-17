@@ -215,22 +215,32 @@ export const useLaporanSpmFarmasiStore = defineStore('laporan_spm_farmasi', {
 
       } else {
         if (this.tipe === 'Rinci') {
-          this.items = [...this.rawItems.filter(item => this.params.depo.includes(item.dari))]
+          if (this.tujuanMinta == 'Gudang') this.items = [...this.rawItems.filter(item => this.params.depo.includes(item.dari))]
+          else this.items = [...this.rawItems.filter(item => item.dari.includes('R-'))]
         } else this.setRekapResponseTime()
       }
 
-      console.log('items', this.items)
+      // console.log('items', this.items)
 
     },
     setRekapResponseTime () {
-      const rawDates = this.tipeObat === 'Semua' ? this.rawItems.map(item => date.formatDate(item.tgl, 'YYYY-MM-DD')) : this.rawItems?.filter(item => item.jenis === this.tipeObat)?.map(item => date.formatDate(item.tgl, 'YYYY-MM-DD'))
+      const rawDates = this.params.response_time === 'Obat' ?
+        this.rawItems?.filter(item => item.jenis === this.tipeObat)?.map(item => date.formatDate(item.tgl, 'YYYY-MM-DD')) :
+        this.rawItems.map(item => date.formatDate(item.tgl, 'YYYY-MM-DD'))
       const uniqueDates = [...new Set(rawDates)]
 
       uniqueDates.forEach(tangg => {
-        const allReseps = this.rawItems.filter(item => tangg === date.formatDate(item.tgl, 'YYYY-MM-DD') && item.jenis === this.tipeObat)
-        const resepnya = allReseps.map(item => item.noresep)
+        const allReseps = this.params.response_time === 'Obat' ?
+          this.rawItems.filter(item => tangg === date.formatDate(item.tgl, 'YYYY-MM-DD') && item.jenis === this.tipeObat) :
+          (
+            this.tujuanMinta == 'Gudang' ? this.rawItems.filter(item => tangg === date.formatDate(item.tgl, 'YYYY-MM-DD') && this.params.depo.includes(item.dari)) :
+              this.rawItems.filter(item => tangg === date.formatDate(item.tgl, 'YYYY-MM-DD') && item.dari.includes('R-'))
+          )
+        const resepnya = this.params.response_time === 'Obat' ?
+          allReseps.map(item => item.noresep) :
+          allReseps.map(item => item.no_permintaan)
         const uniqueNoreseps = [...new Set(resepnya)]
-        const TotalMenit = allReseps.reduce((acc, item) => acc + parseFloat(item.menit), 0)
+        const TotalMenit = allReseps.reduce((acc, item) => acc + parseFloat((item.menit ?? 0)), 0)
         const less30 = allReseps.filter(item => parseFloat(item.menit) <= 30)?.length
         const more30 = allReseps.filter(item => parseFloat(item.menit) > 30)?.length
         const less60 = allReseps.filter(item => parseFloat(item.menit) <= 60)?.length
@@ -241,7 +251,7 @@ export const useLaporanSpmFarmasiStore = defineStore('laporan_spm_farmasi', {
           total_menit: TotalMenit,
           less30: this.tipeObat == 'Obat Jadi' && this.params.response_time === 'Obat' ? less30 : less60,
           more30: this.tipeObat == 'Obat Jadi' && this.params.response_time === 'Obat' ? more30 : more60,
-          jenis: this.params.response_time === 'Obat' ? this.tipeObat : item?.unit,
+          // jenis: this.params.response_time === 'Obat' ? this.tipeObat : item?.unit,
         })
       })
     },
@@ -390,27 +400,53 @@ export const useLaporanSpmFarmasiStore = defineStore('laporan_spm_farmasi', {
 
       } else if (this.jenisLaporan === 'Response Time') {
         if (this.tipe === 'Rekap') {
-          this.fields = {
-            No: 'no',
-            'Tanggal': 'tgl',
-            'Lembar Resep': 'jml_lembar_resep',
-            'Total Menit': 'total_menit',
-            'Response Time > 30 menit': 'more30',
-            'Response Time <= 30 menit': 'less30',
-            'Jenis Obat': 'jenis',
-
+          if (this.params.response_time === 'Obat') {
+            this.fields = {
+              No: 'no',
+              'Tanggal': 'tgl',
+              'Lembar Resep': 'jml_lembar_resep',
+              'Total Menit': 'total_menit',
+              'Response Time > 30 menit': 'more30',
+              'Response Time <= 30 menit': 'less30',
+              'Jenis Obat': 'jenis',
+            }
+          } else {
+            this.fields = {
+              No: 'no',
+              'Tanggal': 'tgl',
+              'Jumlah Permintaan': 'jml_lembar_resep',
+              'Total Menit': 'total_menit',
+              // 'Response Time > 30 menit': 'more30',
+              // 'Response Time <= 30 menit': 'less30',
+            }
+            if (this.tipeObat == 'Obat Jadi' && this.params.response_time == 'Obat') this.fields['Response Time > 30 menit'] = 'more30'
+            else this.fields['Response Time > 60 menit'] = 'more30'
+            if (this.tipeObat == 'Obat Jadi' && this.params.response_time == 'Obat') this.fields['Response Time =< 60 menit'] = 'less30'
+            else this.fields['Response Time <= 60 menit'] = 'less30'
           }
         }
         else {
-          this.fields = {
-            No: 'no',
-            'Tanggal': 'tgl',
-            'Nomor Resep': 'noresep',
-            'Jam Masuk Resep': 'jam_masuk',
-            'Jam Selesai Obat': 'jam_selesai',
-            'Total Menit': 'menit',
-            'Jenis Obat': 'jenis',
-            'Sistem Bayar': 'sistembayar',
+          if (this.params.response_time === 'Obat') {
+            this.fields = {
+              No: 'no',
+              'Tanggal': 'tgl',
+              'Nomor Resep': 'noresep',
+              'Jam Masuk Resep': 'jam_masuk',
+              'Jam Selesai Obat': 'jam_selesai',
+              'Total Menit': 'menit',
+              'Jenis Obat': 'jenis',
+              'Sistem Bayar': 'sistembayar',
+            }
+          } else {
+            this.fields = {
+              No: 'no',
+              'Tanggal': 'tgl',
+              'Nomor Permintaan': 'noresep',
+              'Tgl & Jam Pengajuan Permintaan': 'jam_masuk',
+              'Tgl & Jam Diterima ': 'jam_selesai',
+              'Total Menit': 'menit',
+              'Unit yang mengajukan': 'jenis',
+            }
           }
         }
       } else { }
@@ -430,9 +466,9 @@ export const useLaporanSpmFarmasiStore = defineStore('laporan_spm_farmasi', {
             data.push({
               no: i + 1,
               tgl: item.tgl,
-              noresep: item.noresep,
+              noresep: this.params.response_time == 'Obat' ? item?.noresep : item?.no_permintaan,
               menit: item.menit,
-              jenis: item.jenis,
+              jenis: this.params.response_time == 'Obat' ? item?.jenis : item?.unit,
               sistembayar: item.sistembayar,
               jam_masuk: date.formatDate(item?.tgl_kirim, 'HH:mm:ss'),
               jam_selesai: date.formatDate(item?.tgl_selesai, 'HH:mm:ss'),
