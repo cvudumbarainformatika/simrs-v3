@@ -59,8 +59,8 @@ export default defineConfig((ctx) => {
           : 'http://192.168.150.111:3507',
 
         ENABLE_MONITORING: ctx.dev, // Aktifkan hanya di development
-        MONITORING_LOG: true // Matikan console log
-
+        MONITORING_LOG: true, // Matikan console log
+        APP_VERSION: require('./package.json').version
       },
 
       vueRouterMode: 'history', // available values: 'hash', 'history'

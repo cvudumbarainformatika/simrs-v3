@@ -6,22 +6,10 @@
       </div>
     </div>
     <div class="q-my-md full-width">
-      <q-form
-        ref="myForm"
-        class="q-pa-md"
-        @submit="onSubmit"
-      >
-        <q-input
-          v-model="form.email"
-          color="white"
-          label="Username"
-          dark
-          :rules="[val => !!val || 'Harap diisi terlebih dahulu']"
-          autocorrect="off"
-          autocapitalize="off"
-          autocomplete="chrome-off"
-          spellcheck="false"
-        >
+      <q-form ref="myForm" class="q-pa-md" @submit="onSubmit">
+        <q-input v-model="form.email" color="white" label="Username" dark
+          :rules="[val => !!val || 'Harap diisi terlebih dahulu']" autocorrect="off" autocapitalize="off"
+          autocomplete="chrome-off" spellcheck="false">
           <template #label>
             <!-- <span class="text-weight-bold text-deep-orange">You</span> -->
             <span class="q-px-sm bg-deep-orange text-white text-italic rounded-borders">Username</span>
@@ -30,18 +18,9 @@
             <q-icon name="icon-mat-person" />
           </template>
         </q-input>
-        <q-input
-          v-model="form.password"
-          color="white"
-          label="Password"
-          dark
-          :rules="[val => !!val || 'Harap diisi terlebih dahulu']"
-          :type="isPasw ? 'password' : 'text'"
-          autocorrect="off"
-          autocapitalize="off"
-          autocomplete="chrome-off"
-          spellcheck="false"
-        >
+        <q-input v-model="form.password" color="white" label="Password" dark
+          :rules="[val => !!val || 'Harap diisi terlebih dahulu']" :type="isPasw ? 'password' : 'text'"
+          autocorrect="off" autocapitalize="off" autocomplete="chrome-off" spellcheck="false">
           <template #label>
             <!-- <span class="text-weight-bold text-deep-orange">You</span> -->
             <span class="q-px-sm bg-deep-orange text-white text-italic rounded-borders">Password</span>
@@ -50,38 +29,20 @@
             <q-icon name="icon-mat-key" />
           </template>
           <template #append>
-            <q-icon
-              :name="isPasw ? 'icon-mat-visibility_off' : 'icon-mat-visibility'"
-              class="cursor-pointer"
-              @click="isPasw = !isPasw"
-            />
+            <q-icon :name="isPasw ? 'icon-mat-visibility_off' : 'icon-mat-visibility'" class="cursor-pointer"
+              @click="isPasw = !isPasw" />
           </template>
         </q-input>
         <div class="row justify-between q-mt-lg">
-          <q-btn
-            push
-            color="white"
-            text-color="primary"
-            label="Login"
-            type="submit"
-            :disable="storeAuth.loading"
-          >
+          <q-btn push color="white" text-color="primary" label="Login" type="submit" :disable="storeAuth.loading">
             <template #loading>
               <q-spinner-hourglass class="on-right" />
               Loading...
             </template>
           </q-btn>
-          <div
-            class="column flex-center cursor-pointer f-12"
-            :class="hoverred?'text-red':'text-grey-4'"
-            @mouseover="hoverred=true"
-            @mouseleave="hoverred=false"
-            @click="goToQr()"
-          >
-            <q-icon
-              name="icon-mat-qr_code_2"
-              size="lg"
-            />
+          <div class="column flex-center cursor-pointer f-12" :class="hoverred ? 'text-red' : 'text-grey-4'"
+            @mouseover="hoverred = true" @mouseleave="hoverred = false" @click="goToQr()">
+            <q-icon name="icon-mat-qr_code_2" size="lg" />
             <div>Login Qr ?</div>
             <div>Klik disini</div>
           </div>
@@ -89,7 +50,7 @@
       </q-form>
     </div>
     <div class="app-v text-grey-4">
-      app versi v2.21
+      app versi v{{ process.env.APP_VERSION }}
     </div>
   </div>
 </template>
@@ -113,7 +74,7 @@ const form = ref({
 
 const storeAuth = useAuthStore()
 // const router = useRouter()
-function onSubmit () {
+function onSubmit() {
   const formData = new FormData()
   formData.append('email', form.value.email + '@app.com')
   formData.append('password', form.value.password)
@@ -148,17 +109,17 @@ function goToQr() {
 <style lang="scss" scoped>
 .app-v {
   position: absolute;
-  bottom:20px;
+  bottom: 20px;
   right: 20px;
 }
 
-.q-field__native{
+.q-field__native {
 
   &:-webkit-autofill,
   &:-webkit-autofill:hover,
   &:-webkit-autofill:focus,
-  &:-webkit-autofill:active{
-      transition: background-color 9999s ease-in-out 0s;
+  &:-webkit-autofill:active {
+    transition: background-color 9999s ease-in-out 0s;
   }
 
   // &input:-internal-autofill-previewed,
