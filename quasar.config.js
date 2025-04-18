@@ -60,7 +60,7 @@ export default defineConfig((ctx) => {
 
         ENABLE_MONITORING: ctx.dev, // Aktifkan hanya di development
         MONITORING_LOG: true, // Matikan console log
-        APP_VERSION: require('./package.json').version
+        APP_VERSION: JSON.stringify(require('./package.json').version)
       },
 
       vueRouterMode: 'history', // available values: 'hash', 'history'

@@ -50,7 +50,7 @@
       </q-form>
     </div>
     <div class="app-v text-grey-4">
-      app versi v{{ process.env.APP_VERSION }}
+      app versi v{{ appVersion }}
     </div>
   </div>
 </template>
@@ -60,8 +60,11 @@ import { ref } from 'vue'
 import { useAuthStore } from 'src/stores/auth'
 import { useQuasar } from 'quasar'
 import { useRouter } from 'vue-router'
+import packageJson from '../../../../package.json'
 const $q = useQuasar()
 const router = useRouter()
+
+const appVersion = ref(packageJson.version || '0.0.1')
 
 const isPasw = ref(true)
 const hoverred = ref(false)

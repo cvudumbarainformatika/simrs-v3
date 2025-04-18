@@ -3,7 +3,7 @@ name: Deploy Simrs SPA
 on:
   push:
     branches:
-      - swoole
+      - deploy
 
 permissions:
   contents: write
