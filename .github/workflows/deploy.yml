@@ -21,10 +21,13 @@ jobs:
     - name: Setup SSH
       run: |
         mkdir -p ~/.ssh
-        echo "${{ secrets.SSH_KEY_UDUMBARA }}" > ~/.ssh/id_ed25519
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
         chmod 600 ~/.ssh/id_ed25519
         ssh-keyscan -p 2221 192.168.150.112 >> ~/.ssh/known_hosts
 
     - name: Upload to server via rsync
       run: |
+        ls -la ~/.ssh
+        cat ~/.ssh/id_ed25519 | head -n 5
+        ssh -p 2221 root@192.168.150.112 "echo SSH CONNECTED"
         rsync -avz -e "ssh -p 2221" dist/spa/ root@192.168.150.112:/www/wwwroot/frontend.192.168.150.111/dist/
