@@ -13,10 +13,11 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
     reqs: {
       q: '',
       page: 1,
+      per_page: 100,
       tgl: date.formatDate(Date.now(), 'YYYY-MM-DD'),
       tglx: date.formatDate(Date.now(), 'YYYY-MM-DD'),
       tahun: date.formatDate(Date.now(), 'YYYY'),
-      levelberapa: '',
+      levelberapa: 0,
       jenisbukubesar: '',
       rekenings: '',
       uraian: ''
@@ -103,18 +104,26 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
     getAkun() {
       this.loading = true
       const params = { params: this.reqs }
-      return new Promise((resolve) => {
-        api.get('v1/akuntansi/bukubesar/akun', params).then((resp) => {
-          console.log('getakuns', resp.data)
-          if (resp.status === 200) {
-            this.alllevel = []
-            this.alllevel = resp.data
 
+      return new Promise((resolve, reject) => {
+        api.get('v1/akuntansi/bukubesar/akun', params)
+          .then((resp) => {
+            if (resp.status === 200) {
+              // Untuk pencarian, kita hanya perlu mencatat daftar akun
+              this.alllevel = resp.data.data
+
+              this.loading = false
+              resolve(resp.data)
+            } else {
+              this.loading = false
+              reject(new Error('Failed to fetch data'))
+            }
+          })
+          .catch((error) => {
             this.loading = false
-
-            resolve(resp.data)
-          }
-        }).catch(() => { this.loading = false })
+            console.error('Error fetching akun data:', error)
+            reject(error)
+          })
       })
     },
     getTtd() {
