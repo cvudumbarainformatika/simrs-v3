@@ -1,7 +1,7 @@
 <template>
-  <div class="container full-width full-height">
+  <div class="container">
     <q-card class="items-center q-pa-sm full-width full-height">
-      <div class="row">
+      <div class="row" style="height: 100%">
         <ListData />
       </div>
     </q-card>
