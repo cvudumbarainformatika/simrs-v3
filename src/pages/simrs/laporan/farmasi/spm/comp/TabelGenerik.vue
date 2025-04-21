@@ -449,7 +449,7 @@ table {
 
 thead {
   position: sticky;
-  z-index: 2;
+  z-index: 10;
   background-color: white;
 
   tr {

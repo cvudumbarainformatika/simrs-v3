@@ -45,7 +45,7 @@ export const useLaporanSpmFarmasiStore = defineStore('laporan_spm_farmasi', {
       { nama: 'Desember', value: '12' }
     ],
     optionJenisLaporans: ['Generik', 'Response Time', 'Kesesuaian Obat'],
-    jenisLaporan: 'Response Time',
+    jenisLaporan: 'Generik',
     optionGeneriks: [
       'Semua',
       'Generik',
@@ -123,6 +123,7 @@ export const useLaporanSpmFarmasiStore = defineStore('laporan_spm_farmasi', {
             this.reseps.push(...e.data?.unProcessedData)
             if (this.jenisLaporan === 'Generik') this.filterAndSetItems()
             else if (this.jenisLaporan === 'Response Time') this.filterAndSetItemRespons()
+            else this.filterAndSetItemKesesuaian()
             worker.terminate()
           }
         }
@@ -164,8 +165,8 @@ export const useLaporanSpmFarmasiStore = defineStore('laporan_spm_farmasi', {
             // Simpan data mentah ke reseps
             // this.reseps.push(...resp.data.data)
 
-            // totalPages = Math.min(resp.data?.meta?.last_page || totalPages)
-            totalPages = 10
+            totalPages = Math.min(resp.data?.meta?.last_page || totalPages)
+            // totalPages = 10
             this.meta = resp.data?.meta
 
             const chunks = this.chunkArray(resp.data?.data, 100)
@@ -205,6 +206,54 @@ export const useLaporanSpmFarmasiStore = defineStore('laporan_spm_farmasi', {
       }
     },
 
+    filterAndSetItemKesesuaian () {
+      this.items = []
+      const itemnya = []
+      if (this.tipe == 'Rinci') {
+        const allReseps = this.reseps.map(it => it.noresep)
+        const uniqueReseps = [...new Set(allReseps)]
+        uniqueReseps.forEach(item => {
+          const resepnya = this.rawItems.filter(x => x.nomor == item)
+          const satuRes = this.rawItems.find(x => x.nomor == item)
+          const nonFor = resepnya.filter(i => i.fornas != '1').map(m => m.nama_obat)
+          itemnya.push({
+            tgl: satuRes?.tgl,
+            nomor: satuRes?.nomor,
+            ruang: satuRes?.ruang,
+            dokter: satuRes?.dokter,
+            fornas: resepnya?.filter(a => a.fornas == '1')?.length ?? 0,
+            total: resepnya.length ?? 0,
+            ket: nonFor?.join(', ')
+          })
+        })
+      }
+      else this.setRekapKesesuaian(itemnya)
+      this.items = [...itemnya]
+    },
+    setRekapKesesuaian (items) {
+      const rawDates = this.rawItems.map(item => date.formatDate(item.tgl, 'YYYY-MM-DD'))
+      const uniqueDates = [...new Set(rawDates)]
+      uniqueDates.forEach(tangg => {
+        const datanya = this.rawItems.filter(item => tangg === date.formatDate(item.tgl, 'YYYY-MM-DD'))
+        const rajal = datanya.filter(x => x.poli != null)
+        const ranap = datanya.filter(x => x.ranap != null)
+        items.push({
+          tgl: tangg,
+          rajal: {
+            fornas: rajal.filter(x => x.fornas == '1')?.length,
+            total: rajal.length
+          },
+          ranap: {
+            fornas: ranap.filter(x => x.fornas == '1')?.length,
+            total: ranap.length
+          },
+          total: {
+            fornas: datanya.filter(x => x.fornas == '1')?.length,
+            total: datanya.length
+          },
+        })
+      })
+    },
     filterAndSetItemRespons () {
       this.items = []
       if (this.params.response_time === 'Obat') {
@@ -218,7 +267,7 @@ export const useLaporanSpmFarmasiStore = defineStore('laporan_spm_farmasi', {
         } else this.setRekapResponseTime()
       }
 
-      console.log('items', this.rawItems, this.items)
+      // console.log('items', this.rawItems, this.items)
 
     },
     setRekapResponseTime () {
@@ -447,7 +496,32 @@ export const useLaporanSpmFarmasiStore = defineStore('laporan_spm_farmasi', {
             }
           }
         }
-      } else { }
+      } else {
+        if (this.tipe === 'Rekap') {
+          this.fields = {
+            'No': 'no',
+            'Tanggal': 'tgl',
+            'Rawat Jalan (Fornas)': 'rajal.fornas',
+            'Rawat Jalan (Total)': 'rajal.total',
+            'Rawat Inap (Fornas)': 'ranap.fornas',
+            'Rawat Inap (Total)': 'ranap.total',
+            'Total (Fornas)': 'total.fornas',
+            'Total (Total)': 'total.total',
+
+          }
+        } else {
+          this.fields = {
+            'No': 'no',
+            'Tanggal': 'tgl',
+            'Nomor Resep': 'nomor',
+            'Ruang': 'ruang',
+            'Dokter': 'dokter',
+            'Fornas': 'fornas',
+            'Total': 'total',
+            'Keterangan': 'ket',
+          }
+        }
+      }
     },
     fetch () {
       if (!this.items.length) {

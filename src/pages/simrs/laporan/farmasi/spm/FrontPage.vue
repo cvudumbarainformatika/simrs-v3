@@ -63,12 +63,15 @@
                 option-label="nama" option-value="kode" outlined :source="store.optionKelompoks" hide-dropdown-icon
                 :disable="store.loading" @update:model-value="store.filterAndSetItems()" />
             </div>
-            <div v-if="store.params?.response_time != 'Floor Stok'" class="col-2">
+
+            <div v-if="store.jenisLaporan == 'Response Time' ? store.params.response_time != 'Floor Stok' : store.jenisLaporan !=
+              'Kesesuaian Obat'" class="col-2">
               <app-autocomplete v-model="store.groupSistembayar" label="Pilih sistem bayar" autocomplete="nama"
                 option-label="nama" option-value="kode" outlined multiple :source="store.optionSistemBayars"
                 :hide-selected="false" hide-dropdown-icon :disable="store.loading" @update:model-value="setSitermbayar"
                 valid />
             </div>
+
             <!-- ini filter rinci generik -->
             <div v-if="store.jenisLaporan == 'Generik' && store.tipe == 'Rinci'" class="col-auto"
               style="max-width: 12%;">
@@ -421,7 +424,7 @@ const menus = ref([
   },
   {
     name: 'Kesesuaian Obat',
-    bottom: 164,
+    bottom: 145,
     comp: shallowRef(defineAsyncComponent(() => import('./comp/TabelKesesuaian.vue')))
   },
 ])
@@ -496,6 +499,7 @@ function setTipe (val) {
     if (val === 'Rinci') setFormularium()
     if (val === 'Rekap') store.setRekapGenerik()
   } else if (store.jenisLaporan == 'Response Time') store.filterAndSetItemRespons()
+  else store.filterAndSetItemKesesuaian()
   setTimeout(() => {
     console.log('set tipe', val, refTop.value?.clientHeight)
     h.value = refTop.value?.clientHeight

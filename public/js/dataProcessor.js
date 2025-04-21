@@ -30,6 +30,13 @@ self.onmessage = function (e) {
           }
         } else if (jenisLaporan === 'Response Time') {
           processedData.push(...processResponseTime(item))
+        } else {
+          if (item.permintaanresep) {
+            processedData.push(...processKesesuaian(item))
+          }
+          if (item?.permintaanracikan) {
+            processedData.push(...processKesesuaianRacikan(item))
+          }
         }
         processed++
         if (processed % 100 === 0) {
@@ -84,6 +91,63 @@ function createDataResposeTime (item) {
       jenis: adaRacikan?.length > 0 ? 'Racikan' : 'Obat Jadi',
       sistembayar: item.sistembayar?.rs2,
     }
+  }
+}
+
+function processKesesuaian (data) {
+
+  const results = []
+  data.permintaanresep.forEach(item => {
+    const keluar = data?.rincian?.filter(k => k.kdobat === item.kdobat)
+    const depo = data.depo
+    results.push(createDataKesesuaian(item, keluar, data, depo))
+  })
+  return results
+}
+
+function processKesesuaianRacikan (data) {
+  const results = []
+  data.permintaanracikan.forEach(item => {
+    const keluar = data?.rincianracik?.filter(k => k.kdobat === item.kdobat)
+    const depo = data.depo
+
+    // Cek apakah item sudah ada di results
+    const existingIndex = results.findIndex(
+      r => r.kdobat === item.kdobat && r.noresep === data.noresep
+    )
+
+    if (existingIndex >= 0) {
+      // Update existing item
+      const jumKel = keluar?.reduce((acc, curr) => acc + curr.jumlah, 0) || 0
+      results[existingIndex].jumlah_resep += item.jumlah
+      results[existingIndex].jumlah_dilayani += jumKel
+      results[existingIndex].adaRacikan = 'ada racikan'
+    } else {
+      // Add new item
+      results.push({
+        ...createDataKesesuaian(item, keluar, data, depo),
+        adaRacikan: 'ada racikan'
+      })
+    }
+  })
+  return results
+}
+function createDataKesesuaian (item, keluar, data, depo) {
+  // console.log('item', item)
+  return {
+    tgl: data?.tgl_permintaan,
+    nomor: item.noresep,
+    fornas: item?.mobat.status_fornas,
+    generik: item?.mobat.status_generik,
+    forkit: item?.mobat.status_forkid,
+    nama_obat: item?.mobat.nama_obat,
+    ruang: data?.poli?.nama ?? data?.ruanganranap?.nama,
+    poli: data?.poli ?? null,
+    ranap: data?.ruanganranap ?? null,
+    dokter: data?.ketdokter?.nama,
+    depo: depo,
+    jumlah_resep: item.jumlah,
+    jumlah_dilayani: keluar?.reduce((acc, curr) => acc + curr.jumlah, 0) || 0,
   }
 }
 function processResep (data) {
