@@ -99,21 +99,12 @@
         </q-btn>
       </div>
       <div class="q-pa-sm">
-        <!-- <download-excel
-          class="btn"
-          :fields="store.fields"
-          :fetch="store.getDataBukubesar"
-          :before-generate="store.startDownload"
-          :before-finish="store.finishDownload"
-          :name="'Buku Besar ' + store.reqs.tahun +'.xls'"
-        > -->
         <q-btn icon="icon-mat-download" color="green" round size="sm" push :disable="store.loading"
-          :loading="store.loading" @click="store.exportExcel = !store.exportExcel">
+          :loading="store.loading" @click="exportToExcel">
           <q-tooltip class="bg-green" :offset="[10, 10]">
             Export to Excel
           </q-tooltip>
         </q-btn>
-        <!-- </download-excel> -->
       </div>
     </div>
   </div>
@@ -122,11 +113,13 @@
 <script setup>
 import { useQuasar } from 'quasar'
 import { useBukubesarStore } from 'src/stores/siasik/akuntansi/bukubesar/bukubesar'
-// eslint-disable-next-line no-unused-vars
 import { defineAsyncComponent, ref, watchEffect } from 'vue'
 import { api } from 'src/boot/axios'
 const CetakBukubesar = defineAsyncComponent(() => import('../printbukubesar/PrintBukubesar.vue'))
-// eslint-disable-next-line no-unused-vars
+import * as XLSX from 'xlsx'
+import { notifErrVue } from 'src/modules/utils'
+
+
 const $q = useQuasar()
 const store = useBukubesarStore()
 const berdasarrekap = ref('')
@@ -243,38 +236,160 @@ function filterFn(val, update, abort) {
   }
 }
 
-function exportToExcel(tableId, filename) {
-  // const el = document.getElementById(tableId)
-  // const filenames = filename ? filename + '.xls' : 'KartuStokFarmasi.xls'
-  // const columns = store.items
-  // const content = [columns.map(col => wrapCsvValue(col.label))].concat(
-  //   rows.map(row => columns.map(col => wrapCsvValue(
-  //     typeof col.field === 'function'
-  //       ? col.field(row)
-  //       : row[col.field === void 0 ? col.name : col.field],
-  //     col.format,
-  //     row
-  //   )).join(','))
-  // ).join('\r\n')
+function exportToExcel() {
+  if (!store.hasilRinci1.length && !store.hasilRinci2.length && !store.hasilRinci3.length && !store.hasilRinci4.length
+    && !store.hasilRinci5.length && !store.hasilRinci6.length
+  ) {
+    notifErrVue('Tidak ada data untuk diekspor!');
+    return;
+  }
 
-  // const status = exportFile(
-  //   'table-export.csv',
-  //   content,
-  //   'text/csv'
-  // )
-  // console.log('mulai export', el?.parentElement)
-  $q.notify({
-    message: 'Masih dibuatkan ... harap tunggu',
-    color: 'negative',
-    icon: 'icon-mat-warning'
-  })
+  // Siapkan data untuk Excel
+  const data = [];
+
+  // Header tabel
+  const headers = [
+    'TANGGAL',
+    'NO. BUKTI',
+    'URAIAN',
+    'DEBIT (Rp.)',
+    'KREDIT (Rp.)',
+    'SALDO (Rp.)',
+  ];
+  data.push(headers);
+
+  // Fungsi untuk format URAIAN
+  const formatUraian = (item) => {
+    if (!item.keterangan) return item.kegiatan || '';
+    if (!item.kegiatan) return item.keterangan || '';
+    return `${item.keterangan} > ${item.kegiatan}`;
+  };
+
+  // Gabungkan semua hasilRinci
+  const allRinci = [
+    ...store.hasilRinci1,
+    ...store.hasilRinci2,
+    ...store.hasilRinci3,
+    ...store.hasilRinci4,
+    ...store.hasilRinci5,
+    ...store.hasilRinci6,
+  ];
+
+  // Tambahkan data
+  allRinci.forEach((item) => {
+    data.push([
+      item.tanggal,
+      item.notrans,
+      formatUraian(item),
+      item.debit,
+      item.kredit,
+      item.total,
+    ]);
+  });
+
+  // Tambahkan baris total
+  const totalData = total(store);
+  data.push([
+    '',
+    '',
+    'JUMLAH',
+    totalData.jmldebit,
+    totalData.jmlkredit,
+    totalData.jumlah,
+  ]);
+
+
+  // Buat workbook dan worksheet
+  const worksheet = XLSX.utils.aoa_to_sheet(data);
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'Buku Besar');
+
+  // Atur lebar kolom (opsional)
+  const colWidths = data[0].map((_, colIndex) => {
+    return Math.max(
+      ...data.map((row) => (row[colIndex] ? row[colIndex].toString().length : 0)),
+      10
+    );
+  });
+  worksheet['!cols'] = colWidths.map((width) => ({ wch: width }));
+
+  // Download file Excel
+  XLSX.writeFile(workbook, `Buku_Besar_${new Date().toISOString().slice(0, 10)}.xlsx`);
 }
 
-watchEffect(() => {
-  if (store.exportExcel) {
-    // console.log('store.exportExcel', store.exportExcel)
-    exportToExcel('tableItem', 'KartuStokFarmasi')
-  }
-})
 
+function total(store) {
+  if (store.hasilRinci1.length > 0) {
+    const debit = store.hasilRinci1.map((x) => x.debit);
+    const jmldebit = debit.reduce((a, b) => a + b, 0);
+    const kredit = store.hasilRinci1.map((x) => x.kredit);
+    const jmlkredit = kredit.reduce((a, b) => a + b, 0);
+    const jumlah = jmldebit - jmlkredit;
+    return {
+      jmldebit,
+      jmlkredit,
+      jumlah,
+    };
+  } else if (store.hasilRinci2.length > 0) {
+    const debit = store.hasilRinci2.map((x) => x.debit);
+    const jmldebit = debit.reduce((a, b) => a + b, 0);
+    const kredit = store.hasilRinci2.map((x) => x.kredit);
+    const jmlkredit = kredit.reduce((a, b) => a + b, 0);
+    const jumlah = jmldebit - jmlkredit;
+    return {
+      jmldebit,
+      jmlkredit,
+      jumlah,
+    };
+  } else if (store.hasilRinci3.length > 0) {
+    const debit = store.hasilRinci3.map((x) => x.debit);
+    const jmldebit = debit.reduce((a, b) => a + b, 0);
+    const kredit = store.hasilRinci3.map((x) => x.kredit);
+    const jmlkredit = kredit.reduce((a, b) => a + b, 0);
+    const jumlah = jmldebit - jmlkredit;
+    return {
+      jmldebit,
+      jmlkredit,
+      jumlah,
+    };
+  } else if (store.hasilRinci4.length > 0) {
+    const debit = store.hasilRinci4.map((x) => x.debit);
+    const jmldebit = debit.reduce((a, b) => a + b, 0);
+    const kredit = store.hasilRinci4.map((x) => x.kredit);
+    const jmlkredit = kredit.reduce((a, b) => a + b, 0);
+    const jumlah = jmldebit - jmlkredit;
+    return {
+      jmldebit,
+      jmlkredit,
+      jumlah,
+    };
+  } else if (store.hasilRinci5.length > 0) {
+    const debit = store.hasilRinci5.map((x) => x.debit);
+    const jmldebit = debit.reduce((a, b) => a + b, 0);
+    const kredit = store.hasilRinci5.map((x) => x.kredit);
+    const jmlkredit = kredit.reduce((a, b) => a + b, 0);
+    const jumlah = jmldebit - jmlkredit;
+    return {
+      jmldebit,
+      jmlkredit,
+      jumlah,
+    };
+  } else if (store.hasilRinci6.length > 0) {
+    const debit = store.hasilRinci6.map((x) => x.debit);
+    const jmldebit = debit.reduce((a, b) => a + b, 0);
+    const kredit = store.hasilRinci6.map((x) => x.kredit);
+    const jmlkredit = kredit.reduce((a, b) => a + b, 0);
+    const jumlah = jmldebit - jmlkredit;
+    return {
+      jmldebit,
+      jmlkredit,
+      jumlah,
+    };
+  }
+  return {
+    jmldebit: 0,
+    jmlkredit: 0,
+    jumlah: 0,
+  };
+}
 </script>

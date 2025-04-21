@@ -53,21 +53,12 @@
       </q-btn>
     </div>
     <div class="q-pa-sm">
-      <!-- <download-excel
-      class="btn"
-      :fields="store.fields"
-      :fetch="store.getDataBukubesar"
-      :before-generate="store.startDownload"
-      :before-finish="store.finishDownload"
-      :name="'Buku Besar ' + store.reqs.tahun +'.xls'"
-    > -->
       <q-btn icon="icon-mat-download" color="green" round size="sm" push :disable="store.loading"
-        :loading="store.loading" @click="store.exportExcel = !store.exportExcel">
+        :loading="store.loading" @click="exportToExcel">
         <q-tooltip class="bg-green" :offset="[10, 10]">
           Export to Excel
         </q-tooltip>
       </q-btn>
-      <!-- </download-excel> -->
     </div>
   </div>
   <cetak-lra v-model="store.dialogCetak" :printlra="printlra" />
@@ -76,7 +67,9 @@
 import { useQuasar } from 'quasar'
 import { notifErrVue } from 'src/modules/utils'
 import { useLRAjurnalStore } from 'src/stores/siasik/laporan/lra/lrajurnal.'
-import { ref, defineAsyncComponent, watchEffect } from 'vue'
+import { ref, defineAsyncComponent } from 'vue'
+import * as XLSX from 'xlsx'
+
 
 const CetakLra = defineAsyncComponent(() => import('../printLRA/PrintDataLra.vue'))
 const store = useLRAjurnalStore()
@@ -111,51 +104,228 @@ function cetakData() {
   store.dialogCetak = true
 }
 
-// const jenisData = (val) => {
-//   console.log('jenisData', val)
-//   if (val === '1') {
-//     return store.kodeakun
-//   }
-//   else if (val === '2') {
-//     console.log('kode2', store.kodekelompok)
-//     return store.kodekelompok
-//   }
-//   else if (val === '3') {
-//     console.log('kode3', store.kodejenis)
-//     return store.kodejenis
-//   }
-// }
-function exportToExcel(tableId, filename) {
-  // const el = document.getElementById(tableId)
-  // const filenames = filename ? filename + '.xls' : 'KartuStokFarmasi.xls'
-  // const columns = store.items
-  // const content = [columns.map(col => wrapCsvValue(col.label))].concat(
-  //   rows.map(row => columns.map(col => wrapCsvValue(
-  //     typeof col.field === 'function'
-  //       ? col.field(row)
-  //       : row[col.field === void 0 ? col.name : col.field],
-  //     col.format,
-  //     row
-  //   )).join(','))
-  // ).join('\r\n')
+function exportToExcel() {
+  if (!store.hasilpendapatan.length && !store.hasilbelanja.length && !store.hasilsilpa.length) {
+    notifErrVue('Tidak ada data untuk diekspor!');
+    return;
+  }
 
-  // const status = exportFile(
-  //   'table-export.csv',
-  //   content,
-  //   'text/csv'
-  // )
-  // console.log('mulai export', el?.parentElement)
-  $q.notify({
-    message: 'Masih dibuatkan ... harap tunggu',
-    color: 'negative',
-    icon: 'icon-mat-warning'
-  })
+  // Siapkan data untuk Excel
+  const data = [];
+
+  // Header tabel
+  const headers = [
+    'KODE REKENING',
+    'URAIAN',
+    'PAGU (Rp.)',
+    'REALISASI SEBELUMNYA (Rp.)',
+    'REALISASI SAAT INI (Rp.)',
+    'REALISASI SELURUHNYA (Rp.)',
+    'SISA ANGGARAN (Rp.)',
+    'PERSENTASE (%)',
+  ];
+  data.push(headers);
+
+  // Data Pendapatan
+  store.hasilpendapatan.forEach((item) => {
+    data.push([
+      item.kode,
+      item.uraian,
+      item.pagupend,
+      item.nilaisblm,
+      item.nilaiskg,
+      item.nilaisemua,
+      item.selisih,
+      item.persen,
+    ]);
+  });
+
+  // Total Pendapatan
+  data.push([
+    '',
+    'JUMLAH PENDAPATAN DAERAH',
+    totalPendapatan().totalpend,
+    totalPendapatan().totalsblm,
+    totalPendapatan().totalskg,
+    totalPendapatan().totalsemua,
+    totalPendapatan().totalselisih,
+    totalPendapatan().totalpersen,
+  ]);
+
+  // Data Belanja
+  store.hasilbelanja.forEach((item) => {
+    data.push([
+      item.kode,
+      item.uraian,
+      item.pagu,
+      item.nilaisblm,
+      item.nilaiskg,
+      item.nilaisemua,
+      item.selisih,
+      item.persen,
+    ]);
+  });
+
+  // Total Belanja
+  data.push([
+    '',
+    'JUMLAH BELANJA DAERAH',
+    totalBelanja().totalpagu,
+    totalBelanja().totalsblm,
+    totalBelanja().totalskg,
+    totalBelanja().totalsemua,
+    totalBelanja().totalselisih,
+    totalBelanja().totalpersen,
+  ]);
+
+  // Surplus/Defisit
+  data.push([
+    '',
+    'SURPLUS / DEFISIT LRA',
+    surplusDefisit().totalpagu,
+    surplusDefisit().totalsblm,
+    surplusDefisit().totalskg,
+    surplusDefisit().totalsemua,
+    surplusDefisit().totalselisih,
+    surplusDefisit().totalpersen,
+  ]);
+
+  // Data Silpa
+  store.hasilsilpa.forEach((item) => {
+    data.push([
+      item.kode,
+      item.uraian,
+      item.pagu,
+      item.nilaisblm,
+      item.nilaiskg,
+      item.nilaisemua,
+      item.selisih,
+      item.persen,
+    ]);
+  });
+
+  // Total Silpa
+  data.push([
+    '',
+    'TOTAL PEMBIAYAAN (NETTO)',
+    totalSilpa().totalpagu,
+    totalSilpa().totalsblm,
+    totalSilpa().totalskg,
+    totalSilpa().totalsemua,
+    totalSilpa().totalselisih,
+    totalSilpa().totalpersen,
+  ]);
+
+  // Sisa Lebih
+  data.push([
+    '',
+    'SISA LEBIH PEMBIAYAAN ANGGARAN (SILPA)',
+    sisaLebih().totalpagu,
+    sisaLebih().totalsblm,
+    sisaLebih().totalskg,
+    sisaLebih().totalsemua,
+    sisaLebih().totalselisih,
+    sisaLebih().totalpersen,
+  ]);
+
+  // Buat workbook dan worksheet
+  const worksheet = XLSX.utils.aoa_to_sheet(data);
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'LRA');
+
+  // Atur lebar kolom (opsional)
+  const colWidths = data[0].map((_, colIndex) => {
+    return Math.max(
+      ...data.map((row) => (row[colIndex] ? row[colIndex].toString().length : 0)),
+      10
+    );
+  });
+  worksheet['!cols'] = colWidths.map((width) => ({ wch: width }));
+
+  // Download file Excel
+  XLSX.writeFile(workbook, `LRA_Report_${new Date().toISOString().slice(0, 10)}.xlsx`);
 }
 
-watchEffect(() => {
-  if (store.exportExcel) {
-    // console.log('store.exportExcel', store.exportExcel)
-    exportToExcel('tableItem', 'KartuStokFarmasi')
+
+function totalPendapatan() {
+  const totalpend = store.hasilpendapatan.map((x) => x.pagupend)[0]
+  const totalsblm = store.hasilpendapatan.map((x) => x.nilaisblm)[0]
+  const totalskg = store.hasilpendapatan.map((x) => x.nilaiskg)[0]
+  const totalsemua = store.hasilpendapatan.map((x) => x.nilaisemua)[0]
+  const totalselisih = store.hasilpendapatan.map((x) => x.selisih)[0]
+  const totalpersen = store.hasilpendapatan.map((x) => x.persen)[0]
+  return {
+    totalpend,
+    totalsblm,
+    totalskg,
+    totalsemua,
+    totalselisih,
+    totalpersen
   }
-})
+}
+function totalBelanja() {
+  const totalpagu = store.hasilbelanja.map((x) => x.pagu)[0]
+  const totalsblm = store.hasilbelanja.map((x) => x.nilaisblm)[0]
+  const totalskg = store.hasilbelanja.map((x) => x.nilaiskg)[0]
+  const totalsemua = store.hasilbelanja.map((x) => x.nilaisemua)[0]
+  const totalselisih = store.hasilbelanja.map((x) => x.selisih)[0]
+  const totalpersen = store.hasilbelanja.map((x) => x.persen)[0]
+  return {
+    totalpagu,
+    totalsblm,
+    totalskg,
+    totalsemua,
+    totalselisih,
+    totalpersen
+  }
+}
+function totalSilpa() {
+  const totalpagu = store.hasilsilpa.map((x) => x.pagu)[0]
+  const totalsblm = store.hasilsilpa.map((x) => x.nilaisblm)[0]
+  const totalskg = store.hasilsilpa.map((x) => x.nilaiskg)[0]
+  const totalsemua = store.hasilsilpa.map((x) => x.nilaisemua)[0]
+  const totalselisih = store.hasilsilpa.map((x) => x.selisih)[0]
+  const totalpersen = store.hasilsilpa.map((x) => x.persen)[0]
+  return {
+    totalpagu,
+    totalsblm,
+    totalskg,
+    totalsemua,
+    totalselisih,
+    totalpersen
+  }
+}
+function surplusDefisit() {
+  const totalpagu = store.hasilpendapatan.map((x) => x.pagupend)[0] - store.hasilbelanja.map((x) => x.pagu)[0]
+  const totalsblm = store.hasilpendapatan.map((x) => x.nilaisblm)[0] - store.hasilbelanja.map((x) => x.nilaisblm)[0]
+  const totalskg = store.hasilpendapatan.map((x) => x.nilaiskg)[0] - store.hasilbelanja.map((x) => x.nilaiskg)[0]
+  const totalsemua = store.hasilpendapatan.map((x) => x.nilaisemua)[0] - store.hasilbelanja.map((x) => x.nilaisemua)[0]
+  const totalselisih = store.hasilpendapatan.map((x) => x.selisih)[0] - store.hasilbelanja.map((x) => x.selisih)[0]
+  const totalpersen = store.hasilpendapatan.map((x) => x.persen)[0] - store.hasilbelanja.map((x) => x.persen)[0]
+  return {
+    totalpagu,
+    totalsblm,
+    totalskg,
+    totalsemua,
+    totalselisih,
+    totalpersen
+  }
+}
+function sisaLebih() {
+  const totalpagu = (store.hasilpendapatan.map((x) => x.pagupend)[0] - store.hasilbelanja.map((x) => x.pagu)[0]) + store.hasilsilpa.map((x) => x.pagu)[0]
+  const totalsblm = (store.hasilpendapatan.map((x) => x.nilaisblm)[0] - store.hasilbelanja.map((x) => x.nilaisblm)[0]) + store.hasilsilpa.map((x) => x.nilaisblm)[0]
+  const totalskg = (store.hasilpendapatan.map((x) => x.nilaiskg)[0] - store.hasilbelanja.map((x) => x.nilaiskg)[0]) + store.hasilsilpa.map((x) => x.nilaiskg)[0]
+  const totalsemua = (store.hasilpendapatan.map((x) => x.nilaisemua)[0] - store.hasilbelanja.map((x) => x.nilaisemua)[0]) + store.hasilsilpa.map((x) => x.nilaisemua)[0]
+  const totalselisih = (store.hasilpendapatan.map((x) => x.selisih)[0] - store.hasilbelanja.map((x) => x.selisih)[0]) + store.hasilsilpa.map((x) => x.selisih)[0]
+  const totalpersen = (store.hasilpendapatan.map((x) => parseFloat(x.persen))[0] - store.hasilbelanja.map((x) => parseFloat(x.persen))[0]) + store.hasilsilpa.map((x) => parseFloat(x.persen))[0]
+  return {
+    totalpagu,
+    totalsblm,
+    totalskg,
+    totalsemua,
+    totalselisih,
+    totalpersen
+  }
+}
+
 </script>
