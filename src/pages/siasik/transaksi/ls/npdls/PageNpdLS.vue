@@ -60,9 +60,8 @@ function reset() {
       <PageHead v-if="!style.componentfull" :title="title" :subtitle="subtitle" :path="page.path"
         @togle-draw="togleDraw()" />
     </div>
-    <q-card flat class="col full-width full-height bg-grey-6"
-      :style="`max-height: ${!style.componentfull ? h - 60 : h + 40}px; overflow:hidden`">
-      <q-scroll-area :style="`height: ${!style.componentfull ? h - 95 : h + 40}px; max-width: 100%;`"
+    <q-card flat class="col full-width full-height bg-grey-3" :style="`max-height: 100%; overflow:hidden`">
+      <q-scroll-area :style="`height: ${!style.componentfull ? h - 0 : h + 20}px; max-width: 100%;`"
         :thumb-style="thumbStyle" :bar-style="barStyle">
         <router-view v-slot="{ Component, route }">
           <transition :name="route.meta.transition || 'fade'">

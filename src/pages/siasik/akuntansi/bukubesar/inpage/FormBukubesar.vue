@@ -47,7 +47,6 @@
           const arrBaru = store.alllevel?.filter(x => x?.kodeall3?.length === parseInt(val))
           store.optionrekening = arrBaru
           store.form.kode = ''
-          console.log('arrBaru', store.optionrekening)
         }" />
       <app-autocomplete v-model="berdasarrinci" label="Pilih Jenis Akun" autocomplete="nama" option-value="value"
         option-label="nama" outlined :disable="store.loading || !store.alllevel.length"
@@ -57,7 +56,6 @@
           const arrBaru = store.alllevel?.filter(x => x?.kodeall3?.length === parseInt(val))
           store.optionrekening = arrBaru
           store.form.kode = ''
-          console.log('arrBaru', store.optionrekening)
         }" />
     </div>
     <div class="q-pa-sm" style="width:50%">
@@ -126,7 +124,7 @@ import { useQuasar } from 'quasar'
 import { useBukubesarStore } from 'src/stores/siasik/akuntansi/bukubesar/bukubesar'
 // eslint-disable-next-line no-unused-vars
 import { defineAsyncComponent, ref, watchEffect } from 'vue'
-
+import { api } from 'src/boot/axios'
 const CetakBukubesar = defineAsyncComponent(() => import('../printbukubesar/PrintBukubesar.vue'))
 // eslint-disable-next-line no-unused-vars
 const $q = useQuasar()
@@ -169,55 +167,82 @@ function cetakData() {
   store.dialogCetak = true
 }
 
+// function filterFn(val, update, abort) {
+
+// update(() => {
+//   if (val === '') {
+//     options.value = store.optionrekening;
+//   } else {
+//     const needle = val.toLowerCase();
+//     const filter = ['kodeall3', 'uraian'];
+
+//     // Selalu filter dari data asal (store.rekening50), bukan dari options yang sudah difilter
+//     const multiFilter = (data = [], filterKeys = [], value = '') =>
+//       data.filter((item) => filterKeys.some(
+//         (key) =>
+//           item[key].toString().toLowerCase().includes(value.toLowerCase()) &&
+//           item[key]
+//       ));
+
+//     options.value = multiFilter(store.optionrekening, filter, needle);
+//   }
+// });
+// }
+
 function filterFn(val, update, abort) {
-
-  update(() => {
-    if (val === '') {
+  // Jika string pencarian kosong, tampilkan semua data yang ada
+  if (val === '') {
+    update(() => {
       options.value = store.optionrekening;
-    } else {
-      const needle = val.toLowerCase();
-      const filter = ['kodeall3', 'uraian'];
+    });
+    return;
+  }
 
-      // Selalu filter dari data asal (store.rekening50), bukan dari options yang sudah difilter
-      const multiFilter = (data = [], filterKeys = [], value = '') =>
-        data.filter((item) => filterKeys.some(
-          (key) =>
-            item[key].toString().toLowerCase().includes(value.toLowerCase()) &&
-            item[key]
-        ));
+  // Coba filter dari data lokal terlebih dahulu
+  const needle = val.toLowerCase();
+  const localResults = store.optionrekening.filter(
+    (v) => v.uraian.toLowerCase().includes(needle) || v.kodeall3.toLowerCase().includes(needle)
+  );
 
-      options.value = multiFilter(store.optionrekening, filter, needle);
-    }
-  });
+  // Jika ditemukan hasil dari filter lokal, gunakan itu
+  if (localResults.length > 0) {
+    update(() => {
+      options.value = localResults;
+    });
+    return;
+  }
 
-  // if (val === '') {
-  //   update(() => {
-  //     options.value = store.optionrekening
-  //     // console.log('opti', options.value)
-  //   })
-  //   return
-  // }
-  // update(() => {
-  //   const needle = val.toLowerCase()
-  //   const arr = options.value
-
-  //   const filter = ['kodeall3', 'uraian']
-
-  //   const multiFilter = (data = [], filterKeys = [], value = '') =>
-  //     data.filter((item) => filterKeys.some(
-  //       (key) =>
-  //         item[key].toString().toLowerCase().includes(value.toLowerCase()) &&
-  //         item[key]
-  //     )
-  //     )
-  //   const filteredData = multiFilter(arr, filter, needle)
-  //   console.log('filterdata', filteredData)
-  //   options.value = filteredData
-  //   // options.value = store.optionrekening.filter(
-  //   //   (v) => v.uraian.toLowerCase().indexOf(needle) > -1 || v.kodeall3.toLowerCase().indexOf(needle) > -1
-  //   // )
-  // })
+  // Jika tidak ditemukan hasil lokal dan pencarian cukup spesifik, cari ke server
+  if (val.length >= 2) {
+    // Gunakan axios langsung untuk menghindari konflik dengan state di store
+    api.get('v1/akuntansi/bukubesar/akun', {
+      params: {
+        q: val,
+        per_page: 100,
+        page: 1
+      }
+    })
+      .then((resp) => {
+        if (resp.status === 200) {
+          update(() => {
+            options.value = resp.data.data || [];
+          });
+        }
+      })
+      .catch((error) => {
+        console.error('Error saat melakukan pencarian:', error);
+        update(() => {
+          options.value = localResults; // Fallback ke hasil lokal
+        });
+      });
+  } else {
+    // Pencarian terlalu pendek untuk dikirim ke server
+    update(() => {
+      options.value = localResults;
+    });
+  }
 }
+
 function exportToExcel(tableId, filename) {
   // const el = document.getElementById(tableId)
   // const filenames = filename ? filename + '.xls' : 'KartuStokFarmasi.xls'
