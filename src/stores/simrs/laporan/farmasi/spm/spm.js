@@ -16,8 +16,8 @@ export const useLaporanSpmFarmasiStore = defineStore('laporan_spm_farmasi', {
       q: '',
       per_page: 10,
       page: 1,
-      bulan: '03', // buat percobaan
-      // bulan: date.formatDate(Date.now(), 'MM'), // aslinya
+      // bulan: '03', // buat percobaan
+      bulan: date.formatDate(Date.now(), 'MM'), // aslinya
       tahun: date.formatDate(Date.now(), 'YYYY'),
       kelompok: null,
       depo: ['Gd-04010102', 'Gd-05010101', 'Gd-02010104'],
@@ -165,8 +165,8 @@ export const useLaporanSpmFarmasiStore = defineStore('laporan_spm_farmasi', {
             // Simpan data mentah ke reseps
             // this.reseps.push(...resp.data.data)
 
-            totalPages = Math.min(resp.data?.meta?.last_page || totalPages)
-            // totalPages = 10
+            // totalPages = Math.min(resp.data?.meta?.last_page || totalPages)
+            totalPages = 10
             this.meta = resp.data?.meta
 
             const chunks = this.chunkArray(resp.data?.data, 100)
@@ -303,34 +303,35 @@ export const useLaporanSpmFarmasiStore = defineStore('laporan_spm_farmasi', {
       })
     },
     filterAndSetItems () {
-      if (this.params.generik === 'Semua' && this.params.formularium === 'Semua') {
-        this.items = [...this.rawItems]
-      } else {
-        const items = [...this.rawItems]
-        this.items = items.filter(item => {
-          if (this.params.generik === 'Generik') {
-            return item.status_generik == '1'
-          } else if (this.params.generik === 'Non Generik') {
-            return item.status_generik != '1'
-          } else {
-            return item
-          }
-        }).filter(item => {
-          if (this.params.formularium === 'Fornas') {
-            return item.status_fornas == '1'
-          } else if (this.params.formularium === 'Forkit') {
-            return item.status_forkit == '1' && item.status_fornas != '1'
-          } else {
-            return item
-          }
-        }).filter(item => {
-          if (this.params.kelompok == '') return item
-          else return item.perbekalan == this.params.kelompok
-        })
+      if (this.tipe === 'Rinci') {
+        if (this.params.generik === 'Semua' && this.params.formularium === 'Semua') {
+          this.items = [...this.rawItems]
+        } else {
+          const items = [...this.rawItems]
+          this.items = items.filter(item => {
+            if (this.params.generik === 'Generik') {
+              return item.status_generik == '1'
+            } else if (this.params.generik === 'Non Generik') {
+              return item.status_generik != '1'
+            } else {
+              return item
+            }
+          }).filter(item => {
+            if (this.params.formularium === 'Fornas') {
+              return item.status_fornas == '1'
+            } else if (this.params.formularium === 'Forkit') {
+              return item.status_forkit == '1' && item.status_fornas != '1'
+            } else {
+              return item
+            }
+          }).filter(item => {
+            if (this.params.kelompok == '') return item
+            else return item.perbekalan == this.params.kelompok
+          })
+        }
       }
-      if (this.tipe === 'Rekap') {
-        this.setRekapGenerik()
-      }
+      else this.setRekapGenerik()
+
     },
 
     // Helper function untuk memproses data dalam chunks
@@ -358,7 +359,7 @@ export const useLaporanSpmFarmasiStore = defineStore('laporan_spm_farmasi', {
           permintaan = tempPer
           dilayani = tempLay
         }
-        // console.log('permintaan', permintaan)
+        console.log('permintaan', this.params.kelompok != '')
 
         const item = {
           tgl: tangg,
@@ -380,7 +381,7 @@ export const useLaporanSpmFarmasiStore = defineStore('laporan_spm_farmasi', {
         }
         this.items.push(item)
       })
-      console.log('items', this.items)
+      // console.log('items', this.items)
       // console.log('rawDates', rawDates, uniqueDates, this.reseps)
 
     },

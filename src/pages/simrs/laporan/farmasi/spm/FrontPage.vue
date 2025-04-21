@@ -496,8 +496,7 @@ function setFormularium (val) {
 
 function setTipe (val) {
   if (store.jenisLaporan == 'Generik') {
-    if (val === 'Rinci') setFormularium()
-    if (val === 'Rekap') store.setRekapGenerik()
+    store.filterAndSetItems()
   } else if (store.jenisLaporan == 'Response Time') store.filterAndSetItemRespons()
   else store.filterAndSetItemKesesuaian()
   setTimeout(() => {
