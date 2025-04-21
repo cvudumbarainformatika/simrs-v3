@@ -112,7 +112,7 @@ export const useLaporanSpmFarmasiStore = defineStore('laporan_spm_farmasi', {
         const worker = new Worker('/js/dataProcessor.js')
 
         worker.onmessage = (e) => {
-          console.log('e', e?.data)
+          // console.log('e', e?.data)
 
           // const { type, processedData, progress, uprocessedData } = e.data
           if (e.data?.type === 'progress') {
@@ -165,8 +165,8 @@ export const useLaporanSpmFarmasiStore = defineStore('laporan_spm_farmasi', {
             // Simpan data mentah ke reseps
             // this.reseps.push(...resp.data.data)
 
-            // totalPages = Math.min(resp.data?.meta?.last_page || totalPages)
-            totalPages = 10
+            totalPages = Math.min(resp.data?.meta?.last_page || totalPages)
+            // totalPages = 10
             this.meta = resp.data?.meta
 
             const chunks = this.chunkArray(resp.data?.data, 100)
@@ -353,13 +353,13 @@ export const useLaporanSpmFarmasiStore = defineStore('laporan_spm_farmasi', {
         const uniqueNoreseps = [...new Set(resepnya)]
         let permintaan = this.rawItems.filter(item => (tangg === date.formatDate(item.tgl, 'YYYY-MM-DD') && item.jumlah_resep > 0))
         let dilayani = this.rawItems.filter(item => (tangg === date.formatDate(item.tgl, 'YYYY-MM-DD') && item.jumlah_dilayani > 0))
-        if (this.params.kelompok != '') {
+        if (!!this.params.kelompok) {
           const tempPer = permintaan.filter(item => item.perbekalan == this.params.kelompok)
           const tempLay = dilayani.filter(item => item.perbekalan == this.params.kelompok)
           permintaan = tempPer
           dilayani = tempLay
         }
-        console.log('permintaan', this.params.kelompok != '')
+        // console.log('permintaan', this.params.kelompok, !!this.params.kelompok)
 
         const item = {
           tgl: tangg,
