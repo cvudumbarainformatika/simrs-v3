@@ -203,28 +203,7 @@ function tidakdatangs(val) {
 
 function subscribedChannel() {
   if (kdDisplay.value) {
-    // ok persiiip
-    // const channel = laravelEcho.join('presence.chat.display' + kdDisplay.value)
-    // socket.value = channel
-    // channel.here((users) => {
-    //   usersOnline.value = [...users]
-    //   console.log(`subscribed display${kdDisplay.value} channel`)
-    // })
-    //   .joining((user) => {
-    //     // console.log({ user }, 'joined')
-    //     usersOnline.value.push(user)
-    //   })
-    //   .leaving((user) => {
-    //     // console.log({ user }, 'leaving')
-    //     usersOnline.value = usersOnline.value.filter(x => x.id !== user.id)
-    //     // console.log('usersOnline', usersOnline.value)
-    //   })
-    //   .listen('.chat-message', (e) => {
-    //     console.log('listen', e)
-    //   // const thumb = [...chatMessages.value]
-    //   // if (e.message !== null || e.message !== '') { thumb.push(e.message) }
-    //   // chatMessages.value = thumb
-    //   })
+
     const channel = laravelEcho.private('private.notif.display' + kdDisplay.value)
     channel.subscribed(() => {
       console.log(`subscribed private.notif.display${kdDisplay.value} channel !!!`)
