@@ -7,6 +7,7 @@ export const formKontrakPekerjaan = defineStore('form_KontrakPekerjaan', {
   state: () => ({
     loading: false,
     disabled: false,
+    isEdit: false,
     params: {
       q: '',
       tahun: date.formatDate(Date.now(), 'YYYY'),
@@ -44,54 +45,68 @@ export const formKontrakPekerjaan = defineStore('form_KontrakPekerjaan', {
     ptks: []
   }),
   actions: {
-    resetFORM() {
+
+    setEditData(data) {
+      this.isEdit = true
+      this.form = {
+        ...this.form, // Pertahankan default untuk field yang tidak ada di data
+        ...data,
+        kodekegiatanblud: data.kodekegiatanblud || data.kodekegiatan, // Pastikan kodekegiatanblud diambil
+        kegiatanblud: data.kegiatanblud || data.kegiatan // Pastikan kegiatanblud diambil
+      }
+      this.params.tgl = data.tgltrans
+      this.params.nip = data.kodepptk
+      this.params.kodebidang = data.kodeBagian
+    },
+    resetForm() {
+      // const currentDate = date.formatDate(Date.now(), 'YYYY-MM-DD')
+      // this.form = {
+      //   nokontrak: null,
+      //   nokontrakx: null,
+      //   tgltrans: currentDate,
+      //   tglmulaikontrak: currentDate,
+      //   tglakhirkontrak: currentDate,
+      //   kodeperusahaan: null,
+      //   namaperusahaan: null,
+      //   kodemapingrs: null,
+      //   namasuplier: null,
+      //   kodepptk: null,
+      //   namapptk: null,
+      //   kodeBagian: null,
+      //   kodekegiatanblud: null,
+      //   kegiatanblud: null,
+      //   nilaikontrak: 0,
+      //   termin: 1
+      // }
+      // this.params = {
+      //   q: '',
+      //   tahun: date.formatDate(Date.now(), 'YYYY'),
+      //   tgl: currentDate,
+      //   bidang: '',
+      //   kegiatan: '',
+      //   nip: null,
+      //   kodebidang: null
+      // }
+      // this.isEdit = false
+
       const forms = Object.keys(this.form)
       for (let i = 0; i < forms.length; i++) {
         const el = forms[i]
         this.setForm(el, null)
       }
+      const keys = Object.keys(this.params)
+      for (let i = 0; i < keys.length; i++) {
+        const el = keys[i]
+        this.setParams(el, null)
+      }
     },
-    // newData () {
-    //   this.resetFORM()
-    //   this.edited = false
-    // },
-    // editData (val) {
-    //   this.edited = true
-    //   const keys = Object.keys(val)
-    //   keys.forEach((key, index) => {
-    //     this.setForm(key, val[key])
-    //   })
-    // },
-    // setAmbils (key, val) {
-    //   this.reqs[key] = val
-    // },
-    setParams(key, val) {
-      this.reqs[key] = val
-    },
-    setForm(key, val) {
-      this.form[key] = val
-      this.form.termin = 1
-      this.form.nilaikontrak = 0
-      // console.log('form', this.form)
-    },
-    emptyForm() {
-      this.form.nokontrak = ''
-      this.form.tgltrans = ''
-      this.form.tglmulaikontrak = ''
-      this.form.tglakhirkontrak = ''
-      this.form.kodeperusahaan = ''
-      this.form.namaperusahaan = ''
-      this.form.kodemapingrs = ''
-      this.form.namasuplier = ''
-      this.form.kodepptk = ''
-      this.form.namapptk = ''
-      this.form.kodeBagian = ''
-      this.form.kodekegiatanblud = ''
-      this.form.kegiatanblud = ''
-      this.form.nilaikontrak = 0
-      this.form.nokontrakx = ''
-      this.form.termin = 1
 
+    setForm(key, value) {
+      this.form[key] = value
+    },
+
+    setParams(key, value) {
+      this.params[key] = value
     },
     getDataBidang() {
       this.loading = true
@@ -131,7 +146,6 @@ export const formKontrakPekerjaan = defineStore('form_KontrakPekerjaan', {
         return acc
       }, [])
       this.ptks = ptk
-      // console.log('pptk', this.ptks)
     },
     filterKegiatan() {
       const data = this.bidangdanptk?.length
@@ -140,13 +154,11 @@ export const formKontrakPekerjaan = defineStore('form_KontrakPekerjaan', {
         )
         : []
       this.kegiatans = data
-      // console.log('ddd', this.kegiatans)
     },
     getPihaktiga() {
       this.loading = true
       return new Promise((resolve) => {
         api.get('v1/transaksi/belanja_ls/perusahaan').then((resp) => {
-          // console.log('pihaktiga', resp)
           if (resp.status === 200) {
             this.loading = false
             this.pihaktigas = resp.data
@@ -164,12 +176,11 @@ export const formKontrakPekerjaan = defineStore('form_KontrakPekerjaan', {
       return new Promise((resolve, reject) => {
         api.post('/v1/transaksi/kontrak/simpankontrak', this.form)
           .then((resp) => {
-            console.log('isian', resp)
+            console.log('isian', resp.data)
             this.form.nokontrak = resp.data?.result?.nokontrak
-            // console.log('nokontrak', this.form.nokontrak)
             this.loading = false
             notifSuccess(resp)
-
+            this.isEdit = false
             resolve(resp.data)
           })
           .catch((err) => {
