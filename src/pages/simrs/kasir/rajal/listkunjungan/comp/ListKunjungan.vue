@@ -55,8 +55,7 @@
       <app-fullscreen-blue v-model="billOpen" @close="store.notas = {}">
         <template #default>
           <!-- <BillingPage :pasien="pasien" @print="openPrint($event)" @rekap="openFaktur" @nota="getNota" /> -->
-          <FormPembayaran :pasien="pasien" :billing="store.rekapBill" />
-          {{ store.rekapBill }}
+          <FormPembayaran :pasien="pasien" :billing="store.rekapBill" :kwitansi="store.kwitansi" />
         </template>
       </app-fullscreen-blue>
       <!-- print nota -->
@@ -85,8 +84,8 @@ const store = useKasirRajalListKunjunganStore()
 function openBill(row) {
   store.getparams.noreg = row?.noreg
   pasien.value = row
-  store.getBill()
   billOpen.value = !billOpen.value
+  store.getBill()
 }
 function openPrint(val) {
   console.log('print', val)

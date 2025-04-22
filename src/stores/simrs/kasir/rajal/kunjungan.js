@@ -5,6 +5,7 @@ import { dateDbFormat } from 'src/modules/formatter'
 export const useKasirRajalListKunjunganStore = defineStore('kasir_rajal_list_kunjungan_umum', {
   state: () => ({
     items: [],
+    kwitansi: {},
     meta: null,
     params: {
       q: '',
@@ -60,7 +61,6 @@ export const useKasirRajalListKunjunganStore = defineStore('kasir_rajal_list_kun
       const params = { params: this.params }
       const resp = await api.get('/v1/simrs/kasir/rajal/kunjunganpoli', params)
       if (resp.status === 200) {
-        console.log('kunjungan', resp)
         this.items = resp.data.data
         this.meta = resp.data
         this.loading = false
@@ -73,6 +73,42 @@ export const useKasirRajalListKunjunganStore = defineStore('kasir_rajal_list_kun
       const resp = await api.get('/v1/simrs/kasir/rajal/billbynoreg', params)
       if (resp.status === 200) {
         this.rekapBill = resp.data
+        const thiskwitansi = resp.data?.heder
+        const hasilglobal = []
+        thiskwitansi?.forEach(x => {
+          const kwitansilog = x?.kwitansilog
+          kwitansilog?.forEach(k => {
+            const hasil = {
+              noreg: k?.noreg,
+              norm: k?.norm,
+              nota: k?.nota,
+              tgl_pembayaran: k?.tglx,
+              batal: k?.batal,
+              total: k?.total,
+              nama: k?.nama,
+              nokwitansi: k?.nokwitansi,
+              i: ''
+            }
+            hasilglobal.push(hasil)
+          })
+          const karcislog = x?.karcislog
+          karcislog?.forEach(k => {
+            const hasilx = {
+              noreg: k?.noreg,
+              norm: k?.norm,
+              nota: null,
+              tgl_pembayaran: k?.tglx,
+              batal: k?.batal,
+              total: k?.total,
+              nama: k?.nama,
+              nokwitansi: k?.nokarcis,
+              i: 'KARCIS'
+            }
+            hasilglobal.push(hasilx)
+          })
+        })
+        this.kwitansi = hasilglobal
+        console.log('kwitansi', this.kwitansi)
       }
       this.loading = false
     },
