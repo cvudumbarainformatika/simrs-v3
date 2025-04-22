@@ -65,7 +65,6 @@ export const usePembayaranKasirRajalStore = defineStore('pembayaran-kasir-rajal-
                 hasilglobal.push(hasil)
               })
               const karcislog = x?.karcislog
-              console.log('karcislog', karcislog)
               karcislog?.forEach(k => {
                 const hasilx = {
                   noreg: k?.noreg,
@@ -78,7 +77,6 @@ export const usePembayaranKasirRajalStore = defineStore('pembayaran-kasir-rajal-
                   nokwitansi: k?.nokarcis,
                   i: 'KARCIS'
                 }
-                console.log('hasilx', hasilx)
                 hasilglobal.push(hasilx)
               })
             })
