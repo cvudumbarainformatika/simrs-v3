@@ -16,6 +16,8 @@
         :source="store.level" @update:model-value="(val) => {
           const aa = parseInt(val)
           store.reqs.levelberapa = aa
+          store.hasilpendapatan = []
+          store.hasilbeban = []
           console.log('lvl', store.reqs.levelberapa)
         }" />
     </div>
@@ -40,21 +42,12 @@
         </q-btn>
       </div>
       <div class="q-pa-sm">
-        <!-- <download-excel
-        class="btn"
-        :fields="store.fields"
-        :fetch="store.getDataBukubesar"
-        :before-generate="store.startDownload"
-        :before-finish="store.finishDownload"
-        :name="'Buku Besar ' + store.reqs.tahun +'.xls'"
-      > -->
         <q-btn icon="icon-mat-download" color="green" round size="sm" push :disable="store.loading"
-          :loading="store.loading" @click="store.exportExcel = !store.exportExcel">
+          :loading="store.loading" @click="exportToExcel">
           <q-tooltip class="bg-green" :offset="[10, 10]">
             Export to Excel
           </q-tooltip>
         </q-btn>
-        <!-- </download-excel> -->
       </div>
     </div>
   </div>
@@ -65,8 +58,8 @@ import { useQuasar } from 'quasar'
 import { notifErrVue } from 'src/modules/utils'
 import { useLaporanOperasionalStore } from 'src/stores/siasik/laporan/laporanoperasional/lapoperasional'
 // eslint-disable-next-line no-unused-vars
-import { defineAsyncComponent, onMounted, ref, watchEffect } from 'vue'
-
+import { defineAsyncComponent, ref } from 'vue'
+import * as XLSX from 'xlsx'
 const CetakLo = defineAsyncComponent(() => import('../printLO/PrintDataLo.vue'))
 const $q = useQuasar()
 const store = useLaporanOperasionalStore()
@@ -102,37 +95,93 @@ const printlo = ref(null)
 function cetakData() {
   store.dialogCetak = true
 }
-function exportToExcel(tableId, filename) {
-  // const el = document.getElementById(tableId)
-  // const filenames = filename ? filename + '.xls' : 'KartuStokFarmasi.xls'
-  // const columns = store.items
-  // const content = [columns.map(col => wrapCsvValue(col.label))].concat(
-  //   rows.map(row => columns.map(col => wrapCsvValue(
-  //     typeof col.field === 'function'
-  //       ? col.field(row)
-  //       : row[col.field === void 0 ? col.name : col.field],
-  //     col.format,
-  //     row
-  //   )).join(','))
-  // ).join('\r\n')
+async function exportToExcel() {
+  if (!store.hasilpendapatan.length && !store.hasilbeban.length) {
+    notifErrVue('Tidak ada data untuk diekspor!');
+    return;
+  }
 
-  // const status = exportFile(
-  //   'table-export.csv',
-  //   content,
-  //   'text/csv'
-  // )
-  // console.log('mulai export', el?.parentElement)
-  $q.notify({
-    message: 'Masih dibuatkan ... harap tunggu',
-    color: 'negative',
-    icon: 'icon-mat-warning'
-  })
+  // Siapkan data untuk Excel
+  const data = [];
+
+  // Header tabel
+  const headers = [
+    'KODE REKENING',
+    'URAIAN',
+    'NILAI (Rp.)',
+  ];
+  data.push(headers);
+
+
+  // Data Pendapatan
+  store.hasilpendapatan.forEach((item) => {
+    data.push([
+      item.kode,
+      item.uraian,
+      item.nilai,
+    ])
+  });
+
+  // Tambahkan total Pendapatan (tebal)
+  data.push([
+    '',
+    'JUMLAH PENDAPATAN DAERAH-LO',
+    totalPendapatan(),
+  ])
+
+  // Data Beban
+  store.hasilbeban.forEach((item) => {
+    data.push([
+      item.kode,
+      item.uraian,
+      item.nilai,
+    ])
+  });
+
+  // Tambahkan total Pendapatan (tebal)
+  data.push([
+    '',
+    'JUMLAH BEBAN DAERAH',
+    totalBeban(),
+  ])
+
+
+  // Surplus/Defisit
+  data.push([
+    '',
+    'SURPLUS / DEFISIT LO',
+    surplusdefisit(),
+  ])
+
+  const worksheet = XLSX.utils.aoa_to_sheet(data);
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'LO');
+
+  // Atur lebar kolom (opsional)
+  const colWidths = data[0].map((_, colIndex) => {
+    return Math.max(
+      ...data.map((row) => (row[colIndex] ? row[colIndex].toString().length : 0)),
+      10
+    );
+  });
+  worksheet['!cols'] = colWidths.map((width) => ({ wch: width }));
+
+  // Download file Excel
+  XLSX.writeFile(workbook, `LO_Report_${new Date().toISOString().slice(0, 10)}.xlsx`);
 }
 
-watchEffect(() => {
-  if (store.exportExcel) {
-    // console.log('store.exportExcel', store.exportExcel)
-    exportToExcel('tableItem', 'KartuStokFarmasi')
-  }
-})
+function totalPendapatan() {
+  const totalpend = store.hasilpendapatan.map((x) => x.nilai)[0]
+  return totalpend
+}
+function totalBeban() {
+  const totalbeban = store.hasilbeban.map((x) => x.nilai)[0]
+  return totalbeban
+}
+
+function surplusdefisit() {
+  const totalpend = store.hasilpendapatan.map((x) => x.nilai)[0]
+  const totalbeban = store.hasilbeban.map((x) => x.nilai)[0]
+  return totalpend - totalbeban
+}
 </script>

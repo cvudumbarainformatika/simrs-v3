@@ -133,7 +133,7 @@ export const formInputNpdlsStore = defineStore('forminput_NPD_LS', {
     anggarans: [],
     rekening50: [],
     itembelanja: [],
-    // GET DATA RINCIAN
+    // GET DATA RINCIAN BAST
     transall: [],
 
     //UNTUK VALIDASI JIKA JUMLAH MELEBIHI PAGU
@@ -168,14 +168,21 @@ export const formInputNpdlsStore = defineStore('forminput_NPD_LS', {
         const el = bast[i]
         this.setForm(el, null)
       }
+      const transall = Object.keys(this.transall)
+      for (let i = 0; i < transall.length; i++) {
+        const el = transall[i]
+        this.setForm(el, null)
+      }
     },
     setForm(key, val) {
       this.form[key] = val
       this.rinci[key] = val
       this.reqs[key] = val
+      this.transall[key] = val
     },
     setFormInput(key, val) {
       this.rinci[key] = val
+      this.form[key] = val
     },
     setParams(key, val) {
       this.reqs[key] = val
@@ -362,7 +369,7 @@ export const formInputNpdlsStore = defineStore('forminput_NPD_LS', {
         api.get('/v1/transaksi/belanja_ls/getrincian', params).then((resp) => {
           if (resp.status === 200) {
             this.transall = resp.data
-            console.log('hasilall', this.transall)
+            // console.log('hasilall', this.transall)
             this.loading = false
             resolve(resp)
           }
@@ -377,7 +384,7 @@ export const formInputNpdlsStore = defineStore('forminput_NPD_LS', {
           .then(resp => {
 
             this.transall = resp?.data?.data
-            console.log('HAPUS', this.transall)
+            // console.log('HAPUS', this.transall)
             // if (this.transall.length < 0) {
             //   this.initForm()
             //   this.listrincians()

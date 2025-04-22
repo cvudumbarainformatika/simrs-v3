@@ -11,21 +11,24 @@
             Tanggal
           </th>
           <th>
-            Nomor Resep
+            {{ store.params.response_time == 'Obat' ? 'Nomor Resep' : 'Nomor Permintaan' }}
           </th>
           <th>
-            Jam Masuk Resep
+            {{ store.params.response_time == 'Obat' ? 'Jam Masuk Resep' : 'Tgl & Jam Pengajuan Permintaan' }}
+
           </th>
           <th>
-            Jam Selesai Obat
+            {{ store.params.response_time == 'Obat' ? 'Jam Selesai Obat' : 'Tgl & Jam Diterima ' +
+              (store.tujuanMinta == 'Depo' ? 'Ruangan' : 'Depo') }}
           </th>
           <th>
             Total Menit
           </th>
           <th>
-            Jenis Obat
+            {{ store.params.response_time == 'Obat' ? 'Jenis Obat' : 'Unit yang mengajukan' }}
+
           </th>
-          <th>
+          <th v-if="store.params.response_time == 'Obat'">
             Sistem Bayar
           </th>
         </tr>
@@ -39,17 +42,19 @@
             Tanggal
           </th>
           <th>
-            Lembar Resep
+            {{ store.params.response_time == 'Obat' ? 'Lembar Resep' : 'Jumlah Permintaan' }}
           </th>
           <th>
             Total Menit
           </th>
           <th>
-            Response Time > 30 Menit
+            Response Time > {{ store.tipeObat == 'Obat Jadi' && store.params.response_time == 'Obat' ? '30 Menit' :
+              '60 Menit' }}
           </th>
           <th>
-            Response Time {{ '=<' }} 30 Menit </th>
-          <th>
+            Response Time {{ store.tipeObat == 'Obat Jadi' && store.params.response_time == 'Obat' ? '=< 30 Menit'
+              : '=< 60 Menit' }} </th>
+          <th v-if="store.params.response_time == 'Obat'">
             Jenis Obat
           </th>
 
@@ -81,7 +86,7 @@
             <td>
               <q-skeleton type="text" width="60px" height="25px" />
             </td>
-            <td>
+            <td v-if="store.params.response_time == 'Obat'">
               <q-skeleton type="text" width="60px" height="25px" />
             </td>
           </tr>
@@ -147,18 +152,18 @@
               </td>
               <td style="white-space: normal; max-width: 150px;">
                 <div class="row items-center">
-                  {{ item?.noresep }}
+                  {{ store.params.response_time == 'Obat' ? item?.noresep : item?.no_permintaan }}
                 </div>
               </td>
               <td style="white-space: normal; max-width: 250px;">
                 <div class="row ">
-                  {{ date.formatDate(item?.tgl_kirim, 'HH:mm:ss') }}
+                  {{ date.formatDate(item?.tgl_kirim, 'DD MMMM / HH:mm:ss') }}
                 </div>
               </td>
 
               <td style="white-space: normal; max-width: 150px;">
                 <div class="row items-center">
-                  {{ date.formatDate(item?.tgl_selesai, 'HH:mm:ss') }}
+                  {{ date.formatDate(item?.tgl_selesai, 'DD MMMM / HH:mm:ss') }}
                 </div>
               </td>
               <td style="white-space: normal; max-width: 150px;">
@@ -168,10 +173,10 @@
               </td>
               <td style="white-space: normal; max-width: 150px;">
                 <div class="row items-center">
-                  {{ item?.jenis }}
+                  {{ store.params.response_time == 'Obat' ? item?.jenis : item?.unit }}
                 </div>
               </td>
-              <td style="white-space: normal; max-width: 150px;">
+              <td v-if="store.params.response_time == 'Obat'" style="white-space: normal; max-width: 150px;">
                 <div class="row items-center">
                   {{ item?.sistembayar }}
                 </div>
@@ -214,14 +219,32 @@
                   {{ item?.less30 }}
                 </div>
               </td>
-              <td style="white-space: normal; max-width: 150px;">
+              <td v-if="store.params.response_time == 'Obat'" style="white-space: normal; max-width: 150px;">
                 <div class="row items-center">
                   {{ item?.jenis }}
                 </div>
               </td>
 
             </tr>
+
           </template>
+          <tr class="text-weight-bold">
+            <td colspan="2">
+              Rata-Rata
+            </td>
+            <td>
+              {{formatDouble(store.items?.reduce((a, b) => a + b.jml_lembar_resep, 0))}}
+            </td>
+            <td>
+              {{formatDouble(store.items?.reduce((a, b) => a + b.total_menit, 0))}}
+            </td>
+            <td colspan="3">
+              {{
+                formatDouble(store.items?.reduce((a, b) => a + b.total_menit, 0) /
+                  store.items?.reduce((a, b) => a + b.jml_lembar_resep, 0))
+              }} Menit
+            </td>
+          </tr>
         </template>
       </template>
     </tbody>
@@ -332,7 +355,7 @@ table {
 
 thead {
   position: sticky;
-  z-index: 2;
+  z-index: 10;
   background-color: white;
 
   tr {

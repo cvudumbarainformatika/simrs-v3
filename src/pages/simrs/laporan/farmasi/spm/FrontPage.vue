@@ -6,9 +6,25 @@
           Laporan SPM Farmasi
         </div>
         <div class="">
-          <app-autocomplete v-model="store.jenisLaporan" label="Pilih Laporan" autocomplete="nama" option-label="nama"
-            option-value="value" outlined :source="store.optionJenisLaporans" :disable="store.loading" bg-color="white"
-            @update:model-value="setJenisLaporan" hide-dropdown-icon />
+          <div class="row q-col-gutter-x-sm">
+            <app-autocomplete v-if="store.jenisLaporan == 'Response Time' && store.params.response_time == 'Floor Stok'"
+              v-model="store.tujuanMinta" label="Pilih Tujuan Permintaan" autocomplete="nama" option-label="nama"
+              option-value="value" outlined :source="store.optionTujuanMinta" :disable="store.loading" bg-color="white"
+              @update:model-value="() => {
+                store.filterAndSetItemRespons()
+
+              }" hide-dropdown-icon />
+            <app-autocomplete v-if="store.jenisLaporan == 'Response Time'" v-model="store.params.response_time"
+              label="Pilih Response Time" autocomplete="nama" option-label="nama" option-value="value" outlined
+              :source="store.optionResTipeObats" :disable="store.loading" bg-color="white"
+              @update:model-value="store.setParamsResponseTime" hide-dropdown-icon />
+            <app-autocomplete v-model="store.jenisLaporan" label="Pilih Laporan" autocomplete="nama" option-label="nama"
+              option-value="value" outlined :source="store.optionJenisLaporans" :disable="store.loading"
+              bg-color="white" @update:model-value="setJenisLaporan" hide-dropdown-icon />
+
+
+
+          </div>
         </div>
       </div>
 
@@ -36,21 +52,26 @@
                 option-value="value" multiple outlined :source="store.depos" :hide-selected="false" hide-dropdown-icon
                 :disable="store.loading" />
             </div>
-            <div v-if="store.jenisLaporan == 'Response Time'" class="col-2">
+            <div v-if="store.jenisLaporan == 'Response Time' && store.params.response_time != 'Floor Stok'"
+              class="col-2">
               <app-autocomplete v-model="store.tipeObat" label="Pilih Tipe Obat" autocomplete="nama" option-label="nama"
                 option-value="value" outlined :source="store.optionTipeObats" hide-selected hide-dropdown-icon
                 :disable="store.loading" @update:model-value="store.filterAndSetItemRespons()" />
             </div>
             <div v-if="store.jenisLaporan == 'Generik'" class="col-2">
               <app-autocomplete v-model="store.params.kelompok" label="Pilih Kelompok Obat" autocomplete="nama"
-                option-label="nama" option-value="kode" multiple outlined :source="store.optionKelompoks"
-                :hide-selected="false" hide-dropdown-icon :disable="store.loading" />
+                option-label="nama" option-value="kode" outlined :source="store.optionKelompoks" hide-dropdown-icon
+                :disable="store.loading" @update:model-value="store.filterAndSetItems()" />
             </div>
-            <div class="col-2">
+
+            <div v-if="store.jenisLaporan == 'Response Time' ? store.params.response_time != 'Floor Stok' : store.jenisLaporan !=
+              'Kesesuaian Obat'" class="col-2">
               <app-autocomplete v-model="store.groupSistembayar" label="Pilih sistem bayar" autocomplete="nama"
-                option-label="nama" option-value="kode" outlined :source="store.optionSistemBayars" hide-dropdown-icon
-                :disable="store.loading" @update:model-value="setSitermbayar" />
+                option-label="nama" option-value="kode" outlined multiple :source="store.optionSistemBayars"
+                :hide-selected="false" hide-dropdown-icon :disable="store.loading" @update:model-value="setSitermbayar"
+                valid />
             </div>
+
             <!-- ini filter rinci generik -->
             <div v-if="store.jenisLaporan == 'Generik' && store.tipe == 'Rinci'" class="col-auto"
               style="max-width: 12%;">
@@ -78,7 +99,8 @@
             <div class="q-ml-xs">
               <download-excel class="btn" :fields="store.fields" :fetch="store.fetch"
                 :before-generate="store.startDownload" :before-finish="store.finishDownload"
-                :name="'Laporan SPM ' + laporan() + ' Bulan ' + bulan() + ' ' + store.params.tahun + jenis() + '.xls'">
+                :name="'Laporan SPM ' + store.jenisLaporan + ' ' + (store.jenisLaporan == 'Response Time' ?
+                  store.tujuanMinta + ' ' + store.params.response_time + ' ' : '') + ' Bulan ' + bulan() + ' ' + store.params.tahun + '(' + store.tipe + ').xls'">
                 <q-btn color="green" round size="sm" icon="icon-mat-download" push :loading="store.loadingDownload"
                   :disable="store.loadingDownload || !!store.ketProses || store?.loadingNext">
                   <q-tooltip>Download Excel</q-tooltip>
@@ -175,7 +197,8 @@
       </div>
 
       <div class="row justify-center f-16 text-weight-bold q-my-sm">
-        Laporan {{ store.tipe + ' ' + store.jenisLaporan }} {{
+        Laporan {{ store.tipe + ' ' + store.jenisLaporan + ' ' + (store.jenisLaporan == 'Response Time' ?
+          store.tujuanMinta + ' ' + store.params.response_time + ' ' : '') }} {{
           date.formatDate((store.params.tahun + '-' + store.params.bulan + '-02'), 'MMMM YYYY') }}
       </div>
 
@@ -372,14 +395,14 @@ function bulan () {
   const bul = store.bulans.find(a => a.value === store.params.bulan)
   return bul?.nama ?? '-'
 }
-function jenis () {
-  const bul = store.optionTipes.find(a => a === store.tipe)
-  return ' (' + bul + ')' ?? '-'
-}
-function laporan () {
-  const bul = store.optionJenisLaporans.find(a => a === store.jenisLaporan)
-  return ' (' + bul + ')' ?? '-'
-}
+// function jenis () {
+//   const bul = store.optionTipes.find(a => a === store.tipe)
+//   return ' (' + bul + ')' ?? '-'
+// }
+// function laporan () {
+//   const bul = store.optionJenisLaporans.find(a => a === store.jenisLaporan)
+//   return ' (' + bul + ')' ?? '-'
+// }
 const printObj = {
   id: 'printMe',
   popTitle: 'Laporan SPM Farmasi'
@@ -401,11 +424,12 @@ const menus = ref([
   },
   {
     name: 'Kesesuaian Obat',
-    bottom: 164,
+    bottom: 145,
     comp: shallowRef(defineAsyncComponent(() => import('./comp/TabelKesesuaian.vue')))
   },
 ])
-const menu = ref(menus.value[0])
+const menu = ref(menus.value.find((item) => item.name === store.jenisLaporan) ?? menus.value[0])
+store.url = store.urls.find((item) => item.nama === store.jenisLaporan)?.url ?? store.urls[0].url
 function setJenisLaporan (val) {
   const component = menus.value.find((item) => item.name === val)
   if (component) {
@@ -416,12 +440,28 @@ function setJenisLaporan (val) {
   const url = store.urls.find((item) => item.nama === val)
   if (url) store.url = url.url
   console.log('val', val)
+  if (val != 'Response Time') {
+    if (store.params.response_time == 'Floor Stok') {
+      store.params.response_time = 'Obat'
+      store.tujuanMinta = 'Gudang'
+    }
+    store.setParams('depo', ['Gd-04010102', 'Gd-05010101', 'Gd-02010104'])
+    store.depos = [
+      { nama: 'Depo Rawat inap', value: 'Gd-04010102' },
+      { nama: 'Depo Rawat Jalan', value: 'Gd-05010101' },
+      { nama: 'Depo IGD', value: 'Gd-02010104' },
+      { nama: 'Depo OK', value: 'Gd-04010103' },
+    ]
+  }
+
 
 }
 
 // ganti sistem bayar
 function setSitermbayar (val) {
-  const sis = apps.sistemBayars.filter((item) => item.groups === val)?.map((item) => item.kode)
+  const sis = apps.sistemBayars.filter((item) => val.includes(item.groups))?.map((item) => item.kode)
+  console.log('sis', sis)
+
   if (sis.length > 0) {
     store.setParams('sistem_bayar', sis)
   }
@@ -456,9 +496,9 @@ function setFormularium (val) {
 
 function setTipe (val) {
   if (store.jenisLaporan == 'Generik') {
-    if (val === 'Rinci') setFormularium()
-    if (val === 'Rekap') store.setRekapGenerik()
+    store.filterAndSetItems()
   } else if (store.jenisLaporan == 'Response Time') store.filterAndSetItemRespons()
+  else store.filterAndSetItemKesesuaian()
   setTimeout(() => {
     console.log('set tipe', val, refTop.value?.clientHeight)
     h.value = refTop.value?.clientHeight

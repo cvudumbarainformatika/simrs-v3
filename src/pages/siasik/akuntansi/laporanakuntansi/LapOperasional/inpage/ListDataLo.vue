@@ -1,11 +1,11 @@
 <template>
   <template v-if="store.hasilpendapatan.length > 0 && store.hasilbeban.length > 0">
-    <q-card-section class="full-width">
+    <q-card-section>
       <div class="row">
         <div class="full-width">
-          <q-markup-table flat-bordered wrap-cells :separator="separator">
+          <q-markup-table class="custom-table" flat bordered wrap-cells :separator="separator">
             <thead>
-              <tr class="bg-dark text-white max-width">
+              <tr class="bg-grey-4">
                 <th>KODE REKENING</th>
                 <th style="width: 70%;">
                   URAIAN
@@ -284,3 +284,34 @@ function surplusdefisit() {
   return totalpend - totalbeban
 }
 </script>
+<style scoped>
+/* Mengatur warna garis pada seluruh tabel termasuk garis luar */
+.custom-table {
+  border-color: #555555 !important;
+}
+
+/* Menargetkan tabel di dalam komponen q-markup-table */
+.custom-table table {
+  border-color: #555555 !important;
+}
+
+/* Mengatur warna garis pada sel header */
+.custom-table th {
+  border-color: #555555 !important;
+  font-weight: bold;
+}
+
+/* Mengatur warna garis pada sel data */
+.custom-table td {
+  border-color: #555555 !important;
+}
+
+/* Pastikan garis tidak dobel */
+.custom-table table {
+  border-collapse: collapse;
+}
+
+.custom-table thead tr {
+  border-color: #555555 !important;
+}
+</style>

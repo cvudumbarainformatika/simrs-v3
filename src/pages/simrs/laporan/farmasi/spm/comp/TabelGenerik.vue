@@ -160,6 +160,22 @@
             <td>
               <q-skeleton type="text" width="60px" height="25px" />
             </td>
+
+            <td>
+              <q-skeleton type="text" width="60px" height="25px" />
+            </td>
+            <td>
+              <q-skeleton type="text" width="60px" height="25px" />
+            </td>
+            <td>
+              <q-skeleton type="text" width="60px" height="25px" />
+            </td>
+            <td>
+              <q-skeleton type="text" width="60px" height="25px" />
+            </td>
+            <td>
+              <q-skeleton type="text" width="60px" height="25px" />
+            </td>
           </tr>
         </template>
       </template>
@@ -433,7 +449,7 @@ table {
 
 thead {
   position: sticky;
-  z-index: 2;
+  z-index: 10;
   background-color: white;
 
   tr {

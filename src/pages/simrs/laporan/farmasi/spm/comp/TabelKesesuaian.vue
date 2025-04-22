@@ -13,93 +13,59 @@
             Nomor Resep
           </th>
           <th>
-            Obat
+            Fornas
+          </th>
+          <th>
+            Total
+          </th>
+          <th>
+            Ruang
           </th>
           <th>
             Dokter
           </th>
           <th>
-            Depo
-          </th>
-          <th>
-            Jumlah Ditulis
-          </th>
-          <th>
-            Jumlah Dilayani
+            Keterangan
           </th>
         </tr>
       </template>
       <template v-else>
         <tr>
-          <th width="5%" rowspan="4">
+          <th width="5%" rowspan="2">
             No
           </th>
-          <th rowspan="4">
+          <th rowspan="2">
             Tanggal
           </th>
-          <th rowspan="4">
-            Lembar Resep
+          <th colspan="2">
+            Rawat Inap
           </th>
-          <th colspan="5">
-            Resep yang ditulis dokter
+          <th colspan="2">
+            Rawat Jalan
           </th>
-          <th colspan="5">
-            Resep yang dilayani famasi
+          <th colspan="2">
+            Total
           </th>
 
         </tr>
         <tr>
-          <th colspan="5">
-            * {{ ambilDepo() }}
-          </th>
-          <th colspan="5">
-            * {{ ambilDepo() }}
-          </th>
-        </tr>
-        <tr>
-          <th colspan="2">
+          <th>
             Fornas
           </th>
-          <th colspan="2">
-            Formularium RS
+          <th>
+            Total Item
           </th>
-          <th rowspan="2">
-            Non Formularium
-          </th>
-          <th colspan="2">
+          <th>
             Fornas
           </th>
-          <th colspan="2">
-            Formularium RS
-          </th>
-          <th rowspan="2">
-            Non Formularium
-          </th>
-        </tr>
-        <tr>
           <th>
-            Generik
+            Total Item
           </th>
           <th>
-            Non Generik
+            Fornas
           </th>
           <th>
-            Generik
-          </th>
-          <th>
-            Non Generik
-          </th>
-          <th>
-            Generik
-          </th>
-          <th>
-            Non Generik
-          </th>
-          <th>
-            Generik
-          </th>
-          <th>
-            Non Generik
+            Total Item
           </th>
         </tr>
       </template>
@@ -173,7 +139,7 @@
         </template>
         <template v-else>
           <tr>
-            <td colspan="13">
+            <td colspan="8">
               <app-no-data />
             </td>
           </tr>
@@ -195,58 +161,66 @@
               </td>
               <td style="white-space: normal; max-width: 150px;">
                 <div class="row items-center">
-                  {{ item?.noresep }}
+                  {{ item?.nomor }}
                 </div>
               </td>
               <td style="white-space: normal; max-width: 250px;">
-                <div class="row text-weight-bold">
-                  {{ item?.nama_obat }}
-                </div>
                 <div class="row">
-                  <div class="col-auto f-10 q-mr-md">
-                    {{ item?.kdobat }}
-                  </div>
-                  <div class="col-auto q-mr-md f-10">
-                    {{ item?.kelompok }}
-                  </div>
-                  <div class="col-auto q-mr-md f-10">
-                    {{ item?.generik }}
-                  </div>
-                  <div class="col-auto q-mr-md f-10">
-                    {{ item?.fornas }}
-                  </div>
-                  <div class="col-auto q-mr-md f-10">
-                    {{ item?.forkit }}
-                  </div>
-                  <div class="col-auto q-mr-md f-10">
-                    {{ item?.nama_sistembayar }}
-                  </div>
+                  {{ item?.fornas }}
                 </div>
+
               </td>
 
               <td style="white-space: normal; max-width: 150px;">
                 <div class="row items-center">
-                  {{ item?.nama_dokter }}
+                  {{ item?.total }}
                 </div>
               </td>
               <td style="white-space: normal; max-width: 150px;">
                 <div class="row items-center">
-                  {{ item?.depo }}
+                  {{ item?.ruang }}
                 </div>
               </td>
               <td style="white-space: normal; max-width: 150px;">
                 <div class="row items-center">
-                  {{ item?.jumlah_resep }}
+                  {{ item?.dokter }}
                 </div>
               </td>
               <td style="white-space: normal; max-width: 150px;">
                 <div class="row items-center">
-                  {{ item?.jumlah_dilayani }}
+                  {{ item?.ket }}
                 </div>
               </td>
 
             </tr>
           </template>
+          <tr>
+            <td colspan="3">
+              <div class="text-center">
+                Jumlah
+              </div>
+            </td>
+            <td>
+              {{store.items.reduce((a, b) => a + b.fornas, 0)}}
+            </td>
+            <td>
+              {{store.items.reduce((a, b) => a + b.total, 0)}}
+            </td>
+          </tr>
+          <tr>
+            <td colspan="3">
+              <div class="text-center">% Kesesuaian Fornas</div>
+            </td>
+            <td colspan="2">
+              <div class="text-center">
+                {{
+                  (store.items.reduce((a, b) => a + b.fornas, 0) /
+                    store.items.reduce((a, b) => a + b.total, 0) * 100).toFixed(2)
+                }} %
+
+              </div>
+            </td>
+          </tr>
         </template>
         <template v-else>
           <template v-for="(item, n) in store.items" :key="n">
@@ -261,69 +235,68 @@
                   {{ dateFullFormat(item?.tgl) }}
                 </div>
               </td>
+              <!-- ranap -->
               <td style="white-space: normal; max-width: 150px;">
                 <div class="row items-center">
-                  {{ item?.jml_lembar_resep }}
+                  {{ item?.ranap?.fornas }}
                 </div>
               </td>
-              <!-- ditulis -->
               <td style="white-space: normal; max-width: 250px;">
                 <div class="row ">
-                  {{ item?.ditulis?.jml_fornas_generik }}
+                  {{ item?.ranap?.total }}
                 </div>
               </td>
-
+              <!-- rajal -->
               <td style="white-space: normal; max-width: 150px;">
                 <div class="row items-center">
-                  {{ item?.ditulis?.jml_fornas_non_generik }}
+                  {{ item?.rajal?.fornas }}
                 </div>
               </td>
-              <td style="white-space: normal; max-width: 150px;">
-                <div class="row items-center">
-                  {{ item?.ditulis?.jml_forkit_generik }}
-                </div>
-              </td>
-              <td style="white-space: normal; max-width: 150px;">
-                <div class="row items-center">
-                  {{ item?.ditulis?.jml_forkit_non_generik }}
-                </div>
-              </td>
-              <td style="white-space: normal; max-width: 150px;">
-                <div class="row items-center">
-                  {{ item?.ditulis?.non_formulaium }}
-                </div>
-              </td>
-              <!-- dilayani -->
-
               <td style="white-space: normal; max-width: 250px;">
                 <div class="row ">
-                  {{ item?.dilayani?.jml_fornas_generik }}
+                  {{ item?.rajal?.total }}
                 </div>
               </td>
-
+              <!-- total -->
               <td style="white-space: normal; max-width: 150px;">
                 <div class="row items-center">
-                  {{ item?.dilayani?.jml_fornas_non_generik }}
+                  {{ item?.total?.fornas }}
                 </div>
               </td>
-              <td style="white-space: normal; max-width: 150px;">
-                <div class="row items-center">
-                  {{ item?.dilayani?.jml_forkit_generik }}
+              <td style="white-space: normal; max-width: 250px;">
+                <div class="row ">
+                  {{ item?.total?.total }}
                 </div>
               </td>
-              <td style="white-space: normal; max-width: 150px;">
-                <div class="row items-center">
-                  {{ item?.dilayani?.jml_forkit_non_generik }}
-                </div>
-              </td>
-              <td style="white-space: normal; max-width: 150px;">
-                <div class="row items-center">
-                  {{ item?.dilayani?.non_formulaium }}
-                </div>
-              </td>
-
             </tr>
           </template>
+          <tr>
+            <td colspan="6">
+              <div class="text-center">
+                Jumlah
+              </div>
+            </td>
+            <td>
+              {{store.items.reduce((a, b) => a + b.total.fornas, 0)}}
+            </td>
+            <td>
+              {{store.items.reduce((a, b) => a + b.total.total, 0)}}
+            </td>
+          </tr>
+          <tr>
+            <td colspan="6">
+              <div class="text-center">% Kesesuaian Fornas</div>
+            </td>
+            <td colspan="2">
+              <div class="text-center">
+                {{
+                  (store.items.reduce((a, b) => a + b.total.fornas, 0) /
+                    store.items.reduce((a, b) => a + b.total.total, 0) * 100).toFixed(2)
+                }} %
+
+              </div>
+            </td>
+          </tr>
         </template>
       </template>
     </tbody>
@@ -433,7 +406,7 @@ table {
 
 thead {
   position: sticky;
-  z-index: 2;
+  z-index: 10;
   background-color: white;
 
   tr {

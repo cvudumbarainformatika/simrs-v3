@@ -5,11 +5,25 @@
         <div class="q-gutter-y-md" style="width: 25%">
           <app-input-simrs label="Nomor NPD-LS" v-model="store.form.nonpdls" readonly :disable="store.disabled" outlined
             dense />
+          <q-select label="Pejabat Teknis Kegiatan" v-model="store.form.kodepptk" clearable
+            class="ellipsis-2-lines allign-center" use-input outlined dense emit-value map-options autocomplete="nama"
+            option-value="nip" standout="bg-yellow-3" hide-bottom-space :disable="store.loading"
+            :loading="store.loading"
+            :option-label="opt => Object(opt) === opt && 'nip' in opt ? opt.nama + ' - ' + opt.nip : ''"
+            input-debounce="0" :options="options" @filter="filterFn" @update:model-value="(val) => pilihPTK(val)">
 
-          <app-autocomplete label="Pejabat Teknis Kegiatan" v-model="store.form.kodepptk" autocomplete="nama" outlined
+            <template #no-option>
+              <q-item>
+                <q-item-section class="text-grey">
+                  Tidak ditemukan
+                </q-item-section>
+              </q-item>
+            </template>
+          </q-select>
+          <!-- <app-autocomplete label="Pejabat Teknis Kegiatan" v-model="store.form.kodepptk" autocomplete="nama" outlined
             :option-label="opt => Object(opt) === opt && 'nip' in opt ? opt.nama + ' - ' + opt.nip : 'Silahkan Dipilih'"
             option-value="nip" :source="store.ptks" @selected="(val) => pilihPTK(val)" :disable="store.disabled"
-            :loading="store.loading" />
+            :loading="store.loading" /> -->
         </div>
         <div class="q-gutter-y-md" style="width: 25%">
           <app-input-date-human label="Tanggal Transaksi" :model="store.params.tgl" icon="icon-mat-event" outlined
@@ -92,6 +106,8 @@ const store = formInputNpdlsStore()
 const ambil = formKontrakPekerjaan()
 const carisrt = dataBastFarmasiStore()
 const formNpdLS = ref(null)
+const options = ref([])
+
 function onSubmit() {
   store.fixed = true
 }
@@ -184,5 +200,31 @@ function pilihPihaktiga(val) {
   store.form.bank = obj?.bank ?? ''
   store.form.rekening = obj?.norek ?? ''
   store.form.npwp = obj?.npwp ?? ''
+}
+
+async function filterFn(val, update) {
+  // console.log('val filter', val)
+  if (!store.ptks || store.ptks.length === 0) {
+    // Jika data rekening kosong, muat ulang data
+    await store.getDataBidang();
+  }
+  update(() => {
+    if (val === '') {
+      options.value = store.ptks;
+    } else {
+      const needle = val.toLowerCase();
+      const filter = ['nip', 'nama'];
+
+      // Selalu filter dari data asal (store.ptks), bukan dari options yang sudah difilter
+      const multiFilter = (data = [], filterKeys = [], value = '') =>
+        data.filter((item) => filterKeys.some(
+          (key) =>
+            item[key].toString().toLowerCase().includes(value.toLowerCase()) &&
+            item[key]
+        ));
+
+      options.value = multiFilter(store.ptks, filter, needle);
+    }
+  });
 }
 </script>
