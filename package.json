@@ -17,7 +17,7 @@
     "monitor": "quasar dev --debug",
     "analyze": "quasar build --analyze",
     "optimize-avatars": "node scripts/optimize-avatars.js",
-    "deploy": "git fetch origin && git checkout deploy && git merge swoole --no-edit && git push origin deploy && git checkout swoole"
+    "deploy": "git fetch origin && git checkout deploy && git merge master --no-edit && git push origin deploy && git checkout master"
   },
   "dependencies": {
     "@chenfengyuan/vue-qrcode": "^2.0.0",
