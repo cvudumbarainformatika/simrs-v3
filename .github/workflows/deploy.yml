@@ -47,4 +47,4 @@ jobs:
 
       - name: Trigger webhook di server
         run: |
-          curl -X POST "http://panelb.xenter.my.id/hook?access_key=Jlajy2eyH3BysC6DCSCkgGk0MXrOBMzaJETh5hPheivYoo6P"
+          curl -X POST "https://panelb.xenter.my.id/hook?access_key=Jlajy2eyH3BysC6DCSCkgGk0MXrOBMzaJETh5hPheivYoo6P"
