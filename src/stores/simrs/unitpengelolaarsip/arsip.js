@@ -95,7 +95,7 @@ export const useUnitPengelolahArsipStore = defineStore('unit-pengelolah-arsip-st
             this.loadingForm = false
           })
           .catch((err) => {
-            console.log(err)
+            console.log('err', err)
             this.loadingForm = false
             reject(err)
           })
