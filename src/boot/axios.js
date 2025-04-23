@@ -84,7 +84,7 @@ const interceptRequest = (config) => {
 }
 api.interceptors.request.use(interceptRequest, interceptReqErrors)
 
-const pathImg = SERV + '/storage/'
+const pathImg = process.env.PATHIMG + '/storage/'
 
 // const getApp = async () => {
 //   await api.get('/v1/header').then((resp) => {

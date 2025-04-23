@@ -1,6 +1,6 @@
 {
   "name": "simrs-v3",
-  "version": "0.0.1",
+  "version": "3.0.2",
   "description": "Front Simrs V3",
   "productName": "Simrs V3",
   "author": "cvudumbarainformatika <cvudumbarainformatika@gmail.com>",
@@ -16,7 +16,8 @@
     "audit-deps": "node scripts/audit-deps.js",
     "monitor": "quasar dev --debug",
     "analyze": "quasar build --analyze",
-    "optimize-avatars": "node scripts/optimize-avatars.js"
+    "optimize-avatars": "node scripts/optimize-avatars.js",
+    "deploy": "git fetch origin && git checkout deploy && git merge master --no-edit && git push origin deploy && git checkout master"
   },
   "dependencies": {
     "@chenfengyuan/vue-qrcode": "^2.0.0",
