@@ -132,18 +132,18 @@ const props = defineProps({
 })
 
 function updateKodeDpjp (val) {
-  // console.log(props?.pasien?.groups)
+  // console.log('update dpjp', props?.pasien?.groups)
   kodedpjp.value = val?.kddpjp ?? ''
   kdpegsimrs.value = val?.kdpegsimrs
 }
 
 function gantiDpjp () {
-  // console.log('ok')
   const form = {
     kodedpjp: kodedpjp.value ?? '',
     kdpegsimrs: kdpegsimrs.value,
     noreg: props?.pasien?.noreg
   }
+  // console.log('ganti', form)
 
   emits('gantidpjp', form)
 }

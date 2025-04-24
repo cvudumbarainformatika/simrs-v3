@@ -2,6 +2,7 @@ import { acceptHMRUpdate, defineStore } from 'pinia'
 import { api } from 'boot/axios'
 import { dateDbFormat } from 'src/modules/formatter'
 import { date } from 'quasar'
+import { notifErrVue } from 'src/modules/utils'
 
 export const useListPasienHemodialisaStore = defineStore('list-pasien-hemodialisa', {
   state: () => ({
@@ -214,7 +215,63 @@ export const useListPasienHemodialisaStore = defineStore('list-pasien-hemodialis
         if (pos >= 0) { data.splice(pos, 1) }
       }
     },
+    async gantiDpjp (form, pasien) {
+      // console.log(form)
+      this.loadingSaveGantiDpjp = true
+      try {
+        const resp = await api.post('/v1/simrs/pelayanan/gantidpjp', form)
+        if (resp.status === 200) {
+          const findPasien = this.items.find(x => x === pasien)
+          if (findPasien) {
+            const data = findPasien
+            data.datasimpeg = resp?.data?.result?.datasimpeg
+            data.dokter = resp?.data?.result?.datasimpeg?.nama
+            data.kodedokter = resp?.data?.result?.datasimpeg?.kdpegsimrs
+            this.loadingSaveGantiDpjp = false
+          }
 
+          this.loadingSaveGantiDpjp = false
+        }
+        this.loadingSaveGantiDpjp = false
+      }
+      catch (error) {
+        console.log(error)
+        this.loadingSaveGantiDpjp = false
+      }
+    },
+
+    async setLayananSelesai (pasien) {
+      return notifErrVue('Fitur ini belum diaktifkan. Belum ada Arahan Mengenan Layanan Selesai di Hemodialisa')
+      this.loadingTerima = true
+      // '' : 'Belum Terlayanani'
+      // '1': 'Terlayani'
+      // '2': 'Sudah diterima'
+      // '3': Batal
+      if (!pasien?.anamnesis.length) {
+        this.loadingTerima = false
+        return this.notifikasiError('Maaf, Anamnesis Harap Diisi Dahulu...')
+      }
+      const form = {
+        noreg: pasien?.noreg
+      }
+      try {
+        const resp = await api.post('v1/simrs/rajal/poli/flagfinish', form)
+        // console.log('rsp ', form, resp)
+        if (resp.status === 200) {
+          const findPasien = this.items.filter(x => x === pasien)
+          if (findPasien.length) {
+            findPasien[0].status = '1'
+          }
+          this.loadingTerima = false
+        }
+      }
+      catch (error) {
+        console.log(error)
+        notifErrVue('Maaf.. Harap ulangi, Ada Kesalahan ')
+        this.loadingTerima = false
+        // this.notifikasiError('Maaf.. Harap ulangi, Ada Kesalahan ')
+      }
+    },
     async getNakes () {
       const resp = await api.get('/v1/simrs/master/pegawai/listnakes')
       // console.log('nakes', resp)
