@@ -150,8 +150,9 @@ const notifErr = (resp) => {
   }
   else if (status === 500) {
     let msgs = 'Ada Kesalahan Harap ulangi'
-    if (resp.data) {
-      console.log('rsp data msg', resp?.data?.message)
+    console.log('rsp data msg', resp)
+    if (resp?.data) {
+
       if (resp?.data?.message?.includes('https://apijkn.bpjs-kesehatan.go.id')) msgs = 'Error Bridging BPJS'
       else if (resp?.data?.message?.includes('simrs/events?auth_key=simrs_key_harry141312&auth_')) msgs = 'Error Event Notifikasi Simrs'
       else msgs = resp.data.message ? resp.data.message : 'Ada Kesalahan Harap ulangi'

@@ -65,6 +65,7 @@ export const useHistoryPasienRanapStore = defineStore('history-pasien-ranap-stor
       pasien.konsultasi = hasil?.konsuldokterspesialis
       pasien.tinjauanulang = hasil?.tinjauanulang
       pasien.rencanaterapidokter = hasil?.rencanaterapidokter
+      pasien.skalatransfer = hasil?.skalatransfer
       this.pasienIgd = { ...pasien }
 
       console.log('pasien igd', this.pasienIgd)

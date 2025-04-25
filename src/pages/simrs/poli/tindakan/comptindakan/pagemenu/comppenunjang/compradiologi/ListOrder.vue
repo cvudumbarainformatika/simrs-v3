@@ -6,39 +6,20 @@
       </div>
       <q-space />
       <div class="q-py-xs">
-        <q-select
-          v-model="store.form.nota"
-          outlined
-          standout="bg-yellow-3"
-          bg-color="white"
-          dense
+        <q-select v-model="store.form.nota" outlined standout="bg-yellow-3" bg-color="white" dense
           :options="store.notas"
           :display-value="`NOTA: ${store.form.nota === null || store.form.nota === '' || store.form.nota === 'BARU' ? 'BARU' : store.form.nota}`"
-          style="min-width: 200px;"
-        />
+          style="min-width: 200px;" />
       </div>
     </q-bar>
     <div class="col full-height bg-grey-5">
-      <div
-        v-if="pasien?.radiologi?.length === 0"
-        class="column full-height flex-center text-white"
-      >
+      <div v-if="pasien?.radiologi?.length === 0" class="column full-height flex-center text-white">
         Belum Ada Permintaan Order
       </div>
-      <q-scroll-area
-        style="height: calc(100% - 1px);"
-        v-else
-        class="q-pa-sm"
-      >
+      <q-scroll-area style="height: calc(100% - 1px);" v-else class="q-pa-sm">
         <transition-group name="list">
-          <template
-            v-for="(item, i) in filterredTable"
-            :key="i"
-          >
-            <q-list
-              separator
-              class="q-mb-sm list-move"
-            >
+          <template v-for="(item, i) in filterredTable" :key="i">
+            <q-list separator class="q-mb-sm list-move">
               <q-item class="bg-white">
                 <q-item-section>
                   <q-item-label caption>
@@ -57,25 +38,11 @@
                     {{ item?.rs7 }}
                   </q-item-label>
                 </q-item-section>
-                <q-item-section
-                  v-if="bisaEditHapus"
-                  side
-                >
-                  <q-btn
-                    flat
-                    dense
-                    icon="icon-mat-delete"
-                    color="negative"
-                    size="sm"
-                    rounded
-                    @click="hapusItem(item?.id)"
-                  />
-                  <q-badge
-                    outline
-                    :color="item?.cito==='Cito'?'orange':'primary'"
-                    :label="item?.cito==='Cito'? item?.cito:'Normal'"
-                    class="q-my-sm"
-                  />
+                <q-item-section v-if="bisaEditHapus" side>
+                  <q-btn flat dense icon="icon-mat-delete" color="negative" size="sm" rounded
+                    @click="hapusItem(item?.id)" />
+                  <q-badge outline :color="item?.cito === 'Cito' ? 'orange' : 'primary'"
+                    :label="item?.cito === 'Cito' ? item?.cito : 'Bukan Cito'" class="q-my-sm" />
                 </q-item-section>
               </q-item>
             </q-list>
@@ -110,7 +77,7 @@ const filterredTable = computed(() => {
   return (val === 'SEMUA' || val === null || val === '') ? arr : arr?.filter(x => x?.rs2 === val)
 })
 
-function hapusItem (id) {
+function hapusItem(id) {
   $q.dialog({
     dark: true,
     title: 'Peringatan',
