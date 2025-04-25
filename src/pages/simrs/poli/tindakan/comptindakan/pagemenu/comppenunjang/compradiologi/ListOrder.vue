@@ -41,8 +41,8 @@
                 <q-item-section v-if="bisaEditHapus" side>
                   <q-btn flat dense icon="icon-mat-delete" color="negative" size="sm" rounded
                     @click="hapusItem(item?.id)" />
-                  <q-badge outline :color="item?.cito === 'Cito' ? 'orange' : 'primary'"
-                    :label="item?.cito === 'Cito' ? item?.cito : 'Bukan Cito'" class="q-my-sm" />
+                  <!-- <q-badge outline :color="item?.cito === 'Cito' ? 'orange' : 'primary'"
+                    :label="item?.cito === 'Cito' ? item?.cito : 'Bukan Cito'" class="q-my-sm" /> -->
                 </q-item-section>
               </q-item>
             </q-list>
