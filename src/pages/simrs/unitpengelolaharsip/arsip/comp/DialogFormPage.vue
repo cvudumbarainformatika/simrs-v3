@@ -1,28 +1,25 @@
 <template>
   <q-dialog v-model="store.dialog" :backdrop-filter="backdropFilter" transition-show="flip-down"
     transition-hide="flip-up">
-    <q-card style="width: 900px; max-width: 80vw;">
-      <q-form ref="refForm" @submit="onSubmit" class="column full-height">
+    <q-card>
+      <q-form ref="refForm" @submit="onSubmit">
         <q-card-section class="bg-primary text-white">
           <div class="text-h6">Entry Data Arsip</div>
         </q-card-section>
 
         <q-separator />
 
-        <q-card-section class="scroll" align="center">
-          <div class=" q-gutter-xs">
-            <div class="row q-gutter-xs">
-              <!-- <div class="col-12">
-                <q-input v-model="store.form.noarsip" label="No. Arsip" outlined dense disable />
-              </div> -->
-              <div class="col-5">
+        <q-card-section align="center" class="full-height full-width ">
+          <div>
+            <div class="row">
+              <div class="col-6 ">
                 <app-input-date-human :model="store.tanggal.tgl" label="Tanggal" outlined @db-model="setFrom"
-                  @set-display="setToFromDisp" />
+                  style="width: 260px;" @set-display="setToFromDisp" />
               </div>
-              <div class="col-5">
+              <div class="col-6">
                 <q-select v-model="store.form.kodekelasifikasi" label="Kode Klasifikasi" outlined dense
                   :options="options" use-input option-label="nama" option-value="kode" clearable emit-value map-options
-                  :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" @filter="filterFn">
+                  :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" @filter="filterFn" style="width: 260px;">
                   <template #option="scope">
                     <q-item v-bind="scope.itemProps"><q-item-section avatar>
                         <q-item-label>
@@ -42,22 +39,23 @@
                 </q-select>
               </div>
             </div>
-            <div class="row q-gutter-xs">
-              <div class="col-10">
+            <div class="row">
+              <div class=" col-12">
                 <q-input type="textarea" v-model="store.form.uraian" label="Deskripsi" outlined
                   :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" />
               </div>
             </div>
-            <div class="row q-gutter-xs">
-              <div class="col-5">
+            <div class="row">
+              <div class="col-6">
                 <q-select v-model="store.form.lokasi" label="Lokasi Arsip" outlined dense :options="lokasiarsip"
                   option-value="id" option-label="nama_lokasi" emit-value map-options
-                  :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" />
+                  :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" style="width: 260px;" />
               </div>
-              <div class="col-5">
+              <div class="col-6">
                 <q-select label="Jenis Media" v-model="store.form.media" outlined dense :options="optionsmedia"
                   use-input option-label="nama_media" option-value="id" clearable emit-value map-options
-                  @filter="filterFnmedia" :rules="[val => !!val || 'Harap Diisi terlebih dahulu']">
+                  @filter="filterFnmedia" :rules="[val => !!val || 'Harap Diisi terlebih dahulu']"
+                  style="width: 260px;">
                   <template #option="scope">
                     <q-item v-bind="scope.itemProps"><q-item-section avatar>
                         <q-item-label>
@@ -76,22 +74,22 @@
                 </q-select>
               </div>
             </div>
-            <div class="row q-gutter-xs">
-              <div class="col-2">
+            <div class="row">
+              <div class="col-4" align="left">
                 <q-option-group v-model="store.form.keaslian" :options="keaslian" color="primary" inline dense
                   :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" />
               </div>
               <div class="col-4">
                 <q-input v-model="store.form.jumlah" label="Jumlah" input-class="text-right" outlined dense
-                  :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" type="number" />
+                  :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" type="number" style="width: 95%;" />
               </div>
               <div class="col-4">
                 <q-input v-model="store.form.nobox" label="No. Laci" outlined dense input-class="text-right"
-                  :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" type="number" />
+                  :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" type="number" style="width: 95%;" />
               </div>
             </div>
-            <div class="row q-gutter-xs">
-              <div class="col-10">
+            <div class="row">
+              <div class="col-12">
                 <q-input type="textarea" v-model="store.form.keterangan" label="Keterangan" outlined
                   :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" />
               </div>
