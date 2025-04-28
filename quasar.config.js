@@ -44,7 +44,7 @@ export default defineConfig((ctx) => {
         // NODE_OPTIONS: '--max-old-space-size=20480',
         API: ctx?.dev
           // ? 'http://192.168.150.112:3501'
-          ? 'http://localhost:8080'
+          ? 'http://192.168.20.37:8080'
           // : 'http://192.168.150.111:3507',
           : 'http://192.168.150.112:3501',
 
@@ -57,10 +57,6 @@ export default defineConfig((ctx) => {
           // ? 'http://localhost:8000/storage/'
           ? 'http://192.168.150.111:3507'
           : 'http://192.168.150.111:3507',
-
-        ENABLE_MONITORING: ctx.dev, // Aktifkan hanya di development
-        MONITORING_LOG: true, // Matikan console log
-        APP_VERSION: JSON.stringify(require('./package.json').version)
       },
 
       vueRouterMode: 'history', // available values: 'hash', 'history'
