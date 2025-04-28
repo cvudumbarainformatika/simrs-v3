@@ -72,31 +72,38 @@ export const usePerbaikanDataFarmasiStore = defineStore('perbaikan_data_farmasi'
       const params = {
         ...this.params
       }
+      try {
+        const resp = await api.post('/v1/simrs/farmasinew/stok/fr-perbaikan-data-depo', params)
+        console.log(resp?.data)
+        if (resp.status === 200) {
+          const data = resp.data?.kdobat
+          data.forEach(item => {
+            if (item?.data.status === 200) {
+              item.opnameJml = item?.data?.data?.cekOpname?.jmlSesuai
+              item.opnameTrx = item?.data?.data?.cekOpname?.noperSesuai
+              item.trxSesuai = !!(item?.data?.data?.eksekusi?.gaKtm === false || item?.data?.data?.eksekusi?.gaKtm?.length === 0)
+              item.trxLebih = item?.data?.data?.penKur?.length === 0
+              item.trxKurang = item?.data?.data?.penLeb?.length === 0
+              // console.log('item', item)
+            }
+          })
+          this.semuas = data
+          if (this.params.pilihan === 'semua') this.items = this.semuas
+          else if (this.params.pilihan === 'bermasalah') this.items = this.semuas.filter(item => (item.trxSesuai === false || item.trxLebih === false || item.trxKurang === false || item.opnameJml === false || item.opnameTrx === false))
+          else if (this.params.pilihan === 'tidak') this.items = this.semuas.filter(item => (item.trxSesuai === true && item.trxLebih === true && item.trxKurang === true && item.opnameJml === true && item.opnameTrx === true))
+          this.meta.total = resp.data?.total
+          this.meta.page = resp.data?.page
+        }
 
-      const resp = await api.post('/v1/simrs/farmasinew/stok/fr-perbaikan-data-depo', params)
-      console.log(resp?.data)
-      if (resp.status === 200) {
-        const data = resp.data?.kdobat
-        data.forEach(item => {
-          if (item?.data.status === 200) {
-            item.opnameJml = item?.data?.data?.cekOpname?.jmlSesuai
-            item.opnameTrx = item?.data?.data?.cekOpname?.noperSesuai
-            item.trxSesuai = !!(item?.data?.data?.eksekusi?.gaKtm === false || item?.data?.data?.eksekusi?.gaKtm?.length === 0)
-            item.trxLebih = item?.data?.data?.penKur?.length === 0
-            item.trxKurang = item?.data?.data?.penLeb?.length === 0
-            // console.log('item', item)
-          }
-        })
-        this.semuas = data
-        if (this.params.pilihan === 'semua') this.items = this.semuas
-        else if (this.params.pilihan === 'bermasalah') this.items = this.semuas.filter(item => (item.trxSesuai === false || item.trxLebih === false || item.trxKurang === false || item.opnameJml === false || item.opnameTrx === false))
-        else if (this.params.pilihan === 'tidak') this.items = this.semuas.filter(item => (item.trxSesuai === true && item.trxLebih === true && item.trxKurang === true && item.opnameJml === true && item.opnameTrx === true))
-        this.meta.total = resp.data?.total
-        this.meta.page = resp.data?.page
+      } catch (err) {
+        this.loading = false
+
+      } finally {
+        this.loading = false
+
       }
       // this.items = data
       // this.meta = meta
-      this.loading = false
     },
     async getDetailMutasi (kode) {
       this.loadingMutasi = true
