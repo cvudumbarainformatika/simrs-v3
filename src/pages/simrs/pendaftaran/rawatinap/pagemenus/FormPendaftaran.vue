@@ -741,7 +741,8 @@ function pilihRuang(val) {
   const arr = store.kamars
   const obj = arr.length ? arr.find(x => x.rs1 === val) : null
   console.log('pilihRuang', val)
-  const group = obj?.rs4 ?? null
+  // console.log('obj', obj)
+  const group = obj?.groups ?? null
   // const kodeRuang = obj?.rs1 ?? null
   const kelas = obj?.rs3 ?? null
   const flag = obj?.rs6 ?? null
@@ -753,7 +754,7 @@ function pilihRuang(val) {
 
   store.pasien.kamar = null
   store.pasien.no_bed = null
-  // console.log('group', group);
+  console.log('group', group);
 
 
   store.showKamar()
@@ -762,7 +763,8 @@ function pilihRuang(val) {
       kamars.value = []
       const pilihan = store.listKamars.find(x => x.groups === group)
       // console.log('group', group)
-      // console.log('pilihan', pilihan)
+      console.log('pilihan', pilihan)
+      console.log('store.listKamars', store.listKamars)
 
       const kamarsx = pilihan?.kamars?.length
         ? pilihan?.kamars?.filter(x => {
