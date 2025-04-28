@@ -2,146 +2,75 @@
   <div class="column full-height">
     <div class="col-auto">
       <q-bar>
-        <q-btn
-          flat
-          rounded
-          padding="xs"
-          size="xs"
-          icon="icon-mat-close"
-          @click="emits('close')"
-        />
+        <q-btn flat rounded padding="xs" size="xs" icon="icon-mat-close" @click="emits('close')" />
         <q-space />
         <div>History Pasien</div>
       </q-bar>
     </div>
     <div class="col full-height">
       <div class="col-auto bg-red">
-        <q-tabs
-          v-model="store.tab"
-          no-caps
-          inline-label
-          class="bg-primary text-white shadow-2"
-          align="left"
-          dense
-          active-color="yellow"
-          active-bg-color="dark"
-        >
-          <q-tab
-            v-for="(item, i) in store.tabs"
-            :key="i"
-            :name="item"
-            :label="item"
-          />
+        <q-tabs v-model="store.tab" no-caps inline-label class="bg-primary text-white shadow-2" align="left" dense
+          active-color="yellow" active-bg-color="dark">
+          <q-tab v-for="(item, i) in store.tabs" :key="i" :name="item" :label="item" />
         </q-tabs>
       </div>
-      <div
-        class="col full-height"
-        style="overflow: hidden;"
-      >
-        <q-tab-panels
-          v-model="store.tab"
-          animated
-          class="full-height"
-        >
-          <q-tab-panel
-            name="Rawat Jalan"
-            class="full-height q-pa-none"
-          >
+      <div class="col full-height" style="overflow: hidden;">
+        <q-tab-panels v-model="store.tab" animated class="full-height">
+          <q-tab-panel name="Rawat Jalan" class="full-height q-pa-none">
             <q-scroll-area style="height:calc(100% - 50px)">
-              <q-list
-                v-if="store?.items?.length"
-                bordered
-                separator
-              >
+              <q-list v-if="store?.items?.length" bordered separator>
                 <div v-if="filteredItems?.length">
-                  <q-expansion-item
-                    v-for="(item, i) in filteredItems"
-                    :key="i"
-                    expand-separator
+                  <q-expansion-item v-for="(item, i) in filteredItems" :key="i" expand-separator
                     :label="item?.ruangan + ' | ' + item?.rs1 + ' | DPJP : ' + item?.dpjp"
-                    :caption="tanggal(item?.tanggal)"
-                  >
+                    :caption="tanggal(item?.tanggal)">
                     <q-card dark>
                       <q-separator />
                       <q-card-section class="q-pa-none">
-                        <div v-if="item?.anamnesis.length">
+                        <div v-if="item?.anamnesis?.length">
                           <q-bar class="bg-accent">
                             <div>ANAMNESIS</div>
                           </q-bar>
                           <q-list dark>
-                            <q-item
-                              v-for="(anamnesis, a) in item?.anamnesis"
-                              :key="a"
-                            >
+                            <q-item v-for="(anamnesis, a) in item?.anamnesis" :key="a">
                               <q-item-section>
                                 <q-item-label>Keluhan Utama</q-item-label>
-                                <q-item-label
-                                  caption
-                                  lines="2"
-                                >
+                                <q-item-label caption lines="2">
                                   {{ anamnesis?.rs4 }}
                                 </q-item-label>
                                 <q-item-label>Riwayat Penyakit (Sekarang)</q-item-label>
-                                <q-item-label
-                                  caption
-                                  lines="2"
-                                >
+                                <q-item-label caption lines="2">
                                   {{ anamnesis?.riwayatpenyakitsekarang }}
                                 </q-item-label>
                                 <q-item-label>Riwayat Penyakit</q-item-label>
-                                <q-item-label
-                                  caption
-                                  lines="2"
-                                >
+                                <q-item-label caption lines="2">
                                   {{ anamnesis?.riwayatpenyakit }}
                                 </q-item-label>
                                 <q-item-label>Riwayat Alergi</q-item-label>
-                                <q-item-label
-                                  caption
-                                  lines="2"
-                                >
+                                <q-item-label caption lines="2">
                                   {{ anamnesis?.riwayatalergi }}
                                 </q-item-label>
                                 <q-item-label>Reaksi berupa</q-item-label>
-                                <q-item-label
-                                  caption
-                                  lines="2"
-                                >
+                                <q-item-label caption lines="2">
                                   {{ anamnesis?.keteranganalergi }}
                                 </q-item-label>
                                 <q-item-label>Riwayat Pengobatan</q-item-label>
-                                <q-item-label
-                                  caption
-                                  lines="2"
-                                >
+                                <q-item-label caption lines="2">
                                   {{ anamnesis?.riwayatpengobatan }}
                                 </q-item-label>
                                 <q-item-label>Penurunan Berat Badan</q-item-label>
-                                <q-item-label
-                                  caption
-                                  lines="2"
-                                >
+                                <q-item-label caption lines="2">
                                   {{ anamnesis?.skreeninggizi == 0 ? "Tidak" : "Ya" }}
                                 </q-item-label>
                                 <q-item-label>Asupan Makan Berkurang</q-item-label>
-                                <q-item-label
-                                  caption
-                                  lines="2"
-                                >
+                                <q-item-label caption lines="2">
                                   {{ anamnesis?.asupanmakan == 0 ? "Tidak" : "Ya" }}
                                 </q-item-label>
                                 <q-item-label>Kondisi Khusus</q-item-label>
-                                <q-item-label
-                                  caption
-                                  lines="2"
-                                >
+                                <q-item-label caption lines="2">
                                   {{ anamnesis?.kondisikhusus }}
                                 </q-item-label>
                                 <q-item-label>Score Nyeri</q-item-label>
-                                <q-item-label
-                                  caption
-                                  lines="2"
-                                >
+                                <q-item-label caption lines="2">
                                   {{ anamnesis?.scorenyeri }} ( {{ anamnesis?.keteranganscorenyeri }} )
                                 </q-item-label>
                               </q-item-section>
@@ -154,35 +83,18 @@
                           </q-bar>
                         </div>
                       </q-card-section>
-                      <q-card-section
-                        v-if="item?.pemeriksaanfisik?.length"
-                        flat
-                        bordered
-                        square
-                        dark
-                      />
+                      <q-card-section v-if="item?.pemeriksaanfisik?.length" flat bordered square dark />
                       <q-list separator>
                         <q-bar class="bg-accent">
                           <div>PEMERIKSAAN FISIK</div>
                         </q-bar>
                         <!-- <transition-group name="list"> -->
-                        <div
-                          v-for="(pemeriksaanfisik, f) in item?.pemeriksaanfisik"
-                          :key="f"
-                        >
+                        <div v-for="(pemeriksaanfisik, f) in item?.pemeriksaanfisik" :key="f">
                           <!-- NADI-->
-                          <q-item
-                            v-ripple
-                            class="q-pa-xs list-move"
-                            dark
-                            clickable
-                          >
+                          <q-item v-ripple class="q-pa-xs list-move" dark clickable>
                             <q-item-section avatar>
-                              <q-icon
-                                :color="nadi(pemeriksaanfisik?.rs4).color"
-                                name="icon-my-monitor_heart"
-                                size="lg"
-                              />
+                              <q-icon :color="nadi(pemeriksaanfisik?.rs4).color" name="icon-my-monitor_heart"
+                                size="lg" />
                             </q-item-section>
                             <q-item-section class="q-pa-xs">
                               <q-item-label :class="`text-h4 text-${nadi(pemeriksaanfisik?.rs4).color}`">
@@ -198,22 +110,10 @@
                               </q-item-label>
                             </q-item-section>
                           </q-item>
-                          <q-separator
-                            dark
-                            inset
-                          />
-                          <q-item
-                            v-ripple
-                            class="q-pa-xs list-move"
-                            dark
-                            clickable
-                          >
+                          <q-separator dark inset />
+                          <q-item v-ripple class="q-pa-xs list-move" dark clickable>
                             <q-item-section avatar>
-                              <q-icon
-                                color="white"
-                                name="icon-my-local_hospital"
-                                size="lg"
-                              />
+                              <q-icon color="white" name="icon-my-local_hospital" size="lg" />
                             </q-item-section>
                             <q-item-section class="q-pa-xs">
                               <q-item-label :class="`text-h4 text-white`">
@@ -229,22 +129,11 @@
                               </q-item-label>
                             </q-item-section>
                           </q-item>
-                          <q-separator
-                            dark
-                            inset
-                          />
-                          <q-item
-                            v-ripple
-                            class="q-pa-xs list-move"
-                            dark
-                            clickable
-                          >
+                          <q-separator dark inset />
+                          <q-item v-ripple class="q-pa-xs list-move" dark clickable>
                             <q-item-section avatar>
-                              <q-icon
-                                :color="suhu(pemeriksaanfisik?.suhutubuh).color"
-                                name="icon-my-standing-human-body-silhouette-svgrepo-com"
-                                size="lg"
-                              />
+                              <q-icon :color="suhu(pemeriksaanfisik?.suhutubuh).color"
+                                name="icon-my-standing-human-body-silhouette-svgrepo-com" size="lg" />
                             </q-item-section>
                             <q-item-section class="q-pa-xs">
                               <q-item-label :class="`text-h4 text-${suhu(item?.suhutubuh).color}`">
@@ -260,16 +149,8 @@
                               </q-item-label>
                             </q-item-section>
                           </q-item>
-                          <q-separator
-                            dark
-                            inset
-                          />
-                          <q-item
-                            v-ripple
-                            class="q-pa-xs list-move"
-                            dark
-                            clickable
-                          >
+                          <q-separator dark inset />
+                          <q-item v-ripple class="q-pa-xs list-move" dark clickable>
                             <q-item-section class="q-pa-xs">
                               <q-item-label :class="`text-h5 `">
                                 <span :class="`${tekananDarah(pemeriksaanfisik?.sistole).color}`">{{
@@ -291,16 +172,8 @@
                             </q-item-section>
                           </q-item>
                           <!-- STATUS -->
-                          <q-separator
-                            dark
-                            inset
-                          />
-                          <q-item
-                            v-ripple
-                            class="q-pa-xs list-move"
-                            dark
-                            clickable
-                          >
+                          <q-separator dark inset />
+                          <q-item v-ripple class="q-pa-xs list-move" dark clickable>
                             <q-item-section class="q-pa-xs">
                               <q-item-label lines="2">
                                 T Kesadaran : <em>{{ getKesadaran(pemeriksaanfisik?.tingkatkesadaran) ?? '-' }}</em>
@@ -321,16 +194,8 @@
                           </q-item>
 
                           <!-- KHUSUS PARU POL018-->
-                          <q-separator
-                            dark
-                            inset
-                          />
-                          <q-item
-                            v-ripple
-                            class="q-pa-xs list-move"
-                            dark
-                            clickable
-                          >
+                          <q-separator dark inset />
+                          <q-item v-ripple class="q-pa-xs list-move" dark clickable>
                             <q-item-section class="q-pa-xs">
                               <q-item-label lines="2">
                                 Inspeksi : <em>{{ pemeriksaanfisik?.inspeksi ?? '-' }}</em>
@@ -354,48 +219,27 @@
                               <q-item-label lines="2">
                                 Suara Nafas Tambahan (Kiri) : <em>{{ pemeriksaanfisik?.auskultasisuaratambahankiri ??
                                   '-'
-                                }}</em>
+                                  }}</em>
                               </q-item-label>
                             </q-item-section>
                           </q-item>
                         </div>
                         <!-- </transition-group> -->
-                        <q-card-section
-                          v-if="item?.diagnosa?.length"
-                          class="q-pa-none"
-                          flat
-                          bordered
-                          square
-                          dark
-                        >
+                        <q-card-section v-if="item?.diagnosa?.length" class="q-pa-none" flat bordered square dark>
                           <q-bar class="bg-accent">
                             <div>DIAGNOSA</div>
                           </q-bar>
-                          <q-list
-                            dark
-                            separator
-                          >
-                            <q-item
-                              v-for="(diagnosa, d) in item?.diagnosa"
-                              :key="d"
-                              v-ripple
-                              clickable
-                            >
+                          <q-list dark separator>
+                            <q-item v-for="(diagnosa, d) in item?.diagnosa" :key="d" v-ripple clickable>
                               <q-item-section>
                                 <q-item-label>Kasus = {{ diagnosa?.rs7 }}</q-item-label>
-                                <q-item-label
-                                  caption
-                                  lines="2"
-                                />
+                                <q-item-label caption lines="2" />
                                 Jenis Diagnosa = {{ diagnosa?.rs4 }}
                                 <q-item-label>
                                   Diagnosa = {{ diagnosa?.masterdiagnosa?.rs4 }} ( {{ diagnosa?.rs3 }}
                                   )
                                 </q-item-label>
-                                <q-item-label
-                                  caption
-                                  lines="2"
-                                />
+                                <q-item-label caption lines="2" />
                                 Keterangan = {{ diagnosa?.rs6 }}
                               </q-item-section>
                             </q-item>
@@ -971,64 +815,25 @@
                         </q-card-section> -->
 
                         <q-separator />
-                        <q-card-section
-                          v-if="item?.tindakan?.length"
-                          class="q-pa-none"
-                          flat
-                          bordered
-                          square
-                          dark
-                        >
+                        <q-card-section v-if="item?.tindakan?.length" class="q-pa-none" flat bordered square dark>
                           <q-bar class="bg-accent">
                             <div>TINDAKAN</div>
                           </q-bar>
-                          <q-list
-                            dark
-                            separator
-                          >
-                            <q-item
-                              v-for="(tindakan, tin) in item?.tindakan"
-                              :key="tin"
-                              v-ripple
-                              clickable
-                            >
+                          <q-list dark separator>
+                            <q-item v-for="(tindakan, tin) in item?.tindakan" :key="tin" v-ripple clickable>
                               <q-item-section>
-                                <q-item-label
-                                  caption
-                                  lines="2"
-                                />
+                                <q-item-label caption lines="2" />
                                 {{ tin + 1 }}. {{ tindakan?.mastertindakan?.rs2 }}
-                                <q-item-label
-                                  caption
-                                  lines="2"
-                                />
+                                <q-item-label caption lines="2" />
                                 keterangan = {{ tindakan?.rs20 }}
-                                <div
-                                  v-if="tindakan?.gambardokumens?.length > 0"
-                                  class="image-row"
-                                >
-                                  <div
-                                    v-for="(image, index) in tindakan?.gambardokumens"
-                                    :key="index"
-                                    class="image-container"
-                                  >
-                                    <q-img
-                                      :src="pathImg + image.url"
-                                      class="image"
-                                    >
+                                <div v-if="tindakan?.gambardokumens?.length > 0" class="image-row">
+                                  <div v-for="(image, index) in tindakan?.gambardokumens" :key="index"
+                                    class="image-container">
+                                    <q-img :src="pathImg + image.url" class="image">
                                       <div class="absolute-bottom">
                                         <div class="column items-center justify-between">
-                                          <q-btn
-                                            class="gt-xs"
-                                            size="md"
-                                            color="yellow"
-                                            flat
-                                            dense
-                                            round
-                                            icon="icon-mat-visibility"
-                                            :href="pathImg + image?.url"
-                                            target="_blank"
-                                          />
+                                          <q-btn class="gt-xs" size="md" color="yellow" flat dense round
+                                            icon="icon-mat-visibility" :href="pathImg + image?.url" target="_blank" />
                                         </div>
                                       </div>
                                     </q-img>
@@ -1040,20 +845,11 @@
                         </q-card-section>
                         <q-separator />
 
-                        <q-card-section
-                          v-if="item?.laborat?.length || item?.laborats?.length"
-                          class="q-pa-none"
-                        >
+                        <q-card-section v-if="item?.laborat?.length || item?.laborats?.length" class="q-pa-none">
                           <q-bar class="bg-accent">
                             PEMERIKSAAN LABORAT
                           </q-bar>
-                          <q-markup-table
-                            separator="vertical"
-                            flat
-                            bordered
-                            dense
-                            dark
-                          >
+                          <q-markup-table separator="vertical" flat bordered dense dark>
                             <thead>
                               <tr>
                                 <th class="text-left">
@@ -1071,42 +867,22 @@
                               </tr>
                             </thead>
                             <tbody>
-                              <tr
-                                v-for="(lab, l) in item?.laborat"
-                                :key="l"
-                                v-ripple
-                                clickable
-                              >
-                                <td
-                                  class="text-left ellipsis"
-                                  style="max-width: 250px;"
-                                >
+                              <tr v-for="(lab, l) in item?.laborat" :key="l" v-ripple clickable>
+                                <td class="text-left ellipsis" style="max-width: 250px;">
                                   {{ lab?.pemeriksaanlab?.rs2 }}
                                 </td>
-                                <td
-                                  class="text-right"
-                                  style="max-width: 150px;"
-                                >
+                                <td class="text-right" style="max-width: 150px;">
                                   {{ lab?.pemeriksaanlab?.rs21 }}
                                 </td>
-                                <td
-                                  class="text-right"
-                                  style="max-width: 150px;"
-                                >
+                                <td class="text-right" style="max-width: 150px;">
                                   {{ lab?.pemeriksaanlab?.rs22 }}
                                 </td>
-                                <td
-                                  v-if="lab?.rs27 === ''"
-                                  style="max-width: 150px;"
-                                >
+                                <td v-if="lab?.rs27 === ''" style="max-width: 150px;">
                                   <q-item-label class="text-right">
                                     {{ lab?.rs21 }}
                                   </q-item-label>
                                 </td>
-                                <td
-                                  v-else
-                                  style="max-width: 150px;"
-                                >
+                                <td v-else style="max-width: 150px;">
                                   <q-item-label class="text-right">
                                     {{ lab?.rs21 }} ({{ lab?.rs27 }})
                                   </q-item-label>
@@ -1118,51 +894,30 @@
                         </q-card-section>
                         <q-separator />
 
-                        <q-card-section
-                          v-if="item?.transradiologi?.length && item?.hasilradiologi?.length"
-                          class="q-pa-none"
-                          flat
-                          bordered
-                          square
-                          dark
-                        >
+                        <q-card-section v-if="item?.transradiologi?.length && item?.hasilradiologi?.length"
+                          class="q-pa-none" flat bordered square dark>
                           <q-bar class="bg-accent">
                             <div>RADIOLOGI</div>
                           </q-bar>
-                          <q-list
-                            dark
-                            separator
-                          >
-                            <q-item
-                              v-for="(radiologi, r) in item?.transradiologi"
-                              :key="r"
-                              v-ripple
-                              clickable
-                            >
+                          <q-list dark separator>
+                            <q-item v-for="(radiologi, r) in item?.transradiologi" :key="r" v-ripple clickable>
                               <q-item-section>
                                 <q-item-label>Pemeriksaan = {{ radiologi?.relmasterpemeriksaan?.rs2 }}</q-item-label>
-                                <q-item-label>Jenis Pemeriksaan Radiologi = {{ radiologi?.relmasterpemeriksaan?.rs3 }}</q-item-label>
-                                <q-item-label>Hasil Pemeriksaan Radiologi = {{ item?.hasilradiologi[r]?.rs3 }}</q-item-label>
+                                <q-item-label>Jenis Pemeriksaan Radiologi = {{ radiologi?.relmasterpemeriksaan?.rs3
+                                  }}</q-item-label>
+                                <q-item-label>Hasil Pemeriksaan Radiologi = {{ item?.hasilradiologi[r]?.rs3
+                                  }}</q-item-label>
                               </q-item-section>
                             </q-item>
                           </q-list>
                         </q-card-section>
 
                         <q-separator />
-                        <q-card-section
-                          v-if="item?.kamaroperasi?.length"
-                          class="q-pa-none"
-                        >
+                        <q-card-section v-if="item?.kamaroperasi?.length" class="q-pa-none">
                           <q-bar class="bg-accent">
                             TINDAKAN OPERASI
                           </q-bar>
-                          <q-markup-table
-                            separator="vertical"
-                            flat
-                            bordered
-                            dense
-                            dark
-                          >
+                          <q-markup-table separator="vertical" flat bordered dense dark>
                             <thead>
                               <tr>
                                 <th class="text-left">
@@ -1177,28 +932,14 @@
                               </tr>
                             </thead>
                             <tbody>
-                              <tr
-                                v-for="(operasi, l) in item?.kamaroperasi"
-                                :key="l"
-                                v-ripple
-                                clickable
-                              >
-                                <td
-                                  class="text-left ellipsis"
-                                  style="max-width: 250px;"
-                                >
+                              <tr v-for="(operasi, l) in item?.kamaroperasi" :key="l" v-ripple clickable>
+                                <td class="text-left ellipsis" style="max-width: 250px;">
                                   {{ operasi?.rs3 }}
                                 </td>
-                                <td
-                                  class="text-right"
-                                  style="max-width: 150px;"
-                                >
+                                <td class="text-right" style="max-width: 150px;">
                                   {{ operasi?.mastertindakanoperasi?.rs2 }}
                                 </td>
-                                <td
-                                  class="text-right"
-                                  style="max-width: 150px;"
-                                >
+                                <td class="text-right" style="max-width: 150px;">
                                   {{ operasi?.mastertindakanoperasi?.rs4 }}
                                 </td>
                               </tr>
@@ -1208,27 +949,18 @@
                         </q-card-section>
 
                         <q-separator />
-                        <q-card-section
-                          v-if="item?.apotekrajal?.length
-                            || item?.apotekrajalpolilalu?.length
-                            || item?.apotekracikanrajal?.length
-                            || item?.apotekracikanrajallalu?.length
-                            || item?.apotekranap?.length
-                            || item?.apotekranaplalu?.length
-                            || item?.apotekranapracikanheder?.length
-                            || item?.apotekranapracikanhederlalu?.length"
-                          class="q-pa-none"
-                        >
+                        <q-card-section v-if="item?.apotekrajal?.length
+                          || item?.apotekrajalpolilalu?.length
+                          || item?.apotekracikanrajal?.length
+                          || item?.apotekracikanrajallalu?.length
+                          || item?.apotekranap?.length
+                          || item?.apotekranaplalu?.length
+                          || item?.apotekranapracikanheder?.length
+                          || item?.apotekranapracikanhederlalu?.length" class="q-pa-none">
                           <q-bar class="bg-accent">
                             PEMBERIAN OBAT
                           </q-bar>
-                          <q-markup-table
-                            separator="vertical"
-                            flat
-                            bordered
-                            dense
-                            dark
-                          >
+                          <q-markup-table separator="vertical" flat bordered dense dark>
                             <thead>
                               <tr>
                                 <th class="text-left">
@@ -1246,179 +978,86 @@
                               </tr>
                             </thead>
                             <tbody>
-                              <tr
-                                v-for="(apotekrajal, wew) in item?.apotekrajal"
-                                :key="wew"
-                              >
-                                <td
-                                  class="text-left ellipsis"
-                                  style="max-width: 250px;"
-                                >
+                              <tr v-for="(apotekrajal, wew) in item?.apotekrajal" :key="wew">
+                                <td class="text-left ellipsis" style="max-width: 250px;">
                                   {{ apotekrajal?.rs3 }}
                                 </td>
-                                <td
-                                  class="text-right"
-                                  style="max-width: 150px;"
-                                >
+                                <td class="text-right" style="max-width: 150px;">
                                   {{ apotekrajal.masterobat?.rs2 }}
                                 </td>
-                                <td
-                                  v-if="apotekrajal?.rs27.length > 0 && apotekrajal?.rs28.length > 0"
-                                  class="text-right"
-                                  style="max-width: 250px;"
-                                >
+                                <td v-if="apotekrajal?.rs27.length > 0 && apotekrajal?.rs28.length > 0"
+                                  class="text-right" style="max-width: 250px;">
                                   {{ getInteger(apotekrajal?.rs27) + ' X ' + getInteger(apotekrajal?.rs28) }}
                                 </td>
-                                <td
-                                  v-else
-                                  class="text-right"
-                                  style="max-width: 250px;"
-                                >
+                                <td v-else class="text-right" style="max-width: 250px;">
                                   {{ '-' }}
                                 </td>
-                                <td
-                                  class="text-right"
-                                  style="max-width: 150px;"
-                                >
+                                <td class="text-right" style="max-width: 150px;">
                                   {{ apotekrajal?.rs8 }}
                                 </td>
                               </tr>
-                              <tr
-                                v-for="(apotekrajalpolilalu, lll) in item?.apotekrajalpolilalu"
-                                :key="lll"
-                              >
-                                <td
-                                  class="text-left ellipsis"
-                                  style="max-width: 250px;"
-                                >
+                              <tr v-for="(apotekrajalpolilalu, lll) in item?.apotekrajalpolilalu" :key="lll">
+                                <td class="text-left ellipsis" style="max-width: 250px;">
                                   {{ apotekrajalpolilalu?.rs3 }}
                                 </td>
-                                <td
-                                  class="text-right"
-                                  style="max-width: 150px;"
-                                >
+                                <td class="text-right" style="max-width: 150px;">
                                   {{ apotekrajalpolilalu.masterobat?.rs2 }}
                                 </td>
-                                <td
-                                  v-if="apotekrajalpolilalu?.rs27.length > 0 && apotekrajalpolilalu?.rs28.length > 0"
-                                  class="text-right"
-                                  style="max-width: 250px;"
-                                >
-                                  {{ getInteger(apotekrajalpolilalu?.rs27) + ' X ' + getInteger(apotekrajalpolilalu?.rs28) }}
+                                <td v-if="apotekrajalpolilalu?.rs27.length > 0 && apotekrajalpolilalu?.rs28.length > 0"
+                                  class="text-right" style="max-width: 250px;">
+                                  {{ getInteger(apotekrajalpolilalu?.rs27) + ' X ' +
+                                  getInteger(apotekrajalpolilalu?.rs28) }}
                                 </td>
-                                <td
-                                  v-else
-                                  class="text-right"
-                                  style="max-width: 250px;"
-                                >
+                                <td v-else class="text-right" style="max-width: 250px;">
                                   {{ '-' }}
                                 </td>
-                                <td
-                                  class="text-right"
-                                  style="max-width: 150px;"
-                                >
+                                <td class="text-right" style="max-width: 150px;">
                                   {{ apotekrajalpolilalu?.rs8 }}
                                 </td>
                               </tr>
-                              <tr
-                                v-for="(apotekracikanrajal, llll) in item?.apotekracikanrajal"
-                                :key="llll"
-                              >
-                                <td
-                                  class="text-left ellipsis"
-                                  style="max-width: 250px;"
-                                >
+                              <tr v-for="(apotekracikanrajal, llll) in item?.apotekracikanrajal" :key="llll">
+                                <td class="text-left ellipsis" style="max-width: 250px;">
                                   {{ apotekracikanrajal?.rs3 }}
                                 </td>
-                                <td
-                                  class="text-right"
-                                  style="max-width: 150px;"
-                                >
+                                <td class="text-right" style="max-width: 150px;">
                                   {{ apotekracikanrajal.masterobat?.rs2 }}
                                 </td>
-                                <td
-                                  class="text-left ellipsis"
-                                  style="max-width: 250px;"
-                                >
+                                <td class="text-left ellipsis" style="max-width: 250px;">
                                   {{ '-' }}
                                 </td>
-                                <td
-                                  class="text-right"
-                                  style="max-width: 150px;"
-                                >
+                                <td class="text-right" style="max-width: 150px;">
                                   {{ apotekracikanrajal?.rs5 }}
                                 </td>
                               </tr>
-                              <tr
-                                v-for="(apotekracikanrajallalu, llll) in item?.apotekracikanrajallalu"
-                                :key="llll"
-                              >
-                                <td
-                                  class="text-left ellipsis"
-                                  style="max-width: 250px;"
-                                >
+                              <tr v-for="(apotekracikanrajallalu, llll) in item?.apotekracikanrajallalu" :key="llll">
+                                <td class="text-left ellipsis" style="max-width: 250px;">
                                   {{ apotekracikanrajallalu?.rs3 }}
                                 </td>
-                                <td
-                                  class="text-right"
-                                  style="max-width: 150px;"
-                                >
+                                <td class="text-right" style="max-width: 150px;">
                                   {{ apotekracikanrajallalu.masterobat?.rs2 }}
                                 </td>
-                                <td
-                                  class="text-right"
-                                  style="max-width: 150px;"
-                                >
+                                <td class="text-right" style="max-width: 150px;">
                                   {{ '-' }}
                                 </td>
-                                <td
-                                  class="text-right"
-                                  style="max-width: 150px;"
-                                >
+                                <td class="text-right" style="max-width: 150px;">
                                   {{ apotekracikanrajallalu?.rs5 }}
                                 </td>
                               </tr>
                             </tbody>
                           </q-markup-table>
                         </q-card-section>
-                        <q-card-section
-                          v-if="item?.dokumenluar?.length"
-                          class="q-pa-none"
-                          flat
-                          bordered
-                          square
-                          dark
-                        >
+                        <q-card-section v-if="item?.dokumenluar?.length" class="q-pa-none" flat bordered square dark>
                           <q-bar class="bg-accent">
                             <div>DOKUMEN</div>
                           </q-bar>
-                          <q-list
-                            dark
-                            separator
-                          >
+                          <q-list dark separator>
                             <div class="image-row">
-                              <div
-                                v-for="(image, index) in item?.dokumenluar"
-                                :key="index"
-                                class="image-container"
-                              >
-                                <q-img
-                                  :src="pathImg + image.url"
-                                  class="image"
-                                >
+                              <div v-for="(image, index) in item?.dokumenluar" :key="index" class="image-container">
+                                <q-img :src="pathImg + image.url" class="image">
                                   <div class="absolute-bottom">
                                     <div class="column items-center justify-between">
-                                      <q-btn
-                                        class="gt-xs"
-                                        size="md"
-                                        color="yellow"
-                                        flat
-                                        dense
-                                        round
-                                        icon="icon-mat-visibility"
-                                        :href="pathImg + image?.url"
-                                        target="_blank"
-                                      />
+                                      <q-btn class="gt-xs" size="md" color="yellow" flat dense round
+                                        icon="icon-mat-visibility" :href="pathImg + image?.url" target="_blank" />
                                     </div>
                                     <div>Dokumen : {{ image?.nama }}</div>
                                     <div>Diinput Oleh : {{ image?.pegawai?.nama }}</div>
@@ -1432,34 +1071,19 @@
                     </q-card>
                   </q-expansion-item>
                 </div>
-                <div
-                  v-else
-                  class="column flex-center"
-                  style="min-height: 860px;"
-                >
+                <div v-else class="column flex-center" style="min-height: 860px;">
                   MAAF ... DATA HISTORY PASIEN RAWAT JALAN BELUM ADA
                 </div>
               </q-list>
             </q-scroll-area>
           </q-tab-panel>
-          <q-tab-panel
-            name="Rawat Inap"
-            class="full-height q-pa-none"
-          >
+          <q-tab-panel name="Rawat Inap" class="full-height q-pa-none">
             <q-scroll-area style="height:calc(100% - 50px)">
-              <q-list
-                v-if="store?.items?.length"
-                bordered
-                separator
-              >
+              <q-list v-if="store?.items?.length" bordered separator>
                 <div v-if="filteredItems?.length">
-                  <q-expansion-item
-                    v-for="(item, i) in filteredItems"
-                    :key="i"
-                    expand-separator
+                  <q-expansion-item v-for="(item, i) in filteredItems" :key="i" expand-separator
                     :label="item?.ruangan + ' | ' + item?.rs1 + ' | DPJP : ' + item?.dpjp"
-                    :caption="tanggal(item?.tanggal)"
-                  >
+                    :caption="tanggal(item?.tanggal)">
                     <q-card dark>
                       <q-separator />
                       <q-card-section class="q-pa-none">
@@ -1468,79 +1092,46 @@
                             <div>ANAMNESIS</div>
                           </q-bar>
                           <q-list dark>
-                            <q-item
-                              v-for="(anamnesis, a) in item?.anamnesis"
-                              :key="a"
-                            >
+                            <q-item v-for="(anamnesis, a) in item?.anamnesis" :key="a">
                               <q-item-section>
                                 <q-item-label>Keluhan Utama</q-item-label>
-                                <q-item-label
-                                  caption
-                                  lines="2"
-                                >
+                                <q-item-label caption lines="2">
                                   {{ anamnesis?.rs4 }}
                                 </q-item-label>
                                 <q-item-label>Riwayat Penyakit (Sekarang)</q-item-label>
-                                <q-item-label
-                                  caption
-                                  lines="2"
-                                >
+                                <q-item-label caption lines="2">
                                   {{ anamnesis?.riwayatpenyakitsekarang }}
                                 </q-item-label>
                                 <q-item-label>Riwayat Penyakit</q-item-label>
-                                <q-item-label
-                                  caption
-                                  lines="2"
-                                >
+                                <q-item-label caption lines="2">
                                   {{ anamnesis?.riwayatpenyakit }}
                                 </q-item-label>
                                 <q-item-label>Riwayat Alergi</q-item-label>
-                                <q-item-label
-                                  caption
-                                  lines="2"
-                                >
+                                <q-item-label caption lines="2">
                                   {{ anamnesis?.riwayatalergi }}
                                 </q-item-label>
                                 <q-item-label>Reaksi berupa</q-item-label>
-                                <q-item-label
-                                  caption
-                                  lines="2"
-                                >
+                                <q-item-label caption lines="2">
                                   {{ anamnesis?.keteranganalergi }}
                                 </q-item-label>
                                 <q-item-label>Riwayat Pengobatan</q-item-label>
-                                <q-item-label
-                                  caption
-                                  lines="2"
-                                >
+                                <q-item-label caption lines="2">
                                   {{ anamnesis?.riwayatpengobatan }}
                                 </q-item-label>
                                 <q-item-label>Penurunan Berat Badan</q-item-label>
-                                <q-item-label
-                                  caption
-                                  lines="2"
-                                >
+                                <q-item-label caption lines="2">
                                   {{ anamnesis?.skreeninggizi == 0 ? "Tidak" : "Ya" }}
                                 </q-item-label>
                                 <q-item-label>Asupan Makan Berkurang</q-item-label>
-                                <q-item-label
-                                  caption
-                                  lines="2"
-                                >
+                                <q-item-label caption lines="2">
                                   {{ anamnesis?.asupanmakan == 0 ? "Tidak" : "Ya" }}
                                 </q-item-label>
                                 <q-item-label>Kondisi Khusus</q-item-label>
-                                <q-item-label
-                                  caption
-                                  lines="2"
-                                >
+                                <q-item-label caption lines="2">
                                   {{ anamnesis?.kondisikhusus }}
                                 </q-item-label>
                                 <q-item-label>Score Nyeri</q-item-label>
-                                <q-item-label
-                                  caption
-                                  lines="2"
-                                >
+                                <q-item-label caption lines="2">
                                   {{ anamnesis?.scorenyeri }} ( {{ anamnesis?.keteranganscorenyeri }} )
                                 </q-item-label>
                               </q-item-section>
@@ -1553,35 +1144,18 @@
                           </q-bar>
                         </div>
                       </q-card-section>
-                      <q-card-section
-                        v-if="item?.pemeriksaanfisik?.length"
-                        flat
-                        bordered
-                        square
-                        dark
-                      />
+                      <q-card-section v-if="item?.pemeriksaanfisik?.length" flat bordered square dark />
                       <q-list separator>
                         <q-bar class="bg-accent">
                           <div>PEMERIKSAAN FISIK</div>
                         </q-bar>
                         <!-- <transition-group name="list"> -->
-                        <div
-                          v-for="(pemeriksaanfisik, f) in item?.pemeriksaanfisik"
-                          :key="f"
-                        >
+                        <div v-for="(pemeriksaanfisik, f) in item?.pemeriksaanfisik" :key="f">
                           <!-- NADI-->
-                          <q-item
-                            v-ripple
-                            class="q-pa-xs list-move"
-                            dark
-                            clickable
-                          >
+                          <q-item v-ripple class="q-pa-xs list-move" dark clickable>
                             <q-item-section avatar>
-                              <q-icon
-                                :color="nadi(pemeriksaanfisik?.rs4).color"
-                                name="icon-my-monitor_heart"
-                                size="lg"
-                              />
+                              <q-icon :color="nadi(pemeriksaanfisik?.rs4).color" name="icon-my-monitor_heart"
+                                size="lg" />
                             </q-item-section>
                             <q-item-section class="q-pa-xs">
                               <q-item-label :class="`text-h4 text-${nadi(pemeriksaanfisik?.rs4).color}`">
@@ -1597,22 +1171,10 @@
                               </q-item-label>
                             </q-item-section>
                           </q-item>
-                          <q-separator
-                            dark
-                            inset
-                          />
-                          <q-item
-                            v-ripple
-                            class="q-pa-xs list-move"
-                            dark
-                            clickable
-                          >
+                          <q-separator dark inset />
+                          <q-item v-ripple class="q-pa-xs list-move" dark clickable>
                             <q-item-section avatar>
-                              <q-icon
-                                color="white"
-                                name="icon-my-local_hospital"
-                                size="lg"
-                              />
+                              <q-icon color="white" name="icon-my-local_hospital" size="lg" />
                             </q-item-section>
                             <q-item-section class="q-pa-xs">
                               <q-item-label :class="`text-h4 text-white`">
@@ -1628,22 +1190,11 @@
                               </q-item-label>
                             </q-item-section>
                           </q-item>
-                          <q-separator
-                            dark
-                            inset
-                          />
-                          <q-item
-                            v-ripple
-                            class="q-pa-xs list-move"
-                            dark
-                            clickable
-                          >
+                          <q-separator dark inset />
+                          <q-item v-ripple class="q-pa-xs list-move" dark clickable>
                             <q-item-section avatar>
-                              <q-icon
-                                :color="suhu(pemeriksaanfisik?.suhutubuh).color"
-                                name="icon-my-standing-human-body-silhouette-svgrepo-com"
-                                size="lg"
-                              />
+                              <q-icon :color="suhu(pemeriksaanfisik?.suhutubuh).color"
+                                name="icon-my-standing-human-body-silhouette-svgrepo-com" size="lg" />
                             </q-item-section>
                             <q-item-section class="q-pa-xs">
                               <q-item-label :class="`text-h4 text-${suhu(item?.suhutubuh).color}`">
@@ -1659,16 +1210,8 @@
                               </q-item-label>
                             </q-item-section>
                           </q-item>
-                          <q-separator
-                            dark
-                            inset
-                          />
-                          <q-item
-                            v-ripple
-                            class="q-pa-xs list-move"
-                            dark
-                            clickable
-                          >
+                          <q-separator dark inset />
+                          <q-item v-ripple class="q-pa-xs list-move" dark clickable>
                             <q-item-section class="q-pa-xs">
                               <q-item-label :class="`text-h5 `">
                                 <span :class="`${tekananDarah(pemeriksaanfisik?.sistole).color}`">{{
@@ -1690,16 +1233,8 @@
                             </q-item-section>
                           </q-item>
                           <!-- STATUS -->
-                          <q-separator
-                            dark
-                            inset
-                          />
-                          <q-item
-                            v-ripple
-                            class="q-pa-xs list-move"
-                            dark
-                            clickable
-                          >
+                          <q-separator dark inset />
+                          <q-item v-ripple class="q-pa-xs list-move" dark clickable>
                             <q-item-section class="q-pa-xs">
                               <q-item-label lines="2">
                                 T Kesadaran : <em>{{ getKesadaran(pemeriksaanfisik?.tingkatkesadaran) ?? '-' }}</em>
@@ -1720,16 +1255,8 @@
                           </q-item>
 
                           <!-- KHUSUS PARU POL018-->
-                          <q-separator
-                            dark
-                            inset
-                          />
-                          <q-item
-                            v-ripple
-                            class="q-pa-xs list-move"
-                            dark
-                            clickable
-                          >
+                          <q-separator dark inset />
+                          <q-item v-ripple class="q-pa-xs list-move" dark clickable>
                             <q-item-section class="q-pa-xs">
                               <q-item-label lines="2">
                                 Inspeksi : <em>{{ pemeriksaanfisik?.inspeksi ?? '-' }}</em>
@@ -1753,48 +1280,27 @@
                               <q-item-label lines="2">
                                 Suara Nafas Tambahan (Kiri) : <em>{{ pemeriksaanfisik?.auskultasisuaratambahankiri ??
                                   '-'
-                                }}</em>
+                                  }}</em>
                               </q-item-label>
                             </q-item-section>
                           </q-item>
                         </div>
                         <!-- </transition-group> -->
-                        <q-card-section
-                          v-if="item?.diagnosa?.length"
-                          class="q-pa-none"
-                          flat
-                          bordered
-                          square
-                          dark
-                        >
+                        <q-card-section v-if="item?.diagnosa?.length" class="q-pa-none" flat bordered square dark>
                           <q-bar class="bg-accent">
                             <div>DIAGNOSA</div>
                           </q-bar>
-                          <q-list
-                            dark
-                            separator
-                          >
-                            <q-item
-                              v-for="(diagnosa, d) in item?.diagnosa"
-                              :key="d"
-                              v-ripple
-                              clickable
-                            >
+                          <q-list dark separator>
+                            <q-item v-for="(diagnosa, d) in item?.diagnosa" :key="d" v-ripple clickable>
                               <q-item-section>
                                 <q-item-label>Kasus = {{ diagnosa?.rs7 }}</q-item-label>
-                                <q-item-label
-                                  caption
-                                  lines="2"
-                                />
+                                <q-item-label caption lines="2" />
                                 Jenis Diagnosa = {{ diagnosa?.rs4 }}
                                 <q-item-label>
                                   Diagnosa = {{ diagnosa?.masterdiagnosa?.rs4 }} ( {{ diagnosa?.rs3 }}
                                   )
                                 </q-item-label>
-                                <q-item-label
-                                  caption
-                                  lines="2"
-                                />
+                                <q-item-label caption lines="2" />
                                 Keterangan = {{ diagnosa?.rs6 }}
                               </q-item-section>
                             </q-item>
@@ -1802,64 +1308,25 @@
                         </q-card-section>
 
                         <q-separator />
-                        <q-card-section
-                          v-if="item?.tindakan?.length"
-                          class="q-pa-none"
-                          flat
-                          bordered
-                          square
-                          dark
-                        >
+                        <q-card-section v-if="item?.tindakan?.length" class="q-pa-none" flat bordered square dark>
                           <q-bar class="bg-accent">
                             <div>TINDAKAN</div>
                           </q-bar>
-                          <q-list
-                            dark
-                            separator
-                          >
-                            <q-item
-                              v-for="(tindakan, tin) in item?.tindakan"
-                              :key="tin"
-                              v-ripple
-                              clickable
-                            >
+                          <q-list dark separator>
+                            <q-item v-for="(tindakan, tin) in item?.tindakan" :key="tin" v-ripple clickable>
                               <q-item-section>
-                                <q-item-label
-                                  caption
-                                  lines="2"
-                                />
+                                <q-item-label caption lines="2" />
                                 {{ tin + 1 }}. {{ tindakan?.mastertindakan?.rs2 }}
-                                <q-item-label
-                                  caption
-                                  lines="2"
-                                />
+                                <q-item-label caption lines="2" />
                                 keterangan = {{ tindakan?.rs20 }}
-                                <div
-                                  v-if="tindakan?.gambardokumens.length > 0"
-                                  class="image-row"
-                                >
-                                  <div
-                                    v-for="(image, index) in tindakan?.gambardokumens"
-                                    :key="index"
-                                    class="image-container"
-                                  >
-                                    <q-img
-                                      :src="pathImg + image.url"
-                                      class="image"
-                                    >
+                                <div v-if="tindakan?.gambardokumens.length > 0" class="image-row">
+                                  <div v-for="(image, index) in tindakan?.gambardokumens" :key="index"
+                                    class="image-container">
+                                    <q-img :src="pathImg + image.url" class="image">
                                       <div class="absolute-bottom">
                                         <div class="column items-center justify-between">
-                                          <q-btn
-                                            class="gt-xs"
-                                            size="md"
-                                            color="yellow"
-                                            flat
-                                            dense
-                                            round
-                                            icon="icon-mat-visibility"
-                                            :href="pathImg + image?.url"
-                                            target="_blank"
-                                          />
+                                          <q-btn class="gt-xs" size="md" color="yellow" flat dense round
+                                            icon="icon-mat-visibility" :href="pathImg + image?.url" target="_blank" />
                                         </div>
                                       </div>
                                     </q-img>
@@ -1871,20 +1338,11 @@
                         </q-card-section>
                         <q-separator />
 
-                        <q-card-section
-                          v-if="item?.laborat?.length || item?.laborats?.length"
-                          class="q-pa-none"
-                        >
+                        <q-card-section v-if="item?.laborat?.length || item?.laborats?.length" class="q-pa-none">
                           <q-bar class="bg-accent">
                             PEMERIKSAAN LABORAT
                           </q-bar>
-                          <q-markup-table
-                            separator="vertical"
-                            flat
-                            bordered
-                            dense
-                            dark
-                          >
+                          <q-markup-table separator="vertical" flat bordered dense dark>
                             <thead>
                               <tr>
                                 <th class="text-left">
@@ -1902,42 +1360,22 @@
                               </tr>
                             </thead>
                             <tbody>
-                              <tr
-                                v-for="(lab, l) in item?.laborat"
-                                :key="l"
-                                v-ripple
-                                clickable
-                              >
-                                <td
-                                  class="text-left ellipsis"
-                                  style="max-width: 250px;"
-                                >
+                              <tr v-for="(lab, l) in item?.laborat" :key="l" v-ripple clickable>
+                                <td class="text-left ellipsis" style="max-width: 250px;">
                                   {{ lab?.pemeriksaanlab?.rs2 }}
                                 </td>
-                                <td
-                                  class="text-right"
-                                  style="max-width: 150px;"
-                                >
+                                <td class="text-right" style="max-width: 150px;">
                                   {{ lab?.pemeriksaanlab?.rs21 }}
                                 </td>
-                                <td
-                                  class="text-right"
-                                  style="max-width: 150px;"
-                                >
+                                <td class="text-right" style="max-width: 150px;">
                                   {{ lab?.pemeriksaanlab?.rs22 }}
                                 </td>
-                                <td
-                                  v-if="lab?.rs27 === ''"
-                                  style="max-width: 150px;"
-                                >
+                                <td v-if="lab?.rs27 === ''" style="max-width: 150px;">
                                   <q-item-label class="text-right">
                                     {{ lab?.rs21 }}
                                   </q-item-label>
                                 </td>
-                                <td
-                                  v-else
-                                  style="max-width: 150px;"
-                                >
+                                <td v-else style="max-width: 150px;">
                                   <q-item-label class="text-right">
                                     {{ lab?.rs21 }} ({{ lab?.rs27 }})
                                   </q-item-label>
@@ -1949,51 +1387,30 @@
                         </q-card-section>
                         <q-separator />
 
-                        <q-card-section
-                          v-if="item?.transradiologi?.length && item?.hasilradiologi?.length"
-                          class="q-pa-none"
-                          flat
-                          bordered
-                          square
-                          dark
-                        >
+                        <q-card-section v-if="item?.transradiologi?.length && item?.hasilradiologi?.length"
+                          class="q-pa-none" flat bordered square dark>
                           <q-bar class="bg-accent">
                             <div>RADIOLOGI</div>
                           </q-bar>
-                          <q-list
-                            dark
-                            separator
-                          >
-                            <q-item
-                              v-for="(radiologi, r) in item?.transradiologi"
-                              :key="r"
-                              v-ripple
-                              clickable
-                            >
+                          <q-list dark separator>
+                            <q-item v-for="(radiologi, r) in item?.transradiologi" :key="r" v-ripple clickable>
                               <q-item-section>
                                 <q-item-label>Pemeriksaan = {{ radiologi?.relmasterpemeriksaan?.rs2 }}</q-item-label>
-                                <q-item-label>Jenis Pemeriksaan Radiologi = {{ radiologi?.relmasterpemeriksaan?.rs3 }}</q-item-label>
-                                <q-item-label>Hasil Pemeriksaan Radiologi = {{ item.hasilradiologi[r]?.rs3 }}</q-item-label>
+                                <q-item-label>Jenis Pemeriksaan Radiologi = {{ radiologi?.relmasterpemeriksaan?.rs3
+                                  }}</q-item-label>
+                                <q-item-label>Hasil Pemeriksaan Radiologi = {{ item.hasilradiologi[r]?.rs3
+                                  }}</q-item-label>
                               </q-item-section>
                             </q-item>
                           </q-list>
                         </q-card-section>
 
                         <q-separator />
-                        <q-card-section
-                          v-if="item?.kamaroperasi?.length"
-                          class="q-pa-none"
-                        >
+                        <q-card-section v-if="item?.kamaroperasi?.length" class="q-pa-none">
                           <q-bar class="bg-accent">
                             TINDAKAN OPERASI
                           </q-bar>
-                          <q-markup-table
-                            separator="vertical"
-                            flat
-                            bordered
-                            dense
-                            dark
-                          >
+                          <q-markup-table separator="vertical" flat bordered dense dark>
                             <thead>
                               <tr>
                                 <th class="text-left">
@@ -2008,28 +1425,14 @@
                               </tr>
                             </thead>
                             <tbody>
-                              <tr
-                                v-for="(operasi, l) in item?.kamaroperasi"
-                                :key="l"
-                                v-ripple
-                                clickable
-                              >
-                                <td
-                                  class="text-left ellipsis"
-                                  style="max-width: 250px;"
-                                >
+                              <tr v-for="(operasi, l) in item?.kamaroperasi" :key="l" v-ripple clickable>
+                                <td class="text-left ellipsis" style="max-width: 250px;">
                                   {{ operasi?.rs3 }}
                                 </td>
-                                <td
-                                  class="text-right"
-                                  style="max-width: 150px;"
-                                >
+                                <td class="text-right" style="max-width: 150px;">
                                   {{ operasi?.mastertindakanoperasi?.rs2 }}
                                 </td>
-                                <td
-                                  class="text-right"
-                                  style="max-width: 150px;"
-                                >
+                                <td class="text-right" style="max-width: 150px;">
                                   {{ operasi?.mastertindakanoperasi?.rs4 }}
                                 </td>
                               </tr>
@@ -2039,27 +1442,18 @@
                         </q-card-section>
 
                         <q-separator />
-                        <q-card-section
-                          v-if="item?.apotekrajal?.length
-                            || item?.apotekrajalpolilalu?.length
-                            || item?.apotekracikanrajal?.length
-                            || item?.apotekracikanrajallalu?.length
-                            || item?.apotekranap?.length
-                            || item?.apotekranaplalu?.length
-                            || item?.apotekranapracikanheder?.length
-                            || item?.apotekranapracikanhederlalu?.length"
-                          class="q-pa-none"
-                        >
+                        <q-card-section v-if="item?.apotekrajal?.length
+                          || item?.apotekrajalpolilalu?.length
+                          || item?.apotekracikanrajal?.length
+                          || item?.apotekracikanrajallalu?.length
+                          || item?.apotekranap?.length
+                          || item?.apotekranaplalu?.length
+                          || item?.apotekranapracikanheder?.length
+                          || item?.apotekranapracikanhederlalu?.length" class="q-pa-none">
                           <q-bar class="bg-accent">
                             PEMBERIAN OBAT
                           </q-bar>
-                          <q-markup-table
-                            separator="vertical"
-                            flat
-                            bordered
-                            dense
-                            dark
-                          >
+                          <q-markup-table separator="vertical" flat bordered dense dark>
                             <thead>
                               <tr>
                                 <th class="text-left">
@@ -2073,138 +1467,65 @@
                                 </th>
                               </tr>
                             </thead>
-                            <tr
-                              v-for="(apotekranap, lxx) in item?.apotekranap"
-                              :key="lxx"
-                            >
-                              <td
-                                class="text-left ellipsis"
-                                style="max-width: 250px;"
-                              >
+                            <tr v-for="(apotekranap, lxx) in item?.apotekranap" :key="lxx">
+                              <td class="text-left ellipsis" style="max-width: 250px;">
                                 {{ apotekranap?.rs3 }}
                               </td>
-                              <td
-                                class="text-right"
-                                style="max-width: 150px;"
-                              >
+                              <td class="text-right" style="max-width: 150px;">
                                 {{ apotekranap.masterobat?.rs2 }}
                               </td>
-                              <td
-                                class="text-right"
-                                style="max-width: 150px;"
-                              >
+                              <td class="text-right" style="max-width: 150px;">
                                 {{ apotekranap?.rs8 }}
                               </td>
                             </tr>
-                            <tr
-                              v-for="(apotekranaplalu, lx) in item?.apotekranaplalu"
-                              :key="lx"
-                            >
-                              <td
-                                class="text-left ellipsis"
-                                style="max-width: 250px;"
-                              >
+                            <tr v-for="(apotekranaplalu, lx) in item?.apotekranaplalu" :key="lx">
+                              <td class="text-left ellipsis" style="max-width: 250px;">
                                 {{ apotekranaplalu?.rs3 }}
                               </td>
-                              <td
-                                class="text-right"
-                                style="max-width: 150px;"
-                              >
+                              <td class="text-right" style="max-width: 150px;">
                                 {{ apotekranaplalu.masterobat?.rs2 }}
                               </td>
-                              <td
-                                class="text-right"
-                                style="max-width: 150px;"
-                              >
+                              <td class="text-right" style="max-width: 150px;">
                                 {{ apotekranaplalu?.rs8 }}
                               </td>
                             </tr>
-                            <tr
-                              v-for="(apotekranapracikanheder, lxx) in item?.apotekranapracikanheder"
-                              :key="lxx"
-                            >
-                              <td
-                                class="text-left ellipsis"
-                                style="max-width: 250px;"
-                              >
+                            <tr v-for="(apotekranapracikanheder, lxx) in item?.apotekranapracikanheder" :key="lxx">
+                              <td class="text-left ellipsis" style="max-width: 250px;">
                                 {{ apotekranapracikanheder?.rs3 }}
                               </td>
-                              <td
-                                class="text-right"
-                                style="max-width: 150px;"
-                              >
+                              <td class="text-right" style="max-width: 150px;">
                                 {{ apotekranapracikanheder.apotekranapracikanrinci.masterobat?.rs2 }}
                               </td>
-                              <td
-                                class="text-right"
-                                style="max-width: 150px;"
-                              >
+                              <td class="text-right" style="max-width: 150px;">
                                 {{ apotekranapracikanheder.apotekranapracikanrinci.masterobat?.rs8 }}
                               </td>
                             </tr>
-                            <tr
-                              v-for="(apotekranapracikanhederlalu, lxxx) in item?.apotekranapracikanhederlalu"
-                              :key="lxxx"
-                            >
-                              <td
-                                class="text-left ellipsis"
-                                style="max-width: 250px;"
-                              >
+                            <tr v-for="(apotekranapracikanhederlalu, lxxx) in item?.apotekranapracikanhederlalu"
+                              :key="lxxx">
+                              <td class="text-left ellipsis" style="max-width: 250px;">
                                 {{ apotekranapracikanhederlalu?.rs3 }}
                               </td>
-                              <td
-                                class="text-right"
-                                style="max-width: 150px;"
-                              >
+                              <td class="text-right" style="max-width: 150px;">
                                 {{ apotekranapracikanhederlalu.apotekranapracikanrincilalu.masterobat?.rs2 }}
                               </td>
-                              <td
-                                class="text-right"
-                                style="max-width: 150px;"
-                              >
+                              <td class="text-right" style="max-width: 150px;">
                                 {{ apotekranapracikanhederlalu.apotekranapracikanrincilalu.masterobat?.rs8 }}
                               </td>
                             </tr>
                           </q-markup-table>
                         </q-card-section>
-                        <q-card-section
-                          v-if="item?.dokumenluar?.length"
-                          class="q-pa-none"
-                          flat
-                          bordered
-                          square
-                          dark
-                        >
+                        <q-card-section v-if="item?.dokumenluar?.length" class="q-pa-none" flat bordered square dark>
                           <q-bar class="bg-accent">
                             <div>DOKUMEN</div>
                           </q-bar>
-                          <q-list
-                            dark
-                            separator
-                          >
+                          <q-list dark separator>
                             <div class="image-row">
-                              <div
-                                v-for="(image, index) in item?.dokumenluar"
-                                :key="index"
-                                class="image-container"
-                              >
-                                <q-img
-                                  :src="pathImg + image.url"
-                                  class="image"
-                                >
+                              <div v-for="(image, index) in item?.dokumenluar" :key="index" class="image-container">
+                                <q-img :src="pathImg + image.url" class="image">
                                   <div class="absolute-bottom">
                                     <div class="column items-center justify-between">
-                                      <q-btn
-                                        class="gt-xs"
-                                        size="md"
-                                        color="yellow"
-                                        flat
-                                        dense
-                                        round
-                                        icon="icon-mat-visibility"
-                                        :href="pathImg + image?.url"
-                                        target="_blank"
-                                      />
+                                      <q-btn class="gt-xs" size="md" color="yellow" flat dense round
+                                        icon="icon-mat-visibility" :href="pathImg + image?.url" target="_blank" />
                                     </div>
                                     <div>Dokumen : {{ image?.nama }}</div>
                                     <div>Diinput Oleh : {{ image?.pegawai?.nama }}</div>
@@ -2218,34 +1539,19 @@
                     </q-card>
                   </q-expansion-item>
                 </div>
-                <div
-                  v-else
-                  class="column flex-center"
-                  style="min-height: 860px;"
-                >
+                <div v-else class="column flex-center" style="min-height: 860px;">
                   MAAF ... DATA HISTORY PASIEN RAWAT INAP BELUM ADA
                 </div>
               </q-list>
             </q-scroll-area>
           </q-tab-panel>
-          <q-tab-panel
-            name="IGD"
-            class="full-height q-pa-none"
-          >
+          <q-tab-panel name="IGD" class="full-height q-pa-none">
             <q-scroll-area style="height:calc(100% - 50px)">
-              <q-list
-                v-if="store?.items?.length"
-                bordered
-                separator
-              >
+              <q-list v-if="store?.items?.length" bordered separator>
                 <div v-if="filteredItems?.length">
-                  <q-expansion-item
-                    v-for="(item, i) in filteredItems"
-                    :key="i"
-                    expand-separator
+                  <q-expansion-item v-for="(item, i) in filteredItems" :key="i" expand-separator
                     :label="item?.ruangan + ' | ' + item?.rs1 + ' | DPJP : ' + item?.dpjp"
-                    :caption="tanggal(item?.tanggal)"
-                  >
+                    :caption="tanggal(item?.tanggal)">
                     <q-card dark>
                       <q-separator />
                       <q-card-section class="q-pa-none">
@@ -2254,79 +1560,46 @@
                             <div>ANAMNESIS</div>
                           </q-bar>
                           <q-list dark>
-                            <q-item
-                              v-for="(anamnesis, a) in item?.anamnesis"
-                              :key="a"
-                            >
+                            <q-item v-for="(anamnesis, a) in item?.anamnesis" :key="a">
                               <q-item-section>
                                 <q-item-label>Keluhan Utama</q-item-label>
-                                <q-item-label
-                                  caption
-                                  lines="2"
-                                >
+                                <q-item-label caption lines="2">
                                   {{ anamnesis?.rs4 }}
                                 </q-item-label>
                                 <q-item-label>Riwayat Penyakit (Sekarang)</q-item-label>
-                                <q-item-label
-                                  caption
-                                  lines="2"
-                                >
+                                <q-item-label caption lines="2">
                                   {{ anamnesis?.riwayatpenyakitsekarang }}
                                 </q-item-label>
                                 <q-item-label>Riwayat Penyakit</q-item-label>
-                                <q-item-label
-                                  caption
-                                  lines="2"
-                                >
+                                <q-item-label caption lines="2">
                                   {{ anamnesis?.riwayatpenyakit }}
                                 </q-item-label>
                                 <q-item-label>Riwayat Alergi</q-item-label>
-                                <q-item-label
-                                  caption
-                                  lines="2"
-                                >
+                                <q-item-label caption lines="2">
                                   {{ anamnesis?.riwayatalergi }}
                                 </q-item-label>
                                 <q-item-label>Reaksi berupa</q-item-label>
-                                <q-item-label
-                                  caption
-                                  lines="2"
-                                >
+                                <q-item-label caption lines="2">
                                   {{ anamnesis?.keteranganalergi }}
                                 </q-item-label>
                                 <q-item-label>Riwayat Pengobatan</q-item-label>
-                                <q-item-label
-                                  caption
-                                  lines="2"
-                                >
+                                <q-item-label caption lines="2">
                                   {{ anamnesis?.riwayatpengobatan }}
                                 </q-item-label>
                                 <q-item-label>Penurunan Berat Badan</q-item-label>
-                                <q-item-label
-                                  caption
-                                  lines="2"
-                                >
+                                <q-item-label caption lines="2">
                                   {{ anamnesis?.skreeninggizi == 0 ? "Tidak" : "Ya" }}
                                 </q-item-label>
                                 <q-item-label>Asupan Makan Berkurang</q-item-label>
-                                <q-item-label
-                                  caption
-                                  lines="2"
-                                >
+                                <q-item-label caption lines="2">
                                   {{ anamnesis?.asupanmakan == 0 ? "Tidak" : "Ya" }}
                                 </q-item-label>
                                 <q-item-label>Kondisi Khusus</q-item-label>
-                                <q-item-label
-                                  caption
-                                  lines="2"
-                                >
+                                <q-item-label caption lines="2">
                                   {{ anamnesis?.kondisikhusus }}
                                 </q-item-label>
                                 <q-item-label>Score Nyeri</q-item-label>
-                                <q-item-label
-                                  caption
-                                  lines="2"
-                                >
+                                <q-item-label caption lines="2">
                                   {{ anamnesis?.scorenyeri }} ( {{ anamnesis?.keteranganscorenyeri }} )
                                 </q-item-label>
                               </q-item-section>
@@ -2339,35 +1612,18 @@
                           </q-bar>
                         </div>
                       </q-card-section>
-                      <q-card-section
-                        v-if="item?.pemeriksaanfisik?.length"
-                        flat
-                        bordered
-                        square
-                        dark
-                      />
+                      <q-card-section v-if="item?.pemeriksaanfisik?.length" flat bordered square dark />
                       <q-list separator>
                         <q-bar class="bg-accent">
                           <div>PEMERIKSAAN FISIK</div>
                         </q-bar>
                         <!-- <transition-group name="list"> -->
-                        <div
-                          v-for="(pemeriksaanfisik, f) in item?.pemeriksaanfisik"
-                          :key="f"
-                        >
+                        <div v-for="(pemeriksaanfisik, f) in item?.pemeriksaanfisik" :key="f">
                           <!-- NADI-->
-                          <q-item
-                            v-ripple
-                            class="q-pa-xs list-move"
-                            dark
-                            clickable
-                          >
+                          <q-item v-ripple class="q-pa-xs list-move" dark clickable>
                             <q-item-section avatar>
-                              <q-icon
-                                :color="nadi(pemeriksaanfisik?.rs4).color"
-                                name="icon-my-monitor_heart"
-                                size="lg"
-                              />
+                              <q-icon :color="nadi(pemeriksaanfisik?.rs4).color" name="icon-my-monitor_heart"
+                                size="lg" />
                             </q-item-section>
                             <q-item-section class="q-pa-xs">
                               <q-item-label :class="`text-h4 text-${nadi(pemeriksaanfisik?.rs4).color}`">
@@ -2383,22 +1639,10 @@
                               </q-item-label>
                             </q-item-section>
                           </q-item>
-                          <q-separator
-                            dark
-                            inset
-                          />
-                          <q-item
-                            v-ripple
-                            class="q-pa-xs list-move"
-                            dark
-                            clickable
-                          >
+                          <q-separator dark inset />
+                          <q-item v-ripple class="q-pa-xs list-move" dark clickable>
                             <q-item-section avatar>
-                              <q-icon
-                                color="white"
-                                name="icon-my-local_hospital"
-                                size="lg"
-                              />
+                              <q-icon color="white" name="icon-my-local_hospital" size="lg" />
                             </q-item-section>
                             <q-item-section class="q-pa-xs">
                               <q-item-label :class="`text-h4 text-white`">
@@ -2414,22 +1658,11 @@
                               </q-item-label>
                             </q-item-section>
                           </q-item>
-                          <q-separator
-                            dark
-                            inset
-                          />
-                          <q-item
-                            v-ripple
-                            class="q-pa-xs list-move"
-                            dark
-                            clickable
-                          >
+                          <q-separator dark inset />
+                          <q-item v-ripple class="q-pa-xs list-move" dark clickable>
                             <q-item-section avatar>
-                              <q-icon
-                                :color="suhu(pemeriksaanfisik?.suhutubuh).color"
-                                name="icon-my-standing-human-body-silhouette-svgrepo-com"
-                                size="lg"
-                              />
+                              <q-icon :color="suhu(pemeriksaanfisik?.suhutubuh).color"
+                                name="icon-my-standing-human-body-silhouette-svgrepo-com" size="lg" />
                             </q-item-section>
                             <q-item-section class="q-pa-xs">
                               <q-item-label :class="`text-h4 text-${suhu(item?.suhutubuh).color}`">
@@ -2445,16 +1678,8 @@
                               </q-item-label>
                             </q-item-section>
                           </q-item>
-                          <q-separator
-                            dark
-                            inset
-                          />
-                          <q-item
-                            v-ripple
-                            class="q-pa-xs list-move"
-                            dark
-                            clickable
-                          >
+                          <q-separator dark inset />
+                          <q-item v-ripple class="q-pa-xs list-move" dark clickable>
                             <q-item-section class="q-pa-xs">
                               <q-item-label :class="`text-h5 `">
                                 <span :class="`${tekananDarah(pemeriksaanfisik?.sistole).color}`">{{
@@ -2476,16 +1701,8 @@
                             </q-item-section>
                           </q-item>
                           <!-- STATUS -->
-                          <q-separator
-                            dark
-                            inset
-                          />
-                          <q-item
-                            v-ripple
-                            class="q-pa-xs list-move"
-                            dark
-                            clickable
-                          >
+                          <q-separator dark inset />
+                          <q-item v-ripple class="q-pa-xs list-move" dark clickable>
                             <q-item-section class="q-pa-xs">
                               <q-item-label lines="2">
                                 T Kesadaran : <em>{{ getKesadaran(pemeriksaanfisik?.tingkatkesadaran) ?? '-' }}</em>
@@ -2506,16 +1723,8 @@
                           </q-item>
 
                           <!-- KHUSUS PARU POL018-->
-                          <q-separator
-                            dark
-                            inset
-                          />
-                          <q-item
-                            v-ripple
-                            class="q-pa-xs list-move"
-                            dark
-                            clickable
-                          >
+                          <q-separator dark inset />
+                          <q-item v-ripple class="q-pa-xs list-move" dark clickable>
                             <q-item-section class="q-pa-xs">
                               <q-item-label lines="2">
                                 Inspeksi : <em>{{ pemeriksaanfisik?.inspeksi ?? '-' }}</em>
@@ -2539,48 +1748,27 @@
                               <q-item-label lines="2">
                                 Suara Nafas Tambahan (Kiri) : <em>{{ pemeriksaanfisik?.auskultasisuaratambahankiri ??
                                   '-'
-                                }}</em>
+                                  }}</em>
                               </q-item-label>
                             </q-item-section>
                           </q-item>
                         </div>
                         <!-- </transition-group> -->
-                        <q-card-section
-                          v-if="item?.diagnosa?.length"
-                          class="q-pa-none"
-                          flat
-                          bordered
-                          square
-                          dark
-                        >
+                        <q-card-section v-if="item?.diagnosa?.length" class="q-pa-none" flat bordered square dark>
                           <q-bar class="bg-accent">
                             <div>DIAGNOSA</div>
                           </q-bar>
-                          <q-list
-                            dark
-                            separator
-                          >
-                            <q-item
-                              v-for="(diagnosa, d) in item?.diagnosa"
-                              :key="d"
-                              v-ripple
-                              clickable
-                            >
+                          <q-list dark separator>
+                            <q-item v-for="(diagnosa, d) in item?.diagnosa" :key="d" v-ripple clickable>
                               <q-item-section>
                                 <q-item-label>Kasus = {{ diagnosa?.rs7 }}</q-item-label>
-                                <q-item-label
-                                  caption
-                                  lines="2"
-                                />
+                                <q-item-label caption lines="2" />
                                 Jenis Diagnosa = {{ diagnosa?.rs4 }}
                                 <q-item-label>
                                   Diagnosa = {{ diagnosa?.masterdiagnosa?.rs4 }} ( {{ diagnosa?.rs3 }}
                                   )
                                 </q-item-label>
-                                <q-item-label
-                                  caption
-                                  lines="2"
-                                />
+                                <q-item-label caption lines="2" />
                                 Keterangan = {{ diagnosa?.rs6 }}
                               </q-item-section>
                             </q-item>
@@ -2588,64 +1776,25 @@
                         </q-card-section>
                         <q-separator />
 
-                        <q-card-section
-                          v-if="item?.tindakan?.length"
-                          class="q-pa-none"
-                          flat
-                          bordered
-                          square
-                          dark
-                        >
+                        <q-card-section v-if="item?.tindakan?.length" class="q-pa-none" flat bordered square dark>
                           <q-bar class="bg-accent">
                             <div>TINDAKAN</div>
                           </q-bar>
-                          <q-list
-                            dark
-                            separator
-                          >
-                            <q-item
-                              v-for="(tindakan, tin) in item?.tindakan"
-                              :key="tin"
-                              v-ripple
-                              clickable
-                            >
+                          <q-list dark separator>
+                            <q-item v-for="(tindakan, tin) in item?.tindakan" :key="tin" v-ripple clickable>
                               <q-item-section>
-                                <q-item-label
-                                  caption
-                                  lines="2"
-                                />
+                                <q-item-label caption lines="2" />
                                 {{ tin + 1 }}. {{ tindakan?.mastertindakan?.rs2 }}
-                                <q-item-label
-                                  caption
-                                  lines="2"
-                                />
+                                <q-item-label caption lines="2" />
                                 keterangan = {{ tindakan?.rs20 }}
-                                <div
-                                  v-if="tindakan?.gambardokumens.length > 0"
-                                  class="image-row"
-                                >
-                                  <div
-                                    v-for="(image, index) in tindakan?.gambardokumens"
-                                    :key="index"
-                                    class="image-container"
-                                  >
-                                    <q-img
-                                      :src="pathImg + image.url"
-                                      class="image"
-                                    >
+                                <div v-if="tindakan?.gambardokumens.length > 0" class="image-row">
+                                  <div v-for="(image, index) in tindakan?.gambardokumens" :key="index"
+                                    class="image-container">
+                                    <q-img :src="pathImg + image.url" class="image">
                                       <div class="absolute-bottom">
                                         <div class="column items-center justify-between">
-                                          <q-btn
-                                            class="gt-xs"
-                                            size="md"
-                                            color="yellow"
-                                            flat
-                                            dense
-                                            round
-                                            icon="icon-mat-visibility"
-                                            :href="pathImg + image?.url"
-                                            target="_blank"
-                                          />
+                                          <q-btn class="gt-xs" size="md" color="yellow" flat dense round
+                                            icon="icon-mat-visibility" :href="pathImg + image?.url" target="_blank" />
                                         </div>
                                       </div>
                                     </q-img>
@@ -2657,20 +1806,11 @@
                         </q-card-section>
                         <q-separator />
 
-                        <q-card-section
-                          v-if="item?.laborat?.length || item?.laborats?.length"
-                          class="q-pa-none"
-                        >
+                        <q-card-section v-if="item?.laborat?.length || item?.laborats?.length" class="q-pa-none">
                           <q-bar class="bg-accent">
                             PEMERIKSAAN LABORAT
                           </q-bar>
-                          <q-markup-table
-                            separator="vertical"
-                            flat
-                            bordered
-                            dense
-                            dark
-                          >
+                          <q-markup-table separator="vertical" flat bordered dense dark>
                             <thead>
                               <tr>
                                 <th class="text-left">
@@ -2688,42 +1828,22 @@
                               </tr>
                             </thead>
                             <tbody>
-                              <tr
-                                v-for="(lab, l) in item?.laborat"
-                                :key="l"
-                                v-ripple
-                                clickable
-                              >
-                                <td
-                                  class="text-left ellipsis"
-                                  style="max-width: 250px;"
-                                >
+                              <tr v-for="(lab, l) in item?.laborat" :key="l" v-ripple clickable>
+                                <td class="text-left ellipsis" style="max-width: 250px;">
                                   {{ lab?.pemeriksaanlab?.rs2 }}
                                 </td>
-                                <td
-                                  class="text-right"
-                                  style="max-width: 150px;"
-                                >
+                                <td class="text-right" style="max-width: 150px;">
                                   {{ lab?.pemeriksaanlab?.rs21 }}
                                 </td>
-                                <td
-                                  class="text-right"
-                                  style="max-width: 150px;"
-                                >
+                                <td class="text-right" style="max-width: 150px;">
                                   {{ lab?.pemeriksaanlab?.rs22 }}
                                 </td>
-                                <td
-                                  v-if="lab?.rs27 === ''"
-                                  style="max-width: 150px;"
-                                >
+                                <td v-if="lab?.rs27 === ''" style="max-width: 150px;">
                                   <q-item-label class="text-right">
                                     {{ lab?.rs21 }}
                                   </q-item-label>
                                 </td>
-                                <td
-                                  v-else
-                                  style="max-width: 150px;"
-                                >
+                                <td v-else style="max-width: 150px;">
                                   <q-item-label class="text-right">
                                     {{ lab?.rs21 }} ({{ lab?.rs27 }})
                                   </q-item-label>
@@ -2736,51 +1856,30 @@
 
                         <q-separator />
 
-                        <q-card-section
-                          v-if="item?.transradiologi?.length && item?.hasilradiologi?.length"
-                          class="q-pa-none"
-                          flat
-                          bordered
-                          square
-                          dark
-                        >
+                        <q-card-section v-if="item?.transradiologi?.length && item?.hasilradiologi?.length"
+                          class="q-pa-none" flat bordered square dark>
                           <q-bar class="bg-accent">
                             <div>RADIOLOGI</div>
                           </q-bar>
-                          <q-list
-                            dark
-                            separator
-                          >
-                            <q-item
-                              v-for="(radiologi, r) in item?.transradiologi"
-                              :key="r"
-                              v-ripple
-                              clickable
-                            >
+                          <q-list dark separator>
+                            <q-item v-for="(radiologi, r) in item?.transradiologi" :key="r" v-ripple clickable>
                               <q-item-section>
                                 <q-item-label>Pemeriksaan = {{ radiologi?.relmasterpemeriksaan?.rs2 }}</q-item-label>
-                                <q-item-label>Jenis Pemeriksaan Radiologi = {{ radiologi?.relmasterpemeriksaan?.rs3 }}</q-item-label>
-                                <q-item-label>Hasil Pemeriksaan Radiologi = {{ item.hasilradiologi[r]?.rs3 }}</q-item-label>
+                                <q-item-label>Jenis Pemeriksaan Radiologi = {{ radiologi?.relmasterpemeriksaan?.rs3
+                                  }}</q-item-label>
+                                <q-item-label>Hasil Pemeriksaan Radiologi = {{ item.hasilradiologi[r]?.rs3
+                                  }}</q-item-label>
                               </q-item-section>
                             </q-item>
                           </q-list>
                         </q-card-section>
 
                         <q-separator />
-                        <q-card-section
-                          v-if="item?.kamaroperasi?.length"
-                          class="q-pa-none"
-                        >
+                        <q-card-section v-if="item?.kamaroperasi?.length" class="q-pa-none">
                           <q-bar class="bg-accent">
                             TINDAKAN OPERASI
                           </q-bar>
-                          <q-markup-table
-                            separator="vertical"
-                            flat
-                            bordered
-                            dense
-                            dark
-                          >
+                          <q-markup-table separator="vertical" flat bordered dense dark>
                             <thead>
                               <tr>
                                 <th class="text-left">
@@ -2795,28 +1894,14 @@
                               </tr>
                             </thead>
                             <tbody>
-                              <tr
-                                v-for="(operasi, l) in item?.kamaroperasi"
-                                :key="l"
-                                v-ripple
-                                clickable
-                              >
-                                <td
-                                  class="text-left ellipsis"
-                                  style="max-width: 250px;"
-                                >
+                              <tr v-for="(operasi, l) in item?.kamaroperasi" :key="l" v-ripple clickable>
+                                <td class="text-left ellipsis" style="max-width: 250px;">
                                   {{ operasi?.rs3 }}
                                 </td>
-                                <td
-                                  class="text-right"
-                                  style="max-width: 150px;"
-                                >
+                                <td class="text-right" style="max-width: 150px;">
                                   {{ operasi?.mastertindakanoperasi?.rs2 }}
                                 </td>
-                                <td
-                                  class="text-right"
-                                  style="max-width: 150px;"
-                                >
+                                <td class="text-right" style="max-width: 150px;">
                                   {{ operasi?.mastertindakanoperasi?.rs4 }}
                                 </td>
                               </tr>
@@ -2826,27 +1911,18 @@
                         </q-card-section>
 
                         <q-separator />
-                        <q-card-section
-                          v-if="item?.apotekrajal?.length
-                            || item?.apotekrajalpolilalu?.length
-                            || item?.apotekracikanrajal?.length
-                            || item?.apotekracikanrajallalu?.length
-                            || item?.apotekranap?.length
-                            || item?.apotekranaplalu?.length
-                            || item?.apotekranapracikanheder?.length
-                            || item?.apotekranapracikanhederlalu?.length"
-                          class="q-pa-none"
-                        >
+                        <q-card-section v-if="item?.apotekrajal?.length
+                          || item?.apotekrajalpolilalu?.length
+                          || item?.apotekracikanrajal?.length
+                          || item?.apotekracikanrajallalu?.length
+                          || item?.apotekranap?.length
+                          || item?.apotekranaplalu?.length
+                          || item?.apotekranapracikanheder?.length
+                          || item?.apotekranapracikanhederlalu?.length" class="q-pa-none">
                           <q-bar class="bg-accent">
                             PEMBERIAN OBAT
                           </q-bar>
-                          <q-markup-table
-                            separator="vertical"
-                            flat
-                            bordered
-                            dense
-                            dark
-                          >
+                          <q-markup-table separator="vertical" flat bordered dense dark>
                             <thead>
                               <tr>
                                 <th class="text-left">
@@ -2861,271 +1937,131 @@
                               </tr>
                             </thead>
                             <tbody>
-                              <tr
-                                v-for="(apotekrajal, wew) in item?.apotekrajal"
-                                :key="wew"
-                              >
-                                <td
-                                  class="text-left ellipsis"
-                                  style="max-width: 250px;"
-                                >
+                              <tr v-for="(apotekrajal, wew) in item?.apotekrajal" :key="wew">
+                                <td class="text-left ellipsis" style="max-width: 250px;">
                                   {{ apotekrajal?.rs3 }}
                                 </td>
-                                <td
-                                  class="text-right"
-                                  style="max-width: 150px;"
-                                >
+                                <td class="text-right" style="max-width: 150px;">
                                   {{ apotekrajal.masterobat?.rs2 }}
                                 </td>
-                                <td
-                                  v-if="apotekrajal?.rs27.length > 0 && apotekrajal?.rs28.length > 0"
-                                  class="text-right"
-                                  style="max-width: 250px;"
-                                >
+                                <td v-if="apotekrajal?.rs27.length > 0 && apotekrajal?.rs28.length > 0"
+                                  class="text-right" style="max-width: 250px;">
                                   {{ getInteger(apotekrajal?.rs27) + ' X ' + getInteger(apotekrajal?.rs28) }}
                                 </td>
-                                <td
-                                  v-else
-                                  class="text-right"
-                                  style="max-width: 250px;"
-                                >
+                                <td v-else class="text-right" style="max-width: 250px;">
                                   {{ '-' }}
                                 </td>
-                                <td
-                                  class="text-right"
-                                  style="max-width: 150px;"
-                                >
+                                <td class="text-right" style="max-width: 150px;">
                                   {{ apotekrajal?.rs8 }}
                                 </td>
                               </tr>
-                              <tr
-                                v-for="(apotekrajalpolilalu, lll) in item?.apotekrajalpolilalu"
-                                :key="lll"
-                              >
-                                <td
-                                  class="text-left ellipsis"
-                                  style="max-width: 250px;"
-                                >
+                              <tr v-for="(apotekrajalpolilalu, lll) in item?.apotekrajalpolilalu" :key="lll">
+                                <td class="text-left ellipsis" style="max-width: 250px;">
                                   {{ apotekrajalpolilalu?.rs3 }}
                                 </td>
-                                <td
-                                  class="text-right"
-                                  style="max-width: 150px;"
-                                >
+                                <td class="text-right" style="max-width: 150px;">
                                   {{ apotekrajalpolilalu.masterobat?.rs2 }}
                                 </td>
-                                <td
-                                  v-if="apotekrajalpolilalu?.rs27.length > 0 && apotekrajalpolilalu?.rs28.length > 0"
-                                  class="text-right"
-                                  style="max-width: 250px;"
-                                >
-                                  {{ getInteger(apotekrajalpolilalu?.rs27) + ' X ' + getInteger(apotekrajalpolilalu?.rs28) }}
+                                <td v-if="apotekrajalpolilalu?.rs27.length > 0 && apotekrajalpolilalu?.rs28.length > 0"
+                                  class="text-right" style="max-width: 250px;">
+                                  {{ getInteger(apotekrajalpolilalu?.rs27) + ' X ' +
+                                  getInteger(apotekrajalpolilalu?.rs28) }}
                                 </td>
-                                <td
-                                  v-else
-                                  class="text-right"
-                                  style="max-width: 250px;"
-                                >
+                                <td v-else class="text-right" style="max-width: 250px;">
                                   {{ '-' }}
                                 </td>
-                                <td
-                                  class="text-right"
-                                  style="max-width: 150px;"
-                                >
+                                <td class="text-right" style="max-width: 150px;">
                                   {{ apotekrajalpolilalu?.rs8 }}
                                 </td>
                               </tr>
-                              <tr
-                                v-for="(apotekracikanrajal, llll) in item?.apotekracikanrajal"
-                                :key="llll"
-                              >
-                                <td
-                                  class="text-left ellipsis"
-                                  style="max-width: 250px;"
-                                >
+                              <tr v-for="(apotekracikanrajal, llll) in item?.apotekracikanrajal" :key="llll">
+                                <td class="text-left ellipsis" style="max-width: 250px;">
                                   {{ apotekracikanrajal?.rs3 }}
                                 </td>
-                                <td
-                                  class="text-right"
-                                  style="max-width: 150px;"
-                                >
+                                <td class="text-right" style="max-width: 150px;">
                                   {{ apotekracikanrajal.masterobat?.rs2 }}
                                 </td>
-                                <td
-                                  class="text-left ellipsis"
-                                  style="max-width: 250px;"
-                                >
+                                <td class="text-left ellipsis" style="max-width: 250px;">
                                   {{ '-' }}
                                 </td>
-                                <td
-                                  class="text-right"
-                                  style="max-width: 150px;"
-                                >
+                                <td class="text-right" style="max-width: 150px;">
                                   {{ apotekracikanrajal?.rs5 }}
                                 </td>
                               </tr>
-                              <tr
-                                v-for="(apotekracikanrajallalu, llll) in item?.apotekracikanrajallalu"
-                                :key="llll"
-                              >
-                                <td
-                                  class="text-left ellipsis"
-                                  style="max-width: 250px;"
-                                >
+                              <tr v-for="(apotekracikanrajallalu, llll) in item?.apotekracikanrajallalu" :key="llll">
+                                <td class="text-left ellipsis" style="max-width: 250px;">
                                   {{ apotekracikanrajallalu?.rs3 }}
                                 </td>
-                                <td
-                                  class="text-right"
-                                  style="max-width: 150px;"
-                                >
+                                <td class="text-right" style="max-width: 150px;">
                                   {{ apotekracikanrajallalu.masterobat?.rs2 }}
                                 </td>
-                                <td
-                                  class="text-right"
-                                  style="max-width: 150px;"
-                                >
+                                <td class="text-right" style="max-width: 150px;">
                                   {{ '-' }}
                                 </td>
-                                <td
-                                  class="text-right"
-                                  style="max-width: 150px;"
-                                >
+                                <td class="text-right" style="max-width: 150px;">
                                   {{ apotekracikanrajallalu?.rs5 }}
                                 </td>
                               </tr>
-                              <tr
-                                v-for="(apotekranap, lxx) in item?.apotekranap"
-                                :key="lxx"
-                              >
-                                <td
-                                  class="text-left ellipsis"
-                                  style="max-width: 250px;"
-                                >
+                              <tr v-for="(apotekranap, lxx) in item?.apotekranap" :key="lxx">
+                                <td class="text-left ellipsis" style="max-width: 250px;">
                                   {{ apotekranap?.rs3 }}
                                 </td>
-                                <td
-                                  class="text-right"
-                                  style="max-width: 150px;"
-                                >
+                                <td class="text-right" style="max-width: 150px;">
                                   {{ apotekranap.masterobat?.rs2 }}
                                 </td>
-                                <td
-                                  class="text-right"
-                                  style="max-width: 150px;"
-                                >
+                                <td class="text-right" style="max-width: 150px;">
                                   {{ apotekranap?.rs8 }}
                                 </td>
                               </tr>
-                              <tr
-                                v-for="(apotekranaplalu, lx) in item?.apotekranaplalu"
-                                :key="lx"
-                              >
-                                <td
-                                  class="text-left ellipsis"
-                                  style="max-width: 250px;"
-                                >
+                              <tr v-for="(apotekranaplalu, lx) in item?.apotekranaplalu" :key="lx">
+                                <td class="text-left ellipsis" style="max-width: 250px;">
                                   {{ apotekranaplalu?.rs3 }}
                                 </td>
-                                <td
-                                  class="text-right"
-                                  style="max-width: 150px;"
-                                >
+                                <td class="text-right" style="max-width: 150px;">
                                   {{ apotekranaplalu.masterobat?.rs2 }}
                                 </td>
-                                <td
-                                  class="text-right"
-                                  style="max-width: 150px;"
-                                >
+                                <td class="text-right" style="max-width: 150px;">
                                   {{ apotekranaplalu?.rs8 }}
                                 </td>
                               </tr>
-                              <tr
-                                v-for="(apotekranapracikanheder, lxx) in item?.apotekranapracikanheder"
-                                :key="lxx"
-                              >
-                                <td
-                                  class="text-left ellipsis"
-                                  style="max-width: 250px;"
-                                >
+                              <tr v-for="(apotekranapracikanheder, lxx) in item?.apotekranapracikanheder" :key="lxx">
+                                <td class="text-left ellipsis" style="max-width: 250px;">
                                   {{ apotekranapracikanheder?.rs3 }}
                                 </td>
-                                <td
-                                  class="text-right"
-                                  style="max-width: 150px;"
-                                >
+                                <td class="text-right" style="max-width: 150px;">
                                   {{ apotekranapracikanheder.apotekranapracikanrinci.masterobat?.rs2 }}
                                 </td>
-                                <td
-                                  class="text-right"
-                                  style="max-width: 150px;"
-                                >
+                                <td class="text-right" style="max-width: 150px;">
                                   {{ apotekranapracikanheder.apotekranapracikanrinci.masterobat?.rs8 }}
                                 </td>
                               </tr>
-                              <tr
-                                v-for="(apotekranapracikanhederlalu, lxxx) in item?.apotekranapracikanhederlalu"
-                                :key="lxxx"
-                              >
-                                <td
-                                  class="text-left ellipsis"
-                                  style="max-width: 250px;"
-                                >
+                              <tr v-for="(apotekranapracikanhederlalu, lxxx) in item?.apotekranapracikanhederlalu"
+                                :key="lxxx">
+                                <td class="text-left ellipsis" style="max-width: 250px;">
                                   {{ apotekranapracikanhederlalu?.rs3 }}
                                 </td>
-                                <td
-                                  class="text-right"
-                                  style="max-width: 150px;"
-                                >
+                                <td class="text-right" style="max-width: 150px;">
                                   {{ apotekranapracikanhederlalu.apotekranapracikanrincilalu.masterobat?.rs2 }}
                                 </td>
-                                <td
-                                  class="text-right"
-                                  style="max-width: 150px;"
-                                >
+                                <td class="text-right" style="max-width: 150px;">
                                   {{ apotekranapracikanhederlalu.apotekranapracikanrincilalu.masterobat?.rs8 }}
                                 </td>
                               </tr>
                             </tbody>
                           </q-markup-table>
                         </q-card-section>
-                        <q-card-section
-                          v-if="item?.dokumenluar?.length"
-                          class="q-pa-none"
-                          flat
-                          bordered
-                          square
-                          dark
-                        >
+                        <q-card-section v-if="item?.dokumenluar?.length" class="q-pa-none" flat bordered square dark>
                           <q-bar class="bg-accent">
                             <div>DOKUMEN</div>
                           </q-bar>
-                          <q-list
-                            dark
-                            separator
-                          >
+                          <q-list dark separator>
                             <div class="image-row">
-                              <div
-                                v-for="(image, index) in item?.dokumenluar"
-                                :key="index"
-                                class="image-container"
-                              >
-                                <q-img
-                                  :src="pathImg + image.url"
-                                  class="image"
-                                >
+                              <div v-for="(image, index) in item?.dokumenluar" :key="index" class="image-container">
+                                <q-img :src="pathImg + image.url" class="image">
                                   <div class="absolute-bottom">
                                     <div class="column items-center justify-between">
-                                      <q-btn
-                                        class="gt-xs"
-                                        size="md"
-                                        color="yellow"
-                                        flat
-                                        dense
-                                        round
-                                        icon="icon-mat-visibility"
-                                        :href="pathImg + image?.url"
-                                        target="_blank"
-                                      />
+                                      <q-btn class="gt-xs" size="md" color="yellow" flat dense round
+                                        icon="icon-mat-visibility" :href="pathImg + image?.url" target="_blank" />
                                     </div>
                                     <div>Dokumen : {{ image?.nama }}</div>
                                     <div>Diinput Oleh : {{ image?.pegawai?.nama }}</div>
@@ -3139,11 +2075,7 @@
                     </q-card>
                   </q-expansion-item>
                 </div>
-                <div
-                  v-else
-                  class="column flex-center"
-                  style="min-height: 860px;"
-                >
+                <div v-else class="column flex-center" style="min-height: 860px;">
                   MAAF ... DATA HISTORY PASIEN IGD BELUM ADA
                 </div>
               </q-list>
@@ -3341,15 +2273,17 @@ function getInteger (str) {
 }
 
 .image {
-height: 300px;
+  height: 300px;
 }
 
 table {
   border-collapse: collapse;
   width: 100%;
 }
-table, th, td {
+
+table,
+th,
+td {
   border: 1px solid grey;
 }
-
 </style>

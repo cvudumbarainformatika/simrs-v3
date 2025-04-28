@@ -52,7 +52,14 @@ const interceptResErrors = (err) => {
     //   removeToken()
     // }icon-fa-kit-medical-solid
     console.log('axios', err)
-    notifErr(err.response)
+    if (err.response) notifErr(err.response)
+    else {
+      if (err.message.includes('413')) {
+        notifErr({ status: 413, message: 'The file is too large' })
+      } else {
+        notifErr({ data: { message: "The server didn't respond, possibly because the file was too large." } })
+      }
+    }
     // notifErr(err)
   }
   catch (e) {

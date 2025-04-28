@@ -171,9 +171,9 @@ export const useListPasienHemodialisaStore = defineStore('list-pasien-hemodialis
     },
 
     injectUpdatean (noreg, id, val, kode) {
-      const findPasien = this.items.filter(x => x?.noreg === noreg)
-      if (findPasien.length) {
-        const data = findPasien[0]
+      const findPasien = this.items.find(x => x?.noreg === noreg)
+      if (findPasien) {
+        const data = findPasien
         const target = data[kode]?.find(x => x?.id === id)
         if (target) {
           Object.assign(target, val)
@@ -181,9 +181,9 @@ export const useListPasienHemodialisaStore = defineStore('list-pasien-hemodialis
       }
     },
     deleteInjectanNull (noreg, kode) {
-      const findPasien = this.items.filter(x => x.noreg === noreg)
-      if (findPasien.length) {
-        const data = findPasien[0]
+      const findPasien = this.items.find(x => x.noreg === noreg)
+      if (findPasien) {
+        const data = findPasien
         const target = data[kode]?.find(x => x?.id === null || x?.id === '' || x?.id === undefined || !('id' in x)) ?? null
         if (target) {
           data[kode]?.splice(data[kode]?.findIndex(x => x?.id === null), 1)
@@ -192,8 +192,8 @@ export const useListPasienHemodialisaStore = defineStore('list-pasien-hemodialis
     },
     deleteInjectanNull2 (noreg, kode) {
       const findPasien = this.items.filter(x => x.noreg === noreg)
-      if (findPasien.length) {
-        const data = findPasien[0]
+      if (findPasien) {
+        const data = findPasien
         const target = data[kode]?.find(x => !('id' in x))
         if (target) {
           data[kode]?.splice(target, 1)
@@ -247,7 +247,7 @@ export const useListPasienHemodialisaStore = defineStore('list-pasien-hemodialis
       // '1': 'Terlayani'
       // '2': 'Sudah diterima'
       // '3': Batal
-      if (!pasien?.anamnesis.length) {
+      if (!pasien?.anamnesis?.length) {
         this.loadingTerima = false
         return this.notifikasiError('Maaf, Anamnesis Harap Diisi Dahulu...')
       }
@@ -258,9 +258,9 @@ export const useListPasienHemodialisaStore = defineStore('list-pasien-hemodialis
         const resp = await api.post('v1/simrs/rajal/poli/flagfinish', form)
         // console.log('rsp ', form, resp)
         if (resp.status === 200) {
-          const findPasien = this.items.filter(x => x === pasien)
-          if (findPasien.length) {
-            findPasien[0].status = '1'
+          const findPasien = this.items.find(x => x === pasien)
+          if (findPasien) {
+            findPasien.status = '1'
           }
           this.loadingTerima = false
         }
@@ -294,9 +294,9 @@ export const useListPasienHemodialisaStore = defineStore('list-pasien-hemodialis
           .then(resp => {
             // console.log(resp)
             if (resp.status === 200) {
-              const findPasien = this.items.filter(x => x.noreg === pasien?.noreg)
-              if (findPasien.length) {
-                const data = findPasien[0]
+              const findPasien = this.items.find(x => x.noreg === pasien?.noreg)
+              if (findPasien) {
+                const data = findPasien
                 data.memodiagnosa = resp?.data?.result?.diagnosa
               }
             }
@@ -341,7 +341,7 @@ export const useListPasienHemodialisaStore = defineStore('list-pasien-hemodialis
               this.pasien = findPasien
             }
             const jnsKasus = resp?.data?.kd_jeniskasus
-            if (this.jeniskasus.length && jnsKasus) {
+            if (this.jeniskasus?.length && jnsKasus) {
               this.jnsKasusPasien = this.jeniskasus.find(x => x.kode === jnsKasus) ?? null
             }
             console.log('resp pas', this.jnsKasusPasien, jnsKasus)

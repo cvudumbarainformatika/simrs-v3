@@ -16,13 +16,13 @@ export const useUploadDokStore = defineStore('upload-dok-poli', {
   }),
   actions: {
 
-    initForm() {
+    initForm () {
       // anamnesis tambahan
       this.form.nama = null
       this.form.dokumen = []
     },
 
-    getMaster(isRanap) {
+    getMaster (isRanap) {
       const params = { params: { ranap: isRanap ? '1' : '' } }
       return new Promise((resolve, reject) => {
         api.get('v1/simrs/pelayanan/dokumenupload/master', params)
@@ -40,7 +40,7 @@ export const useUploadDokStore = defineStore('upload-dok-poli', {
       })
     },
 
-    selectFiles(files) {
+    selectFiles (files) {
       for (let i = 0; i < files.length; i++) {
         const images = files[i]
         this.form.dokumen.push(images)
@@ -48,7 +48,7 @@ export const useUploadDokStore = defineStore('upload-dok-poli', {
       console.log('masukkan ke form', this.form)
     },
 
-    saveData(pasien, isRanap) {
+    saveData (pasien, isRanap) {
       this.form.noreg = pasien?.noreg
       this.form.norm = pasien?.norm
       this.form.isRanap = isRanap
@@ -96,7 +96,7 @@ export const useUploadDokStore = defineStore('upload-dok-poli', {
       })
     },
 
-    deleteData(pasien, id) {
+    deleteData (pasien, id) {
       const payload = { id }
       return new Promise((resolve, reject) => {
         api.post('v1/simrs/pelayanan/dokumenupload/deletedata', payload)
@@ -105,8 +105,11 @@ export const useUploadDokStore = defineStore('upload-dok-poli', {
             if (resp.status === 200) {
               const storePasien = usePengunjungPoliStore()
               const storeRananp = usePengunjungRanapStore()
+              const storeHD = useListPasienHemodialisaStore()
               storePasien.hapusDataInjectan(pasien, id, 'dokumenluar')
               storeRananp.hapusDataInjectan(pasien, id, 'dokumenluar')
+              storeHD.hapusDataInjectan(pasien, id, 'dokumenluar')
+
               notifSuccess(resp)
             }
           })

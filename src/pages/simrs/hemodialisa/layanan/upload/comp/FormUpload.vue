@@ -50,7 +50,7 @@ onMounted(() => {
 })
 
 function onSubmit () {
-  // const isRanap = true
+  const isRanap = false
   store.saveData(props?.pasien, isRanap).then(() => {
     store.form.nama = 'Hemodialisa'
   })
