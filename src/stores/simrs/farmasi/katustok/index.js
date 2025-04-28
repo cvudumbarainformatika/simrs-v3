@@ -30,29 +30,20 @@ export const useKartuStokFarmasiStore = defineStore('kartu_stok_farmasi', {
     async getData () {
       this.loading = true
       const params = { params: this.params }
-      const resp = await api.get('v1/simrs/farmasinew/kartustok/listobat', params)
-      if (resp.status === 200) {
+      try {
+        const resp = await api.get('v1/simrs/farmasinew/kartustok/listobat', params)
+        if (resp.status === 200) {
+          this.loading = false
+          this.meta = resp.data
+          this.items = resp.data.data
+          this.params.rowsNumber = resp.data.total
+          console.log('kjkjsdfs ', resp?.data)
+        }
         this.loading = false
-        this.meta = resp.data
-        this.items = resp.data.data
-        this.params.rowsNumber = resp.data.total
-        // console.log('kjkjsdfs', this.items)
-        // if (this.items.length) {
-        //   this.items.forEach(it => {
-        //     if (it?.distribusipersiapan?.length) {
-        //       it?.distribusipersiapan.forEach(per => {
-        //         const nore = per?.rinci?.find(ri => ri.nopermintaan === per.nopermintaan)
-        //         per.noresep = nore?.noresep ?? ''
-        //         // console.log('per', per)
-        //       })
-        //     }
-        //   })
-        // }
-        console.log('kjkjsdfs ', resp?.data)
+
+      } catch (error) {
         this.loading = false
-      }
-      else {
-        this.loading = false
+        console.log('error', error)
       }
     },
 
