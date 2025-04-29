@@ -150,7 +150,15 @@ function setSpeech(txt) {
 }
 
 function panggil(row) {
-  // console.log(row)
+  // Log untuk debugging speech
+  console.log('Speech panggilan dimulai:', {
+    browser: navigator.userAgent,
+    speechSupport: 'speechSynthesis' in window,
+    voicesAvailable: speech.voiceList.length,
+    selectedVoice: indexVoices.value,
+    speechState: speech.synth.speaking ? 'speaking' : 'idle'
+  })
+
   const nama = (row?.nama_panggil) ? (row?.nama_panggil)?.toLowerCase() : ''
   const unit = row?.panggil_antrian
   const noAntrean = row?.noantrian ? row.noantrian.toUpperCase() : ''
@@ -161,7 +169,14 @@ function panggil(row) {
 
   const txt3 = 'Nomor Antrian ... ' + noAntrean + '... nama!  ' + nama + '! ...Harap menujuu  ' + unit
   // const txt = jns === 'nama' ? txt1 : txt2
-  speech.synth.speak(setSpeech(txt3))
+
+  try {
+    speech.synth.speak(setSpeech(txt3))
+    console.log('Speech berhasil dipanggil:', { text: txt3 })
+  } catch (error) {
+    console.error('Error saat memanggil speech:', error)
+  }
+
   // console.log(row)
   store.sendPanggil(row, `display${kdDisplay.value}`)
 }
