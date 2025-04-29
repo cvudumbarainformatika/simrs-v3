@@ -27,7 +27,8 @@
 
         <div class="q-mt-lg">
           <div>Dengan Hormat,</div>
-          <div>Mohon Bantuan Dokter <b>{{ namaPetugas(item?.kddokterkonsul) }}</b>, untuk konsultasi Masalah medik saat ini</div>
+          <div>Mohon Bantuan Dokter <b>{{ namaPetugas(item?.kddokterkonsul) }}</b>, untuk konsultasi Masalah medik saat
+            ini</div>
           <div>{{ item?.permintaan }}</div>
 
           <div class="q-mt-lg">
@@ -35,15 +36,12 @@
           </div>
 
           <q-form v-if="cekYgMenjawab(item)" ref="formRef" class="q-mt-lg" @submit="onSubmit">
-            <q-input
-              outlined standout="bg-yellow-3"
-              v-model="form.jawaban"
-              label="" type="textarea" rows="10"
-            />
+            <q-input outlined standout="bg-yellow-3" v-model="form.jawaban" label="" type="textarea" rows="10" />
 
             <div class="text-right q-mt-lg q-gutter-md">
               <q-btn color="dark" label="Kembali" @click="emits('toList')" />
-              <q-btn :loading="loadingSave" :disable="loadingSave" color="primary" label="Simpan Jawaban" type="submit" />
+              <q-btn :loading="loadingSave" :disable="loadingSave" color="primary" label="Simpan Jawaban"
+                type="submit" />
             </div>
           </q-form>
 
@@ -98,7 +96,7 @@ const form = ref({
 })
 const loadingSave = ref(false)
 
-function namaPetugas (item) {
+function namaPetugas(item) {
   // console.log('item', item)
   const petugas = store.dokters?.find(x => x.kdpegsimrs === item)?.nama ?? null
   return petugas
@@ -115,14 +113,19 @@ onMounted(() => {
   }
 })
 
-function cekYgMenjawab (item) {
+function cekYgMenjawab(item) {
   let open = false
+  console.log('cekYgMenjawb', item);
+  console.log('auth', props.auth);
+
+
+  const nakesYnMinta = item?.nakesminta?.kdgroupnakes ?? null
   if (item?.kddokterkonsul === props?.auth) { // jika akun dokter konsulnya maka... jawaban terbuka
     // tapi jika dokter sudah memverif
 
     open = true
   }
-  else if (item?.nakesminta?.kdgroupnakes === '2') { // jika yg konsultasi adalah perawat maka... jawaban terbuka
+  else if (nakesYnMinta === '2' || nakesYnMinta === '3') { // jika yg konsultasi adalah perawat maka... jawaban terbuka
     const ygJwbPerawat = (item?.kdminta === item?.user_jawab)
     // console.log('ygJwbPerawat', ygJwbPerawat)
     if (item?.user_jawab === null || item?.user_jawab === '') {
@@ -144,7 +147,7 @@ function cekYgMenjawab (item) {
   return open
 }
 
-async function updateFlagRanap (item) {
+async function updateFlagRanap(item) {
   const findPasien = kunjunganRanap.pasiens?.find(x => x?.noreg === props?.pasien?.noreg) ?? null
   const konsultasis = findPasien?.konsultasi ?? []
   const target = konsultasis?.find(x => x?.id === item?.id) ?? null
@@ -169,11 +172,11 @@ async function updateFlagRanap (item) {
   }
 }
 
-function getNewLine (text) {
+function getNewLine(text) {
   return text?.replace(/\n/g, '<br/>')
 }
 
-function onSubmit () {
+function onSubmit() {
   // eslint-disable-next-line prefer-const
   const { item, pasien } = props
   form.value.id = item?.id

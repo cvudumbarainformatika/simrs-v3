@@ -1,6 +1,6 @@
 <template>
   <div class="row fit relative-position">
-    <!-- Form Validitas -->
+    <!-- Form skriining Mpp -->
     <div v-if="!isValid" class="fit flex flex-center">
       <q-card class="validation-card" flat bordered>
         <q-card-section class="bg-primary text-white">
@@ -38,33 +38,7 @@
 
     <!-- Main Forms Section After Validation -->
     <div v-else class="fit column q-pa-xs">
-      <!-- <q-card flat class="fit"> -->
-      <!-- Main Form Tabs -->
-      <q-tabs v-model="mainTab" dense no-caps inline-label narrow-indicator indicator-color="transparent" align="left"
-        class="bg-transparent text-grey-8 mytabs col-auto" active-color="white" active-bg-color="dark"
-        :mobile-arrows="false" :outside-arrows="false">
-        <!-- <q-tab name="formA" label="Form A" />
-          <q-tab name="formB" label="Form B" /> -->
-
-        <q-tab v-for="tb in tabs" :key="tb.name" :ripple="true" :name="tb?.name" content-class="tab-classes">
-          <template #default>
-            <div class="row q-gutter-x-xs items-center q-px-sm no-wrap" style="border-radius: 10px;">
-              <q-icon :name="tb?.icon" size="18px" />
-              <div><strong>{{ tb?.label }}</strong></div>
-            </div>
-          </template>
-        </q-tab>
-      </q-tabs>
-
-      <!-- Main Form Tab Panels -->
-      <q-tab-panels v-model="mainTab" animated class="col full-height bg-transparent q-pa-none relative-position fit">
-        <!-- Form A Panel -->
-        <q-tab-panel :name="menu?.name" class="q-pa-none">
-          <!-- <PemeriksaanUmumPage :pasien="props?.pasien" /> -->
-          <component :is="menu?.comp" :pasien="pasien" :kasus="kasus" :nakes="nakes" />
-        </q-tab-panel>
-      </q-tab-panels>
-      <!-- </q-card> -->
+      <!-- ini setelah skrining -->
     </div>
   </div>
 </template>
@@ -95,31 +69,12 @@ const validationProgress = ref(0)
 // Tab states
 const mainTab = ref('formA')
 
-const tabs = [
-  {
-    label: 'Formulir A',
-    name: 'formA',
-    icon: 'icon-mat-description',
-    comp: defineAsyncComponent(() => import('./comp/FormPageA.vue'))
-  },
-  {
-    label: 'Formulir B',
-    name: 'formB',
-    icon: 'icon-mat-description',
-    comp: defineAsyncComponent(() => import('./comp/FormPageB.vue'))
-  },
 
-]
 
 onMounted(() => {
   mainTab.value = tabs[0].name
 })
 
-const menu = computed(() => {
-  const by = mainTab.value
-
-  return tabs.find(i => i.name === by)
-})
 
 // Validation checklist items
 const validationItems = ref([

@@ -9,7 +9,9 @@ export const useMppRanapStore = defineStore('mpp-ranap-store', {
 
     forma: {
       skrining: {
-        usia: null,
+        usia: [
+          { name: anak }
+        ],
       }
     }
 

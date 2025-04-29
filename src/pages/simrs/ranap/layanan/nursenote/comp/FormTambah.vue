@@ -140,7 +140,7 @@
 
               <!-- Implementasi -->
               <div class="col-12 row q-mt-sm">
-                <div class="text-lg text-subtitle1 text-bold q-mb-sm col-12">Ventilator Menu</div>
+                <div class="text-lg text-subtitle1 text-bold q-mb-sm col-12">Ventilator Menu - CPAD</div>
                 <div class="row q-col-gutter-sm ">
                   <app-input-simrs v-model="store.form.mode" label="Mode" class="col-6" />
                   <app-input-simrs v-model="store.form.fraksio2" label="Fraksi O2" class="col-6" />
@@ -174,8 +174,8 @@
               </div>
 
               <div class="col-4">
-                <div class="col-8">Albumin </div> <app-input-simrs v-model="store.form.albumin" label="mililiter"
-                  class="col-4" />
+                <div class="col-8">Albumin / Transfusi </div> <app-input-simrs v-model="store.form.albumin"
+                  label="mililiter" class="col-4" />
               </div>
               <div class="col-4">
                 <div class="col-8">Makan & Minum </div> <app-input-simrs v-model="store.form.mamin" label="mililiter"

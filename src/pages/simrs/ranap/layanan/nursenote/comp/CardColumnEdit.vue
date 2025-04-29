@@ -222,7 +222,7 @@
 
 
               <q-separator class="q-my-sm"></q-separator>
-              <div class="text-bold">VENTILATOR MENU </div>
+              <div class="text-bold">VENTILATOR MENU - CPAD</div>
               <q-separator class="q-my-sm"></q-separator>
 
               <div class="q-ml-sm flex">
@@ -328,7 +328,7 @@
                   </div>
                 </div>
                 <div class="q-ml-sm flex">
-                  <div class="text-bold">ALBUMIN : </div>
+                  <div class="text-bold">ALBUMIN / TRANSFUSI : </div>
                   <div class="flex items-center q-gutter-x-xs">
                     <text-edit style="max-width: 80px;" :model-value="item.albumin" type="number" @update:model-value="(val) => {
                       item.albumin = val

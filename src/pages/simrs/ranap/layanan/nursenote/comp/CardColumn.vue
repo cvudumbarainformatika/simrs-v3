@@ -111,7 +111,7 @@
               <div class="fit q-pa-xs">
                 <q-card flat class="fit column">
                   <div class="col-auto q-pa-sm text-bold bg-dark text-white">
-                    <div class="f-14">VENTILATOR MENU</div>
+                    <div class="f-14">VENTILATOR MENU - CPAD</div>
                   </div>
                   <div class="col full-height scroll">
                     <div class="row q-pa-md q-col-gutter-sm">
@@ -150,8 +150,8 @@
                     class="col-7" />
                   <div class="col-5">Obat-obatan </div> <app-input-simrs v-model="store.form.obat" label="mililiter"
                     class="col-7" />
-                  <div class="col-5">Albumin </div> <app-input-simrs v-model="store.form.albumin" label="mililiter"
-                    class="col-7" />
+                  <div class="col-5">Albumin / Transfusi </div> <app-input-simrs v-model="store.form.albumin"
+                    label="mililiter" class="col-7" />
                   <div class="col-5">Makan & Minum </div> <app-input-simrs v-model="store.form.mamin" label="mililiter"
                     class="col-7" />
                   <div class="col-5">Zonde </div> <app-input-simrs v-model="store.form.zonde" label="mililiter"
