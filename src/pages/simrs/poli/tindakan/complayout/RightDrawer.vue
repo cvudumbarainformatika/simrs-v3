@@ -495,7 +495,11 @@
                         </q-card-section>
 
                         <q-separator />
-
+                        <q-card-section v-if="store?.loadingEresep" class="q-pa-none">
+                          <q-bar class="bg-accent">
+                            <div>Loading E-RESEP...</div>
+                          </q-bar>
+                        </q-card-section>
                         <q-card-section v-if="store?.metaEresep !== null" class="q-pa-none">
                           <q-bar class="bg-accent">
                             PEMBERIAN OBAT E-RESEP
