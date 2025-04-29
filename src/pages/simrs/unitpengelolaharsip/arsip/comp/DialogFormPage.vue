@@ -95,7 +95,7 @@
               </div>
             </div>
             <div class="row q-gutter-xs">
-              <div class="col-10" v-if="store.form.media !== ''">
+              <div class="col-12" v-if="store.form.media !== ''">
                 <q-uploader ref="uploader" :factory="uploadFiles" :loading="uploadPercent" bordered flat
                   :label="`Upload Dokumen/ Arsip`" accept=".pdf" class="fit" multiple max-files="1" auto-upload
                   @finish="finished" @rejected="onRejected">
