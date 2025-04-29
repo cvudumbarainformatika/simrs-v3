@@ -1,10 +1,10 @@
 <template>
-  <div class="row justify-between content-center full-width">
-    <div class="col-auto q-pl-md flex-start">
+  <div class="row b1 justify-between content-center full-width">
+    <!-- <div class="col-auto q-pl-md flex-start">
       <q-img src="~assets/images/Pemkot.svg" style="height: 2.6cm; width: 2cm" />
-    </div>
-    <div class="flex-end justify-center content-center col full-width">
-      <div class="row justify-center text-center text-weight-bold" style="font-size: 15px">
+    </div> -->
+    <div class="justify-center content-center col full-width">
+      <div class="row q-pt-sm justify-center text-center text-weight-bold" style="font-size: 15px">
         PEMERINTAH KOTA PROBOLINGGO
       </div>
       <div class="row justify-center text-center text-weight-bold" style="font-size: 15px">
@@ -13,7 +13,7 @@
       <div class="row justify-center text-center text-weight-bold" style="font-size: 15px">
         BADAN LAYANAN UMUM DAERAH
       </div>
-      <div class="row justify-center text-center q-pt-md">
+      <div class="row q-pb-sm justify-center text-center q-pt-sm">
         Tanggal : {{ store.viewData?.bulan_realisasi }} Nomor: {{ store.viewData?.nosp3b }}
       </div>
     </div>
@@ -24,3 +24,9 @@ import { useSp3bStore } from 'src/stores/siasik/akuntansi/sp3b/sp3b';
 
 const store = useSp3bStore()
 </script>
+<style>
+.b1 {
+  border-style: solid;
+  border-width: 2px;
+}
+</style>

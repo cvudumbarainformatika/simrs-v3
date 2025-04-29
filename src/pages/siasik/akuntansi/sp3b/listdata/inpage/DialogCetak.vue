@@ -13,7 +13,7 @@
           </q-bar>
         </q-header>
         <q-page-container id="printMe">
-          <div class="q-pa-md">
+          <div class="q-pt-sm q-px-md full-width">
             <kop-cetak />
           </div>
           <div class="q-px-md full-width">
