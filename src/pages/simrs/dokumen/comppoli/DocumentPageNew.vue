@@ -168,7 +168,7 @@ const documents = ref([
 function getLabel (val) {
   const anu = documents.value.filter(a => a.value === val)
   // console.log('anu ', anu)
-  return anu.length ? anu[0].label : '-'
+  return anu?.length ? anu[0].label : '-'
 }
 const comp = [
   { nama: 'Resume', page: defineAsyncComponent(() => import('../resume/ResumePage.vue')) },

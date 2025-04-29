@@ -175,7 +175,7 @@
                     style="height: 49vh; width:100%;"
                   >
                     <div
-                      v-if="store.kunjunganRanap.length > 0"
+                      v-if="store.kunjunganRanap?.length > 0"
                       style="padding-bottom: 40px;"
                       class="q-px-xl"
                     >
@@ -238,7 +238,7 @@
                 </div>
 
                 <div
-                  v-if="store.ranap.data.length > 0"
+                  v-if="store.ranap.data?.length > 0"
                   class="absolute-bottom full-width bg-white"
                   style="z-index:1"
                 >
@@ -246,7 +246,7 @@
                     <div class="row justify-between items-center">
                       <div>
                         Hal. <strong>{{ store.ranap.current_page }}</strong> dari <strong>{{ store.ranap.total_page }}</strong>
-                        halaman dan <strong>{{ store.kunjunganRanap.length }}</strong> data keseluruhan
+                        halaman dan <strong>{{ store.kunjunganRanap?.length }}</strong> data keseluruhan
                       </div>
                       <div>
                         <div class="flex items-center justify-end">
@@ -312,7 +312,7 @@
                     style="height: 85vh; width:100%;"
                   >
                     <div
-                      v-if="store.kunjunganPoli.length > 0"
+                      v-if="store.kunjunganPoli?.length > 0"
                       style="padding-bottom: 40px;"
                       class="q-px-xl"
                     >
@@ -388,7 +388,7 @@
                 </div>
 
                 <div
-                  v-if="store.rajal.data.length > 0"
+                  v-if="store.rajal.data?.length > 0"
                   class="absolute-bottom full-width bg-white"
                   style="z-index:1"
                 >
@@ -396,7 +396,7 @@
                     <div class="row justify-between items-center">
                       <div>
                         Hal. <strong>{{ store.rajal.current_page }}</strong> dari <strong>{{ store.rajal.total_page }}</strong>
-                        halaman dan <strong>{{ store.kunjunganPoli.length }}</strong> data keseluruhan
+                        halaman dan <strong>{{ store.kunjunganPoli?.length }}</strong> data keseluruhan
                       </div>
                       <div>
                         <div class="flex items-center justify-end">

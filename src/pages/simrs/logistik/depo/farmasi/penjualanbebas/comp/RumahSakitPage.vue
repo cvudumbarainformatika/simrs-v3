@@ -13,7 +13,7 @@
           option-label="nama"
           option-value="kode"
           :options="optionRs"
-          :disable="store.form.details.length>0"
+          :disable="store.form.details?.length>0"
           hide-dropdown-icon
           hide-selected
           @filter="filterRsLain"
@@ -45,7 +45,7 @@ const listbelum = shallowRef(defineAsyncComponent(() => import('./ListObatBelum.
 function filterRsLain (val, update) {
   console.log(val)
   const ada = store.pihakTigas.filter(f => f?.nama?.toLowerCase()?.includes(val?.toLowerCase()))
-  if (ada.length > 3) update(() => { optionRs.value = ada })
+  if (ada?.length > 3) update(() => { optionRs.value = ada })
   else {
     store.getPihakTiga(val).then(() => {
       optionRs.value = store.pihakTigas

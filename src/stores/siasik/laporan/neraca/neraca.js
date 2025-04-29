@@ -108,11 +108,11 @@ export const useNeracaStore = defineStore('Neraca_Akuntansi', {
             // this.utangjkpanjang = resp.data?.utangjkpanjang
             // this.ekuitas = resp.data?.ekuitas
             // const coba = this.asetlainnya.map((x) => x.kodex)
-            // const unik = coba.length ? [...new Set(coba)] : []
+            // const unik = coba?.length ? [...new Set(coba)] : []
             // console.log('set', unik)
 
             const objsetarakas = []
-            for (let i = 0; i < this.setarakas.length; i++) {
+            for (let i = 0; i < this.setarakas?.length; i++) {
               const el = this.setarakas[i]
               const saldoawal = el?.saldoawal.map((x) => parseFloat(x.saldo)).reduce((a, b) => a + b, 0)
               const jurnal = el?.jurnalotom.map((x) => parseFloat(x.totaljurnal)).reduce((a, b) => a + b, 0)
@@ -126,7 +126,7 @@ export const useNeracaStore = defineStore('Neraca_Akuntansi', {
             }
 
             const objretri = []
-            for (let i = 0; i < this.retribusi.length; i++) {
+            for (let i = 0; i < this.retribusi?.length; i++) {
               const el = this.retribusi[i]
               const saldoawal = el?.saldoawal.map((x) => parseFloat(x.saldo)).reduce((a, b) => a + b, 0)
               const jurnal = el?.jurnalotom.map((x) => parseFloat(x.totaljurnal)).reduce((a, b) => a + b, 0)
@@ -145,7 +145,7 @@ export const useNeracaStore = defineStore('Neraca_Akuntansi', {
             }
 
             const objx = []
-            for (let i = 0; i < this.piutang.length; i++) {
+            for (let i = 0; i < this.piutang?.length; i++) {
               const el = this.piutang[i]
               const saldoawal = el?.saldoawal.map((x) => parseFloat(x.saldo)).reduce((a, b) => a + b, 0)
               const jurnal = el?.jurnalotom.map((x) => parseFloat(x.totaljurnal)).reduce((a, b) => a + b, 0)
@@ -157,7 +157,7 @@ export const useNeracaStore = defineStore('Neraca_Akuntansi', {
               }
               objx.push(piutang)
             }
-            for (let i = 0; i < this.piutanglain.length; i++) {
+            for (let i = 0; i < this.piutanglain?.length; i++) {
               const el = this.piutanglain[i]
               const saldoawal = el?.saldoawal.map((x) => parseFloat(x.saldo)).reduce((a, b) => a + b, 0)
               const jurnal = el?.jurnalotom.map((x) => parseFloat(x.totaljurnal)).reduce((a, b) => a + b, 0)
@@ -171,8 +171,8 @@ export const useNeracaStore = defineStore('Neraca_Akuntansi', {
             }
             const objpiutang = []
             const set = objx.map((x) => x.kode)
-            const setunik = set.length ? [...new Set(set)] : []
-            for (let i = 0; i < setunik.length; i++) {
+            const setunik = set?.length ? [...new Set(set)] : []
+            for (let i = 0; i < setunik?.length; i++) {
               const el = setunik[i]
               const obj = {
                 kode: objx.filter((x) => x.kode === el)[0]?.kode,
@@ -183,7 +183,7 @@ export const useNeracaStore = defineStore('Neraca_Akuntansi', {
             }
 
             // const objp = []
-            // for (let i = 0; i < this.penyisihanpiutang.length; i++) {
+            // for (let i = 0; i < this.penyisihanpiutang?.length; i++) {
             //   const el = this.penyisihanpiutang[i]
             //   const saldoawal = el?.saldoawal.map((x) => parseFloat(x.saldo)).reduce((a, b) => a + b, 0)
             //   const jurnal = el?.jurnalotom.map((x) => parseFloat(x.totaljurnal)).reduce((a, b) => a + b, 0)
@@ -204,8 +204,8 @@ export const useNeracaStore = defineStore('Neraca_Akuntansi', {
             const objpersediaan = []
             const setpersedian = this.reqpersediaan.map((x) => x.kode)
             const filpersediaan = this.aset.filter(x => setpersedian.includes(x.kodex)).map((x) => x.kodex)
-            const setunikpersd = filpersediaan.length ? [...new Set(filpersediaan)] : []
-            for (let i = 0; i < setunikpersd.length; i++) {
+            const setunikpersd = filpersediaan?.length ? [...new Set(filpersediaan)] : []
+            for (let i = 0; i < setunikpersd?.length; i++) {
               const el = setunikpersd[i]
               const saldoawal = this.aset.filter((x) => x.kodex === el).map((x) => x.saldoawal.map((x) => parseFloat(x.saldo)).reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0)
               const jurnal = this.aset.filter((x) => x.kodex === el).map((x) => x.jurnalotom.map((x) => parseFloat(x.totaljurnal)).reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0)
@@ -229,8 +229,8 @@ export const useNeracaStore = defineStore('Neraca_Akuntansi', {
             const objinv = []
             const setinv = this.reqinves.map((x) => x.kode)
             const filinves = this.aset.filter(x => setinv.includes(x.kodex)).map((x) => x.kodex)
-            const setunikinves = filinves.length ? [...new Set(filinves)] : []
-            for (let i = 0; i < setunikinves.length; i++) {
+            const setunikinves = filinves?.length ? [...new Set(filinves)] : []
+            for (let i = 0; i < setunikinves?.length; i++) {
               const el = setunikinves[i]
               const saldoawal = this.aset.filter((x) => x.kodex === el).map((x) => x.saldoawal.map((x) => parseFloat(x.saldo)).reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0)
               const jurnal = this.aset.filter((x) => x.kodex === el).map((x) => x.jurnalotom.map((x) => parseFloat(x.totaljurnal)).reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0)
@@ -252,8 +252,8 @@ export const useNeracaStore = defineStore('Neraca_Akuntansi', {
             const objasettetap = []
             const setaset = this.reqasettetap.map((x) => x.kode)
             const filasetttp = this.aset.filter(x => setaset.includes(x.kodex)).map((x) => x.kodex)
-            const setunikaset = filasetttp.length ? [...new Set(filasetttp)] : []
-            for (let i = 0; i < setunikaset.length; i++) {
+            const setunikaset = filasetttp?.length ? [...new Set(filasetttp)] : []
+            for (let i = 0; i < setunikaset?.length; i++) {
               const el = setunikaset[i]
               const saldoawal = this.aset.filter((x) => x.kodex === el).map((x) => x.saldoawal.map((x) => parseFloat(x.saldo)).reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0)
               const jurnal = this.aset.filter((x) => x.kodex === el).map((x) => x.jurnalotom.map((x) => parseFloat(x.totaljurnal)).reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0)
@@ -270,8 +270,8 @@ export const useNeracaStore = defineStore('Neraca_Akuntansi', {
             const objasetlainnya = []
             const setasetlain = this.reqasetlain.map((x) => x.kode)
             const filasetlain = this.aset.filter(x => setasetlain.includes(x.kodex)).map((x) => x.kodex)
-            const setunikasetlain = filasetlain.length ? [...new Set(filasetlain)] : []
-            for (let i = 0; i < setunikasetlain.length; i++) {
+            const setunikasetlain = filasetlain?.length ? [...new Set(filasetlain)] : []
+            for (let i = 0; i < setunikasetlain?.length; i++) {
               const el = setunikasetlain[i]
               const saldoawal = this.aset.filter((x) => x.kodex === el).map((x) => x.saldoawal.map((x) => parseFloat(x.saldo)).reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0)
               const jurnal = this.aset.filter((x) => x.kodex === el).map((x) => x.jurnalotom.map((x) => parseFloat(x.totaljurnal)).reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0)
@@ -288,9 +288,9 @@ export const useNeracaStore = defineStore('Neraca_Akuntansi', {
             const objutang = []
             const setutang = this.requtang.map((x) => x.kode)
             const filtutang = this.utang.filter(x => setutang.includes(x.kodex)).map((x) => x.kodex)
-            const setunikutang = filtutang.length ? [...new Set(filtutang)] : []
+            const setunikutang = filtutang?.length ? [...new Set(filtutang)] : []
 
-            for (let i = 0; i < setunikutang.length; i++) {
+            for (let i = 0; i < setunikutang?.length; i++) {
               const el = setunikutang[i]
               const saldoawal = this.utang.filter((x) => x.kodex === el).map((x) => x.saldoawal.map((x) => parseFloat(x.saldo)).reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0)
               const jurnal = this.utang.filter((x) => x.kodex === el).map((x) => x.jurnalotom.map((x) => parseFloat(x.totaljurnal)).reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0)
@@ -307,8 +307,8 @@ export const useNeracaStore = defineStore('Neraca_Akuntansi', {
             const objutangjkpanjang = []
             const setutangpjg = this.requtngjgkpanjang.map((x) => x.kode)
             const filtutangjgk = this.utang.filter(x => setutangpjg.includes(x.kodex)).map((x) => x.kodex)
-            const setunikutangpjg = filtutangjgk.length ? [...new Set(filtutangjgk)] : []
-            for (let i = 0; i < setunikutangpjg.length; i++) {
+            const setunikutangpjg = filtutangjgk?.length ? [...new Set(filtutangjgk)] : []
+            for (let i = 0; i < setunikutangpjg?.length; i++) {
               const el = setunikutangpjg[i]
               const saldoawal = this.utang.filter((x) => x.kodex === el).map((x) => x.saldoawal.map((x) => parseFloat(x.saldo)).reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0)
               const jurnal = this.utang.filter((x) => x.kodex === el).map((x) => x.jurnalotom.map((x) => parseFloat(x.totaljurnal)).reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0)
@@ -336,8 +336,8 @@ export const useNeracaStore = defineStore('Neraca_Akuntansi', {
             const objekuitas = []
             const setekuitas = this.reqekuitas.map((x) => x.kode)
             const filtekuitas = this.utang.filter(x => setekuitas.includes(x.kodex)).map((x) => x.kodex)
-            const setekuitasx = filtekuitas.length ? [...new Set(filtekuitas)] : []
-            for (let i = 0; i < setekuitasx.length; i++) {
+            const setekuitasx = filtekuitas?.length ? [...new Set(filtekuitas)] : []
+            for (let i = 0; i < setekuitasx?.length; i++) {
               const el = setekuitasx[i]
               const saldoawal = this.utang.filter((x) => x.kodex === el).map((x) => x.saldoawal.map((x) => parseFloat(x.saldo)).reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0)
               const jurnal = this.utang.filter((x) => x.kodex === el).map((x) => x.jurnalotom.map((x) => parseFloat(x.totaljurnal)).reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0)

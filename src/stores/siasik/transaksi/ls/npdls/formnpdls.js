@@ -197,17 +197,17 @@ export const formNotaPermintaanDanaLS = defineStore('form_NPD_LS', {
     },
     resetFORM() {
       const forms = Object.keys(this.form)
-      for (let i = 0; i < forms.length; i++) {
+      for (let i = 0; i < forms?.length; i++) {
         const el = forms[i]
         this.setForm(el, null)
       }
       const keys = Object.keys(this.rinci)
-      for (let i = 0; i < keys.length; i++) {
+      for (let i = 0; i < keys?.length; i++) {
         const el = keys[i]
         this.setForm(el, null)
       }
       const bast = Object.keys(this.reqs)
-      for (let i = 0; i < bast.length; i++) {
+      for (let i = 0; i < bast?.length; i++) {
         const el = bast[i]
         this.setForm(el, null)
       }
@@ -484,9 +484,9 @@ export const formNotaPermintaanDanaLS = defineStore('form_NPD_LS', {
       })
     },
     rincianNpd() {
-      if (this.listnpdls.length) {
+      if (this.listnpdls?.length) {
         const sas = []
-        for (let i = 0; i < this.listnpdls.length; i++) {
+        for (let i = 0; i < this.listnpdls?.length; i++) {
           const arr = this.listnpdls[i]
           // console.log('rincianqqq', arr)
           const head = {
@@ -514,7 +514,7 @@ export const formNotaPermintaanDanaLS = defineStore('form_NPD_LS', {
           }
           // console.log('head', head)
           // const el = arr.npdlsrinci
-          // const obj = el.length
+          // const obj = el?.length
           //   ? el.map((x) => {
           //     return {
           //       nonpdls: x.nonpdls,
@@ -540,7 +540,7 @@ export const formNotaPermintaanDanaLS = defineStore('form_NPD_LS', {
 
             this.transall = resp?.data?.data
             this.listdatanpd()
-            if (this.transall.length < 0) {
+            if (this.transall?.length < 0) {
               this.resetFORM()
               this.form = []
               this.form.nonpdls = ''
@@ -576,7 +576,7 @@ export const formNotaPermintaanDanaLS = defineStore('form_NPD_LS', {
             // if (index >= 0) {
             //   row.rincian.splice(index, 1)
             // }
-            // if (!row.rincian.length) this.cariRencanaBeli()
+            // if (!row.rincian?.length) this.cariRencanaBeli()
             notifSuccess(resp)
             resolve(resp)
           })

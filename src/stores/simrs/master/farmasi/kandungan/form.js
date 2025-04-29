@@ -19,7 +19,7 @@ export const useMasterKandunganForm = defineStore('master_kandungan_form', {
       const columns = [
         'nama'
       ]
-      for (let i = 0; i < columns.length; i++) {
+      for (let i = 0; i < columns?.length; i++) {
         this.setForm(columns[i], null)
       }
       // this.setForm('isi', 1)

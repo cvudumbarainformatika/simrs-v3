@@ -309,7 +309,7 @@
         >
           <q-separator />
           <q-item
-            v-if="menu.submenus.length===0"
+            v-if="menu.submenus?.length===0"
             v-ripple
             clickable
             class="q-ml-lg"

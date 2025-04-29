@@ -114,8 +114,8 @@ function saveOrderLaborat() {
 function pilihPemeriksaans(val) {
   // console.log(val)
   modalOpen.value = false
-  const arr = val.length ? val.map(x => x.name) : []
-  const implode = arr.length ? arr.join('||') : ''
+  const arr = val?.length ? val.map(x => x.name) : []
+  const implode = arr?.length ? arr.join('||') : ''
   // console.log(implode)
   store.setPermintaanLaborats(implode, val)
   // insertList(val)

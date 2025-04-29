@@ -25,7 +25,7 @@ const speech = useSpeechStore()
 const model = ref('Nomor Antrian. 345.. menuju. Poli Kandungan..')
 onMounted(() => {
   const voices = speech.synth.getVoices()
-  if (voices.length) {
+  if (voices?.length) {
     speech.setLoading(false)
     console.log('onMounted :', voices)
   }

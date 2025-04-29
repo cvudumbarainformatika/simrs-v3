@@ -8,7 +8,7 @@
       </div>
     </div>
     <div class="col full-height bg-transparent">
-      <q-scroll-area v-if="items.length" style="height:calc( 100% - 1px );">
+      <q-scroll-area v-if="items?.length" style="height:calc( 100% - 1px );">
         <q-card v-for="(item, i) in items" :key="i" class="q-ma-sm relative-position">
           <q-card-section>
             <div class="row">

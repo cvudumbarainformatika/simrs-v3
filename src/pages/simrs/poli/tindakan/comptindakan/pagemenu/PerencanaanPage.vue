@@ -209,11 +209,11 @@ function editItem(val) {
       store.setFormRanap('jenistindakan', val.operasi?.jenistindakan)
       store.setFormRanap('icd9', val.operasi?.icd9)
       const opTi = store.optionsJenisTindakan.filter(a => a.kdtindakan === val.operasi?.jenistindakan)
-      if (!opTi.length) {
+      if (!opTi?.length) {
         store.cariTindakan(val.operasi?.jenistindakan)
       }
       const opIc = store.optionsIcd9.filter(a => a.kd_prosedur === val.operasi?.icd9)
-      if (!opIc.length) {
+      if (!opIc?.length) {
         store.cariIcd9(val.operasi?.icd9)
       }
       store.setFormRanap('tanggaloperasi', val.operasi?.tanggaloperasi)

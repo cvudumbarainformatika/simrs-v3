@@ -168,7 +168,7 @@
   <q-card style="width:100%" class="q-mt-md">
     <q-card-section>
       <q-list bordered separator>
-        <q-item v-if="!menus.length" class="text-blue">
+        <q-item v-if="!menus?.length" class="text-blue">
           <q-item-section avatar>
             <q-icon name="icon-mat-receipt_long" />
           </q-item-section>
@@ -176,7 +176,7 @@
             Belum ada Data
           </q-item-section>
         </q-item>
-        <q-item v-if="menus.length" class="text-blue">
+        <q-item v-if="menus?.length" class="text-blue">
           <q-item-section>
             <q-checkbox v-model="check" dense :disable="loading" @update:model-value="$emit('allCheck', check)" />
 
@@ -185,7 +185,7 @@
             </q-item-section>
           </q-item-section>
         </q-item>
-        <template v-if="menus.length">
+        <template v-if="menus?.length">
           <q-expansion-item v-for="(app, i) in menus" :key="i" expand-icon-toggle>
             <template #header>
               <q-item-section>
@@ -200,7 +200,7 @@
               </q-item-section>
             </template>
             <template v-for="(menu, n) in app.menus" :key="n">
-              <q-item v-if="menu.submenus.length === 0" v-ripple clickable class="q-ml-lg">
+              <q-item v-if="menu.submenus?.length === 0" v-ripple clickable class="q-ml-lg">
                 <q-item-section>
                   <q-checkbox v-model="menu.checked" dense :disable="loading"
                     @update:model-value="$emit('menuCheck', { 'menu': menu, 'i': i, 'n': n })" />
@@ -249,7 +249,7 @@
   </q-card>
   <q-card>
     <!-- <q-card-actions
-      v-if="menus.length"
+      v-if="menus?.length"
       align="right"
     >
       <app-btn
@@ -317,7 +317,7 @@ function setpoli(val) {
   kodepolis.value = val.kdruangansim.split('|')
 }
 function simpan() {
-  const anu = kodepolis.value?.length ? kodepolis.value.filter(a => a.length > 4) : null
+  const anu = kodepolis.value?.length ? kodepolis.value.filter(a => a?.length > 4) : null
   const arr = anu?.join('|') ?? null
   console.log('kode', anu)
   console.log(arr)
@@ -326,7 +326,7 @@ function simpan() {
   })
 }
 function simpanGudang() {
-  const anu = kodegudangs.value?.length ? kodegudangs.value.filter(a => a.length > 4) : null
+  const anu = kodegudangs.value?.length ? kodegudangs.value.filter(a => a?.length > 4) : null
   const arr = anu?.join('|') ?? null
   console.log('kode', anu)
   console.log(arr)
@@ -335,7 +335,7 @@ function simpanGudang() {
   })
 }
 function simpanRunganSim() {
-  const anu = koderuang.value?.length ? koderuang.value?.filter(a => a.length > 4) : null
+  const anu = koderuang.value?.length ? koderuang.value?.filter(a => a?.length > 4) : null
   const arr = anu?.join('|') ?? null
   console.log('kode', anu)
   console.log(arr)
@@ -348,12 +348,12 @@ function ruangan(val) {
   if (val.kdruangansim) {
     const temp = val.kdruangansim.split('|')
     const anu = []
-    if (temp.length) {
+    if (temp?.length) {
       temp.forEach(a => {
         const pol = store.polis.filter(b => b.kodepoli === a)
-        if (pol.length) anu.push(pol[0])
+        if (pol?.length) anu.push(pol[0])
       })
-      if (anu.length) {
+      if (anu?.length) {
         fin = anu.map(x => x.polirs).join(', ')
       }
     }
@@ -372,12 +372,12 @@ function gudang(val) {
   if (val.kdruangansim) {
     const temp = val.kdruangansim.split('|')
     const anu = []
-    if (temp.length) {
+    if (temp?.length) {
       temp.forEach(a => {
         const pol = store.gudangs.filter(b => b.kode === a)
-        if (pol.length) anu.push(pol[0])
+        if (pol?.length) anu.push(pol[0])
       })
-      if (anu.length) {
+      if (anu?.length) {
         fin = anu.map(x => x.nama).join(', ')
       }
     }
@@ -396,12 +396,12 @@ function ruangsim(val) {
   if (val.kdruangansim) {
     const temp = val.kdruangansim.split('|')
     const anu = []
-    if (temp.length) {
+    if (temp?.length) {
       temp.forEach(a => {
         const pol = store.ruangansims.filter(b => b.kode === a)
-        if (pol.length) anu.push(pol[0])
+        if (pol?.length) anu.push(pol[0])
       })
-      if (anu.length) {
+      if (anu?.length) {
         fin = anu.map(x => x.uraian).join(', ')
       }
     }

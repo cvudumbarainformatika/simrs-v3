@@ -13,7 +13,7 @@
       <q-separator />
 
       <q-card-section
-        v-if="items.length > 0"
+        v-if="items?.length > 0"
         id="printMe"
         style="max-height: 50vh"
         class="scroll"
@@ -68,7 +68,7 @@
                     {{ item.name === ""?
                       i + n + 1
                       : n!==0? ''
-                        :items[i - 1].name === ""?i + items[i - 1].value.length
+                        :items[i - 1].name === ""?i + items[i - 1].value?.length
                           :i + n + 1
                     }}
                   </td>

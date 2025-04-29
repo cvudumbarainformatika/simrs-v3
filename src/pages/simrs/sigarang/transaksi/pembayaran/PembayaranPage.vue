@@ -123,7 +123,7 @@
       </q-card-actions>
     </q-card>
     <q-card
-      v-if="store.penerimaans.length && !store.loading"
+      v-if="store.penerimaans?.length && !store.loading"
       class="q-mt-md"
     >
       <q-card-section>
@@ -194,7 +194,7 @@
       </q-card-section>
     </q-card>
     <q-card
-      v-if="!store.penerimaans.length && !store.loading"
+      v-if="!store.penerimaans?.length && !store.loading"
       class="q-mt-md"
     >
       <q-card-section><app-no-data /></q-card-section>
@@ -253,7 +253,7 @@ function simpan() {
     })
     const anu = ada.filter(a => a === false)
     // console.log('satu belanja', anu)
-    if (anu.length) {
+    if (anu?.length) {
       notifErrVue('Semua BAST harus dibayar')
     } else {
       store.setForm('penerimaans', dbyr)

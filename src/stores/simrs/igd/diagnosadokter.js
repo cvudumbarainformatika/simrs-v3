@@ -72,7 +72,7 @@ export const useDiagnosaDokter = defineStore('diagnosa-dokter', {
 
     //= ===
     async cariIcd9 (val) {
-      if (val.length < 3) {
+      if (val?.length < 3) {
         return
       }
       this.loadingIcd = true
@@ -84,7 +84,7 @@ export const useDiagnosaDokter = defineStore('diagnosa-dokter', {
       await api.get('v1/simrs/ranap/ruangan/mastericd9', params)
         .then(response => {
           this.loadingIcd = false
-          if (response?.data.length) {
+          if (response?.data?.length) {
             this.optionsIcd9 = response?.data
             return Promise.resolve(response)
           }
@@ -99,13 +99,13 @@ export const useDiagnosaDokter = defineStore('diagnosa-dokter', {
     //= ===
     setKode (val) {
       this.formdiagnosa.kddiagnosa = val
-      const ada = this.listDiagnosa.length > 0
+      const ada = this.listDiagnosa?.length > 0
       if (ada) {
         const target = this.listDiagnosa.filter(x => x.kode === val)
-        target.length
+        target?.length
           ? this.formdiagnosa.diagnosa = target[0].keterangan
           : this.formdiagnosa.diagnosa = ''
-        target.length
+        target?.length
           ? this.formdiagnosa.dtd = target[0].dtd ? target[0].dtd : ''
           : this.formdiagnosa.dtd = ''
       }
@@ -117,25 +117,25 @@ export const useDiagnosaDokter = defineStore('diagnosa-dokter', {
 
     setKdTindakan (val) {
       this.formtindakan.kdtindakan = val
-      const ada = this.listTindakan.length > 0
+      const ada = this.listTindakan?.length > 0
       if (ada) {
         const target = this.listTindakan.filter(x => x.kdtindakan === val)
-        target.length
+        target?.length
           ? this.formtindakan.tindakan = target[0].tindakan
           : this.formtindakan.tindakan = ''
-        target.length
+        target?.length
           ? this.formtindakan.tarif = target[0].tarif
           : this.formtindakan.tarif = 0
-        target.length
+        target?.length
           ? this.formtindakan.hargasarana = target[0].sarana
           : this.formtindakan.sarana = 0
-        target.length
+        target?.length
           ? this.formtindakan.hargapelayanan = target[0].pelayanan
           : this.formtindakan.pelayanan = 0
-        target.length
+        target?.length
           ? this.formtindakan.biaya = (parseInt(target[0].pelayanan) + parseInt(target[0].sarana))
           : this.formtindakan.biaya = 0
-        target.length
+        target?.length
           ? this.formtindakan.subtotal = parseInt(this.formtindakan.biaya) * this.formtindakan.jumlah
           : this.formtindakan.subtotal = 0
       }
@@ -272,7 +272,7 @@ export const useDiagnosaDokter = defineStore('diagnosa-dokter', {
       if (resp.status === 200) {
         const arr = resp.data.map(x => x.nota)
         // console.log('wewew', arr)
-        this.notaTindakans = arr.length ? arr : []
+        this.notaTindakans = arr?.length ? arr : []
         this.notaTindakans.push('BARU')
         this.notaTindakan = this.notaTindakans[0]
       }
@@ -282,7 +282,7 @@ export const useDiagnosaDokter = defineStore('diagnosa-dokter', {
       const files = file
       // console.log('store upload image', id)
       const data = new FormData()
-      for (let i = 0; i < files.length; i++) {
+      for (let i = 0; i < files?.length; i++) {
         const images = files[i]
         data.append(`images[${i}]`, images)
       }
@@ -366,7 +366,7 @@ export const useDiagnosaDokter = defineStore('diagnosa-dokter', {
 
     setNotas (array) {
       const arr = array.map(x => x.nota)
-      this.notaTindakans = arr.length ? arr : []
+      this.notaTindakans = arr?.length ? arr : []
       this.notaTindakans.push('BARU')
       this.notaTindakan = this.notaTindakans[0]
     },

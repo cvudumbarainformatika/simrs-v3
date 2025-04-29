@@ -127,7 +127,7 @@
                         option-value="nokontrakx"
                         :option-label="['nokontrakx','namaperusahaan']"
                         :source="store.kontrakPekerjaans"
-                        :disable="table.items.length ? true : false"
+                        :disable="table.items?.length ? true : false"
                         :loading="store.loadingKontrak"
                         @on-select="store.kontrakSelected"
                         @clear="clearkontrak"
@@ -237,7 +237,7 @@
                       <app-btn
                         label="Tutup Pemesanan"
                         :loading="store.loadingFinish"
-                        :disable="store.isOpen || store.loadingFinish || store.loadingTambah || !table.items.length"
+                        :disable="store.isOpen || store.loadingFinish || store.loadingTambah || !table.items?.length"
                         @click="onFisnish"
                       />
                     </div>
@@ -331,25 +331,25 @@
                 </td>
                 <td>
                   <div class="bold">
-                    {{ store.barangrs.length ? store.barangrs[0].kode : '-' }}
+                    {{ store.barangrs?.length ? store.barangrs[0].kode : '-' }}
                   </div>
                 </td>
                 <!-- <td>
-                  <div class="bold">{{store.barangrs.length ? store.barangrs[0].nama : '-'}}</div>
+                  <div class="bold">{{store.barangrs?.length ? store.barangrs[0].nama : '-'}}</div>
                 </td> -->
                 <td>
                   <div class="bold">
-                    {{ store.barangrs.length ? store.barangrs[0].barang108.kode : '-' }}
+                    {{ store.barangrs?.length ? store.barangrs[0].barang108.kode : '-' }}
                   </div>
                 </td>
                 <td>
                   <div class="bold">
-                    {{ store.barangrs.length ? store.barangrs[0].barang108.uraian : '-' }}
+                    {{ store.barangrs?.length ? store.barangrs[0].barang108.uraian : '-' }}
                   </div>
                 </td>
                 <td>
                   <div class="bold">
-                    {{ store.barangrs.length ? store.barangrs[0].satuan.nama : '-' }}
+                    {{ store.barangrs?.length ? store.barangrs[0].satuan.nama : '-' }}
                   </div>
                 </td>
                 <td>
@@ -484,7 +484,7 @@ const clearkontrak = () => {
 }
 
 const onFisnish = () => {
-  if (table.items.length) {
+  if (table.items?.length) {
     const jumlah = table.items.map(data => {
       return data.sub_total
     }).reduce((x, y) => { return x + y })

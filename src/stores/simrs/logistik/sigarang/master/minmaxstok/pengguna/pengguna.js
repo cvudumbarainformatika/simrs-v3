@@ -75,7 +75,7 @@ export const useMinMaxPenggunaStockStore = defineStore('min_max_pengguna_store',
         'kode_ruang'
 
       ]
-      for (let i = 0; i < columns.length; i++) {
+      for (let i = 0; i < columns?.length; i++) {
         this.setForm(columns[i], null)
       }
       this.setForm('flag_minta', 'all')

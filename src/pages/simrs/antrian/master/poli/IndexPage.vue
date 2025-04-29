@@ -138,7 +138,7 @@
                         Pencarian yang ditemukan Bpjs
                       </div>
                       <q-list
-                        v-if="row.referensi_poli_bpjs.length>0"
+                        v-if="row.referensi_poli_bpjs?.length>0"
                         dense
                         bordered
                         padding

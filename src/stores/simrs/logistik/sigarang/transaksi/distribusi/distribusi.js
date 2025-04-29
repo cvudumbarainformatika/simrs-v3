@@ -41,7 +41,7 @@ export const useTransaksiDistribusiStore = defineStore('transaksi_distribusi', {
         'id'
       ]
 
-      for (let i = 0; i < columns.length; i++) {
+      for (let i = 0; i < columns?.length; i++) {
         this.setForm(columns[i], null)
       }
     },
@@ -169,11 +169,11 @@ export const useTransaksiDistribusiStore = defineStore('transaksi_distribusi', {
             this.loading = false
             // console.log('permintaan verified', resp.data)
             const permintaanWithDetail = resp.data.data.data.filter(minta => {
-              return minta.details.length > 0
+              return minta.details?.length > 0
             })
             const dataTable = permintaanWithDetail.map(apem => {
               const temp = apem
-              if (apem.details.length) {
+              if (apem.details?.length) {
                 apem.ruang = apem.details[0].ruang
               }
               // console.log('details', apem)

@@ -158,20 +158,20 @@ export const registerJurnal = defineStore('register_jurnal', {
     dataregisterjurnal() {
       // DATA SERAHTERIMA SIASIK //
       const unikstp = this.stp.map((x) => x.noserahterimapekerjaan)
-      const dataunikstp = unikstp.length ? [...new Set(unikstp)] : []
+      const dataunikstp = unikstp?.length ? [...new Set(unikstp)] : []
       const dataserahterima = []
       const stp = []
-      for (let i = 0; i < dataunikstp.length; i++) {
+      for (let i = 0; i < dataunikstp?.length; i++) {
         const el = dataunikstp[i]
         const arr = this.stp
 
         const arrfilter = arr.filter((x) => x.noserahterimapekerjaan === el).map((x) => x)
 
         const unik50 = arrfilter.map((x) => x.koderek50)
-        const unik50x = unik50.length ? [...new Set(unik50)] : []
+        const unik50x = unik50?.length ? [...new Set(unik50)] : []
 
         const beban = []
-        for (let k = 0; k < unik50x.length; k++) {
+        for (let k = 0; k < unik50x?.length; k++) {
           const es = unik50x[k]
           const arrs = arrfilter
           // console.log('arrrs', arrs)
@@ -193,7 +193,7 @@ export const registerJurnal = defineStore('register_jurnal', {
         }
         // console.log('beban xxxxxxxxxxx', beban)
         const utangstp = []
-        for (let k = 0; k < unik50x.length; k++) {
+        for (let k = 0; k < unik50x?.length; k++) {
           const es = unik50x[k]
           const arrs = arrfilter
           const el = {
@@ -233,7 +233,7 @@ export const registerJurnal = defineStore('register_jurnal', {
       const bastfarm = [];
       const arr50bast = [];
 
-      for (let i = 0; i < this.bastfarmasi.length; i++) {
+      for (let i = 0; i < this.bastfarmasi?.length; i++) {
         const el = this.bastfarmasi[i];
         const ri = el.rincianbast;
 
@@ -256,13 +256,13 @@ export const registerJurnal = defineStore('register_jurnal', {
 
         // Ambil nilai unik dari nobast
         const unik50 = rinci.map((s) => s.nobast);
-        const unik = unik50.length ? [...new Set(unik50)] : [];
+        const unik = unik50?.length ? [...new Set(unik50)] : [];
 
         // Buat rincian debit dan kredit
         const rincidebit = [];
         const rincikredit = [];
 
-        for (let j = 0; j < unik.length; j++) {
+        for (let j = 0; j < unik?.length; j++) {
           const elUnik = unik[j];
           const items = arr50bast.filter((x) => x.nobast === elUnik);
 
@@ -349,7 +349,7 @@ export const registerJurnal = defineStore('register_jurnal', {
       // DATA BAST KONSINYASI
       const bastkons = []
       const arr50kons = []
-      for (let x = 0; x < this.bastkonsinyasi.length; x++) {
+      for (let x = 0; x < this.bastkonsinyasi?.length; x++) {
         const el = this.bastkonsinyasi[x];
         const ri = el.rinci
 
@@ -369,12 +369,12 @@ export const registerJurnal = defineStore('register_jurnal', {
         arr50kons.push(...rinci)
 
         const unik50 = rinci.map((s) => s.nobast)
-        const unik = unik50.length ? [...new Set(unik50)] : []
+        const unik = unik50?.length ? [...new Set(unik50)] : []
 
         const rincidebit = []
         const rincikredit = []
 
-        for (let i = 0; i < unik.length; i++) {
+        for (let i = 0; i < unik?.length; i++) {
           const elUnik = unik[i];
           const items = arr50kons.filter((x) => x.nobast === elUnik)
 
@@ -456,10 +456,10 @@ export const registerJurnal = defineStore('register_jurnal', {
 
       // DATA PENCAIRAN TANPA STP //
       const uniks = this.cairnostp.map((x) => x.nonpdls)
-      const unik = uniks.length ? [...new Set(uniks)] : []
+      const unik = uniks?.length ? [...new Set(uniks)] : []
       const cairnonstp = []
       // const arrcair = []
-      for (let i = 0; i < unik.length; i++) {
+      for (let i = 0; i < unik?.length; i++) {
         const el = unik[i]
         const arr = this.cairnostp
 
@@ -472,7 +472,7 @@ export const registerJurnal = defineStore('register_jurnal', {
 
         const arrfilter = arr.filter((x) => x.nonpdls === el).map((x) => x)
         const bendpg = []
-        for (let y = 0; y < arrfilter.length; y++) {
+        for (let y = 0; y < arrfilter?.length; y++) {
           const er = arrfilter[y]
           const cair1 = {
             // kas bendahara
@@ -490,7 +490,7 @@ export const registerJurnal = defineStore('register_jurnal', {
           // console.log('bendpg', bendpg)
         }
         const blud = []
-        for (let v = 0; v < arrfilter.length; v++) {
+        for (let v = 0; v < arrfilter?.length; v++) {
           const er = arrfilter[v]
           const cair1 = {
             // kas blud
@@ -508,7 +508,7 @@ export const registerJurnal = defineStore('register_jurnal', {
         }
 
         const belanja = []
-        for (let y = 0; y < arrfilter.length; y++) {
+        for (let y = 0; y < arrfilter?.length; y++) {
           const er = arrfilter[y]
           const cair1 = {
             // Belanja
@@ -525,7 +525,7 @@ export const registerJurnal = defineStore('register_jurnal', {
           belanja.push(cair1)
         }
         const kcair1 = []
-        for (let v = 0; v < arrfilter.length; v++) {
+        for (let v = 0; v < arrfilter?.length; v++) {
           const er = arrfilter[v]
           const cair1 = {
             // epsal
@@ -542,7 +542,7 @@ export const registerJurnal = defineStore('register_jurnal', {
           kcair1.push(cair1)
         }
         const cairx = []
-        for (let y = 0; y < arrfilter.length; y++) {
+        for (let y = 0; y < arrfilter?.length; y++) {
           const er = arrfilter[y]
           const cair1 = {
             // utang / beban / aset
@@ -559,7 +559,7 @@ export const registerJurnal = defineStore('register_jurnal', {
           cairx.push(cair1)
         }
         const kasbend = []
-        for (let v = 0; v < arrfilter.length; v++) {
+        for (let v = 0; v < arrfilter?.length; v++) {
           const er = arrfilter[v]
           const cair1 = {
             // kas bendahara
@@ -613,10 +613,10 @@ export const registerJurnal = defineStore('register_jurnal', {
 
       // DATA PENCAIRAN DENGAN STP //
       const unikx = this.cairstp.map((x) => x.nonpdls)
-      const unikz = unikx.length ? [...new Set(unikx)] : []
+      const unikz = unikx?.length ? [...new Set(unikx)] : []
       const cairstpz = []
       // const arrcair = []
-      for (let i = 0; i < unikz.length; i++) {
+      for (let i = 0; i < unikz?.length; i++) {
         const el = unikz[i]
         const arr = this.cairstp
 
@@ -629,7 +629,7 @@ export const registerJurnal = defineStore('register_jurnal', {
 
         const arrfilter = arr.filter((x) => x.nonpdls === el).map((x) => x)
         const bendpg = []
-        for (let y = 0; y < arrfilter.length; y++) {
+        for (let y = 0; y < arrfilter?.length; y++) {
           const er = arrfilter[y]
           const cair1 = {
             // kas bendahara
@@ -646,7 +646,7 @@ export const registerJurnal = defineStore('register_jurnal', {
           bendpg.push(cair1)
         }
         const blud = []
-        for (let v = 0; v < arrfilter.length; v++) {
+        for (let v = 0; v < arrfilter?.length; v++) {
           const er = arrfilter[v]
           const cair1 = {
             // kas blud
@@ -663,7 +663,7 @@ export const registerJurnal = defineStore('register_jurnal', {
           blud.push(cair1)
         }
         const belanja = []
-        for (let y = 0; y < arrfilter.length; y++) {
+        for (let y = 0; y < arrfilter?.length; y++) {
           const er = arrfilter[y]
           const cair1 = {
             // Belanja
@@ -680,7 +680,7 @@ export const registerJurnal = defineStore('register_jurnal', {
           belanja.push(cair1)
         }
         const kcair1 = []
-        for (let v = 0; v < arrfilter.length; v++) {
+        for (let v = 0; v < arrfilter?.length; v++) {
           const er = arrfilter[v]
           const cair1 = {
             // epsal
@@ -697,7 +697,7 @@ export const registerJurnal = defineStore('register_jurnal', {
           kcair1.push(cair1)
         }
         const cairx = []
-        for (let y = 0; y < arrfilter.length; y++) {
+        for (let y = 0; y < arrfilter?.length; y++) {
           const er = arrfilter[y]
           const cair1 = {
             // utang / beban / aset
@@ -714,7 +714,7 @@ export const registerJurnal = defineStore('register_jurnal', {
           cairx.push(cair1)
         }
         const kasbend = []
-        for (let v = 0; v < arrfilter.length; v++) {
+        for (let v = 0; v < arrfilter?.length; v++) {
           const er = arrfilter[v]
           const cair1 = {
             // kas bendahara
@@ -765,11 +765,11 @@ export const registerJurnal = defineStore('register_jurnal', {
 
       // DATA CONTRAPOST //
       const unikcp = this.contrapost.map((x) => x.nocontrapost)
-      const dataunik = unikcp.length ? [...new Set(unikcp)] : []
+      const dataunik = unikcp?.length ? [...new Set(unikcp)] : []
       // eslint-disable-next-line no-unused-vars
       const cp = []
 
-      for (let c = 0; c < dataunik.length; c++) {
+      for (let c = 0; c < dataunik?.length; c++) {
         const el = dataunik[c]
         const arr = this.contrapost
         // console.log('arr', arr)
@@ -777,7 +777,7 @@ export const registerJurnal = defineStore('register_jurnal', {
         // eslint-disable-next-line no-unused-vars
         const epsal = []
         const arrfilter = arr.filter((x) => x.nocontrapost === el).map((x) => x)
-        for (let i = 0; i < arrfilter.length; i++) {
+        for (let i = 0; i < arrfilter?.length; i++) {
           const er = arrfilter[i]
           const els = {
             // epsal
@@ -795,7 +795,7 @@ export const registerJurnal = defineStore('register_jurnal', {
         }
 
         const belanja = []
-        for (let i = 0; i < arrfilter.length; i++) {
+        for (let i = 0; i < arrfilter?.length; i++) {
           const er = arrfilter[i]
           const els = {
             // belanja
@@ -814,7 +814,7 @@ export const registerJurnal = defineStore('register_jurnal', {
         }
 
         const kasbend = []
-        for (let i = 0; i < arrfilter.length; i++) {
+        for (let i = 0; i < arrfilter?.length; i++) {
           const er = arrfilter[i]
           const els = {
             // belanja
@@ -832,7 +832,7 @@ export const registerJurnal = defineStore('register_jurnal', {
         }
 
         const bebanaset = []
-        for (let i = 0; i < arrfilter.length; i++) {
+        for (let i = 0; i < arrfilter?.length; i++) {
           const er = arrfilter[i]
           const els = {
             // belanja
@@ -870,10 +870,10 @@ export const registerJurnal = defineStore('register_jurnal', {
 
       // DATA SPM UP //
       const dataspmup = []
-      for (let i = 0; i < this.spmup.length; i++) {
+      for (let i = 0; i < this.spmup?.length; i++) {
         const arr = this.spmup
         const kasbend = []
-        for (let k = 0; k < arr.length; k++) {
+        for (let k = 0; k < arr?.length; k++) {
           const er = arr[i]
           const el = {
             tanggal: er.tglSpm,
@@ -889,7 +889,7 @@ export const registerJurnal = defineStore('register_jurnal', {
           kasbend.push(el)
         }
         const kasblud = []
-        for (let k = 0; k < arr.length; k++) {
+        for (let k = 0; k < arr?.length; k++) {
           const er = arr[i]
           const el = {
             tanggal: er.tglSpm,
@@ -926,11 +926,11 @@ export const registerJurnal = defineStore('register_jurnal', {
 
       // DATA SPM GU //
       const dataspmgu = []
-      for (let i = 0; i < this.spmgu.length; i++) {
+      for (let i = 0; i < this.spmgu?.length; i++) {
         const arr = this.spmgu
 
         const kasblud = []
-        for (let k = 0; k < arr.length; k++) {
+        for (let k = 0; k < arr?.length; k++) {
           const er = arr[i]
           const el = {
             tanggal: er.tglSpm,
@@ -946,7 +946,7 @@ export const registerJurnal = defineStore('register_jurnal', {
           kasblud.push(el)
         }
         const kasbend = []
-        for (let k = 0; k < arr.length; k++) {
+        for (let k = 0; k < arr?.length; k++) {
           const er = arr[i]
           const el = {
             tanggal: er.tglSpm,
@@ -981,16 +981,16 @@ export const registerJurnal = defineStore('register_jurnal', {
 
       // DATA SPJ PANJAR //
       const unikspj = this.spjpanjar.map((x) => x.nospjpanjar)
-      const unikno = unikspj.length ? [...new Set(unikspj)] : []
+      const unikno = unikspj?.length ? [...new Set(unikspj)] : []
 
       const spjpjr = []
-      for (let i = 0; i < unikno.length; i++) {
+      for (let i = 0; i < unikno?.length; i++) {
         const el = unikno[i]
         const arr = this.spjpanjar
         const arrfilter = arr.filter((x) => x.nospjpanjar === el).map((x) => x)
 
         const belanja = []
-        for (let x = 0; x < arrfilter.length; x++) {
+        for (let x = 0; x < arrfilter?.length; x++) {
           const er = arrfilter[x]
           const els = {
             tanggal: er?.tglspjpanjar,
@@ -1008,7 +1008,7 @@ export const registerJurnal = defineStore('register_jurnal', {
         }
 
         const epsal = []
-        for (let x = 0; x < arrfilter.length; x++) {
+        for (let x = 0; x < arrfilter?.length; x++) {
           const er = arrfilter[x]
           const els = {
             tanggal: er?.tglspjpanjar,
@@ -1025,7 +1025,7 @@ export const registerJurnal = defineStore('register_jurnal', {
         }
 
         const beban = []
-        for (let x = 0; x < arrfilter.length; x++) {
+        for (let x = 0; x < arrfilter?.length; x++) {
           const er = arrfilter[x]
           const els = {
             tanggal: er?.tglspjpanjar,
@@ -1042,7 +1042,7 @@ export const registerJurnal = defineStore('register_jurnal', {
         }
 
         const kasbend = []
-        for (let x = 0; x < arrfilter.length; x++) {
+        for (let x = 0; x < arrfilter?.length; x++) {
           const er = arrfilter[x]
           const els = {
             tanggal: er?.tglspjpanjar,
@@ -1080,11 +1080,11 @@ export const registerJurnal = defineStore('register_jurnal', {
       }
       // DATA PENGEMBALIAN NIHIL //
       const datanihil = []
-      for (let i = 0; i < this.nihil.length; i++) {
+      for (let i = 0; i < this.nihil?.length; i++) {
         const arr = this.nihil
 
         const kasblud = []
-        for (let k = 0; k < arr.length; k++) {
+        for (let k = 0; k < arr?.length; k++) {
           const er = arr[i]
           const el = {
             tanggal: er?.tgltrans,
@@ -1101,7 +1101,7 @@ export const registerJurnal = defineStore('register_jurnal', {
           // console.log('nihil', kasblud)
         }
         const kasbend = []
-        for (let k = 0; k < arr.length; k++) {
+        for (let k = 0; k < arr?.length; k++) {
           const er = arr[i]
           const el = {
             tanggal: er?.tgltrans,
@@ -1136,15 +1136,15 @@ export const registerJurnal = defineStore('register_jurnal', {
 
       // DATA PENDAPATAN //
       const unikppk = this.pendapatan.map((x) => x.idtrans)
-      const unikpend = unikppk.length ? [...new Set(unikppk)] : []
+      const unikpend = unikppk?.length ? [...new Set(unikppk)] : []
       const pendapatan = []
-      for (let i = 0; i < unikpend.length; i++) {
+      for (let i = 0; i < unikpend?.length; i++) {
         const el = unikpend[i]
         const arr = this.pendapatan
         const arrfilter = arr.filter((x) => x.idtrans === el).map((x) => x)
         // console.log('filter pendapatan', arrfilter)
         const epsal = []
-        for (let k = 0; k < arrfilter.length; k++) {
+        for (let k = 0; k < arrfilter?.length; k++) {
           const er = arrfilter[k]
           const els = {
             tanggal: er?.tgltrans,
@@ -1160,7 +1160,7 @@ export const registerJurnal = defineStore('register_jurnal', {
           epsal.push(els)
         }
         const pend = []
-        for (let k = 0; k < arrfilter.length; k++) {
+        for (let k = 0; k < arrfilter?.length; k++) {
           const er = arrfilter[k]
           const els = {
             tanggal: er?.tgltrans,
@@ -1177,7 +1177,7 @@ export const registerJurnal = defineStore('register_jurnal', {
           // console.log('nihil', kasblud)
         }
         const kasblud = []
-        for (let k = 0; k < arrfilter.length; k++) {
+        for (let k = 0; k < arrfilter?.length; k++) {
           const er = arrfilter[k]
           const els = {
             tanggal: er?.tgltrans,
@@ -1193,7 +1193,7 @@ export const registerJurnal = defineStore('register_jurnal', {
           kasblud.push(els)
         }
         const pendplo = []
-        for (let k = 0; k < arrfilter.length; k++) {
+        for (let k = 0; k < arrfilter?.length; k++) {
           const er = arrfilter[k]
           const els = {
             tanggal: er?.tgltrans,
@@ -1229,15 +1229,15 @@ export const registerJurnal = defineStore('register_jurnal', {
 
       // DATA PAJAK LS //
       const unikpajakls = this.pajakls.map((x) => x.nonpdls)
-      const unpjakls = unikpajakls.length ? [...new Set(unikpajakls)] : []
+      const unpjakls = unikpajakls?.length ? [...new Set(unikpajakls)] : []
       const pajakls = []
-      for (let i = 0; i < unpjakls.length; i++) {
+      for (let i = 0; i < unpjakls?.length; i++) {
         const el = unpjakls[i]
         const arr = this.pajakls
         const arrfilter = arr.filter((x) => x.nonpdls === el).map((x) => x)
 
         const pph21x = []
-        for (let x = 0; x < arrfilter.length; x++) {
+        for (let x = 0; x < arrfilter?.length; x++) {
           const er = arrfilter[x]
           const kas = {
             tanggal: er?.tglpindahbuku,
@@ -1258,7 +1258,7 @@ export const registerJurnal = defineStore('register_jurnal', {
           }
         }
         const pph21y = []
-        for (let x = 0; x < arrfilter.length; x++) {
+        for (let x = 0; x < arrfilter?.length; x++) {
           const er = arrfilter[x]
           const utang = {
             tanggal: er?.tglpindahbuku,
@@ -1279,7 +1279,7 @@ export const registerJurnal = defineStore('register_jurnal', {
         }
 
         const pph21a = []
-        for (let x = 0; x < arrfilter.length; x++) {
+        for (let x = 0; x < arrfilter?.length; x++) {
           const er = arrfilter[x]
           const kas = {
             tanggal: er?.tglpindahbuku,
@@ -1299,7 +1299,7 @@ export const registerJurnal = defineStore('register_jurnal', {
           }
         }
         const pph21b = []
-        for (let x = 0; x < arrfilter.length; x++) {
+        for (let x = 0; x < arrfilter?.length; x++) {
           const er = arrfilter[x]
           const utang = {
             tanggal: er?.tglpindahbuku,
@@ -1320,7 +1320,7 @@ export const registerJurnal = defineStore('register_jurnal', {
         }
 
         const pph22x = []
-        for (let x = 0; x < arrfilter.length; x++) {
+        for (let x = 0; x < arrfilter?.length; x++) {
           const er = arrfilter[x]
           const kas = {
             tanggal: er?.tglpindahbuku,
@@ -1340,7 +1340,7 @@ export const registerJurnal = defineStore('register_jurnal', {
           }
         }
         const pph22y = []
-        for (let x = 0; x < arrfilter.length; x++) {
+        for (let x = 0; x < arrfilter?.length; x++) {
           const er = arrfilter[x]
           const utang = {
             tanggal: er?.tglpindahbuku,
@@ -1361,7 +1361,7 @@ export const registerJurnal = defineStore('register_jurnal', {
         }
 
         const pph22a = []
-        for (let x = 0; x < arrfilter.length; x++) {
+        for (let x = 0; x < arrfilter?.length; x++) {
           const er = arrfilter[x]
           const kas = {
             tanggal: er?.tglpindahbuku,
@@ -1381,7 +1381,7 @@ export const registerJurnal = defineStore('register_jurnal', {
           }
         }
         const pph22b = []
-        for (let x = 0; x < arrfilter.length; x++) {
+        for (let x = 0; x < arrfilter?.length; x++) {
           const er = arrfilter[x]
           const utang = {
             tanggal: er?.tglpindahbuku,
@@ -1402,7 +1402,7 @@ export const registerJurnal = defineStore('register_jurnal', {
         }
 
         const pph23x = []
-        for (let x = 0; x < arrfilter.length; x++) {
+        for (let x = 0; x < arrfilter?.length; x++) {
           const er = arrfilter[x]
           const kas = {
             tanggal: er?.tglpindahbuku,
@@ -1422,7 +1422,7 @@ export const registerJurnal = defineStore('register_jurnal', {
           }
         }
         const pph23y = []
-        for (let x = 0; x < arrfilter.length; x++) {
+        for (let x = 0; x < arrfilter?.length; x++) {
           const er = arrfilter[x]
           const utang = {
             tanggal: er?.tglpindahbuku,
@@ -1443,7 +1443,7 @@ export const registerJurnal = defineStore('register_jurnal', {
         }
 
         const pph23a = []
-        for (let x = 0; x < arrfilter.length; x++) {
+        for (let x = 0; x < arrfilter?.length; x++) {
           const er = arrfilter[x]
           const kas = {
             tanggal: er?.tglpindahbuku,
@@ -1463,7 +1463,7 @@ export const registerJurnal = defineStore('register_jurnal', {
           }
         }
         const pph23b = []
-        for (let x = 0; x < arrfilter.length; x++) {
+        for (let x = 0; x < arrfilter?.length; x++) {
           const er = arrfilter[x]
           const utang = {
             tanggal: er?.tglpindahbuku,
@@ -1484,7 +1484,7 @@ export const registerJurnal = defineStore('register_jurnal', {
         }
 
         const pph25x = []
-        for (let x = 0; x < arrfilter.length; x++) {
+        for (let x = 0; x < arrfilter?.length; x++) {
           const er = arrfilter[x]
           const kas = {
             tanggal: er?.tglpindahbuku,
@@ -1504,7 +1504,7 @@ export const registerJurnal = defineStore('register_jurnal', {
           }
         }
         const pph25y = []
-        for (let x = 0; x < arrfilter.length; x++) {
+        for (let x = 0; x < arrfilter?.length; x++) {
           const er = arrfilter[x]
           const utang = {
             tanggal: er?.tglpindahbuku,
@@ -1525,7 +1525,7 @@ export const registerJurnal = defineStore('register_jurnal', {
         }
 
         const pph25a = []
-        for (let x = 0; x < arrfilter.length; x++) {
+        for (let x = 0; x < arrfilter?.length; x++) {
           const er = arrfilter[x]
           const kas = {
             tanggal: er?.tglpindahbuku,
@@ -1545,7 +1545,7 @@ export const registerJurnal = defineStore('register_jurnal', {
           }
         }
         const pph25b = []
-        for (let x = 0; x < arrfilter.length; x++) {
+        for (let x = 0; x < arrfilter?.length; x++) {
           const er = arrfilter[x]
           const utang = {
             tanggal: er?.tglpindahbuku,
@@ -1566,7 +1566,7 @@ export const registerJurnal = defineStore('register_jurnal', {
         }
 
         const ppnpusatx = []
-        for (let x = 0; x < arrfilter.length; x++) {
+        for (let x = 0; x < arrfilter?.length; x++) {
           const er = arrfilter[x]
           const kas = {
             tanggal: er?.tglpindahbuku,
@@ -1586,7 +1586,7 @@ export const registerJurnal = defineStore('register_jurnal', {
           }
         }
         const ppnpusaty = []
-        for (let x = 0; x < arrfilter.length; x++) {
+        for (let x = 0; x < arrfilter?.length; x++) {
           const er = arrfilter[x]
           const utang = {
             tanggal: er?.tglpindahbuku,
@@ -1607,7 +1607,7 @@ export const registerJurnal = defineStore('register_jurnal', {
         }
 
         const ppnpusata = []
-        for (let x = 0; x < arrfilter.length; x++) {
+        for (let x = 0; x < arrfilter?.length; x++) {
           const er = arrfilter[x]
           const kas = {
             tanggal: er?.tglpindahbuku,
@@ -1627,7 +1627,7 @@ export const registerJurnal = defineStore('register_jurnal', {
           }
         }
         const ppnpusatb = []
-        for (let x = 0; x < arrfilter.length; x++) {
+        for (let x = 0; x < arrfilter?.length; x++) {
           const er = arrfilter[x]
           const utang = {
             tanggal: er?.tglpindahbuku,
@@ -1648,7 +1648,7 @@ export const registerJurnal = defineStore('register_jurnal', {
         }
 
         const pasal4x = []
-        for (let x = 0; x < arrfilter.length; x++) {
+        for (let x = 0; x < arrfilter?.length; x++) {
           const er = arrfilter[x]
           const kas = {
             tanggal: er?.tglpindahbuku,
@@ -1668,7 +1668,7 @@ export const registerJurnal = defineStore('register_jurnal', {
           }
         }
         const pasal4y = []
-        for (let x = 0; x < arrfilter.length; x++) {
+        for (let x = 0; x < arrfilter?.length; x++) {
           const er = arrfilter[x]
           const utang = {
             tanggal: er?.tglpindahbuku,
@@ -1689,7 +1689,7 @@ export const registerJurnal = defineStore('register_jurnal', {
         }
 
         const pasal4a = []
-        for (let x = 0; x < arrfilter.length; x++) {
+        for (let x = 0; x < arrfilter?.length; x++) {
           const er = arrfilter[x]
           const kas = {
             tanggal: er?.tglpindahbuku,
@@ -1709,7 +1709,7 @@ export const registerJurnal = defineStore('register_jurnal', {
           }
         }
         const pasal4b = []
-        for (let x = 0; x < arrfilter.length; x++) {
+        for (let x = 0; x < arrfilter?.length; x++) {
           const er = arrfilter[x]
           const utang = {
             tanggal: er?.tglpindahbuku,
@@ -1730,7 +1730,7 @@ export const registerJurnal = defineStore('register_jurnal', {
         }
 
         const pajakdaerahx = []
-        for (let x = 0; x < arrfilter.length; x++) {
+        for (let x = 0; x < arrfilter?.length; x++) {
           const er = arrfilter[x]
           const kas = {
             tanggal: er?.tglpindahbuku,
@@ -1750,7 +1750,7 @@ export const registerJurnal = defineStore('register_jurnal', {
           }
         }
         const pajakdaerahy = []
-        for (let x = 0; x < arrfilter.length; x++) {
+        for (let x = 0; x < arrfilter?.length; x++) {
           const er = arrfilter[x]
           const utang = {
             tanggal: er?.tglpindahbuku,
@@ -1771,7 +1771,7 @@ export const registerJurnal = defineStore('register_jurnal', {
         }
 
         const pajakdaeraha = []
-        for (let x = 0; x < arrfilter.length; x++) {
+        for (let x = 0; x < arrfilter?.length; x++) {
           const er = arrfilter[x]
           const kas = {
             tanggal: er?.tglpindahbuku,
@@ -1791,7 +1791,7 @@ export const registerJurnal = defineStore('register_jurnal', {
           }
         }
         const pajakdaerahb = []
-        for (let x = 0; x < arrfilter.length; x++) {
+        for (let x = 0; x < arrfilter?.length; x++) {
           const er = arrfilter[x]
           const utang = {
             tanggal: er?.tglpindahbuku,

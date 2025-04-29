@@ -59,7 +59,7 @@ export const useLaboratIgd = defineStore('laborat-igd', {
         // console.log('masterlaborat', resp)
         if (resp.status === 200) {
           const arr = resp.data
-          const arr2 = arr.length > 0
+          const arr2 = arr?.length > 0
             ? arr.filter(x => x.hidden === '').map(x =>
               ({
                 gruper: x.gruper !== '' ? x.gruper : x.pemeriksaan,
@@ -79,7 +79,7 @@ export const useLaboratIgd = defineStore('laborat-igd', {
           // const result = Object.groupBy(arr2, ({ gruper }) => gruper)
           // console.log('arr pemeriksaan', result)
 
-          // const grouped = arr.length ? Object.groupBy(arr, ({ gruper }) => gruper) : {}
+          // const grouped = arr?.length ? Object.groupBy(arr, ({ gruper }) => gruper) : {}
           // const header = Object.keys(grouped).map((key) => ({ name: key }))
           // const result = arr.sort((a, b) => (a.gruper > b.gruper) ? 1 : ((b.gruper > a.gruper) ? -1 : 0))
           // this.headerlaborats = header
@@ -117,7 +117,7 @@ export const useLaboratIgd = defineStore('laborat-igd', {
       if (resp.status === 200) {
         // this.setNotas(resp?.data)
         // const arr = resp.data.map(x => x.nota)
-        // this.notalaborats = arr.length ? arr : []
+        // this.notalaborats = arr?.length ? arr : []
         // this.notalaborats.push('BARU')
         // this.notalaborat = this.notalaborats[0]
       }
@@ -130,7 +130,7 @@ export const useLaboratIgd = defineStore('laborat-igd', {
       if (resp.status === 200) {
         this.setNotasold(resp?.data)
         // const arr = resp.data.map(x => x.nota)
-        // this.notalaborats = arr.length ? arr : []
+        // this.notalaborats = arr?.length ? arr : []
         // this.notalaborats.push('BARU')
         // this.notalaborat = this.notalaborats[0]
       }
@@ -149,7 +149,7 @@ export const useLaboratIgd = defineStore('laborat-igd', {
       // this.form.details = []
       const thumb = []
       // console.log('pemeriksaan', pemeriksaan)
-      for (let i = 0; i < pemeriksaan?.value.length; i++) {
+      for (let i = 0; i < pemeriksaan?.value?.length; i++) {
         const element = pemeriksaan?.value[i]
         this.form.biaya_layanan = element?.aslix?.hargapelayananpolispesialis // ini bisa element?.aslix?.hargapelayananpoliumum
         this.form.biaya_sarana = element?.aslix?.hargasaranapolispesialis // ini bisa element?.aslix?.hargasaranapoliumum
@@ -226,9 +226,9 @@ export const useLaboratIgd = defineStore('laborat-igd', {
       // const arr = []
 
       this.form.details = []
-      for (let i = 0; i < this.permintaans.length; i++) {
+      for (let i = 0; i < this.permintaans?.length; i++) {
         const element = this.permintaans[i]
-        for (let i = 0; i < element?.value.length; i++) {
+        for (let i = 0; i < element?.value?.length; i++) {
           const el = element?.value[i]
           const biayalayanan = el?.aslix?.hargapelayananpolispesialis // ini bisa el?.aslix?.hargapelayananpoliumum
           const biayasarana = el?.aslix?.hargasaranapolispesialis // ini bisa el?.aslix?.hargasaranapoliumum
@@ -252,8 +252,8 @@ export const useLaboratIgd = defineStore('laborat-igd', {
         if (resp.status === 200) {
           const storePasien = usePengunjungIgdStore()
           const arr = resp?.data?.result
-          if (arr.length) {
-            for (let i = 0; i < arr.length; i++) {
+          if (arr?.length) {
+            for (let i = 0; i < arr?.length; i++) {
               const isi = arr[i]
               storePasien.injectDataPasien(pasien, isi, 'laborats')
             }
@@ -314,7 +314,7 @@ export const useLaboratIgd = defineStore('laborat-igd', {
     },
     setNotas (array) {
       const arr = array.map(x => x.nota)
-      this.notalaborats = arr.length ? arr : []
+      this.notalaborats = arr?.length ? arr : []
       // this.notalaborats.push('LIHAT SEMUA')
       this.notalaborats.push('BARU')
       this.notalaborat = this.notalaborats[0]
@@ -322,13 +322,13 @@ export const useLaboratIgd = defineStore('laborat-igd', {
     setNotasold (array) {
       console.log('sasa', array)
       const arr = array.map(x => x.rs2)
-      this.notalaborats = arr.length ? arr : []
+      this.notalaborats = arr?.length ? arr : []
       // this.notalaborats.push('LIHAT SEMUA')
       this.notalaborats.push('BARU')
       this.notalaborat = this.notalaborats[0]
     },
     setNotasx (arr) {
-      this.notalaborats = arr.length ? arr : []
+      this.notalaborats = arr?.length ? arr : []
       // this.notalaborats.push('LIHAT SEMUA')
       this.notalaborats.push('BARU')
       this.notalaborat = this.notalaborats[0]

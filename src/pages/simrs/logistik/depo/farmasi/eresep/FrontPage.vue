@@ -41,7 +41,7 @@
         />
       </q-scroll-area>
       <div
-        v-if="Object.keys(store.meta).length"
+        v-if="Object.keys(store.meta)?.length"
         class="absolute-bottom bg-primary text-white"
       >
         <BottomComp
@@ -104,7 +104,7 @@ function subscribedChannel () {
   }).listen('.notif-message', (e) => {
     console.log('listen notif', e)
     if (apps?.user?.kdruangansim === e?.message?.data?.depo && e?.message?.data?.status === '1') {
-      if (store.params.page === 1 && store.items.length < store.params.per_page && store.meta?.last_page === 1) store.getSatuResep(e?.message?.data)
+      if (store.params.page === 1 && store.items?.length < store.params.per_page && store.meta?.last_page === 1) store.getSatuResep(e?.message?.data)
       else store.getDataTable(true)
     }
   })
@@ -136,7 +136,7 @@ const kdDisplay = computed(() => {
   const kdpoli = 'APT001'
 
   const target = poli.filter(x => x.kodepoli === kdpoli)
-  if (target.length) {
+  if (target?.length) {
     return target[0].displaykode
   }
   return null
@@ -165,7 +165,7 @@ function getListVoices () {
       let id = 0
 
       id = setInterval(() => {
-        if (synth.getVoices().length !== 0) {
+        if (synth.getVoices()?.length !== 0) {
           speech.voiceList = synth.getVoices()
           resolve(synth.getVoices())
           clearInterval(id)
@@ -176,7 +176,7 @@ function getListVoices () {
 }
 function settingsVoice () {
   const voices = speech.voiceList
-  if (voices.length) {
+  if (voices?.length) {
     const lang = voices?.map(x => x.lang)
     const ind = lang.findIndex(x => x === 'id-ID') ?? 0
     indexVoices.value = ind
@@ -204,7 +204,7 @@ onMounted(() => {
   setting.getPenunjang()
   store.getApoteker()
   const depo = store.depos.filter(a => a.value === apps?.user?.kdruangansim)
-  if (depo.length) {
+  if (depo?.length) {
     store.setParams('kddepo', apps?.user?.kdruangansim)
     store.getDataTable()
   }
@@ -217,7 +217,7 @@ watch(() => apps?.user?.kdruangansim, (obj) => {
   store.setParams('kddepo', obj)
   store.setParams('tipe', 'normal')
   const depo = store.depos.filter(a => a.value === obj)
-  if (depo.length) store.getDataTable()
+  if (depo?.length) store.getDataTable()
   else {
     store.items = []
     store.meta = {}

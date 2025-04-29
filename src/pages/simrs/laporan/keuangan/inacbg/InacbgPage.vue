@@ -57,7 +57,7 @@
         />
       </div>
       <div class="col-2">
-        <div v-if="store.items.length">
+        <div v-if="store.items?.length">
           <download-excel
             class="btn"
             :data="store.items"
@@ -181,7 +181,7 @@
         </td>
         <td>
           <div
-            v-if="store.items.length"
+            v-if="store.items?.length"
             class="text-right f-12"
           >
             {{ formatRp(store.total) }}

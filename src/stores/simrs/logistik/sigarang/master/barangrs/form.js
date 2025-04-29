@@ -61,7 +61,7 @@ export const useMasterBarangRSForm = defineStore('master_barangrs_form', {
         'kode_108',
         'kode_satuan_kecil'
       ]
-      for (let i = 0; i < columns.length; i++) {
+      for (let i = 0; i < columns?.length; i++) {
         this.setForm(columns[i], null)
       }
       this.setForm('ssh', 'non-ssh')
@@ -81,7 +81,7 @@ export const useMasterBarangRSForm = defineStore('master_barangrs_form', {
       if (!this.edited) {
         const anu = this.input_kode === '' ? this.input_kode.split('') : false
         const temp = anu || kode.split('')
-        const apem = temp.length
+        const apem = temp?.length
         apem >= 5 ? this.form.kode = 'RS-' + this.input_kode
           : apem === 4 ? this.form.kode = 'RS-0' + this.input_kode
             : apem === 3 ? this.form.kode = 'RS-00' + this.input_kode
@@ -164,7 +164,7 @@ export const useMasterBarangRSForm = defineStore('master_barangrs_form', {
     },
     // ambil data depo
     getDataDepos () {
-      if (!this.depos.length) {
+      if (!this.depos?.length) {
         return new Promise(resolve => {
           api.get('v1/gudang/depo')
             .then(resp => {
@@ -180,7 +180,7 @@ export const useMasterBarangRSForm = defineStore('master_barangrs_form', {
     getData108s () {
       const param = { params: this.autocompleteParams }
       // loading diambil dari tambah baru barang 108
-      if (!this.barang108s.length || this.loading108) {
+      if (!this.barang108s?.length || this.loading108) {
         return new Promise(resolve => {
           // api.get('v1/barang108/barang108')
           api.get('v1/barang108/index', param)

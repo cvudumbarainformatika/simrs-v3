@@ -271,7 +271,7 @@ export const usePerencanaanPoliStore = defineStore('perencanaan-poli', {
           if (resp.status === 200) {
             const storePasien = usePengunjungPoliStore()
             const isi = resp?.data?.result
-            if (isi.length) {
+            if (isi?.length) {
               isi.forEach(anu => {
                 storePasien.injectDataPasien(pasien, anu, 'planning')
               })
@@ -304,10 +304,10 @@ export const usePerencanaanPoliStore = defineStore('perencanaan-poli', {
             // // console.log(resp.data)
             if (resp?.data?.metadata?.code === '200' || resp?.data?.metadata?.code === 200) {
               this.jadwalDpjps = resp?.data?.result
-              if (this.jadwalDpjps.length) {
+              if (this.jadwalDpjps?.length) {
                 const ada = this.jadwalDpjps.filter(a => a.kodedokter === parseInt(pasien?.kodedokterdpjp))
                 // // console.log('ada', ada)
-                if (ada.length) {
+                if (ada?.length) {
                   this.setFormKontrol('kodedokterdpjp', ada[0].kodedokter)
                 }
               }
@@ -398,7 +398,7 @@ export const usePerencanaanPoliStore = defineStore('perencanaan-poli', {
           if (resp?.status === 200) {
             const storePasien = usePengunjungPoliStore()
             const isi = resp?.data?.result
-            if (isi.length) {
+            if (isi?.length) {
               isi.forEach(anu => {
                 storePasien.injectDataPasien(pasien, anu, 'planning')
               })
@@ -652,7 +652,7 @@ export const usePerencanaanPoliStore = defineStore('perencanaan-poli', {
       }
     },
     async cariTindakan(val) {
-      if (val.length < 3) {
+      if (val?.length < 3) {
         return
       }
       this.loadingTind = true
@@ -674,7 +674,7 @@ export const usePerencanaanPoliStore = defineStore('perencanaan-poli', {
       })
     },
     async cariIcd9(val) {
-      if (val.length < 3) {
+      if (val?.length < 3) {
         return
       }
       this.loadingIcd = true
@@ -686,7 +686,7 @@ export const usePerencanaanPoliStore = defineStore('perencanaan-poli', {
       await api.get('v1/simrs/ranap/ruangan/mastericd9', params)
         .then(response => {
           this.loadingIcd = false
-          if (response?.data.length) {
+          if (response?.data?.length) {
             this.optionsIcd9 = response?.data
           }
         })

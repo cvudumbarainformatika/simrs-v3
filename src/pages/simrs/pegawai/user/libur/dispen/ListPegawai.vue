@@ -64,8 +64,8 @@ const image = (row) => {
 function coba(obj) {
   const id = obj.id
   const arr = store.list
-  if (arr.length) {
-    const matching = arr.filter(x => x.id === id).length
+  if (arr?.length) {
+    const matching = arr.filter(x => x.id === id)?.length
 
     if (matching === 1) {
       return true

@@ -378,7 +378,7 @@ export const useLaporanDataResepStore = defineStore('laporan_data_resep', {
               else it.data.push(data)
             })
           }
-          if (!it.data.length) it.data = [{ jumlah: 0, tgl_selesai: '-', noresep: '-', norm: '-', tiperesep: '-', dokter: '-' }]
+          if (!it.data?.length) it.data = [{ jumlah: 0, tgl_selesai: '-', noresep: '-', norm: '-', tiperesep: '-', dokter: '-' }]
         }
 
         const index = array.findIndex(a => a.kd_obat === it.kd_obat)

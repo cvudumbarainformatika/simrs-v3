@@ -313,10 +313,10 @@
                             {{ formattanpaRp(store.npddatasave.pajak.ppnpusat) }}
                           </div>
                           <div
-                            v-else-if="store.npddatasave.newpajak.length !== 0 || store.npddatasave.newpajak.length > 0">
+                            v-else-if="store.npddatasave.newpajak?.length !== 0 || store.npddatasave.newpajak?.length > 0">
                             {{ formattanpaRp(isNaN(mapPajakBaru().ppn?.nilai) ? 0 : mapPajakBaru().ppn?.nilai) }}
                           </div> -->
-                          <div v-if="store.npddatasave.pajak != null || store.npddatasave.newpajak.length > 0">
+                          <div v-if="store.npddatasave.pajak != null || store.npddatasave.newpajak?.length > 0">
                             {{ formattanpaRp(mapPajakBaru().sumppn) }}
                           </div>
                           <div v-else>{{ formattanpaRp(0) }} </div>
@@ -337,10 +337,10 @@
                           <!-- <div v-if="store.npddatasave.pajak != null">
                             {{ formattanpaRp(store.npddatasave.pajak.pph21) }}
                           </div>
-                          <div v-if="store.npddatasave.newpajak.length > 0">
+                          <div v-if="store.npddatasave.newpajak?.length > 0">
                             {{ formattanpaRp(isNaN(mapPajakBaru().pph21?.nilai) ? 0 : mapPajakBaru().pph21?.nilai) }}
                           </div> -->
-                          <div v-if="store.npddatasave.pajak != null || store.npddatasave.newpajak.length > 0">
+                          <div v-if="store.npddatasave.pajak != null || store.npddatasave.newpajak?.length > 0">
                             {{ formattanpaRp(mapPajakBaru().sumpph21) }}
                           </div>
                           <div v-else>{{ formattanpaRp(0) }} </div>
@@ -361,10 +361,10 @@
                           <!-- <div v-if="store.npddatasave.pajak != null">
                             {{ formattanpaRp(store.npddatasave.pajak.pph22) }}
                           </div>
-                          <div v-if="store.npddatasave.newpajak.length > 0">
+                          <div v-if="store.npddatasave.newpajak?.length > 0">
                             {{ formattanpaRp(isNaN(mapPajakBaru().pph22?.nilai) ? 0 : mapPajakBaru().pph22?.nilai) }}
                           </div> -->
-                          <div v-if="store.npddatasave.pajak != null || store.npddatasave.newpajak.length > 0">
+                          <div v-if="store.npddatasave.pajak != null || store.npddatasave.newpajak?.length > 0">
                             {{ formattanpaRp(mapPajakBaru().sumpph22) }}
                           </div>
                           <div v-else>{{ formattanpaRp(0) }} </div>
@@ -385,10 +385,10 @@
                           <!-- <div v-if="store.npddatasave.pajak != null">
                             {{ formattanpaRp(store.npddatasave.pajak.pph23) }}
                           </div>
-                          <div v-if="store.npddatasave.newpajak.length > 0">
+                          <div v-if="store.npddatasave.newpajak?.length > 0">
                             {{ formattanpaRp(isNaN(mapPajakBaru().pph23?.nilai) ? 0 : mapPajakBaru().pph23?.nilai) }}
                           </div> -->
-                          <div v-if="store.npddatasave.pajak != null || store.npddatasave.newpajak.length > 0">
+                          <div v-if="store.npddatasave.pajak != null || store.npddatasave.newpajak?.length > 0">
                             {{ formattanpaRp(mapPajakBaru().sumpph23) }}
                           </div>
                           <div v-else>{{ formattanpaRp(0) }} </div>
@@ -409,10 +409,10 @@
                           <!-- <div v-if="store.npddatasave.pajak != null">
                             {{ formattanpaRp(store.npddatasave.pajak.pph25) }}
                           </div>
-                          <div v-if="store.npddatasave.newpajak.length > 0">
+                          <div v-if="store.npddatasave.newpajak?.length > 0">
                             {{ formattanpaRp(isNaN(mapPajakBaru().pph25?.nilai) ? 0 : mapPajakBaru().pph25?.nilai) }}
                           </div> -->
-                          <div v-if="store.npddatasave.pajak != null || store.npddatasave.newpajak.length > 0">
+                          <div v-if="store.npddatasave.pajak != null || store.npddatasave.newpajak?.length > 0">
                             {{ formattanpaRp(mapPajakBaru().sumpph25) }}
                           </div>
                           <div v-else>{{ formattanpaRp(0) }} </div>
@@ -433,11 +433,11 @@
                           <!-- <div v-if="store.npddatasave.pajak != null">
                             {{ formattanpaRp(store.npddatasave.pajak.pajakdaerah) }}
                           </div>
-                          <div v-if="store.npddatasave.newpajak.length > 0">
+                          <div v-if="store.npddatasave.newpajak?.length > 0">
                             {{ formattanpaRp(isNaN(mapPajakBaru().pajakdaerah?.nilai) ? 0 :
                               mapPajakBaru().pajakdaerah?.nilai) }}
                           </div> -->
-                          <div v-if="store.npddatasave.pajak != null || store.npddatasave.newpajak.length > 0">
+                          <div v-if="store.npddatasave.pajak != null || store.npddatasave.newpajak?.length > 0">
                             {{ formattanpaRp(mapPajakBaru().sumpajakdaerah) }}
                           </div>
                           <div v-else>{{ formattanpaRp(0) }} </div>

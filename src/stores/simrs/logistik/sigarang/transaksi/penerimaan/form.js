@@ -104,11 +104,11 @@ export const useTransaksiPenerimaanForm = defineStore('form_transaksi_penerimaan
       const psn = this.pemesanans.filter(x => x.id === dat)
       this.form.id = dat
       this.params.reff = psn[0].reff
-      if (psn.length) {
+      if (psn?.length) {
         const val = psn[0].nomor
         this.setForm('nomor', psn[0].nomor)
         const tempNo = val.split('/SP-')
-        if (tempNo.length === 2) {
+        if (tempNo?.length === 2) {
           this.setForm('no_penerimaan', tempNo[0] + '/BAST-' + tempNo[1])
         } else {
           this.setForm('no_penerimaan', 'BAST/' + tempNo)
@@ -121,7 +121,7 @@ export const useTransaksiPenerimaanForm = defineStore('form_transaksi_penerimaan
           this.setForm('kode_perusahaan', data.pemesanan[0].kode_perusahaan)
           this.setForm('namaPerusahaan', data.pemesanan[0].perusahaan ? data.pemesanan[0].perusahaan.nama : '-')
 
-          if (data.trmSkr.length && !data.trmSkr[0].status) {
+          if (data.trmSkr?.length && !data.trmSkr[0].status) {
             const apem = data.trmSkr[0]
             if (apem.faktur) {
               this.option_surat = 'faktur'
@@ -142,7 +142,7 @@ export const useTransaksiPenerimaanForm = defineStore('form_transaksi_penerimaan
             if (apem.tanggal_surat) { this.setForm('tanggal_surat', apem.tanggal_surat) }
           } else {
             this.clearNomorPemesanan()
-            if (tempNo.length === 2) {
+            if (tempNo?.length === 2) {
               this.jumlahPenerimaan(val).then(resp => {
                 // console.log('jumlahnya', resp)
                 if (resp.jumlah > 0) {
@@ -184,8 +184,8 @@ export const useTransaksiPenerimaanForm = defineStore('form_transaksi_penerimaan
     setDetails (data) {
       // console.log('data sebelum pesanan', data)
       const pesanan = data.pemesanan[0].details
-      const skr = data.trmSkr.length ? data.trmSkr[0].details : null
-      const sblm = data.detailLama.length ? data.detailLama : null
+      const skr = data.trmSkr?.length ? data.trmSkr[0].details : null
+      const sblm = data.detailLama?.length ? data.detailLama : null
 
       pesanan.forEach((data, index) => {
         data.qtyskr = 0
@@ -213,9 +213,9 @@ export const useTransaksiPenerimaanForm = defineStore('form_transaksi_penerimaan
       // console.log('sblm', sblm)
     },
     setDataLama (data) {
-      if (data.length === 1) {
+      if (data?.length === 1) {
         return data[0].details
-      } else if (data.length > 1) {
+      } else if (data?.length > 1) {
         return data.map(apem => {
           return apem.details
         })

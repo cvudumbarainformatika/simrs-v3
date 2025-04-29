@@ -43,7 +43,7 @@ export const useRekapAbsensiPegawaiStore = defineStore('rekap_absensi_pegawai', 
         'pegawai_id'
       ]
 
-      for (let i = 0; i < columns.length; i++) {
+      for (let i = 0; i < columns?.length; i++) {
         this.setForm(columns[i], null)
       }
     },
@@ -123,7 +123,7 @@ export const useRekapAbsensiPegawaiStore = defineStore('rekap_absensi_pegawai', 
             }
           })
         }
-        if (this.protas.length) {
+        if (this.protas?.length) {
           this.protas.forEach(prota => {
             if (user[prota.day]) {
               user[prota.day].prota = prota
@@ -132,7 +132,7 @@ export const useRekapAbsensiPegawaiStore = defineStore('rekap_absensi_pegawai', 
             }
           })
         }
-        if (this.liburs.length) {
+        if (this.liburs?.length) {
           this.liburs.forEach(libur => {
             if (user.id === libur.user_id) {
               if (user[libur.day]) {

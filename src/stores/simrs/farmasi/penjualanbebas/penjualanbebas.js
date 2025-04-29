@@ -138,7 +138,7 @@ export const usePenjualanBebasFarmasiStore = defineStore('penjualan_bebas_farmas
       // .catch(() => { this.loadingSigna = false })
     },
     simpan () {
-      if (!this.form.details.length) return notifErrVue('Tidak Ada Rincian untuk disimpan')
+      if (!this.form.details?.length) return notifErrVue('Tidak Ada Rincian untuk disimpan')
       this.loadingSimpan = true
       return new Promise(resolve => {
         api.post('v1/simrs/farmasinew/penjualanbebas/simpan', this.form)

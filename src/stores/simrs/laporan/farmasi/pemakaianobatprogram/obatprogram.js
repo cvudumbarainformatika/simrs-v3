@@ -104,7 +104,7 @@ export const useLaporanPermakaianObatProgramStore = defineStore('laporan_pemakai
         const racikan = it?.resepkeluarracikan ?? []
         const pak = it?.mutasikeluar ?? []
         if (this.params.jenis === 'detail') {
-          if (it?.saldoawal.length) {
+          if (it?.saldoawal?.length) {
             it?.saldoawal.forEach(s => {
               s.tgl = this.params.tahun + '-' + this.params.bulan + '-01 00:00:00'
               const temp = {
@@ -262,7 +262,7 @@ export const useLaporanPermakaianObatProgramStore = defineStore('laporan_pemakai
           }
           it.data.push(temp)
 
-          if (it?.saldoawal.length) {
+          if (it?.saldoawal?.length) {
             const sala = {
               kd_obat: it?.kd_obat,
               jumlah: it?.saldoawal?.reduce((a, b) => parseFloat(a) + parseFloat(b.jumlah), 0),

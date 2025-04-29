@@ -8,11 +8,11 @@
   </div>
   <div class="container q-px-sm">
     <q-card class="items-center full-width">
-      <template v-if="store.hasilpendapatan.length > 0 && store.hasilbeban.length > 0">
+      <template v-if="store.hasilpendapatan?.length > 0 && store.hasilbeban?.length > 0">
         <listData />
       </template>
       <!-- <template
-        v-else-if="store.reqs.jenislo === 2 && (store.psappendapatan.length > 0 || store.psapbeban.length > 0 || store.psapnonoperasional > 0 || store.psapbebanluarbiasa > 0)">
+        v-else-if="store.reqs.jenislo === 2 && (store.psappendapatan?.length > 0 || store.psapbeban?.length > 0 || store.psapnonoperasional > 0 || store.psapbebanluarbiasa > 0)">
         <listDataPsap />
       </template> -->
       <template v-else>

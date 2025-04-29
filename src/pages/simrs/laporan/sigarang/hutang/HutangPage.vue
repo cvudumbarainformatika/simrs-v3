@@ -149,7 +149,7 @@
       </template>
 
       <template #expand="{ row }">
-        <div v-if="row.penerimaan.length">
+        <div v-if="row.penerimaan?.length">
           <div class="row text-weight-bold">
             <div class="no">
               No
@@ -204,7 +204,7 @@
             <q-separator />
           </div>
         </div>
-        <div v-if="!row.penerimaan.length">
+        <div v-if="!row.penerimaan?.length">
           Tidak ada detail
         </div>
       </template>
@@ -217,7 +217,7 @@
         </td>
         <td>
           <div
-            v-if="store.items.length"
+            v-if="store.items?.length"
             class="text-right"
           >
             <div class="text-weight-bold text-right">

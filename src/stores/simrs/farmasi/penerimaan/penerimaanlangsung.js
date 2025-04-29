@@ -134,7 +134,7 @@ export const usePenerimaanLangsungFarmasiStore = defineStore('farmasi_penerimaan
       this.namaPenyedia = null
       // console.log('pemesanan selected ', val)
       const pemesanan = this.pemesanans.filter(a => a.nopemesanan === val)
-      if (pemesanan.length) {
+      if (pemesanan?.length) {
         this.items = pemesanan[0]
         this.details = pemesanan[0].rinci
         this.namaPenyedia = this.items.pihakketiga
@@ -142,10 +142,10 @@ export const usePenerimaanLangsungFarmasiStore = defineStore('farmasi_penerimaan
         console.log('det ', this.details)
         const terima = this.items.penerimaan ? this.items.penerimaan : []
         const terRi = []
-        if (terima.length) {
+        if (terima?.length) {
           terima.forEach(ter => {
             const rinci = ter.penerimaanrinci ? ter.penerimaanrinci : []
-            if (rinci.length) {
+            if (rinci?.length) {
               const anu = rinci.map(a => {
                 const ai = {}
                 ai.jml_terima = parseFloat(a.jml_terima)
@@ -175,10 +175,10 @@ export const usePenerimaanLangsungFarmasiStore = defineStore('farmasi_penerimaan
       this.namaPenyedia = null
     },
     metanirinci (pen) {
-      if (this.details.length) {
+      if (this.details?.length) {
         const kod = this.details.map(a => a.kdobat) // ambil kode obat
         const ter = []
-        if (kod.length) {
+        if (kod?.length) {
           const filtKod = filterDuplicateArrays(kod) // pastikan tidak ada duplikasi kode obat
           filtKod.forEach(a => {
             let temp = 0
@@ -210,9 +210,9 @@ export const usePenerimaanLangsungFarmasiStore = defineStore('farmasi_penerimaan
           a.subtotal = 0
           a.satuan_bsr = a.masterobat ? a.masterobat.satuan_b : '-'
           a.satuan_kcl = a.masterobat ? a.masterobat.satuan_k : '-'
-          if (ter.length) {
+          if (ter?.length) {
             const temp = ter.filter(b => b.kode === a.kdobat)
-            if (temp.length) {
+            if (temp?.length) {
               a.jml_terima_lalu = temp[0].jml
             }
             else {
@@ -232,7 +232,7 @@ export const usePenerimaanLangsungFarmasiStore = defineStore('farmasi_penerimaan
       this.setForm('kdobat', val)
       const obat = this.obats.filter(a => a.kd_obat === val)
       console.log('obat selected', obat, val)
-      if (obat.length) {
+      if (obat?.length) {
         // this.obatTerpilih = obat[0]
         this.setForm('satuan_bsr', obat[0].satuan_b)
         this.setForm('satuan_kcl', obat[0].satuan_k)
@@ -280,7 +280,7 @@ export const usePenerimaanLangsungFarmasiStore = defineStore('farmasi_penerimaan
     },
     cariPihatTiga (val) {
       const pihaktiga = this.allPihakTigas.filter(pht => pht?.nama?.toLowerCase().includes(val.toLowerCase))
-      if (pihaktiga.length) this.pihakTigas = pihaktiga
+      if (pihaktiga?.length) this.pihakTigas = pihaktiga
       else this.getPihakKetiga()
     },
     // cari obat
@@ -357,7 +357,7 @@ export const usePenerimaanLangsungFarmasiStore = defineStore('farmasi_penerimaan
             if (resp.data.rinci) {
               const rin = resp.data.rinci
               // const obat = this.obats.filter(ob => ob.kodeobat === rin.kdobat)
-              // if (obat.length) rin.masterobat = obat[0]
+              // if (obat?.length) rin.masterobat = obat[0]
               const index = findWithAttr(this.rincis, 'kdobat', rin.kdobat)
               if (index > 0) {
                 this.rincis[index] = rin

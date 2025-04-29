@@ -74,7 +74,7 @@ export const UseFarmasiStokStore = defineStore('form_stok', {
     cariObat (val) {
       const obat = this.allObats.filter(ob => ob.namaobat.toLowerCase().includes(val.toLowerCase()))
       console.log('filter obat', obat)
-      if (obat.length) {
+      if (obat?.length) {
         this.obats = obat
       }
       else {

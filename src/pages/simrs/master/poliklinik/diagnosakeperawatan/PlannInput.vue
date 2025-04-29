@@ -6,7 +6,7 @@
       <q-popup-edit
         v-slot="scope"
         v-model="store.intervensi"
-        :validate="val => val.length > 0"
+        :validate="val => val?.length > 0"
         style="width: 30% !important;"
         :cover="false"
         :offset="[0, 10]"
@@ -52,7 +52,7 @@
             <q-popup-edit
               v-slot="scope"
               v-model="row.nama"
-              :validate="val => val.length > 0"
+              :validate="val => val?.length > 0"
               style="width: 30% !important;"
               :cover="false"
               :offset="[0, 10]"

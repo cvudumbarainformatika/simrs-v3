@@ -38,7 +38,7 @@ export const useReturPenyediaStore = defineStore('retur_penyedia', {
       this.setForm('kd_ruang', gudang)
     },
     perusahaanSelected (val) {
-      if (this.dataReturs.length) {
+      if (this.dataReturs?.length) {
         Dialog.create({
           title: 'Konfirmasi',
           message: 'Sudah Ada Data yang diretur, jika mengganti perusahaan maka akan mengganti nomor retur, apakah akan dilanjutkan?',
@@ -122,14 +122,14 @@ export const useReturPenyediaStore = defineStore('retur_penyedia', {
           this.dataRusaks = resp?.data?.rusak
           this.dataMauReturs = resp?.data?.penerimaan
           this.dataStokSekarang = resp?.data?.stok
-          if (this.dataStokSekarang.length > 0) {
+          if (this.dataStokSekarang?.length > 0) {
             this.dataStokSekarang.forEach(da => {
               da.no_batch = da.nobatch
               da.tgl_exp = da.tglexp
               da.harga_neto = da?.harga ?? 0
             })
           }
-          if (this.dataMauReturs.length > 0) {
+          if (this.dataMauReturs?.length > 0) {
             this.dataMauReturs.forEach(da => {
               da.stok = da.stokterima.map(s => parseFloat(s.jumlah)).reduce((a, b) => a + b, 0)
             })

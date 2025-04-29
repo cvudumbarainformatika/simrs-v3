@@ -628,7 +628,7 @@ export const usePemeriksaanUmumHemodialisaStore = defineStore('pemeriksaan-umum-
       }
 
       const apggar = {}
-      for (let i = 0; i < this.frmApgarScores.length; i++) {
+      for (let i = 0; i < this.frmApgarScores?.length; i++) {
         const el = this.frmApgarScores[i]
         apggar[el.kode] = el?.values?.find(x => x?.value === data?.neonatal?.apgarScores?.[el?.kode]?.value) ?? el?.values?.find(x => x?.value === 2) ?? null
       }
@@ -662,7 +662,7 @@ export const usePemeriksaanUmumHemodialisaStore = defineStore('pemeriksaan-umum-
       }
 
       const glass = {}
-      for (let i = 0; i < this.frmGlasgows.length; i++) {
+      for (let i = 0; i < this.frmGlasgows?.length; i++) {
         const el = this.frmGlasgows[i]
         glass[el.kode] = el?.values?.find(x => x?.value === data?.pediatrik?.glasgow?.[el?.kode]?.value) ?? null
       }
@@ -705,7 +705,7 @@ export const usePemeriksaanUmumHemodialisaStore = defineStore('pemeriksaan-umum-
         // console.log('data: ', isData)
 
         const frmX = {}
-        for (let i = 0; i < arr.length; i++) {
+        for (let i = 0; i < arr?.length; i++) {
           const el = arr[i]
           frmX[el.kode] = el?.values?.find(x => x?.value === isData[el?.kode]?.value) ?? el?.values?.find(x => x?.value === 'Tidak') ?? null
         }
@@ -719,7 +719,7 @@ export const usePemeriksaanUmumHemodialisaStore = defineStore('pemeriksaan-umum-
       let skor = 0
       let ket = null
       // skor = parseInt(this.formNeonatal?.appearance?.value ?? 0) + parseInt(this.formNeonatal?.pulse?.value ?? 0) + parseInt(this.formNeonatal?.grimace?.value ?? 0) + parseInt(this.formNeonatal?.activity?.value ?? 0) + parseInt(this.formNeonatal?.respiration?.value ?? 0)
-      for (let i = 0; i < this.frmApgarScores.length; i++) {
+      for (let i = 0; i < this.frmApgarScores?.length; i++) {
         const el = this.frmApgarScores[i]
         skor += parseInt(this.formNeonatal?.apgarScores[el?.kode]?.value ?? 0)
       }
@@ -733,7 +733,7 @@ export const usePemeriksaanUmumHemodialisaStore = defineStore('pemeriksaan-umum-
       let skor = 0
       let ket = null
       // skor = parseInt(this.formNeonatal?.appearance?.value ?? 0) + parseInt(this.formNeonatal?.pulse?.value ?? 0) + parseInt(this.formNeonatal?.grimace?.value ?? 0) + parseInt(this.formNeonatal?.activity?.value ?? 0) + parseInt(this.formNeonatal?.respiration?.value ?? 0)
-      for (let i = 0; i < this.frmGlasgows.length; i++) {
+      for (let i = 0; i < this.frmGlasgows?.length; i++) {
         const el = this.frmGlasgows[i]
         skor += parseInt(this.formPediatrik?.glasgow[el?.kode]?.value ?? 0)
       }
@@ -799,7 +799,7 @@ export const usePemeriksaanUmumHemodialisaStore = defineStore('pemeriksaan-umum-
           // pengunjung.deleteInjectanNull2(pasien?.noreg, 'pemeriksaan')
           pengunjung.injectDataArray(pasien?.noreg, result, 'pemeriksaan')
 
-          if (result.length) this.PISAH_DATA_RANAP_IGD(result, pasien)
+          if (result?.length) this.PISAH_DATA_RANAP_IGD(result, pasien)
         }
         this.loadingSave = false
       }
@@ -826,9 +826,9 @@ export const usePemeriksaanUmumHemodialisaStore = defineStore('pemeriksaan-umum-
       // console.log('items', this.items)
 
 
-      const isianDokter = ranap.length ? ranap?.filter(x => x?.nakes === '1') : []
-      const isianKeperawatan = ranap.length ? ranap?.filter(x => x?.nakes === '2') : []
-      const isianKebidanan = ranap.length ? ranap?.filter(x => x?.nakes === '3') : []
+      const isianDokter = ranap?.length ? ranap?.filter(x => x?.nakes === '1') : []
+      const isianKeperawatan = ranap?.length ? ranap?.filter(x => x?.nakes === '2') : []
+      const isianKebidanan = ranap?.length ? ranap?.filter(x => x?.nakes === '3') : []
       // console.log('isianDokter', isianDokter);
 
       // baru ada penyesuaian nakes
@@ -838,24 +838,24 @@ export const usePemeriksaanUmumHemodialisaStore = defineStore('pemeriksaan-umum-
       const bidan = (jns === '3' || jns === 3)
       if (dokter) {
         // if (isianDokter?.length) { form = ranap[0] } // form = ranap isianDokter jika ada
-        // else { form = isianKeperawatan.length ? isianKeperawatan[0] : null } // form = isianKeperawatan jika blm ada isianDokter
+        // else { form = isianKeperawatan?.length ? isianKeperawatan[0] : null } // form = isianKeperawatan jika blm ada isianDokter
         form = isianDokter[0] || isianKeperawatan[0] || isianKebidanan[0] || null
-        if (form) isianDokter.length ? form.id = form.id : form.id = null
+        if (form) isianDokter?.length ? form.id = form.id : form.id = null
       }
       else if (perawat) {
         // form = isianKeperawatan?.length ? isianKeperawatan[0] : null
         form = isianKeperawatan[0] || isianKebidanan[0] || isianDokter[0] || null
-        if (form) isianKeperawatan.length ? form.id = form.id : form.id = null
+        if (form) isianKeperawatan?.length ? form.id = form.id : form.id = null
 
       } else if (bidan) {
 
         form = isianKebidanan[0] || isianKeperawatan[0] || isianDokter[0] || null
-        if (form) isianKebidanan.length ? form.id = form.id : form.id = null
+        if (form) isianKebidanan?.length ? form.id = form.id : form.id = null
       }
       // form = isianDokter[0] || isianKeperawatan[0] || isianKebidanan[0] || null
       // form.id = null
-      // if (form) ranap.length ? form.id = form?.id : form.id = null
-      // const isianList = ranap.length ? ranap[0] : null
+      // if (form) ranap?.length ? form.id = form?.id : form.id = null
+      // const isianList = ranap?.length ? ranap[0] : null
 
       // if (isianList) {
       //   pengunjung.injectDataPasien(pasien?.noreg, isianList, 'pemeriksaan')

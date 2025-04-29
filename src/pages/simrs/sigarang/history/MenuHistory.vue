@@ -1,5 +1,5 @@
 <template>
-  <div v-if="items ? items.submenus.length : null">
+  <div v-if="items ? items.submenus?.length : null">
     <div
       v-for="(item, i) in items.submenus"
       :key="i"
@@ -31,7 +31,7 @@
     </div>
   </div>
 
-  <div v-if="items ? !items.submenus.length : true">
+  <div v-if="items ? !items.submenus?.length : true">
     <div class="q-mb-sm">
       <q-skeleton
         animation="pulse"
@@ -61,7 +61,7 @@ import { useSettingsStore } from 'src/stores/simrs/logistik/sigarang/settings/se
 import { computed } from 'vue'
 const items = computed(() => {
   const apem = setting.menus.filter(data => { return data.name === 'History' })
-  if (apem.length) return apem[0]
+  if (apem?.length) return apem[0]
   return false
 })
 // const items = ref([

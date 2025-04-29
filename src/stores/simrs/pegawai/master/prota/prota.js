@@ -28,7 +28,7 @@ export const UseProtaAbsensiLiburStore = defineStore('prota_absensi_libur', {
     resetFORM() {
       this.form = {}
       const columns = ['nama', 'tgl_libur']
-      for (let i = 0; i < columns.length; i++) {
+      for (let i = 0; i < columns?.length; i++) {
         this.setForm(columns[i], null)
       }
     },
@@ -136,7 +136,7 @@ export const UseProtaAbsensiLiburStore = defineStore('prota_absensi_libur', {
             const data = resp.data.data
             // console.log('get Prota', resp)
             // console.log('data Prota', data)
-            if (data.length) {
+            if (data?.length) {
               this.setColumns(data)
               this.setItems(data)
             }

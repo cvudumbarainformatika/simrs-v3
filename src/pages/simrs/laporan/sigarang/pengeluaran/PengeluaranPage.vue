@@ -220,10 +220,10 @@
       </template>
 
       <template #expand="{ row }">
-        <div v-if="!row.detail_distribusi_langsung.length && !row.detail_permintaanruangan.length">
+        <div v-if="!row.detail_distribusi_langsung?.length && !row.detail_permintaanruangan?.length">
           Tidak Ada Detail
         </div>
-        <div v-if="row.detail_distribusi_langsung.length">
+        <div v-if="row.detail_distribusi_langsung?.length">
           <div class="row text-weight-bold">
             <div class="no">
               No
@@ -269,7 +269,7 @@
             </div>
           </div>
         </div>
-        <div v-if="row.detail_permintaanruangan.length">
+        <div v-if="row.detail_permintaanruangan?.length">
           <div class="row text-weight-bold">
             <div class="no">
               No
@@ -324,7 +324,7 @@
         </td>
         <td colspan="3">
           <div
-            v-if="store.items.length"
+            v-if="store.items?.length"
             class="text-right f-12  text-weight-bold"
           >
             {{ parseFloat(store.total.toFixed(3)) }}

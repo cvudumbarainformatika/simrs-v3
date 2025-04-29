@@ -67,7 +67,7 @@
       </div>
     </q-card-section>
     <q-card-section>
-      <div v-if="store.itemsGudang.length || store.itemsDepo.length || store.itemsRuangan.length">
+      <div v-if="store.itemsGudang?.length || store.itemsDepo?.length || store.itemsRuangan?.length">
         <div class="row items-center justify-end">
           <q-btn
             v-print="printObj"
@@ -90,7 +90,7 @@
         id="printMe"
       >
         <!-- style="width:210mm; height:310mm; margin:10mm; " -->
-        <div v-if="store.itemsGudang.length">
+        <div v-if="store.itemsGudang?.length">
           <div class="row q-col-gutter-sm items-center">
             <!-- {{ store.item }} -->
             <div class="col-6">
@@ -236,7 +236,7 @@
             <q-separator />
           </div>
         </div>
-        <div v-else-if="store.itemsDepo.length">
+        <div v-else-if="store.itemsDepo?.length">
           <div class="row q-col-gutter-sm items-center">
             <!-- {{ store.item }} -->
             <div class="col-6">
@@ -381,7 +381,7 @@
             <q-separator />
           </div>
         </div>
-        <div v-else-if="store.itemsRuangan.length">
+        <div v-else-if="store.itemsRuangan?.length">
           <div class="row q-col-gutter-sm items-center">
             <!-- {{ store.item }} -->
             <div class="col-6">

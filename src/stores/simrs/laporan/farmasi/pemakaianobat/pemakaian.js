@@ -125,7 +125,7 @@ export const useLaporanPemakaianObatStore = defineStore('laporan_pemakaian_obat'
       // .then(resp => {
       const items = resp?.data?.data
 
-      if (!items.length) return notifErrVue('Data tidak ditemukan')
+      if (!items?.length) return notifErrVue('Data tidak ditemukan')
       this.metaniitems(items)
       items.forEach((item, i) => {
         const temp = {}

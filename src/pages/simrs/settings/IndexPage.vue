@@ -124,7 +124,7 @@ onMounted(() => {
 function newData() {
   console.log(store.items)
   const ada = store.items.filter(anu => anu.itemId === 0)
-  if (ada.length) {
+  if (ada?.length) {
     notifErrVue('isi dulu yang ada')
   }
   else {
@@ -283,10 +283,10 @@ function allCheck(val) {
     data = []
     all.forEach(app => {
       app.checked = true
-      if (app.menus.length) {
+      if (app.menus?.length) {
         app.menus.forEach(men => {
           men.checked = true
-          if (men.submenus.length) {
+          if (men.submenus?.length) {
             men.submenus.forEach(sub => {
               sub.checked = true
               data.push({ user_id: store.pegawai.user.id, aplikasi_id: app.id, menu_id: men.id, submenu_id: sub.id })
@@ -300,10 +300,10 @@ function allCheck(val) {
     data = []
     all.forEach(app => {
       app.checked = false
-      if (app.menus.length) {
+      if (app.menus?.length) {
         app.menus.forEach(men => {
           men.checked = false
-          if (men.submenus.length) {
+          if (men.submenus?.length) {
             men.submenus.forEach(sub => {
               sub.checked = false
               data.push({ user_id: store.pegawai.user.id, aplikasi_id: app.id, menu_id: men.id, submenu_id: sub.id })
@@ -325,7 +325,7 @@ function appCheck(val) {
     data = []
     menus.forEach(men => {
       men.checked = true
-      if (men.submenus.length) {
+      if (men.submenus?.length) {
         men.submenus.forEach(sub => {
           sub.checked = true
           data.push({ user_id: store.pegawai.user.id, aplikasi_id: app.id, menu_id: men.id, submenu_id: sub.id })
@@ -341,7 +341,7 @@ function appCheck(val) {
     const temp = menus.filter(m => m.checked)
     temp.forEach(men => {
       men.checked = false
-      if (men.submenus.length) {
+      if (men.submenus?.length) {
         const anu = men.submenus.filter(a => a.checked)
         anu.forEach(sub => {
           sub.checked = false
@@ -365,7 +365,7 @@ function menuCheck(val) {
     if (!app.checked) {
       app.checked = true
     }
-    if (sub.length) {
+    if (sub?.length) {
       sub.forEach(s => {
         s.checked = true
         data.push({ user_id: store.pegawai.user.id, aplikasi_id: app.id, menu_id: val.menu.id, submenu_id: s.id })
@@ -379,10 +379,10 @@ function menuCheck(val) {
   else {
     data = []
     const menu = app.menus.filter(a => a.checked === true)
-    if (!menu.length) {
+    if (!menu?.length) {
       app.checked = false
     }
-    if (sub.length) {
+    if (sub?.length) {
       const tmp = sub.filter(anu => anu.checked)
       tmp.forEach(s => {
         s.checked = false
@@ -408,11 +408,11 @@ function submenuCheck(val) {
   }
   else {
     const subs = menu.submenus.filter(a => a.checked === true)
-    if (!subs.length) {
+    if (!subs?.length) {
       menu.checked = false
     }
     const mens = app.menus.filter(n => n.checked === true)
-    if (!mens.length) {
+    if (!mens?.length) {
       app.checked = false
     }
   }

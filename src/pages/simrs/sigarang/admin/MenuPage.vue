@@ -27,7 +27,7 @@ import { useSettingsStore } from 'src/stores/simrs/logistik/sigarang/settings/se
 import { computed } from 'vue'
 const menus = computed(() => {
   const apem = setting.menus.filter(data => { return data.name === 'Admin' })
-  if (apem.length) return apem[0]
+  if (apem?.length) return apem[0]
   return [0, 0]
 })
 const setting = useSettingsStore()

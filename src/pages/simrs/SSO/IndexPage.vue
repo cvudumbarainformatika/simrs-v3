@@ -246,10 +246,10 @@ onMounted(() => {
 
 function goTo (app, url) {
   // console.log('go to', url, app, auth.aplications)
-  if (auth.aplications.length) {
+  if (auth.aplications?.length) {
     const appAkses = auth.aplications.filter(a => a.aplikasi === app)
     // console.log('akses', appAkses, auth.role)
-    if (appAkses.length || auth.role === 'root') {
+    if (appAkses?.length || auth.role === 'root') {
       console.log('masuk', getCurrentApp(), app)
       if (!getCurrentApp() || getCurrentApp() === null || getCurrentApp() === app) {
         setCurrentApp(app)

@@ -19,7 +19,7 @@ export const useUserFormStore = defineStore('user_form', {
     resetFORM () {
       this.form = {}
       const columns = ['nama']
-      for (let i = 0; i < columns.length; i++) {
+      for (let i = 0; i < columns?.length; i++) {
         this.setForm(columns[i], '')
       }
       this.setForm('nama', '')

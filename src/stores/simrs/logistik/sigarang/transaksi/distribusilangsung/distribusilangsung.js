@@ -157,10 +157,10 @@ export const useTransaksiDistribusiLangsung = defineStore('transaksi_distribusi_
             }
             this.loading = false
             this.setColumns()
-            if (this.items.length) {
+            if (this.items?.length) {
               this.items.forEach(anu => {
                 anu.loading = false
-                if (!anu.detail_distribusi_langsung.length) { anu.jumlah = 0 } else {
+                if (!anu.detail_distribusi_langsung?.length) { anu.jumlah = 0 } else {
                   anu.jumlah = anu.detail_distribusi_langsung.map(m => m.jumlah).reduce((a, b) => a + b, 0)
                 }
               })

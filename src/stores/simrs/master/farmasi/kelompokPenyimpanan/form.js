@@ -19,7 +19,7 @@ export const useMasterKelompokPenyimpananForm = defineStore('master_KelompokPeny
       const columns = [
         'kelompokpenyimpanan'
       ]
-      for (let i = 0; i < columns.length; i++) {
+      for (let i = 0; i < columns?.length; i++) {
         this.setForm(columns[i], null)
       }
       // this.setForm('isi', 1)

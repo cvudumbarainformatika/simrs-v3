@@ -290,7 +290,7 @@ function totalsaldo() {
 // ]
 // const columns = ref(listDatabku)
 
-// const seedSize = store.hasilArray.length
+// const seedSize = store.hasilArray?.length
 
 // let rows = []
 // for (let i = 0; i < 1000; i++) {

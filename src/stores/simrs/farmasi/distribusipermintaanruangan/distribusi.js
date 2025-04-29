@@ -95,7 +95,7 @@ export const useDistribusiPermintaanRuanganStore = defineStore('distribusi_permi
     permintaanSelected (val) {
       this.disp.no_permintaan = val
       const temp = this.items.filter(a => a.no_permintaan === val)
-      if (temp.length) {
+      if (temp?.length) {
         const item = temp[0]
         this.terpilih = item
         console.log('item', item)
@@ -122,7 +122,7 @@ export const useDistribusiPermintaanRuanganStore = defineStore('distribusi_permi
         )
       const filteredData = multiFilter(this.items, splits, needle)
       opt = filteredData
-      if (opt.length <= 0) {
+      if (opt?.length <= 0) {
         this.setParams('no_permintaan', val)
         this.getPermintaanDepo()
         // console.log('opt', 'ga ada')
@@ -144,14 +144,14 @@ export const useDistribusiPermintaanRuanganStore = defineStore('distribusi_permi
             this.loading = false
             this.items = resp?.data?.data
             this.meta = resp.data
-            if (this.items.length) {
+            if (this.items?.length) {
               console.log('items anu', this.items)
               this.items.forEach(it => {
-                if (it?.permintaanrinci.length) {
+                if (it?.permintaanrinci?.length) {
                   it?.permintaanrinci.forEach(ri => {
                     ri.jumlahdiminta = ri.jumlah_minta
                     ri.jumlah_minta = 0
-                    if (it?.mutasigudangkedepo.length) {
+                    if (it?.mutasigudangkedepo?.length) {
                       const dist = it?.mutasigudangkedepo.filter(mu => mu.kd_obat === ri.kdobat).map(ma => parseFloat(ma.jml)).reduce((a, b) => a + b, 0)
                       console.log('dist', dist)
                       ri.distribusi = !isNaN(dist) ? dist : 0

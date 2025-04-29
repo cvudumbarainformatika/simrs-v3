@@ -170,7 +170,7 @@
                   @click="ambilData"
                 />
               </div>
-              <div v-if="store.items.length">
+              <div v-if="store.items?.length">
                 <download-excel
                   class="btn"
                   :data="store.items"

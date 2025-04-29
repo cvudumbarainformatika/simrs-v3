@@ -182,7 +182,7 @@ const inputObat = myDebounce((val) => {
   // console.log('input obat', val, typeof val)
   if ((typeof val) !== 'string') val = ''
   if (val !== '') store.cariObat(val)
-  if (val === '' && store.nonFilteredObat.length) store.Obats = store.nonFilteredObat
+  if (val === '' && store.nonFilteredObat?.length) store.Obats = store.nonFilteredObat
 })
 function obatSelected (val) {
   // console.log('select obat', val)
@@ -212,7 +212,7 @@ function setJumlah (evt) {
   // console.log('alokasi', store.form.stokalokasi)
   const inc = evt.includes('.')
   const ind = evt.indexOf('.')
-  const panj = evt.length
+  const panj = evt?.length
   const nilai = isNaN(parseFloat(evt)) ? 0 : (inc && (ind === (panj - 1)) ? evt : parseFloat(evt))
   const alokasi = parseFloat(store.form.stokalokasi)
   if (nilai > alokasi) {

@@ -2,7 +2,7 @@
   <div>
     <app-loading v-if="loading" />
     <div v-else>
-      <div v-if="items.length <= 0">
+      <div v-if="items?.length <= 0">
         <div
           class="column flex-center"
           style="min-height:50vh"

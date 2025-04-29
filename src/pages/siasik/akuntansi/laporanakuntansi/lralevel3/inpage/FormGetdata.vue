@@ -105,7 +105,7 @@ function cetakData() {
 }
 
 function exportToExcel() {
-  if (!store.hasilpendapatan.length && !store.hasilbelanja.length && !store.hasilsilpa.length) {
+  if (!store.hasilpendapatan?.length && !store.hasilbelanja?.length && !store.hasilsilpa?.length) {
     notifErrVue('Tidak ada data untuk diekspor!');
     return;
   }
@@ -236,7 +236,7 @@ function exportToExcel() {
   // Atur lebar kolom (opsional)
   const colWidths = data[0].map((_, colIndex) => {
     return Math.max(
-      ...data.map((row) => (row[colIndex] ? row[colIndex].toString().length : 0)),
+      ...data.map((row) => (row[colIndex] ? row[colIndex].toString()?.length : 0)),
       10
     );
   });

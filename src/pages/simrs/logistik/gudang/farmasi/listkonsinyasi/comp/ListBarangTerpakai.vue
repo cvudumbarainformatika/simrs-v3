@@ -42,10 +42,10 @@
           />
         </div>
       </div>
-      <div v-if="!store.items.length && !store.loading">
+      <div v-if="!store.items?.length && !store.loading">
         <app-no-data />
       </div>
-      <div v-if="store.items.length && !store.loading" class="q-mb-xl">
+      <div v-if="store.items?.length && !store.loading" class="q-mb-xl">
         <TableComp />
       </div>
       <div v-if="store.loading">

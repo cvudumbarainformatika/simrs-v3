@@ -189,24 +189,24 @@ export const usePraAnastesiStore = defineStore('pra-anastesi-store', {
         this.reducerMaster(m)
       }
       else {
-        for (let i = 0; i < item.kajianSistem.length; i++) {
+        for (let i = 0; i < item.kajianSistem?.length; i++) {
           const el = item.kajianSistem[i]
           this.masterKajian.filter(x => x.kajian === el).map(x => x.check = true)
           this.masterKajian2.filter(x => x.kajian === el).map(x => x.check = true)
         }
-        for (let i = 0; i < item.laboratorium.length; i++) {
+        for (let i = 0; i < item.laboratorium?.length; i++) {
           const el = item.laboratorium[i]
           this.masterLab.filter(x => x.nama === el.nama).map(x => x.model = el.model)
           this.masterLab2.filter(x => x.nama === el.nama).map(x => x.model = el.model)
         }
-        for (let i = 0; i < item.asaClasification.length; i++) {
+        for (let i = 0; i < item.asaClasification?.length; i++) {
           const el = item.asaClasification[i]
           this.asaClass.filter(x => x.nama === el).map(x => x.check = true)
         }
         this.form.penyulitAnastesi = item.penyulitAnastesi
 
         // baru
-        for (let i = 0; i < item.teknikAnestesia.length; i++) {
+        for (let i = 0; i < item.teknikAnestesia?.length; i++) {
           const el = item.teknikAnestesia[i]
           // eslint-disable-next-line array-callback-return
           this.teknikAnestesia.filter(x => x.nama === el.nama).map(x => {
@@ -221,7 +221,7 @@ export const usePraAnastesiStore = defineStore('pra-anastesi-store', {
             this.regional = arr
           }
         }
-        for (let i = 0; i < item.teknikKhusus.length; i++) {
+        for (let i = 0; i < item.teknikKhusus?.length; i++) {
           const el = item.teknikKhusus[i]
           // eslint-disable-next-line array-callback-return
           this.teknikKhusus.filter(x => x.nama === el.nama).map(x => {
@@ -230,7 +230,7 @@ export const usePraAnastesiStore = defineStore('pra-anastesi-store', {
             x.keterangan = el.keterangan
           })
         }
-        for (let i = 0; i < item.pascaAnastesi.length; i++) {
+        for (let i = 0; i < item.pascaAnastesi?.length; i++) {
           const el = item.pascaAnastesi[i]
           // eslint-disable-next-line array-callback-return
           this.pascaAnastesi.filter(x => x.nama === el.nama).map(x => {
@@ -283,7 +283,7 @@ export const usePraAnastesiStore = defineStore('pra-anastesi-store', {
               // ==================jika bukan edit
               const check = this.resultPraAnastesi.filter(x => x.id === resp.data.id)
               const target = this.resultPraAnastesi.find(x => x.id === resp?.data?.id)
-              if (check.length) {
+              if (check?.length) {
                 Object.assign(target, resp?.data)
               }
               else {

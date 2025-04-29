@@ -46,7 +46,7 @@
         <div>{{ row.tgl? dateFullFormat( row.tgl) : '-' }}</div>
       </template>
       <template #expand="{row}">
-        <div v-if="row.rincian.length">
+        <div v-if="row.rincian?.length">
           <div class="row items-center text-weight-bold">
             <div class="col-3">
               Obat
@@ -385,7 +385,7 @@ function simpan(row, rin) {
 
   const index = urutanInp.value.findIndex(ind => ind.id === rin.id)
   urutanInp.value.splice(index, 1)
-  inpIndex = urutanInp.value.length - 1
+  inpIndex = urutanInp.value?.length - 1
 
   if (parseFloat(rin?.jumlahdirencanakan) === parseFloat(rin.prevRenc)) {
     rin.edit = false
@@ -399,7 +399,7 @@ function simpan(row, rin) {
 function batalEdit(row, rin) {
   const index = urutanInp.value.findIndex(ind => ind.id === rin.id)
   urutanInp.value.splice(index, 1)
-  inpIndex = urutanInp.value.length - 1
+  inpIndex = urutanInp.value?.length - 1
 
   rin.edit = false
 }

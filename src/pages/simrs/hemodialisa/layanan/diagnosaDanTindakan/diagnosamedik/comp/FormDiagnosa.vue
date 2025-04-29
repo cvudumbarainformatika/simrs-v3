@@ -140,7 +140,7 @@ const optionsDiagutama = ref([
 // const isErrInput = ref(false)
 // const errMsg = ref('')
 // const validInput = (val) => {
-//   if (val?.trim().length === 0) {
+//   if (val?.trim()?.length === 0) {
 //     isErrInput.value = true
 //     errMsg.value = 'Tidak boleh kosong'
 //     return false
@@ -193,7 +193,7 @@ onMounted(() => {
 })
 
 function filterFn (val, update, abort) {
-  if (val.length < 2) {
+  if (val?.length < 2) {
     abort()
     options.value = []
     return
@@ -241,22 +241,22 @@ function ganti (val) {
 
   // const arr2 = props.pasien?.diagnosamedis
 
-  // if (val === 'Baru' && arr2.length === 0) {
-  //   listDiagnosa.value = arr.length ? arr.filter(x => !x.kode.toString().toLowerCase().includes('z')) : []
-  //   // listDiagnosa.value = arr.length ? arr : []
+  // if (val === 'Baru' && arr2?.length === 0) {
+  //   listDiagnosa.value = arr?.length ? arr.filter(x => !x.kode.toString().toLowerCase().includes('z')) : []
+  //   // listDiagnosa.value = arr?.length ? arr : []
   // }
-  // else if (val === 'Baru' && arr2.length > 0) {
-  //   // listDiagnosa.value = arr.length ? arr.filter(x => x.kode.toString().toLowerCase().includes('z')) : []
-  //   listDiagnosa.value = arr.length ? arr : []
+  // else if (val === 'Baru' && arr2?.length > 0) {
+  //   // listDiagnosa.value = arr?.length ? arr.filter(x => x.kode.toString().toLowerCase().includes('z')) : []
+  //   listDiagnosa.value = arr?.length ? arr : []
   // }
-  // else if (val === 'Lama' && arr2.length === 0) {
-  //   listDiagnosa.value = arr.length ? arr.filter(x => x.kode.toString().toLowerCase().includes('z')) : []
+  // else if (val === 'Lama' && arr2?.length === 0) {
+  //   listDiagnosa.value = arr?.length ? arr.filter(x => x.kode.toString().toLowerCase().includes('z')) : []
   // }
-  // else if (val === 'Lama' && arr2.length > 0) {
-  //   listDiagnosa.value = arr.length ? arr.filter(x => !x.kode.toString().toLowerCase().includes('z')) : []
+  // else if (val === 'Lama' && arr2?.length > 0) {
+  //   listDiagnosa.value = arr?.length ? arr.filter(x => !x.kode.toString().toLowerCase().includes('z')) : []
   // }
-  // listDiagnosa.value = arr.length ? arr : []
-  // arr2.length ? store.setFormDianosa('tipediagnosa', 'Sekunder') : store.setFormDianosa('tipediagnosa', 'Primer')
+  // listDiagnosa.value = arr?.length ? arr : []
+  // arr2?.length ? store.setFormDianosa('tipediagnosa', 'Sekunder') : store.setFormDianosa('tipediagnosa', 'Primer')
 
   // console.log('diag', arr)
 }

@@ -291,7 +291,7 @@
         </div>
       </template>
       <template #expand="{ row }">
-        <div v-if="row.details.length">
+        <div v-if="row.details?.length">
           <div
             v-for="(det, i) in row.details"
             :key="i"

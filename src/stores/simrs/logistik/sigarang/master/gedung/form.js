@@ -20,7 +20,7 @@ export const useMasterGedungForm = defineStore('master_gedung_form', {
         'nama',
         'nomor'
       ]
-      for (let i = 0; i < columns.length; i++) {
+      for (let i = 0; i < columns?.length; i++) {
         this.setForm(columns[i], '')
       }
     },

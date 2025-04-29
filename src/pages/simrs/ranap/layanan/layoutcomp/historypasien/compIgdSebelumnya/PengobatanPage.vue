@@ -45,7 +45,7 @@ const pengobatans = computed(() => {
     const det = headx?.map(x => x.permintaanresep)?.flat()
     resep = det
   }
-  // const f = resep.length ? resep?.map(x => x.mobat?.nama_obat) : []
+  // const f = resep?.length ? resep?.map(x => x.mobat?.nama_obat) : []
   // console.log('resep', resep)
 
   return resep

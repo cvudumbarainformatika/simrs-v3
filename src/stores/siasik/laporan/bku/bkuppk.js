@@ -121,9 +121,9 @@ export const useLaporanBkuPpkStore = defineStore('laporan_bkuppk', {
       const saldo = []
 
       // Cek apakah bulan Januari dan ada data saldo di database
-      if (this.params.bulan === '01' && this.items.saldo && this.items.saldo.length) {
+      if (this.params.bulan === '01' && this.items.saldo && this.items.saldo?.length) {
         // Untuk Januari, gunakan nilai saldo dari database jika tersedia
-        for (let i = 0; i < this.items.saldo.length; i++) {
+        for (let i = 0; i < this.items.saldo?.length; i++) {
           const el = this.items.saldo
           const obj = {
             tgl: el[i].tanggal,
@@ -161,8 +161,8 @@ export const useLaporanBkuPpkStore = defineStore('laporan_bkuppk', {
           nilaisaldoKredit.push(...gabungsebelumkredit)
 
           // Hitung total debit dan kredit
-          const totaldebitsebelum = nilaisaldoDebit.length ? nilaisaldoDebit.map(x => parseFloat(x.nilai || 0)).reduce((x, y) => x + y, 0) : 0
-          const totalkreditsebelum = nilaisaldoKredit.length ? nilaisaldoKredit.map(x => parseFloat(x.nilai || 0)).reduce((x, y) => x + y, 0) : 0
+          const totaldebitsebelum = nilaisaldoDebit?.length ? nilaisaldoDebit.map(x => parseFloat(x.nilai || 0)).reduce((x, y) => x + y, 0) : 0
+          const totalkreditsebelum = nilaisaldoKredit?.length ? nilaisaldoKredit.map(x => parseFloat(x.nilai || 0)).reduce((x, y) => x + y, 0) : 0
           saldoAwal = totaldebitsebelum - totalkreditsebelum
 
           console.log('totaldebitsebelum (dihitung):', totaldebitsebelum)
@@ -191,8 +191,8 @@ export const useLaporanBkuPpkStore = defineStore('laporan_bkuppk', {
 
       // ===================================================Silpa
       const silpa = []
-      if (this.items.silpa && this.items.silpa.length) {
-        for (let i = 0; i < this.items.silpa.length; i++) {
+      if (this.items.silpa && this.items.silpa?.length) {
+        for (let i = 0; i < this.items.silpa?.length; i++) {
           const el = this.items.silpa
           const obj = {
             tgl: el[i].tanggal,
@@ -211,8 +211,8 @@ export const useLaporanBkuPpkStore = defineStore('laporan_bkuppk', {
 
       // ===================================================Setor
       const setor = []
-      if (this.items.setor && this.items.setor.length) {
-        for (let i = 0; i < this.items.setor.length; i++) {
+      if (this.items.setor && this.items.setor?.length) {
+        for (let i = 0; i < this.items.setor?.length; i++) {
           const el = this.items.setor
           const obj = {
             tgl: el[i].tgltrans,
@@ -231,8 +231,8 @@ export const useLaporanBkuPpkStore = defineStore('laporan_bkuppk', {
 
       // ===================================================SPM
       const spm = []
-      if (this.items.spm && this.items.spm.length) {
-        for (let i = 0; i < this.items.spm.length; i++) {
+      if (this.items.spm && this.items.spm?.length) {
+        for (let i = 0; i < this.items.spm?.length; i++) {
           const el = this.items.spm
           const obj = {
             tgl: el[i].tglSpm,
@@ -251,8 +251,8 @@ export const useLaporanBkuPpkStore = defineStore('laporan_bkuppk', {
 
       // ===================================================SPMGU
       const spmgu = []
-      if (this.items.spmgu && this.items.spmgu.length) {
-        for (let i = 0; i < this.items.spmgu.length; i++) {
+      if (this.items.spmgu && this.items.spmgu?.length) {
+        for (let i = 0; i < this.items.spmgu?.length; i++) {
           const el = this.items.spmgu
           const obj = {
             tgl: el[i].tglSpm,
@@ -271,8 +271,8 @@ export const useLaporanBkuPpkStore = defineStore('laporan_bkuppk', {
 
       // ===================================================NPKls
       const npkls = []
-      if (this.npkls && this.npkls.length) {
-        for (let i = 0; i < this.npkls.length; i++) {
+      if (this.npkls && this.npkls?.length) {
+        for (let i = 0; i < this.npkls?.length; i++) {
           const el = this.npkls[i]
           const rinci = el.npklsrinci || []
 
@@ -285,7 +285,7 @@ export const useLaporanBkuPpkStore = defineStore('laporan_bkuppk', {
             uraianNPD: rinci.map((x) => x.kegiatanblud),
             urutan: 4,
             penerimaan: 0,
-            pengeluaran: rinci.length ? rinci.map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0) : 0
+            pengeluaran: rinci?.length ? rinci.map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0) : 0
           }
           npkls.push(obj)
         }
@@ -293,8 +293,8 @@ export const useLaporanBkuPpkStore = defineStore('laporan_bkuppk', {
 
       // ===================================================Nihil
       const nihil = []
-      if (this.items.nihil && this.items.nihil.length) {
-        for (let i = 0; i < this.items.nihil.length; i++) {
+      if (this.items.nihil && this.items.nihil?.length) {
+        for (let i = 0; i < this.items.nihil?.length; i++) {
           const el = this.items.nihil
           const obj = {
             tgl: el[i].tgltrans,
@@ -313,8 +313,8 @@ export const useLaporanBkuPpkStore = defineStore('laporan_bkuppk', {
 
       // ===================================================Kaskecil
       const kurangikaskecil = []
-      if (this.items.kaskecil && this.items.kaskecil.length) {
-        for (let i = 0; i < this.items.kaskecil.length; i++) {
+      if (this.items.kaskecil && this.items.kaskecil?.length) {
+        for (let i = 0; i < this.items.kaskecil?.length; i++) {
           const el = this.items.kaskecil
           const obj = {
             tgl: date.formatDate(el[i].tanggalpengeluaran, 'YYYY-MM-DD'),
@@ -346,8 +346,8 @@ export const useLaporanBkuPpkStore = defineStore('laporan_bkuppk', {
       this.hasilArray = this.cariHasilAkhirArray(hslSmntara)
 
       // Simpan saldo akhir untuk kebutuhan reporting
-      if (this.hasilArray.length > 0) {
-        this.saldoakhir = this.hasilArray[this.hasilArray.length - 1].total
+      if (this.hasilArray?.length > 0) {
+        this.saldoakhir = this.hasilArray[this.hasilArray?.length - 1].total
       }
 
       console.log('hasil gabung', this.hasilArray)
@@ -355,10 +355,10 @@ export const useLaporanBkuPpkStore = defineStore('laporan_bkuppk', {
     },
 
     cariHasilAkhirArray(arr) {
-      if (!arr.length) return []
+      if (!arr?.length) return []
 
       let total = 0
-      for (let i = 0; i < arr.length; i++) {
+      for (let i = 0; i < arr?.length; i++) {
         if (i === 0) {
           total = arr[0].penerimaan - arr[0].pengeluaran
           arr[0].total = total
@@ -378,21 +378,21 @@ export const useLaporanBkuPpkStore = defineStore('laporan_bkuppk', {
     },
 
     hitungTotalNpd(arr) {
-      if (!arr || !arr.length) return 0
+      if (!arr || !arr?.length) return 0
       return arr
         .map((x) => parseFloat(x.nominalpembayaran || 0))
         .reduce((x, y) => x + y, 0)
     },
 
     hitungTBP(arr) {
-      if (!arr || !arr.length) return 0
+      if (!arr || !arr?.length) return 0
       return arr
         .map((x) => parseFloat(x.nilai || 0))
         .reduce((x, y) => x + y, 0)
     },
 
     hitungPlain(arr) {
-      if (!arr || !arr.length) return 0
+      if (!arr || !arr?.length) return 0
       return arr
         .map((x) => parseFloat(x.plainlain?.rs4 || 0))
         .reduce((x, y) => x + y, 0)
@@ -402,7 +402,7 @@ export const useLaporanBkuPpkStore = defineStore('laporan_bkuppk', {
       const bulan = this.params.bulan
       const tahun = this.params.tahun
       const saldoAwal = this.nilaisaldoawal
-      const saldoAkhir = this.hasilArray.length > 0 ? this.hasilArray[this.hasilArray.length - 1].total : 0
+      const saldoAkhir = this.hasilArray?.length > 0 ? this.hasilArray[this.hasilArray?.length - 1].total : 0
 
       // Hitung total debit dan kredit dari bulan sebelumnya untuk validasi
       const totalDebitSebelum = [

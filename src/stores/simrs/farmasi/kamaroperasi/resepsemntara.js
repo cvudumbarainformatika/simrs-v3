@@ -208,7 +208,7 @@ export const usePersiapanOperasiStore = defineStore('resep_sementara', {
       key.harga = (parseFloat(key?.jumlah) * parseFloat(key?.harga_jual)) + parseFloat(key?.r)
       const namaracikan = key?.namaracikan
       const adaList = this.listRacikan.filter(list => list.namaracikan === namaracikan)
-      if (adaList.length) {
+      if (adaList?.length) {
         adaList[0].rincian.push(key)
         const harga = adaList[0].rincian.map(a => a?.harga).reduce((a, b) => a + b, 0) ?? 0
         adaList[0].harga = harga
@@ -268,7 +268,7 @@ export const usePersiapanOperasiStore = defineStore('resep_sementara', {
     cariObat (val) {
       const depo = this.depos.filter(pa => pa.jenis === this.depo)
       // console.log('depo', this?.depo, depo)
-      if (depo.length) {
+      if (depo?.length) {
         this.dpPar = depo[0]?.value
       }
       else return notifErrVue('depo tujuan tidak ditemukan')

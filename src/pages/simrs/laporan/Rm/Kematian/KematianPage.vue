@@ -96,7 +96,7 @@
                 {{ rincix?.noka }}
               </div>
               <div class="col-1 text-center ">
-                {{ rincix?.doa.length > 0 ? 'DOA' : '-' }}
+                {{ rincix?.doa?.length > 0 ? 'DOA' : '-' }}
               </div>
             </div>
           </div>

@@ -299,7 +299,7 @@
         </div>
       </template>
       <template #expand="{ row }">
-        <div v-if="row.penerimaan.length" style="width: 90vw;">
+        <div v-if="row.penerimaan?.length" style="width: 90vw;">
           <div
             v-for="(trm,n) in row.penerimaan"
             :key="n"
@@ -354,7 +354,7 @@
                 </div>
               </div>
             </div>
-            <div v-if="trm.penerimaanrinci.length && trm.disp">
+            <div v-if="trm.penerimaanrinci?.length && trm.disp">
               <div class="row q-mb-sm text-weight-bold">
                 <div class="col-6">
                   <div class="row">

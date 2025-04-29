@@ -159,7 +159,7 @@ export const useLapMutasiHutangObatStore = defineStore('lap-mutasi-hutang-obat',
         }
       })
       const kodepbfhutangkonsi = filterDuplicateArrays(tutangsekarangkonsi.map(k => k.kodepbfskx))
-      if (kodepbfhutangkonsi.length > 0) {
+      if (kodepbfhutangkonsi?.length > 0) {
         kodepbfhutangkonsi?.forEach(xxxutangsekarangkonsi => {
           const subtotalhutangsekarangkonsi = tutangsekarangkonsi.filter(sasa => sasa.kodepbfskx === xxxutangsekarangkonsi)?.map(m => m.total)?.reduce((a, b) => parseFloat(a) + parseFloat(b), 0)
           const hasilfixhutangkonsi = {

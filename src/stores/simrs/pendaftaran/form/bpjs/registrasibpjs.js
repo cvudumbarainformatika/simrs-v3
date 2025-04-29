@@ -220,53 +220,53 @@ export const useRegistrasiPasienBPJSStore = defineStore('registrasi_pasien_BPJS'
     },
     // initial data
     getInitialData () {
-      // if (this.autocompleteStore.asalrujukans.length) {
+      // if (this.autocompleteStore.asalrujukans?.length) {
       //   this.asalrujukans = this.autocompleteStore.asalrujukans
       // } else {
       //   this.getAsalRujukan()
       // }
 
-      if (this.autocompleteStore.sistembayars1.length) {
+      if (this.autocompleteStore.sistembayars1?.length) {
         this.sistembayars1 = this.autocompleteStore.sistembayars1
       }
       else {
         this.getSistemBayar()
       }
 
-      if (this.autocompleteStore.polis.length) {
+      if (this.autocompleteStore.polis?.length) {
         this.polis = this.autocompleteStore.polis
       }
       else {
         this.getPoli()
       }
 
-      if (this.autocompleteStore.jenisKarcises.length) {
+      if (this.autocompleteStore.jenisKarcises?.length) {
         this.jenisKarcises = this.autocompleteStore.jenisKarcises
       }
       else {
         this.getJenisKarcis()
       }
 
-      if (this.autocompleteStore.jenisKunjungans.length) {
+      if (this.autocompleteStore.jenisKunjungans?.length) {
         this.jenisKunjungans = this.autocompleteStore.jenisKunjungans
       }
       else {
         this.getJenisKunjungan()
       }
 
-      // if (this.autocompleteStore.prosedurs.length) {
+      // if (this.autocompleteStore.prosedurs?.length) {
       //   this.prosedurs = this.autocompleteStore.prosedurs
       // } else {
       //   this.getProsedur()
       // }
 
-      // if (this.autocompleteStore.assesmens.length) {
+      // if (this.autocompleteStore.assesmens?.length) {
       //   this.assesmens = this.autocompleteStore.assesmens
       // } else {
       //   this.getAssesmen()
       // }
 
-      if (this.autocompleteStore.penunjangs.length) {
+      if (this.autocompleteStore.penunjangs?.length) {
         this.penunjangs = this.autocompleteStore.penunjangs
       }
       else {
@@ -442,7 +442,7 @@ export const useRegistrasiPasienBPJSStore = defineStore('registrasi_pasien_BPJS'
                 }
                 else {
                   notifInfVue('Dokter ybs tidak ada di list Dokter yang praktek Hari ini, silakan pilih dokter yang lain')
-                  if (this.jadwalDpjps.length) {
+                  if (this.jadwalDpjps?.length) {
                     this.jadwalDpjps.forEach(a => {
                       notifInfVue('Dokter yang praktek hari ini : ' + a.namadokter)
                     })
@@ -466,7 +466,7 @@ export const useRegistrasiPasienBPJSStore = defineStore('registrasi_pasien_BPJS'
         api.post('v1/simrs/bridgingbpjs/pendaftaran/dpjpbpjs', this.paramDpjp)
           .then(resp => {
             this.loading = false
-            if (resp.data.result.list.length) {
+            if (resp.data.result.list?.length) {
               const data = resp.data.result.list
               data.forEach(anu => {
                 anu.dpjp = anu.kode
@@ -491,7 +491,7 @@ export const useRegistrasiPasienBPJSStore = defineStore('registrasi_pasien_BPJS'
           this.loading = false
           this.kasrcispoli = resp.data
           const temp = Object.keys(resp.data)
-          if (temp.length) {
+          if (temp?.length) {
             temp.forEach(key => {
               this.setForm(key, resp.data[key])
             })
@@ -627,7 +627,7 @@ export const useRegistrasiPasienBPJSStore = defineStore('registrasi_pasien_BPJS'
         .then(resp => {
           this.loadingsistembayar = false
           this.sistembayars = resp.data
-          if (this.sistembayars.length === 1) {
+          if (this.sistembayars?.length === 1) {
             this.setForm('sistembayar', this.sistembayars[0].rs2)
             this.setForm('kodesistembayar', this.sistembayars[0].rs1)
             this.display.rs2 = this.sistembayars[0].rs2
@@ -724,7 +724,7 @@ export const useRegistrasiPasienBPJSStore = defineStore('registrasi_pasien_BPJS'
             if (resp.data.metadata.code !== '200') {
               notifErrVue('Cari Surat Kontrol : ' + resp.data.metadata.message)
             }
-            const rujukan = resp.data?.result?.sep?.jnsPelayanan === 'Rawat Inap' && resp.data?.result?.sep?.provPerujuk?.kdProviderPerujuk === '1327R001' && resp.data?.result?.sep?.provPerujuk?.noRujukan.length < 16 ? resp.data.result.sep.noSep : resp.data.result.sep.provPerujuk.noRujukan
+            const rujukan = resp.data?.result?.sep?.jnsPelayanan === 'Rawat Inap' && resp.data?.result?.sep?.provPerujuk?.kdProviderPerujuk === '1327R001' && resp.data?.result?.sep?.provPerujuk?.noRujukan?.length < 16 ? resp.data.result.sep.noSep : resp.data.result.sep.provPerujuk.noRujukan
             console.log('surat kontrol rujukan', rujukan)
             if (!this.form.norujukan) {
               console.log('tidak ada nomor rujukan')

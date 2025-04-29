@@ -304,7 +304,7 @@
               class="column-break full-height"
             >
               <q-scroll-area
-                v-if="filterShapes.length"
+                v-if="filterShapes?.length"
                 style="height: calc(100% - 52px);"
               >
                 <q-list
@@ -427,10 +427,10 @@ const props = defineProps({
 })
 
 function setNumber(evt, key) {
-  // console.log(evt, 'includes', evt.includes('.'), 'indexOf', evt.indexOf('.'), 'length', evt.length)
+  // console.log(evt, 'includes', evt.includes('.'), 'indexOf', evt.indexOf('.'), 'length', evt?.length)
   const inc = evt.includes('.')
   const ind = evt.indexOf('.')
-  const panj = evt.length
+  const panj = evt?.length
   const nilai = isNaN(parseFloat(evt)) ? 0 : (inc && (ind === (panj - 1)) ? evt : parseFloat(evt))
   // console.log('evt', evt, 'key', key)
   store.setFormVital(key, nilai)

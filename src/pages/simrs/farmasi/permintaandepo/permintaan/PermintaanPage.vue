@@ -337,7 +337,7 @@
           Rincian Permintaan Tersimpan
         </div>
       </div>
-      <div v-if="store.details.length">
+      <div v-if="store.details?.length">
         <div
           v-for="(det,i) in store.details"
           :key="i"
@@ -387,7 +387,7 @@
           </div>
         </div>
       </div>
-      <div v-if="!store.details.length">
+      <div v-if="!store.details?.length">
         <app-no-data />
       </div>
     </div>
@@ -457,7 +457,7 @@ const user = computed(() => {
       store.setDisp('depo', apps.user.pegawai.depo.nama)
       const dep = store.floor.filter(a => a.kode === apps.user.pegawai.depo.kode)
       console.log('dep', dep)
-      if (dep.length) {
+      if (dep?.length) {
         store.setForm('tujuan', 'Gd-05010100')
         store.setParam('kdgudang', 'Gd-05010100')
         store.setDisp('gudang', 'Gudang Farmasi(Kamar Obat)')

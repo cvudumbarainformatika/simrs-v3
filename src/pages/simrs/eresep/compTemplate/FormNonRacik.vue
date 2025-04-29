@@ -14,7 +14,7 @@
             size="xs"
             dense
             inline
-            :disable="store.items.length>0"
+            :disable="store.items?.length>0"
             @update:model-value="setTipe"
           />
         </div>
@@ -210,7 +210,7 @@ function resetChild () {
   store.form = {
     racikan: false,
     tiperacikan: null,
-    tiperesep: store.items.length ? store.items[0].tiperesep : 'normal',
+    tiperesep: store.items?.length ? store.items[0].tiperesep : 'normal',
     forkit: null,
     fornas: null,
     generik: null,

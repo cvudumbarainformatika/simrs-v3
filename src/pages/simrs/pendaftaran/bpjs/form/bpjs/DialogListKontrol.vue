@@ -27,7 +27,7 @@
 
         <q-tab-panels v-model="tab" animated>
           <q-tab-panel name="kontrol" style="padding: 0;">
-            <div v-if="!store.listRencanaKontrols.length">
+            <div v-if="!store.listRencanaKontrols?.length">
               <app-no-data-small style="height: 46vh;" />
             </div>
             <div v-else style="height: 50vh;" class="scroll">
@@ -65,7 +65,7 @@
           </q-tab-panel>
 
           <q-tab-panel name="dpjp" style="padding: 0;">
-            <div v-if="!store.listSuratKontrols.length">
+            <div v-if="!store.listSuratKontrols?.length">
               <app-no-data-small style="height: 46vh;" />
             </div>
             <div v-else style="height: 50vh;" class="scroll">
@@ -106,11 +106,11 @@
         <div class="title-desc q-mb-md">
           Daftar Rekom DPJP
         </div>
-        <div v-if="!store.listSuratKontrols.length">
+        <div v-if="!store.listSuratKontrols?.length">
           <app-loading v-if="store.loadingSuratKontrol" />
           <app-no-data-small v-else />
         </div>
-        <div v-if="store.listSuratKontrols.length">
+        <div v-if="store.listSuratKontrols?.length">
           <div class="row no-wrap justify-center items-center q-col-gutter-sm text-weight-bold q-mb-sm">
             <div class="col-1">
               <div class="row q-col-gutter-sm">
@@ -191,11 +191,11 @@
         <div class="title-desc q-mb-md">
           Daftar Surat kontrol
         </div>
-        <div v-if="!store.listRencanaKontrols.length">
+        <div v-if="!store.listRencanaKontrols?.length">
           <app-loading v-if="store.loadingRencanaKontrol" />
           <app-no-data-small v-else />
         </div>
-        <div v-if="store.listRencanaKontrols.length">
+        <div v-if="store.listRencanaKontrols?.length">
           <div class="row no-wrap justify-center items-center q-col-gutter-sm text-weight-bold q-mb-sm">
             <div class="col-1">
               No
@@ -309,10 +309,10 @@ function pilihSuratKontrol (val) {
     }
   }
 
-  if (poli || Object.keys(datapoli).length) emits('kodePoli', findpoli)
+  if (poli || Object.keys(datapoli)?.length) emits('kodePoli', findpoli)
   store.setForm('noDpjp', val.noDpjp)
   let enol = ''
-  const panjang = 19 - val.noDpjp.length
+  const panjang = 19 - val.noDpjp?.length
   for (let index = 0; index < panjang; index++) {
     enol += '0'
   }

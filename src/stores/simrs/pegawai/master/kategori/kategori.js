@@ -48,7 +48,7 @@ export const useKategoriJadwalStore = defineStore('kategori_jadwal_store', {
       this.form = {}
       const columns = ['nama', 'warna', 'jam', 'menit']
 
-      for (let i = 0; i < columns.length; i++) {
+      for (let i = 0; i < columns?.length; i++) {
         this.setForm(columns[i], null)
       }
       this.setForm('masuk', '07:00')

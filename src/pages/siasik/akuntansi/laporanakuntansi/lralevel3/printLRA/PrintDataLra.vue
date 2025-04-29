@@ -58,11 +58,11 @@
               <div class="row full-width">
                 <div class="items-center full-width">
                   <template
-                    v-if="store.reqs.jenislra === 1 || (store.hasilpendapatan.length > 0 && store.hasilbelanja.length > 0 && store.hasilsilpa.length > 0)">
+                    v-if="store.reqs.jenislra === 1 || (store.hasilpendapatan?.length > 0 && store.hasilbelanja?.length > 0 && store.hasilsilpa?.length > 0)">
                     <listData />
                   </template>
                   <template
-                    v-else-if="store.reqs.jenislra === 2 || (store.psapbarjas.length > 0 && store.psapmodal.length > 0 && store.psapsilpa.length > 0)">
+                    v-else-if="store.reqs.jenislra === 2 || (store.psapbarjas?.length > 0 && store.psapmodal?.length > 0 && store.psapsilpa?.length > 0)">
                     <listDataPsap />
                   </template>
                   <template v-else>
@@ -164,7 +164,7 @@ const printObj = {
 // const cetakNPD = ref(false)
 // function hitungSubtotal () {
 //   const arr = store.form.rincians
-//   const obj = arr.length ? arr.map((x) => x.nominalpembayaran) : []
+//   const obj = arr?.length ? arr.map((x) => x.nominalpembayaran) : []
 //   const subtotal = obj.reduce((x, y) => x + y, 0)
 //   // console.log('jumlah', obj)
 //   // const total = nominal.reduce((x, y) => x + y, 0)

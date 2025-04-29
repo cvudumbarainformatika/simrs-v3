@@ -1,6 +1,6 @@
 <template>
   <div class="full-height q-pa-sm bg-white" style="overflow: scroll;">
-    <div v-if="!pasien?.jawabankonsul || pasien?.jawabankonsul.length == 0">
+    <div v-if="!pasien?.jawabankonsul || pasien?.jawabankonsul?.length == 0">
       <app-no-data text="Belum ada data konsul" />
     </div>
     <q-list v-else bordered class="rounded-borders">

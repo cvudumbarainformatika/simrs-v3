@@ -25,7 +25,7 @@ export const useExtraAbsensiLiburStore = defineStore('extra_absensi_libur', {
     resetFORM() {
       this.form = {}
       const columns = ['prota_id', 'user_id', 'tanggal']
-      for (let i = 0; i < columns.length; i++) {
+      for (let i = 0; i < columns?.length; i++) {
         this.setForm(columns[i], null)
       }
     },

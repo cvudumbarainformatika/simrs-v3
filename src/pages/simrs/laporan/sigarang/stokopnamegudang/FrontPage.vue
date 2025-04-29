@@ -474,7 +474,7 @@
         </td>
         <td colspan="4">
           <div
-            v-if="store.items.length"
+            v-if="store.items?.length"
             class="text-right"
           >
             <div class="row no-wrap justify-end items-center">
@@ -627,7 +627,7 @@ onMounted(() => {
 })
 // const ruang = computed(() => {
 //   const tem = store.gudangs.filter(v => v.value === store.params.kode_ruang)
-//   return tem.length > 0 ? tem[0].nama : '-'
+//   return tem?.length > 0 ? tem[0].nama : '-'
 // })
 
 const printObj = {

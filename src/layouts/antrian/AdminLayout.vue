@@ -75,7 +75,7 @@ const mobile = $q.screen.lt.sm
 //   const apem = store.aplications.filter(app => {
 //     return app.aplikasi === 'antrian'
 //   })
-//   if (apem.length) {
+//   if (apem?.length) {
 //     return apem[0].menus
 //   } else {
 //     return []

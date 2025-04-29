@@ -339,15 +339,15 @@ const setClick = (day, i) => {
   // console.log(day, i)
   const existingClass = day.class.split(' ')
   // console.log('existing', existingClass)
-  if (existingClass.length > 0 && existingClass[0] !== '') {
+  if (existingClass?.length > 0 && existingClass[0] !== '') {
     const a = existingClass.filter(cla => {
       return cla === 'prev-date'
     })
     const b = existingClass.filter(cla => {
       return cla === 'next-date'
     })
-    if (a.length > 0)prev()
-    if (b.length > 0)next()
+    if (a?.length > 0)prev()
+    if (b?.length > 0)next()
   }
 }
 watch(() => props.data, (data) => {
@@ -374,7 +374,7 @@ watch(() => props.data, (data) => {
     })
   }
   if (data.libur) {
-    if (data.libur.length) {
+    if (data.libur?.length) {
       data.libur.forEach(libur => {
         // console.log('tanggal', libur.tanggal)
         const index = temp.indexOf(libur.tanggal)
@@ -385,7 +385,7 @@ watch(() => props.data, (data) => {
     }
   }
   if (data.prota) {
-    if (data.prota.length) {
+    if (data.prota?.length) {
       data.prota.forEach(prota => {
         // console.log('tanggal', prota.tgl_libur)p0
         const index = temp.indexOf(prota.tgl_libur)

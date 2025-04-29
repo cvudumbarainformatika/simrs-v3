@@ -820,7 +820,7 @@ const distribusikan = val => {
   // const enolDetail = val.details.filter(data => {
   //   return data.jumlah_distribusi <= 0
   // })
-  // if (enolDetail.length) {
+  // if (enolDetail?.length) {
   //   Dialog.create({
   //     title: 'Konfirmasi',
   //     message: 'Ada barang yang distribusinya bernilai 0, Tetap lanjutakan distribusi?',
@@ -871,9 +871,9 @@ const printObj = {
 //   })
 //   console.log('jumlah distribusi', val)
 
-//   if (!tempItems.length) {
+//   if (!tempItems?.length) {
 //     const habis = store.items[itemsIndex].details.filter(det => { return det.barangrs.alokasi <= 0 })
-//     if (!habis.length) {
+//     if (!habis?.length) {
 //       store.items[itemsIndex].disableSend = false
 //       store.setForm('detail', store.items[itemsIndex].details)
 //     } else {

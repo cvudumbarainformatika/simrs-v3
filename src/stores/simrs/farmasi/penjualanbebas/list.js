@@ -71,7 +71,7 @@ export const useListKunjunganPenjualanLangsungStore = defineStore('list_kunjunga
                 an.subtotal = parseFloat(an.jumlah) * parseFloat(an.harga_jual)
               })
               const noresep = filterDuplicateArrays(item?.rincian.map(m => m.noresep))
-              if (noresep.length) {
+              if (noresep?.length) {
                 noresep.forEach(res => {
                   const det = {
                     noresep: res,
@@ -104,7 +104,7 @@ export const useListKunjunganPenjualanLangsungStore = defineStore('list_kunjunga
               const indexes = da.apotek.findIndex(a => a.noresep === item?.noresep)
               const indexri = da.rincian.filter(cur => cur.noresep === item?.noresep)
               if (indexes >= 0) da.apotek.splice(indexes, 1)
-              if (indexri.length > 0) {
+              if (indexri?.length > 0) {
                 indexri.forEach(ind => {
                   const index = da.rincian.findIndex(a => a.noresep === item?.noresep)
                   // console.log('ind', ind, da.rincian[index])

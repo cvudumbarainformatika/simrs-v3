@@ -111,21 +111,21 @@ export const useLaporanSigarangRekapPengeluaranStore = defineStore('laporan_siga
         '12'
 
       ]
-      if (temp.length) {
+      if (temp?.length) {
         temp.forEach(item => {
           item.Total = 0
           item.satuan = item.satuan?.nama
           bulan.forEach(bul => {
             item[bul] = 0
-            if (item.detail_permintaanruangan.length) {
+            if (item.detail_permintaanruangan?.length) {
               const it = item.detail_permintaanruangan.filter(f => date.formatDate(f?.tanggal, 'MM') === bul)
-              if (it.length) {
+              if (it?.length) {
                 item[bul] = it.map(m => m.jumlah).reduce((a, b) => a + b, 0)
               }
             }
-            if (item.detail_distribusi_langsung.length) {
+            if (item.detail_distribusi_langsung?.length) {
               const it = item.detail_distribusi_langsung.filter(f => date.formatDate(f?.tanggal, 'MM') === bul)
-              if (it.length) {
+              if (it?.length) {
                 item[bul] = it.map(m => m.jumlah).reduce((a, b) => a + b, 0)
               }
             }
@@ -150,7 +150,7 @@ export const useLaporanSigarangRekapPengeluaranStore = defineStore('laporan_siga
           this.mapingitem(resp.data.data)
           // this.items = resp.data.data ?? []
           // console.log('type', typeof this.items)
-          // if (this.items.length) {
+          // if (this.items?.length) {
           //   this.total = this.items.map(a => {
           //     if (a.jumlah_distribusi > 0) {
           //       return a.jumlah_distribusi

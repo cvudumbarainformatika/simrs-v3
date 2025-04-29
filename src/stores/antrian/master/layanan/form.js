@@ -31,7 +31,7 @@ export const useMasterLayananFormStore = defineStore('layanan_form', {
         'nama',
         'kode'
       ]
-      for (let i = 0; i < columns.length; i++) {
+      for (let i = 0; i < columns?.length; i++) {
         this.setForm(columns[i], null)
       }
     },

@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- {{ table.rencanas }} -->
-    <div v-if="table.rencanas.length && !table.loadingList">
+    <div v-if="table.rencanas?.length && !table.loadingList">
       <q-list
 
         separator
@@ -53,7 +53,7 @@
           </q-item-section>
           <!-- <q-item-section>
             <div class="text-right">
-              <q-btn 
+              <q-btn
                 icon="icon-mat-done_all"
                 size="xs"
                 round
@@ -72,7 +72,7 @@
     <div v-if="table.loadingList">
       <app-loading />
     </div>
-    <div v-if="!table.rencanas.length && !table.loadingList">
+    <div v-if="!table.rencanas?.length && !table.loadingList">
       <app-no-selected-page
         color="primary"
         icon="icon-mat-receipt_long"

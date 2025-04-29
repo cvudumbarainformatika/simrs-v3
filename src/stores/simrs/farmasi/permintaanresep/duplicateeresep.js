@@ -220,7 +220,7 @@ export const useDuplicateEResepStore = defineStore('duplicate_e_resep', {
         if (indexp >= 0) resep?.permintaanresep?.splice(indexp, 1)
         // console.log('new', indexp)
       }
-      if (resep?.permintaanracikan.length <= 0 && resep?.permintaanresep.length <= 0) {
+      if (resep?.permintaanracikan?.length <= 0 && resep?.permintaanresep?.length <= 0) {
         this.noresep = 'BARU'
         const indexres = this?.noreseps?.findIndex(a => a === obat?.noresep)
         if (indexres >= 0) this?.noreseps?.splice(indexres, 1)
@@ -356,13 +356,13 @@ export const useDuplicateEResepStore = defineStore('duplicate_e_resep', {
     },
     cariObat (val, obat) {
       let kdobatArray = ''
-      if (obat.length) {
+      if (obat?.length) {
         kdobatArray = obat.map(item => item?.kdobat)
       }
 
       const depo = this.depos.filter(pa => pa.jenis === this.depo)
 
-      if (depo.length) {
+      if (depo?.length) {
         this.dpPar = depo[0]?.value
       }
       else return notifErrVue('depo tujuan tidak ditemukan')
@@ -397,7 +397,7 @@ export const useDuplicateEResepStore = defineStore('duplicate_e_resep', {
     cariObat2 (val) {
       const depo = this.depos.filter(pa => pa.jenis === this.depo)
       // console.log('depo', this?.depo, depo)
-      if (depo.length) {
+      if (depo?.length) {
         this.dpPar = depo[0]?.value
       }
       else return notifErrVue('depo tujuan tidak ditemukan')
@@ -665,7 +665,7 @@ export const useDuplicateEResepStore = defineStore('duplicate_e_resep', {
       const kirimResep = []
       const kirimRacik = []
       // console.log('racikan', racik)
-      if (resep.length) {
+      if (resep?.length) {
         resep.forEach(res => {
           // console.log('non racikan', res)
           // console.log('50', res?.uraian50)
@@ -710,11 +710,11 @@ export const useDuplicateEResepStore = defineStore('duplicate_e_resep', {
           kirimResep.push(temp)
         })
       }
-      // if (racik.length) {
+      // if (racik?.length) {
       //   racik.forEach(rac => {
       //     // console.log('racikan', rac)
       //     if (!rac?.kosong) {
-      //       if (rac.rincian.length) {
+      //       if (rac.rincian?.length) {
       //         rac.rincian.forEach(rinc => {
       //           const temp = {
       //             noreg: rinc?.noreg,

@@ -29,7 +29,7 @@
         <q-select v-model="store.form.caraKeluar" dense standout="bg-yellow-3 text-black" outlined label="Cara Keluar"
           :options="store.carakeluars" option-value="rs1" option-label="rs2" map-options emit-value hide-selected
           fill-input use-input input-debounce="0" hide-bottom-space
-          :rules="[val => val && val.length > 0 || 'harap diisi']" style="width: 40%;" @update:model-value="(val) => {
+          :rules="[val => val && val?.length > 0 || 'harap diisi']" style="width: 40%;" @update:model-value="(val) => {
             console.log('val', val);
 
           }" />
@@ -42,7 +42,7 @@
       </div>
       <div class="col-9 flex q-gutter-xs">
         <app-input-date :model="store.form.tglKeluar" label="" outlined :disable="store.loading"
-          :loading="store.loading" :rules="[val => val && val.length > 0 || 'harap diisi']"
+          :loading="store.loading" :rules="[val => val && val?.length > 0 || 'harap diisi']"
           @set-model="val => store.form.tglKeluar = val" style="width: 20%;" />
 
       </div>
@@ -54,7 +54,7 @@
       <div class="col-9">
         <div class="flex items-center">
           <q-input outlined standout="bg-yellow-3" hide-bottom-space dense v-model="store.form.jamMeninggal"
-            mask="##:##" label="Jam Meninggal" :rules="[val => val && val.length > 0 || 'harap diisi']"
+            mask="##:##" label="Jam Meninggal" :rules="[val => val && val?.length > 0 || 'harap diisi']"
             style="width: 20%;" />
           <span class="q-ml-md"> *. diisi jika status pulang meninggal <b>format HH:MM contoh 12:00</b></span>
         </div>
@@ -97,7 +97,7 @@
           emit-value map-options option-value="kode"
           :option-label="opt => Object(opt) === opt && 'keterangan' in opt ? opt.kode + ' ~ ' + opt.keterangan : ' Cari Diagnosa '"
           input-debounce="0" :options="options" label="Cari Diagnosa (ICD)" @filter="filterFn"
-          :rules="[val => val && val.length > 0 || 'harap diisi']" @update:model-value="(val) => {
+          :rules="[val => val && val?.length > 0 || 'harap diisi']" @update:model-value="(val) => {
             // console.log('val', val);
             store.form.diagnosaAkhir = val
           }">
@@ -121,7 +121,7 @@
           emit-value map-options option-value="kode"
           :option-label="opt => Object(opt) === opt && 'keterangan' in opt ? opt.kode + ' ~ ' + opt.keterangan : ' Cari Diagnosa '"
           input-debounce="0" :options="options2" label="Cari Diagnosa (ICD)" @filter="filterFn2"
-          :rules="[val => val && val.length > 0 || 'harap diisi']" @update:model-value="(val) => {
+          :rules="[val => val && val?.length > 0 || 'harap diisi']" @update:model-value="(val) => {
             // console.log('val', val);
             store.form.diagnosaPenyebabMeninggal = val
           }">
@@ -142,7 +142,7 @@
       </div>
       <div class="col-6">
         <q-input v-model="store.form.tindakLanjut" type="textarea" standout="bg-yellow-3 text-black" outlined rows="3"
-          :rules="[val => val && val.length > 0 || 'Anjuran harus diisi']" />
+          :rules="[val => val && val?.length > 0 || 'Anjuran harus diisi']" />
       </div>
     </div>
 
@@ -188,7 +188,7 @@ const options = ref([])
 const options2 = ref([])
 
 function filterFn(val, update, abort) {
-  if (val.length < 2) {
+  if (val?.length < 2) {
     abort()
     options.value = []
     return
@@ -213,7 +213,7 @@ function filterFn(val, update, abort) {
   })
 }
 function filterFn2(val, update, abort) {
-  if (val.length < 2) {
+  if (val?.length < 2) {
     abort()
     options2.value = []
     return

@@ -76,7 +76,7 @@ export const useKontrakPemensananStore = defineStore('kontrak_pemesanan', {
     setColumns (payload) {
       const thumb = payload.map((x) => Object.keys(x))
       this.columns = thumb[0]
-      if (this.columns.length) changeArrayIndex(this.columns, 'nokontrakx', 'namaperusahaan')
+      if (this.columns?.length) changeArrayIndex(this.columns, 'nokontrakx', 'namaperusahaan')
       // console.log('columns', this.columns)
     },
 
@@ -90,7 +90,7 @@ export const useKontrakPemensananStore = defineStore('kontrak_pemesanan', {
 
     // ambil
     getDataTable () {
-      if (!this.items.length || this.getNew) {
+      if (!this.items?.length || this.getNew) {
         waitLoad('show')
         this.loading = true
         // const params = { params: this.params }

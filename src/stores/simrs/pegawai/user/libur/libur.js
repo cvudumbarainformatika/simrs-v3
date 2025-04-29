@@ -62,7 +62,7 @@ export const useLiburAbsenStore = defineStore('libur_absen', {
         'alasan'
       ]
 
-      for (let i = 0; i < columns.length; i++) {
+      for (let i = 0; i < columns?.length; i++) {
         this.setForm(columns[i], null)
       }
       this.setForm('tanggals', [])
@@ -183,12 +183,12 @@ export const useLiburAbsenStore = defineStore('libur_absen', {
             console.log('tidak masuk', resp.data)
             this.items = resp.data.data
             this.items.forEach(data => {
-              if (data.image.length) {
+              if (data.image?.length) {
                 const temp = data.image.split('.')
                 console.log('data', data)
                 console.log('image ', temp)
                 console.log('image ', temp[1])
-                data.fileType = temp[temp.length - 1]
+                data.fileType = temp[temp?.length - 1]
                 data.disp = true
               }
             })

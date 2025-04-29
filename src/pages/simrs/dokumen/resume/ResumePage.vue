@@ -778,7 +778,7 @@ function getYT(val) {
 // eslint-disable-next-line no-unused-vars
 function getKesadaran(val) {
   const temp = fisik.optionsTingkatkesadaran.filter(a => a.value === val)
-  if (temp.length) {
+  if (temp?.length) {
     return temp[0].label
   }
   else {

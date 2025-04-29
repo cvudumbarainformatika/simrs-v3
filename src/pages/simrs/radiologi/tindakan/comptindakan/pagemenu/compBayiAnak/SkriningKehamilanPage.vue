@@ -101,13 +101,13 @@
                   :key="grup"
                 >
                   <template
-                    v-for="(item, i) in store.masterSkrining.length? store.masterSkrining.filter(x=>x.fr===grup) : []"
+                    v-for="(item, i) in store.masterSkrining?.length? store.masterSkrining.filter(x=>x.fr===grup) : []"
                     :key="item"
                   >
                     <tr>
                       <td
                         v-if="i===0"
-                        :rowspan="store.masterSkrining.filter(x=>x.fr===grup).length"
+                        :rowspan="store.masterSkrining.filter(x=>x.fr===grup)?.length"
                       >
                         {{ item.fr }}
                       </td>
@@ -223,29 +223,29 @@ onMounted(() => {
 // eslint-disable-next-line no-unused-vars
 const filterSkriningByKehamilanNo = computed(() => {
   const arr = store.skriningAllFromServer
-  const res = arr.length ? arr.filter(x => x.kehamilanNo === store.formSkrining.kehamilanNo).map(x => x.valueSingkat) : []
+  const res = arr?.length ? arr.filter(x => x.kehamilanNo === store.formSkrining.kehamilanNo).map(x => x.valueSingkat) : []
   return res
 })
 
 const jmlSkorI = computed(() => {
   const arr = store.formSkrining.skriningKehamilan
-  const isi = arr.filter(x => x.includes('--I--')).map(x => parseInt(x.substring(x.length - 1))).reduce((x, y) => x + y, 0) + 2
-  return arr.length ? isi : 2
+  const isi = arr.filter(x => x.includes('--I--')).map(x => parseInt(x.substring(x?.length - 1))).reduce((x, y) => x + y, 0) + 2
+  return arr?.length ? isi : 2
 })
 const jmlSkorII = computed(() => {
   const arr = store.formSkrining.skriningKehamilan
-  const isi = arr.filter(x => x.includes('--II--')).map(x => parseInt(x.substring(x.length - 1))).reduce((x, y) => x + y, 0) + 2
-  return arr.length ? isi : 2
+  const isi = arr.filter(x => x.includes('--II--')).map(x => parseInt(x.substring(x?.length - 1))).reduce((x, y) => x + y, 0) + 2
+  return arr?.length ? isi : 2
 })
 const jmlSkorIII1 = computed(() => {
   const arr = store.formSkrining.skriningKehamilan
-  const isi = arr.filter(x => x.includes('--III.1--')).map(x => parseInt(x.substring(x.length - 1))).reduce((x, y) => x + y, 0) + 2
-  return arr.length ? isi : 2
+  const isi = arr.filter(x => x.includes('--III.1--')).map(x => parseInt(x.substring(x?.length - 1))).reduce((x, y) => x + y, 0) + 2
+  return arr?.length ? isi : 2
 })
 const jmlSkorIII2 = computed(() => {
   const arr = store.formSkrining.skriningKehamilan
-  const isi = arr.filter(x => x.includes('--III.2--')).map(x => parseInt(x.substring(x.length - 1))).reduce((x, y) => x + y, 0) + 2
-  return arr.length ? isi : 2
+  const isi = arr.filter(x => x.includes('--III.2--')).map(x => parseInt(x.substring(x?.length - 1))).reduce((x, y) => x + y, 0) + 2
+  return arr?.length ? isi : 2
 })
 
 function setSkrining() {
@@ -256,7 +256,7 @@ function arrayCompare(_arr1, _arr2) {
   if (
     !Array.isArray(_arr1) ||
       !Array.isArray(_arr2) ||
-      _arr1.length !== _arr2.length
+      _arr1?.length !== _arr2?.length
   ) {
     return false
   }
@@ -265,7 +265,7 @@ function arrayCompare(_arr1, _arr2) {
   const arr1 = _arr1.concat().sort()
   const arr2 = _arr2.concat().sort()
 
-  for (let i = 0; i < arr1.length; i++) {
+  for (let i = 0; i < arr1?.length; i++) {
     if (arr1[i] !== arr2[i]) {
       return false
     }

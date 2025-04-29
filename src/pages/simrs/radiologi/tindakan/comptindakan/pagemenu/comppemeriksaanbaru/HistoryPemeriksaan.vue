@@ -6,7 +6,7 @@
       </div>
     </div>
     <div
-      v-if="store.historys.length && !store.loadingHistory"
+      v-if="store.historys?.length && !store.loadingHistory"
       class="col full-height bg-grey-3 scroll"
     >
       <!-- <q-infinite-scroll
@@ -44,7 +44,7 @@
           </div>
           <table class="row full-width">
             <th class="th-center">
-              <div v-if="items?.gambars.length && items?.detailgambars.length">
+              <div v-if="items?.gambars?.length && items?.detailgambars?.length">
                 <div
                   v-for="gambars in items?.gambars"
                   :key="gambars?.id"
@@ -322,7 +322,7 @@
                       <div>
                         <q-separator dark />
                         <q-list
-                          v-if="items?.detailgambars.length"
+                          v-if="items?.detailgambars?.length"
                           separator
                           dark
                         >
@@ -340,7 +340,7 @@
                             </q-item-section>
                             <q-item-section>
                               <q-item-label>{{ row.anatomy }}</q-item-label>
-                              <q-item-label v-if="items?.pemeriksaankhususmata.length">
+                              <q-item-label v-if="items?.pemeriksaankhususmata?.length">
                                 <div class="column q-ml-sm">
                                   <div><em>Details Pemeriksaan (Khusus Mata)</em></div>
                                   <div class="q-ml-sm">
@@ -586,7 +586,7 @@ function tekananDarahDias (val) {
 
 function getKesadaran (val) {
   const temp = store.optionsTingkatkesadaran.filter(a => a.value === parseInt(val))
-  if (temp.length) {
+  if (temp?.length) {
     return temp[0].label
   }
   else {

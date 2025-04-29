@@ -81,7 +81,7 @@
                 Tanggal Permintaan
               </div>
               <div class="col-8">
-                : {{ Object.keys(store.permintaan).length ? dateFull( store.permintaan.tanggal):'belum dipilih' }}
+                : {{ Object.keys(store.permintaan)?.length ? dateFull( store.permintaan.tanggal):'belum dipilih' }}
               </div>
             </div>
             <div class="row q-col-gutter-sm q-mb-sm items-center">
@@ -107,7 +107,7 @@
                 User Ruangan
               </div>
               <div class="col-8">
-                : {{ Object.keys(store.permintaan).length ? store.permintaan.pengguna.jabatan : 'belum dipilih' }}
+                : {{ Object.keys(store.permintaan)?.length ? store.permintaan.pengguna.jabatan : 'belum dipilih' }}
               </div>
             </div>
           </div>
@@ -125,7 +125,7 @@
       />
     </div> -->
     <div
-      v-if="Object.keys(store.mapGudang).length && !store.loading"
+      v-if="Object.keys(store.mapGudang)?.length && !store.loading"
       class="col-12"
     >
       <tabelVerifGudang

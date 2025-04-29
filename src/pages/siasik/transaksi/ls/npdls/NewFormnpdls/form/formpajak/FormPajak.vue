@@ -122,7 +122,7 @@ onBeforeMount(() => {
 })
 function pilihPajak(val) {
   const arr = store.getpajak
-  const obj = arr.length ? arr.find(x => x.kodeall3 === val) : null
+  const obj = arr?.length ? arr.find(x => x.kodeall3 === val) : null
   store.form.uraian = obj?.uraian ?? ''
 }
 function submitPajak() {

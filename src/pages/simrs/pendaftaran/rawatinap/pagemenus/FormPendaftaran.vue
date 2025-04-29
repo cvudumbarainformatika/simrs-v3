@@ -384,7 +384,7 @@
 
               <q-select dense outlined standout="bg-yellow-3" v-model="store.pasien.no_bed" :options="kamars"
                 label="NO BED" option-value="rs2"
-                :option-label="opt => Object(opt) === opt && 'rs2' in opt ? `${opt.rs2}  -  ${opt.kunjungan.length ? 'Terisi' : 'Kosong'}` : '- Null -'"
+                :option-label="opt => Object(opt) === opt && 'rs2' in opt ? `${opt.rs2}  -  ${opt.kunjungan?.length ? 'Terisi' : 'Kosong'}` : '- Null -'"
                 map-options emit-value class="q-mb-xs col-4" />
 
 
@@ -488,7 +488,7 @@ const cekKtp = (e) => {
     console.log('nik tidak valid')
     return
   }
-  const digit = e?.toString().length
+  const digit = e?.toString()?.length
   if (digit !== 16) {
     console.log('nik tidak valid')
   }
@@ -579,7 +579,7 @@ const autocompleteSelected = (val, fromArr, objVal, el, model, key) => {
   // console.log('arr', fromArr)
   // console.log('el', el)
   // console.log('model', model)
-  const finder = fromArr.length ? fromArr.filter(x => x[objVal] === val) : []
+  const finder = fromArr?.length ? fromArr.filter(x => x[objVal] === val) : []
   // console.log('index', finder)
   store.pasien[model] = finder[0][key] ?? null
   if (store.domisiliSama) {
@@ -685,7 +685,7 @@ const autocompleteSelected = (val, fromArr, objVal, el, model, key) => {
 }
 
 async function filterFn(val, update, abort) {
-  if (val.length < 3) {
+  if (val?.length < 3) {
     abort()
     return
   }
@@ -739,7 +739,7 @@ function copyDataFromBpjs() {
 function pilihRuang(val) {
   store.pasien.kamar = null
   const arr = store.kamars
-  const obj = arr.length ? arr.find(x => x.rs1 === val) : null
+  const obj = arr?.length ? arr.find(x => x.rs1 === val) : null
   console.log('pilihRuang', val)
   // console.log('obj', obj)
   const group = obj?.groups ?? null
@@ -778,7 +778,7 @@ function pilihRuang(val) {
       // grupKamar.value = grup
       console.log('grup', grup)
       // const thumb = []
-      for (let i = 0; i < grup.length; i++) {
+      for (let i = 0; i < grup?.length; i++) {
         const el = grup[i]
         // const anggotaKamar = kamarsx?.filter(x => x.rs1 === el)?.sort((x, y) => x.rs2 - y.rs2)
         // const anggotaKamar = kamarsx?.find(x => x.rs1 === el)
@@ -807,7 +807,7 @@ function pilihKamar(val) {
 
 function pilihDokter(val) {
   const arr = store.dokters
-  const obj = arr.length ? arr.find(x => x.kddpjp === val) : null
+  const obj = arr?.length ? arr.find(x => x.kddpjp === val) : null
   // console.log('pilihKamar', obj)
   store.pasien.nama_dokter = obj?.nama ?? null
   store.pasien.kd_dokter = obj?.kdpegsimrs ?? null
@@ -819,7 +819,7 @@ function pilihDokter(val) {
 // function cariBiayaAdministrasi () {
 //   if (store.pasien.kode_ruang && store.pasien.kelas) {
 //     const arr = store.tarifs
-//     const tarifs = arr.length ? arr.find(x => x.rs3 === 'A1#') : null
+//     const tarifs = arr?.length ? arr.find(x => x.rs3 === 'A1#') : null
 //     console.log('tarifs', tarifs)
 //     const kelas = store.pasien.kelas
 //     let biaya1 = 0
@@ -862,10 +862,10 @@ function pilihDokter(val) {
 //     const arr = store.tarifs
 //     let tarifs = null
 //     if (store.pasien.flag_ruang === 'ISO') {
-//       tarifs = arr.length ? arr.find(x => x.rs3 === 'B1#' && x.rs4.includes(store.pasien.kode_ruang + '|') && x.rs5.includes(store.pasien.flag_ruang + '|')) : null
+//       tarifs = arr?.length ? arr.find(x => x.rs3 === 'B1#' && x.rs4.includes(store.pasien.kode_ruang + '|') && x.rs5.includes(store.pasien.flag_ruang + '|')) : null
 //     }
 //     else {
-//       tarifs = arr.length ? arr.find(x => x.rs3 === 'B1#' && x.rs4.includes(store.pasien.kode_ruang + '|') && x.rs5.includes(store.pasien.kelas + '|')) : null
+//       tarifs = arr?.length ? arr.find(x => x.rs3 === 'B1#' && x.rs4.includes(store.pasien.kode_ruang + '|') && x.rs5.includes(store.pasien.kelas + '|')) : null
 //     }
 
 //     console.log('tarifs', tarifs)

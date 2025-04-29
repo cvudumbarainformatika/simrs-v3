@@ -242,7 +242,7 @@ export const usePermintaanEResepStore = defineStore('permintaan_e_resep', {
         if (indexp >= 0) resep?.permintaanresep?.splice(indexp, 1)
         // // console.log('new', indexp)
       }
-      if (resep?.permintaanracikan.length <= 0 && resep?.permintaanresep.length <= 0) {
+      if (resep?.permintaanracikan?.length <= 0 && resep?.permintaanresep?.length <= 0) {
         this.noresep = 'BARU'
         const indexres = this?.noreseps?.findIndex(a => a === obat?.noresep)
         if (indexres >= 0) this?.noreseps?.splice(indexres, 1)
@@ -378,7 +378,7 @@ export const usePermintaanEResepStore = defineStore('permintaan_e_resep', {
     cariObat (val) {
       const depo = this.depos.filter(pa => pa.jenis === this.depo)
       // // console.log('depo', this?.depo, depo)
-      if (depo.length) {
+      if (depo?.length) {
         this.dpPar = depo[0]?.value
       }
       else return notifErrVue('depo tujuan tidak ditemukan')
@@ -755,13 +755,13 @@ export const usePermintaanEResepStore = defineStore('permintaan_e_resep', {
           }
         })
 
-        if (panjang.length <= 0 && batas > 0) {
+        if (panjang?.length <= 0 && batas > 0) {
           this.loading = false
           return notifErrVue('silahkan pilih obat yang diperlukan maksimal ' + batas + ' Obat!!!')
         }
       }
 
-      if (obat.length) {
+      if (obat?.length) {
         kdobatArray = obat.map(item => item?.kdobat)
       }
 
@@ -786,7 +786,7 @@ export const usePermintaanEResepStore = defineStore('permintaan_e_resep', {
       }
       // }
 
-      if (depo.length) {
+      if (depo?.length) {
         this.dpPar = depo[0]?.value
       }
       else return notifErrVue('depo tujuan tidak ditemukan')
@@ -829,7 +829,7 @@ export const usePermintaanEResepStore = defineStore('permintaan_e_resep', {
         if (pa?.mobat?.jenis_perbekalan.toLowerCase() === 'obat') {
           if (val?.permintaanresep?.length > 5) {
             batas = pa.batas
-            if (pa.checked && panjang.length <= pa.batas) {
+            if (pa.checked && panjang?.length <= pa.batas) {
               indexss.push(indexs)
               resep.push(pa)
             }
@@ -845,7 +845,7 @@ export const usePermintaanEResepStore = defineStore('permintaan_e_resep', {
         }
       })
 
-      if (panjang.length > batas) {
+      if (panjang?.length > batas) {
         this.loading = false
         return notifErrVue('Maaf duplicate resep maksimal ' + batas + ' Obat, silahkan pilih obat yang diperlukan maksimal ' + batas + ' Obat!!!')
       }
@@ -855,7 +855,7 @@ export const usePermintaanEResepStore = defineStore('permintaan_e_resep', {
       const kirimResep = []
       const depo = this.depos.filter(pa => pa.value === val?.depo)
       if (tipe === 'nonRacik') {
-        if (resep.length) {
+        if (resep?.length) {
           resep.forEach(res => {
             const obats = obat.find(ob => ob?.kdobat === res?.kdobat)
             const temp = {
@@ -907,7 +907,7 @@ export const usePermintaanEResepStore = defineStore('permintaan_e_resep', {
         }
       }
       else {
-        if (rinracik.length) {
+        if (rinracik?.length) {
           rinracik.forEach(racikan => {
             const obats = obat.find(ob => ob?.kdobat === racikan?.kdobat)
             const rac = racik.find(ob => ob?.kdobat === racikan?.kdobat)
@@ -981,8 +981,8 @@ export const usePermintaanEResepStore = defineStore('permintaan_e_resep', {
             this.noresep = nota[0]
 
             const newapotekrajal = resp?.data.map(item => item?.newapotekrajal)
-            if (newapotekrajal.length) {
-              const lastIndex = newapotekrajal.length - 1
+            if (newapotekrajal?.length) {
+              const lastIndex = newapotekrajal?.length - 1
               const lastItem = newapotekrajal[lastIndex]
               this.pasien.newapotekrajal = lastItem
               this.indexRacikan = this.pasien.newapotekrajal.findIndex(x => x.noresep === nota[0])
@@ -1202,8 +1202,8 @@ export const usePermintaanEResepStore = defineStore('permintaan_e_resep', {
 
             const newapotekrajal = resp?.data.map(item => item?.newapotekrajal)
 
-            if (newapotekrajal.length) {
-              const lastIndex = newapotekrajal.length - 1
+            if (newapotekrajal?.length) {
+              const lastIndex = newapotekrajal?.length - 1
               const lastItem = newapotekrajal[lastIndex]
               this.pasien.newapotekrajal = lastItem
               this.indexRacikan = this.pasien.newapotekrajal.findIndex(x => x.noresep === nota[0])

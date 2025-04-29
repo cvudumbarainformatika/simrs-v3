@@ -157,7 +157,7 @@ export const useLaporanOperasionalStore = defineStore('Laporan_Operasional', {
     },
     mapData() {
       const koderekpend = this.pagupendapatan.map((x) => x.kode6)
-      const newsetpend = koderekpend.length ? [...new Set(koderekpend)] : []
+      const newsetpend = koderekpend?.length ? [...new Set(koderekpend)] : []
 
       const pendapatan = this.datapendapatans.filter(x => koderekpend.includes(x.kode6))
       const penyepend = this.penyesuaian.filter(x => koderekpend.includes(x.kode6))
@@ -171,7 +171,7 @@ export const useLaporanOperasionalStore = defineStore('Laporan_Operasional', {
       const kode2 = []
       const kode1 = []
 
-      for (let i = 0; i < newsetpend.length; i++) {
+      for (let i = 0; i < newsetpend?.length; i++) {
         const el = newsetpend[i]
 
         const obj6 = {
@@ -182,8 +182,8 @@ export const useLaporanOperasionalStore = defineStore('Laporan_Operasional', {
         kode6.push(obj6)
       }
 
-      const pend5 = this.pagupendapatan.length ? [...new Set(this.pagupendapatan.map((x) => x.kode5))] : []
-      for (let i = 0; i < pend5.length; i++) {
+      const pend5 = this.pagupendapatan?.length ? [...new Set(this.pagupendapatan.map((x) => x.kode5))] : []
+      for (let i = 0; i < pend5?.length; i++) {
         const el = pend5[i]
 
         const obj5 = {
@@ -194,8 +194,8 @@ export const useLaporanOperasionalStore = defineStore('Laporan_Operasional', {
         kode5.push(obj5)
       }
 
-      const pend4 = this.pagupendapatan.length ? [...new Set(this.pagupendapatan.map((x) => x.kode4))] : []
-      for (let i = 0; i < pend4.length; i++) {
+      const pend4 = this.pagupendapatan?.length ? [...new Set(this.pagupendapatan.map((x) => x.kode4))] : []
+      for (let i = 0; i < pend4?.length; i++) {
         const el = pend4[i]
 
         const obj4 = {
@@ -205,8 +205,8 @@ export const useLaporanOperasionalStore = defineStore('Laporan_Operasional', {
         }
         kode4.push(obj4)
       }
-      const pend3 = this.pagupendapatan.length ? [...new Set(this.pagupendapatan.map((x) => x.kode3))] : []
-      for (let i = 0; i < pend3.length; i++) {
+      const pend3 = this.pagupendapatan?.length ? [...new Set(this.pagupendapatan.map((x) => x.kode3))] : []
+      for (let i = 0; i < pend3?.length; i++) {
         const el = pend3[i]
 
         const obj3 = {
@@ -217,8 +217,8 @@ export const useLaporanOperasionalStore = defineStore('Laporan_Operasional', {
         kode3.push(obj3)
       }
 
-      const pend2 = this.pagupendapatan.length ? [...new Set(this.pagupendapatan.map((x) => x.kode2))] : []
-      for (let i = 0; i < pend2.length; i++) {
+      const pend2 = this.pagupendapatan?.length ? [...new Set(this.pagupendapatan.map((x) => x.kode2))] : []
+      for (let i = 0; i < pend2?.length; i++) {
         const el = pend2[i]
 
         const obj2 = {
@@ -229,8 +229,8 @@ export const useLaporanOperasionalStore = defineStore('Laporan_Operasional', {
         kode2.push(obj2)
       }
 
-      const pend1 = this.pagupendapatan.length ? [...new Set(this.pagupendapatan.map((x) => x.kode1))] : []
-      for (let i = 0; i < pend1.length; i++) {
+      const pend1 = this.pagupendapatan?.length ? [...new Set(this.pagupendapatan.map((x) => x.kode1))] : []
+      for (let i = 0; i < pend1?.length; i++) {
         const el = pend1[i]
 
         const obj1 = {
@@ -294,8 +294,8 @@ export const useLaporanOperasionalStore = defineStore('Laporan_Operasional', {
       const beban1 = []
 
       const fil6 = allbeban.map((x) => x.kode6)
-      const unik6 = fil6.length ? [...new Set(fil6)] : []
-      for (let i = 0; i < unik6.length; i++) {
+      const unik6 = fil6?.length ? [...new Set(fil6)] : []
+      for (let i = 0; i < unik6?.length; i++) {
         const el = unik6[i]
         const obj6 = {
           kode: allbeban.filter((x) => x.kode6 === el)[0].kode6,
@@ -306,8 +306,8 @@ export const useLaporanOperasionalStore = defineStore('Laporan_Operasional', {
       }
 
       const fil5 = allbeban.map((x) => x.kode5)
-      const unik5 = fil5.length ? [...new Set(fil5)] : []
-      for (let i = 0; i < unik5.length; i++) {
+      const unik5 = fil5?.length ? [...new Set(fil5)] : []
+      for (let i = 0; i < unik5?.length; i++) {
         const el = unik5[i]
         const obj = {
           kode: allbeban.filter((x) => x.kode5 === el)[0].kode5,
@@ -318,8 +318,8 @@ export const useLaporanOperasionalStore = defineStore('Laporan_Operasional', {
       }
 
       const fil4 = allbeban.map((x) => x.kode4)
-      const unik4 = fil4.length ? [...new Set(fil4)] : []
-      for (let i = 0; i < unik4.length; i++) {
+      const unik4 = fil4?.length ? [...new Set(fil4)] : []
+      for (let i = 0; i < unik4?.length; i++) {
         const el = unik4[i]
         const obj = {
           kode: allbeban.filter((x) => x.kode4 === el)[0].kode4,
@@ -330,8 +330,8 @@ export const useLaporanOperasionalStore = defineStore('Laporan_Operasional', {
       }
 
       const fil3 = allbeban.map((x) => x.kode3)
-      const unik3 = fil3.length ? [...new Set(fil3)] : []
-      for (let i = 0; i < unik3.length; i++) {
+      const unik3 = fil3?.length ? [...new Set(fil3)] : []
+      for (let i = 0; i < unik3?.length; i++) {
         const el = unik3[i]
         const obj = {
           kode: allbeban.filter((x) => x.kode3 === el)[0].kode3,
@@ -342,8 +342,8 @@ export const useLaporanOperasionalStore = defineStore('Laporan_Operasional', {
       }
 
       const fil2 = allbeban.map((x) => x.kode2)
-      const unik2 = fil2.length ? [...new Set(fil2)] : []
-      for (let i = 0; i < unik2.length; i++) {
+      const unik2 = fil2?.length ? [...new Set(fil2)] : []
+      for (let i = 0; i < unik2?.length; i++) {
         const el = unik2[i]
         const obj = {
           kode: allbeban.filter((x) => x.kode2 === el)[0].kode2,
@@ -354,8 +354,8 @@ export const useLaporanOperasionalStore = defineStore('Laporan_Operasional', {
       }
 
       const fil1 = allbeban.map((x) => x.kode1)
-      const unik1 = fil1.length ? [...new Set(fil1)] : []
-      for (let i = 0; i < unik1.length; i++) {
+      const unik1 = fil1?.length ? [...new Set(fil1)] : []
+      for (let i = 0; i < unik1?.length; i++) {
         const el = unik1[i]
         const obj = {
           kode: allbeban.filter((x) => x.kode1 === el)[0].kode1,
@@ -412,7 +412,7 @@ export const useLaporanOperasionalStore = defineStore('Laporan_Operasional', {
       // // PSAP 13 DATA PENDAPATAN JASA LAYANAN //
       // const filterjs = this.pendjasalayanan?.map((x) => x.kode)
       // const filpagujs = gabung.filter(x => filterjs.includes(x.kode)).map((x) => x.kode)
-      // const unikfilpagujs = filpagujs.length ? [...new Set(filpagujs)] : []
+      // const unikfilpagujs = filpagujs?.length ? [...new Set(filpagujs)] : []
       // const realisasi = realpostingotom.filter(x => filterjs.includes(x.kode)).map((x) => parseFloat(x.realisasi)).reduce((a, b) => a + b, 0).toFixed(2)
       // const realisasix = realju.map((x) => parseFloat(x.realisasix)).reduce((a, b) => a + b, 0).toFixed(2)
       // const penyesuaianpend = penyspendpatan.map((x) => parseFloat(x.nilaix)).reduce((a, b) => a + b, 0).toFixed(2)
@@ -426,7 +426,7 @@ export const useLaporanOperasionalStore = defineStore('Laporan_Operasional', {
       // // PSAP 13 DATA PENDAPATAN KERJA SAMA //
       // const filterks = this.pendhasilkerjasama?.map((x) => x.kode)
       // const filks = gabung.filter(x => filterks.includes(x.kode)).map((x) => x.kode)
-      // const unikfilks = filks.length ? [...new Set(filks)] : []
+      // const unikfilks = filks?.length ? [...new Set(filks)] : []
       // const realks = realju.filter(x => filks.includes(x.kode)).map((x) => parseFloat(x.realisasix)).reduce((a, b) => a + b, 0).toFixed(2)
       // const hslkerjasama = {
       //   kode: unikfilks[0],
@@ -437,7 +437,7 @@ export const useLaporanOperasionalStore = defineStore('Laporan_Operasional', {
       // // PSAP 13 DATA PENDAPATAN HIBAH //
       // const filterhb = this.pendhibah?.map((x) => x.kode)
       // const filhb = gabung.filter(x => filterhb.includes(x.kode)).map((x) => x.kode)
-      // const unikfilhb = filhb.length ? [...new Set(filhb)] : []
+      // const unikfilhb = filhb?.length ? [...new Set(filhb)] : []
       // const realhb = (realju.filter(x => filhb.includes(x.kode)).map((x) => parseFloat(x.realisasix)).reduce((a, b) => a + b, 0).toFixed(2))
       // const hbh = (psaphibah.filter(x => filhb.includes(x.kode)).map((x) => parseFloat(x.realisasix)).reduce((a, b) => a + b, 0).toFixed(2))
       // const total = parseFloat(realhb) + parseFloat(hbh)
@@ -451,7 +451,7 @@ export const useLaporanOperasionalStore = defineStore('Laporan_Operasional', {
       // // PSAP 13 DATA PENDAPATAN JASA GIRO //
       // const filtergiro = this.pendjasagiro.map((x) => x.kode)
       // const filgiro = gabung.filter(x => filtergiro.includes(x.kode)).map((x) => x.kode)
-      // const unikgiro = filgiro.length ? [...new Set(filgiro)] : []
+      // const unikgiro = filgiro?.length ? [...new Set(filgiro)] : []
       // const realgiro = realju.filter(x => filgiro.includes(x.kode)).map((x) => parseFloat(x.realisasix)).reduce((a, b) => a + b, 0).toFixed(2)
       // const hslgiro = {
       //   kode: unikgiro,
@@ -462,7 +462,7 @@ export const useLaporanOperasionalStore = defineStore('Laporan_Operasional', {
       // // PSAP 13 DATA PENDAPATAN USAHA LAINNYA //
       // const filterlainya = this.pendusahalain.map((x) => x.kode)
       // const fillainnya = gabung.filter(x => filterlainya.includes(x.kode)).map((x) => x.kode)
-      // const uniklainnya = fillainnya.length ? [...new Set(fillainnya)] : []
+      // const uniklainnya = fillainnya?.length ? [...new Set(fillainnya)] : []
       // const reallainnya = realju.filter(x => fillainnya.includes(x.kode)).map((x) => parseFloat(x.realisasix)).reduce((a, b) => a + b, 0).toFixed(2)
       // const hsllainnya = {
       //   kode: uniklainnya,
@@ -473,7 +473,7 @@ export const useLaporanOperasionalStore = defineStore('Laporan_Operasional', {
 
       // const bebanpsap = []
       // const bpegawai = this.psapbebanpegawai
-      // for (let i = 0; i < bpegawai.length; i++) {
+      // for (let i = 0; i < bpegawai?.length; i++) {
       //   const el = bpegawai.map((x) => {
       //     return {
       //       kode: x.kode,
@@ -488,7 +488,7 @@ export const useLaporanOperasionalStore = defineStore('Laporan_Operasional', {
       // const bebanlain = this.psapbebanlain
       // const filla = this.bebanpersediaan?.map((x) => x.kode)
       // const kodeuniks = bebanlain.filter(x => filla.includes(x.kode)).map((x) => x.kode)
-      // const uniks = kodeuniks.length ? [...new Set(kodeuniks)] : []
+      // const uniks = kodeuniks?.length ? [...new Set(kodeuniks)] : []
       // const realisasipersed = bebanlain.filter(x => filla.includes(x.kode)).map((x) => parseFloat(x.realisasi)).reduce((a, b) => a + b, 0)
       // const psappersediaan = {
       //   kode: uniks,
@@ -498,7 +498,7 @@ export const useLaporanOperasionalStore = defineStore('Laporan_Operasional', {
 
       // const fillb = this.bebanjasa?.map((x) => x.kode)
       // const kodeuniksb = bebanlain.filter(x => fillb.includes(x.kode)).map((x) => x.kode)
-      // const unikskode = kodeuniksb.length ? [...new Set(kodeuniksb)] : []
+      // const unikskode = kodeuniksb?.length ? [...new Set(kodeuniksb)] : []
       // const realisasijasa = bebanlain.filter(x => fillb.includes(x.kode)).map((x) => parseFloat(x.realisasi)).reduce((a, b) => a + b, 0)
       // const psapjasa = {
       //   kode: unikskode,
@@ -507,7 +507,7 @@ export const useLaporanOperasionalStore = defineStore('Laporan_Operasional', {
       // }
       // const fillc = this.bebanpemeliharaan?.map((x) => x.kode)
       // const kodeuniksc = bebanlain.filter(x => fillc.includes(x.kode)).map((x) => x.kode)
-      // const unikskodec = kodeuniksc.length ? [...new Set(kodeuniksc)] : []
+      // const unikskodec = kodeuniksc?.length ? [...new Set(kodeuniksc)] : []
       // const realisasipemeliharaan = bebanlain.filter(x => fillc.includes(x.kode)).map((x) => parseFloat(x.realisasi)).reduce((a, b) => a + b, 0)
       // const psappemeliharaan = {
       //   kode: unikskodec,
@@ -516,7 +516,7 @@ export const useLaporanOperasionalStore = defineStore('Laporan_Operasional', {
       // }
       // const filld = this.bebanperdin?.map((x) => x.kode)
       // const kodeuniksd = bebanlain.filter(x => filld.includes(x.kode)).map((x) => x.kode)
-      // const unikskoded = kodeuniksd.length ? [...new Set(kodeuniksd)] : []
+      // const unikskoded = kodeuniksd?.length ? [...new Set(kodeuniksd)] : []
       // const realisasiperdin = bebanlain.filter(x => filld.includes(x.kode)).map((x) => parseFloat(x.realisasi)).reduce((a, b) => a + b, 0)
       // const psapperdin = {
       //   kode: unikskoded,
@@ -525,7 +525,7 @@ export const useLaporanOperasionalStore = defineStore('Laporan_Operasional', {
       // }
       // const fille = this.bebanpenyusutan?.map((x) => x.kode)
       // const kodeunikse = bebanlain.filter(x => fille.includes(x.kode)).map((x) => x.kode)
-      // const unikskodee = kodeunikse.length ? [...new Set(kodeunikse)] : []
+      // const unikskodee = kodeunikse?.length ? [...new Set(kodeunikse)] : []
       // const realisasipenyusutan = bebanlain.filter(x => fille.includes(x.kode)).map((x) => parseFloat(x.realisasi)).reduce((a, b) => a + b, 0)
       // const psappenyusutan = {
       //   kode: unikskodee,
@@ -534,7 +534,7 @@ export const useLaporanOperasionalStore = defineStore('Laporan_Operasional', {
       // }
       // const fillf = this.bebanamortisasi?.map((x) => x.kode)
       // const kodeuniksf = bebanlain.filter(x => fillf.includes(x.kode)).map((x) => x.kode)
-      // const unikskodef = kodeuniksf.length ? [...new Set(kodeuniksf)] : []
+      // const unikskodef = kodeuniksf?.length ? [...new Set(kodeuniksf)] : []
       // const realisasiamortisasi = bebanlain.filter(x => fillf.includes(x.kode)).map((x) => parseFloat(x.realisasi)).reduce((a, b) => a + b, 0)
       // const psapamortisasi = {
       //   kode: unikskodef,
@@ -543,7 +543,7 @@ export const useLaporanOperasionalStore = defineStore('Laporan_Operasional', {
       // }
       // const fillg = this.bebanamortisasi?.map((x) => x.kode)
       // const kodeuniksg = bebanlain.filter(x => fillg.includes(x.kode)).map((x) => x.kode)
-      // const unikskodeg = kodeuniksg.length ? [...new Set(kodeuniksg)] : []
+      // const unikskodeg = kodeuniksg?.length ? [...new Set(kodeuniksg)] : []
       // const realisasipenyisihan = bebanlain.filter(x => fillg.includes(x.kode)).map((x) => parseFloat(x.realisasi)).reduce((a, b) => a + b, 0)
       // const psapapenyisihan = {
       //   kode: unikskodeg,
@@ -557,7 +557,7 @@ export const useLaporanOperasionalStore = defineStore('Laporan_Operasional', {
       // const nonoperasional = []
       // const pjualaset = []
       // const penjualanasset = this.psappenjualanaset
-      // for (let i = 0; i < penjualanasset.length; i++) {
+      // for (let i = 0; i < penjualanasset?.length; i++) {
       //   const el = penjualanasset.map((x) => {
       //     return {
       //       kode: x.kode,
@@ -570,7 +570,7 @@ export const useLaporanOperasionalStore = defineStore('Laporan_Operasional', {
 
       // const psapkerugian = []
       // const kerugian = this.psapkerugian
-      // for (let i = 0; i < kerugian.length; i++) {
+      // for (let i = 0; i < kerugian?.length; i++) {
       //   const el = kerugian.map((x) => {
       //     return {
       //       kode: x.kode,
@@ -591,7 +591,7 @@ export const useLaporanOperasionalStore = defineStore('Laporan_Operasional', {
 
       // const bebanluarbiasa = []
       // const pendluarbiasa = this.psappendapatanluarbiasa
-      // for (let i = 0; i < pendluarbiasa.length; i++) {
+      // for (let i = 0; i < pendluarbiasa?.length; i++) {
       //   const el = pendluarbiasa.map((x) => {
       //     return {
       //       kode: x.kode,

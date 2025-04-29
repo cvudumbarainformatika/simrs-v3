@@ -39,7 +39,7 @@
             v-for="gr in lihatIntervensis(item)"
             :key="gr"
           >
-            <div v-if="item.intervensis?.filter(x=>x.group === gr).length">
+            <div v-if="item.intervensis?.filter(x=>x.group === gr)?.length">
               <q-separator class="q-my-xs" />
               <div class="">
                 <q-chip
@@ -100,7 +100,7 @@
           :key="gr"
         >
           <template v-if="categoryIntervensi === 'plann'">
-            <div v-if="item.intervensis?.filter(x=>x.group === gr && x.group === 'plann').length">
+            <div v-if="item.intervensis?.filter(x=>x.group === gr && x.group === 'plann')?.length">
               <q-separator class="q-my-xs" />
               <div class="">
                 <q-chip
@@ -130,7 +130,7 @@
             </div>
           </template>
           <template v-else>
-            <div v-if="item.intervensis?.filter(x=>x.group === gr && x.group !== 'plann').length">
+            <div v-if="item.intervensis?.filter(x=>x.group === gr && x.group !== 'plann')?.length">
               <q-separator class="q-my-xs" />
               <div class="">
                 <q-chip
@@ -229,8 +229,8 @@ const groups = ref([])
 function lihatIntervensis (item) {
   const int = item.intervensis
 
-  const gr = int.length ? int.map(x => x.group) : []
-  const unik = gr.length ? [...new Set(gr)] : []
+  const gr = int?.length ? int.map(x => x.group) : []
+  const unik = gr?.length ? [...new Set(gr)] : []
   groups.value = unik
   // console.log('groups', groups.value)
 

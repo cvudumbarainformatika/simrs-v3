@@ -28,7 +28,7 @@
             </q-item-section>
           </q-item>
           <!-- Separator antar notifikasi -->
-          <q-separator v-if="index < notifications.length - 1" />
+          <q-separator v-if="index < notifications?.length - 1" />
         </template>
       </q-scroll-area>
 
@@ -171,7 +171,7 @@ const addNotification = (title, dari, cito, read, icon = "icon-mat-medical_infor
 
 
 // **Hitung jumlah notifikasi belum dibaca**
-const unreadCount = computed(() => notifications.value.filter((n) => !n.read).length);
+const unreadCount = computed(() => notifications.value.filter((n) => !n.read)?.length);
 
 // **Putar Suara Notifikasi**
 const playNotificationSound = async (cito) => {

@@ -84,9 +84,9 @@
             <div class="text-grey-6 f-10">
               Jam : <b> {{ date.formatDate(item?.tglmasuk, 'HH:mm') }}</b>
             </div>
-            <q-badge outline class="q-mt-sm q-px-sm" dense :color="item?.diagnosa.length ? 'teal' : 'negative'">
+            <q-badge outline class="q-mt-sm q-px-sm" dense :color="item?.diagnosa?.length ? 'teal' : 'negative'">
               <div class="f-10">
-                {{ item?.diagnosa.length ? 'Ada Diagnosa' : 'Blm Ada Diagnosa' }}
+                {{ item?.diagnosa?.length ? 'Ada Diagnosa' : 'Blm Ada Diagnosa' }}
               </div>
             </q-badge>
           </div>

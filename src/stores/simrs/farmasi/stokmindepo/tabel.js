@@ -83,7 +83,7 @@ export const UseFarmasiStokMinDepoTable = defineStore('tabel_stok_min_depo', {
         // .catch(() => { this.loading = false })
     },
     getRuangRanap () {
-      if (this.ruangRanaps.length) return
+      if (this.ruangRanaps?.length) return
       return new Promise(resolve => {
         api.get('v1/simrs/farmasinew/penerimaan/list-ruang-ranap')
           .then(resp => {

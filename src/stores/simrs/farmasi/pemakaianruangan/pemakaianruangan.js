@@ -52,7 +52,7 @@ export const useFarmasiPemakaianRuanganStore = defineStore('farmasi_pemakaian_ru
           item.checked = false
         })
 
-        if (this.form.obats.length) {
+        if (this.form.obats?.length) {
           this.form.obats.forEach(obat => {
             const ada = this.items.find(a => a.id === obat.id)
             if (ada) {
@@ -86,7 +86,7 @@ export const useFarmasiPemakaianRuanganStore = defineStore('farmasi_pemakaian_ru
     },
     simpanPemakaian() {
       console.log('simpan pemakaian', this.form)
-      if (this.form.obats.length <= 0) return notifErrVue('tidak ada input obat dipakai')
+      if (this.form.obats?.length <= 0) return notifErrVue('tidak ada input obat dipakai')
       this.loading = true
       return new Promise(resolve => {
         api.post('v1/simrs/penunjang/farmasinew/ruangan/simpan', this.form)

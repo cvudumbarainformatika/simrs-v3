@@ -23,7 +23,7 @@ export const useMasterDokumenPasienStore = defineStore('master-dokumen-pasien', 
         api.get('/v1/simrs/pendaftaran/generalconscent/mastergeneralconsent', params)
           .then(resp => {
             if (resp.status === 200) {
-              const data = resp.data.length ? resp.data[0] : null
+              const data = resp.data?.length ? resp.data[0] : null
               // console.log('dokumen data', data)
               if (data) {
                 this.kelompok = data.kelompok

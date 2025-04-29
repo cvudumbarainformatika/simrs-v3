@@ -565,12 +565,12 @@ const DIAG_KEB = computed(() => {
   return diag
 })
 const SUMMARY = computed(() => {
-  const diag = props?.pasien?.summarydischargeplannings.length ? props?.pasien?.summarydischargeplannings[0] : null
+  const diag = props?.pasien?.summarydischargeplannings?.length ? props?.pasien?.summarydischargeplannings[0] : null
   return diag
 })
 
 const perawat = computed(() => {
-  const diag = props?.pasien?.summarydischargeplannings.length ? props?.pasien?.summarydischargeplannings[0] : null
+  const diag = props?.pasien?.summarydischargeplannings?.length ? props?.pasien?.summarydischargeplannings[0] : null
   const petugas = diag?.user_input ?? null
   // console.log('petugas', petugas, pengunjung?.nakes?.find(x => x?.kdpegsimrs === petugas)?.nama ?? null)
 

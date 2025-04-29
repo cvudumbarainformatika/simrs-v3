@@ -197,7 +197,7 @@ export const useReportAbsensiStore = defineStore('report_absensi', {
       const resp = await api.get('/v1/pegawai/absensi/prota', params)
       // console.log('prota', resp)
       if (resp.status === 200) {
-        this.jumlahProta = resp.data.length
+        this.jumlahProta = resp.data?.length
         this.protas = resp.data
       }
     },

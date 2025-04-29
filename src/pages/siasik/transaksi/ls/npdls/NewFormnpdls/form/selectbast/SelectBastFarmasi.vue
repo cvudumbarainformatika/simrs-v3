@@ -16,7 +16,7 @@
       <q-separator />
       <q-card-section>
         <q-list>
-          <template v-if="carisrt.bastfarmasis.length !== 0 || carisrt.konsinyasis.length !== 0">
+          <template v-if="carisrt.bastfarmasis?.length !== 0 || carisrt.konsinyasis?.length !== 0">
             <q-table class="my-sticky-header" :rows="carisrt.itembelanja" :columns="columns" row-key="name"
               @request="carisrt.onRequest" v-model:pagination="carisrt.reqs" :filter="carisrt.reqs.q"
               :loading="carisrt.loading" :rows-per-page-options="[50, 100, 200, 500]">

@@ -10,13 +10,13 @@
     <q-card class="items-center full-width">
       <div class="row">
         <template
-          v-if="store.reqs.jenisbukubesar === 1 && (store.hasilmapsLevel6.length || store.hasilmapsLevel5.length || store.hasilmapsLevel1.length)">
+          v-if="store.reqs.jenisbukubesar === 1 && (store.hasilmapsLevel6?.length || store.hasilmapsLevel5?.length || store.hasilmapsLevel1?.length)">
           <listDataRekap />
         </template>
         <template v-else-if="store.reqs.jenisbukubesar === 2 && (
-          store.hasilRinci1.length > 0 || store.hasilRinci2.length > 0
-          || store.hasilRinci3.length > 0 || store.hasilRinci4.length > 0
-          || store.hasilRinci5.length > 0 || store.hasilRinci6.length > 0
+          store.hasilRinci1?.length > 0 || store.hasilRinci2?.length > 0
+          || store.hasilRinci3?.length > 0 || store.hasilRinci4?.length > 0
+          || store.hasilRinci5?.length > 0 || store.hasilRinci6?.length > 0
         )">
           <listDataRinci />
         </template>

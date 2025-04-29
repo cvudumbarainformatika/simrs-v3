@@ -104,17 +104,17 @@ export const postingJurnal = defineStore('posting_jurnal', {
     // },
     mapData() {
       const uniknotrans = this.getjurnals.map((x) => x.notrans)
-      const set = uniknotrans.length ? [...new Set(uniknotrans)] : []
+      const set = uniknotrans?.length ? [...new Set(uniknotrans)] : []
       const jurnals = []
-      for (let i = 0; i < set.length; i++) {
+      for (let i = 0; i < set?.length; i++) {
         const el = set[i]
         const arr = this.getjurnals
 
         const filter = arr.filter((x) => x.notrans === el).map((x) => x)
         const unikjenis = filter.map((x) => x.keterangan)
-        const setket = unikjenis.length ? [...new Set(unikjenis)] : []
+        const setket = unikjenis?.length ? [...new Set(unikjenis)] : []
         const jurnal = []
-        for (let x = 0; x < setket.length; x++) {
+        for (let x = 0; x < setket?.length; x++) {
           const et = setket[x]
           const arrs = filter
 

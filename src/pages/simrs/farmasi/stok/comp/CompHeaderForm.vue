@@ -135,14 +135,14 @@ const store = UseFarmasiStokStore()
 function numberOnly (evt, key) {
   const inc = evt.includes('.')
   const ind = evt.indexOf('.')
-  const panj = evt.length
+  const panj = evt?.length
   const nilai = isNaN(parseFloat(evt)) ? 0 : (inc && (ind === (panj - 1)) ? evt : parseFloat(evt))
   store.setForm(key, nilai)
 }
 
 const satuan = computed(() => {
   const obat = store.allObats.filter(ob => ob.kodeobat === store.form.kdobat)
-  if (obat.length) return '( ' + obat[0]?.satuan_k + ')'
+  if (obat?.length) return '( ' + obat[0]?.satuan_k + ')'
   else return ''
 })
 

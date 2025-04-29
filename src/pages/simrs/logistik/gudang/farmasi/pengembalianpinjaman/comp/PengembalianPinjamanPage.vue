@@ -138,7 +138,7 @@
                   @update:model-value="(evt)=>{
                     const inc = evt.includes('.')
                     const ind = evt.indexOf('.')
-                    const panj = evt.length
+                    const panj = evt?.length
                     const nilai = isNaN(parseFloat(evt)) ? 0 : (inc && (ind === (panj - 1)) ? evt : parseFloat(evt))
                     item.jml_dikembalikan=nilai
                     const sudahDiterima=item?.pengembalian_rinci?.reduce((a, b) => a + parseFloat(b?.jml_dikembalikan), 0)

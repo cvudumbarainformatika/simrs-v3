@@ -82,7 +82,7 @@ export const useLaporanPersediaanFiFoFarmasiStore = defineStore('laporan_persedi
           it.stok = it?.saldoawal
         }
 
-        if (it?.stok.length) {
+        if (it?.stok?.length) {
           it?.stok.forEach(s => {
             if (s.sub === null) {
               let sub = 0

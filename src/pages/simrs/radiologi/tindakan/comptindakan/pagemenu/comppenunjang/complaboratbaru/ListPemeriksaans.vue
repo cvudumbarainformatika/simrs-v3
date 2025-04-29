@@ -59,8 +59,8 @@
                     >
                       <span
                         class="text-weight-bold"
-                        :class="item?.value.length === 1 ? 'text-orange' : 'text-primary'"
-                      >{{ item?.value.length === 1 ? 'NON-PAKET' : 'PAKET' }}</span>
+                        :class="item?.value?.length === 1 ? 'text-orange' : 'text-primary'"
+                      >{{ item?.value?.length === 1 ? 'NON-PAKET' : 'PAKET' }}</span>
                     </q-item-label>
                   </q-item-section>
                   <q-item-section
@@ -195,7 +195,7 @@ function fillterTable (val) {
 // eslint-disable-next-line no-unused-vars
 function mapping (item) {
   const arr = item
-  const arr2 = arr.length > 0
+  const arr2 = arr?.length > 0
     ? arr.map(x =>
       ({
         gruper: x.pemeriksaanlab?.rs21 !== '' ? x.pemeriksaanlab?.rs21 : x.pemeriksaanlab?.rs2,

@@ -21,8 +21,8 @@
     </div>
     <div class="q-pa-sm" style="width:25%">
       <app-autocomplete v-model="jenisapa" label="Pilih Jenis Buku Besar" autocomplete="nama" option-value="value"
-        option-label="nama" outlined :disable="store.loading || !store.alllevel.length"
-        :loading="store.loading || !store.alllevel.length" :source="store.jenis" @update:model-value="(val) => {
+        option-label="nama" outlined :disable="store.loading || !store.alllevel?.length"
+        :loading="store.loading || !store.alllevel?.length" :source="store.jenis" @update:model-value="(val) => {
           store.hasilmapsLevel1 = []
           store.hasilmapsLevel5 = []
           store.hasilmapsLevel6 = []
@@ -40,8 +40,8 @@
     </div>
     <div class="q-pa-sm" style="width:25%">
       <app-autocomplete v-model="berdasarrekap" label="Pilih Jenis Akun" autocomplete="nama" option-value="value"
-        option-label="nama" outlined :disable="store.loading || !store.alllevel.length"
-        :loading="store.loading || !store.alllevel.length" v-if="store.reqs.jenisbukubesar < 2" :source="store.level"
+        option-label="nama" outlined :disable="store.loading || !store.alllevel?.length"
+        :loading="store.loading || !store.alllevel?.length" v-if="store.reqs.jenisbukubesar < 2" :source="store.level"
         @update:model-value="(val) => {
           store.reqs.levelberapa = parseInt(val)
           const arrBaru = store.alllevel?.filter(x => x?.kodeall3?.length === parseInt(val))
@@ -49,8 +49,8 @@
           store.form.kode = ''
         }" />
       <app-autocomplete v-model="berdasarrinci" label="Pilih Jenis Akun" autocomplete="nama" option-value="value"
-        option-label="nama" outlined :disable="store.loading || !store.alllevel.length"
-        :loading="store.loading || !store.alllevel.length" v-if="store.reqs.jenisbukubesar === 2"
+        option-label="nama" outlined :disable="store.loading || !store.alllevel?.length"
+        :loading="store.loading || !store.alllevel?.length" v-if="store.reqs.jenisbukubesar === 2"
         :source="store.levelrinci" @update:model-value="(val) => {
           store.reqs.levelberapa = parseInt(val)
           const arrBaru = store.alllevel?.filter(x => x?.kodeall3?.length === parseInt(val))
@@ -62,8 +62,8 @@
       <q-select v-model="store.form.kode" use-input outlined standout="bg-yellow-3" dense emit-value map-options
         option-value="kodeall3" input-debounce="0" label="Pilih Rekening" class="ellipsis-2-lines" :options="options"
         :option-label="opt => Object(opt) === opt && 'kodeall3' in opt ? opt.kodeall3 + ' - ' + opt.uraian : ''"
-        :disable="store.loading || !store.alllevel.length || !store.optionrekening.length && store.reqs.jenisbukubesar === 1"
-        :loading="store.loading || !store.alllevel.length" @filter="filterFn"
+        :disable="store.loading || !store.alllevel?.length || !store.optionrekening?.length && store.reqs.jenisbukubesar === 1"
+        :loading="store.loading || !store.alllevel?.length" @filter="filterFn"
         @clear="store.setFormRekening('kode', null)" @update:model-value="(val) => {
           store.reqs.rekenings = val
           const arr = store.optionrekening
@@ -87,8 +87,8 @@
   <div class="row full-width justify-center">
     <div class="row q-pa-sm">
       <div class="q-pa-sm">
-        <app-btn label="Ambil Data" :disable="store.loading || !store.alllevel.length"
-          :loading="store.loading || !store.alllevel.length" @click="ambilData()" />
+        <app-btn label="Ambil Data" :disable="store.loading || !store.alllevel?.length"
+          :loading="store.loading || !store.alllevel?.length" @click="ambilData()" />
       </div>
       <div class="q-pa-sm">
         <q-btn icon="icon-mat-print" color="orange" round size="sm" :disable="store.loading" :loading="store.loading"
@@ -198,7 +198,7 @@ function filterFn(val, update, abort) {
   );
 
   // Jika ditemukan hasil dari filter lokal, gunakan itu
-  if (localResults.length > 0) {
+  if (localResults?.length > 0) {
     update(() => {
       options.value = localResults;
     });
@@ -206,7 +206,7 @@ function filterFn(val, update, abort) {
   }
 
   // Jika tidak ditemukan hasil lokal dan pencarian cukup spesifik, cari ke server
-  if (val.length >= 2) {
+  if (val?.length >= 2) {
     // Gunakan axios langsung untuk menghindari konflik dengan state di store
     api.get('v1/akuntansi/bukubesar/akun', {
       params: {
@@ -237,8 +237,8 @@ function filterFn(val, update, abort) {
 }
 
 function exportToExcel() {
-  if (!store.hasilRinci1.length && !store.hasilRinci2.length && !store.hasilRinci3.length && !store.hasilRinci4.length
-    && !store.hasilRinci5.length && !store.hasilRinci6.length
+  if (!store.hasilRinci1?.length && !store.hasilRinci2?.length && !store.hasilRinci3?.length && !store.hasilRinci4?.length
+    && !store.hasilRinci5?.length && !store.hasilRinci6?.length
   ) {
     notifErrVue('Tidak ada data untuk diekspor!');
     return;
@@ -307,7 +307,7 @@ function exportToExcel() {
   // Atur lebar kolom (opsional)
   const colWidths = data[0].map((_, colIndex) => {
     return Math.max(
-      ...data.map((row) => (row[colIndex] ? row[colIndex].toString().length : 0)),
+      ...data.map((row) => (row[colIndex] ? row[colIndex].toString()?.length : 0)),
       10
     );
   });
@@ -319,7 +319,7 @@ function exportToExcel() {
 
 
 function total(store) {
-  if (store.hasilRinci1.length > 0) {
+  if (store.hasilRinci1?.length > 0) {
     const debit = store.hasilRinci1.map((x) => x.debit);
     const jmldebit = debit.reduce((a, b) => a + b, 0);
     const kredit = store.hasilRinci1.map((x) => x.kredit);
@@ -330,7 +330,7 @@ function total(store) {
       jmlkredit,
       jumlah,
     };
-  } else if (store.hasilRinci2.length > 0) {
+  } else if (store.hasilRinci2?.length > 0) {
     const debit = store.hasilRinci2.map((x) => x.debit);
     const jmldebit = debit.reduce((a, b) => a + b, 0);
     const kredit = store.hasilRinci2.map((x) => x.kredit);
@@ -341,7 +341,7 @@ function total(store) {
       jmlkredit,
       jumlah,
     };
-  } else if (store.hasilRinci3.length > 0) {
+  } else if (store.hasilRinci3?.length > 0) {
     const debit = store.hasilRinci3.map((x) => x.debit);
     const jmldebit = debit.reduce((a, b) => a + b, 0);
     const kredit = store.hasilRinci3.map((x) => x.kredit);
@@ -352,7 +352,7 @@ function total(store) {
       jmlkredit,
       jumlah,
     };
-  } else if (store.hasilRinci4.length > 0) {
+  } else if (store.hasilRinci4?.length > 0) {
     const debit = store.hasilRinci4.map((x) => x.debit);
     const jmldebit = debit.reduce((a, b) => a + b, 0);
     const kredit = store.hasilRinci4.map((x) => x.kredit);
@@ -363,7 +363,7 @@ function total(store) {
       jmlkredit,
       jumlah,
     };
-  } else if (store.hasilRinci5.length > 0) {
+  } else if (store.hasilRinci5?.length > 0) {
     const debit = store.hasilRinci5.map((x) => x.debit);
     const jmldebit = debit.reduce((a, b) => a + b, 0);
     const kredit = store.hasilRinci5.map((x) => x.kredit);
@@ -374,7 +374,7 @@ function total(store) {
       jmlkredit,
       jumlah,
     };
-  } else if (store.hasilRinci6.length > 0) {
+  } else if (store.hasilRinci6?.length > 0) {
     const debit = store.hasilRinci6.map((x) => x.debit);
     const jmldebit = debit.reduce((a, b) => a + b, 0);
     const kredit = store.hasilRinci6.map((x) => x.kredit);

@@ -126,8 +126,8 @@ function submit () {
 
 function pilihDiagnosa () {
   const val = store.selectDiagnosa
-  const arr = val.length ? val.map(x => x.kode) : []
-  const implode = arr.length ? arr.join('||') : ''
+  const arr = val?.length ? val.map(x => x.kode) : []
+  const implode = arr?.length ? arr.join('||') : ''
   console.log('pilih', val)
   store.setDiagnosa(implode, val)
   // insertList(val)

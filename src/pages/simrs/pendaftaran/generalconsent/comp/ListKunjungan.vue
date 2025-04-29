@@ -6,7 +6,7 @@
       class="full-height"
     >
       <div
-        v-if="items.length <= 0"
+        v-if="items?.length <= 0"
         class="column flex-center full-height"
       >
         <div class="text-h3 q-mb-md">
@@ -187,7 +187,7 @@ function openPreviewGc (val) {
 }
 
 function getStatus (arr) {
-  if (arr.length === 0) {
+  if (arr?.length === 0) {
     return '-'
   }
 

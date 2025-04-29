@@ -69,7 +69,7 @@
           </td>
         </tr>
       </template>
-      <template v-else-if="!store.items.length">
+      <template v-else-if="!store.items?.length">
         <tr>
           <td colspan="5">
             <app-no-data />
@@ -337,7 +337,7 @@ function hapusRinci (item) {
 }
 function rincLoading (val) {
   const ada = val?.rinci.filter(rin => rin.loading)
-  if (ada.length) return true
+  if (ada?.length) return true
   else return false
 }
 // const indexId = ref(0)

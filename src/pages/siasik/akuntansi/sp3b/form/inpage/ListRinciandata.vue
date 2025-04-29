@@ -88,7 +88,7 @@
         <div class="text-center">Probolinggo, {{ store.tanggal }} </div>
         <div class="text-center q-pb-xl">Direktur RSUD Dokter Mohamad Saleh</div>
         <div class="text-center"> {{ it.nama }}
-          <div class="garis-bawah" :style="{ width: it.nama.length + 'ch' }"></div>
+          <div class="garis-bawah" :style="{ width: it.nama?.length + 'ch' }"></div>
         </div>
         <div class="text-center"> NIP. {{ it.nip }} </div>
       </div>
@@ -119,7 +119,7 @@ onMounted(() => {
 function totalPendapatan() {
   const itu = store.pendapatans.map(x => x.total) || 0
   // console.log('pendapatanxxx', it)
-  const it = itu.length ? itu.reduce((a, b) => a + b, 0) : 0
+  const it = itu?.length ? itu.reduce((a, b) => a + b, 0) : 0
   store.form.pendapatan = it
   return it
 }

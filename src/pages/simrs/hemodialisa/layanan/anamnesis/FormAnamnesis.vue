@@ -1496,7 +1496,7 @@ const hitungSkorGizi = () => {
 function filterFn (val, update, abort, arr) {
   const stringOptions = arr
   let k = arr
-  if (val.length < 1) {
+  if (val?.length < 1) {
     // eslint-disable-next-line dot-notation
     store['ketubans'] = k
   }

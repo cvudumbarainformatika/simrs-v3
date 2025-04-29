@@ -361,7 +361,7 @@
                       <div>
                         <q-separator dark />
                         <q-list
-                          v-if="item.detailgambars.length"
+                          v-if="item.detailgambars?.length"
                           separator
                           dark
                         >
@@ -379,7 +379,7 @@
                             </q-item-section>
                             <q-item-section>
                               <q-item-label>{{ row.anatomy }}</q-item-label>
-                              <q-item-label v-if="item?.pemeriksaankhususmata.length">
+                              <q-item-label v-if="item?.pemeriksaankhususmata?.length">
                                 <div class="column q-ml-sm">
                                   <div><em>Details Pemeriksaan (Khusus Mata)</em></div>
                                   <div class="q-ml-sm">
@@ -457,7 +457,7 @@ const props = defineProps({
 
 function getKesadaran(val) {
   const temp = store.optionsTingkatkesadaran.filter(a => a.value === parseInt(val))
-  if (temp.length) {
+  if (temp?.length) {
     return temp[0].label
   } else {
     return '-'

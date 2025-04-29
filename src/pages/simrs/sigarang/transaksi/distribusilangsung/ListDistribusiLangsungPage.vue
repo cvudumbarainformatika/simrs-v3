@@ -40,7 +40,7 @@
       <div>{{ row.pegawai.nama }}</div>
     </template>
     <template #expand="{row}">
-      <div v-if="row.details.length">
+      <div v-if="row.details?.length">
         <div class="row no-wrap text-weight-bold">
           <div class="col-3">
             <div class="row">
@@ -94,7 +94,7 @@
           </div>
         </div>
       </div>
-      <div v-if="!row.details.length">
+      <div v-if="!row.details?.length">
         tidak ada Detail
       </div>
     </template>

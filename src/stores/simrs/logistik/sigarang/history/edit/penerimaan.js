@@ -92,7 +92,7 @@ export const useEditPenerimaanStore = defineStore('edit_penerimaan', {
             console.log('pesanan', resp.data)
             const detailPesanan = resp.data.pesanan
             const detaildistribusi = resp.data.distribusi
-            if (detailPesanan.length) {
+            if (detailPesanan?.length) {
               this.item.statuspesanan = detailPesanan[0].statuspesanan
             } else {
               this.item.statuspesanan = 0

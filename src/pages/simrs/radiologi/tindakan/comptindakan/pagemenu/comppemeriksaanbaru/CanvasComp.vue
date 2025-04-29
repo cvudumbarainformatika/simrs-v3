@@ -794,8 +794,8 @@ function drawall() {
   // if (writingMode.value) {
   const canvas = cvn.value
   const scalling = widthEl.value / canvas?.width
-  if (arr.value.length > 0) {
-    for (let i = 0; i < arr.value.length; i++) {
+  if (arr.value?.length > 0) {
+    for (let i = 0; i < arr.value?.length; i++) {
       const { x, y } = scaleCoordinates(canvas.width, canvas.height, arr.value[i].x, arr.value[i].y, scalling)
       draw(arr.value[i].penanda,
         // arr.value[i].x,
@@ -981,7 +981,7 @@ function onChangeImg() {
 watch(() => arr.value, (newVal, oldVal) => {
   // console.log('watch on shapes', newVal)
   // console.log('watch on shapes-old', oldVal)
-  if (newVal.length !== oldVal.length) {
+  if (newVal?.length !== oldVal?.length) {
     drawall()
   }
 }, { deep: true })

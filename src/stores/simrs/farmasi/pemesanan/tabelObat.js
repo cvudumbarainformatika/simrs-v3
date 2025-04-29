@@ -69,7 +69,7 @@ export const useTabelPemesananObatStore = defineStore('tabel_pemesanan_obat', {
       this.pesan.setForm('no_rencbeliobat', val)
       console.log('renc se', from, val)
       this.getRencanaRinci(val).then(() => {
-        if (!this.items.length) {
+        if (!this.items?.length) {
           this.pesan.setClose()
           this.getObatMauBeli()
 
@@ -78,10 +78,10 @@ export const useTabelPemesananObatStore = defineStore('tabel_pemesanan_obat', {
           return
         }
         // const item = this.rencanaAlls.filter(a => a.noperencanaan === val)
-        // if (item.length) {
+        // if (item?.length) {
         this.pesan.setForm('gudang', this.items[0].gudang)
         const gud = this.gudangs.filter(a => a.value === this.items[0].gudang)
-        if (gud.length) this.gudang = gud[0].nama
+        if (gud?.length) this.gudang = gud[0].nama
         this.tglRencana = date.formatDate(this.items[0].tglperencanaan, 'DD MMMM YYYY')
         //   this.items = item
 
@@ -91,7 +91,7 @@ export const useTabelPemesananObatStore = defineStore('tabel_pemesanan_obat', {
             const dterima = this.terima?.find(a => a.kdobat === item.kdobat)
             if (dterima) item.diterima = dterima?.jumlah
           }
-          if (item?.rincian.length) {
+          if (item?.rincian?.length) {
             const rinc = item.rincian.find(a => a.kdobat === item.kdobat)
             if (rinc) {
               const trm = rinc.penerimaan.map(ha => parseFloat(ha.harga)).reduce((a, b) => a + b, 0)
@@ -123,12 +123,12 @@ export const useTabelPemesananObatStore = defineStore('tabel_pemesanan_obat', {
       this.setParam('no_rencbeliobat', '')
       this.rencanas = []
       const ren = this.rencanaAlls.filter(a => a.noperencanaan.includes(val))
-      if (ren.length) {
+      if (ren?.length) {
         const noren = filterDuplicateArrays(ren.map(a => a.noperencanaan))
-        if (noren.length) {
+        if (noren?.length) {
           noren.forEach(a => {
             const head = this.rencanaAlls.filter(kep => kep.noperencanaan === a)
-            if (head.length) {
+            if (head?.length) {
               const gudA = this.gudangs.filter(gu => gu.value === head[0]?.gudang)
               const gud = gudA[0] ?? {}
               console.log('gu', gud)
@@ -171,18 +171,18 @@ export const useTabelPemesananObatStore = defineStore('tabel_pemesanan_obat', {
             const rencana = resp?.data?.data ?? resp?.data
             this.rencanas = rencana
             this.rencanaAlls = rencana
-            // if (rencana.length) {
+            // if (rencana?.length) {
             //   this.rencanaAlls = rencana
             //   const noren = filterDuplicateArrays(rencana.map(a => a.noperencanaan))
-            //   if (noren.length) {
+            //   if (noren?.length) {
             //     noren.forEach(a => {
             //       const anu = { no_rencbeliobat: a }
             //       const head = this.rencanaAlls.filter(kep => kep.noperencanaan === a)
-            //       if (head.length) {
+            //       if (head?.length) {
             //         head.forEach(he => {
-            //           if (he?.rincian.length) {
+            //           if (he?.rincian?.length) {
             //             const rinc = he.rincian.filter(a => a.kdobat === he.kdobat)
-            //             if (rinc.length) {
+            //             if (rinc?.length) {
             //               const trm = rinc[0].penerimaan.map(ha => parseFloat(ha.harga)).reduce((a, b) => a + b, 0)
             //               const stok = rinc[0].stok.map(ha => parseFloat(ha.harga)).reduce((a, b) => a + b, 0)
             //               console.log('trm', trm, 'stok', stok)
@@ -211,9 +211,9 @@ export const useTabelPemesananObatStore = defineStore('tabel_pemesanan_obat', {
             // const temp = resp.data
             // temp.forEach(item => {
             //   item.checked = false
-            //   item.stokGudang = item.stokrealgudang.length ? item.stokrealgudang.map(a => parseInt(a.jumlah)).reduce((a, b) => a + b, 0) : 0
-            //   item.stokRS = item.stokrealallrs.length ? item.stokrealallrs.map(a => parseInt(a.jumlah)).reduce((a, b) => a + b, 0) : 0
-            //   item.stokMaxRS = item.stokmaxrs.length ? item.stokmaxrs.map(a => parseInt(a.jumlah)).reduce((a, b) => a + b, 0) : 0
+            //   item.stokGudang = item.stokrealgudang?.length ? item.stokrealgudang.map(a => parseInt(a.jumlah)).reduce((a, b) => a + b, 0) : 0
+            //   item.stokRS = item.stokrealallrs?.length ? item.stokrealallrs.map(a => parseInt(a.jumlah)).reduce((a, b) => a + b, 0) : 0
+            //   item.stokMaxRS = item.stokmaxrs?.length ? item.stokmaxrs.map(a => parseInt(a.jumlah)).reduce((a, b) => a + b, 0) : 0
             //   item.bisaBeli = (item.stokMaxRS - item.stokRS) > 0 ? (item.stokMaxRS - item.stokRS) : 0
             //   item.jumlahBeli = item.bisaBeli
             // })

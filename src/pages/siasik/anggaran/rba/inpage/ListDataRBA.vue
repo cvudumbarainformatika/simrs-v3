@@ -22,7 +22,7 @@
               </div>
             </td>
           </tr>
-          <template v-if="item.rincian && item.rincian.length > 0">
+          <template v-if="item.rincian && item.rincian?.length > 0">
             <template v-for="(rincian, index) in item.rincian" :key="index">
               <tr>
                 <td class="text-right text-bold q-px-sm"> > </td>

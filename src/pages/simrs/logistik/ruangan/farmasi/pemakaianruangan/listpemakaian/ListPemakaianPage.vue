@@ -41,7 +41,7 @@
         class="absolute-bottom "
       >
         <BottomComp
-          v-if="Object.keys(store.meta).length"
+          v-if="Object.keys(store.meta)?.length"
           style="z-index: 5;"
           class="bg-primary text-white"
           :meta="store.meta"
@@ -81,7 +81,7 @@ const TandaTanganPage = defineAsyncComponent(() => import('src/pages/simrs/sigar
 
 const pakai = computed(() => {
   const ada = store.items.filter(a => a.checked === true)
-  if (ada.length) return true
+  if (ada?.length) return true
   else return false
 })
 function hapus (val) {
@@ -102,7 +102,7 @@ onMounted(() => {
   else {
     const adaRu = apps?.user?.pegawai?.kdruangansim.split('|')
     const ruNya = adaRu.filter(x => x.includes('R-'))
-    if (ruNya.length > 1) notifCenterVue('ada lebih dari satu akses ruangan')
+    if (ruNya?.length > 1) notifCenterVue('ada lebih dari satu akses ruangan')
     else {
       store.setParam('kdruang', ruNya[0])
       // store.setForm('kdruang', ruNya[0])

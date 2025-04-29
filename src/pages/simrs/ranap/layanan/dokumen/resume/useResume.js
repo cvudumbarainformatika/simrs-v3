@@ -115,7 +115,7 @@ export default function useResume(pasien) {
       const det = headx?.map(x => x.permintaanresep)?.flat()
       resep = det
     }
-    const f = resep.length ? resep?.map(x => x.mobat?.nama_obat) : []
+    const f = resep?.length ? resep?.map(x => x.mobat?.nama_obat) : []
     data.resep = Array.from(new Set(f))
     // console.log('resep', f)
   }
@@ -161,12 +161,12 @@ export default function useResume(pasien) {
       {
         title: 'ALASAN PASIEN DIRAWAT IGD',
         type: '1', // 1 = html, 2 = belum
-        isian: data.anamnesis_igd.length ? data.anamnesis_igd[0]?.keluhanUtama : ''
+        isian: data.anamnesis_igd?.length ? data.anamnesis_igd[0]?.keluhanUtama : ''
       },
       {
         title: 'ANAMNESE AWAL IGD',
         type: '1',
-        isian: data.anamnesis_igd.length
+        isian: data.anamnesis_igd?.length
           ? `  <div> - Riwayat Penyakit Sekarang : ${data?.anamnesis_igd[0]?.riwayatpenyakitsekarang} </div>
                   <div> - Riwayat Penyakit Dahulu : ${data?.anamnesis_igd[0]?.riwayatpenyakit} </div>
                   <div> - Riwayat Pengobatan : ${data?.anamnesis_igd[0]?.riwayatpengobatan} </div>
@@ -179,7 +179,7 @@ export default function useResume(pasien) {
       {
         title: 'PEMERIKSAAN FISIK IGD',
         type: '1',
-        isian: data?.pemeriksaan_igd.length
+        isian: data?.pemeriksaan_igd?.length
           ? ` <div> - Bagian Kepala : ${data?.pemeriksaan_igd[0]?.rs5 ?? ''} . </div>
               <div> - Bagian Leher : ${data?.pemeriksaan_igd[0]?.rs6 ?? ''}.</div>
               <div> - Bagian Dada : ${data?.pemeriksaan_igd[0]?.rs7 ?? ''}</div>
@@ -204,7 +204,7 @@ export default function useResume(pasien) {
       { // 4
         title: 'ANAMNESE RAWAT INAP',
         type: '1',
-        isian: data?.anamnesis.length
+        isian: data?.anamnesis?.length
           ? `
             <div> - Keluhan Utama : ${data?.anamnesis[0]?.keluhanUtama} </div>
             <div> - Riwayat Penyakit Sekarang : ${data?.anamnesis[0]?.riwayatpenyakitsekarang} </div>
@@ -246,7 +246,7 @@ export default function useResume(pasien) {
           {
             name: 'lab',
             label: 'LABORAT',
-            data: data?.laborats.length
+            data: data?.laborats?.length
               ? data?.laborats.map(lab => {
                 const tampil = (lab?.rs27 !== null && lab?.rs27 !== 'N')
                 if (tampil) {
@@ -339,19 +339,19 @@ export default function useResume(pasien) {
       { // 10
         title: 'KEADAAN WAKTU KRS',
         type: '1', // 1 = html, 2 = belum
-        // isian: pasien?.dischargeplanning.length
-        //   ? `${pasien?.dischargeplanning[pasien?.dischargeplanning.length - 1]?.rs4} - ${pasien?.dischargeplanning[pasien?.dischargeplanning.length - 1]?.rs5}`
+        // isian: pasien?.dischargeplanning?.length
+        //   ? `${pasien?.dischargeplanning[pasien?.dischargeplanning?.length - 1]?.rs4} - ${pasien?.dischargeplanning[pasien?.dischargeplanning?.length - 1]?.rs5}`
         //   : ''
         isian: data?.cppt?.length
           ? `
-            <div> - ${data?.cppt[data?.cppt.length - 1]?.anamnesis?.keluhanUtama ?? '-'}</div>
-            <div> - Nadi : ${data?.cppt[data?.cppt.length - 1]?.pemeriksaan?.nadi ?? '-'} |
-            RR : ${data?.cppt[data?.cppt.length - 1]?.pemeriksaan?.pernapasan ?? '-'} |
-            Sis/Dias : ${data?.cppt[data?.cppt.length - 1]?.pemeriksaan?.sistole ?? '-'} / ${data?.cppt[data?.cppt.length - 1]?.pemeriksaan?.diastole ?? '-'} |
-            Spo2 : ${data?.cppt[data?.cppt.length - 1]?.pemeriksaan?.spo ?? '-'} |
-            Suhu : ${data?.cppt[data?.cppt.length - 1]?.pemeriksaan?.suhu ?? '-'} | ${data?.cppt[data?.cppt.length - 1]?.o_sambung ?? '-'}</div>
+            <div> - ${data?.cppt[data?.cppt?.length - 1]?.anamnesis?.keluhanUtama ?? '-'}</div>
+            <div> - Nadi : ${data?.cppt[data?.cppt?.length - 1]?.pemeriksaan?.nadi ?? '-'} |
+            RR : ${data?.cppt[data?.cppt?.length - 1]?.pemeriksaan?.pernapasan ?? '-'} |
+            Sis/Dias : ${data?.cppt[data?.cppt?.length - 1]?.pemeriksaan?.sistole ?? '-'} / ${data?.cppt[data?.cppt?.length - 1]?.pemeriksaan?.diastole ?? '-'} |
+            Spo2 : ${data?.cppt[data?.cppt?.length - 1]?.pemeriksaan?.spo ?? '-'} |
+            Suhu : ${data?.cppt[data?.cppt?.length - 1]?.pemeriksaan?.suhu ?? '-'} | ${data?.cppt[data?.cppt?.length - 1]?.o_sambung ?? '-'}</div>
             </div>
-            <div> - ${data?.cppt[data?.cppt.length - 1]?.instruksi ?? '-'}</div>
+            <div> - ${data?.cppt[data?.cppt?.length - 1]?.instruksi ?? '-'}</div>
           `
           : ''
       },
@@ -376,9 +376,9 @@ export default function useResume(pasien) {
         // isian: (pasien?.tindaklanjut !== '' && pasien?.tindaklanjut !== null)
         //   ? `${pasien?.tindaklanjut} `
         //   : ''
-        // isian: pasien?.dischargeplanning.length
-        //   // ? `${pasien?.dischargeplanning[pasien?.dischargeplanning.length - 1]?.rs4} - ${pasien?.dischargeplanning[pasien?.dischargeplanning.length - 1]?.rs5}`
-        //   ? `${pasien?.dischargeplanning[pasien?.dischargeplanning.length - 1]?.rs4}`
+        // isian: pasien?.dischargeplanning?.length
+        //   // ? `${pasien?.dischargeplanning[pasien?.dischargeplanning?.length - 1]?.rs4} - ${pasien?.dischargeplanning[pasien?.dischargeplanning?.length - 1]?.rs5}`
+        //   ? `${pasien?.dischargeplanning[pasien?.dischargeplanning?.length - 1]?.rs4}`
         //   : ''
       }
 

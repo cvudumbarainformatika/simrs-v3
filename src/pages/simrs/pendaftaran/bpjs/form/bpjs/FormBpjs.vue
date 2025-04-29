@@ -128,7 +128,7 @@ function simpanData () {
   // )
   if (dataPasien.save && dataRegis.save) {
     const keys = Object.keys(dataPasien.form)
-    if (keys.length) {
+    if (keys?.length) {
       keys.forEach(key => {
         registrasi.setForm(key, dataPasien.form[key])
       })
@@ -241,7 +241,7 @@ function simpanPengajuan () {
 // }
 // function toSimpan(dataPasien) {
 //   const keys = Object.keys(dataPasien.form)
-//   if (keys.length) {
+//   if (keys?.length) {
 //     keys.forEach(key => {
 //       registrasi.setForm(key, dataPasien.form[key])
 //     })
@@ -312,7 +312,7 @@ function getListRujukan () {
   registrasi.listRujukanSepMrs = []
   registrasi.jumlahSEP = 0
   if (data) {
-    if (Object.keys(data).length) {
+    if (Object.keys(data)?.length) {
       console.log('cek list rujukan', data)
       registrasi.getListRujukanPCare(data)
       registrasi.getListRujukanRs(data)

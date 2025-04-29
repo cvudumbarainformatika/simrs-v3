@@ -54,9 +54,9 @@ export const listDataNpdlsStore = defineStore('list_data_npdls', {
       })
     },
     rincianNpd() {
-      if (this.listnpdls.length) {
+      if (this.listnpdls?.length) {
         const sas = []
-        for (let i = 0; i < this.listnpdls.length; i++) {
+        for (let i = 0; i < this.listnpdls?.length; i++) {
           const arr = this.listnpdls[i]
           // console.log('rincianqqq', arr)
           const head = {

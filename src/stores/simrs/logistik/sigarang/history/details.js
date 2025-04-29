@@ -62,7 +62,7 @@ export const useDetailHistoryTable = defineStore('detail_history', {
         const thumb = payload.map((x) => Object.keys(x))
         // console.log('thumb', thumb)
         this.columns = thumb[0]
-        if (thumb.length) {
+        if (thumb?.length) {
           this.columns.sort()
           // changeArrayIndex(this.columns, 'kode_rs', 'harga')
           changeArrayIndex(this.columns, 'uraian_108', 'merk')

@@ -8,11 +8,11 @@
         <div class="title-desc q-mb-md">
           Daftar Nomor Suplesi
         </div>
-        <div v-if="!store.listSuplesi.length">
+        <div v-if="!store.listSuplesi?.length">
           <app-loading v-if="store.loadingSuplesi" />
           <app-no-data v-else />
         </div>
-        <div v-if="store.listSuplesi.length">
+        <div v-if="store.listSuplesi?.length">
           <div class="row no-wrap justify-center items-center q-col-gutter-sm text-weight-bold q-mb-sm">
             <div class="col-2">
               <div class="row q-col-gutter-sm">

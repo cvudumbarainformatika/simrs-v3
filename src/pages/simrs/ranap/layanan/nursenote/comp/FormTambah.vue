@@ -42,7 +42,7 @@
 
               <q-card-section>
                 <q-list bordered separator class="rounded-lg shadow-md">
-                  <template v-if="obatList.length">
+                  <template v-if="obatList?.length">
                     <q-item v-for="(obat, index) in obatList" :key="index" class="q-hoverable futuristic-item">
                       <q-item-section avatar>
                         <q-avatar color="primary" text-color="white" size="sm">

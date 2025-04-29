@@ -1,10 +1,10 @@
 <template>
-  <template v-if="store.objsetarakas.length > 0 || store.objretribusi.length > 0 ||
-    store.objpiutang.length > 0 || store.objpenyisihan.length > 0 ||
-    store.objpersediaan.length > 0 || store.objinvestasi.length > 0 ||
-    store.objasettetap.length > 0 || store.objasetlainnya.length > 0 ||
-    store.objutang.length > 0 || store.objutangjkpanjang.length > 0 ||
-    store.objekuitas.length > 0">
+  <template v-if="store.objsetarakas?.length > 0 || store.objretribusi?.length > 0 ||
+    store.objpiutang?.length > 0 || store.objpenyisihan?.length > 0 ||
+    store.objpersediaan?.length > 0 || store.objinvestasi?.length > 0 ||
+    store.objasettetap?.length > 0 || store.objasetlainnya?.length > 0 ||
+    store.objutang?.length > 0 || store.objutangjkpanjang?.length > 0 ||
+    store.objekuitas?.length > 0">
     <q-card-section class="full-width">
       <div class="row justify-center">
         <div class="full-width">

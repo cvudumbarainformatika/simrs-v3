@@ -64,7 +64,7 @@ const kdDisplay = computed(() => {
   const kdpoli = store.params.kodepoli[0] ?? 'POL'
 
   const target = poli.filter(x => x.kodepoli === kdpoli)
-  if (target.length) {
+  if (target?.length) {
     return target[0].displaykode
   }
   return null
@@ -98,7 +98,7 @@ function getListVoices() {
       let id = 0
 
       id = setInterval(() => {
-        if (synth.getVoices().length !== 0) {
+        if (synth.getVoices()?.length !== 0) {
           speech.voiceList = synth.getVoices()
           resolve(synth.getVoices())
           clearInterval(id)
@@ -110,7 +110,7 @@ function getListVoices() {
 
 function settingsVoice() {
   const voices = speech.voiceList
-  if (voices.length) {
+  if (voices?.length) {
     const lang = voices?.map(x => x.lang)
     const ind = lang.findIndex(x => x === 'id-ID') ?? 0
     indexVoices.value = ind

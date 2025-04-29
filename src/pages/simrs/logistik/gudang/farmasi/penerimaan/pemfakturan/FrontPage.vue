@@ -10,7 +10,7 @@
       @set-row="store.setPerPage"
       @refresh="store.getLists"
     />
-    <div v-if="store.filteredPemesanans.length && !store.loading">
+    <div v-if="store.filteredPemesanans?.length && !store.loading">
       <q-list
         bordered
         separator
@@ -81,7 +81,7 @@
     <div v-if="store.loading">
       <app-loading />
     </div>
-    <div v-if="!store.filteredPemesanans.length && !store.loading">
+    <div v-if="!store.filteredPemesanans?.length && !store.loading">
       <app-no-selected-page
         color="primary"
         icon="icon-mat-receipt_long"

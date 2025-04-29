@@ -42,7 +42,7 @@ export const usePendaftaranEditPasienStore = defineStore('editPaseienPendaftaran
       const tglLahir = val.tgllahir.split('-')
       this.pasien.setForm('barulama', 'lama')
       this.pasien.edit = true
-      if (tglLahir.length) {
+      if (tglLahir?.length) {
         this.pasien.tanggal.tahun = tglLahir[0]
         this.pasien.tanggal.bulan = tglLahir[1]
         this.pasien.tanggal.hari = tglLahir[2]
@@ -77,10 +77,10 @@ export const usePendaftaranEditPasienStore = defineStore('editPaseienPendaftaran
       }
       // telepon
       if (this.pasien.form.noteleponhp) {
-        if (this.pasien.form.noteleponhp.length) {
+        if (this.pasien.form.noteleponhp?.length) {
           if (this.pasien.form.noteleponhp.charAt(0) !== '0') {
             if (this.pasien.form.noteleponhp.charAt(0) === '+' && this.pasien.form.noteleponhp.charAt(1) === '6' && this.pasien.form.noteleponhp.charAt(2) === '2') {
-              const telp = '0' + this.pasien.form.noteleponhp.slice(3, this.pasien.form.noteleponhp.length)
+              const telp = '0' + this.pasien.form.noteleponhp.slice(3, this.pasien.form.noteleponhp?.length)
               this.pasien.setForm('noteleponhp', telp)
             }
           }

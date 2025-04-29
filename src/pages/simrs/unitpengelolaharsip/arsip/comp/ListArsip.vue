@@ -2,7 +2,7 @@
   <div>
     <div class="q-pb-xl">
       <ListLoading v-if="loading" />
-      <empty-data v-else-if="!items.length && !loading" />
+      <empty-data v-else-if="!items?.length && !loading" />
       <q-list v-else separator>
         <q-item v-for="(item, i) in items" :key="i">
           <q-item-section avatar>
@@ -96,7 +96,7 @@ defineProps({
 
 const getImg = (file) => {
   const spl = file.split('.')
-  const ext = spl[spl.length - 1]
+  const ext = spl[spl?.length - 1]
   // console.log(ext)
 
   if (ext === 'pdf') {

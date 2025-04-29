@@ -11,7 +11,7 @@ self.onmessage = function (e) {
   // Hanya proses jika ini adalah chunk terakhir
   if (isLastChunk) {
     let processed = 0
-    const total = allChunks.reduce((acc, chunk) => acc + chunk.length, 0)
+    const total = allChunks.reduce((acc, chunk) => acc + chunk?.length, 0)
 
     const processedData = []
     const unProcessedData = []

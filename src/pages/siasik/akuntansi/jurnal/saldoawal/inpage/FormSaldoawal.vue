@@ -117,7 +117,7 @@ function filterFn(val, update) {
   //     )
   //     )
   //   let filteredData = multiFilter(store.akuns, filter, needle)
-  //   if (!filteredData.length) {
+  //   if (!filteredData?.length) {
   //     if (val !== '') {
   //       store.getRekening(val).then(() => {
   //         filteredData = multiFilter(store.options, filter, needle)

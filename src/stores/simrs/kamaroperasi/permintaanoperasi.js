@@ -138,7 +138,7 @@ export const usePermintaanOperasistore = defineStore('permintaan-operasi-store',
         console.log(resp)
         if (resp.status === 200) {
           const findPasien = this.items.filter(x => x === pasien)
-          if (findPasien.length) {
+          if (findPasien?.length) {
             const data = findPasien[0]
             data.datasimpeg = resp?.data?.result?.datasimpeg
             data.dokter = resp?.data?.result?.datasimpeg?.nama
@@ -163,7 +163,7 @@ export const usePermintaanOperasistore = defineStore('permintaan-operasi-store',
             console.log(resp)
             if (resp.status === 200) {
               const findPasien = this.items.filter(x => x === pasien)
-              if (findPasien.length) {
+              if (findPasien?.length) {
                 const data = findPasien[0]
                 data.memodiagnosa = resp?.data?.result?.diagnosa
               }
@@ -182,7 +182,7 @@ export const usePermintaanOperasistore = defineStore('permintaan-operasi-store',
       // '1': 'Terlayani'
       // '2': 'Sudah diterima'
       // '3': Batal
-      if (!pasien?.anamnesis.length) {
+      if (!pasien?.anamnesis?.length) {
         this.loadingTerima = false
         return this.notifikasiError('Maaf, Anamnesis Harap Diisi Dahulu...')
       }
@@ -201,7 +201,7 @@ export const usePermintaanOperasistore = defineStore('permintaan-operasi-store',
         console.log('rsp ', form, resp)
         if (resp.status === 200) {
           const findPasien = this.items.filter(x => x === pasien)
-          if (findPasien.length) {
+          if (findPasien?.length) {
             findPasien[0].status = '1'
           }
           this.loadingTerima = false
@@ -224,7 +224,7 @@ export const usePermintaanOperasistore = defineStore('permintaan-operasi-store',
         // console.log('terima', resp)
         if (resp.status === 200) {
           const findPasien = this.items.filter(x => x === pasien)
-          if (findPasien.length) {
+          if (findPasien?.length) {
             findPasien[0].status = findPasien[0].status === '' ? '2' : findPasien[0].status
           }
           this.loadingTerima = false
@@ -262,7 +262,7 @@ export const usePermintaanOperasistore = defineStore('permintaan-operasi-store',
     setinject (noreg) {
       const findPasien = this.items.filter(x => x.noreg === noreg)
       console.log('wew', findPasien)
-      if (findPasien.length) {
+      if (findPasien?.length) {
         const data = findPasien[0]
         data.status = '3'
       }
@@ -284,7 +284,7 @@ export const usePermintaanOperasistore = defineStore('permintaan-operasi-store',
     injectDataPasien (pasien, val, kode) {
       const findPasien = this.items.filter(x => x === pasien)
       // console.log('inject pasien', findPasien)
-      if (findPasien.length) {
+      if (findPasien?.length) {
         const data = findPasien[0]
         const target = data[kode]?.find(x => x.id === val.id)
         // console.log('inject target pasien', target)
@@ -305,7 +305,7 @@ export const usePermintaanOperasistore = defineStore('permintaan-operasi-store',
     },
     hapusDataAnamnesis (pasien, id) {
       const findPasien = this.items.filter(x => x === pasien)
-      if (findPasien.length) {
+      if (findPasien?.length) {
         const data = findPasien[0].anamnesis
         const pos = data.findIndex(el => el.id === id)
         if (pos >= 0) { data.splice(pos, 1) }
@@ -313,7 +313,7 @@ export const usePermintaanOperasistore = defineStore('permintaan-operasi-store',
     },
     hapusDataPemeriksaanfisik (pasien, id) {
       const findPasien = this.items.filter(x => x === pasien)
-      if (findPasien.length) {
+      if (findPasien?.length) {
         const data = findPasien[0].pemeriksaanfisik
         const pos = data.findIndex(el => el.id === id)
         if (pos >= 0) { data.splice(pos, 1) }
@@ -321,7 +321,7 @@ export const usePermintaanOperasistore = defineStore('permintaan-operasi-store',
     },
     hapusGambars (pasien, nama) {
       const findPasien = this.items.filter(x => x === pasien)
-      if (findPasien.length) {
+      if (findPasien?.length) {
         const data = findPasien[0].gambars
         const pos = data.findIndex(el => el.gambar === nama)
         if (pos >= 0) { data.splice(pos, 1) }
@@ -329,7 +329,7 @@ export const usePermintaanOperasistore = defineStore('permintaan-operasi-store',
     },
     hapusDataDiagnosa (pasien, id) {
       const findPasien = this.items.filter(x => x === pasien)
-      if (findPasien.length) {
+      if (findPasien?.length) {
         const data = findPasien[0].diagnosa
         const pos = data.findIndex(el => el.id === id)
         if (pos >= 0) { data.splice(pos, 1) }
@@ -337,7 +337,7 @@ export const usePermintaanOperasistore = defineStore('permintaan-operasi-store',
     },
     hapusDataTindakan (pasien, id) {
       const findPasien = this.items.filter(x => x === pasien)
-      if (findPasien.length) {
+      if (findPasien?.length) {
         const data = findPasien[0].tindakan
         const pos = data.findIndex(el => el.id === id)
         if (pos >= 0) { data.splice(pos, 1) }
@@ -345,7 +345,7 @@ export const usePermintaanOperasistore = defineStore('permintaan-operasi-store',
     },
     hapusDataProsedur (pasien, id) {
       const findPasien = this.items.filter(x => x === pasien)
-      if (findPasien.length) {
+      if (findPasien?.length) {
         const data = findPasien[0].prosedur
         const pos = data.findIndex(el => el.id === id)
         if (pos >= 0) { data.splice(pos, 1) }
@@ -353,7 +353,7 @@ export const usePermintaanOperasistore = defineStore('permintaan-operasi-store',
     },
     hapusDataLaborat (pasien, id) {
       const findPasien = this.items.filter(x => x === pasien)
-      if (findPasien.length) {
+      if (findPasien?.length) {
         const data = findPasien[0].laborats
         const pos = data.findIndex(el => el.id === id)
         if (pos >= 0) { data.splice(pos, 1) }
@@ -361,13 +361,13 @@ export const usePermintaanOperasistore = defineStore('permintaan-operasi-store',
     },
     hapusDataLaboratBaru (pasien, id, databaru) {
       const findPasien = this.items.filter(x => x === pasien)
-      if (findPasien.length) {
+      if (findPasien?.length) {
         findPasien[0].laborats = databaru
       }
     },
     hapusDataRadiologi (pasien, id) {
       const findPasien = this.items.filter(x => x === pasien)
-      if (findPasien.length) {
+      if (findPasien?.length) {
         const data = findPasien[0]?.radiologi
         const pos = data.findIndex(el => el.id === id)
         if (pos >= 0) { data.splice(pos, 1) }
@@ -375,7 +375,7 @@ export const usePermintaanOperasistore = defineStore('permintaan-operasi-store',
     },
     hapusDataPenunjangLain (pasien, id) {
       const findPasien = this.items.filter(x => x === pasien)
-      if (findPasien.length) {
+      if (findPasien?.length) {
         const data = findPasien[0]?.penunjanglain
         const pos = data.findIndex(el => el.id === id)
         if (pos >= 0) { data.splice(pos, 1) }
@@ -383,7 +383,7 @@ export const usePermintaanOperasistore = defineStore('permintaan-operasi-store',
     },
     hapusDataOk (pasien, id) {
       const findPasien = this.items.filter(x => x === pasien)
-      if (findPasien.length) {
+      if (findPasien?.length) {
         const data = findPasien[0]?.ok
         const pos = data.findIndex(el => el.id === id)
         if (pos >= 0) { data.splice(pos, 1) }
@@ -391,7 +391,7 @@ export const usePermintaanOperasistore = defineStore('permintaan-operasi-store',
     },
     hapusDataFisio (pasien, id) {
       const findPasien = this.items.filter(x => x === pasien)
-      if (findPasien.length) {
+      if (findPasien?.length) {
         const data = findPasien[0]?.fisio
         const pos = data.findIndex(el => el.id === id)
         if (pos >= 0) { data.splice(pos, 1) }
@@ -399,7 +399,7 @@ export const usePermintaanOperasistore = defineStore('permintaan-operasi-store',
     },
     hapusDataPlanning (pasien, id) {
       const findPasien = this.items.filter(x => x === pasien)
-      if (findPasien.length) {
+      if (findPasien?.length) {
         const data = findPasien[0]?.planning
         const pos = data.findIndex(el => el.id === id)
         if (pos >= 0) { data.splice(pos, 1) }
@@ -407,7 +407,7 @@ export const usePermintaanOperasistore = defineStore('permintaan-operasi-store',
     },
     hapusDataDiet (pasien, id) {
       const findPasien = this.items.filter(x => x === pasien)
-      if (findPasien.length) {
+      if (findPasien?.length) {
         const data = findPasien[0]?.diet
         const pos = data.findIndex(el => el.id === id)
         if (pos >= 0) { data.splice(pos, 1) }
@@ -415,7 +415,7 @@ export const usePermintaanOperasistore = defineStore('permintaan-operasi-store',
     },
     hapusDataEdukasi (pasien, id) {
       const findPasien = this.items.filter(x => x === pasien)
-      if (findPasien.length) {
+      if (findPasien?.length) {
         const data = findPasien[0]?.edukasi
         const pos = data.findIndex(el => el.id === id)
         if (pos >= 0) { data.splice(pos, 1) }
@@ -423,7 +423,7 @@ export const usePermintaanOperasistore = defineStore('permintaan-operasi-store',
     },
     hapusDataDiagnosaKeperawatan (pasien, id) {
       const findPasien = this.items.filter(x => x === pasien)
-      if (findPasien.length) {
+      if (findPasien?.length) {
         const data = findPasien[0].diagnosakeperawatan
         const pos = data.findIndex(el => el.id === id)
         if (pos >= 0) { data.splice(pos, 1) }

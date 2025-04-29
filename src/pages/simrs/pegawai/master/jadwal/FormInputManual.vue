@@ -245,7 +245,7 @@ if (store.edited === true) {
 }
 const checkBox = (value, event) => {
   console.log(store.shifts)
-//   if (value.length) {
+//   if (value?.length) {
 //     store.tanggals = []
 //     value.forEach(data => {
 //       store.setForm('hari_0' + data + 1, store.days[data].id)

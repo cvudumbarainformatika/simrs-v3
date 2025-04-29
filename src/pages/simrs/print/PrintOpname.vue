@@ -127,10 +127,10 @@ function getData () {
         loading.value = false
         console.log('data', resp?.data)
         const itemnya = resp?.data?.data
-        if (itemnya.length) {
+        if (itemnya?.length) {
           const ada = itemnya.filter(a => a.oneopname)
           console.log('ada', ada)
-          if (ada.length) {
+          if (ada?.length) {
             keterangan.value = 'Stok Opname '
             tanggal.value = date.formatDate(ada[0]?.oneopname?.tglopname, 'DD MMMM YYYY')
             // console.log('ada', ada[0?.oneopname])

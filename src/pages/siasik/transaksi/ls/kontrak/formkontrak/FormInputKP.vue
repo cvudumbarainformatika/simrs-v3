@@ -109,7 +109,7 @@ function pilihKegiatan(val) {
 }
 function pilihPihaktiga(val) {
   const arr = store.pihaktigas
-  const obj = arr.length ? arr.find(x => x.kode === val) : null
+  const obj = arr?.length ? arr.find(x => x.kode === val) : null
   store.form.namaperusahaan = obj?.nama ?? ''
   store.form.kodeperusahaan = obj?.kode ?? ''
   store.form.kodemapingrs = obj?.kodemapingrs ?? ''

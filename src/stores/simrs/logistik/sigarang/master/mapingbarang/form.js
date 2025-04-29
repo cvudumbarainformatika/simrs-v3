@@ -24,7 +24,7 @@ export const useMasterMapingBarangForm = defineStore('master_maping_barang_form'
       const columns = [
         'kode_108', 'kode_rs', 'kode_satuan'
       ]
-      for (let i = 0; i < columns.length; i++) {
+      for (let i = 0; i < columns?.length; i++) {
         this.setForm(columns[i], null)
       }
     },

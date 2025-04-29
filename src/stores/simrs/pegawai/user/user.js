@@ -36,7 +36,7 @@ export const useUserStore = defineStore('store_user', {
         'pegawai_id'
       ]
 
-      for (let i = 0; i < columns.length; i++) {
+      for (let i = 0; i < columns?.length; i++) {
         this.setForm(columns[i], null)
       }
     },

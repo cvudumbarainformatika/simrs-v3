@@ -90,7 +90,7 @@ export const UseFarmasiStokTable = defineStore('tabel_stok', {
             this.now = resp.data?.now
             console.log('params', this.params)
             // 0001320
-            if (this.items.length) {
+            if (this.items?.length) {
               this.items.forEach(it => {
                 const tglInputFisik = it.tgl_input_fisik
                 if (it.tgl_input_fisik) {

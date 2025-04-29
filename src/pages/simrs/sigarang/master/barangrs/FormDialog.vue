@@ -21,7 +21,7 @@
               />
             </div>
             <div class="col-md-6 col-xs-12">
-              <!-- :rules="[ val => val.length <= 5 || 'Maksimal 5 karakter']" -->
+              <!-- :rules="[ val => val?.length <= 5 || 'Maksimal 5 karakter']" -->
               <q-input
                 v-model="store.input_kode"
                 dense
@@ -211,7 +211,7 @@ function get108(val) {
 function selected108(val) {
   console.log(val)
   const temp = store.barang108s.filter(a => a.kode === val)
-  if (temp.length) {
+  if (temp?.length) {
     console.log(temp[0])
     store.setForm('uraian_108', temp[0].uraian)
     store.setForm('kode_50', temp[0]?.maping?.kode50)
@@ -224,19 +224,19 @@ const onSubmit = () => {
   // const ur108 = store.barang108s.filter(data => {
   //   return data.kode === store.form.kode_108
   // })
-  // if (ur108.length) {
+  // if (ur108?.length) {
   //   store.setForm('uraian_108', ur108[0].uraian)
   // }
   // isi uraian 50
   // const ur50 = store.rekening50s.filter(data => {
   //   return data.kode === store.form.kode_50
   // })
-  // if (ur50.length) {
+  // if (ur50?.length) {
   //   store.setForm('uraian_50', ur50[0].uraian)
   // }
 
   const ada = mapingbarang.barangrses.filter(val => { return val.kode === store.form.kode })
-  if (ada.length && !store.edited) {
+  if (ada?.length && !store.edited) {
     Dialog.create({
       title: 'Konfirmasi',
       message: 'Kode barang sudah ada, jika dilanjutkan maka barang akan di update',

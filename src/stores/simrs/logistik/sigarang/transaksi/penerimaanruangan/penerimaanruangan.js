@@ -35,7 +35,7 @@ export const usePenerimaanRuanganStore = defineStore('penerimaan_ruangan_store',
         'tanggal'
       ]
 
-      for (let i = 0; i < columns.length; i++) {
+      for (let i = 0; i < columns?.length; i++) {
         this.setForm(columns[i], null)
       }
       this.setForm('details', [])
@@ -131,7 +131,7 @@ export const usePenerimaanRuanganStore = defineStore('penerimaan_ruangan_store',
     newDistribusiSelected(val) {
       const permintaan = this.permintaans.filter(data => { return data.id === val })
       // console.log('permintaa', permintaan)
-      if (permintaan.length) {
+      if (permintaan?.length) {
         this.setForm('reff', 'RRAGD-' + uniqueId())
         this.setForm('tanggal', date.formatDate(Date.now(), 'YYYY-MM-DD HH:mm:ss'))
         this.setForm('no_distribusi', permintaan[0].no_distribusi)
@@ -148,7 +148,7 @@ export const usePenerimaanRuanganStore = defineStore('penerimaan_ruangan_store',
       // 'details'
       const permintaan = this.permintaans.filter(data => { return data.id === val })
       // console.log('permintaan', permintaan)
-      if (permintaan.length) {
+      if (permintaan?.length) {
         this.setForm('permintaan_id', permintaan[0].id)
         this.setForm('reff', 'RRAGD-' + uniqueId())
         this.setForm('kode_penanggungjawab', permintaan[0].kode_penanggungjawab)

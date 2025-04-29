@@ -128,7 +128,7 @@ const options = ref(null)
 let url = '/v1/simrs/farmasinew/depo/caripasienpoli'
 watch(() => apps?.user?.kdruangansim, (obj) => {
   const ruang = props.depos.filter(dep => dep.value === obj)
-  if (ruang.length) {
+  if (ruang?.length) {
     const val = ruang[0].jenis
     if (val === 'rjl') url = '/v1/simrs/farmasinew/depo/caripasienpoli'
     if (val === 'rnp') url = '/v1/simrs/farmasinew/depo/caripasienranap'
@@ -169,7 +169,7 @@ async function filterOptions (val, update) {
   update(
     () => (options.value = resp?.data?.data ?? resp?.data),
     ref => {
-      if (val !== '' && ref.options.length) {
+      if (val !== '' && ref.options?.length) {
         ref.setOptionIndex(-1)
         ref.moveOptionSelection(1, true)
       }

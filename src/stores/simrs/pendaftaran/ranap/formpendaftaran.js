@@ -170,7 +170,7 @@ export const useFormPendaftaranRanapStore = defineStore('pendaftaran-ranap-store
     initForm() {
       this.errors = []
       const keys = Object.keys(this.pasien)
-      for (let i = 0; i < keys.length; i++) {
+      for (let i = 0; i < keys?.length; i++) {
         const el = keys[i]
         this.setForm(el, null)
       }
@@ -523,7 +523,7 @@ export const useFormPendaftaranRanapStore = defineStore('pendaftaran-ranap-store
 
           this.propinsies = resp.data[0]
           // this.autocompleteStore.setPropinsi(resp.data[0])
-          // if (this.pasien.propinsi !== null && this.propinsies.length > 0) {
+          // if (this.pasien.propinsi !== null && this.propinsies?.length > 0) {
           //   th
           // }
           return new Promise(resolve => { resolve(resp) })
@@ -622,7 +622,7 @@ export const useFormPendaftaranRanapStore = defineStore('pendaftaran-ranap-store
           this.allSistemBayars = resp.data
           // mapping sistembayar
           const all = resp.data
-          this.jnsSistemBayars = all.length ? all.filter(a => a.hidden === '') : []
+          this.jnsSistemBayars = all?.length ? all.filter(a => a.hidden === '') : []
           // // console.log('aljnsl', this.jnsSistemBayars)
           this.filterSistemBayars('all')
         })
@@ -634,12 +634,12 @@ export const useFormPendaftaranRanapStore = defineStore('pendaftaran-ranap-store
     filterSistemBayar(kode) {
       const all = this.allSistemBayars
       let sb = []
-      if (all.length > 0) {
+      if (all?.length > 0) {
         if (kode !== 'all') {
-          sb = all.length ? all.filter(a => a.groups === kode) : []
+          sb = all?.length ? all.filter(a => a.groups === kode) : []
         }
         else {
-          sb = all.length ? all.filter(a => a.groups !== '') : []
+          sb = all?.length ? all.filter(a => a.groups !== '') : []
         }
         this.sistembayars = sb
       }
@@ -696,10 +696,10 @@ export const useFormPendaftaranRanapStore = defineStore('pendaftaran-ranap-store
           // // console.log('show kamar resp', resp.data)
           this.listKamars = []
           const data = resp.data
-          for (let i = 0; i < data.length; i++) {
+          for (let i = 0; i < data?.length; i++) {
             const el = data[i]
             const kamars = el?.kamars
-            for (let x = 0; x < kamars.length; x++) {
+            for (let x = 0; x < kamars?.length; x++) {
               const w = kamars[x]
               const kunjungan = w?.kunjungan
               if (w.rs5 !== '-') {

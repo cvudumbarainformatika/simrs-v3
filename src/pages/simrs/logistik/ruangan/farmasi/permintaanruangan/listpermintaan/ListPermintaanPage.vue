@@ -73,7 +73,7 @@
         {{ tujuan(row?.tujuan) }}
       </template>
       <template #expand="{ row }">
-        <div v-if="row.permintaanrinci.length">
+        <div v-if="row.permintaanrinci?.length">
           <div class="row items-center text-weight-bold">
             <div class="col-4">
               Obat
@@ -463,7 +463,7 @@ function hapusRinci (row, val) {
       if (index >= 0) {
         row.permintaanrinci.splice(index, 1)
       }
-      if (row.permintaanrinci.length < 1) {
+      if (row.permintaanrinci?.length < 1) {
         const index = store.items.findIndex(it => it.id === row.id)
         if (index >= 0) {
           store.items.splice(index, 1)
@@ -559,7 +559,7 @@ onMounted(() => {
   }
   else if (apps?.user?.pegawai?.kdruangansim) {
     const ru = apps?.user?.pegawai?.kdruangansim.split('|')
-    if (ru.length === 1) {
+    if (ru?.length === 1) {
       store.setParam('kddepo', apps?.user?.pegawai?.kdruangansim)
     }
   }

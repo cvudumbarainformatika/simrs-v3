@@ -233,7 +233,7 @@
         </div>
       </template>
       <template #expand="{ row }">
-        <div v-if="row.detail_distribusi_depo.length">
+        <div v-if="row.detail_distribusi_depo?.length">
           <div class="row text-weight-bold">
             <div class="no">
               No
@@ -279,7 +279,7 @@
             </div>
           </div>
         </div>
-        <div v-if="!row.detail_distribusi_depo.length">
+        <div v-if="!row.detail_distribusi_depo?.length">
           Tidak ada detail
         </div>
       </template>
@@ -291,7 +291,7 @@
         </td>
         <td colspan="2">
           <div
-            v-if="store.items.length"
+            v-if="store.items?.length"
             class="text-right f-12"
           >
             {{ formatRp(store.total) }}

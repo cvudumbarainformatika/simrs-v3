@@ -219,7 +219,7 @@
         </td>
         <td>
           <div
-            v-if="store.items.length"
+            v-if="store.items?.length"
             class="text-right f-12  text-weight-bold"
           >
             {{ parseFloat(store.total.toFixed(3)) }}

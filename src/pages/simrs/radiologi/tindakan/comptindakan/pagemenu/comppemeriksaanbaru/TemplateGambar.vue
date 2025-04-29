@@ -123,7 +123,7 @@ const props = defineProps({
 const fileGambars = computed(() => {
   const arr = filterredMenu()
   const men = arr.filter(x => x?.nama.indexOf(props.active) > -1)
-  const menu = men.length ? men[0] : null
+  const menu = men?.length ? men[0] : null
   // const modules = import.meta.glob('/src/assets/human/anatomys/*.{png,svg,jpg,jpeg}', { eager: true })
   const arr2 = menu?.gambars
   // const res = arr2.filter(x => x.indexOf(menu) > -1)

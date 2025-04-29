@@ -91,7 +91,7 @@
                   {{ row.kandungan }}
                 </div>
               </div>
-              <div v-if="row.indikasi.length" class="row items-center box justify-between no-wrap q-mb-sm">
+              <div v-if="row.indikasi?.length" class="row items-center box justify-between no-wrap q-mb-sm">
                 <div>
                   Indikasi
                 </div>
@@ -108,7 +108,7 @@
                   </div>
                 </div>
               </div>
-              <div v-if="row.mkelasterapi.length" class="row items-center box justify-between no-wrap q-mb-sm">
+              <div v-if="row.mkelasterapi?.length" class="row items-center box justify-between no-wrap q-mb-sm">
                 <div>
                   Terapi
                 </div>

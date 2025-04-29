@@ -44,7 +44,7 @@ export const useMinMaxDepoStockStore = defineStore('min_max_depo_store', {
         'min_stok',
         'max_stok'
       ]
-      for (let i = 0; i < columns.length; i++) {
+      for (let i = 0; i < columns?.length; i++) {
         this.setForm(columns[i], null)
       }
     },

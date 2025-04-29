@@ -71,7 +71,7 @@ export const useJenazahIgd = defineStore('jenazah-igd', {
     },
     setNotas(array) {
       const arr = array.map(x => x.nota)
-      this.notas = arr.length ? arr : []
+      this.notas = arr?.length ? arr : []
       this.notas.push('BARU')
       this.form.nota = this.notas[0]
     }

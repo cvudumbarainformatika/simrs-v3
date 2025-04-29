@@ -57,27 +57,27 @@ export const useRegistrasiPasienIgdStore = defineStore('registrasi_pasien_igd', 
       // this.getPoli()
       // this.getJenisKarcis()
 
-      if (this.autocompleteStore.asalrujukans.length) {
+      if (this.autocompleteStore.asalrujukans?.length) {
         this.asalrujukans = this.autocompleteStore.asalrujukans
       }
       else {
         this.getAsalRujukan()
       }
 
-      if (this.autocompleteStore.sistembayars1.length) {
+      if (this.autocompleteStore.sistembayars1?.length) {
         this.sistembayars1 = this.autocompleteStore.sistembayars1
       }
       else {
         this.getSistemBayar()
       }
 
-      // if (this.autocompleteStore.polis.length) {
+      // if (this.autocompleteStore.polis?.length) {
       //   this.polis = this.autocompleteStore.polis
       // } else {
       //   this.getPoli()
       // }
 
-      if (this.autocompleteStore.jenisKarcises.length) {
+      if (this.autocompleteStore.jenisKarcises?.length) {
         this.jenisKarcises = this.autocompleteStore.jenisKarcises
       }
       else {
@@ -91,7 +91,7 @@ export const useRegistrasiPasienIgdStore = defineStore('registrasi_pasien_igd', 
       await api.post('v1/simrs/bridgingbpjs/pendaftaran/dpjpbpjs', this.paramDpjp)
         .then(resp => {
           this.loading = false
-          if (resp.data.result.list.length) {
+          if (resp.data.result.list?.length) {
             const data = resp.data.result.list
             data.forEach(anu => {
               anu.dpjp = anu.kode
@@ -113,7 +113,7 @@ export const useRegistrasiPasienIgdStore = defineStore('registrasi_pasien_igd', 
           this.loading = false
           this.kasrcispoli = resp.data
           const temp = Object.keys(resp.data)
-          if (temp.length) {
+          if (temp?.length) {
             temp.forEach(key => {
               this.setForm(key, resp.data[key])
             })

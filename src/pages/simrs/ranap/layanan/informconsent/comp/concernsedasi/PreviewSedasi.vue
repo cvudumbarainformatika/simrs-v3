@@ -136,7 +136,7 @@
                   {{ item?.tindakanMedis.join(' | ') }}
                 </td>
                 <td class="text-right">
-                  <q-icon v-if="item?.tindakanMedis.length > 0" name="icon-mat-check" size="sm" />
+                  <q-icon v-if="item?.tindakanMedis?.length > 0" name="icon-mat-check" size="sm" />
                 </td>
               </tr>
 

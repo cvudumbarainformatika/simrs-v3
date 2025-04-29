@@ -81,20 +81,20 @@
         <!-- button stok opname -->
         <div class="fit row no-wrap justify-end items-center q-mb-sm">
           <q-btn
-            :label="!store.allItems.length ? 'Mulai Opname':'Sudah ada data'"
+            :label="!store.allItems?.length ? 'Mulai Opname':'Sudah ada data'"
             no-caps
             color="primary"
-            :disable="!!store.allItems.length || store.loading"
+            :disable="!!store.allItems?.length || store.loading"
             @click="store.simpanOpname"
           >
             <q-tooltip
               anchor="top middle"
               self="center middle"
             >
-              <div v-if="!store.allItems.length">
+              <div v-if="!store.allItems?.length">
                 Mulai stok opname
               </div>
-              <div v-if="store.allItems.length">
+              <div v-if="store.allItems?.length">
                 Sudah dilakukan stok opname di bulan ini
               </div>
             </q-tooltip>

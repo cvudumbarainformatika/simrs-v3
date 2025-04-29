@@ -230,7 +230,7 @@
     <q-separator />
     <!-- details -->
     <div
-      v-if="store.details.length && !store.loading"
+      v-if="store.details?.length && !store.loading"
       class="bg-grey-2"
     >
       <div
@@ -514,7 +514,7 @@
     <div v-if="store.loading">
       <app-loading />
     </div>
-    <div v-if="!store.details.length && !store.loading">
+    <div v-if="!store.details?.length && !store.loading">
       <app-no-selected-page
         color="primary"
         icon="icon-mat-receipt_long"
@@ -734,7 +734,7 @@ const gudang = computed(() => {
   let gud = null
   if (apps.user.pegawai.kode_ruang !== '') {
     const anu = store.gudangs.filter(a => a.value === apps.user.pegawai.kode_ruang)
-    if (anu.length) {
+    if (anu?.length) {
       gud = anu[0]
       store.setForm('kdruang', gud.value)
     }

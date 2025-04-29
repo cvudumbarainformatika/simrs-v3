@@ -74,10 +74,10 @@ export const useVerifikasiRencanaPesanStore = defineStore('verifikasi_rencana_pe
           if (rinci?.stok?.length) {
             rinci.totalStok = rinci?.stok?.map(x => parseFloat(x.jumlah)).reduce((a, b) => a + b, 0)
             const ru = filterDuplicateArrays(rinci?.stok?.map(x => x.kdruang))
-            if (ru.length) {
+            if (ru?.length) {
               ru.forEach(r => {
                 const stok = rinci?.stok?.filter(x => x.kdruang === r)
-                if (stok.length) {
+                if (stok?.length) {
                   const temp = stok[0]
                   temp.stok = stok.map(x => parseFloat(x.jumlah)).reduce((a, b) => a + b, 0)
                   rinci.stokRuangan.push(temp)

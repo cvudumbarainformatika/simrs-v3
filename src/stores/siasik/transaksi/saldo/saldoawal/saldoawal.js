@@ -95,7 +95,7 @@ export const useSaldoAwalStore = defineStore('transaksi_saldo_awal', {
       //   console.log('SALDO', resp)
       //   this.loading = false
       //   this.saldobluds = resp.data
-      //   // if (this.saldobluds.length) {
+      //   // if (this.saldobluds?.length) {
       //   //   this.saldobluds.forEach(it =>
       //   //     it
       //   //   )

@@ -140,7 +140,7 @@ export const useCallStore = defineStore('call_antrian', {
     ubahStatus(val) {
       const arr = this.items
       const ada = arr.filter(x => x.nomorantrean === val)
-      if (ada.length) {
+      if (ada?.length) {
         ada[0].statuspanggil = 1
       }
     }

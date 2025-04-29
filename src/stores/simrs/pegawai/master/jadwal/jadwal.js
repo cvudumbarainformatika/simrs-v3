@@ -105,10 +105,10 @@ export const useAbsensiJadwalStore = defineStore('jadwal_absensi', {
         'jam_06',
         'jam_07'
       ]
-      for (let i = 0; i < columns.length; i++) {
+      for (let i = 0; i < columns?.length; i++) {
         this.setForm(columns[i], null)
       }
-      for (let i = 0; i < hari.length; i++) {
+      for (let i = 0; i < hari?.length; i++) {
         this.setForm(hari[i], false)
       }
       this.days.forEach((data) => {
@@ -299,10 +299,10 @@ export const useAbsensiJadwalStore = defineStore('jadwal_absensi', {
         if (reason === 'add-day') this.subuhes.push(tgl)
         this.subuhes.sort()
       }
-      if (!this.tanggals.length) return
+      if (!this.tanggals?.length) return
       this.tanggals.sort()
       const wtemp = []
-      for (let index = 1; index < this.tanggals.length; index++) {
+      for (let index = 1; index < this.tanggals?.length; index++) {
         const tgl = this.tanggals[index - 1]
         const tgl2 = this.tanggals[index]
         const unit = 'days'
@@ -418,7 +418,7 @@ export const useAbsensiJadwalStore = defineStore('jadwal_absensi', {
             const data = resp.data.data
             // console.log('get data table', resp)
             console.log('data table', data)
-            if (data.length) {
+            if (data?.length) {
               this.setColumns(data)
               this.setItems(data)
             }
@@ -442,7 +442,7 @@ export const useAbsensiJadwalStore = defineStore('jadwal_absensi', {
             const data = resp.data.data
             // console.log('get by user', resp)
             // console.log('data by user', data)
-            if (data.length) {
+            if (data?.length) {
               this.setColumns(data)
               this.setItems(data)
             }

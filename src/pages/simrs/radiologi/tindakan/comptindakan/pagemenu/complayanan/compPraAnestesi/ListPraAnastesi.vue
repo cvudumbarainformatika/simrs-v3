@@ -9,7 +9,7 @@
     </div>
     <div class="col full-height bg-transparent">
       <q-scroll-area
-        v-if="items.length"
+        v-if="items?.length"
         style="height:calc( 100% - 1px );"
       >
         <q-card

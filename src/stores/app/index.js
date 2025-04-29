@@ -46,7 +46,7 @@ export const useAppStore = defineStore('app', {
   }),
   getters: {
     stafs: (state) => {
-      if (state.section_three.length === 0) {
+      if (state.section_three?.length === 0) {
         return state.tmp_section_three
       }
       return state.section_three
@@ -158,11 +158,11 @@ export const useAppStore = defineStore('app', {
       const formData = new FormData()
       formData.append('image', this.section_one.image)
       formData.append('point_1_title', this.section_one.point_1.title)
-      for (let i = 0; i < this.section_one.point_1.data.length; i++) {
+      for (let i = 0; i < this.section_one.point_1.data?.length; i++) {
         formData.append('point_1_data[]', this.section_one.point_1.data[i])
       }
       formData.append('point_2_title', this.section_one.point_2.title)
-      for (let i = 0; i < this.section_one.point_2.data.length; i++) {
+      for (let i = 0; i < this.section_one.point_2.data?.length; i++) {
         formData.append('point_2_data[]', this.section_one.point_2.data[i])
       }
       try {

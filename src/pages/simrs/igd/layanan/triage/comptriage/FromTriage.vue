@@ -364,7 +364,7 @@ function resetscore() {
 }
 function hidenall() {
   // store.setForm('doa', val.join(', '))
-  if (store.form.doa.length > 0) {
+  if (store.form.doa?.length > 0) {
     store.hiddenall = 'MATI'
     tutupall()
   }

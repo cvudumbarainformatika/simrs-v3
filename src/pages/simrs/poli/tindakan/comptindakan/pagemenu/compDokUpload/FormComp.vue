@@ -19,7 +19,7 @@
     >
       <div class="full-height full-width">
         <div
-          v-if="scope.files.length===0"
+          v-if="scope.files?.length===0"
           class="column flex-center full-height"
         >
           <q-icon
@@ -120,7 +120,7 @@ function onRejected (rejectedEntries) {
   console.log('rejected')
   $q.notify({
     type: 'negative',
-    message: `${rejectedEntries.length} ... Maaf Besar Dokummen tidak boleh lebih dari 1024 KB / 1 MB`
+    message: `${rejectedEntries?.length} ... Maaf Besar Dokummen tidak boleh lebih dari 1024 KB / 1 MB`
   })
 }
 

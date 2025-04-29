@@ -8,7 +8,7 @@
     </div>
     <div class="col-6 full-height bg-grey-4">
       <ListComp
-        v-if="pasien.laporantindakan.length"
+        v-if="pasien.laporantindakan?.length"
         :lists="pasien?.laporantindakan"
         :listdokter="store.listdokters"
         :pasien="props.pasien"

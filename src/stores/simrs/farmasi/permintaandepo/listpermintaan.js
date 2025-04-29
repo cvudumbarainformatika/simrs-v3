@@ -64,9 +64,9 @@ export const useListPermintaanStore = defineStore('list_permintaan_store', {
             this.meta = resp.data
             if (this.items?.length) {
               this.items.forEach(it => {
-                if (it?.permintaanrinci.length) {
+                if (it?.permintaanrinci?.length) {
                   it?.permintaanrinci.forEach(ri => {
-                    if (it?.mutasigudangkedepo.length) {
+                    if (it?.mutasigudangkedepo?.length) {
                       const dist = it?.mutasigudangkedepo.filter(mu => mu.kd_obat === ri.kdobat).map(ma => parseFloat(ma.jml)).reduce((a, b) => a + b, 0)
                       // console.log('dist', dist)
                       ri.distribusi = !isNaN(dist) ? dist : 0

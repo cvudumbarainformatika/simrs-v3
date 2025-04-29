@@ -159,8 +159,8 @@ export const useLRAjurnalStore = defineStore('lap_realisasi_anggaran', {
       const kode1 = []
 
       const setkod = pagupendapatan.map((x) => x.kode6)
-      const unikset = setkod.length ? [...new Set(setkod)] : []
-      for (let i = 0; i < unikset.length; i++) {
+      const unikset = setkod?.length ? [...new Set(setkod)] : []
+      for (let i = 0; i < unikset?.length; i++) {
         const el = unikset[i];
         const totalpagu = pagupendapatan.filter((x) => x.kode6 === el).reduce((a, b) => parseFloat(a) + parseFloat(b.pagupendapatan), 0)
 
@@ -189,8 +189,8 @@ export const useLRAjurnalStore = defineStore('lap_realisasi_anggaran', {
       }
 
       const setkod5 = pagupendapatan.map((x) => x.kode5)
-      const unikset5 = setkod5.length ? [...new Set(setkod5)] : []
-      for (let i = 0; i < unikset5.length; i++) {
+      const unikset5 = setkod5?.length ? [...new Set(setkod5)] : []
+      for (let i = 0; i < unikset5?.length; i++) {
         const el = unikset5[i];
         const totalpagu = pagupendapatan.filter((x) => x.kode5 === el).reduce((a, b) => parseFloat(a) + parseFloat(b.pagupendapatan), 0)
 
@@ -216,8 +216,8 @@ export const useLRAjurnalStore = defineStore('lap_realisasi_anggaran', {
         kode5.push(obj5)
       }
       const setkod4 = pagupendapatan.map((x) => x.kode4)
-      const unikset4 = setkod4.length ? [...new Set(setkod4)] : []
-      for (let i = 0; i < unikset4.length; i++) {
+      const unikset4 = setkod4?.length ? [...new Set(setkod4)] : []
+      for (let i = 0; i < unikset4?.length; i++) {
         const el = unikset4[i];
         const totalpagu = pagupendapatan.filter((x) => x.kode4 === el).reduce((a, b) => parseFloat(a) + parseFloat(b.pagupendapatan), 0)
 
@@ -244,8 +244,8 @@ export const useLRAjurnalStore = defineStore('lap_realisasi_anggaran', {
       }
 
       const setkod3 = pagupendapatan.map((x) => x.kode3)
-      const unikset3 = setkod3.length ? [...new Set(setkod3)] : []
-      for (let i = 0; i < unikset3.length; i++) {
+      const unikset3 = setkod3?.length ? [...new Set(setkod3)] : []
+      for (let i = 0; i < unikset3?.length; i++) {
         const el = unikset3[i];
         const totalpagu = pagupendapatan.filter((x) => x.kode3 === el).reduce((a, b) => parseFloat(a) + parseFloat(b.pagupendapatan), 0)
 
@@ -272,8 +272,8 @@ export const useLRAjurnalStore = defineStore('lap_realisasi_anggaran', {
       }
 
       const setkod2 = pagupendapatan.map((x) => x.kode2)
-      const unikset2 = setkod2.length ? [...new Set(setkod2)] : []
-      for (let i = 0; i < unikset2.length; i++) {
+      const unikset2 = setkod2?.length ? [...new Set(setkod2)] : []
+      for (let i = 0; i < unikset2?.length; i++) {
         const el = unikset2[i];
         const totalpagu = pagupendapatan.filter((x) => x.kode2 === el).reduce((a, b) => parseFloat(a) + parseFloat(b.pagupendapatan), 0)
 
@@ -301,8 +301,8 @@ export const useLRAjurnalStore = defineStore('lap_realisasi_anggaran', {
 
 
       const setkod1 = pagupendapatan.map((x) => x.kode1)
-      const unikset1 = setkod1.length ? [...new Set(setkod1)] : []
-      for (let i = 0; i < unikset1.length; i++) {
+      const unikset1 = setkod1?.length ? [...new Set(setkod1)] : []
+      for (let i = 0; i < unikset1?.length; i++) {
         const el = unikset1[i];
         const totalpagu = pagupendapatan.filter((x) => x.kode1 === el).reduce((a, b) => parseFloat(a) + parseFloat(b.pagupendapatan), 0)
 
@@ -383,8 +383,8 @@ export const useLRAjurnalStore = defineStore('lap_realisasi_anggaran', {
       const belanja1 = []
 
       const fil6 = belanja.map((x) => x.kode6)
-      const unik6 = fil6.length ? [...new Set(fil6)] : []
-      for (let i = 0; i < unik6.length; i++) {
+      const unik6 = fil6?.length ? [...new Set(fil6)] : []
+      for (let i = 0; i < unik6?.length; i++) {
         const el = unik6[i]
         const pagu = belanja.filter((x) => x.kode6 === el).map((x) => parseFloat(x.pagu)).reduce((a, b) => a + b, 0)
         const bljskg = nilaiskg.filter((x) => x.kode6 === el).map((x) => parseFloat(x.subtotalx)).reduce((a, b) => a + b, 0)
@@ -410,8 +410,8 @@ export const useLRAjurnalStore = defineStore('lap_realisasi_anggaran', {
       }
       console.log('belanja6', belanja6)
       const fil5 = belanja.map((x) => x.kode5)
-      const unik5 = fil5.length ? [...new Set(fil5)] : []
-      for (let i = 0; i < unik5.length; i++) {
+      const unik5 = fil5?.length ? [...new Set(fil5)] : []
+      for (let i = 0; i < unik5?.length; i++) {
         const el = unik5[i]
         const pagu = belanja.filter((x) => x.kode5 === el).map((x) => parseFloat(x.pagu)).reduce((a, b) => a + b, 0)
         const bljskg = nilaiskg.filter((x) => x.kode5 === el).map((x) => parseFloat(x.subtotalx)).reduce((a, b) => a + b, 0)
@@ -437,8 +437,8 @@ export const useLRAjurnalStore = defineStore('lap_realisasi_anggaran', {
       }
 
       const fil4 = belanja.map((x) => x.kode4)
-      const unik4 = fil4.length ? [...new Set(fil4)] : []
-      for (let i = 0; i < unik4.length; i++) {
+      const unik4 = fil4?.length ? [...new Set(fil4)] : []
+      for (let i = 0; i < unik4?.length; i++) {
         const el = unik4[i]
         const pagu = belanja.filter((x) => x.kode4 === el).map((x) => parseFloat(x.pagu)).reduce((a, b) => a + b, 0)
         const bljskg = nilaiskg.filter((x) => x.kode4 === el).map((x) => parseFloat(x.subtotalx)).reduce((a, b) => a + b, 0)
@@ -464,8 +464,8 @@ export const useLRAjurnalStore = defineStore('lap_realisasi_anggaran', {
       }
 
       const fil3 = belanja.map((x) => x.kode3)
-      const unik3 = fil3.length ? [...new Set(fil3)] : []
-      for (let i = 0; i < unik3.length; i++) {
+      const unik3 = fil3?.length ? [...new Set(fil3)] : []
+      for (let i = 0; i < unik3?.length; i++) {
         const el = unik3[i]
         const pagu = belanja.filter((x) => x.kode3 === el).map((x) => parseFloat(x.pagu)).reduce((a, b) => a + b, 0)
         const bljskg = nilaiskg.filter((x) => x.kode3 === el).map((x) => parseFloat(x.subtotalx)).reduce((a, b) => a + b, 0)
@@ -491,8 +491,8 @@ export const useLRAjurnalStore = defineStore('lap_realisasi_anggaran', {
       }
 
       const fil2 = belanja.map((x) => x.kode2)
-      const unik2 = fil2.length ? [...new Set(fil2)] : []
-      for (let i = 0; i < unik2.length; i++) {
+      const unik2 = fil2?.length ? [...new Set(fil2)] : []
+      for (let i = 0; i < unik2?.length; i++) {
         const el = unik2[i]
         const pagu = belanja.filter((x) => x.kode2 === el).map((x) => parseFloat(x.pagu)).reduce((a, b) => a + b, 0)
         const bljskg = nilaiskg.filter((x) => x.kode2 === el).map((x) => parseFloat(x.subtotalx)).reduce((a, b) => a + b, 0)
@@ -518,8 +518,8 @@ export const useLRAjurnalStore = defineStore('lap_realisasi_anggaran', {
       }
 
       const fil1 = belanja.map((x) => x.kode1)
-      const unik1 = fil1.length ? [...new Set(fil1)] : []
-      for (let i = 0; i < unik1.length; i++) {
+      const unik1 = fil1?.length ? [...new Set(fil1)] : []
+      for (let i = 0; i < unik1?.length; i++) {
         const el = unik1[i]
         const pagu = belanja.filter((x) => x.kode1 === el).map((x) => parseFloat(x.pagu)).reduce((a, b) => a + b, 0)
         const bljskg = nilaiskg.filter((x) => x.kode1 === el).map((x) => parseFloat(x.subtotalx)).reduce((a, b) => a + b, 0)
@@ -595,7 +595,7 @@ export const useLRAjurnalStore = defineStore('lap_realisasi_anggaran', {
       const silpa2 = []
       const silpa1 = []
       const psapsilpa = []
-      for (let i = 0; i < pagusilpas.length; i++) {
+      for (let i = 0; i < pagusilpas?.length; i++) {
         const el = pagusilpas[i]
         const sblm = silpasblms[i] ?? 0
         const skg = silpaskgs[i] ?? 0
@@ -678,16 +678,16 @@ export const useLRAjurnalStore = defineStore('lap_realisasi_anggaran', {
       // const realpostingotom = this.psaprealisasipendapatan
       // const realju = this.psaprealisasipendapatanx
       // const nilaipenyes = []
-      // for (let x = 0; x < realpostingotom.length; x++) {
+      // for (let x = 0; x < realpostingotom?.length; x++) {
       //   const el = realpostingotom[x];
-      //   const nilaipx = el?.penyesuaian.length ? el?.penyesuaian?.map(x => parseFloat(x?.totalpenyesuaian)) : 0
+      //   const nilaipx = el?.penyesuaian?.length ? el?.penyesuaian?.map(x => parseFloat(x?.totalpenyesuaian)) : 0
       //   nilaipenyes.push(nilaipx)
       // }
 
       // // PSAP 13 DATA PENDAPATAN JASA LAYANAN //
       // const filterjs = this.pendjasalayanan?.map((x) => x.kode)
       // const filpagujs = pagup.filter(x => filterjs.includes(x.kode)).map((x) => x.kode)
-      // const unikfilpagujs = filpagujs.length ? [...new Set(filpagujs)] : []
+      // const unikfilpagujs = filpagujs?.length ? [...new Set(filpagujs)] : []
       // const pagujs = pagup.filter(x => filterjs.includes(x.kode)).map((x) => parseFloat(x.pagu)).reduce((a, b) => a + b, 0)
       // const realisasi = realpostingotom.filter(x => filterjs.includes(x.kode)).map((x) => parseFloat(x.realisasi)).reduce((a, b) => a + b, 0).toFixed(2)
       // const realisasix = realju.map((x) => parseFloat(x.realisasix)).reduce((a, b) => a + b, 0).toFixed(2)
@@ -707,7 +707,7 @@ export const useLRAjurnalStore = defineStore('lap_realisasi_anggaran', {
       // // PSAP 13 DATA PENDAPATAN KERJA SAMA //
       // const filterks = this.pendhasilkerjasama?.map((x) => x.kode)
       // const filks = pagup.filter(x => filterks.includes(x.kode)).map((x) => x.kode)
-      // const unikfilks = filks.length ? [...new Set(filks)] : []
+      // const unikfilks = filks?.length ? [...new Set(filks)] : []
       // const paguks = pagup.filter(x => filks.includes(x.kode)).map((x) => parseFloat(x.pagu)).reduce((a, b) => a + b, 0).toFixed(2)
       // const realks = realju.filter(x => filks.includes(x.kode)).map((x) => parseFloat(x.realisasix)).reduce((a, b) => a + b, 0).toFixed(2)
       // const persenks = ((realks / paguks) * 100).toFixed(2)
@@ -723,7 +723,7 @@ export const useLRAjurnalStore = defineStore('lap_realisasi_anggaran', {
       // // PSAP 13 DATA PENDAPATAN HIBAH //
       // const filterhb = this.pendhibah?.map((x) => x.kode)
       // const filhb = pagup.filter(x => filterhb.includes(x.kode)).map((x) => x.kode)
-      // const unikfilhb = filhb.length ? [...new Set(filhb)] : []
+      // const unikfilhb = filhb?.length ? [...new Set(filhb)] : []
       // const paguhb = pagup.filter(x => filhb.includes(x.kode)).map((x) => parseFloat(x.pagu)).reduce((a, b) => a + b, 0).toFixed(2)
       // const realhb = realju.filter(x => filhb.includes(x.kode)).map((x) => parseFloat(x.realisasix)).reduce((a, b) => a + b, 0).toFixed(2)
       // const persenhb = ((realhb / paguhb) * 100).toFixed(2)
@@ -739,7 +739,7 @@ export const useLRAjurnalStore = defineStore('lap_realisasi_anggaran', {
       // // PSAP 13 DATA PENDAPATAN JASA GIRO //
       // const filtergiro = this.pendjasagiro.map((x) => x.kode)
       // const filgiro = pagup.filter(x => filtergiro.includes(x.kode)).map((x) => x.kode)
-      // const unikgiro = filgiro.length ? [...new Set(filgiro)] : []
+      // const unikgiro = filgiro?.length ? [...new Set(filgiro)] : []
       // const pagugiro = pagup.filter(x => filgiro.includes(x.kode)).map((x) => parseFloat(x.pagu)).reduce((a, b) => a + b, 0).toFixed(2)
       // const realgiro = realju.filter(x => filgiro.includes(x.kode)).map((x) => parseFloat(x.realisasix)).reduce((a, b) => a + b, 0).toFixed(2)
       // const persengiro = ((realgiro / pagugiro) * 100).toFixed(2)
@@ -755,7 +755,7 @@ export const useLRAjurnalStore = defineStore('lap_realisasi_anggaran', {
       // // PSAP 13 DATA PENDAPATAN USAHA LAINNYA //
       // const filterlainya = this.pendusahalain.map((x) => x.kode)
       // const fillainnya = pagup.filter(x => filterlainya.includes(x.kode)).map((x) => x.kode)
-      // const uniklainnya = fillainnya.length ? [...new Set(fillainnya)] : []
+      // const uniklainnya = fillainnya?.length ? [...new Set(fillainnya)] : []
       // const pagulainnya = pagup.filter(x => fillainnya.includes(x.kode)).map((x) => parseFloat(x.pagu)).reduce((a, b) => a + b, 0).toFixed(2)
       // const reallainnya = realju.filter(x => fillainnya.includes(x.kode)).map((x) => parseFloat(x.realisasix)).reduce((a, b) => a + b, 0).toFixed(2)
       // const persenlainnya = ((reallainnya / pagulainnya) * 100).toFixed(2)
@@ -777,8 +777,8 @@ export const useLRAjurnalStore = defineStore('lap_realisasi_anggaran', {
       // const filbarjas = databarjas.filter(x => filkode.includes(x.kode)).map((x) => x.kode)
       // // const filbarjas = databarjas.map((x) => x.kode)
 
-      // const unikbarjas = filbarjas.length ? [...new Set(filbarjas)] : []
-      // for (let i = 0; i < unikbarjas.length; i++) {
+      // const unikbarjas = filbarjas?.length ? [...new Set(filbarjas)] : []
+      // for (let i = 0; i < unikbarjas?.length; i++) {
       //   const el = unikbarjas[i]
       //   // const obj = {
       //   //   kode: belanja.filter((x) => x.kode3 === el)[0].kode3,
@@ -808,7 +808,7 @@ export const useLRAjurnalStore = defineStore('lap_realisasi_anggaran', {
       // const selisihlain = pagulainlain - realisasilainlain
       // const persentase = ((b.filter(x => fillain.includes(x.kode)).map((x) => parseFloat(x.realisasi)).reduce((a, b) => a + b, 0) /
       //   a.filter(x => fillain.includes(x.kode)).map((x) => parseFloat(x.pagu)).reduce((a, b) => a + b, 0)) * 100).toFixed(2)
-      // const unikbarjaslain = filbarjaslain.length ? [...new Set(filbarjaslain)] : []
+      // const unikbarjaslain = filbarjaslain?.length ? [...new Set(filbarjaslain)] : []
       // const barjaslain = {
       //   kode: unikbarjaslain,
       //   uraian: 'Belanja Lain-lain',
@@ -825,8 +825,8 @@ export const useLRAjurnalStore = defineStore('lap_realisasi_anggaran', {
       // const datamodal = c.concat(d)
       // const filmodal = datamodal.map((x) => x.kode)
       // console.log('xklxxlx', datamodal)
-      // const unikmodal = filmodal.length ? [...new Set(filmodal)] : []
-      // for (let i = 0; i < unikmodal.length; i++) {
+      // const unikmodal = filmodal?.length ? [...new Set(filmodal)] : []
+      // for (let i = 0; i < unikmodal?.length; i++) {
       //   const el = unikmodal[i]
       //   // const obj = {
       //   //   kode: belanja.filter((x) => x.kode3 === el)[0].kode3,

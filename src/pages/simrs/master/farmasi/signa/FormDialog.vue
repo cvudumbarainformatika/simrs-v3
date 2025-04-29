@@ -74,7 +74,7 @@ function signaBlur (val) {
     signa.forEach(si => {
       const num = si.toString().split(' ')
       const val = num.filter(m => m !== '')
-      if (val.length > 1) si = val.join(' ')
+      if (val?.length > 1) si = val.join(' ')
       else si = val.toString().replace(/\s+/g, '')
       temp.push(si)
       console.log('num', si, val, num)
@@ -87,7 +87,7 @@ function signaBlur (val) {
 function setJumlah (evt, key) {
   const inc = evt.includes('.')
   const ind = evt.indexOf('.')
-  const panj = evt.length
+  const panj = evt?.length
   const nilai = isNaN(parseFloat(evt)) ? 0 : (inc && (ind === (panj - 1)) ? evt : parseFloat(evt))
   store.setForm(key, nilai)
 }

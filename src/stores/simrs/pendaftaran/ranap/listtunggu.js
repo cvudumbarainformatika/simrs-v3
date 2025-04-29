@@ -211,7 +211,7 @@ export const useListPendaftaranRanapStore = defineStore('list-pendaftaran-ranap'
       const pendaftaran = useFormPendaftaranRanapStore()
       this.form.kamar = null
       const arr = pendaftaran.kamars
-      const obj = arr.length ? arr.find(x => x.rs1 === val) : null
+      const obj = arr?.length ? arr.find(x => x.rs1 === val) : null
       // console.log('pilihRuang', obj)
       const group = obj?.groups ?? null
       const kodeRuang = obj?.rs1 ?? null
@@ -244,7 +244,7 @@ export const useListPendaftaranRanapStore = defineStore('list-pendaftaran-ranap'
           // grupKamar.value = grup
           console.log('grup', grup)
           // const thumb = []
-          for (let i = 0; i < grup.length; i++) {
+          for (let i = 0; i < grup?.length; i++) {
             const el = grup[i]
 
             this.grupKamars.push({
@@ -270,7 +270,7 @@ export const useListPendaftaranRanapStore = defineStore('list-pendaftaran-ranap'
     pilihDokter (val) {
       const pendaftaran = useFormPendaftaranRanapStore()
       const arr = pendaftaran.dokters
-      const obj = arr.length ? arr.find(x => x.kdpegsimrs === val) : null
+      const obj = arr?.length ? arr.find(x => x.kdpegsimrs === val) : null
       // console.log('pilihKamar', obj)
       this.form.nama_dokter = obj?.nama ?? null
       this.form.kd_dokter = obj?.kdpegsimrs ?? null
@@ -291,7 +291,7 @@ export const useListPendaftaranRanapStore = defineStore('list-pendaftaran-ranap'
           if (resp.status === 200) {
             notifSuccessVue('Pasien success dimutasikan ')
             const findPasien = this.items.filter(x => x?.noreg === noreg)
-            if (findPasien.length) findPasien[0].status_masuk = this.form.norm
+            if (findPasien?.length) findPasien[0].status_masuk = this.form.norm
             // this.initForm()
           }
         })
@@ -318,7 +318,7 @@ export const useListPendaftaranRanapStore = defineStore('list-pendaftaran-ranap'
             const findPasien = this.items.filter(x => x?.noreg === this.form.noreglama)
 
             const obj = { rs1: resp.data.noreg, rs22: '' }
-            if (findPasien.length) findPasien[0].tunggu_ranap = obj
+            if (findPasien?.length) findPasien[0].tunggu_ranap = obj
             // this.initForm()
           }
         })

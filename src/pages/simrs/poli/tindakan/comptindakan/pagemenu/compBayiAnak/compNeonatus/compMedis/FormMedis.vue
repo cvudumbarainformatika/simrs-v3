@@ -162,7 +162,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-if="!store.riwayatKehamilan.length">
+          <tr v-if="!store.riwayatKehamilan?.length">
             <td
               colspan="7"
               class="text-center"

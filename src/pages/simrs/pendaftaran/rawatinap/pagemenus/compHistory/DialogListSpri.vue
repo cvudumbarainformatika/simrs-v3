@@ -10,7 +10,7 @@
       <q-separator />
 
       <q-card-section v-if="!formSpri" style="max-height: 50vh" class="q-pa-none scroll">
-        <div v-if="lists.length === 0">
+        <div v-if="lists?.length === 0">
           <div class="column flex-center" style="min-height: 300px;">
             <div>Maaf data tidak ditemukan</div>
             <q-btn
@@ -82,7 +82,7 @@
             @set-model="setTglRawatInap"
             class="col-5"
           />
-          <template v-if="spesialistiks.length > 0 && form.tglRawatInap !== null">
+          <template v-if="spesialistiks?.length > 0 && form.tglRawatInap !== null">
             <q-select
               ref="refSpesialis"
               v-model="form.spesialis"
@@ -120,7 +120,7 @@
               </template>
             </q-select>
             <q-select
-              v-if="dokters.length > 0 && form.spesialis !== null"
+              v-if="dokters?.length > 0 && form.spesialis !== null"
               ref="refDokter"
               v-model="form.dokter"
               label="Dokter"
@@ -254,7 +254,7 @@ const setTglRawatInap = async (val) => {
 }
 
 function spesialisFn (val, update, abort) {
-  if (val.length < 2) {
+  if (val?.length < 2) {
     abort()
     return
   }
@@ -294,7 +294,7 @@ const cariDataDokter = async () => {
 }
 
 function dokterFn (val, update, abort) {
-  if (val === null || val.length < 1) {
+  if (val === null || val?.length < 1) {
     update(() => {
       optionsDokters.value = dokters.value
     })

@@ -288,7 +288,7 @@ if (store.edited === true) {
   daySelected.value = store.checkBoxValue
 }
 const checkBox = (value, event) => {
-  if (value.length) {
+  if (value?.length) {
     store.tanggals = []
     value.forEach(data => {
       store.setForm('hari_0' + data + 1, store.days[data].id)

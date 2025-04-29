@@ -27,7 +27,7 @@ export const useMasterBarang108Form = defineStore('master_barang108_form', {
       const columns = [
         'akun', 'kode', 'kelompok', 'jenis', 'objek', 'rincian_objek', 'sub_rincian_objek', 'sub_sub_rincian_objek', 'uraian'
       ]
-      for (let i = 0; i < columns.length; i++) {
+      for (let i = 0; i < columns?.length; i++) {
         this.setForm(columns[i], null)
       }
     },

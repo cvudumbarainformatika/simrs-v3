@@ -145,7 +145,7 @@
                     autocomplete="nama"
                     option-value="dpjp"
                     option-label="nama"
-                    :disable="!store.dpjps.length"
+                    :disable="!store.dpjps?.length"
                     outlined
                     :source="store.dpjps"
                     :loading="store.loading"

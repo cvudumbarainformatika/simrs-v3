@@ -34,7 +34,7 @@
           <app-loading />
         </div>
         <div
-          v-if="!rekap.jadwals.length && !rekap.loading"
+          v-if="!rekap.jadwals?.length && !rekap.loading"
           class="flex flex-center"
         >
           <app-no-data />

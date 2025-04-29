@@ -1,5 +1,5 @@
 <template>
-  <template v-if="store.belanja.length > 0 && store.pendapatan.length > 0 && store.silpaskg.length > 0">
+  <template v-if="store.belanja?.length > 0 && store.pendapatan?.length > 0 && store.silpaskg?.length > 0">
     <q-card-section class="full-width">
       <div class="row justify-center">
         <div class="full-width">

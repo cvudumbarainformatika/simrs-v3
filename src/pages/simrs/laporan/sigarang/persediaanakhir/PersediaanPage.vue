@@ -200,7 +200,7 @@
         <div>{{ row.satuan?.nama }}</div>
       </template>
       <template #cell-qty="{row}">
-        <div v-if="row.monthly.length">
+        <div v-if="row.monthly?.length">
           <div
             v-for="(item,i) in row.monthly"
             :key="i"
@@ -217,7 +217,7 @@
             </div>
           </div>
         </div>
-        <div v-else-if="row.recent.length">
+        <div v-else-if="row.recent?.length">
           <div
             v-for="(item,i) in row.recent"
             :key="i"
@@ -249,7 +249,7 @@
         </td>
         <td>
           <div
-            v-if="store.items.length"
+            v-if="store.items?.length"
             class="text-right"
           >
             {{ formatRp(store.total) }}

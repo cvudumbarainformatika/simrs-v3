@@ -30,7 +30,7 @@
         <ListPage />
       </q-scroll-area>
       <div
-        v-if="Object.keys(store.meta).length"
+        v-if="Object.keys(store.meta)?.length"
         class="absolute-bottom bg-primary text-white"
       >
         <BottomComp

@@ -83,7 +83,7 @@ export const useDiagnosaStore = defineStore('diagnosa-store', {
 
     //= ===
     async cariIcd9 (val) {
-      if (val.length < 3) {
+      if (val?.length < 3) {
         return
       }
       this.loadingIcd = true
@@ -95,7 +95,7 @@ export const useDiagnosaStore = defineStore('diagnosa-store', {
       await api.get('v1/simrs/ranap/ruangan/mastericd9', params)
         .then(response => {
           this.loadingIcd = false
-          if (response?.data.length) {
+          if (response?.data?.length) {
             this.optionsIcd9 = response?.data
             return Promise.resolve(response)
           }
@@ -110,13 +110,13 @@ export const useDiagnosaStore = defineStore('diagnosa-store', {
     //= ===
     setKode (val) {
       this.formdiagnosa.kddiagnosa = val
-      const ada = this.listDiagnosa.length > 0
+      const ada = this.listDiagnosa?.length > 0
       if (ada) {
         const target = this.listDiagnosa.filter(x => x.kode === val)
-        target.length
+        target?.length
           ? this.formdiagnosa.diagnosa = target[0].keterangan
           : this.formdiagnosa.diagnosa = ''
-        target.length
+        target?.length
           ? this.formdiagnosa.dtd = target[0].dtd ? target[0].dtd : ''
           : this.formdiagnosa.dtd = ''
       }

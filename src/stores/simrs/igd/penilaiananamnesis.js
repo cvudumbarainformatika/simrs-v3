@@ -77,7 +77,7 @@ export const usePenilaianAnamnesisIgd = defineStore('penilaian_anamnesis_igd', {
         if (resp.status === 200) {
           const storePasien = usePengunjungIgdStore()
           const isix = resp.data.result
-          const isi = isix[isix.length - 1]
+          const isi = isix[isix?.length - 1]
 
           storePasien.injectDataPasien(pasien, isi, 'penilaiananamnesis')
           notifSuccess(resp)
@@ -155,7 +155,7 @@ export const usePenilaianAnamnesisIgd = defineStore('penilaian_anamnesis_igd', {
         //       formHumpty.kelamin = el.categories?.find(x => x?.label === pasien?.kelamin) ?? null
         //     }
         //     else {
-        //       formHumpty[el.kode] = el.categories[el.categories.length - 1] ?? null
+        //       formHumpty[el.kode] = el.categories[el.categories?.length - 1] ?? null
         //     }
         //   }
         // }
@@ -230,10 +230,10 @@ export const usePenilaianAnamnesisIgd = defineStore('penilaian_anamnesis_igd', {
       for (let i = 0; i < this.barthels?.form?.length; i++) {
         const el = this.barthels.form[i]
         if (data?.barthel) {
-          formBarthel[el.kode] = el?.categories?.find(item => item.skor === data?.barthel[el.kode]?.skor) ?? el.categories[el.categories.length - 1] ?? null
+          formBarthel[el.kode] = el?.categories?.find(item => item.skor === data?.barthel[el.kode]?.skor) ?? el.categories[el.categories?.length - 1] ?? null
         }
         else {
-          formBarthel[el.kode] = el.categories[el.categories.length - 1] ?? null
+          formBarthel[el.kode] = el.categories[el.categories?.length - 1] ?? null
         }
       }
       // formBarthel['kode'] = usia
@@ -244,7 +244,7 @@ export const usePenilaianAnamnesisIgd = defineStore('penilaian_anamnesis_igd', {
       for (let i = 0; i < this.nortons?.form?.length; i++) {
         const el = this.nortons.form[i]
         formNorton[el.kode] = el.categories[0]
-        // this.formNorton = { ...this.formNorton, [el?.kode]: el.categories[el.categories.length - 1] }
+        // this.formNorton = { ...this.formNorton, [el?.kode]: el.categories[el.categories?.length - 1] }
       }
       this.formNorton = formNorton
 
@@ -276,7 +276,7 @@ export const usePenilaianAnamnesisIgd = defineStore('penilaian_anamnesis_igd', {
             formHumpty.kelamin = el.categories?.find(x => x?.label === pasien?.kelamin) ?? null
           }
           else {
-            formHumpty[el.kode] = el.categories[el.categories.length - 1] ?? null
+            formHumpty[el.kode] = el.categories[el.categories?.length - 1] ?? null
           }
         }
       }
@@ -295,8 +295,8 @@ export const usePenilaianAnamnesisIgd = defineStore('penilaian_anamnesis_igd', {
       const formOntario = {}
       for (let i = 0; i < this.ontarios?.form?.length; i++) {
         const el = this.ontarios.form[i]
-        if (el.submenu.length) {
-          for (let n = 0; n < el.submenu.length; n++) {
+        if (el.submenu?.length) {
+          for (let n = 0; n < el.submenu?.length; n++) {
             const sub = el.submenu[n]
             formOntario[sub.kode] = sub.categories?.find(x => x?.skor === 0)
           }
@@ -490,7 +490,7 @@ export const usePenilaianAnamnesisIgd = defineStore('penilaian_anamnesis_igd', {
           notifSuccess(resp)
           const result = resp?.data?.result
           const pengunjung = usePengunjungIgdStore()
-          const isi = result[result.length - 1]
+          const isi = result[result?.length - 1]
           pengunjung.injectDataPasien(pasien, isi, 'penilaiananamnesis')
           // storePasien.injectDataPasien(pasien, isi, 'penilaiananamnesis')
         }

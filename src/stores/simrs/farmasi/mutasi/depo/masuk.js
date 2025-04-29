@@ -174,7 +174,7 @@ export const useMutasiMasukDepoStore = defineStore('mutasi_masuk_depo', {
             notifSuccess(resp)
             const index = row.permintaanrinci.findIndex(a => a.id === val.id)
             if (index >= 0) row.permintaanrinci.splice(index, 1)
-            if (!row.permintaanrinci.length) {
+            if (!row.permintaanrinci?.length) {
               // const list = useListPermintaanStore()
               // list.ambilPermintaan()
               this.getPermintaanDepo()

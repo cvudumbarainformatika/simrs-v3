@@ -34,7 +34,7 @@ import { useSettingsStore } from 'src/stores/simrs/logistik/sigarang/settings/se
 import { computed } from 'vue'
 const items = computed(() => {
   const apem = setting.menus.filter(data => { return data.name === 'Setting' })
-  if (apem.length) return apem[0]
+  if (apem?.length) return apem[0]
   return [0, 0]
 })
 // const items = ref([

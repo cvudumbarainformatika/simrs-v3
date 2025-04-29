@@ -351,7 +351,7 @@
           Rincian Permintaan Tersimpan
         </div>
       </div>
-      <div v-if="store.details.length">
+      <div v-if="store.details?.length">
         <!-- {{ store.details }} -->
         <div
           v-for="(det,i) in store.details"
@@ -403,7 +403,7 @@
           </div>
         </div>
       </div>
-      <div v-if="!store.details.length">
+      <div v-if="!store.details?.length">
         <app-no-data />
       </div>
     </div>
@@ -461,7 +461,7 @@ const user = computed(() => {
 
       if (apps?.user?.kdruangansim) {
         const depo = store.depos.filter(a => a.value === apps?.user?.kdruangansim)
-        if (depo.length) {
+        if (depo?.length) {
           store.setForm('dari', apps?.user?.kdruangansim)
           store.setDisp('depo', depo[0]?.nama)
           store.setParam('kddepo', apps?.user?.kdruangansim)
@@ -493,7 +493,7 @@ function setJumlahMinta (evt) {
   // console.log('maks stok', parseFloat(store.form.mak_stok))
   const inc = evt.includes('.')
   const ind = evt.indexOf('.')
-  const panj = evt.length
+  const panj = evt?.length
   const jumlah = isNaN(parseFloat(evt)) ? 0 : (inc && (ind === (panj - 2)) ? evt : parseFloat(evt))
   // const jumlah = !isNaN(parseFloat(evt)) ? parseFloat(evt) : 0
   const stok = parseFloat(store.form.stok) ?? 0
@@ -565,12 +565,12 @@ watch(() => apps?.user?.kdruangansim, (obj) => {
   }
   console.log('floor', dpFl)
   const depo = store.depos.filter(a => a.value === obj)
-  if (depo.length) {
+  if (depo?.length) {
     store.disp.depo = depo[0]?.nama
     console.log('watch', dpFl, gd)
     store.getListObat()
   }
-  // if (depo.length) store.getDataTable()
+  // if (depo?.length) store.getDataTable()
   // else {
   //   store.items = []
   //   store.meta = {}
@@ -593,7 +593,7 @@ onMounted(() => {
     }
   }
   const depo = store.depos.filter(a => a.value === apps?.user?.kdruangansim)
-  if (depo.length) {
+  if (depo?.length) {
     store.disp.depo = depo[0]?.nama
     // console.log('onmounted', dpFl, gd)
     store.getListObat()

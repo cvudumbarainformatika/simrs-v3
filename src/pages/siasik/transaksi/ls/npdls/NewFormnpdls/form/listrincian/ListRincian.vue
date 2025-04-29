@@ -115,7 +115,7 @@ function deleteData(row) {
       // carisrt.refreshTable()
       store.refreshTable()
 
-      if (store.transall.length === 0) {
+      if (store.transall?.length === 0) {
         store.initForm()
       }
       // console.log('data hapus', store.transall)

@@ -39,7 +39,7 @@
               @update:model-value="(val) => {
                 const inc = val.includes('.')
                 const ind = val.indexOf('.')
-                const panj = val.length
+                const panj = val?.length
                 const nilai = isNaN(parseFloat(val)) ? 0 : (inc && (ind === (panj - 2) || ind === (panj - 1)) ? val : parseFloat(val))
                 jumlah=nilai
               }"

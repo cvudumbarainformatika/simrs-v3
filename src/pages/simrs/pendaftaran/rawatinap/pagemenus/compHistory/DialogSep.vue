@@ -673,7 +673,7 @@ const init = () => {
 }
 
 async function ppkRujukanFn (val, update, abort) {
-  if (val.length < 3) {
+  if (val?.length < 3) {
     abort()
     return
   }
@@ -698,7 +698,7 @@ async function ppkRujukanFn (val, update, abort) {
   })
 }
 async function diagnosaFn (val, update, abort) {
-  if (val.length < 3) {
+  if (val?.length < 3) {
     abort()
     return
   }
@@ -723,7 +723,7 @@ async function diagnosaFn (val, update, abort) {
 }
 
 function dokterFn (val, update, abort) {
-  if (val.length < 1) {
+  if (val?.length < 1) {
     update(() => {
       sep.dokters = pendaftaran.dokters
     })

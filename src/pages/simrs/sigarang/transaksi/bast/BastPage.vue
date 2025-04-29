@@ -89,14 +89,14 @@
         >
           <app-btn
             label="Simpan BAST"
-            :disable="!store.tampilPenerimaans.length || store.loading"
+            :disable="!store.tampilPenerimaans?.length || store.loading"
             :loading="store.loading"
             @click="simpanBast"
           />
         </div>
       </q-card-section>
     </q-card>
-    <q-card v-if="store.pemesanans.length">
+    <q-card v-if="store.pemesanans?.length">
       <q-card-section>
         <div
           class="row fit no-wrap items-center justify-start q-mb-sm q-col-gutter-sm text-weight-bold bb"
@@ -144,7 +144,7 @@
               {{ formatRpDouble(pesan.total) }}
             </div>
           </div>
-          <div v-if="pesan.checked && pesan.penerimaan.length">
+          <div v-if="pesan.checked && pesan.penerimaan?.length">
             <div class="row fit no-wrap justify-start items-center text-weight-bolder">
               <div class="anak">
                 Nomor Faktur
@@ -464,7 +464,7 @@ function simpanBast() {
   store.form.penerimaans = temp.map(psn => {
     const anu = psn
     psn.penerimaan = psn.penerimaan.filter(trm => trm.checked)
-    if (anu.penerimaan.length) return anu.penerimaan
+    if (anu.penerimaan?.length) return anu.penerimaan
     else return false
   }).filter(x => x !== false)
   console.log('form', store.form)

@@ -47,7 +47,7 @@
                         label="id"
                       />
                     </div>
-                    <!-- <div v-if="Object.keys( store.pasien).length">
+                    <!-- <div v-if="Object.keys( store.pasien)?.length">
                   <q-btn
                     flat
                     outline
@@ -354,7 +354,7 @@ const cekPanel = () => {
 
 function cariDokter(val) {
   const opt = store.dokters.filter(dok => dok.nama.toLowerCase().includes(val.toLowerCase()))
-  if (opt.length) store.filtDokters = opt
+  if (opt?.length) store.filtDokters = opt
   else {
     store.cariDokter(val)
   }

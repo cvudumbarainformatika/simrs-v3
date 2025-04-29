@@ -56,7 +56,7 @@ const itemFilterred = computed(() => {
 
   console.log('arr', arr)
 
-  if (org.search.length > 0) {
+  if (org.search?.length > 0) {
     return arr.filter(i => i?.nama?.toLowerCase().indexOf(org.search.toLowerCase()) > -1 || i?.gruper?.toLowerCase().indexOf(org.search.toLowerCase()) > -1)
   }
 

@@ -280,7 +280,7 @@
                 v-if="!store.loading"
                 class="col-md-9 col-xs-12"
               >
-                {{ Object.keys(store.barang).length?store.barang.alokasi:0 }}
+                {{ Object.keys(store.barang)?.length?store.barang.alokasi:0 }}
               </div>
             </div>
             <div class="row q-col-gutter-md q-mb-sm items-center text-weight-bolder">
@@ -328,7 +328,7 @@
                 v-if="!store.loading"
                 class="col-md-8 col-xs-12"
               >
-                <div v-if="maksRuangan.formRuangan.flag_minta===null && !Object.keys(store.minMaxPenggunas).length && store.form.kode_rs">
+                <div v-if="maksRuangan.formRuangan.flag_minta===null && !Object.keys(store.minMaxPenggunas)?.length && store.form.kode_rs">
                   <app-btn
                     label="Minta maks ruangan"
                     color="orange"
@@ -336,7 +336,7 @@
                   />
                 </div>
                 <div
-                  v-if="maksRuangan.formRuangan.flag_minta==='1' && !Object.keys(store.minMaxPenggunas).length"
+                  v-if="maksRuangan.formRuangan.flag_minta==='1' && !Object.keys(store.minMaxPenggunas)?.length"
                   class="row"
                 >
                   <app-input
@@ -355,7 +355,7 @@
                   />
                 </div>
                 <div
-                  v-if="maksRuangan.formRuangan.flag_minta==='1' && Object.keys(store.minMaxPenggunas).length"
+                  v-if="maksRuangan.formRuangan.flag_minta==='1' && Object.keys(store.minMaxPenggunas)?.length"
                   class="row"
                 >
                   <q-badge>
@@ -443,7 +443,7 @@
                 <app-btn
                   label="Kirim ke Depo"
                   icon-right="icon-mat-send"
-                  :disable="!table.mapGudang.length || table.loading"
+                  :disable="!table.mapGudang?.length || table.loading"
                   :loading="table.Finishloading "
                   @click="table.selesaiInput"
                 />
@@ -506,7 +506,7 @@ const time = () => {
   // stokOpname.value = tanggal.value.month === '2' ? !!(parseInt(tanggal.value.day) > 25) : !!(parseInt(tanggal.value.day) > 28)
   // tutupPermintaan.value = parseInt(tanggal.value.hour) >= 13 || parseInt(tanggal.value.hour) <= 7
   const barang = table.barangHasStok.filter(barang => { return barang.kode === store.form.kode_rs })
-  if (barang.length) {
+  if (barang?.length) {
     const excepDate = new Date('2023-03-09')
     const sameday = date.isSameDate(sekarang, excepDate, 'days')
     // console.log('same date', sameday)
@@ -607,7 +607,7 @@ const pilihPengguna = (val) => {
   store.setNama('penanggungjawab', pj.jabatan)
   store.setForm('kode_pengguna', peng.kode)
   store.setNama('pengguna', peng.jabatan)
-  if (ruang.length) {
+  if (ruang?.length) {
     store.setForm('tujuan', ruang[0].kode_ruang)
     store.setParams('kode_ruangan', ruang[0].kode_ruang)
     store.setNama('ruang', ruang[0].ruang.uraian)
@@ -640,9 +640,9 @@ const barangSelected = val => {
   // const nama = depo.map(data => {
   let temp = nama.split(' ')
 
-  if (temp.length > 2) {
+  if (temp?.length > 2) {
     // let a = ''
-    for (let i = 0; i < temp.length; i++) {
+    for (let i = 0; i < temp?.length; i++) {
       temp[i] = temp[i].charAt(0)
       // noPer = noPer + temp[i]
       // console.log('temp', a = a + temp[i])
@@ -666,15 +666,15 @@ const barangSelected = val => {
 
   // const depo = table.mapingDepos.filter(data => { return data.kode_rs === val })
   // console.log('depo', depo)
-  // if (depo.length) {
+  // if (depo?.length) {
   //   const nama = depo[0].gudang.nama
   //   let noPer = ''
   //   // const nama = depo.map(data => {
   //   let temp = nama.split(' ')
 
-  //   if (temp.length > 2) {
+  //   if (temp?.length > 2) {
   //     let a = ''
-  //     for (let i = 0; i < temp.length; i++) {
+  //     for (let i = 0; i < temp?.length; i++) {
   //       temp[i] = temp[i].charAt(0)
   //       // noPer = noPer + temp[i]
   //       console.log('temp', a = a + temp[i])

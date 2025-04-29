@@ -274,7 +274,7 @@
                         Kode Barang
                       </div>
                       <div class="col-6">
-                        {{ store.barangrs.length ? store.barangrs[0].kode : '-' }}
+                        {{ store.barangrs?.length ? store.barangrs[0].kode : '-' }}
                       </div>
                     </div>
                     <div class="row q-mb-sm">
@@ -282,7 +282,7 @@
                         Uraian 108
                       </div>
                       <div class="col-6">
-                        {{ store.barangrs.length ? store.barangrs[0].uraian_108 : '-' }}
+                        {{ store.barangrs?.length ? store.barangrs[0].uraian_108 : '-' }}
                       </div>
                     </div>
 
@@ -291,7 +291,7 @@
                         Rekening 50
                       </div>
                       <div class="col-6">
-                        {{ store.barangrs.length ? store.barangrs[0].uraian_50 : '-' }}
+                        {{ store.barangrs?.length ? store.barangrs[0].uraian_50 : '-' }}
                         <!-- <app-autocomplete-new
                           :model="store.form.kode_50"
                           outlined
@@ -313,7 +313,7 @@
                         Satuan
                       </div>
                       <div class="col-6">
-                        {{ store.barangrs.length ? store.barangrs[0].satuan.nama : '-' }}
+                        {{ store.barangrs?.length ? store.barangrs[0].satuan.nama : '-' }}
                       </div>
                     </div>
                     <div class="row q-mb-sm items-center">
@@ -328,7 +328,7 @@
                           label="Keterangan / Merk"
                           outlined
                           type="text"
-                          :rules="[ val => val.length <= 255 || 'maximal 255 karakter']"
+                          :rules="[ val => val?.length <= 255 || 'maximal 255 karakter']"
                           :disable="store.loadingTambah"
                         />
                       </div>
@@ -465,14 +465,14 @@
                         v-if="!store.needToEdit"
                         label="Tutup Pemesanan"
                         :loading="store.loadingFinish"
-                        :disable="store.isOpen || store.loadingFinish || store.loadingTambah || !table.items.length"
+                        :disable="store.isOpen || store.loadingFinish || store.loadingTambah || !table.items?.length"
                         @click="onFisnish"
                       />
                       <app-btn
                         v-if="store.needToEdit"
                         label="Selesai Edit"
                         :loading="store.loadingFinish"
-                        :disable="store.isOpen || store.loadingFinish || store.loadingTambah || !table.items.length"
+                        :disable="store.isOpen || store.loadingFinish || store.loadingTambah || !table.items?.length"
                         @click="onFisnishEdit"
                       />
                     </div>
@@ -566,22 +566,22 @@
                 </td>
                 <td>
                   <div class="bold">
-                    {{ store.barangrs.length ? store.barangrs[0].kode : '-' }}
+                    {{ store.barangrs?.length ? store.barangrs[0].kode : '-' }}
                   </div>
                 </td>
                 <td>
                   <div class="bold">
-                    {{ store.barangrs.length ? store.barangrs[0].barang108.kode : '-' }}
+                    {{ store.barangrs?.length ? store.barangrs[0].barang108.kode : '-' }}
                   </div>
                 </td>
                 <td>
                   <div class="bold">
-                    {{ store.barangrs.length ? store.barangrs[0].barang108.uraian : '-' }}
+                    {{ store.barangrs?.length ? store.barangrs[0].barang108.uraian : '-' }}
                   </div>
                 </td>
                 <td>
                   <div class="bold">
-                    {{ store.barangrs.length ? store.barangrs[0].satuan.nama : '-' }}
+                    {{ store.barangrs?.length ? store.barangrs[0].satuan.nama : '-' }}
                   </div>
                 </td>
                 <td>
@@ -780,7 +780,7 @@ const clearBarangRs = () => {
 const onFisnish = () => {
   refNoUrut.value.$refs.refInput.validate()
   refBidang.value.$refs.refInput.validate()
-  if (table.items.length) {
+  if (table.items?.length) {
     const jumlah = table.items.map(data => {
       return data.sub_total
     }).reduce((x, y) => { return x + y })

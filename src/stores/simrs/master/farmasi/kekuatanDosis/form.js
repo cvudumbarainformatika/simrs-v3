@@ -19,7 +19,7 @@ export const useMasterKekuatanDosisForm = defineStore('master_KekuatanDosis_form
       const columns = [
         'kekuatandosis'
       ]
-      for (let i = 0; i < columns.length; i++) {
+      for (let i = 0; i < columns?.length; i++) {
         this.setForm(columns[i], null)
       }
       // this.setForm('isi', 1)

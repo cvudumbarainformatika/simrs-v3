@@ -15,17 +15,17 @@
             <div class="row q-mb-xs">
               <div style="width:100px">
                 Nama
-              </div> <span>: {{ store.details.length > 0 ? store.details[0].nama : null }}</span>
+              </div> <span>: {{ store.details?.length > 0 ? store.details[0].nama : null }}</span>
             </div>
             <div class="row q-mb-xs">
               <div style="width:100px">
                 No.KTP
-              </div> <span>: {{ store.details.length > 0 ? store.details[0].noktp : null }}</span>
+              </div> <span>: {{ store.details?.length > 0 ? store.details[0].noktp : null }}</span>
             </div>
             <div class="row q-mb-xs">
               <div style="width:100px">
                 Alamat
-              </div> <span>: {{ store.details.length > 0 ? store.details[0].alamat : null }}</span>
+              </div> <span>: {{ store.details?.length > 0 ? store.details[0].alamat : null }}</span>
             </div>
             <div class="row q-mb-xs">
               <div style="width:100px">
@@ -35,23 +35,23 @@
             <div class="row q-mb-xs">
               <div style="width:100px">
                 Agama
-              </div> <span>: {{ store.details.length > 0 ? store.details[0].agama : null }}</span>
+              </div> <span>: {{ store.details?.length > 0 ? store.details[0].agama : null }}</span>
             </div>
             <div class="row q-mb-xs">
               <div style="width:100px">
                 Pekerjaan
-              </div> <span>: {{ store.details.length > 0 ? store.details[0].nama_pekerjaan : null }}</span>
+              </div> <span>: {{ store.details?.length > 0 ? store.details[0].nama_pekerjaan : null }}</span>
             </div>
             <q-separator class="q-my-md" />
             <div class="row q-mb-xs">
               <div style="width:100px">
                 Nota
-              </div> <span>: {{ store.details.length > 0 ? store.details[0].nota : null }}</span>
+              </div> <span>: {{ store.details?.length > 0 ? store.details[0].nota : null }}</span>
             </div>
             <div class="row q-mb-xs">
               <div style="width:100px">
                 Pengirim
-              </div> <span>: {{ store.details.length > 0 ? store.details[0].pengirim : null }}</span>
+              </div> <span>: {{ store.details?.length > 0 ? store.details[0].pengirim : null }}</span>
             </div>
           </div>
         </div>
@@ -207,7 +207,7 @@
                     {{ item.name === ""?
                       i + n + 1
                       : n!==0? ''
-                        :store.details[i - 1].name === ""?i + store.details[i - 1].value.length
+                        :store.details[i - 1].name === ""?i + store.details[i - 1].value?.length
                           :i + n + 1
                     }}
                   </td>
@@ -342,7 +342,7 @@
           class="q-py-md"
         >
           <app-btn
-            v-if="store.details.length > 0"
+            v-if="store.details?.length > 0"
             label="Simpan Catatan"
             :loading="load"
           />
@@ -383,7 +383,7 @@ function getImage() {
 const load = ref(false)
 
 async function onSubmit() {
-  if (store.details.length === 0) {
+  if (store.details?.length === 0) {
     notifErrVue('Data Masih Belum terload semua')
   }
   load.value = true

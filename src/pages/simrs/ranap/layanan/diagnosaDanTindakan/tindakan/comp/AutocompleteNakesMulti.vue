@@ -43,13 +43,13 @@ const createValue = (val, done) => {
   // If "var" content is undefined/null, then it doesn't tampers with the model
   // and only resets the input textbox to empty string
 
-  if (val.length > 0) {
+  if (val?.length > 0) {
     const modelValue = (model?.value || []).slice()
 
     val
       .split(/[,;|]+/)
       .map(v => v.trim())
-      .filter(v => v.length > 0)
+      .filter(v => v?.length > 0)
       .forEach(v => {
         // if (props.source?.includes(v) === false) {
         //   filterOptions.value.push(v)
@@ -87,7 +87,7 @@ const filterFn = (val, update) => {
   },
   ref => {
     console.log('ref', ref)
-    if (val !== '' && ref.options.length) {
+    if (val !== '' && ref.options?.length) {
       ref.setOptionIndex(-1)
       ref.moveOptionSelection(1, true)
     }

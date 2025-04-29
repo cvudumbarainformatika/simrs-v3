@@ -105,7 +105,7 @@ function onSubmit () {
   storeAuth.login(formData)
   // .then(() => {
   //   console.log('loading false', storeAuth.aplications)
-  //   if (storeAuth.aplications.length === 1) {
+  //   if (storeAuth.aplications?.length === 1) {
   //     if (storeAuth.aplications[0].aplikasi === 'pegawai') {
   //       router.push('pegawai/user/list')
   //     } else {
@@ -117,7 +117,7 @@ function onSubmit () {
   // storeAuth.login2(formData)
   //   .then(() => {
   //     console.log('loading false', storeAuth.aplications)
-  //     if (storeAuth.aplications.length === 1) {
+  //     if (storeAuth.aplications?.length === 1) {
   //       if (storeAuth.aplications[0].aplikasi === 'pegawai') {
   //         router.push('pegawai/user/list')
   //       } else {

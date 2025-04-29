@@ -581,7 +581,7 @@ const teknikAnestesia = computed(() => {
   for (let i = 0; i < a?.length; i++) {
     const el = a[i]
     const d = a.filter(x => x.nama === el?.nama)
-    if (d.length) {
+    if (d?.length) {
       return d.map(x => {
         x.nama = el.nama
         x.check = el.check
@@ -603,7 +603,7 @@ const teknikKhusus = computed(() => {
   for (let i = 0; i < a?.length; i++) {
     const el = a[i]
     const d = a.filter(x => x.nama === el?.nama)
-    if (d.length) {
+    if (d?.length) {
       return d.map(x => {
         x.nama = el.nama
         x.check = el.check

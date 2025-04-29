@@ -57,7 +57,7 @@
       </div>
       <!-- Special Procedure -->
       <div
-        v-if="ina.specialProcedureOpts.length"
+        v-if="ina.specialProcedureOpts?.length"
         class="col-12 q-mb-sm"
       >
         <q-select
@@ -100,7 +100,7 @@
       </div>
       <!-- Special Prosthesis -->
       <div
-        v-if="ina.specialProsthesisOpts.length"
+        v-if="ina.specialProsthesisOpts?.length"
         class="col-12 q-mb-sm"
       >
         <q-select
@@ -143,7 +143,7 @@
       </div>
       <!-- Special Investigation -->
       <div
-        v-if="ina.specialInvestigationOpts.length"
+        v-if="ina.specialInvestigationOpts?.length"
         class="col-12 q-mb-sm"
       >
         <q-select
@@ -186,7 +186,7 @@
       </div>
       <!-- Special Drug  -->
       <div
-        v-if="ina.specialDrugOpts.length"
+        v-if="ina.specialDrugOpts?.length"
         class="col-12 q-mb-sm"
       >
         <q-select
@@ -281,7 +281,7 @@ onMounted(() => {
 function setIcd (val) {
   store.setFormIcd('kdprocedure', val)
   const icd = store.optionsIcd9.filter(a => a.kd_prosedur === val)
-  if (icd.length) {
+  if (icd?.length) {
     store.setFormIcd('procedure', icd[0].prosedur)
   }
 }
@@ -293,7 +293,7 @@ function onSubmit () {
 }
 
 // function filterFn(val, update, abort) {
-//   if (val.length < 1) {
+//   if (val?.length < 1) {
 //     abort()
 //     return
 //   }
@@ -344,7 +344,7 @@ function filterIcd (val, update) {
         )
       )
     let filteredData = multiFilter(store.optionsIcd9, filter, needle)
-    if (!filteredData.length) {
+    if (!filteredData?.length) {
       if (val !== '') {
         store.cariIcd9(val).then(() => {
           filteredData = multiFilter(store.optionsIcd9, filter, needle)

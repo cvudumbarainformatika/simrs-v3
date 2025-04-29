@@ -45,11 +45,11 @@
         </div>
         <div class="">
           <div v-if="rin.stokreal">
-            <div v-if="rin.stokreal.length">
+            <div v-if="rin.stokreal?.length">
               <!-- {{ rin.stokreal.filter(x => x.kdruang === row.dari).map(a => parseFloat(a.jumlah)).reduce((a,b) => a + b, 0) }} -->
               {{ rin.stok }}
             </div>
-            <div v-if="!rin.stokreal.length">
+            <div v-if="!rin.stokreal?.length">
               0
             </div>
           </div>
@@ -264,7 +264,7 @@ function setNol (val) {
 function setJumlah (evt, val) {
   const inc = evt.includes('.')
   const ind = evt.indexOf('.')
-  const panj = evt.length
+  const panj = evt?.length
   const beli = isNaN(parseFloat(evt)) ? 0 : (inc && (ind === (panj - 2)) ? evt : parseFloat(evt))
   // const beli = !isNaN(parseFloat(evt)) ? (parseFloat(evt) <= 0 ? 0 : parseFloat(evt)) : 0
   const max = parseFloat(val?.mak_stok)

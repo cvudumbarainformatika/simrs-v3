@@ -29,7 +29,7 @@
                     <q-card dark>
                       <q-separator />
                       <q-card-section class="q-pa-none">
-                        <div v-if="item?.anamnesis.length">
+                        <div v-if="item?.anamnesis?.length">
                           <q-bar class="bg-accent">
                             <div>ANAMNESIS</div>
                           </q-bar>
@@ -432,7 +432,7 @@
                                 <td class="text-right" style="max-width: 150px;">
                                   {{ apotekrajal.masterobat?.rs2 }}
                                 </td>
-                                <td v-if="apotekrajal?.rs27.length > 0 && apotekrajal?.rs28.length > 0"
+                                <td v-if="apotekrajal?.rs27?.length > 0 && apotekrajal?.rs28?.length > 0"
                                   class="text-right" style="max-width: 250px;">
                                   {{ getInteger(apotekrajal?.rs27) + ' X ' + getInteger(apotekrajal?.rs28) }}
                                 </td>
@@ -450,7 +450,7 @@
                                 <td class="text-right" style="max-width: 150px;">
                                   {{ apotekrajalpolilalu.masterobat?.rs2 }}
                                 </td>
-                                <td v-if="apotekrajalpolilalu?.rs27.length > 0 && apotekrajalpolilalu?.rs28.length > 0"
+                                <td v-if="apotekrajalpolilalu?.rs27?.length > 0 && apotekrajalpolilalu?.rs28?.length > 0"
                                   class="text-right" style="max-width: 250px;">
                                   {{ getInteger(apotekrajalpolilalu?.rs27) + ' X ' +
                                     getInteger(apotekrajalpolilalu?.rs28) }}
@@ -749,7 +749,7 @@
                     <q-card dark>
                       <q-separator />
                       <q-card-section class="q-pa-none">
-                        <div v-if="item?.anamnesis.length">
+                        <div v-if="item?.anamnesis?.length">
                           <q-bar class="bg-accent">
                             <div>ANAMNESIS</div>
                           </q-bar>
@@ -999,7 +999,7 @@
                               {{ tin + 1 }}. {{ tindakan?.mastertindakan?.rs2 }}
                               <q-item-label caption lines="2" />
                               keterangan = {{ tindakan?.rs20 }}
-                              <div v-if="tindakan?.gambardokumens.length > 0" class="image-row">
+                              <div v-if="tindakan?.gambardokumens?.length > 0" class="image-row">
                                 <div v-for="(image, index) in tindakan?.gambardokumens" :key="index"
                                   class="image-container">
                                   <q-img :src="pathImg + image.url" class="image">
@@ -1438,7 +1438,7 @@
                     <q-card dark>
                       <q-separator />
                       <q-card-section class="q-pa-none">
-                        <div v-if="item?.anamnesis.length">
+                        <div v-if="item?.anamnesis?.length">
                           <q-bar class="bg-accent">
                             <div>ANAMNESIS</div>
                           </q-bar>
@@ -1685,7 +1685,7 @@
                                 {{ tin + 1 }}. {{ tindakan?.mastertindakan?.rs2 }}
                                 <q-item-label caption lines="2" />
                                 keterangan = {{ tindakan?.rs20 }}
-                                <div v-if="tindakan?.gambardokumens.length > 0" class="image-row">
+                                <div v-if="tindakan?.gambardokumens?.length > 0" class="image-row">
                                   <div v-for="(image, index) in tindakan?.gambardokumens" :key="index"
                                     class="image-container">
                                     <q-img :src="pathImg + image.url" class="image">
@@ -1842,7 +1842,7 @@
                                 <td class="text-right" style="max-width: 150px;">
                                   {{ apotekrajal.masterobat?.rs2 }}
                                 </td>
-                                <td v-if="apotekrajal?.rs27.length > 0 && apotekrajal?.rs28.length > 0"
+                                <td v-if="apotekrajal?.rs27?.length > 0 && apotekrajal?.rs28?.length > 0"
                                   class="text-right" style="max-width: 250px;">
                                   {{ getInteger(apotekrajal?.rs27) + ' X ' + getInteger(apotekrajal?.rs28) }}
                                 </td>
@@ -1860,7 +1860,7 @@
                                 <td class="text-right" style="max-width: 150px;">
                                   {{ apotekrajalpolilalu.masterobat?.rs2 }}
                                 </td>
-                                <td v-if="apotekrajalpolilalu?.rs27.length > 0 && apotekrajalpolilalu?.rs28.length > 0"
+                                <td v-if="apotekrajalpolilalu?.rs27?.length > 0 && apotekrajalpolilalu?.rs28?.length > 0"
                                   class="text-right" style="max-width: 250px;">
                                   {{ getInteger(apotekrajalpolilalu?.rs27) + ' X ' +
                                     getInteger(apotekrajalpolilalu?.rs28) }}
@@ -2284,7 +2284,7 @@ function suhu(val) {
 
 function getKesadaran(val) {
   const temp = store.optionsTingkatkesadaran.filter(a => a.value === val)
-  if (temp.length) {
+  if (temp?.length) {
     return temp[0].label
   }
   else {
@@ -2353,7 +2353,7 @@ function tekananDarahDias(val) {
 function getInteger(str) {
   const parts = str.split('.')
 
-  if (parts.length > 1 && parseInt(parts[1]) === 0) {
+  if (parts?.length > 1 && parseInt(parts[1]) === 0) {
     return parts[0]
   }
 

@@ -210,7 +210,7 @@
     <div
       class="tmp-t z-top absolute-bottom "
     >
-      <div v-if="pasien?.gambars.length">
+      <div v-if="pasien?.gambars?.length">
         <div class="flex">
           <div class="q-py-xs q-px-sm f-10 bg-dark text-white">
             Gambar Tersimpan
@@ -524,8 +524,8 @@ async function func(filename) {
     ctx.value.fillRect(0, 0, cvn.width, cvn.height)
     ctx.value.drawImage(bg, x, y, width, height)
     // console.log('func', arr)
-    if (arr.value.length > 0) {
-      for (let i = 0; i < arr.value.length; i++) {
+    if (arr.value?.length > 0) {
+      for (let i = 0; i < arr.value?.length; i++) {
         drawShapes(arr.value[i].penanda,
           arr.value[i].x, arr.value[i].y,
           arr.value[i].ketebalan,

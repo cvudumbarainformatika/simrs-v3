@@ -241,7 +241,7 @@ const q = computed({
 //   } else {
 //     const split = aksesruangan.split('|')
 //     const res = []
-//     for (let i = 0; i < split.length; i++) {
+//     for (let i = 0; i < split?.length; i++) {
 //       const kd = split[i]
 //       res.push(setting.polis.filter(x => x.kodepoli === kd)[0])
 //     }

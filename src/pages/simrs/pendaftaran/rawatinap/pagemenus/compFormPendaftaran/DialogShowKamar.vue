@@ -174,13 +174,13 @@ const kamar = ref(null)
 const lists = computed(() => {
   const asli = props.items
   const thumb = []
-  for (let i = 0; i < asli.length; i++) {
+  for (let i = 0; i < asli?.length; i++) {
     const el = asli[i]
     const kmr = el.kamars
-    for (let n = 0; n < kmr.length; n++) {
+    for (let n = 0; n < kmr?.length; n++) {
       const x = kmr[n]
       if (x.kamar !== null) {
-        const kunj = x.kunjungan.length
+        const kunj = x.kunjungan?.length
           ? x.kunjungan.filter(a => {
             if (a.titipan !== '') {
               return a.titipan === x.rs5
@@ -237,17 +237,17 @@ function closeOrBack () {
 function lihatItem () {
   console.log('lihatItem', itm.value)
   const ad = itm.value.kamars
-  const terisi = ad.filter(x => x.kunjungan.length).reduce((x, y) => x + y.kunjungan.length, 0)
+  const terisi = ad.filter(x => x.kunjungan?.length).reduce((x, y) => x + y.kunjungan?.length, 0)
   console.log('terisi', terisi)
-  return { terisi, kapasitas: ad.length }
+  return { terisi, kapasitas: ad?.length }
 }
 
 // eslint-disable-next-line no-unused-vars
 function getKelas (item) {
-  const kamars = item.kamars.length ? item.kamars.map(x => x.rs5) : []
+  const kamars = item.kamars?.length ? item.kamars.map(x => x.rs5) : []
   const grup = [...new Set(kamars)]
   const temp = []
-  // if (grup.length) {
+  // if (grup?.length) {
   const kmrs = item.kamars
   for (let i = 0; i < grup?.length; i++) {
     const el = grup[i]
@@ -256,13 +256,13 @@ function getKelas (item) {
     // grup[i].kamars = kmr
     const obj = {
       group: el,
-      kelas: kmr.length ? kmr[0]?.kamar?.rs3 : null,
-      kamar: kmr.length ? kmr[0]?.rs1 : null,
-      ruang: kmr.length ? kmr[0]?.kamar?.rs2 : null,
+      kelas: kmr?.length ? kmr[0]?.kamar?.rs3 : null,
+      kamar: kmr?.length ? kmr[0]?.rs1 : null,
+      ruang: kmr?.length ? kmr[0]?.kamar?.rs2 : null,
       kamars: kmr,
-      kapasitas: kmr.length,
-      terisi: kmr.filter(x => x.kunjungan.length).reduce((x, y) => x + y.kunjungan.length, 0),
-      kosong: kmr.length - kmr.filter(x => x.kunjungan.length).reduce((x, y) => x + y.kunjungan.length, 0)
+      kapasitas: kmr?.length,
+      terisi: kmr.filter(x => x.kunjungan?.length).reduce((x, y) => x + y.kunjungan?.length, 0),
+      kosong: kmr?.length - kmr.filter(x => x.kunjungan?.length).reduce((x, y) => x + y.kunjungan?.length, 0)
     }
     temp.push(obj)
   }

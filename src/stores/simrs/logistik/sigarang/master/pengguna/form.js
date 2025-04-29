@@ -29,7 +29,7 @@ export const useMasterPenggunaForm = defineStore('master_Pengguna_form', {
         'kode',
         'jabatan'
       ]
-      for (let i = 0; i < columns.length; i++) {
+      for (let i = 0; i < columns?.length; i++) {
         this.setForm(columns[i], null)
       }
     },
@@ -66,10 +66,10 @@ export const useMasterPenggunaForm = defineStore('master_Pengguna_form', {
       const tLv2 = lv2 === null ? '0' : typeof lv2 === 'string' ? lv2 : lv2.toString()
       const tLv3 = lv3 === null ? '0' : typeof lv3 === 'string' ? lv3 : lv3.toString()
       const tlv4 = lv4 === null ? '0' : typeof lv4 === 'string' ? lv4 : lv4.toString()
-      const rLv1 = tLv1.length === 1 ? '0' + tLv1 : tLv1
-      const rLv2 = tLv2.length === 1 ? '0' + tLv2 : tLv2
-      const rLv3 = tLv3.length === 1 ? '0' + tLv3 : tLv3
-      const rLv4 = tlv4.length === 1 ? '0' + tlv4 : tlv4
+      const rLv1 = tLv1?.length === 1 ? '0' + tLv1 : tLv1
+      const rLv2 = tLv2?.length === 1 ? '0' + tLv2 : tLv2
+      const rLv3 = tLv3?.length === 1 ? '0' + tLv3 : tLv3
+      const rLv4 = tlv4?.length === 1 ? '0' + tlv4 : tlv4
       const kode = 'P-' + rLv1 + rLv2 + rLv3 + rLv4
 
       this.form.kode = kode
@@ -78,10 +78,10 @@ export const useMasterPenggunaForm = defineStore('master_Pengguna_form', {
       // console.log('lv2', lv2)
       // console.log('lv3', lv3)
       // console.log('lv4', lv4)
-      // console.log('tLv1', tLv1.length)
-      // console.log('tLv2', tLv2.length)
-      // console.log('tlv3', tLv3.length)
-      // console.log('tlv4', tlv4.length)
+      // console.log('tLv1', tLv1?.length)
+      // console.log('tLv2', tLv2?.length)
+      // console.log('tlv3', tLv3?.length)
+      // console.log('tlv4', tlv4?.length)
       // console.log('kode', kode)
       // console.log('kode', this.form.kode)
     },

@@ -245,13 +245,13 @@ const role = computed(() => {
   return apps?.user?.pegawai?.role_id
 })
 function cariGudang (val) {
-  if (table.gudangs.length) {
+  if (table.gudangs?.length) {
     const gudang = table.gudangs.filter(gud => gud.kode === val)
     if (apps?.user?.kdruangansim !== '') {
       const gudang2 = table.gudangs.filter(gud => gud.kode === apps?.user?.kdruangansim)
       store.setDisp('kdruang', gudang2[0]?.nama)
     }
-    if (gudang.length) {
+    if (gudang?.length) {
       return gudang[0]?.nama
     }
     else return 'Gudang / Depo tidak ditemukan'

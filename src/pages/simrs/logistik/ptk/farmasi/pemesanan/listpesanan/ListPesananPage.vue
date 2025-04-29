@@ -46,7 +46,7 @@
           color="white"
           dense
           placeholder="Cari Obat ..."
-          debounce="500"          
+          debounce="500"
           @update:model-value="store.setSearchObat"
         />
         <div class="q-ml-xs text-white">
@@ -62,7 +62,7 @@
           />
         </div>
         </div>
-        
+
       </template>
       <template #col-nopemesanan>
         <div>Nomor Pemesanan</div>
@@ -86,7 +86,7 @@
         <div>{{ row.tgl_pemesanan? dateFullFormat( row.tgl_pemesanan) : '-' }}</div>
       </template>
       <template #expand="{row}">
-        <div v-if="row.rinci.length">
+        <div v-if="row.rinci?.length">
           <div class="row items-center text-weight-bold">
             <div class="col-4">
               Obat
@@ -307,7 +307,7 @@ const CompDialog = defineAsyncComponent(() => import('../pemesanan/comp/CompDial
 
 // dianggap selesai
 function dianggapSelesai(row){
-  
+
   Dialog.create({
     title:'Konfirmasi',
     message:'Apakah Pemesanan Akan Dianggap Selesai?',

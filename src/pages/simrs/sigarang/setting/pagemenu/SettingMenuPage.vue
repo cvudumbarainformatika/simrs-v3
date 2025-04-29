@@ -254,7 +254,7 @@ const addsub = ref(false)
 const curentmenu = ref('Dashboard')
 
 const index = computed(() => {
-  if (!setting.menus.length) { return 0 }
+  if (!setting.menus?.length) { return 0 }
   const ind = findWithAttr(setting.menus, 'name', curentmenu.value)
   console.log('index', ind)
   return ind

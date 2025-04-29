@@ -93,7 +93,7 @@ export const useLaporanBukuTunaiStore = defineStore('laporan_bukutunai', {
       // ===================================================NPKPanjar
       // eslint-disable-next-line camelcase
       const npk_Panjar = []
-      for (let i = 0; i < this.items.npkpanjar.length; i++) {
+      for (let i = 0; i < this.items.npkpanjar?.length; i++) {
         const el = this.items?.npkpanjar
         const pjr = el[i].npkrinci?.length
           ? this.ambilDataUnik(
@@ -144,7 +144,7 @@ export const useLaporanBukuTunaiStore = defineStore('laporan_bukutunai', {
       // ==================================================
       // ===================================================Pergeseran BankKas
       const Kaskebank = []
-      for (let i = 0; i < this.items.kaskebank.length; i++) {
+      for (let i = 0; i < this.items.kaskebank?.length; i++) {
         const el = this.items?.kaskebank
         const geserbank = el[i].kasrinci?.length
           ? el[i].kasrinci?.map((x) => {
@@ -183,7 +183,7 @@ export const useLaporanBukuTunaiStore = defineStore('laporan_bukutunai', {
       // ===================================================Pergeseran BankKas
       // eslint-disable-next-line camelcase
       const Bank_Kas = []
-      for (let i = 0; i < this.items.bankkekas.length; i++) {
+      for (let i = 0; i < this.items.bankkekas?.length; i++) {
         const el = this.items?.bankkekas
         const geserbank = el[i].kasrinci?.length
           ? el[i].kasrinci?.map((x) => {
@@ -221,7 +221,7 @@ export const useLaporanBukuTunaiStore = defineStore('laporan_bukutunai', {
       // =====================================================
       // ===================================================Pengembalian Panjar
       const kembalianpjr = []
-      for (let i = 0; i < this.items.pengembalianpjr.length; i++) {
+      for (let i = 0; i < this.items.pengembalianpjr?.length; i++) {
         const el = this.items?.pengembalianpjr
         // console.log("adada", el);
         const cpallpjr = el?.length
@@ -261,7 +261,7 @@ export const useLaporanBukuTunaiStore = defineStore('laporan_bukutunai', {
           sisapanjar: null,
           uraian: el[i].keterangan,
           uraianNPD: null,
-          penerimaan: cpallpjr.length
+          penerimaan: cpallpjr?.length
             ? cpallpjr.map((x) => x.totalRincian).reduce((x, y) => x + y, 0)
             : 0,
           pengeluaran: 0
@@ -307,7 +307,7 @@ export const useLaporanBukuTunaiStore = defineStore('laporan_bukutunai', {
       const cp = []
       // const cppjr = this.items.cp.filter((x) => x.jenisbelanja === "PANJAR");
       // if (cppjr?.length) {}
-      for (let i = 0; i < this.items.cp.length; i++) {
+      for (let i = 0; i < this.items.cp?.length; i++) {
         const el = this.items?.cp
         const obj = {
           tgl: el[i].tglcontrapost,
@@ -353,8 +353,8 @@ export const useLaporanBukuTunaiStore = defineStore('laporan_bukutunai', {
 
     cariHasilAkhirArray(arr) {
       let total = 0
-      if (arr.length) {
-        for (let i = 0; i < arr.length; i++) {
+      if (arr?.length) {
+        for (let i = 0; i < arr?.length; i++) {
           if (i === 0) {
             total = arr[0]?.penerimaan - arr[0]?.pengeluaran
             arr[0].total = total

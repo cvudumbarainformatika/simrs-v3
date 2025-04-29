@@ -40,7 +40,7 @@ export const useDiagnosaGiziStore = defineStore('diagnosa-gizi-store', {
       this.loadingSave = true
 
       let intv = []
-      if (this.selectIntervensis.length) {
+      if (this.selectIntervensis?.length) {
         intv = this.selectIntervensis.map(x => {
           return {
             intervensi_id: x?.split('||')[0],
@@ -49,8 +49,8 @@ export const useDiagnosaGiziStore = defineStore('diagnosa-gizi-store', {
         })
       }
       const thumb = []
-      if (this.selectDiagnosa.length) {
-        for (let i = 0; i < this.selectDiagnosa.length; i++) {
+      if (this.selectDiagnosa?.length) {
+        for (let i = 0; i < this.selectDiagnosa?.length; i++) {
           const el = this.selectDiagnosa[i]
           const frm = {
             norm: pasien?.norm,
@@ -78,7 +78,7 @@ export const useDiagnosaGiziStore = defineStore('diagnosa-gizi-store', {
           // const storePasien = usePengunjungPoliStore()
           const storeRanap = usePengunjungRanapStore()
           const arr = resp.data.result
-          for (let i = 0; i < arr.length; i++) {
+          for (let i = 0; i < arr?.length; i++) {
             const isi = arr[i]
             // storePasien.injectDataPasien(pasien, isi, 'diagnosagizi')
             storeRanap.injectDataPasien(pasien?.noreg, isi, 'diagnosagizi')
@@ -97,7 +97,7 @@ export const useDiagnosaGiziStore = defineStore('diagnosa-gizi-store', {
 
     tataForm (pasien, cat) {
       let intv = []
-      if (this.selectIntervensis.length) {
+      if (this.selectIntervensis?.length) {
         intv = this.selectIntervensis.map(x => {
           return {
             intervensi_id: x?.split('||')[0],
@@ -106,8 +106,8 @@ export const useDiagnosaGiziStore = defineStore('diagnosa-gizi-store', {
         })
       }
       const thumb = []
-      if (this.selectDiagnosa.length) {
-        for (let i = 0; i < this.selectDiagnosa.length; i++) {
+      if (this.selectDiagnosa?.length) {
+        for (let i = 0; i < this.selectDiagnosa?.length; i++) {
           const el = this.selectDiagnosa[i]
           const frm = {
             norm: pasien?.norm,

@@ -108,7 +108,7 @@ export const useLaporanBkuPtkStore = defineStore('laporan_bkuptk', {
       // ===================================================NPKPanjar
       // eslint-disable-next-line camelcase
       const npk_Panjar = []
-      for (let i = 0; i < this.items.npkpanjar.length; i++) {
+      for (let i = 0; i < this.items.npkpanjar?.length; i++) {
         const el = this.items?.npkpanjar
         const pjr = el[i].npkrinci?.length
           ? el[i].npkrinci?.map((x) => {
@@ -160,7 +160,7 @@ export const useLaporanBkuPtkStore = defineStore('laporan_bkuptk', {
       // ===================================================spjpanjar
       // eslint-disable-next-line camelcase
       const spj_Panjar = []
-      for (let i = 0; i < this.items.spjpanjar.length; i++) {
+      for (let i = 0; i < this.items.spjpanjar?.length; i++) {
         const el = this.items?.spjpanjar
         const spjnyaPanjar = el[i].spj_rinci?.length
           ? el[i].spj_rinci?.map((x) => {
@@ -199,7 +199,7 @@ export const useLaporanBkuPtkStore = defineStore('laporan_bkuptk', {
 
       // ===================================================Pengembalian Panjar
       const kembalianpjr = []
-      for (let i = 0; i < this.items.pengembalianpjr.length; i++) {
+      for (let i = 0; i < this.items.pengembalianpjr?.length; i++) {
         const el = this.items?.pengembalianpjr
         // console.log("adada", el);
         const cpallpjr = el?.length
@@ -240,7 +240,7 @@ export const useLaporanBkuPtkStore = defineStore('laporan_bkuptk', {
           uraian: el[i].keterangan,
           uraianNPD: null,
           penerimaan: 0,
-          pengeluaran: cpallpjr.length
+          pengeluaran: cpallpjr?.length
             ? cpallpjr.map((x) => x.totalRincian).reduce((x, y) => x + y, 0)
             : 0
         }
@@ -286,7 +286,7 @@ export const useLaporanBkuPtkStore = defineStore('laporan_bkuptk', {
 
       // ===================================================pencairanLS
       const LSdebit = []
-      for (let i = 0; i < this.items.pencairanls.length; i++) {
+      for (let i = 0; i < this.items.pencairanls?.length; i++) {
         const el = this.items?.pencairanls
         const nonpd = el[i].npklsrinci?.length
           ? this.ambilDataUnik(
@@ -324,7 +324,7 @@ export const useLaporanBkuPtkStore = defineStore('laporan_bkuptk', {
           sisapanjar: null,
           uraian: 'Penerimaan Kegiatan Pelayanan dan Penunjang BLUD',
           uraianNPD: el[i]?.npklsrinci?.npdlshead?.kegiatanblud,
-          penerimaan: nonpd.length
+          penerimaan: nonpd?.length
             ? nonpd.map((x) => x.totalRincian).reduce((x, y) => x + y, 0)
             : 0,
           pengeluaran: 0
@@ -336,7 +336,7 @@ export const useLaporanBkuPtkStore = defineStore('laporan_bkuptk', {
       // =====================================================
       // ===================================================pencairanLS
       const pencairanLS = []
-      for (let i = 0; i < this.items.pencairanls.length; i++) {
+      for (let i = 0; i < this.items.pencairanls?.length; i++) {
         const el = this.items?.pencairanls
         const nonpd = el[i].npklsrinci?.length
           ? this.ambilDataUnik(
@@ -375,7 +375,7 @@ export const useLaporanBkuPtkStore = defineStore('laporan_bkuptk', {
           uraian: 'Pengeluaran Kegiatan Pelayanan dan Penunjang BLUD',
           uraianNPD: el[i]?.npklsrinci?.npdlshead?.kegiatanblud,
           penerimaan: 0,
-          pengeluaran: nonpd.length
+          pengeluaran: nonpd?.length
             ? nonpd.map((x) => x.totalRincian).reduce((x, y) => x + y, 0)
             : 0
         }
@@ -408,8 +408,8 @@ export const useLaporanBkuPtkStore = defineStore('laporan_bkuptk', {
 
     cariHasilAkhirArray(arr) {
       let total = 0
-      if (arr.length) {
-        for (let i = 0; i < arr.length; i++) {
+      if (arr?.length) {
+        for (let i = 0; i < arr?.length; i++) {
           if (i === 0) {
             total = arr[0]?.penerimaan - arr[0]?.pengeluaran
             arr[0].total = total

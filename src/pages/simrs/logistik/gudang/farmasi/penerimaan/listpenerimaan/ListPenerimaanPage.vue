@@ -77,7 +77,7 @@
             </q-btn>
           </div>
           <div class="col-auto q-ml-sm">
-            <div v-if="store.items.length">
+            <div v-if="store.items?.length">
               <download-excel class="btn" :data="store.items" :fields="jsonFields" :fetch="fetch"
                 :name="'Penerimaan ' + (store?.param?.jenispenerimaan ?? '') + ' ' + store?.param?.from + ' sd ' + store?.param?.to + '.xls'">
                 <app-btn color="orange" label="Download Excel" icon="icon-mat-download" push />

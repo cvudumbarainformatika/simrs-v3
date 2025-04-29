@@ -21,7 +21,7 @@ const props = defineProps({
 
 <template>
   <div class="">
-    <div v-if="props.items.length">
+    <div v-if="props.items?.length">
       <slot />
     </div>
     <div v-else class="column full-height flex-center" style="min-height: 300px;">

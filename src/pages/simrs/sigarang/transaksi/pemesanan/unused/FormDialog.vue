@@ -101,7 +101,7 @@
                   Kode RS
                 </div>
                 <div class="col text-right">
-                  {{ store.barangrs.length ? store.barangrs[0].kode : '-' }}
+                  {{ store.barangrs?.length ? store.barangrs[0].kode : '-' }}
                 </div>
               </div>
               <div class="row q-mb-sm">
@@ -109,7 +109,7 @@
                   Nama Barang
                 </div>
                 <div class="col text-right">
-                  {{ store.barangrs.length ? store.barangrs[0].nama : '-' }}
+                  {{ store.barangrs?.length ? store.barangrs[0].nama : '-' }}
                 </div>
               </div>
               <div class="row q-mb-sm">
@@ -117,7 +117,7 @@
                   Kode 108
                 </div>
                 <div class="col text-right">
-                  {{ store.barang108.length ? store.barang108[0].kode : '-' }}
+                  {{ store.barang108?.length ? store.barang108[0].kode : '-' }}
                 </div>
               </div>
               <div class="row q-mb-sm">
@@ -125,7 +125,7 @@
                   Uraian 108
                 </div>
                 <div class="col text-right">
-                  {{ store.barang108.length ? store.barang108[0].uraian : '-' }}
+                  {{ store.barang108?.length ? store.barang108[0].uraian : '-' }}
                 </div>
               </div>
               <div class="row q-mb-sm">
@@ -133,7 +133,7 @@
                   Satuan
                 </div>
                 <div class="col text-right">
-                  {{ store.satuan.length ? store.satuan[0].nama : '-' }}
+                  {{ store.satuan?.length ? store.satuan[0].nama : '-' }}
                 </div>
               </div>
               <div class="row q-mb-sm">

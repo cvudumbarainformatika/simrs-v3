@@ -130,7 +130,7 @@
           </td>
         </tr>
       </template>
-      <template v-else-if="!store.items.length">
+      <template v-else-if="!store.items?.length">
         <tr>
           <td colspan="9">
             <app-no-data />

@@ -80,7 +80,7 @@ export const useMasterPemeriksaanFisik = defineStore('master-pemeriksaan-fisik',
       const files = file
       // console.log('store upload image', files)
       const data = new FormData()
-      for (let i = 0; i < files.length; i++) {
+      for (let i = 0; i < files?.length; i++) {
         const images = files[i]
         data.append(`images[${i}]`, images)
       }

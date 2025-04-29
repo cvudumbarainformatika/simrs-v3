@@ -62,11 +62,11 @@ export const useSurveyorFormStore = defineStore('surveyor_form', {
     },
     async getKota (val) {
       this.loadingSelect = true
-      if (this.provinces.length > 0) {
+      if (this.provinces?.length > 0) {
         console.log('jika data array provinsi ada')
         let temp = []
         temp = this.provinces.filter(v => v.name.toLowerCase() === val.toLowerCase())
-        if (temp.length > 0) {
+        if (temp?.length > 0) {
           const tempId = temp[0].id
           await axios.get(`${this.api_wilayah}/regencies/${tempId}.json`)
             .then((resp) => {
@@ -84,11 +84,11 @@ export const useSurveyorFormStore = defineStore('surveyor_form', {
     },
     async getKec (val) {
       this.loadingSelect = true
-      if (this.kotas.length > 0) {
+      if (this.kotas?.length > 0) {
         console.log('jika data array provinsi ada')
         let temp = []
         temp = this.kotas.filter(v => v.name.toLowerCase() === val.toLowerCase())
-        if (temp.length > 0) {
+        if (temp?.length > 0) {
           const tempId = temp[0].id
           await axios.get(`${this.api_wilayah}/districts/${tempId}.json`)
             .then((resp) => {
@@ -106,10 +106,10 @@ export const useSurveyorFormStore = defineStore('surveyor_form', {
     },
     async getKels (val) {
       this.loadingSelect = true
-      if (this.kecs.length > 0) {
+      if (this.kecs?.length > 0) {
         let temp = []
         temp = this.kecs.filter(v => v.name.toLowerCase() === val.toLowerCase())
-        if (temp.length > 0) {
+        if (temp?.length > 0) {
           const tempId = temp[0].id
           await axios.get(`${this.api_wilayah}/villages/${tempId}.json`)
             .then((resp) => {
@@ -164,7 +164,7 @@ export const useSurveyorFormStore = defineStore('surveyor_form', {
         'agama', 'gender', 'no_hp',
         'alamat', 'provinsi', 'kabkot', 'kecamatan', 'kelurahan', 'kodepos',
         'email', 'password']
-      for (let i = 0; i < columns.length; i++) {
+      for (let i = 0; i < columns?.length; i++) {
         this.setForm(columns[i], '')
       }
       this.setToday()

@@ -56,7 +56,7 @@ export const useBarangRusakStore = defineStore('barang_rusak_store', {
         'jumlah'
       ]
 
-      for (let i = 0; i < columns.length; i++) {
+      for (let i = 0; i < columns?.length; i++) {
         this.setForm(columns[i], null)
       }
       this.form.details = []

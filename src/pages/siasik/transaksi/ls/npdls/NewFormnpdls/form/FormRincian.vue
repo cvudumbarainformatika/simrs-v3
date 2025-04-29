@@ -119,7 +119,7 @@ const formNpdLS = ref(null)
 
 async function filterFn(val, update) {
   // console.log('val filter', val)
-  if (!store.rekening50 || store.rekening50.length === 0) {
+  if (!store.rekening50 || store.rekening50?.length === 0) {
     // Jika data rekening kosong, muat ulang data
     await store.getRincianBelanja();
   }
@@ -146,7 +146,7 @@ function pilihRekening50(val) {
   if (!val) return; // Tambahkan pengecekan nilai kosong
 
   const arr = store.rekening50;
-  if (!arr || arr.length === 0) {
+  if (!arr || arr?.length === 0) {
     console.error('Data rekening50 kosong');
     return;
   }
@@ -188,10 +188,10 @@ function saveNpd() {
   const objrincian = store.rinci
   store.form.rincians.push(objrincian)
   const unikjumlah = store.form.rincians.map((x) => x.itembelanja)
-  const unik = unikjumlah.length ? [...new Set(unikjumlah)] : []
+  const unik = unikjumlah?.length ? [...new Set(unikjumlah)] : []
 
   const arr = []
-  for (let i = 0; i < unik.length; i++) {
+  for (let i = 0; i < unik?.length; i++) {
     const el = unik[i]
     const obj = {
       jumlah: store.form.rincians.map((x) => parseFloat(x.nominalpembayaran)).reduce((a, b) => a + b, 0),

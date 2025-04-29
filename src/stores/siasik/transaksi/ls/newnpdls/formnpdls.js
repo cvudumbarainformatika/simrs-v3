@@ -154,22 +154,22 @@ export const formInputNpdlsStore = defineStore('forminput_NPD_LS', {
   actions: {
     resetFORM() {
       const forms = Object.keys(this.form)
-      for (let i = 0; i < forms.length; i++) {
+      for (let i = 0; i < forms?.length; i++) {
         const el = forms[i]
         this.setForm(el, null)
       }
       const keys = Object.keys(this.rinci)
-      for (let i = 0; i < keys.length; i++) {
+      for (let i = 0; i < keys?.length; i++) {
         const el = keys[i]
         this.setForm(el, null)
       }
       const bast = Object.keys(this.reqs)
-      for (let i = 0; i < bast.length; i++) {
+      for (let i = 0; i < bast?.length; i++) {
         const el = bast[i]
         this.setForm(el, null)
       }
       const transall = Object.keys(this.transall)
-      for (let i = 0; i < transall.length; i++) {
+      for (let i = 0; i < transall?.length; i++) {
         const el = transall[i]
         this.setForm(el, null)
       }
@@ -385,7 +385,7 @@ export const formInputNpdlsStore = defineStore('forminput_NPD_LS', {
 
             this.transall = resp?.data?.data
             // console.log('HAPUS', this.transall)
-            // if (this.transall.length < 0) {
+            // if (this.transall?.length < 0) {
             //   this.initForm()
             //   this.listrincians()
             // }
@@ -393,7 +393,7 @@ export const formInputNpdlsStore = defineStore('forminput_NPD_LS', {
             // if (index >= 0) {
             //   row.rincian.splice(index, 1)
             // }
-            // if (!row.rincian.length) this.cariRencanaBeli()
+            // if (!row.rincian?.length) this.cariRencanaBeli()
             this.loadingHapus = false
             notifSuccess(resp)
             resolve(resp)

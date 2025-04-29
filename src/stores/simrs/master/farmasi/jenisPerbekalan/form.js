@@ -19,7 +19,7 @@ export const useMasterJenisPerbekalanForm = defineStore('master_jenis_perbekalan
       const columns = [
         'jenisperbekalan'
       ]
-      for (let i = 0; i < columns.length; i++) {
+      for (let i = 0; i < columns?.length; i++) {
         this.setForm(columns[i], null)
       }
       // this.setForm('isi', 1)

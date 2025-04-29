@@ -128,7 +128,7 @@ export const useTemplateEResepStore = defineStore('template_e_resep', {
     },
     saveListItems () {
       const arr = this.items
-      const racikans = arr.length ? arr.filter(x => x?.racikan === true) : []
+      const racikans = arr?.length ? arr.filter(x => x?.racikan === true) : []
       if (this.form?.racikan === true) {
         this.form.kodeobat = `racikan-${parseInt(racikans?.length) + parseInt(1)}`
         this.form.namaobat = `Racikan ${parseInt(racikans?.length) + parseInt(1)}`
@@ -235,7 +235,7 @@ export const useTemplateEResepStore = defineStore('template_e_resep', {
       })
       const non = ite?.rincian.filter(f => f?.jenis_perbekalan?.toLowerCase() === 'obat')
       const rac = ite?.rincian.filter(f => f?.kodeobat?.toLowerCase().includes('racik'))
-      const tot = non.length + rac.length
+      const tot = non?.length + rac?.length
       console.log('rincian', non, rac, tot)
       if (tot > batas) {
         ite.bisaOrder = false
@@ -382,7 +382,7 @@ export const useTemplateEResepStore = defineStore('template_e_resep', {
     cariObat (val) {
       const depo = this.depos.filter(pa => pa.jenis === this.depo)
       // console.log('depo', this?.depo, depo)
-      if (depo.length) {
+      if (depo?.length) {
         this.dpPar = depo[0]?.value
       }
       else return notifErrVue('depo tujuan tidak ditemukan')

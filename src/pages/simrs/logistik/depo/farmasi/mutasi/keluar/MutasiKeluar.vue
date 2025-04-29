@@ -227,7 +227,7 @@
         </div>
       </template>
       <template #expand="{ row }">
-        <div v-if="row.permintaanrinci.length">
+        <div v-if="row.permintaanrinci?.length">
           <div class="row items-center text-weight-bold">
             <div class="col-3 text-center">
               Obat
@@ -413,7 +413,7 @@ watch(() => apps?.user?.kdruangansim, (obj) => {
 function depo (val) {
   const temp = apps.depos.filter(a => a.value === val)
   // console.log('temp', temp)
-  if (temp.length) {
+  if (temp?.length) {
     return temp[0].nama
   }
   else {
@@ -513,7 +513,7 @@ function setEdit (evt, rin) {
 // function setJumlah (evt, val) {
 //   const inc = evt.includes('.')
 //   const ind = evt.indexOf('.')
-//   const panj = evt.length
+//   const panj = evt?.length
 //   const beli = isNaN(parseFloat(evt)) ? 0 : (inc && (ind === (panj - 1)) ? evt : parseFloat(evt))
 //   // const beli = !isNaN(parseFloat(evt)) ? (parseFloat(evt) <= 0 ? 0 : parseFloat(evt)) : 0
 //   const max = parseFloat(val?.mak_stok)

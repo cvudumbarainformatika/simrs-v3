@@ -321,7 +321,7 @@
             >
               PENYULIT ANESTESI LAIN
             </div>
-            <template v-if="store.resultPraAnastesi.length && store.resultPraAnastesi[0]?.penyulitAnastesi.length">
+            <template v-if="store.resultPraAnastesi?.length && store.resultPraAnastesi[0]?.penyulitAnastesi?.length">
               <div
                 v-for="(item, i) in store.resultPraAnastesi[0]?.penyulitAnastesi"
                 :key="i"
@@ -515,10 +515,10 @@
               <div class="col-auto flex q-gutter-lg">
                 <div>Puasa Mulai : </div>
                 <div class="">
-                  Jam : {{ store.resultPraAnastesi.length? store.resultPraAnastesi[0]?.mulaiPuasajam ?? '...............' : '..................................................' }}
+                  Jam : {{ store.resultPraAnastesi?.length? store.resultPraAnastesi[0]?.mulaiPuasajam ?? '...............' : '..................................................' }}
                 </div>
                 <div class="">
-                  Tanggal : {{ store.resultPraAnastesi.length? store.resultPraAnastesi[0]?.mulaiPuasaTgl ?? '...............' : '..................................................' }}
+                  Tanggal : {{ store.resultPraAnastesi?.length? store.resultPraAnastesi[0]?.mulaiPuasaTgl ?? '...............' : '..................................................' }}
                 </div>
               </div>
             </div>
@@ -526,10 +526,10 @@
               <div class="col-auto flex q-gutter-lg">
                 <div>Pre medikasi : </div>
                 <div class="">
-                  Jam : {{ store.resultPraAnastesi.length? store.resultPraAnastesi[0]?.preMedikasiJam ?? '...............' : '..................................................' }}
+                  Jam : {{ store.resultPraAnastesi?.length? store.resultPraAnastesi[0]?.preMedikasiJam ?? '...............' : '..................................................' }}
                 </div>
                 <div class="">
-                  Tanggal : {{ store.resultPraAnastesi.length? store.resultPraAnastesi[0]?.preMedikasiTgl ?? '...............' : '..................................................' }}
+                  Tanggal : {{ store.resultPraAnastesi?.length? store.resultPraAnastesi[0]?.preMedikasiTgl ?? '...............' : '..................................................' }}
                 </div>
               </div>
             </div>
@@ -537,10 +537,10 @@
               <div class="col-auto flex q-gutter-lg">
                 <div>Transportasi ke kamar bedah : </div>
                 <div class="">
-                  Jam : {{ store.resultPraAnastesi.length? store.resultPraAnastesi[0]?.transKeKamarBedahJam ?? '...............' : '..................................................' }}
+                  Jam : {{ store.resultPraAnastesi?.length? store.resultPraAnastesi[0]?.transKeKamarBedahJam ?? '...............' : '..................................................' }}
                 </div>
                 <div class="">
-                  Tanggal : {{ store.resultPraAnastesi.length? store.resultPraAnastesi[0]?.transKeKamarBedahTgl ?? '...............' : '..................................................' }}
+                  Tanggal : {{ store.resultPraAnastesi?.length? store.resultPraAnastesi[0]?.transKeKamarBedahTgl ?? '...............' : '..................................................' }}
                 </div>
               </div>
             </div>
@@ -548,10 +548,10 @@
               <div class="col-auto flex q-gutter-lg">
                 <div>Rencana Operasi : </div>
                 <div class="">
-                  Jam : {{ store.resultPraAnastesi.length? store.resultPraAnastesi[0]?.rencanaOperasiJam ?? '...............' : '..................................................' }}
+                  Jam : {{ store.resultPraAnastesi?.length? store.resultPraAnastesi[0]?.rencanaOperasiJam ?? '...............' : '..................................................' }}
                 </div>
                 <div class="">
-                  Tanggal : {{ store.resultPraAnastesi.length? store.resultPraAnastesi[0]?.rencanaOperasiTgl ?? '...............' : '..................................................' }}
+                  Tanggal : {{ store.resultPraAnastesi?.length? store.resultPraAnastesi[0]?.rencanaOperasiTgl ?? '...............' : '..................................................' }}
                 </div>
               </div>
             </div>
@@ -674,7 +674,7 @@ const rawatkhususLainlain = ref(false)
 onMounted(async () => {
   await store.getMaster()
   await store.getData(props.pasien)
-    .then(() => store.initForm(store.resultPraAnastesi.length ? store.resultPraAnastesi[0] : null))
+    .then(() => store.initForm(store.resultPraAnastesi?.length ? store.resultPraAnastesi[0] : null))
 })
 
 const qrUrl = computed(() => {

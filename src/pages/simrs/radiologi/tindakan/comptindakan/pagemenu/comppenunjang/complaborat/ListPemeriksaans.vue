@@ -21,7 +21,7 @@
     <div class="col-grow bg-grey">
       <!-- jika belum ada pemeriksaan -->
       <div
-        v-if="filterredTable.length === 0"
+        v-if="filterredTable?.length === 0"
         class="column full-height flex-center text-white"
       >
         Belum Ada Permintaan Order ke Laborat
@@ -60,8 +60,8 @@
                     >
                       <span
                         class="text-weight-bold"
-                        :class="item?.details.length === 1 ? 'text-orange' : 'text-primary'"
-                      >{{ item?.details.length === 1 ? 'NON-PAKET' : 'PAKET' }}</span>
+                        :class="item?.details?.length === 1 ? 'text-orange' : 'text-primary'"
+                      >{{ item?.details?.length === 1 ? 'NON-PAKET' : 'PAKET' }}</span>
                     </q-item-label>
                     <q-item-label
                       lines="2"
@@ -194,7 +194,7 @@ const filterredTable = computed(() => {
 // eslint-disable-next-line no-unused-vars
 function mapping (item) {
   const arr = item
-  const arr2 = arr.length > 0
+  const arr2 = arr?.length > 0
     ? arr.map(x =>
       ({
         gruper: x.pemeriksaanlab?.rs21 !== '' ? x.pemeriksaanlab?.rs21 : x.pemeriksaanlab?.rs2,

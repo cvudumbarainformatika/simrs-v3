@@ -10,7 +10,7 @@
       <q-separator />
 
       <q-card-section style="max-height: 50vh" class="q-pa-none scroll">
-        <div v-if="lists.length === 0">
+        <div v-if="lists?.length === 0">
           <div class="column flex-center" style="min-height: 300px;">
             Maaf data tidak ditemukan
           </div>

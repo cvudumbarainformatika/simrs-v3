@@ -16,7 +16,7 @@
       </tr>
     </thead>
     <tbody>
-      <template v-if="store.items.length">
+      <template v-if="store.items?.length">
         <tr
           v-for="(item, n) in store?.items"
           :key="n"

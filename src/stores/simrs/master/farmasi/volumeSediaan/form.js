@@ -19,7 +19,7 @@ export const useMasterVolumeSediaanForm = defineStore('master_VolumeSediaan_form
       const columns = [
         'volumesediaan'
       ]
-      for (let i = 0; i < columns.length; i++) {
+      for (let i = 0; i < columns?.length; i++) {
         this.setForm(columns[i], null)
       }
       // this.setForm('isi', 1)

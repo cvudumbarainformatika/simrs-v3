@@ -113,7 +113,7 @@
             </div>
           </template>
           <template #expand="{row}">
-            <div v-if="row.details.length">
+            <div v-if="row.details?.length">
               <!-- {{ row.details }} -->
               <div class="row items-start text-weight-bold">
                 <div class="col-3">
@@ -264,7 +264,7 @@ function onClick (val) {
 // kirim pesanan
 function kirimPenerimaan (val) {
   const oldreff = val.reff.split('-')
-  const newreff = oldreff.length ? 'DDP-' + oldreff[1] : 'DDP-' + uniqueId()
+  const newreff = oldreff?.length ? 'DDP-' + oldreff[1] : 'DDP-' + uniqueId()
   const jamIni = date.formatDate(Date.now(), ' HH:mm:ss')
   const tanggal = store.form.tanggal + jamIni
   console.log('tanggal ', store.form.tanggal, tanggal)
@@ -286,7 +286,7 @@ function kirimPenerimaan (val) {
 // kirim detail pemesanan
 function kirimDetailPenerimaan (val, detail) {
   const oldreff = val.reff.split('-')
-  const newreff = oldreff.length ? 'DDP-' + oldreff[1] : 'DDP-' + uniqueId()
+  const newreff = oldreff?.length ? 'DDP-' + oldreff[1] : 'DDP-' + uniqueId()
   const jamIni = date.formatDate(Date.now(), ' HH:mm:ss')
   const tanggal = store.form.tanggal + jamIni
   console.log('tanggal ', store.form.tanggal, tanggal)

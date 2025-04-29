@@ -68,7 +68,7 @@ export const useBpjsMappingDokter = defineStore('mapping-dokter-bpjs', {
             this.loadingSave = false
             console.log(this.ygsudahdimappings)
             const target = this.pegawais?.filter(x => x.nip === this.searchResultKepeg?.nip)
-            if (target.length) {
+            if (target?.length) {
               target[0].kddpjp = this.objDokter?.kodedokter
             }
             this.objDokter = null
@@ -93,7 +93,7 @@ export const useBpjsMappingDokter = defineStore('mapping-dokter-bpjs', {
       }
     },
     setDataTermapping(arr) {
-      this.ygsudahdimappings = arr.length ? arr?.map(x => x.kddpjp) : []
+      this.ygsudahdimappings = arr?.length ? arr?.map(x => x.kddpjp) : []
     }
   }
 })

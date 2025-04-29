@@ -141,8 +141,8 @@ export const useRkaStore = defineStore('store_rka_siasik', {
       const rka = []
       const totalrka = []
       const uniq1 = this.dataanggaran.map((x) => x.kode1)
-      const fils1 = uniq1.length ? [...new Set(uniq1)] : []
-      for (let i = 0; i < fils1.length; i++) {
+      const fils1 = uniq1?.length ? [...new Set(uniq1)] : []
+      for (let i = 0; i < fils1?.length; i++) {
         const el = fils1[i]
         const obj = {
           kode: this.dataanggaran.filter((x) => x.kode1 === el)[0].kode1,
@@ -155,8 +155,8 @@ export const useRkaStore = defineStore('store_rka_siasik', {
       }
       console.log('totalpagukegiatan', totalrka)
       const uniq2 = this.dataanggaran.map((x) => x.kode2)
-      const fils2 = uniq2.length ? [...new Set(uniq2)] : []
-      for (let i = 0; i < fils2.length; i++) {
+      const fils2 = uniq2?.length ? [...new Set(uniq2)] : []
+      for (let i = 0; i < fils2?.length; i++) {
         const el = fils2[i]
         const obj = {
           kode: this.dataanggaran.filter((x) => x.kode2 === el)[0].kode2,
@@ -167,8 +167,8 @@ export const useRkaStore = defineStore('store_rka_siasik', {
         rka.push(obj)
       }
       const uniq3 = this.dataanggaran.map((x) => x.kode3)
-      const fils3 = uniq3.length ? [...new Set(uniq3)] : []
-      for (let i = 0; i < fils3.length; i++) {
+      const fils3 = uniq3?.length ? [...new Set(uniq3)] : []
+      for (let i = 0; i < fils3?.length; i++) {
         const el = fils3[i]
         const obj = {
           kode: this.dataanggaran.filter((x) => x.kode3 === el)[0].kode3,
@@ -179,8 +179,8 @@ export const useRkaStore = defineStore('store_rka_siasik', {
         rka.push(obj)
       }
       const uniq4 = this.dataanggaran.map((x) => x.kode4)
-      const fils4 = uniq4.length ? [...new Set(uniq4)] : []
-      for (let i = 0; i < fils4.length; i++) {
+      const fils4 = uniq4?.length ? [...new Set(uniq4)] : []
+      for (let i = 0; i < fils4?.length; i++) {
         const el = fils4[i]
         const obj = {
           kode: this.dataanggaran.filter((x) => x.kode4 === el)[0].kode4,
@@ -191,8 +191,8 @@ export const useRkaStore = defineStore('store_rka_siasik', {
         rka.push(obj)
       }
       const uniq5 = this.dataanggaran.map((x) => x.kode5)
-      const fils5 = uniq5.length ? [...new Set(uniq5)] : []
-      for (let i = 0; i < fils5.length; i++) {
+      const fils5 = uniq5?.length ? [...new Set(uniq5)] : []
+      for (let i = 0; i < fils5?.length; i++) {
         const el = fils5[i]
         const obj = {
           kode: this.dataanggaran.filter((x) => x.kode5 === el)[0].kode5,
@@ -203,8 +203,8 @@ export const useRkaStore = defineStore('store_rka_siasik', {
         rka.push(obj)
       }
       const uniq6 = this.dataanggaran.map((x) => x.kode)
-      const fils6 = uniq6.length ? [...new Set(uniq6)] : []
-      for (let i = 0; i < fils6.length; i++) {
+      const fils6 = uniq6?.length ? [...new Set(uniq6)] : []
+      for (let i = 0; i < fils6?.length; i++) {
         const el = fils6[i]
         const obj = {
           kode: this.dataanggaran.filter((x) => x.kode === el)[0].kode,

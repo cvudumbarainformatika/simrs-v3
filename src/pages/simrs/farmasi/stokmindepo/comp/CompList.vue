@@ -115,7 +115,7 @@
       </template>
       <template #cell-minta="{row}">
         <div
-          v-if="row?.permintaanobatrinci.length"
+          v-if="row?.permintaanobatrinci?.length"
           class="row no-wrap text-weight-bold  items-end"
         >
           <div v-for="(minta) in row?.permintaanobatrinci" :key="minta">
@@ -190,7 +190,7 @@ function subscribedChannel () {
       if (e?.message?.data?.aksi === 'kunci') {
         if (parseInt(e?.message?.data?.flag) >= 4) table.getDataTable()
         const kodeobats = e?.message?.data?.kodeobats
-        if (kodeobats.length) {
+        if (kodeobats?.length) {
           kodeobats?.forEach(kd => {
             const kdobat = kd?.kdobat
             const item = table.items?.find(it => it.kdobat === kdobat)
@@ -208,13 +208,13 @@ function subscribedChannel () {
 }
 
 function cariGudang (val) {
-  if (table.gudangs.length) {
+  if (table.gudangs?.length) {
     const gudang = table.gudangs.filter(gud => gud.kode === val)
     if (apps?.user?.kdruangansim !== '') {
       const gudang2 = table.gudangs.filter(gud => gud.kode === apps?.user?.kdruangansim)
       store.setDisp('kdruang', gudang2[0]?.nama)
     }
-    if (gudang.length) {
+    if (gudang?.length) {
       return gudang[0]?.nama
     }
     else return 'Gudang / Depo tidak ditemukan'

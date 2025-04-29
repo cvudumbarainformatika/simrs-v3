@@ -85,7 +85,7 @@ const menus = computed(() => {
     'Menu', apem,
     'all app', store.aplications
   )
-  if (apem.length) {
+  if (apem?.length) {
     return apem[0].menus
   } else {
     return []

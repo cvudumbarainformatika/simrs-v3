@@ -123,7 +123,7 @@
         </div>
       </div>
       <div
-        v-if="store.items.length"
+        v-if="store.items?.length"
         class="garis-luar-tabel q-mx-sm"
       >
         <!-- header -->
@@ -280,7 +280,7 @@
           </div>
         </div>
       </div>
-      <div v-if="!store.items.length">
+      <div v-if="!store.items?.length">
         <app-no-data />
       </div>
     </div>

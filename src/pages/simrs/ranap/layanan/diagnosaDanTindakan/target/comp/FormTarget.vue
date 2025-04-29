@@ -142,7 +142,7 @@ const onSubmit = async () => {
     if (resp.status === 200) {
       const pengunjung = usePengunjungRanapStore()
       const findPasien = pengunjung?.pasiens.filter(x => x?.noreg === props?.pasien?.noreg)
-      if (findPasien.length) {
+      if (findPasien?.length) {
         const data = findPasien[0]
         data.planningdokter = resp?.data
       }

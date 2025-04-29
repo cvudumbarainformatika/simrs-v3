@@ -101,7 +101,7 @@
                   @finish="finished" @rejected="onRejected">
                   <template #list="scope">
                     <div class="full-height full-width">
-                      <div v-if="scope.files.length === 0" class="column flex-center full-height">
+                      <div v-if="scope.files?.length === 0" class="column flex-center full-height">
                         <q-icon name="icon-mat-cloud_upload" size="40px" color="primary" />
                         <div class="f-10">
                           Seret Gambar Kesini
@@ -247,7 +247,7 @@ function onRejected(rejectedEntries) {
   console.log('rejected')
   $q.notify({
     type: 'negative',
-    message: `${rejectedEntries.length} ... Maaf Besar Dokummen tidak boleh lebih dari 1024 KB / 1 MB`
+    message: `${rejectedEntries?.length} ... Maaf Besar Dokummen tidak boleh lebih dari 1024 KB / 1 MB`
   })
 }
 

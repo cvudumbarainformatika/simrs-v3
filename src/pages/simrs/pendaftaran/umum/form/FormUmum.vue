@@ -53,7 +53,7 @@ const style = useStyledStore()
 //   canSavePasien = val.save
 //   if (val.save) {
 //     const keys = Object.keys(val.form)
-//     if (keys.length) {
+//     if (keys?.length) {
 //       keys.forEach(key => {
 //         register.setForm(key, val.form[key])
 //       })
@@ -78,7 +78,7 @@ function simpanData (val) {
   )
   if (dataPasien.save && dataRegis.save) {
     const keys = Object.keys(dataPasien.form)
-    if (keys.length) {
+    if (keys?.length) {
       keys.forEach(key => {
         register.setForm(key, dataPasien.form[key])
       })

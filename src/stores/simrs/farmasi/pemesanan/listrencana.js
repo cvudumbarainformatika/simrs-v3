@@ -129,7 +129,7 @@ export const useListRencanaPemesananStore = defineStore('list_rencana_pemesanan'
             if (index >= 0) {
               row.rincian.splice(index, 1)
             }
-            if (!row.rincian.length) this.cariRencanaBeli()
+            if (!row.rincian?.length) this.cariRencanaBeli()
             notifSuccess(resp)
             resolve(resp)
           })

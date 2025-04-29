@@ -4,7 +4,7 @@
       <div class="q-pa-sm row items-center justify-between">
         <div class="f-12">
           <sistem-bayar-ganti v-if="depo !== 'ok'" :pasien="pasien"
-            :disabled="store.listPemintaanSementara.length > 0 || store.listRacikan.length > 0" :is-reset="isReset" />
+            :disabled="store.listPemintaanSementara?.length > 0 || store.listRacikan?.length > 0" :is-reset="isReset" />
         </div>
         <div>
           <q-btn flat dense size="md" icon="icon-mat-history" @click="historyOpen">
@@ -18,7 +18,7 @@
     <div class="col full-height relative-position">
       <div class="row justify-between items-center q-px-xs q-py-xs">
         <div v-if="depo === 'rjl'" class="q-px-xs">
-          <div v-if="!store.listPemintaanSementara.length && !store.listRacikan.length"
+          <div v-if="!store.listPemintaanSementara?.length && !store.listRacikan?.length"
             class="row q-my-xs items-center">
             Tipe Resep:
             <q-option-group v-model="store.form.tiperesep" :options="store.tipeReseps" color="primary" class="q-ml-sm"
@@ -114,7 +114,7 @@
           </q-item>
 
           <!-- hasil Inputan -->
-          <template v-if="store.listPemintaanSementara.length">
+          <template v-if="store.listPemintaanSementara?.length">
             <q-item v-for="(item, i) in store.listPemintaanSementara" :key="i"
               :class="item?.sudahAda ? 'bg-red-2' : ''">
               <!-- {{ item }} -->
@@ -175,7 +175,7 @@
             </q-item>
           </template>
           <!-- {{ store.listRacikan }} -->
-          <template v-if="store.listRacikan.length">
+          <template v-if="store.listRacikan?.length">
             <q-expansion-item v-for="(item, i) in store.listRacikan" :key="i" dense-toggle class="bg-grey-4">
               <template #header>
                 <q-item-section style="width: 50%;">
@@ -486,11 +486,11 @@ function openPersiapanOperasi () {
 //   // // console.log('input obat', val, typeof val)
 //   if ((typeof val) !== 'string') val = ''
 //   if (val !== '') store.cariObat(val)
-//   if (val === '' && store.nonFilteredObat.length) store.Obats = store.nonFilteredObat
+//   if (val === '' && store.nonFilteredObat?.length) store.Obats = store.nonFilteredObat
 // })
 // function inputObat(val) {
 //   if (val !== '') store.cariObat(val)
-//   if (val === '' && store.nonFilteredObat.length) store.Obats = store.nonFilteredObat
+//   if (val === '' && store.nonFilteredObat?.length) store.Obats = store.nonFilteredObat
 // }
 // function obatSelected (val) {
 //   // console.log('select obat', val)
@@ -526,7 +526,7 @@ function signaSelected (val) {
   // // console.log('signa', val)
   store.setForm('aturan', val?.signa)
   // const sign = store.signas.filter(sig => sig.signa === val?.signa)
-  // if (sign.length) {
+  // if (sign?.length) {
   store.setForm('jumlahdosis', parseFloat(val?.jumlah))
   if (parseFloat(store.form.jumlah_diminta) > 0) {
     const kons = store.form.jumlah_diminta / parseFloat(val?.jumlah)
@@ -605,7 +605,7 @@ function setJumlah (val) {
   }
   else if (store.form?.aturan !== '') {
     const sign = store.signas.filter(sig => sig.signa === store?.form?.aturan)
-    if (sign.length) {
+    if (sign?.length) {
       if (parseFloat(jumlah) > 0) {
         const kons = jumlah / parseFloat(signa.value?.jumlah)
         store.setForm('konsumsi', kons)
@@ -635,16 +635,16 @@ function validate () {
   }
   if (store?.form?.kodeobat !== '') {
     const ob = store?.nonFilteredObat?.filter(o => o?.kodeobat === store?.form?.kodeobat)
-    // if (ob.length && !Object.keys(store?.namaObat)?.length) store.namaObat = ob[0]
-    if (ob.length) store.namaObat = ob[0]
+    // if (ob?.length && !Object.keys(store?.namaObat)?.length) store.namaObat = ob[0]
+    if (ob?.length) store.namaObat = ob[0]
     // // console.log('non', store.nonFilteredObat)
   }
   if (store?.form?.aturan !== '') {
     const sign = store?.signas?.filter(sig => sig?.signa === store?.form?.aturan)
     // // console.log('sign', sign)
     // // console.log('sign', signa.value)
-    // if (sign.length && !Object.keys(signa.value)?.length) signa.value = sign[0]
-    if (sign.length) signa.value = sign[0]
+    // if (sign?.length && !Object.keys(signa.value)?.length) signa.value = sign[0]
+    if (sign?.length) signa.value = sign[0]
     // // console.log('at', store.signas, sign)
   }
   if (store?.form?.tiperesep === 'iter' && store?.dpPar === 'Gd-05010101') {

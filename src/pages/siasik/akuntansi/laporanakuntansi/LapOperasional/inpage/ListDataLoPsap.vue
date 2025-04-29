@@ -1,5 +1,5 @@
 <template>
-  <template v-if="store.psappendapatan.length > 0">
+  <template v-if="store.psappendapatan?.length > 0">
     <q-card-section class="full-width">
       <div class="row">
         <div class="full-width">

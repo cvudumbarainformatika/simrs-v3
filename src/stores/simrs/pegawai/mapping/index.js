@@ -52,7 +52,7 @@ export const useMappingNakesStore = defineStore('mapping-nakes', {
       this.objNakes = val
       // this.searchResultKepeg = val?.nama
       const peg = this.pegawais?.filter(x => x.kdpegsimrs === val?.kode)
-      this.searchResultKepeg = peg.length ? peg[0] : null
+      this.searchResultKepeg = peg?.length ? peg[0] : null
     },
     async saveMapping() {
       const notValidNakes = this.objNakes === null || this.objNakes === ''
@@ -76,7 +76,7 @@ export const useMappingNakesStore = defineStore('mapping-nakes', {
             this.loadingSave = false
             console.log(this.ygsudahdimappings)
             const target = this.pegawais?.filter(x => x.nip === this.searchResultKepeg?.nip)
-            if (target.length) {
+            if (target?.length) {
               target[0].kdpegsimrs = this.objNakes?.kode
             }
             this.objNakes = null
@@ -104,7 +104,7 @@ export const useMappingNakesStore = defineStore('mapping-nakes', {
       }
     },
     setDataTermapping(arr) {
-      this.ygsudahdimappings = arr.length ? arr?.map(x => x.kdpegsimrs) : []
+      this.ygsudahdimappings = arr?.length ? arr?.map(x => x.kdpegsimrs) : []
     }
   }
 })

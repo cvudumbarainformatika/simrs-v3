@@ -77,14 +77,14 @@ export const useFarmasiPermintaanRuanganStore = defineStore('farmasi_permintaan_
       console.log('obat ', val)
       console.log('obats ', this.obats)
       const anu = this.obats.filter(a => a.kdobat === val)
-      if (anu.length) {
+      if (anu?.length) {
         const obat = anu[0]
         console.log('obat ketemu', obat)
         this.setForm('stok_alokasi', obat.stokalokasi)
         console.log('form', this.form)
         if (this.form.dari) {
           // const aMax = obat?.minmax?.filter(a => a.kd_obat === val && a.kd_ruang === this.form.dari)
-          // if (aMax.length) {
+          // if (aMax?.length) {
           //   const max = aMax[0]
           //   this.setForm('mak_stok', max.max)
           // } else {
@@ -95,7 +95,7 @@ export const useFarmasiPermintaanRuanganStore = defineStore('farmasi_permintaan_
       }
       if (this.form.dari) {
         const dar = this?.stokDewe?.filter(a => a.kdobat === val && a.kdruang === this.form.dari)
-        if (dar.length) {
+        if (dar?.length) {
           const stok = dar[0]
           this.setForm('stok', stok.jumlah)
         }
@@ -200,12 +200,12 @@ export const useFarmasiPermintaanRuanganStore = defineStore('farmasi_permintaan_
               const rinc = resp.data.rinci
               if (rinc.kdobat) {
                 const anu = this.obats.filter(a => a.kdobat === rinc.kdobat)
-                if (anu.length) {
+                if (anu?.length) {
                   const obat = anu[0]
                   rinc.nama_obat = obat.nama_obat
                 }
                 const adaDetail = this.details.filter(ob => ob.kdobat === rinc.kdobat)
-                if (adaDetail.length) {
+                if (adaDetail?.length) {
                   const data = adaDetail[0]
                   if (data) {
                     Object.assign(data, rinc)

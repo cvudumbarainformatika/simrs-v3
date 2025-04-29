@@ -161,11 +161,11 @@ const props = defineProps({
 })
 
 function pilihPermintaan (val) {
-  const arr = val.length ? val.map(x => x.val) : []
-  const arr2 = val.length ? val.map(x => x.kode) : []
-  const implode = arr.length ? arr.join('-. ') : ''
+  const arr = val?.length ? val.map(x => x.val) : []
+  const arr2 = val?.length ? val.map(x => x.kode) : []
+  const implode = arr?.length ? arr.join('-. ') : ''
   const str = `-. ${implode}`
-  const tpemeriksaan = arr2.length ? arr2.join(';') : ''
+  const tpemeriksaan = arr2?.length ? arr2.join(';') : ''
   store.setForm('permintaan', str)
   store.setForm('tpemeriksaan', tpemeriksaan)
   modalOpen.value = false

@@ -105,7 +105,7 @@ export const useRadiologiPoli = defineStore('poli-radiologi', {
       if (resp.status === 200) {
         // this.setNotas(resp.data)
         const data = resp.data
-        for (let i = 0; i < data.length; i++) {
+        for (let i = 0; i < data?.length; i++) {
           const isi = data[i]
 
           const storeRanap = usePengunjungRanapStore()
@@ -117,7 +117,7 @@ export const useRadiologiPoli = defineStore('poli-radiologi', {
     },
     setNotas (array) {
       const arr = array.map(x => x.nota)
-      this.notas = arr.length ? arr : []
+      this.notas = arr?.length ? arr : []
       this.notas.push('BARU')
       this.form.nota = this.notas[0]
     },
@@ -145,7 +145,7 @@ export const useRadiologiPoli = defineStore('poli-radiologi', {
     initReset () {
       this.form = {
         noreg: '', // rs1
-        nota: this.notas.length ? this.notas[0] : 'BARU', // rs2
+        nota: this.notas?.length ? this.notas[0] : 'BARU', // rs2
         // rs3:'', //tgl
         permintaan: '', // rs4
         keterangan: '', // rs7

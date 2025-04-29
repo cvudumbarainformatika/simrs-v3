@@ -45,10 +45,10 @@ export const useLaporanSigarangHutangStore = defineStore('laporan_sigarang_hutan
     },
     mapingData(val) {
       const temp = val
-      if (temp.length) {
+      if (temp?.length) {
         temp.forEach(item => {
           item.nilai = 0
-          if (item.penerimaan.length) {
+          if (item.penerimaan?.length) {
             item.nilai = item.penerimaan.map(c => {
               return c.nilai_tagihan > 0 ? c.nilai_tagihan : c.total
             }).reduce((a, b) => a + b, 0)

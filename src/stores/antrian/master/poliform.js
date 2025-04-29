@@ -38,7 +38,7 @@ export const useFormMasterPoliStore = defineStore('master_poli_form', {
         'max_of',
         'max_ol'
       ]
-      for (let i = 0; i < columns.length; i++) {
+      for (let i = 0; i < columns?.length; i++) {
         this.setForm(columns[i], null)
       }
       this.setForm('max_of', 60)

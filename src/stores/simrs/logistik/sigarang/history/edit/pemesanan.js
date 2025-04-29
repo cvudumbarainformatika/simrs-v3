@@ -109,10 +109,10 @@ export const useEditPemesananStore = defineStore('edit_pemesanan', {
       const minMax = this.minMaxDepos.filter(s => {
         return s.kode_rs === val // hardcode kode gudang Habis pakai gedung 2
       })
-      if (dataStok.length) {
+      if (dataStok?.length) {
         this.stok.sisaStok = dataStok[0].sisa_stok
       }
-      if (minMax.length) {
+      if (minMax?.length) {
         this.stok.max_stok = minMax[0].max_stok
       }
       if (this.stok.max_stok && this.stok.sisaStok) {
@@ -195,7 +195,7 @@ export const useEditPemesananStore = defineStore('edit_pemesanan', {
     // cari barang yang sudah diterima
     getItemsDetail() {
       // ambil kode barang di detail
-      if (this.item.details.length) {
+      if (this.item.details?.length) {
         const kodeBarang = this.item.details.map(a => a.kode_rs)
         this.setForm('kodeBarang', kodeBarang)
 
@@ -209,8 +209,8 @@ export const useEditPemesananStore = defineStore('edit_pemesanan', {
           api.get('v1/transaksi/penerimaan/cari-detail-penerimaan', params)
             .then(resp => {
               this.loadingDetailPenerimaan = false
-              console.log('resp', resp.data.length)
-              if (resp.status === 200 && resp.data.length) {
+              console.log('resp', resp.data?.length)
+              if (resp.status === 200 && resp.data?.length) {
                 this.item.details.forEach(b => {
                   const bar = resp.data.filter(a => a.kode_rs === b.kode_rs).map(m => m.qty).reduce((x, y) => x + y, 0)
                   b.diterima = bar
@@ -219,7 +219,7 @@ export const useEditPemesananStore = defineStore('edit_pemesanan', {
                 // console.log('item', this.item)
               }
               const adaPenerimaan = this.item.details.filter(anu => anu.diterima > 0)
-              if (adaPenerimaan.length) {
+              if (adaPenerimaan?.length) {
                 this.statuses = this.useStatus.filter(anu => (anu.nilai === 3 || anu.nilai === 4))
               } else {
                 this.statuses = this.useStatus

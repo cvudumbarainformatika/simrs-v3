@@ -197,7 +197,7 @@
                 />
               </div>
               <div
-                v-if="store.tanggals.length"
+                v-if="store.tanggals?.length"
                 class="col-sm-5 col-md-6 col-xs-12"
               >
                 <div class="row q-col-gutter-md q-my-sm">

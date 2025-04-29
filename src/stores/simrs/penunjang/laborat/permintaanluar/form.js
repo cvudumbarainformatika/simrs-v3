@@ -100,7 +100,7 @@ export const usePermintaanLuarForm = defineStore('permintaan_luar_form', {
         'nohp',
         'kode_pekerjaan',
         'nama_pekerjaan']
-      for (let i = 0; i < columns.length; i++) {
+      for (let i = 0; i < columns?.length; i++) {
         this.setForm(columns[i], '')
       }
       this.setToday()
@@ -162,7 +162,7 @@ export const usePermintaanLuarForm = defineStore('permintaan_luar_form', {
       await api.get('/v1/master_laborat_group').then((resp) => {
         // console.log('master pemeriksaan', resp)
         const arr = resp.data
-        const arr2 = arr.length > 0 ? resp.data.map(x =>
+        const arr2 = arr?.length > 0 ? resp.data.map(x =>
           ({
             paket: x.rs21 !== '' ? x.rs21 : x.rs2,
             nama: x.rs2,

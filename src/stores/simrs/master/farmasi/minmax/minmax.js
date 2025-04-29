@@ -44,7 +44,7 @@ export const useMasterFarmasiMinMaxObatStore = defineStore('master_farmasi_minma
       const columns = [
         'kd_obat', 'kd_ruang'
       ]
-      for (let i = 0; i < columns.length; i++) {
+      for (let i = 0; i < columns?.length; i++) {
         this.setForm(columns[i], null)
       }
       this.setForm('min', 0)
@@ -131,7 +131,7 @@ export const useMasterFarmasiMinMaxObatStore = defineStore('master_farmasi_minma
     mapingFilteredObat (data) {
       console.log('filterd data', data)
       data.forEach(anu => {
-        if (anu.stokmaxrs.length) {
+        if (anu.stokmaxrs?.length) {
           anu.min = anu.stokmaxrs[0].min
           anu.max = anu.stokmaxrs[0].max
         }
@@ -142,7 +142,7 @@ export const useMasterFarmasiMinMaxObatStore = defineStore('master_farmasi_minma
       })
       this.obats = data
       this.filteredObats = data
-      // if (this.filteredObats.length) {
+      // if (this.filteredObats?.length) {
       //   this.filteredObats.forEach(ob => {
       //     ob.min = 0
       //     ob.max = 0

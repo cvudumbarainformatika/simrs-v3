@@ -280,7 +280,7 @@ async function previewLaborat(x) {
         // console.log('mapping', x)
         details = x
         mentah = resp.data
-        for (let i = 0; i < mentah.length; i++) {
+        for (let i = 0; i < mentah?.length; i++) {
           const obj = mentah[i].pemeriksaan_laborat
           obj.biaya = details[i].biaya
           obj.jumlah = mentah[i].jml
@@ -330,7 +330,7 @@ function getTotal(arr) {
     if (x.name !== '') {
       sum = val[0].subtotal
     } else {
-      for (let i = 0; i < val.length; i++) {
+      for (let i = 0; i < val?.length; i++) {
         sum = sum + val[i].subtotal
       }
     }

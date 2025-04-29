@@ -48,7 +48,7 @@ const store = useMasterDiagnosaKeperawatan()
 const formRef = ref()
 function getErrorField (val) {
   if (store.errorsForm !== null) {
-    return !!store.errorsForm[val].length
+    return !!store.errorsForm[val]?.length
   }
   return false
 }

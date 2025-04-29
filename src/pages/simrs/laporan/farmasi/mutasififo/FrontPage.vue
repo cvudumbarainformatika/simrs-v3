@@ -353,7 +353,7 @@ function jenis () {
 }
 function setJenis (val) {
   // console.log(val)
-  if (store.items.length) store.getInitialData(1)
+  if (store.items?.length) store.getInitialData(1)
 }
 const refScroll = ref(null)
 const refTt = ref(null)

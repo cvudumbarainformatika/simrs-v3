@@ -256,7 +256,7 @@
                         padding
                       >
                         <div
-                          v-if="details.length===0"
+                          v-if="details?.length===0"
                           class="column flex-center"
                           style="height:300px"
                         >
@@ -406,7 +406,7 @@ const details = ref([])
 
 const filterDetails = computed(() => {
   const c = details.value
-  if (c.length > 0) {
+  if (c?.length > 0) {
     return groupBy(c, paket => paket.rs21)
   }
   return []
@@ -432,13 +432,13 @@ function insertList(val) {
     //   details.value.push(val)
     // } else {
     //   const group = store.pemeriksaans.filter(x => x.rs21 === val.rs21)
-    //   for (let i = 0; i < group.length; i++) {
+    //   for (let i = 0; i < group?.length; i++) {
     //     details.value.push(group[i])
     //   }
     // }
-    if (val.value.length > 0) {
+    if (val.value?.length > 0) {
       const group = val.value
-      for (let i = 0; i < group.length; i++) {
+      for (let i = 0; i < group?.length; i++) {
         details.value.push(group[i].aslix)
       }
     } else {
@@ -457,7 +457,7 @@ function deleteDetails(paket, item) {
   } else {
     console.log(item)
     const arr = item.value
-    for (let i = 0; i < arr.length; i++) {
+    for (let i = 0; i < arr?.length; i++) {
       const index = details.value.indexOf(arr[i])
       details.value.splice(index, 1)
     }
@@ -497,7 +497,7 @@ async function filterNonPaket (val, update) {
       optNonPaket.value = filteredData
     },
     ref => {
-      if (val !== '' && ref.options.length) {
+      if (val !== '' && ref.options?.length) {
         ref.setOptionIndex(-1)
         ref.moveOptionSelection(1, true)
       }
@@ -506,7 +506,7 @@ async function filterNonPaket (val, update) {
 }
 
 function simpanData() {
-  if (details.value.length === 0) {
+  if (details.value?.length === 0) {
     return notifErrVue('Harap masukkan Data permintaan terlebih dahulu')
   }
 

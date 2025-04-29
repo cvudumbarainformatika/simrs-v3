@@ -462,7 +462,7 @@ function setSitermbayar (val) {
   const sis = apps.sistemBayars.filter((item) => val.includes(item.groups))?.map((item) => item.kode)
   console.log('sis', sis)
 
-  if (sis.length > 0) {
+  if (sis?.length > 0) {
     store.setParams('sistem_bayar', sis)
   }
   console.log('set sistem bayar', val, sis)

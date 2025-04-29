@@ -16,7 +16,7 @@
 
       <q-card-section class="q-pa-md">
         <q-list bordered separator class="rounded-lg shadow-md">
-          <template v-if="reseps.length">
+          <template v-if="reseps?.length">
             <q-item v-for="(obat, index) in reseps" :key="index" class="q-hoverable futuristic-item q-mb-xs">
               <q-item-section avatar>
                 <q-avatar :color="obat?.flag !== '1' ? 'orange' : 'secondary'" text-color="white" size="md">

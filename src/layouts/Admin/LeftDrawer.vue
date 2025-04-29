@@ -70,7 +70,7 @@ watch(
   (now, prev) => {
     console.log('now', now)
     console.log('prev', prev)
-    if (now.length === 1) {
+    if (now?.length === 1) {
       const url = now[0].url
       setCurrentApp(now[0].aplikasi)
       router.replace({ path: url })

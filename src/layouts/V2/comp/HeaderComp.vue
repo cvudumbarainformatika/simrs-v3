@@ -170,20 +170,20 @@ onMounted(() => {
 })
 function labelGd() {
   const anu = props?.gudangs.filter(gud => gud.kode === props.user?.kdruangansim)
-  if (anu.length) return anu[0]?.nama
+  if (anu?.length) return anu[0]?.nama
   else return 'Gudang Tidak Dipilih'
 }
 function labelRu() {
   const anu = props?.ruangs?.filter(gud => gud.kode === props.user?.kdruangansim)
-  if (anu.length) return anu[0]?.uraian
+  if (anu?.length) return anu[0]?.uraian
   else return 'Ruangan Tidak Dipilih'
 }
 function poli(val) {
   let fin = null
   let ruang = ''
   const temp = val.kdruangansim.split('|')
-  if (temp.length) {
-    if (optionsPolis.value.length) {
+  if (temp?.length) {
+    if (optionsPolis.value?.length) {
       fin = optionsPolis.value.map(x => x.polirs).join(', ')
     }
     // else if (optionsGudang.value?.length) {
@@ -205,7 +205,7 @@ function namaPath(val) {
   const stringdepan = val[0]
   let res = val
   if (stringdepan === '/') {
-    res = val.substring(val.length, 1)
+    res = val.substring(val?.length, 1)
   }
   // console.log('nama path', stringdepan)
   return res.toUpperCase()

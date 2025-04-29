@@ -41,7 +41,7 @@ export const useUploadDokStore = defineStore('upload-dok-poli', {
     },
 
     selectFiles (files) {
-      for (let i = 0; i < files.length; i++) {
+      for (let i = 0; i < files?.length; i++) {
         const images = files[i]
         this.form.dokumen.push(images)
       }

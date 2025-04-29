@@ -332,7 +332,7 @@ watch(() => {
       x.hasil = store?.ontarios?.form
       x?.hasil?.forEach(ha => {
         console.log('ha', ha)
-        if (ha?.submenu.length) {
+        if (ha?.submenu?.length) {
           ha?.submenu.forEach(su => {
             su.skor = x.ontario[su.kode]
           })

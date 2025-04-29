@@ -101,7 +101,7 @@
               </q-tab-panel>
 
               <q-tab-panel name="template" class="fit overflow-hidden q-pa-none">
-                <ListTemplate v-if="store.templates.length" :items="store.templates" @select="store.selectTemplate" @delete="store.deleteTemplate" />
+                <ListTemplate v-if="store.templates?.length" :items="store.templates" @select="store.selectTemplate" @delete="store.deleteTemplate" />
                 <div class="fit column flex-center bg-grey-4">
                   <div class="text-dark">
                     Belum ada template
@@ -256,7 +256,7 @@ function kirimOrder () {
   // console.log('kirim order', store.templateSelected, store.items)
   const obat = store.items.filter(f => f?.jenis_perbekalan?.toLowerCase() === 'obat')
   const racik = store.items.filter(f => f?.kodeobat?.includes('racik'))
-  const tot = obat.length + racik.length
+  const tot = obat?.length + racik?.length
   const batas = store.batases.find(f => f.depo === store.templateSelected.kodedepo)
   if (tot > batas?.batas) return notifErrVue('Batas Item Obat + Racikan adalah ' + batas?.batas)
 
@@ -267,7 +267,7 @@ function kirimOrder () {
   if (props?.pasien?.groups === '' || props?.pasien?.groups === null) return notifErrVue('Sistem Bayar Pasien Belum Jelas')
   if (props?.pasien?.noreg === '' || props?.pasien?.noreg === null) return notifErrVue('NOREG PASIEN BELUM TERDAFTAR')
   if (props?.pasien?.norm === '' || props?.pasien?.norm === null) return notifErrVue('NORM PASIEN BELUM TERDAFTAR')
-  if (store.items.length === 0) return notifErrVue('Tidak Ada obat terpilih')
+  if (store.items?.length === 0) return notifErrVue('Tidak Ada obat terpilih')
 
   const non = store.items?.filter(item => !item.racikan)
   // console.log('non', non)
@@ -292,10 +292,10 @@ function kirimOrder () {
     : []
   const racikan = store.items?.filter(item => item.racikan)
   const obatRacikan = []
-  for (let i = 0; i < racikan.length; i++) {
+  for (let i = 0; i < racikan?.length; i++) {
     const el = racikan[i]
     const rincian = el?.rincian
-    for (let n = 0; n < rincian.length; n++) {
+    for (let n = 0; n < rincian?.length; n++) {
       const sub = rincian[n]
       obatRacikan.push({
         kodeobat: sub?.kodeobat,
@@ -335,7 +335,7 @@ function kirimOrder () {
   })
 
   const thumb = []
-  for (let i = 0; i < Object.entries(sumMap).length; i++) {
+  for (let i = 0; i < Object.entries(sumMap)?.length; i++) {
     const el = Object.entries(sumMap)[i]
     const obj = {
       kodeobat: el[0],

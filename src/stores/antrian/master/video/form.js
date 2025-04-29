@@ -31,7 +31,7 @@ export const useVideoFormStore = defineStore('video_form', {
         'url',
         'type'
       ]
-      for (let i = 0; i < columns.length; i++) {
+      for (let i = 0; i < columns?.length; i++) {
         this.setForm(columns[i], null)
       }
     },

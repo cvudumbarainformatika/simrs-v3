@@ -73,18 +73,18 @@ export default function useSvg (pasien) {
     _svg.addEventListener('wheel', viewPortOnMouseWheel)
 
     const gSvg = _svg.children
-    for (let i = 0; i < gSvg.length; i++) {
+    for (let i = 0; i < gSvg?.length; i++) {
       const group = gSvg[i]
       console.log('group', group)
       if (group.tagName === 'g') {
         // console.log('g', g)
         const gChildren = group.children
-        for (let j = 0; j < gChildren.length; j++) {
+        for (let j = 0; j < gChildren?.length; j++) {
           const el = gChildren[j]
           if (el.tagName === 'g') {
             el.classList.add('main')
             const gChildren2 = el.children
-            for (let k = 0; k < gChildren2.length; k++) {
+            for (let k = 0; k < gChildren2?.length; k++) {
               const pathMain = gChildren2[k]
               if (pathMain.tagName === 'path') {
                 pathMain.classList.add('main')

@@ -15,12 +15,12 @@
           Sinkron Data Ke DATABASE
         </div>
       </div>
-      <div v-if="filterredTable.length <= 0" class="column full-height flex-center">
+      <div v-if="filterredTable?.length <= 0" class="column full-height flex-center">
         <div class="text-white">
           Belum Ada Data....
         </div>
       </div>
-      <div v-if="filterredTable.length > 0" class="fit q-pa-sm scroll">
+      <div v-if="filterredTable?.length > 0" class="fit q-pa-sm scroll">
         <transition-group name="list">
           <q-card flat bordered v-for="(item, i) in filterredTable" :key="i" class="q-mb-xs cursor-pointer"
             :class="{ 'bg-yellow-1': item?.nakesminta?.kdgroupnakes === '2' }" @mouseover="hoverredId = item?.id"
@@ -49,7 +49,7 @@
                       -- {{ item?.jawaban ?? 'Belum Ada Jawaban' }}
                     </q-item-label>
                     <q-item-label>
-                      <span v-if="item?.tindakan.length > 0" class="text-weight-bold">
+                      <span v-if="item?.tindakan?.length > 0" class="text-weight-bold">
                         <q-badge color="red" outline>{{ formatRpDouble(item?.tindakan[0]?.subtotal) ?? '' }}</q-badge>
                       </span>
                     </q-item-label>

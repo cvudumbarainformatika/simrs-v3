@@ -184,7 +184,7 @@ export const useHistoryTable = defineStore('history_table', {
             this.loading = false
             if (resp.status === 200) {
               // console.log('resp history', resp.data)
-              if (resp.data.data.length) {
+              if (resp.data.data?.length) {
                 this.setColumns(resp.data.data)
                 this.items = resp.data.data
               }

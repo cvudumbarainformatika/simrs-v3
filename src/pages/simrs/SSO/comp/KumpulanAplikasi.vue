@@ -29,7 +29,7 @@
         :style="`height:${h}px;`"
       >
         <div
-          v-if="filterApps.length || !loading"
+          v-if="filterApps?.length || !loading"
           class="wrapper"
           :class="!isMobile? ' q-col-gutter-xl': 'q-col-gutter-md'"
         >

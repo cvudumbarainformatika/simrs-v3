@@ -106,7 +106,7 @@ const menus = computed(() => {
     const appNow = appSetting.currentApp !== '' ? appSetting.currentApp : getCurrentApp()
     return app.aplikasi === appNow
   })
-  if (apem.length) {
+  if (apem?.length) {
     return apem[0].menus
   } else {
     return []
