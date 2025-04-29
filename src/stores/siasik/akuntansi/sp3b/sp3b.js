@@ -163,19 +163,19 @@ export const useSp3bStore = defineStore('laporan_sp3b', {
 
       //Filter pendapatan berdasarkan data pagu pendapatan
       const filterpendpatan = pendx.filter(x => koderekpend.includes(x.kode))
-      const filterpenyesuaian = penyesuaianx && penyesuaianx.length > 0 ?
+      const filterpenyesuaian = penyesuaianx && penyesuaianx?.length > 0 ?
         penyesuaianx.filter(x => koderekpend.includes(x.kode)) : []
       const salawalpendapatan = filterpendpatan.concat(filterpenyesuaian)
-      const pendapatanx = salawalpendapatan.length > 0 ?
+      const pendapatanx = salawalpendapatan?.length > 0 ?
         salawalpendapatan.reduce((a, b) => parseFloat(a) + parseFloat(b.subtotal), 0) : 0
 
       //filter penyesuaian berdasarkan belanja
-      const filterpnye = penyesuaianx && penyesuaianx.length ?
+      const filterpnye = penyesuaianx && penyesuaianx?.length ?
         penyesuaianx.filter(x => koderekblja.includes(x.kode)) : []
       const saldoawalbelanja = bljx.concat(filterpnye)
-      const totalbelanjax = saldoawalbelanja.length > 0 ?
+      const totalbelanjax = saldoawalbelanja?.length > 0 ?
         saldoawalbelanja.reduce((a, b) => parseFloat(a) + parseFloat(b.subtotal), 0) : 0
-      const totalbiayax = biayax.length > 0 ?
+      const totalbiayax = biayax?.length > 0 ?
         biayax.map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0) : 0
       const saldoawalx = ((pendapatanx - totalbelanjax) + totalbiayax).toFixed(2)
       this.saldoawal = saldoawalx
@@ -183,14 +183,14 @@ export const useSp3bStore = defineStore('laporan_sp3b', {
       // DATA PENDAPATAN
       const pendapatanall = this.allitems?.pendapatan || []
       const pend = pendapatanall.filter(x => koderekpend.includes(x.kode))
-      const penye = this.allitems?.penyesuaian && this.allitems?.penyesuaian.length > 0 ?
+      const penye = this.allitems?.penyesuaian && this.allitems?.penyesuaian?.length > 0 ?
         this.allitems.penyesuaian.filter(x => koderekpend.includes(x.kode)) : []
       const datapendapatan = pend.concat(penye)
 
       const unikpend = pagupendapatan.map((x) => x.kode)
-      const newsetpend = unikpend.length ? [...new Set(unikpend)] : []
+      const newsetpend = unikpend?.length ? [...new Set(unikpend)] : []
       const pendapatan = []
-      for (let i = 0; i < newsetpend.length; i++) {
+      for (let i = 0; i < newsetpend?.length; i++) {
         const el = newsetpend[i];
         console.log('el', el)
         // Ambil kode dan uraian dari pagupendapatan
@@ -199,7 +199,7 @@ export const useSp3bStore = defineStore('laporan_sp3b', {
         if (paguData) {
           // Filter data pendapatan untuk menghitung total
           const filteredData = datapendapatan.filter((x) => x.kode === el)
-          const total = filteredData.length > 0 ?
+          const total = filteredData?.length > 0 ?
             filteredData.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0) : 0
 
           const obj = {
@@ -223,10 +223,10 @@ export const useSp3bStore = defineStore('laporan_sp3b', {
 
       const databelanja = blj.concat(penyesbelanja)
 
-      const hslunik = uniks.length ? [...new Set(uniks)] : []
+      const hslunik = uniks?.length ? [...new Set(uniks)] : []
 
       const belanja = []
-      for (let i = 0; i < hslunik.length; i++) {
+      for (let i = 0; i < hslunik?.length; i++) {
         const el = hslunik[i];
         const obj = {
           kode: databelanja.filter((x) => x.kode === el)[0].kode,
@@ -241,7 +241,7 @@ export const useSp3bStore = defineStore('laporan_sp3b', {
       //DATA PEMBIAYAAN
       const pmbiaya = this.allitems?.pembiayaan || []
       const pembiayaan = []
-      for (let i = 0; i < pmbiaya.length; i++) {
+      for (let i = 0; i < pmbiaya?.length; i++) {
         const el = pmbiaya[i];
         const obj = {
           kode: el.kode,
@@ -255,7 +255,7 @@ export const useSp3bStore = defineStore('laporan_sp3b', {
       this.pembiayaans.push(...pembiayaan)
 
       this.saveall = pendapatan.concat(belanja)
-      if (pembiayaan.length > 0) {
+      if (pembiayaan?.length > 0) {
         this.saveall = this.saveall.concat(pembiayaan)
       }
       console.log('this.pembiayaans', this.pembiayaans)

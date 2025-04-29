@@ -105,7 +105,7 @@ export const useVerifPermintaanDepoStore = defineStore('verif_permintaan_depo', 
     permintaanSelected(val) {
       this.disp.no_permintaan = val
       const temp = this.items.filter(a => a.no_permintaan === val)
-      if (temp.length) {
+      if (temp?.length) {
         const item = temp[0]
         this.terpilih = item
         console.log('item', item)
@@ -127,7 +127,7 @@ export const useVerifPermintaanDepoStore = defineStore('verif_permintaan_depo', 
         )
       const filteredData = multiFilter(this.items, splits, needle)
       opt = filteredData
-      if (opt.length <= 0) {
+      if (opt?.length <= 0) {
         this.setParams('no_permintaan', val)
         this.getPermintaanDepo()
         // console.log('opt', 'ga ada')

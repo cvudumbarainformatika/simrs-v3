@@ -27,7 +27,7 @@
 
       <hr>
       <!-- CONTENT -->
-      <div v-if="!EDUKASI.length" class="q-pa-md column full-height flex-center" style="min-height: 400px;">
+      <div v-if="!EDUKASI?.length" class="q-pa-md column full-height flex-center" style="min-height: 400px;">
         <div class="text-weight-bold text-center ">
           BELUM TERSEDIA LAPORAN EDUKASI
         </div>

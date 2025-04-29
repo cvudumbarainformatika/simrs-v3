@@ -52,7 +52,7 @@
                     {{ item.label }}
                   </div>
                   <div class="row" v-for="(submenu , x) in item?.submenu" :key="x">
-                    <div class="col-12" v-if="item.submenu.length > 0">
+                    <div class="col-12" v-if="item.submenu?.length > 0">
                       <span>
                         - {{ submenu.label }}
                       </span>

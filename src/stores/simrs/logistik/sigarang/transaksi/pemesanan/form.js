@@ -91,7 +91,7 @@ export const useTransaksiPemensananForm = defineStore('transaksi_pemensanan_form
         'status',
         'sub_total'
       ]
-      for (let i = 0; i < columns.length; i++) {
+      for (let i = 0; i < columns?.length; i++) {
         this.setForm(columns[i], null)
       }
       this.setForm('merk', '')
@@ -113,7 +113,7 @@ export const useTransaksiPemensananForm = defineStore('transaksi_pemensanan_form
         'harga',
         'sub_total'
       ]
-      for (let i = 0; i < columns.length; i++) {
+      for (let i = 0; i < columns?.length; i++) {
         this.setForm(columns[i], null)
       }
       this.setForm('isi', 1)
@@ -233,14 +233,14 @@ export const useTransaksiPemensananForm = defineStore('transaksi_pemensanan_form
       this.isOpen = true
     },
     kontrakSelected (val) {
-      // console.log('kontrak', !this.kontrakPekerjaans.length)
+      // console.log('kontrak', !this.kontrakPekerjaans?.length)
 
       // console.log('kontrak val', val)
       this.form.kode_perusahaan = val.kodeperusahaan
       this.namaPerusahaan = val.namaperusahaan
       this.form.kontrak = val.nokontrakx
       this.kontrakOpen = true
-      // if (!val || !this.kontrakPekerjaans.length) return
+      // if (!val || !this.kontrakPekerjaans?.length) return
       // const result = this.kontrakPekerjaans.filter(data => {
       //   return data.nokontrakx === val
       // })
@@ -290,10 +290,10 @@ export const useTransaksiPemensananForm = defineStore('transaksi_pemensanan_form
         // return s.kode_rs === val && s.kode_depo === 'Gd-02010100' // hardcode kode gudang Habis pakai gedung 2
         return s.kode_rs === val // hardcode kode gudang Habis pakai gedung 2
       })
-      if (dataStok.length) {
+      if (dataStok?.length) {
         this.stok.sisaStok = dataStok[0].sisa_stok
       }
-      if (minMax.length) {
+      if (minMax?.length) {
         this.stok.max_stok = minMax[0].max_stok
       }
       if (this.stok.max_stok && this.stok.sisaStok) {
@@ -326,7 +326,7 @@ export const useTransaksiPemensananForm = defineStore('transaksi_pemensanan_form
     // api related actions
     // ambil data kontrak pekerjaan
     getKontrakPekerjaan () {
-      if (!this.kontrakPekerjaans.length) {
+      if (!this.kontrakPekerjaans?.length) {
         this.loadingKontrak = true
         const params = { params: this.params }
         return new Promise((resolve, reject) => {

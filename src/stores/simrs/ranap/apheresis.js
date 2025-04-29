@@ -98,7 +98,7 @@ export const usePermintaanApheresisStore = defineStore('permintaan-apheresis-sto
 
     setNotas (array) {
       const arr = array.map(x => x.nota)
-      this.notas = arr.length ? arr : []
+      this.notas = arr?.length ? arr : []
       this.notas.push('BARU')
       // this.notas.unshift('SEMUA')
       this.form.nota = this.notas[0]

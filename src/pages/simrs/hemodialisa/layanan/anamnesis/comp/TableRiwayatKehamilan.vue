@@ -19,7 +19,7 @@
         </th>
       </tr>
     </thead>
-    <tbody v-if="items.length">
+    <tbody v-if="items?.length">
       <tr v-for="(item, i) in items" :key="i">
         <td>{{ i+1 }}</td>
         <td>{{ item?.pl }}</td>

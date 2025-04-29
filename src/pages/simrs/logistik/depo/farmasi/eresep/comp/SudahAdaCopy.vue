@@ -80,7 +80,7 @@
             </div>
           </div>
         </div>
-        <div v-if="store.adaCopys?.listRacikan.length">
+        <div v-if="store.adaCopys?.listRacikan?.length">
           <div class="row bg-orange text-white q-pa-xs q-mt-sm">
             Racikan
           </div>

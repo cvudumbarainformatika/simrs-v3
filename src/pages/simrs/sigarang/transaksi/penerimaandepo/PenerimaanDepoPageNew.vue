@@ -20,10 +20,10 @@
         </div>
       </q-card-section>
       <q-separator />
-      <q-card-section v-if="!Object.keys(store.display).length">
+      <q-card-section v-if="!Object.keys(store.display)?.length">
         <app-no-data />
       </q-card-section>
-      <q-card-section v-if="Object.keys(store.display).length">
+      <q-card-section v-if="Object.keys(store.display)?.length">
         <!-- header -->
         <div class="fit row no-wrap justify-evenly items-center content-center q-my-xs text-weight-bold">
           <div class="anak text-center">
@@ -122,7 +122,7 @@ store.getInitialData()
 
 const refDistribusi = ref(null)
 // const disSelected = (val) => {
-//   // if (!store.minMaxDepos.length || !store.stoks.length) {
+//   // if (!store.minMaxDepos?.length || !store.stoks?.length) {
 //   //   // notifErrVue('data masih sedang dalam perjalanan, mohon tunggu beberapa saat lagi')
 //   //   return
 //   // }

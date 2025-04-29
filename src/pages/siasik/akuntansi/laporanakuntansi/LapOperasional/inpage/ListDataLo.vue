@@ -1,5 +1,5 @@
 <template>
-  <template v-if="store.hasilpendapatan.length > 0 && store.hasilbeban.length > 0">
+  <template v-if="store.hasilpendapatan?.length > 0 && store.hasilbeban?.length > 0">
     <q-card-section>
       <div class="row">
         <div class="full-width">
@@ -16,7 +16,7 @@
               </tr>
             </thead>
             <tbody v-if="store.reqs.levelberapa === 6">
-              <tr v-for="it in store.hasilpendapatan" :key="it" :class="it.kode.length <= 12 ? 'text-bold' : ''">
+              <tr v-for="it in store.hasilpendapatan" :key="it" :class="it.kode?.length <= 12 ? 'text-bold' : ''">
                 <td class="text-left">
                   {{ it.kode }}
                 </td>
@@ -35,7 +35,7 @@
                   {{ formattanpaRp(totalPendapatan()) }}
                 </td>
               </tr>
-              <tr v-for="it in store.hasilbeban" :key="it" :class="it.kode.length <= 12 ? 'text-bold' : ''">
+              <tr v-for="it in store.hasilbeban" :key="it" :class="it.kode?.length <= 12 ? 'text-bold' : ''">
                 <td class="text-left">
                   {{ it.kode }}
                 </td>
@@ -64,7 +64,7 @@
               </tr>
             </tbody>
             <tbody v-if="store.reqs.levelberapa === 5">
-              <tr v-for="it in store.hasilpendapatan" :key="it" :class="it.kode.length <= 9 ? 'text-bold' : ''">
+              <tr v-for="it in store.hasilpendapatan" :key="it" :class="it.kode?.length <= 9 ? 'text-bold' : ''">
                 <td class="text-left">
                   {{ it.kode }}
                 </td>
@@ -83,7 +83,7 @@
                   {{ formattanpaRp(totalPendapatan()) }}
                 </td>
               </tr>
-              <tr v-for="it in store.hasilbeban" :key="it" :class="it.kode.length <= 9 ? 'text-bold' : ''">
+              <tr v-for="it in store.hasilbeban" :key="it" :class="it.kode?.length <= 9 ? 'text-bold' : ''">
                 <td class="text-left">
                   {{ it.kode }}
                 </td>
@@ -112,7 +112,7 @@
               </tr>
             </tbody>
             <tbody v-if="store.reqs.levelberapa === 4">
-              <tr v-for="it in store.hasilpendapatan" :key="it" :class="it.kode.length <= 6 ? 'text-bold' : ''">
+              <tr v-for="it in store.hasilpendapatan" :key="it" :class="it.kode?.length <= 6 ? 'text-bold' : ''">
                 <td class="text-left">
                   {{ it.kode }}
                 </td>
@@ -131,7 +131,7 @@
                   {{ formattanpaRp(totalPendapatan()) }}
                 </td>
               </tr>
-              <tr v-for="it in store.hasilbeban" :key="it" :class="it.kode.length <= 6 ? 'text-bold' : ''">
+              <tr v-for="it in store.hasilbeban" :key="it" :class="it.kode?.length <= 6 ? 'text-bold' : ''">
                 <td class="text-left">
                   {{ it.kode }}
                 </td>
@@ -160,7 +160,7 @@
               </tr>
             </tbody>
             <tbody v-if="store.reqs.levelberapa === 3">
-              <tr v-for="it in store.hasilpendapatan" :key="it" :class="it.kode.length <= 3 ? 'text-bold' : ''">
+              <tr v-for="it in store.hasilpendapatan" :key="it" :class="it.kode?.length <= 3 ? 'text-bold' : ''">
                 <td class="text-left">
                   {{ it.kode }}
                 </td>
@@ -179,7 +179,7 @@
                   {{ formattanpaRp(totalPendapatan()) }}
                 </td>
               </tr>
-              <tr v-for="it in store.hasilbeban" :key="it" :class="it.kode.length <= 3 ? 'text-bold' : ''">
+              <tr v-for="it in store.hasilbeban" :key="it" :class="it.kode?.length <= 3 ? 'text-bold' : ''">
                 <td class="text-left">
                   {{ it.kode }}
                 </td>
@@ -208,7 +208,7 @@
               </tr>
             </tbody>
             <tbody v-if="store.reqs.levelberapa === 2 || store.reqs.levelberapa === 1">
-              <tr v-for="it in store.hasilpendapatan" :key="it" :class="it.kode.length <= 1 ? 'text-bold' : ''">
+              <tr v-for="it in store.hasilpendapatan" :key="it" :class="it.kode?.length <= 1 ? 'text-bold' : ''">
                 <td class="text-left">
                   {{ it.kode }}
                 </td>
@@ -227,7 +227,7 @@
                   {{ formattanpaRp(totalPendapatan()) }}
                 </td>
               </tr>
-              <tr v-for="it in store.hasilbeban" :key="it" :class="it.kode.length <= 1 ? 'text-bold' : ''">
+              <tr v-for="it in store.hasilbeban" :key="it" :class="it.kode?.length <= 1 ? 'text-bold' : ''">
                 <td class="text-left">
                   {{ it.kode }}
                 </td>

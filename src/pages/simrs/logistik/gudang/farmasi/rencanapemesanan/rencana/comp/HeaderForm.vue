@@ -123,7 +123,7 @@ function setTanggal(val) {
 }
 function gudang(val) {
   const gud = store.gudangs.filter(a => a.value === val)
-  if (gud.length) return gud[0].nama
+  if (gud?.length) return gud[0].nama
   else return 'form gudang tidak terisi'
 }
 onMounted(() => {

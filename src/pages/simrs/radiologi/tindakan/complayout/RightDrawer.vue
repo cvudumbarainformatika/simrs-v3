@@ -64,7 +64,7 @@
                     <q-card dark>
                       <q-separator />
                       <q-card-section class="q-pa-none">
-                        <div v-if="item?.anamnesis.length">
+                        <div v-if="item?.anamnesis?.length">
                           <q-bar class="bg-accent">
                             <div>ANAMNESIS</div>
                           </q-bar>
@@ -1263,7 +1263,7 @@
                                   {{ apotekrajal.masterobat?.rs2 }}
                                 </td>
                                 <td
-                                  v-if="apotekrajal?.rs27.length > 0 && apotekrajal?.rs28.length > 0"
+                                  v-if="apotekrajal?.rs27?.length > 0 && apotekrajal?.rs28?.length > 0"
                                   class="text-right"
                                   style="max-width: 250px;"
                                 >
@@ -1300,7 +1300,7 @@
                                   {{ apotekrajalpolilalu.masterobat?.rs2 }}
                                 </td>
                                 <td
-                                  v-if="apotekrajalpolilalu?.rs27.length > 0 && apotekrajalpolilalu?.rs28.length > 0"
+                                  v-if="apotekrajalpolilalu?.rs27?.length > 0 && apotekrajalpolilalu?.rs28?.length > 0"
                                   class="text-right"
                                   style="max-width: 250px;"
                                 >
@@ -1463,7 +1463,7 @@
                     <q-card dark>
                       <q-separator />
                       <q-card-section class="q-pa-none">
-                        <div v-if="item?.anamnesis.length">
+                        <div v-if="item?.anamnesis?.length">
                           <q-bar class="bg-accent">
                             <div>ANAMNESIS</div>
                           </q-bar>
@@ -1835,7 +1835,7 @@
                                 />
                                 keterangan = {{ tindakan?.rs20 }}
                                 <div
-                                  v-if="tindakan?.gambardokumens.length > 0"
+                                  v-if="tindakan?.gambardokumens?.length > 0"
                                   class="image-row"
                                 >
                                   <div
@@ -2249,7 +2249,7 @@
                     <q-card dark>
                       <q-separator />
                       <q-card-section class="q-pa-none">
-                        <div v-if="item?.anamnesis.length">
+                        <div v-if="item?.anamnesis?.length">
                           <q-bar class="bg-accent">
                             <div>ANAMNESIS</div>
                           </q-bar>
@@ -2621,7 +2621,7 @@
                                 />
                                 keterangan = {{ tindakan?.rs20 }}
                                 <div
-                                  v-if="tindakan?.gambardokumens.length > 0"
+                                  v-if="tindakan?.gambardokumens?.length > 0"
                                   class="image-row"
                                 >
                                   <div
@@ -2878,7 +2878,7 @@
                                   {{ apotekrajal.masterobat?.rs2 }}
                                 </td>
                                 <td
-                                  v-if="apotekrajal?.rs27.length > 0 && apotekrajal?.rs28.length > 0"
+                                  v-if="apotekrajal?.rs27?.length > 0 && apotekrajal?.rs28?.length > 0"
                                   class="text-right"
                                   style="max-width: 250px;"
                                 >
@@ -2915,7 +2915,7 @@
                                   {{ apotekrajalpolilalu.masterobat?.rs2 }}
                                 </td>
                                 <td
-                                  v-if="apotekrajalpolilalu?.rs27.length > 0 && apotekrajalpolilalu?.rs28.length > 0"
+                                  v-if="apotekrajalpolilalu?.rs27?.length > 0 && apotekrajalpolilalu?.rs28?.length > 0"
                                   class="text-right"
                                   style="max-width: 250px;"
                                 >
@@ -3244,7 +3244,7 @@ function suhu (val) {
 
 function getKesadaran (val) {
   const temp = store.optionsTingkatkesadaran.filter(a => a.value === val)
-  if (temp.length) {
+  if (temp?.length) {
     return temp[0].label
   }
   else {
@@ -3313,7 +3313,7 @@ function tekananDarahDias (val) {
 function getInteger (str) {
   const parts = str.split('.')
 
-  if (parts.length > 1 && parseInt(parts[1]) === 0) {
+  if (parts?.length > 1 && parseInt(parts[1]) === 0) {
     return parts[0]
   }
 

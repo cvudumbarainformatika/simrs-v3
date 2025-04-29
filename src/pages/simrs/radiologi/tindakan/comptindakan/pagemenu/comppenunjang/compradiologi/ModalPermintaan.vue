@@ -22,7 +22,7 @@
             Pemerikasaan teripilih :
           </div>
           <div
-            v-if="pemeriksaans.length"
+            v-if="pemeriksaans?.length"
             class="row"
           >
             <div
@@ -58,7 +58,7 @@
             </div>
           </div>
           <div
-            v-if="pemeriksaans.length"
+            v-if="pemeriksaans?.length"
             class="row"
           >
             <q-btn
@@ -161,7 +161,7 @@
               </div>
               <div class="col full-height scroll">
                 <q-list
-                  v-if="filterredLists.length"
+                  v-if="filterredLists?.length"
                   separator
                   dense
                 >
@@ -326,10 +326,10 @@ function checkingAll() {
   }
 }
 function setPem() {
-  if (pemeriksaans.value.length) {
+  if (pemeriksaans.value?.length) {
     pemeriksaans.value.forEach((item, i) => {
       const temp = filterredLists.value.filter(a => a.val === item.val)
-      if (temp.length) {
+      if (temp?.length) {
         pemeriksaans.value[i] = temp[0]
       }
     })

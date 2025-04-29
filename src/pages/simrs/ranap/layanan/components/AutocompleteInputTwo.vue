@@ -71,7 +71,7 @@ const requiredRule = (val) => {
 }
 
 const filterFn = (val, update, abort) => {
-  if (val.length < props.minLength) {
+  if (val?.length < props.minLength) {
     abort()
     return
   }
@@ -105,7 +105,7 @@ const createValue = (val, done) => {
   // If "var" content is undefined/null, then it doesn't tampers with the model
   // and only resets the input textbox to empty string
 
-  if (val.length > 2) {
+  if (val?.length > 2) {
     if (!props.options.includes(val)) {
       done(val, 'add-unique')
     }

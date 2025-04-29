@@ -29,7 +29,7 @@ export const useMasterDiagnosaGiziStore = defineStore('master-diagnosa-gizi-stor
           .then((resp) => {
             if (resp.status === 200) {
               const ada = this.items.filter(x => x.id === resp?.data?.result?.id)
-              if (!ada.length) {
+              if (!ada?.length) {
                 this.items?.splice(0, 0, resp.data.result)
               }
               this.resetForm()
@@ -66,7 +66,7 @@ export const useMasterDiagnosaGiziStore = defineStore('master-diagnosa-gizi-stor
         const arr = this.diagnosa?.intervensis
         const arr2 = arr?.length ? arr?.map(x => x.group) : []
         const unique = arr2?.length ? this.removeDuplicates(arr2) : []
-        this.groupIntervensis = unique.length
+        this.groupIntervensis = unique?.length
           ? unique.map(x => {
             return { group: x, kode: this.diagnosa.kode }
           })
@@ -82,7 +82,7 @@ export const useMasterDiagnosaGiziStore = defineStore('master-diagnosa-gizi-stor
     addGroupIntervensi (val) {
       return new Promise((resolve, reject) => {
         const cek = this.groupIntervensis.filter(x => x.group === val)
-        if (!cek.length) {
+        if (!cek?.length) {
           const obj = {
             kode: this.diagnosa?.kode,
             group: val
@@ -136,7 +136,7 @@ export const useMasterDiagnosaGiziStore = defineStore('master-diagnosa-gizi-stor
 
               const ada = this.diagnosa?.intervensis?.filter(x => x.id === row?.id)
               console.log('ada', this.diagnosa)
-              if (!ada.length) {
+              if (!ada?.length) {
                 this.diagnosa?.intervensis?.push(resp?.data?.result)
               }
               this.intervensi = null
@@ -158,7 +158,7 @@ export const useMasterDiagnosaGiziStore = defineStore('master-diagnosa-gizi-stor
         if (resp.status === 200) {
           notifSuccess(resp)
           const findItem = this.items.filter(x => x.id === id)
-          if (findItem.length) {
+          if (findItem?.length) {
             const pos = this.items.findIndex(el => el.id === id)
             if (pos >= 0) { this.items.splice(pos, 1) }
           }
@@ -177,7 +177,7 @@ export const useMasterDiagnosaGiziStore = defineStore('master-diagnosa-gizi-stor
         if (resp.status === 200) {
           notifSuccess(resp)
           const findItem = this.diagnosa?.intervensis?.filter(x => x.id === id)
-          if (findItem.length) {
+          if (findItem?.length) {
             const pos = this.diagnosa?.intervensis?.findIndex(el => el.id === id)
             if (pos >= 0) { this.diagnosa?.intervensis.splice(pos, 1) }
           }

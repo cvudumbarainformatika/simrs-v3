@@ -64,7 +64,7 @@ const kdDisplay = computed(() => {
   const kdpoli = store.params.kodepoli[0] ?? 'POL'
 
   const target = poli.filter(x => x.kodepoli === kdpoli)
-  if (target.length) {
+  if (target?.length) {
     return target[0].displaykode
   }
   return null
@@ -98,7 +98,7 @@ function getListVoices() {
       let id = 0
 
       id = setInterval(() => {
-        if (synth.getVoices().length !== 0) {
+        if (synth.getVoices()?.length !== 0) {
           speech.voiceList = synth.getVoices()
           resolve(synth.getVoices())
           clearInterval(id)
@@ -110,7 +110,7 @@ function getListVoices() {
 
 function settingsVoice() {
   const voices = speech.voiceList
-  if (voices.length) {
+  if (voices?.length) {
     const lang = voices?.map(x => x.lang)
     const ind = lang.findIndex(x => x === 'id-ID') ?? 0
     indexVoices.value = ind
@@ -150,7 +150,15 @@ function setSpeech(txt) {
 }
 
 function panggil(row) {
-  // console.log(row)
+  // Log untuk debugging speech
+  console.log('Speech panggilan dimulai:', {
+    browser: navigator.userAgent,
+    speechSupport: 'speechSynthesis' in window,
+    voicesAvailable: speech.voiceList.length,
+    selectedVoice: indexVoices.value,
+    speechState: speech.synth.speaking ? 'speaking' : 'idle'
+  })
+
   const nama = (row?.nama_panggil) ? (row?.nama_panggil)?.toLowerCase() : ''
   const unit = row?.panggil_antrian
   const noAntrean = row?.noantrian ? row.noantrian.toUpperCase() : ''
@@ -160,10 +168,51 @@ function panggil(row) {
   const txt2 = 'Nomor Antrian ... ' + noAntrean + '? ...Harap menujuu' + unit
 
   const txt3 = 'Nomor Antrian ... ' + noAntrean + '... nama!  ' + nama + '! ...Harap menujuu  ' + unit
+
+  // const parts = [
+  //   { text: 'Nomor antrean ... ', pitch: 1.5, rate: 0.95 },
+  //   { text: noAntrean, pitch: 1.3, rate: 1.0 },
+  //   { text: ' ... Nama! ', pitch: 1.2, rate: 1.0 },
+  //   { text: nama, pitch: 1.1, rate: 1.0 },
+  //   { text: ' ... Harap menuju ', pitch: 1.4, rate: 0.95 },
+  //   { text: unit, pitch: 1.3, rate: 1.0 },
+  // ];
   // const txt = jns === 'nama' ? txt1 : txt2
-  speech.synth.speak(setSpeech(txt3))
+
+  try {
+    // speech.synth.speak(setSpeech(txt3))
+    // console.log('Speech berhasil dipanggil:', { text: txt3 })
+
+    speakDynamic(noAntrean, nama, unit);
+  } catch (error) {
+    console.error('Error saat memanggil speech:', error)
+  }
+
   // console.log(row)
   store.sendPanggil(row, `display${kdDisplay.value}`)
+}
+
+function speakDynamic(noAntrean, nama, unit) {
+  const voiceList = speech.voiceList[indexVoices.value];
+
+  const parts = [
+    { text: 'Nomor Antrian ... ', pitch: 1.2, rate: 0.95 },
+    { text: noAntrean, pitch: 1.2, rate: 0.9 },
+    { text: '  Nama!  ', pitch: 1.1, rate: 1.0 },
+    { text: nama, pitch: 1.1, rate: 0.95 },
+    { text: '  Harap menuju  ', pitch: 1.2, rate: 0.95 },
+    { text: unit, pitch: 1, rate: 0.9 },
+  ];
+
+  parts.forEach(part => {
+    const utterance = new SpeechSynthesisUtterance(part.text);
+    utterance.voice = voiceList;
+    utterance.volume = 1;
+    utterance.pitch = part.pitch;
+    utterance.rate = part.rate;
+    utterance.lang = 'id-ID';
+    speechSynthesis.speak(utterance);
+  });
 }
 
 function bukaTindakan(val) {

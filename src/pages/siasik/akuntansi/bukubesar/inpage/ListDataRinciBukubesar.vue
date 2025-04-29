@@ -1,7 +1,7 @@
 <template>
-  <!-- <template v-if="store.hasilRinci1.length || store.hasilRinci2.length
-    || store.hasilRinci3.length || store.hasilRinci4.length
-    || store.hasilRinci5.length || store.hasilRinci6.length"> -->
+  <!-- <template v-if="store.hasilRinci1?.length || store.hasilRinci2?.length
+    || store.hasilRinci3?.length || store.hasilRinci4?.length
+    || store.hasilRinci5?.length || store.hasilRinci6?.length"> -->
   <q-card-section class="full-width">
     <div class="row">
       <div class="full-width">
@@ -182,7 +182,7 @@ const store = useBukubesarStore()
 const separator = ref('cell')
 
 function total() {
-  if (store.hasilRinci1.length > 0) {
+  if (store.hasilRinci1?.length > 0) {
     const debit = store.hasilRinci1.map((x) => x.debit)
     const jmldebit = debit.reduce((a, b) => a + b, 0)
     const kredit = store.hasilRinci1.map((x) => x.kredit)
@@ -194,7 +194,7 @@ function total() {
       jumlah
     }
   }
-  else if (store.hasilRinci2.length > 0) {
+  else if (store.hasilRinci2?.length > 0) {
     const debit = store.hasilRinci2.map((x) => x.debit)
     const jmldebit = debit.reduce((a, b) => a + b, 0)
     const kredit = store.hasilRinci2.map((x) => x.kredit)
@@ -206,7 +206,7 @@ function total() {
       jumlah
     }
   }
-  else if (store.hasilRinci3.length > 0) {
+  else if (store.hasilRinci3?.length > 0) {
     const debit = store.hasilRinci3.map((x) => x.debit)
     const jmldebit = debit.reduce((a, b) => a + b, 0)
     const kredit = store.hasilRinci3.map((x) => x.kredit)
@@ -218,7 +218,7 @@ function total() {
       jumlah
     }
   }
-  else if (store.hasilRinci4.length > 0) {
+  else if (store.hasilRinci4?.length > 0) {
     const debit = store.hasilRinci4.map((x) => x.debit)
     const jmldebit = debit.reduce((a, b) => a + b, 0)
     const kredit = store.hasilRinci4.map((x) => x.kredit)
@@ -230,7 +230,7 @@ function total() {
       jumlah
     }
   }
-  else if (store.hasilRinci5.length > 0) {
+  else if (store.hasilRinci5?.length > 0) {
     const debit = store.hasilRinci5.map((x) => x.debit)
     const jmldebit = debit.reduce((a, b) => a + b, 0)
     const kredit = store.hasilRinci5.map((x) => x.kredit)
@@ -242,7 +242,7 @@ function total() {
       jumlah
     }
   }
-  else if (store.hasilRinci6.length > 0) {
+  else if (store.hasilRinci6?.length > 0) {
     const debit = store.hasilRinci6.map((x) => x.debit)
     const jmldebit = debit.reduce((a, b) => a + b, 0)
     const kredit = store.hasilRinci6.map((x) => x.kredit)

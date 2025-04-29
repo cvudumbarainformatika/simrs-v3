@@ -123,9 +123,9 @@ const store = useListPemakaianObatKonsinyasiStore()
 const allChecked = computed({
   get () {
     const check = store.items.filter(it => it.checked)
-    // console.log(check.length)
-    if (check.length === store.items.length) return true
-    else if (check.length <= 0) return false
+    // console.log(check?.length)
+    if (check?.length === store.items?.length) return true
+    else if (check?.length <= 0) return false
     else return null
   },
   set (val) {
@@ -186,7 +186,7 @@ function setCheck (evt, item) {
   }
 }
 function simpan () {
-  if (store.form.items.length <= 0) return notifErrVue('Belum Ada Barang yang dipilih')
+  if (store.form.items?.length <= 0) return notifErrVue('Belum Ada Barang yang dipilih')
   const tlg = store.form.tgl
   const hrs = date.formatDate(Date.now(), ' HH:mm:ss')
   const jumlahKonsi = store.form?.items?.map(m => m.subtotal)?.reduce((a, b) => a + b, 0)

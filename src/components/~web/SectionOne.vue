@@ -22,7 +22,7 @@
                   :cover="false"
                   :offset="[0, 0]"
                   auto-save
-                  :validate="val => val.length > 0"
+                  :validate="val => val?.length > 0"
                 >
                   <q-input
                     v-model="scope.value"
@@ -68,7 +68,7 @@
                       v-model="items.point_1.data[i]"
                       :offset="[0, 10]"
                       auto-save
-                      :validate="val => val.length > 0"
+                      :validate="val => val?.length > 0"
                     >
                       <div class="row items-center justify-between">
                         <q-input
@@ -119,7 +119,7 @@
                   :cover="false"
                   :offset="[0, 0]"
                   auto-save
-                  :validate="val => val.length > 0"
+                  :validate="val => val?.length > 0"
                 >
                   <q-input
                     v-model="scope.value"
@@ -160,7 +160,7 @@
                       v-model="items.point_2.data[i]"
                       :offset="[0, 10]"
                       auto-save
-                      :validate="val => val.length > 0"
+                      :validate="val => val?.length > 0"
                     >
                       <div class="row items-center justify-between">
                         <q-input

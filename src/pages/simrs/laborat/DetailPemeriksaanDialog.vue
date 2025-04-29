@@ -64,7 +64,7 @@
                     {{ item.name === ""?
                       i + n + 1
                       : n!==0? ''
-                        :items[i - 1].name === ""?i + items[i - 1].value.length
+                        :items[i - 1].name === ""?i + items[i - 1].value?.length
                           :i + n + 1
                     }}
                   </td>

@@ -19,7 +19,7 @@ export const useMasterBentukSediaanForm = defineStore('master_BentukSediaan_form
       const columns = [
         'bentuksediaan'
       ]
-      for (let i = 0; i < columns.length; i++) {
+      for (let i = 0; i < columns?.length; i++) {
         this.setForm(columns[i], null)
       }
       // this.setForm('isi', 1)

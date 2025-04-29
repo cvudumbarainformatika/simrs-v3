@@ -39,7 +39,7 @@ export const useTableMenu = defineStore('table_menu', {
       // this.newSubData(menuid)
       this.subForm = {}
       const columns = ['nama', 'icon']
-      for (let i = 0; i < columns.length; i++) {
+      for (let i = 0; i < columns?.length; i++) {
         this.setSubForm(columns[i], null)
       }
       this.setSubForm('menu_id', menuid)
@@ -96,14 +96,14 @@ export const useTableMenu = defineStore('table_menu', {
     resetFORM () {
       this.form = {}
       const columns = ['nama']
-      for (let i = 0; i < columns.length; i++) {
+      for (let i = 0; i < columns?.length; i++) {
         this.setForm(columns[i], null)
       }
     },
     // resetSUBFORM (menuid) {
     //   this.subForm = {}
     //   const columns = ['nama']
-    //   for (let i = 0; i < columns.length; i++) {
+    //   for (let i = 0; i < columns?.length; i++) {
     //     this.setSubForm(columns[i], null)
     //   }
     //   this.setSubForm('menu_id', menuid)

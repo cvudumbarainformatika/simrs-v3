@@ -1,7 +1,7 @@
 <template>
   <div class="fit">
     <div
-      v-if="!items.length"
+      v-if="!items?.length"
       class="column full-height flex-center"
     >
       <div>Belum Ada Data</div>

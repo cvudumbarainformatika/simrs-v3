@@ -92,12 +92,12 @@ export const dataBastFarmasi = defineStore('data_Bast_Farmasi', {
       })
     },
     filterRekening50() {
-      if (this.bastfarmasis.length) {
+      if (this.bastfarmasis?.length) {
         const dataPagu = []
-        for (let i = 0; i < this.bastfarmasis.length; i++) {
+        for (let i = 0; i < this.bastfarmasis?.length; i++) {
           const el = this.bastfarmasis[i].rincianbast
           // console.log('kkk', el);
-          const master = el.length
+          const master = el?.length
             ? el.map((x) => {
               // const a = x.masterobat.pagu.koderek108
               return {
@@ -129,18 +129,18 @@ export const dataBastFarmasi = defineStore('data_Bast_Farmasi', {
         this.rekening50 = dataPagu
 
         const uniknotrans = this.rekening50.map((s) => s.nopenerimaan)
-        const unik = uniknotrans.length ? [...new Set(uniknotrans)] : []
+        const unik = uniknotrans?.length ? [...new Set(uniknotrans)] : []
 
         // ITEM UNTUK FARMASI
         const arr = []
-        for (let i = 0; i < unik.length; i++) {
+        for (let i = 0; i < unik?.length; i++) {
           const el = unik[i]
           const data = dataPagu.filter((z) => z.nopenerimaan === el).map((x) => x)
           // console.log('dataxxx BAST', data)
           const unik108 = data.map((x) => x.rek108)
-          const uniks = unik108.length ? [...new Set(unik108)] : []
+          const uniks = unik108?.length ? [...new Set(unik108)] : []
           const arr108 = []
-          for (let z = 0; z < uniks.length; z++) {
+          for (let z = 0; z < uniks?.length; z++) {
             const els = uniks[z];
             const un = data
             const objx = {
@@ -209,10 +209,10 @@ export const dataBastFarmasi = defineStore('data_Bast_Farmasi', {
       }
       else {
         const kons = []
-        for (let i = 0; i < this.konsinyasis.length; i++) {
+        for (let i = 0; i < this.konsinyasis?.length; i++) {
           const el = this.konsinyasis[i].rinci
 
-          const master = el.length
+          const master = el?.length
             ? el.map((x) => {
               // const a = x.masterobat.pagu.koderek108
               return {
@@ -243,15 +243,15 @@ export const dataBastFarmasi = defineStore('data_Bast_Farmasi', {
         this.rekening50 = kons
 
         const uniknot = this.rekening50.map((s) => s.nopenerimaan)
-        const unik = uniknot.length ? [...new Set(uniknot)] : []
+        const unik = uniknot?.length ? [...new Set(uniknot)] : []
         const arrkons = []
-        for (let i = 0; i < unik.length; i++) {
+        for (let i = 0; i < unik?.length; i++) {
           const el = unik[i]
           const datakons = kons.filter((z) => z.nopenerimaan === el).map((x) => x)
           const unik108 = datakons.map((x) => x.rek108)
-          const uniks = unik108.length ? [...new Set(unik108)] : []
+          const uniks = unik108?.length ? [...new Set(unik108)] : []
           const arr108 = []
-          for (let r = 0; r < uniks.length; r++) {
+          for (let r = 0; r < uniks?.length; r++) {
             const el = uniks[r];
             const kons = datakons
             const objkons = {

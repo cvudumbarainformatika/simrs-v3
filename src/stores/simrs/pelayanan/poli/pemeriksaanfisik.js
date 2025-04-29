@@ -271,14 +271,14 @@ export const usePemeriksaanFisik = defineStore('pemeriksaan-fisik', {
     },
     async savePemeriksaan (pasien, menus) {
       this.loadingform = true
-      const arr = menus.length > 0 ? menus.filter(x => x.nama !== 'Body').map(y => y.nama) : []
+      const arr = menus?.length > 0 ? menus.filter(x => x.nama !== 'Body').map(y => y.nama) : []
 
       const arr2 = this.shapes
       const anatomys = []
-      for (let i = 0; i < arr.length; i++) {
+      for (let i = 0; i < arr?.length; i++) {
         let obj = { nama: arr[i], ket: 'Tidak Ada Kelainan / TAK' }
         const ada = arr2.filter(x => x.anatomy === arr[i])
-        if (ada.length > 0) {
+        if (ada?.length > 0) {
           obj = { nama: ada[0].anatomy, ket: ada.map(x => x.ket).join() ?? 'Tidak Ada Kelainan / TAK' }
         }
 
@@ -293,13 +293,13 @@ export const usePemeriksaanFisik = defineStore('pemeriksaan-fisik', {
 
       // FORm LOKALIS MATA
 
-      if (this.mata.length) {
+      if (this.mata?.length) {
         form.mata = this.mata
       }
 
       // form lokalis Paru
 
-      if (this.paru.length) {
+      if (this.paru?.length) {
         form.paru = this.paru
       }
 
@@ -350,7 +350,7 @@ export const usePemeriksaanFisik = defineStore('pemeriksaan-fisik', {
       // // console.log(details)
       this.loadingform = true
       let keterangan = ''
-      if (details.length) {
+      if (details?.length) {
         keterangan = details.map(x => x.ket).join()
       }
       const obj = {
@@ -582,7 +582,7 @@ export const usePemeriksaanFisik = defineStore('pemeriksaan-fisik', {
       this.auskultasisuaratambahankiris = item?.auskultasisuaratambahankiri ? item?.auskultasisuaratambahankiri?.split('||') : []
       this.shapes = []
       const arr = item?.detailgambars.filter(x => x.templategambar === this.fileGambar)
-      for (let i = 0; i < arr.length; i++) {
+      for (let i = 0; i < arr?.length; i++) {
         const el = arr[i]
         el.ids = [i]
       }
@@ -593,7 +593,7 @@ export const usePemeriksaanFisik = defineStore('pemeriksaan-fisik', {
 
       // this.mata = item?.pemeriksaankhususmata
       const matasx = item?.pemeriksaankhususmata
-      if (matasx.length && arr.length) {
+      if (matasx?.length && arr?.length) {
         matasx.map(x => {
           const obj = {
             rs1: x?.rs1,

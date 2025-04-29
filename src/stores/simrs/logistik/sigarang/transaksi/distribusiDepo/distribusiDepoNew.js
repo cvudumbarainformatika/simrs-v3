@@ -88,7 +88,7 @@ export const useDistribusiDepoNewStore = defineStore('new_distribusi_depo_store'
     },
     setDepo() {
       this.items.forEach(item => {
-        if (item.details.length) {
+        if (item.details?.length) {
           item.details.forEach(det => {
             det.no_penerimaan = item.no_penerimaan
             if (det.barangrs) {
@@ -113,15 +113,15 @@ export const useDistribusiDepoNewStore = defineStore('new_distribusi_depo_store'
           })
           const depo = filterDuplicateArrays(item.details.map(x => x.kode_depo))
           // console.log('depo', depo)
-          if (depo.length === 1) item.kode_depo = depo[0]
+          if (depo?.length === 1) item.kode_depo = depo[0]
           const canSave = item.details.filter(x => x.canSave === false)
           const hasStok = item.details.filter(x => x.hasStok === false)
-          item.canSave = !!(!canSave.length && depo.length === 1)
-          item.hasStok = !hasStok.length
+          item.canSave = !!(!canSave?.length && depo?.length === 1)
+          item.hasStok = !hasStok?.length
         }
         const temp = item.no_penerimaan.split('BAST')
         let dist = ''
-        if (temp.length === 2) {
+        if (temp?.length === 2) {
           // console.log('temp', temp)
           if (temp[0] === '') {
             dist = 'DSTRB' + temp[1]
@@ -130,7 +130,7 @@ export const useDistribusiDepoNewStore = defineStore('new_distribusi_depo_store'
             const dua = temp[1].split('/')
             dist = satu[2] + '/' + 'DSTRB' + dua[0] + '/' + dua[2] + '/' + dua[3]
           }
-        } else if (temp.length === 1) {
+        } else if (temp?.length === 1) {
           dist = 'DSTRB/' + temp[0]
         }
         item.no_distribusi = dist

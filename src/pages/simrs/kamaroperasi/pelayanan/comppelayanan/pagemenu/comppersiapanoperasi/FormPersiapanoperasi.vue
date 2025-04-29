@@ -182,7 +182,7 @@ const inputObat = myDebounce((val) => {
   // console.log('input obat', val, typeof val)
   if ((typeof val) !== 'string') val = ''
   if (val !== '') store.cariObat(val)
-  if (val === '' && store.nonFilteredObat.length) store.Obats = store.nonFilteredObat
+  if (val === '' && store.nonFilteredObat?.length) store.Obats = store.nonFilteredObat
 })
 
 function obatSelected (val) {
@@ -225,7 +225,7 @@ function obatValid (val) {
 function validate () {
   if (store?.form?.kodeobat !== '') {
     const ob = store?.nonFilteredObat.filter(o => o.kodeobat === store?.form?.kodeobat)
-    if (ob.length && !Object?.keys(store?.namaObat)?.length) store.namaObat = ob[0]
+    if (ob?.length && !Object?.keys(store?.namaObat)?.length) store.namaObat = ob[0]
 
   }
 

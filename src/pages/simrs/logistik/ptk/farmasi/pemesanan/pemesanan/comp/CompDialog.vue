@@ -435,7 +435,7 @@ function setTanggal (val) {
 function setHarga (evt, val) {
   const inc = evt.includes('.')
   const ind = evt.indexOf('.')
-  const panj = evt.length
+  const panj = evt?.length
   const nilai = isNaN(parseFloat(evt)) ? 0 : (inc && (ind === (panj - 2)) ? evt : parseFloat(evt))
   // const dipesan = !isNaN(parseFloat(evt)) ? (parseFloat(evt) < 0 ? 0 : parseFloat(evt)) : 0
 
@@ -477,7 +477,7 @@ function kirimRencana (val) {
       // table.getObatMauBeli().then(resp => {
       //   console.log('get obat setelah kirim', resp)
       table.rencanaSelected(store.form.no_rencbeliobat, 'form')
-      // if (!resp.length) store.setClose()
+      // if (!resp?.length) store.setClose()
       // })
     })
   }

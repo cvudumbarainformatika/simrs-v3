@@ -98,17 +98,17 @@ const minRule = (val) => {
   if (!props.valid?.min) {
     return true
   }
-  return (val && val.length >= parseInt(props.valid?.min)) || `Min ${props.valid?.min} char`
+  return (val && val?.length >= parseInt(props.valid?.min)) || `Min ${props.valid?.min} char`
 }
 
 const maxRule = (val) => {
   if (props.valid === null) {
     return true
   }
-  if (!props.valid?.max || val.length === 0) {
+  if (!props.valid?.max || val?.length === 0) {
     return true
   }
-  return (val && val.length <= parseInt(props.valid?.max)) || `Max ${props.valid?.max} char`
+  return (val && val?.length <= parseInt(props.valid?.max)) || `Max ${props.valid?.max} char`
 }
 
 const emailRule = (val) => {

@@ -601,7 +601,7 @@
                     option-label="nama"
                     outlined
                     :source="store.propinsies"
-                    :disable="!store.propinsies.length"
+                    :disable="!store.propinsies?.length"
                     :rules="[val => (!!val || val>=0) || 'Harap diisi',]"
                     :loading="store.loadingKecelakaan"
                     @selected="setPropisiKecelakaan"
@@ -617,7 +617,7 @@
                     option-label="nama"
                     outlined
                     :source="store.kabupatens"
-                    :disable="!store.kabupatens.length"
+                    :disable="!store.kabupatens?.length"
                     :rules="[val => (!!val || val>=0) || 'Harap diisi',]"
                     :loading="store.loadingKecelakaan"
                     @selected="setKabupatenKecelakaan"
@@ -633,7 +633,7 @@
                     option-label="nama"
                     outlined
                     :source="store.kecamatans"
-                    :disable="!store.kecamatans.length"
+                    :disable="!store.kecamatans?.length"
                     :rules="[val => (!!val || val>=0) || 'Harap diisi',]"
                     :loading="store.loadingKecelakaan"
                     @selected="setKecamatanKecelakaan"
@@ -846,7 +846,7 @@ function dpjpSelected (val) {
     // console.log('form  ', store.form)
   }
   else {
-    if (store.jadwalDpjps.length) {
+    if (store.jadwalDpjps?.length) {
       const dok = store.jadwalDpjps.map(e => e.namadokter)
       notifInfVue('Dokter Praktek hari ini : ' + dok)
     }

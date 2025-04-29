@@ -51,7 +51,7 @@
         </div>
         <div class="fit row items-center justify-start content-start q-mb-sm">
           <div class="col-3">
-            <div v-if="(store.ruangans.length > 1)">
+            <div v-if="(store.ruangans?.length > 1)">
               Cari Ruangan
             </div>
             <div v-else>
@@ -67,7 +67,7 @@
             />
           </div>
           <div class="q-ml-md">
-            <div v-if="(store.ruangans.length > 0)">
+            <div v-if="(store.ruangans?.length > 0)">
               <app-autocomplete-new
                 ref="refUs"
                 :model="store.user"
@@ -110,7 +110,7 @@
         </div>
       </q-card-section>
       <q-separator />
-      <!-- <q-card-section v-if="(!store.items.length && store.loading && store.pj!==null)">
+      <!-- <q-card-section v-if="(!store.items?.length && store.loading && store.pj!==null)">
         <div
           class="flex column flex-center bg-loading-bg__table q-my-xs text-weight-bold"
           style="height:300px"
@@ -119,10 +119,10 @@
           <app-loading />
         </div>
       </q-card-section>
-      <q-card-section v-if="!store.items.length && !store.loading">
+      <q-card-section v-if="!store.items?.length && !store.loading">
         <app-no-data />
       </q-card-section>
-      <q-card-section v-if="store.items.length">
+      <q-card-section v-if="store.items?.length">
         <div class="fit row no-wrap justify-evenly items-center content-center q-my-xs text-weight-bold">
           <div class="anak text-center">
             Kode barang
@@ -148,7 +148,7 @@
         </div>
         <div class="fit row no-wrap justify-evenly items-center content-center q-my-xs">
           <div class="anak text-center">
-            {{ Object.keys(store.detail).length? store.detail.kode_rs:'barang belum dipilih' }}
+            {{ Object.keys(store.detail)?.length? store.detail.kode_rs:'barang belum dipilih' }}
           </div>
           <div class="anak text-center">
             <app-autocomplete-new
@@ -165,13 +165,13 @@
             />
           </div>
           <div class="anak text-center">
-            {{ Object.keys(store.detail).length? store.detail.kode_108:'barang belum dipilih' }}
+            {{ Object.keys(store.detail)?.length? store.detail.kode_108:'barang belum dipilih' }}
           </div>
           <div class="anak text-center">
-            {{ Object.keys(store.detail).length? store.detail.uraian:'barang belum dipilih' }}
+            {{ Object.keys(store.detail)?.length? store.detail.uraian:'barang belum dipilih' }}
           </div>
           <div class="anak text-center">
-            {{ Object.keys(store.detail).length? store.detail.stokRuangan:'barang belum dipilih' }}
+            {{ Object.keys(store.detail)?.length? store.detail.stokRuangan:'barang belum dipilih' }}
           </div>
           <div class="anak text-center">
             <q-input
@@ -186,7 +186,7 @@
             />
           </div>
           <div class="anak text-center">
-            {{ Object.keys(store.detail).length? store.detail.sisaStok:'barang belum dipilih' }}
+            {{ Object.keys(store.detail)?.length? store.detail.sisaStok:'barang belum dipilih' }}
           </div>
         </div>
         <div
@@ -220,10 +220,10 @@
 
       -->
       <q-card-section>
-        <div v-if="!store.items.length">
+        <div v-if="!store.items?.length">
           <app-no-data />
         </div>
-        <div v-if="store.items.length">
+        <div v-if="store.items?.length">
           <div class="fit row no-wrap justify-evenly items-center content-center q-my-xs text-weight-bold">
             <div class="anak text-center">
               Kode barang
@@ -287,7 +287,7 @@
           </div>
         </div>
       </q-card-section>
-      <!-- v-if="store.details.length" -->
+      <!-- v-if="store.details?.length" -->
       <q-card-actions
         align="right"
       >
@@ -371,7 +371,7 @@ const timer = setInterval(() => {
 }, 1000)
 function caller() {
   loading.value = true
-  if (auth.user.pegawai.kode_ruang && store.penanggungjawabs.length) {
+  if (auth.user.pegawai.kode_ruang && store.penanggungjawabs?.length) {
     console.log('caller', auth.user.pegawai.kode_ruang, store.penanggungjawabs)
     store.setRuangan(auth.user.pegawai.kode_ruang)
     loading.value = false

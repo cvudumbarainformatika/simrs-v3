@@ -63,7 +63,7 @@
           </td>
         </tr>
       </template>
-      <template v-else-if="!store.items.length">
+      <template v-else-if="!store.items?.length">
         <tr>
           <td colspan="7">
             <app-no-data />
@@ -619,7 +619,7 @@ function setResepToPdf (val) {
 
       key.groupsistembayar = val?.sistembayar?.groups
       const adaList = res.listRacikan.filter(list => list.namaracikan === namaracikan)
-      if (adaList.length) {
+      if (adaList?.length) {
         adaList[0].rincian.push(key)
         const harga = adaList[0].rincian.map(a => a?.harga).reduce((a, b) => a + b, 0) ?? 0
         adaList[0].harga = harga

@@ -222,7 +222,7 @@ export const useLaporanSpmFarmasiStore = defineStore('laporan_spm_farmasi', {
             ruang: satuRes?.ruang,
             dokter: satuRes?.dokter,
             fornas: resepnya?.filter(a => a.fornas == '1')?.length ?? 0,
-            total: resepnya.length ?? 0,
+            total: resepnya?.length ?? 0,
             ket: nonFor?.join(', ')
           })
         })
@@ -241,15 +241,15 @@ export const useLaporanSpmFarmasiStore = defineStore('laporan_spm_farmasi', {
           tgl: tangg,
           rajal: {
             fornas: rajal.filter(x => x.fornas == '1')?.length,
-            total: rajal.length
+            total: rajal?.length
           },
           ranap: {
             fornas: ranap.filter(x => x.fornas == '1')?.length,
-            total: ranap.length
+            total: ranap?.length
           },
           total: {
             fornas: datanya.filter(x => x.fornas == '1')?.length,
-            total: datanya.length
+            total: datanya?.length
           },
         })
       })
@@ -337,7 +337,7 @@ export const useLaporanSpmFarmasiStore = defineStore('laporan_spm_farmasi', {
     // Helper function untuk memproses data dalam chunks
     chunkArray (array, size) {
       const chunked = []
-      for (let i = 0; i < array.length; i += size) {
+      for (let i = 0; i < array?.length; i += size) {
         chunked.push(array.slice(i, i + size))
       }
       return chunked
@@ -525,7 +525,7 @@ export const useLaporanSpmFarmasiStore = defineStore('laporan_spm_farmasi', {
       }
     },
     fetch () {
-      if (!this.items.length) {
+      if (!this.items?.length) {
         this.getDataTable()
       }
       this.setField()

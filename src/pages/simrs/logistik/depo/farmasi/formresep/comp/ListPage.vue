@@ -11,7 +11,7 @@
       :default-btn="false"
       :ada-tambah="false"
       :ada-filter="false"
-      :ada-paginasi="Object.keys( store.meta).length>0"
+      :ada-paginasi="Object.keys( store.meta)?.length>0"
       use-full
       row-no
       text-cari="(rm/reg/nama/noresep) ..."

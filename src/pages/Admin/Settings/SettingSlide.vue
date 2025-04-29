@@ -117,7 +117,7 @@
           <div v-else>
             <!-- jika data kosong -->
             <q-card
-              v-if="slides.length === 0"
+              v-if="slides?.length === 0"
               flat
               class="column flex-center bg-grey-5 q-pa-lg text-center"
               style="min-height:400px"
@@ -179,7 +179,7 @@
             <!-- pagination -->
             <!-- Pagination -->
             <AppPaginationTable
-              v-if="slides.length > 0"
+              v-if="slides?.length > 0"
               class="q-mt-md"
               :details="false"
               :meta="store.meta"
@@ -192,7 +192,7 @@
         </div>
         <q-separator class="q-my-md" />
         <div
-          v-if="slides.length>0"
+          v-if="slides?.length>0"
           class="q-pa-md bg-secondary f-20 text-white rounded-borders"
         >
           <strong>{{ store.meta.total }}</strong> data

@@ -94,7 +94,7 @@ export const useLaporanBukuBankStore = defineStore('laporan_bukubank', {
 
       // ===================================================SPM
       const spm = []
-      for (let i = 0; i < this.items.spm.length; i++) {
+      for (let i = 0; i < this.items.spm?.length; i++) {
         const el = this.items?.spm
         const obj = {
           tgl: el[i].tglSpm,
@@ -116,7 +116,7 @@ export const useLaporanBukuBankStore = defineStore('laporan_bukubank', {
 
       // ===================================================SPMGU
       const spmgu = []
-      for (let i = 0; i < this.items.spmgu.length; i++) {
+      for (let i = 0; i < this.items.spmgu?.length; i++) {
         const el = this.items?.spmgu
         const obj = {
           tgl: el[i].tglSpm,
@@ -137,7 +137,7 @@ export const useLaporanBukuBankStore = defineStore('laporan_bukubank', {
       // =====================================================
       // ===================================================Pergeseran BankKas
       const Kaskebank = []
-      for (let i = 0; i < this.items.kaskebank.length; i++) {
+      for (let i = 0; i < this.items.kaskebank?.length; i++) {
         const el = this.items?.kaskebank
         const geserbank = el[i].kasrinci?.length
           ? el[i].kasrinci?.map((x) => {
@@ -176,7 +176,7 @@ export const useLaporanBukuBankStore = defineStore('laporan_bukubank', {
       // ===================================================Pergeseran BankKas
       // eslint-disable-next-line camelcase
       const Bank_Kas = []
-      for (let i = 0; i < this.items.bankkekas.length; i++) {
+      for (let i = 0; i < this.items.bankkekas?.length; i++) {
         const el = this.items?.bankkekas
         const geserbank = el[i].kasrinci?.length
           ? el[i].kasrinci?.map((x) => {
@@ -218,7 +218,7 @@ export const useLaporanBukuBankStore = defineStore('laporan_bukubank', {
       //   (x) => x.jenis === "Bank Ke Kas"
       // );
       // if (bankkas?.length) {
-      //   for (let i = 0; i < bankkas.length; i++) {
+      //   for (let i = 0; i < bankkas?.length; i++) {
       //     const obj = {
       //       tgl: bankkas[i].tgltrans,
       //       notrans: bankkas[i].notrans,
@@ -239,7 +239,7 @@ export const useLaporanBukuBankStore = defineStore('laporan_bukubank', {
       // =====================================================
       // ===================================================npkls
       const npkls = []
-      for (let i = 0; i < this.items.pencairanls.length; i++) {
+      for (let i = 0; i < this.items.pencairanls?.length; i++) {
         const el = this.items?.pencairanls
         const nonpd = el[i].npklsrinci?.length
           ? this.ambilDataUnik(
@@ -277,7 +277,7 @@ export const useLaporanBukuBankStore = defineStore('laporan_bukubank', {
           sisapanjar: null,
           uraian: 'Penerimaan Kegiatan Pelayanan dan Penunjang BLUD',
           uraianNPD: null,
-          penerimaan: nonpd.length
+          penerimaan: nonpd?.length
             ? nonpd.map((x) => x.totalRincian).reduce((x, y) => x + y, 0)
             : 0,
           pengeluaran: 0
@@ -289,7 +289,7 @@ export const useLaporanBukuBankStore = defineStore('laporan_bukubank', {
 
       // ===================================================pencairanLS
       const pencairanLS = []
-      for (let i = 0; i < this.items.pencairanls.length; i++) {
+      for (let i = 0; i < this.items.pencairanls?.length; i++) {
         const el = this.items?.pencairanls
         const nonpd = el[i].npklsrinci?.length
           ? this.ambilDataUnik(
@@ -329,7 +329,7 @@ export const useLaporanBukuBankStore = defineStore('laporan_bukubank', {
           uraianNPD: el[i]?.npklsrinci?.npdlshead?.kegiatanblud,
           // uraianrekening: null,
           penerimaan: 0,
-          pengeluaran: nonpd.length
+          pengeluaran: nonpd?.length
             ? nonpd.map((x) => x.totalRincian).reduce((x, y) => x + y, 0)
             : 0
         }
@@ -342,7 +342,7 @@ export const useLaporanBukuBankStore = defineStore('laporan_bukubank', {
       const cp = []
       const cpls = this.items.cp.filter((x) => x.jenisbelanja === 'LS')
       if (cpls?.length) {
-        for (let i = 0; i < this.items.cp.length; i++) {
+        for (let i = 0; i < this.items.cp?.length; i++) {
           const el = this.items?.cp
           const obj = {
             tgl: date.formatDate(el[i].tglcontrapost, 'YYYY-MM-DD'),
@@ -365,7 +365,7 @@ export const useLaporanBukuBankStore = defineStore('laporan_bukubank', {
 
       // ===================================================Nihil
       const nihil = []
-      for (let i = 0; i < this.items.nihil.length; i++) {
+      for (let i = 0; i < this.items.nihil?.length; i++) {
         const el = this.items?.nihil
         const obj = {
           tgl: el[i].tgltrans,
@@ -419,8 +419,8 @@ export const useLaporanBukuBankStore = defineStore('laporan_bukubank', {
 
     cariHasilAkhirArray(arr) {
       let total = 0
-      if (arr.length) {
-        for (let i = 0; i < arr.length; i++) {
+      if (arr?.length) {
+        for (let i = 0; i < arr?.length; i++) {
           if (i === 0) {
             total = arr[0]?.penerimaan - arr[0]?.pengeluaran
             arr[0].total = total

@@ -178,7 +178,7 @@ const inputObat = myDebounce((val) => {
   // console.log('input obat', val, typeof val)
   if ((typeof val) !== 'string') val = ''
   if (val !== '') store.cariObat(val)
-  if (val === '' && store.nonFilteredObat.length) store.Obats = store.nonFilteredObat
+  if (val === '' && store.nonFilteredObat?.length) store.Obats = store.nonFilteredObat
 
   modVal.value = val
 })

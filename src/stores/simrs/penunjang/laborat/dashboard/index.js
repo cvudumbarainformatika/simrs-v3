@@ -38,7 +38,7 @@ export const useDashboardLaborat = defineStore('dashboard_laborat', {
     jumlahLabHariIni(arr) {
       // let jml = 0
       const today = dateDbFormat(new Date())
-      if (arr.length > 0) {
+      if (arr?.length > 0) {
         this.labHariIni = arr.filter(item => item.x === today)[0].y
         this.transLabHariIni = arr.filter(item => item.x === today)[0].z
       } else {
@@ -48,7 +48,7 @@ export const useDashboardLaborat = defineStore('dashboard_laborat', {
     },
     jumlahLabLuarHariIni(arr) {
       const today = dateDbFormat(new Date())
-      if (arr.length > 0) {
+      if (arr?.length > 0) {
         this.labLuarHariIni = arr.filter(item => item.x === today)[0].y
         this.transLabLuarHariIni = arr.filter(item => item.x === today)[0].z
       } else {
@@ -60,14 +60,14 @@ export const useDashboardLaborat = defineStore('dashboard_laborat', {
     // jmlTransLabHariIni(arr) {
     //   let jml = 0
     //   const today = dateDbFormat(new Date())
-    //   if (arr.length > 0) jml = arr.filter(item => item.x === today) ? arr.filter(item => item.x === today)[0].z : 0
+    //   if (arr?.length > 0) jml = arr.filter(item => item.x === today) ? arr.filter(item => item.x === today)[0].z : 0
     //   return jml
     //   // console.log('transLabHariIni', jml)
     // },
     // jmlTransLabLuarHariIni(arr) {
     //   let jml = 0
     //   const today = dateDbFormat(new Date())
-    //   if (arr.length > 0) jml = arr.filter(item => item.x === today) ? arr.filter(item => item.x === today)[0].z : 0
+    //   if (arr?.length > 0) jml = arr.filter(item => item.x === today) ? arr.filter(item => item.x === today)[0].z : 0
     //   return jml
     //   // console.log('transLabLuarHariIni', jml)
     // }

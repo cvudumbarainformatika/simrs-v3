@@ -34,7 +34,7 @@
         <ListComp />
       </q-scroll-area>
       <div
-        v-if="Object.keys(store.meta).length"
+        v-if="Object.keys(store.meta)?.length"
         class="absolute-bottom bg-primary text-white"
       >
         <BottomComp
@@ -76,7 +76,7 @@ onMounted(() => {
   const depoRet = ['Gd-04010102', 'Gd-02010104', 'Gd-05010101']
   const depos = apps.depos.filter(a => depoRet.includes(a.value))
   const depo = depos.filter(a => a.value === apps?.user?.kdruangansim)
-  if (depo.length) store.setParams('kddepo', apps?.user?.kdruangansim)
+  if (depo?.length) store.setParams('kddepo', apps?.user?.kdruangansim)
   else notifErrVue('Yang bisa Melakukan retur hanya Depo Rawat Inap, Depo IGD dan Depo Rawat Jalan.')
   store.getDataTable()
 })
@@ -85,7 +85,7 @@ watch(() => apps?.user?.kdruangansim, (obj) => {
   const depos = apps.depos.filter(a => depoRet.includes(a.value))
   const depo = depos.filter(a => a.value === obj)
   console.log('depos', depos)
-  if (depo.length) store.setParams('kddepo', obj)
+  if (depo?.length) store.setParams('kddepo', obj)
   else {
     notifErrVue('Yang bisa Melakukan retur hanya Depo Rawat Inap, Depo IGD dan Depo Rawat Jalan.')
     store.items = []

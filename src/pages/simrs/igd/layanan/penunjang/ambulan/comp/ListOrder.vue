@@ -20,7 +20,7 @@
     </q-bar>
     <div class="col-grow bg-grey">
       <div
-        v-if="filterredTable.length === 0"
+        v-if="filterredTable?.length === 0"
         class="column full-height flex-center text-white"
       >
         Belum Ada Permintaan Ambulan

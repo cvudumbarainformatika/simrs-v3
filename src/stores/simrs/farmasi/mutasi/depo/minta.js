@@ -91,7 +91,7 @@ export const useFarmasiPermintaanMutasiDepoStore = defineStore('farmasi_perminta
       }
       if (this.form.dari) {
         const dar = this.stokDewe.filter(a => a.kdobat === val && a.kdruang === this.form.dari)
-        if (dar.length) {
+        if (dar?.length) {
           const stok = dar[0]
           this.setForm('stok', stok.jumlah)
         } else {
@@ -178,12 +178,12 @@ export const useFarmasiPermintaanMutasiDepoStore = defineStore('farmasi_perminta
               const rinc = resp.data.rinci
               if (rinc.kdobat) {
                 const anu = this.obats.filter(a => a.kdobat === rinc.kdobat)
-                if (anu.length) {
+                if (anu?.length) {
                   const obat = anu[0]
                   rinc.nama_obat = obat.nama_obat
                 }
                 const adaDetail = this.details.filter(ob => ob.kdobat === rinc.kdobat)
-                if (adaDetail.length) {
+                if (adaDetail?.length) {
                   const data = adaDetail[0]
                   if (data) {
                     Object.assign(data, rinc)

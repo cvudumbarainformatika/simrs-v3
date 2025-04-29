@@ -1,7 +1,7 @@
 <template>
   <!-- <div class="fit"> -->
   <q-list dark bordered separator>
-    <q-item v-if="!items.length" clickable v-ripple>
+    <q-item v-if="!items?.length" clickable v-ripple>
       <q-item-section>Single line item</q-item-section>
     </q-item>
 
@@ -46,7 +46,7 @@ const setitems = () => {
   let arr = []
   const reseps = props?.pasien?.newapotekrajal ?? []
 
-  if (reseps.length) {
+  if (reseps?.length) {
     const detailsResep = reseps?.map(x => x?.permintaanresep?.map(y => {
       return {
         kdobat: y?.kdobat,

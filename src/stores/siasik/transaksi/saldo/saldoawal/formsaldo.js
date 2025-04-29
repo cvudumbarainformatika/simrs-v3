@@ -19,7 +19,7 @@ export const useFormSaldo = defineStore('Saldo_form', {
     resetFORM () {
       this.form = {}
       const columns = ['notrans', 'tanggal', 'tahun', 'nominal']
-      for (let i = 0; i < columns.length; i++) {
+      for (let i = 0; i < columns?.length; i++) {
         this.setForm(columns[i], null)
       }
     },

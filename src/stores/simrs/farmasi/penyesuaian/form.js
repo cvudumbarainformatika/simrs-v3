@@ -68,7 +68,7 @@ export const usePenyesuaianFarmasiStore = defineStore('form_penyesuaian_farmasi'
       const masuk = []
       penye?.forEach(e => {
         const anu = e?.filter(f => f.penyesuaian > 0)
-        if (anu.length) {
+        if (anu?.length) {
           anu.forEach(s => {
             masuk.push(s)
           })
@@ -98,7 +98,7 @@ export const usePenyesuaianFarmasiStore = defineStore('form_penyesuaian_farmasi'
       const keluar = []
       penye?.forEach(e => {
         const anu = e?.filter(f => f.penyesuaian < 0)
-        if (anu.length) {
+        if (anu?.length) {
           anu.forEach(s => {
             keluar.push(s)
           })
@@ -171,7 +171,7 @@ export const usePenyesuaianFarmasiStore = defineStore('form_penyesuaian_farmasi'
           .then(resp => {
             this.loadingGetObat = false
             this.obats = resp?.data?.data ?? resp?.data
-            if (this.obats.length) this.metaniObat()
+            if (this.obats?.length) this.metaniObat()
             resolve(resp)
           })
           .catch(() => {

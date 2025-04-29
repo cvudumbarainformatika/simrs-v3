@@ -70,7 +70,7 @@ export const usePemakaianRuanganStore = defineStore('pemakaian_ruangan_store', {
       this.form.kode_ruang = val
       const temp = this.penanggungjawabs.map(data => {
         const apem = data.ruang.filter(rua => { return rua.kode_ruang === val })
-        if (apem.length) return apem[0]
+        if (apem?.length) return apem[0]
         else return false
       }).filter(ada => { return ada !== false })
 
@@ -82,7 +82,7 @@ export const usePemakaianRuanganStore = defineStore('pemakaian_ruangan_store', {
 
       const ruangan = this.penanggungjawabs.map(data => {
         const apem = data.ruang.filter(rua => { return rua.kode_pengguna === this.form.kode_pengguna })
-        if (apem.length) return apem
+        if (apem?.length) return apem
         else return false
       }).filter(ada => { return ada !== false })
 
@@ -111,7 +111,7 @@ export const usePemakaianRuanganStore = defineStore('pemakaian_ruangan_store', {
       //   const temp = data.kode.slice(0, 8)
       //   return temp === trimmed
       // })
-      // if (pengguna.length === 1) {
+      // if (pengguna?.length === 1) {
       //   this.form.kode_pengguna = pengguna[0].kode
       //   this.getItemsData()
       // }
@@ -166,7 +166,7 @@ export const usePemakaianRuanganStore = defineStore('pemakaian_ruangan_store', {
           return a.penanggungjawab !== null
         })
         let temp2 = []
-        if (!temp.length) {
+        if (!temp?.length) {
           temp2 = data.penanggungjawab[key].filter(a => {
             return a.pengguna !== null
           })
@@ -174,9 +174,9 @@ export const usePemakaianRuanganStore = defineStore('pemakaian_ruangan_store', {
         // console.log('temp', temp)
         // console.log('temp2', temp2)
         const dat = {}
-        if (temp.length) {
+        if (temp?.length) {
           dat.jabatan = temp[0].penanggungjawab.jabatan
-        } else if (temp2.length) {
+        } else if (temp2?.length) {
           dat.jabatan = temp2[0].pengguna.jabatan
         } else {
           dat.jabatan = 'Data Jabatan tidak ditemukan'
@@ -238,7 +238,7 @@ export const usePemakaianRuanganStore = defineStore('pemakaian_ruangan_store', {
     },
     saveInput() {
       const det = this.items.filter(x => x.jumlah > 0)
-      if (det.length) {
+      if (det?.length) {
         this.form.details = this.items.filter(x => x.jumlah > 0)
         console.log('input saved', this.form)
         this.loading = true
@@ -286,7 +286,7 @@ export const usePemakaianRuanganStore = defineStore('pemakaian_ruangan_store', {
     //
     // dibawah ini adalah api related function yang tidak dipakai
     getDataMaping() {
-      if (!this.mapingbarang.length) {
+      if (!this.mapingbarang?.length) {
         this.loadingMaping = true
         return new Promise(resolve => {
           api.get('v1/mapingbarang/mapingwith')

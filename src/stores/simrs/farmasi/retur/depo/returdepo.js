@@ -85,7 +85,7 @@ export const useReturDepoStore = defineStore('retur_dari_depo', {
       }
       const obatraciks = filterDuplicateArrays(res?.rincianracik.map(x => x.kdobat))
       // console.log('rinc', obatraciks)
-      if (obatraciks.length) {
+      if (obatraciks?.length) {
         obatraciks.forEach(key => {
           const temp = res?.rincianracik.filter(x => x.kdobat === key)
           const obat = res?.rincianracik.find(x => x.kdobat === key)
@@ -94,7 +94,7 @@ export const useReturDepoStore = defineStore('retur_dari_depo', {
           // metani by namaracikan
           const namaracikan = obat?.namaracikan
           const adaList = res.listRacikan.filter(list => list.namaracikan === namaracikan)
-          if (adaList.length) {
+          if (adaList?.length) {
             adaList[0].rincian.push(obat)
             const harga = adaList[0].rincian.map(a => a?.harga).reduce((a, b) => a + b, 0) ?? 0
             adaList[0].harga = harga
@@ -123,7 +123,7 @@ export const useReturDepoStore = defineStore('retur_dari_depo', {
         })
       }
       const obats = filterDuplicateArrays(res?.rincian.map(x => x.kdobat))
-      if (obats.length) {
+      if (obats?.length) {
         obats.forEach(key => {
           const temp = res?.rincian.filter(x => x.kdobat === key)
           const obat = res?.rincian.find(x => x.kdobat === key)

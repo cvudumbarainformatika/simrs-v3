@@ -21,7 +21,7 @@
       <template #list="scope">
         <div>
           <div
-            v-if="scope.files.length===0"
+            v-if="scope.files?.length===0"
             class="column flex-center"
             style="min-height:250px"
           >

@@ -22,7 +22,7 @@
         style="height:calc(100%-50px) ;padding-top:50px"
       > -->
     <div
-      v-if="menus.length"
+      v-if="menus?.length"
       class="flex column flex-center full-height"
       style="height:calc(100vw-60px) "
     >
@@ -135,7 +135,7 @@
           </q-menu>
           <div class="item-content">
             <q-tooltip
-              v-if="!menu.submenus.length && !Object.keys(menu.submenus).length"
+              v-if="!menu.submenus?.length && !Object.keys(menu.submenus)?.length"
               class="bg-primary"
               anchor="center right"
               self="center left"
@@ -155,7 +155,7 @@
     </div>
     <!-- Skleleton -->
     <div
-      v-if="!menus.length"
+      v-if="!menus?.length"
       class="flex column flex-center full-height"
       style="height:calc(100%-60px) "
     >
@@ -251,7 +251,7 @@ const refItem = ref(null)
 const refMenu = ref(null)
 const prev = ref(0)
 const hover = (menu, i) => {
-  if (menu.submenus.length || Object.keys(menu.submenus).length) {
+  if (menu.submenus?.length || Object.keys(menu.submenus)?.length) {
     refMenu.value[i].show()
     if (!refItem.value[i].active) {
       refMenu.value[i].offset[0] = 16
@@ -270,11 +270,11 @@ const hover = (menu, i) => {
 
   // console.log('ref item', refItem.value)
   // console.log('ref menu', refMenu.value[i])
-  // console.log('menu', menu.submenus.length)
+  // console.log('menu', menu.submenus?.length)
 }
 const leave = (i) => {
   refMenu.value[i].hide()
-  // if (menu.submenus.length) {
+  // if (menu.submenus?.length) {
   // }
   // console.log('leave', i)
   // console.log('ref item ', [i], refItem.value[i].active)

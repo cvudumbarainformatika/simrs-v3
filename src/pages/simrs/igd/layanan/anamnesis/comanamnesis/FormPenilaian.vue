@@ -86,7 +86,7 @@
         <q-separator />
         <q-card-section v-if="store.formOntario" class="q-pa-sm row q-col-gutter-xs">
           <div v-for="obj in store.ontarios.form" :key="obj.kode" class="col-12">
-            <div v-if="obj.submenu.length" class="row">
+            <div v-if="obj.submenu?.length" class="row">
               <div class="col-12 q-pb-xs">
                 <strong>{{ obj?.label }} :</strong>
               </div>

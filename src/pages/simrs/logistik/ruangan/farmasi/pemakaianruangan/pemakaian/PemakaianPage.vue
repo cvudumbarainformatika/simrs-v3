@@ -111,7 +111,7 @@
             </div>
           </div>
           <BottomComp
-            v-if="Object.keys(store.meta).length"
+            v-if="Object.keys(store.meta)?.length"
             class="bg-primary text-white"
             :meta="store.meta"
             @go-to="store.setPage"
@@ -145,7 +145,7 @@ const ListPage = defineAsyncComponent(() => import('./comp/TableComp.vue'))
 
 const pakai = computed(() => {
   const ada = store.items.filter(a => a.checked === true)
-  if (ada.length || !!store.form.nopemakaian) return true
+  if (ada?.length || !!store.form.nopemakaian) return true
   else return false
 })
 function simpan () {
@@ -159,7 +159,7 @@ function selesai () {
 }
 const checked = computed(() => {
   const ada = store.items.filter(a => a.checked === true)
-  if (ada.length) return true
+  if (ada?.length) return true
   else return false
 })
 onMounted(() => {
@@ -172,7 +172,7 @@ onMounted(() => {
   else {
     const adaRu = apps?.user?.pegawai?.kdruangansim.split('|')
     const ruNya = adaRu.filter(x => x.includes('R-'))
-    if (ruNya.length > 1) notifCenterVue('ada lebih dari satu akses ruangan')
+    if (ruNya?.length > 1) notifCenterVue('ada lebih dari satu akses ruangan')
     else {
       store.setParam('kdruang', ruNya[0])
       store.setForm('kdruang', ruNya[0])

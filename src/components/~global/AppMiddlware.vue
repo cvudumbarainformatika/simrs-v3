@@ -21,7 +21,7 @@
             <div class="column">
               <div
                 class="kotak column flex-center"
-                :class="y+1 === info.length?'bg-secondary text-white':'bg-white text-primary'"
+                :class="y+1 === info?.length?'bg-secondary text-white':'bg-white text-primary'"
               >
                 {{ y + 1 }}
               </div>

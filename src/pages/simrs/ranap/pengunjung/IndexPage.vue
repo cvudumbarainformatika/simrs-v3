@@ -26,7 +26,7 @@
       </div>
       <div class="absolute-bottom bg-primary text-white z-top">
         <footer-page
-          v-if="store.pasiens.length"
+          v-if="store.pasiens?.length"
           :meta="store.meta"
           @go-to="(val)=> store.goToPage(val)"
         />

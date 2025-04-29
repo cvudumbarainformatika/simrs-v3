@@ -184,7 +184,7 @@
                   @click="ambilData"
                 />
               </div>
-              <div v-if="store.items.length">
+              <div v-if="store.items?.length">
                 <download-excel
                   class="btn"
                   :fetch="store.params.layanan === '3'?fetchRanap:fetchRajal"
@@ -270,7 +270,7 @@
             </td>
             <td colspan="2">
               <div
-                v-if="store.items.length"
+                v-if="store.items?.length"
                 class="text-weight-bold"
               >
                 <div class=" row justify-between no-wrap">
@@ -394,10 +394,10 @@
                 {{ row.rs1 }}
               </div>
               <div class="row no-wrap q-mb-xs text-weight-bold text-primary">
-                {{ row.masterpasien.length?row.masterpasien[0].rs1: row.masterpasien.rs1 }}
+                {{ row.masterpasien?.length?row.masterpasien[0].rs1: row.masterpasien.rs1 }}
               </div>
               <div class="kecilin q-mb-xs text-weight-bold">
-                {{ row.masterpasien.length?row.masterpasien[0].rs2: row.masterpasien.rs2 }}
+                {{ row.masterpasien?.length?row.masterpasien[0].rs2: row.masterpasien.rs2 }}
               </div>
             </div>
             <div v-if="row.msistembayar">
@@ -773,7 +773,7 @@
                 Lab
               </div>
               <div>
-                <div v-if="row.lab.length">
+                <div v-if="row.lab?.length">
                   {{ formatDouble(row.lab.map(l=>l.subtotal).reduce((a,b)=>a+b,0)) }}
                 </div>
                 <div v-else>
@@ -907,7 +907,7 @@
             </div>
           </template>
           <template #cell-pendapatan="{row}">
-            <div v-if="row.pendapatanallbpjs.length">
+            <div v-if="row.pendapatanallbpjs?.length">
               <div class="text-right">
                 {{ row.pendapatanallbpjs[0]?formatDouble(row.pendapatanallbpjs[0].subtotal):0 }}
               </div>

@@ -210,7 +210,7 @@ const optionsJenisOperasi = ref([
 function setIcd(val) {
   store.setFormRanap('icd9', val)
   const icd = store.optionsIcd9.filter(a => a.kd_prosedur === val)
-  if (icd.length) {
+  if (icd?.length) {
     store.setFormRanap('jenistindakan', icd[0].prosedur)
   }
 }

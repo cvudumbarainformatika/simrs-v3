@@ -275,7 +275,7 @@ export const useKandunganStore = defineStore('kandungan-poli', {
 
     filterFormSkrining (data) {
       const arr = this.skriningAllFromServer
-      const res = arr.length ? arr.filter(x => x.kehamilanNo === this.formSkrining.kehamilanNo).map(x => x.valueSingkat) : []
+      const res = arr?.length ? arr.filter(x => x.kehamilanNo === this.formSkrining.kehamilanNo).map(x => x.valueSingkat) : []
       this.formSkrining.skriningKehamilan = res
     },
 
@@ -303,7 +303,7 @@ export const useKandunganStore = defineStore('kandungan-poli', {
     },
 
     setUpdateSkrining (val) {
-      if (this.formSkrining.skriningKehamilan.length) {
+      if (this.formSkrining.skriningKehamilan?.length) {
         const arr = this.formSkrining.skriningKehamilan
         if (arr.includes(val)) {
           this.addEdited = false

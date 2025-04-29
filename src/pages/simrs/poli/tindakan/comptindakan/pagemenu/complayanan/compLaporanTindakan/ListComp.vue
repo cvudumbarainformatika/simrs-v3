@@ -72,7 +72,7 @@ const props = defineProps({
 
 function getDokter(item) {
   const dok = props.listdokter.filter(x => x.kode === item.kddokter)
-  if (dok.length) {
+  if (dok?.length) {
     return dok[0].nama
   }
   return '-'
@@ -83,7 +83,7 @@ function namaTindakan(kode) {
   const arr = props?.pasien?.tindakan
   const target = arr.filter(x => x.rs4 === kode)
   console.log('tt', target)
-  if (target.length) {
+  if (target?.length) {
     return target[0].mastertindakan?.rs2
   }
   return 'tidak valid'

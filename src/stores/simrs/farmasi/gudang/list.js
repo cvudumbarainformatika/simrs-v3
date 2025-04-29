@@ -114,7 +114,7 @@ export const useListReturPenyediaStore = defineStore('list_retur_penyedia', {
           // hapus di list
           const item = this.items.findIndex(it => it.no_retur === val.no_retur)
           if (item >= 0) {
-            if (this.items[item].rinci.length > 1) {
+            if (this.items[item].rinci?.length > 1) {
               const index = this.items[item].rinci.findIndex(ri => ri.kd_obat === val.kd_obat && ri.nopenerimaan === val.nopenerimaan)
               if (index >= 0) this.items[item].rinci.splice(index, 1)
             }

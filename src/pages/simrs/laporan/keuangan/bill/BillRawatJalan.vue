@@ -170,7 +170,7 @@
                   @click="ambilData"
                 />
               </div>
-              <div v-if="store.items.length">
+              <div v-if="store.items?.length">
                 <download-excel
                   class="btn"
                   :fetch="fetchData"
@@ -254,7 +254,7 @@
             </td>
             <td>
               <div
-                v-if="store.items.length"
+                v-if="store.items?.length"
                 class="text-weight-bold"
               >
                 Rp. {{ formatDouble(store.items.map(it=>it.subtotal).reduce((a,b)=>a+b,0)) }}

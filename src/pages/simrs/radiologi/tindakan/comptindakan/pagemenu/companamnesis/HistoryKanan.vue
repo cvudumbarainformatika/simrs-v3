@@ -6,7 +6,7 @@
       </div>
     </div>
     <div
-      v-if="store.historys.length && !store.loadingHistory"
+      v-if="store.historys?.length && !store.loadingHistory"
       class="col full-height bg-grey-3 scroll"
     >
       <!-- <q-infinite-scroll

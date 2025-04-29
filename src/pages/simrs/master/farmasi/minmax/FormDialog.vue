@@ -204,7 +204,7 @@ function obatInput (val) {
     )
   const filteredData = multiFilter(store.obats, splits, needle)
   store.filteredObats = filteredData
-  if (!filteredData.length && store.form.kd_ruang) {
+  if (!filteredData?.length && store.form.kd_ruang) {
     store.getDataObatByRuang()
   }
   else {
@@ -223,7 +223,7 @@ function ruangSet (val) {
 }
 function ruangInput (val) {
   store.filterRuang = val
-  if (val.length % 2 === 0) {
+  if (val?.length % 2 === 0) {
     store.getDataRuang()
   }
 }

@@ -62,18 +62,18 @@ export const useLaporanSigarangPenerimaanDepoStore = defineStore('laporan_sigara
     },
     mapingItem(val) {
       const temp = val
-      if (temp.length) {
+      if (temp?.length) {
         temp.forEach(bar => {
           bar.qty = 0
           bar.harga = 0
           bar.sub_total = 0
           bar.satuan = bar.satuan?.nama
-          if (bar.detail_distribusi_depo.length) {
+          if (bar.detail_distribusi_depo?.length) {
             bar.detail_distribusi_depo.forEach(det => {
               const har = det.recent.filter(a => a.kode_rs === det.kode_rs)
               det.harga = 0
               det.sub = 0
-              if (har.length) {
+              if (har?.length) {
                 det.harga = har[0].harga
                 det.sub = det.jumlah * det.harga
               }

@@ -148,7 +148,7 @@
           label="Alasan Retur"
           outlined
           :rules="[
-            val=>val.length<=255 || 'maksimal 255 karakter',
+            val=>val?.length<=255 || 'maksimal 255 karakter',
             val=>!!val||'Tidak boleh kosong'
           ]"
           :hint="hint"
@@ -168,7 +168,7 @@
       <div v-if="store.loading">
         <app-loading style="margin-top: 100px;" />
       </div>
-      <div v-else-if="!store.form.details.length && !store.loading">
+      <div v-else-if="!store.form.details?.length && !store.loading">
         <app-no-data />
       </div>
       <div v-else>
@@ -281,7 +281,7 @@ function setJumlah (key, evt) {
   }
   const inc = evt.includes('.')
   const ind = evt.indexOf('.')
-  const panj = evt.length
+  const panj = evt?.length
   const nilai = isNaN(parseFloat(evt)) ? 0 : (inc && (ind === (panj - 2)) ? evt : parseFloat(evt))
   console.log('set jumlah', key, evt, nilai, store.model?.stokalokasi)
   if (parseFloat(store.model?.stokalokasi) < nilai) {

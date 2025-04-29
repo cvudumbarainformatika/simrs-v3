@@ -169,7 +169,7 @@ const refInput = ref(null)
 function setNumber (evt, det, key) {
   const inc = evt.includes('.')
   const ind = evt.indexOf('.')
-  const panj = evt.length
+  const panj = evt?.length
   const nilai = isNaN(parseFloat(evt)) ? 0 : (inc && (ind === (panj - 2)) ? evt : parseFloat(evt))
   det[key] = nilai
   if (key === 'dipakai') {

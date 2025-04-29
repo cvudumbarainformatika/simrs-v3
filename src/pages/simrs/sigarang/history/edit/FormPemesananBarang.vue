@@ -78,7 +78,7 @@
                   outlined
                   counter
                   type="text"
-                  :rules="[ val => val.length <= 255 || 'maximal 255 karakter']"
+                  :rules="[ val => val?.length <= 255 || 'maximal 255 karakter']"
                   :disable="store.loadingTambah"
                 />
               </div>
@@ -183,7 +183,7 @@ function updateData(data) {
   store.item.status = data.data.data.status
   const det = data.data.data.details.map(a => a.kode_rs)
   const detData = data.data.data.details
-  if (det.length) {
+  if (det?.length) {
     det.forEach(m => {
       const respIn = findWithAttr(detData, 'kode_rs', m)
       const itemIn = findWithAttr(store.item.details, 'kode_rs', m)

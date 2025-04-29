@@ -57,7 +57,7 @@ const slides = computed(() => store.slides)
 const slide = ref(0)
 
 function getImage(img) {
-  if (store.carousels.length > 0) {
+  if (store.carousels?.length > 0) {
     return pathImg + img
   }
   return img

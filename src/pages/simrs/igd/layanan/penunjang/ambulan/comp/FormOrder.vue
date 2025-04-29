@@ -180,7 +180,7 @@ const refPelayananperawat = ref(null)
 const refperawatPendamping1 = ref(null)
 
 function filterFn (val, update, abort) {
-  if (val.length < 1) {
+  if (val?.length < 1) {
     abort()
     return
   }

@@ -4,7 +4,7 @@
       <div class="col-auto ng-red">
         <HeaderPage />
       </div>
-      <div v-if="store.loading || store.items.length === 0" class="col full-height">
+      <div v-if="store.loading || store.items?.length === 0" class="col full-height">
         <div class="column full-height flex-center">
           <div v-if="store.loading">
             <app-loading />

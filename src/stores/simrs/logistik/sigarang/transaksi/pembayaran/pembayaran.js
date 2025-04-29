@@ -36,17 +36,17 @@ export const usePembayaranStore = defineStore('pembayaran_store', {
       this.setParam('kontrak', val)
       this.getPenerimaan().then(pnrm => {
         this.getNoBayar().then(byr => {
-          if (pnrm.length) {
+          if (pnrm?.length) {
             const nomor = pnrm[0].nomor
             const tempNom = nomor.split('SP-')
             let nom = ''
             let nom2 = ''
             const noByr = byr < 9 ? '0' + (byr + 1) : byr + 1
-            if (tempNom.length > 1) {
+            if (tempNom?.length > 1) {
               nom = tempNom[0].split('/')
               nom2 = tempNom[1].split('/')
               const dua = nom2[0] === '' ? nom2[1] + '/' + nom2[2] + '/' + nom2[3] : tempNom[1]
-              if (nom.length > 3) {
+              if (nom?.length > 3) {
                 // this.setForm('no_kwitansi', noByr + '/KWTS/SP-' + nom[2] + '/' + dua)
                 this.setForm('no_pembayaran', noByr + '/BYR/SP-' + nom[2] + '/' + dua)
               } else {
@@ -57,7 +57,7 @@ export const usePembayaranStore = defineStore('pembayaran_store', {
               // this.setForm('no_kwitansi', noByr + '/KWTS/' + nomor)
               this.setForm('no_pembayaran', noByr + '/BYR/' + nomor)
             }
-            console.log('nom length', tempNom.length)
+            console.log('nom length', tempNom?.length)
             console.log('nom', nom2)
           } else {
             notifErrVue('tidak ada Transaksi Penerimaan')
@@ -76,17 +76,17 @@ export const usePembayaranStore = defineStore('pembayaran_store', {
       console.log('bast', bast)
       this.getPenerimaanByBast().then(pnrm => {
         this.getNoBayar().then(byr => {
-          if (pnrm.length) {
+          if (pnrm?.length) {
             const nomor = pnrm[0].nomor
             const tempNom = nomor.split('SP-')
             let nom = ''
             let nom2 = ''
             const noByr = byr < 9 ? '0' + (byr + 1) : byr + 1
-            if (tempNom.length > 1) {
+            if (tempNom?.length > 1) {
               nom = tempNom[0].split('/')
               nom2 = tempNom[1].split('/')
               const dua = nom2[0] === '' ? nom2[1] + '/' + nom2[2] + '/' + nom2[3] : tempNom[1]
-              if (nom.length > 3) {
+              if (nom?.length > 3) {
                 // this.setForm('no_kwitansi', noByr + '/KWTS/SP-' + nom[2] + '/' + dua)
                 this.setForm('no_pembayaran', noByr + '/BYR/SP-' + nom[2] + '/' + dua)
               } else {
@@ -97,7 +97,7 @@ export const usePembayaranStore = defineStore('pembayaran_store', {
               // this.setForm('no_kwitansi', noByr + '/KWTS/' + nomor)
               this.setForm('no_pembayaran', noByr + '/BYR/' + nomor)
             }
-            console.log('nom length', tempNom.length)
+            console.log('nom length', tempNom?.length)
             console.log('nom', nom2)
           } else {
             notifErrVue('tidak ada Transaksi Penerimaan')

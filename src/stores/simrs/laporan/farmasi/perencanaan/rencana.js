@@ -95,7 +95,7 @@ export const useLaporanPerencanaanStore = defineStore('laporan_perencanaan', {
           rinci.subtotal = rinci.harga * rinci.jumlah
           item.pesan.push(rinci)
           // const penerimaanRinci = item?.penerimaanrinci?.filter(f => f.nopemesanan === rinci.nopemesanan)
-          // if (penerimaanRinci.length) {
+          // if (penerimaanRinci?.length) {
           //   const terima = penerimaanRinci.reduce((a, b) => a + b.jumlah, 0)
           //   item.belumTerima.push({
           //     tanggal: rinci?.tanggal,

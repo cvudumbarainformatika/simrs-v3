@@ -92,7 +92,7 @@
               />
             </div>
             <div
-              v-if="store.params.flag_minta==='1' && store.items.length"
+              v-if="store.params.flag_minta==='1' && store.items?.length"
               class="q-mr-sm"
             >
               <app-btn

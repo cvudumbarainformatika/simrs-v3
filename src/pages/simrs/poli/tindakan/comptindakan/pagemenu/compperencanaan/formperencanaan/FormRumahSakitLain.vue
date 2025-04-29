@@ -72,7 +72,7 @@
       </div>
       <div class="col-12">
         <q-input ref="refCatat" v-model="store.formRsLain.catatan" label="Catatan" dense outlined
-          :rules="[val => val.length > 5 || 'Minimal 5 karakter']" standout="bg-yellow-3" />
+          :rules="[val => val?.length > 5 || 'Minimal 5 karakter']" standout="bg-yellow-3" />
       </div>
       <div class="col-12">
         <q-separator class=" q-my-md" />
@@ -106,7 +106,7 @@ const listDiagnosa = ref([])
 
 
 function filterFn (val, update, abort) {
-  if (val.length < 1) {
+  if (val?.length < 1) {
     abort()
     return
   }
@@ -202,7 +202,7 @@ function updateModelPpk (val) {
   // console.log('poli ', val)
 }
 const onFilterTest = async (val, update, abort) => {
-  if (val.length < 3) {
+  if (val?.length < 3) {
     abort()
     return
   }
@@ -226,7 +226,7 @@ const onFilterTest = async (val, update, abort) => {
   }
 }
 const filterPoli = async (val, update, abort) => {
-  if (val.length < 3) {
+  if (val?.length < 3) {
     abort()
     return
   }

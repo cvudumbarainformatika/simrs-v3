@@ -1071,7 +1071,7 @@ function setJumlah (evt, det, key) {
   console.log('jumh ', jumlahsigna, det, (parseFloat(det?.aturansigna?.jumlah)))
   const inc = evt.includes('.')
   const ind = evt.indexOf('.')
-  const panj = evt.length
+  const panj = evt?.length
   const nilai = isNaN(parseFloat(evt)) ? 0 : (inc && (ind === (panj - 1)) ? evt : parseFloat(evt))
   det[key] = nilai
   if (nilai > det?.jumlahAwal) {
@@ -1087,7 +1087,7 @@ function setJumlahRacik (evt, det, key) {
   // console.log('jumh ', det)
   const inc = evt.includes('.')
   const ind = evt.indexOf('.')
-  const panj = evt.length
+  const panj = evt?.length
   const nilai = isNaN(parseFloat(evt)) ? 0 : (inc && (ind === (panj - 1)) ? evt : parseFloat(evt))
   det[key] = nilai
   const awal = parseFloat(det?.jumlahdibutuhkanAwal)
@@ -1096,7 +1096,7 @@ function setJumlahRacik (evt, det, key) {
     det[key] = awal
     notifErrVue('Tidak boleh lebih dari jumlah permintaan resep')
   }
-  if (det.rincian.length) {
+  if (det.rincian?.length) {
     det.rincian.forEach(rinc => {
       // console.log('mobat', rinc)
       if (det?.tiperacikan === 'DTD') {
@@ -1134,7 +1134,7 @@ function setJumlahRacik (evt, det, key) {
 function updateJumlahObat (evt, rinc, item) {
   const inc = evt.includes('.')
   const ind = evt.indexOf('.')
-  const panj = evt.length
+  const panj = evt?.length
   const nilai = isNaN(parseFloat(evt)) ? 0 : (inc && (ind === (panj - 1)) ? evt : parseFloat(evt))
   rinc.jumlahobat = nilai
   // yang ikut berubah rinc?.harga item?.harga
@@ -1154,7 +1154,7 @@ function copyResep (val) {
   const kirimResep = []
   const kirimRacik = []
   // console.log('racikan', racik)
-  if (resep.length) {
+  if (resep?.length) {
     resep.forEach(res => {
       // console.log('non racikan', res)
       // console.log('50', res?.uraian50)
@@ -1185,11 +1185,11 @@ function copyResep (val) {
       kirimResep.push(temp)
     })
   }
-  if (racik.length) {
+  if (racik?.length) {
     racik.forEach(rac => {
       // console.log('racikan', rac)
       if (!rac?.kosong) {
-        if (rac.rincian.length) {
+        if (rac.rincian?.length) {
           rac.rincian.forEach(rinc => {
             const temp = {
               noreg: rinc?.noreg,

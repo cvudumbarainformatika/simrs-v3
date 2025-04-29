@@ -36,10 +36,10 @@
             Depo Tujuan
           </div>
           <div class="col">
-            <div v-if="!Object.keys(store.display).length">
+            <div v-if="!Object.keys(store.display)?.length">
               -
             </div>
-            <div v-if="Object.keys(store.display).length">
+            <div v-if="Object.keys(store.display)?.length">
               <q-chip
                 color="primary"
                 text-color="white"
@@ -52,7 +52,7 @@
                 </div>
               </q-chip>
             </div>
-            <!-- {{ Object.keys(store.display).length ? store.display.depo.nama:'-' }} -->
+            <!-- {{ Object.keys(store.display)?.length ? store.display.depo.nama:'-' }} -->
           </div>
         </div>
         <div class="row items-center q-mb-sm">
@@ -105,10 +105,10 @@
       <q-card-section v-if="store.loading ">
         <app-loading />
       </q-card-section>
-      <q-card-section v-if="!Object.keys(store.display).length && !store.loading">
+      <q-card-section v-if="!Object.keys(store.display)?.length && !store.loading">
         <app-no-data />
       </q-card-section>
-      <q-card-section v-if="Object.keys(store.display).length && !store.loading">
+      <q-card-section v-if="Object.keys(store.display)?.length && !store.loading">
         <!-- header -->
         <div class="fit row no-wrap justify-evenly items-center content-center q-my-xs text-weight-bold">
           <div class="anak text-center">
@@ -229,7 +229,7 @@ function dateOption(val) {
 
 const refDistribusi = ref(null)
 const disSelected = (val) => {
-  // if (!store.minMaxDepos.length || !store.stoks.length) {
+  // if (!store.minMaxDepos?.length || !store.stoks?.length) {
   //   // notifErrVue('data masih sedang dalam perjalanan, mohon tunggu beberapa saat lagi')
   //   return
   // }

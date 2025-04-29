@@ -89,7 +89,7 @@ export const useRadiologiIgd = defineStore('igd-radiologi', {
     },
     setNotas (array) {
       const arr = array.map(x => x.nota)
-      this.notas = arr.length ? arr : []
+      this.notas = arr?.length ? arr : []
       this.notas.push('BARU')
       this.form.nota = this.notas[0]
     },
@@ -113,7 +113,7 @@ export const useRadiologiIgd = defineStore('igd-radiologi', {
     initReset () {
       this.form = {
         noreg: '', // rs1
-        nota: this.notas.length ? this.notas[0] : '', // rs2
+        nota: this.notas?.length ? this.notas[0] : '', // rs2
         // rs3:'', //tgl
         permintaan: '', // rs4
         keterangan: '', // rs7

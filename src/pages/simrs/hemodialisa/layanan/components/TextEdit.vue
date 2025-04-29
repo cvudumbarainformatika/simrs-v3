@@ -47,7 +47,7 @@ const adjustWidth = () => {
   if (inputRef.value) {
     const charWidth = 8; // Approximate width per character
     const padding = 5;
-    const minWidth = Math.max(50, (editableText.value?.length ? editableText.value.length : 1) * charWidth + padding);
+    const minWidth = Math.max(50, (editableText.value?.length ? editableText.value?.length : 1) * charWidth + padding);
     // const minWidth = 30;
     inputWidth.value = minWidth;
   }

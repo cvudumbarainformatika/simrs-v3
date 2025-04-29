@@ -79,7 +79,7 @@ export const useFarmasiPermintaanDepoStore = defineStore('farmasi_permintaan_dep
         console.log('form', this.form)
         if (this.form.dari) {
           // const aMax = obat?.minmax?.filter(a => a.kd_obat === val && a.kd_ruang === this.form.dari)
-          // if (aMax.length) {
+          // if (aMax?.length) {
           //   const max = aMax[0]
           //   this.setForm('mak_stok', max.max)
           // } else {
@@ -90,7 +90,7 @@ export const useFarmasiPermintaanDepoStore = defineStore('farmasi_permintaan_dep
       }
       if (this.form.dari) {
         const dar = this.stokDewe.filter(a => a.kdobat === val && a.kdruang === this.form.dari)
-        if (dar.length) {
+        if (dar?.length) {
           const stok = dar[0]
           this.setForm('stok', stok.jumlah)
         }
@@ -188,7 +188,7 @@ export const useFarmasiPermintaanDepoStore = defineStore('farmasi_permintaan_dep
             notifSuccess(resp)
             const index = row.permintaanrinci.findIndex(a => a.id === val.id)
             if (index >= 0) row.permintaanrinci.splice(index, 1)
-            if (!row.permintaanrinci.length) {
+            if (!row.permintaanrinci?.length) {
               const list = useListPermintaanStore()
               list.ambilPermintaan()
             }
@@ -248,7 +248,7 @@ export const useFarmasiPermintaanDepoStore = defineStore('farmasi_permintaan_dep
                   }
                 }
                 const adaDetail = this.details.filter(ob => ob.kdobat === rinc.kdobat)
-                if (adaDetail.length) {
+                if (adaDetail?.length) {
                   const data = adaDetail[0]
                   if (data) {
                     Object.assign(data, rinc)

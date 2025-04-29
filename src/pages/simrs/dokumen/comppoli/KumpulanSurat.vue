@@ -29,7 +29,7 @@
       :style="`height:${h}px;  width:100%;`"
     >
       <div
-        v-if="items.length"
+        v-if="items?.length"
         class="wrapper"
         :class="!isMobile? ' q-col-gutter-xl': 'q-col-gutter-md'"
       >

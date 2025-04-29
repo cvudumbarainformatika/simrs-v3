@@ -41,7 +41,7 @@
                 UOBK RSUD MOHAMAD SALEH KOTA PROBOLINGGO
               </div>
               <div class="f-12 ">
-                Periode Bulan <span class="text-weight-bold">{{ monthName }} {{ tahun }}</span> {{ store.ruanganPrint.length > 0? store.ruanganPrint[0].namaruang:'-' }}
+                Periode Bulan <span class="text-weight-bold">{{ monthName }} {{ tahun }}</span> {{ store.ruanganPrint?.length > 0? store.ruanganPrint[0].namaruang:'-' }}
               </div>
             </div>
           </div>
@@ -112,7 +112,7 @@
               </thead>
               <tbody v-if="loading">
                 <tr>
-                  <td :colspan="store.columns.length">
+                  <td :colspan="store.columns?.length">
                     <div
                       class="flex column flex-center bg-loading-bg__table"
                       style="height:500px"
@@ -224,7 +224,7 @@
                         :key="num"
                       >
                         <div v-if="col === getString(num)">
-                          <div v-if="row.transaksi_absen.length > 0">
+                          <div v-if="row.transaksi_absen?.length > 0">
                             <div class="columns flex-center items-center">
                               <div>{{ getTransaksiAbsen(num, row.transaksi_absen, 'masuk') }}</div>
                               <q-separator />
@@ -373,10 +373,10 @@ function getString(num) {
 function getIjinRinci(row, fx) {
   const user = row.user
   if (user) {
-    const ada = user.libur.length
+    const ada = user.libur?.length
     if (ada > 0) {
       const libur = user.libur
-      return libur.length
+      return libur?.length
     }
     return 0
   }

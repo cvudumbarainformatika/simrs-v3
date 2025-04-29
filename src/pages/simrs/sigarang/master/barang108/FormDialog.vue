@@ -123,7 +123,7 @@ const formBarang = useMasterBarangRSForm()
 const formReff = ref(null)
 const onSubmit = () => {
   const ada = formBarang.barang108s.filter(val => { return val.kode === store.form.kode })
-  if (ada.length && !store.edited) {
+  if (ada?.length && !store.edited) {
     notifErrVue('Kode 108 sudah ada')
   } else {
     store.saveForm().then(() => {

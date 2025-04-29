@@ -12,7 +12,7 @@
       <app-autocomplete v-model="store.reqs.bidang" label="Pilih Bidang" autocomplete="bidang" option-label="bidang"
         option-value="kodebidang" outlined :source="store.bidangs" :loading="store.loading" @selected="(val) => {
           const arr = store.bidangs
-          const obj = arr.length ? arr.find(x => x.kodebidang === val) : null
+          const obj = arr?.length ? arr.find(x => x.kodebidang === val) : null
           store.reqs.kodebidang = obj?.kodebidang ?? ''
           store.reqs.kegiatan = ''
           console.log('kode bidang', store.reqs.kodebidang)
@@ -24,7 +24,7 @@
         option-label="kegiatan" option-value="kodekegiatan" outlined :source="store.kegiatans" :loading="store.loading"
         @selected="(val) => {
           const arr = store.kegiatans
-          const obj = arr.length ? arr.find(x => x.kodekegiatan === val) : null
+          const obj = arr?.length ? arr.find(x => x.kodekegiatan === val) : null
           const kegiatan = obj?.kegiatan
           store.kegiatanblud = kegiatan
 

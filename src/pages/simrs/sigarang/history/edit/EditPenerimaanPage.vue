@@ -195,12 +195,12 @@
       <!-- details -->
       <q-card-section>
         <div
-          v-if="!store.item.details.length"
+          v-if="!store.item.details?.length"
           style="height:300px"
         >
           <app-no-data />
         </div>
-        <div v-if="store.item.details.length">
+        <div v-if="store.item.details?.length">
           <!-- header -->
           <div class="row text-weight-bold q-col-gutter-sm q-mb-sm q-mt-sm">
             <div class="col-1 btb bl">
@@ -584,15 +584,15 @@ function updateJumlah(val, i) {
   store.item.details[i].edit = false
 }
 function hapus(val, i) {
-  console.log('item detail length', store.item.details.length)
+  console.log('item detail length', store.item.details?.length)
   console.log('hapus', val)
   const form = {
     id: val.id,
     kode_rs: val.kode_rs,
     penerimaan: val.penerimaan_id,
-    jmlDet: store.item.details.length
+    jmlDet: store.item.details?.length
   }
-  if (store.item.details.length <= 1) {
+  if (store.item.details?.length <= 1) {
     Dialog.create({
       title: 'Konfirmasi',
       message: 'Data akan terhapus seluruhnya, Apakah akan dilanjutkan?',

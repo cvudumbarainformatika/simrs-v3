@@ -50,7 +50,7 @@
         <div>{{ row.tgl_pemesanan? dateFullFormat( row.tgl_pemesanan) : '-' }}</div>
       </template>
       <template #expand="{row}">
-        <div v-if="row.rinci.length">
+        <div v-if="row.rinci?.length">
           <div class="row items-center text-weight-bold">
             <div class="col-2">
               Kode Obat

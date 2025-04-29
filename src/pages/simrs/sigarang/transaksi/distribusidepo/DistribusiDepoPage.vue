@@ -190,7 +190,7 @@
         </div>
         <q-separator />
         <!-- display -->
-        <div v-if="store.displays.length">
+        <div v-if="store.displays?.length">
           <div
             v-for="(data,i) in store.displays"
             :key="i"
@@ -319,7 +319,7 @@ const barangSelected = val => {
     return sel.kode_rs === val
   })
   console.log('barang', barang)
-  if (!store.minMaxDepos.length) store.filterBarangHasStok()
+  if (!store.minMaxDepos?.length) store.filterBarangHasStok()
 
   const minMaxBarang = store.minMaxDepos.filter(data => {
     return data.kode_rs === val
@@ -333,10 +333,10 @@ const barangSelected = val => {
     return data.kode_rs === val
   })
 
-  if (stok.length) {
+  if (stok?.length) {
     store.setInput('stok_gudang', store.stoks[stok[0]].stok)
     store.setForm('no_penerimaan', store.stoks[stok[0]].no_penerimaan)
-    if (toDistribute.length) {
+    if (toDistribute?.length) {
       let alokasi = 0
       if (toDistribute[0].jml > 0) {
         alokasi = store.input.stok_gudang - toDistribute[0].jml
@@ -348,7 +348,7 @@ const barangSelected = val => {
       store.setInput('stok_alokasi_depo', store.input.stok_gudang)
     }
   }
-  if (barang.length) {
+  if (barang?.length) {
     store.setInput('kode_108', barang[0].barang.kode_108)
     store.setInput('uraian', barang[0].barang.uraian_108)
     store.setInput('nama', barang[0].barang.nama)
@@ -356,7 +356,7 @@ const barangSelected = val => {
     store.setDetail('kode_satuan', barang[0].barang.kode_satuan)
     store.setDetail('recentStokId', barang[0].id)
   }
-  if (minMaxBarang.length) {
+  if (minMaxBarang?.length) {
     store.setInput('stok_min_depo', minMaxBarang[0].min_stok)
     store.setInput('stok_max_depo', minMaxBarang[0].max_stok)
   }

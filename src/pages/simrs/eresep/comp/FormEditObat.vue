@@ -109,7 +109,7 @@ function setJumlah (val) {
   // }
   // else if (store.form?.aturan !== '') {
   //   const sign = store.signas.filter(sig => sig.signa === store?.form?.aturan)
-  //   if (sign.length) {
+  //   if (sign?.length) {
   //     if (parseFloat(jumlah) > 0) {
   //       const kons = jumlah / parseFloat(signa.value?.jumlah)
   //       store.setForm('konsumsi', kons)
@@ -181,7 +181,7 @@ function showMe () {
 
 watch(() => store.signas, (val) => {
   // console.log('val', val, store.signas)
-  if (val.length && store.itemToEdit?.aturan) {
+  if (val?.length && store.itemToEdit?.aturan) {
     signa.value = store.signas.find(sig => sig.signa === store.itemToEdit.aturan)
   }
 

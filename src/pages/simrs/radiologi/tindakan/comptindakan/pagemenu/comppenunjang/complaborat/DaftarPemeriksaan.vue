@@ -22,7 +22,7 @@
       </div>
       <q-separator />
       <q-scroll-area
-        v-if="filterDetails.length > 0"
+        v-if="filterDetails?.length > 0"
         style="height: calc(100% - 68px);"
         class="bg-grey"
       >

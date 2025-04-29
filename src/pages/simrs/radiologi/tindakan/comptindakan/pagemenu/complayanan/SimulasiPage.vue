@@ -129,7 +129,7 @@ const props = defineProps({
 })
 // const totalPemeriksaan = computed(() => {
 //   const arr = props?.pasien?.tindakan
-//   return arr.length ? arr.reduce((acc, cur) => acc + cur.subtotal, 0) : 0
+//   return arr?.length ? arr.reduce((acc, cur) => acc + cur.subtotal, 0) : 0
 // })
 
 function hitungSelisih() {

@@ -67,7 +67,7 @@
               option-label="bidang" option-value="kodebidang" outlined :source="store.bidangs" :loading="store.loading"
               @selected="(val) => {
                 const arr = store.bidangs
-                const obj = arr.length ? arr.find(x => x.kodebidang === val) : null
+                const obj = arr?.length ? arr.find(x => x.kodebidang === val) : null
                 store.params.kodebidang = obj?.kodebidang ?? ''
                 store.params.kegiatan = ''
                 console.log('kode bidang', store.params.kodebidang)
@@ -101,7 +101,7 @@
               </div>
             </div>
           </template>
-          <template v-else-if="store.items.length === 0">
+          <template v-else-if="store.items?.length === 0">
             <div class="row flex flex-center">
               <div class="kosong">
                 <div>Data Belum Ada</div>
@@ -132,33 +132,33 @@
                 <tbody class="align-middle q-pl-sm">
                   <tr v-for="item in store.pendapatans" :key="item">
                     <td class="text-left q-pl-sm q-pr-sm">
-                      <div :class="item.kodeall3.length <= 12 ? 'text-bold' : ''"> {{ item.kodeall3 }} </div>
+                      <div :class="item.kodeall3?.length <= 12 ? 'text-bold' : ''"> {{ item.kodeall3 }} </div>
                     </td>
                     <td class="text-left q-pl-sm q-pr-sm">
-                      <div :class="item.kodeall3.length <= 12 ? 'text-bold' : ''"> {{ item.uraian }} </div>
+                      <div :class="item.kodeall3?.length <= 12 ? 'text-bold' : ''"> {{ item.uraian }} </div>
                     </td>
                     <td class="text-right q-pl-sm q-pr-sm">
-                      <div :class="item.kodeall3.length <= 12 ? 'text-bold' : ''">{{
+                      <div :class="item.kodeall3?.length <= 12 ? 'text-bold' : ''">{{
                         formattanpaRp(store.realisasipends?.totalPaguPendapatan) }}</div>
                     </td>
                     <td class="text-right q-pl-sm q-pr-sm">
-                      <div :class="item.kodeall3.length <= 12 ? 'text-bold' : ''">{{
+                      <div :class="item.kodeall3?.length <= 12 ? 'text-bold' : ''">{{
                         formattanpaRp(store.realisasipends?.totalSebelumnya) }}</div>
                     </td>
                     <td class="text-right q-pl-sm q-pr-sm">
-                      <div :class="item.kodeall3.length <= 12 ? 'text-bold' : ''">{{
+                      <div :class="item.kodeall3?.length <= 12 ? 'text-bold' : ''">{{
                         formattanpaRp(store.realisasipends?.totalSekarang) }}</div>
                     </td>
                     <td class="text-right q-pl-sm q-pr-sm">
-                      <div :class="item.kodeall3.length <= 12 ? 'text-bold' : ''">{{
+                      <div :class="item.kodeall3?.length <= 12 ? 'text-bold' : ''">{{
                         formattanpaRp(store.realisasipends?.totalRealisasi) }}</div>
                     </td>
                     <td class="text-right q-pl-sm q-pr-sm">
-                      <div :class="item.kodeall3.length <= 12 ? 'text-bold' : ''"> {{
+                      <div :class="item.kodeall3?.length <= 12 ? 'text-bold' : ''"> {{
                         formattanpaRp(store.realisasipends?.selisih) }} </div>
                     </td>
                     <td class="text-right q-pl-sm q-pr-sm">
-                      <div :class="item.kodeall3.length <= 12 ? 'text-bold' : ''"> {{
+                      <div :class="item.kodeall3?.length <= 12 ? 'text-bold' : ''"> {{
                         formattanpaRp(store.realisasipends?.persen) }} </div>
                     </td>
                   </tr>
@@ -187,36 +187,36 @@
                   </tr>
                   <tr v-for="item in store.items" :key="item">
                     <td class="text-left q-pl-sm q-pr-sm">
-                      <div :class="item.kodeall3.length <= 12 ? 'text-bold' : ''"> {{ item.kodeall3 }} </div>
+                      <div :class="item.kodeall3?.length <= 12 ? 'text-bold' : ''"> {{ item.kodeall3 }} </div>
                     </td>
                     <td class="text-left q-pl-sm q-pr-sm">
-                      <div :class="item.kodeall3.length <= 12 ? 'text-bold' : ''"> {{ item.uraian }} </div>
+                      <div :class="item.kodeall3?.length <= 12 ? 'text-bold' : ''"> {{ item.uraian }} </div>
                     </td>
                     <td class="text-right q-pl-sm q-pr-sm">
-                      <div :class="item.kodeall3.length <= 12 ? 'text-bold' : ''">{{ formattanpaRp(item.totalPagu) }}
+                      <div :class="item.kodeall3?.length <= 12 ? 'text-bold' : ''">{{ formattanpaRp(item.totalPagu) }}
                       </div>
                     </td>
                     <td class="text-right q-pl-sm q-pr-sm">
-                      <div :class="item.kodeall3.length <= 12 ? 'text-bold' : ''">{{
+                      <div :class="item.kodeall3?.length <= 12 ? 'text-bold' : ''">{{
                         formattanpaRp(item.totalRealisasiSebelumnya) }}</div>
                     </td>
                     <td class="text-right q-pl-sm q-pr-sm">
-                      <div :class="item.kodeall3.length <= 12 ? 'text-bold' : ''">
+                      <div :class="item.kodeall3?.length <= 12 ? 'text-bold' : ''">
                         {{ formattanpaRp(item.totalRealisasi) }}
                       </div>
                     </td>
                     <td class="text-right q-pl-sm q-pr-sm">
-                      <div :class="item.kodeall3.length <= 12 ? 'text-bold' : ''">
+                      <div :class="item.kodeall3?.length <= 12 ? 'text-bold' : ''">
                         {{ formattanpaRp(item.RealisasiSemua) }}
                       </div>
                     </td>
                     <td class="text-right q-pl-sm q-pr-sm">
-                      <div :class="item.kodeall3.length <= 12 ? 'text-bold' : ''">
+                      <div :class="item.kodeall3?.length <= 12 ? 'text-bold' : ''">
                         {{ formattanpaRp(item.selisih) }}
                       </div>
                     </td>
                     <td class="text-right q-pl-sm q-pr-sm">
-                      <div :class="item.kodeall3.length <= 12 ? 'text-bold' : ''">
+                      <div :class="item.kodeall3?.length <= 12 ? 'text-bold' : ''">
                         {{ item.persen }}
                       </div>
                     </td>
@@ -270,33 +270,33 @@
                   </tr>
                   <tr v-for="rek in store.pembiayaans" :key="rek">
                     <td class="text-left q-pl-sm q-pr-sm">
-                      <div :class="rek.kodeall3.length <= 12 ? 'text-bold' : ''"> {{ rek.kodeall3 }} </div>
+                      <div :class="rek.kodeall3?.length <= 12 ? 'text-bold' : ''"> {{ rek.kodeall3 }} </div>
                     </td>
                     <td class="text-left q-pl-sm q-pr-sm">
-                      <div :class="rek.kodeall3.length <= 12 ? 'text-bold' : ''"> {{ rek.uraian }} </div>
+                      <div :class="rek.kodeall3?.length <= 12 ? 'text-bold' : ''"> {{ rek.uraian }} </div>
                     </td>
                     <td class="text-right q-pl-sm q-pr-sm">
-                      <div :class="rek.kodeall3.length <= 12 ? 'text-bold' : ''">{{
+                      <div :class="rek.kodeall3?.length <= 12 ? 'text-bold' : ''">{{
                         formattanpaRp(store.realisasiPembiayaans?.totalPaguPembiayaan) }}</div>
                     </td>
                     <td class="text-right q-pl-sm q-pr-sm">
-                      <div :class="rek.kodeall3.length <= 12 ? 'text-bold' : ''">{{
+                      <div :class="rek.kodeall3?.length <= 12 ? 'text-bold' : ''">{{
                         formattanpaRp(store.realisasiPembiayaans?.totalSebelumnya) }}</div>
                     </td>
                     <td class="text-right q-pl-sm q-pr-sm">
-                      <div :class="rek.kodeall3.length <= 12 ? 'text-bold' : ''">{{
+                      <div :class="rek.kodeall3?.length <= 12 ? 'text-bold' : ''">{{
                         formattanpaRp(store.realisasiPembiayaans?.totalSekarang) }}</div>
                     </td>
                     <td class="text-right q-pl-sm q-pr-sm">
-                      <div :class="rek.kodeall3.length <= 12 ? 'text-bold' : ''">{{
+                      <div :class="rek.kodeall3?.length <= 12 ? 'text-bold' : ''">{{
                         formattanpaRp(store.realisasiPembiayaans?.totalRealisasi) }}</div>
                     </td>
                     <td class="text-right q-pl-sm q-pr-sm">
-                      <div :class="rek.kodeall3.length <= 12 ? 'text-bold' : ''"> {{
+                      <div :class="rek.kodeall3?.length <= 12 ? 'text-bold' : ''"> {{
                         formattanpaRp(store.realisasiPembiayaans?.selisih) }} </div>
                     </td>
                     <td class="text-right q-pl-sm q-pr-sm">
-                      <div :class="rek.kodeall3.length <= 12 ? 'text-bold' : ''"> {{
+                      <div :class="rek.kodeall3?.length <= 12 ? 'text-bold' : ''"> {{
                         formattanpaRp(store.realisasiPembiayaans?.persen) }} </div>
                     </td>
                   </tr>

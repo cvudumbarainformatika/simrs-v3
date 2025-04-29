@@ -100,7 +100,7 @@ const props = defineProps({
 const emits = defineEmits(['close'])
 
 async function filterFn (val, update, abort) {
-  if (val.length < 2) {
+  if (val?.length < 2) {
     store.selectTemplate(null)
     abort()
     return
@@ -108,7 +108,7 @@ async function filterFn (val, update, abort) {
 
   const depo = store.depos.filter(pa => pa.jenis === props.depo)
   // console.log('depo', store?.depo, depo)
-  if (depo.length) {
+  if (depo?.length) {
     store.dpPar = depo[0]?.value
   }
   else return notifErrVue('depo tujuan tidak ditemukan')
@@ -126,7 +126,7 @@ async function filterFn (val, update, abort) {
 
   update(() => {
     // const needle = val?.toLowerCase()
-    // options.value = data.length ? data?.filter(v => v?.namaobat.toLowerCase().indexOf(needle) > -1) : []
+    // options.value = data?.length ? data?.filter(v => v?.namaobat.toLowerCase().indexOf(needle) > -1) : []
     options.value = data
   })
 }

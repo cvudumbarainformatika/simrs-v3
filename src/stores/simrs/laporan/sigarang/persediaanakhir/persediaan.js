@@ -68,14 +68,14 @@ export const useLaporanSigarangPersediaanFifoStore = defineStore('laporan_sigara
       this.getDataTable()
     },
     mapingItem(val) {
-      if (val.length) {
+      if (val?.length) {
         const total = []
         val.forEach(item => {
-          if (item.monthly.length) {
+          if (item.monthly?.length) {
             item.monthly.forEach(a => { a.total = a.totalStok * a.harga })
             item.subtotal = item.monthly.map(a => a.total).reduce((a, b) => a + b, 0)
             total.push(item.subtotal)
-          } else if (item.recent.length) {
+          } else if (item.recent?.length) {
             item.recent.forEach(a => { a.total = a.totalStok * a.harga })
             item.subtotal = item.recent.map(a => a.total).reduce((a, b) => a + b, 0)
             total.push(item.subtotal)

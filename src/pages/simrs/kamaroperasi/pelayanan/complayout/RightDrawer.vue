@@ -31,7 +31,7 @@
             <q-card dark>
               <q-separator />
               <q-card-section class="q-pa-none">
-                <div v-if="item?.anamnesis.length">
+                <div v-if="item?.anamnesis?.length">
                   <q-bar class="bg-accent">
                     <div>ANAMNESIS</div>
                   </q-bar>
@@ -815,7 +815,7 @@ function suhu(val) {
 
 function getKesadaran(val) {
   const temp = store.optionsTingkatkesadaran.filter(a => a.value === val)
-  if (temp.length) {
+  if (temp?.length) {
     return temp[0].label
   } else {
     return '-'

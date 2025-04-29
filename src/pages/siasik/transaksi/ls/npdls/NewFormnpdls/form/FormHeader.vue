@@ -136,7 +136,7 @@ const serahTerima = (val) => {
 }
 function pilihPTK(val) {
   const arr = store.ptks
-  const obj = arr.length ? arr.find(x => x.nip === val) : null
+  const obj = arr?.length ? arr.find(x => x.nip === val) : null
   store.form.pptk = obj?.nama ?? ''
   store.form.kodepptk = obj?.nip ?? ''
   store.form.kodebidang = obj?.kodeBagian ?? ''
@@ -165,7 +165,7 @@ function pilihPTK(val) {
 }
 function pilihKegiatan(val) {
   const arr = store.kegiatans
-  const obj = arr.length ? arr.find(x => x.kegiatan === val) : null
+  const obj = arr?.length ? arr.find(x => x.kegiatan === val) : null
   store.form.kegiatanblud = obj?.kegiatan ?? ''
   store.form.kodekegiatanblud = obj?.kodekegiatan ?? ''
   // Mengosongkan Rincian Belanja setelah milih ulang kegiatan
@@ -189,7 +189,7 @@ function pilihKegiatan(val) {
 function pilihPihaktiga(val) {
   // console.log('val kodepenerima', val)
   const arr = ambil.pihaktigas
-  const obj = arr.length ? arr.find(x => x.kode === val) : null
+  const obj = arr?.length ? arr.find(x => x.kode === val) : null
 
   store.form.penerima = obj?.nama ?? ''
   store.form.kodepenerima = obj?.kode ?? ''
@@ -204,7 +204,7 @@ function pilihPihaktiga(val) {
 
 async function filterFn(val, update) {
   // console.log('val filter', val)
-  if (!store.ptks || store.ptks.length === 0) {
+  if (!store.ptks || store.ptks?.length === 0) {
     // Jika data rekening kosong, muat ulang data
     await store.getDataBidang();
   }

@@ -13,7 +13,7 @@
           option-label="nama"
           option-value="nik"
           :options="optionKaryawans"
-          :disable="store.form.details.length>0"
+          :disable="store.form.details?.length>0"
           hide-dropdown-icon
           hide-selected
           @filter="filterRsLain"
@@ -59,7 +59,7 @@ const listbelum = shallowRef(defineAsyncComponent(() => import('./ListObatBelum.
 function filterRsLain (val, update) {
   console.log(val)
   const ada = store.karyawans.filter(f => f?.nama?.toLowerCase()?.includes(val?.toLowerCase()))
-  if (ada.length > 3) update(() => { optionKaryawans.value = ada })
+  if (ada?.length > 3) update(() => { optionKaryawans.value = ada })
   else {
     store.getKaryawan(val).then(() => {
       optionKaryawans.value = store.karyawans

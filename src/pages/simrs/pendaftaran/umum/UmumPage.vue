@@ -134,7 +134,7 @@ function panggil(val) {
         sisaAntrian.value = resp.data.data.sisa_antrian
         pasien.setForm('noantrian', resp.data.data.nomor)
         pasien.noantrian = resp.data.data.nomor
-        const temp = parseInt(val.slice(1, resp.data.data.nomor.length))
+        const temp = parseInt(val.slice(1, resp.data.data.nomor?.length))
         pasien.setForm('angkaantrean', temp)
         console.log(resp.data)
         resolve(resp)

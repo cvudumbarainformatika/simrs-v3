@@ -33,7 +33,7 @@
                   <div class="column">
                     <div
                       class="kotak column flex-center"
-                      :class="y+1 === info.length?'bg-primary text-white':'bg-white'"
+                      :class="y+1 === info?.length?'bg-primary text-white':'bg-white'"
                     >
                       {{ y + 1 }}
                     </div>

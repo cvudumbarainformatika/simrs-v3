@@ -1,5 +1,5 @@
 <template>
-  <template v-if="store.ekuitasawal && store.surplusdefisit && store.hasilkoreksi.length > 0">
+  <template v-if="store.ekuitasawal && store.surplusdefisit && store.hasilkoreksi?.length > 0">
     <q-card-section class="full-width">
       <div class="row justify-center">
         <div class="full-width">

@@ -35,7 +35,7 @@
             </div>
           </div>
         </template>
-        <template v-else-if="store.hasilArray.length === 0">
+        <template v-else-if="store.hasilArray?.length === 0">
           <div class="row flex-center">
             <div class="kosong">
               <div>Data Belum Ada</div>

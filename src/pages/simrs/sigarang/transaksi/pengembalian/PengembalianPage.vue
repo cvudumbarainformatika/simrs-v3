@@ -88,9 +88,9 @@
                   dense
                   :rules="[
                     val => !!val || '* harap di isi',
-                    val => val.length <= 255|| 'maksimal 255 karakter'
+                    val => val?.length <= 255|| 'maksimal 255 karakter'
                   ]"
-                  :hint="store.details.alasan?String(store.details.alasan.length):''"
+                  :hint="store.details.alasan?String(store.details.alasan?.length):''"
                 />
               </div>
             </div>
@@ -141,10 +141,10 @@
       </q-card-section>
       <q-separator />
       <q-card-section>
-        <div v-if="!store.displays.length">
+        <div v-if="!store.displays?.length">
           <app-no-data />
         </div>
-        <div v-if="store.displays.length">
+        <div v-if="store.displays?.length">
           <div class="fit row no-wrap justify-between items-center text-weight-bold">
             <div class="anak text-center">
               Kode Barang
@@ -205,7 +205,7 @@
         </div>
       </q-card-section>
       <q-card-actions
-        v-if="store.displays.length"
+        v-if="store.displays?.length"
         align="right"
       >
         <app-btn
@@ -234,7 +234,7 @@ const barangSelected = (val) => {
   const maping = store.mapingBarangs.filter(mp => {
     return mp.kode_rs === val
   })
-  if (maping.length) {
+  if (maping?.length) {
     store.setDetail('kode_108', maping[0].kode_108)
     store.setDetail('kode_satuan', maping[0].kode_satuan)
     store.setInput('kode_108', maping[0].kode_108)
@@ -269,7 +269,7 @@ const refRuangan = ref(null)
 const refJumlah = ref(null)
 const tambah = () => {
   store.setInput('jumlah', store.details.jumlah)
-  if (Object.keys(store.input).length && store.details.jumlah > 0) {
+  if (Object.keys(store.input)?.length && store.details.jumlah > 0) {
     store.form.details.push(store.details)
     store.displays.push(store.input)
     store.resetInput()

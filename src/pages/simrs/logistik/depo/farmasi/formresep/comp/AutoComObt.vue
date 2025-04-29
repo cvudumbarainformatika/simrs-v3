@@ -148,7 +148,7 @@ function labelFront (val) {
 }
 function fetchData () {
   // console.log(refAuto.value)
-  if (props.source.length > 0) {
+  if (props.source?.length > 0) {
     optionx.value = props.source
   }
 }
@@ -215,7 +215,7 @@ function filterFn (val, update) {
       // }
     },
     (ref) => {
-      if (val !== '' && ref.options.length > 0) {
+      if (val !== '' && ref.options?.length > 0) {
         ref.setOptionIndex(-1) // reset optionIndex in case there is something selected
         ref.moveOptionSelection(1, true) // focus the first selectable option and do not update the input-value
       }
@@ -226,7 +226,7 @@ function filterFn (val, update) {
 //   return val
 // }
 // function getFocus () {
-//   if (props.source.length === 0) {
+//   if (props.source?.length === 0) {
 //     console.log('getData from server')
 //     emits('getSource')
 //     // optionx.value = props.source

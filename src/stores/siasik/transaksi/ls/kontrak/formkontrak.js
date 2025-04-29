@@ -90,12 +90,12 @@ export const formKontrakPekerjaan = defineStore('form_KontrakPekerjaan', {
       // this.isEdit = false
 
       const forms = Object.keys(this.form)
-      for (let i = 0; i < forms.length; i++) {
+      for (let i = 0; i < forms?.length; i++) {
         const el = forms[i]
         this.setForm(el, null)
       }
       const keys = Object.keys(this.params)
-      for (let i = 0; i < keys.length; i++) {
+      for (let i = 0; i < keys?.length; i++) {
         const el = keys[i]
         this.setParams(el, null)
       }

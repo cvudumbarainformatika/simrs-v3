@@ -53,11 +53,11 @@ export const useDetailPasien = defineStore('detail_pasien', {
     },
 
     paginasiRajal(val) {
-      if (val.length > 0) {
-        this.rajal.total_page = Math.ceil(val.length / this.rajal.per_page)
+      if (val?.length > 0) {
+        this.rajal.total_page = Math.ceil(val?.length / this.rajal.per_page)
         const page = this.rajal.current_page
         const recordsperpage = this.rajal.per_page
-        const from = page === this.rajal.total_page ? val.length : (page * recordsperpage)
+        const from = page === this.rajal.total_page ? val?.length : (page * recordsperpage)
         this.rajal.data = [] // ini membersihkan data
         for (let i = (page - 1) * recordsperpage; i < from; i++) {
           this.rajal.data.push(val[i])
@@ -65,11 +65,11 @@ export const useDetailPasien = defineStore('detail_pasien', {
       }
     },
     paginasiRanap(val) {
-      if (val.length > 0) {
-        this.ranap.total_page = Math.ceil(val.length / this.ranap.per_page)
+      if (val?.length > 0) {
+        this.ranap.total_page = Math.ceil(val?.length / this.ranap.per_page)
         const page = this.ranap.current_page
         const recordsperpage = this.ranap.per_page
-        const from = page === this.ranap.total_page ? val.length : (page * recordsperpage)
+        const from = page === this.ranap.total_page ? val?.length : (page * recordsperpage)
         this.ranap.data = [] // ini membersihkan data
         for (let i = (page - 1) * recordsperpage; i < from; i++) {
           this.ranap.data.push(val[i])

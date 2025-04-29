@@ -236,7 +236,7 @@
         <q-option-group v-model="store.formInfo.jenisPertanyaan" type="checkbox" :options="store.jenisPertanyaans"
           inline @update:model-value="(val) => {
             store.formInfo.kode = []
-            if (val.length > 0) {
+            if (val?.length > 0) {
               val?.forEach(anu => {
                 const ada = store.jenisPertanyaans?.find(x => x.value === anu)
                 if (ada) {

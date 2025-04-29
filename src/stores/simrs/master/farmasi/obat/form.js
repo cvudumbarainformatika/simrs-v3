@@ -114,7 +114,7 @@ export const useMasterObatForm = defineStore('master_Obat_form', {
       //   // 'kekuatan_dosis',
       //   // 'jenis_perbekalan'
       // ]
-      // for (let i = 0; i < columns.length; i++) {
+      // for (let i = 0; i < columns?.length; i++) {
       //   this.setForm(columns[i], null)
       // }
       // this.setForm('kd_obat', 'dasdasdasds1')
@@ -127,7 +127,7 @@ export const useMasterObatForm = defineStore('master_Obat_form', {
     },
     removeIndikasi (i) {
       const ter = this.form.indikasis[i]
-      if (this.edited && Object.keys(ter).length) {
+      if (this.edited && Object.keys(ter)?.length) {
         // console.log('ter ', ter)
         this.hapusIndikasi(ter.id)
       }
@@ -135,7 +135,7 @@ export const useMasterObatForm = defineStore('master_Obat_form', {
     },
     removeKelasTerapi (i) {
       const ter = this.form.kelasterapis[i]
-      if (this.edited && Object.keys(ter).length) {
+      if (this.edited && Object.keys(ter)?.length) {
         // console.log('ter ', ter)
         this.hapusMaping(ter.id)
       }
@@ -171,7 +171,7 @@ export const useMasterObatForm = defineStore('master_Obat_form', {
     editData (val) {
       this.edited = true
       console.log('edit ', val)
-      if (val.mkelasterapi.length) {
+      if (val.mkelasterapi?.length) {
         this.form.kelasterapis = []
         console.log('kelas terapi ', val.mkelasterapi)
         val.mkelasterapi.forEach(ter => {
@@ -182,7 +182,7 @@ export const useMasterObatForm = defineStore('master_Obat_form', {
       else {
         this.form.kelasterapis = []
       }
-      if (val.indikasi.length) {
+      if (val.indikasi?.length) {
         this.form.indikasis = []
         console.log('indikasi ', val.indikasi)
         val.indikasi.forEach(ter => {
@@ -207,7 +207,7 @@ export const useMasterObatForm = defineStore('master_Obat_form', {
       })
       const namaObat = val.nama_obat.split(' ')
       const numIn = []
-      for (let index = 0; index < namaObat.length; index++) {
+      for (let index = 0; index < namaObat?.length; index++) {
         const element = namaObat[index]
         if (!isNaN(parseInt(element))) numIn.push(index)
         // console.log('element', element, ' p ', parseInt(element), ' t ', typeof (parseInt(element)))

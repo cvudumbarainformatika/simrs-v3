@@ -107,7 +107,7 @@
         </q-btn>
       </div>
       <div class="col-auto q-ml-sm">
-        <div v-if="store.items.length">
+        <div v-if="store.items?.length">
           <download-excel
             class="btn"
             :fields="store.fields"

@@ -34,7 +34,7 @@
                         } else {
                           return item
                         }
-                      }).length})`"
+                      })?.length})`"
                     />
                   </div>
                 </div>
@@ -50,7 +50,7 @@
             </div>
 
             <div v-else class="col full-height">
-              <div v-if="listsFilterred.length" class="full-height scroll bg-grey-4 q-pa-md">
+              <div v-if="listsFilterred?.length" class="full-height scroll bg-grey-4 q-pa-md">
                 <q-card dark separator bordered class="q-ma-xs" v-for="(data, n) in listsFilterred" :key="n" :class="data?.satset_uuid?'bg-primary':'bg-negative'">
                   <q-item clickable v-ripple @click="store.setRuangan(data, data?.gruper)">
                     <q-item-section avatar>

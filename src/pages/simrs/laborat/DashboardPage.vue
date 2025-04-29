@@ -103,14 +103,14 @@ const store = useDashboardLaborat()
 //   let jml = 0
 //   const today = dateDbFormat(new Date())
 //   const items = store.itemLabs
-//   if (items.length > 0) jml = items.filter(item => item.x === today)[0].y
+//   if (items?.length > 0) jml = items.filter(item => item.x === today)[0].y
 //   return jml
 // })
 // const labLuarToday = computed(() => {
 //   let jml = 0
 //   const today = dateDbFormat(new Date())
 //   const items = store.itemLabLuars
-//   if (items.length > 0) jml = items.filter(item => item.x === today)[0].y
+//   if (items?.length > 0) jml = items.filter(item => item.x === today)[0].y
 //   return jml
 // })
 

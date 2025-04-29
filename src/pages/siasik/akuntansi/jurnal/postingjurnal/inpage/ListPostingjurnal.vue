@@ -1,5 +1,5 @@
 <template>
-  <template v-if="store.hasilmaps.length">
+  <template v-if="store.hasilmaps?.length">
     <q-card-section class="full-width">
       <div class="row">
         <div class="full-width">

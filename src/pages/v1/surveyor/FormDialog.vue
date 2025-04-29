@@ -56,7 +56,7 @@
                 label="Kabupaten / Kota"
                 autocomplete="name"
                 :source="store.kotas"
-                :disable="store.kotas.length===0"
+                :disable="store.kotas?.length===0"
                 option-label="name"
                 option-value="name"
                 @set-model="store.getKec"
@@ -70,7 +70,7 @@
                 label="Kecamatan"
                 autocomplete="name"
                 :source="store.kecs"
-                :disable="store.kecs.length===0"
+                :disable="store.kecs?.length===0"
                 option-label="name"
                 option-value="name"
                 @set-model="store.getKels"
@@ -84,7 +84,7 @@
                 label="Kelurahan"
                 autocomplete="name"
                 :source="store.kels"
-                :disable="store.kecs.length===0"
+                :disable="store.kecs?.length===0"
                 option-label="name"
                 option-value="name"
               />
@@ -125,7 +125,7 @@
                 hide-bottom-space
                 no-error-icon
                 lazy-rules
-                :rules="[(val) => (val && val.length > 0) || 'Harap diisi']"
+                :rules="[(val) => (val && val?.length > 0) || 'Harap diisi']"
               />
             </div>
             <div class="col-md-6 col-xs-12">

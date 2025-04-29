@@ -116,17 +116,17 @@ export const useResepDepoFarmasiStore = defineStore('resep_depo_farmasi_setore',
     },
     getBillRanap(val) {
       this.setForm('kdruangan', val.kdruangan)
-      if (!!this.form.dokter && !this.dokters.length) this.cariDokter(this.form.dokter)
+      if (!!this.form.dokter && !this.dokters?.length) this.cariDokter(this.form.dokter)
     },
     getBillIgd(val) {
       this.setForm('kdruangan', val.kodepoli)
-      if (!!this.form.dokter && !this.dokters.length) this.cariDokter(this.form.dokter)
+      if (!!this.form.dokter && !this.dokters?.length) this.cariDokter(this.form.dokter)
     },
     obatSelected(val) {
       this.setForm('kdobat', val)
       const obat = this.obats.filter(a => a.kodeobat === val)
       console.log('obat', obat)
-      if (obat.length) {
+      if (obat?.length) {
         this.obatTerpilih = obat[0]
         this.setForm('satuan_kcl', obat[0]?.satuankecil ?? '-')
         this.setForm('kodeobat', obat[0]?.kodeobat ?? '-')
@@ -143,7 +143,7 @@ export const useResepDepoFarmasiStore = defineStore('resep_depo_farmasi_setore',
     signaSelected(val) {
       this.setForm('aturan', val)
       const signa = this.signas.filter(sig => sig.signa === val)
-      if (signa.length) {
+      if (signa?.length) {
         this.setForm('jumlahdosis', parseFloat(signa[0]?.jumlah))
         if (parseFloat(this.form.jumlah) > 0) {
           const kons = this.form.jumlah / parseFloat(signa[0]?.jumlah)

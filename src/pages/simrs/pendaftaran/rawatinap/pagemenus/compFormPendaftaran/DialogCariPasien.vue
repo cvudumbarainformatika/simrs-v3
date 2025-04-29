@@ -166,7 +166,7 @@ function hiddenDialog () {
 }
 
 async function filterFn (val, update) {
-  if (val.length < 3) {
+  if (val?.length < 3) {
     pasien.value = null
     update(() => {
       options.value = []

@@ -701,7 +701,7 @@
               belum ada kelas terapi
             </div>
             <div v-if="store.form.kelasterapis">
-              <div v-if="store.form.kelasterapis.length">
+              <div v-if="store.form.kelasterapis?.length">
                 <div
                   v-for="(ter,i) in store.form.kelasterapis"
                   :key="i"
@@ -774,7 +774,7 @@
               belum ada kelas terapi
             </div>
             <div v-if="store.form.indikasis">
-              <div v-if="store.form.indikasis.length">
+              <div v-if="store.form.indikasis?.length">
                 <div
                   v-for="(ter,i) in store.form.indikasis"
                   :key="i"
@@ -871,7 +871,7 @@ function scJenisProduk (val) {
 
 // set label obat start---
 function setNama (val) {
-  if (!val.length) {
+  if (!val?.length) {
     store.deleteNamaObat('nama')
     store.setFormNamaObat()
     return

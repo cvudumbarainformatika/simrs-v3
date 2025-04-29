@@ -37,16 +37,16 @@
       </div>
       <div class="col-12">
         <q-input ref="refKet" v-model="store.formPrb.keterangan" label="Keterangan" dense outlined hide-bottom-space
-          :rules="[val => val.length > 5 || 'Minimal 5 karakter']" standout="bg-yellow-3" />
+          :rules="[val => val?.length > 5 || 'Minimal 5 karakter']" standout="bg-yellow-3" />
       </div>
       <div class="col-12">
         <q-input ref="refSaran" v-model="store.formPrb.saran" label="Saran" dense outlined hide-bottom-space
-          :rules="[val => val.length > 5 || 'Minimal 5 karakter']" standout="bg-yellow-3" />
+          :rules="[val => val?.length > 5 || 'Minimal 5 karakter']" standout="bg-yellow-3" />
       </div>
       <div class="col-12">
         <q-separator class=" q-my-md" />
         <div class="row text-weight-bold f-14 q-py-sm items-center">Resep PRB</div>
-        <div v-if="filterObatPrb.length > 0">
+        <div v-if="filterObatPrb?.length > 0">
           <div v-for="(item, i) in filterObatPrb" :key="i">
             <div class="row cursor-pointer items-center" :class="setBg(i, item)" @click="bukaRincian(item)">
               <div class="col-3">{{ item?.noresep }}</div>
@@ -57,7 +57,7 @@
             </div>
           </div>
         </div>
-        <div v-if="filterObatPrb.length <= 0">Tidak ada obat PRB</div>
+        <div v-if="filterObatPrb?.length <= 0">Tidak ada obat PRB</div>
       </div>
 
       <div class="col-12">
@@ -196,7 +196,7 @@ function colorFlag (flag) {
 }
 
 const onFilterDiagnosa = async (val, update, abort) => {
-  // if (val.length < 1) {
+  // if (val?.length < 1) {
   //   abort()
   //   return
   // }
@@ -298,7 +298,7 @@ function simpan () {
   store.saveRujukBalik(props?.pasien)
 
   // if (props?.pasien?.groups === '1') {
-  //   // if (filterObatPrbBelum.value.length <= 0) {
+  //   // if (filterObatPrbBelum.value?.length <= 0) {
   //   //   Dialog.create({
   //   //     title: 'Konfirmasi',
   //   //     message: 'Obat belum selesai, apakah akan dilanjutkan?',

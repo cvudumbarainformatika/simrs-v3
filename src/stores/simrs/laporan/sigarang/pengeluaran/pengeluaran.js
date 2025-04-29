@@ -65,18 +65,18 @@ export const useLaporanSigarangPengeluaranStore = defineStore('laporan_sigarang_
     mapingitem(val) {
       const temp = val ?? []
 
-      if (temp.length) {
+      if (temp?.length) {
         temp.forEach(item => {
           item.jumlah = 0
           item.jumlah_distribusi = 0
           item.jumlah_disetujui = 0
           item.satuan = item.satuan?.nama
-          if (item.detail_permintaanruangan.length) {
+          if (item.detail_permintaanruangan?.length) {
             item.jumlah = item.detail_permintaanruangan.map(m => m.jumlah).reduce((a, b) => a + b, 0)
             item.jumlah_disetujui = item.detail_permintaanruangan.map(m => m.jumlah_disetujui).reduce((a, b) => a + b, 0)
             item.jumlah_distribusi = item.detail_permintaanruangan.map(m => m.jumlah_distribusi).reduce((a, b) => a + b, 0)
           }
-          if (item.detail_distribusi_langsung.length) {
+          if (item.detail_distribusi_langsung?.length) {
             item.jumlah_distribusi = item.detail_distribusi_langsung.map(m => m.jumlah_distribusi).reduce((a, b) => a + b, 0)
             item.jumlah_disetujui = item.jumlah_distribusi
             item.jumlah = item.jumlah_distribusi
@@ -98,7 +98,7 @@ export const useLaporanSigarangPengeluaranStore = defineStore('laporan_sigarang_
           this.mapingitem(resp.data.data)
           // this.items = resp.data.data ?? []
           // console.log('type', typeof this.items)
-          // if (this.items.length) {
+          // if (this.items?.length) {
           //   this.total = this.items.map(a => {
           //     if (a.jumlah_distribusi > 0) {
           //       return a.jumlah_distribusi

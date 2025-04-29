@@ -56,7 +56,7 @@
         <q-card-section class="q-pa-none ">
           <div class="row q-pa-md q-col-gutter-sm">
             <app-autocomplete
-              v-if="pendaftaran.jnsSistemBayars.length > 0"
+              v-if="pendaftaran.jnsSistemBayars?.length > 0"
               ref="refJnsSistemBayar"
               v-model="store.form.jnsBayar"
               label="Pilih Sistem Bayar"
@@ -82,7 +82,7 @@
               :rules="[val => (!!val) || 'Harap diisi',]"
             />
             <app-autocomplete
-              v-if="pendaftaran.kamars.length > 0"
+              v-if="pendaftaran.kamars?.length > 0"
               ref="refHakRuang"
               v-model="store.form.hakruang"
               label="Hak Ruang"
@@ -157,7 +157,7 @@
               :disable="pendaftaran.loadingShowKamar"
               label="NO BED"
               option-value="rs2"
-              :option-label="opt=> Object(opt) === opt && 'rs2' in opt ? `${opt.rs2}  -  ${opt.pasien.length ? 'Terisi' : 'Kosong'}` : '- Null -'"
+              :option-label="opt=> Object(opt) === opt && 'rs2' in opt ? `${opt.rs2}  -  ${opt.pasien?.length ? 'Terisi' : 'Kosong'}` : '- Null -'"
               map-options
               emit-value
               :rules="[

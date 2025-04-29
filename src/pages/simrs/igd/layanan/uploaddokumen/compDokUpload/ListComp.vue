@@ -61,7 +61,7 @@ const emits = defineEmits(['hapus', 'edit', 'preview'])
 
 const getImg = (file) => {
   const spl = file.split('.')
-  const ext = spl[spl.length - 1]
+  const ext = spl[spl?.length - 1]
   // console.log(ext)
 
   if (ext === 'pdf') {

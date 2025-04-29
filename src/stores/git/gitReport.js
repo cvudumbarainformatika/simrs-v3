@@ -98,7 +98,7 @@ export const useGitReportStore = defineStore('git-report', {
             url: commit.html_url,
             additions: detailResponse.data.stats.additions,
             deletions: detailResponse.data.stats.deletions,
-            files: detailResponse.data.files.length
+            files: detailResponse.data.files?.length
           }
         })
 
@@ -114,7 +114,7 @@ export const useGitReportStore = defineStore('git-report', {
           )
 
           // Check if we got valid data
-          if (statsResponse.data && statsResponse.data.length > 0) {
+          if (statsResponse.data && statsResponse.data?.length > 0) {
             break
           }
 
@@ -139,7 +139,7 @@ export const useGitReportStore = defineStore('git-report', {
         })) : []
 
         // If still no contributors data after retries, try fallback method
-        if (this.contributors.length === 0) {
+        if (this.contributors?.length === 0) {
           // Get unique contributors from commits
           const uniqueContributors = new Map()
 

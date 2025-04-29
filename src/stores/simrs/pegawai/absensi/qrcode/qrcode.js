@@ -26,7 +26,7 @@ export const useQrCodeStore = defineStore('qr_code_store', {
           .then(resp => {
             this.loading = false
             // console.log(resp)
-            if (Object.keys(resp.data).length) {
+            if (Object.keys(resp.data)?.length) {
               this.newQr = resp.data.code
               resolve('has data')
             } else {

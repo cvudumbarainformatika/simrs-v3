@@ -23,7 +23,7 @@ export const useMasterKelompokRKOForm = defineStore('master_KelompokRKO_form', {
         'namaobat',
         'kode'
       ]
-      for (let i = 0; i < columns.length; i++) {
+      for (let i = 0; i < columns?.length; i++) {
         this.setForm(columns[i], null)
       }
       // this.setForm('isi', 1)

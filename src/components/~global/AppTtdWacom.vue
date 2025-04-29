@@ -238,7 +238,7 @@ function tabletDemo () {
       return WacomGSS.STU.getUsbDevices()
     })
     .then((message) => {
-      if (message === null || message.length === 0) {
+      if (message === null || message?.length === 0) {
         throw new Error('No STU devices found')
       }
       // console.log('received 1: ', JSON.stringify(message))
@@ -510,7 +510,7 @@ function drawButtons () {
   ctx.value.font = '20px Arial'
 
   // Draw the buttons
-  for (let i = 0; i < MBTNS.value.length; ++i) {
+  for (let i = 0; i < MBTNS.value?.length; ++i) {
     // if (useColor)
     // // console.log('for draw', MBTNS.value[i].Bounds.width)
     // eslint-disable-next-line no-lone-blocks
@@ -608,7 +608,7 @@ function processButtons (point, inCanvas) {
   const isDown2 = (ISDOWN.value ? !(point.pressure <= INKTHRESHOLD.value.offPressureMark) : (point.pressure > INKTHRESHOLD.value.onPressureMark))
 
   let btn = -1
-  for (let i = 0; i < MBTNS.value.length; ++i) {
+  for (let i = 0; i < MBTNS.value?.length; ++i) {
     if (MBTNS.value[i].Bounds.Contains(nextPoint)) {
       btn = i
       break
@@ -663,7 +663,7 @@ function generateImage () {
   LASTPOINT.value = { x: 0, y: 0 }
   ISDOWN.value = false
 
-  for (let i = 0; i < MPENDATA.value.length; i++) {
+  for (let i = 0; i < MPENDATA.value?.length; i++) {
     processPoint(MPENDATA.value[i], signatureCanvas, signatureCtx)
   }
   const imageUrl = signatureCanvas.toDataURL('image/jpeg')
@@ -698,7 +698,7 @@ function onCanvasClick (event) {
   const posX = event.layerX
   const posY = event.layerY
 
-  for (let i = 0; i < MBTNS.value.length; i++) {
+  for (let i = 0; i < MBTNS.value?.length; i++) {
     // console.log('event mbtns', MBTNS.value[i].Bounds.Contains(new Point(posX, posY)))
     if (MBTNS.value[i].Bounds.Contains(new Point(posX, posY))) {
       MBTNS.value[i].Click()

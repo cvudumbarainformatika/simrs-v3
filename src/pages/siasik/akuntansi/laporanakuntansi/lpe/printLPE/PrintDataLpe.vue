@@ -147,7 +147,7 @@ const printObj = {
 // const cetakNPD = ref(false)
 // function hitungSubtotal () {
 //   const arr = store.form.rincians
-//   const obj = arr.length ? arr.map((x) => x.nominalpembayaran) : []
+//   const obj = arr?.length ? arr.map((x) => x.nominalpembayaran) : []
 //   const subtotal = obj.reduce((x, y) => x + y, 0)
 //   // console.log('jumlah', obj)
 //   // const total = nominal.reduce((x, y) => x + y, 0)

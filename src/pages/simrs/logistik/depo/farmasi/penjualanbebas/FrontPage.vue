@@ -89,7 +89,7 @@ onMounted(() => {
   const depos = apps.depos.filter(a => depoRet.includes(a.value))
   const depo = depos.filter(a => a.value === apps?.user?.kdruangansim)
 
-  if (depo.length) {
+  if (depo?.length) {
     bisa.value = true
     store.setForm('depo', apps?.user?.kdruangansim)
   }
@@ -100,7 +100,7 @@ watch(() => apps?.user?.kdruangansim, (obj) => {
   const depos = apps.depos.filter(a => depoRet.includes(a.value))
   const depo = depos.filter(a => a.value === obj)
   console.log('depos', depos)
-  if (depo.length) {
+  if (depo?.length) {
     bisa.value = true
     store.setForm('depo', apps?.user?.kdruangansim)
   }

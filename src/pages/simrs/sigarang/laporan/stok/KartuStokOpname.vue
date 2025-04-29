@@ -141,7 +141,7 @@
         <!-- stok awal -->
         <!-- {{ data.stok_awal }} -->
         <div
-          v-if="!data.stok_awal.length"
+          v-if="!data.stok_awal?.length"
           class="row fit no-wrap items-center q-mb-sm q-col-gutter-sm"
         >
           <div class="col-2">
@@ -164,7 +164,7 @@
           </div>
         </div>
         <div
-          v-if="data.stok_awal.length"
+          v-if="data.stok_awal?.length"
         >
           <div
             v-for="(awal,i) in data.stok_awal"
@@ -229,7 +229,7 @@
         <!-- distribusi depo -->
 
         <div
-          v-if="data.detail_distribusi_depo.length"
+          v-if="data.detail_distribusi_depo?.length"
         >
           <div
             v-for="(dist,i) in data.detail_distribusi_depo"
@@ -267,7 +267,7 @@
           </div>
         </div>
         <div
-          v-if="!data.detail_distribusi_depo.length"
+          v-if="!data.detail_distribusi_depo?.length"
           class="row fit no-wrap items-center q-mb-sm q-col-gutter-sm"
         >
           <div class="col-2">
@@ -292,7 +292,7 @@
 
         <!-- permintaan ruanagan -->
         <div
-          v-if="data.detail_permintaanruangan.length"
+          v-if="data.detail_permintaanruangan?.length"
         >
           <div
             v-for="(minta,i) in data.detail_permintaanruangan"
@@ -335,7 +335,7 @@
           </div>
         </div>
         <div
-          v-if="!data.detail_permintaanruangan.length"
+          v-if="!data.detail_permintaanruangan?.length"
           class="row fit no-wrap items-center q-mb-sm q-col-gutter-sm"
         >
           <div class="col-2">

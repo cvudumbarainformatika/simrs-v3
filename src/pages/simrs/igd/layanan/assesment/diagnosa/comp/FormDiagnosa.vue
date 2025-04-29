@@ -302,7 +302,7 @@ onMounted(() => {
 })
 
 function filterFn (val, update, abort) {
-  if (val.length < 1) {
+  if (val?.length < 1) {
     abort()
     return
   }
@@ -344,22 +344,22 @@ function kasusDiUbah (val) {
 function ganti (val) {
   const arr = store.listDiagnosa
   // const arr2 = props.pasien?.diagnosa
-  listDiagnosa.value = arr.length ? arr : []
-  // if (val === 'Baru' && arr2.length === 0) {
-  //   // listDiagnosa.value = arr.length ? arr.filter(x => !x.kode.toString().toLowerCase().includes('z')) : []
-  //   listDiagnosa.value = arr.length ? arr : []
+  listDiagnosa.value = arr?.length ? arr : []
+  // if (val === 'Baru' && arr2?.length === 0) {
+  //   // listDiagnosa.value = arr?.length ? arr.filter(x => !x.kode.toString().toLowerCase().includes('z')) : []
+  //   listDiagnosa.value = arr?.length ? arr : []
   // }
-  // else if (val === 'Baru' && arr2.length > 0) {
-  //   // listDiagnosa.value = arr.length ? arr.filter(x => x.kode.toString().toLowerCase().includes('z')) : []
-  //   listDiagnosa.value = arr.length ? arr : []
+  // else if (val === 'Baru' && arr2?.length > 0) {
+  //   // listDiagnosa.value = arr?.length ? arr.filter(x => x.kode.toString().toLowerCase().includes('z')) : []
+  //   listDiagnosa.value = arr?.length ? arr : []
   // }
-  // else if (val === 'Lama' && arr2.length === 0) {
-  //   listDiagnosa.value = arr.length ? arr.filter(x => x.kode.toString().toLowerCase().includes('z')) : []
+  // else if (val === 'Lama' && arr2?.length === 0) {
+  //   listDiagnosa.value = arr?.length ? arr.filter(x => x.kode.toString().toLowerCase().includes('z')) : []
   // }
-  // else if (val === 'Lama' && arr2.length > 0) {
-  //   listDiagnosa.value = arr.length ? arr.filter(x => !x.kode.toString().toLowerCase().includes('z')) : []
+  // else if (val === 'Lama' && arr2?.length > 0) {
+  //   listDiagnosa.value = arr?.length ? arr.filter(x => !x.kode.toString().toLowerCase().includes('z')) : []
   // }
-  // arr2.length ? store.setFormDianosa('tipediagnosa', 'Awal') : store.setFormDianosa('tipediagnosa', 'Primer')
+  // arr2?.length ? store.setFormDianosa('tipediagnosa', 'Awal') : store.setFormDianosa('tipediagnosa', 'Primer')
 }
 
 const tipediagnosa = ref(['Awal', 'Primer', 'Sekunder'])

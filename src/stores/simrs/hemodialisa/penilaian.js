@@ -117,10 +117,10 @@ export const usePenilaianHemodialisaStore = defineStore('penilaian-hemodialisa-s
       for (let i = 0; i < this.barthels?.form?.length; i++) {
         const el = this.barthels.form[i]
         if (data?.barthel) {
-          formBarthel[el.kode] = el?.categories?.find(item => item.skor === data?.barthel[el.kode]?.skor) ?? el.categories[el.categories.length - 1] ?? null
+          formBarthel[el.kode] = el?.categories?.find(item => item.skor === data?.barthel[el.kode]?.skor) ?? el.categories[el.categories?.length - 1] ?? null
         }
         else {
-          formBarthel[el.kode] = el.categories[el.categories.length - 1] ?? null
+          formBarthel[el.kode] = el.categories[el.categories?.length - 1] ?? null
         }
       }
       // formBarthel['kode'] = usia
@@ -131,7 +131,7 @@ export const usePenilaianHemodialisaStore = defineStore('penilaian-hemodialisa-s
       for (let i = 0; i < this.nortons?.form?.length; i++) {
         const el = this.nortons.form[i]
         formNorton[el.kode] = el.categories[0]
-        // this.formNorton = { ...this.formNorton, [el?.kode]: el.categories[el.categories.length - 1] }
+        // this.formNorton = { ...this.formNorton, [el?.kode]: el.categories[el.categories?.length - 1] }
       }
       this.formNorton = formNorton
 
@@ -163,7 +163,7 @@ export const usePenilaianHemodialisaStore = defineStore('penilaian-hemodialisa-s
             formHumpty.kelamin = el.categories?.find(x => x?.label === pasien?.kelamin) ?? null
           }
           else {
-            formHumpty[el.kode] = el.categories[el.categories.length - 1] ?? null
+            formHumpty[el.kode] = el.categories[el.categories?.length - 1] ?? null
           }
         }
       }
@@ -182,8 +182,8 @@ export const usePenilaianHemodialisaStore = defineStore('penilaian-hemodialisa-s
       const formOntario = {}
       for (let i = 0; i < this.ontarios?.form?.length; i++) {
         const el = this.ontarios.form[i]
-        if (el.submenu.length) {
-          for (let n = 0; n < el.submenu.length; n++) {
+        if (el.submenu?.length) {
+          for (let n = 0; n < el.submenu?.length; n++) {
             const sub = el.submenu[n]
             formOntario[sub.kode] = sub.categories?.find(x => x?.skor === 0)
           }
@@ -492,7 +492,7 @@ export const usePenilaianHemodialisaStore = defineStore('penilaian-hemodialisa-s
           pengunjung.deleteInjectanNull2(pasien?.noreg, 'penilaian')
           pengunjung.injectDataArray(pasien?.noreg, result, 'penilaian')
 
-          if (result.length) this.PISAH_DATA_RANAP_IGD(result, pasien)
+          if (result?.length) this.PISAH_DATA_RANAP_IGD(result, pasien)
         }
         this.loadingSave = false
       }
@@ -518,7 +518,7 @@ export const usePenilaianHemodialisaStore = defineStore('penilaian-hemodialisa-s
       // console.log('items', this.items)
 
 
-      const form = ranap.length ? ranap[0] : null
+      const form = ranap?.length ? ranap[0] : null
       // if (form) {
       //   pengunjung.injectDataPasien(pasien?.noreg, form, 'penilaian')
       //   pengunjung.deleteInjectanNull(pasien?.noreg, 'penilaian')

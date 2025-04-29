@@ -34,13 +34,13 @@ export const useSimrsLaporanSigarangPenerimaanSimperdaRinciStore = defineStore('
       // kode108
       // kode_barang
       this.items = []
-      const adaisi = val.filter(a => a.barangrs.length)
-      if (adaisi.length) {
+      const adaisi = val.filter(a => a.barangrs?.length)
+      if (adaisi?.length) {
         adaisi.forEach(isi => {
           // ambil kode 108
           const satuNol = isi.barangrs.map(rin => rin.kode_108)
           isi.kode108 = []
-          if (satuNol.length) {
+          if (satuNol?.length) {
             // filter duplicated
             // console.log('satunol', satuNol)
             const filtSatu = filterDuplicateArrays(satuNol)
@@ -63,9 +63,9 @@ export const useSimrsLaporanSigarangPenerimaanSimperdaRinciStore = defineStore('
           // console.log('subt', subt)
         })
         const lv4 = val.filter(a => a.kode === '5.1.02.01')
-        if (lv4.length) this.level4 = lv4[0]
+        if (lv4?.length) this.level4 = lv4[0]
         const lv5 = val.filter(a => a.kode === '5.1.02.01.01')
-        if (lv5.length) this.level5 = lv5[0]
+        if (lv5?.length) this.level5 = lv5[0]
         console.log('lv4', lv4)
         console.log('lv5', lv5)
         const jml = adaisi.map(rin => rin.subtotal).reduce((a, b) => a + b, 0)

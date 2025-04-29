@@ -89,7 +89,7 @@
     </div>
     <q-separator class="q-my-sm" />
     <div
-      v-if="store.reseprinci.length"
+      v-if="store.reseprinci?.length"
     >
       <div
         v-for="(res,i) in store.reseprinci"
@@ -133,7 +133,7 @@ function cariObat (val) {
     groups: store?.pasien?.groups,
     kdruang: apps?.user?.kdruangansim
   }
-  if (store.obats.length) {
+  if (store.obats?.length) {
     options.value = store.obats.filter(ob => ob.namaobat.toLowerCase().includes(val.toLowerCase()))
   }
   else {
@@ -149,7 +149,7 @@ function cariObat (val) {
 function setJumlah (evt, key) {
   const inc = evt.includes('.')
   const ind = evt.indexOf('.')
-  const panj = evt.length
+  const panj = evt?.length
   const nilai = isNaN(parseFloat(evt)) ? 0 : (inc && (ind === (panj - 1)) ? evt : parseFloat(evt))
   store.setForm(key, nilai)
   if (key === 'jumlah') {

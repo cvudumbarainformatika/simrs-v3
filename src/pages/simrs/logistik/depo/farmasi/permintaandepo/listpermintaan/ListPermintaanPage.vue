@@ -75,7 +75,7 @@
         {{ row?.menuju?.nama }}
       </template>
       <template #expand="{ row }">
-        <div v-if="row.permintaanrinci.length">
+        <div v-if="row.permintaanrinci?.length">
           <div class="row items-center text-weight-bold">
             <div class="col-4">
               Obat

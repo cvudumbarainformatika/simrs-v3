@@ -391,8 +391,8 @@ const { data } = useCppt(props?.pasien)
 
 const listFilterredByDate = computed(() => {
   const arr = data?.cppt
-  const target = arr.length ? arr?.map(x => dateCppt(x?.tgl)) : []
-  const uniq = target.length ? [...new Set(target)] : []
+  const target = arr?.length ? arr?.map(x => dateCppt(x?.tgl)) : []
+  const uniq = target?.length ? [...new Set(target)] : []
   return uniq
 })
 

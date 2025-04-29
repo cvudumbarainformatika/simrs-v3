@@ -59,7 +59,7 @@ export const useDistribusiDepoStore = defineStore('distribusi_depo_store', {
         'kode_depo'
       ]
 
-      for (let i = 0; i < columns.length; i++) {
+      for (let i = 0; i < columns?.length; i++) {
         this.setForm(columns[i], null)
       }
       this.form.details = []
@@ -207,7 +207,7 @@ export const useDistribusiDepoStore = defineStore('distribusi_depo_store', {
       this.barangrHasStoks = []
 
       // console.log('Stoks', this.stoks)
-      if (this.stoks.length) {
+      if (this.stoks?.length) {
         // this.barangrses = this.stoks.filter(stok => { return stok.maping.kode_gudang === val })
         const apem = this.stoks.filter(stok => {
           if (stok.barang) {
@@ -233,7 +233,7 @@ export const useDistribusiDepoStore = defineStore('distribusi_depo_store', {
         //     return data.stok > 0
         //   })
 
-        //   if (temp.length) {
+        //   if (temp?.length) {
         //     const barang = {
         //       nama: temp[0].barang.nama,
         //       kode: temp[0].barang.kode,
@@ -253,14 +253,14 @@ export const useDistribusiDepoStore = defineStore('distribusi_depo_store', {
         }
       } else {
         setTimeout(() => {
-          if (this.stoks.length) {
+          if (this.stoks?.length) {
             this.barangrses = this.stoks.filter(stok => { return stok.barang.kode_depo === val })
             // console.log('barangrses with timeout', this.barangrses)
             const ape = this.stoks.map(stok => {
               const temp = this.barangrses.filter(data => {
                 return data.kode_rs === stok.kode_rs
               })
-              if (temp.length) {
+              if (temp?.length) {
                 const barang = {
                   nama: temp[0].barangrs.nama,
                   kode: temp[0].barangrs.kode,
@@ -345,11 +345,11 @@ export const useDistribusiDepoStore = defineStore('distribusi_depo_store', {
             this.loadingHasStok = false
             // console.log('stok', resp.data)
             this.stoks = resp.data
-            if (this.barangrses.length) {
+            if (this.barangrses?.length) {
               this.filterBarangHasStok()
             } else {
               setTimeout(() => {
-                if (this.barangrses.length) {
+                if (this.barangrses?.length) {
                   this.filterBarangHasStok()
                 }
               }, 1500)
@@ -379,7 +379,7 @@ export const useDistribusiDepoStore = defineStore('distribusi_depo_store', {
     },
     // get data mapping barang
     getMappingBarang() {
-      if (!this.mappingBarangs.length) {
+      if (!this.mappingBarangs?.length) {
         this.loading = true
         return new Promise(resolve => {
           api.get('v1/mapingbarang/mapingwith')
@@ -397,7 +397,7 @@ export const useDistribusiDepoStore = defineStore('distribusi_depo_store', {
     },
     // get data minMaxDepo
     getMinMaxDepo() {
-      if (!this.minMaxDepos.length) {
+      if (!this.minMaxDepos?.length) {
         this.loading = true
         return new Promise(resolve => {
           api.get('v1/minmaxdepostok/all')

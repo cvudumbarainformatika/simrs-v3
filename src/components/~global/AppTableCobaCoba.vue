@@ -44,7 +44,7 @@
           class="q-ml-md"
         />
         <q-btn
-          v-if="selected.length>0"
+          v-if="selected?.length>0"
           unelevated
           color="red"
           round
@@ -264,12 +264,12 @@
         </tr> -->
       </thead>
       <tbody v-if="!loading">
-        <tr v-if="!items.length > 0">
+        <tr v-if="!items?.length > 0">
           <!-- <transition
             transition-show="fade"
             transition-hide="fade"
           > -->
-          <td :colspan="rowImage === null? filterColumn.length + 2 : filterColumn.length + 3">
+          <td :colspan="rowImage === null? filterColumn?.length + 2 : filterColumn?.length + 3">
             <div
               class="flex column flex-center bg-loading-bg__table"
               style="height:300px"
@@ -362,7 +362,7 @@
                     </q-tooltip>
                   </q-btn>
                   <q-btn
-                    v-if="selected.length < 2 && adaDelete"
+                    v-if="selected?.length < 2 && adaDelete"
                     flat
                     class=""
                     size="sm"
@@ -390,7 +390,7 @@
             </td>
           </tr>
           <tr v-if="item.expand">
-            <td :colspan="filterColumn.length + 2">
+            <td :colspan="filterColumn?.length + 2">
               <slot
                 name="expand"
                 :row="item"
@@ -401,7 +401,7 @@
       </tbody>
       <tbody v-else>
         <tr>
-          <td :colspan="rowImage === null? filterColumn.length + 2 : filterColumn.length + 3">
+          <td :colspan="rowImage === null? filterColumn?.length + 2 : filterColumn?.length + 3">
             <div
               class="flex column flex-center bg-loading-bg__table"
               style="height:400px"
@@ -427,7 +427,7 @@
     </div>
     <!-- Pagination -->
     <AppPaginationTable
-      v-if="items.length > 0"
+      v-if="items?.length > 0"
       class="print-hide"
       :meta="meta"
       @first="emits('goto', 1)"
@@ -490,9 +490,9 @@ const clicked = (val, i) => {
 }
 const filterColumn = computed(() => {
   const cols = props.columns ? props.columns : []
-  if (cols.length > 0) {
+  if (cols?.length > 0) {
     const filterred = cols.filter((el) => !props.columnHide.includes(el))
-    if (selectColumn.value.length > 0) {
+    if (selectColumn.value?.length > 0) {
       const thumb = filterred.filter((el) => selectColumn.value.includes(el))
       return thumb
     }
@@ -504,7 +504,7 @@ const filterColumn = computed(() => {
 
 const filterCheckbox = computed(() => {
   const cols = props.columns ? props.columns : []
-  if (cols.length > 0) {
+  if (cols?.length > 0) {
     return cols.filter((el) => !props.columnHide.includes(el))
   }
   return cols
@@ -519,7 +519,7 @@ onMounted(() => {
 //   console.log(refCellTable.value.$el.clientHeight * props.perPage)
 })
 watch(filterCheckbox, (obk) => {
-  for (let i = 0; i < obk.length; i++) {
+  for (let i = 0; i < obk?.length; i++) {
     selectColumn.value.push(obk[i])
   }
 })
@@ -542,7 +542,7 @@ function searchEnter (evt) {
 const setCheck = (x) => {
   const arr = []
   if (x) {
-    for (let i = 0; i < props.items.length; i++) {
+    for (let i = 0; i < props.items?.length; i++) {
       arr.push(props.items[i].id)
     }
     selected.value = arr

@@ -22,7 +22,7 @@ export const usePencarianPasienStore = defineStore('pencarian_pasien_store', {
         })
         return
       }
-      if (val.length < 3) {
+      if (val?.length < 3) {
         abort()
         return
       }
@@ -37,7 +37,7 @@ export const usePencarianPasienStore = defineStore('pencarian_pasien_store', {
       update(
         () => (this.options = resp.data),
         ref => {
-          if (val !== '' && ref.options.length) {
+          if (val !== '' && ref.options?.length) {
             ref.setOptionIndex(-1)
             ref.moveOptionSelection(1, true)
           }

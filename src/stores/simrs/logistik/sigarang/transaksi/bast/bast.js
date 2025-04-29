@@ -49,12 +49,12 @@ export const useTransaksiBastStore = defineStore('transaksi_bast', {
       // console.log('pemesanan temp', temp)
       this.getNoBast().then(data => {
         const anu = data > 0 ? '-' + data : ''
-        if (temp.length > 1) {
+        if (temp?.length > 1) {
           this.setForm('no_bast', temp[0] + 'BAST' + temp[1] + anu)
         } else {
           this.setForm('no_bast', val + ' (BAST)' + anu)
         }
-        // if (temp.length > 1) {
+        // if (temp?.length > 1) {
         //   this.setForm('no_bast', temp[0] + 'BAST-' + temp[1] + anu)
         // } else {
         //   this.setForm('no_bast', pes[0].nomor + ' (BAST)' + anu)
@@ -141,7 +141,7 @@ export const useTransaksiBastStore = defineStore('transaksi_bast', {
             temp.forEach(anu => {
               // console.log('raw', anu)
               anu.checked = false
-              if (anu.penerimaan.length) {
+              if (anu.penerimaan?.length) {
                 anu.penerimaan.forEach(trm => {
                   trm.checked = false
                   trm.details.forEach(det => {
@@ -159,9 +159,9 @@ export const useTransaksiBastStore = defineStore('transaksi_bast', {
             this.pemesanans = temp.filter(s => s.penerimaan !== false)
             console.log('pemesanan', this.pemesanans)
             // const terima = resp.data
-            // if (terima.length) {
+            // if (terima?.length) {
             //   terima.forEach(anu => {
-            //     if (term.penerimaan.length) {
+            //     if (term.penerimaan?.length) {
             //       this.penerimaans = term.penerimaan.map(data => {
             //         data.checked = false
             //         // const balik = data.details.map(anu => {

@@ -62,7 +62,7 @@ export const useFisioIgd = defineStore('fisio-igd', {
 
     setNotas (array) {
       const arr = array.map(x => x.nota)
-      this.notas = arr.length ? arr : []
+      this.notas = arr?.length ? arr : []
       this.notas.push('BARU')
       this.form.nota = this.notas[0]
     },

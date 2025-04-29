@@ -489,7 +489,7 @@ const gudangSelected = (val) => {
     store.getDataTable()
   } else {
     const anu = store.gudangDepo.filter(a => a.kode === val)
-    if (anu.length) {
+    if (anu?.length) {
       namaTempat.value = anu[0].nama
     }
     store.params.search = val
@@ -512,7 +512,7 @@ const gudangCleared = () => {
 //   store.setParamsDetails('kode_rs', val.kode_rs)
 //   store.setParamsDetails('kode_ruang', val.kode_ruang)
 //   // const anu = Object.keys(val)
-//   // if (anu.length) {
+//   // if (anu?.length) {
 //   //   anu.forEach(y => {
 //   //     if (val[y] !== null || val[y] !== '') {
 //   //     }

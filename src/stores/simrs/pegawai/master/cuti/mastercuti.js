@@ -28,7 +28,7 @@ export const useMasterCutiPegawaiStore = defineStore('master_cuti_pegawai', {
     resetFORM() {
       this.form = {}
       const columns = ['nama', 'jenispegawai_id, jumlah']
-      for (let i = 0; i < columns.length; i++) {
+      for (let i = 0; i < columns?.length; i++) {
         this.setForm(columns[i], null)
       }
     },
@@ -122,7 +122,7 @@ export const useMasterCutiPegawaiStore = defineStore('master_cuti_pegawai', {
             const data = resp.data.data
             console.log('get master', resp)
             console.log('data master', data)
-            if (data.length) {
+            if (data?.length) {
               this.setColumns(data)
               this.setItems(data)
             }

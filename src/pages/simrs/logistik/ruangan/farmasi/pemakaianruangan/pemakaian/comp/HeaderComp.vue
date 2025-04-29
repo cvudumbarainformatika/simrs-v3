@@ -236,7 +236,7 @@ const search = computed({
 // eslint-disable-next-line no-unused-vars
 const checked = computed(() => {
   const ada = props.items.filter(a => a.checked === true)
-  if (ada.length) return true
+  if (ada?.length) return true
   else return false
 })
 onMounted(() => {

@@ -232,7 +232,7 @@
     <q-separator />
     <!-- details -->
     <div
-      v-if="store.details.length && !store.loading"
+      v-if="store.details?.length && !store.loading"
       class="bg-grey-2"
     >
       <div
@@ -569,7 +569,7 @@
     <div v-if="store.loading">
       <app-loading />
     </div>
-    <div v-if="!store.details.length && !store.loading">
+    <div v-if="!store.details?.length && !store.loading">
       <app-no-selected-page
         color="primary"
         icon="icon-mat-receipt_long"
@@ -693,7 +693,7 @@ let isiPrev = 0
 function setHargaNetNew (evt, det, key) {
   const inc = evt.includes('.')
   const ind = evt.indexOf('.')
-  const panj = evt.length
+  const panj = evt?.length
   const nilai = isNaN(parseFloat(evt)) ? 0 : (inc && (ind === (panj - 2)) ? evt : parseFloat(evt))
   det[key] = nilai
   if (key === 'isi' && nilai <= 0) return
@@ -940,7 +940,7 @@ const gudang = computed(() => {
   let gud = null
   if (apps.user.kdruangansim !== '') {
     const anu = store.gudangs.filter(a => a.value === apps.user.kdruangansim)
-    if (anu.length) {
+    if (anu?.length) {
       gud = anu[0]
       store.setForm('kdruang', gud.value)
       store.setForm('gudang', gud.value)

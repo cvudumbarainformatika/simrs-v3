@@ -259,7 +259,7 @@
         </div>
       </template>
       <!-- <template #expand="{ row }">
-        <div v-if="row.permintaanrinci.length">
+        <div v-if="row.permintaanrinci?.length">
           <div class="row items-center text-weight-bold">
             <div class="col-3 text-center">
               Obat
@@ -355,7 +355,7 @@
                   </div>
                   <div class="">
                     <div v-if="rin.stokreal">
-                      <div v-if="rin.stokreal.length">
+                      <div v-if="rin.stokreal?.length">
                         {{ rin.stokreal.filter(x => x.kdruang === row.dari).map(a => parseFloat(a.stokdendiri)).reduce((a,
                                                                                                                         b) => a + b, 0) }}
                       </div>
@@ -511,7 +511,7 @@ const store = useDistribusiPermintaanDepoStore()
 function depo (val) {
   const temp = store.depos.filter(a => a.value === val)
   // console.log('temp', temp)
-  if (temp.length) {
+  if (temp?.length) {
     return temp[0].nama
   }
   else {
@@ -521,7 +521,7 @@ function depo (val) {
 // function gudang (val) {
 //   const temp = store.gudangs.filter(a => a.value === val)
 //   // console.log('temp', temp)
-//   if (temp.length) {
+//   if (temp?.length) {
 //     return temp[0].nama
 //   } else {
 //     return val

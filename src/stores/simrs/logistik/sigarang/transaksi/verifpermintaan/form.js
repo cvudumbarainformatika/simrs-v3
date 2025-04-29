@@ -102,7 +102,7 @@ export const useVerifPermintaanRuangan = defineStore('verif_permintaan_ruangan',
         //   items: this.permintaan.details
         // }
 
-        this.mapGudang.gudang = apem.length ? titleCase(apem[0].nama) : '-'
+        this.mapGudang.gudang = apem?.length ? titleCase(apem[0].nama) : '-'
         this.mapGudang.items = this.permintaan.details
 
         // const mapKey = Object.keys(this.permintaan.gudang)
@@ -156,7 +156,7 @@ export const useVerifPermintaanRuangan = defineStore('verif_permintaan_ruangan',
             this.loadingPermintaan = false
             // console.log('permintaan ruangan', resp)
             const permintaanWithDetail = resp.data.filter(minta => {
-              return minta.details.length > 0
+              return minta.details?.length > 0
             })
             this.permintaans = permintaanWithDetail
             resolve(resp)

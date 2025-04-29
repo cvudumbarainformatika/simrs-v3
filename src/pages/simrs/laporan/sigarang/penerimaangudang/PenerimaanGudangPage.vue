@@ -275,7 +275,7 @@
         </td>
         <td>
           <div
-            v-if="store.items.length"
+            v-if="store.items?.length"
             class="text-right f-12"
           >
             {{ formatRp(store.total) }}

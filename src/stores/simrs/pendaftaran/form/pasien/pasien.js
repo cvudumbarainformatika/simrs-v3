@@ -163,7 +163,7 @@ export const usePendaftaranPasienStore = defineStore('pendaftaran_pasien', {
       console.log('antrian ', val)
       if (val) {
         const regex = /^\d+$/
-        if (val.length > 1) {
+        if (val?.length > 1) {
           const txt = val.split('')
           let txtTr = 0
           txt.forEach((anu, i) => {
@@ -171,7 +171,7 @@ export const usePendaftaranPasienStore = defineStore('pendaftaran_pasien', {
               txtTr += 1
             }
           })
-          const temp = parseInt(val.slice(txtTr, val.length))
+          const temp = parseInt(val.slice(txtTr, val?.length))
           this.setForm('angkaantrean', temp)
           this.setForm('noantrian', val)
         }
@@ -567,10 +567,10 @@ export const usePendaftaranPasienStore = defineStore('pendaftaran_pasien', {
         if (this.form.kelurahandomisili) delete this.form.kelurahandomisili
         if (this.form.kodekelurahandomisili) delete this.form.kodekelurahandomisili
 
-        if (this.domisiliPropinsies.length) this.domisiliPropinsies = []
-        if (this.domisiliKabupatens.length) this.domisiliKabupatens = []
-        if (this.domisiliKecamatans.length) this.domisiliKecamatans = []
-        if (this.domisiliKelurahans.length) this.domisiliKelurahans = []
+        if (this.domisiliPropinsies?.length) this.domisiliPropinsies = []
+        if (this.domisiliKabupatens?.length) this.domisiliKabupatens = []
+        if (this.domisiliKecamatans?.length) this.domisiliKecamatans = []
+        if (this.domisiliKelurahans?.length) this.domisiliKelurahans = []
       }
       console.log('form ', this.form)
     },
@@ -611,7 +611,7 @@ export const usePendaftaranPasienStore = defineStore('pendaftaran_pasien', {
     // initial data
     getInitialData () {
       this.setTanggalLahir()
-      if (this.autocompleteStore.negaras.length) {
+      if (this.autocompleteStore.negaras?.length) {
         this.negaras = this.autocompleteStore.negaras
         this.negaraSelected('62')
       }
@@ -621,7 +621,7 @@ export const usePendaftaranPasienStore = defineStore('pendaftaran_pasien', {
         })
       }
 
-      if (this.autocompleteStore.domisiliNegaras.length) {
+      if (this.autocompleteStore.domisiliNegaras?.length) {
         this.domisiliNegaras = this.autocompleteStore.domisiliNegaras
         this.negaraDomisiliSelected('62')
       }
@@ -631,7 +631,7 @@ export const usePendaftaranPasienStore = defineStore('pendaftaran_pasien', {
         })
       }
 
-      if (this.autocompleteStore.propinsies.length) {
+      if (this.autocompleteStore.propinsies?.length) {
         this.propinsies = this.autocompleteStore.propinsies
         this.propinsiSelected('35')
         this.getKota()
@@ -643,7 +643,7 @@ export const usePendaftaranPasienStore = defineStore('pendaftaran_pasien', {
         })
       }
 
-      if (this.autocompleteStore.domisiliPropinsies.length) {
+      if (this.autocompleteStore.domisiliPropinsies?.length) {
         this.domisiliPropinsies = this.autocompleteStore.domisiliPropinsies
         this.propinsiDomisiliSelected('35')
         this.getKotaDomisili()
@@ -655,7 +655,7 @@ export const usePendaftaranPasienStore = defineStore('pendaftaran_pasien', {
         })
       }
 
-      if (this.autocompleteStore.agamas.length) {
+      if (this.autocompleteStore.agamas?.length) {
         this.domisiliNegaras = this.autocompleteStore.domisiliNegaras
         this.agamas = this.autocompleteStore.agamas
       }
@@ -663,7 +663,7 @@ export const usePendaftaranPasienStore = defineStore('pendaftaran_pasien', {
         this.getAgama()
       }
 
-      if (this.autocompleteStore.sapaans.length) {
+      if (this.autocompleteStore.sapaans?.length) {
         this.domisiliNegaras = this.autocompleteStore.domisiliNegaras
         this.sapaans = this.autocompleteStore.sapaans
       }
@@ -671,40 +671,40 @@ export const usePendaftaranPasienStore = defineStore('pendaftaran_pasien', {
         this.getSapaan()
       }
 
-      if (this.autocompleteStore.kelamins.length) {
+      if (this.autocompleteStore.kelamins?.length) {
         this.kelamins = this.autocompleteStore.kelamins
       }
       else {
         this.getKelamin()
       }
 
-      if (this.autocompleteStore.pendidikans.length) {
+      if (this.autocompleteStore.pendidikans?.length) {
         this.pendidikans = this.autocompleteStore.pendidikans
       }
       else {
         this.getPendidikan()
       }
 
-      if (this.autocompleteStore.statuspernikahans.length) {
+      if (this.autocompleteStore.statuspernikahans?.length) {
         this.statuspernikahans = this.autocompleteStore.statuspernikahans
       }
       else {
         this.getStatusPernikahan()
       }
 
-      if (this.autocompleteStore.pekerjaans.length) {
+      if (this.autocompleteStore.pekerjaans?.length) {
         this.pekerjaans = this.autocompleteStore.pekerjaans
       }
       else {
         this.getPekerjaan()
       }
-      if (this.autocompleteStore.bahasas.length) {
+      if (this.autocompleteStore.bahasas?.length) {
         this.bahasas = this.autocompleteStore.bahasas
       }
       else {
         this.getBahasa()
       }
-      if (this.autocompleteStore.hambatans.length) {
+      if (this.autocompleteStore.hambatans?.length) {
         this.hambatans = this.autocompleteStore.hambatans
       }
       else {
@@ -940,7 +940,7 @@ export const usePendaftaranPasienStore = defineStore('pendaftaran_pasien', {
           this.loadingHambatan = false
           console.log('hambatan', resp.data)
           this.hambatans = resp.data
-          if (this.hambatans.length) {
+          if (this.hambatans?.length) {
             this.hambatans.forEach(a => {
               a.kdhambatan = String(a.id)
             })
@@ -992,7 +992,7 @@ export const usePendaftaranPasienStore = defineStore('pendaftaran_pasien', {
             console.log('tgl lahir ', this.form.tgllahir)
             if (!this.form.tgllahir || this.form.tgllahir === '1900-01-01') {
               const lahir = hasil.peserta.tglLahir.split('-')
-              if (lahir.length) {
+              if (lahir?.length) {
                 this.tanggal.tahun = lahir[0] ? lahir[0] : '1900'
                 this.tanggal.bulan = lahir[1] ? lahir[1] : '01'
                 this.tanggal.hari = lahir[2] ? lahir[2] : '01'

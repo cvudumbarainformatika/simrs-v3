@@ -46,28 +46,28 @@ export const useRegistrasiPasienHomeCareStore = defineStore('registrasi_pasien_h
       // this.getPoli()
       // this.getJenisKarcis()
 
-      if (this.autocompleteStore.asalrujukans.length) {
+      if (this.autocompleteStore.asalrujukans?.length) {
         this.asalrujukans = this.autocompleteStore.asalrujukans
       }
       else {
         this.getAsalRujukan()
       }
 
-      if (this.autocompleteStore.sistembayars1.length) {
+      if (this.autocompleteStore.sistembayars1?.length) {
         this.sistembayars1 = this.autocompleteStore.sistembayars1
       }
       else {
         this.getSistemBayar()
       }
 
-      if (this.autocompleteStore.polis.length) {
+      if (this.autocompleteStore.polis?.length) {
         this.polis = this.autocompleteStore.polis
       }
       else {
         this.getPoli()
       }
 
-      if (this.autocompleteStore.jenisKarcises.length) {
+      if (this.autocompleteStore.jenisKarcises?.length) {
         this.jenisKarcises = this.autocompleteStore.jenisKarcises
       }
       else {
@@ -81,7 +81,7 @@ export const useRegistrasiPasienHomeCareStore = defineStore('registrasi_pasien_h
       await api.post('v1/simrs/bridgingbpjs/pendaftaran/dpjpbpjs', this.paramDpjp)
         .then(resp => {
           this.loading = false
-          if (resp.data.result.list.length) {
+          if (resp.data.result.list?.length) {
             const data = resp.data.result.list
             data.forEach(anu => {
               anu.dpjp = anu.kode
@@ -104,7 +104,7 @@ export const useRegistrasiPasienHomeCareStore = defineStore('registrasi_pasien_h
           this.loading = false
           this.kasrcispoli = resp.data
           const temp = Object.keys(resp.data)
-          if (temp.length) {
+          if (temp?.length) {
             temp.forEach(key => {
               this.setForm(key, resp.data[key])
             })
@@ -161,7 +161,7 @@ export const useRegistrasiPasienHomeCareStore = defineStore('registrasi_pasien_h
           this.loading = false
           this.sistembayars = resp.data
           console.log('sistem bayar', resp.data)
-          if (this.sistembayars.length === 1) {
+          if (this.sistembayars?.length === 1) {
             this.setForm('kodesistembayar', this.sistembayars[0].rs2)
             this.display.rs2 = this.sistembayars[0].rs2
           }

@@ -74,7 +74,7 @@
                     <b>{{ saldoAwal }}</b>
                   </td>
                 </tr>
-                <template v-if="bentukArrBaru.length">
+                <template v-if="bentukArrBaru?.length">
                   <tr v-for="(rinci, n) in bentukArrBaru" :key="rinci">
                     <td
                       :class="rinci?.masuk === 0 ? rinci?.keluar === 0 ? 'text-yellow-9' : 'text-negative' : 'text-primary'">
@@ -100,7 +100,7 @@
                     </td>
                     <td class="text-end">
                       <div style="min-height: 30px;" class="f-14">
-                        <b>{{ formatDouble((cariHasilAkhirArray(bentukArrBaru.length) ?? 0), 1) }}</b>
+                        <b>{{ formatDouble((cariHasilAkhirArray(bentukArrBaru?.length) ?? 0), 1) }}</b>
                       </div>
                     </td>
                   </tr>
@@ -362,8 +362,8 @@ const bentukArrBaru = computed(() => {
     resepkeluar, resepracikankeluar, returresep, penyesuaian,
     distribusi, returdistribusi, barangrusak, returgudang, returdepo, returpbf, pengembalian].flat(Infinity)
 
-  // const hasil = gabung.length ? gabung?.filter(x => x.masuk !== x.keluar)?.sort((a, b) => new Date(a.tgl) - new Date(b.tgl)) : [] // ini jika yg aneh tdk dimasukkan
-  const hasil = gabung.length ? gabung?.sort((a, b) => new Date(a.tgl) - new Date(b.tgl)) : []
+  // const hasil = gabung?.length ? gabung?.filter(x => x.masuk !== x.keluar)?.sort((a, b) => new Date(a.tgl) - new Date(b.tgl)) : [] // ini jika yg aneh tdk dimasukkan
+  const hasil = gabung?.length ? gabung?.sort((a, b) => new Date(a.tgl) - new Date(b.tgl)) : []
 
   return hasil
 })
@@ -387,8 +387,8 @@ function carigudang (val) {
 function cariHasilAkhirArray (i) {
   // const total = 0
   const arr = bentukArrBaru.value ?? []
-  if (arr.length) {
-    // for (let i = 0; i < arr.length; i++) {
+  if (arr?.length) {
+    // for (let i = 0; i < arr?.length; i++) {
     // if (i === 0) {
     //   total = arr[0]?.penerimaan - arr[0]?.pengeluaran
     //   arr[0].total = total

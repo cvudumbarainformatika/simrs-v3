@@ -24,7 +24,7 @@
           />
           <div class="q-px-md q-py-sm">
             <div class="text-subtitle1 text-weight-bold">
-              {{ filterred.length }}
+              {{ filterred?.length }}
             </div>
           </div>
         </div>
@@ -39,7 +39,7 @@
         />
         <div class="q-px-md q-py-sm">
           <div class="text-subtitle1 text-weight-bold">
-            {{ filterred.length }}
+            {{ filterred?.length }}
           </div>
         </div>
       </div>

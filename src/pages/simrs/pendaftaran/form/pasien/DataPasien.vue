@@ -115,11 +115,11 @@
                 <app-input ref="refNoRM" v-model="store.form.norm" label="Nomor RM" autofocus outlined
                   :disable="store.form.barulama !== 'baru'" :loading="store.loading || store.loadingNorm" :rules="[
                     val => (!!val) || 'Harap diisi',
-                    val => val ? val.length > 5 : !val || 'Harus 6 Karakter',
+                    val => val ? val?.length > 5 : !val || 'Harus 6 Karakter',
                     val => regex.test(val) || 'Hanya angka'
                   ]" @keyup.enter="inputNoRmSelesai" @update:model-value="updateValNoRM"
                   @blur="store.cekDulu($event, 'norm')" />
-                <!-- val => val?val.length < 7:!val || 'Harus 6 Karakter', -->
+                <!-- val => val?val?.length < 7:!val || 'Harus 6 Karakter', -->
                 <div>
                   Kewarganegaraan :
                   <q-radio v-for="item in store.kewarganegaran" :key="item" v-model="store.form.kewarganegaraan"
@@ -133,11 +133,11 @@
                 <div class="col-12">
                   <app-input ref="refKtp" v-model="store.form.nik" label="Nomor KTP" outlined :right-icon="!!bpjs"
                     right-icon-name="icon-mat-dvr" :loading="store.loadingNik"
-                    :disable="store.form.barulama !== 'baru' && !store.edit && (!store.form.nik ? false : store.form.nik.length >= 16)"
+                    :disable="store.form.barulama !== 'baru' && !store.edit && (!store.form.nik ? false : store.form.nik?.length >= 16)"
                     right-icon-tooltip="Cek BPJS" :rules="[
                       val => (pelayanan === 'igd' ? true : (!store.form.nomoridentitaslain && !pelayanan ? !!val : true)) || 'Harap di isi',
-                      val => (pelayanan === 'igd' ? true : ((!store.form.nomoridentitaslain && val.length > 0)) ? regex.test(val) : true) || 'Hanya angka',
-                      val => (pelayanan === 'igd' ? true : (!store.form.nomoridentitaslain && val.length >= 16)) || 'Minimal 16 angka',
+                      val => (pelayanan === 'igd' ? true : ((!store.form.nomoridentitaslain && val?.length > 0)) ? regex.test(val) : true) || 'Hanya angka',
+                      val => (pelayanan === 'igd' ? true : (!store.form.nomoridentitaslain && val?.length >= 16)) || 'Minimal 16 angka',
                     ]" @icon-right-click="cekBpjsbyNik" @update:model-value="cekKtpKitas"
                     @blur="store.cekDulu($event, 'nik')" />
                 </div>
@@ -150,7 +150,7 @@
                   <app-input ref="refKitas" v-model="store.form.nomoridentitaslain" label="Nomor Paspor / KITAS"
                     outlined :disable="store.form.barulama !== 'baru' && !store.edit" :rules="[
                       val => (!store.form.nik ? !!val : true) || 'Harap di isi',
-                      val => ((!store.form.nik && val.length > 0) ? regex.test(val) : true) || 'Hanya angka'
+                      val => ((!store.form.nik && val?.length > 0) ? regex.test(val) : true) || 'Hanya angka'
                     ]" @update:model-value="cekKtpKitas" />
                 </div>
               </div>
@@ -405,7 +405,7 @@
                   outlined
                   :source="store.kelurahans"
                   :loading="store.loadingSelect"
-                  :disable="!store.kelurahans.length || store.form.barulama!=='baru'"
+                  :disable="!store.kelurahans?.length || store.form.barulama!=='baru'"
                   @on-select="kelurahanSelected"
                   @clear="store.clearKelurahan"
                 /> -->
@@ -550,7 +550,7 @@
                   <app-autocomplete-new ref="refPropinsi" :model="store.wilayah.propinsi" label="Cari propinsi"
                     autocomplete="wilayah" option-value="propinsi" option-label="wilayah" outlined
                     :source="store.propinsies"
-                    :disable="!store.propinsies.length || (store.form.barulama !== 'baru' && !store.edit)"
+                    :disable="!store.propinsies?.length || (store.form.barulama !== 'baru' && !store.edit)"
                     :loading="store.loadingPropinsi" @on-select="propinsiSelected" @clear="store.clearPropinsi" />
                 </div>
               </div>
@@ -564,7 +564,7 @@
                   <app-autocomplete-new ref="refKabupaten" :model="store.wilayah.kotakabupaten"
                     label="Cari kabupaten / kota" autocomplete="wilayah" option-value="kotakabupaten"
                     option-label="wilayah" outlined :source="store.kabupatens" :loading="store.loadingKabupaten"
-                    :disable="!store.kabupatens.length || (store.form.barulama !== 'baru' && !store.edit)"
+                    :disable="!store.kabupatens?.length || (store.form.barulama !== 'baru' && !store.edit)"
                     @on-select="kabupatenSelected" @clear="store.clearKabupaten" />
                 </div>
               </div>
@@ -578,7 +578,7 @@
                   <app-autocomplete-new ref="refKecamatan" :model="store.wilayah.kecamatan.kotakabupaten"
                     label="Cari kecamatan" autocomplete="wilayah" option-value="kotakabupaten" option-label="wilayah"
                     outlined :source="store.kecamatans" :loading="store.loadingKecamatan"
-                    :disable="!store.kecamatans.length || (store.form.barulama !== 'baru' && !store.edit)"
+                    :disable="!store.kecamatans?.length || (store.form.barulama !== 'baru' && !store.edit)"
                     @on-select="kecamatanSelected" @clear="store.clearKecamatan" />
                 </div>
               </div>
@@ -592,7 +592,7 @@
                   <app-autocomplete-new ref="refKelurahan" :model="store.wilayah.kelurahan.kotakabupaten"
                     label="Cari kelurahan" autocomplete="wilayah" option-value="kotakabupaten" option-label="wilayah"
                     outlined :source="store.kelurahans" :loading="store.loadingKelurahan"
-                    :disable="!store.kelurahans.length || (store.form.barulama !== 'baru' && !store.edit)"
+                    :disable="!store.kelurahans?.length || (store.form.barulama !== 'baru' && !store.edit)"
                     @on-select="kelurahanSelected" @clear="store.clearKelurahan" />
                 </div>
               </div>
@@ -737,7 +737,7 @@
                   <app-autocomplete-new ref="refPropinsiDomisili" :model="store.wilayahDomisili.propinsi"
                     label="Cari propinsi" autocomplete="wilayah" option-value="propinsi" option-label="wilayah" outlined
                     :source="store.domisiliPropinsies"
-                    :disable="!store.domisiliPropinsies.length || (store.form.barulama !== 'baru' && !store.edit)"
+                    :disable="!store.domisiliPropinsies?.length || (store.form.barulama !== 'baru' && !store.edit)"
                     :loading="store.loadingPropinsiDomisili" @on-select="propinsiDomisiliSelected"
                     @clear="store.clearPropinsiDomisili" />
                 </div>
@@ -756,7 +756,7 @@
                     label="Cari kabupaten / kota" autocomplete="wilayah" option-value="kotakabupaten"
                     option-label="wilayah" outlined :source="store.domisiliKabupatens"
                     :loading="store.loadingKabupatenDomisili"
-                    :disable="!store.domisiliKabupatens.length || (store.form.barulama !== 'baru' && !store.edit)"
+                    :disable="!store.domisiliKabupatens?.length || (store.form.barulama !== 'baru' && !store.edit)"
                     @on-select="kabupatenDomisiliSelected" @clear="store.clearKabupatenDomisili" />
                 </div>
               </div>
@@ -770,7 +770,7 @@
                     :model="store.wilayahDomisili.kecamatan.kotakabupaten" label="Cari kecamatan" autocomplete="wilayah"
                     option-value="kotakabupaten" option-label="wilayah" outlined :source="store.domisiliKecamatans"
                     :loading="store.loadingKecamatanDomisili"
-                    :disable="!store.domisiliKecamatans.length || (store.form.barulama !== 'baru' && !store.edit)"
+                    :disable="!store.domisiliKecamatans?.length || (store.form.barulama !== 'baru' && !store.edit)"
                     @on-select="kecamatanDomisiliSelected" @clear="store.clearKecamatanDomisili" />
                 </div>
               </div>
@@ -784,7 +784,7 @@
                     :model="store.wilayahDomisili.kelurahan.kotakabupaten" label="Cari kelurahan" autocomplete="wilayah"
                     option-value="kotakabupaten" option-label="wilayah" outlined :source="store.domisiliKelurahans"
                     :loading="store.loadingKelurahanDomisili"
-                    :disable="!store.domisiliKelurahans.length || (store.form.barulama !== 'baru' && !store.edit)"
+                    :disable="!store.domisiliKelurahans?.length || (store.form.barulama !== 'baru' && !store.edit)"
                     @on-select="kelurahanDomisiliSelected" @clear="store.clearKelurahanDomisili" />
                 </div>
               </div>
@@ -1201,14 +1201,14 @@ function setAlamat (val) {
 // set RT / RW
 function setRT (val) {
   if (store.alamataDomisiliSama) { store.setForm('rtdomisili', val) }
-  if (val.length === 3) {
+  if (val?.length === 3) {
     refRT.value.$refs.refInput.blur()
     refRW.value.$refs.refInput.focus()
   }
 }
 function setRW (val) {
   if (store.alamataDomisiliSama) { store.setForm('rwdomisili', val) }
-  if (val.length === 3) {
+  if (val?.length === 3) {
     refRW.value.$refs.refInput.blur()
     refNegara.value.$refs.refAuto.focus()
   }
@@ -1231,8 +1231,8 @@ function updateValNoRM (val) {
   store.setForm('norm', val)
   // console.log('ref sapaan', refSapaan.value.$refs.refAuto)
 
-  // console.log('input no rm', val.length)
-  // if (val.length === 6) {
+  // console.log('input no rm', val?.length)
+  // if (val?.length === 6) {
   // const temp = val.slice(0, 6)
   // console.log('no rm', store.form.norm)
   // refNoRM.value.$refs.refInput.blur()?
@@ -1337,7 +1337,7 @@ function fokusHariLahir () {
   refHariLahir.value.$refs.refInput.select()
 }
 function setHariLahir (val) {
-  if (val.length === 2) {
+  if (val?.length === 2) {
     refHariLahir.value.$refs.refInput.blur()
     refBulanLahir.value.$refs.refInput.focus()
     refBulanLahir.value.$refs.refInput.select()
@@ -1346,7 +1346,7 @@ function setHariLahir (val) {
 }
 
 function setBulanLahir (val) {
-  if (val.length === 2) {
+  if (val?.length === 2) {
     refBulanLahir.value.$refs.refInput.blur()
     refTahunLahir.value.$refs.refInput.focus()
     refTahunLahir.value.$refs.refInput.select()
@@ -1355,7 +1355,7 @@ function setBulanLahir (val) {
 }
 
 function setTahunLahir (val) {
-  if (val.length === 4) {
+  if (val?.length === 4) {
     refTahunLahir.value.$refs.refInput.blur()
     refKelamin.value.$refs.refAuto.focus()
     // refRT.value.$refs.refInput.focus()
@@ -1454,8 +1454,8 @@ function kelurahanDomisiliSelected (val) {
 function setTlpRumah (val) {
   // console.log('form', store.form)
   // if (val.charAt(0) === '0') {
-  //   // console.log('val', val.charAt(0), val.slice(1, val.length))
-  //   store.setForm('noteleponrumah', '+' + (store.form.negara ? store.form.negara : '62') + val.slice(1, val.length))
+  //   // console.log('val', val.charAt(0), val.slice(1, val?.length))
+  //   store.setForm('noteleponrumah', '+' + (store.form.negara ? store.form.negara : '62') + val.slice(1, val?.length))
   // } else {
   //   // console.log('val', val.charAt(0), val.slice(0, 1))
   //   store.setForm('noteleponrumah', '+' + (store.form.negara ? store.form.negara : '62') + val)
@@ -1465,8 +1465,8 @@ function setTlpHP (evt) {
   // const val = evt.target.value
   // console.log('val', val)
   // if (val.charAt(0) === '0' || val.charAt(0) === '+') {
-  //   // console.log('val', val.charAt(0), val.slice(1, val.length))
-  //   store.setForm('noteleponhp', '+' + (store.form.negara ? store.form.negara : '62') + val.slice(1, val.length))
+  //   // console.log('val', val.charAt(0), val.slice(1, val?.length))
+  //   store.setForm('noteleponhp', '+' + (store.form.negara ? store.form.negara : '62') + val.slice(1, val?.length))
   // } else {
   //   // console.log('val', val.charAt(0), val.slice(0, 1))
   //   store.setForm('noteleponhp', '+' + (store.form.negara ? store.form.negara : '62') + val)
@@ -1615,7 +1615,7 @@ onBeforeUpdate(() => {
 })
 
 async function filterFn (val, update, abort) {
-  if (val.length < 3) {
+  if (val?.length < 3) {
     abort()
     return
   }

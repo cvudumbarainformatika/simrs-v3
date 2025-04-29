@@ -191,7 +191,7 @@
           label="Catatan"
           dense
           outlined
-          :rules="[val => val.length > 5 || 'Minimal 5 karakter']"
+          :rules="[val => val?.length > 5 || 'Minimal 5 karakter']"
           standout="bg-yellow-3"
         />
       </div>
@@ -252,7 +252,7 @@ function updateModelPpk(val) {
   // console.log('poli ', val)
 }
 const onFilterTest = async (val, update, abort) => {
-  if (val.length < 3) {
+  if (val?.length < 3) {
     abort()
     return
   }
@@ -272,7 +272,7 @@ const onFilterTest = async (val, update, abort) => {
   }
 }
 const filterPoli = async (val, update, abort) => {
-  if (val.length < 3) {
+  if (val?.length < 3) {
     abort()
     return
   }

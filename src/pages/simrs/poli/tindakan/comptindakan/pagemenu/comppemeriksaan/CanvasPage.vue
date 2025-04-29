@@ -53,7 +53,7 @@
     <div
       class="tmp-t z-top absolute-bottom "
     >
-      <div v-if="pasien?.gambars.length">
+      <div v-if="pasien?.gambars?.length">
         <div class="flex">
           <div class="q-py-xs q-px-sm f-10 bg-dark text-white">
             Gambar Tersimpan
@@ -454,8 +454,8 @@ function func(filename) {
       ctx.value.drawImage(bg, x, y, width, height)
       console.log('arr', arr.value)
 
-      if (arr.value.length > 0) {
-        for (let i = 0; i < arr.value.length; i++) {
+      if (arr.value?.length > 0) {
+        for (let i = 0; i < arr.value?.length; i++) {
           drawShapes(arr.value[i].penanda,
             arr.value[i].x,
             arr.value[i].y,

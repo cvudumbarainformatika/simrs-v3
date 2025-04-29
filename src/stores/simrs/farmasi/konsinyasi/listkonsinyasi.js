@@ -58,7 +58,7 @@ export const useListPemakaianObatKonsinyasiStore = defineStore('list_pemakaian_o
           this.loading = false
           console.log('list kon', resp?.data)
           this.items = resp?.data?.data ?? resp?.data
-          if (this.items.length) this.metaniItem()
+          if (this.items?.length) this.metaniItem()
         })
         .catch(() => {
           this.loading = false

@@ -772,23 +772,23 @@ function chartInit () {
 }
 
 const cariPanduan = (val) => {
-  // const masterTb = store?.masterCdc.length ? store.masterCdc.filter(x => x.gender === 1 && x?.jns === 1) : []
+  // const masterTb = store?.masterCdc?.length ? store.masterCdc.filter(x => x.gender === 1 && x?.jns === 1) : []
   const masterTb = props?.draft?.masterTb ?? []
   const arr = []
   // if (val === '3rd') {
-  for (let i = 0; i < masterTb.length; i++) {
+  for (let i = 0; i < masterTb?.length; i++) {
     arr[i] = [masterTb[i].age_m, masterTb[i][val]]
   }
 
   return arr
 }
 const cariPanduanWeight = (val) => {
-  // const masterTb = store?.masterCdc.length ? store.masterCdc.filter(x => x.gender === 1 && x?.jns === 2) : []
+  // const masterTb = store?.masterCdc?.length ? store.masterCdc.filter(x => x.gender === 1 && x?.jns === 2) : []
   const masterTb = props?.draft?.masterWeight ?? []
   // console.log(masterTb)
   const arr = []
   // if (val === '3rd') {
-  for (let i = 0; i < masterTb.length; i++) {
+  for (let i = 0; i < masterTb?.length; i++) {
     arr[i] = [masterTb[i].age_m, masterTb[i][val]]
   }
 
@@ -796,12 +796,12 @@ const cariPanduanWeight = (val) => {
 }
 
 const cariPanduanBmi = (val) => {
-  // const masterTb = store?.masterCdc.length ? store.masterCdc.filter(x => x.gender === 1 && x?.jns === 2) : []
+  // const masterTb = store?.masterCdc?.length ? store.masterCdc.filter(x => x.gender === 1 && x?.jns === 2) : []
   const masterTb = props?.draft?.masterBmi ?? []
   // console.log(masterTb)
   const arr = []
   // if (val === '3rd') {
-  for (let i = 0; i < masterTb.length; i++) {
+  for (let i = 0; i < masterTb?.length; i++) {
     arr[i] = [masterTb[i].age_m, masterTb[i][val]]
   }
 
@@ -824,7 +824,7 @@ const getScatterBmi = () => {
 // eslint-disable-next-line no-unused-vars
 const getMaxBmi = (val) => {
   const masterTb = props?.draft?.masterBmi ?? []
-  const o = masterTb.length ? masterTb.map(x => x[val]) : []
+  const o = masterTb?.length ? masterTb.map(x => x[val]) : []
   const y = o.reduce((a, b) => Math.max(a, b), 0)
   const xy = [240, y]
   return [xy]

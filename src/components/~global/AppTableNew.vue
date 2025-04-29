@@ -38,7 +38,7 @@
       <div class="col-one">
         <!-- delete Ids -->
         <q-btn
-          v-if="selected.length>0"
+          v-if="selected?.length>0"
           unelevated
           color="red"
           round
@@ -243,12 +243,12 @@
         </tr>
       </thead>
       <tbody v-if="!loading">
-        <tr v-if="!items.length > 0">
+        <tr v-if="!items?.length > 0">
           <!-- <transition
             transition-show="fade"
             transition-hide="fade"
           > -->
-          <td :colspan="rowImage === null? filterColumn.length + 2 : filterColumn.length + 3">
+          <td :colspan="rowImage === null? filterColumn?.length + 2 : filterColumn?.length + 3">
             <div
               class="flex column flex-center bg-loading-bg__table"
               style="height:300px"
@@ -323,7 +323,7 @@
                 </q-tooltip>
               </q-btn>
               <q-btn
-                v-if="selected.length < 2"
+                v-if="selected?.length < 2"
                 flat
                 class=""
                 size="sm"
@@ -352,7 +352,7 @@
       </tbody>
       <tbody v-else>
         <tr>
-          <td :colspan="rowImage === null? filterColumn.length + 2 : filterColumn.length + 3">
+          <td :colspan="rowImage === null? filterColumn?.length + 2 : filterColumn?.length + 3">
             <div
               class="flex column flex-center bg-loading-bg__table"
               style="height:400px"
@@ -373,7 +373,7 @@
     </q-markup-table>
     <!-- Pagination -->
     <AppPaginationNew
-      v-if="items.length > 0"
+      v-if="items?.length > 0"
       :meta="meta"
       :total="total"
       @first="emits('goto', 1)"
@@ -425,9 +425,9 @@ const search = computed({
 
 const filterColumn = computed(() => {
   const cols = props.columns ? props.columns : []
-  if (cols.length > 0) {
+  if (cols?.length > 0) {
     const filterred = cols.filter((el) => !props.columnHide.includes(el))
-    if (selectColumn.value.length > 0) {
+    if (selectColumn.value?.length > 0) {
       const thumb = filterred.filter((el) => selectColumn.value.includes(el))
       return thumb
     }
@@ -439,7 +439,7 @@ const filterColumn = computed(() => {
 
 const filterCheckbox = computed(() => {
   const cols = props.columns ? props.columns : []
-  if (cols.length > 0) {
+  if (cols?.length > 0) {
     return cols.filter((el) => !props.columnHide.includes(el))
   }
   return cols
@@ -454,7 +454,7 @@ onMounted(() => {
 //   console.log(refCellTable.value.$el.clientHeight * props.perPage)
 })
 watch(filterCheckbox, (obk) => {
-  for (let i = 0; i < obk.length; i++) {
+  for (let i = 0; i < obk?.length; i++) {
     selectColumn.value.push(obk[i])
   }
 })
@@ -473,7 +473,7 @@ watch(() => props.items, (obj) => {
 const setCheck = (x) => {
   const arr = []
   if (x) {
-    for (let i = 0; i < props.items.length; i++) {
+    for (let i = 0; i < props.items?.length; i++) {
       arr.push(props.items[i].id)
     }
     selected.value = arr

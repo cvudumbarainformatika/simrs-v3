@@ -38,7 +38,7 @@ export const usePediatriStore = defineStore('pediatri-poli', {
     initForm (pasien) {
       const riwayatPediatri = this.pediatris
 
-      const data = riwayatPediatri.length ? riwayatPediatri[riwayatPediatri.length - 1] : null
+      const data = riwayatPediatri?.length ? riwayatPediatri[riwayatPediatri?.length - 1] : null
 
       this.isEdited = data?.noreg === pasien?.noreg
 

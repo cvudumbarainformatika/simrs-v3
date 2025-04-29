@@ -50,7 +50,7 @@ export const useBankDarahStore = defineStore('bankdarah-store', {
       if (resp.status === 200) {
         this.setNotas(resp?.data)
         // const arr = resp.data.map(x => x.nota)
-        // this.notalaborats = arr.length ? arr : []
+        // this.notalaborats = arr?.length ? arr : []
         // this.notalaborats.push('BARU')
         // this.notalaborat = this.notalaborats[0]
       }
@@ -58,7 +58,7 @@ export const useBankDarahStore = defineStore('bankdarah-store', {
 
     setNotas (array) {
       const arr = array.map(x => x.nota)
-      this.notas = arr.length ? arr : []
+      this.notas = arr?.length ? arr : []
       this.notas.push('BARU')
       this.form.nota = this.notas[0]
     },

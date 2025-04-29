@@ -11,7 +11,7 @@
 
       <div v-if="type === 'resep'" class="slide-panel-2">
         <!-- List Obat yang Bisa Di-Scroll -->
-        <div v-if="filteredObat.length > 0" class="scrollable-list">
+        <div v-if="filteredObat?.length > 0" class="scrollable-list">
           <q-list bordered class="futuristic-list">
             <q-item v-for="obat in filteredObat" :key="obat.id" clickable @click="selectObat(obat)"
               class="futuristic-item">
@@ -144,7 +144,7 @@ const setitems = () => {
   const reseps = props?.pasien?.newapotekrajal ?? []
   // console.log('reseps', reseps);
 
-  if (reseps.length) {
+  if (reseps?.length) {
     const detailsResep = reseps?.map(x => x?.permintaanresep?.filter?.(y => y?.mobat?.jenis_perbekalan === 'Obat').map(y => {
       return {
         kdobat: y?.kdobat,

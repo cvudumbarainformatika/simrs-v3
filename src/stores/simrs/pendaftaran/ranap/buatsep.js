@@ -637,7 +637,7 @@ export const useBuatSepRanapStore = defineStore('buat-sep-ranap', {
       console.log('klsRawat', klsRawat)
 
       // this.dokter?.kode = val?.dokter
-      this.diagnosas = pasien?.diagnosa.length
+      this.diagnosas = pasien?.diagnosa?.length
         ? pasien?.diagnosa.map(x => {
           return { kode: x?.kode, nama: x?.kode + ' - ' + x?.inggris }
         })
@@ -648,7 +648,7 @@ export const useBuatSepRanapStore = defineStore('buat-sep-ranap', {
 
       const pendaftaran = useFormPendaftaranRanapStore()
       const doktersFromPendaftaran = pendaftaran.dokters
-      this.dokter = doktersFromPendaftaran.length ? doktersFromPendaftaran.find(x => x.kddpjp === val?.dpjp?.kdDPJP) : null
+      this.dokter = doktersFromPendaftaran?.length ? doktersFromPendaftaran.find(x => x.kddpjp === val?.dpjp?.kdDPJP) : null
       // console.log('dokter', this.dokter)
 
       const app = useAplikasiStore()

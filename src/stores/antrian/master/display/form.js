@@ -28,7 +28,7 @@ export const useMasterDisplayFormStore = defineStore('display_form', {
         'nama',
         'keterangan'
       ]
-      for (let i = 0; i < columns.length; i++) {
+      for (let i = 0; i < columns?.length; i++) {
         this.setForm(columns[i], null)
       }
     },

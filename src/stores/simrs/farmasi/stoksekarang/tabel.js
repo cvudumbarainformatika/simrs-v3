@@ -86,7 +86,7 @@ export const UseFarmasiStokSekarangTable = defineStore('tabel_stok_sekarang', {
         // .catch(() => { this.loading = false })
     },
     getRuangRanap () {
-      if (this.ruangRanaps.length) return
+      if (this.ruangRanaps?.length) return
       return new Promise(resolve => {
         api.get('v1/simrs/farmasinew/penerimaan/list-ruang-ranap')
           .then(resp => {
@@ -131,7 +131,7 @@ export const UseFarmasiStokSekarangTable = defineStore('tabel_stok_sekarang', {
                 this.reseps.push(racik)
               })
             }
-            if (this.operasis.length) {
+            if (this.operasis?.length) {
               this.operasis.forEach(op => {
                 const rajal = op?.list?.kunjunganrajal?.rs8
                 const ranap = op?.list?.kunjunganranap?.rs5

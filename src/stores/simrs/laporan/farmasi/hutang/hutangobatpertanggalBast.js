@@ -85,9 +85,9 @@ export const usehutangObatPerTanggalBastStore = defineStore('laporan_hutang_obat
         k.rinci = []
         const caripbf = k?.kodepbfp
         const cariheder = val.filter(f => f.kdpbf === caripbf)
-        if (cariheder.length) {
+        if (cariheder?.length) {
           cariheder.forEach(h => {
-            if (h.penerimaanrinci.length) {
+            if (h.penerimaanrinci?.length) {
               h.penerimaanrinci.forEach(r => {
                 k.rinci.push(r)
               })

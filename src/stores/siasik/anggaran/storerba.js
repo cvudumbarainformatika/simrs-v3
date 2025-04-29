@@ -41,8 +41,8 @@ export const useRbaStore = defineStore('store_rba_siasik', {
       const rba = []
 
       const unik1 = this.datarba.map((x) => x.kode1)
-      const elunik1 = unik1.length ? [...new Set(unik1)] : []
-      for (let i = 0; i < elunik1.length; i++) {
+      const elunik1 = unik1?.length ? [...new Set(unik1)] : []
+      for (let i = 0; i < elunik1?.length; i++) {
         const el = elunik1[i];
         const arr = this.datarba
         const obj = {
@@ -55,8 +55,8 @@ export const useRbaStore = defineStore('store_rba_siasik', {
       }
 
       const unik2 = this.datarba.map((x) => x.kode2)
-      const elunik2 = unik2.length ? [...new Set(unik2)] : []
-      for (let i = 0; i < elunik2.length; i++) {
+      const elunik2 = unik2?.length ? [...new Set(unik2)] : []
+      for (let i = 0; i < elunik2?.length; i++) {
         const el = elunik2[i];
         const arr = this.datarba
         const obj = {
@@ -69,8 +69,8 @@ export const useRbaStore = defineStore('store_rba_siasik', {
       }
 
       const unik3 = this.datarba.map((x) => x.kode3)
-      const elunik3 = unik3.length ? [...new Set(unik3)] : []
-      for (let i = 0; i < elunik3.length; i++) {
+      const elunik3 = unik3?.length ? [...new Set(unik3)] : []
+      for (let i = 0; i < elunik3?.length; i++) {
         const el = elunik3[i];
         const arr = this.datarba
         const obj = {
@@ -83,8 +83,8 @@ export const useRbaStore = defineStore('store_rba_siasik', {
       }
 
       const unik4 = this.datarba.map((x) => x.kode4)
-      const elunik4 = unik4.length ? [...new Set(unik4)] : []
-      for (let i = 0; i < elunik4.length; i++) {
+      const elunik4 = unik4?.length ? [...new Set(unik4)] : []
+      for (let i = 0; i < elunik4?.length; i++) {
         const el = elunik4[i];
         const arr = this.datarba
         const obj = {
@@ -96,8 +96,8 @@ export const useRbaStore = defineStore('store_rba_siasik', {
         rba.push(obj)
       }
       const unik5 = this.datarba.map((x) => x.kode5)
-      const elunik5 = unik5.length ? [...new Set(unik5)] : []
-      for (let i = 0; i < elunik5.length; i++) {
+      const elunik5 = unik5?.length ? [...new Set(unik5)] : []
+      for (let i = 0; i < elunik5?.length; i++) {
         const el = elunik5[i];
         const arr = this.datarba
         const obj = {
@@ -145,14 +145,14 @@ export const useRbaStore = defineStore('store_rba_siasik', {
       })
 
       // const unik6 = this.datarba.map((x) => x.kode)
-      // const elunik6 = unik6.length ? [...new Set(unik6)] : []
-      // for (let i = 0; i < elunik6.length; i++) {
+      // const elunik6 = unik6?.length ? [...new Set(unik6)] : []
+      // for (let i = 0; i < elunik6?.length; i++) {
       //   const el = elunik6[i];
       //   const arr = this.datarba
 
       //   const bidg = arr.filter((x) => x.kode === el)
       //   const unikbidg = bidg.map((x) => x.kodebidang)
-      //   const elbidg = unikbidg.length ? [...new Set(unikbidg)] : []
+      //   const elbidg = unikbidg?.length ? [...new Set(unikbidg)] : []
 
       //   const obj = {
       //     kode: arr.filter((x) => x.kode === el)[0].kode,

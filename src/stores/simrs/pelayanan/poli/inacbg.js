@@ -71,7 +71,7 @@ export const useInacbgPoli = defineStore('inacbg-poli', {
       this.specialDrugOpts = obj?.special_cmg_option?.filter(a => a.type === 'Special Drug') ?? []
 
       const specCmg = obj?.response?.special_cmg ?? []
-      if (specCmg.length) {
+      if (specCmg?.length) {
         specCmg.forEach(cmg => {
           if (cmg.type === 'Special Procedure') {
             const posProce = this.specialProcedureOpts.findIndex(el => el.description === cmg.description)
@@ -103,19 +103,19 @@ export const useInacbgPoli = defineStore('inacbg-poli', {
           }
         })
 
-        if (this.specialProcedureOpts.length) {
+        if (this.specialProcedureOpts?.length) {
           this.formSpecial.procedure_code = this.specialProcedureOpts[0].code
           this.specialProcedureOpts.splice(0, 0, { code: '', description: 'none' })
         }
-        if (this.specialProsthesisOpts.length) {
+        if (this.specialProsthesisOpts?.length) {
           this.formSpecial.prosthesis_code = this.specialProsthesisOpts[0].code
           this.specialProsthesisOpts.splice(0, 0, { code: '', description: 'none' })
         }
-        if (this.specialInvestigationOpts.length) {
+        if (this.specialInvestigationOpts?.length) {
           this.formSpecial.investigation_code = this.specialInvestigationOpts[0].code
           this.specialInvestigationOpts.splice(0, 0, { code: '', description: 'none' })
         }
-        if (this.specialDrugOpts.length) {
+        if (this.specialDrugOpts?.length) {
           this.formSpecial.drug_code = this.specialDrugOpts[0].code
           this.specialDrugOpts.splice(0, 0, { code: '', description: 'none' })
         }

@@ -55,7 +55,7 @@ export const useReturStore = defineStore('retur_store', {
         'dari'
       ]
 
-      for (let i = 0; i < columns.length; i++) {
+      for (let i = 0; i < columns?.length; i++) {
         this.setForm(columns[i], null)
       }
       this.form.details = []

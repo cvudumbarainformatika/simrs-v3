@@ -4,7 +4,7 @@
       <app-loader></app-loader>
     </div>
     <div v-else class="fit">
-      <div v-if="!store.items.length" class="column full-height flex-center ">
+      <div v-if="!store.items?.length" class="column full-height flex-center ">
         <div>Belum Ada Data Tersimpan ... 📋</div>
       </div>
       <div v-else class="full-height q-py-md scroll">

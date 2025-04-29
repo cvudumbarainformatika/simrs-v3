@@ -25,7 +25,7 @@ export const useMasterPenggunaRuangForm = defineStore('master_Pengguna_ruang_for
         'kode_penanggungjawab',
         'kode_pengguna'
       ]
-      for (let i = 0; i < columns.length; i++) {
+      for (let i = 0; i < columns?.length; i++) {
         this.setForm(columns[i], null)
       }
     },

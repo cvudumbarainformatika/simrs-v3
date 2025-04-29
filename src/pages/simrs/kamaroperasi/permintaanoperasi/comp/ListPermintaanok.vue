@@ -2,7 +2,7 @@
   <div>
     <div class="q-pb-xl">
       <LoadingList v-if="loading" />
-      <empty-data v-else-if="!items.length && !loading" />
+      <empty-data v-else-if="!items?.length && !loading" />
       <q-list
         v-else
         separator

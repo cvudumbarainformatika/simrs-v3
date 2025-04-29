@@ -123,7 +123,7 @@
             </div>
           </template>
           <template #cell-pabrikan="{row}">
-            <div v-if="row.stokrealgudang.length">
+            <div v-if="row.stokrealgudang?.length">
               nanti isinya pabrikan
             </div>
             <div v-else>

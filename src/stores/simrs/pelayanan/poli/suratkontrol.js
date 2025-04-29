@@ -109,16 +109,16 @@ export const useSuratKontrolPoliStore = defineStore('surat_kontrol_poli', {
             // const pol = 'BDM'
             if (pol) {
               const gig = gigis.filter(a => a.toLowerCase().includes(pol.toLowerCase()))
-              if (gig.length) {
+              if (gig?.length) {
                 gigis.forEach(anu => {
                   const anunya = res.filter(a => a.poliTujuan.toLowerCase().includes(anu.toLowerCase()))
-                  if (anunya.length) {
+                  if (anunya?.length) {
                     anunya.forEach(b => {
                       this.items.push(b)
                     })
                   }
                 })
-                if (this.items.length) {
+                if (this.items?.length) {
                   this.items.sort((a, b) => new Date(a.tglRencanaKontrol).getTime() - new Date(b.tglRencanaKontrol).getTime())
                 }
               }
@@ -130,8 +130,8 @@ export const useSuratKontrolPoliStore = defineStore('surat_kontrol_poli', {
               this.items = res
             }
 
-            this.filteredItems = this.items.length ? this.items.filter(a => a?.nama?.toLowerCase().includes(this.fNama.toLowerCase())) : []
-            // this.filteredItems = this.items.length ? this.items.filter(a => a.namaJnsKontrol === 'Surat Kontrol' && a.jnsPelayanan === 'Rawat Inap') : []
+            this.filteredItems = this.items?.length ? this.items.filter(a => a?.nama?.toLowerCase().includes(this.fNama.toLowerCase())) : []
+            // this.filteredItems = this.items?.length ? this.items.filter(a => a.namaJnsKontrol === 'Surat Kontrol' && a.jnsPelayanan === 'Rawat Inap') : []
             if (resp?.data?.original?.code) {
               notifErrVue(resp?.data?.original?.message)
             }
@@ -169,7 +169,7 @@ export const useSuratKontrolPoliStore = defineStore('surat_kontrol_poli', {
             console.log('jadwal', resp.data)
             if (resp?.data?.metadata?.code === '200' || resp?.data?.metadata?.code === 200) {
               this.jadwalDpjps = resp?.data?.result
-              if (this.jadwalDpjps.length) {
+              if (this.jadwalDpjps?.length) {
                 this.setForm('kodeDokter', this.jadwalDpjps[0].kodedokter)
               }
             }

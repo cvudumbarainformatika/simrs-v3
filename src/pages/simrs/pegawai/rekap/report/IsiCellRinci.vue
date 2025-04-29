@@ -1,6 +1,6 @@
 <template>
   <div>
-    <!-- <div v-if="item.rekap_absensi.length > 0">
+    <!-- <div v-if="item.rekap_absensi?.length > 0">
       ok
     </div>
     <div v-else>

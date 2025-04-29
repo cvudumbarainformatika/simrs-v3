@@ -1,9 +1,9 @@
 <template>
   <div class="q-py-xs">
-    <div v-if="!store.form?.details.length" style="width: 90vw; height: 100%;">
+    <div v-if="!store.form?.details?.length" style="width: 90vw; height: 100%;">
       <app-no-data />
     </div>
-    <div v-if="store.form?.details.length" style="width: 90vw; height: 100%;">
+    <div v-if="store.form?.details?.length" style="width: 90vw; height: 100%;">
       <div class="row no-wrap q-col-gutter-xs text-weight-bold">
         <div class="col-1">
           No

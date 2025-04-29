@@ -1,7 +1,7 @@
 <template>
   <div class="q-pa-xs">
     <div
-      v-if="store.list.length === 0"
+      v-if="store.list?.length === 0"
       class="full-height"
     >
       <div

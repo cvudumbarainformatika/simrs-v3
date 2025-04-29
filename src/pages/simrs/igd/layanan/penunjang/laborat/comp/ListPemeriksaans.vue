@@ -42,7 +42,7 @@
                     </q-item-label>
                     <q-item-label lines="2" class="f-12">
                       <span v-if="!loading" class="text-weight-bold"
-                        :class="item?.value.length === 1 ? 'text-orange' : 'text-primary'">{{ item?.value.length === 1 ?
+                        :class="item?.value?.length === 1 ? 'text-orange' : 'text-primary'">{{ item?.value?.length === 1 ?
                           'NON-PAKET' : 'PAKET' }}</span>
                       <div v-else>
                         <q-skeleton type="text" height="30px" width="20%" />
@@ -158,7 +158,7 @@ function fillterTable(val) {
 // eslint-disable-next-line no-unused-vars
 function mapping(item) {
   const arr = item
-  const arr2 = arr.length > 0
+  const arr2 = arr?.length > 0
     ? arr.map(x =>
     ({
       gruper: x.pemeriksaanlab?.rs21 !== '' ? x.pemeriksaanlab?.rs21 : x.pemeriksaanlab?.rs2,

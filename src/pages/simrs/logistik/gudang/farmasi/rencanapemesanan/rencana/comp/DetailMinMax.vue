@@ -34,7 +34,7 @@
           {{ store?.obat?.kd_obat }}
         </div>
         <q-separator class="q-my-sm" />
-        <div v-if="store.rincis.length">
+        <div v-if="store.rincis?.length">
           <div class="row text-weight-bold fit q-mb-sm">
             <div class="col-6">
               Gudang / Depo / Ruangan

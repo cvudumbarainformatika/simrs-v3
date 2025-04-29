@@ -19,7 +19,7 @@ export const useMasterSignaForm = defineStore('master_signa_form', {
       const columns = [
         'signa'
       ]
-      for (let i = 0; i < columns.length; i++) {
+      for (let i = 0; i < columns?.length; i++) {
         this.setForm(columns[i], null)
       }
       // this.setForm('isi', 1)

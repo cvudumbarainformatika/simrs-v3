@@ -87,8 +87,8 @@ const namaRuangan = (grup, kamars) => {
 }
 
 const jumlahBed = (itm, kamars) => {
-  const begTerisi = kamars.filter(x => x.rs5 === itm && x.kunjungan.length).length
-  const begKapasitas = kamars.filter(x => x.rs5 === itm).length
+  const begTerisi = kamars.filter(x => x.rs5 === itm && x.kunjungan?.length)?.length
+  const begKapasitas = kamars.filter(x => x.rs5 === itm)?.length
 
   const tersedia = begKapasitas - begTerisi
   // console.log('jumlah bed', begKapasitas)

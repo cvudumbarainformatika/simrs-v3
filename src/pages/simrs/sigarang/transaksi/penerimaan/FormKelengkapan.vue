@@ -1,7 +1,7 @@
 <template>
   <div>
-    <app-no-data v-if="!Object.keys(kelengkapan.form).length" />
-    <div v-if="Object.keys(kelengkapan.form).length">
+    <app-no-data v-if="!Object.keys(kelengkapan.form)?.length" />
+    <div v-if="Object.keys(kelengkapan.form)?.length">
       <div class="col-md-6 col-xs-12">
         <div class="row q-col-gutter-md q-mb-sm items-center">
           <div class="col-md-4 col-xs-12">
@@ -85,7 +85,7 @@
       </div>
     </div>
     <div
-      v-if="Object.keys(kelengkapan.form).length"
+      v-if="Object.keys(kelengkapan.form)?.length"
       class="row q-col-gutter-md q-mb-sm items-center"
     >
       <div class="col-md-5 col-xs-12" />

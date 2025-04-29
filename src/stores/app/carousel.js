@@ -29,7 +29,7 @@ export const useCarouselApp = defineStore('carousel', {
   }),
   getters: {
     slides: (state) => {
-      if (state.carousels.length === 0) {
+      if (state.carousels?.length === 0) {
         return state.tmpCarousels
       }
       return state.carousels

@@ -60,7 +60,7 @@
               {{ dateFullFormat(his?.tgl) }}
             </div>
             <div v-if="his.show">
-              <div v-if="his?.asalpermintaanresep.length">
+              <div v-if="his?.asalpermintaanresep?.length">
                 <div class="row bg-teal text-white">
                   <div
                     class="col-auto"

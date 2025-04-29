@@ -400,7 +400,7 @@ export const useLaporanLraLaprealisasianggaranStore = defineStore('laporan_reali
       }
       // console.log('KODE 1', kode1)
       // KODE2
-      const kod2 = this.realisasibelanja.length
+      const kod2 = this.realisasibelanja?.length
         ? this.realisasibelanja.map((x) => {
           const a = x?.kode2?.kodeall2
           return {
@@ -548,7 +548,7 @@ export const useLaporanLraLaprealisasianggaranStore = defineStore('laporan_reali
       )
       // console.log('KODE 2', kode2)
       // const kode2 = {}
-      // for (let i = 0; i < kode.length; i++) {
+      // for (let i = 0; i < kode?.length; i++) {
       //   const el = kode.reduce(
       //     (acc, curr) =>
       //       acc.find((v) => v.kodeall2 === curr.kodeall2) ? acc : [...acc, curr],
@@ -559,7 +559,7 @@ export const useLaporanLraLaprealisasianggaranStore = defineStore('laporan_reali
       // }
 
       // KODE 3
-      const kod3 = this.realisasibelanja.length
+      const kod3 = this.realisasibelanja?.length
         ? this.realisasibelanja.map((x) => {
           const a = x?.kode3?.kodeall2
           return {
@@ -707,7 +707,7 @@ export const useLaporanLraLaprealisasianggaranStore = defineStore('laporan_reali
       )
       // console.log('kode3', kode3)
       // KODE4
-      const kod4 = this.realisasibelanja.length
+      const kod4 = this.realisasibelanja?.length
         ? this.realisasibelanja.map((x) => {
           const a = x?.kode4?.kodeall2
           return {

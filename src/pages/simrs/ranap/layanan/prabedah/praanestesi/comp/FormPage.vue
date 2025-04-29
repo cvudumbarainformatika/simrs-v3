@@ -332,7 +332,7 @@ async function getKunjunganRajalLatest(norm) {
   if (res.status === 200) {
     console.log('resp', res?.data)
     const pas = res.data
-    dataLaluRajal.value = pas.length ? pas[0] : null
+    dataLaluRajal.value = pas?.length ? pas[0] : null
   }
 }
 

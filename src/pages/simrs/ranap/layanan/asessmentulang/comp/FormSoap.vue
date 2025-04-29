@@ -99,14 +99,14 @@ watch(() => storeDiagnosaKeperawatan.selectDiagnosa, (val) => {
     const text = val?.map(x => '- ' + x.nama)?.join('\n')
 
     console.log('val', text)
-    store.form.asessment = val.length ? text : null
+    store.form.asessment = val?.length ? text : null
   }
 })
 watch(() => storeDiagnosaKebidanan.selectDiagnosa, (val) => {
   // console.log('watch diagnosa kebidanan', val)
   if (val) {
     const text = val?.map(x => '- ' + x.nama)?.join('\n')
-    store.form.asessment = val.length ? text : null
+    store.form.asessment = val?.length ? text : null
   }
 })
 
@@ -120,16 +120,16 @@ watch(() => storeDiagnosaKeperawatan.selectIntervensis, (val) => {
     const cariIntPlann = []
     const cariInt = []
 
-    for (let i = 0; i < justDetails.length; i++) {
+    for (let i = 0; i < justDetails?.length; i++) {
       const kddiag = justDetails[i]?.diagnosakeperawatan_kode
       const kdInt = justDetails[i]?.intervensi_id
       const diag = storeDiagnosaKeperawatan.selectDiagnosa.find(x => x?.kode === kddiag)?.intervensis ?? []
-      const intPlann = diag.length ? diag.find(x => x?.id === parseInt(kdInt)) : null
+      const intPlann = diag?.length ? diag.find(x => x?.id === parseInt(kdInt)) : null
       cariIntPlann.push(intPlann)
     }
     if (settings.categoryIntervensi === 'plann') {
       const plann = cariIntPlann?.filter(x => x?.group === 'plann')?.map(x => '- ' + x?.nama).join('\n')
-      store.form.plann = cariIntPlann.length ? plann : null
+      store.form.plann = cariIntPlann?.length ? plann : null
     }
     else {
       const intX = cariIntPlann?.filter(x => x?.group !== 'plann')?.map(x => '- ' + x?.nama).join('\n')
@@ -150,16 +150,16 @@ watch(() => storeDiagnosaKebidanan.selectIntervensis, (val) => {
     const cariIntPlann = []
     const cariInt = []
 
-    for (let i = 0; i < justDetails.length; i++) {
+    for (let i = 0; i < justDetails?.length; i++) {
       const kddiag = justDetails[i]?.diagnosakebidanan_kode
       const kdInt = justDetails[i]?.intervensi_id
       const diag = storeDiagnosaKebidanan.selectDiagnosa.find(x => x?.kode === kddiag)?.intervensis ?? []
-      const intPlann = diag.length ? diag.find(x => x?.id === parseInt(kdInt)) : null
+      const intPlann = diag?.length ? diag.find(x => x?.id === parseInt(kdInt)) : null
       cariIntPlann.push(intPlann)
     }
     if (settings.categoryIntervensi === 'plann') {
       const plann = cariIntPlann?.filter(x => x?.group === 'plann')?.map(x => '- ' + x?.nama).join('\n')
-      store.form.plann = cariIntPlann.length ? plann : null
+      store.form.plann = cariIntPlann?.length ? plann : null
       console.log('val watch intervensi kebidanan', plann)
     }
     else {

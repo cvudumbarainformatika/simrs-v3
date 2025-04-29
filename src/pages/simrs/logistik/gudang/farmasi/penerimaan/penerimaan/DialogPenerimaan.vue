@@ -228,7 +228,7 @@
     <q-separator />
     <!-- details -->
     <div
-      v-if="store.details.length && !store.loading"
+      v-if="store.details?.length && !store.loading"
       class="bg-grey-2"
     >
       <div
@@ -540,7 +540,7 @@
     <div v-if="store.loading">
       <app-loading />
     </div>
-    <div v-if="!store.details.length && !store.loading">
+    <div v-if="!store.details?.length && !store.loading">
       <app-no-selected-page
         color="primary"
         icon="icon-mat-receipt_long"
@@ -634,7 +634,7 @@ const gudang = computed(() => {
   let gud = null
   if (apps.user.kdruangansim !== '') {
     const anu = store.gudangs.filter(a => a.value === apps.user.kdruangansim)
-    if (anu.length) {
+    if (anu?.length) {
       gud = anu[0]
       store.setForm('kdruang', gud.value)
       store.setForm('gudang', gud.value)
@@ -644,10 +644,10 @@ const gudang = computed(() => {
 })
 // console.log('gudang', gudang.value)
 onMounted(() => {
-  // if (store.details.length) {
+  // if (store.details?.length) {
   //   // console.log('detailnya', store.details)
   //   const belumTsSmw = store.details.filter(a => parseFloat(a.jumlahdpesan) > parseFloat(a.jml_all_penerimaan))
-  //   if (belumTsSmw.length) {
+  //   if (belumTsSmw?.length) {
   //     belumTsSmw[0].adaPPN = !belumTsSmw[0].adaPPN
   //     if (belumTsSmw[0].adaPPN) setHargaNetNew('11', belumTsSmw[0], 'ppn')
   //     if (!belumTsSmw[0].adaPPN) setHargaNetNew('0', belumTsSmw[0], 'ppn')

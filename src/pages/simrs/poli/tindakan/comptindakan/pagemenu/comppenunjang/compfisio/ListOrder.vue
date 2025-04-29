@@ -20,7 +20,7 @@
     </q-bar>
     <div class="col full-height bg-grey-4">
       <div
-        v-if="pasien?.fisio.length === 0"
+        v-if="pasien?.fisio?.length === 0"
         class="column full-height flex-center text-white"
       >
         Belum Ada Permintaan Fisio Terapi

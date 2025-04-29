@@ -2,7 +2,7 @@
   <div>
     <div class="q-pb-xl">
       <LoadingList v-if="loading" />
-      <empty-data v-else-if="!items.length && !loading" />
+      <empty-data v-else-if="!items?.length && !loading" />
       <q-list v-else separator>
         <q-item v-for="(item, i) in items" :key="i">
           <q-item-section avatar top>
@@ -199,7 +199,7 @@ function getSep(val) {
   }
 }
 // function getTask(arr) {
-//   if (arr.length === 0) {
+//   if (arr?.length === 0) {
 //     return '-'
 //   }
 

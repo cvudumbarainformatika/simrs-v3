@@ -212,10 +212,10 @@
         </div>
       </template>
       <template #expand="{ row }">
-        <div v-if="!row.rinci.length">
+        <div v-if="!row.rinci?.length">
           <app-no-data-small />
         </div>
-        <div v-if="row.rinci.length">
+        <div v-if="row.rinci?.length">
           <div class="row bg-dark text-white q-pa-xs q-mb-sm" style="width: 100%;">
             <div
               class="col-auto"

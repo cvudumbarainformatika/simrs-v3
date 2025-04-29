@@ -68,7 +68,7 @@ function updateSearchTindakan(val) {
 }
 
 function filterFn(val, update, abort) {
-  if (val.length < 1) {
+  if (val?.length < 1) {
     abort()
     return
   }

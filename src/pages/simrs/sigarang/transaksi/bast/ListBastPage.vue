@@ -286,7 +286,7 @@
         </div>
       </template>
       <template #expand="{ row }">
-        <div v-if="row.penerimaan.length">
+        <div v-if="row.penerimaan?.length">
           <div
             v-for="(trm,n) in row.penerimaan"
             :key="n"
@@ -323,7 +323,7 @@
                 </div>
               </div>
             </div>
-            <div v-if="trm.details.length && trm.disp">
+            <div v-if="trm.details?.length && trm.disp">
               <div
                 v-for="(det,i) in trm.details"
                 :key="i"

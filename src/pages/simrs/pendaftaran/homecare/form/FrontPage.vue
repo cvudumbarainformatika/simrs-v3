@@ -57,7 +57,7 @@ function simpanData (val) {
   )
   if (dataPasien.save && dataRegis.save) {
     const keys = Object.keys(dataPasien.form)
-    if (keys.length) {
+    if (keys?.length) {
       keys.forEach(key => {
         register.setForm(key, dataPasien.form[key])
       })

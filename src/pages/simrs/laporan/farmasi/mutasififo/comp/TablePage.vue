@@ -193,7 +193,7 @@
           </td>
         </tr>
       </template>
-      <template v-else-if="!store.items.length">
+      <template v-else-if="!store.items?.length">
         <tr v-if="store.params.jenis==='rekap'">
           <td colspan="12">
             <app-no-data />

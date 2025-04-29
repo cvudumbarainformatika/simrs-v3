@@ -199,7 +199,7 @@ export const useSPJOPNameStore = defineStore('spjopname', {
             this.KaUang = resp?.data?.keuangan
             this.pegawaies = resp?.data?.pegawai
             this.pelaksanas = resp?.data?.pelaksanas
-            if (this.pelaksanas.length > 0 && this.form.pelaksanas.length <= 0) {
+            if (this.pelaksanas?.length > 0 && this.form.pelaksanas?.length <= 0) {
               this.pelaksanas.forEach(item => {
                 this.form.pelaksanas.push(item?.id)
               })

@@ -96,15 +96,15 @@ export const useTabelObatDirencanakaStore = defineStore('tabel_obat_direncanakan
       val.forEach(item => {
         item.checked = false
         // item.stokGudang = item?.stok ?? 0
-        // item.stokGudangFs = item.stokrealgudangfs.length ? item.stokrealgudangfs.map(a => parseInt(a.jumlah)).reduce((a, b) => a + b, 0) : 0
-        // item.stokGudangKo = item.stokrealgudangko.length ? item.stokrealgudangko.map(a => parseInt(a.jumlah)).reduce((a, b) => a + b, 0) : 0
+        // item.stokGudangFs = item.stokrealgudangfs?.length ? item.stokrealgudangfs.map(a => parseInt(a.jumlah)).reduce((a, b) => a + b, 0) : 0
+        // item.stokGudangKo = item.stokrealgudangko?.length ? item.stokrealgudangko.map(a => parseInt(a.jumlah)).reduce((a, b) => a + b, 0) : 0
         // item.stokRS = parseFloat(item.stok) ?? 0
         // item.stokMaxRS = parseFloat(item.summax) ?? 0
         // item.stokMinRS = parseFloat(item.summin) ?? 0
-        // item.stokMaxGudangKo = item.stokmaxpergudang.length ? item.stokmaxpergudang.filter(a => a.kd_ruang === 'Gd-05010100').map(a => parseInt(a.jumlah)).reduce((a, b) => a + b, 0) : 0
-        // item.stokMaxGudangFs = item.stokmaxpergudang.length ? item.stokmaxpergudang.filter(a => a.kd_ruang === 'Gd-03010100').map(a => parseInt(a.jumlah)).reduce((a, b) => a + b, 0) : 0
-        item.dipesan = item.pemesananrinci.length ? item.pemesananrinci.map(a => parseInt(a.jumlah)).reduce((a, b) => a + b, 0) : 0
-        item.direncanakan = item.perencanaanrinci.length ? item.perencanaanrinci.map(a => parseInt(a.jumlah)).reduce((a, b) => a + b, 0) : 0
+        // item.stokMaxGudangKo = item.stokmaxpergudang?.length ? item.stokmaxpergudang.filter(a => a.kd_ruang === 'Gd-05010100').map(a => parseInt(a.jumlah)).reduce((a, b) => a + b, 0) : 0
+        // item.stokMaxGudangFs = item.stokmaxpergudang?.length ? item.stokmaxpergudang.filter(a => a.kd_ruang === 'Gd-03010100').map(a => parseInt(a.jumlah)).reduce((a, b) => a + b, 0) : 0
+        item.dipesan = item.pemesananrinci?.length ? item.pemesananrinci.map(a => parseInt(a.jumlah)).reduce((a, b) => a + b, 0) : 0
+        item.direncanakan = item.perencanaanrinci?.length ? item.perencanaanrinci.map(a => parseInt(a.jumlah)).reduce((a, b) => a + b, 0) : 0
         item.sudahDirencanakan = item?.dipesan + item?.direncanakan
         item.stokMinRS = item?.stokmaxrs?.length ? item?.stokmaxrs?.map(ma => parseFloat(ma.min)).reduce((a, b) => a + b, 0) : 0
         item.stokMaxRS = item?.stokmaxrs?.length ? item?.stokmaxrs?.map(ma => parseFloat(ma.max)).reduce((a, b) => a + b, 0) : 0

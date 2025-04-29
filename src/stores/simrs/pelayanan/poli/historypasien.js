@@ -8,6 +8,7 @@ export const useHistoryPasien = defineStore('history-pasien', {
     itemsEresep: [],
     metaEresep: null,
     loading: false,
+    loadingEresep: false,
     params: {
       page: 1,
       per_page: 20,
@@ -32,6 +33,7 @@ export const useHistoryPasien = defineStore('history-pasien', {
   // },
   actions: {
     async getData (pasien) {
+      this.items = []
       this.loading = true
       try {
         this.params.norm = pasien?.norm
@@ -51,7 +53,7 @@ export const useHistoryPasien = defineStore('history-pasien', {
     },
     async getEresep (noreg) {
       if (this.metaEresep === null) {
-        this.loading = true
+        this.loadingEresep = true
         try {
           this.params.noreg = noreg
           const params = { params: this.params }
@@ -59,15 +61,15 @@ export const useHistoryPasien = defineStore('history-pasien', {
           // console.log('history  ', resp)
           if (resp.status === 200) {
             this.itemsEresep = resp?.data?.data
-            this.loading = false
+            this.loadingEresep = false
 
             this.metaEresep = resp?.data // or you can push specific data from resp
             // console.log(this.metaEresep)
           }
-          this.loading = false
+          this.loadingEresep = false
         }
         catch (error) {
-          this.loading = false
+          this.loadingEresep = false
         }
       }
     }

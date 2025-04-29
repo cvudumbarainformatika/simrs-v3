@@ -257,7 +257,7 @@ const optionpulangs = ref(['Sembuh', 'Paksa', 'Meninggal'])
 // }
 
 const onFilterTest = async (val, update, abort) => {
-  if (val.length < 3) {
+  if (val?.length < 3) {
     abort()
     return
   }
@@ -278,7 +278,7 @@ const onFilterTest = async (val, update, abort) => {
 }
 
 const filterPoli = async (val, update, abort) => {
-  if (val.length < 3) {
+  if (val?.length < 3) {
     abort()
     return
   }

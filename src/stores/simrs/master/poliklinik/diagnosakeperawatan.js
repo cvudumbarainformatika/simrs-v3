@@ -31,7 +31,7 @@ export const useMasterDiagnosaKeperawatan = defineStore('master-diagnosa-keperaw
         if (resp.status === 200) {
           notifSuccess(resp)
           const ada = this.items.filter(x => x.id === resp?.data?.result?.id)
-          if (!ada.length) {
+          if (!ada?.length) {
             this.items?.splice(0, 0, resp.data.result)
           }
           this.resetForm()
@@ -71,7 +71,7 @@ export const useMasterDiagnosaKeperawatan = defineStore('master-diagnosa-keperaw
         if (resp.status === 200) {
           notifSuccess(resp)
           const findItem = this.items.filter(x => x.id === id)
-          if (findItem.length) {
+          if (findItem?.length) {
             const pos = this.items.findIndex(el => el.id === id)
             if (pos >= 0) { this.items.splice(pos, 1) }
           }
@@ -121,7 +121,7 @@ export const useMasterDiagnosaKeperawatan = defineStore('master-diagnosa-keperaw
 
           const ada = this.diagnosa?.intervensis?.filter(x => x.id === row?.id)
           console.log('ada', this.diagnosa)
-          if (!ada.length) {
+          if (!ada?.length) {
             this.diagnosa?.intervensis?.push(resp?.data?.result)
           }
           this.intervensi = ''
@@ -140,7 +140,7 @@ export const useMasterDiagnosaKeperawatan = defineStore('master-diagnosa-keperaw
         if (resp.status === 200) {
           notifSuccess(resp)
           const findItem = this.diagnosa?.intervensis?.filter(x => x.id === id)
-          if (findItem.length) {
+          if (findItem?.length) {
             const pos = this.diagnosa?.intervensis?.findIndex(el => el.id === id)
             if (pos >= 0) { this.diagnosa?.intervensis.splice(pos, 1) }
           }

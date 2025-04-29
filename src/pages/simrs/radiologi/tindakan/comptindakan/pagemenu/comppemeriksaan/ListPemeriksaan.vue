@@ -272,7 +272,7 @@
                       <div v-show="expanded===i+1">
                         <q-separator dark />
                         <q-list
-                          v-if="item.detailgambars.length"
+                          v-if="item.detailgambars?.length"
                           separator
                           dark
                         >
@@ -365,7 +365,7 @@
                 </div>
               </div>
               <q-separator />
-              <div v-if="item.detailgambars.length">
+              <div v-if="item.detailgambars?.length">
                 <div class="text-weight-bold q-pa-xs text-right">
                   Penandaan Anatomy
                 </div>
@@ -467,7 +467,7 @@ const props = defineProps({
 
 function getKesadaran(val) {
   const temp = store.optionsTingkatkesadaran.filter(a => a.value === val)
-  if (temp.length) {
+  if (temp?.length) {
     return temp[0].label
   } else {
     return '-'

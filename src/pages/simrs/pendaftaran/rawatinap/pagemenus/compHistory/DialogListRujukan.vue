@@ -15,12 +15,12 @@
       <q-separator />
 
       <q-card-section style="max-height: 50vh" class="q-pa-none scroll">
-        <div v-if="tab ==='pcare' && pCares.length === 0">
+        <div v-if="tab ==='pcare' && pCares?.length === 0">
           <div class="column flex-center" style="min-height: 300px;">
             Maaf data tidak ditemukan
           </div>
         </div>
-        <div v-else-if="tab ==='rs' && listRs.length === 0">
+        <div v-else-if="tab ==='rs' && listRs?.length === 0">
           <div class="column flex-center" style="min-height: 300px;">
             Maaf data tidak ditemukan
           </div>

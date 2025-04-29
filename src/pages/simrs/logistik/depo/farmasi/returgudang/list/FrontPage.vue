@@ -76,7 +76,7 @@
         </div>
       </template>
       <template #expand="{ row }">
-        <div v-if="row.details.length">
+        <div v-if="row.details?.length">
           <div class="row items-center text-weight-bold">
             <div class="col-6 text-center">
               Obat

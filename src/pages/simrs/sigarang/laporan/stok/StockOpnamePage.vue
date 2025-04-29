@@ -108,20 +108,20 @@
           <!-- button stok opname -->
           <!-- <div class="fit row no-wrap justify-end items-center q-mb-sm">
           <q-btn
-            :label="!store.allItems.length ? 'Mulai Opname':'Sudah ada data'"
+            :label="!store.allItems?.length ? 'Mulai Opname':'Sudah ada data'"
             no-caps
             color="primary"
-            :disable="!!store.allItems.length || store.loading"
+            :disable="!!store.allItems?.length || store.loading"
             @click="store.simpanOpname"
           >
             <q-tooltip
               anchor="top middle"
               self="center middle"
             >
-              <div v-if="!store.allItems.length">
+              <div v-if="!store.allItems?.length">
                 Mulai stok opname
               </div>
-              <div v-if="store.allItems.length">
+              <div v-if="store.allItems?.length">
                 Sudah dilakukan stok opname di bulan ini
               </div>
             </q-tooltip>
@@ -649,10 +649,10 @@ function noPenerimaanDepo(val) {
   return depo.map(m => m.no_penerimaan).toString()
 }
 function sisaStok(val) {
-  if (val.length > 0) {
+  if (val?.length > 0) {
     const depo = val.filter(m => m.kode_ruang === store.kode_tempat)
     let totalDepo = 0
-    if (depo.length > 0) {
+    if (depo?.length > 0) {
       totalDepo = depo.map(x => x.sisa_stok).reduce((a, b) => a + b, 0)
     }
     return totalDepo
@@ -661,10 +661,10 @@ function sisaStok(val) {
 }
 function stokGudang (val) {
   const gudang = 'Gd-02010100'
-  if (val.length > 0) {
+  if (val?.length > 0) {
     const depo = val.filter(m => m.kode_ruang === gudang)
     let totalDepo = 0
-    if (depo.length > 0) {
+    if (depo?.length > 0) {
       totalDepo = depo.map(x => x.sisa_stok).reduce((a, b) => a + b, 0)
     }
     return totalDepo
@@ -689,7 +689,7 @@ const tahunSelected = val => {
 }
 const namaTempat = computed(() => {
   const temp = store.gudangDepo.filter(a => a.kode === store.kode_tempat)
-  if (temp.length) {
+  if (temp?.length) {
     return temp[0].nama
   } else {
     return '-'

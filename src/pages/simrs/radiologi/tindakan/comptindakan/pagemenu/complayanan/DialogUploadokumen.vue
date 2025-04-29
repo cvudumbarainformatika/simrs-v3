@@ -37,7 +37,7 @@
               >
                 <div class="full-height full-width">
                   <div
-                    v-if="scope.files.length===0"
+                    v-if="scope.files?.length===0"
                     class="column flex-center full-height"
                   >
                     <q-icon

@@ -102,7 +102,7 @@ const menus = computed(() => {
   const apem = store.aplications.filter(app => {
     return app.aplikasi === 'laporan'
   })
-  if (apem.length) {
+  if (apem?.length) {
     return apem[0].menus
   } else {
     return []

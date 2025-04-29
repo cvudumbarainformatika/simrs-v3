@@ -1,5 +1,5 @@
 <template>
-  <template v-if="store.psappendapatan.length || store.psapbarjas.length || store.psapsilpa.length">
+  <template v-if="store.psappendapatan?.length || store.psapbarjas?.length || store.psapsilpa?.length">
     <q-card-section class="full-width">
       <div class="row">
         <div class="full-width">
@@ -114,7 +114,7 @@
                   BELANJA MODAL
                 </td>
               </tr>
-              <tr v-for="it in store.psapmodal" :key="it" :class="it.kode.length <= 3 ? 'text-bold' : ''">
+              <tr v-for="it in store.psapmodal" :key="it" :class="it.kode?.length <= 3 ? 'text-bold' : ''">
                 <td class="text-left">
                   - {{ it.uraian }}
                 </td>
@@ -202,7 +202,7 @@
                   PEMBIAYAAN
                 </td>
               </tr>
-              <tr v-for="it in store.psapsilpa" :key="it" :class="it.kode.length <= 3 ? 'text-bold' : ''">
+              <tr v-for="it in store.psapsilpa" :key="it" :class="it.kode?.length <= 3 ? 'text-bold' : ''">
                 <td class="text-left">
                   - {{ it.uraian }}
                 </td>

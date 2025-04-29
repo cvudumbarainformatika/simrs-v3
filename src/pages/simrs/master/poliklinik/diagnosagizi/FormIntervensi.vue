@@ -45,7 +45,7 @@
                 :cover="false"
                 :offset="[0, -10]"
                 class=""
-                :validate="val => val.length > 0"
+                :validate="val => val?.length > 0"
               >
                 <q-input
                   v-model="scope.value"
@@ -69,7 +69,7 @@
               <q-popup-edit
                 v-slot="scope"
                 v-model="store.intervensi"
-                :validate="val => val.length > 0"
+                :validate="val => val?.length > 0"
                 style="width: 30% !important;"
                 :cover="false"
                 :offset="[0, 10]"
@@ -109,7 +109,7 @@
                       :cover="false"
                       :offset="[0, -10]"
                       class=""
-                      :validate="val => val.length > 0"
+                      :validate="val => val?.length > 0"
                     >
                       <q-input
                         v-model="scope.value"
@@ -174,6 +174,6 @@ function setScope (scope, group, row) {
 
 function filterredIntervensis (by) {
   const arr = store?.diagnosa?.intervensis
-  return arr.length ? arr.filter(x => x.group === by) : []
+  return arr?.length ? arr.filter(x => x.group === by) : []
 }
 </script>

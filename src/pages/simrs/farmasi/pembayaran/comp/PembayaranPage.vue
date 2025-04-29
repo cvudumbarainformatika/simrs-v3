@@ -150,10 +150,10 @@
       <div v-if="store.loadingAmbil">
         <app-loading />
       </div>
-      <div v-if="!store.loadingAmbil && !store.penerimaans.length">
+      <div v-if="!store.loadingAmbil && !store.penerimaans?.length">
         <app-no-data />
       </div>
-      <div v-if="!store.loadingAmbil && store.penerimaans.length">
+      <div v-if="!store.loadingAmbil && store.penerimaans?.length">
         <div class="row bg-dark text-white q-px-sm q-py-xs q-mb-sm">
           <div
             class="col-auto"
@@ -282,7 +282,7 @@ function setTanggalCair (val) {
 function setJmBayar (evt) {
   const inc = evt.includes('.')
   const ind = evt.indexOf('.')
-  const panj = evt.length
+  const panj = evt?.length
   const nilai = isNaN(parseFloat(evt)) ? 0 : (inc && (ind === (panj - 2)) ? evt : parseFloat(evt))
   store.setForm('total_pembayaran', nilai)
 }

@@ -25,8 +25,8 @@ const isEditing = ref(false);
 const inputRef = ref(null);
 
 const computedRows = computed(() => {
-  const lineCount = (editableText.value.match(/\n/g) || []).length + 1;
-  const charCount = editableText.value.length;
+  const lineCount = (editableText.value.match(/\n/g) || [])?.length + 1;
+  const charCount = editableText.value?.length;
   return Math.min(20, Math.max(1, Math.max(lineCount, Math.ceil(charCount / 50))));
 });
 

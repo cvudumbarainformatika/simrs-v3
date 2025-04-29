@@ -6,7 +6,7 @@
           Submenu  {{ title }}
         </div>
         <q-btn
-          v-if="items.length > 0"
+          v-if="items?.length > 0"
           round
           icon="icon-mat-add"
           size="sm"
@@ -18,7 +18,7 @@
       <q-separator class="q-my-md" />
       <div class="submenus">
         <div
-          v-if="submenus.length === 0"
+          v-if="submenus?.length === 0"
           class="column flex-center"
         >
           SubMenu Belum Ada
@@ -109,23 +109,23 @@ const emits = defineEmits(['addSubmenu', 'editSubmenu'])
 const submenus = computed(() => {
   let arr = []
   // const id = props.items[props.menu].id
-  if (props.menu.length === 0) return arr
-  if (props.items.length > 0) arr = props.items[props.menu].submenu
+  if (props.menu?.length === 0) return arr
+  if (props.items?.length > 0) arr = props.items[props.menu].submenu
   console.log('submenus', arr)
   return arr
 })
 const title = computed(() => {
   let txt = ''
   // const id = props.items[props.menu].id
-  if (props.menu.length === 0) return txt
-  if (props.items.length > 0) txt = props.items[props.menu].nama
+  if (props.menu?.length === 0) return txt
+  if (props.items?.length > 0) txt = props.items[props.menu].nama
   return txt
 })
 const menuId = computed(() => {
   let txt = 0
   // const id = props.items[props.menu].id
-  if (props.menu.length === 0) return txt
-  if (props.items.length > 0) txt = props.items[props.menu].id
+  if (props.menu?.length === 0) return txt
+  if (props.items?.length > 0) txt = props.items[props.menu].id
   return txt
 })
 

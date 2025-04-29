@@ -333,7 +333,7 @@ onMounted(() => {
 })
 
 // async function filterFn(val, update, abort) {
-//   if (val.length < 1) {
+//   if (val?.length < 1) {
 //     abort()
 //     return
 //   }
@@ -347,7 +347,7 @@ onMounted(() => {
 //       options.value = filteredData
 //     },
 //     ref => {
-//       if (val !== '' && ref.options.length) {
+//       if (val !== '' && ref.options?.length) {
 //         ref.setOptionIndex(-1)
 //         ref.moveOptionSelection(1, true)
 //       }
@@ -375,7 +375,7 @@ onMounted(() => {
 // }
 
 // function createValueAsalSumberSpesimen(val, done) {
-//   if (val.length > 0) {
+//   if (val?.length > 0) {
 //     if (!asalOptions.includes(val)) {
 //       asalOptions.push(val)
 //     }
@@ -396,7 +396,7 @@ onMounted(() => {
 // }
 
 // function createValueMetodePengambilanSpesimen(val, done) {
-//   if (val.length > 0) {
+//   if (val?.length > 0) {
 //     if (!metodeOptions.includes(val)) {
 //       metodeOptions.push(val)
 //     }
@@ -417,8 +417,8 @@ function saveOrderLaborat () {
 function pilihPemeriksaans (val) {
   // console.log(val)
   modalOpen.value = false
-  const arr = val.length ? val.map(x => x.name) : []
-  const implode = arr.length ? arr.join('||') : ''
+  const arr = val?.length ? val.map(x => x.name) : []
+  const implode = arr?.length ? arr.join('||') : ''
   // console.log(implode)
   store.setPermintaanLaborats(implode, val)
   // insertList(val)

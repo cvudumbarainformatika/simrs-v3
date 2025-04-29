@@ -31,7 +31,7 @@
               />
             </div>
 
-            <div v-if="store.selectDiagnosa.length" class="col-12">
+            <div v-if="store.selectDiagnosa?.length" class="col-12">
               <b>Intervensi Keperawatan</b>
             </div>
           </div>
@@ -48,7 +48,7 @@
               <b>{{ item.kode }} - {{ item.nama }}</b>
             </div>
 
-            <div v-if="item.intervensis?.filter(x=>x.group === 'terapeutik').length">
+            <div v-if="item.intervensis?.filter(x=>x.group === 'terapeutik')?.length">
               <q-separator class="q-my-xs" />
               <div class="">
                 <q-chip
@@ -77,7 +77,7 @@
               />
             </div>
 
-            <div v-if="item.intervensis?.filter(x=>x.group === 'edukasi').length">
+            <div v-if="item.intervensis?.filter(x=>x.group === 'edukasi')?.length">
               <q-separator class="q-my-xs" />
               <div class="">
                 <q-chip
@@ -106,7 +106,7 @@
               />
             </div>
 
-            <div v-if="item.intervensis?.filter(x=>x.group === 'observasi').length">
+            <div v-if="item.intervensis?.filter(x=>x.group === 'observasi')?.length">
               <q-separator class="q-my-xs" />
               <div class="">
                 <q-chip
@@ -136,7 +136,7 @@
             </div>
 
             <div
-              v-if="item.intervensis?.filter(x=>x.group === 'kolaborasi').length"
+              v-if="item.intervensis?.filter(x=>x.group === 'kolaborasi')?.length"
               class="q-mb-sm"
             >
               <q-separator class="q-my-xs" />
@@ -168,7 +168,7 @@
             </div>
 
             <div
-              v-if="item.intervensis?.filter(x=>x.group === 'plann').length"
+              v-if="item.intervensis?.filter(x=>x.group === 'plann')?.length"
               class="q-mb-sm"
             >
               <q-separator class="q-my-xs" />
@@ -214,7 +214,7 @@
               <b>{{ item.kode }} - {{ item.nama }}</b>
             </div>
 
-            <div v-if="item.intervensis?.filter(x=>x.group === 'terapeutik' ).length && categoryIntervensi !== 'plann'">
+            <div v-if="item.intervensis?.filter(x=>x.group === 'terapeutik' )?.length && categoryIntervensi !== 'plann'">
               <q-separator class="q-my-xs" />
               <div class="">
                 <q-chip
@@ -243,7 +243,7 @@
               />
             </div>
 
-            <div v-if="item.intervensis?.filter(x=>x.group === 'edukasi').length && categoryIntervensi !== 'plann'">
+            <div v-if="item.intervensis?.filter(x=>x.group === 'edukasi')?.length && categoryIntervensi !== 'plann'">
               <q-separator class="q-my-xs" />
               <div class="">
                 <q-chip
@@ -272,7 +272,7 @@
               />
             </div>
 
-            <div v-if="item.intervensis?.filter(x=>x.group === 'observasi').length && categoryIntervensi !== 'plann'">
+            <div v-if="item.intervensis?.filter(x=>x.group === 'observasi')?.length && categoryIntervensi !== 'plann'">
               <q-separator class="q-my-xs" />
               <div class="">
                 <q-chip
@@ -302,7 +302,7 @@
             </div>
 
             <div
-              v-if="item.intervensis?.filter(x=>x.group === 'kolaborasi').length && categoryIntervensi !== 'plann'"
+              v-if="item.intervensis?.filter(x=>x.group === 'kolaborasi')?.length && categoryIntervensi !== 'plann'"
               class="q-mb-sm"
             >
               <q-separator class="q-my-xs" />
@@ -334,7 +334,7 @@
             </div>
 
             <div
-              v-if="item.intervensis?.filter(x=>x.group === 'plann').length && categoryIntervensi === 'plann'"
+              v-if="item.intervensis?.filter(x=>x.group === 'plann')?.length && categoryIntervensi === 'plann'"
               class="q-mb-sm"
             >
               <q-separator class="q-my-xs" />

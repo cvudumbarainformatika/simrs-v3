@@ -16,7 +16,7 @@
     <div class="row q-col-gutter-lg">
       <div class="col-md-4">
         <q-list
-          v-if="store.items.length === 0"
+          v-if="store.items?.length === 0"
           bordered
           class="bg-white"
           padding

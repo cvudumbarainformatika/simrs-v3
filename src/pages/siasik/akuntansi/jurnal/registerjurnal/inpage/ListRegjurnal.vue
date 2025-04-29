@@ -1,5 +1,5 @@
 <template>
-  <template v-if="store.jurnals.length">
+  <template v-if="store.jurnals?.length">
     <div class="q-pa-md full-width">
       <q-table
         class="my-sticky-table"
@@ -65,7 +65,7 @@
             </q-td>
             <q-td key="koderek" :props="props" class="text-left vertical-bottom">
               <div class="row" v-for="it in props.row?.debit" :key="it">
-                <template v-if="it.length">
+                <template v-if="it?.length">
                   <q-badge v-for="at in it" :key="at" color="white" class="row full-width text-weight-bold text-teal-6">
                     {{ at.kode }}
                   </q-badge>
@@ -77,7 +77,7 @@
                 </template>
               </div>
               <div class="row q-pl-md" v-for="it in props.row?.kredit" :key="it">
-                <template v-if="it.length">
+                <template v-if="it?.length">
                   <q-badge v-for="at in it" :key="at" color="white" class="row full-width text-weight-bold text-orange-6">
                     {{ at.kode }}
                   </q-badge>
@@ -168,7 +168,7 @@
                 </div>
               </template>
               <div class="row" v-for="it in props.row?.debit" :key="it">
-                <template v-if="it.length">
+                <template v-if="it?.length">
                   <q-badge v-for="at in it" :key="at" color="white" class="row full-width text-weight-bold text-teal-6">
                     {{ at.uraian }}
                   </q-badge>
@@ -180,7 +180,7 @@
                 </template>
               </div>
               <div class="row q-pl-md" v-for="it in props.row?.kredit" :key="it">
-                <template v-if="it.length">
+                <template v-if="it?.length">
                   <q-badge v-for="at in it" :key="at" color="white" class="row full-width text-weight-bold text-orange-6">
                     {{ at.uraian }}
                   </q-badge>
@@ -262,7 +262,7 @@
 
             <q-td key="debit" :props="props" class="text-right vertical-bottom">
               <div v-for="it in props.row?.debit" :key="it">
-                <template v-if="it.length">
+                <template v-if="it?.length">
                   <q-badge v-for="at in it" :key="at" color="teal-6" class="row justify-end full-width">
                     {{ formattanpaRp(at.debit) }}
                   </q-badge>
@@ -274,7 +274,7 @@
                 </template>
               </div>
               <div v-for="it in props.row?.kredit" :key="it">
-                <template v-if="it.length">
+                <template v-if="it?.length">
                   <q-badge v-for="at in it" :key="at" color="orange-6" class="row justify-end full-width">
                     {{ formattanpaRp(at.debit) }}
                   </q-badge>
@@ -356,7 +356,7 @@
 
             <q-td key="kredit" :props="props" class="text-right vertical-bottom">
               <div v-for="it in props.row?.debit" :key="it">
-                <template v-if="it.length">
+                <template v-if="it?.length">
                   <q-badge v-for="at in it" :key="at" color="teal-6" class="row justify-end full-width">
                     {{ formattanpaRp(at.kredit) }}
                   </q-badge>
@@ -368,7 +368,7 @@
                 </template>
               </div>
               <div v-for="it in props.row?.kredit" :key="it">
-                <template v-if="it.length">
+                <template v-if="it?.length">
                   <q-badge v-for="at in it" :key="at" color="orange-6" class="row justify-end full-width">
                     {{ formattanpaRp(at.kredit) }}
                   </q-badge>

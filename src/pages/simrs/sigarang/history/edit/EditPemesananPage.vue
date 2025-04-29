@@ -152,12 +152,12 @@
           @click="tambahRow"
         />
         <div
-          v-if="!store.item.details.length"
+          v-if="!store.item.details?.length"
           style="height:300px"
         >
           <app-no-data />
         </div>
-        <div v-if="store.item.details.length">
+        <div v-if="store.item.details?.length">
           <!-- header -->
           <div class="row text-weight-bold q-col-gutter-sm q-mb-sm q-mt-sm">
             <div class="col-1 border-tb border-left">
@@ -377,7 +377,7 @@ function hapus (val, i) {
       delete det[index]
       store.item.details = det.filter(a => a.kode_rs)
       const habisUdah = store.item.details.filter(y => y.diterima <= 0)
-      if (!habisUdah.length) {
+      if (!habisUdah?.length) {
         kirim.status = 4
       }
       else {

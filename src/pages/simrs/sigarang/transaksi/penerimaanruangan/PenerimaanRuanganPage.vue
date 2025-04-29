@@ -40,7 +40,7 @@
         </div>
       </q-card-section>
       <q-separator />
-      <q-card-section v-if="store.form.details?Object.keys(store.form.details).length:false">
+      <q-card-section v-if="store.form.details?Object.keys(store.form.details)?.length:false">
         <div class="fit row no-wrap justify-evenly items-center content-center q-my-xs text-weight-bold">
           <div class="anak text-center">
             Kode barang
@@ -108,7 +108,7 @@
         </div>
       </q-card-section>
       <q-card-actions
-        v-if="store.form.details?Object.keys(store.form.details).length:false"
+        v-if="store.form.details?Object.keys(store.form.details)?.length:false"
         align="right"
       >
         <q-btn

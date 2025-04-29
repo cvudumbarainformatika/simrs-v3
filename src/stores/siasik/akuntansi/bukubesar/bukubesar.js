@@ -203,7 +203,7 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
       this.allsaldosebelum = arr
       // SALDO AWAL ALL//
       const kode6 = []
-      for (let z = 0; z < arr.length; z++) {
+      for (let z = 0; z < arr?.length; z++) {
         const el = arr[z]
         const obj = {
           tanggal: el?.tanggal,
@@ -219,16 +219,16 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
       }
       const kode5 = []
       const unik5 = this.allsaldosebelum.map((x) => x.notrans)
-      const set5 = unik5.length ? [...new Set(unik5)] : []
-      for (let z = 0; z < set5.length; z++) {
+      const set5 = unik5?.length ? [...new Set(unik5)] : []
+      for (let z = 0; z < set5?.length; z++) {
         const el = set5[z]
         const arrs = this.allsaldosebelum
         const filters = arrs.filter((x) => x.notrans === el).map((x) => x)
 
         const unikkode = filters.map((x) => x.kode6)
-        const setunik = unikkode.length ? [...new Set(unikkode)] : []
+        const setunik = unikkode?.length ? [...new Set(unikkode)] : []
         const unikarr = []
-        for (let a = 0; a < setunik.length; a++) {
+        for (let a = 0; a < setunik?.length; a++) {
           const el = setunik[a]
           const er = filters
           const obj = {
@@ -247,16 +247,16 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
 
       const kode4 = []
       const unik4 = this.allsaldosebelum.map((x) => x.notrans)
-      const set4 = unik4.length ? [...new Set(unik4)] : []
-      for (let z = 0; z < set4.length; z++) {
+      const set4 = unik4?.length ? [...new Set(unik4)] : []
+      for (let z = 0; z < set4?.length; z++) {
         const el = set4[z]
         const arrs = this.allsaldosebelum
         const filters = arrs.filter((x) => x.notrans === el).map((x) => x)
         // console.log('kkkk', filters)
         const unikkode = filters.map((x) => x.kode6)
-        const setunik = unikkode.length ? [...new Set(unikkode)] : []
+        const setunik = unikkode?.length ? [...new Set(unikkode)] : []
         const unikarr = []
-        for (let a = 0; a < setunik.length; a++) {
+        for (let a = 0; a < setunik?.length; a++) {
           const el = setunik[a]
           const er = filters
           const obj = {
@@ -273,16 +273,16 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
       }
       const kode3 = []
       const unik3 = this.allsaldosebelum.map((x) => x.notrans)
-      const set3 = unik3.length ? [...new Set(unik3)] : []
-      for (let z = 0; z < set3.length; z++) {
+      const set3 = unik3?.length ? [...new Set(unik3)] : []
+      for (let z = 0; z < set3?.length; z++) {
         const el = set3[z]
         const arrs = this.allsaldosebelum
         const filters = arrs.filter((x) => x.notrans === el).map((x) => x)
         // console.log('kkkk', filters)
         const unikkode = filters.map((x) => x.kode6)
-        const setunik = unikkode.length ? [...new Set(unikkode)] : []
+        const setunik = unikkode?.length ? [...new Set(unikkode)] : []
         const unikarr = []
-        for (let a = 0; a < setunik.length; a++) {
+        for (let a = 0; a < setunik?.length; a++) {
           const el = setunik[a]
           const er = filters
           const obj = {
@@ -299,16 +299,16 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
       }
       const kode2 = []
       const unik2 = this.allsaldosebelum.map((x) => x.notrans)
-      const set2 = unik2.length ? [...new Set(unik2)] : []
-      for (let z = 0; z < set2.length; z++) {
+      const set2 = unik2?.length ? [...new Set(unik2)] : []
+      for (let z = 0; z < set2?.length; z++) {
         const el = set2[z]
         const arrs = this.allsaldosebelum
         const filters = arrs.filter((x) => x.notrans === el).map((x) => x)
         // console.log('kkkk', filters)
         const unikkode = filters.map((x) => x.kode6)
-        const setunik = unikkode.length ? [...new Set(unikkode)] : []
+        const setunik = unikkode?.length ? [...new Set(unikkode)] : []
         const unikarr = []
-        for (let a = 0; a < setunik.length; a++) {
+        for (let a = 0; a < setunik?.length; a++) {
           const el = setunik[a]
           const er = filters
           const obj = {
@@ -329,8 +329,8 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
       // const filter6 = buku6.filter(x => x.kodereqs === this.reqs.rekenings)
       const setakhir6 = []
       const filterunik6 = buku6.map((x) => x.kodereqs)
-      const setfil6 = filterunik6.length ? [...new Set(filterunik6)] : []
-      for (let x = 0; x < setfil6.length; x++) {
+      const setfil6 = filterunik6?.length ? [...new Set(filterunik6)] : []
+      for (let x = 0; x < setfil6?.length; x++) {
         const el = setfil6[x]
         const es = buku6
         const obj = {
@@ -350,9 +350,9 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
       // const filter5 = buku5.filter(x => x.kodereqs === this.reqs.rekenings)
       // console.log('reksss', filter5)
       const filterunik5 = buku5.map((x) => x.kodereqs)
-      const setfil5 = filterunik5.length ? [...new Set(filterunik5)] : []
+      const setfil5 = filterunik5?.length ? [...new Set(filterunik5)] : []
       const setakhir5 = []
-      for (let x = 0; x < setfil5.length; x++) {
+      for (let x = 0; x < setfil5?.length; x++) {
         const el = setfil5[x]
         const es = buku5
         const obj = {
@@ -385,7 +385,7 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
       // SALDO AWAL//
       const Salbefore6 = this.hasilSal6
       const saldo6 = []
-      for (let z = 0; z < arrsaldoawal.length; z++) {
+      for (let z = 0; z < arrsaldoawal?.length; z++) {
         const el = arrsaldoawal[z]
         const obj = {
           tanggal: '',
@@ -403,8 +403,8 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
       // console.log('coba saldo', saldo6)
       const saldo5 = []
       const unsaldo5 = arrsaldoawal.map((x) => x.kode6)
-      const setsal5 = unsaldo5.length ? [...new Set(unsaldo5)] : []
-      for (let x = 0; x < setsal5.length; x++) {
+      const setsal5 = unsaldo5?.length ? [...new Set(unsaldo5)] : []
+      for (let x = 0; x < setsal5?.length; x++) {
         const el = setsal5[x]
         const arrs = this.saldoawal
 
@@ -420,8 +420,8 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
       }
       const saldo4 = []
       const unsaldo4 = arrsaldoawal.map((x) => x.kode6)
-      const setsal4 = unsaldo4.length ? [...new Set(unsaldo4)] : []
-      for (let x = 0; x < setsal4.length; x++) {
+      const setsal4 = unsaldo4?.length ? [...new Set(unsaldo4)] : []
+      for (let x = 0; x < setsal4?.length; x++) {
         const el = setsal4[x]
         const arrs = this.saldoawal
 
@@ -438,8 +438,8 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
 
       const saldo3 = []
       const unsaldo3 = arrsaldoawal.map((x) => x.kode6)
-      const setsal3 = unsaldo3.length ? [...new Set(unsaldo3)] : []
-      for (let x = 0; x < setsal3.length; x++) {
+      const setsal3 = unsaldo3?.length ? [...new Set(unsaldo3)] : []
+      for (let x = 0; x < setsal3?.length; x++) {
         const el = setsal3[x]
         const arrs = this.saldoawal
 
@@ -455,8 +455,8 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
       }
       const saldo2 = []
       const unsaldo2 = arrsaldoawal.map((x) => x.kode6)
-      const setsal2 = unsaldo2.length ? [...new Set(unsaldo2)] : []
-      for (let x = 0; x < setsal2.length; x++) {
+      const setsal2 = unsaldo2?.length ? [...new Set(unsaldo2)] : []
+      for (let x = 0; x < setsal2?.length; x++) {
         const el = setsal2[x]
         const arrs = this.saldoawal
 
@@ -473,8 +473,8 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
 
       const saldo1 = []
       const unsaldo1 = arrsaldoawal.map((x) => x.kode6)
-      const setsal1 = unsaldo1.length ? [...new Set(unsaldo1)] : []
-      for (let x = 0; x < setsal1.length; x++) {
+      const setsal1 = unsaldo1?.length ? [...new Set(unsaldo1)] : []
+      for (let x = 0; x < setsal1?.length; x++) {
         const el = setsal1[x]
         const arrs = this.saldoawal
 
@@ -501,7 +501,7 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
 
       // HASIL DATA SALDO AWAL LEVEL 5 kebawah//
       const salsebelum5 = this.hasilSal5
-      if (this.hasilSal5.length === 0) {
+      if (this.hasilSal5?.length === 0) {
         bukuSaldo5.push(...saldo5, ...saldo4, ...saldo3, ...saldo2)
       }
       else {
@@ -511,8 +511,8 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
       const filtersaldo5 = bukuSaldo5.filter(x => x.kodereqs === this.reqs.rekenings)
       const set5akhir = []
       const uniksal5 = filtersaldo5.map((x) => x.kodereqs)
-      const setsaldo5 = uniksal5.length ? [...new Set(uniksal5)] : []
-      for (let x = 0; x < setsaldo5.length; x++) {
+      const setsaldo5 = uniksal5?.length ? [...new Set(uniksal5)] : []
+      for (let x = 0; x < setsaldo5?.length; x++) {
         const el = setsaldo5[x]
         const es = filtersaldo5
         const obj = {
@@ -534,7 +534,7 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
 
       // JURNAL//
       const kode6 = []
-      for (let z = 0; z < this.alljurnal.length; z++) {
+      for (let z = 0; z < this.alljurnal?.length; z++) {
         const el = this.alljurnal[z]
         const obj = {
           tanggal: el?.tanggal,
@@ -551,17 +551,17 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
 
       const kode5 = []
       const unik5 = this.alljurnal.map((x) => x.notrans)
-      const set5 = unik5.length ? [...new Set(unik5)] : []
-      for (let z = 0; z < set5.length; z++) {
+      const set5 = unik5?.length ? [...new Set(unik5)] : []
+      for (let z = 0; z < set5?.length; z++) {
         const el = set5[z]
         const arrs = this.alljurnal
         const filters = arrs.filter((x) => x.notrans === el).map((x) => x)
         // console.log('kkkk', filters)
 
         const unikkode = filters.map((x) => x.kode6)
-        const setunik = unikkode.length ? [...new Set(unikkode)] : []
+        const setunik = unikkode?.length ? [...new Set(unikkode)] : []
         const unikarr = []
-        for (let a = 0; a < setunik.length; a++) {
+        for (let a = 0; a < setunik?.length; a++) {
           const el = setunik[a]
           const er = filters
           const obj = {
@@ -580,16 +580,16 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
 
       const kode4 = []
       const unik4 = this.alljurnal.map((x) => x.notrans)
-      const set4 = unik4.length ? [...new Set(unik4)] : []
-      for (let z = 0; z < set4.length; z++) {
+      const set4 = unik4?.length ? [...new Set(unik4)] : []
+      for (let z = 0; z < set4?.length; z++) {
         const el = set4[z]
         const arrs = this.alljurnal
         const filters = arrs.filter((x) => x.notrans === el).map((x) => x)
         // console.log('kkkk', filters)
         const unikkode = filters.map((x) => x.kode6)
-        const setunik = unikkode.length ? [...new Set(unikkode)] : []
+        const setunik = unikkode?.length ? [...new Set(unikkode)] : []
         const unikarr = []
-        for (let a = 0; a < setunik.length; a++) {
+        for (let a = 0; a < setunik?.length; a++) {
           const el = setunik[a]
           const er = filters
           const obj = {
@@ -606,16 +606,16 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
       }
       const kode3 = []
       const unik3 = this.alljurnal.map((x) => x.notrans)
-      const set3 = unik3.length ? [...new Set(unik3)] : []
-      for (let z = 0; z < set3.length; z++) {
+      const set3 = unik3?.length ? [...new Set(unik3)] : []
+      for (let z = 0; z < set3?.length; z++) {
         const el = set3[z]
         const arrs = this.alljurnal
         const filters = arrs.filter((x) => x.notrans === el).map((x) => x)
         // console.log('kkkk', filters)
         const unikkode = filters.map((x) => x.kode3)
-        const setunik = unikkode.length ? [...new Set(unikkode)] : []
+        const setunik = unikkode?.length ? [...new Set(unikkode)] : []
         const unikarr = []
-        for (let a = 0; a < setunik.length; a++) {
+        for (let a = 0; a < setunik?.length; a++) {
           const el = setunik[a]
           const er = filters
           const obj = {
@@ -632,16 +632,16 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
       }
       const kode2 = []
       const unik2 = this.alljurnal.map((x) => x.notrans)
-      const set2 = unik2.length ? [...new Set(unik2)] : []
-      for (let z = 0; z < set2.length; z++) {
+      const set2 = unik2?.length ? [...new Set(unik2)] : []
+      for (let z = 0; z < set2?.length; z++) {
         const el = set2[z]
         const arrs = this.alljurnal
         const filters = arrs.filter((x) => x.notrans === el).map((x) => x)
         // console.log('kkkk', filters)
         const unikkode = filters.map((x) => x.kode6)
-        const setunik = unikkode.length ? [...new Set(unikkode)] : []
+        const setunik = unikkode?.length ? [...new Set(unikkode)] : []
         const unikarr = []
-        for (let a = 0; a < setunik.length; a++) {
+        for (let a = 0; a < setunik?.length; a++) {
           const el = setunik[a]
           const er = filters
           const obj = {
@@ -658,16 +658,16 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
       }
       const kode1 = []
       const unik1 = this.alljurnal.map((x) => x.notrans)
-      const set1 = unik1.length ? [...new Set(unik1)] : []
-      for (let z = 0; z < set1.length; z++) {
+      const set1 = unik1?.length ? [...new Set(unik1)] : []
+      for (let z = 0; z < set1?.length; z++) {
         const el = set1[z]
         const arrs = this.alljurnal
         const filters = arrs.filter((x) => x.notrans === el).map((x) => x)
         // console.log('kkkk', filters)
         const unikkode = filters.map((x) => x.kode6)
-        const setunik = unikkode.length ? [...new Set(unikkode)] : []
+        const setunik = unikkode?.length ? [...new Set(unikkode)] : []
         const unikarr = []
-        for (let a = 0; a < setunik.length; a++) {
+        for (let a = 0; a < setunik?.length; a++) {
           const el = setunik[a]
           const er = filters
           const obj = {
@@ -701,9 +701,9 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
       const filter5 = buku5.filter(x => x.kodereqs === this.reqs.rekenings)
       // console.log('reksss', filter5)
       const filterunik5 = filter5.map((x) => x.kodereqs)
-      const setfil5 = filterunik5.length ? [...new Set(filterunik5)] : []
+      const setfil5 = filterunik5?.length ? [...new Set(filterunik5)] : []
       const setakhir5 = []
-      for (let x = 0; x < setfil5.length; x++) {
+      for (let x = 0; x < setfil5?.length; x++) {
         const el = setfil5[x]
         const es = filter5
         const obj = {
@@ -727,9 +727,9 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
       // HASIL DATA BUKU BESAR LEVEL 1 JURNAL + SALDO AWAL//
       buku1.push(...kode1, ...saldo1)
       const filterunik1 = buku1.map((x) => x.kode)
-      const setfil1 = filterunik1.length ? [...new Set(filterunik1)] : []
+      const setfil1 = filterunik1?.length ? [...new Set(filterunik1)] : []
       const setakhir1 = []
-      for (let x = 0; x < setfil1.length; x++) {
+      for (let x = 0; x < setfil1?.length; x++) {
         const el = setfil1[x]
         const es = buku1
         const obj = {
@@ -780,8 +780,8 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
       const saldo6sebelumnya = []
       const saldounik6 = saldosebelum.filter(x => x.kode6 === this.reqs.rekenings).map((x) => x.kode6)
 
-      const setunik6 = saldounik6.length ? [...new Set(saldounik6)] : []
-      for (let q = 0; q < setunik6.length; q++) {
+      const setunik6 = saldounik6?.length ? [...new Set(saldounik6)] : []
+      for (let q = 0; q < setunik6?.length; q++) {
         const el = setunik6[q] ?? 0
         const obj = {
           tanggal: '',
@@ -799,8 +799,8 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
 
       const saldo5sebelumnya = []
       const saldounik5 = saldosebelum.filter(x => x.kode5 === this.reqs.rekenings).map((x) => x.kode5)
-      const setunik5 = saldounik5.length ? [...new Set(saldounik5)] : []
-      for (let q = 0; q < setunik5.length; q++) {
+      const setunik5 = saldounik5?.length ? [...new Set(saldounik5)] : []
+      for (let q = 0; q < setunik5?.length; q++) {
         const el = setunik5[q] ?? 0
         const obj = {
           tanggal: '',
@@ -817,8 +817,8 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
 
       const saldo4sebelumnya = []
       const saldounik4 = saldosebelum.filter(x => x.kode4 === this.reqs.rekenings).map((x) => x.kode4)
-      const setunik4 = saldounik4.length ? [...new Set(saldounik4)] : []
-      for (let q = 0; q < setunik4.length; q++) {
+      const setunik4 = saldounik4?.length ? [...new Set(saldounik4)] : []
+      for (let q = 0; q < setunik4?.length; q++) {
         const el = setunik4[q] ?? 0
         const obj = {
           tanggal: '',
@@ -835,8 +835,8 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
 
       const saldo3sebelumnya = []
       const saldounik3 = saldosebelum.filter(x => x.kode3 === this.reqs.rekenings).map((x) => x.kode3)
-      const setunik3 = saldounik3.length ? [...new Set(saldounik3)] : []
-      for (let q = 0; q < setunik3.length; q++) {
+      const setunik3 = saldounik3?.length ? [...new Set(saldounik3)] : []
+      for (let q = 0; q < setunik3?.length; q++) {
         const el = setunik3[q] ?? 0
         const obj = {
           tanggal: '',
@@ -853,8 +853,8 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
 
       const saldo2sebelumnya = []
       const saldounik2 = saldosebelum.filter(x => x.kode2 === this.reqs.rekenings).map((x) => x.kode2)
-      const setunik2 = saldounik2.length ? [...new Set(saldounik2)] : []
-      for (let q = 0; q < setunik2.length; q++) {
+      const setunik2 = saldounik2?.length ? [...new Set(saldounik2)] : []
+      for (let q = 0; q < setunik2?.length; q++) {
         const el = setunik2[q] ?? 0
         const obj = {
           tanggal: '',
@@ -871,8 +871,8 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
       }
       const saldo1sebelumnya = []
       const saldounik1 = saldosebelum.filter(x => x.kode1 === this.reqs.rekenings).map((x) => x.kode1)
-      const setunik1 = saldounik1.length ? [...new Set(saldounik1)] : []
-      for (let q = 0; q < setunik1.length; q++) {
+      const setunik1 = saldounik1?.length ? [...new Set(saldounik1)] : []
+      for (let q = 0; q < setunik1?.length; q++) {
         const el = setunik1[q] ?? 0
         const obj = {
           tanggal: '',
@@ -907,7 +907,7 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
       const arrjurnal = []
       arrjurnal.push(...arrotom, ...arrmanual)
       const kode6 = []
-      for (let z = 0; z < arr6.length; z++) {
+      for (let z = 0; z < arr6?.length; z++) {
         const el = arr6[z]
         const obj = {
           tanggal: el?.tanggal,
@@ -927,7 +927,7 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
           a < b ? -1 : a > b ? 1 : 0
         )
       const arrBuku6 = sortByDate6(filter6)
-      if (!saldo6sebelumnya.length && arrBuku6.length) {
+      if (!saldo6sebelumnya?.length && arrBuku6?.length) {
         this.hasilRinci6 = this.hasilMapssaldo(saldonol.concat(arrBuku6))
         // console.log('!saldo6sebelumnya', this.hasilRinci6)
       }
@@ -938,7 +938,7 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
       console.log('BUKU BESAR KODE6', this.hasilRinci6)
 
       const kode5 = []
-      for (let z = 0; z < arr5.length; z++) {
+      for (let z = 0; z < arr5?.length; z++) {
         const el = arr5[z]
         const obj = {
           tanggal: el?.tanggal,
@@ -958,7 +958,7 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
           a < b ? -1 : a > b ? 1 : 0
         )
       const arrBuku5 = sortByDate5(filter5)
-      if (!saldo5sebelumnya.length && arrBuku5.length) {
+      if (!saldo5sebelumnya?.length && arrBuku5?.length) {
         this.hasilRinci5 = this.hasilMapssaldo(saldonol.concat(arrBuku5))
       }
       else {
@@ -967,7 +967,7 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
       console.log('BUKU BESAR KODE5', this.hasilRinci5)
 
       const kode4 = []
-      for (let z = 0; z < arr4.length; z++) {
+      for (let z = 0; z < arr4?.length; z++) {
         const el = arr4[z]
         const obj = {
           tanggal: el?.tanggal,
@@ -987,7 +987,7 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
           a < b ? -1 : a > b ? 1 : 0
         )
       const arrBuku4 = sortByDate4(filter4)
-      if (!saldo4sebelumnya.length && arrBuku4.length) {
+      if (!saldo4sebelumnya?.length && arrBuku4?.length) {
         this.hasilRinci4 = this.hasilMapssaldo(saldonol.concat(arrBuku4))
       }
       else {
@@ -997,8 +997,8 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
 
       const kode3 = []
       // const fil3 = arr3.map((x) => x.kode3)
-      // const unik3 = fil3.length ? [...new Set(fil3)] : []
-      for (let z = 0; z < arr3.length; z++) {
+      // const unik3 = fil3?.length ? [...new Set(fil3)] : []
+      for (let z = 0; z < arr3?.length; z++) {
         const el = arr3[z]
         const obj = {
           tanggal: el?.tanggal,
@@ -1012,7 +1012,7 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
         }
         kode3.push(obj)
       }
-      // for (let z = 0; z < unik3.length; z++) {
+      // for (let z = 0; z < unik3?.length; z++) {
       //   const el = unik3[z]
       //   const obj = {
       //     kodereqs: arr3?.filter(x => x.kode4 === el)[0]?.kode3,
@@ -1039,12 +1039,12 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
           a < b ? -1 : a > b ? 1 : 0
         )
       const arrBuku3 = sortByDate3(filter3)
-      // for (let a = 0; a < arrBuku3.length; a++) {
+      // for (let a = 0; a < arrBuku3?.length; a++) {
       //   const el = arrBuku3[a]
       //   const sumrinci = el.rinci
       //   this.hasilMapssaldo(sumrinci)
       // }
-      if (!saldo3sebelumnya.length && arrBuku3.length) {
+      if (!saldo3sebelumnya?.length && arrBuku3?.length) {
         this.hasilRinci3 = this.hasilMapssaldo(saldonol.concat(arrBuku3))
       }
       else {
@@ -1053,7 +1053,7 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
       console.log('BUKU BESAR KODE3', this.hasilRinci3)
 
       const kode2 = []
-      for (let z = 0; z < arr2.length; z++) {
+      for (let z = 0; z < arr2?.length; z++) {
         const el = arr2[z]
         const obj = {
           tanggal: el?.tanggal,
@@ -1073,7 +1073,7 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
           a < b ? -1 : a > b ? 1 : 0
         )
       const arrBuku2 = sortByDate2(filter2)
-      if (!saldo2sebelumnya.length && arrBuku2.length) {
+      if (!saldo2sebelumnya?.length && arrBuku2?.length) {
         this.hasilRinci2 = this.hasilMapssaldo(saldonol.concat(arrBuku2))
       }
       else {
@@ -1082,7 +1082,7 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
       console.log('BUKU BESAR KODE2', this.hasilRinci2)
 
       const kode1 = []
-      for (let z = 0; z < arr1.length; z++) {
+      for (let z = 0; z < arr1?.length; z++) {
         const el = arr1[z]
         const obj = {
           tanggal: el?.tanggal,
@@ -1103,7 +1103,7 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
           a < b ? -1 : a > b ? 1 : 0
         )
       const arrBuku1 = sortByDate1(filter1)
-      if (!saldo1sebelumnya.length && arrBuku1.length) {
+      if (!saldo1sebelumnya?.length && arrBuku1?.length) {
         this.hasilRinci1 = this.hasilMapssaldo(saldonol.concat(arrBuku1))
       }
       else {
@@ -1113,8 +1113,8 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
     },
     hasilMapssaldo(arr) {
       let total = 0
-      if (arr.length) {
-        for (let i = 0; i < arr.length; i++) {
+      if (arr?.length) {
+        for (let i = 0; i < arr?.length; i++) {
           if (i === 0) {
             total = parseFloat(arr[0]?.debit) - parseFloat(arr[0]?.kredit)
             arr[0].total = total.toFixed(2)

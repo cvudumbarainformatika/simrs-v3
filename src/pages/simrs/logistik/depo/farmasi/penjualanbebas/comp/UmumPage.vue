@@ -15,7 +15,7 @@
           :options="optionModelKunjs"
           hide-dropdown-icon
           hide-selected
-          :disable="store.form.details.length>0"
+          :disable="store.form.details?.length>0"
           @filter="filterKunj"
           @update:model-value="modelKunjSelected"
           @clear="clearModelKunj"
@@ -39,7 +39,7 @@
           :options="optionModels"
           hide-dropdown-icon
           hide-selected
-          :disable="store.form.details.length>0"
+          :disable="store.form.details?.length>0"
           @filter="filterRsLain"
           @update:model-value="modelSelected"
           @clear="clearModel"
@@ -55,7 +55,7 @@
         <app-input
           v-model="store.form.kode_identitas"
           label="Kode Identitas (NIK)"
-          :disable="store.form.details.length>0"
+          :disable="store.form.details?.length>0"
           outlined
         />
       </div>
@@ -63,7 +63,7 @@
         <app-input
           v-if="inputNama"
           v-model="store.form.nama"
-          :disable="store.form.details.length>0"
+          :disable="store.form.details?.length>0"
           label="Nama"
           @update:model-value="ketikNama"
           outlined
@@ -73,13 +73,13 @@
         <app-btn
           v-if="!inputNama"
           label="Input Nama"
-          :disable="store.form.details.length>0"
+          :disable="store.form.details?.length>0"
           @click="inputNama=true"
         />
         <app-btn
           v-if="inputNama"
           label="Tutup"
-          :disable="store.form.details.length>0"
+          :disable="store.form.details?.length>0"
           @click="inputNama=false"
         />
       </div>
@@ -111,7 +111,7 @@ function filterRsLain (val, update) {
 
   console.log(val)
   const ada = store.pasiens.filter(f => f?.nama?.toLowerCase()?.includes(val?.toLowerCase()))
-  if (ada.length > 3) update(() => { optionModels.value = ada })
+  if (ada?.length > 3) update(() => { optionModels.value = ada })
   else {
     store.getPasien(val).then(() => {
       optionModels.value = store.pasiens
@@ -141,7 +141,7 @@ function filterKunj (val, update) {
   store.setForm('kode_identitas', null)
   console.log(val)
   const ada = store.kunjungans.filter(f => f?.nama?.toLowerCase()?.includes(val?.toLowerCase()))
-  if (ada.length > 3) update(() => { optionModelKunjs.value = ada })
+  if (ada?.length > 3) update(() => { optionModelKunjs.value = ada })
   else {
     store.getKunjungan(val).then(() => {
       optionModelKunjs.value = store.kunjungans

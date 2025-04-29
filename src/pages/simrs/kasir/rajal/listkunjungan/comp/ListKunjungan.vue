@@ -3,7 +3,7 @@
     <div class="q-pb-xl">
       <ListLoading v-if="loading" />
       <div v-else>
-        <div v-if="items.length <= 0">
+        <div v-if="items?.length <= 0">
           <div class="column flex-center">
             <div class="text-h3 q-mb-md">
               🏷️
@@ -129,7 +129,7 @@ defineProps({
 })
 
 // function getStatus(arr) {
-//   if (arr.length === 0) {
+//   if (arr?.length === 0) {
 //     return '-'
 //   }
 

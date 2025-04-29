@@ -234,7 +234,7 @@ function pilihPasienIni (val) {
   // }
   const tglLahir = val.tgllahir.split('-')
   store.setForm('barulama', 'lama')
-  if (tglLahir.length) {
+  if (tglLahir?.length) {
     store.tanggal.tahun = tglLahir[0]
     store.tanggal.bulan = tglLahir[1]
     store.tanggal.hari = tglLahir[2]

@@ -228,7 +228,7 @@
       </div>
     </div>
     <q-separator class="q-my-md" />
-    <div v-if="store.rincis.length">
+    <div v-if="store.rincis?.length">
       <q-list bordered separator>
         <q-item class="row items-center q-col-gutter-sm">
           <q-item-section>
@@ -344,7 +344,7 @@ function setHargaNetto () {
   const hargaPembelian = hargaSetelahDiskon + ppnRp
   const subtotal = hargaPembelian * jmlTerimaB
   let totalPbf = 0
-  if (store.rincis.length) {
+  if (store.rincis?.length) {
     const sub = store.rincis.map(m => parseFloat(m.subtotal)).reduce((a, b) => a + b, 0)
     totalPbf = sub + subtotal
   }
@@ -396,7 +396,7 @@ function setHarga (val) {
 function setDiskon (val) {
   const inc = val.includes('.')
   const ind = val.indexOf('.')
-  const panj = val.length
+  const panj = val?.length
   const temp = isNaN(parseFloat(val)) ? 0 : (inc && (ind === (panj - 2)) ? val : parseFloat(val))
   store.setForm('diskon', temp)
   setTimeout(() => {
@@ -412,7 +412,7 @@ const adaPPN = ref(false)
 function setPpn (val) {
   // const inc = val.includes('.')
   // const ind = val.indexOf('.')
-  // const panj = val.length
+  // const panj = val?.length
   // const temp = isNaN(parseFloat(val)) ? 0 : (inc && (ind === (panj - 2)) ? val : parseFloat(val))
   // store.setForm('ppn', temp)
   if (val) store.setForm('ppn', 11)

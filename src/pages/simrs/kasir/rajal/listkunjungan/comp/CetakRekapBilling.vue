@@ -187,7 +187,7 @@
               Tindakan :
             </div>
           </div>
-          <div v-if="store.rekapBill.tindakan.length">
+          <div v-if="store.rekapBill.tindakan?.length">
             <div
               v-for="(tin,i) in store.rekapBill.tindakan"
               :key="i"

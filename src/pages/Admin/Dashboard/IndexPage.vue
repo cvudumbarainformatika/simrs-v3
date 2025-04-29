@@ -41,7 +41,7 @@
                 <template #list="scope">
                   <div>
                     <div
-                      v-if="scope.files.length===0"
+                      v-if="scope.files?.length===0"
                       class="column flex-center"
                       style="min-height:250px"
                     >
@@ -130,7 +130,7 @@
               style="min-height:250px"
             >
               <div
-                v-if="imageGalleries.length > 0"
+                v-if="imageGalleries?.length > 0"
                 class="row q-pa-md q-col-gutter-md"
               >
                 <div

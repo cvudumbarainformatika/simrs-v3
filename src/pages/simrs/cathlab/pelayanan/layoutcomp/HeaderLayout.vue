@@ -162,7 +162,7 @@ function getImageDokter (kelamin, row) {
 //   update(
 //     () => (options.value = resp.data),
 //     ref => {
-//       if (val !== '' && ref.options.length) {
+//       if (val !== '' && ref.options?.length) {
 //         ref.setOptionIndex(-1)
 //         ref.moveOptionSelection(1, true)
 //       }

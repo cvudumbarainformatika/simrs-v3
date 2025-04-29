@@ -120,11 +120,11 @@
               <!-- Export buttons -->
               <div class="row q-gutter-sm">
                 <q-btn flat dense color="green" icon="icon-mat-file_download" label="Excel" @click="exportToExcel"
-                  :loading="exporting" :disable="!store.commits.length">
+                  :loading="exporting" :disable="!store.commits?.length">
                   <q-tooltip>Export ke Excel</q-tooltip>
                 </q-btn>
                 <q-btn flat dense color="red" icon="icon-mat-picture_as_pdf" label="PDF" @click="exportToPDF"
-                  :loading="exporting" :disable="!store.commits.length">
+                  :loading="exporting" :disable="!store.commits?.length">
                   <q-tooltip>Export ke PDF</q-tooltip>
                 </q-btn>
               </div>
@@ -137,7 +137,7 @@
             </div>
 
             <!-- Empty state -->
-            <div v-else-if="!store.commits.length" class="column items-center justify-center q-pa-md"
+            <div v-else-if="!store.commits?.length" class="column items-center justify-center q-pa-md"
               style="min-height: 200px">
               <div class="text-center">
                 <q-icon name="icon-mat-source" size="64px" class="text-grey-4 empty-state-icon" />
@@ -377,7 +377,7 @@ async function exportToExcel() {
       'Message': commit.message,
       'Additions': commit.additions || 0,
       'Deletions': commit.deletions || 0,
-      'Files Changed': Array.isArray(commit.files) ? commit.files.length : 0,
+      'Files Changed': Array.isArray(commit.files) ? commit.files?.length : 0,
       'Commit Hash': commit.hash,
       'URL': commit.url
     }))
@@ -451,14 +451,14 @@ async function exportToPDF() {
 
       // Message
       y += lineHeight
-      const message = commit.message.length > 60
+      const message = commit.message?.length > 60
         ? commit.message.substring(0, 60) + '...'
         : commit.message
       doc.text(`Message: ${message}`, 14, y)
 
       // Stats
       y += lineHeight
-      doc.text(`Added: ${commit.additions || 0} | Deleted: ${commit.deletions || 0} | Files: ${Array.isArray(commit.files) ? commit.files.length : 0}`, 14, y)
+      doc.text(`Added: ${commit.additions || 0} | Deleted: ${commit.deletions || 0} | Files: ${Array.isArray(commit.files) ? commit.files?.length : 0}`, 14, y)
 
       y += lineHeight + 3 // Extra space between commits
     })

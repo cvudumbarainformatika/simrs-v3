@@ -198,15 +198,15 @@ export const useAuthStore = defineStore('auth', {
           //   const localAppss = JSON.parse(localStorage.getItem('aplikasiX'))
 
           //   console.log('the app yes', localAppss)
-          //   if (!Object.keys(localAppss?.user).length) {
+          //   if (!Object.keys(localAppss?.user)?.length) {
           //     localAppss.user = user
           //     localStorage.setItem('aplikasiX', JSON.stringify(localAppss))
           //   }
-          //   if (!localAppss?.items.length) {
+          //   if (!localAppss?.items?.length) {
           //     localAppss.items = aplikasi
           //     localStorage.setItem('aplikasiX', JSON.stringify(localAppss))
           //   }
-          //   if (!localAppss?.aksesApps.length) {
+          //   if (!localAppss?.aksesApps?.length) {
           //     localAppss.aksesApps = akses
           //     localStorage.setItem('aplikasiX', JSON.stringify(localAppss))
           //   }

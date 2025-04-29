@@ -74,7 +74,7 @@
             <!-- submenu -->
           </q-item>
           <q-list
-            v-if="menu.submenu.length"
+            v-if="menu.submenu?.length"
             class="text-grey-9 q-pt-none q-pl-lg"
           >
             <q-item

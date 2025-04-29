@@ -9,7 +9,7 @@
           <div class="col-9">
             <q-input
               v-model="store.form.permintaan" label="Permintaan" outlined standout="bg-yellow-3" type="textarea" rows="3"
-              :rules="[val => val && val.length > 0 || 'Mohon Isi Permintaan']"
+              :rules="[val => val && val?.length > 0 || 'Mohon Isi Permintaan']"
             />
           </div>
 

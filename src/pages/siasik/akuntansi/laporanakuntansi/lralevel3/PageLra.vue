@@ -9,7 +9,7 @@
   <div class="container q-px-sm">
     <q-card class="items-center full-width">
       <div class="row">
-        <template v-if="store.hasilpendapatan.length || store.hasilbelanja.length || store.hasilsilpa.length">
+        <template v-if="store.hasilpendapatan?.length || store.hasilbelanja?.length || store.hasilsilpa?.length">
           <listData />
         </template>
         <!-- <template v-else-if="store.reqs.jenislra === 2">

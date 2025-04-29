@@ -228,7 +228,7 @@ function editItem (item) {
 }
 
 async function icdFn (val, update, abort) {
-  if (val.length < 2) {
+  if (val?.length < 2) {
     abort()
     return
   }

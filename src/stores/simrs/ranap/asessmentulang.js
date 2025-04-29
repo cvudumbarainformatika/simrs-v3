@@ -55,12 +55,12 @@ export const useAsessmentUlangRanapStore = defineStore('asesment-ulang-ranap-sto
 
     getPreviousForm(pasien, nakes) {
       const dataAwal = {
-        anamnesis: pasien?.anamnesis.length
+        anamnesis: pasien?.anamnesis?.length
           ? pasien.anamnesis?.filter((a) => a?.kdruang !== 'POL014')?.length
             ? pasien.anamnesis?.filter((a) => a?.kdruang !== 'POL014')[0]
             : null
           : null,
-        pemeriksaan: pasien?.pemeriksaan.length
+        pemeriksaan: pasien?.pemeriksaan?.length
           ? pasien.pemeriksaan?.filter((a) => a?.kdruang !== 'POL014')?.length
             ? pasien.pemeriksaan?.filter((a) => a?.kdruang !== 'POL014')[0]
             : null
@@ -183,7 +183,7 @@ export const useAsessmentUlangRanapStore = defineStore('asesment-ulang-ranap-sto
 
     initDiagnosaMedisToText(diag) {
       const diagnosa = diag?.length ? diag?.filter(x => x?.rs13 !== 'POL014') : []
-      const text = diagnosa.length ? diagnosa.map(x => '* ' + x?.rs3 + ' - ' + x?.masterdiagnosa?.rs4).join('\n') : null
+      const text = diagnosa?.length ? diagnosa.map(x => '* ' + x?.rs3 + ' - ' + x?.masterdiagnosa?.rs4).join('\n') : null
       // console.log('diagnosa', diagnosa)
 
       this.form.asessment = text
@@ -203,7 +203,7 @@ export const useAsessmentUlangRanapStore = defineStore('asesment-ulang-ranap-sto
       const masterDiagnosaKep = storeDiagnosaKeperawatan.diagnosas
       const splitAssessment = diagnosKep?.split('- ')
       const cariDiagnosaKep = masterDiagnosaKep.filter(row => splitAssessment?.some(value => value?.includes(row?.nama)))
-      if (cariDiagnosaKep.length) storeDiagnosaKeperawatan.selectDiagnosa = cariDiagnosaKep
+      if (cariDiagnosaKep?.length) storeDiagnosaKeperawatan.selectDiagnosa = cariDiagnosaKep
 
       // cari intervensi
       const intervensiKep = dataSebelumnya?.instruksi?.replace(/\n/g, '')
@@ -213,17 +213,17 @@ export const useAsessmentUlangRanapStore = defineStore('asesment-ulang-ranap-sto
       const splitIPlann = plannKep?.split('- ')
 
       splitIntervensi = splitIntervensi?.concat(splitIPlann)
-      const masterIntervensiKep = cariDiagnosaKep.length ? cariDiagnosaKep.map(x => x?.intervensis)?.flat() : []
-      // const masterPlannKep = cariDiagnosaKep.length ? cariDiagnosaKep.map(x => x?.intervensis)?.flat() : []
+      const masterIntervensiKep = cariDiagnosaKep?.length ? cariDiagnosaKep.map(x => x?.intervensis)?.flat() : []
+      // const masterPlannKep = cariDiagnosaKep?.length ? cariDiagnosaKep.map(x => x?.intervensis)?.flat() : []
 
       const cariIntervensiKep = masterIntervensiKep.filter(row => splitIntervensi?.some(value => value?.includes(row?.nama)))
 
       // const splitIntervensi = intervensiKep?.split('- ')
-      const intervensis = cariIntervensiKep.length ? cariIntervensiKep.map(x => x?.id + '||' + x?.mdiagnosakeperawatan_kode) : []
+      const intervensis = cariIntervensiKep?.length ? cariIntervensiKep.map(x => x?.id + '||' + x?.mdiagnosakeperawatan_kode) : []
 
       // console.log('splitIntervensi', splitIntervensi)
       // console.log('cariIntervensiKep', intervensis)
-      if (cariIntervensiKep.length) storeDiagnosaKeperawatan.selectIntervensis = intervensis
+      if (cariIntervensiKep?.length) storeDiagnosaKeperawatan.selectIntervensis = intervensis
     },
 
     initDiagnosaKebidanan(dataSebelumnya) {
@@ -233,7 +233,7 @@ export const useAsessmentUlangRanapStore = defineStore('asesment-ulang-ranap-sto
       const masterDiagnosaKep = storeDiagnosaKebidanan.diagnosas
       const splitAssessment = diagnosKep?.split('- ')
       const cariDiagnosaKep = masterDiagnosaKep.filter(row => splitAssessment?.some(value => value?.includes(row?.nama)))
-      if (cariDiagnosaKep.length) storeDiagnosaKebidanan.selectDiagnosa = cariDiagnosaKep
+      if (cariDiagnosaKep?.length) storeDiagnosaKebidanan.selectDiagnosa = cariDiagnosaKep
 
       // cari intervensi
       const intervensiKep = dataSebelumnya?.instruksi?.replace(/\n/g, '')
@@ -243,17 +243,17 @@ export const useAsessmentUlangRanapStore = defineStore('asesment-ulang-ranap-sto
       const splitIPlann = plannKep?.split('- ')
 
       splitIntervensi = splitIntervensi?.concat(splitIPlann)
-      const masterIntervensiKep = cariDiagnosaKep.length ? cariDiagnosaKep.map(x => x?.intervensis)?.flat() : []
-      // const masterPlannKep = cariDiagnosaKep.length ? cariDiagnosaKep.map(x => x?.intervensis)?.flat() : []
+      const masterIntervensiKep = cariDiagnosaKep?.length ? cariDiagnosaKep.map(x => x?.intervensis)?.flat() : []
+      // const masterPlannKep = cariDiagnosaKep?.length ? cariDiagnosaKep.map(x => x?.intervensis)?.flat() : []
 
       const cariIntervensiKep = masterIntervensiKep.filter(row => splitIntervensi?.some(value => value?.includes(row?.nama)))
 
       // const splitIntervensi = intervensiKep?.split('- ')
-      const intervensis = cariIntervensiKep.length ? cariIntervensiKep.map(x => x?.id + '||' + x?.mdiagnosakeperawatan_kode) : []
+      const intervensis = cariIntervensiKep?.length ? cariIntervensiKep.map(x => x?.id + '||' + x?.mdiagnosakeperawatan_kode) : []
 
       // console.log('splitIntervensi', splitIntervensi)
       // console.log('cariIntervensiKep', intervensis)
-      if (cariIntervensiKep.length) storeDiagnosaKebidanan.selectIntervensis = intervensis
+      if (cariIntervensiKep?.length) storeDiagnosaKebidanan.selectIntervensis = intervensis
     },
 
     // editForm (item) {

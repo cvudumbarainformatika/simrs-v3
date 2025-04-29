@@ -51,7 +51,7 @@ export const useKartuStokStore = defineStore('kartu_stok', {
       await api.get('v1/ruang/index', params)
         .then(resp => {
           this.loadingRuangan = false
-          if (resp.data.data.length) {
+          if (resp.data.data?.length) {
             const temp = resp.data.data
             temp.forEach(tempt => {
               tempt.nama = tempt.uraian
@@ -103,9 +103,9 @@ export const useKartuStokStore = defineStore('kartu_stok', {
       await api.get('v1/transaksi/kartustok/lihatkartustokgudang', params)
         .then(resp => {
           this.loading = false
-          if (resp.data.length) {
+          if (resp.data?.length) {
             resp.data.forEach(dat => {
-              if (dat.stok_awal.length) {
+              if (dat.stok_awal?.length) {
                 dat.stok_awal.forEach(kel => {
                   kel.kode = dat.kode
                   kel.nama = dat.nama
@@ -114,7 +114,7 @@ export const useKartuStokStore = defineStore('kartu_stok', {
                   this.itemsGudang.push(kel)
                 })
               }
-              if (dat.masukgudang.length) {
+              if (dat.masukgudang?.length) {
                 dat.masukgudang.forEach(kel => {
                   kel.kode = dat.kode
                   kel.nama = dat.nama
@@ -123,7 +123,7 @@ export const useKartuStokStore = defineStore('kartu_stok', {
                   this.itemsGudang.push(kel)
                 })
               }
-              if (dat.keluargudang.length) {
+              if (dat.keluargudang?.length) {
                 dat.keluargudang.forEach(kel => {
                   kel.kode = dat.kode
                   kel.nama = dat.nama
@@ -132,7 +132,7 @@ export const useKartuStokStore = defineStore('kartu_stok', {
                   this.itemsGudang.push(kel)
                 })
               }
-              if (dat.stok_akhir.length) {
+              if (dat.stok_akhir?.length) {
                 dat.stok_akhir.forEach(kel => {
                   kel.kode = dat.kode
                   kel.nama = dat.nama
@@ -173,30 +173,30 @@ export const useKartuStokStore = defineStore('kartu_stok', {
       await api.get('v1/transaksi/kartustok/lihatkartustokdepo', params)
         .then(resp => {
           this.loading = false
-          if (resp.data.length) {
+          if (resp.data?.length) {
             resp.data.forEach(dat => {
-              if (dat.stok_awal.length) {
+              if (dat.stok_awal?.length) {
                 dat.stok_awal.forEach(kel => {
                   kel.saldo = kel.sisa_stok
                   kel.trx = 'stokAwal'
                   this.itemsDepo.push(kel)
                 })
               }
-              if (dat.pengeluarandepo.length) {
+              if (dat.pengeluarandepo?.length) {
                 dat.pengeluarandepo.forEach(kel => {
                   kel.saldo = 0 - kel.jumlah
                   kel.trx = 'keluarDepo'
                   this.itemsDepo.push(kel)
                 })
               }
-              if (dat.keluargudang.length) {
+              if (dat.keluargudang?.length) {
                 dat.keluargudang.forEach(kel => {
                   kel.saldo = kel.keluar
                   kel.trx = 'masukDepo'
                   this.itemsDepo.push(kel)
                 })
               }
-              if (dat.stok_akhir.length) {
+              if (dat.stok_akhir?.length) {
                 dat.stok_akhir.forEach(kel => {
                   kel.saldoAkhir = kel.sisa_stok
                   kel.trx = 'stokAkhir'
@@ -236,9 +236,9 @@ export const useKartuStokStore = defineStore('kartu_stok', {
       await api.get('v1/transaksi/kartustok/lihatkartustokruangan', params)
         .then(resp => {
           this.loading = false
-          if (resp.data.length) {
+          if (resp.data?.length) {
             resp.data.forEach(dat => {
-              if (dat.stok_awal.length) {
+              if (dat.stok_awal?.length) {
                 dat.stok_awal.forEach(kel => {
                   kel.satuan = dat.satuan ? dat.satuan.nama : '-'
                   kel.saldo = kel.sisa_stok
@@ -246,7 +246,7 @@ export const useKartuStokStore = defineStore('kartu_stok', {
                   this.itemsRuangan.push(kel)
                 })
               }
-              if (dat.pengeluarandepo.length) {
+              if (dat.pengeluarandepo?.length) {
                 dat.pengeluarandepo.forEach(kel => {
                   kel.satuan = dat.satuan ? dat.satuan.nama : '-'
                   kel.saldo = kel.jumlah
@@ -254,7 +254,7 @@ export const useKartuStokStore = defineStore('kartu_stok', {
                   this.itemsRuangan.push(kel)
                 })
               }
-              if (dat.pemakaianruangan.length) {
+              if (dat.pemakaianruangan?.length) {
                 dat.pemakaianruangan.forEach(kel => {
                   kel.satuan = dat.satuan ? dat.satuan.nama : '-'
                   kel.saldo = 0 - kel.jumlah
@@ -262,7 +262,7 @@ export const useKartuStokStore = defineStore('kartu_stok', {
                   this.itemsRuangan.push(kel)
                 })
               }
-              if (dat.stok_akhir.length) {
+              if (dat.stok_akhir?.length) {
                 dat.stok_akhir.forEach(kel => {
                   kel.satuan = dat.satuan ? dat.satuan.nama : '-'
                   kel.saldoAkhir = kel.sisa_stok

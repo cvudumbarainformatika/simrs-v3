@@ -92,7 +92,7 @@ function onSubmit() {
   // })
   // .then(() => {
   //   // console.log('loading false', storeAuth.aplications)
-  //   if (storeAuth.aplications.length === 1) {
+  //   if (storeAuth.aplications?.length === 1) {
   //     if (storeAuth.aplications[0].aplikasi === 'pegawai') {
   //       router.push('pegawai/user/list')
   //     } else {

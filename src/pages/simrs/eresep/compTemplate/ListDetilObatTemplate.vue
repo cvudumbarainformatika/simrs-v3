@@ -18,7 +18,7 @@
           List Detil Obat Template {{ store.templateSelected ? store.templateSelected?.nama : '(Baru)' }}
         </div>
         <q-btn
-          v-if="store.items.length"
+          v-if="store.items?.length"
           dense color="white" text-color="dark" class="q-px-md"
           :loading="store.loadingTemplate"
           @click="emits('kirimOrder')"
@@ -208,7 +208,7 @@ function hapusItem (val) {
     store.items?.splice(val.rowIndex, 1)
 
     const dataracikan = store.items.filter(x => x.racikan === true)
-    for (let i = 0; i < dataracikan.length; i++) {
+    for (let i = 0; i < dataracikan?.length; i++) {
       const el = dataracikan[i]
       el.kodeobat = `racikan-${parseInt(i) + parseInt(1)}`
       el.namaobat = `Racikan ${parseInt(i) + parseInt(1)}`
@@ -228,7 +228,7 @@ function simpanTemplate () {
   // cek lagi
   const obat = store.items.filter(f => f?.jenis_perbekalan?.toLowerCase() === 'obat')
   const racik = store.items.filter(f => f?.kodeobat?.includes('racik'))
-  const tot = obat.length + racik.length
+  const tot = obat?.length + racik?.length
   const batas = store.batases.find(f => f.depo === store?.templateSelected?.kodedepo)
   if (tot > batas?.batas) return notifErrVue('Batas Item Obat + Racikan adalah ' + batas?.batas)
 
@@ -237,7 +237,7 @@ function simpanTemplate () {
     message: `${store.templateSelected?.nama ? 'Apakah Template ini akan diperbarui?' : 'Silahkan masukkan nama Template terlebih dahulu'}`,
     prompt: {
       model: store.templateSelected?.nama ?? '',
-      isValid: val => val.length > 2,
+      isValid: val => val?.length > 2,
       type: 'text', // optional
       readonly: store.templateSelected !== null
     },
@@ -267,7 +267,7 @@ function adaErrorRacikan (row) {
 function pembatasan (row) {
   const obat = store.items.filter(f => f?.jenis_perbekalan?.toLowerCase() === 'obat')
   const racik = store.items.filter(f => f?.kodeobat?.includes('racik'))
-  const tot = obat.length + racik.length
+  const tot = obat?.length + racik?.length
   // console.log('pembatasan', store.items, row, tot)
   console.log('pembatasan', store.items, row)
   if (tot > row?.batas && (row?.jenis_perbekalan?.toLowerCase() === 'obat' || row?.kodeobat?.includes('racik'))) {

@@ -169,10 +169,10 @@ export const useTandaTanganStore = defineStore('tanda_tangan_store_form', {
     },
     // initial data
     getInitialData () {
-      if (this.optionPTK.length <= 0) this.getDataPtk()
-      if (this.optionPPK.length <= 0) this.getDataPpk()
-      if (this.optionGudang.length <= 0) this.getDataGudang()
-      if (this.optionMengetahui.length <= 0) {
+      if (this.optionPTK?.length <= 0) this.getDataPtk()
+      if (this.optionPPK?.length <= 0) this.getDataPpk()
+      if (this.optionGudang?.length <= 0) this.getDataGudang()
+      if (this.optionMengetahui?.length <= 0) {
         this.getDataMengetahui().then(() => {
           this.getDataIndex()
         })
@@ -194,7 +194,7 @@ export const useTandaTanganStore = defineStore('tanda_tangan_store_form', {
               if (this.data.ptk) {
                 this.setForm('ptk', this.data.ptk.id)
                 const anu = this.optionPTK.filter(a => a.id === this.data.ptk.id)
-                if (!anu.length) {
+                if (!anu?.length) {
                   this.optionPTK.push(this.data.ptk)
                 }
               }
@@ -204,7 +204,7 @@ export const useTandaTanganStore = defineStore('tanda_tangan_store_form', {
               if (this.data.ppk) {
                 this.setForm('ppk', this.data.ppk.id)
                 const anu = this.optionPPK.filter(a => a.id === this.data.ppk.id)
-                if (!anu.length) {
+                if (!anu?.length) {
                   this.optionPPK.push(this.data.ppk)
                 }
               }
@@ -212,7 +212,7 @@ export const useTandaTanganStore = defineStore('tanda_tangan_store_form', {
               if (this.data.gudang) {
                 this.setForm('gudang', this.data.gudang.id)
                 const anu = this.optionGudang.filter(a => a.id === this.data.gudang.id)
-                if (!anu.length) {
+                if (!anu?.length) {
                   this.optionGudang.push(this.data.gudang)
                 }
               }
@@ -220,7 +220,7 @@ export const useTandaTanganStore = defineStore('tanda_tangan_store_form', {
               if (this.data.mengetahui) {
                 this.setForm('mengetahui', this.data.mengetahui.id)
                 const anu = this.optionMengetahui.filter(a => a.id === this.data.mengetahui.id)
-                if (!anu.length) {
+                if (!anu?.length) {
                   this.optionMengetahui.push(this.data.mengetahui)
                 }
               }

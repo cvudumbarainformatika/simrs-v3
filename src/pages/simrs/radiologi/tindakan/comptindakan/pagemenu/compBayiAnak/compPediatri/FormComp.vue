@@ -43,7 +43,7 @@
             #
           </th>
         </tr>
-        <template v-if="store.pediatris.length">
+        <template v-if="store.pediatris?.length">
           <tr v-for="(item, i) in store.pediatris" :key="i">
             <td>{{ i+1 }}</td>
             <td>{{ item.bb }}</td><td>{{ item.pb }}</td>
@@ -470,7 +470,7 @@
     <q-dialog v-model="store.bukaCdc" position="right">
       <q-card style="width: 600px" class="full-height bg-grey-4 q-pa-sm scroll">
         <ChartWhoBbi :pasien="pasien" :draft="draft" :key="store.masterCdc" width="544px" height="644px" class="q-mb-sm" />
-        <ChartWhoBmi :pasien="pasien" :draft="draft" :key="store.masterCdc.length" width="544px" height="644px" />
+        <ChartWhoBmi :pasien="pasien" :draft="draft" :key="store.masterCdc?.length" width="544px" height="644px" />
       </q-card>
     </q-dialog>
   </div>
@@ -513,17 +513,17 @@ const cariGrafikChart = () => {
   const x = props?.pasien?.kelamin ?? null
   const kelamin = x === 'Perempuan' ? 2 : 1
 
-  const masterTb = store?.masterCdc.length ? store.masterCdc.filter(x => x.gender === kelamin && x?.jns === 1) : []
-  const masterWeight = store?.masterCdc.length ? store.masterCdc.filter(x => x.gender === kelamin && x?.jns === 2) : []
+  const masterTb = store?.masterCdc?.length ? store.masterCdc.filter(x => x.gender === kelamin && x?.jns === 1) : []
+  const masterWeight = store?.masterCdc?.length ? store.masterCdc.filter(x => x.gender === kelamin && x?.jns === 2) : []
   const dataTb = masterTb?.filter(x => x['50rd'] >= Math.floor(pb) && x['50rd'] < Math.round(pb) + 1)
   const dataTbIndexTerdekat = findClosestNumberIndex(dataTb.map(x => x['50rd']), pb)
   const titkA = [ageInMonths, pb]
-  const titikB = [dataTb.length ? dataTb[dataTbIndexTerdekat]?.age_m ?? 0 : 0, dataTb.length ? dataTb[dataTbIndexTerdekat]['50rd'] ?? 0 : 0]
+  const titikB = [dataTb?.length ? dataTb[dataTbIndexTerdekat]?.age_m ?? 0 : 0, dataTb?.length ? dataTb[dataTbIndexTerdekat]['50rd'] ?? 0 : 0]
   const dataWeight = masterWeight?.filter(x => x.age_m >= Math.floor(titikB[0] ?? 0) && x.age_m < Math.round(titikB[0] ?? 0) + 1)
-  // const titikC = [titikB[0], dataWeight.length ? Math.floor(dataWeight.reduce((x, y) => x + y['50rd'], 0) / dataWeight.length) ?? 0 : 0]
-  const titikC = [titikB[0], dataWeight.length ? dataWeight[0]['50rd'] ?? 0 : 0]
+  // const titikC = [titikB[0], dataWeight?.length ? Math.floor(dataWeight.reduce((x, y) => x + y['50rd'], 0) / dataWeight?.length) ?? 0 : 0]
+  const titikC = [titikB[0], dataWeight?.length ? dataWeight[0]['50rd'] ?? 0 : 0]
   const bmi = calculateBMI(bb, pb)
-  const masterBmi = store?.masterCdc.length ? store.masterCdc.filter(x => x.gender === kelamin && x?.jns === 3) : []
+  const masterBmi = store?.masterCdc?.length ? store.masterCdc.filter(x => x.gender === kelamin && x?.jns === 3) : []
   const titikD = [ageInMonths, bmi]
 
   const rangeBmi = cariRangeBmi(masterBmi, bmi, ageInMonths)
@@ -580,7 +580,7 @@ function calculateBMI (weight, height) {
 
 function cariRangeBmi (master, coord, age) {
   const cari = master?.filter(x => x.age_m >= Math.floor(age) && x.age_m < Math.round(age) + 1)
-  const range2d = cari.length
+  const range2d = cari?.length
     ? cari.map(x => {
       return {
         '3rd': x['3rd'],
@@ -597,7 +597,7 @@ function cariRangeBmi (master, coord, age) {
     })
     : []
 
-  const range = range2d.length ? Object.values(Object.values(range2d)[0]) : []
+  const range = range2d?.length ? Object.values(Object.values(range2d)[0]) : []
   const closestRange = findClosestRange(range, coord, age, range2d)
   // const closestRange = findClosestRange(range, 15.81, age, range2d)
   return closestRange
@@ -607,7 +607,7 @@ function findClosestNumberIndex (numbers, target) {
   let closestIndex = null
   let minDifference = Infinity
 
-  for (let i = 0; i < numbers.length; i++) {
+  for (let i = 0; i < numbers?.length; i++) {
     const difference = Math.abs(numbers[i] - target)
     if (difference <= minDifference) {
       minDifference = difference
@@ -625,12 +625,12 @@ function findClosestRange (coordinates, targetCoordinate, age, arrayAsli) {
   let keterangan = null
   // console.log('arrayAsli', arrayAsli)
 
-  if (arrayAsli.length === 0) {
+  if (arrayAsli?.length === 0) {
     const result = { keterangan, coor }
     return result
   }
 
-  for (let i = 0; i < coordinates.length - 1; i++) {
+  for (let i = 0; i < coordinates?.length - 1; i++) {
     const currentRange = coordinates[i] + '-' + coordinates[i + 1]
     const currentMin = Math.min(coordinates[i], coordinates[i + 1])
     const currentMax = Math.max(coordinates[i], coordinates[i + 1])
@@ -657,14 +657,14 @@ function findClosestRange (coordinates, targetCoordinate, age, arrayAsli) {
 
       coor.push([age, currentMin], [age, currentMax])
     }
-    if (targetCoordinate > coordinates[coordinates.length - 1]) {
-      // console.log('atas', coordinates[coordinates.length - 1])
+    if (targetCoordinate > coordinates[coordinates?.length - 1]) {
+      // console.log('atas', coordinates[coordinates?.length - 1])
       const obj = arrayAsli[0]
 
-      const foundObject = Object.keys(obj).find((key) => obj[key] === coordinates[coordinates.length - 1])
+      const foundObject = Object.keys(obj).find((key) => obj[key] === coordinates[coordinates?.length - 1])
       keterangan = `diatas ${foundObject}`
       if (i === 0) {
-        coor.push([age, coordinates[coordinates.length - 1]])
+        coor.push([age, coordinates[coordinates?.length - 1]])
       }
     }
     if (targetCoordinate < coordinates[0]) {
@@ -700,7 +700,7 @@ function lihatGrafik (item) {
 }
 
 watchEffect(() => {
-  if (store.masterCdc.length || store.pediatri) {
+  if (store.masterCdc?.length || store.pediatri) {
     cariGrafikChart()
   }
 })

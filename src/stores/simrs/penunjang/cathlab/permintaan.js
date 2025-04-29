@@ -88,7 +88,7 @@ export const usePermintaanCathLab = defineStore('permintaan_cathlab', {
         const resp = await api.post('v1/simrs/penunjang/cathlab/terimapasien', form)
         if (resp.status === 200) {
           const wew = this.items.filter(x => x === pasien)
-          if (wew.length) {
+          if (wew?.length) {
             wew[0].flag = '2'
           }
           this.loadingTerima = false
@@ -111,7 +111,7 @@ export const usePermintaanCathLab = defineStore('permintaan_cathlab', {
         const resp = await api.post('v1/simrs/penunjang/cathlab/terimapasien', form)
         if (resp.status === 200) {
           const findPasien = this.items.filter(x => x?.nota === pasien?.nota)
-          if (findPasien.length) {
+          if (findPasien?.length) {
             // findPasien[0].status = findPasien[0].status === '' ? '2' : findPasien[0].status
 
             // BARU
@@ -135,7 +135,7 @@ export const usePermintaanCathLab = defineStore('permintaan_cathlab', {
     },
     injectDataPasien (pasien, val, kode, arr) {
       const findPasien = this.items.filter(x => x === pasien)
-      if (findPasien.length) {
+      if (findPasien?.length) {
         const data = findPasien[0]
         const target = data[kode]?.find(x => x.id === val.id)
         // console.log('itarget', target)
@@ -164,7 +164,7 @@ export const usePermintaanCathLab = defineStore('permintaan_cathlab', {
     },
     hapusDataCathlab (pasien, id) {
       const findPasien = this.items.filter(x => x === pasien)
-      if (findPasien.length) {
+      if (findPasien?.length) {
         const data = findPasien[0].cathlab
         const pos = data.findIndex(el => el.id === id)
         if (pos >= 0) { data.splice(pos, 1) }
@@ -195,7 +195,7 @@ export const usePermintaanCathLab = defineStore('permintaan_cathlab', {
         const resp = await api.post('v1/simrs/penunjang/cathlab/updateflag', form)
         if (resp.status === 200) {
           const wew = this.items.filter(x => x === val)
-          if (wew.length) {
+          if (wew?.length) {
             wew[0].flag = '1'
           }
           this.loading = false

@@ -119,7 +119,7 @@ function obatValid (val) {
 }
 const options = ref([])
 async function filterFn (val, update, abort) {
-  if (val.length < 3) {
+  if (val?.length < 3) {
     abort()
     return
   }
@@ -138,7 +138,7 @@ async function filterFn (val, update, abort) {
 
   update(() => {
     // const needle = val?.toLowerCase()
-    // options.value = data.length ? data?.filter(v => v?.namaobat.toLowerCase().indexOf(needle) > -1) : []
+    // options.value = data?.length ? data?.filter(v => v?.namaobat.toLowerCase().indexOf(needle) > -1) : []
     options.value = data
   })
 }

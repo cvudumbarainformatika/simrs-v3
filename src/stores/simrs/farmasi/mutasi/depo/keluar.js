@@ -94,7 +94,7 @@ export const useMutasiKeluarAntarDepoStore = defineStore('mutasi_keluar_antar_de
     permintaanSelected (val) {
       this.disp.no_permintaan = val
       const temp = this.items.filter(a => a.no_permintaan === val)
-      if (temp.length) {
+      if (temp?.length) {
         const item = temp[0]
         this.terpilih = item
         console.log('item', item)
@@ -121,7 +121,7 @@ export const useMutasiKeluarAntarDepoStore = defineStore('mutasi_keluar_antar_de
         )
       const filteredData = multiFilter(this.items, splits, needle)
       opt = filteredData
-      if (opt.length <= 0) {
+      if (opt?.length <= 0) {
         this.setParams('no_permintaan', val)
         this.getPermintaanDepo()
         // console.log('opt', 'ga ada')
@@ -143,14 +143,14 @@ export const useMutasiKeluarAntarDepoStore = defineStore('mutasi_keluar_antar_de
             this.loading = false
             this.items = resp?.data?.data
             this.meta = resp.data
-            if (this.items.length) {
+            if (this.items?.length) {
               // console.log('items anu', this.items)
               this.items.forEach(it => {
-                if (it?.permintaanrinci.length) {
+                if (it?.permintaanrinci?.length) {
                   it?.permintaanrinci.forEach(ri => {
                     ri.jumlahdiminta = ri.jumlah_minta
                     ri.jumlah_minta = 0
-                    if (it?.mutasigudangkedepo.length) {
+                    if (it?.mutasigudangkedepo?.length) {
                       const dist = it?.mutasigudangkedepo.filter(mu => mu.kd_obat === ri.kdobat).map(ma => parseFloat(ma.jml)).reduce((a, b) => a + b, 0)
                       // console.log('dist', dist)
                       ri.distribusi = !isNaN(dist) ? dist : 0
@@ -158,9 +158,9 @@ export const useMutasiKeluarAntarDepoStore = defineStore('mutasi_keluar_antar_de
                     else {
                       ri.distribusi = 0
                     }
-                    if (ri?.stokreal.length) {
+                    if (ri?.stokreal?.length) {
                       const tempStok = ri?.stokreal.filter(x => x.kdruang === it?.dari)
-                      if (tempStok.length) {
+                      if (tempStok?.length) {
                         ri.stok = tempStok.map(m => m.jumlah).reduce((a, b) => a + b, 0)
                       }
                       else { ri.stok = 0 }

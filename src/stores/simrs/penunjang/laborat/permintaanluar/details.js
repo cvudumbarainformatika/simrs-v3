@@ -16,7 +16,7 @@ export const useDetailsLaboratLuar = defineStore('details_laborat_luar', {
     //   return this.groupBy(state.details, paket => paket.kd_lab)
     // },
     kelamin: (state) => {
-      return state.details.length > 0 ? state.details[0].kelamin : null
+      return state.details?.length > 0 ? state.details[0].kelamin : null
     }
   },
   actions: {
@@ -41,7 +41,7 @@ export const useDetailsLaboratLuar = defineStore('details_laborat_luar', {
             )
             // this.details = x
             // const mentah = resp.data
-            // for (let i = 0; i < mentah.length; i++) {
+            // for (let i = 0; i < mentah?.length; i++) {
             //   const obj = mentah[i].pemeriksaan_laborat
             //   obj.biaya = this.details[i].biaya
             //   obj.jumlah = mentah[i].jml
@@ -80,7 +80,7 @@ export const useDetailsLaboratLuar = defineStore('details_laborat_luar', {
         if (x.name !== '') {
           sum = val[0].subtotal
         } else {
-          for (let i = 0; i < val.length; i++) {
+          for (let i = 0; i < val?.length; i++) {
             sum = sum + val[i].subtotal
           }
         }

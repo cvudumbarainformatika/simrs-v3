@@ -166,7 +166,7 @@ export const useLaporanBkuPengeluaranStore = defineStore(
 
         // ===================================================SPM
         const spm = []
-        for (let i = 0; i < this.items.spm.length; i++) {
+        for (let i = 0; i < this.items.spm?.length; i++) {
           const el = this.items?.spm
           const obj = {
             tgl: el[i].tglSpm,
@@ -189,7 +189,7 @@ export const useLaporanBkuPengeluaranStore = defineStore(
         // =====================================================
         // ===================================================Pergeseran BankKas
         const geserDebit = []
-        for (let i = 0; i < this.items.pergeserankas.length; i++) {
+        for (let i = 0; i < this.items.pergeserankas?.length; i++) {
           const el = this.items?.pergeserankas
           const geserbank = el[i].kasrinci?.length
             ? el[i].kasrinci?.map((x) => {
@@ -224,7 +224,7 @@ export const useLaporanBkuPengeluaranStore = defineStore(
 
         // ===================================================Pergeseran BankKas
         const geserKredit = []
-        for (let i = 0; i < this.items.pergeserankas.length; i++) {
+        for (let i = 0; i < this.items.pergeserankas?.length; i++) {
           const el = this.items?.pergeserankas
           console.log('geseeer', el)
           const geserbank = el[i].kasrinci?.length
@@ -260,7 +260,7 @@ export const useLaporanBkuPengeluaranStore = defineStore(
         // ===================================================NPKPanjar
         // eslint-disable-next-line camelcase
         const npk_Panjar = []
-        for (let i = 0; i < this.items.npkpanjar.length; i++) {
+        for (let i = 0; i < this.items.npkpanjar?.length; i++) {
           const el = this.items?.npkpanjar
           const pjr = el[i].npkrinci?.length
             ? this.ambilDataUnik(
@@ -313,7 +313,7 @@ export const useLaporanBkuPengeluaranStore = defineStore(
 
         // ===================================================NPKPanjar
         const CairNpkPanjar = []
-        for (let i = 0; i < this.items.npkpanjar.length; i++) {
+        for (let i = 0; i < this.items.npkpanjar?.length; i++) {
           const el = this.items?.npkpanjar
           const pjr = el[i].npkrinci?.length
             ? this.ambilDataUnik(
@@ -366,7 +366,7 @@ export const useLaporanBkuPengeluaranStore = defineStore(
         // ===================================================spjpanjar
         // eslint-disable-next-line camelcase
         const spj_Panjar = []
-        for (let i = 0; i < this.items.spjpanjar.length; i++) {
+        for (let i = 0; i < this.items.spjpanjar?.length; i++) {
           const el = this.items?.spjpanjar
           const spjnyaPanjar = el[i].spj_rinci?.length
             ? el[i].spj_rinci?.map((x) => {
@@ -406,7 +406,7 @@ export const useLaporanBkuPengeluaranStore = defineStore(
 
         // ===================================================Pengembalian Panjar
         const kembalianpjr = []
-        for (let i = 0; i < this.items.pengembalianpjr.length; i++) {
+        for (let i = 0; i < this.items.pengembalianpjr?.length; i++) {
           const el = this.items?.pengembalianpjr
           // console.log("adada", el);
           const cpallpjr = el?.length
@@ -447,7 +447,7 @@ export const useLaporanBkuPengeluaranStore = defineStore(
             sisapanjar: null,
             uraian: el[i].keterangan,
             uraianNPD: null,
-            penerimaan: cpallpjr.length
+            penerimaan: cpallpjr?.length
               ? cpallpjr.map((x) => x.totalRincian).reduce((x, y) => x + y, 0)
               : 0,
             pengeluaran: 0
@@ -501,7 +501,7 @@ export const useLaporanBkuPengeluaranStore = defineStore(
 
         // ===================================================npkls
         const npkls = []
-        for (let i = 0; i < this.items.npkls.length; i++) {
+        for (let i = 0; i < this.items.npkls?.length; i++) {
           const el = this.items?.npkls
           const nonpd = el[i].npklsrinci?.length
             ? this.ambilDataUnik(
@@ -540,7 +540,7 @@ export const useLaporanBkuPengeluaranStore = defineStore(
             sisapanjar: null,
             uraian: 'Penerimaan Kegiatan Pelayanan dan Penunjang BLUD',
             uraianNPD: null,
-            penerimaan: nonpd.length
+            penerimaan: nonpd?.length
               ? nonpd.map((x) => x.totalRincian).reduce((x, y) => x + y, 0)
               : 0,
             pengeluaran: 0
@@ -553,7 +553,7 @@ export const useLaporanBkuPengeluaranStore = defineStore(
 
         // ===================================================pencairanLS
         const pencairanLS = []
-        for (let i = 0; i < this.items.pencairanls.length; i++) {
+        for (let i = 0; i < this.items.pencairanls?.length; i++) {
           const el = this.items?.pencairanls
           const nonpd = el[i].npklsrinci?.length
             ? this.ambilDataUnik(
@@ -593,7 +593,7 @@ export const useLaporanBkuPengeluaranStore = defineStore(
             uraian: 'Pengeluaran Kegiatan Pelayanan dan Penunjang BLUD',
             uraianNPD: el[i]?.npklsrinci?.npdlshead?.kegiatanblud,
             penerimaan: 0,
-            pengeluaran: nonpd.length
+            pengeluaran: nonpd?.length
               ? nonpd.map((x) => x.totalRincian).reduce((x, y) => x + y, 0)
               : 0
           }
@@ -607,7 +607,7 @@ export const useLaporanBkuPengeluaranStore = defineStore(
         const cp = []
         // const cppjr = this.items.cp.filter((x) => x.jenisbelanja === "Panjar");
         // if (cppjr?.length) {
-        for (let i = 0; i < this.items.cp.length; i++) {
+        for (let i = 0; i < this.items.cp?.length; i++) {
           const el = this.items?.cp
           const obj = {
             tgl: date.formatDate(el[i].tglcontrapost, 'YYYY-MM-DD'),
@@ -631,7 +631,7 @@ export const useLaporanBkuPengeluaranStore = defineStore(
         // =====================================================
         // ===================================================SPMGU
         const spmgu = []
-        for (let i = 0; i < this.items.spmgu.length; i++) {
+        for (let i = 0; i < this.items.spmgu?.length; i++) {
           const el = this.items?.spmgu
           const obj = {
             tgl: el[i].tglSpm,
@@ -654,7 +654,7 @@ export const useLaporanBkuPengeluaranStore = defineStore(
         // =====================================================
         // ===================================================Nihil
         const nihil = []
-        for (let i = 0; i < this.items.nihil.length; i++) {
+        for (let i = 0; i < this.items.nihil?.length; i++) {
           const el = this.items?.nihil
           const obj = {
             tgl: el[i].tgltrans,
@@ -721,8 +721,8 @@ export const useLaporanBkuPengeluaranStore = defineStore(
 
       cariHasilAkhirArray(arr) {
         let total = 0
-        if (arr.length) {
-          for (let i = 0; i < arr.length; i++) {
+        if (arr?.length) {
+          for (let i = 0; i < arr?.length; i++) {
             if (i === 0) {
               total = arr[0]?.penerimaan - arr[0]?.pengeluaran
               arr[0].total = total

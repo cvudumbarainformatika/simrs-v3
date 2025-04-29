@@ -64,7 +64,7 @@ const onSubmit = () => {
   /// cek tahun buat bikin keputusan ambil data tahun yang baru apa tidak
   store.saveProta().then(() => {
     if (formReff.value != null) { formReff.value.resetValidation() }
-    if (!adaTahun.length) {
+    if (!adaTahun?.length) {
       store.tahuns.push(adaTahun[0])
       store.tahuns.sort()
       store.getTahunProta()

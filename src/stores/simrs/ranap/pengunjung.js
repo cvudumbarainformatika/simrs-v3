@@ -131,7 +131,7 @@ export const usePengunjungRanapStore = defineStore('pengunjung-ranap', {
 
             const jnsKasus = this.pasiens[indexPasien]?.kd_jeniskasus
 
-            if (this.jeniskasus.length && jnsKasus) {
+            if (this.jeniskasus?.length && jnsKasus) {
               this.jnsKasusPasien = this.jeniskasus.find(x => x.kode === jnsKasus) ?? null
             }
 
@@ -149,7 +149,7 @@ export const usePengunjungRanapStore = defineStore('pengunjung-ranap', {
       const findPasien = this.pasiens.filter(x => x?.noreg === pasien?.noreg)
       // this.pasiens[indexPasien] = data
       // // console.log('wew', this.pasiens[indexPasien])
-      if (findPasien.length) {
+      if (findPasien?.length) {
         const datax = findPasien[0]
         datax.dataigd = data?.dataigd ?? null
         datax.newapotekrajal = data?.newapotekrajal ?? []
@@ -251,8 +251,8 @@ export const usePengunjungRanapStore = defineStore('pengunjung-ranap', {
 
     aksesRuangan() {
       let ruang = null
-      if (this.ruangans.length > 0) {
-        if (this.ruangans.length === 1) {
+      if (this.ruangans?.length > 0) {
+        if (this.ruangans?.length === 1) {
           ruang = this.ruangans[0]?.groups
         }
         else if (this.ruangans?.length > 1) {
@@ -365,7 +365,7 @@ export const usePengunjungRanapStore = defineStore('pengunjung-ranap', {
         // console.log(resp)
         if (resp.status === 200) {
           const findPasien = this.pasiens.filter(x => x.noreg === pasien?.noreg)
-          if (findPasien.length) {
+          if (findPasien?.length) {
             const data = findPasien[0]
             // data.datasimpeg = resp?.data?.result?.datasimpeg
             data.dokter = resp?.data?.result?.datasimpeg?.nama
@@ -392,7 +392,7 @@ export const usePengunjungRanapStore = defineStore('pengunjung-ranap', {
             // console.log(resp)
             if (resp.status === 200) {
               const findPasien = this.pasiens.filter(x => x.noreg === pasien?.noreg)
-              if (findPasien.length) {
+              if (findPasien?.length) {
                 const data = findPasien[0]
                 data.memodiagnosa = resp?.data?.result?.diagnosa
               }
@@ -407,7 +407,7 @@ export const usePengunjungRanapStore = defineStore('pengunjung-ranap', {
     injectDataPasien(noreg, val, kode, arr) {
       const findPasien = this.pasiens.filter(x => x.noreg === noreg)
       // console.log('inject pasien', findPasien)
-      if (findPasien.length) {
+      if (findPasien?.length) {
         const data = findPasien[0]
         // data[kode] = val
         if (kode === 'kd_jeniskasus' ||
@@ -435,7 +435,7 @@ export const usePengunjungRanapStore = defineStore('pengunjung-ranap', {
     injectDataArray(noreg, arr, kode) {
       const findPasien = this.pasiens.filter(x => x?.noreg === noreg)
       // console.log('inject pasien', findPasien)
-      if (findPasien.length) {
+      if (findPasien?.length) {
         const data = findPasien[0]
         data[kode] = arr
       }
@@ -443,7 +443,7 @@ export const usePengunjungRanapStore = defineStore('pengunjung-ranap', {
 
     injectUpdatean(noreg, id, val, kode) {
       const findPasien = this.pasiens.filter(x => x?.noreg === noreg)
-      if (findPasien.length) {
+      if (findPasien?.length) {
         const data = findPasien[0]
         const target = data[kode]?.find(x => x?.id === id)
         if (target) {
@@ -453,7 +453,7 @@ export const usePengunjungRanapStore = defineStore('pengunjung-ranap', {
     },
     deleteInjectanNull(noreg, kode) {
       const findPasien = this.pasiens.filter(x => x.noreg === noreg)
-      if (findPasien.length) {
+      if (findPasien?.length) {
         const data = findPasien[0]
         const target = data[kode]?.find(x => x?.id === null || x?.id === '' || x?.id === undefined || !('id' in x)) ?? null
         if (target) {
@@ -463,7 +463,7 @@ export const usePengunjungRanapStore = defineStore('pengunjung-ranap', {
     },
     deleteInjectanNull2(noreg, kode) {
       const findPasien = this.pasiens.filter(x => x.noreg === noreg)
-      if (findPasien.length) {
+      if (findPasien?.length) {
         const data = findPasien[0]
         const target = data[kode]?.find(x => !('id' in x))
         if (target) {
@@ -478,7 +478,7 @@ export const usePengunjungRanapStore = defineStore('pengunjung-ranap', {
       const findPasien = this.pasiens.filter(x => x?.noreg === pasien?.noreg)
       // console.log('find pasien', findPasien)
 
-      if (findPasien.length) {
+      if (findPasien?.length) {
         const data = findPasien[0][key]
         // console.log('data', data)
 

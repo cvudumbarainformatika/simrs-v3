@@ -30,8 +30,8 @@
         <div class="fit row justify-center q-mb-md">
           <q-card>
             <q-card-section>
-              {{ rekap.user.nama }} terlambat {{ rekap.telat }} dari {{ rekap.tanggals.length }} kali absen
-              ({{ isNaN((rekap.telat/rekap.tanggals.length*100).toPrecision(4)) ? 0 : (rekap.telat/rekap.tanggals.length*100).toPrecision(4) }}%)
+              {{ rekap.user.nama }} terlambat {{ rekap.telat }} dari {{ rekap.tanggals?.length }} kali absen
+              ({{ isNaN((rekap.telat/rekap.tanggals?.length*100).toPrecision(4)) ? 0 : (rekap.telat/rekap.tanggals?.length*100).toPrecision(4) }}%)
             </q-card-section>
           </q-card>
         </div>

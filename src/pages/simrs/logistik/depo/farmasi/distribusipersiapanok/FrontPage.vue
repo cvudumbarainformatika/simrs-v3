@@ -215,7 +215,7 @@
         </div>
       </template>
       <template #expand="{ row }">
-        <div v-if="row.rinci.length">
+        <div v-if="row.rinci?.length">
           <div class="row items-center text-weight-bold">
             <div class="col-3 ">
               Obat
@@ -628,7 +628,7 @@ function onClick (val) {
 function depo (val) {
   const temp = store.depos.filter(a => a.value === val)
   // console.log('temp', temp)
-  if (temp.length) {
+  if (temp?.length) {
     return temp[0].nama
   }
   else {
@@ -659,15 +659,15 @@ function teimaPengembalian (val) {
         // console.log('fref', ref.validate())
         if (!ref.validate()) valid.push(false)
       })
-      console.log('valid', valid.length)
-      if (valid.length <= 0) store.terimaPengembalian(val)
+      console.log('valid', valid?.length)
+      if (valid?.length <= 0) store.terimaPengembalian(val)
       else notifErrVue('periksa kembali jumlah kembali')
     }
     else {
       // console.log('else', val?.rinci)
       val?.rinci.forEach(rin => { rin.sisa = parseFloat(rin.jumlah_distribusi - rin.jumlah_resep) })
       const ada = val?.rinci.filter(a => a.sisa !== a.jumlah_kembali)
-      if (ada.length) return notifErrVue('periksa kembali jumlah pengembalian, ada yang tidak sama antara jumlah distribusi dikurangi jumlah resep dengan jumlah kembali')
+      if (ada?.length) return notifErrVue('periksa kembali jumlah pengembalian, ada yang tidak sama antara jumlah distribusi dikurangi jumlah resep dengan jumlah kembali')
       else store.terimaPengembalian(val)
     }
   }, 100)
@@ -686,8 +686,8 @@ function distribusi (val) {
         console.log('fref', ref.validate())
         if (!ref.validate()) valid.push(false)
       })
-      console.log('valid', valid.length)
-      if (valid.length <= 0) store.simpanDistribusi(val)
+      console.log('valid', valid?.length)
+      if (valid?.length <= 0) store.simpanDistribusi(val)
       else {
         notifErrVue('periksa kembali jumlah distribusi')
         val.loading = false
@@ -697,7 +697,7 @@ function distribusi (val) {
       // console.log('else', val?.rinci)
       const ada = val?.rinci.filter(a => a.jumlah_distribusi <= 0)
       // console.log('ada', ada)
-      if (ada.length) {
+      if (ada?.length) {
         val.loading = false
         return notifErrVue('periksa kembali jumlah distribusi, tidak boleh 0')
       }
@@ -710,7 +710,7 @@ function distribusi (val) {
 function setJumlah (evt, det, key) {
   const inc = evt.includes('.')
   const ind = evt.indexOf('.')
-  const panj = evt.length
+  const panj = evt?.length
   const beli = isNaN(parseFloat(evt)) ? 0 : (inc && (ind === (panj - 2)) ? evt : parseFloat(evt))
   // const beli = !isNaN(parseFloat(evt)) ? (parseFloat(evt) <= 0 ? 0 : parseFloat(evt)) : 0
   det[key] = beli

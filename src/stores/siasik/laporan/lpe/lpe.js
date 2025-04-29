@@ -73,7 +73,7 @@ export const useLPEStore = defineStore('laporan_PerubahanEkuitas', {
             console.log('surplusdefisit', this.surplusdefisit)
 
             const objkoreksi = []
-            for (let i = 0; i < this.datakoreksi.length; i++) {
+            for (let i = 0; i < this.datakoreksi?.length; i++) {
               const el = this.datakoreksi[i]
               const saldoawal = el?.saldoawal.map((x) => parseFloat(x.saldo)).reduce((a, b) => a + b, 0)
               const jurnal = el?.jurnalotom.map((x) => parseFloat(x.totaljurnal)).reduce((a, b) => a + b, 0)

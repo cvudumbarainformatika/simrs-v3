@@ -73,7 +73,7 @@ export const useGeneralConsentStore = defineStore('general_consent', {
         'hubunganWali1',
         'hubunganWali2'
       ]
-      for (let i = 0; i < columns.length; i++) {
+      for (let i = 0; i < columns?.length; i++) {
         this.setForm(columns[i], null)
       }
       this.setForm('tanggal', dateDbFormat(new Date()))

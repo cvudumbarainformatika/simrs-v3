@@ -57,10 +57,10 @@ export const useSettingsAplikasi = defineStore('settings_aplikasi', {
 
     addMenu(idx) {
       const menus = this.items[idx]
-      if (menus.length) {
+      if (menus?.length) {
         const key0 = Object.keys(menus.menus[0])
         const temp = key0.filter(a => a === 'menuId')
-        if (temp.length) {
+        if (temp?.length) {
           notifErrVue('isi dulu baru tambah baru')
         }
         else {
@@ -74,7 +74,7 @@ export const useSettingsAplikasi = defineStore('settings_aplikasi', {
             submenus: []
           }
 
-          menus.menus.length > 0 ? menus.menus.unshift(menu) : menus.menus.push(menu)
+          menus.menus?.length > 0 ? menus.menus.unshift(menu) : menus.menus.push(menu)
           // console.log('addMenu', menus)
         }
       }
@@ -89,18 +89,18 @@ export const useSettingsAplikasi = defineStore('settings_aplikasi', {
           submenus: []
         }
 
-        menus.menus.length > 0 ? menus.menus.unshift(menu) : menus.menus.push(menu)
+        menus.menus?.length > 0 ? menus.menus.unshift(menu) : menus.menus.push(menu)
         // console.log('addMenu', menus)
       }
     },
     addSubMenu(idx) {
       const menus = this.items[idx.i].menus[idx.n]
       // console.log(menus)
-      if (menus.submenus.length) {
+      if (menus.submenus?.length) {
         const key0 = Object.keys(menus.submenus[0])
         const temp = key0.filter(a => a === 'submenuId')
         // console.log('temp', temp)
-        if (temp.length) {
+        if (temp?.length) {
           notifErrVue('isi dulu baru tambah baru')
         }
         else {
@@ -113,7 +113,7 @@ export const useSettingsAplikasi = defineStore('settings_aplikasi', {
             name: 'kosong'
           }
 
-          menus.submenus.length > 0 ? menus.submenus.unshift(menu) : menus.submenus.push(menu)
+          menus.submenus?.length > 0 ? menus.submenus.unshift(menu) : menus.submenus.push(menu)
         }
       }
       else {
@@ -126,7 +126,7 @@ export const useSettingsAplikasi = defineStore('settings_aplikasi', {
           name: 'kosong'
         }
 
-        menus.submenus.length > 0 ? menus.submenus.unshift(menu) : menus.submenus.push(menu)
+        menus.submenus?.length > 0 ? menus.submenus.unshift(menu) : menus.submenus.push(menu)
       }
       // console.log('addSubMenu', menus)
     },
@@ -378,7 +378,7 @@ export const useSettingsAplikasi = defineStore('settings_aplikasi', {
       const key = Object.keys(menu)
       const kosong = key.filter(a => menu[a] === 'kosong')
       // console.log('key', key, 'kosong', kosong)
-      if (menu.aplikasi_id && menu.icon && !kosong.length) {
+      if (menu.aplikasi_id && menu.icon && !kosong?.length) {
         this.loading = true
         return new Promise(resolve => {
           api.post('v1/settings/appmenu/menu-store', menu)
@@ -415,7 +415,7 @@ export const useSettingsAplikasi = defineStore('settings_aplikasi', {
       const key = Object.keys(sub)
       const kosong = key.filter(a => sub[a] === 'kosong')
       // console.log('key', key, 'kosong', kosong)
-      if (sub.menu_id && !kosong.length) {
+      if (sub.menu_id && !kosong?.length) {
         this.loading = true
         return new Promise(resolve => {
           api.post('v1/settings/appmenu/submenu-store', sub)

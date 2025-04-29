@@ -334,7 +334,7 @@
       <div class="text-center">Probolinggo, {{ store.viewData.tanggal }} </div>
       <div class="text-center text-bold q-pb-xl">Direktur RSUD Dokter Mohamad Saleh</div>
       <div class="text-center text-bold"> {{ it.nama }}
-        <div class="garis-bawah" :style="{ width: it.nama.length + 'ch' }"></div>
+        <div class="garis-bawah" :style="{ width: it.nama?.length + 'ch' }"></div>
       </div>
       <div class="text-center"> NIP. {{ it.nip }} </div>
     </div>

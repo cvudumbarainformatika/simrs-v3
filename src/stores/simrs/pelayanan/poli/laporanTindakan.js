@@ -30,7 +30,7 @@ export const useLaporanTindakanPoliStore = defineStore('laporan-tindakan-poli', 
       return new Promise((resolve, reject) => {
         api.get('v1/simrs/pelayanan/laporantindakan/listdokter')
           .then(resp => {
-            this.listdokters = resp.data.length ? resp.data.map(x => {
+            this.listdokters = resp.data?.length ? resp.data.map(x => {
               return { nama: x.nama, kode: x.kdpegsimrs }
             }) : []
             // console.log('list dokters', resp)

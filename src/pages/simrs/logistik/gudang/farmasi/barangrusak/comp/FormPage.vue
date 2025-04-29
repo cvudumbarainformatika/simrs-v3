@@ -108,7 +108,7 @@
                 @keyup.enter.stop="store.cariPenerimaan()"
               />
               <div
-                v-if="Object.keys(store.penerimaan).length"
+                v-if="Object.keys(store.penerimaan)?.length"
                 class="row"
               >
                 <div
@@ -201,12 +201,12 @@
       <app-loading />
     </div>
     <div
-      v-if="!store.loading && !store.items.length"
+      v-if="!store.loading && !store.items?.length"
       class="row justify-center"
     >
       <app-no-data-small />
     </div>
-    <div v-if="!store.loading && store.items.length">
+    <div v-if="!store.loading && store.items?.length">
       <div class="row bg-dark text-white q-pa-xs q-mb-sm">
         <div
           class="col-auto"
@@ -391,7 +391,7 @@ const store = useFormBarangRusakStore()
 function updateJum (evt) {
   const inc = evt.includes('.')
   const ind = evt.indexOf('.')
-  const panj = evt.length
+  const panj = evt?.length
   const nilai = isNaN(parseFloat(evt)) ? 0 : (inc && (ind === (panj - 2)) ? evt : parseFloat(evt))
   const stok = store.form.stok
   if (nilai > stok) {

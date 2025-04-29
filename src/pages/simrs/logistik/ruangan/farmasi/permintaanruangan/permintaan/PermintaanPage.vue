@@ -315,7 +315,7 @@
           Rincian Permintaan Tersimpan
         </div>
       </div>
-      <div v-if="store.details.length">
+      <div v-if="store.details?.length">
         <div
           v-for="(det,i) in store.details"
           :key="i"
@@ -383,7 +383,7 @@
           </div>
         </div>
       </div>
-      <div v-if="!store.details.length">
+      <div v-if="!store.details?.length">
         <app-no-data />
       </div>
     </div>
@@ -455,7 +455,7 @@ const user = computed(() => {
     }
     else if (apps.user?.kdruangansim) {
       const peg = store.ruangans.filter(val => val.kode === apps.user?.kdruangansim)
-      if (peg.length) {
+      if (peg?.length) {
         store.setForm('dari', peg[0].kode)
         store.setDisp('depo', peg[0].uraian)
         const dep = store.floor.filter(a => a.kode === peg[0].kode)
@@ -484,7 +484,7 @@ function depoSelected (val) {
 function setJumlahMinta (evt) {
   const inc = evt.includes('.')
   const ind = evt.indexOf('.')
-  const panj = evt.length
+  const panj = evt?.length
   const jumlah = isNaN(parseFloat(evt)) ? 0 : (inc && (ind === (panj - 2)) ? evt : parseFloat(evt))
   // const jumlah = !isNaN(parseFloat(evt)) ? parseFloat(evt) : 0
   store.setForm('jumlah_minta', jumlah)

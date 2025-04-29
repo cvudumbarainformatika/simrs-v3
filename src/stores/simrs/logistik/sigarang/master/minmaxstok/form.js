@@ -34,7 +34,7 @@ export const useMinMaxStokForm = defineStore('min_maks_stok_form', {
         'min_stok',
         'max_stok'
       ]
-      for (let i = 0; i < columns.length; i++) {
+      for (let i = 0; i < columns?.length; i++) {
         this.setForm(columns[i], null)
       }
     },

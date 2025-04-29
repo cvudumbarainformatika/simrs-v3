@@ -31,7 +31,7 @@ export const usePermintaanOperasiIrdRanapStore = defineStore('permintaan-operasi
         // this.setNotas(resp?.data)
         const data = resp?.data
         const storeRanap = usePengunjungRanapStore()
-        for (let i = 0; i < data.length; i++) {
+        for (let i = 0; i < data?.length; i++) {
           const isi = data[i]
           storeRanap.injectDataPasien(pasien?.noreg, isi, 'operasi')
         }
@@ -85,7 +85,7 @@ export const usePermintaanOperasiIrdRanapStore = defineStore('permintaan-operasi
 
     setNotas (array) {
       const arr = array.map(x => x.nota)
-      this.notas = arr.length ? arr : []
+      this.notas = arr?.length ? arr : []
       this.notas.push('BARU')
       this.notas.unshift('SEMUA')
       this.form.nota = this.notas[0]

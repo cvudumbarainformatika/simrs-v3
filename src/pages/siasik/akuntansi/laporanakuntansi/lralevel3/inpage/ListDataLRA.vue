@@ -16,17 +16,17 @@
           <template #body="props">
             <q-tr>
               <q-td key="kode" :props="props" class="text-left">
-                <div :class="props?.row?.kodeall3.length <= 1 ? 'text-bold' : '' ">
+                <div :class="props?.row?.kodeall3?.length <= 1 ? 'text-bold' : '' ">
                   {{ props.row?.kodeall3 }}
                 </div>
               </q-td>
               <q-td key="rekening" :props="props" class="text-left">
-                <div :class="props?.row?.kodeall3.length <= 1 ? 'text-bold' : '' ">
+                <div :class="props?.row?.kodeall3?.length <= 1 ? 'text-bold' : '' ">
                   {{ props.row?.uraian }}
                 </div>
               </q-td>
               <q-td key="pagu" :props="props" class="text-right">
-                <div :class="props?.row?.kodeall3.length <= 1 ? 'text-bold' : '' ">
+                <div :class="props?.row?.kodeall3?.length <= 1 ? 'text-bold' : '' ">
                   {{ formattanpaRp(props.row?.totalPagu) }}
                 </div>
               </q-td>
@@ -41,12 +41,12 @@
                 </div>
               </q-td> -->
               <q-td key="totalreal" :props="props" class="text-right">
-                <div :class="props?.row?.kodeall3.length <= 1 ? 'text-bold' : '' ">
+                <div :class="props?.row?.kodeall3?.length <= 1 ? 'text-bold' : '' ">
                   {{ formattanpaRp(props.row?.RealisasiSemua) }}
                 </div>
               </q-td>
               <q-td key="selisih" :props="props" class="text-right">
-                <div :class="props?.row?.kodeall3.length <= 1 ? 'text-bold' : '' ">
+                <div :class="props?.row?.kodeall3?.length <= 1 ? 'text-bold' : '' ">
                   {{ formattanpaRp(props.row?.selisih) }}
                 </div>
               </q-td>
@@ -69,17 +69,17 @@
           <template #body="props">
             <q-tr>
               <q-td key="kode" :props="props" class="text-left">
-                <div :class="props?.row?.kodeall3.length <= 1 ? 'text-bold' : '' ">
+                <div :class="props?.row?.kodeall3?.length <= 1 ? 'text-bold' : '' ">
                   {{ props.row?.kodeall3 }}
                 </div>
               </q-td>
               <q-td key="rekening" :props="props" class="text-left">
-                <div :class="props?.row?.kodeall3.length <= 1 ? 'text-bold' : '' ">
+                <div :class="props?.row?.kodeall3?.length <= 1 ? 'text-bold' : '' ">
                   {{ props.row?.uraian }}
                 </div>
               </q-td>
               <q-td key="pagu" :props="props" class="text-right">
-                <div :class="props?.row?.kodeall3.length <= 1 ? 'text-bold' : '' ">
+                <div :class="props?.row?.kodeall3?.length <= 1 ? 'text-bold' : '' ">
                   {{ formattanpaRp(props.row?.totalPagu) }}
                 </div>
               </q-td>
@@ -94,12 +94,12 @@
                 </div>
               </q-td> -->
               <q-td key="totalreal" :props="props" class="text-right">
-                <div :class="props?.row?.kodeall3.length <= 1 ? 'text-bold' : '' ">
+                <div :class="props?.row?.kodeall3?.length <= 1 ? 'text-bold' : '' ">
                   {{ formattanpaRp(props.row?.RealisasiSemua) }}
                 </div>
               </q-td>
               <q-td key="selisih" :props="props" class="text-right">
-                <div :class="props?.row?.kodeall3.length <= 1 ? 'text-bold' : '' ">
+                <div :class="props?.row?.kodeall3?.length <= 1 ? 'text-bold' : '' ">
                   {{ formattanpaRp(props.row?.selisih) }}
                 </div>
               </q-td>
@@ -122,17 +122,17 @@
           <template #body="props">
             <q-tr>
               <q-td key="kode" :props="props" class="text-left">
-                <div :class="props?.row?.kodeall3.length <= 3 ? 'text-bold' : '' ">
+                <div :class="props?.row?.kodeall3?.length <= 3 ? 'text-bold' : '' ">
                   {{ props.row?.kodeall3 }}
                 </div>
               </q-td>
               <q-td key="rekening" :props="props" class="text-left">
-                <div :class="props?.row?.kodeall3.length <= 3 ? 'text-bold' : '' ">
+                <div :class="props?.row?.kodeall3?.length <= 3 ? 'text-bold' : '' ">
                   {{ props.row?.uraian }}
                 </div>
               </q-td>
               <q-td key="pagu" :props="props" class="text-right">
-                <div :class="props?.row?.kodeall3.length <= 3 ? 'text-bold' : '' ">
+                <div :class="props?.row?.kodeall3?.length <= 3 ? 'text-bold' : '' ">
                   {{ formattanpaRp(props.row?.totalPagu) }}
                 </div>
               </q-td>
@@ -147,12 +147,12 @@
                 </div>
               </q-td> -->
               <q-td key="totalreal" :props="props" class="text-right">
-                <div :class="props?.row?.kodeall3.length <= 3 ? 'text-bold' : '' ">
+                <div :class="props?.row?.kodeall3?.length <= 3 ? 'text-bold' : '' ">
                   {{ formattanpaRp(props.row?.RealisasiSemua) }}
                 </div>
               </q-td>
               <q-td key="selisih" :props="props" class="text-right">
-                <div :class="props?.row?.kodeall3.length <= 3 ? 'text-bold' : '' ">
+                <div :class="props?.row?.kodeall3?.length <= 3 ? 'text-bold' : '' ">
                   {{ formattanpaRp(props.row?.selisih) }}
                 </div>
               </q-td>
@@ -175,17 +175,17 @@
           <template #body="props">
             <q-tr>
               <q-td key="kode" :props="props" class="text-left">
-                <div :class="props?.row?.kodeall3.length <= 3 ? 'text-bold' : '' ">
+                <div :class="props?.row?.kodeall3?.length <= 3 ? 'text-bold' : '' ">
                   {{ props.row?.kodeall3 }}
                 </div>
               </q-td>
               <q-td key="rekening" :props="props" class="text-left">
-                <div :class="props?.row?.kodeall3.length <= 3 ? 'text-bold' : '' ">
+                <div :class="props?.row?.kodeall3?.length <= 3 ? 'text-bold' : '' ">
                   {{ props.row?.uraian }}
                 </div>
               </q-td>
               <q-td key="pagu" :props="props" class="text-right">
-                <div :class="props?.row?.kodeall3.length <= 3 ? 'text-bold' : '' ">
+                <div :class="props?.row?.kodeall3?.length <= 3 ? 'text-bold' : '' ">
                   {{ formattanpaRp(props.row?.totalPagu) }}
                 </div>
               </q-td>
@@ -200,12 +200,12 @@
                 </div>
               </q-td> -->
               <q-td key="totalreal" :props="props" class="text-right">
-                <div :class="props?.row?.kodeall3.length <= 3 ? 'text-bold' : '' ">
+                <div :class="props?.row?.kodeall3?.length <= 3 ? 'text-bold' : '' ">
                   {{ formattanpaRp(props.row?.RealisasiSemua) }}
                 </div>
               </q-td>
               <q-td key="selisih" :props="props" class="text-right">
-                <div :class="props?.row?.kodeall3.length <= 3 ? 'text-bold' : '' ">
+                <div :class="props?.row?.kodeall3?.length <= 3 ? 'text-bold' : '' ">
                   {{ formattanpaRp(props.row?.selisih) }}
                 </div>
               </q-td>
@@ -228,17 +228,17 @@
           <template #body="props">
             <q-tr>
               <q-td key="kode" :props="props" class="text-left">
-                <div :class="props?.row?.kodeall3.length <= 6 ? 'text-bold' : '' ">
+                <div :class="props?.row?.kodeall3?.length <= 6 ? 'text-bold' : '' ">
                   {{ props.row?.kodeall3 }}
                 </div>
               </q-td>
               <q-td key="rekening" :props="props" class="text-left">
-                <div :class="props?.row?.kodeall3.length <= 6 ? 'text-bold' : '' ">
+                <div :class="props?.row?.kodeall3?.length <= 6 ? 'text-bold' : '' ">
                   {{ props.row?.uraian }}
                 </div>
               </q-td>
               <q-td key="pagu" :props="props" class="text-right">
-                <div :class="props?.row?.kodeall3.length <= 6 ? 'text-bold' : '' ">
+                <div :class="props?.row?.kodeall3?.length <= 6 ? 'text-bold' : '' ">
                   {{ formattanpaRp(props.row?.totalPagu) }}
                 </div>
               </q-td>
@@ -253,12 +253,12 @@
                 </div>
               </q-td> -->
               <q-td key="totalreal" :props="props" class="text-right">
-                <div :class="props?.row?.kodeall3.length <= 6 ? 'text-bold' : '' ">
+                <div :class="props?.row?.kodeall3?.length <= 6 ? 'text-bold' : '' ">
                   {{ formattanpaRp(props.row?.RealisasiSemua) }}
                 </div>
               </q-td>
               <q-td key="selisih" :props="props" class="text-right">
-                <div :class="props?.row?.kodeall3.length <= 6 ? 'text-bold' : '' ">
+                <div :class="props?.row?.kodeall3?.length <= 6 ? 'text-bold' : '' ">
                   {{ formattanpaRp(props.row?.selisih) }}
                 </div>
               </q-td>
@@ -281,17 +281,17 @@
           <template #body="props">
             <q-tr>
               <q-td key="kode" :props="props" class="text-left">
-                <div :class="props?.row?.kodeall3.length <= 6 ? 'text-bold' : '' ">
+                <div :class="props?.row?.kodeall3?.length <= 6 ? 'text-bold' : '' ">
                   {{ props.row?.kodeall3 }}
                 </div>
               </q-td>
               <q-td key="rekening" :props="props" class="text-left">
-                <div :class="props?.row?.kodeall3.length <= 6 ? 'text-bold' : '' ">
+                <div :class="props?.row?.kodeall3?.length <= 6 ? 'text-bold' : '' ">
                   {{ props.row?.uraian }}
                 </div>
               </q-td>
               <q-td key="pagu" :props="props" class="text-right">
-                <div :class="props?.row?.kodeall3.length <= 6 ? 'text-bold' : '' ">
+                <div :class="props?.row?.kodeall3?.length <= 6 ? 'text-bold' : '' ">
                   {{ formattanpaRp(props.row?.totalPagu) }}
                 </div>
               </q-td>
@@ -306,12 +306,12 @@
                 </div>
               </q-td> -->
               <q-td key="totalreal" :props="props" class="text-right">
-                <div :class="props?.row?.kodeall3.length <= 6 ? 'text-bold' : '' ">
+                <div :class="props?.row?.kodeall3?.length <= 6 ? 'text-bold' : '' ">
                   {{ formattanpaRp(props.row?.RealisasiSemua) }}
                 </div>
               </q-td>
               <q-td key="selisih" :props="props" class="text-right">
-                <div :class="props?.row?.kodeall3.length <= 6 ? 'text-bold' : '' ">
+                <div :class="props?.row?.kodeall3?.length <= 6 ? 'text-bold' : '' ">
                   {{ formattanpaRp(props.row?.selisih) }}
                 </div>
               </q-td>

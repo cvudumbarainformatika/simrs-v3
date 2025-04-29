@@ -135,7 +135,7 @@ export const useTransaksiPermintaanTable = defineStore('table_transaksi_perminta
       // const peng = store.penggunas.filter((apem) => {
       //   return apem.kode === data.kode_pengguna
       // })
-      // console.log('soucet', store.penggunas.length)
+      // console.log('soucet', store.penggunas?.length)
       // console.log('peng', peng)
       // const pj = store.penanggungjawabs.filter((data) => {
       //   return (
@@ -154,7 +154,7 @@ export const useTransaksiPermintaanTable = defineStore('table_transaksi_perminta
       // store.setForm('kode_penanggungjawab', pj[0].kode)
       store.setNama('penanggungjawab', data.pj.jabatan)
       store.setNama('pengguna', data.pengguna.jabatan)
-      if (Object.keys(detail).length) {
+      if (Object.keys(detail)?.length) {
         // console.log('Objeck key detail HAAAAADDIIIIRRRRR')
         store.setForm('tujuan', detail.tujuan)
         store.setForm('kode_ruang', detail.tujuan)
@@ -182,7 +182,7 @@ export const useTransaksiPermintaanTable = defineStore('table_transaksi_perminta
 
     // get data minMaxPengguna
     getMinMaxPengguna() {
-      if (!this.minMaxPenggunas.length) {
+      if (!this.minMaxPenggunas?.length) {
         this.loading = true
         return new Promise(resolve => {
         // api.get('v1/minmaxpenggunastok/all')
@@ -268,10 +268,10 @@ export const useTransaksiPermintaanTable = defineStore('table_transaksi_perminta
               return
             }
             if (resp.status === 200) {
-              if (resp.data.length) {
+              if (resp.data?.length) {
                 const apem = resp.data
-                this.setForm(apem[apem.length - 1])
-                this.assignForm(apem[apem.length - 1])
+                this.setForm(apem[apem?.length - 1])
+                this.assignForm(apem[apem?.length - 1])
                 apem.forEach((data, i) => {
                   if (data) {
                     const mapKey = Object.keys(data.gudang)
@@ -280,7 +280,7 @@ export const useTransaksiPermintaanTable = defineStore('table_transaksi_perminta
                       this.setColumns(data.gudang[lupis])
                       this.mapGudang[i] = {
                         header: data,
-                        gudang: apem.length ? titleCase(apem[0].nama) : 'Nama depo Tidak terlihat',
+                        gudang: apem?.length ? titleCase(apem[0].nama) : 'Nama depo Tidak terlihat',
                         items: data.gudang[lupis]
                       }
                     })
@@ -319,7 +319,7 @@ export const useTransaksiPermintaanTable = defineStore('table_transaksi_perminta
       })
     },
     getDepo() {
-      if (!this.depos.length) {
+      if (!this.depos?.length) {
         this.loading = true
         return new Promise((resolve, reject) => {
           api
@@ -330,8 +330,8 @@ export const useTransaksiPermintaanTable = defineStore('table_transaksi_perminta
                 const nama = resp.data.map(data => {
                   let temp = data.nama.split(' ')
 
-                  if (temp.length > 2) {
-                    for (let i = 0; i < temp.length; i++) {
+                  if (temp?.length > 2) {
+                    for (let i = 0; i < temp?.length; i++) {
                       temp[i] = temp[i].charAt(0)
                     }
                     data.noPer = temp.join('')
@@ -356,7 +356,7 @@ export const useTransaksiPermintaanTable = defineStore('table_transaksi_perminta
       }
     },
     getRuang() {
-      if (!this.ruangs.length) {
+      if (!this.ruangs?.length) {
         this.loading = true
         return new Promise((resolve, reject) => {
           api
@@ -377,7 +377,7 @@ export const useTransaksiPermintaanTable = defineStore('table_transaksi_perminta
       }
     },
     getMapingDepo() {
-      if (!this.mapingDepos.length) {
+      if (!this.mapingDepos?.length) {
         this.loadingDepo = true
         return new Promise((resolve, reject) => {
           api

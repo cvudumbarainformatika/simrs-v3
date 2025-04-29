@@ -32,7 +32,7 @@
     <!-- lists -->
 
     <!-- jika data kosong -->
-    <div v-if="items.length === 0">
+    <div v-if="items?.length === 0">
       <q-card
         flat
         class="column flex-center bg-grey-5 q-pa-lg text-center"
@@ -210,7 +210,7 @@ function imgClick() {
 }
 
 function addData() {
-  if (items.value.length === 4) {
+  if (items.value?.length === 4) {
     return notifErrVue('Maaf, Maximal 4')
   }
   tempId.value = null

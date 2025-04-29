@@ -42,7 +42,7 @@ const optionx = ref([])
 defineExpose({ refAuto })
 
 async function filterFn (val, update, abort) {
-  if (val.length < props.filterMin) {
+  if (val?.length < props.filterMin) {
     abort()
     return
   }

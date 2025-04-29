@@ -72,7 +72,7 @@
             name="pcare"
             style="padding: 0;"
           >
-            <div v-if="!store.listRujukanPcare.length">
+            <div v-if="!store.listRujukanPcare?.length">
               <app-no-data-small
                 style="height: 46vh;"
               />
@@ -136,7 +136,7 @@
             name="rs"
             style="padding: 0;"
           >
-            <div v-if="!store.listRujukanRs.length">
+            <div v-if="!store.listRujukanRs?.length">
               <app-no-data-small
                 style="height: 46vh;"
               />
@@ -201,7 +201,7 @@
             name="mrs"
             style="padding: 0;"
           >
-            <div v-if="!store.listRujukanSepMrs.length">
+            <div v-if="!store.listRujukanSepMrs?.length">
               <app-no-data-small
                 style="height: 46vh;"
               />
@@ -268,7 +268,7 @@
           class="col-6 scroll"
           style="max-height: 80vh; padding:0"
         >
-          <div v-if="!store.listRujukanPcare.length">
+          <div v-if="!store.listRujukanPcare?.length">
             <app-loading v-if="store.loadingListRujukan" />
             <app-no-data-small
               v-else
@@ -320,7 +320,7 @@
           class="col-6 scroll"
           style="max-height: 80vh; padding:0"
         >
-          <div v-if="!store.listRujukanRs.length">
+          <div v-if="!store.listRujukanRs?.length">
             <app-loading v-if="store.loadingListRujukanRS" />
             <app-no-data-small
               v-else
@@ -373,11 +373,11 @@
         <div class="title-desc q-mb-md">
           Daftar Rujukan P Care
         </div>
-        <div v-if="!store.listRujukanPcare.length">
+        <div v-if="!store.listRujukanPcare?.length">
           <app-loading v-if="store.loadingListRujukan" />
           <app-no-data-small v-else />
         </div>
-        <div v-if="store.listRujukanPcare.length">
+        <div v-if="store.listRujukanPcare?.length">
           <div class="row no-wrap justify-center items-center q-col-gutter-sm text-weight-bold q-mb-sm">
             <div class="col-1">
               <div class="row">
@@ -467,11 +467,11 @@
         <div class="title-desc q-mb-md">
           Daftar Rujukan Rumah Sakit
         </div>
-        <div v-if="!store.listRujukanRs.length">
+        <div v-if="!store.listRujukanRs?.length">
           <app-loading v-if="store.loadingListRujukanRS" />
           <app-no-data-small v-else />
         </div>
-        <div v-if="store.listRujukanRs.length">
+        <div v-if="store.listRujukanRs?.length">
           <div class="row no-wrap justify-center items-center q-col-gutter-sm text-weight-bold q-mb-sm">
             <div class="col-1">
               <div class="row">
@@ -562,11 +562,11 @@
         <div class="title-desc q-mb-md">
           Daftar No SEP Waktu MRS
         </div>
-        <div v-if="!store.listRujukanSepMrs.length">
+        <div v-if="!store.listRujukanSepMrs?.length">
           <app-loading v-if="store.loadingListRujukanMrs" />
           <app-no-data-small v-else />
         </div>
-        <div v-if="store.listRujukanSepMrs.length">
+        <div v-if="store.listRujukanSepMrs?.length">
           <div class="row no-wrap justify-center items-center q-col-gutter-sm text-weight-bold q-mb-sm">
             <div class="col-1">
               No
@@ -650,7 +650,7 @@ function pilihRujukan(val, jenis) {
     console.log('index', index, store.polis[index])
     store.paramKarcis.kd_poli = store.polis[index].kodepoli
     store.form.dpjp = ''
-    if (store.jenisKarcises.length) {
+    if (store.jenisKarcises?.length) {
       store.form.jeniskarcis = store.jenisKarcises[0].jeniskarcis
       store.paramKarcis.flag = store.jenisKarcises[0].jeniskarcis
     }

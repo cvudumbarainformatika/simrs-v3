@@ -36,7 +36,7 @@ export const saldoawalJurnal = defineStore('saldoawal_Jurnal', {
       // const columns = [
       //   'id'
       // ]
-      // for (let i = 0; i < columns.length; i++) {
+      // for (let i = 0; i < columns?.length; i++) {
       //   this.setFormSaldo(columns[i], null)
       // }
       // (delete) this.form.id
@@ -78,8 +78,8 @@ export const saldoawalJurnal = defineStore('saldoawal_Jurnal', {
     },
     nilaiSaldo() {
       const arr = {
-        debit: (this.datasaldo.length ? this.datasaldo.map((x) => parseFloat(x.debit)) : []).reduce((a, b) => a + b, 0),
-        kredit: (this.datasaldo.length ? this.datasaldo.map((x) => parseFloat(x.kredit)) : []).reduce((a, b) => a + b, 0)
+        debit: (this.datasaldo?.length ? this.datasaldo.map((x) => parseFloat(x.debit)) : []).reduce((a, b) => a + b, 0),
+        kredit: (this.datasaldo?.length ? this.datasaldo.map((x) => parseFloat(x.kredit)) : []).reduce((a, b) => a + b, 0)
       }
       this.saldo = arr
       console.log('nilai Saldo', this.saldo)

@@ -68,7 +68,7 @@ export const useTransaksiPermintaanForm = defineStore('form_transaksi_permintaan
       // if (this.auth.role.id === 5) {}
       this.form.kode_ruang = this.auth.kode_ruang
       const ruang = this.penggunaruangs.filter(data => { return data.kode_ruang === this.auth.kode_ruang })
-      if (ruang.length) {
+      if (ruang?.length) {
         const peng = ruang[0].pengguna
         const pj = ruang[0].penanggungjawab ? ruang[0].penanggungjawab : ruang[0].pengguna
 
@@ -158,7 +158,7 @@ export const useTransaksiPermintaanForm = defineStore('form_transaksi_permintaan
             // console.log('minmaxpengguna', resp)
             this.minMaxPenggunas = resp.data
             const maksRuangan = useMinMaxPenggunaStockStore()
-            maksRuangan.formRuangan.flag_minta = Object.keys(resp.data).length ? resp.data.flag_minta : null
+            maksRuangan.formRuangan.flag_minta = Object.keys(resp.data)?.length ? resp.data.flag_minta : null
             resolve(resp)
           })
           .catch(() => {

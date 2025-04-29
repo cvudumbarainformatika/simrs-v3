@@ -173,7 +173,7 @@ export const useStokOpnameStore = defineStore('stok_opnam_store', {
     },
     prosesData(val) {
       // this.items = val
-      if (this.kode_tempat === '' && val.length) {
+      if (this.kode_tempat === '' && val?.length) {
         this.kode_tempat = val[0].kode_depo
       }
       console.log('proses data', val[0])
@@ -181,42 +181,42 @@ export const useStokOpnameStore = defineStore('stok_opnam_store', {
         const x = br
 
         // penerimaan
-        x.penerimaan = !br.detail_penerimaan.length ? 0
+        x.penerimaan = !br.detail_penerimaan?.length ? 0
           : br.detail_penerimaan.map(trm => trm.qty).reduce((a, b) => a + b)
 
         // pemesanan masuk gudang
-        x.gudang = !br.detail_transaksi_gudang.length ? 0
+        x.gudang = !br.detail_transaksi_gudang?.length ? 0
           : br.detail_transaksi_gudang.map(trm => trm.qty).reduce((a, b) => a + b)
 
         // distribusi depo
-        x.distribusiDepo = !br.detail_distribusi_depo.length ? 0
+        x.distribusiDepo = !br.detail_distribusi_depo?.length ? 0
           : br.detail_distribusi_depo.map(trm => trm.jumlah).reduce((a, b) => a + b)
 
         // permintaan ruangan
-        x.permintaanRuangan = !br.detail_permintaanruangan.length ? 0
+        x.permintaanRuangan = !br.detail_permintaanruangan?.length ? 0
           : br.detail_permintaanruangan.map(trm => trm.jumlah_distribusi).reduce((a, b) => a + b)
 
         // distribusi langsung
-        x.distribusiLangsung = !br.detail_distribusi_langsung.length ? 0
+        x.distribusiLangsung = !br.detail_distribusi_langsung?.length ? 0
           : br.detail_distribusi_langsung.map(trm => trm.jumlah).reduce((a, b) => a + b)
 
         // pemakaian ruangan
-        x.pemakaianRuangan = !br.detail_pemakaianruangan.length ? 0
+        x.pemakaianRuangan = !br.detail_pemakaianruangan?.length ? 0
           : br.detail_pemakaianruangan.map(trm => trm.jumlah).reduce((a, b) => a + b)
 
         // stok awal
-        x.stokAwal = !br.stok_awal.length ? 0
+        x.stokAwal = !br.stok_awal?.length ? 0
           : br.stok_awal.map(mo => mo.sisa_stok).reduce((a, b) => a + b)
 
         // stok fisik
-        x.stok_fisik = !br.fisik.length ? 0
+        x.stok_fisik = !br.fisik?.length ? 0
           : br.fisik.map(fs => fs.stok_fisik).reduce((a, b) => a + b)
 
         // hitung stok transaksi
         x.stok_transaksi = x.stokAwal + x.distribusiDepo - x.permintaanRuangan - x.distribusiLangsung
 
         // total stok
-        x.totalStok = !br.monthly.length ? 0
+        x.totalStok = !br.monthly?.length ? 0
           : br.monthly.filter(mo => mo.kode_ruang === this.kode_tempat).map(y => y.sisa_stok).reduce((a, b) => a + b, 0)
 
         return x

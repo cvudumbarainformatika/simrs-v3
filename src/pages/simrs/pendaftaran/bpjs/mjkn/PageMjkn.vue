@@ -254,9 +254,9 @@ function kirimPoli (val) {
       pasien.setForm('noka', val.nomorkartu)
       pasien.setForm('nokabpjs', val.nomorkartu)
       pasien.setForm('kewarganegaraan', 'WNI')
-      if (val.nomorantrean.length > 1) {
-        const temp = parseInt(val.nomorantrean.slice(2, val.nomorantrean.length))
-        // console.log('antrian ', val.nomorantrean.length)
+      if (val.nomorantrean?.length > 1) {
+        const temp = parseInt(val.nomorantrean.slice(2, val.nomorantrean?.length))
+        // console.log('antrian ', val.nomorantrean?.length)
         // console.log('temp ', temp)
         pasien.setForm('angkaantrean', temp)
       }
@@ -270,7 +270,7 @@ function kirimPoli (val) {
       // pasien.setForm('kewarganegaraan', 'WNI')
       regis.paramKarcis.flag = 'Lama'
       store.getPasien(val.norm).then(resp => {
-        if (resp.length === 1) {
+        if (resp?.length === 1) {
           pilihPasienIni(resp[0], val)
         }
         else {
@@ -335,7 +335,7 @@ function pilihPasienIni (val, jkn) {
   pasien.setNoAntrian(jkn.nomorantrean)
   const tglLahir = val.tgllahir.split('-')
   pasien.setForm('barulama', 'lama')
-  if (tglLahir.length) {
+  if (tglLahir?.length) {
     pasien.tanggal.tahun = tglLahir[0]
     pasien.tanggal.bulan = tglLahir[1]
     pasien.tanggal.hari = tglLahir[2]
@@ -371,10 +371,10 @@ function pilihPasienIni (val, jkn) {
     }
   }
   // telepon
-  if (pasien.form.noteleponhp.length) {
+  if (pasien.form.noteleponhp?.length) {
     if (pasien.form.noteleponhp.charAt(0) !== '0') {
       if (pasien.form.noteleponhp.charAt(0) === '+' && pasien.form.noteleponhp.charAt(1) === '6' && pasien.form.noteleponhp.charAt(2) === '2') {
-        const telp = '0' + pasien.form.noteleponhp.slice(3, pasien.form.noteleponhp.length)
+        const telp = '0' + pasien.form.noteleponhp.slice(3, pasien.form.noteleponhp?.length)
         pasien.setForm('noteleponhp', telp)
       }
     }
@@ -603,7 +603,7 @@ function getListRujukan () {
   regis.listRujukanSepMrs = []
   regis.jumlahSEP = 0
   if (data) {
-    if (Object.keys(data).length) {
+    if (Object.keys(data)?.length) {
       // console.log('cek list rujukan', data)
       regis.getListRujukanPCare(data)
       regis.getListRujukanRs(data)
@@ -736,7 +736,7 @@ function simpanData () {
 const router = useRouter()
 function toSimpan (dataPasien, form) {
   const keys = Object.keys(dataPasien.form)
-  if (keys.length) {
+  if (keys?.length) {
     keys.forEach(key => {
       regis.setForm(key, dataPasien.form[key])
     })

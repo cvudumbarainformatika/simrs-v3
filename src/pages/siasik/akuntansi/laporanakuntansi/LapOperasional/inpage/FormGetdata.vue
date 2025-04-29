@@ -96,7 +96,7 @@ function cetakData() {
   store.dialogCetak = true
 }
 async function exportToExcel() {
-  if (!store.hasilpendapatan.length && !store.hasilbeban.length) {
+  if (!store.hasilpendapatan?.length && !store.hasilbeban?.length) {
     notifErrVue('Tidak ada data untuk diekspor!');
     return;
   }
@@ -160,7 +160,7 @@ async function exportToExcel() {
   // Atur lebar kolom (opsional)
   const colWidths = data[0].map((_, colIndex) => {
     return Math.max(
-      ...data.map((row) => (row[colIndex] ? row[colIndex].toString().length : 0)),
+      ...data.map((row) => (row[colIndex] ? row[colIndex].toString()?.length : 0)),
       10
     );
   });

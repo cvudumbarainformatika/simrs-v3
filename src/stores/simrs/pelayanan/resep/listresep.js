@@ -64,19 +64,19 @@ export const useListResepDokterToDepoStore = defineStore('list_resep_dokter_to_d
       this.getData()
     },
     metanidata () {
-      if (this.items.length) {
+      if (this.items?.length) {
         this.items.forEach(item => {
           this.metaniItem(item)
         })
       }
     },
     metaniItem (item) {
-      if (item.permintaanresep.length) {
+      if (item.permintaanresep?.length) {
         item.permintaanresep.forEach(resep => {
           resep.kronis = resep?.mobat?.status_kronis
           const rinci = item?.rincian.filter(x => x.kdobat === resep.kdobat)
           // console.log('rinc', rinci, resep)
-          if (rinci.length) {
+          if (rinci?.length) {
             const obatkeluar = rinci.map(m => parseFloat(m.jumlah)).reduce((a, b) => a + b, 0)
             resep.obatkeluar = obatkeluar
             resep.hargajual = rinci[0].harga_jual
@@ -90,14 +90,14 @@ export const useListResepDokterToDepoStore = defineStore('list_resep_dokter_to_d
           // console.log('rinci ', rinci)
         })
         const adaKronis = item?.permintaanresep.filter(f => f.kronis === '1' && parseInt(f.konsumsi) >= 28)
-        if (adaKronis.length) item.adaKronis = 'kronis'
+        if (adaKronis?.length) item.adaKronis = 'kronis'
       }
-      if (item.permintaanracikan.length) {
+      if (item.permintaanracikan?.length) {
         item.permintaanracikan.forEach(resep => {
           resep.kronis = resep?.mobat?.status_kronis
           const rinci = item?.rincianracik.filter(x => x.kdobat === resep.kdobat && x.namaracikan === resep.namaracikan)
           // console.log('rinc', rinci, resep)
-          if (rinci.length) {
+          if (rinci?.length) {
             const obatkeluar = rinci.map(m => parseFloat(m.jumlah)).reduce((a, b) => a + b, 0)
             resep.obatkeluar = obatkeluar
             resep.hargajual = rinci[0].harga_jual
@@ -127,7 +127,7 @@ export const useListResepDokterToDepoStore = defineStore('list_resep_dokter_to_d
           key.groupsistembayar = item?.sistembayar?.groups
           const namaracikan = key?.namaracikan
           const adaList = item.listRacikan.filter(list => list.namaracikan === namaracikan)
-          if (adaList.length) {
+          if (adaList?.length) {
             adaList[0].rincian.push(key)
             const harga = adaList[0].rincian.map(a => a?.harga).reduce((a, b) => a + b, 0) ?? 0
             adaList[0].harga = harga
@@ -152,7 +152,7 @@ export const useListResepDokterToDepoStore = defineStore('list_resep_dokter_to_d
           }
         })
       }
-      if (item.listRacikan.length) {
+      if (item.listRacikan?.length) {
         item.listRacikan.forEach(a => {
           a.harga += nilaiR
         })
@@ -166,13 +166,13 @@ export const useListResepDokterToDepoStore = defineStore('list_resep_dokter_to_d
         })
       }
       // const adaKronisR = item?.permintaanracikan.filter(f => f.kronis === '1' && parseInt(f.konsumsi) >= 28)
-      // if (adaKronisR.length) item.adaKronis = 'kronis'
-      // item.doneresep = item?.permintaanresep.filter(x => x.done === true).length > 0
-      // item.doneracik = item?.permintaanracikan.filter(x => x.done === true).length > 0
-      // // item.doneresep = item?.permintaanresep.filter(x => x.done === true).length === item?.permintaanresep?.length
-      // // item.doneracik = item?.permintaanracikan.filter(x => x.done === true).length === item?.permintaanracikan?.length
-      // item.semuaresep = item?.permintaanresep.length ? item?.permintaanresep.length && item?.permintaanresep.filter(x => x.done === true).length === item?.permintaanresep?.length : true
-      // item.semuaracik = item?.permintaanracikan.length ? item?.permintaanracikan.length && item?.permintaanracikan.filter(x => x.done === true).length === item?.permintaanracikan?.length : true
+      // if (adaKronisR?.length) item.adaKronis = 'kronis'
+      // item.doneresep = item?.permintaanresep.filter(x => x.done === true)?.length > 0
+      // item.doneracik = item?.permintaanracikan.filter(x => x.done === true)?.length > 0
+      // // item.doneresep = item?.permintaanresep.filter(x => x.done === true)?.length === item?.permintaanresep?.length
+      // // item.doneracik = item?.permintaanracikan.filter(x => x.done === true)?.length === item?.permintaanracikan?.length
+      // item.semuaresep = item?.permintaanresep?.length ? item?.permintaanresep?.length && item?.permintaanresep.filter(x => x.done === true)?.length === item?.permintaanresep?.length : true
+      // item.semuaracik = item?.permintaanracikan?.length ? item?.permintaanracikan?.length && item?.permintaanracikan.filter(x => x.done === true)?.length === item?.permintaanracikan?.length : true
       // console.log('item', item)
     },
     async getData (val) {

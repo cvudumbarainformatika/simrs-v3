@@ -21,7 +21,7 @@
   <div class="container q-px-sm">
     <q-card class="items-center full-width">
       <div class="row">
-        <template v-if="store.datarka.length">
+        <template v-if="store.datarka?.length">
           <listData />
         </template>
 

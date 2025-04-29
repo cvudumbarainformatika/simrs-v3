@@ -130,7 +130,7 @@ function setObat (val) {
 function setJumlah (evt, key) {
   const inc = evt.includes('.')
   const ind = evt.indexOf('.')
-  const panj = evt.length
+  const panj = evt?.length
   const nilai = isNaN(parseFloat(evt)) ? 0 : (inc && (ind === (panj - 2)) ? evt : parseFloat(evt))
   store.setTemp(key, nilai)
   if (store.tempObat?.harga_beli > 0 && store.form?.margin > 0) store.setTemp('harga_jual', (((store.tempObat.harga_beli + ((store.form.margin / 100) * store.tempObat.harga_beli)))))
@@ -190,7 +190,7 @@ function signaSelected (val) {
   store.setTemp('aturan', val?.signa)
   store.setTemp('konsumsiPerHari', val?.jumlah)
   // const sign = store.signas.filter(sig => sig.signa === val?.signa)
-  // if (sign.length) {
+  // if (sign?.length) {
   // store.setTemp('jumlahdosis', parseFloat(val?.jumlah))
   // if (parseFloat(store.tempObat.jumlah) > 0) {
   //   const kons = store.tempObat.jumlah / parseFloat(val?.jumlah)

@@ -481,7 +481,7 @@ const isErrInput = ref(false)
 const errMsg = ref('')
 
 const validInput = (val) => {
-  if (val?.trim().length === 0) {
+  if (val?.trim()?.length === 0) {
     isErrInput.value = true
     errMsg.value = 'Tidak boleh kosong'
     return false

@@ -137,7 +137,7 @@ export const usePemfakturanFarmasiStore = defineStore('farmasi_pemfakturan', {
     },
     metanirinci (pen) {
       console.log('pen', pen)
-      if (pen.length) {
+      if (pen?.length) {
         pen.forEach(item => {
           item?.penerimaanrinci?.forEach(rinc => {
             rinc.adaPPN = false

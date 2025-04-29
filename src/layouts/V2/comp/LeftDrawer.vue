@@ -25,7 +25,7 @@
           :key="i"
         >
           <q-item
-            v-if="menu.submenus.length === 0"
+            v-if="menu.submenus?.length === 0"
             v-ripple
             clickable
             :active-class="route.path.indexOf(aturLink(menu.link)) > -1?'bg-primary text-white':''"

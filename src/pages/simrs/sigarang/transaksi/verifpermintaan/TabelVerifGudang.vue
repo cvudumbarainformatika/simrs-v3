@@ -81,7 +81,7 @@
               dense
               type="number"
               :rules="[
-                (val)=>(val && val.length>0)||'periksa kembali input',
+                (val)=>(val && val?.length>0)||'periksa kembali input',
                 (val)=> val <= row.alokasi+row.jumlah || 'tidak boleh melebih alokasi'
               ]"
               @keyup.enter="onSubmit"

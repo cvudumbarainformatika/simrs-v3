@@ -10330,7 +10330,7 @@ onMounted(() => {
 // eslint-disable-next-line no-unused-vars
 const _initSVG = (_svg) => {
   const gSvg = _svg.children
-  for (let i = 0; i < gSvg.length; i++) {
+  for (let i = 0; i < gSvg?.length; i++) {
     const group = gSvg[i]?.children
     // console.log('el', group)
     for (let x = 0; x < group?.length; x++) {
@@ -10357,7 +10357,7 @@ const checkChildren = (el) => {
       const g2 = g1.children[x] // ini group nama
       // console.log('g2', g2.children)
       // if (g2.childElementCount > 0) {
-      for (let n = 0; n < g2.children.length; n++) {
+      for (let n = 0; n < g2.children?.length; n++) {
         const el = g2.children[n]
         el.setAttribute('pointer-events', 'bounding-box')
         el.addEventListener('mouseover', onMouseOver)

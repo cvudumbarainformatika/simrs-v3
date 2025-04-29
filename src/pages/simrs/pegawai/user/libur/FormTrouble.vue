@@ -203,7 +203,7 @@ function saveNonShift() {
 const onSubmit = () => {
   // if (nonShift) return
   console.log('onSubmit')
-  if (!store.list.length) {
+  if (!store.list?.length) {
     return notifErrVue('Maaf, Belum Ada Pegawai yang dipilih!')
   }
   store.saveData().then(() => {

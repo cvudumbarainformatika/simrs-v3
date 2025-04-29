@@ -108,7 +108,7 @@ onMounted(() => {
   // else {
   //   const adaRu = apps?.user?.pegawai?.kdruangansim.split('|')
   //   const ruNya = adaRu.filter(x => x.includes('R-'))
-  //   if (ruNya.length > 1) notifCenterVue('ada lebih dari satu akses ruangan')
+  //   if (ruNya?.length > 1) notifCenterVue('ada lebih dari satu akses ruangan')
   //   else {
   //     store.setParam('kdruang', ruNya[0])
   //     // store.setForm('kdruang', ruNya[0])

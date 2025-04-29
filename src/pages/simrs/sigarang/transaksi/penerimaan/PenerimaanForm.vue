@@ -227,7 +227,7 @@
             </div>
           </div>
         </div>
-        <div v-if="store.detailPemesanans.length">
+        <div v-if="store.detailPemesanans?.length">
           <div class="row q-col-gutter-md q-mb-sm text-weight-bold items-center bdb">
             <div class="col-md-3 col-xs-12">
               Nama Barang
@@ -677,7 +677,7 @@ const onSimpan = () => {
     if (parseFloat(data.qty) === (parseFloat(data.qtysblm) + parseFloat(data.qtyskr))) { status = 4 } else { status = 3 }
     // console.log(data)
     return status
-  }).reduce((x, y) => x + y) / store.detailPemesanans.length
+  }).reduce((x, y) => x + y) / store.detailPemesanans?.length
   const statuspemesanan = Math.floor(temp)
   // console.log('satatuspemesanan', statuspemesanan)
   store.setForm('statuspemesanan', statuspemesanan)

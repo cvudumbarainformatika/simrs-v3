@@ -104,14 +104,14 @@
         >
           <app-btn
             label="Simpan BAST"
-            :disable="!store.tampilPenerimaans.length || store.loading"
+            :disable="!store.tampilPenerimaans?.length || store.loading"
             :loading="store.loading"
             @click="simpanBast"
           />
         </div>
       </q-card-section>
     </q-card>
-    <q-card v-if="store.newPenerimaans.length">
+    <q-card v-if="store.newPenerimaans?.length">
       <q-card-section>
         <div
           class="row fit no-wrap items-center justify-start q-mb-sm q-col-gutter-sm text-weight-bold bb"
@@ -170,7 +170,7 @@
               {{ formatRpDouble(pesan?.subtotal_bast) }}
             </div>
           </div>
-          <div v-if="pesan?.checked && pesan.rinci.length">
+          <div v-if="pesan?.checked && pesan.rinci?.length">
             <div class="row q-mt-sm bb">
               <div class="q-mb-md">
                 Daftar Barang Konsinyasi Terpakai
@@ -329,7 +329,7 @@ function adaPPN (evt, det, pesan) {
 function updateHargaAll (evt, det, trm, key) {
   const inc = evt.includes('.')
   const ind = evt.indexOf('.')
-  const panj = evt.length
+  const panj = evt?.length
   const nilai = isNaN(parseFloat(evt)) ? 0 : (inc && (ind === (panj - 2)) ? evt : parseFloat(evt))
   console.log('nilai', parseFloat(evt), isNaN(parseFloat(evt)))
   det[key] = nilai
@@ -356,7 +356,7 @@ function updateHargaAll (evt, det, trm, key) {
 
   // jumlahkan semua nilai bast
   trm.subtotal_bast = trm.rinci.map(a => parseFloat(a.subtotal)).reduce((a, b) => a + b, 0)
-  if (store.tampilPenerimaans.length > 0) store.form.jumlah_bast = store.tampilPenerimaans.map(a => parseFloat(a.subtotal_bast)).reduce((a, b) => a + b, 0)
+  if (store.tampilPenerimaans?.length > 0) store.form.jumlah_bast = store.tampilPenerimaans.map(a => parseFloat(a.subtotal_bast)).reduce((a, b) => a + b, 0)
   store.form.jumlah_bastx = store.form.jumlah_bast
 }
 
@@ -381,7 +381,7 @@ function itemClicked (val, i) {
     }
   }
   store.form.jumlah_bast = 0
-  if (store.tampilPenerimaans.length > 0) store.form.jumlah_bast = store.tampilPenerimaans.map(a => parseFloat(a.subtotal_bast)).reduce((a, b) => a + b, 0)
+  if (store.tampilPenerimaans?.length > 0) store.form.jumlah_bast = store.tampilPenerimaans.map(a => parseFloat(a.subtotal_bast)).reduce((a, b) => a + b, 0)
   store.form.jumlah_bastx = store.form.jumlah_bast
   console.log('clicked bottom', store.tampilPenerimaans)
 }
@@ -394,7 +394,7 @@ function simpanBast () {
   console.log('temp', temp)
   store.form.list = temp.filter(x => x !== false)
 
-  if (!store.form.list.length) notifErrVue('Belum ada transaksi yang dipilih')
+  if (!store.form.list?.length) notifErrVue('Belum ada transaksi yang dipilih')
   console.log('form', store.form)
   if (refTaBast.value.$refs.refInputDate.validate()) {
     console.log('form', store.form)

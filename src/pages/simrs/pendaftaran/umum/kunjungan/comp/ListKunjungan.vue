@@ -2,7 +2,7 @@
   <div>
     <app-loading v-if="loading" />
     <div v-else>
-      <div v-if="items.length <= 0">
+      <div v-if="items?.length <= 0">
         <div
           class="column flex-center"
           style="min-height:50vh"
@@ -130,7 +130,7 @@ defineProps({
 })
 
 function getStatus(arr) {
-  if (arr.length === 0) {
+  if (arr?.length === 0) {
     return '-'
   }
 

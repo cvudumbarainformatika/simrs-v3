@@ -99,7 +99,7 @@ export const usePermintaanAmbulanStore = defineStore('permintaan-ambulance-store
 
     setNotas (array) {
       const arr = array.map(x => x.nota)
-      this.notas = arr.length ? arr : []
+      this.notas = arr?.length ? arr : []
       this.notas.unshift('SEMUA')
       this.notas.push('BARU')
       this.form.nota = this.notas[0]

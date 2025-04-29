@@ -8,7 +8,7 @@
     </div>
 
     <div v-else>
-      <div v-if="store.items.length === 0" class="full-height column flex-center" style="min-height: 400px;">
+      <div v-if="store.items?.length === 0" class="full-height column flex-center" style="min-height: 400px;">
         <div class="full-height column flex-center">
           Belum Ada Data
         </div>

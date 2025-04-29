@@ -171,7 +171,7 @@ function initRacikan () {
   store.form = {
     racikan: true,
     tiperacikan: 'non-DTD',
-    tiperesep: store.items.length ? store.items[0].tiperesep : 'normal',
+    tiperesep: store.items?.length ? store.items[0].tiperesep : 'normal',
     forkit: null,
     fornas: null,
     generik: null,

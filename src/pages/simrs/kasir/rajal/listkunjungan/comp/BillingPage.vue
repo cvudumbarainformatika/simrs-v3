@@ -471,7 +471,7 @@ function gantiDataNota(val) {
     store.notas = {}
     nota.value = ''
     if (val === 'tindakan') {
-      if (prop.pasien.tindakan.length) {
+      if (prop.pasien.tindakan?.length) {
         const param = {
           golongan: val,
           noreg: prop.pasien.noreg,
@@ -483,7 +483,7 @@ function gantiDataNota(val) {
       }
     }
     if (val === 'laborat') {
-      if (prop.pasien.laborat.length) {
+      if (prop.pasien.laborat?.length) {
         const param = {
           golongan: val,
           noreg: prop.pasien.noreg,
@@ -495,7 +495,7 @@ function gantiDataNota(val) {
       }
     }
     if (val === 'radiologi') {
-      if (prop.pasien.transradiologi.length) {
+      if (prop.pasien.transradiologi?.length) {
         const param = {
           golongan: val,
           noreg: prop.pasien.noreg,
@@ -507,7 +507,7 @@ function gantiDataNota(val) {
       }
     }
     if (val === 'operasibesar') {
-      if (prop.pasien.kamaroperasi.length) {
+      if (prop.pasien.kamaroperasi?.length) {
         const param = {
           golongan: val,
           noreg: prop.pasien.noreg,
@@ -519,7 +519,7 @@ function gantiDataNota(val) {
       }
     }
     if (val === 'operasikecil') {
-      if (prop.pasien.tindakanoperasi.length) {
+      if (prop.pasien.tindakanoperasi?.length) {
         const param = {
           golongan: val,
           noreg: prop.pasien.noreg,
@@ -532,19 +532,19 @@ function gantiDataNota(val) {
     }
     if (val === 'farmasi') {
       const farmasi = []
-      if (prop.pasien.apotekrajal.length) {
+      if (prop.pasien.apotekrajal?.length) {
         prop.pasien.apotekrajal.forEach(a => farmasi.push(a))
       }
-      if (prop.pasien.apotekrajalpolilalu.length) {
+      if (prop.pasien.apotekrajalpolilalu?.length) {
         prop.pasien.apotekrajalpolilalu.forEach(a => farmasi.push(a))
       }
-      if (prop.pasien.apotekracikanrajal.length) {
+      if (prop.pasien.apotekracikanrajal?.length) {
         prop.pasien.apotekracikanrajal.forEach(a => farmasi.push(a))
       }
-      if (prop.pasien.apotekracikanrajallalu.length) {
+      if (prop.pasien.apotekracikanrajallalu?.length) {
         prop.pasien.apotekracikanrajallalu.forEach(a => farmasi.push(a))
       }
-      if (farmasi.length) {
+      if (farmasi?.length) {
         const param = {
           golongan: val,
           noreg: prop.pasien.noreg,
@@ -575,7 +575,7 @@ function notaDipilih(val) {
 const carabayar = ref('')
 function kirimBayar() {
   let rinci = ''
-  if (store.notas?.Pelayanan.length) {
+  if (store.notas?.Pelayanan?.length) {
     // console.log('nota pelayanan')
     store.notas.Pelayanan.forEach(a => {
       const b = a.namatindakan + ':' + a.subtotal
@@ -605,7 +605,7 @@ function kirimBayar() {
   }
 }
 function bayar() {
-  if (store.notas?.Pelayanan.length) {
+  if (store.notas?.Pelayanan?.length) {
     // console.log('nota pelayanan')
     const form = {
       noreg: prop.pasien.noreg,

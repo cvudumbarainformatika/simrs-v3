@@ -33,7 +33,7 @@
             </th>
           </tr>
         </thead>
-        <tbody v-if="store.riwayatObsetri.length">
+        <tbody v-if="store.riwayatObsetri?.length">
           <tr v-for="(item, i) in store.riwayatObsetri" :key="i">
             <td>{{ i+1 }}</td>
             <td>{{ item?.pl }}</td>

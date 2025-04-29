@@ -1,5 +1,5 @@
 <template>
-  <template v-if="store.hasilmapsLevel1.length > 0 && store.reqs.levelberapa === 0">
+  <template v-if="store.hasilmapsLevel1?.length > 0 && store.reqs.levelberapa === 0">
     <q-card-section class="full-width">
       <div class="row">
         <div class="full-width">
@@ -49,7 +49,7 @@
       </div>
     </q-card-section>
   </template>
-  <template v-else-if="store.hasilmapsLevel5.length > 0 && !store.hasilmapsLevel6.length">
+  <template v-else-if="store.hasilmapsLevel5?.length > 0 && !store.hasilmapsLevel6?.length">
     <q-card-section class="full-width">
       <div class="row">
         <div class="full-width">
@@ -99,7 +99,7 @@
       </div>
     </q-card-section>
   </template>
-  <template v-else-if="store.hasilmapsLevel6.length">
+  <template v-else-if="store.hasilmapsLevel6?.length">
     <q-card-section class="full-width">
       <div class="row">
         <div class="full-width">

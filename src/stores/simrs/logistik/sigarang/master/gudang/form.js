@@ -27,7 +27,7 @@ export const useMasterGudangForm = defineStore('master_gudang_form', {
         'gudang',
         'nama'
       ]
-      for (let i = 0; i < columns.length; i++) {
+      for (let i = 0; i < columns?.length; i++) {
         this.setForm(columns[i], null)
       }
     },
@@ -72,10 +72,10 @@ export const useMasterGudangForm = defineStore('master_gudang_form', {
       const tGudang = gudang === null ? '0' : typeof gudang === 'string' ? gudang : gudang.toString()
       const tDepo = depo === null ? '0' : typeof depo === 'string' ? depo : depo.toString()
 
-      const rGedung = tGedung.length === 1 ? '0' + tGedung : tGedung
-      const rLantai = tLantai.length === 1 ? '0' + tLantai : tLantai
-      const rGudang = tGudang.length === 1 ? '0' + tGudang : tGudang
-      const rDepo = tDepo.length === 1 ? '0' + tDepo : tDepo
+      const rGedung = tGedung?.length === 1 ? '0' + tGedung : tGedung
+      const rLantai = tLantai?.length === 1 ? '0' + tLantai : tLantai
+      const rGudang = tGudang?.length === 1 ? '0' + tGudang : tGudang
+      const rDepo = tDepo?.length === 1 ? '0' + tDepo : tDepo
       const kode = 'Gd-' + rGedung + rLantai + rGudang + rDepo
 
       this.form.kode = kode
@@ -83,9 +83,9 @@ export const useMasterGudangForm = defineStore('master_gudang_form', {
       // console.log('gudang', gedung)
       // console.log('lantai', lantai)
       // console.log('ruang', ruang)
-      // console.log('tGedung', tGedung.length)
-      // console.log('tLantai', tLantai.length)
-      // console.log('tGudang', tGudang.length)
+      // console.log('tGedung', tGedung?.length)
+      // console.log('tLantai', tLantai?.length)
+      // console.log('tGudang', tGudang?.length)
       // console.log('kode', kode)
       // console.log('kode', this.form.kode)
     },
