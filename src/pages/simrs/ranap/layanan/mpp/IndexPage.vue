@@ -71,9 +71,6 @@ const mainTab = ref('formA')
 
 
 
-onMounted(() => {
-  mainTab.value = tabs[0].name
-})
 
 
 // Validation checklist items

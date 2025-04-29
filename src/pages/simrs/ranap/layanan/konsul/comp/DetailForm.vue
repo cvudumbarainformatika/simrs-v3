@@ -120,6 +120,7 @@ function cekYgMenjawab(item) {
 
 
   const nakesYnMinta = item?.nakesminta?.kdgroupnakes ?? null
+  const dokterUmum = item?.nakesminta?.kdgroupnakes === '1' && item?.nakesminta?.statusspesialis === ''
   if (item?.kddokterkonsul === props?.auth) { // jika akun dokter konsulnya maka... jawaban terbuka
     // tapi jika dokter sudah memverif
 
