@@ -751,7 +751,7 @@
                 <div v-if="filteredItems?.length">
                   <q-expansion-item v-for="(item, i) in filteredItems" :key="i" expand-separator
                     :label="item?.ruangan + ' | ' + item?.rs1 + ' | DPJP : ' + item?.dpjp"
-                    :caption="tanggal(item?.tanggal)">
+                    :caption="tanggal(item?.tanggal)" @click="store.getEresep(item, store.tab)">
                     <q-card dark>
                       <q-separator />
                       <q-card-section v-if="item?.loading" class="q-pa-none">
@@ -1445,7 +1445,7 @@
                 <div v-if="filteredItems?.length">
                   <q-expansion-item v-for="(item, i) in filteredItems" :key="i" expand-separator
                     :label="item?.ruangan + ' | ' + item?.rs1 + ' | DPJP : ' + item?.dpjp"
-                    :caption="tanggal(item?.tanggal)">
+                    :caption="tanggal(item?.tanggal)" @click="store.getEresep(item, store.tab)">
                     <q-card dark>
                       <q-separator />
                       <q-card-section v-if="item?.loading" class="q-pa-none">
