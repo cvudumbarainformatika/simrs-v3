@@ -1,4 +1,5 @@
-import { defineStore } from 'pinia'
+
+import { acceptHMRUpdate, defineStore } from 'pinia'
 import { api } from 'src/boot/axios'
 
 export const useHistoryPasien = defineStore('history-pasien', {
@@ -8,7 +9,7 @@ export const useHistoryPasien = defineStore('history-pasien', {
     itemsEresep: [],
     metaEresep: null,
     loading: false,
-    loadingEresep: false,
+    loadingEresep: true,
     params: {
       page: 1,
       per_page: 20,
@@ -51,27 +52,48 @@ export const useHistoryPasien = defineStore('history-pasien', {
         this.loading = false
       }
     },
-    async getEresep (noreg) {
-      if (this.metaEresep === null) {
-        this.loadingEresep = true
+    async getEresep (item, tab) {
+      // console.log(item, tab)
+      if (!item.anamnesis?.length) {
+        item.loading = true
         try {
-          this.params.noreg = noreg
-          const params = { params: this.params }
-          const resp = await api.get('v1/simrs/pelayanan/listresepbynorm', params)
-          // console.log('history  ', resp)
+          const resp = await api.get('v1/simrs/historypasien/detail-history', { params: { noreg: item.noreg, layanan: tab } })
+          console.log('detail history  ', resp)
           if (resp.status === 200) {
-            this.itemsEresep = resp?.data?.data
-            this.loadingEresep = false
-
-            this.metaEresep = resp?.data // or you can push specific data from resp
-            // console.log(this.metaEresep)
+            const index = this.items.findIndex(i => i.noreg === item.noreg)
+            if (index >= 0) this.items[index] = resp?.data?.data
           }
-          this.loadingEresep = false
-        }
-        catch (error) {
-          this.loadingEresep = false
+        } catch (error) {
+          delete item.loading
+        } finally {
+          item.loading = false
         }
       }
+
+      // if (this.metaEresep === null) {
+      //   this.loadingEresep = true
+      //   try {
+      //     this.params.noreg = noreg
+      //     const params = { params: this.params }
+      //     const resp = await api.get('v1/simrs/pelayanan/listresepbynorm', params)
+      //     // console.log('history  ', resp)
+      //     if (resp.status === 200) {
+      //       this.itemsEresep = resp?.data?.data
+      //       this.loadingEresep = false
+
+      //       this.metaEresep = resp?.data // or you can push specific data from resp
+      //       // console.log(this.metaEresep)
+      //     }
+      //     this.loadingEresep = false
+      //   }
+      //   catch (error) {
+      //     this.loadingEresep = false
+      //   }
+      // }
     }
   }
 })
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useHistoryPasien, import.meta.hot))
+}
