@@ -44,18 +44,20 @@
         :loading="store.loading || !store.alllevel?.length" v-if="store.reqs.jenisbukubesar < 2" :source="store.level"
         @update:model-value="(val) => {
           store.reqs.levelberapa = parseInt(val)
-          const arrBaru = store.alllevel?.filter(x => x?.kodeall3?.length === parseInt(val))
-          store.optionrekening = arrBaru
-          store.form.kode = ''
+          // Filter store.alllevel berdasarkan panjang kodeall3
+          store.optionrekening = store.alllevel?.filter(x => x?.kodeall3?.length === parseInt(val)) || []
+          store.form.kode = '' // Reset kode saat jenis akun berubah
+          options.value = store.optionrekening // Update options untuk q-select
         }" />
       <app-autocomplete v-model="berdasarrinci" label="Pilih Jenis Akun" autocomplete="nama" option-value="value"
         option-label="nama" outlined :disable="store.loading || !store.alllevel?.length"
         :loading="store.loading || !store.alllevel?.length" v-if="store.reqs.jenisbukubesar === 2"
         :source="store.levelrinci" @update:model-value="(val) => {
           store.reqs.levelberapa = parseInt(val)
-          const arrBaru = store.alllevel?.filter(x => x?.kodeall3?.length === parseInt(val))
-          store.optionrekening = arrBaru
-          store.form.kode = ''
+          // Filter store.alllevel berdasarkan panjang kodeall3
+          store.optionrekening = store.alllevel?.filter(x => x?.kodeall3?.length === parseInt(val)) || []
+          store.form.kode = '' // Reset kode saat jenis akun berubah
+          options.value = store.optionrekening // Update options untuk q-select
         }" />
     </div>
     <div class="q-pa-sm" style="width:50%">
@@ -126,6 +128,7 @@ const berdasarrekap = ref('')
 const berdasarrinci = ref('')
 const jenisapa = ref('')
 const options = ref([])
+// const isLoading = ref(false) // untuk filterFn
 // const inpRek = ref(null)
 // const emits = defineEmits(['onClick', 'newData', 'editData', 'goto', 'deleteIds', 'setRow', 'setColumns', 'setOrder', 'find', 'search', 'delete', 'refresh'])
 function tglDari(val) {
@@ -182,58 +185,95 @@ function cetakData() {
 // });
 // }
 
-function filterFn(val, update, abort) {
-  // Jika string pencarian kosong, tampilkan semua data yang ada
-  if (val === '') {
+async function filterFn(val, update, abort) {
+  // isLoading.value = true // Aktifkan loading saat filter dimulai
+
+  // Jika input kosong, kembalikan semua opsi
+  if (!val) {
     update(() => {
-      options.value = store.optionrekening;
-    });
-    return;
-  }
-
-  // Coba filter dari data lokal terlebih dahulu
-  const needle = val.toLowerCase();
-  const localResults = store.optionrekening.filter(
-    (v) => v.uraian.toLowerCase().includes(needle) || v.kodeall3.toLowerCase().includes(needle)
-  );
-
-  // Jika ditemukan hasil dari filter lokal, gunakan itu
-  if (localResults?.length > 0) {
-    update(() => {
-      options.value = localResults;
-    });
-    return;
-  }
-
-  // Jika tidak ditemukan hasil lokal dan pencarian cukup spesifik, cari ke server
-  if (val?.length >= 2) {
-    // Gunakan axios langsung untuk menghindari konflik dengan state di store
-    api.get('v1/akuntansi/bukubesar/akun', {
-      params: {
-        q: val,
-        per_page: 100,
-        page: 1
-      }
+      options.value = store.optionrekening || []
+      console.log('Options saat pencarian kosong:', options.value)
     })
-      .then((resp) => {
-        if (resp.status === 200) {
-          update(() => {
-            options.value = resp.data.data || [];
-          });
-        }
-      })
-      .catch((error) => {
-        console.error('Error saat melakukan pencarian:', error);
-        update(() => {
-          options.value = localResults; // Fallback ke hasil lokal
-        });
-      });
-  } else {
-    // Pencarian terlalu pendek untuk dikirim ke server
-    update(() => {
-      options.value = localResults;
-    });
+    store.loading = false
+    return
   }
+
+  // Filter lokal
+  const needle = val.toLowerCase()
+  const localResults = store.optionrekening?.filter(
+    (item) =>
+      (item.kodeall3?.toLowerCase().includes(needle) ||
+        item.uraian?.toLowerCase().includes(needle)) &&
+      item.kodeall3?.length === parseInt(store.reqs.levelberapa)
+  ) || []
+
+  console.log('Hasil filter lokal:', localResults)
+
+  // Jika ada hasil lokal, gunakan itu
+  if (localResults.length > 0) {
+    update(() => {
+      options.value = localResults
+      console.log('Options dari filter lokal:', localResults)
+    })
+    store.loading = false
+    return
+  }
+
+  // Jika input >= 2 karakter, cari ke server
+  if (val.length >= 2) {
+    let allData = []
+    let page = 1
+    let hasMore = true
+
+    console.log('Mulai iterasi halaman untuk levelberapa:', store.reqs.levelberapa)
+
+    while (hasMore) {
+      try {
+        const resp = await api.get('v1/akuntansi/bukubesar/akun', {
+          params: {
+            q: val,
+            per_page: 100,
+            page: page,
+            levelberapa: store.reqs.levelberapa
+          }
+        })
+
+        console.log(`filterFn: Data halaman ${page}:`, resp.data)
+
+        if (resp.status === 200 && resp.data.data?.length) {
+          allData = [...allData, ...resp.data.data]
+          hasMore = resp.data.next_page_url !== null // Untuk SimplePaginator
+          page++
+        } else {
+          hasMore = false
+        }
+      } catch (error) {
+        console.error('Error saat mengambil halaman:', error)
+        hasMore = false
+      }
+    }
+
+    console.log('filterFn: Semua data dari server:', allData)
+
+    // Update opsi berdasarkan hasil server
+    update(() => {
+      if (allData.length > 0) {
+        options.value = allData
+        store.optionrekening = allData // Update hanya jika ada hasil
+      } else {
+        options.value = [] // Kosongkan opsi untuk menampilkan "Tidak ditemukan"
+      }
+      console.log('Options setelah update:', options.value)
+    })
+  } else {
+    // Untuk input pendek, gunakan hasil lokal
+    update(() => {
+      options.value = localResults
+      console.log('Options untuk pencarian pendek:', localResults)
+    })
+  }
+
+  store.loading = false // Matikan loading setelah selesai
 }
 
 function exportToExcel() {
