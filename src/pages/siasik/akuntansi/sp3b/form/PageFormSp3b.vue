@@ -1,7 +1,7 @@
 <template>
   <div class="container q-pa-sm full-width">
     <q-card class="items-center q-pa-sm full-width">
-      <div class="row">
+      <div class="row justify-center">
         <FormHeader />
       </div>
     </q-card>

@@ -111,8 +111,17 @@ function getListVoices() {
 function settingsVoice() {
   const voices = speech.voiceList
   if (voices?.length) {
-    const lang = voices?.map(x => x.lang)
-    const ind = lang.findIndex(x => x === 'id-ID') ?? 0
+    const lang = voices?.map(x => {
+      return {
+        lang: x.lang,
+        name: x.name
+      }
+    })
+    console.log('daftar voice indonesia thok', lang.filter(x => x?.lang === 'id-ID'));
+
+    const ind = lang.findIndex(x => x?.lang === 'id-ID' && x?.name?.includes('Google')) ?? 0
+    console.log('indexVoice', ind);
+
     indexVoices.value = ind
   }
 
@@ -150,7 +159,15 @@ function setSpeech(txt) {
 }
 
 function panggil(row) {
-  // console.log(row)
+  // Log untuk debugging speech
+  console.log('Speech panggilan dimulai:', {
+    browser: navigator.userAgent,
+    speechSupport: 'speechSynthesis' in window,
+    voicesAvailable: speech.voiceList.length,
+    selectedVoice: indexVoices.value,
+    speechState: speech.synth.speaking ? 'speaking' : 'idle'
+  })
+
   const nama = (row?.nama_panggil) ? (row?.nama_panggil)?.toLowerCase() : ''
   const unit = row?.panggil_antrian
   const noAntrean = row?.noantrian ? row.noantrian.toUpperCase() : ''
@@ -160,10 +177,56 @@ function panggil(row) {
   const txt2 = 'Nomor Antrian ... ' + noAntrean + '? ...Harap menujuu' + unit
 
   const txt3 = 'Nomor Antrian ... ' + noAntrean + '... nama!  ' + nama + '! ...Harap menujuu  ' + unit
-  // const txt = jns === 'nama' ? txt1 : txt2
-  speech.synth.speak(setSpeech(txt3))
+
+  try {
+    // speech.synth.speak(setSpeech(txt3))
+    console.log('Speech berhasil dipanggil:')
+
+    speakDynamic(noAntrean, nama, unit);
+  } catch (error) {
+    console.error('Error saat memanggil speech:', error)
+  }
+
   // console.log(row)
   store.sendPanggil(row, `display${kdDisplay.value}`)
+}
+
+function speakDynamic(noAntrean, nama, unit) {
+  const voiceList = speech?.voiceList[indexVoices.value];
+  console.log('suorone sopo?', voiceList);
+  console.log('index', indexVoices.value);
+
+  // Bersihkan antrian speech yang mungkin masih ada
+  speechSynthesis.cancel();
+
+  // Gunakan satu utterance saja untuk menghindari masalah dengan multiple utterances
+  const fullText = `Nomor Antrian ... ${noAntrean} ... Nama! ... ${nama} ... Harap menuju ... ${unit}`;
+  const utterance = new SpeechSynthesisUtterance(fullText);
+  utterance.voice = voiceList;
+  utterance.volume = 1;
+  utterance.pitch = 1.2;
+  utterance.rate = 0.95;
+  utterance.lang = 'id-ID';
+
+  // Tambahkan event listener untuk debugging
+  utterance.onstart = () => console.log('Speech mulai diputar');
+  utterance.onend = () => console.log('Speech selesai diputar');
+  utterance.onerror = (e) => console.error('Speech error:', e);
+
+  // Coba dengan timeout kecil untuk mengatasi masalah timing
+  setTimeout(() => {
+    console.log('Mencoba memainkan speech...');
+    speechSynthesis.speak(utterance);
+  }, 100);
+
+  // Alternatif: gunakan metode lama jika yang baru tidak berfungsi
+  if (speech.synth && speech.utterance) {
+    setTimeout(() => {
+      console.log('Mencoba metode alternatif...');
+      const altUtterance = setSpeech(fullText);
+      speech.synth.speak(altUtterance);
+    }, 200);
+  }
 }
 
 function bukaTindakan(val) {

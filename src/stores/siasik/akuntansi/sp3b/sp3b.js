@@ -13,7 +13,7 @@ export const useSp3bStore = defineStore('laporan_sp3b', {
       q: '',
       bulan: date.formatDate(Date.now(), 'MM'),
       tahun: date.formatDate(Date.now(), 'YYYY'),
-      nosp3b: '00000',
+      nosp3b: '000',
       page: 1,
     },
     tanggal: date.formatDate(Date.now(), 'DD MMMM YYYY'),
