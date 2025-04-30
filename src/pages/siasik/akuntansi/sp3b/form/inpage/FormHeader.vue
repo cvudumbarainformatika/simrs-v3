@@ -1,7 +1,7 @@
 <template>
-  <div class="q-pa-sm">
+  <!-- <div class="q-pa-sm">
     <app-input v-model="store.reqs.nosp3b" label="Nomor SP3B" outlined />
-  </div>
+  </div> -->
   <div class="q-pa-sm">
     <app-autocomplete v-model="store.reqs.bulan" label="Pilih Bulan" autocomplete="nama" option-label="nama"
       option-value="value" outlined :source="store.bulans" />
