@@ -12,7 +12,6 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
     loadingDownload: false,
     reqs: {
       q: '',
-      page: 1,
       per_page: 100,
       tgl: date.formatDate(Date.now(), 'YYYY-MM-DD'),
       tglx: date.formatDate(Date.now(), 'YYYY-MM-DD'),
@@ -98,33 +97,48 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
     },
     setPerPage(payload) {
       this.reqs.per_page = payload
-      this.reqs.page = 1
       this.getAkun()
     },
-    getAkun() {
+    async getAkun() {
       this.loading = true
-      const params = { params: this.reqs }
+      this.alllevel = [] // Reset alllevel
+      let allData = []
+      let page = 1
+      let hasMore = true
 
-      return new Promise((resolve, reject) => {
-        api.get('v1/akuntansi/bukubesar/akun', params)
-          .then((resp) => {
-            if (resp.status === 200) {
-              // Untuk pencarian, kita hanya perlu mencatat daftar akun
-              this.alllevel = resp.data.data
-
-              this.loading = false
-              resolve(resp.data)
-            } else {
-              this.loading = false
-              reject(new Error('Failed to fetch data'))
+      try {
+        while (hasMore) {
+          const params = {
+            params: {
+              per_page: 10000,
+              page: page,
+              q: '', // Pastikan tidak ada pencarian
+              levelberapa: 0 // Pastikan tidak ada filter level
             }
-          })
-          .catch((error) => {
-            this.loading = false
-            console.error('Error fetching akun data:', error)
-            reject(error)
-          })
-      })
+          }
+
+          const resp = await api.get('v1/akuntansi/bukubesar/akun', params)
+
+          if (resp.status === 200 && resp.data.data?.length) {
+            allData = [...allData, ...resp.data.data]
+            hasMore = resp.data.next_page_url !== null // Gunakan next_page_url untuk SimplePaginator
+
+            page++
+          } else {
+
+            hasMore = false
+          }
+        }
+
+        this.alllevel = allData
+
+        this.loading = false
+        return allData
+      } catch (error) {
+        this.loading = false
+        console.error('Error fetching akun data:', error.response?.data || error.message)
+        throw error
+      }
     },
     getTtd() {
       this.loading = true
