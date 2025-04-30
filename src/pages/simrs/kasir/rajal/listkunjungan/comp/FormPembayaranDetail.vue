@@ -97,21 +97,40 @@ function jeniscarabayar(val) {
     })
     store.form.carabayar = ''
   } else {
-    if (val === 'Tunai') {
-      $q.dialog({
-        dark: true,
-        title: 'Peringatan',
-        message: 'Apakah Data ini akan DISIMPAN?',
-        cancel: true,
-        persistent: true
-      }).onOk(() => {
-        // console.log('OK')
-        store.savePembayaran(prop.pasien, prop.billing, prop.jenislayanan, val)
-      }).onCancel(() => {
-        // console.log('Cancel')
-      }).onDismiss(() => {
-        // console.log('I am triggered on both OK and Cancel')
-      })
+    console.log('val', storex.jenispembayaran)
+    if (storex.jenispembayaran === 'karcis') {
+      console.log('valxxx', val)
+      if (val === 'Tunai') {
+        $q.dialog({
+          dark: true,
+          title: 'Peringatan',
+          message: 'Apakah Data ini akan DISIMPAN?',
+          cancel: true,
+          persistent: true
+        }).onOk(() => {
+          // console.log('OK')
+          store.savePembayaran(prop.pasien, prop.billing, prop.jenislayanan, val)
+        }).onCancel(() => {
+          // console.log('Cancel')
+        }).onDismiss(() => {
+          // console.log('I am triggered on both OK and Cancel')
+        })
+      } else if (val === 'Qris') {
+        $q.dialog({
+          dark: true,
+          title: 'Peringatan',
+          message: 'Apakah Data Anda Ingin Create QRIS?',
+          cancel: true,
+          persistent: true
+        }).onOk(() => {
+          // console.log('OK')
+          store.createQris(prop.pasien, prop.billing, prop.jenislayanan, val)
+        }).onCancel(() => {
+          // console.log('Cancel')
+        }).onDismiss(() => {
+          // console.log(
+        })
+      }
     }
   }
 }

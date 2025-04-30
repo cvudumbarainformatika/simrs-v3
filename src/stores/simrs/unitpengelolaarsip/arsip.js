@@ -102,6 +102,8 @@ export const useUnitPengelolahArsipStore = defineStore('unit-pengelolah-arsip-st
       })
     },
     initForm() {
+      // this.from = date.formatDate(Date.now(), 'YYYY-MM-DD')
+      this.tanggal.tgl = date.formatDate(Date.now(), 'DD MMMM YYYY')
       this.form.tgl = date.formatDate(Date.now(), 'YYYY-MM-DD')
       this.form.kodekelasifikasi = ''
       this.form.uraian = ''

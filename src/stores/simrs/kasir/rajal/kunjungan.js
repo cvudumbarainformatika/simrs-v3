@@ -5,7 +5,7 @@ import { dateDbFormat } from 'src/modules/formatter'
 export const useKasirRajalListKunjunganStore = defineStore('kasir_rajal_list_kunjungan_umum', {
   state: () => ({
     items: [],
-    kwitansi: {},
+    kwitansi: [],
     meta: null,
     params: {
       q: '',

@@ -87,7 +87,7 @@ const store = useKasirRajalListKunjunganStore()
 const prop = defineProps({
   pasien: { type: Object, default: () => { } },
   billing: { type: Object, default: () => { } },
-  kwitansi: { type: Object, default: () => { } },
+  kwitansi: { type: Array, default: () => [] },
 })
 
 const karcis = parseFloat(prop?.billing?.poliklinik + prop?.billing?.kartuidentitas + prop?.billing?.pelayananrm)

@@ -262,4 +262,7 @@ function setToFromDisp(vaal) {
 function onSubmit() {
   store.saveData()
 }
+
+store.initForm()
+console.log('sasa')
 </script>
