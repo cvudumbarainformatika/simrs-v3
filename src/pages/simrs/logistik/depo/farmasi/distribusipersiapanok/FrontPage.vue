@@ -249,40 +249,6 @@
                     ({{ rin.obat.satuan_k }})
                   </div>
                 </div>
-                <!-- <div class="row no-wrap q-mt-xs anu f-10">
-                  <div
-                    class="text-weight-bold q-mr-sm"
-                    :class="rin.obat.status_fornas === '1' ? 'text-green' : 'text-negative'"
-                  >
-                    {{ rin.obat.status_fornas === '1' ? 'Fronas' : 'Non-Fornas' }}
-                  </div>
-                  <div
-                    class=" text-weight-bold  q-mr-sm"
-                    :class="rin.obat.status_forkid === '1' ? 'text-green' : 'text-negative'"
-                  >
-                    {{ rin.obat.status_forkid === '1' ? 'Forkit' : 'Non-Forkit' }}
-                  </div>
-                  <div
-                    class=" text-weight-bold  q-mr-sm"
-                    :class="rin.obat.status_generik === '1' ? 'text-green' : 'text-negative'"
-                  >
-                    {{ rin.obat.status_generik === '1' ? 'Generik' : 'Non-Generik' }}
-                  </div>
-                </div>
-                <div class="row f-10 no-wrap q-mt-xs anu">
-                  <div
-                    class=" text-weight-bold q-mr-sm"
-                    :class="rin.obat.status_kronis === '1' ? 'text-green' : 'text-negative'"
-                  >
-                    {{ rin.obat.status_kronis === '1' ? 'Kronis' : 'Non-Kronis' }}
-                  </div>
-                  <div
-                    class=" text-weight-bold q-mr-sm"
-                    :class="rin.obat.status_prb === '1' ? 'text-green' : 'text-negative'"
-                  >
-                    {{ rin.obat.status_prb === '1' ? 'PRB' : 'Non-PRB' }}
-                  </div>
-                </div> -->
               </div>
               <div class="col-3">
                 <div class="row justify-between no-wrap q-mt-xs text-purple">
@@ -344,8 +310,19 @@
                   </div>
                 </div>
               </div>
-              <div v-if="rin?.susulan" class="col-3">
-                {{ rin?.susulan?.nama }}
+              <div class="col-3">
+                <div class="row items-center">
+                  <div v-if="rin?.susulan" class="col-10">
+                    {{ rin?.susulan?.nama }}
+                  </div>
+                  <div v-if="row?.flag === '1'" class="col-2 text-right">
+                    <q-btn flat icon="icon-mat-delete" dense color="negative" @click="hapusRincian(rin)"
+                      :loading="rin.loading" :disable="rin.loading">
+                      <q-tooltip>Hapus Rincian</q-tooltip>
+                    </q-btn>
+                  </div>
+                </div>
+
               </div>
             </div>
             <q-separator />
@@ -554,6 +531,29 @@ function batalOperasi (val) {
     }
   }).onOk(() => {
     store.batalOperasi(val)
+  })
+}
+function hapusRincian (val) {
+  val.expand = !val.expand
+  val.highlight = !val.highlight
+  // console.log('val', val)
+  Dialog.create({
+    title: 'Konfirmasi',
+    message: 'Apakah anda yakin ingin menghapus rincian ini?',
+    ok: {
+      'no-caps': true,
+      push: true,
+      color: 'negative',
+      label: 'Hapus'
+    },
+    cancel: {
+      'no-caps': true,
+      push: true,
+      color: 'dark',
+      label: 'Tidak Hapus'
+    }
+  }).onOk(() => {
+    store.hapusRincian(val)
   })
 }
 function cariByQ (val) {

@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia'
+import { acceptHMRUpdate, defineStore } from 'pinia'
 import { date } from 'quasar'
 import { api } from 'src/boot/axios'
 import { notifSuccess } from 'src/modules/utils'
@@ -162,6 +162,33 @@ export const useDistribusiPersiapanOperasiStore = defineStore('distribusi_persia
             val.loading = false
           })
       })
+    },
+    hapusRincian (val) {
+      // console.log('delete', val)
+      val.loading = true
+      return new Promise(resolve => {
+        api.post('v1/simrs/penunjang/farmasinew/obatoperasi/hapus-rincian', val)
+          .then(resp => {
+            delete val.loading
+            const indexItem = this.items.findIndex(item => item.nopermintaan === val.nopermintaan)
+            if (indexItem >= 0) {
+              const indexRinc = this.items[indexItem].rinci.findIndex(item => item.id === val.id)
+              if (indexRinc >= 0) {
+                this.items[indexItem].rinci.splice(indexRinc, 1)
+              }
+              // console.log('delete', resp?.data, indexItem, indexRinc)
+            }
+            notifSuccess(resp)
+            resolve(resp)
+          })
+          .catch(() => {
+            delete val.loading
+          })
+      })
     }
   }
 })
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useDistribusiPersiapanOperasiStore, import.meta.hot))
+}
