@@ -41,6 +41,10 @@ const farmasi = {
       component: () => import('pages/simrs/farmasi/perbaikanharga/IndexPage.vue')
     },
     {
+      path: '/farmasi/restriksi-fornas',
+      component: () => import('pages/simrs/farmasi/restriksiFornas/IndexPage.vue')
+    },
+    {
       path: '/farmasi/notfound',
       component: () => import('pages/MidlewareNotFound.vue')
     }
