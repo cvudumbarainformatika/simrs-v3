@@ -6,7 +6,6 @@
         <q-card-section class="bg-primary text-white">
           <div class="text-h6">Entry Data Arsip</div>
         </q-card-section>
-
         <q-separator />
 
         <q-card-section align="center" class="full-height full-width ">
@@ -17,9 +16,37 @@
                   style="width: 260px;" @set-display="setToFromDisp" />
               </div>
               <div class="col-6">
-                <q-select v-model="store.form.kodekelasifikasi" label="Kode Klasifikasi" outlined dense
+                <q-input v-model="store.form.kodekelasifikasi" label="Kode Klasifikasi" outlined dense
+                  :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" style="width: 260px;" disable />
+                <!-- <q-select v-model="store.form.kodekelasifikasi" label="Kode Klasifikasi" outlined dense
                   :options="options" use-input option-label="nama" option-value="kode" clearable emit-value map-options
+                  @update:model-value="(val) => kodeklasifikasi(val)"
                   :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" @filter="filterFn" style="width: 260px;">
+                  <template #option="scope">
+                    <q-item v-bind="scope.itemProps"><q-item-section avatar>
+                        <q-item-label>
+                          <span class="text-bold">{{ scope.opt.kode }} </span><br />
+                          <span>{{ scope.opt.nama }}</span>
+                        </q-item-label>
+                      </q-item-section>
+                    </q-item>
+                  </template>
+<template #no-option>
+                    <q-item>
+                      <q-item-section class="text-grey">
+                        Data Tidak Ditemukan....
+                      </q-item-section>
+                    </q-item>
+                  </template>
+</q-select> -->
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <q-select v-model="store.form.kelasifikasi" label="Kode Klasifikasi" outlined dense :options="options"
+                  use-input option-label="nama" option-value="kode" clearable emit-value map-options
+                  :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" @filter="filterFn"
+                  @update:model-value="(val) => kodeklasifikasi(val)">
                   <template #option="scope">
                     <q-item v-bind="scope.itemProps"><q-item-section avatar>
                         <q-item-label>
@@ -52,10 +79,9 @@
                   :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" style="width: 260px;" />
               </div>
               <div class="col-6">
-                <q-select label="Jenis Media" v-model="store.form.media" outlined dense :options="optionsmedia"
-                  use-input option-label="nama_media" option-value="id" clearable emit-value map-options
-                  @filter="filterFnmedia" :rules="[val => !!val || 'Harap Diisi terlebih dahulu']"
-                  style="width: 260px;">
+                <q-select label="Jenis Media" v-model="store.form.media" outlined dense :options="media"
+                  option-label="nama_media" option-value="id" clearable emit-value map-options @filter="filterFnmedia"
+                  :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" style="width: 260px;">
                   <template #option="scope">
                     <q-item v-bind="scope.itemProps"><q-item-section avatar>
                         <q-item-label>
@@ -95,7 +121,7 @@
               </div>
             </div>
             <div class="row q-gutter-xs">
-              <div class="col-12" v-if="store.form.media !== ''">
+              <div class="col-12" v-if="store.form.noarsip === '' || store.form.noarsip === null">
                 <q-uploader ref="uploader" :factory="uploadFiles" :loading="uploadPercent" bordered flat
                   :label="`Upload Dokumen/ Arsip`" accept=".pdf" class="fit" multiple max-files="1" auto-upload
                   @finish="finished" @rejected="onRejected">
@@ -154,11 +180,13 @@
 
 </template>
 <script setup>
+import { useQuasar } from 'quasar';
 import { useUnitPengelolahArsipStore } from 'src/stores/simrs/unitpengelolaarsip/arsip';
 import { ref } from 'vue';
 
 const store = useUnitPengelolahArsipStore()
 const backdropFilter = ref('blur(4px)')
+const $q = useQuasar()
 
 const props = defineProps({
   klasifikasi: {
@@ -260,9 +288,22 @@ function setToFromDisp(vaal) {
 }
 
 function onSubmit() {
+  if (store.form.keaslian === '' || store.form.keaslian === null) {
+    $q.notify({
+      color: 'red-5',
+      textColor: 'white',
+      icon: 'icon-mat-warning',
+      message: 'Maaf Keaslian harus dipilih'
+    })
+    store.loading = false
+  }
   store.saveData()
 }
 
+function kodeklasifikasi(val) {
+  store.form.kodekelasifikasi = val
+}
+
 store.initForm()
-console.log('sasa')
+
 </script>
