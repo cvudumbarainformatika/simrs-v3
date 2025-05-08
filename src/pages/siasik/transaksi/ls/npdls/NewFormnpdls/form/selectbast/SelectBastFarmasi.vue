@@ -1,6 +1,6 @@
 <template>
   <q-dialog class="q-mt-xl" @hide="hiddenDialog()" @show="init()" backdrop-filter="blur(4px)" persistent>
-    <q-card style="min-width:50vw;">
+    <q-card style="min-width:50vw; min-height:20vw;">
       <q-card-section class="row items-center">
         <div class="column">
           <div class="f-14 text-weight-bold">
@@ -16,7 +16,7 @@
       <q-separator />
       <q-card-section>
         <q-list>
-          <template v-if="carisrt.bastfarmasis?.length !== 0 || carisrt.konsinyasis?.length !== 0">
+          <template v-if="carisrt.bastfarmasis?.length > 0 || carisrt.konsinyasis?.length > 0">
             <q-table class="my-sticky-header" :rows="carisrt.itembelanja" :columns="columns" row-key="name"
               @request="carisrt.onRequest" v-model:pagination="carisrt.reqs" :filter="carisrt.reqs.q"
               :loading="carisrt.loading" :rows-per-page-options="[50, 100, 200, 500]">
@@ -60,47 +60,18 @@
               </template>
             </q-table>
           </template>
-          <!-- <template v-else>
-            <q-table class="my-sticky-header" :rows="carisrt.itembelanja" :columns="columnkonsinyasi" row-key="name"
-              @request="carisrt.onRequest" v-model:pagination="carisrt.reqs" :filter="carisrt.reqs.q"
-              :loading="carisrt.loading">
-              <template #top-left>
-                <div class="flex q-qutter-sm z-top">
-                  <div>
-                    <q-input v-model="carisrt.reqs.q" outlined dark color="white" dense placeholder="Cari BAST ..."
-                      debounce="500" style="min-width: 200px;" @keyup.enter="carisrt.goToPage(1)">
-                      <template v-if="carisrt.reqs.q" #append>
-                        <q-icon name="icon-mat-close" size="xs" class="cursor-pointer"
-                          @click.stop.prevent="clearSearch" />
-                      </template>
-                      <template #prepend>
-                        <q-icon size="sm" name="icon-mat-search" />
-                      </template>
-                    </q-input>
-                  </div>
+          <template v-else>
+            <div class="full-heigh">
+              <q-inner-loading :showing="carisrt.loading">
+                <div class="q-pa-xl full-height"> <q-spinner-gears size="50px" color="primary" /> Memuat
+                  data...
                 </div>
-              </template>
-              <template #body="props">
-                <q-tr :props="props">
-                  <q-td key="nopenerimaan" :props="props">
-                    <div class="text-teal text-bold">
-                      Penerimaan : {{ props.row.nopenerimaan }}
-                    </div>
-                    <div class="q-pl-sm" style="font-size: 0.9em">{{ props.row.nobast }}</div>
-                  </q-td>
-                  <q-td key="nominalpembayaran" :props="props">
-                    {{ formattanpaRp(props.row.nominalpembayaran) }}
-                  </q-td>
-                  <q-td>
-                    <div class="row justify-end">
-                      <q-btn outline size="sm" class="q-px-md" label="Pilih"
-                        @click="pilihDataSerahterima(props?.row)" />
-                    </div>
-                  </q-td>
-                </q-tr>
-              </template>
-            </q-table>
-          </template> -->
+              </q-inner-loading>
+              <div v-if="!carisrt.loading" class="text-center q-pa-md">
+                Tidak ada data yang ditemukan.
+              </div>
+            </div>
+          </template>
         </q-list>
       </q-card-section>
     </q-card>
@@ -139,27 +110,6 @@ const columnsx = [
 ]
 const columns = ref(columnsx)
 
-// const columnkons = [
-//   {
-//     name: 'nopenerimaan',
-//     label: 'No BAST',
-//     align: 'left',
-//     field: 'nopenerimaan'
-//   },
-//   {
-//     name: 'nominalpembayaran',
-//     label: 'Nilai',
-//     align: 'center',
-//     field: 'nominalpembayaran'
-//   },
-//   {
-//     name: 'Opsi',
-//     label: 'Opsi',
-//     align: 'center'
-//   }
-// ]
-// const columnkonsinyasi = ref(columnkons)
-
 const init = () => {
   carisrt.getDataBast()
 }
@@ -169,34 +119,12 @@ const clearSearch = () => {
 }
 
 function pilihDataSerahterima(row) {
-  // console.log('row bast', row)
-
   store.reqs.bast = row?.nopenerimaan
   store.openDialogFarmasi = false
-
   carisrt.reqs.kodebast = row?.nopenerimaan
   store.form.noserahterima = store.reqs.bast
-  // carisrt.selectbastFarmasi()
-  // store.selectbast = row
   store.rinci = row
-  // store.rinci.rincianbelanja = row?.rincianbelanja
-  // store.rinci.koderek50 = row?.koderek50
-  // store.rinci.koderek108 = row?.koderek108
-  // store.rinci.uraian108 = row?.uraian108
-  // store.rinci.itembelanja = row?.itembelanja
-  // store.rinci.bast_r_id = row?.bast_r_id
-  // store.rinci.nopenerimaan = row?.nopenerimaan
-  // store.rinci.idserahterima_rinci = row?.idserahterima_rinci
-  // store.rinci.volume = row?.volume
-  // store.rinci.satuan = row?.satuan
-  // store.rinci.harga = row?.harga
-  // store.rinci.total = row?.total
-  // store.rinci.sisapagu = row?.sisapagu
-  // store.rinci.volumels = row?.volumels
-  // store.rinci.hargals = row?.hargals
-  // store.rinci.totalls = row?.totalls
-  // store.rinci.nominalpembayaran = row?.nominalpembayaran
-  console.log('row bast', store.selectbast)
+
 }
 
 function gantibotton(row) {
