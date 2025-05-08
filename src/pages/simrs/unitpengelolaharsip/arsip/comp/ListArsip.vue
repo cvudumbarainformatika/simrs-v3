@@ -32,6 +32,11 @@
               Jenis Arsip : <span class=" text-weight-bold"><q-badge outline color="teal">{{ item?.ket ?? '-'
                   }}</q-badge></span>
             </q-item-label>
+            <q-item-label>
+              Unit Pengelolah : <span class=" text-weight-bold"><q-badge outline color="accent">{{
+                item?.unitpengolah?.nama ?? '-'
+                  }}</q-badge></span>
+            </q-item-label>
           </q-item-section>
           <q-separator vertical class="q-mx-md" />
           <q-item-section class="q-col-gutter-xs">
@@ -53,6 +58,11 @@
               Keterangan : <span class="text-negative text-weight-bold">{{ item?.keterangan ?? '-' }}</span>
             </q-item-label>
           </q-item-section>
+          <q-item-section side>
+            <div class="q-gutter-sm">
+              <q-btn flat round size="sm" icon="icon-mat-edit" @click="editForm(item)" />
+            </div>
+          </q-item-section>
         </q-item>
       </q-list>
     </div>
@@ -61,6 +71,9 @@
       v-model="store.pageLayanan"
       :pasien="pasien"
     /> -->
+    <DialogFormPage :items="items" :loading="loading" :klasifikasi="klasifikasi" :media="media"
+      :lokasiarsip="lokasiarsip" />
+
   </div>
 </template>
 
@@ -69,10 +82,14 @@ import { pathImg } from 'src/boot/axios'
 // eslint-disable-next-line no-unused-vars
 import ListLoading from './ListLoading.vue'
 import EmptyData from './EmptyData.vue'
+import DialogFormPage from './DialogFormPage.vue';
 
 import { dateFullFormat, formatJam } from 'src/modules/formatter'
+import { useUnitPengelolahArsipStore } from 'src/stores/simrs/unitpengelolaarsip/arsip';
+import { date } from 'quasar';
 
 const emits = defineEmits(['terimapasien', 'bukalayanan', 'kirimcasmix'])
+const store = useUnitPengelolahArsipStore()
 
 
 // const PageLayananIgd = defineAsyncComponent(() => import('src/pages/simrs/igd/layanan/PageLayananIgd.vue'))
@@ -91,7 +108,19 @@ defineProps({
   loading: {
     type: Boolean,
     default: false
-  }
+  },
+  klasifikasi: {
+    type: Object,
+    default: null
+  },
+  media: {
+    type: Object,
+    default: null
+  },
+  lokasiarsip: {
+    type: Object,
+    default: null
+  },
 })
 
 const getImg = (file) => {
@@ -106,5 +135,25 @@ const getImg = (file) => {
     return pathImg + file
   }
 }
+
+function editForm(val) {
+  console.log('val', val)
+  store.dialog = true
+  store.form.noarsip = val?.noarsip
+  store.form.tgl = date.formatDate(val?.tanggal, 'YYYY-MM-DD')
+  store.tanggal.tgl = date.formatDate(val?.tanggal, 'DD MMMM YYYY')
+  store.form.kodekelasifikasi = val?.kodeklasifikasi
+  store.form.kelasifikasi = val?.namakelasifikasi
+  store.form.uraian = val?.uraian
+  store.form.lokasi = parseInt(val?.lokasi)
+  store.form.media = parseInt(val?.media)
+  store.form.keaslian = val?.ket
+  store.form.jumlah = val?.jumlah
+  store.form.nobox = val?.nobox
+  store.form.dokumen = val?.dokumen
+  store.form.keterangan = val?.keterangan
+}
+
+
 
 </script>

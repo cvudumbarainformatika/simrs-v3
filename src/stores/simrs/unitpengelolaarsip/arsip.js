@@ -86,8 +86,9 @@ export const useUnitPengelolahArsipStore = defineStore('unit-pengelolah-arsip-st
           .then((resp) => {
             if (resp.status === 200) {
               const datax = resp?.data?.result[0]
-              //this.form.noarsip = data?.noarsip
-              this.items.unshift(datax)
+              const index = this.items.findIndex(x => x.noarsip === datax.noarsip)
+              if (index >= 0) this.items = resp?.data?.result
+              else this.items.unshift(datax)
               notifSuccess(resp)
               this.initForm()
               this.loadingForm = false
@@ -106,6 +107,7 @@ export const useUnitPengelolahArsipStore = defineStore('unit-pengelolah-arsip-st
       this.tanggal.tgl = date.formatDate(Date.now(), 'DD MMMM YYYY')
       this.form.tgl = date.formatDate(Date.now(), 'YYYY-MM-DD')
       this.form.kodekelasifikasi = ''
+      this.form.kelasifikasi = ''
       this.form.uraian = ''
       this.form.lokasi = ''
       this.form.media = ''
@@ -113,6 +115,7 @@ export const useUnitPengelolahArsipStore = defineStore('unit-pengelolah-arsip-st
       this.form.jumlah = 1
       this.form.nobox = ''
       this.form.dokumen = []
+      this.form.keterangan = ''
     },
     setPeriodik(val) {
       // console.log('wew', val)
