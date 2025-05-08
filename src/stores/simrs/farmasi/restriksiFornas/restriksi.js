@@ -113,6 +113,7 @@ export const useRestriksiFornasStore = defineStore('restriksi-fornas-store', {
       form.jumlah = this.form.jumlah
       form.tgl_mulai_berlaku = this.form.tgl_mulai_berlaku
       // console.log('save this.form', form, this.form)
+      if (!form.jumlah || !form.tgl_mulai_berlaku || parseFloat(form.jumlah) <= 0) return notifErrVue('Jumlah dan Tanggal tidak boleh kosong')
       this.form.loading = true
       return new Promise(resolve => {
         api.post('/v1/simrs/penunjang/farmasinew/restriksi/save-restriksi', form)

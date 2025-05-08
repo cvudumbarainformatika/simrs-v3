@@ -32,6 +32,9 @@
           <div class="row">
             {{ row?.nama_obat }}
           </div>
+          <div class="row text-italic f-10">
+            {{ row?.kandungan }}
+          </div>
           <div class="row q-col-gutter-x-xs">
             <div class="col-auto f-10">
               ({{ row?.kd_obat }})
