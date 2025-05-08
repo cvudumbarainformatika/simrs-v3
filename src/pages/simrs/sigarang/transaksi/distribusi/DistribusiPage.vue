@@ -1,74 +1,29 @@
 <template>
   <div class="q-px-sm q-pt-md">
-    <app-card
-      title="Tabel Distribusi barang"
-      desc="Halaman Distribusi barang"
-    >
+    <app-card title="Tabel Distribusi barang" desc="Halaman Distribusi barang">
       <template #content>
-        <app-table-extend
-          title="Data Distribusi"
-          :columns="store.columns"
-          :column-hide="store.columnHide"
-          :items="store.items"
-          :meta="store.meta"
-          :per-page="store.params.per_page"
-          :order-by="store.params.order_by"
-          :sort="store.params.sort"
-          :loading="store.loading"
-          :to-search="store.params.q"
-          row-no
-          :ada-tambah="false"
-          :ada-edit="false"
-          :ada-delete="false"
-          :click-able="true"
-          @goto="store.setPage"
-          @set-row="store.setPerPage"
-          @refresh="store.refreshTable"
-          @find="store.setSearch"
-          @set-order="store.setOder"
-          @new-data="store.newData"
-          @edit-data="store.editData"
-          @delete="store.deletesData"
-          @on-click="onClick"
-        >
+        <app-table-extend title="Data Distribusi" :columns="store.columns" :column-hide="store.columnHide"
+          :items="store.items" :meta="store.meta" :per-page="store.params.per_page" :order-by="store.params.order_by"
+          :sort="store.params.sort" :loading="store.loading" :to-search="store.params.q" row-no :ada-tambah="false"
+          :ada-edit="false" :ada-delete="false" :click-able="true" @goto="store.setPage" @set-row="store.setPerPage"
+          @refresh="store.refreshTable" @find="store.setSearch" @set-order="store.setOder" @new-data="store.newData"
+          @edit-data="store.editData" @delete="store.deletesData" @on-click="onClick">
           <template #header-left-after-search>
             <div class="row q-col-gutter-sm q-ml-sm">
               <div class="q-col">
-                <app-input
-                  v-model="store.params.r"
-                  label="cari ruangan"
-                  outlined
-                  valid
-                  icon="icon-mat-search"
-                  debounce="1000"
-                  :loading="store.loading"
-                  @update:model-value="store.searchRuangan"
-                />
+                <app-input v-model="store.params.r" label="cari ruangan" outlined valid icon="icon-mat-search"
+                  debounce="1000" :loading="store.loading" @update:model-value="store.searchRuangan" />
               </div>
               <div class="col cursor-pointer">
-                <q-chip
-                  class="f-12"
-                  :color="color(store.paramStatus.value)"
-                  :text-color="store.paramStatus.value===99?'dark':'white'"
-                  :label="label(store.paramStatus.value,store.paramStatus.nama)"
-                />
-                <q-menu
-                  transition-show="jump-down"
-                  transition-hide="jump-up"
-                  anchor="center middle"
-                  self="center middle"
-                  :offset="[-50, 0]"
-                >
+                <q-chip class="f-12" :color="color(store.paramStatus.value)"
+                  :text-color="store.paramStatus.value === 99 ? 'dark' : 'white'"
+                  :label="label(store.paramStatus.value, store.paramStatus.nama)" />
+                <q-menu transition-show="jump-down" transition-hide="jump-up" anchor="center middle"
+                  self="center middle" :offset="[-50, 0]">
                   <q-list>
-                    <q-item
-                      v-for="(item,i) in store.statuses"
-                      :key="i"
-                      v-close-popup
-                      style="min-width:250px"
-                      clickable
-                      :style="(item.value===99? 'color:black; ': 'color:white; ')+ 'background-color:'+color(item.value)+';'"
-                      @click="store.setParamStatus(item)"
-                    >
+                    <q-item v-for="(item, i) in store.statuses" :key="i" v-close-popup style="min-width:250px" clickable
+                      :style="(item.value === 99 ? 'color:black; ' : 'color:white; ') + 'background-color:' + color(item.value) + ';'"
+                      @click="store.setParamStatus(item)">
                       <q-item-section>
                         {{ item.nama }}
                       </q-item-section>
@@ -83,31 +38,31 @@
           <template #col-tanggal>
             <div>Tanggal Permintaan</div>
           </template>
-          <template #cell-tanggal="{row}">
+          <template #cell-tanggal="{ row }">
             {{ dateFullFormat(row.tanggal) }}
           </template>
           <template #col-tanggal_distribusi>
             <div>Tanggal Dikeluarakan</div>
           </template>
-          <template #cell-tanggal_distribusi="{row}">
+          <template #cell-tanggal_distribusi="{ row }">
             {{ dateFullFormat(row.tanggal_distribusi) }}
           </template>
           <template #col-tanggal_verif>
             <div>Tanggal Verifikasi</div>
           </template>
-          <template #cell-tanggal_verif="{row}">
+          <template #cell-tanggal_verif="{ row }">
             {{ dateFull(row.tanggal_verif) }}
           </template>
           <template #col-pengguna>
             <div>Ruangan</div>
           </template>
-          <template #cell-pengguna="{row}">
-            {{ row.ruang?row.ruang.uraian:'-' }}
+          <template #cell-pengguna="{ row }">
+            {{ row.ruang ? row.ruang.uraian : '-' }}
           </template>
           <template #col-pj>
             <div>Nama Penerima</div>
           </template>
-          <template #cell-pj="{row}">
+          <template #cell-pj="{ row }">
             {{ row.pj.jabatan }}
           </template>
           <template #col-no_permintaan>
@@ -120,125 +75,58 @@
             <div>Aksi</div>
           </template>
 
-          <template #cell-aksi="{row}">
-            <div
-              v-if="row.status===6"
-              class="fit row no-wrap justify-start items-center"
-            >
+          <template #cell-aksi="{ row }">
+            <div v-if="row.status === 6" class="fit row no-wrap justify-start items-center">
               <div>
                 {{ store.tanggalDisplay }}
               </div>
               <div class="q-ml-sm">
-                <q-btn
-                  icon="icon-mat-event"
-                  round
-                  flat
-                  dense
-                  color="primary"
-                >
-                  <q-popup-proxy
-                    cover
-                    transition-show="scale"
-                    transition-hide="scale"
-                    @show="updateProxy"
-                  >
-                    <q-date
-                      ref="refDate"
-                      v-model="store.form.tanggal"
-                      mask="YYYY-MM-DD HH:mm:ss"
-                      :options="dateOption"
-                      @update:model-value="store.setTanggal"
-                    >
+                <q-btn icon="icon-mat-event" round flat dense color="primary">
+                  <q-popup-proxy cover transition-show="scale" transition-hide="scale" @show="updateProxy">
+                    <q-date ref="refDate" v-model="store.form.tanggal" mask="YYYY-MM-DD HH:mm:ss" :options="dateOption"
+                      @update:model-value="store.setTanggal">
                       <div class="row items-center justify-end">
-                        <q-btn
-                          v-close-popup
-                          label="Close"
-                          color="primary"
-                          flat
-                        />
+                        <q-btn v-close-popup label="Close" color="primary" flat />
                       </div>
                     </q-date>
                   </q-popup-proxy>
-                  <q-tooltip
-                    class="primary"
-                    :offset="[10, 10]"
-                  >
+                  <q-tooltip class="primary" :offset="[10, 10]">
                     Ganti Tanggal
                   </q-tooltip>
                 </q-btn>
-                <q-btn
-                  icon="icon-mat-send"
-                  color="green"
-                  flat
-                  no-caps
-                  dense
-                  round
-                  @click="distribusikan(row)"
-                >
-                  <q-tooltip
-                    class="primary"
-                    :offset="[10, 10]"
-                  >
+                <q-btn icon="icon-mat-send" color="green" flat no-caps dense round @click="distribusikan(row)">
+                  <q-tooltip class="primary" :offset="[10, 10]">
                     Distribusikan
                   </q-tooltip>
                 </q-btn>
               </div>
             </div>
 
-            <q-btn
-              v-if="row.status===5"
-              icon="icon-mat-move_to_inbox"
-              color="blue"
-              flat
-              no-caps
-              dense
-              round
-              @click="barangSiap(row)"
-            >
-              <q-tooltip
-                class="primary"
-                :offset="[10, 10]"
-              >
+            <q-btn v-if="row.status === 5" icon="icon-mat-move_to_inbox" color="blue" flat no-caps dense round
+              @click="barangSiap(row)">
+              <q-tooltip class="primary" :offset="[10, 10]">
                 Barang Siap
               </q-tooltip>
             </q-btn>
             <!-- :disable="row.disableSend" -->
           </template>
-          <template #cell-status="{row}">
+          <template #cell-status="{ row }">
             <!-- {{row.status}} -->
-            <q-chip
-              class="f-12"
-              :color="color(row.status)"
-              text-color="white"
-              :label="label(row.status,row.nama)"
-            />
+            <q-chip class="f-12" :color="color(row.status)" text-color="white" :label="label(row.status, row.nama)" />
           </template>
-          <template #expand="{row}">
+          <template #expand="{ row }">
             <div class="q-my-md">
               <div>
-                <!-- v-if="item.highlight" -->
                 <div>
                   <div class="print">
-                    <q-btn
-                      ref="refPrint"
-                      v-print="printObj"
-                      unelevated
-                      color="dark"
-                      round
-                      size="sm"
-                      icon="icon-mat-print"
-                    >
-                      <q-tooltip
-                        class="primary"
-                        :offset="[10, 10]"
-                      >
+                    <q-btn ref="refPrint" v-print="printObj" unelevated color="dark" round size="sm"
+                      icon="icon-mat-print">
+                      <q-tooltip class="primary" :offset="[10, 10]">
                         Print
                       </q-tooltip>
                     </q-btn>
                   </div>
-                  <div
-                    class="print-only"
-                  >
+                  <div class="print-only">
                     <div id="printMe">
                       <div class="text-center text-weight-bold">
                         TANDA TERIMA PENGAMBILAN BARANG
@@ -295,13 +183,10 @@
                         </div>
                       </div>
                       <q-separator />
-                      <div
-                        v-for="(item, i) in row.details"
-                        :key="i"
-                      >
+                      <div v-for="(item, i) in row.details" :key="i">
                         <div class="fit row no-wrap justify-evenly items-center content-center q-col-gutter-sm">
                           <div class="col-1 text-left">
-                            {{ i+1 }}
+                            {{ i + 1 }}
                           </div>
 
                           <div class="col-2 text-left">
@@ -313,7 +198,7 @@
                           </div>
 
                           <div class="col-1 text-left">
-                            {{ item.satuan?item.satuan.nama:'-' }}
+                            {{ item.satuan ? item.satuan.nama : '-' }}
                           </div>
 
                           <div class="col-1 text-right">
@@ -336,45 +221,27 @@
                         <q-separator />
                       </div>
                       <div class="fit row no-wrap justify-evenly items-center content-center q-mt-md">
-                        <div
-                          v-if="ruang==='Depo Habis Pakai'"
-                          class="to-print-tt text-center"
-                        >
+                        <div v-if="ruang === 'Depo Habis Pakai'" class="to-print-tt text-center">
                           <div class="q-mb-xl">
                             Pejabat Pelaksanan Teknik Kegiatan
                           </div>
                           <div class="q-mt-lg text-weight-bold">
-                            YULIANA S.A.P
+                            {{ tandatangan?.data?.ptk?.nama }}
                           </div>
                           <div class="">
-                            NIP. 19740304 200801 2 005
+                            NIP. {{ tandatangan?.data?.ptk?.nip }}
                           </div>
                         </div>
-                        <!--
-                        <div
-                          v-if="ruang==='Depo PNM' || ruang==='Depo Gizi'"
-                          class="to-print-tt text-center"
-                        >
-                          <div class="q-mb-xl">
-                            Pejabat Pelaksanan Teknik Kegiatan
-                          </div>
-                          <div class="q-mt-lg text-weight-bold">
-                            SUYANI, S.Sos.
-                          </div>
-                          <div class="">
-                            NIP. 19661125 199603 2 003
-                          </div>
-                        </div>
-                        -->
+
                         <div class="to-print-tt text-center">
                           <div class="q-mb-xl">
                             Petugas Barang
                           </div>
                           <div class="q-mt-lg text-weight-bold">
-                            SARWANI
+                            {{ tandatangan?.data?.gudang?.nama }}
                           </div>
                           <div class="">
-                            NIP. 19760311 200801 1 008
+                            NIP. {{ tandatangan?.data?.gudang?.nip }}
                           </div>
                         </div>
                         <div class="to-print-tt text-center">
@@ -384,9 +251,6 @@
                           <div class="q-mt-lg text-weight-bold">
                             ...........................
                           </div>
-                          <!-- <div class="">
-                      NIP. 19740304 200801 2 005
-                    </div> -->
                         </div>
                       </div>
                     </div>
@@ -419,10 +283,7 @@
                       </div>
                     </div>
                     <q-separator />
-                    <div
-                      v-for="(item, j) in row.details"
-                      :key="j"
-                    >
+                    <div v-for="(item, j) in row.details" :key="j">
                       <div class="fit row no-wrap justify-evenly items-center content-center">
                         <div class="col-1 text-left">
                           {{ item.barangrs.kode }}
@@ -434,10 +295,7 @@
                           <div v-if="item.ruang">
                             {{ item.ruang.uraian }}
                           </div>
-                          <div
-                            v-else
-                            class="text-yellow bg-red"
-                          >
+                          <div v-else class="text-yellow bg-red">
                             Tidak ada ruangan tujuan
                           </div>
                         </div>
@@ -463,290 +321,14 @@
                         </div>
                       </div>
                     </div>
-                    <!-- <div
-                  v-if="itemIndex!==null"
-                >
-                  <div
-                    v-if="!store.items[itemIndex].disableSend"
-                    class="q-mt-sm"
-                  >
-                    <q-separator />
-                    <div class="fit row no-wrap justify-end items-center content-center">
-                      <div class="q-mt-sm">
-                        <q-btn
-                          icon="icon-mat-send"
-                          color="primary"
-                          flat
-                          no-caps
-                          dense
-                          round
-                          @click="distribusikan(store.items[itemIndex])"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div> -->
                   </div>
                 </div>
               </div>
             </div>
           </template>
         </app-table-extend>
-        <!-- <div class="q-my-md">
-          <div
-            v-for="(item,i) in store.items"
-            :key="i"
-          >
-            <q-card
-              v-if="item.highlight"
-            >
-              <div class="print">
-                <q-btn
-                  ref="refPrint"
-                  v-print="printObj"
-                  unelevated
-                  color="dark"
-                  round
-                  size="sm"
-                  icon="icon-mat-print"
-                >
-                  <q-tooltip
-                    class="primary"
-                    :offset="[10, 10]"
-                  >
-                    Print
-                  </q-tooltip>
-                </q-btn>
-              </div>
-              <q-card-section
-                class="print-only"
-              >
-                <div id="printMe">
-                  <div class="text-center text-weight-bold">
-                    TANDA TERIMA PENGAMBILAN BARANG
-                  </div>
-                  <div class="text-center text-weight-bold">
-                    BAHAN HABIS PAKAI
-                  </div>
-                  <div class="text-center text-weight-bold q-mb-lg">
-                    TAHUN {{ date.formatDate(item.tanggal, 'YYYY') }}
-                  </div>
-                  <div class="row text-left text-weight-bold">
-                    <div class="col-3">
-                      NAMA RUANGAN
-                    </div>
-                    <div class="col-7">
-                      : {{ item.ruang.uraian }}
-                    </div>
-                  </div>
-                  <div class="row text-left text-weight-bold">
-                    <div class="col-3">
-                      TANGGAL
-                    </div>
-                    <div class="col-7">
-                      : {{ dateFullFormat(item.tanggal_distribusi) }}
-                    </div>
-                  </div>
-                  <div class="fit row no-wrap justify-evenly items-center content-center q-col-gutter-sm q-mt-lg">
-                    <div class="col-1 text-weight-bold text-left">
-                      NO
-                    </div>
-
-                    <div class="col-2 text-weight-bold text-left">
-                      KODE BARANG
-                    </div>
-
-                    <div class="col-4 text-weight-bold text-left">
-                      NAMA BARANG
-                    </div>
-
-                    <div class="col-1 text-weight-bold text-left">
-                      SATUAN
-                    </div>
-
-                    <div class="col-1 text-weight-bold text-right">
-                      JUMLAH MINTA
-                    </div>
-
-                    <div class="col-1 text-weight-bold text-right">
-                      JUMLAH DIBERI
-                    </div>
-
-                    <div class="col-2 text-weight-bold text-right">
-                      KETERANGAN
-                    </div>
-                  </div>
-                  <q-separator />
-                  <div
-                    v-for="(data, j) in item.details"
-                    :key="j"
-                  >
-                    <div class="fit row no-wrap justify-evenly items-center content-center q-col-gutter-sm">
-                      <div class="col-1 text-left">
-                        {{ j+1 }}
-                      </div>
-
-                      <div class="col-2 text-left">
-                        {{ data.kode_rs }}
-                      </div>
-
-                      <div class="col-4 text-left">
-                        {{ data.barangrs.nama }}
-                      </div>
-
-                      <div class="col-1 text-left">
-                        {{ data.satuan?data.satuan.nama:'-' }}
-                      </div>
-
-                      <div class="col-1 text-right">
-                        {{ data.jumlah }}
-                      </div>
-
-                      <div class="col-1 text-right">
-                        <div v-if="store.items[itemIndex]?store.items[itemIndex].status >= 5:false">
-                          {{ data.jumlah_disetujui }}
-                        </div>
-                        <div v-if="itemIndex?store.items[itemIndex].status < 5:false">
-                          -
-                        </div>
-                      </div>
-
-                      <div class="col-2 text-right" />
-                    </div>
-                    <q-separator />
-                  </div>
-                  <div class="fit row no-wrap justify-evenly items-center content-center q-mt-md">
-                    <div
-                      v-if="ruang==='Depo Habis Pakai'"
-                      class="to-print-tt text-center"
-                    >
-                      <div class="q-mb-xl">
-                        Pejabat Pelaksanan Teknik Kegiatan
-                      </div>
-                      <div class="q-mt-lg text-weight-bold">
-                        YULIANA S.A.P
-                      </div>
-                      <div class="">
-                        NIP. 19740304 200801 2 005
-                      </div>
-                    </div>
-                    <div
-                      v-if="ruang==='Depo PNM' || ruang==='Depo Gizi'"
-                      class="to-print-tt text-center"
-                    >
-                      <div class="q-mb-xl">
-                        Pejabat Pelaksanan Teknik Kegiatan
-                      </div>
-                      <div class="q-mt-lg text-weight-bold">
-                        SUYANI, S.Sos.
-                      </div>
-                      <div class="">
-                        NIP. 19661125 199603 2 003
-                      </div>
-                    </div>
-                    <div class="to-print-tt text-center">
-                      <div class="q-mb-xl">
-                        Petugas Barang
-                      </div>
-                      <div class="q-mt-lg text-weight-bold">
-                        SARWANI
-                      </div>
-                      <div class="">
-                        NIP. 19760311 200801 1 008
-                      </div>
-                    </div>
-                    <div class="to-print-tt text-center">
-                      <div class="q-mb-xl">
-                        Kepala Bagian / Ka.ru
-                      </div>
-                      <div class="q-mt-lg text-weight-bold">
-                        ...........................
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </q-card-section>
-              <q-card-section>
-                <div class="fit row no-wrap justify-evenly items-center content-center q-mt-lg">
-                  <div class="anak text-left">
-                    Kode Barang
-                  </div>
-                  <div class="anak text-left">
-                    Nama Barang
-                  </div>
-                  <div class="anak text-left">
-                    Ruangan
-                  </div>
-                  <div class="anak text-right print-hide">
-                    Stok Depo
-                  </div>
-                  <div class="anak text-right">
-                    Alokasi
-                  </div>
-                  <div class="anak text-right">
-                    Jumlah
-                  </div>
-                  <div class="anak text-right">
-                    Jumlah Disetujui
-                  </div>
-                  <div class="anak text-right">
-                    Jumlah Distribusi
-                  </div>
-                </div>
-                <q-separator />
-                <div
-                  v-for="(data, j) in item.details"
-                  :key="j"
-                >
-                  <div class="fit row no-wrap justify-evenly items-center content-center">
-                    <div class="anak text-left">
-                      {{ data.barangrs.kode }}
-                    </div>
-                    <div class="anak text-left">
-                      {{ data.barangrs.nama }}
-                    </div>
-                    <div class="anak text-left">
-                      <div v-if="data.ruang">
-                        data.ruang.uraian
-                      </div>
-                      <div
-                        v-else
-                        class="text-yellow bg-red"
-                      >
-                        Tidak ada ruangan tujuan
-                      </div>
-                    </div>
-                    <div class="anak text-right print-hide">
-                      {{ data.barangrs.stokDepo }}
-                    </div>
-                    <div class="anak text-right">
-                      {{ data.barangrs.alokasi }}
-                    </div>
-                    <div class="anak text-right">
-                      {{ data.jumlah }}
-                    </div>
-                    <div class="anak text-right">
-                      {{ data.jumlah_disetujui }}
-                    </div>
-                    <div class="anak text-right">
-
-                      <div v-if="store.items[itemIndex]?store.items[itemIndex].status >= 5:false">
-                        {{ data.jumlah_disetujui }}
-                      </div>
-                      <div v-if="itemIndex?store.items[itemIndex].status < 5:false">
-                        -
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-              </q-card-section>
-            </q-card>
-          </div>
-        </div> -->
       </template>
     </app-card>
-    <!-- <FormDialog v-model="store.isOpen" /> -->
   </div>
 </template>
 <script setup>
@@ -757,11 +339,14 @@ import { dateFullFormat, dateFull } from 'src/modules/formatter'
 // import { notifErrVue } from 'src/modules/utils'
 import { useTransaksiDistribusiStore } from 'src/stores/simrs/logistik/sigarang/transaksi/distribusi/distribusi'
 import { useAplikasiStore } from 'src/stores/app/aplikasi'
+import { useTandaTanganStore } from 'src/stores/simrs/logistik/sigarang/tantatangan/tandatangan'
 // import FormDialog from './FormDialog.vue'
 const store = useTransaksiDistribusiStore()
 
 const apps = useAplikasiStore()
 
+const tandatangan = useTandaTanganStore()
+tandatangan.getDataIndex()
 const ruang = computed(() => {
   const depo = apps.user.pegawai.depo ? apps.user.pegawai.depo.nama : false
 
@@ -992,23 +577,27 @@ const label = (status, nama) => {
 </script>
 
 <style lang="scss" scoped>
-.anak{
-  width:calc(100vw/8);
+.anak {
+  width: calc(100vw/8);
 }
-.to-print{
-  width:calc(100vw/7);
+
+.to-print {
+  width: calc(100vw/7);
   margin-left: 3px;
 }
-.to-print-tt{
-  width:calc(100vw/3);
+
+.to-print-tt {
+  width: calc(100vw/3);
 }
-.disp{
-  width:calc(100vw/9);
+
+.disp {
+  width: calc(100vw/9);
 }
-.print{
+
+.print {
   position: absolute;
-    right: 30px;
-    top: 5px;
-    z-index: 10;
+  right: 30px;
+  top: 5px;
+  z-index: 10;
 }
 </style>
