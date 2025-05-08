@@ -113,6 +113,9 @@
               <div v-if="item?.flag === '5'" class="row  text-weight-bold f-10">
                 Diolak karena : {{ item?.alasan }}
               </div>
+              <div v-if="item?.flag_krs === '1'" class="row  text-weight-bold justify-end text-primary">
+                Resep KRS
+              </div>
               <div v-if="(parseInt(item?.flag) === 3 && (!item?.semuaracik || !item?.semuaresep))"
                 class="row text-weight-bold f-10">
                 Tidak diberikan semua karena : {{ item?.alasan }}
