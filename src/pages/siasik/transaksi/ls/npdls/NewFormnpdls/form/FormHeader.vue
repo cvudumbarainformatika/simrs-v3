@@ -129,6 +129,7 @@ const serahTerima = (val) => {
   else if (val === 'Farmasi') {
     store.openDialogFarmasi = true
     carisrt.reqs.kodebast = ''
+    // carisrt.selectbastFarmasi()
   }
   else if (val === 'Siasik') {
     store.openDialogSiasik = false
@@ -182,12 +183,12 @@ function pilihKegiatan(val) {
   store.rinci.nominalpembayaran = ''
 
   carisrt.reqs.kodekegiatanblud = obj?.kodekegiatan
-  carisrt.selectbastFarmasi()
+
   store.reqs.kodekegiatan = obj?.kodekegiatan
   store.getRincianBelanja()
 }
 function pilihPihaktiga(val) {
-  // console.log('val kodepenerima', val)
+
   const arr = ambil.pihaktigas
   const obj = arr?.length ? arr.find(x => x.kode === val) : null
 
@@ -200,6 +201,10 @@ function pilihPihaktiga(val) {
   store.form.bank = obj?.bank ?? ''
   store.form.rekening = obj?.norek ?? ''
   store.form.npwp = obj?.npwp ?? ''
+
+  carisrt.bastfarmasis = []
+  carisrt.konsinyasis = []
+  carisrt.itembelanja = []
 }
 
 async function filterFn(val, update) {
