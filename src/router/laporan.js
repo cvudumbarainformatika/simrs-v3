@@ -15,11 +15,11 @@ const laporan = {
       // name: 'laporan.rekap.datapasien',
       component: () => import('pages/simrs/laporan/rekap/datapasien/IndexPage.vue')
     },
-    // {  // ini error
-    //   path: '/laporan/kematian',
-    //   // name: 'laporan.rekap.datapasien',
-    //   component: () => import('pages/simrs/laporan/Rm/Kematian/IndexPage.vue')
-    // },
+    {
+      path: '/laporan/kematian',
+      // name: 'laporan.rekap.datapasien',
+      component: () => import('pages/simrs/laporan/Rm/Kematian/IndexPage.vue')
+    },
     {
       path: '/laporan/jumlahpasien',
       // name: 'laporan.rekap.datapasien',

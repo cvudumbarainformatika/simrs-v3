@@ -2,8 +2,7 @@
   <q-page>
     <Suspense>
       <!-- main content -->
-      <!-- ini error padahal harusnya ga -->
-      <!-- <AsyncComp /> -->
+      <AsyncComp />
       <!-- loading state -->
       <template #fallback>
         <app-loading />
@@ -12,9 +11,9 @@
   </q-page>
 </template>
 <script setup>
-// import { defineAsyncComponent } from 'vue'
+import { defineAsyncComponent } from 'vue'
 
-// const AsyncComp = defineAsyncComponent(() =>
-//   import('./LaporanKematian.vue')
-// )
+const AsyncComp = defineAsyncComponent(() =>
+  import('./LaporanKematian.vue')
+)
 </script>
