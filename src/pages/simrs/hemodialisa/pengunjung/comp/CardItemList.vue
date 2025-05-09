@@ -1,14 +1,7 @@
 <template>
-  <q-item
-    v-ripple
-    clickable
-    class="q-my-lg bg-white shadow-q relative-position"
-    @click="emits('details', item)"
-  >
-    <q-card
-      :class="`absolute text-grey-3 q-py-xs q-px-sm ${item?.status !== '' ? 'bg-teal' : 'bg-deep-orange-8'}`"
-      style="top:-15px; left: 0;"
-    >
+  <q-item v-ripple clickable class="q-my-lg bg-white shadow-q relative-position" @click="emits('details', item)">
+    <q-card :class="`absolute text-grey-3 q-py-xs q-px-sm ${item?.status !== '' ? 'bg-teal' : 'bg-deep-orange-8'}`"
+      style="top:-15px; left: 0;">
       <div class="f-10">
         {{ item?.status !== '' ? 'Terlayani' : 'Belum terlayani' }}
       </div>
@@ -18,10 +11,7 @@
         <div class="row fit q-pa-none items-center q-col-gutter-md">
           <div class="col-auto">
             <q-avatar size="40px">
-              <app-avatar-pasien
-                :pasien="item"
-                width="40px"
-              />
+              <app-avatar-pasien :pasien="item" width="40px" />
             </q-avatar>
           </div>
           <div class="col full-width flex wrap ellipsis">
@@ -91,5 +81,4 @@ defineProps({
 const emits = defineEmits(['details'])
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

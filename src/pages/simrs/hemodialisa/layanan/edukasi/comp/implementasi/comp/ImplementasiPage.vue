@@ -13,7 +13,6 @@
     <div class="col full-height bg-grey-4">
       <ListImplementasi :pasien="pasien" :kasus="kasus" :nakes="nakes" :items="store.items" />
     </div>
-
     <DialogFormAdd v-model="isForm" :pasien="pasien" :kasus="kasus" :nakes="nakes" @exit="isForm = false" />
   </q-card>
 </template>

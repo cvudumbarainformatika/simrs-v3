@@ -13,11 +13,11 @@
                   {{ titleAvatar(item?.nakes) }}
                 </q-avatar>
               </q-item-section>
-
+              {{ item }}
               <q-item-section caption>
                 <div class="">
                   <span class="text-weight-bold">PPA</span> <span class="text-weight-medium">- {{ item?.petugas?.nama
-                    }}</span>
+                  }}</span>
                 </div>
               </q-item-section>
 

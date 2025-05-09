@@ -2,7 +2,7 @@ import { computed, defineAsyncComponent, onMounted, ref, shallowRef, watchEffect
 import { useAplikasiStore } from 'src/stores/app/aplikasi'
 import { useListPasienHemodialisaStore } from 'src/stores/simrs/hemodialisa/hemodialisa'
 
-export default function useLayanan (pasien) {
+export default function useLayanan(pasien) {
   const store = useListPasienHemodialisaStore()
   const auth = useAplikasiStore()
 
@@ -77,27 +77,13 @@ export default function useLayanan (pasien) {
       nakes: ['1', '2', '3', '4', '5', '6'],
       comp: shallowRef(defineAsyncComponent(() => import('./upload/IndexPage.vue')))
     },
-    // {
-    //   name: 'catatan-dan-dokumen',
-    //   label: 'Catatan / Dokumen',
-    //   icon: 'icon-my-file_sign',
-    //   nakes: ['1', '2', '3', '4', '5', '6'],
-    //   comp: shallowRef(defineAsyncComponent(() => import('./dokumen/IndexPage.vue')))
-    // },
-    // {
-    //   name: 'mpp',
-    //   label: 'MPP',
-    //   icon: 'icon-fa-arrows-down-to-people-solid',
-    //   nakes: ['2', '3'],
-    //   comp: shallowRef(defineAsyncComponent(() => import('./mpp/IndexPage.vue')))
-    // },
-    // {
-    //   name: 'page-pulang',
-    //   label: 'Pulang / Pulangkan',
-    //   icon: 'icon-eva-home',
-    //   nakes: ['1', '2', '3'],
-    //   comp: shallowRef(defineAsyncComponent(() => import('./pulang/IndexPage.vue')))
-    // }
+    {
+      name: 'dokumen-page',
+      label: 'Dokumen',
+      icon: 'icon-mat-email',
+      nakes: ['1', '2', '3', '4', '5', '6', '', null],
+      comp: shallowRef(defineAsyncComponent(() => import('./dokumen/IndexPage.vue')))
+    }
 
   ])
 
@@ -126,7 +112,7 @@ export default function useLayanan (pasien) {
     menu.value = filterredMenus.value[0]
   })
 
-  function menuDiganti (val) {
+  function menuDiganti(val) {
     menu.value = val
   }
 
