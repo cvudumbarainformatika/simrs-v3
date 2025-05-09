@@ -361,30 +361,12 @@
                       <div
                         v-if="apps?.user?.kdruangansim === 'Gd-04010102' || apps?.user?.kdruangansim === 'Gd-02010104'">
                         <div class="row justify-end">
-                          <q-checkbox v-model="rinc.etiket" size="xs"
-                            @update:model-value="setRincRanap(rinc, $event)" />
+                          <q-checkbox v-model="rinc.etiket" size="xs" @update:model-value="setRincRanap(rinc, $event)">
+                            <q-tooltip>
+                              check untuk print etiket
+                            </q-tooltip>
+                          </q-checkbox>
                         </div>
-                        <!-- <div class="row justify-end">
-                          <q-checkbox
-                            v-model="rinc.etiket"
-                            size="xs"
-                            @update:model-value="setRincRanap(rinc,$event)"
-                          />
-                        </div>
-                        <div class="row justify-end">
-                          <q-checkbox
-                            v-model="rinc.etiket"
-                            size="xs"
-                            @update:model-value="setRincRanap(rinc,$event)"
-                          />
-                        </div>
-                        <div class="row justify-end">
-                          <q-checkbox
-                            v-model="rinc.etiket"
-                            size="xs"
-                            @update:model-value="setRincRanap(rinc,$event)"
-                          />
-                        </div> -->
                       </div>
                     </div>
                     <div v-if="parseInt(store?.resep?.flag) >= '2'">
@@ -455,7 +437,11 @@
                   </q-tooltip>
                 </q-btn>
                 <div v-if="apps?.user?.kdruangansim === 'Gd-04010102'" class="row">
-                  <q-checkbox v-model="item.etiket" size="xs" @update:model-value="setRincRanap(item, $event)" />
+                  <q-checkbox v-model="item.etiket" size="xs" @update:model-value="setRincRanap(item, $event)">
+                    <q-tooltip>
+                      check untuk print etiket
+                    </q-tooltip>
+                  </q-checkbox>
                 </div>
               </div>
             </div>
@@ -716,7 +702,7 @@
                         <div v-if="store?.resep?.flag === '1'">
                           Resep Belum diterima
                         </div>
-                        <div v-if="store?.resep?.flag === '3'">
+                        <div v-if="['3', '4'].includes(store?.resep?.flag)">
                           <div v-if="store?.resep?.tiperesep !== 'iter'">
                             Resep Sudah selesai
                           </div>
@@ -743,24 +729,6 @@
                         <!-- anu -->
                         <div v-if="parseInt(store?.resep?.flag) >= 2">
 
-                          <!-- <q-btn
-                            v-if="!rinc?.obatkeluar && parseInt(store?.resep?.flag)<5"
-                            round
-                            class="f-10 q-my-sm"
-                            color="primary"
-                            text-color="white"
-                            icon="icon-mat-save"
-                            :loading=" rinc?.loading"
-                            :disable=" rinc?.loading"
-                            @click="store.simpanObat(rinc)"
-                          >
-                            <q-tooltip
-                              class="primary"
-                              :offset="[10, 10]"
-                            >
-                              Simpan Obat
-                            </q-tooltip>
-                          </q-btn> -->
                           <div v-if="rinc?.obatkeluar">
                             Sudah dikeluarkan obat sebanyak {{ rinc?.obatkeluar }} ({{ rinc?.mobat?.satuan_k }})
                           </div>
