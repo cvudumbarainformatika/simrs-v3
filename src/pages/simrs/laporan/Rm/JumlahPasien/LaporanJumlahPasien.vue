@@ -5,11 +5,11 @@
       Laporan Jumlah Pasien
     </div>
     <div class="bg-white">
-      <KematianPage />
+      <!-- <KematianPage /> -->
     </div>
   </div>
 </template>
 <script setup>
 import KopSurat from 'src/components/KopSurat.vue';
-import KematianPage from './KematianPage.vue';
+// import KematianPage from './KematianPage.vue';
 </script>
