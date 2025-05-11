@@ -133,7 +133,7 @@
                   <q-item-section class="">
                     <q-item-label class="f-12">
                       <span class="">Keluhan Utama </span> : <span class="text-weight-bold">{{ anamnesis?.keluhanUtama
-                        }}</span>
+                      }}</span>
                     </q-item-label>
                     <q-item-label>
                       <span class="">Riwayat Penyakit (Sekarang) </span> : <span class="text-weight-bold">{{
@@ -142,7 +142,7 @@
                     <q-item-label>
                       <span class="">Riwayat Penyakit </span> : <span class="text-weight-bold">{{
                         anamnesis?.riwayatpenyakit
-                        }}</span>
+                      }}</span>
                     </q-item-label>
                     <!-- <q-item-label>
                       <span class="">Riwayat Alergi </span> : <span class="text-weight-bold">{{ anamnesis?.riwayatalergi
@@ -270,10 +270,10 @@
               <q-card-section class="q-pa-none">
                 <div class="column">
                   <div>Metode Yang Digunakan : {{ edukasi?.metode
-                  }}
+                    }}
                   </div>
                   <div>Materi : {{ edukasi?.materi
-                  }} </div>
+                    }} </div>
                   <div> Media : <b><em> {{ edukasi?.media }}</em></b> </div>
                   <div> Evaluasi Respon : <b><em>{{ edukasi?.evaluasi }}</em></b> </div>
                   <div> Penerima Edukasi : <b><em>{{ edukasi?.penerima }}</em></b> </div>
@@ -289,38 +289,19 @@
               <div class="col-1">
                 5
               </div>
-              <div class="col-11">
-                Laborat
+              <div class="col-2">
+                Laborat :
               </div>
             </div>
           </div>
-          <div class="col-7">
-            <q-card v-if="store.items?.laboratold?.length > 0" flat>
-              <q-card-section class="q-pa-none">
-                <q-markup-table separator="vertical" flat bordered dense>
-                  <thead>
-                    <tr>
-                      <th class="text-left">
-                        Nama Pemeriksaan
-                      </th>
-                      <th class="text-right">
-                        Hasil
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr v-for="(lab, l) in store.items?.laboratold" :key="l">
-                      <td class="text-left f-12 ellipsis" style="max-width: 250px;">
-                        {{ lab?.pemeriksaanlab?.rs2 }}
-                      </td>
-                      <td class="text-right f-12" style="max-width: 150px;">
-                        {{ lab?.rs21 }}
-                      </td>
-                    </tr>
-                  </tbody>
-                </q-markup-table>
-              </q-card-section>
-            </q-card>
+          <div class="col-7" v-if="store.items?.laboratold?.length > 0">
+            <div class="row q-gutter-x-sm">
+              <div v-for="(lab, l) in store.items?.laboratold" :key="l" class="col-auto">
+                <q-chip outline color="dark" class="q-pa-xs">
+                  {{ lab?.pemeriksaanlab?.rs2 }} = {{ lab?.rs21 ?? '-' }}
+                </q-chip>
+              </div>
+            </div>
           </div>
         </div>
         <q-separator />
@@ -407,37 +388,31 @@
         </div>
         <q-separator />
       </div>
-      <div class="q-mt-md">
-        <div class="row">
-          <div class="col-6" />
-          <div class="col-6">
-            <div class="text-center text-weight-bold">
-              Probolinggo, {{ date.formatDate(Date.now(), 'DD MMMM YYYY') }}
-            </div>
+      <div class="row q-pa-xl justify-between items-center">
+        <div class="kiri text-center">
+          <div><b>Pasien / Keluarga</b></div>
+          <div style="margin-top:100px">
+            <b>(................)</b>
           </div>
         </div>
-        <div class="row q-mb-xl">
-          <div class="col-6">
-            <div class="text-center text-weight-bold">
-              Pasien / Keluarga
+        <div class="kanan text-center">
+          <div><b>Probolinggo, {{ pasien?.tanggalkeluar }}</b></div>
+          <div><b>Dokter Penanggung Jawab Pelayanan</b></div>
+          <div class="column flex-center">
+            <div style="width: 100px;">
+              <vue-qrcode :value="qrUrl" tag="svg" :options="{
+                errorCorrectionLevel: 'Q',
+                color: {
+                  dark: '#000000',
+                  light: '#ffffff',
+                },
+                margin: 0
+              }" />
             </div>
           </div>
-          <div class="col-6">
-            <div class="text-center text-weight-bold">
-              Dokter
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-6">
-            <div class="text-center text-weight-bold">
-              (........................)
-            </div>
-          </div>
-          <div class="col-6">
-            <div class="text-center text-weight-bold">
-              ( {{ pasien?.dokter }} )
-            </div>
+
+          <div>
+            <b>{{ pasien?.dokter }}</b>
           </div>
         </div>
       </div>
@@ -453,6 +428,7 @@ import { usePemeriksaanFisik } from 'src/stores/simrs/pelayanan/poli/pemeriksaan
 import KopSurat from 'src/components/KopSurat.vue';
 import { getNewLine } from 'src/modules/formatter';
 import { useDokumenResumeHDStore } from 'src/stores/simrs/hemodialisa/resume';
+import { computed } from 'vue';
 const props = defineProps({
   pasien: {
     type: Object,
@@ -599,6 +575,15 @@ const printObj = {
   popTitle: 'Resume Medik'
 
 }
+
+const qrUrl = computed(() => {
+  const noreg = props?.pasien?.noreg// noreg
+  const dok = 'RESUME-MEDIS.png'
+  const asal = 'HEMODDIALISA'
+  const enc = btoa(`${noreg}|${dok}|${asal}`)
+  return `https://rsud.probolinggokota.go.id/dokumen-simrs/legalitas/${enc}`
+  // return `https://xenter.my.id/qr-document?noreg=${noreg}&dokumen=${dok}&asal=${asal}`
+})
 </script>
 <style lang="scss" scoped>
 .tinggi {
