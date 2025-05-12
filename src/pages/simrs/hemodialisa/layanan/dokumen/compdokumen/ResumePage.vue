@@ -243,10 +243,10 @@
                     - Kaki : {{ pemeriksaanfisik?.rs11 }}
                   </q-item-label>
                   <q-item-label class="q-pa-none list-move">
-                    - Status Neurologis : : {{ pemeriksaanfisik?.rs11 }}
+                    - Status Neurologis : : {{ pemeriksaanfisik?.rs12 }}
                   </q-item-label>
                   <q-item-label class="q-pa-none list-move">
-                    - Genital : {{ pemeriksaanfisik?.rs11 }}
+                    - Genital : {{ pemeriksaanfisik?.rs13 }}
                   </q-item-label>
                 </template>
               </transition-group>
