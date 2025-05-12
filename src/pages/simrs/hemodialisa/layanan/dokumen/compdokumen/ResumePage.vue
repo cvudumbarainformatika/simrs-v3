@@ -133,7 +133,7 @@
                   <q-item-section class="">
                     <q-item-label class="f-12">
                       <span class="">Keluhan Utama </span> : <span class="text-weight-bold">{{ anamnesis?.keluhanUtama
-                      }}</span>
+                        }}</span>
                     </q-item-label>
                     <q-item-label>
                       <span class="">Riwayat Penyakit (Sekarang) </span> : <span class="text-weight-bold">{{
@@ -142,7 +142,7 @@
                     <q-item-label>
                       <span class="">Riwayat Penyakit </span> : <span class="text-weight-bold">{{
                         anamnesis?.riwayatpenyakit
-                      }}</span>
+                        }}</span>
                     </q-item-label>
                     <!-- <q-item-label>
                       <span class="">Riwayat Alergi </span> : <span class="text-weight-bold">{{ anamnesis?.riwayatalergi
@@ -242,12 +242,12 @@
                   <q-item-label class="q-pa-none list-move">
                     - Kaki : {{ pemeriksaanfisik?.rs11 }}
                   </q-item-label>
-                  <!-- <q-item-label class="q-pa-none list-move">
+                  <q-item-label class="q-pa-none list-move">
                     - Status Neurologis : : {{ pemeriksaanfisik?.rs11 }}
                   </q-item-label>
                   <q-item-label class="q-pa-none list-move">
                     - Genital : {{ pemeriksaanfisik?.rs11 }}
-                  </q-item-label> -->
+                  </q-item-label>
                 </template>
               </transition-group>
             </q-list>
@@ -270,10 +270,10 @@
               <q-card-section class="q-pa-none">
                 <div class="column">
                   <div>Metode Yang Digunakan : {{ edukasi?.metode
-                    }}
+                  }}
                   </div>
                   <div>Materi : {{ edukasi?.materi
-                    }} </div>
+                  }} </div>
                   <div> Media : <b><em> {{ edukasi?.media }}</em></b> </div>
                   <div> Evaluasi Respon : <b><em>{{ edukasi?.evaluasi }}</em></b> </div>
                   <div> Penerima Edukasi : <b><em>{{ edukasi?.penerima }}</em></b> </div>
