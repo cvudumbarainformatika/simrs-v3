@@ -127,13 +127,13 @@ function cekYgMenjawab(item) {
 
   const nakesYnMinta = item?.nakesminta?.kdgroupnakes ?? null
   const dokterUmum = item?.nakesminta?.kdgroupnakes === '1' && item?.nakesminta?.statusspesialis === ''
+  const ygJwbPerawat = (item?.kddokterkonsul !== item?.user_jawab)
   if (item?.kddokterkonsul === props?.auth) { // jika akun dokter konsulnya maka... jawaban terbuka
     // tapi jika dokter sudah memverif
 
     open = true
   }
   else if (nakesYnMinta === '2' || nakesYnMinta === '3') { // jika yg konsultasi adalah perawat maka... jawaban terbuka
-    const ygJwbPerawat = (item?.kdminta === item?.user_jawab)
     // console.log('ygJwbPerawat', ygJwbPerawat)
     if (item?.user_jawab === null || item?.user_jawab === '') {
       open = true
