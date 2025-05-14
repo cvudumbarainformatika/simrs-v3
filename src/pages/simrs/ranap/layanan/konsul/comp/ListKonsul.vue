@@ -160,6 +160,11 @@ function hapusItem(id) {
             </div>
           </div>
         </div>
+
+
+        <q-badge v-if="item?.user_jawab !== props?.auth" color="orange-9" text-color="white">
+          Belum Terverif Oleh Dokter Konsulan
+        </q-badge>
       </q-card>
     </transition-group>
     <div style="margin-bottom: 100px;" />

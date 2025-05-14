@@ -36,12 +36,18 @@
           </div>
 
           <q-form v-if="cekYgMenjawab(item)" ref="formRef" class="q-mt-lg" @submit="onSubmit">
+            <q-badge class="q-px-md q-py-sm" :color="item?.user_jawab !== props?.auth ? 'orange-9' : 'primary'"
+              :text-color="item?.user_jawab !== props?.auth ? 'white' : 'white'">
+              {{ item?.user_jawab !== props?.auth
+                ? 'Jawaban Ini Belum Terverifikasi Dokter Konsulan'
+                : 'Sudah Terverifikasi' }}
+            </q-badge>
             <q-input outlined standout="bg-yellow-3" v-model="form.jawaban" label="" type="textarea" rows="10" />
 
             <div class="text-right q-mt-lg q-gutter-md">
               <q-btn color="dark" label="Kembali" @click="emits('toList')" />
-              <q-btn :loading="loadingSave" :disable="loadingSave" color="primary" label="Simpan Jawaban"
-                type="submit" />
+              <q-btn :loading="loadingSave" :disable="loadingSave" color="primary"
+                :label="item?.user_jawab !== props?.auth ? 'Simpan Jawaban' : 'Ubah Jawaban'" type="submit" />
             </div>
           </q-form>
 
