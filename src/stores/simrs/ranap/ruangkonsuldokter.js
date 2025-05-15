@@ -7,10 +7,16 @@ import { notifErrVue, notifSuccess } from 'src/modules/utils'
 
 export const useRuangKonsulDokterStore = defineStore('ruang-konsul-store', {
   state: () => ({
+    params: {
+      status: '', // '','1','2'
+      page: 1,
+      perPage: 20
+    },
     items: [],
     meta: null,
 
     item: null,
+
 
     loading: false,
     loadingSave: false,
@@ -26,30 +32,44 @@ export const useRuangKonsulDokterStore = defineStore('ruang-konsul-store', {
   actions: {
     /**
      * Mendapatkan data ruang konsul dokter yang ada di rumah sakit
-     * @returns {Promise<void>}
+     * @returns {Promise} Promise yang mengembalikan data ruang konsul
      */
-    async getRuangKonsulDokter () {
+    async getRuangKonsulDokter() {
       this.loading = true
-      try {
-        const { data } = await api.get('v1/simrs/ranap/layanan/konsultasi/getdatarkd')
-        console.log('resp rkd', data)
 
-        this.meta = data
-        this.items = data?.data ?? []
-        this.loading = false
+      const params = {
+        params: this.params
       }
-      catch (error) {
-        console.log(error)
-      }
+
+      return new Promise((resolve, reject) => {
+        api.get('v1/simrs/ranap/layanan/konsultasi/getdatarkd', params)
+          .then(response => {
+            const { data } = response
+            this.meta = data
+            this.items = data?.data ?? []
+            this.loading = false
+            resolve(data)
+          })
+          .catch(error => {
+            console.error('Error fetching konsultasi data:', error)
+            this.loading = false
+            reject(error)
+          })
+      })
     },
 
-    initReset (val) {
+    initReset(val) {
       this.form = {
         jawaban: val?.jawaban ?? this.form.jawaban ?? null
       }
     },
 
-    async updateFlag (val) {
+    /**
+     * Memperbarui flag konsultasi menjadi sudah dibaca
+     * @param {Object} val - Item konsultasi yang akan diupdate
+     * @returns {Promise} Promise yang mengembalikan hasil update
+     */
+    async updateFlag(val) {
       const target = this.items.findIndex(x => x?.id === val?.id)
       if (target > -1) {
         if (this.items[target].flag === null || this.items[target].flag === '') {
@@ -57,13 +77,26 @@ export const useRuangKonsulDokterStore = defineStore('ruang-konsul-store', {
 
           const payload = { id: val?.id }
           try {
-            await api.post('v1/simrs/ranap/layanan/konsultasi/updateFlag', payload)
+            const response = await api.post('v1/simrs/ranap/layanan/konsultasi/updateFlag', payload)
+
+            // Animasi perubahan status pada item di list
+            setTimeout(() => {
+              // Trigger reactivity update
+              this.items = [...this.items]
+            }, 300)
+
+            if (val.jawaban) {
+              this.initReset(val)
+            }
+
+            return response
           }
           catch (error) {
             const target = this.items.findIndex(x => x?.id === val?.id && x?.flag === '1')
             if (target > -1) {
               this.items[target].flag = null
             }
+            throw error
           }
         }
       }
@@ -73,8 +106,22 @@ export const useRuangKonsulDokterStore = defineStore('ruang-konsul-store', {
       }
     },
 
+    async tandaiSemuaSudahDibaca() {
+      try {
+        const response = await api.post('v1/simrs/ranap/layanan/konsultasi/updateFlagAllRead')
+        if (response?.status === 200) {
+          this.getRuangKonsulDokter()
+        }
+      }
+      catch (error) {
+        console.log('error update tandai semua sudah dibaca', error);
+
+        throw error
+      }
+    },
+
     // khusus save jawaban ranap
-    async saveJawaban (val) {
+    async saveJawaban(val) {
       const target = this.items.findIndex(x => x?.id === val?.id)
       if (target > -1) {
         this.items[target].jawaban = val.jawaban
