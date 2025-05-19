@@ -1,5 +1,5 @@
 <template>
-  <div class="full-height q-pa-sm">
+  <div v-if="!pasien?.nota_permintaan" class="full-height q-pa-sm">
     <div class="row q-col-gutter-x-xs full-height">
       <div class="col-8 full-height">
         <PlanningPage :key="props.pasien" :pasien="props.pasien" />
@@ -141,6 +141,9 @@
         </div>
       </div>
     </div>
+  </div>
+  <div v-else>
+    <app-maintenance text="Hanya untuk Pasien Rawat Jalan" color="negative" />
   </div>
 </template>
 
