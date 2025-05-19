@@ -45,11 +45,11 @@ const tab = ref('intridialitik')
 
 const tabsxx = [
   {
-    label: 'Pemantauan Intridialitik',
-    name: 'intridialitik',
-    // icon: 'icon-my-stethoscope',
-    nakes: ['1', '2', '3'],
-    comp: defineAsyncComponent(() => import('./intridialitik/IndexPage.vue'))
+    label: 'Assasement Harian', // ini isisnya Assasement awal, data tidak boleh tercampur dengan data ranap
+    name: 'assement-harian',
+    // icon: 'icon-my-human-back-svgrepo-com',
+    nakes: ['1', '2'],
+    comp: defineAsyncComponent(() => import('../pemeriksaan/comp/PemeriksaanFisikPage.vue'))
   },
   {
     label: 'Pengkajian Hemodialisa',
@@ -58,13 +58,28 @@ const tabsxx = [
     nakes: ['1', '2', '3'],
     comp: defineAsyncComponent(() => import('./pengkajian/IndexPage.vue'))
   },
-  // {   // iki ga usah jare mbak anne
-  //   label: 'Status Hemodialisa',
-  //   name: 'status',
-  //   // icon: 'icon-my-human-back-svgrepo-com',
-  //   nakes: ['1', '2'],
-  //   comp: defineAsyncComponent(() => import('./status/IndexPage.vue'))
-  // }
+  {
+    label: 'Pemeriksaan Fisik', // ini isinya pemeriksaan fisik, data tidak boleh tercampur dengan data ranap
+    name: 'assement-harian',
+    // icon: 'icon-my-human-back-svgrepo-com',
+    nakes: ['1', '2'],
+    comp: defineAsyncComponent(() => import('../pemeriksaan/comp/PemeriksaanFisikPage.vue'))
+  },
+  {
+    label: 'Diagnosa Keperawatan',
+    name: 'assement-harian',
+    // icon: 'icon-my-human-back-svgrepo-com',
+    nakes: ['1', '2'],
+    comp: defineAsyncComponent(() => import('../pemeriksaan/comp/PemeriksaanFisikPage.vue'))
+  },
+  {
+    label: 'Pemantauan Intridialitik',
+    name: 'intridialitik',
+    // icon: 'icon-my-stethoscope',
+    nakes: ['1', '2', '3'],
+    comp: defineAsyncComponent(() => import('./intridialitik/IndexPage.vue'))
+  },
+
 ]
 
 const menu = computed(() => {

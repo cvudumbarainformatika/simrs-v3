@@ -2,21 +2,21 @@ import { computed, defineAsyncComponent, onMounted, ref, shallowRef, watchEffect
 import { useAplikasiStore } from 'src/stores/app/aplikasi'
 import { useListPasienHemodialisaStore } from 'src/stores/simrs/hemodialisa/hemodialisa'
 
-export default function useLayanan(pasien) {
+export default function useLayanan (pasien) {
   const store = useListPasienHemodialisaStore()
   const auth = useAplikasiStore()
 
   const menus = ref([
     {
       name: 'AnamnesisPage',
-      label: 'Anamnesse $ Riwayat',
+      label: 'Assasement Awal',
       icon: 'icon-mat-medical_information',
       nakes: ['1', '2', '3'],
       comp: shallowRef(defineAsyncComponent(() => import('./anamnesis/IndexPage.vue')))
     },
     {
       name: 'PemeriksaanPage',
-      label: 'Pemeriksaan',
+      label: 'Pemeriksaan Awal',
       icon: 'icon-my-stethoscope',
       nakes: ['1', '2', '3'],
       comp: shallowRef(defineAsyncComponent(() => import('./pemeriksaan/IndexPage.vue')))
@@ -30,7 +30,7 @@ export default function useLayanan(pasien) {
     },
     {
       name: 'hemodialisa',
-      label: 'Hemodialisa',
+      label: 'Assasement Harian',
       icon: 'icon-mat-note_alt',
       nakes: ['1', '2'],
       comp: shallowRef(defineAsyncComponent(() => import('./hemodialisa/IndexPage.vue')))
@@ -63,13 +63,20 @@ export default function useLayanan(pasien) {
       nakes: ['1'],
       comp: shallowRef(defineAsyncComponent(() => import('../../eresep/EresepPage.vue')))
     },
-    // {
-    //   name: 'discharge-planning-page',
-    //   label: 'Discharge Planning',
-    //   icon: 'icon-mat-send_time_extension',
-    //   nakes: ['2', '3'],
-    //   comp: shallowRef(defineAsyncComponent(() => import('./dischargeplanning/IndexPage.vue')))
-    // },
+    {
+      name: 'planning-pasien',
+      label: 'Planning Pasien',
+      icon: 'icon-mat-send_time_extension',
+      nakes: ['2', '3'],
+      comp: shallowRef(defineAsyncComponent(() => import('./planingPasien/PerencanaanPage.vue')))
+    },
+    {
+      name: 'travelling-pasien',
+      label: 'Pasien Travelling',
+      icon: 'icon-mat-send',
+      nakes: ['2', '3'],
+      comp: shallowRef(defineAsyncComponent(() => import('./travelling/Indexpage.vue')))
+    },
     {
       name: 'upload-page',
       label: 'Upload Dokumen Luar',
@@ -112,7 +119,7 @@ export default function useLayanan(pasien) {
     menu.value = filterredMenus.value[0]
   })
 
-  function menuDiganti(val) {
+  function menuDiganti (val) {
     menu.value = val
   }
 
