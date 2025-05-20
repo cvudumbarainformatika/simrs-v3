@@ -61,19 +61,12 @@ const tabsxx = [
     nakes: ['1', '2', '3'],
     comp: defineAsyncComponent(() => import('./comp/PemeriksaanUmumPage.vue'))
   },
-  // { // ga usah, khusus ranap
+  // { // ini khusus ranap, ga usah
   //   label: 'Penilaian',
   //   name: 'penilaian',
   //   icon: 'icon-mat-description',
-  //   nakes: ['2', '3'],
+  //   nakes: ['1', '2', '3'],
   //   comp: defineAsyncComponent(() => import('./comp/PenilaianPage.vue'))
-  // }
-  // {
-  //   label: 'Anatomi',
-  //   name: 'fisik',
-  //   icon: 'icon-my-human-back-svgrepo-com',
-  //   nakes: ['1', '2'],
-  //   comp: defineAsyncComponent(() => import('./comp/PemeriksaanFisikPage.vue'))
   // }
 ]
 

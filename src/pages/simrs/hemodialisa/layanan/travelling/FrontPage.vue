@@ -1,3 +1,3 @@
 <template>
-  halaman travelling
+  <app-maintenance />
 </template>

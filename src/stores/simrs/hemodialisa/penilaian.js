@@ -452,7 +452,7 @@ export const usePenilaianHemodialisaStore = defineStore('penilaian-hemodialisa-s
         morse_fall: (this.morses.grupings?.includes(jnsKasus) && (this.usia >= 18 && this.usia < 60)) ? this.formMorse : null,
         ontario: (this.ontarios.grupings?.includes(jnsKasus) && (this.usia >= 60)) ? this.formOntario : null,
         kdruang: pasien?.kdruangan ?? null,
-        noreg: pasien?.noreg,
+        noreg: pasien?.nota_permintaan ?? pasien?.noreg,
         norm: pasien?.norm,
         awal: '1',
         id: this.form?.id ?? null
@@ -466,7 +466,7 @@ export const usePenilaianHemodialisaStore = defineStore('penilaian-hemodialisa-s
       const auth = useAplikasiStore()
       const pushSementara = {
         id: this.form?.id ?? null,
-        noreg: pasien?.noreg,
+        noreg: pasien?.nota_permintaan ?? pasien?.noreg,
         norm: pasien?.norm,
         kdruang: pasien?.kdruangan ?? null,
         ruangan: pasien?.ruangan ?? null,

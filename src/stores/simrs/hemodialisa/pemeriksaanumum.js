@@ -744,7 +744,7 @@ export const usePemeriksaanUmumHemodialisaStore = defineStore('pemeriksaan-umum-
       this.formPediatrik.glasgowKet = ket
     },
 
-    async saveForm (jnsKasus, pasien) {
+    async saveForm (jnsKasus, pasien, awal) {
       // console.log('jnsKasus', jnsKasus, pasien)
 
       this.loadingSave = true
@@ -759,7 +759,7 @@ export const usePemeriksaanUmumHemodialisaStore = defineStore('pemeriksaan-umum-
       }
       const req = {
         id: this.form.id,
-        noreg: pasien?.noreg ?? null,
+        noreg: awal == 'awal' ? pasien?.noreg : (pasien?.nota_permintaan ?? pasien?.noreg),
         norm: pasien?.norm,
         kdruang: pasien?.kdruangan,
         form: formDefault,
@@ -773,7 +773,7 @@ export const usePemeriksaanUmumHemodialisaStore = defineStore('pemeriksaan-umum-
       const auth = useAplikasiStore()
       const pushSementara = {
         id: this.form?.id ?? null,
-        noreg: pasien?.noreg,
+        noreg: awal == 'awal' ? pasien?.noreg : (pasien?.nota_permintaan ?? pasien?.noreg),
         norm: pasien?.norm,
         kdruang: pasien?.kdruangan ?? null,
         ruangan: pasien?.ruangan ?? null,

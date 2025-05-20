@@ -214,18 +214,7 @@
         <q-select v-model="store.form.ansuransi" dense standout="bg-yellow-3 text-black" outlined
           label="Ekonomi, Punya Ansuransi ?" :options="store.adaTidaks" emit-value map-options input-class="ellipsis"
           fill-input hide-bottom-space class="col-6" />
-        <!-- <q-list flat bordered separator class="col-12 q-mt-xs">
-          <q-item v-for="item in store.form.edukasi" :key="item">
-            <q-item-section>
-              <q-item-label>{{ item?.label }}</q-item-label>
-            </q-item-section>
-            <q-item-section>
-              <div class="flex q-gutter-sm">
-                <q-radio dense v-for="n in store.yaTidaks" :key="n" v-model="item.value" :val="n" :label="n" />
-              </div>
-            </q-item-section>
-          </q-item>
-        </q-list> -->
+
         <q-list flat bordered separator class="col-12 q-mt-xs">
           <q-item v-for="item in store.frmEdukasis" :key="item">
             <q-item-section>
@@ -275,7 +264,7 @@
 
     <!-- end 4.1 -->
     <!-- start 4.2 -->
-    <q-card v-if="gruping === '4.2' && !ulang" flat bordered class="col-12">
+    <!-- <q-card v-if="gruping === '4.2' && !ulang" flat bordered class="col-12">
       <q-card-section class="q-pa-sm bg-grey-4">
         <strong>FORM 4.2 KEBIDANAN</strong>
       </q-card-section>
@@ -291,7 +280,6 @@
           hide-bottom-space class="col-4" />
       </q-card-section>
 
-      <!-- <q-separator class="q-my-xs" /> -->
       <q-card bordered class="q-py-sm">
         <q-card-section class="q-px-sm q-py-xs">
           <strong>Anatomi (Wajib diisi)</strong>
@@ -440,107 +428,13 @@
         <app-input-simrs label="Portio" class="col-4" v-model="store.formKebidanan.gynecologiInsPortio" />
         <app-input-simrs label="Vagina Toucher" class="col-4" v-model="store.formKebidanan.gynecologiInsVgnToucher" />
       </q-card-section>
-    </q-card>
+    </q-card> -->
 
     <!-- start 4.3 -->
-    <q-card v-if="gruping === '4.3' && !ulang" flat bordered class="col-12">
+    <!-- <q-card v-if="gruping === '4.3' && !ulang" flat bordered class="col-12">
       <q-card-section class="q-pa-sm bg-grey-4">
         <strong>FORM 4.3 NEONATAL</strong>
       </q-card-section>
-      <!-- <q-card-section class="q-px-sm q-py-none q-pt-sm">
-        <div class="row items-center justify-between">
-          <div><strong>APGAR SCORE : {{ store.formNeonatal.apgarScore }}</strong></div>
-          <div><em class="text-orange-10">{{ store.formNeonatal.apgarKet }}</em></div>
-        </div>
-      </q-card-section> -->
-      <!-- <q-card-section class="row q-col-gutter-xs q-px-sm q-py-none q-pb-md">
-        <q-select
-          dense
-          v-model="store.formNeonatal.appearance"
-          standout="bg-yellow-3 text-black"
-          outlined
-          label="Appearance"
-          :options="store.appearances"
-          :option-value="option => option"
-          emit-value
-          map-options
-          option-label="label"
-          fill-input
-          input-debounce="0"
-          hide-bottom-space
-          class="col-12"
-          @update:model-value="store.hitungSkorApgar"
-        />
-        <q-select
-          dense
-          v-model="store.formNeonatal.pulse"
-          standout="bg-yellow-3 text-black"
-          outlined
-          label="Appearance"
-          :options="store.pulses"
-          :option-value="option => option"
-          emit-value
-          map-options
-          option-label="label"
-          fill-input
-          input-debounce="0"
-          hide-bottom-space
-          class="col-12"
-          @update:model-value="store.hitungSkorApgar"
-        />
-        <q-select
-          dense
-          v-model="store.formNeonatal.grimace"
-          standout="bg-yellow-3 text-black"
-          outlined
-          label="Grimace"
-          :options="store.grimaces"
-          :option-value="option => option"
-          emit-value
-          map-options
-          option-label="label"
-          fill-input
-          input-debounce="0"
-          hide-bottom-space
-          class="col-12"
-          @update:model-value="store.hitungSkorApgar"
-        />
-
-        <q-select
-          dense
-          v-model="store.formNeonatal.activity"
-          standout="bg-yellow-3 text-black"
-          outlined
-          label="Activity"
-          :options="store.activitys"
-          :option-value="option => option"
-          emit-value
-          map-options
-          option-label="label"
-          fill-input
-          input-debounce="0"
-          hide-bottom-space
-          class="col-12"
-          @update:model-value="store.hitungSkorApgar"
-        />
-        <q-select
-          dense
-          v-model="store.formNeonatal.respiration"
-          standout="bg-yellow-3 text-black"
-          outlined
-          label="Respiration"
-          :options="store.respirations"
-          :option-value="option => option"
-          emit-value
-          map-options
-          option-label="label"
-          fill-input
-          input-debounce="0"
-          hide-bottom-space
-          class="col-12"
-          @update:model-value="store.hitungSkorApgar"
-        />
-      </q-card-section> -->
       <q-card-section class="q-pa-none">
         <q-list bordered separator>
           <q-item v-for="item in store.frmApgarScores" :key="item">
@@ -581,179 +475,10 @@
       </q-card-section>
 
 
-      <!-- <div>
-
-
-        <q-card-section class="q-pa-sm bg-grey-4">
-          <strong>ANATOMY</strong>
-        </q-card-section>
-        <q-card-section class="q-px-sm q-py-none">
-          <strong>Pengkajian Persistem</strong>
-        </q-card-section>
-        <q-card-section class="q-px-sm q-py-none text-bold">
-          <em>1. Sistem Susunan Syaraf Pusat</em>
-        </q-card-section>
-        <q-separator class="q-my-xs" />
-        <q-card-section class="q-px-sm q-py-none row q-col-gutter-xs q-mb-xs">
-          <select-input v-model="store.formNeonatal.grkBayi" :options="store.aktifs" label="Gerak Bayi" class="col-4" />
-          <autocomplete-input v-model="store.formNeonatal.uub" :options="store.uubs" label="UUB" class="col-4"
-            @set-model="(val) => store.formNeonatal.uub = val" />
-          <autocomplete-input v-model="store.formNeonatal.kejang" :options="store.adaTidaks" label="Kejang?"
-            class="col-4" @set-model="(val) => store.formNeonatal.kejang = val" />
-          <autocomplete-input v-model="store.formNeonatal.refleks" :options="store.refleks" label="Refleks"
-            class="col-4" @set-model="(val) => store.formNeonatal.refleks = val" />
-          <autocomplete-input v-model="store.formNeonatal.tngsBayi" :options="store.tngsBayis" label="Tangis Bayi"
-            class="col-4" @set-model="(val) => store.formNeonatal.tngsBayi = val" />
-        </q-card-section>
-        <q-separator class="q-my-xs" />
-        <q-card-section class="q-px-sm q-py-none text-bold">
-          <em>2. Sistem Penglihatan</em>
-        </q-card-section>
-        <q-separator class="q-my-xs" />
-        <q-card-section class="q-px-sm q-py-none row q-col-gutter-xs q-mb-xs">
-          <select-input v-model="store.formNeonatal.pssMata" :options="store.posisiMatas" label="Posisi Mata"
-            class="col-3" />
-          <select-input v-model="store.formNeonatal.bsrPupil" :options="store.pupils" label="Besar Pupil"
-            class="col-3" />
-          <autocomplete-input v-model="store.formNeonatal.klpkMata" :options="store.klpkMatas" label="Kelopak Mata"
-            class="col-6" @set-model="(val) => store.formNeonatal.klpkMata = val" />
-          <autocomplete-input v-model="store.formNeonatal.konjungtiva" :options="store.konjungtivas" label="Konjungtiva"
-            class="col-6" @set-model="(val) => store.formNeonatal.konjungtiva = val" />
-          <autocomplete-input v-model="store.formNeonatal.sklera" :options="store.skleras" label="Sklera" class="col-6"
-            @set-model="(val) => store.formNeonatal.sklera = val" />
-        </q-card-section>
-        <q-separator class="q-my-xs" />
-        <q-card-section class="q-px-sm q-py-none text-bold">
-          <em>3. Sistem Pendengaran</em>
-        </q-card-section>
-        <q-separator class="q-my-xs" />
-        <q-card-section class="q-px-sm q-py-none row q-col-gutter-xs q-mb-xs">
-          <autocomplete-input v-model="store.formNeonatal.pendengaran" :options="store.pendengarans" label="Penciuman"
-            class="col-12" @set-model="(val) => store.formNeonatal.pendengaran = val" />
-        </q-card-section>
-        <q-separator class="q-my-xs" />
-        <q-card-section class="q-px-sm q-py-none text-bold">
-          <em>4. Sistem Penciuman</em>
-        </q-card-section>
-        <q-separator class="q-my-xs" />
-        <q-card-section class="q-px-sm q-py-none row q-col-gutter-xs q-mb-xs">
-          <autocomplete-input v-model="store.formNeonatal.penciuman" :options="store.penciumans" label="Penciuman"
-            class="col-12" @set-model="(val) => store.formNeonatal.penciuman = val" />
-        </q-card-section>
-        <q-separator class="q-my-xs" />
-        <q-card-section class="q-px-sm q-py-none text-bold">
-          <em>5. Sistem Kardiovaskular</em>
-        </q-card-section>
-        <q-separator class="q-my-xs" />
-        <q-card-section class="q-px-sm q-py-none row q-col-gutter-xs q-mb-xs">
-          <autocomplete-input v-model="store.formNeonatal.warnaKlt" :options="store.warnaKulits" label="Warna Kulit"
-            class="col-3" @set-model="(val) => store.formNeonatal.warnaKlt = val" />
-          <autocomplete-input v-model="store.formNeonatal.denyutNadi" :options="store.denyutNadis" label="Dennyut Nadi"
-            class="col-3" @set-model="(val) => store.formNeonatal.denyutNadi = val" />
-          <autocomplete-input v-model="store.formNeonatal.sirkulasi" :options="store.sirkulasis" label="Dennyut Nadi"
-            class="col-3" @set-model="(val) => store.formNeonatal.sirkulasi = val" />
-          <autocomplete-input v-model="store.formNeonatal.sirkulasi" :options="store.sirkulasis" label="Dennyut Nadi"
-            class="col-3" @set-model="(val) => store.formNeonatal.sirkulasi = val" />
-        </q-card-section>
-        <q-separator class="q-my-xs" />
-        <q-card-section class="q-px-sm q-py-none text-bold">
-          <em>6. Sistem Pernapasan</em>
-        </q-card-section>
-        <q-separator class="q-my-xs" />
-        <q-card-section class="q-px-sm q-py-none row q-col-gutter-xs q-mb-xs">
-          <autocomplete-input v-model="store.formNeonatal.polaNafas" :options="store.polaNafas" label="Pola Nafas"
-            class="col-4" @set-model="(val) => store.formNeonatal.polaNafas = val" />
-          <autocomplete-input v-model="store.formNeonatal.jnsPernafasan" :options="store.jnsPernafasans"
-            label="Jenis Pernafasan" class="col-4" @set-model="(val) => store.formNeonatal.jnsPernafasan = val" />
-          <autocomplete-input v-model="store.formNeonatal.irmNapas" :options="store.iramaNapas" label="Irama Napas"
-            class="col-4" @set-model="(val) => store.formNeonatal.irmNapas = val" />
-          <autocomplete-input v-model="store.formNeonatal.retraksi" :options="store.retraksis" label="Retraksi"
-            class="col-4" @set-model="(val) => store.formNeonatal.retraksi = val" />
-          <autocomplete-input v-model="store.formNeonatal.airEntri" :options="store.airEntris" label="Air Entri"
-            class="col-4" @set-model="(val) => store.formNeonatal.airEntri = val" />
-          <autocomplete-input v-model="store.formNeonatal.merintih" :options="store.merintihs" label="Merintih"
-            class="col-4" @set-model="(val) => store.formNeonatal.merintih = val" />
-          <autocomplete-input v-model="store.formNeonatal.suaraNapas" :options="store.suaraNapas" label="Suara Napas"
-            class="col-4" @set-model="(val) => store.formNeonatal.suaraNapas = val" />
-        </q-card-section>
-        <q-separator class="q-my-xs" />
-        <q-card-section class="q-px-sm q-py-none text-bold">
-          <em>7. Sistem Pencernaan</em>
-        </q-card-section>
-        <q-separator class="q-my-xs" />
-        <q-card-section class="q-px-sm q-py-none row q-col-gutter-xs q-mb-xs">
-          <autocomplete-input v-model="store.formNeonatal.mulut" :options="store.muluts" label="Mulut" class="col-4"
-            @set-model="(val) => store.formNeonatal.mulut = val" />
-          <autocomplete-input v-model="store.formNeonatal.lidah" :options="store.lidahs" label="Lidah" class="col-4"
-            @set-model="(val) => store.formNeonatal.lidah = val" />
-          <autocomplete-input v-model="store.formNeonatal.oesofagus" :options="store.oesofagus" label="Oesofagus"
-            class="col-4" @set-model="(val) => store.formNeonatal.oesofagus = val" />
-          <autocomplete-input v-model="store.formNeonatal.abdomen" :options="store.abdomensAnatomy" label="Abdomen"
-            class="col-6" @set-model="(val) => store.formNeonatal.abdomen = val" />
-          <autocomplete-input v-model="store.formNeonatal.bab" :options="store.babs" label="BAB" class="col-6"
-            @set-model="(val) => store.formNeonatal.bab = val" />
-          <autocomplete-input v-model="store.formNeonatal.warnaBab" :options="store.warnaFeses" label="Warna"
-            class="col-6" @set-model="(val) => store.formNeonatal.warnaBab = val" />
-        </q-card-section>
-        <q-separator class="q-my-xs" />
-        <q-card-section class="q-px-sm q-py-none">
-          <em>8. Sistem Genitourinaris</em>
-        </q-card-section>
-        <q-separator class="q-my-xs" />
-        <q-card-section class="q-px-sm q-py-none row q-col-gutter-xs q-mb-xs">
-          <autocomplete-input v-model="store.formNeonatal.bak" :options="store.baks" label="BAK" class="col-6"
-            @set-model="(val) => store.formNeonatal.bak = val" />
-          <autocomplete-input v-model="store.formNeonatal.warnaUrine" :options="store.warnaUrines" label="Warna Urin"
-            class="col-6" @set-model="(val) => store.formNeonatal.warnaUrine = val" />
-        </q-card-section>
-        <q-separator class="q-my-xs" />
-        <q-card-section class="q-px-sm q-py-none text-bold">
-          <em>9. Sistem Reproduksi</em>
-        </q-card-section>
-        <q-separator class="q-my-xs" />
-        <q-card-section class="q-px-sm q-py-none row q-col-gutter-xs q-mb-xs">
-          <autocomplete-input v-model="store.formNeonatal.laki" :options="store.lakilakis" label="Laki-laki"
-            class="col-6" @set-model="(val) => store.formNeonatal.laki = val" />
-          <autocomplete-input v-model="store.formNeonatal.perempuan" :options="store.perempuans" label="Perempuan"
-            class="col-6" @set-model="(val) => store.formNeonatal.perempuan = val" />
-        </q-card-section>
-        <q-separator class="q-my-xs" />
-        <q-card-section class="q-px-sm q-py-none text-bold">
-          <em>10. Sistem Integument</em>
-        </q-card-section>
-        <q-separator class="q-my-xs" />
-        <q-card-section class="q-px-sm q-py-none row q-col-gutter-xs q-mb-xs">
-          <autocomplete-input v-model="store.formNeonatal.vernicKasesosa" :options="store.vernicKasesosas"
-            label="Vernic Kasesosa" class="col-4" @set-model="(val) => store.formNeonatal.vernicKasesosa = val" />
-          <autocomplete-input v-model="store.formNeonatal.lanugo" :options="store.lanugos" label="Lanugo" class="col-4"
-            @set-model="(val) => store.formNeonatal.lanugo = val" />
-          <autocomplete-input v-model="store.formNeonatal.warnaIntegument" :options="store.warnas" label="Warna"
-            class="col-4" @set-model="(val) => store.formNeonatal.warnaIntegument = val" />
-          <autocomplete-input v-model="store.formNeonatal.turgor" :options="store.turgors" label="Turgor" class="col-4"
-            @set-model="(val) => store.formNeonatal.turgor = val" />
-          <autocomplete-input v-model="store.formNeonatal.kulit" :options="store.kulits" label="Kulit" class="col-4"
-            @set-model="(val) => store.formNeonatal.kulit = val" />
-        </q-card-section>
-        <q-separator class="q-my-xs" />
-        <q-card-section class="q-px-sm q-py-none text-bold">
-          <em>11. Sistem Muskuloskkeletal</em>
-        </q-card-section>
-        <q-separator class="q-my-xs" />
-        <q-card-section class="q-px-sm q-py-none row q-col-gutter-xs q-mb-xs">
-          <autocomplete-input v-model="store.formNeonatal.lengan" :options="store.lengans" label="Lengan" class="col-6"
-            @set-model="(val) => store.formNeonatal.lengan = val" />
-          <autocomplete-input v-model="store.formNeonatal.tungkai" :options="store.tungkals" label="Tungkal"
-            class="col-6" @set-model="(val) => store.formNeonatal.tungkai = val" />
-          <autocomplete-input v-model="store.formNeonatal.rekoilTelinga" :options="store.rekoilTelingas"
-            label="Rekoil Telinga" class="col-6" @set-model="(val) => store.formNeonatal.rekoilTelinga = val" />
-          <autocomplete-input v-model="store.formNeonatal.grsTlpkKaki" :options="store.grsTelapakKakis"
-            label="Garis Telapak Kaki" class="col-6" @set-model="(val) => store.formNeonatal.grsTlpkKaki = val" />
-        </q-card-section>
-      </div> -->
-    </q-card>
+    </q-card> -->
 
     <!-- start 4.4 -->
-    <q-card v-if="gruping === '4.4' && !ulang" flat bordered class="col-12">
+    <!-- <q-card v-if="gruping === '4.4' && !ulang" flat bordered class="col-12">
       <q-card-section class="q-pa-sm bg-grey-4">
         <strong>Glasgow Coma Scale</strong>
       </q-card-section>
@@ -787,7 +512,7 @@
           </q-item>
         </q-list>
       </q-card-section>
-    </q-card>
+    </q-card> -->
   </div>
 </template>
 

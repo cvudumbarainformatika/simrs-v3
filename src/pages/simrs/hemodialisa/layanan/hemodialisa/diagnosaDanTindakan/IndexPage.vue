@@ -79,7 +79,7 @@ const tabsxx = [
   //   label: 'Diagnosa Gizi',
   //   name: 'diagnosaGizi',
   //   icon: 'icon-mat-health_and_safety',
-  //   nakes: ['5'],
+  //   nakes: ['1', '5'],
   //   comp: defineAsyncComponent(() => import('./diagnosagizi/IndexPage.vue'))
   // },
   {
@@ -89,13 +89,13 @@ const tabsxx = [
     nakes: ['1', '2', '3'],
     comp: defineAsyncComponent(() => import('./tindakan/TindakanPage.vue'))
   },
-  {
-    label: 'Planning',
-    name: 'target',
-    icon: 'icon-mat-assignment_return',
-    nakes: ['1'],
-    comp: defineAsyncComponent(() => import('./target/TargetPage.vue'))
-  }
+  // { // harian ga butuh, awal butuh
+  //   label: 'Planning',
+  //   name: 'target',
+  //   icon: 'icon-mat-assignment_return',
+  //   nakes: ['1'],
+  //   comp: defineAsyncComponent(() => import('./target/TargetPage.vue'))
+  // }
 ]
 
 const menu = computed(() => {

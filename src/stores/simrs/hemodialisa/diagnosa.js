@@ -132,9 +132,9 @@ export const useDiagnosaHDStore = defineStore('diagnosa-hd-store', {
         return notifErrVue('kode Dokter masih kosong, silahkan tutup dulu pasien ini kemudian tekan tombol refresh di pojok kanan atas')
       }
       const form = this.formdiagnosa
-      form.noreg = pasien?.noreg
+      form.noreg = pasien?.nota_permintaan ?? (pasien?.noreg ?? null)
       form.norm = pasien?.norm
-      form.kodedokter = pasien?.kodedokter ?? pasien?.kddokter ?? null
+      form.kodedokter = pasien?.kodedokter ?? (pasien?.kddokter ?? null)
       form.ruangan = pasien?.kodepoli
 
       // console.log('sdiag', form)

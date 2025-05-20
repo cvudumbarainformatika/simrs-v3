@@ -18,7 +18,7 @@
         <q-tab-panels v-model="tab" animated class="bg-transparent q-pa-none relative-position fit">
           <q-tab-panel ref="refPanel" :name="menu?.name" class="q-pa-none"
             style="overflow: hidden; max-height: calc(100vh - 95px);">
-            <component :is="menu?.comp" />
+            <component :is="menu?.comp" :pasien="store?.pasien" :nakes="nakes" />
           </q-tab-panel>
         </q-tab-panels>
       </div>
@@ -29,9 +29,11 @@
 
 <script setup>
 import { useAplikasiStore } from 'src/stores/app/aplikasi'
+import { useListPasienHemodialisaStore } from 'src/stores/simrs/hemodialisa/hemodialisa'
 import { computed, defineAsyncComponent, onMounted, ref } from 'vue'
 
 const auth = useAplikasiStore()
+const store = useListPasienHemodialisaStore()
 const props = defineProps({
   headheight: {
     type: Number,
@@ -41,7 +43,7 @@ const props = defineProps({
 const nakes = computed(() => {
   return auth?.user?.pegawai?.kdgroupnakes
 })
-const tab = ref('intridialitik')
+const tab = ref('assement-harian')
 
 const tabsxx = [
   {
@@ -49,7 +51,7 @@ const tabsxx = [
     name: 'assement-harian',
     // icon: 'icon-my-human-back-svgrepo-com',
     nakes: ['1', '2'],
-    comp: defineAsyncComponent(() => import('../pemeriksaan/comp/PemeriksaanFisikPage.vue'))
+    comp: defineAsyncComponent(() => import('./anamnesis/IndexPage.vue'))
   },
   {
     label: 'Pengkajian Hemodialisa',
@@ -60,17 +62,17 @@ const tabsxx = [
   },
   {
     label: 'Pemeriksaan Fisik', // ini isinya pemeriksaan fisik, data tidak boleh tercampur dengan data ranap
-    name: 'assement-harian',
+    name: 'pemeriksaan-fisik',
     // icon: 'icon-my-human-back-svgrepo-com',
     nakes: ['1', '2'],
-    comp: defineAsyncComponent(() => import('../pemeriksaan/comp/PemeriksaanFisikPage.vue'))
+    comp: defineAsyncComponent(() => import('./pemeriksaan/IndexPage.vue'))
   },
   {
     label: 'Diagnosa Keperawatan',
-    name: 'assement-harian',
+    name: 'diagnosa-keperawatan',
     // icon: 'icon-my-human-back-svgrepo-com',
     nakes: ['1', '2'],
-    comp: defineAsyncComponent(() => import('../pemeriksaan/comp/PemeriksaanFisikPage.vue'))
+    comp: defineAsyncComponent(() => import('./diagnosaDanTindakan/IndexPage.vue'))
   },
   {
     label: 'Pemantauan Intridialitik',
