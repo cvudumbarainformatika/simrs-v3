@@ -4,10 +4,10 @@
       <div class="q-pa-sm q-gutter-y-md" style="width: 50%">
 
         <q-select label="Rekening Belanja" v-model="store.rinci.koderek50" class="ellipsis-2-lines" use-input outlined
-          standout="bg-yellow-3" dense emit-value map-options autocomplete="uraianrek50" option-value="koderek50"
-          hide-bottom-space :disable="store.loading" :loading="store.loading"
-          :option-label="opt => Object(opt) === opt && 'uraian50' in opt ? opt.koderek50 + ' - ' + opt.uraian50 : ' '"
-          input-debounce="0" :options="options" :key="store.formheader.kodekegiatanblud" @filter="filterFn"
+          standout="bg-yellow-3" dense emit-value map-options autocomplete="rincianbelanja" option-value="rek50"
+          hide-bottom-space :disable="store.loadingrinci" :loading="store.loadingrinci"
+          :option-label="opt => Object(opt) === opt && 'rincianbelanja' in opt ? opt.rek50 + ' - ' + opt.rincianbelanja : ' '"
+          input-debounce="0" :options="options" :key="store.params.kodekegiatan" @filter="filterFn"
           @clear="store.setFormInput('koderek50', null)" @update:model-value="(val) => pilihRekening50(val)">
           <template v-if="store.rinci.koderek50" #append>
             <q-icon name="icon-mat-cancel" class="cursor-pointer"
@@ -24,12 +24,10 @@
 
       </div>
 
-      <!-- <div class="q-pa-sm q-gutter-y-md" style="width: 50%">
-        <app-input-simrs v-if="store.form.serahterimapekerjaan === '3'" label="Rincian Belanja"
-          v-model="store.rinci.itembelanja" disable outlined :autofocus="false" :valid="{ required: true }" />
-        <app-autocomplete v-else v-model="store.rinci.itembelanja" label="Item Belanja" autocomplete="itembelanja"
-          option-label="itembelanja" option-value="itembelanja" outlined :key="store.reqs" :source="store.itembelanja"
-          :loading="store.loading" @selected="(val) => {
+      <div class="q-pa-sm q-gutter-y-md" style="width: 50%">
+        <app-autocomplete v-model="store.rinci.itembelanja" label="Item Belanja" autocomplete="itembelanja"
+          option-label="itembelanja" option-value="itembelanja" outlined :key="store.params" :source="store.itembelanja"
+          :loading="store.loadingrinci" :disable="store.loadingrinci" @selected="(val) => {
             const arr = store.itembelanja
             const cari = arr.find(x => x.itembelanja === val)
             store.rinci.idserahterima_rinci = cari.idpp
@@ -75,10 +73,7 @@
         <app-btn label="Simpan Rincian" class="bg-black" type="submit" :disable="store.loading"
           :loading="store.loading" />
       </div>
-      <div class="row items-center q-pb-md q-pa-sm q-gutter-y-md">
-        <app-btn label="Tambah Pajak" class="bg-orange-8" :disable="store.loading" :loading="store.loading"
-          @click="tambahPajak()" />
-      </div> -->
+
     </div>
   </q-form>
 </template>
@@ -105,7 +100,7 @@ async function filterFn(val, update) {
       options.value = store.rekening50;
     } else {
       const needle = val.toLowerCase();
-      const filter = ['koderek50', 'uraian50'];
+      const filter = ['rek50', 'rincianbelanja'];
 
       // Selalu filter dari data asal (store.rekening50), bukan dari options yang sudah difilter
       const multiFilter = (data = [], filterKeys = [], value = '') =>
@@ -133,25 +128,26 @@ function pilihRekening50(val) {
     console.error('Rekening tidak ditemukan');
     return;
   }
+  store.rinci.uraianrek50 = obj.rincianbelanja;
 
   // Reset nilai sebelumnya
   store.rinci = {
     ...store.rinci,
     koderek50: obj.rek50,
-    rincianbelanja: obj.rincianbelanja,
+    uraianrek50: obj.rincianbelanja,
     itembelanja: '',
-    volume: '',
+    volume: 0,
     satuan: '',
-    harga: '',
-    total: '',
-    sisapagu: '',
-    volumels: '',
-    hargals: '',
-    totalls: '',
-    nominalpembayaran: ''
+    harga: 0,
+    total: 0,
+    sisapagu: 0,
+    volumels: 0,
+    hargals: 0,
+    totalls: 0,
+    nominalpembayaran: 0
   };
 
-  store.reqs.rekening50 = val;
+  store.params.rekening50 = val;
   store.filterItemBelanja();
 }
 const props = defineProps({
@@ -161,23 +157,24 @@ const props = defineProps({
   }
 })
 function saveSerahterima() {
-  // console.log('store.rinci', store.rinci)
+
   const objrincian = store.rinci
-  store.form.rincians.push(objrincian)
-  const unikjumlah = store.form.rincians.map((x) => x.itembelanja)
+  store.formheader.rincian.push(objrincian)
+
+  const unikjumlah = store.formheader.rincian.map((x) => x.itembelanja)
   const unik = unikjumlah.length ? [...new Set(unikjumlah)] : []
 
   const arr = []
   for (let i = 0; i < unik.length; i++) {
     const el = unik[i]
     const obj = {
-      jumlah: store.form.rincians.map((x) => parseFloat(x.nominalpembayaran)).reduce((a, b) => a + b, 0),
+      jumlah: store.formheader.rincian.map((x) => parseFloat(x.nominalpembayaran)).reduce((a, b) => a + b, 0),
       koderek108: el,
       sisapagu: store.rinci.sisapagu
     }
     if (obj?.jumlah > obj?.sisapagu) {
-      formNpdLS.value.resetValidation()
-      store.form.rincians = []
+      formInput.value.resetValidation()
+      store.formheader.rincian = []
       console.log('pxpxpxpx', (obj?.jumlah > obj?.sisapagu))
       return notifErrVue('Maaf Pengajuan Lebih dari Sisa Pagu')
     }
@@ -186,28 +183,33 @@ function saveSerahterima() {
     // const subtotal = arr.map((x) => x.jumlah).reduce((x, y) => x + y, 0)
     // store.reqs.subtotal = subtotal
   }
-  store.simpanNpdls(props.data).then(() => {
+
+  store.saveData(props.data).then(() => {
     store.rinci.koderek50 = ''
     store.rinci.itembelanja = ''
-    store.rinci.volume = ''
+    store.rinci.volume = 0
     store.rinci.satuan = ''
-    store.rinci.harga = ''
-    store.rinci.total = ''
-    store.rinci.sisapagu = ''
-    store.rinci.volumels = ''
-    store.rinci.hargals = ''
-    store.rinci.totalls = ''
-    store.rinci.nominalpembayaran = ''
-    formNpdLS.value.resetValidation()
+    store.rinci.harga = 0
+    store.rinci.total = 0
+    store.rinci.sisapagu = 0
+    store.rinci.volumels = 0
+    store.rinci.hargals = 0
+    store.rinci.totalls = 0
+    store.rinci.nominalpembayaran = 0
+    formInput.value.resetValidation()
     store.disabled = true
+    store.disableplus = true
   })
+
+  console.log('store.rinci', store.rinci)
+  console.log('store.header', store.formheader)
 }
-function tambahPajak() {
-  console.log('open Dialog')
-  store.openDialogPajak = true
-  pjk.form.nonpdls = store.form.nonpdls
-  pjk.reqs.nonpdls = store.form.nonpdls
-  pjk.getListpajak()
-  console.log('nonpdls pajak', pjk.form.nonpdls)
-}
+// function tambahPajak() {
+//   console.log('open Dialog')
+//   store.openDialogPajak = true
+//   pjk.form.nonpdls = store.form.nonpdls
+//   pjk.reqs.nonpdls = store.form.nonpdls
+//   pjk.getListpajak()
+//   console.log('nonpdls pajak', pjk.form.nonpdls)
+// }
 </script>

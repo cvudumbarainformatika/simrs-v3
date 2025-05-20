@@ -11,5 +11,5 @@
 <script setup>
 import { defineAsyncComponent } from 'vue'
 
-const AsyncComp = defineAsyncComponent(() => import('./inpage/FormHeader.vue'))
+const AsyncComp = defineAsyncComponent(() => import('./PageForm.vue'))
 </script>

@@ -11,5 +11,5 @@
 <script setup>
 import { defineAsyncComponent } from 'vue'
 
-const AsyncComp = defineAsyncComponent(() => import('./inpage/ListData.vue'))
+const AsyncComp = defineAsyncComponent(() => import('./PageListData.vue'))
 </script>

@@ -1,6 +1,6 @@
 <template>
   <q-dialog class="q-mt-xl" @hide="hiddenDialog()" @show="init()" backdrop-filter="blur(4px)" persistent>
-    <q-card style="min-width:50vw;">
+    <q-card style="min-width:50vw; min-height:15vw;">
       <q-card-section class="row items-center">
         <div class="column">
           <div class="f-14 text-weight-bold">
@@ -62,6 +62,18 @@
               </template>
             </q-table>
           </template>
+          <template v-else>
+            <div class="full-heigh">
+              <q-inner-loading :showing="store.loading">
+                <div class="q-pa-xl full-height"> <q-spinner-gears size="50px" color="primary" /> Memuat
+                  data...
+                </div>
+              </q-inner-loading>
+              <div v-if="!store.loading" class="text-center q-pa-md">
+                Tidak ada data yang ditemukan.
+              </div>
+            </div>
+          </template>
 
         </q-list>
       </q-card-section>
@@ -111,6 +123,7 @@ function pilihDataKontrak(row) {
   console.log('row kontrak', row)
 
   store.formheader.nokontrak = row?.nokontrak
+  store.rinci.nokontrak = row?.nokontrak
   store.formheader.namaperusahaan = row?.namaperusahaan
   store.formheader.kodepihakketiga = row?.kodeperusahaan
   store.formheader.kodemapingrs = row?.kodemapingrs
@@ -130,6 +143,21 @@ function pilihDataKontrak(row) {
   store.formheader.kodepptk = row?.kodepptk
   store.openDialog = false
   store.disabled = true
+  store.rinci = {
+    ...store.rinci,
+    koderek50: '',
+    uraianrek50: '',
+    itembelanja: '',
+    volume: 0,
+    satuan: '',
+    harga: 0,
+    total: 0,
+    sisapagu: 0,
+    volumels: 0,
+    hargals: 0,
+    totalls: 0,
+    nominalpembayaran: 0
+  };
   store.getRincianBelanja()
 }
 
