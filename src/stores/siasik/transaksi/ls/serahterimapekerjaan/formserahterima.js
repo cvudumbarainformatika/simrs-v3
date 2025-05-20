@@ -1,14 +1,17 @@
 import { defineStore } from 'pinia';
-import { notifErrVue } from 'src/modules/utils';
+import { notifErrVue, notifSuccess } from 'src/modules/utils';
 import { api } from 'src/boot/axios';
 import { date } from 'quasar';
 
 export const useFormSerahterimaStore = defineStore('formSerahterima', {
   state: () => ({
     loading: false,
+    loadingHapus: false,
+    loadingrinci: false,
     error: null,
     fixed: false,
     disabled: false,
+    disableplus: false,
     openDialog: false,
     params: {
       q: '',
@@ -16,11 +19,17 @@ export const useFormSerahterimaStore = defineStore('formSerahterima', {
       rowsPerPage: 50,
       tgl: date.formatDate(Date.now(), 'YYYY-MM-DD'),
       tahun: date.formatDate(Date.now(), 'YYYY'),
-      kodekegiatan: '',
+      kodekegiatan: null,
+      rekening50: null,
+    },
+
+    paramsrinci: {
+      noserahterimapekerjaan: '',
+      nopenerimaan: []
     },
     // State untuk header
     formheader: {
-      noserahterima: '',
+      noserahterimapekerjaan: '',
       nokontrak: '',
       kodepihakketiga: '',
       namaperusahaan: '',
@@ -35,11 +44,13 @@ export const useFormSerahterimaStore = defineStore('formSerahterima', {
       kegiatan: '',
       kodekegiatanblud: '',
       kegiatanblud: '',
+      rincian: [],
     },
-    // State untuk rincian (array)
-    rincian: [],
+
+
     // State untuk item rincian sementara (saat menambah/edit rincian)
     rinci: {
+      noserahterimapekerjaan: '',
       nokontrak: '',
       koderek50: '',
       uraianrek50: '',
@@ -51,6 +62,7 @@ export const useFormSerahterimaStore = defineStore('formSerahterima', {
       satuan: '',
       harga: 0,
       total: 0,
+      sisapagu: 0,
       volumels: 0,
       hargals: 0,
       totalls: 0,
@@ -64,47 +76,48 @@ export const useFormSerahterimaStore = defineStore('formSerahterima', {
     itembelanja: [],
     rekening50: [],
 
+    transall: []
+
   }),
 
   actions: {
-    // Reset form ke state awal
-    resetForm() {
-      this.header = {
-        noserahterima: '',
-        nokontrak: '',
-        kodepihakketiga: '',
-        namaperusahaan: '',
-        kodemapingrs: '',
-        namasuplier: '',
-        tglmulaikontrak: '',
-        tglakhirkontrak: '',
-        tgltrans: '',
-        kodepptk: '',
-        namapptk: '',
-        program: '',
-        kegiatan: '',
-        kodekegiatanblud: '',
-        kegiatanblud: '',
-      };
-      this.rincian = [];
-      this.rincianItem = {
-        nokontrak: '',
-        koderek50: '',
-        uraianrek50: '',
-        koderek108: '',
-        uraian108: '',
-        itembelanja: '',
-        idserahterima_rinci: '',
-        volume: 0,
-        satuan: '',
-        harga: 0,
-        total: 0,
-        volumels: 0,
-        hargals: 0,
-        totalls: 0,
-        nominalpembayaran: 0,
-      };
-      this.error = null;
+    initReset(data) {
+
+      if (data) {
+        return new Promise((resolve) => {
+          for (const key in this.formheader) {
+            // console.log(`${key}: ${this.form[key]}`);
+            // console.log(`${key}`);
+            this.formheader[key] = data[key]
+          }
+          this.formheader.noserahterimapekerjaan = data?.noserahterimapekerjaan
+          // console.log(this.form);
+
+
+          resolve()
+        })
+      } else {
+
+        for (const key in this.formheader) {
+          // console.log(`${key}: ${this.form[key]}`);
+          this.formheader[key] = null
+        }
+
+      }
+    },
+
+    resetFORM() {
+      const forms = Object.keys(this.formheader)
+      for (let i = 0; i < forms?.length; i++) {
+        const el = forms[i]
+        this.setForm(el, null)
+      }
+      const keys = Object.keys(this.rinci)
+      for (let i = 0; i < keys?.length; i++) {
+        const el = keys[i]
+        this.setForm(el, null)
+      }
+
     },
 
     onRequest(props) {
@@ -118,77 +131,70 @@ export const useFormSerahterimaStore = defineStore('formSerahterima', {
       this.getKontrakPekerjaan()
     },
     setFormInput(key, val) {
+
+      console.log('setFormInput', key, val)
       this.rinci[key] = val
       this.formheader[key] = val
     },
-    // Tambah rincian ke array
-    addRincian() {
-      if (!this.rincianItem.nokontrak || this.rincianItem.volume <= 0) {
-        notifErrVue.create({
-          type: 'negative',
-          message: 'Harap isi data rincian dengan lengkap!',
-        });
-        return;
-      }
-      this.rincian.push({ ...this.rincianItem });
-      this.resetRincianItem();
-      notifErrVue.create({
-        type: 'positive',
-        message: 'Rincian ditambahkan ke daftar.',
-      });
+    resetformrinci() {
+      this.formheader.rincian = []
     },
 
-    // Reset rincianItem
-    resetRincianItem() {
-      this.rincianItem = {
-        nokontrak: '',
-        koderek50: '',
-        uraianrek50: '',
-        koderek108: '',
-        uraian108: '',
-        itembelanja: '',
-        idserahterima_rinci: '',
-        volume: 0,
-        satuan: '',
-        harga: 0,
-        total: 0,
-        volumels: 0,
-        hargals: 0,
-        totalls: 0,
-        nominalpembayaran: 0,
-      };
+    refreshTable() {
+      this.loadingHapus = false
+    },
+
+    initForm() {
+      this.formheader.noserahterimapekerjaan = ''
+      this.formheader.nokontrak = ''
+      this.formheader.kodepihakketiga = ''
+      this.formheader.namaperusahaan = ''
+      this.formheader.kodemapingrs = ''
+      this.formheader.namasuplier = ''
+      this.formheader.tglmulaikontrak = date.formatDate(Date.now(), 'YYYY-MM-DD'),
+        this.formheader.tglakhirkontrak = date.formatDate(Date.now(), 'YYYY-MM-DD'),
+        this.formheader.tgltrans = date.formatDate(Date.now(), 'YYYY-MM-DD'),
+        this.formheader.kodepptk = ''
+      this.formheader.namapptk = ''
+      this.formheader.program = ''
+      this.formheader.kegiatan = ''
+      this.formheader.kodekegiatanblud = ''
+      this.formheader.kegiatanblud = ''
+      this.formheader.rincian = []
+
+      this.transall = []
+      this.loading = true
+      this.disabled = false
+      this.loading = false
     },
 
     // Simpan data ke backend
-    async saveData() {
-      if (this.rincian.length === 0) {
-        notifErrVue.create({
-          type: 'negative',
-          message: 'Harap tambahkan setidaknya satu rincian!',
-        });
-        return;
-      }
+    async saveData(add) {
+      console.log('fooorm', this.formheader)
+      this.loading = true
+      return new Promise((resolve, reject) => {
+        api.post('/v1/transaksi/serahterima/savedata', this.formheader)
+          .then((resp) => {
+            console.log('Resp Api', resp?.data)
 
-      this.loading = true;
-      try {
-        const response = await api.post('/v1/transaksi/serahterima/savedata', {
-          ...this.header,
-          rincian: this.rincian,
-        });
-        notifErrVue.create({
-          type: 'positive',
-          message: response.data.message,
-        });
-        this.resetForm(); // Reset form setelah simpan
-      } catch (error) {
-        this.error = error.response?.data?.message || 'Gagal menyimpan data';
-        notifErrVue.create({
-          type: 'negative',
-          message: this.error,
-        });
-      } finally {
-        this.loading = false;
-      }
+            this.formheader.noserahterimapekerjaan = resp.data?.result?.noserahterimapekerjaan
+            this.rinci.noserahterimapekerjaan = resp.data?.result?.noserahterimapekerjaan
+            this.paramsrinci.noserahterimapekerjaan = resp.data?.result?.noserahterimapekerjaan
+
+            this.loading = false
+            notifSuccess(resp)
+            this.resetformrinci()
+            this.listrincians()
+
+            resolve(resp.data)
+            // this.form.rincians = {}
+          })
+          .catch((err) => {
+            this.loading = false
+            reject(err)
+            this.formheader.rincian = []
+          })
+      })
     },
 
     // Muat data untuk edit
@@ -196,8 +202,8 @@ export const useFormSerahterimaStore = defineStore('formSerahterima', {
       this.loading = true;
       try {
         const response = await api.get(`/v1/transaksi/serahterima/${noserahterimapekerjaan}`);
-        this.header = response.data.header;
-        this.rincian = response.data.rincian;
+        this.formheader = response.data.header;
+        this.rinci = response.data.rincian;
         notifErrVue.create({
           type: 'positive',
           message: 'Data berhasil dimuat.',
@@ -214,26 +220,33 @@ export const useFormSerahterimaStore = defineStore('formSerahterima', {
     },
 
     // Hapus data
-    async deleteData(noserahterimapekerjaan) {
-      this.loading = true;
-      try {
-        const response = await api.post('/v1/transaksi/serahterima/deletedata', {
-          noserahterimapekerjaan,
-        });
-        notifErrVue.create({
-          type: 'positive',
-          message: response.data.message,
-        });
-        this.resetForm(); // Reset form setelah hapus
-      } catch (error) {
-        this.error = error.response?.data?.message || ' konieGagal menghapus data';
-        notifErrVue.create({
-          type: 'negative',
-          message: this.error,
-        });
-      } finally {
-        this.loading = false;
-      }
+    hapusRinci(row) {
+      // console.log('hapus rinci', row)
+      this.loadingHapus = true
+      return new Promise(resolve => {
+        api.post('/v1/transaksi/serahterima/deleterinci', row)
+          .then(resp => {
+
+            this.transall = resp?.data?.data
+            // console.log('HAPUS', this.transall)
+            // if (this.transall?.length < 0) {
+            //   this.initForm()
+            //   this.listrincians()
+            // }
+            // const index = row.rincian.findIndex(x => x.id === val.id)
+            // if (index >= 0) {
+            //   row.rincian.splice(index, 1)
+            // }
+            // if (!row.rincian?.length) this.cariRencanaBeli()
+            this.loadingHapus = false
+            notifSuccess(resp)
+            resolve(resp)
+          })
+          .catch(() => {
+            this.loadingHapus = false
+            row.loading = false
+          })
+      })
     },
 
     // Ambil data kontrak pekerjaan
@@ -259,26 +272,26 @@ export const useFormSerahterimaStore = defineStore('formSerahterima', {
       })
     },
     getRincianBelanja() {
-      this.loading = true
+      this.loadingrinci = true
       const params = { params: this.params }
-      console.log('anggaran', params)
+      console.log('anggaran params', params)
       return new Promise((resolve) => {
         api.get('/v1/transaksi/belanja_ls/anggaran', params)
           .then((resp) => {
             if (resp.status === 200) {
               console.log('anggaran', resp.data)
-              this.loading = false
+              this.loadingrinci = false
               this.anggarans = resp.data
               this.filterRekening50(resp.data)
               this.filterItemBelanja(resp.data)
               resolve(resp.data)
             }
             else {
-              this.loading = false
+              this.loadingrinci = false
             }
           })
           .catch(() => {
-            this.loading = false
+            this.loadingrinci = false
           })
       })
     },
@@ -306,7 +319,7 @@ export const useFormSerahterimaStore = defineStore('formSerahterima', {
     },
     filterItemBelanja() {
       const data = this.anggarans?.length
-        ? this.anggarans?.filter(x => x.koderek50 === this.reqs.rekening50).map((x) => {
+        ? this.anggarans?.filter(x => x.koderek50 === this.params.rekening50).map((x) => {
           return {
             idpp: x.idpp,
             koderek108: x.koderek108,
@@ -329,6 +342,23 @@ export const useFormSerahterimaStore = defineStore('formSerahterima', {
         : []
       this.itembelanja = data
       // console.log('item belanja', data)
+    },
+
+
+    //list di form SERAHTERIMA
+    async listrincians() {
+      this.loading = true
+      const params = { params: this.paramsrinci }
+      return new Promise((resolve, reject) => {
+        api.get('/v1/transaksi/serahterima/getrincian', params).then((resp) => {
+          if (resp.status === 200) {
+            this.transall = resp.data
+            console.log('hasilall', this.transall)
+            this.loading = false
+            resolve(resp)
+          }
+        }).catch(() => { this.loading = false })
+      })
     },
   },
 });
