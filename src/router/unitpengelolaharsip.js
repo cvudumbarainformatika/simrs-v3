@@ -1,5 +1,5 @@
 const unitpengelolaharsip = {
-  path: '/unitpengelolaharsip',
+  path: '/unit_pengolah_arsip',
   component: () => import('layouts/V2/IndexLayout.vue'),
   meta: { requireAuth: true },
   children: [
