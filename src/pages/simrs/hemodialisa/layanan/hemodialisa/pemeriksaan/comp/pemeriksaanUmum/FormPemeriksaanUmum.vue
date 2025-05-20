@@ -201,7 +201,7 @@
           hide-bottom-space style="width:50%" />
       </q-card-section>
     </q-card>
-    \
+
   </div>
 </template>
 
