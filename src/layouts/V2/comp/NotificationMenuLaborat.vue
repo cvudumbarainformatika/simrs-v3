@@ -235,13 +235,13 @@ const lihatAksesLaborat = () => {
   // console.log('akses ke aplikasi laborat', akses);
   const laborat = apps?.find(x => x?.aplikasi === 'laborat')?.id || null
 
-  let haveAkses = false
-  if (akses === 'all') {
-    haveAkses = true
-  } else {
-    haveAkses = akses?.find(x => x?.aplikasi_id === laborat) ? true : false
+  // let haveAkses = false
+  // if (akses === 'all') {
+  //   haveAkses = true
+  // } else {
+  haveAkses = akses?.find(x => x?.aplikasi_id === laborat) ? true : false
 
-  }
+  // }
 
 
   console.log('akses ke aplikasi laborat', haveAkses);
