@@ -3,15 +3,13 @@
     <q-card square flat class="container-no-header">
       <q-layout view="lHr Lpr lFf" container class="shadow-2 rounded-borders z-top">
         <q-header elevated class="bg-primary">
-          <HeaderLayout :pasien="pasien" :loading-save-dpjp="store.loadingSaveGantiDpjp" :loading-finish="store.loading"
-            @toggle-left-drawer="() => drawer = !drawer" @gantidpjp="(val) => store.gantiDpjp(val, pasien)"
-            @layanan-selesai="store.setLayananSelesai(pasien)" />
+          <HeaderLayout :pasien="pasien" />
         </q-header>
 
         <!-- LEFT DRAWER ======================================================================================-->
         <q-drawer v-model="drawer" elevated bordered show-if-above :width="230" :breakpoint="400">
           <LeftDrawer :key="pasien" :pasien="pasien" :menus="menus" :menu="menu" @click-menu="(val) => menuDiganti(val)"
-            @icare="getIcare" @history-pasien="historyPasien" />
+            @history-pasien="historyPasien" />
         </q-drawer>
 
         <!-- RIGHT DRAWER ======================================================================================-->
@@ -35,16 +33,15 @@
         </q-page-container>
       </q-layout>
     </q-card>
+
   </q-dialog>
 </template>
 
 <script setup>
 import { defineAsyncComponent, onMounted, ref, shallowRef, watchEffect } from 'vue'
-import { usePengunjungIgdStore } from 'src/stores/simrs/igd/pengunjung'
-import { useInacbgIgd } from 'src/stores/simrs/igd/inacbg'
-import { usePemakaianObatStore } from 'src/stores/simrs/igd/pemakaianobat'
-const store = usePengunjungIgdStore()
-const storepemakaianobat = usePemakaianObatStore()
+// import { usePengunjungIgdStore } from 'src/stores/simrs/igd/pengunjung'
+import { useKlaimPenjaminanStore } from 'src/stores/simrs/penjaminan/klaim'
+const store = useKlaimPenjaminanStore()
 
 const HeaderLayout = defineAsyncComponent(() => import('./layoutcomp/HeaderLayout.vue'))
 const LeftDrawer = defineAsyncComponent(() => import('./layoutcomp/LeftDrawer.vue'))
@@ -65,23 +62,12 @@ const props = defineProps({
   }
 })
 
-// defineProps({
-//   pasien: {
-//     type: Object,
-//     default: null
-//   },
-//   loadingaja: {
-//     type: Boolean,
-//     default: false
-//   }
-// })
-
 const menus = ref([
   {
     name: 'BerkasPage',
     label: 'Berkas/Dokumen',
     icon: 'icon-fa-warehouse-solid',
-    comp: shallowRef(defineAsyncComponent(() => import('../layanan/berkas/BerkasPage.vue')))
+    comp: shallowRef(defineAsyncComponent(() => import('./berkas/BerkasPage.vue')))
   },
   // {
   //   name: 'AnamnesisPage',
@@ -154,7 +140,7 @@ const menus = ref([
 ])
 const menu = ref(menus.value[0])
 
-const inacbg = useInacbgIgd()
+// const inacbg = useInacbgIgd()
 
 function menuDiganti(val) {
   menu.value = val
@@ -164,29 +150,29 @@ function historyPasien() {
   drawerRight.value = !drawerRight.value
 }
 
-function getIcare() {
-  store.getDataIcare(props.pasien).then(resp => {
-    if (resp) {
-      window.open(resp?.response?.url, '_blank')
-    }
-  })
-}
+// function getIcare() {
+//   store.getDataIcare(props.pasien).then(resp => {
+//     if (resp) {
+//       window.open(resp?.response?.url, '_blank')
+//     }
+//   })
+// }
 
-onMounted(() => {
-  store.getruangranap()
-  store.getsistembayar()
-  store.getsistembayarrinci()
-  storepemakaianobat.carisatuan()
-})
+// onMounted(() => {
+//   store.getruangranap()
+//   store.getsistembayar()
+//   store.getsistembayarrinci()
+//   storepemakaianobat.carisatuan()
+// })
 
-watchEffect(() => {
-  // console.log('watch effect', store.loadingTerima)
-  if (store.loadingTerima === false) {
-    inacbg.getDataIna(props.pasien)
-    inacbg.setTotalTindakan(props.pasien)
-    inacbg.setTotalLaborat(props.pasien)
-  }
-})
+// watchEffect(() => {
+//   // console.log('watch effect', store.loadingTerima)
+//   if (store.loadingTerima === false) {
+//     inacbg.getDataIna(props.pasien)
+//     inacbg.setTotalTindakan(props.pasien)
+//     inacbg.setTotalLaborat(props.pasien)
+//   }
+// })
 
 </script>
 <style lang="scss">

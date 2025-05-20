@@ -156,15 +156,15 @@ const menu = ref(menus.value[0])
 
 const inacbg = useInacbgIgd()
 
-function menuDiganti (val) {
+function menuDiganti(val) {
   menu.value = val
 }
 
-function historyPasien () {
+function historyPasien() {
   drawerRight.value = !drawerRight.value
 }
 
-function getIcare () {
+function getIcare() {
   store.getDataIcare(props.pasien).then(resp => {
     if (resp) {
       window.open(resp?.response?.url, '_blank')

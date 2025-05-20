@@ -5,8 +5,10 @@ import { notifErrVue } from "src/modules/utils"
 export const useKlaimPenjaminanStore = defineStore('klaim-penjaminan', {
   state: () => ({
     loading: false,
+    loadingbuka: false,
     items: [],
     meta: {},
+    pageLayanan: false,
     params: {
       q: '',
       page: 1,
@@ -33,15 +35,17 @@ export const useKlaimPenjaminanStore = defineStore('klaim-penjaminan', {
         })
         .catch(() => { this.loading = false })
     },
-    async setTerima(pasien) {
+    async bukaLayanan(pasien) {
       this.loadingTerima = true
-      const form = { noreg: pasien?.noreg, kdruang: pasien?.kdruangan }
+
+      const form = { noreg: pasien?.noreg }
       this.noreg = pasien?.noreg
+      this.togglePageTindakan()
       try {
-        const resp = await api.post('v1/simrs/penjaminan/klaim/terimapasien', form)
-        // console.log('terima', resp)
+        const resp = await api.post('v1/simrs/pelayanan/igd/terimapasien', form)
         if (resp.status === 200) {
-          const findPasien = this.items.filter(x => x?.rs1 === pasien?.noreg)
+          const findPasien = this.items.filter(x => x?.noreg === pasien?.noreg)
+          console.log('findPasien', findPasien)
           if (findPasien?.length) {
             // findPasien[0].status = findPasien[0].status === '' ? '2' : findPasien[0].status
 
@@ -85,7 +89,7 @@ export const useKlaimPenjaminanStore = defineStore('klaim-penjaminan', {
             // findPasien[0].dokumenluar = resp?.data?.dokumenluar
           }
           this.loadingTerima = false
-          // console.log('load2', this.loadingTerima)
+          console.log('items', this.items)
           this.noreg = null
         }
       }
@@ -95,6 +99,9 @@ export const useKlaimPenjaminanStore = defineStore('klaim-penjaminan', {
         this.noreg = null
         this.notifikasiError('Maaf.. Harap ulangi, Ada Kesalahan ')
       }
+    },
+    togglePageTindakan() {
+      this.pageLayanan = !this.pageLayanan
     },
     notifikasiError(msg) {
       notifErrVue(msg)

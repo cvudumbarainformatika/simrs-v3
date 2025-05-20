@@ -7,7 +7,8 @@
       </q-tooltip>
     </q-btn>
     <div id="printMe" style="width: 21cm;" class="q-pa-xs full-width full-height">
-      <KopSurat :judul="props?.judul" :pasien="props?.pasien" :jangantampil=false :kelas="props.kelas" />
+      <KopSurat :judul="props?.judul ?? 'Indikasi Masuk Ranap'" :pasien="props?.pasien" :jangantampil=false
+        :kelas="props.kelas" />
 
       <Isiindikasimasuknicudaninter :pasien="props?.pasien" :isi="props.isi" :kelas="props.kelas"
         :keterangan="props.keterangan" :loading="props.loading" />

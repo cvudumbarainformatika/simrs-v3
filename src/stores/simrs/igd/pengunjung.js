@@ -155,15 +155,14 @@ export const usePengunjungIgdStore = defineStore('pengunjung-igd', {
       notifErrVue(msg)
     },
     async bukaLayanan(pasien) {
-      // this.loadingCall = false
       this.loadingTerima = true
-      // console.log('load1', this.loadingTerima)
+
       const form = { noreg: pasien?.noreg }
       this.noreg = pasien?.noreg
       this.togglePageTindakan()
       try {
         const resp = await api.post('v1/simrs/pelayanan/igd/terimapasien', form)
-        //  console.log('terima', resp)
+        console.log('terima', resp)
         if (resp.status === 200) {
           const findPasien = this.items.filter(x => x?.rs1 === pasien?.noreg)
           if (findPasien?.length) {
