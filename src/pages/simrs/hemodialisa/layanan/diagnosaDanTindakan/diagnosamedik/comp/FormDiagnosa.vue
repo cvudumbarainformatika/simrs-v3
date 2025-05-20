@@ -5,7 +5,7 @@
       <div class="f-10 text-weight-light">
         <em>form Diagnosa sekaligus pensimulasian INACBG </em>
       </div> -->
-      <q-btn color="primary" class="q-pa-none full-width" flat dense no-caps>
+      <q-btn color="primary" class="q-pa-none full-width" flat dense no-caps :disable="!!pasien?.nota_permintaan">
         MEMO : {{ pasien?.memodiagnosa ?? 'MEMO DOKTER' }}
         <q-popup-edit fit buttons v-model="memoDokter" :cover="false" :offset="[0, 10]" v-slot="scope" @save="(val) => {
           gantiMemo(val)

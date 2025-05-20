@@ -5,7 +5,7 @@
       <div class="f-10 text-weight-light">
         <em>form Diagnosa sekaligus pensimulasian INACBG </em>
       </div> -->
-      <q-btn color="primary" class="q-pa-none full-width" flat dense no-caps>
+      <q-btn color="primary" class="q-pa-none full-width" flat dense no-caps :disable="!!pasien?.nota_permintaan">
         MEMO : {{ pasien?.memodiagnosa ?? 'MEMO DOKTER' }}
         <q-popup-edit fit buttons v-model="memoDokter" :cover="false" :offset="[0, 10]" v-slot="scope" @save="(val) => {
           gantiMemo(val)
@@ -102,9 +102,6 @@
 import { useQuasar } from 'quasar'
 import { useDiagnosaHDStore } from 'src/stores/simrs/hemodialisa/diagnosa'
 import { useListPasienHemodialisaStore } from 'src/stores/simrs/hemodialisa/hemodialisa'
-// import { useLayananPoli } from 'src/stores/simrs/pelayanan/poli/layanan'
-// import { usePengunjungPoliStore } from 'src/stores/simrs/pelayanan/poli/pengunjung'
-// eslint-disable-next-line no-unused-vars
 import { onMounted, ref, watch } from 'vue'
 
 const props = defineProps({
