@@ -100,6 +100,63 @@ export const useKlaimPenjaminanStore = defineStore('klaim-penjaminan', {
         this.notifikasiError('Maaf.. Harap ulangi, Ada Kesalahan ')
       }
     },
+    async bukaLayananrajal(pasien) {
+      this.loadingTerima = true
+      const form = { noreg: pasien?.noreg }
+      this.noreg = pasien?.noreg
+      this.togglePageTindakan()
+      try {
+        const resp = await api.post('v1/simrs/rajal/poli/terimapasien', form)
+        // console.log('terima', resp)
+        if (resp.status === 200) {
+          const findPasien = this.items.filter(x => x?.noreg === pasien?.noreg)
+          if (findPasien?.length) {
+            findPasien[0].status = findPasien[0].status === '' ? '2' : findPasien[0].status
+            const responseData = resp?.data?.result ?? null
+            // BARU
+            findPasien[0].anamnesis = responseData?.anamnesis
+            findPasien[0].datasimpeg = responseData?.datasimpeg
+            findPasien[0].diagnosa = responseData?.diagnosa
+            findPasien[0].diagnosakeperawatan = responseData?.diagnosakeperawatan
+            findPasien[0].diagnosakebidanan = responseData?.diagnosakebidanan
+            findPasien[0].diet = responseData?.diet
+            findPasien[0].edukasi = responseData?.edukasi
+            findPasien[0].fisio = responseData?.fisio
+            findPasien[0].gambars = responseData?.gambars
+            findPasien[0].laborats = responseData?.laborats
+            findPasien[0].newapotekrajal = responseData?.newapotekrajal
+            findPasien[0].ok = responseData?.ok
+            findPasien[0].pemeriksaanfisik = responseData?.pemeriksaanfisik
+            findPasien[0].penunjanglain = responseData?.penunjanglain
+            findPasien[0].planning = responseData?.planning
+            findPasien[0].radiologi = responseData?.radiologi
+            findPasien[0].sharing = responseData?.sharing
+            findPasien[0].taskid = responseData?.taskid
+            findPasien[0].tindakan = responseData?.tindakan
+            // BARU
+            findPasien[0].laporantindakan = responseData?.laporantindakan
+            findPasien[0].psikiatri = responseData?.psikiatri
+            findPasien[0].neonatusmedis = responseData?.neonatusmedis
+            findPasien[0].neonatuskeperawatan = responseData?.neonatuskeperawatan
+            findPasien[0].pediatri = responseData?.pediatri
+            findPasien[0].kandungan = responseData?.kandungan
+            findPasien[0].dokumenluar = responseData?.dokumenluar
+            findPasien[0].rs19 = responseData?.rs19
+            // jawabn konsul
+            findPasien[0].jawabankonsul = responseData?.jawabankonsul
+
+          }
+          this.loadingTerima = false
+          this.noreg = null
+        }
+      }
+      catch (error) {
+        console.log(error)
+        this.loadingTerima = false
+        this.noreg = null
+        this.notifikasiError('Maaf.. Harap ulangi, Ada Kesalahan ')
+      }
+    },
     togglePageTindakan() {
       this.pageLayanan = !this.pageLayanan
     },

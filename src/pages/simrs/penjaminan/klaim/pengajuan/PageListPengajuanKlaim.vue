@@ -24,6 +24,7 @@
 import ListPengajuanKlaim from './ListPengajuanKlaim.vue'
 import HeaderPage from './HeaderPage.vue'
 import FooterPage from './FooterPage.vue'
+
 import PageGroupingKlaim from '../grouping/PageGroupingKlaim.vue'
 import { useStyledStore } from 'src/stores/app/styled'
 import { onMounted, ref, watch } from 'vue'
@@ -36,9 +37,14 @@ const style = useStyledStore()
 const pasien = ref(null)
 
 function bukaTindakan(val) {
-
+  console.log('sa', val)
   pasien.value = val
-  store.bukaLayanan(val)
+  if (val?.kodepoli === 'POL014') {
+    store.bukaLayanan(val)
+  } else {
+    store.bukaLayananrajal(val)
+  }
+
 }
 
 onMounted(() => {
