@@ -10,7 +10,7 @@ export const useRkaStore = defineStore('store_rka_siasik', {
       q: '',
       bidang: '',
       kegiatan: '',
-      tahun: '',
+      tahun: date.formatDate(Date.now(), 'YYYY'),
       kodebidang: null
     },
     display: {

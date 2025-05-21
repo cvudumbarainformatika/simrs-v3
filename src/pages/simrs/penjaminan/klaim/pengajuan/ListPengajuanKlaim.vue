@@ -33,7 +33,7 @@
           <q-separator vertical class="q-mx-md" />
           <q-item-section class="q-col-gutter-xs">
             <q-item-label>
-              DPJP : <span class="text-negative text-weight-bold">{{ item.dpjp }}</span>
+              DPJP : <span class="text-negative text-weight-bold">{{ item.dokter }}</span>
             </q-item-label>
             <q-item-label>
               RUANGAN : <span class="text-teal text-weight-bold"> {{ item.poli }}</span>
@@ -48,7 +48,7 @@
           <q-item-section side>
             <q-btn dense size="sm" no-caps color="primary" label="Grouping" class="q-mb-sm"
               icon-right="icon-mat-transfer_within_a_station" style="min-width: 120px;"
-              :loading="loadingTerima && store.noreg === item?.noreg" @click="emits('terimapasien', item)" />
+              :loading="loadingTerima && store.noreg === item?.noreg" @click="emits('bukalayanan', item)" />
           </q-item-section>
         </q-item>
       </q-list>
@@ -68,9 +68,10 @@ import EmptyData from './EmptyData.vue'
 // import { defineAsyncComponent, ref } from 'vue'
 import { usePengunjungIgdStore } from 'src/stores/simrs/igd/pengunjung'
 import { dateFullFormat, formatJam } from 'src/modules/formatter'
+import { useKlaimPenjaminanStore } from 'src/stores/simrs/penjaminan/klaim'
 
-const emits = defineEmits(['terimapasien', 'bukalayanan', 'kirimcasmix'])
-const store = usePengunjungIgdStore()
+const emits = defineEmits(['bukalayanan'])
+const store = useKlaimPenjaminanStore()
 
 // const PageLayananIgd = defineAsyncComponent(() => import('src/pages/simrs/igd/layanan/PageLayananIgd.vue'))
 // const pasien = ref(null)
@@ -104,6 +105,10 @@ defineProps({
   loadingcesmix: {
     type: Boolean,
     default: false
+  },
+  itemsigd: {
+    type: Array,
+    default: () => []
   }
 })
 

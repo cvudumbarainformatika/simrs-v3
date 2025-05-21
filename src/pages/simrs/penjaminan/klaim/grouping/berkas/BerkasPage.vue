@@ -1,80 +1,130 @@
 <template>
-  <div class="full-height q-pa-sm">
-    <div class="row q-col-gutter-x-xs full-height">
-      <div class="col-6 full-height">
-        <FromTriage :key="props.pasien" :pasien="props.pasien" tooltip="History Pasien (Shift + H)" />
-      </div>
-      <div class="col-6 full-height">
-        <ListTriage :key="props.pasien" :pasien="props.pasien" :loadingaja="loadingaja" />
+  <div ref="main" class="column flex-center full-height  bg-white">
+    <div class="container full-height">
+      <div class="column full-height ">
+        <div class="col-grow">
+          <KumpulanSurat :key="doc" :items="pasien?.kodepoli === 'POL014' ? documents : documentsrajal"
+            @go-to="(item) => goTo(item)" />
+        </div>
       </div>
     </div>
-
-    <!-- dialog -->
-
-    <!-- <HistoryAnamnesis
-      :key="props.pasien"
-      :seamless="seamless"
-      :pasien="props.pasien"
-      @close="seamless =!seamless"
-    /> -->
-    <!-- <app-drawer-right-new
-      :key="props.pasien"
-      :seamless="seamless"
-      :pasien="props.pasien"
-      @click-btn="clickslideRight"
-    >
-      <template #content>
-        <HistoryKanan
-          :key="pasien"
-          :pasien="pasien"
-          title="HISTORY ANAMNESSIS LALU"
-        />
-      </template>
-</app-drawer-right-new> -->
   </div>
+  <app-fullscreen-blue v-model="open">
+    <template #default>
+      <component :is="cekPanel(pasien?.kodepoli)" :key="props.pasien" :pasien="props.pasien" />
+    </template>
+  </app-fullscreen-blue>
 </template>
-
 <script setup>
-// import { useAnamnesis } from 'src/stores/simrs/pelayanan/poli/anamnesis'
-import FromTriage from './comptriage/FromTriage.vue'
-import ListTriage from './comptriage/ListTriage.vue'
+import KumpulanSurat from './KumpulanSurat.vue'
+import { findWithAttr } from 'src/modules/utils'
+import { ref, defineAsyncComponent } from 'vue'
 // eslint-disable-next-line no-unused-vars
-// import HistoryAnamnesis from './comanamnesis/HistoryAnamnesis.vue'
-// import HistoryKanan from './comanamnesis/HistoryKanan.vue'
-import { onMounted, onUnmounted, ref } from 'vue'
-
-// const store = useAnamnesis()
-const seamless = ref(false)
-// const text = ref('')
-
 const props = defineProps({
   pasien: {
     type: Object,
     default: null
+  }
+})
+
+const open = ref(false)
+const doc = ref('')
+const documents = ref([
+  {
+    icon: 'icon-fa-file-regular',
+    color: 'primary',
+    jenis: 'Res',
+    label: 'Resume',
+    value: 'Resume'
   },
-  loadingaja: {
-    type: Boolean,
-    default: false
+  {
+    icon: 'icon-fa-file-regular',
+    color: 'primary',
+    jenis: 'Bill',
+    label: 'Billing',
+    value: 'Billing',
+  },
+  {
+    icon: 'icon-fa-file-regular',
+    color: 'primary',
+    jenis: 'Trg',
+    label: 'Triage IGD',
+    value: 'Triage_IGD'
+  },
+  {
+    icon: 'icon-fa-file-regular',
+    color: 'primary',
+    jenis: 'Sutian',
+    label: 'Surat Kematian',
+    value: 'Surat_Kematian'
   }
-})
-onMounted(() => {
-  // console.log(text.value)
-  document.addEventListener('keypress', handleKeypress, false)
-})
+])
 
-onUnmounted(() => {
-  document.removeEventListener('keypress', handleKeypress, true)
-})
-
-const handleKeypress = (evt) => {
-  if (evt.key === 'H' && evt.shiftKey) {
-    seamless.value = !seamless.value
-  }
+const documentsrajal = ref([
+  {
+    icon: 'icon-fa-file-regular',
+    color: 'primary',
+    jenis: 'Res',
+    label: 'Resume',
+    value: 'Resume'
+  },
+  {
+    icon: 'icon-fa-file-regular',
+    color: 'primary',
+    jenis: 'Bill',
+    label: 'Billing',
+    value: 'Billing'
+  },
+])
+// eslint-disable-next-line no-unused-vars
+function getLabel(val) {
+  const anu = documents.value.filter(a => a.value === val)
+  // console.log('anu ', anu)
+  return anu?.length ? anu[0].label : '-'
 }
+const comp = [
+  { nama: 'Resume', page: defineAsyncComponent(() => import('./compdokumen/ResumePage.vue')) },
+  { nama: 'Billing', page: defineAsyncComponent(() => import('../../../../igd/layanan/dokumen/dokumenisi/Billing/BillingPage.vue')) },
+  { nama: 'Triage_IGD', page: defineAsyncComponent(() => import('../../../../igd/layanan/dokumen/dokumenisi/triage/TriasePage.vue')) },
+  { nama: 'Surat_Kematian', page: defineAsyncComponent(() => import('../../../../igd/layanan/dokumen/dokumenisi/suratkematian/SuratKematianPage.vue')) },
+]
 
-// const clickslideRight = () => {
-//   // console.log('ok')
-//   seamless.value = !seamless.value
-// }
+const comprajal = [
+  { nama: 'Resume', page: defineAsyncComponent(() => import('../../../../dokumen/resume/ResumePage.vue')) },
+  { nama: 'Billing', page: defineAsyncComponent(() => import('../../../../dokumen/comppoli/BillingPage.vue')) },
+]
+// eslint-disable-next-line no-unused-vars
+const cekPanel = (kodepoli) => {
+  const val = doc.value
+  console.log('val', kodepoli)
+  const ganti = val.replace(/ /g, '')
+  if (kodepoli === 'POL014') {
+    const arr = findWithAttr(comp, 'nama', ganti)
+    return arr >= 0 ? comp[arr].page : ''
+  } else {
+    const arr = findWithAttr(comprajal, 'nama', ganti)
+    return arr >= 0 ? comprajal[arr].page : ''
+  }
 
+}
+function goTo(val) {
+  console.log('got', val)
+  doc.value = val.value
+  open.value = true
+}
 </script>
+<style lang="scss" scoped>
+.container {
+  position: relative;
+  width: calc(100vw - 250px);
+  min-height: 90vh;
+  border-radius: 10px;
+  backdrop-filter: blur(5px);
+  font-size: 10px;
+  // backdrop-filter: sepia(.5);
+  box-shadow: 0 25px 45px rgba(0, 0, 0, 0.1);
+  border: 3px solid rgba(255, 255, 255, 0.5);
+  border-right: 3px solid rgba(255, 255, 255, 0.2);
+  border-bottom: 3px solid rgba(255, 255, 255, 0.2);
+}
+</style>

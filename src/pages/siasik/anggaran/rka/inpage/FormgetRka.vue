@@ -10,7 +10,8 @@
     </div>
     <div class="q-pa-sm" style="width:25%">
       <app-autocomplete v-model="store.reqs.bidang" label="Pilih Bidang" autocomplete="bidang" option-label="bidang"
-        option-value="kodebidang" outlined :source="store.bidangs" :loading="store.loading" @selected="(val) => {
+        option-value="kodebidang" outlined :source="store.bidangs" :disable="store.loading" :loading="store.loading"
+        @selected="(val) => {
           const arr = store.bidangs
           const obj = arr?.length ? arr.find(x => x.kodebidang === val) : null
           store.reqs.kodebidang = obj?.kodebidang ?? ''
@@ -21,8 +22,8 @@
     </div>
     <div class="q-pa-sm" style="width:25%">
       <app-autocomplete v-model="store.reqs.kegiatan" label="Pilih Kegiatan" autocomplete="kegiatan"
-        option-label="kegiatan" option-value="kodekegiatan" outlined :source="store.kegiatans" :loading="store.loading"
-        @selected="(val) => {
+        option-label="kegiatan" option-value="kodekegiatan" outlined :source="store.kegiatans" :disable="store.loading"
+        :loading="store.loading" @selected="(val) => {
           const arr = store.kegiatans
           const obj = arr?.length ? arr.find(x => x.kodekegiatan === val) : null
           const kegiatan = obj?.kegiatan
@@ -69,17 +70,38 @@
 import { useQuasar } from 'quasar'
 import { useRkaStore } from 'src/stores/siasik/anggaran/storerka'
 // eslint-disable-next-line no-unused-vars
-import { defineAsyncComponent, ref, watchEffect } from 'vue'
+import { defineAsyncComponent, onBeforeMount, ref, watchEffect } from 'vue'
 
 const CetakRka = defineAsyncComponent(() => import('../printRka/PrintDataRKA.vue'))
 const store = useRkaStore()
 const $q = useQuasar()
+
+onBeforeMount(() => {
+  store.getDataBidang()
+})
 // Model berdasarkan ref agar tidak updte
 // const berdasar = ref('')
 function setTglcetak(val) {
   store.tglcetak = val
 }
 function ambilData() {
+  if (store.reqs.tahun === '') {
+    $q.notify({
+      message: 'Tahun tidak boleh kosong',
+      color: 'negative',
+      icon: 'icon-mat-warning'
+    })
+    return
+  }
+  if (store.reqs.bidang === '' || store.reqs.kegiatan === '') {
+    $q.notify({
+      message: 'Bidang atau Kegiatan tidak boleh kosong',
+      color: 'negative',
+      icon: 'icon-mat-warning'
+    })
+    return
+  }
+
   // console.log('ambil Data')
   store.getAnggaran()
 }

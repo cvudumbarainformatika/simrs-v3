@@ -53,8 +53,8 @@ const periods = ref([
 ])
 
 const pelayanan = ref([
-  { value: 1, label: 'RAWAT JALAN' },
-  { value: 2, label: 'RAWAT INAP' },
+  { value: 1, label: 'IGD' },
+  { value: 2, label: 'RAWAT JALAN' }
 ])
 
 

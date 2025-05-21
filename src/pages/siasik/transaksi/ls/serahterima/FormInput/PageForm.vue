@@ -4,9 +4,9 @@
       <div class="row">
         <FormHeader />
       </div>
-      <!-- <div class="q-pt-md">
-        <Rincian />
-      </div> -->
+      <div class="q-pt-md">
+        <ListRincian />
+      </div>
     </q-card>
   </div>
 
@@ -16,7 +16,7 @@
 // import { formKontrakPekerjaan } from 'src/stores/siasik/transaksi/ls/kontrak/formkontrak';
 // import { onBeforeMount } from 'vue';
 import FormHeader from './inpage/FormHeader.vue'
-// import ListRincian from './inpage/FormHeader.vue'
+import ListRincian from './inpage/ListRincian.vue'
 // const store = formInputNpdlsStore()
 // const ambil = formKontrakPekerjaan()
 // onBeforeMount(() => {

@@ -11,7 +11,7 @@
       </q-tooltip>
     </q-btn>
     <div id="printMe" style="width: 21cm;" class="q-pa-xs full-width full-height">
-      <KopSurat :judul="props?.judul" :pasien="props?.pasien" :jangantampil=true />
+      <KopSurat :judul="props?.judul ?? 'SURAT KEMATIAN'" :pasien="props?.pasien" :jangantampil=true />
       <IsiSuratKematianPage :pasien="props?.pasien" :plannkematian="plannkematian" />
     </div>
   </div>
