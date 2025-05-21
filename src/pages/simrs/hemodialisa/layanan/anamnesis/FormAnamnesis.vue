@@ -292,7 +292,7 @@ const iconNyeriKebidanan = computed(() => {
 onMounted(() => {
   Promise.all([
     // store.getRiwayatKehamilan()
-    // store.initReset(null)
+    store.initReset(props?.pasien?.anamnesis_awal_hd)
   ])
 })
 

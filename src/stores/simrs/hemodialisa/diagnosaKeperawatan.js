@@ -83,6 +83,7 @@ export const useDiagnosaKeperawatanHD = defineStore('diagnosa-keperawatan-hd', {
           const el = this.selectDiagnosa[i]
           const frm = {
             norm: pasien?.norm,
+            kdruang: pasien?.kodepoli ?? pasien?.koderuangan,
             noreg: cat == 'awal' ? pasien?.noreg : (pasien?.nota_permintaan ?? (pasien?.noreg ?? null)),
             kode: el?.kode,
             nama: el?.nama,
@@ -105,7 +106,8 @@ export const useDiagnosaKeperawatanHD = defineStore('diagnosa-keperawatan-hd', {
       const arr = data
       for (let i = 0; i < arr?.length; i++) {
         const isi = arr[i]
-        storePasien.injectDataPasien(pasien, isi, 'diagnosakeperawatan')
+        if (cat == 'awal') storePasien.injectDataPasien(pasien, isi, 'diagnosakeperawatan_awal_hd')
+        else storePasien.injectDataPasien(pasien, isi, 'diagnosakeperawatan')
       }
 
     },
@@ -126,7 +128,8 @@ export const useDiagnosaKeperawatanHD = defineStore('diagnosa-keperawatan-hd', {
       console.log('cat', cat, id, pasien)
 
       const storePasien = useListPasienHemodialisaStore()
-      storePasien.hapusDataInjectan(pasien, id, 'diagnosakeperawatan')
+      if (cat == 'awal') storePasien.injectDataPasien(pasien, isi, 'diagnosakeperawatan_awal_hd')
+      else storePasien.hapusDataInjectan(pasien, id, 'diagnosakeperawatan')
     },
 
     initReset () {

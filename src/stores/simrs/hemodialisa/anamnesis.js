@@ -565,7 +565,7 @@ export const useAnamnesisHemodialisaStore = defineStore('anamnesis-hemodialisa-s
     },
 
     initReset (data) {
-      // console.log('data init reset', data)
+      console.log('data init reset', data)
       this.loadingSave = false
 
       this.form = {
@@ -1104,7 +1104,7 @@ export const useAnamnesisHemodialisaStore = defineStore('anamnesis-hemodialisa-s
         kdruang: pasien?.kdruangan,
         id: this.form.id,
         form: formDefault,
-        awal: '1',
+        awal: awal == 'awal' ? '1' : '',
         formKebidanan: kasusKep === '4.2' ? this.formKebidanan : null, // ini this.formKebidanan,
         formNeoNatal: kasusKep === '4.3' ? this.formNeoNatal : null,
         formPediatrik: kasusKep === '4.4' ? this.formPediatrik : null // ini this.formPediatrik
@@ -1124,7 +1124,8 @@ export const useAnamnesisHemodialisaStore = defineStore('anamnesis-hemodialisa-s
       }
 
       const pengunjung = useListPasienHemodialisaStore()
-      pengunjung.injectDataPasien(pasien?.noreg, pushSementara, 'anamnesis')
+      if (awal == 'awal') pengunjung.injectDataPasien(pasien?.noreg, pushSementara, 'anamnesis_awal_hd')
+      else pengunjung.injectDataPasien(pasien?.noreg, pushSementara, 'anamnesis')
 
       // console.log('form, jenis kasus', req)
 
@@ -1135,8 +1136,15 @@ export const useAnamnesisHemodialisaStore = defineStore('anamnesis-hemodialisa-s
           notifSuccess(resp)
           const result = resp?.data?.result
           // pengunjung.injectDataPasien(pasien?.noreg, result, 'anamnesis')
-          pengunjung.deleteInjectanNull2(pasien?.noreg, 'anamnesis')
-          pengunjung.injectDataArray(pasien?.noreg, result, 'anamnesis')
+          if (awal = 'awal') {
+            pengunjung.deleteInjectanNull2(pasien?.noreg, 'anamnesis_awal_hd')
+            pengunjung.injectDataArray(pasien?.noreg, result, 'anamnesis_awal_hd')
+
+          } else {
+            pengunjung.deleteInjectanNull2(pasien?.noreg, 'anamnesis')
+            pengunjung.injectDataArray(pasien?.noreg, result, 'anamnesis')
+
+          }
 
           if (result?.length) this.PISAH_DATA_RANAP_IGD(result, pasien)
         }

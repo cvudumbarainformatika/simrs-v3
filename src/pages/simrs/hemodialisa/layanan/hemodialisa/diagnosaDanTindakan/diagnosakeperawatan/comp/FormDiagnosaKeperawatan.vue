@@ -218,7 +218,7 @@
 
 <script setup>
 
-import ModalDiagnosaKeperawatan from 'src/pages/simrs/poli/tindakan/comptindakan/pagemenu/complayanan/ModalDiagnosaKeperawatan.vue'
+import ModalDiagnosaKeperawatan from 'src/pages/simrs/hemodialisa/layanan/components/ModalDiagnosaKeperawatan.vue'
 import { useDiagnosaKeperawatanHD } from 'src/stores/simrs/hemodialisa/diagnosaKeperawatan'
 import { onMounted } from 'vue'
 

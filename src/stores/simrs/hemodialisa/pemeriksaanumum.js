@@ -785,7 +785,8 @@ export const usePemeriksaanUmumHemodialisaStore = defineStore('pemeriksaan-umum-
       // console.log('push frm sementara', pushSementara)
 
       const pengunjung = useListPasienHemodialisaStore()
-      pengunjung.injectDataPasien(pasien?.noreg, pushSementara, 'pemeriksaan')
+      if (awal = 'awal') pengunjung.injectDataPasien(pasien?.noreg, pushSementara, 'pemeriksaan')
+      else pengunjung.injectDataPasien(pasien?.noreg, pushSementara, 'pemeriksaan_awal_hd')
 
       console.log('form, jenis kasus', req, jnsKasus)
 
@@ -797,7 +798,8 @@ export const usePemeriksaanUmumHemodialisaStore = defineStore('pemeriksaan-umum-
           const result = resp?.data?.result
 
           // pengunjung.deleteInjectanNull2(pasien?.noreg, 'pemeriksaan')
-          pengunjung.injectDataArray(pasien?.noreg, result, 'pemeriksaan')
+          if (awal = 'awal') pengunjung.injectDataArray(pasien?.noreg, result, 'pemeriksaan_awal_hd')
+          else pengunjung.injectDataArray(pasien?.noreg, result, 'pemeriksaan')
 
           if (result?.length) this.PISAH_DATA_RANAP_IGD(result, pasien)
         }
@@ -814,14 +816,14 @@ export const usePemeriksaanUmumHemodialisaStore = defineStore('pemeriksaan-umum-
       const auth = useAplikasiStore()
       const jns = auth?.user?.pegawai?.kdgroupnakes
 
-      const igd = arr?.filter(x => x?.kdruang === 'POL014') ?? []
-      const ranap = arr?.filter(x => (x?.kdruang !== 'POL014' && x?.awal === '1')) ?? []
+      const awal = arr?.filter(x => (x?.kdruang === 'PEN005' && x?.awal === '1')) ?? []
+      const harian = arr?.filter(x => (x?.kdruang === 'PEN005' && x?.awal !== '1')) ?? []
       // const isianKeperawatan = arr?.filter(x => x?.kdruang !== 'POL014' && x?.nakes !== '1' && x?.awal === '1') ?? []
 
       // console.log('isianKeperawatan :', isianKeperawatan);
 
-      this.items.igd = igd
-      this.items.ranap = ranap
+      this.items.awal = awal
+      this.items.ranap = harian
 
       // console.log('items', this.items)
 
