@@ -75,6 +75,7 @@
   "devDependencies": {
     "@quasar/app-vite": "^2.0.0",
     "autoprefixer": "^10.4.2",
+    "fantasticon": "^3.0.0",
     "postcss": "^8.4.14",
     "sharp": "^0.33.5"
   },
