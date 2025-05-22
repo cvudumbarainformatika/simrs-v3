@@ -200,7 +200,7 @@ function onSubmit() {
   return new Promise((resolve, reject) => {
     api.post('v1/simrs/ranap/layanan/konsultasi/updateJawaban', form.value)
       .then(resp => {
-        console.log('resp', resp)
+        console.log('resp update jawaban', resp)
         if (resp.status === 200) {
           kunjunganRanap.injectUpdatean(pasien?.noreg, item?.id, resp.data.result, 'konsultasi')
           loadingSave.value = false

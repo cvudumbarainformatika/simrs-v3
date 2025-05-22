@@ -293,14 +293,51 @@
                 <q-expansion-item group="somegroup" icon="icon-mat-app_registration"
                   :label="`${item?.rs2} - (${item?.rs3})`" header-class="text-teal f-16 text-weight-bold q-pa-md"
                   :default-opened="index === 0">
-                  <q-card>
+                  <q-card v-if="item.hasil">
                     <q-separator />
                     <q-card-section>
                       <div class="row full-width">
-                        <app-input-simrs v-model="item.kesimpulan" type="textarea" label="Kesimpulan" class="col-12" />
-                        <app-input-simrs-mode type="wysiwyg" v-model="item.hasil" :disable="false" class="col-12" />
+                        <!-- <app-input-simrs v-model="item.kesimpulan" type="textarea" label="Kesimpulan" class="col-12" /> -->
+                        <div class="col-12 q-mb-sm"> Hasil : </div>
+                        <app-input-simrs-mode type="wysiwyg" v-model="item.hasil" :disable="false"
+                          class="col-12 q-mb-md" />
+                        <div class="col-12 q-mb-sm">Kesimpulan : </div>
+                        <app-input-simrs-mode type="wysiwyg" v-model="item.kesimpulan" :disable="false"
+                          class="col-12" />
                       </div>
                     </q-card-section>
+                    <q-separator />
+                    <!-- <q-card-section class="bg-grey-2">
+                      <div class="row">
+                        <div class="col-4">Tgl. Pemeriksaan</div>
+                        <div class="col-8">
+                          <div class="row">
+                            <div class="col-auto" style="min-width:5px"> : </div>
+                            <div class="col">{{ formatDateTime(item.tgl_pemeriksaan) }}</div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-4">Pemeriksa</div>
+                        <div class="col-8">
+                          <div class="row">
+                            <div class="col-auto" style="min-width:5px"> : </div>
+                            <div class="col">{{ item?.rs4 }}</div>
+                          </div>
+                        </div>
+                      </div>
+                    </q-card-section> -->
+                  </q-card>
+
+                  <q-card v-else>
+                    <q-separator />
+                    <q-card-section>
+                      <div class="items-center text-center f-14">
+                        🗂️ Belum ada hasil pemeriksaan
+                      </div>
+                    </q-card-section>
+                    <q-separator />
+
                   </q-card>
                 </q-expansion-item>
 

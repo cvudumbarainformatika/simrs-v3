@@ -286,14 +286,12 @@ const isLoading = ref(false)
 
 // Add this utility function at the top of script setup
 const sanitizeHtml = (html) => {
-  // Create a temporary div to parse HTML
   const div = document.createElement('div')
   div.innerHTML = html
 
-  // Remove invalid attributes and clean up Word-specific classes
   const cleanNode = (node) => {
     if (node.nodeType === 1) { // Element node
-      // Remove numeric attributes
+      // Remove invalid attributes and clean up Word-specific classes
       Array.from(node.attributes).forEach(attr => {
         if (/^\d+$/.test(attr.name)) {
           node.removeAttribute(attr.name)
@@ -311,6 +309,19 @@ const sanitizeHtml = (html) => {
         } else {
           node.removeAttribute('class')
         }
+      }
+
+      // Handle Word alignment attributes
+      if (node.getAttribute('align')) {
+        const alignment = node.getAttribute('align')
+        node.style.textAlign = alignment
+      }
+
+      // Handle Word style-based alignment
+      const style = node.getAttribute('style') || ''
+      if (style.includes('text-align')) {
+        // Preserve text alignment
+        node.style.textAlign = style.match(/text-align:\s*(.*?);/)[1]
       }
 
       // Clean child nodes
@@ -381,6 +392,8 @@ onMounted(() => {
         }),
         TextAlign.configure({
           types: ['heading', 'paragraph'],
+          defaultAlignment: 'left',
+          alignments: ['left', 'center', 'right', 'justify']
         }),
         Image,
         TextStyle,
@@ -442,47 +455,82 @@ const setColor = (color) => {
     padding: 12px;
     min-height: 200px;
 
-    /* Heading Styles */
+    /* Heading Styles dengan line-height yang lebih kecil */
     h1 {
-      font-size: 2em;
+      font-size: 1.5em;
       font-weight: 600;
-      margin: 0.67em 0;
+      margin: 0.3em 0; // Kurangi margin
+      line-height: 1.2; // Tambah line-height yang lebih kecil
     }
 
     h2 {
-      font-size: 1.5em;
+      font-size: 1.25em;
       font-weight: 600;
-      margin: 0.83em 0;
+      margin: 0.3em 0;
+      line-height: 1.2;
     }
 
     h3 {
       font-size: 1.17em;
       font-weight: 600;
-      margin: 1em 0;
+      margin: 0.3em 0;
+      line-height: 1.2;
     }
 
     h4 {
       font-size: 1em;
       font-weight: 600;
-      margin: 1.33em 0;
+      margin: 0.3em 0;
+      line-height: 1.2;
     }
 
     h5 {
       font-size: 0.83em;
       font-weight: 600;
-      margin: 1.67em 0;
+      margin: 0.3em 0;
+      line-height: 1.2;
     }
 
     h6 {
       font-size: 0.67em;
       font-weight: 600;
-      margin: 2.33em 0;
+      margin: 0.3em 0;
+      line-height: 1.2;
     }
 
     /* Paragraph Style */
     p {
-      margin: 1em 0;
-      line-height: 1.5;
+      font-size: 0.75em;
+      margin: 0.5em 0; // Kurangi margin
+      line-height: 1; // Sesuaikan line-height
+
+      /* Fix alignment dari Word */
+      &[style*="text-align: center"] {
+        text-align: center !important;
+      }
+
+      &[style*="text-align: right"] {
+        text-align: right !important;
+      }
+
+      &[style*="text-align: justify"] {
+        text-align: justify !important;
+      }
+    }
+
+    /* Tambahan untuk memastikan alignment bekerja di semua elemen */
+    [style*="text-align"] {
+      &[style*="center"] {
+        text-align: center !important;
+      }
+
+      &[style*="right"] {
+        text-align: right !important;
+      }
+
+      &[style*="justify"] {
+        text-align: justify !important;
+      }
     }
 
     /* List Styles */
@@ -532,6 +580,61 @@ const setColor = (color) => {
         background: #f5f5f5;
         font-weight: bold;
       }
+    }
+
+    /* Add these styles for text alignment */
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    p {
+
+      /* General alignment styles */
+      &[style*="text-align: center"] {
+        text-align: center !important;
+        display: block !important;
+        width: 100% !important;
+      }
+
+      &[style*="text-align: right"] {
+        text-align: right !important;
+        display: block !important;
+        width: 100% !important;
+      }
+
+      &[style*="text-align: justify"] {
+        text-align: justify !important;
+        display: block !important;
+        width: 100% !important;
+      }
+    }
+
+    /* Override untuk mammoth import */
+    [align="center"] {
+      text-align: center !important;
+      display: block !important;
+      width: 100% !important;
+    }
+
+    [align="right"] {
+      text-align: right !important;
+      display: block !important;
+      width: 100% !important;
+    }
+
+    /* Tambahan untuk class alignment */
+    .is-text-center {
+      text-align: center !important;
+      display: block !important;
+      width: 100% !important;
+    }
+
+    .is-text-right {
+      text-align: right !important;
+      display: block !important;
+      width: 100% !important;
     }
   }
 
