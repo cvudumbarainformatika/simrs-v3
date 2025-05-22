@@ -32,13 +32,19 @@ export const useListPasienRadiologiStore = defineStore('list-pasien-radiologi', 
     newapotekrajal: [],
     diagnosa: [],
     koderuangan: null,
-    depo: null
+    depo: null,
+
+    // INI BARU
+    namaPemeriksaans: [],
+    jenisPemeriksaans: [],
   }),
   getters: {
     // doubleCount: (state) => state.counter * 2
   },
   actions: {
-    getDataTable () {
+
+
+    getDataTable() {
       this.loading = true
       return new Promise((resolve, reject) => {
         api.get('/v1/simrs/radiologi/radiologi/pasienradiologi', {
@@ -53,8 +59,8 @@ export const useListPasienRadiologiStore = defineStore('list-pasien-radiologi', 
             this.meta.total = total
             this.items = obj?.data ?? []
 
-            console.log('this.meta', this.meta)
-            console.log('this.items', this.items)
+            // console.log('this.meta', this.meta)
+            // console.log('this.items', this.items)
             // this.togglePageTindakan()
             this.pageTindakan = true
           }
@@ -68,7 +74,7 @@ export const useListPasienRadiologiStore = defineStore('list-pasien-radiologi', 
       })
     },
 
-    setPeriode (val) {
+    setPeriode(val) {
       this.header.periode = val
       if (val === 'Hari ini') {
         this.hariIni()
@@ -81,28 +87,28 @@ export const useListPasienRadiologiStore = defineStore('list-pasien-radiologi', 
       }
     },
 
-    setUrutan (val) {
+    setUrutan(val) {
       this.params.sort = val
       this.getDataTable()
     },
 
-    setPage (val) {
+    setPage(val) {
       this.params.page = val
       this.getDataTable()
     },
 
-    setStatus (val) {
+    setStatus(val) {
       this.params.page = 1
       this.params.status = val
       this.getDataTable()
     },
 
-    hariIni () {
+    hariIni() {
       const cDate = new Date()
       this.params.to = dateDbFormat(cDate)
       this.params.from = dateDbFormat(cDate)
     },
-    bulanIni () {
+    bulanIni() {
       const curr = new Date(), y = curr.getFullYear(), m = curr.getMonth()
       // const firstday = date.formatDate(curr, 'YYYY') + '-' + date.formatDate(curr, 'MM') + '-01'
       // const lastday = date.formatDate(curr, 'YYYY') + '-' + date.formatDate(curr, 'MM') + '-31'
@@ -111,26 +117,26 @@ export const useListPasienRadiologiStore = defineStore('list-pasien-radiologi', 
       this.params.to = dateDbFormat(firstday)
       this.params.from = dateDbFormat(lastday)
     },
-    mingguIni () {
+    mingguIni() {
       const curr = new Date()
       const firstday = new Date(curr.setDate(curr.getDate() - curr.getDay()))
       const lastday = new Date(curr.setDate(curr.getDate() - curr.getDay() + 6))
       this.params.to = dateDbFormat(firstday)
       this.params.from = dateDbFormat(lastday)
     },
-    tahunIni () {
+    tahunIni() {
       const curr = new Date()
       const firstday = date.formatDate(curr, 'YYYY') + '-01' + '-01'
       const lastday = date.formatDate(curr, 'YYYY') + '-12' + '-31'
       this.params.to = dateDbFormat(firstday)
       this.params.from = dateDbFormat(lastday)
     },
-    togglePageTindakan () {
+    togglePageTindakan() {
       this.pageTindakan = !this.pageTindakan
     },
 
     // BARU PUTRA DEV RADIOLOGI
-    helperKdRuangan (val) {
+    helperKdRuangan(val) {
       const ruang = val?.ruangan.split('').slice(0, 3).join('')
       const poli = val?.poli.split('').slice(0, 3).join('')
       if (ruang === 'Rua' || poli === 'Rua') {

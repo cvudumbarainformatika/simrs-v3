@@ -3,9 +3,9 @@
     <q-card v-if="pasien?.dokter !== '' || pasien?.dokter !== null" flat>
       <q-layout view="lHr Lpr lFf" container class="shadow-2 rounded-borders z-top">
         <q-header elevated class="bg-primary">
-          <HeaderLayout :pasien="pasien" :loading-save-dpjp="store.loadingSaveGantiDpjp"
-            :loading-finish="store.loadingTerima" @toggle-left-drawer="drawer = !drawer"
-            @gantidpjp="(val) => store.gantiDpjp(val, pasien)" @layanan-selesai="store.setLayananSelesai(pasien)" />
+          <HeaderLayout :pasien="pasien" :loading-save-dpjp="poli.loadingSaveGantiDpjp"
+            :loading-finish="poli.loadingTerima" @toggle-left-drawer="drawer = !drawer"
+            @gantidpjp="(val) => console.log(val)" @layanan-selesai="" />
         </q-header>
         <!-- LEFT DRAWER ======================================================================================-->
         <q-drawer v-model="drawer" elevated bordered show-if-above :width="230" :breakpoint="400">
@@ -31,8 +31,8 @@
                     Maaf, DPJP Pasien Ini Belum Ada ... Harap Input DPJP Terlebih dahulu
                   </div>
                 </div>
-                <component :is="menu.comp" v-else :key="pasien" :pasien="pasien" :loading-terima="store.loadingTerima"
-                  :depo="radiologi.depo" />
+                <component :is="menu.comp" v-else :key="pasien" :pasien="pasien" :loading-terima="poli.loadingTerima"
+                  :depo="store.depo" />
               </template>
               <template #fallback>
                 <AppLoader />
@@ -63,14 +63,18 @@ import { defineAsyncComponent, onBeforeMount, onBeforeUnmount, onMounted, onUnmo
 import { useQuasar } from 'quasar'
 
 import { useListPasienRadiologiStore } from 'src/stores/simrs/radiologi/radiologi'
+import { useRadiologiPoli } from 'src/stores/simrs/pelayanan/poli/radiologi'
 
 const $q = useQuasar()
 
-const radiologi = useListPasienRadiologiStore()
-
-const store = usePengunjungPoliStore()
+const store = useListPasienRadiologiStore()
+// const store = useListPasienRadiologiStore()
+const poli = usePengunjungPoliStore()
 // const master = useMasterPemeriksaanFisik()
 // const anamnesis = useAnamnesis()
+const storeRadiologiPoli = useRadiologiPoli()
+
+
 const fisik = usePemeriksaanFisik()
 const drawer = ref(false)
 const drawerRight = ref(false)
@@ -94,121 +98,59 @@ const menus = ref([
     icon: 'icon-mat-medical_information',
     comp: shallowRef(defineAsyncComponent(() => import('./comptindakan/pagemenu/permintaan/IndexPage.vue')))
   },
-  // {
-  //   name: 'PemeriksaanPage',
-  //   label: 'Pemeriksaan Umum & Fisik',
-  //   icon: 'icon-my-stethoscope',
-  //   comp: shallowRef(defineAsyncComponent(() => import('./comptindakan/pagemenu/PemeriksaanPageBaru.vue')))
-  // },
-  // {
-  //   name: 'PsikiatriPage',
-  //   label: 'Pemeriksaan Psikologi',
-  //   icon: 'icon-mat-health_and_safety',
-  //   comp: shallowRef(defineAsyncComponent(() => import('./comptindakan/pagemenu/PsikiatriPage.vue')))
-  // },
-  // {
-  //   name: 'LayananPage',
-  //   label: 'Assesment',
-  //   icon: 'icon-mat-analytics',
-  //   comp: shallowRef(defineAsyncComponent(() => import('./comptindakan/pagemenu/LayananPage.vue')))
-  // },
-  // {
-  //   name: 'BayiAnakPage',
-  //   label: 'Bayi & Anak',
-  //   icon: 'icon-my-baby-head',
-  //   comp: shallowRef(defineAsyncComponent(() => import('./comptindakan/pagemenu/BayiAnakPage.vue')))
-  // },
-  // {
-  //   name: 'penunjang-page',
-  //   label: 'Penunjang',
-  //   icon: 'icon-my-local_hospital',
-  //   comp: shallowRef(defineAsyncComponent(() => import('./comptindakan/pagemenu/PenunjangPage.vue')))
-  // },
-  // {
-  //   name: 'perencanaan-page',
-  //   label: 'Plann',
-  //   icon: 'icon-mat-style',
-  //   comp: shallowRef(defineAsyncComponent(() => import('./comptindakan/pagemenu/PerencanaanPage.vue')))
-  // },
-  // {
-  //   name: 'edukasi-page',
-  //   label: 'Edukasi',
-  //   icon: 'icon-mat-tungsten',
-  //   comp: shallowRef(defineAsyncComponent(() => import('./comptindakan/pagemenu/EdukasiPage.vue')))
-  // },
   {
     name: 'e-resep-page',
     label: 'EResep',
     icon: 'icon-mat-receipt',
     comp: shallowRef(defineAsyncComponent(() => import('../../eresep/EresepPage.vue')))
-    // comp: shallowRef(defineAsyncComponent(() => import('./comptindakan/pagemenu/EResepPage.vue')))
   }
-  // {
-  //   name: 'sharing-bpjs-page',
-  //   label: 'Sharing',
-  //   icon: 'icon-my-bpjs',
-  //   comp: shallowRef(defineAsyncComponent(() => import('./comptindakan/pagemenu/SharingBpjsPage.vue')))
-  // },
-  // {
-  //   name: 'upload-dok-page',
-  //   label: 'Upload Dokumen',
-  //   icon: 'icon-mat-cloud_upload',
-  //   comp: shallowRef(defineAsyncComponent(() => import('./comptindakan/pagemenu/UploadDokPage.vue')))
-  // },
-  // {
-  //   name: 'penerbitan-surat-page',
-  //   label: 'Dokumen',
-  //   icon: 'icon-mat-email',
-  //   comp: shallowRef(defineAsyncComponent(() => import('./comptindakan/pagemenu/PenerbitanSuratPage.vue')))
-  // }
 ])
 const menu = ref(menus.value[0])
 
 // eslint-disable-next-line no-unused-vars
 const inacbg = useInacbgPoli()
 onMounted(() => {
-  console.log('pasien', props?.pasien)
+  // console.log('pasien', props?.pasien)
   menu.value = menus.value[0]
 
-  // master.getData()
-  // fisik.initReset(false, props?.pasien)
+  Promise.all([
+    storeRadiologiPoli.getRadiologi(),
+    storeRadiologiPoli.getJenisRadiologi()
+  ]).then(() => {
+    store.namaPemeriksaans = storeRadiologiPoli.namaPemeriksaans
+    store.jenisPemeriksaans = storeRadiologiPoli.jenisPemeriksaans
+
+    console.log('masterRad', store.namaPemeriksaans);
+    console.log('jenisRad', store.jenisPemeriksaans);
+
+
+  }).catch((err) => {
+    // console.log('error', err)
+  })
+
 })
 
 onBeforeMount(() => {
   menu.value = menus.value[0]
-  // fisik.setFullCanvasFalse()
 })
 
 onBeforeUnmount(() => {
-  // console.log('beforeunmount')
   menu.value = menus.value[0]
-  // fisik.setFullCanvasFalse()
-  // fisik.initReset(true)
 })
 
 onUnmounted(() => {
-  // console.log('pasien', props.pasien)
   menu.value = menus.value[0]
-  // fisik.setFullCanvasFalse()
 })
 
 function historyPasien() {
   drawerRight.value = !drawerRight.value
 }
 function getIcare() {
-  // store.getDataIcare(props.pasien).then(resp => {
-  //   if (resp) {
-  //     console.log('anu', resp?.response?.url)
-  //     window.open(resp?.response?.url, '_blank')
-  //   }
-  // })
 }
 
 function lihatSebelumTertutup() {
-  // console.log('ini sebelum halama di close')
-  // anamnesis.initReset()
-  radiologi.pasien = null
-  radiologi.pageTindakan = true
+  store.pasien = null
+  store.pageTindakan = true
 }
 
 function menuDiganti(val) {
@@ -247,12 +189,6 @@ function harapSimpanPerubahanPemeriksaanFisik(val) {
 }
 
 watchEffect(() => {
-  // console.log('watch effect', store.loadingTerima)
-  // if (store.loadingTerima === false) {
-  //   inacbg.getDataIna(props.pasien)
-  //   inacbg.setTotalTindakan(props.pasien)
-  //   inacbg.setTotalLaborat(props.pasien)
-  // }
 })
 </script>
 
