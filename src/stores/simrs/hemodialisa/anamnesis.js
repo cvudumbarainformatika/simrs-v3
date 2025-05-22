@@ -9,6 +9,7 @@ export const useAnamnesisHemodialisaStore = defineStore('anamnesis-hemodialisa-s
   state: () => ({
 
     items: {
+      awal: [],
       ranap: [],
       igd: []
     },
@@ -1161,20 +1162,15 @@ export const useAnamnesisHemodialisaStore = defineStore('anamnesis-hemodialisa-s
     PISAH_DATA_RANAP_IGD (arr, pasien) {
       const auth = useAplikasiStore()
       const jns = auth?.user?.pegawai?.kdgroupnakes
-      // console.groupCollapsed('[setForm : PISAH_DATA_RANAP_IGD]')
       console.log('jns auth', jns)
 
       const igd = arr?.filter(x => x?.kdruang === 'POL014') ?? []
-      const ranap = arr?.filter(x => x?.kdruang !== 'POL014' && x?.awal === '1' && x?.nakes === '1') ?? [] // ini isian dokter
-      // const ranap = arr?.filter(x => x?.kdruang !== 'POL014' && x?.awal === '1' && x?.jns === '1') ?? []
-      // console.log('ranap isianDokter:', ranap)
-      // console.log('igd :', igd)
 
-      const isianDokter = arr?.filter(x => x?.kdruang !== 'POL014' && x?.nakes === '1' && x?.awal === '1') ?? []
-      const isianKeperawatan = arr?.filter(x => x?.kdruang !== 'POL014' && x?.nakes === '2' && x?.awal === '1') ?? []
-      const isianKebidanan = arr?.filter(x => x?.kdruang !== 'POL014' && x?.nakes === '3' && x?.awal === '1') ?? []
-      // const isianDokter = arr?.filter(x => x?.kdruang !== 'POL014' && x?.awal === '1' && x?.nakes === '1') ?? []
-      // console.log('isianKeperawatan :', isianKeperawatan)
+
+      const isianDokter = arr?.filter(x => x?.kdruang == 'PEN005' && x?.nakes === '1') ?? []
+      const isianKeperawatan = arr?.filter(x => x?.kdruang == 'PEN005' && x?.nakes === '2') ?? []
+      const isianKebidanan = arr?.filter(x => x?.kdruang == 'PEN005' && x?.nakes === '3') ?? []
+
 
       // baru ada penyesuaian nakes
       let form = null
@@ -1184,7 +1180,8 @@ export const useAnamnesisHemodialisaStore = defineStore('anamnesis-hemodialisa-s
       // console.log('dokter', dokter)
 
       this.items.igd = igd
-      this.items.ranap = arr?.filter(x => x?.kdruang !== 'POL014' && x?.awal === '1') ?? []
+      this.items.awal = arr?.filter(x => x?.kdruang === 'PEN005' && x?.awal == '1') ?? [] // awal
+      this.items.ranap = arr?.filter(x => x?.kdruang == 'PEN005' && x?.awal == null) ?? [] // harian
       // this.items.ranap = dokter ? ranap : isianKeperawatan
 
       // jika dokter
@@ -1208,7 +1205,7 @@ export const useAnamnesisHemodialisaStore = defineStore('anamnesis-hemodialisa-s
       // form = isianDokter[0] || isianKeperawatan[0] || isianKebidanan[0] || null
       // form.id = null
 
-      // console.log('form', form)
+      console.log('form pisah', form)
       this.initReset(form)
       if (dokter) this.form.keluhannyeri = null
       if (dokter) this.form.skreeninggizi = null
@@ -1217,6 +1214,10 @@ export const useAnamnesisHemodialisaStore = defineStore('anamnesis-hemodialisa-s
     SPLICE_ITEMS_RANAP (arr) {
       const idx = arr?.findIndex(x => x.id === null)
       this.items.ranap = arr.splice(1, idx)
+    },
+    SPLICE_ITEMS_AWAL (arr) {
+      const idx = arr?.findIndex(x => x.id === null)
+      this.items.awal = arr.splice(1, idx)
     }
   }
 })

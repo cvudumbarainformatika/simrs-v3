@@ -3,6 +3,7 @@
     <q-btn flat dense icon="icon-mat-sort" @click="emits('toggleLeftDrawer')" />
     <q-toolbar-title class="f-14">
       <div class="row items-center q-gutter-md">
+
         <q-btn color="primary" class="q-pl-xs" flat>
           <div class="row items-center no-wrap q-gutter-sm text-white cursor-pointer">
             <q-avatar size="30px">
@@ -14,7 +15,7 @@
               </div>
             </div>
           </div>
-          <q-menu style="max-width: 460px;">
+          <q-menu v-if="!pasien?.nota_permintaan" style="max-width: 460px;">
             <div class="row no-wrap q-pa-md">
               <div class="column items-center">
                 <q-avatar size="72px">
@@ -89,8 +90,9 @@
 
     <div v-if="pasien?.dokter !== ''">
 
-      <q-btn v-if="pasien?.status === '' || pasien?.status === '2'" label="selesaikan layanan" color="negative"
-        class="q-mr-lg q-px-lg" dense :loading="loadingFinish" :disable="loadingFinish" @click="selesaikanLayanan" />
+      <q-btn v-if="(pasien?.status === '' || pasien?.status === '2') && !pasien?.nota_permintaan"
+        label="selesaikan layanan" color="negative" class="q-mr-lg q-px-lg" dense :loading="loadingFinish"
+        :disable="loadingFinish" @click="selesaikanLayanan" />
       <q-btn v-else-if="pasien?.status === '3'" label="LAYANAN TELAH BATAL" color="negative" class="q-mr-lg q-px-lg"
         dense />
       <q-btn v-else label="SUDAH DILAYANI" color="white" class="q-mr-lg q-px-lg" dense outline disable />

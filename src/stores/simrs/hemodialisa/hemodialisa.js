@@ -315,30 +315,9 @@ export const useListPasienHemodialisaStore = defineStore('list-pasien-hemodialis
             if (findPasien) {
               const datanya = resp?.data?.data
               const objectName = Object.keys(datanya)
-              // console.log('objectName', objectName)
               objectName?.forEach((key) => {
                 findPasien[key] = datanya[key]
               })
-              // findPasien.noreg = resp?.data?.noreg
-              // findPasien.kd_jeniskasus = resp?.data?.kd_jeniskasus
-              // findPasien.anamnesis = resp?.data?.anamnesis
-              // findPasien.newapotekrajal = resp?.data?.newapotekrajal
-              // findPasien.diagnosa = resp?.data?.diagnosa
-              // findPasien.pemeriksaan = resp?.data?.pemeriksaan
-              // findPasien.penilaian = resp?.data?.penilaian
-              // findPasien.memodiagnosa = resp?.data?.memodiagnosa
-              // findPasien.diagnosamedis = resp?.data?.diagnosamedis
-              // findPasien.diagnosakeperawatan = resp?.data?.diagnosakeperawatan
-              // findPasien.diagnosakebidanan = resp?.data?.diagnosakebidanan
-              // findPasien.diagnosagizi = resp?.data?.diagnosagizi
-              // findPasien.tindakan = resp?.data?.tindakan
-              // findPasien.intradialitik = resp?.data?.intradialitik
-              // findPasien.pengkajian = resp?.data?.pengkajian
-              // findPasien.laborats = resp?.data?.laborats
-              // findPasien.laboratold = resp?.data?.laboratold
-              // findPasien.radiologi = resp?.data?.radiologi
-              // findPasien.hasilradiologi = resp?.data?.hasilradiologi
-              // findPasien.bankdarah = resp?.data?.bankdarah
               this.pasien = findPasien
             }
             const jnsKasus = resp?.data?.kd_jeniskasus

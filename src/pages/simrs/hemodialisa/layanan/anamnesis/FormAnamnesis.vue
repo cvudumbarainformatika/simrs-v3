@@ -292,8 +292,9 @@ const iconNyeriKebidanan = computed(() => {
 onMounted(() => {
   Promise.all([
     // store.getRiwayatKehamilan()
-    store.initReset(props?.pasien?.anamnesis_awal_hd)
+    // props?.pasien?.anamnesis_awal_hd?.length ? store.initReset(props?.pasien?.anamnesis_awal_hd[0]) : ''
   ])
+  // if (props?.pasien?.anamnesis_awal_hd?.length) store.initReset(props?.pasien?.anamnesis_awal_hd[0])
 })
 
 // eslint-disable-next-line no-unused-vars

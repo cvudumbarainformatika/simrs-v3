@@ -474,7 +474,7 @@ onMounted(() => {
   Promise.all([
     // store.getRiwayatKehamilan()
 
-    store.initReset(props?.pasien?.anamnesis[0])
+    // props?.pasien?.anamnesis?.length ? store.initReset(props?.pasien?.anamnesis[0]) : ''
   ])
 })
 
