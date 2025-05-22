@@ -319,7 +319,7 @@
                   <q-separator class="q-my-xs" />
                   <div class="flex">
                     Skor Skreening Gizi : <div class="q-mx-sm">
-                      <b>{{ store.form.skor }}</b>
+                      <b>{{ isNaN(store.form.skor) ? 0 : store.form.skor }}</b>
                     </div>
                     <div>
                       Keterangan : {{ store.keteranganSkorGizi(store.form.skor) }}
@@ -345,7 +345,7 @@
           </template> -->
 
           <q-card-section class="row items-center justify-between q-py-md q-px-md text-primary text-bold">
-            <div>SKOR GIZI : {{ store.form?.skreeninggizi?.skor }}</div>
+            <div>SKOR GIZI : {{ isNaN(store.form?.skreeninggizi?.skor) ? 0 : store.form?.skreeninggizi?.skor }}</div>
             <div>{{ store.form?.skreeninggizi?.ket }}</div>
           </q-card-section>
         </q-card>

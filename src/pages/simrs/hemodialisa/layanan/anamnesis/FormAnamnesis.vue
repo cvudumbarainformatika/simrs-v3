@@ -164,7 +164,7 @@
           </q-card-section>
 
           <q-card-section class="row items-center justify-between q-py-md q-px-md text-primary text-bold">
-            <div>SKOR GIZI : {{ store.form?.skreeninggizi?.skor }}</div>
+            <div>SKOR GIZI : {{ isNaN(store.form?.skreeninggizi?.skor) ? 0 : store.form?.skreeninggizi?.skor }}</div>
             <div>{{ store.form?.skreeninggizi?.ket }}</div>
           </q-card-section>
         </q-card>

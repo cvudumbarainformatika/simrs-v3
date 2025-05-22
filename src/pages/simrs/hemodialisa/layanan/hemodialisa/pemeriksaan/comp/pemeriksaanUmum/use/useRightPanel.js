@@ -3,7 +3,7 @@ import { useAplikasiStore } from 'src/stores/app/aplikasi'
 import { usePemeriksaanUmumHemodialisaStore } from 'src/stores/simrs/hemodialisa/pemeriksaanumum'
 // import { usePengunjungRanapStore } from 'src/stores/simrs/ranap/pengunjung'
 // eslint-disable-next-line no-unused-vars
-import { onMounted, reactive, ref } from 'vue'
+import { onMounted, reactive, ref, watch } from 'vue'
 
 export default function useRightPanel (pasien) {
   const store = usePemeriksaanUmumHemodialisaStore()
@@ -34,25 +34,32 @@ export default function useRightPanel (pasien) {
 
   onMounted(() => {
     // console.log('did mount', pengunjung.pasiens)
-    getData(pasien)
+    // getData(pasien)
+
+    store.PISAH_DATA_RANAP_IGD(pasien?.pemeriksaan, pasien)
   })
 
-  const getData = (pasien) => {
-    // const params = {
-    //   params: {
-    //     noreg: pasien?.noreg
-    //   }
-    // }
-    // const resp = await api.get('v1/simrs/ranap/layanan/pemeriksaan/pemeriksaanumum', params)
-    // console.log('resp right pemeriksaan', resp)
-    // if (resp.status === 200) {
-    //   // store.items = resp.data
-    //   store.PISAH_DATA_RANAP_IGD(resp.data, pasien)
-    // }
+  watch(() => pasien.pemeriksaan, (val) => {
+    console.log('watch pemeriksaan', val)
 
-    // await store.getData(pasien)
     store.PISAH_DATA_RANAP_IGD(pasien?.pemeriksaan, pasien)
-  }
+  }, { deep: true })
+  // const getData = (pasien) => {
+  //   // const params = {
+  //   //   params: {
+  //   //     noreg: pasien?.noreg
+  //   //   }
+  //   // }
+  //   // const resp = await api.get('v1/simrs/ranap/layanan/pemeriksaan/pemeriksaanumum', params)
+  //   // console.log('resp right pemeriksaan', resp)
+  //   // if (resp.status === 200) {
+  //   //   // store.items = resp.data
+  //   //   store.PISAH_DATA_RANAP_IGD(resp.data, pasien)
+  //   // }
+
+  //   // await store.getData(pasien)
+  //   store.PISAH_DATA_RANAP_IGD(pasien?.pemeriksaan, pasien)
+  // }
 
   return {
     store, settings, fields, nakes

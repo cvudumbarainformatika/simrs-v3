@@ -46,7 +46,7 @@ export default function useRightPanel (pasien) {
   // }
 
   watch(() => pasien.anamnesis, (val) => {
-    console.log('watch', val)
+    // console.log('watch', val)
     store.PISAH_DATA_RANAP_IGD(pasien?.anamnesis, pasien)
   }, { deep: true })
 

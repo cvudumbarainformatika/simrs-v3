@@ -35,7 +35,7 @@ export default function useRightPanel (pasien) {
     nakes.perawat = !!(auth?.user?.pegawai?.kdgroupnakes === '2' || auth?.user?.pegawai?.kdgroupnakes === '3')
 
     // console.log('nakes', nakes)
-    console.log('pasien?.anamnesis_awal_hd', pasien?.anamnesis_awal_hd)
+    // console.log('pasien?.anamnesis_awal_hd', pasien?.anamnesis_awal_hd)
 
     // getData(pasien)
     store.PISAH_DATA_RANAP_IGD(pasien?.anamnesis_awal_hd, pasien)

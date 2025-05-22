@@ -50,7 +50,9 @@ const enter = (el, done) => {
             <transition-group appear tag="div" @before-enter="beforeEnter" @enter="enter">
               <div v-for="(item, i) in store?.items?.ranap" :key="i" v-ripple
                 class="q-card q-pa-md q-mb-sm cursor-pointer">
-                <q-item-section>
+                <q-item-section @click="() => {
+                  store.initReset(item)
+                }">
                   <q-item-label class="text-bold">
                     {{ item?.nakes === '1' ? 'ASESMENT AWAL MEDIS'
                       : item?.nakes === '2' ? 'ASESMENT AWAL KEPERAWATAN'

@@ -566,7 +566,7 @@ export const useAnamnesisHemodialisaStore = defineStore('anamnesis-hemodialisa-s
     },
 
     initReset (data) {
-      console.log('data init reset', data)
+      // console.log('data init reset', data)
       this.loadingSave = false
 
       this.form = {
@@ -605,9 +605,10 @@ export const useAnamnesisHemodialisaStore = defineStore('anamnesis-hemodialisa-s
       this.form.keluhannyeri.form = formNyeri
 
       const formGizi = {}
+
       for (let i = 0; i < this.formGizis?.length; i++) {
         const el = this.formGizis[i]
-        formGizi[el?.kode] = el?.values?.find(x => x?.skor === data?.skreeninggizi?.dewasa?.form[el.kode]?.skor) ?? el?.values?.find(x => x?.skor === 0) ?? null
+        formGizi[el?.kode] = el?.values?.find(x => x?.skor === (data?.skreeninggizi?.dewasa?.form ? data?.skreeninggizi?.dewasa?.form[el?.kode]?.skor : el?.values?.find(x => x?.skor === 0))) ?? null
       }
       this.form.skreeninggizi.form = formGizi
 
@@ -956,7 +957,7 @@ export const useAnamnesisHemodialisaStore = defineStore('anamnesis-hemodialisa-s
     },
 
     hitungSkorSgd () {
-      const skor = parseInt(this.form.skreeninggizi.form.bb.skor) + parseInt(this.form.skreeninggizi.form.am.skor) + parseInt(this.form.skreeninggizi.form.kk.skor)
+      const skor = parseInt(this.form.skreeninggizi?.form?.bb?.skor) + parseInt(this.form.skreeninggizi?.form?.am?.skor) + parseInt(this.form?.skreeninggizi?.form?.kk?.skor)
       this.form.skreeninggizi.skor = skor
       this.form.skreeninggizi.ket = this.setSgdKet(skor)
       // this.form.sgdSkor = skor
@@ -1144,7 +1145,6 @@ export const useAnamnesisHemodialisaStore = defineStore('anamnesis-hemodialisa-s
           } else {
             pengunjung.deleteInjectanNull2(pasien?.noreg, 'anamnesis')
             pengunjung.injectDataArray(pasien?.noreg, result, 'anamnesis')
-
           }
 
           if (result?.length) this.PISAH_DATA_RANAP_IGD(result, pasien)
@@ -1154,18 +1154,18 @@ export const useAnamnesisHemodialisaStore = defineStore('anamnesis-hemodialisa-s
       catch (error) {
         console.log('error', error)
         this.SPLICE_ITEMS_RANAP(this.items.ranap)
+        this.SPLICE_ITEMS_AWAL(this.items.awal)
         this.loadingSave = false
       }
       // this.loadingSave = false
     },
 
-    PISAH_DATA_RANAP_IGD (arr, pasien) {
+    PISAH_DATA_RANAP_IGD (arr, pasien, cat) {
       const auth = useAplikasiStore()
       const jns = auth?.user?.pegawai?.kdgroupnakes
       console.log('jns auth', jns)
 
       const igd = arr?.filter(x => x?.kdruang === 'POL014') ?? []
-
 
       const isianDokter = arr?.filter(x => x?.kdruang == 'PEN005' && x?.nakes === '1') ?? []
       const isianKeperawatan = arr?.filter(x => x?.kdruang == 'PEN005' && x?.nakes === '2') ?? []
@@ -1205,7 +1205,7 @@ export const useAnamnesisHemodialisaStore = defineStore('anamnesis-hemodialisa-s
       // form = isianDokter[0] || isianKeperawatan[0] || isianKebidanan[0] || null
       // form.id = null
 
-      console.log('form pisah', form)
+      // console.log('form pisah', form)
       this.initReset(form)
       if (dokter) this.form.keluhannyeri = null
       if (dokter) this.form.skreeninggizi = null
