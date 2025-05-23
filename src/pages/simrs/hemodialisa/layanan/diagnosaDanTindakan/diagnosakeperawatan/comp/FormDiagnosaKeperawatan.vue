@@ -1,8 +1,5 @@
 <template>
-  <q-form
-    class="column fit"
-    @submit="simpan"
-  >
+  <q-form class="column fit" @submit="simpan">
     <div class="col full-height full-width">
       <div class="column fit">
         <div v-if="!ulang" class="col-auto">
@@ -16,19 +13,9 @@
               </div>
             </div>
             <div class="col full-width">
-              <q-input
-                v-model="store.diagnosa"
-                label="Diagnosa Keperawtan"
-                autogrow
-                outlined
-                standout="bg-yellow-3"
-                icon="icon-mat-search"
-                :rules="[val => !!val || 'Harap cari Diagnosa dahulu']"
-                lazy-rules="ondemand"
-                hide-bottom-space
-                @click="store.modalOpen = true"
-                @update:model-value="lihatDiagnosa"
-              />
+              <q-input v-model="store.diagnosa" label="Diagnosa Keperawtan" autogrow outlined standout="bg-yellow-3"
+                icon="icon-mat-search" :rules="[val => !!val || 'Harap cari Diagnosa dahulu']" lazy-rules="ondemand"
+                hide-bottom-space @click="store.modalOpen = true" @update:model-value="lihatDiagnosa" />
             </div>
 
             <div v-if="store.selectDiagnosa?.length" class="col-12">
@@ -39,164 +26,85 @@
         </div>
 
         <div v-if="!ulang" class="col full-height q-px-md scroll">
-          <div
-            v-for="item in store.selectDiagnosa"
-            :key="item.kode"
-          >
+          <div v-for="item in store.selectDiagnosa" :key="item.kode">
             <q-separator class="q-my-xs" />
             <div class="bg-grey-4 q-pa-sm">
               <b>{{ item.kode }} - {{ item.nama }}</b>
             </div>
 
-            <div v-if="item.intervensis?.filter(x=>x.group === 'terapeutik')?.length">
+            <div v-if="item.intervensis?.filter(x => x.group === 'terapeutik')?.length">
               <q-separator class="q-my-xs" />
               <div class="">
-                <q-chip
-                  outline
-                  color="primary"
-                  text-color="white"
-                  dense
-                  size="sm"
-                >
+                <q-chip outline color="primary" text-color="white" dense size="sm">
                   Terapeutik
                 </q-chip>
               </div>
-              <q-option-group
-                v-model="store.selectIntervensis"
-                :options="item.intervensis?.filter(x=>x.group === 'terapeutik').map(x=>{
-                  return {
-                    label:x?.nama,
-                    value:x?.id + '||' + item.kode
-                  }
-                })"
-                color="primary"
-                inline
-                dense
-                type="checkbox"
-                size="sm"
-              />
+              <q-option-group v-model="store.selectIntervensis" :options="item.intervensis?.filter(x => x.group === 'terapeutik').map(x => {
+                return {
+                  label: x?.nama,
+                  value: x?.id + '||' + item.kode
+                }
+              })" color="primary" inline dense type="checkbox" size="sm" />
             </div>
 
-            <div v-if="item.intervensis?.filter(x=>x.group === 'edukasi')?.length">
+            <div v-if="item.intervensis?.filter(x => x.group === 'edukasi')?.length">
               <q-separator class="q-my-xs" />
               <div class="">
-                <q-chip
-                  outline
-                  color="orange"
-                  text-color="white"
-                  dense
-                  size="sm"
-                >
+                <q-chip outline color="orange" text-color="white" dense size="sm">
                   Edukasi
                 </q-chip>
               </div>
-              <q-option-group
-                v-model="store.selectIntervensis"
-                :options="item.intervensis?.filter(x=>x.group === 'edukasi').map(x=>{
-                  return {
-                    label:x?.nama,
-                    value:x?.id + '||' + item.kode
-                  }
-                })"
-                color="primary"
-                inline
-                dense
-                type="checkbox"
-                size="sm"
-              />
+              <q-option-group v-model="store.selectIntervensis" :options="item.intervensis?.filter(x => x.group === 'edukasi').map(x => {
+                return {
+                  label: x?.nama,
+                  value: x?.id + '||' + item.kode
+                }
+              })" color="primary" inline dense type="checkbox" size="sm" />
             </div>
 
-            <div v-if="item.intervensis?.filter(x=>x.group === 'observasi')?.length">
+            <div v-if="item.intervensis?.filter(x => x.group === 'observasi')?.length">
               <q-separator class="q-my-xs" />
               <div class="">
-                <q-chip
-                  outline
-                  color="teal"
-                  text-color="white"
-                  dense
-                  size="sm"
-                >
+                <q-chip outline color="teal" text-color="white" dense size="sm">
                   Observasi
                 </q-chip>
               </div>
-              <q-option-group
-                v-model="store.selectIntervensis"
-                :options="item.intervensis?.filter(x=>x.group === 'observasi').map(x=>{
-                  return {
-                    label:x?.nama,
-                    value:x?.id + '||' + item.kode
-                  }
-                })"
-                color="primary"
-                inline
-                dense
-                type="checkbox"
-                size="sm"
-              />
+              <q-option-group v-model="store.selectIntervensis" :options="item.intervensis?.filter(x => x.group === 'observasi').map(x => {
+                return {
+                  label: x?.nama,
+                  value: x?.id + '||' + item.kode
+                }
+              })" color="primary" inline dense type="checkbox" size="sm" />
             </div>
 
-            <div
-              v-if="item.intervensis?.filter(x=>x.group === 'kolaborasi')?.length"
-              class="q-mb-sm"
-            >
+            <div v-if="item.intervensis?.filter(x => x.group === 'kolaborasi')?.length" class="q-mb-sm">
               <q-separator class="q-my-xs" />
               <div class="">
-                <q-chip
-                  outline
-                  color="pink"
-                  text-color="white"
-                  dense
-                  size="sm"
-                >
+                <q-chip outline color="pink" text-color="white" dense size="sm">
                   Kolaborasi
                 </q-chip>
               </div>
-              <q-option-group
-                v-model="store.selectIntervensis"
-                :options="item.intervensis?.filter(x=>x.group === 'kolaborasi').map(x=>{
-                  return {
-                    label:x?.nama,
-                    value:x?.id + '||' + item.kode
-                  }
-                })"
-                color="primary"
-                inline
-                dense
-                type="checkbox"
-                size="sm"
-              />
+              <q-option-group v-model="store.selectIntervensis" :options="item.intervensis?.filter(x => x.group === 'kolaborasi').map(x => {
+                return {
+                  label: x?.nama,
+                  value: x?.id + '||' + item.kode
+                }
+              })" color="primary" inline dense type="checkbox" size="sm" />
             </div>
 
-            <div
-              v-if="item.intervensis?.filter(x=>x.group === 'plann')?.length"
-              class="q-mb-sm"
-            >
+            <div v-if="item.intervensis?.filter(x => x.group === 'plann')?.length" class="q-mb-sm">
               <q-separator class="q-my-xs" />
               <div class="">
-                <q-chip
-                  outline
-                  color="pink"
-                  text-color="white"
-                  dense
-                  size="sm"
-                >
+                <q-chip outline color="pink" text-color="white" dense size="sm">
                   Plann
                 </q-chip>
               </div>
-              <q-option-group
-                v-model="store.selectIntervensis"
-                :options="item.intervensis?.filter(x=>x.group === 'plann').map(x=>{
-                  return {
-                    label:x?.nama,
-                    value:x?.id + '||' + item.kode
-                  }
-                })"
-                color="primary"
-                inline
-                dense
-                type="checkbox"
-                size="sm"
-              />
+              <q-option-group v-model="store.selectIntervensis" :options="item.intervensis?.filter(x => x.group === 'plann').map(x => {
+                return {
+                  label: x?.nama,
+                  value: x?.id + '||' + item.kode
+                }
+              })" color="primary" inline dense type="checkbox" size="sm" />
             </div>
           </div>
 
@@ -205,164 +113,90 @@
         </div>
 
         <div v-if="ulang" class="col full-height q-px-md scroll">
-          <div
-            v-for="item in store.selectDiagnosa"
-            :key="item.kode"
-          >
+          <div v-for="item in store.selectDiagnosa" :key="item.kode">
             <q-separator class="q-my-xs" />
             <div class="bg-grey-4 q-pa-sm">
               <b>{{ item.kode }} - {{ item.nama }}</b>
             </div>
 
-            <div v-if="item.intervensis?.filter(x=>x.group === 'terapeutik' )?.length && categoryIntervensi !== 'plann'">
+            <div
+              v-if="item.intervensis?.filter(x => x.group === 'terapeutik')?.length && categoryIntervensi !== 'plann'">
               <q-separator class="q-my-xs" />
               <div class="">
-                <q-chip
-                  outline
-                  color="primary"
-                  text-color="white"
-                  dense
-                  size="sm"
-                >
+                <q-chip outline color="primary" text-color="white" dense size="sm">
                   Terapeutik
                 </q-chip>
               </div>
-              <q-option-group
-                v-model="store.selectIntervensis"
-                :options="item.intervensis?.filter(x=>x.group === 'terapeutik').map(x=>{
-                  return {
-                    label:x?.nama,
-                    value:x?.id + '||' + item.kode
-                  }
-                })"
-                color="primary"
-                inline
-                dense
-                type="checkbox"
-                size="sm"
-              />
+              <q-option-group v-model="store.selectIntervensis" :options="item.intervensis?.filter(x => x.group === 'terapeutik').map(x => {
+                return {
+                  label: x?.nama,
+                  value: x?.id + '||' + item.kode
+                }
+              })" color="primary" inline dense type="checkbox" size="sm" />
             </div>
 
-            <div v-if="item.intervensis?.filter(x=>x.group === 'edukasi')?.length && categoryIntervensi !== 'plann'">
+            <div v-if="item.intervensis?.filter(x => x.group === 'edukasi')?.length && categoryIntervensi !== 'plann'">
               <q-separator class="q-my-xs" />
               <div class="">
-                <q-chip
-                  outline
-                  color="orange"
-                  text-color="white"
-                  dense
-                  size="sm"
-                >
+                <q-chip outline color="orange" text-color="white" dense size="sm">
                   Edukasi
                 </q-chip>
               </div>
-              <q-option-group
-                v-model="store.selectIntervensis"
-                :options="item.intervensis?.filter(x=>x.group === 'edukasi').map(x=>{
-                  return {
-                    label:x?.nama,
-                    value:x?.id + '||' + item.kode
-                  }
-                })"
-                color="primary"
-                inline
-                dense
-                type="checkbox"
-                size="sm"
-              />
+              <q-option-group v-model="store.selectIntervensis" :options="item.intervensis?.filter(x => x.group === 'edukasi').map(x => {
+                return {
+                  label: x?.nama,
+                  value: x?.id + '||' + item.kode
+                }
+              })" color="primary" inline dense type="checkbox" size="sm" />
             </div>
 
-            <div v-if="item.intervensis?.filter(x=>x.group === 'observasi')?.length && categoryIntervensi !== 'plann'">
+            <div
+              v-if="item.intervensis?.filter(x => x.group === 'observasi')?.length && categoryIntervensi !== 'plann'">
               <q-separator class="q-my-xs" />
               <div class="">
-                <q-chip
-                  outline
-                  color="teal"
-                  text-color="white"
-                  dense
-                  size="sm"
-                >
+                <q-chip outline color="teal" text-color="white" dense size="sm">
                   Observasi
                 </q-chip>
               </div>
-              <q-option-group
-                v-model="store.selectIntervensis"
-                :options="item.intervensis?.filter(x=>x.group === 'observasi').map(x=>{
-                  return {
-                    label:x?.nama,
-                    value:x?.id + '||' + item.kode
-                  }
-                })"
-                color="primary"
-                inline
-                dense
-                type="checkbox"
-                size="sm"
-              />
+              <q-option-group v-model="store.selectIntervensis" :options="item.intervensis?.filter(x => x.group === 'observasi').map(x => {
+                return {
+                  label: x?.nama,
+                  value: x?.id + '||' + item.kode
+                }
+              })" color="primary" inline dense type="checkbox" size="sm" />
             </div>
 
             <div
-              v-if="item.intervensis?.filter(x=>x.group === 'kolaborasi')?.length && categoryIntervensi !== 'plann'"
-              class="q-mb-sm"
-            >
+              v-if="item.intervensis?.filter(x => x.group === 'kolaborasi')?.length && categoryIntervensi !== 'plann'"
+              class="q-mb-sm">
               <q-separator class="q-my-xs" />
               <div class="">
-                <q-chip
-                  outline
-                  color="pink"
-                  text-color="white"
-                  dense
-                  size="sm"
-                >
+                <q-chip outline color="pink" text-color="white" dense size="sm">
                   Kolaborasi
                 </q-chip>
               </div>
-              <q-option-group
-                v-model="store.selectIntervensis"
-                :options="item.intervensis?.filter(x=>x.group === 'kolaborasi').map(x=>{
-                  return {
-                    label:x?.nama,
-                    value:x?.id + '||' + item.kode
-                  }
-                })"
-                color="primary"
-                inline
-                dense
-                type="checkbox"
-                size="sm"
-              />
+              <q-option-group v-model="store.selectIntervensis" :options="item.intervensis?.filter(x => x.group === 'kolaborasi').map(x => {
+                return {
+                  label: x?.nama,
+                  value: x?.id + '||' + item.kode
+                }
+              })" color="primary" inline dense type="checkbox" size="sm" />
             </div>
 
-            <div
-              v-if="item.intervensis?.filter(x=>x.group === 'plann')?.length && categoryIntervensi === 'plann'"
-              class="q-mb-sm"
-            >
+            <div v-if="item.intervensis?.filter(x => x.group === 'plann')?.length && categoryIntervensi === 'plann'"
+              class="q-mb-sm">
               <q-separator class="q-my-xs" />
               <div class="">
-                <q-chip
-                  outline
-                  color="pink"
-                  text-color="white"
-                  dense
-                  size="sm"
-                >
+                <q-chip outline color="pink" text-color="white" dense size="sm">
                   Plann
                 </q-chip>
               </div>
-              <q-option-group
-                v-model="store.selectIntervensis"
-                :options="item.intervensis?.filter(x=>x.group === 'plann').map(x=>{
-                  return {
-                    label:x?.nama,
-                    value:x?.id + '||' + item.kode
-                  }
-                })"
-                color="primary"
-                inline
-                dense
-                type="checkbox"
-                size="sm"
-              />
+              <q-option-group v-model="store.selectIntervensis" :options="item.intervensis?.filter(x => x.group === 'plann').map(x => {
+                return {
+                  label: x?.nama,
+                  value: x?.id + '||' + item.kode
+                }
+              })" color="primary" inline dense type="checkbox" size="sm" />
             </div>
           </div>
 
@@ -370,34 +204,22 @@
           <!-- <q-separator class="q-my-lg" /> -->
         </div>
       </div>
-      <div
-        v-if="!ulang"
-        class="text-right absolute-bottom full-width bg-yellow-2 q-pa-sm"
-      >
-        <q-btn
-          label="Simpan Diagnosa & Intervensi Keperawatan"
-          color="primary"
-          type="submit"
-          :loading="store.loadingSave"
-          :disable="store.loadingSave"
-        />
+      <div v-if="!ulang" class="text-right absolute-bottom full-width bg-yellow-2 q-pa-sm">
+        <q-btn label="Simpan Diagnosa & Intervensi Keperawatan" color="primary" type="submit"
+          :loading="store.loadingSave" :disable="store.loadingSave" />
       </div>
     </div>
 
     <!-- modal diagnosa -->
-    <modal-diagnosa-keperawatan
-      :key="props?.pasien"
-      v-model="store.modalOpen"
-      :masters="store.diagnosas"
-      @ok="store.modalOpen=false"
-    />
+    <modal-diagnosa-keperawatan :key="props?.pasien" v-model="store.modalOpen" :masters="store.diagnosas"
+      @ok="store.modalOpen = false" />
   </q-form>
 </template>
 
 <script setup>
 
-import ModalDiagnosaKeperawatan from 'src/pages/simrs/poli/tindakan/comptindakan/pagemenu/complayanan/ModalDiagnosaKeperawatan.vue'
-import { useDiagnosaKeperawatan } from 'src/stores/simrs/pelayanan/poli/diagnosakeperawatan'
+import ModalDiagnosaKeperawatan from 'src/pages/simrs/hemodialisa/layanan/components/ModalDiagnosaKeperawatan.vue'
+import { useDiagnosaKeperawatanHD } from 'src/stores/simrs/hemodialisa/diagnosaKeperawatan'
 import { onMounted } from 'vue'
 
 const props = defineProps({
@@ -423,7 +245,7 @@ const props = defineProps({
   }
 })
 
-const store = useDiagnosaKeperawatan()
+const store = useDiagnosaKeperawatanHD()
 
 // const modalOpen = ref()
 // const group = ref([])
@@ -434,7 +256,7 @@ const store = useDiagnosaKeperawatan()
 
 onMounted(() => {
   // console.log(props.pasien)
-  if (!props.ulang)store.initReset()
+  if (!props.ulang) store.initReset()
 })
 
 function lihatDiagnosa () {
@@ -442,10 +264,7 @@ function lihatDiagnosa () {
 }
 
 function simpan () {
-  // console.log('simpan')
-  if (props.ulang) {
-    store.tataForm(props?.pasien, 'ranap')
-  }
-  store.simpanDiagnosadanIntervensi(props?.pasien, 'ranap')
+
+  store.simpanDiagnosadanIntervensi(props?.pasien, 'awal')
 }
 </script>

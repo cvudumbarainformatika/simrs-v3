@@ -46,11 +46,13 @@ const enter = (el, done) => {
       separator-class="bg-grey-9" separator-style="height: 3px">
       <template #before>
         <div class="bg-grey-4 q-pa-sm">
-          <info-input-ranap :items="store.items.ranap">
+          <info-input-ranap :items="store.items.awal">
             <transition-group appear tag="div" @before-enter="beforeEnter" @enter="enter">
-              <div v-for="(item, i) in store?.items?.ranap" :key="i" v-ripple
+              <div v-for="(item, i) in store?.items?.awal" :key="i" v-ripple
                 class="q-card q-pa-md q-mb-sm cursor-pointer">
-                <q-item-section>
+                <q-item-section @click="() => {
+                  store.initReset(item)
+                }">
                   <q-item-label class="text-bold">
                     {{ item?.nakes === '1' ? 'ASESMENT AWAL MEDIS'
                       : item?.nakes === '2' ? 'ASESMENT AWAL KEPERAWATAN'
@@ -103,36 +105,5 @@ const enter = (el, done) => {
         </div>
       </template>
     </q-splitter>
-    <!-- <div class="" :class="min? 'col full-height':'col-6'">
-      <div v-if="pasien?.anamnesis?.length" class="full-height q-pa-sm scroll">
-        <transition-group appear tag="div" @before-enter="beforeEnter" @enter="enter">
-          <div v-for="(item, i) in pasien?.anamnesis" :key="i" v-ripple class="q-card q-pa-md q-mb-sm cursor-pointer">
-            <q-item-section>
-              <q-item-label class="text-bold">
-                ASESMENT AWAL KEPERAWATAN
-              </q-item-label>
-              <q-item-label>Data PEMERIKSAAN Tersimpan</q-item-label>
-              <q-item-label caption>
-                Oleh : {{ item?.petugas?.nama }}
-              </q-item-label>
-              <q-item-label caption>
-                <div class="flex q-gutter-sm items-center">
-                  <div><q-icon name="icon-ion-timer" size="sm" /></div>
-                  <div>{{ item?.tgl }}</div>
-                </div>
-              </q-item-label>
-            </q-item-section>
-            <q-item-section side bottom>
-              <q-icon :name="item?.id ? 'icon-mat-done_all':'icon-mat-done'" color="teal" />
-            </q-item-section>
-          </div>
-        </transition-group>
-        <div style="margin-bottom:100px;" />
-      </div>
-      <div v-else class="column full-height flex-center">
-        <div>Belum Ada Data Tersimpan</div>
-      </div>
-    </div> -->
-    <!-- INI LIST IGD -->
   </div>
 </template>

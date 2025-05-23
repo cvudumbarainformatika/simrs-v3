@@ -744,7 +744,7 @@ export const usePemeriksaanUmumHemodialisaStore = defineStore('pemeriksaan-umum-
       this.formPediatrik.glasgowKet = ket
     },
 
-    async saveForm (jnsKasus, pasien) {
+    async saveForm (jnsKasus, pasien, cat) {
       // console.log('jnsKasus', jnsKasus, pasien)
 
       this.loadingSave = true
@@ -759,11 +759,11 @@ export const usePemeriksaanUmumHemodialisaStore = defineStore('pemeriksaan-umum-
       }
       const req = {
         id: this.form.id,
-        noreg: pasien?.noreg ?? null,
+        noreg: cat == 'awal' ? pasien?.noreg : (pasien?.nota_permintaan ?? pasien?.noreg),
         norm: pasien?.norm,
-        kdruang: pasien?.kdruangan,
+        kdruang: 'PEN005',
         form: formDefault,
-        awal: '1',
+        awal: cat == 'awal' ? '1' : '',
         formKebidanan: kasusKep === '4.2' ? this.formKebidanan : null, // ini this.formKebidanan,
         formNeonatal: kasusKep === '4.3' ? this.formNeonatal : null,
         formPediatrik: kasusKep === '4.4' ? this.formPediatrik : null // ini this.formPediatrik
@@ -773,9 +773,9 @@ export const usePemeriksaanUmumHemodialisaStore = defineStore('pemeriksaan-umum-
       const auth = useAplikasiStore()
       const pushSementara = {
         id: this.form?.id ?? null,
-        noreg: pasien?.noreg,
+        noreg: cat == 'awal' ? pasien?.noreg : (pasien?.nota_permintaan ?? pasien?.noreg),
         norm: pasien?.norm,
-        kdruang: pasien?.kdruangan ?? null,
+        kdruang: 'PEN005',
         ruangan: pasien?.ruangan ?? null,
         nakes: auth?.user?.pegawai?.kdgroupnakes,
         petugas: { nama: auth?.user?.nama }
@@ -785,51 +785,53 @@ export const usePemeriksaanUmumHemodialisaStore = defineStore('pemeriksaan-umum-
       // console.log('push frm sementara', pushSementara)
 
       const pengunjung = useListPasienHemodialisaStore()
-      pengunjung.injectDataPasien(pasien?.noreg, pushSementara, 'pemeriksaan')
+      if (cat == 'awal') pengunjung.injectDataPasien(pasien?.noreg, pushSementara, 'pemeriksaan_awal_hd')
+      else pengunjung.injectDataPasien(pasien?.noreg, pushSementara, 'pemeriksaan')
 
       console.log('form, jenis kasus', req, jnsKasus)
 
       try {
         const resp = await api.post('v1/simrs/hemodialisa/layanan/pemeriksaan/simpan', req)
-        // console.log('simpan pemeriksaan', resp)
         if (resp.status === 200) {
           notifSuccess(resp)
           const result = resp?.data?.result
 
           // pengunjung.deleteInjectanNull2(pasien?.noreg, 'pemeriksaan')
-          pengunjung.injectDataArray(pasien?.noreg, result, 'pemeriksaan')
+          if (cat == 'awal') pengunjung.injectDataArray(pasien?.noreg, result, 'pemeriksaan_awal_hd')
+          else pengunjung.injectDataArray(pasien?.noreg, result, 'pemeriksaan')
+          console.log('simpan pemeriksaan', result, pasien, cat)
 
-          if (result?.length) this.PISAH_DATA_RANAP_IGD(result, pasien)
+          if (result?.length && cat == 'awal') this.PISAH_DATA_RANAP_IGD(result, pasien, 'awal')
+          else if (result?.length) this.PISAH_DATA_RANAP_IGD(result, pasien)
         }
         this.loadingSave = false
       }
       catch (error) {
         console.log('error', error)
         this.SPLICE_ITEMS_RANAP(this.items.ranap)
+        this.SPLICE_ITEMS_AWAL(this.items.awal)
         this.loadingSave = false
       }
     },
 
-    PISAH_DATA_RANAP_IGD (arr, pasien) {
+    PISAH_DATA_RANAP_IGD (arr, pasien, cat) {
       const auth = useAplikasiStore()
       const jns = auth?.user?.pegawai?.kdgroupnakes
 
-      const igd = arr?.filter(x => x?.kdruang === 'POL014') ?? []
-      const ranap = arr?.filter(x => (x?.kdruang !== 'POL014' && x?.awal === '1')) ?? []
+      const awal = arr?.filter(x => (x?.kdruang === 'PEN005' && x?.awal === '1')) ?? []
+      const harian = arr?.filter(x => (x?.kdruang === 'PEN005' && x?.awal == null)) ?? []
       // const isianKeperawatan = arr?.filter(x => x?.kdruang !== 'POL014' && x?.nakes !== '1' && x?.awal === '1') ?? []
 
       // console.log('isianKeperawatan :', isianKeperawatan);
 
-      this.items.igd = igd
-      this.items.ranap = ranap
+      if (cat == 'awal') this.items.awal = [...awal]
+      else this.items.ranap = [...harian]
 
-      // console.log('items', this.items)
+      console.log('items pemeriksaan', awal, harian, this.items)
 
-
-      const isianDokter = ranap?.length ? ranap?.filter(x => x?.nakes === '1') : []
-      const isianKeperawatan = ranap?.length ? ranap?.filter(x => x?.nakes === '2') : []
-      const isianKebidanan = ranap?.length ? ranap?.filter(x => x?.nakes === '3') : []
-      // console.log('isianDokter', isianDokter);
+      const isianDokter = arr?.filter(x => x?.kdruang == 'PEN005' && x?.nakes === '1') ?? []
+      const isianKeperawatan = arr?.filter(x => x?.kdruang == 'PEN005' && x?.nakes === '2') ?? []
+      const isianKebidanan = arr?.filter(x => x?.kdruang == 'PEN005' && x?.nakes === '3') ?? []
 
       // baru ada penyesuaian nakes
       let form = null
@@ -852,24 +854,19 @@ export const usePemeriksaanUmumHemodialisaStore = defineStore('pemeriksaan-umum-
         form = isianKebidanan[0] || isianKeperawatan[0] || isianDokter[0] || null
         if (form) isianKebidanan?.length ? form.id = form.id : form.id = null
       }
-      // form = isianDokter[0] || isianKeperawatan[0] || isianKebidanan[0] || null
-      // form.id = null
-      // if (form) ranap?.length ? form.id = form?.id : form.id = null
-      // const isianList = ranap?.length ? ranap[0] : null
 
-      // if (isianList) {
-      //   pengunjung.injectDataPasien(pasien?.noreg, isianList, 'pemeriksaan')
-      //   pengunjung.deleteInjectanNull(pasien?.noreg, 'pemeriksaan')
-      // }
-      // console.log('form', form)
 
       this.initReset(form)
-      // console.log('form', form)
+
     },
 
     SPLICE_ITEMS_RANAP (arr) {
       const idx = arr?.findIndex(x => x.id === null)
       this.items.ranap = arr.splice(1, idx)
+    },
+    SPLICE_ITEMS_AWAL (arr) {
+      const idx = arr?.findIndex(x => x.id === null)
+      this.items.awal = arr.splice(1, idx)
     }
 
   }

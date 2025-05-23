@@ -3,7 +3,7 @@
     <div class="absolute-top columm fit q-pa-xs">
       <div class="col-auto">
         <q-tabs v-model="tab" dense no-caps inline-label narrow-indicator indicator-color="transparent" align="left"
-          class=" glassmo text-grey-8" active-color="white" active-bg-color="dark">
+          class=" glassmo text-grey-8" active-color="white" active-bg-color="primary">
           <q-tab v-for="tb in tabs" :key="tb.name" :ripple="true" :name="tb?.name" content-class="tab-classes">
             <template #default>
               <div class="row q-gutter-x-xs items-center q-px-sm" style="border-radius: 10px;">
@@ -18,7 +18,7 @@
         <q-tab-panels v-model="tab" animated class="bg-transparent q-pa-none relative-position fit">
           <q-tab-panel ref="refPanel" :name="menu?.name" class="q-pa-none"
             style="overflow: hidden; max-height: calc(100vh - 95px);">
-            <component :is="menu?.comp" />
+            <component :is="menu?.comp" :pasien="store?.pasien" :nakes="nakes" />
           </q-tab-panel>
         </q-tab-panels>
       </div>
@@ -29,9 +29,11 @@
 
 <script setup>
 import { useAplikasiStore } from 'src/stores/app/aplikasi'
+import { useListPasienHemodialisaStore } from 'src/stores/simrs/hemodialisa/hemodialisa'
 import { computed, defineAsyncComponent, onMounted, ref } from 'vue'
 
 const auth = useAplikasiStore()
+const store = useListPasienHemodialisaStore()
 const props = defineProps({
   headheight: {
     type: Number,
@@ -41,15 +43,15 @@ const props = defineProps({
 const nakes = computed(() => {
   return auth?.user?.pegawai?.kdgroupnakes
 })
-const tab = ref('intridialitik')
+const tab = ref('assement-harian')
 
 const tabsxx = [
   {
-    label: 'Pemantauan Intridialitik',
-    name: 'intridialitik',
-    // icon: 'icon-my-stethoscope',
-    nakes: ['1', '2', '3'],
-    comp: defineAsyncComponent(() => import('./intridialitik/IndexPage.vue'))
+    label: 'Assasement Harian', // ini isisnya Assasement awal, data tidak boleh tercampur dengan data ranap
+    name: 'assement-harian',
+    // icon: 'icon-my-human-back-svgrepo-com',
+    nakes: ['1', '2'],
+    comp: defineAsyncComponent(() => import('./anamnesis/IndexPage.vue'))
   },
   {
     label: 'Pengkajian Hemodialisa',
@@ -58,13 +60,28 @@ const tabsxx = [
     nakes: ['1', '2', '3'],
     comp: defineAsyncComponent(() => import('./pengkajian/IndexPage.vue'))
   },
-  // {   // iki ga usah jare mbak anne
-  //   label: 'Status Hemodialisa',
-  //   name: 'status',
-  //   // icon: 'icon-my-human-back-svgrepo-com',
-  //   nakes: ['1', '2'],
-  //   comp: defineAsyncComponent(() => import('./status/IndexPage.vue'))
-  // }
+  {
+    label: 'Pemeriksaan Fisik', // ini isinya pemeriksaan fisik, data tidak boleh tercampur dengan data ranap
+    name: 'pemeriksaan-fisik',
+    // icon: 'icon-my-human-back-svgrepo-com',
+    nakes: ['1', '2'],
+    comp: defineAsyncComponent(() => import('./pemeriksaan/IndexPage.vue'))
+  },
+  {
+    label: 'Diagnosa Keperawatan',
+    name: 'diagnosa-keperawatan',
+    // icon: 'icon-my-human-back-svgrepo-com',
+    nakes: ['1', '2'],
+    comp: defineAsyncComponent(() => import('./diagnosaDanTindakan/IndexPage.vue'))
+  },
+  {
+    label: 'Pemantauan Intridialitik',
+    name: 'intridialitik',
+    // icon: 'icon-my-stethoscope',
+    nakes: ['1', '2', '3'],
+    comp: defineAsyncComponent(() => import('./intridialitik/IndexPage.vue'))
+  },
+
 ]
 
 const menu = computed(() => {

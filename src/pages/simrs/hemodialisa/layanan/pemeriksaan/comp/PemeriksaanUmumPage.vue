@@ -80,8 +80,8 @@ const validate = () => {
   myForm.value.validate().then(success => {
     if (success) {
       // yay, models are correct
-      // console.log('success', store.formKebidanan)
-      store.saveForm(props?.kasus, props.pasien)
+      console.log('success pemeriksaan awal')
+      store.saveForm(props?.kasus, props.pasien, 'awal')
     }
     else {
       // oh no, user has filled in

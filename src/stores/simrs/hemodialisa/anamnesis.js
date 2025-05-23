@@ -9,6 +9,7 @@ export const useAnamnesisHemodialisaStore = defineStore('anamnesis-hemodialisa-s
   state: () => ({
 
     items: {
+      awal: [],
       ranap: [],
       igd: []
     },
@@ -25,6 +26,7 @@ export const useAnamnesisHemodialisaStore = defineStore('anamnesis-hemodialisa-s
       rwPkrjDgZatBahaya: null,
       rwAlergi: [],
       ketRwAlergi: null,
+      asupanmakan: null,
 
       // kajianNyeri: 'Wong Baker Face Scale',
       // skorNyeri: 0,
@@ -522,51 +524,26 @@ export const useAnamnesisHemodialisaStore = defineStore('anamnesis-hemodialisa-s
 
     ]
 
-    // sgn: {
-    //   nm: {
-    //     text: 'Nafsu Makan',
-    //     pilihan: [
-    //       { text: ' Nafsu Makan Baik', skor: 0 },
-    //       { text: ' Intake Berkurang, Sisa Makan Lebih dari Setengah Pors', skor: 2 },
-    //       { text: ' Tidak Ada Nafsu Makan Lebih dari 24 Jam', skor: 3 }
-    //     ]
-    //   },
-    //   km: {
-    //     text: 'Kemampuan Untuk Makan',
-    //     pilihan: [
-    //       { text: 'Tidak ada kesulitan makan, tidak diare atau muntah', skor: 0 },
-    //       { text: 'Ada masalah makan, sering muntah dan diare ringan', skor: 1 },
-    //       { text: 'Butuh bantuan untuk makan, muntah sedang dan atau diare 1-2 kali sehari', skor: 2 },
-    //       { text: 'Tidak dapat makan secara oral, disfagia, muntah berat dan atau diare lebih dari sekali sehari', skor: 3 }
-    //     ]
-    //   },
-    //   fs: {
-    //     text: 'Faktor Stress',
-    //     pilihan: [
-    //       { text: 'Tidak ada', skor: 0 },
-    //       { text: 'Pembedahan ringan atau infeksi', skor: 1 },
-    //       { text: 'Penyakit kronik, bedah mayor, inflamatory bowl disease atau penyakit gastrointestina', skor: 2 },
-    //       { text: 'Patah tulang, luka bakar, sepsis berat, penyakit malignansi', skor: 3 }
-    //     ]
-    //   },
-    //   bb: {
-    //     text: 'Persentil BB',
-    //     pilihan: [
-    //       { text: 'BB/TB sesuai standar', skor: 0 },
-    //       { text: '90-99% BB/TB', skor: 1 },
-    //       { text: '80-89% BB/TB', skor: 2 },
-    //       { text: '<79% BB/TB', skor: 3 }
-    //     ]
-    //   }
-
-    // }
 
   }),
   // getters: {
   //   doubleCount: (state) => state.counter * 2
   // },
   actions: {
-
+    keteranganSkorGizi (nilai) {
+      const skor = nilai || 0
+      if (skor < 2) {
+        return 'tidak beresiko malnutrisi'
+      }
+      else {
+        return 'Beresiko malnutrisi'
+      }
+    },
+    hitungNilaiSkor () {
+      const skorKondKhusus = this.form.kondisikhusus.trim()?.length === 0 ? 0 : 2
+      const skor = parseInt(this.form.skreeninggizi) + parseInt(this.form.asupanmakan) + parseInt(skorKondKhusus)
+      this.form.skor = skor
+    },
     async getData (pasien) {
       this.loading = true
       const params = {
@@ -628,9 +605,10 @@ export const useAnamnesisHemodialisaStore = defineStore('anamnesis-hemodialisa-s
       this.form.keluhannyeri.form = formNyeri
 
       const formGizi = {}
+
       for (let i = 0; i < this.formGizis?.length; i++) {
         const el = this.formGizis[i]
-        formGizi[el?.kode] = el?.values?.find(x => x?.skor === data?.skreeninggizi?.dewasa?.form[el.kode]?.skor) ?? el?.values?.find(x => x?.skor === 0) ?? null
+        formGizi[el?.kode] = el?.values?.find(x => x?.skor === (data?.skreeninggizi?.dewasa?.form ? data?.skreeninggizi?.dewasa?.form[el?.kode]?.skor : el?.values?.find(x => x?.skor === 0))) ?? null
       }
       this.form.skreeninggizi.form = formGizi
 
@@ -979,7 +957,7 @@ export const useAnamnesisHemodialisaStore = defineStore('anamnesis-hemodialisa-s
     },
 
     hitungSkorSgd () {
-      const skor = parseInt(this.form.skreeninggizi.form.bb.skor) + parseInt(this.form.skreeninggizi.form.am.skor) + parseInt(this.form.skreeninggizi.form.kk.skor)
+      const skor = parseInt(this.form.skreeninggizi?.form?.bb?.skor) + parseInt(this.form.skreeninggizi?.form?.am?.skor) + parseInt(this.form?.skreeninggizi?.form?.kk?.skor)
       this.form.skreeninggizi.skor = skor
       this.form.skreeninggizi.ket = this.setSgdKet(skor)
       // this.form.sgdSkor = skor
@@ -1058,7 +1036,7 @@ export const useAnamnesisHemodialisaStore = defineStore('anamnesis-hemodialisa-s
       this.formRiwayatKehamilan.riwayatKehamilan = val ? val?.riwayatKehamilan : null
     },
     saveRiwayatKehamilan (pasien) {
-      this.formRiwayatKehamilan.noreg = pasien?.noreg
+      this.formRiwayatKehamilan.noreg = pasien?.nota_permintaan ?? pasien?.noreg
       this.formRiwayatKehamilan.norm = pasien?.norm
       return new Promise((resolve, reject) => {
         api.post('v1/simrs/pelayanan/kandungan/store-obsetri', this.formRiwayatKehamilan)
@@ -1106,7 +1084,7 @@ export const useAnamnesisHemodialisaStore = defineStore('anamnesis-hemodialisa-s
 
 
     // KHUSUS KEPERAWATAN
-    async saveForm (jnsKasus, pasien) {
+    async saveForm (jnsKasus, pasien, awal) {
 
       // console.log('this.form', this.form);
 
@@ -1123,12 +1101,12 @@ export const useAnamnesisHemodialisaStore = defineStore('anamnesis-hemodialisa-s
       }
       // eslint-disable-next-line no-unused-vars
       const req = {
-        noreg: pasien?.noreg ?? null,
+        noreg: awal == 'awal' ? pasien?.noreg : (pasien?.nota_permintaan ?? (pasien?.noreg ?? null)),
         norm: pasien?.norm,
         kdruang: pasien?.kdruangan,
         id: this.form.id,
         form: formDefault,
-        awal: '1',
+        awal: awal == 'awal' ? '1' : '',
         formKebidanan: kasusKep === '4.2' ? this.formKebidanan : null, // ini this.formKebidanan,
         formNeoNatal: kasusKep === '4.3' ? this.formNeoNatal : null,
         formPediatrik: kasusKep === '4.4' ? this.formPediatrik : null // ini this.formPediatrik
@@ -1138,7 +1116,7 @@ export const useAnamnesisHemodialisaStore = defineStore('anamnesis-hemodialisa-s
       const auth = useAplikasiStore()
       const pushSementara = {
         id: this.form.id,
-        noreg: pasien?.noreg,
+        noreg: awal == 'awal' ? pasien?.noreg : (pasien?.nota_permintaan ?? pasien?.noreg),
         norm: pasien?.norm,
         kdruang: pasien?.kdruangan,
         nakes: auth?.user?.pegawai?.kdgroupnakes,
@@ -1148,7 +1126,8 @@ export const useAnamnesisHemodialisaStore = defineStore('anamnesis-hemodialisa-s
       }
 
       const pengunjung = useListPasienHemodialisaStore()
-      pengunjung.injectDataPasien(pasien?.noreg, pushSementara, 'anamnesis')
+      if (awal == 'awal') pengunjung.injectDataPasien(pasien?.noreg, pushSementara, 'anamnesis_awal_hd')
+      else pengunjung.injectDataPasien(pasien?.noreg, pushSementara, 'anamnesis')
 
       // console.log('form, jenis kasus', req)
 
@@ -1159,8 +1138,14 @@ export const useAnamnesisHemodialisaStore = defineStore('anamnesis-hemodialisa-s
           notifSuccess(resp)
           const result = resp?.data?.result
           // pengunjung.injectDataPasien(pasien?.noreg, result, 'anamnesis')
-          pengunjung.deleteInjectanNull2(pasien?.noreg, 'anamnesis')
-          pengunjung.injectDataArray(pasien?.noreg, result, 'anamnesis')
+          if (awal = 'awal') {
+            pengunjung.deleteInjectanNull2(pasien?.noreg, 'anamnesis_awal_hd')
+            pengunjung.injectDataArray(pasien?.noreg, result, 'anamnesis_awal_hd')
+
+          } else {
+            pengunjung.deleteInjectanNull2(pasien?.noreg, 'anamnesis')
+            pengunjung.injectDataArray(pasien?.noreg, result, 'anamnesis')
+          }
 
           if (result?.length) this.PISAH_DATA_RANAP_IGD(result, pasien)
         }
@@ -1169,28 +1154,23 @@ export const useAnamnesisHemodialisaStore = defineStore('anamnesis-hemodialisa-s
       catch (error) {
         console.log('error', error)
         this.SPLICE_ITEMS_RANAP(this.items.ranap)
+        this.SPLICE_ITEMS_AWAL(this.items.awal)
         this.loadingSave = false
       }
       // this.loadingSave = false
     },
 
-    PISAH_DATA_RANAP_IGD (arr, pasien) {
+    PISAH_DATA_RANAP_IGD (arr, pasien, cat) {
       const auth = useAplikasiStore()
       const jns = auth?.user?.pegawai?.kdgroupnakes
-      // console.groupCollapsed('[setForm : PISAH_DATA_RANAP_IGD]')
       console.log('jns auth', jns)
 
       const igd = arr?.filter(x => x?.kdruang === 'POL014') ?? []
-      const ranap = arr?.filter(x => x?.kdruang !== 'POL014' && x?.awal === '1' && x?.nakes === '1') ?? [] // ini isian dokter
-      // const ranap = arr?.filter(x => x?.kdruang !== 'POL014' && x?.awal === '1' && x?.jns === '1') ?? []
-      // console.log('ranap isianDokter:', ranap)
-      // console.log('igd :', igd)
 
-      const isianDokter = arr?.filter(x => x?.kdruang !== 'POL014' && x?.nakes === '1' && x?.awal === '1') ?? []
-      const isianKeperawatan = arr?.filter(x => x?.kdruang !== 'POL014' && x?.nakes === '2' && x?.awal === '1') ?? []
-      const isianKebidanan = arr?.filter(x => x?.kdruang !== 'POL014' && x?.nakes === '3' && x?.awal === '1') ?? []
-      // const isianDokter = arr?.filter(x => x?.kdruang !== 'POL014' && x?.awal === '1' && x?.nakes === '1') ?? []
-      // console.log('isianKeperawatan :', isianKeperawatan)
+      const isianDokter = arr?.filter(x => x?.kdruang == 'PEN005' && x?.nakes === '1') ?? []
+      const isianKeperawatan = arr?.filter(x => x?.kdruang == 'PEN005' && x?.nakes === '2') ?? []
+      const isianKebidanan = arr?.filter(x => x?.kdruang == 'PEN005' && x?.nakes === '3') ?? []
+
 
       // baru ada penyesuaian nakes
       let form = null
@@ -1200,7 +1180,8 @@ export const useAnamnesisHemodialisaStore = defineStore('anamnesis-hemodialisa-s
       // console.log('dokter', dokter)
 
       this.items.igd = igd
-      this.items.ranap = arr?.filter(x => x?.kdruang !== 'POL014' && x?.awal === '1') ?? []
+      this.items.awal = arr?.filter(x => x?.kdruang === 'PEN005' && x?.awal == '1') ?? [] // awal
+      this.items.ranap = arr?.filter(x => x?.kdruang == 'PEN005' && x?.awal == null) ?? [] // harian
       // this.items.ranap = dokter ? ranap : isianKeperawatan
 
       // jika dokter
@@ -1224,7 +1205,7 @@ export const useAnamnesisHemodialisaStore = defineStore('anamnesis-hemodialisa-s
       // form = isianDokter[0] || isianKeperawatan[0] || isianKebidanan[0] || null
       // form.id = null
 
-      // console.log('form', form)
+      // console.log('form pisah', form)
       this.initReset(form)
       if (dokter) this.form.keluhannyeri = null
       if (dokter) this.form.skreeninggizi = null
@@ -1233,6 +1214,10 @@ export const useAnamnesisHemodialisaStore = defineStore('anamnesis-hemodialisa-s
     SPLICE_ITEMS_RANAP (arr) {
       const idx = arr?.findIndex(x => x.id === null)
       this.items.ranap = arr.splice(1, idx)
+    },
+    SPLICE_ITEMS_AWAL (arr) {
+      const idx = arr?.findIndex(x => x.id === null)
+      this.items.awal = arr.splice(1, idx)
     }
   }
 })

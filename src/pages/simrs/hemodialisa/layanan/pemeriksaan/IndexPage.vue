@@ -61,13 +61,13 @@ const tabsxx = [
     nakes: ['1', '2', '3'],
     comp: defineAsyncComponent(() => import('./comp/PemeriksaanUmumPage.vue'))
   },
-  {
-    label: 'Penilaian',
-    name: 'penilaian',
-    icon: 'icon-mat-description',
-    nakes: ['2', '3'],
-    comp: defineAsyncComponent(() => import('./comp/PenilaianPage.vue'))
-  }
+  // { // ga usah, khusus ranap
+  //   label: 'Penilaian',
+  //   name: 'penilaian',
+  //   icon: 'icon-mat-description',
+  //   nakes: ['2', '3'],
+  //   comp: defineAsyncComponent(() => import('./comp/PenilaianPage.vue'))
+  // }
   // {
   //   label: 'Anatomi',
   //   name: 'fisik',
