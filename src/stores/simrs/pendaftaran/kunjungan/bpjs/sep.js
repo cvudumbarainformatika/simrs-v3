@@ -33,10 +33,12 @@ export const useSepBpjsStore = defineStore('sep_bpjs', {
         })
     },
     async carisep(val) {
+      console.log('form', val)
       this.items = []
       this.itemsx = []
       this.loadingsep = true
-      const payload = { nosep: val?.sep, noka: val?.noka }
+      const sep = val?.sep ?? val?.nosep
+      const payload = { nosep: sep, noka: val?.noka }
       await api.post('v1/simrs/bridgingbpjs/pendaftaran/carisep', payload)
         .then(resp => {
           this.loadingsep = false
