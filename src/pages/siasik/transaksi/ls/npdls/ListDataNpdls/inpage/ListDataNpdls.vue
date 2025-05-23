@@ -55,6 +55,9 @@
             </q-td>
             <q-td key="kegiatanblud" :props="props" class="text-left">
               {{ props.row?.kegiatanblud }}
+              <q-badge v-if="props.row?.nonotadinas" outline class="text-orange-9">
+                {{ props.row?.nonotadinas }}
+              </q-badge>
             </q-td>
             <q-td key="penerima" :props="props" class="text-left">
               {{ props.row?.penerima }}
@@ -65,21 +68,30 @@
               </div>
             </q-td>
             <q-td key="nopencairan" :props="props" class="text-left wrap-cells">
-              <div>
-                Pencairan Tanggal
-              </div>
-              <div>{{ props.row?.tglcair }}</div>
-              <q-badge>
-                {{ props.row?.nopencairan }}
-              </q-badge>
+              <template v-if="props.row?.nopencairan">
+                <div>
+                  Pencairan Tanggal
+                </div>
+                <div>{{ props.row?.tglcair }}</div>
+                <q-badge>
+                  {{ props.row?.nopencairan }}
+                </q-badge>
+              </template>
+              <template v-else>
+                <q-badge outline class="text-primary">Belum Pencairan</q-badge>
+              </template>
             </q-td>
             <q-td>
               <div class="row justify-center">
                 <div class="q-pr-xs">
-                  <q-btn v-if="gantiKunci(props?.row)" flat round size="xs" class="bg-red" icon="icon-mat-lock"
-                    @click="kunciData(props?.row?.nonpdls)" />
-                  <q-btn v-else flat round size="xs" class="bg-orange" icon="icon-mat-lock_open"
-                    @click="kunciData(props?.row?.nonpdls)" />
+                  <q-btn v-if="gantiKunci(props?.row)" flat round size="xs" class="bg-red-10 text-white"
+                    icon="icon-mat-lock" @click="kunciData(props?.row)">
+                    <q-tooltip> Buka Kunci </q-tooltip>
+                  </q-btn>
+                  <q-btn v-else flat round size="xs" class="bg-orange" icon="icon-mat-key"
+                    @click="kunciData(props?.row)">
+                    <q-tooltip> Kunci Data </q-tooltip>
+                  </q-btn>
                 </div>
                 <div> <q-btn flat round class="bg-dark" size="xs" color="warning" icon="icon-fa-file-regular">
                     <q-menu dark style="min-width: 150px">
@@ -119,6 +131,7 @@
 <script setup>
 import { useQuasar } from 'quasar'
 import { formatRpDouble } from 'src/modules/formatter'
+import { useAuthStore } from 'src/stores/auth'
 import { dataBastFarmasiStore } from 'src/stores/siasik/transaksi/ls/newnpdls/bastfarmasi'
 import { formInputNpdlsStore } from 'src/stores/siasik/transaksi/ls/newnpdls/formnpdls'
 import { listDataNpdlsStore } from 'src/stores/siasik/transaksi/ls/newnpdls/listdatanpdls'
@@ -134,6 +147,7 @@ const store = listDataNpdlsStore()
 const form = formInputNpdlsStore()
 const router = useRouter()
 const carisrt = dataBastFarmasiStore()
+const auth = useAuthStore()
 onMounted(() => {
 
 })
@@ -252,25 +266,55 @@ function gantiKunci(row) {
 const $q = useQuasar()
 const selected = ref([])
 function kunciData(row) {
-  $q.dialog({
-    title: 'Peringatan',
-    message: 'Apakah Data ini akan dikunci?',
-    cancel: true,
-    persistent: true
-  }).onOk(() => {
-    // const kunci = store.datanpd.find((x) => x.nonpdls === row)
-
-    const payload = {
-      nonpdls: row,
-      // kunci: kunci?.kunci
+  if (row.kunci === "1") {
+    // Validasi: hanya user super admin yang bisa buka kunci
+    if (auth.user?.pegawai?.kdpegsimrs !== 'sa') {
+      $q.notify({
+        type: 'negative',
+        message: 'Anda tidak Memiliki Izin Membuka Kunci Data ini, Silahkan Hubungi Admin'
+      })
+      return
     }
-    console.log('payload', payload)
-    store.kunciData(payload)
-  }).onCancel(() => {
-    console.log('Cancel')
-    selected.value = []
-  }).onDismiss(() => {
-  })
+    $q.dialog({
+      title: 'Peringatan',
+      message: 'Apakah Anda yakin akan Membuka Kunci?',
+      cancel: true,
+      persistent: true
+    }).onOk(() => {
+      const payload = {
+        nonpdls: row.nonpdls,
+        kunci: row.kunci
+      }
+      console.log('payload', payload)
+      store.kunciData(payload).then(() => {
+        row.kunci = row.kunci === '1' ? '' : '1'
+      })
+    }).onCancel(() => {
+      console.log('Cancel')
+      selected.value = []
+    }).onDismiss(() => {
+    })
+  } else {
+    $q.dialog({
+      title: 'Peringatan',
+      message: 'Apakah Anda yakin akan Mengunci Data?',
+      cancel: true,
+      persistent: true
+    }).onOk(() => {
+      const payload = {
+        nonpdls: row.nonpdls,
+        kunci: row.kunci
+      }
+      console.log('payload', payload)
+      store.kunciData(payload).then(() => {
+        row.kunci = row.kunci === '1' ? '' : '1'
+      })
+    }).onCancel(() => {
+      console.log('Cancel')
+      selected.value = []
+    }).onDismiss(() => {
+    })
+  }
 }
 </script>
 

@@ -95,7 +95,7 @@ export const listdataSerahterimaStore = defineStore('list_data_serahterima', {
       console.log('KUNCI', row)
       this.loading = true;
       return new Promise((resolve) => {
-        api.post('/v1/transaksi/serahterima/kuncinpd')
+        api.post('/v1/transaksi/serahterima/kuncidata', row)
           .then((resp) => {
             console.log('resp', resp)
             this.loading = false
