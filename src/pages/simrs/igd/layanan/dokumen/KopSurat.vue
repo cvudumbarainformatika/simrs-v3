@@ -1,6 +1,6 @@
 <template>
   <div class="row q-col-gutter-xs items-center garis-bawah-double  q-pb-sm">
-    <div class="col-1">
+    <div class="col-1 ">
       <img src="~assets/images/logo-kota-grey.png" spinner-color="white" style="height: 2cm; max-width: 1.5cm" />
     </div>
     <div class="col-10 ">
@@ -10,7 +10,7 @@
       <div class="row justify-center ">
         DINAS KESEHATAN, PENGENDALIAN PENDUDUK, DAN KELUARGA BERENCANA
       </div>
-      <div class="row justify-center">
+      <div class="row justify-center text-bold" style="font-size: 17px">
         UOBK RSUD DOKTER MOHAMAD SALEH
       </div>
       <div class="row  justify-center">
@@ -24,7 +24,7 @@
       </div>
     </div>
     <div class="col-1">
-      <img src="~assets/logos/logo-rsud.png" spinner-color="white" style="height: 1.6cm; max-width: 1.6cm" />
+      <img src="~assets/logos/logo-rsud.png" spinner-color="white" style="height: 1.9cm; max-width: 1.6cm" />
     </div>
   </div>
 
@@ -35,7 +35,7 @@
     <div class="row q-mt-sm">
       <div class="col-2">Nama</div>
       <div class="col-1">:</div>
-      <div class="col-3 text-bold">{{ pasien?.nama }}</div>
+      <div class="col-3 text-bold">{{ pasien?.nama ?? pasien?.pasien }}</div>
       <div class="col-2">No. RM</div>
       <div class="col-1">:</div>
       <div class="col-3 text-bold">{{ pasien?.norm }}</div>

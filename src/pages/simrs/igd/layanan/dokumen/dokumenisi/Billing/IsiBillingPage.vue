@@ -257,6 +257,23 @@
         Dokter
       </div>
     </div>
+    <div class="row items-center no-wrap">
+      <div class="col-6 text-right" />
+      <div class="col-6 text-weight-bold text-center">
+        <div class="column flex-center">
+          <div style="width: 100px;">
+            <vue-qrcode :value="qrUrl" tag="svg" :options="{
+              errorCorrectionLevel: 'Q',
+              color: {
+                dark: '#000000',
+                light: '#ffffff',
+              },
+              margin: 0
+            }" />
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="row items-center no-wrap q-mt-lg">
       <div class="col-6 text-right" />
       <div class="col-6 text-weight-bold text-center">
@@ -270,11 +287,22 @@
 import { formatRp } from 'src/modules/formatter';
 import { useKasirIgdStore } from 'src/stores/simrs/kasir/igd/kasirigd';
 import { date } from 'quasar';
+import { computed } from 'vue';
 
 const store = useKasirIgdStore()
 const props = defineProps({
   pasien: { type: Object, default: () => { } }
 })
+
+const qrUrl = computed(() => {
+  const noreg = props?.pasien?.noreg// noreg
+  const dok = 'BILLING.png'
+  const asal = 'IGD'
+  const enc = btoa(`${noreg}|${dok}|${asal}`)
+  return `https://rsud.probolinggokota.go.id/dokumen-simrs/legalitas/${enc}`
+  // return `https://xenter.my.id/qr-document?noreg=${noreg}&dokumen=${dok}&asal=${asal}`
+})
+
 </script>
 
 <style lang="scss" scoped>

@@ -15,16 +15,15 @@
     </div>
   </div>
 
-  <div class="full-height full-height q-pa-sm ">
-    <div id="printMe" style="width: 21cm;" class="q-pa-xs full-width full-height">
-      <KopSurat :judul="props?.judul" :pasien="props?.pasien" :jangantampil=false />
-      <IsiBillingPage :pasien="props?.pasien" />
+  <div class="full-height full-height q-pa-sm bg-indigo-1">
+    <div id="printMe" style="width: 21cm;" class="q-pa-xs full-width full-height bg-white">
+      <IsiSepPage :pasien="props?.pasien" />
     </div>
   </div>
 </template>
 <script setup>
-import KopSurat from '../../KopSurat.vue';
-import IsiBillingPage from './IsiBillingPage.vue';
+
+import IsiSepPage from './IsiSepPage.vue';
 import html2pdf from 'html2pdf.js';
 
 const printObj = {
