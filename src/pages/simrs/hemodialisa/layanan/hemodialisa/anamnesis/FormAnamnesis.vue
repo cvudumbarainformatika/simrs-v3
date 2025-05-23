@@ -36,13 +36,11 @@
         </q-card-section>
       </q-card>
 
-      <!-- KAJIAN NYERI 4.1 -->
-      <!-- <q-card v-if="gruping === '4.1'" flat bordered class="q-mb-sm"> -->
-      <!-- <q-card flat bordered class="q-mb-sm">
+      <q-card flat bordered class="q-mb-sm">
         <q-card-section class="q-py-xs q-px-md">
           <div class="q-mt-sm">
             <div class="text-weight-bold">
-              Kajian Nyeri anu
+              Kajian Nyeri
             </div>
             <q-radio v-model="store.form.keluhannyeri.kajianNyeri" v-for="dd in store.pilihanNyeris" :key="dd"
               :label="dd?.text" :val="dd.text" @update:model-value="(val) => {
@@ -50,8 +48,8 @@
                 store.hitungSkorNyeri('form')
               }" />
           </div>
+          <q-separator />
         </q-card-section>
-        <q-separator />
         <q-card-section>
           <div v-if="store.form.keluhannyeri.kajianNyeri === 'Wong Baker Face Scale'"
             class="row items-center q-col-gutter-md">
@@ -59,11 +57,7 @@
               <q-slider v-model="store.form.keluhannyeri.skorNyeri" color="primary" thumb-color="primary"
                 label-color="primary" label-text-color="yellow" markers :marker-labels="(val) => fnMarkerLabel"
                 marker-labels-class="text-primary" label-always switch-label-side :min="0" :max="10"
-                @update:model-value="(val) => {
-                  console.log('jenis', store.form.keluhannyeri.kajianNyeri);
-
-                  store.hitungSkorNyeri('form')
-                }" style="width: 100%;" />
+                @update:model-value="(val) => store.setKeteranganSkornyeri(val, 'form')" style="width: 100%;" />
             </div>
             <div class="col-4">
               <div class="flex flex-center">
@@ -75,6 +69,7 @@
             </div>
           </div>
           <div v-else>
+            <q-separator class="q-my-xs" />
             <template v-for="(val, key) in store.form.keluhannyeri?.form" :key="val">
               <div class="row q-col-gutter-md">
                 <div class="col-3 text-weight-bold">
@@ -95,180 +90,14 @@
               </div>
               <q-separator class="q-my-sm" />
             </template>
-<q-card-section class="row items-center justify-between q-py-sm q-px-md text-primary text-bold">
-  <div>SKOR NYERI : {{ store.form?.keluhannyeri?.skorNyeri }}</div>
-  <div>{{ store.form?.keluhannyeri?.ket }}</div>
-</q-card-section>
-</div>
-</q-card-section>
-</q-card> -->
-
-      <!-- KAJIAN NYERI 4.2 -->
-      <!-- <q-card v-if="gruping === '4.2'" flat bordered class="q-mb-sm"> -->
-      <!-- <q-card flat bordered class="q-mb-sm">
-        <q-card-section class="q-py-xs q-px-md">
-          <div class="q-mt-sm">
-            <div class="text-weight-bold">
-              Kajian Nyeri Kebidanan
-            </div>
-            <q-radio v-model="store.formKebidanan.keluhannyeri.kajianNyeri" v-for="dd in store.pilihanNyeris" :key="dd"
-              :label="dd?.text" :val="dd.text" @update:model-value="(val) => {
-                if (val === 'Wong Baker Face Scale') store.formKebidanan.keluhannyeri.skorNyeri = 0
-                store.hitungSkorNyeri('form')
-              }" />
-          </div>
-          <q-separator />
-        </q-card-section>
-        <q-card-section>
-          <div v-if="store.formKebidanan.keluhannyeri.kajianNyeri === 'Wong Baker Face Scale'"
-            class="row items-center q-col-gutter-md">
-            <div class="col-4">
-              <div class="flex flex-center">
-                <div class="">
-                  <q-icon size="lg" color="teal" :name="iconNyeriKebidanan" />
-                </div>
-                <div><em class="text-primary q-ml-sm">{{ store.formKebidanan.keluhannyeri.ket }}</em></div>
-              </div>
-            </div>
-            <div class="col-8">
-              <q-slider v-model="store.formKebidanan.keluhannyeri.skorNyeri" color="primary" thumb-color="primary"
-                label-color="primary" label-text-color="yellow" markers :marker-labels="(val) => fnMarkerLabel"
-                marker-labels-class="text-primary" label-always switch-label-side :min="0" :max="10"
-                @update:model-value="(val) => store.hitungSkorNyeri('kebidanan')" style="width: 100%;" />
-            </div>
-          </div>
-          <div v-else>
-            <q-separator class="q-my-xs" />
-            <template v-for="(val, key) in store.formKebidanan.keluhannyeri?.form" :key="val">
-              <div class="row q-col-gutter-md">
-                <div class="col-3 text-weight-bold">
-                  {{store.formNyeris?.find(x => x.kode === key)?.label}}
-                </div>
-                <div class="col-9">
-                  <div class="flex q-gutter-sm items-center">
-                    <q-radio dense size="sm" v-model="store.formKebidanan.keluhannyeri.form[key]"
-                      v-for="aa in store.formNyeris?.find(x => x.kode === key)?.values" :key="aa" :label="aa?.text"
-                      :val="aa" @update:model-value="(val) => {
-                        // store.form.ekspresiWajahKet = aa?.text
-                        // console.log('aa',val);
-
-                        store.hitungSkorNyeri('kebidanan')
-                      }" />
-                  </div>
-                </div>
-              </div>
-              <q-separator class="q-my-sm" />
-            </template>
             <q-card-section class="row items-center justify-between q-py-sm q-px-md text-primary text-bold">
-              <div>SKOR NYERI : {{ store.formKebidanan?.keluhannyeri?.skorNyeri }}</div>
-              <div>{{ store.formKebidanan?.keluhannyeri?.ket }}</div>
-            </q-card-section>
-          </div>
-        </q-card-section>
-      </q-card> -->
-
-      <!-- KAJIAN NYERI 4.3 NEONATAL -->
-      <!-- <q-card v-if="gruping === '4.3'" flat bordered class="q-mb-sm"> -->
-      <!-- <q-card flat bordered class="q-mb-sm">
-        <q-card-section>
-          <div class="text-weight-bold">
-            Kajian Nyeri NIPS (Neonatus Infant Pain Scale)
-          </div>
-        </q-card-section>
-        <q-separator />
-        <q-card-section class="q-pa-none">
-          <q-list bordered separator>
-            <q-item v-for="(val, key) in store.formNeoNatal.keluhannyeri?.form" :key="val">
-              <q-item-section style="max-width: 25%;">
-                <q-item-label>
-                  {{store.formNyeriNeonatals?.find(x => x.kode === key)?.label}}
-                </q-item-label>
-              </q-item-section>
-              <q-item-section>
-                <div class="flex q-gutter-sm items-center">
-                  <q-radio dense size="sm" v-model="store.formNeoNatal.keluhannyeri.form[key]"
-                    v-for="aa in store.formNyeriNeonatals?.find(x => x.kode === key)?.values" :key="aa"
-                    :label="aa?.text" :val="aa" @update:model-value="(val) => {
-                      store.hitungSkorNyeri('formNeoNatal')
-                    }" />
-                </div>
-              </q-item-section>
-            </q-item>
-          </q-list>
-        </q-card-section>
-        <q-separator />
-        <q-card-section class="row items-center justify-between  text-primary text-bold">
-          <div>SKOR NYERI : {{ store.formNeoNatal?.keluhannyeri?.skorNyeri }}</div>
-          <div>{{ store.formNeoNatal?.keluhannyeri?.ket }}</div>
-        </q-card-section>
-      </q-card> -->
-
-      <!-- KAJIAN NYERI 4.4 Pediatrik -->
-      <!-- <q-card v-if="gruping === '4.4'" flat bordered class="q-mb-sm"> -->
-      <q-card flat bordered class="q-mb-sm">
-        <q-card-section class="q-py-xs q-px-md">
-          <div class="q-mt-sm">
-            <div class="text-weight-bold">
-              Kajian Nyeri
-            </div>
-            <q-radio v-model="store.formPediatrik.keluhannyeri.kajianNyeri" v-for="dd in store.pilihanNyeris" :key="dd"
-              :label="dd?.text" :val="dd.text" @update:model-value="(val) => {
-                if (val === 'Wong Baker Face Scale') store.formPediatrik.keluhannyeri.skorNyeri = 0
-                store.hitungSkorNyeri('form')
-              }" />
-          </div>
-          <q-separator />
-        </q-card-section>
-        <q-card-section>
-          <div v-if="store.formPediatrik.keluhannyeri.kajianNyeri === 'Wong Baker Face Scale'"
-            class="row items-center q-col-gutter-md">
-            <div class="col-8">
-              <q-slider v-model="store.formPediatrik.keluhannyeri.skorNyeri" color="primary" thumb-color="primary"
-                label-color="primary" label-text-color="yellow" markers :marker-labels="(val) => fnMarkerLabel"
-                marker-labels-class="text-primary" label-always switch-label-side :min="0" :max="10"
-                @update:model-value="(val) => store.setKeteranganSkornyeri(val, 'pediatrik')" style="width: 100%;" />
-            </div>
-            <div class="col-4">
-              <div class="flex flex-center">
-                <div class="">
-                  <q-icon size="lg" color="teal" :name="iconNyeri" />
-                </div>
-                <div><em class="text-primary q-ml-sm">{{ store.formPediatrik.keluhannyeri.ket }}</em></div>
-              </div>
-            </div>
-          </div>
-          <div v-else>
-            <q-separator class="q-my-xs" />
-            <template v-for="(val, key) in store.formPediatrik.keluhannyeri?.form" :key="val">
-              <div class="row q-col-gutter-md">
-                <div class="col-3 text-weight-bold">
-                  {{store.formNyeris?.find(x => x.kode === key)?.label}}
-                </div>
-                <div class="col-9">
-                  <div class="flex q-gutter-sm items-center">
-                    <q-radio dense size="sm" v-model="store.formPediatrik.keluhannyeri.form[key]"
-                      v-for="aa in store.formNyeris?.find(x => x.kode === key)?.values" :key="aa" :label="aa?.text"
-                      :val="aa" @update:model-value="(val) => {
-                        // store.form.ekspresiWajahKet = aa?.text
-                        // console.log('aa',val);
-
-                        store.hitungSkorNyeri('pediatrik')
-                      }" />
-                  </div>
-                </div>
-              </div>
-              <q-separator class="q-my-sm" />
-            </template>
-            <q-card-section class="row items-center justify-between q-py-sm q-px-md text-primary text-bold">
-              <div>SKOR NYERI : {{ store.formPediatrik?.keluhannyeri?.skorNyeri }}</div>
-              <div>{{ store.formPediatrik?.keluhannyeri?.ket }}</div>
+              <div>SKOR NYERI : {{ store.form?.keluhannyeri?.skorNyeri }}</div>
+              <div>{{ store.form?.keluhannyeri?.ket }}</div>
             </q-card-section>
           </div>
         </q-card-section>
       </q-card>
 
-      <!-- GIZI 4.1 DEWASA -->
-      <!-- <div v-if="gruping === '4.1' && !ulang" class="skreening-gizi-dewasa q-mb-sm"> -->
       <div class="skreening-gizi-dewasa q-mb-sm">
         <q-card flat bordered>
           <q-card-section class="q-py-sm q-px-md">
@@ -277,7 +106,21 @@
             </div>
             <q-separator />
           </q-card-section>
-          <q-card-section class="">
+
+          <template v-for="(val, key) in store.form.skreeninggizi?.form" :key="val">
+            <q-card-section class="row">
+              <div class="col-9">
+                {{store.formGizis?.find(x => x.kode === key)?.label}}
+              </div>
+              <div class="col-3 flex q-gutter-sm justify-end">
+                <q-radio v-for="aa in store.formGizis?.find(x => x.kode === key)?.values" dense
+                  v-model="store.form.skreeninggizi.form[key]" :val="aa" :label="aa?.text"
+                  @update:model-value="hitungSkorGizi" :key="aa" />
+              </div>
+            </q-card-section>
+            <q-separator />
+          </template>
+          <!-- <q-card-section class="">
             <div class="col-12 q-mt-xs">
               <div class="text-weight-bold">
                 Skreening Gizi
@@ -329,7 +172,7 @@
               </div>
             </div>
 
-          </q-card-section>
+          </q-card-section> -->
           <!-- <template v-for="(val, key) in store.form.skreeninggizi?.form" :key="val">
             <q-card-section class="row">
               <div class="col-9">
