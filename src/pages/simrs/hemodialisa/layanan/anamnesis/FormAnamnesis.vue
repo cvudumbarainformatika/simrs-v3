@@ -14,9 +14,8 @@
     <q-input v-model="store.form.rwPkrjDgZatBahaya" outlined autogrow stack-label standout="bg-yellow-3"
       label="Riwayat Pekerjaan yg berhubung dg Zat berbahaya" hide-bottom-space style="width:50%" />
 
-    <!-- <div v-if="nakes === '2' || nakes === '3'" class="col-12"> -->
-    <div class="col-12">
-      <!-- RIWAYAT ALERGI -->
+    <div v-if="nakes === '2' || nakes === '3'" class="col-12">
+      <!-- <div class="col-12"> -->
       <q-card flat bordered class="q-mb-sm">
         <q-card-section>
           <div class="text-weight-bold">
@@ -35,66 +34,71 @@
             style="width: 70%;" />
         </q-card-section>
       </q-card>
-
+      kajian {{ store.form }}
       <q-card flat bordered class="q-mb-sm">
         <q-card-section class="q-py-xs q-px-md">
           <div class="q-mt-sm">
             <div class="text-weight-bold">
               Kajian Nyeri
             </div>
-            <q-radio v-model="store.form.keluhannyeri.kajianNyeri" v-for="dd in store.pilihanNyeris" :key="dd"
-              :label="dd?.text" :val="dd.text" @update:model-value="(val) => {
-                if (val === 'Wong Baker Face Scale') store.form.keluhannyeri.skorNyeri = 0
-                store.hitungSkorNyeri('form')
-              }" />
+            <template v-if="!!store.form?.keluhannyeri?.kajianNyeri">
+              <q-radio v-model="store.form.keluhannyeri.kajianNyeri" v-for="dd in store.pilihanNyeris" :key="dd"
+                :label="dd?.text" :val="dd.text" @update:model-value="(val) => {
+                  if (val === 'Wong Baker Face Scale') store.form.keluhannyeri.skorNyeri = 0
+                  store.hitungSkorNyeri('form')
+                }" />
+            </template>
           </div>
           <q-separator />
         </q-card-section>
         <q-card-section>
-          <div v-if="store.form.keluhannyeri.kajianNyeri === 'Wong Baker Face Scale'"
-            class="row items-center q-col-gutter-md">
-            <div class="col-8">
-              <q-slider v-model="store.form.keluhannyeri.skorNyeri" color="primary" thumb-color="primary"
-                label-color="primary" label-text-color="yellow" markers :marker-labels="(val) => fnMarkerLabel"
-                marker-labels-class="text-primary" label-always switch-label-side :min="0" :max="10"
-                @update:model-value="(val) => store.setKeteranganSkornyeri(val, 'form')" style="width: 100%;" />
-            </div>
-            <div class="col-4">
-              <div class="flex flex-center">
-                <div class="">
-                  <q-icon size="lg" color="teal" :name="iconNyeri" />
+          <template v-if="!!store.form?.keluhannyeri?.kajianNyeri">
+            <div v-if="store.form?.keluhannyeri?.kajianNyeri === 'Wong Baker Face Scale'"
+              class="row items-center q-col-gutter-md">
+              <div class="col-8">
+                <q-slider v-model="store.form.keluhannyeri.skorNyeri" color="primary" thumb-color="primary"
+                  label-color="primary" label-text-color="yellow" markers :marker-labels="(val) => fnMarkerLabel"
+                  marker-labels-class="text-primary" label-always switch-label-side :min="0" :max="10"
+                  @update:model-value="(val) => store.setKeteranganSkornyeri(val, 'form')" style="width: 100%;" />
+              </div>
+              <div class="col-4">
+                <div class="flex flex-center">
+                  <div class="">
+                    <q-icon size="lg" color="teal" :name="iconNyeri" />
+                  </div>
+                  <div><em class="text-primary q-ml-sm">{{ store.form.keluhannyeri.ket }}</em></div>
                 </div>
-                <div><em class="text-primary q-ml-sm">{{ store.form.keluhannyeri.ket }}</em></div>
               </div>
             </div>
-          </div>
-          <div v-else>
-            <q-separator class="q-my-xs" />
-            <template v-for="(val, key) in store.form.keluhannyeri?.form" :key="val">
-              <div class="row q-col-gutter-md">
-                <div class="col-3 text-weight-bold">
-                  {{store.formNyeris?.find(x => x.kode === key)?.label}}
-                </div>
-                <div class="col-9">
-                  <div class="flex q-gutter-sm items-center">
-                    <q-radio dense size="sm" v-model="store.form.keluhannyeri.form[key]"
-                      v-for="aa in store.formNyeris?.find(x => x.kode === key)?.values" :key="aa" :label="aa?.text"
-                      :val="aa" @update:model-value="(val) => {
-                        // store.form.ekspresiWajahKet = aa?.text
-                        // console.log('aa',val);
+            <div v-else>
+              <q-separator class="q-my-xs" />
+              <template v-for="(val, key) in store.form?.keluhannyeri?.form" :key="val">
+                <div class="row q-col-gutter-md">
+                  <div class="col-3 text-weight-bold">
+                    {{store.formNyeris?.find(x => x.kode === key)?.label}}
+                  </div>
+                  <div class="col-9">
+                    <div class="flex q-gutter-sm items-center">
+                      <q-radio dense size="sm" v-model="store.form.keluhannyeri.form[key]"
+                        v-for="aa in store.formNyeris?.find(x => x.kode === key)?.values" :key="aa" :label="aa?.text"
+                        :val="aa" @update:model-value="(val) => {
+                          // store.form.ekspresiWajahKet = aa?.text
+                          // console.log('aa',val);
 
-                        store.hitungSkorNyeri('form')
-                      }" />
+                          store.hitungSkorNyeri('form')
+                        }" />
+                    </div>
                   </div>
                 </div>
-              </div>
-              <q-separator class="q-my-sm" />
-            </template>
-            <q-card-section class="row items-center justify-between q-py-sm q-px-md text-primary text-bold">
-              <div>SKOR NYERI : {{ store.form?.keluhannyeri?.skorNyeri }}</div>
-              <div>{{ store.form?.keluhannyeri?.ket }}</div>
-            </q-card-section>
-          </div>
+                <q-separator class="q-my-sm" />
+              </template>
+              <q-card-section class="row items-center justify-between q-py-sm q-px-md text-primary text-bold">
+                <div>SKOR NYERI : {{ store.form?.keluhannyeri?.skorNyeri }}</div>
+                <div>{{ store.form?.keluhannyeri?.ket }}</div>
+              </q-card-section>
+            </div>
+
+          </template>
         </q-card-section>
       </q-card>
 
@@ -106,73 +110,22 @@
             </div>
             <q-separator />
           </q-card-section>
-          <template v-for="(val, key) in store.form.skreeninggizi?.form" :key="val">
-            <q-card-section class="row">
-              <div class="col-9">
-                {{store.formGizis?.find(x => x.kode === key)?.label}}
-              </div>
-              <div class="col-3 flex q-gutter-sm justify-end">
-                <q-radio v-for="aa in store.formGizis?.find(x => x.kode === key)?.values" dense
-                  v-model="store.form.skreeninggizi.form[key]" :val="aa" :label="aa?.text"
-                  @update:model-value="hitungSkorGizi" :key="aa" />
-              </div>
-            </q-card-section>
-            <q-separator />
+          <template v-if="!!store.form.skreeninggizi">
+            <template v-for="(val, key) in store.form.skreeninggizi?.form" :key="val">
+              <q-card-section class="row">
+                <div class="col-9">
+                  {{store.formGizis?.find(x => x.kode === key)?.label}}
+                </div>
+                <div class="col-3 flex q-gutter-sm justify-end">
+                  <q-radio v-for="aa in store.formGizis?.find(x => x.kode === key)?.values" dense
+                    v-model="store.form.skreeninggizi.form[key]" :val="aa" :label="aa?.text"
+                    @update:model-value="hitungSkorGizi" :key="aa" />
+                </div>
+              </q-card-section>
+              <q-separator />
+            </template>
           </template>
-          <!-- <q-card-section class="">
-            <div class="col-12 q-mt-xs">
-              <div class="text-weight-bold">
-                Skreening Gizi
-              </div>
-              <q-separator class="q-my-xs" />
 
-              <div class="row items-center">
-                <div class="col-8">
-                  Apakah Ada Penurunan Berat badan yang tidak diinginkan selama 6 Bulan terakhir ?
-                </div>
-                <div class="col-4">
-                  <q-option-group v-model="store.form.skreeninggizi" :options="optionSkreening" color="primary" inline
-                    dense @update:model-value="lihatPerubahan" />
-                </div>
-              </div>
-            </div>
-            <div class="col-12 q-mt-xs">
-              <q-separator class="q-my-xs" />
-              <div class="row items-center">
-                <div class="col-8">
-                  Apakah Asupan Makan berkurang karena tidak nafsu makan ?
-                </div>
-                <div class="col-4">
-                  <q-option-group v-model="store.form.asupanmakan" :options="optionAsupanMakan" color="primary" inline
-                    dense @update:model-value="lihatPerubahan" />
-                </div>
-              </div>
-            </div>
-            <div class="col-12">
-              <q-separator class="q-my-xs" />
-              <div class="row items-center q-col-gutter-sm">
-                <div class="col-2">
-                  Kondisi Khusus :
-                </div>
-                <div class="col-8">
-                  <q-input v-model="store.form.kondisikhusus" outlined dense standout="bg-yellow-3"
-                    label="Kondisi Khusus" stack-label @update:model-value="lihatPerubahan" />
-                </div>
-                <div class="col-12">
-                  <q-separator class="q-my-xs" />
-                  <div class="flex">
-                    Skor Skreening Gizi : <div class="q-mx-sm">
-                      <b>{{ isNaN(store.form.skor) ? 0 : store.form.skor }}</b>
-                    </div>
-                    <div>
-                      Keterangan : {{ store.keteranganSkorGizi(store.form.skor) }}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-          </q-card-section> -->
 
           <q-card-section class="row items-center justify-between q-py-md q-px-md text-primary text-bold">
             <div>SKOR GIZI : {{ isNaN(store.form?.skreeninggizi?.skor) ? 0 : store.form?.skreeninggizi?.skor }}</div>

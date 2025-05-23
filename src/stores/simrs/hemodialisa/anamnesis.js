@@ -566,7 +566,7 @@ export const useAnamnesisHemodialisaStore = defineStore('anamnesis-hemodialisa-s
     },
 
     initReset (data) {
-      console.log('data init reset', data)
+      // console.log('data init reset', data)
       this.loadingSave = false
 
       this.form = {
@@ -612,278 +612,278 @@ export const useAnamnesisHemodialisaStore = defineStore('anamnesis-hemodialisa-s
       }
       this.form.skreeninggizi.form = formGizi
 
-      this.formKebidanan = {
-        // ini untuk 4.2
-        rwObsetri: null,
-        rwRawat: null,
-        rwOperasi: null,
-        rwGynecology: [],
-        rwGynecologyLain: null,
-        rwKbJns: null,
-        rwKbLama: null,
-        rwKbKeluhan: null,
+      // this.formKebidanan = {
+      //   // ini untuk 4.2
+      //   rwObsetri: null,
+      //   rwRawat: null,
+      //   rwOperasi: null,
+      //   rwGynecology: [],
+      //   rwGynecologyLain: null,
+      //   rwKbJns: null,
+      //   rwKbLama: null,
+      //   rwKbKeluhan: null,
 
-        // riwayat menstruasi
-        menarche: null,
-        siklusHari: null,
-        siklus: null,
-        lamaMens: 0,
-        kondisiMens: [],
-        hpht: 0,
-        tglPerkPersalinan: null,
-        // rw perkawinan
-        rwKawinStatus: null,
-        kawinKe: 1,
-        nikahUmur: 0,
-        // rw kehamilan, nifas
-        g: null,
-        p: null,
-        ab: null,
-        ah: null,
-        anc: null,
-        imunisasi: null,
-        // list riwayat kehamilan
-        riwayatKehamilans: [],
-        // pola eliminisasi
-        bab: 0,
-        konsistensi: null,
-        warna: null,
-        keluhans: [],
-        peristatikUsus: 0,
-        flatus: null,
-        bak: 0,
-        keluhanBak: [],
-        jmlBak: 0,
-        warnaUrine: null,
-        kateter: 'Tidak',
-        kttHrKe: null,
-        // skreening gizi pasien hamil/nifas / kebidanan
-        // sgk: {
-        //   am: 0,
-        //   bb: 0,
-        //   hb: 0,
-        //   metabolisme: 0,
-        //   metabolismeKet: null
-        // },
-        // sgkSkor: 0,
-        // sgkKet: null
-        skreeninggizi: {
-          form: null,
-          skor: data?.skreeninggizi?.kebidanan?.skor ?? 0,
-          ket: data?.keluhannyeri?.kebidanan?.ket ?? null
-        },
+      //   // riwayat menstruasi
+      //   menarche: null,
+      //   siklusHari: null,
+      //   siklus: null,
+      //   lamaMens: 0,
+      //   kondisiMens: [],
+      //   hpht: 0,
+      //   tglPerkPersalinan: null,
+      //   // rw perkawinan
+      //   rwKawinStatus: null,
+      //   kawinKe: 1,
+      //   nikahUmur: 0,
+      //   // rw kehamilan, nifas
+      //   g: null,
+      //   p: null,
+      //   ab: null,
+      //   ah: null,
+      //   anc: null,
+      //   imunisasi: null,
+      //   // list riwayat kehamilan
+      //   riwayatKehamilans: [],
+      //   // pola eliminisasi
+      //   bab: 0,
+      //   konsistensi: null,
+      //   warna: null,
+      //   keluhans: [],
+      //   peristatikUsus: 0,
+      //   flatus: null,
+      //   bak: 0,
+      //   keluhanBak: [],
+      //   jmlBak: 0,
+      //   warnaUrine: null,
+      //   kateter: 'Tidak',
+      //   kttHrKe: null,
+      //   // skreening gizi pasien hamil/nifas / kebidanan
+      //   // sgk: {
+      //   //   am: 0,
+      //   //   bb: 0,
+      //   //   hb: 0,
+      //   //   metabolisme: 0,
+      //   //   metabolismeKet: null
+      //   // },
+      //   // sgkSkor: 0,
+      //   // sgkKet: null
+      //   skreeninggizi: {
+      //     form: null,
+      //     skor: data?.skreeninggizi?.kebidanan?.skor ?? 0,
+      //     ket: data?.keluhannyeri?.kebidanan?.ket ?? null
+      //   },
 
-        keluhannyeri: {
-          kajianNyeri: data?.keluhannyeri?.kebidanan?.kajianNyeri ?? 'Wong Baker Face Scale',
-          skorNyeri: data?.keluhannyeri?.kebidanan?.skorNyeri ?? 0,
-          ket: data?.keluhannyeri?.kebidanan?.ket ?? null,
-          form: null
-        }
-      }
+      //   keluhannyeri: {
+      //     kajianNyeri: data?.keluhannyeri?.kebidanan?.kajianNyeri ?? 'Wong Baker Face Scale',
+      //     skorNyeri: data?.keluhannyeri?.kebidanan?.skorNyeri ?? 0,
+      //     ket: data?.keluhannyeri?.kebidanan?.ket ?? null,
+      //     form: null
+      //   }
+      // }
 
-      if (data?.kebidanan) {
-        Object.keys(this.formKebidanan).forEach(key => {
-          if (key !== 'keluhannyeri' && key !== 'skreeninggizi') {
-            this.formKebidanan[key] = data?.kebidanan[key]
-          }
-        })
-      }
+      // if (data?.kebidanan) {
+      //   Object.keys(this.formKebidanan).forEach(key => {
+      //     if (key !== 'keluhannyeri' && key !== 'skreeninggizi') {
+      //       this.formKebidanan[key] = data?.kebidanan[key]
+      //     }
+      //   })
+      // }
 
-      const kebidananNyeri = {}
-      for (let i = 0; i < this.formNyeris?.length; i++) {
-        const el = this.formNyeris[i]
-        kebidananNyeri[el?.kode] = el?.values?.find(x => x?.skor === data?.keluhannyeri?.kebidanan?.form[el.kode]?.skor) ?? el?.values?.find(x => x.skor === 1) ?? null
-      }
-      this.formKebidanan.keluhannyeri.form = kebidananNyeri
+      // const kebidananNyeri = {}
+      // for (let i = 0; i < this.formNyeris?.length; i++) {
+      //   const el = this.formNyeris[i]
+      //   kebidananNyeri[el?.kode] = el?.values?.find(x => x?.skor === data?.keluhannyeri?.kebidanan?.form[el.kode]?.skor) ?? el?.values?.find(x => x.skor === 1) ?? null
+      // }
+      // this.formKebidanan.keluhannyeri.form = kebidananNyeri
 
-      const formGiziObgyn = {}
-      for (let i = 0; i < this.formGiziObgyns?.length; i++) {
-        const el = this.formGiziObgyns[i]
-        formGiziObgyn[el?.kode] = el?.values?.find(x => x?.skor === data?.skreeninggizi?.kebidanan?.form[el.kode]?.skor) ?? el?.values?.find(x => x?.skor === 0) ?? null
-      }
-      this.formKebidanan.skreeninggizi.form = formGiziObgyn
+      // const formGiziObgyn = {}
+      // for (let i = 0; i < this.formGiziObgyns?.length; i++) {
+      //   const el = this.formGiziObgyns[i]
+      //   formGiziObgyn[el?.kode] = el?.values?.find(x => x?.skor === data?.skreeninggizi?.kebidanan?.form[el.kode]?.skor) ?? el?.values?.find(x => x?.skor === 0) ?? null
+      // }
+      // this.formKebidanan.skreeninggizi.form = formGiziObgyn
 
-      // console.log('kebidanan', this.formKebidanan)
+      // // console.log('kebidanan', this.formKebidanan)
 
-      this.formNeoNatal = {
-        crMasuk: null,
-        asalMasuk: null,
-        penanggungJawab: null,
-        noHpPj: null,
-        alamatPj: null,
-        hubPj: null,
+      // this.formNeoNatal = {
+      //   crMasuk: null,
+      //   asalMasuk: null,
+      //   penanggungJawab: null,
+      //   noHpPj: null,
+      //   alamatPj: null,
+      //   hubPj: null,
 
-        rwOpname: null,
-        g: null,
-        p: null,
-        a: null,
-        usiaGestasi: null,
-        sgIbu: null,
+      //   rwOpname: null,
+      //   g: null,
+      //   p: null,
+      //   a: null,
+      //   usiaGestasi: null,
+      //   sgIbu: null,
 
-        rwObat: null,
-        kebiasaanIbu: null,
-        kebiasaanLain: null,
-        rwPersalinan: null,
-        ketuban: null,
-        volume: null,
+      //   rwObat: null,
+      //   kebiasaanIbu: null,
+      //   kebiasaanLain: null,
+      //   rwPersalinan: null,
+      //   ketuban: null,
+      //   volume: null,
 
-        rwTransDarah: null,
-        reaksiTrans: null,
-        rwImunisasi: null,
+      //   rwTransDarah: null,
+      //   reaksiTrans: null,
+      //   rwImunisasi: null,
 
-        crLahir: null,
-        apgarScore: 0,
-        volumeKetuban: 'Tidak Ada',
-        warnaKetuban: null,
-        pecahDini: null,
+      //   crLahir: null,
+      //   apgarScore: 0,
+      //   volumeKetuban: 'Tidak Ada',
+      //   warnaKetuban: null,
+      //   pecahDini: null,
 
-        golDarahIbu: null,
-        golDarahAyah: null,
-        golDarahBayi: null,
-        rhDarahBayi: null,
-        rhDarahIbu: null,
-        rhDarahAyah: null,
+      //   golDarahIbu: null,
+      //   golDarahAyah: null,
+      //   golDarahBayi: null,
+      //   rhDarahBayi: null,
+      //   rhDarahIbu: null,
+      //   rhDarahAyah: null,
 
-        // skorNyeri: 0,
-        // keluhanNyeri: null,
-        // ekspresiWajah: 0,
-        // menangis: 0,
-        // polaNafas: 0,
-        // lengan: 0,
-        // kaki: 0,
-        // keadaanRangsangan: 0,
+      //   // skorNyeri: 0,
+      //   // keluhanNyeri: null,
+      //   // ekspresiWajah: 0,
+      //   // menangis: 0,
+      //   // polaNafas: 0,
+      //   // lengan: 0,
+      //   // kaki: 0,
+      //   // keadaanRangsangan: 0,
 
-        keluhannyeri: {
-          skorNyeri: data?.keluhannyeri?.kebidanan?.skorNyeri ?? 0,
-          ket: data?.keluhannyeri?.kebidanan?.ket ?? null,
-          form: null
-        },
+      //   keluhannyeri: {
+      //     skorNyeri: data?.keluhannyeri?.kebidanan?.skorNyeri ?? 0,
+      //     ket: data?.keluhannyeri?.kebidanan?.ket ?? null,
+      //     form: null
+      //   },
 
-        skreeninggizi: {
-          form: null,
-          skor: 0,
-          ket: null
-        }
+      //   skreeninggizi: {
+      //     form: null,
+      //     skor: 0,
+      //     ket: null
+      //   }
 
-        // sgn: {
-        //   nm: 0, // nafsu makan
-        //   km: 0, // kemampuan makan
-        //   fs: 0, // faktor stress
-        //   bb: 0 // persentil BB
-        // },
-        // sgnSkor: 0,
-        // sgnKet: null
+      //   // sgn: {
+      //   //   nm: 0, // nafsu makan
+      //   //   km: 0, // kemampuan makan
+      //   //   fs: 0, // faktor stress
+      //   //   bb: 0 // persentil BB
+      //   // },
+      //   // sgnSkor: 0,
+      //   // sgnKet: null
 
-      }
+      // }
 
-      if (data?.neonatal) {
-        Object.keys(this.formNeoNatal).forEach(key => {
-          if (key !== 'keluhannyeri' && key !== 'skreeninggizi') {
-            this.formNeoNatal[key] = data?.neonatal[key]
-          }
-        })
-      }
+      // if (data?.neonatal) {
+      //   Object.keys(this.formNeoNatal).forEach(key => {
+      //     if (key !== 'keluhannyeri' && key !== 'skreeninggizi') {
+      //       this.formNeoNatal[key] = data?.neonatal[key]
+      //     }
+      //   })
+      // }
 
-      const neonatalNyeri = {}
-      for (let i = 0; i < this.formNyeriNeonatals?.length; i++) {
-        const el = this.formNyeriNeonatals[i]
-        neonatalNyeri[el?.kode] = el?.values?.find(x => x?.skor === data?.keluhannyeri?.neonatal?.form[el.kode]?.skor) ?? el.values?.find(x => x?.skor === 0) ?? null
-      }
-      this.formNeoNatal.keluhannyeri.form = neonatalNyeri
+      // const neonatalNyeri = {}
+      // for (let i = 0; i < this.formNyeriNeonatals?.length; i++) {
+      //   const el = this.formNyeriNeonatals[i]
+      //   neonatalNyeri[el?.kode] = el?.values?.find(x => x?.skor === data?.keluhannyeri?.neonatal?.form[el.kode]?.skor) ?? el.values?.find(x => x?.skor === 0) ?? null
+      // }
+      // this.formNeoNatal.keluhannyeri.form = neonatalNyeri
 
-      const neonatalGizi = {}
-      for (let i = 0; i < this.formGiziNeonatals?.length; i++) {
-        const el = this.formGiziNeonatals[i]
-        neonatalGizi[el?.kode] = el?.values?.find(x => x?.skor === data?.skreeninggizi?.neonatal?.form[el.kode]?.skor) ?? el.values?.find(x => x?.skor === 0) ?? null
-      }
-      this.formNeoNatal.skreeninggizi.form = neonatalGizi
+      // const neonatalGizi = {}
+      // for (let i = 0; i < this.formGiziNeonatals?.length; i++) {
+      //   const el = this.formGiziNeonatals[i]
+      //   neonatalGizi[el?.kode] = el?.values?.find(x => x?.skor === data?.skreeninggizi?.neonatal?.form[el.kode]?.skor) ?? el.values?.find(x => x?.skor === 0) ?? null
+      // }
+      // this.formNeoNatal.skreeninggizi.form = neonatalGizi
 
-      // console.log('formNeoNatal', this.formNeoNatal)
+      // // console.log('formNeoNatal', this.formNeoNatal)
 
-      this.formPediatrik = {
-        // riwayat penyakit kelahiran
-        anakKe: 1,
-        jmlSaudara: 1,
-        crKelahiran: null,
-        umurKelahiran: 'Cukup Bulan',
-        klainanBawaan: null,
-        // riwayat Imunisasi
-        rwImunisasi: [],
-        // riwayat Tumbuh kembang
-        gigiPertama: null,
-        berjalan: null,
-        membaca: null,
-        duduk: null,
-        bicara: null,
+      // this.formPediatrik = {
+      //   // riwayat penyakit kelahiran
+      //   anakKe: 1,
+      //   jmlSaudara: 1,
+      //   crKelahiran: null,
+      //   umurKelahiran: 'Cukup Bulan',
+      //   klainanBawaan: null,
+      //   // riwayat Imunisasi
+      //   rwImunisasi: [],
+      //   // riwayat Tumbuh kembang
+      //   gigiPertama: null,
+      //   berjalan: null,
+      //   membaca: null,
+      //   duduk: null,
+      //   bicara: null,
 
-        sukaMknan: null,
-        tdkSukaMknan: null,
-        nafsuMkn: 'Baik',
-        polaMakan: null,
-        mknYgdiberikan: null,
+      //   sukaMknan: null,
+      //   tdkSukaMknan: null,
+      //   nafsuMkn: 'Baik',
+      //   polaMakan: null,
+      //   mknYgdiberikan: null,
 
-        // polaTidur
-        tidurSiang: null,
-        tidurMalam: null,
-        kebiasaanSblmMkn: null,
-        nyeri: 'Tidak',
+      //   // polaTidur
+      //   tidurSiang: null,
+      //   tidurMalam: null,
+      //   kebiasaanSblmMkn: null,
+      //   nyeri: 'Tidak',
 
-        mandiSendiri: 1,
-        dimandikan: 1,
-        gosokGigi: 1,
-        keramas: 1,
+      //   mandiSendiri: 1,
+      //   dimandikan: 1,
+      //   gosokGigi: 1,
+      //   keramas: 1,
 
-        kbersihanKuku: 'Bersih',
-        aktifitas: null,
+      //   kbersihanKuku: 'Bersih',
+      //   aktifitas: null,
 
-        babFrekuensi: null,
-        babKonsistensi: null,
-        babWarna: null,
-        babBau: null,
+      //   babFrekuensi: null,
+      //   babKonsistensi: null,
+      //   babWarna: null,
+      //   babBau: null,
 
-        bakFrekuensi: null,
-        bakWarna: null,
-        bakBau: null,
-        meconium: 'Tidak Ada',
+      //   bakFrekuensi: null,
+      //   bakWarna: null,
+      //   bakBau: null,
+      //   meconium: 'Tidak Ada',
 
-        skreeninggizi: {
-          form: null,
-          skor: 0,
-          ket: null
-        },
+      //   skreeninggizi: {
+      //     form: null,
+      //     skor: 0,
+      //     ket: null
+      //   },
 
-        keluhannyeri: {
-          kajianNyeri: 'Wong Baker Face Scale',
-          skorNyeri: 0,
-          ket: null,
-          form: null
-        }
+      //   keluhannyeri: {
+      //     kajianNyeri: 'Wong Baker Face Scale',
+      //     skorNyeri: 0,
+      //     ket: null,
+      //     form: null
+      //   }
 
-      }
+      // }
 
-      if (data?.pediatrik) {
-        Object.keys(this.formPediatrik).forEach(key => {
-          if (key !== 'keluhannyeri' && key !== 'skreeninggizi') {
-            this.formPediatrik[key] = data?.pediatrik[key]
-          }
-        })
-      }
+      // if (data?.pediatrik) {
+      //   Object.keys(this.formPediatrik).forEach(key => {
+      //     if (key !== 'keluhannyeri' && key !== 'skreeninggizi') {
+      //       this.formPediatrik[key] = data?.pediatrik[key]
+      //     }
+      //   })
+      // }
 
-      const formNyeriPediatrik = {}
-      for (let i = 0; i < this.formNyeris?.length; i++) {
-        const el = this.formNyeris[i]
-        formNyeriPediatrik[el?.kode] = el?.values?.find(x => x?.skor === data?.keluhannyeri?.pediatrik?.form[el.kode]?.skor) ?? el?.values?.find(x => x.skor === 1) ?? null
-      }
-      this.formPediatrik.keluhannyeri.form = formNyeriPediatrik
+      // const formNyeriPediatrik = {}
+      // for (let i = 0; i < this.formNyeris?.length; i++) {
+      //   const el = this.formNyeris[i]
+      //   formNyeriPediatrik[el?.kode] = el?.values?.find(x => x?.skor === data?.keluhannyeri?.pediatrik?.form[el.kode]?.skor) ?? el?.values?.find(x => x.skor === 1) ?? null
+      // }
+      // this.formPediatrik.keluhannyeri.form = formNyeriPediatrik
 
-      // console.log('el', this.form.keluhannyeri.form)
-      // if (data?.skreeninggizi?.dewasa === null || data?.skreeninggizi?.dewasa === undefined) {
-      const formGiziPedia = {}
-      for (let i = 0; i < this.formGiziPediatrik?.length; i++) {
-        const el = this.formGiziPediatrik[i]
-        formGiziPedia[el?.kode] = el?.values?.find(x => x?.skor === data?.skreeninggizi?.pediatrik?.form[el.kode]?.skor) ?? el?.values?.find(x => x?.skor === 0) ?? null
-      }
-      this.formPediatrik.skreeninggizi.form = formGiziPedia
+      // // console.log('el', this.form.keluhannyeri.form)
+      // // if (data?.skreeninggizi?.dewasa === null || data?.skreeninggizi?.dewasa === undefined) {
+      // const formGiziPedia = {}
+      // for (let i = 0; i < this.formGiziPediatrik?.length; i++) {
+      //   const el = this.formGiziPediatrik[i]
+      //   formGiziPedia[el?.kode] = el?.values?.find(x => x?.skor === data?.skreeninggizi?.pediatrik?.form[el.kode]?.skor) ?? el?.values?.find(x => x?.skor === 0) ?? null
+      // }
+      // this.formPediatrik.skreeninggizi.form = formGiziPedia
 
       // console.log('gizi pediatrik', this.formPediatrik)
 
@@ -891,11 +891,12 @@ export const useAnamnesisHemodialisaStore = defineStore('anamnesis-hemodialisa-s
       this.hitungSkorSgk()
       this.hitungSkorSgn()
       this.hitungSkorSgp()
-      this.hitungSkorNyeri('formNeoNatal')
+      // this.hitungSkorNyeri('formNeoNatal')
       this.hitungSkorNyeri('form')
-      this.hitungSkorNyeri('kebidanan')
-      this.hitungSkorNyeri('pediatrik')
-      console.log('form', this.form)
+      // this.hitungSkorNyeri('kebidanan')
+      // this.hitungSkorNyeri('pediatrik')
+
+      // console.log('form', this.form)
 
     },
 
@@ -914,7 +915,7 @@ export const useAnamnesisHemodialisaStore = defineStore('anamnesis-hemodialisa-s
       }
       else if (jns === 'form' || jns === 'kebidanan' || jns === 'pediatrik') {
         const frm = jns === 'form' ? this.form : (jns === 'kebidanan' ? this.formKebidanan : this.formPediatrik)
-        if (frm.keluhannyeri.kajianNyeri === 'Wong Baker Face Scale') {
+        if (frm.keluhannyeri?.kajianNyeri === 'Wong Baker Face Scale') {
           this.setKeteranganSkornyeri(frm.keluhannyeri.skorNyeri, jns)
           // frm.keluhannyeri.form = null
         }
@@ -939,7 +940,7 @@ export const useAnamnesisHemodialisaStore = defineStore('anamnesis-hemodialisa-s
       }
       else if (jns === 'form' || jns === 'kebidanan' || jns === 'pediatrik') {
         const frm = jns === 'form' ? this.form : (jns === 'kebidanan' ? this.formKebidanan : this.formPediatrik)
-        if (frm.keluhannyeri.kajianNyeri === 'Wong Baker Face Scale') {
+        if (frm.keluhannyeri?.kajianNyeri === 'Wong Baker Face Scale') {
           if (val === 0) ket = 'Tidak ada nyeri'
           else if (val > 0 && val <= 3) ket = 'Nyeri Ringan'
           else if (val > 3 && val <= 6) ket = 'Nyeri Sedang'
@@ -1200,11 +1201,9 @@ export const useAnamnesisHemodialisaStore = defineStore('anamnesis-hemodialisa-s
         form = isianKebidanan[0] || isianKeperawatan[0] || isianDokter[0] || null
         if (form) isianKebidanan?.length ? form.id = form.id : form.id = null
       }
-
       // form = isianDokter[0] || isianKeperawatan[0] || isianKebidanan[0] || null
       // form.id = null
 
-      // console.log('form pisah', form)
       this.initReset(form)
       if (dokter) this.form.keluhannyeri = null
       if (dokter) this.form.skreeninggizi = null
