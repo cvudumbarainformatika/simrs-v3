@@ -47,7 +47,7 @@ function exportPdf() {
   const nama = props?.pasien?.nama ?? props?.pasien?.pasien
   const pdfConfig = {
     margin: 0,
-    filename: 'billing-' + props?.pasien?.noreg + '_' + nama + '_' + props?.pasien?.norm + '.pdf',
+    filename: 'SEP_' + props?.pasien?.noreg + '_' + nama + '_' + props?.pasien?.norm + '.pdf',
     image: {
       type: 'jpeg',
       quality: 0.98

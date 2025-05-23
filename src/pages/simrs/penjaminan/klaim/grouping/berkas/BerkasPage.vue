@@ -33,6 +33,13 @@ const documents = ref([
   {
     icon: 'icon-fa-file-regular',
     color: 'primary',
+    jenis: 'SEP',
+    label: 'Sep',
+    value: 'Sep'
+  },
+  {
+    icon: 'icon-fa-file-regular',
+    color: 'primary',
     jenis: 'Res',
     label: 'Resume',
     value: 'Resume'
@@ -83,6 +90,7 @@ function getLabel(val) {
   return anu?.length ? anu[0].label : '-'
 }
 const comp = [
+  { nama: 'Sep', page: defineAsyncComponent(() => import('../../../../igd/layanan/dokumen/dokumenisi/Sep/SepPage.vue')) },
   { nama: 'Resume', page: defineAsyncComponent(() => import('./compdokumen/ResumePage.vue')) },
   { nama: 'Billing', page: defineAsyncComponent(() => import('../../../../igd/layanan/dokumen/dokumenisi/Billing/BillingPage.vue')) },
   { nama: 'Triage_IGD', page: defineAsyncComponent(() => import('../../../../igd/layanan/dokumen/dokumenisi/triage/TriasePage.vue')) },
