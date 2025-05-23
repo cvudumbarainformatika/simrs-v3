@@ -540,7 +540,7 @@ export const useAnamnesisHemodialisaStore = defineStore('anamnesis-hemodialisa-s
       }
     },
     hitungNilaiSkor () {
-      const skorKondKhusus = this.form.kondisikhusus.trim()?.length === 0 ? 0 : 2
+      const skorKondKhusus = this.form.kondisikhusus?.trim()?.length === 0 ? 0 : 2
       const skor = parseInt(this.form.skreeninggizi) + parseInt(this.form.asupanmakan) + parseInt(skorKondKhusus)
       this.form.skor = skor
     },
@@ -566,7 +566,7 @@ export const useAnamnesisHemodialisaStore = defineStore('anamnesis-hemodialisa-s
     },
 
     initReset (data) {
-      // console.log('data init reset', data)
+      console.log('data init reset', data)
       this.loadingSave = false
 
       this.form = {
@@ -895,6 +895,8 @@ export const useAnamnesisHemodialisaStore = defineStore('anamnesis-hemodialisa-s
       this.hitungSkorNyeri('form')
       this.hitungSkorNyeri('kebidanan')
       this.hitungSkorNyeri('pediatrik')
+      console.log('form', this.form)
+
     },
 
     hitungSkorNyeri (jns) {
@@ -1090,15 +1092,10 @@ export const useAnamnesisHemodialisaStore = defineStore('anamnesis-hemodialisa-s
 
 
       this.loadingSave = true
-      const kasusKep = jnsKasus?.gruping
+      // const kasusKep = jnsKasus?.gruping
       let formDefault = this.form
-      if (kasusKep === '4.1') {
-        formDefault = this.form
-      }
-      if (kasusKep === '4.2' || kasusKep === '4.3' || kasusKep === '4.4') {
-        formDefault.skreeninggizi = null
-        formDefault.keluhannyeri = null
-      }
+
+      formDefault = this.form
       // eslint-disable-next-line no-unused-vars
       const req = {
         noreg: awal == 'awal' ? pasien?.noreg : (pasien?.nota_permintaan ?? (pasien?.noreg ?? null)),
@@ -1107,10 +1104,12 @@ export const useAnamnesisHemodialisaStore = defineStore('anamnesis-hemodialisa-s
         id: this.form.id,
         form: formDefault,
         awal: awal == 'awal' ? '1' : '',
-        formKebidanan: kasusKep === '4.2' ? this.formKebidanan : null, // ini this.formKebidanan,
-        formNeoNatal: kasusKep === '4.3' ? this.formNeoNatal : null,
-        formPediatrik: kasusKep === '4.4' ? this.formPediatrik : null // ini this.formPediatrik
+        // formKebidanan: kasusKep === '4.2' ? this.formKebidanan : null, // ini this.formKebidanan,
+        // formNeoNatal: kasusKep === '4.3' ? this.formNeoNatal : null,
+        // formPediatrik: kasusKep === '4.4' ? this.formPediatrik : null // ini this.formPediatrik
       }
+      // this.loadingSave = false
+      // return console.log('req', req)
 
       const timeStamp = Date.now()
       const auth = useAplikasiStore()
@@ -1163,7 +1162,7 @@ export const useAnamnesisHemodialisaStore = defineStore('anamnesis-hemodialisa-s
     PISAH_DATA_RANAP_IGD (arr, pasien, cat) {
       const auth = useAplikasiStore()
       const jns = auth?.user?.pegawai?.kdgroupnakes
-      console.log('jns auth', jns)
+      // console.log('jns auth', jns)
 
       const igd = arr?.filter(x => x?.kdruang === 'POL014') ?? []
 
