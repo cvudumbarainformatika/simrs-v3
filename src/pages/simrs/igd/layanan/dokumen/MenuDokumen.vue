@@ -1,29 +1,30 @@
 <template>
-  <div class="column full-height" style="overflow: hidden;">
-    <div class="q-gutter-y-md full-height full-width">
-      <div class="col-auto bg-red">
-        <q-tabs v-model="store.tab" inline-label outside-arrows mobile-arrows align="left" active-color="yellow"
-          class="bg-grey-4 text-white shadow-2 text-grey-8" active-bg-color="primary">
-          <q-tab v-for="(item, i) in store.tabs" :key="i" :name="item.page" :label="item.name" style="width: 100%;" />
-        </q-tabs>
-      </div>
-      <div class="col full-height" style="overflow: hidden;">
-        <q-tab-panels v-model="store.tab" animated class="full-height">
-          <q-tab-panel name="Billing" class="full-height q-pa-none">
-            <BillingPage :judul="billing" :pasien="props?.pasien" />
-          </q-tab-panel>
-          <q-tab-panel name="Triase" class="full-height q-pa-none">
-            <TriasePage :judul="triase" :pasien="props.pasien" />
-          </q-tab-panel>
-          <q-tab-panel name="Surat Kematian" class="full-height q-pa-none">
-            <SuratKematianPage :judul="suratkematian" :pasien="props.pasien" />
-          </q-tab-panel>
-          <q-tab-panel name="Indikasi Masuk Rawat Inap" class="full-height q-pa-none">
-            <Indikasimasuknicudaninter :judul="indikasinicu" :pasien="props.pasien" :isi="isi" :kelas="kelas"
-              :loading="storex?.loading" :keterangan="keterangan" />
-          </q-tab-panel>
-        </q-tab-panels>
-      </div>
+  <div class=" full-height full-width bg-red">
+    <div class="col-auto bg-red">
+      <q-tabs v-model="store.tab" inline-label outside-arrows mobile-arrows align="left" active-color="yellow"
+        class="bg-grey-4 text-white shadow-2 text-grey-8" active-bg-color="primary">
+        <q-tab v-for="(item, i) in store.tabs" :key="i" :name="item.page" :label="item.name" style="width: 100%;" />
+      </q-tabs>
+    </div>
+    <div class="col full-height" style="overflow: hidden;">
+      <q-tab-panels v-model="store.tab" animated class="full-height">
+        <q-tab-panel name="Billing" class="full-height q-pa-none">
+          <BillingPage :judul="billing" :pasien="props?.pasien" />
+        </q-tab-panel>
+        <q-tab-panel name="Triase" class="full-height q-pa-none">
+          <TriasePage :judul="triase" :pasien="props.pasien" />
+        </q-tab-panel>
+        <q-tab-panel name="Surat Kematian" class="full-height q-pa-none">
+          <SuratKematianPage :judul="suratkematian" :pasien="props.pasien" />
+        </q-tab-panel>
+        <q-tab-panel name="Indikasi Masuk Rawat Inap" class="full-height q-pa-none">
+          <Indikasimasuknicudaninter :judul="indikasinicu" :pasien="props.pasien" :isi="isi" :kelas="kelas"
+            :loading="storex?.loading" :keterangan="keterangan" />
+        </q-tab-panel>
+        <q-tab-panel name="Sep" class="full-height q-pa-none">
+          <SepPage :judul="sep" :pasien="props.pasien" />
+        </q-tab-panel>
+      </q-tab-panels>
     </div>
   </div>
 </template>
@@ -42,11 +43,13 @@ import BillingPage from './dokumenisi/Billing/BillingPage.vue';
 import TriasePage from './dokumenisi/triage/TriasePage.vue';
 import SuratKematianPage from './dokumenisi/suratkematian/SuratKematianPage.vue';
 import Indikasimasuknicudaninter from './dokumenisi/inidakasimasuknicudaninter/indikasimasuknicudaninter.vue';
+import SepPage from './dokumenisi/Sep/SepPage.vue';
 import { usePlannStore } from 'src/stores/simrs/igd/plann';
 const billing = ref('BILLING')
 const triase = ref('TRIASE')
 const suratkematian = ref('Surat Kematian')
 const indikasinicu = ref('Indikasi Pasien Masuk Ruang')
+const sep = ref('Sep')
 const store = useDokumenIgdStore()
 // const storex = usePlannStore()
 // const isi = storex?.isiindikasimasuknicu?.planranap?.dokumentransfer?.isi ? JSON.parse(storex?.isiindikasimasuknicu?.planranap?.dokumentransfer?.isi) : '-'
