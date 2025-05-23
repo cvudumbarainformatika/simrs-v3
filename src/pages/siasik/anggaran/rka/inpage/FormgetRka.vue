@@ -70,13 +70,17 @@
 import { useQuasar } from 'quasar'
 import { useRkaStore } from 'src/stores/siasik/anggaran/storerka'
 // eslint-disable-next-line no-unused-vars
-import { defineAsyncComponent, onBeforeMount, ref, watchEffect } from 'vue'
+import { defineAsyncComponent, onBeforeMount, onMounted, ref, watchEffect } from 'vue'
 
 const CetakRka = defineAsyncComponent(() => import('../printRka/PrintDataRKA.vue'))
 const store = useRkaStore()
 const $q = useQuasar()
 
 onBeforeMount(() => {
+  // store.getDataBidang()
+  store.emptyForm()
+})
+onMounted(() => {
   store.getDataBidang()
 })
 // Model berdasarkan ref agar tidak updte
