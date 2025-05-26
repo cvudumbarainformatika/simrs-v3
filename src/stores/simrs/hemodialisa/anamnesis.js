@@ -596,25 +596,21 @@ export const useAnamnesisHemodialisaStore = defineStore('anamnesis-hemodialisa-s
         }
 
       }
-      if (data?.keluhannyeri) {
-        const formNyeri = {}
-        for (let i = 0; i < this.formNyeris?.length; i++) {
-          const el = this.formNyeris[i]
-          formNyeri[el?.kode] = el?.values?.find(x => x?.skor === data?.keluhannyeri?.dewasa?.form[el.kode]?.skor) ?? null
-        }
-        this.form.keluhannyeri.form = formNyeri
-
+      const formNyeri = {}
+      for (let i = 0; i < this.formNyeris?.length; i++) {
+        const el = this.formNyeris[i]
+        formNyeri[el?.kode] = el?.values?.find(x => x?.skor === data?.keluhannyeri?.dewasa?.form[el.kode]?.skor) ?? null
       }
-      if (data?.skreeninggizi) {
-        const formGizi = {}
+      this.form.keluhannyeri.form = formNyeri
+      const formGizi = {}
 
-        for (let i = 0; i < this.formGizis?.length; i++) {
-          const el = this.formGizis[i]
-          formGizi[el?.kode] = el?.values?.find(x => x?.skor === (data?.skreeninggizi?.dewasa?.form ? data?.skreeninggizi?.dewasa?.form[el?.kode]?.skor : el?.values?.find(x => x?.skor === 0))) ?? null
-        }
-        this.form.skreeninggizi.form = formGizi
+      for (let i = 0; i < this.formGizis?.length; i++) {
+        const el = this.formGizis[i]
 
+        formGizi[el?.kode] = el?.values?.find(x => x?.skor === (!!data?.skreeninggizi?.dewasa?.form ? data?.skreeninggizi?.dewasa?.form[el?.kode]?.skor : el?.values?.find(x => x?.skor === 0))) ?? null
       }
+      this.form.skreeninggizi.form = formGizi
+
 
       // this.formKebidanan = {
       //   // ini untuk 4.2
@@ -892,9 +888,9 @@ export const useAnamnesisHemodialisaStore = defineStore('anamnesis-hemodialisa-s
       // console.log('gizi pediatrik', this.formPediatrik)
 
       this.hitungSkorSgd()
-      this.hitungSkorSgk()
-      this.hitungSkorSgn()
-      this.hitungSkorSgp()
+      // this.hitungSkorSgk()
+      // this.hitungSkorSgn()
+      // this.hitungSkorSgp()
       // this.hitungSkorNyeri('formNeoNatal')
       this.hitungSkorNyeri('form')
       // this.hitungSkorNyeri('kebidanan')
@@ -1128,10 +1124,11 @@ export const useAnamnesisHemodialisaStore = defineStore('anamnesis-hemodialisa-s
         petugas: { nama: auth?.user?.nama }
 
       }
+      const noreg = pasien?.nota_permintaan ?? pasien?.noreg
 
       const pengunjung = useListPasienHemodialisaStore()
-      if (awal == 'awal') pengunjung.injectDataPasien(pasien?.noreg, pushSementara, 'anamnesis_awal_hd')
-      else pengunjung.injectDataPasien(pasien?.noreg, pushSementara, 'anamnesis')
+      if (awal == 'awal') pengunjung.injectDataPasien(noreg, pushSementara, 'anamnesis_awal_hd')
+      else pengunjung.injectDataPasien(noreg, pushSementara, 'anamnesis')
 
       // console.log('form, jenis kasus', req)
 
@@ -1141,14 +1138,14 @@ export const useAnamnesisHemodialisaStore = defineStore('anamnesis-hemodialisa-s
         if (resp.status === 200) {
           notifSuccess(resp)
           const result = resp?.data?.result
-          // pengunjung.injectDataPasien(pasien?.noreg, result, 'anamnesis')
-          if (awal = 'awal') {
-            pengunjung.deleteInjectanNull2(pasien?.noreg, 'anamnesis_awal_hd')
-            pengunjung.injectDataArray(pasien?.noreg, result, 'anamnesis_awal_hd')
+          // pengunjung.injectDataPasien(noreg, result, 'anamnesis')
+          if (awal == 'awal') {
+            pengunjung.deleteInjectanNull2(noreg, 'anamnesis_awal_hd')
+            pengunjung.injectDataArray(noreg, result, 'anamnesis_awal_hd')
 
           } else {
-            pengunjung.deleteInjectanNull2(pasien?.noreg, 'anamnesis')
-            pengunjung.injectDataArray(pasien?.noreg, result, 'anamnesis')
+            pengunjung.deleteInjectanNull2(noreg, 'anamnesis')
+            pengunjung.injectDataArray(noreg, result, 'anamnesis')
           }
 
           if (result?.length) this.PISAH_DATA_RANAP_IGD(result, pasien)
@@ -1207,6 +1204,7 @@ export const useAnamnesisHemodialisaStore = defineStore('anamnesis-hemodialisa-s
       }
       // form = isianDokter[0] || isianKeperawatan[0] || isianKebidanan[0] || null
       // form.id = null
+      console.log('form', form, pasien)
 
       this.initReset(form)
       if (dokter) this.form.keluhannyeri = null
