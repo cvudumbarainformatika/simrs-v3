@@ -1,6 +1,7 @@
 <template>
   <div class="row items-center q-col-gutter-x-sm">
     <!-- Status fungsional -->
+
     <div class="col-6">
       <app-autocomplete class="q-my-xs" v-model="store.form.fungsional" :source="store.statusFungs"
         label="Status Fungsional" outlined hide-dropdown-icon />
