@@ -1,5 +1,5 @@
 <template>
-  <q-bar dense class="bg-white q-mb-md">
+  <q-bar v-if="!pasien?.nota_permintaan" dense class="bg-white q-my-md">
     <q-space />
     <q-btn ref="refPrint" v-print="printObj" unelevated color="dark" round size="sm" icon="icon-mat-print">
       <q-tooltip class="primary" :offset="[10, 10]">
@@ -7,7 +7,8 @@
       </q-tooltip>
     </q-btn>
   </q-bar>
-  <div class="tinggi">
+
+  <div v-if="!pasien?.nota_permintaan" class="tinggi">
     <div id="printMe" class="full-width">
       <KopSurat />
       <div class="garis-bawah-dblue q-pb-sm q-mb-md">
@@ -421,14 +422,17 @@
       <app-loading />
     </div>
   </div>
+  <div v-else>
+    <app-maintenance text="Hanya untuk Pasien Rawat Jalan dan Hemodialisa sebagai Poli" color="negative" />
+  </div>
 </template>
 <script setup>
 import { date } from 'quasar'
 import { usePemeriksaanFisik } from 'src/stores/simrs/pelayanan/poli/pemeriksaanfisik'
-import KopSurat from 'src/components/KopSurat.vue';
-import { getNewLine } from 'src/modules/formatter';
-import { useDokumenResumeHDStore } from 'src/stores/simrs/hemodialisa/resume';
-import { computed } from 'vue';
+import KopSurat from 'src/components/KopSurat.vue'
+import { getNewLine } from 'src/modules/formatter'
+import { useDokumenResumeHDStore } from 'src/stores/simrs/hemodialisa/resume'
+import { computed } from 'vue'
 const props = defineProps({
   pasien: {
     type: Object,
@@ -443,7 +447,7 @@ const fisik = usePemeriksaanFisik()
 store.setParams('noreg', props.pasien?.noreg)
 store.getData()
 // eslint-disable-next-line no-unused-vars
-function getYT(val) {
+function getYT (val) {
   if (val === 1 || val === '1') {
     return 'Ya'
   }
@@ -465,7 +469,7 @@ function getYT(val) {
 //   }
 // }
 // eslint-disable-next-line no-unused-vars
-function tekananDarah(val) {
+function tekananDarah (val) {
   const normal = val >= 100 && val <= 120
   const prahipertensi = val >= 121 && val <= 139
   const hipertensiderajat1 = val >= 140 && val <= 159
@@ -494,7 +498,7 @@ function tekananDarah(val) {
   return obj
 }
 // eslint-disable-next-line no-unused-vars
-function tekananDarahDias(val) {
+function tekananDarahDias (val) {
   const normal = val >= 60 && val <= 79
   const prahipertensi = val >= 80 && val <= 89
   const hipertensiderajat1 = val >= 90 && val <= 99
@@ -523,7 +527,7 @@ function tekananDarahDias(val) {
   return obj
 }
 // eslint-disable-next-line no-unused-vars
-function suhu(val) {
+function suhu (val) {
   const hipotermia = val < 35
   const normal = val >= 35 && val < 37
   const pireksia = val >= 37 && val <= 41.1
@@ -549,7 +553,7 @@ function suhu(val) {
   return obj
 }
 // eslint-disable-next-line no-unused-vars
-function nadi(val) {
+function nadi (val) {
   const bradikardi = val < 60
   const normal = val >= 61 && val <= 100
   const takikardi = val > 100
