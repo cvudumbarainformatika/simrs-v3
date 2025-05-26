@@ -16,11 +16,11 @@
   </q-input>
 
   <!-- WYSIWYG Editor -->
-  <div v-else class="app-wysiwyg-editor">
-    <div class="editor-toolbar bg-grey-2 rounded-borders">
-      <div class="row q-col-gutter-sm items-center">
+  <div v-else class="app-wysiwyg-editor full-width q-pa-none overflow-hidden">
+    <div class="editor-toolbar bg-grey-2 rounded-borders ">
+      <div class="row items-center">
         <!-- Add Import Button -->
-        <div class="col-auto">
+        <div class="col-auto flex">
           <q-btn-dropdown flat dense icon="icon-mat-upload_file" label="Import">
             <q-list>
               <q-item clickable v-close-popup @click="triggerFileInput">
@@ -38,67 +38,67 @@
           <input type="file" ref="fileInput" accept=".docx" style="display: none" @change="handleFileUpload">
         </div>
 
-        <q-separator vertical inset />
+        <q-separator vertical />
 
         <!-- Text Style -->
         <div class="col-auto">
           <q-btn-group flat>
-            <q-btn flat dense :color="editor?.isActive('heading', { level: 2 }) ? 'primary' : 'grey-8'"
-              icon="icon-mat-title" @click="editor?.chain().focus().toggleHeading({ level: 2 }).run()">
+            <q-btn flat dense :color="editor?.isActive('heading', { level: 2 }) ? 'secondary' : 'grey-8'"
+              icon="icon-mat-menu" @click="editor?.chain().focus().toggleHeading({ level: 2 }).run()">
               <q-tooltip>Heading</q-tooltip>
             </q-btn>
-            <q-btn flat dense :color="editor?.isActive('bold') ? 'primary' : 'grey-8'" icon="icon-mat-format_bold"
+            <q-btn flat dense :color="editor?.isActive('bold') ? 'secondary' : 'grey-8'" icon="icon-mat-format_bold"
               @click="editor?.chain().focus().toggleBold().run()">
               <q-tooltip>Bold</q-tooltip>
             </q-btn>
-            <q-btn flat dense :color="editor?.isActive('italic') ? 'primary' : 'grey-8'" icon="icon-mat-format_italic"
+            <q-btn flat dense :color="editor?.isActive('italic') ? 'secondary' : 'grey-8'" icon="icon-mat-format_italic"
               @click="editor?.chain().focus().toggleItalic().run()">
               <q-tooltip>Italic</q-tooltip>
             </q-btn>
           </q-btn-group>
         </div>
 
-        <q-separator vertical inset />
+        <q-separator vertical />
 
         <!-- Alignment -->
         <div class="col-auto">
           <q-btn-group flat>
-            <q-btn flat dense :color="editor?.isActive({ textAlign: 'left' }) ? 'primary' : 'grey-8'"
+            <q-btn flat dense :color="editor?.isActive({ textAlign: 'left' }) ? 'secondary' : 'grey-8'"
               icon="icon-mat-format_align_left" @click="editor?.chain().focus().setTextAlign('left').run()">
               <q-tooltip>Align Left</q-tooltip>
             </q-btn>
-            <q-btn flat dense :color="editor?.isActive({ textAlign: 'center' }) ? 'primary' : 'grey-8'"
+            <q-btn flat dense :color="editor?.isActive({ textAlign: 'center' }) ? 'secondary' : 'grey-8'"
               icon="icon-mat-format_align_center" @click="editor?.chain().focus().setTextAlign('center').run()">
               <q-tooltip>Center</q-tooltip>
             </q-btn>
-            <q-btn flat dense :color="editor?.isActive({ textAlign: 'right' }) ? 'primary' : 'grey-8'"
+            <q-btn flat dense :color="editor?.isActive({ textAlign: 'right' }) ? 'secondary' : 'grey-8'"
               icon="icon-mat-format_align_right" @click="editor?.chain().focus().setTextAlign('right').run()">
               <q-tooltip>Align Right</q-tooltip>
             </q-btn>
           </q-btn-group>
         </div>
 
-        <q-separator vertical inset />
+        <q-separator vertical />
 
         <!-- Lists -->
         <div class="col-auto">
           <q-btn-group flat>
-            <q-btn flat dense :color="editor?.isActive('bulletList') ? 'primary' : 'grey-8'"
+            <q-btn flat dense :color="editor?.isActive('bulletList') ? 'secondary' : 'grey-8'"
               icon="icon-mat-format_list_bulleted" @click="editor?.chain().focus().toggleBulletList().run()">
               <q-tooltip>Bullet List</q-tooltip>
             </q-btn>
-            <q-btn flat dense :color="editor?.isActive('orderedList') ? 'primary' : 'grey-8'"
+            <q-btn flat dense :color="editor?.isActive('orderedList') ? 'secondary' : 'grey-8'"
               icon="icon-mat-format_list_numbered" @click="editor?.chain().focus().toggleOrderedList().run()">
               <q-tooltip>Numbered List</q-tooltip>
             </q-btn>
           </q-btn-group>
         </div>
 
-        <q-separator vertical inset />
+        <q-separator vertical />
 
         <!-- Table -->
         <div class="col-auto">
-          <q-btn flat dense icon="icon-mat-table_chart" @click="insertTable">
+          <q-btn flat dense icon="icon-mat-table_view" @click="insertTable">
             <q-tooltip>Insert Table</q-tooltip>
           </q-btn>
         </div>
@@ -438,6 +438,7 @@ const setColor = (color) => {
 
   .editor-toolbar {
     border-bottom: 1px solid #ddd;
+
   }
 
   .editor-content {
@@ -492,7 +493,7 @@ const setColor = (color) => {
     }
 
     h6 {
-      font-size: 0.67em;
+      font-size: 0.78em;
       font-weight: 600;
       margin: 0.3em 0;
       line-height: 1.2;
@@ -500,7 +501,7 @@ const setColor = (color) => {
 
     /* Paragraph Style */
     p {
-      font-size: 0.75em;
+      font-size: 1em;
       margin: 0.5em 0; // Kurangi margin
       line-height: 1; // Sesuaikan line-height
 

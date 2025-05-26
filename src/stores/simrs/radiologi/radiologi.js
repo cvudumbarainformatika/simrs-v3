@@ -1,7 +1,8 @@
-import { defineStore } from 'pinia'
+import { acceptHMRUpdate, defineStore, } from 'pinia'
 import { api } from 'boot/axios'
 import { dateDbFormat } from 'src/modules/formatter'
 import { date } from 'quasar'
+import { usePermintaanRadiologiStore } from './permintaan'
 
 export const useListPasienRadiologiStore = defineStore('list-pasien-radiologi', {
   state: () => ({
@@ -24,11 +25,11 @@ export const useListPasienRadiologiStore = defineStore('list-pasien-radiologi', 
     sorting: ['terbaru', 'terlama'],
     statuses: ['Semua', 'Terlayani', 'Belum terlayani'],
     isViewList: false,
-    pasien: null,
     pageTindakan: false,
     loadingTerima: false,
     bukaLayanan: false,
     pasiens: [],
+    pasien: null,
     newapotekrajal: [],
     diagnosa: [],
     koderuangan: null,
@@ -72,6 +73,34 @@ export const useListPasienRadiologiStore = defineStore('list-pasien-radiologi', 
           reject(err)
         })
       })
+    },
+
+    async getDataPasienRadiologiByNota(pasien) {
+      this.pasien = pasien
+      console.log('getDataPasienRadiologiByNoreg', pasien);
+
+      this.loading = true
+
+      const permintaan = usePermintaanRadiologiStore()
+      try {
+        const resp = await api.get(`/v1/simrs/radiologi/radiologi/getDataPasienRadiologiByNota?nota=${pasien?.nota_permintaan}`)
+        console.log('resp pasien radiologi', resp, this.depo)
+        if (resp.status === 200) {
+          this.pasien['permintaan'] = resp.data?.permintaan ?? null
+          this.pasien['newapotekrajal'] = resp.data?.newapotekrajal ?? []
+          permintaan.initPermintaan(this.pasien)
+
+        }
+      } catch (error) {
+        console.error('Error fetching data for pasien radiologi:', error)
+
+      } finally {
+        this.loading = false
+      }
+
+
+
+
     },
 
     setPeriode(val) {
@@ -135,7 +164,7 @@ export const useListPasienRadiologiStore = defineStore('list-pasien-radiologi', 
       this.pageTindakan = !this.pageTindakan
     },
 
-    // BARU PUTRA DEV RADIOLOGI
+    // BARU RADIOLOGI
     helperKdRuangan(val) {
       const ruang = val?.ruangan.split('').slice(0, 3).join('')
       const poli = val?.poli.split('').slice(0, 3).join('')
@@ -151,6 +180,20 @@ export const useListPasienRadiologiStore = defineStore('list-pasien-radiologi', 
       else {
         this.depo = 'rjl'
       }
+    },
+    async simpan() {
+      console.log('simpan');
+
+    },
+
+    async batal(item) {
+      const itemId = this.items?.find(x => x?.id === item?.id) || null
+      console.log('batal', itemId);
+
     }
   }
 })
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useListPasienRadiologiStore, import.meta.hot))
+}

@@ -22,7 +22,7 @@
   // "typescript.tsdk": "node_modules/typescript/lib",
   "files.autoSave": "off",
   "beautify.config": "",
-  "workbench.colorTheme": "GitHub Dark",
+  "workbench.colorTheme": "Default Dark Modern",
   "vue.codeActions.enabled": false,
   "[javascript]": {
     "editor.defaultFormatter": "vscode.typescript-language-features"

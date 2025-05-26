@@ -79,13 +79,13 @@ export const useDuplicateEResepStore = defineStore('duplicate_e_resep', {
     // section racikan end---
   }),
   actions: {
-    setForm (key, val) {
+    setForm(key, val) {
       this.form[key] = val
     },
-    setRacikan (key, val) {
+    setRacikan(key, val) {
       this.racikan[key] = val
     },
-    setPasien () {
+    setPasien() {
       const val = this?.pasien
       const temp = val?.diagnosa?.map(x => x?.rs3 + ' - ' + x?.masterdiagnosa?.rs4)
       const diag = temp?.length ? temp.join(', ') : '-'
@@ -100,7 +100,7 @@ export const useDuplicateEResepStore = defineStore('duplicate_e_resep', {
       // if (this?.depo === 'rnp') this.getBillRanap(val)
       // if (this?.depo === 'igd') this.getBillIgd(val)
     },
-    resetForm () {
+    resetForm() {
       this.namaObat = null
       const tagihanrs = this.form?.tagihanrs ?? 0
       const iterExpired = this.form?.iter_expired ?? ''
@@ -153,7 +153,7 @@ export const useDuplicateEResepStore = defineStore('duplicate_e_resep', {
       }
       this.setPasien()
     },
-    resetObat () {
+    resetObat() {
       const tagihanrs = this.form?.tagihanrs ?? 0
       const kodeincbg = this.form?.kodeincbg ?? '-'
       const uraianinacbg = this.form?.uraianinacbg ?? '-'
@@ -171,7 +171,7 @@ export const useDuplicateEResepStore = defineStore('duplicate_e_resep', {
 
       this.setPasien()
     },
-    resetRacikan () {
+    resetRacikan() {
       const jen = this.racikan?.tiperacikan ?? '-'
       const nam = this.racikan?.namaracikan ?? '-'
       this.racikan = {
@@ -184,7 +184,7 @@ export const useDuplicateEResepStore = defineStore('duplicate_e_resep', {
         dosismaksimum: 1 // dosis resep
       }
     },
-    hapusList (obat) {
+    hapusList(obat) {
       const resep = this?.pasien?.newapotekrajal?.find(val => val.noresep === obat?.noresep)
       if (obat?.namaracikan) {
         // const racikan = this?.listRacikan?.filter(a => a.namaracikan === obat?.namaracikan)
@@ -197,7 +197,7 @@ export const useDuplicateEResepStore = defineStore('duplicate_e_resep', {
           //   if (index >= 0)racikan[0]?.rincian?.splice(index, 1)
           if (racikan?.rincian?.length > 1) {
             const index = racikan?.rincian?.findIndex(x => x.id === obat?.id)
-            if (index >= 0)racikan?.rincian?.splice(index, 1)
+            if (index >= 0) racikan?.rincian?.splice(index, 1)
           }
           else {
             const index = this?.listRacikan?.findIndex(x => x.namaracikan === obat?.namaracikan)
@@ -227,16 +227,16 @@ export const useDuplicateEResepStore = defineStore('duplicate_e_resep', {
       }
       console.log('pasien hapus obat', resep)
     },
-    setList (key) {
+    setList(key) {
       key.harga = (parseFloat(key?.jumlah) * parseFloat(key?.hargajual)) + parseFloat(key?.r)
       this.listPemintaanSementara.push(key)
     },
-    setListArray (array) {
+    setListArray(array) {
       array.forEach(arr => {
         this.setList(arr)
       })
     },
-    setListRacikan (key) {
+    setListRacikan(key) {
       // console.log('set list racikan', key)
       key.harga = (parseFloat(key?.jumlah) * parseFloat(key?.harga_jual)) + parseFloat(key?.r)
       // const adaRin = this.listRincianRacikan?.find(ri => ri.id === key.id && ri.namaracikan === this.form.namaracikan)
@@ -281,19 +281,19 @@ export const useDuplicateEResepStore = defineStore('duplicate_e_resep', {
       //   { label: 'non-DTD', value: 'non-DTD', disable: true }
       // ]
     },
-    setListRacikanArray (array) {
+    setListRacikanArray(array) {
       array.forEach(arr => {
         this.setListRacikan(arr)
       })
     },
-    setNoreseps (reseps) {
+    setNoreseps(reseps) {
       this.noreseps = []
       reseps?.forEach(resep => {
         this.noreseps.unshift(resep?.noresep)
       })
       this.noreseps.unshift('BARU')
     },
-    setResep (val) {
+    setResep(val) {
       this.setForm('noresep', '')
       this.listRacikan = []
       this.listPemintaanSementara = []
@@ -320,7 +320,7 @@ export const useDuplicateEResepStore = defineStore('duplicate_e_resep', {
       }
       // console.log('set resep', val, resep, this.form)
     },
-    setListResep (resep) {
+    setListResep(resep) {
       resep.listRacikan = []
       if (resep?.permintaanracikan?.length) {
         const rac = resep?.permintaanracikan
@@ -354,7 +354,7 @@ export const useDuplicateEResepStore = defineStore('duplicate_e_resep', {
         })
       }
     },
-    cariObat (val, obat) {
+    cariObat(val, obat) {
       let kdobatArray = ''
       if (obat?.length) {
         kdobatArray = obat.map(item => item?.kdobat)
@@ -394,7 +394,7 @@ export const useDuplicateEResepStore = defineStore('duplicate_e_resep', {
       // }
     },
 
-    cariObat2 (val) {
+    cariObat2(val) {
       const depo = this.depos.filter(pa => pa.jenis === this.depo)
       // console.log('depo', this?.depo, depo)
       if (depo?.length) {
@@ -426,7 +426,7 @@ export const useDuplicateEResepStore = defineStore('duplicate_e_resep', {
       })
       // }
     },
-    async getSigna () {
+    async getSigna() {
       this.loadingSigna = true
       await api.get('v1/simrs/farmasinew/depo/get-signa')
         .then(resp => {
@@ -436,7 +436,7 @@ export const useDuplicateEResepStore = defineStore('duplicate_e_resep', {
         })
         .catch(() => { this.loadingSigna = false })
     },
-    seveSigna () {
+    seveSigna() {
       this.loadingSaveSigna = true
       return new Promise(resolve => {
         api.post('v1/simrs/master/signa/store-signa', this.fromSigna)
@@ -453,7 +453,7 @@ export const useDuplicateEResepStore = defineStore('duplicate_e_resep', {
           })
       })
     },
-    getBillRajal (val) {
+    getBillRajal(val) {
       this.setForm('kdruangan', val?.kodepoli)
       const kunjRajal = useKasirRajalListKunjunganStore()
       const param = { noreg: val?.noreg }
@@ -463,19 +463,19 @@ export const useDuplicateEResepStore = defineStore('duplicate_e_resep', {
         // console.log('form', this.form)
       })
     },
-    getBillRanap (val) {
+    getBillRanap(val) {
       this.setForm('kdruangan', val?.kdruangan)
       // if (!!this.form?.dokter && !this.dokters?.length) this.cariDokter(this.form?.dokter)
     },
-    getBillIgd (val) {
+    getBillIgd(val) {
       this.setForm('kdruangan', val?.kodepoli)
       // if (!!this.form?.dokter && !this.dokters?.length) this.cariDokter(this.form?.dokter)
     },
-    getBillOk (val) {
+    getBillOk(val) {
       this.setForm('kdruangan', val?.kdruangan)
       // if (!!this.form?.dokter && !this.dokters?.length) this.cariDokter(this.form?.dokter)
     },
-    cariSimulasi (val) {
+    cariSimulasi(val) {
       this.setForm('kodeincbg', '-')
       this.setForm('uraianinacbg', '-')
       this.setForm('tarifina', 0)
@@ -500,7 +500,7 @@ export const useDuplicateEResepStore = defineStore('duplicate_e_resep', {
       //     })
       // })
     },
-    async getNomor () {
+    async getNomor() {
       const param = {
         params: {
           noresep: this.form?.noresep
@@ -512,13 +512,13 @@ export const useDuplicateEResepStore = defineStore('duplicate_e_resep', {
           this.setForm('namaracikan', resp?.data)
         })
     },
-    async getHistory (norm) {
+    async getHistory(norm) {
       console.log(norm)
       this.loadingHistory = true
       const params = { params: { norm } }
       try {
         const resp = await api.get('v1/simrs/pelayanan/listresepbynorm', params)
-        console.log('history', resp)
+        // console.log('history', resp)
         if (resp.status === 200) {
           if (resp.data?.length) {
             const arr = resp.data
@@ -542,7 +542,7 @@ export const useDuplicateEResepStore = defineStore('duplicate_e_resep', {
     },
 
     // BARU
-    simpanCopyResep (val, obat) {
+    simpanCopyResep(val, obat) {
       // // const res = val?.rincian
       // // const racik = val?.permintaanracikan
 
@@ -808,7 +808,7 @@ export const useDuplicateEResepStore = defineStore('duplicate_e_resep', {
           })
       })
     },
-    openDialog (val) {
+    openDialog(val) {
       Dialog.create({
         title: 'Konfirmasi',
         message: `Obat yang diberikan tgl ${dateFullFormat(val?.cek?.hasil[0]?.tgl)} yang direncakan untuk konsumsi selama ${val?.cek?.total} hari, baru dikonsumsi ${val?.cek?.selisih} hari. Apakah Akan tetal dilanjutkan?`,
