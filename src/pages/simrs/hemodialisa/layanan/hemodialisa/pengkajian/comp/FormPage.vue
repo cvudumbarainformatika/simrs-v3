@@ -1,5 +1,17 @@
 <template>
   <div class="row items-center q-col-gutter-x-sm">
+    <!-- Status fungsional -->
+    <div class="col-6">
+      <app-autocomplete class="q-my-xs" v-model="store.form.fungsional" :source="store.statusFungs"
+        label="Status Fungsional" outlined hide-dropdown-icon />
+    </div>
+    <!-- jika fingsional Perlu Bantuan -->
+    <div v-if="store.form.fungsional === 'Perlu Bantuan'" class="col-6">
+      <app-input-simrs ref="refLainFungsi" v-model="store.form.lainx"
+        :label="'Sebutkan Bantuan yang diperlukan ' + panjangChar(store.form.lainx, 250)"
+        :valid="{ max: 255, canEmpty: true }" />
+    </div>
+
     <!-- Alasan -->
     <div class="col-6">
       <app-input-simrs ref="refAlasan" v-model="store.form.alasan"
@@ -80,17 +92,7 @@
         label="Pasien dengan diagnosa khusus" outlined hide-dropdown-icon> <q-tooltip>Pasien dengan diagnosa khusus
         </q-tooltip></app-autocomplete>
     </div>
-    <!-- Status fungsional -->
-    <div class="col-6">
-      <app-autocomplete class="q-my-xs" v-model="store.form.fungsional" :source="store.statusFungs"
-        label="Status Fungsional" outlined hide-dropdown-icon />
-    </div>
-    <!-- jika fingsional Perlu Bantuan -->
-    <div v-if="store.form.fungsional === 'Perlu Bantuan'" class="col-6">
-      <app-input-simrs ref="refLainFungsi" v-model="store.form.lainx"
-        :label="'Sebutkan Bantuan yang diperlukan ' + panjangChar(store.form.lainx, 250)"
-        :valid="{ max: 255, canEmpty: true }" />
-    </div>
+
   </div>
   <div class="row q-mt-md justify-end">
     <q-btn label="Simpan" no-caps dense color="primary" @click="simpan" :loading="store.loading"
