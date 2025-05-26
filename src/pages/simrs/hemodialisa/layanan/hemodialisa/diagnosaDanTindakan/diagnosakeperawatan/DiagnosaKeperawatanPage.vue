@@ -1,6 +1,6 @@
 <script setup>
 import { useQuasar } from 'quasar'
-import { useDiagnosaKeperawatan } from 'src/stores/simrs/pelayanan/poli/diagnosakeperawatan'
+import { useDiagnosaKeperawatanHD } from 'src/stores/simrs/hemodialisa/diagnosaKeperawatan'
 import { defineAsyncComponent, onMounted } from 'vue'
 
 const BaseLayout = defineAsyncComponent(() => import('src/pages/simrs/hemodialisa/layanan/components/BaseLayout.vue'))
@@ -24,7 +24,7 @@ const props = defineProps({
   }
 })
 
-const store = useDiagnosaKeperawatan()
+const store = useDiagnosaKeperawatanHD()
 
 onMounted(() => {
   Promise.all([
@@ -42,7 +42,7 @@ function hapusItem (id) {
     persistent: true
   }).onOk(() => {
     // console.log('OK')
-    store.deleteDiagnosa(props.pasien, id, 'ranap')
+    store.deleteDiagnosa(props.pasien, id)
   }).onCancel(() => {
     // console.log('Cancel')
   }).onDismiss(() => {

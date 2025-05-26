@@ -596,21 +596,25 @@ export const useAnamnesisHemodialisaStore = defineStore('anamnesis-hemodialisa-s
         }
 
       }
+      if (data?.keluhannyeri) {
+        const formNyeri = {}
+        for (let i = 0; i < this.formNyeris?.length; i++) {
+          const el = this.formNyeris[i]
+          formNyeri[el?.kode] = el?.values?.find(x => x?.skor === data?.keluhannyeri?.dewasa?.form[el.kode]?.skor) ?? null
+        }
+        this.form.keluhannyeri.form = formNyeri
 
-      const formNyeri = {}
-      for (let i = 0; i < this.formNyeris?.length; i++) {
-        const el = this.formNyeris[i]
-        formNyeri[el?.kode] = el?.values?.find(x => x?.skor === data?.keluhannyeri?.dewasa?.form[el.kode]?.skor) ?? null
       }
-      this.form.keluhannyeri.form = formNyeri
+      if (data?.skreeninggizi) {
+        const formGizi = {}
 
-      const formGizi = {}
+        for (let i = 0; i < this.formGizis?.length; i++) {
+          const el = this.formGizis[i]
+          formGizi[el?.kode] = el?.values?.find(x => x?.skor === (data?.skreeninggizi?.dewasa?.form ? data?.skreeninggizi?.dewasa?.form[el?.kode]?.skor : el?.values?.find(x => x?.skor === 0))) ?? null
+        }
+        this.form.skreeninggizi.form = formGizi
 
-      for (let i = 0; i < this.formGizis?.length; i++) {
-        const el = this.formGizis[i]
-        formGizi[el?.kode] = el?.values?.find(x => x?.skor === (data?.skreeninggizi?.dewasa?.form ? data?.skreeninggizi?.dewasa?.form[el?.kode]?.skor : el?.values?.find(x => x?.skor === 0))) ?? null
       }
-      this.form.skreeninggizi.form = formGizi
 
       // this.formKebidanan = {
       //   // ini untuk 4.2

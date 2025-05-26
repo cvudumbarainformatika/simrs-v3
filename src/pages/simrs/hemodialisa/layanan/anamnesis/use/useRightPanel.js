@@ -38,7 +38,7 @@ export default function useRightPanel (pasien) {
     // console.log('pasien?.anamnesis_awal_hd', pasien?.anamnesis_awal_hd)
 
     // getData(pasien)
-    store.PISAH_DATA_RANAP_IGD(pasien?.anamnesis_awal_hd, pasien)
+    // store.PISAH_DATA_RANAP_IGD(pasien?.anamnesis_awal_hd, pasien)
   })
 
 

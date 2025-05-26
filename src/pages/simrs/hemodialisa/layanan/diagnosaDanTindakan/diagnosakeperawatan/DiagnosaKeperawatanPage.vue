@@ -1,6 +1,6 @@
 <script setup>
 import { useQuasar } from 'quasar'
-import { useDiagnosaKeperawatan } from 'src/stores/simrs/pelayanan/poli/diagnosakeperawatan'
+import { useDiagnosaKeperawatanHD } from 'src/stores/simrs/hemodialisa/diagnosaKeperawatan'
 import { defineAsyncComponent, onMounted } from 'vue'
 
 const BaseLayout = defineAsyncComponent(() => import('src/pages/simrs/ranap/layanan/components/BaseLayout.vue'))
@@ -24,7 +24,7 @@ const props = defineProps({
   }
 })
 
-const store = useDiagnosaKeperawatan()
+const store = useDiagnosaKeperawatanHD()
 
 onMounted(() => {
   Promise.all([
@@ -42,7 +42,7 @@ function hapusItem (id) {
     persistent: true
   }).onOk(() => {
     // console.log('OK')
-    store.deleteDiagnosa(props.pasien, id, 'ranap')
+    store.deleteDiagnosa(props.pasien, id, 'awal')
   }).onCancel(() => {
     // console.log('Cancel')
   }).onDismiss(() => {
@@ -53,17 +53,15 @@ function hapusItem (id) {
 </script>
 
 <template>
-  <BaseLayout
-    :pasien="props.pasien" :kasus="props.kasus" :nakes="props.nakes" :split="60"
-    title-before="FORM DIAGNOSA KEPERAWATAN"
-    title-after="LIST DIAGNOSA KEPERAWATAN"
-  >
+  <BaseLayout :pasien="props.pasien" :kasus="props.kasus" :nakes="props.nakes" :split="60"
+    title-before="FORM DIAGNOSA KEPERAWATAN" title-after="LIST DIAGNOSA KEPERAWATAN">
     <template #form>
       <FormDiagnosaKeperawatan :pasien="props.pasien" :kasus="props.kasus" :nakes="props.nakes" />
     </template>
     <template #list>
       <div class="fit">
-        <ListDiagnosaKeperawatan :pasien="props.pasien" :kasus="props.kasus" :nakes="props.nakes" @delete-item="(id)=>hapusItem(id)" />
+        <ListDiagnosaKeperawatan :pasien="props.pasien" :kasus="props.kasus" :nakes="props.nakes"
+          @delete-item="(id) => hapusItem(id)" />
       </div>
     </template>
 

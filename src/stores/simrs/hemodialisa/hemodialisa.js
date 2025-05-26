@@ -136,7 +136,7 @@ export const useListPasienHemodialisaStore = defineStore('list-pasien-hemodialis
     },
     injectDataPasien (noreg, val, kode, arr) {
       const findPasien = this.items?.find(x => x.noreg === noreg)
-      // console.log('inject pasien', findPasien)
+      console.log('inject pasien', findPasien)
       if (findPasien) {
         const data = findPasien
         // data[kode] = val

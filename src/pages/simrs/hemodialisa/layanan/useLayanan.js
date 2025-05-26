@@ -7,26 +7,33 @@ export default function useLayanan (pasien) {
   const auth = useAplikasiStore()
 
   const menus = ref([
+    // {
+    //   name: 'AnamnesisPage',
+    //   label: 'Assasement Awal',
+    //   icon: 'icon-mat-medical_information',
+    //   nakes: ['1', '2', '3'],
+    //   comp: shallowRef(defineAsyncComponent(() => import('./anamnesis/IndexPage.vue')))
+    // },
+    // {
+    //   name: 'PemeriksaanPage',
+    //   label: 'Pemeriksaan Awal',
+    //   icon: 'icon-my-stethoscope',
+    //   nakes: ['1', '2', '3'],
+    //   comp: shallowRef(defineAsyncComponent(() => import('./pemeriksaan/IndexPage.vue')))
+    // },
+    // {
+    //   name: 'DiagTindPage',
+    //   label: 'Diagnosa & Tindakan',
+    //   icon: 'icon-mat-health_and_safety',
+    //   nakes: ['1', '2', '3', '4', '5', '6'],
+    //   comp: shallowRef(defineAsyncComponent(() => import('./diagnosaDanTindakan/IndexPage.vue')))
+    // },
     {
-      name: 'AnamnesisPage',
+      name: 'assAwal',
       label: 'Assasement Awal',
-      icon: 'icon-mat-medical_information',
-      nakes: ['1', '2', '3'],
-      comp: shallowRef(defineAsyncComponent(() => import('./anamnesis/IndexPage.vue')))
-    },
-    {
-      name: 'PemeriksaanPage',
-      label: 'Pemeriksaan Awal',
-      icon: 'icon-my-stethoscope',
-      nakes: ['1', '2', '3'],
-      comp: shallowRef(defineAsyncComponent(() => import('./pemeriksaan/IndexPage.vue')))
-    },
-    {
-      name: 'DiagTindPage',
-      label: 'Diagnosa & Tindakan',
       icon: 'icon-mat-health_and_safety',
       nakes: ['1', '2', '3', '4', '5', '6'],
-      comp: shallowRef(defineAsyncComponent(() => import('./diagnosaDanTindakan/IndexPage.vue')))
+      comp: shallowRef(defineAsyncComponent(() => import('./awal/IndexPage.vue')))
     },
     {
       name: 'hemodialisa',

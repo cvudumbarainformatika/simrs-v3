@@ -34,7 +34,7 @@
             style="width: 70%;" />
         </q-card-section>
       </q-card>
-      kajian {{ store.form }}
+      <!-- kajian {{ store.form }} -->
       <q-card flat bordered class="q-mb-sm">
         <q-card-section class="q-py-xs q-px-md">
           <div class="q-mt-sm">

@@ -47,10 +47,10 @@ const props = defineProps({
     default: null
   }
 })
-const tab = ref('diagnosaMedik')
+const tab = ref('diagnosaKeperawatan')
 
 onMounted(() => {
-  tab.value = tabs.value[0]?.name
+  tab.value = tabs.value[1]?.name
 })
 
 const tabsxx = [
@@ -58,7 +58,7 @@ const tabsxx = [
     label: 'Diagnosa Medis',
     name: 'diagnosaMedik',
     icon: 'icon-mat-health_and_safety',
-    nakes: ['1'],
+    nakes: ['1', '2'],
     comp: defineAsyncComponent(() => import('./diagnosamedik/DiagnosaPage.vue'))
   },
   {
@@ -68,20 +68,6 @@ const tabsxx = [
     nakes: ['2', '3'],
     comp: defineAsyncComponent(() => import('./diagnosakeperawatan/DiagnosaKeperawatanPage.vue'))
   },
-  // {
-  //   label: 'Diagnosa Kebidanan',
-  //   name: 'diagnosaKebidanan',
-  //   icon: 'icon-mat-health_and_safety',
-  //   nakes: ['2', '3'],
-  //   comp: defineAsyncComponent(() => import('./diagnosakebidanan/IndexPage.vue'))
-  // },
-  // {
-  //   label: 'Diagnosa Gizi',
-  //   name: 'diagnosaGizi',
-  //   icon: 'icon-mat-health_and_safety',
-  //   nakes: ['1', '5'],
-  //   comp: defineAsyncComponent(() => import('./diagnosagizi/IndexPage.vue'))
-  // },
   {
     label: 'Tindakan',
     name: 'tindakan',
@@ -89,13 +75,6 @@ const tabsxx = [
     nakes: ['1', '2', '3'],
     comp: defineAsyncComponent(() => import('./tindakan/TindakanPage.vue'))
   },
-  // { // harian ga butuh, awal butuh
-  //   label: 'Planning',
-  //   name: 'target',
-  //   icon: 'icon-mat-assignment_return',
-  //   nakes: ['1'],
-  //   comp: defineAsyncComponent(() => import('./target/TargetPage.vue'))
-  // }
 ]
 
 const menu = computed(() => {
