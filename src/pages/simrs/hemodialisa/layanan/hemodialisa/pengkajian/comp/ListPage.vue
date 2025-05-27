@@ -9,19 +9,19 @@
               <div class="col-1">{{ i + 1 }}</div>
               <div class="col-11">
 
-                <div class="row items-center">
+                <div v-if="item?.rs4" class="row items-center">
                   <div class="col-4">Alasan</div>
                   <div class="col-8">{{ item?.rs4 }}</div>
                 </div>
-                <div class="row items-center bg-blue-2">
+                <div v-if="item?.rs5" class="row items-center bg-blue-2">
                   <div class="col-4">Riwayat Psikososial</div>
                   <div class="col-8">{{ item?.rs5 }}</div>
                 </div>
-                <div class="row items-center ">
+                <div v-if="item?.rs6" class="row items-center ">
                   <div class="col-4">Hubungan Keluarga</div>
                   <div class="col-8">{{ item?.rs6 }}</div>
                 </div>
-                <div class="row items-center bg-blue-2">
+                <div v-if="item?.rs7" class="row items-center bg-blue-2">
                   <div class="col-4">Psikologis</div>
                   <div class="col-8">{{ item?.rs7 }}</div>
                 </div>
@@ -29,45 +29,69 @@
                   <div class="col-4">yaitu</div>
                   <div class="col-8">{{ item?.rs8 }}</div>
                 </div>
-                <div class="row items-center ">
+                <div v-if="item?.rs9" class="row items-center ">
                   <div class="col-4 f-12">Tekanan Darah</div>
                   <div class="col-8">{{ item?.rs9 }}</div>
                 </div>
-                <div class="row items-center bg-blue-2">
+                <div v-if="item?.rs10" class="row items-center bg-blue-2">
                   <div class="col-4">Nadi</div>
                   <div class="col-8">{{ item?.rs10 }}</div>
                 </div>
-                <div class="row items-center ">
+                <div v-if="item?.rs11" class="row items-center ">
                   <div class="col-4">Suhu</div>
                   <div class="col-8">{{ item?.rs11 }}</div>
                 </div>
-                <div class="row items-center bg-blue-2">
+                <div v-if="item?.rs12" class="row items-center bg-blue-2">
                   <div class="col-4">Tinggi Badan</div>
                   <div class="col-8">{{ item?.rs12 }}</div>
                 </div>
-                <div class="row items-center ">
+                <div v-if="item?.rs13" class="row items-center ">
                   <div class="col-4">Berat Badan</div>
                   <div class="col-8">{{ item?.rs13 }}</div>
                 </div>
-                <div class="row items-center bg-blue-2">
+                <div v-if="item?.rs14" class="row items-center bg-blue-2">
                   <div class="col-4">Penuruan Berat Badan</div>
                   <div class="col-8">{{ item?.rs14 }}</div>
                 </div>
-                <div class="row items-center ">
+                <div v-if="item?.rs15" class="row items-center ">
                   <div class="col-4">Diagnosa Khusus</div>
                   <div class="col-8">{{ item?.rs15 }}</div>
                 </div>
-                <div class="row items-center bg-blue-2">
+                <div v-if="item?.rs16" class="row items-center bg-blue-2">
                   <div class="col-4">Berkurang asupan akibat Nafsu makan</div>
                   <div class="col-8"><span class="q-ml-xs">{{ item?.rs16 }}</span></div>
                 </div>
-                <div class="row items-center ">
+                <div v-if="item?.rs17" class="row items-center ">
                   <div class="col-4">Status Fungsional</div>
                   <div class="col-8">{{ item?.rs17 }}</div>
                 </div>
                 <div v-if="item?.rs17 == 'Perlu Bantuan'" class="row items-center ">
-                  <div class="col-4">Dibantu dengan</div>
-                  <div class="col-8">{{ item?.rs18 }}</div>
+                  Dibantu dengan
+                  {{ item?.rs18 }}
+                </div>
+                <div v-if="item?.jam_lapor_fs" class="row items-center ">
+                  Dilaporkan pada dokter pukul
+                  {{ item?.jam_lapor_fs }}
+
+                </div>
+                <div v-if="item?.resiko_jatuh" class="row items-center  bg-blue-2">
+                  <div class="col-12 text-weight-bold  q-py-sm">Resiko Jatuh</div>
+                  <div v-for="val in item?.resiko_jatuh?.form" :key="val" class="col-12 q-my-xs">
+                    {{ val.label }}
+                  </div>
+                  <div>
+                    <div class="col-12 text-weight-bold q-my-xs" v-if="item?.resiko_jatuh?.hasil?.count == 2">
+                      <div v-if="item?.resiko_jatuh?.hasil?.values?.toLowerCase() == 'iya'">
+                        {{ item?.resiko_jatuh?.hasil?.label }} pada pukul {{
+                          item?.resiko_jatuh?.hasil?.jam_lapor }}
+                      </div>
+                      <div v-else>
+                        {{ item?.resiko_jatuh?.hasil?.values }}{{ ' ' + item?.resiko_jatuh?.hasil?.label }}
+                      </div>
+                    </div>
+                    <div v-else class="col-12 text-weight-bold">{{ item?.resiko_jatuh?.hasil?.label }}</div>
+
+                  </div>
                 </div>
               </div>
             </div>
@@ -113,6 +137,22 @@ function edit (item) {
   storeForm.setForm('diagKhus', item.rs16)
   storeForm.setForm('fungsional', item.rs17)
   storeForm.setForm('lainx', item.rs18)
+  storeForm.setForm('jam_lapor_fs', item.jam_lapor_fs)
+  storeForm.setForm('resiko_jatuh', item.resiko_jatuh ?? {
+    form: [
+      {
+        kode: 'sm',
+        label: 'Perhatikan cara berjalan pasien saat akan duduk di kursi, Apakah pasien tampak seimbang (sempoyongan / limbung) ?',
+        values: ''
+      },
+      {
+        kode: 'tp',
+        label: 'Apakah pasien memegang pinggiran kursi atau meja atau benda lain sebagai penopang saat akan duduk ?',
+        values: ''
+      }
+    ],
+    hasil: null
+  })
 }
 function remove (item) {
   console.log('remove', item)

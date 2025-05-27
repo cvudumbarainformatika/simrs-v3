@@ -54,7 +54,7 @@ const tabsxx = [
     comp: defineAsyncComponent(() => import('./anamnesis/IndexPage.vue'))
   },
   {
-    label: 'Pengkajian Hemodialisa',
+    label: 'Status Fungsional dan Skrining Jatuh',
     name: 'pengkajian',
     // icon: 'icon-mat-description',
     nakes: ['1', '2', '3'],

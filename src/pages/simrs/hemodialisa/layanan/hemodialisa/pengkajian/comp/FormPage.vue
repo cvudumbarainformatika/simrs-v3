@@ -1,5 +1,6 @@
 <template>
   <div class="row items-center q-col-gutter-x-sm">
+    <div class="col-12 text-weight-bold f-14 q-px-md q-py-sm">Status Fungsional</div>
     <!-- Status fungsional -->
     <div class="col-6">
       <app-autocomplete class="q-my-xs" v-model="store.form.fungsional" :source="store.statusFungs"
@@ -11,92 +12,45 @@
         :label="'Sebutkan Bantuan yang diperlukan ' + panjangChar(store.form.lainx, 250)"
         :valid="{ max: 255, canEmpty: true }" />
     </div>
+    <!-- jika fingsional Perlu Bantuan -->
+    <div v-if="store.form.fungsional === 'Perlu Bantuan'" class="col-6">
+      <app-input-simrs ref="refLaporFungsi" v-model="store.form.jam_lapor_fs"
+        :label="'ketergantungan total, jam lapor dokter ' + panjangChar(store.form.jam_lapor_fs, 50)"
+        :valid="{ max: 50, canEmpty: true, canEmpty: true }" />
+    </div>
+    <div class="col-12 text-weight-bold f-14 q-px-md q-py-sm">Skrining Resiko Cedera / Jatuh</div>
+    <!-- skrining jatuh -->
 
-    <!-- Alasan -->
-    <div class="col-6">
-      <app-input-simrs ref="refAlasan" v-model="store.form.alasan"
-        :label="'Alasan Kunjungan ' + panjangChar(store.form.alasan, 250)"
-        :valid="{ max: 255, canEmpty: true, canEmpty: true }" />
-    </div>
-    <!-- Riwayat Psikososial -->
-    <div class="col-6"> <app-input-simrs ref="refRiwayatPsikososial" v-model="store.form.riwayat"
-        :label="'Riwayat Psikososial ' + panjangChar(store.form.riwayat, 250)" type="textarea"
-        :valid="{ max: 255, canEmpty: true }" />
-    </div>
-    <!-- Hunbungan dengan kel -->
-    <div class="col-6">
-      <app-autocomplete class="q-my-xs" v-model="store.form.hubungan" :source="store.hubungans"
-        label="Hubungan Pasien dengan keluarga" outlined hide-dropdown-icon />
-    </div>
-    <!-- Status Psikologis -->
-    <div class="col-6">
-      <app-autocomplete class="q-my-xs" v-model="store.form.psikologis" :source="store.psikologis"
-        label="Status Psikologis" outlined hide-dropdown-icon />
-    </div>
-    <!-- jika psikologis lain-lain -->
-    <div v-if="store.form.psikologis === 'Lain-lain'" class="col-6">
-      <app-input-simrs ref="refLainPsiko" v-model="store.form.lain"
-        :label="'Sebutkan Status Psikologis Lainya ' + panjangChar(store.form.lain, 250)"
-        :valid="{ max: 255, canEmpty: true }" />
-    </div>
-    <!-- Tek Dar -->
-    <div class="col-5">
-      <app-input-simrs ref="refTekDar" v-model="store.form.td"
-        :label="'Tekanan Darah ' + panjangChar(store.form.td, 250)" :valid="{ max: 255, canEmpty: true }" />
-    </div>
-    <div class="col-1 text-center">mmHg</div>
-    <!-- Nadi -->
-    <div class="col-5">
-      <app-input-simrs ref="refNadi" v-model="store.form.nadi" :label="'Nadi ' + panjangChar(store.form.nadi, 250)"
-        :valid="{ max: 255, canEmpty: true }" />
-    </div>
-    <div class="col-1 text-center">x/menit</div>
-    <!-- Suhu -->
-    <div class="col-5">
-      <app-input-simrs ref="refSuhu" v-model="store.form.suhu" :label="'Suhu ' + panjangChar(store.form.suhu, 250)"
-        :valid="{ max: 255, canEmpty: true }" />
-    </div>
-    <div class="col-1 text-center">
-      <div class="row justify-center">
-        <span class="f-10">o</span> C
+    <div class="col-12" v-for="(val, key) in store.formSkiringJatuh" :key="key">
+      <div class="row q-my-xs">
+        <div class="col-9">
+          {{store.formSkiringJatuh?.find(x => x.kode === val.kode)?.label}}
+        </div>
+        <div class="col-3 flex q-gutter-sm justify-end">
+          <q-radio v-for="aa in store.formSkiringJatuh?.find(x => x.kode === val.kode)?.values" dense
+            v-model="store.form.resiko_jatuh.form[key].values" :val="aa" :label="aa" @update:model-value="setHasil"
+            :key="aa" />
+        </div>
       </div>
     </div>
-    <!-- Tinggi Badan -->
-    <div class="col-5">
-      <app-input-simrs ref="refTingBad" v-model="store.form.tb"
-        :label="'Tinggi Badan ' + panjangChar(store.form.tb, 250)" :valid="{ max: 255, canEmpty: true }" />
+    <div class="col-12 text-weight-bold q-px-md q-py-sm">Hasil</div>
+    <div class="col-8 q-px-md q-py-sm">{{ store.form.resiko_jatuh?.hasil?.label }}</div>
+
+    <div v-if="store.form?.resiko_jatuh?.hasil?.count == 2" class="col-4 flex q-gutter-sm justify-end">
+      <q-radio v-for="aa in ytOptions" dense v-model="store.form.resiko_jatuh.hasil.values" :val="aa" :label="aa"
+        :key="aa" />
     </div>
-    <div class="col-1 text-center">cm</div>
-    <!-- Berat Badan -->
-    <div class="col-5">
-      <app-input-simrs ref="refBerBad" v-model="store.form.bb" :label="'Berat Badan ' + panjangChar(store.form.bb, 250)"
-        :valid="{ max: 255, canEmpty: true }" />
+    <div v-if="store.form?.resiko_jatuh?.hasil?.values?.toLowerCase() == 'iya'" class="col-6">
+      <app-input-simrs v-model="store.form.resiko_jatuh.hasil.jam_lapor" :label="'jam lapor dokter '"
+        :valid="{ canEmpty: true }" />
     </div>
-    <div class="col-1 text-center">Kg</div>
-    <!-- Penurunan BB -->
-    <div class="col-6">
-      <app-autocomplete class="q-my-xs" v-model="store.form.penurunanBB" :source="store.penurunanBeratBadans"
-        label="Penurunan BB pasien yang tidak diiginkan dalam 6 bulan terakhir " outlined hide-dropdown-icon>
-        <q-tooltip>Apakah Pasien Mengalami Penurunan BB yang tidak diiginkan dalam 6 bulan
-          terakhir</q-tooltip></app-autocomplete>
-    </div>
-    <!-- Napsu-->
-    <div class="col-6">
-      <app-autocomplete class="q-my-xs" v-model="store.form.asupanNafsu" :source="store.yatis"
-        label="Apakah asupan makna berkurang akibat nafsu makan  " outlined hide-dropdown-icon> <q-tooltip>Apakah asupan
-          makna berkurang akibat nafsu makan </q-tooltip></app-autocomplete>
-    </div>
-    <!-- Diagsus-->
-    <div class="col-6">
-      <app-autocomplete class="q-my-xs" v-model="store.form.diagKhus" :source="store.yatis"
-        label="Pasien dengan diagnosa khusus" outlined hide-dropdown-icon> <q-tooltip>Pasien dengan diagnosa khusus
-        </q-tooltip></app-autocomplete>
-    </div>
+
 
   </div>
   <div class="row q-mt-md justify-end">
     <q-btn label="Simpan" no-caps dense color="primary" @click="simpan" :loading="store.loading"
-      :disable="store.loading"> <q-tooltip>Simpan</q-tooltip></q-btn>
+      :disable="store.loading">
+      <q-tooltip>Simpan</q-tooltip></q-btn>
   </div>
 </template>
 <script setup>
@@ -106,39 +60,22 @@ import { onMounted, onUnmounted, ref } from 'vue'
 
 
 const store = usePengkajianHemodialisaStore()
+const ytOptions = ref(['Iya', 'Tidak'])
 
-const refAlasan = ref(null)
-const refTekDar = ref(null)
-const refNadi = ref(null)
-const refSuhu = ref(null)
-const refTingBad = ref(null)
-const refBerBad = ref(null)
-const refRiwayatPsikososial = ref(null)
-const refLainPsiko = ref(null)
 const refLainFungsi = ref(null)
+const refLaporFungsi = ref(null)
+
 function resetValidasi () {
-  refAlasan.value?.appInputSimrs?.resetValidation()
-  refTekDar.value?.appInputSimrs?.resetValidation()
-  refNadi.value?.appInputSimrs?.resetValidation()
-  refSuhu.value?.appInputSimrs?.resetValidation()
-  refTingBad.value?.appInputSimrs?.resetValidation()
-  refBerBad.value?.appInputSimrs?.resetValidation()
-  refRiwayatPsikososial.value?.appInputSimrs?.resetValidation()
-  refLainPsiko.value?.appInputSimrs?.resetValidation()
   refLainFungsi.value?.appInputSimrs?.resetValidation()
+  refLaporFungsi.value?.appInputSimrs?.resetValidation()
 }
 function validasi () {
-  console.log('refLainFungsi', !refLainPsiko.value)
 
-  if (refAlasan.value?.appInputSimrs?.validate() &&
-    refTekDar.value?.appInputSimrs?.validate() &&
-    refNadi.value?.appInputSimrs?.validate() &&
-    refSuhu.value?.appInputSimrs?.validate() &&
-    refTingBad.value?.appInputSimrs?.validate() &&
-    refBerBad.value?.appInputSimrs?.validate() &&
-    refRiwayatPsikososial.value?.appInputSimrs?.validate() &&
-    (!refLainPsiko.value ? true : refLainPsiko.value?.appInputSimrs?.validate()) &&
-    (!refLainFungsi.value ? true : refLainFungsi.value?.appInputSimrs?.validate())
+
+  if (
+    (!refLainFungsi.value ? true : refLainFungsi.value?.appInputSimrs?.validate()) &&
+    (!refLaporFungsi.value ? true : refLaporFungsi.value?.appInputSimrs?.validate())
+
   ) {
     return true
   } else {
@@ -148,6 +85,19 @@ function validasi () {
 function panjangChar (val, panj) {
   if (val?.length > parseInt(panj)) return '(' + val?.length + ')'
   else return ''
+}
+function setHasil () {
+  const hasil = store.form.resiko_jatuh.form.filter(x => x.values.toLowerCase() == 'iya')
+  store.form.resiko_jatuh.hasil = store.hasilSkringJatuh.find(x => parseInt(x.count) == hasil.length)
+  store.form.resiko_jatuh.form.forEach(x => {
+    const anu = store.formSkiringJatuh?.find(y => y.kode === x.kode)
+    // console.log('x', x.values, anu)
+    if (x.values.toLowerCase() == 'iya') {
+      x.label = anu?.labelY
+    } else x.label = anu?.labelT
+  })
+  console.log('set hasil', hasil, store.form)
+
 }
 
 function simpan () {
