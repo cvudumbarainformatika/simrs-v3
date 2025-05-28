@@ -25,7 +25,7 @@
     </div>
 
   </div>
-  <CompDialog />
+  <CompDialog :pasien="pasien" />
 </template>
 
 <script setup>

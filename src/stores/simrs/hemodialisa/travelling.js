@@ -80,6 +80,8 @@ export const useTravellingHDStore = defineStore('store-travelling-hd', {
       }
     },
     initForm (data) {
+      console.log('pasien', this.pasien)
+
       this.resetForm(data)
     },
     selectItem (data) {

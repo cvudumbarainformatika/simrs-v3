@@ -164,6 +164,14 @@
               <div class="value">{{ store?.item?.ket }}</div>
             </div>
           </div>
+          <div class="ttd text-right q-mt-xl">
+            <div>Probolinggo, {{ dateFullFormat(store?.item?.tgl) }}</div>
+            <div class="q-mb-xl">Dokter Penanggungjawab</div>
+            <div class="text-weight-bold q-pt-xl">{{ pasien?.pegsim?.nama }}</div>
+            <div>NIP: {{ pasien?.pegsim?.nip }}</div>
+
+          </div>
+
         </div>
       </q-card-section>
 
@@ -187,7 +195,12 @@ import { dateFullFormat } from 'src/modules/formatter'
 import { useTravellingHDStore } from 'src/stores/simrs/hemodialisa/travelling'
 
 const store = useTravellingHDStore()
-
+defineProps({
+  pasien: {
+    type: Object,
+    default: null
+  }
+})
 function hapus (item) {
   Dialog.create({
     title: 'Konfirmasi',
@@ -222,5 +235,17 @@ const printObj = {
 
 .print-section {
   margin-top: 12px;
+}
+
+.ttd {
+  margin-top: 50px;
+  padding-right: 20px;
+}
+
+@media print {
+  .ttd {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
 }
 </style>
