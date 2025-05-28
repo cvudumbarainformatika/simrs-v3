@@ -30,7 +30,7 @@
 <script setup>
 import { defineAsyncComponent, ref } from 'vue'
 
-const BarComp = defineAsyncComponent(() => import('../../components/BarComp.vue'))
+const BarComp = defineAsyncComponent(() => import('src/pages/simrs/hemodialisa/layanan/components/BarComp.vue'))
 const FormPage = defineAsyncComponent(() => import('./comp/FormPage.vue'))
 const ListPage = defineAsyncComponent(() => import('./comp/ListPage.vue'))
 

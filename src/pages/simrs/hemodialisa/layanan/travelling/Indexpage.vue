@@ -2,7 +2,7 @@
   <q-page>
     <Suspense>
       <!-- main content -->
-      <AsyncComp />
+      <AsyncComp :pasien="pasien" />
       <!-- loading state -->
       <template #fallback>
         <app-loading />
@@ -16,4 +16,10 @@ import { defineAsyncComponent } from 'vue'
 const AsyncComp = defineAsyncComponent(() =>
   import('./FrontPage.vue')
 )
+defineProps({
+  pasien: {
+    type: Object,
+    default: null
+  }
+})
 </script>
