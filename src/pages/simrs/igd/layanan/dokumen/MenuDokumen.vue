@@ -11,6 +11,9 @@
         <q-tab-panel name="Billing" class="full-height q-pa-none">
           <BillingPage :judul="billing" :pasien="props?.pasien" />
         </q-tab-panel>
+        <q-tab-panel name="Resume" class="full-height q-pa-none">
+          <ResumePage judul="Resume Medis" :pasien="props?.pasien" />
+        </q-tab-panel>
         <q-tab-panel name="Triase" class="full-height q-pa-none">
           <TriasePage :judul="triase" :pasien="props.pasien" />
         </q-tab-panel>
@@ -44,6 +47,7 @@ import TriasePage from './dokumenisi/triage/TriasePage.vue';
 import SuratKematianPage from './dokumenisi/suratkematian/SuratKematianPage.vue';
 import Indikasimasuknicudaninter from './dokumenisi/inidakasimasuknicudaninter/indikasimasuknicudaninter.vue';
 import SepPage from './dokumenisi/Sep/SepPage.vue';
+import ResumePage from './dokumenisi/Resume/ResumePage.vue';
 import { usePlannStore } from 'src/stores/simrs/igd/plann';
 const billing = ref('BILLING')
 const triase = ref('TRIASE')

@@ -91,7 +91,7 @@ function getLabel(val) {
 }
 const comp = [
   { nama: 'Sep', page: defineAsyncComponent(() => import('../../../../igd/layanan/dokumen/dokumenisi/Sep/SepPage.vue')) },
-  { nama: 'Resume', page: defineAsyncComponent(() => import('./compdokumen/ResumePage.vue')) },
+  { nama: 'Resume', page: defineAsyncComponent(() => import('../../../../igd/layanan/dokumen/dokumenisi/Resume/ResumePage.vue')) },
   { nama: 'Billing', page: defineAsyncComponent(() => import('../../../../igd/layanan/dokumen/dokumenisi/Billing/BillingPage.vue')) },
   { nama: 'Triage_IGD', page: defineAsyncComponent(() => import('../../../../igd/layanan/dokumen/dokumenisi/triage/TriasePage.vue')) },
   { nama: 'Surat_Kematian', page: defineAsyncComponent(() => import('../../../../igd/layanan/dokumen/dokumenisi/suratkematian/SuratKematianPage.vue')) },
