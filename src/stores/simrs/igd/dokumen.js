@@ -4,6 +4,7 @@ export const useDokumenIgdStore = defineStore('dokumen-igd-store', {
   state: () => ({
     tabs: [
       { name: 'Billing', page: 'Billing' },
+      { name: 'Resume', page: 'Resume' },
       { name: 'Triase', page: 'Triase' },
       { name: 'Surat Kematian', page: 'Surat Kematian' },
       { name: 'Indikasi Masuk Rawat Inap', page: 'Indikasi Masuk Rawat Inap' },
