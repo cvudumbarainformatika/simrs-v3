@@ -54,10 +54,10 @@ const enter = (el, done) => {
                   store.initReset(item)
                 }">
                   <q-item-label class="text-bold">
-                    {{ item?.nakes === '1' ? 'ASESMENT AWAL MEDIS'
-                      : item?.nakes === '2' ? 'ASESMENT AWAL KEPERAWATAN'
-                        : item.nakes === '3' ? 'ASESMENT AWAL KEBIDANAN'
-                          : 'ASESMENT AWAL ???' }}
+                    {{ item?.nakes === '1' ? 'ASESMENT HARIAN MEDIS'
+                      : item?.nakes === '2' ? 'ASESMENT HARIAN KEPERAWATAN'
+                        : item.nakes === '3' ? 'ASESMENT HARIAN KEBIDANAN'
+                          : 'ASESMENT HARIAN ???' }}
                   </q-item-label>
                   <q-item-label>Data Pemeriksaan Tersimpan</q-item-label>
                   <q-item-label caption>

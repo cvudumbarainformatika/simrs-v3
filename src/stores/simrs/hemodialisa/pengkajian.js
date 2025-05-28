@@ -38,27 +38,65 @@ export const usePengkajianHemodialisaStore = defineStore('pengkajian-hemodialisa
       noreg: null,
       norm: null,
       tgl: date.formatDate(Date.now(), 'YYYY-MM-DD HH:mm:ss'),
-      alasan: '', // rs4
-      riwayat: '', // rs5
-      hubungan: 'Baik', // rs6
-      psikologis: 'Tenang', // rs7
-      lain: '', // jika psikologis = Lain-lain rs8
-      td: '', // rs9
-      nadi: '', // rs10
-      suhu: '',   // rs11
-      tb: '', // rs12
-      bb: '', // rs13
-      penurunanBB: 'Tidak ada Penurunan Berat Badan', // rs14
-      asupanNafsu: 'Ya', // rs16
-      diagKhus: 'Ya', // rs15
+      // alasan: '', // rs4
+      // riwayat: '', // rs5
+      // hubungan: 'Baik', // rs6
+      // psikologis: 'Tenang', // rs7
+      // lain: '', // jika psikologis = Lain-lain rs8
+      // td: '', // rs9
+      // nadi: '', // rs10
+      // suhu: '',   // rs11
+      // tb: '', // rs12
+      // bb: '', // rs13
+      // penurunanBB: 'Tidak ada Penurunan Berat Badan', // rs14
+      // asupanNafsu: 'Ya', // rs16
+      // diagKhus: 'Ya', // rs15
       fungsional: 'Mandiri', // rs17
       lainx: '', // jika fungsional = Perlu Bantuan rs18
+      resiko_jatuh: {
+        form: [
+          {
+            kode: 'sm',
+            label: 'Perhatikan cara berjalan pasien saat akan duduk di kursi, Apakah pasien tampak seimbang (sempoyongan / limbung) ?',
+            values: ''
+          },
+          {
+            kode: 'tp',
+            label: 'Apakah pasien memegang pinggiran kursi atau meja atau benda lain sebagai penopang saat akan duduk ?',
+            values: ''
+          }
+        ],
+        hasil: null
+      }, // jika fungsional = Perlu Bantuan rs18
     },
     yatis: ['Ya', 'Tidak'],
     hubungans: ['Baik', 'Tidak Baik'],
     psikologis: ['Tenang', 'Cemas', 'Takut', 'Marah', 'Kecenderungan Bunuh Diri', 'Lain-lain'],
     penurunanBeratBadans: ['Tidak ada Penurunan Berat Badan', 'Tidak Yakin / Tidak Tahu / Terasa Baju Longgar', 'Ya, Turun 1-5 kg', 'Ya, Turun 6-10 kg', 'Ya, Turun 11-15 kg', 'Ya, > 15 kg'],
-    statusFungs: ['Mandiri', 'Perlu Bantuan']
+    statusFungs: ['Mandiri', 'Perlu Bantuan'],
+    formSkiringJatuh: [
+      {
+        kode: 'sm',
+        label: 'Perhatikan cara berjalan pasien saat akan duduk di kursi, Apakah pasien tampak tidak seimbang (sempoyongan / limbung) ?',
+        labelY: 'pasien tampak tidak seimbang (sempoyongan / limbung)',
+        labelT: 'pasien tampak seimbang',
+        values: ['Iya', 'Tidak']
+      },
+      {
+        kode: 'tp',
+        label: 'Apakah pasien memegang pinggiran kursi atau meja atau benda lain sebagai penopang saat akan duduk ?',
+        labelY: 'pasien memegang pinggiran kursi atau meja atau benda lain sebagai penopang saat akan duduk',
+        labelT: 'pasien tidak memegang pinggiran kursi atau meja atau benda lain sebagai penopang saat akan duduk',
+        values: ['Iya', 'Tidak']
+      }
+    ],
+    hasilSkringJatuh: [
+      { count: 0, label: 'Tidak Berisiko' },
+      { count: 1, label: 'Resiko Rendah' },
+      {
+        count: 2, label: 'Diberitahukan Ke Dokter ', values: ''
+      },
+    ],
   }),
   actions: {
     initPasien () {
@@ -73,22 +111,37 @@ export const usePengkajianHemodialisaStore = defineStore('pengkajian-hemodialisa
         noreg: null,
         norm: null,
         tgl: date.formatDate(Date.now(), 'YYYY-MM-DD HH:mm:ss'),
-        alasan: '',
-        riwayat: '',
-        hubungan: 'Baik',
-        psikologis: 'Tenang',
-        lain: '', // jika psikologis = Lain-lain
-        td: '',
-        nadi: '',
-        suhu: '',
-        tb: '',
-        bb: '',
-        penurunanBB: 'Tidak ada Penurunan Berat Badan',
-        asupanNafsu: 'Ya',
-        diagKhus: 'Ya',
+        // alasan: '',
+        // riwayat: '',
+        // hubungan: 'Baik',
+        // psikologis: 'Tenang',
+        // lain: '', // jika psikologis = Lain-lain
+        // td: '',
+        // nadi: '',
+        // suhu: '',
+        // tb: '',
+        // bb: '',
+        // penurunanBB: 'Tidak ada Penurunan Berat Badan',
+        // asupanNafsu: 'Ya',
+        // diagKhus: 'Ya',
         fungsional: 'Mandiri',
         lainx: '', // jika fungsional = Perlu Bantuan
+        resiko_jatuh: {
+          form: [
+            {
+              kode: 'sm',
+              label: 'Perhatikan cara berjalan pasien saat akan duduk di kursi, Apakah pasien tampak seimbang (sempoyongan / limbung) ?',
+              values: ''
+            },
+            {
+              kode: 'tp',
+              label: 'Apakah pasien memegang pinggiran kursi atau meja atau benda lain sebagai penopang saat akan duduk ?',
+              values: ''
+            }
+          ], hasil: null
+        }, // resiko jatuh
       }
+
     },
     simpan () {
       this.loading = true

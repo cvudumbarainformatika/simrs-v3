@@ -47,8 +47,11 @@ export const useRkaStore = defineStore('store_rka_siasik', {
       this.reqs[key] = val
     },
     emptyForm() {
-      // this.reqs.bidang = ''
+      this.reqs.bidang = ''
       this.reqs.kegiatan = ''
+      this.reqs.tahun = date.formatDate(Date.now(), 'YYYY')
+      this.reqs.kodebidang = null
+      this.datarka = []
     },
     getDataBidang() {
       this.loading = true

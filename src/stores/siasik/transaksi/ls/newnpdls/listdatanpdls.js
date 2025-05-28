@@ -78,6 +78,7 @@ export const listDataNpdlsStore = defineStore('list_data_npdls', {
             keterangan: arr.keterangan,
             nopencairan: arr.nopencairan,
             nopenerimaan: arr.nopenerimaan,
+            nonotadinas: arr.nonotadinas,
             bast: arr.bast,
             kunci: arr.kunci,
             serahterimapekerjaan: arr.serahterimapekerjaan,
@@ -100,7 +101,7 @@ export const listDataNpdlsStore = defineStore('list_data_npdls', {
       console.log('KUNCI', row)
       this.loading = true;
       return new Promise((resolve) => {
-        api.post('/v1/transaksi/belanja_ls/kuncinpd')
+        api.post('/v1/transaksi/belanja_ls/kuncinpd', row)
           .then((resp) => {
             console.log('resp', resp)
             this.loading = false

@@ -14,8 +14,8 @@
     <q-input v-model="store.form.rwPkrjDgZatBahaya" outlined autogrow stack-label standout="bg-yellow-3"
       label="Riwayat Pekerjaan yg berhubung dg Zat berbahaya" hide-bottom-space style="width:50%" />
 
-    <!-- <div v-if="nakes === '2' || nakes === '3'" class="col-12"> -->
-    <div class="col-12">
+    <div v-if="nakes === '2' || nakes === '3'" class="col-12">
+      <!-- <div class="col-12"> -->
       <!-- RIWAYAT ALERGI -->
       <q-card flat bordered class="q-mb-sm">
         <q-card-section>
@@ -42,16 +42,19 @@
             <div class="text-weight-bold">
               Kajian Nyeri
             </div>
-            <q-radio v-model="store.form.keluhannyeri.kajianNyeri" v-for="dd in store.pilihanNyeris" :key="dd"
-              :label="dd?.text" :val="dd.text" @update:model-value="(val) => {
-                if (val === 'Wong Baker Face Scale') store.form.keluhannyeri.skorNyeri = 0
-                store.hitungSkorNyeri('form')
-              }" />
+            <template v-if="store.form.keluhannyeri.kajianNyeri">
+              <q-radio v-model="store.form.keluhannyeri.kajianNyeri" v-for="dd in store.pilihanNyeris" :key="dd"
+                :label="dd?.text" :val="dd.text" @update:model-value="(val) => {
+                  if (val === 'Wong Baker Face Scale') store.form.keluhannyeri.skorNyeri = 0
+                  store.hitungSkorNyeri('form')
+                }" />
+
+            </template>
           </div>
           <q-separator />
         </q-card-section>
         <q-card-section>
-          <div v-if="store.form.keluhannyeri.kajianNyeri === 'Wong Baker Face Scale'"
+          <div v-if="store.form?.keluhannyeri?.kajianNyeri === 'Wong Baker Face Scale'"
             class="row items-center q-col-gutter-md">
             <div class="col-8">
               <q-slider v-model="store.form.keluhannyeri.skorNyeri" color="primary" thumb-color="primary"

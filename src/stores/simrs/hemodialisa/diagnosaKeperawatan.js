@@ -54,7 +54,8 @@ export const useDiagnosaKeperawatanHD = defineStore('diagnosa-keperawatan-hd', {
         const resp = await api.post('v1/simrs/pelayanan/simpandiagnosakeperawatan', form)
         // console.log('simpan', resp)
         if (resp.status === 200) {
-          this.injectToKunjunganPasien(pasien, resp.data.result, cat)
+          const noreg = pasien?.nota_permintaan ?? pasien?.noreg
+          this.injectToKunjunganPasien(noreg, resp.data.result, cat)
           notifSuccess(resp)
           this.initReset()
           this.loadingSave = false
@@ -83,7 +84,7 @@ export const useDiagnosaKeperawatanHD = defineStore('diagnosa-keperawatan-hd', {
           const el = this.selectDiagnosa[i]
           const frm = {
             norm: pasien?.norm,
-            kdruang: pasien?.kodepoli ?? pasien?.koderuangan,
+            kdruang: 'PEN005',
             noreg: cat == 'awal' ? pasien?.noreg : (pasien?.nota_permintaan ?? (pasien?.noreg ?? null)),
             kode: el?.kode,
             nama: el?.nama,
@@ -104,6 +105,7 @@ export const useDiagnosaKeperawatanHD = defineStore('diagnosa-keperawatan-hd', {
 
       const storePasien = useListPasienHemodialisaStore()
       const arr = data
+
       for (let i = 0; i < arr?.length; i++) {
         const isi = arr[i]
         if (cat == 'awal') storePasien.injectDataPasien(pasien, isi, 'diagnosakeperawatan_awal_hd')
@@ -117,8 +119,7 @@ export const useDiagnosaKeperawatanHD = defineStore('diagnosa-keperawatan-hd', {
       const resp = await api.post('v1/simrs/pelayanan/deletediagnosakeperawatan', payload)
       // console.log('delete', resp)
       if (resp.status === 200) {
-        // const storePasien = usePengunjungPoliStore()
-        // storePasien.hapusDataDiagnosaKeperawatan(pasien, id)
+
         this.deleteInjectan(pasien, id, cat)
         notifSuccess(resp)
       }
@@ -128,7 +129,7 @@ export const useDiagnosaKeperawatanHD = defineStore('diagnosa-keperawatan-hd', {
       console.log('cat', cat, id, pasien)
 
       const storePasien = useListPasienHemodialisaStore()
-      if (cat == 'awal') storePasien.injectDataPasien(pasien, isi, 'diagnosakeperawatan_awal_hd')
+      if (cat == 'awal') storePasien.hapusDataInjectan(pasien, id, 'diagnosakeperawatan_awal_hd')
       else storePasien.hapusDataInjectan(pasien, id, 'diagnosakeperawatan')
     },
 
