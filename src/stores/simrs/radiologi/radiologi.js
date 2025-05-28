@@ -79,7 +79,7 @@ export const useListPasienRadiologiStore = defineStore('list-pasien-radiologi', 
       this.pasien = pasien
       console.log('getDataPasienRadiologiByNoreg', pasien);
 
-      this.loading = true
+      this.loadingTerima = true
 
       const permintaan = usePermintaanRadiologiStore()
       try {
@@ -95,7 +95,7 @@ export const useListPasienRadiologiStore = defineStore('list-pasien-radiologi', 
         console.error('Error fetching data for pasien radiologi:', error)
 
       } finally {
-        this.loading = false
+        this.loadingTerima = false
       }
 
 

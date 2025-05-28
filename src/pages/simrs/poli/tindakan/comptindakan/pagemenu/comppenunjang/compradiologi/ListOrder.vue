@@ -20,31 +20,59 @@
         <transition-group name="list">
           <template v-for="(item, i) in filterredTable" :key="i">
             <q-list separator class="q-mb-sm list-move">
-              <q-item class="bg-white">
-                <q-item-section>
-                  <q-item-label caption>
-                    NOMOR : <span class="text-primary">{{ item?.rs2 }}</span>
-                  </q-item-label>
-                  <q-item-label caption>
-                    PERMINTAAN
-                  </q-item-label>
-                  <q-item-label lines="6">
-                    {{ item?.rs4 }}
-                  </q-item-label>
-                  <q-item-label caption>
-                    KETERANGAN
-                  </q-item-label>
-                  <q-item-label lines="6">
-                    {{ item?.rs7 }}
-                  </q-item-label>
-                </q-item-section>
-                <q-item-section v-if="bisaEditHapus" side>
-                  <q-btn flat dense icon="icon-mat-delete" color="negative" size="sm" rounded
-                    @click="hapusItem(item?.id)" />
-                  <!-- <q-badge outline :color="item?.cito === 'Cito' ? 'orange' : 'primary'"
-                    :label="item?.cito === 'Cito' ? item?.cito : 'Bukan Cito'" class="q-my-sm" /> -->
-                </q-item-section>
-              </q-item>
+              <q-expansion-item class="q-pa-xs bg-white" style="margin-bottom:.2em" hide-expand-icon>
+                <template #header>
+                  <q-item-section>
+                    <q-item-label caption>
+                      NOMOR : <span class="text-primary">{{ item?.rs2 }}</span>
+                    </q-item-label>
+                    <q-item-label caption>
+                      PERMINTAAN
+                    </q-item-label>
+                    <q-item-label lines="6">
+                      {{ item?.rs4 }}
+                    </q-item-label>
+                    <q-item-label caption>
+                      KETERANGAN
+                    </q-item-label>
+                    <q-item-label lines="6">
+                      {{ item?.rs7 }}
+                    </q-item-label>
+                  </q-item-section>
+                  <q-item-section v-if="bisaEditHapus" side>
+                    <q-btn flat dense icon="icon-mat-delete" color="negative" size="sm" rounded
+                      @click="hapusItem(item?.id)" />
+                    <!-- <q-badge outline :color="item?.cito === 'Cito' ? 'orange' : 'primary'"
+                      :label="item?.cito === 'Cito' ? item?.cito : 'Bukan Cito'" class="q-my-sm" /> -->
+                  </q-item-section>
+                </template>
+
+                <!-- Rincians -->
+
+                <q-card v-for="(rinci, i) in item.rincians" square flat class="bg-grey-3">
+                  <q-separator />
+                  <q-card-section class="q-pa-sm bg-grey-8 text-white">
+                    <div class="flex justify-between">
+                      <div class="flex-1">{{ rinci?.relmasterpemeriksaan?.rs2 }} ({{ rinci?.relmasterpemeriksaan?.rs3
+                        }})</div>
+                      <div class="flex-1">{{ formatRp(rinci?.subtotal) }}</div>
+                    </div>
+                  </q-card-section>
+                  <q-card-section class="q-pa-sm">
+                    <div class="column">
+                      <div class="text-bold">Hasil : </div>
+                      <div class="q-mb-md">
+                        {{ rinci.hasil ?? 'Belum Ada Hasil' }}
+                      </div>
+                      <div class="text-bold">Kesimpulan : </div>
+                      <div>
+                        {{ rinci.kesimpulan ?? 'Belum Ada Kesimpulan' }}
+                      </div>
+                    </div>
+                  </q-card-section>
+                </q-card>
+
+              </q-expansion-item>
             </q-list>
           </template>
         </transition-group>
@@ -57,6 +85,7 @@
 import { useQuasar } from 'quasar'
 import { useRadiologiPoli } from 'src/stores/simrs/pelayanan/poli/radiologi'
 import { computed } from 'vue'
+import { formatRp } from 'src/modules/formatter'
 
 const $q = useQuasar()
 const store = useRadiologiPoli()

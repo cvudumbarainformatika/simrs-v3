@@ -73,14 +73,28 @@
         📋 Daftar Permintaan Pemeriksaan
       </div>
 
-      <div v-if="listPermintaans?.length">
+      <div v-if="loading" class="flex flex-center full-height q-pa-md bg-grey" style="height:300px;">
+        <div>Harap Tunggu ... </div>
+      </div>
+
+      <div v-else-if="listPermintaans?.length">
         <q-list bordered>
 
 
           <template v-for="(item, index) in listPermintaans" :key="item">
             <q-expansion-item group="somegroup" icon="icon-mat-app_registration"
-              :label="`${item?.rs2} - (${item?.rs3})`" header-class="text-teal f-16 text-weight-bold q-pa-md"
-              switch-toggle-side>
+              :label="`${item?.nama} - (${item?.jenis})`" switch-toggle-side>
+
+              <template #header>
+                <q-item-section class="q-pa-sm">
+                  <div class="f-14">{{ item?.nama }} ({{ item?.jenis }})</div>
+                  <div class="text-xs q-mt-sm text-orange">{{ formatRp(item?.subtotal) }}</div>
+                </q-item-section>
+                <q-item-section side>
+                  <q-icon name="icon-mat-app_registration"></q-icon>
+                </q-item-section>
+              </template>
+
               <q-card>
                 <q-separator />
                 <q-card-section>
@@ -89,29 +103,56 @@
                     <!-- <div class="col-3 q-mb-sm"> -->
                     <q-select v-model="item.ukuran" dense standout="bg-yellow-3 text-black" outlined label="Ukuran"
                       :options="ukurans" emit-value map-options input-class="ellipsis" fill-input hide-bottom-space
-                      class="col-4" @update:model-value="(val) => {
+                      class="col-3" @update:model-value="(val) => {
                         item.ukuran = val
                       }" />
                     <!-- </div> -->
                     <!-- <div class="col-3 q-mb-sm"> -->
-                    <app-input-simrs v-model="item.jumlah" label="Jumlah" class="col-3" />
+                    <app-input-simrs v-model="item.jumlah" label="Jumlah" class="col-3"
+                      :valid="{ required: false, number: true }" />
                     <!-- </div> -->
-                    <div class="col-12 q-mb-sm"> Hasil : </div>
-                    <app-input-simrs-mode type="wysiwyg" v-model="item.hasil" :disable="false" class="col-12 q-mb-md" />
+
+                    <app-autocomplete-new ref="refDokter" :model="item.kdPelaksana" label="Pelaksana Tindakan"
+                      :key="item" autocomplete="nama" option-value="kdpegsimrs" option-label="nama" outlined
+                      :source="storePermintaan.dokters" class="col-6" @on-select="(val) => {
+                        // console.log('selected pelaksana', val);
+                        const finder = storePermintaan.dokters.find(d => d.kdpegsimrs === val);
+                        if (!finder) {
+                          item.pelaksana = null;
+                          item.kdPelaksana = null;
+                          return;
+                        }
+
+                        item.kdPelaksana = val
+                        item.pelaksana = finder.nama;
+                      }" @clear="() => {
+                        item.kdPelaksana = null
+                        item.pelaksana = null
+                      }" />
+
+                    <div class="col-12 q-mb-sm"> Hasil : <span class="text-red">*</span> </div>
+                    <app-input-simrs-mode type="wysiwyg" v-model="item.hasil" :disable="false" class="col-12 q-mb-md"
+                      @update:model-value="(val) => {
+                        item.hasil = val
+                      }" :valid="{ required: true }" />
+                    <div class="q-mb-sm">kesimpulan :</div>
+                    <app-input-simrs-mode type="wysiwyg" v-model="item.kesimpulan" :disable="false" @update:model-value="(val) => {
+                      item.kesimpulan = val
+                    }" class="col-12 q-mb-md" />
                   </div>
                 </q-card-section>
                 <q-separator />
 
-                <!-- <q-card-section>
+                <q-card-section class="bg-yellow-2">
                   <div class="row q-col-gutter-sm justify-end">
                     <div class="col-auto">
-                      <q-btn label="Batal" color="bg-dark" flat @click="store.batal(item)" />
+                      <q-btn label="Batal" color="bg-dark" flat @click="storePermintaan.batal(item)" />
                     </div>
                     <div class="col-auto">
-                      <q-btn label="Simpan" color="primary" class="q-mr-sm" @click="store.simpan(item)" />
+                      <q-btn label="Simpan" color="primary" class="q-mr-sm" @click="storePermintaan.simpan(item)" />
                     </div>
                   </div>
-                </q-card-section> -->
+                </q-card-section>
               </q-card>
             </q-expansion-item>
 
@@ -119,7 +160,7 @@
           </template>
         </q-list>
 
-        <div class="q-pa-md">
+        <!-- <div class="q-pa-md">
           <div class="q-mb-sm">kesimpulan :</div>
           <app-input-simrs-mode type="wysiwyg" v-model="permintaan.kesimpulan" :disable="false"
             class="col-12 q-mb-md" />
@@ -134,13 +175,14 @@
               <q-btn label="Simpan" color="primary" class="q-mr-sm" @click="store.simpan(item)" />
             </div>
           </div>
-        </div>
+        </div> -->
 
         <div class="q-mb-xl"></div>
       </div>
 
 
-      <div v-else class="flex flex-center q-pa-md bg-white" style="height:300px;">
+
+      <div v-else class="flex flex-center full-height q-pa-md bg-white" style="height:300px;">
         <div class="text-subtitle2">Tidak ada permintaan pemeriksaan radiologi.</div>
       </div>
 
@@ -156,16 +198,21 @@ import { date } from 'quasar'
 import { useListPasienRadiologiStore } from 'src/stores/simrs/radiologi/radiologi'
 import { usePermintaanRadiologiStore } from 'src/stores/simrs/radiologi/permintaan'
 import { storeToRefs } from 'pinia';
+import { formatRp } from 'src/modules/formatter'
 
 const props = defineProps({
   pasien: {
     type: Object,
     required: true
+  },
+  loading: {
+    type: Boolean,
+    default: false
   }
 })
 
 const storePermintaan = usePermintaanRadiologiStore()
-const { permintaan, listPermintaans, ukurans } = storeToRefs(storePermintaan)
+const { permintaan, listPermintaans, ukurans, } = storeToRefs(storePermintaan)
 
 function formatDate(dateStr) {
   if (!dateStr) return '-'

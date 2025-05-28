@@ -1,6 +1,6 @@
 <template>
   <!-- Existing input -->
-  <q-input v-if="type !== 'wysiwyg'" ref="appInputSimrs" v-bind="$props" @update:model-value="updatedModel" :rules="[
+  <q-input v-if="type !== 'wysiwyg'" ref="appInputSimrsMode" v-bind="$props" @update:model-value="updatedModel" :rules="[
     requiredRule,
     minRule,
     maxRule,
@@ -133,14 +133,28 @@
       <q-spinner-dots size="50px" color="primary" />
     </q-inner-loading>
 
-    <div class="editor-content" :class="{ 'editor-disabled': disable }">
+    <div class="editor-content q-pa-xs" :class="{
+      'editor-disabled': disable,
+      'editor-error': hasError,
+      'editor-warning': showWarning
+    }">
       <editor-content :editor="editor" />
+
+      <!-- Error Message -->
+      <div v-if="hasError" class="text-negative text-caption q-mt-sm">
+        {{ errorMessage }}
+      </div>
+
+      <!-- Warning/Helper Text -->
+      <div v-else-if="showWarning" class="text-warning text-caption q-mt-sm">
+        {{ warningMessage }}
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { ref, onMounted, onBeforeUnmount, computed, watch } from 'vue'
 import { Editor, EditorContent } from '@tiptap/vue-3'
 import StarterKit from '@tiptap/starter-kit'
 import TextAlign from '@tiptap/extension-text-align'
@@ -196,7 +210,11 @@ const props = defineProps({
   },
   valid: {
     type: Object,
-    default: null
+    default: () => ({})
+  },
+  modelValue: {
+    type: String,
+    default: ''
   },
   lazyRules: {
     type: [Boolean, String],
@@ -215,9 +233,9 @@ const props = defineProps({
 
 const emits = defineEmits(['appendClick', 'update:modelValue'])
 
-const appInputSimrs = ref(null)
+const appInputSimrsMode = ref(null)
 
-defineExpose({ appInputSimrs })
+defineExpose({ appInputSimrsMode })
 
 const requiredRule = (val) => {
   if (props.valid === null) {
@@ -286,6 +304,8 @@ const isLoading = ref(false)
 
 // Add this utility function at the top of script setup
 const sanitizeHtml = (html) => {
+  // console.log('Sanitizing HTML:', html);
+
   const div = document.createElement('div')
   div.innerHTML = html
 
@@ -351,8 +371,15 @@ const handleFileUpload = async (event) => {
     const result = await mammoth.convertToHtml({ arrayBuffer })
     const cleanHtml = sanitizeHtml(result.value)
 
-    // Set sanitized content
-    editor.value?.commands.setContent(cleanHtml)
+    // Tunggu editor siap dan set content
+    await new Promise(resolve => setTimeout(resolve, 100))
+    if (editor.value) {
+      editor.value.commands.setContent(cleanHtml)
+
+      // Trigger update untuk emit nilai
+      const content = editor.value.getHTML()
+      emits('update:modelValue', content)
+    }
 
     event.target.value = null
     $q.notify({
@@ -364,13 +391,22 @@ const handleFileUpload = async (event) => {
     console.error('Error importing document:', error)
     $q.notify({
       type: 'negative',
-      message: 'Failed to import document. Please check file format.',
+      message: 'Failed to import document',
       position: 'top'
     })
   } finally {
     isLoading.value = false
   }
 }
+
+// Add watcher for modelValue changes
+watch(() => props.modelValue, (newValue) => {
+  if (editor.value && (newValue === null || newValue === '')) {
+    editor.value.commands.clearContent(true)
+  } else if (editor.value && newValue !== editor.value.getHTML()) {
+    editor.value.commands.setContent(newValue || '')
+  }
+})
 
 // Initialize editor when component is mounted
 onMounted(() => {
@@ -405,9 +441,18 @@ onMounted(() => {
         TableHeader,
         TableCell,
       ],
-      content: '',
+      content: props.modelValue || '', // Set initial content from modelValue
       onUpdate: ({ editor }) => {
-        emits('update:modelValue', editor.getHTML())
+        const content = editor.getHTML()
+        // Only emit if content actually changed
+        if (content !== props.modelValue) {
+          emits('update:modelValue', content === '<p></p>' ? '' : content)
+        }
+      },
+      editorProps: {
+        attributes: {
+          class: hasError.value ? 'has-error' : ''
+        }
       }
     })
   }
@@ -427,6 +472,31 @@ const insertTable = () => {
 const setColor = (color) => {
   editor.value?.chain().focus().setColor(color).run()
 }
+
+// Validation computed properties
+const hasError = computed(() => {
+  if (!props.valid?.required) return false
+  return !props.modelValue || props.modelValue.trim().length === 0
+})
+
+const errorMessage = computed(() => {
+  if (hasError.value) return 'Field ini wajib diisi'
+  return ''
+})
+
+const showWarning = computed(() => {
+  if (props.valid?.minLength && props.modelValue) {
+    return props.modelValue.length < props.valid.minLength
+  }
+  return false
+})
+
+const warningMessage = computed(() => {
+  if (showWarning.value) {
+    return `Minimal ${props.valid.minLength} karakter`
+  }
+  return ''
+})
 </script>
 
 <style lang="scss">
@@ -443,18 +513,50 @@ const setColor = (color) => {
 
   .editor-content {
     min-height: 200px;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    border-radius: 4px;
+    transition: all 0.3s ease;
 
-    &.editor-disabled {
-      opacity: 0.7;
-      pointer-events: none;
-      background: #f5f5f5;
+    &:hover {
+      border-color: #000;
+    }
+
+    &:focus-within {
+      border-color: #1976d2;
+      box-shadow: 0 0 0 1px #1976d2;
+    }
+
+    &.editor-error {
+      border-color: #C10015;
+
+      &:focus-within {
+        box-shadow: 0 0 0 1px #C10015;
+      }
+
+      .ProseMirror {
+        background-color: rgba(#C10015, 0.03);
+      }
+    }
+
+    &.editor-warning {
+      border-color: #F2C037;
+
+      &:focus-within {
+        box-shadow: 0 0 0 1px #F2C037;
+      }
+
+      .ProseMirror {
+        background-color: rgba(#F2C037, 0.03);
+      }
     }
   }
 
   .ProseMirror {
     outline: none;
-    padding: 12px;
+    padding: 5px;
     min-height: 200px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
 
     /* Heading Styles dengan line-height yang lebih kecil */
     h1 {

@@ -10,7 +10,7 @@
         <!-- Existing code for right column -->
         <div class="col-12 col-md-8">
 
-          <list-permintaan :pasien="pasien" />
+          <list-permintaan :pasien="pasien" :loading="storeListPasienRadiologi?.loadingTerima" />
 
 
         </div>
@@ -25,6 +25,7 @@ import { defineAsyncComponent } from 'vue'
 import { useListPasienRadiologiStore } from 'src/stores/simrs/radiologi/radiologi'
 import { useRadiologiPoli } from 'src/stores/simrs/pelayanan/poli/radiologi'
 import { usePermintaanRadiologiStore } from 'src/stores/simrs/radiologi/permintaan'
+import { usePengunjungRanapStore } from 'src/stores/simrs/ranap/pengunjung'
 
 const ProfilingPermintaan = defineAsyncComponent(() => import('./comp/ProfilingPermintaan.vue'))
 const ListPermintaan = defineAsyncComponent(() => import('./comp/ListPermintaan.vue'))
@@ -32,6 +33,7 @@ const ListPermintaan = defineAsyncComponent(() => import('./comp/ListPermintaan.
 
 const storeRadiologiPoli = useRadiologiPoli()
 const storeListPasienRadiologi = useListPasienRadiologiStore()
+const storeRanap = usePengunjungRanapStore()
 const store = usePermintaanRadiologiStore()
 
 
@@ -46,11 +48,13 @@ const props = defineProps({
 onMounted(() => {
   Promise.all([
     storeRadiologiPoli.getRadiologi(),
-    storeRadiologiPoli.getJenisRadiologi()
+    storeRadiologiPoli.getJenisRadiologi(),
+    storeRanap.getNakes()
   ]).then(() => {
     storeListPasienRadiologi.namaPemeriksaans = storeRadiologiPoli.namaPemeriksaans
     storeListPasienRadiologi.jenisPemeriksaans = storeRadiologiPoli.jenisPemeriksaans
     store.initPermintaan(props.pasien)
+    store.initNakes(storeRanap)
   }).catch((err) => {
     // console.log('error', err)
   })
