@@ -30,16 +30,16 @@
                   <div class="row q-pa-sm text-weight-bold flex-center">
                     <div class="col-auto">
                       <div class="q-py-xs">
-                        Nomor NPK
+                        Nomor NP2D
                       </div>
                       <div class="q-py-xs">
-                        Tanggal NPK
+                        Tanggal NP2D
                       </div>
                     </div>
                     <div class="q-px-md" />
                     <div class="col full-width">
                       <div class="q-py-xs">
-                        : {{ store.npddatasave.nonpk }}
+                        : {{ store.npddatasave.nopencairan }}
                       </div>
                       <div class="q-py-xs">
                         : {{ store.npddatasave.tglcair }}
@@ -54,10 +54,13 @@
                   <div class="row q-pa-sm text-weight-bold flex-center">
                     <div class="col-auto">
                       <div class="q-py-xs">
+                        Nomor NPK-LS
+                      </div>
+                      <div class="q-py-xs">
                         Nomor NPD-LS
                       </div>
                       <div class="q-py-xs">
-                        Tanggal
+                        Tanggal NPD-LS
                       </div>
                       <div class="q-py-xs">
                         Bidang
@@ -68,6 +71,9 @@
                     </div>
                     <div class="q-px-md" />
                     <div class="col full-width">
+                      <div class="q-py-xs">
+                        : {{ store.npddatasave.nonpk }}
+                      </div>
                       <div class="q-py-xs">
                         : {{ store.npddatasave.nonpdls }}
                       </div>
@@ -88,10 +94,10 @@
                   <div class="row flex-center full-width">
                     <div class="col text-weight-bold full-width q-pa-sm b3 text-center">
                       <div class="q-py-xs">
-                        NOTA PENCAIRAN KAS
+                        NOTA PERINTAH PENCAIRAN DANA
                       </div>
                       <div class="q-py-xs">
-                        (NPK)
+                        (NP2D)
                       </div>
                     </div>
                     <div class="row full-width q-pa-sm">
@@ -106,7 +112,7 @@
                       <div class="q-px-md" />
                       <div class="col full-width">
                         <div class="q-py-xs">
-                          : PPK (Pejabat Penatausahaan Keuangan)
+                          : KPA (Kuasa Pengguna Anggaran)
                         </div>
                         <div class="q-py-xs">
                           : {{ store.params.tahun }}
@@ -296,7 +302,7 @@
                         </th>
                       </tr>
                     </thead>
-                    <tbody v-if="store.npddatasave.pajak" class=" align-middle q-pl-sm">
+                    <tbody class=" align-middle q-pl-sm">
                       <tr>
                         <td class="text-center">
                           <div>
@@ -570,15 +576,15 @@
                       Probolinggo {{ store.display.sekarang }}
                     </div>
                     <div class="text-bold">
-                      PEJABAT PENATAUSAHAAN KEUANGAN
+                      KUASA PENGGUNA ANGGARAN
                     </div>
                     <div style="padding-bottom: 40px" />
                     <div class="underline text-bold q-py-xs">
-                      {{ pegawai.pegawais[2]?.nama }}
+                      {{ pegawai.pegawais[1]?.nama }}
                       <div class="garis-bawah" style="text-decoration-line: underline;" />
                     </div>
                     <div>
-                      NIP. {{ pegawai.pegawais[2]?.nip }}
+                      NIP. {{ pegawai.pegawais[1]?.nip }}
                     </div>
                   </div>
                 </div>
@@ -625,7 +631,7 @@ const pegawai = useLaporanBkuPengeluaranStore()
 const printed = ref(false)
 const printObj = {
   id: 'printMe',
-  popTitle: 'Nota Permintaan Dana Langsung (NPD-LS) | SIASIK',
+  popTitle: 'Nota Pencairan Kas | SIASIK',
   beforeOpenCallback(vue) {
     printed.value = true
     console.log('wait...')
