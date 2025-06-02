@@ -164,11 +164,28 @@
               <div class="value">{{ store?.item?.ket }}</div>
             </div>
           </div>
-          <div class="ttd text-right q-mt-xl">
-            <div>Probolinggo, {{ dateFullFormat(store?.item?.tgl) }}</div>
-            <div class="q-mb-xl">Dokter Penanggungjawab</div>
-            <div class="text-weight-bold q-pt-xl">{{ pasien?.pegsim?.nama }}</div>
-            <div>NIP: {{ pasien?.pegsim?.nip }}</div>
+          <div class="ttd row text-right q-mt-xl">
+            <div class="col-8" />
+            <div class="col-4 text-center">
+              <div>Probolinggo, {{ dateFullFormat(store?.item?.tgl) }}</div>
+              <div class="q-mb-sm">Dokter Penanggungjawab</div>
+              <div class="row justify-center">
+                <div class="relative-position" style="width: 90px;">
+                  <vue-qrcode :value="qrDokter" tag="svg" :options="{
+                    errorCorrectionLevel: 'Q',
+                    color: {
+                      dark: '#000000',
+                      light: '#ffffff',
+                    },
+                    margin: 0
+                  }" />
+                </div>
+
+              </div>
+              <div class="text-weight-bold q-pt-sm">{{ pasien?.pegsim?.nama }}</div>
+              <div>NIP: {{ pasien?.pegsim?.nip }}</div>
+
+            </div>
 
           </div>
 
@@ -193,9 +210,10 @@
 import { Dialog } from 'quasar'
 import { dateFullFormat } from 'src/modules/formatter'
 import { useTravellingHDStore } from 'src/stores/simrs/hemodialisa/travelling'
+import { computed } from 'vue'
 
 const store = useTravellingHDStore()
-defineProps({
+const props = defineProps({
   pasien: {
     type: Object,
     default: null
@@ -211,6 +229,16 @@ function hapus (item) {
     store.deleteData(item)
   })
 }
+
+const qrDokter = computed(() => {
+  // const petugas = 'Nama : ' + dpjp?.value?.nama ?? '' + 'NIP : ' + dpjp?.value?.nip ?? ''
+  const noreg = props?.pasien?.noreg// noreg
+  const dok = 'TRAVELING HD.png'
+  const asal = 'HEMODIALISA'
+  const petugas = props?.pasien?.pegsim?.nip
+  const enc = btoa(`${noreg}|${dok}|${asal}|${petugas}`)
+  return `${enc}`
+})
 
 const printObj = {
   id: 'printMe',
