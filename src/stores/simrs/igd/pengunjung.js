@@ -199,6 +199,11 @@ export const usePengunjungIgdStore = defineStore('pengunjung-igd', {
             findPasien[0].rencanaterapidokter = resp?.data?.rencanaterapidokter
             findPasien[0].dokumenluar = resp?.data?.dokumenluar
             findPasien[0].hasilradiologi = resp?.data?.hasilradiologi
+            findPasien[0].rs35x = resp?.data?.rs35x
+            findPasien[0].transradiologi = resp?.data?.transradiologi
+            findPasien[0].bankdarahtrans = resp?.data?.bankdarahtrans
+            findPasien[0].oktrans = resp?.data?.oktrans
+            findPasien[0].kamarjenazah = resp?.data?.kamarjenazah
             // BARU
             // findPasien[0].laporantindakan = resp?.data?.laporantindakan
             // findPasien[0].psikiatri = resp?.data?.psikiatri
