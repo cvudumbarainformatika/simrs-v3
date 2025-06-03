@@ -1,31 +1,21 @@
 <template>
-  <div
-    v-if="!pasien?.dokumenluar?.length"
-    class="full-height column flex-center"
-  >
+  <div v-if="!pasien?.dokumenluar?.length" class="full-height column flex-center">
     <div>Belum Ada Data Tersimpan ... 📋</div>
   </div>
-  <div
-    v-else
-    class="full-height scroll"
-  >
+  <div v-else class="full-height scroll">
     <div class="q-pa-sm">
-      <ListComp
-        :items="pasien?.dokumenluar"
-        :key="pasien?.dokumenluar"
-        @hapus="hapusItem"
-      />
+      <ListComp :items="pasien?.dokumenluar" :key="pasien?.dokumenluar" @hapus="hapusItem" />
     </div>
   </div>
 </template>
 
 <script setup>
 
-import { useUploadDokStore } from 'src/stores/simrs/pelayanan/poli/uploaddok'
 import { defineAsyncComponent } from 'vue'
 import { useQuasar } from 'quasar'
+import { useHdUploadDokStore } from 'src/stores/simrs/hemodialisa/upDok'
 
-const ListComp = defineAsyncComponent(() => import('src/pages/simrs/poli/tindakan/comptindakan/pagemenu/compDokUpload/ListComp.vue'))
+const ListComp = defineAsyncComponent(() => import('src/pages/simrs/hemodialisa/layanan/upload/comp/comUpload/ListComp.vue'))
 const props = defineProps({
   pasien: {
     type: Object,
@@ -33,7 +23,7 @@ const props = defineProps({
   }
 })
 
-const store = useUploadDokStore()
+const store = useHdUploadDokStore()
 const $q = useQuasar()
 
 function hapusItem (item) {

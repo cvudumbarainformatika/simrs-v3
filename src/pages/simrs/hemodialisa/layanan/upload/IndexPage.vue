@@ -2,7 +2,7 @@
 // import { useTindakanRanapStore } from 'src/stores/simrs/ranap/tindakan'
 import { defineAsyncComponent, onMounted } from 'vue'
 
-const BaseLayout = defineAsyncComponent(() => import('src/pages/simrs/ranap/layanan/components/BaseLayout.vue'))
+const BaseLayout = defineAsyncComponent(() => import('src/pages/simrs/hemodialisa/layanan/components/BaseLayout.vue'))
 const FormUpload = defineAsyncComponent(() => import('./comp/FormUpload.vue'))
 const ListUpload = defineAsyncComponent(() => import('./comp/ListUpload.vue'))
 
@@ -33,11 +33,8 @@ onMounted(() => {
 </script>
 
 <template>
-  <BaseLayout
-    :pasien="props.pasien" :kasus="props.kasus" :nakes="props.nakes" :split="60" nota
-    title-before="UPLOAD DOKUMEN LUAR"
-    title-after="List Upload"
-  >
+  <BaseLayout :pasien="props.pasien" :kasus="props.kasus" :nakes="props.nakes" :split="60" nota
+    title-before="UPLOAD DOKUMEN LUAR" title-after="List Upload">
     <template #form>
       <FormUpload :pasien="props.pasien" />
     </template>

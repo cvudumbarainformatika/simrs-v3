@@ -23,12 +23,12 @@
 </template>
 
 <script setup>
-import { useUploadDokStore } from 'src/stores/simrs/pelayanan/poli/uploaddok'
+import { useHdUploadDokStore } from 'src/stores/simrs/hemodialisa/upDok'
 import { defineAsyncComponent, onMounted } from 'vue'
 
-const FormComp = defineAsyncComponent(() => import('src/pages/simrs/poli/tindakan/comptindakan/pagemenu/compDokUpload/FormComp.vue'))
+const FormComp = defineAsyncComponent(() => import('src/pages/simrs/hemodialisa/layanan/upload/comp/comUpload/FormComp.vue'))
 
-const store = useUploadDokStore()
+const store = useHdUploadDokStore()
 const props = defineProps({
   pasien: {
     type: Object,
@@ -37,21 +37,21 @@ const props = defineProps({
 })
 
 onMounted(() => {
-  const isRanap = true
+  // const isRanap = true
   Promise.all([
     store.initForm(),
-    store.getMaster(isRanap).then(() => {
-      store.masters = ['Hemodialisa']
-      store.form.nama = 'Hemodialisa'
-      // setTimeout(() => {
-      // }, 100)
-    })
+    // store.getMaster(isRanap).then(() => {
+    //   store.masters = ['Hemodialisa']
+    store.form.nama = 'Hemodialisa'
+    //   // setTimeout(() => {
+    //   // }, 100)
+    // })
   ])
 })
 
 function onSubmit () {
-  const isRanap = false
-  store.saveData(props?.pasien, isRanap).then(() => {
+  // const isRanap = false
+  store.saveData(props?.pasien).then(() => {
     store.form.nama = 'Hemodialisa'
   })
     .catch((err) => {
