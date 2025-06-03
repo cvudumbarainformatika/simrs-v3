@@ -78,6 +78,23 @@ export const uselistKontrakPekerjaan = defineStore('list_kontra_kPekerjaan', {
             this.loading = false
           })
       })
+    },
+    kunciData(row) {
+      console.log('KUNCI', row)
+      this.loading = true;
+      return new Promise((resolve) => {
+        api.post('/v1/transaksi/kontrak/kuncidata', row)
+          .then((resp) => {
+            console.log('resp', resp)
+            this.loading = false
+            notifSuccess(resp)
+            resolve(resp)
+          })
+          .catch((err) => {
+            console.error(err)
+            this.loading = false
+          });
+      });
     }
   }
 })

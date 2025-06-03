@@ -18,10 +18,10 @@
 import ListData from './inpage/ListData.vue'
 import { onBeforeMount } from 'vue';
 import { listdataSerahterimaStore } from 'src/stores/siasik/transaksi/ls/serahterimapekerjaan/listdataserahterima';
+
 // import listRegjurnal from './inpage/ListRegjurnal.vue'
 
 const store = listdataSerahterimaStore()
-
 onBeforeMount(() => {
   store.listdataserahterima()
 })

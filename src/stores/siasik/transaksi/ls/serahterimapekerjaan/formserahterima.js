@@ -111,6 +111,8 @@ export const useFormSerahterimaStore = defineStore('formSerahterima', {
       for (let i = 0; i < forms?.length; i++) {
         const el = forms[i]
         this.setForm(el, null)
+        this.disabled = false
+        this.disableplus = false
       }
       const keys = Object.keys(this.rinci)
       for (let i = 0; i < keys?.length; i++) {
@@ -118,6 +120,10 @@ export const useFormSerahterimaStore = defineStore('formSerahterima', {
         this.setForm(el, null)
       }
 
+    },
+    setForm(key, value) {
+      this.formheader[key] = value
+      this.rinci[key] = value
     },
 
     onRequest(props) {

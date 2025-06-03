@@ -84,7 +84,7 @@
             <q-td>
               <div class="row justify-center">
                 <div class="q-pr-xs">
-                  <q-btn v-if="gantiKunci(props?.row)" flat round size="xs" class="bg-red-10 text-white"
+                  <q-btn :auth="user" v-if="gantiKunci(props?.row)" flat round size="xs" class="bg-red-10 text-white"
                     icon="icon-mat-lock" @click="kunciData(props?.row)">
                     <q-tooltip> Buka Kunci </q-tooltip>
                   </q-btn>
@@ -131,11 +131,12 @@
 <script setup>
 import { useQuasar } from 'quasar'
 import { formatRpDouble } from 'src/modules/formatter'
+import { useAplikasiStore } from 'src/stores/app/aplikasi'
 import { useAuthStore } from 'src/stores/auth'
 import { dataBastFarmasiStore } from 'src/stores/siasik/transaksi/ls/newnpdls/bastfarmasi'
 import { formInputNpdlsStore } from 'src/stores/siasik/transaksi/ls/newnpdls/formnpdls'
 import { listDataNpdlsStore } from 'src/stores/siasik/transaksi/ls/newnpdls/listdatanpdls'
-import { defineAsyncComponent, onMounted, ref } from 'vue'
+import { computed, defineAsyncComponent, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 
@@ -147,7 +148,8 @@ const store = listDataNpdlsStore()
 const form = formInputNpdlsStore()
 const router = useRouter()
 const carisrt = dataBastFarmasiStore()
-const auth = useAuthStore()
+const auth = useAplikasiStore()
+const user = computed(() => auth.user?.pegawai?.kdpegsimrs)
 onMounted(() => {
 
 })

@@ -51,7 +51,7 @@
 
               <div class="row b justify-between full-width full-height ">
                 <div class="row q-pa-sm b2" style="width:50%">
-                  <div class="row q-pa-sm text-weight-bold flex-center">
+                  <div class="row q-pa-sm text-weight-bold flex-top">
                     <div class="col-auto">
                       <div class="q-py-xs">
                         Nomor NPK-LS
@@ -65,12 +65,12 @@
                       <div class="q-py-xs">
                         Bidang
                       </div>
-                      <div class="q-py-xs">
+                      <div class="q-py-xs full-height">
                         Kegiatan
                       </div>
                     </div>
                     <div class="q-px-md" />
-                    <div class="col full-width">
+                    <div class="col full-width flex-top">
                       <div class="q-py-xs">
                         : {{ store.npddatasave.nonpk }}
                       </div>
@@ -573,7 +573,7 @@
                   <div class="col full-width" />
                   <div class="col text-center">
                     <div class="q-py-xs">
-                      Probolinggo {{ store.display.sekarang }}
+                      Probolinggo {{ dateFullFormat(store.npddatasave.tglcair) }}
                     </div>
                     <div class="text-bold">
                       KUASA PENGGUNA ANGGARAN
@@ -621,7 +621,7 @@
 <script setup>
 import { listDataNpdlsStore } from 'src/stores/siasik/transaksi/ls/newnpdls/listdatanpdls'
 import { useLaporanBkuPengeluaranStore } from 'src/stores/siasik/laporan/bku/bkupengeluaran'
-import { formattanpaRp } from 'src/modules/formatter'
+import { dateFullFormat, formattanpaRp } from 'src/modules/formatter'
 import { terbilangRupiah } from 'src/modules/utils'
 import { ref } from 'vue'
 
@@ -631,7 +631,7 @@ const pegawai = useLaporanBkuPengeluaranStore()
 const printed = ref(false)
 const printObj = {
   id: 'printMe',
-  popTitle: 'Nota Pencairan Kas | SIASIK',
+  popTitle: 'Nota Perintah Pencairan Dana | SIASIK',
   beforeOpenCallback(vue) {
     printed.value = true
     console.log('wait...')

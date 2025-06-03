@@ -85,6 +85,9 @@
                       <q-item clickable v-close-popup @click="viewRincian(props?.row)">
                         <q-item-section>Lihat Rincian</q-item-section>
                       </q-item>
+                      <q-item clickable @click="editdata(props?.row)">
+                        <q-item-section :auth="user">Edit NPD</q-item-section>
+                      </q-item>
                     </q-list>
                   </q-menu>
                 </q-btn>
@@ -100,15 +103,21 @@
 <script setup>
 import { useQuasar } from 'quasar';
 import { formatRpDouble } from 'src/modules/formatter';
-import { useAuthStore } from 'src/stores/auth';
+import { useAplikasiStore } from 'src/stores/app/aplikasi';
+import { useFormSerahterimaStore } from 'src/stores/siasik/transaksi/ls/serahterimapekerjaan/formserahterima';
 import { listdataSerahterimaStore } from 'src/stores/siasik/transaksi/ls/serahterimapekerjaan/listdataserahterima';
-import { defineAsyncComponent, onMounted, ref } from 'vue';
+import { computed, defineAsyncComponent, onMounted, ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 
 const AppDialogRincian = defineAsyncComponent(() => import('./DialogViewRincian.vue'))
 
 const store = listdataSerahterimaStore()
-const auth = useAuthStore()
+const form = useFormSerahterimaStore()
+
+const auth = useAplikasiStore()
+const user = computed(() => auth.user?.pegawai?.kdpegsimrs)
+const router = useRouter()
 const listserahterima = [
   {
     name: 'noserahterimapekerjaan',
@@ -262,6 +271,32 @@ function kunciData(row) {
     }).onDismiss(() => {
     })
   }
+}
+
+const editDataref = ref(null)
+function editdata(row) {
+  // console.log('auth', auth.user?.pegawai?.kdpegsimrs)
+  if (auth.user?.pegawai?.kdpegsimrs !== 'sa') {
+    $q.notify({
+      type: 'negative',
+      message: 'Anda tidak Memiliki Akses Edit Data ini, Silahkan Hubungi Admin'
+    })
+    return
+  }
+  if (row?.kunci === '1') {
+    $q.notify({
+      type: 'negative',
+      message: 'Data Masih Terkunci, Silahkan Buka Kunci Terlebih Dahulu'
+    })
+    return
+  }
+  console.log('row edit', row)
+  router.push({ path: '/siasik/ls/serahterima/formserahterima', replace: true, query: { id: row.id } })
+  editDataref.value = row
+  form.formheader = editDataref.value
+  form.transall = editDataref.value?.rinci
+  form.params.kodekegiatan = editDataref.value?.kodekegiatanblud
+  form.getRincianBelanja()
 }
 
 </script>
