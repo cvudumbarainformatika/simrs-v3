@@ -117,10 +117,10 @@ function settingsVoice() {
         name: x.name
       }
     })
-    console.log('daftar voice indonesia thok', lang.filter(x => x?.lang === 'id-ID'));
+    // console.log('daftar voice indonesia thok', lang.filter(x => x?.lang === 'id-ID'));
 
     const ind = lang.findIndex(x => x?.lang === 'id-ID' && x?.name?.includes('Google')) ?? 0
-    console.log('indexVoice', ind);
+    // console.log('indexVoice', ind);
 
     indexVoices.value = ind
   }

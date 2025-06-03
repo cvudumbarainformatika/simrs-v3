@@ -1,6 +1,7 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
 import { useListPasienRadiologiStore } from './radiologi'
-import { notifErrVue } from 'src/modules/utils'
+import { notifErrVue, notifSuccessVue } from 'src/modules/utils'
+import { api } from 'src/boot/axios'
 
 export const usePermintaanRadiologiStore = defineStore('permintaan-radiologi', {
   state: () => ({
@@ -15,6 +16,7 @@ export const usePermintaanRadiologiStore = defineStore('permintaan-radiologi', {
     ],
     dokters: [],
     perawats: [],
+    loadingSimpan: false
   }),
   getters: {
     doubleCount: (state) => state.counter * 2
@@ -46,13 +48,17 @@ export const usePermintaanRadiologiStore = defineStore('permintaan-radiologi', {
       //   }
       // })
 
+
       this.listPermintaans = pasien?.permintaan?.rincians?.map(x => {
-        const ukuran = '43 x 35'
-        const jumlah = 1
-        const kdPelaksana = null
+        const kdPelaksana = this.dokters?.find(d => d.nama === x.pelaksana)?.kdpegsimrs || null
+        console.log('kdPelaksana', kdPelaksana);
+
+        const ukuran = x.ukuran || '43 x 35'
+        const jumlah = x.jumlah || 1
+        const pelaksana = x.pelaksana || null
         return {
           ...x,
-          kdPelaksana, ukuran, jumlah
+          kdPelaksana, ukuran, jumlah, pelaksana
         }
       })
 
@@ -67,18 +73,40 @@ export const usePermintaanRadiologiStore = defineStore('permintaan-radiologi', {
       // console.log('initNakes dokters', this.dokters);
 
     },
-    async simpan(item) {
+    async simpan(item, pasien) {
 
-      if (!item.hasil || !item.jumlah > 0 || !item.kdPelaksana) {
+      this.loadingSimpan = true
+      if (!item.hasil || !item.jumlah > 0 || !item.kdPelaksana || !item.kesimpulan || !item.ukuran) {
         notifErrVue('Ad field yang belum diisi, silahkan periksa kembali')
         return
       }
       console.log('simpan item', item);
 
+      try {
+        const resp = await api.post('v1/simrs/radiologi/radiologi/simpanHasilByKode', item)
+        console.log('simpan hasil', resp);
+        if (resp.status === 200) {
+
+          // this.initPermintaan(pasien)
+
+          notifSuccessVue(resp?.message)
+          // this.initPermintaan(this.pasien)
+        }
+      } catch (error) {
+        console.log('error', error);
+
+      } finally {
+        this.loadingSimpan = false
+
+      }
+
+
+
+
     },
     batal(item) {
-      item.kdPelaksana = null
-      item.pelaksana = null
+      // item.kdPelaksana = null
+      // item.pelaksana = null
       item.hasil = null
       item.jumlah = 1
       item.kesimpulan = null

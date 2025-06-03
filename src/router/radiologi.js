@@ -9,11 +9,11 @@ const radiologi = {
       name: 'radiologi.pengunjung',
       component: () => import('pages/simrs/radiologi/pengunjung/IndexPage.vue')
     },
-    // {
-    //   path: '/ranap/suratkontrol',
-    //   name: 'ranap.suratkontrol',
-    //   component: () => import('pages/simrs/ranap/suratkontrol/IndexPage.vue')
-    // },
+    {
+      path: '/radiologi/permintaan-luar',
+      name: 'radiologi.permintaan-luar',
+      component: () => import('pages/simrs/radiologi/luar/IndexPage.vue')
+    },
 
     {
       path: '/radiologi/notfound',

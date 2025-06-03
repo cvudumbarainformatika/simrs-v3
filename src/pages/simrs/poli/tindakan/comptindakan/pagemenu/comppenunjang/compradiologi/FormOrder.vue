@@ -31,11 +31,11 @@
               </q-item>
             </q-list>
           </q-card>
-          <div class="col-6">
+          <div class="col-12">
             <q-input v-model="store.form.diagnosakerja" label="Diagnosa Masalah" autogrow outlined
               standout="bg-yellow-3" icon="icon-mat-search" />
           </div>
-          <div class="col-6">
+          <div class="col-12">
             <q-input v-model="store.form.catatanpermintaan" label="Catatan / Keteragan" autogrow outlined
               standout="bg-yellow-3" icon="icon-mat-search" />
           </div>

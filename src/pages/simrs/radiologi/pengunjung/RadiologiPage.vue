@@ -12,12 +12,16 @@
           <HeaderComp />
         </div>
         <div class="col full-height">
-          <template v-if="store.items?.length > 0">
+          <div v-if="store.loading" class="fit column flex-center">
+            <q-spinner-comment size="6em" color="grey"></q-spinner-comment>
+            <div>Harap Tunggu ...</div>
+          </div>
+          <template v-else-if="store.items?.length && !store.loading > 0">
             <transition-group appear enter-active-class="animated fadeIn faster"
               leave-active-class="animated fadeOut faster">
               <list-pasien v-if="!store.isViewList" key="list-pasien" :items="store.items" :loading="store.loading"
-                @details="(val) => store.getDataPasienRadiologiByNota(val)"
-                @click="store.helperKdRuangan(store.pasien)" />
+                @details="(val) => store.getDataPasienRadiologiByNota(val)" @click="store.helperKdRuangan(store.pasien)"
+                jenis="dalam" />
               <thumbnail-view v-else key="thumbnail-view" :items="store.items"
                 @details="(val) => store.getDataPasienRadiologiByNota(val)" />
             </transition-group>

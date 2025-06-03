@@ -69,8 +69,13 @@
 
     <q-separator />
     <div class="bg-white">
-      <div class="text-h6 text-white bg-grey-9 q-pa-md flex items-center">
-        📋 Daftar Permintaan Pemeriksaan
+      <div class="flex justify-between text-white bg-grey-9 q-pa-md ">
+        <div class="f-16 flex items-center">
+          📋 Daftar Permintaan
+        </div>
+        <div v-if="!loading" class="f-14 text-weight-bold">
+          Rp {{ hitungBilTotal() }}
+        </div>
       </div>
 
       <div v-if="loading" class="flex flex-center full-height q-pa-md bg-grey" style="height:300px;">
@@ -88,7 +93,7 @@
               <template #header>
                 <q-item-section class="q-pa-sm">
                   <div class="f-14">{{ item?.nama }} ({{ item?.jenis }})</div>
-                  <div class="text-xs q-mt-sm text-orange">{{ formatRp(item?.subtotal) }}</div>
+                  <div class="text-md q-mt-sm text-grey">Rp. {{ formatRp(item?.subtotal) }}</div>
                 </q-item-section>
                 <q-item-section side>
                   <q-icon name="icon-mat-app_registration"></q-icon>
@@ -138,7 +143,7 @@
                     <div class="q-mb-sm">kesimpulan :</div>
                     <app-input-simrs-mode type="wysiwyg" v-model="item.kesimpulan" :disable="false" @update:model-value="(val) => {
                       item.kesimpulan = val
-                    }" class="col-12 q-mb-md" />
+                    }" class="col-12 q-mb-md" :valid="{ required: true }" />
                   </div>
                 </q-card-section>
                 <q-separator />
@@ -149,7 +154,8 @@
                       <q-btn label="Batal" color="bg-dark" flat @click="storePermintaan.batal(item)" />
                     </div>
                     <div class="col-auto">
-                      <q-btn label="Simpan" color="primary" class="q-mr-sm" @click="storePermintaan.simpan(item)" />
+                      <q-btn label="Simpan" color="primary" class="q-mr-sm"
+                        @click="storePermintaan.simpan(item, pasien)" />
                     </div>
                   </div>
                 </q-card-section>
@@ -222,6 +228,18 @@ function formatDate(dateStr) {
 function formatDateTime(dateStr) {
   if (!dateStr) return '-'
   return date.formatDate(dateStr, 'DD MMMM YYYY HH:mm')
+}
+
+function hitungBilTotal() {
+  // console.log('listPermintaans', listPermintaans.value);
+
+  let total = 0
+  for (let i = 0; i < listPermintaans.value?.length; i++) {
+    const el = listPermintaans.value[i];
+    total += el?.subtotal
+  }
+
+  return formatRp(total)
 }
 
 </script>
