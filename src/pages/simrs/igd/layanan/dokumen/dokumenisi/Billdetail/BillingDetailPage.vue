@@ -47,7 +47,7 @@ function exportPdf() {
   const concern = document.getElementById('printMe')
   const nama = props?.pasien?.nama ?? props?.pasien?.pasien
   const pdfConfig = {
-    margin: 0,
+    margin: [10, 10, 10, 10],
     filename: 'billing_detail-' + props?.pasien?.noreg + '_' + nama + '_' + props?.pasien?.norm + '.pdf',
     image: {
       type: 'jpeg',

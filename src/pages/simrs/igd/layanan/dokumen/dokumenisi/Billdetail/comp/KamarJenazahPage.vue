@@ -10,7 +10,7 @@
     </div>
     <div class="row">
       <div class="col-10">
-        <table class="table q-ma-sm">
+        <table class="table q-ml-xl q-ma-sm">
           <thead>
             <tr>
               <th class="text-center">
