@@ -1,8 +1,8 @@
 <template>
   <div class="row b1 justify-between content-center full-width">
-    <!-- <div class="col-auto q-pl-md flex-start">
+    <div class="col-auto q-pl-md q-py-sm flex-start">
       <q-img src="~assets/images/Pemkot.svg" style="height: 2.6cm; width: 2cm" />
-    </div> -->
+    </div>
     <div class="justify-center content-center col full-width">
       <div class="row q-pt-sm justify-center text-center text-weight-bold" style="font-size: 15px">
         PEMERINTAH KOTA PROBOLINGGO
@@ -14,12 +14,13 @@
         BADAN LAYANAN UMUM DAERAH
       </div>
       <div class="row q-pb-sm justify-center text-center q-pt-sm">
-        Tanggal : {{ store.viewData?.bulan_realisasi }} Nomor: {{ store.viewData?.nosp3b }}
+        Tanggal : {{ dateFullFormat(store.viewData?.bulan_realisasi) }} Nomor: {{ store.viewData?.nosp3b }}
       </div>
     </div>
   </div>
 </template>
 <script setup>
+import { dateFullFormat } from 'src/modules/formatter';
 import { useSp3bStore } from 'src/stores/siasik/akuntansi/sp3b/sp3b';
 
 const store = useSp3bStore()
