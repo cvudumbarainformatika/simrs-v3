@@ -4,8 +4,8 @@
       <q-item v-for="(item, index) in items" :key="index" v-ripple clickable
         :class="`masonry-item cursor-pointer q-pa-none ${onHoverred === index ? 'dimmed' : ''}`"
         @mouseover="onHoverred = index" @mouseleave="onHoverred = -1" @click="emits('details', item)">
-        <q-card class="card-masonry">
-          <app-avatar-pasien :pasien="item" class="full-width relative-position">
+        <q-card class="card-masonry full-width q-pa-xs" style="max-width: 100%;">
+          <app-avatar-pasien :pasien="item" width="100%" class="full-width relative-position">
             <div class="absolute-right">
               <div class="text-right">
                 <div>{{ date.formatDate(item.tgl_kunjungan, 'MMM DD, YYYY') }}</div>
@@ -36,7 +36,7 @@
           <!-- Isi card masonry -->
           <q-separator />
           <q-card-section class="q-pa-sm f-10">
-            <div><b>No .RM</b> : {{ item?.norm }} <b>NOREG</b> : {{ item?.noreg }}</div>
+            <div><b>Nota</b> : {{ item?.notrans }} </div>
             <div class="ellipsis-2-lines q-mt-xs">
               <b>ALAMAT</b> : {{ item?.alamat }}
             </div>

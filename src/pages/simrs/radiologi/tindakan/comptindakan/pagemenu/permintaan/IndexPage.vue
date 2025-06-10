@@ -37,6 +37,7 @@ const storeRanap = usePengunjungRanapStore()
 const store = usePermintaanRadiologiStore()
 
 
+
 const props = defineProps({
   pasien: {
     type: Object,
@@ -53,7 +54,7 @@ onMounted(() => {
   ]).then(() => {
     storeListPasienRadiologi.namaPemeriksaans = storeRadiologiPoli.namaPemeriksaans
     storeListPasienRadiologi.jenisPemeriksaans = storeRadiologiPoli.jenisPemeriksaans
-    store.initPermintaan(props.pasien)
+    store.initPermintaan(props?.pasien)
     store.initNakes(storeRanap)
   }).catch((err) => {
     // console.log('error', err)

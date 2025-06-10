@@ -1,7 +1,7 @@
 <template>
   <picture>
     <source :srcset="fotoWebp" type="image/webp">
-    <q-img :src="foto" :ratio="withRatio ? ratio : null" :width="width" style="max-width: 100%;" loading="lazy">
+    <q-img :src="fotoWebp" :ratio="withRatio ? ratio : null" :width="width" style="max-width: 100%;" loading="lazy">
       <slot />
     </q-img>
   </picture>

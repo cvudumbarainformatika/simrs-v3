@@ -24,6 +24,7 @@ export const useListRadiologiLuarStore = defineStore('list-radiologi-luar', {
     sorting: ['terbaru', 'terlama'],
     statuses: ['Semua', 'Terlayani', 'Belum terlayani'],
     isViewList: false,
+    isForm: false,
     pageTindakan: false,
     loadingTerima: false,
     bukaLayanan: false,
@@ -46,39 +47,39 @@ export const useListRadiologiLuarStore = defineStore('list-radiologi-luar', {
 
     getDataTable() {
       this.loading = true
-      // return new Promise((resolve, reject) => {
-      //   api.get('/v1/simrs/radiologi/radiologi/pasienradiologi', {
-      //     params: this.params
-      //   }).then(res => {
-      //     // console.log('res list tggu ranap', res)
-      //     if (res.status === 200) {
-      //       const total = res.data?.total
-      //       const obj = res.data?.data
-      //       const clone = (({ data, ...o }) => o)(obj)
-      //       this.meta = clone
-      //       this.meta.total = total
-      //       this.items = obj?.data ?? []
-      //       this.pageTindakan = true
-      //     }
-      //     this.loading = false
-      //     resolve(res)
-      //   }).catch(err => {
-      //     console.log('err list tggu ranap', err)
-      //     this.loading = false
-      //     reject(err)
-      //   })
-      // })
+      return new Promise((resolve, reject) => {
+        api.get('/v1/simrs/radiologi/radiologi/pasienradiologiluar', {
+          params: this.params
+        }).then(res => {
+          console.log('resp pasien radiologi luar', res)
+          if (res.status === 200) {
+            const total = res.data?.total
+            const obj = res.data?.data
+            const clone = (({ data, ...o }) => o)(obj)
+            this.meta = clone
+            this.meta.total = total
+            this.items = obj?.data ?? []
+            // this.pageTindakan = true
+          }
+          this.loading = false
+          resolve(res)
+        }).catch(err => {
+          console.log('radiologi luar', err)
+          this.loading = false
+          reject(err)
+        })
+      })
     },
 
     async getDataPasienRadiologiByNota(pasien) {
-      // this.pasien = pasien
-      // console.log('getDataPasienRadiologiByNoreg', pasien);
+      this.pasien = pasien
+      console.log('getDataPasienRadiologiByNoreg', pasien);
 
       // this.loadingTerima = true
 
       // const permintaan = usePermintaanRadiologiStore()
       // try {
-      //   const resp = await api.get(`/v1/simrs/radiologi/radiologi/getDataPasienRadiologiByNota?nota=${pasien?.nota_permintaan}`)
+      //   const resp = await api.get(`/v1/simrs/radiologi/radiologi/getDataPasienRadiologiLuarByNota?nota=${pasien?.nota_permintaan}`)
       //   console.log('resp pasien radiologi', resp, this.depo)
       //   if (resp.status === 200) {
       //     this.pasien['permintaan'] = resp.data?.permintaan ?? null
@@ -160,22 +161,22 @@ export const useListRadiologiLuarStore = defineStore('list-radiologi-luar', {
     },
 
     // BARU RADIOLOGI
-    helperKdRuangan(val) {
-      const ruang = val?.ruangan.split('').slice(0, 3).join('')
-      const poli = val?.poli.split('').slice(0, 3).join('')
-      if (ruang === 'Rua' || poli === 'Rua') {
-        this.depo = 'rnp'
-      }
-      else if (ruang === 'IRD' || poli === 'IRD') {
-        this.depo = 'igd'
-      }
-      else if (ruang === 'Kam' || poli === 'Kam') {
-        this.depo = 'ok'
-      }
-      else {
-        this.depo = 'rjl'
-      }
-    },
+    // helperKdRuangan(val) {
+    //   const ruang = val?.ruangan.split('').slice(0, 3).join('')
+    //   const poli = val?.poli.split('').slice(0, 3).join('')
+    //   if (ruang === 'Rua' || poli === 'Rua') {
+    //     this.depo = 'rnp'
+    //   }
+    //   else if (ruang === 'IRD' || poli === 'IRD') {
+    //     this.depo = 'igd'
+    //   }
+    //   else if (ruang === 'Kam' || poli === 'Kam') {
+    //     this.depo = 'ok'
+    //   }
+    //   else {
+    //     this.depo = 'rjl'
+    //   }
+    // },
     async simpan() {
       console.log('simpan');
 

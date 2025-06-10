@@ -1,21 +1,11 @@
 <template>
   <div class="fit scroll">
     <div class="masonry-container q-gutter-md">
-      <q-item
-        v-for="(item, index) in items"
-        :key="index"
-        v-ripple
-        clickable
-        :class="`masonry-item cursor-pointer q-pa-none ${onHoverred===index? 'dimmed' : ''}`"
-        @mouseover="onHoverred=index"
-        @mouseleave="onHoverred=-1"
-        @click="emits('details',item)"
-      >
+      <q-item v-for="(item, index) in items" :key="index" v-ripple clickable
+        :class="`masonry-item cursor-pointer q-pa-none ${onHoverred === index ? 'dimmed' : ''}`"
+        @mouseover="onHoverred = index" @mouseleave="onHoverred = -1" @click="emits('details', item)">
         <q-card class="card-masonry">
-          <app-avatar-pasien
-            :pasien="item"
-            class="full-width relative-position"
-          >
+          <app-avatar-pasien :pasien="item" width="100%" class="full-width relative-position">
             <div class="absolute-right">
               <div class="text-right">
                 <div>{{ date.formatDate(item.tgl_kunjungan, 'MMM DD, YYYY') }}</div>
@@ -25,10 +15,8 @@
               </div>
             </div>
             <div class="absolute bg-transparent q-mt-md">
-              <q-card
-                :class="`q-pa-sm ${item?.status !== '' ? 'bg-teal' : 'bg-deep-orange-8'}`"
-                style="top:-15px; left: 0;"
-              >
+              <q-card :class="`q-pa-sm ${item?.status !== '' ? 'bg-teal' : 'bg-deep-orange-8'}`"
+                style="top:-15px; left: 0;">
                 <div class="f-12">
                   {{ item?.status !== '' ? 'Terlayani' : 'Belum terlayani' }}
                 </div>
@@ -89,5 +77,4 @@ const emits = defineEmits(['details'])
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
 }
-
 </style>

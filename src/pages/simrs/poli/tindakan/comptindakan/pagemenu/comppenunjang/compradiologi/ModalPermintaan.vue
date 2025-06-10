@@ -213,8 +213,8 @@ function mapper(arr) {
 
     // Determine prices based on room class
     if (kelas === '3') {
-      sarana = parseFloat(x?.rs4 || 0)
-      pelayanan = parseFloat(x?.rs5 || 0)
+      sarana = parseFloat(x?.rs6 || 0) // ini diubah seharusnya rs4
+      pelayanan = parseFloat(x?.rs7 || 0) // ini diubah seharusnya rs5
     } else if (kelas === 'PS') {
       sarana = parseFloat(x?.pss || 0)
       pelayanan = parseFloat(x?.psp || 0)

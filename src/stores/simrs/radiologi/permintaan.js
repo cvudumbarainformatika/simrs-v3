@@ -34,20 +34,6 @@ export const usePermintaanRadiologiStore = defineStore('permintaan-radiologi', {
       const storePasienRadiologi = useListPasienRadiologiStore()
       const master = storePasienRadiologi.namaPemeriksaans
 
-      // this.listPermintaans = arrayResult.map(kode => {
-      //   const item = master?.find(item => item.rs1 === kode)
-      //   const hasil = null
-      //   const ukuran = '43 x 35'
-      //   const jumlah = 1
-      //   const kesimpulan = null
-      //   const pelaksana = null
-      //   const kdPelaksana = null
-      //   return {
-      //     ...item,
-      //     kode, hasil, ukuran, jumlah, kesimpulan, pelaksana, kdPelaksana
-      //   }
-      // })
-
 
       this.listPermintaans = pasien?.permintaan?.rincians?.map(x => {
         const kdPelaksana = this.dokters?.find(d => d.nama === x.pelaksana)?.kdpegsimrs || null
@@ -62,7 +48,7 @@ export const usePermintaanRadiologiStore = defineStore('permintaan-radiologi', {
         }
       })
 
-      console.log('listPermintaans', this.listPermintaans);
+      // console.log('listPermintaans', this.listPermintaans);
 
     },
     initNakes(store) {

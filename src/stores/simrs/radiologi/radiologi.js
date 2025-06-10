@@ -77,14 +77,14 @@ export const useListPasienRadiologiStore = defineStore('list-pasien-radiologi', 
 
     async getDataPasienRadiologiByNota(pasien) {
       this.pasien = pasien
-      console.log('getDataPasienRadiologiByNoreg', pasien);
+      // console.log('getDataPasienRadiologiByNoreg', pasien);
 
       this.loadingTerima = true
 
       const permintaan = usePermintaanRadiologiStore()
       try {
         const resp = await api.get(`/v1/simrs/radiologi/radiologi/getDataPasienRadiologiByNota?nota=${pasien?.nota_permintaan}`)
-        console.log('resp pasien radiologi', resp, this.depo)
+        // console.log('resp pasien radiologi', resp, this.depo)
         if (resp.status === 200) {
           this.pasien['permintaan'] = resp.data?.permintaan ?? null
           this.pasien['newapotekrajal'] = resp.data?.newapotekrajal ?? []

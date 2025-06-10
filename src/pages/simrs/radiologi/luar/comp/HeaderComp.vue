@@ -7,10 +7,11 @@
             color="grey-8" />
           <div class="q-ml-sm">
             <div class="f-18">
-              <b class="text-grey-8">{{ store.pasien ? 'DETAILS PASIEN' : 'RADIOLOGI LUAR' }}</b>
+              <b class="text-grey-8">{{ store.pasien ? 'DETAILS PERMINTAAN' : 'PERMINTAAN LUAR' }}</b>
             </div>
             <div class="f-10">
-              List Permintaan Radiologi Luar
+              {{ store.pasien ? 'Details Permintaan Radiologi Luar' : 'List Permintaan Radiologi Luar' }} {{
+                store.pasien ? '# ' + store.pasien.notrans : '' }}
             </div>
           </div>
         </div>
@@ -111,7 +112,7 @@
             <q-icon name="icon-mat-refresh" />
             <q-tooltip>Refresh</q-tooltip>
           </q-btn>
-          <q-btn outline color="grey-8" class="bg-white" padding="sm" size="sm">
+          <q-btn outline color="grey-8" class="bg-white" padding="sm" size="sm" @click="store.isForm = true">
             <q-icon name="icon-mat-add" />
             <q-tooltip>Data Baru</q-tooltip>
           </q-btn>
