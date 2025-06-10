@@ -429,14 +429,17 @@
                 <q-separator size="1px" color="deep-orange" inset />
               </div>
               <div class="col-auto q-mr-lg">
-                <q-btn v-if="apps?.user?.kdruangansim === 'Gd-05010101' || apps?.user?.kdruangansim === 'Gd-04010102'"
+
+                <q-btn
+                  v-if="apps?.user?.kdruangansim === 'Gd-05010101' || apps?.user?.kdruangansim === 'Gd-04010102' || apps?.user?.kdruangansim === 'Gd-02010104'"
                   round class="f-10 q-my-sm" color="dark" text-color="white" icon="icon-mat-print"
                   @click="openRajal(item)">
                   <q-tooltip class="primary" :offset="[10, 10]">
                     Print Etiket Rajal
                   </q-tooltip>
                 </q-btn>
-                <div v-if="apps?.user?.kdruangansim === 'Gd-04010102'" class="row">
+                <div v-if="apps?.user?.kdruangansim === 'Gd-04010102' || apps?.user?.kdruangansim === 'Gd-02010104'"
+                  class="row">
                   <q-checkbox v-model="item.etiket" size="xs" @update:model-value="setRincRanap(item, $event)">
                     <q-tooltip>
                       check untuk print etiket
