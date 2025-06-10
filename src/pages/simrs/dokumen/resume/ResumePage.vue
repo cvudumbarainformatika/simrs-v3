@@ -146,15 +146,15 @@
                     </q-item-label>
                     <q-item-label>
                       <span class="">Riwayat Penyakit </span> : <span class="text-weight-bold">{{ item?.riwayatpenyakit
-                      }}</span>
+                        }}</span>
                     </q-item-label>
                     <q-item-label>
                       <span class="">Riwayat Alergi </span> : <span class="text-weight-bold">{{ item?.riwayatalergi
-                      }}</span>
+                        }}</span>
                     </q-item-label>
                     <q-item-label>
                       <span class="">Reaksi berupa </span> : <span class="text-weight-bold">{{ item?.keteranganalergi
-                      }}</span>
+                        }}</span>
                     </q-item-label>
                     <q-item-label>
                       <span class="">Riwayat Pengobatan</span> : <span class="text-weight-bold">{{
@@ -390,12 +390,12 @@
               <q-card-section class="q-pa-none">
                 <div class="column">
                   <div>{{ item?.perlupenerjemah === 'Iya' ? 'Pasien Perlu Penerjemah' : 'Pasien Tidak Perlu Penerjemah'
-                  }}
+                    }}
                   </div>
                   <div>{{ item?.bahasaisyarat === 'Iya'
                     ? 'Pasien Memakai Bahasa Isyarat'
                     : 'Pasien Tidak Memakai Bahasa Isyarat'
-                  }}</div>
+                    }}</div>
                   <div>{{ item?.caraedukasi === 'Lisan' ? 'Edukasi Memakai Lisan' : 'Edukasi Memakai Tulisan' }}</div>
                   <div>{{ item?.kesediaan === 'Iya' ? 'Pasien Bersedia' : 'Pasien Tidak Bersedia' }}</div>
                   <div> Kebutuhan : <b><em>{{ item?.kebutuhanedukasi }}</em></b> </div>
@@ -555,12 +555,12 @@
             <div
               v-if="store.item?.apotekracikanrajal?.length || store.item?.apotekracikanrajallalu?.length || store.item?.apotekrajal?.length || store.item?.apotekrajal?.length || store.item?.newapotekrajal?.length"
               class="row items-center text-weight-bold">
-              <div class="col-9">
+              <!-- <div class="col-9">
                 Obat
               </div>
               <div class="col-3">
                 Jumlah
-              </div>
+              </div> -->
             </div>
             <div v-if="store.item?.apotekracikanrajal?.length">
               <div v-for="(item, i) in store.item?.apotekracikanrajal" :key="i" class="row items-center">
@@ -593,17 +593,11 @@
               </div>
             </div>
             <div v-if="store.item?.newapotekrajal?.length">
-              <div v-for="(item, i) in store.item?.newapotekrajal" :key="i" class="">
-                <div v-for="(obat, j) in filteredObat(item)" :key="j" class="row">
-                  <div class="col-9">
-                    {{ obat?.nama ?? '-' }}
-                  </div>
-                  <div class="col-3">
-                    {{ obat?.jumlah ?? '0' }}
-                  </div>
-                  <!-- {{ obat }} -->
-                </div>
-              </div>
+              {{ filteredObat(store.item?.newapotekrajal) }}
+              <!-- <template v-for="(item, i) in store.item?.newapotekrajal" :key="i">
+                <template v-for="(obat, j) in filteredObat(item)" :key="j">
+                </template>
+              </template> -->
             </div>
 
           </div>
@@ -646,7 +640,7 @@
           <div class="col-7">
             <div v-for="(item, i) in store.item?.planning" :key="i" class="row">
               <div class="col-12">
-                {{ item?.rs4f }}
+                {{ item?.rs4 }}
               </div>
             </div>
           </div>
@@ -765,26 +759,31 @@ function getKesadaran (val) {
     return '-'
   }
 }
-function filteredObat (val) {
-  const perRa = val?.permintaanracikan
-  const perNoRa = val?.permintaanresep
-  const kdRacik = val?.permintaanracikan?.map(x => x?.kdobat)
-  const kdNoRacik = val?.permintaanresep?.map(x => x?.kdobat)
+function filteredObat (item) {
+  const obats = []
+  console.log('item', item)
+
+
+  const perRa = item?.flatMap(x => x.permintaanracikan)
+  const perNoRa = item?.flatMap(x => x.permintaanresep)
+  const kdRacik = perRa?.map(x => x?.kdobat)
+  const kdNoRacik = perNoRa?.map(x => x?.kdobat)
   const kdObats = [...kdRacik, ...kdNoRacik]
 
-  const obats = []
   kdObats.forEach(ob => {
     const adaR = perRa.filter(x => x.kdobat === ob)?.reduce((a, b) => a + b?.jumlah, 0)
     const adaNR = perNoRa.filter(x => x.kdobat === ob)?.reduce((a, b) => a + b?.jumlah, 0)
     const ObatR = perRa.find(x => x.kdobat === ob)
     const ObatNR = perNoRa.find(x => x.kdobat === ob)
-    obats.push({
+    const jumlah = adaR + adaNR
+    if (jumlah > 0) obats.push({
       nama: ObatR?.mobat?.nama_obat ?? ObatNR?.mobat?.nama_obat,
-      jumlah: adaR + adaNR
+      jumlah: jumlah
     })
   })
-  console.log('val', val, kdObats, obats)
-  return obats
+  const obatnya = obats?.map(x => x.nama)?.join(', ')
+  console.log('val', kdObats, obats)
+  return obatnya
 
 }
 // eslint-disable-next-line no-unused-vars
