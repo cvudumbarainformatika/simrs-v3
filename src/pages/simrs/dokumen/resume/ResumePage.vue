@@ -761,28 +761,42 @@ function getKesadaran (val) {
 }
 function filteredObat (item) {
   const obats = []
-  console.log('item', item)
+  const retur = store.item?.newapotekrajalretur
+  // console.log('item', item, retur)
 
 
-  const perRa = item?.flatMap(x => x.permintaanracikan)
-  const perNoRa = item?.flatMap(x => x.permintaanresep)
+  const perRa = item?.flatMap(x => x.permintaanracikan) ?? []
+  const perNoRa = item?.flatMap(x => x.permintaanresep) ?? []
+
+  const rinciannya = item?.flatMap(x => x.rincian) ?? []
+  const rincRacik = item?.flatMap(x => x.rincianracik) ?? []
+
+  const retnya = retur?.flatMap(x => x.rinci) ?? []
+  // console.log('rinciaaan', perRa, perNoRa, rinciannya, rincRacik, retnya,)
+
   const kdRacik = perRa?.map(x => x?.kdobat)
   const kdNoRacik = perNoRa?.map(x => x?.kdobat)
   const kdObats = [...kdRacik, ...kdNoRacik]
 
   kdObats.forEach(ob => {
-    const adaR = perRa.filter(x => x.kdobat === ob)?.reduce((a, b) => a + b?.jumlah, 0)
-    const adaNR = perNoRa.filter(x => x.kdobat === ob)?.reduce((a, b) => a + b?.jumlah, 0)
+    const adaR = rinciannya?.length ? rinciannya?.filter(x => x.kdobat === ob)?.reduce((a, b) => a + b?.jumlah, 0) : 0
+    const adaNR = rincRacik?.length ? rincRacik?.filter(x => x.kdobat === ob)?.reduce((a, b) => a + b?.jumlah, 0) : 0
+    const adaRet = retnya?.length ? retnya?.filter(x => x.kdobat === ob)?.reduce((a, b) => a + b?.jumlah_retur, 0) : 0
+
     const ObatR = perRa.find(x => x.kdobat === ob)
     const ObatNR = perNoRa.find(x => x.kdobat === ob)
-    const jumlah = adaR + adaNR
+    const jumlah = adaR + adaNR - adaRet
     if (jumlah > 0) obats.push({
       nama: ObatR?.mobat?.nama_obat ?? ObatNR?.mobat?.nama_obat,
       jumlah: jumlah
     })
+    else {
+      console.log('retur all', ObatR?.mobat?.nama_obat ?? ObatNR?.mobat?.nama_obat)
+
+    }
   })
   const obatnya = obats?.map(x => x.nama)?.join(', ')
-  console.log('val', kdObats, obats)
+  // console.log('val', kdObats, obats)
   return obatnya
 
 }
