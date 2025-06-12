@@ -1,5 +1,6 @@
 <template>
-  <q-bar dense class="bg-white q-mb-md">
+  <!-- persobaan noreg : 152827/06/2025/J -->
+  <q-bar dense class="bg-white q-my-md">
     <q-space />
     <q-btn ref="refPrint" v-print="printObj" unelevated color="dark" round size="sm" icon="icon-mat-print">
       <q-tooltip class="primary" :offset="[10, 10]">
@@ -106,16 +107,17 @@
             </div>
           </div>
           <div class="col-7">
-            <!-- <div
-              v-for="(item,i) in store.item?.diagnosa"
-              :key="i"
-              class="row"
-            >
-              <div class="col-12">
-                {{ item?.masterdiagnosa?.rs1 }} {{ item?.masterdiagnosa?.diagnosa }} <span v-if="item?.jenisdiagnosa">({{ item?.jenisdiagnosa }})</span>
+            <div v-if="pasien?.memodiagnosa" class="row">
+              <div>{{ pasien?.memodiagnosa }} (Diagnosa Dokter)</div>
+            </div>
+            <div v-if="pasien?.diagnosamedis?.length">
+              <div v-for="(diagnosa, i) in pasien?.diagnosamedis" :key="i" class="row">
+                <div class="col-12">
+                  {{ diagnosa?.masterdiagnosa?.rs3 ?? diagnosa?.masterdiagnosa?.rs4 }} ({{ diagnosa?.rs3 }})
+                </div>
               </div>
-            </div> -->
-            <div>{{ pasien?.memodiagnosa }}</div>
+
+            </div>
           </div>
         </div>
         <q-separator />
@@ -205,82 +207,69 @@
                 <template v-for="(item, i) in store.item?.pemeriksaanfisik" :key="i">
                   <!-- NADI-->
                   <q-item class="q-pa-none list-move">
-                    <q-item-section avatar>
-                      <q-icon :color="nadi(item?.rs4).color" name="icon-my-monitor_heart" size="sm" />
-                    </q-item-section>
-                    <q-item-section class="q-pa-xs">
-                      <q-item-label :class="`text-h6 text-${nadi(item?.rs4).color}`">
-                        {{ item?.rs4 }}
-                      </q-item-label>
-                    </q-item-section>
-                    <q-item-section side>
-                      <q-item-label class="text-right f-10">
+                    <q-item-section>
+                      <q-item-label class="">
                         N (HR)
                       </q-item-label>
-                      <q-item-label class="text-right f-10">
+                      <q-item-label class="">
                         {{ nadi(item?.rs4).res }}
                       </q-item-label>
                     </q-item-section>
+                    <q-item-section class="q-pa-xs">
+                      <q-item-label>
+                        {{ item?.rs4 }}
+                      </q-item-label>
+                    </q-item-section>
+
                   </q-item>
                   <!-- PERNAPASAN -->
                   <q-separator />
                   <q-item class="q-pa-none list-move">
-                    <q-item-section avatar>
-                      <q-icon name="icon-my-local_hospital" size="sm" />
-                    </q-item-section>
-                    <q-item-section class="q-pa-xs">
-                      <q-item-label :class="`text-h6 `">
-                        {{ item?.pernapasan }}
-                      </q-item-label>
-                    </q-item-section>
-                    <q-item-section side>
-                      <q-item-label class="text-right f-10">
+                    <q-item-section>
+                      <q-item-label class="">
                         RR
                       </q-item-label>
-                      <q-item-label class="text-right f-10">
+                      <q-item-label class="">
                         -
+                      </q-item-label>
+                    </q-item-section>
+                    <q-item-section class="q-pa-xs">
+                      <q-item-label>
+                        {{ item?.pernapasan }}
                       </q-item-label>
                     </q-item-section>
                   </q-item>
                   <!-- SUHU TUBUH -->
                   <q-separator />
                   <q-item class="q-pa-none list-move">
-                    <q-item-section avatar>
-                      <q-icon :color="suhu(item?.suhutubuh).color"
-                        name="icon-my-standing-human-body-silhouette-svgrepo-com" size="sm" />
-                    </q-item-section>
-                    <q-item-section class="q-pa-xs">
-                      <q-item-label :class="`text-h6 text-${suhu(item?.suhutubuh).color}`">
-                        {{ item?.suhutubuh }}
-                      </q-item-label>
-                    </q-item-section>
-                    <q-item-section side>
-                      <q-item-label class="text-right f-10">
+                    <q-item-section>
+                      <q-item-label class="">
                         SUHU TUBUH
                       </q-item-label>
-                      <q-item-label class="text-right f-10">
+                      <q-item-label class="">
                         {{ suhu(item?.suhutubuh).res }}
+                      </q-item-label>
+                    </q-item-section>
+
+                    <q-item-section class="q-pa-xs">
+                      <q-item-label>
+                        {{ item?.suhutubuh }}
                       </q-item-label>
                     </q-item-section>
                   </q-item>
                   <!-- TEKaNAN darah -->
                   <q-separator />
-                  <q-item class="q-pa-none list-move">
-                    <q-item-section class="q-pa-xs">
-                      <q-item-label :class="`text-h6 `">
-                        <span :class="`${tekananDarah(item?.sistole).color}`">{{ item?.sistole }}</span> /
-                        <span :class="`${tekananDarahDias(item?.diatole).color}`">{{ item?.diastole }}</span>
-                      </q-item-label>
-                      <q-item-label class="f-10">
-                        <span :class="`${tekananDarah(item?.sistole).color}`">{{ tekananDarah(item?.sistole).res
-                          }}</span> /
-                        <span :class="`${tekananDarahDias(item?.diastole).color}`">{{
-                          tekananDarahDias(item?.diastole).res }}</span>
+                  <q-item class=" q-pa-none list-move">
+
+                    <q-item-section>
+                      <q-item-label class="">
+                        TD sys / dias
                       </q-item-label>
                     </q-item-section>
-                    <q-item-section side>
-                      <q-item-label class="text-right f-10">
-                        TD sys / dias
+                    <q-item-section class="q-pa-xs">
+                      <q-item-label class="">
+                        <span>{{ item?.sistole }}</span> /
+                        <span>{{ item?.diastole }}</span>
                       </q-item-label>
                     </q-item-section>
                   </q-item>
@@ -305,53 +294,18 @@
                       </q-item-label>
                     </q-item-section>
                   </q-item>
-
-                  <!-- <q-card
-                  flat
-
-                  square
-                >
-                  <q-slide-transition>
-                    <div v-show="expanded===i+1">
-                      <q-separator  />
-                      <q-list
-                        v-if="item?.detailgambars?.length"
-                        separator
-
-                      >
-                        <q-item
-                          v-for="(row, n) in item.detailgambars"
-                          :key="n"
-                        >
-                          <q-item-section avatar>
-                            <q-avatar
-                              size="24px"
-                              color="orange"
-                            >
-                              {{ n + 1 }}
-                            </q-avatar>
-                          </q-item-section>
-                          <q-item-section>
-                            <q-item-label>{{ row.anatomy }}</q-item-label>
-                            <q-item-label caption>
-                              {{ row.ket }}
-                            </q-item-label>
-                          </q-item-section>
-                        </q-item>
-                      </q-list>
-                      <div
-                        v-else
-                        class="text-center q-pa-md"
-                      >
-                        Tidak ada detail anatomy
-                      </div>
-                    </div>
-                  </q-slide-transition>
-                </q-card> -->
-                  <!-- <q-separator
-                  color="grey"
-                  size="5px"
-                /> -->
+                  <template v-if="item?.detailgambars?.length > 0">
+                    <template v-for="deta in item?.detailgambars" :key="deta">
+                      <q-item class="q-pa-none list-move">
+                        <q-item-section class="q-pa-xs">
+                          <q-item-label>
+                            <span>{{ deta?.anatomy + ' : ' }} </span>
+                            <span>{{ deta?.ket }}</span>
+                          </q-item-label>
+                        </q-item-section>
+                      </q-item>
+                    </template>
+                  </template>
                 </template>
                 <!-- KHUSUS PARU POL018-->
                 <q-separator v-if="pasien?.kodepoli === 'POL018'" />
@@ -604,14 +558,14 @@
           </div>
           <div class="col-7">
             <div
-              v-if="store.item?.apotekracikanrajal?.length || store.item?.apotekracikanrajallalu?.length || store.item?.apotekrajal?.length || store.item?.apotekrajal?.length"
+              v-if="store.item?.apotekracikanrajal?.length || store.item?.apotekracikanrajallalu?.length || store.item?.apotekrajal?.length || store.item?.apotekrajal?.length || store.item?.newapotekrajal?.length"
               class="row items-center text-weight-bold">
-              <div class="col-9">
+              <!-- <div class="col-9">
                 Obat
               </div>
               <div class="col-3">
                 Jumlah
-              </div>
+              </div> -->
             </div>
             <div v-if="store.item?.apotekracikanrajal?.length">
               <div v-for="(item, i) in store.item?.apotekracikanrajal" :key="i" class="row items-center">
@@ -643,20 +597,14 @@
                 </div>
               </div>
             </div>
-            <!-- <div v-if="store.item?.apotekrajal?.length">
-              <div
-                v-for="(item,i) in store.item?.apotekrajal"
-                :key="i"
-                class="row items-center"
-              >
-                <div class="col-9">
-                  {{ item?.obat??'-' }}
-                </div>
-                <div class="col-3">
-                  {{ item?.jumlah??'0' }}
-                </div>
-              </div>
-            </div> -->
+            <div v-if="store.item?.newapotekrajal?.length">
+              {{ filteredObat(store.item?.newapotekrajal) }}
+              <!-- <template v-for="(item, i) in store.item?.newapotekrajal" :key="i">
+                <template v-for="(obat, j) in filteredObat(item)" :key="j">
+                </template>
+              </template> -->
+            </div>
+
           </div>
         </div>
         <q-separator />
@@ -697,7 +645,9 @@
           <div class="col-7">
             <div v-for="(item, i) in store.item?.planning" :key="i" class="row">
               <div class="col-12">
-                {{ item?.rs4f }}
+                {{ item?.rs4 }}
+                <span v-if="item?.rekomdpjp">( {{ item?.rekomdpjp?.saran }} )</span>
+                <span v-if="item?.kontrol">( {{ item?.kontrol?.keterangan }} )</span>
               </div>
             </div>
           </div>
@@ -705,14 +655,43 @@
         <q-separator />
       </div>
       <div class="q-mt-md">
-        <div class="row">
+        <!-- <div class="row">
           <div class="col-6" />
           <div class="col-6">
             <div class="text-center text-weight-bold">
               Probolinggo, {{ date.formatDate(Date.now(), 'DD MMMM YYYY') }}
             </div>
           </div>
+        </div> -->
+        <div class="row q-pa-xl justify-between items-center">
+          <div class="kiri text-center">
+            <div><b>Pasien / Keluarga</b></div>
+            <div style="margin-top:100px">
+              <b>(................)</b>
+            </div>
+          </div>
+          <div class="kanan text-center">
+            <div><b>Probolinggo, {{ dateFullFormat(pasien?.tgl_kunjungan) }}</b></div>
+            <div><b>Dokter Penanggung Jawab Pelayanan</b></div>
+            <div class="column flex-center">
+              <div style="width: 100px;">
+                <vue-qrcode :value="qrUrl" tag="svg" :options="{
+                  errorCorrectionLevel: 'Q',
+                  color: {
+                    dark: '#000000',
+                    light: '#ffffff',
+                  },
+                  margin: 0
+                }" />
+              </div>
+            </div>
+
+            <div>
+              <b>{{ pasien?.dokter }}</b>
+            </div>
+          </div>
         </div>
+        <!--
         <div class="row q-mb-xl">
           <div class="col-6">
             <div class="text-center text-weight-bold">
@@ -737,6 +716,7 @@
             </div>
           </div>
         </div>
+        -->
       </div>
     </div>
     <div v-if="store.loading">
@@ -749,7 +729,8 @@ import { date } from 'quasar'
 import { useDokumenResumeStore } from 'src/stores/simrs/dokumen/resume/resume'
 import { usePemeriksaanFisik } from 'src/stores/simrs/pelayanan/poli/pemeriksaanfisik'
 import KopSurat from '../comppoli/KopSurat.vue'
-import { getNewLine } from 'src/modules/formatter';
+import { dateFullFormat, getNewLine } from 'src/modules/formatter'
+import { computed } from 'vue'
 const props = defineProps({
   pasien: {
     type: Object,
@@ -764,7 +745,7 @@ const fisik = usePemeriksaanFisik()
 store.setParams('noreg', props.pasien?.noreg)
 store.getData()
 // eslint-disable-next-line no-unused-vars
-function getYT(val) {
+function getYT (val) {
   if (val === 1 || val === '1') {
     return 'Ya'
   }
@@ -776,8 +757,8 @@ function getYT(val) {
   }
 }
 // eslint-disable-next-line no-unused-vars
-function getKesadaran(val) {
-  const temp = fisik.optionsTingkatkesadaran.filter(a => a.value === val)
+function getKesadaran (val) {
+  const temp = fisik.optionsTingkatkesadaran.filter(a => parseInt(a.value) === parseInt(val))
   if (temp?.length) {
     return temp[0].label
   }
@@ -785,8 +766,49 @@ function getKesadaran(val) {
     return '-'
   }
 }
+function filteredObat (item) {
+  const obats = []
+  const retur = store.item?.newapotekrajalretur
+  // console.log('item', item, retur)
+
+
+  const perRa = item?.flatMap(x => x.permintaanracikan) ?? []
+  const perNoRa = item?.flatMap(x => x.permintaanresep) ?? []
+
+  const rinciannya = item?.flatMap(x => x.rincian) ?? []
+  const rincRacik = item?.flatMap(x => x.rincianracik) ?? []
+
+  const retnya = retur?.flatMap(x => x.rinci) ?? []
+  // console.log('rinciaaan', perRa, perNoRa, rinciannya, rincRacik, retnya,)
+
+  const kdRacik = perRa?.map(x => x?.kdobat)
+  const kdNoRacik = perNoRa?.map(x => x?.kdobat)
+  const kdObats = [...kdRacik, ...kdNoRacik]
+
+  kdObats.forEach(ob => {
+    const adaR = rinciannya?.length ? rinciannya?.filter(x => x.kdobat === ob)?.reduce((a, b) => a + b?.jumlah, 0) : 0
+    const adaNR = rincRacik?.length ? rincRacik?.filter(x => x.kdobat === ob)?.reduce((a, b) => a + b?.jumlah, 0) : 0
+    const adaRet = retnya?.length ? retnya?.filter(x => x.kdobat === ob)?.reduce((a, b) => a + b?.jumlah_retur, 0) : 0
+
+    const ObatR = perRa.find(x => x.kdobat === ob)
+    const ObatNR = perNoRa.find(x => x.kdobat === ob)
+    const jumlah = adaR + adaNR - adaRet
+    if (jumlah > 0) obats.push({
+      nama: ObatR?.mobat?.nama_obat ?? ObatNR?.mobat?.nama_obat,
+      jumlah: jumlah
+    })
+    else {
+      console.log('retur all', ObatR?.mobat?.nama_obat ?? ObatNR?.mobat?.nama_obat)
+
+    }
+  })
+  const obatnya = obats?.map(x => x.nama)?.join(', ')
+  // console.log('val', kdObats, obats)
+  return obatnya
+
+}
 // eslint-disable-next-line no-unused-vars
-function tekananDarah(val) {
+function tekananDarah (val) {
   const normal = val >= 100 && val <= 120
   const prahipertensi = val >= 121 && val <= 139
   const hipertensiderajat1 = val >= 140 && val <= 159
@@ -815,7 +837,7 @@ function tekananDarah(val) {
   return obj
 }
 // eslint-disable-next-line no-unused-vars
-function tekananDarahDias(val) {
+function tekananDarahDias (val) {
   const normal = val >= 60 && val <= 79
   const prahipertensi = val >= 80 && val <= 89
   const hipertensiderajat1 = val >= 90 && val <= 99
@@ -844,7 +866,7 @@ function tekananDarahDias(val) {
   return obj
 }
 // eslint-disable-next-line no-unused-vars
-function suhu(val) {
+function suhu (val) {
   const hipotermia = val < 35
   const normal = val >= 35 && val < 37
   const pireksia = val >= 37 && val <= 41.1
@@ -870,7 +892,7 @@ function suhu(val) {
   return obj
 }
 // eslint-disable-next-line no-unused-vars
-function nadi(val) {
+function nadi (val) {
   const bradikardi = val < 60
   const normal = val >= 61 && val <= 100
   const takikardi = val > 100
@@ -896,6 +918,17 @@ const printObj = {
   popTitle: 'Resume Medik'
 
 }
+
+const qrUrl = computed(() => {
+  // console.log('pasien', props?.pasien)
+
+  const noreg = props?.pasien?.noreg// noreg
+  const dok = 'RESUME-MEDIS.png'
+  const asal = 'HEMODDIALISA'
+  const enc = btoa(`${noreg}|${dok}|${asal}`)
+  return `https://rsud.probolinggokota.go.id/dokumen-simrs/legalitas/${enc}`
+  // return `https://xenter.my.id/qr-document?noreg=${noreg}&dokumen=${dok}&asal=${asal}`
+})
 </script>
 <style lang="scss" scoped>
 .tinggi {

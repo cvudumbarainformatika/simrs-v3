@@ -7,7 +7,7 @@
             dense />
           <q-select label="Pejabat Teknis Kegiatan" v-model="store.form.kodepptk" clearable
             class="ellipsis-2-lines allign-center" use-input outlined dense emit-value map-options autocomplete="nama"
-            option-value="nip" standout="bg-yellow-3" hide-bottom-space :disable="store.loading"
+            option-value="nip" standout="bg-yellow-3" hide-bottom-space :disable="store.loading || store.disabled"
             :loading="store.loading"
             :option-label="opt => Object(opt) === opt && 'nip' in opt ? opt.nama + ' - ' + opt.nip : ''"
             input-debounce="0" :options="options" @filter="filterFn" @update:model-value="(val) => pilihPTK(val)">
@@ -31,14 +31,15 @@
             :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" />
           <app-autocomplete label="Kegiatan BLUD" v-model="store.form.kegiatanblud" autocomplete="kegiatan" outlined
             option-label="kegiatan" option-value="kegiatan" :source="store.kegiatans"
-            @selected="(val) => pilihKegiatan(val)" :key="store.reqs.kodebidang" :disable="store.disabled"
-            :loading="store.loading" />
+            @selected="(val) => pilihKegiatan(val)" :key="store.reqs.kodebidang"
+            :disable="store.disabled || store.loading" :loading="store.loading" />
         </div>
 
         <div class="q-gutter-y-md" style="width: 50%">
           <app-autocomplete label="Pihak Ketiga" v-model="store.form.kodepenerima" autocomplete="nama"
             option-label="nama" option-value="kode" outlined :source="ambil.pihaktigas"
-            @selected="(val) => pilihPihaktiga(val)" :disable="store.disabled" :loading="store.loading" />
+            @selected="(val) => pilihPihaktiga(val)" :disable="store.disabled || store.loading"
+            :loading="store.loading" />
 
           <div class="row items-center">
             <div>
@@ -58,7 +59,7 @@
           </div>
         </div>
         <app-input-simrs label="Keterangan Belanja" style="width: 50%" v-model="store.form.keterangan" outlined
-          :autofocus="false" :valid="{ required: false }" :disable="store.disabled" />
+          :autofocus="false" :valid="{ required: false }" :disable="store.loading" />
 
         <template v-if="store.form.serahterimapekerjaan === '3'">
           <div class="row items-center" style="width: 50%;">
@@ -79,7 +80,7 @@
 
       </div>
       <select-serahterima v-model="store.openDialogFarmasi" :key="carisrt.reqs.kodepenerima" />
-      <select-serahterima v-model="store.openDialogSiasik" />
+      <select-serahterimapekerjaan v-model="store.openDialogSiasik" :key="stpekerjaan.reqs.kodepenerima" />
       <div class="q-px-sm">
         <q-card class="full-width bg-grey-4 q-my-sm q-px-sm">
           <div class="row text-primary q-pa-sm q-my-sm q-px-sm">
@@ -90,23 +91,33 @@
         </q-card>
       </div>
     </q-form>
-    <FormRincianNpdls />
+    <FormRincianNpdls v-if="store.form?.bast !== 'Siasik'" />
   </q-card>
 </template>
 <script setup>
 import { formKontrakPekerjaan } from 'src/stores/siasik/transaksi/ls/kontrak/formkontrak';
 import { dataBastFarmasiStore } from 'src/stores/siasik/transaksi/ls/newnpdls/bastfarmasi';
 import { formInputNpdlsStore } from 'src/stores/siasik/transaksi/ls/newnpdls/formnpdls';
-import { defineAsyncComponent, ref } from 'vue';
+import { defineAsyncComponent, ref, watch } from 'vue';
 import FormRincianNpdls from './FormRincian.vue'
+import { dataBastPekerjaanStore } from 'src/stores/siasik/transaksi/ls/newnpdls/bastpekerjaan';
 
 
 const SelectSerahterima = defineAsyncComponent(() => import('./selectbast/SelectBastFarmasi.vue'))
+const SelectSerahterimapekerjaan = defineAsyncComponent(() => import('./selectbast/SelectBastPekerjaan.vue'))
 const store = formInputNpdlsStore()
 const ambil = formKontrakPekerjaan()
 const carisrt = dataBastFarmasiStore()
+const stpekerjaan = dataBastPekerjaanStore()
 const formNpdLS = ref(null)
 const options = ref([])
+
+watch(() => store.form.kodepptk, (newVal) => {
+  // Perbarui options saat kodepptk berubah
+  if (newVal && store.ptks?.length) {
+    options.value = store.ptks;
+  }
+});
 
 function onSubmit() {
   store.fixed = true
@@ -120,6 +131,7 @@ function tglTransaksi(val) {
   store.getRincianBelanja()
   store.getDataBidang()
   carisrt.getDataBast()
+  stpekerjaan.listBastPekerjaan()
 }
 const serahTerima = (val) => {
   // console.log('serahTerima', val)
@@ -132,12 +144,14 @@ const serahTerima = (val) => {
     // carisrt.selectbastFarmasi()
   }
   else if (val === 'Siasik') {
-    store.openDialogSiasik = false
+    store.openDialogSiasik = true
   }
 }
 function pilihPTK(val) {
   const arr = store.ptks
   const obj = arr?.length ? arr.find(x => x.nip === val) : null
+
+  // const arrstp = stpekerjaan.bastpekerjaan?.length ? stpekerjaan.bastpekerjaan?.find(x => x.kodepptk === val) : null
   store.form.pptk = obj?.nama ?? ''
   store.form.kodepptk = obj?.nip ?? ''
   store.form.kodebidang = obj?.kodeBagian ?? ''
@@ -195,6 +209,7 @@ function pilihPihaktiga(val) {
   store.form.penerima = obj?.nama ?? ''
   store.form.kodepenerima = obj?.kode ?? ''
   carisrt.reqs.kodepenerima = obj?.kode ?? ''
+  stpekerjaan.reqs.kodepenerima = obj?.kode ?? ''
   store.form.serahterimapekerjaan = '2'
   carisrt.reqs.kodebast = '1'
   store.form.bast = '-'

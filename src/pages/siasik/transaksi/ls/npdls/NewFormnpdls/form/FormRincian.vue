@@ -32,7 +32,7 @@
           v-model="store.rinci.itembelanja" disable outlined :autofocus="false" :valid="{ required: true }" />
         <app-autocomplete v-else v-model="store.rinci.itembelanja" label="Item Belanja" autocomplete="itembelanja"
           option-label="itembelanja" option-value="itembelanja" outlined :key="store.reqs" :source="store.itembelanja"
-          :loading="store.loading" @selected="(val) => {
+          :loading="store.loading" :disable="store.loading" @selected="(val) => {
             const arr = store.itembelanja
             const cari = arr.find(x => x.itembelanja === val)
             store.rinci.idserahterima_rinci = cari.idpp
@@ -53,12 +53,12 @@
         outlined readonly />
       <app-input-simrs v-model="store.rinci.satuan" class="q-pa-sm q-gutter-y-md" style="width: 15%" label="Satuan Item"
         outlined readonly />
-      <app-input-simrs :model-value="formattanpaRp(store.rinci.harga)" class="q-pa-sm q-gutter-y-md" style="width: 20%" label="Harga Item"
-        outlined readonly />
-      <app-input-simrs :model-value="formattanpaRp(store.rinci.total)" class="q-pa-sm q-gutter-y-md" style="width: 25%" label="Total Pagu"
-        outlined readonly />
-      <app-input-simrs :model-value="formattanpaRp(store.rinci.sisapagu)" class="q-pa-sm q-gutter-y-md" style="width: 25%" label="Sisa Pagu"
-        outlined readonly />
+      <app-input-simrs :model-value="formattanpaRp(store.rinci.harga)" class="q-pa-sm q-gutter-y-md" style="width: 20%"
+        label="Harga Item" outlined readonly />
+      <app-input-simrs :model-value="formattanpaRp(store.rinci.total)" class="q-pa-sm q-gutter-y-md" style="width: 25%"
+        label="Total Pagu" outlined readonly />
+      <app-input-simrs :model-value="formattanpaRp(store.rinci.sisapagu)" class="q-pa-sm q-gutter-y-md"
+        style="width: 25%" label="Sisa Pagu" outlined readonly />
 
       <app-input-simrs v-model="store.rinci.volumels" class="q-pa-sm q-gutter-y-md" style="width: 25%"
         label="Volume Permintaan" outlined :autofocus="false" :valid="{ required: true, number: true }"
@@ -72,8 +72,8 @@
           store.rinci.totalls = parseFloat(store.rinci.volumels) * parseFloat(val)
           store.rinci.nominalpembayaran = parseFloat(store.rinci.volumels) * parseFloat(val)
         }" />
-      <app-input-simrs :model-value="formattanpaRp(store.rinci.nominalpembayaran)"  class="q-pa-sm q-gutter-y-md" style="width: 25%"
-        label="Total Permintaan" outlined readonly />
+      <app-input-simrs :model-value="formattanpaRp(store.rinci.nominalpembayaran)" class="q-pa-sm q-gutter-y-md"
+        style="width: 25%" label="Total Permintaan" outlined readonly />
       <div class="row items-center q-pb-md q-pa-sm q-gutter-y-md">
         <app-btn label="Simpan Rincian" class="bg-black" type="submit" :disable="store.loading"
           :loading="store.loading" />

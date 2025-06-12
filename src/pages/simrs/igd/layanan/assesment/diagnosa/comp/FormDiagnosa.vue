@@ -5,37 +5,21 @@
       <div class="f-10 text-weight-light">
         <em>form Diagnosa sekaligus pensimulasian INACBG </em>
       </div>
-      <q-btn
-        color="primary"
-        class="q-pa-none"
-        flat
-        dense
-      >
+      <q-btn color="primary" class="q-pa-none full-width" flat dense :loading="pengunjung.loadingGantiMemo"
+        :disable="pengunjung.loadingGantiMemo">
         {{ pasien?.memodiagnosa ?? 'MEMO DOKTER' }}
-        <q-menu
-          style="width: 400px;"
-        >
+        <q-menu ref="refMemo" style="width: 400px;" @show="showMemo">
           <div class="q-pa-sm">
-            <q-form @submit="gantiMemo">
-              <q-input
-                v-model="memoDokter"
-                label="Masukkan Memo Dokter untuk diagnosa"
-                outlined
-                standout="bg-yellow-3"
-                dense
-                :rules="[val => !!val || 'Harap diisi']"
-              />
-            </q-form>
+            <!-- <q-form @submit="gantiMemo"> -->
+            <q-input ref="refInputMemo" v-model="memoDokter" label="Masukkan Memo Dokter untuk diagnosa" outlined
+              standout="bg-yellow-3" dense :rules="[val => !!val || 'Harap diisi']" @keyup.enter.self="gantiMemo" />
+            <!-- </q-form> -->
           </div>
         </q-menu>
       </q-btn>
     </div>
     <q-separator style="margin-top:-10px" />
-    <q-form
-      ref="formRef"
-      class="row q-pa-md q-col-gutter-xs"
-      @submit="onSubmit"
-    >
+    <q-form ref="formRef" class="row q-pa-md q-col-gutter-xs" @submit="onSubmit">
       <div class="col-3">
         <div>Kasus Baru ?</div>
       </div>
@@ -56,43 +40,23 @@
         name="kasus"
         color="negative"
       /> -->
-        <q-option-group
-          v-model="store.formdiagnosa.kasus"
-          name="kasus"
-          :options="optionsKasus"
-          inline
-          dense
-          @update:model-value="kasusDiUbah"
-        />
+        <q-option-group v-model="store.formdiagnosa.kasus" name="kasus" :options="optionsKasus" inline dense
+          @update:model-value="kasusDiUbah" />
       </div>
       <div class="col-3">
         Type Diagnosa
       </div>
       <div class="col-9">
-        <q-select
-          v-model="store.formdiagnosa.tipediagnosa"
-          label="Type Diagnosa"
-          outlined
-          dense
-          :options="tipediagnosa"
-          :rules="[val => !!val || 'Harap Diisi terlebih dahulu']"
-        />
+        <q-select v-model="store.formdiagnosa.tipediagnosa" label="Type Diagnosa" outlined dense :options="tipediagnosa"
+          :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" />
       </div>
       <div class="col-3">
         Jenis Khasus
       </div>
       <div class="col-9">
-        <q-select
-          v-model="store.formdiagnosa.jeniskasus"
-          label="Type Diagnosa"
-          outlined
-          dense
-          :options="props.tipekhasusdiagnosa"
-          option-label="rs1"
-          option-value="rs1"
-          emit-value
-          :rules="[val => !!val || 'Harap Diisi terlebih dahulu']"
-        />
+        <q-select v-model="store.formdiagnosa.jeniskasus" label="Type Diagnosa" outlined dense
+          :options="props.tipekhasusdiagnosa" option-label="rs1" option-value="rs1" emit-value
+          :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" />
       </div>
       <div class="col-12">
         <q-separator class="q-my-sm" />
@@ -138,27 +102,14 @@
               </q-item-section>
             </q-item>
           </template>
-        </q-select>
-      </div> -->
+</q-select>
+</div> -->
       <div class="col-12 q-mb-sm">
-        <q-select
-          v-model="store.searchdiagnosa"
-          use-input
-          hide-selected
-          fill-input
-          outlined
-          standout="bg-yellow-3"
-          dense
-          emit-value
-          map-options
-          option-value="kode"
-          :option-label="opt => Object(opt) === opt && 'keterangan' in opt ? opt.kode +' ~ '+ opt.keterangan : ' Cari Diagnosa '"
-          input-debounce="0"
-          :options="options"
-          label="Cari Diagnosa (ICD)"
-          @filter="filterFn"
-          @update:model-value="(val)=>store.setKode(val)"
-        >
+        <q-select v-model="store.searchdiagnosa" use-input hide-selected fill-input outlined standout="bg-yellow-3"
+          dense emit-value map-options option-value="kode"
+          :option-label="opt => Object(opt) === opt && 'keterangan' in opt ? opt.kode + ' ~ ' + opt.keterangan : ' Cari Diagnosa '"
+          input-debounce="0" :options="options" label="Cari Diagnosa (ICD)" @filter="filterFn"
+          @update:model-value="(val) => store.setKode(val)">
           <template #no-option>
             <q-item>
               <q-item-section class="text-grey">
@@ -172,57 +123,30 @@
         <div>Kode (ICD)</div>
       </div>
       <div class="col-9">
-        <q-input
-          v-model="store.formdiagnosa.kddiagnosa"
-          placeholder="Kode (Automatis)"
-          dense
-          outlined
-          standout="bg-yellow-3"
-          :rules="[val => !!val || 'Harus diisi']"
-          hide-bottom-space
-          readonly
-          style="max-width: 150px;"
-        />
+        <q-input v-model="store.formdiagnosa.kddiagnosa" placeholder="Kode (Automatis)" dense outlined
+          standout="bg-yellow-3" :rules="[val => !!val || 'Harus diisi']" hide-bottom-space readonly
+          style="max-width: 150px;" />
       </div>
       <div class="col-3">
         <div>Diagnosa</div>
       </div>
       <div class="col-9">
-        <q-input
-          v-model="store.formdiagnosa.diagnosa"
-          placeholder="Diagnosa (Automatis)"
-          outlined
-          autogrow
-          standout="bg-yellow-3"
-          :rules="[val => !!val || 'Harus diisi']"
-          hide-bottom-space
-          readonly
-        />
+        <q-input v-model="store.formdiagnosa.diagnosa" placeholder="Diagnosa (Automatis)" outlined autogrow
+          standout="bg-yellow-3" :rules="[val => !!val || 'Harus diisi']" hide-bottom-space readonly />
       </div>
       <div class="col-3">
         <div>Keterangan</div>
       </div>
       <div class="col-9">
-        <q-input
-          v-model="store.formdiagnosa.keterangan"
-          autogrow
-          outlined
-          standout="bg-yellow-3"
-          hide-bottom-space
-        />
+        <q-input v-model="store.formdiagnosa.keterangan" autogrow outlined standout="bg-yellow-3" hide-bottom-space />
       </div>
 
       <div class="col-12">
         <q-separator class="q-my-lg" />
       </div>
       <div class="col-12">
-        <q-btn
-          label="Simpan Diagnosa"
-          color="primary"
-          type="submit"
-          :loading="store.loadingFormDiagnosa"
-          :disable="store.loadingFormDiagnosa"
-        />
+        <q-btn label="Simpan Diagnosa" color="primary" type="submit" :loading="store.loadingFormDiagnosa"
+          :disable="store.loadingFormDiagnosa" />
       </div>
     </q-form>
   </div>
@@ -329,7 +253,7 @@ function filterFn (val, update, abort) {
       data.filter((item) => filterKeys.some(
         (key) =>
           item[key].toString().toLowerCase().includes(value.toLowerCase()) &&
-            item[key]
+          item[key]
       )
       )
     const filteredData = multiFilter(arr, filter, needle)
@@ -379,14 +303,23 @@ const tipediagnosa = ref(['Awal', 'Primer', 'Sekunder'])
 //   }
 // }
 
+const refMemo = ref(null)
+const refInputMemo = ref(null)
 function gantiMemo () {
-  // console.log('okkk')
+  // console.log('ganti memo', refMemo.value)
   const form = {
     memo: memoDokter.value,
     noreg: props.pasien?.noreg
   }
-
+  refMemo.value?.hide()
   pengunjung.gantiMemo(form, props.pasien)
+}
+function showMemo () {
+  console.log('show memo')
+  memoDokter.value = props.pasien?.memodiagnosa
+  // refInputMemo.value.focus()
+  refInputMemo.value.select()
+
 }
 
 watch(() => store.formdiagnosa.kasus, () => {

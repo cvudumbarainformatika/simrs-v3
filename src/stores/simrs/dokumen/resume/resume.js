@@ -11,10 +11,10 @@ export const useDokumenResumeStore = defineStore('dokumen_resume', {
     }
   }),
   actions: {
-    setParams(key, val) {
+    setParams (key, val) {
       this.params[key] = val
     },
-    getData() {
+    getData () {
       this.item = {}
       this.loading = true
       const param = { params: this.params }
@@ -22,9 +22,9 @@ export const useDokumenResumeStore = defineStore('dokumen_resume', {
         api.get('v1/simrs/dokumen/rajal/resume', param)
           .then(resp => {
             this.loading = false
-            console.log('resp resume', resp.data)
-            this.item = resp.data?.length ? resp.data[0] : {}
+            this.item = resp.data?.data ?? {}
             this.items = resp.data
+            console.log('resp resume', resp, this.item)
             resolve(resp)
           })
           .catch(() => { this.loading = false })

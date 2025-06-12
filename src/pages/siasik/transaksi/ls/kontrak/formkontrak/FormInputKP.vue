@@ -32,7 +32,7 @@
         <app-autocomplete v-model="store.form.kodeperusahaan" label="Pihak Ketiga" autocomplete="nama"
           option-label="nama" option-value="kode" outlined :source="store.pihaktigas"
           @selected="(val) => pilihPihaktiga(val)" :disable="store.loading" :loading="store.loading" />
-        <app-input-simrs label="Nilai Kontrak" v-model="store.form.nilaikontrak" outlined :autofocus="false"
+        <app-input-simrs :label="NilaiKontrak" v-model="store.form.nilaikontrak" outlined :autofocus="false"
           :valid="{ required: false, number: true }" :disable="store.loading" :loading="store.loading" />
         <div class="float-left">
           <app-btn label="Simpan" :disable="store.loading" :loading="store.loading" type="submit" />
@@ -43,7 +43,7 @@
 </template>
 <script setup>
 import { formKontrakPekerjaan } from 'src/stores/siasik/transaksi/ls/kontrak/formkontrak'
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted, computed } from 'vue'
 
 const store = formKontrakPekerjaan()
 const formKP = ref(null)
@@ -80,6 +80,15 @@ function onSimpan() {
       store.resetForm()
     })
 }
+const formatNilai = computed(() => {
+  return new Intl.NumberFormat('id-ID', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(store.form.nilaikontrak);
+});
+const NilaiKontrak = computed(() => {
+  return `Nilai Kontrak Rp. ${formatNilai.value}`;
+});
 
 function pilihPTK(val) {
   const arr = store.ptks

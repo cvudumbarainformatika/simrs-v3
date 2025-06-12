@@ -6,8 +6,14 @@
       <template #body="props">
         <q-tr :props="props">
           <q-td key="rincianbelanja" :props="props" class="text-left">
-            <div class="text-bold">{{ props.row.nopenerimaan }}</div>
-            <div>{{ props.row.rincianbelanja }}</div>
+            <template v-if="props.row.uraianrek50">
+              <div> {{ props?.row?.uraianrek50 }} </div>
+
+            </template>
+            <template v-else>
+              <div class="text-bold">{{ props.row.nopenerimaan }}</div>
+              <div>{{ props.row.rincianbelanja }}</div>
+            </template>
           </q-td>
           <q-td key="koderek50" :props="props" class="text-left">
             {{ props.row.koderek50 }}

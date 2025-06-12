@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia'
+import { acceptHMRUpdate, defineStore } from 'pinia'
 import { Dialog, date } from 'quasar'
 import { api } from 'src/boot/axios'
 import { dateDbFormat } from 'src/modules/formatter'
@@ -896,3 +896,7 @@ export const useEResepDepoFarmasiStore = defineStore('e_resep_depo_farmasi', {
     }
   }
 })
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useEResepDepoFarmasiStore, import.meta.hot))
+}

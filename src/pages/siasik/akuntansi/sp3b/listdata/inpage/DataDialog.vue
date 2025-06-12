@@ -227,9 +227,9 @@
               <th colspan="2" style="width: 50%" class="text-bold">Pengeluaran Pembiayaan</th>
             </tr>
             <tr class="max-width">
-              <th class="text-bold" style="width: 30%">Kode Rekening</th>
+              <th class="text-bold" style="width: 25%">Kode Rekening</th>
               <th class="text-bold">Jumlah</th>
-              <th class="text-bold" style="width: 30%">Kode Rekening</th>
+              <th class="text-bold" style="width: 25%">Kode Rekening</th>
               <th class="text-bold">Jumlah</th>
             </tr>
           </thead>
@@ -331,7 +331,7 @@
   <div class="row q-px-sm q-py-md full-width justify-between">
     <div class="col flex-start"></div>
     <div class="flex-end justify-center content-center col full-width" v-for="it in tt.ttd" :key="it">
-      <div class="text-center">Probolinggo, {{ store.viewData.tanggal }} </div>
+      <div class="text-center">Probolinggo, {{ dateFullFormat(store.viewData.tanggal) }} </div>
       <div class="text-center text-bold q-pb-xl">Direktur RSUD Dokter Mohamad Saleh</div>
       <div class="text-center text-bold"> {{ it.nama }}
         <div class="garis-bawah" :style="{ width: it.nama?.length + 'ch' }"></div>
@@ -341,7 +341,7 @@
   </div>
 </template>
 <script setup>
-import { formattanpaRp } from 'src/modules/formatter';
+import { dateFullFormat, formattanpaRp } from 'src/modules/formatter';
 import { useBukubesarStore } from 'src/stores/siasik/akuntansi/bukubesar/bukubesar';
 import { useSp3bStore } from 'src/stores/siasik/akuntansi/sp3b/sp3b';
 import { computed, ref, watch } from 'vue';

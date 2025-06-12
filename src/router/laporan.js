@@ -283,6 +283,10 @@ const laporan = {
       path: '/laporan/farmasi/spm',
       component: () => import('pages/simrs/laporan/farmasi/spm/IndexPage.vue')
     },
+    {
+      path: '/laporan/farmasi/pemakaian-ruangan',
+      component: () => import('pages/simrs/laporan/farmasi/pemakaianFloorStok/IndexPage.vue')
+    },
 
     // ini Harus ada
     {

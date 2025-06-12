@@ -12,17 +12,30 @@
 
 </template>
 <script setup>
-// import { formInputNpdlsStore } from 'src/stores/siasik/transaksi/ls/newnpdls/formnpdls';
-// import { formKontrakPekerjaan } from 'src/stores/siasik/transaksi/ls/kontrak/formkontrak';
-// import { onBeforeMount } from 'vue';
+import { useFormSerahterimaStore } from 'src/stores/siasik/transaksi/ls/serahterimapekerjaan/formserahterima'
 import FormHeader from './inpage/FormHeader.vue'
 import ListRincian from './inpage/ListRincian.vue'
-// const store = formInputNpdlsStore()
+import { onUnmounted } from 'vue'
+import { date } from 'quasar'
+const store = useFormSerahterimaStore()
 // const ambil = formKontrakPekerjaan()
 // onBeforeMount(() => {
 //   // store.initReset(props.data)
 //   store.getDataBidang()
 //   ambil.getPihaktiga()
 // })
+// onBeforeMount(() => {
+//   // store.initReset(props.data)
+//   ambil.getPihaktiga()
+// })
+onUnmounted(() => {
+  resetFormData()
+})
+function resetFormData() {
+  store.resetFORM()
+
+  store.formheader.tgltrans = date.formatDate(Date.now(), 'YYYY-MM-DD')
+
+}
 
 </script>

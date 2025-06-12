@@ -18,9 +18,10 @@
             </q-input>
           </div>
           <div class="q-mx-sm">
-            <q-select v-model="store.reqs.tahun" :options="tahuns" outlined dark dense color="white" style="width:100px"
-              @update:model-value="val => {
+            <q-select v-model="store.reqs.tahun" :disable="store.loading" :loading="store.loading" :options="tahuns"
+              outlined dark dense color="white" style="width:100px" @update:model-value="val => {
                 store.reqs.tahun = val
+                store.loading = true
                 store.getlistKontrak()
               }" />
           </div>
@@ -32,7 +33,8 @@
           <q-tooltip>Export Ke Excel</q-tooltip>
         </q-btn>
       </template>
-      <template #no-data="{ message, filter }">
+
+      <template v-if="!store.kontraks" #no-data="{ message, filter }">
         <div class="absolute-top fit row flex-center bg-transparent items-center text-dark">
           <div class="row items-center q-gutter-sm">
             <q-icon size="2em" name="icon-mat-eye" />
@@ -40,6 +42,7 @@
             <div class="text-h4">{{ filter ? '🏷️' : '🏷️' }}</div>
           </div>
         </div>
+
       </template>
       <template #body="props">
         <q-tr :props="props">
@@ -52,6 +55,15 @@
           <q-td key="nilaikontrak" :props="props">{{ formattanpaRp(props.row.nilaikontrak) }}</q-td>
           <q-td>
             <div class="row justify-center">
+              <div class="q-pr-xs">
+                <q-btn v-if="gantiKunci(props?.row)" flat round size="xs" class="bg-red-10 text-white"
+                  icon="icon-mat-lock" @click="kunciData(props?.row)">
+                  <q-tooltip> Buka Kunci </q-tooltip>
+                </q-btn>
+                <q-btn v-else flat round size="xs" class="bg-orange" icon="icon-mat-key" @click="kunciData(props?.row)">
+                  <q-tooltip> Kunci Data </q-tooltip>
+                </q-btn>
+              </div>
               <q-btn flat round class="bg-dark" size="xs" color="warning" icon="icon-fa-file-regular">
                 <q-menu dark style="min-width: 150px">
                   <q-list style="min-width: 150px;">
@@ -79,12 +91,14 @@ import { onMounted, ref, watchEffect } from 'vue'
 import { formattanpaRp } from 'src/modules/formatter'
 import { useRouter } from 'vue-router'
 import { formKontrakPekerjaan } from 'src/stores/siasik/transaksi/ls/kontrak/formkontrak'
+import { useAuthStore } from 'src/stores/auth'
 
 const store = uselistKontrakPekerjaan()
 const formStore = formKontrakPekerjaan()
 const tahuns = ref([])
 const $q = useQuasar()
 const router = useRouter()
+const auth = useAuthStore()
 
 const columns = ref([
   { name: 'nokontrak', label: 'Nomer Transaksi', align: 'left', field: 'nokontrak' },
@@ -94,7 +108,7 @@ const columns = ref([
   { name: 'kegiatanblud', label: 'KegiatanBLUD', align: 'left', field: 'kegiatanblud' },
   { name: 'namapptk', label: 'Pejabat Teknis', align: 'left', field: 'namapptk' },
   { name: 'nilaikontrak', label: 'Nilai (Rp.)', align: 'right', field: 'nilaikontrak' },
-  { label: 'Aksi', name: 'aksi', align: 'center' }
+  { label: 'Aksi', name: 'aksi', align: 'center', headerStyle: 'width: 100px;' }
 ])
 
 onMounted(() => {
@@ -130,6 +144,13 @@ function editKontrak(row) {
 }
 
 function deleteData(nokontrak) {
+  if (auth.user?.pegawai?.kdpegsimrs !== 'sa') {
+    $q.notify({
+      type: 'negative',
+      message: 'Anda tidak Memiliki Izin Membuka Kunci Data ini, Silahkan Hubungi Admin'
+    })
+    return
+  }
   $q.dialog({
     title: 'Peringatan',
     message: 'Apakah Data ini akan dihapus?',
@@ -155,6 +176,72 @@ watchEffect(() => {
     })
   }
 })
+
+function gantiKunci(row) {
+  // console.log('row kunci', row)
+  const nonpdls = row.kunci === "1"
+  let lockdata = true
+  if (nonpdls) {
+    lockdata = true
+  } else {
+    lockdata = false
+  }
+  return lockdata
+}
+
+const selected = ref([])
+function kunciData(row) {
+  if (row.kunci === "1") {
+    // Validasi: hanya user super admin yang bisa buka kunci
+    if (auth.user?.pegawai?.kdpegsimrs !== 'sa') {
+      $q.notify({
+        type: 'negative',
+        message: 'Anda tidak Memiliki Izin Membuka Kunci Data ini, Silahkan Hubungi Admin'
+      })
+      return
+    }
+    $q.dialog({
+      title: 'Peringatan',
+      message: 'Apakah Anda yakin akan Membuka Kunci?',
+      cancel: true,
+      persistent: true
+    }).onOk(() => {
+      const payload = {
+        nokontrak: row.nokontrak,
+        kunci: row.kunci
+      }
+      console.log('payload', payload)
+      store.kunciData(payload).then(() => {
+        row.kunci = row.kunci === '1' ? '' : '1'
+      })
+    }).onCancel(() => {
+      console.log('Cancel')
+      selected.value = []
+    }).onDismiss(() => {
+    })
+  } else {
+    $q.dialog({
+      title: 'Peringatan',
+      message: 'Apakah Anda yakin akan Mengunci Data?',
+      cancel: true,
+      persistent: true
+    }).onOk(() => {
+      const payload = {
+        nokontrak: row.nokontrak,
+        kunci: row.kunci,
+      }
+      console.log('payload', payload)
+      store.kunciData(payload).then(() => {
+        row.kunci = row.kunci === '1' ? '' : '1'
+      })
+    }).onCancel(() => {
+      console.log('Cancel')
+      selected.value = []
+    }).onDismiss(() => {
+    })
+  }
+}
+
 </script>
 
 <style lang="scss">

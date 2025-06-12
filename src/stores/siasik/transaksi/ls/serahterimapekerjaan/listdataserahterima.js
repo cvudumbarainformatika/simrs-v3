@@ -56,6 +56,7 @@ export const listdataSerahterimaStore = defineStore('list_data_serahterima', {
           const arr = this.listdata[i]
           // console.log('rincianqqq', arr)
           const head = {
+            id: arr.id,
             noserahterimapekerjaan: arr.noserahterimapekerjaan,
             nokontrak: arr.nokontrak,
             kodepihakketiga: arr.kodepihakketiga,
