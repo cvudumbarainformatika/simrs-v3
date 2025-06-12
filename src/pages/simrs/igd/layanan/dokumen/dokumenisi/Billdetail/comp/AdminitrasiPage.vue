@@ -29,10 +29,10 @@ defineExpose({
 <template>
   <div>
     <div class="row q-gutter-sm q-mr-lg items-center no-wrap ">
-      <div class="col-10">
+      <div class="col-10 text-bold">
         Administrasi
       </div>
-      <div class="col-2 garis-bawah-dablue text-right">
+      <div class="col-2 garis-bawah-dablue text-right text-bold">
         <!-- {{ formatRp(props?.pasien?.rs35x?.rs7) }} -->
         {{ formatRp(administrasi?.subtotal) }}
       </div>

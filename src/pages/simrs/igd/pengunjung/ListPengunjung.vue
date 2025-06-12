@@ -11,11 +11,11 @@
 
           <q-item-section class="q-col-gutter-xs">
             <q-item-label>
-              <span class="text-weight-bold">{{ item.nama }}</span> | <span class="text-primary text-weight-bold">{{
+              <span class="text-weight-bold">{{ item?.nama }}</span> | <span class="text-primary text-weight-bold">{{
                 item.norm }}</span>
             </q-item-label>
             <q-item-label>
-              <span class="text-weight-bold">{{ item.noreg }} </span> | <span v-if="item?.noka"> Noka : </span> <span
+              <span class="text-weight-bold">{{ item?.noreg }} </span> | <span v-if="item?.noka"> Noka : </span> <span
                 class="text-cyan text-weight-bold">{{ item?.noka ?? '-' }}</span>
             </q-item-label>
             <q-item-label>
@@ -23,8 +23,9 @@
                 class="text-teal text-weight-bold"> {{ item?.nohp ?? '-' }}</span>
             </q-item-label>
             <q-item-label caption>
-              USIA : <span class="text-weight-bold">{{ item.usia }}</span> | Kelamin : <span class="text-weight-bold">{{
-                item.kelamin }}</span>
+              USIA : <span class="text-weight-bold">{{ item?.usia }}</span> | Kelamin : <span
+                class="text-weight-bold">{{
+                  item.kelamin }}</span>
             </q-item-label>
             <q-item-label>
               <span class="text-grey">alamat :</span> {{ item?.alamat }}
@@ -33,13 +34,13 @@
           <q-separator vertical class="q-mx-md" />
           <q-item-section class="q-col-gutter-xs">
             <q-item-label>
-              DPJP : <span class="text-negative text-weight-bold">{{ item.kodedokter ? item.dokter : '-' }}</span>
+              DPJP : <span class="text-negative text-weight-bold">{{ item?.kodedokter ? item?.dokter : '-' }}</span>
             </q-item-label>
             <q-item-label>
-              RUANGAN : <span class="text-teal text-weight-bold"> {{ item.poli }}</span>
+              RUANGAN : <span class="text-teal text-weight-bold"> {{ item?.poli }}</span>
             </q-item-label>
             <q-item-label>
-              Tanggal : <i class="text-weight-bold text-negative">{{ item.tgl_kunjungan ?
+              Tanggal : <i class="text-weight-bold text-negative">{{ item?.tgl_kunjungan ?
                 dateFullFormat(item.tgl_kunjungan) : '-' }}</i> | Jam : <i class="text-weight-bold text-negative">{{
                   item.tgl_kunjungan ? formatJam(item.tgl_kunjungan) : '-' }}</i>
             </q-item-label>
