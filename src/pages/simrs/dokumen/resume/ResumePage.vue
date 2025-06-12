@@ -146,15 +146,15 @@
                     </q-item-label>
                     <q-item-label>
                       <span class="">Riwayat Penyakit </span> : <span class="text-weight-bold">{{ item?.riwayatpenyakit
-                        }}</span>
+                      }}</span>
                     </q-item-label>
                     <q-item-label>
                       <span class="">Riwayat Alergi </span> : <span class="text-weight-bold">{{ item?.riwayatalergi
-                        }}</span>
+                      }}</span>
                     </q-item-label>
                     <q-item-label>
                       <span class="">Reaksi berupa </span> : <span class="text-weight-bold">{{ item?.keteranganalergi
-                        }}</span>
+                      }}</span>
                     </q-item-label>
                     <q-item-label>
                       <span class="">Riwayat Pengobatan</span> : <span class="text-weight-bold">{{
@@ -395,12 +395,12 @@
               <q-card-section class="q-pa-none">
                 <div class="column">
                   <div>{{ item?.perlupenerjemah === 'Iya' ? 'Pasien Perlu Penerjemah' : 'Pasien Tidak Perlu Penerjemah'
-                    }}
+                  }}
                   </div>
                   <div>{{ item?.bahasaisyarat === 'Iya'
                     ? 'Pasien Memakai Bahasa Isyarat'
                     : 'Pasien Tidak Memakai Bahasa Isyarat'
-                    }}</div>
+                  }}</div>
                   <div>{{ item?.caraedukasi === 'Lisan' ? 'Edukasi Memakai Lisan' : 'Edukasi Memakai Tulisan' }}</div>
                   <div>{{ item?.kesediaan === 'Iya' ? 'Pasien Bersedia' : 'Pasien Tidak Bersedia' }}</div>
                   <div> Kebutuhan : <b><em>{{ item?.kebutuhanedukasi }}</em></b> </div>
@@ -646,7 +646,8 @@
             <div v-for="(item, i) in store.item?.planning" :key="i" class="row">
               <div class="col-12">
                 {{ item?.rs4 }}
-                <span v-if="item?.rekomdpjp">( {{ item?.rekomdpjp?.saran }} )</span>
+                <span v-if="item?.rekomdpjp && item?.rs4?.includes('Konsultasi')">( {{ item?.rekomdpjp?.saran }}
+                  )</span>
                 <span v-if="item?.kontrol">( {{ item?.kontrol?.keterangan }} )</span>
               </div>
             </div>
