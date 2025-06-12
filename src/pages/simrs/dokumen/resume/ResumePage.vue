@@ -271,12 +271,6 @@
                         <span>{{ item?.sistole }}</span> /
                         <span>{{ item?.diastole }}</span>
                       </q-item-label>
-                      <!-- <q-item-label class="f-10">
-                        <span>{{ tekananDarah(item?.sistole).res
-                          }}</span> /
-                        <span>{{
-                          tekananDarahDias(item?.diastole).res }}</span>
-                      </q-item-label> -->
                     </q-item-section>
                   </q-item>
                   <!-- STATUS -->
@@ -300,7 +294,18 @@
                       </q-item-label>
                     </q-item-section>
                   </q-item>
-
+                  <template v-if="item?.detailgambars?.length > 0">
+                    <template v-for="deta in item?.detailgambars" :key="deta">
+                      <q-item class="q-pa-none list-move">
+                        <q-item-section class="q-pa-xs">
+                          <q-item-label>
+                            <span>{{ deta?.anatomy + ' : ' }} </span>
+                            <span>{{ deta?.ket }}</span>
+                          </q-item-label>
+                        </q-item-section>
+                      </q-item>
+                    </template>
+                  </template>
                 </template>
                 <!-- KHUSUS PARU POL018-->
                 <q-separator v-if="pasien?.kodepoli === 'POL018'" />
@@ -641,6 +646,8 @@
             <div v-for="(item, i) in store.item?.planning" :key="i" class="row">
               <div class="col-12">
                 {{ item?.rs4 }}
+                <span v-if="item?.rekomdpjp">( {{ item?.rekomdpjp?.saran }} )</span>
+                <span v-if="item?.kontrol">( {{ item?.kontrol?.keterangan }} )</span>
               </div>
             </div>
           </div>
