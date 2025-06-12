@@ -15,20 +15,20 @@
           <ResumePage judul="Resume Medis" :pasien="props?.pasien" />
         </q-tab-panel>
         <q-tab-panel name="Triase" class="full-height q-pa-none">
-          <TriasePage :judul="triase" :pasien="props.pasien" />
+          <TriasePage :judul="triase" :pasien="props?.pasien" />
         </q-tab-panel>
         <q-tab-panel name="Surat Kematian" class="full-height q-pa-none">
-          <SuratKematianPage :judul="suratkematian" :pasien="props.pasien" />
+          <SuratKematianPage :judul="suratkematian" :pasien="props?.pasien" />
         </q-tab-panel>
         <q-tab-panel name="Indikasi Masuk Rawat Inap" class="full-height q-pa-none">
-          <Indikasimasuknicudaninter :judul="indikasinicu" :pasien="props.pasien" :isi="isi" :kelas="kelas"
+          <Indikasimasuknicudaninter :judul="indikasinicu" :pasien="props?.pasien" :isi="isi" :kelas="kelas"
             :loading="storex?.loading" :keterangan="keterangan" />
         </q-tab-panel>
         <q-tab-panel name="Sep" class="full-height q-pa-none">
-          <SepPage :judul="sep" :pasien="props.pasien" />
+          <SepPage :judul="sep" :pasien="props?.pasien" />
         </q-tab-panel>
         <q-tab-panel name="Billing Detail" class="full-height q-pa-none">
-          <BillingDetailPage judul="Billing Detail" :pasien="props.pasien" />
+          <BillingDetailPage judul="Billing Detail" :pasien="props?.pasien" />
         </q-tab-panel>
       </q-tab-panels>
     </div>

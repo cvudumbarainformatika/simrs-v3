@@ -1,10 +1,10 @@
 <template>
   <div>
     <div class="row q-gutter-sm q-mr-lg items-center no-wrap ">
-      <div class="col-10">
+      <div class="col-10 text-bold">
         Kamar Operasi
       </div>
-      <div class="col-2 garis-bawah-dablue text-right">
+      <div class="col-2 garis-bawah-dablue text-right text-bold">
         {{ formatRp(rincianoktrans?.total) }}
       </div>
     </div>
