@@ -77,7 +77,7 @@ const props = defineProps({
 const rinciankamarjenazah = computed(() => {
   const data = props?.pasien?.kamarjenazah
   const hasilglobal = []
-  data.forEach(x => {
+  data?.forEach(x => {
     const hasil = {
       nota: x?.rs2,
       tindakan: x?.pelayananjenazah?.rs2,

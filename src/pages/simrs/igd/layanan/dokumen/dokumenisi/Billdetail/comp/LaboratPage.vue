@@ -5,7 +5,7 @@
         Laborat
       </div>
       <div class="col-2 garis-bawah-dablue text-right text-bold">
-        {{ formatRp(rincianlaborat?.total) }}
+        {{ formatRp(rincianlaborat?.total ?? 0) }}
       </div>
     </div>
     <div class="row">
@@ -77,7 +77,7 @@ const props = defineProps({
 const rincianlaborat = computed(() => {
   const data = props?.pasien?.laboratold
   const hasilglobal = []
-  data.forEach(x => {
+  data?.forEach(x => {
     // console.log('data', x)
     if (x?.paket === '') {
       const hasil = {

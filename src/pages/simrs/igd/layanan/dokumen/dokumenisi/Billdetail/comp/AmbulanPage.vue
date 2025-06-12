@@ -25,7 +25,7 @@ const props = defineProps({
 const rincianambulan = computed(() => {
   const data = props?.pasien?.ambulantrans
   const hasil = {
-    subtotal: data.reduce((sum, item) => sum + Number(item.subtotal), 0)
+    subtotal: data?.reduce((sum, item) => sum + Number(item.subtotal), 0)
   }
   return hasil
 })

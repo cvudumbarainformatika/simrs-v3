@@ -24,7 +24,19 @@ const props = defineProps({
   pasien: {
     type: Object,
     default: null
-  }
+  },
+  loadingaja: {
+    type: Boolean,
+    default: false
+  },
+  ruangranap: {
+    type: Object,
+    default: null
+  },
+  depo: {
+    type: String,
+    default: ''
+  },
 })
 
 const open = ref(false)
@@ -54,6 +66,13 @@ const documents = ref([
   {
     icon: 'icon-fa-file-regular',
     color: 'primary',
+    jenis: 'DetBill',
+    label: 'Detail Billing',
+    value: 'Detail Billing'
+  },
+  {
+    icon: 'icon-fa-file-regular',
+    color: 'primary',
     jenis: 'Trg',
     label: 'Triage IGD',
     value: 'Triage_IGD'
@@ -64,7 +83,7 @@ const documents = ref([
     jenis: 'Sutian',
     label: 'Surat Kematian',
     value: 'Surat_Kematian'
-  }
+  },
 ])
 
 const documentsrajal = ref([
@@ -82,6 +101,7 @@ const documentsrajal = ref([
     label: 'Billing',
     value: 'Billing'
   },
+
 ])
 // eslint-disable-next-line no-unused-vars
 function getLabel(val) {
@@ -93,6 +113,7 @@ const comp = [
   { nama: 'Sep', page: defineAsyncComponent(() => import('../../../../igd/layanan/dokumen/dokumenisi/Sep/SepPage.vue')) },
   { nama: 'Resume', page: defineAsyncComponent(() => import('../../../../igd/layanan/dokumen/dokumenisi/Resume/ResumePage.vue')) },
   { nama: 'Billing', page: defineAsyncComponent(() => import('../../../../igd/layanan/dokumen/dokumenisi/Billing/BillingPage.vue')) },
+  { nama: 'DetailBilling', page: defineAsyncComponent(() => import('../../../../igd/layanan/dokumen/dokumenisi/Billdetail/BillingDetailPage.vue')) },
   { nama: 'Triage_IGD', page: defineAsyncComponent(() => import('../../../../igd/layanan/dokumen/dokumenisi/triage/TriasePage.vue')) },
   { nama: 'Surat_Kematian', page: defineAsyncComponent(() => import('../../../../igd/layanan/dokumen/dokumenisi/suratkematian/SuratKematianPage.vue')) },
 ]
@@ -104,8 +125,9 @@ const comprajal = [
 // eslint-disable-next-line no-unused-vars
 const cekPanel = (kodepoli) => {
   const val = doc.value
-  console.log('val', kodepoli)
+  // console.log('val', kodepoli)
   const ganti = val.replace(/ /g, '')
+
   if (kodepoli === 'POL014') {
     const arr = findWithAttr(comp, 'nama', ganti)
     return arr >= 0 ? comp[arr].page : ''

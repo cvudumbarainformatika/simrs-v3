@@ -78,7 +78,7 @@ const rincianoktrans = computed(() => {
   const data = props?.pasien?.oktrans
   console.log('datax', data)
   const hasilglobal = []
-  data.forEach(x => {
+  data?.forEach(x => {
     const hasil = {
       nota: x?.rs2,
       tindakan: x?.rs3,

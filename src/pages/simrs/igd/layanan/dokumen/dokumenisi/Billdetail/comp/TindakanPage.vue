@@ -77,7 +77,7 @@ const rinciantindakan = computed(() => {
   const data = props?.pasien?.tindakan
   // console.log('data', data)
   const hasilglobal = []
-  data.forEach(x => {
+  data?.forEach(x => {
     const hasil = {
       nama: x?.mastertindakan?.rs2,
       nota: x?.rs2,

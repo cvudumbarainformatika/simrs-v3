@@ -77,7 +77,7 @@ const props = defineProps({
 const rincianbankdarah = computed(() => {
   const data = props?.pasien?.bankdarahtrans
   const hasilglobal = []
-  data.forEach(x => {
+  data?.forEach(x => {
     const hasil = {
       nota: x?.rs3,
       nomorkantong: x?.rs5,

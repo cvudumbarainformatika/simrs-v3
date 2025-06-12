@@ -78,7 +78,7 @@ const rincianobat = computed(() => {
   const data = props?.pasien?.newapotekrajal
   const hasilglobal = []
   const racikanr = []
-  data.forEach(x => {
+  data?.forEach(x => {
     const hasil = {
       nota: x?.noresep,
       nama: x?.rincian,
