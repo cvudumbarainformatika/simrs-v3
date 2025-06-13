@@ -90,6 +90,8 @@ function createDataResposeTime (item) {
       menit: item.rt_menit,
       jenis: adaRacikan?.length > 0 ? 'Racikan' : 'Obat Jadi',
       sistembayar: item.sistembayar?.rs2,
+      ruang: item?.poli?.nama ?? item?.ruanganranap?.nama,
+      dokter: item?.ketdokter?.nama,
     }
   }
 }
