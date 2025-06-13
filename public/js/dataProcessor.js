@@ -98,9 +98,14 @@ function processKesesuaian (data) {
 
   const results = []
   data.permintaanresep.forEach(item => {
-    const keluar = data?.rincian?.filter(k => k.kdobat === item.kdobat)
-    const depo = data.depo
-    results.push(createDataKesesuaian(item, keluar, data, depo))
+    const obat = item?.mobat
+    if (obat?.jenis_perbekalan == 'Alkes Habis Pakai' || obat?.obat_kebijakan == '1') {
+      // console.log('obat', obat)
+    } else {
+      const keluar = data?.rincian?.filter(k => k.kdobat === item.kdobat)
+      const depo = data.depo
+      results.push(createDataKesesuaian(item, keluar, data, depo))
+    }
   })
   return results
 }
@@ -108,38 +113,49 @@ function processKesesuaian (data) {
 function processKesesuaianRacikan (data) {
   const results = []
   data.permintaanracikan.forEach(item => {
-    const keluar = data?.rincianracik?.filter(k => k.kdobat === item.kdobat)
-    const depo = data.depo
-
-    // Cek apakah item sudah ada di results
-    const existingIndex = results.findIndex(
-      r => r.kdobat === item.kdobat && r.noresep === data.noresep
-    )
-
-    if (existingIndex >= 0) {
-      // Update existing item
-      const jumKel = keluar?.reduce((acc, curr) => acc + curr.jumlah, 0) || 0
-      results[existingIndex].jumlah_resep += item.jumlah
-      results[existingIndex].jumlah_dilayani += jumKel
-      results[existingIndex].adaRacikan = 'ada racikan'
+    const obat = item?.mobat
+    if (obat?.jenis_perbekalan == 'Alkes Habis Pakai' || obat?.obat_kebijakan == '1') {
+      // console.log('obat', obat)
     } else {
-      // Add new item
-      results.push({
-        ...createDataKesesuaian(item, keluar, data, depo),
-        adaRacikan: 'ada racikan'
-      })
+      const keluar = data?.rincianracik?.filter(k => k.kdobat === item.kdobat)
+      const depo = data.depo
+
+      // Cek apakah item sudah ada di results
+      const existingIndex = results.findIndex(
+        r => r.kdobat === item.kdobat && r.noresep === data.noresep
+      )
+
+      if (existingIndex >= 0) {
+        // Update existing item
+        const jumKel = keluar?.reduce((acc, curr) => acc + curr.jumlah, 0) || 0
+        results[existingIndex].jumlah_resep += item.jumlah
+        results[existingIndex].jumlah_dilayani += jumKel
+        results[existingIndex].adaRacikan = 'ada racikan'
+      } else {
+        // Add new item
+        results.push({
+          ...createDataKesesuaian(item, keluar, data, depo),
+          adaRacikan: 'ada racikan'
+        })
+      }
+
     }
   })
   return results
 }
 function createDataKesesuaian (item, keluar, data, depo) {
   // console.log('item', item)
+  const obat = item?.mobat
+
+
   return {
     tgl: data?.tgl_permintaan,
     nomor: item.noresep,
     fornas: item?.mobat.status_fornas,
     generik: item?.mobat.status_generik,
     forkit: item?.mobat.status_forkid,
+    kebijakan: item?.mobat.obat_kebijakan,
+    perbekalan: item?.mobat.jenis_perbekalan,
     nama_obat: item?.mobat.nama_obat,
     ruang: data?.poli?.nama ?? data?.ruanganranap?.nama,
     poli: data?.poli ?? null,
