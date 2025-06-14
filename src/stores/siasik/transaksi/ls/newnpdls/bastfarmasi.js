@@ -290,12 +290,12 @@ export const dataBastFarmasiStore = defineStore('data_Bast_Farmasi_Store', {
     selectbastFarmasi() {
       this.loading = true
       const params = { params: this.reqs }
-      console.log('parameter', params)
+      // console.log('parameter', params)
       return new Promise((resolve) => {
         api.get('/v1/transaksi/belanja_ls/bastfarmasi', params)
           .then((resp) => {
             if (resp.status === 200) {
-              console.log('BAST', resp.data)
+              // console.log('BAST', resp.data)
               this.bastfarmasis = []
               this.konsinyasis = []
               this.itembelanja = []
@@ -489,7 +489,7 @@ export const dataBastFarmasiStore = defineStore('data_Bast_Farmasi_Store', {
           arrkons.push(...arr108)
         }
         this.itembelanja = arrkons
-        console.log('DATA KONSINYASI', this.itembelanja)
+        // console.log('DATA KONSINYASI', this.itembelanja)
       }
     }
   }

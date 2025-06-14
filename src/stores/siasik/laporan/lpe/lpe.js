@@ -27,15 +27,15 @@ export const useLPEStore = defineStore('laporan_PerubahanEkuitas', {
     hasilkoreksi: []
   }),
   actions: {
-    setParameter (key, val) {
+    setParameter(key, val) {
       this.reqs[key] = val
     },
-    getDataLap () {
+    getDataLap() {
       this.loading = true
       const params = { params: this.reqs }
       return new Promise((resolve) => {
         api.get('v1/laporan/lpe/getlpe', params).then((resp) => {
-          console.log('data LPE', resp.data)
+          // console.log('data LPE', resp.data)
           if (resp.status === 200) {
             this.dataekuitas = resp.data.ekuitas
             this.datapendapatans = resp.data.pendapatan
@@ -46,8 +46,8 @@ export const useLPEStore = defineStore('laporan_PerubahanEkuitas', {
               return {
                 uraian: 'Ekuitas',
                 nilai: (x?.saldoawal.map((x) => parseFloat(x.saldo)).reduce((a, b) => a + b, 0) +
-                x?.jurnalotom.map((x) => parseFloat(x.totaljurnal)).reduce((a, b) => a + b, 0) +
-                x?.penyesuaianx.map((x) => parseFloat(x.totalpenyesuaian)).reduce((a, b) => a + b, 0))
+                  x?.jurnalotom.map((x) => parseFloat(x.totaljurnal)).reduce((a, b) => a + b, 0) +
+                  x?.penyesuaianx.map((x) => parseFloat(x.totalpenyesuaian)).reduce((a, b) => a + b, 0))
               }
             })
             const nilaiekuitas = {
@@ -56,7 +56,7 @@ export const useLPEStore = defineStore('laporan_PerubahanEkuitas', {
               nilai: datekuitas.map((x) => parseFloat(x.nilai)).reduce((a, b) => a + b, 0).toFixed(2)
             }
             this.ekuitasawal = nilaiekuitas
-            console.log('ekuitasawal', this.ekuitasawal)
+            // console.log('ekuitasawal', this.ekuitasawal)
 
             const surplsdef = this.datapendapatans.map((x) => {
               return {
@@ -70,7 +70,7 @@ export const useLPEStore = defineStore('laporan_PerubahanEkuitas', {
               nilai: surplsdef.map((x) => parseFloat(x.nilai)).reduce((a, b) => a + b, 0).toFixed(2)
             }
             this.surplusdefisit = nilaisurplusdef
-            console.log('surplusdefisit', this.surplusdefisit)
+            // console.log('surplusdefisit', this.surplusdefisit)
 
             const objkoreksi = []
             for (let i = 0; i < this.datakoreksi?.length; i++) {
@@ -87,7 +87,7 @@ export const useLPEStore = defineStore('laporan_PerubahanEkuitas', {
               objkoreksi.push(koreksi)
             }
             this.hasilkoreksi = objkoreksi
-            console.log('hasilkoreksi', objkoreksi)
+            // console.log('hasilkoreksi', objkoreksi)
 
             // console.log('mappeny', mappeny)
             this.loading = false

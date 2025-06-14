@@ -307,7 +307,7 @@ export const formNotaPermintaanDanaLS = defineStore('form_NPD_LS', {
       // console.log('ddd', this.kegiatans)
     },
     async simpanNpdls(add) {
-      console.log('fooorm', this.form)
+      // console.log('fooorm', this.form)
       this.loading = true
       return new Promise((resolve, reject) => {
         api.post('/v1/transaksi/belanja_ls/simpannpd', this.form)

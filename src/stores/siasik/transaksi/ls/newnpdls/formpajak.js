@@ -57,7 +57,7 @@ export const formInputPajakStore = defineStore('form_input_pajak', {
           .then((resp) => {
             this.loading = false
             notifSuccess(resp)
-            console.log('form', this.form)
+            // console.log('form', this.form)
             resolve(resp.data)
           })
           .catch(() => {
@@ -85,7 +85,7 @@ export const formInputPajakStore = defineStore('form_input_pajak', {
         api.post('v1/transaksi/belanja_ls/deletepajak', row).then((resp) => {
           if (resp.status === 200) {
             this.loading = false
-            console.log('delete', resp)
+            // console.log('delete', resp)
             notifSuccess(resp)
             this.refreshTable()
             resolve(resp)

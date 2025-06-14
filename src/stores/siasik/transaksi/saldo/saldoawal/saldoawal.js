@@ -28,27 +28,27 @@ export const useSaldoAwalStore = defineStore('transaksi_saldo_awal', {
   }),
 
   actions: {
-    setParams (key, val) {
+    setParams(key, val) {
       this.params[key] = val
     },
-    setForm (key, val) {
+    setForm(key, val) {
       this.form[key] = val
     },
-    emptyForm () {
+    emptyForm() {
       this.form = {}
     },
-    getInitialData () {
+    getInitialData() {
       this.getSaldoBlud()
     },
-    refreshTable () {
+    refreshTable() {
       this.params.page = 1
       this.getInitialData()
     },
-    getRekeningBlud () {
+    getRekeningBlud() {
       this.loading = true
       return new Promise((resolve) => {
         api.get('v1/transaksi/saldoawal_ppk/lihatrekening').then((resp) => {
-          console.log('rekening', resp)
+          // console.log('rekening', resp)
           if (resp.status === 200) {
             this.rekeningbluds = resp.data
             this.loading = false
@@ -57,7 +57,7 @@ export const useSaldoAwalStore = defineStore('transaksi_saldo_awal', {
         })
       })
     },
-    simpanSaldo () {
+    simpanSaldo() {
       // cari nama bank
       const bank = this.rekeningbluds.find(
         (x) => x.noRek === this.form.rekening
@@ -73,7 +73,7 @@ export const useSaldoAwalStore = defineStore('transaksi_saldo_awal', {
         api
           .post('v1/transaksi/saldoawal_ppk/transsaldo', data)
           .then((resp) => {
-            console.log('isian', resp)
+            // console.log('isian', resp)
             this.loading = false
             notifSuccess(resp)
             // notifSuccessVue(resp)
@@ -87,7 +87,7 @@ export const useSaldoAwalStore = defineStore('transaksi_saldo_awal', {
           })
       })
     },
-    getSaldoBlud () {
+    getSaldoBlud() {
       this.loading = true
       const params = { params: this.params }
       // const resp = await api.get('v1/transaksi/saldoawal_ppk/tabelrek', params)
@@ -109,7 +109,7 @@ export const useSaldoAwalStore = defineStore('transaksi_saldo_awal', {
 
       return new Promise((resolve, reject) => {
         api.get('v1/transaksi/saldoawal_ppk/tabelrek', params).then((resp) => {
-          console.log('saldo', resp)
+          // console.log('saldo', resp)
           if (resp.status === 200) {
             this.loading = false
             this.saldobluds = resp.data.data
@@ -121,17 +121,17 @@ export const useSaldoAwalStore = defineStore('transaksi_saldo_awal', {
         })
       })
     },
-    onRequest (props) {
-      console.log('props', props)
+    onRequest(props) {
+      // console.log('props', props)
       this.params.page = props?.pagination?.page ?? 1
       this.params.rowsPerPage = props?.pagination?.rowsPerPage ?? 5
       this.getInitialData()
     },
-    setTahun (val) {
+    setTahun(val) {
       this.params.tahun = val
     },
 
-    goToPage (val) {
+    goToPage(val) {
       this.params.page = val
       this.getInitialData()
     }

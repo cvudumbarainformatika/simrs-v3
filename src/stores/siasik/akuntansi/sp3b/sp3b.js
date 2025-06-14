@@ -78,14 +78,14 @@ export const useSp3bStore = defineStore('laporan_sp3b', {
       this.form.rincians = this.saveall
 
       this.saveData()
-      console.log('HASIIIL', this.form)
+      // console.log('HASIIIL', this.form)
     },
     getList() {
       this.loading = true
       const params = { params: this.reqs }
       return new Promise((resolve) => {
         api.get('v1/akuntansi/sp3b/listdata', params).then((resp) => {
-          console.log('LIST SP3B', resp.data)
+          // console.log('LIST SP3B', resp.data)
           if (resp.status === 200) {
             this.listdataSp3b = []
 
@@ -98,10 +98,10 @@ export const useSp3bStore = defineStore('laporan_sp3b', {
     },
     saveData() {
       this.loading = true
-      console.log('params', this.form)
+      // console.log('params', this.form)
       return new Promise((resolve) => {
         api.post('v1/akuntansi/sp3b/savedata', this.form).then((resp) => {
-          console.log('Create SP3B', resp)
+          // console.log('Create SP3B', resp)
           if (resp.status === 200) {
             notifSuccess(resp)
             this.loading = false
@@ -118,7 +118,7 @@ export const useSp3bStore = defineStore('laporan_sp3b', {
       return new Promise(resolve => {
         api.post('v1/akuntansi/sp3b/delete', row)
           .then(resp => {
-            console.log('resp delete', resp)
+            // console.log('resp delete', resp)
             this.loading = false
             notifSuccess(resp)
             resolve(resp)
@@ -133,7 +133,7 @@ export const useSp3bStore = defineStore('laporan_sp3b', {
       const params = { params: this.reqs }
       return new Promise((resolve) => {
         api.get('v1/akuntansi/sp3b/getdata', params).then((resp) => {
-          console.log('data SP3B', resp.data)
+          // console.log('data SP3B', resp.data)
           if (resp.status === 200) {
             this.pendapatans = []
             this.belanjas = []
@@ -192,7 +192,7 @@ export const useSp3bStore = defineStore('laporan_sp3b', {
       const pendapatan = []
       for (let i = 0; i < newsetpend?.length; i++) {
         const el = newsetpend[i];
-        console.log('el', el)
+        // console.log('el', el)
         // Ambil kode dan uraian dari pagupendapatan
         const paguData = pagupendapatan.find((x) => x.kode === el)
 
@@ -214,7 +214,7 @@ export const useSp3bStore = defineStore('laporan_sp3b', {
 
       this.pendapatans.push(...pendapatan)
       // const peny = penyesuaian.map((x) => parseFloat(x.totalpenyesuaian))
-      console.log('this.pendapatans', this.pendapatans)
+      // console.log('this.pendapatans', this.pendapatans)
 
       // DATA BELANJA
       const blj = this.allitems?.belanja
@@ -237,7 +237,7 @@ export const useSp3bStore = defineStore('laporan_sp3b', {
         belanja.push(obj)
       }
       this.belanjas = belanja
-      console.log('this.belanjas', this.belanjas)
+      // console.log('this.belanjas', this.belanjas)
       //DATA PEMBIAYAAN
       const pmbiaya = this.allitems?.pembiayaan || []
       const pembiayaan = []
@@ -258,8 +258,8 @@ export const useSp3bStore = defineStore('laporan_sp3b', {
       if (pembiayaan?.length > 0) {
         this.saveall = this.saveall.concat(pembiayaan)
       }
-      console.log('this.pembiayaans', this.pembiayaans)
-      console.log('this.saveall', this.saveall)
+      // console.log('this.pembiayaans', this.pembiayaans)
+      // console.log('this.saveall', this.saveall)
 
 
     }

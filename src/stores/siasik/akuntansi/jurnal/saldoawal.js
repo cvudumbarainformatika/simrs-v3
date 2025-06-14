@@ -49,7 +49,7 @@ export const saldoawalJurnal = defineStore('saldoawal_Jurnal', {
       this.form.debetkredit = ''
       this.form.debit = 0
       this.form.kredit = 0
-      console.log('kosong', this.form)
+      // console.log('kosong', this.form)
     },
     getDataTable() {
       this.getSaldoAwal()
@@ -65,7 +65,7 @@ export const saldoawalJurnal = defineStore('saldoawal_Jurnal', {
       const params = { params: this.reqs }
       return new Promise((resolve) => {
         api.get('v1/akuntansi/saldoawal/index', params).then((resp) => {
-          console.log('saldoAwal', resp.data)
+          // console.log('saldoAwal', resp.data)
           if (resp.status === 200) {
             this.datasaldo = resp.data
             // console.log('KodeRekening', this.datasaldo)
@@ -82,14 +82,14 @@ export const saldoawalJurnal = defineStore('saldoawal_Jurnal', {
         kredit: (this.datasaldo?.length ? this.datasaldo.map((x) => parseFloat(x.kredit)) : []).reduce((a, b) => a + b, 0)
       }
       this.saldo = arr
-      console.log('nilai Saldo', this.saldo)
+      // console.log('nilai Saldo', this.saldo)
     },
     getRekening() {
       this.loading = true
       const params = { params: this.reqs }
       return new Promise((resolve) => {
         api.get('v1/akuntansi/saldoawal/akunsaldo', params).then((resp) => {
-          console.log('KodeRekening', resp)
+          // console.log('KodeRekening', resp)
           if (resp.status === 200) {
             this.akuns = resp.data
             // console.log('KodeRekening', this.akuns)
@@ -103,7 +103,7 @@ export const saldoawalJurnal = defineStore('saldoawal_Jurnal', {
       this.loading = true
       return new Promise((resolve) => {
         api.post('v1/akuntansi/saldoawal/save', this.form).then((resp) => {
-          console.log('SIMPAN', resp)
+          // console.log('SIMPAN', resp)
           if (resp.status === 200) {
             this.loading = false
             notifSuccess(resp)
@@ -120,7 +120,7 @@ export const saldoawalJurnal = defineStore('saldoawal_Jurnal', {
         api.post('v1/akuntansi/saldoawal/delete', payload).then((resp) => {
           if (resp.status === 200) {
             this.deleteloading = false
-            console.log('delete', resp)
+            // console.log('delete', resp)
             notifSuccess(resp)
             this.refreshTable()
             resolve(resp)

@@ -53,7 +53,7 @@ export const useLaporanBkuPtkStore = defineStore('laporan_bkuptk', {
       await api
         .get('v1/laporan/laporan_bku/bkuptk', params)
         .then((resp) => {
-          console.log('dataBKUptk', resp)
+          // console.log('dataBKUptk', resp)
           if (resp.status === 200) {
             this.hasilArray = []
             this.items = []
@@ -71,7 +71,7 @@ export const useLaporanBkuPtkStore = defineStore('laporan_bkuptk', {
       const params = { params: this.params }
       return new Promise((resolve) => {
         api.get('v1/laporan/laporan_bku/ptk', params).then((resp) => {
-          console.log('Data ptk', resp)
+          // console.log('Data ptk', resp)
           if (resp.status === 200) {
             this.ptks = resp.data
             resolve(resp)
@@ -403,7 +403,7 @@ export const useLaporanBkuPtkStore = defineStore('laporan_bkuptk', {
       // Cari Total Zigzag
       this.hasilArray = this.cariHasilAkhirArray(hslSmntara)
 
-      console.log('hasil gabung', this.hasilArray)
+      // console.log('hasil gabung', this.hasilArray)
     },
 
     cariHasilAkhirArray(arr) {

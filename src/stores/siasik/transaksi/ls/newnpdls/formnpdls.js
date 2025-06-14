@@ -10,6 +10,7 @@ export const formInputNpdlsStore = defineStore('forminput_NPD_LS', {
     loading: false,
     loadingHapus: false,
     disabled: false,
+    disabledx: false,
     hidden: false,
     fixed: false,
     params: {
@@ -135,6 +136,8 @@ export const formInputNpdlsStore = defineStore('forminput_NPD_LS', {
     // GET DATA RINCIAN BAST
     transall: [],
 
+    transallserahterima: [],
+
     //UNTUK VALIDASI JIKA JUMLAH MELEBIHI PAGU
     jumlahitem: 0,
     sisapagurinci: 0,
@@ -212,6 +215,7 @@ export const formInputNpdlsStore = defineStore('forminput_NPD_LS', {
       this.form.rincians = []
 
       this.transall = []
+      this.transallserahterima = []
       this.loading = true
       this.disabled = false
       this.loading = false
@@ -269,7 +273,7 @@ export const formInputNpdlsStore = defineStore('forminput_NPD_LS', {
         api.get('/v1/transaksi/belanja_ls/anggaran', params)
           .then((resp) => {
             if (resp.status === 200) {
-              console.log('anggaran', resp.data)
+              // console.log('anggaran', resp.data)
               this.loading = false
               this.anggarans = resp.data
               this.filterRekening50(resp.data)
@@ -334,7 +338,7 @@ export const formInputNpdlsStore = defineStore('forminput_NPD_LS', {
       // console.log('item belanja', data)
     },
     async simpanNpdls(add) {
-      console.log('fooorm', this.form)
+      // console.log('fooorm', this.form)
       this.loading = true
       return new Promise((resolve, reject) => {
         api.post('/v1/transaksi/belanja_ls/simpannpd', this.form)

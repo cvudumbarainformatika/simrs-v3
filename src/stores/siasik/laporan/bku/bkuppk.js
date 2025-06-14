@@ -65,7 +65,7 @@ export const useLaporanBkuPpkStore = defineStore('laporan_bkuppk', {
       await api
         .get('v1/laporan/laporan_bku/bkuppk', params)
         .then((resp) => {
-          console.log('dataBKUPPK', resp)
+          // console.log('dataBKUPPK', resp)
           if (resp.status === 200) {
             this.hasilArray = []
             this.items = []
@@ -146,7 +146,7 @@ export const useLaporanBkuPpkStore = defineStore('laporan_bkuppk', {
         if (this.items.saldoAkhirBulanSebelumnya !== undefined) {
           // Gunakan nilai saldo akhir dari backend
           saldoAwal = parseFloat(this.items.saldoAkhirBulanSebelumnya)
-          console.log('Menggunakan saldo akhir bulan sebelumnya dari backend:', saldoAwal)
+          // console.log('Menggunakan saldo akhir bulan sebelumnya dari backend:', saldoAwal)
         } else {
           // Jika backend tidak menyediakan saldo akhir bulan sebelumnya,
           // hitung dari data transaksi bulan sebelumnya
@@ -165,9 +165,9 @@ export const useLaporanBkuPpkStore = defineStore('laporan_bkuppk', {
           const totalkreditsebelum = nilaisaldoKredit?.length ? nilaisaldoKredit.map(x => parseFloat(x.nilai || 0)).reduce((x, y) => x + y, 0) : 0
           saldoAwal = totaldebitsebelum - totalkreditsebelum
 
-          console.log('totaldebitsebelum (dihitung):', totaldebitsebelum)
-          console.log('totalkreditsebelum (dihitung):', totalkreditsebelum)
-          console.log('saldoawal (dihitung):', saldoAwal)
+          // console.log('totaldebitsebelum (dihitung):', totaldebitsebelum)
+          // console.log('totalkreditsebelum (dihitung):', totalkreditsebelum)
+          // console.log('saldoawal (dihitung):', saldoAwal)
         }
 
         // Buat objek saldo awal untuk bulan ini
@@ -350,7 +350,7 @@ export const useLaporanBkuPpkStore = defineStore('laporan_bkuppk', {
         this.saldoakhir = this.hasilArray[this.hasilArray?.length - 1].total
       }
 
-      console.log('hasil gabung', this.hasilArray)
+      // console.log('hasil gabung', this.hasilArray)
       this.debugSaldoPerbulan()
     },
 
@@ -426,21 +426,21 @@ export const useLaporanBkuPpkStore = defineStore('laporan_bkuppk', {
         ? parseFloat(this.items.saldoAkhirBulanSebelumnya)
         : 'Tidak tersedia'
 
-      console.log(`===== DEBUG SALDO BULAN ${bulan}/${tahun} =====`)
-      console.log('Saldo Awal Aktual:', saldoAwal)
-      console.log('Saldo dari Backend:', saldoBackend)
-      console.log('Saldo Seharusnya (dihitung):', saldoSeharusnya)
+      // console.log(`===== DEBUG SALDO BULAN ${bulan}/${tahun} =====`)
+      // console.log('Saldo Awal Aktual:', saldoAwal)
+      // console.log('Saldo dari Backend:', saldoBackend)
+      // console.log('Saldo Seharusnya (dihitung):', saldoSeharusnya)
 
       if (saldoBackend !== 'Tidak tersedia') {
         console.log('Selisih dengan Backend:', saldoAwal - saldoBackend)
       }
 
-      console.log('Selisih dengan Perhitungan:', saldoAwal - saldoSeharusnya)
-      console.log('Saldo Akhir:', saldoAkhir)
-      console.log('Total Debit Sebelum:', totalDebitSebelum)
-      console.log('Total Kredit Sebelum:', totalKreditSebelum)
-      console.log('Data Sebelum Debit:', this.sebelumsaldo, this.sebelumsetor, this.sebelumnihil, this.sebelumsilpa)
-      console.log('Data Sebelum Kredit:', this.sebelumspm, this.sebelumspmgu, this.sebelumnpkls, this.sebelumkaskecil)
+      // console.log('Selisih dengan Perhitungan:', saldoAwal - saldoSeharusnya)
+      // console.log('Saldo Akhir:', saldoAkhir)
+      // console.log('Total Debit Sebelum:', totalDebitSebelum)
+      // console.log('Total Kredit Sebelum:', totalKreditSebelum)
+      // console.log('Data Sebelum Debit:', this.sebelumsaldo, this.sebelumsetor, this.sebelumnihil, this.sebelumsilpa)
+      // console.log('Data Sebelum Kredit:', this.sebelumspm, this.sebelumspmgu, this.sebelumnpkls, this.sebelumkaskecil)
 
       return {
         bulan,

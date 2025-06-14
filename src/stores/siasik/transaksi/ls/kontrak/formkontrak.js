@@ -113,7 +113,7 @@ export const formKontrakPekerjaan = defineStore('form_KontrakPekerjaan', {
       const params = { params: this.params }
       return new Promise((resolve) => {
         api.get('v1/laporan/lra/bidang', params).then((resp) => {
-          console.log('bidang RSUD', resp)
+          // console.log('bidang RSUD', resp)
           if (resp.status === 200) {
             this.bidangdanptk = resp.data
             // this.kegiatans = resp.data
@@ -171,12 +171,12 @@ export const formKontrakPekerjaan = defineStore('form_KontrakPekerjaan', {
       })
     },
     simpanKontrak() {
-      console.log('fooorm', this.form)
+      // console.log('fooorm', this.form)
       this.loading = true
       return new Promise((resolve, reject) => {
         api.post('/v1/transaksi/kontrak/simpankontrak', this.form)
           .then((resp) => {
-            console.log('isian', resp.data)
+            // console.log('isian', resp.data)
             this.form.nokontrak = resp.data?.result?.nokontrak
             this.loading = false
             notifSuccess(resp)

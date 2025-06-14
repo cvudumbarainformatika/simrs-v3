@@ -44,7 +44,7 @@ export const useFormSerahterimaStore = defineStore('formSerahterima', {
       kegiatan: '',
       kodekegiatanblud: '',
       kegiatanblud: '',
-      rincian: [],
+      rinci: [],
     },
 
 
@@ -106,24 +106,37 @@ export const useFormSerahterimaStore = defineStore('formSerahterima', {
       }
     },
 
-    resetFORM() {
-      const forms = Object.keys(this.formheader)
-      for (let i = 0; i < forms?.length; i++) {
-        const el = forms[i]
-        this.setForm(el, null)
-        this.disabled = false
-        this.disableplus = false
-      }
-      const keys = Object.keys(this.rinci)
-      for (let i = 0; i < keys?.length; i++) {
-        const el = keys[i]
-        this.setForm(el, null)
-      }
-
-    },
     setForm(key, value) {
-      this.formheader[key] = value
-      this.rinci[key] = value
+      // Pastikan rincian tetap array jika key adalah 'rincian'
+      if (key === 'rinci') {
+        this.formheader[key] = value ?? [];
+      } else {
+        this.formheader[key] = value;
+        if (this.rinci.hasOwnProperty(key)) {
+          this.rinci[key] = value;
+        }
+      }
+    },
+
+    resetFORM() {
+      const forms = Object.keys(this.formheader);
+      for (let i = 0; i < forms.length; i++) {
+        const el = forms[i];
+        // Pastikan rincian direset ke array kosong, bukan null
+        if (el === 'rinci') {
+          this.formheader[el] = [];
+        } else {
+          this.setForm(el, null);
+        }
+      }
+      const keys = Object.keys(this.rinci);
+      for (let i = 0; i < keys.length; i++) {
+        const el = keys[i];
+        this.rinci[el] = null;
+      }
+      this.transall = []
+      this.disabled = false;
+      this.disableplus = false;
     },
 
     onRequest(props) {
@@ -138,12 +151,12 @@ export const useFormSerahterimaStore = defineStore('formSerahterima', {
     },
     setFormInput(key, val) {
 
-      console.log('setFormInput', key, val)
+      // console.log('setFormInput', key, val)
       this.rinci[key] = val
       this.formheader[key] = val
     },
     resetformrinci() {
-      this.formheader.rincian = []
+      this.formheader.rinci = []
     },
 
     refreshTable() {
@@ -166,7 +179,7 @@ export const useFormSerahterimaStore = defineStore('formSerahterima', {
       this.formheader.kegiatan = ''
       this.formheader.kodekegiatanblud = ''
       this.formheader.kegiatanblud = ''
-      this.formheader.rincian = []
+      this.formheader.rinci = []
 
       this.transall = []
       this.loading = true
@@ -176,12 +189,12 @@ export const useFormSerahterimaStore = defineStore('formSerahterima', {
 
     // Simpan data ke backend
     async saveData(add) {
-      console.log('fooorm', this.formheader)
+      // console.log('fooorm', this.formheader)
       this.loading = true
       return new Promise((resolve, reject) => {
         api.post('/v1/transaksi/serahterima/savedata', this.formheader)
           .then((resp) => {
-            console.log('Resp Api', resp?.data)
+            // console.log('Resp Api', resp?.data)
 
             this.formheader.noserahterimapekerjaan = resp.data?.result?.noserahterimapekerjaan
             this.rinci.noserahterimapekerjaan = resp.data?.result?.noserahterimapekerjaan
@@ -198,7 +211,7 @@ export const useFormSerahterimaStore = defineStore('formSerahterima', {
           .catch((err) => {
             this.loading = false
             reject(err)
-            this.formheader.rincian = []
+            this.formheader.rinci = []
           })
       })
     },
@@ -209,7 +222,8 @@ export const useFormSerahterimaStore = defineStore('formSerahterima', {
       try {
         const response = await api.get(`/v1/transaksi/serahterima/${noserahterimapekerjaan}`);
         this.formheader = response.data.header;
-        this.rinci = response.data.rincian;
+        // console.log('editxxx', this.formheader)
+        this.rinci = response.data.rinci;
         notifErrVue.create({
           type: 'positive',
           message: 'Data berhasil dimuat.',
@@ -263,7 +277,7 @@ export const useFormSerahterimaStore = defineStore('formSerahterima', {
         api.get('/v1/transaksi/serahterima/getkontrak', params)
           .then((resp) => {
             if (resp.status === 200) {
-              console.log('Data Kontrak', resp.data)
+              // console.log('Data Kontrak', resp.data)
               this.loading = false
               this.kontrakpekerjaan = resp.data
               resolve(resp.data)
@@ -280,12 +294,12 @@ export const useFormSerahterimaStore = defineStore('formSerahterima', {
     getRincianBelanja() {
       this.loadingrinci = true
       const params = { params: this.params }
-      console.log('anggaran params', params)
+      // console.log('anggaran params', params)
       return new Promise((resolve) => {
         api.get('/v1/transaksi/belanja_ls/anggaran', params)
           .then((resp) => {
             if (resp.status === 200) {
-              console.log('anggaran', resp.data)
+              // console.log('anggaran', resp.data)
               this.loadingrinci = false
               this.anggarans = resp.data
               this.filterRekening50(resp.data)
@@ -359,7 +373,7 @@ export const useFormSerahterimaStore = defineStore('formSerahterima', {
         api.get('/v1/transaksi/serahterima/getrincian', params).then((resp) => {
           if (resp.status === 200) {
             this.transall = resp.data
-            console.log('hasilall', this.transall)
+            // console.log('hasilall', this.transall)
             this.loading = false
             resolve(resp)
           }

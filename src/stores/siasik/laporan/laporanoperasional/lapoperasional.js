@@ -123,7 +123,7 @@ export const useLaporanOperasionalStore = defineStore('Laporan_Operasional', {
       const params = { params: this.reqs }
       return new Promise((resolve) => {
         api.get('v1/laporan/lapoperasional/getlo', params).then((resp) => {
-          console.log('data LO', resp.data)
+          // console.log('data LO', resp.data)
           if (resp.status === 200) {
             this.hasilpendapatan = []
             this.hasilbeban = []
@@ -163,7 +163,7 @@ export const useLaporanOperasionalStore = defineStore('Laporan_Operasional', {
       const penyepend = this.penyesuaian.filter(x => koderekpend.includes(x.kode6))
 
       const allpendpatan = pendapatan.concat(penyepend)
-      console.log('allpendpatan', allpendpatan)
+      // console.log('allpendpatan', allpendpatan)
       const kode6 = []
       const kode5 = []
       const kode4 = []

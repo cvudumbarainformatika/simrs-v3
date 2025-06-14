@@ -40,7 +40,7 @@ export const listDataNpdlsStore = defineStore('list_data_npdls', {
         api.get('/v1/transaksi/belanja_ls/listnpdls', params)
           .then((resp) => {
             if (resp.status === 200) {
-              console.log('data NPD', resp)
+              // console.log('data NPD', resp)
               this.loading = false
               this.listnpdls = resp.data
               this.rincianNpd()
@@ -78,6 +78,7 @@ export const listDataNpdlsStore = defineStore('list_data_npdls', {
             keterangan: arr.keterangan,
             nopencairan: arr.nopencairan,
             nopenerimaan: arr.nopenerimaan,
+            noserahterima: arr.noserahterima,
             nonotadinas: arr.nonotadinas,
             bast: arr.bast,
             kunci: arr.kunci,
@@ -98,12 +99,12 @@ export const listDataNpdlsStore = defineStore('list_data_npdls', {
       }
     },
     kunciData(row) {
-      console.log('KUNCI', row)
+      // console.log('KUNCI', row)
       this.loading = true;
       return new Promise((resolve) => {
         api.post('/v1/transaksi/belanja_ls/kuncinpd', row)
           .then((resp) => {
-            console.log('resp', resp)
+            // console.log('resp', resp)
             this.loading = false
             notifSuccess(resp)
             resolve(resp)
