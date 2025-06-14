@@ -44,22 +44,21 @@
           <div class="row items-center">
             <div>
               Ada Serahterima ? :
-              <q-radio :label="item.ket" class="q-pl-sm q-pr-lg" v-for="item in store.serahterimas" :key="item"
+              <q-radio class="q-pl-sm q-pr-lg" v-for="item in store.serahterimas" :key="item.value" :label="item.ket"
                 v-model="store.form.serahterimapekerjaan" :val="item.value" dense size="sm" :disable="store.disabled" />
             </div>
 
             <template v-if="store.form.serahterimapekerjaan === '3'">
               <div>
                 <app-autocomplete label="Serah Terima Dari" v-model="store.form.bast" autocomplete="nama"
-                  option-value="nama" option-label="nama" outlined :key="carisrt.reqs.kodepenerima"
-                  :disable="store.disabled" :source="store.dariserahterima"
-                  @update:model-value="(val) => serahTerima(val)" />
+                  option-value="nama" option-label="nama" outlined :disable="store.disabled"
+                  :source="store.dariserahterima" @update:model-value="(val) => serahTerima(val)" />
               </div>
             </template>
           </div>
         </div>
         <app-input-simrs label="Keterangan Belanja" style="width: 50%" v-model="store.form.keterangan" outlined
-          :autofocus="false" :valid="{ required: false }" :disable="store.loading" />
+          :autofocus="false" :valid="{ required: false }" :disable="store.loading || store.disabledx" />
 
         <template v-if="store.form.serahterimapekerjaan === '3'">
           <div class="row items-center" style="width: 50%;">
@@ -68,7 +67,7 @@
 
             <div class="q-px-md">
               <q-btn color="dark" round size="sm" :loading="store.loading" icon="icon-mat-add"
-                :source="store.dariserahterima" :key="carisrt.reqs.kodepenerima" @click="() => {
+                :source="store.dariserahterima" @click="() => {
                   carisrt.reqs.kodebast = ''
                   store.openDialogFarmasi = true
                 }" />
@@ -80,7 +79,7 @@
 
       </div>
       <select-serahterima v-model="store.openDialogFarmasi" :key="carisrt.reqs.kodepenerima" />
-      <select-serahterimapekerjaan v-model="store.openDialogSiasik" :key="stpekerjaan.reqs.kodepenerima" />
+      <select-serahterimapekerjaan v-model="store.openDialogSiasik" />
       <div class="q-px-sm">
         <q-card class="full-width bg-grey-4 q-my-sm q-px-sm">
           <div class="row text-primary q-pa-sm q-my-sm q-px-sm">
@@ -134,7 +133,7 @@ function tglTransaksi(val) {
   stpekerjaan.listBastPekerjaan()
 }
 const serahTerima = (val) => {
-  // console.log('serahTerima', val)
+  // console.log('serahTerima', store.form.bast)
   if (val === 'Sigarang') {
     store.openDialogSigarang = false
   }
@@ -197,14 +196,14 @@ function pilihKegiatan(val) {
   store.rinci.nominalpembayaran = ''
 
   carisrt.reqs.kodekegiatanblud = obj?.kodekegiatan
-
+  stpekerjaan.reqs.kodekegiatanblud = obj?.kodekegiatan ?? ''
   store.reqs.kodekegiatan = obj?.kodekegiatan
   store.getRincianBelanja()
 }
 function pilihPihaktiga(val) {
 
   const arr = ambil.pihaktigas
-  const obj = arr?.length ? arr.find(x => x.kode === val) : null
+  let obj = arr?.length ? arr.find(x => x.kode === val) : null
 
   store.form.penerima = obj?.nama ?? ''
   store.form.kodepenerima = obj?.kode ?? ''
@@ -216,7 +215,7 @@ function pilihPihaktiga(val) {
   store.form.bank = obj?.bank ?? ''
   store.form.rekening = obj?.norek ?? ''
   store.form.npwp = obj?.npwp ?? ''
-
+  // console.log('store.form.penerima', store.form.penerima)
   carisrt.bastfarmasis = []
   carisrt.konsinyasis = []
   carisrt.itembelanja = []

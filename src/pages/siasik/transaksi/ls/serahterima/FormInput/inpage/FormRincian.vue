@@ -158,23 +158,35 @@ const props = defineProps({
 })
 function saveSerahterima() {
 
-  const objrincian = store.rinci
-  store.formheader.rincian.push(objrincian)
+  if (!store.formheader.rinci) {
+    store.formheader.rinci = [];
+  }
 
-  const unikjumlah = store.formheader.rincian.map((x) => x.itembelanja)
+  const objrincian = { ...store.rinci }; // Salin objek rinci
+  console.log('objrincian', objrincian);
+
+  // Validasi input
+  if (!objrincian.koderek50 || !objrincian.itembelanja || objrincian.nominalpembayaran <= 0) {
+    return notifErrVue('Harap lengkapi semua field yang diperlukan');
+  }
+
+  // Tambahkan rincian ke formheader.rincian
+  store.formheader.rinci.push(objrincian);
+
+  const unikjumlah = store.formheader.rinci.map((x) => x.itembelanja)
   const unik = unikjumlah.length ? [...new Set(unikjumlah)] : []
 
   const arr = []
   for (let i = 0; i < unik.length; i++) {
     const el = unik[i]
     const obj = {
-      jumlah: store.formheader.rincian.map((x) => parseFloat(x.nominalpembayaran)).reduce((a, b) => a + b, 0),
+      jumlah: store.formheader.rinci.map((x) => parseFloat(x.nominalpembayaran)).reduce((a, b) => a + b, 0),
       koderek108: el,
       sisapagu: store.rinci.sisapagu
     }
     if (obj?.jumlah > obj?.sisapagu) {
       formInput.value.resetValidation()
-      store.formheader.rincian = []
+      store.formheader.rinci = []
       console.log('pxpxpxpx', (obj?.jumlah > obj?.sisapagu))
       return notifErrVue('Maaf Pengajuan Lebih dari Sisa Pagu')
     }
@@ -199,10 +211,11 @@ function saveSerahterima() {
     formInput.value.resetValidation()
     store.disabled = true
     store.disableplus = true
+    store.formheader.rinci = []
   })
 
-  console.log('store.rinci', store.rinci)
-  console.log('store.header', store.formheader)
+  // console.log('store.rinci', store.rinci)
+  // console.log('store.header', store.formheader)
 }
 // function tambahPajak() {
 //   console.log('open Dialog')

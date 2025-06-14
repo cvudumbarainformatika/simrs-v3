@@ -154,7 +154,7 @@ const clearSearch = () => {
 }
 
 function pilihDataSerahterima(row) {
-  console.log('row stp pekerjaan', row)
+  // console.log('row stp pekerjaan', row)
   store.reqs.bast = row?.noserahterimapekerjaan
   store.openDialogSiasik = false
   store.form.noserahterima = row?.noserahterimapekerjaan
@@ -173,6 +173,7 @@ function pilihDataSerahterima(row) {
 
   store.disabled = true
 
+
   // Panggil getDataBidang untuk memastikan ptks diperbarui
   store.getDataBidang().then(() => {
     // Pastikan ptks memiliki data yang sesuai dengan kodepptk
@@ -190,8 +191,8 @@ function pilihDataSerahterima(row) {
     store.openDialogSiasik = false;
   });
 
-  store.transall = row?.rinci
-  console.log('form', store.form)
+  store.transallserahterima = row?.rinci
+  // console.log('form', store.form)
 
 }
 

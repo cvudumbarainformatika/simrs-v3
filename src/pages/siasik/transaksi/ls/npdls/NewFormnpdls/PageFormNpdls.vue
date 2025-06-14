@@ -46,7 +46,7 @@ function resetFormData() {
   store.params.tgl = date.formatDate(Date.now(), 'YYYY-MM-DD')
   store.form.tglnpdls = date.formatDate(Date.now(), 'YYYY-MM-DD')
   store.reqs.tgl = date.formatDate(Date.now(), 'YYYY-MM-DD')
-
+  store.disabled = false
   // Load initial data
   store.getDataBidang()
 }
