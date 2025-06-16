@@ -106,6 +106,7 @@ export const useAnamnesis = defineStore('anamnesis', {
             this.form.rs4 = this.form.keluhanutama
           }
           const isi = resp.data.result[0]
+          console.log('isi', isi)
           storePasien.injectDataPasien(pasien, isi, 'anamnesis')
           notifSuccess(resp)
           this.initReset()
