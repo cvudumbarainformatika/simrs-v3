@@ -203,6 +203,7 @@ export const useLaporanSpmFarmasiStore = defineStore('laporan_spm_farmasi', {
         notifErrVue('Terjadi kesalahan saat mengambil data')
       } finally {
         this.loading = false
+        this.ketProses = null
       }
     },
 
