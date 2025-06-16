@@ -122,50 +122,60 @@
               </tr>
             </thead>
             <tbody>
-              <tr class="vertical-top" v-for="it in store.datarka" :key="it">
-                <td>
-                  <div class="text-bold">
-                    {{ it.kode }}
-                  </div>
-                  <div class="q-pl-md q-py-md" v-for="rinci in it?.rincian" :key="rinci">
-                    {{ rinci.kode108 }}
-                  </div>
-                </td>
-                <td>
-                  <div class="text-bold">
-                    {{ it.uraian }}
-                  </div>
-                  <div class="q-pl-md q-py-md" v-for="rinci in it?.rincian" :key="rinci">
-                    - {{ rinci.usulan }}
-                  </div>
-                </td>
-                <td class="text-right">
-                  <div class="q-py-sm" />
-                  <div class="q-pl-md q-py-md" v-for="rinci in it?.rincian" :key="rinci">
-                    {{ rinci.volume }}
-                  </div>
-                </td>
-                <td>
-                  <div class="q-py-sm" />
-                  <div class="q-pl-md q-py-md" v-for="rinci in it?.rincian" :key="rinci">
-                    {{ rinci.satuan }}
-                  </div>
-                </td>
-                <td class="text-right">
-                  <div class="q-py-sm" />
-                  <div class="q-pl-md q-py-md" v-for="rinci in it?.rincian" :key="rinci">
-                    {{ formattanpaRp(rinci.harga) }}
-                  </div>
-                </td>
-                <td class="text-right">
-                  <div class="text-bold">
-                    {{ formattanpaRp(it.pagu) }}
-                  </div>
-                  <div class="q-pl-md q-py-md" v-for="rinci in it?.rincian" :key="rinci">
-                    {{ formattanpaRp(rinci.pagu) }}
-                  </div>
-                </td>
-              </tr>
+              <template v-for="it in store.datarka" :key="it">
+                <tr>
+                  <td class="text-bold text-left q-px-sm"> {{ it.kode }} </td>
+                  <td class="text-bold text-left q-px-sm" colspan="4"> {{ it.uraian }} </td>
+                  <td class="text-right text-bold">
+                    <span class="row justify-between">
+                      <span class="col-auto flex-start">Rp. </span>
+                      <span class="flex-end text-right q-pr-sm">
+                        {{ formattanpaRp(it.pagu) }}
+                      </span>
+                    </span>
+                  </td>
+                </tr>
+                <template v-for="rinci in it?.rincian" :key="rinci">
+                  <tr>
+                    <td>
+                      <span class="q-pl-md">
+                        {{ rinci.kode108 }}
+                      </span>
+                    </td>
+                    <td>
+                      <span class="q-pl-md">
+                        - {{ rinci.usulan }}
+                      </span>
+                    </td>
+                    <td>
+                      <span class="q-pl-md">
+                        {{ rinci.volume }}
+                      </span>
+                    </td>
+                    <td>
+                      <span class="q-pl-md">
+                        {{ rinci.satuan }}
+                      </span>
+                    </td>
+                    <td class="text-right">
+                      <span class="row justify-between">
+                        <span class="col-auto flex-start">Rp. </span>
+                        <span class="flex-end text-right q-pr-sm">
+                          {{ formattanpaRp(rinci.harga) }}
+                        </span>
+                      </span>
+                    </td>
+                    <td class="text-right">
+                      <span class="row justify-between">
+                        <span class="col-auto flex-start">Rp. </span>
+                        <span class="flex-end text-right q-pr-sm">
+                          {{ formattanpaRp(rinci.pagu) }}
+                        </span>
+                      </span>
+                    </td>
+                  </tr>
+                </template>
+              </template>
             </tbody>
           </q-markup-table>
         </div>

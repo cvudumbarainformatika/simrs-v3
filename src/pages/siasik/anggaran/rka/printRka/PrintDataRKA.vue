@@ -222,66 +222,70 @@
                     <div class="row full-width" style="width:100%">
                       <table class="justify-center full-width">
                         <thead>
-                          <tr style="height:50px">
-                            <th>KODE REKENING</th>
-                            <th>URAIAN</th>
-                            <th>VOLUME</th>
-                            <th>SATUAN</th>
-                            <th>HARGA</th>
-                            <th>PAGU</th>
+                          <tr class="text-bold text-center" style="height:50px">
+                            <td class="text-center" style="width: 10%">KODE REKENING</td>
+                            <td class="text-center" style="width: 30%">URAIAN</td>
+                            <td class="text-center" style="width: 5%">VOLUME</td>
+                            <td class="text-center" style="width: 5%">SATUAN</td>
+                            <td class="text-center" style="width: 10%">HARGA</td>
+                            <td class="text-center" style="width: 20%">PAGU</td>
                           </tr>
                         </thead>
                         <tbody>
-                          <tr v-for="it in store.datarka" :key="it">
-                            <td>
-                              <div class="text-bold q-py-sm" style="height: 50px">
-                                {{ it.kode }}
-                              </div>
-                              <div class="q-pl-md q-py-sm" style="height: 45px" v-for="rinci in it?.rincian"
-                                :key="rinci">
-                                {{ rinci.kode108 }}
-                              </div>
-                            </td>
-                            <td>
-                              <div class="text-bold q-py-sm" style="height: 50px">
-                                {{ it.uraian }}
-                              </div>
-                              <div class="q-pl-md q-py-sm" style="height: 45px" v-for="rinci in it?.rincian"
-                                :key="rinci">
-                                - {{ rinci.usulan }}
-                              </div>
-                            </td>
-                            <td class="text-right">
-                              <div class="q-py-md" style="height: 50px" />
-                              <div class="q-pl-md q-py-sm" style="height: 45px" v-for="rinci in it?.rincian"
-                                :key="rinci">
-                                {{ rinci.volume }}
-                              </div>
-                            </td>
-                            <td>
-                              <div class="q-py-md" style="height: 50px" />
-                              <div class="q-pl-md q-py-sm" style="height: 45px" v-for="rinci in it?.rincian"
-                                :key="rinci">
-                                {{ rinci.satuan }}
-                              </div>
-                            </td>
-                            <td class="text-right">
-                              <div class="q-py-md" style="height: 50px" />
-                              <div class="q-pl-md q-py-sm" style="height: 45px" v-for="rinci in it?.rincian"
-                                :key="rinci">
-                                {{ formattanpaRp(rinci.harga) }}
-                              </div>
-                            </td>
-                            <td class="text-right">
-                              <div class="text-bold q-py-md" style="height: 50px">
-                                {{ formattanpaRp(it.pagu) }}
-                              </div>
-                              <div class="q-pl-md q-py-sm" style="height: 45px" v-for="rinci in it?.rincian"
-                                :key="rinci">
-                                {{ formattanpaRp(rinci.pagu) }}
-                              </div>
-                            </td>
-                          </tr>
+                          <template v-for="it in store.datarka" :key="it">
+                            <tr>
+                              <td class="text-bold text-left q-py-md"> {{ it.kode }} </td>
+                              <td class="text-bold text-left q-py-md" colspan="4"> {{ it.uraian }} </td>
+                              <td class="text-right text-bold">
+                                <span class="row justify-between">
+                                  <span class="col-auto flex-start">Rp. </span>
+                                  <span class="flex-end text-right">
+                                    {{ formattanpaRp(it.pagu) }}
+                                  </span>
+                                </span>
+                              </td>
+                            </tr>
+                            <template v-for="rinci in it?.rincian" :key="rinci">
+                              <tr>
+                                <td>
+                                  <span class="q-pl-sm q-py-sm">
+                                    {{ rinci.kode108 }}
+                                  </span>
+                                </td>
+                                <td>
+                                  <span class="q-py-sm">
+                                    - {{ rinci.usulan }}
+                                  </span>
+                                </td>
+                                <td>
+                                  <span class="q-py-sm">
+                                    {{ rinci.volume }}
+                                  </span>
+                                </td>
+                                <td>
+                                  <span class="q-py-sm">
+                                    {{ rinci.satuan }}
+                                  </span>
+                                </td>
+                                <td class="text-right">
+                                  <span class="row justify-between">
+                                    <span class="col-auto flex-start">Rp. </span>
+                                    <span class="flex-end text-right">
+                                      {{ formattanpaRp(rinci.harga) }}
+                                    </span>
+                                  </span>
+                                </td>
+                                <td class="text-right">
+                                  <span class="row justify-between">
+                                    <span class="col-auto flex-start">Rp. </span>
+                                    <span class="flex-end text-right">
+                                      {{ formattanpaRp(rinci.pagu) }}
+                                    </span>
+                                  </span>
+                                </td>
+                              </tr>
+                            </template>
+                          </template>
                         </tbody>
                       </table>
                     </div>
@@ -417,6 +421,7 @@ const printObj = {
 }
 
 table,
+thead,
 th,
 td {
   border-width: 2px;
@@ -427,6 +432,8 @@ td {
 }
 
 td {
+  height: 35px;
+  max-height: 50px;
   padding-left: 10px;
   padding-right: 10px;
 }
