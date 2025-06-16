@@ -51,7 +51,7 @@ export const postingJurnal = defineStore('posting_jurnal', {
       this.verif = val?.verif
       this.totaldebit = val?.totaldebit
       this.totalkredit = val?.totalkredit
-      console.log('value notrans', this.verif)
+      // console.log('value notrans', this.verif)
     },
     // search (val) {
     //   console.log('hasil search ', val)
@@ -63,7 +63,7 @@ export const postingJurnal = defineStore('posting_jurnal', {
       const params = { params: this.reqs }
       return new Promise((resolve) => {
         api.get('v1/akuntansi/registerjurnal/getjurnalpost', params).then((resp) => {
-          console.log('getjurnal', resp.data)
+          // console.log('getjurnal', resp.data)
           if (resp.status === 200) {
             this.getjurnals = []
 
@@ -143,7 +143,7 @@ export const postingJurnal = defineStore('posting_jurnal', {
         )
       const arrJurnal = sortByDate(jurnals)
       this.hasilmaps = arrJurnal
-      console.log('HASIL POSTING', this.hasilmaps)
+      // console.log('HASIL POSTING', this.hasilmaps)
     },
     async verifPosting(val, debit, kredit) {
       // console.log('valueeee', this.rinci.notrans)
@@ -163,7 +163,7 @@ export const postingJurnal = defineStore('posting_jurnal', {
             // this.reqs.notrans = notrans
             // console.log('notrans', this.reqs.notrans)
             this.getPostJurnal()
-            console.log('val e', this.rinci)
+            // console.log('val e', this.rinci)
             this.dialogRinci = false
             this.loadingverif = false
           }
@@ -192,7 +192,7 @@ export const postingJurnal = defineStore('posting_jurnal', {
           // this.reqs.notrans = notrans
           // console.log('notrans', this.reqs.notrans)
           this.getPostJurnal()
-          console.log('val e', this.rinci)
+          // console.log('val e', this.rinci)
           this.dialogRinci = false
           this.loadingverif = false
         }

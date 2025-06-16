@@ -70,7 +70,7 @@ export const registerJurnal = defineStore('register_jurnal', {
 
       this.form.jurnal = this.postingjurnals
 
-      console.log('HASIIIL', this.form)
+      // console.log('HASIIIL', this.form)
       this.postJurnal()
       // this.simpan()
       // this.form.kegiatanblud = this.jurnals?.kegiatan
@@ -133,7 +133,7 @@ export const registerJurnal = defineStore('register_jurnal', {
       const params = { params: this.reqs }
       return new Promise((resolve) => {
         api.get('v1/akuntansi/registerjurnal/regjurnal', params).then((resp) => {
-          console.log('Register Jurnal', resp.data)
+          // console.log('Register Jurnal', resp.data)
           if (resp.status === 200) {
             this.stp = resp.data.stp
             this.bastfarmasi = resp.data.bastfarmasi
@@ -343,7 +343,7 @@ export const registerJurnal = defineStore('register_jurnal', {
         dataserahterima.push(...rincidebit, ...rincikredit);
       }
 
-      console.log('FARMASI', bastfarm);
+      // console.log('FARMASI', bastfarm);
       // console.log('rincibast', dataserahterima);
 
       // DATA BAST KONSINYASI
@@ -430,8 +430,8 @@ export const registerJurnal = defineStore('register_jurnal', {
             });
           }
         }
-        console.log('rincikredit', rincikredit)
-        console.log('rincidebit', rincidebit)
+        // console.log('rincikredit', rincikredit)
+        // console.log('rincidebit', rincidebit)
         // Gabungkan hasil ke bastfarm
         const obj = {
           tanggal: el.tgl_bast,
@@ -452,7 +452,7 @@ export const registerJurnal = defineStore('register_jurnal', {
         dataserahterima.push(...rincidebit, ...rincikredit);
 
       }
-      console.log('KONSINYASI', bastkons)
+      // console.log('KONSINYASI', bastkons)
 
       // DATA PENCAIRAN TANPA STP //
       const uniks = this.cairnostp.map((x) => x.nonpdls)
@@ -1253,7 +1253,7 @@ export const registerJurnal = defineStore('register_jurnal', {
               parseFloat(x.pph25) + parseFloat(x.pph23) + parseFloat(x.pph22) + parseFloat(x.pph21)).reduce((a, b) => a + b, 0),
           }
           if (er.pph21 > 0) {
-            console.log('ppppppphh21', er.pph21 > 0)
+            // console.log('ppppppphh21', er.pph21 > 0)
             pph21x.push(kas)
           }
         }
@@ -1862,7 +1862,7 @@ export const registerJurnal = defineStore('register_jurnal', {
         )
       const arrJurnal = sortByDate(gabungan)
       this.jurnals = arrJurnal
-      console.log('data JURNAL', this.jurnals)
+      // console.log('data JURNAL', this.jurnals)
 
       // DATA POSTING JURNAL CREATE
       const sortDate = (dataserahterima) =>
@@ -1871,15 +1871,15 @@ export const registerJurnal = defineStore('register_jurnal', {
         )
       const arrPosting = sortDate(dataserahterima)
       this.postingjurnals = arrPosting
-      console.log('data POSTING', this.postingjurnals)
+      // console.log('data POSTING', this.postingjurnals)
     },
     postJurnal() {
       this.loading = true
       // const params = { params: this.form }
-      console.log('param', this.form)
+      // console.log('param', this.form)
       return new Promise((resolve) => {
         api.post('v1/akuntansi/registerjurnal/postingjurnal', this.form).then((resp) => {
-          console.log('Posting Jurnal', resp)
+          // console.log('Posting Jurnal', resp)
           if (resp.status === 200) {
             notifSuccess(resp)
             this.loading = false

@@ -63,7 +63,7 @@ export const useLaporanBkuPengeluaranStore = defineStore(
         await api
           .get('v1/laporan/laporan_bku/bkupengeluaran', params)
           .then((resp) => {
-            console.log('BkuPengeluaran', resp)
+            // console.log('BkuPengeluaran', resp)
             if (resp.status === 200) {
               this.hasilArray = []
               this.items = []
@@ -226,7 +226,7 @@ export const useLaporanBkuPengeluaranStore = defineStore(
         const geserKredit = []
         for (let i = 0; i < this.items.pergeserankas?.length; i++) {
           const el = this.items?.pergeserankas
-          console.log('geseeer', el)
+          // console.log('geseeer', el)
           const geserbank = el[i].kasrinci?.length
             ? el[i].kasrinci?.map((x) => {
               return {
@@ -400,7 +400,7 @@ export const useLaporanBkuPengeluaranStore = defineStore(
           // eslint-disable-next-line camelcase
           spj_Panjar.push(obj)
         }
-        console.log('spjPanjar', spj_Panjar)
+        // console.log('spjPanjar', spj_Panjar)
 
         // =====================================================
 
@@ -496,7 +496,7 @@ export const useLaporanBkuPengeluaranStore = defineStore(
           }
           sisapjr.push(obj)
         }
-        console.log('sisa', sisapjr)
+        // console.log('sisa', sisapjr)
         // =====================================================
 
         // ===================================================npkls
@@ -676,19 +676,6 @@ export const useLaporanBkuPengeluaranStore = defineStore(
         // console.log("nihil", nihil);
         // =====================================================
 
-        // console.log("spm", spm);
-        // console.log("pergeseranKASD", pergeseranKASD);
-        // console.log("npkPanjar", npkPanjar);
-        // console.log("cairNpkPanjar", cairNpkPanjar);
-        // console.log("spjPanjar", spjPanjar);
-        // console.log("kembalianpjr", kembalianpjr);
-        // console.log("sisapjr", sisapjr);
-        // console.log("npkls", npkls);
-        // console.log("pencairanLS", pencairanLS);
-        // console.log("cp", cp);
-        // console.log("spmgu", spmgu);
-        // console.log("nihil", nihil);
-
         const gabungArray = saldoawal?.concat(
           spm,
           spmgu,
@@ -704,7 +691,7 @@ export const useLaporanBkuPengeluaranStore = defineStore(
           cp,
           nihil
         )
-        console.log('gabung', gabungArray)
+        // console.log('gabung', gabungArray)
         // urutan by tanggal
         const sortByDate = (gabungArray) =>
           gabungArray.sort(({ tgl: a }, { tgl: b }) =>
@@ -716,7 +703,7 @@ export const useLaporanBkuPengeluaranStore = defineStore(
         // Cari Total Zigzag
         this.hasilArray = this.cariHasilAkhirArray(hslSmntara)
 
-        console.log('hasil gabung', this.hasilArray)
+        // console.log('hasil gabung', this.hasilArray)
       },
 
       cariHasilAkhirArray(arr) {

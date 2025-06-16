@@ -36,7 +36,7 @@ export const listdataSerahterimaStore = defineStore('list_data_serahterima', {
         api.get('/v1/transaksi/serahterima/listdata', params)
           .then((resp) => {
             if (resp.status === 200) {
-              console.log('data Serahterima', resp)
+              // console.log('data Serahterima', resp)
               this.loading = false
               this.listdata = resp.data
               this.rincianSerahterima()
@@ -93,12 +93,12 @@ export const listdataSerahterimaStore = defineStore('list_data_serahterima', {
       }
     },
     kunciData(row) {
-      console.log('KUNCI', row)
+      // console.log('KUNCI', row)
       this.loading = true;
       return new Promise((resolve) => {
         api.post('/v1/transaksi/serahterima/kuncidata', row)
           .then((resp) => {
-            console.log('resp', resp)
+            // console.log('resp', resp)
             this.loading = false
             notifSuccess(resp)
             resolve(resp)

@@ -1,8 +1,6 @@
 <template>
   <q-dialog>
-    <q-card
-      class="lebar"
-    >
+    <q-card class="lebar">
       <q-card-section>
         <div class="f-14 text-weight-bold">
           Form Obat Baru
@@ -26,38 +24,14 @@
               Nama Obat :
             </div>
             <!-- Jenis Perbekalan -->
-            <div
-              :key="store.form.jenis_perbekalan"
-              class="row items-center justify-between q-mb-xs"
-            >
-              <app-autocomplete-debounce-input
-                :model="store.form.jenis_perbekalan"
-                style="width:90%"
-                autocomplete="jenisperbekalan"
-                option-label="jenisperbekalan"
-                option-value="jenisperbekalan"
-                outlined
-                valid
-                label="Jenis Perbekalan"
-                autofocus
-                :source="store.jenisPerbekalans"
-                :loading="store.loadingJenisPerbekalan"
-                @buang="cariJenisPerbekalan"
-                @on-select="jenisPerbekalanSelected"
-                @clear="jenisPerbekalanCleared"
-                @on-enter="scJenisPerbekalan"
-              />
-              <q-icon
-                size="16px"
-                name="icon-mat-help_outline"
-                color="info"
-                class="cursor-pointer"
-              >
-                <q-tooltip
-                  anchor="top middle"
-                  self="bottom middle"
-                  :offset="[10, 10]"
-                >
+            <div :key="store.form.jenis_perbekalan" class="row items-center justify-between q-mb-xs">
+              <app-autocomplete-debounce-input :model="store.form.jenis_perbekalan" style="width:90%"
+                autocomplete="jenisperbekalan" option-label="jenisperbekalan" option-value="jenisperbekalan" outlined
+                valid label="Jenis Perbekalan" autofocus :source="store.jenisPerbekalans"
+                :loading="store.loadingJenisPerbekalan" @buang="cariJenisPerbekalan"
+                @on-select="jenisPerbekalanSelected" @clear="jenisPerbekalanCleared" @on-enter="scJenisPerbekalan" />
+              <q-icon size="16px" name="icon-mat-help_outline" color="info" class="cursor-pointer">
+                <q-tooltip anchor="top middle" self="bottom middle" :offset="[10, 10]">
                   <strong>Untuk Masukkan data ?</strong> <br>
                   <em>ketik data yang akan di input</em><br>
                   <em>contoh</em><br>
@@ -69,49 +43,18 @@
             <!-- Nama barang -->
             <div class="row q-mb-xs">
               <div class="col-12">
-                <app-input
-                  v-model="store.form.nama"
-                  valid
-                  label="Nama Barang"
-                  outlined
-                  autofocus
-                  @update:model-value="setNama"
-                />
+                <app-input v-model="store.form.nama" valid label="Nama Barang" outlined autofocus
+                  @update:model-value="setNama" />
               </div>
             </div>
             <!-- Merk -->
-            <div
-              :key="store.form.merk"
-              class="row items-center justify-between q-mb-xs"
-            >
-              <app-autocomplete-debounce-input
-                style="width:90%"
-                :model="store.form.merk"
-                autocomplete="merk"
-                option-label="merk"
-                option-value="merk"
-                outlined
-                valid
-                label="Merk"
-                autofocus
-                :source="store.merks"
-                :loading="store.loadingMerk"
-                @buang="cariMerk"
-                @on-select="merkSelected"
-                @clear="merkCleared"
-                @on-enter="scMerk"
-              />
-              <q-icon
-                size="16px"
-                name="icon-mat-help_outline"
-                color="info"
-                class="cursor-pointer"
-              >
-                <q-tooltip
-                  anchor="top middle"
-                  self="bottom middle"
-                  :offset="[10, 10]"
-                >
+            <div :key="store.form.merk" class="row items-center justify-between q-mb-xs">
+              <app-autocomplete-debounce-input style="width:90%" :model="store.form.merk" autocomplete="merk"
+                option-label="merk" option-value="merk" outlined valid label="Merk" autofocus :source="store.merks"
+                :loading="store.loadingMerk" @buang="cariMerk" @on-select="merkSelected" @clear="merkCleared"
+                @on-enter="scMerk" />
+              <q-icon size="16px" name="icon-mat-help_outline" color="info" class="cursor-pointer">
+                <q-tooltip anchor="top middle" self="bottom middle" :offset="[10, 10]">
                   <strong>Untuk Masukkan data ?</strong> <br>
                   <em>ketik data yang akan di input</em><br>
                   <em>contoh</em><br>
@@ -121,38 +64,14 @@
               </q-icon>
             </div>
             <!-- Kekuatan Dosis -->
-            <div
-              :key="store.form.kekuatan_dosis"
-              class="row items-center justify-between q-mb-xs"
-            >
-              <app-autocomplete-debounce-input
-                :model="store.form.kekuatan_dosis"
-                style="width:90%"
-                autocomplete="kekuatandosis"
-                option-label="kekuatandosis"
-                option-value="kekuatandosis"
-                outlined
-                valid
-                label="Kekuatan Dosis"
-                autofocus
-                :source="store.kekuatanDosiss"
-                :loading="store.loadingKekuatanDosis"
-                @buang="cariKekuatanDosis"
-                @on-select="kekuatanDosisSelected"
-                @clear="kekuatanDosisCleared"
-                @on-enter="store.simpanCepatKekuatanDosis"
-              />
-              <q-icon
-                size="16px"
-                name="icon-mat-help_outline"
-                color="info"
-                class="cursor-pointer"
-              >
-                <q-tooltip
-                  anchor="top middle"
-                  self="bottom middle"
-                  :offset="[10, 10]"
-                >
+            <div :key="store.form.kekuatan_dosis" class="row items-center justify-between q-mb-xs">
+              <app-autocomplete-debounce-input :model="store.form.kekuatan_dosis" style="width:90%"
+                autocomplete="kekuatandosis" option-label="kekuatandosis" option-value="kekuatandosis" outlined valid
+                label="Kekuatan Dosis" autofocus :source="store.kekuatanDosiss" :loading="store.loadingKekuatanDosis"
+                @buang="cariKekuatanDosis" @on-select="kekuatanDosisSelected" @clear="kekuatanDosisCleared"
+                @on-enter="store.simpanCepatKekuatanDosis" />
+              <q-icon size="16px" name="icon-mat-help_outline" color="info" class="cursor-pointer">
+                <q-tooltip anchor="top middle" self="bottom middle" :offset="[10, 10]">
                   <strong>Untuk Masukkan data ?</strong> <br>
                   <em>ketik data yang akan di input</em><br>
                   <em>contoh</em><br>
@@ -162,38 +81,14 @@
               </q-icon>
             </div>
             <!-- Volume Sediaan -->
-            <div
-              :key="store.form.volumesediaan"
-              class="row items-center justify-between q-mb-xs"
-            >
-              <app-autocomplete-debounce-input
-                v-model="store.form.volumesediaan"
-                style="width:90%"
-                autocomplete="volumesediaan"
-                option-label="volumesediaan"
-                option-value="volumesediaan"
-                outlined
-                valid
-                label="Volume Sediaan"
-                autofocus
-                :source="store.volumeSediaans"
-                :loading="store.loadingVolumeSediaan"
-                @buang="cariVolumeSediaan"
-                @on-select="volumeSediaanSelected"
-                @clear="volumeSediaanCleared"
-                @on-enter="scVolumeSediaan"
-              />
-              <q-icon
-                size="16px"
-                name="icon-mat-help_outline"
-                color="info"
-                class="cursor-pointer"
-              >
-                <q-tooltip
-                  anchor="top middle"
-                  self="bottom middle"
-                  :offset="[10, 10]"
-                >
+            <div :key="store.form.volumesediaan" class="row items-center justify-between q-mb-xs">
+              <app-autocomplete-debounce-input v-model="store.form.volumesediaan" style="width:90%"
+                autocomplete="volumesediaan" option-label="volumesediaan" option-value="volumesediaan" outlined valid
+                label="Volume Sediaan" autofocus :source="store.volumeSediaans" :loading="store.loadingVolumeSediaan"
+                @buang="cariVolumeSediaan" @on-select="volumeSediaanSelected" @clear="volumeSediaanCleared"
+                @on-enter="scVolumeSediaan" />
+              <q-icon size="16px" name="icon-mat-help_outline" color="info" class="cursor-pointer">
+                <q-tooltip anchor="top middle" self="bottom middle" :offset="[10, 10]">
                   <strong>Untuk Masukkan data ?</strong> <br>
                   <em>ketik data yang akan di input</em><br>
                   <em>contoh</em><br>
@@ -203,38 +98,14 @@
               </q-icon>
             </div>
             <!-- Bentuk Sediaan -->
-            <div
-              :key="store.form.bentuk_sediaan"
-              class="row items-center justify-between q-mb-xs"
-            >
-              <app-autocomplete-debounce-input
-                :model="store.form.bentuk_sediaan"
-                style="width:90%"
-                autocomplete="bentuksediaan"
-                option-label="bentuksediaan"
-                option-value="bentuksediaan"
-                outlined
-                valid
-                label="Bentuk Sediaan"
-                autofocus
-                :source="store.bentukSediaans"
-                :loading="store.loadingBentukSediaan"
-                @buang="cariBentukSediaan"
-                @on-select="bentukSediaanSelected"
-                @clear="bentukSediaanCleared"
-                @on-enter="scBentukSediaan"
-              />
-              <q-icon
-                size="16px"
-                name="icon-mat-help_outline"
-                color="info"
-                class="cursor-pointer"
-              >
-                <q-tooltip
-                  anchor="top middle"
-                  self="bottom middle"
-                  :offset="[10, 10]"
-                >
+            <div :key="store.form.bentuk_sediaan" class="row items-center justify-between q-mb-xs">
+              <app-autocomplete-debounce-input :model="store.form.bentuk_sediaan" style="width:90%"
+                autocomplete="bentuksediaan" option-label="bentuksediaan" option-value="bentuksediaan" outlined valid
+                label="Bentuk Sediaan" autofocus :source="store.bentukSediaans" :loading="store.loadingBentukSediaan"
+                @buang="cariBentukSediaan" @on-select="bentukSediaanSelected" @clear="bentukSediaanCleared"
+                @on-enter="scBentukSediaan" />
+              <q-icon size="16px" name="icon-mat-help_outline" color="info" class="cursor-pointer">
+                <q-tooltip anchor="top middle" self="bottom middle" :offset="[10, 10]">
                   <strong>Untuk Masukkan data ?</strong> <br>
                   <em>ketik data yang akan di input</em><br>
                   <em>contoh</em><br>
@@ -244,36 +115,14 @@
               </q-icon>
             </div>
             <!-- kelompok Penyimpanan -->
-            <div
-              :key="store.form.kelompok_penyimpanan"
-              class="row items-center justify-between q-mb-xs"
-            >
-              <app-autocomplete-debounce-input
-                v-model="store.form.kelompok_penyimpanan"
-                style="width:90%"
-                autocomplete="kelompokpenyimpanan"
-                option-label="kelompokpenyimpanan"
-                option-value="kelompokpenyimpanan"
-                outlined
-                valid
-                label="Kelompok Penyimpanan"
-                autofocus
-                :source="store.kelompokPenyimpanans"
-                :loading="store.loadingKelompokPenyimpanan"
-                @buang="cariKelompokPenyimpanan"
-                @on-enter="scKelompokPenyimpanan"
-              />
-              <q-icon
-                size="16px"
-                name="icon-mat-help_outline"
-                color="info"
-                class="cursor-pointer"
-              >
-                <q-tooltip
-                  anchor="top middle"
-                  self="bottom middle"
-                  :offset="[10, 10]"
-                >
+            <div :key="store.form.kelompok_penyimpanan" class="row items-center justify-between q-mb-xs">
+              <app-autocomplete-debounce-input v-model="store.form.kelompok_penyimpanan" style="width:90%"
+                autocomplete="kelompokpenyimpanan" option-label="kelompokpenyimpanan" option-value="kelompokpenyimpanan"
+                outlined valid label="Kelompok Penyimpanan" autofocus :source="store.kelompokPenyimpanans"
+                :loading="store.loadingKelompokPenyimpanan" @buang="cariKelompokPenyimpanan"
+                @on-enter="scKelompokPenyimpanan" />
+              <q-icon size="16px" name="icon-mat-help_outline" color="info" class="cursor-pointer">
+                <q-tooltip anchor="top middle" self="bottom middle" :offset="[10, 10]">
                   <strong>Untuk Masukkan data ?</strong> <br>
                   <em>ketik data yang akan di input</em><br>
                   <em>contoh</em><br>
@@ -285,52 +134,19 @@
             <!-- Kelompok RKO -->
             <div class="row q-mb-xs">
               <div class="col-12">
-                <app-autocomplete-debounce-input
-                  v-model="store.form.kelompok_rko"
-                  autocomplete="rs2"
-                  option-label="rs2"
-                  option-value="rs2"
-                  valid
-                  outlined
-                  label="Kelompok RKO"
-                  autofocus
-                  :source="store.kelompokRKOs"
-                  :loading="store.loadingKelompokRKO"
-                  @buang="cariKelompokRKO"
-                />
+                <app-autocomplete-debounce-input v-model="store.form.kelompok_rko" autocomplete="rs2" option-label="rs2"
+                  option-value="rs2" valid outlined label="Kelompok RKO" autofocus :source="store.kelompokRKOs"
+                  :loading="store.loadingKelompokRKO" @buang="cariKelompokRKO" />
               </div>
             </div>
             <!-- Jenis Produk -->
-            <div
-              :key="store.form.kelas_terapi"
-              class="row items-center justify-between q-mb-xs"
-            >
-              <app-autocomplete-debounce-input
-                v-model="store.form.kelas_terapi"
-                style="width:90%"
-                autocomplete="jenisproduk"
-                option-label="jenisproduk"
-                option-value="jenisproduk"
-                outlined
-                valid
-                label="Jenis Produk"
-                autofocus
-                :source="store.jenisProduks"
-                :loading="store.loadingJenisProduk"
-                @buang="cariJenisProduk"
-                @on-enter="scJenisProduk"
-              />
-              <q-icon
-                size="16px"
-                name="icon-mat-help_outline"
-                color="info"
-                class="cursor-pointer"
-              >
-                <q-tooltip
-                  anchor="top middle"
-                  self="bottom middle"
-                  :offset="[10, 10]"
-                >
+            <div :key="store.form.kelas_terapi" class="row items-center justify-between q-mb-xs">
+              <app-autocomplete-debounce-input v-model="store.form.kelas_terapi" style="width:90%"
+                autocomplete="jenisproduk" option-label="jenisproduk" option-value="jenisproduk" outlined valid
+                label="Jenis Produk" autofocus :source="store.jenisProduks" :loading="store.loadingJenisProduk"
+                @buang="cariJenisProduk" @on-enter="scJenisProduk" />
+              <q-icon size="16px" name="icon-mat-help_outline" color="info" class="cursor-pointer">
+                <q-tooltip anchor="top middle" self="bottom middle" :offset="[10, 10]">
                   <strong>Untuk Masukkan data ?</strong> <br>
                   <em>ketik data yang akan di input</em><br>
                   <em>contoh</em><br>
@@ -340,36 +156,13 @@
               </q-icon>
             </div>
             <!-- Kandungan / nama generik -->
-            <div
-              :key="store.form.kandungan"
-              class="row items-center justify-between q-mb-xs"
-            >
-              <app-autocomplete-debounce-input
-                v-model="store.form.kandungan"
-                style="width:90%"
-                autocomplete="nama"
-                option-label="nama"
-                option-value="nama"
-                outlined
-                valid
-                label="Kandungan / Nama Generik"
-                autofocus
-                :source="store.kandungans"
-                :loading="store.loadingKandungan"
-                @buang="cariKandungan"
-                @on-enter="scKandungan"
-              />
-              <q-icon
-                size="16px"
-                name="icon-mat-help_outline"
-                color="info"
-                class="cursor-pointer"
-              >
-                <q-tooltip
-                  anchor="top middle"
-                  self="bottom middle"
-                  :offset="[10, 10]"
-                >
+            <div :key="store.form.kandungan" class="row items-center justify-between q-mb-xs">
+              <app-autocomplete-debounce-input v-model="store.form.kandungan" style="width:90%" autocomplete="nama"
+                option-label="nama" option-value="nama" outlined valid label="Kandungan / Nama Generik" autofocus
+                :source="store.kandungans" :loading="store.loadingKandungan" @buang="cariKandungan"
+                @on-enter="scKandungan" />
+              <q-icon size="16px" name="icon-mat-help_outline" color="info" class="cursor-pointer">
+                <q-tooltip anchor="top middle" self="bottom middle" :offset="[10, 10]">
                   <strong>Untuk Masukkan data ?</strong> <br>
                   <em>ketik data yang akan di input</em><br>
                   <em>contoh</em><br>
@@ -383,118 +176,55 @@
           <div class="col-md-6 col-xs-12">
             <!-- nama Obat  -->
             <div class="row q-mb-xs text-weight-bold text-red">
-              {{ store.form.nama_obat ? store.form.nama_obat:'belum terbetuk nama obat' }}
+              {{ store.form.nama_obat ? store.form.nama_obat : 'belum terbetuk nama obat' }}
             </div>
             <!-- kelompok Napza -->
             <div class="row q-mb-xs items-center">
               Kelompok Nppza / Psikotropika:
-              <q-option-group
-                v-model="store.form.kelompok_psikotropika"
-                :options="store.optionNapzas"
-                color="primary"
-                class="q-ml-sm"
-                dense
-                inline
-              />
+              <q-option-group v-model="store.form.kelompok_psikotropika" :options="store.optionNapzas" color="primary"
+                class="q-ml-sm" dense inline />
             </div>
             <!-- Kronis -->
             <div class="row q-mb-xs items-center">
               Obat Kronis ?
-              <q-option-group
-                v-model="store.form.status_kronis"
-                :options="store.optionKronis"
-                color="primary"
-                class="q-ml-sm"
-                dense
-                inline
-              />
+              <q-option-group v-model="store.form.status_kronis" :options="store.optionKronis" color="primary"
+                class="q-ml-sm" dense inline />
             </div>
             <!--  Keterangan Kronis  -->
             <div class="row q-mb-xs items-center">
               <div class="col-12">
-                <q-input
-                  v-model="store.form.keterangan_kronis"
-                  dense
-                  label="Restriksi Fornas"
-                  standout="bg-yellow-3"
-                  outlined
-                />
+                <q-input v-model="store.form.keterangan_kronis" dense label="Restriksi Fornas" standout="bg-yellow-3"
+                  outlined />
               </div>
             </div>
             <!-- PRB -->
             <div class="row q-mb-xs items-center">
               Obat PRB ?
-              <q-option-group
-                v-model="store.form.status_prb"
-                :options="store.optionPrb"
-                color="primary"
-                class="q-ml-sm"
-                dense
-                inline
-              />
+              <q-option-group v-model="store.form.status_prb" :options="store.optionPrb" color="primary" class="q-ml-sm"
+                dense inline />
             </div>
             <!-- sistem bayar -->
             <div class="row q-mb-xs items-center">
               Sistem bayar:
-              <q-option-group
-                v-model="store.form.sistembayar"
-                :options="store.optionSistemBayars"
-                color="primary"
-                class="q-ml-sm"
-                dense
-                inline
-              />
+              <q-option-group v-model="store.form.sistembayar" :options="store.optionSistemBayars" color="primary"
+                class="q-ml-sm" dense inline />
             </div>
             <!-- Kode 108 -->
             <div class="row q-mb-xs">
               <div class="col-12">
-                <app-autocomplete-debounce-input
-                  v-model="store.form.kode108"
-                  autocomplete="uraian"
-                  option-label="uraian"
-                  option-value="kode"
-                  valid
-                  outlined
-                  label="Kode 108"
-                  autofocus
-                  :source="store.kodeBelanjas"
-                  :loading="store.loadingKodeBelanja"
-                  @buang="cariKodeBelanja"
-                  @on-select="kodeBelanjaDipilih"
-                />
+                <app-autocomplete-debounce-input v-model="store.form.kode108" autocomplete="uraian"
+                  option-label="uraian" option-value="kode" valid outlined label="Kode 108" autofocus
+                  :source="store.kodeBelanjas" :loading="store.loadingKodeBelanja" @buang="cariKodeBelanja"
+                  @on-select="kodeBelanjaDipilih" />
               </div>
             </div>
             <!-- Satuan Besar -->
-            <div
-              :key="store.form.satuan_b"
-              class="row items-center justify-between q-mb-xs"
-            >
-              <app-autocomplete-debounce-input
-                v-model="store.form.satuan_b"
-                style="width:90%"
-                autocomplete="nama"
-                option-label="nama"
-                option-value="nama"
-                outlined
-                valid
-                label="Satuan Besar"
-                autofocus
-                :source="store.satuanBs"
-                :loading="store.loadingSatuanB"
-                @buang="cariSatuanB"
-                @on-enter="scSatuanBes"
-              />
-              <q-icon
-                size="16px"
-                name="icon-mat-help_outline"
-                color="info"
-                class="cursor-pointer"
-              >
-                <q-tooltip
-                  anchor="top middle"
-                  self="bottom middle"
-                  :offset="[10, 10]"
-                >
+            <div :key="store.form.satuan_b" class="row items-center justify-between q-mb-xs">
+              <app-autocomplete-debounce-input v-model="store.form.satuan_b" style="width:90%" autocomplete="nama"
+                option-label="nama" option-value="nama" outlined valid label="Satuan Besar" autofocus
+                :source="store.satuanBs" :loading="store.loadingSatuanB" @buang="cariSatuanB" @on-enter="scSatuanBes" />
+              <q-icon size="16px" name="icon-mat-help_outline" color="info" class="cursor-pointer">
+                <q-tooltip anchor="top middle" self="bottom middle" :offset="[10, 10]">
                   <strong>Untuk Masukkan data ?</strong> <br>
                   <em>ketik data yang akan di input</em><br>
                   <em>contoh</em><br>
@@ -504,36 +234,12 @@
               </q-icon>
             </div>
             <!-- Satuan Kecil -->
-            <div
-              :key="store.form.satuan_k"
-              class="row items-center justify-between q-mb-xs"
-            >
-              <app-autocomplete-debounce-input
-                v-model="store.form.satuan_k"
-                style="width:90%"
-                autocomplete="nama"
-                option-label="nama"
-                option-value="nama"
-                outlined
-                valid
-                label="Satuan Kecil"
-                autofocus
-                :source="store.satuanKs"
-                :loading="store.loadingSatuanK"
-                @buang="cariSatuanK"
-                @on-enter="scSatuanKec"
-              />
-              <q-icon
-                size="16px"
-                name="icon-mat-help_outline"
-                color="info"
-                class="cursor-pointer"
-              >
-                <q-tooltip
-                  anchor="top middle"
-                  self="bottom middle"
-                  :offset="[10, 10]"
-                >
+            <div :key="store.form.satuan_k" class="row items-center justify-between q-mb-xs">
+              <app-autocomplete-debounce-input v-model="store.form.satuan_k" style="width:90%" autocomplete="nama"
+                option-label="nama" option-value="nama" outlined valid label="Satuan Kecil" autofocus
+                :source="store.satuanKs" :loading="store.loadingSatuanK" @buang="cariSatuanK" @on-enter="scSatuanKec" />
+              <q-icon size="16px" name="icon-mat-help_outline" color="info" class="cursor-pointer">
+                <q-tooltip anchor="top middle" self="bottom middle" :offset="[10, 10]">
                   <strong>Untuk Masukkan data ?</strong> <br>
                   <em>ketik data yang akan di input</em><br>
                   <em>contoh</em><br>
@@ -545,109 +251,63 @@
             <!-- Status Generik -->
             <div class="row q-mb-xs items-center">
               Status Generik:
-              <q-option-group
-                v-model="store.form.status_generik"
-                :options="store.optionStatusGeneriks"
-                color="primary"
-                class="q-ml-sm"
-                dense
-                inline
-              />
+              <q-option-group v-model="store.form.status_generik" :options="store.optionStatusGeneriks" color="primary"
+                class="q-ml-sm" dense inline />
             </div>
             <!-- Status Fornas -->
             <div class="row q-mb-xs items-center">
               Status Fornas:
-              <q-option-group
-                v-model="store.form.status_fornas"
-                :options="store.optionStatusFornases"
-                color="primary"
-                class="q-ml-sm"
-                dense
-                inline
-              />
+              <q-option-group v-model="store.form.status_fornas" :options="store.optionStatusFornases" color="primary"
+                class="q-ml-sm" dense inline />
               >
             </div>
             <!-- Status forkit -->
             <div class="row q-mb-xs items-center">
               Status Forkit:
-              <q-option-group
-                v-model="store.form.status_forkid"
-                :options="store.optionStatusForkits"
-                color="primary"
-                class="q-ml-sm"
-                dense
-                inline
-              />
+              <q-option-group v-model="store.form.status_forkid" :options="store.optionStatusForkits" color="primary"
+                class="q-ml-sm" dense inline />
             </div>
             <!-- obat Progran -->
             <div class="row q-mb-xs items-center">
               Obat Program:
-              <q-option-group
-                v-model="store.form.obat_program"
-                :options="store.optionYN"
-                color="primary"
-                class="q-ml-sm"
-                dense
-                inline
-              />
+              <q-option-group v-model="store.form.obat_program" :options="store.optionYN" color="primary"
+                class="q-ml-sm" dense inline />
             </div>
             <!-- obat donasi -->
             <div class="row q-mb-xs items-center">
               Obat Donasi:
-              <q-option-group
-                v-model="store.form.obat_donasi"
-                :options="store.optionYN"
-                color="primary"
-                class="q-ml-sm"
-                dense
-                inline
-              />
+              <q-option-group v-model="store.form.obat_donasi" :options="store.optionYN" color="primary" class="q-ml-sm"
+                dense inline />
+            </div>
+            <!-- obat kebijakan -->
+            <div class="row q-mb-xs items-center">
+              Obat Kebijakan:
+              <q-option-group v-model="store.form.obat_kebijakan" :options="store.optionYN" color="primary"
+                class="q-ml-sm" dense inline />
             </div>
             <!-- obat Konsinyasi -->
             <div class="row q-mb-xs items-center">
               Status Konsinyasi:
-              <q-option-group
-                v-model="store.form.status_konsinyasi"
-                :options="store.optionStatusKonsinyasi"
-                color="primary"
-                class="q-ml-sm"
-                dense
-                inline
-              />
+              <q-option-group v-model="store.form.status_konsinyasi" :options="store.optionStatusKonsinyasi"
+                color="primary" class="q-ml-sm" dense inline />
             </div>
 
             <!-- Gudang -->
             <div class="row q-mb-xs items-center justify-between">
               di Gudang:
-              <q-option-group
-                v-model="store.form.gudang"
-                :options="store.optionGudangs"
-                color="primary"
-                class="q-ml-sm"
-                dense
-              />
+              <q-option-group v-model="store.form.gudang" :options="store.optionGudangs" color="primary" class="q-ml-sm"
+                dense />
             </div>
             <!-- Nilai TKDN -->
             <div class="row q-mb-xs">
               <div class="col-12">
-                <app-input
-                  v-model="store.form.nilai_kdn"
-                  valid
-                  label="Nilai TKDN"
-                  outlined
-                />
+                <app-input v-model="store.form.nilai_kdn" valid label="Nilai TKDN" outlined />
               </div>
             </div>
             <!-- Sertifukan tkdn -->
             <div class="row q-mb-xs">
               <div class="col-12">
-                <app-input
-                  v-model="store.form.sertifikatkdn"
-                  valid
-                  label="Sertifikat TKDN"
-                  outlined
-                  autofocus
-                />
+                <app-input v-model="store.form.sertifikatkdn" valid label="Sertifikat TKDN" outlined autofocus />
               </div>
             </div>
           </div>
@@ -655,38 +315,13 @@
         <!-- kelas terapi -->
         <div class="row q-col-gutter-md q-mb-md">
           <div class="col-6">
-            <div
-              :key="store.temp.kelas_terapi"
-              class="row items-center justify-between q-mb-xs"
-            >
-              <app-autocomplete-debounce-input
-                ref="refKelasTerapi"
-                v-model="store.temp.kelas_terapi"
-                style="width:90%"
-                autocomplete="kelasterapi"
-                option-label="kelasterapi"
-                option-value="kelasterapi"
-                outlined
-                valid
-                label="Pilih kelas terapi"
-                autofocus
-                :source="store.kelasTerapis"
-                :loading="store.loadingKelasTerapi"
-                @buang="cariKelasTerapi"
-                @on-enter="scKelasTerapi"
-                @on-select="kelasTerapiSelected"
-              />
-              <q-icon
-                size="16px"
-                name="icon-mat-help_outline"
-                color="info"
-                class="cursor-pointer"
-              >
-                <q-tooltip
-                  anchor="top middle"
-                  self="bottom middle"
-                  :offset="[10, 10]"
-                >
+            <div :key="store.temp.kelas_terapi" class="row items-center justify-between q-mb-xs">
+              <app-autocomplete-debounce-input ref="refKelasTerapi" v-model="store.temp.kelas_terapi" style="width:90%"
+                autocomplete="kelasterapi" option-label="kelasterapi" option-value="kelasterapi" outlined valid
+                label="Pilih kelas terapi" autofocus :source="store.kelasTerapis" :loading="store.loadingKelasTerapi"
+                @buang="cariKelasTerapi" @on-enter="scKelasTerapi" @on-select="kelasTerapiSelected" />
+              <q-icon size="16px" name="icon-mat-help_outline" color="info" class="cursor-pointer">
+                <q-tooltip anchor="top middle" self="bottom middle" :offset="[10, 10]">
                   <strong>Untuk Masukkan data ?</strong> <br>
                   <em>ketik data yang akan di input</em><br>
                   <em>contoh</em><br>
@@ -702,27 +337,14 @@
             </div>
             <div v-if="store.form.kelasterapis">
               <div v-if="store.form.kelasterapis?.length">
-                <div
-                  v-for="(ter,i) in store.form.kelasterapis"
-                  :key="i"
-                  class="row justify-between items-center"
-                >
+                <div v-for="(ter, i) in store.form.kelasterapis" :key="i" class="row justify-between items-center">
                   <div>
                     {{ ter.kelasterapi }}
                   </div>
                   <div>
-                    <q-icon
-                      size="16px"
-                      name="icon-mat-cancel"
-                      color="negative"
-                      class="cursor-pointer"
-                      @click="hapusTerapi(i)"
-                    >
-                      <q-tooltip
-                        anchor="top middle"
-                        self="bottom middle"
-                        :offset="[10, 10]"
-                      >
+                    <q-icon size="16px" name="icon-mat-cancel" color="negative" class="cursor-pointer"
+                      @click="hapusTerapi(i)">
+                      <q-tooltip anchor="top middle" self="bottom middle" :offset="[10, 10]">
                         Hapus
                       </q-tooltip>
                     </q-icon>
@@ -735,31 +357,11 @@
         <!-- indikasi obat -->
         <div class="row q-col-gutter-md q-mb-md">
           <div class="col-6">
-            <div
-              :key="store.temp.indikasi"
-              class="row items-center justify-between q-mb-xs"
-            >
-              <app-input
-                ref="refIndikasi"
-                v-model="store.temp.indikasi"
-                style="width:90%"
-                outlined
-                valid
-                label="indikasi"
-                autofocus
-                @keyup.enter.prevent="tambahIndikasi"
-              />
-              <q-icon
-                size="16px"
-                name="icon-mat-help_outline"
-                color="info"
-                class="cursor-pointer"
-              >
-                <q-tooltip
-                  anchor="top middle"
-                  self="bottom middle"
-                  :offset="[10, 10]"
-                >
+            <div :key="store.temp.indikasi" class="row items-center justify-between q-mb-xs">
+              <app-input ref="refIndikasi" v-model="store.temp.indikasi" style="width:90%" outlined valid
+                label="indikasi" autofocus @keyup.enter.prevent="tambahIndikasi" />
+              <q-icon size="16px" name="icon-mat-help_outline" color="info" class="cursor-pointer">
+                <q-tooltip anchor="top middle" self="bottom middle" :offset="[10, 10]">
                   <strong>Untuk Masukkan data ?</strong> <br>
                   <em>ketik data yang akan di input</em><br>
                   <em>contoh</em><br>
@@ -775,27 +377,14 @@
             </div>
             <div v-if="store.form.indikasis">
               <div v-if="store.form.indikasis?.length">
-                <div
-                  v-for="(ter,i) in store.form.indikasis"
-                  :key="i"
-                  class="row justify-between items-center"
-                >
+                <div v-for="(ter, i) in store.form.indikasis" :key="i" class="row justify-between items-center">
                   <div>
                     {{ ter.indikasi }}
                   </div>
                   <div>
-                    <q-icon
-                      size="16px"
-                      name="icon-mat-cancel"
-                      color="negative"
-                      class="cursor-pointer"
-                      @click="hapusIndikasi(i)"
-                    >
-                      <q-tooltip
-                        anchor="top middle"
-                        self="bottom middle"
-                        :offset="[10, 10]"
-                      >
+                    <q-icon size="16px" name="icon-mat-cancel" color="negative" class="cursor-pointer"
+                      @click="hapusIndikasi(i)">
+                      <q-tooltip anchor="top middle" self="bottom middle" :offset="[10, 10]">
                         Hapus
                       </q-tooltip>
                     </q-icon>
@@ -808,18 +397,8 @@
         <div class="row q-col-gutter-md" />
         <q-separator class="q-my-md" />
         <div class="text-right">
-          <app-btn
-            type="reset"
-            color="dark"
-            label="Cancel"
-            class="q-mr-md"
-            @click="onReset"
-          />
-          <app-btn
-            label="Simpan"
-            :loading="store.loading"
-            @click="onSubmit"
-          />
+          <app-btn type="reset" color="dark" label="Cancel" class="q-mr-md" @click="onReset" />
+          <app-btn label="Simpan" :loading="store.loading" @click="onSubmit" />
         </div>
         <!-- </q-form> -->
       </q-card-section>
@@ -1088,9 +667,9 @@ const onReset = () => {
 }
 </script>
 <style lang="scss" scoped>
-.lebar{
-  max-width:80vw;
-  width:60vw;
+.lebar {
+  max-width: 80vw;
+  width: 60vw;
   // height: 40vh;
 }
 </style>

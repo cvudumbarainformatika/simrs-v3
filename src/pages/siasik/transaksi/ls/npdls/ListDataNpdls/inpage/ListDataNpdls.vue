@@ -53,8 +53,11 @@
                 {{ props.row?.pptk }}
               </q-badge>
             </q-td>
-            <q-td key="kegiatanblud" :props="props" class="text-left">
+            <q-td key="kegiatanblud" :props="props" class="text-left q-gutter-y-sm">
               {{ props.row?.kegiatanblud }}
+              <q-badge v-if="props.row?.noserahterima" outline class="text-teal-9">
+                {{ props.row?.noserahterima }}
+              </q-badge>
               <q-badge v-if="props.row?.nonotadinas" outline class="text-orange-9">
                 {{ props.row?.nonotadinas }}
               </q-badge>
@@ -184,7 +187,7 @@ const listnpdls = [
     label: 'Kegiatan BLUD',
     name: 'kegiatanblud',
     align: 'center',
-    field: 'kegiatanblud',
+    field: row => [row.kegiatanblud, row.noserahterima, row.nonotadinas],
     headerStyle: 'width: 200px;'
   },
   {
@@ -234,9 +237,25 @@ function viewCetakDataNpdls(row) {
 
 const editnpds = ref(null)
 function editNpdls(row) {
+  if (auth.user?.pegawai?.kdpegsimrs !== 'sa') {
+    $q.notify({
+      type: 'negative',
+      message: 'Anda tidak Memiliki Akses Edit Data ini, Silahkan Hubungi Admin'
+    })
+    return
+  }
+  if (row?.kunci === '1') {
+    $q.notify({
+      type: 'negative',
+      message: 'Data Masih Terkunci, Silahkan Buka Kunci Terlebih Dahulu'
+    })
+    return
+  }
   router.push({ path: '/siasik/ls/npdls/newformnpd', replace: true, query: { id: row.id } })
   editnpds.value = row
   form.form = editnpds.value
+  form.form.pptk = editnpds.value.pptk
+  form.form.kodepptk = editnpds.value.kodepptk
   console.log('formxx', form.form)
   carisrt.reqs.kodepenerima = editnpds.value?.kodepenerima
   carisrt.reqs.kodekegiatanblud = editnpds.value?.kodekegiatanblud
@@ -246,6 +265,7 @@ function editNpdls(row) {
   form.getRincianBelanja()
   form.form.rincians = []
   form.disabled = true
+  form.disabledx = true
 }
 const printcair = ref(null)
 function PrintPencairan(row) {

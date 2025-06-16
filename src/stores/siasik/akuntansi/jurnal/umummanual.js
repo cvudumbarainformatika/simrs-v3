@@ -80,7 +80,7 @@ export const usejurnalumummanual = defineStore('jurnal_umum_manual', {
       this.totalk = hasil.reduce((a, b) => parseFloat(a) + parseFloat(b.totkredit), 0)
     },
     async saveData() {
-      console.log('no', this.form.nobukti)
+      // console.log('no', this.form.nobukti)
       this.loading = true
       try {
         const resp = await api.post('v1/akuntansi/jurnalumum/simpanjurnalmanual', this.form)
@@ -112,7 +112,7 @@ export const usejurnalumummanual = defineStore('jurnal_umum_manual', {
         const resp = await api.get('v1/akuntansi/jurnalumum/getrincian', params)
         if (resp.status === 200) {
           this.transall = resp.data
-          console.log('transrinci', this.transall)
+          // console.log('transrinci', this.transall)
           const hasilglobal = []
           this.loading = false
           this.transall?.forEach(x => {
@@ -130,8 +130,8 @@ export const usejurnalumummanual = defineStore('jurnal_umum_manual', {
             }
             this.totalrincid = hasil?.debet
             this.totalrincik = hasil?.kredit
-            console.log('debit', this.totalrincid)
-            console.log('kredit', this.totalrincik)
+            // console.log('debit', this.totalrincid)
+            // console.log('kredit', this.totalrincik)
             hasilglobal.push(hasil)
           })
         }

@@ -17,26 +17,26 @@ export const useFormSilpa = defineStore('Silpa_form', {
     }
   }),
   actions: {
-    resetFORM () {
+    resetFORM() {
       this.form = {}
       const columns = ['notrans', 'tanggal', 'tahun', 'nominal']
       for (let i = 0; i < columns?.length; i++) {
         this.setForm(columns[i], null)
       }
     },
-    setOpen () {
+    setOpen() {
       this.isOpen = !this.isOpen
       // this.getLayanan();
       // this.getKategori();
       // this.getSatuan();
     },
-    newData () {
+    newData() {
       this.resetFORM()
       this.edited = false
       this.isOpen = !this.isOpen
       // this.getGedungsData()
     },
-    editData (val) {
+    editData(val) {
       this.edited = true
       const keys = Object.keys(val)
       keys.forEach((key, index) => {
@@ -45,16 +45,16 @@ export const useFormSilpa = defineStore('Silpa_form', {
       // kecuali yang ada di object user
       this.isOpen = !this.isOpen
     },
-    setAmbils (key, val) {
+    setAmbils(key, val) {
       this.ambils[key] = val
     },
-    setForm (key, val) {
+    setForm(key, val) {
       this.form[key] = val
     },
-    emptyForm () {
+    emptyForm() {
       this.form = {}
     },
-    simpanSilpa () {
+    simpanSilpa() {
       // cari nama bank
       // const bank = this.rekeningbluds.find(
       //   (x) => x.noRek === this.form.rekening
@@ -71,7 +71,7 @@ export const useFormSilpa = defineStore('Silpa_form', {
         api
           .post('/v1/transaksi/transaksi_anggaran/transsilpa', this.form)
           .then((resp) => {
-            console.log('isian', resp)
+            // console.log('isian', resp)
             this.loading = false
             this.isOpen = false
             notifSuccess(resp)

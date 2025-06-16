@@ -184,7 +184,7 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
       const params = { params: this.reqs }
       return new Promise((resolve) => {
         api.get('v1/akuntansi/bukubesar/getbukubesar', params).then((resp) => {
-          console.log('getBUKUbesar', resp?.data)
+          // console.log('getBUKUbesar', resp?.data)
           if (resp.status === 200) {
             this.jurnalotoms = resp?.data?.jurnalotom
             this.jurnalmanuals = resp?.data?.jurnalmanual
@@ -949,7 +949,7 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
         this.hasilRinci6 = this.hasilMapssaldo(arrBuku6)
         // console.log('BUKU BESAR KODE6', this.hasilRinci6)
       }
-      console.log('BUKU BESAR KODE6', this.hasilRinci6)
+      // console.log('BUKU BESAR KODE6', this.hasilRinci6)
 
       const kode5 = []
       for (let z = 0; z < arr5?.length; z++) {
@@ -978,7 +978,7 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
       else {
         this.hasilRinci5 = this.hasilMapssaldo(arrBuku5)
       }
-      console.log('BUKU BESAR KODE5', this.hasilRinci5)
+      // console.log('BUKU BESAR KODE5', this.hasilRinci5)
 
       const kode4 = []
       for (let z = 0; z < arr4?.length; z++) {
@@ -1007,7 +1007,7 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
       else {
         this.hasilRinci4 = this.hasilMapssaldo(arrBuku4)
       }
-      console.log('BUKU BESAR KODE4', this.hasilRinci4)
+      // console.log('BUKU BESAR KODE4', this.hasilRinci4)
 
       const kode3 = []
       // const fil3 = arr3.map((x) => x.kode3)
@@ -1064,7 +1064,7 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
       else {
         this.hasilRinci3 = this.hasilMapssaldo(arrBuku3)
       }
-      console.log('BUKU BESAR KODE3', this.hasilRinci3)
+      // console.log('BUKU BESAR KODE3', this.hasilRinci3)
 
       const kode2 = []
       for (let z = 0; z < arr2?.length; z++) {
@@ -1093,7 +1093,7 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
       else {
         this.hasilRinci2 = this.hasilMapssaldo(arrBuku2)
       }
-      console.log('BUKU BESAR KODE2', this.hasilRinci2)
+      // console.log('BUKU BESAR KODE2', this.hasilRinci2)
 
       const kode1 = []
       for (let z = 0; z < arr1?.length; z++) {
@@ -1123,7 +1123,7 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
       else {
         this.hasilRinci1 = this.hasilMapssaldo(arrBuku1)
       }
-      console.log('BUKU BESAR KODE1', this.hasilRinci1)
+      // console.log('BUKU BESAR KODE1', this.hasilRinci1)
     },
     hasilMapssaldo(arr) {
       let total = 0

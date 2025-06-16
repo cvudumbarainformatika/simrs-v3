@@ -75,7 +75,7 @@ export const useLaporanLraLaprealisasianggaranStore = defineStore('laporan_reali
       const params = { params: this.params }
       return new Promise((resolve) => {
         api.get('v1/laporan/lra/bidang', params).then((resp) => {
-          console.log('bidang', resp)
+          // console.log('bidang', resp)
           if (resp.status === 200) {
             this.mapbidangptk = resp.data
             // this.bidangs = resp.data
@@ -137,7 +137,7 @@ export const useLaporanLraLaprealisasianggaranStore = defineStore('laporan_reali
         )
         : []
       this.kegiatans = data
-      console.log('kegiatans', this.kegiatans)
+      // console.log('kegiatans', this.kegiatans)
     },
     getDataRealisasi() {
       this.loadingdata = true
@@ -145,7 +145,7 @@ export const useLaporanLraLaprealisasianggaranStore = defineStore('laporan_reali
       return new Promise(resolve => {
         api.get('v1/laporan/lra/laplra', params).then(resp => {
           if (resp.status === 200) {
-            console.log('DATA LRA', resp)
+            // console.log('DATA LRA', resp)
             // RESET HASIL GET
             this.items = []
             this.kodeakun = []
@@ -189,7 +189,7 @@ export const useLaporanLraLaprealisasianggaranStore = defineStore('laporan_reali
     // NILAI PAGU PENDAPATAN
     nilaiPendapatan(val) {
       const real = this.pagupendapatans?.map((x) => parseFloat(x.nilai))
-      console.log('datapendapatanmmm', real)
+      // console.log('datapendapatanmmm', real)
       const total = {
         totalPaguPendapatan: real?.reduce((a, b) => a + b, 0)
       }
@@ -369,7 +369,7 @@ export const useLaporanLraLaprealisasianggaranStore = defineStore('laporan_reali
       // anggaran.push(...val)
       this.items.push(...anggaran)
       // this.dataitems = this.items
-      console.log('thisitem', this.items)
+      // console.log('thisitem', this.items)
       // val = Anggaran
       // console.log('paguuuu', val)
       // return this.items
@@ -1040,31 +1040,31 @@ export const useLaporanLraLaprealisasianggaranStore = defineStore('laporan_reali
       )
 
       this.kodeakun.push(kode1)
-      console.log('kelompok', this.kodeakun)
+      // console.log('kelompok', this.kodeakun)
       const sortkode1 = this.kodeakun.sort(({ kodeall3: a }, { kodeall3: b }) =>
         a < b ? -1 : a > b ? 1 : 0
       )
 
       this.kodekelompok.push(kode1, ...kode2)
-      console.log('kelompok', this.kodekelompok)
+      // console.log('kelompok', this.kodekelompok)
       const sortkode2 = this.kodekelompok.sort(({ kodeall3: a }, { kodeall3: b }) =>
         a < b ? -1 : a > b ? 1 : 0
       )
 
       this.kodejenis.push(kode1, ...kode2, ...kode3)
-      console.log('jenis', this.kodejenis)
+      // console.log('jenis', this.kodejenis)
       const sortkode3 = this.kodejenis.sort(({ kodeall3: a }, { kodeall3: b }) =>
         a < b ? -1 : a > b ? 1 : 0
       )
 
       this.kodeobjek.push(kode1, ...kode2, ...kode3, ...kode4)
-      console.log('jenis', this.kodeobjek)
+      // console.log('jenis', this.kodeobjek)
       const sortkode4 = this.kodeobjek.sort(({ kodeall3: a }, { kodeall3: b }) =>
         a < b ? -1 : a > b ? 1 : 0
       )
 
       this.koderinciobjek.push(kode1, ...kode2, ...kode3, ...kode4, ...kode5)
-      console.log('jenis', this.koderinciobjek)
+      // console.log('jenis', this.koderinciobjek)
       const sortkode5 = this.koderinciobjek.sort(({ kodeall3: a }, { kodeall3: b }) =>
         a < b ? -1 : a > b ? 1 : 0
       )

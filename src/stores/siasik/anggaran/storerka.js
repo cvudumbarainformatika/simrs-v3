@@ -120,14 +120,14 @@ export const useRkaStore = defineStore('store_rka_siasik', {
         )
         : []
       this.kegiatans = data
-      console.log('kegiatans', this.kegiatans)
+      // console.log('kegiatans', this.kegiatans)
     },
     getAnggaran() {
       this.loading = true
       const params = { params: this.reqs }
       return new Promise((resolve) => {
         api.get('v1/siasik/anggaran/getanggaran', params).then((resp) => {
-          console.log('Data Anggaran', resp)
+          // console.log('Data Anggaran', resp)
           if (resp.status === 200) {
             this.dataanggaran = resp.data
             // this.bidangs = resp.data
@@ -156,7 +156,7 @@ export const useRkaStore = defineStore('store_rka_siasik', {
         rka.push(obj)
         totalrka.push(obj)
       }
-      console.log('totalpagukegiatan', totalrka)
+      // console.log('totalpagukegiatan', totalrka)
       const uniq2 = this.dataanggaran.map((x) => x.kode2)
       const fils2 = uniq2?.length ? [...new Set(uniq2)] : []
       for (let i = 0; i < fils2?.length; i++) {
@@ -233,7 +233,7 @@ export const useRkaStore = defineStore('store_rka_siasik', {
         )
       const dataRKA = sortAnggaran(rka)
       this.datarka = dataRKA
-      console.log('DATA RKA', this.datarka)
+      // console.log('DATA RKA', this.datarka)
 
       this.totalPagukegiatan = totalrka
     }

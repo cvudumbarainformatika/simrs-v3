@@ -34,10 +34,10 @@ export const useLPSALStore = defineStore('laporan_sal', {
     inputlainlain: 0
   }),
   actions: {
-    setParameter (key, val) {
+    setParameter(key, val) {
       this.reqs[key] = val
     },
-    setBiaya () {
+    setBiaya() {
       return new Promise((resolve, reject) => {
         if (this.inputbiaya !== null || this.inputbiaya !== '') {
           this.biayatahunjln.nilai.push(parseFloat(this.inputbiaya))
@@ -45,7 +45,7 @@ export const useLPSALStore = defineStore('laporan_sal', {
         resolve()
       })
     },
-    setKoreksi () {
+    setKoreksi() {
       return new Promise((resolve, reject) => {
         // if (this.inputkoreksi !== null || this.inputkoreksi !== '') {
         this.koreksithnsblm.nilai.push(parseFloat(this.inputkoreksi))
@@ -53,7 +53,7 @@ export const useLPSALStore = defineStore('laporan_sal', {
         resolve()
       })
     },
-    setLainlain () {
+    setLainlain() {
       return new Promise((resolve, reject) => {
         // if (this.inputlainlain !== null || this.inputlainlain !== '') {
         this.lainlain.nilai.push(parseFloat(this.inputlainlain))
@@ -61,12 +61,12 @@ export const useLPSALStore = defineStore('laporan_sal', {
         resolve()
       })
     },
-    getDataLap () {
+    getDataLap() {
       this.loading = true
       const params = { params: this.reqs }
       return new Promise((resolve) => {
         api.get('v1/laporan/lra/getlra', params).then((resp) => {
-          console.log('data LRA', resp.data)
+          // console.log('data LRA', resp.data)
           if (resp.status === 200) {
             this.pendapatan = resp.data.pendapatan
             this.belanja = resp.data.belanja
@@ -91,7 +91,7 @@ export const useLPSALStore = defineStore('laporan_sal', {
               nilai: this.inputbiaya
             }
             this.biayatahunjln = pembiayaanthnjln
-            console.log('biayatahunjln', this.biayatahunjln)
+            // console.log('biayatahunjln', this.biayatahunjln)
 
             const pendp = this.pendapatan.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0)
             const blj = this.belanja.map((x) => parseFloat(x.subtotalx)).reduce((a, b) => a + b, 0)

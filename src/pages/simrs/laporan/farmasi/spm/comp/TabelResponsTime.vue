@@ -13,9 +13,14 @@
           <th>
             {{ store.params.response_time == 'Obat' ? 'Nomor Resep' : 'Nomor Permintaan' }}
           </th>
+          <th v-if="store.params.response_time == 'Obat'">
+            Ruangan
+          </th>
+          <th v-if="store.params.response_time == 'Obat'">
+            Dokter
+          </th>
           <th>
             {{ store.params.response_time == 'Obat' ? 'Jam Masuk Resep' : 'Tgl & Jam Pengajuan Permintaan' }}
-
           </th>
           <th>
             {{ store.params.response_time == 'Obat' ? 'Jam Selesai Obat' : 'Tgl & Jam Diterima ' +
@@ -44,6 +49,7 @@
           <th>
             {{ store.params.response_time == 'Obat' ? 'Lembar Resep' : 'Jumlah Permintaan' }}
           </th>
+
           <th>
             Total Menit
           </th>
@@ -89,6 +95,12 @@
             <td v-if="store.params.response_time == 'Obat'">
               <q-skeleton type="text" width="60px" height="25px" />
             </td>
+            <td v-if="store.params.response_time == 'Obat'">
+              <q-skeleton type="text" width="60px" height="25px" />
+            </td>
+            <td v-if="store.params.response_time == 'Obat'">
+              <q-skeleton type="text" width="60px" height="25px" />
+            </td>
           </tr>
         </template>
         <template v-else>
@@ -123,7 +135,7 @@
       <template v-else-if="!store.items?.length">
         <template v-if="store.tipe === 'Rinci'">
           <tr>
-            <td colspan="8">
+            <td :colspan="store.params.response_time == 'Obat' ? '10' : '8'">
               <app-no-data />
             </td>
           </tr>
@@ -155,6 +167,18 @@
                   {{ store.params.response_time == 'Obat' ? item?.noresep : item?.no_permintaan }}
                 </div>
               </td>
+
+              <td style="white-space: normal; max-width: 250px;">
+                <div class="row ">
+                  {{ item?.ruang }}
+                </div>
+              </td>
+              <td style="white-space: normal; max-width: 250px;">
+                <div class="row ">
+                  {{ item?.dokter }}
+                </div>
+              </td>
+
               <td style="white-space: normal; max-width: 250px;">
                 <div class="row ">
                   {{ date.formatDate(item?.tgl_kirim, 'DD MMMM / HH:mm:ss') }}

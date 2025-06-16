@@ -87,15 +87,15 @@ export const useNeracaStore = defineStore('Neraca_Akuntansi', {
     objekuitas: []
   }),
   actions: {
-    setParameter (key, val) {
+    setParameter(key, val) {
       this.reqs[key] = val
     },
-    getDataNeraca () {
+    getDataNeraca() {
       this.loading = true
       const params = { params: this.reqs }
       return new Promise((resolve) => {
         api.get('v1/akuntansi/neraca/getneraca', params).then((resp) => {
-          console.log('getData NERACA', resp?.data)
+          // console.log('getData NERACA', resp?.data)
           if (resp.status === 200) {
             this.setarakas = resp.data?.setarakas
             this.piutang = resp.data?.piutang
@@ -218,7 +218,7 @@ export const useNeracaStore = defineStore('Neraca_Akuntansi', {
               }
               objpersediaan.push(persediaan)
             }
-            console.log('persed', objpersediaan)
+            // console.log('persed', objpersediaan)
 
             // const objpersediaan = {
             //   kode: '1.1.12',
@@ -350,7 +350,7 @@ export const useNeracaStore = defineStore('Neraca_Akuntansi', {
               }
               objekuitas.push(obj)
             }
-            console.log('12121212', objekuitas)
+            // console.log('12121212', objekuitas)
             // const objekekuitas = []
             // const ek = '3.1.01'
             // const ekuitas = objekuitas.filter(x => x.kode === ek)

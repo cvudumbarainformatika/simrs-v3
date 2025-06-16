@@ -86,7 +86,7 @@
                         <q-item-section>Lihat Rincian</q-item-section>
                       </q-item>
                       <q-item clickable @click="editdata(props?.row)">
-                        <q-item-section :auth="user">Edit NPD</q-item-section>
+                        <q-item-section :auth="user">Edit Serahterima</q-item-section>
                       </q-item>
                     </q-list>
                   </q-menu>
@@ -189,7 +189,6 @@ const listserahterima = [
 const columnsserahterima = ref(listserahterima)
 const stp = ref(null)
 function viewRincian(row) {
-  console.log('row rincian', row)
   store.openDialogRinci = true
   stp.value = row.rinci
   store.listrinci = stp.value
@@ -275,7 +274,7 @@ function kunciData(row) {
 
 const editDataref = ref(null)
 function editdata(row) {
-  // console.log('auth', auth.user?.pegawai?.kdpegsimrs)
+
   if (auth.user?.pegawai?.kdpegsimrs !== 'sa') {
     $q.notify({
       type: 'negative',
@@ -290,13 +289,15 @@ function editdata(row) {
     })
     return
   }
-  console.log('row edit', row)
+
   router.push({ path: '/siasik/ls/serahterima/formserahterima', replace: true, query: { id: row.id } })
   editDataref.value = row
   form.formheader = editDataref.value
   form.transall = editDataref.value?.rinci
   form.params.kodekegiatan = editDataref.value?.kodekegiatanblud
   form.getRincianBelanja()
+  form.formheader.rinci = []
+
 }
 
 </script>

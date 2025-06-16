@@ -28,37 +28,37 @@ export const storeSisaAnggaran = defineStore('Sisa_Anggaran', {
   //   }
   // },
   actions: {
-    setSearch (val) {
+    setSearch(val) {
       this.params.q = val
       this.getDataTable()
     },
-    setOder (payload) {
+    setOder(payload) {
       this.params.order_by = payload
       this.params.sort === 'desc'
         ? (this.params.sort = 'asc')
         : (this.params.sort = 'desc')
       this.getDataTable()
     },
-    setPage (payload) {
+    setPage(payload) {
       // console.log('setPage', payload)
       this.params.page = payload
       this.getDataTable()
     },
-    setPerPage (payload) {
+    setPerPage(payload) {
       this.params.per_page = payload
       this.params.page = 1
       this.getDataTable()
     },
-    setColumns (payload) {
+    setColumns(payload) {
       const thumb = payload.map((x) => Object.keys(x))
       this.columns = thumb[0]
       // console.log('columns', this.columns)
     },
-    refreshTable () {
+    refreshTable() {
       this.params.page = 1
       this.getDataTable()
     },
-    getDataTable () {
+    getDataTable() {
       waitLoad('show')
       const params = { params: this.params }
       return new Promise((resolve, reject) => {
@@ -66,7 +66,7 @@ export const storeSisaAnggaran = defineStore('Sisa_Anggaran', {
           .get('/v1/transaksi/transaksi_anggaran/getsilpa', params)
           .then((resp) => {
             waitLoad('done')
-            console.log('dataaaaa', resp)
+            // console.log('dataaaaa', resp)
             if (resp.status === 200) {
               // this.loading = false
               this.items = resp.data.data
@@ -82,7 +82,7 @@ export const storeSisaAnggaran = defineStore('Sisa_Anggaran', {
           })
       })
     },
-    deletesData (payload) {
+    deletesData(payload) {
       this.loading = true
       const params = { id: payload }
       return new Promise((resolve, reject) => {

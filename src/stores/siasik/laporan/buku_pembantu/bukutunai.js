@@ -301,7 +301,7 @@ export const useLaporanBukuTunaiStore = defineStore('laporan_bukutunai', {
         }
         sisapjr.push(obj)
       }
-      console.log('sisa', sisapjr)
+      // console.log('sisa', sisapjr)
       // =====================================================
       // ===================================================cp
       const cp = []
@@ -348,7 +348,7 @@ export const useLaporanBukuTunaiStore = defineStore('laporan_bukutunai', {
       // Cari Total Zigzag
       this.hasilArray = this.cariHasilAkhirArray(hslSmntara)
 
-      console.log('hasil gabung', this.hasilArray)
+      // console.log('hasil gabung', this.hasilArray)
     },
 
     cariHasilAkhirArray(arr) {

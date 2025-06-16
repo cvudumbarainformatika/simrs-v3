@@ -51,7 +51,7 @@ export const useLaporanBukuBankStore = defineStore('laporan_bukubank', {
       await api
         .get('v1/laporan/laporan_bku/bukubank', params)
         .then((resp) => {
-          console.log('dataBukuBank', resp)
+          // console.log('dataBukuBank', resp)
           if (resp.status === 200) {
             this.hasilArray = []
             this.items = []
@@ -414,7 +414,7 @@ export const useLaporanBukuBankStore = defineStore('laporan_bukubank', {
       // Cari Total Zigzag
       this.hasilArray = this.cariHasilAkhirArray(hslSmntara)
 
-      console.log('hasil gabung', this.hasilArray)
+      // console.log('hasil gabung', this.hasilArray)
     },
 
     cariHasilAkhirArray(arr) {

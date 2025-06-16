@@ -26,7 +26,7 @@ export const useRbaStore = defineStore('store_rba_siasik', {
       const params = { params: this.reqs }
       return new Promise((resolve) => {
         api.get('v1/siasik/rba/getdatarba', params).then((resp) => {
-          console.log('Data RBA', resp)
+          // console.log('Data RBA', resp)
           if (resp.status === 200) {
             this.datarba = resp.data
 
@@ -178,7 +178,7 @@ export const useRbaStore = defineStore('store_rba_siasik', {
         )
       const dataRBA = sortRBA(rba)
       this.items = dataRBA
-      console.log('rba', dataRBA)
+      // console.log('rba', dataRBA)
     }
   }
 

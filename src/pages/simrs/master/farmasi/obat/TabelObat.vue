@@ -187,42 +187,56 @@
               </div>
             </template>
             <template #cell-status="{ row }">
-              <div v-if="row.status_generik" class="row box-tiga justify-between items-center no-wrap q-mb-sm">
-                <div class="">
+              <div class="row box-tiga justify-between items-center q-mb-sm">
+                <div v-if="row.status_generik === '1'" class="text-weight-bold text-green q-mx-xs">
                   Generik
                 </div>
-                <div class="text-right text-weight-bold"
-                  :class="row.status_generik === '1' ? 'text-green' : 'text-negative'">
-                  {{ row.status_generik === '1' ? 'YA' : 'TIDAK' }}
-                </div>
-              </div>
-              <div v-if="row.status_fornas" class="row box-tiga justify-between items-center no-wrap q-mb-sm">
-                <div class="">
+                <div v-if="row.status_fornas === '1'" class="text-weight-bold text-green q-mx-xs">
                   Fornas
                 </div>
-                <div class="text-right text-weight-bold"
-                  :class="row.status_fornas === '1' ? 'text-green' : 'text-negative'">
-                  {{ row.status_fornas === '1' ? 'YA' : 'TIDAK' }}
-                </div>
-              </div>
-              <div v-if="row.status_forkid" class="row box-tiga justify-between items-center no-wrap q-mb-sm">
-                <div class="">
+                <div v-if="row.status_forkid === '1'" class="text-weight-bold text-green q-mx-xs">
                   Forkit
                 </div>
-                <div class="text-right text-weight-bold"
-                  :class="row.status_forkid === '1' ? 'text-green' : 'text-negative'">
-                  {{ row.status_forkid === '1' ? 'YA' : 'TIDAK' }}
-                </div>
-              </div>
-              <div v-if="row.status_kronis" class="row box-tiga justify-between items-center no-wrap q-mb-sm">
-                <div class="">
+                <div v-if="row.status_kronis === '1'" class="text-weight-bold text-negative q-mx-xs">
                   Obat Kronis
                 </div>
-                <div class="text-right text-weight-bold"
-                  :class="row.status_kronis === '1' ? 'text-green' : 'text-negative'">
-                  {{ row.status_kronis === '1' ? 'YA' : 'TIDAK' }}
+                <div v-if="row.status_prb === '1'" class="text-weight-bold text-green q-mx-xs">
+                  Obat PRB
+                </div>
+                <div v-if="row.obat_program === '1'" class="text-weight-bold text-green q-mx-xs">
+                  Obat Program
+                </div>
+                <div v-if="row.obat_donasi === '1'" class="text-weight-bold text-green q-mx-xs">
+                  Obat Donasi
+                </div>
+                <div v-if="row.obat_kebijakan === '1'" class="text-weight-bold text-green q-mx-xs">
+                  Obat Kebijakan
+                </div>
+                <div v-if="row.status_konsinyasi === '1'" class="text-weight-bold text-orange q-mx-xs">
+                  Konsinyasi
                 </div>
               </div>
+              <!-- <div v-if="row.status_generik === '1'" class="row box-tiga justify-between items-center no-wrap q-mb-sm">
+                <div class="text-weight-bold text-green">
+                  Generik
+                </div>
+
+              </div> -->
+              <!-- <div v-if="row.status_fornas === '1'" class="row box-tiga justify-between items-center no-wrap q-mb-sm">
+                <div class=" text-weight-bold text-green">
+                  Fornas
+                </div>
+              </div> -->
+              <!-- <div v-if="row.status_forkid === '1'" class="row box-tiga justify-between items-center no-wrap q-mb-sm">
+                <div class=" text-weight-bold text-green">
+                  Forkit
+                </div>
+              </div> -->
+              <!-- <div v-if="row.status_kronis === '1'" class="row box-tiga justify-between items-center no-wrap q-mb-sm">
+                <div class="text-weight-bold text-green">
+                  Obat Kronis
+                </div>
+              </div> -->
               <div v-if="row.keterangan_kronis" class="row box-tiga justify-between items-center no-wrap q-mb-sm">
                 <div class="">
                   Restriksi Fornas
@@ -231,42 +245,32 @@
                   {{ row.keterangan_kronis }}
                 </div>
               </div>
-              <div v-if="row.status_prb" class="row box-tiga justify-between items-center no-wrap q-mb-sm">
-                <div class="">
+              <!-- <div v-if="row.status_prb === '1'" class="row box-tiga justify-between items-center no-wrap q-mb-sm">
+                <div class="text-weight-bold text-green">
                   Obat PRB
                 </div>
-                <div class="text-right text-weight-bold"
-                  :class="row.status_prb === '1' ? 'text-green' : 'text-negative'">
-                  {{ row.status_prb === '1' ? 'YA' : 'TIDAK' }}
-                </div>
-              </div>
-              <div v-if="row.obat_program" class="row box-tiga justify-between items-center no-wrap q-mb-sm">
-                <div class="">
+              </div> -->
+              <!-- <div v-if="row.obat_program === '1'" class="row box-tiga justify-between items-center no-wrap q-mb-sm">
+                <div class="text-weight-bold text-green">
                   Obat Program
                 </div>
-                <div class="text-right text-weight-bold"
-                  :class="row.obat_program === '1' ? 'text-green' : 'text-negative'">
-                  {{ row.obat_program === '1' ? 'YA' : 'TIDAK' }}
-                </div>
-              </div>
-              <div v-if="row.obat_donasi" class="row box-tiga justify-between items-center no-wrap q-mb-sm">
-                <div class="">
+              </div> -->
+              <!-- <div v-if="row.obat_donasi == '1'" class="row box-tiga justify-between items-center no-wrap q-mb-sm">
+                <div class="text-weight-bold text-green">
                   Obat Donasi
                 </div>
-                <div class="text-right text-weight-bold"
-                  :class="row.obat_donasi === '1' ? 'text-green' : 'text-negative'">
-                  {{ row.obat_donasi === '1' ? 'YA' : 'TIDAK' }}
+              </div> -->
+              <!-- <div v-if="row.obat_kebijakan == '1'" class="row box-tiga justify-between items-center no-wrap q-mb-sm">
+                <div class="text-weight-bold text-green">
+                  Obat Kebijakan
                 </div>
-              </div>
-              <div v-if="row.status_konsinyasi" class="row box-tiga justify-between items-center no-wrap q-mb-sm">
-                <div class="">
+              </div> -->
+              <!-- <div v-if="row.status_konsinyasi == '1'"
+                class="row box-tiga justify-between items-center no-wrap q-mb-sm">
+                <div class="text-weight-bold text-green">
                   Konsinyasi
                 </div>
-                <div class="text-right text-weight-bold"
-                  :class="row.status_konsinyasi === '1' ? 'text-green' : 'text-negative'">
-                  {{ row.status_konsinyasi === '1' ? 'YA' : 'TIDAK' }}
-                </div>
-              </div>
+              </div> -->
               <div v-if="row.nilai_kdn" class="row box-tiga justify-between items-center no-wrap q-mb-sm">
                 <div class="">
                   Nilai TKDN

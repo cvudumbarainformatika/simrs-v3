@@ -98,7 +98,7 @@ export const useLRAjurnalStore = defineStore('lap_realisasi_anggaran', {
       const params = { params: this.reqs }
       return new Promise((resolve) => {
         api.get('v1/laporan/lra/getlra', params).then((resp) => {
-          console.log('data LRA', resp.data)
+          // console.log('data LRA', resp.data)
           if (resp.status === 200) {
             // this.pagupendapatans = []
             // this.datapendapatans = []
@@ -173,8 +173,8 @@ export const useLRAjurnalStore = defineStore('lap_realisasi_anggaran', {
         const penyesblm = datareklas_sblm.filter((x) => x.kode6 === el).map((x) => parseFloat(x.totalpenyesuaian))
         const totalpenysblm = penyesblm.reduce((x, y) => parseFloat(x) + parseFloat(y), 0).toFixed(2)
         const totalnilaisblm = (isNaN(parseFloat(nilaisblm) + parseFloat(totalpenysblm)) ? parseFloat(0) : parseFloat(nilaisblm) + parseFloat(totalpenysblm)).toFixed(2)
-        console.log('penyesuaian', totalpeny)
-        console.log('penyesblm', totalpenysblm)
+        // console.log('penyesuaian', totalpeny)
+        // console.log('penyesblm', totalpenysblm)
         const obj6 = {
           kode: pagupendapatan.filter((x) => x.kode6 === el)[0].kode6,
           uraian: pagupendapatan.filter((x) => x.kode6 === el)[0].uraian,
@@ -369,12 +369,12 @@ export const useLRAjurnalStore = defineStore('lap_realisasi_anggaran', {
         )
       const pendapatan1 = sortpend1(kode1)
 
-      console.log('pendapatan', pendapatan6)
+      // console.log('pendapatan', pendapatan6)
 
       const belanja = this.pagubelanjas
       const nilaiskg = this.databelanjas
       const nilaisblm = this.belanjasblm
-      console.log('belanja', belanja)
+      // console.log('belanja', belanja)
       const belanja6 = []
       const belanja5 = []
       const belanja4 = []
@@ -408,7 +408,7 @@ export const useLRAjurnalStore = defineStore('lap_realisasi_anggaran', {
         }
         belanja6.push(obj6)
       }
-      console.log('belanja6', belanja6)
+      // console.log('belanja6', belanja6)
       const fil5 = belanja.map((x) => x.kode5)
       const unik5 = fil5?.length ? [...new Set(fil5)] : []
       for (let i = 0; i < unik5?.length; i++) {
@@ -671,7 +671,8 @@ export const useLRAjurnalStore = defineStore('lap_realisasi_anggaran', {
         psapsilpa.push(obj3)
 
 
-      } console.log('SILPA', silpa6)
+      }
+      // console.log('SILPA', silpa6)
 
       // const psappendapatan = []
       // const pagup = this.psappagupendapatan

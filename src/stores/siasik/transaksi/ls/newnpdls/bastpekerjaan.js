@@ -13,6 +13,7 @@ export const dataBastPekerjaanStore = defineStore('data_bast_pekerjaan', {
       rowsPerPage: 50,
       rowsNumber: 0,
       kodepenerima: null,
+      kodekegiatanblud: null
     },
     bastpekerjaan: [],
   }),
@@ -37,7 +38,7 @@ export const dataBastPekerjaanStore = defineStore('data_bast_pekerjaan', {
         api.get('/v1/transaksi/belanja_ls/bastpekerjaan', params)
           .then((resp) => {
             if (resp.status === 200) {
-              console.log('data BAST Pekerjaan', resp);
+              // console.log('data BAST Pekerjaan', resp);
               this.loading = false;
               this.bastpekerjaan = resp.data;
               resolve(resp.data);
