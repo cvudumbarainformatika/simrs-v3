@@ -1,11 +1,6 @@
 <template>
-  <div v-if="!store?.items && !store?.loadingsep">
-    <app-no-data />
-  </div>
-  <div v-else-if="store?.loadingsep">
-    <app-loading />
-  </div>
-  <div v-else-if="store?.items && !store?.loadingsep" class="q-pa-md" style="max-width: 100%">
+
+  <div class="q-pa-md" style="max-width: 100%">
     <AdminitrasiPage :pasien="props?.pasien" ref="adminRef" />
     <LaboratPage :pasien="props?.pasien" ref="laboratRef" />
     <RadiologiPage :pasien="props?.pasien" ref="radioRef" />
