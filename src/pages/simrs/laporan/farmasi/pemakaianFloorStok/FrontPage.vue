@@ -17,7 +17,11 @@
             <div class="col-2">
               <app-autocomplete v-model="store.params.kode_ruang" label="Pilih Gudang / Depo" autocomplete="uraian"
                 option-label="uraian" option-value="kode" outlined :source="store.ruangs" :loading="store.loading"
-                :disable="store.loading || !!store.ketProses" />
+                :disable="store.loading || !!store.ketProses" @update:model-value="() => {
+                  store.items = []
+                  store.meta = {}
+                  store.setParams('page', 1)
+                }" />
             </div>
             <div class="col-2">
               <app-autocomplete v-model="store.params.bulan" label="Pilih Bulan" autocomplete="nama" option-label="nama"
@@ -34,20 +38,20 @@
             </div>
             <div class="col-2">
               <app-btn label="Ambil Data" :disable="store.loading || !!store.ketProses" :loading="store.loading"
-                @click="store.getInitialData(1)" />
+                @click="store.getDataTable(1)" />
             </div>
           </div>
         </div>
 
         <div class="col-grow q-mr-md">
           <div class="row items-center">
-            <q-btn unelevated color="primary" round size="sm" icon="icon-mat-download"
+            <!-- <q-btn unelevated color="primary" round size="sm" icon="icon-mat-download"
               :loading="!!store.ketProses || store?.loadingNext" :disable="!!store.ketProses || store?.loadingNext"
               @click="store.getAllData()">
               <q-tooltip class="primary" :offset="[10, 10]">
                 Ambil Semua Data
               </q-tooltip>
-            </q-btn>
+            </q-btn> -->
             <q-btn class="q-ml-sm" ref="refPrint" v-print="printObj" unelevated color="dark" round size="sm"
               :disable="!!store.ketProses" icon="icon-mat-print">
               <q-tooltip class="primary" :offset="[10, 10]">
@@ -57,7 +61,7 @@
             <div class="q-ml-sm">
               <download-excel class="btn" :fields="store.fields" :fetch="store.fetch"
                 :before-generate="store.startDownload" :before-finish="store.finishDownload"
-                :name="'Pemakaian Ruangan Bulan ' + bulan() + ' ' + store.params.tahun + jenis() + '.xls'">
+                :name="'Pemakaian ' + ruangan() + ' Bulan ' + bulan() + ' ' + store.params.tahun + '.xls'">
                 <q-btn color="green" round size="sm" icon="icon-mat-download" push :loading="store.loadingDownload"
                   :disable="store.loadingDownload || !!store.ketProses || store?.loadingNext">
                   <q-tooltip>Download Excel</q-tooltip>
@@ -154,7 +158,9 @@
       </div>
 
       <div class="row justify-center f-16 text-weight-bold q-my-sm">
-        Laporan Pemakaian Ruangan Farmasi periode {{ date.formatDate((store.params.tahun + '-' + store.params.bulan +
+        Laporan Pemakaian Farmasi {{ ruangan() }} periode {{ date.formatDate((store.params.tahun + '-' +
+          store.params.bulan
+          +
           '-02'),
           'MMMM YYYY') }}
       </div>
@@ -341,10 +347,7 @@ function bulan () {
   const bul = store.bulans?.find(a => a.value === store.params.bulan)
   return bul?.nama ?? '-'
 }
-function jenis () {
-  const bul = store.ruangs?.find(a => a.value === store.params.kode_ruang)
-  return ' (' + bul?.uraian + ')' ?? '-'
-}
+
 
 const refScroll = ref(null)
 const refTt = ref(null)
@@ -359,6 +362,16 @@ function onScroll (pos) {
   // console.log('pos', pos, 'height', height, 'scroll client height', refScroll.value.clientHeight, 'tt height', refTt.value.clientHeight)
 }
 
+function ruangan () {
+  let ruang = ''
+  if (store.params.kode_ruang == 'all') {
+    ruang = 'Semua Ruangan'
+  } else {
+    const rua = store.ruangs?.find(a => a.kode === store.params.kode_ruang)
+    if (rua) ruang = 'Ruangan ' + rua.uraian
+  }
+  return ruang
+}
 
 const printObj = {
   id: 'printMe',

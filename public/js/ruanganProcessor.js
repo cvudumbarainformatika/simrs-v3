@@ -14,14 +14,17 @@ self.onmessage = function (e) {
     const total = allChunks.reduce((acc, chunk) => acc + chunk?.length, 0)
 
     const processedData = []
-    const unProcessedData = []
+    const obatsaja = []
 
     allChunks.forEach((chunk, i) => {
       // Simpan data mentah
-      unProcessedData.push(...chunk)
+      // obatsaja.push(...chunk)
 
       chunk.forEach(item => {
-        processedData.push(...processResep(item))
+        processedData.push(...processData(item))
+        const obat = { ...item }
+        if (obat?.mutasi) delete obat.mutasi
+        obatsaja.push(obat)
 
         processed++
         if (processed % 100 === 0) {
@@ -35,44 +38,34 @@ self.onmessage = function (e) {
       })
     })
 
-    self.postMessage({ type: 'complete', processedData, unProcessedData })
+    self.postMessage({ type: 'complete', processedData, obatsaja })
     // Reset allChunks untuk request berikutnya
     allChunks = []
   }
 }
 
 
-function processResep (data) {
-  // const results = []
-  // data.permintaanresep.forEach(item => {
-  //   const keluar = data?.rincian?.filter(k => k.kdobat === item.kdobat)
-  //   const depo = data.depo
-  //   results.push(createDataObject(item, keluar, data, depo))
-  // })
-  return data
+function processData (data) {
+  // console.log('data', data)
+  const results = []
+  data?.mutasi.forEach(item => {
+    results.push(createDataObject(item, data))
+  })
+  return results
 }
-
-
-function createDataObject (item, keluar, data, depo) {
+function createDataObject (item, data) {
+  const subtotal = item.jml * item.harga
   return {
-    noresep: item.noresep,
-    tgl: data.tgl_permintaan,
-    jumlah_resep: item.jumlah,
-    jumlah_dilayani: keluar?.reduce((acc, curr) => acc + curr.jumlah, 0) || 0,
-    kdobat: item.kdobat,
-    kelompok: item?.mobat?.kelompok_penyimpanan,
-    perbekalan: item?.mobat?.jenis_perbekalan,
-    nama_obat: item?.mobat?.nama_obat,
-    generik: item?.mobat?.status_generik == '1' ? 'Generik' : '',
-    status_generik: item?.mobat?.status_generik,
-    fornas: item?.mobat?.status_fornas == '1' ? 'Fornas' : '',
-    status_fornas: item?.mobat?.status_fornas,
-    forkit: item?.mobat?.status_forkid == '1' ? 'Forkit' : '',
-    status_forkit: item?.mobat?.status_forkid,
-    obat_program: item?.mobat?.obat_program,
-    depo: depo,
-    nama_dokter: data?.ketdokter?.nama,
-    kode_sistembayar: data?.sistembayar?.rs1,
-    nama_sistembayar: data?.sistembayar?.rs2
+    kd_obat: data?.kd_obat,
+    nama_obat: data?.nama_obat,
+    kd_obat: data?.kd_obat,
+    bentuk_sediaan: data?.bentuk_sediaan,
+    jenis_perbekalan: data?.jenis_perbekalan,
+    harga: item.harga,
+    jumlah: item.jml,
+    subtotal: Number(parseFloat(subtotal).toFixed(2)),
   }
 }
+
+
+
