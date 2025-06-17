@@ -98,6 +98,20 @@ const documents = ref([
     label: 'Laborat',
     value: 'Laborat'
   },
+  {
+    icon: 'icon-fa-file-regular',
+    color: 'primary',
+    jenis: 'Radiologi',
+    label: 'Radiologi',
+    value: 'Radiologi'
+  },
+  {
+    icon: 'icon-fa-file-regular',
+    color: 'primary',
+    jenis: 'KonsulDokt',
+    label: 'Konsultasi Dokter',
+    value: 'Konsul_Dokter'
+  },
 ])
 
 const documentsrajal = ref([
@@ -132,6 +146,8 @@ const comp = [
   { nama: 'Surat_Kematian', page: defineAsyncComponent(() => import('../../../../igd/layanan/dokumen/dokumenisi/suratkematian/SuratKematianPage.vue')) },
   { nama: 'Farmasi', page: defineAsyncComponent(() => import('../../../../igd/layanan/dokumen/dokumenisi/Farmasi/FarmasiPage.vue')) },
   { nama: 'Laborat', page: defineAsyncComponent(() => import('../../../../igd/layanan/dokumen/dokumenisi/Laborat/LaboratPage.vue')) },
+  { nama: 'Radiologi', page: defineAsyncComponent(() => import('../../../../igd/layanan/dokumen/dokumenisi/Radiologi/RadiologiPage.vue')) },
+  { nama: 'Konsul_Dokter', page: defineAsyncComponent(() => import('../../../../igd/layanan/dokumen/dokumenisi/konsulDokter/KonsulDokterPage.vue')) },
 ]
 
 const comprajal = [
