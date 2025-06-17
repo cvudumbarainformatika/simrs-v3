@@ -1,106 +1,41 @@
 <template>
   <div class="column full-height">
-    <div
-      class="col-auto fixed-top"
-      style="z-index:1"
-    >
-      <HeaderComp
-        :tanggal="store.params.tgl"
-        :search="store.params.q"
-        :per-page="store.params.per_page"
-        @fullscreen="style.setComponentFull"
-        @set-tanggal="(val)=>store.setDate(val)"
-        @set-search="store.setQ"
-        @set-row="store.setPerPage"
-      />
+    <div class="col-auto fixed-top" style="z-index:1">
+      <HeaderComp :tanggal="store.params.tgl" :search="store.params.q" :per-page="store.params.per_page"
+        @fullscreen="style.setComponentFull" @set-tanggal="(val) => store.setDate(val)" @set-search="store.setQ"
+        @set-row="store.setPerPage" />
     </div>
-    <div
-      class="col full-height"
-      style="padding-bottom: 60px; padding-top:60px"
-    >
-      <ListKunjungan
-        :key="store.items"
-        :items="store.items"
-        :loading="store.loading"
-        :loading-send="store.loadingSend"
-        :rm="Rm"
-        @kirim-poli="kirimPoli"
-        @cetak-antrian="cetakAntrian"
-      />
+    <div class="col full-height" style="padding-bottom: 60px; padding-top:60px">
+      <ListKunjungan :key="store.items" :items="store.items" :loading="store.loading" :loading-send="store.loadingSend"
+        :rm="Rm" @kirim-poli="kirimPoli" @cetak-antrian="cetakAntrian" />
     </div>
     <div class="fixed-bottom">
-      <BottomComp
-        v-if="store.meta !==null"
-        :key="store.meta"
-        :meta="store.meta"
-        @go-to="store.setPage"
-      />
+      <BottomComp v-if="store.meta !== null" :key="store.meta" :meta="store.meta" @go-to="store.setPage" />
     </div>
   </div>
-  <app-fullscreen
-    v-model="store.dialog"
-    @close="clearAllRegistrasi"
-  >
+  <app-fullscreen v-model="store.dialog" @close="clearAllRegistrasi">
     <template #default>
       <div>
-        <div
-          class="row items-center justify-between bg-grey q-pa-sm"
-        >
+        <div class="row items-center justify-between bg-grey q-pa-sm">
           <div class="f-14 text-weight-bold">
             Form Identitas Pasien I.1
           </div>
           <div>
-            <q-checkbox
-              v-model="pasien.edit"
-              label="Edit Form "
-              dense
-            />
+            <q-checkbox v-model="pasien.edit" label="Edit Form " dense />
           </div>
         </div>
-        <DataPasien
-          ref="refDataPasien"
-          bpjs
-          :bisa-full="false"
-          :not-edit="false"
-          :nik="regis.form.nik"
-          :noka="regis.form.noka"
-          :tglsep="regis.form.tglsep"
-          @ganti-pasien="clearFormRegistrasi"
-        />
-        <FormRegistrasi
-          ref="refRegistrasi"
-          :ada-list="false"
-          @get-list-surat-kontrol="getListSuratKontrol"
-          @get-list-rujukan="getListRujukan"
-          @cek-suplesi="cekSuplesi"
-        />
-        <q-card
-          class="full-width q-pb-xl"
-          flat
-        >
+        <DataPasien ref="refDataPasien" bpjs :bisa-full="false" :not-edit="false" :nik="regis.form.nik"
+          :noka="regis.form.noka" :tglsep="regis.form.tglsep" @ganti-pasien="clearFormRegistrasi" />
+        <FormRegistrasi ref="refRegistrasi" :ada-list="false" @get-list-surat-kontrol="getListSuratKontrol"
+          @get-list-rujukan="getListRujukan" @cek-suplesi="cekSuplesi" />
+        <q-card class="full-width q-pb-xl" flat>
           <q-card-actions>
             <div class="">
-              <app-btn
-                label="Simpan Form"
-                :loading="loading"
-                :disable="loading"
-                @click="simpanData"
-              />
+              <app-btn label="Simpan Form" :loading="loading" :disable="loading" @click="simpanData" />
 
-              <app-btn
-                class="q-ml-xl"
-                label="SEP"
-                :loading="loading"
-                :disable="loading"
-                @click="preSEP"
-              />
-              <app-btn
-                class="q-ml-xl"
-                label="Bersihkan Form"
-                :loading="loading"
-                :disable="loading"
-                @click="clearAllRegistrasi"
-              />
+              <app-btn class="q-ml-xl" label="SEP" :loading="loading" :disable="loading" @click="preSEP" />
+              <app-btn class="q-ml-xl" label="Bersihkan Form" :loading="loading" :disable="loading"
+                @click="clearAllRegistrasi" />
               <!-- <app-btn
                 class="q-ml-xl"
                 label="cek dialog"
@@ -129,73 +64,40 @@
           @jenis-kunjungan="jenisKunjungan"
           @assign-surat="assignSurat"
         /> -->
-        <DialogListSuplesi
-          v-model="regis.tampilSuplesi"
-        />
+        <DialogListSuplesi v-model="regis.tampilSuplesi" />
       </div>
     </template>
   </app-fullscreen>
-  <app-dialog-form
-    v-model="dialog"
-    :title="loadingFinger?'Masih mengambil data .... ':'Alasan Finger'"
-    :loading="loadingP"
-    @save-form="simpanPengajuan()"
-  >
+  <app-dialog-form v-model="dialog" :title="loadingFinger ? 'Masih mengambil data .... ' : 'Alasan Finger'"
+    :loading="loadingP" @save-form="simpanPengajuan()">
     <template #default>
       <div>
-        <div
-          v-if="pesanBPJS!==''"
-          class="row q-mb-sm"
-        >
+        <div v-if="pesanBPJS !== ''" class="row q-mb-sm">
           <p>{{ pesanBPJS }}</p>
         </div>
-        <div
-          v-if="!loadingFinger"
-          class="row"
-        >
+        <div v-if="!loadingFinger" class="row">
           <div class="col-12">
-            <app-input
-              v-model="keterangan"
-              label="keterangan"
-            />
+            <app-input v-model="keterangan" label="keterangan" />
           </div>
         </div>
-        <div
-          v-if="bisaBuatSep"
-          class="row justify-end q-mr-lg q-my-md"
-        >
-          <app-btn
-            class="q-mr-md"
-            label="Buat SEP"
-            :loading="loading"
-            :disable="loading"
-            @click="preSEP"
-          />
+        <div v-if="bisaBuatSep" class="row justify-end q-mr-lg q-my-md">
+          <app-btn class="q-mr-md" label="Buat SEP" :loading="loading" :disable="loading" @click="preSEP" />
         </div>
       </div>
     </template>
   </app-dialog-form>
-  <app-dialog-not-full
-    v-model="dialogQr"
-    @on-ok="closeQr()"
-  >
+  <app-dialog-not-full v-model="dialogQr" @on-ok="closeQr()">
     <template #default>
       <div style="width:25vw ">
-        <figure
-          class="qrcode full-width q-pa-sm"
-        >
-          <vue-qrcode
-            :value="nokaQr"
-            tag="svg"
-            :options="{
-              errorCorrectionLevel: 'Q',
-              color: {
-                dark: '#000000',
-                light: '#ffffff',
-              },
-              margin:2
-            }"
-          />
+        <figure class="qrcode full-width q-pa-sm">
+          <vue-qrcode :value="nokaQr" tag="svg" :options="{
+            errorCorrectionLevel: 'Q',
+            color: {
+              dark: '#000000',
+              light: '#ffffff',
+            },
+            margin: 2
+          }" />
         </figure>
       </div>
     </template>
@@ -281,7 +183,9 @@ function kirimPoli (val) {
         }
       })
     }
+
   }
+  if (val?.norm) pasien.cariRujukanKeluar(val)
 }
 // eslint-disable-next-line no-unused-vars
 
@@ -866,5 +770,4 @@ onUnmounted(() => {
   margin: 0;
   position: relative;
 }
-
 </style>
