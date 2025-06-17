@@ -707,7 +707,79 @@
 
                         </q-card-section>
 
-                        <q-card-section v-if="item?.dokumenluar?.length" class="q-pa-none" flat bordered square dark>
+
+                        <q-card-section v-if="item?.jawabankonsul?.length" class="q-pa-none" flat bordered square dark>
+                          <q-bar class="bg-accent">
+                            <div>KONSUL ANTAR POLI</div>
+                          </q-bar>
+                          <template v-for="(jawaban, j) in item?.jawabankonsul" :key="j">
+                            <q-timeline color="secondary">
+                              <q-timeline-entry heading body="Timeline heading" />
+
+                              <q-timeline-entry
+                                title="Event Title"
+                                subtitle="February 22, 1986"
+                                avatar="https://cdn.quasar.dev/img/avatar3.jpg"
+                                :body="body"
+                              />
+
+                              <q-timeline-entry
+                                title="Event Title"
+                                subtitle="February 21, 1986"
+                                icon="delete"
+                                :body="body"
+                              />
+
+                              <q-timeline-entry heading body="November, 2017" />
+
+                              <q-timeline-entry
+                                title="Event Title"
+                                subtitle="February 22, 1986"
+                                :body="body"
+                              />
+
+                              <q-timeline-entry
+                                title="Event Title"
+                                subtitle="February 22, 1986"
+                                :body="body"
+                              />
+
+                              <q-timeline-entry
+                                title="Event Title"
+                                subtitle="February 22, 1986"
+                                color="orange"
+                                icon="done_all"
+                                :body="body"
+                              />
+
+                              <q-timeline-entry
+                                title="Event Title"
+                                subtitle="February 22, 1986"
+                                :body="body"
+                              />
+
+                              <q-timeline-entry
+                                title="Event Title"
+                                subtitle="February 22, 1986"
+                                :body="body"
+                              />
+                            </q-timeline>
+                          </template>
+
+                        </q-card-section>
+
+                        <q-card-section v-if="item?.planning?.length" class="q-pa-none" flat bordered square dark>
+                          <q-bar class="bg-accent">
+                            <div>PLANNING</div>
+                          </q-bar>
+                          <q-card v-if="getPlanning(item.planning)" flat dark class="full-width">
+                            INI Untuk Planning
+                          </q-card>
+
+                        </q-card-section>
+
+
+                        <!-- <q-card-section v-if="item?.dokumenluar?.length" class="q-pa-none" flat bordered square dark>
                           <q-bar class="bg-accent">
                             <div>DOKUMEN</div>
                           </q-bar>
@@ -727,7 +799,10 @@
                               </div>
                             </div>
                           </q-list>
-                        </q-card-section>
+                        </q-card-section> -->
+
+                        
+
                       </q-list>
                     </q-card>
                     <!-- <q-card v-if="item?.praanastesi?.length">
@@ -2179,7 +2254,7 @@
 
                         <q-card-section v-if="item?.dokumenluar?.length" class="q-pa-none" flat bordered square dark>
                           <q-bar class="bg-accent">
-                            <div>DOKUMEN</div>
+                            <div>DOKUMENx</div>
                           </q-bar>
                           <q-list dark separator>
                             <div class="image-row">
@@ -2198,6 +2273,23 @@
                             </div>
                           </q-list>
                         </q-card-section>
+
+                        <q-card-section v-if="item?.planning?.length" class="q-pa-none" flat bordered square dark>
+                          <q-bar class="bg-accent">
+                            <div>PLANNING</div>
+                          </q-bar>
+                          <q-list dark separator>
+                            <q-item v-for="(plan, p) in item?.planning" :key="p" v-ripple clickable>
+                              <q-item-section>
+                                <q-item-label>{{ plan?.rs3 }}</q-item-label>
+                                <q-item-label caption lines="2" />
+                                Keterangan = {{ plan?.rs4 }}
+                              </q-item-section>
+                            </q-item>
+                          </q-list>
+
+                        </q-card-section>
+
                       </q-list>
                     </q-card>
                   </q-expansion-item>
@@ -2386,6 +2478,7 @@ function getInteger (str) {
   return str
 }
 
+<<<<<<< HEAD
 function groupingRacikan (val, resep) {
   const namaRacikan = [... new Set(val.map(a => a.namaracikan))]
   const rincianrac = resep?.rincianracik ?? []
@@ -2415,6 +2508,15 @@ function jumlahResep (item, list) {
   return jumlah
 
 }
+=======
+function getPlanning(val) {
+  if (val?.length) {
+    return val.map(item => item.rs3).join(', ')
+  }
+  return '-'
+}
+
+>>>>>>> 41e60a3 (rev: history)
 // function arrayToString(val) {
 //   const value = val.join(', ')
 //   return value
