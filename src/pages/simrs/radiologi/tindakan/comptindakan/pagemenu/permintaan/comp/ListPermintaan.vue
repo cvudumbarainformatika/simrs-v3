@@ -7,10 +7,25 @@
             <div class="text-h4">🧾</div>
           </template>
           <div class="text-subtitle2">No. Permintaan : </div>
-          <div class="text-weight-bold text-subtitle2">{{ pasien?.nota_permintaan }}</div>
+          <div class="text-weight-bold text-subtitle2">{{ pasien?.nota_permintaan }}
 
-          <div v-if="pasien?.cito" class="absolute-right">
+            <q-badge v-if="pasien?.cito" class="q-pa-sm">Cito</q-badge>
+          </div>
+
+
+          <!-- <div v-if="pasien?.cito" class="absolute-right">
             <q-badge class="q-pa-sm">Cito</q-badge>
+          </div> -->
+
+          <div class="absolute-right">
+            <div class="q-pa-md">
+              <q-btn :loading="store.loadingSelesaikan" :disabled="store.loadingSelesaikan" v-if="pasien.status === '2'"
+                color="primary" label="Selesaikan Layanan" @click="selesaikanLayanan"></q-btn>
+              <q-btn v-else-if="pasien.status === '1'" color="primary" rounded disabled outline>
+                <q-icon name="icon-mat-lock" class="q-mr-md"></q-icon>
+                <div>Layanan telah selesai</div>
+              </q-btn>
+            </div>
           </div>
         </q-banner>
         <q-separator></q-separator>
@@ -214,9 +229,18 @@ const props = defineProps({
   loading: {
     type: Boolean,
     default: false
+  },
+  loadingTerima: {
+    type: Boolean,
+    default: false
+  },
+  loadingBatal: {
+    type: Boolean,
+    default: false
   }
 })
 
+const store = useListPasienRadiologiStore()
 const storePermintaan = usePermintaanRadiologiStore()
 const { permintaan, listPermintaans, ukurans, } = storeToRefs(storePermintaan)
 
@@ -240,6 +264,11 @@ function hitungBilTotal() {
   }
 
   return formatRp(total)
+}
+
+function selesaikanLayanan() {
+  store.selesaikanLayanan(props.pasien)
+
 }
 
 </script>

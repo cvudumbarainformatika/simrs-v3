@@ -2,6 +2,7 @@ import { acceptHMRUpdate, defineStore, } from 'pinia'
 import { api } from 'boot/axios'
 import { dateDbFormat } from 'src/modules/formatter'
 import { date } from 'quasar'
+import { notifErrVue, notifSuccessVue } from 'src/modules/utils'
 
 export const useListRadiologiLuarStore = defineStore('list-radiologi-luar', {
   state: () => ({
@@ -27,6 +28,9 @@ export const useListRadiologiLuarStore = defineStore('list-radiologi-luar', {
     isForm: false,
     pageTindakan: false,
     loadingTerima: false,
+    loadingBatal: false,
+    loadingSimpan: false,
+    loadingSelesaikan: false,
     bukaLayanan: false,
     pasiens: [],
     pasien: null,
@@ -38,6 +42,9 @@ export const useListRadiologiLuarStore = defineStore('list-radiologi-luar', {
     // INI BARU
     namaPemeriksaans: [],
     jenisPemeriksaans: [],
+    listPemeriksaans: [],
+    dokters: [],
+    perawats: [],
   }),
   getters: {
     // doubleCount: (state) => state.counter * 2
@@ -96,6 +103,107 @@ export const useListRadiologiLuarStore = defineStore('list-radiologi-luar', {
 
 
 
+
+    },
+
+    async terimaPasien(val) {
+      this.loadingTerima = true
+      console.log('terima pasien', val);
+      const payload = {
+        'notrans': val?.rs1
+      }
+      await api.post('/v1/simrs/radiologi/radiologi/terimapasienradiologiluar', payload)
+        .then(resp => {
+          console.log('resp terima pasien radiologi', resp);
+          if (resp.status === 200) {
+            // notifSuccessVue('Pasien berhasil diterima')
+            // this.getDataTable()
+            const finder = this.items.find(x => x?.rs1 === val?.rs1)
+            if (finder) {
+              finder['flag'] = '2'
+            }
+          }
+        }).catch(err => {
+          console.log('err terima pasien radiologi', err);
+          // notifErrVue('Pasien gagal diterima')
+        }).finally(() => {
+          this.loadingTerima = false
+        })
+    },
+    async batalkanPasien(val) {
+      this.loadingBatal = true
+      console.log('batalkan pasien', val);
+      const payload = {
+        'notrans': val?.rs1
+      }
+      await api.post('/v1/simrs/radiologi/radiologi/batalkanpasienradiologiluar', payload)
+        .then(resp => {
+          console.log('resp batal pasien radiologi', resp);
+          if (resp.status === 200) {
+            // notifSuccessVue('Pasien berhasil diterima')
+            // this.getDataTable()
+            const finder = this.items.find(x => x?.rs1 === val?.rs1)
+            if (finder) {
+              finder['flag'] = '3'
+            }
+          }
+        }).catch(err => {
+          console.log('err batal pasien radiologi', err);
+          // notifErrVue('Pasien gagal diterima')
+        }).finally(() => {
+          this.loadingBatal = false
+        })
+    },
+    async selesaikanLayanan(val) {
+      this.loadingSelesaikan = true
+      // console.log('selesaikan layanan', val?.notrans);
+      const payload = {
+        'notrans': val?.notrans
+      }
+      await api.post('/v1/simrs/radiologi/radiologi/selesaikanlayananradiologiluar', payload)
+        .then(resp => {
+          // console.log('resp selesaikan layanan radiologi luar', resp);
+          if (resp.status === 200) {
+            // notifSuccessVue('Pasien berhasil diterima')
+            // this.getDataTable()
+            const finder = this.items.find(x => x?.rs1 === val?.rs1)
+            if (finder) {
+              finder['flag'] = '1'
+            }
+          }
+        }).catch(err => {
+          console.log('err selesaikan pasien radiologi', err);
+          // notifErrVue('Pasien gagal diterima')
+        }).finally(() => {
+          this.loadingBatal = false
+        })
+    },
+
+    initPermintaan(pasien) {
+      this.listPemeriksaans = pasien?.rincians?.map(x => {
+
+
+        const kdPelaksana = this.dokters?.find(d => d.nama === x?.pelaksana)?.kdpegsimrs || null
+
+        const ukuran = x?.ukuran || '43 x 35'
+        const jumlah = x?.jumlah || 1
+        const pelaksana = x?.pelaksana || null
+        const hasil = x?.hasil || null
+        const kesimpulan = x?.kesimpulan || null
+        return {
+          ...x,
+          ukuran, jumlah, pelaksana, hasil, kesimpulan, kdPelaksana
+        }
+      })
+
+    },
+
+    initNakes(store) {
+
+      this.dokters = store?.nakes?.filter(x => x?.kdgroupnakes === '1') ?? []
+      this.perawats = store?.nakes?.filter(x => x?.kdgroupnakes === '2' || x?.kdgroupnakes === '3') ?? []
+
+      // console.log('initNakes dokters', this.dokters);
 
     },
 
@@ -160,31 +268,52 @@ export const useListRadiologiLuarStore = defineStore('list-radiologi-luar', {
       this.pageTindakan = !this.pageTindakan
     },
 
-    // BARU RADIOLOGI
-    // helperKdRuangan(val) {
-    //   const ruang = val?.ruangan.split('').slice(0, 3).join('')
-    //   const poli = val?.poli.split('').slice(0, 3).join('')
-    //   if (ruang === 'Rua' || poli === 'Rua') {
-    //     this.depo = 'rnp'
-    //   }
-    //   else if (ruang === 'IRD' || poli === 'IRD') {
-    //     this.depo = 'igd'
-    //   }
-    //   else if (ruang === 'Kam' || poli === 'Kam') {
-    //     this.depo = 'ok'
-    //   }
-    //   else {
-    //     this.depo = 'rjl'
-    //   }
-    // },
-    async simpan() {
-      console.log('simpan');
-
-    },
-
     async batal(item) {
       const itemId = this.items?.find(x => x?.id === item?.id) || null
       console.log('batal', itemId);
+
+    },
+
+    async simpan(item, pasien) {
+      // console.log('simpan', item, pasien);
+
+      if (item.hasil === null || item.kesimpulan === null || item.pelaksana === null) {
+        notifErrVue('Ada field yang belum diisi, silahkan periksa kembali')
+        return
+
+      }
+
+      this.loadingSimpan = true
+      const payload = {
+        'notrans': item?.rs1,
+        'nama': pasien?.nama || '',
+        'alamat': pasien?.alamat || '',
+        'kelamin': pasien?.kelamin || '',
+        'tgllahir': pasien?.tgllahir || '',
+        'yangmeminta': pasien?.dari || '',
+        // 'tanggal': item?.rs7 || '',
+        'hasil': item?.hasil || '',
+        'kesimpulan': item?.kesimpulan || '',
+        'kode': item?.rs3 || '',
+        'dokter': item?.pelaksana || ''
+      }
+
+
+      // console.log('payload simpan', payload);
+      await api.post('/v1/simrs/radiologi/radiologi/simpanHasilRadiologiLuar', payload)
+        .then(resp => {
+          console.log('simpan hasil', resp);
+          if (resp.status === 200) {
+            notifSuccessVue(resp?.data?.message || 'Data berhasil disimpan')
+          }
+        })
+        .catch(err => {
+          console.log('error', err);
+        })
+        .finally(() => {
+          this.loadingSimpan = false
+        })
+
 
     }
   }

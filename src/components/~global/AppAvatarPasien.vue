@@ -58,7 +58,7 @@ const getImagePath = (filename, format = 'jpg') => {
 const avatarName = computed(() => {
   const perempuan = props.pasien?.kelamin === 'Perempuan' || props.pasien?.kelamin === 'perempuan'
   const usia = props.pasien?.usia
-  const usiath = usia ? parseInt(usia.substring(0, 2)) : 25
+  const usiath = usia && typeof usia === 'string' ? parseInt(usia?.substring(0, 2)) : 25
 
   return getAvatarPath(perempuan ? 'Perempuan' : 'Laki', usiath)
 })

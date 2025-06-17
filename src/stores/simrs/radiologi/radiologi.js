@@ -27,6 +27,9 @@ export const useListPasienRadiologiStore = defineStore('list-pasien-radiologi', 
     isViewList: false,
     pageTindakan: false,
     loadingTerima: false,
+    loadingBatal: false,
+    loadingSimpan: false,
+    loadingSelesaikan: false,
     bukaLayanan: false,
     pasiens: [],
     pasien: null,
@@ -101,6 +104,81 @@ export const useListPasienRadiologiStore = defineStore('list-pasien-radiologi', 
 
 
 
+    },
+
+    async terimaPasien(val) {
+      this.loadingTerima = true
+      console.log('terima pasien', val);
+      const payload = {
+        'notrans': val?.nota_permintaan
+      }
+      await api.post('/v1/simrs/radiologi/radiologi/terimapasienradiologi', payload)
+        .then(resp => {
+          console.log('resp terima pasien radiologi', resp);
+          if (resp.status === 200) {
+            // notifSuccessVue('Pasien berhasil diterima')
+            // this.getDataTable()
+            const finder = this.items.find(x => x?.nota_permintaan === val?.nota_permintaan)
+            if (finder) {
+              finder['status'] = '2'
+            }
+          }
+        }).catch(err => {
+          console.log('err terima pasien radiologi', err);
+          // notifErrVue('Pasien gagal diterima')
+        }).finally(() => {
+          this.loadingTerima = false
+        })
+    },
+
+    async batalkanPasien(val) {
+      this.loadingBatal = true
+      // console.log('batalkan pasien', val);
+      const payload = {
+        'notrans': val?.nota_permintaan
+      }
+      await api.post('/v1/simrs/radiologi/radiologi/batalkanpasienradiologi', payload)
+        .then(resp => {
+          // console.log('resp batal pasien radiologi', resp);
+          if (resp.status === 200) {
+            // notifSuccessVue('Pasien berhasil diterima')
+            // this.getDataTable()
+            const finder = this.items.find(x => x?.nota_permintaan === val?.nota_permintaan)
+            if (finder) {
+              finder['status'] = '3'
+            }
+          }
+        }).catch(err => {
+          console.log('err batal pasien radiologi', err);
+          // notifErrVue('Pasien gagal diterima')
+        }).finally(() => {
+          this.loadingBatal = false
+        })
+    },
+
+    async selesaikanLayanan(val) {
+      this.loadingSelesaikan = true
+      // console.log('selesaikan layanan', val?.notrans);
+      const payload = {
+        'notrans': val?.nota_permintaan
+      }
+      await api.post('/v1/simrs/radiologi/radiologi/selesaikanlayananradiologi', payload)
+        .then(resp => {
+          // console.log('resp selesaikan layanan radiologi luar', resp);
+          if (resp.status === 200) {
+            // notifSuccessVue('Pasien berhasil diterima')
+            // this.getDataTable()
+            const finder = this.items.find(x => x?.nota_permintaan === val?.nota_permintaan)
+            if (finder) {
+              finder['status'] = '1'
+            }
+          }
+        }).catch(err => {
+          console.log('err selesaikan pasien radiologi', err);
+          // notifErrVue('Pasien gagal diterima')
+        }).finally(() => {
+          this.loadingBatal = false
+        })
     },
 
     setPeriode(val) {

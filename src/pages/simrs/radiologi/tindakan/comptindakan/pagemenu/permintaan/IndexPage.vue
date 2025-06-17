@@ -10,7 +10,9 @@
         <!-- Existing code for right column -->
         <div class="col-12 col-md-8">
 
-          <list-permintaan :pasien="pasien" :loading="storeListPasienRadiologi?.loadingTerima" />
+          <list-permintaan :pasien="pasien" :loading="storeListPasienRadiologi?.loadingTerima"
+            :loading-batal="storeListPasienRadiologi?.loadingBatal"
+            :loadingTerima="storeListPasienRadiologi?.loadingTerima" />
 
 
         </div>

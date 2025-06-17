@@ -6,7 +6,9 @@
       </template>
       <template v-else>
         <TransitionGroup name="slide-left-fade" tag="div">
-          <CardItemList v-for="(item, i) in items" :key="i" :item="item" @details="(val) => emits('details', val)" />
+          <CardItemList v-for="(item, i) in items" :key="i" :item="item" @details="(val) => emits('details', val)"
+            @terima="(val) => emits('terima', val)" @batal="(val) => emits('batal', val)" :loadingTerima="loadingTerima"
+            :loadingBatal="loadingBatal" :loading="loading" />
         </TransitionGroup>
       </template>
 
@@ -32,13 +34,21 @@ defineProps({
     type: Boolean,
     default: false
   },
+  loadingTerima: {
+    type: Boolean,
+    default: false
+  },
+  loadingBatal: {
+    type: Boolean,
+    default: false
+  },
   jenis: {
     type: String,
     default: 'dalam'
   }
 })
 
-const emits = defineEmits(['details'])
+const emits = defineEmits(['details', 'terima', 'batal'])
 </script>
 
 <style lang="scss" scoped>

@@ -20,8 +20,9 @@
             <transition-group appear enter-active-class="animated fadeIn faster"
               leave-active-class="animated fadeOut faster">
               <list-pasien v-if="!store.isViewList" key="list-pasien" :items="store.items" :loading="store.loading"
+                :loading-terima="store?.loadingTerima" :loading-batal="store?.loadingBatal"
                 @details="(val) => store.getDataPasienRadiologiByNota(val)" @click="store.helperKdRuangan(store.pasien)"
-                jenis="dalam" />
+                @terima="(val) => store.terimaPasien(val)" @batal="(val) => store.batalkanPasien(val)" jenis="dalam" />
               <thumbnail-view v-else key="thumbnail-view" :items="store.items"
                 @details="(val) => store.getDataPasienRadiologiByNota(val)" />
             </transition-group>

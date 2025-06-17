@@ -1,9 +1,12 @@
 <template>
-  <q-item v-ripple clickable class="q-my-lg bg-white shadow-q relative-position" @click="emits('details', item)">
-    <q-card :class="`absolute text-grey-3 q-py-xs q-px-sm ${item?.status !== '' ? 'bg-teal' : 'bg-deep-orange-8'}`"
+  <q-item v-ripple class="q-my-lg bg-white shadow-q relative-position">
+    <q-card :class="`absolute text-grey-3 q-py-xs q-px-sm ${item?.flag === '1' ? 'bg-teal' : 'bg-deep-orange-8'}`"
       style="top:-15px; left: 0;">
       <div class="f-10">
-        {{ item?.status !== '' ? 'Terlayani' : 'Belum terlayani' }}
+        {{ item?.flag === '1' ? 'Terlayani' :
+          item?.flag === '2' ? 'Proses ...' :
+            item?.flag === '3' ? 'Dibatalkan' : 'Belum terlayani'
+        }}
       </div>
     </q-card>
     <div class="row items-center full-width">
@@ -50,12 +53,33 @@
               <span class="text-primary">{{ item?.perusahaan || '-' }}</span>
             </div>
           </div>
-          <div class="col-2 flex justify-end">
-            <div class="text-grey-8 f-12">
-              {{ date.formatDate(item?.tglentri, 'MMM DD, YYYY') }}
+          <div class="col-2 flex justify-end relative-position">
+            <div class="" style="margin-top: -30px;">
+              <div class="text-grey-8 f-12">
+                {{ date.formatDate(item?.tglentri, 'MMM DD, YYYY') }}
+              </div>
+              <div class="text-grey-6 f-10">
+                Jam : <b> {{ date.formatDate(item?.tglentri, 'HH:mm') }}</b>
+              </div>
             </div>
-            <div class="text-grey-6 f-10">
-              Jam : <b> {{ date.formatDate(item?.tglentri, 'HH:mm') }}</b>
+
+
+
+          </div>
+
+          <div class="absolute-bottom-right q-pa-sm">
+            <div v-if="item?.flag === ''" class="flex q-gutter-lg">
+              <q-btn :loading="loadingBatal && idClick === item.rs1" :disable="loadingBatal && idClick === item.rs1"
+                rounded size="sm" label="Batalkan" color="negative" @click="bataalkanPasien(item)"></q-btn>
+              <q-btn :loading="loadingTerima && idClick === item.rs1" :disable="loadingTerima && idClick === item.rs1"
+                rounded size="sm" label="Terima" color="primary" @click="terimaPasien(item)"></q-btn>
+            </div>
+            <div v-else-if="item?.flag !== '' && item?.flag !== '3'" class="flex q-gutter-lg">
+              <q-btn rounded outline size="sm" color="primary" label="Lihat Layanan"
+                @click="emits('details', item)"></q-btn>
+            </div>
+            <div v-else-if="item?.flag === '3'" class="flex q-gutter-lg">
+              <q-btn disable rounded outline size="sm" color="primary" label="DIBATALKAN"></q-btn>
             </div>
           </div>
         </div>
@@ -65,16 +89,42 @@
 </template>
 
 <script setup>
+import { ref } from 'vue'
 import { date } from 'quasar'
 
 defineProps({
   item: {
     type: Object,
     default: null
+  },
+  loadingTerima: {
+    type: Boolean,
+    default: false
+  },
+  loadingBatal: {
+    type: Boolean,
+    default: false
   }
 })
 
-const emits = defineEmits(['details'])
+const idClick = ref(null)
+
+const emits = defineEmits(['details', 'terima', 'batal'])
+
+function terimaPasien(item) {
+  idClick.value = item.rs1
+  // console.log('terima pasien', item);
+
+  emits('terima', item)
+}
+
+function bataalkanPasien(item) {
+  // console.log('batal pasien', item);
+  idClick.value = item.rs1
+  emits('batal', item)
+}
+
+
 </script>
 
 <style lang="scss" scoped></style>
