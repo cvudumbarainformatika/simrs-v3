@@ -12,7 +12,7 @@ export const useDokumenIgdStore = defineStore('dokumen-igd-store', {
       { name: 'Billing Detail', page: 'Billing Detail' },
       { name: 'Farmasi', page: 'Farmasi' },
       { name: 'Laborat', page: 'Laborat' },
-      // { name: 'Bank Darah', page: 'BankDarah' },
+      { name: 'Radiologi', page: 'Radiologi' },
       // { name: 'Bank Darah', page: 'BankDarah' },
       // { name: 'Bank Darah', page: 'BankDarah' },
       // { name: 'Bank Darah', page: 'BankDarah' },

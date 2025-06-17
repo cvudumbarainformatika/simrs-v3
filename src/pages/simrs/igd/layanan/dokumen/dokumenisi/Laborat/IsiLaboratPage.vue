@@ -90,15 +90,6 @@ const laborat = computed(() => {
     return acc;
   }, {});
 
-  // const getOnePackage = (groupedByPaket) => {
-  //   const wew = groupedByPaket.find(item => item.paket !== "");
-  //   return wew
-  // };
-
-  console.log('groupedByPaket', groupedByPaket);
-
-
-
   return groupedByPaket;
 })
 </script>
