@@ -2,21 +2,27 @@
   <table style="width: calc(100vw - 80px);">
     <thead class="my-sticky-header-table">
       <tr>
-        <th width="5%">
+        <th width="5%" rowspan="2">
           No
         </th>
-        <th>
+        <th rowspan="2">
           Obat
         </th>
-        <th>
+        <th rowspan="2">
           Harga
         </th>
-        <th>
+        <th colspan="2">
+          Mutasi
+        </th>
+        <th colspan="2">
           Penggunaan
         </th>
-        <th>
-          Subtotal
-        </th>
+      </tr>
+      <tr>
+        <th>Jumlah</th>
+        <th>Subtotal</th>
+        <th>Jumlah</th>
+        <th>Subtotal</th>
       </tr>
 
     </thead>
@@ -38,12 +44,18 @@
           <td>
             <q-skeleton type="text" width="60px" height="25px" />
           </td>
+          <td>
+            <q-skeleton type="text" width="60px" height="25px" />
+          </td>
+          <td>
+            <q-skeleton type="text" width="60px" height="25px" />
+          </td>
 
         </tr>
       </template>
       <template v-else-if="!store.items?.length">
         <tr>
-          <td colspan="5">
+          <td colspan="7">
             <app-no-data />
           </td>
         </tr>
@@ -90,6 +102,16 @@
                 {{ formatDouble(item?.subtotal, 2) }}
               </div>
             </td>
+            <td>
+              <div class="text-end">
+                {{ formatDouble(item?.jumlah_pemakaian, 2) }}
+              </div>
+            </td>
+            <td>
+              <div class="text-end">
+                {{ formatDouble(item?.subtotal_pemakaian, 2) }}
+              </div>
+            </td>
           </tr>
         </template>
         <template v-if="store.loadingNext">
@@ -103,6 +125,12 @@
             <td>
               <q-skeleton type="text" width="60px" height="25px" />
             </td>
+            <td>
+              <q-skeleton type="text" width="60px" height="25px" />
+            </td>
+            <td>
+              <q-skeleton type="text" width="60px" height="25px" />
+            </td>
             <td v-if="store.params.jenis === 'detail'">
               <q-skeleton type="text" width="60px" height="25px" />
             </td>
@@ -150,12 +178,23 @@
             </td>
           </tr>
         </template>
-        <!-- <tr class="text-weight-bold">
-          <td colspan="6">
+        <tr class="text-weight-bold">
+          <td colspan="3">
             Total
           </td>
-          <td> {{ formatDouble(parseFloat(store.total),2) }}</td>
-        </tr> -->
+          <td colspan="2">
+            <div class="text-right">{{formatDouble(parseFloat(store.items?.reduce((a, b) => a +
+              parseFloat(b.subtotal), 0)), 2)
+            }}
+            </div>
+          </td>
+          <td colspan="2">
+            <div class="text-right">{{formatDouble(parseFloat(store.items?.reduce((a, b) => a +
+              parseFloat(b.subtotal_pemakaian), 0)), 2)
+            }}
+            </div>
+          </td>
+        </tr>
       </template>
     </tbody>
   </table>

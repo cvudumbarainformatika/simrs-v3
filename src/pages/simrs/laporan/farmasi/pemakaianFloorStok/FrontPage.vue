@@ -17,7 +17,7 @@
             <div class="col-2">
               <app-autocomplete v-model="store.params.kode_ruang" label="Pilih Gudang / Depo" autocomplete="uraian"
                 option-label="uraian" option-value="kode" outlined :source="store.ruangs" :loading="store.loading"
-                :disable="store.loading || !!store.ketProses" @update:model-value="() => {
+                :key="store.params.kode_ruang" :disable="store.loading || !!store.ketProses" @update:model-value="() => {
                   store.items = []
                   store.meta = {}
                   store.setParams('page', 1)
@@ -38,7 +38,7 @@
             </div>
             <div class="col-2">
               <app-btn label="Ambil Data" :disable="store.loading || !!store.ketProses" :loading="store.loading"
-                @click="store.getDataTable(1)" />
+                @click="store.getDataTable()" />
             </div>
           </div>
         </div>
