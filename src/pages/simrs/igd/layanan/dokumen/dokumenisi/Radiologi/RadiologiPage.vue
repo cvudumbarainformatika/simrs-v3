@@ -1,5 +1,11 @@
 <template>
-  <div class="q-pa-sm row flex justify-between bg-teal text-white items-center">
+  <div v-if="store?.loadingTerima">
+    <app-loading />
+  </div>
+  <div v-else-if="pasien?.radiologi?.length <= 0 && !store.loadingTerima">
+    <app-no-data />
+  </div>
+  <div v-else class="q-pa-sm row flex justify-between bg-teal text-white items-center">
     <div class="col-6">{{ props?.judul }}</div>
     <div class="col-6 text-right">
       <q-btn flat dense size="md" icon="icon-mat-download" @click="exportPdf()">
@@ -18,28 +24,18 @@
   <div class="full-height full-height q-pa-sm bg-indigo-1">
     <div id="printMe" style="width: 21cm;" class="q-pa-xs full-width full-height bg-white">
       <KopSurat :judul="props?.judul" :pasien="props?.pasien" :jangantampil=false />
-      <ObatPage :pasien="props?.pasien" ref="obatRef" />
-      <returObatPage :pasien="props?.pasien" ref="returobatRef" />
-      <q-separator class="q-mt-sm q-mb-sm" style="border-top: 1px solid black;" />
-      <div class="row q-gutter-sm q-mr-lg items-center no-wrap ">
-
-        <div class="col-10 text-right text-bold">
-          Total Akhir
-        </div>
-        <div class="col-2 garis-bawah-dablue text-right text-bold">
-          {{ formatRp(totalakhir) }}
-        </div>
-      </div>
+      <IsiRadiologiPage :pasien="props?.pasien" />
     </div>
   </div>
 </template>
 <script setup>
-import { computed, ref } from 'vue';
+
+import { usePengunjungIgdStore } from 'src/stores/simrs/igd/pengunjung';
 import KopSurat from '../../KopSurat.vue';
-import ObatPage from '../Billdetail/comp/ObatPage.vue';
-import ReturObatPage from '../Billdetail/comp/ReturObatPage.vue';
+import IsiRadiologiPage from './IsiRadiologiPage.vue';
 import html2pdf from 'html2pdf.js';
-import { formatRp } from 'src/modules/formatter';
+
+const store = usePengunjungIgdStore()
 
 const printObj = {
   id: 'printMe',
@@ -57,22 +53,22 @@ const props = defineProps({
   }
 })
 
-const obatRef = ref(0);
-const returobatRef = ref(0);
+// const obatRef = ref(0);
+// const returobatRef = ref(0);
 
-const totalakhir = computed(() => {
-  const returobat = returobatRef.value.returobat?.total ?? 0;
-  const obat = obatRef.value.rincianobat?.total ?? 0;
-  const total = parseInt(obat) - parseInt(returobat);
-  return total
-})
+// const totalakhir = computed(() => {
+//   const returobat = returobatRef.value.returobat?.total ?? 0;
+//   const obat = obatRef.value.rincianobat?.total ?? 0;
+//   const total = parseInt(obat) - parseInt(returobat);
+//   return total
+// })
 
 function exportPdf() {
   const concern = document.getElementById('printMe')
   const nama = props?.pasien?.nama ?? props?.pasien?.pasien
   const pdfConfig = {
     margin: 0,
-    filename: 'FARMASI_' + props?.pasien?.noreg + '_' + nama + '_' + props?.pasien?.norm + '.pdf',
+    filename: 'LABORAT_' + props?.pasien?.noreg + '_' + nama + '_' + props?.pasien?.norm + '.pdf',
     image: {
       type: 'jpeg',
       quality: 0.98
