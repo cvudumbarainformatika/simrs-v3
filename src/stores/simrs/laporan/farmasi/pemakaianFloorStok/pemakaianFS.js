@@ -1,6 +1,7 @@
 import { acceptHMRUpdate, defineStore } from "pinia"
 import { date } from "quasar"
 import { api } from "src/boot/axios"
+import { useAplikasiStore } from "src/stores/app/aplikasi"
 
 export const useLaporanPemakaianFloorStokStore = defineStore('laporan_pemakaian_floor_stok', {
   state: () => ({
@@ -67,17 +68,26 @@ export const useLaporanPemakaianFloorStokStore = defineStore('laporan_pemakaian_
       this.ketProses = null
       this.setParams('page', val)
       this.setParams('action', '')
-      this.getDataTable()
+      // this.getDataTable()
       this.getRuangans()
       this.meta = {}
       this.items = []
     },
     async getRuangans () {
       const { data } = await api.get('v1/simrs/laporan/farmasi/pemakaian-ruangan/get-ruangan')
-      console.log('data', data)
+      const ruang = data?.data
+      const app = useAplikasiStore()
+      const kdruangs = app?.user?.pegawai?.kdruangansim?.split('|')
+      // console.log('kd', kdruangs)
+      const depo = kdruangs?.filter(item => item?.toLowerCase()?.includes('gd-'))
+      const adaRuangan = kdruangs?.filter(item => item?.toLowerCase()?.includes('r-'))
+      if (depo?.length) this.ruangs = ruang
+      else this.ruangs = ruang.filter(item => adaRuangan?.includes(item?.kode))
+      // this.ruangs = ruang.filter(item => adaRuangan?.includes(item?.kode)) // percobaan
 
-      this.ruangs = data?.data
-      this.ruangs.unshift({ kode: 'all', uraian: 'Semua' })
+      if (this.ruangs?.length > 1) this.ruangs.unshift({ kode: 'all', uraian: 'Semua' })
+      else this.params.kode_ruang = this.ruangs[0]?.kode
+      console.log('data', this.ruangs)
     },
     getAllData () { },
     async getDataTable () {
@@ -179,13 +189,22 @@ export const useLaporanPemakaianFloorStokStore = defineStore('laporan_pemakaian_
       return chunked
     },
     dataProcessing () {
-      // console.log('data processing', this.obats, this.rawItems)
+      console.log('data processing', this.obats, this.rawItems)
       this.obats.forEach(obat => {
         const mut = this.rawItems.filter(item => item.kd_obat === obat.kd_obat)
+
         const jum = mut.reduce((total, item) => total + item.jumlah, 0)
         obat.jumlah = jum
+
         const sub = mut.reduce((total, item) => total + item.subtotal, 0)
         obat.subtotal = sub
+
+        const jum_pe = mut.reduce((total, item) => total + item.jumlah_pemakaian, 0)
+        obat.jumlah_pemakaian = jum_pe
+
+        const sub_pe = mut.reduce((total, item) => total + item.subtotal_pemakaian, 0)
+        obat.subtotal_pemakaian = sub_pe
+
         obat.harga = mut[0]?.harga
       })
       this.items = [...this.obats]
@@ -218,8 +237,10 @@ export const useLaporanPemakaianFloorStokStore = defineStore('laporan_pemakaian_
           'Bentuk Sediaan': 'bentuk_sediaan',
           Satuan: 'satuan_k',
           Harga: 'harga',
-          Jumlah: 'jumlah',
-          Subtotal: 'subtotal',
+          'Jumlah Mutasi': 'jumlah',
+          'Subtotal Mutasi': 'subtotal',
+          'Jumlah Pemakaian': 'jumlah_pemakaian',
+          'Subtotal Pemakaian': 'subtotal_pemakaian',
         }
       }
     },
@@ -234,8 +255,14 @@ export const useLaporanPemakaianFloorStokStore = defineStore('laporan_pemakaian_
       let data = []
       let loop = true
 
+      const subtotal = this.items.reduce((total, item) => total + item.subtotal, 0)
+      const subtotalPem = this.items.reduce((total, item) => total + item.subtotal_pemakaian, 0)
+      const tot = {
+        subtotal: subtotal,
+        subtotal_pemakaian: subtotalPem
+      }
       data = [...this.items]
-
+      data.push(tot)
 
 
       if (loop) data.forEach((item, i) => {

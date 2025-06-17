@@ -21,9 +21,11 @@ self.onmessage = function (e) {
       // obatsaja.push(...chunk)
 
       chunk.forEach(item => {
-        processedData.push(...processData(item))
+        if (item?.mutasi?.length) processedData.push(...processData(item))
+        if (item?.pemakaian?.length) processedData.push(...processDataPemakaian(item))
         const obat = { ...item }
         if (obat?.mutasi) delete obat.mutasi
+        if (obat?.pemakaian) delete obat.pemakaian
         obatsaja.push(obat)
 
         processed++
@@ -49,22 +51,45 @@ function processData (data) {
   // console.log('data', data)
   const results = []
   data?.mutasi.forEach(item => {
-    results.push(createDataObject(item, data))
+    const subtotal = item.jml * item.harga
+    results.push({
+      ...createDataObject(item, data),
+      harga: item.harga,
+      jumlah: item.jml,
+      subtotal: Number(parseFloat(subtotal).toFixed(2)),
+      jumlah_pemakaian: 0,
+      subtotal_pemakaian: 0
+    })
   })
   return results
 }
+
 function createDataObject (item, data) {
-  const subtotal = item.jml * item.harga
+
   return {
     kd_obat: data?.kd_obat,
     nama_obat: data?.nama_obat,
     kd_obat: data?.kd_obat,
     bentuk_sediaan: data?.bentuk_sediaan,
     jenis_perbekalan: data?.jenis_perbekalan,
-    harga: item.harga,
-    jumlah: item.jml,
-    subtotal: Number(parseFloat(subtotal).toFixed(2)),
   }
+}
+function processDataPemakaian (data) {
+  // console.log('data', data)
+  const results = []
+  data?.pemakaian.forEach(item => {
+    const harga = (data?.mutasi[0]?.harga ?? item?.penerimaanrinci[0]?.harga_netto_kecil) ?? 0
+    const subtotal = item.jumlah * harga
+    results.push({
+      ...createDataObject(item, data),
+      harga: harga,
+      jumlah: 0,
+      subtotal: 0,
+      jumlah_pemakaian: item.jumlah,
+      subtotal_pemakaian: Number(parseFloat(subtotal).toFixed(2))
+    })
+  })
+  return results
 }
 
 
