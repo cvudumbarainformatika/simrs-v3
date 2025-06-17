@@ -84,6 +84,20 @@ const documents = ref([
     label: 'Surat Kematian',
     value: 'Surat_Kematian'
   },
+  {
+    icon: 'icon-fa-file-regular',
+    color: 'primary',
+    jenis: 'Farmasi',
+    label: 'Farmasi',
+    value: 'Farmasi'
+  },
+  {
+    icon: 'icon-fa-file-regular',
+    color: 'primary',
+    jenis: 'Laborat',
+    label: 'Laborat',
+    value: 'Laborat'
+  },
 ])
 
 const documentsrajal = ref([
@@ -116,6 +130,8 @@ const comp = [
   { nama: 'DetailBilling', page: defineAsyncComponent(() => import('../../../../igd/layanan/dokumen/dokumenisi/Billdetail/BillingDetailPage.vue')) },
   { nama: 'Triage_IGD', page: defineAsyncComponent(() => import('../../../../igd/layanan/dokumen/dokumenisi/triage/TriasePage.vue')) },
   { nama: 'Surat_Kematian', page: defineAsyncComponent(() => import('../../../../igd/layanan/dokumen/dokumenisi/suratkematian/SuratKematianPage.vue')) },
+  { nama: 'Farmasi', page: defineAsyncComponent(() => import('../../../../igd/layanan/dokumen/dokumenisi/Farmasi/FarmasiPage.vue')) },
+  { nama: 'Laborat', page: defineAsyncComponent(() => import('../../../../igd/layanan/dokumen/dokumenisi/Laborat/LaboratPage.vue')) },
 ]
 
 const comprajal = [
