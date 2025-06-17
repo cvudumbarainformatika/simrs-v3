@@ -13,6 +13,7 @@ export const useDokumenIgdStore = defineStore('dokumen-igd-store', {
       { name: 'Farmasi', page: 'Farmasi' },
       { name: 'Laborat', page: 'Laborat' },
       { name: 'Radiologi', page: 'Radiologi' },
+      { name: 'Konsul Dokter', page: 'Konsul' },
       // { name: 'Bank Darah', page: 'BankDarah' },
       // { name: 'Bank Darah', page: 'BankDarah' },
       // { name: 'Bank Darah', page: 'BankDarah' },

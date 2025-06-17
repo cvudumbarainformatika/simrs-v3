@@ -39,6 +39,9 @@
         <q-tab-panel name="Radiologi" class="full-height q-pa-none">
           <RadiologiPage judul="Radiologi" :pasien="props?.pasien" />
         </q-tab-panel>
+        <q-tab-panel name="Konsul" class="full-height q-pa-none">
+          <KonsulDokterPage judul="Konsul Dokter" :pasien="props?.pasien" />
+        </q-tab-panel>
       </q-tab-panels>
     </div>
   </div>
@@ -64,7 +67,9 @@ import BillingDetailPage from './dokumenisi/Billdetail/BillingDetailPage.vue';
 import FarmasiPage from './dokumenisi/Farmasi/FarmasiPage.vue';
 import LaboratPage from './dokumenisi/Laborat/LaboratPage.vue';
 import RadiologiPage from './dokumenisi/Radiologi/RadiologiPage.vue';
+import KonsulDokterPage from './dokumenisi/konsulDokter/KonsulDokterPage.vue';
 import { usePlannStore } from 'src/stores/simrs/igd/plann';
+
 const billing = ref('BILLING')
 const triase = ref('TRIASE')
 const suratkematian = ref('Surat Kematian')
