@@ -112,6 +112,13 @@ const documents = ref([
     label: 'Konsultasi Dokter',
     value: 'Konsul_Dokter'
   },
+  {
+    icon: 'icon-fa-file-regular',
+    color: 'primary',
+    jenis: 'UploadBerk',
+    label: 'Berkas Upload',
+    value: 'Berkas_Upload'
+  },
 ])
 
 const documentsrajal = ref([
@@ -148,6 +155,7 @@ const comp = [
   { nama: 'Laborat', page: defineAsyncComponent(() => import('../../../../igd/layanan/dokumen/dokumenisi/Laborat/LaboratPage.vue')) },
   { nama: 'Radiologi', page: defineAsyncComponent(() => import('../../../../igd/layanan/dokumen/dokumenisi/Radiologi/RadiologiPage.vue')) },
   { nama: 'Konsul_Dokter', page: defineAsyncComponent(() => import('../../../../igd/layanan/dokumen/dokumenisi/konsulDokter/KonsulDokterPage.vue')) },
+  { nama: 'Berkas_Upload', page: defineAsyncComponent(() => import('./compdokumen/comIgdupload/DokumenUploadPage.vue')) },
 ]
 
 const comprajal = [

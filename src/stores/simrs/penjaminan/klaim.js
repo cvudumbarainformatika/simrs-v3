@@ -6,6 +6,7 @@ export const useKlaimPenjaminanStore = defineStore('klaim-penjaminan', {
   state: () => ({
     loading: false,
     loadingbuka: false,
+    loadingTerima: false,
     items: [],
     meta: {},
     pageLayanan: false,

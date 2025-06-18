@@ -1,5 +1,4 @@
 <template>
-
   <div class="full-height full-height q-pa-sm">
     <q-btn ref="refPrint" v-print="printObj" unelevated color="dark" round size="sm" icon="icon-mat-print">
       <q-tooltip class="primary" :offset="[10, 10]">
