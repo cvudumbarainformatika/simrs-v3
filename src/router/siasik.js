@@ -78,6 +78,27 @@ const siasik = {
 
       ]
     },
+    {
+      path: '/siasik/ls/notadinas',
+      name: 'siasik.ls.notadinas',
+      component: () => import('pages/siasik/transaksi/ls/notadinas/IndexPage.vue'),
+      children: [
+        { path: '', name: 'notadinas', redirect: '/siasik/ls/notadinas/formdata' },
+        {
+          path: '/siasik/ls/notadinas/formdata',
+          name: 'siasik.ls.notadinas.formdata',
+          component: () =>
+            import('src/pages/siasik/transaksi/ls/notadinas/formdata/IndexPage.vue')
+        },
+        {
+          path: '/siasik/ls/notadinas/listdata',
+          name: 'siasik.ls.notadinas.listdata',
+          component: () =>
+            import('src/pages/siasik/transaksi/ls/notadinas/listdata/IndexPage.vue')
+        },
+
+      ]
+    },
     // {
     //   path: '/satset/kunjungan',
     //   name: 'satset.kunjungan',

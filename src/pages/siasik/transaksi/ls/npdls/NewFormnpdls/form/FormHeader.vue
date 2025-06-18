@@ -58,7 +58,8 @@
           </div>
         </div>
         <app-input-simrs label="Keterangan Belanja" style="width: 50%" v-model="store.form.keterangan" outlined
-          :autofocus="false" :valid="{ required: false }" :disable="store.loading || store.disabledx" />
+          :autofocus="false" :valid="{ required: false }"
+          :disable="store.loading || store.disabledx || store.transall.length > 0" />
 
         <template v-if="store.form.serahterimapekerjaan === '3'">
           <div class="row items-center" style="width: 50%;">
