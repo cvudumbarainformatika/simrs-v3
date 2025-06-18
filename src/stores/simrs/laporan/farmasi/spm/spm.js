@@ -213,11 +213,16 @@ export const useLaporanSpmFarmasiStore = defineStore('laporan_spm_farmasi', {
       if (this.tipe == 'Rinci') {
         const allReseps = this.reseps.map(it => it.noresep)
         const uniqueReseps = [...new Set(allReseps)]
+        // console.log('uniqueReseps', uniqueReseps)
+        // console.log('rawItems', this.rawItems)
+
         uniqueReseps.forEach(item => {
           const resepnya = this.rawItems.filter(x => x.nomor == item)
           const satuRes = this.rawItems.find(x => x.nomor == item)
           const nonFor = resepnya.filter(i => i.fornas != '1').map(m => m.nama_obat)
-          itemnya.push({
+          // console.log('satuRes', satuRes)
+
+          if (satuRes) itemnya.push({
             tgl: satuRes?.tgl,
             nomor: satuRes?.nomor,
             ruang: satuRes?.ruang,
