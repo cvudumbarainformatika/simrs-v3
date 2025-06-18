@@ -23,6 +23,19 @@ export const useKlaimPenjaminanStore = defineStore('klaim-penjaminan', {
     setParams(key, val) {
       this.params[key] = val
     },
+    goToPage(val) {
+      this.params.page = val
+      this.getData()
+    },
+    search(val) {
+      this.params.q = val
+      this.params.page = 1
+      this.getData()
+    },
+    refresh(val) {
+      this.params.page = 1
+      this.getData()
+    },
     async getData() {
       this.loading = true
       const params = { params: this.params }

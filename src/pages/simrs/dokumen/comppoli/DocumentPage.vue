@@ -1,45 +1,23 @@
 <template>
-  <q-card
-    flat
-    bordered
-    square
-    class="full-height"
-  >
+  <q-card flat bordered square class="full-height">
     <div class="full-height column">
       <div class="col-auto bg-primary text-white">
         <q-bar>
           <div>Dokumen Pasien</div>
         </q-bar>
         <div class="q-pa-sm row items-center q-gutter-sm ">
-          <q-option-group
-            v-model="doc"
-            :options="documents"
-            color="white"
-            inline
-            dark
-          />
+          <q-option-group v-model="doc" :options="documents" color="white" inline dark />
         </div>
       </div>
       <div class="col">
-        <div
-          v-if="doc !== ''"
-          class="q-pa-md"
-        >
+        <div v-if="doc !== ''" class="q-pa-md">
           Dokumen {{ getLabel(doc) }}
           <q-separator class="q-my-sm" />
           <div>
-            <component
-              :is="cekPanel()"
-              :key="props.pasien"
-              :pasien="props.pasien"
-            />
+            <component :is="cekPanel()" :key="props.pasien" :pasien="props.pasien" />
           </div>
         </div>
-        <div
-          v-else
-          class="column full-height flex-center q-pa-md"
-          style="min-height: 400px;"
-        >
+        <div v-else class="column full-height flex-center q-pa-md" style="min-height: 400px;">
           Belum Ada Pemilihan Surat
         </div>
       </div>
@@ -85,11 +63,14 @@ const documents = ref([
   {
     label: 'Rencana Pasien',
     value: 'Rencana'
+  },
+  {
+    label: 'Surat Elegibilitas Peserta',
+    value: 'SEP'
   }
 ])
 function getLabel(val) {
   const anu = documents.value.filter(a => a.value === val)
-  // console.log('anu ', anu)
   return anu?.length ? anu[0].label : '-'
 }
 const comp = [

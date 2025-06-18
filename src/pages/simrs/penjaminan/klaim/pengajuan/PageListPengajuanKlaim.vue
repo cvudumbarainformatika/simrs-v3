@@ -18,7 +18,6 @@
     <page-grouping-klaim :key="pasien" v-model="store.pageLayanan" :pasien="pasien" :loadingbuka="store.loadingbuka" />
   </q-page>
 </template>
-
 <script setup>
 
 import ListPengajuanKlaim from './ListPengajuanKlaim.vue'
