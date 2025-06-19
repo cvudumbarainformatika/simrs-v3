@@ -28,6 +28,8 @@ export const useFormNotadinasStore = defineStore('formNotadinas', {
     },
     formheader: {
       nonotadinas: '',
+      nosptjm: '',
+      noverifikasi: '',
       tglnotadinas: date.formatDate(Date.now(), 'YYYY-MM-DD'),
       kodepptk: '',
       namapptk: '',
@@ -229,6 +231,9 @@ export const useFormNotadinasStore = defineStore('formNotadinas', {
             this.formheader.nonotadinas = resp.data?.result?.nonotadinas
             this.rinci.nonotadinas = resp.data?.result?.nonotadinas
             this.paramsrinci.nonotadinas = resp.data?.result?.nonotadinas
+            this.formheader.nosptjm = resp.data?.result?.nosptjm
+            this.formheader.noverifikasi = resp.data?.result?.noverifikasi
+
 
             this.loading = false
             notifSuccess(resp)

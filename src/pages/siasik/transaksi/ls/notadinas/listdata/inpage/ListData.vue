@@ -47,7 +47,7 @@
           <q-td key="nonpk" :props="props">
             <div>
               <template v-if="props.row?.nonpk">
-                <q-badge color="pink">
+                <q-badge color="brown-6">
                   NPK-LS: {{ props.row?.nonpk }}
                 </q-badge>
               </template>
@@ -87,6 +87,18 @@
                       <q-item clickable @click="editdata(props?.row)">
                         <q-item-section :auth="user">Edit Notadinas</q-item-section>
                       </q-item>
+                      <q-item clickable v-close-popup @click="viewCetakData(props?.row)">
+                        <q-item-section>Cetak Nota Dinas</q-item-section>
+                      </q-item>
+                      <q-item clickable v-close-popup @click="viewLembarverif(props?.row)">
+                        <q-item-section>Cetak Lembar Verif</q-item-section>
+                      </q-item>
+                      <q-item clickable v-close-popup @click="viewCetakSptj(props?.row)">
+                        <q-item-section>Cetak SPTJ</q-item-section>
+                      </q-item>
+                      <q-item clickable v-close-popup @click="viewCetakVerifikasi(props?.row)">
+                        <q-item-section>Cetak Verifikasi</q-item-section>
+                      </q-item>
                     </q-list>
                   </q-menu>
                 </q-btn>
@@ -97,6 +109,10 @@
       </template>
     </q-table>
     <app-dialog-rincian v-model="store.openDialogRinci" :nota="nota" />
+    <print-data v-model="store.dialogCetak" :cetakdata="cetakdata" />
+    <cetak-sptj v-model="store.dialogCetakSptj" :cetaksptj="cetaksptj" />
+    <cetak-verif v-model="store.dialogCetakPernyataan" :cetakverif="cetakverif" />
+    <lembar-verif v-model="store.dialogLembarverif" :lembarverif="lembarverif" />
   </div>
 </template>
 <script setup>
@@ -110,7 +126,10 @@ import { useRouter } from 'vue-router';
 
 
 const AppDialogRincian = defineAsyncComponent(() => import('./DialogViewRincian.vue'))
-
+const PrintData = defineAsyncComponent(() => import('./DialogCetakdata.vue'))
+const CetakSptj = defineAsyncComponent(() => import('./DialogCetakSptj.vue'))
+const CetakVerif = defineAsyncComponent(() => import('./DialogCetakVerif.vue'))
+const LembarVerif = defineAsyncComponent(() => import('./DialogLembarVerif.vue'))
 const store = listdataNotadinasStore()
 const form = useFormNotadinasStore()
 
@@ -139,8 +158,8 @@ const listdatanota = [
     name: 'nonpk',
     label: 'No NPK-LS',
     align: 'left',
-    // field: 'nokontrak',
-    field: row => [row.nonpk],
+    field: 'nonpk',
+    // field: row => [row.nonpk],
     sortable: true,
     // style: 'width: 200px',
     headerStyle: 'height:50px; font-weight: bold;'
@@ -175,22 +194,13 @@ const listdatanota = [
     align: 'center',
     headerStyle: 'width: 77px; height:50px; font-weight: bold;'
   }
-
-  // {
-  //   name: 'totalpermintaanls',
-  //   label: 'Nilai Kontrak',
-  //   align: 'right',
-  //   field: 'totalpermintaanls',
-  //   sortable: true,
-  //   headerStyle: 'width: 200px; height:50px; font-weight: bold;'
-  // }
 ]
 const columnsdata = ref(listdatanota)
 const nota = ref(null)
 function viewRincian(row) {
   store.openDialogRinci = true
   nota.value = row.rincians
-  console.log('nota', nota.value)
+  // console.log('nota', nota.value)
   store.listrinci = nota.value
 }
 
@@ -199,10 +209,37 @@ const clearSearch = () => {
   store.goToPage(1)
 }
 
+const cetakdata = ref([])
+function viewCetakData(row) {
+  // console.log('row cetak', row)
+  store.dialogCetak = true
+  cetakdata.value = row
+  store.cetaknotadinas = cetakdata.value
+}
 
-// onMounted(() => {
-//   console.log('user', auth.user)
-// })
+const lembarverif = ref([])
+function viewLembarverif(row) {
+  // console.log('row cetak', row)
+  store.dialogLembarverif = true
+  lembarverif.value = row
+  store.cetaknotadinas = lembarverif.value
+}
+
+const cetaksptj = ref([])
+function viewCetakSptj(row) {
+  // console.log('row cetak', row)
+  store.dialogCetakSptj = true
+  cetaksptj.value = row
+  store.cetaknotadinas = cetaksptj.value
+}
+
+const cetakverif = ref([])
+function viewCetakVerifikasi(row) {
+  // console.log('row cetak', row)
+  store.dialogCetakPernyataan = true
+  cetakverif.value = row
+  store.cetaknotadinas = cetakverif.value
+}
 
 function gantiKunci(row) {
   // console.log('row kunci', row)
@@ -235,7 +272,7 @@ function kunciData(row) {
       persistent: true
     }).onOk(() => {
       const payload = {
-        noserahterimapekerjaan: row.noserahterimapekerjaan,
+        nonotadinas: row.nonotadinas,
         kunci: row.kunci,
         nonpdls: row.nonpdls
       }
@@ -274,7 +311,7 @@ function kunciData(row) {
 
 const editDataref = ref(null)
 function editdata(row) {
-  console.log('row edit', row)
+
   if (auth.user?.pegawai?.kdpegsimrs !== 'sa') {
     $q.notify({
       type: 'negative',
@@ -294,6 +331,11 @@ function editdata(row) {
   editDataref.value = row
   form.formheader = editDataref.value
   form.transrinci = editDataref.value?.rincians
+
+  form.params.kodekegiatan = editDataref.value?.kodekegiatan ?? ''
+  form.params.kodepptk = editDataref.value?.kodepptk ?? ''
+  // console.log('formptks', form.ptks);
+
   form.getDataNpdls()
   form.formheader.rincians = []
 

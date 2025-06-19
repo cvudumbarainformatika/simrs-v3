@@ -8,6 +8,9 @@ export const listdataNotadinasStore = defineStore('list_data_notadinas', {
     loading: false,
     disabled: false,
     dialogCetak: false,
+    dialogCetakSptj: false,
+    dialogCetakPernyataan: false,
+    dialogLembarverif: false,
     openDialogRinci: false,
     params: {
       q: '',
@@ -19,8 +22,8 @@ export const listdataNotadinasStore = defineStore('list_data_notadinas', {
     },
     listdata: [],
     datanotadinas: [],
+    cetaknotadinas: [],
 
-    npddatasave: [],
     editdata: [],
     listrinci: []
   }),
@@ -36,7 +39,7 @@ export const listdataNotadinasStore = defineStore('list_data_notadinas', {
         api.get('/v1/transaksi/notadinas/listdata', params)
           .then((resp) => {
             if (resp.status === 200) {
-              // console.log('data Serahterima', resp)
+              // console.log('data Nota Dinas', resp.data)
               this.loading = false
               this.listdata = resp.data
               this.rincianNotadinas()
@@ -58,6 +61,8 @@ export const listdataNotadinasStore = defineStore('list_data_notadinas', {
           const head = {
             id: arr.id,
             nonotadinas: arr.nonotadinas,
+            nosptjm: arr.nosptjm,
+            noverifikasi: arr.noverifikasi,
             tglnotadinas: arr.tglnotadinas,
             kodepptk: arr.kodepptk,
             namapptk: arr.namapptk,

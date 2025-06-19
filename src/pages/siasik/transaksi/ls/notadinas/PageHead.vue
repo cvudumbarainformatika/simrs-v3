@@ -13,9 +13,9 @@
 
     <div class="row items-center">
       <q-btn-group outline>
-        <q-btn :outline="path !== '/siasik/ls/notadinas/formdata'" glossy size="md" color="teal" label="Form NPD-LS"
+        <q-btn :outline="path !== '/siasik/ls/notadinas/formdata'" glossy size="md" color="teal" label="Form Nota Dinas"
           @click="goTo('/siasik/ls/notadinas/formdata')" />
-        <q-btn :outline="path !== '/siasik/ls/notadinas/listdata'" glossy size="md" color="dark" label="List NPD-LS"
+        <q-btn :outline="path !== '/siasik/ls/notadinas/listdata'" glossy size="md" color="dark" label="List Nota Dinas"
           @click="goTo('/siasik/ls/notadinas/listdata')" />
 
       </q-btn-group>

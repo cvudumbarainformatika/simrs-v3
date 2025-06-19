@@ -21,7 +21,7 @@
             autocomplete="namapptk" option-value="kodepptk" standout="bg-yellow-3" hide-bottom-space
             :disable="store.loading || store.disabled || store.transrinci.length > 0" :loading="store.loading"
             :option-label="opt => Object(opt) === opt && 'kodepptk' in opt ? opt.namapptk + ' - ' + opt.kodepptk : ''"
-            input-debounce="0" :options="options" @filter="filterFn" @update:model-value="(val) => pilihPTK(val)">
+            input-debounce="300" :options="options" @filter="filterFn" @update:model-value="(val) => pilihPTK(val)">
 
             <template #no-option>
               <q-item>
@@ -116,16 +116,19 @@ function pilihPTK(val) {
 }
 function pilihKegiatan(val) {
   const arr = store.kegiatans
-  const obj = arr?.length ? arr.find(x => x.kegiatan === val) : null
 
-  store.formheader.kodekegiatan = obj?.kegiatan ?? ''
-  store.formheader.kegiatan = obj?.kodekegiatan ?? ''
+  const obj = arr?.length ? arr.find(x => x.kegiatan === val) : null
+  console.log('obj kegiatan', obj)
+  store.formheader.kodekegiatan = obj?.kodekegiatan ?? ''
+  store.formheader.kegiatan = obj?.kegiatan ?? ''
   store.formheader.kodebidang = obj?.kodebidang ?? ''
   store.formheader.bidang = obj?.bidang ?? ''
   store.formheader.kodepptk = obj?.kodepptk ?? ''
   store.formheader.namapptk = obj?.namapptk ?? ''
 
+  console.log('formheader', store.formheader)
   store.params.kodekegiatan = obj?.kodekegiatan ?? ''
+  store.params.kodepptk = obj?.kodepptk ?? ''
   store.getDataNpdls()
   store.openDialog = true
 
