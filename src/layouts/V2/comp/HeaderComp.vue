@@ -50,7 +50,7 @@
               {{ poli(user?.pegawai) }}
             </div>
           </div>
-          <div v-if="optionsGudang?.length > 1" class="q-mr-sm items-center">
+          <div v-if="optionsGudang?.length >= 1" class="q-mr-sm items-center">
             <!-- :label="labelGd()" -->
             <q-btn no-caps dense color="primary">
               <div class="f-10">
@@ -59,7 +59,7 @@
               <adm-choice-ruangan :option="optionsGudang" @set-gudang="emit('setGudang', $event)" />
             </q-btn>
           </div>
-          <div v-if="optionsRuangans?.length > 1" class="q-mr-sm items-center">
+          <div v-if="optionsRuangans?.length >= 1" class="q-mr-sm items-center">
             <!-- style="width: 180px;" -->
             <q-btn no-caps dense color="primary">
               <div class="f-10">
@@ -168,17 +168,17 @@ onMounted(() => {
   if (!props.user?.kdruangansim && temp?.length) emit('setGudang', ruang[0] ?? temp[0])
   // rsim.value = temp
 })
-function labelGd() {
+function labelGd () {
   const anu = props?.gudangs.filter(gud => gud.kode === props.user?.kdruangansim)
   if (anu?.length) return anu[0]?.nama
   else return 'Gudang Tidak Dipilih'
 }
-function labelRu() {
+function labelRu () {
   const anu = props?.ruangs?.filter(gud => gud.kode === props.user?.kdruangansim)
   if (anu?.length) return anu[0]?.uraian
   else return 'Ruangan Tidak Dipilih'
 }
-function poli(val) {
+function poli (val) {
   let fin = null
   let ruang = ''
   const temp = val.kdruangansim.split('|')
@@ -201,7 +201,7 @@ function poli(val) {
   return ruang
 }
 
-function namaPath(val) {
+function namaPath (val) {
   const stringdepan = val[0]
   let res = val
   if (stringdepan === '/') {
