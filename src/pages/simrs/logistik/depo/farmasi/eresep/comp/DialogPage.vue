@@ -126,6 +126,15 @@
       </div>
     </div>
     <div class="text-right q-mr-md q-my-sm">
+      <q-btn round push label="" class="f-12 q-mr-sm" color="orange" text-color="white" icon="icon-fa-vials-solid"
+        :loading="historiLab.loading" @click="() => {
+          historiLab.isOpen = true
+          historiLab.form.persyarantan_lab = store?.resep?.persyarantan_lab
+        }">
+        <q-tooltip class="primary" :offset="[10, 10]">
+          History Lab Pasien
+        </q-tooltip>
+      </q-btn>
       <q-btn round push label="" class="f-12 q-mr-sm" color="primary" text-color="white" icon="icon-mat-history"
         :loading="histori.loading" @click="openHistory = true">
         <q-tooltip class="primary" :offset="[10, 10]">
@@ -958,6 +967,7 @@
       </q-card-section>
     </q-card>
   </q-dialog>
+  <HistoryLabPage v-model="historiLab.isOpen" />
 </template>
 <script setup>
 import { ref, onMounted, defineAsyncComponent } from 'vue'
@@ -967,10 +977,12 @@ import { date } from 'quasar'
 import { useAplikasiStore } from 'src/stores/app/aplikasi'
 import { notifErrVue } from 'src/modules/utils'
 import { useHistoryPasien } from 'src/stores/simrs/pelayanan/poli/historypasien'
+import { useHistoryLaboratoriumPasienStore } from 'src/stores/simrs/farmasi/eresep/historyLab'
 
 const store = useEResepDepoFarmasiStore()
 const apps = useAplikasiStore()
 const histori = useHistoryPasien()
+const historiLab = useHistoryLaboratoriumPasienStore()
 const rajalRinc = ref(null)
 const ranapRinc = ref([])
 const ranapWaktu = ref(null)
@@ -978,6 +990,7 @@ const rajalOpen = ref(false)
 const ranapOpen = ref(false)
 const refEtiketRajal = ref(null)
 const refEtiketRanap = ref(null)
+
 const openHistory = ref(false)
 
 const openIter = ref(false)
@@ -987,6 +1000,7 @@ const HistoryResepIter = defineAsyncComponent(() => import('./HistoryResepIter.v
 const EtiketRajal = defineAsyncComponent(() => import('./EtiketRajal.vue'))
 const EtiketRanap = defineAsyncComponent(() => import('./EtiketRanap.vue'))
 const historyPage = defineAsyncComponent(() => import('src/pages/simrs/poli/tindakan/complayout/RightDrawer.vue'))
+const HistoryLabPage = defineAsyncComponent(() => import('./HistoryLabPage.vue'))
 
 function openRajal (val) {
   // console.log('refEtiketRajal', refEtiketRajal.value)
