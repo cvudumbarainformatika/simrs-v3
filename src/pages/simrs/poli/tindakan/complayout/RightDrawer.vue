@@ -228,7 +228,7 @@
                               <q-item-label lines="2">
                                 Suara Nafas Tambahan (Kiri) : <em>{{ pemeriksaanfisik?.auskultasisuaratambahankiri ??
                                   '-'
-                                }}</em>
+                                  }}</em>
                               </q-item-label>
                             </q-item-section>
                           </q-item>
@@ -358,9 +358,9 @@
                               <q-item-section>
                                 <q-item-label>Pemeriksaan = {{ radiologi?.relmasterpemeriksaan?.rs2 }}</q-item-label>
                                 <q-item-label>Jenis Pemeriksaan Radiologi = {{ radiologi?.relmasterpemeriksaan?.rs3
-                                }}</q-item-label>
+                                  }}</q-item-label>
                                 <q-item-label>Hasil Pemeriksaan Radiologi = {{ item?.hasilradiologi[r]?.rs3
-                                }}</q-item-label>
+                                  }}</q-item-label>
                               </q-item-section>
                             </q-item>
                           </q-list>
@@ -709,66 +709,12 @@
 
 
                         <q-card-section v-if="item?.jawabankonsul?.length" class="q-pa-none" flat bordered square dark>
-                          <q-bar class="bg-accent">
-                            <div>KONSUL ANTAR POLI</div>
-                          </q-bar>
-                          <template v-for="(jawaban, j) in item?.jawabankonsul" :key="j">
-                            <q-timeline color="secondary">
-                              <q-timeline-entry heading body="Timeline heading" />
 
-                              <q-timeline-entry
-                                title="Event Title"
-                                subtitle="February 22, 1986"
-                                avatar="https://cdn.quasar.dev/img/avatar3.jpg"
-                                :body="body"
-                              />
-
-                              <q-timeline-entry
-                                title="Event Title"
-                                subtitle="February 21, 1986"
-                                icon="delete"
-                                :body="body"
-                              />
-
-                              <q-timeline-entry heading body="November, 2017" />
-
-                              <q-timeline-entry
-                                title="Event Title"
-                                subtitle="February 22, 1986"
-                                :body="body"
-                              />
-
-                              <q-timeline-entry
-                                title="Event Title"
-                                subtitle="February 22, 1986"
-                                :body="body"
-                              />
-
-                              <q-timeline-entry
-                                title="Event Title"
-                                subtitle="February 22, 1986"
-                                color="orange"
-                                icon="done_all"
-                                :body="body"
-                              />
-
-                              <q-timeline-entry
-                                title="Event Title"
-                                subtitle="February 22, 1986"
-                                :body="body"
-                              />
-
-                              <q-timeline-entry
-                                title="Event Title"
-                                subtitle="February 22, 1986"
-                                :body="body"
-                              />
-                            </q-timeline>
-                          </template>
+                          <KonsulPoli :items="item.jawabankonsul" :pasien="pasien" />
 
                         </q-card-section>
 
-                        <q-card-section v-if="item?.planning?.length" class="q-pa-none" flat bordered square dark>
+                        <!-- <q-card-section v-if="item?.planning?.length" class="q-pa-none" flat bordered square dark>
                           <q-bar class="bg-accent">
                             <div>PLANNING</div>
                           </q-bar>
@@ -776,10 +722,10 @@
                             INI Untuk Planning
                           </q-card>
 
-                        </q-card-section>
+                        </q-card-section> -->
 
 
-                        <!-- <q-card-section v-if="item?.dokumenluar?.length" class="q-pa-none" flat bordered square dark>
+                        <q-card-section v-if="item?.dokumenluar?.length" class="q-pa-none" flat bordered square dark>
                           <q-bar class="bg-accent">
                             <div>DOKUMEN</div>
                           </q-bar>
@@ -799,9 +745,9 @@
                               </div>
                             </div>
                           </q-list>
-                        </q-card-section> -->
+                        </q-card-section>
 
-                        
+
 
                       </q-list>
                     </q-card>
@@ -1032,7 +978,7 @@
                                 <q-item-label lines="2">
                                   Suara Nafas Tambahan (Kiri) : <em>{{ pemeriksaanfisik?.auskultasisuaratambahankiri ??
                                     '-'
-                                  }}</em>
+                                    }}</em>
                                 </q-item-label>
                               </q-item-section>
                             </q-item>
@@ -1167,9 +1113,9 @@
                             <q-item-section>
                               <q-item-label>Pemeriksaan = {{ radiologi?.relmasterpemeriksaan?.rs2 }}</q-item-label>
                               <q-item-label>Jenis Pemeriksaan Radiologi = {{ radiologi?.relmasterpemeriksaan?.rs3
-                              }}</q-item-label>
+                                }}</q-item-label>
                               <q-item-label>Hasil Pemeriksaan Radiologi = {{ item.hasilradiologi[r]?.rs3
-                              }}</q-item-label>
+                                }}</q-item-label>
                             </q-item-section>
                           </q-item>
                         </q-list>
@@ -1729,7 +1675,7 @@
                               <q-item-label lines="2">
                                 Suara Nafas Tambahan (Kiri) : <em>{{ pemeriksaanfisik?.auskultasisuaratambahankiri ??
                                   '-'
-                                }}</em>
+                                  }}</em>
                               </q-item-label>
                             </q-item-section>
                           </q-item>
@@ -1862,9 +1808,9 @@
                               <q-item-section>
                                 <q-item-label>Pemeriksaan = {{ radiologi?.relmasterpemeriksaan?.rs2 }}</q-item-label>
                                 <q-item-label>Jenis Pemeriksaan Radiologi = {{ radiologi?.relmasterpemeriksaan?.rs3
-                                }}</q-item-label>
+                                  }}</q-item-label>
                                 <q-item-label>Hasil Pemeriksaan Radiologi = {{ item.hasilradiologi[r]?.rs3
-                                }}</q-item-label>
+                                  }}</q-item-label>
                               </q-item-section>
                             </q-item>
                           </q-list>
@@ -2313,6 +2259,10 @@ import { useHistoryPasien } from 'src/stores/simrs/pelayanan/poli/historypasien'
 import { onMounted, computed } from 'vue'
 import { pathImg } from 'src/boot/axios'
 
+import { defineAsyncComponent } from 'vue'
+
+const KonsulPoli = defineAsyncComponent(() => import('./compRight/KonsulPoli.vue'))
+
 // const PraAnestesi = defineAsyncComponent(() => import('src/pages/simrs/dokumen/erm/poli/AsesmenPraAnestesia.vue'))
 
 const props = defineProps({
@@ -2352,7 +2302,7 @@ const filteredItems = computed(() => {
   return store.items.filter(item => item.ruangan?.includes(tabs))
 })
 
-function nadi (val) {
+function nadi(val) {
   const bradikardi = val < 60
   const normal = val >= 61 && val <= 100
   const takikardi = val > 100
@@ -2374,7 +2324,7 @@ function nadi (val) {
   return obj
 }
 
-function suhu (val) {
+function suhu(val) {
   const hipotermia = val < 35
   const normal = val >= 35 && val < 37
   const pireksia = val >= 37 && val <= 41.1
@@ -2400,7 +2350,7 @@ function suhu (val) {
   return obj
 }
 
-function getKesadaran (val) {
+function getKesadaran(val) {
   const temp = store.optionsTingkatkesadaran.filter(a => a.value === val)
   if (temp?.length) {
     return temp[0].label
@@ -2410,7 +2360,7 @@ function getKesadaran (val) {
   }
 }
 // eslint-disable-next-line no-unused-vars
-function tekananDarah (val) {
+function tekananDarah(val) {
   const normal = val >= 100 && val <= 120
   const prahipertensi = val >= 121 && val <= 139
   const hipertensiderajat1 = val >= 140 && val <= 159
@@ -2439,7 +2389,7 @@ function tekananDarah (val) {
   return obj
 }
 
-function tekananDarahDias (val) {
+function tekananDarahDias(val) {
   const normal = val >= 60 && val <= 79
   const prahipertensi = val >= 80 && val <= 89
   const hipertensiderajat1 = val >= 90 && val <= 99
@@ -2468,7 +2418,7 @@ function tekananDarahDias (val) {
   return obj
 }
 
-function getInteger (str) {
+function getInteger(str) {
   const parts = str.split('.')
 
   if (parts?.length > 1 && parseInt(parts[1]) === 0) {

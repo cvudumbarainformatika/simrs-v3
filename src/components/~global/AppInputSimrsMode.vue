@@ -18,7 +18,7 @@
   <!-- WYSIWYG Editor -->
   <div v-else class="app-wysiwyg-editor full-width q-pa-none overflow-hidden">
     <div class="editor-toolbar bg-grey-2 rounded-borders ">
-      <div class="row items-center">
+      <div v-if="!view" class="row items-center">
         <!-- Add Import Button -->
         <div class="col-auto flex">
           <q-btn-dropdown flat dense icon="icon-mat-upload_file" label="Import">
@@ -133,10 +133,11 @@
       <q-spinner-dots size="50px" color="primary" />
     </q-inner-loading>
 
-    <div class="editor-content q-pa-xs" :class="{
+    <div class="q-pa-xs" :class="{
       'editor-disabled': disable,
       'editor-error': hasError,
-      'editor-warning': showWarning
+      'editor-warning': showWarning,
+      'editor-content': !disable
     }">
       <editor-content :editor="editor" />
 
@@ -206,7 +207,7 @@ const props = defineProps({
   },
   type: {
     type: String,
-    default: 'text'
+    default: 'wysiwyg' // text, wysiwyg
   },
   valid: {
     type: Object,
@@ -227,11 +228,15 @@ const props = defineProps({
   errorFromServer: {
     type: [Array, Object, Boolean],
     default: null
+  },
+  view: {
+    type: Boolean,
+    default: false
   }
 
 })
 
-const emits = defineEmits(['appendClick', 'update:modelValue'])
+const emits = defineEmits(['appendClick', 'update:modelValue', 'plaintext:modelValue'])
 
 const appInputSimrsMode = ref(null)
 
@@ -378,6 +383,9 @@ const handleFileUpload = async (event) => {
 
       // Trigger update untuk emit nilai
       const content = editor.value.getHTML()
+      const plaintext = editor.value.getText()
+
+      emits('plaintext:modelValue', plaintext)
       emits('update:modelValue', content)
     }
 
@@ -442,11 +450,16 @@ onMounted(() => {
         TableCell,
       ],
       content: props.modelValue || '', // Set initial content from modelValue
+      editable: !props.disable,
       onUpdate: ({ editor }) => {
         const content = editor.getHTML()
+        const plaintext = editor.getText()
         // Only emit if content actually changed
         if (content !== props.modelValue) {
           emits('update:modelValue', content === '<p></p>' ? '' : content)
+        }
+        if (plaintext) {
+          emits('plaintext:modelValue', plaintext)
         }
       },
       editorProps: {
@@ -499,7 +512,7 @@ const warningMessage = computed(() => {
 })
 </script>
 
-<style lang="scss">
+<!-- <style lang="scss">
 /* Hapus 'scoped' agar style bisa mempengaruhi konten editor */
 .app-wysiwyg-editor {
   border: 1px solid #ddd;
@@ -769,5 +782,276 @@ const warningMessage = computed(() => {
   .text-body1 {
     @extend p;
   }
+}
+</style> -->
+
+
+<style lang="css">
+.app-wysiwyg-editor {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  position: relative;
+}
+
+.app-wysiwyg-editor .editor-toolbar {
+  border-bottom: 1px solid #ddd;
+}
+
+.app-wysiwyg-editor .editor-content {
+  min-height: 200px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.app-wysiwyg-editor .editor-content:hover {
+  border-color: #000;
+}
+
+.app-wysiwyg-editor .editor-content:focus-within {
+  border-color: #1976d2;
+  box-shadow: 0 0 0 1px #1976d2;
+}
+
+.app-wysiwyg-editor .editor-content.editor-error {
+  border-color: #C10015;
+}
+
+.app-wysiwyg-editor .editor-content.editor-error:focus-within {
+  box-shadow: 0 0 0 1px #C10015;
+}
+
+.app-wysiwyg-editor .editor-content.editor-error .ProseMirror {
+  background-color: rgba(193, 0, 21, 0.03);
+}
+
+.app-wysiwyg-editor .editor-content.editor-warning {
+  border-color: #F2C037;
+}
+
+.app-wysiwyg-editor .editor-content.editor-warning:focus-within {
+  box-shadow: 0 0 0 1px #F2C037;
+}
+
+.app-wysiwyg-editor .editor-content.editor-warning .ProseMirror {
+  background-color: rgba(242, 192, 55, 0.03);
+}
+
+.app-wysiwyg-editor .ProseMirror {
+  outline: none;
+  padding: 5px;
+  min-height: 200px;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+/* Heading Styles */
+.app-wysiwyg-editor .ProseMirror h1 {
+  font-size: 1.5em;
+  font-weight: 600;
+  margin: 0.3em 0;
+  line-height: 1.2;
+}
+
+.app-wysiwyg-editor .ProseMirror h2 {
+  font-size: 1.25em;
+  font-weight: 600;
+  margin: 0.3em 0;
+  line-height: 1.2;
+}
+
+.app-wysiwyg-editor .ProseMirror h3 {
+  font-size: 1.17em;
+  font-weight: 600;
+  margin: 0.3em 0;
+  line-height: 1.2;
+}
+
+.app-wysiwyg-editor .ProseMirror h4 {
+  font-size: 1em;
+  font-weight: 600;
+  margin: 0.3em 0;
+  line-height: 1.2;
+}
+
+.app-wysiwyg-editor .ProseMirror h5 {
+  font-size: 0.83em;
+  font-weight: 600;
+  margin: 0.3em 0;
+  line-height: 1.2;
+}
+
+.app-wysiwyg-editor .ProseMirror h6 {
+  font-size: 0.78em;
+  font-weight: 600;
+  margin: 0.3em 0;
+  line-height: 1.2;
+}
+
+/* Paragraph Style */
+.app-wysiwyg-editor .ProseMirror p {
+  font-size: 1em;
+  margin: 0.5em 0;
+  line-height: 1;
+}
+
+.app-wysiwyg-editor .ProseMirror p[style*="text-align: center"],
+.app-wysiwyg-editor .ProseMirror p[style*="text-align: right"],
+.app-wysiwyg-editor .ProseMirror p[style*="text-align: justify"] {
+  text-align: inherit !important;
+}
+
+/* Tambahan alignment */
+.app-wysiwyg-editor .ProseMirror [style*="text-align"]:not(p) {
+  text-align: inherit !important;
+}
+
+.app-wysiwyg-editor .ProseMirror h1[style*="text-align: center"],
+.app-wysiwyg-editor .ProseMirror h2[style*="text-align: center"],
+.app-wysiwyg-editor .ProseMirror h3[style*="text-align: center"],
+.app-wysiwyg-editor .ProseMirror h4[style*="text-align: center"],
+.app-wysiwyg-editor .ProseMirror h5[style*="text-align: center"],
+.app-wysiwyg-editor .ProseMirror h6[style*="text-align: center"],
+.app-wysiwyg-editor .ProseMirror p[style*="text-align: center"] {
+  text-align: center !important;
+  display: block !important;
+  width: 100% !important;
+}
+
+.app-wysiwyg-editor .ProseMirror h1[style*="text-align: right"],
+.app-wysiwyg-editor .ProseMirror h2[style*="text-align: right"],
+.app-wysiwyg-editor .ProseMirror h3[style*="text-align: right"],
+.app-wysiwyg-editor .ProseMirror h4[style*="text-align: right"],
+.app-wysiwyg-editor .ProseMirror h5[style*="text-align: right"],
+.app-wysiwyg-editor .ProseMirror h6[style*="text-align: right"],
+.app-wysiwyg-editor .ProseMirror p[style*="text-align: right"] {
+  text-align: right !important;
+  display: block !important;
+  width: 100% !important;
+}
+
+.app-wysiwyg-editor .ProseMirror h1[style*="text-align: justify"],
+.app-wysiwyg-editor .ProseMirror h2[style*="text-align: justify"],
+.app-wysiwyg-editor .ProseMirror h3[style*="text-align: justify"],
+.app-wysiwyg-editor .ProseMirror h4[style*="text-align: justify"],
+.app-wysiwyg-editor .ProseMirror h5[style*="text-align: justify"],
+.app-wysiwyg-editor .ProseMirror h6[style*="text-align: justify"],
+.app-wysiwyg-editor .ProseMirror p[style*="text-align: justify"] {
+  text-align: justify !important;
+  display: block !important;
+  width: 100% !important;
+}
+
+/* Mammoth imported alignment */
+.app-wysiwyg-editor .ProseMirror [align="center"],
+.app-wysiwyg-editor .ProseMirror .is-text-center {
+  text-align: center !important;
+  display: block !important;
+  width: 100% !important;
+}
+
+.app-wysiwyg-editor .ProseMirror [align="right"],
+.app-wysiwyg-editor .ProseMirror .is-text-right {
+  text-align: right !important;
+  display: block !important;
+  width: 100% !important;
+}
+
+/* List styles */
+.app-wysiwyg-editor .ProseMirror ul,
+.app-wysiwyg-editor .ProseMirror ol {
+  margin: 1em 0;
+  padding-left: 2em;
+}
+
+/* Blockquote */
+.app-wysiwyg-editor .ProseMirror blockquote {
+  margin: 1em 0;
+  padding-left: 1em;
+  border-left: 4px solid #ccc;
+  color: #666;
+}
+
+/* Code block */
+.app-wysiwyg-editor .ProseMirror pre {
+  background: #f5f5f5;
+  padding: 1em;
+  border-radius: 4px;
+  overflow-x: auto;
+}
+
+/* Inline code */
+.app-wysiwyg-editor .ProseMirror code {
+  background: #f5f5f5;
+  padding: 0.2em 0.4em;
+  border-radius: 3px;
+  font-family: monospace;
+}
+
+/* Table */
+.app-wysiwyg-editor .ProseMirror table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0.5em 0;
+}
+
+.app-wysiwyg-editor .ProseMirror table td,
+.app-wysiwyg-editor .ProseMirror table th {
+  border: 1px solid #ddd;
+  padding: 6px 12px;
+}
+
+.app-wysiwyg-editor .ProseMirror table th {
+  background: #f5f5f5;
+  font-weight: bold;
+}
+
+/* Manual replacement of @extend */
+.app-wysiwyg-editor .text-h1 {
+  font-size: 1.5em;
+  font-weight: 600;
+  margin: 0.3em 0;
+  line-height: 1.2;
+}
+
+.app-wysiwyg-editor .text-h2 {
+  font-size: 1.25em;
+  font-weight: 600;
+  margin: 0.3em 0;
+  line-height: 1.2;
+}
+
+.app-wysiwyg-editor .text-h3 {
+  font-size: 1.17em;
+  font-weight: 600;
+  margin: 0.3em 0;
+  line-height: 1.2;
+}
+
+.app-wysiwyg-editor .text-h4 {
+  font-size: 1em;
+  font-weight: 600;
+  margin: 0.3em 0;
+  line-height: 1.2;
+}
+
+.app-wysiwyg-editor .text-h5 {
+  font-size: 0.83em;
+  font-weight: 600;
+  margin: 0.3em 0;
+  line-height: 1.2;
+}
+
+.app-wysiwyg-editor .text-h6 {
+  font-size: 0.78em;
+  font-weight: 600;
+  margin: 0.3em 0;
+  line-height: 1.2;
+}
+
+.app-wysiwyg-editor .text-body1 {
+  font-size: 1em;
+  margin: 0.5em 0;
+  line-height: 1;
 }
 </style>

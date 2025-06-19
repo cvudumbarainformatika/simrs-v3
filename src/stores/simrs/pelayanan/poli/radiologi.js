@@ -141,7 +141,7 @@ export const useRadiologiPoli = defineStore('poli-radiologi', {
         }
       }
       catch (error) {
-        // console.log('hpus rad', error)
+        console.log('hpus rad', error)
       }
     },
 

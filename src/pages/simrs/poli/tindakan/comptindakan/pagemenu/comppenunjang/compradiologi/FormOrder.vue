@@ -36,7 +36,7 @@
               standout="bg-yellow-3" icon="icon-mat-search" />
           </div>
           <div class="col-12">
-            <q-input v-model="store.form.catatanpermintaan" label="Catatan / Keteragan" autogrow outlined
+            <q-input v-model="store.form.catatanpermintaan" label="Catatan / Keterangan" autogrow outlined
               standout="bg-yellow-3" icon="icon-mat-search" />
           </div>
 

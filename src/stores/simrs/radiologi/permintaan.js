@@ -23,16 +23,19 @@ export const usePermintaanRadiologiStore = defineStore('permintaan-radiologi', {
   },
   actions: {
     initPermintaan(pasien) {
-      const nota = pasien?.nota_permintaan
-      const dasarPermintaan = pasien?.permintaan ?? null
-      this.permintaan = dasarPermintaan
-      console.log('dasarPermintaan', dasarPermintaan);
-      const data = dasarPermintaan?.rs15 || null
-      const arrayResult = data ? data?.split(';') : []
+      // const nota = pasien?.nota_permintaan
+      // const dasarPermintaan = pasien?.permintaan ?? null
+      // this.permintaan = dasarPermintaan
+      // console.log('dasarPermintaan', dasarPermintaan, pasien);
+      // const data = dasarPermintaan?.rs15 || null
+      // const arrayResult = data ? data?.split(';') : []
+      this.permintaan = pasien?.permintaan
 
 
       const storePasienRadiologi = useListPasienRadiologiStore()
       const master = storePasienRadiologi.namaPemeriksaans
+
+      console.log('dasarPermintaan', this.listPermintaans, pasien);
 
 
       this.listPermintaans = pasien?.permintaan?.rincians?.map(x => {
@@ -42,9 +45,13 @@ export const usePermintaanRadiologiStore = defineStore('permintaan-radiologi', {
         const ukuran = x.ukuran || '43 x 35'
         const jumlah = x.jumlah || 1
         const pelaksana = x.pelaksana || null
+        const hasil = x.hasil || null
+        const kesimpulan = x.kesimpulan || null
+        const hasilhtml = x.hasilhtml || null
+        const kesimpulanhtml = x.kesimpulanhtml || null
         return {
           ...x,
-          kdPelaksana, ukuran, jumlah, pelaksana
+          kdPelaksana, ukuran, jumlah, pelaksana, hasil, kesimpulan, hasilhtml, kesimpulanhtml
         }
       })
 
@@ -90,12 +97,14 @@ export const usePermintaanRadiologiStore = defineStore('permintaan-radiologi', {
 
 
     },
-    batal(item) {
+    reset(item) {
       // item.kdPelaksana = null
       // item.pelaksana = null
       item.hasil = null
-      item.jumlah = 1
       item.kesimpulan = null
+      item.hasilhtml = null
+      item.kesimpulanhtml = null
+      item.jumlah = 1
       item.ukuran = '43 x 35'
     }
   }

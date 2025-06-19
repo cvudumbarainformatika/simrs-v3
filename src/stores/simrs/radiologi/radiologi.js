@@ -38,6 +38,8 @@ export const useListPasienRadiologiStore = defineStore('list-pasien-radiologi', 
     koderuangan: null,
     depo: null,
 
+    alasanpembatalan: null,
+
     // INI BARU
     namaPemeriksaans: [],
     jenisPemeriksaans: [],
@@ -85,21 +87,37 @@ export const useListPasienRadiologiStore = defineStore('list-pasien-radiologi', 
       this.loadingTerima = true
 
       const permintaan = usePermintaanRadiologiStore()
-      try {
-        const resp = await api.get(`/v1/simrs/radiologi/radiologi/getDataPasienRadiologiByNota?nota=${pasien?.nota_permintaan}`)
-        // console.log('resp pasien radiologi', resp, this.depo)
-        if (resp.status === 200) {
-          this.pasien['permintaan'] = resp.data?.permintaan ?? null
-          this.pasien['newapotekrajal'] = resp.data?.newapotekrajal ?? []
-          permintaan.initPermintaan(this.pasien)
+      // try {
+      //   const resp = await api.get(`/v1/simrs/radiologi/radiologi/getDataPasienRadiologiByNota?nota=${pasien?.nota_permintaan}`)
+      //   // console.log('resp pasien radiologi', resp, this.depo)
+      //   if (resp.status === 200) {
+      //     this.pasien['permintaan'] = resp.data?.permintaan ?? null
+      //     this.pasien['newapotekrajal'] = resp.data?.newapotekrajal ?? []
+      //     permintaan.initPermintaan(this.pasien)
 
-        }
-      } catch (error) {
-        console.error('Error fetching data for pasien radiologi:', error)
+      //   }
+      // } catch (error) {
+      //   console.error('Error fetching data for pasien radiologi:', error)
 
-      } finally {
-        this.loadingTerima = false
-      }
+      // } finally {
+      //   this.loadingTerima = false
+      // }
+
+      await api.get(`/v1/simrs/radiologi/radiologi/getDataPasienRadiologiByNota?nota=${pasien?.nota_permintaan}`)
+        .then(resp => {
+          // console.log('resp pasien radiologi', resp, this.depo)
+          if (resp.status === 200) {
+            this.pasien['permintaan'] = resp.data?.permintaan ?? null
+            this.pasien['newapotekrajal'] = resp.data?.newapotekrajal ?? []
+            permintaan.initPermintaan(this.pasien)
+
+          }
+        }).catch(err => {
+          console.log('err pasien radiologi', err);
+          // notifErrVue('Pasien gagal diterima')
+        }).finally(() => {
+          this.loadingTerima = false
+        })
 
 
 
@@ -108,7 +126,7 @@ export const useListPasienRadiologiStore = defineStore('list-pasien-radiologi', 
 
     async terimaPasien(val) {
       this.loadingTerima = true
-      console.log('terima pasien', val);
+      // console.log('terima pasien', val);
       const payload = {
         'notrans': val?.nota_permintaan
       }
@@ -131,11 +149,12 @@ export const useListPasienRadiologiStore = defineStore('list-pasien-radiologi', 
         })
     },
 
-    async batalkanPasien(val) {
+    async batalkanPasien(val, alasan) {
       this.loadingBatal = true
       // console.log('batalkan pasien', val);
       const payload = {
-        'notrans': val?.nota_permintaan
+        'notrans': val?.nota_permintaan,
+        'alasanpembatalan': alasan
       }
       await api.post('/v1/simrs/radiologi/radiologi/batalkanpasienradiologi', payload)
         .then(resp => {

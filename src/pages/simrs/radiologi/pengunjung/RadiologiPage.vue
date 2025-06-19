@@ -22,7 +22,7 @@
               <list-pasien v-if="!store.isViewList" key="list-pasien" :items="store.items" :loading="store.loading"
                 :loading-terima="store?.loadingTerima" :loading-batal="store?.loadingBatal"
                 @details="(val) => store.getDataPasienRadiologiByNota(val)" @click="store.helperKdRuangan(store.pasien)"
-                @terima="(val) => store.terimaPasien(val)" @batal="(val) => store.batalkanPasien(val)" jenis="dalam" />
+                @terima="(val) => store.terimaPasien(val)" @batal="(val) => batalkanPasien(val)" jenis="dalam" />
               <thumbnail-view v-else key="thumbnail-view" :items="store.items"
                 @details="(val) => store.getDataPasienRadiologiByNota(val)" />
             </transition-group>
@@ -52,20 +52,38 @@ import ThumbnailView from './comp/ThumbnailView.vue'
 
 import { useListPasienRadiologiStore } from 'src/stores/simrs/radiologi/radiologi'
 import { onMounted } from 'vue'
+import { useQuasar } from 'quasar'
 import ListPasien from './comp/ListPasien.vue'
 // import DetailsPasien from '../pengunjung/comp/DetailsPasien.vue'
 import PageTindakan from '../tindakan/IndexPage.vue'
 
 const store = useListPasienRadiologiStore()
 
+const $q = useQuasar()
+
 onMounted(() => {
   store.getDataTable()
 })
 
-// function bukaTindakan (val) {
-//   // console.log('buka tindakan', val)
-//   store.pasien = val
-// }
+function batalkanPasien(dot) {
+  // console.log('dot', dot);
+
+  $q.dialog({
+    title: 'Alasan Pembatalan',
+    message: `Berikan Alasan Pembatalan Pada Pasien <b>${dot.nama} dengan </b> Nota Permintaan <b class="text-negative">${dot.nota_permintaan}</b> dari ruangan <b>${dot.ruangan}</b> ini`,
+    prompt: {
+      model: '',
+      isValid: val => val.length > 2, // << here is the magic
+      type: 'text' // optional
+    },
+    cancel: true,
+    persistent: true,
+    html: true
+  }).onOk(data => {
+    // console.log('>>>> OK, received', data)
+    store.batalkanPasien(dot, data)
+  })
+}
 
 </script>
 

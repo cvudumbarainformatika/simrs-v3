@@ -1,6 +1,7 @@
 <template>
   <q-item v-ripple clickable class="q-my-lg bg-white shadow-q relative-position">
-    <q-card :class="`absolute text-grey-3 q-py-xs q-px-sm ${item?.status === '1' ? 'bg-teal' : 'bg-deep-orange-8'}`"
+    <q-card
+      :class="`absolute text-grey-3 q-py-xs q-px-sm ${item?.status === '1' ? 'bg-teal' : item.status === '2' ? 'bg-deep-orange-8' : 'bg-negative'}`"
       style="top:-15px; left: 0;">
       <div class="f-10">
         {{ item?.status === '1' ? 'Terlayani' :
@@ -75,7 +76,8 @@
               @click="emits('details', item)"></q-btn>
           </div>
           <div v-else-if="item?.status === '3'" class="flex q-gutter-lg">
-            <q-btn disable rounded outline size="sm" color="primary" label="DIBATALKAN"></q-btn>
+            <q-btn @click="emits('details', item)" rounded outline size="sm" color="negative"
+              label="DIBATALKAN"></q-btn>
           </div>
         </div>
       </div>

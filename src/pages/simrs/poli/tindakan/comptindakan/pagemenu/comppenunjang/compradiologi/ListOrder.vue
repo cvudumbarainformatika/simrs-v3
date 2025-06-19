@@ -62,11 +62,13 @@
                     <div class="column">
                       <div class="text-bold">Hasil : </div>
                       <div class="q-mb-md">
-                        {{ rinci.hasil ?? 'Belum Ada Hasil' }}
+                        <!-- <span v-html="rinci.hasil ?? 'Belum Ada Hasil'"></span> -->
+                        <app-input-simrs-mode view v-model="rinci.hasilhtml" :disable="true" />
                       </div>
                       <div class="text-bold">Kesimpulan : </div>
                       <div>
-                        {{ rinci.kesimpulan ?? 'Belum Ada Kesimpulan' }}
+                        <!-- {{ rinci.kesimpulan ?? 'Belum Ada Kesimpulan' }} -->
+                        <app-input-simrs-mode view v-model="rinci.kesimpulanhtml" :disable="true" />
                       </div>
                     </div>
                   </q-card-section>
@@ -76,6 +78,7 @@
             </q-list>
           </template>
         </transition-group>
+        <div style="padding-bottom: 300px;"></div>
       </q-scroll-area>
     </div>
   </div>

@@ -25,6 +25,10 @@
                 <q-icon name="icon-mat-lock" class="q-mr-md"></q-icon>
                 <div>Layanan telah selesai</div>
               </q-btn>
+              <q-btn v-else-if="pasien.status === '3'" color="negative" rounded disabled outline>
+                <q-icon name="icon-mat-close" class="q-mr-md"></q-icon>
+                <div>Layanan telah Dibatalkan</div>
+              </q-btn>
             </div>
           </div>
         </q-banner>
@@ -71,7 +75,25 @@
             <div class="col-8">
               <div class="row">
                 <div class="col-auto" style="min-width:5px"> : </div>
-                <div class="col">{{ formatDateTime(permintaan?.created_at) }}</div>
+                <div class="col">{{ formatDateTime(permintaan?.tgl_kunjungan) }}</div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-4">Diterima Tgl</div>
+            <div class="col-8">
+              <div class="row">
+                <div class="col-auto" style="min-width:5px"> : </div>
+                <div class="col">{{ formatDateTime(permintaan?.trmtgl) }}</div>
+              </div>
+            </div>
+          </div>
+          <div v-if="permintaan?.rs9 === '1' || permintaan?.rs9 === '3'" class="row">
+            <div class="col-4">{{ permintaan?.rs9 === '1' ? 'Diselesaikan Tgl' : 'Dibatalkan Tgl' }}</div>
+            <div class="col-8">
+              <div class="row">
+                <div class="col-auto" style="min-width:5px"> : </div>
+                <div class="col">{{ formatDateTime(permintaan?.updateststgl) }}</div>
               </div>
             </div>
           </div>
@@ -101,21 +123,30 @@
         <q-list bordered>
 
 
-          <template v-for="(item, index) in listPermintaans" :key="item">
-            <q-expansion-item group="somegroup" icon="icon-mat-app_registration"
-              :label="`${item?.nama} - (${item?.jenis})`" switch-toggle-side>
+          <template v-for="(item, index) in listPermintaans" :key="index">
+            <q-expansion-item group="somegroup" :label="`${item?.nama} - (${item?.jenis})`" switch-toggle-side
+              :header-class="{ 'bg-primary text-white': isActive === index }" expand-separator
+              @click="isActive = index">
 
               <template #header>
                 <q-item-section class="q-pa-sm">
                   <div class="f-14">{{ item?.nama }} ({{ item?.jenis }})</div>
-                  <div class="text-md q-mt-sm text-grey">Rp. {{ formatRp(item?.subtotal) }}</div>
+                  <div class="text-md q-mt-sm text-positive">Rp. {{ formatRp(item?.subtotal) }}</div>
+
                 </q-item-section>
                 <q-item-section side>
-                  <q-icon name="icon-mat-app_registration"></q-icon>
+                  <template v-if="permintaan?.rs9 !== '3'">
+                    <q-icon :name="item?.hasil?.length > 1 ? 'icon-mat-done_all' : 'icon-mat-app_registration'"
+                      :color="item?.hasil?.length > 1 ? 'positive' : 'orange'"></q-icon>
+                  </template>
+                  <template v-else>
+                    <q-icon name="icon-mat-cancel" color="negative"></q-icon>
+
+                  </template>
                 </q-item-section>
               </template>
 
-              <q-card>
+              <q-card v-if="permintaan?.rs9 !== '3'">
                 <q-separator />
                 <q-card-section>
                   <div class="row q-col-gutter-sm full-width">
@@ -151,12 +182,18 @@
                       }" />
 
                     <div class="col-12 q-mb-sm"> Hasil : <span class="text-red">*</span> </div>
-                    <app-input-simrs-mode type="wysiwyg" v-model="item.hasil" :disable="false" class="col-12 q-mb-md"
+                    <app-input-simrs-mode v-model="item.hasilhtml" :disable="false" class="col-12 q-mb-md"
                       @update:model-value="(val) => {
+                        item.hasilhtml = val
+                      }" @plaintext:model-value="(val) => {
+                        // console.log('plaintext', val);
                         item.hasil = val
                       }" :valid="{ required: true }" />
                     <div class="q-mb-sm">kesimpulan :</div>
-                    <app-input-simrs-mode type="wysiwyg" v-model="item.kesimpulan" :disable="false" @update:model-value="(val) => {
+                    <app-input-simrs-mode v-model="item.kesimpulanhtml" :disable="false" @update:model-value="(val) => {
+                      item.kesimpulanhtml = val
+                    }" @plaintext:model-value="(val) => {
+                      // console.log('plaintext', val);
                       item.kesimpulan = val
                     }" class="col-12 q-mb-md" :valid="{ required: true }" />
                   </div>
@@ -164,13 +201,18 @@
                 <q-separator />
 
                 <q-card-section class="bg-yellow-2">
-                  <div class="row q-col-gutter-sm justify-end">
-                    <div class="col-auto">
-                      <q-btn label="Batal" color="bg-dark" flat @click="storePermintaan.batal(item)" />
-                    </div>
-                    <div class="col-auto">
-                      <q-btn label="Simpan" color="primary" class="q-mr-sm"
-                        @click="storePermintaan.simpan(item, pasien)" />
+                  <div class="row justify-between">
+                    <!-- <div>
+                      <q-btn label="Batalkan Permintaan" color="negative" @click="batalkan(item)" />
+                    </div> -->
+                    <div class="row q-col-gutter-sm ">
+                      <div class="col-auto">
+                        <q-btn label="Reset" color="bg-dark" flat @click="storePermintaan.reset(item)" />
+                      </div>
+                      <div class="col-auto">
+                        <q-btn label="Simpan" color="primary" class="q-mr-sm"
+                          @click="storePermintaan.simpan(item, pasien)" />
+                      </div>
                     </div>
                   </div>
                 </q-card-section>
@@ -214,12 +256,13 @@
 </template>
 
 <script setup>
-import { computed, onMounted } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { date } from 'quasar'
 import { useListPasienRadiologiStore } from 'src/stores/simrs/radiologi/radiologi'
 import { usePermintaanRadiologiStore } from 'src/stores/simrs/radiologi/permintaan'
 import { storeToRefs } from 'pinia';
 import { formatRp } from 'src/modules/formatter'
+import { notifErrVue } from 'src/modules/utils'
 
 const props = defineProps({
   pasien: {
@@ -244,6 +287,11 @@ const store = useListPasienRadiologiStore()
 const storePermintaan = usePermintaanRadiologiStore()
 const { permintaan, listPermintaans, ukurans, } = storeToRefs(storePermintaan)
 
+// console.log('permintaan', permintaan, listPermintaans, props.pasien);
+
+const isActive = ref(null)
+
+
 function formatDate(dateStr) {
   if (!dateStr) return '-'
   return date.formatDate(dateStr, 'DD MMMM YYYY')
@@ -267,8 +315,34 @@ function hitungBilTotal() {
 }
 
 function selesaikanLayanan() {
-  store.selesaikanLayanan(props.pasien)
+
+
+
+  let count = 0
+  for (let i = 0; i < listPermintaans.value?.length; i++) {
+    const el = listPermintaans.value[i];
+    if (el?.hasil?.length >= 1) {
+      count++
+    }
+  }
+
+  // console.log('selesaikan layanan', listPermintaans.value?.length, count);
+  if (count === listPermintaans.value?.length) {
+    store.selesaikanLayanan(props.pasien)
+  }
+  else {
+    notifErrVue('Ada Pemeriksaan yang belum ada hasil. Harap Isi Hasil terlebih dahulu.')
+  }
+
+
+  // store.selesaikanLayanan(props.pasien)
 
 }
+
+// function batalkan(item) {
+//   console.log('batalkan item', item);
+
+//   // store.batal(item)
+// }
 
 </script>
