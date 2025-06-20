@@ -185,12 +185,12 @@
                       <tr>
                         <td>Nama</td>
                         <td class="text-center">
-                          <div>{{ pegawai.pegawais[2]?.nama }}</div>
-                          <div>NIP. {{ pegawai.pegawais[2]?.nip }}</div>
+                          <div>{{ store.datattd[3]?.nama }}</div>
+                          <div>NIP. {{ store.datattd[3]?.nip }}</div>
                         </td>
                         <td class="text-center">
-                          <div>{{ pegawai.pegawais[2]?.nama }}</div>
-                          <div>NIP. {{ pegawai.pegawais[2]?.nip }}</div>
+                          <div>{{ store.datattd[1]?.nama }}</div>
+                          <div>NIP. {{ store.datattd[1]?.nip }}</div>
                         </td>
                       </tr>
                       <tr>
@@ -269,12 +269,12 @@ import { listdataNotadinasStore } from 'src/stores/siasik/transaksi/ls/notadinas
 import '@quasar/extras/material-icons/material-icons.css'
 
 const store = listdataNotadinasStore()
-const pegawai = useLaporanBkuPengeluaranStore()
+// const pegawai = useLaporanBkuPengeluaranStore()
 
 
 onMounted(() => {
-  pegawai.getDataTable()
-  store.listData()
+  // pegawai.getDataTable()
+  // store.listData()
 })
 
 const printed = ref(false)

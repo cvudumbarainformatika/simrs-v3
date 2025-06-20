@@ -71,10 +71,10 @@
                 </div>
                 <div class="col full-width">
                   <div class="q-py-xs">
-                    : {{ pegawai.pegawais[1]?.nama }}
+                    : {{ store.datattd[0]?.nama }}
                   </div>
                   <div class="q-py-xs">
-                    : {{ pegawai.pegawais[1]?.nip }}
+                    : {{ store.datattd[0]?.nip }}
                   </div>
                   <div class="q-py-xs">
                     : Direktur UOBK RSUD Dokter Mohamad Saleh selaku Pimpinan Badan Layanan Umum Daerah
@@ -166,11 +166,11 @@
               </div>
               <div style="padding-bottom: 40px" />
               <div class="underline text-bold q-py-xs">
-                {{ pegawai.pegawais[1]?.nama }}
+                {{ store.datattd[0]?.nama }}
                 <div class="garis-bawah" style="text-decoration-line: underline;" />
               </div>
               <div>
-                NIP. {{ pegawai.pegawais[1]?.nip }}
+                NIP. {{ store.datattd[0]?.nip }}
               </div>
             </div>
           </div>
@@ -199,12 +199,9 @@ import { listdataNotadinasStore } from 'src/stores/siasik/transaksi/ls/notadinas
 
 
 const store = listdataNotadinasStore()
-const pegawai = useLaporanBkuPengeluaranStore()
-
 
 onMounted(() => {
-  pegawai.getDataTable()
-  store.listData()
+  // store.listData()
 })
 
 const printed = ref(false)

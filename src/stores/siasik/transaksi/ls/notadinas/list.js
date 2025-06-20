@@ -25,7 +25,9 @@ export const listdataNotadinasStore = defineStore('list_data_notadinas', {
     cetaknotadinas: [],
 
     editdata: [],
-    listrinci: []
+    listrinci: [],
+
+    datattd: []
   }),
   actions: {
     goToPage(val) {
@@ -101,7 +103,28 @@ export const listdataNotadinasStore = defineStore('list_data_notadinas', {
             this.loading = false
           });
       });
-    }
+    },
+
+    ttd() {
+      this.loading = true
+      // const params = { params: this.params }
+      return new Promise((resolve, reject) => {
+        api.get('/v1/siasik/ttd/ttdpengesahan')
+          .then((resp) => {
+            if (resp.status === 200) {
+              console.log('TTD', resp.data)
+              this.datattd = resp.data
+              this.loading = false
+
+              resolve(resp.data)
+            }
+          })
+          .catch((err) => {
+            this.loading = false
+            reject(err)
+          })
+      })
+    },
 
   }
 })

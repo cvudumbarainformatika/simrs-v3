@@ -236,12 +236,12 @@ import { listdataNotadinasStore } from 'src/stores/siasik/transaksi/ls/notadinas
 
 
 const store = listdataNotadinasStore()
-const pegawai = useLaporanBkuPengeluaranStore()
+// const pegawai = useLaporanBkuPengeluaranStore()
 
 
 onMounted(() => {
-  pegawai.getDataTable()
-  store.listData()
+  // pegawai.getDataTable()
+  // store.listData()
 })
 
 const printed = ref(false)

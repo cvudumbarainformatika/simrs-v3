@@ -137,11 +137,11 @@
               </div>
               <div style="padding-bottom: 40px" />
               <div class="underline text-bold q-py-xs">
-                {{ pegawai.pegawais[2]?.nama }}
+                {{ store.datattd[1]?.nama }}
                 <div class="garis-bawah" style="text-decoration-line: underline;" />
               </div>
               <div>
-                NIP. {{ pegawai.pegawais[2]?.nip }}
+                NIP. {{ store.datattd[1]?.nip }}
               </div>
             </div>
           </div>
@@ -170,12 +170,12 @@ import { listdataNotadinasStore } from 'src/stores/siasik/transaksi/ls/notadinas
 
 
 const store = listdataNotadinasStore()
-const pegawai = useLaporanBkuPengeluaranStore()
+// const pegawai = useLaporanBkuPengeluaranStore()
 
 
 onMounted(() => {
-  pegawai.getDataTable()
-  store.listData()
+  // pegawai.getDataTable()
+  // store.listData()
 })
 
 const printed = ref(false)

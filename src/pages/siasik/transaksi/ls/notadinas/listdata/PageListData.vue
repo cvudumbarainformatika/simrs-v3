@@ -22,5 +22,6 @@ import { onBeforeMount } from 'vue';
 const store = listdataNotadinasStore()
 onBeforeMount(() => {
   store.listData()
+  store.ttd()
 })
 </script>
