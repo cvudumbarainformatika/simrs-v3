@@ -50,7 +50,7 @@
 
 <script setup>
 import LeftDrawer from './complayout/LeftDrawer.vue'
-import RightDrawer from './complayout/RightDrawer.vue'
+import RightDrawer from '../../poli/tindakan/complayout/RightDrawer.vue'
 import HeaderLayout from './complayout/HeaderLayout.vue'
 import DialogProfile from './DialogProfile.vue'
 // import LoaderPage from './LoaderPage.vue'
