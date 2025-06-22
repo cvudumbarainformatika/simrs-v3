@@ -126,14 +126,14 @@
             <template v-for="data in maping" :key="data">
               <tr>
                 <td style="white-space: normal; ">{{ data?.title }}</td>
-                <td style="white-space: normal; ">{{ data?.pre }}</td>
-                <td style="white-space: normal; ">{{ data?.satu }}</td>
-                <td style="white-space: normal; ">{{ data?.dua }}</td>
-                <td style="white-space: normal; ">{{ data?.tiga }}</td>
-                <td style="white-space: normal; ">{{ data?.empat }}</td>
-                <td style="white-space: normal; ">{{ data?.lima }}</td>
-                <td style="white-space: normal; ">{{ data?.enam }}</td>
-                <td style="white-space: normal; ">{{ data?.post }}</td>
+                <td v-if="data?.pre" style="white-space: normal; ">{{ data?.pre }}</td>
+                <td v-if="data?.satu" style="white-space: normal; ">{{ data?.satu }}</td>
+                <td v-if="data?.dua" style="white-space: normal; ">{{ data?.dua }}</td>
+                <td v-if="data?.tiga" style="white-space: normal; ">{{ data?.tiga }}</td>
+                <td v-if="data?.empat" style="white-space: normal; ">{{ data?.empat }}</td>
+                <td v-if="data?.lima" style="white-space: normal; ">{{ data?.lima }}</td>
+                <td v-if="data?.enam" style="white-space: normal; ">{{ data?.enam }}</td>
+                <td v-if="data?.post" style="white-space: normal; ">{{ data?.post }}</td>
               </tr>
             </template>
             <!-- <template v-for="head in header" :key="head">
@@ -225,37 +225,40 @@ const maping = computed(() => {
   hasil.forEach(item => {
     header.value?.forEach(head => {
       const data = props?.pasien?.intradialitik?.find(it => it?.rs4 === head)
-      if (data?.rs4.includes('PRE')) {
-        if (item.value == 'user') item.pre = data[item.value]?.nama
-        else item.pre = data[item.value]
-      }
-      if (data?.rs4.includes('POST')) {
-        if (item.value == 'user') item.post = data[item.value]?.nama
-        else item.post = data[item.value]
-      }
-      if (data?.rs4 == '1') {
-        if (item.value == 'user') item.satu = data[item.value]?.nama
-        else item.satu = data[item.value]
-      }
-      if (data?.rs4 == '2') {
-        if (item.value == 'user') item.dua = data[item.value]?.nama
-        else item.dua = data[item.value]
-      }
-      if (data?.rs4 == '3') {
-        if (item.value == 'user') item.tiga = data[item.value]?.nama
-        else item.tiga = data[item.value]
-      }
-      if (data?.rs4 == '4') {
-        if (item.value == 'user') item.empat = data[item.value]?.nama
-        else item.empat = data[item.value]
-      }
-      if (data?.rs4 == '5') {
-        if (item.value == 'user') item.lima = data[item.value]?.nama
-        else item.lima = data[item.value]
-      }
-      if (data?.rs4 == '6') {
-        if (item.value == 'user') item.enam = data[item.value]?.nama
-        else item.enam = data[item.value]
+      if (data) {
+        if (data?.rs4.includes('PRE')) {
+          if (item.value == 'user') item.pre = data[item.value]?.nama
+          else item.pre = data[item.value]
+        }
+        if (data?.rs4.includes('POST')) {
+          if (item.value == 'user') item.post = data[item.value]?.nama
+          else item.post = data[item.value]
+        }
+        if (data?.rs4 == '1') {
+          if (item.value == 'user') item.satu = data[item.value]?.nama
+          else item.satu = data[item.value]
+        }
+        if (data?.rs4 == '2') {
+          if (item.value == 'user') item.dua = data[item.value]?.nama
+          else item.dua = data[item.value]
+        }
+        if (data?.rs4 == '3') {
+          if (item.value == 'user') item.tiga = data[item.value]?.nama
+          else item.tiga = data[item.value]
+        }
+        if (data?.rs4 == '4') {
+          if (item.value == 'user') item.empat = data[item.value]?.nama
+          else item.empat = data[item.value]
+        }
+        if (data?.rs4 == '5') {
+          if (item.value == 'user') item.lima = data[item.value]?.nama
+          else item.lima = data[item.value]
+        }
+        if (data?.rs4 == '6') {
+          if (item.value == 'user') item.enam = data[item.value]?.nama
+          else item.enam = data[item.value]
+        }
+
       }
     })
   })
