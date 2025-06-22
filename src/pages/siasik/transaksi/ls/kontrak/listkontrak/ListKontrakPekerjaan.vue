@@ -64,13 +64,14 @@
                   <q-tooltip> Kunci Data </q-tooltip>
                 </q-btn>
               </div>
-              <q-btn flat round class="bg-dark" size="xs" color="warning" icon="icon-fa-file-regular">
+              <q-btn v-if="props?.row?.kunci !== '1'" flat round class="bg-dark" size="xs" color="warning"
+                icon="icon-fa-file-regular">
                 <q-menu dark style="min-width: 150px">
                   <q-list style="min-width: 150px;">
                     <q-item clickable @click="editKontrak(props?.row)">
                       <q-item-section>Edit Kontrak</q-item-section>
                     </q-item>
-                    <q-item v-if="props?.row?.kunci !== '1'" clickable @click="deleteData(props?.row?.nokontrak)">
+                    <q-item clickable @click="deleteData(props?.row?.nokontrak)">
                       <q-item-section>Delete Kontrak</q-item-section>
                     </q-item>
                   </q-list>
