@@ -60,6 +60,7 @@
       </q-card>
       <div class="row q-px-md justify-center">
         <app-btn rounded color="teal-8" :loading="store.loading" label="Tambah NPD-LS" :source="store.datanpd" @click="() => {
+          store.datanpd = []
           store.openDialog = true
         }" />
       </div>
@@ -73,11 +74,14 @@ import { useFormNotadinasStore } from 'src/stores/siasik/transaksi/ls/notadinas/
 import { watch } from 'vue';
 import { defineAsyncComponent, onMounted, ref } from 'vue';
 import FormRincian from './FormRinci.vue'
+import { listdataNotadinasStore } from 'src/stores/siasik/transaksi/ls/notadinas/list';
 
 const SelectDatanpd = defineAsyncComponent(() => import('./DialogSelectnpd.vue'));
 const store = useFormNotadinasStore()
 const options = ref([])
 const formInput = ref(null)
+
+const list = listdataNotadinasStore()
 
 watch(() => store.formheader.kodepptk, (newVal) => {
   // Perbarui options saat kodepptk berubah
@@ -85,6 +89,8 @@ watch(() => store.formheader.kodepptk, (newVal) => {
     options.value = store.ptks;
   }
 });
+
+
 function onSubmit() {
   store.fixed = true
 }
@@ -103,7 +109,6 @@ function pilihPTK(val) {
   const arr = store.ptks
   const obj = arr?.length ? arr.find(x => x.kodepptk === val) : null
 
-  console.log('obj ptk', obj)
   // const arrstp = stpekerjaan.bastpekerjaan?.length ? stpekerjaan.bastpekerjaan?.find(x => x.kodepptk === val) : null
   store.formheader.namapptk = obj?.namapptk ?? ''
   store.formheader.kodepptk = obj?.kodepptk ?? ''
@@ -118,7 +123,7 @@ function pilihKegiatan(val) {
   const arr = store.kegiatans
 
   const obj = arr?.length ? arr.find(x => x.kegiatan === val) : null
-  console.log('obj kegiatan', obj)
+  // console.log('obj kegiatan', obj)
   store.formheader.kodekegiatan = obj?.kodekegiatan ?? ''
   store.formheader.kegiatan = obj?.kegiatan ?? ''
   store.formheader.kodebidang = obj?.kodebidang ?? ''
@@ -126,7 +131,6 @@ function pilihKegiatan(val) {
   store.formheader.kodepptk = obj?.kodepptk ?? ''
   store.formheader.namapptk = obj?.namapptk ?? ''
 
-  console.log('formheader', store.formheader)
   store.params.kodekegiatan = obj?.kodekegiatan ?? ''
   store.params.kodepptk = obj?.kodepptk ?? ''
   store.getDataNpdls()

@@ -1,32 +1,34 @@
 <template>
   <q-form ref="formInput" @submit="saveNotaDinas">
     <div class="row">
-      <app-input-simrs v-model="store.rinci.nonpdls" class="col q-pa-sm q-gutter-y-md" label="Volume Item" outlined
-        readonly />
-      <app-input-simrs v-model="store.rinci.tglnpd" class="col q-pa-sm q-gutter-y-md" label="Volume Item" outlined
-        readonly />
+      <app-input-simrs v-model="store.rinci.nonpdls" class="col q-pa-sm q-gutter-y-md" label="NPD-LS" outlined readonly
+        :valid="{ required: false }" />
+      <app-input-simrs v-model="store.rinci.tglnpd" class="col q-pa-sm q-gutter-y-md" label="Tanggal NPD-LS" outlined
+        readonly :valid="{ required: false }" />
 
 
     </div>
     <div class="row">
       <app-input-simrs v-model="store.rinci.kegiatanblud" class="col q-pa-sm q-gutter-y-md" label="Kegiatan BLUD"
-        outlined readonly />
+        outlined readonly :valid="{ required: false }" />
 
       <app-input-simrs :model-value="formattanpaRp(store.rinci.total)" class="col q-pa-sm q-gutter-y-md"
-        label="Total NPD-LS" outlined readonly />
+        label="Total NPD-LS" outlined readonly :valid="{ required: false }" />
     </div>
     <div class="row items-center q-pb-md q-pa-sm q-gutter-y-md">
-      <app-btn label="Simpan Rincian" class="bg-black" type="submit" :disable="store.loading"
-        :loading="store.loading" />
+      <div>
+        <app-btn label="Simpan Rincian" class="bg-black" type="submit" :disable="store.loading"
+          :loading="store.loading" />
+      </div>
     </div>
   </q-form>
+
 </template>
 <script setup>
 import { notifErrVue } from 'src/modules/utils';
 import { ref } from 'vue';
 import { formattanpaRp } from 'src/modules/formatter'
 import { useFormNotadinasStore } from 'src/stores/siasik/transaksi/ls/notadinas/form';
-
 
 const store = useFormNotadinasStore()
 const options = ref([])
@@ -39,6 +41,8 @@ const props = defineProps({
     default: null
   }
 })
+
+
 function saveNotaDinas() {
 
   if (!store.formheader.rincians) {

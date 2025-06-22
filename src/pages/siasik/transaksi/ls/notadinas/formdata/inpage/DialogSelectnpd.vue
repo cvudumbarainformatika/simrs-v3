@@ -17,7 +17,7 @@
       <q-card-section>
         <q-list>
           <template v-if="store.datanpd.length !== 0">
-            <q-table class="my-sticky-header" :rows="store.datanpd" :columns="columns" row-key="name"
+            <q-table class="my-sticky-header text-wrap" :rows="store.datanpd" :columns="columns" row-key="name"
               @request="store.onRequest" v-model:pagination="store.params" :filter="store.params.q"
               :loading="store.loading" :rows-per-page-options="[50, 100, 200, 500]">
               <template #top-left>

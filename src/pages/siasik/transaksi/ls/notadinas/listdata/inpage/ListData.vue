@@ -19,7 +19,7 @@
             </q-input>
           </div>
           <div class="q-pl-sm">
-            <q-input outlined dense label="Tahun" v-model="store.params.tahun"
+            <q-input outlined dense label="Tahun" v-model="store.params.tahun" debounce="400"
               :disable="store.disabled && store.loading" :loading="store.loading" :autofocus="false"
               @update:model-value="(val) => {
                 console.log('Tahun berapa?', val)
@@ -71,7 +71,7 @@
             <div class="row justify-center">
               <div class="q-pr-xs">
                 <q-btn v-if="gantiKunci(props?.row)" flat round size="xs" class="bg-red-10 text-white"
-                  icon="icon-mat-lock" @click="kunciData(props?.row)">
+                  icon="icon-mat-lock" :auth="user" @click="kunciData(props?.row)">
                   <q-tooltip> Buka Kunci </q-tooltip>
                 </q-btn>
                 <q-btn v-else flat round size="xs" class="bg-orange" icon="icon-mat-key" @click="kunciData(props?.row)">
@@ -87,18 +87,20 @@
                       <q-item clickable @click="editdata(props?.row)">
                         <q-item-section :auth="user">Edit Notadinas</q-item-section>
                       </q-item>
-                      <q-item clickable v-close-popup @click="viewCetakData(props?.row)">
-                        <q-item-section>Cetak Nota Dinas</q-item-section>
-                      </q-item>
-                      <q-item clickable v-close-popup @click="viewLembarverif(props?.row)">
-                        <q-item-section>Cetak Lembar Verif</q-item-section>
-                      </q-item>
-                      <q-item clickable v-close-popup @click="viewCetakSptj(props?.row)">
-                        <q-item-section>Cetak SPTJ</q-item-section>
-                      </q-item>
-                      <q-item clickable v-close-popup @click="viewCetakVerifikasi(props?.row)">
-                        <q-item-section>Cetak Verifikasi</q-item-section>
-                      </q-item>
+                      <template v-if="props?.row.kunci === '1'">
+                        <q-item clickable v-close-popup @click="viewCetakData(props?.row)">
+                          <q-item-section>Cetak Nota Dinas</q-item-section>
+                        </q-item>
+                        <q-item clickable v-close-popup @click="viewLembarverif(props?.row)">
+                          <q-item-section>Cetak Lembar Verif</q-item-section>
+                        </q-item>
+                        <q-item clickable v-close-popup @click="viewCetakSptj(props?.row)">
+                          <q-item-section>Cetak SPTJ</q-item-section>
+                        </q-item>
+                        <q-item clickable v-close-popup @click="viewCetakVerifikasi(props?.row)">
+                          <q-item-section>Cetak Verifikasi</q-item-section>
+                        </q-item>
+                      </template>
                     </q-list>
                   </q-menu>
                 </q-btn>
@@ -332,10 +334,12 @@ function editdata(row) {
   form.formheader = editDataref.value
   form.transrinci = editDataref.value?.rincians
 
+
+
   form.params.kodekegiatan = editDataref.value?.kodekegiatan ?? ''
   form.params.kodepptk = editDataref.value?.kodepptk ?? ''
   // console.log('formptks', form.ptks);
-
+  console.log('editDataref', editDataref.value)
   form.getDataNpdls()
   form.formheader.rincians = []
 
