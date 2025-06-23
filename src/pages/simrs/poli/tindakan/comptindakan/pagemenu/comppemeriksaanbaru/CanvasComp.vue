@@ -1,88 +1,33 @@
 <template>
-  <div
-    ref="el"
-    class="column full-height full-width flex-center scroll bg-grey"
-    style="border: 1px solid grey;"
-  >
-    <!-- <div class="t-canvas"> -->
-    <!-- <div class="absolute-left full-height">
-      <DrawerKiri />
-    </div> -->
-    <!-- <div class="absolute-left full-height">
-      <MenuSamping />
-    </div> -->
-    <!-- {{ openTab }} -->
-    <img
-      ref="imgRef"
-      :key="store.fileGambar"
-      :src="`${tab !==null? pathImg + tab : store.fileGambar}`"
-      alt="gambar medis"
-      class="hidden"
-    >
-    <canvas
-      id="canvas-target"
-      ref="canvasRef"
-      :width="widthEl"
-      :height="heightEl"
-    >
-      <MenuCanvas
-        ref="refMenu"
-        :target="target || null"
-        @show-menu="onMenuShow"
-        @cancel-shape="cancelShape"
-        @save-shape="saveShapes"
-      />
+  <div ref="el" class="column full-height full-width flex-center scroll bg-grey" style="border: 1px solid grey;">
+
+    <img ref="imgRef" :key="store.fileGambar" :src="`${tab !== null ? pathImg + tab : store.fileGambar}`"
+      alt="gambar medis" class="hidden">
+    <canvas id="canvas-target" ref="canvasRef" :width="widthEl" :height="heightEl">
+      <MenuCanvas ref="refMenu" :target="target || null" @show-menu="onMenuShow" @cancel-shape="cancelShape"
+        @save-shape="saveShapes" />
 
     </canvas>
 
     <!-- </div> -->
     <div class="absolute-top">
-      <HeaderCanvas
-        v-if="tab===null"
-        :is-btn="objectSelected===null? false:true"
-        :canvas="cvn"
-        @ok="deselectObject"
-      />
+      <HeaderCanvas v-if="tab === null" :is-btn="objectSelected === null ? false : true" :canvas="cvn"
+        @ok="deselectObject" />
     </div>
     <div class="absolute-bottom">
-      <BottomCanvas
-        :tab="tab?true:false"
-        @reset="resetShapes"
-        @save-image="saveImage"
-        @is-template="emits('openTemplate')"
-        @new-editor="tabDiNullkan"
-        @list-images="tabOpenned"
-        @delete-image="hapusGambar"
-      />
+      <BottomCanvas :tab="tab ? true : false" @reset="resetShapes" @save-image="saveImage"
+        @is-template="emits('openTemplate')" @new-editor="tabDiNullkan" @list-images="tabOpenned"
+        @delete-image="hapusGambar" />
       <div v-if="pasien?.gambars?.length && openTab">
         <div class="flex">
           <div class="q-py-xs q-px-sm f-10 bg-dark text-white">
             Gambar Tersimpan
           </div>
         </div>
-        <q-tabs
-          v-model="tab"
-          dense
-          class="bg-dark text-white q-pa-none"
-          align="center"
-          :breakpoint="0"
-          indicator-color="transparent"
-          mobile-arrows
-          outside-arrows
-          @update:model-value="lihatTab"
-        >
-          <q-tab
-            v-for="(src , i) in pasien?.gambars"
-            :key="i"
-            :name="src.gambar"
-            class="q-pa-xs"
-          >
-            <q-img
-              :src="`${pathImg + src.gambar}`"
-              loading="lazy"
-              spinner-color="white"
-              width="100px"
-            />
+        <q-tabs v-model="tab" dense class="bg-dark text-white q-pa-none" align="center" :breakpoint="0"
+          indicator-color="transparent" mobile-arrows outside-arrows @update:model-value="lihatTab">
+          <q-tab v-for="(src, i) in pasien?.gambars" :key="i" :name="src.gambar" class="q-pa-xs">
+            <q-img :src="`${pathImg + src.gambar}`" loading="lazy" spinner-color="white" width="100px" />
           </q-tab>
         </q-tabs>
       </div>
@@ -144,6 +89,7 @@ const props = defineProps({
   }
 })
 const emits = defineEmits(['openTemplate'])
+
 onMounted(() => {
   store.initReset(false, props.pasien)
   setTimeout(() => {
@@ -168,12 +114,12 @@ const resizeCanvas = () => {
   heightEl.value = (imgRef.value.height * scale)
   imgRef.value.width = widthEl.value
   imgRef.value.height = imgRef.value.height * scale
-  console.log('gambar height', scale)
+  // console.log('gambar height', scale)
   target.value = '.upper-canvas '
   // func()
 }
 
-function init () {
+function init() {
   if (!canvasRef.value) return
   cvn.value = markRaw(new fabric.Canvas(canvasRef.value, {
     // isDrawingMode: true,
@@ -227,8 +173,8 @@ function init () {
   const cloneImg = document.createElement('img')
   cloneImg.src = cloneIcon
 
-  function renderIcon (icon) {
-    return function renderIcon (ctx, left, top, styleOverride, fabricObject) {
+  function renderIcon(icon) {
+    return function renderIcon(ctx, left, top, styleOverride, fabricObject) {
       const size = this.cornerSize
       ctx.save()
       ctx.translate(left, top)
@@ -261,7 +207,7 @@ function init () {
     cornerSize: 16
   }))
 
-  function deleteObject () {
+  function deleteObject() {
     console.log('delete Object', objectSelected.value)
     const x = objectSelected.value?.left
     const y = objectSelected.value?.top
@@ -270,7 +216,7 @@ function init () {
     })
   }
 
-  function cloneObject (eventData, transform) {
+  function cloneObject(eventData, transform) {
     const target = transform.target
     const obj = arr.value[target.ids]
     console.log('clone', target)
@@ -295,7 +241,7 @@ function init () {
       norm: props.pasien ? props.pasien.norm : ''
     }
     store.pushShapes(clone).then((x) => {
-    // console.log('shapes', writingMode.value)
+      // console.log('shapes', writingMode.value)
       drawall()
       // objectSelected.value = obj
       // canvas.setActiveObject(obj)
@@ -308,7 +254,7 @@ function init () {
   drawall()
 }
 
-function onCanvas () {
+function onCanvas() {
   const canvas = cvn.value
 
   canvas.on('mouse:down', (obj) => {
@@ -450,7 +396,7 @@ function onCanvas () {
   // })
 }
 
-function setBtns (canvas, obj) {
+function setBtns(canvas, obj) {
   const object = canvas.item(obj?.target?.ids)
   objectSelected.value = object
   // console.log('mousedown select', obj)
@@ -475,7 +421,7 @@ function setBtns (canvas, obj) {
   canvas.renderAll()
 }
 
-function deselectObject () {
+function deselectObject() {
   const canvas = cvn.value
   canvas.discardActiveObject()
   canvas.renderAll()
@@ -532,17 +478,17 @@ const onChange = (obj) => {
   }
 }
 
-function onMenuShow () {
+function onMenuShow() {
   writingMode.value = false
 }
 
-function cancelShape () {
+function cancelShape() {
   store.resetDialogForm(store.templateActive, store.dialogForm.penanda)
   refMenu.value?.refMenu?.hide()
   drawall()
 }
 
-function saveShapes () {
+function saveShapes() {
   const obj = {
     penanda: store.dialogForm.penanda,
     x: store.dialogForm.x,
@@ -572,7 +518,7 @@ function saveShapes () {
   })
 }
 
-function draw (penanda, x, y, p, w, h, clr, tbl, ids, angle, fill, tinggi) {
+function draw(penanda, x, y, p, w, h, clr, tbl, ids, angle, fill, tinggi) {
   const canvas = cvn.value
   if (penanda === 'circle') {
     const circle = markRaw(new fabric.Circle({
@@ -807,7 +753,7 @@ function draw (penanda, x, y, p, w, h, clr, tbl, ids, angle, fill, tinggi) {
   }
 }
 
-function drawall () {
+function drawall() {
   resetCanvas()
   objectSelected.value = null
   // if (writingMode.value) {
@@ -848,12 +794,12 @@ const scaleCoordinates = (width, height, x, y, scale) => {
   return { x: scaledX + centerX, y: scaledY + centerY }
 }
 
-function resetCanvas () {
+function resetCanvas() {
   const canvas = cvn.value
   canvas?.remove(...canvas?.getObjects())
 }
 
-function resetShapes () {
+function resetShapes() {
   store.resetShapes()
   setTimeout(() => {
     drawall()
@@ -914,9 +860,9 @@ const saveImage = () => {
 //   canvas.renderAll()
 // }
 
-function lihatTab (val) {
+function lihatTab(val) {
   const canvas = cvn.value
-  console.log('tab', canvas)
+  // console.log('tab', canvas)
   canvas.discardActiveObject()
   canvas.defaultCursor = 'default'
   canvas.selectionBorderColor = 'white'
@@ -926,7 +872,7 @@ function lihatTab (val) {
   canvas.remove(...canvas.getObjects())
   setTimeout(() => onChangeImg(), 500)
 }
-function tabDiNullkan () {
+function tabDiNullkan() {
   const canvas = cvn.value
   console.log('baruuuuuuuuuuuuuuuuu')
   if (canvas) {
@@ -947,11 +893,11 @@ function tabDiNullkan () {
     drawall()
   }, 500)
 }
-function tabOpenned () {
+function tabOpenned() {
   openTab.value = !openTab.value
 }
 
-function hapusGambar () {
+function hapusGambar() {
   $q.dialog({
     dark: true,
     title: 'Peringatan',
@@ -969,7 +915,7 @@ function hapusGambar () {
   })
 }
 
-function onChangeImg () {
+function onChangeImg() {
   // resizeCanvas()
   const canvas = cvn.value
   console.log('oooi')
@@ -1022,6 +968,4 @@ watch(() => store.fileGambar, (newVal, oldVal) => {
 
 </script>
 
-<style lang="scss">
-
-</style>
+<style lang="scss"></style>
