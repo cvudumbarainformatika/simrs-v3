@@ -1,39 +1,20 @@
 <template>
-  <div
-    class="full-height"
-  >
-    <div
-      ref="pageRef"
-      class="row items-start bg-grey-8 text-white q-pr-sm"
-      :style=" `height: ${tinggiDetailPas}px;`"
-    >
-      <div
-        class="col-3"
-      >
+  <div class="full-height">
+    <div ref="pageRef" class="row items-start bg-grey-8 text-white q-pr-sm" :style="`height: ${tinggiDetailPas}px;`">
+      <div class="col-3">
         <div class="row">
-          <div
-            class="absolute-top bg-dark text-white col-3"
-            :style=" `height: ${tinggiDetailPas}px; margin-top: ${25+16}px`"
-          >
+          <div class="absolute-top bg-dark text-white col-3"
+            :style="`height: ${tinggiDetailPas}px; margin-top: ${25 + 16}px`">
             <div class="absolute-top-right">
               <div class="row">
                 <div class="q-pa-sm">
-                  <q-btn
-                    outline
-                    round
-                    style="color: goldenrod;"
-                    label="id"
-                  />
+                  <q-btn outline round style="color: goldenrod;" label="id" />
                 </div>
               </div>
             </div>
             <div class="absolute-top">
               <div class="q-pa-sm">
-                <q-badge
-                  outline
-                  color="orange"
-                  :label="`${store.resep?.sistembayar?.rs2?? '-'}`"
-                />
+                <q-badge outline color="orange" :label="`${store.resep?.sistembayar?.rs2 ?? '-'}`" />
               </div>
             </div>
             <div class="absolute-bottom">
@@ -42,20 +23,17 @@
                   {{ store.resep?.datapasien?.rs2 ?? '-' }}
                 </div>
                 <div class="text-teal">
-                  {{ store.resep ? store.resep.noreg : '-' }} || {{ store.resep?.norm??'-' }}
+                  {{ store.resep ? store.resep.noreg : '-' }} || {{ store.resep?.norm ?? '-' }}
                 </div>
                 <div class="text-yellow text-italic f-10">
-                  {{ store.resep?.datapasien?.usia?? '-' }}
+                  {{ store.resep?.datapasien?.usia ?? '-' }}
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div
-        class="col-9"
-        :style=" `height: ${tinggiDetailPas}px;`"
-      >
+      <div class="col-9" :style="`height: ${tinggiDetailPas}px;`">
         <div class="row q-ml-sm">
           <div class="col-6">
             <div class="row text-weight-bold">
@@ -67,22 +45,13 @@
             <div class="row">
               {{ store?.resep?.dokter?.nama }}
             </div>
-            <div
-              v-if="store?.resep?.poli"
-              class="row"
-            >
+            <div v-if="store?.resep?.poli" class="row">
               {{ store?.resep?.poli?.rs2 }}
             </div>
-            <div
-              v-if="store?.resep?.ruanganranap"
-              class="row"
-            >
+            <div v-if="store?.resep?.ruanganranap" class="row">
               {{ store?.resep?.ruanganranap?.rs2 }}
             </div>
-            <div
-              v-if="store?.resep?.diagnosa"
-              class="row"
-            >
+            <div v-if="store?.resep?.diagnosa" class="row">
               <div class="col-shrink q-mr-xs">
                 diagnosa :
               </div>
@@ -113,7 +82,7 @@
                 tarif Ina :
               </div>
               <div class="col-grow">
-                {{ formatRpDouble( store?.resep?.tarifina) }}
+                {{ formatRpDouble(store?.resep?.tarifina) }}
               </div>
             </div>
             <div class="row">
@@ -121,69 +90,37 @@
                 tagihan :
               </div>
               <div class="col-grow">
-                {{ formatRpDouble( store?.resep?.tagihanrs) }}
+                {{ formatRpDouble(store?.resep?.tagihanrs) }}
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div
-      v-if="store?.resep?.flag==='3'"
-      class="text-right q-mr-md q-my-sm"
-    >
-      <q-btn
-        rounded
-        push
-        label="Proses retur"
-        class="f-12 q-mr-sm"
-        color="green"
-        text-color="white"
-        icon-right="icon-mat-send"
-        :disable="store.loadingKirim && store?.resep?.loading"
-        :loading="store.loadingKirim && store?.resep?.loading"
-        @click="kirim()"
-      >
-        <q-tooltip
-          class="primary"
-          :offset="[10, 10]"
-        >
+    <!-- v-if="store?.resep?.flag==='3'" -->
+    <div class="text-right q-mr-md q-my-sm">
+      <q-btn rounded push label="Proses retur" class="f-12 q-mr-sm" color="green" text-color="white"
+        icon-right="icon-mat-send" :disable="store.loadingKirim && store?.resep?.loading"
+        :loading="store.loadingKirim && store?.resep?.loading" @click="kirim()">
+        <q-tooltip class="primary" :offset="[10, 10]">
           Proses retur
         </q-tooltip>
       </q-btn>
     </div>
 
-    <div
-      class="column q-pa-sm "
-      :style="`height: calc(100vh - ${tinggiDetailPas+32}px);`"
-    >
-      <q-scroll-area
-        style="height: 100%;"
-      >
-        <div
-          v-if="store?.resep?.listObat?.length"
-          class="q-mt-sm"
-        >
+    <div class="column q-pa-sm " :style="`height: calc(100vh - ${tinggiDetailPas + 32}px);`">
+      <q-scroll-area style="height: 100%;">
+        <div v-if="store?.resep?.listObat?.length" class="q-mt-sm">
           <div class="row items-center">
             <div class="col-shrink text-weight-bold">
               Non Racikan
             </div>
             <div class="col-grow">
-              <q-separator
-                size="2px"
-                color="primary"
-                inset
-              />
+              <q-separator size="2px" color="primary" inset />
             </div>
           </div>
-          <q-list
-            separator
-            bordered
-          >
-            <q-item
-              v-for="(rinc,j) in store?.resep?.listObat"
-              :key="j"
-            >
+          <q-list separator bordered>
+            <q-item v-for="(rinc, j) in store?.resep?.listObat" :key="j">
               <q-item-section style="width: 30%;">
                 <div class="row text-weight-bold text-deep-orange">
                   {{ rinc?.mobat?.nama_obat }}
@@ -198,41 +135,23 @@
                   ( {{ rinc?.mobat?.satuan_k }} )
                 </div>
                 <div class="row q-col-gutter-sm text-weight-bold f-10">
-                  <div
-                    class="col-shrink"
-                    :class="rinc?.fornas==='1'?'text-green':'text-red'"
-                  >
-                    {{ rinc?.fornas==='1'?'Fornas':'' }}
+                  <div class="col-shrink" :class="rinc?.fornas === '1' ? 'text-green' : 'text-red'">
+                    {{ rinc?.fornas === '1' ? 'Fornas' : '' }}
                   </div>
-                  <div
-                    class="col-shrink"
-                    :class="rinc?.forkit==='1'?'text-green':'text-red'"
-                  >
-                    {{ rinc?.forkit==='1'?'Forkit':'' }}
+                  <div class="col-shrink" :class="rinc?.forkit === '1' ? 'text-green' : 'text-red'">
+                    {{ rinc?.forkit === '1' ? 'Forkit' : '' }}
                   </div>
-                  <div
-                    class="col-shrink"
-                    :class="rinc?.generik==='1'?'text-green':'text-red'"
-                  >
-                    {{ rinc?.generik==='1'?'Generik':'' }}
+                  <div class="col-shrink" :class="rinc?.generik === '1' ? 'text-green' : 'text-red'">
+                    {{ rinc?.generik === '1' ? 'Generik' : '' }}
                   </div>
                 </div>
               </q-item-section>
-              <q-item-section
-                side
-                style="width:70%"
-              >
+              <q-item-section side style="width:70%">
                 <div class="row full-width items-center">
                   <div class="col-6">
                     <div class="row">
-                      <q-input
-                        v-model="rinc.jumlah_retur"
-                        label="Jumlah"
-                        outlined
-                        dense
-                        standout="bg-yellow-3"
-                        @update:model-value="reguler($event,rinc,'jumlah_retur')"
-                      />
+                      <q-input v-model="rinc.jumlah_retur" label="Jumlah" outlined dense standout="bg-yellow-3"
+                        @update:model-value="reguler($event, rinc, 'jumlah_retur')" />
                     </div>
                   </div>
                   <div class="col-6">
@@ -244,7 +163,7 @@
                         {{ rinc.jumlah_keluar }}
                       </div>
                     </div>
-                  <!--
+                    <!--
                     <div class="row">
                       <div class="col-4">
                         Harga
