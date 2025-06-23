@@ -58,7 +58,8 @@
           </div>
         </div>
         <app-input-simrs label="Keterangan Belanja" style="width: 50%" v-model="store.form.keterangan" outlined
-          :autofocus="false" :valid="{ required: false }" :disable="store.loading || store.disabledx" />
+          :autofocus="false" :valid="{ required: false }"
+          :disable="store.loading || store.disabledx || store.transall.length > 0" />
 
         <template v-if="store.form.serahterimapekerjaan === '3'">
           <div class="row items-center" style="width: 50%;">
@@ -76,6 +77,10 @@
         </template>
         <app-input-simrs style="width: 50%;" v-model="store.form.biayatransfer" label="Biaya Administrasi" outlined
           :autofocus="false" :valid="{ required: true, number: true }" :disable="store.disabled" />
+        <div v-if="store.form?.bast === 'Siasik' && store.transall.length > 0" class="row items-center q-gutter-y-md">
+          <app-btn label="Tambah Pajak" class="bg-orange-8" :disable="store.loading" :loading="store.loading"
+            @click="tambahPajak()" />
+        </div>
 
       </div>
       <select-serahterima v-model="store.openDialogFarmasi" :key="carisrt.reqs.kodepenerima" />
@@ -91,6 +96,7 @@
       </div>
     </q-form>
     <FormRincianNpdls v-if="store.form?.bast !== 'Siasik'" />
+    <form-input-pajak v-model="store.openDialogPajak" />
   </q-card>
 </template>
 <script setup>
@@ -100,8 +106,9 @@ import { formInputNpdlsStore } from 'src/stores/siasik/transaksi/ls/newnpdls/for
 import { defineAsyncComponent, ref, watch } from 'vue';
 import FormRincianNpdls from './FormRincian.vue'
 import { dataBastPekerjaanStore } from 'src/stores/siasik/transaksi/ls/newnpdls/bastpekerjaan';
+import { formInputPajakStore } from 'src/stores/siasik/transaksi/ls/newnpdls/formpajak';
 
-
+const FormInputPajak = defineAsyncComponent(() => import('./formpajak/FormPajak.vue'))
 const SelectSerahterima = defineAsyncComponent(() => import('./selectbast/SelectBastFarmasi.vue'))
 const SelectSerahterimapekerjaan = defineAsyncComponent(() => import('./selectbast/SelectBastPekerjaan.vue'))
 const store = formInputNpdlsStore()
@@ -111,6 +118,7 @@ const stpekerjaan = dataBastPekerjaanStore()
 const formNpdLS = ref(null)
 const options = ref([])
 
+const pjk = formInputPajakStore()
 watch(() => store.form.kodepptk, (newVal) => {
   // Perbarui options saat kodepptk berubah
   if (newVal && store.ptks?.length) {
@@ -245,5 +253,14 @@ async function filterFn(val, update) {
       options.value = multiFilter(store.ptks, filter, needle);
     }
   });
+}
+
+function tambahPajak() {
+  // console.log('open Dialog')
+  store.openDialogPajak = true
+  pjk.form.nonpdls = store.form.nonpdls
+  pjk.reqs.nonpdls = store.form.nonpdls
+  pjk.getListpajak()
+  console.log('nonpdls pajak', pjk.form.nonpdls)
 }
 </script>

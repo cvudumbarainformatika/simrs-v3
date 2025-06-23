@@ -120,6 +120,11 @@
                 class="row text-weight-bold f-10">
                 Tidak diberikan semua karena : {{ item?.alasan }}
               </div>
+
+              <!-- persyaratan Lab -->
+              <div v-if="!!item?.persyarantan_lab">
+                <span class="" v-html="getNewLine(item?.persyarantan_lab)" />
+              </div>
               <!-- tgl pelayanan obat -->
               <div v-if="item?.addTglPelayanan" class="row items-center q-col-gutter-xs">
                 <div class="col-10">
@@ -136,7 +141,8 @@
                   </q-btn>
                 </div>
               </div>
-              <div v-if="!item?.addTglPelayanan && parseFloat(item?.flag) >= 1" class="row items-center q-col-gutter-xs">
+              <div v-if="!item?.addTglPelayanan && parseFloat(item?.flag) >= 1"
+                class="row items-center q-col-gutter-xs">
                 <div class="col-10 f-10 text-negative">
                   <div v-if="item?.tgl_pelayanan_obat">
                     Tgl Pelayanan Obat : <span class="f-12">{{ dateFullFormat(item?.tgl_pelayanan_obat) }}</span>
@@ -208,8 +214,8 @@
             <td class="q-mr-sm">
               <div class="row no-wrap text-end">
                 <!-- terima -->
-                <q-btn v-if="item?.flag === '1'" round class="f-10 q-mr-sm" :color="color(item?.flag)" text-color="white"
-                  icon="icon-mat-move_to_inbox" :disable="store.loadingTerima && item?.loading"
+                <q-btn v-if="item?.flag === '1'" round class="f-10 q-mr-sm" :color="color(item?.flag)"
+                  text-color="white" icon="icon-mat-move_to_inbox" :disable="store.loadingTerima && item?.loading"
                   :loading="store.loadingTerima && item?.loading" @click="terimaResep(item)">
                   <q-tooltip class="primary" :offset="[10, 10]">
                     Terima
@@ -349,7 +355,7 @@
 
 <script setup>
 // import { ref } from 'vue'
-import { dateFullFormat, dateFull } from 'src/modules/formatter'
+import { dateFullFormat, dateFull, getNewLine } from 'src/modules/formatter'
 import { useEResepDepoFarmasiStore } from 'src/stores/simrs/farmasi/eresep/eresep'
 import { usePrintEresepStore } from 'src/stores/simrs/farmasi/eresep/printesep'
 import { useRouter } from 'vue-router'

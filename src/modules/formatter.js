@@ -16,6 +16,10 @@ const humanDate = (val) => {
   return date.formatDate(val, 'DD MMMM YYYY')
 }
 
+const dateOnlyYears = (val) => {
+  return date.formatDate(val, 'YYYY')
+}
+
 const timeDiff = (start, end) => {
   start = start.split(':')
   end = end.split(':')
@@ -193,6 +197,7 @@ export {
   diffDate, calcDate, tglJamFormat, formatJam, dateOnly, jamTnpDetik, formatTime,
   dateBOD,
   dateUnix,
+  dateOnlyYears,
   formatRp,
   formatRpDouble,
   olahUang,

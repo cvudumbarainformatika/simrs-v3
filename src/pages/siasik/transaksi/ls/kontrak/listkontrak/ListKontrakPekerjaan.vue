@@ -64,7 +64,8 @@
                   <q-tooltip> Kunci Data </q-tooltip>
                 </q-btn>
               </div>
-              <q-btn flat round class="bg-dark" size="xs" color="warning" icon="icon-fa-file-regular">
+              <q-btn v-if="props?.row?.kunci !== '1'" flat round class="bg-dark" size="xs" color="warning"
+                icon="icon-fa-file-regular">
                 <q-menu dark style="min-width: 150px">
                   <q-list style="min-width: 150px;">
                     <q-item clickable @click="editKontrak(props?.row)">
@@ -137,7 +138,21 @@ const clearSearch = () => {
 }
 
 function editKontrak(row) {
-  console.log('edit', row);
+  // console.log('edit', row);
+  if (auth.user?.pegawai?.kdpegsimrs !== 'sa') {
+    $q.notify({
+      type: 'negative',
+      message: 'Anda tidak Memiliki Akses Edit Data ini, Silahkan Hubungi Admin'
+    })
+    return
+  }
+  if (row?.kunci === '1') {
+    $q.notify({
+      type: 'negative',
+      message: 'Data Masih Terkunci, Silahkan Buka Kunci Terlebih Dahulu'
+    })
+    return
+  }
 
   formStore.setEditData(row) // Mengatur data edit di store
   router.push({ path: '/siasik/ls/kontrak/form' })
@@ -147,7 +162,7 @@ function deleteData(nokontrak) {
   if (auth.user?.pegawai?.kdpegsimrs !== 'sa') {
     $q.notify({
       type: 'negative',
-      message: 'Anda tidak Memiliki Izin Membuka Kunci Data ini, Silahkan Hubungi Admin'
+      message: 'Anda tidak Memiliki Izin Menghapus Data ini, Silahkan Hubungi Admin'
     })
     return
   }

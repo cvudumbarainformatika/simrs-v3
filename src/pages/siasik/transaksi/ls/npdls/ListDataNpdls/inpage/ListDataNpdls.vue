@@ -305,7 +305,8 @@ function kunciData(row) {
     }).onOk(() => {
       const payload = {
         nonpdls: row.nonpdls,
-        kunci: row.kunci
+        kunci: row.kunci,
+        nonotadinas: row.nonotadinas
       }
       console.log('payload', payload)
       store.kunciData(payload).then(() => {

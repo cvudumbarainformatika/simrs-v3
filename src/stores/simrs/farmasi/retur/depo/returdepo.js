@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia'
+import { acceptHMRUpdate, defineStore } from 'pinia'
 import { api } from 'src/boot/axios'
 // import { dateDbFormat } from 'src/modules/formatter'
 import { filterDuplicateArrays, notifSuccess } from 'src/modules/utils'
@@ -133,7 +133,7 @@ export const useReturDepoStore = defineStore('retur_dari_depo', {
       }
       this.resep = res
     },
-    getInitalData () {},
+    getInitalData () { },
     async getDataTable () {
       this.loading = true
       const param = { params: this.params }
@@ -167,6 +167,14 @@ export const useReturDepoStore = defineStore('retur_dari_depo', {
             this.resep.loading = false
             console.log('resp', resp)
             this.resep.flag = '4'
+            const item = resp?.data?.resep
+            const index = this.items.findIndex(x => x.noresep === this.resep.noresep)
+            if (index >= 0 && item) this.items[index] = item
+            const rinciRet = resp?.data?.retur_rinci
+            if (rinciRet) {
+              const rinci = this.resep?.rincian?.find(x => x.kdobat === rinciRet.kdobat)
+              rinci.jumlah_retur = rinciRet.jumlah_retur
+            }
             this.setClose()
             notifSuccess(resp)
             resolve(resp)
@@ -179,3 +187,6 @@ export const useReturDepoStore = defineStore('retur_dari_depo', {
     }
   }
 })
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useReturDepoStore, import.meta.hot))
+}

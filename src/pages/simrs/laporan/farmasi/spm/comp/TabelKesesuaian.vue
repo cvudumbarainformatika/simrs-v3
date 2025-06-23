@@ -1,4 +1,7 @@
 <template>
+  <!-- <div v-for="(item, index) in store.items" :key="index" class="row">
+    {{ index + 1 }}. {{ item }}
+  </div> -->
   <table style="width: calc(100vw - 80px);">
     <thead class="" :style="{ top: `${headerOffset}px` }">
       <template v-if="store.tipe === 'Rinci'">
