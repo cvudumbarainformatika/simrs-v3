@@ -80,7 +80,8 @@ const comp = [
   { nama: 'Sehat', page: defineAsyncComponent(() => import('../surat/compsurat/SuratSehatPage.vue')) },
   { nama: 'Rencana', page: defineAsyncComponent(() => import('../surat/compsurat/SuratRencanaPage.vue')) },
   { nama: 'prb', page: defineAsyncComponent(() => import('../pengantar/comppengantar/PengantarRujukBalik.vue')) },
-  { nama: 'rslain', page: defineAsyncComponent(() => import('../pengantar/comppengantar/PengantarRsLain.vue')) }
+  { nama: 'rslain', page: defineAsyncComponent(() => import('../pengantar/comppengantar/PengantarRsLain.vue')) },
+  { nama: 'SEP', page: defineAsyncComponent(() => import('../../igd/layanan/dokumen/dokumenisi/Sep/SepPage.vue')) }
 ]
 const cekPanel = () => {
   const val = doc.value

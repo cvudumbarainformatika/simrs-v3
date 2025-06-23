@@ -76,6 +76,7 @@ const props = defineProps({
 
 const rincianobat = computed(() => {
   const data = props?.pasien?.newapotekrajal
+  console.log('data', data)
   const hasilglobal = []
   const racikanr = []
   data?.forEach(x => {
@@ -94,6 +95,7 @@ const rincianobat = computed(() => {
         nilai_r: parseFloat(y?.nilai_r),
         subtotal: parseFloat(y?.harga_jual).toFixed(2) * parseFloat(y?.jumlah) + parseFloat(y?.nilai_r)
       }
+      console.log('obat', obat)
       hasilglobal.push(obat)
     })
     const racikanMap = new Map();

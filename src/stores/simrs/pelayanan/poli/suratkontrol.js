@@ -8,9 +8,10 @@ export const useSuratKontrolPoliStore = defineStore('surat_kontrol_poli', {
   state: () => ({
     isOpen: false,
     loading: false,
-    loadingSuKe: false,
+    loadingSuKet: false,
     meta: null,
     items: [],
+    itemsSuket: [],
     filteredItems: [],
     fNama: '',
     params: {
@@ -28,7 +29,7 @@ export const useSuratKontrolPoliStore = defineStore('surat_kontrol_poli', {
     loadingJadwalDokter: false
   }),
   actions: {
-    resetParam () {
+    resetParam() {
       this.fNama = ''
       this.params = {
         tglawal: date.formatDate(Date.now(), 'YYYY-MM-DD'),
@@ -38,43 +39,43 @@ export const useSuratKontrolPoliStore = defineStore('surat_kontrol_poli', {
       this.filters = false
       this.custom = false
     },
-    setParam (key, val) {
+    setParam(key, val) {
       this.params[key] = val
     },
-    setForm (key, val) {
+    setForm(key, val) {
       this.form[key] = val
     },
-    setDate (val) {
+    setDate(val) {
       this.tgl = val
       const { to, from, status } = val
       this.params.tglakhir = to
       this.params.tglawal = from
       this.params.filter = status
     },
-    setPeriodik (val) {
+    setPeriodik(val) {
       const { to, from, status } = val
       this.params.tglakhir = to
       this.params.tglawal = from
       this.params.filter = status
       this.getData()
     },
-    setOpen () {
+    setOpen() {
       this.isOpen = !this.isOpen
     },
-    setFilters () {
+    setFilters() {
       this.filters = !this.filters
     },
-    setCustom () {
+    setCustom() {
       this.custom = true
     },
-    notCustom () {
+    notCustom() {
       this.custom = false
     },
-    setQ (val) {
+    setQ(val) {
       this.fNama = val
       this.filterItem(val)
     },
-    filterData (val) {
+    filterData(val) {
       const { to, from, q, status } = val // status
       this.params.tglakhir = to
       this.params.tglawal = from
@@ -84,19 +85,19 @@ export const useSuratKontrolPoliStore = defineStore('surat_kontrol_poli', {
       this.getData()
       // // console.log(val)
     },
-    filterItem (val) {
+    filterItem(val) {
       this.filteredItems = this.items.filter(a => a?.nama?.toLowerCase().includes(val.toLowerCase()))
     },
-    getAllSurat () {
+    getAllSurat() {
       this.getData()
       this.getSuratKeluar()
     },
-    getData () {
+    getData() {
       this.loading = true
       const param = { params: this.params }
       return new Promise(resolve => {
         api.get('v1/simrs/rajal/poli/listsuratkontrol', param)
-        // api.get('v1/simrs/rajal/poli/listsuratkontrol')
+          // api.get('v1/simrs/rajal/poli/listsuratkontrol')
           .then(resp => {
             this.loading = false
             // console.log('list surat kontrol ', resp.data)
@@ -142,7 +143,7 @@ export const useSuratKontrolPoliStore = defineStore('surat_kontrol_poli', {
           })
       })
     },
-    getSuratKeluar () {
+    getSuratKeluar() {
       this.loadingSuKe = true
       const param = { params: this.params }
       return new Promise(resolve => {
@@ -157,7 +158,7 @@ export const useSuratKontrolPoliStore = defineStore('surat_kontrol_poli', {
           })
       })
     },
-    getjadwalDokterDpjp () {
+    getjadwalDokterDpjp() {
       this.jadwalDpjps = []
       this.loadingJadwalDokter = true
       // // console.log('get jadwal dokter')
@@ -183,7 +184,7 @@ export const useSuratKontrolPoliStore = defineStore('surat_kontrol_poli', {
           })
       })
     },
-    simpanEdit () {
+    simpanEdit() {
       this.loading = true
       return new Promise(resolve => {
         api.post('v1/simrs/rajal/poli/editsuratkontrol', this.form)
@@ -201,6 +202,21 @@ export const useSuratKontrolPoliStore = defineStore('surat_kontrol_poli', {
           })
           .catch(() => { this.loading = false })
       })
+    },
+    async suratkontrolbysuratkontrol(val) {
+      this.loadingsuratkontrol = true
+      const param = { params: { noSuratKontrol: val } }
+      try {
+        const res = await api.get('v1/simrs/rajal/poli/suratkontrolbysuratkontrol', param)
+        console.log('surat kontrol', res)
+        this.itemsSuket = res.data
+        this.loadingsuratkontrol = false
+        // return res.data
+      }
+      catch (error) {
+        this.loadingsuratkontrol = false
+        throw error
+      }
     }
   }
 })

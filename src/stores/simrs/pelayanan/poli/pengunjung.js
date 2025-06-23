@@ -251,12 +251,15 @@ export const usePengunjungPoliStore = defineStore('pengunjung-poli-store', {
             findPasien[0].fisio = responseData?.fisio
             findPasien[0].gambars = responseData?.gambars
             findPasien[0].laborats = responseData?.laborats
+            findPasien[0].laboratold = responseData?.laboratold
             findPasien[0].newapotekrajal = responseData?.newapotekrajal
             findPasien[0].ok = responseData?.ok
+            findPasien[0].kamaroperasi = responseData?.kamaroperasi
             findPasien[0].pemeriksaanfisik = responseData?.pemeriksaanfisik
             findPasien[0].penunjanglain = responseData?.penunjanglain
             findPasien[0].planning = responseData?.planning
             findPasien[0].radiologi = responseData?.radiologi
+            findPasien[0].hasilradiologi = responseData?.hasilradiologi
             findPasien[0].sharing = responseData?.sharing
             findPasien[0].taskid = responseData?.taskid
             findPasien[0].tindakan = responseData?.tindakan
@@ -269,6 +272,7 @@ export const usePengunjungPoliStore = defineStore('pengunjung-poli-store', {
             findPasien[0].kandungan = responseData?.kandungan
             findPasien[0].dokumenluar = responseData?.dokumenluar
             findPasien[0].rs19 = responseData?.rs19
+            findPasien[0].bpjssuratkontrol = responseData?.bpjssuratkontrol
             // jawabn konsul
             findPasien[0].jawabankonsul = responseData?.jawabankonsul
 

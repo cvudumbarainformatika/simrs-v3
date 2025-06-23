@@ -1,27 +1,16 @@
 <template>
-  <div
-    ref="main"
-    class="column flex-center full-height  bg-white"
-  >
+  <div ref="main" class="column flex-center full-height  bg-white">
     <div class="container full-height">
       <div class="column full-height ">
         <div class="col-grow">
-          <KumpulanSurat
-            :key="doc"
-            :items="documents"
-            @go-to="(item)=>goTo(item)"
-          />
+          <KumpulanSurat :key="doc" :items="documents" @go-to="(item) => goTo(item)" />
         </div>
       </div>
     </div>
   </div>
   <app-fullscreen-blue v-model="open">
     <template #default>
-      <component
-        :is="cekPanel()"
-        :key="props.pasien"
-        :pasien="props.pasien"
-      />
+      <component :is="cekPanel()" :key="props.pasien" :pasien="props.pasien" />
     </template>
   </app-fullscreen-blue>
   <!-- <q-card
@@ -162,10 +151,52 @@ const documents = ref([
     jenis: 'PRA-ANES',
     label: 'Asesmen Pra Anestesia',
     value: 'AsesmenPraAnestesia'
+  },
+  {
+    icon: 'icon-mat-email',
+    color: 'primary',
+    jenis: 'SEP',
+    label: 'Surat Elegibilitas Peserta',
+    value: 'SEP'
+  },
+  {
+    icon: 'icon-mat-email',
+    color: 'primary',
+    jenis: 'E-Resep',
+    label: 'E-Resep',
+    value: 'ERESEP'
+  },
+  {
+    icon: 'icon-mat-email',
+    color: 'primary',
+    jenis: 'Laborat',
+    label: 'Laborat',
+    value: 'Laborat'
+  },
+  {
+    icon: 'icon-mat-email',
+    color: 'primary',
+    jenis: 'Radiologi',
+    label: 'Radiologi',
+    value: 'Radiologi'
+  },
+  {
+    icon: 'icon-mat-email',
+    color: 'primary',
+    jenis: 'LapOperasi',
+    label: 'Laporan Operasi',
+    value: 'LapOperasi'
+  },
+  {
+    icon: 'icon-mat-email',
+    color: 'primary',
+    jenis: 'SrtKntrl',
+    label: 'Surat-Kontrol',
+    value: 'SuratKontrol'
   }
 ])
 // eslint-disable-next-line no-unused-vars
-function getLabel (val) {
+function getLabel(val) {
   const anu = documents.value.filter(a => a.value === val)
   // console.log('anu ', anu)
   return anu?.length ? anu[0].label : '-'
@@ -181,7 +212,12 @@ const comp = [
   { nama: 'AsesmenAwalMedis', page: defineAsyncComponent(() => import('../erm/poli/PengkajianAwalMedisRJPage.vue')) },
   { nama: 'Catatan', page: defineAsyncComponent(() => import('../erm/poli/CatatanRawatJalanPage.vue')) },
   { nama: 'AsesmenAwalKeperawatan', page: defineAsyncComponent(() => import('../erm/poli/AsesmenAwalMedisRj.vue')) },
-  { nama: 'AsesmenPraAnestesia', page: defineAsyncComponent(() => import('../erm/poli/AsesmenPraAnestesia.vue')) }
+  { nama: 'AsesmenPraAnestesia', page: defineAsyncComponent(() => import('../erm/poli/AsesmenPraAnestesia.vue')) },
+  { nama: 'SEP', page: defineAsyncComponent(() => import('../../../simrs/poli/dokumen/Sep/SepPage.vue')) },
+  { nama: 'ERESEP', page: defineAsyncComponent(() => import('../../../simrs/igd/layanan/dokumen/dokumenisi/Farmasi/FarmasiPage.vue')) },
+  { nama: 'Laborat', page: defineAsyncComponent(() => import('../../../simrs/igd/layanan/dokumen/dokumenisi/Laborat/LaboratPage.vue')) },
+  { nama: 'Radiologi', page: defineAsyncComponent(() => import('../../../simrs/igd/layanan/dokumen/dokumenisi/Radiologi/RadiologiPage.vue')) },
+  { nama: 'SuratKontrol', page: defineAsyncComponent(() => import('../../../simrs/poli/dokumen/SuratKontrol/SuratKontrolPage.vue')) },
 ]
 // eslint-disable-next-line no-unused-vars
 const cekPanel = () => {
@@ -191,25 +227,24 @@ const cekPanel = () => {
 
   return arr >= 0 ? comp[arr].page : ''
 }
-function goTo (val) {
+function goTo(val) {
   console.log('got', val)
   doc.value = val.value
   open.value = true
 }
 </script>
 <style lang="scss" scoped>
-  .container {
-    position: relative;
-    width: calc(100vw - 250px);
-    min-height: 90vh;
-    border-radius: 10px;
-    backdrop-filter: blur(5px);
-    font-size:10px;
-    // backdrop-filter: sepia(.5);
-    box-shadow: 0 25px 45px rgba(0,0,0,0.1);
-    border: 3px solid rgba(255,255,255,0.5);
-    border-right: 3px solid rgba(255,255,255,0.2);
-    border-bottom: 3px solid rgba(255,255,255,0.2);
-  }
-
+.container {
+  position: relative;
+  width: calc(100vw - 250px);
+  min-height: 90vh;
+  border-radius: 10px;
+  backdrop-filter: blur(5px);
+  font-size: 10px;
+  // backdrop-filter: sepia(.5);
+  box-shadow: 0 25px 45px rgba(0, 0, 0, 0.1);
+  border: 3px solid rgba(255, 255, 255, 0.5);
+  border-right: 3px solid rgba(255, 255, 255, 0.2);
+  border-bottom: 3px solid rgba(255, 255, 255, 0.2);
+}
 </style>
