@@ -81,8 +81,8 @@ export const useLaporanPemakaianFloorStokStore = defineStore('laporan_pemakaian_
       // console.log('kd', kdruangs)
       const depo = kdruangs?.filter(item => item?.toLowerCase()?.includes('gd-'))
       const adaRuangan = kdruangs?.filter(item => item?.toLowerCase()?.includes('r-'))
-      if (depo?.length) this.ruangs = ruang
-      else this.ruangs = ruang.filter(item => adaRuangan?.includes(item?.kode))
+      if (adaRuangan?.length && !depo?.length) this.ruangs = ruang.filter(item => adaRuangan?.includes(item?.kode))
+      else this.ruangs = ruang
       // this.ruangs = ruang.filter(item => adaRuangan?.includes(item?.kode)) // percobaan
 
       if (this.ruangs?.length > 1) this.ruangs.unshift({ kode: 'all', uraian: 'Semua' })
