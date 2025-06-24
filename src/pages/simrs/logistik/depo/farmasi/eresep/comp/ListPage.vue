@@ -173,7 +173,8 @@
                 {{ item?.norm }} -->
               </div>
               <div class="row text-italic f-10">
-                {{ item?.datapasien?.noka }}
+                <span v-html="highlightText(item?.datapasien?.noka)" />
+                <!-- {{ item?.datapasien?.noka }} -->
               </div>
             </td>
             <td>
