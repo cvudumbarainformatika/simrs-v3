@@ -1,71 +1,32 @@
 <template>
-  <q-page
-    class=""
-    :class="style.componentfull?'container-no-header':'container--q-header q-pa-xs'"
-  >
+  <q-page class="" :class="style.componentfull ? 'container-no-header' : 'container--q-header q-pa-xs'">
     <div class="header">
-      <HeaderComp
-        ada-per-page
-        ada-refresh
-        use-full
-        :ruang="kdruangansim"
-        :search="store.params.q"
-        :flag="store.params.flag"
-        :tipe="store.params.tipe"
-        :per-page="store.params.per_page"
-        @cari="store.setSearch"
-        @refresh="store.refresh"
-        @set-per-page="store.setPerPage"
-        @set-flag="store.setFlag"
-        @set-tipe="store.setTipe"
-        @set-periode="(val)=>store.setPeriodik(val)"
-        @terapkan="store.getDataTable()"
-        @set-sistembayar="store.setSistembayar"
-        @set-list-sistembayar="store.setListSistembayar"
-      />
+      <HeaderComp ada-per-page ada-refresh use-full :ruang="kdruangansim" :search="store.params.q"
+        :flag="store.params.flag" :tipe="store.params.tipe" :iter_timing="store.params.iter_timing"
+        :per-page="store.params.per_page" @cari="store.setSearch" @refresh="store.refresh"
+        @set-per-page="store.setPerPage" @set-flag="store.setFlag" @set-tipe="store.setTipe"
+        @set-iter-timing="store.setIterTiming" @set-periode="(val) => store.setPeriodik(val)"
+        @terapkan="store.getDataTable()" @set-sistembayar="store.setSistembayar"
+        @set-list-sistembayar="store.setListSistembayar" />
     </div>
-    <q-card
-      flat
-      no-shadow
-      square
-      class="my-flex-1 scroll"
-    >
-      <q-scroll-area
-        style="height:calc( 100% - 40px)"
-      >
-        <ListPage
-          :loading-call="speech.isLoading"
-          :ruangan="kdruangansim"
-          :user="apps?.user"
-          @panggilan="panggil"
-        />
+    <q-card flat no-shadow square class="my-flex-1 scroll">
+      <q-scroll-area style="height:calc( 100% - 40px)">
+        <ListPage :loading-call="speech.isLoading" :ruangan="kdruangansim" :user="apps?.user" @panggilan="panggil" />
       </q-scroll-area>
-      <div
-        v-if="Object.keys(store.meta)?.length"
-        class="absolute-bottom bg-primary text-white"
-      >
-        <BottomComp
-          :meta="store.meta"
-          @go-to="store.setPage"
-        />
+      <div v-if="Object.keys(store.meta)?.length" class="absolute-bottom bg-primary text-white">
+        <BottomComp :meta="store.meta" @go-to="store.setPage" />
       </div>
     </q-card>
 
     <!-- dialogPage -->
-    <app-fullscreen-blue
-      v-model="store.isOpen"
-      @close="store.setClose"
-    >
+    <app-fullscreen-blue v-model="store.isOpen" @close="store.setClose">
       <template #default>
         <DialogPage />
       </template>
     </app-fullscreen-blue>
 
     <!-- InfoPage -->
-    <app-fullscreen-blue
-      v-model="store.isInfo"
-      @close="store.closeInfo"
-    >
+    <app-fullscreen-blue v-model="store.isInfo" @close="store.closeInfo">
       <template #default>
         <InfoPage />
       </template>

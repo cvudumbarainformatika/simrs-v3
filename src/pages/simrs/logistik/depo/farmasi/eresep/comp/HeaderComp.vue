@@ -2,169 +2,48 @@
   <div class="column">
     <div class="row justify-between items-center q-pa-sm bg-primary text-white">
       <div class="kiri row q-gutter-sm items-center">
-        <q-input
-          v-model="search"
-          outlined
-          dark
-          color="white"
-          dense
-          :label="labelCari"
-          debounce="500"
-          style="min-width: 200px;"
-          @keyup.enter="enterSearch"
-        >
-          <template
-            v-if="props?.search"
-            #append
-          >
-            <q-icon
-              name="icon-mat-close"
-              size="xs"
-              class="cursor-pointer"
-              @click.stop.prevent="enterSearch('')"
-            />
+        <q-input v-model="search" outlined dark color="white" dense :label="labelCari" debounce="500"
+          style="min-width: 200px;" @keyup.enter="enterSearch">
+          <template v-if="props?.search" #append>
+            <q-icon name="icon-mat-close" size="xs" class="cursor-pointer" @click.stop.prevent="enterSearch('')" />
           </template>
           <template #prepend>
-            <q-icon
-              size="sm"
-              name="icon-mat-search"
-            />
+            <q-icon size="sm" name="icon-mat-search" />
           </template>
         </q-input>
-        <!-- <q-select
-          v-model="periode"
-          dense
-          outlined
-          dark
-          color="white"
-          :options="periods"
-          label="Periode"
-          class="q-ml-sm"
-          emit-value
-          map-options
-          style="min-width: 150px;"
-          @update:model-value="gantiPeriode"
-        /> -->
-        <BtnPeriode
-          @set-periode="gantiPeriode"
-          @terapkan="emits('terapkan')"
-        />
-        <q-select
-          v-model="toFlag"
-          dense
-          outlined
-          dark
-          color="white"
-          :options="flagOptions"
-          label="Status"
-          class="q-ml-sm"
-          emit-value
-          map-options
-          style="min-width: 150px;"
-        />
-        <q-select
-          v-if="ruang==='Gd-05010101'"
-          v-model="tipeResep"
-          dense
-          outlined
-          dark
-          color="white"
-          :options="tipeOptions"
-          label="Tipe Resep"
-          class="q-ml-sm"
-          emit-value
-          map-options
-          style="min-width: 150px;"
-        />
-        <q-select
-          v-model="group"
-          dense
-          outlined
-          dark
-          color="white"
-          :options="groups"
-          option-label="nama"
-          option-value="value"
-          label="Group Sistembayar"
-          class="q-ml-sm"
-          emit-value
-          map-options
-          style="min-width: 150px;"
-          @update:model-value="setGroupSistembayar"
-        />
-        <q-select
-          v-if="group"
-          v-model="sistembayar"
-          dense
-          outlined
-          dark
-          color="white"
-          :options="sistemBayars"
-          option-label="nama"
-          option-value="kode"
-          label="Sistembayar"
-          class="q-ml-sm"
-          emit-value
-          map-options
-          style="min-width: 150px;"
-          @update:model-value="setSistembayar"
-        />
+        <BtnPeriode @set-periode="gantiPeriode" @terapkan="emits('terapkan')" />
+        <q-select v-model="toFlag" dense outlined dark color="white" :options="flagOptions" label="Status"
+          class="q-ml-sm" emit-value map-options style="min-width: 150px;" />
+        <q-select v-if="ruang === 'Gd-05010101'" v-model="tipeResep" dense outlined dark color="white"
+          :options="tipeOptions" label="Tipe Resep" class="q-ml-sm" emit-value map-options style="min-width: 150px;" />
+        <q-select v-if="ruang === 'Gd-05010101' && tipeResep === 'iter'" v-model="iterTiming" dense outlined dark
+          color="white" :options="iterTimingOptions" label="Filter Iter" class="q-ml-sm" emit-value map-options
+          style="min-width: 150px;" />
+        <q-select v-model="group" dense outlined dark color="white" :options="groups" option-label="nama"
+          option-value="value" label="Group Sistembayar" class="q-ml-sm" emit-value map-options
+          style="min-width: 150px;" @update:model-value="setGroupSistembayar" />
+        <q-select v-if="group" v-model="sistembayar" dense outlined dark color="white" :options="sistemBayars"
+          option-label="nama" option-value="kode" label="Sistembayar" class="q-ml-sm" emit-value map-options
+          style="min-width: 150px;" @update:model-value="setSistembayar" />
       </div>
       <div class="kanan">
         <!-- refresh Ids -->
-        <q-btn
-          v-if="props.adaRefresh"
-          unelevated
-          round
-          size="sm"
-          icon="icon-mat-refresh"
-          @click="emits('refresh')"
-        >
-          <q-tooltip
-            class="primary"
-            :offset="[10, 10]"
-          >
+        <q-btn v-if="props.adaRefresh" unelevated round size="sm" icon="icon-mat-refresh" @click="emits('refresh')">
+          <q-tooltip class="primary" :offset="[10, 10]">
             Refresh Table
           </q-tooltip>
         </q-btn>
         <!-- per page -->
-        <q-btn
-          v-if="props.adaPerPage"
-          class="q-ml-sm"
-          unelevated
-          color="orange"
-          round
-          size="sm"
-          icon="icon-mat-layers"
-        >
-          <q-tooltip
-            class="primary"
-            :offset="[10, 10]"
-          >
+        <q-btn v-if="props.adaPerPage" class="q-ml-sm" unelevated color="orange" round size="sm" icon="icon-mat-layers">
+          <q-tooltip class="primary" :offset="[10, 10]">
             Filter Table
           </q-tooltip>
-          <q-menu
-            transition-show="flip-left"
-            transition-hide="flip-right"
-            class="q-pt-sm"
-            anchor="top left"
-            self="top right"
-          >
+          <q-menu transition-show="flip-left" transition-hide="flip-right" class="q-pt-sm" anchor="top left"
+            self="top right">
             <q-list>
-              <q-item
-                v-for="(opt, i) in options"
-                :key="i"
-                v-ripple
-                tag="label"
-              >
+              <q-item v-for="(opt, i) in options" :key="i" v-ripple tag="label">
                 <q-item-section>
-                  <q-radio
-                    v-model="selectPerPage"
-                    size="xs"
-                    :val="opt"
-                    :label="opt + ' Baris'"
-                    color="primary"
-                  />
+                  <q-radio v-model="selectPerPage" size="xs" :val="opt" :label="opt + ' Baris'" color="primary" />
                 </q-item-section>
                 <q-item-label />
               </q-item>
@@ -172,20 +51,10 @@
           </q-menu>
         </q-btn>
         <!-- style -->
-        <q-btn
-          v-if="useFull"
-          flat
-          :icon="!style.componentfull ? 'icon-mat-open_in_full' : 'icon-mat-close_fullscreen'"
-          round
-          :color="style.componentfull ? 'green' : 'white'"
-          size="12px"
-          class="q-ml-md"
-          @click="style.setComponentFull"
-        >
-          <q-tooltip
-            class="primary"
-            :offset="[10, 10]"
-          >
+        <q-btn v-if="useFull" flat :icon="!style.componentfull ? 'icon-mat-open_in_full' : 'icon-mat-close_fullscreen'"
+          round :color="style.componentfull ? 'green' : 'white'" size="12px" class="q-ml-md"
+          @click="style.setComponentFull">
+          <q-tooltip class="primary" :offset="[10, 10]">
             Full Screen
           </q-tooltip>
         </q-btn>
@@ -197,12 +66,10 @@
 <script setup>
 import { computed, defineAsyncComponent, onMounted, ref } from 'vue'
 import { useStyledStore } from 'src/stores/app/styled'
-// import { dateDbFormat } from 'src/modules/formatter'
-// import { date } from 'quasar'
 import { useAplikasiStore } from 'src/stores/app/aplikasi'
 
 const style = useStyledStore()
-const emits = defineEmits(['cari', 'refresh', 'setPerPage', 'setFlag', 'setPeriode', 'setTipe', 'setSistembayar', 'setListSistembayar', 'terapkan'])
+const emits = defineEmits(['cari', 'refresh', 'setPerPage', 'setFlag', 'setPeriode', 'setTipe', 'setSistembayar', 'setListSistembayar', 'terapkan', 'setIterTiming'])
 const props = defineProps({
   ruang: { type: String, default: '' },
   search: { type: String, default: '' },
@@ -212,7 +79,8 @@ const props = defineProps({
   useFull: { type: Boolean, default: false },
   perPage: { type: Number, default: 5 },
   flag: { type: String, default: '1' },
-  tipe: { type: String, default: '' }
+  tipe: { type: String, default: '' },
+  iter_timing: { type: String, default: '' },
 })
 const BtnPeriode = defineAsyncComponent(() => import('./BtnPeriode.vue'))
 // filter sistem bayar start ---
@@ -304,7 +172,18 @@ const tipeResep = computed({
     emits('setTipe', newVal)
   }
 })
-
+const iterTimingOptions = ref([
+  { label: 'Berlaku Sampai', value: 'barlaku' },
+  { label: 'Dibuat Pada', value: 'dibuat' }
+])
+const iterTiming = computed({
+  get () {
+    return props.iter_timing
+  },
+  set (newVal) {
+    emits('setIterTiming', newVal)
+  }
+})
 // // periode
 // const to = ref(dateDbFormat(new Date()))
 // const from = ref(dateDbFormat(new Date()))

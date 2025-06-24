@@ -35,6 +35,7 @@ export const useEResepDepoFarmasiStore = defineStore('e_resep_depo_farmasi', {
       kddepo: '',
       tipe: '',
       flag: 'semua',
+      iter_timing: 'barlaku',
       to: dateDbFormat(new Date()),
       from: dateDbFormat(new Date())
     },
@@ -162,6 +163,12 @@ export const useEResepDepoFarmasiStore = defineStore('e_resep_depo_farmasi', {
     },
     setTipe (val) {
       this.setParams('tipe', val)
+      this.setParams('page', 1)
+      this.removedItemId = []
+      this.getDataTable()
+    },
+    setIterTiming (val) {
+      this.setParams('iter_timing', val)
       this.setParams('page', 1)
       this.removedItemId = []
       this.getDataTable()
