@@ -218,6 +218,7 @@ const comp = [
   { nama: 'Laborat', page: defineAsyncComponent(() => import('../../../simrs/igd/layanan/dokumen/dokumenisi/Laborat/LaboratPage.vue')) },
   { nama: 'Radiologi', page: defineAsyncComponent(() => import('../../../simrs/igd/layanan/dokumen/dokumenisi/Radiologi/RadiologiPage.vue')) },
   { nama: 'SuratKontrol', page: defineAsyncComponent(() => import('../../../simrs/poli/dokumen/SuratKontrol/SuratKontrolPage.vue')) },
+  { nama: 'LapOperasi', page: defineAsyncComponent(() => import('../../../simrs/poli/dokumen/lapoperasi/LapOperasiPage.vue')) },
 ]
 // eslint-disable-next-line no-unused-vars
 const cekPanel = () => {

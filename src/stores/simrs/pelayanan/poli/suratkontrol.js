@@ -204,17 +204,17 @@ export const useSuratKontrolPoliStore = defineStore('surat_kontrol_poli', {
       })
     },
     async suratkontrolbysuratkontrol(val) {
-      this.loadingsuratkontrol = true
+      this.loadingSuKet = true
       const param = { params: { noSuratKontrol: val } }
       try {
         const res = await api.get('v1/simrs/rajal/poli/suratkontrolbysuratkontrol', param)
         console.log('surat kontrol', res)
         this.itemsSuket = res.data
-        this.loadingsuratkontrol = false
+        this.loadingSuKet = false
         // return res.data
       }
       catch (error) {
-        this.loadingsuratkontrol = false
+        this.loadingSuKet = false
         throw error
       }
     }

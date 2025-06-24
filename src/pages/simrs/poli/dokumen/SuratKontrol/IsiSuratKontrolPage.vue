@@ -1,10 +1,4 @@
 <template>
-  <!-- <div v-if="!store.items && !store.loadingsep">
-    <app-no-data />
-  </div>
-  <div v-else-if="store.loadingsep">
-    <app-loading />
-  </div> -->
   <div class="q-pa-md" style="max-width: 100%">
     <div class="row items-center">
       <div class="col-4">
@@ -15,7 +9,7 @@
         <div class="text-center">RSUD MOH SALEH</div>
       </div>
       <div class="col-4 text-center text-bold">
-        {{ props?.pasien?.bpjssuratkontrol?.noSuratKontrol }}
+        {{ store?.itemsSuket?.result?.noSuratKontrol }}
       </div>
     </div>
     <br>
@@ -24,7 +18,7 @@
         <div class="row q-mb-xs">
           <div class="col-2">Kepada Yth</div>
           <div class="col-1">:</div>
-          <div class="col-3">{{ pasien?.bpjssuratkontrol?.namaDokter }}</div>
+          <div class="col-3">{{ store?.itemsSuket?.result?.namaDokter }}</div>
         </div>
         <br>
         Mohon Pemeriksaan dan Penanganan lebih lanjut :
@@ -36,7 +30,7 @@
         <div class="row">
           <div class="col-5">No. Kartu</div>
           <div class="col-1">:</div>
-          <div class="col-6">{{ pasien?.noka }}</div>
+          <div class="col-6">{{ store.itemsSuket?.result?.sep?.peserta?.noKartu ?? '-' }}</div>
         </div>
         <div class="row">
           <div class="col-5">No. RM</div>
@@ -46,12 +40,12 @@
         <div class="row">
           <div class="col-5">Nama Peserta</div>
           <div class="col-1">:</div>
-          <div class="col-6">{{ pasien?.nama }}</div>
+          <div class="col-6">{{ store.itemsSuket?.result?.sep?.peserta?.nama ?? '-' }}</div>
         </div>
         <div class="row">
           <div class="col-5">Tgl Lahir</div>
           <div class="col-1">:</div>
-          <div class="col-6">{{ humanDate(pasien?.tgllahir) }}</div>
+          <div class="col-6">{{ humanDate(store.itemsSuket?.result?.sep?.peserta?.tglLahir ?? '-') }}</div>
         </div>
         <div class="row">
           <div class="col-5">Diagnosa</div>
@@ -61,7 +55,7 @@
         <div class="row">
           <div class="col-5">Rencana Kontrol</div>
           <div class="col-1">:</div>
-          <div class="col-6">{{ humanDate(pasien?.bpjssuratkontrol?.tglRencanaKontrol) }}</div>
+          <div class="col-6">{{ humanDate(store.itemsSuket?.result?.tglRencanaKontrol ?? '-') }}</div>
         </div>
         <div class="row">
           <div class="col-12">Demikian Atas Bantuanya, diucapkan banyak terimakasih.</div>
@@ -107,6 +101,6 @@ const props = defineProps({
   }
 })
 
-store.suratkontrolbysuratkontrol(props?.pasien?.bpjssuratkontrol?.noSuratKontrol)
+
 
 </script>
