@@ -207,7 +207,7 @@ onMounted(() => {
 const printed = ref(false)
 const printObj = {
   id: 'printMe',
-  popTitle: 'Nota Dinas Belanja | SIASIK',
+  popTitle: 'Surat Pernyataan Tanggung Jawab | SIASIK',
   beforeOpenCallback(vue) {
     printed.value = true
     console.log('wait...')
