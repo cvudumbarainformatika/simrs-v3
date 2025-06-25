@@ -378,7 +378,7 @@
                         </div>
                       </div>
                     </div>
-                    <div v-if="parseInt(store?.resep?.flag) >= '2'">
+                    <div v-if="parseInt(store?.resep?.flag) >= '2' && store?.resep?.tiperesep !== 'iter'">
                       <q-btn v-if="(!rinc?.obatkeluar) && !rinc?.done && parseInt(store?.resep?.flag) < 5" round
                         class="f-10 q-my-sm" color="primary" text-color="white" icon="icon-mat-save"
                         :loading="rinc?.loading" :disable="rinc?.loading" @click="store.simpanObat(rinc)">

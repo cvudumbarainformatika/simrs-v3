@@ -4,6 +4,7 @@ import { api } from 'src/boot/axios'
 import { dateDbFormat } from 'src/modules/formatter'
 import { notifSuccess } from 'src/modules/utils'
 import { useAplikasiStore } from 'src/stores/app/aplikasi'
+// import { usePrintEresepStore } from './printesep'
 
 export const useEResepDepoFarmasiStore = defineStore('e_resep_depo_farmasi', {
   state: () => ({
@@ -240,7 +241,10 @@ export const useEResepDepoFarmasiStore = defineStore('e_resep_depo_farmasi', {
         this.getResepIter(val).then(resp => {
           // // console.log('resep iter', resp?.data)
           const datanya = resp?.data?.head
-          res.rincian = datanya?.permintaanresep
+          res.rincian = datanya?.rincian
+          if (res?.rincian?.length <= 0) res.rincian = datanya?.permintaanresep
+
+
           if (res.rincian?.length > 0) {
             res.rincian.forEach(key => {
               key.harga = (parseFloat(key?.jumlah) * parseFloat(key?.hargajual)) + parseFloat(key?.r)
@@ -427,6 +431,16 @@ export const useEResepDepoFarmasiStore = defineStore('e_resep_depo_farmasi', {
         api.post('v1/simrs/farmasinew/depo/ambil-iter', val)
           .then(resp => {
             val.loadingGetIter = false
+            console.log('resp', resp)
+            const data = resp?.data?.head
+            if (data) {
+              const index = this.items.findIndex(x => x.id === data.id)
+              if (index >= 0) this.items[index] = data
+              // this.setResep(data)
+              // const print = usePrintEresepStore(
+              //   print.setResep(data)
+              // )
+            }
             resolve(resp)
           })
           .catch(() => {
