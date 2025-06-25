@@ -17,6 +17,7 @@ export const usePemeriksaanFisik = defineStore('pemeriksaan-fisik', {
     fileGambar: null,
     urlGambar: null,
     writingMode: false,
+    isEdit: false,
     dialogForm: {
       anatomy: '',
       ket: '',

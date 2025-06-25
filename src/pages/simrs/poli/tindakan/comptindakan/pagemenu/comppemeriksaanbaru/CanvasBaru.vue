@@ -9,8 +9,8 @@
 
       <div class="absolute">
         <!-- Menu overlay -->
-        <MenuCanvas ref="refMenu" :target="target || null" @show-menu="onMenuShow" @cancel-shape="cancelShape"
-          @save-shape="saveShapes" />
+        <MenuCanvas v-if="target" ref="refMenu" :target="target || null" @show-menu="onMenuShow"
+          @cancel-shape="cancelShape" @save-shape="saveShapes" />
       </div>
 
     </div>
@@ -47,6 +47,7 @@ import { ref, onMounted, onBeforeUnmount, nextTick, watch, defineAsyncComponent,
 import { pathImg } from 'src/boot/axios'
 import { usePemeriksaanFisik } from 'src/stores/simrs/pelayanan/poli/pemeriksaanfisik'
 import { useFabricCanvas } from './compossableCanvasBaru/useFabricCanvas'
+import { useMenuPemeriksaan } from '../../forjs/menupemeriksaan'
 
 
 const MenuCanvas = defineAsyncComponent(() => import('./MenuCanvas.vue'))
@@ -81,9 +82,12 @@ const writingMode = ref(false)
 const start = ref(null)
 const showMenu = ref(false)
 
-// const store = useSomeStore() // ganti dengan store kamu
 
 const objectSelected = ref(null) // bisa jadi reactive state untuk HeaderCanvas
+const canvasScale = ref(1)
+const SCALE_FACTOR = ref(1)
+const options = ref([])
+const { menus } = useMenuPemeriksaan()
 
 const arr = computed(() => {
   return store?.shapes?.filter(x => x?.templategambar === store?.fileGambar)
@@ -96,7 +100,8 @@ const {
   drawall,
   onChangeImg,
 
-} = useFabricCanvas(canvasRef, cvn, imgRef, widthEl, heightEl, store, arr, objectSelected, writingMode, tab, openTab, start, target, showMenu)
+} = useFabricCanvas(canvasRef, cvn, imgRef, widthEl, heightEl, store, arr, objectSelected, writingMode, tab, openTab, start, target, showMenu,
+  canvasScale, SCALE_FACTOR, options, menus)
 
 
 
@@ -140,9 +145,53 @@ onMounted(() => {
 
   store.initReset(false, props.pasien)
   initCanvas()
-  addCustomControls()
+  addCustomControls(deleteHandler, cloneHandler)
   window.addEventListener('resize', resizeCanvas)
 })
+
+const deleteHandler = () => {
+  // console.log('deleteHandler');
+  const x = objectSelected.value?.left
+  const y = objectSelected.value?.top
+  store.deleteObjectOnShapes(x, y).then(() => {
+    drawall()
+  })
+}
+
+const cloneHandler = (target) => {
+  // const target = transform.target
+  const obj = arr.value[target.ids]
+  console.log('clone', target)
+  const clone = {
+    penanda: obj?.penanda,
+    x: obj?.x + 10,
+    y: obj?.y + 10,
+    anatomy: obj?.anatomy,
+    ket: obj?.ket,
+    ketebalan: obj?.ketebalan,
+    panjang: obj?.panjang,
+    width: obj?.width,
+    height: obj?.height,
+    warna: obj?.warna,
+    fill: obj?.fill,
+    angle: obj?.angle,
+    tinggi: obj?.tinggi,
+    templatemenu: store.templateActive,
+    templategambar: store.fileGambar,
+    templateindex: store.gambarActive,
+    noreg: props.pasien ? props.pasien.noreg : '',
+    norm: props.pasien ? props.pasien.norm : ''
+  }
+  store.pushShapes(clone).then((x) => {
+    // console.log('shapes', writingMode.value)
+    drawall()
+    // objectSelected.value = obj
+    // canvas.setActiveObject(obj)
+    // setTimeout(() => {
+    // }, 100)
+  })
+}
+
 
 onBeforeUnmount(() => {
   window.removeEventListener('resize', resizeCanvas)
@@ -161,6 +210,8 @@ watch(() => imgRef.value?.src, (src) => {
 
 
 function onMenuShow() {
+  console.log('onMenuShow');
+
   writingMode.value = false
 }
 
@@ -305,4 +356,20 @@ watch(() => store?.fileGambar, (newVal, oldVal) => {
     tabDiNullkan()
   }
 }, { deep: true })
+
+watch(() => store.isEdit, (val) => {
+
+  if (val) {
+    console.log('watch on store.isEdit', val);
+
+    objectSelected.value = null
+    writingMode.value = true
+    target.value = '.upper-canvas'
+    showMenu.value = val
+  }
+
+  // }
+
+}, { deep: true })
+
 </script>

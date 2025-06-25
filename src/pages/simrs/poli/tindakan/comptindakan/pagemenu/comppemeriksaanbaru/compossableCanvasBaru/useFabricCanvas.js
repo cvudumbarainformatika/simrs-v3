@@ -3,7 +3,8 @@ import { fabric } from 'fabric'
 
 export function useFabricCanvas(
   canvasRef, cvn, imgRef, widthEl, heightEl, store, arr, objectSelected, writingMode,
-  tab, openTab, start, target, showMenu
+  tab, openTab, start, target, showMenu,
+  canvasScale, SCALE_FACTOR, options, menus
 ) {
 
   const initCanvas = () => {
@@ -98,9 +99,13 @@ export function useFabricCanvas(
       cursorStyle: 'pointer'
     }))
 
+
+
     onCanvas()
     drawall()
   }
+
+
 
 
   function onCanvas() {
@@ -132,6 +137,9 @@ export function useFabricCanvas(
         writingMode.value = true
         target.value = '.upper-canvas'
         showMenu.value = true
+
+        // console.log('menuShow');
+
       }
     })
 
@@ -145,6 +153,8 @@ export function useFabricCanvas(
 
     // 👇 Mouse Up
     canvas.on('mouse:up', (evt) => {
+      // console.log('mouse:up', evt);
+
       if (tab.value !== null) {
         target.value = null
         return false
@@ -162,6 +172,7 @@ export function useFabricCanvas(
       }
 
       if (evt.target === null) {
+        console.log('mouse:up', null);
         draw(
           store.dialogForm.penanda,
           store.dialogForm.x,
@@ -187,6 +198,9 @@ export function useFabricCanvas(
         store.setDialogForm('ketebalan', active.strokeWidth)
         store.setDialogForm('warna', active.stroke)
         store.setDialogForm('fill', active.fill)
+
+        console.log('active', store.dialogForm);
+
         return false
       }
 

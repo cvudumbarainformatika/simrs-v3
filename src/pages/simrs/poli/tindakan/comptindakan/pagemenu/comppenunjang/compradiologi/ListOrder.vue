@@ -44,6 +44,9 @@
                       @click="hapusItem(item?.id)" />
                     <!-- <q-badge outline :color="item?.cito === 'Cito' ? 'orange' : 'primary'"
                       :label="item?.cito === 'Cito' ? item?.cito : 'Bukan Cito'" class="q-my-sm" /> -->
+                    <q-badge outline :color="item?.rs9 === '3' ? 'negative' : 'primary'" :label="item?.rs9 === '' ? 'Permintaan'
+                      : item.rs9 === '2' ? 'Diproses' : item.rs9 === '1' ? 'Selesai' : 'dibatalkan'"
+                      class="q-my-md" />
                   </q-item-section>
                 </template>
 

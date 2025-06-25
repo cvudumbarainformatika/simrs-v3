@@ -18,7 +18,8 @@
           </q-btn-group>
           <q-separator vertical dark class="q-mx-sm" />
           <q-btn-group rounded>
-            <q-btn v-for="sym in symbols" :key="sym.name" :color="sym.name !== store.dialogForm.penanda ? 'dark' : 'white'"
+            <q-btn v-for="sym in symbols" :key="sym.name"
+              :color="sym.name !== store.dialogForm.penanda ? 'dark' : 'white'"
               :text-color="sym.name !== store.dialogForm.penanda ? 'white' : 'black'" rounded
               :glossy="sym.name === store.dialogForm.penanda" :label="sym.label" push size="sm"
               style="padding-left: 5px; padding-right: 5px; font-size: 10px; font-weight: bold; line-height: 1px;" dense
@@ -44,8 +45,8 @@
         <div v-else class="row items-center q-pa-xs">
           <div class="row items-center">
             <div class="flex q-px-sm" style="width: 85px;">
-              <q-slider v-model="store.dialogForm.ketebalan" :min="2" :max="20" label switch-label-side color="white"
-                dense size="xs" dark label-color="black" @update:model-value="gantiStroke" />
+              <q-slider v-model.number="store.dialogForm.ketebalan" :min="2" :max="20" label switch-label-side
+                color="white" dense size="xs" dark label-color="black" @update:model-value="gantiStroke" />
             </div>
           </div>
           <q-separator vertical dark class="q-mx-xs" />
