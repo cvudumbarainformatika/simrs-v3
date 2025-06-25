@@ -91,6 +91,9 @@
                         <q-item clickable v-close-popup @click="viewCetakData(props?.row)">
                           <q-item-section>Cetak Nota Dinas</q-item-section>
                         </q-item>
+                        <q-item clickable v-close-popup @click="LapRealisasi(props?.row)">
+                          <q-item-section>Laporan Realisasi</q-item-section>
+                        </q-item>
                         <q-item clickable v-close-popup @click="viewLembarverif(props?.row)">
                           <q-item-section>Cetak Lembar Verif</q-item-section>
                         </q-item>
@@ -115,6 +118,7 @@
     <cetak-sptj v-model="store.dialogCetakSptj" :cetaksptj="cetaksptj" />
     <cetak-verif v-model="store.dialogCetakPernyataan" :cetakverif="cetakverif" />
     <lembar-verif v-model="store.dialogLembarverif" :lembarverif="lembarverif" />
+    <laporan-pengajuan v-model="store.dialogLaporan" :cetaklaporan="cetaklaporan" />
   </div>
 </template>
 <script setup>
@@ -132,6 +136,7 @@ const PrintData = defineAsyncComponent(() => import('./DialogCetakdata.vue'))
 const CetakSptj = defineAsyncComponent(() => import('./DialogCetakSptj.vue'))
 const CetakVerif = defineAsyncComponent(() => import('./DialogCetakVerif.vue'))
 const LembarVerif = defineAsyncComponent(() => import('./DialogLembarVerif.vue'))
+const LaporanPengajuan = defineAsyncComponent(() => import('./DialogLaporanPengajuan.vue'))
 const store = listdataNotadinasStore()
 const form = useFormNotadinasStore()
 
@@ -217,6 +222,84 @@ function viewCetakData(row) {
   store.dialogCetak = true
   cetakdata.value = row
   store.cetaknotadinas = cetakdata.value
+}
+
+const cetaklaporan = ref([])
+async function LapRealisasi(row) {
+  store.params.tgl = row.tglnotadinas;
+  store.params.kodekegiatan = row.kodekegiatan;
+
+  store.realisasi = [];
+
+  try {
+    await store.lapRealisasi();
+
+    // Proses perhitungan realisasi
+    const real = [];
+    const arr = store.anggarans.map((x) => x.koderek50);
+    const uniksx = arr?.length ? [...new Set(arr)] : [];
+
+    for (let i = 0; i < uniksx?.length; i++) {
+      const rek = uniksx[i];
+      const arrls = store.anggarans.filter((x) => x.koderek50 === rek).map((x) => x.realisasi);
+      const ls = arrls.map((x) => x.map((y) => parseFloat(y.realisasi)).reduce((a, b) => a + b, 0));
+
+      const arrpanjar = store.anggarans.filter((x) => x.koderek50 === rek).map((x) => x.realisasi_spjpanjar);
+      const panjar = arrpanjar.map((x) => x.map((y) => parseFloat(y.realisasi)).reduce((a, b) => a + b, 0));
+
+      const arrcp = store.anggarans.filter((x) => x.koderek50 === rek).map((x) => x.contrapost);
+      const cp = arrcp.map((x) => x.map((y) => parseFloat(y.nilaicp)).reduce((a, b) => a + b, 0));
+
+      const rincian = {
+        rekeningbelanja: store.anggarans.filter((x) => x.koderek50 === rek)[0]?.uraian50,
+        koderekening: store.anggarans.filter((x) => x.koderek50 === rek)[0]?.koderek50,
+        pagu: store.anggarans.filter((x) => x.koderek50 === rek)?.map((x) => parseFloat(x.pagu)).reduce((a, b) => a + b, 0),
+        realisasi: ls.reduce((a, b) => a + b, 0) + panjar.reduce((a, b) => a + b, 0) - cp.reduce((a, b) => a + b, 0),
+        pengajuan: 0,
+      };
+
+      real.push(rincian);
+    }
+
+    // Proses pengajuan
+    const pengajuan = [];
+    const npdls = row.rinci_npd.concat(real);
+    const uniks = npdls.map((x) => x.koderekening);
+    const hasilx = uniks?.length ? [...new Set(uniks)] : [];
+
+    for (let i = 0; i < hasilx.length; i++) {
+      const el = hasilx[i];
+      const obj = {
+        rekeningbelanja: npdls.filter((x) => x.koderekening === el)[0]?.rekeningbelanja,
+        koderekening: npdls.filter((x) => x.koderekening === el)[0]?.koderekening,
+        pagu: npdls.filter((x) => x.koderekening === el).map((x) => parseFloat(x.pagu)).reduce((a, b) => a + b, 0),
+        realisasi: npdls.filter((x) => x.koderekening === el).map((x) => parseFloat(x.realisasi)).reduce((a, b) => a + b, 0),
+        pengajuan: npdls.filter((x) => x.koderekening === el).map((x) => parseFloat(x.pengajuan)).reduce((a, b) => a + b, 0),
+        sisapagu: npdls.filter((x) => x.koderekening === el).map((x) => parseFloat(x.pagu)).reduce((a, b) => a + b, 0) -
+          npdls.filter((x) => x.koderekening === el).map((x) => parseFloat(x.realisasi)).reduce((a, b) => a + b, 0) -
+          npdls.filter((x) => x.koderekening === el).map((x) => parseFloat(x.pengajuan)).reduce((a, b) => a + b, 0),
+      };
+      pengajuan.push(obj);
+    }
+
+    store.realisasi = pengajuan;
+    cetaklaporan.value = pengajuan;
+
+    store.nilaitotal = {
+      pagu: store.realisasi.map((x) => parseFloat(x.pagu)).reduce((a, b) => a + b, 0),
+      realisasi: store.realisasi.map((x) => parseFloat(x.realisasi)).reduce((a, b) => a + b, 0),
+      pengajuan: store.realisasi.map((x) => parseFloat(x.pengajuan)).reduce((a, b) => a + b, 0),
+      sisapagu: store.realisasi.map((x) => parseFloat(x.sisapagu)).reduce((a, b) => a + b, 0)
+    }
+    store.realisasi.kegiatanblud = row.kegiatan
+    store.realisasi.pptk = row.namapptk
+    store.realisasi.nip = row.kodepptk
+    store.realisasi.bidang = row.bidang
+    console.log('row', row)
+    store.dialogLaporan = true;
+  } catch (error) {
+    console.error("Error saat memproses laporan:", error);
+  }
 }
 
 const lembarverif = ref([])

@@ -88,9 +88,11 @@ export const useLaporanOperasionalStore = defineStore('Laporan_Operasional', {
       { kode: '8.1.07.07', uraian: 'Beban Penyisihan Piutang Lainnya' }
     ],
     pagupendapatan: [],
-    penyesuaian: [],
+    penyesuaianpendapatan: [],
     datapendapatans: [],
     databebans: [],
+    penyesuaianbeban: [],
+
     hasilpendapatan: [],
     hasilbeban: [],
 
@@ -132,9 +134,11 @@ export const useLaporanOperasionalStore = defineStore('Laporan_Operasional', {
             // this.psapnonoperasional = []
             // this.psapbebanluarbiasa = []
             this.pagupendapatan = resp.data.pagupendapatan
-            this.penyesuaian = resp.data.penyesuaian
+            this.penyesuaianpendapatan = resp.data.penyesuaianpendapatan
             this.datapendapatans = resp.data.pendapatan
             this.databebans = resp.data.beban
+            this.penyesuaianbeban = resp.data.penyesuaianbeban
+
 
             // this.psaprealisasipendapatan = resp.data.psaprealisasipendapatan
             // this.psaprealisasipendapatanx = resp.data.psaprealisasipendapatanx
@@ -160,7 +164,7 @@ export const useLaporanOperasionalStore = defineStore('Laporan_Operasional', {
       const newsetpend = koderekpend?.length ? [...new Set(koderekpend)] : []
 
       const pendapatan = this.datapendapatans.filter(x => koderekpend.includes(x.kode6))
-      const penyepend = this.penyesuaian.filter(x => koderekpend.includes(x.kode6))
+      const penyepend = this.penyesuaianpendapatan.filter(x => koderekpend.includes(x.kode6))
 
       const allpendpatan = pendapatan.concat(penyepend)
       // console.log('allpendpatan', allpendpatan)
@@ -282,7 +286,7 @@ export const useLaporanOperasionalStore = defineStore('Laporan_Operasional', {
       // DATA BEBAN
       const beban = this.databebans
       const rekbeban = beban.map((x) => x.kode6)
-      const penyebeban = this.penyesuaian.filter(x => rekbeban.includes(x.kode6))
+      const penyebeban = this.penyesuaianbeban.filter(x => rekbeban.includes(x.kode6))
 
       const allbeban = beban.concat(penyebeban)
 

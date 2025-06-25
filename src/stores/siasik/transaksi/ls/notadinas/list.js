@@ -2,6 +2,7 @@ import { defineStore } from "pinia"
 import { date } from "quasar"
 import { api } from "src/boot/axios"
 import { notifErr, notifSuccess } from "src/modules/utils"
+import { parse } from "vue/compiler-sfc"
 
 export const listdataNotadinasStore = defineStore('list_data_notadinas', {
   state: () => ({
@@ -11,11 +12,16 @@ export const listdataNotadinasStore = defineStore('list_data_notadinas', {
     dialogCetakSptj: false,
     dialogCetakPernyataan: false,
     dialogLembarverif: false,
+    dialogLaporan: false,
     openDialogRinci: false,
     params: {
       q: '',
       tahun: date.formatDate(Date.now(), 'YYYY'),
       page: 1,
+
+      // parameters Realsisasi
+      kodekegiatan: null,
+      tgl: date.formatDate(Date.now(), 'YYYY'),
     },
     display: {
       sekarang: date.formatDate(Date.now(), 'DD MMMM YYYY')
@@ -27,7 +33,11 @@ export const listdataNotadinasStore = defineStore('list_data_notadinas', {
     editdata: [],
     listrinci: [],
 
-    datattd: []
+    datattd: [],
+
+    anggarans: [],
+    realisasi: [],
+    nilaitotal: []
   }),
   actions: {
     goToPage(val) {
@@ -41,11 +51,12 @@ export const listdataNotadinasStore = defineStore('list_data_notadinas', {
         api.get('/v1/transaksi/notadinas/listdata', params)
           .then((resp) => {
             if (resp.status === 200) {
-              // console.log('data Nota Dinas', resp.data)
-              this.loading = false
+              console.log('data Nota Dinas', resp.data)
               this.listdata = resp.data
               this.rincianNotadinas()
+
               resolve(resp.data)
+              this.loading = false
             }
           })
           .catch((err) => {
@@ -79,6 +90,7 @@ export const listdataNotadinasStore = defineStore('list_data_notadinas', {
             kunci: arr.kunci,
             terima: arr.terima,
             rincians: arr.rincians,
+            rinci_npd: arr.rincians.map((x) => x.npdlsrinci).reduce((a, b) => a.concat(b), []),
           }
 
           sas.push(head)
@@ -124,6 +136,58 @@ export const listdataNotadinasStore = defineStore('list_data_notadinas', {
             reject(err)
           })
       })
+    },
+
+    lapRealisasi() {
+      this.loading = true
+      const params = { params: this.params }
+      return new Promise((resolve) => {
+        api.get('/v1/transaksi/notadinas/laprealisasi', params)
+          .then((resp) => {
+            if (resp.status === 200) {
+              this.anggarans = resp.data
+              // console.log('this.anggarans', this.anggarans)
+              // this.filterRekening50(resp.data)
+              this.loading = false
+              resolve(resp.data)
+            }
+            else {
+              this.loading = false
+            }
+          })
+          .catch(() => {
+            this.loading = false
+          })
+      })
+    },
+
+    filterRekening50() {
+      const hasilx = this.anggarans.map((x) => x.koderek50)
+      const uniksx = hasilx?.length ? [...new Set(hasilx)] : []
+      for (let i = 0; i < uniksx?.length; i++) {
+        const rek = uniksx[i]
+        const arrls = this.anggarans.filter(x => x.koderek50 === rek).map((x) => x.realisasi)
+        const ls = arrls.map((x) => x.map((y) => parseFloat(y.realisasi)).reduce((a, b) => a + b, 0))
+
+        const arrpanjar = this.anggarans.filter(x => x.koderek50 === rek).map((x) => x.realisasi_spjpanjar)
+        const panjar = arrpanjar.map((x) => x.map((y) => parseFloat(y.realisasi)).reduce((a, b) => a + b, 0))
+
+        const arrcp = this.anggarans.filter(x => x.koderek50 === rek).map((x) => x.contrapost)
+        const cp = arrcp.map((x) => x.map((y) => parseFloat(y.nilaicp)).reduce((a, b) => a + b, 0))
+
+        const rincian = {
+          rekeningbelanja: this.anggarans.filter(x => x.koderek50 === rek)[0]?.uraian50,
+          koderekening: this.anggarans.filter(x => x.koderek50 === rek)[0]?.koderek50,
+          pagu: this.anggarans.filter(x => x.koderek50 === rek)?.map((x) => parseFloat(x.pagu)).reduce((a, b) => a + b, 0),
+          realisasi: ls.reduce((a, b) => a + b, 0) + panjar.reduce((a, b) => a + b, 0) - cp.reduce((a, b) => a + b, 0),
+          pengajuan: 0
+        }
+
+        this.realisasi.push(rincian)
+      }
+
+      // this.realisasi = rek
+      // console.log('resp realisasi', this.realisasi)
     },
 
   }
