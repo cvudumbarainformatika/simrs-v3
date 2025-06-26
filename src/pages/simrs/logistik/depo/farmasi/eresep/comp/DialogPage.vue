@@ -142,7 +142,8 @@
         </q-tooltip>
       </q-btn>
     </div>
-    <div v-if="store?.resep?.flag === '2' && (store?.resep?.semuaresep && store?.resep?.semuaracik)"
+    <div
+      v-if="store?.resep?.flag === '2' && (store?.resep?.tiperesep !== 'iter' ? store?.resep?.semuaresep && store?.resep?.semuaracik : true)"
       class="text-right q-mr-md q-my-sm">
       <q-btn rounded push label="Selesai" class="f-12 q-mr-sm" color="green" text-color="white" icon="icon-mat-done_all"
         :disable="store.loadingSelesai && store?.resep?.loading"
