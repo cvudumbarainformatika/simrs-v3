@@ -62,6 +62,15 @@ const menus = ref([
     comp: shallowRef(defineAsyncComponent(() => import('./asessmentawal/medis/IndexPage.vue')))
   },
   {
+    name: 'asessment-awal-keperawatan',
+    label: 'ASESSMENT AWAL KEPERAWATAN',
+    title: 'ASESSMENT AWAL KEPERAWATAN',
+    desc: 'Asessment Awal Keperawatan Pasien',
+    icon: 'icon-my-file_sign',
+    nakes: ['1', '2', '3'],
+    comp: shallowRef(defineAsyncComponent(() => import('./asessmentawal/keperawatan/IndexPage.vue')))
+  },
+  {
     name: 'cppt-page',
     label: 'CPPT & EWS',
     title: 'CPPT PASIEN',
