@@ -17,7 +17,7 @@ export const saldoawalJurnal = defineStore('saldoawal_Jurnal', {
     form: {
       kodepsap13: null,
       uraianpsap13: null,
-      tahun: null,
+      tahun: date.formatDate(Date.now(), 'YYYY'),
       debetkredit: null,
       debit: 0,
       kredit: 0

@@ -62,7 +62,7 @@
     </div>
     <div class="q-pa-sm" style="width:50%">
       <q-select v-model="store.form.kode" use-input outlined standout="bg-yellow-3" dense emit-value map-options
-        option-value="kodeall3" input-debounce="0" label="Pilih Rekening" class="ellipsis-2-lines" :options="options"
+        option-value="kodeall3" input-debounce="300" label="Pilih Rekening" class="ellipsis-2-lines" :options="options"
         :option-label="opt => Object(opt) === opt && 'kodeall3' in opt ? opt.kodeall3 + ' - ' + opt.uraian : ''"
         :disable="store.loading || !store.alllevel?.length || !store.optionrekening?.length && store.reqs.jenisbukubesar === 1"
         :loading="store.loading || !store.alllevel?.length" @filter="filterFn"
