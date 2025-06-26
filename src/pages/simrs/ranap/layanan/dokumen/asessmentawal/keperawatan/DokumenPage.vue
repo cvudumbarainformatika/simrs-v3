@@ -199,7 +199,7 @@
             <tr style="border: none !important; padding: 0px !important;">
               <td style="border: none !important; padding: 0px !important; width: 17%">
                 <div class="text-weight-bold">PENGOBATAN</div>
-                <div class="text-italic">THERAPY</div>
+                <!-- <div class="text-italic">THERAPY</div> -->
               </td>
               <td valign="top" style="border: none !important; padding: 0px !important;"> : {{
                 pasien?.planningdokter?.terapi }}</td>
@@ -214,7 +214,7 @@
             <tr style="border: none !important; padding: 0px !important;">
               <td style="border: none !important; padding: 0px !important; width: 17%">
                 <div class="text-weight-bold">RENCANA</div>
-                <div class="text-italic">PLANNING</div>
+                <!-- <div class="text-italic">PLANNING</div> -->
               </td>
               <td valign="top" style="border: none !important; padding: 0px !important;">
                 <div class="flex">
@@ -236,7 +236,7 @@
             <tr style="border: none !important; padding: 0px !important;">
               <td style="border: none !important; padding: 0px !important; width: 17%">
                 <div class="text-weight-bold">CATATAN KIE</div>
-                <div class="text-italic">EDUCATION NOTE</div>
+                <!-- <div class="text-italic">EDUCATION NOTE</div> -->
               </td>
               <td valign="top" style="border: none !important; padding: 0px !important;"> : - </td>
             </tr>
@@ -249,8 +249,8 @@
           <tbody>
             <tr style="border: none !important; padding: 0px !important;">
               <td style="border: none !important; padding: 0px !important; width: 17%">
-                <div class="text-weight-bold">TANGGAL / DATE</div>
-                <div class="text-italic">JAM / TIME</div>
+                <div class="text-weight-bold">TANGGAL</div>
+                <div class="text-italic">JAM</div>
               </td>
               <td valign="top" style="border: none !important; padding: 0px !important;"> : <b>Tanggal</b> {{
                 dateFullFormat(pasien?.tglmasuk) }} / <b>Jam</b> {{ jamTnpDetik(pasien?.tglmasuk) }}</td>
@@ -283,7 +283,7 @@
           <div class="column flex-center ">
 
             <div>DOKTER</div>
-            <div style="margin-top: -5px; margin-bottom: 10px;">DOCTOR</div>
+            <!-- <div style="margin-top: -5px; margin-bottom: 10px;">DOCTOR</div> -->
 
             <div class="relative-position" style="width: 80px;">
               <vue-qrcode :value="qrDokter" tag="svg" :options="{
@@ -305,8 +305,9 @@
   </div>
 </template>
 <script setup>
+import { api } from 'src/boot/axios'
 import { dateFullFormat, jamTnpDetik } from 'src/modules/formatter'
-import { computed } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 
 const props = defineProps({
   pasien: {
@@ -325,6 +326,33 @@ const props = defineProps({
     type: Array,
     default: null
   }
+})
+
+const dpjp = ref(null)
+
+onMounted(() => {
+  getDpjpData()
+})
+
+
+const getDpjpData = async () => {
+  const res = await api.get(`/v1/pegawai/master/pegawai-by-kdpegsimrs?kdpegsimrs=${props?.pasien?.kodedokter}`)
+  // console.log('res', res);
+  if (res.status === 200) {
+    dpjp.value = res.data
+
+  }
+
+}
+
+const qrDokter = computed(() => {
+  // const petugas = 'Nama : ' + dpjp?.value?.nama ?? '' + 'NIP : ' + dpjp?.value?.nip ?? ''
+  const noreg = props?.pasien?.noreg// noreg
+  const dok = 'ASESSMENT-AWAL-MEDIS.png'
+  const asal = 'RANAP'
+  const petugas = dpjp?.value?.nip || null
+  const enc = btoa(`${noreg}|${dok}|${asal}|${petugas}`)
+  return `${enc}`
 })
 
 
