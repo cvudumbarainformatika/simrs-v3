@@ -41,9 +41,11 @@ export const listDataNpdlsStore = defineStore('list_data_npdls', {
           .then((resp) => {
             if (resp.status === 200) {
               // console.log('data NPD', resp)
-              this.loading = false
+
               this.listnpdls = resp.data
               this.rincianNpd()
+
+              this.loading = false
               resolve(resp.data)
             }
           })

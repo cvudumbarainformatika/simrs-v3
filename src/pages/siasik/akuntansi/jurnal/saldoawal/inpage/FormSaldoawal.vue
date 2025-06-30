@@ -61,7 +61,7 @@
 
     <div class="row q-pa-sm flex-center">
       <div class="q-pr-md q-gutter-y-md">
-        <app-input v-model="store.form.tahun" label="Tahun Saldo Awal" outlined @update:model-value="(val) => {
+        <app-input v-model="store.form.tahun" debounce="300" label="Tahun Saldo Awal" outlined @update:model-value="(val) => {
           store.reqs.tahun = val
           store.getDataTable()
 

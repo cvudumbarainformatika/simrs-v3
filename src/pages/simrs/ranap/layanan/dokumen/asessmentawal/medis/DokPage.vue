@@ -412,9 +412,9 @@
 </template>
 
 <script setup>
-import { api } from 'src/boot/axios';
-import { dateFullFormat, jamTnpDetik } from 'src/modules/formatter';
-import { computed, onMounted, ref } from 'vue';
+import { api } from 'src/boot/axios'
+import { dateFullFormat, jamTnpDetik } from 'src/modules/formatter'
+import { computed, onMounted, ref } from 'vue'
 
 
 
@@ -450,20 +450,20 @@ onMounted(() => {
 
 const anamnesisAwal = computed(() => {
   const awal = props?.pasien?.anamnesis?.find(x => x?.awal === '1' && x?.nakes === '1') || null
-  console.log('awal', awal);
+  // console.log('awal', awal);
 
   return awal
 })
 const pemeriksaanUmum = computed(() => {
   const awal = props?.pasien?.pemeriksaan?.find(x => x?.awal === '1' && x?.nakes === '1') || null
-  console.log('awal', awal);
+  // console.log('awal', awal);
 
   return awal
 })
 
 const diagnosa = computed(() => {
   const primer = props?.pasien?.diagnosa?.find(x => x?.rs4 === 'Primer' && x?.rs13 === 'POL014') || null
-  console.log('awal', primer);
+  // console.log('awal', primer);
 
   return primer
 })

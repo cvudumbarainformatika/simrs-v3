@@ -39,8 +39,9 @@ export const dataBastPekerjaanStore = defineStore('data_bast_pekerjaan', {
           .then((resp) => {
             if (resp.status === 200) {
               // console.log('data BAST Pekerjaan', resp);
-              this.loading = false;
+
               this.bastpekerjaan = resp.data;
+              this.loading = false;
               resolve(resp.data);
             }
           })

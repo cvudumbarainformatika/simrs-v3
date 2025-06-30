@@ -50,9 +50,10 @@ export const uselistKontrakPekerjaan = defineStore('list_kontra_kPekerjaan', {
         api.get('v1/transaksi/kontrak/listkontrak', params).then((resp) => {
           // console.log('kontrak', resp)
           if (resp.status === 200) {
-            this.loading = false
+
             this.kontraks = resp.data
             // this.reqs.rowsNumber = resp.data.total
+            this.loading = false
             resolve(resp)
           }
           else {

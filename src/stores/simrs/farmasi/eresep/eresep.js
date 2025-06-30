@@ -249,7 +249,9 @@ export const useEResepDepoFarmasiStore = defineStore('e_resep_depo_farmasi', {
             res.rincian.forEach(key => {
               key.harga = (parseFloat(key?.jumlah) * parseFloat(key?.hargajual)) + parseFloat(key?.r)
               key.diCopy = true
-              const stok = key.stok[0]
+              const prmint = datanya?.permintaanresep?.find(k => k.kdobat === key.kdobat)
+
+              const stok = prmint.stok[0] ?? {}
               const totalStok = isNaN(parseFloat(stok?.total)) ? 0 : parseFloat(stok?.total)
               const permintaan = stok?.permintaanobatrinci?.map(per => parseFloat(per.allpermintaan)).reduce((a, b) => a + b, 0) ?? 0
               const transnonracikan = stok?.transnonracikan?.map(per => parseFloat(per.jumlah)).reduce((a, b) => a + b, 0) ?? 0

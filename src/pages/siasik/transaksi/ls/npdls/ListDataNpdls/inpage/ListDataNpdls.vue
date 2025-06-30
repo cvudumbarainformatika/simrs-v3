@@ -237,13 +237,13 @@ function viewCetakDataNpdls(row) {
 
 const editnpds = ref(null)
 function editNpdls(row) {
-  if (auth.user?.pegawai?.kdpegsimrs !== 'sa') {
-    $q.notify({
-      type: 'negative',
-      message: 'Anda tidak Memiliki Akses Edit Data ini, Silahkan Hubungi Admin'
-    })
-    return
-  }
+  // if (auth.user?.pegawai?.kdpegsimrs !== 'sa') {
+  //   $q.notify({
+  //     type: 'negative',
+  //     message: 'Anda tidak Memiliki Akses Edit Data ini, Silahkan Hubungi Admin'
+  //   })
+  //   return
+  // }
   if (row?.kunci === '1') {
     $q.notify({
       type: 'negative',
