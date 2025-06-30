@@ -22,7 +22,8 @@
               <list-pasien v-if="!store.isViewList" key="list-pasien" :items="store.items" :loading="store.loading"
                 :loading-terima="store?.loadingTerima" :loading-batal="store?.loadingBatal"
                 @details="(val) => store.getDataPasienRadiologiByNota(val)" @click="store.helperKdRuangan(store.pasien)"
-                @terima="(val) => store.terimaPasien(val)" @batal="(val) => batalkanPasien(val)" jenis="dalam" />
+                @terima="(val) => store.terimaPasien(val)" @batal="(val) => batalkanPasien(val)" jenis="dalam"
+                @detail-item="(val) => detailPermintaan(val)" />
               <thumbnail-view v-else key="thumbnail-view" :items="store.items"
                 @details="(val) => store.getDataPasienRadiologiByNota(val)" />
             </transition-group>
@@ -82,6 +83,36 @@ function batalkanPasien(dot) {
   }).onOk(data => {
     // console.log('>>>> OK, received', data)
     store.batalkanPasien(dot, data)
+  })
+}
+
+
+function detailPermintaan(val) {
+  console.log('details sementara', val);
+
+  const items = val?.rinciansementara
+
+  let rinci = []
+  for (let i = 0; i < items.length; i++) {
+    const el = items[i];
+    rinci.push(`<div style="border-top: 1px solid #ddd; padding: 5px"> ${i + 1} .  ${el?.relmasterpemeriksaan?.rs2} (${el?.relmasterpemeriksaan?.rs3})</div>`)
+  }
+
+  $q.dialog({
+    title: 'Details Permintaan',
+    message: `Data Permintaan Radiologi dari <b class="text-primary"> ${val?.ruangan} </b> 
+    <div style="margin-top: 10px; padding-bottom: 10px;">
+      ${rinci}
+    </div>
+    `,
+    persistent: true,
+    html: true
+  }).onOk(data => {
+    // console.log('>>>> OK, received', data)
+  }).onCancel(() => {
+    // console.log('>>>> Cancel')
+  }).onDismiss(() => {
+    // console.log('I am triggered on both OK and Cancel')
   })
 }
 

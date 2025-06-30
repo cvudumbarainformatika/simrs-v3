@@ -69,7 +69,7 @@ export const useRadiologiPoli = defineStore('poli-radiologi', {
       this.form.nota = (this.form.nota === 'BARU' || this.form.nota === 'SEMUA') ? '' : this.form.nota
 
       this.form.isRanap = isRanap
-      console.log('form rad', this.form)
+      // console.log('form rad', this.form)
       try {
         const resp = await api.post('v1/simrs/penunjang/radiologi/simpanpermintaanradiologi', this.form)
         // console.log('save', resp)

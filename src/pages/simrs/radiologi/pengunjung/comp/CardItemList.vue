@@ -40,6 +40,10 @@
             <div class="q-pt-sm">
               {{ item?.sistembayar }}
             </div>
+            <div class="q-mt-xs">
+              <q-btn outline rounded size="xs" padding="xs" label="Detail Permintaan" color="teal"
+                @click="detailPermintaan(item)"></q-btn>
+            </div>
           </div>
           <div class="col full-width flex wrap ellipsis">
             <div class="f-10">
@@ -47,6 +51,12 @@
             </div>
             <div class="full-width ellipsis">
               <span class="text-primary">{{ item?.ruangan }}</span>
+            </div>
+
+            <div v-if="item?.status === ''" class="q-mt-xs">
+              <q-badge outline align="middle" color="orange" class="q-mr-xs">
+                Hari
+              </q-badge>
             </div>
           </div>
           <div class="col-2 flex justify-end">
@@ -104,7 +114,7 @@ defineProps({
   }
 })
 
-const emits = defineEmits(['details', 'terima', 'batal'])
+const emits = defineEmits(['details', 'terima', 'batal', 'detailItem'])
 
 const idClick = ref(null)
 
@@ -119,6 +129,12 @@ function bataalkanPasien(item) {
   // console.log('batal pasien', item);
   idClick.value = item.nota_permintaan
   emits('batal', item)
+}
+
+function detailPermintaan(item) {
+  // console.log('emit detailItem', item);
+
+  emits('detailItem', item)
 }
 </script>
 

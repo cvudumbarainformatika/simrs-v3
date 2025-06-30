@@ -8,7 +8,7 @@
         <TransitionGroup name="slide-left-fade" tag="div">
           <CardItemList v-for="(item, i) in items" :key="i" :item="item" @details="(val) => emits('details', val)"
             @terima="(val) => emits('terima', val)" @batal="(val) => emits('batal', val)" :loadingTerima="loadingTerima"
-            :loadingBatal="loadingBatal" :loading="loading" />
+            :loadingBatal="loadingBatal" :loading="loading" @detail-item="(val) => emits('detailItem', val)" />
         </TransitionGroup>
       </template>
 
@@ -48,7 +48,7 @@ defineProps({
   }
 })
 
-const emits = defineEmits(['details', 'terima', 'batal'])
+const emits = defineEmits(['details', 'terima', 'batal', 'detailItem'])
 </script>
 
 <style lang="scss" scoped>

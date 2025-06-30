@@ -31,30 +31,31 @@ export const useRadiologiIgd = defineStore('igd-radiologi', {
   //   doubleCount: (state) => state.counter * 2
   // },
   actions: {
-    async getRadiologi () {
+    async getRadiologi() {
       const resp = await api.get('v1/simrs/penunjang/radiologi/listpermintaanradiologirinci')
       // console.log('master radiologi', resp)
       if (resp.status === 200) {
         this.namaPemeriksaans = resp.data
       }
     },
-    async getJenisRadiologi () {
+    async getJenisRadiologi() {
       const resp = await api.get('v1/simrs/penunjang/radiologi/jenispermintaanradiologi')
       // console.log('jenis radiologi', resp)
       if (resp.status === 200) {
         this.jenisPemeriksaans = resp.data
       }
     },
-    setForm (key, value) {
+    setForm(key, value) {
       this.form[key] = value
     },
-    async saveRadiologi (pasien) {
+    async saveRadiologi(pasien) {
       if (!pasien?.kodedokter) {
         return notifErrVue('kode Dokter masih kosong, silahkan tutup dulu pasien ini kemudian tekan tombol refresh di pojok kanan atas')
       }
       this.loadingSave = true
       this.form.keterangan = this.form.diagnosakerja + ' ' + this.form.catatanpermintaan
       this.form.noreg = pasien?.noreg
+      this.form.norm = pasien?.norm
       this.form.kodedokter = pasien?.kodedokter
       this.form.kodesistembayar = pasien?.kodesistembayar
       this.form.kodepoli = pasien?.kodepoli
@@ -79,7 +80,7 @@ export const useRadiologiIgd = defineStore('igd-radiologi', {
         this.loadingSave = false
       }
     },
-    async getNota (pasien) {
+    async getNota(pasien) {
       const params = { params: { noreg: pasien?.noreg } }
       const resp = await api.get('v1/simrs/penunjang/radiologi/getnota', params)
       // console.log('nota rad', resp)
@@ -87,14 +88,14 @@ export const useRadiologiIgd = defineStore('igd-radiologi', {
         this.setNotas(resp.data)
       }
     },
-    setNotas (array) {
+    setNotas(array) {
       const arr = array.map(x => x.nota)
       this.notas = arr?.length ? arr : []
       this.notas.push('BARU')
       this.form.nota = this.notas[0]
     },
 
-    async hapusRadiologi (pasien, id) {
+    async hapusRadiologi(pasien, id) {
       const payload = { noreg: pasien?.noreg, id }
       try {
         const resp = await api.post('v1/simrs/penunjang/radiologi/hapusradiologi', payload)
@@ -110,7 +111,7 @@ export const useRadiologiIgd = defineStore('igd-radiologi', {
       }
     },
 
-    initReset () {
+    initReset() {
       this.form = {
         noreg: '', // rs1
         nota: this.notas?.length ? this.notas[0] : '', // rs2
@@ -132,6 +133,28 @@ export const useRadiologiIgd = defineStore('igd-radiologi', {
       return new Promise((resolve, reject) => {
         resolve()
       })
+    },
+    mappingArrayItems(val) {
+      const arr = val?.length ? val.map(x => x.val) : []
+
+      const arr2 = val?.length ? val.map(x => x.kode) : []
+      const implode = arr?.length ? arr.join('-. ') : ''
+      const str = `-. ${implode}`
+      const tpemeriksaan = arr2?.length ? arr2.join(';') : ''
+      this.setForm('permintaan', str)
+      this.setForm('tpemeriksaan', tpemeriksaan)
+      this.setForm('items', val)
+    },
+    hapusFormItems(item) {
+      console.log('form', this.form);
+
+      console.log('item', item);
+      const data = this.form.items
+      const dataBaru = data.filter(x => x?.kode !== item?.kode);
+
+      this.form.items = dataBaru
+      this.mappingArrayItems(dataBaru)
+
     }
   }
 })

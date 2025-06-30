@@ -124,6 +124,7 @@
 import { ref } from 'vue'
 import { useGroupBy } from 'src/composable/groupby'
 import { formatDouble } from 'src/modules/formatter'
+import { notifErrVue } from 'src/modules/utils'
 
 const { setGroup } = useGroupBy()
 const props = defineProps({
@@ -167,7 +168,7 @@ function ruanganHelper() {
 function checked(val) {
   // console.log('list', filterredLists.value)
   // console.log('pem', pemeriksaans.value)
-  console.log('val', val)
+  // console.log('val', val)
 }
 function removeOne(i) {
   // console.log('remove one ', pemeriksaans.value[i])
@@ -297,6 +298,11 @@ function pilihPemeriksaan(val) {
 }
 
 function submitPemeriksaans() {
+  if (pemeriksaans.value?.length > 1) {
+    notifErrVue('Tidak bisa memilih lebih dari satu pemeriksaan')
+
+    return
+  }
   emits('ok', pemeriksaans.value)
 }
 </script>
