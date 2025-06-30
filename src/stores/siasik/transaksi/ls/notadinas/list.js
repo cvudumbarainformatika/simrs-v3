@@ -55,8 +55,9 @@ export const listdataNotadinasStore = defineStore('list_data_notadinas', {
               this.listdata = resp.data
               this.rincianNotadinas()
 
-              resolve(resp.data)
               this.loading = false
+              resolve(resp.data)
+
             }
           })
           .catch((err) => {

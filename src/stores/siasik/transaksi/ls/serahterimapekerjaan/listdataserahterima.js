@@ -37,9 +37,11 @@ export const listdataSerahterimaStore = defineStore('list_data_serahterima', {
           .then((resp) => {
             if (resp.status === 200) {
               // console.log('data Serahterima', resp)
-              this.loading = false
+
               this.listdata = resp.data
               this.rincianSerahterima()
+
+              this.loading = false
               resolve(resp.data)
             }
           })
