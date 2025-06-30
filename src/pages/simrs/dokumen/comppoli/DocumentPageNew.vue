@@ -193,6 +193,12 @@ const documents = ref([
     jenis: 'SrtKntrl',
     label: 'Surat-Kontrol',
     value: 'SuratKontrol'
+  }, {
+    icon: 'icon-mat-email',
+    color: 'primary',
+    jenis: 'SrtKnslAnPol',
+    label: 'Surat-Konsul-Antar-Poli',
+    value: 'SrtKnslAnPol'
   }
 ])
 // eslint-disable-next-line no-unused-vars
@@ -219,6 +225,7 @@ const comp = [
   { nama: 'Radiologi', page: defineAsyncComponent(() => import('../../../simrs/igd/layanan/dokumen/dokumenisi/Radiologi/RadiologiPage.vue')) },
   { nama: 'SuratKontrol', page: defineAsyncComponent(() => import('../../../simrs/poli/dokumen/SuratKontrol/SuratKontrolPage.vue')) },
   { nama: 'LapOperasi', page: defineAsyncComponent(() => import('../../../simrs/poli/dokumen/lapoperasi/LapOperasiPage.vue')) },
+  { nama: 'SrtKnslAnPol', page: defineAsyncComponent(() => import('../../../simrs/poli/dokumen/SuratKonsulAntarPoli/SuratKonsulAntarPoli.vue')) },
 ]
 // eslint-disable-next-line no-unused-vars
 const cekPanel = () => {

@@ -1,8 +1,8 @@
 <template>
-  <div v-if="store.loadingSuKet">
+  <div v-if="store.loadingTerima">
     <app-loading />
   </div>
-  <div v-else-if="store.itemsSuket?.metadata?.code === '201' && !store.loadingSuKet">
+  <div v-else-if="pasien?.jawabankonsulbynoreg?.length <= 0 && !store.loadingTerima">
     <app-no-data />
   </div>
   <div v-else class="q-pa-md" style="max-width: 100%">
@@ -23,7 +23,8 @@
     </div>
     <div class="full-height full-height q-pa-sm bg-indigo-1">
       <div id="printMe" style="width: 21cm;" class="q-pa-xs full-width full-height bg-white">
-        <IsiSuratKontrolPage :pasien="props?.pasien" />
+        <KopSurat judul="Surat Konsultasi Antar Poli" :pasien="props?.pasien" :jangantampil=false />
+        <IsiSuratKonsulAntarPoliPage :pasien="props?.pasien" />
       </div>
     </div>
   </div>
@@ -31,9 +32,9 @@
 <script setup>
 
 import { useSuratKontrolPoliStore } from 'src/stores/simrs/pelayanan/poli/suratkontrol';
-import IsiSuratKontrolPage from './IsiSuratKontrolPage.vue';
+import KopSurat from '../../../../simrs/igd/layanan/dokumen/KopSurat.vue';
+import IsiSuratKonsulAntarPoliPage from './IsiSuratKonsulAntarPoli.vue';
 import html2pdf from 'html2pdf.js';
-import { usePengunjungIgdStore } from 'src/stores/simrs/igd/pengunjung';
 
 const printObj = {
   id: 'printMe',
@@ -52,16 +53,13 @@ const props = defineProps({
 })
 
 const store = useSuratKontrolPoliStore()
-const storex = usePengunjungIgdStore()
-
-store.suratkontrolbysuratkontrol(props?.pasien?.bpjssuratkontrol?.noSuratKontrol)
 
 function exportPdf() {
   const concern = document.getElementById('printMe')
   const nama = props?.pasien?.nama ?? props?.pasien?.pasien
   const pdfConfig = {
     margin: 0,
-    filename: 'Surat_Kontrol_' + props?.pasien?.noreg + '_' + nama + '_' + props?.pasien?.norm + '.pdf',
+    filename: 'Surat_Konsultasi_Antar_Poli_' + props?.pasien?.noreg + '_' + nama + '_' + props?.pasien?.norm + '.pdf',
     image: {
       type: 'jpeg',
       quality: 0.98
