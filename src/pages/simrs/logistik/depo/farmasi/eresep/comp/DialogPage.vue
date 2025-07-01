@@ -387,9 +387,9 @@
                           Simpan Obat
                         </q-tooltip>
                       </q-btn>
-                      <div v-if="rinc?.obatkeluar >= 0">
-                        Sudah dikeluarkan obat sebanyak {{ rinc?.obatkeluar }} ({{ rinc?.mobat?.satuan_k }})
-                      </div>
+                    </div>
+                    <div v-if="rinc?.obatkeluar >= 0">
+                      Sudah dikeluarkan obat sebanyak {{ rinc?.obatkeluar }} ({{ rinc?.mobat?.satuan_k }})
                     </div>
                   </div>
                 </div>
@@ -579,20 +579,20 @@
                       <div v-if="store?.resep?.flag === '1'">
                         Resep Belum diterima
                       </div>
-                      <div v-if="store?.resep?.flag === '3'">
+                      <!-- <div v-if="store?.resep?.flag === '3'">
                         Resep Sudah selesai
-                      </div>
-                      <div v-if="parseInt(store?.resep?.flag) >= 2">
-                        <q-btn v-if="(!rinc?.obatkeluar) && !rinc?.done && parseInt(store?.resep?.flag) < 5" round
+                      </div> -->
+                      <div v-if="parseInt(store?.resep?.flag) >= 2 && store?.resep?.tiperesep !== 'iter'">
+                        <q-btn v-if="(!rinc?.obatkeluar) && !rinc?.done && parseInt(store?.resep?.flag) < 3" round
                           class="f-10 q-mr-sm" color="primary" text-color="white" icon="icon-mat-save"
                           :loading="rinc?.loading" :disable="rinc?.loading" @click="store.simpanRacikan(rinc)">
                           <q-tooltip class="primary" :offset="[10, 10]">
                             Simpan Obat
                           </q-tooltip>
                         </q-btn>
-                        <div v-if="rinc?.obatkeluar >= 0">
-                          Sudah dikeluarkan obat sebanyak {{ rinc?.obatkeluar }} ({{ rinc?.mobat?.satuan_k }})
-                        </div>
+                      </div>
+                      <div v-if="rinc?.obatkeluar >= 0">
+                        Sudah dikeluarkan obat sebanyak {{ rinc?.obatkeluar }} ({{ rinc?.mobat?.satuan_k }})
                       </div>
                     </div>
                   </div>
@@ -752,7 +752,8 @@
                 </q-item>
               </q-list>
             </div>
-            <div v-if="store?.resep?.rincianracik?.length && (store?.resep?.flag === '3' || store?.resep?.flag === '4')"
+            <div
+              v-if="store?.resep?.rincianracik?.length && (store?.resep?.flag === '3' || store?.resep?.flag === '4') && openIter"
               class="q-mt-sm">
               <div class="row items-center">
                 <div class="col-shrink text-weight-bold">
@@ -797,6 +798,12 @@
                     <q-separator size="1px" color="deep-orange" inset />
                   </div>
                   <div class="col-auto q-mr-lg">
+                    <div v-if="!item?.kosong && store?.resep?.noresep_asal === ''">
+                      <q-checkbox v-model="item.diCopy" label="Copy Resep" />
+                    </div>
+                    <div v-if="item?.kosong">
+                      Tidak ada Alokasi
+                    </div>
                     <q-btn v-if="apps?.user?.kdruangansim === 'Gd-05010101'" round class="f-10 q-my-sm" color="dark"
                       text-color="white" icon="icon-mat-print" @click="openRajal(item)">
                       <q-tooltip class="primary" :offset="[10, 10]">
@@ -915,9 +922,7 @@
                             </div>
                             <div v-if="store?.resep?.tiperesep === 'iter' && store?.resep?.noresep_asal === ''">
                               <div v-if="parseFloat(rinc.jumlah) < parseFloat(rinc.alokasi)">
-                                <div v-if="!item?.kosong">
-                                  Klik Copy Resep
-                                </div>
+
                                 <div v-if="item?.kosong">
                                   Tidak ada Alokasi Racikan
                                 </div>
@@ -928,16 +933,16 @@
                             </div>
                           </div>
                           <div v-if="parseInt(store?.resep?.flag) >= 2">
-                            <q-btn v-if="!rinc?.obatkeluar && parseInt(store?.resep?.flag) < 5" round
+                            <q-btn v-if="!rinc?.obatkeluar && parseInt(store?.resep?.flag) < 3" round
                               class="f-10 q-mr-sm" color="primary" text-color="white" icon="icon-mat-save"
                               :loading="rinc?.loading" :disable="rinc?.loading" @click="store.simpanRacikan(rinc)">
                               <q-tooltip class="primary" :offset="[10, 10]">
                                 Simpan Obat
                               </q-tooltip>
                             </q-btn>
-                            <div v-if="rinc?.obatkeluar">
+                            <!-- <div v-if="rinc?.obatkeluar">
                               Sudah dikeluarkan obat sebanyak {{ rinc?.obatkeluar }} ({{ rinc?.mobat?.satuan_k }})
-                            </div>
+                            </div> -->
                           </div>
                         </div>
                       </div>
@@ -1174,7 +1179,7 @@ function copyResep (val) {
   if (racik?.length) {
     racik.forEach(rac => {
       // console.log('racikan', rac)
-      if (!rac?.kosong) {
+      if (!rac?.kosong && rac?.diCopy) {
         if (rac.rincian?.length) {
           rac.rincian.forEach(rinc => {
             const temp = {
