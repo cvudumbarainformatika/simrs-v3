@@ -81,6 +81,12 @@ const menus = ref([
     comp: shallowRef(defineAsyncComponent(() => import('src/pages/simrs/igd/layanan/assesment/diagnosa/comp/DiagnosaTable.vue')))
   },
   {
+    name: 'memo',
+    label: 'Memodiagnosa',
+    icon: 'icon-my-file_sign',
+    comp: shallowRef(defineAsyncComponent(() => import('./compIgdSebelumnya/MemoDiagnosaPage.vue')))
+  },
+  {
     name: 'tindakan',
     label: 'Tindakan',
     icon: 'icon-my-file_sign',
