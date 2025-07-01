@@ -282,7 +282,7 @@
                 <template v-else>
                   <div v-for="i in 2" :key="i" class="row">
                     <div class="col-auto">
-                      {{ i + 1 }} .
+                      {{ i }} .
                     </div>
                     <div class="col q-ml-sm dotted-line" />
                   </div>

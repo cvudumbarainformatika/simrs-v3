@@ -44,6 +44,8 @@
                     @click="hapusItem(item?.id)" />
                   <q-badge outline :color="item?.cito === 'Cito' ? 'orange' : 'primary'"
                     :label="item?.cito === 'Cito' ? item?.cito : 'Bukan Cito'" class="q-my-sm" />
+                  <q-btn class="q-mt-sm" flat dense icon="icon-mat-print" color="primary" size="md" rounded
+                    @click="handlePrint(item)" />
                 </q-item-section>
               </q-item>
             </template>
@@ -51,13 +53,20 @@
         </q-list>
       </q-scroll-area>
     </div>
+
+
+    <!-- dialog cetak -->
+    <DialogCetakPermintaanRadiologi :pasien="pasien" :data="isiPrint" v-model="isPrint" />
   </div>
 </template>
 
 <script setup>
 import { useQuasar } from 'quasar'
 import { useRadiologiIgd } from 'src/stores/simrs/igd/radiologi'
-import { computed } from 'vue'
+import { computed, ref, defineAsyncComponent } from 'vue'
+
+
+const DialogCetakPermintaanRadiologi = defineAsyncComponent(() => import('src/pages/simrs/poli/tindakan/comptindakan/pagemenu/comppenunjang/compradiologi/DialogCetakPermintaanRadiologi.vue'))
 
 const $q = useQuasar()
 const store = useRadiologiIgd()
@@ -68,11 +77,19 @@ const props = defineProps({
   }
 })
 
+const isPrint = ref(false)
+const isiPrint = ref(null)
+
 const filterredTable = computed(() => {
   const val = store.form.nota
   const arr = props?.pasien?.radiologi
   return arr.filter(x => x.rs2 === val)
 })
+
+function handlePrint(item) {
+  isPrint.value = true
+  isiPrint.value = item
+}
 
 function hapusItem(id) {
   $q.dialog({
