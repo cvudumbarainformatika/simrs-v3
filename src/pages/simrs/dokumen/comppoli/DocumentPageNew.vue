@@ -206,7 +206,7 @@ const documents = ref([
     color: 'primary',
     jenis: 'SrtKnslinternal',
     label: 'Surat-Konsul-Internal',
-    value: 'SuratKonsulinternal'
+    value: 'SrtKnslinternal'
   }
 ])
 // eslint-disable-next-line no-unused-vars
