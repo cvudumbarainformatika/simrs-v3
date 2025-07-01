@@ -117,13 +117,13 @@ const documents = ref([
     label: 'Pengantar Rujuk RS Lain',
     value: 'rslain'
   },
-  {
-    icon: 'icon-mat-email',
-    color: 'primary',
-    jenis: 'R P',
-    label: 'Rencana Pasien',
-    value: 'Rencana'
-  },
+  // {
+  //   icon: 'icon-mat-email',
+  //   color: 'primary',
+  //   jenis: 'R P',
+  //   label: 'Rencana Pasien',
+  //   value: 'Rencana'
+  // },
   {
     icon: 'icon-mat-email',
     color: 'primary',
@@ -193,12 +193,20 @@ const documents = ref([
     jenis: 'SrtKntrl',
     label: 'Surat-Kontrol',
     value: 'SuratKontrol'
-  }, {
+  },
+  {
     icon: 'icon-mat-email',
     color: 'primary',
     jenis: 'SrtKnslAnPol',
     label: 'Surat-Konsul-Antar-Poli',
     value: 'SrtKnslAnPol'
+  },
+  {
+    icon: 'icon-mat-email',
+    color: 'primary',
+    jenis: 'SrtKnslinternal',
+    label: 'Surat-Konsul-Internal',
+    value: 'SuratKonsulinternal'
   }
 ])
 // eslint-disable-next-line no-unused-vars
@@ -212,7 +220,7 @@ const comp = [
   { nama: 'Billing', page: defineAsyncComponent(() => import('./BillingPage.vue')) },
   { nama: 'Sakit', page: defineAsyncComponent(() => import('../surat/compsurat/SuratSakitPage.vue')) },
   { nama: 'Sehat', page: defineAsyncComponent(() => import('../surat/compsurat/SuratSehatPage.vue')) },
-  { nama: 'Rencana', page: defineAsyncComponent(() => import('../surat/compsurat/SuratRencanaPage.vue')) },
+  // { nama: 'Rencana', page: defineAsyncComponent(() => import('../surat/compsurat/SuratRencanaPage.vue')) },
   { nama: 'prb', page: defineAsyncComponent(() => import('../pengantar/comppengantar/PengantarRujukBalik.vue')) },
   { nama: 'rslain', page: defineAsyncComponent(() => import('../pengantar/comppengantar/PengantarRsLain.vue')) },
   { nama: 'AsesmenAwalMedis', page: defineAsyncComponent(() => import('../erm/poli/PengkajianAwalMedisRJPage.vue')) },
@@ -226,6 +234,7 @@ const comp = [
   { nama: 'SuratKontrol', page: defineAsyncComponent(() => import('../../../simrs/poli/dokumen/SuratKontrol/SuratKontrolPage.vue')) },
   { nama: 'LapOperasi', page: defineAsyncComponent(() => import('../../../simrs/poli/dokumen/lapoperasi/LapOperasiPage.vue')) },
   { nama: 'SrtKnslAnPol', page: defineAsyncComponent(() => import('../../../simrs/poli/dokumen/SuratKonsulAntarPoli/SuratKonsulAntarPoli.vue')) },
+  { nama: 'SrtKnslinternal', page: defineAsyncComponent(() => import('../../../simrs/poli/dokumen/KonsulInternal/SuratKonsulInternalPage.vue')) },
 ]
 // eslint-disable-next-line no-unused-vars
 const cekPanel = () => {
