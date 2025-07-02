@@ -117,13 +117,13 @@ const documents = ref([
     label: 'Pengantar Rujuk RS Lain',
     value: 'rslain'
   },
-  // {
-  //   icon: 'icon-mat-email',
-  //   color: 'primary',
-  //   jenis: 'R P',
-  //   label: 'Rencana Pasien',
-  //   value: 'Rencana'
-  // },
+  {
+    icon: 'icon-mat-email',
+    color: 'primary',
+    jenis: 'R P',
+    label: 'Rencana Pasien',
+    value: 'Rencana'
+  },
   {
     icon: 'icon-mat-email',
     color: 'primary',
