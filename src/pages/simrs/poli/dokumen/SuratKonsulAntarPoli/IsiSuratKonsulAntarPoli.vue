@@ -43,7 +43,6 @@
 <script setup>
 import { computed } from 'vue';
 
-console.log('props', props?.pasien?.jawabankonsulbynoreg)
 const props = defineProps({
   pasien: {
     type: Object,
