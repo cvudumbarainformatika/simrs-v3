@@ -106,10 +106,10 @@ defineProps({
     type: Boolean,
     default: false
   },
-  itemsigd: {
-    type: Array,
-    default: () => []
-  }
+  // itemsigd: {
+  //   type: Array,
+  //   default: () => []
+  // }
 })
 
 function colortriage(val) {

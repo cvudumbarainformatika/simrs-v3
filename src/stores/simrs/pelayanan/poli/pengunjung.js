@@ -263,7 +263,6 @@ export const usePengunjungPoliStore = defineStore('pengunjung-poli-store', {
             findPasien[0].sharing = responseData?.sharing
             findPasien[0].taskid = responseData?.taskid
             findPasien[0].tindakan = responseData?.tindakan
-            findPasien[0].jawabankonsulbynoreg = responseData?.jawabankonsulbynoreg
             // BARU
             findPasien[0].laporantindakan = responseData?.laporantindakan
             findPasien[0].psikiatri = responseData?.psikiatri
@@ -276,6 +275,7 @@ export const usePengunjungPoliStore = defineStore('pengunjung-poli-store', {
             findPasien[0].bpjssuratkontrol = responseData?.bpjssuratkontrol
             // jawabn konsul
             findPasien[0].jawabankonsul = responseData?.jawabankonsul
+            findPasien[0].jawabankonsulbynoreg = responseData?.jawabankonsulbynoreg
 
 
           }

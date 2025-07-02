@@ -1,4 +1,5 @@
 <template>
+  <pre>{{ props?.pasien }}</pre>
   <div v-if="store.loadingTerima">
     <app-loading />
   </div>
@@ -31,7 +32,8 @@
 </template>
 <script setup>
 
-import { useSuratKontrolPoliStore } from 'src/stores/simrs/pelayanan/poli/suratkontrol';
+
+import { usePengunjungPoliStore } from 'src/stores/simrs/pelayanan/poli/pengunjung';
 import KopSurat from '../../../../simrs/igd/layanan/dokumen/KopSurat.vue';
 import IsiSuratKonsulAntarPoliPage from './IsiSuratKonsulAntarPoli.vue';
 import html2pdf from 'html2pdf.js';
@@ -52,7 +54,9 @@ const props = defineProps({
   }
 })
 
-const store = useSuratKontrolPoliStore()
+
+
+const store = usePengunjungPoliStore()
 
 function exportPdf() {
   const concern = document.getElementById('printMe')

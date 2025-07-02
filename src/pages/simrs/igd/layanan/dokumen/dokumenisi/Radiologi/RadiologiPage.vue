@@ -36,8 +36,10 @@ import { usePengunjungIgdStore } from 'src/stores/simrs/igd/pengunjung';
 import KopSurat from '../../KopSurat.vue';
 import IsiRadiologiPage from './IsiRadiologiPage.vue';
 import html2pdf from 'html2pdf.js';
+import { computed } from 'vue';
+import { usePengunjungPoliStore } from 'src/stores/simrs/pelayanan/poli/pengunjung';
 
-const store = usePengunjungIgdStore()
+// const store = usePengunjungIgdStore()
 
 const printObj = {
   id: 'printMe',
@@ -54,6 +56,13 @@ const props = defineProps({
     default: null
   }
 })
+
+const store = computed(() =>
+  props?.pasien?.kdpoli === 'POL014'
+    ? usePengunjungIgdStore()
+    : usePengunjungPoliStore()
+)
+
 
 // const obatRef = ref(0);
 // const returobatRef = ref(0);

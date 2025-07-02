@@ -36,7 +36,6 @@ const style = useStyledStore()
 const pasien = ref(null)
 
 function bukaTindakan(val) {
-  console.log('sa', val)
   pasien.value = val
   if (val?.kodepoli === 'POL014') {
     store.bukaLayanan(val)

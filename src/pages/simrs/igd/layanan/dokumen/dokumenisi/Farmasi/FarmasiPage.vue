@@ -1,5 +1,11 @@
 <template>
-  <div class="q-pa-sm row flex justify-between bg-teal text-white items-center">
+  <div v-if="store?.loadingTerima">
+    <app-loading />
+  </div>
+  <div v-else-if="pasien?.newapotekrajal?.length <= 0 && !store.loadingTerima">
+    <app-no-data />
+  </div>
+  <div v-else class="q-pa-sm row flex justify-between bg-teal text-white items-center">
     <div class="col-6">{{ props?.judul }}</div>
     <div class="col-6 text-right">
       <q-btn flat dense size="md" icon="icon-mat-download" @click="exportPdf()">
@@ -40,6 +46,8 @@ import ObatPage from '../Billdetail/comp/ObatPage.vue';
 import ReturObatPage from '../Billdetail/comp/ReturObatPage.vue';
 import html2pdf from 'html2pdf.js';
 import { formatRp } from 'src/modules/formatter';
+import { usePengunjungPoliStore } from 'src/stores/simrs/pelayanan/poli/pengunjung';
+import { usePengunjungIgdStore } from 'src/stores/simrs/igd/pengunjung';
 
 const printObj = {
   id: 'printMe',
@@ -56,6 +64,12 @@ const props = defineProps({
     default: null
   }
 })
+
+const store = computed(() =>
+  props?.pasien?.kdpoli === 'POL014'
+    ? usePengunjungIgdStore()
+    : usePengunjungPoliStore()
+)
 
 const obatRef = ref(0);
 const returobatRef = ref(0);

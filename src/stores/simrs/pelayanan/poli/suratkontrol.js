@@ -9,6 +9,7 @@ export const useSuratKontrolPoliStore = defineStore('surat_kontrol_poli', {
     isOpen: false,
     loading: false,
     loadingSuKet: false,
+    loadingTerima: false,
     meta: null,
     items: [],
     itemsSuket: [],

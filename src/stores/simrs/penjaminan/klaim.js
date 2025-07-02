@@ -101,6 +101,7 @@ export const useKlaimPenjaminanStore = defineStore('klaim-penjaminan', {
             findPasien[0].oktrans = resp?.data?.oktrans
             findPasien[0].kamarjenazah = resp?.data?.kamarjenazah
             findPasien[0].ambulantrans = resp?.data?.ambulantrans
+            findPasien[0].jawabankonsulbynoreg = resp?.data?.jawabankonsulbynoreg
             // BARU
             // findPasien[0].laporantindakan = resp?.data?.laporantindakan
             // findPasien[0].psikiatri = resp?.data?.psikiatri
@@ -146,6 +147,7 @@ export const useKlaimPenjaminanStore = defineStore('klaim-penjaminan', {
             findPasien[0].fisio = responseData?.fisio
             findPasien[0].gambars = responseData?.gambars
             findPasien[0].laborats = responseData?.laborats
+            findPasien[0].laboratold = responseData?.laboratold
             findPasien[0].newapotekrajal = responseData?.newapotekrajal
             findPasien[0].ok = responseData?.ok
             findPasien[0].pemeriksaanfisik = responseData?.pemeriksaanfisik
@@ -166,6 +168,7 @@ export const useKlaimPenjaminanStore = defineStore('klaim-penjaminan', {
             findPasien[0].rs19 = responseData?.rs19
             // jawabn konsul
             findPasien[0].jawabankonsul = responseData?.jawabankonsul
+            findPasien[0].jawabankonsulbynoreg = responseData?.jawabankonsulbynoreg
 
           }
           this.loadingTerima = false

@@ -31,14 +31,14 @@
   </div>
 </template>
 <script setup>
-import { computed, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import KopSurat from '../../KopSurat.vue';
 import IsiLaboratPage from './IsiLaboratPage.vue';
 import html2pdf from 'html2pdf.js';
 import { formatRp } from 'src/modules/formatter';
 import { usePengunjungIgdStore } from 'src/stores/simrs/igd/pengunjung';
+import { usePengunjungPoliStore } from 'src/stores/simrs/pelayanan/poli/pengunjung';
 
-const store = usePengunjungIgdStore()
 
 const printObj = {
   id: 'printMe',
@@ -55,6 +55,13 @@ const props = defineProps({
     default: null
   }
 })
+
+const store = computed(() =>
+  props?.pasien?.kdpoli === 'POL014'
+    ? usePengunjungIgdStore()
+    : usePengunjungPoliStore()
+)
+
 
 // const obatRef = ref(0);
 // const returobatRef = ref(0);

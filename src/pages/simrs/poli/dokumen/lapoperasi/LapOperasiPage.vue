@@ -2,7 +2,7 @@
   <div v-if="store?.loadingTerima">
     <app-loading />
   </div>
-  <div v-else-if="pasien?.kamaroperasi?.length < 1 && !store.loadingTerima">
+  <div v-else-if="kamaroperasi?.length < 1 && !store.loadingTerima">
     <app-no-data />
   </div>
   <div v-else class="q-pa-md" style="max-width: 100%">
@@ -38,9 +38,11 @@ import KopSurat from '../../../igd/layanan/dokumen/KopSurat.vue';
 import IsiLaporanOperasi from './IsiLaporanOperasi.vue';
 import html2pdf from 'html2pdf.js';
 import { usePengunjungIgdStore } from 'src/stores/simrs/igd/pengunjung';
+import { computed } from 'vue';
+import { usePengunjungPoliStore } from 'src/stores/simrs/pelayanan/poli/pengunjung';
 
 const storepegawai = usePengunjungRanapStore()
-const store = usePengunjungIgdStore()
+// const store = usePengunjungIgdStore()
 
 storepegawai.getNakes()
 
@@ -57,6 +59,18 @@ const props = defineProps({
     default: null
   }
 })
+
+const store = computed(() =>
+  props?.pasien?.kdpoli === 'POL014'
+    ? usePengunjungIgdStore()
+    : usePengunjungPoliStore()
+)
+
+const kamaroperasi = computed(() =>
+  props?.pasien?.kdpoli === 'POL014'
+    ? props?.pasien?.kamaroperasi
+    : props?.pasien?.ok
+)
 
 
 function exportPdf() {
