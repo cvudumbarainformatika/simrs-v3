@@ -61,7 +61,9 @@
         <div class="data-item">4. Riwayat Penyakit Keluarga : {{ anamnesisAwal?.riwayatpenyakitkeluarga || '-' }}</div>
         <div class="data-item">5. Riwayat Pekerjaan : {{
           anamnesisAwal?.riwayat_pekerjaan_yang_berhubungan_dengan_zat_berbahaya || '-' }}</div>
-        <div class="data-item">6. Kelulah Nyeri : {{ anamnesisAwal?.keluhannyeri?.keluhan || '-' }}</div>
+        <div class="data-item">6. Keluhan Nyeri : {{ anamnesisAwal?.keluhannyeri?.skor > 0 ? 'Ada' : 'Tidak ada' || '-'
+        }}
+        </div>
       </div>
     </div>
     <!-- Pemeriksaan Fisik -->
