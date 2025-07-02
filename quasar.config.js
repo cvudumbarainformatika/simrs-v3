@@ -114,6 +114,12 @@ export default defineConfig((ctx) => {
         viteConf.build.chunkSizeWarningLimit = 5000
         viteConf.build.rollupOptions = {
           output: {
+
+            // Pastikan nama file pakai hash agar cache di browser terhindar
+            entryFileNames: 'assets/[name].[hash].js',
+            chunkFileNames: 'assets/[name].[hash].js',
+            assetFileNames: 'assets/[name].[hash].[ext]',
+
             manualChunks(id) {
               if (id.includes('node_modules')) {
                 return id.toString().split('node_modules/')[1].split('/')[0].toString();
