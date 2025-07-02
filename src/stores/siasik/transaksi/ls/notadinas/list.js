@@ -24,7 +24,8 @@ export const listdataNotadinasStore = defineStore('list_data_notadinas', {
       tgl: date.formatDate(Date.now(), 'YYYY'),
     },
     display: {
-      sekarang: date.formatDate(Date.now(), 'DD MMMM YYYY')
+      sekarang: date.formatDate(Date.now(), 'DD MMMM YYYY'),
+      skg: date.formatDate(Date.now(), ' YYYY')
     },
     listdata: [],
     datanotadinas: [],
