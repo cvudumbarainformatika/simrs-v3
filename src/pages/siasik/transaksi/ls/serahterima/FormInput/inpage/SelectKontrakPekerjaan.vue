@@ -17,8 +17,8 @@
       <q-card-section>
         <q-list>
           <template v-if="store.kontrakpekerjaan.length !== 0">
-            <q-table class="my-sticky-header" :rows="store.kontrakpekerjaan" :columns="columns" row-key="name"
-              @request="store.onRequest" v-model:pagination="store.params" :filter="store.params.q"
+            <q-table class="my-sticky-header" wrap-cells :rows="store.kontrakpekerjaan" :columns="columns"
+              row-key="name" @request="store.onRequest" v-model:pagination="store.params" :filter="store.params.q"
               :loading="store.loading" :rows-per-page-options="[50, 100, 200, 500]">
               <template #top-left>
                 <div class="flex q-qutter-sm z-top">
