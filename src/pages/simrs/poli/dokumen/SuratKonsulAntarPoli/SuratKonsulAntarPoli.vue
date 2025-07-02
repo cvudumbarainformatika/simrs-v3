@@ -1,5 +1,4 @@
 <template>
-  <pre>{{ props?.pasien }}</pre>
   <div v-if="store.loadingTerima">
     <app-loading />
   </div>

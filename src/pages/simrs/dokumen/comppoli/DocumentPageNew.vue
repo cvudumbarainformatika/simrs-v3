@@ -187,27 +187,27 @@ const documents = ref([
     label: 'Laporan Operasi',
     value: 'LapOperasi'
   },
-  {
-    icon: 'icon-mat-email',
-    color: 'primary',
-    jenis: 'SrtKntrl',
-    label: 'Surat-Kontrol',
-    value: 'SuratKontrol'
-  },
-  {
-    icon: 'icon-mat-email',
-    color: 'primary',
-    jenis: 'SrtKnslAnPol',
-    label: 'Surat-Konsul-Antar-Poli',
-    value: 'SrtKnslAnPol'
-  },
-  {
-    icon: 'icon-mat-email',
-    color: 'primary',
-    jenis: 'SrtKnslinternal',
-    label: 'Surat-Konsul-Internal',
-    value: 'SrtKnslinternal'
-  }
+  // {
+  //   icon: 'icon-mat-email',
+  //   color: 'primary',
+  //   jenis: 'SrtKntrl',
+  //   label: 'Surat-Kontrol',
+  //   value: 'SuratKontrol'
+  // },
+  // {
+  //   icon: 'icon-mat-email',
+  //   color: 'primary',
+  //   jenis: 'SrtKnslAnPol',
+  //   label: 'Surat-Konsul-Antar-Poli',
+  //   value: 'SrtKnslAnPol'
+  // },
+  // {
+  //   icon: 'icon-mat-email',
+  //   color: 'primary',
+  //   jenis: 'SrtKnslinternal',
+  //   label: 'Surat-Konsul-Internal',
+  //   value: 'SrtKnslinternal'
+  // }
 ])
 // eslint-disable-next-line no-unused-vars
 function getLabel(val) {
@@ -231,10 +231,10 @@ const comp = [
   { nama: 'ERESEP', page: defineAsyncComponent(() => import('../../../simrs/igd/layanan/dokumen/dokumenisi/Farmasi/FarmasiPage.vue')) },
   { nama: 'Laborat', page: defineAsyncComponent(() => import('../../../simrs/igd/layanan/dokumen/dokumenisi/Laborat/LaboratPage.vue')) },
   { nama: 'Radiologi', page: defineAsyncComponent(() => import('../../../simrs/igd/layanan/dokumen/dokumenisi/Radiologi/RadiologiPage.vue')) },
-  { nama: 'SuratKontrol', page: defineAsyncComponent(() => import('../../../simrs/poli/dokumen/SuratKontrol/SuratKontrolPage.vue')) },
+  // { nama: 'SuratKontrol', page: defineAsyncComponent(() => import('../../../simrs/poli/dokumen/SuratKontrol/SuratKontrolPage.vue')) },
   { nama: 'LapOperasi', page: defineAsyncComponent(() => import('../../../simrs/poli/dokumen/lapoperasi/LapOperasiPage.vue')) },
-  { nama: 'SrtKnslAnPol', page: defineAsyncComponent(() => import('../../../simrs/poli/dokumen/SuratKonsulAntarPoli/SuratKonsulAntarPoli.vue')) },
-  { nama: 'SrtKnslinternal', page: defineAsyncComponent(() => import('../../../simrs/poli/dokumen/KonsulInternal/SuratKonsulInternalPage.vue')) },
+  // { nama: 'SrtKnslAnPol', page: defineAsyncComponent(() => import('../../../simrs/poli/dokumen/SuratKonsulAntarPoli/SuratKonsulAntarPoli.vue')) },
+  // { nama: 'SrtKnslinternal', page: defineAsyncComponent(() => import('../../../simrs/poli/dokumen/KonsulInternal/SuratKonsulInternalPage.vue')) },
 ]
 // eslint-disable-next-line no-unused-vars
 const cekPanel = () => {
