@@ -236,6 +236,14 @@
                     Print Resep Besar
                   </q-tooltip>
                 </q-btn>
+                <!-- new print  resep besar-->
+                <!-- <q-btn v-if="parseInt(item?.flag) <= 4" round class="f-10 q-mr-sm" color="yellow" text-color="white"
+                  icon="icon-mat-print" @click="newFuncPrintResep(item)">
+                  <q-tooltip class="primary" :offset="[10, 10]">
+                    Print Resep Besar
+                  </q-tooltip>
+                </q-btn> -->
+
                 <!-- print resep-->
                 <q-btn v-if="parseInt(item?.flag) <= 4" round class="f-10 q-mr-sm" color="dark" text-color="white"
                   icon="icon-mat-print" @click="toPrint(item)">
@@ -346,8 +354,11 @@
   <commpIdResep ref="idResp" v-model="openIdPrint" :item="itemPrintId" :head="printHeadOnly"
     @close="openIdPrint = false" />
 
+  <newPrintResep ref="refNewPrint" v-model="openNewPrint" :item="newItemPrint" @close="openNewPrint = false" />
+
   <commpResepToPdf ref="pdfResp" v-model="openPrintPdf" :item="itemToPrint" :head="printHeadOnly"
     @close="openPrintPdf = false" />
+
   <commpTelaahResep ref="telaah" v-model="openTelaah" :item="itemToTelaah" :user="user" :apotekers="store.apotekers"
     :head="printHeadOnly" @close="CloseTelaahResep" @simpan="(val) => {
       console.log('val', val);
@@ -564,11 +575,17 @@ function toPrint (row) {
   })
   window.open(routeData.href, '_blank')
 }
+const newPrintResep = defineAsyncComponent(() => import('./NewPrintResepPage.vue'))
+const openNewPrint = ref(false)
+const refNewPrint = ref(null)
+const newItemPrint = ref(null)
+
 const commpIdResep = defineAsyncComponent(() => import('./PrintIdResep.vue'))
 const itemPrintId = ref(null)
 const idResp = ref(null)
 const openIdPrint = ref(false)
 const printHeadOnly = ref(false)
+
 const commpResepToPdf = defineAsyncComponent(() => import('./ResepToClaimPage.vue'))
 const openPrintPdf = ref(false)
 const itemToPrint = ref(null)
@@ -582,6 +599,17 @@ const telaah = ref(null)
 function terimaResep (item) {
   store.terimaResep(item)
   printIdResep(item)
+}
+function newFuncPrintResep (val) {
+  console.log(val)
+  openNewPrint.value = true
+  newItemPrint.value = val
+  // print.setResep(val)
+  // printHeadOnly.value = false
+  // itemPrintId.value = print.resep
+  // setTimeout(() => {
+  //   idResp.value.printPage()
+  // }, 200)
 }
 function printIdResep (val) {
   console.log(val)

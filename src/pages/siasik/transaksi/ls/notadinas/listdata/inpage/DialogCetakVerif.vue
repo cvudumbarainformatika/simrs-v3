@@ -130,7 +130,7 @@
             </div>
             <div class="col flex-end content-center text-center">
               <div class="items-center">
-                Probolinggo {{ store.display.sekarang }}
+                Probolinggo, <span class="q-pl-lg"> - </span> <span class="q-pl-lg">-</span> {{ store.display.skg }}
               </div>
               <div class="text-bold q-py-xs q-pt-sm">
                 Pejabat Penatausahaan Keuangan

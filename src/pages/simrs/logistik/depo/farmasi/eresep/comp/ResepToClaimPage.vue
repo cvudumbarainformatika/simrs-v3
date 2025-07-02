@@ -118,7 +118,7 @@
                     <div class="col-4">
                       Dokter
                     </div>
-                    <div v-if="item?.depo ==='Gd-05010101'" class="col-6">
+                    <div v-if="item?.depo ==='Gd-05010101' && item?.kunjunganrajal?.length" class="col-6">
                       {{ item?.kunjunganrajal[0]?.doktersimpeg?.nama }}
                     </div>
                     <div v-else>

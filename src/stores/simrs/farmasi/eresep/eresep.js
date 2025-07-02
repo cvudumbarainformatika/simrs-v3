@@ -232,10 +232,13 @@ export const useEResepDepoFarmasiStore = defineStore('e_resep_depo_farmasi', {
         return Math.ceil(num)
       }
     },
+    hitungHarga (jumlah, hargajual, r = 0) {
+      return (parseFloat(jumlah) * parseFloat(hargajual)) + parseFloat(r || 0)
+    },
     setResep (val) {
       const res = val
       // // console.log('set Resep', val)
-      if (res.flag === '3' && val.tiperesep === 'iter') {
+      if ((res.flag === '3' || res.flag === '4') && val.tiperesep === 'iter') {
         res.rincian = []
         res.rincianracik = []
         this.getResepIter(val).then(resp => {
@@ -247,7 +250,8 @@ export const useEResepDepoFarmasiStore = defineStore('e_resep_depo_farmasi', {
 
           if (res.rincian?.length > 0) {
             res.rincian.forEach(key => {
-              key.harga = (parseFloat(key?.jumlah) * parseFloat(key?.hargajual)) + parseFloat(key?.r)
+              // key.harga = (parseFloat(key?.jumlah) * parseFloat(key?.hargajual)) + parseFloat(key?.r)
+              key.harga = this.hitungHarga(key?.jumlah, key?.hargajual, key?.r)
               key.diCopy = true
               const prmint = datanya?.permintaanresep?.find(k => k.kdobat === key.kdobat)
 
@@ -263,12 +267,14 @@ export const useEResepDepoFarmasiStore = defineStore('e_resep_depo_farmasi', {
           const racik = datanya?.permintaanracikan
           if (racik?.length > 0) {
             racik.forEach(key => {
-              key.harga = (parseFloat(key?.jumlah) * parseFloat(key?.hargajual)) + parseFloat(key?.r)
+              // key.harga = (parseFloat(key?.jumlah) * parseFloat(key?.hargajual)) + parseFloat(key?.r)
+              key.harga = this.hitungHarga(key?.jumlah, key?.hargajual, key?.r)
               key.jumlahresep = key.jumlah
               key.jumlahobat = Math.ceil(key.jumlah)
               key.groupsistembayar = val?.sistembayar?.groups
 
-              const stok = key.stok[0]
+              // const stok = key.stok[0]
+              const stok = key?.stok?.[0] ?? {}
               const totalStok = isNaN(parseFloat(stok?.total)) ? 0 : parseFloat(stok?.total)
               const permintaan = stok?.permintaanobatrinci?.map(per => parseFloat(per.allpermintaan)).reduce((a, b) => a + b, 0) ?? 0
               const transnonracikan = stok?.transnonracikan?.map(per => parseFloat(per.jumlah)).reduce((a, b) => a + b, 0) ?? 0
@@ -317,14 +323,15 @@ export const useEResepDepoFarmasiStore = defineStore('e_resep_depo_farmasi', {
       let nilaiR = 0
       if (res?.permintaanracikan?.length) {
         res?.permintaanracikan.forEach(key => {
-          nilaiR = parseFloat(key?.r)
+          nilaiR = parseFloat(key?.r || 0)
           key.jumlahresep = key.jumlah
           if (parseInt(key?.mobat?.kelompok_psikotropika) === 1) {
             // // console.log('mobat', key?.mobat)
             key.jumlahobat = this.customRound(key.jumlah)
           }
           else key.jumlahobat = Math.ceil(key.jumlah)
-          key.harga = (parseFloat(key?.jumlahobat) * parseFloat(key?.harga_jual))// + parseFloat(key?.r)
+          // key.harga = (parseFloat(key?.jumlahobat) * parseFloat(key?.harga_jual))// + parseFloat(key?.r)
+          key.harga = this.hitungHarga(key?.jumlahobat, key?.harga_jual, 0)
           key.jumlahobatAwal = parseFloat(key?.jumlahobat)
           key.jumlahresepAwal = parseFloat(key?.jumlahresep)
           key.groupsistembayar = val?.sistembayar?.groups
@@ -345,7 +352,6 @@ export const useEResepDepoFarmasiStore = defineStore('e_resep_depo_farmasi', {
               konsumsi: key?.konsumsi,
               satuan_racik: key?.satuan_racik,
               jumlahdibutuhkan: key?.jumlahdibutuhkan,
-
               jumlahdibutuhkanAwal: key?.jumlahdibutuhkan,
               etiket: false,
               nilaiR,
@@ -363,7 +369,8 @@ export const useEResepDepoFarmasiStore = defineStore('e_resep_depo_farmasi', {
       if (res?.permintaanresep?.length) {
         res?.permintaanresep.forEach(key => {
           key.groupsistembayar = val?.sistembayar?.groups
-          key.harga = (parseFloat(key?.jumlah) * parseFloat(key?.hargajual)) + parseFloat(key?.r)
+          // key.harga = (parseFloat(key?.jumlah) * parseFloat(key?.hargajual)) + parseFloat(key?.r)
+          key.harga = this.hitungHarga(key?.jumlah, key?.hargajual, key?.r)
           key.jumlahAwal = parseFloat(key?.jumlah)
           key.etiket = false
         })
@@ -437,7 +444,12 @@ export const useEResepDepoFarmasiStore = defineStore('e_resep_depo_farmasi', {
             const data = resp?.data?.head
             if (data) {
               const index = this.items.findIndex(x => x.id === data.id)
-              if (index >= 0) this.items[index] = data
+              if (index >= 0) {
+                this.metaniItem(data)
+                this.items[index] = data
+
+
+              }
               // this.setResep(data)
               // const print = usePrintEresepStore(
               //   print.setResep(data)
