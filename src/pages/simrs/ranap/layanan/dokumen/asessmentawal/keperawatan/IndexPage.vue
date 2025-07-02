@@ -22,7 +22,7 @@ import { defineAsyncComponent } from 'vue'
 const DokPage = defineAsyncComponent(() => import('./DokumenPage.vue'))
 const printObj = {
   id: 'assessmentawalkeperawatan',
-  popTitle: 'Asessment Awal Medis'
+  popTitle: 'Asessment Awal Keperawatan'
 
 }
 defineProps({
