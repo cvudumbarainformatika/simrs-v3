@@ -237,12 +237,12 @@
                   </q-tooltip>
                 </q-btn>
                 <!-- new print  resep besar-->
-                <!-- <q-btn v-if="parseInt(item?.flag) <= 4" round class="f-10 q-mr-sm" color="yellow" text-color="white"
-                  icon="icon-mat-print" @click="newFuncPrintResep(item)">
-                  <q-tooltip class="primary" :offset="[10, 10]">
-                    Print Resep Besar
-                  </q-tooltip>
-                </q-btn> -->
+                <!-- <q-btn v-if="parseInt(item?.flag) <= 4" round class="f-10 q-mr-sm" color="orange" text-color="white"
+                    icon="icon-mat-print" @click="newFuncPrintResep(item)">
+                    <q-tooltip class="primary" :offset="[10, 10]">
+                      Print Resep Besar
+                    </q-tooltip>
+                  </q-btn> -->
 
                 <!-- print resep-->
                 <q-btn v-if="parseInt(item?.flag) <= 4" round class="f-10 q-mr-sm" color="dark" text-color="white"
