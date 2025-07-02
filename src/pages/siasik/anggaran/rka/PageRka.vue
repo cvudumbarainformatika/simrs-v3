@@ -21,9 +21,20 @@
   <div class="container q-px-sm">
     <q-card class="items-center full-width">
       <div class="row">
-        <template v-if="store.datarka?.length">
+        <template v-if="store.datarka?.length && store.reqs.jenisrka === '1'">
           <listData />
         </template>
+
+        <template v-else-if="store.datarkapergeseran?.length || store.datarkaperubahan.length">
+          <listDatapergeseran />
+        </template>
+
+        <!-- <template v-else-if="!store.datarka?.length && !store.datarkapergeseran?.length">
+          <div class="row q-pa-md full-width text-subtitle1 flex-center">
+            <q-icon class="q-pr-sm" size="sm" name="icon-mat-warning" />
+            Data Tidak Ditemukan
+          </div>
+        </template> -->
 
         <template v-else>
           <div class="row q-pa-md full-width text-subtitle1 flex-center">
@@ -39,7 +50,10 @@
 import { useRkaStore } from 'src/stores/siasik/anggaran/storerka';
 import FormGet from './inpage/FormgetRka.vue'
 import listData from './inpage/ListDataRKA.vue'
+import listDatapergeseran from './inpage/ListDataRKApergeseran.vue'
 
 const store = useRkaStore()
+
+
 
 </script>

@@ -3,7 +3,7 @@
     <q-card-section class="full-width">
       <div class="row q-py-md">
         <div class="full-width">
-          <table class="full-width">
+          <q-markup-table flat bordered wrap-cells :separator="separator">
             <thead style="height: 35px;">
               <tr>
                 <th style="width: 20%;">
@@ -105,12 +105,12 @@
                 </td>
               </tr>
             </tbody>
-          </table>
+          </q-markup-table>
         </div>
       </div>
       <div class="row">
         <div class="full-width">
-          <q-markup-table class="my-sticky-table" flat-bordered wrap-cells :separator="separator">
+          <q-markup-table class="my-sticky-table" flat bordered wrap-cells :separator="separator">
             <thead>
               <tr class="bg-grey text-white max-width">
                 <th>KODE REKENING</th>

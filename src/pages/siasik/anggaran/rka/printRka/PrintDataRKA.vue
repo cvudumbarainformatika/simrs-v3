@@ -112,7 +112,8 @@
 
                   <div class="row justify-between full-width full-height ">
                     <div class="row full-width" style="width:100%">
-                      <table class="justify-center full-width">
+                      <table v-if="store.datarka?.length && store.reqs.jenisrka === '1'"
+                        class="justify-center full-width">
                         <thead>
                           <tr style="height: 25px">
                             <th rowspan="2" style="width:210px">
@@ -178,6 +179,206 @@
                           </tr>
                         </tbody>
                       </table>
+
+                      <table v-if="store.reqs.jenisrka === '2'" class="justify-center full-width">
+                        <thead>
+                          <tr style="height: 25px">
+                            <th rowspan="2" style="width:210px">
+                              Indikator
+                            </th>
+                            <th colspan="2">
+                              Tolak Ukur Kerja Sebelum Perubahan
+                            </th>
+                            <th colspan="2">
+                              Tolak Ukur Kerja Setelah Perubahan
+                            </th>
+                          </tr>
+                          <tr style="height: 25px">
+                            <th>
+                              Uraian
+                            </th>
+                            <th style="width:200px">
+                              Target Kinerja
+                            </th>
+                            <th>
+                              Uraian
+                            </th>
+                            <th style="width:200px">
+                              Target Kinerja
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr style="height: 25px">
+                            <td>
+                              Capaian Kegiatan
+                            </td>
+                            <td>
+                              {{ store.capaiankegiatan }}
+                            </td>
+                            <td class="text-right">
+                              {{ store.targetcapaian }}
+                            </td>
+                            <td>
+                              {{ store.capaiankegiatan }}
+                            </td>
+                            <td class="text-right">
+                              {{ store.targetcapaian }}
+                            </td>
+                          </tr>
+                          <tr style="height: 25px">
+                            <td>
+                              Masukan
+                            </td>
+                            <td>
+                              {{ store.masukan }}
+                            </td>
+                            <td class="text-right">
+                              {{ formatRpDouble(store.datarkapergeseran[0].pagu) }}
+                            </td>
+                            <td>
+                              {{ store.masukan }}
+                            </td>
+                            <td class="text-right">
+                              {{ formatRpDouble(store.datarkapergeseran[0].pagubaru) }}
+                            </td>
+                          </tr>
+                          <tr style="height: 25px">
+                            <td>
+                              Keluaran
+                            </td>
+                            <td>
+                              {{ store.keluaran }}
+                            </td>
+                            <td class="text-right">
+                              {{ store.targetkeluaran }}
+                            </td>
+                            <td>
+                              {{ store.keluaran }}
+                            </td>
+                            <td class="text-right">
+                              {{ store.targetkeluaran }}
+                            </td>
+                          </tr>
+                          <tr style="height: 25px">
+                            <td>
+                              Hasil
+                            </td>
+                            <td>
+                              {{ store.hasil }}
+                            </td>
+                            <td class="text-right">
+                              {{ store.targethasil }}
+                            </td>
+                            <td>
+                              {{ store.hasil }}
+                            </td>
+                            <td class="text-right">
+                              {{ store.targethasil }}
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+
+                      <table v-if="store.reqs.jenisrka === '3'" class="justify-center full-width">
+                        <thead>
+                          <tr style="height: 25px">
+                            <th rowspan="2" style="width:210px">
+                              Indikator
+                            </th>
+                            <th colspan="2">
+                              Tolak Ukur Kerja Sebelum Perubahan
+                            </th>
+                            <th colspan="2">
+                              Tolak Ukur Kerja Setelah Perubahan
+                            </th>
+                          </tr>
+                          <tr style="height: 25px">
+                            <th>
+                              Uraian
+                            </th>
+                            <th style="width:200px">
+                              Target Kinerja
+                            </th>
+                            <th>
+                              Uraian
+                            </th>
+                            <th style="width:200px">
+                              Target Kinerja
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr style="height: 25px">
+                            <td>
+                              Capaian Kegiatan
+                            </td>
+                            <td>
+                              {{ store.capaiankegiatan }}
+                            </td>
+                            <td class="text-right">
+                              {{ store.targetcapaian }}
+                            </td>
+                            <td>
+                              {{ store.capaiankegiatan }}
+                            </td>
+                            <td class="text-right">
+                              {{ store.targetcapaian }}
+                            </td>
+                          </tr>
+                          <tr style="height: 25px">
+                            <td>
+                              Masukan
+                            </td>
+                            <td>
+                              {{ store.masukan }}
+                            </td>
+                            <td class="text-right">
+                              {{ formatRpDouble(store.datarkaperubahan[0].pagu) }}
+                            </td>
+                            <td>
+                              {{ store.masukan }}
+                            </td>
+                            <td class="text-right">
+                              {{ formatRpDouble(store.datarkaperubahan[0].pagubaru) }}
+                            </td>
+                          </tr>
+                          <tr style="height: 25px">
+                            <td>
+                              Keluaran
+                            </td>
+                            <td>
+                              {{ store.keluaran }}
+                            </td>
+                            <td class="text-right">
+                              {{ store.targetkeluaran }}
+                            </td>
+                            <td>
+                              {{ store.keluaran }}
+                            </td>
+                            <td class="text-right">
+                              {{ store.targetkeluaran }}
+                            </td>
+                          </tr>
+                          <tr style="height: 25px">
+                            <td>
+                              Hasil
+                            </td>
+                            <td>
+                              {{ store.hasil }}
+                            </td>
+                            <td class="text-right">
+                              {{ store.targethasil }}
+                            </td>
+                            <td>
+                              {{ store.hasil }}
+                            </td>
+                            <td class="text-right">
+                              {{ store.targethasil }}
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
                     </div>
                   </div>
 
@@ -220,7 +421,8 @@
 
                   <div class="row justify-between full-width full-height ">
                     <div class="row full-width" style="width:100%">
-                      <table class="justify-center full-width">
+                      <table v-if="store.datarka?.length && store.reqs.jenisrka === '1'"
+                        class="justify-center full-width">
                         <thead>
                           <tr class="text-bold text-center" style="height:50px">
                             <td class="text-center" style="width: 10%">KODE REKENING</td>
@@ -288,6 +490,232 @@
                           </template>
                         </tbody>
                       </table>
+
+                      <table v-else-if="store.reqs.jenisrka === '2'" class="justify-center full-width">
+                        <thead>
+                          <tr class="text-bold text-center" style="height:50px">
+                            <td class="text-center" colspan="2">REKENING</td>
+                            <td class="text-center" colspan="4">SEBELUM PERUBAHAN</td>
+                            <td class="text-center" colspan="4">SESUDAH PERUBAHAN</td>
+                          </tr>
+                          <tr class="text-bold text-center" style="height:50px">
+                            <td class="text-center">KODE</td>
+                            <td class="text-center">URAIAN</td>
+                            <td class="text-center">VOLUME</td>
+                            <td class="text-center">SATUAN</td>
+                            <td class="text-center">HARGA</td>
+                            <td class="text-center">PAGU</td>
+                            <td class="text-center">VOLUME</td>
+                            <td class="text-center">SATUAN</td>
+                            <td class="text-center">HARGA</td>
+                            <td class="text-center">PAGU</td>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <template v-for="it in store.datarkapergeseran" :key="it">
+                            <tr>
+                              <td class="text-bold text-left q-py-md"> {{ it.kode }} </td>
+                              <td class="text-bold text-left q-py-md" colspan="4"> {{ it.uraian }} </td>
+                              <td class="text-right text-bold">
+                                <span class="row justify-between">
+                                  <span class="col-auto flex-start">Rp. </span>
+                                  <span class="flex-end text-right">
+                                    {{ formattanpaRp(it.pagu) }}
+                                  </span>
+                                </span>
+                              </td>
+                              <td colspan="3"></td>
+                              <td class="text-right text-bold">
+                                <span class="row justify-between">
+                                  <span class="col-auto flex-start">Rp. </span>
+                                  <span class="flex-end text-right">
+                                    {{ formattanpaRp(it.pagubaru) }}
+                                  </span>
+                                </span>
+                              </td>
+                            </tr>
+                            <template v-for="rinci in it?.rincian" :key="rinci">
+                              <tr>
+                                <td>
+                                  <span class="q-pl-sm q-py-sm">
+                                    {{ rinci.kode108 }}
+                                  </span>
+                                </td>
+                                <td>
+                                  <span class="q-py-sm">
+                                    - {{ rinci.usulan }}
+                                  </span>
+                                </td>
+                                <td>
+                                  <span class="q-py-sm">
+                                    {{ rinci.volume }}
+                                  </span>
+                                </td>
+                                <td>
+                                  <span class="q-py-sm">
+                                    {{ rinci.satuan }}
+                                  </span>
+                                </td>
+                                <td class="text-right">
+                                  <span class="row justify-between">
+                                    <span class="col-auto flex-start">Rp. </span>
+                                    <span class="flex-end text-right">
+                                      {{ formattanpaRp(rinci.harga) }}
+                                    </span>
+                                  </span>
+                                </td>
+                                <td class="text-right">
+                                  <span class="row justify-between">
+                                    <span class="col-auto flex-start">Rp. </span>
+                                    <span class="flex-end text-right">
+                                      {{ formattanpaRp(rinci.pagu) }}
+                                    </span>
+                                  </span>
+                                </td>
+                                <td>
+                                  <span class="q-py-sm">
+                                    {{ rinci.volumebaru }}
+                                  </span>
+                                </td>
+                                <td>
+                                  <span class="q-py-sm">
+                                    {{ rinci.satuan }}
+                                  </span>
+                                </td>
+                                <td class="text-right">
+                                  <span class="row justify-between">
+                                    <span class="col-auto flex-start">Rp. </span>
+                                    <span class="flex-end text-right">
+                                      {{ formattanpaRp(rinci.hargabaru) }}
+                                    </span>
+                                  </span>
+                                </td>
+                                <td class="text-right">
+                                  <span class="row justify-between">
+                                    <span class="col-auto flex-start">Rp. </span>
+                                    <span class="flex-end text-right">
+                                      {{ formattanpaRp(rinci.pagubaru) }}
+                                    </span>
+                                  </span>
+                                </td>
+                              </tr>
+                            </template>
+                          </template>
+                        </tbody>
+                      </table>
+
+                      <table v-else-if="store.reqs.jenisrka === '3'" class="justify-center full-width">
+                        <thead>
+                          <tr class="text-bold text-center" style="height:50px">
+                            <td class="text-center" colspan="2">REKENING</td>
+                            <td class="text-center" colspan="4">SEBELUM PERUBAHAN</td>
+                            <td class="text-center" colspan="4">SESUDAH PERUBAHAN</td>
+                          </tr>
+                          <tr class="text-bold text-center" style="height:50px">
+                            <td class="text-center">KODE</td>
+                            <td class="text-center">URAIAN</td>
+                            <td class="text-center">VOLUME</td>
+                            <td class="text-center">SATUAN</td>
+                            <td class="text-center">HARGA</td>
+                            <td class="text-center">PAGU</td>
+                            <td class="text-center">VOLUME</td>
+                            <td class="text-center">SATUAN</td>
+                            <td class="text-center">HARGA</td>
+                            <td class="text-center">PAGU</td>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <template v-for="it in store.datarkaperubahan" :key="it">
+                            <tr>
+                              <td class="text-bold text-left q-py-md"> {{ it.kode }} </td>
+                              <td class="text-bold text-left q-py-md" colspan="4"> {{ it.uraian }} </td>
+                              <td class="text-right text-bold">
+                                <span class="row justify-between">
+                                  <span class="col-auto flex-start">Rp. </span>
+                                  <span class="flex-end text-right">
+                                    {{ formattanpaRp(it.pagu) }}
+                                  </span>
+                                </span>
+                              </td>
+                              <td colspan="3"></td>
+                              <td class="text-right text-bold">
+                                <span class="row justify-between">
+                                  <span class="col-auto flex-start">Rp. </span>
+                                  <span class="flex-end text-right">
+                                    {{ formattanpaRp(it.pagubaru) }}
+                                  </span>
+                                </span>
+                              </td>
+                            </tr>
+                            <template v-for="rinci in it?.rincian" :key="rinci">
+                              <tr>
+                                <td>
+                                  <span class="q-pl-sm q-py-sm">
+                                    {{ rinci.kode108 }}
+                                  </span>
+                                </td>
+                                <td>
+                                  <span class="q-py-sm">
+                                    - {{ rinci.usulan }}
+                                  </span>
+                                </td>
+                                <td>
+                                  <span class="q-py-sm">
+                                    {{ rinci.volume }}
+                                  </span>
+                                </td>
+                                <td>
+                                  <span class="q-py-sm">
+                                    {{ rinci.satuan }}
+                                  </span>
+                                </td>
+                                <td class="text-right">
+                                  <span class="row justify-between">
+                                    <span class="col-auto flex-start">Rp. </span>
+                                    <span class="flex-end text-right">
+                                      {{ formattanpaRp(rinci.harga) }}
+                                    </span>
+                                  </span>
+                                </td>
+                                <td class="text-right">
+                                  <span class="row justify-between">
+                                    <span class="col-auto flex-start">Rp. </span>
+                                    <span class="flex-end text-right">
+                                      {{ formattanpaRp(rinci.pagu) }}
+                                    </span>
+                                  </span>
+                                </td>
+                                <td>
+                                  <span class="q-py-sm">
+                                    {{ rinci.volumebaru }}
+                                  </span>
+                                </td>
+                                <td>
+                                  <span class="q-py-sm">
+                                    {{ rinci.satuan }}
+                                  </span>
+                                </td>
+                                <td class="text-right">
+                                  <span class="row justify-between">
+                                    <span class="col-auto flex-start">Rp. </span>
+                                    <span class="flex-end text-right">
+                                      {{ formattanpaRp(rinci.hargabaru) }}
+                                    </span>
+                                  </span>
+                                </td>
+                                <td class="text-right">
+                                  <span class="row justify-between">
+                                    <span class="col-auto flex-start">Rp. </span>
+                                    <span class="flex-end text-right">
+                                      {{ formattanpaRp(rinci.pagubaru) }}
+                                    </span>
+                                  </span>
+                                </td>
+                              </tr>
+                            </template>
+                          </template>
+                        </tbody>
+                      </table>
                     </div>
                   </div>
 
@@ -339,10 +767,12 @@ import { useBukubesarStore } from 'src/stores/siasik/akuntansi/bukubesar/bukubes
 import { onMounted, ref } from 'vue'
 
 // eslint-disable-next-line no-unused-vars
-import listData from '../inpage/ListDataRKA.vue'
 import { useRkaStore } from 'src/stores/siasik/anggaran/storerka'
 import { formatRpDouble, formattanpaRp } from 'src/modules/formatter'
-// import listDataPsap from '../inpage/ListDataLoPsap.vue'
+import listDatapergeseran from '../inpage/ListDataRKApergeseran.vue'
+import listData from '../inpage/ListDataRKA.vue'
+
+
 const tt = useBukubesarStore()
 const store = useRkaStore()
 onMounted(() => {
