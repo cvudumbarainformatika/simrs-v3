@@ -245,12 +245,12 @@
                 </q-btn>
 
                 <!-- print resep-->
-                <q-btn v-if="parseInt(item?.flag) <= 4" round class="f-10 q-mr-sm" color="dark" text-color="white"
+                <!-- <q-btn v-if="parseInt(item?.flag) <= 4" round class="f-10 q-mr-sm" color="dark" text-color="white"
                   icon="icon-mat-print" @click="toPrint(item)">
                   <q-tooltip class="primary" :offset="[10, 10]">
                     Print resep
                   </q-tooltip>
-                </q-btn>
+                </q-btn> -->
                 <!-- print resep to pdf-->
                 <q-btn v-if="parseInt(item?.flag) <= 4" round class="f-10 q-mr-sm" color="primary" text-color="white"
                   icon="icon-mat-download" @click="printResepToPdf(item)">
@@ -351,10 +351,9 @@
       </template>
     </tbody>
   </table>
-  <commpIdResep ref="idResp" v-model="openIdPrint" :item="itemPrintId" :head="printHeadOnly"
-    @close="openIdPrint = false" />
+  <commpIdResep ref="idResp" v-model="openIdPrint" :item="itemPrintId" :head="printHeadOnly" @close="tutupIdRes()" />
 
-  <newPrintResep ref="refNewPrint" v-model="openNewPrint" :item="newItemPrint" @close="openNewPrint = false" />
+  <newPrintResep ref="refNewPrint" v-model="openNewPrint" :item="newItemPrint" @close="tutupIdRes()" />
 
   <commpResepToPdf ref="pdfResp" v-model="openPrintPdf" :item="itemToPrint" :head="printHeadOnly"
     @close="openPrintPdf = false" />
@@ -627,6 +626,11 @@ function printHeadResep (val) {
   setTimeout(() => {
     idResp.value.printPage()
   }, 200)
+}
+function tutupIdRes () {
+  console.log('tutup id res')
+  openNewPrint.value = false
+  openIdPrint.value = false
 }
 // eslint-disable-next-line no-unused-vars
 function printResepToPdf (val) {

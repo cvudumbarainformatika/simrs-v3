@@ -381,7 +381,7 @@
                     </div>
 
                     <div
-                      v-if="parseInt(store?.resep?.flag) >= '2' && (store?.resep?.tiperesep === 'iter' ? store?.resep?.noresep_asal === '' : true)">
+                      v-if="parseInt(store?.resep?.flag) == '2' && (store?.resep?.tiperesep === 'iter' ? store?.resep?.noresep_asal === '' : true)">
                       <q-btn v-if="(!rinc?.obatkeluar) && !rinc?.done && parseInt(store?.resep?.flag) < 5" round
                         class="f-10 q-my-sm" color="primary" text-color="white" icon="icon-mat-save"
                         :loading="rinc?.loading" :disable="rinc?.loading" @click="store.simpanObat(rinc)">
@@ -585,7 +585,7 @@
                         Resep Sudah selesai
                       </div> -->
                       <div
-                        v-if="parseInt(store?.resep?.flag) >= 2 && (store?.resep?.tiperesep === 'iter' ? store?.resep?.noresep_asal === '' : true)">
+                        v-if="parseInt(store?.resep?.flag) == 2 && (store?.resep?.tiperesep === 'iter' ? store?.resep?.noresep_asal === '' : true)">
                         <q-btn v-if="(!rinc?.obatkeluar) && !rinc?.done && parseInt(store?.resep?.flag) < 3" round
                           class="f-10 q-mr-sm" color="primary" text-color="white" icon="icon-mat-save"
                           :loading="rinc?.loading" :disable="rinc?.loading" @click="store.simpanRacikan(rinc)">
