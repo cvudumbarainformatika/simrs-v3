@@ -237,20 +237,20 @@
                   </q-tooltip>
                 </q-btn>
                 <!-- new print  resep besar-->
-                <!-- <q-btn v-if="parseInt(item?.flag) <= 4" round class="f-10 q-mr-sm" color="orange" text-color="white"
-                    icon="icon-mat-print" @click="newFuncPrintResep(item)">
-                    <q-tooltip class="primary" :offset="[10, 10]">
-                      Print Resep Besar
-                    </q-tooltip>
-                  </q-btn> -->
+                <q-btn v-if="parseInt(item?.flag) <= 4" round class="f-10 q-mr-sm" color="orange" text-color="white"
+                  icon="icon-mat-print" @click="newFuncPrintResep(item)">
+                  <q-tooltip class="primary" :offset="[10, 10]">
+                    Print Resep Besar Baru
+                  </q-tooltip>
+                </q-btn>
 
                 <!-- print resep-->
-                <q-btn v-if="parseInt(item?.flag) <= 4" round class="f-10 q-mr-sm" color="dark" text-color="white"
+                <!-- <q-btn v-if="parseInt(item?.flag) <= 4" round class="f-10 q-mr-sm" color="dark" text-color="white"
                   icon="icon-mat-print" @click="toPrint(item)">
                   <q-tooltip class="primary" :offset="[10, 10]">
                     Print resep
                   </q-tooltip>
-                </q-btn>
+                </q-btn> -->
                 <!-- print resep to pdf-->
                 <q-btn v-if="parseInt(item?.flag) <= 4" round class="f-10 q-mr-sm" color="primary" text-color="white"
                   icon="icon-mat-download" @click="printResepToPdf(item)">
@@ -269,7 +269,7 @@
                 <!-- selesai -->
 
                 <q-btn
-                  v-if="item?.flag === '2' && (item?.tiperesep !== 'iter' ? (item?.semuaresep && item?.semuaracik) : true)"
+                  v-if="item?.flag === '2' && ((store?.resep?.tiperesep === 'iter' ? store?.resep?.noresep_asal === '' : true) ? (item?.semuaresep && item?.semuaracik) : true)"
                   round class="f-10 q-mr-sm" :color="color(item?.flag)" text-color="white" icon="icon-mat-done_all"
                   :disable="store.loadingSelesai && item?.loading" :loading="store.loadingSelesai && item?.loading"
                   @click="store.resepSelesai(item)">
@@ -351,10 +351,9 @@
       </template>
     </tbody>
   </table>
-  <commpIdResep ref="idResp" v-model="openIdPrint" :item="itemPrintId" :head="printHeadOnly"
-    @close="openIdPrint = false" />
+  <commpIdResep ref="idResp" v-model="openIdPrint" :item="itemPrintId" :head="printHeadOnly" @close="tutupIdRes()" />
 
-  <newPrintResep ref="refNewPrint" v-model="openNewPrint" :item="newItemPrint" @close="openNewPrint = false" />
+  <newPrintResep ref="refNewPrint" v-model="openNewPrint" :item="newItemPrint" @close="tutupIdRes()" />
 
   <commpResepToPdf ref="pdfResp" v-model="openPrintPdf" :item="itemToPrint" :head="printHeadOnly"
     @close="openPrintPdf = false" />
@@ -604,11 +603,8 @@ function newFuncPrintResep (val) {
   console.log(val)
   openNewPrint.value = true
   newItemPrint.value = val
-  // print.setResep(val)
-  // printHeadOnly.value = false
-  // itemPrintId.value = print.resep
   // setTimeout(() => {
-  //   idResp.value.printPage()
+  // refNewPrint.value.printPage()
   // }, 200)
 }
 function printIdResep (val) {
@@ -630,6 +626,11 @@ function printHeadResep (val) {
   setTimeout(() => {
     idResp.value.printPage()
   }, 200)
+}
+function tutupIdRes () {
+  console.log('tutup id res')
+  openNewPrint.value = false
+  openIdPrint.value = false
 }
 // eslint-disable-next-line no-unused-vars
 function printResepToPdf (val) {

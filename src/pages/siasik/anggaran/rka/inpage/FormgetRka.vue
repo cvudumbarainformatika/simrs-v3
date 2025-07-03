@@ -1,6 +1,15 @@
 <template>
   <div class="row full-width justify-center">
     <div class="q-pa-sm" style="width:25%">
+      <app-autocomplete v-model="store.reqs.jenisrka" label="Pilih Jenis RKA" autocomplete="value" option-label="label"
+        option-value="value" outlined :source="store.jenisrka" :disable="store.loading" :loading="store.loading"
+        @update:model-value="(val) => {
+          console.log('value', val)
+          store.datarka = []
+          store.datarkapergeseran = []
+        }" />
+    </div>
+    <div class="q-pa-sm" style="width:25%">
       <app-input v-model="store.reqs.tahun" label="Tahun" outlined @update:model-value="(val) => {
         console.log('Tahun berapa?', val)
         store.getDataBidang()
@@ -105,9 +114,33 @@ function ambilData() {
     })
     return
   }
+  if (store.reqs.jenisrka === '') {
+    $q.notify({
+      message: 'Silahkan Pilih Jenis RKA',
+      color: 'negative',
+      icon: 'icon-mat-warning'
+    })
+    return
+
+  }
+  if (store.reqs.jenisrka !== '' && store.reqs.jenisrka === '1') {
+    store.getAnggaran()
+  }
+
+
+  if (store.reqs.jenisrka !== '' && store.reqs.jenisrka === '2' || store.reqs.jenisrka === '3') {
+    store.datarkaperubahan = []
+    store.datarkapergeseran = []
+    store.getAnggaranPergeseran()
+  }
+  // if (store.reqs.jenisrka !== '' && store.reqs.jenisrka === '3') {
+  //   store.mapingDataperubahan()
+  // }
+
 
   // console.log('ambil Data')
-  store.getAnggaran()
+
+
 }
 const printrka = ref(null)
 function cetakData() {

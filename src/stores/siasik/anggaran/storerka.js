@@ -11,8 +11,14 @@ export const useRkaStore = defineStore('store_rka_siasik', {
       bidang: '',
       kegiatan: '',
       tahun: date.formatDate(Date.now(), 'YYYY'),
-      kodebidang: null
+      kodebidang: null,
+      jenisrka: ''
     },
+    jenisrka: [
+      { label: 'RKA Sekarang', value: '1' },
+      { label: 'RKA Pergeseran', value: '2' },
+      { label: 'RKA Perubahan', value: '3' },
+    ],
     display: {
       sekarang: date.formatDate(Date.now(), 'DD MMMM YYYY'),
       tahunsekarang: date.formatDate(Date.now(), 'YYYY')
@@ -29,6 +35,13 @@ export const useRkaStore = defineStore('store_rka_siasik', {
     totalPagukegiatan: [],
     dataanggaran: [],
     datarka: [],
+
+    pergeseran: [],
+    rincianpergeseran: [],
+    datarkapergeseran: [],
+
+    rincianperubahan: [],
+    datarkaperubahan: [],
 
     capaiankegiatan: '',
     targetcapaian: '',
@@ -51,7 +64,9 @@ export const useRkaStore = defineStore('store_rka_siasik', {
       this.reqs.kegiatan = ''
       this.reqs.tahun = date.formatDate(Date.now(), 'YYYY')
       this.reqs.kodebidang = null
+      this.reqs.jenisrka = null
       this.datarka = []
+      this.datarkapergeseran = []
     },
     getDataBidang() {
       this.loading = true
@@ -128,6 +143,7 @@ export const useRkaStore = defineStore('store_rka_siasik', {
       return new Promise((resolve) => {
         api.get('v1/siasik/anggaran/getanggaran', params).then((resp) => {
           // console.log('Data Anggaran', resp)
+          this.dataanggaran = []
           if (resp.status === 200) {
             this.dataanggaran = resp.data
             // this.bidangs = resp.data
@@ -236,6 +252,249 @@ export const useRkaStore = defineStore('store_rka_siasik', {
       // console.log('DATA RKA', this.datarka)
 
       this.totalPagukegiatan = totalrka
+      console.log('DATA RKA', this.totalPagukegiatan)
+
+    },
+    getAnggaranPergeseran() {
+      this.loading = true
+      const params = { params: this.reqs }
+      return new Promise((resolve) => {
+        api.get('v1/siasik/anggaran/getrkapergeseran', params).then((resp) => {
+          // console.log('Data Anggaran', resp)
+          this.pergeseran = []
+          this.rincianpergeseran = []
+          this.rincianperubahan = []
+          if (resp.status === 200) {
+            this.pergeseran = resp.data
+            // this.rincianpergeseran = []
+            this.rincianpergeseran = resp.data.flatMap((x) => x.hasilpergeseran)
+            this.rincianperubahan = resp.data.flatMap((x) => x.perubahanpak)
+
+            // console.log('pergeseran', this.pergeseran)
+            // console.log('rincianpergeseran', this.rincianpergeseran)
+            this.mapingDatapergeseran()
+            this.mapingDataperubahan()
+            this.loading = false
+            resolve(resp)
+          }
+        }).catch(() => { this.loading = false })
+      })
+    },
+    mapingDatapergeseran() {
+      const rka = []
+      // const totalrka = []
+      const unik1 = this.rincianpergeseran.map((x) => x.kode1)
+      const ar1 = unik1.length ? [...new Set(unik1)] : []
+      for (let i = 0; i < ar1.length; i++) {
+        const el = ar1[i];
+        const obj = {
+          kode: this.rincianpergeseran.filter((x) => x.kode1 === el)[0].kode1,
+          uraian: this.rincianpergeseran.filter((x) => x.kode1 === el)[0].uraian1,
+          pagu: this.rincianpergeseran.filter((x) => x.kode1 === el).map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0),
+          pagubaru: this.rincianpergeseran.filter((x) => x.kode1 === el).map((x) => parseFloat(x.totalbaru)).reduce((a, b) => a + b, 0),
+          rincian: []
+        }
+        rka.push(obj)
+      }
+
+      const unik2 = this.rincianpergeseran.map((x) => x.kode2)
+      const ar2 = unik2.length ? [...new Set(unik2)] : []
+      for (let i = 0; i < ar2.length; i++) {
+        const el = ar2[i];
+        const obj = {
+          kode: this.rincianpergeseran.filter((x) => x.kode2 === el)[0].kode2,
+          uraian: this.rincianpergeseran.filter((x) => x.kode2 === el)[0].uraian2,
+          pagu: this.rincianpergeseran.filter((x) => x.kode2 === el).map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0),
+          pagubaru: this.rincianpergeseran.filter((x) => x.kode2 === el).map((x) => parseFloat(x.totalbaru)).reduce((a, b) => a + b, 0),
+          rincian: []
+        }
+        rka.push(obj)
+      }
+
+      const unik3 = this.rincianpergeseran.map((x) => x.kode3)
+      const ar3 = unik3.length ? [...new Set(unik3)] : []
+      for (let i = 0; i < ar3.length; i++) {
+        const el = ar3[i];
+        const obj = {
+          kode: this.rincianpergeseran.filter((x) => x.kode3 === el)[0].kode3,
+          uraian: this.rincianpergeseran.filter((x) => x.kode3 === el)[0].uraian3,
+          pagu: this.rincianpergeseran.filter((x) => x.kode3 === el).map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0),
+          pagubaru: this.rincianpergeseran.filter((x) => x.kode3 === el).map((x) => parseFloat(x.totalbaru)).reduce((a, b) => a + b, 0),
+          rincian: []
+        }
+        rka.push(obj)
+      }
+
+      const unik4 = this.rincianpergeseran.map((x) => x.kode4)
+      const ar4 = unik4.length ? [...new Set(unik4)] : []
+      for (let i = 0; i < ar4.length; i++) {
+        const el = ar4[i];
+        const obj = {
+          kode: this.rincianpergeseran.filter((x) => x.kode4 === el)[0].kode4,
+          uraian: this.rincianpergeseran.filter((x) => x.kode4 === el)[0].uraian4,
+          pagu: this.rincianpergeseran.filter((x) => x.kode4 === el).map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0),
+          pagubaru: this.rincianpergeseran.filter((x) => x.kode4 === el).map((x) => parseFloat(x.totalbaru)).reduce((a, b) => a + b, 0),
+          rincian: []
+        }
+        rka.push(obj)
+      }
+      const unik5 = this.rincianpergeseran.map((x) => x.kode5)
+      const ar5 = unik5.length ? [...new Set(unik5)] : []
+      for (let i = 0; i < ar5.length; i++) {
+        const el = ar5[i];
+        const obj = {
+          kode: this.rincianpergeseran.filter((x) => x.kode5 === el)[0].kode5,
+          uraian: this.rincianpergeseran.filter((x) => x.kode5 === el)[0].uraian5,
+          pagu: this.rincianpergeseran.filter((x) => x.kode5 === el).map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0),
+          pagubaru: this.rincianpergeseran.filter((x) => x.kode5 === el).map((x) => parseFloat(x.totalbaru)).reduce((a, b) => a + b, 0),
+          rincian: []
+        }
+        rka.push(obj)
+      }
+
+      const unik6 = this.rincianpergeseran.map((x) => x.kode6)
+      const ar6 = unik6.length ? [...new Set(unik6)] : []
+      for (let i = 0; i < ar6.length; i++) {
+        const el = ar6[i];
+        const obj = {
+          kode: this.rincianpergeseran.filter((x) => x.kode6 === el)[0].kode6,
+          uraian: this.rincianpergeseran.filter((x) => x.kode6 === el)[0].uraian6,
+          pagu: this.rincianpergeseran.filter((x) => x.kode6 === el).map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0),
+          pagubaru: this.rincianpergeseran.filter((x) => x.kode6 === el).map((x) => parseFloat(x.totalbaru)).reduce((a, b) => a + b, 0),
+          rincian: this.rincianpergeseran.filter((x) => x.kode6 === el).map((x) => {
+            return {
+              kode108: x.koderek108,
+              usulan: x.usulan,
+              satuan: x.satuan,
+              volume: x.volume,
+              harga: x.harga,
+              pagu: x.total,
+
+              volumebaru: x.volumebaru,
+              hargabaru: x.hargabaru,
+              pagubaru: x.totalbaru
+            }
+          })
+        }
+        rka.push(obj)
+      }
+
+      const sortAnggaran = (rka) =>
+        rka.sort(({ kode: a }, { kode: b }) =>
+          a < b ? -1 : a > b ? 1 : 0
+        )
+      const dataRKApergeseran = sortAnggaran(rka)
+      this.datarkapergeseran = dataRKApergeseran
+      console.log('rka', this.datarkapergeseran)
+    },
+
+
+    mapingDataperubahan() {
+      const rka = []
+      // const totalrka = []
+      const unik1 = this.rincianperubahan.map((x) => x.kode1)
+      const ar1 = unik1.length ? [...new Set(unik1)] : []
+      for (let i = 0; i < ar1.length; i++) {
+        const el = ar1[i];
+        const obj = {
+          kode: this.rincianperubahan.filter((x) => x.kode1 === el)[0].kode1,
+          uraian: this.rincianperubahan.filter((x) => x.kode1 === el)[0].uraian1,
+          pagu: this.rincianperubahan.filter((x) => x.kode1 === el).map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0),
+          pagubaru: this.rincianperubahan.filter((x) => x.kode1 === el).map((x) => parseFloat(x.totalbaru)).reduce((a, b) => a + b, 0),
+          rincian: []
+        }
+        rka.push(obj)
+      }
+
+      const unik2 = this.rincianperubahan.map((x) => x.kode2)
+      const ar2 = unik2.length ? [...new Set(unik2)] : []
+      for (let i = 0; i < ar2.length; i++) {
+        const el = ar2[i];
+        const obj = {
+          kode: this.rincianperubahan.filter((x) => x.kode2 === el)[0].kode2,
+          uraian: this.rincianperubahan.filter((x) => x.kode2 === el)[0].uraian2,
+          pagu: this.rincianperubahan.filter((x) => x.kode2 === el).map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0),
+          pagubaru: this.rincianperubahan.filter((x) => x.kode2 === el).map((x) => parseFloat(x.totalbaru)).reduce((a, b) => a + b, 0),
+          rincian: []
+        }
+        rka.push(obj)
+      }
+
+      const unik3 = this.rincianperubahan.map((x) => x.kode3)
+      const ar3 = unik3.length ? [...new Set(unik3)] : []
+      for (let i = 0; i < ar3.length; i++) {
+        const el = ar3[i];
+        const obj = {
+          kode: this.rincianperubahan.filter((x) => x.kode3 === el)[0].kode3,
+          uraian: this.rincianperubahan.filter((x) => x.kode3 === el)[0].uraian3,
+          pagu: this.rincianperubahan.filter((x) => x.kode3 === el).map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0),
+          pagubaru: this.rincianperubahan.filter((x) => x.kode3 === el).map((x) => parseFloat(x.totalbaru)).reduce((a, b) => a + b, 0),
+          rincian: []
+        }
+        rka.push(obj)
+      }
+
+      const unik4 = this.rincianperubahan.map((x) => x.kode4)
+      const ar4 = unik4.length ? [...new Set(unik4)] : []
+      for (let i = 0; i < ar4.length; i++) {
+        const el = ar4[i];
+        const obj = {
+          kode: this.rincianperubahan.filter((x) => x.kode4 === el)[0].kode4,
+          uraian: this.rincianperubahan.filter((x) => x.kode4 === el)[0].uraian4,
+          pagu: this.rincianperubahan.filter((x) => x.kode4 === el).map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0),
+          pagubaru: this.rincianperubahan.filter((x) => x.kode4 === el).map((x) => parseFloat(x.totalbaru)).reduce((a, b) => a + b, 0),
+          rincian: []
+        }
+        rka.push(obj)
+      }
+      const unik5 = this.rincianperubahan.map((x) => x.kode5)
+      const ar5 = unik5.length ? [...new Set(unik5)] : []
+      for (let i = 0; i < ar5.length; i++) {
+        const el = ar5[i];
+        const obj = {
+          kode: this.rincianperubahan.filter((x) => x.kode5 === el)[0].kode5,
+          uraian: this.rincianperubahan.filter((x) => x.kode5 === el)[0].uraian5,
+          pagu: this.rincianperubahan.filter((x) => x.kode5 === el).map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0),
+          pagubaru: this.rincianperubahan.filter((x) => x.kode5 === el).map((x) => parseFloat(x.totalbaru)).reduce((a, b) => a + b, 0),
+          rincian: []
+        }
+        rka.push(obj)
+      }
+
+      const unik6 = this.rincianperubahan.map((x) => x.kode6)
+      const ar6 = unik6.length ? [...new Set(unik6)] : []
+      for (let i = 0; i < ar6.length; i++) {
+        const el = ar6[i];
+        const obj = {
+          kode: this.rincianperubahan.filter((x) => x.kode6 === el)[0].kode6,
+          uraian: this.rincianperubahan.filter((x) => x.kode6 === el)[0].uraian6,
+          pagu: this.rincianperubahan.filter((x) => x.kode6 === el).map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0),
+          pagubaru: this.rincianperubahan.filter((x) => x.kode6 === el).map((x) => parseFloat(x.totalbaru)).reduce((a, b) => a + b, 0),
+          rincian: this.rincianperubahan.filter((x) => x.kode6 === el).map((x) => {
+            return {
+              kode108: x.koderek108,
+              usulan: x.usulan,
+              satuan: x.satuan,
+              volume: x.volume,
+              harga: x.harga,
+              pagu: x.total,
+
+              volumebaru: x.volumebaru,
+              hargabaru: x.hargabaru,
+              pagubaru: x.totalbaru
+            }
+          })
+        }
+        rka.push(obj)
+      }
+
+      const sortAnggaran = (rka) =>
+        rka.sort(({ kode: a }, { kode: b }) =>
+          a < b ? -1 : a > b ? 1 : 0
+        )
+      const dataRKAperubahan = sortAnggaran(rka)
+      this.datarkaperubahan = dataRKAperubahan
+      console.log('rka PAK', this.datarkaperubahan)
     }
   }
 })

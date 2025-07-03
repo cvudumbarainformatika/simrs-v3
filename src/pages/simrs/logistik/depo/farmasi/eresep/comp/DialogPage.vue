@@ -143,7 +143,7 @@
       </q-btn>
     </div>
     <div
-      v-if="store?.resep?.flag === '2' && (store?.resep?.tiperesep !== 'iter' ? store?.resep?.semuaresep && store?.resep?.semuaracik : true)"
+      v-if="store?.resep?.flag === '2' && ((store?.resep?.tiperesep === 'iter' ? store?.resep?.noresep_asal === '' : true) ? store?.resep?.semuaresep && store?.resep?.semuaracik : true)"
       class="text-right q-mr-md q-my-sm">
       <q-btn rounded push label="Selesai" class="f-12 q-mr-sm" color="green" text-color="white" icon="icon-mat-done_all"
         :disable="store.loadingSelesai && store?.resep?.loading"
@@ -379,7 +379,9 @@
                         </div>
                       </div>
                     </div>
-                    <div v-if="parseInt(store?.resep?.flag) >= '2' && store?.resep?.tiperesep !== 'iter'">
+
+                    <div
+                      v-if="parseInt(store?.resep?.flag) == '2' && (store?.resep?.tiperesep === 'iter' ? store?.resep?.noresep_asal === '' : true)">
                       <q-btn v-if="(!rinc?.obatkeluar) && !rinc?.done && parseInt(store?.resep?.flag) < 5" round
                         class="f-10 q-my-sm" color="primary" text-color="white" icon="icon-mat-save"
                         :loading="rinc?.loading" :disable="rinc?.loading" @click="store.simpanObat(rinc)">
@@ -582,7 +584,8 @@
                       <!-- <div v-if="store?.resep?.flag === '3'">
                         Resep Sudah selesai
                       </div> -->
-                      <div v-if="parseInt(store?.resep?.flag) >= 2 && store?.resep?.tiperesep !== 'iter'">
+                      <div
+                        v-if="parseInt(store?.resep?.flag) == 2 && (store?.resep?.tiperesep === 'iter' ? store?.resep?.noresep_asal === '' : true)">
                         <q-btn v-if="(!rinc?.obatkeluar) && !rinc?.done && parseInt(store?.resep?.flag) < 3" round
                           class="f-10 q-mr-sm" color="primary" text-color="white" icon="icon-mat-save"
                           :loading="rinc?.loading" :disable="rinc?.loading" @click="store.simpanRacikan(rinc)">

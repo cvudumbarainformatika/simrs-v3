@@ -62,11 +62,11 @@
         <div class="data-item">5. Riwayat Pekerjaan : {{
           anamnesisAwal?.riwayat_pekerjaan_yang_berhubungan_dengan_zat_berbahaya || '-' }}</div>
         <div class="data-item">6. Keluhan Nyeri : {{ anamnesisAwal?.keluhannyeri?.skor > 0 ? 'Ada' : 'Tidak ada' || '-'
-        }}
+          }}
         </div>
       </div>
     </div>
-    <!-- Pemeriksaan Fisik -->
+    <!-- Pemeriksaan : umum -->
     <div class="section">
       <div class="section-title">Pemeriksaan Umum : </div>
       <table border="0" style="border: none !important; margin-left: 10px; margin-top: -5px;">
@@ -113,160 +113,225 @@
 
         </tbody>
       </table>
+    </div>
+    <!-- Pemeriksaan : kultural -->
+    <div class="section">
+      <div class="section-title">Kultural : </div>
+      <table border="0" style="border: none !important; margin-left: 10px; margin-top: -5px;">
+        <tbody>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td style="border: none !important; padding: 0px !important; width:15%;"> - Penyebab Penyakit</td>
+            <td style="border: none !important; padding: 0px !important; width: 35%;"> : {{
+              pemeriksaanUmum?.penyebabSakit || ' - ' }}</td>
+          </tr>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td style="border: none !important; padding: 0px !important; width:15%;"> - Pola Komunikasi</td>
+            <td style="border: none !important; padding: 0px !important; width: 35%;"> : {{
+              pemeriksaanUmum?.komunikasi || ' - ' }}</td>
+          </tr>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td style="border: none !important; padding: 0px !important; width:15%;"> - Makanan Pokok</td>
+            <td style="border: none !important; padding: 0px !important; width: 35%;"> : {{
+              (pemeriksaanUmum?.makananPokokLain ?? pemeriksaanUmum?.makananPokok) || ' - ' }}</td>
+          </tr>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td style="border: none !important; padding: 0px !important; width:15%;"> - Pantangan Makanan</td>
+            <td style="border: none !important; padding: 0px !important; width: 35%;"> : {{
+              pemeriksaanUmum?.pantanganMkanan || ' - ' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- Pemeriksaan : psikologi dll -->
+    <div class="section">
+      <div class="section-title">Pemeriksaan Psikologi, Sosial Ekonomi, Spriritual : </div>
+      <table border="0" style="border: none !important; margin-left: 10px; margin-top: -5px;">
+        <tbody>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td style="border: none !important; padding: 0px !important; width:15%;"> - Sosial</td>
+            <td style="border: none !important; padding: 0px !important; width: 35%;"> : {{
+              pemeriksaanUmum?.sosial || ' - ' }}</td>
+          </tr>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td style="border: none !important; padding: 0px !important; width:15%;"> - Spiritual</td>
+            <td style="border: none !important; padding: 0px !important; width: 35%;"> : {{
+              pemeriksaanUmum?.spiritual || ' - ' }}</td>
+          </tr>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td style="border: none !important; padding: 0px !important; width:15%;"> - Status Psikologis</td>
+            <td style="border: none !important; padding: 0px !important; width: 35%;"> : {{
+              pemeriksaanUmum?.statusPsikologis || ' - ' }}</td>
+          </tr>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td style="border: none !important; padding: 0px !important; width:15%;"> - Punya Ansuransi</td>
+            <td style="border: none !important; padding: 0px !important; width: 35%;"> : {{
+              pemeriksaanUmum?.ansuransi || ' - ' }}</td>
+          </tr>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td style="border: none !important; padding: 0px !important; width:15%;"> - Edukasi</td>
+            <td style="border: none !important; padding: 0px !important; width: 35%;">
+              <div class="row no-wrap">
+                <div class="col-auto" style="width:2%">:</div>
+                <div v-if="edukasi" class="col-auto">
+                  <div class="row items-center">
+                    <div class="col-10">Apakah pasien / keluarga tahu mengenai penyakit dan perawatannya?</div>
+                    <div class="col-2">{{ edukasi?.tahuPenanganan?.value }}</div>
+                  </div>
+                  <div class="row items-center">
+                    <div class="col-10">Apakah membutuhkan edukasi?</div>
+                    <div class="col-2">{{ edukasi?.butuhEdukasi?.value }}</div>
+                  </div>
+                </div>
+                <div v-else> - </div>
+              </div>
 
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- Pemeriksaan : Fisik -->
+    <div class="section">
+      <div class="section-title">Pemeriksaan Fisik : </div>
       <table>
         <thead>
           <tr>
             <th>Bagian</th>
-            <th>Normal</th>
-            <th>Jika Tidak Normal, Jelaskan</th>
+            <th>Keterangan</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td>Kepala (Head)</td>
-            <td>{{ pemeriksaanUmum?.rs5?.toUpperCase() === 'TAK' ? 'TAK' : '' }}</td>
-            <td> {{ pemeriksaanUmum?.rs5?.toUpperCase() !== 'TAK' ? pemeriksaanUmum?.rs5 : '' }} </td>
+            <td> {{ pemeriksaanUmum?.rs5 }} </td>
           </tr>
           <tr>
             <td>Leher (Neck)</td>
-            <td>{{ pemeriksaanUmum?.rs6?.toUpperCase() === 'TAK' ? 'TAK' : '' }}</td>
-            <td> {{ pemeriksaanUmum?.rs6?.toUpperCase() !== 'TAK' ? pemeriksaanUmum?.rs6 : '' }} </td>
+            <td> {{ pemeriksaanUmum?.rs6 }} </td>
           </tr>
           <tr>
             <td>Dada & Payudara (Chest & Breast)</td>
-            <td>{{ pemeriksaanUmum?.rs7?.toUpperCase() === 'TAK' ? 'TAK' : '' }}</td>
-            <td> {{ pemeriksaanUmum?.rs7?.toUpperCase() !== 'TAK' ? pemeriksaanUmum?.rs7 : '' }} </td>
+            <td> {{ pemeriksaanUmum?.rs7 }} </td>
           </tr>
           <tr>
             <td>Punggung (Back)</td>
-            <td>{{ pemeriksaanUmum?.rs8?.toUpperCase() === 'TAK' ? 'TAK' : '' }}</td>
-            <td> {{ pemeriksaanUmum?.rs8?.toUpperCase() !== 'TAK' ? pemeriksaanUmum?.rs8 : '' }} </td>
+            <td> {{ pemeriksaanUmum?.rs8 }} </td>
           </tr>
           <tr>
             <td>Perut (Abdomen)</td>
-            <td>{{ pemeriksaanUmum?.rs9?.toUpperCase() === 'TAK' ? 'TAK' : '' }}</td>
-            <td> {{ pemeriksaanUmum?.rs9?.toUpperCase() !== 'TAK' ? pemeriksaanUmum?.rs9 : '' }} </td>
+            <td> {{ pemeriksaanUmum?.rs9 }} </td>
           </tr>
           <tr>
             <td>Urogenital</td>
-            <td>{{ pemeriksaanUmum?.rs13?.toUpperCase() === 'TAK' ? 'TAK' : '' }}</td>
-            <td> {{ pemeriksaanUmum?.rs13?.toUpperCase() !== 'TAK' ? pemeriksaanUmum?.rs13 : '' }} </td>
+            <td> {{ pemeriksaanUmum?.rs13 }} </td>
           </tr>
           <tr>
             <td>Tangan (Hand)</td>
-            <td>{{ pemeriksaanUmum?.rs10?.toUpperCase() === 'TAK' ? 'TAK' : '' }}</td>
-            <td> {{ pemeriksaanUmum?.rs10?.toUpperCase() !== 'TAK' ? pemeriksaanUmum?.rs10 : '' }} </td>
+            <td> {{ pemeriksaanUmum?.rs10 }} </td>
           </tr>
           <tr>
             <td>Kaki (Foot)</td>
-            <td>{{ pemeriksaanUmum?.rs11?.toUpperCase() === 'TAK' ? 'TAK' : '' }}</td>
-            <td> {{ pemeriksaanUmum?.rs11?.toUpperCase() !== 'TAK' ? pemeriksaanUmum?.rs11 : '' }} </td>
+            <td> {{ pemeriksaanUmum?.rs11 }} </td>
           </tr>
           <tr>
             <td>Status Neurologis (Neurological Status)</td>
-            <td>{{ pemeriksaanUmum?.rs12?.toUpperCase() === 'TAK' ? 'TAK' : '' }}</td>
-            <td> {{ pemeriksaanUmum?.rs12?.toUpperCase() !== 'TAK' ? pemeriksaanUmum?.rs12 : '' }} </td>
+            <td> {{ pemeriksaanUmum?.rs12 }} </td>
           </tr>
         </tbody>
       </table>
+    </div>
 
-      <div class="section">
-        <div class="section-title">Diagnosis Keperawatan</div>
-        <table style="margin-top: -5px;">
-          <thead>
-            <tr>
-
-              <th>DIAGNOSA KEPERAWATAN</th>
-            </tr>
-          </thead>
-          <tbody>
+    <!-- Diagnosa keperawatan -->
+    <div class="section">
+      <div class="section-title">Diagnosis Keperawatan</div>
+      <table style="margin-top: -5px;">
+        <thead>
+          <tr>
+            <th>DIAGNOSA KEPERAWATAN</th>
+            <th>PLANN</th>
+            <th>INTERVENSI</th>
+          </tr>
+        </thead>
+        <tbody>
+          <template v-for="(item, i) in pasien?.diagnosakeperawatan" :key="i">
             <tr>
               <td>
-                <div v-for="(item, i) in pasien?.diagnosakeperawatan" :key="i">
-                  <div> - {{ item?.nama }}</div>
+                <div> - {{ item?.nama }}</div>
+              </td>
+              <td>
+                <div v-for="plann in kepPlann(item)" :key="plann">
+                  <div class="row no-wrap">
+                    <div class="col-auto q-mr-xs">-</div>
+                    <div class="col-auto">{{ plann?.masterintervensi?.nama }}</div>
+                  </div>
                 </div>
               </td>
-            </tr>
-          </tbody>
-        </table>
-
-      </div>
-
-
-
-      <div class="section">
-        <table border="0" style="border: none !important; margin-left: 10px; margin-top: -5px;">
-          <tbody>
-            <tr style="border: none !important; padding: 0px !important;">
-              <td style="border: none !important; padding: 0px !important; width: 17%">
-                <div class="text-weight-bold">PENGOBATAN</div>
-                <!-- <div class="text-italic">THERAPY</div> -->
-              </td>
-              <td valign="top" style="border: none !important; padding: 0px !important;"> : {{
-                pasien?.planningdokter?.terapi }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div class="section">
-        <table border="0" style="border: none !important; margin-left: 10px; margin-top: -5px;">
-          <tbody>
-            <tr style="border: none !important; padding: 0px !important;">
-              <td style="border: none !important; padding: 0px !important; width: 17%">
-                <div class="text-weight-bold">RENCANA</div>
-                <!-- <div class="text-italic">PLANNING</div> -->
-              </td>
-              <td valign="top" style="border: none !important; padding: 0px !important;">
-                <div class="flex">
-                  <div class="q-mr-sm">: </div>
-                  <div>
-                    <div>Monitoring : {{ pasien?.planningdokter?.monitor || '-' }}</div>
-                    <div>Target : {{ pasien?.planningdokter?.target || '-' }}</div>
+              <td>
+                <div v-for="plann in kepInter(item)" :key="plann">
+                  <div class="row no-wrap">
+                    <div class="col-auto q-mr-xs">-</div>
+                    <div class="col-auto">{{ plann?.masterintervensi?.nama }}</div>
                   </div>
                 </div>
               </td>
             </tr>
-          </tbody>
-        </table>
-      </div>
+          </template>
+        </tbody>
+      </table>
 
-      <div class="section">
-        <table border="0" style="border: none !important; margin-left: 10px; margin-top: -5px;">
-          <tbody>
-            <tr style="border: none !important; padding: 0px !important;">
-              <td style="border: none !important; padding: 0px !important; width: 17%">
-                <div class="text-weight-bold">CATATAN KIE</div>
-                <!-- <div class="text-italic">EDUCATION NOTE</div> -->
-              </td>
-              <td valign="top" style="border: none !important; padding: 0px !important;"> : - </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div class="section">
-        <table border="0" style="border: none !important; margin-left: 10px; margin-top: -5px;">
-          <tbody>
-            <tr style="border: none !important; padding: 0px !important;">
-              <td style="border: none !important; padding: 0px !important; width: 17%">
-                <div class="text-weight-bold">TANGGAL</div>
-                <div class="text-italic">JAM</div>
-              </td>
-              <td valign="top" style="border: none !important; padding: 0px !important;"> : <b>Tanggal</b> {{
-                dateFullFormat(pasien?.tglmasuk) }} / <b>Jam</b> {{ jamTnpDetik(pasien?.tglmasuk) }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+    </div>
 
 
-      <div class="section">
 
-        <div class="flex justify-between q-mx-xl">
-          <!-- <div class="flex-center " style="width: 60px;">
-          <div class="relative-position">
+    <div class="section">
+
+      <div class="flex justify-between q-mx-xl">
+
+        <div>
+          <table border="0" style="border: none !important; margin-left: 10px; margin-top:  5px;">
+            <tbody>
+              <tr style="border: none !important; padding: 0px !important;">
+                <td style="border: none !important; padding: 0px !important; width: 17%">
+                  <div class="text-weight-bold">TANGGAL</div>
+                </td>
+                <td valign="top" style="border: none !important; padding: 0px !important;"> :
+                  {{ dateFullFormat(pasien?.tglmasuk) }} </td>
+              </tr>
+              <tr style="border: none !important; padding: 0px !important;">
+                <td style="border: none !important; padding: 0px !important; width: 17%">
+                  <div class="text-italic">JAM</div>
+                </td>
+                <td valign="top" style="border: none !important; padding: 0px !important;"> : {{
+                  jamTnpDetik(pasien?.tglmasuk) }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="column flex-center">
+          <div>
+            Pasien / Keluarga
+          </div>
+          <div class="relative-position" style="width: 80px;">
+            <vue-qrcode :value="qrPenerima" tag="svg" :options="{
+              errorCorrectionLevel: 'Q',
+              color: {
+                dark: '#000000',
+                light: '#ffffff',
+              },
+              margin: 0
+            }" />
+            <!-- <img class="qrcode__image" src="~assets/logos/logo-rsud.png" alt="RSUD DOKTER MOHAMAD SALEH"> -->
+          </div>
+          <div class="text-wrap text-center">{{ penerimanEdu?.namaPenerima }}</div>
+        </div>
+
+
+        <div class="column flex-center">
+
+          <div>PERAWAT / BIDAN</div>
+          <!-- <div style="margin-top: -5px; margin-bottom: 10px;">DOCTOR</div> -->
+
+          <div class="relative-position" style="width: 80px;">
             <vue-qrcode :value="qrDokter" tag="svg" :options="{
               errorCorrectionLevel: 'Q',
               color: {
@@ -275,40 +340,20 @@
               },
               margin: 0
             }" />
+            <!-- <img class="qrcode__image" src="~assets/logos/logo-rsud.png" alt="RSUD DOKTER MOHAMAD SALEH"> -->
           </div>
-          <div class="f-8 text-wrap text-center">{{ dpjp?.nama }}</div>
-        </div> -->
-
-          <div></div>
-
-
-          <div class="column flex-center ">
-
-            <div>DOKTER</div>
-            <!-- <div style="margin-top: -5px; margin-bottom: 10px;">DOCTOR</div> -->
-
-            <div class="relative-position" style="width: 80px;">
-              <vue-qrcode :value="qrDokter" tag="svg" :options="{
-                errorCorrectionLevel: 'Q',
-                color: {
-                  dark: '#000000',
-                  light: '#ffffff',
-                },
-                margin: 0
-              }" />
-              <!-- <img class="qrcode__image" src="~assets/logos/logo-rsud.png" alt="RSUD DOKTER MOHAMAD SALEH"> -->
-            </div>
-            <div class="text-wrap text-center">{{ dpjp?.nama }}</div>
-          </div>
+          <div class="text-wrap text-center">{{ anamnesisAwal?.petugas?.nama }}</div>
         </div>
       </div>
-
     </div>
+
+
   </div>
 </template>
 <script setup>
 import { api } from 'src/boot/axios'
 import { dateFullFormat, jamTnpDetik } from 'src/modules/formatter'
+import { useImplementasiEdukasiRanapStore } from 'src/stores/simrs/ranap/implementasiEdukasi'
 import { computed, onMounted, ref } from 'vue'
 
 const props = defineProps({
@@ -330,44 +375,73 @@ const props = defineProps({
   }
 })
 
-const dpjp = ref(null)
-
+// const dpjp = ref(null)
+const impEdukasi = useImplementasiEdukasiRanapStore()
 onMounted(() => {
-  getDpjpData()
+  // getDpjpData()
+  if (impEdukasi?.items?.length === 0) impEdukasi.getList(props?.pasien)
 })
 
 
-const getDpjpData = async () => {
-  const res = await api.get(`/v1/pegawai/master/pegawai-by-kdpegsimrs?kdpegsimrs=${props?.pasien?.kodedokter}`)
-  // console.log('res', res);
-  if (res.status === 200) {
-    dpjp.value = res.data
+// const getDpjpData = async () => {
+//   const res = await api.get(`/v1/pegawai/master/pegawai-by-kdpegsimrs?kdpegsimrs=${props?.pasien?.kodedokter}`)
+//   // console.log('res', res);
+//   if (res.status === 200) {
+//     dpjp.value = res.data
 
-  }
+//   }
 
-}
+// }
+const penerimanEdu = computed(() => {
+  const ttd = impEdukasi?.items[0]
 
+  // console.log('ttd', ttd)
+  return ttd
+})
 const qrDokter = computed(() => {
   // const petugas = 'Nama : ' + dpjp?.value?.nama ?? '' + 'NIP : ' + dpjp?.value?.nip ?? ''
   const noreg = props?.pasien?.noreg// noreg
-  const dok = 'ASESSMENT-AWAL-MEDIS.png'
+  const dok = 'ASESSMENT-AWAL-KEPERAWATAN.png'
   const asal = 'RANAP'
-  const petugas = dpjp?.value?.nip || null
+  const petugas = anamnesisAwal.value?.petugas?.nik || null
   const enc = btoa(`${noreg}|${dok}|${asal}|${petugas}`)
   return `${enc}`
 })
-
+const qrPenerima = computed(() => {
+  // console.log('user', user);
+  const noreg = props?.pasien?.noreg// noreg
+  const dok = 'ASESSMENT-AWAL-KEPERAWATAN.png'
+  const asal = 'RANAP'
+  const ttdPenerima = penerimanEdu.value?.ttdPenerima ?? null
+  const enc = btoa(`${noreg}|${dok}|${asal}|${ttdPenerima}`)
+  return `https://rsud.probolinggokota.go.id/dokumen-simrs/legalitas/${enc}`
+})
+function kepPlann (item) {
+  const inter = item?.intervensi?.filter(x => x?.masterintervensi?.group === 'plann')
+  // console.log('item', item, inter)
+  return inter
+}
+function kepInter (item) {
+  const inter = item?.intervensi?.filter(x => x?.masterintervensi?.group !== 'plann')
+  // console.log('item', item, inter)
+  return inter
+}
 
 const anamnesisAwal = computed(() => {
   const awal = props?.pasien?.anamnesis?.find(x => x?.awal === '1' && x?.nakes === '2') || null
-  // console.log('awal', awal)
+  console.log('awal anam', awal?.petugas)
 
   return awal
 })
+const edukasi = computed(() => {
+  const edu = JSON.parse(pemeriksaanUmum.value?.edukasi)
+  // console.log('edu', edu)
 
+  return edu
+})
 const pemeriksaanUmum = computed(() => {
   const awal = props?.pasien?.pemeriksaan?.find(x => x?.awal === '1' && x?.nakes === '2') || null
-  console.log('awal pemerikasaan', awal)
+  // console.log('awal pemerikasaan', awal)
 
   return awal
 })
