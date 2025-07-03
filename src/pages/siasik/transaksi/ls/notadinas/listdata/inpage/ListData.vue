@@ -281,9 +281,13 @@ async function LapRealisasi(row) {
       };
       pengajuan.push(obj);
     }
-
-    store.realisasi = pengajuan;
-    cetaklaporan.value = pengajuan;
+    const sortAnggaran = (pengajuan) =>
+      pengajuan.sort(({ koderekening: a }, { koderekening: b }) =>
+        a < b ? -1 : a > b ? 1 : 0
+      )
+    const datarealisasi = sortAnggaran(pengajuan)
+    store.realisasi = datarealisasi;
+    cetaklaporan.value = datarealisasi;
 
     store.nilaitotal = {
       pagu: store.realisasi.map((x) => parseFloat(x.pagu)).reduce((a, b) => a + b, 0),
@@ -295,7 +299,7 @@ async function LapRealisasi(row) {
     store.realisasi.pptk = row.namapptk
     store.realisasi.nip = row.kodepptk
     store.realisasi.bidang = row.bidang
-    console.log('row', row)
+    console.log('row', store.realisasi)
     store.dialogLaporan = true;
   } catch (error) {
     console.error("Error saat memproses laporan:", error);
