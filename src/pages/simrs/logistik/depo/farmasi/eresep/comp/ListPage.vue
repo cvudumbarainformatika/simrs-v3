@@ -269,7 +269,7 @@
                 <!-- selesai -->
 
                 <q-btn
-                  v-if="item?.flag === '2' && (item?.tiperesep !== 'iter' ? (item?.semuaresep && item?.semuaracik) : true)"
+                  v-if="item?.flag === '2' && ((store?.resep?.tiperesep === 'iter' ? store?.resep?.noresep_asal === '' : true) ? (item?.semuaresep && item?.semuaracik) : true)"
                   round class="f-10 q-mr-sm" :color="color(item?.flag)" text-color="white" icon="icon-mat-done_all"
                   :disable="store.loadingSelesai && item?.loading" :loading="store.loadingSelesai && item?.loading"
                   @click="store.resepSelesai(item)">
