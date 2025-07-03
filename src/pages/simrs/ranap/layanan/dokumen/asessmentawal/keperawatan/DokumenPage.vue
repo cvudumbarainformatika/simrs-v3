@@ -62,7 +62,7 @@
         <div class="data-item">5. Riwayat Pekerjaan : {{
           anamnesisAwal?.riwayat_pekerjaan_yang_berhubungan_dengan_zat_berbahaya || '-' }}</div>
         <div class="data-item">6. Keluhan Nyeri : {{ anamnesisAwal?.keluhannyeri?.skor > 0 ? 'Ada' : 'Tidak ada' || '-'
-        }}
+          }}
         </div>
       </div>
     </div>
@@ -197,55 +197,45 @@
         <thead>
           <tr>
             <th>Bagian</th>
-            <th>Normal</th>
-            <th>Jika Tidak Normal, Jelaskan</th>
+            <th>Keterangan</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td>Kepala (Head)</td>
-            <td>{{ pemeriksaanUmum?.rs5?.toUpperCase() === 'TAK' ? 'TAK' : '' }}</td>
-            <td> {{ pemeriksaanUmum?.rs5?.toUpperCase() !== 'TAK' ? pemeriksaanUmum?.rs5 : '' }} </td>
+            <td> {{ pemeriksaanUmum?.rs5 }} </td>
           </tr>
           <tr>
             <td>Leher (Neck)</td>
-            <td>{{ pemeriksaanUmum?.rs6?.toUpperCase() === 'TAK' ? 'TAK' : '' }}</td>
-            <td> {{ pemeriksaanUmum?.rs6?.toUpperCase() !== 'TAK' ? pemeriksaanUmum?.rs6 : '' }} </td>
+            <td> {{ pemeriksaanUmum?.rs6 }} </td>
           </tr>
           <tr>
             <td>Dada & Payudara (Chest & Breast)</td>
-            <td>{{ pemeriksaanUmum?.rs7?.toUpperCase() === 'TAK' ? 'TAK' : '' }}</td>
-            <td> {{ pemeriksaanUmum?.rs7?.toUpperCase() !== 'TAK' ? pemeriksaanUmum?.rs7 : '' }} </td>
+            <td> {{ pemeriksaanUmum?.rs7 }} </td>
           </tr>
           <tr>
             <td>Punggung (Back)</td>
-            <td>{{ pemeriksaanUmum?.rs8?.toUpperCase() === 'TAK' ? 'TAK' : '' }}</td>
-            <td> {{ pemeriksaanUmum?.rs8?.toUpperCase() !== 'TAK' ? pemeriksaanUmum?.rs8 : '' }} </td>
+            <td> {{ pemeriksaanUmum?.rs8 }} </td>
           </tr>
           <tr>
             <td>Perut (Abdomen)</td>
-            <td>{{ pemeriksaanUmum?.rs9?.toUpperCase() === 'TAK' ? 'TAK' : '' }}</td>
-            <td> {{ pemeriksaanUmum?.rs9?.toUpperCase() !== 'TAK' ? pemeriksaanUmum?.rs9 : '' }} </td>
+            <td> {{ pemeriksaanUmum?.rs9 }} </td>
           </tr>
           <tr>
             <td>Urogenital</td>
-            <td>{{ pemeriksaanUmum?.rs13?.toUpperCase() === 'TAK' ? 'TAK' : '' }}</td>
-            <td> {{ pemeriksaanUmum?.rs13?.toUpperCase() !== 'TAK' ? pemeriksaanUmum?.rs13 : '' }} </td>
+            <td> {{ pemeriksaanUmum?.rs13 }} </td>
           </tr>
           <tr>
             <td>Tangan (Hand)</td>
-            <td>{{ pemeriksaanUmum?.rs10?.toUpperCase() === 'TAK' ? 'TAK' : '' }}</td>
-            <td> {{ pemeriksaanUmum?.rs10?.toUpperCase() !== 'TAK' ? pemeriksaanUmum?.rs10 : '' }} </td>
+            <td> {{ pemeriksaanUmum?.rs10 }} </td>
           </tr>
           <tr>
             <td>Kaki (Foot)</td>
-            <td>{{ pemeriksaanUmum?.rs11?.toUpperCase() === 'TAK' ? 'TAK' : '' }}</td>
-            <td> {{ pemeriksaanUmum?.rs11?.toUpperCase() !== 'TAK' ? pemeriksaanUmum?.rs11 : '' }} </td>
+            <td> {{ pemeriksaanUmum?.rs11 }} </td>
           </tr>
           <tr>
             <td>Status Neurologis (Neurological Status)</td>
-            <td>{{ pemeriksaanUmum?.rs12?.toUpperCase() === 'TAK' ? 'TAK' : '' }}</td>
-            <td> {{ pemeriksaanUmum?.rs12?.toUpperCase() !== 'TAK' ? pemeriksaanUmum?.rs12 : '' }} </td>
+            <td> {{ pemeriksaanUmum?.rs12 }} </td>
           </tr>
         </tbody>
       </table>
