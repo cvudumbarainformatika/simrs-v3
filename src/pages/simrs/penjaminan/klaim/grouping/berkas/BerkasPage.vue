@@ -206,6 +206,13 @@ const documentsrajal = ref([
     label: 'Berkas Upload',
     value: 'Berkas_Upload'
   },
+  {
+    icon: 'icon-fa-file-regular',
+    color: 'primary',
+    jenis: 'INTR',
+    label: 'Pemantauan Itradialitik',
+    value: 'Intradialitik'
+  },
 ])
 // eslint-disable-next-line no-unused-vars
 function getLabel(val) {
@@ -240,6 +247,7 @@ const comprajal = [
   // { nama: 'SrtKnslinternal', page: defineAsyncComponent(() => import('../../../../../simrs/poli/dokumen/KonsulInternal/SuratKonsulInternalPage.vue')) },
   { nama: 'Rencana', page: defineAsyncComponent(() => import('../../../../dokumen/surat/compsurat/SuratRencanaPage.vue')) },
   { nama: 'Berkas_Upload', page: defineAsyncComponent(() => import('./compdokumen/comIgdupload/DokumenUploadPage.vue')) },
+  { nama: 'Intradialitik', page: defineAsyncComponent(() => import('../../../../hemodialisa/layanan/dokumen/compdokumen/IntradialitikPage.vue')) },
 
 ]
 // eslint-disable-next-line no-unused-vars
@@ -258,7 +266,7 @@ const cekPanel = (kodepoli) => {
 
 }
 function goTo(val) {
-  console.log('got', val)
+  // console.log('got', val)
   doc.value = val.value
   open.value = true
 }

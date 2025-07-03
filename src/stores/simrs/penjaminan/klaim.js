@@ -169,6 +169,7 @@ export const useKlaimPenjaminanStore = defineStore('klaim-penjaminan', {
             // jawabn konsul
             findPasien[0].jawabankonsul = responseData?.jawabankonsul
             findPasien[0].jawabankonsulbynoreg = responseData?.jawabankonsulbynoreg
+            findPasien[0].intradialitik = responseData?.intradialitikhd
 
           }
           this.loadingTerima = false
