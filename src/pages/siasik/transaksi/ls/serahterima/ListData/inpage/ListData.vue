@@ -297,7 +297,8 @@ function editdata(row) {
   form.params.kodekegiatan = editDataref.value?.kodekegiatanblud
   form.getRincianBelanja()
   form.formheader.rinci = []
-
+  form.disabled = true
+  form.disableplus = true
 }
 
 </script>

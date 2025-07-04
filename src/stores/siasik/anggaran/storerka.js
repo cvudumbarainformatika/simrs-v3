@@ -270,7 +270,7 @@ export const useRkaStore = defineStore('store_rka_siasik', {
             this.rincianpergeseran = resp.data.flatMap((x) => x.hasilpergeseran)
             this.rincianperubahan = resp.data.flatMap((x) => x.perubahanpak)
 
-            // console.log('pergeseran', this.pergeseran)
+            console.log('pergeseran', this.pergeseran)
             // console.log('rincianpergeseran', this.rincianpergeseran)
             this.mapingDatapergeseran()
             this.mapingDataperubahan()

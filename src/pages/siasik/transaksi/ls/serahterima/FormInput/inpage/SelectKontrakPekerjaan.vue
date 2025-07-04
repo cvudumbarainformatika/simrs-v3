@@ -1,6 +1,6 @@
 <template>
   <q-dialog class="q-mt-xl" @hide="hiddenDialog()" @show="init()" backdrop-filter="blur(4px)" persistent>
-    <q-card style="min-width:50vw; min-height:15vw;">
+    <q-card style="min-width:70vw; min-height:15vw;">
       <q-card-section class="row items-center">
         <div class="column">
           <div class="f-14 text-weight-bold">
@@ -44,6 +44,12 @@
                       No Trans Kontrak : {{ props.row.nokontrak }}
                     </div>
                     <div class="q-pl-sm" style="font-size: 0.9em">{{ props.row.nokontrakx }}</div>
+                  </q-td>
+                  <q-td key="pptk" :props="props">
+                    {{ props.row.namapptk }}
+                  </q-td>
+                  <q-td key="kegiatan" :props="props">
+                    {{ props.row.kegiatanblud }}
                   </q-td>
                   <q-td key="nilaikontrak" :props="props">
                     {{ formattanpaRp(props.row.nilaikontrak) }}
@@ -96,6 +102,18 @@ const columnsx = [
     label: 'No Kontrak',
     align: 'left',
     field: row => [row.nokontrak, row.nokontrakx]
+  },
+  {
+    name: 'pptk',
+    label: 'PTK',
+    align: 'center',
+    field: 'namapptk'
+  },
+  {
+    name: 'kegiatan',
+    label: 'Kegiatan',
+    align: 'center',
+    field: 'kegiatanblud'
   },
   {
     name: 'nilaikontrak',

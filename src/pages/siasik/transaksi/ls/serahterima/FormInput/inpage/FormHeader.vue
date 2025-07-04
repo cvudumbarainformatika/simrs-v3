@@ -20,6 +20,7 @@
           <div class="q-px-sm q-gutter-y-xs">
             <q-btn color="dark" round size="sm" icon="icon-mat-add" :loading="store.loading"
               :disable="store.loading || store.disableplus" :source="store.kontrakpekerjaan" @click="() => {
+                store.kontrakpekerjaan = []
                 store.openDialog = true
                 store.getKontrakPekerjaan()
               }" />

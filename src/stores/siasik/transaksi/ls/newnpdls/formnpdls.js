@@ -183,7 +183,23 @@ export const formInputNpdlsStore = defineStore('forminput_NPD_LS', {
       this.transall[key] = val
     },
     setFormInput(key, val) {
-      this.rinci[key] = val
+
+      this.rinci = {
+        koderek50: '',
+        rincianbelanja: '',
+        itembelanja: '',
+        idserahterima_rinci: '',
+        volume: 0,
+        satuan: '',
+        harga: 0,
+        total: 0,
+        sisapagu: 0,
+        volumels: 0,
+        hargals: 0,
+        totalls: 0,
+        nominalpembayaran: 0
+      };
+      // this.rinci[key] = val
       this.form[key] = val
     },
     setParams(key, val) {
@@ -216,8 +232,8 @@ export const formInputNpdlsStore = defineStore('forminput_NPD_LS', {
 
       this.transall = []
       this.transallserahterima = []
-      this.loading = true
       this.disabled = false
+      this.disabledx = false
       this.loading = false
     },
     resetformrinci() {

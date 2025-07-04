@@ -146,9 +146,9 @@ function saveRinciSerahterima(row) {
   store.reqs.rekening50 = row.koderek50
   store.filterItemBelanja()
   const arrblj = store.itembelanja
-  console.log('arrblj', arrblj, store.reqs.rekening50)
+  // console.log('arrblj', arrblj, store.reqs.rekening50)
   const cari = arrblj.find(x => x.idpp === row.idserahterima_rinci)
-  console.log('cari', cari)
+  // console.log('cari', cari)
   store.rinci.sisapagu = cari.sisapagu
 
 
@@ -191,6 +191,7 @@ function saveRinciSerahterima(row) {
       store.rinci.koderek108 = ''
       store.rinci.uraian108 = ''
       store.rinci.itembelanja = ''
+      store.rinci.idserahterima_rinci = ''
       store.rinci.volume = ''
       store.rinci.satuan = ''
       store.rinci.harga = ''

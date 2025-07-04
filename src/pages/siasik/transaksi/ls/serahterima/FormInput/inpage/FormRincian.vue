@@ -25,12 +25,12 @@
       </div>
 
       <div class="q-pa-sm q-gutter-y-md" style="width: 50%">
-        <app-autocomplete v-model="store.rinci.itembelanja" label="Item Belanja" autocomplete="itembelanja"
-          option-label="itembelanja" option-value="itembelanja" outlined :key="store.params" :source="store.itembelanja"
+        <app-autocomplete v-model="store.rinci.idserahterima_rinci" label="Item Belanja" autocomplete="itembelanja"
+          option-label="itembelanja" option-value="idpp" outlined :key="store.params" :source="store.itembelanja"
           :loading="store.loadingrinci" :disable="store.loadingrinci" @selected="(val) => {
             const arr = store.itembelanja
-            const cari = arr.find(x => x.itembelanja === val)
-            store.rinci.idserahterima_rinci = cari.idpp
+            const cari = arr.find(x => x.idpp === val)
+            store.rinci.itembelanja = cari.itembelanja
             store.rinci.koderek108 = cari.koderek108
             store.rinci.uraian108 = cari.uraian108
             store.rinci.volume = cari.volume
@@ -136,6 +136,7 @@ function pilihRekening50(val) {
     koderek50: obj.rek50,
     uraianrek50: obj.rincianbelanja,
     itembelanja: '',
+    idserahterima_rinci: '',
     volume: 0,
     satuan: '',
     harga: 0,
@@ -199,6 +200,7 @@ function saveSerahterima() {
   store.saveData(props.data).then(() => {
     store.rinci.koderek50 = ''
     store.rinci.itembelanja = ''
+    store.rinci.idserahterima_rinci = ''
     store.rinci.volume = 0
     store.rinci.satuan = ''
     store.rinci.harga = 0
