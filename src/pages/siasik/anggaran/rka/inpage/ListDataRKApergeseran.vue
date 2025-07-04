@@ -138,6 +138,9 @@
                 <th style="font-weight: bold;" colspan="2">REKENING</th>
                 <th style="font-weight: bold;" colspan="4">SEBELUM PERUBAHAN</th>
                 <th style="font-weight: bold;" colspan="4">SETELAH PERUBAHAN</th>
+                <th style="font-weight: bold" rowspan="2">
+                  Selisih
+                </th>
               </tr>
               <tr>
                 <th style="font-weight: bold;">Kode</th>
@@ -174,6 +177,11 @@
                       </span>
                     </span>
                   </td>
+                  <td class="text-right text-bold">
+                    <span class="q-pr-sm">
+                      {{ formatDenganRp(it.selisih) }}
+                    </span>
+                  </td>
                 </tr>
                 <template v-for="rinci in it?.rincian" :key="rinci">
                   <tr>
@@ -237,6 +245,11 @@
                         <span class="flex-end text-right q-pr-sm">
                           {{ formattanpaRp(rinci.pagubaru) }}
                         </span>
+                      </span>
+                    </td>
+                    <td class="text-right">
+                      <span class="col q-pr-sm">
+                        {{ formatDenganRp(rinci.selisih) }}
                       </span>
                     </td>
                   </tr>
@@ -265,6 +278,11 @@
                       </span>
                     </span>
                   </td>
+                  <td class="text-right text-bold">
+                    <span class="q-pr-sm">
+                      {{ formatDenganRp(it.selisih) }}
+                    </span>
+                  </td>
                 </tr>
                 <template v-for="rinci in it?.rincian" :key="rinci">
                   <tr>
@@ -330,6 +348,11 @@
                         </span>
                       </span>
                     </td>
+                    <td class="text-right">
+                      <span class="col q-pr-sm">
+                        {{ formatDenganRp(rinci.selisih) }}
+                      </span>
+                    </td>
                   </tr>
                 </template>
               </template>
@@ -341,12 +364,14 @@
   </template>
 </template>
 <script setup>
-import { formatRpDouble, formattanpaRp } from 'src/modules/formatter'
+import { formatDenganRp, formattanpaRp } from 'src/modules/formatter'
 import { useRkaStore } from 'src/stores/siasik/anggaran/storerka'
 import { ref } from 'vue'
 
 const store = useRkaStore()
 const separator = ref('cell')
+
+
 
 </script>
 <style>

@@ -520,6 +520,7 @@
                             <td class="text-center" colspan="2">REKENING</td>
                             <td class="text-center" colspan="4">SEBELUM PERUBAHAN</td>
                             <td class="text-center" colspan="4">SESUDAH PERUBAHAN</td>
+                            <td class="text-center" rowspan="2">SELISIH</td>
                           </tr>
                           <tr class="text-bold text-center" style="height:50px">
                             <td class="text-center">KODE</td>
@@ -556,6 +557,11 @@
                                   </span>
                                 </span>
                               </td>
+                              <td class="text-right text-bold">
+                                <span class="flex-end text-right">
+                                  {{ formatDenganRp(it.selisih) }}
+                                </span>
+                              </td>
                             </tr>
                             <template v-for="rinci in it?.rincian" :key="rinci">
                               <tr>
@@ -621,18 +627,24 @@
                                     </span>
                                   </span>
                                 </td>
+                                <td class="text-right">
+                                  <span class="flex-end text-right">
+                                    {{ formatDenganRp(rinci.selisih) }}
+                                  </span>
+                                </td>
                               </tr>
                             </template>
                           </template>
                         </tbody>
                       </table>
 
-                      <table v-else-if="store.reqs.jenisrka === '3'" class="justify-center full-width">
+                      <table v-else-if="store.reqs.jenisrka === '3'" class="justify-center full-width full-height">
                         <thead>
                           <tr class="text-bold text-center" style="height:50px">
                             <td class="text-center" colspan="2">REKENING</td>
                             <td class="text-center" colspan="4">SEBELUM PERUBAHAN</td>
                             <td class="text-center" colspan="4">SESUDAH PERUBAHAN</td>
+                            <td class="text-center" rowspan="2">SELISIH</td>
                           </tr>
                           <tr class="text-bold text-center" style="height:50px">
                             <td class="text-center">KODE</td>
@@ -669,6 +681,11 @@
                                   </span>
                                 </span>
                               </td>
+                              <td class="text-right text-bold">
+                                <span class="flex-end text-right">
+                                  {{ formatDenganRp(it.selisih) }}
+                                </span>
+                              </td>
                             </tr>
                             <template v-for="rinci in it?.rincian" :key="rinci">
                               <tr>
@@ -732,6 +749,11 @@
                                     <span class="flex-end text-right">
                                       {{ formattanpaRp(rinci.pagubaru) }}
                                     </span>
+                                  </span>
+                                </td>
+                                <td class="text-right">
+                                  <span class="flex-end text-right">
+                                    {{ formatDenganRp(rinci.selisih) }}
                                   </span>
                                 </td>
                               </tr>
@@ -800,7 +822,7 @@ import { onMounted, ref } from 'vue'
 
 // eslint-disable-next-line no-unused-vars
 import { useRkaStore } from 'src/stores/siasik/anggaran/storerka'
-import { formatRpDouble, formattanpaRp } from 'src/modules/formatter'
+import { formatDenganRp, formatRpDouble, formattanpaRp } from 'src/modules/formatter'
 import listDatapergeseran from '../inpage/ListDataRKApergeseran.vue'
 import listData from '../inpage/ListDataRKA.vue'
 
