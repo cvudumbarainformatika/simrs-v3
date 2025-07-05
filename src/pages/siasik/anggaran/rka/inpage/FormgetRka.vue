@@ -40,10 +40,10 @@
 
         }" />
     </div>
-    <div class="q-pa-sm" style="width:25%">
+    <!-- <div class="q-pa-sm" style="width:25%">
       <app-input-date-human :model="store.tglcetak" label="Tanggal Cetak" outlined :disable="store.loading"
         @set-display="setTglcetak" />
-    </div>
+    </div> -->
     <div class="q-pa-sm">
       <app-btn label="Ambil Data" :disable="store.loading" :loading="store.loading" @click="ambilData()" />
     </div>
