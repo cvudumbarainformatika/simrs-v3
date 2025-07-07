@@ -1,22 +1,13 @@
 <template>
   <div class="fit scroll">
-    <q-list
-      class="rounded-borders full-height"
-    >
+    <q-list class="rounded-borders full-height">
       <template v-if="loading">
-        <LoadingList
-          v-for="i in 20"
-          :key="i"
-        />
+        <LoadingList v-for="i in 20" :key="i" />
       </template>
       <template v-else>
         <TransitionGroup name="slide-left-fade" tag="div">
-          <CardItemList
-            v-for="(item, i) in items"
-            :key="i"
-            :item="item"
-            @details="(val)=>emits('details', val)"
-          />
+          <CardItemList v-for="(item, i) in items" :key="i" :item="item" @details="(val) => emits('details', val)"
+            @kirimkesmix="(val) => emits('kirimkesmix', val)" />
         </TransitionGroup>
       </template>
 
@@ -44,7 +35,7 @@ defineProps({
   }
 })
 
-const emits = defineEmits(['details'])
+const emits = defineEmits(['details', 'kirimkesmix'])
 </script>
 
 <style lang="scss" scoped>
@@ -53,11 +44,13 @@ const emits = defineEmits(['details'])
 }
 
 .scroll {
-  scrollbar-width: none; /* untuk Firefox */
+  scrollbar-width: none;
+  /* untuk Firefox */
 }
 
 .scroll::-webkit-scrollbar {
-  display: none; /* untuk Chrome, Safari, dan Opera */
+  display: none;
+  /* untuk Chrome, Safari, dan Opera */
 }
 
 .slide-left-fade-enter-from {
@@ -79,5 +72,4 @@ const emits = defineEmits(['details'])
   transform: translateX(0);
   opacity: 1;
 }
-
 </style>

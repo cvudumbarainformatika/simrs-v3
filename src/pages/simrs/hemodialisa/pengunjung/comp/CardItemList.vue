@@ -62,6 +62,11 @@
               Jam : <b> {{ date.formatDate(item?.tgl_kunjungan, 'HH:mm') }}</b>
             </div>
           </div>
+          <div v-if="item.nota_permintaan !== '' && item.kesmik === null" class="col-2 flex justify-end">
+            <q-btn dense outline size="sm" no-caps color="primary" :loading="item?.loadingcesmix"
+              label="Kirim Penjaminan" class="q-mb-sm" icon-right="icon-mat-attach_money" style="min-width: 120px;"
+              @click.stop="emits('kirimkesmix', item)" />
+          </div>
         </div>
       </div>
     </div>
@@ -78,7 +83,8 @@ defineProps({
   }
 })
 
-const emits = defineEmits(['details'])
+const emits = defineEmits(['details', 'kirimkesmix'])
+
 </script>
 
 <style lang="scss" scoped></style>

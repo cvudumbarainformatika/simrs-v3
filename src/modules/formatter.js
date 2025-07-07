@@ -104,6 +104,21 @@ const formattanpaRp = (value) => {
     )
   }
 }
+
+const formatDenganRp = (value) => {
+  if (value !== null && value !== '') {
+    const numValue = Number(value);
+    const formattedValue = Math.abs(numValue)
+      .toFixed(2)
+      .replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, '$1,');
+
+    if (numValue < 0) {
+      return `(Rp. ${formattedValue})`;
+    }
+    return `Rp. ${formattedValue}`;
+  }
+  return '';
+};
 const dateFullFormat = (val) => {
   return date.formatDate(val, 'DD MMMM YYYY')
 }
@@ -208,6 +223,7 @@ export {
   formatDouble,
   dayName,
   formattanpaRp,
+  formatDenganRp,
   formatDoubleKoma,
   getNewLine
 }

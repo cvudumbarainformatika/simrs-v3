@@ -57,6 +57,7 @@ export const useFormSerahterimaStore = defineStore('formSerahterima', {
       koderek108: '',
       uraian108: '',
       itembelanja: '',
+      itembelanjax: '',
       idserahterima_rinci: '',
       volume: 0,
       satuan: '',
@@ -134,6 +135,7 @@ export const useFormSerahterimaStore = defineStore('formSerahterima', {
         const el = keys[i];
         this.rinci[el] = null;
       }
+      this.kontrakpekerjaan = []
       this.transall = []
       this.disabled = false;
       this.disableplus = false;
@@ -152,7 +154,22 @@ export const useFormSerahterimaStore = defineStore('formSerahterima', {
     setFormInput(key, val) {
 
       // console.log('setFormInput', key, val)
-      this.rinci[key] = val
+      this.rinci = {
+        koderek50: '',
+        uraianrek50: '',
+        itembelanja: '',
+        idserahterima_rinci: '',
+        volume: 0,
+        satuan: '',
+        harga: 0,
+        total: 0,
+        sisapagu: 0,
+        volumels: 0,
+        hargals: 0,
+        totalls: 0,
+        nominalpembayaran: 0
+      };
+      // this.rinci[key] = val
       this.formheader[key] = val
     },
     resetformrinci() {
@@ -276,11 +293,15 @@ export const useFormSerahterimaStore = defineStore('formSerahterima', {
       return new Promise((resolve) => {
         api.get('/v1/transaksi/serahterima/getkontrak', params)
           .then((resp) => {
+            this.kontrakpekerjaan = []
             if (resp.status === 200) {
+
               // console.log('Data Kontrak', resp.data)
-              this.loading = false
+
               this.kontrakpekerjaan = resp.data
+              this.loading = false
               resolve(resp.data)
+
             }
             else {
               this.loading = false

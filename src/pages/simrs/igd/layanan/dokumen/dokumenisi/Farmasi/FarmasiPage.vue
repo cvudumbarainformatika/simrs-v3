@@ -5,35 +5,36 @@
   <div v-else-if="pasien?.newapotekrajal?.length <= 0 && !store.loadingTerima">
     <app-no-data />
   </div>
-  <div v-else class="q-pa-sm row flex justify-between bg-teal text-white items-center">
-    <div class="col-6">{{ props?.judul }}</div>
-    <div class="col-6 text-right">
-      <q-btn flat dense size="md" icon="icon-mat-download" @click="exportPdf()">
-        <q-tooltip class="primary" :offset="[10, 10]">
-          Download
-        </q-tooltip>
-      </q-btn>
-      <q-btn icon="icon-mat-print" flat dense size="md" v-print="printObj"> <q-tooltip class="primary"
-          :offset="[10, 10]">
-          Print
-        </q-tooltip>
-      </q-btn>
+  <div v-else class="q-pa-md" style="max-width: 100%">
+    <div class="q-pa-sm row flex justify-between bg-teal text-white items-center">
+      <div class="col-6">{{ props?.judul }}</div>
+      <div class="col-6 text-right">
+        <q-btn flat dense size="md" icon="icon-mat-download" @click="exportPdf()">
+          <q-tooltip class="primary" :offset="[10, 10]">
+            Download
+          </q-tooltip>
+        </q-btn>
+        <q-btn icon="icon-mat-print" flat dense size="md" v-print="printObj"> <q-tooltip class="primary"
+            :offset="[10, 10]">
+            Print
+          </q-tooltip>
+        </q-btn>
+      </div>
     </div>
-  </div>
+    <div class="full-height full-height q-pa-sm bg-indigo-1">
+      <div id="printMe" style="width: 21cm;" class="q-pa-xs full-width full-height bg-white">
+        <KopSurat :judul="props?.judul" :pasien="props?.pasien" :jangantampil=false />
+        <ObatPage :pasien="props?.pasien" ref="obatRef" />
+        <returObatPage :pasien="props?.pasien" ref="returobatRef" />
+        <q-separator class="q-mt-sm q-mb-sm" style="border-top: 1px solid black;" />
+        <div class="row q-gutter-sm q-mr-lg items-center no-wrap ">
 
-  <div class="full-height full-height q-pa-sm bg-indigo-1">
-    <div id="printMe" style="width: 21cm;" class="q-pa-xs full-width full-height bg-white">
-      <KopSurat :judul="props?.judul" :pasien="props?.pasien" :jangantampil=false />
-      <ObatPage :pasien="props?.pasien" ref="obatRef" />
-      <returObatPage :pasien="props?.pasien" ref="returobatRef" />
-      <q-separator class="q-mt-sm q-mb-sm" style="border-top: 1px solid black;" />
-      <div class="row q-gutter-sm q-mr-lg items-center no-wrap ">
-
-        <div class="col-10 text-right text-bold">
-          Total Akhir
-        </div>
-        <div class="col-2 garis-bawah-dablue text-right text-bold">
-          {{ formatRp(totalakhir) }}
+          <div class="col-10 text-right text-bold">
+            Total Akhir
+          </div>
+          <div class="col-2 garis-bawah-dablue text-right text-bold">
+            {{ formatRp(totalakhir) }}
+          </div>
         </div>
       </div>
     </div>

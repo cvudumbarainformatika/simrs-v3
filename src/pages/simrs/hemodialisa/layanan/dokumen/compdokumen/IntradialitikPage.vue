@@ -7,7 +7,6 @@
       </q-tooltip>
     </q-btn>
   </q-bar>
-
   <div id="printMe" class="full-width">
     <KopSurat />
     <div class="garis-bawah-dblue q-pb-sm q-mb-md">
@@ -21,7 +20,7 @@
               Nama
             </div>
             <div class="col-8">
-              {{ pasien?.nama }}
+              {{ pasien?.nama ?? pasien?.pasien }}
             </div>
           </div>
           <div class="row">

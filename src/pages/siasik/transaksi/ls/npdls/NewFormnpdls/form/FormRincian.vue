@@ -30,14 +30,15 @@
       <div class="q-pa-sm q-gutter-y-md" style="width: 50%">
         <app-input-simrs v-if="store.form.serahterimapekerjaan === '3'" label="Rincian Belanja"
           v-model="store.rinci.itembelanja" disable outlined :autofocus="false" :valid="{ required: true }" />
-        <app-autocomplete v-else v-model="store.rinci.itembelanja" label="Item Belanja" autocomplete="itembelanja"
-          option-label="itembelanja" option-value="itembelanja" outlined :key="store.reqs" :source="store.itembelanja"
-          :loading="store.loading" :disable="store.loading" @selected="(val) => {
+        <app-autocomplete v-else v-model="store.rinci.idserahterima_rinci" label="Item Belanja"
+          autocomplete="itembelanja" option-label="itembelanja" option-value="idpp" outlined :key="store.reqs"
+          :source="store.itembelanja" :loading="store.loading" :disable="store.loading" @selected="(val) => {
             const arr = store.itembelanja
-            const cari = arr.find(x => x.itembelanja === val)
-            store.rinci.idserahterima_rinci = cari.idpp
+            const cari = arr.find(x => x.idpp === val)
+
             store.rinci.koderek108 = cari.koderek108
             store.rinci.uraian108 = cari.uraian108
+            store.rinci.itembelanja = cari.itembelanja
             store.rinci.volume = cari.volume
             store.rinci.satuan = cari.satuan
             store.rinci.harga = cari.harga
@@ -78,7 +79,7 @@
         <app-btn label="Simpan Rincian" class="bg-black" type="submit" :disable="store.loading"
           :loading="store.loading" />
       </div>
-      <div class="row items-center q-pb-md q-pa-sm q-gutter-y-md">
+      <div v-if="store.transall.length > 0" class="row items-center q-pb-md q-pa-sm q-gutter-y-md">
         <app-btn label="Tambah Pajak" class="bg-orange-8" :disable="store.loading" :loading="store.loading"
           @click="tambahPajak()" />
       </div>
@@ -163,15 +164,16 @@ function pilihRekening50(val) {
     koderek50: obj.rek50,
     rincianbelanja: obj.rincianbelanja,
     itembelanja: '',
-    volume: '',
+    idserahterima_rinci: '',
+    volume: 0,
     satuan: '',
-    harga: '',
-    total: '',
-    sisapagu: '',
-    volumels: '',
-    hargals: '',
-    totalls: '',
-    nominalpembayaran: ''
+    harga: 0,
+    total: 0,
+    sisapagu: 0,
+    volumels: 0,
+    hargals: 0,
+    totalls: 0,
+    nominalpembayaran: 0
   };
 
   store.reqs.rekening50 = val;
@@ -212,6 +214,7 @@ function saveNpd() {
   store.simpanNpdls(props.data).then(() => {
     store.rinci.koderek50 = ''
     store.rinci.itembelanja = ''
+    store.rinci.idserahterima_rinci = ''
     store.rinci.volume = ''
     store.rinci.satuan = ''
     store.rinci.harga = ''

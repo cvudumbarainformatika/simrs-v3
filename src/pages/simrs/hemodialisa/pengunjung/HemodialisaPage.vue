@@ -16,7 +16,7 @@
             <transition-group appear enter-active-class="animated fadeIn faster"
               leave-active-class="animated fadeOut faster">
               <list-pasien v-if="!store.isViewList" key="list-pasien" :items="store.items" :loading="store.loading"
-                @details="bukaTindakan" />
+                @details="bukaTindakan" @kirimkesmix="kirimcasmix" />
               <thumbnail-view v-else key="thumbnail-view" :items="store.items" @details="bukaTindakan" />
             </transition-group>
           </template>
@@ -56,6 +56,8 @@ import { useLaboratPoli } from 'src/stores/simrs/pelayanan/poli/laborat'
 import { useRadiologiPoli } from 'src/stores/simrs/pelayanan/poli/radiologi'
 import { usePermintaanBankDarahHDStore } from 'src/stores/simrs/hemodialisa/bankdarah'
 import { useDiagnosaKeperawatanHD } from 'src/stores/simrs/hemodialisa/diagnosaKeperawatan'
+import { useQuasar } from 'quasar'
+import { use } from 'echarts'
 
 const store = useListPasienHemodialisaStore()
 const penilaian = usePenilaianHemodialisaStore()
@@ -63,7 +65,7 @@ const anatomy = useAnatommyHemodialisaStore()
 const tindakan = useTindakanHemodialisaStore()
 const diagnosa = useDiagnosaHDStore()
 const diagnosakeperawatan = useDiagnosaKeperawatanHD()
-
+const $q = useQuasar()
 const lab = useLaboratPoli()
 const radiologi = useRadiologiPoli()
 const bankdarah = usePermintaanBankDarahHDStore()
@@ -91,10 +93,25 @@ onMounted(() => {
   ])
 })
 
-function bukaTindakan (val) {
+function bukaTindakan(val) {
   console.log('buka tindakan', val)
   store.pasien = val
   store.terimapasien(val)
+}
+
+function kirimcasmix(val) {
+  // console.log('kirimcasmix', val)
+  if (!val?.status) {
+    $q.notify({
+      type: 'negative',
+      title: 'Peringatan',
+      message: 'INFO WARNING <b/> MAAF,<em><b>Pasien Ini Masih Belum Selese Palayanan</b></em>',
+      html: true,
+      timeout: 1000
+    })
+  } else {
+    store.kirimpenjaminan(val)
+  }
 }
 
 </script>

@@ -15,7 +15,7 @@
       </div>
       <div v-else class="full-height scroll">
         <div class="q-pa-sm q-gutter-sm row items-start bg-grey-4">
-          <ListComp :items="pasien?.dokumenluar" @hapus="hapusItem" />
+          <ListComp :items="pasien?.dokumenluar" />
         </div>
       </div>
     </div>
@@ -24,9 +24,8 @@
 <script setup>
 
 import ListComp from 'src/pages/simrs/igd/layanan/uploaddokumen/compDokUpload/ListComp.vue';
+import { useHdUploadDokStore } from 'src/stores/simrs/hemodialisa/upDok';
 import { useKlaimPenjaminanStore } from 'src/stores/simrs/penjaminan/klaim';
-
-const store = useKlaimPenjaminanStore()
 
 const props = defineProps({
   pasien: {
@@ -34,5 +33,10 @@ const props = defineProps({
     default: null
   }
 })
+const store = props.pasien?.kodepoli === 'POL014' ? useKlaimPenjaminanStore() : useHdUploadDokStore()
+
+// const store = useHdUploadDokStore()
+
+
 
 </script>
