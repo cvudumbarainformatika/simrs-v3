@@ -313,6 +313,14 @@
                     Tolak Resep
                   </q-tooltip>
                 </q-btn>
+                <!-- tolak percobaan nanti  -->
+                <!-- <q-btn round class="f-10 q-mx-sm" color="negative" text-color="white" icon="icon-mat-hand-front-left"
+                  :disable="store.loadingTolak && item?.loading" :loading="store.loadingTolak && item?.loading"
+                  @click="tolakResep(item)">
+                  <q-tooltip class="primary" :offset="[10, 10]">
+                    Tolak Resep coba2
+                  </q-tooltip>
+                </q-btn> -->
               </div>
               <div class="row no-wrap q-mt-sm">
                 <div class="col-6">
