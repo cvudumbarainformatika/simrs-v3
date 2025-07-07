@@ -1,8 +1,5 @@
 <template>
-  <q-card
-    flat
-    class="column full-height bg-grey-4 shadow-1"
-  >
+  <q-card flat class="column full-height bg-grey-4 shadow-1">
     <!-- <div
       class="col-auto bg-white"
       style="border-bottom: 1px solid grey;"
@@ -10,65 +7,26 @@
       <HeaderComp />
     </div> -->
     <div class="col full-height full-width relative-position">
-      <div
-        class="absolute-left full-height bg-white"
-        style="width:35%;"
-      >
-        <transition
-          v-if="!store.fullCanvas"
-          appear
-          @enter="enter"
-          @leave="leave"
-        >
-          <TemplateGambar
-            v-show="store.dialogTemplate"
-            style="border-right:2px solid gray;"
-            :active="store.templateActive"
-            :gambar-active="store.gambarActive"
-          />
+      <div class="absolute-left full-height bg-white" style="width:35%;">
+        <transition v-if="!store.fullCanvas" appear @enter="enter" @leave="leave">
+          <TemplateGambar v-show="store.dialogTemplate" style="border-right:2px solid gray;"
+            :active="store.templateActive" :gambar-active="store.gambarActive" />
         </transition>
         <!-- INI FORM -->
-        <FormPemeriksaan
-          :key="pasien"
-          :pasien="pasien"
-          :filter-shapes="filterShapes"
-          tooltip="History Pasien (Shift + H)"
-          @open-history="seamless = !seamless"
-        />
+        <FormPemeriksaan :key="pasien" :pasien="pasien" :filter-shapes="filterShapes"
+          tooltip="History Pasien (Shift + H)" @open-history="seamless = !seamless" />
       </div>
-      <div
-        class="absolute-right full-height bg-white"
-        style="width:30%;"
-      >
-        <ListPemeriksaan
-          :key="pasien"
-          :pasien="pasien"
-        />
+      <div class="absolute-right full-height bg-white" style="width:30%;">
+        <ListPemeriksaan :key="pasien" :pasien="pasien" />
       </div>
-      <div
-        style="width:35%; margin-left: 35%;"
-        class="absolute full-height"
-      >
-        <CanvasComp
-          :key="props?.pasien"
-          :pasien="props?.pasien"
-          @open-template="store.setDialogTemplate"
-        />
+      <div style="width:35%; margin-left: 35%;" class="absolute full-height">
+        <CanvasComp :key="props?.pasien" :pasien="props?.pasien" @open-template="store.setDialogTemplate" />
       </div>
 
-      <app-drawer-right-new
-        :key="pasien"
-        style="width:60%;"
-        :seamless="seamless"
-        :pasien="pasien"
-        @click-btn="clickslideRight"
-      >
+      <app-drawer-right-new :key="pasien" style="width:60%;" :seamless="seamless" :pasien="pasien"
+        @click-btn="clickslideRight">
         <template #content>
-          <HistoryPemeriksaan
-            :key="pasien"
-            :pasien="pasien"
-            title="HISTORY PEMERIKSAAN FISIK LALU"
-          />
+          <HistoryPemeriksaan :key="pasien" :pasien="pasien" title="HISTORY PEMERIKSAAN FISIK LALU" />
         </template>
       </app-drawer-right-new>
     </div>

@@ -57,7 +57,14 @@ const props = defineProps({
 })
 
 const filterShapes = computed(() => {
-  return store.shapes.filter(x => x.templategambar === store.fileGambar)
+  // console.log('store', store.shapes);
+  // console.log('mata', store.mata);
+  // console.log('paru', store.paru);
+
+  // return store.shapes.filter(x => x.templategambar === store.fileGambar)
+  const shapes = store.shapes.filter(x => x.templategambar === store.fileGambar)
+  return shapes
+
 })
 
 onBeforeUnmount(() => {

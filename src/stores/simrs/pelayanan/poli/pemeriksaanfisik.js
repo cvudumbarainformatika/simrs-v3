@@ -201,6 +201,8 @@ export const usePemeriksaanFisik = defineStore('pemeriksaan-fisik', {
     },
 
     setShapeObject(index, key, value) {
+      console.log('setShapeObject', index, key, value);
+
       const a = this.shapes
       const b = a.filter(x => x.templategambar === this.fileGambar)
       b[index][key] = value
@@ -305,10 +307,10 @@ export const usePemeriksaanFisik = defineStore('pemeriksaan-fisik', {
       }
 
       form.deleteDetails = this.deleteShapes
-      // // console.log('LOG FORM', form)
+      console.log('LOG FORM', form)
       try {
         const resp = await api.post('v1/simrs/pelayanan/simpanpemeriksaanfisik', form)
-        // console.log('save', resp)
+        console.log('save / edit pemeriksaan', resp)
         if (resp.status === 200) {
           const storePasien = usePengunjungPoliStore()
           const isi = resp.data.result

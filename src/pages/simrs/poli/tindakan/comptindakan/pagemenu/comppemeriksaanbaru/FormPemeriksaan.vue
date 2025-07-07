@@ -197,27 +197,125 @@
             </q-bar>
           </div>
           <div class="col">
-            <q-card flat dark square class="column-break full-height">
+            <q-card flat square class="column-break full-height">
               <q-scroll-area v-if="filterShapes?.length" style="height: calc(100% - 52px);">
-                <q-list dark separator>
-                  <q-item clickable v-for="(item, i) in filterShapes" :key="i" @click="handleClickItem(item, i)">
-                    <q-item-section avatar>
-                      <q-avatar size="24px" color="orange">
-                        {{ i + 1 }}
-                      </q-avatar>
-                    </q-item-section>
-                    <q-item-section>
-                      <q-item-label>{{ item.anatomy ? item.anatomy : '...' }}</q-item-label>
-                      <q-item-label caption lines="2">
-                        {{ item.ket ? item.ket : '...' }}
-                      </q-item-label>
-                    </q-item-section>
+                <q-list separator>
+                  <template v-for="(item, i) in filterShapes" :key="i">
+                    <q-item clickable @click="handleClickItem(item, i)">
+                      <q-item-section avatar side top>
+                        <q-avatar size="18px" color="orange">
+                          {{ i + 1 }}
+                        </q-avatar>
+                      </q-item-section>
+                      <q-item-section>
+                        <q-item-label>{{ item.anatomy ? item.anatomy : '...' }}
+                          <div v-if="store.mata[i]">
+                            <div class="column q-ml-sm">
+                              <!-- <div><em>Details Pemeriksaan (Khusus Mata)</em></div> -->
+                              <div class="q-ml-sm">
+                                <div class="flex items-center q-gutter-x-xs">
+                                  <div>VOD AWAL : </div>
+                                  <b>
+                                    <text-edit :model-value="store.mata[i].rs4" @update:model-value="(val) => {
+                                      store.mata[i].rs4 = val
+                                    }" />
+                                  </b>
+                                </div>
+                                <div class="flex items-center q-gutter-x-xs">
+                                  <div>VOD REFR : </div>
+                                  <b>
+                                    <text-edit :model-value="store.mata[i].rs5" @update:model-value="(val) => {
+                                      store.mata[i].rs5 = val
+                                    }" />
+                                  </b>
+                                </div>
+                                <div class="flex items-center q-gutter-x-xs">
+                                  <div>VOD AKHIR : </div>
+                                  <b>
+                                    <text-edit :model-value="store.mata[i].rs6" @update:model-value="(val) => {
+                                      store.mata[i].rs6 = val
+                                    }" />
+                                  </b>
+                                </div>
+                                <div class="flex items-center q-gutter-x-xs">
+                                  <div>TOD : </div>
+                                  <b>
+                                    <text-edit :model-value="store.mata[i].rs10" @update:model-value="(val) => {
+                                      store.mata[i].rs10 = val
+                                    }" />
+                                  </b>
+                                </div>
+                                <div class="flex items-center q-gutter-x-xs">
+                                  <div>FONDOS OD : </div>
+                                  <b>
+                                    <text-edit :model-value="store.mata[i].rs12" @update:model-value="(val) => {
+                                      store.mata[i].rs12 = val
+                                    }" />
+                                  </b>
+                                </div>
+                                <div class="flex items-center q-gutter-x-xs">
+                                  <div>VOS AWAL : </div>
+                                  <b>
+                                    <text-edit :model-value="store.mata[i].rs7" @update:model-value="(val) => {
+                                      store.mata[i].rs7 = val
+                                    }" />
+                                  </b>
+                                </div>
+                                <div class="flex items-center q-gutter-x-xs">
+                                  <div>VOS REFR : </div>
+                                  <b>
+                                    <text-edit :model-value="store.mata[i].rs8" @update:model-value="(val) => {
+                                      store.mata[i].rs8 = val
+                                    }" />
+                                  </b>
+                                </div>
+                                <div class="flex items-center q-gutter-x-xs">
+                                  <div>VOS AKHIR : </div>
+                                  <b>
+                                    <text-edit :model-value="store.mata[i].rs9" @update:model-value="(val) => {
+                                      store.mata[i].rs9 = val
+                                    }" />
+                                  </b>
+                                </div>
+                                <div class="flex items-center q-gutter-x-xs">
+                                  <div>TOS : </div>
+                                  <b>
+                                    <text-edit :model-value="store.mata[i].rs11" @update:model-value="(val) => {
+                                      store.mata[i].rs11 = val
+                                    }" />
+                                  </b>
+                                </div>
+                                <div class="flex items-center q-gutter-x-xs">
+                                  <div>FONDOS OS : </div>
+                                  <b>
+                                    <text-edit :model-value="store.mata[i].rs13" @update:model-value="(val) => {
+                                      store.mata[i].rs13 = val
+                                    }" />
+                                  </b>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </q-item-label>
+                        <q-item-label caption lines="2">
+                          Ket:
+                          <!-- <span>
+                            {{ item.ket ? item.ket : '...' }}
+                          </span> -->
+                          <text-area-edit class="full-width" :model-value="item.ket" @update:model-value="(val) => {
+                            item.ket = val
+                          }" />
+                        </q-item-label>
+                      </q-item-section>
 
-                    <q-item-section side style="padding: 0;">
-                      <q-btn flat icon="icon-mat-delete" size="xs" padding="xs" color="negative"
-                        @click="store.deleteObjShapes(i)" />
-                    </q-item-section>
-                  </q-item>
+                      <q-item-section side top style="padding: 0;">
+                        <q-btn flat icon="icon-mat-delete" size="xs" padding="xs" color="negative"
+                          @click="store.deleteObjShapes(i)" />
+                      </q-item-section>
+                    </q-item>
+
+                  </template>
+                  <div style="margin-bottom: 100px;"></div>
                   <q-separator dark />
                 </q-list>
               </q-scroll-area>
@@ -241,16 +339,21 @@
         </div>
       </div>
     </div>
+
+
+
   </div>
 </template>
 
 <script setup>
 import DadaParuFormVue from './khusus/DadaParuForm.vue'
 import { usePemeriksaanFisik } from 'src/stores/simrs/pelayanan/poli/pemeriksaanfisik'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, onBeforeMount, defineAsyncComponent } from 'vue'
 import { useMenuPemeriksaan } from '../../forjs/menupemeriksaan'
 
 import MenuCanvas from './MenuCanvas.vue'
+const TextEdit = defineAsyncComponent(() => import('src/pages/simrs/ranap/layanan/components/TextEdit.vue'))
+const TextAreaEdit = defineAsyncComponent(() => import('src/pages/simrs/ranap/layanan/components/TextAreaEdit.vue'))
 
 const emits = defineEmits(['openHistory'])
 const store = usePemeriksaanFisik()
@@ -258,6 +361,7 @@ const store = usePemeriksaanFisik()
 const { menus } = useMenuPemeriksaan()
 const formRef = ref()
 const isEditFormDialog = ref(false)
+const editIndex = ref(null)
 
 const opt = ref([
   { value: 'Tidak ada kelainan', label: 'Tidak ada kelainan' },
@@ -316,7 +420,7 @@ function sumKesadaran() {
 }
 
 onMounted(() => {
-  // console.log('canvas', canvasEl.value?.clientWidth)
+  // console.log('filterShapes', filterShapes.value)
   // getImage()
   // canvasWidth.value = canvasEl.value?.clientWidth
   store.initReset(false).then(() => {
@@ -339,10 +443,10 @@ function historyOpen() {
 }
 
 const handleClickItem = (item, index) => {
-  console.log('handleClickItem', item, index);
-  console.log('handleClickItem2', store.dialogForm);
+  // console.log('handleClickItem', item, index);
+  // console.log('handleClickItem2', store.dialogForm);
   store.isEdit = true
-
+  editIndex.value = index
 
   // store.getHistory(props.pasien?.norm)
 }

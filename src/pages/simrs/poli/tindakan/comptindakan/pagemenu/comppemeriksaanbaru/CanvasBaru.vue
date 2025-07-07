@@ -5,13 +5,15 @@
       <img ref="imgRef" class="hidden" :src="`${tab !== null ? pathImg + tab : store.fileGambar}`" alt="gambar medis" />
 
       <!-- Canvas area -->
-      <canvas ref="canvasRef"></canvas>
-
-      <div class="absolute">
+      <canvas ref="canvasRef">
+        <!-- <div class="absolute"> -->
         <!-- Menu overlay -->
-        <MenuCanvas v-if="target" ref="refMenu" :target="target || null" @show-menu="onMenuShow"
-          @cancel-shape="cancelShape" @save-shape="saveShapes" />
-      </div>
+        <MenuCanvas ref="refMenu" :target="target || null" @show-menu="onMenuShow" @cancel-shape="cancelShape"
+          @save-shape="saveShapes" />
+        <!-- </div> -->
+      </canvas>
+
+
 
     </div>
 
@@ -344,7 +346,7 @@ watch(() => arr?.value, (newVal, oldVal) => {
   // console.log('watch on shapes', newVal)
   // console.log('watch on shapes-old', oldVal)
   if (newVal?.length !== oldVal?.length) {
-    console.log('watch on shapes', newVal);
+    // console.log('watch on shapes', newVal);
 
     drawall()
   }
@@ -360,7 +362,7 @@ watch(() => store?.fileGambar, (newVal, oldVal) => {
 watch(() => store.isEdit, (val) => {
 
   if (val) {
-    console.log('watch on store.isEdit', val);
+    // console.log('watch on store.isEdit', val);
 
     objectSelected.value = null
     writingMode.value = true

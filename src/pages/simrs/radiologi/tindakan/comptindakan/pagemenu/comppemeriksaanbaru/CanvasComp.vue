@@ -1,9 +1,5 @@
 <template>
-  <div
-    ref="el"
-    class="column full-height full-width flex-center scroll bg-grey"
-    style="border: 1px solid grey;"
-  >
+  <div ref="el" class="column full-height full-width flex-center scroll bg-grey" style="border: 1px solid grey;">
     <!-- <div class="t-canvas"> -->
     <!-- <div class="absolute-left full-height">
       <DrawerKiri />
@@ -12,77 +8,32 @@
       <MenuSamping />
     </div> -->
     <!-- {{ openTab }} -->
-    <img
-      ref="imgRef"
-      :key="store.fileGambar"
-      :src="`${tab !==null? pathImg + tab : store.fileGambar}`"
-      alt="gambar medis"
-      class="hidden"
-    >
-    <canvas
-      id="canvas-target"
-      ref="canvasRef"
-      :width="widthEl"
-      :height="heightEl"
-    >
-      <MenuCanvas
-        ref="refMenu"
-        :target="target || null"
-        @show-menu="onMenuShow"
-        @cancel-shape="cancelShape"
-        @save-shape="saveShapes"
-      />
+    <img ref="imgRef" :key="store.fileGambar" :src="`${tab !== null ? pathImg + tab : store.fileGambar}`"
+      alt="gambar medis" class="hidden">
+    <canvas id="canvas-target" ref="canvasRef" :width="widthEl" :height="heightEl">
+      <MenuCanvas ref="refMenu" :target="target || null" @show-menu="onMenuShow" @cancel-shape="cancelShape"
+        @save-shape="saveShapes" />
 
     </canvas>
 
     <!-- </div> -->
     <div class="absolute-top">
-      <HeaderCanvas
-        v-if="tab===null"
-        :is-btn="objectSelected===null? false:true"
-        :canvas="cvn"
-        @ok="deselectObject"
-      />
+      <HeaderCanvas v-if="tab === null" :is-btn="objectSelected === null ? false : true" :canvas="cvn" @ok="deselectObject" />
     </div>
     <div class="absolute-bottom">
-      <BottomCanvas
-        :tab="tab?true:false"
-        @reset="resetShapes"
-        @save-image="saveImage"
-        @is-template="emits('openTemplate')"
-        @new-editor="tabDiNullkan"
-        @list-images="tabOpenned"
-        @delete-image="hapusGambar"
-      />
+      <BottomCanvas :tab="tab ? true : false" @reset="resetShapes" @save-image="saveImage"
+        @is-template="emits('openTemplate')" @new-editor="tabDiNullkan" @list-images="tabOpenned"
+        @delete-image="hapusGambar" />
       <div v-if="pasien?.gambars?.length && openTab">
         <div class="flex">
           <div class="q-py-xs q-px-sm f-10 bg-dark text-white">
             Gambar Tersimpan
           </div>
         </div>
-        <q-tabs
-          v-model="tab"
-          dense
-          class="bg-dark text-white q-pa-none"
-          align="center"
-          :breakpoint="0"
-          indicator-color="transparent"
-          mobile-arrows
-          outside-arrows
-          @update:model-value="lihatTab"
-        >
-          <q-tab
-            v-for="(src , i) in pasien?.gambars"
-            :key="i"
-            :name="src.gambar"
-            class="q-pa-xs"
-          >
-            <q-img
-              :src="`${pathImg + src.gambar}`"
-              loading="lazy"
-              spinner-color="white"
-              width="100px"
-            />
+        <q-tabs v-model="tab" dense class="bg-dark text-white q-pa-none" align="center" :breakpoint="0"
+          indicator-color="transparent" mobile-arrows outside-arrows @update:model-value="lihatTab">
+          <q-tab v-for="(src, i) in pasien?.gambars" :key="i" :name="src.gambar" class="q-pa-xs">
+            <q-img :src="`${pathImg + src.gambar}`" loading="lazy" spinner-color="white" width="100px" />
           </q-tab>
         </q-tabs>
       </div>
@@ -295,7 +246,7 @@ function init() {
       norm: props.pasien ? props.pasien.norm : ''
     }
     store.pushShapes(clone).then((x) => {
-    // console.log('shapes', writingMode.value)
+      // console.log('shapes', writingMode.value)
       drawall()
       // objectSelected.value = obj
       // canvas.setActiveObject(obj)
@@ -467,9 +418,17 @@ function setBtns(canvas, obj) {
   })
   // canvas.setActiveObject(object)
 
-  // console.log('setBtns', obj)
-  canvas.item(obj?.target?.ids).hasControls = true
-  canvas.item(obj?.target?.ids).controls.mtr.offsetY = -20
+  const objTarget = obj?.target;
+  if (objTarget) {
+    objTarget.hasControls = true;
+    if (objTarget.controls && objTarget.controls.mtr) {
+      objTarget.controls.mtr.offsetY = -20;
+    }
+  }
+
+  // // console.log('setBtns', obj)
+  // canvas.item(obj?.target?.ids).hasControls = true
+  // canvas.item(obj?.target?.ids).controls.mtr.offsetY = -20
 
   canvas.renderAll()
 }
@@ -1003,6 +962,4 @@ watch(() => store.fileGambar, (newVal, oldVal) => {
 
 </script>
 
-<style lang="scss">
-
-</style>
+<style lang="scss"></style>

@@ -153,26 +153,23 @@ export function useFabricCanvas(
 
     // 👇 Mouse Up
     canvas.on('mouse:up', (evt) => {
-      // console.log('mouse:up', evt);
-
       if (tab.value !== null) {
-        target.value = null
-        return false
-      }
-
-      if (store?.dialogForm?.penanda === 'drag-segi-empat' && evt.target !== null) {
-        target.value = '.upper-canvas'
+        return // keluar langsung, tidak ubah target
       }
 
       const { x, y } = evt.pointer || {}
 
       if (store?.dialogForm?.penanda === 'drag-segi-empat') {
+        if (evt.target !== null) {
+          target.value = '.upper-canvas'
+        }
+
         store.setDialogForm('width', x - start.value.x)
         store.setDialogForm('height', y - start.value.y)
       }
 
+      // Jika tidak klik ke objek manapun, gambar baru
       if (evt.target === null) {
-        console.log('mouse:up', null);
         draw(
           store.dialogForm.penanda,
           store.dialogForm.x,
@@ -189,7 +186,8 @@ export function useFabricCanvas(
         )
       }
 
-      if (target.value === null) {
+      // Pastikan hanya setBtns jika tidak ada tab dan objek baru dipilih
+      if (evt.target && !tab.value) {
         setBtns(canvas, evt)
       }
 
@@ -199,14 +197,12 @@ export function useFabricCanvas(
         store.setDialogForm('warna', active.stroke)
         store.setDialogForm('fill', active.fill)
 
-        console.log('active', store.dialogForm);
-
-        return false
+        console.log('active', store.dialogForm)
+        return
       }
 
       if (objectSelected.value !== null) {
         target.value = null
-        return false
       }
     })
 
@@ -217,7 +213,7 @@ export function useFabricCanvas(
       zoom = Math.max(0.01, Math.min(zoom, 20))
 
       SCALE_FACTOR.value = zoom
-      canvas.setZoom(zoom)
+      // canvas.setZoom(zoom) // 👈 Zoom saya matikan
 
       opt.e.preventDefault()
       opt.e.stopPropagation()
@@ -250,7 +246,8 @@ export function useFabricCanvas(
     const ids = obj?.target?.ids
     const object = obj?.target
     objectSelected.value = object
-    // console.log('onChange', objectSelected.value)
+    // console.log('onChange objectSelected', objectSelected.value)
+    // console.log('onChange obj', obj)
     const o = obj?.target
     if (!o?.strokeWidthUnscaled && o?.strokeWidth) {
       o.strokeWidthUnscaled = o?.strokeWidth
@@ -297,7 +294,7 @@ export function useFabricCanvas(
 
   function drawall() {
 
-    console.log('🔁 drawall called')
+    // console.log('🔁 drawall called')
 
     if (!cvn.value) return
 
@@ -328,7 +325,7 @@ export function useFabricCanvas(
 
     canvas.renderAll()
 
-    console.log('drawall paling bawah', arr.value);
+    // console.log('drawall paling bawah', arr.value);
 
   }
 
@@ -351,8 +348,15 @@ export function useFabricCanvas(
     // canvas.setActiveObject(object)
 
     // console.log('setBtns', obj)
-    canvas.item(obj?.target?.ids).hasControls = true
-    canvas.item(obj?.target?.ids).controls.mtr.offsetY = -20
+    // canvas.item(obj?.target?.ids).hasControls = true
+    // canvas.item(obj?.target?.ids).controls.mtr.offsetY = -20
+    const objTarget = obj?.target;
+    if (objTarget) {
+      objTarget.hasControls = true;
+      if (objTarget.controls && objTarget.controls.mtr) {
+        objTarget.controls.mtr.offsetY = -20;
+      }
+    }
 
     canvas.renderAll()
   }
