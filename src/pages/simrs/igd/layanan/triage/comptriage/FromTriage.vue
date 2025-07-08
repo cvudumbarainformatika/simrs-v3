@@ -249,8 +249,8 @@
               </div>
               <div class="row q-col-gutter-sm q-pb-sm">
                 <div class="col-6">
-                  <q-input ref="refbb" v-model="store.form.bb" label="BB/Kg" mask="##.#" outlined standout="bg-yellow-3"
-                    dense :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" />
+                  <q-input ref="refbb" v-model="store.form.bb" label="BB/Kg" outlined standout="bg-yellow-3" dense
+                    :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" />
                 </div>
                 <div class="col-6">
                   <q-input ref="reftinggibadan" v-model="store.form.tinggibadan" label="Tinggi Badan/Cm" type="number"
