@@ -6,37 +6,37 @@
           <q-markup-table flat bordered wrap-cells :separator="separator">
             <thead style="height: 35px;">
               <tr>
-                <th colspan="3">
+                <th style="font-weight: bold" colspan="3">
                   Sebelum Perubahan
                 </th>
-                <th colspan="2">
+                <th style="font-weight: bold" colspan="2">
                   Setelah Perubahan
                 </th>
               </tr>
               <tr>
-                <th>
+                <th style="font-weight: bold">
                   Indikator
                 </th>
-                <th>
+                <th style="font-weight: bold">
                   Tolak Ukur Kerja
                 </th>
-                <th>
+                <th style="font-weight: bold">
                   Target Kinerja
                 </th>
-                <th>
+                <th style="font-weight: bold">
                   Tolak Ukur Kerja
                 </th>
-                <th>
+                <th style="font-weight: bold">
                   Target Kinerja
                 </th>
               </tr>
             </thead>
             <tbody style="height: 30px;">
               <tr>
-                <td>
+                <td class="text-bold">
                   Capaian Kegiatan
                 </td>
-                <td>
+                <!-- <td>
                   {{ store.capaiankegiatan }}
                   <q-popup-edit v-model="store.capaiankegiatan" v-slot="scope" @update:model-value="(val) => {
                     store.capaiankegiatan = val
@@ -44,48 +44,27 @@
                     <q-input label="Silahkan di isi" v-model="scope.value" dense autofocus counter
                       @keyup.enter="scope.set" />
                   </q-popup-edit>
+                </td> -->
+                <td>
+                  {{ store.pergeseran[0].capaianprogram }}
                 </td>
                 <td class="text-right">
-                  {{ store.targetcapaian }}
-                  <q-popup-edit v-model="store.targetcapaian" v-slot="scope" @update:model-value="(val) => {
-                    store.targetcapaian = val
-                  }">
-                    <q-input label="Silahkan di isi" v-model="scope.value" dense autofocus counter
-                      @keyup.enter="scope.set" />
-                  </q-popup-edit>
+                  {{ store.pergeseran[0].targetcapaian }}
                 </td>
                 <!-- SETELAH PERGESERAN -->
                 <td>
-                  {{ store.capaiankegiatan }}
-                  <q-popup-edit v-model="store.capaiankegiatan" v-slot="scope" @update:model-value="(val) => {
-                    store.capaiankegiatan = val
-                  }">
-                    <q-input label="Silahkan di isi" v-model="scope.value" dense autofocus counter
-                      @keyup.enter="scope.set" />
-                  </q-popup-edit>
+                  {{ store.pergeseran[0].capaianprogram }}
                 </td>
                 <td class="text-right">
-                  {{ store.targetcapaian }}
-                  <q-popup-edit v-model="store.targetcapaian" v-slot="scope" @update:model-value="(val) => {
-                    store.targetcapaian = val
-                  }">
-                    <q-input label="Silahkan di isi" v-model="scope.value" dense autofocus counter
-                      @keyup.enter="scope.set" />
-                  </q-popup-edit>
+                  {{ store.pergeseran[0].targetcapaian }}
                 </td>
               </tr>
               <tr>
-                <td>
+                <td class="text-bold">
                   Masukan
                 </td>
                 <td>
-                  {{ store.masukan }}
-                  <q-popup-edit v-model="store.masukan" v-slot="scope" @update:model-value="(val) => {
-                    store.masukan = val
-                  }">
-                    <q-input label="Silahkan di isi" v-model="scope.value" dense autofocus counter
-                      @keyup.enter="scope.set" />
-                  </q-popup-edit>
+                  {{ store.pergeseran[0].masukan }}
                 </td>
                 <td class="text-right">
                   <template v-if="store.reqs.jenisrka === '2'">
@@ -98,13 +77,7 @@
 
                 <!-- SETELAH PERGESERAN -->
                 <td>
-                  {{ store.masukan }}
-                  <q-popup-edit v-model="store.masukan" v-slot="scope" @update:model-value="(val) => {
-                    store.masukan = val
-                  }">
-                    <q-input label="Silahkan di isi" v-model="scope.value" dense autofocus counter
-                      @keyup.enter="scope.set" />
-                  </q-popup-edit>
+                  {{ store.pergeseran[0].masukan }}
                 </td>
                 <td class="text-right">
                   <template v-if="store.reqs.jenisrka === '2'">
@@ -116,88 +89,40 @@
                 </td>
               </tr>
               <tr>
-                <td>
+                <td class="text-bold">
                   Keluaran
                 </td>
                 <td>
-                  {{ store.keluaran }}
-                  <q-popup-edit v-model="store.keluaran" v-slot="scope" @update:model-value="(val) => {
-                    store.keluaran = val
-                  }">
-                    <q-input label="Silahkan di isi" v-model="scope.value" dense autofocus counter
-                      @keyup.enter="scope.set" />
-                  </q-popup-edit>
+                  {{ store.pergeseran[0].keluaran }}
                 </td>
                 <td class="text-right">
-                  {{ store.targetkeluaran }}
-                  <q-popup-edit v-model="store.targetkeluaran" v-slot="scope" @update:model-value="(val) => {
-                    store.targetkeluaran = val
-                  }">
-                    <q-input label="Silahkan di isi" v-model="scope.value" dense autofocus counter
-                      @keyup.enter="scope.set" />
-                  </q-popup-edit>
+                  {{ store.pergeseran[0].targetkeluaran }}
                 </td>
 
                 <!-- SETELAH PERGESERAN -->
                 <td>
-                  {{ store.keluaran }}
-                  <q-popup-edit v-model="store.keluaran" v-slot="scope" @update:model-value="(val) => {
-                    store.keluaran = val
-                  }">
-                    <q-input label="Silahkan di isi" v-model="scope.value" dense autofocus counter
-                      @keyup.enter="scope.set" />
-                  </q-popup-edit>
+                  {{ store.pergeseran[0].keluaran }}
                 </td>
                 <td class="text-right">
-                  {{ store.targetkeluaran }}
-                  <q-popup-edit v-model="store.targetkeluaran" v-slot="scope" @update:model-value="(val) => {
-                    store.targetkeluaran = val
-                  }">
-                    <q-input label="Silahkan di isi" v-model="scope.value" dense autofocus counter
-                      @keyup.enter="scope.set" />
-                  </q-popup-edit>
+                  {{ store.pergeseran[0].targetkeluaran }}
                 </td>
               </tr>
               <tr>
-                <td>
+                <td class="text-bold">
                   Hasil
                 </td>
                 <td>
-                  {{ store.hasil }}
-                  <q-popup-edit v-model="store.hasil" v-slot="scope" @update:model-value="(val) => {
-                    store.hasil = val
-                  }">
-                    <q-input label="Silahkan di isi" v-model="scope.value" dense autofocus counter
-                      @keyup.enter="scope.set" />
-                  </q-popup-edit>
+                  {{ store.pergeseran[0].hasil }}
                 </td>
                 <td class="text-right">
-                  {{ store.targethasil }}
-                  <q-popup-edit v-model="store.targethasil" v-slot="scope" @update:model-value="(val) => {
-                    store.targethasil = val
-                  }">
-                    <q-input label="Silahkan di isi" v-model="scope.value" dense autofocus counter
-                      @keyup.enter="scope.set" />
-                  </q-popup-edit>
+                  {{ store.pergeseran[0].targethasil }}
                 </td>
                 <!-- SETELAH PERGESERAN -->
                 <td>
-                  {{ store.hasil }}
-                  <q-popup-edit v-model="store.hasil" v-slot="scope" @update:model-value="(val) => {
-                    store.hasil = val
-                  }">
-                    <q-input label="Silahkan di isi" v-model="scope.value" dense autofocus counter
-                      @keyup.enter="scope.set" />
-                  </q-popup-edit>
+                  {{ store.pergeseran[0].hasil }}
                 </td>
                 <td class="text-right">
-                  {{ store.targethasil }}
-                  <q-popup-edit v-model="store.targethasil" v-slot="scope" @update:model-value="(val) => {
-                    store.targethasil = val
-                  }">
-                    <q-input label="Silahkan di isi" v-model="scope.value" dense autofocus counter
-                      @keyup.enter="scope.set" />
-                  </q-popup-edit>
+                  {{ store.pergeseran[0].targethasil }}
                 </td>
               </tr>
 
@@ -213,6 +138,9 @@
                 <th style="font-weight: bold;" colspan="2">REKENING</th>
                 <th style="font-weight: bold;" colspan="4">SEBELUM PERUBAHAN</th>
                 <th style="font-weight: bold;" colspan="4">SETELAH PERUBAHAN</th>
+                <th style="font-weight: bold" rowspan="2">
+                  Selisih
+                </th>
               </tr>
               <tr>
                 <th style="font-weight: bold;">Kode</th>
@@ -249,6 +177,11 @@
                       </span>
                     </span>
                   </td>
+                  <td class="text-right text-bold">
+                    <span class="q-pr-sm">
+                      {{ formatDenganRp(it.selisih) }}
+                    </span>
+                  </td>
                 </tr>
                 <template v-for="rinci in it?.rincian" :key="rinci">
                   <tr>
@@ -312,6 +245,11 @@
                         <span class="flex-end text-right q-pr-sm">
                           {{ formattanpaRp(rinci.pagubaru) }}
                         </span>
+                      </span>
+                    </td>
+                    <td class="text-right">
+                      <span class="col q-pr-sm">
+                        {{ formatDenganRp(rinci.selisih) }}
                       </span>
                     </td>
                   </tr>
@@ -340,6 +278,11 @@
                       </span>
                     </span>
                   </td>
+                  <td class="text-right text-bold">
+                    <span class="q-pr-sm">
+                      {{ formatDenganRp(it.selisih) }}
+                    </span>
+                  </td>
                 </tr>
                 <template v-for="rinci in it?.rincian" :key="rinci">
                   <tr>
@@ -405,6 +348,11 @@
                         </span>
                       </span>
                     </td>
+                    <td class="text-right">
+                      <span class="col q-pr-sm">
+                        {{ formatDenganRp(rinci.selisih) }}
+                      </span>
+                    </td>
                   </tr>
                 </template>
               </template>
@@ -416,12 +364,14 @@
   </template>
 </template>
 <script setup>
-import { formatRpDouble, formattanpaRp } from 'src/modules/formatter'
+import { formatDenganRp, formattanpaRp } from 'src/modules/formatter'
 import { useRkaStore } from 'src/stores/siasik/anggaran/storerka'
 import { ref } from 'vue'
 
 const store = useRkaStore()
 const separator = ref('cell')
+
+
 
 </script>
 <style>

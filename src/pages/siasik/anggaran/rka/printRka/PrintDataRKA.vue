@@ -29,7 +29,7 @@
                           </div>
                         </div>
                       </div>
-                      <div class="row text-center full-width q-py-sm">
+                      <div class="row text-center text-bold full-width q-py-sm">
                         <div class="full-width">
                           UOBK RSUD DOKTER MOHAMAD SALEH
                         </div>
@@ -41,12 +41,35 @@
 
                     <div class="row" style="width:30%">
                       <div class="row text-weight-bold full-width text-center">
-                        <div class="col flex-center q-pa-md full-width">
-                          <div>
+                        <div v-if="store.datarka?.length && store.reqs.jenisrka === '1'"
+                          class="col flex-center q-pa-md full-width">
+                          <div class="q-pb-sm">
                             Formulir
                           </div>
                           <div>
                             RKA - RINCIAN BELANJA SKPD
+                          </div>
+                        </div>
+                        <div v-if="store.reqs.jenisrka === '2'" class="col flex-center q-pa-md full-width">
+                          <div class="q-pb-sm">
+                            Formulir
+                          </div>
+                          <div class="q-pb-sm">
+                            RKA - RINCIAN BELANJA SKPD
+                          </div>
+                          <div>
+                            PERGESERAN-ANGGARAN
+                          </div>
+                        </div>
+                        <div v-if="store.reqs.jenisrka === '3'" class="col flex-center q-pa-md full-width">
+                          <div class="q-pb-sm">
+                            Formulir
+                          </div>
+                          <div class="q-pb-sm">
+                            RKA - RINCIAN BELANJA SKPD
+                          </div>
+                          <div>
+                            PERUBAHAN-ANGGARAN
                           </div>
                         </div>
                       </div>
@@ -104,7 +127,7 @@
 
                   <div class="row b6 justify-between full-width full-height ">
                     <div class="row q-pl-sm q-py-xs" style="width:100%">
-                      <div class="row q-pl-sm q-pb-xs flex-center full-width text-center">
+                      <div class="row text-bold q-pl-sm q-py-sm flex-center full-width text-center">
                         Indikator Tolak Ukur Kinerja Kegiatan
                       </div>
                     </div>
@@ -116,7 +139,7 @@
                         class="justify-center full-width">
                         <thead>
                           <tr style="height: 25px">
-                            <th rowspan="2" style="width:210px">
+                            <th rowspan="2">
                               Indikator
                             </th>
                             <th colspan="2">
@@ -127,54 +150,54 @@
                             <th>
                               Uraian
                             </th>
-                            <th style="width:200px">
+                            <th>
                               Target Kinerja
                             </th>
                           </tr>
                         </thead>
                         <tbody>
                           <tr style="height: 25px">
-                            <td>
+                            <td class="text-bold">
                               Capaian Kegiatan
                             </td>
                             <td>
-                              {{ store.capaiankegiatan }}
+                              {{ store.pergeseran[0].capaianprogram }}
                             </td>
                             <td class="text-right">
-                              {{ store.targetcapaian }}
+                              {{ store.pergeseran[0].targetcapaian }}
                             </td>
                           </tr>
                           <tr style="height: 25px">
-                            <td>
+                            <td class="text-bold">
                               Masukan
                             </td>
                             <td>
-                              {{ store.masukan }}
+                              {{ store.pergeseran[0].masukan }}
                             </td>
                             <td class="text-right">
-                              {{ formatRpDouble(store.totalPagukegiatan[0].pagu) }}
+                              {{ formatRpDouble(store.datarka[0].pagu) }}
                             </td>
                           </tr>
                           <tr style="height: 25px">
-                            <td>
+                            <td class="text-bold">
                               Keluaran
                             </td>
                             <td>
-                              {{ store.keluaran }}
+                              {{ store.pergeseran[0].keluaran }}
                             </td>
                             <td class="text-right">
-                              {{ store.targetkeluaran }}
+                              {{ store.pergeseran[0].targetkeluaran }}
                             </td>
                           </tr>
                           <tr style="height: 25px">
-                            <td>
+                            <td class="text-bold">
                               Hasil
                             </td>
                             <td>
-                              {{ store.hasil }}
+                              {{ store.pergeseran[0].hasil }}
                             </td>
                             <td class="text-right">
-                              {{ store.targethasil }}
+                              {{ store.pergeseran[0].targethasil }}
                             </td>
                           </tr>
                         </tbody>
@@ -183,98 +206,98 @@
                       <table v-if="store.reqs.jenisrka === '2'" class="justify-center full-width">
                         <thead>
                           <tr style="height: 25px">
-                            <th rowspan="2" style="width:210px">
+                            <th rowspan="2">
                               Indikator
                             </th>
                             <th colspan="2">
-                              Tolak Ukur Kerja Sebelum Perubahan
+                              Sebelum Perubahan
                             </th>
                             <th colspan="2">
-                              Tolak Ukur Kerja Setelah Perubahan
+                              Setelah Perubahan
                             </th>
                           </tr>
                           <tr style="height: 25px">
                             <th>
                               Uraian
                             </th>
-                            <th style="width:200px">
+                            <th>
                               Target Kinerja
                             </th>
                             <th>
                               Uraian
                             </th>
-                            <th style="width:200px">
+                            <th>
                               Target Kinerja
                             </th>
                           </tr>
                         </thead>
                         <tbody>
                           <tr style="height: 25px">
-                            <td>
+                            <td class="text-bold">
                               Capaian Kegiatan
                             </td>
                             <td>
-                              {{ store.capaiankegiatan }}
+                              {{ store.pergeseran[0].capaianprogram }}
                             </td>
                             <td class="text-right">
-                              {{ store.targetcapaian }}
+                              {{ store.pergeseran[0].targetcapaian }}
                             </td>
                             <td>
-                              {{ store.capaiankegiatan }}
+                              {{ store.pergeseran[0].capaianprogram }}
                             </td>
                             <td class="text-right">
-                              {{ store.targetcapaian }}
+                              {{ store.pergeseran[0].targetcapaian }}
                             </td>
                           </tr>
                           <tr style="height: 25px">
-                            <td>
+                            <td class="text-bold">
                               Masukan
                             </td>
                             <td>
-                              {{ store.masukan }}
+                              {{ store.pergeseran[0].masukan }}
                             </td>
                             <td class="text-right">
                               {{ formatRpDouble(store.datarkapergeseran[0].pagu) }}
                             </td>
                             <td>
-                              {{ store.masukan }}
+                              {{ store.pergeseran[0].masukan }}
                             </td>
                             <td class="text-right">
                               {{ formatRpDouble(store.datarkapergeseran[0].pagubaru) }}
                             </td>
                           </tr>
                           <tr style="height: 25px">
-                            <td>
+                            <td class="text-bold">
                               Keluaran
                             </td>
                             <td>
-                              {{ store.keluaran }}
+                              {{ store.pergeseran[0].keluaran }}
                             </td>
                             <td class="text-right">
-                              {{ store.targetkeluaran }}
+                              {{ store.pergeseran[0].targetkeluaran }}
                             </td>
                             <td>
-                              {{ store.keluaran }}
+                              {{ store.pergeseran[0].keluaran }}
                             </td>
                             <td class="text-right">
-                              {{ store.targetkeluaran }}
+                              {{ store.pergeseran[0].targetkeluaran }}
                             </td>
                           </tr>
                           <tr style="height: 25px">
-                            <td>
+                            <td class="text-bold">
                               Hasil
                             </td>
                             <td>
-                              {{ store.hasil }}
+                              {{ store.pergeseran[0].hasil }}
                             </td>
                             <td class="text-right">
-                              {{ store.targethasil }}
+                              {{ store.pergeseran[0].targethasil }}
                             </td>
                             <td>
-                              {{ store.hasil }}
+                              {{ store.pergeseran[0].hasil }}
                             </td>
                             <td class="text-right">
-                              {{ store.targethasil }}
+                              {{ store.pergeseran[0].targethasil }}
                             </td>
                           </tr>
                         </tbody>
@@ -283,98 +306,98 @@
                       <table v-if="store.reqs.jenisrka === '3'" class="justify-center full-width">
                         <thead>
                           <tr style="height: 25px">
-                            <th rowspan="2" style="width:210px">
+                            <th rowspan="2">
                               Indikator
                             </th>
                             <th colspan="2">
-                              Tolak Ukur Kerja Sebelum Perubahan
+                              Sebelum Perubahan
                             </th>
                             <th colspan="2">
-                              Tolak Ukur Kerja Setelah Perubahan
+                              Setelah Perubahan
                             </th>
                           </tr>
                           <tr style="height: 25px">
                             <th>
                               Uraian
                             </th>
-                            <th style="width:200px">
+                            <th>
                               Target Kinerja
                             </th>
                             <th>
                               Uraian
                             </th>
-                            <th style="width:200px">
+                            <th>
                               Target Kinerja
                             </th>
                           </tr>
                         </thead>
                         <tbody>
                           <tr style="height: 25px">
-                            <td>
+                            <td class="text-bold">
                               Capaian Kegiatan
                             </td>
                             <td>
-                              {{ store.capaiankegiatan }}
+                              {{ store.pergeseran[0].capaianprogram }}
                             </td>
                             <td class="text-right">
-                              {{ store.targetcapaian }}
+                              {{ store.pergeseran[0].targetcapaian }}
                             </td>
                             <td>
-                              {{ store.capaiankegiatan }}
+                              {{ store.pergeseran[0].capaianprogram }}
                             </td>
                             <td class="text-right">
-                              {{ store.targetcapaian }}
+                              {{ store.pergeseran[0].targetcapaian }}
                             </td>
                           </tr>
                           <tr style="height: 25px">
-                            <td>
+                            <td class="text-bold">
                               Masukan
                             </td>
                             <td>
-                              {{ store.masukan }}
+                              {{ store.pergeseran[0].masukan }}
                             </td>
                             <td class="text-right">
                               {{ formatRpDouble(store.datarkaperubahan[0].pagu) }}
                             </td>
                             <td>
-                              {{ store.masukan }}
+                              {{ store.pergeseran[0].masukan }}
                             </td>
                             <td class="text-right">
                               {{ formatRpDouble(store.datarkaperubahan[0].pagubaru) }}
                             </td>
                           </tr>
                           <tr style="height: 25px">
-                            <td>
+                            <td class="text-bold">
                               Keluaran
                             </td>
                             <td>
-                              {{ store.keluaran }}
+                              {{ store.pergeseran[0].keluaran }}
                             </td>
                             <td class="text-right">
-                              {{ store.targetkeluaran }}
+                              {{ store.pergeseran[0].targetkeluaran }}
                             </td>
                             <td>
-                              {{ store.keluaran }}
+                              {{ store.pergeseran[0].keluaran }}
                             </td>
                             <td class="text-right">
-                              {{ store.targetkeluaran }}
+                              {{ store.pergeseran[0].targetkeluaran }}
                             </td>
                           </tr>
                           <tr style="height: 25px">
-                            <td>
+                            <td class="text-bold">
                               Hasil
                             </td>
                             <td>
-                              {{ store.hasil }}
+                              {{ store.pergeseran[0].hasil }}
                             </td>
                             <td class="text-right">
-                              {{ store.targethasil }}
+                              {{ store.pergeseran[0].targethasil }}
                             </td>
                             <td>
-                              {{ store.hasil }}
+                              {{ store.pergeseran[0].hasil }}
                             </td>
                             <td class="text-right">
-                              {{ store.targethasil }}
+                              {{ store.pergeseran[0].targethasil }}
                             </td>
                           </tr>
                         </tbody>
@@ -497,6 +520,7 @@
                             <td class="text-center" colspan="2">REKENING</td>
                             <td class="text-center" colspan="4">SEBELUM PERUBAHAN</td>
                             <td class="text-center" colspan="4">SESUDAH PERUBAHAN</td>
+                            <td class="text-center" rowspan="2">SELISIH</td>
                           </tr>
                           <tr class="text-bold text-center" style="height:50px">
                             <td class="text-center">KODE</td>
@@ -533,6 +557,11 @@
                                   </span>
                                 </span>
                               </td>
+                              <td class="text-right text-bold">
+                                <span class="flex-end text-right">
+                                  {{ formatDenganRp(it.selisih) }}
+                                </span>
+                              </td>
                             </tr>
                             <template v-for="rinci in it?.rincian" :key="rinci">
                               <tr>
@@ -598,18 +627,24 @@
                                     </span>
                                   </span>
                                 </td>
+                                <td class="text-right">
+                                  <span class="flex-end text-right">
+                                    {{ formatDenganRp(rinci.selisih) }}
+                                  </span>
+                                </td>
                               </tr>
                             </template>
                           </template>
                         </tbody>
                       </table>
 
-                      <table v-else-if="store.reqs.jenisrka === '3'" class="justify-center full-width">
+                      <table v-else-if="store.reqs.jenisrka === '3'" class="justify-center full-width full-height">
                         <thead>
                           <tr class="text-bold text-center" style="height:50px">
                             <td class="text-center" colspan="2">REKENING</td>
                             <td class="text-center" colspan="4">SEBELUM PERUBAHAN</td>
                             <td class="text-center" colspan="4">SESUDAH PERUBAHAN</td>
+                            <td class="text-center" rowspan="2">SELISIH</td>
                           </tr>
                           <tr class="text-bold text-center" style="height:50px">
                             <td class="text-center">KODE</td>
@@ -646,6 +681,11 @@
                                   </span>
                                 </span>
                               </td>
+                              <td class="text-right text-bold">
+                                <span class="flex-end text-right">
+                                  {{ formatDenganRp(it.selisih) }}
+                                </span>
+                              </td>
                             </tr>
                             <template v-for="rinci in it?.rincian" :key="rinci">
                               <tr>
@@ -711,6 +751,11 @@
                                     </span>
                                   </span>
                                 </td>
+                                <td class="text-right">
+                                  <span class="flex-end text-right">
+                                    {{ formatDenganRp(rinci.selisih) }}
+                                  </span>
+                                </td>
                               </tr>
                             </template>
                           </template>
@@ -721,13 +766,22 @@
 
                   <div class="row b5 justify-between q-pt-xl q-pb-md full-width full-height ">
                     <div class="row q-pl-sm q-py-xs text-weight-bold" style="width:100%">
-                      <div class="col full-width" />
-                      <div class="col text-center" v-for="it in tt.ttd" :key="it">
-                        <div class="q-py-xs">
-                          Probolinggo {{ store.tglcetak }}
-                        </div>
+                      <div class="col text-center" v-for="it in store.pergeseran" :key="it">
                         <div class="text-bold">
-                          Pengguna Anggaran
+                          Pejabat Teknis Kegiatan
+                        </div>
+                        <div style="padding-bottom: 60px" />
+                        <div class="underline text-bold q-py-xs">
+                          {{ it.pptk }}
+                          <div class="garis-bawah" style="text-decoration-line: underline;" />
+                        </div>
+                        <div>
+                          NIP. {{ it.kodepptk }}
+                        </div>
+                      </div>
+                      <div class="col text-center" v-for="it in tt.ttd" :key="it">
+                        <div class="text-bold">
+                          Kuasa Pengguna Anggaran
                         </div>
                         <div style="padding-bottom: 60px" />
                         <div class="underline text-bold q-py-xs">
@@ -768,7 +822,7 @@ import { onMounted, ref } from 'vue'
 
 // eslint-disable-next-line no-unused-vars
 import { useRkaStore } from 'src/stores/siasik/anggaran/storerka'
-import { formatRpDouble, formattanpaRp } from 'src/modules/formatter'
+import { formatDenganRp, formatRpDouble, formattanpaRp } from 'src/modules/formatter'
 import listDatapergeseran from '../inpage/ListDataRKApergeseran.vue'
 import listData from '../inpage/ListDataRKA.vue'
 

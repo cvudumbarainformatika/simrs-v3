@@ -241,114 +241,480 @@
       </table>
     </div>
 
-    <!-- Diagnosa keperawatan -->
-    <div class="section">
-      <div class="section-title">Diagnosis Keperawatan</div>
-      <table style="margin-top: -5px;">
+    <!-- Penilaian : Assasement Fungsional Barthel -->
+    <div class="section" v-if="penilaian?.barthel">
+      <div class="section-title">Pengkajian fungsional menggunakan Indeks Barthel : </div>
+      <table>
         <thead>
           <tr>
-            <th>DIAGNOSA KEPERAWATAN</th>
-            <th>PLANN</th>
-            <th>INTERVENSI</th>
+            <th>Item Yang Dinilai</th>
+            <th>Keterangan</th>
+            <th>Skor</th>
           </tr>
         </thead>
         <tbody>
-          <template v-for="(item, i) in pasien?.diagnosakeperawatan" :key="i">
-            <tr>
-              <td>
-                <div> - {{ item?.nama }}</div>
-              </td>
-              <td>
-                <div v-for="plann in kepPlann(item)" :key="plann">
-                  <div class="row no-wrap">
-                    <div class="col-auto q-mr-xs">-</div>
-                    <div class="col-auto">{{ plann?.masterintervensi?.nama }}</div>
-                  </div>
+          <tr>
+            <td>Makan (Feeding)</td>
+            <td> {{ penilaian?.barthel?.makan?.label }} </td>
+            <td> {{ penilaian?.barthel?.makan?.skor }} </td>
+          </tr>
+          <tr>
+            <td>Mandi (Bathing)</td>
+            <td> {{ penilaian?.barthel?.mandi?.label }} </td>
+            <td> {{ penilaian?.barthel?.mandi?.skor }} </td>
+          </tr>
+          <tr>
+            <td>Perawatan diri (Grooming)</td>
+            <td> {{ penilaian?.barthel?.perawatanDiri?.label }} </td>
+            <td> {{ penilaian?.barthel?.perawatanDiri?.skor }} </td>
+          </tr>
+          <tr>
+            <td>Berpakaian (Dressing)</td>
+            <td> {{ penilaian?.barthel?.berpakaian?.label }} </td>
+            <td> {{ penilaian?.barthel?.berpakaian?.skor }} </td>
+          </tr>
+          <tr>
+            <td>Buang Air Kecil (Bowel)</td>
+            <td> {{ penilaian?.barthel?.buangAirKcl?.label }} </td>
+            <td> {{ penilaian?.barthel?.buangAirKcl?.skor }} </td>
+          </tr>
+          <tr>
+            <td>Buang Air Besar (Bladder)</td>
+            <td> {{ penilaian?.barthel?.buangAirBsr?.label }} </td>
+            <td> {{ penilaian?.barthel?.buangAirBsr?.skor }} </td>
+          </tr>
+          <tr>
+            <td>Penggunaan Toilet</td>
+            <td> {{ penilaian?.barthel?.toilet?.label }} </td>
+            <td> {{ penilaian?.barthel?.toilet?.skor }} </td>
+          </tr>
+          <tr>
+            <td>Transfer</td>
+            <td> {{ penilaian?.barthel?.transfer?.label }} </td>
+            <td> {{ penilaian?.barthel?.transfer?.skor }} </td>
+          </tr>
+          <tr>
+            <td>Mobilitas</td>
+            <td> {{ penilaian?.barthel?.mobilitas?.label }} </td>
+            <td> {{ penilaian?.barthel?.mobilitas?.skor }} </td>
+          </tr>
+          <tr>
+            <td>Naik dan turun tangga</td>
+            <td> {{ penilaian?.barthel?.ntTangga?.label }} </td>
+            <td> {{ penilaian?.barthel?.ntTangga?.skor }} </td>
+          </tr>
+          <tr class="text-weight-bold">
+            <td colspan="3">
+              <div class="row justify-between q-px-lg">
+                <div class="col-auto">
+                  Total Skor :
                 </div>
-              </td>
-              <td>
-                <div v-for="plann in kepInter(item)" :key="plann">
-                  <div class="row no-wrap">
-                    <div class="col-auto q-mr-xs">-</div>
-                    <div class="col-auto">{{ plann?.masterintervensi?.nama }}</div>
-                  </div>
+                <div class="col-auto">
+                  {{ penilaian?.barthel?.skorBarthel?.skor }} ( {{
+                    penilaian?.barthel?.skorBarthel?.label }} )
                 </div>
-              </td>
-            </tr>
-          </template>
+              </div>
+            </td>
+
+          </tr>
+
         </tbody>
       </table>
+    </div>
+    <!-- Penilaian : Assasement Fungsional Norton -->
+    <div class="section" v-if="penilaian?.norton">
+      <div class="section-title">Resiko Ulkus Dekubitus Skala Norton : </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Keadaan Pasien</th>
+            <th>Keterangan</th>
+            <th>Skor</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Kondisi Fisik Umum</td>
+            <td> {{ penilaian?.norton?.kondisiFisik?.label }} </td>
+            <td> {{ penilaian?.norton?.kondisiFisik?.skor }} </td>
+          </tr>
+          <tr>
+            <td>Kesadaran</td>
+            <td> {{ penilaian?.norton?.kesadaran?.label }} </td>
+            <td> {{ penilaian?.norton?.kesadaran?.skor }} </td>
+          </tr>
+          <tr>
+            <td>Aktivitas</td>
+            <td> {{ penilaian?.norton?.aktivitas?.label }} </td>
+            <td> {{ penilaian?.norton?.aktivitas?.skor }} </td>
+          </tr>
+          <tr>
+            <td>Mobilitas</td>
+            <td> {{ penilaian?.norton?.mobilitas?.label }} </td>
+            <td> {{ penilaian?.norton?.mobilitas?.skor }} </td>
+          </tr>
+          <tr>
+            <td>Inkontinensia</td>
+            <td> {{ penilaian?.norton?.inkontinensia?.label }} </td>
+            <td> {{ penilaian?.norton?.inkontinensia?.skor }} </td>
+          </tr>
 
+          <tr class="text-weight-bold">
+            <td colspan="3">
+              <div class="row justify-between q-px-lg">
+                <div class="col-auto">
+                  Total Skor :
+                </div>
+                <div class="col-auto">
+                  {{ penilaian?.norton?.skorNorton?.skor }} ( {{
+                    penilaian?.norton?.skorNorton?.label }} )
+                </div>
+              </div>
+            </td>
+
+          </tr>
+
+        </tbody>
+      </table>
     </div>
 
 
 
-    <div class="section">
 
-      <div class="flex justify-between q-mx-xl">
+    <!-- Penilaian : Assasement Resiko Jatuh Morse Fall-->
+    <div class="section" v-if="penilaian?.morse_fall">
+      <div class="section-title">Resiko Jatuh Morse Fall Scale (18 - 59 tahun) : </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Skala</th>
+            <th>Keterangan</th>
+            <th>Skor</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Riwayat Jatuh</td>
+            <td> {{ penilaian?.morse_fall?.riwayatJth?.label }} </td>
+            <td> {{ penilaian?.morse_fall?.riwayatJth?.skor }} </td>
+          </tr>
+          <tr>
+            <td>Diagnosis Sekunder (? 2 Diagnosis Medis)</td>
+            <td> {{ penilaian?.morse_fall?.diagnosis?.label }} </td>
+            <td> {{ penilaian?.morse_fall?.diagnosis?.skor }} </td>
+          </tr>
+          <tr>
+            <td>Alat Bantu Mobilisasi</td>
+            <td> {{ penilaian?.morse_fall?.alatBantu?.label }} </td>
+            <td> {{ penilaian?.morse_fall?.alatBantu?.skor }} </td>
+          </tr>
+          <tr>
+            <td>Terpasang Infus</td>
+            <td> {{ penilaian?.morse_fall?.infus?.label }} </td>
+            <td> {{ penilaian?.morse_fall?.infus?.skor }} </td>
+          </tr>
+          <tr>
+            <td>Gaya Berjalan</td>
+            <td> {{ penilaian?.morse_fall?.gayaJalan?.label }} </td>
+            <td> {{ penilaian?.morse_fall?.gayaJalan?.skor }} </td>
+          </tr>
+          <tr>
+            <td>Status Mental</td>
+            <td> {{ penilaian?.morse_fall?.mental?.label }} </td>
+            <td> {{ penilaian?.morse_fall?.mental?.skor }} </td>
+          </tr>
 
-        <div>
-          <table border="0" style="border: none !important; margin-left: 10px; margin-top:  5px;">
+          <tr class="text-weight-bold">
+            <td colspan="3">
+              <div class="row justify-between q-px-lg">
+                <div class="col-auto">
+                  Total Skor :
+                </div>
+                <div class="col-auto">
+                  {{ penilaian?.morse_fall?.skorMorse?.skor }} ( {{
+                    penilaian?.morse_fall?.skorMorse?.label }} )
+                </div>
+              </div>
+            </td>
+
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Penilaian : Assasement Resiko Jatuh Ontario-->
+    <div class="section" v-if="penilaian?.ontario">
+      <div class="section-title">Resiko Jatuh Ontario / Sidney Scoring (geriatric dg usia >=60 tahun) : </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Parameter</th>
+            <th>Skrining</th>
+            <th>Jawaban</th>
+            <th>Skor</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td rowspan="2">Riwayat Jatuh</td>
+            <td> Apakah pasien datang kerumah sakit karena jatuh? </td>
+            <td> {{ penilaian?.ontario?.riwayatJth_a?.label }} </td>
+            <td> {{ penilaian?.ontario?.riwayatJth_a?.skor }} </td>
+          </tr>
+          <tr>
+            <td> Jika tidak, apakah pasien mengalami jatuh dalam 2 bulan terakhir ini? </td>
+            <td> {{ penilaian?.ontario?.riwayatJth_b?.label }} </td>
+            <td> {{ penilaian?.ontario?.riwayatJth_b?.skor }} </td>
+          </tr>
+
+          <tr>
+            <td rowspan="3">Status Mental</td>
+            <td> Apakah pasien delirium? (tidak dapat membuat keputusan, pola pikir tidak terorganisir, gangguan daya
+              ingat) </td>
+            <td> {{ penilaian?.ontario?.statusMental_a?.label }} </td>
+            <td> {{ penilaian?.ontario?.statusMental_a?.skor }} </td>
+          </tr>
+          <tr>
+            <td> Apakah pasien disorientasi? (salah menyebutkan waktu, tempat atau orang) </td>
+            <td> {{ penilaian?.ontario?.statusMental_b?.label }} </td>
+            <td> {{ penilaian?.ontario?.statusMental_b?.skor }} </td>
+          </tr>
+          <tr>
+            <td> Apakah pasien agitasi? (ketakutan, gelisah dan cemas) </td>
+            <td> {{ penilaian?.ontario?.statusMental_c?.label }} </td>
+            <td> {{ penilaian?.ontario?.statusMental_c?.skor }} </td>
+          </tr>
+
+          <tr>
+            <td rowspan="3">Penglihatan </td>
+            <td> Apakah pasien memakai kaca mata? </td>
+            <td> {{ penilaian?.ontario?.penglihatan_a?.label }} </td>
+            <td> {{ penilaian?.ontario?.penglihatan_a?.skor }} </td>
+          </tr>
+          <tr>
+            <td> Apakah pasien mengeluh adanya penglihatan buram? </td>
+            <td> {{ penilaian?.ontario?.penglihatan_b?.label }} </td>
+            <td> {{ penilaian?.ontario?.penglihatan_b?.skor }} </td>
+          </tr>
+          <tr>
+            <td> Apakah pasien memiliki glaukoma, katarak, atau degenerasi makula? </td>
+            <td> {{ penilaian?.ontario?.penglihatan_c?.label }} </td>
+            <td> {{ penilaian?.ontario?.penglihatan_c?.skor }} </td>
+          </tr>
+
+          <tr>
+            <td>Kebiasaan Berkemih</td>
+            <td> Apakah terdapat perubahan perilaku berkemih? (frekuensi, urgensi, inkontinensia, nokturia) </td>
+            <td> {{ penilaian?.ontario?.berkemih_a?.label }} </td>
+            <td> {{ penilaian?.ontario?.berkemih_a?.skor }} </td>
+          </tr>
+          <tr>
+            <td>Transfer (dr tempat tidur ke kursi dan sebaliknya)</td>
+            <td colspan="2"> {{ penilaian?.ontario?.transfertk?.label }} </td>
+            <td> {{ penilaian?.ontario?.transfertk?.skor }} </td>
+          </tr>
+          <tr>
+            <td>Mobilitas</td>
+            <td colspan="2"> {{ penilaian?.ontario?.mobilitas?.label }} </td>
+            <td> {{ penilaian?.ontario?.mobilitas?.skor }} </td>
+          </tr>
+
+          <tr class="text-weight-bold">
+            <td colspan="4">
+              <div class="row justify-between q-px-lg">
+                <div class="col-auto">
+                  Total Skor :
+                </div>
+                <div class="col-auto">
+                  {{ penilaian?.ontario?.skorOntario?.skor }} ( {{
+                    penilaian?.ontario?.skorOntario?.label }} )
+                </div>
+              </div>
+            </td>
+
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Penilaian : Assasement Resiko Jatuh Humpty-->
+    <div class="section" v-if="penilaian?.humpty_dumpty">
+      <div class="section-title">
+        Resiko Jatuh Humpty Dumpty Fall Scale ( {{ '<' }}18 tahun) : </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Skala</th>
+                <th>Keterangan</th>
+                <th>Skor</th>
+              </tr>
+            </thead>
             <tbody>
-              <tr style="border: none !important; padding: 0px !important;">
-                <td style="border: none !important; padding: 0px !important; width: 17%">
-                  <div class="text-weight-bold">TANGGAL</div>
-                </td>
-                <td valign="top" style="border: none !important; padding: 0px !important;"> :
-                  {{ dateFullFormat(pasien?.tglmasuk) }} </td>
+              <tr>
+                <td>Usia</td>
+                <td> {{ penilaian?.humpty_dumpty?.usia?.label }} </td>
+                <td> {{ penilaian?.humpty_dumpty?.usia?.skor }} </td>
               </tr>
-              <tr style="border: none !important; padding: 0px !important;">
-                <td style="border: none !important; padding: 0px !important; width: 17%">
-                  <div class="text-italic">JAM</div>
-                </td>
-                <td valign="top" style="border: none !important; padding: 0px !important;"> : {{
-                  jamTnpDetik(pasien?.tglmasuk) }}</td>
+              <tr>
+                <td>Jenis Kelamin</td>
+                <td> {{ penilaian?.humpty_dumpty?.kelamin?.label }} </td>
+                <td> {{ penilaian?.humpty_dumpty?.kelamin?.skor }} </td>
               </tr>
+              <tr>
+                <td>Aktivitas</td>
+                <td> {{ penilaian?.humpty_dumpty?.aktivitas?.label }} </td>
+                <td> {{ penilaian?.humpty_dumpty?.aktivitas?.skor }} </td>
+              </tr>
+              <tr>
+                <td>Gangguan Kognitif</td>
+                <td> {{ penilaian?.humpty_dumpty?.kognitif?.label }} </td>
+                <td> {{ penilaian?.humpty_dumpty?.kognitif?.skor }} </td>
+              </tr>
+              <tr>
+                <td>Faktor Lingkungan</td>
+                <td> {{ penilaian?.humpty_dumpty?.lingkungan?.label }} </td>
+                <td> {{ penilaian?.humpty_dumpty?.lingkungan?.skor }} </td>
+              </tr>
+              <tr>
+                <td>Respon Pada Pembedahan/ Sedasi/Anastesi</td>
+                <td> {{ penilaian?.humpty_dumpty?.pembedahan?.label }} </td>
+                <td> {{ penilaian?.humpty_dumpty?.pembedahan?.skor }} </td>
+              </tr>
+              <tr>
+                <td>Pengobatan</td>
+                <td> {{ penilaian?.humpty_dumpty?.pengobatan?.label }} </td>
+                <td> {{ penilaian?.humpty_dumpty?.pengobatan?.skor }} </td>
+              </tr>
+
+              <tr class="text-weight-bold">
+                <td colspan="3">
+                  <div class="row justify-between q-px-lg">
+                    <div class="col-auto">
+                      Total Skor :
+                    </div>
+                    <div class="col-auto">
+                      {{ penilaian?.humpty_dumpty?.skorHumpty?.skor }} ( {{
+                        penilaian?.humpty_dumpty?.skorHumpty?.label }} )
+                    </div>
+                  </div>
+                </td>
+
+              </tr>
+
             </tbody>
           </table>
-        </div>
-        <div class="column flex-center">
+      </div>
+
+      <!-- Diagnosa keperawatan -->
+      <div class="section">
+        <div class="section-title">Diagnosis Keperawatan</div>
+        <table style="margin-top: -5px;">
+          <thead>
+            <tr>
+              <th>DIAGNOSA KEPERAWATAN</th>
+              <th>PLANN</th>
+              <th>INTERVENSI</th>
+            </tr>
+          </thead>
+          <tbody>
+            <template v-for="(item, i) in pasien?.diagnosakeperawatan" :key="i">
+              <tr>
+                <td>
+                  <div> - {{ item?.nama }}</div>
+                </td>
+                <td>
+                  <div v-for="plann in kepPlann(item)" :key="plann">
+                    <div class="row no-wrap">
+                      <div class="col-auto q-mr-xs">-</div>
+                      <div class="col-auto">{{ plann?.masterintervensi?.nama }}</div>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <div v-for="plann in kepInter(item)" :key="plann">
+                    <div class="row no-wrap">
+                      <div class="col-auto q-mr-xs">-</div>
+                      <div class="col-auto">{{ plann?.masterintervensi?.nama }}</div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </template>
+          </tbody>
+        </table>
+
+      </div>
+
+
+
+      <div class="section">
+
+        <div class="flex justify-between q-mx-xl">
+
           <div>
-            Pasien / Keluarga
+            <table border="0" style="border: none !important; margin-left: 10px; margin-top:  5px;">
+              <tbody>
+                <tr style="border: none !important; padding: 0px !important;">
+                  <td style="border: none !important; padding: 0px !important; width: 17%">
+                    <div class="text-weight-bold">TANGGAL</div>
+                  </td>
+                  <td valign="top" style="border: none !important; padding: 0px !important;"> :
+                    {{ dateFullFormat(pasien?.tglmasuk) }} </td>
+                </tr>
+                <tr style="border: none !important; padding: 0px !important;">
+                  <td style="border: none !important; padding: 0px !important; width: 17%">
+                    <div class="text-italic">JAM</div>
+                  </td>
+                  <td valign="top" style="border: none !important; padding: 0px !important;"> : {{
+                    jamTnpDetik(pasien?.tglmasuk) }}</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
-          <div class="relative-position" style="width: 80px;">
-            <vue-qrcode :value="qrPenerima" tag="svg" :options="{
-              errorCorrectionLevel: 'Q',
-              color: {
-                dark: '#000000',
-                light: '#ffffff',
-              },
-              margin: 0
-            }" />
-            <!-- <img class="qrcode__image" src="~assets/logos/logo-rsud.png" alt="RSUD DOKTER MOHAMAD SALEH"> -->
+          <div class="column flex-center">
+            <div>
+              Pasien / Keluarga
+            </div>
+            <div class="relative-position" style="width: 80px;">
+              <vue-qrcode :value="qrPenerima" tag="svg" :options="{
+                errorCorrectionLevel: 'Q',
+                color: {
+                  dark: '#000000',
+                  light: '#ffffff',
+                },
+                margin: 0
+              }" />
+              <!-- <img class="qrcode__image" src="~assets/logos/logo-rsud.png" alt="RSUD DOKTER MOHAMAD SALEH"> -->
+            </div>
+            <div class="text-wrap text-center">{{ penerimanEdu?.namaPenerima }}</div>
           </div>
-          <div class="text-wrap text-center">{{ penerimanEdu?.namaPenerima }}</div>
-        </div>
 
 
-        <div class="column flex-center">
+          <div class="column flex-center">
 
-          <div>PERAWAT / BIDAN</div>
-          <!-- <div style="margin-top: -5px; margin-bottom: 10px;">DOCTOR</div> -->
+            <div>PERAWAT / BIDAN</div>
+            <!-- <div style="margin-top: -5px; margin-bottom: 10px;">DOCTOR</div> -->
 
-          <div class="relative-position" style="width: 80px;">
-            <vue-qrcode :value="qrDokter" tag="svg" :options="{
-              errorCorrectionLevel: 'Q',
-              color: {
-                dark: '#000000',
-                light: '#ffffff',
-              },
-              margin: 0
-            }" />
-            <!-- <img class="qrcode__image" src="~assets/logos/logo-rsud.png" alt="RSUD DOKTER MOHAMAD SALEH"> -->
+            <div class="relative-position" style="width: 80px;">
+              <vue-qrcode :value="qrDokter" tag="svg" :options="{
+                errorCorrectionLevel: 'Q',
+                color: {
+                  dark: '#000000',
+                  light: '#ffffff',
+                },
+                margin: 0
+              }" />
+              <!-- <img class="qrcode__image" src="~assets/logos/logo-rsud.png" alt="RSUD DOKTER MOHAMAD SALEH"> -->
+            </div>
+            <div class="text-wrap text-center">{{ anamnesisAwal?.petugas?.nama }}</div>
           </div>
-          <div class="text-wrap text-center">{{ anamnesisAwal?.petugas?.nama }}</div>
         </div>
       </div>
+
+
     </div>
-
-
-  </div>
 </template>
 <script setup>
 import { api } from 'src/boot/axios'
@@ -379,7 +745,7 @@ const props = defineProps({
 const impEdukasi = useImplementasiEdukasiRanapStore()
 onMounted(() => {
   // getDpjpData()
-  if (impEdukasi?.items?.length === 0) impEdukasi.getList(props?.pasien)
+  impEdukasi.getList(props?.pasien)
 })
 
 
@@ -439,12 +805,21 @@ const edukasi = computed(() => {
 
   return edu
 })
+
 const pemeriksaanUmum = computed(() => {
   const awal = props?.pasien?.pemeriksaan?.find(x => x?.awal === '1' && x?.nakes === '2') || null
   // console.log('awal pemerikasaan', awal)
 
   return awal
 })
+
+const penilaian = computed(() => {
+  const awal = props?.pasien?.penilaian?.find(x => x?.awal === '1' && x?.group_nakes === '2') || null
+  // console.log('awal pemerikasaan', awal)
+
+  return awal
+})
+
 </script>
 
 <style lang="scss" scoped>
