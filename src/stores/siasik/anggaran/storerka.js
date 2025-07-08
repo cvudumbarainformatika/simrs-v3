@@ -31,6 +31,8 @@ export const useRkaStore = defineStore('store_rka_siasik', {
     ptks: [],
 
     kegiatanblud: '',
+    namapptk: '',
+    kodepptk: '',
 
     totalPagukegiatan: [],
     dataanggaran: [],
@@ -146,6 +148,8 @@ export const useRkaStore = defineStore('store_rka_siasik', {
           this.dataanggaran = []
           if (resp.status === 200) {
             this.dataanggaran = resp.data
+
+            // console.log('dataaaaaaaxz', this.dataanggaran)
             // this.bidangs = resp.data
             // this.kegiatans = resp.data
             // this.ptks = resp.data
@@ -249,10 +253,10 @@ export const useRkaStore = defineStore('store_rka_siasik', {
         )
       const dataRKA = sortAnggaran(rka)
       this.datarka = dataRKA
-      // console.log('DATA RKA', this.datarka)
+      // console.log('DATA RKAxxxx', this.datarka)
 
       this.totalPagukegiatan = totalrka
-      console.log('DATA RKA', this.totalPagukegiatan)
+      // console.log('DATA total', this.totalPagukegiatan)
 
     },
     getAnggaranPergeseran() {
@@ -266,14 +270,19 @@ export const useRkaStore = defineStore('store_rka_siasik', {
           this.rincianperubahan = []
           if (resp.status === 200) {
             this.pergeseran = resp.data
+            console.log('this.pergeseran', this.pergeseran)
             // this.rincianpergeseran = []
             this.rincianpergeseran = resp.data.flatMap((x) => x.hasilpergeseran)
             this.rincianperubahan = resp.data.flatMap((x) => x.perubahanpak)
 
-            console.log('pergeseran', this.pergeseran)
+            // console.log('pergeseran', this.pergeseran)
             // console.log('rincianpergeseran', this.rincianpergeseran)
-            this.mapingDatapergeseran()
-            this.mapingDataperubahan()
+            if (this.reqs.jenisrka === '2') {
+              this.mapingDatapergeseran()
+            } else {
+              this.mapingDataperubahan()
+            }
+
             this.loading = false
             resolve(resp)
           }

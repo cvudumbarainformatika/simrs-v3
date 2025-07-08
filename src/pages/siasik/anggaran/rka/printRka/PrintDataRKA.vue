@@ -41,7 +41,7 @@
 
                     <div class="row" style="width:30%">
                       <div class="row text-weight-bold full-width text-center">
-                        <div v-if="store.datarka?.length && store.reqs.jenisrka === '1'"
+                        <div v-if="store.datarka?.length || store.reqs.jenisrka === '1'"
                           class="col flex-center q-pa-md full-width">
                           <div class="q-pb-sm">
                             Formulir
@@ -50,7 +50,7 @@
                             RKA - RINCIAN BELANJA SKPD
                           </div>
                         </div>
-                        <div v-if="store.reqs.jenisrka === '2'" class="col flex-center q-pa-md full-width">
+                        <div v-else-if="store.reqs.jenisrka === '2'" class="col flex-center q-pa-md full-width">
                           <div class="q-pb-sm">
                             Formulir
                           </div>
@@ -61,7 +61,7 @@
                             PERGESERAN-ANGGARAN
                           </div>
                         </div>
-                        <div v-if="store.reqs.jenisrka === '3'" class="col flex-center q-pa-md full-width">
+                        <div v-else-if="store.reqs.jenisrka === '3'" class="col flex-center q-pa-md full-width">
                           <div class="q-pb-sm">
                             Formulir
                           </div>
@@ -161,10 +161,10 @@
                               Capaian Kegiatan
                             </td>
                             <td>
-                              {{ store.pergeseran[0].capaianprogram }}
+                              {{ store.dataanggaran[0].capaianprogram }}
                             </td>
                             <td class="text-right">
-                              {{ store.pergeseran[0].targetcapaian }}
+                              {{ store.dataanggaran[0].targetcapaian }}
                             </td>
                           </tr>
                           <tr style="height: 25px">
@@ -172,7 +172,7 @@
                               Masukan
                             </td>
                             <td>
-                              {{ store.pergeseran[0].masukan }}
+                              {{ store.dataanggaran[0].masukan }}
                             </td>
                             <td class="text-right">
                               {{ formatRpDouble(store.datarka[0].pagu) }}
@@ -183,10 +183,10 @@
                               Keluaran
                             </td>
                             <td>
-                              {{ store.pergeseran[0].keluaran }}
+                              {{ store.dataanggaran[0].keluaran }}
                             </td>
                             <td class="text-right">
-                              {{ store.pergeseran[0].targetkeluaran }}
+                              {{ store.dataanggaran[0].targetkeluaran }}
                             </td>
                           </tr>
                           <tr style="height: 25px">
@@ -194,16 +194,16 @@
                               Hasil
                             </td>
                             <td>
-                              {{ store.pergeseran[0].hasil }}
+                              {{ store.dataanggaran[0].hasil }}
                             </td>
                             <td class="text-right">
-                              {{ store.pergeseran[0].targethasil }}
+                              {{ store.dataanggaran[0].targethasil }}
                             </td>
                           </tr>
                         </tbody>
                       </table>
 
-                      <table v-if="store.reqs.jenisrka === '2'" class="justify-center full-width">
+                      <table v-else-if="store.reqs.jenisrka === '2'" class="justify-center full-width">
                         <thead>
                           <tr style="height: 25px">
                             <th rowspan="2">
@@ -303,7 +303,7 @@
                         </tbody>
                       </table>
 
-                      <table v-if="store.reqs.jenisrka === '3'" class="justify-center full-width">
+                      <table v-else-if="store.reqs.jenisrka === '3'" class="justify-center full-width">
                         <thead>
                           <tr style="height: 25px">
                             <th rowspan="2">
@@ -766,17 +766,17 @@
 
                   <div class="row b5 justify-between q-pt-xl q-pb-md full-width full-height ">
                     <div class="row q-pl-sm q-py-xs text-weight-bold" style="width:100%">
-                      <div class="col text-center" v-for="it in store.pergeseran" :key="it">
+                      <div class="col text-center">
                         <div class="text-bold">
                           Pejabat Teknis Kegiatan
                         </div>
                         <div style="padding-bottom: 60px" />
                         <div class="underline text-bold q-py-xs">
-                          {{ it.pptk }}
+                          {{ store.namapptk }}
                           <div class="garis-bawah" style="text-decoration-line: underline;" />
                         </div>
                         <div>
-                          NIP. {{ it.kodepptk }}
+                          NIP. {{ store.kodepptk }}
                         </div>
                       </div>
                       <div class="col text-center" v-for="it in tt.ttd" :key="it">

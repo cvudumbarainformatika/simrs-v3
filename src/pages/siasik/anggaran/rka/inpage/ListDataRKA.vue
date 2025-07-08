@@ -23,10 +23,10 @@
                   Capaian Kegiatan
                 </td>
                 <td>
-                  {{ store.pergeseran[0].capaianprogram }}
+                  {{ store.dataanggaran[0].capaianprogram }}
                 </td>
                 <td class="text-right">
-                  {{ store.pergeseran[0].targetcapaian }}
+                  {{ store.dataanggaran[0].targetcapaian }}
                 </td>
               </tr>
               <tr>
@@ -34,7 +34,7 @@
                   Masukan
                 </td>
                 <td>
-                  {{ store.pergeseran[0].masukan }}
+                  {{ store.dataanggaran[0].masukan }}
                 </td>
                 <td class="text-right">
                   {{ formatRpDouble(store.totalPagukegiatan[0].pagu) }}
@@ -45,10 +45,10 @@
                   Keluaran
                 </td>
                 <td>
-                  {{ store.pergeseran[0].keluaran }}
+                  {{ store.dataanggaran[0].keluaran }}
                 </td>
                 <td class="text-right">
-                  {{ store.pergeseran[0].targetkeluaran }}
+                  {{ store.dataanggaran[0].targetkeluaran }}
                 </td>
               </tr>
               <tr>
@@ -56,10 +56,10 @@
                   Hasil
                 </td>
                 <td>
-                  {{ store.pergeseran[0].hasil }}
+                  {{ store.dataanggaran[0].hasil }}
                 </td>
                 <td class="text-right">
-                  {{ store.pergeseran[0].targethasil }}
+                  {{ store.dataanggaran[0].targethasil }}
                 </td>
               </tr>
             </tbody>

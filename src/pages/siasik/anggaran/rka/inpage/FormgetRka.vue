@@ -37,7 +37,8 @@
           const obj = arr?.length ? arr.find(x => x.kodekegiatan === val) : null
           const kegiatan = obj?.kegiatan
           store.kegiatanblud = kegiatan
-
+          store.namapptk = obj?.namapptk
+          store.kodepptk = obj?.kodepptk
         }" />
     </div>
     <!-- <div class="q-pa-sm" style="width:25%">
@@ -128,9 +129,14 @@ function ambilData() {
   }
 
 
-  if (store.reqs.jenisrka !== '' && store.reqs.jenisrka === '2' || store.reqs.jenisrka === '3') {
-    store.datarkaperubahan = []
+  if (store.reqs.jenisrka !== '' && store.reqs.jenisrka === '2') {
+    // store.datarkaperubahan = []
     store.datarkapergeseran = []
+    store.getAnggaranPergeseran()
+  }
+  if (store.reqs.jenisrka !== '' && store.reqs.jenisrka === '3') {
+    store.datarkaperubahan = []
+    // store.datarkapergeseran = []
     store.getAnggaranPergeseran()
   }
   // if (store.reqs.jenisrka !== '' && store.reqs.jenisrka === '3') {
@@ -138,7 +144,7 @@ function ambilData() {
   // }
 
 
-  // console.log('ambil Data')
+  console.log('ambil Data', store.reqs.jenisrka)
 
 
 }

@@ -21,11 +21,12 @@
   <div class="container q-px-sm">
     <q-card class="items-center full-width">
       <div class="row">
-        <template v-if="store.datarka?.length && store.reqs.jenisrka === '1'">
+        <template v-if="store.datarka?.length > 0 && store.reqs.jenisrka === '1'">
           <listData />
         </template>
 
-        <template v-else-if="store.datarkapergeseran?.length || store.datarkaperubahan.length">
+        <template
+          v-else-if="store.datarkapergeseran?.length > 0 && store.reqs.jenisrka === '2' || store.datarkaperubahan.length > 0 && store.reqs.jenisrka === '3'">
           <listDatapergeseran />
         </template>
 
