@@ -190,6 +190,18 @@ const masters = {
         }
       ]
     },
+    {
+      path: '/master/keuangan',
+      component: () => import('src/pages/simrs/master/keuangan/IndexPage.vue'),
+      children: [
+        { path: '', redirect: '/master/keuangan/sistembayar' },
+        {
+          path: '/master/keuangan/sistembayar',
+          name: 'master.keuangan.sistembayar',
+          component: () => import('pages/simrs/master/keuangan/sistembayar/IndexPage.vue')
+        },
+      ]
+    },
     // {
     //   path: '/master/pasien',
     //   component: () => import('src/pages/simrs/master/pasien/IndexPage.vue')
