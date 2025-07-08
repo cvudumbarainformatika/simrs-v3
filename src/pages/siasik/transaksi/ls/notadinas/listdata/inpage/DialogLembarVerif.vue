@@ -1,216 +1,223 @@
 <template>
   <q-dialog persistent backdrop-filter="blur(4px)">
-    <q-card style="min-width:80vw; max-width: 80vw;">
-      <q-bar class="bg-black text-white">
-        <div>Lembar Verifikasi Belanja</div>
-        <q-space />
+    <q-card style="min-width:80vw; max-width: 180vw; height: 600px">
+      <q-layout view="lHh Lpr lFf" container class="shadow-2 rounded-borders">
+        <q-header elevated>
+          <q-bar class="bg-black text-white">
+            <div>Lembar Verifikasi Belanja</div>
+            <q-space />
 
-        <q-btn dense flat icon="icon-mat-close" v-close-popup>
-          <q-tooltip>Close</q-tooltip>
-        </q-btn>
-      </q-bar>
+            <q-btn dense flat icon="icon-mat-close" v-close-popup>
+              <q-tooltip>Close</q-tooltip>
+            </q-btn>
+          </q-bar>
+        </q-header>
+        <q-page-container>
+          <div id="printMe" class="f-12 row justify-center q-pt-md">
+            <div class="row">
+              <div class="col-1 q-pl-md">
+                <q-img src="~assets/images/Pemkot.svg" style="height: 2.6cm; width: 2cm" />
+              </div>
+              <div class="col-10">
+                <div class="row justify-center text-h6">
+                  PEMERINTAH KOTA PROBOLINGGO
+                </div>
+                <div class="row justify-center text-h7 text-weight-bold">
+                  DINAS KESEHATAN, PENGENDALIAN PENDUDUK, DAN KELUARGA BERENCANA
+                </div>
+                <div class="row justify-center text-h5 text-weight-bold">
+                  UOBK RSUD DOKTER MOHAMAD SALEH
+                </div>
+                <div class="row justify-center text-h8">
+                  Jl. Mayjen Panjaitan No.65 Telp.(0335) 433119, 42118 Fax (0335)
+                  432702
+                </div>
+                <div class="row justify-center text-h8 text-weight-bold">
+                  PROBOLINGGO 67219
+                </div>
+              </div>
+              <div class="col-1 logo_kanan">
+                <q-img src="~assets/logos/logo-rsud.png" style="height: 2.6cm; width: 2.6cm" />
+              </div>
+              <div class="col-12">
+                <div style="border: 1px solid black; margin: 8px 0;"></div>
+              </div>
+              <div class="col-12 q-py-md">
+                <div class="row justify-center text-weight-bold q-py-xs">
+                  LEMBAR VERIFIKASI BELANJA
+                </div>
+              </div>
+              <q-card-section class="q-pa-sm full-width">
+                <div class="col">
+                  <div class="row q-col-gutter-md full-width">
+                    <div class="col-auto">
+                      <div class="q-py-xs">
+                        Nomor Nota Dinas
+                      </div>
+                      <div class="q-py-xs">
+                        Tanggal
+                      </div>
+                    </div>
+                    <div class="col full-width">
+                      <div class="q-py-xs">
+                        : {{ store.cetaknotadinas.nonotadinas }}
+                      </div>
+                      <div class="q-py-xs">
+                        : {{ store.cetaknotadinas.tglnotadinas }}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-auto q-pl-md">
+                    <div class="row q-py-xs content-center items-center">
+                      <span class="q-pr-md icon-text">Jenis Belanja</span>
+                      <span class="q-pr-md icon-text"> <q-icon name="check_box_outline_blank" size="2em" /> LS</span>
+                      <span class="q-pr-sm icon-text"> <q-icon name="check_box_outline_blank" size="2em" />
+                        Panjar</span>
+                    </div>
+                    <div class="row q-py-xs content-center">
+                      <span class="q-pr-md icon-text">Rekening Belanja</span>
+                      <span class="q-pr-md icon-text"> <q-icon name="check_box_outline_blank" size="2em" /> Belanja
+                        Pegawai</span>
+                      <span class="q-pr-sm icon-text"> <q-icon name="check_box_outline_blank" size="2em" />
+                        Belanja Barang & Jasa</span>
+                      <span class="q-pr-sm icon-text"> <q-icon name="check_box_outline_blank" size="2em" />
+                        Belanja Modal</span>
+                    </div>
+                  </div>
+                  <div class="row q-col-gutter-md q-pr-md q-pt-sm full-width">
+                    <div class="col text-justify text-wrap" style="line-height: 1.6;">
+                      KELENGKAPAN SPJ
+                    </div>
+                  </div>
+                  <div class="row justify-between q-col-gutter-md q-pr-md full-width">
+                    <div class="col flex-start text-wrap" style="line-height: 1.6;">
+                      <span class="q-pr-md icon-text"> <q-icon name="check_box_outline_blank" size="2em" /> Nota Dinas
+                        Perencanaan</span>
+                    </div>
+                    <div class="col flex-end text-wrap" style="line-height: 1.6;">
+                      <span class="q-pr-md icon-text"> <q-icon name="check_box_outline_blank" size="2em" /> Surat
+                        Pesanan</span>
+                    </div>
+                  </div>
+                  <div class="row justify-between q-col-gutter-md q-pr-md full-width">
+                    <div class="col flex-start text-wrap" style="line-height: 1.6;">
+                      <span class="q-pr-md icon-text"> <q-icon name="check_box_outline_blank" size="2em" /> Nota Dinas
+                        Belanja</span>
+                    </div>
+                    <div class="col flex-end text-wrap" style="line-height: 1.6;">
+                      <span class="q-pr-md icon-text"> <q-icon name="check_box_outline_blank" size="2em" />
+                        Kuitansi</span>
+                    </div>
+                  </div>
+                  <div class="row justify-between q-col-gutter-md q-pr-md full-width">
+                    <div class="col flex-start text-wrap" style="line-height: 1.6;">
+                      <span class="q-pr-md icon-text"> <q-icon name="check_box_outline_blank" size="2em" /> SPTJ (Surat
+                        Pernyataan Tanggung Jawab)</span>
+                    </div>
+                    <div class="col flex-end text-wrap" style="line-height: 1.6;">
+                      <span class="q-pr-md icon-text"> <q-icon name="check_box_outline_blank" size="2em" /> Dokumen
+                        Sebagai
+                        Dasar Pembebanan/Pembayaran</span>
+                    </div>
+                  </div>
+                  <div class="row justify-between q-col-gutter-md q-pr-md full-width">
+                    <div class="col flex-start text-wrap" style="line-height: 1.6;">
+                      <span class="q-pr-md icon-text"> <q-icon name="check_box_outline_blank" size="2em" /> Surat
+                        Pernyataan
+                        Verifikasi</span>
+                    </div>
+                    <div class="col flex-end text-wrap" style="line-height: 1.6;">
+                      <span class="q-pr-md icon-text"> <q-icon name="check_box_outline_blank" size="2em" /> Berita Acara
+                        Serah Terima (BAST)</span>
+                    </div>
+                  </div>
+                  <div class="row justify-between q-col-gutter-md q-pr-md full-width">
+                    <div class="col flex-start text-wrap" style="line-height: 1.6;">
+                      <span class="q-pr-md icon-text"> <q-icon name="check_box_outline_blank" size="2em" /> Realisasi
+                        Pengajuan Kegiatan</span>
+                    </div>
+                    <div class="col flex-end text-wrap" style="line-height: 1.6;">
+                      <span class="q-pr-md icon-text"> <q-icon name="check_box_outline_blank" size="2em" /> Bukti
+                        Pembelian/Pembayaran</span>
+                    </div>
+                  </div>
+                  <div class="row justify-between q-col-gutter-md q-pr-md full-width">
+                    <div class="col flex-start text-wrap" style="line-height: 1.6;">
+                      <span class="q-pr-md icon-text"> <q-icon name="check_box_outline_blank" size="2em" /> NPD (Nota
+                        Permintaan Dana)</span>
+                    </div>
+                    <div class="col flex-end text-wrap" style="line-height: 1.6;">
+                      <span class="q-pr-md icon-text"> <q-icon name="check_box_outline_blank" size="2em" /> Faktur
+                        Pajak</span>
+                    </div>
+                  </div>
+                  <div class="row justify-between q-col-gutter-md q-pr-md full-width">
+                    <div class="col flex-start text-wrap" style="line-height: 1.6;">
+                      <span class="q-pr-md icon-text"> <q-icon name="check_box_outline_blank" size="2em" /> Surat
+                        Perintah
+                        Kerja</span>
+                    </div>
+                    <div class="col flex-end text-wrap" style="line-height: 1.6;">
+                      <span class="q-pr-md icon-text"> <q-icon name="check_box_outline_blank" size="2em" />
+                        Dokumentasi & Pendukung lainnya</span>
+                    </div>
+                  </div>
+                  <div class="col" style="height: 150px"></div>
+                  <div class="row q-col-gutter-md q-pr-md q-pt-xl full-width">
+                    <div class="col text-justify text-wrap" style="line-height: 1.6;">
+                      Peneliti Kelengkapan dan Keabsahan Dokumen SPJ :
+                    </div>
+                  </div>
+                  <div class="row q-col-gutter-md q-pr-md q-pt-xs full-width">
+                    <div class="col text-justify text-wrap">
+                      <table class="full-width">
+                        <thead>
+                          <tr class="text-bold text-center">
+                            <th style="width: 50px">Keterangan</th>
+                            <th style="width: 50%">Verivikator</th>
+                            <th style="width: 50%">PPK</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>Tanggal</td>
+                            <td></td>
+                            <td></td>
+                          </tr>
+                          <tr>
+                            <td>Jabatan</td>
+                            <td class="text-center">Staf PPK</td>
+                            <td class="text-center">PPK - SKPD</td>
+                          </tr>
+                          <tr>
+                            <td>Nama</td>
+                            <td class="text-center">
+                              <div>{{ store.datattd[3]?.nama }}</div>
+                              <div>NIP. {{ store.datattd[3]?.nip }}</div>
+                            </td>
+                            <td class="text-center">
+                              <div>{{ store.datattd[1]?.nama }}</div>
+                              <div>NIP. {{ store.datattd[1]?.nip }}</div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>Tandatangan</td>
+                            <td style="height: 50px"></td>
+                            <td style="height: 50px"></td>
+                          </tr>
+                          <tr>
+                            <td>Catatan</td>
+                            <td style="height: 100px"></td>
+                            <td style="height: 100px"></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
 
-      <div id="printMe" class="f-12 row justify-center q-pt-md">
-        <div class="row">
-          <div class="col-1 q-pl-md">
-            <q-img src="~assets/images/Pemkot.svg" style="height: 2.6cm; width: 2cm" />
-          </div>
-          <div class="col-10">
-            <div class="row justify-center text-h6">
-              PEMERINTAH KOTA PROBOLINGGO
-            </div>
-            <div class="row justify-center text-h7 text-weight-bold">
-              DINAS KESEHATAN, PENGENDALIAN PENDUDUK, DAN KELUARGA BERENCANA
-            </div>
-            <div class="row justify-center text-h5 text-weight-bold">
-              UOBK RSUD DOKTER MOHAMAD SALEH
-            </div>
-            <div class="row justify-center text-h8">
-              Jl. Mayjen Panjaitan No.65 Telp.(0335) 433119, 42118 Fax (0335)
-              432702
-            </div>
-            <div class="row justify-center text-h8 text-weight-bold">
-              PROBOLINGGO 67219
-            </div>
-          </div>
-          <div class="col-1 logo_kanan">
-            <q-img src="~assets/logos/logo-rsud.png" style="height: 2.6cm; width: 2.6cm" />
-          </div>
-          <div class="col-12">
-            <div style="border: 1px solid black; margin: 8px 0;"></div>
-          </div>
-          <div class="col-12 q-py-md">
-            <div class="row justify-center text-weight-bold q-py-xs">
-              LEMBAR VERIFIKASI BELANJA
-            </div>
-          </div>
-          <q-card-section class="q-pa-sm full-width">
-            <div class="col">
-              <div class="row q-col-gutter-md full-width">
-                <div class="col-auto">
-                  <div class="q-py-xs">
-                    Nomor Nota Dinas
-                  </div>
-                  <div class="q-py-xs">
-                    Tanggal
-                  </div>
                 </div>
-                <div class="col full-width">
-                  <div class="q-py-xs">
-                    : {{ store.cetaknotadinas.nonotadinas }}
-                  </div>
-                  <div class="q-py-xs">
-                    : {{ store.cetaknotadinas.tglnotadinas }}
-                  </div>
-                </div>
-              </div>
-              <div class="col-auto q-pl-md">
-                <div class="row q-py-xs content-center items-center">
-                  <span class="q-pr-md icon-text">Jenis Belanja</span>
-                  <span class="q-pr-md icon-text"> <q-icon name="check_box_outline_blank" size="2em" /> LS</span>
-                  <span class="q-pr-sm icon-text"> <q-icon name="check_box_outline_blank" size="2em" />
-                    Panjar</span>
-                </div>
-                <div class="row q-py-xs content-center">
-                  <span class="q-pr-md icon-text">Rekening Belanja</span>
-                  <span class="q-pr-md icon-text"> <q-icon name="check_box_outline_blank" size="2em" /> Belanja
-                    Pegawai</span>
-                  <span class="q-pr-sm icon-text"> <q-icon name="check_box_outline_blank" size="2em" />
-                    Belanja Barang & Jasa</span>
-                  <span class="q-pr-sm icon-text"> <q-icon name="check_box_outline_blank" size="2em" />
-                    Belanja Modal</span>
-                </div>
-              </div>
-              <div class="row q-col-gutter-md q-pr-md q-pt-sm full-width">
-                <div class="col text-justify text-wrap" style="line-height: 1.6;">
-                  KELENGKAPAN SPJ
-                </div>
-              </div>
-              <div class="row justify-between q-col-gutter-md q-pr-md full-width">
-                <div class="col flex-start text-wrap" style="line-height: 1.6;">
-                  <span class="q-pr-md icon-text"> <q-icon name="check_box_outline_blank" size="2em" /> Nota Dinas
-                    Perencanaan</span>
-                </div>
-                <div class="col flex-end text-wrap" style="line-height: 1.6;">
-                  <span class="q-pr-md icon-text"> <q-icon name="check_box_outline_blank" size="2em" /> Surat
-                    Pesanan</span>
-                </div>
-              </div>
-              <div class="row justify-between q-col-gutter-md q-pr-md full-width">
-                <div class="col flex-start text-wrap" style="line-height: 1.6;">
-                  <span class="q-pr-md icon-text"> <q-icon name="check_box_outline_blank" size="2em" /> Nota Dinas
-                    Belanja</span>
-                </div>
-                <div class="col flex-end text-wrap" style="line-height: 1.6;">
-                  <span class="q-pr-md icon-text"> <q-icon name="check_box_outline_blank" size="2em" /> Kuitansi</span>
-                </div>
-              </div>
-              <div class="row justify-between q-col-gutter-md q-pr-md full-width">
-                <div class="col flex-start text-wrap" style="line-height: 1.6;">
-                  <span class="q-pr-md icon-text"> <q-icon name="check_box_outline_blank" size="2em" /> SPTJ (Surat
-                    Pernyataan Tanggung Jawab)</span>
-                </div>
-                <div class="col flex-end text-wrap" style="line-height: 1.6;">
-                  <span class="q-pr-md icon-text"> <q-icon name="check_box_outline_blank" size="2em" /> Dokumen Sebagai
-                    Dasar Pembebanan/Pembayaran</span>
-                </div>
-              </div>
-              <div class="row justify-between q-col-gutter-md q-pr-md full-width">
-                <div class="col flex-start text-wrap" style="line-height: 1.6;">
-                  <span class="q-pr-md icon-text"> <q-icon name="check_box_outline_blank" size="2em" /> Surat Pernyataan
-                    Verifikasi</span>
-                </div>
-                <div class="col flex-end text-wrap" style="line-height: 1.6;">
-                  <span class="q-pr-md icon-text"> <q-icon name="check_box_outline_blank" size="2em" /> Berita Acara
-                    Serah Terima (BAST)</span>
-                </div>
-              </div>
-              <div class="row justify-between q-col-gutter-md q-pr-md full-width">
-                <div class="col flex-start text-wrap" style="line-height: 1.6;">
-                  <span class="q-pr-md icon-text"> <q-icon name="check_box_outline_blank" size="2em" /> Realisasi
-                    Pengajuan Kegiatan</span>
-                </div>
-                <div class="col flex-end text-wrap" style="line-height: 1.6;">
-                  <span class="q-pr-md icon-text"> <q-icon name="check_box_outline_blank" size="2em" /> Bukti
-                    Pembelian/Pembayaran</span>
-                </div>
-              </div>
-              <div class="row justify-between q-col-gutter-md q-pr-md full-width">
-                <div class="col flex-start text-wrap" style="line-height: 1.6;">
-                  <span class="q-pr-md icon-text"> <q-icon name="check_box_outline_blank" size="2em" /> NPD (Nota
-                    Permintaan Dana)</span>
-                </div>
-                <div class="col flex-end text-wrap" style="line-height: 1.6;">
-                  <span class="q-pr-md icon-text"> <q-icon name="check_box_outline_blank" size="2em" /> Faktur
-                    Pajak</span>
-                </div>
-              </div>
-              <div class="row justify-between q-col-gutter-md q-pr-md full-width">
-                <div class="col flex-start text-wrap" style="line-height: 1.6;">
-                  <span class="q-pr-md icon-text"> <q-icon name="check_box_outline_blank" size="2em" /> Surat Perintah
-                    Kerja</span>
-                </div>
-                <div class="col flex-end text-wrap" style="line-height: 1.6;">
-                  <span class="q-pr-md icon-text"> <q-icon name="check_box_outline_blank" size="2em" />
-                    Dokumentasi & Pendukung lainnya</span>
-                </div>
-              </div>
-              <div class="col" style="height: 150px"></div>
-              <div class="row q-col-gutter-md q-pr-md q-pt-xl full-width">
-                <div class="col text-justify text-wrap" style="line-height: 1.6;">
-                  Peneliti Kelengkapan dan Keabsahan Dokumen SPJ :
-                </div>
-              </div>
-              <div class="row q-col-gutter-md q-pr-md q-pt-xs full-width">
-                <div class="col text-justify text-wrap">
-                  <table class="full-width">
-                    <thead>
-                      <tr class="text-bold text-center">
-                        <th style="width: 50px">Keterangan</th>
-                        <th style="width: 50%">Verivikator</th>
-                        <th style="width: 50%">PPK</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>Tanggal</td>
-                        <td></td>
-                        <td></td>
-                      </tr>
-                      <tr>
-                        <td>Jabatan</td>
-                        <td class="text-center">Staf PPK</td>
-                        <td class="text-center">PPK - SKPD</td>
-                      </tr>
-                      <tr>
-                        <td>Nama</td>
-                        <td class="text-center">
-                          <div>{{ store.datattd[3]?.nama }}</div>
-                          <div>NIP. {{ store.datattd[3]?.nip }}</div>
-                        </td>
-                        <td class="text-center">
-                          <div>{{ store.datattd[1]?.nama }}</div>
-                          <div>NIP. {{ store.datattd[1]?.nip }}</div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>Tandatangan</td>
-                        <td style="height: 50px"></td>
-                        <td style="height: 50px"></td>
-                      </tr>
-                      <tr>
-                        <td>Catatan</td>
-                        <td style="height: 100px"></td>
-                        <td style="height: 100px"></td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-
-            </div>
-          </q-card-section>
-          <!-- <div class="row justify-between full-width q-pt-lg">
+              </q-card-section>
+              <!-- <div class="row justify-between full-width q-pt-lg">
             <div class="col flex-start content-center items-center">
               <div class="q-py-xs items-center">
                 Probolinggo {{ store.display.sekarang }}
@@ -244,19 +251,24 @@
               </div>
             </div>
           </div> -->
-        </div>
-      </div>
-      <q-card-section class="q-pa-none bg-primary text-white">
-        <div class="q-pa-md row justify-end items-end">
-          <div class="items-end">
-            <q-btn v-print="printObj" unelevated color="dark" round size="sm" icon="icon-mat-print">
-              <q-tooltip class="primary" :offset="[10, 10]">
-                Print
-              </q-tooltip>
-            </q-btn>
+            </div>
           </div>
-        </div>
-      </q-card-section>
+        </q-page-container>
+
+        <q-footer elevated>
+          <q-card-section class="q-pa-none bg-primary text-white">
+            <div class="q-pa-md row justify-end items-end">
+              <div class="items-end">
+                <q-btn v-print="printObj" unelevated color="dark" round size="sm" icon="icon-mat-print">
+                  <q-tooltip class="primary" :offset="[10, 10]">
+                    Print
+                  </q-tooltip>
+                </q-btn>
+              </div>
+            </div>
+          </q-card-section>
+        </q-footer>
+      </q-layout>
     </q-card>
   </q-dialog>
 </template>

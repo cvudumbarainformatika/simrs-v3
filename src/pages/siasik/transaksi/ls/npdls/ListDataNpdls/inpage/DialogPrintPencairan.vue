@@ -1,620 +1,628 @@
 <template>
   <q-dialog persistent backdrop-filter="blur(4px)">
-    <q-card style="min-width:80vw;">
-      <q-bar class="bg-black text-white">
-        <div>Cetak Pencairan</div>
-        <q-space />
+    <q-card style="min-width:80vw; max-width: 180vw; height: 600px">
+      <q-layout view="lHh Lpr lFf" container class="shadow-2 rounded-borders">
+        <q-header elevated>
+          <q-bar class="bg-black text-white">
+            <div>Cetak Pencairan</div>
+            <q-space />
 
-        <q-btn dense flat icon="icon-mat-close" v-close-popup>
-          <q-tooltip>Close</q-tooltip>
-        </q-btn>
-      </q-bar>
-      <div id="printMe" class="f-12 row justify-center">
-        <template v-if="store.npddatasave.tglcair != null">
-          <q-card-section>
-            <div class="col-auto">
-              <div class="row b1 justify-between full-width full-height ">
-                <div class="row q-pa-sm b2 q-pr-xl" style="width:50%">
-                  <div class="row full-width flex-center">
-                    <q-img src="~assets/logos/logo-rsud.png" style="height: 1.5cm; width: 1.5cm" />
-                    <div class="row q-px-md flex-center text-center">
-                      <div class="col-auto q-pa-sm text-weight-bold text-center">
-                        <div>PEMERINTAH KOTA PROBOLINGGO</div>
-                        <div>RSUD DOKTER MOHAMAD SALEH</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="row q-pa-sm" style="width:50%">
-                  <div class="row q-pa-sm text-weight-bold flex-center">
-                    <div class="col-auto">
-                      <div class="q-py-xs">
-                        Nomor NP2D
-                      </div>
-                      <div class="q-py-xs">
-                        Tanggal NP2D
-                      </div>
-                    </div>
-                    <div class="q-px-md" />
-                    <div class="col full-width">
-                      <div class="q-py-xs">
-                        : {{ store.npddatasave.nopencairan }}
-                      </div>
-                      <div class="q-py-xs">
-                        : {{ store.npddatasave.tglcair }}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="row b justify-between full-width full-height ">
-                <div class="row q-pa-sm b2" style="width:50%">
-                  <div class="row q-pa-sm text-weight-bold flex-top">
-                    <div class="col-auto">
-                      <div class="q-py-xs">
-                        Nomor NPK-LS
-                      </div>
-                      <div class="q-py-xs">
-                        Nomor NPD-LS
-                      </div>
-                      <div class="q-py-xs">
-                        Tanggal NPD-LS
-                      </div>
-                      <div class="q-py-xs">
-                        Bidang
-                      </div>
-                      <div class="q-py-xs full-height">
-                        Kegiatan
-                      </div>
-                    </div>
-                    <div class="q-px-md" />
-                    <div class="col full-width flex-top">
-                      <div class="q-py-xs">
-                        : {{ store.npddatasave.nonpk }}
-                      </div>
-                      <div class="q-py-xs">
-                        : {{ store.npddatasave.nonpdls }}
-                      </div>
-                      <div class="q-py-xs">
-                        : {{ store.npddatasave.tglnpdls }}
-                      </div>
-                      <div class="q-py-xs">
-                        : {{ store.npddatasave.bidang }}
-                      </div>
-                      <div class="q-py-xs full-height">
-                        : {{ store.npddatasave.kegiatanblud }}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="row" style="width:50%">
-                  <div class="row flex-center full-width">
-                    <div class="col text-weight-bold full-width q-pa-sm b3 text-center">
-                      <div class="q-py-xs">
-                        NOTA PERINTAH PENCAIRAN DANA
-                      </div>
-                      <div class="q-py-xs">
-                        (NP2D)
-                      </div>
-                    </div>
-                    <div class="row full-width q-pa-sm">
-                      <div class="col-auto">
-                        <div class="q-py-xs">
-                          Dari
-                        </div>
-                        <div class="q-py-xs">
-                          Tahun
+            <q-btn dense flat icon="icon-mat-close" v-close-popup>
+              <q-tooltip>Close</q-tooltip>
+            </q-btn>
+          </q-bar>
+        </q-header>
+        <q-page-container>
+          <div id="printMe" class="f-12 row justify-center">
+            <template v-if="store.npddatasave.tglcair != null">
+              <q-card-section>
+                <div class="col-auto">
+                  <div class="row b1 justify-between full-width full-height ">
+                    <div class="row q-pa-sm b2 q-pr-xl" style="width:50%">
+                      <div class="row full-width flex-center">
+                        <q-img src="~assets/logos/logo-rsud.png" style="height: 1.5cm; width: 1.5cm" />
+                        <div class="row q-px-md flex-center text-center">
+                          <div class="col-auto q-pa-sm text-weight-bold text-center">
+                            <div>PEMERINTAH KOTA PROBOLINGGO</div>
+                            <div>RSUD DOKTER MOHAMAD SALEH</div>
+                          </div>
                         </div>
                       </div>
-                      <div class="q-px-md" />
-                      <div class="col full-width">
-                        <div class="q-py-xs">
-                          : KPA (Kuasa Pengguna Anggaran)
+                    </div>
+
+                    <div class="row q-pa-sm" style="width:50%">
+                      <div class="row q-pa-sm text-weight-bold flex-center">
+                        <div class="col-auto">
+                          <div class="q-py-xs">
+                            Nomor NP2D
+                          </div>
+                          <div class="q-py-xs">
+                            Tanggal NP2D
+                          </div>
                         </div>
-                        <div class="q-py-xs">
-                          : {{ store.params.tahun }}
+                        <div class="q-px-md" />
+                        <div class="col full-width">
+                          <div class="q-py-xs">
+                            : {{ store.npddatasave.nopencairan }}
+                          </div>
+                          <div class="q-py-xs">
+                            : {{ store.npddatasave.tglcair }}
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </div>
 
-              <div class="row b justify-between full-width full-height ">
-                <div class="row q-pl-sm q-py-xs" style="width:100%">
-                  <div class="row q-pl-sm q-py-xs flex-center">
-                    <div class="col-auto">
-                      <div>
-                        Rekening Bank
+                  <div class="row b justify-between full-width full-height ">
+                    <div class="row q-pa-sm b2" style="width:50%">
+                      <div class="row q-pa-sm text-weight-bold flex-top">
+                        <div class="col-auto">
+                          <div class="q-py-xs">
+                            Nomor NPK-LS
+                          </div>
+                          <div class="q-py-xs">
+                            Nomor NPD-LS
+                          </div>
+                          <div class="q-py-xs">
+                            Tanggal NPD-LS
+                          </div>
+                          <div class="q-py-xs">
+                            Bidang
+                          </div>
+                          <div class="q-py-xs full-height">
+                            Kegiatan
+                          </div>
+                        </div>
+                        <div class="q-px-md" />
+                        <div class="col full-width flex-top">
+                          <div class="q-py-xs">
+                            : {{ store.npddatasave.nonpk }}
+                          </div>
+                          <div class="q-py-xs">
+                            : {{ store.npddatasave.nonpdls }}
+                          </div>
+                          <div class="q-py-xs">
+                            : {{ store.npddatasave.tglnpdls }}
+                          </div>
+                          <div class="q-py-xs">
+                            : {{ store.npddatasave.bidang }}
+                          </div>
+                          <div class="q-py-xs full-height">
+                            : {{ store.npddatasave.kegiatanblud }}
+                          </div>
+                        </div>
                       </div>
                     </div>
-                    <div class="q-px-md" />
-                    <div class="col full-width">
-                      <div>
-                        : BANK JATIM
+
+                    <div class="row" style="width:50%">
+                      <div class="row flex-center full-width">
+                        <div class="col text-weight-bold full-width q-pa-sm b3 text-center">
+                          <div class="q-py-xs">
+                            NOTA PERINTAH PENCAIRAN DANA
+                          </div>
+                          <div class="q-py-xs">
+                            (NP2D)
+                          </div>
+                        </div>
+                        <div class="row full-width q-pa-sm">
+                          <div class="col-auto">
+                            <div class="q-py-xs">
+                              Dari
+                            </div>
+                            <div class="q-py-xs">
+                              Tahun
+                            </div>
+                          </div>
+                          <div class="q-px-md" />
+                          <div class="col full-width">
+                            <div class="q-py-xs">
+                              : KPA (Kuasa Pengguna Anggaran)
+                            </div>
+                            <div class="q-py-xs">
+                              : {{ store.params.tahun }}
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </div>
 
-              <div class="row b justify-between full-width full-height ">
-                <div class="row q-pl-sm q-py-xs" style="width:100%">
-                  <div class="row q-pl-sm q-pt-xs flex-center">
-                    <div class="col-auto">
-                      <div>
-                        Hendaklah mencairkan / memindahkan dari Rekening Nomor
-                      </div>
-                    </div>
-                    <div class="q-px-md" />
-                    <div class="col full-width">
-                      <div>
-                        : 0121161061
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="row q-pl-sm q-pb-xs" style="width:100%">
-                  <div class="row q-pl-sm q-pb-xs flex-center">
-                    <div class="col-auto">
-                      <div class="q-py-xs">
-                        Uang Sebesar
-                      </div>
-                      <div class="q-py-xs">
-                        Terbilang
-                      </div>
-                    </div>
-                    <div class="q-px-md" />
-                    <div class="col full-width">
-                      <div class="q-py-xs">
-                        : Rp. {{ formattanpaRp(store.npddatasave.total) }}
-                      </div>
-                      <div class="q-py-xs">
-                        : {{ terbilangRupiah(store.npddatasave.total) }} Rupiah
+                  <div class="row b justify-between full-width full-height ">
+                    <div class="row q-pl-sm q-py-xs" style="width:100%">
+                      <div class="row q-pl-sm q-py-xs flex-center">
+                        <div class="col-auto">
+                          <div>
+                            Rekening Bank
+                          </div>
+                        </div>
+                        <div class="q-px-md" />
+                        <div class="col full-width">
+                          <div>
+                            : BANK JATIM
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </div>
 
-              <div class="row b4 justify-between full-width full-height ">
-                <div class="row q-pl-sm q-py-xs" style="width:100%">
-                  <div class="row q-pl-sm q-pb-xs flex-center">
-                    <div class="col-auto">
-                      <div class="q-py-xs">
-                        Pihak Ketiga
-                      </div>
-                      <div class="q-py-xs">
-                        Rekening Bank
-                      </div>
-                      <div class="q-py-xs">
-                        No. Rekening
-                      </div>
-                      <div class="q-py-xs">
-                        NPWP
-                      </div>
-                      <div class="q-py-xs">
-                        Untuk Keperluan
+                  <div class="row b justify-between full-width full-height ">
+                    <div class="row q-pl-sm q-py-xs" style="width:100%">
+                      <div class="row q-pl-sm q-pt-xs flex-center">
+                        <div class="col-auto">
+                          <div>
+                            Hendaklah mencairkan / memindahkan dari Rekening Nomor
+                          </div>
+                        </div>
+                        <div class="q-px-md" />
+                        <div class="col full-width">
+                          <div>
+                            : 0121161061
+                          </div>
+                        </div>
                       </div>
                     </div>
-                    <div class="q-px-sm" />
-                    <div class="col full-width">
-                      <div class="q-py-xs">
-                        : {{ store.npddatasave.penerima }}
-                      </div>
-                      <div class="q-py-xs">
-                        : {{ store.npddatasave.bank }}
-                      </div>
-                      <div class="q-py-xs">
-                        : {{ store.npddatasave.rekening }}
-                      </div>
-                      <div class="q-py-xs">
-                        : {{ store.npddatasave.npwp }}
-                      </div>
-                      <div class="q-py-xs">
-                        : {{ store.npddatasave.keterangan }}
+
+                    <div class="row q-pl-sm q-pb-xs" style="width:100%">
+                      <div class="row q-pl-sm q-pb-xs flex-center">
+                        <div class="col-auto">
+                          <div class="q-py-xs">
+                            Uang Sebesar
+                          </div>
+                          <div class="q-py-xs">
+                            Terbilang
+                          </div>
+                        </div>
+                        <div class="q-px-md" />
+                        <div class="col full-width">
+                          <div class="q-py-xs">
+                            : Rp. {{ formattanpaRp(store.npddatasave.total) }}
+                          </div>
+                          <div class="q-py-xs">
+                            : {{ terbilangRupiah(store.npddatasave.total) }} Rupiah
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </div>
 
-              <div class="row justify-between full-width full-height ">
-                <div class="row" style="width:100%">
-                  <table class="items-center full-width">
-                    <thead>
-                      <tr>
-                        <th>
-                          No.
-                        </th>
-                        <th>
-                          Kode Rekening
-                        </th>
-                        <th>
-                          Uraian
-                        </th>
-                        <th>
-                          Jumlah (Rp.)
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody class="align-middle q-pl-sm">
-                      <tr v-for="item, n in store.npddatasave.rincian" :key="item">
-                        <td class="text-center">
-                          <div>
-                            {{ n + 1 }}.
+                  <div class="row b4 justify-between full-width full-height ">
+                    <div class="row q-pl-sm q-py-xs" style="width:100%">
+                      <div class="row q-pl-sm q-pb-xs flex-center">
+                        <div class="col-auto">
+                          <div class="q-py-xs">
+                            Pihak Ketiga
                           </div>
-                        </td>
-                        <td class="text-left">
-                          <div>
-                            {{ item.koderek50 }} - {{ item.rincianbelanja }}
+                          <div class="q-py-xs">
+                            Rekening Bank
                           </div>
-                        </td>
-                        <td class="text-left">
-                          <div>
-                            {{ item.itembelanja }}
+                          <div class="q-py-xs">
+                            No. Rekening
                           </div>
-                        </td>
-                        <td class="text-right">
-                          <div>
-                            {{ formattanpaRp(item.nominalpembayaran) }}
+                          <div class="q-py-xs">
+                            NPWP
                           </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td class="text-center text-weight-bold" colspan="3">
-                          <div>Jumlah</div>
-                        </td>
-                        <td class="text-right text-weight-bold" colspan="3">
-                          <div>{{ formattanpaRp(store.npddatasave.total) }} </div>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-
-              <div class="row b4 justify-between full-width full-height ">
-                <div class="row q-pl-sm q-py-xs" style="width:100%">
-                  <div class="row q-pl-sm q-pb-xs flex-center">
-                    Potongan-potongan :
+                          <div class="q-py-xs">
+                            Untuk Keperluan
+                          </div>
+                        </div>
+                        <div class="q-px-sm" />
+                        <div class="col full-width">
+                          <div class="q-py-xs">
+                            : {{ store.npddatasave.penerima }}
+                          </div>
+                          <div class="q-py-xs">
+                            : {{ store.npddatasave.bank }}
+                          </div>
+                          <div class="q-py-xs">
+                            : {{ store.npddatasave.rekening }}
+                          </div>
+                          <div class="q-py-xs">
+                            : {{ store.npddatasave.npwp }}
+                          </div>
+                          <div class="q-py-xs">
+                            : {{ store.npddatasave.keterangan }}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
 
-              <div class="row justify-between full-width full-height ">
-                <div class="row" style="width:100%">
-                  <table class="items-center full-width">
-                    <thead>
-                      <tr>
-                        <th style="width: 40px">
-                          No.
-                        </th>
-                        <th>
-                          Uraian
-                        </th>
-                        <th>
-                          Jumlah (Rp.)
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody class=" align-middle q-pl-sm">
-                      <tr>
-                        <td class="text-center">
-                          <div>
-                            1.
-                          </div>
-                        </td>
-                        <td class="text-left">
-                          <div>
-                            PPN Pusat
-                          </div>
-                        </td>
-                        <td class="text-right">
-                          <!-- <div v-if="store.npddatasave.pajak != null">
+                  <div class="row justify-between full-width full-height ">
+                    <div class="row" style="width:100%">
+                      <table class="items-center full-width">
+                        <thead>
+                          <tr>
+                            <th>
+                              No.
+                            </th>
+                            <th>
+                              Kode Rekening
+                            </th>
+                            <th>
+                              Uraian
+                            </th>
+                            <th>
+                              Jumlah (Rp.)
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody class="align-middle q-pl-sm">
+                          <tr v-for="item, n in store.npddatasave.rincian" :key="item">
+                            <td class="text-center">
+                              <div>
+                                {{ n + 1 }}.
+                              </div>
+                            </td>
+                            <td class="text-left">
+                              <div>
+                                {{ item.koderek50 }} - {{ item.rincianbelanja }}
+                              </div>
+                            </td>
+                            <td class="text-left">
+                              <div>
+                                {{ item.itembelanja }}
+                              </div>
+                            </td>
+                            <td class="text-right">
+                              <div>
+                                {{ formattanpaRp(item.nominalpembayaran) }}
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td class="text-center text-weight-bold" colspan="3">
+                              <div>Jumlah</div>
+                            </td>
+                            <td class="text-right text-weight-bold" colspan="3">
+                              <div>{{ formattanpaRp(store.npddatasave.total) }} </div>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                  <div class="row b4 justify-between full-width full-height ">
+                    <div class="row q-pl-sm q-py-xs" style="width:100%">
+                      <div class="row q-pl-sm q-pb-xs flex-center">
+                        Potongan-potongan :
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row justify-between full-width full-height ">
+                    <div class="row" style="width:100%">
+                      <table class="items-center full-width">
+                        <thead>
+                          <tr>
+                            <th style="width: 40px">
+                              No.
+                            </th>
+                            <th>
+                              Uraian
+                            </th>
+                            <th>
+                              Jumlah (Rp.)
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody class=" align-middle q-pl-sm">
+                          <tr>
+                            <td class="text-center">
+                              <div>
+                                1.
+                              </div>
+                            </td>
+                            <td class="text-left">
+                              <div>
+                                PPN Pusat
+                              </div>
+                            </td>
+                            <td class="text-right">
+                              <!-- <div v-if="store.npddatasave.pajak != null">
                             {{ formattanpaRp(store.npddatasave.pajak.ppnpusat) }}
                           </div>
                           <div
                             v-else-if="store.npddatasave.newpajak?.length !== 0 || store.npddatasave.newpajak?.length > 0">
                             {{ formattanpaRp(isNaN(mapPajakBaru().ppn?.nilai) ? 0 : mapPajakBaru().ppn?.nilai) }}
                           </div> -->
-                          <div v-if="store.npddatasave.pajak != null || store.npddatasave.newpajak?.length > 0">
-                            {{ formattanpaRp(mapPajakBaru().sumppn) }}
-                          </div>
-                          <div v-else>{{ formattanpaRp(0) }} </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td class="text-center">
-                          <div>
-                            2.
-                          </div>
-                        </td>
-                        <td class="text-left">
-                          <div>
-                            PPh 21
-                          </div>
-                        </td>
-                        <td class="text-right">
-                          <!-- <div v-if="store.npddatasave.pajak != null">
+                              <div v-if="store.npddatasave.pajak != null || store.npddatasave.newpajak?.length > 0">
+                                {{ formattanpaRp(mapPajakBaru().sumppn) }}
+                              </div>
+                              <div v-else>{{ formattanpaRp(0) }} </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td class="text-center">
+                              <div>
+                                2.
+                              </div>
+                            </td>
+                            <td class="text-left">
+                              <div>
+                                PPh 21
+                              </div>
+                            </td>
+                            <td class="text-right">
+                              <!-- <div v-if="store.npddatasave.pajak != null">
                             {{ formattanpaRp(store.npddatasave.pajak.pph21) }}
                           </div>
                           <div v-if="store.npddatasave.newpajak?.length > 0">
                             {{ formattanpaRp(isNaN(mapPajakBaru().pph21?.nilai) ? 0 : mapPajakBaru().pph21?.nilai) }}
                           </div> -->
-                          <div v-if="store.npddatasave.pajak != null || store.npddatasave.newpajak?.length > 0">
-                            {{ formattanpaRp(mapPajakBaru().sumpph21) }}
-                          </div>
-                          <div v-else>{{ formattanpaRp(0) }} </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td class="text-center">
-                          <div>
-                            3.
-                          </div>
-                        </td>
-                        <td class="text-left">
-                          <div>
-                            PPh 22
-                          </div>
-                        </td>
-                        <td class="text-right">
-                          <!-- <div v-if="store.npddatasave.pajak != null">
+                              <div v-if="store.npddatasave.pajak != null || store.npddatasave.newpajak?.length > 0">
+                                {{ formattanpaRp(mapPajakBaru().sumpph21) }}
+                              </div>
+                              <div v-else>{{ formattanpaRp(0) }} </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td class="text-center">
+                              <div>
+                                3.
+                              </div>
+                            </td>
+                            <td class="text-left">
+                              <div>
+                                PPh 22
+                              </div>
+                            </td>
+                            <td class="text-right">
+                              <!-- <div v-if="store.npddatasave.pajak != null">
                             {{ formattanpaRp(store.npddatasave.pajak.pph22) }}
                           </div>
                           <div v-if="store.npddatasave.newpajak?.length > 0">
                             {{ formattanpaRp(isNaN(mapPajakBaru().pph22?.nilai) ? 0 : mapPajakBaru().pph22?.nilai) }}
                           </div> -->
-                          <div v-if="store.npddatasave.pajak != null || store.npddatasave.newpajak?.length > 0">
-                            {{ formattanpaRp(mapPajakBaru().sumpph22) }}
-                          </div>
-                          <div v-else>{{ formattanpaRp(0) }} </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td class="text-center">
-                          <div>
-                            4.
-                          </div>
-                        </td>
-                        <td class="text-left">
-                          <div>
-                            PPh 23
-                          </div>
-                        </td>
-                        <td class="text-right">
-                          <!-- <div v-if="store.npddatasave.pajak != null">
+                              <div v-if="store.npddatasave.pajak != null || store.npddatasave.newpajak?.length > 0">
+                                {{ formattanpaRp(mapPajakBaru().sumpph22) }}
+                              </div>
+                              <div v-else>{{ formattanpaRp(0) }} </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td class="text-center">
+                              <div>
+                                4.
+                              </div>
+                            </td>
+                            <td class="text-left">
+                              <div>
+                                PPh 23
+                              </div>
+                            </td>
+                            <td class="text-right">
+                              <!-- <div v-if="store.npddatasave.pajak != null">
                             {{ formattanpaRp(store.npddatasave.pajak.pph23) }}
                           </div>
                           <div v-if="store.npddatasave.newpajak?.length > 0">
                             {{ formattanpaRp(isNaN(mapPajakBaru().pph23?.nilai) ? 0 : mapPajakBaru().pph23?.nilai) }}
                           </div> -->
-                          <div v-if="store.npddatasave.pajak != null || store.npddatasave.newpajak?.length > 0">
-                            {{ formattanpaRp(mapPajakBaru().sumpph23) }}
-                          </div>
-                          <div v-else>{{ formattanpaRp(0) }} </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td class="text-center">
-                          <div>
-                            5.
-                          </div>
-                        </td>
-                        <td class="text-left">
-                          <div>
-                            PPh 25
-                          </div>
-                        </td>
-                        <td class="text-right">
-                          <!-- <div v-if="store.npddatasave.pajak != null">
+                              <div v-if="store.npddatasave.pajak != null || store.npddatasave.newpajak?.length > 0">
+                                {{ formattanpaRp(mapPajakBaru().sumpph23) }}
+                              </div>
+                              <div v-else>{{ formattanpaRp(0) }} </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td class="text-center">
+                              <div>
+                                5.
+                              </div>
+                            </td>
+                            <td class="text-left">
+                              <div>
+                                PPh 25
+                              </div>
+                            </td>
+                            <td class="text-right">
+                              <!-- <div v-if="store.npddatasave.pajak != null">
                             {{ formattanpaRp(store.npddatasave.pajak.pph25) }}
                           </div>
                           <div v-if="store.npddatasave.newpajak?.length > 0">
                             {{ formattanpaRp(isNaN(mapPajakBaru().pph25?.nilai) ? 0 : mapPajakBaru().pph25?.nilai) }}
                           </div> -->
-                          <div v-if="store.npddatasave.pajak != null || store.npddatasave.newpajak?.length > 0">
-                            {{ formattanpaRp(mapPajakBaru().sumpph25) }}
-                          </div>
-                          <div v-else>{{ formattanpaRp(0) }} </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td class="text-center">
-                          <div>
-                            6.
-                          </div>
-                        </td>
-                        <td class="text-left">
-                          <div>
-                            Pajak Daerah (PPh Final)
-                          </div>
-                        </td>
-                        <td class="text-right">
-                          <!-- <div v-if="store.npddatasave.pajak != null">
+                              <div v-if="store.npddatasave.pajak != null || store.npddatasave.newpajak?.length > 0">
+                                {{ formattanpaRp(mapPajakBaru().sumpph25) }}
+                              </div>
+                              <div v-else>{{ formattanpaRp(0) }} </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td class="text-center">
+                              <div>
+                                6.
+                              </div>
+                            </td>
+                            <td class="text-left">
+                              <div>
+                                Pajak Daerah (PPh Final)
+                              </div>
+                            </td>
+                            <td class="text-right">
+                              <!-- <div v-if="store.npddatasave.pajak != null">
                             {{ formattanpaRp(store.npddatasave.pajak.pajakdaerah) }}
                           </div>
                           <div v-if="store.npddatasave.newpajak?.length > 0">
                             {{ formattanpaRp(isNaN(mapPajakBaru().pajakdaerah?.nilai) ? 0 :
                               mapPajakBaru().pajakdaerah?.nilai) }}
                           </div> -->
-                          <div v-if="store.npddatasave.pajak != null || store.npddatasave.newpajak?.length > 0">
-                            {{ formattanpaRp(mapPajakBaru().sumpajakdaerah) }}
-                          </div>
-                          <div v-else>{{ formattanpaRp(0) }} </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td class="text-center text-weight-bold" colspan="2">
-                          <div>Jumlah</div>
-                        </td>
-                        <td class="text-right text-weight-bold">
-                          <template v-if="store.npddatasave.pajak != null">
-                            <div>
-                              {{ formattanpaRp(store.npddatasave.totalpajak) }}
-                            </div>
-                          </template>
-                          <template v-else>
-                            <div>{{ formattanpaRp(0) }} </div>
-                          </template>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td class="text-weight-bold" colspan="3">
-                          <div>NPK yang dibayarkan</div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td colspan="2" class="text-left">
-                          <div>Jumlah yang Diminta</div>
-                        </td>
-                        <td class="text-right justify-between">
-                          <div class="row">
-                            <div class="col-auto">
-                              Rp.
-                            </div>
-                            <div class="col">
-                              {{ formattanpaRp(store.npddatasave.total) }}
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td colspan="2" class="text-left">
-                          <div>Jumlah Potongan</div>
-                        </td>
-                        <td class="text-right justify-between">
-                          <template v-if="store.npddatasave.pajak != null">
-                            <div class="row">
-                              <div class="col-auto">
-                                Rp.
+                              <div v-if="store.npddatasave.pajak != null || store.npddatasave.newpajak?.length > 0">
+                                {{ formattanpaRp(mapPajakBaru().sumpajakdaerah) }}
                               </div>
-                              <div class="col">
-                                {{ formattanpaRp(store.npddatasave.totalpajak) }}
+                              <div v-else>{{ formattanpaRp(0) }} </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td class="text-center text-weight-bold" colspan="2">
+                              <div>Jumlah</div>
+                            </td>
+                            <td class="text-right text-weight-bold">
+                              <template v-if="store.npddatasave.pajak != null">
+                                <div>
+                                  {{ formattanpaRp(store.npddatasave.totalpajak) }}
+                                </div>
+                              </template>
+                              <template v-else>
+                                <div>{{ formattanpaRp(0) }} </div>
+                              </template>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td class="text-weight-bold" colspan="3">
+                              <div>NPK yang dibayarkan</div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td colspan="2" class="text-left">
+                              <div>Jumlah yang Diminta</div>
+                            </td>
+                            <td class="text-right justify-between">
+                              <div class="row">
+                                <div class="col-auto">
+                                  Rp.
+                                </div>
+                                <div class="col">
+                                  {{ formattanpaRp(store.npddatasave.total) }}
+                                </div>
                               </div>
-                            </div>
-                          </template>
-                          <template v-else>
-                            <div class="row">
-                              <div class="col-auto">
-                                Rp.
+                            </td>
+                          </tr>
+                          <tr>
+                            <td colspan="2" class="text-left">
+                              <div>Jumlah Potongan</div>
+                            </td>
+                            <td class="text-right justify-between">
+                              <template v-if="store.npddatasave.pajak != null">
+                                <div class="row">
+                                  <div class="col-auto">
+                                    Rp.
+                                  </div>
+                                  <div class="col">
+                                    {{ formattanpaRp(store.npddatasave.totalpajak) }}
+                                  </div>
+                                </div>
+                              </template>
+                              <template v-else>
+                                <div class="row">
+                                  <div class="col-auto">
+                                    Rp.
+                                  </div>
+                                  <div class="col">
+                                    {{ formattanpaRp(0) }}
+                                  </div>
+                                </div>
+                              </template>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td class="text-weight-bold" colspan="2">
+                              <div>Jumlah yang Dibayarkan</div>
+                            </td>
+                            <td class="text-right justify-between">
+                              <div class="row">
+                                <template v-if="store.npddatasave.pajak != null">
+                                  <div class="col-auto text-weight-bold">
+                                    Rp.
+                                  </div>
+                                  <div class="col text-weight-bold">
+                                    {{ formattanpaRp(store.npddatasave.totalbayar) }}
+                                  </div>
+                                </template>
+                                <template v-else>
+                                  <div class="col-auto text-weight-bold">
+                                    Rp.
+                                  </div>
+                                  <div class="col text-weight-bold">
+                                    {{ formattanpaRp(store.npddatasave.total) }}
+                                  </div>
+                                </template>
                               </div>
-                              <div class="col">
-                                {{ formattanpaRp(0) }}
+                            </td>
+                          </tr>
+                        </tbody>
+                        <tbody>
+                          <tr v-for="(item, n) in store.npddatasave.newpajak" :key="n">
+                            <td>{{ n + 1 }}</td>
+                            <td>{{ item.uraian }}</td>
+                            <td class="text-right justify-between">
+                              <div class="row">
+                                <span class="col-auto">Rp.</span>
+                                <span class="col">{{ formattanpaRp(item.nilai) }}</span>
                               </div>
-                            </div>
-                          </template>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td class="text-weight-bold" colspan="2">
-                          <div>Jumlah yang Dibayarkan</div>
-                        </td>
-                        <td class="text-right justify-between">
-                          <div class="row">
-                            <template v-if="store.npddatasave.pajak != null">
-                              <div class="col-auto text-weight-bold">
-                                Rp.
-                              </div>
-                              <div class="col text-weight-bold">
-                                {{ formattanpaRp(store.npddatasave.totalbayar) }}
-                              </div>
-                            </template>
-                            <template v-else>
-                              <div class="col-auto text-weight-bold">
-                                Rp.
-                              </div>
-                              <div class="col text-weight-bold">
-                                {{ formattanpaRp(store.npddatasave.total) }}
-                              </div>
-                            </template>
-                          </div>
-                        </td>
-                      </tr>
-                    </tbody>
-                    <tbody>
-                      <tr v-for="(item, n) in store.npddatasave.newpajak" :key="n">
-                        <td>{{ n + 1 }}</td>
-                        <td>{{ item.uraian }}</td>
-                        <td class="text-right justify-between">
-                          <div class="row">
-                            <span class="col-auto">Rp.</span>
-                            <span class="col">{{ formattanpaRp(item.nilai) }}</span>
-                          </div>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
 
-              <div class="row b4 justify-between full-width full-height ">
-                <div class="row q-pl-sm q-py-xs text-weight-bold" style="width:100%">
-                  <template v-if="store.npddatasave.pajak != null">
-                    <div>
-                      Uang Sejumlah : {{ terbilangRupiah(store.npddatasave.totalbayar) }}
+                  <div class="row b4 justify-between full-width full-height ">
+                    <div class="row q-pl-sm q-py-xs text-weight-bold" style="width:100%">
+                      <template v-if="store.npddatasave.pajak != null">
+                        <div>
+                          Uang Sejumlah : {{ terbilangRupiah(store.npddatasave.totalbayar) }}
+                        </div>
+                      </template>
+                      <template v-else>
+                        <div>
+                          Uang Sejumlah : {{ terbilangRupiah(store.npddatasave.total) }}
+                        </div>
+                      </template>
                     </div>
-                  </template>
-                  <template v-else>
-                    <div>
-                      Uang Sejumlah : {{ terbilangRupiah(store.npddatasave.total) }}
-                    </div>
-                  </template>
-                </div>
-              </div>
+                  </div>
 
-              <div class="row b justify-between full-width full-height ">
-                <div class="row q-pl-sm q-py-xs text-weight-bold" style="width:100%">
-                  <div class="col full-width" />
-                  <div class="col text-center">
-                    <div class="q-py-xs">
-                      Probolinggo {{ dateFullFormat(store.npddatasave.tglcair) }}
-                    </div>
-                    <div class="text-bold">
-                      KUASA PENGGUNA ANGGARAN
-                    </div>
-                    <div style="padding-bottom: 40px" />
-                    <div class="underline text-bold q-py-xs">
-                      {{ pegawai.pegawais[1]?.nama }}
-                      <div class="garis-bawah" style="text-decoration-line: underline;" />
-                    </div>
-                    <div>
-                      NIP. {{ pegawai.pegawais[1]?.nip }}
+                  <div class="row b justify-between full-width full-height ">
+                    <div class="row q-pl-sm q-py-xs text-weight-bold" style="width:100%">
+                      <div class="col full-width" />
+                      <div class="col text-center">
+                        <div class="q-py-xs">
+                          Probolinggo {{ dateFullFormat(store.npddatasave.tglcair) }}
+                        </div>
+                        <div class="text-bold">
+                          KUASA PENGGUNA ANGGARAN
+                        </div>
+                        <div style="padding-bottom: 40px" />
+                        <div class="underline text-bold q-py-xs">
+                          {{ pegawai.pegawais[1]?.nama }}
+                          <div class="garis-bawah" style="text-decoration-line: underline;" />
+                        </div>
+                        <div>
+                          NIP. {{ pegawai.pegawais[1]?.nip }}
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
+              </q-card-section>
+            </template>
+            <template v-else>
+              <q-card-section>
+                <div class="container q-pa-md full-width">
+                  <q-card class="items-center bg-yellow-1 q-pa-xl full-width">
+                    <div class="row flex-center">
+                      SABAR YA... NPD-LS BELUM DICAIRKAN
+                    </div>
+                  </q-card>
+                </div>
+              </q-card-section>
+            </template>
+          </div>
+        </q-page-container>
+        <q-footer elevated>
+          <q-card-section class="q-pa-none bg-primary text-white">
+            <div class="q-pa-md row justify-end items-end">
+              <div class="items-end">
+                <q-btn v-print="printObj" unelevated color="dark" round size="sm" icon="icon-mat-print">
+                  <q-tooltip class="primary" :offset="[10, 10]">
+                    Print
+                  </q-tooltip>
+                </q-btn>
               </div>
             </div>
           </q-card-section>
-        </template>
-        <template v-else>
-          <q-card-section>
-            <div class="container q-pa-md full-width">
-              <q-card class="items-center bg-yellow-1 q-pa-xl full-width">
-                <div class="row flex-center">
-                  SABAR YA... NPD-LS BELUM DICAIRKAN
-                </div>
-              </q-card>
-            </div>
-          </q-card-section>
-        </template>
-      </div>
-      <q-card-section class="q-pa-none bg-primary text-white">
-        <div class="q-pa-md row justify-end items-end">
-          <div class="items-end">
-            <q-btn v-print="printObj" unelevated color="dark" round size="sm" icon="icon-mat-print">
-              <q-tooltip class="primary" :offset="[10, 10]">
-                Print
-              </q-tooltip>
-            </q-btn>
-          </div>
-        </div>
-      </q-card-section>
+        </q-footer>
+      </q-layout>
     </q-card>
   </q-dialog>
 </template>
