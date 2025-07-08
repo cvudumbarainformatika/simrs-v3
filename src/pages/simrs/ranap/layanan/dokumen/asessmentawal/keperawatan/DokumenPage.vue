@@ -62,7 +62,7 @@
         <div class="data-item">5. Riwayat Pekerjaan : {{
           anamnesisAwal?.riwayat_pekerjaan_yang_berhubungan_dengan_zat_berbahaya || '-' }}</div>
         <div class="data-item">6. Keluhan Nyeri : {{ anamnesisAwal?.keluhannyeri?.skor > 0 ? 'Ada' : 'Tidak ada' || '-'
-          }}
+        }}
         </div>
       </div>
     </div>
@@ -237,6 +237,196 @@
             <td>Status Neurologis (Neurological Status)</td>
             <td> {{ pemeriksaanUmum?.rs12 }} </td>
           </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Skreening gizi Dewasa-->
+    <div v-if="anamnesisAwal?.skreeninggizi?.dewasa" class="section">
+      <div class="section-title">Skreening Gizi : </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Parameter</th>
+            <th>Skor</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Apakah Ada Penurunan Berat badan yang tidak diinginkan selama 6 Bulan terakhir ?</td>
+            <td> {{ anamnesisAwal?.skreeninggizi?.dewasa?.form?.bb?.skor }} </td>
+          </tr>
+          <tr>
+            <td>Apakah Asupan Makan berkurang karena tidak nafsu makan ?</td>
+            <td> {{ anamnesisAwal?.skreeninggizi?.dewasa?.form?.am?.skor }} </td>
+          </tr>
+          <tr>
+            <td>Apakah pasien memiliki diagnosa khusus / kondisi khusus ?</td>
+            <td> {{ anamnesisAwal?.skreeninggizi?.dewasa?.form?.kk?.skor }} </td>
+          </tr>
+          <tr class="text-weight-bold">
+            <td colspan="2">
+              <div class="row justify-between q-px-lg">
+                <div class="col-auto">
+                  Total Skor :
+                </div>
+                <div class="col-auto">
+                  {{ anamnesisAwal?.skreeninggizi?.dewasa?.skor }} ( {{
+                    anamnesisAwal?.skreeninggizi?.dewasa?.ket }} )
+                </div>
+              </div>
+            </td>
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+    <!-- Skreening gizi Kebidanan-->
+    <div v-if="anamnesisAwal?.skreeninggizi?.kebidanan" class="section">
+      <div class="section-title">Skrining Gizi Pasien Obstetric / Kehamilan / Nifas : </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Parameter</th>
+            <th>Skor</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Apakah asupan makan berkurang karena tidak nafsu makan?</td>
+            <td> {{ anamnesisAwal?.skreeninggizi?.kebidanan?.form?.am?.skor }} </td>
+          </tr>
+          <tr>
+            <td>Apakah ada pertambahan BB yang kurang atau lebih selama kehamilan?</td>
+            <td> {{ anamnesisAwal?.skreeninggizi?.kebidanan?.form?.bb?.skor }} </td>
+          </tr>
+          <tr>
+            <td>Nilai Hb {{ '<' }} 10 g/dl atau HCT 30%</td>
+            <td> {{ anamnesisAwal?.skreeninggizi?.kebidanan?.form?.hb?.skor }} </td>
+          </tr>
+          <tr>
+            <td>Ada gangguan metabolisme / kondisi khusus. (Penyakit tertentu)</td>
+            <td> {{ anamnesisAwal?.skreeninggizi?.kebidanan?.form?.metabolisme?.skor }} </td>
+          </tr>
+          <tr class="text-weight-bold">
+            <td colspan="2">
+              <div class="row justify-between q-px-lg">
+                <div class="col-auto">
+                  Total Skor :
+                </div>
+                <div class="col-auto">
+                  {{ anamnesisAwal?.skreeninggizi?.kebidanan?.skor }} ( {{
+                    anamnesisAwal?.skreeninggizi?.kebidanan?.ket }} )
+                </div>
+              </div>
+            </td>
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+    <!-- Skreening gizi Kebidanan-->
+    <div v-if="anamnesisAwal?.skreeninggizi?.neonatal" class="section">
+      <div class="section-title">Skrining Gizi Neonatal : </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Parameter</th>
+            <th>Keterangan</th>
+            <th>Skor</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Nafsu Makan</td>
+            <td> {{ anamnesisAwal?.skreeninggizi?.neonatal?.form?.nm?.text }} </td>
+            <td> {{ anamnesisAwal?.skreeninggizi?.neonatal?.form?.nm?.skor }} </td>
+          </tr>
+          <tr>
+            <td>Kemampuan Untuk Makan</td>
+            <td> {{ anamnesisAwal?.skreeninggizi?.neonatal?.form?.km?.text }} </td>
+            <td> {{ anamnesisAwal?.skreeninggizi?.neonatal?.form?.km?.skor }} </td>
+          </tr>
+          <tr>
+            <td>Faktor Stress</td>
+            <td> {{ anamnesisAwal?.skreeninggizi?.neonatal?.form?.fs?.text }} </td>
+            <td> {{ anamnesisAwal?.skreeninggizi?.neonatal?.form?.fs?.skor }} </td>
+          </tr>
+          <tr>
+            <td>Persentil BB</td>
+            <td> {{ anamnesisAwal?.skreeninggizi?.neonatal?.form?.bb?.text }} </td>
+            <td> {{ anamnesisAwal?.skreeninggizi?.neonatal?.form?.bb?.skor }} </td>
+          </tr>
+          <tr class="text-weight-bold">
+            <td colspan="3">
+              <div class="row justify-between q-px-lg">
+                <div class="col-auto">
+                  Total Skor :
+                </div>
+                <div class="col-auto">
+                  {{ anamnesisAwal?.skreeninggizi?.neonatal?.skor }} ( {{
+                    anamnesisAwal?.skreeninggizi?.neonatal?.ket }} )
+                </div>
+              </div>
+            </td>
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+    <!-- Skreening gizi Pediatrik-->
+    <div v-if="anamnesisAwal?.skreeninggizi?.pediatrik" class="section">
+      <div class="section-title">Skrining Gizi Pediatrik : </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Parameter</th>
+            <th>Skor</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Apakah pasien tampak kurus?</td>
+            <td> {{ anamnesisAwal?.skreeninggizi?.pediatrik?.form?.tk?.skor }} </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="row">Apakah terdapat penurunan BB selama 1 bulan terakhir?</div>
+              <div class="row f-10 text-italic"> - Berdasarkan penilaian objektif data BB bila ada satu penilaian
+                subjektif orang tua pasien</div>
+              <div class="row f-10 text-italic"> - Untuk bayi {{ '<' }} 1 tahun berat badan tidak naik selama 3 bulan
+                  terakhir</div>
+            </td>
+            <td> {{ anamnesisAwal?.skreeninggizi?.pediatrik?.form?.bb?.skor }} </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="row">Apakah terdapat salah satu dari kondisi ini?</div>
+              <div class="row f-10 text-italic"> - Diare >= 5 kali/hari dan/atau muntah > 3 kali/hari dalam seminggu
+                terakhir</div>
+              <div class="row f-10 text-italic"> - Asupan makanan berkurang selama satu minggu terakhir</div>
+            </td>
+            <td> {{ anamnesisAwal?.skreeninggizi?.pediatrik?.form?.kk?.skor }} </td>
+          </tr>
+          <tr>
+            <td>Apakah terdapat penyakit atau keadaan yang mengakibatkan pasien beresiko malnutrisi? (Diare kronis, HIV,
+              PJB, Hepato, Ginjal, Stoma, Lain-lain)</td>
+            <td> {{ anamnesisAwal?.skreeninggizi?.pediatrik?.form?.penyakit?.skor }} </td>
+          </tr>
+          <tr class="text-weight-bold">
+            <td colspan="3">
+              <div class="row justify-between q-px-lg">
+                <div class="col-auto">
+                  Total Skor :
+                </div>
+                <div class="col-auto">
+                  {{ anamnesisAwal?.skreeninggizi?.pediatrik?.skor }} ( {{
+                    anamnesisAwal?.skreeninggizi?.pediatrik?.ket }} )
+                </div>
+              </div>
+            </td>
+          </tr>
+
         </tbody>
       </table>
     </div>
@@ -541,8 +731,7 @@
 
     <!-- Penilaian : Assasement Resiko Jatuh Humpty-->
     <div class="section" v-if="penilaian?.humpty_dumpty">
-      <div class="section-title">
-        Resiko Jatuh Humpty Dumpty Fall Scale ( {{ '<' }}18 tahun) : </div>
+      <div class="section-title"> Resiko Jatuh Humpty Dumpty Fall Scale ( {{ '<' }}18 tahun) : </div>
           <table>
             <thead>
               <tr>
@@ -794,8 +983,10 @@ function kepInter (item) {
 }
 
 const anamnesisAwal = computed(() => {
-  const awal = props?.pasien?.anamnesis?.find(x => x?.awal === '1' && x?.nakes === '2') || null
-  console.log('awal anam', awal?.petugas)
+  const awalper = props?.pasien?.anamnesis?.find(x => x?.awal === '1' && x?.nakes === '2') || null
+  const awalBid = props?.pasien?.anamnesis?.find(x => x?.awal === '1' && x?.nakes === '3') || null
+  const awal = awalper ?? awalBid
+  // console.log('awal anam', awal?.petugas)
 
   return awal
 })
@@ -807,14 +998,18 @@ const edukasi = computed(() => {
 })
 
 const pemeriksaanUmum = computed(() => {
-  const awal = props?.pasien?.pemeriksaan?.find(x => x?.awal === '1' && x?.nakes === '2') || null
+  const awalper = props?.pasien?.pemeriksaan?.find(x => x?.awal === '1' && x?.nakes === '2') || null
+  const awalBid = props?.pasien?.pemeriksaan?.find(x => x?.awal === '1' && x?.nakes === '3') || null
+  const awal = awalper ?? awalBid
   // console.log('awal pemerikasaan', awal)
 
   return awal
 })
 
 const penilaian = computed(() => {
-  const awal = props?.pasien?.penilaian?.find(x => x?.awal === '1' && x?.group_nakes === '2') || null
+  const awalper = props?.pasien?.penilaian?.find(x => x?.awal === '1' && x?.group_nakes === '2') || null
+  const awalBid = props?.pasien?.penilaian?.find(x => x?.awal === '1' && x?.group_nakes === '3') || null
+  const awal = awalper ?? awalBid
   // console.log('awal pemerikasaan', awal)
 
   return awal

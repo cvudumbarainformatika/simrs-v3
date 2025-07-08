@@ -273,10 +273,12 @@ async function LapRealisasi(row) {
         rekeningbelanja: npdls.filter((x) => x.koderekening === el)[0]?.rekeningbelanja,
         koderekening: npdls.filter((x) => x.koderekening === el)[0]?.koderekening,
         pagu: npdls.filter((x) => x.koderekening === el).map((x) => parseFloat(x.pagu)).reduce((a, b) => a + b, 0),
-        realisasi: npdls.filter((x) => x.koderekening === el).map((x) => parseFloat(x.realisasi)).reduce((a, b) => a + b, 0),
+        realisasi: npdls.filter((x) => x.koderekening === el).map((x) => parseFloat(x.realisasi)).reduce((a, b) => a + b, 0) -
+          npdls.filter((x) => x.koderekening === el).map((x) => parseFloat(x.pengajuan)).reduce((a, b) => a + b, 0),
         pengajuan: npdls.filter((x) => x.koderekening === el).map((x) => parseFloat(x.pengajuan)).reduce((a, b) => a + b, 0),
         sisapagu: npdls.filter((x) => x.koderekening === el).map((x) => parseFloat(x.pagu)).reduce((a, b) => a + b, 0) -
-          npdls.filter((x) => x.koderekening === el).map((x) => parseFloat(x.realisasi)).reduce((a, b) => a + b, 0) -
+          (npdls.filter((x) => x.koderekening === el).map((x) => parseFloat(x.realisasi)).reduce((a, b) => a + b, 0) -
+            npdls.filter((x) => x.koderekening === el).map((x) => parseFloat(x.pengajuan)).reduce((a, b) => a + b, 0)) -
           npdls.filter((x) => x.koderekening === el).map((x) => parseFloat(x.pengajuan)).reduce((a, b) => a + b, 0),
       };
       pengajuan.push(obj);
