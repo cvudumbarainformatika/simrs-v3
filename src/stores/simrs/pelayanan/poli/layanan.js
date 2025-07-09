@@ -46,21 +46,29 @@ export const useLayananPoli = defineStore('layanan-poli', {
     loadingSaveIcd: false,
     formicd: {
       kdprocedure: ''
-    }
-
+    },
+    /// --------edit keterangan tindakan start -----
+    openEdit: false,
+    tindToedit: null,
+    formKetToEdit: {
+      ket: '',
+      rs73_id: null,
+    },
+    loadingSimpanKetTind: false,
+    /// --------edit keterangan tindakan end -----
   }),
   // getters: {
   //   doubleCount: (state) => state.counter * 2
   // },
   actions: {
 
-    async getDiagnosaDropdown() {
+    async getDiagnosaDropdown () {
       const resp = await api.get('v1/simrs/pelayanan/listdiagnosa')
       if (resp.status === 200) {
         this.listDiagnosa = resp.data
       }
     },
-    async getTindakanDropdown() {
+    async getTindakanDropdown () {
       const resp = await api.get('v1/simrs/pelayanan/dialogtindakanpoli')
       // console.log('list tindakan', resp)
       if (resp.status === 200) {
@@ -69,7 +77,7 @@ export const useLayananPoli = defineStore('layanan-poli', {
     },
 
     //= ===
-    async cariIcd9(val) {
+    async cariIcd9 (val) {
       if (val?.length < 3) {
         return
       }
@@ -91,11 +99,11 @@ export const useLayananPoli = defineStore('layanan-poli', {
           this.loadingIcd = false
         })
     },
-    setFormTindakan(key, val) {
+    setFormTindakan (key, val) {
       this.formtindakan[key] = val
     },
     //= ===
-    setKode(val) {
+    setKode (val) {
       this.formdiagnosa.kddiagnosa = val
       const ada = this.listDiagnosa?.length > 0
       if (ada) {
@@ -109,11 +117,11 @@ export const useLayananPoli = defineStore('layanan-poli', {
       }
     },
 
-    setFormDianosa(key, val) {
+    setFormDianosa (key, val) {
       this.formdiagnosa[key] = val
     },
 
-    setKdTindakan(val) {
+    setKdTindakan (val) {
       this.formtindakan.kdtindakan = val
       const ada = this.listTindakan?.length > 0
       if (ada) {
@@ -144,7 +152,7 @@ export const useLayananPoli = defineStore('layanan-poli', {
       })
     },
 
-    async simpanDiagnosa(pasien) {
+    async simpanDiagnosa (pasien) {
       if (!pasien?.kodedokter) {
         return notifErrVue('kode Dokter masih kosong, silahkan tutup dulu pasien ini kemudian tekan tombol refresh di pojok kanan atas')
       }
@@ -196,7 +204,7 @@ export const useLayananPoli = defineStore('layanan-poli', {
       }
     },
 
-    async deleteDiagnosa(pasien, id) {
+    async deleteDiagnosa (pasien, id) {
       const payload = { id }
       const resp = await api.post('v1/simrs/pelayanan/hapusdiagnosa', payload)
       if (resp.status === 200) {
@@ -208,7 +216,7 @@ export const useLayananPoli = defineStore('layanan-poli', {
       }
     },
 
-    editFormDiagnosa(val) {
+    editFormDiagnosa (val) {
       this.formdiagnosa = {
         id: val.id,
         kddiagnosa: val.rs3,
@@ -224,7 +232,7 @@ export const useLayananPoli = defineStore('layanan-poli', {
 
     // ==================================================================================== TINDAKAN =========================================================================
 
-    async saveTindakan(pasien) {
+    async saveTindakan (pasien) {
       if (!pasien?.kodedokter) {
         return notifErrVue('kode Dokter masih kosong, silahkan tutup dulu pasien ini kemudian tekan tombol refresh di pojok kanan atas')
       }
@@ -256,8 +264,29 @@ export const useLayananPoli = defineStore('layanan-poli', {
         this.loadingFormTindakan = false
       }
     },
-
-    async getNota(pasien) {
+    async seveEditKeteranganTindakan (pasien) {
+      try {
+        this.loadingSimpanKetTind = true
+        const resp = await api.post('v1/simrs/pelayanan/simpan-ket-tindakan', this.formKetToEdit)
+        if (resp.status === 200) {
+          const storePasien = usePengunjungPoliStore()
+          const isi = resp?.data?.result
+          storePasien.injectDataPasien(pasien, isi, 'tindakan')
+          notifSuccess(resp)
+          this.openEdit = false
+          this.tindToedit = null,
+            this.formKetToEdit = {
+              ket: '',
+              rs73_id: null,
+            }
+        }
+      } catch {
+        this.loadingSimpanKetTind = false
+      } finally {
+        this.loadingSimpanKetTind = false
+      }
+    },
+    async getNota (pasien) {
       const params = {
         params: {
           noreg: pasien?.noreg
@@ -274,7 +303,7 @@ export const useLayananPoli = defineStore('layanan-poli', {
       }
     },
 
-    uploadImages(file, id, pasien) {
+    uploadImages (file, id, pasien) {
       const files = file
       // console.log('store upload image', id)
       const data = new FormData()
@@ -308,7 +337,7 @@ export const useLayananPoli = defineStore('layanan-poli', {
       })
     },
 
-    hapusDokumen(pasien, id) {
+    hapusDokumen (pasien, id) {
       // hapusdokumentindakan
       const payload = { id }
 
@@ -342,7 +371,7 @@ export const useLayananPoli = defineStore('layanan-poli', {
       // }
     },
 
-    async hapusTindakan(pasien, id) {
+    async hapusTindakan (pasien, id) {
       const payload = { id, noreg: pasien?.noreg }
 
       try {
@@ -360,14 +389,14 @@ export const useLayananPoli = defineStore('layanan-poli', {
       }
     },
 
-    setNotas(array) {
+    setNotas (array) {
       const arr = array.map(x => x.nota)
       this.notaTindakans = arr?.length ? arr : []
       this.notaTindakans.push('BARU')
       this.notaTindakan = this.notaTindakans[0]
     },
 
-    initReset(x) {
+    initReset (x) {
       const tabbed = x ?? 'Diagnosa Medik'
       return new Promise((resolve, reject) => {
         this.tab = tabbed
@@ -406,10 +435,10 @@ export const useLayananPoli = defineStore('layanan-poli', {
       })
     },
     // =====
-    setFormIcd(key, val) {
+    setFormIcd (key, val) {
       this.formicd[key] = val
     },
-    saveIcd(pasien) {
+    saveIcd (pasien) {
       this.loadingSaveIcd = true
       // this.setFormIcd('noreg', pasien?.noreg)
       // console.log('form icd', this.formicd)
@@ -432,7 +461,7 @@ export const useLayananPoli = defineStore('layanan-poli', {
           })
       })
     },
-    getListProsedur(pasien) {
+    getListProsedur (pasien) {
       const payload = {
         params: { noreg: pasien?.noreg }
       }
@@ -444,7 +473,7 @@ export const useLayananPoli = defineStore('layanan-poli', {
           })
       })
     },
-    hapusProsedur(pasien, id) {
+    hapusProsedur (pasien, id) {
       this.loadingSaveIcd = true
       const payload = { id, noreg: pasien?.noreg }
       return new Promise(resolve => {

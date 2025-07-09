@@ -64,6 +64,16 @@
                       <q-btn label="lihat dokumen" class="q-px-md" dense color="info" size="sm"
                         @click="lihatDokumen(item)" />
                     </q-item-label>
+                    <q-item-label v-if="item.gambardokumens?.length">
+                      <q-btn label="lihat dokumen" class="q-px-md" dense color="info" size="sm"
+                        @click="lihatDokumen(item)" />
+                    </q-item-label>
+                    <q-item-label>
+                      <q-btn class="q-px-md" dense color="info" icon="icon-mat-edit" flat size="sm"
+                        @click="editKeterangan(item)">
+                        <q-tooltip>Edit Keterangan</q-tooltip>
+                      </q-btn>
+                    </q-item-label>
                   </q-item-section>
                 </q-item>
                 <q-separator size="2px" />
@@ -85,6 +95,8 @@
     <!-- drawer -->
     <dialog-dokumen v-model="drawerRight" :dokumen="dokumen" @hapus-dokumen="(val) => hapusDokumen(val)" />
   </q-card>
+  <!-- dialog edit keterangan -->
+  <dialogEdit :pasien="pasien" />
 </template>
 
 <script setup>
@@ -93,7 +105,7 @@ import DialogUploadokumen from './DialogUploadokumen.vue'
 import { useQuasar } from 'quasar'
 import { dateFullFormat, formatRp, getNewLine } from 'src/modules/formatter'
 import { useLayananPoli } from 'src/stores/simrs/pelayanan/poli/layanan'
-import { computed, ref } from 'vue'
+import { computed, defineAsyncComponent, ref } from 'vue'
 
 const store = useLayananPoli()
 const $q = useQuasar()
@@ -114,7 +126,7 @@ const filterredTable = computed(() => {
   return arr?.filter(x => x.rs2 === val)
 })
 
-function hapusItem(id) {
+function hapusItem (id) {
   $q.dialog({
     dark: true,
     title: 'Peringatan',
@@ -131,17 +143,27 @@ function hapusItem(id) {
   })
 }
 
-function bukaUploadan(id) {
+function bukaUploadan (id) {
   idTindakan.value = id
   modalUpload.value = !modalUpload.value
 }
 
-function lihatDokumen(item) {
+const dialogEdit = defineAsyncComponent(() => import('./DialogEditKeterangan.vue'))
+function editKeterangan (item) {
+  // console.log('edited', item)
+  store.openEdit = true
+  store.tindToedit = structuredClone(item)
+  store.formKetToEdit.ket = structuredClone(item?.sambungan?.ket) ?? structuredClone(item?.rs20)
+  store.formKetToEdit.rs73_id = structuredClone(item?.sambungan?.rs73_id) ?? structuredClone(item?.id)
+  store.formKetToEdit.id = structuredClone(item?.id)
+}
+
+function lihatDokumen (item) {
   dokumen.value = null
   dokumen.value = item
   drawerRight.value = !drawerRight.value
 }
-function hapusDokumen(id) {
+function hapusDokumen (id) {
   $q.dialog({
     dark: true,
     title: 'Peringatan',
@@ -163,7 +185,7 @@ function hapusDokumen(id) {
   })
 }
 
-function setPelaksana(item) {
+function setPelaksana (item) {
   const nota = item?.rs2
   const notaDariSimrsBaru = nota.includes('RJ')
 
