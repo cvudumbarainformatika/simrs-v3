@@ -10,7 +10,7 @@
         }" />
     </div>
     <div class="q-pa-sm" style="width:25%">
-      <app-input v-model="store.reqs.tahun" label="Tahun" outlined @update:model-value="(val) => {
+      <app-input v-model="store.reqs.tahun" label="Tahun" debounce="500" outlined @update:model-value="(val) => {
         console.log('Tahun berapa?', val)
         store.getDataBidang()
         store.reqs.bidang = ''

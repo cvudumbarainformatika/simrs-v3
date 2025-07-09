@@ -224,6 +224,9 @@ function viewRincian(row) {
   store.openDialogRinci = true
   npd.value = row.rincian
   store.listrinci = npd.value
+  store.npddatasave = row
+  console.log('npd save', store.npddatasave)
+
 }
 const onRowClick = (row) =>
   alert([row?.nopencairan, row?.total])

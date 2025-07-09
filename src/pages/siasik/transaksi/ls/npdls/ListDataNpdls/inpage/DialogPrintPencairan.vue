@@ -319,13 +319,6 @@
                               </div>
                             </td>
                             <td class="text-right">
-                              <!-- <div v-if="store.npddatasave.pajak != null">
-                            {{ formattanpaRp(store.npddatasave.pajak.ppnpusat) }}
-                          </div>
-                          <div
-                            v-else-if="store.npddatasave.newpajak?.length !== 0 || store.npddatasave.newpajak?.length > 0">
-                            {{ formattanpaRp(isNaN(mapPajakBaru().ppn?.nilai) ? 0 : mapPajakBaru().ppn?.nilai) }}
-                          </div> -->
                               <div v-if="store.npddatasave.pajak != null || store.npddatasave.newpajak?.length > 0">
                                 {{ formattanpaRp(mapPajakBaru().sumppn) }}
                               </div>
@@ -344,12 +337,6 @@
                               </div>
                             </td>
                             <td class="text-right">
-                              <!-- <div v-if="store.npddatasave.pajak != null">
-                            {{ formattanpaRp(store.npddatasave.pajak.pph21) }}
-                          </div>
-                          <div v-if="store.npddatasave.newpajak?.length > 0">
-                            {{ formattanpaRp(isNaN(mapPajakBaru().pph21?.nilai) ? 0 : mapPajakBaru().pph21?.nilai) }}
-                          </div> -->
                               <div v-if="store.npddatasave.pajak != null || store.npddatasave.newpajak?.length > 0">
                                 {{ formattanpaRp(mapPajakBaru().sumpph21) }}
                               </div>
@@ -368,12 +355,6 @@
                               </div>
                             </td>
                             <td class="text-right">
-                              <!-- <div v-if="store.npddatasave.pajak != null">
-                            {{ formattanpaRp(store.npddatasave.pajak.pph22) }}
-                          </div>
-                          <div v-if="store.npddatasave.newpajak?.length > 0">
-                            {{ formattanpaRp(isNaN(mapPajakBaru().pph22?.nilai) ? 0 : mapPajakBaru().pph22?.nilai) }}
-                          </div> -->
                               <div v-if="store.npddatasave.pajak != null || store.npddatasave.newpajak?.length > 0">
                                 {{ formattanpaRp(mapPajakBaru().sumpph22) }}
                               </div>
@@ -392,12 +373,6 @@
                               </div>
                             </td>
                             <td class="text-right">
-                              <!-- <div v-if="store.npddatasave.pajak != null">
-                            {{ formattanpaRp(store.npddatasave.pajak.pph23) }}
-                          </div>
-                          <div v-if="store.npddatasave.newpajak?.length > 0">
-                            {{ formattanpaRp(isNaN(mapPajakBaru().pph23?.nilai) ? 0 : mapPajakBaru().pph23?.nilai) }}
-                          </div> -->
                               <div v-if="store.npddatasave.pajak != null || store.npddatasave.newpajak?.length > 0">
                                 {{ formattanpaRp(mapPajakBaru().sumpph23) }}
                               </div>
@@ -416,12 +391,6 @@
                               </div>
                             </td>
                             <td class="text-right">
-                              <!-- <div v-if="store.npddatasave.pajak != null">
-                            {{ formattanpaRp(store.npddatasave.pajak.pph25) }}
-                          </div>
-                          <div v-if="store.npddatasave.newpajak?.length > 0">
-                            {{ formattanpaRp(isNaN(mapPajakBaru().pph25?.nilai) ? 0 : mapPajakBaru().pph25?.nilai) }}
-                          </div> -->
                               <div v-if="store.npddatasave.pajak != null || store.npddatasave.newpajak?.length > 0">
                                 {{ formattanpaRp(mapPajakBaru().sumpph25) }}
                               </div>
@@ -440,13 +409,6 @@
                               </div>
                             </td>
                             <td class="text-right">
-                              <!-- <div v-if="store.npddatasave.pajak != null">
-                            {{ formattanpaRp(store.npddatasave.pajak.pajakdaerah) }}
-                          </div>
-                          <div v-if="store.npddatasave.newpajak?.length > 0">
-                            {{ formattanpaRp(isNaN(mapPajakBaru().pajakdaerah?.nilai) ? 0 :
-                              mapPajakBaru().pajakdaerah?.nilai) }}
-                          </div> -->
                               <div v-if="store.npddatasave.pajak != null || store.npddatasave.newpajak?.length > 0">
                                 {{ formattanpaRp(mapPajakBaru().sumpajakdaerah) }}
                               </div>
@@ -458,14 +420,9 @@
                               <div>Jumlah</div>
                             </td>
                             <td class="text-right text-weight-bold">
-                              <template v-if="store.npddatasave.pajak != null">
-                                <div>
-                                  {{ formattanpaRp(store.npddatasave.totalpajak) }}
-                                </div>
-                              </template>
-                              <template v-else>
-                                <div>{{ formattanpaRp(0) }} </div>
-                              </template>
+                              <div>
+                                {{ formattanpaRp(store.npddatasave.totalpajak) }}
+                              </div>
                             </td>
                           </tr>
                           <tr>
@@ -493,26 +450,14 @@
                               <div>Jumlah Potongan</div>
                             </td>
                             <td class="text-right justify-between">
-                              <template v-if="store.npddatasave.pajak != null">
-                                <div class="row">
-                                  <div class="col-auto">
-                                    Rp.
-                                  </div>
-                                  <div class="col">
-                                    {{ formattanpaRp(store.npddatasave.totalpajak) }}
-                                  </div>
+                              <div class="row">
+                                <div class="col-auto">
+                                  Rp.
                                 </div>
-                              </template>
-                              <template v-else>
-                                <div class="row">
-                                  <div class="col-auto">
-                                    Rp.
-                                  </div>
-                                  <div class="col">
-                                    {{ formattanpaRp(0) }}
-                                  </div>
+                                <div class="col">
+                                  {{ formattanpaRp(store.npddatasave.totalpajak) }}
                                 </div>
-                              </template>
+                              </div>
                             </td>
                           </tr>
                           <tr>
@@ -521,34 +466,12 @@
                             </td>
                             <td class="text-right justify-between">
                               <div class="row">
-                                <template v-if="store.npddatasave.pajak != null">
-                                  <div class="col-auto text-weight-bold">
-                                    Rp.
-                                  </div>
-                                  <div class="col text-weight-bold">
-                                    {{ formattanpaRp(store.npddatasave.totalbayar) }}
-                                  </div>
-                                </template>
-                                <template v-else>
-                                  <div class="col-auto text-weight-bold">
-                                    Rp.
-                                  </div>
-                                  <div class="col text-weight-bold">
-                                    {{ formattanpaRp(store.npddatasave.total) }}
-                                  </div>
-                                </template>
-                              </div>
-                            </td>
-                          </tr>
-                        </tbody>
-                        <tbody>
-                          <tr v-for="(item, n) in store.npddatasave.newpajak" :key="n">
-                            <td>{{ n + 1 }}</td>
-                            <td>{{ item.uraian }}</td>
-                            <td class="text-right justify-between">
-                              <div class="row">
-                                <span class="col-auto">Rp.</span>
-                                <span class="col">{{ formattanpaRp(item.nilai) }}</span>
+                                <div class="col-auto text-weight-bold">
+                                  Rp.
+                                </div>
+                                <div class="col text-weight-bold">
+                                  {{ formattanpaRp(store.npddatasave.totalbayar) }}
+                                </div>
                               </div>
                             </td>
                           </tr>
@@ -559,16 +482,9 @@
 
                   <div class="row b4 justify-between full-width full-height ">
                     <div class="row q-pl-sm q-py-xs text-weight-bold" style="width:100%">
-                      <template v-if="store.npddatasave.pajak != null">
-                        <div>
-                          Uang Sejumlah : {{ terbilangRupiah(store.npddatasave.totalbayar) }}
-                        </div>
-                      </template>
-                      <template v-else>
-                        <div>
-                          Uang Sejumlah : {{ terbilangRupiah(store.npddatasave.total) }}
-                        </div>
-                      </template>
+                      <div>
+                        Uang Sejumlah : {{ terbilangRupiah(store.npddatasave.totalbayar) }}
+                      </div>
                     </div>
                   </div>
 
