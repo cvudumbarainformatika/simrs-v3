@@ -103,6 +103,8 @@ export const useLaporanMutasiFiFoFarmasiStore = defineStore('laporan_mutasi_fifo
         const resep = it?.resepkeluar ?? []
         const racikan = it?.resepkeluarracikan ?? []
         const pak = it?.mutasikeluar ?? []
+        const masNgam = it?.mutasimasukngambang ?? []
+        const kelNgam = it?.mutasikeluarngambang ?? []
         if (this.params.jenis === 'detail') {
           if (it?.saldoawal?.length) {
             it?.saldoawal.forEach(s => {
@@ -137,6 +139,14 @@ export const useLaporanMutasiFiFoFarmasiStore = defineStore('laporan_mutasi_fifo
               tgl: res.tgl,
               masuk: res,
               ket: 'retur dari ' + res?.header?.norm + ' ' + (res?.header?.datapasien?.rs2 ?? '')
+            }
+            it.data.push(temp)
+          })
+          masNgam?.forEach(res => {
+            const temp = {
+              tgl: res.tgl,
+              masuk: res,
+              ket: 'Mutasi masuk ' + ((res?.ruangan?.uraian ?? res?.depo?.nama ?? ' ') + ' ' + res?.no_permintaan ?? '')
             }
             it.data.push(temp)
           })
@@ -235,6 +245,17 @@ export const useLaporanMutasiFiFoFarmasiStore = defineStore('laporan_mutasi_fifo
               tgl: res?.tgl ?? this.params.tahun + '-' + this.params.bulan + '-31 23:00:00',
               keluar: res,
               ket: ((res?.ruangan?.uraian ?? res?.depo?.nama ?? ' ') + ' ' + res?.no_permintaan ?? '')
+            }
+
+            it.data.push(temp)
+            keluar.push(res)
+
+          })
+          kelNgam?.forEach(res => {
+            const temp = {
+              tgl: res?.tgl ?? this.params.tahun + '-' + this.params.bulan + '-31 23:00:00',
+              keluar: res,
+              ket: 'Mutasi masuk ' + ((res?.ruangan?.uraian ?? res?.depo?.nama ?? ' ') + ' ' + res?.no_permintaan ?? '')
             }
 
             it.data.push(temp)
@@ -464,6 +485,30 @@ export const useLaporanMutasiFiFoFarmasiStore = defineStore('laporan_mutasi_fifo
 
 
             keluarx.push(raw)
+          }
+          if (it?.mutasikeluarngambang?.length) {
+            const raw = {
+              tgl: it?.mutasikeluarngambang[0]?.tgl,
+              harga: 0,
+              jumlah: it?.mutasikeluarngambang?.reduce((a, b) => parseFloat(a) + parseFloat(b.jumlah), 0),
+              sub: it?.mutasikeluarngambang?.reduce((a, b) => parseFloat(a) + parseFloat(b.sub), 0),
+              ket: 'Mutasi Keluar Beklum diteriman'
+            }
+
+
+            keluarx.push(raw)
+          }
+          if (it?.mutasimasukngambang?.length) {
+            const raw = {
+              tgl: it?.mutasimasukngambang[0]?.tgl,
+              harga: 0,
+              jumlah: it?.mutasimasukngambang?.reduce((a, b) => parseFloat(a) + parseFloat(b.jumlah), 0),
+              sub: it?.mutasimasukngambang?.reduce((a, b) => parseFloat(a) + parseFloat(b.sub), 0),
+              ket: 'Mutasi masuk depo'
+            }
+
+
+            masuk.push(raw)
           }
         }
         if (this.params.jenis === 'rekap') {
