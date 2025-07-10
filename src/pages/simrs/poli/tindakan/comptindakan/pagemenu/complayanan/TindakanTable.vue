@@ -152,10 +152,14 @@ const dialogEdit = defineAsyncComponent(() => import('./DialogEditKeterangan.vue
 function editKeterangan (item) {
   // console.log('edited', item)
   store.openEdit = true
-  store.tindToedit = structuredClone(item)
-  store.formKetToEdit.ket = structuredClone(item?.sambungan?.ket) ?? structuredClone(item?.rs20)
-  store.formKetToEdit.rs73_id = structuredClone(item?.sambungan?.rs73_id) ?? structuredClone(item?.id)
-  store.formKetToEdit.id = structuredClone(item?.id)
+  store.tindToedit = item
+  if (item?.sambungan) {
+    store.formKetToEdit = item?.sambungan
+  } else {
+    store.formKetToEdit.ket = item?.rs20
+    store.formKetToEdit.rs73_id = item?.id
+  }
+  store.formKetToEdit.id = item?.id
 }
 
 function lihatDokumen (item) {
