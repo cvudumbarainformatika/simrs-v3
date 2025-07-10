@@ -83,6 +83,25 @@
                 {{ item?.kategoritriage ?? '-' }}
               </q-badge>
             </div>
+            <div v-if="item?.groups === '1'" class="flex q-gutter-sm">
+              <q-badge v-if="cekReadmisi(item?.last_visit, item?.tgl_kunjungan) && item?.flagpelayanan !== '1'"
+                class="q-mt-sm q-px-sm cursor-pointer" dense color="dark">
+                <q-popup-proxy dark>
+                  <q-banner dark>
+                    <template v-slot:avatar>
+                      <app-avatar-pasien :pasien="item" width="50px" />
+                    </template>
+                    <div class="column">
+                      <div>Terakhir Masuk </div>
+                      <div class="text-bold">{{ humanDate(item?.last_visit) }} </div>
+                    </div>
+                  </q-banner>
+                </q-popup-proxy>
+                <div class="f-12">
+                  {{ cekReadmisi(item?.last_visit, item?.tgl_kunjungan) }}
+                </div>
+              </q-badge>
+            </div>
           </q-item-section>
           <q-item-section v-if="item?.flagpelayanan === ''" side>
             <q-btn dense size="sm" no-caps color="red" label="TERIMA" class="q-mb-sm"
@@ -118,6 +137,7 @@ import EmptyData from './EmptyData.vue'
 // import { defineAsyncComponent, ref } from 'vue'
 import { usePengunjungIgdStore } from 'src/stores/simrs/igd/pengunjung'
 import { dateFullFormat, formatJam } from 'src/modules/formatter'
+import { date } from 'quasar'
 
 const emits = defineEmits(['terimapasien', 'bukalayanan', 'kirimcasmix'])
 const store = usePengunjungIgdStore()
@@ -157,7 +177,7 @@ defineProps({
   }
 })
 
-function colortriage(val) {
+function colortriage (val) {
   if (val === 'Resusitasi') {
     return 'red'
   }
@@ -173,5 +193,20 @@ function colortriage(val) {
   else {
     return 'black'
   }
+}
+const cekReadmisi = (last_visit, tglmasuk) => {
+  // console.log('tgl', tgl);
+  let ada = null
+  if (last_visit) {
+    const selisih = date.getDateDiff(tglmasuk, last_visit, 'days') ?? null
+    if (selisih) {
+      if (selisih <= 30) {
+        ada = 'Re-Adm'
+      }
+    }
+  }
+
+  return ada
+
 }
 </script>
