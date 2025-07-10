@@ -5,8 +5,9 @@
       <div class="f-10 text-weight-light">
         <em>form Diagnosa sekaligus pensimulasian INACBG </em>
       </div>
+
       <q-btn color="primary" class="q-pa-none full-width" flat dense :loading="pengunjung.loadingGantiMemo"
-        :disable="pengunjung.loadingGantiMemo">
+        :disable="pengunjung.loadingGantiMemo" no-caps>
         {{ pasien?.memodiagnosa ?? 'MEMO DOKTER' }}
         <q-menu ref="refMemo" style="width: 400px;" @show="showMemo">
           <div class="q-pa-sm">
@@ -306,12 +307,13 @@ const tipediagnosa = ref(['Awal', 'Primer', 'Sekunder'])
 const refMemo = ref(null)
 const refInputMemo = ref(null)
 function gantiMemo () {
-  // console.log('ganti memo', refMemo.value)
   const form = {
     memo: memoDokter.value,
-    noreg: props.pasien?.noreg
+    noreg: props.pasien?.noreg,
+    kdruang: props.pasien?.kodepoli,
   }
   refMemo.value?.hide()
+  // console.log('ganti memo', props.pasien, form)
   pengunjung.gantiMemo(form, props.pasien)
 }
 function showMemo () {

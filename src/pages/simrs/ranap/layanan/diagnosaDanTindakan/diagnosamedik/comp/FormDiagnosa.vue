@@ -5,6 +5,7 @@
       <div class="f-10 text-weight-light">
         <em>form Diagnosa sekaligus pensimulasian INACBG </em>
       </div> -->
+      <div v-if="pasien?.memodiagnosaigd" class="text-center">Memo Diagnosa Igd : {{ pasien?.memodiagnosaigd }}</div>
       <q-btn color="primary" class="q-pa-none full-width" flat dense no-caps>
         MEMO : {{ pasien?.memodiagnosa ?? 'MEMO DOKTER' }}
         <q-popup-edit fit buttons v-model="memoDokter" :cover="false" :offset="[0, 10]" v-slot="scope" @save="(val) => {
@@ -152,7 +153,7 @@ const optionsDiagutama = ref([
 
 // console.log('props', store.formdiagnosa)
 
-function onSubmit() {
+function onSubmit () {
   if (store.formdiagnosa.kasus === null || store.formdiagnosa.kasus === '') {
     $q.notify({
       color: 'red-5',
@@ -174,7 +175,7 @@ function onSubmit() {
   }
 }
 
-function resetValidation() {
+function resetValidation () {
   // formRef.value.resetValidation()
 }
 defineExpose({ resetValidation })
@@ -192,7 +193,7 @@ onMounted(() => {
   // console.log('onMounted', options.value)
 })
 
-function filterFn(val, update, abort) {
+function filterFn (val, update, abort) {
   if (val?.length < 2) {
     abort()
     options.value = []
@@ -230,11 +231,11 @@ function filterFn(val, update, abort) {
   })
 }
 
-function kasusDiUbah(val) {
+function kasusDiUbah (val) {
   ganti(val)
 }
 
-function ganti(val) {
+function ganti (val) {
   // const arr = store.listDiagnosa
   // // console.log(arr)
   // listDiagnosa.value = arr
@@ -261,7 +262,7 @@ function ganti(val) {
   // console.log('diag', arr)
 }
 
-function diagnosaUtamaDiubah(val) {
+function diagnosaUtamaDiubah (val) {
   // console.log(props.pasien)
   if (store.formdiagnosa.kasus === null || store.formdiagnosa.kasus === '') {
     $q.notify({
@@ -276,7 +277,7 @@ function diagnosaUtamaDiubah(val) {
   }
 }
 
-function gantiMemo(val) {
+function gantiMemo (val) {
   // console.log('okkk')
   const form = {
     memo: val ?? '',
