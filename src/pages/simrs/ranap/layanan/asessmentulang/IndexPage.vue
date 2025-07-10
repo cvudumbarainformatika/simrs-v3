@@ -11,12 +11,7 @@
           </div>
         </div>
         <div>
-          <q-btn
-            rounded
-            outline
-            color="white"
-            @click="settings.isForm = !settings.isForm"
-          >
+          <q-btn rounded outline color="white" @click="settings.isForm = !settings.isForm">
             <q-icon name="icon-mat-add" size="xs" /><span class="q-ml-xs">Tambah</span>
           </q-btn>
         </div>
@@ -26,7 +21,8 @@
       <ListSoap :pasien="pasien" :kasus="kasus" :nakes="nakes" :items="store.items" />
     </div>
 
-    <DialogForm v-model="settings.isForm" :pasien="pasien" :kasus="kasus" :nakes="nakes" @exit="settings.isForm = false" />
+    <DialogForm v-model="settings.isForm" :pasien="pasien" :kasus="kasus" :nakes="nakes"
+      @exit="settings.isForm = false" />
   </q-card>
 </template>
 
@@ -48,7 +44,7 @@ const props = defineProps({
 const { settings, store, storeAnamnesis, storePemeriksaanUmum, storePenilaian } = useForm(props.pasien)
 
 onMounted(() => {
-  // console.log('props', props?.pasien?.cppt)
+  console.log('props', props?.pasien?.cppt)
 
   store.getCppt(props?.pasien?.cppt)
   Promise.all([

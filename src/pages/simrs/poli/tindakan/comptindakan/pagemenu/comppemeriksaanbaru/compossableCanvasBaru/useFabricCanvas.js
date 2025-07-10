@@ -616,7 +616,7 @@ export function useFabricCanvas(
   function onChangeImg() {
     // resizeCanvas()
     const canvas = cvn.value
-    console.log('oooi')
+    // console.log('oooi')
     canvas.setDimensions({ width: widthEl.value, height: heightEl.value })
     const img = markRaw(new fabric.Image(imgRef.value, (image, isError) => {
       image.set({
@@ -639,6 +639,7 @@ export function useFabricCanvas(
       // heigh: heightEl.value - 50
     })
     canvas.add()
+
   }
 
 

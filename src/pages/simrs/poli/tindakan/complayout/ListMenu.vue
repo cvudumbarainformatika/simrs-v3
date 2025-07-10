@@ -33,7 +33,7 @@ const props = defineProps({
 })
 const getCount = computed(() => {
   const jawaban = props?.pasien?.jawabankonsul?.filter((item) => item?.dibaca_poli_asal === null && item?.noreg_lama === props?.pasien?.noreg && item?.jawaban !== null)
-  console.log('paeian', props?.pasien, jawaban)
+  // console.log('paeian', props?.pasien, jawaban)
 
   return jawaban?.length
 }

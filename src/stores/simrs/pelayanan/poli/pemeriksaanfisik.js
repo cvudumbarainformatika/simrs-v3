@@ -428,7 +428,7 @@ export const usePemeriksaanFisik = defineStore('pemeriksaan-fisik', {
       this.fileGambar = file
       this.templateActive = template
       this.urlGambar = pathImg + imgUrl
-      // // console.log('init url', pathImg + imgUrl)
+      // console.log('init url', pathImg + imgUrl)
       // // console.log('init', file)
       // // console.log('init template', this.templateActive)
       // // console.log('init gambar', this.gambarActive)

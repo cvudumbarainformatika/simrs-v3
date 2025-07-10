@@ -29,7 +29,7 @@
 </template>
 
 <script setup>
-import { defineAsyncComponent } from 'vue'
+import { defineAsyncComponent, computed, onBeforeUnmount, ref, onMounted } from 'vue'
 // import HeaderComp from './comppemeriksaanbaru/HeaderComp.vue'
 import TemplateGambar from './comppemeriksaanbaru/TemplateGambar.vue'
 import FormPemeriksaan from './comppemeriksaanbaru/FormPemeriksaan.vue'
@@ -37,7 +37,6 @@ import ListPemeriksaan from './comppemeriksaanbaru/ListPemeriksaan.vue'
 // import CanvasComp from './comppemeriksaanbaru/CanvasComp.vue'
 import { useSlideFromLeft } from 'src/composable/gsap/slidefromleft'
 import { usePemeriksaanFisik } from 'src/stores/simrs/pelayanan/poli/pemeriksaanfisik'
-import { computed, onBeforeUnmount, ref } from 'vue'
 import HistoryPemeriksaan from './comppemeriksaanbaru/HistoryPemeriksaan.vue'
 // import { ref } from 'vue'
 
@@ -63,8 +62,14 @@ const filterShapes = computed(() => {
 
   // return store.shapes.filter(x => x.templategambar === store.fileGambar)
   const shapes = store.shapes.filter(x => x.templategambar === store.fileGambar)
+  // console.log('shapes', shapes);
+
   return shapes
 
+})
+
+onMounted(() => {
+  console.log('pemeriksaan fisik dibuka', props.pasien)
 })
 
 onBeforeUnmount(() => {

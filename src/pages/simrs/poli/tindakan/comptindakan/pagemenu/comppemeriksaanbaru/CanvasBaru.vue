@@ -300,7 +300,9 @@ function tabDiNullkan() {
   setTimeout(() => {
     onChangeImg()
     drawall()
-  }, 500)
+
+  }, 100)
+  resizeCanvas()
 }
 
 function tabOpenned() {
@@ -354,9 +356,15 @@ watch(() => arr?.value, (newVal, oldVal) => {
 
 watch(() => store?.fileGambar, (newVal, oldVal) => {
   if (newVal !== oldVal) {
-    // setTimeout(() => onChangeImg(), 300)
     tabDiNullkan()
   }
+}, { deep: true })
+
+
+watch(() => store?.urlGambar, (newVal, oldVal) => {
+  console.log('store.urlGambar', newVal);
+  console.log('store.urlGambar old', oldVal);
+
 }, { deep: true })
 
 watch(() => store.isEdit, (val) => {
