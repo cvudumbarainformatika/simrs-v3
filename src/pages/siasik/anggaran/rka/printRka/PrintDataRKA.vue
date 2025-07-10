@@ -638,7 +638,7 @@
                         </tbody>
                       </table>
 
-                      <table v-else-if="store.reqs.jenisrka === '3'" class="justify-center full-width full-height">
+                      <table v-else-if="store.reqs.jenisrka === '3'" class="justify-center full-width">
                         <thead>
                           <tr class="text-bold text-center" style="height:50px">
                             <td class="text-center" colspan="2">REKENING</td>
@@ -764,7 +764,7 @@
                     </div>
                   </div>
 
-                  <div class="row b5 justify-between q-pt-xl q-pb-md full-width full-height ">
+                  <div class="row b5 justify-between q-pt-xl q-pb-md full-width">
                     <div class="row q-pl-sm q-py-xs text-weight-bold" style="width:100%">
                       <div class="col text-center">
                         <div class="text-bold">
