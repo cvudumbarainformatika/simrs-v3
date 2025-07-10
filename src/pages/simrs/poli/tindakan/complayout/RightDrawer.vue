@@ -43,43 +43,43 @@
                             <q-item v-for="(anamnesis, a) in item?.anamnesis" :key="a">
                               <q-item-section>
                                 <q-item-label>Keluhan Utama</q-item-label>
-                                <q-item-label caption lines="2">
+                                <q-item-label caption lines="5">
                                   {{ anamnesis?.rs4 }}
                                 </q-item-label>
                                 <q-item-label>Riwayat Penyakit (Sekarang)</q-item-label>
-                                <q-item-label caption lines="2">
+                                <q-item-label caption lines="5">
                                   {{ anamnesis?.riwayatpenyakitsekarang }}
                                 </q-item-label>
                                 <q-item-label>Riwayat Penyakit</q-item-label>
-                                <q-item-label caption lines="2">
+                                <q-item-label caption lines="5">
                                   {{ anamnesis?.riwayatpenyakit }}
                                 </q-item-label>
                                 <q-item-label>Riwayat Alergi</q-item-label>
-                                <q-item-label caption lines="2">
+                                <q-item-label caption lines="5">
                                   {{ anamnesis?.riwayatalergi }}
                                 </q-item-label>
                                 <q-item-label>Reaksi berupa</q-item-label>
-                                <q-item-label caption lines="2">
+                                <q-item-label caption lines="5">
                                   {{ anamnesis?.keteranganalergi }}
                                 </q-item-label>
                                 <q-item-label>Riwayat Pengobatan</q-item-label>
-                                <q-item-label caption lines="2">
+                                <q-item-label caption lines="7">
                                   {{ anamnesis?.riwayatpengobatan }}
                                 </q-item-label>
                                 <q-item-label>Penurunan Berat Badan</q-item-label>
-                                <q-item-label caption lines="2">
+                                <q-item-label caption lines="5">
                                   {{ anamnesis?.skreeninggizi == 0 ? "Tidak" : "Ya" }}
                                 </q-item-label>
                                 <q-item-label>Asupan Makan Berkurang</q-item-label>
-                                <q-item-label caption lines="2">
+                                <q-item-label caption lines="5">
                                   {{ anamnesis?.asupanmakan == 0 ? "Tidak" : "Ya" }}
                                 </q-item-label>
                                 <q-item-label>Kondisi Khusus</q-item-label>
-                                <q-item-label caption lines="2">
+                                <q-item-label caption lines="5">
                                   {{ anamnesis?.kondisikhusus }}
                                 </q-item-label>
                                 <q-item-label>Score Nyeri</q-item-label>
-                                <q-item-label caption lines="2">
+                                <q-item-label caption lines="5">
                                   {{ anamnesis?.scorenyeri }} ( {{ anamnesis?.keteranganscorenyeri }} )
                                 </q-item-label>
                               </q-item-section>
