@@ -288,7 +288,7 @@ export const usePerbaikanHargaFarmasiStore = defineStore('perbaikan_harga_farmas
             }
             // console.log('resp', resp?.data)
             resolve(resp)
-          // this.data = resp?.data?.data
+            // this.data = resp?.data?.data
           }).catch(err => {
             this.loading = false
             reject(err)
@@ -297,7 +297,8 @@ export const usePerbaikanHargaFarmasiStore = defineStore('perbaikan_harga_farmas
     },
 
     async simpanPerbaikanHarga (item) {
-      const param = this.params
+      const param = { ...this.params }
+      const q = param.q
       this.loading = true
       item.item.loading = true
       try {
@@ -312,7 +313,7 @@ export const usePerbaikanHargaFarmasiStore = defineStore('perbaikan_harga_farmas
         this.getData(param).then(() => {
           this.params.per_page = perPage
           this.params.page = page
-          this.params.q = ''
+          this.params.q = q
         })
       }
       catch (err) {
@@ -324,8 +325,9 @@ export const usePerbaikanHargaFarmasiStore = defineStore('perbaikan_harga_farmas
       }
     },
     async simpanPerbaikanHargaArray (item) {
-      console.log(' simpan array', item)
-      const param = this.params
+      // console.log(' simpan array', item)
+      const param = { ...this.params }
+      const q = param.q
       // this.loading = true
       item.row['loading' + item.loading] = true
       try {
@@ -340,7 +342,7 @@ export const usePerbaikanHargaFarmasiStore = defineStore('perbaikan_harga_farmas
         this.getData(param).then(() => {
           this.params.per_page = perPage
           this.params.page = page
-          this.params.q = ''
+          this.params.q = q
         })
       }
       catch (err) {
