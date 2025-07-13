@@ -101,21 +101,21 @@ const getImg = (file) => {
   }
 }
 
-// function uploadFiles(file) {
-//   // console.log(file)
-//   store.selectFiles(file)
-// }
 function uploadFiles(file) {
-  return new Promise((resolve, reject) => {
-    try {
-      store.selectFiles(file);
-      // Simulasi delay, atau resolve langsung jika tidak ada proses upload ke server
-      resolve();
-    } catch (e) {
-      reject(e);
-    }
-  });
+  console.log('upload files', file)
+  store.selectFiles(file)
 }
+// function uploadFiles(file) {
+//   return new Promise((resolve, reject) => {
+//     try {
+//       store.selectFiles(file);
+//       // Simulasi delay, atau resolve langsung jika tidak ada proses upload ke server
+//       resolve();
+//     } catch (e) {
+//       reject(e);
+//     }
+//   });
+// }
 
 function uploadPercent(files) {
   console.log('upload percent', files)

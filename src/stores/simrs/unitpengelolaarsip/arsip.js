@@ -76,11 +76,11 @@ export const useUnitPengelolahArsipStore = defineStore('unit-pengelolah-arsip-st
     },
     saveData() {
       this.loadingForm = true
-      const data = new FormData()
-      for (let i = 0; i < this.form.dokumen; i++) {
-        const images = this.form.dokumen[i]
-        data.append(`dokumen[${i}]`, images)
-      }
+      // const data = new FormData()
+      // for (let i = 0; i < this.form.dokumen; i++) {
+      //   const images = this.form.dokumen[i]
+      //   data.append(`dokumen[${i}]`, images)
+      // }
 
       return new Promise((resolve, reject) => {
         api.post('v1/simrs/unitpengelolaharsip/arsip/simpanarsip', this.form)
@@ -137,13 +137,14 @@ export const useUnitPengelolahArsipStore = defineStore('unit-pengelolah-arsip-st
     //   })
     // },
     saveDataGambar() {
+
       this.loadingForm = true
       const data = new FormData()
       for (let i = 0; i < this.formgambar.dokumen; i++) {
-        const file = this.formgambar.dokumen[i]
-        data.append(`dokumen[${i}]`, file)
+        const images = this.formgambar.dokumen[i]
+        data.append(`dokumen[${i}]`, images)
       }
-      data.append('noarsip', this.formgambar.noarsip)
+      console.log('formgambar', this.formgambar)
       return new Promise((resolve, reject) => {
         api.post('v1/simrs/unitpengelolaharsip/arsip/simpanarsipdokumen', this.formgambar, {
           headers: {
@@ -154,10 +155,10 @@ export const useUnitPengelolahArsipStore = defineStore('unit-pengelolah-arsip-st
             if (resp.status === 200) {
               const datax = resp?.data?.result[0]
               const index = this.items.findIndex(x => x.noarsip === datax.noarsip)
-              if (index >= 0) this.items[index] = datax
+              if (index >= 0) this.items = resp?.data?.result
               else this.items.unshift(datax)
               notifSuccess(resp)
-              this.initFormGambar()
+              this.initForm()
               this.loadingForm = false
             }
             this.loadingForm = false
@@ -217,11 +218,12 @@ export const useUnitPengelolahArsipStore = defineStore('unit-pengelolah-arsip-st
       this.filters = !this.filters
     },
     selectFiles(files) {
+      console.log('files', files)
       for (let i = 0; i < files?.length; i++) {
         const images = files[i]
         this.formgambar.dokumen.push(images)
       }
-      // console.log('masukkan ke form', this.form)
+      console.log('masukkan ke form', this.formgambar)
     },
   }
 })

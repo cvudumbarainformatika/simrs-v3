@@ -5,18 +5,7 @@
       <empty-data v-else-if="!items?.length && !loading" />
       <q-list v-else separator>
         <q-item v-for="(item, i) in items" :key="i">
-          <q-item-section avatar v-if="item?.url != null">
-            <q-img :src="getImg(item?.url)" :key="item.url" style="width: 100px;">
-              <div class="absolute-bottom">
-                <div class="row items-center justify-between">
-                  <q-btn class="gt-xs" size="md" color="yellow" flat dense round icon="icon-mat-visibility"
-                    :href="pathImg + item.url" target="_blank" />
-
-                </div>
-              </div>
-            </q-img>
-          </q-item-section>
-          <q-item-section avatar v-else>
+          <q-item-section avatar v-if="item?.url === null || item?.url === ''">
             <q-img src="../../../../../assets/images/no-image.png" :key="item.url" style="width: 100px;">
               <div class="absolute-bottom">
                 <div class="row items-center justify-between">
@@ -25,6 +14,17 @@
                       Tambah Gambar
                     </q-tooltip>
                   </q-btn>
+                </div>
+              </div>
+            </q-img>
+          </q-item-section>
+          <q-item-section avatar v-else>
+            <q-img :src="getImg(item?.url)" :key="item.url" style="width: 100px;">
+              <div class="absolute-bottom">
+                <div class="row items-center justify-between">
+                  <q-btn class="gt-xs" size="md" color="yellow" flat dense round icon="icon-mat-visibility"
+                    :href="pathImg + item.url" target="_blank" />
+
                 </div>
               </div>
             </q-img>
