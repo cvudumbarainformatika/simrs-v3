@@ -1,4 +1,4 @@
-<template>
+<template>xxx
   <div>
     <div class="q-pb-xl">
       <ListLoading v-if="loading" />
@@ -43,7 +43,7 @@
             </q-item-label>
             <q-item-label>
               Jenis Arsip : <span class=" text-weight-bold"><q-badge outline color="teal">{{ item?.ket ?? '-'
-                  }}</q-badge></span>
+              }}</q-badge></span>
             </q-item-label>
             <q-item-label>
               Unit Pengelolah : <span class=" text-weight-bold"><q-badge outline color="accent">{{
