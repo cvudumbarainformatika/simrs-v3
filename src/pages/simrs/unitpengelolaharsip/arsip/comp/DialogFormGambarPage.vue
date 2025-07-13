@@ -102,7 +102,7 @@ const getImg = (file) => {
 }
 
 function uploadFiles(file) {
-  console.log('upload files', file)
+
   store.selectFiles(file)
 }
 // function uploadFiles(file) {

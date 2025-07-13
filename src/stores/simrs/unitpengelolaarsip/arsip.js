@@ -1,7 +1,7 @@
 import { defineStore, acceptHMRUpdate } from 'pinia'
 import { date } from 'quasar'
 import { api } from 'src/boot/axios'
-import { notifErrVue, notifSuccess } from 'src/modules/utils'
+import { notifErr, notifErrVue, notifSuccess } from 'src/modules/utils'
 
 export const useUnitPengelolahArsipStore = defineStore('unit-pengelolah-arsip-store', {
   state: () => ({
@@ -29,7 +29,7 @@ export const useUnitPengelolahArsipStore = defineStore('unit-pengelolah-arsip-st
       jumlah: 1,
       nobox: 1,
       nama: null,
-      dokumen: []
+      dokumen: null
     },
     formgambar: {
       noarsip: '',
@@ -140,22 +140,31 @@ export const useUnitPengelolahArsipStore = defineStore('unit-pengelolah-arsip-st
 
       this.loadingForm = true
       const data = new FormData()
-      for (let i = 0; i < this.formgambar.dokumen; i++) {
-        const images = this.formgambar.dokumen[i]
-        data.append(`dokumen[${i}]`, images)
+      // for (let i = 0; i < this.formgambar.dokumen; i++) {
+      //   const images = this.formgambar.dokumen[i]
+      //   data.append(`dokumen[${i}]`, images)
+      // }
+      const file = this.formgambar.dokumen?.[0]
+
+      if (!file) {
+        this.loadingForm = false
+        notifErr('Tidak ada file yang dipilih')
+        return
       }
-      console.log('formgambar', this.formgambar)
+
+      data.append('dokumen', file)
+      data.append('noarsip', this.formgambar.noarsip)
+
       return new Promise((resolve, reject) => {
-        api.post('v1/simrs/unitpengelolaharsip/arsip/simpanarsipdokumen', this.formgambar, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
+        api.post('v1/simrs/unitpengelolaharsip/arsip/simpanarsipdokumen', data, {
+          headers: { 'Content-Type': 'multipart/form-data' },
+          timeout: 30000 // 30 detik
         })
           .then((resp) => {
             if (resp.status === 200) {
               const datax = resp?.data?.result[0]
               const index = this.items.findIndex(x => x.noarsip === datax.noarsip)
-              if (index >= 0) this.items = resp?.data?.result
+              if (index >= 0) this.items[index] = datax
               else this.items.unshift(datax)
               notifSuccess(resp)
               this.initForm()
@@ -218,12 +227,13 @@ export const useUnitPengelolahArsipStore = defineStore('unit-pengelolah-arsip-st
       this.filters = !this.filters
     },
     selectFiles(files) {
-      console.log('files', files)
-      for (let i = 0; i < files?.length; i++) {
-        const images = files[i]
-        this.formgambar.dokumen.push(images)
-      }
-      console.log('masukkan ke form', this.formgambar)
+      // console.log('files', files)
+      // for (let i = 0; i < files?.length; i++) {
+      //   const images = files[i]
+      //   this.formgambar.dokumen.push(images)
+      // }
+      // console.log('masukkan ke form', this.formgambar)
+      this.formgambar.dokumen = files
     },
   }
 })
