@@ -5,13 +5,26 @@
       <empty-data v-else-if="!items?.length && !loading" />
       <q-list v-else separator>
         <q-item v-for="(item, i) in items" :key="i">
-          <q-item-section avatar>
+          <q-item-section avatar v-if="item?.url != null">
             <q-img :src="getImg(item?.url)" :key="item.url" style="width: 100px;">
               <div class="absolute-bottom">
                 <div class="row items-center justify-between">
                   <q-btn class="gt-xs" size="md" color="yellow" flat dense round icon="icon-mat-visibility"
                     :href="pathImg + item.url" target="_blank" />
 
+                </div>
+              </div>
+            </q-img>
+          </q-item-section>
+          <q-item-section avatar v-else>
+            <q-img src="../../../../../assets/images/no-image.png" :key="item.url" style="width: 100px;">
+              <div class="absolute-bottom">
+                <div class="row items-center justify-between">
+                  <q-btn size="sm" color="dark" round icon="icon-mat-settings" unelevated @click="addgambar(item)">
+                    <q-tooltip class="primary" :offset="[10, 10]">
+                      Tambah Gambar
+                    </q-tooltip>
+                  </q-btn>
                 </div>
               </div>
             </q-img>
@@ -73,7 +86,7 @@
     /> -->
     <DialogFormPage :items="items" :loading="loading" :klasifikasi="klasifikasi" :media="media"
       :lokasiarsip="lokasiarsip" />
-
+    <DialogFormGambarPage :items="items" :loading="loading" />
   </div>
 </template>
 
@@ -83,6 +96,7 @@ import { pathImg } from 'src/boot/axios'
 import ListLoading from './ListLoading.vue'
 import EmptyData from './EmptyData.vue'
 import DialogFormPage from './DialogFormPage.vue';
+import DialogFormGambarPage from './DialogFormGambarPage.vue';
 
 import { dateFullFormat, formatJam } from 'src/modules/formatter'
 import { useUnitPengelolahArsipStore } from 'src/stores/simrs/unitpengelolaarsip/arsip';
@@ -137,7 +151,7 @@ const getImg = (file) => {
 }
 
 function editForm(val) {
-  console.log('val', val)
+  // console.log('val', val)
   store.dialog = true
   store.form.noarsip = val?.noarsip
   store.form.tgl = date.formatDate(val?.tanggal, 'YYYY-MM-DD')
@@ -152,6 +166,12 @@ function editForm(val) {
   store.form.nobox = val?.nobox
   store.form.dokumen = val?.dokumen
   store.form.keterangan = val?.keterangan
+}
+
+function addgambar(val) {
+  console.log('val', val)
+  store.dialoggambar = true
+  store.formgambar.noarsip = val?.noarsip
 }
 
 

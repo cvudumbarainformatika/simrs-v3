@@ -10,6 +10,7 @@ export const useUnitPengelolahArsipStore = defineStore('unit-pengelolah-arsip-st
     loading: false,
     meta: null,
     dialog: false,
+    dialoggambar: false,
     params: {
       q: '',
       page: 1,
@@ -28,6 +29,10 @@ export const useUnitPengelolahArsipStore = defineStore('unit-pengelolah-arsip-st
       jumlah: 1,
       nobox: 1,
       nama: null,
+      dokumen: []
+    },
+    formgambar: {
+      noarsip: '',
       dokumen: []
     },
     loadingForm: false
@@ -78,16 +83,12 @@ export const useUnitPengelolahArsipStore = defineStore('unit-pengelolah-arsip-st
       }
 
       return new Promise((resolve, reject) => {
-        api.post('v1/simrs/unitpengelolaharsip/arsip/simpanarsip', this.form, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        })
+        api.post('v1/simrs/unitpengelolaharsip/arsip/simpanarsip', this.form)
           .then((resp) => {
             if (resp.status === 200) {
               const datax = resp?.data?.result[0]
               const index = this.items.findIndex(x => x.noarsip === datax.noarsip)
-              if (index >= 0) this.items = resp?.data?.result
+              if (index >= 0) this.items[index] = datax
               else this.items.unshift(datax)
               notifSuccess(resp)
               this.initForm()
@@ -102,8 +103,79 @@ export const useUnitPengelolahArsipStore = defineStore('unit-pengelolah-arsip-st
           })
       })
     },
+    // saveData() {
+    //   this.loadingForm = true
+    //   const data = new FormData()
+    //   for (let i = 0; i < this.form.dokumen; i++) {
+    //     const images = this.form.dokumen[i]
+    //     data.append(`dokumen[${i}]`, images)
+    //   }
+
+    //   return new Promise((resolve, reject) => {
+    //     api.post('v1/simrs/unitpengelolaharsip/arsip/simpanarsip', this.form, {
+    //       headers: {
+    //         'Content-Type': 'multipart/form-data'
+    //       }
+    //     })
+    //       .then((resp) => {
+    //         if (resp.status === 200) {
+    //           const datax = resp?.data?.result[0]
+    //           const index = this.items.findIndex(x => x.noarsip === datax.noarsip)
+    //           if (index >= 0) this.items = resp?.data?.result
+    //           else this.items.unshift(datax)
+    //           notifSuccess(resp)
+    //           this.initForm()
+    //           this.loadingForm = false
+    //         }
+    //         this.loadingForm = false
+    //       })
+    //       .catch((err) => {
+    //         console.log('err', err)
+    //         this.loadingForm = false
+    //         reject(err)
+    //       })
+    //   })
+    // },
+    saveDataGambar() {
+      this.loadingForm = true
+      const data = new FormData()
+      for (let i = 0; i < this.formgambar.dokumen; i++) {
+        const file = this.formgambar.dokumen[i]
+        data.append(`dokumen[${i}]`, file)
+      }
+      data.append('noarsip', this.formgambar.noarsip)
+      return new Promise((resolve, reject) => {
+        api.post('v1/simrs/unitpengelolaharsip/arsip/simpanarsipdokumen', this.formgambar, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        })
+          .then((resp) => {
+            if (resp.status === 200) {
+              const datax = resp?.data?.result[0]
+              const index = this.items.findIndex(x => x.noarsip === datax.noarsip)
+              if (index >= 0) this.items[index] = datax
+              else this.items.unshift(datax)
+              notifSuccess(resp)
+              this.initFormGambar()
+              this.loadingForm = false
+            }
+            this.loadingForm = false
+          })
+          .catch((err) => {
+            console.log('err', err)
+            this.loadingForm = false
+            reject(err)
+          })
+      })
+    },
+    initFormGambar() {
+      this.form.noarsip = ''
+      this.form.dokumen = []
+    },
     initForm() {
       // this.from = date.formatDate(Date.now(), 'YYYY-MM-DD')
+      this.form.noarsip = ''
       this.tanggal.tgl = date.formatDate(Date.now(), 'DD MMMM YYYY')
       this.form.tgl = date.formatDate(Date.now(), 'YYYY-MM-DD')
       this.form.kodekelasifikasi = ''
@@ -114,7 +186,7 @@ export const useUnitPengelolahArsipStore = defineStore('unit-pengelolah-arsip-st
       this.form.keaslian = ''
       this.form.jumlah = 1
       this.form.nobox = ''
-      this.form.dokumen = []
+      // this.form.dokumen = []
       this.form.keterangan = ''
     },
     setPeriodik(val) {
@@ -147,7 +219,7 @@ export const useUnitPengelolahArsipStore = defineStore('unit-pengelolah-arsip-st
     selectFiles(files) {
       for (let i = 0; i < files?.length; i++) {
         const images = files[i]
-        this.form.dokumen.push(images)
+        this.formgambar.dokumen.push(images)
       }
       // console.log('masukkan ke form', this.form)
     },

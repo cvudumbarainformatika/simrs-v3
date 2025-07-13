@@ -120,7 +120,7 @@
                   :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" />
               </div>
             </div>
-            <div class="row q-gutter-xs">
+            <!-- <div class="row q-gutter-xs">
               <div class="col-12" v-if="store.form.noarsip === '' || store.form.noarsip === null">
                 <q-uploader ref="uploader" :factory="uploadFiles" :loading="uploadPercent" bordered flat
                   :label="`Upload Dokumen/ Arsip`" accept=".pdf" class="fit" multiple max-files="1" auto-upload
@@ -138,7 +138,6 @@
                         <div class="f-10">
                           Klik tanda plus diatas
                         </div>
-                        <!-- {{ scope }} -->
                       </div>
                       <div v-else class="full-width full-height row">
                         <div v-for="file in scope.files" :key="file.__key" class="col-3 q-pa-xs">
@@ -165,7 +164,7 @@
                   </template>
                 </q-uploader>
               </div>
-            </div>
+            </div> -->
           </div>
         </q-card-section>
 
