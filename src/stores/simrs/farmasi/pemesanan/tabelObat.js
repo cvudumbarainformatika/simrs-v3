@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia'
+import { acceptHMRUpdate, defineStore } from 'pinia'
 import { api } from 'src/boot/axios'
 import { usePemesananObatStore } from './pesanan'
 import { filterDuplicateArrays } from 'src/modules/utils'
@@ -10,7 +10,11 @@ export const useTabelPemesananObatStore = defineStore('tabel_pemesanan_obat', {
     loadingList: false,
     loading: false,
     items: [],
+    unfilteredItems: [],
     terima: [],
+    filterItems: {
+      obat: ''
+    },
     meta: {},
     params: {
       per_page: 50,
@@ -59,6 +63,20 @@ export const useTabelPemesananObatStore = defineStore('tabel_pemesanan_obat', {
       this.columns = thumb[0]
       // console.log('columns', this.columns)
     },
+    tampilkanSemua () {
+      this.filterItems.obat = ''
+      this.items = [...this.unfilteredItems]
+
+      // console.log('a..', this.unfilteredItems)
+    },
+    filterObat (payload) {
+      if (payload?.length) {
+        const item = this.unfilteredItems.filter(a => a.namaobat.toLowerCase().includes(payload.toLowerCase()) || a.kdobat.toLowerCase().includes(payload.toLowerCase()))
+        this.items = [...item]
+      } else this.items = [...this.unfilteredItems]
+      // console.log('payload', payload, this.unfilteredItems)
+
+    },
     rencanaSelected (val, from) {
       // eslint-disable-next-line no-unused-vars
       const gudangs = [
@@ -67,7 +85,7 @@ export const useTabelPemesananObatStore = defineStore('tabel_pemesanan_obat', {
       ]
       this.pesan.isOpen = true
       this.pesan.setForm('no_rencbeliobat', val)
-      console.log('renc se', from, val)
+      // console.log('renc se', from, val)
       this.getRencanaRinci(val).then(() => {
         if (!this.items?.length) {
           this.pesan.setClose()
@@ -149,7 +167,7 @@ export const useTabelPemesananObatStore = defineStore('tabel_pemesanan_obat', {
         this.getObatMauBeli()
       }
     },
-    setCari(val){
+    setCari (val) {
       this.setParam('obat', val)
       this.getObatMauBeli()
     },
@@ -238,6 +256,7 @@ export const useTabelPemesananObatStore = defineStore('tabel_pemesanan_obat', {
             this.loading = false
             console.log('rencana r', resp?.data)
             this.items = resp?.data?.data ?? resp?.data
+            this.unfilteredItems = resp?.data?.data ?? resp?.data
             // this.terima = resp?.data?.terima
 
             resolve(this.items)
@@ -249,3 +268,6 @@ export const useTabelPemesananObatStore = defineStore('tabel_pemesanan_obat', {
     }
   }
 })
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useTabelPemesananObatStore, import.meta.hot))
+}
