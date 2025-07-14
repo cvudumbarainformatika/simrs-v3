@@ -1,27 +1,12 @@
 <template>
-  <q-page
-    ref="pageRef"
-    class="column full-height full-width"
-    :class="!style.componentfull?'q-pa-md':'q-pa-xs'"
-  >
+  <q-page ref="pageRef" class="column full-height full-width" :class="!style.componentfull ? 'q-pa-md' : 'q-pa-xs'">
     <div class="col-auto ">
-      <PageHead
-        v-if="!style.componentfull"
-        :title="title"
-        :subtitle="subtitle"
-        :path="page.path"
-      />
+      <PageHead v-if="!style.componentfull" :title="title" :subtitle="subtitle" :path="page.path" />
     </div>
-    <q-card
-      flat
-      class="col full-width full-height"
-      :style="`max-height: ${!style.componentfull? h-60:h+40}px; overflow:hidden`"
-    >
-      <q-scroll-area
-        :style="`height: ${!style.componentfull? h-95:h+40}px; max-width: 100%;`"
-        :thumb-style="thumbStyle"
-        :bar-style="barStyle"
-      >
+    <q-card flat class="col full-width full-height"
+      :style="`max-height: ${!style.componentfull ? h - 60 : h + 40}px; overflow:hidden`">
+      <q-scroll-area :style="`height: ${!style.componentfull ? h - 95 : h + 40}px; max-width: 100%;`"
+        :thumb-style="thumbStyle" :bar-style="barStyle">
         <router-view v-slot="{ Component, route }">
           <transition :name="route.meta.transition || 'fade'">
             <component :is="Component" />
@@ -66,6 +51,7 @@ const title = computed(() => {
     return 'Pemesanan'
   }
 })
+//
 const subtitle = computed(() => {
   if (page.path === '/ptk/farmasi/pemesanan/rencana') {
     return 'Rencana Pemesanan Obat'
