@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import { date } from 'quasar'
 import { api } from 'src/boot/axios'
 import { dateDbFormat } from 'src/modules/formatter'
 import { notifErrVue, notifSuccess } from 'src/modules/utils'
@@ -19,8 +20,10 @@ export const usePerbaikanHargaFarmasiStore = defineStore('perbaikan_harga_farmas
       q: '',
       page: 1,
       per_page: 100,
-      tahun: '2024',
-      bulan: '06',
+      // tahun: '2024',
+      // bulan: '06',
+      tahun: date.formatDate(Date.now(), 'YYYY'),
+      bulan: date.formatDate(Date.now(), 'MM'),
       pilihan: 'semua'
     },
     gudangs: [
