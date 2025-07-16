@@ -4,39 +4,18 @@
       Perbaikan Harga
     </div>
     <div>
-      <app-table
-        :columns="store.columns"
-        :items="store.items"
-        :meta="store.meta"
-        :per-page="store.params.per_page"
-        :loading="store.loading"
-        :to-search="store.params.q"
-        :default-btn="false"
-        :ada-tambah="false"
-        :ada-filter="false"
-        force-paginasi
-        @goto="store.setPage"
-        @set-row="store.setPerPage"
-        @refresh="store.refreshTable"
-        @find="store.setSearch"
-        @set-order="store.setOder"
-      >
+      <app-table :columns="store.columns" :items="store.items" :meta="store.meta" :per-page="store.params.per_page"
+        :loading="store.loading" :to-search="store.params.q" :default-btn="false" :ada-tambah="false"
+        :ada-filter="false" force-paginasi @goto="store.setPage" @set-row="store.setPerPage"
+        @refresh="store.refreshTable" @find="store.setSearch" @set-order="store.setOder">
         <template #header-left-after-search>
           <div class=" q-ml-sm" style="width: 200px">
-            <app-autocomplete-new
-              v-model="store.params.kdruang"
-              label="Pilih Gudang / Depo"
-              autocomplete="nama"
-              option-label="nama"
-              option-value="kode"
-              outlined
-              clearable
-              :source="store.gudangs"
-              @on-select="(val)=>{
+            <app-autocomplete-new ref="refKdruang" v-model="store.params.kdruang" label="Pilih Gudang / Depo"
+              autocomplete="nama" option-label="nama" option-value="kode" outlined clearable :source="store.gudangs"
+              @on-select="(val) => {
                 store.setParams('kdruang', val)
                 store.getData()
-              }"
-            />
+              }" />
           </div>
           <div class="q-ml-sm" style="width: 100px">
             <app-input v-model="store.params.tahun" label="Tahun" outlined />
@@ -48,7 +27,8 @@
             <app-input v-model="store.params.page" label="Halaman" outlined />
           </div>
           <div class="q-ml-sm" style="width: 410px">
-            <q-option-group v-model="store.params.pilihan" :options="pilihanBermasalahs" type="radio" inline @update:model-value="setPilihan" />
+            <q-option-group v-model="store.params.pilihan" :options="pilihanBermasalahs" type="radio" inline
+              @update:model-value="setPilihan" />
           </div>
         </template>
         <template #col-kd_obat>
@@ -88,46 +68,40 @@
             {{ formatDouble(parseFloat(row?.stok),2) }}
           </div> -->
           <div v-if="store.params.kdruang" class="text-right">
-            <div v-if="row?.data?.stok?.filter(f=>f.beda===true)?.length>0">
-              <q-btn
-                :label="formatDouble(parseFloat(row?.stok),2)"
-                no-caps
-                dense
-                :loading="row.loadingStok"
+            <div v-if="row?.data?.stok?.filter(f => f.beda === true)?.length > 0">
+              <q-btn :label="formatDouble(parseFloat(row?.stok), 2)" no-caps dense :loading="row.loadingStok"
                 :disable="row.loadingStok"
-                :color="row?.data?.stok?.filter(f=>f.beda===true)?.length>0?'negative':''"
-                @click="()=>{
-                  const item=row?.data?.stok?.filter(f=>f.beda===true)
-                  if(item?.length===0) return notifErrVue('data salah tidak terdeteksi')
-                  item?.forEach(fo=>{
-                    let pen=null
-                    if(fo?.nopenerimaan?.includes('awal')){
-                      pen=row?.data?.awal?.find(p=>p?.nopenerimaan===fo?.nopenerimaan)
-                    }else{
-                      pen=row?.data?.penerimaan?.find(p=>p?.nopenerimaan===fo?.nopenerimaan)
+                :color="row?.data?.stok?.filter(f => f.beda === true)?.length > 0 ? 'negative' : ''" @click="() => {
+                  const item = row?.data?.stok?.filter(f => f.beda === true)
+                  if (item?.length === 0) return notifErrVue('data salah tidak terdeteksi')
+                  item?.forEach(fo => {
+                    let pen = null
+                    if (fo?.nopenerimaan?.includes('awal')) {
+                      pen = row?.data?.awal?.find(p => p?.nopenerimaan === fo?.nopenerimaan)
+                    } else {
+                      pen = row?.data?.penerimaan?.find(p => p?.nopenerimaan === fo?.nopenerimaan)
                     }
-                    if(pen){
-                      fo.harga=pen.harga
-                      if(fo.tglpenerimaan !== pen.tglpenerimaan) fo.tglpenerimaan=pen.tglpenerimaan
-                      if(fo.nobatch !== pen.nobatch) fo.nobatch=pen.nobatch
+                    if (pen) {
+                      fo.harga = pen.harga
+                      if (fo.tglpenerimaan !== pen.tglpenerimaan) fo.tglpenerimaan = pen.tglpenerimaan
+                      if (fo.nobatch !== pen.nobatch) fo.nobatch = pen.nobatch
                     }
                   })
                   store.simpanPerbaikanHargaArray({
-                    row:row,
-                    item:item,
-                    kd_obat:row?.kd_obat,
-                    tipe:'stok',
-                    loading:'Stok'
+                    row: row,
+                    item: item,
+                    kd_obat: row?.kd_obat,
+                    tipe: 'stok',
+                    loading: 'Stok'
                   })
-                }"
-              >
+                }">
                 <q-tooltip>
                   Auto Fix
                 </q-tooltip>
               </q-btn>
             </div>
             <div v-else>
-              {{ formatDouble(parseFloat(row?.stok),2) }}
+              {{ formatDouble(parseFloat(row?.stok), 2) }}
             </div>
           </div>
           <div v-else>
@@ -139,46 +113,40 @@
             {{ formatDouble(parseFloat(row?.opname),2) }}
           </div> -->
           <div v-if="store.params.kdruang" class="text-right">
-            <div v-if="row?.data?.opname?.filter(f=>f.beda===true)?.length>0">
-              <q-btn
-                :label="formatDouble(parseFloat(row?.opname),2)"
-                no-caps
-                dense
-                :loading="row.loadingOpname"
+            <div v-if="row?.data?.opname?.filter(f => f.beda === true)?.length > 0">
+              <q-btn :label="formatDouble(parseFloat(row?.opname), 2)" no-caps dense :loading="row.loadingOpname"
                 :disable="row.loadingOpname"
-                :color="row?.data?.opname?.filter(f=>f.beda===true)?.length>0?'negative':''"
-                @click="()=>{
-                  const item=row?.data?.opname?.filter(f=>f.beda===true)
-                  if(item?.length===0) return notifErrVue('data salah tidak terdeteksi')
-                  item?.forEach(fo=>{
-                    let pen=null
-                    if(fo?.nopenerimaan?.includes('awal')){
-                      pen=row?.data?.awal?.find(p=>p?.nopenerimaan===fo?.nopenerimaan)
-                    }else{
-                      pen=row?.data?.penerimaan?.find(p=>p?.nopenerimaan===fo?.nopenerimaan)
+                :color="row?.data?.opname?.filter(f => f.beda === true)?.length > 0 ? 'negative' : ''" @click="() => {
+                  const item = row?.data?.opname?.filter(f => f.beda === true)
+                  if (item?.length === 0) return notifErrVue('data salah tidak terdeteksi')
+                  item?.forEach(fo => {
+                    let pen = null
+                    if (fo?.nopenerimaan?.includes('awal')) {
+                      pen = row?.data?.awal?.find(p => p?.nopenerimaan === fo?.nopenerimaan)
+                    } else {
+                      pen = row?.data?.penerimaan?.find(p => p?.nopenerimaan === fo?.nopenerimaan)
                     }
-                    if(pen){
-                      fo.harga=pen.harga
-                      if(fo.tglpenerimaan !== pen.tglpenerimaan) fo.tglpenerimaan=pen.tglpenerimaan
-                      if(fo.nobatch !== pen.nobatch) fo.nobatch=pen.nobatch
+                    if (pen) {
+                      fo.harga = pen.harga
+                      if (fo.tglpenerimaan !== pen.tglpenerimaan) fo.tglpenerimaan = pen.tglpenerimaan
+                      if (fo.nobatch !== pen.nobatch) fo.nobatch = pen.nobatch
                     }
                   })
                   store.simpanPerbaikanHargaArray({
-                    row:row,
-                    item:item,
-                    kd_obat:row?.kd_obat,
-                    tipe:'opname',
-                    loading:'Opname'
+                    row: row,
+                    item: item,
+                    kd_obat: row?.kd_obat,
+                    tipe: 'opname',
+                    loading: 'Opname'
                   })
-                }"
-              >
+                }">
                 <q-tooltip>
                   Auto Fix
                 </q-tooltip>
               </q-btn>
             </div>
             <div v-else>
-              {{ formatDouble(parseFloat(row?.opname),2) }}
+              {{ formatDouble(parseFloat(row?.opname), 2) }}
             </div>
           </div>
           <div v-else>
@@ -190,49 +158,43 @@
             {{ formatDouble(parseFloat(row?.mutasi),2) }}
           </div> -->
           <div v-if="store.params.kdruang" class="text-right">
-            <div v-if="row?.data?.mutasi?.filter(f=>f.beda===true)?.length>0">
-              <q-btn
-                :label="formatDouble(parseFloat(row?.mutasi),2)"
-                no-caps
-                dense
-                :loading="row.loadingMutasi"
+            <div v-if="row?.data?.mutasi?.filter(f => f.beda === true)?.length > 0">
+              <q-btn :label="formatDouble(parseFloat(row?.mutasi), 2)" no-caps dense :loading="row.loadingMutasi"
                 :disable="row.loadingMutasi"
-                :color="row?.data?.mutasi?.filter(f=>f.beda===true)?.length>0?'negative':''"
-                @click="()=>{
-                  const item=row?.data?.mutasi?.filter(f=>f.beda===true)
-                  if(item?.length===0) return notifErrVue('data salah tidak terdeteksi')
-                  item?.forEach(fo=>{
-                    let pen=null
-                    if(fo?.nopenerimaan?.includes('awal')){
-                      pen=row?.data?.awal?.find(p=>p?.nopenerimaan===fo?.nopenerimaan)
-                    }else{
-                      pen=row?.data?.penerimaan?.find(p=>p?.nopenerimaan===fo?.nopenerimaan)
+                :color="row?.data?.mutasi?.filter(f => f.beda === true)?.length > 0 ? 'negative' : ''" @click="() => {
+                  const item = row?.data?.mutasi?.filter(f => f.beda === true)
+                  if (item?.length === 0) return notifErrVue('data salah tidak terdeteksi')
+                  item?.forEach(fo => {
+                    let pen = null
+                    if (fo?.nopenerimaan?.includes('awal')) {
+                      pen = row?.data?.awal?.find(p => p?.nopenerimaan === fo?.nopenerimaan)
+                    } else {
+                      pen = row?.data?.penerimaan?.find(p => p?.nopenerimaan === fo?.nopenerimaan)
                     }
-                    if(pen){
-                      fo.harga=pen.harga
-                      if(fo.tglpenerimaan !== pen.tglpenerimaan && !!pen.tglpenerimaan) fo.tglpenerimaan=pen.tglpenerimaan
-                      if(fo.nobatch !== pen.nobatch && pen.nobatch) fo.nobatch=pen.nobatch
-                      if(fo.tglexp !== pen.tglexp && pen.tglexp) fo.tglexp=pen.tglexp
+                    if (pen) {
+                      fo.harga = pen.harga
+                      if (fo.tglpenerimaan !== pen.tglpenerimaan && !!pen.tglpenerimaan) fo.tglpenerimaan = pen.tglpenerimaan
+                      if (fo.nobatch !== pen.nobatch && pen.nobatch) fo.nobatch = pen.nobatch
+                      if (fo.tglexp !== pen.tglexp && pen.tglexp) fo.tglexp = pen.tglexp
                     }
                     // console.log('pen',pen);
 
                   })
                   store.simpanPerbaikanHargaArray({
-                    row:row,
-                    item:item,
-                    kd_obat:row?.kd_obat,
-                    tipe:'mutasi',
-                    loading:'Mutasi'
+                    row: row,
+                    item: item,
+                    kd_obat: row?.kd_obat,
+                    tipe: 'mutasi',
+                    loading: 'Mutasi'
                   })
-                }"
-              >
+                }">
                 <q-tooltip>
                   Auto Fix
                 </q-tooltip>
               </q-btn>
             </div>
             <div v-else>
-              {{ formatDouble(parseFloat(row?.mutasi),2) }}
+              {{ formatDouble(parseFloat(row?.mutasi), 2) }}
             </div>
           </div>
           <div v-else>
@@ -241,47 +203,41 @@
         </template>
         <template #cell-mutasi_keluar="{ row }">
           <div v-if="store.params.kdruang" class="text-right">
-            <div v-if="row?.data?.mutasikeluar?.filter(f=>f.beda===true)?.length>0">
-              <q-btn
-                :label="formatDouble(parseFloat(row?.mutasi_keluar),2)"
-                no-caps
-                dense
-                :loading="row.loadingMutasiKeluar"
-                :disable="row.loadingMutasiKeluar"
-                :color="row?.data?.mutasikeluar?.filter(f=>f.beda===true)?.length>0?'negative':''"
-                @click="()=>{
-                  const item=row?.data?.mutasikeluar?.filter(f=>f.beda===true)
-                  if(item?.length===0) return notifErrVue('data salah tidak terdeteksi')
-                  item?.forEach(fo=>{
-                    let pen=null
-                    if(fo?.nopenerimaan?.includes('awal')){
-                      pen=row?.data?.awal?.find(p=>p?.nopenerimaan===fo?.nopenerimaan)
-                    }else{
-                      pen=row?.data?.penerimaan?.find(p=>p?.nopenerimaan===fo?.nopenerimaan)
+            <div v-if="row?.data?.mutasikeluar?.filter(f => f.beda === true)?.length > 0">
+              <q-btn :label="formatDouble(parseFloat(row?.mutasi_keluar), 2)" no-caps dense
+                :loading="row.loadingMutasiKeluar" :disable="row.loadingMutasiKeluar"
+                :color="row?.data?.mutasikeluar?.filter(f => f.beda === true)?.length > 0 ? 'negative' : ''" @click="() => {
+                  const item = row?.data?.mutasikeluar?.filter(f => f.beda === true)
+                  if (item?.length === 0) return notifErrVue('data salah tidak terdeteksi')
+                  item?.forEach(fo => {
+                    let pen = null
+                    if (fo?.nopenerimaan?.includes('awal')) {
+                      pen = row?.data?.awal?.find(p => p?.nopenerimaan === fo?.nopenerimaan)
+                    } else {
+                      pen = row?.data?.penerimaan?.find(p => p?.nopenerimaan === fo?.nopenerimaan)
                     }
-                    if(pen){
-                      fo.harga=pen.harga
-                      if(fo.tglpenerimaan !== pen.tglpenerimaan && !!pen.tglpenerimaan) fo.tglpenerimaan=pen.tglpenerimaan
-                      if(fo.nobatch !== pen.nobatch && pen.nobatch) fo.nobatch=pen.nobatch
-                      if(fo.tglexp !== pen.tglexp && pen.tglexp) fo.tglexp=pen.tglexp
+                    if (pen) {
+                      fo.harga = pen.harga
+                      if (fo.tglpenerimaan !== pen.tglpenerimaan && !!pen.tglpenerimaan) fo.tglpenerimaan = pen.tglpenerimaan
+                      if (fo.nobatch !== pen.nobatch && pen.nobatch) fo.nobatch = pen.nobatch
+                      if (fo.tglexp !== pen.tglexp && pen.tglexp) fo.tglexp = pen.tglexp
                     }
                   })
                   store.simpanPerbaikanHargaArray({
-                    row:row,
-                    item:item,
-                    kd_obat:row?.kd_obat,
-                    tipe:'mutasi',
-                    loading:'MutasiKeluar'
+                    row: row,
+                    item: item,
+                    kd_obat: row?.kd_obat,
+                    tipe: 'mutasi',
+                    loading: 'MutasiKeluar'
                   })
-                }"
-              >
+                }">
                 <q-tooltip>
                   Auto Fix
                 </q-tooltip>
               </q-btn>
             </div>
             <div v-else>
-              {{ formatDouble(parseFloat(row?.mutasi_keluar),2) }}
+              {{ formatDouble(parseFloat(row?.mutasi_keluar), 2) }}
             </div>
           </div>
           <div v-else>
@@ -293,44 +249,38 @@
             {{ formatDouble(parseFloat(row?.resep),2) }}
           </div> -->
           <div v-if="store.params.kdruang" class="text-right">
-            <div v-if="row?.data?.resep?.filter(f=>f.beda===true)?.length>0">
-              <q-btn
-                :label="formatDouble(parseFloat(row?.resep),2)"
-                no-caps
-                dense
-                :loading="row.loadingResep"
+            <div v-if="row?.data?.resep?.filter(f => f.beda === true)?.length > 0">
+              <q-btn :label="formatDouble(parseFloat(row?.resep), 2)" no-caps dense :loading="row.loadingResep"
                 :disable="row.loadingResep"
-                :color="row?.data?.resep?.filter(f=>f.beda===true)?.length>0?'negative':''"
-                @click="()=>{
-                  const item=row?.data?.resep?.filter(f=>f.beda===true)
-                  if(item?.length===0) return notifErrVue('data salah tidak terdeteksi')
-                  item?.forEach(fo=>{
-                    let pen=null
-                    if(fo?.nopenerimaan?.includes('awal')){
-                      pen=row?.data?.awal?.find(p=>p?.nopenerimaan===fo?.nopenerimaan)
-                    }else{
-                      pen=row?.data?.penerimaan?.find(p=>p?.nopenerimaan===fo?.nopenerimaan)
+                :color="row?.data?.resep?.filter(f => f.beda === true)?.length > 0 ? 'negative' : ''" @click="() => {
+                  const item = row?.data?.resep?.filter(f => f.beda === true)
+                  if (item?.length === 0) return notifErrVue('data salah tidak terdeteksi')
+                  item?.forEach(fo => {
+                    let pen = null
+                    if (fo?.nopenerimaan?.includes('awal')) {
+                      pen = row?.data?.awal?.find(p => p?.nopenerimaan === fo?.nopenerimaan)
+                    } else {
+                      pen = row?.data?.penerimaan?.find(p => p?.nopenerimaan === fo?.nopenerimaan)
                     }
-                    if(pen){
-                      fo.harga=pen.harga
+                    if (pen) {
+                      fo.harga = pen.harga
                     }
                   })
                   store.simpanPerbaikanHargaArray({
-                    row:row,
-                    item:item,
-                    kd_obat:row?.kd_obat,
-                    tipe:'resep',
-                    loading:'Resep'
+                    row: row,
+                    item: item,
+                    kd_obat: row?.kd_obat,
+                    tipe: 'resep',
+                    loading: 'Resep'
                   })
-                }"
-              >
+                }">
                 <q-tooltip>
                   Auto Fix
                 </q-tooltip>
               </q-btn>
             </div>
             <div v-else>
-              {{ formatDouble(parseFloat(row?.resep),2) }}
+              {{ formatDouble(parseFloat(row?.resep), 2) }}
             </div>
           </div>
           <div v-else>
@@ -342,44 +292,38 @@
             {{ formatDouble(parseFloat(row?.racikan),2) }}
           </div> -->
           <div v-if="store.params.kdruang" class="text-right">
-            <div v-if="row?.data?.racikan?.filter(f=>f.beda===true)?.length>0">
-              <q-btn
-                :label="formatDouble(parseFloat(row?.racikan),2)"
-                no-caps
-                dense
-                :loading="row.loadingRacikan"
+            <div v-if="row?.data?.racikan?.filter(f => f.beda === true)?.length > 0">
+              <q-btn :label="formatDouble(parseFloat(row?.racikan), 2)" no-caps dense :loading="row.loadingRacikan"
                 :disable="row.loadingRacikan"
-                :color="row?.data?.racikan?.filter(f=>f.beda===true)?.length>0?'negative':''"
-                @click="()=>{
-                  const item=row?.data?.racikan?.filter(f=>f.beda===true)
-                  if(item?.length===0) return notifErrVue('data salah tidak terdeteksi')
-                  item?.forEach(fo=>{
-                    let pen=null
-                    if(fo?.nopenerimaan?.includes('awal')){
-                      pen=row?.data?.awal?.find(p=>p?.nopenerimaan===fo?.nopenerimaan)
-                    }else{
-                      pen=row?.data?.penerimaan?.find(p=>p?.nopenerimaan===fo?.nopenerimaan)
+                :color="row?.data?.racikan?.filter(f => f.beda === true)?.length > 0 ? 'negative' : ''" @click="() => {
+                  const item = row?.data?.racikan?.filter(f => f.beda === true)
+                  if (item?.length === 0) return notifErrVue('data salah tidak terdeteksi')
+                  item?.forEach(fo => {
+                    let pen = null
+                    if (fo?.nopenerimaan?.includes('awal')) {
+                      pen = row?.data?.awal?.find(p => p?.nopenerimaan === fo?.nopenerimaan)
+                    } else {
+                      pen = row?.data?.penerimaan?.find(p => p?.nopenerimaan === fo?.nopenerimaan)
                     }
-                    if(pen){
-                      fo.harga=pen.harga
+                    if (pen) {
+                      fo.harga = pen.harga
                     }
                   })
                   store.simpanPerbaikanHargaArray({
-                    row:row,
-                    item:item,
-                    kd_obat:row?.kd_obat,
-                    tipe:'racikan',
-                    loading:'Racikan'
+                    row: row,
+                    item: item,
+                    kd_obat: row?.kd_obat,
+                    tipe: 'racikan',
+                    loading: 'Racikan'
                   })
-                }"
-              >
+                }">
                 <q-tooltip>
                   Auto Fix
                 </q-tooltip>
               </q-btn>
             </div>
             <div v-else>
-              {{ formatDouble(parseFloat(row?.racikan),2) }}
+              {{ formatDouble(parseFloat(row?.racikan), 2) }}
             </div>
           </div>
           <div v-else>
@@ -391,44 +335,38 @@
             {{ formatDouble(parseFloat(row?.retur),2) }}
           </div> -->
           <div v-if="store.params.kdruang" class="text-right">
-            <div v-if="row?.data?.retur?.filter(f=>f.beda===true)?.length>0">
-              <q-btn
-                :label="formatDouble(parseFloat(row?.retur),2)"
-                no-caps
-                dense
-                :loading="row.loadingRetur"
+            <div v-if="row?.data?.retur?.filter(f => f.beda === true)?.length > 0">
+              <q-btn :label="formatDouble(parseFloat(row?.retur), 2)" no-caps dense :loading="row.loadingRetur"
                 :disable="row.loadingRetur"
-                :color="row?.data?.retur?.filter(f=>f.beda===true)?.length>0?'negative':''"
-                @click="()=>{
-                  const item=row?.data?.retur?.filter(f=>f.beda===true)
-                  if(item?.length===0) return notifErrVue('data salah tidak terdeteksi')
-                  item?.forEach(fo=>{
-                    let pen=null
-                    if(fo?.nopenerimaan?.includes('awal')){
-                      pen=row?.data?.awal?.find(p=>p?.nopenerimaan===fo?.nopenerimaan)
-                    }else{
-                      pen=row?.data?.penerimaan?.find(p=>p?.nopenerimaan===fo?.nopenerimaan)
+                :color="row?.data?.retur?.filter(f => f.beda === true)?.length > 0 ? 'negative' : ''" @click="() => {
+                  const item = row?.data?.retur?.filter(f => f.beda === true)
+                  if (item?.length === 0) return notifErrVue('data salah tidak terdeteksi')
+                  item?.forEach(fo => {
+                    let pen = null
+                    if (fo?.nopenerimaan?.includes('awal')) {
+                      pen = row?.data?.awal?.find(p => p?.nopenerimaan === fo?.nopenerimaan)
+                    } else {
+                      pen = row?.data?.penerimaan?.find(p => p?.nopenerimaan === fo?.nopenerimaan)
                     }
-                    if(pen){
-                      fo.harga=pen.harga
+                    if (pen) {
+                      fo.harga = pen.harga
                     }
                   })
                   store.simpanPerbaikanHargaArray({
-                    row:row,
-                    item:item,
-                    kd_obat:row?.kd_obat,
-                    tipe:'retur',
-                    loading:'Retur'
+                    row: row,
+                    item: item,
+                    kd_obat: row?.kd_obat,
+                    tipe: 'retur',
+                    loading: 'Retur'
                   })
-                }"
-              >
+                }">
                 <q-tooltip>
                   Auto Fix
                 </q-tooltip>
               </q-btn>
             </div>
             <div v-else>
-              {{ formatDouble(parseFloat(row?.retur),2) }}
+              {{ formatDouble(parseFloat(row?.retur), 2) }}
             </div>
           </div>
           <div v-else>
@@ -437,12 +375,7 @@
         </template>
         <template #cell-status="{ row }">
           <div v-if="store.params.kdruang">
-            <q-chip
-              size="sm"
-              dense
-              :color="row?.beda === true?'negative':'primary'"
-              text-color="white"
-            >
+            <q-chip size="sm" dense :color="row?.beda === true ? 'negative' : 'primary'" text-color="white">
               <div v-if="row?.beda === true">
                 Beda
               </div>
@@ -457,15 +390,10 @@
         </template>
         <template #cell-act="{ row }">
           <div v-if="store.params.kdruang">
-            <q-btn
-              no-caps
-              dense
-              color="primary"
-              @click="()=>{
-                store.isOpen=true
-                store.data=row
-              }"
-            >
+            <q-btn no-caps dense color="primary" @click="() => {
+              store.isOpen = true
+              store.data = row
+            }">
               Buka
             </q-btn>
           </div>
@@ -476,13 +404,13 @@
       </app-table>
     </div>
   </div>
-  <DetailPage v-model="store.isOpen" @close="store.isOpen=false" />
+  <DetailPage v-model="store.isOpen" @close="store.isOpen = false" />
 </template>
 <script setup>
 import { formatDouble } from 'src/modules/formatter'
 import { notifErrVue } from 'src/modules/utils'
 import { usePerbaikanHargaFarmasiStore } from 'src/stores/simrs/farmasi/perbaikanharga/perbaikanharga'
-import { defineAsyncComponent, onMounted, shallowRef, ref } from 'vue'
+import { defineAsyncComponent, onMounted, shallowRef, ref, onBeforeUnmount } from 'vue'
 
 const store = usePerbaikanHargaFarmasiStore()
 const DetailPage = shallowRef(defineAsyncComponent(() => import('./DetailPage.vue')))
@@ -502,6 +430,16 @@ function setPilihan (val) {
 }
 onMounted(() => {
   store.getData()
+  window.addEventListener('keydown', tombolPencet)
+})
+const refKdruang = ref(null)
+function tombolPencet (evt) {
+  console.log('keyup', evt, refKdruang.value?.refAuto)
+  if (evt.key == 'Escape') refKdruang.value?.refAuto?.focus()
+
+}
+onBeforeUnmount(() => {
+  window.removeEventListener('keydown', tombolPencet)
 })
 </script>
 
@@ -510,5 +448,4 @@ onMounted(() => {
   border-top-left-radius: 40px;
   border-bottom-right-radius: 40px;
 }
-
 </style>
