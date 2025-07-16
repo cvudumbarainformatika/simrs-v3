@@ -434,7 +434,7 @@ onMounted(() => {
 })
 const refKdruang = ref(null)
 function tombolPencet (evt) {
-  console.log('keyup', evt, refKdruang.value?.refAuto)
+  // console.log('keyup', evt, refKdruang.value?.refAuto)
   if (evt.key == 'Escape') refKdruang.value?.refAuto?.focus()
 
 }
