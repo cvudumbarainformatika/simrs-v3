@@ -1,65 +1,27 @@
 <template>
-  <q-select
-    ref="refAuto"
-    use-input
-    dense
-    :options="optionx"
-    :label="label"
-    :filled="!outlined ? filled : !filled"
-    :outlined="outlined"
-    hide-bottom-space
-    no-error-icon
-    hide-dropdown-icon
-    :option-label="typeof optionLabel === 'object' ? optionLabel[0]: optionLabel"
-    :option-value="optionValue"
-    :disable="disable"
-    :model-value="modelProp"
-    :loading="loading"
-    :input-debounce="debounce"
-    lazy-rules
-    :rules="[anotherValid]"
-    behavior="menu"
-    map-options
-    emit-value
-    transition-show="scale"
-    transition-hide="scale"
-    @update:model-value="selected"
-    @filter="filterFn"
-    @new-value="createValue"
-    @input-value="inputValue"
-    @clear="bersihkan"
-  >
-    <template
-      v-if="modelProp"
-      #append
-    >
-      <q-icon
-        name="icon-mat-cancel"
-        class="cursor-pointer"
-        @click.stop.prevent="bersihkan"
-      />
+  <q-select ref="refAuto" use-input dense :options="optionx" :label="label" :filled="!outlined ? filled : !filled"
+    :outlined="outlined" hide-bottom-space no-error-icon hide-dropdown-icon
+    :option-label="typeof optionLabel === 'object' ? optionLabel[0] : optionLabel" :option-value="optionValue"
+    :disable="disable" :model-value="modelProp" :loading="loading" :input-debounce="debounce" lazy-rules
+    :rules="[anotherValid]" behavior="menu" map-options emit-value transition-show="scale" transition-hide="scale"
+    @update:model-value="selected" @filter="filterFn" @new-value="createValue" @input-value="inputValue"
+    @clear="bersihkan">
+    <template v-if="modelProp" #append>
+      <q-icon name="icon-mat-cancel" class="cursor-pointer" @click.stop.prevent="bersihkan" />
     </template>
     <template #option="scope">
       <q-item v-bind="scope.itemProps">
         <q-item-section>
-          <div v-if="typeof(props.optionLabel)==='object'">
-            <div
-              v-for="(item, i) in props.optionLabel"
-              :key="i"
-            >
+          <div v-if="typeof (props.optionLabel) === 'object'">
+            <div v-for="(item, i) in props.optionLabel" :key="i">
               <q-item-label>
-                <div
-                  class="ellipsis"
-                >
+                <div class="ellipsis">
                   {{ scope.opt[item] }}
                 </div>
               </q-item-label>
             </div>
           </div>
-          <div
-            v-if="typeof(props.optionLabel)==='string'"
-            class="ellipsis"
-          >
+          <div v-if="typeof (props.optionLabel) === 'string'" class="ellipsis">
             {{ scope.opt[optionLabel] }}
           </div>
         </q-item-section>
@@ -73,7 +35,7 @@
       </q-item>
     </template>
     <template #selected-item="scope">
-      <div v-if="typeof(props.optionLabel)==='object'">
+      <div v-if="typeof (props.optionLabel) === 'object'">
         <div class="ellipsis">
           {{ scope.opt[optionLabel[0]] }}
           <!-- {{ props.optionLabel[0] }} -->
@@ -222,6 +184,4 @@ watch(() => props.source, (obj) => {
 })
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

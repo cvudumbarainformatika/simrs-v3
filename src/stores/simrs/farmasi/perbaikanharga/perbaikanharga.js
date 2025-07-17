@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia'
+import { acceptHMRUpdate, defineStore } from 'pinia'
 import { date } from 'quasar'
 import { api } from 'src/boot/axios'
 import { dateDbFormat } from 'src/modules/formatter'
@@ -53,12 +53,15 @@ export const usePerbaikanHargaFarmasiStore = defineStore('perbaikan_harga_farmas
       this.getData()
     },
     setSearch (payload) {
+      // console.log('q', payload)
+      // console.log('payload', payload)
+
       this.setParams('page', 1)
       this.setParams('q', payload)
       this.getData()
     },
     metaniData (data) {
-      console.log('data', data)
+      // console.log('data', data)
 
       if (this.semuas?.length) {
         this.semuas?.forEach(item => {
@@ -167,13 +170,13 @@ export const usePerbaikanHargaFarmasiStore = defineStore('perbaikan_harga_farmas
         else if (this.params.pilihan === 'tidak') {
           this.items = this.semuas.filter(fi => !fi.beda === true)
         }
-        console.log('items', this.items)
+        // console.log('items', this.items)
       }
     },
     metaniSatuData (data) {
       const kode = data?.kode[0]
       const item = this.semuas.find(f => f.kd_obat === kode)
-      console.log('data', data, item, kode)
+      // console.log('data', data, item, kode)
       if (item) {
         item.beda = false
         const penerimaan = data?.penerimaan?.filter(a => a.kdobat === item.kd_obat) ?? []
@@ -272,7 +275,7 @@ export const usePerbaikanHargaFarmasiStore = defineStore('perbaikan_harga_farmas
         })
 
         const item2 = this.items.find(f => f.kd_obat === item.kd_obat)
-        console.log('item2', item2)
+        // console.log('item2', item2)
       }
     },
     getData (val) {
@@ -306,7 +309,7 @@ export const usePerbaikanHargaFarmasiStore = defineStore('perbaikan_harga_farmas
       item.item.loading = true
       try {
         const resp = await api.post('/v1/simrs/farmasinew/cekdata/simpan-perbaikan-harga-dua', item)
-        console.log('resp simpan', resp)
+        // console.log('resp simpan', resp)
         notifSuccess(resp)
         const perPage = this.params.per_page
         const page = this.params.page
@@ -335,7 +338,7 @@ export const usePerbaikanHargaFarmasiStore = defineStore('perbaikan_harga_farmas
       item.row['loading' + item.loading] = true
       try {
         const resp = await api.post('/v1/simrs/farmasinew/cekdata/simpan-perbaikan-harga-array', item)
-        console.log('resp simpan array', resp)
+        // console.log('resp simpan array', resp)
         notifSuccess(resp)
         const perPage = this.params.per_page
         const page = this.params.page
@@ -358,3 +361,7 @@ export const usePerbaikanHargaFarmasiStore = defineStore('perbaikan_harga_farmas
     }
   }
 })
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(usePerbaikanHargaFarmasiStore, import.meta.hot))
+}
