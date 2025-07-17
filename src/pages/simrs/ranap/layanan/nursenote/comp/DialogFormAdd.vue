@@ -15,18 +15,20 @@
           </q-bar>
         </div>
 
-        <!-- <div class="col-auto bg-white">
-          <q-card-section class="row justify-between">
-            <div class="q-gutter-md">
-              <q-btn rounded outline color="orange" icon="icon-mat-arrow_back" v-close-popup>
-                <span class="text-orange-9 q-ml-sm">Kembali </span>
-              </q-btn>
-              <q-btn rounded outline color="primary" @click="store.dialogPreview = true">
-                <span class="text-primary q-ml-sm">Lihat Eresep </span>
-              </q-btn>
+        <div class="col-auto bg-white">
+          <q-card-section class="row justify-end">
+            <div class="flex q-gutter-md justify-end">
+              <div class="text-black column text-right">
+                <div class="f-14 text-bold">{{ pasien?.norm }} || {{ pasien?.nama_panggil }} </div>
+                <div class="f-12">usia {{ pasien?.usia }}</div>
+                <div class="f-12 text-primary">{{ pasien?.ruangan }}</div>
+              </div>
+              <div class="text-black">
+                <app-avatar-pasien :pasien="pasien" width="40px" />
+              </div>
             </div>
           </q-card-section>
-        </div> -->
+        </div>
 
         <div class="col full-height bg-grey-4">
           <!-- <card-column :pasien="pasien" :kasus="kasus" /> -->

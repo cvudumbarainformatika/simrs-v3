@@ -168,6 +168,9 @@ function hapusItem(id) {
         <q-badge v-if="item?.user_jawab !== item?.kddokterkonsul" color="orange-9" text-color="white">
           Belum Terverif Oleh Dokter Konsulan
         </q-badge>
+        <q-badge v-if="item?.user_jawab === item?.kddokterkonsul" color="primary" text-color="white">
+          Terverifikasi
+        </q-badge>
       </q-card>
     </transition-group>
     <div style="margin-bottom: 100px;" />

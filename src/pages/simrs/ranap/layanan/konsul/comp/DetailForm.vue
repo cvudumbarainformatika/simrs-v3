@@ -38,7 +38,7 @@
           <q-form v-if="cekYgMenjawab(item)" ref="formRef" class="q-mt-lg" @submit="onSubmit">
             <q-badge class="q-px-md q-py-sm" :color="item?.user_jawab !== props?.auth ? 'orange-9' : 'primary'"
               :text-color="item?.user_jawab !== props?.auth ? 'white' : 'white'">
-              {{ item?.user_jawab !== props?.auth
+              {{ item?.user_jawab !== item?.kddokterkonsul
                 ? 'Jawaban Ini Belum Terverifikasi Dokter Konsulan'
                 : 'Sudah Terverifikasi' }}
             </q-badge>
@@ -58,7 +58,7 @@
             <span v-html="getNewLine(item?.jawaban) || 'Belum Ada Jawaban'" />
 
             <div class="q-mt-lg">
-              <q-badge class="q-px-md">
+              <q-badge v-if="item?.user_jawab === item?.kddokterkonsul" class="q-px-md">
                 Jawaban Sudah Terverif Oleh Dokter Konsulan
               </q-badge>
             </div>
