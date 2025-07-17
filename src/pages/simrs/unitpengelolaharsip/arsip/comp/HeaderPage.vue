@@ -9,10 +9,10 @@
           </template>
         </q-input>
       </div>
-      <div v-if="users === 'sa'">
-        <q-select v-model="store.params.unit" dense outlined dark color="white" :options="organisasi"
+      <div v-if="users === '' || users === null">
+        <q-select v-model="store.params.bidangbagian" dense outlined dark color="white" :options="organisasi"
           label="Unit Pengelolah.." option-label="nama" option-value="kode" class="q-ml-sm" emit-value map-options
-          style="min-width: 300px;" />
+          style="min-width: 300px;" @update:model-value="getUnit" />
       </div>
       <!-- <q-select v-model="periode" dense outlined dark color="white" :options="periods" label="Periode" class="q-ml-sm"
         emit-value map-options style="min-width: 150px;" @update:model-value="gantiPeriode" />
@@ -38,7 +38,7 @@
 <script setup>
 import { date } from 'quasar'
 import { dateDbFormat } from 'src/modules/formatter'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { useUnitPengelolahArsipStore } from 'src/stores/simrs/unitpengelolaarsip/arsip'
 const store = useUnitPengelolahArsipStore()
 // const txt = ref('BELUM TERLAYANI')
@@ -48,7 +48,7 @@ const store = useUnitPengelolahArsipStore()
 // const from = ref(dateDbFormat(new Date()))
 const emits = defineEmits(['fullscreen', 'tambaharsip'])
 
-defineProps({
+const props = defineProps({
   users: {
     type: String,
     default: ""
@@ -58,6 +58,12 @@ defineProps({
     default: () => []
   },
 })
+
+function getUnit(val) {
+  console.log('val', val)
+  store.params.bidangbagian = val
+  store.search()
+}
 
 // onMounted(() => {
 //   store.getData()
