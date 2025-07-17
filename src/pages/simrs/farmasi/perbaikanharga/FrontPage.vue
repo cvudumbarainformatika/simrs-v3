@@ -496,7 +496,7 @@ function setPilihan (val) {
   if (val === 'semua') store.items = store.semuas
   else if (val === 'bermasalah') store.items = store.semuas.filter(fi => fi.beda === true)
   else if (val === 'tidak') store.items = store.semuas.filter(fi => !fi.beda === true)
-  console.log('item', store.items)
+  // console.log('item', store.items)
 }
 onMounted(() => {
   store.getData()
