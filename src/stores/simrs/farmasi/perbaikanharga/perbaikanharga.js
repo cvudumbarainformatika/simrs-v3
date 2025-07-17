@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia'
+import { acceptHMRUpdate, defineStore } from 'pinia'
 import { date } from 'quasar'
 import { api } from 'src/boot/axios'
 import { dateDbFormat } from 'src/modules/formatter'
@@ -53,6 +53,9 @@ export const usePerbaikanHargaFarmasiStore = defineStore('perbaikan_harga_farmas
       this.getData()
     },
     setSearch (payload) {
+      // console.log('q', payload)
+      // console.log('payload', payload)
+
       this.setParams('page', 1)
       this.setParams('q', payload)
       this.getData()
@@ -358,3 +361,7 @@ export const usePerbaikanHargaFarmasiStore = defineStore('perbaikan_harga_farmas
     }
   }
 })
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(usePerbaikanHargaFarmasiStore, import.meta.hot))
+}

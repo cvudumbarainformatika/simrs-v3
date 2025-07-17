@@ -71,7 +71,16 @@
             <div v-if="row?.data?.stok?.filter(f => f.beda === true)?.length > 0">
               <q-btn :label="formatDouble(parseFloat(row?.stok), 2)" no-caps dense :loading="row.loadingStok"
                 :disable="row.loadingStok"
-                :color="row?.data?.stok?.filter(f => f.beda === true)?.length > 0 ? 'negative' : ''" @click="() => {
+                :color="row?.data?.stok?.filter(f => f.beda === true)?.length > 0 ? 'negative' : ''"
+                @click="perbStok(row)">
+                <q-tooltip>
+                  Auto Fix
+                </q-tooltip>
+              </q-btn>
+              <!-- <q-btn :label="formatDouble(parseFloat(row?.stok), 2)" no-caps dense :loading="row.loadingStok"
+                :disable="row.loadingStok"
+                :color="row?.data?.stok?.filter(f => f.beda === true)?.length > 0 ? 'negative' : ''"
+                @click="() => {
                   const item = row?.data?.stok?.filter(f => f.beda === true)
                   if (item?.length === 0) return notifErrVue('data salah tidak terdeteksi')
                   item?.forEach(fo => {
@@ -98,7 +107,7 @@
                 <q-tooltip>
                   Auto Fix
                 </q-tooltip>
-              </q-btn>
+              </q-btn> -->
             </div>
             <div v-else>
               {{ formatDouble(parseFloat(row?.stok), 2) }}
@@ -115,6 +124,14 @@
           <div v-if="store.params.kdruang" class="text-right">
             <div v-if="row?.data?.opname?.filter(f => f.beda === true)?.length > 0">
               <q-btn :label="formatDouble(parseFloat(row?.opname), 2)" no-caps dense :loading="row.loadingOpname"
+                :disable="row.loadingOpname"
+                :color="row?.data?.opname?.filter(f => f.beda === true)?.length > 0 ? 'negative' : ''"
+                @click="perbOpname(row)">
+                <q-tooltip>
+                  Auto Fix
+                </q-tooltip>
+              </q-btn>
+              <!-- <q-btn :label="formatDouble(parseFloat(row?.opname), 2)" no-caps dense :loading="row.loadingOpname"
                 :disable="row.loadingOpname"
                 :color="row?.data?.opname?.filter(f => f.beda === true)?.length > 0 ? 'negative' : ''" @click="() => {
                   const item = row?.data?.opname?.filter(f => f.beda === true)
@@ -143,7 +160,7 @@
                 <q-tooltip>
                   Auto Fix
                 </q-tooltip>
-              </q-btn>
+              </q-btn> -->
             </div>
             <div v-else>
               {{ formatDouble(parseFloat(row?.opname), 2) }}
@@ -160,6 +177,14 @@
           <div v-if="store.params.kdruang" class="text-right">
             <div v-if="row?.data?.mutasi?.filter(f => f.beda === true)?.length > 0">
               <q-btn :label="formatDouble(parseFloat(row?.mutasi), 2)" no-caps dense :loading="row.loadingMutasi"
+                :disable="row.loadingMutasi"
+                :color="row?.data?.mutasi?.filter(f => f.beda === true)?.length > 0 ? 'negative' : ''"
+                @click="perbMutasi(row)">
+                <q-tooltip>
+                  Auto Fix
+                </q-tooltip>
+              </q-btn>
+              <!-- <q-btn :label="formatDouble(parseFloat(row?.mutasi), 2)" no-caps dense :loading="row.loadingMutasi"
                 :disable="row.loadingMutasi"
                 :color="row?.data?.mutasi?.filter(f => f.beda === true)?.length > 0 ? 'negative' : ''" @click="() => {
                   const item = row?.data?.mutasi?.filter(f => f.beda === true)
@@ -191,7 +216,7 @@
                 <q-tooltip>
                   Auto Fix
                 </q-tooltip>
-              </q-btn>
+              </q-btn> -->
             </div>
             <div v-else>
               {{ formatDouble(parseFloat(row?.mutasi), 2) }}
@@ -205,6 +230,14 @@
           <div v-if="store.params.kdruang" class="text-right">
             <div v-if="row?.data?.mutasikeluar?.filter(f => f.beda === true)?.length > 0">
               <q-btn :label="formatDouble(parseFloat(row?.mutasi_keluar), 2)" no-caps dense
+                :loading="row.loadingMutasiKeluar" :disable="row.loadingMutasiKeluar"
+                :color="row?.data?.mutasikeluar?.filter(f => f.beda === true)?.length > 0 ? 'negative' : ''"
+                @click="perbMutasiKel(row)">
+                <q-tooltip>
+                  Auto Fix
+                </q-tooltip>
+              </q-btn>
+              <!-- <q-btn :label="formatDouble(parseFloat(row?.mutasi_keluar), 2)" no-caps dense
                 :loading="row.loadingMutasiKeluar" :disable="row.loadingMutasiKeluar"
                 :color="row?.data?.mutasikeluar?.filter(f => f.beda === true)?.length > 0 ? 'negative' : ''" @click="() => {
                   const item = row?.data?.mutasikeluar?.filter(f => f.beda === true)
@@ -234,7 +267,7 @@
                 <q-tooltip>
                   Auto Fix
                 </q-tooltip>
-              </q-btn>
+              </q-btn> -->
             </div>
             <div v-else>
               {{ formatDouble(parseFloat(row?.mutasi_keluar), 2) }}
@@ -251,6 +284,14 @@
           <div v-if="store.params.kdruang" class="text-right">
             <div v-if="row?.data?.resep?.filter(f => f.beda === true)?.length > 0">
               <q-btn :label="formatDouble(parseFloat(row?.resep), 2)" no-caps dense :loading="row.loadingResep"
+                :disable="row.loadingResep"
+                :color="row?.data?.resep?.filter(f => f.beda === true)?.length > 0 ? 'negative' : ''"
+                @click="perbResep(row)">
+                <q-tooltip>
+                  Auto Fix
+                </q-tooltip>
+              </q-btn>
+              <!-- <q-btn :label="formatDouble(parseFloat(row?.resep), 2)" no-caps dense :loading="row.loadingResep"
                 :disable="row.loadingResep"
                 :color="row?.data?.resep?.filter(f => f.beda === true)?.length > 0 ? 'negative' : ''" @click="() => {
                   const item = row?.data?.resep?.filter(f => f.beda === true)
@@ -277,7 +318,7 @@
                 <q-tooltip>
                   Auto Fix
                 </q-tooltip>
-              </q-btn>
+              </q-btn> -->
             </div>
             <div v-else>
               {{ formatDouble(parseFloat(row?.resep), 2) }}
@@ -294,6 +335,14 @@
           <div v-if="store.params.kdruang" class="text-right">
             <div v-if="row?.data?.racikan?.filter(f => f.beda === true)?.length > 0">
               <q-btn :label="formatDouble(parseFloat(row?.racikan), 2)" no-caps dense :loading="row.loadingRacikan"
+                :disable="row.loadingRacikan"
+                :color="row?.data?.racikan?.filter(f => f.beda === true)?.length > 0 ? 'negative' : ''"
+                @click="perbRacikan(row)">
+                <q-tooltip>
+                  Auto Fix
+                </q-tooltip>
+              </q-btn>
+              <!-- <q-btn :label="formatDouble(parseFloat(row?.racikan), 2)" no-caps dense :loading="row.loadingRacikan"
                 :disable="row.loadingRacikan"
                 :color="row?.data?.racikan?.filter(f => f.beda === true)?.length > 0 ? 'negative' : ''" @click="() => {
                   const item = row?.data?.racikan?.filter(f => f.beda === true)
@@ -320,7 +369,7 @@
                 <q-tooltip>
                   Auto Fix
                 </q-tooltip>
-              </q-btn>
+              </q-btn> -->
             </div>
             <div v-else>
               {{ formatDouble(parseFloat(row?.racikan), 2) }}
@@ -337,6 +386,15 @@
           <div v-if="store.params.kdruang" class="text-right">
             <div v-if="row?.data?.retur?.filter(f => f.beda === true)?.length > 0">
               <q-btn :label="formatDouble(parseFloat(row?.retur), 2)" no-caps dense :loading="row.loadingRetur"
+                :disable="row.loadingRetur"
+                :color="row?.data?.retur?.filter(f => f.beda === true)?.length > 0 ? 'negative' : ''"
+                @click="perbRetur(row)">
+
+                <q-tooltip>
+                  Auto Fix
+                </q-tooltip>
+              </q-btn>
+              <!-- <q-btn :label="formatDouble(parseFloat(row?.retur), 2)" no-caps dense :loading="row.loadingRetur"
                 :disable="row.loadingRetur"
                 :color="row?.data?.retur?.filter(f => f.beda === true)?.length > 0 ? 'negative' : ''" @click="() => {
                   const item = row?.data?.retur?.filter(f => f.beda === true)
@@ -363,7 +421,7 @@
                 <q-tooltip>
                   Auto Fix
                 </q-tooltip>
-              </q-btn>
+              </q-btn> -->
             </div>
             <div v-else>
               {{ formatDouble(parseFloat(row?.retur), 2) }}
@@ -395,6 +453,18 @@
               store.data = row
             }">
               Buka
+            </q-btn>
+            <q-btn v-if="row?.data?.stok?.filter(f => f.beda === true)?.length > 0 ||
+              row?.data?.opname?.filter(f => f.beda === true)?.length > 0 ||
+              row?.data?.mutasi?.filter(f => f.beda === true)?.length > 0 ||
+              row?.data?.mutasikeluar?.filter(f => f.beda === true)?.length > 0 ||
+              row?.data?.resep?.filter(f => f.beda === true)?.length > 0 ||
+              row?.data?.retur?.filter(f => f.beda === true)?.length > 0 ||
+              row?.data?.racikan?.filter(f => f.beda === true)?.length > 0" no-caps dense color="green" class="q-ml-sm"
+              :loading="row?.loadingOpname || row?.loadingStok || row.loadingMutasi || row.loadingMutasiKeluar || row.loadingResep || row.loadingRacikan || row.loadingRetur"
+              :disable="row?.loadingOpname || row?.loadingStok || row.loadingMutasi || row.loadingMutasiKeluar || row.loadingResep || row.loadingRacikan || row.loadingRetur"
+              @click="perbAll(row)">
+              Pebaiki semua
             </q-btn>
           </div>
           <div v-else>
@@ -432,10 +502,198 @@ onMounted(() => {
   store.getData()
   window.addEventListener('keydown', tombolPencet)
 })
+function perbAll (row) {
+  if (row?.data?.stok?.filter(f => f.beda === true)?.length > 0) perbStok(row)
+  if (row?.data?.opname?.filter(f => f.beda === true)?.length > 0) perbOpname(row)
+  if (row?.data?.mutasi?.filter(f => f.beda === true)?.length > 0) perbMutasi(row)
+  if (row?.data?.mutasikeluar?.filter(f => f.beda === true)?.length > 0) perbMutasiKel(row)
+  if (row?.data?.resep?.filter(f => f.beda === true)?.length > 0) perbResep(row)
+  if (row?.data?.retur?.filter(f => f.beda === true)?.length > 0) perbRetur(row)
+  if (row?.data?.racikan?.filter(f => f.beda === true)?.length > 0) perbRacikan(row)
+
+}
+function perbRetur (row) {
+  const item = row?.data?.retur?.filter(f => f.beda === true)
+  if (item?.length === 0) return notifErrVue('data salah tidak terdeteksi')
+  item?.forEach(fo => {
+    let pen = null
+    if (fo?.nopenerimaan?.includes('awal')) {
+      pen = row?.data?.awal?.find(p => p?.nopenerimaan === fo?.nopenerimaan)
+    } else {
+      pen = row?.data?.penerimaan?.find(p => p?.nopenerimaan === fo?.nopenerimaan)
+    }
+    if (pen) {
+      fo.harga = pen.harga
+    }
+  })
+  store.simpanPerbaikanHargaArray({
+    row: row,
+    item: item,
+    kd_obat: row?.kd_obat,
+    tipe: 'retur',
+    loading: 'Retur'
+  })
+}
+function perbRacikan (row) {
+  const item = row?.data?.racikan?.filter(f => f.beda === true)
+  if (item?.length === 0) return notifErrVue('data salah tidak terdeteksi')
+  item?.forEach(fo => {
+    let pen = null
+    if (fo?.nopenerimaan?.includes('awal')) {
+      pen = row?.data?.awal?.find(p => p?.nopenerimaan === fo?.nopenerimaan)
+    } else {
+      pen = row?.data?.penerimaan?.find(p => p?.nopenerimaan === fo?.nopenerimaan)
+    }
+    if (pen) {
+      fo.harga = pen.harga
+    }
+  })
+  store.simpanPerbaikanHargaArray({
+    row: row,
+    item: item,
+    kd_obat: row?.kd_obat,
+    tipe: 'racikan',
+    loading: 'Racikan'
+  })
+}
+function perbResep (row) {
+  const item = row?.data?.resep?.filter(f => f.beda === true)
+  if (item?.length === 0) return notifErrVue('data salah tidak terdeteksi')
+  item?.forEach(fo => {
+    let pen = null
+    if (fo?.nopenerimaan?.includes('awal')) {
+      pen = row?.data?.awal?.find(p => p?.nopenerimaan === fo?.nopenerimaan)
+    } else {
+      pen = row?.data?.penerimaan?.find(p => p?.nopenerimaan === fo?.nopenerimaan)
+    }
+    if (pen) {
+      fo.harga = pen.harga
+    }
+  })
+  store.simpanPerbaikanHargaArray({
+    row: row,
+    item: item,
+    kd_obat: row?.kd_obat,
+    tipe: 'resep',
+    loading: 'Resep'
+  })
+}
+function perbMutasiKel (row) {
+  const item = row?.data?.mutasikeluar?.filter(f => f.beda === true)
+  if (item?.length === 0) return notifErrVue('data salah tidak terdeteksi')
+  item?.forEach(fo => {
+    let pen = null
+    if (fo?.nopenerimaan?.includes('awal')) {
+      pen = row?.data?.awal?.find(p => p?.nopenerimaan === fo?.nopenerimaan)
+    } else {
+      pen = row?.data?.penerimaan?.find(p => p?.nopenerimaan === fo?.nopenerimaan)
+    }
+    if (pen) {
+      fo.harga = pen.harga
+      if (fo.tglpenerimaan !== pen.tglpenerimaan && !!pen.tglpenerimaan) fo.tglpenerimaan = pen.tglpenerimaan
+      if (fo.nobatch !== pen.nobatch && pen.nobatch) fo.nobatch = pen.nobatch
+      if (fo.tglexp !== pen.tglexp && pen.tglexp) fo.tglexp = pen.tglexp
+    }
+  })
+  store.simpanPerbaikanHargaArray({
+    row: row,
+    item: item,
+    kd_obat: row?.kd_obat,
+    tipe: 'mutasi',
+    loading: 'MutasiKeluar'
+  })
+}
+function perbMutasi (row) {
+  const item = row?.data?.mutasi?.filter(f => f.beda === true)
+  if (item?.length === 0) return notifErrVue('data salah tidak terdeteksi')
+  item?.forEach(fo => {
+    let pen = null
+    if (fo?.nopenerimaan?.includes('awal')) {
+      pen = row?.data?.awal?.find(p => p?.nopenerimaan === fo?.nopenerimaan)
+    } else {
+      pen = row?.data?.penerimaan?.find(p => p?.nopenerimaan === fo?.nopenerimaan)
+    }
+    if (pen) {
+      fo.harga = pen.harga
+      if (fo.tglpenerimaan !== pen.tglpenerimaan && !!pen.tglpenerimaan) fo.tglpenerimaan = pen.tglpenerimaan
+      if (fo.nobatch !== pen.nobatch && pen.nobatch) fo.nobatch = pen.nobatch
+      if (fo.tglexp !== pen.tglexp && pen.tglexp) fo.tglexp = pen.tglexp
+    }
+    // console.log('pen',pen);
+
+  })
+  store.simpanPerbaikanHargaArray({
+    row: row,
+    item: item,
+    kd_obat: row?.kd_obat,
+    tipe: 'mutasi',
+    loading: 'Mutasi'
+  })
+}
+function perbOpname (row) {
+  const item = row?.data?.opname?.filter(f => f.beda === true)
+  if (item?.length === 0) return notifErrVue('data salah tidak terdeteksi')
+  item?.forEach(fo => {
+    let pen = null
+    if (fo?.nopenerimaan?.includes('awal')) {
+      pen = row?.data?.awal?.find(p => p?.nopenerimaan === fo?.nopenerimaan)
+    } else {
+      pen = row?.data?.penerimaan?.find(p => p?.nopenerimaan === fo?.nopenerimaan)
+    }
+    if (pen) {
+      fo.harga = pen.harga
+      if (fo.tglpenerimaan !== pen.tglpenerimaan) fo.tglpenerimaan = pen.tglpenerimaan
+      if (fo.nobatch !== pen.nobatch) fo.nobatch = pen.nobatch
+    }
+  })
+  store.simpanPerbaikanHargaArray({
+    row: row,
+    item: item,
+    kd_obat: row?.kd_obat,
+    tipe: 'opname',
+    loading: 'Opname'
+  })
+}
+function perbStok (row) {
+  const item = row?.data?.stok?.filter(f => f.beda === true)
+  if (item?.length === 0) return notifErrVue('data salah tidak terdeteksi')
+  item?.forEach(fo => {
+    let pen = null
+    if (fo?.nopenerimaan?.includes('awal')) {
+      pen = row?.data?.awal?.find(p => p?.nopenerimaan === fo?.nopenerimaan)
+    } else {
+      pen = row?.data?.penerimaan?.find(p => p?.nopenerimaan === fo?.nopenerimaan)
+    }
+    if (pen) {
+      fo.harga = pen.harga
+      if (fo.tglpenerimaan !== pen.tglpenerimaan) fo.tglpenerimaan = pen.tglpenerimaan
+      if (fo.nobatch !== pen.nobatch) fo.nobatch = pen.nobatch
+    }
+  })
+  store.simpanPerbaikanHargaArray({
+    row: row,
+    item: item,
+    kd_obat: row?.kd_obat,
+    tipe: 'stok',
+    loading: 'Stok'
+  })
+}
 const refKdruang = ref(null)
 function tombolPencet (evt) {
-  // console.log('keyup', evt, refKdruang.value?.refAuto)
+  // console.log('keyup', evt?.code)
   if (evt.key == 'Escape') refKdruang.value?.refAuto?.focus()
+  // if (evt.code == 'KeyF') {
+  if (evt.code == 'ControlLeft') {
+    store.items.forEach(row => {
+      if (row?.data?.stok?.filter(f => f.beda === true)?.length > 0 ||
+        row?.data?.opname?.filter(f => f.beda === true)?.length > 0 ||
+        row?.data?.mutasi?.filter(f => f.beda === true)?.length > 0 ||
+        row?.data?.mutasikeluar?.filter(f => f.beda === true)?.length > 0 ||
+        row?.data?.resep?.filter(f => f.beda === true)?.length > 0 ||
+        row?.data?.retur?.filter(f => f.beda === true)?.length > 0 ||
+        row?.data?.racikan?.filter(f => f.beda === true)?.length > 0) perbAll(row)
+    })
+  }
 
 }
 onBeforeUnmount(() => {
