@@ -38,7 +38,7 @@ export const useListPasienHemodialisaStore = defineStore('list-pasien-hemodialis
     // doubleCount: (state) => state.counter * 2
   },
   actions: {
-    getDataTable() {
+    getDataTable () {
       this.loading = true
       return new Promise((resolve, reject) => {
         api.get('/v1/simrs/hemodialisa/hemodialisa/pasienhemodialisa', {
@@ -53,22 +53,22 @@ export const useListPasienHemodialisaStore = defineStore('list-pasien-hemodialis
             this.meta.total = total
             this.items = obj?.data ?? []
 
-            console.log('this.meta', this.meta)
-            console.log('this.items', this.items)
+            // console.log('this.meta', this.meta)
+            // console.log('this.items', this.items)
             // this.togglePageTindakan()
             this.pageTindakan = true
           }
           this.loading = false
           resolve(res)
         }).catch(err => {
-          console.log('err list tggu ranap', err)
+          // console.log('err list tggu ranap', err)
           this.loading = false
           reject(err)
         })
       })
     },
 
-    setPeriode(val) {
+    setPeriode (val) {
       this.header.periode = val
       if (val === 'Hari ini') {
         this.hariIni()
@@ -81,28 +81,28 @@ export const useListPasienHemodialisaStore = defineStore('list-pasien-hemodialis
       }
     },
 
-    setUrutan(val) {
+    setUrutan (val) {
       this.params.sort = val
       this.getDataTable()
     },
 
-    setPage(val) {
+    setPage (val) {
       this.params.page = val
       this.getDataTable()
     },
 
-    setStatus(val) {
+    setStatus (val) {
       this.params.page = 1
       this.params.status = val
       this.getDataTable()
     },
 
-    hariIni() {
+    hariIni () {
       const cDate = new Date()
       this.params.to = dateDbFormat(cDate)
       this.params.from = dateDbFormat(cDate)
     },
-    bulanIni() {
+    bulanIni () {
       const curr = new Date(), y = curr.getFullYear(), m = curr.getMonth()
       // const firstday = date.formatDate(curr, 'YYYY') + '-' + date.formatDate(curr, 'MM') + '-01'
       // const lastday = date.formatDate(curr, 'YYYY') + '-' + date.formatDate(curr, 'MM') + '-31'
@@ -111,33 +111,33 @@ export const useListPasienHemodialisaStore = defineStore('list-pasien-hemodialis
       this.params.to = dateDbFormat(firstday)
       this.params.from = dateDbFormat(lastday)
     },
-    mingguIni() {
+    mingguIni () {
       const curr = new Date()
       const firstday = new Date(curr.setDate(curr.getDate() - curr.getDay()))
       const lastday = new Date(curr.setDate(curr.getDate() - curr.getDay() + 6))
       this.params.to = dateDbFormat(firstday)
       this.params.from = dateDbFormat(lastday)
     },
-    tahunIni() {
+    tahunIni () {
       const curr = new Date()
       const firstday = date.formatDate(curr, 'YYYY') + '-01' + '-01'
       const lastday = date.formatDate(curr, 'YYYY') + '-12' + '-31'
       this.params.to = dateDbFormat(firstday)
       this.params.from = dateDbFormat(lastday)
     },
-    togglePageTindakan() {
+    togglePageTindakan () {
       this.pageTindakan = !this.pageTindakan
     },
-    async getJenisKasus() {
+    async getJenisKasus () {
       const resp = await api.get('v1/simrs/ranap/ruangan/listjeniskasus')
-      console.log('jns kasus', resp.data)
+      // console.log('jns kasus', resp.data)
       if (resp.status === 200) {
         this.jeniskasus = resp.data
       }
     },
-    injectDataPasien(noreg, val, kode, arr) {
+    injectDataPasien (noreg, val, kode, arr) {
       const findPasien = this.items?.find(x => x.noreg === noreg)
-      console.log('inject pasien', findPasien)
+      // console.log('inject pasien', findPasien)
       if (findPasien) {
         const data = findPasien
         // data[kode] = val
@@ -162,7 +162,7 @@ export const useListPasienHemodialisaStore = defineStore('list-pasien-hemodialis
         }
       }
     },
-    injectDataArray(noreg, arr, kode) {
+    injectDataArray (noreg, arr, kode) {
       const findPasien = this.items.find(x => x?.noreg === noreg)
       // console.log('inject pasien', findPasien)
       if (findPasien) {
@@ -171,7 +171,7 @@ export const useListPasienHemodialisaStore = defineStore('list-pasien-hemodialis
       }
     },
 
-    injectUpdatean(noreg, id, val, kode) {
+    injectUpdatean (noreg, id, val, kode) {
       const findPasien = this.items.find(x => x?.noreg === noreg)
       if (findPasien) {
         const data = findPasien
@@ -181,7 +181,7 @@ export const useListPasienHemodialisaStore = defineStore('list-pasien-hemodialis
         }
       }
     },
-    deleteInjectanNull(noreg, kode) {
+    deleteInjectanNull (noreg, kode) {
       const findPasien = this.items.find(x => x.noreg === noreg)
       if (findPasien) {
         const data = findPasien
@@ -191,7 +191,7 @@ export const useListPasienHemodialisaStore = defineStore('list-pasien-hemodialis
         }
       }
     },
-    deleteInjectanNull2(noreg, kode) {
+    deleteInjectanNull2 (noreg, kode) {
       const findPasien = this.items.filter(x => x.noreg === noreg)
       if (findPasien) {
         const data = findPasien
@@ -202,7 +202,7 @@ export const useListPasienHemodialisaStore = defineStore('list-pasien-hemodialis
       }
     },
 
-    hapusDataInjectan(pasien, id, key) {
+    hapusDataInjectan (pasien, id, key) {
       // console.log('hapusDataInjectan', key, id, pasien)
 
       const findPasien = this.items.find(x => x?.noreg === pasien?.noreg)
@@ -216,7 +216,7 @@ export const useListPasienHemodialisaStore = defineStore('list-pasien-hemodialis
         if (pos >= 0) { data.splice(pos, 1) }
       }
     },
-    async gantiDpjp(form, pasien) {
+    async gantiDpjp (form, pasien) {
       // console.log(form)
       this.loadingSaveGantiDpjp = true
       try {
@@ -236,12 +236,12 @@ export const useListPasienHemodialisaStore = defineStore('list-pasien-hemodialis
         this.loadingSaveGantiDpjp = false
       }
       catch (error) {
-        console.log(error)
+        // console.log(error)
         this.loadingSaveGantiDpjp = false
       }
     },
 
-    async setLayananSelesai(pasien) {
+    async setLayananSelesai (pasien) {
       return notifErrVue('Fitur ini belum diaktifkan. Belum ada Arahan Mengenan Layanan Selesai di Hemodialisa')
       this.loadingTerima = true
       // '' : 'Belum Terlayanani'
@@ -267,13 +267,13 @@ export const useListPasienHemodialisaStore = defineStore('list-pasien-hemodialis
         }
       }
       catch (error) {
-        console.log(error)
+        // console.log(error)
         notifErrVue('Maaf.. Harap ulangi, Ada Kesalahan ')
         this.loadingTerima = false
         // this.notifikasiError('Maaf.. Harap ulangi, Ada Kesalahan ')
       }
     },
-    async getNakes() {
+    async getNakes () {
       const resp = await api.get('/v1/simrs/master/pegawai/listnakes')
       // console.log('nakes', resp)
 
@@ -281,7 +281,7 @@ export const useListPasienHemodialisaStore = defineStore('list-pasien-hemodialis
         this.nakes = resp.data
       }
     },
-    async getNonNakes() {
+    async getNonNakes () {
       const resp = await api.get('/v1/simrs/master/pegawai/listnonnakes')
       // console.log('non nakes', resp)
 
@@ -289,7 +289,7 @@ export const useListPasienHemodialisaStore = defineStore('list-pasien-hemodialis
         this.nonNakes = resp.data
       }
     },
-    gantiMemo(form, pasien) {
+    gantiMemo (form, pasien) {
       // console.log(form)
       return new Promise((resolve, reject) => {
         api.post('/v1/simrs/pelayanan/gantimemo', form)
@@ -304,15 +304,15 @@ export const useListPasienHemodialisaStore = defineStore('list-pasien-hemodialis
             }
             resolve(resp)
           }).catch(err => {
-            console.log(err)
+            // console.log(err)
           })
       })
     },
-    terimapasien(pas) {
+    terimapasien (pas) {
       return new Promise((resolve, reject) => {
         api.post('v1/simrs/hemodialisa/hemodialisa/terima-pasien', pas)
           .then((resp) => {
-            console.log('resp', resp)
+            // console.log('resp', resp)
             const findPasien = this.items.find(x => x?.noreg === pas?.noreg)
             if (findPasien) {
               const datanya = resp?.data?.data
@@ -326,7 +326,7 @@ export const useListPasienHemodialisaStore = defineStore('list-pasien-hemodialis
             if (this.jeniskasus?.length && jnsKasus) {
               this.jnsKasusPasien = this.jeniskasus.find(x => x.kode === jnsKasus) ?? null
             }
-            console.log('resp pas', this.jnsKasusPasien, jnsKasus)
+            // console.log('resp pas', this.jnsKasusPasien, jnsKasus)
             resolve(resp)
           })
           .catch((err) => {
@@ -334,7 +334,7 @@ export const useListPasienHemodialisaStore = defineStore('list-pasien-hemodialis
           })
       })
     },
-    async kirimpenjaminan(val) {
+    async kirimpenjaminan (val) {
       // this.noreg = val?.noreg
       val.loadingcesmix = true
 
@@ -356,7 +356,7 @@ export const useListPasienHemodialisaStore = defineStore('list-pasien-hemodialis
             val.kesmik = '1'
           }
         }).catch((err) => {
-          console.log('call', err)
+          // console.log('call', err)
           val.loadingcasmix = false
         })
     }
