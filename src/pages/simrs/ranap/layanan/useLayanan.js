@@ -24,6 +24,14 @@ export default function useLayanan(pasien, mpp) {
       nakes: ['1', '2', '3'],
       comp: shallowRef(defineAsyncComponent(() => import('./pemeriksaan/IndexPage.vue')))
     },
+
+    {
+      name: 'Pagt',
+      label: 'PAGT',
+      icon: 'icon-mat-post_add',
+      nakes: ['5'],
+      comp: shallowRef(defineAsyncComponent(() => import('./pagt/IndexPage.vue')))
+    },
     {
       name: 'DiagTindPage',
       label: 'Diagnosa & Tindakan',
