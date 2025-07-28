@@ -12,22 +12,13 @@
         </div>
       </div>
       <div class="row justify-between no-wrap q-mt-xs anu">
-        <div
-          class=" text-weight-bold"
-          :class="rin.masterobat.status_fornas === '1' ? 'text-green' : 'text-negative'"
-        >
+        <div class=" text-weight-bold" :class="rin.masterobat.status_fornas === '1' ? 'text-green' : 'text-negative'">
           {{ rin.masterobat.status_fornas === '1' ? 'Fronas' : '' }}
         </div>
-        <div
-          class=" text-weight-bold"
-          :class="rin.masterobat.status_forkid === '1' ? 'text-green' : 'text-negative'"
-        >
+        <div class=" text-weight-bold" :class="rin.masterobat.status_forkid === '1' ? 'text-green' : 'text-negative'">
           {{ rin.masterobat.status_forkid === '1' ? 'Forkit' : '' }}
         </div>
-        <div
-          class=" text-weight-bold"
-          :class="rin.masterobat.status_generik === '1' ? 'text-green' : 'text-negative'"
-        >
+        <div class=" text-weight-bold" :class="rin.masterobat.status_generik === '1' ? 'text-green' : 'text-negative'">
           {{ rin.masterobat.status_generik === '1' ? 'Generik' : '' }}
         </div>
       </div>
@@ -75,103 +66,47 @@
       </div>
 
       <div class="row justify-between no-wrap q-mt-xs">
-        <div
-          v-if="row.flag === '2' && rin.distribusi===0 && parseFloat(rin.mak_stok) < rin.stok"
-          class="col-12"
-        >
-          <app-input
-            ref="refInputVerif"
-            v-model="jmlMinta"
-            label="Jumlah Didistribusikan"
-            outlined
-            debounce="100"
-            readonly
-            :rules="[
+        <div v-if="row.flag === '2' && rin.distribusi === 0 && parseFloat(rin.mak_stok) < rin.stok" class="col-12">
+          <app-input ref="refInputVerif" v-model="jmlMinta" label="Jumlah Didistribusikan" outlined debounce="100"
+            readonly :rules="[
               // val => parseFloat(val) >= 0 || 'Harus lebih lebih besar dari 0',
               val => ((parseFloat(val) <= parseFloat(rin.jumlahdiminta))) || 'Tidak Boleh Lebih dari Jumlah minta'
-            ]"
-            :disable="store.loadingSimpan && (store.form.id === rin.id)"
-            @keyup.enter="kirim(rin, row)"
-            @update:model-value="sudah($event, rin)"
-          />
+            ]" :disable="(store.loadingSimpan && (store.form.id === rin.id)) || rin.loading"
+            @keyup.enter="kirim(rin, row)" @update:model-value="sudah($event, rin)" />
         </div>
-        <div
-          v-else-if="row.flag === '2' && rin.distribusi===0"
-          class="col-12"
-        >
-          <app-input
-            ref="refInputVerifNol"
-            v-model="jmlMinta"
-            label="Jumlah Didistribusikan"
-            outlined
-            debounce="100"
+        <div v-else-if="row.flag === '2' && rin.distribusi === 0" class="col-12">
+          <app-input ref="refInputVerifNol" v-model="jmlMinta" label="Jumlah Didistribusikan" outlined debounce="100"
             :rules="[
               val => parseFloat(val) > 0 || 'Harus lebih lebih besar dari 0',
               val => ((parseFloat(val) <= parseFloat(rin.jumlahdiminta))) || 'Tidak Boleh Lebih dari Jumlah minta'
-            ]"
-            :disable="store.loadingSimpan && (store.form.id === rin.id)"
-            @focus="setNol(rin)"
-            @keyup.enter="kirim(rin, row)"
-            @update:model-value="setJumlah($event, rin)"
-          />
+            ]" :disable="(store.loadingSimpan && (store.form.id === rin.id)) || rin.loading" @focus="setNol(rin)"
+            @keyup.enter="kirim(rin, row)" @update:model-value="setJumlah($event, rin)" />
         </div>
-        <div
-          v-else
-          class="col-12"
-        >
+        <div v-else class="col-12">
           <!-- v-model="rin.jumlah_minta" -->
-          <app-input
-            v-model="jmlDistribusi"
-            label="Jumlah Didistribusikan"
-            outlined
-            debounce="800"
-            readonly
-            :rules="[
-              val => parseFloat(val) > 0 || 'Harus lebih lebih besar dari 0',
-              val => ((parseFloat(val) <= parseFloat(rin.jumlahdiminta))) || 'Tidak Boleh Lebih dari Jumlah minta'
-            ]"
-            @update:model-value="sudah($event, rin)"
-          />
+          <app-input v-model="jmlDistribusi" label="Jumlah Didistribusikan" outlined debounce="800" readonly :rules="[
+            val => parseFloat(val) > 0 || 'Harus lebih lebih besar dari 0',
+            val => ((parseFloat(val) <= parseFloat(rin.jumlahdiminta))) || 'Tidak Boleh Lebih dari Jumlah minta'
+          ]" @update:model-value="sudah($event, rin)" />
           <!-- @keyup.enter="gaKirim(rin, i)" -->
         </div>
       </div>
     </div>
     <div class="col-3 ">
-      <div v-if="parseFloat(rin.jumlah_minta) > 0 && row.flag==='2'">
-        <div
-          v-if="parseFloat(rin.jumlah_minta) <= parseFloat(rin.jumlahdiminta) && row.flag==='2'"
-          class="row justify-end"
-        >
-          <q-icon
-            v-if="rin.distribusi>0"
-            class="q-mr-md"
-            name="icon-mat-done"
-            color="green"
-            size="sm"
-          >
-            <q-tooltip
-              anchor="top middle"
-              self="center middle"
-            >
+      <div v-if="parseFloat(rin.jumlah_minta) > 0 && row.flag === '2'">
+        <div v-if="parseFloat(rin.jumlah_minta) <= parseFloat(rin.jumlahdiminta) && row.flag === '2'"
+          class="row justify-end">
+          <q-icon v-if="rin.distribusi > 0" class="q-mr-md" name="icon-mat-done" color="green" size="sm">
+            <q-tooltip anchor="top middle" self="center middle">
               <div class="row justify-end">
                 Sudah Di distribusikan
               </div>
             </q-tooltip>
           </q-icon>
-          <q-btn
-            v-else
-            flat
-            no-caps
-            icon-right="icon-mat-send"
-            label="Distribusikan"
-            color="green"
-            :loading="store.loadingSimpan && (store.form.id === rin.id)"
-            @click="kirim(rin, row)"
-          >
-            <q-tooltip
-              anchor="top middle"
-              self="center middle"
-            >
+          <q-btn v-else flat no-caps icon-right="icon-mat-send" label="Distribusikan" color="green"
+            :loading="rin.loading" @click="kirim(rin, row)">
+            <!-- :loading="store.loadingSimpan && (store.form.id === rin.id)" -->
+            <q-tooltip anchor="top middle" self="center middle">
               <div class="row justify-end">
                 Distribusikan Obat ini
               </div>
@@ -180,29 +115,16 @@
         </div>
       </div>
       <div v-else>
-        <div
-          v-if="(parseFloat(rin.jumlah_minta) <= 0 || mutasi(row,rin)) && row.flag==='2'"
-          class="row justify-end text-weight-bold space-normal"
-        >
-          <div
-            v-if="row.flag === '2' && rin.distribusi===0 && parseFloat(rin.mak_stok) < rin.stok"
-            class="text-negative text-right"
-          >
+        <div v-if="(parseFloat(rin.jumlah_minta) <= 0 || mutasi(row, rin)) && row.flag === '2'"
+          class="row justify-end text-weight-bold space-normal">
+          <div v-if="row.flag === '2' && rin.distribusi === 0 && parseFloat(rin.mak_stok) < rin.stok"
+            class="text-negative text-right">
             Jumlah Stok melebihi Jumlah Maksimal Stok
           </div>
-          <div
-            v-else-if="row.flag === '2' && rin.distribusi<=parseFloat(rin.jumlahdiminta) && rin.distribusi>0"
-            class="text-negative"
-          >
-            <q-icon
-              name="icon-mat-lock"
-              color="negative"
-              size="sm"
-            >
-              <q-tooltip
-                anchor="top middle"
-                self="center middle"
-              >
+          <div v-else-if="row.flag === '2' && rin.distribusi <= parseFloat(rin.jumlahdiminta) && rin.distribusi > 0"
+            class="text-negative">
+            <q-icon name="icon-mat-lock" color="negative" size="sm">
+              <q-tooltip anchor="top middle" self="center middle">
                 <div class="row justify-end">
                   Sudah Di distribusikan
                 </div>
@@ -213,16 +135,10 @@
             Jumlah Distribusi salah
           </div>
         </div>
-        <div
-          v-if="row.flag==='3'"
-          class="row justify-end text-weight-bold text-green"
-        >
+        <div v-if="row.flag === '3'" class="row justify-end text-weight-bold text-green">
           Sudah Di Distribusikan
         </div>
-        <div
-          v-if="row.flag==='1'"
-          class="row justify-end text-weight-bold text-red"
-        >
+        <div v-if="row.flag === '1'" class="row justify-end text-weight-bold text-red">
           Terima Terlebih dahulu
         </div>
       </div>
@@ -235,8 +151,8 @@ import { useDistribusiPermintaanDepoStore } from 'src/stores/simrs/farmasi/distr
 import { computed, ref } from 'vue'
 const emits = defineEmits(['minta', 'distribusi', 'gausah', 'editable'])
 const props = defineProps({
-  row: { type: Object, default: () => {} },
-  rin: { type: Object, default: () => {} }
+  row: { type: Object, default: () => { } },
+  rin: { type: Object, default: () => { } }
 })
 
 const store = useDistribusiPermintaanDepoStore()
@@ -281,11 +197,12 @@ function setJumlah (evt, val) {
   console.log('beli', beli, evt, max, stok, totalStok)
 }
 function kirim (val, row) {
-  console.log('ref', refInputVerifNol.value?.refInput)
+  // console.log('ref', refInputVerifNol.value?.refInput)
   const valid = refInputVerifNol.value?.refInput?.validate()
-  console.log('kirim', val)
-  console.log('kirim row', row)
+  // console.log('kirim', val)
+  // console.log('kirim row', row)
   if (valid) {
+    val.loading = true
     store.setForm('id', val.id)
     const form = {
       id: val.id,
@@ -302,7 +219,10 @@ function kirim (val, row) {
       // val.editable = false
       emits('distribusi', form.distribusi)
       emits('editable', false)
+      val.loading = false
       // val.distribusi = form.distribusi
+    }).catch(() => {
+      val.loading = false
     })
   }
   emits('editable', false)
