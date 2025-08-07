@@ -43,7 +43,7 @@
             </q-item-label>
             <q-item-label>
               Jenis Arsip : <span class=" text-weight-bold"><q-badge outline color="teal">{{ item?.ket ?? '-'
-                  }}</q-badge></span>
+              }}</q-badge></span>
             </q-item-label>
             <q-item-label>
               Unit Pengelolah : <span class=" text-weight-bold"><q-badge outline color="accent">{{
@@ -69,6 +69,9 @@
             </q-item-label>
             <q-item-label>
               Keterangan : <span class="text-negative text-weight-bold">{{ item?.keterangan ?? '-' }}</span>
+            </q-item-label>
+            <q-item-label>
+              User : <span class=" text-weight-bold">{{ item?.user?.nama ?? '-' }}</span>
             </q-item-label>
           </q-item-section>
           <q-item-section side>

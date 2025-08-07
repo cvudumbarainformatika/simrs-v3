@@ -276,7 +276,7 @@ export const usePengunjungPoliStore = defineStore('pengunjung-poli-store', {
             // jawabn konsul
             findPasien[0].jawabankonsul = responseData?.jawabankonsul
             findPasien[0].jawabankonsulbynoreg = responseData?.jawabankonsulbynoreg
-
+            findPasien[0].suratketerangandokter = responseData?.suratketerangandokter
 
           }
           this.loadingTerima = false
@@ -340,9 +340,9 @@ export const usePengunjungPoliStore = defineStore('pengunjung-poli-store', {
       if (findPasien?.length) {
         const data = findPasien[0]
         const target = data[kode]?.find(x => x.id === val.id)
-        console.log('inject target pasien', target)
-        console.log('inject kode pasien', kode)
-        console.log('inject isi pasien', val)
+        // console.log('inject target pasien', target)
+        // console.log('inject kode pasien', kode)
+        // console.log('inject isi pasien', val)
 
         if (target) {
           Object.assign(target, val)

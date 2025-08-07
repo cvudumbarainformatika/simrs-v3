@@ -179,7 +179,7 @@
 
 </template>
 <script setup>
-import { useQuasar } from 'quasar';
+import { date, useQuasar } from 'quasar';
 import { useUnitPengelolahArsipStore } from 'src/stores/simrs/unitpengelolaarsip/arsip';
 import { ref } from 'vue';
 
@@ -287,6 +287,9 @@ function setToFromDisp(vaal) {
 }
 
 function onSubmit() {
+  const thn = 2024;
+  const year = date.formatDate(store.form.tgl, 'YYYY');
+  console.log('year', year, thn, store.form.tgl)
   if (store.form.keaslian === '' || store.form.keaslian === null) {
     $q.notify({
       color: 'red-5',
@@ -295,8 +298,18 @@ function onSubmit() {
       message: 'Maaf Keaslian harus dipilih'
     })
     store.loading = false
+  } else if (parseInt(year) !== parseInt(thn)) {
+    $q.notify({
+      color: 'red-5',
+      textColor: 'white',
+      icon: 'icon-mat-warning',
+      message: 'Maaf Harus Tahun 2024'
+    })
+    store.loading = false
+  } else {
+    store.saveData()
   }
-  store.saveData()
+
 }
 
 function kodeklasifikasi(val) {
