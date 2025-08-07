@@ -289,7 +289,7 @@ function setToFromDisp(vaal) {
 function onSubmit() {
   const thn = 2024;
   const year = date.formatDate(store.form.tgl, 'YYYY');
-  console.log('year', year, thn, store.form.tgl)
+
   if (store.form.keaslian === '' || store.form.keaslian === null) {
     $q.notify({
       color: 'red-5',
