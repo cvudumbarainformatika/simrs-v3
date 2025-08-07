@@ -608,10 +608,10 @@
                       <div v-if="rinc?.obatkeluar >= 0">
                         Sudah dikeluarkan obat sebanyak {{ rinc?.obatkeluar }} ({{ rinc?.mobat?.satuan_k }})
                       </div>
-                      <div v-if="store?.resep?.pembatasanRac?.length > 0">
-                        {{ pembatasanRac(rinc) }}
-                      </div>
                     </div>
+                  </div>
+                  <div v-if="pembatasanRac(rinc)" class="row items-center full-width q-pa-xs bg-red-3 text-black">
+                    {{ pembatasanRac(rinc) }}
                   </div>
                   <div v-if="cekAlokasiRac(rinc) >= 0 && store.resep?.alokasiRac?.length > 0"
                     class="row items-center full-width text-black q-pa-xs"
