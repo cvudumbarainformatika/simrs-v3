@@ -47,7 +47,7 @@ import { useSettingsAplikasi } from 'src/stores/simrs/settings'
 const HeaderComp = defineAsyncComponent(() => import('./comp/HeaderComp.vue'))
 const BottomComp = defineAsyncComponent(() => import('./comp/BottomComp.vue'))
 const ListPage = defineAsyncComponent(() => import('./comp/ListPage.vue'))
-const DialogPage = defineAsyncComponent(() => import('./comp/DialogPage.vue'))
+const DialogPage = defineAsyncComponent(() => import('./comp/newDialogPage/DialogPage.vue'))
 const InfoPage = defineAsyncComponent(() => import('./comp/InfoPage.vue'))
 const DialogAlasan = defineAsyncComponent(() => import('./comp/DialogAlasan.vue'))
 
