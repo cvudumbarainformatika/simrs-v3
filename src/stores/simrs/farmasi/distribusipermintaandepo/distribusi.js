@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia'
+import { acceptHMRUpdate, defineStore } from 'pinia'
 import { api } from 'src/boot/axios'
 import { notifSuccess } from 'src/modules/utils'
 
@@ -10,7 +10,7 @@ export const useDistribusiPermintaanDepoStore = defineStore('distribusi_perminta
     loadingCariPermintaan: false,
     loadingKunci: false,
     items: [],
-    meta: { },
+    meta: {},
     params: {
       page: 1,
       q: '',
@@ -120,7 +120,7 @@ export const useDistribusiPermintaanDepoStore = defineStore('distribusi_perminta
           filterKeys.some(
             (key) =>
               item[key].toString().toLowerCase().includes(value.toLowerCase()) &&
-                item[key]
+              item[key]
           )
         )
       const filteredData = multiFilter(this.items, splits, needle)
@@ -183,17 +183,30 @@ export const useDistribusiPermintaanDepoStore = defineStore('distribusi_perminta
     },
     simpanDetail (val) {
       this.loadingSimpan = true
-      return new Promise(resolve => {
+      let permintaanrinci = null
+      const row = this.items.find(x => x.no_permintaan === val.nopermintaan)
+      if (row) {
+        permintaanrinci = row.permintaanrinci.find(x => x.id === val.id)
+        if (permintaanrinci) permintaanrinci.loading = true
+      }
+      // console.log('permintaanrinci', permintaanrinci, row)
+
+      return new Promise((resolve, reject) => {
         api.post('v1/simrs/farmasinew/gudang/distribusi/simpandistribusidepo', val)
           .then(resp => {
             this.loadingSimpan = false
+            if (permintaanrinci) permintaanrinci.loading = false
             console.log('didtribusi', resp)
             notifSuccess(resp)
             val.distribusi = parseFloat(val?.jumlah_minta)
             // this.getPermintaanDepo()
             resolve(resp)
           })
-          .catch(() => { this.loadingSimpan = false })
+          .catch((err) => {
+            this.loadingSimpan = false
+            if (permintaanrinci) permintaanrinci.loading = false
+            reject(err)
+          })
       })
     },
     kunci (val) {
@@ -246,3 +259,7 @@ export const useDistribusiPermintaanDepoStore = defineStore('distribusi_perminta
     }
   }
 })
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useDistribusiPermintaanDepoStore, import.meta.hot))
+}
+

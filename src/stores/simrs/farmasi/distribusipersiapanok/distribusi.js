@@ -96,7 +96,7 @@ export const useDistribusiPersiapanOperasiStore = defineStore('distribusi_persia
             this.items = resp?.data?.data ?? resp?.data
             this.meta = resp.data
 
-            console.log('list PErmintaan depo', resp?.data)
+            // console.log('list PErmintaan depo', resp?.data)
             if (this.items?.length) this.metaniRinci()
             resolve(resp)
           })
@@ -111,7 +111,7 @@ export const useDistribusiPersiapanOperasiStore = defineStore('distribusi_persia
           .then(resp => {
             this.loadingDistribusi = false
             val.loading = false
-            console.log('distribusi', resp)
+            // console.log('distribusi', resp)
             notifSuccess(resp)
             this.getPermintaan()
             resolve(resp)
@@ -130,7 +130,7 @@ export const useDistribusiPersiapanOperasiStore = defineStore('distribusi_persia
           .then(resp => {
             this.loadingSimpan = false
             val.loading = false
-            console.log('kembali', resp)
+            // console.log('kembali', resp)
             notifSuccess(resp)
             this.getPermintaan()
             resolve(resp)
@@ -152,7 +152,7 @@ export const useDistribusiPersiapanOperasiStore = defineStore('distribusi_persia
           .then(resp => {
             this.loadingBatalOperasi = false
             val.loading = false
-            console.log('batal', resp)
+            // console.log('batal', resp)
             notifSuccess(resp)
             this.getPermintaan()
             resolve(resp)
