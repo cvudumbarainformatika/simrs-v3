@@ -153,6 +153,17 @@
         </q-tooltip>
       </q-btn>
     </div>
+    <div
+      v-if="store?.resep?.flag === '2' && ((store?.resep?.tiperesep === 'iter' ? store?.resep?.noresep_asal !== '' : true))"
+      class="text-right q-mr-md q-my-sm">
+      <q-btn rounded push label="Selesai Iter" class="f-12 q-mr-sm" color="green" text-color="white"
+        icon="icon-mat-done_all" :disable="store.loadingSelesai && store?.resep?.loading"
+        :loading="store.loadingSelesai && store?.resep?.loading" @click="store.resepSelesaiIter(store?.resep)">
+        <q-tooltip class="primary" :offset="[10, 10]">
+          Selesai Iter
+        </q-tooltip>
+      </q-btn>
+    </div>
 
     <div v-if="parseFloat(store?.resep?.flag) >= 3 && store?.resep?.tiperesep === 'iter'"
       class="row justify-end q-mr-md q-my-sm">
@@ -235,6 +246,355 @@
     </div>
     <div class="column q-pa-sm " :style="`height: calc(100vh - ${tinggiDetailPas + 125}px);`">
       <q-scroll-area style="height: 100%;">
+        <div v-if="store?.resep?.asalpermintaanresep?.length && !openIter" class="q-mt-sm">
+          <div class="row items-center">
+            <div class="col-shrink text-weight-bold">
+              Non Racikan
+            </div>
+            <div class="col-grow">
+              <q-separator size="2px" color="primary" inset />
+            </div>
+          </div>
+          <q-list separator bordered>
+            <q-item v-for="(rinc, j) in store?.resep?.asalpermintaanresep" :key="rinc">
+              <q-item-section style="width: 30%;">
+                <div class="row">
+                  <div class="col-1">
+                    {{ j + 1 }}
+                  </div>
+                  <div class="col-11">
+                    <div class="row text-weight-bold text-deep-orange">
+                      {{ rinc?.mobat?.nama_obat }}
+                    </div>
+                    <div v-if="rinc?.kandungan" class="row f-10">
+                      ( {{ rinc?.kandungan }} )
+                    </div>
+                    <div class="row text-italic f-10">
+                      {{ rinc?.kdobat }}
+                    </div>
+                    <div class="row text-weight-bold f-10">
+                      ( {{ rinc?.mobat?.satuan_k }} )
+                    </div>
+                    <div class="row q-col-gutter-sm text-weight-bold f-10">
+                      <div class="col-shrink" :class="rinc?.fornas === '1' ? 'text-green' : 'text-red'">
+                        {{ rinc?.fornas === '1' ? 'Fornas' : '' }}
+                      </div>
+                      <div class="col-shrink" :class="rinc?.forkit === '1' ? 'text-green' : 'text-red'">
+                        {{ rinc?.forkit === '1' ? 'Forkit' : '' }}
+                      </div>
+                      <div class="col-shrink" :class="rinc?.generik === '1' ? 'text-green' : 'text-red'">
+                        {{ rinc?.generik === '1' ? 'Generik' : '' }}
+                      </div>
+                      <div class="col-shrink" :class="rinc?.mobat?.status_kronis === '1' ? 'text-red' : 'text-green'">
+                        {{ rinc?.mobat?.status_kronis === '1' ? 'Kronis' : '' }}
+                      </div>
+                      <div class="col-shrink"
+                        :class="rinc?.mobat?.kelompok_psikotropika === '1' ? 'text-red' : 'text-green'">
+                        {{ rinc?.mobat?.kelompok_psikotropika === '1' ? 'Psikotropika' : '' }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </q-item-section>
+              <q-item-section side style="width:65%">
+                <div class="row items-center full-width">
+                  <div class="col-6">
+                    <div class="row">
+                      <div class="col-4">
+                        Aturan
+                      </div>
+                      <div class="col-8">
+                        {{ rinc?.aturan }}
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-4">
+                        Jumlah Obat
+                      </div>
+                      <div class="col-8">
+                        {{ rinc?.jumlah }}
+                      </div>
+                    </div>
+                    <div class="row items-center">
+                      <div class="col-4">
+                        Konsumsi
+                      </div>
+                      <div class="col-8">
+                        {{ formatDouble(parseFloat(rinc?.konsumsi), 1) }} hari
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-5">
+                    <div class="row">
+                      <div class="col-4">
+                        Harga
+                      </div>
+                      <div class="col-8">
+                        {{ formatDouble(parseFloat(rinc?.hargajual ?? 0), 2) }}
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-4">
+                        Subtotal
+                      </div>
+                      <div class="col-8">
+                        {{ formatDouble(parseFloat((rinc?.hargajual * rinc?.jumlah) ?? 0), 2) }}
+                      </div>
+                    </div>
+                    <div class="row items-center">
+                      <div class="col-4">
+                        Keterangan
+                      </div>
+                      <div class="col-8">
+                        {{ rinc?.keterangan }}
+                      </div>
+                    </div>
+                    <div v-if="rinc?.keterangan_bypass" class="row items-center text-weight-bold text-negative">
+                      <div class="col-4">
+                        Keterangan bypass
+                      </div>
+                      <div class="col-8">
+                        {{ rinc?.keterangan_bypass }}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-1 text-right">
+                    <div v-if="store?.resep?.flag === '1'">
+                      Resep Belum diterima
+                    </div>
+                    <div v-if="parseFloat(store?.resep?.flag) <= '3'">
+
+                      <div v-if="apps?.user?.kdruangansim === 'Gd-04010103'">
+                        Resep Sudah Selesai
+                      </div>
+                      <q-btn v-if="apps?.user?.kdruangansim !== 'Gd-04010103'" round class="f-10 q-my-sm" color="dark"
+                        text-color="white" icon="icon-mat-print" @click="openRajal(rinc)">
+                        <q-tooltip class="primary" :offset="[10, 10]">
+                          Print Etiket Rajal
+                        </q-tooltip>
+                      </q-btn>
+                      <div
+                        v-if="apps?.user?.kdruangansim === 'Gd-04010102' || apps?.user?.kdruangansim === 'Gd-02010104'">
+                        <div class="row justify-end">
+                          <q-checkbox v-model="rinc.etiket" size="xs" @update:model-value="setRincRanap(rinc, $event)">
+                            <q-tooltip>
+                              check untuk print etiket
+                            </q-tooltip>
+                          </q-checkbox>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div v-if="obatKeluar(rinc) > 0">
+                      Sudah dikeluarkan obat sebanyak {{ obatKeluar(rinc) }} ({{ rinc?.mobat?.satuan_k }})
+                    </div>
+                  </div>
+                </div>
+
+              </q-item-section>
+            </q-item>
+          </q-list>
+        </div>
+        <div v-if="store?.resep?.asalpermintaanracikan?.length && !openIter" class="q-mt-sm">
+          <div class="row items-center">
+            <div class="col-shrink text-weight-bold">
+              Racikan
+            </div>
+            <div class="col-grow">
+              <q-separator size="2px" color="primary" inset />
+            </div>
+          </div>
+          <div v-for="(item, i) in asalracikan(store?.resep?.asalpermintaanracikan)" :key="i">
+            <div class="row items-center">
+              <div class="col-shrink q-mr-xs">
+                {{ item?.namaracikan }}
+              </div>
+              <div class="col-shrink q-mr-xs">
+                <q-chip square class="f-10" color="primary" text-color="white" outline>
+                  {{ item?.tiperacikan }}
+                </q-chip>
+              </div>
+              <div class="col-shrink q-mr-xs text-purple text-weight-bold">
+                {{ item?.jumlahdibutuhkan }}
+              </div>
+              <div class="col-shrink q-mr-xs">
+                ({{ item?.satuan_racik }})
+              </div>
+              <div class="col-shrink q-mr-xs text-italic">
+                {{ item?.aturan }}
+              </div>
+
+              <div class="col-shrink q-mr-xs">
+                {{ item?.keterangan }}
+              </div>
+              <div class="col-shrink q-ml-md q-mr-xs text-weight-bold">
+                Rp. {{ formatDouble(parseFloat(item?.subtotal ?? 0), 2) }}
+              </div>
+              <div class="col-grow">
+                <q-separator size="1px" color="deep-orange" inset />
+              </div>
+              <div class="col-auto q-mr-lg">
+
+                <q-btn
+                  v-if="apps?.user?.kdruangansim === 'Gd-05010101' || apps?.user?.kdruangansim === 'Gd-04010102' || apps?.user?.kdruangansim === 'Gd-02010104'"
+                  round class="f-10 q-my-sm" color="dark" text-color="white" icon="icon-mat-print"
+                  @click="openRajal(item)">
+                  <q-tooltip class="primary" :offset="[10, 10]">
+                    Print Etiket Rajal
+                  </q-tooltip>
+                </q-btn>
+                <div v-if="apps?.user?.kdruangansim === 'Gd-04010102' || apps?.user?.kdruangansim === 'Gd-02010104'"
+                  class="row">
+                  <q-checkbox v-model="item.etiket" size="xs" @update:model-value="setRincRanap(item, $event)">
+                    <q-tooltip>
+                      check untuk print etiket
+                    </q-tooltip>
+                  </q-checkbox>
+                </div>
+              </div>
+            </div>
+            <q-list separator bordered>
+              <q-item v-for="(rinc, j) in item?.rincian" :key="rinc">
+                <q-item-section style="width: 30%;">
+                  <div class="row">
+                    <div class="col-1">
+                      {{ j + 1 }}
+                    </div>
+                    <div class="col-11">
+                      <div class="row text-weight-bold text-deep-orange">
+                        {{ rinc?.mobat?.nama_obat }}
+                      </div>
+                      <div v-if="rinc?.kandungan" class="row f-10">
+                        ( {{ rinc?.kandungan }} )
+                      </div>
+                      <div class="row text-italic f-10">
+                        {{ rinc?.kdobat }}
+                      </div>
+                      <div class="row text-weight-bold f-10">
+                        ( {{ rinc?.mobat?.satuan_k }} )
+                      </div>
+                      <div class="row q-col-gutter-sm text-weight-bold f-10">
+                        <div class="col-shrink" :class="rinc?.fornas === '1' ? 'text-green' : 'text-red'">
+                          {{ rinc?.fornas === '1' ? 'Fornas' : '' }}
+                        </div>
+                        <div class="col-shrink" :class="rinc?.forkit === '1' ? 'text-green' : 'text-red'">
+                          {{ rinc?.forkit === '1' ? 'Forkit' : '' }}
+                        </div>
+                        <div class="col-shrink" :class="rinc?.generik === '1' ? 'text-green' : 'text-red'">
+                          {{ rinc?.generik === '1' ? 'Generik' : '' }}
+                        </div>
+                        <div class="col-shrink" :class="rinc?.mobat?.status_kronis === '1' ? 'text-red' : 'text-green'">
+                          {{ rinc?.mobat?.status_kronis === '1' ? 'Kronis' : '' }}
+                        </div>
+                        <div class="col-shrink"
+                          :class="rinc?.mobat?.kelompok_psikotropika === '1' ? 'text-red' : 'text-green'">
+                          {{ rinc?.mobat?.kelompok_psikotropika === '1' ? 'Psikotropika' : '' }}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </q-item-section>
+                <q-item-section side style="width:65%">
+                  <div class="row items-center full-width">
+                    <div class="col-6">
+                      <div class="row">
+                        <div class="col-4">
+                          Aturan
+                        </div>
+                        <div class="col-8">
+                          {{ rinc?.aturan }}
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-4">
+                          Jumlah Obat
+                        </div>
+                        <div class="col-8">
+                          {{ rinc?.jumlah }}
+                        </div>
+                      </div>
+                      <div class="row items-center">
+                        <div class="col-4">
+                          Konsumsi
+                        </div>
+                        <div class="col-8">
+                          {{ formatDouble(parseFloat(rinc?.konsumsi), 1) }} hari
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-5">
+                      <div class="row">
+                        <div class="col-4">
+                          Harga
+                        </div>
+                        <div class="col-8">
+                          {{ formatDouble(parseFloat(rinc?.harga_jual ?? 0), 2) }}
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-4">
+                          Subtotal
+                        </div>
+                        <div class="col-8">
+                          {{ formatDouble(parseFloat(rinc?.sub ?? 0), 2) }}
+                        </div>
+                      </div>
+                      <div class="row items-center">
+                        <div class="col-4">
+                          Keterangan
+                        </div>
+                        <div class="col-8">
+                          {{ rinc?.keterangan }}
+                        </div>
+                      </div>
+                      <div v-if="rinc?.keterangan_bypass" class="row items-center text-weight-bold text-negative">
+                        <div class="col-4">
+                          Keterangan bypass
+                        </div>
+                        <div class="col-8">
+                          {{ rinc?.keterangan_bypass }}
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-1 text-right">
+                      <div v-if="store?.resep?.flag === '1'">
+                        Resep Belum diterima
+                      </div>
+                      <div v-if="parseFloat(store?.resep?.flag) <= '3'">
+
+                        <div v-if="apps?.user?.kdruangansim === 'Gd-04010103'">
+                          Resep Sudah Selesai
+                        </div>
+                        <q-btn v-if="apps?.user?.kdruangansim !== 'Gd-04010103'" round class="f-10 q-my-sm" color="dark"
+                          text-color="white" icon="icon-mat-print" @click="openRajal(rinc)">
+                          <q-tooltip class="primary" :offset="[10, 10]">
+                            Print Etiket Rajal
+                          </q-tooltip>
+                        </q-btn>
+                        <div
+                          v-if="apps?.user?.kdruangansim === 'Gd-04010102' || apps?.user?.kdruangansim === 'Gd-02010104'">
+                          <div class="row justify-end">
+                            <q-checkbox v-model="rinc.etiket" size="xs"
+                              @update:model-value="setRincRanap(rinc, $event)">
+                              <q-tooltip>
+                                check untuk print etiket
+                              </q-tooltip>
+                            </q-checkbox>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div v-if="obatKeluaRac(rinc) > 0">
+                        Sudah dikeluarkan obat sebanyak {{ obatKeluaRac(rinc) }} ({{ rinc?.mobat?.satuan_k }})
+                      </div>
+                    </div>
+                  </div>
+
+                </q-item-section>
+              </q-item>
+            </q-list>
+          </div>
+        </div>
         <div v-if="store?.resep?.permintaanresep?.length && !openIter" class="q-mt-sm">
           <div class="row items-center">
             <div class="col-shrink text-weight-bold">
@@ -1038,6 +1398,56 @@ function openRajal (val) {
   setTimeout(() => {
     refEtiketRajal.value.printPage()
   }, 200)
+}
+function obatKeluar (rinc) {
+  const rincian = store.resep?.rincian?.find(p => p?.kdobat === rinc?.kdobat)
+  // console.log('rincian', rincian)
+  if (rincian) return rincian?.jumlah
+  else return 0
+
+}
+function obatKeluaRac (rinc) {
+  const rincian = store.resep?.rincianracik?.find(p => p?.kdobat === rinc?.kdobat)
+  console.log('rincian', rinc, store.resep?.rincianracik, rincian)
+  if (rincian) return rincian?.jumlah
+  else return 0
+
+}
+function asalracikan (racik) {
+  const rac = []
+  if (racik?.length) {
+    racik?.forEach(r => {
+      r.sub = hitungHarga(r.jumlah, r.harga_jual)
+    })
+    const allRacik = racik?.map(r => r?.namaracikan)
+    const namaRacik = [...new Set(allRacik)]
+    if (namaRacik?.length > 0) {
+      namaRacik?.forEach(nama => {
+        const dataRacik = racik.filter(r => r?.namaracikan == nama)
+        const satudata = racik.find(r => r?.namaracikan == nama)
+
+        rac.push({
+          namaracikan: satudata?.namaracikan,
+          jumlahdibutuhkan: satudata?.jumlahdibutuhkan,
+          satuan_racik: satudata?.satuan_racik,
+          aturan: satudata?.aturan,
+          tiperacikan: satudata?.tiperacikan,
+          nilai_r: satudata?.r,
+          subtotal: dataRacik?.reduce((p, c) => p + c?.sub, 0),
+          rincian: dataRacik
+        })
+      })
+    }
+
+  }
+  console.log('rac', rac)
+
+
+  return rac
+
+}
+function hitungHarga (jumlah, hargajual, r = 0) {
+  return (parseFloat(jumlah) * parseFloat(hargajual)) + parseFloat(r || 0)
 }
 function cekAlokasiRac (val) {
   const cekAlokasi = store.resep?.alokasiRac?.find(p => p?.kdobat === val?.kdobat)

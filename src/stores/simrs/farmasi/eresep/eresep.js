@@ -667,7 +667,7 @@ export const useEResepDepoFarmasiStore = defineStore('e_resep_depo_farmasi', {
       return new Promise((resolve, reject) => {
         api.post('v1/simrs/farmasinew/depo/resep-simpan-selesai', val)
           .then(resp => {
-            console.log('resp', resp?.data)
+            // console.log('resp', resp?.data)
             const data = resp?.data
             const sisaObat = data?.sisaObat?.hasil
             this.resep.sisaObat = sisaObat
@@ -694,7 +694,7 @@ export const useEResepDepoFarmasiStore = defineStore('e_resep_depo_farmasi', {
             this.resep.alokasiRac = data?.alokasiRac?.hasil
             // this.resep.sisaObat = sisaObat
 
-            console.log('err', data)
+            // console.log('err', data)
             if (err?.response?.data?.message?.includes('https://apijkn.bpjs-kesehatan.go.id') || err?.response?.data?.message?.includes('simrs/events?auth_key=simrs_key_harry141312&auth_')) {
               // notifErrVue('Error Update Waktu BPJS')
               this.afterSelesai(val)
@@ -706,46 +706,32 @@ export const useEResepDepoFarmasiStore = defineStore('e_resep_depo_farmasi', {
       })
       // this.loadingTerima = true
     },
-    // async resepSelesai (val) {
-    //   // // console.log('resep selesai', val)
-    //   this.loadingSelesai = true
-    //   val.loading = true
-    //   // await api.post('v1/simrs/farmasinew/depo/resep-selesai', val)
+    async resepSelesaiIter (val) {
+      // // console.log('resep selesai', val)
+      this.loadingSelesai = true
+      val.loading = true
+      await api.post('v1/simrs/farmasinew/depo/resep-selesai', val)
 
-    //   await api.post('v1/simrs/farmasinew/depo/resep-simpan-selesai', val)
-    //     .then(resp => {
-    //       console.log('resp', resp?.data)
-    //       const data = resp?.data
-    //       const sisaObat = data?.sisaObat?.hasil
-    //       this.resep.sisaObat = sisaObat
-    //       this.loadingSelesai = false
-    //       delete val.loading
-    //       this.afterSelesai(resp?.data?.data)
-    //       // this.setClose()
-    //       notifSuccess(resp)
-    //     })
-    //     .catch((err) => {
-    //       const data = err?.response?.data
-    //       const pembatasan = data?.pembatasan?.obatDibatasi
-    //       const pembatasanRac = data?.pembatasanRi?.obatDibatasi
-    //       // const sisaObat = data?.sisaObat?.hasil
+        .then(resp => {
+          // console.log('resp', resp?.data)
+          this.loadingSelesai = false
+          delete val.loading
+          this.afterSelesai(resp?.data?.data)
+          this.setClose()
+          notifSuccess(resp)
+        })
+        .catch((err) => {
 
-    //       this.resep.pembatasan = pembatasan
-    //       this.resep.pembatasanRac = pembatasanRac
-    //       this.resep.alokasi = data?.alokasi?.hasil
-    //       this.resep.alokasiRac = data?.alokasiRac?.hasil
-    //       // this.resep.sisaObat = sisaObat
-
-    //       console.log('err', data)
-    //       if (err?.response?.data?.message?.includes('https://apijkn.bpjs-kesehatan.go.id') || err?.response?.data?.message?.includes('simrs/events?auth_key=simrs_key_harry141312&auth_')) {
-    //         // notifErrVue('Error Update Waktu BPJS')
-    //         this.afterSelesai(val)
-    //       }
-    //       this.loadingSelesai = false
-    //       delete val.loading
-    //     })
-    //   // this.loadingTerima = true
-    // },
+          // console.log('err', data)
+          if (err?.response?.data?.message?.includes('https://apijkn.bpjs-kesehatan.go.id') || err?.response?.data?.message?.includes('simrs/events?auth_key=simrs_key_harry141312&auth_')) {
+            // notifErrVue('Error Update Waktu BPJS')
+            this.afterSelesai(val)
+          }
+          this.loadingSelesai = false
+          delete val.loading
+        })
+      // this.loadingTerima = true
+    },
     afterSelesai (val) {
       const index = this.items.findIndex(x => x.id === val.id)
       if (this.params.flag.includes('3')) {
