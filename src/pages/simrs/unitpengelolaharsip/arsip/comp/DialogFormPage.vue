@@ -271,7 +271,6 @@ function finished() {
 }
 
 function onRejected(rejectedEntries) {
-  console.log('rejected')
   $q.notify({
     type: 'negative',
     message: `${rejectedEntries?.length} ... Maaf Besar Dokummen tidak boleh lebih dari 1024 KB / 1 MB`

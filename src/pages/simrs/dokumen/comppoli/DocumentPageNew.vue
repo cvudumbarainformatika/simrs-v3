@@ -3,7 +3,7 @@
     <div class="container full-height">
       <div class="column full-height ">
         <div class="col-grow">
-          <KumpulanSurat :key="doc" :items="documents" @go-to="(item) => goTo(item)" />
+          <KumpulanSurat :key="doc" :items="filterDokumen" @go-to="(item) => goTo(item)" />
         </div>
       </div>
     </div>
@@ -63,7 +63,7 @@
 <script setup>
 import KumpulanSurat from './KumpulanSurat.vue'
 import { findWithAttr } from 'src/modules/utils'
-import { ref, defineAsyncComponent } from 'vue'
+import { ref, defineAsyncComponent, computed, onMounted } from 'vue'
 // eslint-disable-next-line no-unused-vars
 const props = defineProps({
   pasien: {
@@ -215,6 +215,16 @@ function getLabel(val) {
   // console.log('anu ', anu)
   return anu?.length ? anu[0].label : '-'
 }
+
+const filterDokumen = computed(() => {
+  const kodepoli = props.pasien?.kodepoli
+  if (kodepoli !== 'POL022') {
+    return documents.value.filter(a => a.jenis !== 'SKD')
+  } else {
+    return documents.value
+  }
+})
+
 const comp = [
   { nama: 'Resume', page: defineAsyncComponent(() => import('../resume/ResumePage.vue')) },
   { nama: 'Billing', page: defineAsyncComponent(() => import('./BillingPage.vue')) },
@@ -249,6 +259,10 @@ function goTo(val) {
   doc.value = val.value
   open.value = true
 }
+const filteredDocuments = computed(() =>
+  // console.log('sasasa', )
+  documents.value.filter(doc => doc.jenis !== 'SKD')
+)
 </script>
 <style lang="scss" scoped>
 .container {
