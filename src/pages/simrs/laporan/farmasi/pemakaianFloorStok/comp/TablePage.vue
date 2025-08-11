@@ -89,27 +89,27 @@
             </td>
             <td>
               <div class="text-end">
-                {{ formatDouble(item?.harga, 2) }}
+                {{ formatDouble(item?.harga ?? 0, 2) }}
               </div>
             </td>
             <td>
               <div class="text-end">
-                {{ formatDouble(item?.jumlah, 2) }}
+                {{ formatDouble(item?.jumlah ?? 0, 2) }}
               </div>
             </td>
             <td>
               <div class="text-end">
-                {{ formatDouble(item?.subtotal, 2) }}
+                {{ formatDouble(item?.subtotal ?? 0, 2) }}
               </div>
             </td>
             <td>
               <div class="text-end">
-                {{ formatDouble(item?.jumlah_pemakaian, 2) }}
+                {{ formatDouble(item?.jumlah_pemakaian ?? 0, 2) }}
               </div>
             </td>
             <td>
               <div class="text-end">
-                {{ formatDouble(item?.subtotal_pemakaian, 2) }}
+                {{ formatDouble(item?.subtotal_pemakaian ?? 0, 2) }}
               </div>
             </td>
           </tr>
@@ -185,13 +185,13 @@
           <td colspan="2">
             <div class="text-right">{{formatDouble(parseFloat(store.items?.reduce((a, b) => a +
               parseFloat(b.subtotal), 0)), 2)
-            }}
+              }}
             </div>
           </td>
           <td colspan="2">
             <div class="text-right">{{formatDouble(parseFloat(store.items?.reduce((a, b) => a +
               parseFloat(b.subtotal_pemakaian), 0)), 2)
-            }}
+              }}
             </div>
           </td>
         </tr>
