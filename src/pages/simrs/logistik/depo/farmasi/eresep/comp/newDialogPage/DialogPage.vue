@@ -142,28 +142,43 @@
         </q-tooltip>
       </q-btn>
     </div>
-    <div
-      v-if="store?.resep?.flag === '2' && ((store?.resep?.tiperesep === 'iter' ? store?.resep?.noresep_asal === '' : true))"
-      class="text-right q-mr-md q-my-sm">
-      <q-btn rounded push label="Simpan dan Selesai" class="f-12 q-mr-sm" color="green" text-color="white"
-        icon="icon-mat-done_all" :disable="store.loadingSelesai && store?.resep?.loading"
-        :loading="store.loadingSelesai && store?.resep?.loading" @click="store.resepSelesai(store?.resep)">
-        <q-tooltip class="primary" :offset="[10, 10]">
-          Simpan dan Selesai
-        </q-tooltip>
-      </q-btn>
+    <div class="row justify-end">
+      <div
+        v-if="store?.resep?.flag === '2' && (apps?.user?.kdruangansim === 'Gd-04010102' || apps?.user?.kdruangansim === 'Gd-05010101')"
+        class="text-right q-mr-md q-my-sm">
+        <q-btn rounded push :label="apps?.user?.kdruangansim === 'Gd-04010102' ? 'Cek Pembatasan' : 'Cek Konsumsi'"
+          class="f-12 q-mr-sm" color="yellow" text-color="red" icon="icon-mat-done"
+          :disable="store.loadingCek && store?.resep?.loading" :loading="store.loadingCek && store?.resep?.loading"
+          @click="store.cekResep(store?.resep)">
+          <q-tooltip class="primary" :offset="[10, 10]">
+            Cek pembatasan rana, cek konsumsi obat rajal
+          </q-tooltip>
+        </q-btn>
+      </div>
+      <div
+        v-if="store?.resep?.flag === '2' && ((store?.resep?.tiperesep === 'iter' ? store?.resep?.noresep_asal === '' : true))"
+        class="text-right q-mr-md q-my-sm">
+        <q-btn rounded push label="Simpan dan Selesai" class="f-12 q-mr-sm" color="green" text-color="white"
+          icon="icon-mat-done_all" :disable="store.loadingSelesai && store?.resep?.loading"
+          :loading="store.loadingSelesai && store?.resep?.loading" @click="store.resepSelesai(store?.resep)">
+          <q-tooltip class="primary" :offset="[10, 10]">
+            Simpan dan Selesai
+          </q-tooltip>
+        </q-btn>
+      </div>
+      <div
+        v-if="store?.resep?.flag === '2' && ((store?.resep?.tiperesep === 'iter' && store?.resep?.noresep_asal !== ''))"
+        class="text-right q-mr-md q-my-sm">
+        <q-btn rounded push label="Selesai Iter" class="f-12 q-mr-sm" color="green" text-color="white"
+          icon="icon-mat-done_all" :disable="store.loadingSelesai && store?.resep?.loading"
+          :loading="store.loadingSelesai && store?.resep?.loading" @click="store.resepSelesaiIter(store?.resep)">
+          <q-tooltip class="primary" :offset="[10, 10]">
+            Selesai Iter
+          </q-tooltip>
+        </q-btn>
+      </div>
     </div>
-    <div
-      v-if="store?.resep?.flag === '2' && ((store?.resep?.tiperesep === 'iter' ? store?.resep?.noresep_asal !== '' : true))"
-      class="text-right q-mr-md q-my-sm">
-      <q-btn rounded push label="Selesai Iter" class="f-12 q-mr-sm" color="green" text-color="white"
-        icon="icon-mat-done_all" :disable="store.loadingSelesai && store?.resep?.loading"
-        :loading="store.loadingSelesai && store?.resep?.loading" @click="store.resepSelesaiIter(store?.resep)">
-        <q-tooltip class="primary" :offset="[10, 10]">
-          Selesai Iter
-        </q-tooltip>
-      </q-btn>
-    </div>
+
 
     <div v-if="parseFloat(store?.resep?.flag) >= 3 && store?.resep?.tiperesep === 'iter'"
       class="row justify-end q-mr-md q-my-sm">

@@ -2,7 +2,7 @@ import { acceptHMRUpdate, defineStore } from 'pinia'
 import { Dialog, date } from 'quasar'
 import { api } from 'src/boot/axios'
 import { dateDbFormat } from 'src/modules/formatter'
-import { notifSuccess } from 'src/modules/utils'
+import { notifErrVue, notifSuccess, notifSuccessVue } from 'src/modules/utils'
 import { useAplikasiStore } from 'src/stores/app/aplikasi'
 // import { usePrintEresepStore } from './printesep'
 
@@ -24,6 +24,7 @@ export const useEResepDepoFarmasiStore = defineStore('e_resep_depo_farmasi', {
     loadingPelayananInfoObat: false,
     loadingTolak: false,
     loadingAlasan: false,
+    loadingCek: false,
     openHistory: false,
     toAlasan: {},
     noreg: '',
@@ -731,6 +732,36 @@ export const useEResepDepoFarmasiStore = defineStore('e_resep_depo_farmasi', {
           delete val.loading
         })
       // this.loadingTerima = true
+    },
+    cekResep (val) {
+      this.loadingCek = true
+      val.loading = true
+      return new Promise((resolve, reject) => {
+        api.post('v1/simrs/farmasinew/depo/cek-resep', val)
+          .then(resp => {
+            this.loadingCek = false
+            const data = resp?.data
+            console.log('data', data)
+
+            const sisaObat = data?.sisaObat?.hasil
+            this.resep.sisaObat = sisaObat
+            this.resep.pembatasan = data?.pembatasan?.obatDibatasi
+            this.resep.pembatasanRac = data?.pembatasanRi?.obatDibatasi
+            if (sisaObat) {
+              const ada = sisaObat.filter(x => x.status == '1')
+              if (ada.length > 0) notifErrVue(data?.message + ' : Obat ada yang masih belum habis')
+              else notifSuccessVue(data?.message + ' : Semua obat sudah habis')
+            } else notifSuccess(resp)
+            delete val.loading
+            resolve(resp)
+          }).catch((err) => {
+            this.loadingCek = false
+            delete val.loading
+            reject(err)
+
+          })
+
+      })
     },
     afterSelesai (val) {
       const index = this.items.findIndex(x => x.id === val.id)
