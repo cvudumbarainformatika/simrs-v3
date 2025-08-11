@@ -19,7 +19,7 @@
           <KopSurat />
           <div class="garis-bawah-dblue q-pb-sm q-mb-sm">
             <div class="row justify-center f-16 text-weight-bold" style="text-decoration: underline;">
-              SURAT KETERANGAN SEHAT
+              SURAT KETERANGAN DOKTER
             </div>
             <div class="row justify-center f-16 text-weight-bold q-mb-md">
               Nomor: {{ props.data?.nosurat }}
@@ -37,7 +37,7 @@
                 :
               </div>
               <div class="col-9">
-                {{ props.data?.dokter?.nama }}
+                {{ props.pasien?.dokter }}
               </div>
             </div>
             <div class="row q-col-gutter-sm f-16">
@@ -304,7 +304,7 @@
                 :
               </div>
               <div class="col-6 text-left">
-                {{ props.pasien?.pemeriksaanfisik[0]?.diastole }} / {{ props.pasien?.pemeriksaanfisik[0]?.sistole }}
+                {{ props.pasien?.pemeriksaanfisik[0]?.sistole }} / {{ props.pasien?.pemeriksaanfisik[0]?.diastole }}
               </div>
             </div>
           </div>
@@ -317,11 +317,23 @@
                   Probolinggo, <span id="tanggal-sekarang">{{ tanggal }}</span><br />
                   Dokter yang memeriksa,
                 </p>
-                <br />
-                <br />
-                <br />
-                <br />
-                <p style="font-weight: bold; margin: 0;">{{ props.data?.dokter?.nama }}.</p>
+                <br>
+                <div class="col-6 text-weight-bold text-center">
+                  <div class="column flex-center">
+                    <div style="width: 100px;">
+                      <vue-qrcode :value="qrUrl" tag="svg" :options="{
+                        errorCorrectionLevel: 'Q',
+                        color: {
+                          dark: '#000000',
+                          light: '#ffffff',
+                        },
+                        margin: 0
+                      }" />
+                    </div>
+                  </div>
+                </div>
+                <br>
+                <p style="font-weight: bold; margin: 0;"><u>{{ props.pasien?.dokter }}</u></p>
                 <p style="margin: 0;">NIP. {{ props.pasien?.datasimpeg?.nip }}</p>
               </div>
             </div>
