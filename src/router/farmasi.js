@@ -45,6 +45,10 @@ const farmasi = {
       component: () => import('pages/simrs/farmasi/restriksiFornas/IndexPage.vue')
     },
     {
+      path: '/farmasi/log-activity',
+      component: () => import('pages/simrs/farmasi/activity/IndexPage.vue')
+    },
+    {
       path: '/farmasi/notfound',
       component: () => import('pages/MidlewareNotFound.vue')
     }
