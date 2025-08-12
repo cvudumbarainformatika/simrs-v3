@@ -78,7 +78,9 @@ function processDataPemakaian (data) {
   // console.log('data', data)
   const results = []
   data?.pemakaian.forEach(item => {
-    const harga = (data?.mutasi[0]?.harga ?? item?.penerimaanrinci[0]?.harga_netto_kecil) ?? 0
+    const penerimaan = item?.penerimaanrinci?.find(x => x.kdobat === item?.kd_obat && x.nopenerimaan === item?.nopenerimaan && x.no_batch === item?.nobatch)
+    const mutasi = data?.mutasi?.find(x => x.kd_obat === item?.kd_obat && x.nopenerimaan === item?.nopenerimaan && x.nobatch === item?.nobatch)
+    const harga = (mutasi?.harga ?? penerimaan?.harga_netto_kecil) ?? 0
     const subtotal = item.jumlah * harga
     results.push({
       ...createDataObject(item, data),
