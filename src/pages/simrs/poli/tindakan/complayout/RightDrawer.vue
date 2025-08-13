@@ -2428,8 +2428,7 @@ function getInteger(str) {
   return str
 }
 
-<<<<<<< HEAD
-function groupingRacikan (val, resep) {
+function groupingRacikan(val, resep) {
   const namaRacikan = [... new Set(val.map(a => a.namaracikan))]
   const rincianrac = resep?.rincianracik ?? []
   const list = []
@@ -2451,22 +2450,13 @@ function groupingRacikan (val, resep) {
   return list
 
 }
-function jumlahResep (item, list) {
+function jumlahResep(item, list) {
   const obat = list?.rincianracik.find(b => b.kdobat === item?.kdobat)
   // console.log('obat', item, obat, list)
   const jumlah = obat?.jumlah ?? item?.jumlah
   return jumlah
 
 }
-=======
-function getPlanning(val) {
-  if (val?.length) {
-    return val.map(item => item.rs3).join(', ')
-  }
-  return '-'
-}
-
->>>>>>> 41e60a3 (rev: history)
 // function arrayToString(val) {
 //   const value = val.join(', ')
 //   return value
