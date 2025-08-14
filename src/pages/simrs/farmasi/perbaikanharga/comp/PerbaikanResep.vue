@@ -25,15 +25,14 @@
       <div v-if="props.data?.data?.resep?.length === 0">
         <app-no-data />
       </div>
-      <div v-for="(item,i) in props.data?.data?.resep" :key="item">
+      <div v-for="(item, i) in props.data?.data?.resep" :key="item">
         <div v-if="item?.loading" class="row items-center justify-center bg-dark text-white">
           Mohon tunggu sebentar ...
         </div>
         <div v-else>
-          <div
-            class="row items-center"
-            :class="i%2===0? (parseFloat(item?.harga) === parseFloat(cekHarga(item)?.harga)?'bg-grey-2':'bg-negative text-white cursor-pointer'):(parseFloat(item?.harga) === parseFloat(cekHarga(item)?.harga)?'bg-grey-4':'bg-negative text-white cursor-pointer')"
-            @click="()=>{
+          <div class="row items-center"
+            :class="i % 2 === 0 ? (parseFloat(item?.harga) === parseFloat(cekHarga(item)?.harga) ? 'bg-grey-2' : 'bg-negative text-white cursor-pointer') : (parseFloat(item?.harga) === parseFloat(cekHarga(item)?.harga) ? 'bg-grey-4' : 'bg-negative text-white cursor-pointer')"
+            @click="() => {
               if (parseFloat(item?.harga) !== parseFloat(cekHarga(item)?.harga)) {
                 $q.dialog({
                   title: 'Konfirmasi',
@@ -50,11 +49,10 @@
                   },
                   persistent: true
                 }).onOk(() => {
-                  emits('ubahharga',{item,penerimaan:cekHarga(item),harga:cekHarga(item)?.harga,tipe:'resep',id:item?.id})
+                  emits('ubahharga', { item, penerimaan: cekHarga(item), harga: cekHarga(item)?.harga, tipe: 'resep', id: item?.id })
                 })
               }
-            }"
-          >
+            }">
             <div class="col-2">
               {{ item?.nopenerimaan }}
             </div>
@@ -82,12 +80,18 @@
 const props = defineProps({
   data: {
     type: Object,
-    default: () => {}
+    default: () => { }
   }
 })
 const emits = defineEmits(['ubahharga'])
 function cekHarga (item) {
-  if (item?.nopenerimaan?.includes('awal')) return props.data?.data?.awal?.find(p => p?.nopenerimaan === item?.nopenerimaan)
-  else return props.data?.data?.penerimaan?.find(p => p?.nopenerimaan === item?.nopenerimaan)
+  if (item?.nobatch == null) {
+    if (item?.nopenerimaan?.includes('awal')) return props.data?.data?.awal?.find(p => p?.nopenerimaan === item?.nopenerimaan)
+    else return props.data?.data?.penerimaan?.find(p => p?.nopenerimaan === item?.nopenerimaan)
+  }
+  else {
+    if (item?.nopenerimaan?.includes('awal')) return props.data?.data?.awal?.find(p => p?.nopenerimaan === item?.nopenerimaan && p?.nobatch === item?.nobatch)
+    else return props.data?.data?.penerimaan?.find(p => p?.nopenerimaan === item?.nopenerimaan && p?.nobatch === item?.nobatch)
+  }
 }
 </script>

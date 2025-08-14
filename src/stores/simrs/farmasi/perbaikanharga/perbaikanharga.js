@@ -96,14 +96,14 @@ export const usePerbaikanHargaFarmasiStore = defineStore('perbaikan_harga_farmas
           item.retur = retur?.reduce((a, b) => a + parseFloat(b.jumlah), 0) ?? 0
 
           stok?.forEach(st => {
-            const trm = st?.nopenerimaan?.includes('awal') ? (awal?.find(a => a.kdobat === item.kdobat && a.nopenerimaan === st.nopenerimaan)) : (penerimaan?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan))
+            const trm = st?.nopenerimaan?.includes('awal') ? (awal?.find(a => a.kdobat === item.kdobat && a.nopenerimaan === st.nopenerimaan)) : (penerimaan?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan && a.nobatch === st.nobatch))
             if (trm) {
               if (trm.harga !== st.harga) st.beda = true
               if (dateDbFormat(st?.tglpenerimaan) !== (dateDbFormat(trm?.tglpenerimaan ?? trm?.tglpenerimaan))) st.beda = true // ini belum tentu ada header
             }
           })
           mutasi?.forEach(st => {
-            const trm = st?.nopenerimaan?.includes('awal') ? (awal?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan)) : (penerimaan?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan))
+            const trm = st?.nopenerimaan?.includes('awal') ? (awal?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan)) : (penerimaan?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan && a.nobatch === st.nobatch))
             if (trm) {
               if (trm?.harga !== st.harga) {
                 st.beda = true
@@ -116,7 +116,7 @@ export const usePerbaikanHargaFarmasiStore = defineStore('perbaikan_harga_farmas
             }
           })
           mutasikeluar?.forEach(st => {
-            const trm = st?.nopenerimaan?.includes('awal') ? (awal?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan)) : (penerimaan?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan))
+            const trm = st?.nopenerimaan?.includes('awal') ? (awal?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan)) : (penerimaan?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan && a.nobatch === st.nobatch))
             if (trm) {
               if (trm?.harga !== st.harga) {
                 st.beda = true
@@ -125,7 +125,7 @@ export const usePerbaikanHargaFarmasiStore = defineStore('perbaikan_harga_farmas
             }
           })
           opname?.forEach(st => {
-            const trm = st?.nopenerimaan?.includes('awal') ? (awal?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan)) : (penerimaan?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan))
+            const trm = st?.nopenerimaan?.includes('awal') ? (awal?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan)) : (penerimaan?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan && a.nobatch === st.nobatch))
             if (trm) {
               if (trm?.harga !== st.harga) {
                 st.beda = true
@@ -134,7 +134,7 @@ export const usePerbaikanHargaFarmasiStore = defineStore('perbaikan_harga_farmas
             }
           })
           racikan?.forEach(st => {
-            const trm = st?.nopenerimaan?.includes('awal') ? (awal?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan)) : (penerimaan?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan))
+            const trm = st?.nopenerimaan?.includes('awal') ? (awal?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan)) : (st.nobatch == null ? penerimaan?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan) : penerimaan?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan && a.nobatch === st.nobatch))
             if (trm) {
               if (trm?.harga !== st.harga) {
                 st.beda = true
@@ -143,7 +143,7 @@ export const usePerbaikanHargaFarmasiStore = defineStore('perbaikan_harga_farmas
             }
           })
           resep?.forEach(st => {
-            const trm = st?.nopenerimaan?.includes('awal') ? (awal?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan)) : (penerimaan?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan))
+            const trm = st?.nopenerimaan?.includes('awal') ? (awal?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan)) : (st.nobatch == null ? penerimaan?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan) : penerimaan?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan && a.nobatch === st.nobatch))
             if (trm) {
               if (trm?.harga !== st.harga) {
                 st.beda = true
@@ -152,7 +152,7 @@ export const usePerbaikanHargaFarmasiStore = defineStore('perbaikan_harga_farmas
             }
           })
           retur?.forEach(st => {
-            const trm = st?.nopenerimaan?.includes('awal') ? (awal?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan)) : (penerimaan?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan))
+            const trm = st?.nopenerimaan?.includes('awal') ? (awal?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan)) : (st.nobatch == null ? penerimaan?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan) : penerimaan?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan && a.nobatch === st.nobatch))
             if (trm) {
               if (trm?.harga !== st.harga) {
                 st.beda = true
@@ -209,14 +209,14 @@ export const usePerbaikanHargaFarmasiStore = defineStore('perbaikan_harga_farmas
         item.retur = retur?.reduce((a, b) => a + parseFloat(b.jumlah), 0) ?? 0
 
         stok?.forEach(st => {
-          const trm = st?.nopenerimaan?.includes('awal') ? (awal?.find(a => a.kdobat === item.kdobat && a.nopenerimaan === st.nopenerimaan)) : (penerimaan?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan))
+          const trm = st?.nopenerimaan?.includes('awal') ? (awal?.find(a => a.kdobat === item.kdobat && a.nopenerimaan === st.nopenerimaan)) : (penerimaan?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan && a.nobatch === st.nobatch))
           if (trm) {
             if (trm.harga !== st.harga) st.beda = true
             if (dateDbFormat(st?.tglpenerimaan) !== (dateDbFormat(trm?.tglpenerimaan ?? trm?.tglpenerimaan))) st.beda = true // ini belum tentu ada header
           }
         })
         mutasi?.forEach(st => {
-          const trm = st?.nopenerimaan?.includes('awal') ? (awal?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan)) : (penerimaan?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan))
+          const trm = st?.nopenerimaan?.includes('awal') ? (awal?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan)) : (penerimaan?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan && a.nobatch === st.nobatch))
           if (trm) {
             if (trm?.harga !== st.harga) {
               st.beda = true
@@ -229,7 +229,7 @@ export const usePerbaikanHargaFarmasiStore = defineStore('perbaikan_harga_farmas
           }
         })
         mutasikeluar?.forEach(st => {
-          const trm = st?.nopenerimaan?.includes('awal') ? (awal?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan)) : (penerimaan?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan))
+          const trm = st?.nopenerimaan?.includes('awal') ? (awal?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan)) : (penerimaan?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan && a.nobatch === st.nobatch))
           if (trm) {
             if (trm?.harga !== st.harga) {
               st.beda = true
@@ -247,7 +247,7 @@ export const usePerbaikanHargaFarmasiStore = defineStore('perbaikan_harga_farmas
           }
         })
         racikan?.forEach(st => {
-          const trm = st?.nopenerimaan?.includes('awal') ? (awal?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan)) : (penerimaan?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan))
+          const trm = st?.nopenerimaan?.includes('awal') ? (awal?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan)) : (st.nobatch == null ? penerimaan?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan) : penerimaan?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan && a.nobatch === st.nobatch))
           if (trm) {
             if (trm?.harga !== st.harga) {
               st.beda = true
@@ -256,7 +256,7 @@ export const usePerbaikanHargaFarmasiStore = defineStore('perbaikan_harga_farmas
           }
         })
         resep?.forEach(st => {
-          const trm = st?.nopenerimaan?.includes('awal') ? (awal?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan)) : (penerimaan?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan))
+          const trm = st?.nopenerimaan?.includes('awal') ? (awal?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan)) : (st.nobatch == null ? penerimaan?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan) : penerimaan?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan && a.nobatch === st.nobatch))
           if (trm) {
             if (trm?.harga !== st.harga) {
               st.beda = true
@@ -265,7 +265,7 @@ export const usePerbaikanHargaFarmasiStore = defineStore('perbaikan_harga_farmas
           }
         })
         retur?.forEach(st => {
-          const trm = st?.nopenerimaan?.includes('awal') ? (awal?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan)) : (penerimaan?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan))
+          const trm = st?.nopenerimaan?.includes('awal') ? (awal?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan)) : (st.nobatch == null ? penerimaan?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan) : penerimaan?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan && a.nobatch === st.nobatch))
           if (trm) {
             if (trm?.harga !== st.harga) {
               st.beda = true
@@ -313,13 +313,13 @@ export const usePerbaikanHargaFarmasiStore = defineStore('perbaikan_harga_farmas
         notifSuccess(resp)
         const perPage = this.params.per_page
         const page = this.params.page
-        this.params.page = 1
-        this.params.per_page = 1
-        this.params.q = item?.item?.kdobat
+        // this.params.page = 1
+        // this.params.per_page = 1
+        // this.params.q = item?.item?.kdobat
         this.getData(param).then(() => {
-          this.params.per_page = perPage
-          this.params.page = page
-          this.params.q = q
+          // this.params.per_page = perPage
+          // this.params.page = page
+          // this.params.q = q
         })
       }
       catch (err) {
@@ -342,13 +342,13 @@ export const usePerbaikanHargaFarmasiStore = defineStore('perbaikan_harga_farmas
         notifSuccess(resp)
         const perPage = this.params.per_page
         const page = this.params.page
-        this.params.page = 1
-        this.params.per_page = 1
-        this.params.q = item?.kd_obat
+        // this.params.page = 1
+        // this.params.per_page = 1
+        // this.params.q = item?.kd_obat
         this.getData(param).then(() => {
-          this.params.per_page = perPage
-          this.params.page = page
-          this.params.q = q
+          // this.params.per_page = perPage
+          // this.params.page = page
+          // this.params.q = q
         })
       }
       catch (err) {

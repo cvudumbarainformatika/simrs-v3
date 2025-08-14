@@ -451,6 +451,7 @@
             <q-btn no-caps dense color="primary" @click="() => {
               store.isOpen = true
               store.data = row
+              console.log('row', row)
             }">
               Buka
             </q-btn>
