@@ -41,8 +41,11 @@
               {{ item?.sistembayar }}
             </div>
             <div class="q-mt-xs">
-              <q-btn outline rounded size="xs" padding="xs" label="Detail Permintaan" color="teal"
-                @click="detailPermintaan(item)"></q-btn>
+              <q-btn outline rounded size="xs" padding="xs" color="dark" @click="detailPermintaan(item)">
+                <div class="ellipsis q-px-sm" style="max-width: 120px;"> {{
+                  item?.rinciansementara[0]?.relmasterpemeriksaan?.rs2 || '-' }} ({{
+                    item?.rinciansementara[0]?.relmasterpemeriksaan?.rs3 || '-' }})</div>
+              </q-btn>
             </div>
           </div>
           <div class="col full-width flex wrap ellipsis">
@@ -53,9 +56,12 @@
               <span class="text-primary">{{ item?.ruangan }}</span>
             </div>
 
-            <div v-if="item?.status === ''" class="q-mt-xs">
-              <q-badge outline align="middle" color="orange" class="q-mr-xs">
-                Hari
+            <div class="q-mt-xs">
+              <q-badge v-if="item?.cito" outline align="middle" color="orange" class="q-mr-xs"
+                style="max-width: 250px;">
+                <div class="ellipsis">
+                  Cito
+                </div>
               </q-badge>
             </div>
           </div>

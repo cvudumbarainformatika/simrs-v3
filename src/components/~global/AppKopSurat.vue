@@ -2,11 +2,8 @@
   <div>
     <div class="row garis-bawah">
       <div class="col-2">
-        <q-img
-          src="~assets/images/logo-kota-grey.png"
-          spinner-color="white"
-          style="height: 3.56cm; max-width: 2.86cm"
-        />
+        <q-img src="~assets/images/logo-kota-grey.png" spinner-color="white"
+          style="height: 3.56cm; max-width: 2.86cm" />
       </div>
       <div class="col-8">
         <div class="row justify-center f-18">
@@ -25,45 +22,47 @@
           E-mail : rsudprob@probolinggokota.go.id
         </div>
         <div class="row justify-center f-14 text-weight-bold">
-          PROBOLINGGO  67219
+          PROBOLINGGO 67219
         </div>
       </div>
       <div class="col-2">
-        <q-img
-          src="~assets/logos/logo-rsud.png"
-          spinner-color="white"
-          style="height: 2.9cm; max-width: 2.9cm"
-        />
+        <q-img src="~assets/logos/logo-rsud.png" spinner-color="white" style="height: 2.9cm; max-width: 2.9cm" />
       </div>
     </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
-.print{
+.print {
   position: absolute;
-    right: 30px;
-    top: 5px;
-    z-index: 10;
+  right: 30px;
+  top: 5px;
+  z-index: 10;
 }
-.garis-bawah{
+
+.garis-bawah {
   border-bottom: 6px solid black;
   border-bottom-style: double;
 }
-.border-box{
+
+.border-box {
   border: 1px solid black;
 }
-.border-tb{
+
+.border-tb {
   border-top: 1px solid black;
   border-bottom: 1px solid black;
 }
-.border-left{
+
+.border-left {
   border-left: 1px solid black;
 }
-.border-right{
+
+.border-right {
   border-right: 1px solid black;
 }
-.border-bottom{
+
+.border-bottom {
   border-bottom: 1px solid black;
 }
 </style>

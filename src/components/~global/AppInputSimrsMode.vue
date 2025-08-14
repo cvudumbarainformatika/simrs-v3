@@ -35,7 +35,7 @@
             </q-list>
           </q-btn-dropdown>
           <!-- Hidden file input -->
-          <input type="file" ref="fileInput" accept=".docx" style="display: none" @change="handleFileUpload">
+          <input type="file" ref="fileInput" accept=".doc,.docx" style="display: none" @change="handleFileUpload">
         </div>
 
         <q-separator vertical />

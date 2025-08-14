@@ -214,12 +214,19 @@
                           @click="storePermintaan.simpan(item, pasien)" />
                       </div>
                     </div>
+                    <div>
+                      <q-btn v-if="item?.hasil?.length > 1" icon="icon-mat-print" color="dark"
+                        @click="isPrint = true" />
+                    </div>
                   </div>
                 </q-card-section>
               </q-card>
             </q-expansion-item>
 
             <q-separator />
+
+
+            <PrintModal v-model="isPrint" :item="item" :pasien="pasien" />
           </template>
         </q-list>
 
@@ -251,6 +258,10 @@
 
     </div>
 
+
+
+
+
   </q-card>
 
 </template>
@@ -263,6 +274,8 @@ import { usePermintaanRadiologiStore } from 'src/stores/simrs/radiologi/perminta
 import { storeToRefs } from 'pinia';
 import { formatRp } from 'src/modules/formatter'
 import { notifErrVue } from 'src/modules/utils'
+
+import PrintModal from './PrintModal.vue'
 
 const props = defineProps({
   pasien: {
@@ -288,8 +301,9 @@ const storePermintaan = usePermintaanRadiologiStore()
 const { permintaan, listPermintaans, ukurans, } = storeToRefs(storePermintaan)
 
 // console.log('permintaan', permintaan, listPermintaans, props.pasien);
-
+const refDialogPrint = ref(null)
 const isActive = ref(null)
+const isPrint = ref(false)
 
 
 function formatDate(dateStr) {

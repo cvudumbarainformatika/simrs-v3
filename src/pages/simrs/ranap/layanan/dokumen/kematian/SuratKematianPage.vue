@@ -252,13 +252,21 @@ const diagnosa = ref(null)
 const diag = useDiagnosaStore()
 
 const qrDokter = computed(() => {
-  const petugas = 'Nama : ' + dpjp?.value?.nama ?? '' + 'NIP : ' + dpjp?.value?.nip ?? ''
-  const enc = btoa(`${petugas}`)
-  return `${enc}`
+  // const petugas = 'Nama : ' + dpjp?.value?.nama ?? '' + 'NIP : ' + dpjp?.value?.nip ?? ''
+  // const enc = btoa(`${petugas}`)
+  // return `${enc}`
+
+  const noreg = props?.pasien?.noreg// noreg
+  const dok = 'SURAT-KEMATIAN.png'
+  const asal = 'RANAP'
+  const petugas = props?.pasien?.kddrygmenyatakan ?? null
+  const enc = btoa(`${noreg}|${dok}|${asal}|${petugas}`)
+  return `https://rsud.probolinggokota.go.id/dokumen-simrs/legalitas/${enc}`
+
 })
 
 onBeforeMount(() => {
-  console.log('pasien', props?.pasien);
+  // console.log('pasien', props?.pasien);
   Promise.all([getSurat(), getDpjpData()])
   getDiag()
 })
