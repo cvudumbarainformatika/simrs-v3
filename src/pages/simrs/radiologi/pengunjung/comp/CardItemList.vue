@@ -31,6 +31,10 @@
             <div class="ellipsis text-grey-8 q-pt-xs">
               Alamat : <i>{{ item?.alamat }}</i>
             </div>
+            <div class="ellipsis q-pt-xs">
+              <span class="text-grey-8"> <b>USIA : </b><i>{{ item?.usia }}</i></span>
+              <span class="text-grey-8 q-ml-md"> <b>Kelamin : </b><i>{{ item?.kelamin }}</i></span>
+            </div>
           </div>
         </div>
       </div>

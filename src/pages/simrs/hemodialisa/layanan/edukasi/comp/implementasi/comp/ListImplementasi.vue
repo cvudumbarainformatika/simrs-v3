@@ -17,7 +17,7 @@
               <q-item-section caption>
                 <div class="">
                   <span class="text-weight-bold">PPA</span> <span class="text-weight-medium">- {{ item?.petugas?.nama
-                  }}</span>
+                    }}</span>
                 </div>
               </q-item-section>
 
@@ -281,7 +281,7 @@ const warnaAvatar = (kat) => {
     r = 'teal'
   }
   else if (kat === '4') {
-    r = 'cokelat'
+    r = 'teal'
   }
   else if (kat === '5') {
     r = 'orange'
