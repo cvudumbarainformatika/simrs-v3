@@ -98,7 +98,7 @@ export const useImplementasiEdukasiRanapStore = defineStore('implementasi-edukas
 
       try {
         const resp = await api.get('v1/simrs/pelayanan/simpanimplementasi-edukasi/list', params)
-        console.log('respon list implementasi', resp);
+        // console.log('respon list implementasi', resp);
 
         if (resp?.status === 200) {
           this.items = resp?.data
