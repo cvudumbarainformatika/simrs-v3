@@ -42,6 +42,7 @@
                 <div>Tgl Lahir</div>
                 <div>USIA</div>
                 <div>No. Telp</div>
+                <div>Alamat</div>
               </div>
               <div class="col full-width">
                 <div>{{ data?.rs2 || '-' }}</div>
@@ -51,6 +52,7 @@
                 <div>{{ pasien?.tgllahir }}</div>
                 <div>{{ pasien?.usia }}</div>
                 <div>{{ pasien?.nohp }}</div>
+                <div>{{ pasien?.alamat }}</div>
               </div>
             </div>
           </div>
@@ -93,7 +95,7 @@
       </div>
       <q-card-section class="q-pa-none bg-primary text-white">
         <div class="q-pa-md row justify-between items-center">
-          <div><q-btn label="Tutup" color="dark" text-color="white" @click="$emit('close')" /></div>
+          <div><q-btn label="Tutup" color="dark" text-color="white" v-close-popup /></div>
           <div>
             <q-btn v-print="printObj" label="Print" color="yellow-3" text-color="dark" />
           </div>

@@ -53,8 +53,12 @@
             </div>
           </div>
           <div class="col full-width flex wrap ellipsis">
-            <div class="f-10">
+
+            <div class="full-width ellipsis f-10 ">
               {{ item.nota_permintaan ? 'Permintaan dari' : 'Pendaftaran' }}
+            </div>
+            <div class="full-width ellipsis f-12 q-mb-xs text-teal">
+              {{ item.dokter || '' }}
             </div>
             <div class="full-width ellipsis">
               <span class="text-primary">{{ item?.ruangan }}</span>

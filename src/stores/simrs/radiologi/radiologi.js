@@ -23,7 +23,7 @@ export const useListPasienRadiologiStore = defineStore('list-pasien-radiologi', 
     },
     periods: ['Hari ini', 'Minggu ini', 'Bulan ini', 'Custom'],
     sorting: ['terbaru', 'terlama'],
-    statuses: ['Semua', 'Terlayani', 'Belum terlayani'],
+    statuses: ['Semua', 'Terlayani', 'Proses', 'Belum terlayani'],
     isViewList: false,
     pageTindakan: false,
     loadingTerima: false,
@@ -196,7 +196,7 @@ export const useListPasienRadiologiStore = defineStore('list-pasien-radiologi', 
           console.log('err selesaikan pasien radiologi', err);
           // notifErrVue('Pasien gagal diterima')
         }).finally(() => {
-          this.loadingBatal = false
+          this.loadingSelesaikan = false
         })
     },
 

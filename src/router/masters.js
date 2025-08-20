@@ -170,6 +170,11 @@ const masters = {
           path: '/master/poliklinik/diagnosagizi',
           name: 'master.poliklinik.diagnosagizi',
           component: () => import('pages/simrs/master/poliklinik/diagnosagizi/IndexPage.vue')
+        },
+        {
+          path: '/master/poliklinik/rkk',
+          name: 'master.poliklinik.rkk',
+          component: () => import('pages/simrs/master/poliklinik/rkk/IndexPage.vue')
         }
       ]
     },

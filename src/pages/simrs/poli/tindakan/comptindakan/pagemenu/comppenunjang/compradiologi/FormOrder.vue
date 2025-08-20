@@ -36,8 +36,9 @@
               standout="bg-yellow-3" icon="icon-mat-search" />
           </div>
           <div class="col-12">
-            <q-input v-model="store.form.catatanpermintaan" label="Catatan / Keterangan" autogrow outlined
-              standout="bg-yellow-3" icon="icon-mat-search" />
+            <q-input v-model="store.form.catatanpermintaan" label="Catatan / Keterangan Klinis" autogrow outlined
+              :rules="[val => !!val || 'Harap diisi keterangan klinis terlebih dahulu']" standout="bg-yellow-3"
+              lazy-rules="ondemand" icon="icon-mat-search" />
           </div>
 
           <div v-if="unit === 'ranap'" class="col-12">

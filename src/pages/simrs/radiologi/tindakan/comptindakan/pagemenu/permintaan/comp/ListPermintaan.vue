@@ -215,8 +215,8 @@
                       </div>
                     </div>
                     <div>
-                      <q-btn v-if="item?.hasil?.length > 1" icon="icon-mat-print" color="dark"
-                        @click="isPrint = true" />
+                      <!-- <q-btn v-if="item?.hasil?.length > 1" icon="icon-mat-print" color="dark"
+                        @click="isPrint = true" /> -->
                     </div>
                   </div>
                 </q-card-section>
@@ -230,22 +230,16 @@
           </template>
         </q-list>
 
-        <!-- <div class="q-pa-md">
-          <div class="q-mb-sm">kesimpulan :</div>
-          <app-input-simrs-mode type="wysiwyg" v-model="permintaan.kesimpulan" :disable="false"
-            class="col-12 q-mb-md" />
+        <div class="q-pa-md text-right">
+          <q-btn v-if="pasien.status === '2'" :loading="store.loadingSelesaikan" :disabled="store.loadingSelesaikan"
+            color="primary" label="Selesaikan Layanan" @click="selesaikanLayanan"></q-btn>
 
-          <q-separator class="q-my-lg"></q-separator>
 
-          <div class="row q-col-gutter-sm justify-end">
-            <div class="col-auto">
-              <q-btn label="Batal" color="bg-dark" flat @click="store.batal(item)" />
-            </div>
-            <div class="col-auto">
-              <q-btn label="Simpan" color="primary" class="q-mr-sm" @click="store.simpan(item)" />
-            </div>
+          <div v-else-if="pasien.status === '1'">
+            <q-btn v-if="listPermintaans[0]?.hasil?.length > 1" icon="icon-mat-print" color="dark"
+              @click="isPrint = true" />
           </div>
-        </div> -->
+        </div>
 
         <div class="q-mb-xl"></div>
       </div>
