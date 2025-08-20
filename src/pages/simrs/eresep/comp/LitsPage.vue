@@ -25,7 +25,7 @@
           </div>
         </div>
         <div class="row items-center  q-mt-md q-mx-md justify-between" />
-        <div class="row items-center q-mb-md q-ml-md">
+        <div class="row items-center q-ml-md">
           <div>
             <q-chip square class="f-10" :color="color(store?.pasien?.newapotekrajal[store.indexRacikan]?.flag)"
               text-color="white">
@@ -45,6 +45,19 @@
           <div v-if="store?.pasien?.newapotekrajal[store.indexRacikan]?.tiperesep == 'iter'">
             Iter s/d : {{ dateFullFormat(store?.pasien?.newapotekrajal[store.indexRacikan]?.iter_expired) }}
           </div>
+        </div>
+        <div class="row items-center justify-end q-mb-md q-ml-md">
+          <div
+            v-if="store?.pasien?.newapotekrajal[store.indexRacikan]?.permintaanresep?.length && store?.pasien?.newapotekrajal[store.indexRacikan]?.flag == '3'">
+            <app-btn
+              :label="store?.pasien?.newapotekrajal[store.indexRacikan]?.flag_permintaan_retur == '1' ? 'Permintaan Retur Sudah Dibuat' : 'Buat Permintaan Retur'"
+              dense
+              :color="store?.pasien?.newapotekrajal[store.indexRacikan]?.flag_permintaan_retur == '1' ? 'green' : 'dark'"
+              @click="store.kirimPermintaanRetur(store?.pasien?.newapotekrajal[store.indexRacikan])"
+              :loading="store?.pasien?.newapotekrajal[store.indexRacikan]?.loading"
+              :disable="store?.pasien?.newapotekrajal[store.indexRacikan]?.loading || store?.pasien?.newapotekrajal[store.indexRacikan]?.flag_permintaan_retur == '1'" />
+          </div>
+
         </div>
 
         <!-- {{ store?.pasien?.newapotekrajal[store.indexRacikan]?.permintaanresep?.length }} -->

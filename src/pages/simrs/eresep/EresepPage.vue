@@ -8,7 +8,7 @@
             @open-cari-template="dialogCari = !dialogCari" />
         </div>
         <div class="col-4 full-height q-pa-xs">
-          <listpage />
+          <listpage :depo="props?.depo" />
         </div>
       </div>
 

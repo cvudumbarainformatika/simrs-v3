@@ -98,14 +98,27 @@
       </div>
     </div>
     <!-- v-if="store?.resep?.flag==='3'" -->
-    <div class="text-right q-mr-md q-my-sm">
-      <q-btn rounded push label="Proses retur" class="f-12 q-mr-sm" color="green" text-color="white"
-        icon-right="icon-mat-send" :disable="store.loadingKirim && store?.resep?.loading"
-        :loading="store.loadingKirim && store?.resep?.loading" @click="kirim()">
-        <q-tooltip class="primary" :offset="[10, 10]">
-          Proses retur
-        </q-tooltip>
-      </q-btn>
+    <div class="row justify-end">
+      <div v-if="store?.resep?.depo == 'Gd-04010102' && store?.resep?.flag_permintaan_retur == '1'"
+        class="text-right q-mr-md q-my-sm">
+        <q-btn rounded push label="selesai permintaan retur ranap" class="f-12 q-mr-sm" color="yellow" text-color="red"
+          icon-right="icon-mat-send" :disable="store.loadingKirim && store?.resep?.loading"
+          :loading="store.loadingKirim && store?.resep?.loading" @click="store.selesaiPermintaan()">
+          <q-tooltip class="primary" :offset="[10, 10]">
+            tidak ada obat untuk di retur
+          </q-tooltip>
+        </q-btn>
+      </div>
+      <div class="text-right q-mr-md q-my-sm">
+        <q-btn rounded push label="Proses retur" class="f-12 q-mr-sm" color="green" text-color="white"
+          icon-right="icon-mat-send" :disable="store.loadingKirim && store?.resep?.loading"
+          :loading="store.loadingKirim && store?.resep?.loading" @click="kirim()">
+          <q-tooltip class="primary" :offset="[10, 10]">
+            Proses retur
+          </q-tooltip>
+        </q-btn>
+      </div>
+
     </div>
 
     <div class="column q-pa-sm " :style="`height: calc(100vh - ${tinggiDetailPas + 32}px);`">

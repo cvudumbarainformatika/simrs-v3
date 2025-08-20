@@ -1291,6 +1291,22 @@ export const usePermintaanEResepStore = defineStore('permintaan_e_resep', {
           this.simpanCopyResepKonfirmasi(permintaanResepDuplicate, tipe, indexlist)
         })
     },
+    kirimPermintaanRetur (val) {
+      val.loading = true
+      return new Promise((resolve, reject) => {
+        api.post('v1/simrs/farmasinew/depo/kirim-permintaan-retur', val)
+          .then(resp => {
+            val.flag_permintaan_retur = '1'
+            notifSuccess(resp)
+            delete val.loading
+            resolve(resp)
+          })
+          .catch(err => {
+            delete val.loading
+            reject(err)
+          })
+      })
+    },
 
   }
 })

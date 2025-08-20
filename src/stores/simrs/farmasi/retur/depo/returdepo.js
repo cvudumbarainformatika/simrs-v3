@@ -167,6 +167,7 @@ export const useReturDepoStore = defineStore('retur_dari_depo', {
             this.resep.loading = false
             console.log('resp', resp)
             this.resep.flag = '4'
+            this.resep.flag_permintaan_retur = null
             const item = resp?.data?.resep
             const index = this.items.findIndex(x => x.noresep === this.resep.noresep)
             if (index >= 0 && item) this.items[index] = item
@@ -182,6 +183,26 @@ export const useReturDepoStore = defineStore('retur_dari_depo', {
           .catch(() => {
             this.resep.loading = false
             this.loadingKirim = false
+          })
+      })
+    },
+    selesaiPermintaan () {
+      console.log('selesai', this.resep)
+      this.resep.loading = true
+      return new Promise((resolve, reject) => {
+        api.post('v1/simrs/farmasinew/depo/selesai-permintaan-retur', this.resep)
+          .then(resp => {
+            this.resep.flag_permintaan_retur = null
+            const index = this.items.findIndex(x => x.noresep === this.resep.noresep)
+            if (index >= 0) this.items.splice(index, 1)
+            this.setClose()
+            notifSuccess(resp)
+            delete this.resep.loading
+            resolve(resp)
+          })
+          .catch(err => {
+            delete this.resep.loading
+            reject(err)
           })
       })
     }
