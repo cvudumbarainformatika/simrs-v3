@@ -48,7 +48,7 @@
         </div>
         <div class="row items-center justify-end q-mb-md q-ml-md">
           <div
-            v-if="store?.pasien?.newapotekrajal[store.indexRacikan]?.permintaanresep?.length && store?.pasien?.newapotekrajal[store.indexRacikan]?.flag == '3'">
+            v-if="store?.pasien?.newapotekrajal[store.indexRacikan]?.permintaanresep?.length && store?.pasien?.newapotekrajal[store.indexRacikan]?.flag == '3' && (depo == 'rnp' || depo == 'igd')">
             <app-btn
               :label="store?.pasien?.newapotekrajal[store.indexRacikan]?.flag_permintaan_retur == '1' ? 'Permintaan Retur Sudah Dibuat' : 'Buat Permintaan Retur'"
               dense
@@ -170,6 +170,10 @@ import { usePermintaanEResepStore } from 'src/stores/simrs/farmasi/permintaanres
 
 import { onUnmounted } from 'vue'
 const store = usePermintaanEResepStore()
+defineProps({
+  depo: { type: String, default: '' },
+})
+
 function status (val) {
   let balik = ' Belum ada status'
   switch (val) {
