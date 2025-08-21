@@ -47,7 +47,7 @@ export const useKonsulRanapStore = defineStore('konsul-ranap-store', {
       // console.log('form', this.form)
 
       const storeRanap = usePengunjungRanapStore()
-      storeRanap.injectDataPasien(pasien?.noreg, this.form, 'konsultasi')
+      // storeRanap.injectDataPasien(pasien?.noreg, this.form, 'konsultasi')
 
       try {
         const resp = await api.post('v1/simrs/ranap/layanan/konsultasi/simpandata', this.form)

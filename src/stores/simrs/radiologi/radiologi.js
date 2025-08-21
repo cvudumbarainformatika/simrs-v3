@@ -191,6 +191,8 @@ export const useListPasienRadiologiStore = defineStore('list-pasien-radiologi', 
             if (finder) {
               finder['status'] = '1'
             }
+
+
           }
         }).catch(err => {
           console.log('err selesaikan pasien radiologi', err);

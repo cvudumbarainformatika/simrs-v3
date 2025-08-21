@@ -27,7 +27,7 @@ export default function useLayanan (pasien, mpp) {
 
     {
       name: 'Pagt',
-      label: 'PAGT',
+      label: 'Asessmen Gizi',
       icon: 'icon-mat-post_add',
       nakes: ['5'],
       comp: shallowRef(defineAsyncComponent(() => import('./pagt/IndexPage.vue')))

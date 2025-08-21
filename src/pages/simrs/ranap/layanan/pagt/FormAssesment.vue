@@ -2,7 +2,7 @@
   <div class="row q-col-gutter-md">
     <div class="col-8">
       <q-input ref="refInputKu" v-model="store.form.status_gizi" outlined autogrow stack-label standout="bg-yellow-3"
-        label="Status Gizi" :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" lazy-rules="ondemand"
+        label="ANTROPOMETRI" :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" lazy-rules="ondemand"
         hide-bottom-space />
     </div>
 
@@ -128,7 +128,7 @@
 <script setup>
 import { useAplikasiStore } from 'src/stores/app/aplikasi'
 import { usePagtStore } from 'src/stores/simrs/ranap/pagt'
-import { computed, defineAsyncComponent, onMounted, ref } from 'vue'
+import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue'
 
 // const TableRiwayatKehamilan = defineAsyncComponent(() => import('./comp/TableRiwayatKehamilan.vue'))
 // const DialogFormRiwayat = defineAsyncComponent(() => import('./comp/DialogFormRiwayat.vue'))
@@ -171,6 +171,26 @@ onMounted(() => {
     // store.initReset(null)
   ])
 })
+
+watch(() => store.items, (val, old) => {
+  console.log('watch new', val);
+  console.log('watch old', old);
+
+  if (val.length) {
+
+    const item = val[0]
+
+    if (item) {
+      store.form = {
+        ...item
+      }
+    }
+
+
+  }
+
+
+}, { deep: true })
 
 
 </script>
