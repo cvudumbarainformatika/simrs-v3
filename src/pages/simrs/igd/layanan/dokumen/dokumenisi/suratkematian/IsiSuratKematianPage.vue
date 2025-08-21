@@ -151,6 +151,7 @@
   </div>
 </template>
 <script setup>
+import { computed } from 'vue'
 import { humanDate } from 'src/modules/formatter';
 import { usePlannStore } from 'src/stores/simrs/igd/plann';
 
@@ -171,6 +172,22 @@ const props = defineProps({
   },
 })
 
+
+console.log('surat kematian', props?.pasien);
+
+const qrDokter = computed(() => {
+  // const petugas = 'Nama : ' + dpjp?.value?.nama ?? '' + 'NIP : ' + dpjp?.value?.nip ?? ''
+  // const enc = btoa(`${petugas}`)
+  // return `${enc}`
+
+  const noreg = props?.pasien?.noreg// noreg
+  const dok = 'SURAT-KEMATIAN.png'
+  const asal = 'RAWAT JALAN'
+  const petugas = props?.pasien?.kodedokter ?? null
+  const enc = btoa(`${noreg}|${dok}|${asal}|${petugas}`)
+  return `https://rsud.probolinggokota.go.id/dokumen-simrs/legalitas/${enc}`
+
+})
 
 
 
