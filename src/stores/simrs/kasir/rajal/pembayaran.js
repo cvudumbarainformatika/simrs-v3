@@ -8,6 +8,7 @@ export const usePembayaranKasirRajalStore = defineStore('pembayaran-kasir-rajal-
     loading: false,
     loadingQris: false,
     items: [],
+    itemsobat: [],
     kwitansi: {},
     form: {
       noreg: '',
@@ -158,6 +159,70 @@ export const usePembayaranKasirRajalStore = defineStore('pembayaran-kasir-rajal-
             this.loading = false
           })
       })
+    },
+    async carikarcis(noreg) {
+      this.loading = true
+      this.items = []
+      const params = { params: { noreg: noreg } }
+      const resp = await api.get('/v1/simrs/kasir/rajal/cari-karcis', params)
+        .then(resp => {
+          this.items = resp.data?.data
+          this.loading = false
+        })
+        .catch(() => { this.loading = false })
+    },
+    async cariobat(noreg) {
+      this.loading = true
+      this.itemsobat = []
+      const params = { params: { noreg: noreg } }
+      const resp = await api.get('/v1/simrs/kasir/rajal/cari-obat', params)
+        .then(resp => {
+          const respdata = resp.data?.data
+          // console.log('respdata', respdata)
+          const racikan_r = resp.data?.racikan_R
+          const jumlahracikan_r = (racikan_r ?? []).reduce(
+            (total, item) => total + (item.subtotal ?? 0),
+            0
+          )
+          const hasilglobal = []
+          respdata.forEach(x => {
+            // console.log('x', x)
+            const rincian = (x?.rincian ?? []).reduce((total, item) => {
+              const hargajual = item?.harga_jual ?? 0
+              const jumlah = item?.jumlah ?? 0
+              const r = item?.nilai_r ?? 0
+              return total + (hargajual * jumlah + r)
+            }, 0)
+            // console.log('rincian', rincian)
+            const rincianracik = (x?.rincianracik ?? []).reduce((total, item) => {
+              const hargajual = item?.harga_jual ?? 0
+              const jumlah = item?.jumlah ?? 0
+              return total + (hargajual * jumlah)
+            }, 0)
+            const retur = x?.retur?.rinci?.reduce((total, item) => {
+              return total + ((item.harga_jual ?? 0) * (item.jumlah_retur ?? 0))
+            }, 0) ?? 0
+            console.log('retur', retur)
+            const hasil = {
+              nota: x?.noresep,
+              tanggal: x?.tgl,
+              rincian: rincian,
+              rincianracik: rincianracik,
+              retur: retur,
+              subtotal: rincian + rincianracik - retur
+            }
+            // console.log('hasil', hasil)
+            hasilglobal.push(hasil)
+          })
+          this.itemsobat = hasilglobal
+          console.log('hasilglobal', this.itemsobat)
+          // const totalSemua = hasilglobal.reduce((acc, h) => {
+          //   return acc + h.rincian + h.rincianracik
+          // }, 0) + jumlahracikan_r
+          // console.log('hasilglobal', totalSemua)
+          this.loading = false
+        })
+        .catch(() => { this.loading = false })
     }
   }
 })

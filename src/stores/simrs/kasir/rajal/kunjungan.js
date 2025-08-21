@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { api } from 'src/boot/axios'
 import { dateDbFormat } from 'src/modules/formatter'
+import { usePembayaranKasirRajalStore } from './pembayaran'
 
 export const useKasirRajalListKunjunganStore = defineStore('kasir_rajal_list_kunjungan_umum', {
   state: () => ({
@@ -109,6 +110,7 @@ export const useKasirRajalListKunjunganStore = defineStore('kasir_rajal_list_kun
         })
         this.kwitansi = hasilglobal
         console.log('kwitansi', this.kwitansi)
+
       }
       this.loading = false
     },

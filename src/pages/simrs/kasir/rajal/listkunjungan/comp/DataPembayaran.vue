@@ -1,5 +1,5 @@
 <template>
-  <div class="full-height full-width">
+  <div class="full-height full-width bg-grey-1">
     <q-scroll-area ref="scrollRef" class="full-height" @scroll="onScroll">
       <q-list separator>
         <transition-group name="list">
