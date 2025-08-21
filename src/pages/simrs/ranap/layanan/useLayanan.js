@@ -3,7 +3,7 @@ import { usePengunjungRanapStore } from 'src/stores/simrs/ranap/pengunjung'
 import { useAplikasiStore } from 'src/stores/app/aplikasi'
 import { useRoute } from 'vue-router'
 
-export default function useLayanan(pasien, mpp) {
+export default function useLayanan (pasien, mpp) {
   const store = usePengunjungRanapStore()
   const auth = useAplikasiStore()
   const route = useRoute()
@@ -93,6 +93,13 @@ export default function useLayanan(pasien, mpp) {
       label: 'EResep',
       icon: 'icon-mat-receipt',
       nakes: ['1'],
+      comp: shallowRef(defineAsyncComponent(() => import('../../eresep/EresepPage.vue')))
+    },
+    { // ini kalo akun sa ikut keluar
+      name: 'e-resep-page',
+      label: 'List Resep',
+      icon: 'icon-mat-receipt',
+      nakes: ['2'],
       comp: shallowRef(defineAsyncComponent(() => import('../../eresep/EresepPage.vue')))
     },
     {
@@ -188,7 +195,7 @@ export default function useLayanan(pasien, mpp) {
     menu.value = filterredMenus.value[0]
   })
 
-  function menuDiganti(val) {
+  function menuDiganti (val) {
     menu.value = val
   }
 
