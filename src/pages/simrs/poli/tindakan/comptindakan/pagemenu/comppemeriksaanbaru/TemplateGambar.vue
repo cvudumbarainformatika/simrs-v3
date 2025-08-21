@@ -1,65 +1,34 @@
 <template>
   <div class="full-height text-white full-width bg-dark">
-    <div
-      class="column full-height full-width"
-      style="overflow: hidden;"
-    >
+    <div class="column full-height full-width" style="overflow: hidden;">
       <div class="col-auto">
         <q-bar>
           <div class="f-12">
             Template Gambar {{ store?.templateActive }}
           </div>
           <q-space />
-          <q-btn
-            flat
-            size="sm"
-            icon="icon-mat-close"
-            padding="xs"
-            @click="store.setDialogTemplate"
-          />
+          <q-btn flat size="sm" icon="icon-mat-close" padding="xs" @click="store.setDialogTemplate" />
         </q-bar>
       </div>
       <div class="col">
         <div class="column full-height">
-          <div
-            class="col-6"
-            style="overflow: hidden;"
-          >
+          <div class="col-6" style="overflow: hidden;">
             <q-scroll-area style="height: calc(100% - 70px)">
               <div class="row q-col-gutter-md q-pa-md flex-center">
-                <div
-                  v-for="(item, i) in fileGambars"
-                  :key="i"
-                  class="col-4"
-                >
-                  <q-card
-                    class="text-dark cursor-pointer"
-                    :class="gambarActive===i?'gambar-active':''"
-                    @click="store.setGambarActive(i, item.image)"
-                  >
-                    <q-img
-                      :src="`${pathImg + item.url}`"
-                    />
+                <div v-for="(item, i) in fileGambars" :key="i" class="col-4">
+                  <q-card class="text-dark cursor-pointer" :class="gambarActive === i ? 'gambar-active' : ''"
+                    @click="store.setGambarActive(i, item.image)">
+                    <q-img :src="`${pathImg + item.url}`" />
                   </q-card>
                 </div>
               </div>
             </q-scroll-area>
             <q-separator dark />
             <div class="q-pa-md">
-              <q-input
-                v-model="search"
-                color="teal"
-                outlined
-                label="cari template"
-                dense
-                dark
-                @update:model-value="filterredMenu()"
-              >
+              <q-input v-model="search" color="teal" outlined label="cari template" dense dark
+                @update:model-value="filterredMenu()">
                 <template #prepend>
-                  <q-icon
-                    name="icon-mat-search"
-                    size="sm"
-                  />
+                  <q-icon name="icon-mat-search" size="sm" />
                 </template>
               </q-input>
             </div>
@@ -67,26 +36,12 @@
           <div class="col-6">
             <div class="row q-col-gutter-xs items-start q-py-sm q-pl-sm">
               <!-- <q-scroll-area style="height: calc(100% - 90px);"> -->
-              <div
-                v-for="(item, n) in filterredMenu()"
-                :key="n"
-                class="col-auto"
-              >
+              <div v-for="(item, n) in filterredMenu()" :key="n" class="col-auto">
                 <div class="">
-                  <q-btn
-                    :icon="item.icon"
-                    dense
-                    :text-color="active === item.nama ? 'black' : 'white'"
-                    :glossy="active === item.nama"
-                    :color="active === item.nama ? 'amber' : 'dark'"
-                    size="lg"
-                    @click="store.setTemplateActive(item.nama)"
-                  >
-                    <q-tooltip
-                      anchor="top middle"
-                      self="top middle"
-                      class="bg-orange text-dark"
-                    >
+                  <q-btn :icon="item.icon" dense :text-color="active === item.nama ? 'black' : 'white'"
+                    :glossy="active === item.nama" :color="active === item.nama ? 'amber' : 'dark'" size="lg"
+                    @click="store.setTemplateActive(item.nama)">
+                    <q-tooltip anchor="top middle" self="top middle" class="bg-orange text-dark">
                       <strong>{{ item.nama }}</strong>
                     </q-tooltip>
                   </q-btn>
@@ -136,7 +91,7 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
-.gambar-active{
-  border:3px solid $negative;
+.gambar-active {
+  border: 3px solid $negative;
 }
 </style>

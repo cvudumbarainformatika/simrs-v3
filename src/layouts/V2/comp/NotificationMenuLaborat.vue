@@ -92,7 +92,7 @@ const verifyAudioFile = (url) => {
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      console.log(`Audio file ${url} exists and is accessible`);
+      // console.log(`Audio file ${url} exists and is accessible`);
     })
     .catch(error => {
       console.error(`Audio file ${url} error:`, error);
@@ -244,7 +244,7 @@ const lihatAksesLaborat = () => {
   }
 
 
-  console.log('akses ke aplikasi laborat', haveAkses);
+  // console.log('akses ke aplikasi laborat', haveAkses);
   punyaAkses.value = haveAkses
 }
 
@@ -252,12 +252,12 @@ const lihatAksesLaborat = () => {
 const subscribedChannel = () => {
   const channel = laravelEcho.private('private.notif.permintaan-laborat')
   channel.subscribed(() => {
-    console.log('subscribed private.notif.permintaan-laborat channel !!!')
+    // console.log('subscribed private.notif.permintaan-laborat channel !!!')
   }).listen('.notif-message', (e) => {
     // console.log('listen notif', e)
     const data = e?.message?.data || null
     if (data?.menu === 'permintaan-laborat' && punyaAkses.value) {
-      console.log('message', data);
+      // console.log('message', data);
       const color = data.dari === 'RANAP' ? 'blue' : data.dari === 'IGD' ? 'orange' : 'red'
       addNotification(data?.title, data?.dari, data?.cito, data?.read, "icon-mat-medical_information", color);
     }

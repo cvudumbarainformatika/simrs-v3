@@ -1,7 +1,7 @@
 <template>
   <picture>
     <source :srcset="fotoWebp" type="image/webp">
-    <q-img :src="foto" :ratio="withRatio ? ratio : null" :width="width" style="max-width: 100%;" loading="lazy">
+    <q-img :src="fotoWebp" :ratio="withRatio ? ratio : null" :width="width" style="max-width: 100%;" loading="lazy">
       <slot />
     </q-img>
   </picture>
@@ -58,7 +58,7 @@ const getImagePath = (filename, format = 'jpg') => {
 const avatarName = computed(() => {
   const perempuan = props.pasien?.kelamin === 'Perempuan' || props.pasien?.kelamin === 'perempuan'
   const usia = props.pasien?.usia
-  const usiath = usia ? parseInt(usia.substring(0, 2)) : 25
+  const usiath = usia && typeof usia === 'string' ? parseInt(usia?.substring(0, 2)) : 25
 
   return getAvatarPath(perempuan ? 'Perempuan' : 'Laki', usiath)
 })

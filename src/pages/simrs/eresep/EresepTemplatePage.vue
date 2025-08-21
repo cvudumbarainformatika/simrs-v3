@@ -5,17 +5,8 @@
       <q-card class="fit">
         <div class="fit column">
           <div class="col-auto">
-            <q-tabs
-              v-model="tab"
-              dense
-              class="bg-primary text-grey-5 shadow-2"
-              active-color="yellow-3"
-              indicator-color="yellow-3"
-              narrow-indicator
-              switch-indicator
-              align="justify"
-              :breakpoint="0"
-            >
+            <q-tabs v-model="tab" dense class="bg-primary text-grey-5 shadow-2" active-color="yellow-3"
+              indicator-color="yellow-3" narrow-indicator switch-indicator align="justify" :breakpoint="0">
               <q-tab name="nonracikan" label="Non Racik" />
               <q-tab name="racikan" label="Racikan" />
               <q-tab name="template" label="Template" />
@@ -31,33 +22,13 @@
                   </div>
                   <div class="absolute-bottom full-width row justify-between q-pa-sm bg-primary">
                     <div class="q-gutter-xs">
-                      <q-btn
-                        label="<-"
-                        type="button"
-                        color="dark"
-                        class="q-px-md"
-                        dense
-                        @click="emits('back')"
-                      >
+                      <q-btn label="<-" type="button" color="dark" class="q-px-md" dense @click="emits('back')">
                         <q-tooltip>Kembali Ke Halaman Resep</q-tooltip>
                       </q-btn>
-                      <q-btn
-                        label="Reset"
-                        type="button"
-                        color="dark"
-                        class="q-px-md"
-                        dense
-                        @click="resetChild"
-                      />
+                      <q-btn label="Reset" type="button" color="dark" class="q-px-md" dense @click="resetChild" />
                     </div>
-                    <q-btn
-                      label="simpan ke list"
-                      type="submit"
-                      color="white"
-                      text-color="primary"
-                      class="q-px-md"
-                      dense
-                    />
+                    <q-btn label="simpan ke list" type="submit" color="white" text-color="primary" class="q-px-md"
+                      dense />
                   </div>
                 </q-form>
               </q-tab-panel>
@@ -69,39 +40,20 @@
                   </div>
                   <div class="absolute-bottom full-width row justify-between q-pa-sm bg-teal">
                     <div class="q-gutter-xs">
-                      <q-btn
-                        label="<-"
-                        type="button"
-                        color="dark"
-                        class="q-px-md"
-                        dense
-                        @click="emits('back')"
-                      >
+                      <q-btn label="<-" type="button" color="dark" class="q-px-md" dense @click="emits('back')">
                         <q-tooltip>Kembali Ke Halaman Resep</q-tooltip>
                       </q-btn>
-                      <q-btn
-                        label="Reset"
-                        type="button"
-                        color="dark"
-                        class="q-px-md"
-                        dense
-                        @click="resetChildRacikan"
-                      />
+                      <q-btn label="Reset" type="button" color="dark" class="q-px-md" dense
+                        @click="resetChildRacikan" />
                     </div>
-                    <q-btn
-                      label="simpan ke list"
-                      type="submit"
-                      color="white"
-                      text-color="teal"
-                      class="q-px-md"
-                      dense
-                    />
+                    <q-btn label="simpan ke list" type="submit" color="white" text-color="teal" class="q-px-md" dense />
                   </div>
                 </q-form>
               </q-tab-panel>
 
               <q-tab-panel name="template" class="fit overflow-hidden q-pa-none">
-                <ListTemplate v-if="store.templates?.length" :items="store.templates" @select="store.selectTemplate" @delete="store.deleteTemplate" />
+                <ListTemplate v-if="store.templates?.length" :items="store.templates" @select="store.selectTemplate"
+                  @delete="store.deleteTemplate" />
                 <div class="fit column flex-center bg-grey-4">
                   <div class="text-dark">
                     Belum ada template
@@ -109,24 +61,11 @@
                 </div>
                 <div class="absolute-bottom bg-yellow-3 q-pa-sm row full-width items-center justify-between">
                   <div>
-                    <q-btn
-                      label="<-"
-                      type="button"
-                      color="dark"
-                      class="q-px-md"
-                      dense
-                      @click="emits('back')"
-                    />
+                    <q-btn label="<-" type="button" color="dark" class="q-px-md" dense @click="emits('back')" />
                   </div>
                   <div>
-                    <q-btn
-                      label="Template Baru"
-                      type="button"
-                      color="dark"
-                      class="q-px-md"
-                      dense
-                      @click="templateBaru"
-                    />
+                    <q-btn label="Template Baru" type="button" color="dark" class="q-px-md" dense
+                      @click="templateBaru" />
                   </div>
                 </div>
               </q-tab-panel>
@@ -375,13 +314,13 @@ function kirimOrder () {
       emits('back')
     })
 
-  console.log('pasian', props.pasien)
+  // console.log('pasian', props.pasien)
 
   try {
-    console.log('payload', payload)
+    // console.log('payload', payload)
   }
   catch (error) {
-    console.log('error', error)
+    // console.log('error', error)
   }
 }
 

@@ -1,19 +1,12 @@
 <template>
   <q-dialog @before-show="lihatList">
-    <q-card style="min-width: 50vw;">
+    <q-card style="min-width: 80vw;">
       <q-card-section class="q-pa-sm bg-primary text-white">
         <div class="row justify-between">
           <div class="text-h6">
             Daftar Pemeriksaan
           </div>
-          <q-btn
-            v-close-popup
-            icon="icon-mat-close"
-            size="sm"
-            padding="sm"
-            flat
-            rounded
-          />
+          <q-btn v-close-popup icon="icon-mat-close" size="sm" padding="sm" flat rounded />
         </div>
       </q-card-section>
       <q-card-section>
@@ -21,57 +14,25 @@
           <div class="q-mr-sm">
             Pemerikasaan teripilih :
           </div>
-          <div
-            v-if="pemeriksaans?.length"
-            class="row"
-          >
-            <div
-              v-for="(item,i) in pemeriksaans"
-              :key="i"
-            >
-              <div
-                v-if="i===0"
-                class="cursor-pointer"
-                @click="removeOne(i)"
-              >
+          <div v-if="pemeriksaans?.length" class="row">
+            <div v-for="(item, i) in pemeriksaans" :key="i">
+              <div v-if="i === 0" class="cursor-pointer" @click="removeOne(i)">
                 {{ item?.nama }}
-                <q-tooltip
-                  class="primary"
-                  :offset="[10, 10]"
-                >
+                <q-tooltip class="primary" :offset="[10, 10]">
                   klik untuk hapus
                 </q-tooltip>
               </div>
-              <div
-                v-else
-                class="cursor-pointer"
-                @click="removeOne(i)"
-              >
+              <div v-else class="cursor-pointer" @click="removeOne(i)">
                 , {{ item?.nama }}
-                <q-tooltip
-                  class="primary"
-                  :offset="[10, 10]"
-                >
+                <q-tooltip class="primary" :offset="[10, 10]">
                   klik untuk hapus
                 </q-tooltip>
               </div>
             </div>
           </div>
-          <div
-            v-if="pemeriksaans?.length"
-            class="row"
-          >
-            <q-btn
-              icon="icon-mat-cancel"
-              flat
-              round
-              dense
-              @click="pemeriksaans=[]"
-            >
-              <q-tooltip
-                class="primary"
-                :offset="[10, 10]"
-              >
+          <div v-if="pemeriksaans?.length" class="row">
+            <q-btn icon="icon-mat-cancel" flat round dense @click="pemeriksaans = []">
+              <q-tooltip class="primary" :offset="[10, 10]">
                 Hapus Permintaan
               </q-tooltip>
             </q-btn>
@@ -80,36 +41,17 @@
       </q-card-section>
       <q-separator />
 
-      <q-card-section
-        style="height: 65vh"
-        class="q-pa-none scroll"
-      >
+      <q-card-section style="height: 65vh" class="q-pa-none scroll">
         <div class="row full-height">
-          <div class="col-5 full-height bg-dark text-white scroll">
-            <q-list
-              separator
-              dense
-              dark
-            >
+          <div class="col-4 full-height bg-dark text-white scroll">
+            <q-list separator dense dark>
               <!-- <q-item-label header>
                 Group Pemeriksaan
               </q-item-label> -->
-              <q-item
-                v-for="(row, n) in gruping"
-                :key="n"
-                v-ripple
-                tag="label"
-                clickable
-              >
+              <q-item v-for="(row, n) in gruping" :key="n" v-ripple tag="label" clickable>
                 <q-item-section avatar>
-                  <q-radio
-                    v-model="shape"
-                    :val="row"
-                    color="teal"
-                    size="xs"
-                    dark
-                    @update:model-value="pilihPemeriksaan"
-                  />
+                  <q-radio v-model="shape" :val="row" color="teal" size="xs" dark
+                    @update:model-value="pilihPemeriksaan" />
                 </q-item-section>
                 <q-item-section>
                   <q-item-label>{{ row }}</q-item-label>
@@ -117,67 +59,35 @@
               </q-item>
             </q-list>
           </div>
-          <div class="col-7 full-height">
+          <div class="col-8 full-height">
             <div class="column full-height">
               <div class="col-auto bg-grey-2">
                 <div class="row items-center q-pa-sm q-gutter-md">
                   <div>
-                    <q-input
-                      v-model="search"
-                      outlined
-                      standout="bg-yellow-3"
-                      label="cari Pemeriksaan"
-                      dense
-                      class="full-width"
-                      debounce="500"
-                      @update:model-value="cariPemeriksaan"
-                    >
+                    <q-input v-model="search" outlined standout="bg-yellow-3" label="cari Pemeriksaan" dense
+                      class="full-width" debounce="500" @update:model-value="cariPemeriksaan">
                       <template #prepend>
                         <q-icon name="icon-mat-search" />
                       </template>
-                      <template
-                        #append
-                      >
-                        <q-icon
-                          name="icon-mat-close"
-                          class="cursor-pointer"
-                          @click.stop.prevent="clearPemeriksaan"
-                        />
+                      <template #append>
+                        <q-icon name="icon-mat-close" class="cursor-pointer" @click.stop.prevent="clearPemeriksaan" />
                       </template>
                     </q-input>
                   </div>
                   <q-space />
                   <div>
-                    <q-checkbox
-                      v-model="checkAll"
-                      label="Pilih Semua"
-                      color="teal"
-                      left-label
-                      @update:model-value="checkingAll"
-                    />
+                    <q-checkbox v-model="checkAll" label="Pilih Semua" color="teal" left-label
+                      @update:model-value="checkingAll" />
                   </div>
                 </div>
                 <q-separator />
               </div>
               <div class="col full-height scroll">
-                <q-list
-                  v-if="filterredLists?.length"
-                  separator
-                  dense
-                >
-                  <q-item
-                    v-for="(item, i) in filterredLists"
-                    :key="i"
-                    v-ripple
-                    tag="label"
-                  >
+                <q-list v-if="filterredLists?.length" separator dense>
+                  <q-item v-for="(item, i) in filterredLists" :key="i" v-ripple tag="label">
                     <q-item-section avatar>
-                      <q-checkbox
-                        v-model="pemeriksaans"
-                        :val="item"
-                        color="teal"
-                        @update:model-value="checked"
-                      />
+                      <q-checkbox size="sm" v-model="pemeriksaans" :val="item" color="teal"
+                        @update:model-value="checked" />
                     </q-item-section>
                     <q-item-section>
                       <q-item-label>
@@ -185,13 +95,13 @@
                         <em class="text-negative f-10 q-ml-sm"> - ({{ item.group }})</em>
                       </q-item-label>
                     </q-item-section>
+                    <q-item-section side>
+                      <div class="text-lg text-dark"> {{ formatDouble(item?.total) }} </div>
+                    </q-item-section>
                   </q-item>
                   <q-separator />
                 </q-list>
-                <div
-                  v-else
-                  class="column flex-center full-height"
-                >
+                <div v-else class="column flex-center full-height">
                   <div>Tidak ditemukan</div>
                 </div>
               </div>
@@ -202,22 +112,9 @@
 
       <q-separator />
 
-      <q-card-actions
-        align="right"
-        class="bg-yellow-3"
-      >
-        <q-btn
-          v-close-popup
-          flat
-          label="Batal"
-          color="negative"
-        />
-        <q-btn
-          flat
-          label="Ok"
-          color="primary"
-          @click="submitPemeriksaans"
-        />
+      <q-card-actions align="right" class="bg-yellow-3">
+        <q-btn v-close-popup flat label="Batal" color="negative" />
+        <q-btn flat label="Ok" color="primary" @click="submitPemeriksaans" />
       </q-card-actions>
     </q-card>
   </q-dialog>
@@ -226,14 +123,25 @@
 <script setup>
 import { ref } from 'vue'
 import { useGroupBy } from 'src/composable/groupby'
+import { formatDouble } from 'src/modules/formatter'
+import { notifErrVue } from 'src/modules/utils'
 
 const { setGroup } = useGroupBy()
 const props = defineProps({
   lists: {
     type: Array,
     default: () => []
+  },
+  pasien: {
+    type: Object,
+    default: null
   }
 })
+
+// console.log('props', props.lists,
+//   props.pasien)
+
+
 
 const emits = defineEmits(['ok'])
 
@@ -245,10 +153,22 @@ const checkAll = ref(false)
 
 const filterredLists = ref([])
 
+
+function ruanganHelper() {
+  let kelas = '3'
+  if (props.pasien?.kelas_ruangan) {
+    kelas = props.pasien?.kelas_ruangan
+  } else {
+    kelas = '3'
+  }
+
+  return kelas
+}
+
 function checked(val) {
-  console.log('list', filterredLists.value)
-  console.log('pem', pemeriksaans.value)
-  console.log('val', val)
+  // console.log('list', filterredLists.value)
+  // console.log('pem', pemeriksaans.value)
+  // console.log('val', val)
 }
 function removeOne(i) {
   // console.log('remove one ', pemeriksaans.value[i])
@@ -256,10 +176,13 @@ function removeOne(i) {
 }
 
 function lihatList() {
+  console.log('pasien', props.pasien);
+
   const arr = props.lists
   const mapping = mapper(arr)
 
   const gr = setGroup(mapping, x => x.group)
+  // console.log('gr', gr)
   const sorting = gr.sort(function (a, b) {
     if (a.name < b.name) {
       return -1
@@ -280,13 +203,38 @@ function lihatList() {
 }
 
 function mapper(arr) {
+
+  // console.log('lihat kelas', ruanganHelper());
+  const kelas = ruanganHelper()
+
   return arr?.length ? arr?.map(x => {
+
+    let sarana = 0
+    let pelayanan = 0
+
+    // Determine prices based on room class
+    if (kelas === '3') {
+      sarana = parseFloat(x?.rs6 || 0) // ini diubah seharusnya rs4
+      pelayanan = parseFloat(x?.rs7 || 0) // ini diubah seharusnya rs5
+    } else if (kelas === 'PS') {
+      sarana = parseFloat(x?.pss || 0)
+      pelayanan = parseFloat(x?.psp || 0)
+    } else {
+      sarana = parseFloat(x?.rs6 || 0)
+      pelayanan = parseFloat(x?.rs7 || 0)
+    }
+
     const obj = {
       group: x?.rs3,
       nama: x?.rs2,
       val: x?.rs2 + ' ' + `(${x?.rs3}).`,
-      kode: x?.rs1
+      kode: x?.rs1,
+      sarana,
+      pelayanan,
+      total: sarana + pelayanan,
     }
+
+    // console.log('obj', obj)
     return obj
   }) : []
 }
@@ -350,6 +298,11 @@ function pilihPemeriksaan(val) {
 }
 
 function submitPemeriksaans() {
+  if (pemeriksaans.value?.length > 1) {
+    notifErrVue('Tidak bisa memilih lebih dari satu pemeriksaan')
+
+    return
+  }
   emits('ok', pemeriksaans.value)
 }
 </script>

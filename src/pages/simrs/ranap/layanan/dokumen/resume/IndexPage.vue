@@ -10,7 +10,7 @@
       </div>
     </div>
     <div class="col full-height q-pa-md scroll">
-      <ResumePage id="resume" ref="refResume" :pasien="pasien" :menu="menu" />
+      <ResumePage id="resume" ref="refResume" :pasien="pasien" :menu="menu" :key="pasien" />
     </div>
   </div>
 </template>

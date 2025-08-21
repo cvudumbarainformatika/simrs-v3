@@ -1,0 +1,67 @@
+ h1 {
+      font-size: 1.5em;
+      font-weight: 600;
+      margin: 0.3em 0; // Kurangi margin
+      line-height: 1.2; // Tambah line-height yang lebih kecil
+    }
+
+    h2 {
+      font-size: 1.25em;
+      font-weight: 600;
+      margin: 0.3em 0;
+      line-height: 1.2;
+    }
+
+    h3 {
+      font-size: 1.17em;
+      font-weight: 600;
+      margin: 0.3em 0;
+      line-height: 1.2;
+    }
+
+    h4 {
+      font-size: 1em;
+      font-weight: 600;
+      margin: 0.3em 0;
+      line-height: 1.2;
+    }
+
+    h5 {
+      font-size: 0.83em;
+      font-weight: 600;
+      margin: 0.3em 0;
+      line-height: 1.2;
+    }
+
+    h6 {
+      font-size: 0.78em;
+      font-weight: 600;
+      margin: 0.3em 0;
+      line-height: 1.2;
+    }
+
+    /* Paragraph Style */
+    p {
+      font-size: 0.75em;
+      margin: 0.5em 0; // Kurangi margin
+      line-height: 1; // Sesuaikan line-height
+
+      /* Fix alignment dari Word */
+      &[style*="text-align: center"] {
+        text-align: center !important;
+      }
+
+      &[style*="text-align: right"] {
+        text-align: right !important;
+      }
+
+      &[style*="text-align: justify"] {
+        text-align: justify !important;
+      }
+
+      .text-body1 {
+        font-size: 0.75em !important;
+        margin: 0.5em 0; // Kurangi margin
+        line-height: 1; // Sesuaikan line-height
+      }
+    }

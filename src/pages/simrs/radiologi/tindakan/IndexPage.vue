@@ -50,7 +50,7 @@
 
 <script setup>
 import LeftDrawer from './complayout/LeftDrawer.vue'
-import RightDrawer from './complayout/RightDrawer.vue'
+import RightDrawer from '../../poli/tindakan/complayout/RightDrawer.vue'
 import HeaderLayout from './complayout/HeaderLayout.vue'
 import DialogProfile from './DialogProfile.vue'
 // import LoaderPage from './LoaderPage.vue'
@@ -63,7 +63,6 @@ import { defineAsyncComponent, onBeforeMount, onBeforeUnmount, onMounted, onUnmo
 import { useQuasar } from 'quasar'
 
 import { useListPasienRadiologiStore } from 'src/stores/simrs/radiologi/radiologi'
-import { useRadiologiPoli } from 'src/stores/simrs/pelayanan/poli/radiologi'
 
 const $q = useQuasar()
 
@@ -72,7 +71,7 @@ const store = useListPasienRadiologiStore()
 const poli = usePengunjungPoliStore()
 // const master = useMasterPemeriksaanFisik()
 // const anamnesis = useAnamnesis()
-const storeRadiologiPoli = useRadiologiPoli()
+// const storeRadiologiPoli = useRadiologiPoli()
 
 
 const fisik = usePemeriksaanFisik()
@@ -113,20 +112,7 @@ onMounted(() => {
   // console.log('pasien', props?.pasien)
   menu.value = menus.value[0]
 
-  Promise.all([
-    storeRadiologiPoli.getRadiologi(),
-    storeRadiologiPoli.getJenisRadiologi()
-  ]).then(() => {
-    store.namaPemeriksaans = storeRadiologiPoli.namaPemeriksaans
-    store.jenisPemeriksaans = storeRadiologiPoli.jenisPemeriksaans
 
-    console.log('masterRad', store.namaPemeriksaans);
-    console.log('jenisRad', store.jenisPemeriksaans);
-
-
-  }).catch((err) => {
-    // console.log('error', err)
-  })
 
 })
 

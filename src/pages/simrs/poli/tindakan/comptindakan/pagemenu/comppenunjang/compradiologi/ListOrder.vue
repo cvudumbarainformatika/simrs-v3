@@ -20,43 +20,95 @@
         <transition-group name="list">
           <template v-for="(item, i) in filterredTable" :key="i">
             <q-list separator class="q-mb-sm list-move">
-              <q-item class="bg-white">
-                <q-item-section>
-                  <q-item-label caption>
-                    NOMOR : <span class="text-primary">{{ item?.rs2 }}</span>
-                  </q-item-label>
-                  <q-item-label caption>
-                    PERMINTAAN
-                  </q-item-label>
-                  <q-item-label lines="6">
-                    {{ item?.rs4 }}
-                  </q-item-label>
-                  <q-item-label caption>
-                    KETERANGAN
-                  </q-item-label>
-                  <q-item-label lines="6">
-                    {{ item?.rs7 }}
-                  </q-item-label>
-                </q-item-section>
-                <q-item-section v-if="bisaEditHapus" side>
-                  <q-btn flat dense icon="icon-mat-delete" color="negative" size="sm" rounded
-                    @click="hapusItem(item?.id)" />
-                  <!-- <q-badge outline :color="item?.cito === 'Cito' ? 'orange' : 'primary'"
-                    :label="item?.cito === 'Cito' ? item?.cito : 'Bukan Cito'" class="q-my-sm" /> -->
-                </q-item-section>
-              </q-item>
+              <q-expansion-item class="q-pa-xs bg-white" style="margin-bottom:.2em" hide-expand-icon>
+                <template #header>
+                  <q-item-section>
+                    <q-item-label caption>
+                      NOMOR : <span class="text-primary">{{ item?.rs2 }}</span>
+                    </q-item-label>
+                    <q-item-label caption>
+                      PERMINTAAN
+                    </q-item-label>
+                    <q-item-label lines="6">
+                      {{ item?.rs4 }}
+                    </q-item-label>
+                    <q-item-label caption>
+                      KETERANGAN
+                    </q-item-label>
+                    <q-item-label lines="6">
+                      {{ item?.rs7 }}
+                    </q-item-label>
+
+
+                  </q-item-section>
+                  <q-item-section side>
+                    <q-btn v-if="bisaEditHapus" flat dense icon="icon-mat-delete" color="negative" size="sm" rounded
+                      @click="hapusItem(item?.id)" />
+
+                    <!-- <q-badge outline :color="item?.cito === 'Cito' ? 'orange' : 'primary'"
+                      :label="item?.cito === 'Cito' ? item?.cito : 'Bukan Cito'" class="q-my-sm" /> -->
+                    <q-badge outline :color="item?.rs9 === '3' ? 'negative' : 'primary'" :label="item?.rs9 === '' ? 'Permintaan'
+                      : item.rs9 === '2' ? 'Diproses' : item.rs9 === '1' ? 'Selesai' : 'dibatalkan'" class="q-my-md" />
+
+
+                    <q-btn class="q-mt-sm" flat dense icon="icon-mat-print" color="primary" size="md" rounded
+                      @click="handlePrint(item)" />
+
+                  </q-item-section>
+                </template>
+
+                <!-- Rincians -->
+
+                <template v-if="item.status === '1'">
+                  <q-card v-for="(rinci, i) in item.rincians" square flat class="bg-grey-3">
+                    <q-separator />
+                    <q-card-section class="q-pa-sm bg-grey-8 text-white">
+                      <div class="flex justify-between">
+                        <div class="flex-1">{{ rinci?.relmasterpemeriksaan?.rs2 }} ({{ rinci?.relmasterpemeriksaan?.rs3
+                          }})</div>
+                        <div class="flex-1">{{ formatRp(rinci?.subtotal) }}</div>
+                      </div>
+                    </q-card-section>
+                    <q-card-section class="q-pa-sm">
+                      <div class="column">
+                        <div class="text-bold">Hasil : </div>
+                        <div class="q-mb-md">
+                          <!-- <span v-html="rinci.hasil ?? 'Belum Ada Hasil'"></span> -->
+                          <app-input-simrs-mode view v-model="rinci.hasilhtml" :disable="true" />
+                        </div>
+                        <div class="text-bold">Kesimpulan : </div>
+                        <div>
+                          <!-- {{ rinci.kesimpulan ?? 'Belum Ada Kesimpulan' }} -->
+                          <app-input-simrs-mode view v-model="rinci.kesimpulanhtml" :disable="true" />
+                        </div>
+                      </div>
+                    </q-card-section>
+                  </q-card>
+                </template>
+
+              </q-expansion-item>
             </q-list>
           </template>
         </transition-group>
+        <div style="padding-bottom: 300px;"></div>
       </q-scroll-area>
     </div>
+
+
+
+    <!-- dialog cetak -->
+    <DialogCetakPermintaanRadiologi :pasien="pasien" :data="isiPrint" v-model="isPrint" />
   </div>
 </template>
 
 <script setup>
 import { useQuasar } from 'quasar'
 import { useRadiologiPoli } from 'src/stores/simrs/pelayanan/poli/radiologi'
-import { computed } from 'vue'
+import { computed, ref, defineAsyncComponent } from 'vue'
+import { formatRp } from 'src/modules/formatter'
+
+
+const DialogCetakPermintaanRadiologi = defineAsyncComponent(() => import('./DialogCetakPermintaanRadiologi.vue'))
 
 const $q = useQuasar()
 const store = useRadiologiPoli()
@@ -71,11 +123,19 @@ const props = defineProps({
   }
 })
 
+const isPrint = ref(false)
+const isiPrint = ref(null)
+
 const filterredTable = computed(() => {
   const val = store?.form?.nota
   const arr = props?.pasien?.radiologi
   return (val === 'SEMUA' || val === null || val === '') ? arr : arr?.filter(x => x?.rs2 === val)
 })
+
+function handlePrint(item) {
+  isPrint.value = true
+  isiPrint.value = item
+}
 
 function hapusItem(id) {
   $q.dialog({

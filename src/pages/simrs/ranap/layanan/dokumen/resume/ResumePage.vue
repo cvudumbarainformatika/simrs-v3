@@ -134,8 +134,8 @@
                       - {{ item?.label }} :
                     </div>
                     <div v-if="item?.data?.length" class="col full-width">
-                      <template v-for="(pen, m) in item?.data" :key="m">
-                        <!-- <span v-if="pen">{{ pen?.nama }} : <b>{{ pen?.hasil }}</b>, &nbsp; </span> -->
+
+                      <template v-for="(pen, m) in item?.data" :key="pen + m">
                         <span v-if="pen" v-html="pen" />
                       </template>
                     </div>

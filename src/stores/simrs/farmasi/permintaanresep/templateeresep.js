@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia'
+import { acceptHMRUpdate, defineStore } from 'pinia'
 import { api } from 'src/boot/axios'
 // import { useKasirRajalListKunjunganStore } from '../../kasir/rajal/kunjungan'
 import { notifSuccess, notifErrVue } from 'src/modules/utils'
@@ -278,8 +278,8 @@ export const useTemplateEResepStore = defineStore('template_e_resep', {
           })
           .catch((err) => {
             this.loadingTemplate = false
-            // console.log('err response', err)
-            const items = err.response.data.items
+            console.log('err response', err?.response)
+            const items = err?.response?.data?.items
             const racikan = items?.filter(x => x?.racikan !== false && x?.isError === true)
             const nonRacikan = items?.filter(x => x?.racikan === false && x?.isError === true)
 
@@ -293,7 +293,7 @@ export const useTemplateEResepStore = defineStore('template_e_resep', {
               nonRacikan
             }
             console.log('err', errors)
-            this.expandedList = errors?.racikan?.length ? errors.racikan.map(x => x?.koderacikan) : []
+            this.expandedList = errors?.racikan?.length ? errors.racikan?.map(x => x?.koderacikan) : []
             this.errorsOrder = errors
             // error pembatasan
             this.sudahAda = err?.response?.data?.sudahAda
@@ -414,3 +414,6 @@ export const useTemplateEResepStore = defineStore('template_e_resep', {
 
   }
 })
+if (import.meta?.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useTemplateEResepStore, import.meta.hot))
+}

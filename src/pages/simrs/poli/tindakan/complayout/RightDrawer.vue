@@ -228,7 +228,7 @@
                               <q-item-label lines="2">
                                 Suara Nafas Tambahan (Kiri) : <em>{{ pemeriksaanfisik?.auskultasisuaratambahankiri ??
                                   '-'
-                                }}</em>
+                                  }}</em>
                               </q-item-label>
                             </q-item-section>
                           </q-item>
@@ -358,9 +358,9 @@
                               <q-item-section>
                                 <q-item-label>Pemeriksaan = {{ radiologi?.relmasterpemeriksaan?.rs2 }}</q-item-label>
                                 <q-item-label>Jenis Pemeriksaan Radiologi = {{ radiologi?.relmasterpemeriksaan?.rs3
-                                }}</q-item-label>
+                                  }}</q-item-label>
                                 <q-item-label>Hasil Pemeriksaan Radiologi = {{ item?.hasilradiologi[r]?.rs3
-                                }}</q-item-label>
+                                  }}</q-item-label>
                               </q-item-section>
                             </q-item>
                           </q-list>
@@ -707,6 +707,24 @@
 
                         </q-card-section>
 
+
+                        <q-card-section v-if="item?.jawabankonsul?.length" class="q-pa-none" flat bordered square dark>
+
+                          <KonsulPoli :items="item.jawabankonsul" :pasien="pasien" />
+
+                        </q-card-section>
+
+                        <!-- <q-card-section v-if="item?.planning?.length" class="q-pa-none" flat bordered square dark>
+                          <q-bar class="bg-accent">
+                            <div>PLANNING</div>
+                          </q-bar>
+                          <q-card v-if="getPlanning(item.planning)" flat dark class="full-width">
+                            INI Untuk Planning
+                          </q-card>
+
+                        </q-card-section> -->
+
+
                         <q-card-section v-if="item?.dokumenluar?.length" class="q-pa-none" flat bordered square dark>
                           <q-bar class="bg-accent">
                             <div>DOKUMEN</div>
@@ -728,6 +746,9 @@
                             </div>
                           </q-list>
                         </q-card-section>
+
+
+
                       </q-list>
                     </q-card>
                     <!-- <q-card v-if="item?.praanastesi?.length">
@@ -957,7 +978,7 @@
                                 <q-item-label lines="2">
                                   Suara Nafas Tambahan (Kiri) : <em>{{ pemeriksaanfisik?.auskultasisuaratambahankiri ??
                                     '-'
-                                  }}</em>
+                                    }}</em>
                                 </q-item-label>
                               </q-item-section>
                             </q-item>
@@ -1092,9 +1113,9 @@
                             <q-item-section>
                               <q-item-label>Pemeriksaan = {{ radiologi?.relmasterpemeriksaan?.rs2 }}</q-item-label>
                               <q-item-label>Jenis Pemeriksaan Radiologi = {{ radiologi?.relmasterpemeriksaan?.rs3
-                              }}</q-item-label>
+                                }}</q-item-label>
                               <q-item-label>Hasil Pemeriksaan Radiologi = {{ item.hasilradiologi[r]?.rs3
-                              }}</q-item-label>
+                                }}</q-item-label>
                             </q-item-section>
                           </q-item>
                         </q-list>
@@ -1654,7 +1675,7 @@
                               <q-item-label lines="2">
                                 Suara Nafas Tambahan (Kiri) : <em>{{ pemeriksaanfisik?.auskultasisuaratambahankiri ??
                                   '-'
-                                }}</em>
+                                  }}</em>
                               </q-item-label>
                             </q-item-section>
                           </q-item>
@@ -1787,9 +1808,9 @@
                               <q-item-section>
                                 <q-item-label>Pemeriksaan = {{ radiologi?.relmasterpemeriksaan?.rs2 }}</q-item-label>
                                 <q-item-label>Jenis Pemeriksaan Radiologi = {{ radiologi?.relmasterpemeriksaan?.rs3
-                                }}</q-item-label>
+                                  }}</q-item-label>
                                 <q-item-label>Hasil Pemeriksaan Radiologi = {{ item.hasilradiologi[r]?.rs3
-                                }}</q-item-label>
+                                  }}</q-item-label>
                               </q-item-section>
                             </q-item>
                           </q-list>
@@ -2179,7 +2200,7 @@
 
                         <q-card-section v-if="item?.dokumenluar?.length" class="q-pa-none" flat bordered square dark>
                           <q-bar class="bg-accent">
-                            <div>DOKUMEN</div>
+                            <div>DOKUMENx</div>
                           </q-bar>
                           <q-list dark separator>
                             <div class="image-row">
@@ -2198,6 +2219,23 @@
                             </div>
                           </q-list>
                         </q-card-section>
+
+                        <q-card-section v-if="item?.planning?.length" class="q-pa-none" flat bordered square dark>
+                          <q-bar class="bg-accent">
+                            <div>PLANNING</div>
+                          </q-bar>
+                          <q-list dark separator>
+                            <q-item v-for="(plan, p) in item?.planning" :key="p" v-ripple clickable>
+                              <q-item-section>
+                                <q-item-label>{{ plan?.rs3 }}</q-item-label>
+                                <q-item-label caption lines="2" />
+                                Keterangan = {{ plan?.rs4 }}
+                              </q-item-section>
+                            </q-item>
+                          </q-list>
+
+                        </q-card-section>
+
                       </q-list>
                     </q-card>
                   </q-expansion-item>
@@ -2220,6 +2258,10 @@ import { dateFullFormat, formatJam, humanDate } from 'src/modules/formatter'
 import { useHistoryPasien } from 'src/stores/simrs/pelayanan/poli/historypasien'
 import { onMounted, computed } from 'vue'
 import { pathImg } from 'src/boot/axios'
+
+import { defineAsyncComponent } from 'vue'
+
+const KonsulPoli = defineAsyncComponent(() => import('./compRight/KonsulPoli.vue'))
 
 // const PraAnestesi = defineAsyncComponent(() => import('src/pages/simrs/dokumen/erm/poli/AsesmenPraAnestesia.vue'))
 
@@ -2260,7 +2302,7 @@ const filteredItems = computed(() => {
   return store.items.filter(item => item.ruangan?.includes(tabs))
 })
 
-function nadi (val) {
+function nadi(val) {
   const bradikardi = val < 60
   const normal = val >= 61 && val <= 100
   const takikardi = val > 100
@@ -2282,7 +2324,7 @@ function nadi (val) {
   return obj
 }
 
-function suhu (val) {
+function suhu(val) {
   const hipotermia = val < 35
   const normal = val >= 35 && val < 37
   const pireksia = val >= 37 && val <= 41.1
@@ -2308,7 +2350,7 @@ function suhu (val) {
   return obj
 }
 
-function getKesadaran (val) {
+function getKesadaran(val) {
   const temp = store.optionsTingkatkesadaran.filter(a => a.value === val)
   if (temp?.length) {
     return temp[0].label
@@ -2318,7 +2360,7 @@ function getKesadaran (val) {
   }
 }
 // eslint-disable-next-line no-unused-vars
-function tekananDarah (val) {
+function tekananDarah(val) {
   const normal = val >= 100 && val <= 120
   const prahipertensi = val >= 121 && val <= 139
   const hipertensiderajat1 = val >= 140 && val <= 159
@@ -2347,7 +2389,7 @@ function tekananDarah (val) {
   return obj
 }
 
-function tekananDarahDias (val) {
+function tekananDarahDias(val) {
   const normal = val >= 60 && val <= 79
   const prahipertensi = val >= 80 && val <= 89
   const hipertensiderajat1 = val >= 90 && val <= 99
@@ -2376,7 +2418,7 @@ function tekananDarahDias (val) {
   return obj
 }
 
-function getInteger (str) {
+function getInteger(str) {
   const parts = str.split('.')
 
   if (parts?.length > 1 && parseInt(parts[1]) === 0) {
@@ -2386,7 +2428,7 @@ function getInteger (str) {
   return str
 }
 
-function groupingRacikan (val, resep) {
+function groupingRacikan(val, resep) {
   const namaRacikan = [... new Set(val.map(a => a.namaracikan))]
   const rincianrac = resep?.rincianracik ?? []
   const list = []
@@ -2408,7 +2450,7 @@ function groupingRacikan (val, resep) {
   return list
 
 }
-function jumlahResep (item, list) {
+function jumlahResep(item, list) {
   const obat = list?.rincianracik.find(b => b.kdobat === item?.kdobat)
   // console.log('obat', item, obat, list)
   const jumlah = obat?.jumlah ?? item?.jumlah

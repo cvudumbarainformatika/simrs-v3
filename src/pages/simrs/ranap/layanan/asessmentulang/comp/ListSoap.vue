@@ -58,7 +58,7 @@
                   <q-card flat bordered class="column full-height full-width"
                     style="min-height: 300px; max-width: 100%;">
                     <q-card-section class="col-auto flex justify-between items-center">
-                      <div v-if="nakes !== '5'" class="f-20">
+                      <div v-if="nakes !== '5' && item?.petugas?.kdgroupnakes !== '5'" class="f-20">
                         Subjective
                       </div>
                       <div v-else class="f-20">
@@ -78,7 +78,10 @@
                     <q-separator inset />
 
                     <q-card-section class="col full-height scroll">
-                      <div v-if="nakes !== '4' && nakes !== '5' && nakes !== '6'" class="column q-mb-sm">
+                      <div
+                        v-if="(nakes !== '4' && nakes !== '5' && nakes !== '6') &&
+                          (item?.petugas?.kdgroupnakes !== '4' && item?.petugas?.kdgroupnakes !== '5' && item?.petugas?.kdgroupnakes !== '6')"
+                        class="column q-mb-sm">
                         <div><b>Keluhan Utama : </b></div>
                         <div class="q-ml-sm">
                           <span v-html="getNewLine(item?.anamnesis?.keluhanUtama)" />
@@ -111,14 +114,15 @@
                   <q-card flat bordered class="column full-height full-width"
                     style="min-height: 300px; max-width: 100%;">
                     <q-card-section class="col-auto flex justify-between items-center">
-                      <div v-if="nakes !== '5'" class="f-20">
+                      <div v-if="nakes !== '5' && item?.petugas?.kdgroupnakes !== '5'" class="f-20">
                         Objective
                       </div>
                       <div v-else class="f-20">
                         Diagnosa
                       </div>
-                      <q-btn v-if="nakes !== '4' && nakes !== '5' && nakes !== '6'" dense bordered outline round
-                        icon="icon-mat-edit" size="sm" color="primary" @click="() => {
+                      <q-btn
+                        v-if="(nakes !== '4' && nakes !== '5' && nakes !== '6') && (item?.petugas?.kdgroupnakes !== '4' && item?.petugas?.kdgroupnakes !== '5' && item?.petugas?.kdgroupnakes !== '6')"
+                        dense bordered outline round icon="icon-mat-edit" size="sm" color="primary" @click="() => {
                           if (auth?.user?.pegawai?.kdpegsimrs !== item?.user && auth?.user?.pegawai?.kdpegsimrs !== 'sa') {
                             notifBottomVue('Maaf ... anda bukan USER Peng-input CPPT ini, Harap Edit Punya Sendiri...');
                             return
@@ -130,7 +134,9 @@
                     <q-separator inset />
 
                     <q-card-section class="col full-height scroll">
-                      <div v-if="nakes === '1' || nakes === '2' || nakes === '3'" class="column">
+                      <div
+                        v-if="(nakes === '1' || nakes === '2' || nakes === '3') && (item?.petugas?.kdgroupnakes === '1' || item?.petugas?.kdgroupnakes === '2' || item?.petugas?.kdgroupnakes === '3')"
+                        class="column">
                         <div><b>Ku : </b> <span>{{ item?.pemeriksaan?.keadaanUmum }}</span></div>
                         <div><b>BB : </b> <span>{{ item?.pemeriksaan?.bb }} Kg</span></div>
                         <div><b>TB : </b> <span>{{ item?.pemeriksaan?.tb }} Cm</span></div>
@@ -189,14 +195,15 @@
                   <q-card flat bordered class="column full-height full-width"
                     style="min-height: 300px; max-width: 100%;">
                     <q-card-section class="col-auto flex justify-between items-center">
-                      <div v-if="nakes !== '5'" class="f-20">
+                      <div v-if="nakes !== '5' && item?.petugas?.kdgroupnakes !== '5'" class="f-20">
                         Asessment
                       </div>
                       <div v-else class="f-20">
                         Intervensi
                       </div>
-                      <q-btn v-if="nakes !== '4' && nakes !== '5' && nakes !== '6'" dense bordered outline round
-                        icon="icon-mat-edit" size="sm" color="primary" @click="() => {
+                      <q-btn
+                        v-if="(nakes !== '4' && nakes !== '5' && nakes !== '6') && (item?.petugas?.kdgroupnakes !== '4' && item?.petugas?.kdgroupnakes !== '5' && item?.petugas?.kdgroupnakes !== '6')"
+                        dense bordered outline round icon="icon-mat-edit" size="sm" color="primary" @click="() => {
 
                           if (auth?.user?.pegawai?.kdpegsimrs !== item?.user && auth?.user?.pegawai?.kdpegsimrs !== 'sa') {
                             notifBottomVue('Maaf ... anda bukan USER Peng-input CPPT ini, Harap Edit Punya Sendiri...');
@@ -240,14 +247,15 @@
                   <q-card flat bordered class="column full-height full-width"
                     style="min-height: 300px; max-width: 100%;">
                     <q-card-section class="col-auto flex justify-between items-center">
-                      <div v-if="nakes !== '5'" class="f-20">
+                      <div v-if="nakes !== '5' && item?.petugas?.kdgroupnakes !== '5'" class="f-20">
                         Plan
                       </div>
                       <div v-else class="f-20">
                         Monitoring
                       </div>
-                      <q-btn v-if="nakes !== '4' && nakes !== '5' && nakes !== '6'" dense bordered outline round
-                        icon="icon-mat-edit" size="sm" color="primary" @click="() => {
+                      <q-btn
+                        v-if="(nakes !== '4' && nakes !== '5' && nakes !== '6') && (item?.petugas?.kdgroupnakes !== '4' && item?.petugas?.kdgroupnakes !== '5' && item?.petugas?.kdgroupnakes !== '6')"
+                        dense bordered outline round icon="icon-mat-edit" size="sm" color="primary" @click="() => {
 
                           if (auth?.user?.pegawai?.kdpegsimrs !== item?.user && auth?.user?.pegawai?.kdpegsimrs !== 'sa') {
                             notifBottomVue('Maaf ... anda bukan USER Peng-input CPPT ini, Harap Edit Punya Sendiri...');
@@ -290,7 +298,7 @@
                   <q-card flat bordered class="col-12">
                     <q-card-section class="col-auto flex justify-between items-center">
                       <div class="text-h6">
-                        {{ nakes !== '5' ? 'Instruksi PPA' : 'Evaluasi' }}
+                        {{ (nakes !== '5' && item?.petugas?.kdgroupnakes !== '5') ? 'Instruksi PPA' : 'Evaluasi' }}
                       </div>
 
                       <q-btn v-if="nakes === '2' || nakes === '3'" dense bordered outline round icon="icon-mat-edit"
@@ -441,7 +449,7 @@ const warnaAvatar = (kat) => {
     r = 'teal'
   }
   else if (kat === '4') {
-    r = 'cokelat'
+    r = 'teal'
   }
   else if (kat === '5') {
     r = 'orange'

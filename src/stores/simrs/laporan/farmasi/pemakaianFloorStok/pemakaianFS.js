@@ -87,7 +87,7 @@ export const useLaporanPemakaianFloorStokStore = defineStore('laporan_pemakaian_
 
       if (this.ruangs?.length > 1) this.ruangs.unshift({ kode: 'all', uraian: 'Semua' })
       else this.params.kode_ruang = this.ruangs[0]?.kode
-      console.log('data', this.ruangs)
+      // console.log('data', this.ruangs)
     },
     getAllData () { },
     async getDataTable () {
@@ -189,7 +189,7 @@ export const useLaporanPemakaianFloorStokStore = defineStore('laporan_pemakaian_
       return chunked
     },
     dataProcessing () {
-      console.log('data processing', this.obats, this.rawItems)
+      // console.log('data processing', this.obats, this.rawItems)
       this.obats.forEach(obat => {
         const mut = this.rawItems.filter(item => item.kd_obat === obat.kd_obat)
 

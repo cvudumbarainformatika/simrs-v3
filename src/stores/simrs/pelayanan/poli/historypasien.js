@@ -33,14 +33,14 @@ export const useHistoryPasien = defineStore('history-pasien', {
   //   doubleCount: (state) => state.counter * 2
   // },
   actions: {
-    async getData (pasien) {
+    async getData(pasien) {
       this.items = []
       this.loading = true
       try {
         this.params.norm = pasien?.norm
         const params = { params: this.params }
         const resp = await api.get('v1/simrs/historypasien/historypasienfull', params)
-        console.log('history  ', resp)
+        // console.log('history  ', resp)
         if (resp.status === 200) {
           this.items = resp?.data?.data
           this.meta = resp?.data
@@ -52,7 +52,7 @@ export const useHistoryPasien = defineStore('history-pasien', {
         this.loading = false
       }
     },
-    async getEresep (item, tab) {
+    async getEresep(item, tab) {
       // console.log(item, tab)
       if (!item.anamnesis?.length) {
         item.loading = true

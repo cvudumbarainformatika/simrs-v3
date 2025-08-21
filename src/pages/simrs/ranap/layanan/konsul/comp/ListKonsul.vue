@@ -1,7 +1,7 @@
 <script setup>
 import { useQuasar } from 'quasar'
 // eslint-disable-next-line no-unused-vars
-import { formatRp, tglJamFormat } from 'src/modules/formatter'
+import { formatRp, humanDate, tglJamFormat, jamTnpDetik } from 'src/modules/formatter'
 import { computed, ref } from 'vue'
 import { useKonsulRanapStore } from 'src/stores/simrs/ranap/konsul'
 
@@ -134,11 +134,14 @@ function hapusItem(id) {
                 <!-- <q-item-label v-if="item?.tarif" caption lines="1" :class="{ 'text-red': item?.jawaban === null || item?.jawaban === ''}">
                   <q-badge>Rp. {{ formatRp(item?.tarif?.subtotal) }}</q-badge>
                 </q-item-label> -->
+                <q-item-label v-if="item?.jawaban !== null && item?.jawaban !== ''">
+                  dijawab Pada Tgl, {{ humanDate(item?.tgl_jawaban) }} jam {{ jamTnpDetik(item?.tgl_jawaban) }}
+                </q-item-label>
               </q-item-section>
 
               <q-item-section side>
                 <div class="absolute-top-right">
-                  {{ tglJamFormat(item?.created_at) }}
+                  {{ humanDate(item?.created_at) }}, {{ jamTnpDetik(item?.created_at) }}
                 </div>
                 <div class="absolute-bottom-right">
                   <q-icon :name="!item?.id ? 'icon-mat-done' : 'icon-mat-done_all'"
@@ -164,6 +167,9 @@ function hapusItem(id) {
 
         <q-badge v-if="item?.user_jawab !== item?.kddokterkonsul" color="orange-9" text-color="white">
           Belum Terverif Oleh Dokter Konsulan
+        </q-badge>
+        <q-badge v-if="item?.user_jawab === item?.kddokterkonsul" color="primary" text-color="white">
+          Terverifikasi
         </q-badge>
       </q-card>
     </transition-group>

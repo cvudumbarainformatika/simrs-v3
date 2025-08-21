@@ -119,7 +119,7 @@
                       </div>
                     </q-item-section>
                     <q-item-section class="q-pa-xs">
-                      <q-item-label v-if="cppt?.nakes !== '5'" lines="5" class="f-12">
+                      <q-item-label v-if="cppt?.nakes !== '5' && cppt?.nakes !== '4'" lines="5" class="f-12">
                         {{ cppt?.anamnesis?.keluhanUtama }}
                       </q-item-label>
                       <q-item-label v-else lines="5" class="f-12">
@@ -388,6 +388,9 @@ const props = defineProps({
 const emits = defineEmits(['openEws'])
 
 const { data } = useCppt(props?.pasien)
+
+console.log('data', data);
+
 
 const listFilterredByDate = computed(() => {
   const arr = data?.cppt

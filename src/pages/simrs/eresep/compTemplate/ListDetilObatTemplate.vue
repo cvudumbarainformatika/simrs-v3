@@ -1,28 +1,14 @@
 <template>
-  <q-table
-    class="my-sticky-header"
-    flat
-    title="table"
-    :rows="store.items"
-    :columns="columns"
-    row-key="kodeobat"
-    :rows-per-page-options="[0]"
-    :loading="store.loadingTemplate"
-    v-model:expanded="store.expandedList"
-    hide-pagination
-    wrap-cells
-  >
+  <q-table class="my-sticky-header" flat title="table" :rows="store.items" :columns="columns" row-key="kodeobat"
+    :rows-per-page-options="[0]" :loading="store.loadingTemplate" v-model:expanded="store.expandedList" hide-pagination
+    wrap-cells>
     <template #top>
       <div class=" full-width row items-center justify-between">
         <div class="text-weight-bold">
           List Detil Obat Template {{ store.templateSelected ? store.templateSelected?.nama : '(Baru)' }}
         </div>
-        <q-btn
-          v-if="store.items?.length"
-          dense color="white" text-color="dark" class="q-px-md"
-          :loading="store.loadingTemplate"
-          @click="emits('kirimOrder')"
-        >
+        <q-btn v-if="store.items?.length" dense color="white" text-color="dark" class="q-px-md"
+          :loading="store.loadingTemplate" @click="emits('kirimOrder')">
           Kirim Order
         </q-btn>
       </div>
@@ -30,17 +16,11 @@
     <template #loading>
       <Transition>
         <div class="absolute-top fit column flex-center bg-primary items-center text-dark z-top" style="opacity: 0.95;">
-          <q-spinner-box
-            color="secondary"
-            size="10em"
-          />
+          <q-spinner-box color="secondary" size="10em" />
 
           <div class="text-white">
             Harap Tunggu
-            <q-spinner-comment
-              color="primary"
-              size="2em"
-            />
+            <q-spinner-comment color="primary" size="2em" />
           </div>
         </div>
       </Transition>
@@ -53,7 +33,7 @@
             Data tidak ditemukan... {{ message }}
           </div>
           <div class="text-h4">
-            {{ filter? '🏷️': '🏷️' }}
+            {{ filter ? '🏷️' : '🏷️' }}
           </div>
         </div>
       </div>
@@ -66,12 +46,8 @@
           </q-btn>
         </div>
         <div class="kanan">
-          <q-btn
-            dense color="white"
-            text-color="dark" size="md" class="q-px-md"
-            :loading="store.loadingTemplate"
-            @click="simpanTemplate"
-          >
+          <q-btn dense color="white" text-color="dark" size="md" class="q-px-md" :loading="store.loadingTemplate"
+            @click="simpanTemplate">
             Simpan Template
           </q-btn>
         </div>
@@ -81,28 +57,20 @@
     <template #header="props">
       <q-tr :props="props">
         <!-- <q-th auto-width /> -->
-        <q-th
-          v-for="col in props.cols"
-          :key="col.name"
-          :props="props"
-        >
+        <q-th v-for="col in props.cols" :key="col.name" :props="props">
           {{ col.label }}
         </q-th>
       </q-tr>
     </template>
 
     <template #body="props">
-      <q-tr
-        :props="props" @click="onRowClick(props.row)" @mouseover="indexRow = props.rowIndex" @mouseleave="indexRow = -1"
-        :class="pembatasan(props.row)===false?{'bg-grey text-white': adaError(props.row) || adaErrorRacikan(props.row)}:pembatasan(props.row)"
-      >
+      <q-tr :props="props" @click="onRowClick(props.row)" @mouseover="indexRow = props.rowIndex"
+        @mouseleave="indexRow = -1"
+        :class="pembatasan(props.row) === false ? { 'bg-grey text-white': adaError(props.row) || adaErrorRacikan(props.row) } : pembatasan(props.row)">
         <!-- <q-td auto-width>
           <q-btn v-if="props.row.racikan" size="xs" color="accent" round dense @click="props.expand = !props.expand" :icon="props.expand ? 'icon-mat-remove' : 'icon-mat-add'" />
         </q-td> -->
-        <q-td
-          key="namaobat" :props="props"
-          class="flex items-center full-width"
-        >
+        <q-td key="namaobat" :props="props" class="flex items-center full-width">
           <q-toggle v-if="props.row.racikan" size="xs" v-model="props.expand" />
           <div class="q-ml-sm flex wrap">
             {{ props.row.namaobat }}
@@ -121,11 +89,8 @@
           {{ props.row.satuan_kcl }}
         </q-td>
         <q-td key="signa" :props="props" class="relative-position">
-          <Transition
-            appear
-            enter-active-class="animated fast slideInRight"
-            leave-active-class="animated fast slideOutRight"
-          >
+          <Transition appear enter-active-class="animated fast slideInRight"
+            leave-active-class="animated fast slideOutRight">
             <div v-if="indexRow === props.rowIndex" class="absolute-top fit bg-grey-4">
               <div class="column full-height flex-center content-end q-pa-sm">
                 <q-btn round color="negative" icon="icon-mat-delete" size="xs" @click="hapusItem(props)" />
@@ -190,13 +155,13 @@ function onRowClick (row) {
 }
 
 function closeEdit () {
-  console.log('close edit')
+  // console.log('close edit')
   refProxy.value.hide()
 }
 
 function hapusItem (val) {
   const namaobat = val.row?.namaobat
-  console.log('val', namaobat)
+  // console.log('val', namaobat)
   $q.dialog({
     title: 'Pemberitahuan',
     message: `Apakah Obat <strong>${namaobat}</strong>  ini akan dihapus?`,
@@ -216,7 +181,7 @@ function hapusItem (val) {
 
     store.updateListItems()
   }).onCancel(() => {
-    console.log('Cancel')
+    // console.log('Cancel')
     // selected.value = []
   }).onDismiss(() => {
     // console.log('I am triggered on both OK and Cancel')
@@ -224,7 +189,7 @@ function hapusItem (val) {
 }
 
 function simpanTemplate () {
-  console.log(store.templateSelected, store.items)
+  // console.log(store.templateSelected, store.items)
   // cek lagi
   const obat = store.items.filter(f => f?.jenis_perbekalan?.toLowerCase() === 'obat')
   const racik = store.items.filter(f => f?.kodeobat?.includes('racik'))
@@ -244,7 +209,7 @@ function simpanTemplate () {
     cancel: true,
     persistent: true
   }).onOk(data => {
-    console.log('>>>> OK, received', data)
+    // console.log('>>>> OK, received', data)
     store.simpanTemplate(data)
   }).onCancel(() => {
     // console.log('>>>> Cancel')
@@ -269,7 +234,7 @@ function pembatasan (row) {
   const racik = store.items.filter(f => f?.kodeobat?.includes('racik'))
   const tot = obat?.length + racik?.length
   // console.log('pembatasan', store.items, row, tot)
-  console.log('pembatasan', store.items, row)
+  // console.log('pembatasan', store.items, row)
   if (tot > row?.batas && (row?.jenis_perbekalan?.toLowerCase() === 'obat' || row?.kodeobat?.includes('racik'))) {
     return 'bg-negative text-white'
   }
@@ -292,22 +257,20 @@ watchEffect(() => {
   //   expanded.value = exp
   //   // console.log('exp', exp)
   // }
-  console.log('expanded', expanded.value)
+  // console.log('expanded', expanded.value)
   // console.log('storeErr', store.errorsOrder)
 })
 
 </script>
 
 <style lang="scss">
-
 .my-sticky-header {
   /* height or max-height is important */
   height: 100%;
   width: 100%;
 
-  div.q-table__top ,
-  .q-table__bottom
-   {
+  div.q-table__top,
+  .q-table__bottom {
     background-color: v-bind('bg.head');
     color: $white;
     border-collapse: separate !important;
@@ -316,15 +279,16 @@ watchEffect(() => {
 
   //   /* bg color is important for th; just specify one */
 
-  thead tr th{
+  thead tr th {
     position: sticky;
     z-index: 1;
   }
+
   thead tr:first-child th {
     // border-top: 1px solid $white;
     background-color: v-bind('bg.rowHead');
     color: $white;
-    top:0
+    top: 0
   }
 
   // /* this is when the loading indicator appears */
@@ -333,19 +297,19 @@ watchEffect(() => {
   //   top: 48px
   // }
   // /* prevent scrolling behind sticky top row on focus */
-  tbody{
+  tbody {
     /* height of all previous header rows */
     scroll-margin-top: 100px !important;
   }
 
   .q-table__bottom .q-field__native,
   .q-table__bottom .q-field__inner .q-field__control .q-anchor--skip,
-  i.q-icon
-   {
+  i.q-icon {
     color: $grey-4;
   }
 
-  .q-table__top,.q-table__bottom {
+  .q-table__top,
+  .q-table__bottom {
     z-index: 1000;
   }
 

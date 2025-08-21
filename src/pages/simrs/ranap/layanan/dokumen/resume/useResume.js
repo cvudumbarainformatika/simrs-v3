@@ -82,14 +82,25 @@ export default function useResume(pasien) {
   function cariLaborats(pasien) {
     //let lab = []
     const headx = pasien?.laboratold
-    //console.log('datalaboratx', pasien)
-    // if (headx?.length) {
-    //   const det = headx?.map(x => x.details)?.flat()
-    //   lab = det
-    // }
     data.laborats = pasien?.laboratold
     // console.log('datalaborat', data.laborats)
   }
+
+  const radiologi = computed(() => {
+    const headx = pasien?.radiologi ?? []
+    let res = []
+    if (headx.length) {
+      for (let i = 0; i < headx.length; i++) {
+        const el = headx[i];
+        const rinci = el?.rincians
+        if (rinci?.length) {
+          res = [...res, ...rinci]
+        }
+      }
+    }
+
+    return res
+  })
   function cariDiagnosis(pasien) {
     let diag = []
     const headx = pasien?.diagnosamedis?.length ? pasien?.diagnosamedis?.filter(x => x?.kdruang !== 'POL014') : []
@@ -136,6 +147,9 @@ export default function useResume(pasien) {
     //   .then(() => {
     //     console.log('triage', triage.items)
     //   })
+
+    console.log('onMounted useResume', pasien);
+
 
     cariAnamnesisIgd(pasien)
     cariPemeriksaanIgd(pasien)
@@ -263,11 +277,9 @@ export default function useResume(pasien) {
           {
             name: 'rad',
             label: 'RADIOLOGI',
-            data: pasien?.hasilradiologi?.length
-              ? pasien?.hasilradiologi?.map(rad => {
-                return `${rad?.rs3},  &nbsp;`
-              })
-              : []
+            data: radiologi.value.length ? radiologi.value.map(rad => {
+              return `<div>${rad?.kesimpulan}</div>`
+            }) : []
           }
         ]
 

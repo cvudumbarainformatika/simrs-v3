@@ -38,13 +38,13 @@ export const useAnamnesis = defineStore('anamnesis', {
   // },
   actions: {
 
-    hitungNilaiSkor () {
+    hitungNilaiSkor() {
       const skorKondKhusus = this.form.kondisikhusus.trim()?.length === 0 ? 0 : 2
       const skor = parseInt(this.form.skreeninggizi) + parseInt(this.form.asupanmakan) + parseInt(skorKondKhusus)
       this.form.skor = skor
     },
 
-    async saveData (pasien) {
+    async saveData(pasien) {
       this.loadingForm = true
       this.form.norm = pasien ? pasien.norm : ''
       this.form.noreg = pasien ? pasien.noreg : ''
@@ -78,7 +78,7 @@ export const useAnamnesis = defineStore('anamnesis', {
       }
     },
 
-    editForm (val) {
+    editForm(val) {
       this.form = {
         id: val.id,
         keluhanutama: val.rs4,
@@ -101,7 +101,7 @@ export const useAnamnesis = defineStore('anamnesis', {
       // console.log('form', this.form)
       // console.log('xxx', val)
     },
-    copyForm (val) {
+    copyForm(val) {
       this.form = {
         keluhanutama: val.keluhanutama,
         riwayatpenyakit: val.riwayatpenyakit,
@@ -124,11 +124,11 @@ export const useAnamnesis = defineStore('anamnesis', {
       // console.log('xxx', val)
     },
 
-    setForm (key, val) {
+    setForm(key, val) {
       this.form[key] = val
     },
 
-    setKeteranganSkornyeri (val) {
+    setKeteranganSkornyeri(val) {
       if (val === 0) {
         this.form.keteranganscorenyeri = 'tidak ada nyeri'
       }
@@ -143,7 +143,7 @@ export const useAnamnesis = defineStore('anamnesis', {
       }
     },
 
-    async deleteData (pasien, id) {
+    async deleteData(pasien, id) {
       const payload = { id }
       try {
         const resp = await api.post('v1/simrs/pelayanan/hapusanamnesis', payload)
@@ -159,12 +159,12 @@ export const useAnamnesis = defineStore('anamnesis', {
       }
     },
 
-    async getHistory (norm) {
+    async getHistory(norm) {
       this.loadingHistory = true
       const params = { params: { norm } }
       try {
         const resp = await api.get('v1/simrs/pelayanan/historyanamnesis', params)
-        console.log('history', resp)
+        // console.log('history', resp)
         if (resp.status === 200) {
           if (resp.data?.length) {
             const arr = resp.data
@@ -182,12 +182,12 @@ export const useAnamnesis = defineStore('anamnesis', {
         notifErr(error)
       }
     },
-    async nextHistory (cursor) {
+    async nextHistory(cursor) {
       this.loadingHistory = true
       const params = { params: { cursor } }
       try {
         const resp = await api.get('v1/simrs/pelayanan/historyanamnesis', params)
-        console.log('history', resp)
+        // console.log('history', resp)
         if (resp.status === 200) {
           if (resp.data?.length) {
             const arr = resp.data
@@ -206,7 +206,7 @@ export const useAnamnesis = defineStore('anamnesis', {
       }
     },
 
-    pilihHistory (val) {
+    pilihHistory(val) {
       this.form = {
         keluhanutama: val.keluhanutama,
         riwayatpenyakit: val.riwayatpenyakit,
@@ -219,7 +219,7 @@ export const useAnamnesis = defineStore('anamnesis', {
       this.selection = kommatext
     },
 
-    initReset () {
+    initReset() {
       this.form = null
       return new Promise((resolve, reject) => {
         this.form = {
@@ -247,7 +247,7 @@ export const useAnamnesis = defineStore('anamnesis', {
       })
     },
 
-    keteranganSkorGizi (nilai) {
+    keteranganSkorGizi(nilai) {
       const skor = nilai || 0
       if (skor < 2) {
         return 'tidak beresiko malnutrisi'

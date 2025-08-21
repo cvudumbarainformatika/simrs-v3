@@ -30,18 +30,6 @@ const refAutocomplete = ref(null)
 defineExpose({ refAutocomplete })
 
 const createValue = (val, done) => {
-  // Calling done(var) when new-value-mode is not set or is "add", or done(var, "add") adds "var" content to the model
-  // and it resets the input textbox to empty string
-  // ----
-  // Calling done(var) when new-value-mode is "add-unique", or done(var, "add-unique") adds "var" content to the model
-  // only if is not already set and it resets the input textbox to empty string
-  // ----
-  // Calling done(var) when new-value-mode is "toggle", or done(var, "toggle") toggles the model with "var" content
-  // (adds to model if not already in the model, removes from model if already has it)
-  // and it resets the input textbox to empty string
-  // ----
-  // If "var" content is undefined/null, then it doesn't tampers with the model
-  // and only resets the input textbox to empty string
 
   if (val?.length > 0) {
     const modelValue = (model?.value || []).slice()
@@ -85,38 +73,26 @@ const filterFn = (val, update) => {
       // console.log('filterOptions', val)
     }
   },
-  ref => {
-    console.log('ref', ref)
-    if (val !== '' && ref.options?.length) {
-      ref.setOptionIndex(-1)
-      ref.moveOptionSelection(1, true)
+    ref => {
+      console.log('ref', ref)
+      if (val !== '' && ref.options?.length) {
+        ref.setOptionIndex(-1)
+        ref.moveOptionSelection(1, true)
+      }
     }
-  }
   )
 }
 
 </script>
 
 <template>
-  <q-select
-    ref="refAutocomplete"
-    outlined
-    standout="bg-yellow-3"
-    label="Select multiple values"
-    use-input
-    use-chips
-    multiple
-    input-debounce="0"
-    @new-value="createValue"
-    :options="filterOptions"
-    @filter="filterFn"
-    @update:model-value="(val)=> {
+  <q-select ref="refAutocomplete" outlined standout="bg-yellow-3" label="Select multiple values" use-input use-chips
+    multiple input-debounce="0" @new-value="createValue" :options="filterOptions" @filter="filterFn"
+    @update:model-value="(val) => {
       // console.log('model', val);
       const j = val.join(';')
       emits('update:model', val);
-    }"
-    hide-bottom-space
-  >
+    }" hide-bottom-space>
     <!-- <template #selected-item="scope">
       <q-chip
         removable

@@ -281,7 +281,7 @@ const warnaAvatar = (kat) => {
     r = 'teal'
   }
   else if (kat === '4') {
-    r = 'cokelat'
+    r = 'teal'
   }
   else if (kat === '5') {
     r = 'orange'

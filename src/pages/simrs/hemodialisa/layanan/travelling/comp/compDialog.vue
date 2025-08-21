@@ -182,8 +182,8 @@
                 </div>
 
               </div>
-              <div class="text-weight-bold q-pt-sm">{{ pasien?.pegsim?.nama }}</div>
-              <div>NIP: {{ pasien?.pegsim?.nip }}</div>
+              <div class="text-weight-bold q-pt-sm">{{ pasien?.pegsimhd?.nama }}</div>
+              <div>NIP: {{ pasien?.pegsimhd?.nip }}</div>
 
             </div>
 
@@ -235,7 +235,7 @@ const qrDokter = computed(() => {
   const noreg = props?.pasien?.noreg// noreg
   const dok = 'TRAVELING HD.png'
   const asal = 'HEMODIALISA'
-  const petugas = props?.pasien?.pegsim?.nip
+  const petugas = props?.pasien?.pegsimhd?.nip
   const enc = btoa(`${noreg}|${dok}|${asal}|${petugas}`)
   return `${enc}`
 })

@@ -7,63 +7,47 @@
     </q-bar>
     <div class="col full-height">
       <q-scroll-area style="height: calc(100% - 1px);">
-        <q-form
-          ref="formRef"
-          class="row q-pa-md q-col-gutter-xs"
-          @submit="saveOrderRadiologi"
-        >
+        <q-form ref="formRef" class="row q-pa-md q-col-gutter-xs" @submit="saveOrderRadiologi">
           <div class="col-12">
-            <q-input
-              v-model="store.form.permintaan"
-              label="Permintaan"
-              autogrow
-              outlined
-              standout="bg-yellow-3"
-              icon="icon-mat-search"
-              :rules="[val => !!val || 'Harap cari pemeriksaan dahulu']"
-              lazy-rules="ondemand"
-              hide-bottom-space
-              @click="modalOpen = true"
-            />
+            <q-input v-model="store.form.permintaan" label="Permintaan" autogrow outlined standout="bg-yellow-3"
+              icon="icon-mat-search" :rules="[val => !!val || 'Harap cari pemeriksaan dahulu']" lazy-rules="ondemand"
+              hide-bottom-space @click="modalOpen = true" />
           </div>
-          <div class="col-6">
-            <q-input
-              v-model="store.form.diagnosakerja"
-              label="Diagnosa Masalah"
-              autogrow
-              outlined
-              standout="bg-yellow-3"
-              icon="icon-mat-search"
-            />
+          <q-card flat borderred v-if="store.form.items?.length" class="col-12 overflow-hidden">
+            <q-list dark borderred separator flat rounded class="cursor-pointer">
+              <div class="bg-grey text-white q-pa-sm">
+                <div class="text-weight-bold">List Permintaan</div>
+              </div>
+              <q-item v-for="(item, i) in store.form.items" class="bg-grey-9 text-white">
+                <q-item-section>
+                  <q-item-label>
+                    {{ item.nama }} ({{ item.group }})
+                    <em class="text-negative f-10 q-ml-sm"> - ({{ item.group }})</em>
+                  </q-item-label>
+                </q-item-section>
+                <q-item-section side>
+                  <q-icon name="icon-mat-close" size="xs" @click="store.hapusFormItems(item)" />
+                </q-item-section>
+              </q-item>
+            </q-list>
+          </q-card>
+          <div class="col-12">
+            <q-input v-model="store.form.diagnosakerja" label="Diagnosa Masalah" autogrow outlined
+              standout="bg-yellow-3" icon="icon-mat-search" />
           </div>
-          <div class="col-6">
-            <q-input
-              v-model="store.form.catatanpermintaan"
-              label="Catatan / Keteragan"
-              autogrow
-              outlined
-              standout="bg-yellow-3"
-              icon="icon-mat-search"
-            />
+          <div class="col-12">
+            <q-input v-model="store.form.catatanpermintaan" label="Catatan / Keterangan Klinis" autogrow outlined
+              :rules="[val => !!val || 'Harap diisi keterangan klinis terlebih dahulu']" standout="bg-yellow-3"
+              lazy-rules="ondemand" icon="icon-mat-search" />
           </div>
 
-          <div v-if="unit==='ranap'" class="col-12">
-            <app-autocomplete-new
-              ref="refPerawat"
-              :model="store.form.kodedokter"
-              label="Dokter yg meminta"
-              autocomplete="nama"
-              option-value="kdpegsimrs"
-              option-label="nama"
-              outlined
-              :source="store.dokters"
-              @on-select="(val)=> {
+          <div v-if="unit === 'ranap'" class="col-12">
+            <app-autocomplete-new ref="refPerawat" :model="store.form.kodedokter" label="Dokter yg meminta"
+              autocomplete="nama" option-value="kdpegsimrs" option-label="nama" outlined :source="store.dokters"
+              @on-select="(val) => {
                 store.form.kodedokter = val
                 const ceck = store.dokters.find(item => item.kdpegsimrs === val) ?? null
-              // store.form.perawatyanmeminta = ceck?.nama
-
-              }"
-            />
+              }" />
           </div>
 
           <div class="col-12">
@@ -75,20 +59,8 @@
                 Pasien Hamil ?
               </div>
               <div class="q-gutter-sm">
-                <q-radio
-                  v-model="store.form.statuskehamilan"
-                  val="Tidak"
-                  label="Tidak"
-                  size="sm"
-                  dense
-                />
-                <q-radio
-                  v-model="store.form.statuskehamilan"
-                  val="Iya"
-                  label="Iya"
-                  size="sm"
-                  dense
-                />
+                <q-radio v-model="store.form.statuskehamilan" val="Tidak" label="Tidak" size="sm" dense />
+                <q-radio v-model="store.form.statuskehamilan" val="Iya" label="Iya" size="sm" dense />
               </div>
             </div>
           </div>
@@ -98,20 +70,8 @@
                 Pasien Alergi Terhadap Bahan kontras ?
               </div>
               <div class="q-gutter-sm">
-                <q-radio
-                  v-model="store.form.statusalergipasien"
-                  val="Tidak"
-                  label="Tidak"
-                  size="sm"
-                  dense
-                />
-                <q-radio
-                  v-model="store.form.statusalergipasien"
-                  val="Iya"
-                  label="Iya"
-                  size="sm"
-                  dense
-                />
+                <q-radio v-model="store.form.statusalergipasien" val="Tidak" label="Tidak" size="sm" dense />
+                <q-radio v-model="store.form.statusalergipasien" val="Iya" label="Iya" size="sm" dense />
               </div>
             </div>
           </div>
@@ -121,20 +81,8 @@
                 Cito ?
               </div>
               <div class="q-gutter-sm">
-                <q-radio
-                  v-model="store.form.cito"
-                  val="Tidak"
-                  label="Tidak"
-                  size="sm"
-                  dense
-                />
-                <q-radio
-                  v-model="store.form.cito"
-                  val="Iya"
-                  label="Iya"
-                  size="sm"
-                  dense
-                />
+                <q-radio v-model="store.form.cito" val="Tidak" label="Tidak" size="sm" dense />
+                <q-radio v-model="store.form.cito" val="Iya" label="Iya" size="sm" dense />
               </div>
             </div>
           </div>
@@ -143,13 +91,8 @@
           </div>
           <div class="col-12">
             <div class="text-right">
-              <q-btn
-                label="Simpan & Kirim Permintaan"
-                type="submit"
-                color="primary"
-                :loading="store.loadingSave"
-                :disable="store.loadingSave"
-              />
+              <q-btn label="Simpan & Kirim Permintaan" type="submit" color="primary" :loading="store.loadingSave"
+                :disable="store.loadingSave" />
             </div>
           </div>
         </q-form>
@@ -157,11 +100,8 @@
     </div>
 
     <!-- modal -->
-    <ModalPermintaan
-      v-model="modalOpen"
-      :lists="store.namaPemeriksaans"
-      @ok="(val)=>pilihPermintaan(val)"
-    />
+    <ModalPermintaan v-model="modalOpen" :lists="store.namaPemeriksaans" :pasien="props.pasien"
+      @ok="(val) => pilihPermintaan(val)" />
   </div>
 </template>
 
@@ -186,18 +126,12 @@ const props = defineProps({
 
 // console.log('props', props?.pasien)
 
-function pilihPermintaan (val) {
-  const arr = val?.length ? val.map(x => x.val) : []
-  const arr2 = val?.length ? val.map(x => x.kode) : []
-  const implode = arr?.length ? arr.join('-. ') : ''
-  const str = `-. ${implode}`
-  const tpemeriksaan = arr2?.length ? arr2.join(';') : ''
-  store.setForm('permintaan', str)
-  store.setForm('tpemeriksaan', tpemeriksaan)
+function pilihPermintaan(val) {
+  store.mappingArrayItems(val)
   modalOpen.value = false
 }
 
-function saveOrderRadiologi () {
+function saveOrderRadiologi() {
   const isRanap = props?.unit === 'ranap'
   store.saveRadiologi(props.pasien, isRanap).then(() => {
     formRef.value.resetValidation()

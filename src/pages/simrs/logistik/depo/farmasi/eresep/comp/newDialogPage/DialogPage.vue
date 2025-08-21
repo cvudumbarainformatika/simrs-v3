@@ -217,7 +217,7 @@
     </div>
 
     <div v-if="apps?.user?.kdruangansim === 'Gd-04010102' || apps?.user?.kdruangansim === 'Gd-02010104'"
-      class="row justify-end q-ma-sm">
+      class="row justify-start q-ma-sm ">
       <div class="col-auto q-px-sm">
         <q-btn no-caps dense class="f-10 q-mb-xs" color="dark" text-color="white" label="Etiket Pagi"
           @click="openRanap('Diminum Pagi (06.00) ')">
