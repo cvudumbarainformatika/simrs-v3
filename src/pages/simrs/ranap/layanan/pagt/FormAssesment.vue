@@ -180,11 +180,7 @@ watch(() => store.items, (val, old) => {
 
     const item = val[0]
 
-    if (item) {
-      store.form = {
-        ...item
-      }
-    }
+    store.initReset(item)
 
 
   }
