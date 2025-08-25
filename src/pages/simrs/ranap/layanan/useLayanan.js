@@ -3,7 +3,7 @@ import { usePengunjungRanapStore } from 'src/stores/simrs/ranap/pengunjung'
 import { useAplikasiStore } from 'src/stores/app/aplikasi'
 import { useRoute } from 'vue-router'
 
-export default function useLayanan (pasien, mpp) {
+export default function useLayanan(pasien, mpp) {
   const store = usePengunjungRanapStore()
   const auth = useAplikasiStore()
   const route = useRoute()
@@ -27,7 +27,7 @@ export default function useLayanan (pasien, mpp) {
 
     {
       name: 'Pagt',
-      label: 'PAGT',
+      label: 'Asessmen Gizi',
       icon: 'icon-mat-post_add',
       nakes: ['5'],
       comp: shallowRef(defineAsyncComponent(() => import('./pagt/IndexPage.vue')))
@@ -131,6 +131,13 @@ export default function useLayanan (pasien, mpp) {
       comp: shallowRef(defineAsyncComponent(() => import('./dokumen/IndexPage.vue')))
     },
     {
+      name: 'billing',
+      label: 'Billing & Rekap',
+      icon: 'icon-mat-receipt_long',
+      nakes: ['1', '2', '3', '4', '5', '6', 'mpp'],
+      comp: shallowRef(defineAsyncComponent(() => import('./billing/IndexPage.vue')))
+    },
+    {
       name: 'mpp',
       label: 'MPP',
       icon: 'icon-fa-arrows-down-to-people-solid',
@@ -195,7 +202,7 @@ export default function useLayanan (pasien, mpp) {
     menu.value = filterredMenus.value[0]
   })
 
-  function menuDiganti (val) {
+  function menuDiganti(val) {
     menu.value = val
   }
 

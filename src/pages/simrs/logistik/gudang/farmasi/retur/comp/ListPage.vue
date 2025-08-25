@@ -1,25 +1,9 @@
 <template>
   <div>
-    <app-table-extend
-      :columns="store.columns"
-      :column-hide="store.columnHide"
-      :items="store.items"
-      :meta="store.meta"
-      :per-page="store.param.per_page"
-      :loading="store.loading"
-      :to-search="store.param.q"
-      :click-able="true"
-      :default-btn="false"
-      :ada-tambah="false"
-      :ada-filter="false"
-      use-full
-      row-no
-      @find="store.setSearch"
-      @goto="store.setPage"
-      @set-row="store.setPerPage"
-      @refresh="store.refreshTable"
-      @on-click="onClick"
-    >
+    <app-table-extend :columns="store.columns" :column-hide="store.columnHide" :items="store.items" :meta="store.meta"
+      :per-page="store.param.per_page" :loading="store.loading" :to-search="store.param.q" :click-able="true"
+      :default-btn="false" :ada-tambah="false" :ada-filter="false" use-full row-no @find="store.setSearch"
+      @goto="store.setPage" @set-row="store.setPerPage" @refresh="store.refreshTable" @on-click="onClick">
       <template #col-nomor>
         <div>Nomor</div>
       </template>
@@ -33,35 +17,25 @@
         <div>Gudang</div>
       </template>
       <template #cell-nomor="{ row }">
-        <div
-          v-if="!!row.no_retur"
-          class="row no-wrap justify-between items-center q-mb-xs"
-          style="white-space: none;"
-        >
+        <div v-if="!!row.no_retur" class="row no-wrap justify-between items-center q-mb-xs" style="white-space: none;">
           <div class="q-mr-xs ">
-            Nomor Retur
+            Retur
           </div>
           <div class="box text-right text-italic ">
             {{ row.no_retur }}
           </div>
         </div>
-        <div
-          v-if="!!row.no_faktur_retur_pbf"
-          class="row no-wrap justify-between items-center q-mb-xs"
-          style="white-space: none;"
-        >
+        <div v-if="!!row.no_faktur_retur_pbf" class="row no-wrap justify-between items-center q-mb-xs"
+          style="white-space: none;">
           <div class="q-mr-xs ">
-            Nomor Faktur Retur PBF
+            Faktur Retur PBF
           </div>
           <div class="box text-right text-italic">
             {{ row.no_faktur_retur_pbf }}
           </div>
         </div>
-        <div
-          v-if="!!row.no_kwitansi_pembayaran"
-          class="row no-wrap justify-between items-center q-mb-xs"
-          style="white-space: none;"
-        >
+        <div v-if="!!row.no_kwitansi_pembayaran" class="row no-wrap justify-between items-center q-mb-xs"
+          style="white-space: none;">
           <div class="q-mr-xs ">
             Nomor Kwitansi Pembayaran
           </div>
@@ -71,11 +45,7 @@
         </div>
       </template>
       <template #cell-tanggal="{ row }">
-        <div
-          v-if="row.tgl_retur"
-          class="row no-wrap justify-between items-center q-mb-xs"
-          style="white-space: none;"
-        >
+        <div v-if="row.tgl_retur" class="row no-wrap justify-between items-center q-mb-xs" style="white-space: none;">
           <div class="q-mr-xs">
             Retur
           </div>
@@ -83,11 +53,8 @@
             {{ dateFullFormat(row.tgl_retur) }}
           </div>
         </div>
-        <div
-          v-if="row.tgl_faktur_retur_pbf"
-          class="row no-wrap justify-between items-center q-mb-xs"
-          style="white-space: none;"
-        >
+        <div v-if="row.tgl_faktur_retur_pbf" class="row no-wrap justify-between items-center q-mb-xs"
+          style="white-space: none;">
           <div class="q-mr-xs">
             Faktur Retur PBF
           </div>
@@ -95,11 +62,8 @@
             {{ dateFullFormat(row.tgl_faktur_retur_pbf) }}
           </div>
         </div>
-        <div
-          v-if="row.tgl_kwitansi_pembayaran"
-          class="row no-wrap justify-between items-center q-mb-xs"
-          style="white-space: none;"
-        >
+        <div v-if="row.tgl_kwitansi_pembayaran" class="row no-wrap justify-between items-center q-mb-xs"
+          style="white-space: none;">
           <div class="q-mr-xs">
             Kwitansi Pembayaran
           </div>
@@ -115,97 +79,54 @@
         {{ row?.penyedia?.nama }}
       </template>
       <template #left-acttion="{ row }">
-        <div
-          v-if="!row.kunci"
-          class="row items-center"
-        >
-          <q-btn
-            flat
-            icon="icon-mat-edit"
-            dense
-            size="sm"
-            color="primary"
-            :loading="row.loadingEdit"
-            :disable="row.loadingEdit"
-            @click="()=>{
+        <div v-if="!row.kunci" class="row items-center">
+          <q-btn flat icon="icon-mat-edit" dense size="sm" color="primary" :loading="row.loadingEdit"
+            :disable="row.loadingEdit" @click="() => {
               row.expand = !row.expand
               row.highlight = !row.highlight
-              headerOpen=true
-              dataHeader=row
-            }"
-          >
-            <q-tooltip
-              class="primary"
-              :offset="[10, 10]"
-            >
+              headerOpen = true
+              dataHeader = row
+            }">
+            <q-tooltip class="primary" :offset="[10, 10]">
               Edit Faktur retur
             </q-tooltip>
           </q-btn>
-          <q-btn
-            flat
-            icon="icon-mat-delete"
-            dense
-            size="sm"
-            color="negative"
-            :loading="row.loading"
-            :disable="row.loading"
-            @click="store.deleteHeader(row)"
-          >
-            <q-tooltip
-              class="primary"
-              :offset="[10, 10]"
-            >
+          <q-btn flat icon="icon-mat-delete" dense size="sm" color="negative" :loading="row.loading"
+            :disable="row.loading" @click="store.deleteHeader(row)">
+            <q-tooltip class="primary" :offset="[10, 10]">
               Hapus
             </q-tooltip>
           </q-btn>
-          <q-btn
-            flat
-            icon="icon-mat-lock_open"
-            dense
-            color="green"
-            :loading="row.loadingKunci"
-            :disable="row.loadingKunci"
-            @click="kunci(row)"
-          >
-            <q-tooltip
-              class="primary"
-              :offset="[10, 10]"
-            >
+          <q-btn flat icon="icon-mat-lock_open" dense color="green" :loading="row.loadingKunci"
+            :disable="row.loadingKunci" @click="kunci(row)">
+            <q-tooltip class="primary" :offset="[10, 10]">
               Kunci Retur dan Kurangi Stok
             </q-tooltip>
           </q-btn>
         </div>
         <div v-if="row.kunci">
           <div class="row items-center">
-            <q-btn
-              flat
-              icon="icon-mat-lock"
-              dense
-              color="negative"
-              @click="info(row)"
-            >
-              <q-tooltip
-                class="primary"
-                :offset="[10, 10]"
-              >
+            <q-btn flat icon="icon-mat-edit" dense size="sm" color="primary" :loading="row.loadingEdit"
+              :disable="row.loadingEdit" @click="() => {
+                row.expand = !row.expand
+                row.highlight = !row.highlight
+                headerOpen = true
+                dataHeader = row
+              }">
+              <q-tooltip class="primary" :offset="[10, 10]">
+                Edit Faktur retur
+              </q-tooltip>
+            </q-btn>
+            <q-btn flat icon="icon-mat-lock" dense color="negative" @click="info(row)">
+              <q-tooltip class="primary" :offset="[10, 10]">
                 Retur sudah di kunci
               </q-tooltip>
             </q-btn>
           </div>
         </div>
         <div>
-          <q-btn
-            round
-            icon="icon-mat-print"
-            dense
-            color="dark"
-            size="sm"
-            @click="toPrint(row)"
-          >
-            <q-tooltip
-              class="primary"
-              :offset="[10, 10]"
-            >
+          <q-btn round icon="icon-mat-print" dense color="dark" size="sm" @click="toPrint(row)">
+            <q-tooltip class="primary" :offset="[10, 10]">
               Print
             </q-tooltip>
           </q-btn>
@@ -217,72 +138,43 @@
         </div>
         <div v-if="row.rinci?.length">
           <div class="row bg-dark text-white q-pa-xs q-mb-sm" style="width: 100%;">
-            <div
-              class="col-auto"
-              style="width:5%"
-            >
+            <div class="col-auto" style="width:5%">
               No
             </div>
 
-            <div
-              class="col-auto anak"
-            >
+            <div class="col-auto anak">
               Nama Barang
             </div>
-            <div
-              class="col-auto anak"
-            >
+            <div class="col-auto anak">
               Kondisi Barang
             </div>
-            <div
-              class="col-auto anak"
-            >
+            <div class="col-auto anak">
               Nomor Penerimaan
             </div>
-            <div
-              class="col-auto anak"
-            >
+            <div class="col-auto anak">
               Nomor Batch
             </div>
-            <div
-              class="col-auto anak"
-            >
+            <div class="col-auto anak">
               Tanggal Kadalwarsa
             </div>
 
-            <div
-              class="col-auto anak text-right"
-            >
+            <div class="col-auto anak text-right">
               Jumlah Retur
             </div>
-            <div
-              class="col-auto anak text-right"
-            >
+            <div class="col-auto anak text-right">
               Nilai Retur
             </div>
-            <div
-              class="col-auto text-right"
-              style="width:5%"
-            >
+            <div class="col-auto text-right" style="width:5%">
               #
             </div>
           </div>
-          <div
-            v-for="(trm,n) in row.rinci"
-            :key="n"
-            class=" "
-          >
+          <div v-for="(trm, n) in row.rinci" :key="n" class=" ">
             <div class="row items-center q-col-gutter-sm q-mb-sm" style="width: 100%;">
-              <div
-                class="col-auto"
-                style="width:5%"
-              >
-                {{ n+1 }}
+              <div class="col-auto" style="width:5%">
+                {{ n + 1 }}
               </div>
 
-              <div
-                class="col-auto anak"
-              >
+              <div class="col-auto anak">
                 <div class="namaobat">
                   {{ trm?.mobatnew?.nama_obat }}
                 </div>
@@ -290,97 +182,60 @@
                   ({{ trm?.mobatnew?.satuan_k }})
                 </div>
               </div>
-              <div
-                class="col-auto anak"
-              >
+              <div class="col-auto anak">
                 {{ trm?.kondisi_barang }}
               </div>
-              <div
-                class="col-auto anak"
-              >
+              <div class="col-auto anak">
                 <div class="row">
                   {{ trm?.nopenerimaan }}
                 </div>
-                <div v-if="trm?.nopenerimaan!==trm?.nopenerimaan_default" class="row text-italic f-10">
+                <div v-if="trm?.nopenerimaan !== trm?.nopenerimaan_default" class="row text-italic f-10">
                   Nomor Penerimaan default : <span class="text-weight-bold">{{ trm?.nopenerimaan_default }}
                   </span>
                 </div>
               </div>
-              <div
-                class="col-auto anak"
-              >
+              <div class="col-auto anak">
                 <div class="row">
                   {{ trm?.no_batch }}
                 </div>
-                <div v-if="trm?.no_batch!==trm?.no_batch_default" class="row text-italic f-10">
+                <div v-if="trm?.no_batch !== trm?.no_batch_default" class="row text-italic f-10">
                   Nomor Batch default : <span class="text-weight-bold">{{ trm?.no_batch_default }}</span>
                 </div>
               </div>
-              <div
-                class="col-auto anak"
-              >
+              <div class="col-auto anak">
                 <div class="row">
                   {{ dateFullFormat(trm?.tgl_exp) }}
                 </div>
-                <div v-if="trm?.tgl_exp!==trm?.tgl_exp_default" class="row text-italic f-10">
-                  Nomor penerimaan default : <span class="text-weight-bold">{{ dateFullFormat(trm?.tgl_exp_default) }}</span>
+                <div v-if="trm?.tgl_exp !== trm?.tgl_exp_default" class="row text-italic f-10">
+                  Nomor penerimaan default : <span class="text-weight-bold">{{ dateFullFormat(trm?.tgl_exp_default)
+                  }}</span>
                 </div>
               </div>
 
-              <div
-                class="col-auto anak text-right"
-              >
+              <div class="col-auto anak text-right">
                 {{ trm?.jumlah_retur }}
               </div>
-              <div
-                class="col-auto anak text-right"
-              >
+              <div class="col-auto anak text-right">
                 <div class="row justify-end">
-                  {{ formatRpDouble(trm?.subtotal,2) }}
+                  {{ formatRpDouble(trm?.subtotal, 2) }}
                 </div>
-                <div v-if="trm?.subtotal!==trm?.subtotal_default" class="row text-italic f-10 justify-end">
+                <div v-if="trm?.subtotal !== trm?.subtotal_default" class="row text-italic f-10 justify-end">
                   Subtotal default : <span class="text-weight-bold">{{ trm?.subtotal_default }}</span>
                 </div>
               </div>
-              <div
-                class="col-auto text-right"
-                style="width:5%"
-              >
-                <q-btn
-                  v-if="!row.kunci"
-                  flat
-                  icon="icon-mat-edit"
-                  dense
-                  size="sm"
-                  color="primary"
-                  :loading="trm.loadingEdit"
-                  :disable="trm.loadingEdit"
-                  @click="()=>{
-                    rinciOpen=true
-                    dataRinci=trm
-                  }"
-                >
-                  <q-tooltip
-                    class="primary"
-                    :offset="[10, 10]"
-                  >
+              <div class="col-auto text-right" style="width:5%">
+                <q-btn v-if="!row.kunci" flat icon="icon-mat-edit" dense size="sm" color="primary"
+                  :loading="trm.loadingEdit" :disable="trm.loadingEdit" @click="() => {
+                    rinciOpen = true
+                    dataRinci = trm
+                  }">
+                  <q-tooltip class="primary" :offset="[10, 10]">
                     Edit Penerimaan
                   </q-tooltip>
                 </q-btn>
-                <q-btn
-                  v-if="!row.kunci"
-                  flat
-                  icon="icon-mat-delete"
-                  dense
-                  size="sm"
-                  color="negative"
-                  :loading=" trm.loading"
-                  @click="store.deleteRinci(trm)"
-                >
-                  <q-tooltip
-                    class="primary"
-                    :offset="[10, 10]"
-                  >
+                <q-btn v-if="!row.kunci" flat icon="icon-mat-delete" dense size="sm" color="negative"
+                  :loading="trm.loading" @click="store.deleteRinci(trm)">
+                  <q-tooltip class="primary" :offset="[10, 10]">
                     Hapus
                   </q-tooltip>
                 </q-btn>
@@ -391,23 +246,16 @@
       </template>
     </app-table-extend>
   </div>
-  <app-print-surat
-    ref="dialogPrint"
-    v-model="store.isOpen"
-    :tanggal="store.dataToPrint?.flag==='1'?store.dataToPrint?.tgl_retur:store.dataToPrint?.tgl_retur"
-    @close="store.isOpen=false"
-  >
+  <app-print-surat ref="dialogPrint" v-model="store.isOpen"
+    :tanggal="store.dataToPrint?.flag === '1' ? store.dataToPrint?.tgl_retur : store.dataToPrint?.tgl_retur"
+    @close="store.isOpen = false">
     <template #isi>
       <!-- Top words -->
-      <div
-        class="row justify-center q-mt-md f-16 text-weight-bold"
-      >
+      <div class="row justify-center q-mt-md f-16 text-weight-bold">
         DATA RETUR
       </div>
 
-      <div
-        class="row justify-center q-mb-sm"
-      >
+      <div class="row justify-center q-mb-sm">
         <div class="col-2">
           Tanggal Retur
         </div>
@@ -429,10 +277,7 @@
           {{ store.dataToPrint?.no_retur }}
         </div>
       </div>
-      <div
-        v-if="store.dataToPrint?.tgl_kwitansi_pembayaran"
-        class="row justify-center q-mb-sm"
-      >
+      <div v-if="store.dataToPrint?.tgl_kwitansi_pembayaran" class="row justify-center q-mb-sm">
         <div class="col-2">
           Tanggal Kwitansi Pembayaran
         </div>
@@ -443,10 +288,7 @@
           {{ dateFullFormat(store.dataToPrint?.tgl_kwitansi_pembayaran) }}
         </div>
       </div>
-      <div
-        v-if="!!store.dataToPrint?.no_kwitansi_pembayaran"
-        class="row justify-center q-mb-sm"
-      >
+      <div v-if="!!store.dataToPrint?.no_kwitansi_pembayaran" class="row justify-center q-mb-sm">
         <div class="col-2">
           No. Kwitansi Pembayaran
         </div>
@@ -458,13 +300,11 @@
         </div>
       </div>
 
-      <div
-        class="row justify-start q-mb-md"
-      >
+      <div class="row justify-start q-mb-md">
         <p>
           Telah dikembalikan ke
           <span class="text-weight-bold">
-            {{ store.dataToPrint?.penyedia?store.dataToPrint?.penyedia.nama:'-' }}
+            {{ store.dataToPrint?.penyedia ? store.dataToPrint?.penyedia.nama : '-' }}
           </span> barang dalam list dibawah ini :
         </p>
       </div>
@@ -491,37 +331,23 @@
           </div>
         </div>
         <!-- body details -->
-        <div
-          v-for="(det, i) in store.dataToPrint?.rinci"
-          :key="i"
-        >
-          <div
-            class="row justify-between q-col-gutter-sm"
-          >
+        <div v-for="(det, i) in store.dataToPrint?.rinci" :key="i">
+          <div class="row justify-between q-col-gutter-sm">
             <div class="col-5 border-bottom border-left">
-              {{ i+1 }}. {{ det.mobatnew?det.mobatnew.nama_obat:'Nama barang tidak ditemukan' }}
+              {{ i + 1 }}. {{ det.mobatnew ? det.mobatnew.nama_obat : 'Nama barang tidak ditemukan' }}
             </div>
-            <div
-              class="col-1 border-bottom border-left"
-            >
-              {{ det.jumlah_retur===null?0:det.jumlah_retur }}
+            <div class="col-1 border-bottom border-left">
+              {{ det.jumlah_retur === null ? 0 : det.jumlah_retur }}
             </div>
-            <div
-              class="col-2 border-bottom border-left"
-            >
-              {{ det.mobatnew?det.mobatnew.satuan_k:'-' }}
+            <div class="col-2 border-bottom border-left">
+              {{ det.mobatnew ? det.mobatnew.satuan_k : '-' }}
             </div>
             <div class="col-4 border-bottom border-left border-right">
               <div class="print-only">
-                {{ det?.keterangan??'-' }}
+                {{ det?.keterangan ?? '-' }}
               </div>
               <div class="print-hide">
-                <app-input
-                  v-model="det.keterangan"
-                  label="keterangan"
-                  outlined
-                  valid
-                />
+                <app-input v-model="det.keterangan" label="keterangan" outlined valid />
               </div>
             </div>
           </div>
@@ -530,22 +356,16 @@
       </div>
     </template>
   </app-print-surat>
-  <editHeader
-    v-model="headerOpen" :data="dataHeader"
-    @simpan="(val)=>{
-      console.log('simpan', val);
-      store.simpanEditFaktur(val,dataHeader)
-      headerOpen=false
-    }"
-  />
-  <editRinci
-    v-model="rinciOpen" :data="dataRinci"
-    @simpan="(val)=>{
-      console.log('simpan', val);
-      store.simpanEditRinci(val,dataRinci)
-      rinciOpen=false
-    }"
-  />
+  <editHeader v-model="headerOpen" :data="dataHeader" @simpan="(val) => {
+    console.log('simpan', val);
+    store.simpanEditFaktur(val, dataHeader)
+    headerOpen = false
+  }" />
+  <editRinci v-model="rinciOpen" :data="dataRinci" @simpan="(val) => {
+    console.log('simpan', val);
+    store.simpanEditRinci(val, dataRinci)
+    rinciOpen = false
+  }" />
 </template>
 <script setup>
 import { dateFullFormat, formatRpDouble } from 'src/modules/formatter'
@@ -595,32 +415,38 @@ function info (val) {
 store.getInitialData()
 </script>
 <style scoped>
-.namaobat{
+.namaobat {
   /* inline-size: 200px; */
   overflow-wrap: break-word;
 }
-.anak{
+
+.anak {
   white-space: normal !important;
-  width:calc(90% / 7);
+  width: calc(90% / 7);
   overflow-wrap: break-word;
 }
+
 .box {
   white-space: normal !important;
-    inline-size: 200px;
-    overflow-wrap: break-word;
+  inline-size: 200px;
+  overflow-wrap: break-word;
 }
+
 .box2 {
   white-space: normal !important;
-    inline-size: 150px;
-    overflow-wrap: break-word;
+  inline-size: 150px;
+  overflow-wrap: break-word;
 }
-.terima{
+
+.terima {
   background-color: rgba(120, 231, 51, 0.549);
 }
-.anu:hover{
+
+.anu:hover {
   background-color: rgba(166, 173, 144, 0.548);
 }
-.anudua:hover{
+
+.anudua:hover {
   background-color: rgb(54, 196, 231);
 }
 </style>

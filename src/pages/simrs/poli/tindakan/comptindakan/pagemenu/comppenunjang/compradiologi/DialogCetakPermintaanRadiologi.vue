@@ -92,6 +92,25 @@
           </div>
 
         </q-card-section>
+
+
+        <q-card-section align="right">
+          <div class="column flex-center" style="max-width: 200px;">
+            <div>Dokter Yg Meminta</div>
+            <div style="width: 80px;" class="flex flex-center q-my-xs">
+              <vue-qrcode :value="qrUrl" tag="svg" :options="{
+                errorCorrectionLevel: 'Q',
+                color: {
+                  dark: '#000000',
+                  light: '#ffffff',
+                },
+                margin: 2
+              }" />
+            </div>
+            <div class="text-weight-bold text-center">{{ data?.dokter?.nama }}</div>
+          </div>
+        </q-card-section>
+
       </div>
       <q-card-section class="q-pa-none bg-primary text-white">
         <div class="q-pa-md row justify-between items-center">
@@ -106,7 +125,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed, } from 'vue'
 
 const props = defineProps({
   pasien: {
@@ -141,5 +160,15 @@ function init() {
   console.log('init', props.pasien, props.data);
 
 }
+
+const qrUrl = computed(() => {
+  const noreg = props.pasien?.noreg // noreg
+  const dok = 'PENGANTAR-RADIOLOGI.png'
+  const asal = 'RADIOLOGI'
+  const petugas = props?.data?.rs8 ?? null
+  const enc = btoa(`${noreg}|${dok}|${asal}|${petugas}`)
+  return `https://rsud.probolinggokota.go.id/dokumen-simrs/legalitas/${enc}`
+  // return `https://xenter.my.id/qr-document?noreg=${noreg}&dokumen=${dok}&asal=${asal}`
+})
 
 </script>

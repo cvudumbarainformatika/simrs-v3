@@ -71,6 +71,14 @@
                 </div>
               </q-item-section>
             </q-item>
+            <q-item class="q-mt-sm">
+              <q-item-section>
+                <div class="row">
+                  <div class="col-4">NO.TELP</div>
+                  <div class="col-8">: {{ pasien?.nohp }}</div>
+                </div>
+              </q-item-section>
+            </q-item>
           </q-list>
         </div>
 

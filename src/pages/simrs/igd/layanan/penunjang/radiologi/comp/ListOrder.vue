@@ -33,10 +33,16 @@
                     {{ item?.rs4 }}
                   </q-item-label>
                   <q-item-label caption>
-                    KETERANGAN
+                    DIAGNOSA KERJA
                   </q-item-label>
                   <q-item-label lines="6">
-                    {{ item?.rs7 }}
+                    {{ item?.rs7 || '-' }}
+                  </q-item-label>
+                  <q-item-label caption>
+                    CATATAN / Ket.Klinis
+                  </q-item-label>
+                  <q-item-label lines="6">
+                    {{ item?.catatanpermintaan || '-' }}
                   </q-item-label>
                 </q-item-section>
                 <q-item-section side>
