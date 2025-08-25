@@ -70,11 +70,12 @@
       </div>
     </div>
     <q-separator />
-    <div class="row full-height q-gutter-xs">
-      <div class="col-6">
+    <div class="row " style="height: 81%;">
+      <div class="col-6 ">
         <form-pembayaran-detail :pasien="prop?.pasien" :jenislayanan="store.jenispembayaran" :billing="prop?.billing"
           :kwitansi="prop?.kwitansi" />
       </div>
+      <q-separator vertical />
       <div class="col">
         <data-pembayaran :kwitansi="prop?.kwitansi" />
       </div>

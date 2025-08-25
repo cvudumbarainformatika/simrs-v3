@@ -9,6 +9,11 @@ export const usePembayaranKasirRajalStore = defineStore('pembayaran-kasir-rajal-
     loadingQris: false,
     items: [],
     itemsobat: [],
+    itemstindakan: [],
+    itemsoperasi: [],
+    itemslaborat: [],
+    itemsradiologi: [],
+    itemssharingbpjs: [],
     kwitansi: {},
     form: {
       noreg: '',
@@ -27,7 +32,11 @@ export const usePembayaranKasirRajalStore = defineStore('pembayaran-kasir-rajal-
       carabayar: '',
       jenislayanan: ''
     },
-    formqris: {}
+    formqris: {},
+    totalkarcis: 0,
+    totalobat: 0,
+    totaltindakan: 0,
+    total: 0
   }),
   actions: {
     savePembayaran(pasien, billing, jenislayanan, val) {
@@ -202,7 +211,7 @@ export const usePembayaranKasirRajalStore = defineStore('pembayaran-kasir-rajal-
             const retur = x?.retur?.rinci?.reduce((total, item) => {
               return total + ((item.harga_jual ?? 0) * (item.jumlah_retur ?? 0))
             }, 0) ?? 0
-            console.log('retur', retur)
+
             const hasil = {
               nota: x?.noresep,
               tanggal: x?.tgl,
@@ -215,11 +224,65 @@ export const usePembayaranKasirRajalStore = defineStore('pembayaran-kasir-rajal-
             hasilglobal.push(hasil)
           })
           this.itemsobat = hasilglobal
-          console.log('hasilglobal', this.itemsobat)
           // const totalSemua = hasilglobal.reduce((acc, h) => {
           //   return acc + h.rincian + h.rincianracik
           // }, 0) + jumlahracikan_r
           // console.log('hasilglobal', totalSemua)
+          this.loading = false
+        })
+        .catch(() => { this.loading = false })
+    },
+    async caritindakan(noreg) {
+      this.loading = true
+      this.itemstindakan = []
+      const params = { params: { noreg: noreg } }
+      const resp = await api.get('/v1/simrs/kasir/rajal/cari-tindakan', params)
+        .then(resp => {
+          this.itemstindakan = resp.data
+          this.loading = false
+        })
+        .catch(() => { this.loading = false })
+    },
+    async carioperasi(noreg) {
+      this.loading = true
+      this.itemsoperasi = []
+      const params = { params: { noreg: noreg } }
+      const resp = await api.get('/v1/simrs/kasir/rajal/cari-tindakan-operasi', params)
+        .then(resp => {
+          this.itemsoperasi = resp.data
+          this.loading = false
+        })
+        .catch(() => { this.loading = false })
+    },
+    async carilaborat(noreg) {
+      this.loading = true
+      this.itemslaborat = []
+      const params = { params: { noreg: noreg } }
+      const resp = await api.get('/v1/simrs/kasir/rajal/cari-laborat', params)
+        .then(resp => {
+          this.itemslaborat = resp.data
+          this.loading = false
+        })
+        .catch(() => { this.loading = false })
+    },
+    async cariradiologi(noreg) {
+      this.loading = true
+      this.itemsradiologi = []
+      const params = { params: { noreg: noreg } }
+      const resp = await api.get('/v1/simrs/kasir/rajal/cari-radiologi', params)
+        .then(resp => {
+          this.itemsradiologi = resp.data
+          this.loading = false
+        })
+        .catch(() => { this.loading = false })
+    },
+    async carisharingbpjs(noreg) {
+      this.loading = true
+      this.itemssharingbpjs = []
+      const params = { params: { noreg: noreg } }
+      const resp = await api.get('/v1/simrs/kasir/rajal/cari-radiologi', params)
+        .then(resp => {
+          this.itemssharingbpjs = resp.data
           this.loading = false
         })
         .catch(() => { this.loading = false })

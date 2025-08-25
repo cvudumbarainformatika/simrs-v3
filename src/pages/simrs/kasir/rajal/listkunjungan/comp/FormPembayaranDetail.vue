@@ -1,142 +1,240 @@
 <template>
-  <q-form ref="refForm" class="full-height bg-grey-1 q-pa-sm">
-    <div class="row">
-      <div class="col-6 text-weight-bold q-gutter-sm">
-        <q-btn-dropdown color="primary" label="Pilih Jenis Pembayaran">
-          <q-list>
-            <q-item v-for="item in paymentOptions" :key="item.value" clickable v-close-popup
-              @click="selectPayment(item.value)">
-              <q-item-section avatar>
-                <q-avatar :icon="item.icon" :color="item.color" :label="selectedPayment
-                  ? paymentOptions.find(o => o.value === selectedPayment)?.label
-                  : 'Pilih Jenis Pembayaran'" text-color="white" size="sm" />
-              </q-item-section>
-              <q-item-section>
-                <q-item-label>{{ item.label }}</q-item-label>
-              </q-item-section>
-            </q-item>
-          </q-list>
-        </q-btn-dropdown>
-
-        <!-- <q-radio v-model="storex.jenispembayaran" val="karcis" label="Pelayanan RM" size="sm" dense><q-item-label
-            caption> ( {{
-              formatRpDouble(karcis) }} )</q-item-label></q-radio>
-        <q-radio v-model="storex.jenispembayaran" val="konsulantarpoli" label="Konsul Antar Poli" size="sm"
-          dense><q-item-label caption> ( {{
-            formatRpDouble(billing?.konsulantarpoli) }} )</q-item-label></q-radio>
-        <q-radio v-model="store.jenispembayaran" val="laborat" label="Laborat" size="sm" dense><q-item-label caption> (
-            {{
-              formatRpDouble(billing?.laborat) }} )</q-item-label></q-radio>
-        <q-radio v-model="store.jenispembayaran" val="radiologi" label="Radiologi" size="sm" dense><q-item-label
-            caption> ( {{
-              formatRpDouble(billing?.radiologi) }} )</q-item-label></q-radio>
-        <q-radio v-model="store.jenispembayaran" val="onedaycare" label="Onedaycare" size="sm" dense><q-item-label
-            caption> ( {{
-              formatRpDouble(billing?.onedaycare) }} )</q-item-label></q-radio>
-        <q-radio v-model="store.jenispembayaran" val="fisioterapi" label="Fisioterapi" size="sm" dense><q-item-label
-            caption> ( {{
-              formatRpDouble(billing?.fisioterapi) }} )</q-item-label></q-radio>
-        <q-radio v-model="store.jenispembayaran" val="penunjanglain" label="Penunjanglain" size="sm" dense><q-item-label
-            caption> ( {{
-              formatRpDouble(billing?.penunjanglain) }} )</q-item-label></q-radio>
-        <q-radio v-model="store.jenispembayaran" val="psikologi" label="Psikologi" size="sm" dense><q-item-label
-            caption> ( {{
-              formatRpDouble(billing?.psikologi) }} )</q-item-label></q-radio>
-        <q-radio v-model="store.jenispembayaran" val="cardio" label="Cardio" size="sm" dense><q-item-label caption>
-            ( {{
-              formatRpDouble(billing?.cardio) }} )</q-item-label></q-radio>
-        <q-radio v-model="store.jenispembayaran" val="eeg" label="Eeg" size="sm" dense><q-item-label caption>
-            ( {{
-              formatRpDouble(billing?.eeg) }} )</q-item-label></q-radio>
-        <q-radio v-model="store.jenispembayaran" val="endoscopy" label="Endoscopy" size="sm" dense><q-item-label
-            caption>
-            ( {{
-              formatRpDouble(billing?.endoscopy) }} )</q-item-label></q-radio>
-        <q-radio v-model="store.jenispembayaran" val="obat" label="Obat" size="sm" dense><q-item-label caption>
-            ( {{
-              formatRpDouble(billing?.obat) }} )</q-item-label></q-radio>
-        <q-radio v-model="store.jenispembayaran" val="farmasinew" label="E-Resep" size="sm" dense><q-item-label caption>
-            ( {{
-              formatRpDouble(billing?.farmasinew) }} )</q-item-label></q-radio> -->
+  <q-form ref="refForm" class=" bg-grey-1 q-pa-sm"
+    style="position: relative; display: flex; flex-direction: column; min-height: 100%;">
+    <div>
+      <div class="row">
+        <div class="col-6 text-weight-bold q-gutter-sm">
+          <q-btn-dropdown color="primary" label="Pilih Jenis Pembayaran">
+            <q-list>
+              <q-item v-for="item in paymentOptions" :key="item.value" clickable v-close-popup
+                @click="selectPayment(item.value)">
+                <q-item-section avatar>
+                  <q-avatar :icon="item.icon" :color="item.color" text-color="white" size="sm" />
+                </q-item-section>
+                <q-item-section>
+                  <q-item-label>{{ item.label }}</q-item-label>
+                </q-item-section>
+              </q-item>
+            </q-list>
+          </q-btn-dropdown>
+        </div>
+        <q-separator vertical />
+        <div class="col-6 q-pl-sm">
+          <div class="row text-weight-bold q-mt-sm ">
+            <div class="col-4  q-gutter-lg">
+              <q-radio v-model="store.form.carabayar" val="Tunai" label="Tunai" size="sm" dense
+                @update:model-value="(val) => setjeniscarabayar(val)" />
+            </div>
+            <div class="col-4">
+              <q-radio v-model="store.form.carabayar" val="Qris" label="Qris" size="sm" dense
+                @update:model-value="(val) => setjeniscarabayar(val)" />
+            </div>
+            <div class="col-4">
+              <q-radio v-model="store.form.carabayar" val="VA" label="VA" size="sm" dense
+                @update:model-value="(val) => setjeniscarabayar(val)" />
+            </div>
+          </div>
+        </div>
       </div>
-      <q-separator vertical />
-      <div class="col-6 q-pl-sm">
-        <div class="row text-weight-bold q-mt-sm ">
-          <div class="col-4  q-gutter-lg">
-            <q-radio v-model="store.form.carabayar" val="Tunai" label="Tunai" size="sm" dense
-              @update:model-value="(val) => setjeniscarabayar(val)" />
+      <div class="row q-mt-sm">
+        <div class="col-12 text-weight-bold">Jenis Pelayanan : <q-badge
+            :color="paymentOptions.find(item => item.value === storex.jenispembayaran)?.color">{{ storex.jenispembayaran
+              === '' ? 'Semua' : storex.jenispembayaran
+            }}</q-badge>
+        </div>
+      </div>
+      <div class="row q-mt-sm">
+        <div class="col-12">
+          <div
+            class="full-width bg-black text-white text-weight-bold flex items-center justify-center q-px-md q-py-sm rounded-b-xl shadow-2"
+            style="height: 35px;">
+            <span>Detail Pembayaran</span>
           </div>
-          <div class="col-4">
-            <q-radio v-model="store.form.carabayar" val="Qris" label="Qris" size="sm" dense
-              @update:model-value="(val) => setjeniscarabayar(val)" />
+        </div>
+      </div>
+      <div v-if="store.loading" class="justify-center row" style="font-size: 4em">
+        <q-spinner-dots color="blue" />
+      </div>
+      <div v-else>
+        <div class="col-12 q-mt-sm" style="max-height: 500px; overflow-y: auto; padding-bottom: 50px;">
+          <div class="row q-mt-sm" v-if="(selectedPayment === '' || selectedPayment === 'karcis') && store.items">
+            <q-list class="full-width">
+              <q-item>
+                <q-item-section>
+                  <q-item-label>Karcis {{ store.items?.rs6 }}</q-item-label>
+                  <q-item-label>Subtotal Pelayanan Karcis <q-badge
+                      :color="paymentOptions.find(item => item.value === 'karcis')?.color" class="text-weight-bold">{{
+                        formatRpDouble(store.items?.subtotal)
+                      }}</q-badge></q-item-label>
+                </q-item-section>
+
+                <q-item-section side top>
+                  <q-item-label caption>{{ humanDate(store.items?.rs4) }}</q-item-label>
+                  <q-btn unelevated color="dark" round size="sm" icon="icon-mat-attach_money" @click="bayarbill()">
+                    <q-tooltip class="primary" :offset="[10, 10]">
+                      Bayar & Print
+                    </q-tooltip>
+                  </q-btn>
+                </q-item-section>
+              </q-item>
+
+              <q-separator spaced inset />
+            </q-list>
           </div>
-          <div class="col-4">
-            <q-radio v-model="store.form.carabayar" val="VA" label="VA" size="sm" dense
-              @update:model-value="(val) => setjeniscarabayar(val)" />
+          <div class="row q-mt-sm" v-if="(selectedPayment === '' || selectedPayment === 'obat') && store.itemsobat">
+            <q-list class="full-width" v-for="(item, x) in store.itemsobat" :key="x">
+              <q-item>
+                <q-item-section>
+                  <q-item-label>Nota : {{ item?.nota }}</q-item-label>
+                  <q-item-label> Subtotal Pelayanan Obat <q-badge
+                      :color="paymentOptions.find(item => item.value === 'obat')?.color" class="text-weight-bold">{{
+                        formatRpDouble(item?.subtotal)
+                      }}</q-badge></q-item-label>
+                </q-item-section>
+
+                <q-item-section side top>
+                  <q-item-label caption>{{ humanDate(item?.tanggal) }}</q-item-label>
+                  <q-btn unelevated color="dark" round size="sm" icon="icon-mat-attach_money">
+                    <q-tooltip class="primary" :offset="[10, 10]">
+                      Bayar & Print
+                    </q-tooltip>
+                  </q-btn>
+                </q-item-section>
+              </q-item>
+              <q-separator spaced inset />
+            </q-list>
+          </div>
+          <div class="row q-mt-sm"
+            v-if="(selectedPayment === '' || selectedPayment === 'tindakan') && store.itemstindakan">
+            <q-list class="full-width" v-for="(item, q) in store.itemstindakan" :key="q">
+              <q-item>
+                <q-item-section>
+                  <q-item-label>Nota : {{ item?.rs2 }}</q-item-label>
+                  <q-item-label> Subtotal Pelayanan Tindakan <q-badge
+                      :color="paymentOptions.find(item => item.value === 'tindakan')?.color" class="text-weight-bold">{{
+                        formatRpDouble(item?.total)
+                      }}</q-badge></q-item-label>
+                </q-item-section>
+
+                <q-item-section side top>
+                  <q-item-label caption>{{ humanDate(item?.rs3) }}</q-item-label>
+                  <q-btn unelevated color="dark" round size="sm" icon="icon-mat-attach_money">
+                    <q-tooltip class="primary" :offset="[10, 10]">
+                      Bayar & Print
+                    </q-tooltip>
+                  </q-btn>
+                </q-item-section>
+              </q-item>
+              <q-separator spaced inset />
+            </q-list>
+          </div>
+          <div class="row q-mt-sm"
+            v-if="(selectedPayment === '' || selectedPayment === 'Operasi') && store.itemsoperasi">
+            <q-list class="full-width" v-for="(item, a) in store.itemsoperasi" :key="a">
+              <q-item>
+                <q-item-section>
+                  <q-item-label>Nota : {{ item?.rs2 }}</q-item-label>
+                  <q-item-label> Subtotal Pelayanan Kamar Operasi <q-badge
+                      :color="paymentOptions.find(item => item.value === 'Operasi')?.color" class="text-weight-bold">{{
+                        formatRpDouble(item?.total)
+                      }}</q-badge></q-item-label>
+                </q-item-section>
+
+                <q-item-section side top>
+                  <q-item-label caption>{{ humanDate(item?.rs3) }}</q-item-label>
+                  <q-btn unelevated color="dark" round size="sm" icon="icon-mat-attach_money">
+                    <q-tooltip class="primary" :offset="[10, 10]">
+                      Bayar & Print
+                    </q-tooltip>
+                  </q-btn>
+                </q-item-section>
+              </q-item>
+              <q-separator spaced inset />
+            </q-list>
+          </div>
+          <div class="row q-mt-sm"
+            v-if="(selectedPayment === '' || selectedPayment === 'Laborat') && store.itemslaborat">
+            <q-list class="full-width" v-for="(item, b) in store.itemslaborat" :key="b">
+              <q-item>
+                <q-item-section>
+                  <q-item-label>Nota : {{ item?.nota }}</q-item-label>
+                  <q-item-label> Subtotal Pelayanan Laborat <q-badge
+                      :color="paymentOptions.find(item => item.value === 'Laborat')?.color" class="text-weight-bold">{{
+                        formatRpDouble(item?.total_subtotal)
+                      }}</q-badge></q-item-label>
+                </q-item-section>
+
+                <q-item-section side top>
+                  <q-item-label caption>{{ humanDate(item?.rs3) }}</q-item-label>
+                  <q-btn unelevated color="dark" round size="sm" icon="icon-mat-attach_money">
+                    <q-tooltip class="primary" :offset="[10, 10]">
+                      Bayar & Print
+                    </q-tooltip>
+                  </q-btn>
+                </q-item-section>
+              </q-item>
+              <q-separator spaced inset />
+            </q-list>
+          </div>
+          <div class="row q-mt-sm"
+            v-if="(selectedPayment === '' || selectedPayment === 'Radiologi') && store.itemsradiologi">
+            <q-list class="full-width" v-for="(item, c) in store.itemsradiologi" :key="c">
+              <q-item>
+                <q-item-section>
+                  <q-item-label>Nota : {{ item?.rs2 }}</q-item-label>
+                  <q-item-label> Subtotal Pelayanan Radiologi <q-badge
+                      :color="paymentOptions.find(item => item.value === 'Radiologi')?.color"
+                      class="text-weight-bold">{{
+                        formatRpDouble(item?.total)
+                      }}</q-badge></q-item-label>
+                </q-item-section>
+
+                <q-item-section side top>
+                  <q-item-label caption>{{ humanDate(item?.rs3) }}</q-item-label>
+                  <q-btn unelevated color="dark" round size="sm" icon="icon-mat-attach_money">
+                    <q-tooltip class="primary" :offset="[10, 10]">
+                      Bayar & Print
+                    </q-tooltip>
+                  </q-btn>
+                </q-item-section>
+              </q-item>
+              <q-separator spaced inset />
+            </q-list>
+          </div>
+          <div class="row q-mt-sm"
+            v-if="(selectedPayment === '' || selectedPayment === 'SharingBpjs') && store.itemssharingbpjs">
+            <q-list class="full-width" v-for="(item, c) in store.itemssharingbpjs" :key="c">
+              <q-item>
+                <q-item-section>
+                  <q-item-label>Nota : {{ item?.rs2 }}</q-item-label>
+                  <q-item-label> Subtotal Sharing BPJSi <q-badge
+                      :color="paymentOptions.find(item => item.value === 'SharingBpjs')?.color"
+                      class="text-weight-bold">{{
+                        formatRpDouble(item?.total)
+                      }}</q-badge></q-item-label>
+                </q-item-section>
+
+                <q-item-section side top>
+                  <q-item-label caption>{{ humanDate(item?.rs3) }}</q-item-label>
+                  <q-btn unelevated color="dark" round size="sm" icon="icon-mat-attach_money">
+                    <q-tooltip class="primary" :offset="[10, 10]">
+                      Bayar & Print
+                    </q-tooltip>
+                  </q-btn>
+                </q-item-section>
+              </q-item>
+              <q-separator spaced inset />
+            </q-list>
           </div>
         </div>
       </div>
     </div>
-    <div class="row q-mt-sm">
-      <div class="col-12 text-weight-bold">Jenis Pelayanan : <q-badge color="green"
-          v-if="storex.jenispembayaran !== ''">{{ storex.jenispembayaran
-          }}</q-badge>
-      </div>
-      <!-- <div class="col-6 text-weight-bold">
-        No. Nota : <q-select v-model="store.form.nota" outlined standout="bg-yellow-3" bg-color="white" dense
-          :options="store.notas" style="min-width: 200px;" />
-      </div> -->
-    </div>
-    <div class="row q-mt-sm">
-      <div class="col-12">
-        <q-btn color="primary" class="full-width" label="Cari Tagihan" @click="caripembayaran()"
-          :loading="store.loading" />
-      </div>
-    </div>
-    <div class="row q-mt-sm">
-      <q-list class="full-width">
-        <q-item>
-          <q-item-section>
-            <q-item-label>Karcis {{ store.items?.rs6 }}</q-item-label>
-            <q-item-label caption lines="2">Subtotal <q-badge color="teal" class="text-weight-bold">{{
-              formatRpDouble(store.items?.subtotal)
-                }}</q-badge></q-item-label>
-          </q-item-section>
-
-          <q-item-section side top>
-            <q-item-label caption>{{ humanDate(store.items?.rs4) }}</q-item-label>
-            <q-btn unelevated color="dark" round size="sm" icon="icon-mat-attach_money">
-              <q-tooltip class="primary" :offset="[10, 10]">
-                Bayar & Print
-              </q-tooltip>
-            </q-btn>
-          </q-item-section>
-        </q-item>
-
-        <q-separator spaced inset />
-      </q-list>
-    </div>
-    <div class="row q-mt-sm">
-      <q-list class="full-width" v-for="(item, x) in store.itemsobat" :key="x">
-        <q-item>
-          <q-item-section>
-            <q-item-label>Nota Obat: {{ item?.nota }}</q-item-label>
-            <q-item-label caption lines="2">Subtotal <q-badge color="teal" class="text-weight-bold">{{
-              formatRpDouble(item?.subtotal)
-                }}</q-badge></q-item-label>
-          </q-item-section>
-
-          <q-item-section side top>
-            <q-item-label caption>{{ humanDate(item?.tanggal) }}</q-item-label>
-            <q-btn unelevated color="dark" round size="sm" icon="icon-mat-attach_money">
-              <q-tooltip class="primary" :offset="[10, 10]">
-                Bayar & Print
-              </q-tooltip>
-            </q-btn>
-          </q-item-section>
-        </q-item>
-        <q-separator spaced inset />
-      </q-list>
+    <div
+      class=" bg-black text-white text-weight-bold flex items-center justify-between q-px-md q-py-sm rounded-b-xl shadow-2"
+      style="height: 35px; position: absolute; bottom: 3px; left: 5px; right: 5px;">
+      <span>Total :</span>
+      <span v-if="store.loading === false">{{ formatRpDouble(totalbill) }} </span>
+      <span v-else="store.loading === true">Loading ...</span>
     </div>
   </q-form>
 </template>
@@ -145,7 +243,7 @@ import { useQuasar } from 'quasar';
 import { formatRpDouble, humanDate } from 'src/modules/formatter';
 import { useKasirRajalListKunjunganStore } from 'src/stores/simrs/kasir/rajal/kunjungan';
 import { usePembayaranKasirRajalStore } from 'src/stores/simrs/kasir/rajal/pembayaran';
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 
 const refForm = ref(null)
 const store = usePembayaranKasirRajalStore()
@@ -153,7 +251,7 @@ const storex = useKasirRajalListKunjunganStore()
 
 const $q = useQuasar()
 
-const selectedPayment = ref(null)
+const selectedPayment = ref('')
 
 const prop = defineProps({
   pasien: { type: Object, default: () => { } },
@@ -163,6 +261,12 @@ const prop = defineProps({
 })
 
 const paymentOptions = [
+  {
+    value: '',
+    label: 'Semua',
+    icon: 'icon-mat-list',
+    color: 'grey'
+  },
   {
     value: 'karcis',
     label: 'Pelayanan RM',
@@ -178,13 +282,49 @@ const paymentOptions = [
   {
     value: 'tindakan',
     label: 'Biaya Tindakan',
-    icon: 'icon-mat-healing',
+    icon: 'icon-my-stethoscope',
     color: 'orange'
+  },
+  {
+    value: 'Operasi',
+    label: 'Biaya Operasi',
+    icon: 'icon-my-stomach-svgrepo-com',
+    color: 'dark'
+  },
+  {
+    value: 'Laborat',
+    label: 'Laborat',
+    icon: 'icon-my-stomach-svgrepo-com',
+    color: 'teal'
+  },
+  {
+    value: 'Radiologi',
+    label: 'Radiologi',
+    icon: 'icon-my-stomach-svgrepo-com',
+    color: 'teal-10'
+  },
+  {
+    value: 'SharingBpjs',
+    label: 'Sharing Bpjs',
+    icon: 'icon-my-stomach-svgrepo-com',
+    color: 'red'
   }
 ]
 
+const totalbill = computed(() => {
+  const totalkarcis = parseFloat(prop?.billing?.poliklinik + prop?.billing?.kartuidentitas + prop?.billing?.pelayananrm)
+  const totalobat = parseFloat(store.itemsobat?.reduce((acc, cur) => acc + cur.subtotal, 0) ?? 0)
+  const totaltindakan = parseFloat(store.itemstindakan?.reduce((acc, cur) => acc + cur.total, 0) ?? 0)
+  const totaloperasi = parseFloat(store.itemsoperasi?.reduce((acc, cur) => acc + cur.total, 0) ?? 0)
+  const totallaborat = parseFloat(store.itemslaborat?.reduce((acc, cur) => acc + cur.total_subtotal, 0) ?? 0)
+  const totalradiologi = parseFloat(store.itemsradiologi?.reduce((acc, cur) => acc + cur.total, 0) ?? 0)
+  const total = parseFloat(totalkarcis + totalobat + totaltindakan + totaloperasi + totallaborat, totalradiologi)
+  return total
+})
+
 function selectPayment(value) {
   storex.jenispembayaran = value
+  selectedPayment.value = value
 }
 
 function setjeniscarabayar(value) {
@@ -203,10 +343,10 @@ function caripembayaran() {
   } else {
     if (storex.jenispembayaran === 'karcis') {
       console.log('cari karcis')
-      store.carikarcis(prop.pasien?.noreg)
+      store.items
     } else if (storex.jenispembayaran === 'obat') {
       console.log('cari obat')
-      store.cariobat(prop.pasien?.noreg)
+      store.itemsobat
     }
   }
 }
@@ -263,7 +403,12 @@ function bayar() {
 onMounted(() => {
   store.carikarcis(prop.pasien?.noreg)
   store.cariobat(prop.pasien?.noreg)
+  store.caritindakan(prop.pasien?.noreg)
+  store.carioperasi(prop.pasien?.noreg)
+  store.carilaborat(prop.pasien?.noreg)
+  store.cariradiologi(prop.pasien?.noreg)
+  store.carisharingbpjs(prop.pasien?.noreg)
 })
 
-const karcis = parseFloat(prop?.billing?.poliklinik + prop?.billing?.kartuidentitas + prop?.billing?.pelayananrm)
+
 </script>
