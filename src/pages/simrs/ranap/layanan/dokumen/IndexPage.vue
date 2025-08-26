@@ -26,12 +26,6 @@
 
         <template #after>
           <div class="column fit">
-            <!-- <div class="col-auto full-width">
-              <q-card class="row justify-between items-center q-pa-sm shadow-2 bg-indigo-1">
-                <div><b>LEMBAR KONSUL</b></div>
-                <q-btn icon="icon-mat-close" flat dense size="sm" color="dark" />
-              </q-card>
-            </div> -->
             <div class="col fit">
               <q-tab-panels v-model="innerTab" animated swipeable vertical transition-prev="jump-up"
                 transition-next="jump-up" class="bg-indigo-1 fit">
@@ -69,6 +63,15 @@ const menus = ref([
     icon: 'icon-my-file_sign',
     nakes: ['1', '2', '3'],
     comp: shallowRef(defineAsyncComponent(() => import('./asessmentawal/keperawatan/IndexPage.vue')))
+  },
+  {
+    name: 'asessment-gizi',
+    label: 'ASESSMENT GIZI',
+    title: 'ASESSMENT GIZI',
+    desc: 'Asessment Gizi TERSTANDAR',
+    icon: 'icon-my-file_sign',
+    nakes: ['1', '2', '3', '4', '5', '6', '', null],
+    comp: shallowRef(defineAsyncComponent(() => import('./pagt/IndexPage.vue')))
   },
   {
     name: 'cppt-page',

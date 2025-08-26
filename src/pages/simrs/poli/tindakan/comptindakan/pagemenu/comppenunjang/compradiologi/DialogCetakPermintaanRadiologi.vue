@@ -48,7 +48,7 @@
                 <div>{{ data?.rs2 || '-' }}</div>
                 <div>{{ data?.rs3 || '-' }}</div>
                 <div>{{ pasien?.norm || '-' }}</div>
-                <div>{{ pasien?.nama_panggil }}</div>
+                <div>{{ pasien?.nama_panggil || pasien?.name || '-' }}</div>
                 <div>{{ pasien?.tgllahir }}</div>
                 <div>{{ pasien?.usia }}</div>
                 <div>{{ pasien?.nohp }}</div>
@@ -97,7 +97,7 @@
         <q-card-section align="right">
           <div class="column flex-center" style="max-width: 200px;">
             <div>Dokter Yg Meminta</div>
-            <div style="width: 80px;" class="flex flex-center q-my-xs">
+            <div style="width: 80px;" class="flex flex-center q-my-xs relative-position">
               <vue-qrcode :value="qrUrl" tag="svg" :options="{
                 errorCorrectionLevel: 'Q',
                 color: {
@@ -106,6 +106,7 @@
                 },
                 margin: 2
               }" />
+              <img class="qrcode__image" src="~assets/logos/logo-rsud.png" alt="RSUD DOKTER MOHAMAD SALEH">
             </div>
             <div class="text-weight-bold text-center">{{ data?.dokter?.nama }}</div>
           </div>
@@ -172,3 +173,15 @@ const qrUrl = computed(() => {
 })
 
 </script>
+
+<style lang="scss" scoped>
+.qrcode__image {
+  height: 20%;
+  width: 20%;
+  left: 50%;
+  overflow: hidden;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+</style>
