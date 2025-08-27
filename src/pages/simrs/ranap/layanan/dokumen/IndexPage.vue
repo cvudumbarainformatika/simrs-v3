@@ -66,9 +66,9 @@ const menus = ref([
   },
   {
     name: 'asessment-gizi',
-    label: 'ASESSMENT GIZI',
-    title: 'ASESSMENT GIZI',
-    desc: 'Asessment Gizi TERSTANDAR',
+    label: 'FORM PAGT',
+    title: 'FORM PAGT',
+    desc: '(Proses Asuhan Gizi Terstandar)',
     icon: 'icon-my-file_sign',
     nakes: ['1', '2', '3', '4', '5', '6', '', null],
     comp: shallowRef(defineAsyncComponent(() => import('./pagt/IndexPage.vue')))
