@@ -189,7 +189,7 @@ export const useNurseNoteRanapStore = defineStore('nursenote-ranap-store', {
             };
           }) ?? []
         }
-        console.log('resp nursenote list', this.items)
+        // console.log('resp nursenote list', this.items)
         this.loading = false
       } catch (error) {
         console.log('error', error);

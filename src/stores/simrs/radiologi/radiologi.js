@@ -3,6 +3,7 @@ import { api } from 'boot/axios'
 import { dateDbFormat } from 'src/modules/formatter'
 import { date } from 'quasar'
 import { usePermintaanRadiologiStore } from './permintaan'
+import { notifSuccessVue } from 'src/modules/utils'
 
 export const useListPasienRadiologiStore = defineStore('list-pasien-radiologi', {
   state: () => ({
@@ -190,6 +191,7 @@ export const useListPasienRadiologiStore = defineStore('list-pasien-radiologi', 
             const finder = this.items.find(x => x?.nota_permintaan === val?.nota_permintaan)
             if (finder) {
               finder['status'] = '1'
+              finder['updateststgl'] = resp.data?.result
             }
 
 
