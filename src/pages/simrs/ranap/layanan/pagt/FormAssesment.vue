@@ -171,7 +171,7 @@ onMounted(() => {
 
   // console.log('props', props?.pasien);
 
-  store.initReset(null)
+  // store.initReset(null)
   Promise.all([
     // store.getRiwayatKehamilan()
     // store.initReset(null)

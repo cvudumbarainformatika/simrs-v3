@@ -1,9 +1,8 @@
 <template>
-  <div>
-    <div class="row garis-bawah">
+  <div class="full-width">
+    <div class="row garis-bawah justify-around q-pb-xs">
       <div class="col-2">
-        <q-img src="~assets/images/logo-kota-grey.png" spinner-color="white"
-          style="height: 3.56cm; max-width: 2.86cm" />
+        <q-img src="~assets/images/logo-kota-grey.png" spinner-color="white" style="width: 2.35cm" />
       </div>
       <div class="col-8">
         <div class="row justify-center f-18">
