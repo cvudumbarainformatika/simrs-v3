@@ -56,6 +56,11 @@ const routes = [
         path: '/print/penigd',
         name: 'print.penigd',
         component: () => import('pages/simrs/print/PrintPermintaanResep.vue')
+      },
+      {
+        path: '/print/kwitansi',
+        name: 'print.kwitansi',
+        component: () => import('pages/simrs/kasir/rajal/listkunjungan/comp/PrintKwitansiPage.vue')
       }
     ]
   },

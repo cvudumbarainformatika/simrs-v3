@@ -2,10 +2,12 @@ import { defineStore } from "pinia";
 import { api } from "src/boot/axios";
 import { notifErr, notifSuccess } from "src/modules/utils";
 import { useKasirRajalListKunjunganStore } from "./kunjungan";
+import { printNb } from 'src/modules/print'
 
 export const usePembayaranKasirRajalStore = defineStore('pembayaran-kasir-rajal-store', {
   state: () => ({
     loading: false,
+    loadingpembayaran: false,
     loadingQris: false,
     items: [],
     itemsobat: [],
@@ -14,7 +16,7 @@ export const usePembayaranKasirRajalStore = defineStore('pembayaran-kasir-rajal-
     itemslaborat: [],
     itemsradiologi: [],
     itemssharingbpjs: [],
-    kwitansi: {},
+    kwitansi: [],
     form: {
       noreg: '',
       norm: '',
@@ -26,7 +28,7 @@ export const usePembayaranKasirRajalStore = defineStore('pembayaran-kasir-rajal-
       poli: '',
       sistembayar: '',
       total: '',
-      rinci: '',
+      // rinci: '',
       tglx: '',
       users: '',
       carabayar: '',
@@ -36,11 +38,17 @@ export const usePembayaranKasirRajalStore = defineStore('pembayaran-kasir-rajal-
     totalkarcis: 0,
     totalobat: 0,
     totaltindakan: 0,
-    total: 0
+    total: 0,
+    dataCetak: null,
+    showCetak: false,
+    printObj: {
+      id: 'printMe',
+      popTitle: 'Kwitansi Pembayaran'
+    }
   }),
   actions: {
-    savePembayaran(pasien, billing, jenislayanan, val) {
-      this.loading = true
+    savePembayaran(pasien, subtotal, jenislayanan, val, router, { nomor, poli, norm }) {
+      this.loadingpembayaran = true
       this.form.noreg = pasien.noreg
       this.form.norm = pasien.norm
       this.form.tglkunjungan = pasien.tgl_kunjungan
@@ -50,57 +58,45 @@ export const usePembayaranKasirRajalStore = defineStore('pembayaran-kasir-rajal-
       this.form.kodepoli = pasien.kodepoli
       this.form.poli = pasien.poli
       this.form.sistembayar = pasien.sistembayar
-      this.form.total = billing.totalall
-      this.form.rinci = billing.rincian
+      this.form.total = subtotal
+      // this.form.rinci = billing.rincian
       this.form.carabayar = val
       this.form.jenislayanan = jenislayanan
       return new Promise(resolve => {
-        api.post('/v1/simrs/kasir/rajal/pembayaran', this.form)
+        api.post('/v1/simrs/kasir/rajal/pembayarankarcis', this.form)
           .then((resp) => {
-            this.loading = false
-            const thiskwitansi = resp.data?.result?.heder
+            this.loadingpembayaran = false
+            const kwitansikarcis = resp.data?.kwitansikarcis ?? []
             const hasilglobal = []
-            thiskwitansi?.forEach(x => {
-              const kwitansilog = x?.kwitansilog
-              kwitansilog?.forEach(k => {
-                const hasil = {
-                  noreg: k?.noreg,
-                  norm: k?.norm,
-                  nota: k?.nota,
-                  tgl_pembayaran: k?.tglx,
-                  batal: k?.batal,
-                  total: k?.total,
-                  nama: k?.nama,
-                  nokwitansi: k?.nokwitansi,
-                  i: ''
-                }
-                hasilglobal.push(hasil)
-              })
-              const karcislog = x?.karcislog
-              karcislog?.forEach(k => {
-                const hasilx = {
-                  noreg: k?.noreg,
-                  norm: k?.norm,
-                  nota: null,
-                  tgl_pembayaran: k?.tglx,
-                  batal: k?.batal,
-                  total: k?.total,
-                  nama: k?.nama,
-                  nokwitansi: k?.nokarcis,
-                  i: 'KARCIS'
-                }
-                hasilglobal.push(hasilx)
-              })
+            kwitansikarcis.forEach(k => {
+              const hasil = {
+                noreg: k?.noreg,
+                norm: k?.norm,
+                nota: k?.nokarcis,
+                tgl_pembayaran: k?.tglx,
+                batal: k?.batal,
+                total: k?.total,
+                nama: k?.nama,
+              }
+              hasilglobal.push(hasil)
             })
             const storekunjungan = useKasirRajalListKunjunganStore()
-            storekunjungan.kwitansi = hasilglobal
+            storekunjungan.kwitansikarcis = hasilglobal
+            this.kwitansi = kwitansikarcis
+            console.log('this.kwitansi', this.kwitansi)
             notifSuccess(resp.data?.message)
-            //this.qris = resp.data.result.qrValue
+            const routeData = router.resolve({
+              path: '/print/kwitansi',
+              query: { kwitansikarcis: JSON.stringify(kwitansikarcis) }
+            })
+            window.open(routeData.href, '_blank')
+            // const id = kwitansikarcis?.nokarcis
+            // window.open(`/print`, "_blank")
             resolve(resp.data)
           })
           .catch((err) => {
-            console.log('err', err)
-            this.loading = false
+
+            this.loadingpembayaran = false
           })
       })
     },
@@ -120,7 +116,7 @@ export const usePembayaranKasirRajalStore = defineStore('pembayaran-kasir-rajal-
       this.formqris.carabayar = val
       this.formqris.jenislayanan = jenislayanan
       return new Promise(resolve => {
-        api.post('/v1/simrs/kasir/rajal/pembayaran', this.form)
+        api.post('/v1/simrs/kasir/rajal/pembayarankarcis', this.form)
           .then((resp) => {
             this.loadingQris = false
             const thiskwitansi = resp.data?.result?.heder
@@ -160,6 +156,9 @@ export const usePembayaranKasirRajalStore = defineStore('pembayaran-kasir-rajal-
             const storekunjungan = useKasirRajalListKunjunganStore()
             storekunjungan.kwitansi = hasilglobal
             notifSuccess(resp.data?.message)
+            setTimeout(() => {
+              this.printElement(this.printObj.id)
+            }, 500)
             //this.qris = resp.data.result.qrValue
             resolve(resp.data)
           })
@@ -286,6 +285,31 @@ export const usePembayaranKasirRajalStore = defineStore('pembayaran-kasir-rajal-
           this.loading = false
         })
         .catch(() => { this.loading = false })
+    },
+    setPrintObj(obj) {
+      this.printObj = obj
+    },
+    printElement(elId) {
+      const el = document.getElementById(elId)
+      if (!el) {
+        console.error('Element untuk print tidak ditemukan:', elId)
+        return
+      }
+
+      const printContents = el.innerHTML
+      const win = window.open('', '', 'width=900,height=650')
+      win.document.write(`
+        <html>
+          <head>
+            <title>${this.printObj.popTitle}</title>
+          </head>
+          <body>${printContents}</body>
+        </html>
+      `)
+      win.document.close()
+      win.focus()
+      win.print()
+      win.close()
     }
   }
 })

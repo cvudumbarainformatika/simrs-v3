@@ -70,7 +70,8 @@
 
                 <q-item-section side top>
                   <q-item-label caption>{{ humanDate(store.items?.rs4) }}</q-item-label>
-                  <q-btn unelevated color="dark" round size="sm" icon="icon-mat-attach_money" @click="bayarbill()">
+                  <q-btn unelevated color="dark" round size="sm" icon="icon-mat-attach_money"
+                    :loading="store.loadingpembayaran" @click="bayarkarcis('Karcis', store.items?.subtotal)">
                     <q-tooltip class="primary" :offset="[10, 10]">
                       Bayar & Print
                     </q-tooltip>
@@ -244,6 +245,7 @@ import { formatRpDouble, humanDate } from 'src/modules/formatter';
 import { useKasirRajalListKunjunganStore } from 'src/stores/simrs/kasir/rajal/kunjungan';
 import { usePembayaranKasirRajalStore } from 'src/stores/simrs/kasir/rajal/pembayaran';
 import { computed, onMounted, ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 const refForm = ref(null)
 const store = usePembayaranKasirRajalStore()
@@ -252,6 +254,7 @@ const storex = useKasirRajalListKunjunganStore()
 const $q = useQuasar()
 
 const selectedPayment = ref('')
+const router = useRouter()
 
 const prop = defineProps({
   pasien: { type: Object, default: () => { } },
@@ -312,13 +315,13 @@ const paymentOptions = [
 ]
 
 const totalbill = computed(() => {
-  const totalkarcis = parseFloat(prop?.billing?.poliklinik + prop?.billing?.kartuidentitas + prop?.billing?.pelayananrm)
+  const totalkarcis = parseFloat(store.items?.subtotal ?? 0)
   const totalobat = parseFloat(store.itemsobat?.reduce((acc, cur) => acc + cur.subtotal, 0) ?? 0)
   const totaltindakan = parseFloat(store.itemstindakan?.reduce((acc, cur) => acc + cur.total, 0) ?? 0)
   const totaloperasi = parseFloat(store.itemsoperasi?.reduce((acc, cur) => acc + cur.total, 0) ?? 0)
   const totallaborat = parseFloat(store.itemslaborat?.reduce((acc, cur) => acc + cur.total_subtotal, 0) ?? 0)
   const totalradiologi = parseFloat(store.itemsradiologi?.reduce((acc, cur) => acc + cur.total, 0) ?? 0)
-  const total = parseFloat(totalkarcis + totalobat + totaltindakan + totaloperasi + totallaborat, totalradiologi)
+  const total = parseFloat(totalkarcis + totalobat + totaltindakan + totaloperasi + totallaborat + totalradiologi)
   return total
 })
 
@@ -351,9 +354,8 @@ function caripembayaran() {
   }
 }
 
-function bayar() {
-  console.log('bayar', store.form.carabayar)
-  if (storex.jenispembayaran === '' && store.form.carabayar === '' || storex.jenispembayaran === '' || store.form.carabayar === '') {
+function bayarkarcis(val, subtotal) {
+  if (store.form.carabayar === '' || store.form.carabayar === '') {
     $q.notify({
       type: 'negative',
       title: 'Peringatan',
@@ -361,10 +363,8 @@ function bayar() {
       html: true,
       timeout: 1000
     })
-    store.form.carabayar = ''
-    storex.jenispembayaran = ''
   } else {
-    if (storex.jenispembayaran === 'karcis') {
+    if (val === 'Karcis') {
       if (store.form.carabayar === 'Tunai') {
         $q.dialog({
           dark: true,
@@ -373,8 +373,8 @@ function bayar() {
           cancel: true,
           persistent: true
         }).onOk(() => {
-          // console.log('OK')
-          store.savePembayaran(prop.pasien, prop.billing, prop.jenislayanan, store.form.carabayar)
+          const dataAntrian = { nomor: '123', poli: 'PoliA', norm: '456' }
+          store.savePembayaran(prop.pasien, subtotal, val, store.form.carabayar, router, dataAntrian)
         }).onCancel(() => {
           // console.log('Cancel')
         }).onDismiss(() => {
