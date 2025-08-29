@@ -2,138 +2,48 @@
   <div class="column">
     <div class="row justify-between items-center q-pa-sm bg-primary text-white">
       <div class="kiri row q-gutter-sm items-center">
-        <q-input
-          v-model="search"
-          outlined
-          dark
-          color="white"
-          dense
-          :label="labelCari"
-          debounce="500"
-          style="min-width: 250px;"
-          @keyup.enter="enterSearch"
-        >
-          <template
-            v-if="props?.search"
-            #append
-          >
-            <q-icon
-              name="icon-mat-close"
-              size="xs"
-              class="cursor-pointer"
-              @click.stop.prevent="enterSearch('')"
-            />
+        <q-input v-model="search" outlined dark color="white" dense :label="labelCari" debounce="500"
+          style="min-width: 250px;" @keyup.enter="enterSearch">
+          <template v-if="props?.search" #append>
+            <q-icon name="icon-mat-close" size="xs" class="cursor-pointer" @click.stop.prevent="enterSearch('')" />
           </template>
           <template #prepend>
-            <q-icon
-              size="sm"
-              name="icon-mat-search"
-            />
+            <q-icon size="sm" name="icon-mat-search" />
           </template>
         </q-input>
-        <q-input
-          v-model="searchDua"
-          outlined
-          dark
-          color="white"
-          dense
-          :label="labelCariDua"
-          debounce="500"
-          style="min-width: 250px;"
-          @keyup.enter="enterSearchObat"
-        >
-          <template
-            v-if="props?.search"
-            #append
-          >
-            <q-icon
-              name="icon-mat-close"
-              size="xs"
-              class="cursor-pointer"
-              @click.stop.prevent="enterSearchObat('')"
-            />
+        <q-input v-if="adaSearchDua" v-model="searchDua" outlined dark color="white" dense :label="labelCariDua"
+          debounce="500" style="min-width: 250px;" @keyup.enter="enterSearchObat">
+          <template v-if="props?.search" #append>
+            <q-icon name="icon-mat-close" size="xs" class="cursor-pointer" @click.stop.prevent="enterSearchObat('')" />
           </template>
           <template #prepend>
-            <q-icon
-              size="sm"
-              name="icon-mat-search"
-            />
+            <q-icon size="sm" name="icon-mat-search" />
           </template>
         </q-input>
 
-        <app-input-date-human
-          :model="from"
-          dark
-          outlined
-          label="resep dari tanggal"
-          @set-model="setDari"
-          @db-model="setDbDari"
-        />
-        <q-option-group
-          v-model="toFlag"
-          :options="flagOptions"
-          color="primary"
-          class="q-ml-sm"
-          dense
-          type="checkbox"
-          inline
-        />
+        <app-input-date-human v-if="adaTanggal" :model="from" dark outlined label="resep dari tanggal"
+          @set-model="setDari" @db-model="setDbDari" />
+        <q-option-group v-if="adaFlag" v-model="toFlag" :options="flagOptions" color="primary" class="q-ml-sm" dense
+          type="checkbox" inline />
       </div>
       <div class="kanan">
         <!-- refresh Ids -->
-        <q-btn
-          v-if="props.adaRefresh"
-          unelevated
-          round
-          size="sm"
-          icon="icon-mat-refresh"
-          @click="emits('refresh')"
-        >
-          <q-tooltip
-            class="primary"
-            :offset="[10, 10]"
-          >
+        <q-btn v-if="props.adaRefresh" unelevated round size="sm" icon="icon-mat-refresh" @click="emits('refresh')">
+          <q-tooltip class="primary" :offset="[10, 10]">
             Refresh Table
           </q-tooltip>
         </q-btn>
         <!-- per page -->
-        <q-btn
-          v-if="props.adaPerPage"
-          class="q-ml-sm"
-          unelevated
-          color="orange"
-          round
-          size="sm"
-          icon="icon-mat-layers"
-        >
-          <q-tooltip
-            class="primary"
-            :offset="[10, 10]"
-          >
+        <q-btn v-if="props.adaPerPage" class="q-ml-sm" unelevated color="orange" round size="sm" icon="icon-mat-layers">
+          <q-tooltip class="primary" :offset="[10, 10]">
             Filter Table
           </q-tooltip>
-          <q-menu
-            transition-show="flip-left"
-            transition-hide="flip-right"
-            class="q-pt-sm"
-            anchor="top left"
-            self="top right"
-          >
+          <q-menu transition-show="flip-left" transition-hide="flip-right" class="q-pt-sm" anchor="top left"
+            self="top right">
             <q-list>
-              <q-item
-                v-for="(opt, i) in options"
-                :key="i"
-                v-ripple
-                tag="label"
-              >
+              <q-item v-for="(opt, i) in options" :key="i" v-ripple tag="label">
                 <q-item-section>
-                  <q-radio
-                    v-model="selectPerPage"
-                    size="xs"
-                    :val="opt"
-                    :label="opt + ' Baris'"
-                    color="primary"
-                  />
+                  <q-radio v-model="selectPerPage" size="xs" :val="opt" :label="opt + ' Baris'" color="primary" />
                 </q-item-section>
                 <q-item-label />
               </q-item>
@@ -141,20 +51,10 @@
           </q-menu>
         </q-btn>
         <!-- style -->
-        <q-btn
-          v-if="useFull"
-          flat
-          :icon="!style.componentfull ? 'icon-mat-open_in_full' : 'icon-mat-close_fullscreen'"
-          round
-          :color="style.componentfull ? 'green' : 'white'"
-          size="12px"
-          class="q-ml-md"
-          @click="style.setComponentFull"
-        >
-          <q-tooltip
-            class="primary"
-            :offset="[10, 10]"
-          >
+        <q-btn v-if="useFull" flat :icon="!style.componentfull ? 'icon-mat-open_in_full' : 'icon-mat-close_fullscreen'"
+          round :color="style.componentfull ? 'green' : 'white'" size="12px" class="q-ml-md"
+          @click="style.setComponentFull">
+          <q-tooltip class="primary" :offset="[10, 10]">
             Full Screen
           </q-tooltip>
         </q-btn>
@@ -178,6 +78,9 @@ const props = defineProps({
   labelCariDua: { type: String, default: 'Cari ...' },
   adaPerPage: { type: Boolean, default: false },
   adaRefresh: { type: Boolean, default: false },
+  adaSearchDua: { type: Boolean, default: false },
+  adaTanggal: { type: Boolean, default: false },
+  adaFlag: { type: Boolean, default: false },
   useFull: { type: Boolean, default: false },
   perPage: { type: Number, default: 5 },
   flag: { type: Array, default: () => ['3'] }
@@ -209,11 +112,11 @@ const searchDua = computed({
     emits('cariDua', newVal)
   }
 })
-function enterSearch(evt) {
+function enterSearch (evt) {
   const val = evt?.target?.value
   emits('cari', val)
 }
-function enterSearchObat(evt) {
+function enterSearchObat (evt) {
   const val = evt?.target?.value
   emits('cariDua', val)
 }
@@ -236,10 +139,10 @@ const toFlag = computed({
 // const from = ref(date.formatDate(Date.now(), 'DD MMMM YYYY'))
 const from = ref(null)
 
-function setDari(val) {
+function setDari (val) {
   from.value = val
 }
-function setDbDari(val) {
+function setDbDari (val) {
   emits('setPeriode', val)
 }
 // const periode = ref(1)
