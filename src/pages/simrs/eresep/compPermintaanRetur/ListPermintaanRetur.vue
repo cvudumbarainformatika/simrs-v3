@@ -108,6 +108,9 @@
                       <div class="col-5">
                         {{ depo(item?.rinci) }}
                       </div>
+                      <div class="col-3" :class="item?.flag == '1' ? 'bg-green text-white' : 'bg-orange text-white'">
+                        {{ item?.flag == '1' ? 'Sudah selesai' : 'Sudah dikirim ke depo' }}
+                      </div>
                     </div>
                   </q-item-section>
                 </q-item>
