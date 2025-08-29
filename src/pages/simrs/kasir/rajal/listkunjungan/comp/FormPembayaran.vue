@@ -70,13 +70,14 @@
       </div>
     </div>
     <q-separator />
-    <div class="row full-height q-gutter-xs">
-      <div class="col-6">
+    <div class="row " style="height: 81%;">
+      <div class="col-6 ">
         <form-pembayaran-detail :pasien="prop?.pasien" :jenislayanan="store.jenispembayaran" :billing="prop?.billing"
-          :kwitansi="prop?.kwitansi" />
+          :kwitansikarcis="prop?.kwitansikarcis" />
       </div>
+      <q-separator vertical />
       <div class="col">
-        <data-pembayaran :kwitansi="prop?.kwitansi" />
+        <data-pembayaran :kwitansikarcis="prop?.kwitansikarcis" />
       </div>
     </div>
   </div>
@@ -94,6 +95,6 @@ const store = useKasirRajalListKunjunganStore()
 const prop = defineProps({
   pasien: { type: Object, default: () => { } },
   billing: { type: Object, default: () => { } },
-  kwitansi: { type: Array, default: () => [] },
+  kwitansikarcis: { type: Array, default: () => [] },
 })
 </script>

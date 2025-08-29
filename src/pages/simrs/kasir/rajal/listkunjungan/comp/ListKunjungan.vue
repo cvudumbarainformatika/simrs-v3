@@ -55,7 +55,7 @@
       <app-fullscreen-blue v-model="billOpen" @close="store.notas = {}">
         <template #default>
           <!-- <BillingPage :pasien="pasien" @print="openPrint($event)" @rekap="openFaktur" @nota="getNota" /> -->
-          <FormPembayaran :pasien="pasien" :billing="store.rekapBill" :kwitansi="store.kwitansi" />
+          <FormPembayaran :pasien="pasien" :billing="store.rekapBill" :kwitansikarcis="store.kwitansikarcis" />
         </template>
       </app-fullscreen-blue>
       <!-- print nota -->

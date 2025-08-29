@@ -14,6 +14,12 @@ const kasir = {
       name: 'kasir.rawatjalan',
       component: () => import('pages/simrs/kasir/rajal/listkunjungan/IndexPage.vue')
     },
+    {
+      path: '/kwitansi/:id',
+      name: 'Kwitansi',
+      component: () => import('pages/simrs/kasir/rajal/listkunjungan/comp/PrintKwitansiPage.vue')
+    },
+
     // {
     //   path: '/kasir/rawatjalan',
     //   component: () => import('src/pages/simrs/kasir/rajal/IndexPage.vue'),

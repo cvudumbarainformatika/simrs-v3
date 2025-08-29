@@ -3,7 +3,7 @@
     <q-scroll-area ref="scrollRef" class="full-height" @scroll="onScroll">
       <q-list separator>
         <transition-group name="list">
-          <div class="q-pa-xs q-gutter-xs" v-for="(item, i) in prop?.kwitansi" :key="i">
+          <div class="q-pa-xs q-gutter-xs" v-for="(item, i) in prop?.kwitansikarcis" :key="i">
             <q-list bordered class="rounded-borders" style="max-width: 1200px">
               <q-item-label header>{{ item?.nota }}</q-item-label>
 
@@ -19,7 +19,7 @@
                   <q-item-label lines="1" class="q-mt-xs text-body2 text-weight-bold text-primary text-uppercase">
                     <span class="cursor-pointer"> {{ formatRpDouble(item?.total) }}</span> || <q-badge outline
                       color="teal">{{
-                        item?.nokwitansi }}</q-badge>
+                        item?.nota }}</q-badge>
                   </q-item-label>
                 </q-item-section>
 
@@ -38,6 +38,9 @@
         </transition-group>
       </q-list>
     </q-scroll-area>
+    <!-- <div id="printMe" class="full-width">
+      <DialogCetakKwitansi />
+    </div> -->
   </div>
 </template>
 <script setup>
@@ -46,7 +49,7 @@ import { formatRpDouble } from 'src/modules/formatter'
 
 const scrollRef = ref(null)
 const prop = defineProps({
-  kwitansi: {
+  kwitansikarcis: {
     type: Array,
     default: () => []
   }
@@ -64,6 +67,12 @@ function onScroll(info) {
 
 function batal(val) {
   console.log('batal', val)
+}
+
+const printObj = {
+  id: 'printMe',
+  popTitle: 'Resume Medik'
+
 }
 </script>
 

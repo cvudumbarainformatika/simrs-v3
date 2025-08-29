@@ -1,11 +1,12 @@
 <script setup>
 import { defineAsyncComponent, ref } from 'vue'
 import useRightPanel from './use/useRightPanel'
+import { humanDate, jamTnpDetik } from 'src/modules/formatter'
 import gsap from 'gsap'
 
-const BarComp = defineAsyncComponent(() => import('../components/BarComp.vue'))
-const ListIgd = defineAsyncComponent(() => import('../components/ListIgd.vue'))
-const InfoInputRanap = defineAsyncComponent(() => import('../components/InfoInputRanap.vue'))
+// const BarComp = defineAsyncComponent(() => import('../components/BarComp.vue'))
+// const ListIgd = defineAsyncComponent(() => import('../components/ListIgd.vue'))
+// const InfoInputRanap = defineAsyncComponent(() => import('../components/InfoInputRanap.vue'))
 
 const props = defineProps({
   pasien: {
@@ -41,6 +42,12 @@ const enter = (el, done) => {
   })
 }
 
+
+
+const handleClick = (item) => {
+  // console.log('handleClick', item);
+  store.initReset(item)
+}
 </script>
 
 <template>
@@ -50,82 +57,38 @@ const enter = (el, done) => {
       <div class="bg-transparent q-pa-sm">
         <q-list bordered separator class="">
           <transition-group appear tag="div" @before-enter="beforeEnter" @enter="enter">
-            <div v-for="(item, i) in items" :key="item?.id" v-ripple class="q-card q-pa-md q-mb-sm cursor-pointer">
-              <!-- <q-item clickable v-ripple v-for="item in items" :key="item?.id"> -->
+            <div v-for="(item, i) in items" :key="item?.id" v-ripple class="q-card q-pa-md q-mb-sm cursor-pointer"
+              @click="handleClick(item)">
               <q-item-section>
                 <q-item-label class="text-bold">PAGT</q-item-label>
                 <q-item-label caption>
                   Oleh : {{ item?.petugas?.nama }}
                 </q-item-label>
                 <q-item-label caption>
+                  <div>Dibuat Tanggal : </div>
                   <div class="flex q-gutter-sm items-center">
                     <div><q-icon name="icon-ion-timer" size="sm" /></div>
-                    <div>{{ item?.created_at }}</div>
+                    <div>{{ humanDate(item?.created_at) }}, Jam : {{ jamTnpDetik(item?.created_at) }}</div>
+                  </div>
+                </q-item-label>
+                <q-item-label v-if="item?.updated_at !== item?.created_at" caption>
+                  <div>DiEdit Tanggal : </div>
+                  <div class="flex q-gutter-sm items-center">
+                    <div><q-icon name="icon-ion-timer" size="sm" /></div>
+                    <div>{{ humanDate(item?.updated_at) }}, Jam : {{ jamTnpDetik(item?.updated_at) }}</div>
                   </div>
                 </q-item-label>
               </q-item-section>
               <q-item-section side bottom>
                 <q-icon :name="item?.id ? 'icon-mat-done_all' : 'icon-mat-done'" color="teal" />
               </q-item-section>
-              <!-- </q-item> -->
             </div>
           </transition-group>
         </q-list>
-        <!-- <info-input-ranap :items="store.items.ranap" :loading="store.loading">
-          <transition-group appear tag="div" @before-enter="beforeEnter" @enter="enter">
-            <div v-for="(item, i) in store?.items?.ranap" :key="i" v-ripple
-              class="q-card q-pa-md q-mb-sm cursor-pointer">
-              <q-item-section>
-                <q-item-label class="text-bold">
-                  {{ item?.nakes === '1' ? 'ASESMENT AWAL MEDIS'
-                    : item?.nakes === '2' ? 'ASESMENT AWAL KEPERAWATAN'
-                      : item.nakes === '3' ? 'ASESMENT AWAL KEBIDANAN'
-                        : 'ASESMENT AWAL ???' }}
-                </q-item-label>
-                <q-item-label>Data Anamnesis Tersimpan </q-item-label>
-                <q-item-label caption>
-                  Oleh : {{ item?.petugas?.nama }}
-                </q-item-label>
-                <q-item-label caption>
-                  <div class="flex q-gutter-sm items-center">
-                    <div><q-icon name="icon-ion-timer" size="sm" /></div>
-                    <div>{{ item?.tgl }}</div>
-                  </div>
-                </q-item-label>
-              </q-item-section>
-              <q-item-section side bottom>
-                <q-icon :name="item?.id ? 'icon-mat-done_all' : 'icon-mat-done'" color="teal" />
-              </q-item-section>
-            </div>
-          </transition-group>
-          <div style="margin-bottom:100px;" />
-        </info-input-ranap> -->
+
       </div>
     </template>
 
-    <!-- <template #after>
-      <div class="column fit bg-grey-7 text-white">
-        <div class="col-auto full-width">
-          <bar-comp :btn-full="false" title="Pemeriksaan Umum IGD" bg-color="grey-10" btn-min="icon-mat-expand_more"
-            :minimize="settings.splitMin > 50" @min="() => {
-              settings.splitMin === 94 ? settings.splitMin = 50 : settings.splitMin = 95
-            }" />
-        </div>
-        <div class="col full-height q-pa-sm scroll content">
-          <list-igd :items="store.items.igd">
-            <q-list v-for="dataIgd in store.items?.igd" :key="dataIgd" dark bordered separator>
-              <q-item v-for="list in fields.igd" :key="list">
-                <q-item-section>
-                  <q-item-label>{{ list.label }}</q-item-label>
-                  <q-item-label caption>
-                    <em class="text-weight-bold">{{ dataIgd[list.row] }}</em>
-                  </q-item-label>
-                </q-item-section>
-              </q-item>
-            </q-list>
-          </list-igd>
-        </div>
-      </div>
-    </template> -->
+
   </q-splitter>
 </template>
