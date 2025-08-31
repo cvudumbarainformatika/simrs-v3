@@ -159,7 +159,7 @@ export const usePagtStore = defineStore('pagt-store', {
       }
 
       // console.log('push sementara', pushSementara)
-      // console.log('form', payload)
+      console.log('form', payload)
 
       try {
         const resp = await api.post('v1/simrs/ranap/layanan/pagt/simpan', payload)

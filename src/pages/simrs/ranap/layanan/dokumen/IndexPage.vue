@@ -66,7 +66,7 @@ const menus = ref([
   },
   {
     name: 'asessment-gizi',
-    label: 'FORM PAGT',
+    label: 'Asuhan Gizi',
     title: 'FORM PAGT',
     desc: '(Proses Asuhan Gizi Terstandar)',
     icon: 'icon-my-file_sign',
