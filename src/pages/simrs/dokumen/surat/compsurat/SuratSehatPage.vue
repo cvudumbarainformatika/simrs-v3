@@ -1,60 +1,135 @@
 <template>
-  <div class="q-pa-md row">
-    <div class="col-6">
-      <q-form ref="refForm" @submit="onSubmit" class="q-gutter-sm">
-        <div class="row q-col-gutter-sm q-mb-sm">
-          <div class="col-6">
-            <app-input v-if="store.form" v-model="store.form.nomorSurat" label="Nomor Surat" outlined dense disable />
-          </div>
-          <div class="col-6">
-            <app-input v-if="store.form" v-model="store.form.pekerjaan" label="Pekerjaan" outlined dense />
-          </div>
+  <div class="row full-width full-height">
+    <div class="col-7">
+      <q-form ref="refForm" @submit="onSubmit" class="q-gutter-sm q-pa-lg">
+
+        <div class=" text-weight-bold">Form Surat Keterangan Dokter & Surat Keterangan Sehat (Jiwa)</div>
+
+        <div>
+          <q-option-group v-model="store.defaultJenis" :options="store.jenisx" inline
+            :rules="[val => !!val || 'Harap pilih salah satu']" />
         </div>
-        <div class="row q-col-gutter-sm q-mb-sm">
-          <div class="col-6">
-            <app-input v-if="store.form" v-model="store.form.keperluan" label="Untuk Keperluan" outlined dense />
+
+        <q-separator class="q-my-sm"></q-separator>
+        <div v-if="store.defaultJenis === 'SRT01'">
+          <div class="row q-col-gutter-sm q-mb-sm">
+            <div class="col-6">
+              <app-input v-model="store.form.nomorSurat" label="Nomor Surat" outlined dense disable />
+            </div>
+            <div class="col-6">
+              <app-input v-if="store.form" v-model="store.form.pekerjaan" label="Pekerjaan" outlined dense />
+            </div>
           </div>
-          <div class="col-6">
-            <app-input v-if="store.form" v-model="store.form.golDar" label="Golongan Darah" outlined dense />
+          <div class="row q-col-gutter-sm q-mb-sm">
+            <div class="col-6">
+              <app-input v-if="store.form" v-model="store.form.keperluan" label="Untuk Keperluan" outlined dense />
+            </div>
+            <div class="col-6">
+              <app-input v-if="store.form" v-model="store.form.golDar" label="Golongan Darah" outlined dense />
+            </div>
           </div>
-        </div>
-        <div class="row q-col-gutter-sm q-mb-sm">
-          <div class="col-6">
-            <app-input v-if="store.form" v-model="store.form.penglihatankiri" label="Penglihatan Kiri" outlined dense />
+          <div class="row q-col-gutter-sm q-mb-sm">
+            <div class="col-6">
+              <app-input v-if="store.form" v-model="store.form.penglihatankiri" label="Penglihatan Kiri" outlined
+                dense />
+            </div>
+            <div class="col-6">
+              <app-input v-if="store.form" v-model="store.form.penglihatankanan" label="Penglihatan Kanan" outlined
+                dense />
+            </div>
           </div>
-          <div class="col-6">
-            <app-input v-if="store.form" v-model="store.form.penglihatankanan" label="Penglihatan Kanan" outlined
-              dense />
+          <div class="row q-col-gutter-sm q-mb-sm">
+            <div class="col-6">
+              <app-input v-if="store.form" v-model="store.form.pendengarankiri" label="Pendengaran Kiri" outlined
+                dense />
+            </div>
+            <div class="col-6">
+              <app-input v-if="store.form" v-model="store.form.pendengarankanan" label="Pendengaran Kanan" outlined
+                dense />
+            </div>
           </div>
-        </div>
-        <div class="row q-col-gutter-sm q-mb-sm">
-          <div class="col-6">
-            <app-input v-if="store.form" v-model="store.form.pendengarankiri" label="Pendengaran Kiri" outlined dense />
-          </div>
-          <div class="col-6">
-            <app-input v-if="store.form" v-model="store.form.pendengarankanan" label="Pendengaran Kanan" outlined
-              dense />
-          </div>
-        </div>
-        <div class="row q-col-gutter-sm q-mb-sm">
-          <div class="col-6">
-            <app-input v-if="store.form" v-model="store.form.warna" label="Perbedaan warna" outlined dense />
-          </div>
-          <div class="col-6">
-            <q-option-group v-if="store.form" v-model="store.form.doc" :options="documents" inline
-              :rules="[val => !!val || 'Harap pilih salah satu']" />
-          </div>
-          <!-- <div class="col-6">
+          <div class="row q-col-gutter-sm q-mb-sm">
+            <div class="col-6">
+              <app-input v-if="store.form" v-model="store.form.warna" label="Perbedaan warna" outlined dense />
+            </div>
+            <div class="col-6">
+              <q-option-group v-if="store.form" v-model="store.form.doc" :options="documents" inline
+                :rules="[val => !!val || 'Harap pilih salah satu']" />
+            </div>
+            <!-- <div class="col-6">
             <app-input v-if="store.form" v-model="store.form.tinggi" label="Tinggi Badan" outlined dense />
           </div> -->
-        </div>
-        <div class="row q-col-gutter-sm q-mb-sm">
-          <!-- <div class="col-6">
+          </div>
+          <div class="row q-col-gutter-sm q-mb-sm">
+            <!-- <div class="col-6">
             <app-input v-if="store.form" v-model="store.form.berat" label="Berat Badan" outlined dense />
           </div> -->
 
 
+          </div>
         </div>
+
+        <div v-else>
+          <div class="row q-col-gutter-sm q-mb-sm">
+            <div class="col-6">
+              <app-input v-model="store.form.nomorSurat" label="Nomor Surat (otomatis)" outlined dense disable />
+            </div>
+            <div class="col-6">
+              <app-input v-model="store.form.keperluan" label="Untuk Keperluan" outlined dense />
+            </div>
+          </div>
+          <div class="row q-col-gutter-sm q-mb-sm">
+
+            <div class="col-6">
+              <app-input v-model="store.form.pekerjaan" label="Pekerjaan" outlined dense />
+            </div>
+            <div class="col-6">
+              <app-input v-model="store.form.pendidikan" label="Pendidikan" outlined dense />
+            </div>
+
+          </div>
+
+          <div class="row q-col-gutter-sm q-mb-sm">
+
+
+            <div class="col-12">
+              <q-separator class="q-my-xs"></q-separator>
+              <div class="text-weight-bold">Status Perkawinan</div>
+              <q-option-group v-model="store.form.statusperkawinan" :options="store.kawins" inline
+                :rules="[val => !!val || 'Harap pilih salah satu']" />
+            </div>
+
+            <div class="col-12">
+              <q-separator class="q-my-xs"></q-separator>
+              <div class="text-weight-bold">Psikatopologi</div>
+              <q-option-group v-model="store.form.psikatopologi" :options="store.psikatopologis" inline
+                :rules="[val => !!val || 'Harap pilih salah satu']" />
+            </div>
+
+            <div class="col-12" v-for="(item, i) in store.form.kepribadian" :key="item?.form">
+              <q-separator class="q-my-xs"></q-separator>
+              <div class="text-weight-bold">{{ item.form }}</div>
+              <q-option-group v-model="item.nilai" :options="store.penilaians" inline
+                :rules="[val => !!val || 'Harap pilih salah satu']" />
+            </div>
+
+
+          </div>
+
+          <q-separator class="q-my-sm"></q-separator>
+
+          <div class="row q-col-gutter-sm q-mb-sm">
+            <div class="col-12">
+              <app-input v-model="store.form.kecerdasan" label="Kecerdasan" outlined dense />
+            </div>
+          </div>
+
+          <q-separator class="q-my-xs"></q-separator>
+
+
+        </div>
+
+
         <div class="row q-col-gutter-sm q-mb-sm">
           <div class="col-12">
             <q-btn color="primary" icon-right="icon-mat-save" label="Simpan" type="submit" unelevated
@@ -67,22 +142,26 @@
         </div>
       </q-form>
     </div>
-    <q-separator vertical class="q-mx-sm" />
-    <div class="col-5">
-      <div class="row q-col-gutter-sm q-mb-sm">
-        <div class="col-12">
+    <div class="col-5 full-height bg-grey-3">
+      <div class="row full-height">
+        <div class="col-12 full-height">
           <ListSuratPage :kdsurat="suhats" :pasien="props.pasien" @delete="deleteData" @print="cetakData" />
         </div>
       </div>
     </div>
   </div>
-  <SuratSehatDokumenPage :pasien="props.pasien" :data="store.cetakdata" />
+  <SuratSehatDokumenPage v-if="store?.cetakdata?.kdsurat == 'SRT01'" :pasien="props.pasien" :data="store.cetakdata" />
+
+  <SuratKesehatanJiwaPage v-else-if="store?.cetakdata?.kdsurat == 'SRT02'" :pasien="props.pasien"
+    :data="store.cetakdata" />
+
 </template>
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useDokumenSuratSehatStore } from '../../../../../stores/simrs/dokumen/erm/suratsehat';
 import ListSuratPage from './ListSuratPage.vue'
 import SuratSehatDokumenPage from './SuratSehatDokumenPage.vue';
+import SuratKesehatanJiwaPage from './SuratKesehatanJiwaPage.vue';
 
 const store = useDokumenSuratSehatStore()
 
@@ -93,7 +172,20 @@ const props = defineProps({
   },
 })
 
+// console.log('props surat sehat page', props.pasien);
+
+
 const suhats = ref('SRT01')
+
+onMounted(() => {
+  const polijiwa = props.pasien?.kodepoli === 'POL010' ? true : false
+
+  if (polijiwa) {
+    store.defaultJenis = 'SRT02'
+  } else {
+    store.defaultJenis = 'SRT01'
+  }
+})
 
 const documents = ref([
   {
@@ -114,6 +206,9 @@ function onSubmit() {
   store.form.kdpoli = props.pasien?.kodepoli
   store.form.sistembayar = props.pasien?.sistembayar
   store.form.kddpjp = props.pasien?.kodedokter
+
+  store.form.jenis = store.defaultJenis
+
   store.simpan(props.pasien)
 }
 

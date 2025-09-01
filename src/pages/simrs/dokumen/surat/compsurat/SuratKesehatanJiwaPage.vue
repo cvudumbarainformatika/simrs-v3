@@ -19,7 +19,7 @@
           <KopSurat />
           <div class="garis-bawah-dblue q-pb-sm q-mb-sm">
             <div class="row justify-center f-16 text-weight-bold" style="text-decoration: underline;">
-              SURAT KETERANGAN DOKTER
+              SURAT KETERANGAN PEMERIKSAAN KESEHATAN JIWA
             </div>
             <div class="row justify-center f-16 text-weight-bold q-mb-md">
               Nomor: {{ props.data?.nosurat }}
@@ -62,7 +62,7 @@
                 Dokter Umum
               </div>
             </div>
-            <div class="row q-col-gutter-sm q-mb-xl f-16">
+            <div class="row q-col-gutter-sm f-16">
               <div class="col-2">
                 Instansi
               </div>
@@ -73,56 +73,99 @@
                 RSUD dr. Mohammad Saleh Kota Probolinggo
               </div>
             </div>
-            <div class="row q-col-gutter-sm f-16">
+
+            <div class="row q-col-gutter-sm f-16 q-mt-md">
               <div class="col-12">
-                Dengan ini menerangkan bahwa telah melakukan pemeriksaan terhadap :
+                Telah melakukan pemeriksaan psikiatri pada {{ tanggalEjaIndonesia(pasien?.tgl_kunjungan) }}, Terhadap :
+
               </div>
             </div>
-            <div class="row q-col-gutter-sm f-16">
-              <div class="col-2">
+            <div class="flex q-gutter-sm f-16">
+              <div class="" style="width: 20%">
                 Nama
               </div>
-              <div class="col-1">
+              <div class="">
                 :
               </div>
-              <div class="col-9">
-                {{ props.pasien?.nama }}
+              <div class="">
+                {{ props.pasien?.nama_panggil }}
               </div>
             </div>
-            <div class="row q-col-gutter-sm f-16">
-              <div class="col-2">
+            <div class="flex q-gutter-sm f-16">
+              <div class="" style="width: 20%">
                 Tempat, Tgl Lahir
               </div>
-              <div class="col-1">
+              <div class="">
                 :
               </div>
-              <div class="col-9">
-                {{ props.pasien?.templahir }}, {{ dateFullFormat(props.pasien?.tgllahir) }}
+              <div class="">
+                {{ pasien?.templahir }}, {{ dateFullFormat(pasien?.tgllahir) }}
               </div>
             </div>
-            <div class="row q-col-gutter-sm f-16">
-              <div class="col-2">
+            <div class="flex q-gutter-sm f-16">
+              <div class="" style="width: 20%">
                 Jenis Kelamin
               </div>
-              <div class="col-1">
+              <div class="">
                 :
               </div>
-              <div class="col-9">
+              <div class="">
                 {{ props.pasien?.kelamin }}
               </div>
             </div>
-            <div class="row q-col-gutter-sm f-16">
-              <div class="col-2">
+            <div class="flex q-gutter-sm f-16">
+              <div class="" style="width: 20%">
                 Pekerjaan
+              </div>
+              <div class="">
+                :
+              </div>
+              <div class="">
+                {{ props.data?.pekerjaan }}
+              </div>
+            </div>
+            <div class="flex q-gutter-sm f-16">
+              <div class="" style="width: 20%">
+                Pendidikan
+              </div>
+              <div class="">
+                :
+              </div>
+              <div class="">
+                {{ data?.pendidikan || '-' }}
+              </div>
+            </div>
+            <div class="flex q-gutter-sm f-16">
+              <div class="" style="width: 20%">
+                Status Perkawinan
+              </div>
+              <div class="">
+                :
+              </div>
+              <div class="">
+                {{ data?.statusperkawinan || '-' }}
+              </div>
+            </div>
+
+
+
+
+
+
+            <!-- <div class="row q-col-gutter-sm f-16">
+              <div class="col-2">
+                Status Perkawinan
               </div>
               <div class="col-1">
                 :
               </div>
               <div class="col-9">
-                {{ props.data?.pekerjaan }}
+                {{ props.data?.statusperkawinan }}
               </div>
-            </div>
-            <div class="row q-col-gutter-sm q-mb-lg f-16">
+            </div> -->
+
+
+            <!-- <div class="row q-col-gutter-sm q-mb-lg f-16">
               <div class="col-2">
                 Alamat
               </div>
@@ -132,181 +175,54 @@
               <div class="col-9">
                 {{ props.pasien?.alamat }}
               </div>
-            </div>
-            <div class="row q-col-gutter-sm f-16">
+            </div> -->
+            <div class="row q-col-gutter-sm f-16 q-mt-sm">
               <div class="col-12">
-                berdasarkan pemeriksaan kesehatan kepada bersangkutan pada saat ini dinyatakan :
+                Dengan Hasil Pemeriksaan Kesehatan Jiwa pada saat ini :
               </div>
             </div>
-            <div class="row q-col-gutter-sm f-16">
+
+            <!-- <div class="row q-col-gutter-sm f-16">
               <div class="col-12">
                 ---------------------------------------------- {{ props.data?.kesimpulan }}
                 ---------------------------------------------
               </div>
+            </div> -->
+
+            <div class="column f-16">
+              <div class="flex q-gutter-sm">
+                <div>1.</div>
+                <div>Psikopatologi</div>
+              </div>
+              <div class="column flex q-ml-md">
+                <div class="text-weight-bold">{{ props.data?.psikatopologi || '-' }}</div>
+              </div>
+              <div class="flex q-gutter-sm">
+                <div>2.</div>
+                <div>Kepribadian</div>
+              </div>
+              <div class="column flex q-ml-md">
+                <div v-for="(item, index) in props.data?.kepribadian" :key="index" class="text-weight-bold">
+                  {{ String.fromCharCode(97 + index) }}. {{ item.form }} : {{ item?.nilai || '-' }}
+                </div>
+              </div>
+
+              <div class="flex q-gutter-sm">
+                <div>3.</div>
+                <div>Kecerdasan</div>
+              </div>
+              <div class="column flex q-ml-md">
+                <div class="text-weight-bold">{{ props.data?.kecerdasan || '-' }}</div>
+              </div>
             </div>
-            <div class="row q-col-gutter-sm q-mb-lg f-16">
+
+            <div class="row q-col-gutter-sm q-mb-lg f-16 q-mt-sm">
               <div class="col-12">
-                Surat Keterangan Dokter ini digunakan untuk keperluan : {{ props.data?.untukKeperluan }}
+                Demikian Surat Keterangan Pemeriksaan Kesehatan Jiwa ini dibuat dengan sebenar-benarnya untuk keperluan
+                Administrasi <b>{{ props.data?.untukKeperluan }}</b>
               </div>
             </div>
-            <div class="row q-col-gutter-sm f-16">
-              <div class="col-12">
-                Keterangan :
-              </div>
-            </div>
-            <div class="row q-col-gutter-sm f-16">
-              <div class="col-2">
-                Penglihatan
-              </div>
-              <div class="col-1">
-                :
-              </div>
-              <div class="col-2 text-left">
-                Kiri VOS
-              </div>
-              <div class="col-1">
-                :
-              </div>
-              <div class="col-6 text-left">
-                {{ props.data?.pengliatanKiri }}
-              </div>
-            </div>
-            <div class="row q-col-gutter-sm f-16">
-              <div class="col-2">
 
-              </div>
-              <div class="col-1">
-
-              </div>
-              <div class="col-2 text-left">
-                Kanan VOD
-              </div>
-              <div class="col-1">
-                :
-              </div>
-              <div class="col-6 text-left">
-                {{ props.data?.pengliatanKanan }}
-              </div>
-            </div>
-            <div class="row q-col-gutter-sm f-16">
-              <div class="col-2">
-                Pendengaran
-              </div>
-              <div class="col-1">
-                :
-              </div>
-              <div class="col-2 text-left">
-                Kiri VOS
-              </div>
-              <div class="col-1">
-                :
-              </div>
-              <div class="col-6 text-left">
-                {{ props.data?.pendengaranKiri }}
-              </div>
-            </div>
-            <div class="row q-col-gutter-sm f-16">
-              <div class="col-2">
-
-              </div>
-              <div class="col-1">
-
-              </div>
-              <div class="col-2 text-left">
-                Kanan VOD
-              </div>
-              <div class="col-1">
-                :
-              </div>
-              <div class="col-6 text-left">
-                {{ props.data?.pendengaranKanan }}
-              </div>
-            </div>
-            <div class="row q-col-gutter-sm f-16">
-              <div class="col-2">
-                Perbedaan
-              </div>
-              <div class="col-1">
-                :
-              </div>
-              <div class="col-2 text-left">
-                Warna
-              </div>
-              <div class="col-1">
-                :
-              </div>
-              <div class="col-6 text-left">
-                {{ props.data?.perbedaanWarna }}
-              </div>
-            </div>
-            <div class="row q-col-gutter-sm f-16">
-              <div class="col-2">
-                Tinggi
-              </div>
-              <div class="col-1">
-                :
-              </div>
-              <div class="col-2">
-                Badan
-              </div>
-              <div class="col-1">
-                :
-              </div>
-              <div class="col-6 text-left">
-                {{ props.pasien?.pemeriksaanfisik[0]?.tinggibadan ?? 0 }} cm
-              </div>
-            </div>
-            <div class="row q-col-gutter-sm f-16">
-              <div class="col-2">
-                Berat
-              </div>
-              <div class="col-1">
-                :
-              </div>
-              <div class="col-2">
-                Badan
-              </div>
-              <div class="col-1">
-                :
-              </div>
-              <div class="col-6 text-left">
-                {{ props.pasien?.pemeriksaanfisik[0]?.beratbadan ?? 0 }} kg
-              </div>
-            </div>
-            <div class="row q-col-gutter-sm f-16">
-              <div class="col-2">
-                Golongan
-              </div>
-              <div class="col-1">
-                :
-              </div>
-              <div class="col-2">
-                Darah
-              </div>
-              <div class="col-1">
-                :
-              </div>
-              <div class="col-6 text-left">
-                {{ props.data?.golonganDarah }}
-              </div>
-            </div>
-            <div class="row q-col-gutter-sm f-16">
-              <div class="col-2">
-                Tekanan
-              </div>
-              <div class="col-1">
-                :
-              </div>
-              <div class="col-2">
-                Darah
-              </div>
-              <div class="col-1">
-                :
-              </div>
-              <div class="col-6 text-left">
-                {{ props.pasien?.pemeriksaanfisik[0]?.sistole }} / {{ props.pasien?.pemeriksaanfisik[0]?.diastole }}
-              </div>
-            </div>
           </div>
           <div class="row q-col-gutter-sm f-16">
             <div class="col-6">
@@ -349,7 +265,7 @@
 import { ref, computed } from 'vue'
 import { useDokumenSuratSehatStore } from 'src/stores/simrs/dokumen/erm/suratsehat';
 import KopSurat from 'src/pages/simrs/dokumen/KopSuratNewPage.vue';
-import { dateFullFormat } from 'src/modules/formatter';
+import { dateFullFormat, tanggalEjaIndonesia } from 'src/modules/formatter';
 
 const store = useDokumenSuratSehatStore()
 const props = defineProps({
@@ -376,6 +292,7 @@ const qrUrl = computed(() => {
   return `https://rsud.probolinggokota.go.id/dokumen-simrs/legalitas/${enc}`
 })
 
+
 const tanggal = new Date().toLocaleDateString('id-ID', {
   year: 'numeric',
   month: 'long',
@@ -397,7 +314,9 @@ const printObj = {
 .page-a4 {
   width: 794px;
   min-height: 1123px;
-  padding: 40px;
+  padding-right: 40px;
+  padding-left: 40px;
+  padding-top: 10px;
   margin: auto;
   background-color: white;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
