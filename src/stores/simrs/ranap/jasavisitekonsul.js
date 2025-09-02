@@ -24,18 +24,26 @@ export const useJasaVisitedanKonsulStore = defineStore('visite-konsul-ranap-stor
       { value: 'KONSUL', label: 'KONSUL' }
     ],
 
+    filterRuangs: [],
+    filterJenis: ['SEMUA', 'VISITE', 'KONSUL'],
+
     loading: false,
     loadingSave: false,
     loadingHapus: null,
-    filterTanggal: null
+    filterTanggal: null,
+    filterByRuang: null,
+    filterByJenis: null
 
   }),
   getters: {
     filterByTgl: (state) => {
-      if (state.filterTanggal) {
-        return state.items.filter(a => a.rs2?.includes(state.filterTanggal))
-      }
-      return state.items
+      let data = (state.items || []).filter(a => {
+        return (!state.filterTanggal || a.rs2?.includes(state.filterTanggal)) &&
+          (!state.filterByRuang || a?.rs8?.includes(state.filterByRuang)) &&
+          ((!state.filterByJenis || state.filterByJenis === 'SEMUA') || a?.rs6?.includes(state.filterByJenis === 'VISITE' ? 'V' : 'K'))
+      })
+
+      return data
     },
     total: (state) => state.filterByTgl?.reduce((a, b) => a + b.subtotal, 0),
   },
@@ -56,7 +64,9 @@ export const useJasaVisitedanKonsulStore = defineStore('visite-konsul-ranap-stor
 
         if (resp.status === 200) {
           this.items = resp?.data
+          this.setRuangan()
         }
+
       }
       catch (error) {
         // notifErrVue(error)
@@ -65,6 +75,24 @@ export const useJasaVisitedanKonsulStore = defineStore('visite-konsul-ranap-stor
       } finally {
         this.loading = false
       }
+    },
+
+
+    setRuangan() {
+      const ruangs = this.items.map(x => {
+        return {
+          kdruang: x?.rs8,
+          nama: x?.ruang,
+
+        }
+      })
+      this.filterRuangs = ruangs.reduce((acc, curr) => {
+        if (!acc.find(item => item.kdruang === curr.kdruang)) {
+          acc.push(curr)
+        }
+        return acc
+      }, [])
+      this.filterRuangs.unshift({ kdruang: null, nama: 'SEMUA RUANGAN' })
     },
 
     async simpan(pasien) {

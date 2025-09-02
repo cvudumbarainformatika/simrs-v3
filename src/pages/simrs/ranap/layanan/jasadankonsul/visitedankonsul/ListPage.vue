@@ -5,6 +5,7 @@
         <q-item>
           <q-item-section>
             <q-item-label>Dokter : {{ item?.dokter }}</q-item-label>
+            <q-item-label>Ruangan : {{ item?.ruang }}</q-item-label>
             <q-item-label class="text-weight-bold">Jasa : {{ item?.namatarif }}</q-item-label>
             <q-item-label>
               <q-badge :color="item?.rs6?.toUpperCase().includes('V') ? 'green' : 'orange'" class="text-weight-bold"
