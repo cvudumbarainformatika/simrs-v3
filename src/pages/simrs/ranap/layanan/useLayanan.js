@@ -99,7 +99,7 @@ export default function useLayanan (pasien, mpp) {
       name: 'permintaan-retur',
       label: 'Permintaan Retur Farmasi',
       icon: 'icon-mat-assignment_return',
-      nakes: ['2'],
+      nakes: ['2', '3'],
       comp: shallowRef(defineAsyncComponent(() => import('../../eresep/EresepPermintaanRetur.vue')))
     },
     {
