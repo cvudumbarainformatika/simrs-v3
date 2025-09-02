@@ -40,7 +40,7 @@ export const usePengunjungRanapStore = defineStore('pengunjung-ranap', {
   // persist: true,
 
   actions: {
-    setPeriode (val) {
+    setPeriode(val) {
       this.periode = val
       if (val === 'Hari ini') {
         this.hariIni()
@@ -52,7 +52,7 @@ export const usePengunjungRanapStore = defineStore('pengunjung-ranap', {
         this.bulanIni()
       }
     },
-    async getData () {
+    async getData() {
       this.loading = true
       const params = { params: this.params }
       try {
@@ -75,12 +75,12 @@ export const usePengunjungRanapStore = defineStore('pengunjung-ranap', {
       }
     },
 
-    hariIni () {
+    hariIni() {
       const cDate = new Date()
       this.params.to = dateDbFormat(cDate)
       this.params.from = dateDbFormat(cDate)
     },
-    bulanIni () {
+    bulanIni() {
       const curr = new Date(), y = curr.getFullYear(), m = curr.getMonth()
       // const firstday = date.formatDate(curr, 'YYYY') + '-' + date.formatDate(curr, 'MM') + '-01'
       // const lastday = date.formatDate(curr, 'YYYY') + '-' + date.formatDate(curr, 'MM') + '-31'
@@ -89,14 +89,14 @@ export const usePengunjungRanapStore = defineStore('pengunjung-ranap', {
       this.params.to = dateDbFormat(firstday)
       this.params.from = dateDbFormat(lastday)
     },
-    mingguIni () {
+    mingguIni() {
       const curr = new Date()
       const firstday = new Date(curr.setDate(curr.getDate() - curr.getDay()))
       const lastday = new Date(curr.setDate(curr.getDate() - curr.getDay() + 6))
       this.params.to = dateDbFormat(firstday)
       this.params.from = dateDbFormat(lastday)
     },
-    tahunIni () {
+    tahunIni() {
       const curr = new Date()
       const firstday = date.formatDate(curr, 'YYYY') + '-01' + '-01'
       const lastday = date.formatDate(curr, 'YYYY') + '-12' + '-31'
@@ -105,15 +105,15 @@ export const usePengunjungRanapStore = defineStore('pengunjung-ranap', {
     },
 
 
-    goToPage (val) {
+    goToPage(val) {
       this.params.page = val
       this.getData()
     },
-    refresh () {
+    refresh() {
       this.params.page = 1
       this.getData()
     },
-    bukaLayanan (val, pasien) {
+    bukaLayanan(val, pasien) {
       this.pageLayanan = val
       this.loadingLayanan = true
       const form = { noreg: pasien?.noreg }
@@ -145,7 +145,7 @@ export const usePengunjungRanapStore = defineStore('pengunjung-ranap', {
       })
     },
 
-    setPasien (pasien, data) {
+    setPasien(pasien, data) {
       const findPasien = this.pasiens.filter(x => x?.noreg === pasien?.noreg)
       // this.pasiens[indexPasien] = data
       // // console.log('wew', this.pasiens[indexPasien])
@@ -204,7 +204,7 @@ export const usePengunjungRanapStore = defineStore('pengunjung-ranap', {
 
       }
     },
-    getRuangan () {
+    getRuangan() {
       return new Promise((resolve, reject) => {
         api.get('v1/simrs/ranap/ruangan/listruanganranap')
           .then(resp => {
@@ -224,11 +224,15 @@ export const usePengunjungRanapStore = defineStore('pengunjung-ranap', {
 
               const kodenakes = ['1', '2', '3', '4', '5']
 
+              const ruanganUser = user?.pegawai?.ruangan?.koderuangan || null
+              const selainSa = ['R00037'] // mpp
+              // console.log('ruanganUser', ruanganUser);
+
               // console.log('auth', kodenakes.filter(x => x?.includes(nakes)), user)
-              if (user?.username !== 'sa') {
-                console.log('bukan sa')
+              if (user?.username !== 'sa' && !ruanganUser.includes(selainSa)) {
+                // console.log('bukan sa')
                 if (kodenakes.filter(x => x?.includes(nakes))?.length === 0) {
-                  console.log('bukan perawat')
+                  // console.log('bukan perawat')
                   this.berhakAkses = false
                   this.ruangans = []
                 }
@@ -237,7 +241,7 @@ export const usePengunjungRanapStore = defineStore('pengunjung-ranap', {
                   // cari ruangan
                   if (nakes === '2' || nakes === '3') {
                     this.ruangans = ruangs?.filter(x => x.groups === ruanganPerawat)
-                    console.log('ini nakes', this.ruangans)
+                    // console.log('ini nakes', this.ruangans)
                   }
                   else {
                     this.ruangans = ruangs
@@ -259,7 +263,7 @@ export const usePengunjungRanapStore = defineStore('pengunjung-ranap', {
       })
     },
 
-    aksesRuangan () {
+    aksesRuangan() {
       let ruang = null
       if (this.ruangans?.length > 0) {
         if (this.ruangans?.length === 1) {
@@ -277,7 +281,7 @@ export const usePengunjungRanapStore = defineStore('pengunjung-ranap', {
       return ruang
     },
 
-    gantiRuangan () {
+    gantiRuangan() {
       // console.log('gnt ruangan', this.ruangan)
       // if (this.ruangan === 'SEMUA') {
       //   this.params.koderuangan = this.ruangans.map(x => x.groups)
@@ -292,7 +296,7 @@ export const usePengunjungRanapStore = defineStore('pengunjung-ranap', {
       this.getData()
     },
 
-    initReset () {
+    initReset() {
       this.ruangan = this.aksesRuangan()
       this.params.page = 1
       this.params.koderuangan = this.ruangan
@@ -304,7 +308,7 @@ export const usePengunjungRanapStore = defineStore('pengunjung-ranap', {
 
       this.getData()
     },
-    gantiPeriode (val) {
+    gantiPeriode(val) {
       if (val === 'Hari Ini') {
         this.hariIni()
       }
@@ -316,19 +320,19 @@ export const usePengunjungRanapStore = defineStore('pengunjung-ranap', {
       }
       this.getData()
     },
-    hariIni () {
+    hariIni() {
       const cDate = new Date()
       this.params.to = dateDbFormat(cDate)
       this.params.from = dateDbFormat(cDate)
     },
-    mingguIni () {
+    mingguIni() {
       const curr = new Date()
       const firstday = new Date(curr.setDate(curr.getDate() - curr.getDay()))
       const lastday = new Date(curr.setDate(curr.getDate() - curr.getDay() + 6))
       this.params.to = dateDbFormat(firstday)
       this.params.from = dateDbFormat(lastday)
     },
-    bulanIni () {
+    bulanIni() {
       const curr = new Date()
       const firstday = date.formatDate(curr, 'YYYY') + '-' + date.formatDate(curr, 'MM') + '-01'
       const lastday = date.formatDate(curr, 'YYYY') + '-' + date.formatDate(curr, 'MM') + '-31'
@@ -336,21 +340,21 @@ export const usePengunjungRanapStore = defineStore('pengunjung-ranap', {
       this.params.from = dateDbFormat(lastday)
     },
 
-    tahunIni () {
+    tahunIni() {
       const curr = new Date()
       const firstday = date.formatDate(curr, 'YYYY') + '-01' + '-01'
       const lastday = date.formatDate(curr, 'YYYY') + '-12' + '-31'
       this.params.to = dateDbFormat(firstday)
       this.params.from = dateDbFormat(lastday)
     },
-    async getJenisKasus () {
+    async getJenisKasus() {
       const resp = await api.get('v1/simrs/ranap/ruangan/listjeniskasus')
       // console.log('jns kasus', resp.data)
       if (resp.status === 200) {
         this.jeniskasus = resp.data
       }
     },
-    async gantiJenisKasus (val, pasien) {
+    async gantiJenisKasus(val, pasien) {
       console.log('ganti jns kasus', val, pasien)
       const form = {
         noreg: pasien?.noreg,
@@ -367,7 +371,7 @@ export const usePengunjungRanapStore = defineStore('pengunjung-ranap', {
       }
     },
 
-    async gantiDpjp (form, pasien) {
+    async gantiDpjp(form, pasien) {
       // console.log('ganti dpjp', form, pasien)
       this.loadingSaveGantiDpjp = true
       try {
@@ -394,7 +398,7 @@ export const usePengunjungRanapStore = defineStore('pengunjung-ranap', {
       }
     },
 
-    gantiMemo (form, pasien) {
+    gantiMemo(form, pasien) {
       // console.log(form)
       return new Promise((resolve, reject) => {
         api.post('/v1/simrs/pelayanan/gantimemo', form)
@@ -414,7 +418,7 @@ export const usePengunjungRanapStore = defineStore('pengunjung-ranap', {
       })
     },
 
-    injectDataPasien (noreg, val, kode, arr) {
+    injectDataPasien(noreg, val, kode, arr) {
       const findPasien = this.pasiens.filter(x => x.noreg === noreg)
       // console.log('inject pasien', findPasien)
       if (findPasien?.length) {
@@ -442,7 +446,7 @@ export const usePengunjungRanapStore = defineStore('pengunjung-ranap', {
       }
     },
 
-    injectDataArray (noreg, arr, kode) {
+    injectDataArray(noreg, arr, kode) {
       const findPasien = this.pasiens.filter(x => x?.noreg === noreg)
       // console.log('inject pasien', findPasien)
       if (findPasien?.length) {
@@ -451,7 +455,7 @@ export const usePengunjungRanapStore = defineStore('pengunjung-ranap', {
       }
     },
 
-    injectUpdatean (noreg, id, val, kode) {
+    injectUpdatean(noreg, id, val, kode) {
       const findPasien = this.pasiens.filter(x => x?.noreg === noreg)
       if (findPasien?.length) {
         const data = findPasien[0]
@@ -461,7 +465,7 @@ export const usePengunjungRanapStore = defineStore('pengunjung-ranap', {
         }
       }
     },
-    deleteInjectanNull (noreg, kode) {
+    deleteInjectanNull(noreg, kode) {
       const findPasien = this.pasiens.filter(x => x.noreg === noreg)
       if (findPasien?.length) {
         const data = findPasien[0]
@@ -471,7 +475,7 @@ export const usePengunjungRanapStore = defineStore('pengunjung-ranap', {
         }
       }
     },
-    deleteInjectanNull2 (noreg, kode) {
+    deleteInjectanNull2(noreg, kode) {
       const findPasien = this.pasiens.filter(x => x.noreg === noreg)
       if (findPasien?.length) {
         const data = findPasien[0]
@@ -482,7 +486,7 @@ export const usePengunjungRanapStore = defineStore('pengunjung-ranap', {
       }
     },
 
-    hapusDataInjectan (pasien, id, key) {
+    hapusDataInjectan(pasien, id, key) {
       // console.log('hapusDataInjectan', key, id, pasien)
 
       const findPasien = this.pasiens.filter(x => x?.noreg === pasien?.noreg)
@@ -497,7 +501,7 @@ export const usePengunjungRanapStore = defineStore('pengunjung-ranap', {
       }
     },
 
-    async getNakes () {
+    async getNakes() {
       const resp = await api.get('/v1/simrs/master/pegawai/listnakes')
       // console.log('nakes', resp)
 
@@ -505,7 +509,7 @@ export const usePengunjungRanapStore = defineStore('pengunjung-ranap', {
         this.nakes = resp.data
       }
     },
-    async getNonNakes () {
+    async getNonNakes() {
       const resp = await api.get('/v1/simrs/master/pegawai/listnonnakes')
       // console.log('non nakes', resp)
 

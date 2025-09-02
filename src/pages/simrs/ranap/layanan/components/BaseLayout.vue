@@ -51,26 +51,17 @@ const splitterModel = ref(props.split)
 
 <template>
   <div class="fit " style="padding-top: 1px;">
-    <q-splitter
-      v-model="splitterModel"
-      separator-class="bg-grey-4"
-      separator-style="width: 5px"
-      :limits="[0, 100]"
-      before-class="overflow-hidden"
-      after-class="overflow-hidden"
-      class="fit "
-    >
+    <q-splitter v-model="splitterModel" separator-class="bg-grey-4" separator-style="width: 5px" :limits="[0, 100]"
+      before-class="overflow-hidden" after-class="overflow-hidden" class="fit ">
       <template #before>
         <div class="column fit bg-white">
           <div class="col-auto">
-            <BarComp
-              :title="titleBefore" bg-color="bg-primary" text-color="text-white"
-              :btn-full="btnFullBefore"
-              @full="()=> {
-                full = !full
-                splitterModel = full ? 100 : split
-              }"
-            />
+            <BarComp :title="titleBefore" bg-color="bg-primary" text-color="text-white" :btn-full="btnFullBefore" @full="() => {
+              full = !full
+              splitterModel = full ? 100 : split
+            }">
+
+            </BarComp>
           </div>
           <div class="col full-height">
             <slot name="form" />
@@ -81,12 +72,13 @@ const splitterModel = ref(props.split)
       <template #after>
         <div class="column fit">
           <div class="col-auto full-width">
-            <BarComp
-              :title="titleAfter" bg-color="bg-dark" text-color="text-white" :btn-full="btnFullAfter"
-            >
-              <template #other v-if="nota">
-                <slot name="nota" />
+            <BarComp :title="titleAfter" bg-color="bg-dark" text-color="text-white" :btn-full="btnFullAfter">
+              <template #other>
+                <slot v-if="nota" name="nota" />
+                <slot v-else name="header-kanan" />
+
               </template>
+
             </BarComp>
           </div>
           <div class="col full-height full-width">
