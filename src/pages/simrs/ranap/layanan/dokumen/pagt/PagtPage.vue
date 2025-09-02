@@ -123,7 +123,7 @@
                 <div class="col full-width column">
                   <div>RIWAYAT GIZI</div>
                   <div>DAHULU</div>
-                  <div class="flex q-gutter-md items-center q-pa-none" style="margin-top:-20px;">
+                  <div class="flex q-gutter-md items-center q-pa-none q-ml-lg" style="margin-top:-20px;">
                     <div>ALERGI MAKANAN</div>
                     <div>
                       <q-radio disable v-model="store.items[0].alergi_makanan" v-for="dd in store.yaTidaks" :key="dd"
@@ -133,7 +133,7 @@
                       {{ store?.items[0]?.alergi_makanan_ket }}
                     </div>
                   </div>
-                  <div class="flex q-gutter-md items-center q-pa-none" style="margin-top:-25px;">
+                  <div class="flex q-gutter-md items-center q-pa-none q-ml-lg" style="margin-top:-25px;">
                     <div>POLA MAKAN TERATUR (3 x SEHARI)</div>
                     <div>
                       <q-radio disable v-model="store.items[0].pola_makan" v-for="dd in store.yaTidaks" :key="dd"
@@ -143,7 +143,7 @@
                       {{ store?.items[0]?.pola_makan_ket }}
                     </div>
                   </div>
-                  <div class="flex q-gutter-md items-center q-pa-none" style="margin-top:-25px;">
+                  <div class="flex q-gutter-md items-center q-pa-none q-ml-lg" style="margin-top:-25px;">
                     <div>LAIN-LAIN, SEBUTKAN</div>
 
                     <div class="text-weight-italic">
@@ -154,7 +154,7 @@
                   <q-separator class="q-my-sm"></q-separator>
                   <div>SEKARANG</div>
 
-                  <div class="flex q-gutter-md items-center q-pa-none" style="margin-top:-20px;">
+                  <div class="flex q-gutter-md items-center q-pa-none q-ml-lg" style="margin-top:-20px;">
                     <div>NAFSU MAKAN BAIK</div>
                     <div>
                       <q-radio disable v-model="store.items[0].nafsu_makan" v-for="dd in store.yaTidaks" :key="dd"
@@ -164,7 +164,7 @@
                       {{ store?.items[0]?.nafsu_makan_ket }}
                     </div>
                   </div>
-                  <div class="flex q-gutter-md items-center q-pa-none" style="margin-top:-20px;">
+                  <div class="flex q-gutter-md items-center q-pa-none q-ml-lg" style="margin-top:-20px;">
                     <div>SULIT MENELAN</div>
                     <div>
                       <q-radio disable v-model="store.items[0].sulit_nelan" v-for="dd in store.yaTidaks" :key="dd"
@@ -174,7 +174,7 @@
                       {{ store?.items[0]?.sulit_nelan_ket }}
                     </div>
                   </div>
-                  <div class="flex q-gutter-md items-center q-pa-none" style="margin-top:-20px;">
+                  <div class="flex q-gutter-md items-center q-pa-none q-ml-lg" style="margin-top:-20px;">
                     <div>SULIT MENGUNYAH</div>
                     <div>
                       <q-radio disable v-model="store.items[0].sulit_ngunyah" v-for="dd in store.yaTidaks" :key="dd"
@@ -184,7 +184,7 @@
                       {{ store?.items[0]?.sulit_ngunyah_ket }}
                     </div>
                   </div>
-                  <div class="flex q-gutter-md items-center q-pa-none" style="margin-top:-20px;">
+                  <div class="flex q-gutter-md items-center q-pa-none q-ml-lg" style="margin-top:-20px;">
                     <div>MUAL</div>
                     <div>
                       <q-radio disable v-model="store.items[0].mual" v-for="dd in store.yaTidaks" :key="dd" :label="dd"
@@ -233,38 +233,29 @@
             <div class="col-auto text-weight-bold">2. </div>
             <div class="col full-width column">
               <div class="text-weight-bold">DIAGNOSA GIZI</div>
-              <div class="row q-col-gutter-md">
+              <div v-for="AA in pasien?.diagnosagizi" :key="AA?.id" class="row q-col-gutter-md"
+                style="margin-bottom: 10px !important; line-height: 8px;">
                 <div class="col full-width column">
-                  <div class="flex q-gutter-md">
-                    <div>{{ pasien?.diagnosagizi[0]?.kode }}</div>
-                    <div>- {{ pasien?.diagnosagizi[0]?.nama }}</div>
-                  </div>
-
-                  <div class="row q-col-gutter-md">
-                    <div class="col full-width">
-                      <div class="column full-width">
-                        KONDISI SAKIT
-
-                        <div v-for="DIAG in getGroupIntervensi(pasien?.diagnosagizi[0]?.intervensi, 'Etiologi')">
-                          - {{ DIAG?.masterintervensi?.nama }}
-                        </div>
-                      </div>
+                  <div class="flex q-gutter-sm">
+                    <div>{{ AA?.kode }}</div>
+                    <div> - {{ AA?.nama }}
                     </div>
-                    <div class="col full-width">
-                      <div class="text-weight-italic"><em>ditandai dengan</em></div>
+                    <div class="text-primary"> <em>berkaitan dengan</em></div>
+                    <div v-for="DIAG in getGroupIntervensi(pasien?.diagnosagizi[0]?.intervensi, 'Etiologi')">
+                      {{ DIAG?.masterintervensi?.nama }},
                     </div>
-                    <div class="col full-width">
-                      <div class="column full-width">
-                        <div v-for="DIAG in getGroupIntervensi(pasien?.diagnosagizi[0]?.intervensi, 'Sign/Symptoms')">
-                          - {{ DIAG?.masterintervensi?.nama }}
-                        </div>
-                      </div>
+                    <div class="text-primary">ditandai dengan</div>
+                    <div v-for="DIAG in getGroupIntervensi(pasien?.diagnosagizi[0]?.intervensi, 'Sign/Symptoms')">
+                      {{ DIAG?.masterintervensi?.nama }}
                     </div>
                   </div>
 
 
                 </div>
               </div>
+
+
+
             </div>
           </div>
         </div>
@@ -281,6 +272,13 @@
 
 
 
+                </div>
+              </div>
+
+              <div class="row q-col-gutter-xs">
+                <div>DIET : </div>
+                <div v-for="DIET in getGroupIntervensi(pasien?.diagnosagizi[0]?.intervensi, 'Diet')">
+                  {{ DIET?.masterintervensi?.nama }}
                 </div>
               </div>
             </div>

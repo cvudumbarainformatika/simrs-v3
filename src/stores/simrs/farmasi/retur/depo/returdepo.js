@@ -165,9 +165,10 @@ export const useReturDepoStore = defineStore('retur_dari_depo', {
           .then(resp => {
             this.loadingKirim = false
             this.resep.loading = false
-            console.log('resp', resp)
             this.resep.flag = '4'
             this.resep.flag_permintaan_retur = null
+            notifSuccess(resp)
+            this.setClose()
             const item = resp?.data?.resep
             const index = this.items.findIndex(x => x.noresep === this.resep.noresep)
             if (index >= 0 && item) this.items[index] = item
@@ -176,8 +177,7 @@ export const useReturDepoStore = defineStore('retur_dari_depo', {
               const rinci = this.resep?.rincian?.find(x => x.kdobat === rinciRet.kdobat)
               rinci.jumlah_retur = rinciRet.jumlah_retur
             }
-            this.setClose()
-            notifSuccess(resp)
+            console.log('resp', resp)
             resolve(resp)
           })
           .catch(() => {

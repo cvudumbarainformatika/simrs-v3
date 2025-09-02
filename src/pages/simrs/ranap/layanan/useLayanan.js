@@ -96,11 +96,11 @@ export default function useLayanan(pasien, mpp) {
       comp: shallowRef(defineAsyncComponent(() => import('../../eresep/EresepPage.vue')))
     },
     { // ini kalo akun sa ikut keluar
-      name: 'e-resep-page',
-      label: 'List Resep',
-      icon: 'icon-mat-receipt',
-      nakes: ['2'],
-      comp: shallowRef(defineAsyncComponent(() => import('../../eresep/EresepPage.vue')))
+      name: 'permintaan-retur',
+      label: 'Permintaan Retur Farmasi',
+      icon: 'icon-mat-assignment_return',
+      nakes: ['2', '3'],
+      comp: shallowRef(defineAsyncComponent(() => import('../../eresep/EresepPermintaanRetur.vue')))
     },
     {
       name: 'inform-consent-page',
@@ -115,6 +115,13 @@ export default function useLayanan(pasien, mpp) {
       icon: 'icon-mat-send_time_extension',
       nakes: ['2', '3'],
       comp: shallowRef(defineAsyncComponent(() => import('./dischargeplanning/IndexPage.vue')))
+    },
+    {
+      name: 'jasa-dan-konsul-page',
+      label: 'Jasa & Konsul',
+      icon: 'icon-mat-move_to_inbox',
+      nakes: ['2', '3'],
+      comp: shallowRef(defineAsyncComponent(() => import('./jasadankonsul/IndexPage.vue')))
     },
     {
       name: 'upload-page',

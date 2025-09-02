@@ -1,17 +1,24 @@
 import { acceptHMRUpdate, defineStore } from "pinia"
 import { date } from "quasar"
+import { api } from "src/boot/axios"
 
 export const useLaporanTelaahResepObatStore = defineStore('laporan_telaah_resep_obat', {
   state: () => ({
+    isOpen: false,
     loading: false,
+    loadingNext: false,
     items: [],
     meta: {},
     params: {
       kode_ruang: 'all',
       per_page: 10,
       page: 1,
-      bulan: date.formatDate(Date.now(), 'MM'),
-      tahun: date.formatDate(Date.now(), 'YYYY')
+      from: date.formatDate(Date.now(), 'YYYY-MM-DD'),
+      to: date.formatDate(Date.now(), 'YYYY-MM-DD'),
+    },
+    disp: {
+      from: date.formatDate(Date.now(), 'DD MMMM YYYY'),
+      to: date.formatDate(Date.now(), 'DD MMMM YYYY')
     },
 
     bulans: [
@@ -36,6 +43,7 @@ export const useLaporanTelaahResepObatStore = defineStore('laporan_telaah_resep_
       { nama: 'Depo IGD', value: 'Gd-02010104' }
 
     ],
+    dataToPrint: {},
   }),
   actions: {
     setParams (key, val) {
@@ -49,7 +57,7 @@ export const useLaporanTelaahResepObatStore = defineStore('laporan_telaah_resep_
     },
     setPage (payload) {
       this.setParams('page', payload)
-      this.getDataTable()
+      this.getDataNextTable()
     },
     setPerPage (payload) {
       this.setParams('per_page', payload)
@@ -63,7 +71,34 @@ export const useLaporanTelaahResepObatStore = defineStore('laporan_telaah_resep_
     getInitialData () {
       this.getDataTable()
     },
-    getDataTable () { }
+    async getDataTable () {
+      try {
+        this.loading = true
+        const { data } = await api.get('v1/simrs/laporan/farmasi/telaah/get-data', { params: this.params })
+        console.log('data', data)
+
+        this.items = data.data
+        this.meta = data.meta
+      } catch (error) {
+        console.log(error)
+      } finally {
+        this.loading = false
+      }
+    },
+    async getDataNextTable () {
+      try {
+        this.loadingNext = true
+        const { data } = await api.get('v1/simrs/laporan/farmasi/telaah/get-data', { params: this.params })
+        console.log('data', data)
+        const items = [...new Set([...this.items, ...data.data])]
+        this.items = items
+        this.meta = data.meta
+      } catch (error) {
+        console.log(error)
+      } finally {
+        this.loadingNext = false
+      }
+    }
   }
 })
 if (import.meta.hot) {

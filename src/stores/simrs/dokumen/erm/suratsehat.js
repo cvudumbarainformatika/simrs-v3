@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia'
+import { defineStore, acceptHMRUpdate } from 'pinia'
 import { api } from 'src/boot/axios'
 import { usePengunjungPoliStore } from '../../pelayanan/poli/pengunjung'
 import { notifErr, notifSuccess } from 'src/modules/utils'
@@ -11,11 +11,23 @@ export const useDokumenSuratSehatStore = defineStore('dokumen_suratsehat_new', {
     items: [],
     item: {},
     meta: {},
+
     form: {
       nomorSurat: '',
       noreg: '',
       norm: '',
       pekerjaan: '',
+
+      pendidikan: '',
+      statusperkawinan: '',
+      psikatopologi: '',
+      kepribadian: [
+        { form: 'Ketaatan Pada Peraturan', nilai: '' },
+        { form: 'Kemampuan Mengendalikan Emosi', nilai: '' },
+        { form: 'Kemampuan Mengatasi Permaslahan', nilai: '' },
+      ],
+      kecerdasan: '',
+
       keperluan: '',
       doc: '',
       penglihatankiri: '',
@@ -28,11 +40,39 @@ export const useDokumenSuratSehatStore = defineStore('dokumen_suratsehat_new', {
       golDar: '',
       kdsurat: '',
       dokter: '',
-    }
+    },
+
+    jenisx: [
+      { value: 'SRT01', label: 'Surat Keterangan Dokter' },
+      { value: 'SRT02', label: 'Surat Kesehatan Jiwa' }
+    ],
+    defaultJenis: 'SRT01',
+    kawins: [
+      { value: 'Kawin', label: 'Kawin' },
+      { value: 'Belum Kawin', label: 'Belum Kawin' }
+    ],
+
+    psikatopologis: [
+      { value: 'Ditemukan', label: 'Ditemukan' },
+      { value: 'Tidak Ditemukan Tanda / Gejala Gangguan Jiwa yang bermakna dan dapat menganggu aktivitas kehidupan sehari-hari', label: 'Tidak Ditemukan Tanda / Gejala Gangguan Jiwa yang bermakna dan dapat menganggu aktivitas kehidupan sehari-hari' }
+    ],
+
+    penilaians: [
+      { value: 'Sangat Bagus', label: 'Sangat Bagus' },
+      { value: 'Bagus', label: 'Bagus' },
+      { value: 'Cukup', label: 'Cukup' },
+      { value: 'Kurang', label: 'Kurang' },
+      { value: 'Sangat Kurang', label: 'Sangat Kurang' }
+    ],
+
+
+
   }),
   actions: {
     async simpan(pasien) {
       this.loading = true
+      // console.log('simpan', this.form);
+
       //  const param = { params: this.form }
       try {
         const resp = await api.post('v1/simrs/dokumen/rajal/skdsimpan', this.form)
@@ -92,7 +132,10 @@ export const useDokumenSuratSehatStore = defineStore('dokumen_suratsehat_new', {
       }
     },
     async cekpembayaran(pasien, item) {
+      // console.log('cek pembayaran item', item);
 
+      // this.cetakdata = item
+      // this.dialog = true
       item.cetak = true
       const sistembayar = pasien?.kodesistembayar
       const tindakan_id = item.tindakan_id
@@ -112,3 +155,8 @@ export const useDokumenSuratSehatStore = defineStore('dokumen_suratsehat_new', {
     }
   }
 })
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useDokumenSuratSehatStore, import.meta.hot))
+
+}

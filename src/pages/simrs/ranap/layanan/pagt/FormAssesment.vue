@@ -9,7 +9,7 @@
     <div class="col-6">
       <b>BIOKIMIA :</b>
       <q-separator></q-separator>
-      <q-radio v-model="store.form.biokima" v-for="dd in store.normals" :key="dd" :label="dd" :val="dd"
+      <q-radio v-model="store.form.biokimia" v-for="dd in store.normals" :key="dd" :label="dd" :val="dd"
         @update:model-value="(val) => {
 
         }" />
