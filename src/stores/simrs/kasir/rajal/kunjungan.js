@@ -25,7 +25,8 @@ export const useKasirRajalListKunjunganStore = defineStore('kasir_rajal_list_kun
     rekapBill: {},
     notas: {},
     qris: 'asd',
-    jenispembayaran: ''
+    jenispembayaran: '',
+    loadingdataterbayar: false,
   }),
   // getters: {
   //   doubleCount: (state) => state.counter * 2
@@ -76,6 +77,7 @@ export const useKasirRajalListKunjunganStore = defineStore('kasir_rajal_list_kun
       if (resp.status === 200) {
         this.rekapBill = resp.data
         const kwitansikarcis = resp.data?.kwitansikarcis ?? []
+        const kwitansi = resp.data?.kwitansi ?? []
         const hasilglobal = []
         kwitansikarcis.forEach(k => {
           const hasil = {
@@ -86,6 +88,20 @@ export const useKasirRajalListKunjunganStore = defineStore('kasir_rajal_list_kun
             batal: k?.batal,
             total: k?.total,
             nama: k?.nama,
+            usercetak: k?.nama,
+          }
+          hasilglobal.push(hasil)
+        })
+        kwitansi.forEach(k => {
+          const hasil = {
+            noreg: k?.noreg,
+            norm: k?.norm,
+            nota: k?.nokwitansi,
+            tgl_pembayaran: k?.tglx,
+            batal: k?.batal,
+            total: k?.total,
+            nama: k?.nama,
+            usercetak: k?.nama,
           }
           hasilglobal.push(hasil)
         })

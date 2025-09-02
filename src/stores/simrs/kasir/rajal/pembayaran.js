@@ -3,11 +3,13 @@ import { api } from "src/boot/axios";
 import { notifErr, notifSuccess } from "src/modules/utils";
 import { useKasirRajalListKunjunganStore } from "./kunjungan";
 import { printNb } from 'src/modules/print'
+import { dateDbFormat } from "src/modules/formatter";
 
 export const usePembayaranKasirRajalStore = defineStore('pembayaran-kasir-rajal-store', {
   state: () => ({
     loading: false,
     loadingpembayaran: false,
+    loadingbayar: false,
     loadingQris: false,
     items: [],
     itemsobat: [],
@@ -41,6 +43,7 @@ export const usePembayaranKasirRajalStore = defineStore('pembayaran-kasir-rajal-
     total: 0,
     dataCetak: null,
     showCetak: false,
+    qrcode: '',
     printObj: {
       id: 'printMe',
       popTitle: 'Kwitansi Pembayaran'
@@ -100,87 +103,57 @@ export const usePembayaranKasirRajalStore = defineStore('pembayaran-kasir-rajal-
           })
       })
     },
-    createQris(pasien, billing, jenislayanan, val) {
-      this.loadingQris = true
-      this.formqris.noreg = pasien.noreg
-      this.formqris.norm = pasien.norm
-      this.forformqrism.tglkunjungan = pasien.tgl_kunjungan
-      this.formqris.nama = pasien.nama
-      this.formqris.sapaan = pasien.sapaan
-      this.formqris.kelamin = pasien.kelamin
-      this.formqris.kodepoli = pasien.kodepoli
-      this.formqris.poli = pasien.poli
-      this.formqris.sistembayar = pasien.sistembayar
-      this.formqris.total = billing.totalall
-      this.formqris.rinci = billing.rincian
-      this.formqris.carabayar = val
-      this.formqris.jenislayanan = jenislayanan
+    createQris(pasien, billing, jenislayanan, carabayar) {
+      console.log('createQris', billing, jenislayanan, carabayar)
+      this.loadingpembayaran = true
+      this.form.noreg = pasien.noreg
+      this.form.norm = pasien.norm
+      this.form.tglkunjungan = pasien.tgl_kunjungan
+      this.form.nama = pasien.nama
+      this.form.sapaan = pasien.sapaan
+      this.form.kelamin = pasien.kelamin
+      this.form.kodepoli = pasien.kodepoli
+      this.form.poli = pasien.poli
+      this.form.sistembayar = pasien.sistembayar
+      this.form.total = billing
+      this.form.merchantPan = '9360011400000396828'
+      this.form.billNumber = pasien.noreg
+      this.form.purposetrx = pasien.noreg
+      this.form.storelabel = 'RSUD DR M SALEH'
+      this.form.customerlabel = 'PUBLIC'
+      this.form.terminalUser = 'U012001'
+      this.form.transactionDate = dateDbFormat(new Date())
+      this.form.amount = billing
+      this.form.carabayar = carabayar
+      this.form.jenislayanan = jenislayanan
       return new Promise(resolve => {
         api.post('/v1/simrs/kasir/rajal/pembayarankarcis', this.form)
           .then((resp) => {
-            this.loadingQris = false
-            const thiskwitansi = resp.data?.result?.heder
-            const hasilglobal = []
-            thiskwitansi?.forEach(x => {
-              const kwitansilog = x?.kwitansilog
-              kwitansilog?.forEach(k => {
-                const hasil = {
-                  noreg: k?.noreg,
-                  norm: k?.norm,
-                  nota: k?.nota,
-                  tgl_pembayaran: k?.tglx,
-                  batal: k?.batal,
-                  total: k?.total,
-                  nama: k?.nama,
-                  nokwitansi: k?.nokwitansi,
-                  i: ''
-                }
-                hasilglobal.push(hasil)
-              })
-              const karcislog = x?.karcislog
-              karcislog?.forEach(k => {
-                const hasilx = {
-                  noreg: k?.noreg,
-                  norm: k?.norm,
-                  nota: null,
-                  tgl_pembayaran: k?.tglx,
-                  batal: k?.batal,
-                  total: k?.total,
-                  nama: k?.nama,
-                  nokwitansi: k?.nokarcis,
-                  i: 'KARCIS'
-                }
-                hasilglobal.push(hasilx)
-              })
-            })
-            const storekunjungan = useKasirRajalListKunjunganStore()
-            storekunjungan.kwitansi = hasilglobal
-            notifSuccess(resp.data?.message)
-            setTimeout(() => {
-              this.printElement(this.printObj.id)
-            }, 500)
+            this.loadingpembayaran = false
+            console.log('resp', resp.data)
+            this.qrcode = resp.data.qrValue
             //this.qris = resp.data.result.qrValue
             resolve(resp.data)
           })
           .catch((err) => {
             console.log('err', err)
-            this.loading = false
+            this.loadingpembayaran = false
           })
       })
     },
     async carikarcis(noreg) {
-      this.loading = true
+      this.loadingbayar = true
       this.items = []
       const params = { params: { noreg: noreg } }
       const resp = await api.get('/v1/simrs/kasir/rajal/cari-karcis', params)
         .then(resp => {
           this.items = resp.data?.data
-          this.loading = false
+          this.loadingbayar = false
         })
-        .catch(() => { this.loading = false })
+        .catch(() => { this.loadingbayar = false })
     },
     async cariobat(noreg) {
-      this.loading = true
+      this.loadingbayar = true
       this.itemsobat = []
       const params = { params: { noreg: noreg } }
       const resp = await api.get('/v1/simrs/kasir/rajal/cari-obat', params)
@@ -227,64 +200,64 @@ export const usePembayaranKasirRajalStore = defineStore('pembayaran-kasir-rajal-
           //   return acc + h.rincian + h.rincianracik
           // }, 0) + jumlahracikan_r
           // console.log('hasilglobal', totalSemua)
-          this.loading = false
+          this.loadingbayar = false
         })
-        .catch(() => { this.loading = false })
+        .catch(() => { this.loadingbayar = false })
     },
     async caritindakan(noreg) {
-      this.loading = true
+      this.loadingbayar = true
       this.itemstindakan = []
       const params = { params: { noreg: noreg } }
       const resp = await api.get('/v1/simrs/kasir/rajal/cari-tindakan', params)
         .then(resp => {
           this.itemstindakan = resp.data
-          this.loading = false
+          this.loadingbayar = false
         })
         .catch(() => { this.loading = false })
     },
     async carioperasi(noreg) {
-      this.loading = true
+      this.loadingbayar = true
       this.itemsoperasi = []
       const params = { params: { noreg: noreg } }
       const resp = await api.get('/v1/simrs/kasir/rajal/cari-tindakan-operasi', params)
         .then(resp => {
           this.itemsoperasi = resp.data
-          this.loading = false
+          this.loadingbayar = false
         })
-        .catch(() => { this.loading = false })
+        .catch(() => { this.loadingbayar = false })
     },
     async carilaborat(noreg) {
-      this.loading = true
+      this.loadingbayar = true
       this.itemslaborat = []
       const params = { params: { noreg: noreg } }
       const resp = await api.get('/v1/simrs/kasir/rajal/cari-laborat', params)
         .then(resp => {
           this.itemslaborat = resp.data
-          this.loading = false
+          this.loadingbayar = false
         })
-        .catch(() => { this.loading = false })
+        .catch(() => { this.loadingbayar = false })
     },
     async cariradiologi(noreg) {
-      this.loading = true
+      this.loadingbayar = true
       this.itemsradiologi = []
       const params = { params: { noreg: noreg } }
       const resp = await api.get('/v1/simrs/kasir/rajal/cari-radiologi', params)
         .then(resp => {
           this.itemsradiologi = resp.data
-          this.loading = false
+          this.loadingbayar = false
         })
         .catch(() => { this.loading = false })
     },
     async carisharingbpjs(noreg) {
-      this.loading = true
+      this.loadingbayar = true
       this.itemssharingbpjs = []
       const params = { params: { noreg: noreg } }
       const resp = await api.get('/v1/simrs/kasir/rajal/cari-radiologi', params)
         .then(resp => {
           this.itemssharingbpjs = resp.data
-          this.loading = false
+          this.loadingbayar = false
         })
-        .catch(() => { this.loading = false })
+        .catch(() => { this.loadingbayar = false })
     },
     setPrintObj(obj) {
       this.printObj = obj
