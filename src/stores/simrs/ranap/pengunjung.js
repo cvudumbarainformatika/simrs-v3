@@ -221,37 +221,68 @@ export const usePengunjungRanapStore = defineStore('pengunjung-ranap', {
               const user = auth?.user
               const nakes = auth?.user?.pegawai?.kdgroupnakes
               const ruanganPerawat = user?.pegawai?.ruangan?.kdmapping
-
-              const kodenakes = ['1', '2', '3', '4', '5']
-
               const ruanganUser = user?.pegawai?.ruangan?.koderuangan || null
+              const kodenakes = ['1', '2', '3', '4', '5']
               const selainSa = ['R00037'] // mpp
+              const isSA = user?.username === 'sa'
+
+
+              const isNakes = kodenakes.includes(nakes)
+              const isSelainNakesdanSa = selainSa.includes(ruanganUser)
+
+
+              if (isSA || isSelainNakesdanSa) {
+                // SA atau siapa pun yang punya ruangan MPP (nakes atau bukan nakes)
+                this.berhakAkses = true
+                this.ruangans = ruangs
+              } else if (isNakes) {
+                // perawat biasa
+                this.berhakAkses = true
+                if (nakes === '2' || nakes === '3') {
+                  this.ruangans = ruangs?.filter(x => x.groups === ruanganPerawat)
+                } else {
+                  this.ruangans = ruangs
+                }
+
+              } else {
+                // tidak memenuhi semua syarat
+                this.berhakAkses = false
+                this.ruangans = []
+              }
+
               // console.log('ruanganUser', ruanganUser);
 
               // console.log('auth', kodenakes.filter(x => x?.includes(nakes)), user)
-              if (user?.username !== 'sa' && !ruanganUser.includes(selainSa)) {
-                // console.log('bukan sa')
-                if (kodenakes.filter(x => x?.includes(nakes))?.length === 0) {
-                  // console.log('bukan perawat')
-                  this.berhakAkses = false
-                  this.ruangans = []
-                }
-                else {
-                  this.berhakAkses = true
-                  // cari ruangan
-                  if (nakes === '2' || nakes === '3') {
-                    this.ruangans = ruangs?.filter(x => x.groups === ruanganPerawat)
-                    // console.log('ini nakes', this.ruangans)
-                  }
-                  else {
-                    this.ruangans = ruangs
-                  }
-                }
-              }
-              else {
-                this.berhakAkses = true
-                this.ruangans = ruangs
-              }
+              // if (user?.username !== 'sa') {
+              //   // console.log('bukan sa')
+              //   if (!(isNakes && isSelainNakesdanSa)) {
+              //     // console.log('bukan perawat')
+              //     if (isSelainNakesdanSa) {
+              //       this.berhakAkses = true
+              //       this.ruangans = ruangs
+              //     } else {
+              //       this.berhakAkses = false
+              //       this.ruangans = []
+              //     }
+              //   }
+              //   else {
+              //     this.berhakAkses = true
+              //     // cari ruangan
+              //     if (nakes === '2' || nakes === '3') {
+              //       this.ruangans = ruangs?.filter(x => x.groups === ruanganPerawat)
+              //       // console.log('ini nakes', this.ruangans)
+              //     }
+              //     else {
+              //       this.ruangans = ruangs
+              //     }
+              //   }
+              // }
+
+              // jika usr = sa
+              // else {
+              //   this.berhakAkses = true
+              //   this.ruangans = ruangs
+              // }
               // console.log('akhir', this.ruangans)
               // this.params.koderuangan = this.aksesRuangan()
             }
