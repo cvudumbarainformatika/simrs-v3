@@ -48,7 +48,7 @@
                 <div>{{ data?.rs2 || '-' }}</div>
                 <div>{{ data?.rs3 || '-' }}</div>
                 <div>{{ pasien?.norm || '-' }}</div>
-                <div>{{ pasien?.nama_panggil || pasien?.name || '-' }}</div>
+                <div>{{ pasien?.nama || pasien?.name || pasien?.nama_panggil || '-' }}</div>
                 <div>{{ pasien?.tgllahir }}</div>
                 <div>{{ pasien?.usia }}</div>
                 <div>{{ pasien?.nohp }}</div>

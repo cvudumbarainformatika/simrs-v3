@@ -118,7 +118,7 @@ export default function useLayanan(pasien, mpp) {
     },
     {
       name: 'jasa-dan-konsul-page',
-      label: 'Jasa & Konsul',
+      label: 'Jaspel',
       icon: 'icon-mat-move_to_inbox',
       nakes: ['2', '3'],
       comp: shallowRef(defineAsyncComponent(() => import('./jasadankonsul/IndexPage.vue')))

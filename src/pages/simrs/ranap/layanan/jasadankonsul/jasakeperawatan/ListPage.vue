@@ -4,7 +4,7 @@
       <q-card-section class="q-pa-none">
         <q-item>
           <q-item-section>
-            <q-item-label>Dokter : {{ item?.dokter }}</q-item-label>
+            <!-- <q-item-label>Dokter : {{ item?.dokter }}</q-item-label> -->
             <q-item-label>Ruangan : {{ item?.ruang }}</q-item-label>
             <q-item-label class="text-weight-bold">Jasa : {{ item?.namatarif }}</q-item-label>
             <q-item-label>
@@ -20,6 +20,7 @@
               <q-spinner v-if="store.loadingHapus === item?.id" size="sm" color="red"></q-spinner>
               <q-icon v-else name="icon-mat-delete" size="sm" color="red" class="cursor-pointer"
                 @click="hapusItem(item?.id)"></q-icon>
+
             </q-item-label>
           </q-item-section>
         </q-item>
