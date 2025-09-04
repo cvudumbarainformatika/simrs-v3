@@ -92,17 +92,17 @@ const formatDoubleKoma = (value, dg) => {
 
 const formattanpaRp = (value) => {
   if (value !== null && value !== '') {
-    return (
-      Number(value)
-        .toFixed(2)
-        // titik
-        // .replace(/\d(?=(\d{3})+(?:\.\d+)?$)/g, "$1.");
+    const numValue = Number(value);
+    const formattedValue = Math.abs(numValue)
+      .toFixed(2)
+      .replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, '$1,');
 
-        // koma
-        // .replace(/(\d)(?=(\d{3})+\.)/g, '$&,')
-        .replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, '$1,')
-    )
+    if (numValue < 0) {
+      return `(${formattedValue})`;
+    }
+    return `${formattedValue}`;
   }
+  return '';
 }
 
 const formatDenganRp = (value) => {

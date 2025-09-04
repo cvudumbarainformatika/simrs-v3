@@ -75,8 +75,8 @@
                 <th>URAIAN</th>
                 <th>VOLUME</th>
                 <th>SATUAN</th>
-                <th>HARGA</th>
-                <th>PAGU</th>
+                <th>HARGA (Rp.)</th>
+                <th>PAGU (Rp.)</th>
               </tr>
             </thead>
             <tbody>
@@ -85,12 +85,12 @@
                   <td class="text-bold text-left q-px-sm"> {{ it.kode }} </td>
                   <td class="text-bold text-left q-px-sm" colspan="4"> {{ it.uraian }} </td>
                   <td class="text-right text-bold">
-                    <span class="row justify-between">
-                      <span class="col-auto flex-start">Rp. </span>
-                      <span class="flex-end text-right q-pr-sm">
-                        {{ formattanpaRp(it.pagu) }}
-                      </span>
+                    <!-- <span class="row justify-between">
+                      <span class="col-auto flex-start">Rp. </span> -->
+                    <span class="flex-end text-right q-pr-sm">
+                      {{ formattanpaRp(it.pagu) }}
                     </span>
+                    <!-- </span> -->
                   </td>
                 </tr>
                 <template v-for="rinci in it?.rincian" :key="rinci">
@@ -116,20 +116,20 @@
                       </span>
                     </td>
                     <td class="text-right">
-                      <span class="row justify-between">
-                        <span class="col-auto flex-start">Rp. </span>
-                        <span class="flex-end text-right q-pr-sm">
-                          {{ formattanpaRp(rinci.harga) }}
-                        </span>
+                      <!-- <span class="row justify-between">
+                        <span class="col-auto flex-start">Rp. </span> -->
+                      <span class="flex-end text-right q-pr-sm">
+                        {{ formattanpaRp(rinci.harga) }}
                       </span>
+                      <!-- </span> -->
                     </td>
                     <td class="text-right">
-                      <span class="row justify-between">
-                        <span class="col-auto flex-start">Rp. </span>
-                        <span class="flex-end text-right q-pr-sm">
-                          {{ formattanpaRp(rinci.pagu) }}
-                        </span>
+                      <!-- <span class="row justify-between">
+                        <span class="col-auto flex-start">Rp. </span> -->
+                      <span class="flex-end text-right q-pr-sm">
+                        {{ formattanpaRp(rinci.pagu) }}
                       </span>
+                      <!-- </span> -->
                     </td>
                   </tr>
                 </template>
