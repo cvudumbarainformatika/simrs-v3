@@ -218,11 +218,12 @@ function getLabel(val) {
 
 const filterDokumen = computed(() => {
   const kodepoli = props.pasien?.kodepoli
-  if (kodepoli !== 'POL022') {
+  if (kodepoli !== 'POL022' && kodepoli !== 'POL010') {
     return documents.value.filter(a => a.jenis !== 'SKD')
   } else {
     return documents.value
   }
+  // return documents.value
 })
 
 const comp = [
@@ -255,7 +256,7 @@ const cekPanel = () => {
   return arr >= 0 ? comp[arr].page : ''
 }
 function goTo(val) {
-  console.log('got', val)
+  // console.log('got', val)
   doc.value = val.value
   open.value = true
 }
