@@ -3,10 +3,10 @@
     <div class="col-7">
       <q-form ref="refForm" @submit="onSubmit" class="q-gutter-sm q-pa-lg">
 
-        <div class=" text-weight-bold">Form Surat Keterangan Dokter & Surat Keterangan Sehat (Jiwa)</div>
+        <div class=" text-weight-bold">Form Surat Keterangan Dokter </div>
 
         <div>
-          <q-option-group v-model="store.defaultJenis" :options="store.jenisx" inline
+          <q-option-group v-model="store.defaultJenis" :options="store.jenisSurat" inline
             :rules="[val => !!val || 'Harap pilih salah satu']" />
         </div>
 
@@ -255,14 +255,19 @@ const suhats = ref('SRT01')
 
 onMounted(() => {
   const polijiwa = props.pasien?.kodepoli === 'POL010' ? true : false
+  store.isPolijiwa = polijiwa
 
   if (polijiwa) {
+    // jns.filter(item => item.value === 'SRT02' || item.value === 'SRT03')
     store.defaultJenis = 'SRT02'
-    store.jenisx = store.jenisx.filter(item => item.value === 'SRT02' || item.value === 'SRT03')
   } else {
+    // jns.filter(item => item.value === 'SRT01')
     store.defaultJenis = 'SRT01'
-    store.jenisx = store.jenisx.filter(item => item.value === 'SRT01')
   }
+  // store.jenisx = jns
+
+  // console.log('jenis surat', jns);
+
 })
 
 const documents = ref([

@@ -86,8 +86,21 @@ export const useDokumenSuratSehatStore = defineStore('dokumen_suratsehat_new', {
       // { value: 'Lainnya', label: 'Lainnya' }
     ],
 
+    isPolijiwa: false
+
 
   }),
+
+  getters: {
+    jenisSurat: (state) => {
+      if (state.isPolijiwa) {
+        return state.jenisx.filter(a => a.value !== 'SRT01')
+      } else {
+        return state.jenisx.filter(a => a.value === 'SRT01')
+      }
+    }
+  },
+
   actions: {
     async simpan(pasien) {
       this.loading = true
