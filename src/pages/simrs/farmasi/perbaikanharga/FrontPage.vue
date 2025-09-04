@@ -681,18 +681,35 @@ function perbStok (row) {
 }
 const refKdruang = ref(null)
 function tombolPencet (evt) {
-  // console.log('keyup', evt?.code)
+  console.log('keyup', evt?.code)
   if (evt.key == 'Escape') refKdruang.value?.refAuto?.focus()
   // if (evt.code == 'KeyF') {
-  if (evt.code == 'ControlLeft') {
+  // if (evt.code == 'ControlLeft' && evt.code == 'ShiftLeft') {
+  //   console.log('masuk')
+  //   store.items.forEach(row => {
+  //     if (row?.data?.stok?.filter(f => f.beda === true)?.length > 0 ||
+  //       row?.data?.opname?.filter(f => f.beda === true)?.length > 0 ||
+  //       row?.data?.mutasi?.filter(f => f.beda === true)?.length > 0 ||
+  //       row?.data?.mutasikeluar?.filter(f => f.beda === true)?.length > 0 ||
+  //       row?.data?.resep?.filter(f => f.beda === true)?.length > 0 ||
+  //       row?.data?.retur?.filter(f => f.beda === true)?.length > 0 ||
+  //       row?.data?.racikan?.filter(f => f.beda === true)?.length > 0) perbAll(row)
+  //   })
+  // }
+  if (evt.ctrlKey && evt.shiftKey) {
+    console.log('masuk')
     store.items.forEach(row => {
-      if (row?.data?.stok?.filter(f => f.beda === true)?.length > 0 ||
-        row?.data?.opname?.filter(f => f.beda === true)?.length > 0 ||
-        row?.data?.mutasi?.filter(f => f.beda === true)?.length > 0 ||
-        row?.data?.mutasikeluar?.filter(f => f.beda === true)?.length > 0 ||
-        row?.data?.resep?.filter(f => f.beda === true)?.length > 0 ||
-        row?.data?.retur?.filter(f => f.beda === true)?.length > 0 ||
-        row?.data?.racikan?.filter(f => f.beda === true)?.length > 0) perbAll(row)
+      if (
+        row?.data?.stok?.some(f => f.beda === true) ||
+        row?.data?.opname?.some(f => f.beda === true) ||
+        row?.data?.mutasi?.some(f => f.beda === true) ||
+        row?.data?.mutasikeluar?.some(f => f.beda === true) ||
+        row?.data?.resep?.some(f => f.beda === true) ||
+        row?.data?.retur?.some(f => f.beda === true) ||
+        row?.data?.racikan?.some(f => f.beda === true)
+      ) {
+        perbAll(row)
+      }
     })
   }
 
