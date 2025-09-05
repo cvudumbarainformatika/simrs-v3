@@ -681,7 +681,7 @@ function perbStok (row) {
 }
 const refKdruang = ref(null)
 function tombolPencet (evt) {
-  console.log('keyup', evt?.code)
+  // console.log('keyup', evt?.code)
   if (evt.key == 'Escape') refKdruang.value?.refAuto?.focus()
   // if (evt.code == 'KeyF') {
   // if (evt.code == 'ControlLeft' && evt.code == 'ShiftLeft') {
@@ -697,7 +697,7 @@ function tombolPencet (evt) {
   //   })
   // }
   if (evt.ctrlKey && evt.shiftKey) {
-    console.log('masuk')
+    // console.log('masuk')
     store.items.forEach(row => {
       if (
         row?.data?.stok?.some(f => f.beda === true) ||
@@ -712,18 +712,18 @@ function tombolPencet (evt) {
       }
     })
   }
-  if (evt.ctrlKey && (evt.code === 'ArrowUp' || evt.code === 'ArrowDown')) {
+  if (evt.ctrlKey && (evt.code === 'ArrowRight' || evt.code === 'ArrowLeft')) {
     let bulan = parseInt(store.params.bulan, 10) // ubah string ke number
 
-    if (evt.code === 'ArrowUp') {
+    if (evt.code === 'ArrowRight') {
       bulan = bulan === 12 ? 1 : bulan + 1
-    } else if (evt.code === 'ArrowDown') {
+    } else if (evt.code === 'ArrowLeft') {
       bulan = bulan === 1 ? 12 : bulan - 1
     }
 
     // simpan lagi dengan format 2 digit
     store.params.bulan = String(bulan).padStart(2, '0')
-    console.log('Bulan:', store.params.bulan)
+    // console.log('Bulan:', store.params.bulan)
   }
 
 }

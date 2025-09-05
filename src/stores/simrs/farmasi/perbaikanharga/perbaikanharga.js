@@ -28,12 +28,12 @@ export const usePerbaikanHargaFarmasiStore = defineStore('perbaikan_harga_farmas
     },
     gudangs: [
       { nama: 'Gudang Farmasi ( Kamar Obat )', kode: 'Gd-05010100' },
-      { nama: 'Gudang Farmasi (Floor Stok)', kode: 'Gd-03010100' },
-      { nama: 'Floor Stock 1 (AKHP)', kode: 'Gd-03010101' },
       { nama: 'Depo Rawat inap', kode: 'Gd-04010102' },
       { nama: 'Depo OK', kode: 'Gd-04010103' },
       { nama: 'Depo Rawat Jalan', kode: 'Gd-05010101' },
-      { nama: 'Depo IGD', kode: 'Gd-02010104' }
+      { nama: 'Depo IGD', kode: 'Gd-02010104' },
+      { nama: 'Gudang Farmasi (Floor Stok)', kode: 'Gd-03010100' },
+      { nama: 'Floor Stock 1 (AKHP)', kode: 'Gd-03010101' },
     ]
   }),
   actions: {
