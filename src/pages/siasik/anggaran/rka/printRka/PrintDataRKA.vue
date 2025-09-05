@@ -452,8 +452,8 @@
                             <td class="text-center" style="width: 30%">URAIAN</td>
                             <td class="text-center" style="width: 5%">VOLUME</td>
                             <td class="text-center" style="width: 5%">SATUAN</td>
-                            <td class="text-center" style="width: 10%">HARGA</td>
-                            <td class="text-center" style="width: 20%">PAGU</td>
+                            <td class="text-center" style="width: 10%">HARGA (Rp.)</td>
+                            <td class="text-center" style="width: 20%">PAGU (Rp.)</td>
                           </tr>
                         </thead>
                         <tbody>
@@ -462,12 +462,12 @@
                               <td class="text-bold text-left q-py-md"> {{ it.kode }} </td>
                               <td class="text-bold text-left q-py-md" colspan="4"> {{ it.uraian }} </td>
                               <td class="text-right text-bold">
-                                <span class="row justify-between">
-                                  <span class="col-auto flex-start">Rp. </span>
-                                  <span class="flex-end text-right">
-                                    {{ formattanpaRp(it.pagu) }}
-                                  </span>
+                                <!-- <span class="row justify-between">
+                                  <span class="col-auto flex-start">Rp. </span> -->
+                                <span class="flex-end text-right">
+                                  {{ formattanpaRp(it.pagu) }}
                                 </span>
+                                <!-- </span> -->
                               </td>
                             </tr>
                             <template v-for="rinci in it?.rincian" :key="rinci">
@@ -493,20 +493,20 @@
                                   </span>
                                 </td>
                                 <td class="text-right">
-                                  <span class="row justify-between">
-                                    <span class="col-auto flex-start">Rp. </span>
-                                    <span class="flex-end text-right">
-                                      {{ formattanpaRp(rinci.harga) }}
-                                    </span>
+                                  <!-- <span class="row justify-between">
+                                    <span class="col-auto flex-start">Rp. </span> -->
+                                  <span class="flex-end text-right">
+                                    {{ formattanpaRp(rinci.harga) }}
                                   </span>
+                                  <!-- </span> -->
                                 </td>
                                 <td class="text-right">
-                                  <span class="row justify-between">
-                                    <span class="col-auto flex-start">Rp. </span>
-                                    <span class="flex-end text-right">
-                                      {{ formattanpaRp(rinci.pagu) }}
-                                    </span>
+                                  <!-- <span class="row justify-between">
+                                    <span class="col-auto flex-start">Rp. </span> -->
+                                  <span class="flex-end text-right">
+                                    {{ formattanpaRp(rinci.pagu) }}
                                   </span>
+                                  <!-- </span> -->
                                 </td>
                               </tr>
                             </template>
@@ -520,19 +520,19 @@
                             <td class="text-center" colspan="2">REKENING</td>
                             <td class="text-center" colspan="4">SEBELUM PERUBAHAN</td>
                             <td class="text-center" colspan="4">SESUDAH PERUBAHAN</td>
-                            <td class="text-center" rowspan="2">SELISIH</td>
+                            <td class="text-center" rowspan="2">SELISIH (RP.)</td>
                           </tr>
                           <tr class="text-bold text-center" style="height:50px">
                             <td class="text-center">KODE</td>
                             <td class="text-center">URAIAN</td>
                             <td class="text-center">VOLUME</td>
                             <td class="text-center">SATUAN</td>
-                            <td class="text-center">HARGA</td>
-                            <td class="text-center">PAGU</td>
+                            <td class="text-center">HARGA (Rp.)</td>
+                            <td class="text-center">PAGU (Rp.)</td>
                             <td class="text-center">VOLUME</td>
                             <td class="text-center">SATUAN</td>
-                            <td class="text-center">HARGA</td>
-                            <td class="text-center">PAGU</td>
+                            <td class="text-center">HARGA (Rp.)</td>
+                            <td class="text-center">PAGU (Rp.)</td>
                           </tr>
                         </thead>
                         <tbody>
@@ -541,25 +541,25 @@
                               <td class="text-bold text-left q-py-md"> {{ it.kode }} </td>
                               <td class="text-bold text-left q-py-md" colspan="4"> {{ it.uraian }} </td>
                               <td class="text-right text-bold">
-                                <span class="row justify-between">
-                                  <span class="col-auto flex-start">Rp. </span>
-                                  <span class="flex-end text-right">
-                                    {{ formattanpaRp(it.pagu) }}
-                                  </span>
+                                <!-- <span class="row justify-between">
+                                  <span class="col-auto flex-start">Rp. </span> -->
+                                <span class="flex-end text-right">
+                                  {{ formattanpaRp(it.pagu) }}
                                 </span>
+                                <!-- </span> -->
                               </td>
                               <td colspan="3"></td>
                               <td class="text-right text-bold">
-                                <span class="row justify-between">
-                                  <span class="col-auto flex-start">Rp. </span>
-                                  <span class="flex-end text-right">
-                                    {{ formattanpaRp(it.pagubaru) }}
-                                  </span>
+                                <!-- <span class="row justify-between">
+                                  <span class="col-auto flex-start">Rp. </span> -->
+                                <span class="flex-end text-right">
+                                  {{ formattanpaRp(it.pagubaru) }}
                                 </span>
+                                <!-- </span> -->
                               </td>
                               <td class="text-right text-bold">
                                 <span class="flex-end text-right">
-                                  {{ formatDenganRp(it.selisih) }}
+                                  {{ formattanpaRp(it.selisih) }}
                                 </span>
                               </td>
                             </tr>
@@ -586,20 +586,20 @@
                                   </span>
                                 </td>
                                 <td class="text-right">
-                                  <span class="row justify-between">
-                                    <span class="col-auto flex-start">Rp. </span>
-                                    <span class="flex-end text-right">
-                                      {{ formattanpaRp(rinci.harga) }}
-                                    </span>
+                                  <!-- <span class="row justify-between">
+                                    <span class="col-auto flex-start">Rp. </span> -->
+                                  <span class="flex-end text-right">
+                                    {{ formattanpaRp(rinci.harga) }}
                                   </span>
+                                  <!-- </span> -->
                                 </td>
                                 <td class="text-right">
-                                  <span class="row justify-between">
-                                    <span class="col-auto flex-start">Rp. </span>
-                                    <span class="flex-end text-right">
-                                      {{ formattanpaRp(rinci.pagu) }}
-                                    </span>
+                                  <!-- <span class="row justify-between">
+                                    <span class="col-auto flex-start">Rp. </span> -->
+                                  <span class="flex-end text-right">
+                                    {{ formattanpaRp(rinci.pagu) }}
                                   </span>
+                                  <!-- </span> -->
                                 </td>
                                 <td>
                                   <span class="q-py-sm">
@@ -612,24 +612,24 @@
                                   </span>
                                 </td>
                                 <td class="text-right">
-                                  <span class="row justify-between">
-                                    <span class="col-auto flex-start">Rp. </span>
-                                    <span class="flex-end text-right">
-                                      {{ formattanpaRp(rinci.hargabaru) }}
-                                    </span>
+                                  <!-- <span class="row justify-between">
+                                    <span class="col-auto flex-start">Rp. </span> -->
+                                  <span class="flex-end text-right">
+                                    {{ formattanpaRp(rinci.hargabaru) }}
                                   </span>
+                                  <!-- </span> -->
                                 </td>
                                 <td class="text-right">
-                                  <span class="row justify-between">
-                                    <span class="col-auto flex-start">Rp. </span>
-                                    <span class="flex-end text-right">
-                                      {{ formattanpaRp(rinci.pagubaru) }}
-                                    </span>
+                                  <!-- <span class="row justify-between">
+                                    <span class="col-auto flex-start">Rp. </span> -->
+                                  <span class="flex-end text-right">
+                                    {{ formattanpaRp(rinci.pagubaru) }}
                                   </span>
+                                  <!-- </span> -->
                                 </td>
                                 <td class="text-right">
                                   <span class="flex-end text-right">
-                                    {{ formatDenganRp(rinci.selisih) }}
+                                    {{ formattanpaRp(rinci.selisih) }}
                                   </span>
                                 </td>
                               </tr>
@@ -644,19 +644,19 @@
                             <td class="text-center" colspan="2">REKENING</td>
                             <td class="text-center" colspan="4">SEBELUM PERUBAHAN</td>
                             <td class="text-center" colspan="4">SESUDAH PERUBAHAN</td>
-                            <td class="text-center" rowspan="2">SELISIH</td>
+                            <td class="text-center" rowspan="2">SELISIH (Rp.)</td>
                           </tr>
                           <tr class="text-bold text-center" style="height:50px">
                             <td class="text-center">KODE</td>
                             <td class="text-center">URAIAN</td>
                             <td class="text-center">VOLUME</td>
                             <td class="text-center">SATUAN</td>
-                            <td class="text-center">HARGA</td>
-                            <td class="text-center">PAGU</td>
+                            <td class="text-center">HARGA (Rp.)</td>
+                            <td class="text-center">PAGU (Rp.)</td>
                             <td class="text-center">VOLUME</td>
                             <td class="text-center">SATUAN</td>
-                            <td class="text-center">HARGA</td>
-                            <td class="text-center">PAGU</td>
+                            <td class="text-center">HARGA (Rp.)</td>
+                            <td class="text-center">PAGU (Rp.)</td>
                           </tr>
                         </thead>
                         <tbody>
@@ -665,25 +665,25 @@
                               <td class="text-bold text-left q-py-md"> {{ it.kode }} </td>
                               <td class="text-bold text-left q-py-md" colspan="4"> {{ it.uraian }} </td>
                               <td class="text-right text-bold">
-                                <span class="row justify-between">
-                                  <span class="col-auto flex-start">Rp. </span>
-                                  <span class="flex-end text-right">
-                                    {{ formattanpaRp(it.pagu) }}
-                                  </span>
+                                <!-- <span class="row justify-between">
+                                  <span class="col-auto flex-start">Rp. </span> -->
+                                <span class="flex-end text-right">
+                                  {{ formattanpaRp(it.pagu) }}
                                 </span>
+                                <!-- </span> -->
                               </td>
                               <td colspan="3"></td>
                               <td class="text-right text-bold">
-                                <span class="row justify-between">
-                                  <span class="col-auto flex-start">Rp. </span>
-                                  <span class="flex-end text-right">
-                                    {{ formattanpaRp(it.pagubaru) }}
-                                  </span>
+                                <!-- <span class="row justify-between">
+                                  <span class="col-auto flex-start">Rp. </span> -->
+                                <span class="flex-end text-right">
+                                  {{ formattanpaRp(it.pagubaru) }}
                                 </span>
+                                <!-- </span> -->
                               </td>
                               <td class="text-right text-bold">
                                 <span class="flex-end text-right">
-                                  {{ formatDenganRp(it.selisih) }}
+                                  {{ formattanpaRp(it.selisih) }}
                                 </span>
                               </td>
                             </tr>
@@ -710,20 +710,20 @@
                                   </span>
                                 </td>
                                 <td class="text-right">
-                                  <span class="row justify-between">
-                                    <span class="col-auto flex-start">Rp. </span>
-                                    <span class="flex-end text-right">
-                                      {{ formattanpaRp(rinci.harga) }}
-                                    </span>
+                                  <!-- <span class="row justify-between">
+                                    <span class="col-auto flex-start">Rp. </span> -->
+                                  <span class="flex-end text-right">
+                                    {{ formattanpaRp(rinci.harga) }}
                                   </span>
+                                  <!-- </span> -->
                                 </td>
                                 <td class="text-right">
-                                  <span class="row justify-between">
-                                    <span class="col-auto flex-start">Rp. </span>
-                                    <span class="flex-end text-right">
-                                      {{ formattanpaRp(rinci.pagu) }}
-                                    </span>
+                                  <!-- <span class="row justify-between">
+                                    <span class="col-auto flex-start">Rp. </span> -->
+                                  <span class="flex-end text-right">
+                                    {{ formattanpaRp(rinci.pagu) }}
                                   </span>
+                                  <!-- </span> -->
                                 </td>
                                 <td>
                                   <span class="q-py-sm">
@@ -736,24 +736,24 @@
                                   </span>
                                 </td>
                                 <td class="text-right">
-                                  <span class="row justify-between">
-                                    <span class="col-auto flex-start">Rp. </span>
-                                    <span class="flex-end text-right">
-                                      {{ formattanpaRp(rinci.hargabaru) }}
-                                    </span>
+                                  <!-- <span class="row justify-between">
+                                    <span class="col-auto flex-start">Rp. </span> -->
+                                  <span class="flex-end text-right">
+                                    {{ formattanpaRp(rinci.hargabaru) }}
                                   </span>
+                                  <!-- </span> -->
                                 </td>
                                 <td class="text-right">
-                                  <span class="row justify-between">
-                                    <span class="col-auto flex-start">Rp. </span>
-                                    <span class="flex-end text-right">
-                                      {{ formattanpaRp(rinci.pagubaru) }}
-                                    </span>
+                                  <!-- <span class="row justify-between">
+                                    <span class="col-auto flex-start">Rp. </span> -->
+                                  <span class="flex-end text-right">
+                                    {{ formattanpaRp(rinci.pagubaru) }}
                                   </span>
+                                  <!-- </span> -->
                                 </td>
                                 <td class="text-right">
                                   <span class="flex-end text-right">
-                                    {{ formatDenganRp(rinci.selisih) }}
+                                    {{ formattanpaRp(rinci.selisih) }}
                                   </span>
                                 </td>
                               </tr>
