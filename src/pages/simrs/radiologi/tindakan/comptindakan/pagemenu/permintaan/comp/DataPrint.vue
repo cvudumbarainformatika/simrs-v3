@@ -97,11 +97,16 @@ const props = defineProps({
   }
 })
 
+// console.log('props', props.item);
+
+
 const qrUrl = computed(() => {
-  const noreg = props?.item?.rs2// noreg
+  const noreg = props?.item?.rs2 // noreg
   const dok = 'RADIOLOGI.png'
   const asal = 'RADIOLOGI'
-  const enc = btoa(`${noreg}|${dok}|${asal}`)
+  const petugas = props?.item?.kdPelaksana ?? null
+
+  const enc = btoa(`${noreg}|${dok}|${asal}|${petugas}`)
   return `https://rsud.probolinggokota.go.id/dokumen-simrs/legalitas/${enc}`
 })
 </script>

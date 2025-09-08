@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia'
+import { defineStore, acceptHMRUpdate } from 'pinia'
 import { api } from 'src/boot/axios'
 import { usePengunjungPoliStore } from '../../pelayanan/poli/pengunjung'
 import { notifErr, notifSuccess } from 'src/modules/utils'
@@ -11,13 +11,35 @@ export const useDokumenSuratSehatStore = defineStore('dokumen_suratsehat_new', {
     items: [],
     item: {},
     meta: {},
+
     form: {
       nomorSurat: '',
       noreg: '',
       norm: '',
       pekerjaan: '',
+
+      // SKJ
+      pendidikan: '',
+      statusperkawinan: '',
+
+      psikatopologi: '',
+      kepribadian: [
+        { form: 'Ketaatan Pada Peraturan', nilai: '' },
+        { form: 'Kemampuan Mengendalikan Emosi', nilai: '' },
+        { form: 'Kemampuan Mengatasi Permaslahan', nilai: '' },
+      ],
+      kecerdasan: '',
+
+      // NAPZA
+      riwayatObat: [
+        { form: 'Hasil wawancara Psikiatrik Riwayat Penggunaan Obat-obatan Dalam Seminggu Terakhir', nilai: '' },
+        { form: 'Jenis Obat yang digunakan', nilai: '' },
+        { form: 'Asal Obat', nilai: '' },
+        { form: 'Tanggal konsumsi terakhir', nilai: '' },
+      ],
+
       keperluan: '',
-      doc: '',
+      doc: '', // ini kesimpulan
       penglihatankiri: '',
       penglihatankanan: '',
       pendengarankiri: '',
@@ -28,11 +50,62 @@ export const useDokumenSuratSehatStore = defineStore('dokumen_suratsehat_new', {
       golDar: '',
       kdsurat: '',
       dokter: '',
-    }
+    },
+
+    jenisx: [
+      { value: 'SRT01', label: 'Surat Keterangan Dokter' },
+      { value: 'SRT02', label: 'Surat Kesehatan Jiwa' },
+      { value: 'SRT03', label: 'Surat Keterangan Napza' },
+    ],
+    defaultJenis: 'SRT01',
+    kawins: [
+      { value: 'Kawin', label: 'Kawin' },
+      { value: 'Belum Kawin', label: 'Belum Kawin' }
+    ],
+
+    psikatopologis: [
+      { value: 'Ditemukan', label: 'Ditemukan' },
+      { value: 'Tidak Ditemukan Tanda / Gejala Gangguan Jiwa yang bermakna dan dapat menganggu aktivitas kehidupan sehari-hari', label: 'Tidak Ditemukan Tanda / Gejala Gangguan Jiwa yang bermakna dan dapat menganggu aktivitas kehidupan sehari-hari' }
+    ],
+
+    penilaians: [
+      { value: 'Sangat Bagus', label: 'Sangat Bagus' },
+      { value: 'Bagus', label: 'Bagus' },
+      { value: 'Cukup', label: 'Cukup' },
+      { value: 'Kurang', label: 'Kurang' },
+      { value: 'Sangat Kurang', label: 'Sangat Kurang' }
+    ],
+    adaTidaks: [
+      { value: 'ADA', label: 'ADA' },
+      { value: 'TIDAK ADA', label: 'TIDAK ADA' }
+    ],
+    asalObats: [
+      { value: 'Resep Dokter', label: 'Resep Dokter' },
+      { value: 'Beli Bebas', label: 'Beli Bebas' },
+      { value: 'Pemberian', label: 'Pemberian' },
+      // { value: 'Lainnya', label: 'Lainnya' }
+    ],
+
+    isPolijiwa: false
+
+
   }),
+
+  getters: {
+    jenisSurat: (state) => {
+      if (state.isPolijiwa) {
+        return state.jenisx.filter(a => a.value !== 'SRT01')
+      } else {
+        return state.jenisx.filter(a => a.value === 'SRT01')
+      }
+    }
+  },
+
   actions: {
     async simpan(pasien) {
       this.loading = true
+      // console.log('simpan', this.form);
+
       //  const param = { params: this.form }
       try {
         const resp = await api.post('v1/simrs/dokumen/rajal/skdsimpan', this.form)
@@ -59,8 +132,29 @@ export const useDokumenSuratSehatStore = defineStore('dokumen_suratsehat_new', {
         noreg: '',
         norm: '',
         pekerjaan: '',
+
+        // SKJ
+        pendidikan: '',
+        statusperkawinan: '',
+
+        psikatopologi: '',
+        kepribadian: [
+          { form: 'Ketaatan Pada Peraturan', nilai: '' },
+          { form: 'Kemampuan Mengendalikan Emosi', nilai: '' },
+          { form: 'Kemampuan Mengatasi Permaslahan', nilai: '' },
+        ],
+        kecerdasan: '',
+
+        // NAPZA
+        riwayatObat: [
+          { form: 'Hasil wawancara Psikiatrik Riwayat Penggunaan Obat-obatan Dalam Seminggu Terakhir', nilai: '' },
+          { form: 'Jenis Obat yang digunakan', nilai: '' },
+          { form: 'Asal Obat', nilai: '' },
+          { form: 'Tanggal konsumsi terakhir', nilai: '' },
+        ],
+
         keperluan: '',
-        doc: '',
+        doc: '', // ini kesimpulan
         penglihatankiri: '',
         penglihatankanan: '',
         pendengarankiri: '',
@@ -92,7 +186,10 @@ export const useDokumenSuratSehatStore = defineStore('dokumen_suratsehat_new', {
       }
     },
     async cekpembayaran(pasien, item) {
+      // console.log('cek pembayaran item', item);
 
+      // this.cetakdata = item
+      // this.dialog = true
       item.cetak = true
       const sistembayar = pasien?.kodesistembayar
       const tindakan_id = item.tindakan_id
@@ -112,3 +209,8 @@ export const useDokumenSuratSehatStore = defineStore('dokumen_suratsehat_new', {
     }
   }
 })
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useDokumenSuratSehatStore, import.meta.hot))
+
+}

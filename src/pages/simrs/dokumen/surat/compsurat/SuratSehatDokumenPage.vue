@@ -346,6 +346,7 @@
   </div>
 </template>
 <script setup>
+import { ref, computed } from 'vue'
 import { useDokumenSuratSehatStore } from 'src/stores/simrs/dokumen/erm/suratsehat';
 import KopSurat from 'src/pages/simrs/dokumen/KopSuratNewPage.vue';
 import { dateFullFormat } from 'src/modules/formatter';
@@ -362,7 +363,18 @@ const props = defineProps({
   },
 })
 
-console.log('sasasa', props.data?.pasien)
+// console.log('sasasa', props.data, props.pasien);
+
+const qrUrl = computed(() => {
+  // console.log('pasien', props?.pasien)
+
+  const noreg = props?.pasien?.noreg// noreg
+  const dok = 'SKD.png'
+  const asal = 'RAWAT JALAN'
+  const petugas = props?.pasien?.kddpjp ?? null
+  const enc = btoa(`${noreg}|${dok}|${asal}|${petugas}`)
+  return `https://rsud.probolinggokota.go.id/dokumen-simrs/legalitas/${enc}`
+})
 
 const tanggal = new Date().toLocaleDateString('id-ID', {
   year: 'numeric',

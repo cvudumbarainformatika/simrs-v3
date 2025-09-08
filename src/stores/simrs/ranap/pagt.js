@@ -83,7 +83,7 @@ export const usePagtStore = defineStore('pagt-store', {
     },
 
     initReset(data) {
-      // console.log('data init reset', data)
+      console.log('data init reset', data)
       this.loadingSave = false
 
       this.form = {
@@ -110,7 +110,7 @@ export const usePagtStore = defineStore('pagt-store', {
         mualKet: data?.mual_ket ?? null,
 
         // riawayat personal
-        rwPenyDhl: data?.rw_peny_dhl ?? null,
+        rwPenyDhl: data?.rw_peny_dhl ?? [],
         rwPenyDhlKet: data?.rw_peny_dhl_ket ?? null,
         rwPenySkr: data?.rw_peny_skr ?? null,
       }
@@ -128,6 +128,8 @@ export const usePagtStore = defineStore('pagt-store', {
     // KHUSUS KEPERAWATAN
     async saveForm(pasien) {
 
+      console.log('pasien', pasien);
+
 
       const timeStamp = Date.now()
       const auth = useAplikasiStore()
@@ -142,8 +144,11 @@ export const usePagtStore = defineStore('pagt-store', {
 
       }
 
+
       const pengunjung = usePengunjungRanapStore()
-      pengunjung.injectDataPasien(pasien?.noreg, pushSementara, 'anamnesis')
+      // if (this.form?.id === null) {
+      //   pengunjung.injectDataPasien(pasien?.noreg, pushSementara, 'anamnesis')
+      // }
 
 
       const payload = {
@@ -153,7 +158,7 @@ export const usePagtStore = defineStore('pagt-store', {
         ...this.form
       }
 
-      console.log('push sementara', pushSementara)
+      // console.log('push sementara', pushSementara)
       console.log('form', payload)
 
       try {
@@ -162,11 +167,15 @@ export const usePagtStore = defineStore('pagt-store', {
         if (resp.status === 200) {
           notifSuccess(resp)
           const result = resp?.data?.result
-          this.items.unshift(result)
+          if (!this.items?.length) {
+            this.items.unshift(result)
+          }
           this.initReset()
-          // pengunjung.injectDataPasien(pasien?.noreg, result, 'anamnesis')
-          pengunjung.deleteInjectanNull2(pasien?.noreg, 'pagt')
-          pengunjung.injectDataArray(pasien?.noreg, result, 'pagt')
+          // // pengunjung.injectDataPasien(pasien?.noreg, result, 'anamnesis')
+          // if (this.form?.id === null) {
+          //   pengunjung.deleteInjectanNull2(pasien?.noreg, 'pagt')
+          //   pengunjung.injectDataArray(pasien?.noreg, result, 'pagt')
+          // }
         }
         this.loadingSave = false
       }

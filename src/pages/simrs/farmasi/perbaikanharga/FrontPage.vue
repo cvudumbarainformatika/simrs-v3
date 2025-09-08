@@ -684,16 +684,46 @@ function tombolPencet (evt) {
   // console.log('keyup', evt?.code)
   if (evt.key == 'Escape') refKdruang.value?.refAuto?.focus()
   // if (evt.code == 'KeyF') {
-  if (evt.code == 'ControlLeft') {
+  // if (evt.code == 'ControlLeft' && evt.code == 'ShiftLeft') {
+  //   console.log('masuk')
+  //   store.items.forEach(row => {
+  //     if (row?.data?.stok?.filter(f => f.beda === true)?.length > 0 ||
+  //       row?.data?.opname?.filter(f => f.beda === true)?.length > 0 ||
+  //       row?.data?.mutasi?.filter(f => f.beda === true)?.length > 0 ||
+  //       row?.data?.mutasikeluar?.filter(f => f.beda === true)?.length > 0 ||
+  //       row?.data?.resep?.filter(f => f.beda === true)?.length > 0 ||
+  //       row?.data?.retur?.filter(f => f.beda === true)?.length > 0 ||
+  //       row?.data?.racikan?.filter(f => f.beda === true)?.length > 0) perbAll(row)
+  //   })
+  // }
+  if (evt.ctrlKey && evt.shiftKey) {
+    // console.log('masuk')
     store.items.forEach(row => {
-      if (row?.data?.stok?.filter(f => f.beda === true)?.length > 0 ||
-        row?.data?.opname?.filter(f => f.beda === true)?.length > 0 ||
-        row?.data?.mutasi?.filter(f => f.beda === true)?.length > 0 ||
-        row?.data?.mutasikeluar?.filter(f => f.beda === true)?.length > 0 ||
-        row?.data?.resep?.filter(f => f.beda === true)?.length > 0 ||
-        row?.data?.retur?.filter(f => f.beda === true)?.length > 0 ||
-        row?.data?.racikan?.filter(f => f.beda === true)?.length > 0) perbAll(row)
+      if (
+        row?.data?.stok?.some(f => f.beda === true) ||
+        row?.data?.opname?.some(f => f.beda === true) ||
+        row?.data?.mutasi?.some(f => f.beda === true) ||
+        row?.data?.mutasikeluar?.some(f => f.beda === true) ||
+        row?.data?.resep?.some(f => f.beda === true) ||
+        row?.data?.retur?.some(f => f.beda === true) ||
+        row?.data?.racikan?.some(f => f.beda === true)
+      ) {
+        perbAll(row)
+      }
     })
+  }
+  if (evt.ctrlKey && (evt.code === 'ArrowRight' || evt.code === 'ArrowLeft')) {
+    let bulan = parseInt(store.params.bulan, 10) // ubah string ke number
+
+    if (evt.code === 'ArrowRight') {
+      bulan = bulan === 12 ? 1 : bulan + 1
+    } else if (evt.code === 'ArrowLeft') {
+      bulan = bulan === 1 ? 12 : bulan - 1
+    }
+
+    // simpan lagi dengan format 2 digit
+    store.params.bulan = String(bulan).padStart(2, '0')
+    // console.log('Bulan:', store.params.bulan)
   }
 
 }

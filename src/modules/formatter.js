@@ -92,17 +92,17 @@ const formatDoubleKoma = (value, dg) => {
 
 const formattanpaRp = (value) => {
   if (value !== null && value !== '') {
-    return (
-      Number(value)
-        .toFixed(2)
-        // titik
-        // .replace(/\d(?=(\d{3})+(?:\.\d+)?$)/g, "$1.");
+    const numValue = Number(value);
+    const formattedValue = Math.abs(numValue)
+      .toFixed(2)
+      .replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, '$1,');
 
-        // koma
-        // .replace(/(\d)(?=(\d{3})+\.)/g, '$&,')
-        .replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, '$1,')
-    )
+    if (numValue < 0) {
+      return `(${formattedValue})`;
+    }
+    return `${formattedValue}`;
   }
+  return '';
 }
 
 const formatDenganRp = (value) => {
@@ -200,6 +200,41 @@ const formatTime = (timestamp) => {
   });
 };
 
+
+function numberToWordsID(num) {
+  const angka = ["", "Satu", "Dua", "Tiga", "Empat", "Lima", "Enam", "Tujuh", "Delapan", "Sembilan", "Sepuluh", "Sebelas"];
+
+  if (num < 12) return angka[num];
+  if (num < 20) return numberToWordsID(num - 10) + " Belas";
+  if (num < 100) return numberToWordsID(Math.floor(num / 10)) + " Puluh " + numberToWordsID(num % 10);
+  if (num < 200) return "Seratus " + numberToWordsID(num - 100);
+  if (num < 1000) return numberToWordsID(Math.floor(num / 100)) + " Ratus " + numberToWordsID(num % 100);
+  if (num < 2000) return "Seribu " + numberToWordsID(num - 1000);
+  if (num < 1000000) return numberToWordsID(Math.floor(num / 1000)) + " Ribu " + numberToWordsID(num % 1000);
+  if (num < 1000000000) return numberToWordsID(Math.floor(num / 1000000)) + " Juta " + numberToWordsID(num % 1000000);
+
+  return "";
+}
+
+function tanggalEjaIndonesia(dateStr) {
+  const bulan = [
+    "", "Januari", "Februari", "Maret", "April", "Mei", "Juni",
+    "Juli", "Agustus", "September", "Oktober", "November", "Desember"
+  ];
+
+  const d = new Date(dateStr);
+  const tgl = d.getDate();
+  const bln = d.getMonth() + 1;
+  const thn = d.getFullYear();
+
+  return `Tanggal ${numberToWordsID(tgl)}, Bulan ${bulan[bln]}, Tahun ${numberToWordsID(thn)}`.replace(/\s+/g, " ").trim();
+}
+
+// Contoh penggunaan
+// console.log(tanggalIndonesia("2025-08-29 08:06:13"));
+// Output: "Tanggal Dua Puluh Sembilan, Bulan Agustus, Tahun Dua Ribu Dua Puluh Lima"
+
+
 const getNewLine = (text) => {
   return text?.replace(/\n/g, '<br/>')
 }
@@ -225,5 +260,5 @@ export {
   formattanpaRp,
   formatDenganRp,
   formatDoubleKoma,
-  getNewLine
+  getNewLine, tanggalEjaIndonesia
 }

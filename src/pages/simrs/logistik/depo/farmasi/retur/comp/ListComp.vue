@@ -27,75 +27,35 @@
     </thead>
     <tbody>
       <template v-if="store.loading">
-        <tr
-          v-for="n in store.params.per_page"
-          :key="n"
-        >
+        <tr v-for="n in store.params.per_page" :key="n">
           <td width="5%">
-            <q-skeleton
-              type="text"
-              width="20px"
-              height="14px"
-            />
+            <q-skeleton type="text" width="20px" height="14px" />
           </td>
           <td>
-            <q-skeleton
-              type="text"
-              width="50px"
-              height="14px"
-            />
-            <q-skeleton
-              type="text"
-              width="40px"
-              height="10px"
-            />
+            <q-skeleton type="text" width="50px" height="14px" />
+            <q-skeleton type="text" width="40px" height="10px" />
           </td>
           <td>
             <div class="row q-mb-xs q-col-gutter-sm">
-              <q-skeleton
-                type="text"
-                width="100px"
-                height="14px"
-              />
+              <q-skeleton type="text" width="100px" height="14px" />
             </div>
             <div class="row q-col-gutter-sm items-center">
-              <q-skeleton
-                type="text"
-                width="40px"
-                height="14px"
-              />
+              <q-skeleton type="text" width="40px" height="14px" />
               <div class="text-grey q-pt-none">
                 ||
               </div>
-              <q-skeleton
-                type="text"
-                width="40px"
-                height="14px"
-                class="q-ml-xs"
-              />
+              <q-skeleton type="text" width="40px" height="14px" class="q-ml-xs" />
             </div>
           </td>
           <td>
-            <q-skeleton
-              type="text"
-              width="100px"
-              height="14px"
-            />
+            <q-skeleton type="text" width="100px" height="14px" />
           </td>
           <td>
-            <q-skeleton
-              type="text"
-              width="100px"
-              height="14px"
-            />
+            <q-skeleton type="text" width="100px" height="14px" />
           </td>
           <td class="text-end">
             <div class="row justify-end">
-              <q-skeleton
-                type="text"
-                width="100px"
-                height="14px"
-              />
+              <q-skeleton type="text" width="100px" height="14px" />
             </div>
           </td>
         </tr>
@@ -108,13 +68,10 @@
         </tr>
       </template>
       <template v-else>
-        <template
-          v-for="(item, n) in store.items"
-          :key="n"
-        >
-          <tr :class="item?.flag==='1'?'bg-light-blue-2':''">
+        <template v-for="(item, n) in store.items" :key="n">
+          <tr :class="item?.flag === '1' ? 'bg-light-blue-2' : ''">
             <td width="5%">
-              {{ n+1 }}
+              {{ n + 1 }}
             </td>
             <td>
               <div class="row ">
@@ -129,7 +86,7 @@
                 {{ item?.datapasien?.rs2 }}
               </div>
               <div class="row">
-                {{ item?.noreg }}   ||   {{ item?.norm }}
+                {{ item?.noreg }} || {{ item?.norm }}
               </div>
             </td>
             <td>
@@ -144,12 +101,10 @@
               </div>
             </td>
             <td>
-              <q-chip
-                square
-                class="f-10"
-                :color="color(item?.flag)"
-                text-color="white"
-              >
+              <q-chip v-if="item?.flag_permintaan_retur == '1'" square class="f-10" color="yellow" text-color="red">
+                Ada Permintaan Retur
+              </q-chip>
+              <q-chip square class="f-10" :color="color(item?.flag)" text-color="white">
                 {{ status(item?.flag) }}
               </q-chip>
             </td>
@@ -170,18 +125,11 @@
                 </q-tooltip>
               </q-btn> -->
 
-              <q-btn
-                square
-                class="f-10"
-                color="primary"
-                text-color="white"
-                no-caps
-                @click="buka(item)"
-              >
+              <q-btn square class="f-10" color="primary" text-color="white" no-caps @click="buka(item)">
                 Buka
               </q-btn>
             </td>
-          <!-- <td class="text-end">
+            <!-- <td class="text-end">
             <div>
               <q-btn
                 icon="icon-mat-send"
@@ -280,10 +228,10 @@ function buka (val) {
 </script>
 
 <style lang="scss" scoped>
-
-.text-end{
+.text-end {
   text-align: end;
 }
+
 /* Standard Tables */
 
 table {
@@ -301,9 +249,11 @@ td {
   text-align: left;
   text-indent: -0.5em;
 }
+
 td {
   padding: 0.5em 0.5em 0.5em 1.5em;
 }
+
 th {
   padding: 0.5em 0.5em 0.5em 1em;
   vertical-align: bottom;
@@ -366,12 +316,11 @@ table:nth-of-type(2) th:not([scope=row]):first-child {
 
 /* Strictly for making the scrolling happen. */
 
-th[scope=row] + td {
+th[scope=row]+td {
   min-width: 24em;
 }
 
 th[scope=row] {
   min-width: 20em;
 }
-
 </style>

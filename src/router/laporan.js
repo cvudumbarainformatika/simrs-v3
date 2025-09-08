@@ -287,6 +287,10 @@ const laporan = {
       path: '/laporan/farmasi/pemakaian-ruangan',
       component: () => import('pages/simrs/laporan/farmasi/pemakaianFloorStok/IndexPage.vue')
     },
+    {
+      path: '/laporan/farmasi/telaah-resep',
+      component: () => import('pages/simrs/laporan/farmasi/telaahresep/IndexPage.vue')
+    },
 
     // ini Harus ada
     {

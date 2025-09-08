@@ -193,8 +193,9 @@ function onSubmit() {
   form.value.kdruang = pasien?.kodepoli
   form.value.kodesistembayar = pasien?.kodesistembayar
   form.value.kdgroupnakesminta = item?.nakesminta?.kdgroupnakes
+  form.value.hak_kelas = pasien?.hak_kelas ?? '3'
 
-  console.log('data', form.value)
+  // console.log('data', form.value, pasien?.hak_kelas)
 
   loadingSave.value = true
   return new Promise((resolve, reject) => {

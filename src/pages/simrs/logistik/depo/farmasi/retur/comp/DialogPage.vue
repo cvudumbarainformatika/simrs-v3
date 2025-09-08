@@ -99,10 +99,11 @@
     </div>
     <!-- v-if="store?.resep?.flag==='3'" -->
     <div class="row justify-end">
-      <div v-if="store?.resep?.depo == 'Gd-04010102' && store?.resep?.flag_permintaan_retur == '1'"
+      <div
+        v-if="(store?.resep?.depo == 'Gd-04010102' || store?.resep?.depo == 'Gd-02010104') && store?.resep?.flag_permintaan_retur == '1'"
         class="text-right q-mr-md q-my-sm">
-        <q-btn rounded push label="selesai permintaan retur ranap" class="f-12 q-mr-sm" color="yellow" text-color="red"
-          icon-right="icon-mat-send" :disable="store.loadingKirim && store?.resep?.loading"
+        <q-btn rounded push label="selesai permintaan retur ranap / igd" class="f-12 q-mr-sm" color="yellow"
+          text-color="red" icon-right="icon-mat-send" :disable="store.loadingKirim && store?.resep?.loading"
           :loading="store.loadingKirim && store?.resep?.loading" @click="store.selesaiPermintaan()">
           <q-tooltip class="primary" :offset="[10, 10]">
             tidak ada obat untuk di retur
@@ -169,11 +170,17 @@
                   </div>
                   <div class="col-6">
                     <div class="row">
-                      <div class="col-4">
+                      <div class="col-2">
                         Max retur
                       </div>
-                      <div class="col-8">
+                      <div class="col-2">
                         {{ rinc.jumlah_keluar }}
+                      </div>
+                      <div class="col-3">
+                        Pemintaan retur
+                      </div>
+                      <div class="col-3">
+                        {{ cariPermintaan(rinc)?.retur ?? 0 }}
                       </div>
                     </div>
                     <!--
@@ -337,8 +344,10 @@ import { ref, onMounted } from 'vue'
 import { dateFull, formatRpDouble } from 'src/modules/formatter'
 import { useReturDepoStore } from 'src/stores/simrs/farmasi/retur/depo/returdepo'
 import { notifErrVue } from 'src/modules/utils'
+import { usePemintaanReturDepoStore } from 'src/stores/simrs/farmasi/retur/depo/permintaan'
 
 const store = useReturDepoStore()
+const permintaan = usePemintaanReturDepoStore()
 
 const tinggiDetailPas = ref(130)
 const pageRef = ref(0)
@@ -350,7 +359,18 @@ const h = ref(0)
 
 function kirim () {
   console.log(store.resep)
-  store.kirim()
+  store.kirim().then(() => {
+    console.log('kirim then')
+
+  })
+}
+
+function cariPermintaan (val) {
+  const item = permintaan.items.filter(x => x.noreg == val.noreg).flatMap(x => x.rinci).find(x => x.noresep == val.noresep && x.kdobat == val.kdobat)
+  console.log('cari permintaan', val, item)
+  return item
+
+
 }
 
 function reguler (evt, det, key) {

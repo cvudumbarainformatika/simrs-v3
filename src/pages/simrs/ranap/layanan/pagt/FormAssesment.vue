@@ -9,7 +9,7 @@
     <div class="col-6">
       <b>BIOKIMIA :</b>
       <q-separator></q-separator>
-      <q-radio v-model="store.form.biokima" v-for="dd in store.normals" :key="dd" :label="dd" :val="dd"
+      <q-radio v-model="store.form.biokimia" v-for="dd in store.normals" :key="dd" :label="dd" :val="dd"
         @update:model-value="(val) => {
 
         }" />
@@ -109,8 +109,10 @@
     <div class="col-6">
       <b>RIWAYAT PENYAKIT DAHULU :</b>
       <q-separator></q-separator>
-      <q-checkbox class="q-my-sm q-mr-sm" dense v-for="(g, x) in store.riwayats" :key="x" v-model="store.form.rwPenyDhl"
+
+      <q-checkbox class="q-my-sm q-mr-sm" dense v-for="g in store.riwayats" :key="g" v-model="store.form.rwPenyDhl"
         :val="g" :label="g" color="primary" />
+
       <q-input v-model="store.form.rwPenyDhlKet" outlined autogrow stack-label standout="bg-yellow-3"
         label="Lain-lain, Sebutkan" hide-bottom-space />
     </div>
@@ -166,6 +168,10 @@ defineExpose({
 
 
 onMounted(() => {
+
+  // console.log('props', props?.pasien);
+
+  // store.initReset(null)
   Promise.all([
     // store.getRiwayatKehamilan()
     // store.initReset(null)
@@ -173,17 +179,17 @@ onMounted(() => {
 })
 
 watch(() => store.items, (val, old) => {
-  console.log('watch new', val);
-  console.log('watch old', old);
+  // console.log('watch new', val);
+  // console.log('watch old', old);
 
-  if (val.length) {
+  // if (val.length) {
 
-    const item = val[0]
+  //   const item = val[0]
 
-    store.initReset(item)
+  //   store.initReset(item)
 
 
-  }
+  // }
 
 
 }, { deep: true })

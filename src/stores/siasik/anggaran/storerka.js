@@ -301,8 +301,7 @@ export const useRkaStore = defineStore('store_rka_siasik', {
           uraian: this.rincianpergeseran.filter((x) => x.kode1 === el)[0].uraian1,
           pagu: this.rincianpergeseran.filter((x) => x.kode1 === el).map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0),
           pagubaru: this.rincianpergeseran.filter((x) => x.kode1 === el).map((x) => parseFloat(x.totalbaru)).reduce((a, b) => a + b, 0),
-          selisih: this.rincianpergeseran.filter((x) => x.kode1 === el).map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0) -
-            this.rincianpergeseran.filter((x) => x.kode1 === el).map((x) => parseFloat(x.totalbaru)).reduce((a, b) => a + b, 0),
+          selisih: this.rincianpergeseran.filter((x) => x.kode1 === el).map((x) => parseFloat(x.totalbaru)).reduce((a, b) => a + b, 0) - this.rincianpergeseran.filter((x) => x.kode1 === el).map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0),
           rincian: []
         }
         rka.push(obj)
@@ -317,8 +316,7 @@ export const useRkaStore = defineStore('store_rka_siasik', {
           uraian: this.rincianpergeseran.filter((x) => x.kode2 === el)[0].uraian2,
           pagu: this.rincianpergeseran.filter((x) => x.kode2 === el).map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0),
           pagubaru: this.rincianpergeseran.filter((x) => x.kode2 === el).map((x) => parseFloat(x.totalbaru)).reduce((a, b) => a + b, 0),
-          selisih: this.rincianpergeseran.filter((x) => x.kode2 === el).map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0) -
-            this.rincianpergeseran.filter((x) => x.kode2 === el).map((x) => parseFloat(x.totalbaru)).reduce((a, b) => a + b, 0),
+          selisih: this.rincianpergeseran.filter((x) => x.kode2 === el).map((x) => parseFloat(x.totalbaru)).reduce((a, b) => a + b, 0) - this.rincianpergeseran.filter((x) => x.kode2 === el).map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0),
           rincian: []
         }
         rka.push(obj)
@@ -333,8 +331,7 @@ export const useRkaStore = defineStore('store_rka_siasik', {
           uraian: this.rincianpergeseran.filter((x) => x.kode3 === el)[0].uraian3,
           pagu: this.rincianpergeseran.filter((x) => x.kode3 === el).map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0),
           pagubaru: this.rincianpergeseran.filter((x) => x.kode3 === el).map((x) => parseFloat(x.totalbaru)).reduce((a, b) => a + b, 0),
-          selisih: this.rincianpergeseran.filter((x) => x.kode3 === el).map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0) -
-            this.rincianpergeseran.filter((x) => x.kode3 === el).map((x) => parseFloat(x.totalbaru)).reduce((a, b) => a + b, 0),
+          selisih: this.rincianpergeseran.filter((x) => x.kode3 === el).map((x) => parseFloat(x.totalbaru)).reduce((a, b) => a + b, 0) - this.rincianpergeseran.filter((x) => x.kode3 === el).map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0),
           rincian: []
         }
         rka.push(obj)
@@ -349,8 +346,7 @@ export const useRkaStore = defineStore('store_rka_siasik', {
           uraian: this.rincianpergeseran.filter((x) => x.kode4 === el)[0].uraian4,
           pagu: this.rincianpergeseran.filter((x) => x.kode4 === el).map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0),
           pagubaru: this.rincianpergeseran.filter((x) => x.kode4 === el).map((x) => parseFloat(x.totalbaru)).reduce((a, b) => a + b, 0),
-          selisih: this.rincianpergeseran.filter((x) => x.kode4 === el).map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0) -
-            this.rincianpergeseran.filter((x) => x.kode4 === el).map((x) => parseFloat(x.totalbaru)).reduce((a, b) => a + b, 0),
+          selisih: this.rincianpergeseran.filter((x) => x.kode4 === el).map((x) => parseFloat(x.totalbaru)).reduce((a, b) => a + b, 0) - this.rincianpergeseran.filter((x) => x.kode4 === el).map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0),
           rincian: []
         }
         rka.push(obj)
@@ -364,8 +360,7 @@ export const useRkaStore = defineStore('store_rka_siasik', {
           uraian: this.rincianpergeseran.filter((x) => x.kode5 === el)[0].uraian5,
           pagu: this.rincianpergeseran.filter((x) => x.kode5 === el).map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0),
           pagubaru: this.rincianpergeseran.filter((x) => x.kode5 === el).map((x) => parseFloat(x.totalbaru)).reduce((a, b) => a + b, 0),
-          selisih: this.rincianpergeseran.filter((x) => x.kode5 === el).map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0) -
-            this.rincianpergeseran.filter((x) => x.kode5 === el).map((x) => parseFloat(x.totalbaru)).reduce((a, b) => a + b, 0),
+          selisih: this.rincianpergeseran.filter((x) => x.kode5 === el).map((x) => parseFloat(x.totalbaru)).reduce((a, b) => a + b, 0) - this.rincianpergeseran.filter((x) => x.kode5 === el).map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0),
           rincian: []
         }
         rka.push(obj)
@@ -380,8 +375,7 @@ export const useRkaStore = defineStore('store_rka_siasik', {
           uraian: this.rincianpergeseran.filter((x) => x.kode6 === el)[0].uraian6,
           pagu: this.rincianpergeseran.filter((x) => x.kode6 === el).map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0),
           pagubaru: this.rincianpergeseran.filter((x) => x.kode6 === el).map((x) => parseFloat(x.totalbaru)).reduce((a, b) => a + b, 0),
-          selisih: this.rincianpergeseran.filter((x) => x.kode6 === el).map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0) -
-            this.rincianpergeseran.filter((x) => x.kode6 === el).map((x) => parseFloat(x.totalbaru)).reduce((a, b) => a + b, 0),
+          selisih: this.rincianpergeseran.filter((x) => x.kode6 === el).map((x) => parseFloat(x.totalbaru)).reduce((a, b) => a + b, 0) - this.rincianpergeseran.filter((x) => x.kode6 === el).map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0),
           rincian: this.rincianpergeseran.filter((x) => x.kode6 === el).map((x) => {
             return {
               kode108: x.koderek108,
@@ -423,8 +417,7 @@ export const useRkaStore = defineStore('store_rka_siasik', {
           uraian: this.rincianperubahan.filter((x) => x.kode1 === el)[0].uraian1,
           pagu: this.rincianperubahan.filter((x) => x.kode1 === el).map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0),
           pagubaru: this.rincianperubahan.filter((x) => x.kode1 === el).map((x) => parseFloat(x.totalbaru)).reduce((a, b) => a + b, 0),
-          selisih: this.rincianperubahan.filter((x) => x.kode1 === el).map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0) -
-            this.rincianperubahan.filter((x) => x.kode1 === el).map((x) => parseFloat(x.totalbaru)).reduce((a, b) => a + b, 0),
+          selisih: this.rincianperubahan.filter((x) => x.kode1 === el).map((x) => parseFloat(x.totalbaru)).reduce((a, b) => a + b, 0) - this.rincianperubahan.filter((x) => x.kode1 === el).map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0),
           rincian: []
         }
         rka.push(obj)
@@ -439,8 +432,7 @@ export const useRkaStore = defineStore('store_rka_siasik', {
           uraian: this.rincianperubahan.filter((x) => x.kode2 === el)[0].uraian2,
           pagu: this.rincianperubahan.filter((x) => x.kode2 === el).map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0),
           pagubaru: this.rincianperubahan.filter((x) => x.kode2 === el).map((x) => parseFloat(x.totalbaru)).reduce((a, b) => a + b, 0),
-          selisih: this.rincianperubahan.filter((x) => x.kode2 === el).map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0) -
-            this.rincianperubahan.filter((x) => x.kode2 === el).map((x) => parseFloat(x.totalbaru)).reduce((a, b) => a + b, 0),
+          selisih: this.rincianperubahan.filter((x) => x.kode2 === el).map((x) => parseFloat(x.totalbaru)).reduce((a, b) => a + b, 0) - this.rincianperubahan.filter((x) => x.kode2 === el).map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0),
           rincian: []
         }
         rka.push(obj)
@@ -455,8 +447,7 @@ export const useRkaStore = defineStore('store_rka_siasik', {
           uraian: this.rincianperubahan.filter((x) => x.kode3 === el)[0].uraian3,
           pagu: this.rincianperubahan.filter((x) => x.kode3 === el).map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0),
           pagubaru: this.rincianperubahan.filter((x) => x.kode3 === el).map((x) => parseFloat(x.totalbaru)).reduce((a, b) => a + b, 0),
-          selisih: this.rincianperubahan.filter((x) => x.kode3 === el).map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0) -
-            this.rincianperubahan.filter((x) => x.kode3 === el).map((x) => parseFloat(x.totalbaru)).reduce((a, b) => a + b, 0),
+          selisih: this.rincianperubahan.filter((x) => x.kode3 === el).map((x) => parseFloat(x.totalbaru)).reduce((a, b) => a + b, 0) - this.rincianperubahan.filter((x) => x.kode3 === el).map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0),
           rincian: []
         }
         rka.push(obj)
@@ -471,8 +462,7 @@ export const useRkaStore = defineStore('store_rka_siasik', {
           uraian: this.rincianperubahan.filter((x) => x.kode4 === el)[0].uraian4,
           pagu: this.rincianperubahan.filter((x) => x.kode4 === el).map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0),
           pagubaru: this.rincianperubahan.filter((x) => x.kode4 === el).map((x) => parseFloat(x.totalbaru)).reduce((a, b) => a + b, 0),
-          selisih: this.rincianperubahan.filter((x) => x.kode4 === el).map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0) -
-            this.rincianperubahan.filter((x) => x.kode4 === el).map((x) => parseFloat(x.totalbaru)).reduce((a, b) => a + b, 0),
+          selisih: this.rincianperubahan.filter((x) => x.kode4 === el).map((x) => parseFloat(x.totalbaru)).reduce((a, b) => a + b, 0) - this.rincianperubahan.filter((x) => x.kode4 === el).map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0),
           rincian: []
         }
         rka.push(obj)
@@ -486,8 +476,7 @@ export const useRkaStore = defineStore('store_rka_siasik', {
           uraian: this.rincianperubahan.filter((x) => x.kode5 === el)[0].uraian5,
           pagu: this.rincianperubahan.filter((x) => x.kode5 === el).map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0),
           pagubaru: this.rincianperubahan.filter((x) => x.kode5 === el).map((x) => parseFloat(x.totalbaru)).reduce((a, b) => a + b, 0),
-          selisih: this.rincianperubahan.filter((x) => x.kode5 === el).map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0) -
-            this.rincianperubahan.filter((x) => x.kode5 === el).map((x) => parseFloat(x.totalbaru)).reduce((a, b) => a + b, 0),
+          selisih: this.rincianperubahan.filter((x) => x.kode5 === el).map((x) => parseFloat(x.totalbaru)).reduce((a, b) => a + b, 0) - this.rincianperubahan.filter((x) => x.kode5 === el).map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0),
           rincian: []
         }
         rka.push(obj)
@@ -502,8 +491,8 @@ export const useRkaStore = defineStore('store_rka_siasik', {
           uraian: this.rincianperubahan.filter((x) => x.kode6 === el)[0].uraian6,
           pagu: this.rincianperubahan.filter((x) => x.kode6 === el).map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0),
           pagubaru: this.rincianperubahan.filter((x) => x.kode6 === el).map((x) => parseFloat(x.totalbaru)).reduce((a, b) => a + b, 0),
-          selisih: this.rincianperubahan.filter((x) => x.kode6 === el).map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0) -
-            this.rincianperubahan.filter((x) => x.kode6 === el).map((x) => parseFloat(x.totalbaru)).reduce((a, b) => a + b, 0),
+          selisih: this.rincianperubahan.filter((x) => x.kode6 === el).map((x) => parseFloat(x.totalbaru)).reduce((a, b) => a + b, 0) -
+            this.rincianperubahan.filter((x) => x.kode6 === el).map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0),
           rincian: this.rincianperubahan.filter((x) => x.kode6 === el).map((x) => {
             return {
               kode108: x.koderek108,
@@ -516,7 +505,7 @@ export const useRkaStore = defineStore('store_rka_siasik', {
               volumebaru: x.volumebaru,
               hargabaru: x.hargabaru,
               pagubaru: x.totalbaru,
-              selisih: parseFloat(x.total) - parseFloat(x.totalbaru)
+              selisih: parseFloat(x.totalbaru) - parseFloat(x.total)
             }
           })
         }
