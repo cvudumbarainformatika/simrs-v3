@@ -83,13 +83,13 @@
         {{ isikwitansi[0]?.sistembayar }}
       </div>
       <div class="col-5">
-        Rincian
+        Total
       </div>
       <div class="col-2 text-center">
         :
       </div>
       <div class="col-5 text-left">
-        {{ formatRpDouble(belakang) }}
+        {{formatRpDouble(isikwitansi[0].rincian.reduce((a, x) => a + Number(x.jml), 0), 2)}}
       </div>
     </div>
     <div class="row q-pa-xl justify-between items-center">
@@ -112,7 +112,7 @@
         </div>
 
         <div>
-          <b>{{ isikwitansi[0]?.users }}</b>
+          <b>{{ isikwitansi[0]?.pegawai?.nama }}</b>
         </div>
       </div>
     </div>
@@ -155,30 +155,63 @@ const qrUrl = computed(() => {
 })
 
 onMounted(async () => {
-  // ambil query params
-  isikwitansi.value = JSON.parse(route.query.kwitansikarcis)
-  nomor.value = route.query.noreg || ''
-  poli.value = route.query.poli || ''
-  norm.value = route.query.norm || ''
+  console.log("✅ Masuk ke onMounted")
 
-  let rinci = isikwitansi.value[0]?.rinci
-  if (rinci) {
-    let clean = rinci.replace(/\r?\n/g, "")
-    console.log("clean:", clean)
+  try {
+    console.log("Isi kwitansikarcis (raw):", route.query.kwitansikarcis)
 
-    // ambil bagian terakhir setelah koma
-    let last = clean.split(",").pop().trim()
+    // amanin parse JSON
+    isikwitansi.value = JSON.parse(route.query.kwitansikarcis || '[]')
+    console.log("✅ Hasil parse:", isikwitansi.value)
 
-    lastPart.value = last //
+    const rincian = isikwitansi.value[0]?.rincian
+    console.log("✅ rincian:", rincian)
 
-    belakang.value = lastPart.value.split(":").pop().trim()
-    console.log('belakang:', belakang.value)
+    if (Array.isArray(rincian)) {
+      jumlah.value = rincian.reduce((a, x) => a + Number(x.jml), 0)
+    }
+
+    console.log("✅ Total rincian:", jumlah.value)
+  } catch (err) {
+    console.error("❌ Gagal parse atau error lain:", err)
   }
 
-  // tunggu DOM render dulu
   await nextTick()
-
-  // otomatis print
   window.print()
 })
+
+// onMounted(async () => {
+//   // ambil query params
+//   console.log("Total rincian:", 'xxxx')
+//   isikwitansi.value = JSON.parse(route.query.kwitansikarcis)
+//   nomor.value = route.query.noreg || ''
+//   poli.value = route.query.poli || ''
+//   norm.value = route.query.norm || ''
+//   console.log("Total rincian:", 'sasas')
+//   const rincian = isikwitansi.value[0]?.rincian
+//   console.log("Total rincian:", 'wew')
+//   if (Array.isArray(rincian)) {
+//     jumlah.value = rincian.reduce((a, x) => a + Number(x.jml), 0)
+//   }
+
+//   console.log("Total rincian:", jumlah.value)
+//   // if (rinci) {
+//   //   let clean = rinci.replace(/\r?\n/g, "")
+//   //   console.log("clean:", clean)
+
+//   //   // ambil bagian terakhir setelah koma
+//   //   let last = clean.split(",").pop().trim()
+
+//   //   lastPart.value = last //
+
+//   //   belakang.value = lastPart.value.split(":").pop().trim()
+//   //   console.log('belakang:', belakang.value)
+//   // }
+
+//   // tunggu DOM render dulu
+//   await nextTick()
+
+//   // otomatis print
+//   window.print()
+// })
 </script>

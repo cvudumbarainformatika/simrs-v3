@@ -47,7 +47,8 @@ export const usePembayaranKasirRajalStore = defineStore('pembayaran-kasir-rajal-
     printObj: {
       id: 'printMe',
       popTitle: 'Kwitansi Pembayaran'
-    }
+    },
+    va: ''
   }),
   actions: {
     savePembayaran(pasien, subtotal, jenislayanan, val, router, { nomor, poli, norm }) {
@@ -70,23 +71,7 @@ export const usePembayaranKasirRajalStore = defineStore('pembayaran-kasir-rajal-
           .then((resp) => {
             this.loadingpembayaran = false
             const kwitansikarcis = resp.data?.kwitansikarcis ?? []
-            const hasilglobal = []
-            kwitansikarcis.forEach(k => {
-              const hasil = {
-                noreg: k?.noreg,
-                norm: k?.norm,
-                nota: k?.nokarcis,
-                tgl_pembayaran: k?.tglx,
-                batal: k?.batal,
-                total: k?.total,
-                nama: k?.nama,
-              }
-              hasilglobal.push(hasil)
-            })
-            const storekunjungan = useKasirRajalListKunjunganStore()
-            storekunjungan.kwitansikarcis = hasilglobal
             this.kwitansi = kwitansikarcis
-            console.log('this.kwitansi', this.kwitansi)
             notifSuccess(resp.data?.message)
             const routeData = router.resolve({
               path: '/print/kwitansi',
@@ -104,7 +89,6 @@ export const usePembayaranKasirRajalStore = defineStore('pembayaran-kasir-rajal-
       })
     },
     createQris(pasien, billing, jenislayanan, carabayar) {
-      console.log('createQris', billing, jenislayanan, carabayar)
       this.loadingpembayaran = true
       this.form.noreg = pasien.noreg
       this.form.norm = pasien.norm
@@ -261,6 +245,37 @@ export const usePembayaranKasirRajalStore = defineStore('pembayaran-kasir-rajal-
     },
     setPrintObj(obj) {
       this.printObj = obj
+    },
+    createva(pasien, billing, jenislayanan, carabayar) {
+      this.loadingpembayaran = true
+      this.form.noreg = pasien.noreg
+      this.form.norm = pasien.norm
+      this.form.tglkunjungan = pasien.tgl_kunjungan
+      this.form.nama = pasien.nama
+      this.form.sapaan = pasien.sapaan
+      this.form.kelamin = pasien.kelamin
+      this.form.kodepoli = pasien.kodepoli
+      this.form.poli = pasien.poli
+      this.form.sistembayar = pasien.sistembayar
+      this.form.carabayar = carabayar
+      this.form.jenislayanan = jenislayanan
+      this.form.total = billing
+      return new Promise(resolve => {
+        api.post('/v1/simrs/kasir/rajal/pembayarankarcis', this.form)
+          .then((resp) => {
+            this.loadingpembayaran = false
+            console.log('resp', resp.data)
+            this.va = resp.data?.result?.response?.VirtualAccount
+            console.log('respsasa', this.va)
+            notifSuccess(resp?.data?.message)
+            //this.qris = resp.data.result.qrValue
+            resolve(resp.data)
+          })
+          .catch((err) => {
+            console.log('err', err)
+            this.loadingpembayaran = false
+          })
+      })
     },
     printElement(elId) {
       const el = document.getElementById(elId)
