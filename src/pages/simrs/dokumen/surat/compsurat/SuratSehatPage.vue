@@ -3,10 +3,10 @@
     <div class="col-7">
       <q-form ref="refForm" @submit="onSubmit" class="q-gutter-sm q-pa-lg">
 
-        <div class=" text-weight-bold">Form Surat Keterangan Dokter & Surat Keterangan Sehat (Jiwa)</div>
+        <div class=" text-weight-bold">Form Surat Keterangan Dokter </div>
 
         <div>
-          <q-option-group v-model="store.defaultJenis" :options="store.jenisx" inline
+          <q-option-group v-model="store.defaultJenis" :options="store.jenisSurat" inline
             :rules="[val => !!val || 'Harap pilih salah satu']" />
         </div>
 
@@ -69,7 +69,7 @@
           </div>
         </div>
 
-        <div v-else>
+        <div v-else-if="store.defaultJenis === 'SRT02'">
           <div class="row q-col-gutter-sm q-mb-sm">
             <div class="col-6">
               <app-input v-model="store.form.nomorSurat" label="Nomor Surat (otomatis)" outlined dense disable />
@@ -130,6 +130,77 @@
         </div>
 
 
+        <div v-else-if="store.defaultJenis === 'SRT03'">
+          <div class="row q-col-gutter-sm q-mb-sm">
+            <div class="col-6">
+              <app-input v-model="store.form.nomorSurat" label="Nomor Surat (otomatis)" outlined dense disable />
+            </div>
+            <div class="col-6">
+              <app-input v-model="store.form.keperluan" label="Untuk Keperluan" outlined dense />
+            </div>
+          </div>
+          <div class="row q-col-gutter-sm q-mb-sm">
+
+            <div class="col-6">
+              <app-input v-model="store.form.pekerjaan" label="Pekerjaan" outlined dense />
+            </div>
+            <div class="col-6">
+              <app-input v-model="store.form.pendidikan" label="Pendidikan" outlined dense />
+            </div>
+
+          </div>
+
+          <div class="row q-col-gutter-sm q-mb-sm">
+
+
+            <div class="col-12">
+
+              <q-separator class="q-my-xs"></q-separator>
+              <div class="text-weight-bold">Status Perkawinan</div>
+              <q-option-group v-model="store.form.statusperkawinan" :options="store.kawins" inline
+                :rules="[val => !!val || 'Harap pilih salah satu']" />
+            </div>
+
+            <div class="col-12">
+              <q-separator class="q-my-xs"></q-separator>
+              <div class="text-weight-bold">Keterangan Riwayat Penguunaan obat-obatan dalam Seminggu Terakhir </div>
+
+            </div>
+
+            <div class="col-12" v-for="(item, i) in store.form.riwayatObat" :key="item?.form">
+              <q-separator class="q-my-xs"></q-separator>
+              <div class="text-weight-normal">{{ item.form }}</div>
+              <q-option-group v-model="item.nilai"
+                :options="item.form === 'Asal Obat' ? store.asalObats : store.adaTidaks" inline
+                :rules="[val => !!val || 'Harap pilih salah satu']" />
+            </div>
+
+            <div class="col-12">
+              <q-separator class="q-my-xs"></q-separator>
+              <div class="text-weight-bold">Kesimpulan tentang gejala-gejala penggunaan dan atau penyalahgunaan
+                narkotika / zat psikoaktif
+              </div>
+              <q-option-group v-model="store.form.doc" :options="store.adaTidaks" inline
+                :rules="[val => !!val || 'Harap pilih salah satu']" />
+            </div>
+
+
+          </div>
+
+          <q-separator class="q-my-sm"></q-separator>
+
+          <!-- <div class="row q-col-gutter-sm q-mb-sm">
+            <div class="col-12">
+              <app-input v-model="store.form.kecerdasan" label="Kecerdasan" outlined dense />
+            </div>
+          </div> -->
+
+          <q-separator class="q-my-xs"></q-separator>
+
+
+        </div>
+
+
         <div class="row q-col-gutter-sm q-mb-sm">
           <div class="col-12">
             <q-btn color="primary" icon-right="icon-mat-save" label="Simpan" type="submit" unelevated
@@ -150,9 +221,13 @@
       </div>
     </div>
   </div>
+
+
   <SuratSehatDokumenPage v-if="store?.cetakdata?.kdsurat == 'SRT01'" :pasien="props.pasien" :data="store.cetakdata" />
 
   <SuratKesehatanJiwaPage v-else-if="store?.cetakdata?.kdsurat == 'SRT02'" :pasien="props.pasien"
+    :data="store.cetakdata" />
+  <SuratKeteranganNapza v-else-if="store?.cetakdata?.kdsurat == 'SRT03'" :pasien="props.pasien"
     :data="store.cetakdata" />
 
 </template>
@@ -162,6 +237,7 @@ import { useDokumenSuratSehatStore } from '../../../../../stores/simrs/dokumen/e
 import ListSuratPage from './ListSuratPage.vue'
 import SuratSehatDokumenPage from './SuratSehatDokumenPage.vue';
 import SuratKesehatanJiwaPage from './SuratKesehatanJiwaPage.vue';
+import SuratKeteranganNapza from './SuratKeteranganNapza.vue';
 
 const store = useDokumenSuratSehatStore()
 
@@ -179,12 +255,19 @@ const suhats = ref('SRT01')
 
 onMounted(() => {
   const polijiwa = props.pasien?.kodepoli === 'POL010' ? true : false
+  store.isPolijiwa = polijiwa
 
   if (polijiwa) {
+    // jns.filter(item => item.value === 'SRT02' || item.value === 'SRT03')
     store.defaultJenis = 'SRT02'
   } else {
+    // jns.filter(item => item.value === 'SRT01')
     store.defaultJenis = 'SRT01'
   }
+  // store.jenisx = jns
+
+  // console.log('jenis surat', jns);
+
 })
 
 const documents = ref([

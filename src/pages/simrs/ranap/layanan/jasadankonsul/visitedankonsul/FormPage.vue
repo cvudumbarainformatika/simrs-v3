@@ -33,8 +33,7 @@
       </div>
       <q-separator class="q-my-md" />
       <div class="row full-width justify-end">
-        <q-btn :loading="store.loadingOrder" :disable="store.loadingOrder" label="Simpan" type="submit"
-          color="primary" />
+        <q-btn :loading="store.loadingSave" :disable="store.loadingSave" label="Simpan" type="submit" color="primary" />
       </div>
     </q-form>
   </div>

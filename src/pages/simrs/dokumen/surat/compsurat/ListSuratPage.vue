@@ -11,9 +11,12 @@
         <q-item-section>
           <q-item-label class="text-subtitle1">{{ item?.nosurat }}</q-item-label>
           <q-item-label caption lines="2">
-            Keperluan: {{ item?.untukKeperluan }} ||
+            Keperluan: {{ item?.untukKeperluan }}
+          </q-item-label>
+          <q-item-label caption lines="2">
             <b v-if="item?.kdsurat === 'SRT01'"> Kesimpulan: {{ item?.kesimpulan }}</b>
-            <b v-else> SKD: Surat Keterangan Pemeriksaan Kesehatan Jiwa</b>
+            <b v-else-if="item?.kdsurat === 'SRT02'"> SKD: Surat Keterangan Pemeriksaan Kesehatan Jiwa</b>
+            <b v-else-if="item?.kdsurat === 'SRT03'"> SKD: NAPZA</b>
           </q-item-label>
         </q-item-section>
 

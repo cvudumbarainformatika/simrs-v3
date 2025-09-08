@@ -18,8 +18,10 @@ export const useDokumenSuratSehatStore = defineStore('dokumen_suratsehat_new', {
       norm: '',
       pekerjaan: '',
 
+      // SKJ
       pendidikan: '',
       statusperkawinan: '',
+
       psikatopologi: '',
       kepribadian: [
         { form: 'Ketaatan Pada Peraturan', nilai: '' },
@@ -28,8 +30,16 @@ export const useDokumenSuratSehatStore = defineStore('dokumen_suratsehat_new', {
       ],
       kecerdasan: '',
 
+      // NAPZA
+      riwayatObat: [
+        { form: 'Hasil wawancara Psikiatrik Riwayat Penggunaan Obat-obatan Dalam Seminggu Terakhir', nilai: '' },
+        { form: 'Jenis Obat yang digunakan', nilai: '' },
+        { form: 'Asal Obat', nilai: '' },
+        { form: 'Tanggal konsumsi terakhir', nilai: '' },
+      ],
+
       keperluan: '',
-      doc: '',
+      doc: '', // ini kesimpulan
       penglihatankiri: '',
       penglihatankanan: '',
       pendengarankiri: '',
@@ -44,7 +54,8 @@ export const useDokumenSuratSehatStore = defineStore('dokumen_suratsehat_new', {
 
     jenisx: [
       { value: 'SRT01', label: 'Surat Keterangan Dokter' },
-      { value: 'SRT02', label: 'Surat Kesehatan Jiwa' }
+      { value: 'SRT02', label: 'Surat Kesehatan Jiwa' },
+      { value: 'SRT03', label: 'Surat Keterangan Napza' },
     ],
     defaultJenis: 'SRT01',
     kawins: [
@@ -64,10 +75,32 @@ export const useDokumenSuratSehatStore = defineStore('dokumen_suratsehat_new', {
       { value: 'Kurang', label: 'Kurang' },
       { value: 'Sangat Kurang', label: 'Sangat Kurang' }
     ],
+    adaTidaks: [
+      { value: 'ADA', label: 'ADA' },
+      { value: 'TIDAK ADA', label: 'TIDAK ADA' }
+    ],
+    asalObats: [
+      { value: 'Resep Dokter', label: 'Resep Dokter' },
+      { value: 'Beli Bebas', label: 'Beli Bebas' },
+      { value: 'Pemberian', label: 'Pemberian' },
+      // { value: 'Lainnya', label: 'Lainnya' }
+    ],
 
+    isPolijiwa: false
 
 
   }),
+
+  getters: {
+    jenisSurat: (state) => {
+      if (state.isPolijiwa) {
+        return state.jenisx.filter(a => a.value !== 'SRT01')
+      } else {
+        return state.jenisx.filter(a => a.value === 'SRT01')
+      }
+    }
+  },
+
   actions: {
     async simpan(pasien) {
       this.loading = true
@@ -99,8 +132,29 @@ export const useDokumenSuratSehatStore = defineStore('dokumen_suratsehat_new', {
         noreg: '',
         norm: '',
         pekerjaan: '',
+
+        // SKJ
+        pendidikan: '',
+        statusperkawinan: '',
+
+        psikatopologi: '',
+        kepribadian: [
+          { form: 'Ketaatan Pada Peraturan', nilai: '' },
+          { form: 'Kemampuan Mengendalikan Emosi', nilai: '' },
+          { form: 'Kemampuan Mengatasi Permaslahan', nilai: '' },
+        ],
+        kecerdasan: '',
+
+        // NAPZA
+        riwayatObat: [
+          { form: 'Hasil wawancara Psikiatrik Riwayat Penggunaan Obat-obatan Dalam Seminggu Terakhir', nilai: '' },
+          { form: 'Jenis Obat yang digunakan', nilai: '' },
+          { form: 'Asal Obat', nilai: '' },
+          { form: 'Tanggal konsumsi terakhir', nilai: '' },
+        ],
+
         keperluan: '',
-        doc: '',
+        doc: '', // ini kesimpulan
         penglihatankiri: '',
         penglihatankanan: '',
         pendengarankiri: '',

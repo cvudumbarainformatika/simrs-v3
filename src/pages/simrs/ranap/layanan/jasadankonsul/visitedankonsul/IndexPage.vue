@@ -2,13 +2,38 @@
   <BaseLayout :pasien="props.pasien" :kasus="props.kasus" :nakes="props.nakes" :split="40"
     title-before="VISITE DAN KONSUL" title-after="List Visite & Konsultasi Dokter">
     <template #header-kanan>
-      <div class="flex q-gutter-x-xs items-center">
+      <div class="flex q-gutter-x-xs items-center justify-end">
         <app-input-date :model="store.filterTanggal" label="By Tgl / Semua" icon="icon-mat-event" dark outlined valid
           @set-model="val => store.filterTanggal = val" style="width: 150px;" />
         <div v-if="store.filterTanggal !== null">
           <q-icon name="icon-mat-close" size="md" class="cursor-pointer" @click="store.filterTanggal = null"></q-icon>
         </div>
       </div>
+      <data class="flex q-gutter-x-sm justify-end q-mt-xs">
+        <!-- <q-btn color="white"
+          :label="store?.filterRuangs?.find(item => item?.kdruang === store.filterByRuang)?.nama ?? 'Semua Ruang'"
+          outline>
+          <q-menu>
+            <q-list style="min-width: 100px">
+              <q-item v-for="item in store.filterRuangs" :key="item" clickable
+                :active="item?.kdruang === store.filterByRuang" active-class="bg-primary text-white"
+                @click="store.filterByRuang = item.kdruang">
+                <q-item-section>{{ item.nama }}</q-item-section>
+              </q-item>
+            </q-list>
+          </q-menu>
+        </q-btn> -->
+        <!-- <q-btn color="white" :label="store?.filterByJenis" outline>
+          <q-menu>
+            <q-list style="min-width: 100px">
+              <q-item v-for="item in store.filterJenis" :key="item" clickable :active="item === store.filterByJenis"
+                active-class="bg-primary text-white" @click="store.filterByJenis = item">
+                <q-item-section>{{ item }}</q-item-section>
+              </q-item>
+            </q-list>
+          </q-menu>
+        </q-btn> -->
+      </data>
     </template>
 
     <template #form>

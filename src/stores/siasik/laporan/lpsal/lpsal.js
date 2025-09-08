@@ -21,8 +21,10 @@ export const useLPSALStore = defineStore('laporan_sal', {
     belanja: [],
     silpasikpa: 0,
 
+
     silpaskg: [],
     nilaisilpa: [],
+    penyesuaiansal: [],
 
     penggunaansal: [],
     biayatahunjln: [],
@@ -71,8 +73,10 @@ export const useLPSALStore = defineStore('laporan_sal', {
             this.pendapatan = resp.data.pendapatan
             this.belanja = resp.data.belanja
             this.silpaskg = resp.data.silpaskg
-
+            this.penyesuaiansal = resp.data.penyesuaiansal
+            // console.log('silpaskg', this.silpasikpa)
             const realsilpa = this.silpaskg.map((x) => parseFloat(x.nilaiskg)).reduce((a, b) => a + b, 0)
+            // console.log('realsilpa', realsilpa)
             const saldoanggaran = {
               uraian: 'Saldo Anggaran Lebih Awal',
               nilai: isNaN(realsilpa) ? parseFloat(0) : realsilpa
@@ -95,10 +99,11 @@ export const useLPSALStore = defineStore('laporan_sal', {
 
             const pendp = this.pendapatan.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0)
             const blj = this.belanja.map((x) => parseFloat(x.subtotalx)).reduce((a, b) => a + b, 0)
-            const silp = this.silpaskg.map((x) => parseFloat(x.nilaiskg)).reduce((a, b) => a + b, 0)
+            // const silp = this.silpaskg.map((x) => parseFloat(x.nilaiskg)).reduce((a, b) => a + b, 0)
+            const penyesuaian = this.penyesuaiansal.map((x) => parseFloat(x.totalpenyesuaian)).reduce((a, b) => a + b, 0)
             const objsilpasipka = {
               uraian: 'Penggunaan Saldo Anggaran Lebih sebagai Penerimaan',
-              nilai: pendp - blj + silp
+              nilai: pendp - blj - penyesuaian
             }
             this.silpasikpa = objsilpasipka
             // console.log('nilai Akhir', this.silpasikpa)

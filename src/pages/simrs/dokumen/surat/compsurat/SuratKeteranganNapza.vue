@@ -19,7 +19,7 @@
           <KopSurat />
           <div class="garis-bawah-dblue q-pb-sm q-mb-sm">
             <div class="row justify-center f-16 text-weight-bold" style="text-decoration: underline;">
-              SURAT KETERANGAN PEMERIKSAAN KESEHATAN JIWA
+              SURAT KETERANGAN PEMERIKSAAN NAPZA
             </div>
             <div class="row justify-center f-16 text-weight-bold q-mb-md">
               Nomor: {{ props.data?.nosurat }}
@@ -76,7 +76,7 @@
 
             <div class="row q-col-gutter-sm f-16 q-mt-md">
               <div class="col-12">
-                Telah melakukan pemeriksaan psikiatri pada {{ tanggalEjaIndonesia(pasien?.tgl_kunjungan) }}, Terhadap :
+                Telah melakukan pemeriksaan <b>NAPZA</b> Terhadap :
 
               </div>
             </div>
@@ -178,7 +178,7 @@
             </div> -->
             <div class="row q-col-gutter-sm f-16 q-mt-sm">
               <div class="col-12">
-                Dengan Hasil Pemeriksaan Kesehatan Jiwa pada saat ini :
+                Berdasarkan Pemeriksaan :
               </div>
             </div>
 
@@ -192,34 +192,64 @@
             <div class="column f-16">
               <div class="flex q-gutter-sm">
                 <div>1.</div>
-                <div>Psikopatologi</div>
+                <div>Laboratorium pada tanggal : {{ tanggalEjaIndonesia(pemeriksaanLaborat[0]?.rs3) }}</div>
               </div>
-              <div class="column flex q-ml-md">
-                <div class="text-weight-bold">{{ props.data?.psikatopologi || '-' }}</div>
+              <div class="column flex q-ml-lg">
+                <div class="flex q-gutter-md">
+                  <div>a.</div>
+                  <div style="width:120px;">Amphetamin</div>
+                  <div>: {{ getPemeriksaanLaborat('LAB218') || '...' }}</div>
+                </div>
+                <div class="flex q-gutter-md">
+                  <div>b.</div>
+                  <div style="width:120px;">Morphine</div>
+                  <div>: {{ getPemeriksaanLaborat('LAB220') || '...' }}</div>
+                </div>
+                <div class="flex q-gutter-md">
+                  <div>c.</div>
+                  <div style="width:120px;">Metamphetamine</div>
+                  <div>: {{ getPemeriksaanLaborat('LAB219') || '...' }}</div>
+                </div>
+                <div class="flex q-gutter-md">
+                  <div>d.</div>
+                  <div style="width:120px;">Benzodiazepin</div>
+                  <div>: {{ getPemeriksaanLaborat('LAB222') || '...' }}</div>
+                </div>
+                <div class="flex q-gutter-md">
+                  <div>e.</div>
+                  <div style="width:120px;">Marijuana</div>
+                  <div>: {{ getPemeriksaanLaborat('LAB221') || '...' }}</div>
+                </div>
+                <div class="flex q-gutter-md">
+                  <div>f.</div>
+                  <div style="width:120px;">Cocain</div>
+                  <div>: {{ getPemeriksaanLaborat('LAB153') || '...' }}</div>
+                </div>
               </div>
-              <div class="flex q-gutter-sm">
+              <div class="flex q-gutter-sm q-mt-sm">
                 <div>2.</div>
-                <div>Kepribadian</div>
+                <div>Keterangan riwayat penggunaan obat-obatan dalam seminggu terakhir.</div>
               </div>
-              <div class="column flex q-ml-md">
-                <div v-for="(item, index) in props.data?.kepribadian" :key="index" class="text-weight-bold">
-                  {{ String.fromCharCode(97 + index) }}. {{ item.form }} : {{ item?.nilai || '-' }}
+              <div class="column flex q-ml-lg ">
+                <div v-for="(item, index) in props.data?.riwayatObat" :key="index" class="flex q-gutter-x-sm">
+                  {{ String.fromCharCode(97 + index) }}. {{ item.form }}
+                  <div class="text-weight-bold">: {{ item?.nilai || '-' }}</div>
                 </div>
               </div>
 
-              <div class="flex q-gutter-sm">
-                <div>3.</div>
-                <div>Kecerdasan</div>
-              </div>
-              <div class="column flex q-ml-md">
-                <div class="text-weight-bold">{{ props.data?.kecerdasan || '-' }}</div>
-              </div>
+
             </div>
 
             <div class="row q-col-gutter-sm q-mb-lg f-16 q-mt-sm">
               <div class="col-12">
-                Demikian Surat Keterangan Pemeriksaan Kesehatan Jiwa ini dibuat dengan sebenar-benarnya untuk keperluan
-                Administrasi <b>{{ props.data?.untukKeperluan }}</b>
+                Berdasarkan hasil pemeriksaan di atas menunjukkan <b>{{ props.data?.kesimpulan }}</b> gejala-gejala
+                penggunaan dan atau
+                penyalahgunaan narkotika / zat psikoaktif
+                <!-- <b>{{ props.data?.untukKeperluan }}</b> -->
+              </div>
+              <div class="col-12">
+                Surat Keterangan Pemeriksaan Napza ini digunakan untuk keperluan :
+                <b>{{ props.data?.untukKeperluan }}</b>
               </div>
             </div>
 
@@ -279,7 +309,22 @@ const props = defineProps({
   },
 })
 
-// console.log('sasasa', props.data, props.pasien);
+const pemeriksaanLaborat = computed(() => {
+  const data = props?.pasien?.laboratold || []
+  // const filt = data?.filter((item) => item?.pemeriksaanlab?.rs21?.toLowerCase()?.includes('fungsi hati'))
+  // console.log('filt', filt);
+  return data
+})
+
+
+const getPemeriksaanLaborat = (kode) => {
+  const data = pemeriksaanLaborat.value?.find((item) => item?.rs4 === kode)
+  console.log('data', data);
+
+  return data?.rs21
+}
+
+// console.log('sasasa', props.pasien?.laboratold);
 
 const qrUrl = computed(() => {
   // console.log('pasien', props?.pasien)
