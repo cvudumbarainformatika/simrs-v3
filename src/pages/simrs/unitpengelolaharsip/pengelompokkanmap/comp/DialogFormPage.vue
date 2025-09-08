@@ -16,6 +16,17 @@
                   :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" />
               </div>
             </div>
+            <div class="row q-col-gutter-xs">
+              <div class="col-6">
+                <q-select v-model="store.form.cabinet" option-label="namacabinet" option-value="id"
+                  label="Lokasi Map Di Feling Cabinet" outlined dense
+                  :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" :options="store.itemscabinet" />
+              </div>
+              <div class="col-6">
+                <q-input type="number" v-model="store.form.laci" label="Lokasi Map Di Laci" outlined dense
+                  :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" />
+              </div>
+            </div>
             <div class="row">
               <div class="col-12">
                 <q-select v-model="store.form.kodeorganisasi" dense outlined :options="organisasix"

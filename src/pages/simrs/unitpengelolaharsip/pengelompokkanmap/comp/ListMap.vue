@@ -6,11 +6,11 @@
 
       <div v-else class="row q-mt-sm q-ml-sm q-col-gutter-md justify-center items-start">
         <div v-for="(item, i) in datamap" :key="i" class="col-auto">
-          <q-card class="cursor-pointer folder-card" flat bordered @click="dialogrincian()">
+          <q-card class="cursor-pointer folder-card" flat bordered @click="dialogrincian(item.id)">
             <div class="flex justify-center q-pa-sm">
               <q-btn flat round dense size="sm"
                 style="background: rgba(0,0,0,0.15); top: 0; left: 0; margin: 2px;z-index: 10;" class="absolute"
-                @click="editmap(item)">
+                @click.stop="editmap(item)">
                 <q-icon name="icon-mat-edit" size="18px" color="primary" />
               </q-btn>
               <q-btn flat round dense size="sm"
@@ -32,7 +32,8 @@
         </div>
       </div>
     </div>
-    <DialogRincianPage :hederdetail="props.items" />
+    <DialogRincianPage :hederdetail="props.items" :users="props.users" :organisasi="props.organisasi" />
+    <DialogFormPage />
   </div>
 </template>
 
@@ -43,11 +44,17 @@ import DialogRincianPage from './comp/DialogRincianPage.vue'
 import { computed } from 'vue'
 import folderIcon from 'src/assets/images/folderx.png'
 import { useUnitPengelolaharsipMapStore } from 'src/stores/simrs/unitpengelolaarsip/pengolahanmap'
+import DialogFormPage from './DialogFormPage.vue'
 
 const store = useUnitPengelolaharsipMapStore()
 const props = defineProps({
   items: { type: Array, default: () => [] },
-  loading: { type: Boolean, default: false }
+  loading: { type: Boolean, default: false },
+  users: { type: String, default: '' },
+  organisasi: {
+    type: Array,
+    default: () => []
+  },
 })
 
 const datamap = computed(() => {
@@ -55,7 +62,7 @@ const datamap = computed(() => {
 })
 
 function editmap(item) {
-  console.log('edit', item)
+  store.initreset()
   store.form.id = item.id
   store.form.namamap = item.namamap
   store.form.kodeorganisasi = item.kodeorganisasi
@@ -63,8 +70,10 @@ function editmap(item) {
   store.dialog = true
 }
 
-function dialogrincian() {
+function dialogrincian(val) {
   store.dialogrincian = true
+  store.formisi.idmap = val
+  store.getrincianmap(val)
 }
 </script>
 

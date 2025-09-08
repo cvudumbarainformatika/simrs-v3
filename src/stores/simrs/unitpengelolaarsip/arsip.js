@@ -6,8 +6,10 @@ import { notifErr, notifErrVue, notifSuccess } from 'src/modules/utils'
 export const useUnitPengelolahArsipStore = defineStore('unit-pengelolah-arsip-store', {
   state: () => ({
     items: [],
+    itemsuntukmap: [],
     itemsorganisasi: [],
     loading: false,
+    loadingmap: false,
     meta: null,
     dialog: false,
     dialoggambar: false,
@@ -15,6 +17,10 @@ export const useUnitPengelolahArsipStore = defineStore('unit-pengelolah-arsip-st
       q: '',
       page: 1,
       per_page: 10,
+      bidangbagian: ''
+    },
+    paramsdarimap: {
+      q: '',
       bidangbagian: ''
     },
     from: {
@@ -51,6 +57,10 @@ export const useUnitPengelolahArsipStore = defineStore('unit-pengelolah-arsip-st
       this.params.page = 1
       this.getData()
     },
+    searchdarimap(val) {
+      this.params.q = val
+      this.getDataarsip()
+    },
     refresh(val) {
       this.params.page = 1
       this.getData()
@@ -65,6 +75,16 @@ export const useUnitPengelolahArsipStore = defineStore('unit-pengelolah-arsip-st
           this.loading = false
         })
         .catch(() => { this.loading = false })
+    },
+    async getDataarsip() {
+      this.loadingmap = true
+      const params = { params: this.paramsdarimap }
+      await api.get('v1/simrs/unitpengelolaharsip/arsip/listarsip-map', params)
+        .then(resp => {
+          this.itemsuntukmap = resp?.data
+          this.loadingmap = false
+        })
+        .catch(() => { this.loadingmap = false })
     },
     async getDataorganisasi() {
       await api.get('v1/simrs/master/listorganisasi')

@@ -1,18 +1,23 @@
 import { defineStore } from "pinia";
 import { api } from "src/boot/axios";
 import { notifSuccess } from "src/modules/utils";
+import { useUnitPengelolahArsipStore } from "./arsip";
+import { store } from "quasar/wrappers";
 
 export const useUnitPengelolaharsipMapStore = defineStore('unit-pengelolah-arsip-map-store', {
   state: () => ({
     items: [],
     itemsorganisasi: [],
+    itemscabinet: [],
     itemsrinci: [],
     loading: false,
     loadingForm: false,
+    loadingisimap: false,
     loadingrinci: false,
     meta: null,
     dialog: false,
     dialogrincian: false,
+    dialogtambaharsip: false,
     params: {
       q: '',
       page: 1,
@@ -23,7 +28,13 @@ export const useUnitPengelolaharsipMapStore = defineStore('unit-pengelolah-arsip
       id: '',
       namamap: '',
       kodeorganisasi: '',
-      keterangan: ''
+      keterangan: '',
+      cabinet: '',
+      laci: 1
+    },
+    formisi: {
+      idmap: '',
+      noarsip: ''
     }
   }),
   actions: {
@@ -60,6 +71,13 @@ export const useUnitPengelolaharsipMapStore = defineStore('unit-pengelolah-arsip
         })
         .catch(() => { })
     },
+    async getdatacabinet() {
+      await api.get('v1/simrs/master/listcabinet')
+        .then(resp => {
+          this.itemscabinet = resp?.data
+        })
+        .catch(() => { })
+    },
     saveData() {
       this.loadingForm = true
       return new Promise(resolve => {
@@ -82,6 +100,42 @@ export const useUnitPengelolaharsipMapStore = defineStore('unit-pengelolah-arsip
       this.form.namamap = ''
       this.form.kodeorganisasi = ''
       this.form.keterangan = ''
+      this.form.cabinet = ''
+      this.form.laci = 1
+    },
+    simpanisimap(val) {
+      this.loadingisimap = true
+      this.formisi.noarsip = val.noarsip
+      return new Promise(resolve => {
+        api.post('v1/simrs/unitpengelolaharsip/map/simpanisimap', this.formisi)
+          .then(resp => {
+            const noarsip = resp.data?.result
+            this.itemsrinci = resp?.data?.rincianmap
+            const storearsip = useUnitPengelolahArsipStore()
+            storearsip.itemsuntukmap = storearsip.itemsuntukmap.filter(
+              item => item.noarsip !== noarsip
+            )
+            this.loadingisimap = false
+            notifSuccess(resp)
+            resolve(resp)
+          })
+          .catch(() => {
+            this.loadingisimap = false
+          }).finally(() => {
+            this.loadingisimap = false
+          })
+      })
+    },
+    async getrincianmap(val) {
+      this.loadingrinci = true
+      const params = { params: { idmap: val } }
+      await api.get('v1/simrs/unitpengelolaharsip/map/rincian-map', params)
+        .then(resp => {
+          this.itemsrinci = resp?.data
+          console.log('itemsrinci', this.itemsrinci)
+          this.loadingrinci = false
+        })
+        .catch(() => { this.loadingrinci = false })
     }
   }
 })
