@@ -44,6 +44,7 @@ export default defineConfig((ctx) => {
         // NODE_OPTIONS: '--max-old-space-size=20480',
         API: ctx?.dev
           // ? 'http://192.168.150.112:3503'
+          // ? 'http://192.168.150.112:3501'
           ? 'http://localhost:8080'
           // : 'http://192.168.150.111:3507',
           : 'http://192.168.150.112:3501',
@@ -83,13 +84,13 @@ export default defineConfig((ctx) => {
         plugins: [
           {
             name: 'optimize-images',
-            async generateBundle(options, bundle) {
+            async generateBundle (options, bundle) {
               // Optimize hanya file yang dibutuhkan
-              const imagePattern = /\.(jpg|jpeg|png|gif|webp)$/;
+              const imagePattern = /\.(jpg|jpeg|png|gif|webp)$/
               for (const fileName in bundle) {
                 if (imagePattern.test(fileName)) {
                   // Gunakan sharp yang sudah ada
-                  const file = bundle[fileName];
+                  const file = bundle[fileName]
                   // Proses optimasi
                 }
               }
@@ -110,7 +111,7 @@ export default defineConfig((ctx) => {
         reactivityTransform: true
       },
 
-      extendViteConf(viteConf) {
+      extendViteConf (viteConf) {
         viteConf.build.chunkSizeWarningLimit = 5000
         viteConf.build.rollupOptions = {
           output: {
@@ -120,13 +121,13 @@ export default defineConfig((ctx) => {
             chunkFileNames: 'assets/[name].[hash].js',
             assetFileNames: 'assets/[name].[hash].[ext]',
 
-            manualChunks(id) {
+            manualChunks (id) {
               if (id.includes('node_modules')) {
-                return id.toString().split('node_modules/')[1].split('/')[0].toString();
+                return id.toString().split('node_modules/')[1].split('/')[0].toString()
               }
             }
           }
-        };
+        }
       },
       // viteVuePluginOptions: {},
 

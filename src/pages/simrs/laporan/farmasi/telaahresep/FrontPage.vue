@@ -27,7 +27,11 @@
             </div>
           </div>
         </div>
-        <!-- <div class="col-auto q-mr-md">
+        <div class="col-auto q-mr-md">
+          <div class="row items-center justify-bentween q-mr-md">
+            <div class="col-auto text-weight-bold">Total Data : {{ store.meta?.total }}</div>
+          </div>
+          <!--
           <div class="row items-center">
             <q-btn ref="refPrint" v-print="printObj" unelevated color="dark" round size="sm" icon="icon-mat-print">
               <q-tooltip class="primary" :offset="[10, 10]">
@@ -35,7 +39,8 @@
               </q-tooltip>
             </q-btn>
           </div>
-        </div> -->
+          -->
+        </div>
       </div>
     </div>
     <div :style="`margin-top:${h + 5}px;`" />
