@@ -60,7 +60,6 @@ const props = defineProps({
 })
 
 function getUnit(val) {
-  console.log('val', val)
   store.params.bidangbagian = val
   store.search()
 }

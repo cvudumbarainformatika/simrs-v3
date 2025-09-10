@@ -7,7 +7,8 @@
 
     <q-card flat no-shadow square class="my-flex-1" style="overflow: hidden;">
       <q-scroll-area style="height: calc(100% - 1px);">
-        <ListMap :items="store.items" :loading="store.loading" />
+        <ListMap :items="store.items" :loading="store.loading" :users="appstore?.user?.pegawai?.kdarteri"
+          :organisasi="store.itemsorganisasi" />
       </q-scroll-area>
       <div class=" absolute-bottom bg-primary text-white z-top">
         <footer-page />
@@ -32,6 +33,7 @@ const store = useUnitPengelolaharsipMapStore()
 const appstore = useAplikasiStore()
 
 function tambahmap() {
+  store.initreset()
   store.dialog = true
   //store.initForm()
 }
@@ -43,5 +45,6 @@ onMounted(() => {
   store.params.bidangbagian = appstore?.user?.pegawai?.kdarteri
   store.getData()
   store.getDataorganisasi()
+  store.getdatacabinet()
 })
 </script>

@@ -30,4 +30,6 @@
 import { useUnitPengelolaharsipMapStore } from 'src/stores/simrs/unitpengelolaarsip/pengolahanmap';
 
 const store = useUnitPengelolaharsipMapStore()
+
+const emits = defineEmits(['tambaharsip'])
 </script>

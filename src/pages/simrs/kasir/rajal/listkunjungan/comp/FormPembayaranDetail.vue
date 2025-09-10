@@ -91,6 +91,13 @@
                           Bayar & Print
                         </q-tooltip>
                       </q-btn>
+                      <q-btn v-if="store.form.carabayar === 'VA'" unelevated color="dark" round size="sm"
+                        icon="icon-mat-qr_code_2" :loading="store.loadingpembayaran"
+                        @click="store.createva(prop.pasien, store.items?.subtotal, 'Karcis', store.form.carabayar)">
+                        <q-tooltip class="primary" :offset="[10, 10]">
+                          Bayar & Print
+                        </q-tooltip>
+                      </q-btn>
                     </div>
 
                   </q-item-section>
@@ -367,7 +374,6 @@ function caripembayaran() {
     })
   } else {
     if (storex.jenispembayaran === 'karcis') {
-      console.log('cari karcis')
       store.items
     } else if (storex.jenispembayaran === 'obat') {
       console.log('cari obat')

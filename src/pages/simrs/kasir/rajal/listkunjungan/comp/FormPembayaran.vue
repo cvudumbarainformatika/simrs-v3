@@ -1,5 +1,5 @@
 <template>
-  {{ qrUrl }}
+
   <q-page class="q-pa-md bg-grey-3">
     <q-card class="q-pa-md full-height shadow-2 rounded-borders">
 
@@ -79,8 +79,12 @@
 
               <!-- Kolom QR -->
               <div class="col-auto q-pa-xs flex flex-center">
-                <div style="width: 100px;" class="q-mb-xs">
-                  <vue-qrcode :value="qrUrl" tag="svg" :options="{
+
+                <div class="q-mb-xs"
+                  style="width: 100px; height: 110px; display: flex; justify-content: center; align-items: center;">
+                  <q-spinner-ios v-if="storepembayaran.loadingbayar || storepembayaran.loadingpembayaran"
+                    color=" primary" size="24px" />
+                  <vue-qrcode v-else :value="qrUrl" tag="svg" :options="{
                     errorCorrectionLevel: 'Q',
                     color: {
                       dark: '#000000',
@@ -112,8 +116,13 @@
                 <!-- VA + Tombol Bayar -->
                 <div class="row items-center justify-between q-mt-sm">
                   <div class="text-caption text-grey-9 bg-grey-2 q-px-sm q-py-xs rounded-borders"
-                    style="font-family: monospace;">
-                    VA: 1234567890
+                    style="font-family: monospace;"
+                    v-if="storepembayaran.loadingbayar || storepembayaran.loadingpembayaran">
+                    <q-spinner-facebook color="blue" size="24px" />
+                  </div>
+                  <div class="text-caption text-grey-9 bg-grey-2 q-px-sm q-py-xs rounded-borders"
+                    style="font-family: monospace;" v-else>
+                    VA: {{ storepembayaran.va }}
                   </div>
                   <q-btn color="primary" label="Bayar" rounded unelevated class="q-pa-sm" @click="store.bayar" />
                 </div>
@@ -128,12 +137,16 @@
       <div class="row q-col-gutter-md full-height">
 
         <!-- Form Pembayaran -->
-        <div class="col-6">
+        <div class="col-4">
           <form-pembayaran-detail :pasien="prop?.pasien" :jenislayanan="store.jenispembayaran" :billing="prop?.billing"
             :kwitansikarcis="prop?.kwitansikarcis" />
         </div>
         <!-- Data Pembayaran -->
-        <div class="col">
+        <div class="col-4">
+          <DataFlagingNonTunai :kwitansikarcis="prop?.kwitansikarcis" :kwitansinontunai="prop?.kwitansinontunai"
+            :pasien="prop?.pasien" />
+        </div>
+        <div class="col-4">
           <data-pembayaran :kwitansikarcis="prop?.kwitansikarcis" />
         </div>
       </div>
@@ -149,6 +162,8 @@ import FormPembayaranDetail from './FormPembayaranDetail.vue'
 import DataPembayaran from './DataPembayaran.vue'
 import { usePembayaranKasirRajalStore } from 'src/stores/simrs/kasir/rajal/pembayaran'
 import { computed } from 'vue'
+import DataFlagingNonTunai from './DataFlagingNonTunai.vue'
+import { Loading } from 'quasar'
 
 const store = useKasirRajalListKunjunganStore()
 const storepembayaran = usePembayaranKasirRajalStore()
@@ -165,7 +180,8 @@ const qrUrl = computed(() => {
 const prop = defineProps({
   pasien: { type: Object, default: () => ({}) },
   billing: { type: Object, default: () => ({}) },
-  kwitansikarcis: { type: Array, default: () => [] }
+  kwitansikarcis: { type: Array, default: () => [] },
+  kwitansinontunai: { type: Array, default: () => [] }
 })
 </script>
 

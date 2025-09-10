@@ -27,6 +27,7 @@ export const useKasirRajalListKunjunganStore = defineStore('kasir_rajal_list_kun
     qris: 'asd',
     jenispembayaran: '',
     loadingdataterbayar: false,
+    kwitansinontunai: []
   }),
   // getters: {
   //   doubleCount: (state) => state.counter * 2
@@ -138,6 +139,16 @@ export const useKasirRajalListKunjunganStore = defineStore('kasir_rajal_list_kun
             this.loading = false
           })
       })
+    },
+    async getKwitansinontunai(noreg) {
+      this.loading = true
+      const params = { params: { noreg: noreg ?? this.getparams } }
+      const resp = await api.get('/v1/simrs/kasir/rajal/getKwitansinontunai', params)
+      if (resp.status === 200) {
+        this.kwitansinontunai = resp.data.data
+        this.loading = false
+      }
+      this.loading = false
     }
   }
 })
