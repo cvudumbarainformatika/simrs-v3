@@ -196,7 +196,7 @@
                 :
               </div>
               <div class="col-2 text-left">
-                Kiri VOS
+                Kiri
               </div>
               <div class="col-1">
                 :
@@ -213,7 +213,7 @@
 
               </div>
               <div class="col-2 text-left">
-                Kanan VOD
+                Kanan
               </div>
               <div class="col-1">
                 :
@@ -222,6 +222,18 @@
                 {{ props.data?.pendengaranKanan }}
               </div>
             </div>
+            <div class="row q-col-gutter-sm f-16">
+              <div class="col-2">
+                Gigi Dan Mulut
+              </div>
+              <div class="col-1">
+                :
+              </div>
+              <div class="col-2 text-left">
+                -
+              </div>
+            </div>
+
             <div class="row q-col-gutter-sm f-16">
               <div class="col-2">
                 Perbedaan
@@ -307,6 +319,7 @@
                 {{ props.pasien?.pemeriksaanfisik[0]?.sistole }} / {{ props.pasien?.pemeriksaanfisik[0]?.diastole }}
               </div>
             </div>
+
           </div>
           <div class="row q-col-gutter-sm f-16">
             <div class="col-6">

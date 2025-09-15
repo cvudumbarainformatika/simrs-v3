@@ -64,6 +64,7 @@
         <div v-else style="flex: 1; overflow-y: auto; padding-bottom: 12px;">
           <div class="col-12 q-mt-sm" style="overflow-y: auto; padding-bottom: 50px;">
             <div class="row q-mt-sm" v-if="(selectedPayment === '' || selectedPayment === 'karcis') && store.items">
+
               <q-list class="full-width kwitansi-card">
                 <q-item>
                   <q-item-section>
@@ -73,7 +74,6 @@
                           formatRpDouble(store.items?.subtotal)
                         }}</q-badge></q-item-label>
                   </q-item-section>
-
                   <q-item-section side top>
                     <q-item-label caption>{{ humanDate(store.items?.rs4) }}</q-item-label>
                     <div class="row q-gutter-xs">
@@ -92,7 +92,7 @@
                         </q-tooltip>
                       </q-btn>
                       <q-btn v-if="store.form.carabayar === 'VA'" unelevated color="dark" round size="sm"
-                        icon="icon-mat-qr_code_2" :loading="store.loadingpembayaran"
+                        icon="icon-eva-bell-outline" :loading="store.loadingpembayaran"
                         @click="store.createva(prop.pasien, store.items?.subtotal, 'Karcis', store.form.carabayar)">
                         <q-tooltip class="primary" :offset="[10, 10]">
                           Bayar & Print
@@ -106,6 +106,7 @@
                 <q-separator spaced inset />
               </q-list>
             </div>
+
             <div class="row q-mt-sm" v-if="(selectedPayment === '' || selectedPayment === 'obat') && store.itemsobat">
               <q-list class="full-width kwitansi-card" v-for="(item, x) in store.itemsobat" :key="x">
                 <q-item>
@@ -116,10 +117,22 @@
                           formatRpDouble(item?.subtotal)
                         }}</q-badge></q-item-label>
                   </q-item-section>
-
                   <q-item-section side top>
                     <q-item-label caption>{{ humanDate(item?.tanggal) }}</q-item-label>
-                    <q-btn unelevated color="dark" round size="sm" icon="icon-mat-attach_money">
+                    <q-btn v-if="store.form.carabayar === 'Tunai'" unelevated color="dark" round size="sm"
+                      icon="icon-mat-attach_money">
+                      <q-tooltip class="primary" :offset="[10, 10]">
+                        Bayar & Print
+                      </q-tooltip>
+                    </q-btn>
+                    <q-btn v-if="store.form.carabayar === 'Qris'" unelevated color="dark" round size="sm"
+                      icon="icon-mat-qr_code_2">
+                      <q-tooltip class="primary" :offset="[10, 10]">
+                        Bayar & Print
+                      </q-tooltip>
+                    </q-btn>
+                    <q-btn v-if="store.form.carabayar === 'VA'" unelevated color="dark" round size="sm"
+                      icon="icon-eva-bell-outline">
                       <q-tooltip class="primary" :offset="[10, 10]">
                         Bayar & Print
                       </q-tooltip>
@@ -141,10 +154,23 @@
                           formatRpDouble(item?.total)
                         }}</q-badge></q-item-label>
                   </q-item-section>
-
                   <q-item-section side top>
                     <q-item-label caption>{{ humanDate(item?.rs3) }}</q-item-label>
-                    <q-btn unelevated color="dark" round size="sm" icon="icon-mat-attach_money">
+                    <q-btn v-if="store.form.carabayar === 'Tunai'" unelevated color="dark" round size="sm"
+                      icon="icon-mat-attach_money" @click="bayarnonkarcis(item?.rs2, item?.total, 'Tindakan')"
+                      :loading="store.loadingpembayaran">
+                      <q-tooltip class="primary" :offset="[10, 10]">
+                        Bayar & Print
+                      </q-tooltip>
+                    </q-btn>
+                    <q-btn v-if="store.form.carabayar === 'Qris'" unelevated color="dark" round size="sm"
+                      icon="icon-mat-qr_code_2">
+                      <q-tooltip class="primary" :offset="[10, 10]">
+                        Bayar & Print
+                      </q-tooltip>
+                    </q-btn>
+                    <q-btn v-if="store.form.carabayar === 'VA'" unelevated color="dark" round size="sm"
+                      icon="icon-eva-bell-outline">
                       <q-tooltip class="primary" :offset="[10, 10]">
                         Bayar & Print
                       </q-tooltip>
@@ -387,7 +413,7 @@ function bayarkarcis(val, subtotal) {
     $q.notify({
       type: 'negative',
       title: 'Peringatan',
-      message: 'INFO WARNING <b/> MAAF,<em><b>Anda Belum Memilih Jenis Pelayanan</b></em>',
+      message: 'INFO WARNING <b/> MAAF,<em><b>Anda Belum Memilih Cara Bayar</b></em>',
       html: true,
       timeout: 1000
     })
@@ -401,31 +427,41 @@ function bayarkarcis(val, subtotal) {
           cancel: true,
           persistent: true
         }).onOk(() => {
-          const dataAntrian = { nomor: '123', poli: 'PoliA', norm: '456' }
-          store.savePembayaran(prop.pasien, subtotal, val, store.form.carabayar, router, dataAntrian)
+          store.savePembayaran(prop.pasien, subtotal, val, store.form.carabayar, router)
         }).onCancel(() => {
-          // console.log('Cancel')
+          console.log('Cancel')
         }).onDismiss(() => {
-          // console.log('I am triggered on both OK and Cancel')
+          console.log('I am triggered on both OK and Cancel')
         })
       }
-      // else if (store.form.carabayar === 'Qris') {
-      //   $q.dialog({
-      //     dark: true,
-      //     title: 'Peringatan',
-      //     message: 'Apakah Data Anda Ingin Create QRIS?',
-      //     cancel: true,
-      //     persistent: true
-      //   }).onOk(() => {
-      //     // console.log('OK')
-      //     store.createQris(prop.pasien, prop.billing, prop.jenislayanan, val)
-      //   }).onCancel(() => {
-      //     // console.log('Cancel')
-      //   }).onDismiss(() => {
-      //     // console.log(
-      //   })
-      // }
     }
+  }
+}
+
+function bayarnonkarcis(nota, total, jenis) {
+
+  if (store.form.carabayar === '' || store.form.carabayar === '') {
+    $q.notify({
+      type: 'negative',
+      title: 'Peringatan',
+      message: 'INFO WARNING <b/> MAAF,<em><b>Anda Belum Memilih Cara Bayar</b></em>',
+      html: true,
+      timeout: 1000
+    })
+  } else {
+    $q.dialog({
+      dark: true,
+      title: 'Peringatan',
+      message: 'Apakah Data ini akan DISIMPAN?',
+      cancel: true,
+      persistent: true
+    }).onOk(() => {
+      store.savePembayarannonKarcis(prop.pasien, nota, total, jenis)
+    }).onCancel(() => {
+      console.log('Cancel')
+    }).onDismiss(() => {
+      console.log('I am triggered on both OK and Cancel')
+    })
   }
 }
 
