@@ -73,6 +73,7 @@ export const useLaporanTelaahResepObatStore = defineStore('laporan_telaah_resep_
     },
     async getDataTable () {
       try {
+        this.setParams('page', 1)
         this.loading = true
         const { data } = await api.get('v1/simrs/laporan/farmasi/telaah/get-data', { params: this.params })
         console.log('data', data)
