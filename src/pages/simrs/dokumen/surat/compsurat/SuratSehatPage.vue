@@ -56,9 +56,9 @@
               <q-option-group v-if="store.form" v-model="store.form.doc" :options="documents" inline
                 :rules="[val => !!val || 'Harap pilih salah satu']" />
             </div>
-            <!-- <div class="col-6">
-            <app-input v-if="store.form" v-model="store.form.tinggi" label="Tinggi Badan" outlined dense />
-          </div> -->
+            <div class="col-6">
+              <app-input v-if="store.form" v-model="store.form.gimut" label="Gigi & Mulut" outlined dense />
+            </div>
           </div>
           <div class="row q-col-gutter-sm q-mb-sm">
             <!-- <div class="col-6">

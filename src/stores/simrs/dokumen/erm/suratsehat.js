@@ -48,6 +48,7 @@ export const useDokumenSuratSehatStore = defineStore('dokumen_suratsehat_new', {
       tinggi: '',
       berat: '',
       golDar: '',
+      gimut: '',
       kdsurat: '',
       dokter: '',
     },
