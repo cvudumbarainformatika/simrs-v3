@@ -11,10 +11,10 @@ export const useDokumenResumeStore = defineStore('dokumen_resume', {
     }
   }),
   actions: {
-    setParams (key, val) {
+    setParams(key, val) {
       this.params[key] = val
     },
-    getData () {
+    getData() {
       this.item = {}
       this.loading = true
       const param = { params: this.params }
@@ -24,7 +24,7 @@ export const useDokumenResumeStore = defineStore('dokumen_resume', {
             this.loading = false
             this.item = resp.data?.data ?? {}
             this.items = resp.data
-            console.log('resp resume', resp, this.item)
+            // console.log('resp resume', resp, this.item)
             resolve(resp)
           })
           .catch(() => { this.loading = false })

@@ -96,8 +96,8 @@
                 <div class="col full-width column">
                   <div>BIOKIMIA</div>
                   <div>
-                    <q-radio disable v-model="store.items[0].biokima" v-for="dd in store.normals" :key="dd" :label="dd"
-                      :val="dd" size="xs" checked-icon="icon-mat-done" />
+                    <q-radio disable v-model="store.items[0].biokimia" v-for="dd in store.normals" :key="dd" :label="dd"
+                      :val="dd" size="xs" />
                   </div>
                   <div>{{ store?.items[0]?.biokimia_ket }}</div>
                 </div>
@@ -146,8 +146,8 @@
                   <div class="flex q-gutter-md items-center q-pa-none q-ml-lg" style="margin-top:-25px;">
                     <div>LAIN-LAIN, SEBUTKAN</div>
 
-                    <div class="text-weight-italic">
-                      {{ store?.items[0]?.lain_lain || '.............' }}
+                    <div class="text-weight-bold">
+                      <b>{{ store?.items[0]?.lain_lain || '.............' }}</b>
                     </div>
                   </div>
 
@@ -238,16 +238,27 @@
                 <div class="col full-width column">
                   <div class="flex q-gutter-sm">
                     <div>{{ AA?.kode }}</div>
-                    <div> - {{ AA?.nama }}
-                    </div>
-                    <div class="text-primary"> <em>berkaitan dengan</em></div>
-                    <div v-for="DIAG in getGroupIntervensi(pasien?.diagnosagizi[0]?.intervensi, 'Etiologi')">
-                      {{ DIAG?.masterintervensi?.nama }},
-                    </div>
-                    <div class="text-primary">ditandai dengan</div>
-                    <div v-for="DIAG in getGroupIntervensi(pasien?.diagnosagizi[0]?.intervensi, 'Sign/Symptoms')">
-                      {{ DIAG?.masterintervensi?.nama }}
-                    </div>
+                    <div> - {{ AA?.nama }} </div>
+
+                    <template v-if="getGroupIntervensi(AA?.intervensi, 'Zat Gizi')?.length">
+                      <div v-for="DIAG in getGroupIntervensi(AA?.intervensi, 'Zat Gizi')">
+                        {{ DIAG?.masterintervensi?.nama || '-' }}
+                      </div>
+                    </template>
+
+                    <template v-if="getGroupIntervensi(AA?.intervensi, 'Etiologi')?.length">
+                      <div class="text-primary"> <em>berkaitan dengan</em></div>
+                      <div v-for="DIAG in getGroupIntervensi(AA?.intervensi, 'Etiologi')">
+                        {{ DIAG?.masterintervensi?.nama || '-' }}
+                      </div>
+                    </template>
+
+                    <template v-if="getGroupIntervensi(AA?.intervensi, 'Sign/Symptoms')?.length">
+                      <div class="text-primary">ditandai dengan</div>
+                      <div v-for="DIAG in getGroupIntervensi(AA?.intervensi, 'Sign/Symptoms')">
+                        {{ DIAG?.masterintervensi?.nama || '-' }}
+                      </div>
+                    </template>
                   </div>
 
 
@@ -278,6 +289,18 @@
               <div class="row q-col-gutter-xs">
                 <div>DIET : </div>
                 <div v-for="DIET in getGroupIntervensi(pasien?.diagnosagizi[0]?.intervensi, 'Diet')">
+                  {{ DIET?.masterintervensi?.nama }}
+                </div>
+              </div>
+              <div class="row q-col-gutter-xs">
+                <div>BENTUK MAKANAN : </div>
+                <div v-for="DIET in getGroupIntervensi(pasien?.diagnosagizi[0]?.intervensi, 'Bentuk Makanan')">
+                  {{ DIET?.masterintervensi?.nama }}
+                </div>
+              </div>
+              <div class="row q-col-gutter-xs">
+                <div>ROUTE : </div>
+                <div v-for="DIET in getGroupIntervensi(pasien?.diagnosagizi[0]?.intervensi, 'Route')">
                   {{ DIET?.masterintervensi?.nama }}
                 </div>
               </div>
@@ -456,6 +479,8 @@ const getDiag = () => {
 
 
 const getGroupIntervensi = (arr, val) => {
+  console.log('arr', arr, val);
+
   const dx = arr
   const intervensi = dx?.filter(x => x?.masterintervensi?.group?.toLowerCase() === val?.toLowerCase())
   return intervensi

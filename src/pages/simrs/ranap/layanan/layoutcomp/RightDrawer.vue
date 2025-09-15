@@ -7,36 +7,16 @@
     </div>
     <div class="col-auto">
       <q-bar>
-        <q-btn
-          flat
-          rounded
-          padding="xs"
-          size="xs"
-          icon="icon-mat-close"
-          @click="emits('close')"
-        />
+        <q-btn flat rounded padding="xs" size="xs" icon="icon-mat-close" @click="emits('close')" />
         <q-space />
         <div>History Pasien</div>
       </q-bar>
     </div>
     <div class="col full-height column">
       <div class="col-auto bg-red">
-        <q-tabs
-          v-model="tab"
-          no-caps
-          inline-label
-          class="bg-primary text-white shadow-2"
-          align="left"
-          dense
-          active-color="yellow"
-          active-bg-color="dark"
-        >
-          <q-tab
-            v-for="(item, i) in tabs"
-            :key="i"
-            :name="item?.name"
-            :label="item?.label"
-          />
+        <q-tabs v-model="tab" no-caps inline-label class="bg-primary text-white shadow-2" align="left" dense
+          active-color="yellow" active-bg-color="dark">
+          <q-tab v-for="(item, i) in tabs" :key="i" :name="item?.name" :label="item?.label" />
         </q-tabs>
       </div>
       <div class="col full-height">
@@ -67,16 +47,6 @@ const tabs = ref([
     name: 'riwayatLalu',
     comp: shallowRef(defineAsyncComponent(() => import('src/pages/simrs/poli/tindakan/complayout/RightDrawer.vue')))
   }
-  // {
-  //   label: 'Rawat Jalan',
-  //   name: 'rawatjalan',
-  //   comp: shallowRef(defineAsyncComponent(() => import('./historypasien/RawatJalanPage.vue')))
-  // },
-  // {
-  //   label: 'Rawat Inap',
-  //   name: 'rawatinap',
-  //   comp: shallowRef(defineAsyncComponent(() => import('./historypasien/RawatInapPage.vue')))
-  // }
 ])
 
 const tab = ref(null)
@@ -90,7 +60,6 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
-
 .close-btn {
   width: 25px;
   // height: 64px;
@@ -106,7 +75,7 @@ onMounted(() => {
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
 
-  .vertical-xxx{
+  .vertical-xxx {
     // writing-mode:tb-rl;
     // -webkit-transform:rotate(180deg);
     // -moz-transform:rotate(180deg);
@@ -116,8 +85,7 @@ onMounted(() => {
     // white-space:nowrap;
     writing-mode: vertical-lr;
     text-orientation: upright;
-}
+  }
 
 }
-
 </style>

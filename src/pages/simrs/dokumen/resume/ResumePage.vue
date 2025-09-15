@@ -146,15 +146,15 @@
                     </q-item-label>
                     <q-item-label>
                       <span class="">Riwayat Penyakit </span> : <span class="text-weight-bold">{{ item?.riwayatpenyakit
-                      }}</span>
+                        }}</span>
                     </q-item-label>
                     <q-item-label>
                       <span class="">Riwayat Alergi </span> : <span class="text-weight-bold">{{ item?.riwayatalergi
-                      }}</span>
+                        }}</span>
                     </q-item-label>
                     <q-item-label>
                       <span class="">Reaksi berupa </span> : <span class="text-weight-bold">{{ item?.keteranganalergi
-                      }}</span>
+                        }}</span>
                     </q-item-label>
                     <q-item-label>
                       <span class="">Riwayat Pengobatan</span> : <span class="text-weight-bold">{{
@@ -395,12 +395,12 @@
               <q-card-section class="q-pa-none">
                 <div class="column">
                   <div>{{ item?.perlupenerjemah === 'Iya' ? 'Pasien Perlu Penerjemah' : 'Pasien Tidak Perlu Penerjemah'
-                  }}
+                    }}
                   </div>
                   <div>{{ item?.bahasaisyarat === 'Iya'
                     ? 'Pasien Memakai Bahasa Isyarat'
                     : 'Pasien Tidak Memakai Bahasa Isyarat'
-                  }}</div>
+                    }}</div>
                   <div>{{ item?.caraedukasi === 'Lisan' ? 'Edukasi Memakai Lisan' : 'Edukasi Memakai Tulisan' }}</div>
                   <div>{{ item?.kesediaan === 'Iya' ? 'Pasien Bersedia' : 'Pasien Tidak Bersedia' }}</div>
                   <div> Kebutuhan : <b><em>{{ item?.kebutuhanedukasi }}</em></b> </div>
@@ -731,7 +731,7 @@ import { useDokumenResumeStore } from 'src/stores/simrs/dokumen/resume/resume'
 import { usePemeriksaanFisik } from 'src/stores/simrs/pelayanan/poli/pemeriksaanfisik'
 import KopSurat from '../comppoli/KopSurat.vue'
 import { dateFullFormat, getNewLine } from 'src/modules/formatter'
-import { computed } from 'vue'
+import { computed, onMounted } from 'vue'
 const props = defineProps({
   pasien: {
     type: Object,
@@ -739,14 +739,14 @@ const props = defineProps({
   }
 })
 
-// console.log('pasien', props.pasien);
+console.log('pasien', props.pasien);
 
 const store = useDokumenResumeStore()
 const fisik = usePemeriksaanFisik()
 store.setParams('noreg', props.pasien?.noreg)
 store.getData()
 // eslint-disable-next-line no-unused-vars
-function getYT (val) {
+function getYT(val) {
   if (val === 1 || val === '1') {
     return 'Ya'
   }
@@ -758,7 +758,7 @@ function getYT (val) {
   }
 }
 // eslint-disable-next-line no-unused-vars
-function getKesadaran (val) {
+function getKesadaran(val) {
   const temp = fisik.optionsTingkatkesadaran.filter(a => parseInt(a.value) === parseInt(val))
   if (temp?.length) {
     return temp[0].label
@@ -767,7 +767,7 @@ function getKesadaran (val) {
     return '-'
   }
 }
-function filteredObat (item) {
+function filteredObat(item) {
   const obats = []
   const retur = store.item?.newapotekrajalretur
   // console.log('item', item, retur)
@@ -809,7 +809,7 @@ function filteredObat (item) {
 
 }
 // eslint-disable-next-line no-unused-vars
-function tekananDarah (val) {
+function tekananDarah(val) {
   const normal = val >= 100 && val <= 120
   const prahipertensi = val >= 121 && val <= 139
   const hipertensiderajat1 = val >= 140 && val <= 159
@@ -838,7 +838,7 @@ function tekananDarah (val) {
   return obj
 }
 // eslint-disable-next-line no-unused-vars
-function tekananDarahDias (val) {
+function tekananDarahDias(val) {
   const normal = val >= 60 && val <= 79
   const prahipertensi = val >= 80 && val <= 89
   const hipertensiderajat1 = val >= 90 && val <= 99
@@ -867,7 +867,7 @@ function tekananDarahDias (val) {
   return obj
 }
 // eslint-disable-next-line no-unused-vars
-function suhu (val) {
+function suhu(val) {
   const hipotermia = val < 35
   const normal = val >= 35 && val < 37
   const pireksia = val >= 37 && val <= 41.1
@@ -893,7 +893,7 @@ function suhu (val) {
   return obj
 }
 // eslint-disable-next-line no-unused-vars
-function nadi (val) {
+function nadi(val) {
   const bradikardi = val < 60
   const normal = val >= 61 && val <= 100
   const takikardi = val > 100
@@ -931,6 +931,7 @@ const qrUrl = computed(() => {
   // return `https://xenter.my.id/qr-document?noreg=${noreg}&dokumen=${dok}&asal=${asal}`
 })
 </script>
+
 <style lang="scss" scoped>
 .tinggi {
   min-height: 100%;

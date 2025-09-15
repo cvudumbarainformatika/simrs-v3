@@ -120,6 +120,21 @@
       <q-input v-model="store.form.rwPenySkr" outlined autogrow stack-label standout="bg-yellow-3"
         label="Riwayat Penyakit Sekarang" hide-bottom-space />
     </div>
+    <div class="col-12">
+      <b>INYERVENSI </b>
+      <q-separator></q-separator>
+
+    </div>
+    <div class="col-6">
+
+
+      <q-input v-model="store.form.energi" outlined autogrow stack-label standout="bg-yellow-3" label="Energi"
+        hide-bottom-space />
+    </div>
+    <div class="col-6">
+      <q-input v-model="store.form.extra" outlined autogrow stack-label standout="bg-yellow-3" label="Keterangan Extra"
+        hide-bottom-space />
+    </div>
 
 
     <!-- DIALOG -->

@@ -22,7 +22,7 @@ export const useDokumenpengkajianawalmedisrjStore = defineStore('dokumen_pengkaj
         api.get('v1/simrs/rajal/poli/datamrerajal', param)
           .then(resp => {
             this.loading = false
-            console.log('resp resume', resp.data)
+            // console.log('resp resume', resp.data)
             this.item = resp.data
             resolve(resp)
           })
