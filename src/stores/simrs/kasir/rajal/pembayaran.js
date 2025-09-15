@@ -4,6 +4,7 @@ import { notifErr, notifSuccess } from "src/modules/utils";
 import { useKasirRajalListKunjunganStore } from "./kunjungan";
 import { printNb } from 'src/modules/print'
 import { dateDbFormat } from "src/modules/formatter";
+import { data } from "autoprefixer";
 
 export const usePembayaranKasirRajalStore = defineStore('pembayaran-kasir-rajal-store', {
   state: () => ({
@@ -317,6 +318,10 @@ export const usePembayaranKasirRajalStore = defineStore('pembayaran-kasir-rajal-
         api.post('/v1/simrs/kasir/rajal/pembayaran-non-karcis', this.form)
           .then((resp) => {
             this.loadingpembayaran = false
+            const arr = resp?.data?.kwitansi[0]
+            console.log('arr', arr)
+            const xxx = useKasirRajalListKunjunganStore()
+            xxx?.kwitansikarcis.push(arr)
             notifSuccess(resp.data?.message)
             resolve(resp.data)
           })

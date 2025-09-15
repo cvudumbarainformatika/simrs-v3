@@ -216,7 +216,8 @@
     <div class="col-5 full-height bg-grey-3">
       <div class="row full-height">
         <div class="col-12 full-height">
-          <ListSuratPage :kdsurat="suhats" :pasien="props.pasien" @delete="deleteData" @print="cetakData" />
+          <ListSuratPage :kdsurat="suhats" :pasien="props.pasien" @delete="deleteData" @print="cetakData"
+            @edit="editdata" />
         </div>
       </div>
     </div>
@@ -305,6 +306,24 @@ function cetakData(val) {
   store.cekpembayaran(props.pasien, val)
   // store.cetakdata = val
   // store.dialog = true
+}
+
+function editdata(item) {
+  if (item.kdsurat === 'SRT01') {
+    console.log('edit', item)
+    store.form.nomorSurat = item.nosurat
+    store.form.keperluan = item.untukKeperluan
+    store.form.pekerjaan = item.pekerjaan
+    store.form.golDar = item.golonganDarah
+    store.form.penglihatankiri = item.pengliatanKiri
+    store.form.penglihatankanan = item.pengliatanKanan
+    store.form.pendengarankiri = item.pendengaranKiri
+    store.form.pendengarankanan = item.pendengaranKanan
+    store.form.warna = item.perbedaanWarna
+    store.form.gimut = item.gimut
+    store.form.doc = item.kesimpulan
+  }
+
 }
 
 
