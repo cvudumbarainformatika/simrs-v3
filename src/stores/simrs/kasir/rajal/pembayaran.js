@@ -4,6 +4,7 @@ import { notifErr, notifSuccess } from "src/modules/utils";
 import { useKasirRajalListKunjunganStore } from "./kunjungan";
 import { printNb } from 'src/modules/print'
 import { dateDbFormat } from "src/modules/formatter";
+import { data } from "autoprefixer";
 
 export const usePembayaranKasirRajalStore = defineStore('pembayaran-kasir-rajal-store', {
   state: () => ({
@@ -51,7 +52,7 @@ export const usePembayaranKasirRajalStore = defineStore('pembayaran-kasir-rajal-
     va: ''
   }),
   actions: {
-    savePembayaran(pasien, subtotal, jenislayanan, val, router, { nomor, poli, norm }) {
+    savePembayaran(pasien, subtotal, jenislayanan, val, router) {
       this.loadingpembayaran = true
       this.form.noreg = pasien.noreg
       this.form.norm = pasien.norm
@@ -298,6 +299,36 @@ export const usePembayaranKasirRajalStore = defineStore('pembayaran-kasir-rajal-
       win.focus()
       win.print()
       win.close()
+    },
+    savePembayarannonKarcis(pasien, nota, subtotal, jenis) {
+      this.loadingpembayaran = true
+      this.form.noreg = pasien.noreg
+      this.form.nota = nota
+      this.form.norm = pasien.norm
+      this.form.tglkunjungan = pasien.tgl_kunjungan
+      this.form.nama = pasien.nama
+      this.form.sapaan = pasien.sapaan
+      this.form.kelamin = pasien.kelamin
+      this.form.kodepoli = pasien.kodepoli
+      this.form.poli = pasien.poli
+      this.form.sistembayar = pasien.sistembayar
+      this.form.jenis = jenis
+      this.form.total = subtotal
+      return new Promise(resolve => {
+        api.post('/v1/simrs/kasir/rajal/pembayaran-non-karcis', this.form)
+          .then((resp) => {
+            this.loadingpembayaran = false
+            const arr = resp?.data?.kwitansi[0]
+            console.log('arr', arr)
+            const xxx = useKasirRajalListKunjunganStore()
+            xxx?.kwitansikarcis.push(arr)
+            notifSuccess(resp.data?.message)
+            resolve(resp.data)
+          })
+          .catch((err) => {
+            this.loadingpembayaran = false
+          })
+      })
     }
   }
 })

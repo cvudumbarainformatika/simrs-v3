@@ -38,6 +38,8 @@ export const usePagtStore = defineStore('pagt-store', {
       rwPenyDhl: [],
       rwPenyDhlKet: null,
       rwPenySkr: null,
+      energi: null,
+      extra: null,
 
     },
 
@@ -113,6 +115,8 @@ export const usePagtStore = defineStore('pagt-store', {
         rwPenyDhl: data?.rw_peny_dhl ?? [],
         rwPenyDhlKet: data?.rw_peny_dhl_ket ?? null,
         rwPenySkr: data?.rw_peny_skr ?? null,
+        energi: data?.energi ?? null,
+        extra: data?.extra ?? null,
       }
     },
 

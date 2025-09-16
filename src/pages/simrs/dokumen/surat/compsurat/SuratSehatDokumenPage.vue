@@ -196,7 +196,7 @@
                 :
               </div>
               <div class="col-2 text-left">
-                Kiri VOS
+                Kiri
               </div>
               <div class="col-1">
                 :
@@ -213,7 +213,7 @@
 
               </div>
               <div class="col-2 text-left">
-                Kanan VOD
+                Kanan
               </div>
               <div class="col-1">
                 :
@@ -224,13 +224,25 @@
             </div>
             <div class="row q-col-gutter-sm f-16">
               <div class="col-2">
-                Perbedaan
+                Gigi Dan Mulut
               </div>
               <div class="col-1">
                 :
               </div>
               <div class="col-2 text-left">
-                Warna
+                {{ props.data?.gimut ?? '-' }}
+              </div>
+            </div>
+
+            <div class="row q-col-gutter-sm f-16">
+              <div class="col-2">
+                Perbedaan Warna
+              </div>
+              <div class="col-1">
+
+              </div>
+              <div class="col-2 text-left">
+
               </div>
               <div class="col-1">
                 :
@@ -241,13 +253,13 @@
             </div>
             <div class="row q-col-gutter-sm f-16">
               <div class="col-2">
-                Tinggi
+                Tinggi Badan
               </div>
               <div class="col-1">
-                :
+
               </div>
               <div class="col-2">
-                Badan
+
               </div>
               <div class="col-1">
                 :
@@ -258,16 +270,16 @@
             </div>
             <div class="row q-col-gutter-sm f-16">
               <div class="col-2">
-                Berat
+                Berat Badan
               </div>
               <div class="col-1">
-                :
+
               </div>
               <div class="col-2">
-                Badan
+
               </div>
               <div class="col-1">
-                :
+
               </div>
               <div class="col-6 text-left">
                 {{ props.pasien?.pemeriksaanfisik[0]?.beratbadan ?? 0 }} kg
@@ -275,13 +287,13 @@
             </div>
             <div class="row q-col-gutter-sm f-16">
               <div class="col-2">
-                Golongan
+                Golongan Darah
               </div>
               <div class="col-1">
-                :
+
               </div>
               <div class="col-2">
-                Darah
+
               </div>
               <div class="col-1">
                 :
@@ -292,13 +304,13 @@
             </div>
             <div class="row q-col-gutter-sm f-16">
               <div class="col-2">
-                Tekanan
+                Tekanan Darah
               </div>
               <div class="col-1">
-                :
+
               </div>
               <div class="col-2">
-                Darah
+
               </div>
               <div class="col-1">
                 :
@@ -307,6 +319,7 @@
                 {{ props.pasien?.pemeriksaanfisik[0]?.sistole }} / {{ props.pasien?.pemeriksaanfisik[0]?.diastole }}
               </div>
             </div>
+
           </div>
           <div class="row q-col-gutter-sm f-16">
             <div class="col-6">

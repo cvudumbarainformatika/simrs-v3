@@ -22,7 +22,7 @@ export const useDokumenResumeHDStore = defineStore('dokumen_resume-hd', {
         api.get('v1/simrs/dokumen/hemodialisa/resume', param)
           .then(resp => {
             this.loading = false
-            console.log('resp resume', resp.data)
+            // console.log('resp resume', resp.data)
             this.item = resp.data?.length ? resp.data[0] : {}
             this.items = resp.data
             resolve(resp)
