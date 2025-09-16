@@ -4,7 +4,7 @@ import { notifErr, notifSuccess } from "src/modules/utils";
 import { useKasirRajalListKunjunganStore } from "./kunjungan";
 import { printNb } from 'src/modules/print'
 import { dateDbFormat } from "src/modules/formatter";
-import { data } from "autoprefixer";
+// import { data } from "autoprefixer";
 
 export const usePembayaranKasirRajalStore = defineStore('pembayaran-kasir-rajal-store', {
   state: () => ({

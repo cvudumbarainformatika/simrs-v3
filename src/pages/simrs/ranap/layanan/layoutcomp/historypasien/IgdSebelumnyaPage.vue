@@ -134,6 +134,12 @@ const menus = ref([
     icon: 'icon-my-file_sign',
     comp: shallowRef(defineAsyncComponent(() => import('./compIgdSebelumnya/SkalaTransfer.vue')))
   },
+  {
+    name: 'dokumen',
+    label: 'Dokumen',
+    icon: 'icon-my-file_sign',
+    comp: shallowRef(defineAsyncComponent(() => import('./compIgdSebelumnya/DokumenPage.vue')))
+  },
 
 
 ])
