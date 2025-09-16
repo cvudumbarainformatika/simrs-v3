@@ -10,6 +10,10 @@
         <div class="col-grow">
           <div class="row q-col-gutter-sm q-my-sm">
             <div class="col-2">
+              <app-autocomplete v-model="store.params.user_input" label="Penelaah" autocomplete="nama"
+                option-label="nama" option-value="id" outlined :source="store.pegawaies" :loading="store.loading" />
+            </div>
+            <div class="col-2">
               <app-autocomplete v-model="store.params.kode_ruang" label="Pilih Gudang / Depo" autocomplete="nama"
                 option-label="nama" option-value="value" outlined :source="store.gudangs" :loading="store.loading" />
             </div>
@@ -303,6 +307,7 @@ function onScroll (pos) {
 onMounted(() => {
   // console.log('h', refTop.value.clientHeight)
   h.value = refTop.value?.clientHeight
+  store.getInitialData()
 })
 const printObj = {
   id: 'printMe',

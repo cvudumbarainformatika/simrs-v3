@@ -15,11 +15,13 @@ export const useLaporanTelaahResepObatStore = defineStore('laporan_telaah_resep_
       page: 1,
       from: date.formatDate(Date.now(), 'YYYY-MM-DD'),
       to: date.formatDate(Date.now(), 'YYYY-MM-DD'),
+      user_input: 'all'
     },
     disp: {
       from: date.formatDate(Date.now(), 'DD MMMM YYYY'),
       to: date.formatDate(Date.now(), 'DD MMMM YYYY')
     },
+    pegawaies: [{ nama: 'Semua', id: 'all' }],
 
     bulans: [
       { nama: 'January', value: '01' },
@@ -69,7 +71,10 @@ export const useLaporanTelaahResepObatStore = defineStore('laporan_telaah_resep_
       this.getDataTable()
     },
     getInitialData () {
+      this.setParams('page', 1)
+      this.setParams('user_input', 'all')
       this.getDataTable()
+      this.getPegawai()
     },
     async getDataTable () {
       try {
@@ -98,6 +103,20 @@ export const useLaporanTelaahResepObatStore = defineStore('laporan_telaah_resep_
         console.log(error)
       } finally {
         this.loadingNext = false
+      }
+    },
+    async getPegawai () {
+      try {
+
+        const { data } = await api.get('v1/simrs/laporan/farmasi/telaah/get-pegawai', { params: this.params })
+        console.log('pegawai', data)
+        this.pegawaies = data.data
+        this.pegawaies.unshift({ nama: 'Semua', id: 'all' })
+        console.log('pegawaiise', this.pegawaies)
+      } catch (error) {
+        console.log(error)
+      } finally {
+
       }
     }
   }
