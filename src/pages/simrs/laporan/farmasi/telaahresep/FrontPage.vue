@@ -10,8 +10,9 @@
         <div class="col-grow">
           <div class="row q-col-gutter-sm q-my-sm">
             <div class="col-2">
-              <app-autocomplete v-model="store.params.user_input" label="Penelaah" autocomplete="nama"
-                option-label="nama" option-value="id" outlined :source="store.pegawaies" :loading="store.loading" />
+              <app-autocomplete v-model="store.params.jenis" label="Jenis" autocomplete="nama" option-label="nama"
+                option-value="nama" outlined :source="store.jenises" :loading="store.loading"
+                @selected="jenisSelected" />
             </div>
             <div class="col-2">
               <app-autocomplete v-model="store.params.kode_ruang" label="Pilih Gudang / Depo" autocomplete="nama"
@@ -268,6 +269,13 @@ const h = ref(0)
 
 const TableComp = defineAsyncComponent(() => import('./comp/ListPage.vue'))
 const DialogPrint = defineAsyncComponent(() => import('./comp/DialogPrint.vue'))
+function jenisSelected (val) {
+  // console.log('jenis', val)
+  store.setParams('jenis', val)
+  store.setParams('page', 1)
+  store.getDataTable()
+
+}
 function setFrom (val) {
   store.params.from = val
 }
