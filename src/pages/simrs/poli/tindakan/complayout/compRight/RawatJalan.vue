@@ -4,7 +4,7 @@
       <div v-if="filteredItems?.length">
         <q-expansion-item v-for="(item, i) in filteredItems" :key="i" expand-separator
           :label="item?.ruangan + ' | ' + item?.rs1 + ' | DPJP : ' + item?.dpjp" :caption="tanggal(item?.tanggal)"
-          @click="store.getEresep(item, store?.tab)">
+          @show="requestDetails(item, store.tab)" @hide="noreg = null">
           <q-card dark>
             <q-separator />
             <q-card-section v-if="item?.loading" class="q-pa-none">
@@ -719,12 +719,12 @@
                   <div>RESUME</div>
                 </q-bar>
                 <q-list dark separator>
-                  <div class="q-pa-md bg-white text-dark">
-                    <ResumePage v-if="item?.resume" :pasien="item" />
+                  <div class="q-pa-md ">
+                    <div v-if="noreg === item?.rs1" :pasien="item" class="bg-white text-dark q-pa-md">
+                      <ResumePage :pasien="item" :key="noreg" />
+                    </div>
                     <div v-else>
-                      <q-btn class="gt-xs" size="md" color="primary" flat dense
-                        :label="`Klik untuk Lihat Resume pada noreg : ${item?.noreg} `"
-                        @click="getResume(item?.noreg)" />
+                      No Dokumen Resume
                     </div>
                   </div>
                 </q-list>
@@ -751,7 +751,7 @@ import { useHistoryPasien } from 'src/stores/simrs/pelayanan/poli/historypasien'
 import { onMounted, computed } from 'vue'
 import { pathImg } from 'src/boot/axios'
 
-import { defineAsyncComponent } from 'vue'
+import { defineAsyncComponent, ref } from 'vue'
 
 const KonsulPoli = defineAsyncComponent(() => import('./KonsulPoli.vue'))
 const ResumePage = defineAsyncComponent(() => import('/src/pages/simrs/dokumen/resume/ResumePage.vue'))
@@ -770,6 +770,7 @@ const props = defineProps({
 })
 
 const emits = defineEmits(['close', 'hapus', 'edit', 'preview'])
+const noreg = ref(null)
 
 const tanggal = (val) => {
   return dateFullFormat(val) + ' ~ ' + formatJam(val)
@@ -947,8 +948,10 @@ function jumlahResep(item, list) {
 
 }
 
-function getResume(noreg) {
-  console.log('getResume', noreg);
+function requestDetails(item, tab) {
+  // console.log('requestDetail', item, tab);
+  noreg.value = item?.rs1 || item?.noreg || null
+  store.getEresep(item, store?.tab)
 
 }
 

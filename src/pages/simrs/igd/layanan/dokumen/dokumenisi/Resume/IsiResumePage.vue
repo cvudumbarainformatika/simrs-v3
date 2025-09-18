@@ -1,11 +1,11 @@
 <template>
-  <div v-if="!store.rekapBill && !store.loading">
+  <div v-if="!store?.rekapBill && !store.loading">
     <app-no-data />
   </div>
   <div v-if="store.loading">
     <app-loading />
   </div>
-  <div v-if="store.rekapBill && !store.loading" class="full-height q-mt-md">
+  <div v-if="store?.rekapBill && !store?.loading" class="full-height q-mt-md">
     <div class="row q-gutter-sm items-center no-wrap ">
       <div class="col-auto">
         1.
@@ -331,6 +331,9 @@ import { useKasirIgdStore } from 'src/stores/simrs/kasir/igd/kasirigd';
 import { date } from 'quasar';
 import { computed } from 'vue';
 
+console.log('props', 'ooooi');
+
+
 const store = useKasirIgdStore()
 const props = defineProps({
   pasien: { type: Object, default: () => { } }
@@ -346,8 +349,8 @@ const qrUrl = computed(() => {
 })
 
 const dataanamnesis = props?.pasien?.anamnesis
-const hasilanamnesis = dataanamnesis.filter(item => {
-  if (item.datasimpeg.kdgroupnakes === "1") {
+const hasilanamnesis = dataanamnesis?.filter(item => {
+  if (item?.datasimpeg?.kdgroupnakes === "1") {
     // lakukan sesuatu dengan item
     console.log(item);
     return true;
@@ -356,8 +359,8 @@ const hasilanamnesis = dataanamnesis.filter(item => {
 });
 
 const datapemeriksaanfisik = props?.pasien?.pemeriksaanfisikpsikologidll
-const hasilpemeriksaanfisik = datapemeriksaanfisik.filter(item => {
-  if (item.datasimpeg.kdgroupnakes === "1") {
+const hasilpemeriksaanfisik = datapemeriksaanfisik?.filter(item => {
+  if (item?.datasimpeg?.kdgroupnakes === "1") {
     // lakukan sesuatu dengan item
     console.log(item);
     return true;

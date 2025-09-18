@@ -4,7 +4,7 @@ import { dateDbFormat } from 'src/modules/formatter'
 import { notifErrVue, notifInfVue, notifSuccess } from 'src/modules/utils'
 import { usePengunjungPoliStore } from './pengunjung'
 import { date } from 'quasar'
-import { data } from 'autoprefixer'
+// import { data } from 'autoprefixer'
 
 export const usePerencanaanPoliStore = defineStore('perencanaan-poli', {
   state: () => ({

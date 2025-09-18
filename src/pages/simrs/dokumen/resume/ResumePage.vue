@@ -30,7 +30,7 @@
                 No. registrasi
               </div>
               <div class="col-8">
-                {{ pasien?.noreg }}
+                {{ pasien?.noreg || pasien?.rs1 }}
               </div>
             </div>
             <div class="row">
@@ -38,7 +38,7 @@
                 Ruangan
               </div>
               <div class="col-8">
-                {{ pasien?.poli }}
+                {{ pasien?.poli || pasien?.ruangan }}
               </div>
             </div>
             <div class="row">
@@ -46,7 +46,7 @@
                 Tanggal Masuk
               </div>
               <div class="col-8">
-                {{ pasien?.tgl_kunjungan }}
+                {{ pasien?.tgl_kunjungan || pasien?.tanggal }}
               </div>
             </div>
             <div class="row">
@@ -88,7 +88,7 @@
                 Dokter
               </div>
               <div class="col-9">
-                {{ pasien?.dokter }}
+                {{ pasien?.dokter || pasien?.dpjp }}
               </div>
             </div>
           </div>
