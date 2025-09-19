@@ -1,5 +1,4 @@
 <template>
-
   <q-page class="q-pa-md bg-grey-3">
     <q-card class="q-pa-md full-height shadow-2 rounded-borders">
 

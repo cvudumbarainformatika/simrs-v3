@@ -220,7 +220,20 @@
 
                   <q-item-section side top>
                     <q-item-label caption>{{ humanDate(item?.rs3) }}</q-item-label>
-                    <q-btn unelevated color="dark" round size="sm" icon="icon-mat-attach_money">
+                    <q-btn v-if="store.form.carabayar === 'Tunai'" unelevated color="dark" round size="sm"
+                      icon="icon-mat-attach_money" @click="bayarnonkarcis(item?.nota, item?.total_subtotal, 'Laborat')">
+                      <q-tooltip class="primary" :offset="[10, 10]">
+                        Bayar & Print
+                      </q-tooltip>
+                    </q-btn>
+                    <q-btn v-if="store.form.carabayar === 'Qris'" unelevated color="dark" round size="sm"
+                      icon="icon-mat-qr_code_2">
+                      <q-tooltip class="primary" :offset="[10, 10]">
+                        Bayar & Print
+                      </q-tooltip>
+                    </q-btn>
+                    <q-btn v-if="store.form.carabayar === 'VA'" unelevated color="dark" round size="sm"
+                      icon="icon-eva-bell-outline">
                       <q-tooltip class="primary" :offset="[10, 10]">
                         Bayar & Print
                       </q-tooltip>

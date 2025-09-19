@@ -4,6 +4,7 @@ import { notifErr, notifSuccess } from "src/modules/utils";
 import { useKasirRajalListKunjunganStore } from "./kunjungan";
 import { printNb } from 'src/modules/print'
 import { dateDbFormat } from "src/modules/formatter";
+import { use } from "echarts";
 // import { data } from "autoprefixer";
 
 export const usePembayaranKasirRajalStore = defineStore('pembayaran-kasir-rajal-store', {
@@ -20,6 +21,7 @@ export const usePembayaranKasirRajalStore = defineStore('pembayaran-kasir-rajal-
     itemsradiologi: [],
     itemssharingbpjs: [],
     kwitansi: [],
+    kwitansinonkarcis: [],
     form: {
       noreg: '',
       norm: '',
@@ -72,15 +74,34 @@ export const usePembayaranKasirRajalStore = defineStore('pembayaran-kasir-rajal-
           .then((resp) => {
             this.loadingpembayaran = false
             const kwitansikarcis = resp.data?.kwitansikarcis ?? []
-            this.kwitansi = kwitansikarcis
+            //console.log('aaaaaaaaaaaaaa', kwitansikarcis)
+            //this.kwitansi = kwitansikarcis
+            const hasilglobal = []
+            kwitansikarcis.forEach(k => {
+              const hasil = {
+                noreg: k?.noreg,
+                norm: k?.norm,
+                nota: k?.nokarcis,
+                tgl_pembayaran: k?.tglx,
+                batal: k?.batal,
+                total: k?.total,
+                nama: k?.nama,
+                usercetak: k?.nama,
+              }
+              hasilglobal.push(hasil)
+            })
+            this.kwitansi = hasilglobal
+            const pengunjung = useKasirRajalListKunjunganStore()
+            pengunjung.kwitansikarcis = this.kwitansi
             notifSuccess(resp.data?.message)
+
+            console.log('sasasa', this.kwitansi)
             const routeData = router.resolve({
               path: '/print/kwitansi',
               query: { kwitansikarcis: JSON.stringify(kwitansikarcis) }
             })
             window.open(routeData.href, '_blank')
-            // const id = kwitansikarcis?.nokarcis
-            // window.open(`/print`, "_blank")
+
             resolve(resp.data)
           })
           .catch((err) => {
@@ -318,14 +339,34 @@ export const usePembayaranKasirRajalStore = defineStore('pembayaran-kasir-rajal-
         api.post('/v1/simrs/kasir/rajal/pembayaran-non-karcis', this.form)
           .then((resp) => {
             this.loadingpembayaran = false
-            const arr = resp?.data?.kwitansi[0]
-            console.log('arr', arr)
+            const arr = resp?.data?.kwitansi || []
+            const hasilglobal = arr.map(k => ({
+              noreg: k?.noreg,
+              norm: k?.norm,
+              nota: k?.nokarcis,
+              tgl_pembayaran: k?.tglx,
+              batal: k?.batal,
+              total: k?.total,
+              nama: k?.nama,
+              usercetak: k?.nama,
+            }))
+
+            this.kwitansinonkarcis = hasilglobal
+
             const xxx = useKasirRajalListKunjunganStore()
-            xxx?.kwitansikarcis.push(arr)
+            xxx.kwitansi = this.kwitansinonkarcis
+
             notifSuccess(resp.data?.message)
+
+            const routeData = router.resolve({
+              path: '/print/kwitansinonkarcis',
+              query: { kwitansikarcis: JSON.stringify(this.kwitansinonkarcis) }
+            })
+            window.open(routeData.href, '_blank')
+
             resolve(resp.data)
           })
-          .catch((err) => {
+          .catch(() => {
             this.loadingpembayaran = false
           })
       })
