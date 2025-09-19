@@ -53,23 +53,25 @@
                 Periode {{ store.display.dari + ' - ' + store.display.sampai }}
               </div>
             </div>
-            <q-card-section>
-              <div class="row full-width">
-                <div class="items-center full-width">
-                  <template
-                    v-if="store.reqs.jenislo === 1 || (store.hasilpendapatan?.length > 0 && store.hasilbeban?.length > 0)">
-                    <listData />
-                  </template>
-                  <template
-                    v-else-if="store.reqs.jenislo === 2 || (store.psappendapatan?.length > 0 || store.psapbeban?.length > 0 || store.psapnonoperasional > 0 || store.psapbebanluarbiasa > 0)">
-                    <listDataPsap />
-                  </template>
-                  <template v-else>
-                    <div class="row q-pa-md full-width text-subtitle1 flex-center">
-                      <q-icon class="q-pr-sm" size="sm" name="icon-mat-warning" />
-                      Silahkan Pilih Parameter Dulu
-                    </div>
-                  </template>
+            <q-card-section class="full-width">
+              <div class="col-auto">
+                <div class="row q-col-gutter-md full-width">
+                  <div class="items-center full-width">
+                    <template
+                      v-if="store.reqs.jenislo === 1 || (store.hasilpendapatan?.length > 0 && store.hasilbeban?.length > 0)">
+                      <listData />
+                    </template>
+                    <template
+                      v-else-if="store.reqs.jenislo === 2 || (store.psappendapatan?.length > 0 || store.psapbeban?.length > 0 || store.psapnonoperasional > 0 || store.psapbebanluarbiasa > 0)">
+                      <listDataPsap />
+                    </template>
+                    <template v-else>
+                      <div class="row q-pa-md full-width text-subtitle1 flex-center">
+                        <q-icon class="q-pr-sm" size="sm" name="icon-mat-warning" />
+                        Silahkan Pilih Parameter Dulu
+                      </div>
+                    </template>
+                  </div>
                 </div>
               </div>
             </q-card-section>
