@@ -20,7 +20,11 @@ export const useLPEStore = defineStore('laporan_PerubahanEkuitas', {
     },
     dataekuitas: [],
     datapendapatans: [],
+    datapenyesuaianpendapatans: [],
+    databebans: [],
     datakoreksi: [],
+
+    pagupendapatan: [],
 
     ekuitasawal: [],
     surplusdefisit: [],
@@ -35,16 +39,18 @@ export const useLPEStore = defineStore('laporan_PerubahanEkuitas', {
       const params = { params: this.reqs }
       return new Promise((resolve) => {
         api.get('v1/laporan/lpe/getlpe', params).then((resp) => {
-          // console.log('data LPE', resp.data)
+          console.log('data LPE', resp.data)
           if (resp.status === 200) {
             this.dataekuitas = resp.data.ekuitas
             this.datapendapatans = resp.data.pendapatan
+            this.datapenyesuaianpendapatans = resp.data.penyesuaianpendapatan
             this.datakoreksi = resp.data.koreksi
-
+            this.databebans = resp.data.beban
+            this.pagupendapatan = resp.data.pagupendapatan
             // const objekuitas = []
             const datekuitas = this.dataekuitas.map((x) => {
               return {
-                uraian: 'Ekuitas',
+                uraian: 'Ekuitas Awal',
                 nilai: (x?.saldoawal.map((x) => parseFloat(x.saldo)).reduce((a, b) => a + b, 0) +
                   x?.jurnalotom.map((x) => parseFloat(x.totaljurnal)).reduce((a, b) => a + b, 0) +
                   x?.penyesuaianx.map((x) => parseFloat(x.totalpenyesuaian)).reduce((a, b) => a + b, 0))
@@ -52,25 +58,44 @@ export const useLPEStore = defineStore('laporan_PerubahanEkuitas', {
             })
             const nilaiekuitas = {
               kode: '3.1.01',
-              uraian: 'Ekuitas',
+              uraian: 'Ekuitas Awal',
               nilai: datekuitas.map((x) => parseFloat(x.nilai)).reduce((a, b) => a + b, 0).toFixed(2)
             }
             this.ekuitasawal = nilaiekuitas
             // console.log('ekuitasawal', this.ekuitasawal)
-
-            const surplsdef = this.datapendapatans.map((x) => {
+            const koderekpend = this.pagupendapatan.map((x) => x.kode6)
+            const pendapatan = this.datapendapatans.filter(x => koderekpend.includes(x.kode6))
+            const penyependapatan = this.datapenyesuaianpendapatans.filter(x => koderekpend.includes(x.kode6))
+            const totalpenyependapatan = penyependapatan.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0)
+            const totalpendapatan = pendapatan.map((x) => parseFloat(x.realisasi)).reduce((a, b) => a + b, 0)
+            console.log('totalpenyependapatan', totalpenyependapatan)
+            console.log('totalpendapatan', totalpendapatan)
+            const pendapatanx = pendapatan.map((x) => {
+              return {
+                uraian: 'Surplus / Defisit LO',
+                // nilai: parseFloat(x.realisasi) + x.penyesuaian.map((x) => parseFloat(x.totalpenyesuaian)).reduce((a, b) => a + b, 0),
+                nilai: totalpendapatan + totalpenyependapatan,
+                realisasi: parseFloat(x.realisasi),
+                penyesuaian: x.penyesuaian.map((x) => parseFloat(x.totalpenyesuaian)).reduce((a, b) => a + b, 0)
+              }
+            })
+            console.log('pendapatan', pendapatanx)
+            const beban = this.databebans.map((x) => {
               return {
                 uraian: 'Surplus / Defisit LO',
                 nilai: parseFloat(x.realisasi) + x.penyesuaian.map((x) => parseFloat(x.totalpenyesuaian)).reduce((a, b) => a + b, 0)
               }
             })
+            // console.log('beban', beban)
             const nilaisurplusdef = {
               kode: '3.1.01',
               uraian: 'Surplus / Defisit LO',
-              nilai: surplsdef.map((x) => parseFloat(x.nilai)).reduce((a, b) => a + b, 0).toFixed(2)
+              nilai: pendapatanx.map((x) => parseFloat(x.nilai)).reduce((a, b) => a + b, 0).toFixed(2) - beban.map((x) => parseFloat(x.nilai)).reduce((a, b) => a + b, 0).toFixed(2),
+              pendapatan: pendapatanx.map((x) => parseFloat(x.nilai)).reduce((a, b) => a + b, 0).toFixed(2),
+              beban: beban.map((x) => parseFloat(x.nilai)).reduce((a, b) => a + b, 0).toFixed(2),
             }
             this.surplusdefisit = nilaisurplusdef
-            // console.log('surplusdefisit', this.surplusdefisit)
+            console.log('surplusdefisit', this.surplusdefisit)
 
             const objkoreksi = []
             for (let i = 0; i < this.datakoreksi?.length; i++) {
