@@ -1,7 +1,7 @@
 <template>
   <table style="width: calc(100vw - 80px);">
     <thead class="my-sticky-header-table">
-      <tr>
+      <tr v-if="store.params.jenis == 'Rinci'">
         <th width="5%">
           No
         </th>
@@ -27,6 +27,17 @@
           #
         </th>
       </tr>
+      <tr v-else>
+        <th width="5%">
+          No
+        </th>
+        <th>
+          Penelaah
+        </th>
+        <th>
+          Jumlah
+        </th>
+      </tr>
     </thead>
     <tbody>
       <template v-if="store.loading">
@@ -34,21 +45,23 @@
           <td width="5%">
             <q-skeleton type="text" width="20px" height="14px" />
           </td>
-          <td>
-            <q-skeleton type="text" width="60px" height="25px" />
-          </td>
-          <td>
-            <q-skeleton type="text" width="60px" height="25px" />
-          </td>
-          <td>
-            <q-skeleton type="text" width="60px" height="25px" />
-          </td>
-          <td>
-            <q-skeleton type="text" width="60px" height="25px" />
-          </td>
-          <td>
-            <q-skeleton type="text" width="60px" height="25px" />
-          </td>
+          <template v-if="store.params.jenis == 'Rinci'">
+            <td>
+              <q-skeleton type="text" width="60px" height="25px" />
+            </td>
+            <td>
+              <q-skeleton type="text" width="60px" height="25px" />
+            </td>
+            <td>
+              <q-skeleton type="text" width="60px" height="25px" />
+            </td>
+            <td>
+              <q-skeleton type="text" width="60px" height="25px" />
+            </td>
+            <td>
+              <q-skeleton type="text" width="60px" height="25px" />
+            </td>
+          </template>
           <td>
             <q-skeleton type="text" width="60px" height="25px" />
           </td>
@@ -59,7 +72,7 @@
       </template>
       <template v-else-if="!store.items?.length">
         <tr>
-          <td colspan="8">
+          <td :colspan="store.params.jenis == 'Rinci' ? '8' : '3'">
             <app-no-data />
           </td>
         </tr>
@@ -72,54 +85,68 @@
                 {{ n + 1 }}
               </div>
             </td>
-            <td>
-              {{ item?.noresep }}
-            </td>
-            <td>
-              {{ item?.pasien?.rs2 }}
-            </td>
-            <td>
-              <div v-for="(adm, j) in item?.administrasi" :key="adm">
-                <div class="row items-center" :class="j % 2 === 0 ? 'even' : 'odd'">
-                  <div class="col-9">
-                    Kode {{ adm?.kode }} Tentang {{ adm?.label }}
-                  </div>
-                  <div class="col-3">
-                    : {{ adm?.value }}
-                  </div>
-                </div>
-              </div>
-            </td>
-            <td>
-              <div v-for="(adm, j) in item?.komponen_resep" :key="adm">
-                <div class="row  items-center" :class="j % 2 === 0 ? 'even' : 'odd'">
-                  <div class="col-9">
-                    Kode {{ adm?.kode }} Tentang {{ adm?.label }}
-                  </div>
-                  <div class="col-3">
-                    : {{ adm?.value }}
+            <template v-if="store.params.jenis == 'Rinci'">
+              <td>
+                {{ item?.noresep }}
+              </td>
+              <td>
+                {{ item?.pasien?.rs2 }}
+              </td>
+              <td>
+                <div v-for="(adm, j) in item?.administrasi" :key="adm">
+                  <div class="row items-center" :class="j % 2 === 0 ? 'even' : 'odd'">
+                    <div class="col-9">
+                      Kode {{ adm?.kode }} Tentang {{ adm?.label }}
+                    </div>
+                    <div class="col-3">
+                      : {{ adm?.value }}
+                    </div>
                   </div>
                 </div>
-              </div>
-            </td>
-            <td>
-              <div v-for="(adm, j) in item?.farmasi_klinis" :key="adm">
-                <div class="row  items-center" :class="j % 2 === 0 ? 'even' : 'odd'">
-                  <div class="col-10">
-                    Kode {{ adm?.kode }} Tentang {{ adm?.label }}
-                  </div>
-                  <div class="col-2">
-                    : {{ adm?.value == false ? 'Tidak' : 'Ya' }}
+              </td>
+              <td>
+                <div v-for="(adm, j) in item?.komponen_resep" :key="adm">
+                  <div class="row  items-center" :class="j % 2 === 0 ? 'even' : 'odd'">
+                    <div class="col-9">
+                      Kode {{ adm?.kode }} Tentang {{ adm?.label }}
+                    </div>
+                    <div class="col-3">
+                      : {{ adm?.value }}
+                    </div>
                   </div>
                 </div>
-              </div>
-            </td>
-            <td>
-              {{ item?.petugas?.nama }}
-            </td>
-            <td>
-              <q-btn flat round dense color="primary" icon="icon-mat-print" @click="setPrint(item)" />
-            </td>
+              </td>
+              <td>
+                <div v-for="(adm, j) in item?.farmasi_klinis" :key="adm">
+                  <div class="row  items-center" :class="j % 2 === 0 ? 'even' : 'odd'">
+                    <div class="col-10">
+                      Kode {{ adm?.kode }} Tentang {{ adm?.label }}
+                    </div>
+                    <div class="col-2">
+                      : {{ adm?.value == false ? 'Tidak' : 'Ya' }}
+                    </div>
+                  </div>
+                </div>
+              </td>
+              <td>
+                {{ item?.petugas?.nama }}
+              </td>
+              <td>
+                <q-btn flat round dense color="primary" icon="icon-mat-print" @click="setPrint(item)" />
+              </td>
+            </template>
+            <template v-else>
+              <td>
+                <div class="row items-center q-pa-sm">
+                  {{ item?.nama }}
+                </div>
+              </td>
+              <td>
+                <div class="row items-center q-pa-sm">
+                  {{ item?.total_telaah }}
+                </div>
+              </td>
+            </template>
           </tr>
         </template>
         <template v-if="store.loadingNext">
@@ -127,21 +154,23 @@
             <td width="5%">
               <q-skeleton type="text" width="20px" height="14px" />
             </td>
-            <td>
-              <q-skeleton type="text" width="60px" height="25px" />
-            </td>
-            <td>
-              <q-skeleton type="text" width="60px" height="25px" />
-            </td>
-            <td>
-              <q-skeleton type="text" width="60px" height="25px" />
-            </td>
-            <td>
-              <q-skeleton type="text" width="60px" height="25px" />
-            </td>
-            <td>
-              <q-skeleton type="text" width="60px" height="25px" />
-            </td>
+            <template v-if="store.params.jenis == 'Rinci'">
+              <td>
+                <q-skeleton type="text" width="60px" height="25px" />
+              </td>
+              <td>
+                <q-skeleton type="text" width="60px" height="25px" />
+              </td>
+              <td>
+                <q-skeleton type="text" width="60px" height="25px" />
+              </td>
+              <td>
+                <q-skeleton type="text" width="60px" height="25px" />
+              </td>
+              <td>
+                <q-skeleton type="text" width="60px" height="25px" />
+              </td>
+            </template>
             <td>
               <q-skeleton type="text" width="60px" height="25px" />
             </td>

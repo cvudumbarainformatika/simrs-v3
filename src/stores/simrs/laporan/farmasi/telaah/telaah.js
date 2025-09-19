@@ -11,12 +11,13 @@ export const useLaporanTelaahResepObatStore = defineStore('laporan_telaah_resep_
     meta: {},
     params: {
       kode_ruang: 'all',
-      per_page: 10,
+      per_page: 30,
       page: 1,
       from: date.formatDate(Date.now(), 'YYYY-MM-DD'),
       to: date.formatDate(Date.now(), 'YYYY-MM-DD'),
-      user_input: 'all'
+      jenis: 'Rinci'
     },
+    jenises: [{ nama: 'Rekap' }, { nama: 'Rinci' }],
     disp: {
       from: date.formatDate(Date.now(), 'DD MMMM YYYY'),
       to: date.formatDate(Date.now(), 'DD MMMM YYYY')
@@ -72,9 +73,9 @@ export const useLaporanTelaahResepObatStore = defineStore('laporan_telaah_resep_
     },
     getInitialData () {
       this.setParams('page', 1)
-      this.setParams('user_input', 'all')
+      this.setParams('jenis', 'Rinci')
       this.getDataTable()
-      this.getPegawai()
+      // this.getPegawai()
     },
     async getDataTable () {
       try {
@@ -95,7 +96,7 @@ export const useLaporanTelaahResepObatStore = defineStore('laporan_telaah_resep_
       try {
         this.loadingNext = true
         const { data } = await api.get('v1/simrs/laporan/farmasi/telaah/get-data', { params: this.params })
-        console.log('data', data)
+        // console.log('data', data)
         const items = [...new Set([...this.items, ...data.data])]
         this.items = items
         this.meta = data.meta
