@@ -56,7 +56,7 @@
         <template #default>
           <!-- <BillingPage :pasien="pasien" @print="openPrint($event)" @rekap="openFaktur" @nota="getNota" /> -->
           <FormPembayaran :pasien="pasien" :billing="store.rekapBill" :kwitansikarcis="store.kwitansikarcis"
-            :kwitansinontunai="store.kwitansinontunai" />
+            :kwitansinontunai="store.kwitansinontunai" :getKwitansiTerbayar="store.kwitansiterbayar" />
         </template>
       </app-fullscreen-blue>
       <!-- print nota -->
@@ -88,6 +88,7 @@ function openBill(row) {
   billOpen.value = !billOpen.value
   store.getBill()
   store.getKwitansinontunai()
+  store.getKwitansiTerbayar()
 }
 function openPrint(val) {
   console.log('print', val)

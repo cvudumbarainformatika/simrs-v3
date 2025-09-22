@@ -14,7 +14,7 @@
       <q-scroll-area ref="scrollRef" class="full-height " @scroll="onScroll">
         <q-list separator>
           <transition-group name="fade-slide" tag="div" class="column items-center">
-            <div v-for="(item, i) in prop?.kwitansikarcis" :key="i" class="q-pa-sm full-width flex flex-center">
+            <div v-for="(item, i) in prop?.getKwitansiTerbayar" :key="i" class="q-pa-sm full-width flex flex-center">
               <q-list bordered class="rounded-borders shadow-2 bg-white kwitansi-card"
                 style="max-width: 900px; width: 100%;">
                 <q-item-label header class="text-primary text-weight-bold">
@@ -82,10 +82,7 @@ import { useKasirRajalListKunjunganStore } from 'src/stores/simrs/kasir/rajal/ku
 const store = useKasirRajalListKunjunganStore()
 const scrollRef = ref(null)
 const prop = defineProps({
-  kwitansikarcis: {
-    type: Array,
-    default: () => []
-  }
+  getKwitansiTerbayar: { type: Array, default: () => [] }
 })
 
 function onScroll(info) {

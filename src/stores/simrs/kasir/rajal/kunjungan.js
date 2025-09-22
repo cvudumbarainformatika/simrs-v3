@@ -8,6 +8,7 @@ export const useKasirRajalListKunjunganStore = defineStore('kasir_rajal_list_kun
     items: [],
     kwitansi: [],
     kwitansikarcis: [],
+    kwitansiterbayar: [],
     meta: null,
     params: {
       q: '',
@@ -77,7 +78,47 @@ export const useKasirRajalListKunjunganStore = defineStore('kasir_rajal_list_kun
       const resp = await api.get('/v1/simrs/kasir/rajal/rekapbillbynoreg', params)
       if (resp.status === 200) {
         this.rekapBill = resp.data?.data
-        console.log('resp', resp.data)
+        // console.log('resp', resp.data)
+        // const kwitansikarcis = resp.data?.data?.kwitansikarcis ?? []
+        // const kwitansi = resp.data?.data?.kwitansi ?? []
+        // const hasilglobal = []
+        // kwitansikarcis.forEach(k => {
+        //   const hasil = {
+        //     noreg: k?.noreg,
+        //     norm: k?.norm,
+        //     nota: k?.nokarcis,
+        //     tgl_pembayaran: k?.tglx,
+        //     batal: k?.batal,
+        //     total: k?.total,
+        //     nama: k?.nama,
+        //     usercetak: k?.nama,
+        //   }
+        //   hasilglobal.push(hasil)
+        // })
+        // kwitansi.forEach(k => {
+        //   const hasil = {
+        //     noreg: k?.noreg,
+        //     norm: k?.norm,
+        //     nota: k?.nokwitansi,
+        //     tgl_pembayaran: k?.tglx,
+        //     batal: k?.batal,
+        //     total: k?.total,
+        //     nama: k?.nama,
+        //     usercetak: k?.nama,
+        //   }
+        //   hasilglobal.push(hasil)
+        // })
+        // this.kwitansikarcis = hasilglobal
+        // console.log('kwitansikarcis', this.kwitansikarcis)
+
+      }
+      this.loading = false
+    },
+    async getKwitansiTerbayar() {
+      this.loading = true
+      const params = { params: this.getparams }
+      const resp = await api.get('/v1/simrs/kasir/rajal/getkwitansiterbayar', params)
+      if (resp.status === 200) {
         const kwitansikarcis = resp.data?.kwitansikarcis ?? []
         const kwitansi = resp.data?.kwitansi ?? []
         const hasilglobal = []
@@ -107,11 +148,9 @@ export const useKasirRajalListKunjunganStore = defineStore('kasir_rajal_list_kun
           }
           hasilglobal.push(hasil)
         })
-        this.kwitansikarcis = hasilglobal
-        console.log('kwitansikarcis', this.kwitansikarcis)
-
+        this.kwitansiterbayar = hasilglobal
+        this.loading = false
       }
-      this.loading = false
     },
     async getNotas(val) {
       this.notas = {}

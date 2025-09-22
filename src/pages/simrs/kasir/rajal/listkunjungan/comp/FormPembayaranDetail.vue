@@ -362,8 +362,8 @@ const paymentOptions = [
     color: 'dark'
   },
   {
-    value: 'Laborat',
-    label: 'Laborat',
+    value: 'Laboratorium',
+    label: 'Laboratorium',
     icon: 'icon-my-stomach-svgrepo-com',
     color: 'teal'
   },

@@ -74,7 +74,7 @@ export const usePembayaranKasirRajalStore = defineStore('pembayaran-kasir-rajal-
           .then((resp) => {
             this.loadingpembayaran = false
             const kwitansikarcis = resp.data?.kwitansikarcis ?? []
-            //console.log('aaaaaaaaaaaaaa', kwitansikarcis)
+            console.log('aaaaaaaaaaaaaa', kwitansikarcis)
             //this.kwitansi = kwitansikarcis
             const hasilglobal = []
             kwitansikarcis.forEach(k => {
@@ -90,9 +90,9 @@ export const usePembayaranKasirRajalStore = defineStore('pembayaran-kasir-rajal-
               }
               hasilglobal.push(hasil)
             })
-            this.kwitansi = hasilglobal
+            // this.kwitansi = hasilglobal
             const pengunjung = useKasirRajalListKunjunganStore()
-            pengunjung.kwitansikarcis = this.kwitansi
+            pengunjung.kwitansiterbayar.push(...hasilglobal)
             notifSuccess(resp.data?.message)
 
             console.log('sasasa', this.kwitansi)
@@ -343,7 +343,7 @@ export const usePembayaranKasirRajalStore = defineStore('pembayaran-kasir-rajal-
             const hasilglobal = arr.map(k => ({
               noreg: k?.noreg,
               norm: k?.norm,
-              nota: k?.nokarcis,
+              nota: k?.nokarcis ?? k?.nokwitansi,
               tgl_pembayaran: k?.tglx,
               batal: k?.batal,
               total: k?.total,
@@ -351,16 +351,16 @@ export const usePembayaranKasirRajalStore = defineStore('pembayaran-kasir-rajal-
               usercetak: k?.nama,
             }))
 
-            this.kwitansinonkarcis = hasilglobal
-
+            // this.kwitansinonkarcis = hasilglobal
+            console.log('kwitansinonkarcissasasasa', this.kwitansinonkarcis)
             const xxx = useKasirRajalListKunjunganStore()
-            xxx.kwitansi = this.kwitansinonkarcis
+            xxx.kwitansiterbayar.push(...hasilglobal)
 
             notifSuccess(resp.data?.message)
 
             const routeData = router.resolve({
               path: '/print/kwitansinonkarcis',
-              query: { kwitansikarcis: JSON.stringify(this.kwitansinonkarcis) }
+              query: { kwitansinonkarcis: JSON.stringify(this.kwitansinonkarcis) }
             })
             window.open(routeData.href, '_blank')
 
