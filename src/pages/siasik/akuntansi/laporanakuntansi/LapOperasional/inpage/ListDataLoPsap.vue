@@ -1,7 +1,7 @@
 <template>
   <template v-if="store.psappendapatan?.length > 0">
     <q-card-section class="full-width">
-      <div class="row">
+      <div class="row justify-center">
         <div class="full-width">
           <q-markup-table class="my-sticky-table" flat-bordered wrap-cells :separator="separator">
             <thead>

@@ -1,7 +1,7 @@
 <template>
   <template v-if="store.hasilpendapatan?.length > 0 && store.hasilbeban?.length > 0">
     <q-card-section>
-      <div class="row">
+      <div class="row justify-center">
         <div class="full-width">
           <q-markup-table class="custom-table" flat bordered wrap-cells :separator="separator">
             <thead>
