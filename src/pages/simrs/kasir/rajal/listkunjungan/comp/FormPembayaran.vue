@@ -146,7 +146,7 @@
             :pasien="prop?.pasien" />
         </div>
         <div class="col-4">
-          <data-pembayaran :kwitansikarcis="prop?.kwitansikarcis" />
+          <data-pembayaran :kwitansikarcis="prop?.kwitansikarcis" :getKwitansiTerbayar="prop?.getKwitansiTerbayar" />
         </div>
       </div>
     </q-card>
@@ -180,7 +180,8 @@ const prop = defineProps({
   pasien: { type: Object, default: () => ({}) },
   billing: { type: Object, default: () => ({}) },
   kwitansikarcis: { type: Array, default: () => [] },
-  kwitansinontunai: { type: Array, default: () => [] }
+  kwitansinontunai: { type: Array, default: () => [] },
+  getKwitansiTerbayar: { type: Array, default: () => [] }
 })
 </script>
 
