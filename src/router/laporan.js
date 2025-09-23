@@ -291,6 +291,10 @@ const laporan = {
       path: '/laporan/farmasi/telaah-resep',
       component: () => import('pages/simrs/laporan/farmasi/telaahresep/IndexPage.vue')
     },
+    {
+      path: '/laporan/farmasi/evaluasi-resep',
+      component: () => import('pages/simrs/laporan/farmasi/evaluasiResep/IndexPage.vue')
+    },
 
     // ini Harus ada
     {

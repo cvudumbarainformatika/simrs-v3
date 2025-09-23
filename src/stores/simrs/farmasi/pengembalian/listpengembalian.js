@@ -37,17 +37,17 @@ export const useListPengembalianPinjamanStore = defineStore('list_pengembalian_p
       this.params[key] = val
     },
     setPage (val) {
-      this.setParame('page', val)
+      this.setParams('page', val)
       this.getDataTable()
     },
     setSearch (val) {
-      this.setParame('q', val)
-      this.setParame('page', 1)
+      this.setParams('q', val)
+      this.setParams('page', 1)
       this.getDataTable()
     },
     setPerPage (val) {
-      this.setParame('per_page', val)
-      this.setParame('page', 1)
+      this.setParams('per_page', val)
+      this.setParams('page', 1)
       this.getDataTable()
     },
     refreshTable () {

@@ -3,7 +3,7 @@
     <div ref="refTop" class="fixed-top bg-white" style="margin-top:50px; margin-left: 60px; z-index: 10">
       <div class="row bg-primary text-white q-pa-sm q-mb-sm print-hide">
         <div class="f-14 text-weight-bold">
-          Laporan Resep
+          Laporan Evaluasi Resep
         </div>
       </div>
 
@@ -19,15 +19,10 @@
                 option-value="value" outlined :source="store.optionJenis" :loading="store.loading"
                 :disable="store.loading || !!store.ketProses" @update:model-value="setJenis" />
             </div>
-            <div class="col-1">
+            <div class="col-3 ">
               <app-autocomplete v-model="store.params.tipe" label="Tipe Resep" autocomplete="nama" option-label="nama"
                 option-value="value" outlined :source="store.types" :loading="store.loading"
                 :disable="store.loading || !!store.ketProses" @update:model-value="setJenis" />
-            </div>
-            <div class="col-2">
-              <app-autocomplete v-model="store.params.kode_ruang" label="Pilih Depo" autocomplete="nama"
-                option-label="nama" option-value="value" outlined :source="store.gudangs" :loading="store.loading"
-                :disable="store.loading || !!store.ketProses" />
             </div>
             <div class="col-2">
               <app-input-date-human :model="store.disp.from" label="sampai tanggal" outlined @db-model="(val) => {
@@ -165,17 +160,14 @@
           <q-img src="~assets/logos/logo-rsud.png" spinner-color="white" style="height: 3cm; max-width: 3cm" />
         </div>
       </div>
-
       <div class="row justify-center f-16 text-weight-bold q-my-sm">
-        Laporan Pemakaian Obat Program periode {{ store.disp.from }} s/d {{ store.disp.to }}
+        Laporan Evaluasi Resep periode {{ store.disp.from }} s/d {{ store.disp.to }}
       </div>
       <div>
-        <!-- <q-scroll-observer @scroll="scrollHandler" /> -->
         <div ref="refScroll" class="q-pa-sm" v-scroll="onScroll">
           <TablePage />
         </div>
       </div>
-
       <div class="q-mt-md" ref="refTt">
         <div class="q-my-md">
           <div class="row q-mb-md">
@@ -339,24 +331,19 @@
     </div>
   </div>
 </template>
-
 <script setup>
 import { date } from 'quasar'
-import { useLaporanDataResepStore } from 'src/stores/simrs/laporan/farmasi/dataresep/dataresep'
+import { useLaporanEvaluasiResepStore } from 'src/stores/simrs/laporan/farmasi/evaluasiResep/evaluasi'
 import { defineAsyncComponent, onMounted, ref } from 'vue'
 
 
-const store = useLaporanDataResepStore()
+const store = useLaporanEvaluasiResepStore()
 
-const TablePage = defineAsyncComponent(() => import('src/pages/simrs/laporan/farmasi/dataResep/comp/TablePage.vue'))
-// eslint-disable-next-line no-unused-vars
-function bulan () {
-  const bul = store.bulans.find(a => a.value === store.params.bulan)
-  return bul?.nama ?? '-'
-}
+const TablePage = defineAsyncComponent(() => import('src/pages/simrs/laporan/farmasi/evaluasiResep/comp/TablePage.vue'))
 function jenis () {
-  const bul = store.optionJenis.find(a => a.value === store.params.jenis)
+  const bul = store.optionJenis?.find(a => a.value === store.params.jenis)
   return ' (' + bul?.nama + ')' ?? '-'
+  // return ''
 }
 function setJenis (val) {
 
@@ -365,26 +352,25 @@ function setJenis (val) {
 const refScroll = ref(null)
 const refTt = ref(null)
 function onScroll (pos) {
-  const height = refScroll.value.clientHeight - (refTt.value.clientHeight + 250)
-  const currPage = store.meta.current_page
-  if ((store.meta.current_page < store.meta.last_page) && pos >= height) {
+  const height = refScroll.value?.clientHeight - (refTt.value?.clientHeight + 900)
+  const currPage = store.meta?.current_page
+  if ((store.meta?.current_page < store.meta?.last_page) && pos >= height) {
     if (!store.loadingNext && !store.ketProses) store.setPage(currPage + 1)
-    // console.log('meta', store.meta)
-    console.log('pos', pos, 'height', height, 'scroll client height', refScroll.value.clientHeight, 'tt height', refTt.value.clientHeight)
+    // console.log('pos', pos, 'height', height, 'scroll client height', refScroll.value?.clientHeight, 'tt height', refTt.value?.clientHeight)
   }
-  // console.log('pos', pos, 'height', height, 'scroll client height', refScroll.value.clientHeight, 'tt height', refTt.value.clientHeight)
+  // console.log('pos', pos, 'height', height, 'scroll client height', refScroll.value?.clientHeight, 'tt height', refTt.value?.clientHeight, store.meta)
 }
 const refTop = ref(null)
 const h = ref(0)
 onMounted(() => {
-  console.log('h', refTop.value.clientHeight)
-  h.value = refTop.value.clientHeight
+  console.log('h', refTop.value?.clientHeight)
+  h.value = refTop.value?.clientHeight
 })
 const printObj = {
   id: 'printMe',
-  popTitle: 'Laporan Persediaan Farmasi'
-
+  popTitle: 'Laporan Evaluasi Resep'
 }
+
 
 // text tanda tangan start
 
@@ -406,8 +392,8 @@ const kananBawahDua = ref('')
 const pojokKananAtas = ref('Probolinggo, ' + date.formatDate(Date.now(), 'DD MMMM YYYY'))
 
 // text tanda tangan end
-
 </script>
+
 <style scoped>
 .box-mini {
   white-space: normal !important;
