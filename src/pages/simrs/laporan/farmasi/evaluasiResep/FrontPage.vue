@@ -64,7 +64,7 @@
             <div class="q-ml-sm">
               <download-excel class="btn" :fields="store.fields" :fetch="store.fetch"
                 :before-generate="store.startDownload" :before-finish="store.finishDownload"
-                :name="'Data Resep Bulan Periode ' + store.disp.from + ' s/d ' + store.disp.to + jenis() + '.xls'">
+                :name="'Data Evaluasi Resep ' + store.disp.from + ' s/d ' + store.disp.to + jenis() + '.xls'">
                 <q-btn color="green" round size="sm" icon="icon-mat-download" push :loading="store.loadingDownload"
                   :disable="store.loadingDownload || !!store.ketProses || store?.loadingNext">
                   <q-tooltip>Download Excel</q-tooltip>
@@ -342,7 +342,8 @@ const store = useLaporanEvaluasiResepStore()
 const TablePage = defineAsyncComponent(() => import('src/pages/simrs/laporan/farmasi/evaluasiResep/comp/TablePage.vue'))
 function jenis () {
   const bul = store.optionJenis?.find(a => a.value === store.params.jenis)
-  return ' (' + bul?.nama + ')' ?? '-'
+  const tipe = store.types?.find(a => a.value === store.params.tipe)
+  return ' (' + bul?.nama + ' ' + tipe?.nama + ')' ?? '-'
   // return ''
 }
 function setJenis (val) {

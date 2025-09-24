@@ -117,11 +117,11 @@
                 <div class="q-ma-xs">
                   <b>PENYULIT ANASTESI LAIN</b>
                 </div>
-                <table v-if="item?.penyuliAnastesi?.length" class="column full-width">
+                <table v-if="item?.penyulitAnastesi?.length" class="column full-width">
                   <tbody>
                     <tr class="column full-width">
                       <td>
-                        <div v-for="(peny, n) in item?.penyuliAnastesi" :key="n">
+                        <div v-for="(peny, n) in item?.penyulitAnastesi" :key="n">
                           - {{ peny }}
                         </div>
                         <q-separator />
