@@ -32,7 +32,7 @@
             🏷️
           </div>
           <div class="f-14">
-            Belum Ada Data
+            Belum Ada Data Pembayaran Flaging
           </div>
         </div>
         <div v-else style="flex: 1; overflow-y: auto; padding-bottom: 12px;">

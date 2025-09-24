@@ -120,13 +120,15 @@
                   <q-item-section side top>
                     <q-item-label caption>{{ humanDate(item?.tanggal) }}</q-item-label>
                     <q-btn v-if="store.form.carabayar === 'Tunai'" unelevated color="dark" round size="sm"
-                      icon="icon-mat-attach_money">
+                      icon="icon-mat-attach_money" @click="bayarnonkarcis(item?.nota, item?.subtotal, 'Farmasi')"
+                      :loading="store.loadingpembayaran">
                       <q-tooltip class="primary" :offset="[10, 10]">
                         Bayar & Print
                       </q-tooltip>
                     </q-btn>
                     <q-btn v-if="store.form.carabayar === 'Qris'" unelevated color="dark" round size="sm"
-                      icon="icon-mat-qr_code_2">
+                      icon="icon-mat-qr_code_2"
+                      @click="store.createQris(prop.pasien, store.items?.subtotal, 'NonKarcis', store.form.carabayar)">
                       <q-tooltip class="primary" :offset="[10, 10]">
                         Bayar & Print
                       </q-tooltip>
@@ -195,7 +197,21 @@
 
                   <q-item-section side top>
                     <q-item-label caption>{{ humanDate(item?.rs3) }}</q-item-label>
-                    <q-btn unelevated color="dark" round size="sm" icon="icon-mat-attach_money">
+                    <q-btn v-if="store.form.carabayar === 'Tunai'" unelevated color="dark" round size="sm"
+                      icon="icon-mat-attach_money" @click="bayarnonkarcis(item?.rs2, item?.total, 'Operasi')"
+                      :loading="store.loadingpembayaran">
+                      <q-tooltip class="primary" :offset="[10, 10]">
+                        Bayar & Print
+                      </q-tooltip>
+                    </q-btn>
+                    <q-btn v-if="store.form.carabayar === 'Qris'" unelevated color="dark" round size="sm"
+                      icon="icon-mat-qr_code_2">
+                      <q-tooltip class="primary" :offset="[10, 10]">
+                        Bayar & Print
+                      </q-tooltip>
+                    </q-btn>
+                    <q-btn v-if="store.form.carabayar === 'VA'" unelevated color="dark" round size="sm"
+                      icon="icon-eva-bell-outline">
                       <q-tooltip class="primary" :offset="[10, 10]">
                         Bayar & Print
                       </q-tooltip>
@@ -206,13 +222,13 @@
               </q-list>
             </div>
             <div class="row q-mt-sm"
-              v-if="(selectedPayment === '' || selectedPayment === 'Laborat') && store.itemslaborat">
+              v-if="(selectedPayment === '' || selectedPayment === 'Laboratorium') && store.itemslaborat">
               <q-list class="full-width kwitansi-card" v-for="(item, b) in store.itemslaborat" :key="b">
                 <q-item>
                   <q-item-section>
                     <q-item-label>Nota : {{ item?.nota }}</q-item-label>
                     <q-item-label> Subtotal Pelayanan Laborat <q-badge
-                        :color="paymentOptions.find(item => item.value === 'Laborat')?.color"
+                        :color="paymentOptions.find(item => item.value === 'Laboratorium')?.color"
                         class="text-weight-bold">{{
                           formatRpDouble(item?.total_subtotal)
                         }}</q-badge></q-item-label>
@@ -221,7 +237,9 @@
                   <q-item-section side top>
                     <q-item-label caption>{{ humanDate(item?.rs3) }}</q-item-label>
                     <q-btn v-if="store.form.carabayar === 'Tunai'" unelevated color="dark" round size="sm"
-                      icon="icon-mat-attach_money" @click="bayarnonkarcis(item?.nota, item?.total_subtotal, 'Laborat')">
+                      icon="icon-mat-attach_money"
+                      @click="bayarnonkarcis(item?.nota, item?.total_subtotal, 'Laboratorium')"
+                      :loading="store.loadingpembayaran">
                       <q-tooltip class="primary" :offset="[10, 10]">
                         Bayar & Print
                       </q-tooltip>
@@ -258,7 +276,61 @@
 
                   <q-item-section side top>
                     <q-item-label caption>{{ humanDate(item?.rs3) }}</q-item-label>
-                    <q-btn unelevated color="dark" round size="sm" icon="icon-mat-attach_money">
+                    <q-btn v-if="store.form.carabayar === 'Tunai'" unelevated color="dark" round size="sm"
+                      icon="icon-mat-attach_money" @click="bayarnonkarcis(item?.rs2, item?.total, 'Radiologi')"
+                      :loading="store.loadingpembayaran">
+                      <q-tooltip class="primary" :offset="[10, 10]">
+                        Bayar & Print
+                      </q-tooltip>
+                    </q-btn>
+                    <q-btn v-if="store.form.carabayar === 'Qris'" unelevated color="dark" round size="sm"
+                      icon="icon-mat-qr_code_2">
+                      <q-tooltip class="primary" :offset="[10, 10]">
+                        Bayar & Print
+                      </q-tooltip>
+                    </q-btn>
+                    <q-btn v-if="store.form.carabayar === 'VA'" unelevated color="dark" round size="sm"
+                      icon="icon-eva-bell-outline">
+                      <q-tooltip class="primary" :offset="[10, 10]">
+                        Bayar & Print
+                      </q-tooltip>
+                    </q-btn>
+                  </q-item-section>
+                </q-item>
+                <q-separator spaced inset />
+              </q-list>
+            </div>
+            <div class="row q-mt-sm"
+              v-if="(selectedPayment === '' || selectedPayment === 'TindakanPsikologi') && store.itemssharingbpjs">
+              <q-list class="full-width kwitansi-card" v-for="(item, c) in store.itemstindakanpsikologi" :key="c">
+                <q-item>
+                  <q-item-section>
+                    <q-item-label>Nota : {{ item?.nota }}</q-item-label>
+                    <q-item-label> Subtotal Psikologi <q-badge
+                        :color="paymentOptions.find(item => item.value === 'TindakanPsikologi')?.color"
+                        class="text-weight-bold">{{
+                          formatRpDouble(item?.subtotal)
+                        }}</q-badge></q-item-label>
+                  </q-item-section>
+
+                  <q-item-section side top>
+                    <q-item-label caption>{{ humanDate(item?.tgl) }}</q-item-label>
+                    <q-btn v-if="store.form.carabayar === 'Tunai'" unelevated color="dark" round size="sm"
+                      icon="icon-mat-attach_money"
+                      @click="bayarnonkarcis(item?.nota, item?.subtotal, 'TindakanPsikologi')"
+                      :loading="store.loadingpembayaran">
+                      <q-tooltip class="primary" :offset="[10, 10]">
+                        Bayar & Print
+                      </q-tooltip>
+                    </q-btn>
+                    <q-btn v-if="store.form.carabayar === 'Qris'" unelevated color="dark" round size="sm"
+                      icon="icon-mat-qr_code_2">
+                      <q-tooltip class="primary" :offset="[10, 10]">
+                        Bayar & Print
+                      </q-tooltip>
+                    </q-btn>
+                    <q-btn v-if="store.form.carabayar === 'VA'" unelevated color="dark" round size="sm"
+                      icon="icon-eva-bell-outline">
                       <q-tooltip class="primary" :offset="[10, 10]">
                         Bayar & Print
                       </q-tooltip>
@@ -273,17 +345,31 @@
               <q-list class="full-width kwitansi-card" v-for="(item, c) in store.itemssharingbpjs" :key="c">
                 <q-item>
                   <q-item-section>
-                    <q-item-label>Nota : {{ item?.rs2 }}</q-item-label>
+                    <q-item-label>Nota : {{ item?.id }}</q-item-label>
                     <q-item-label> Subtotal Sharing BPJSi <q-badge
                         :color="paymentOptions.find(item => item.value === 'SharingBpjs')?.color"
                         class="text-weight-bold">{{
-                          formatRpDouble(item?.total)
+                          formatRpDouble(item?.subtotal)
                         }}</q-badge></q-item-label>
                   </q-item-section>
 
                   <q-item-section side top>
-                    <q-item-label caption>{{ humanDate(item?.rs3) }}</q-item-label>
-                    <q-btn unelevated color="dark" round size="sm" icon="icon-mat-attach_money">
+                    <q-item-label caption>{{ humanDate(item?.tgl) }}</q-item-label>
+                    <q-btn v-if="store.form.carabayar === 'Tunai'" unelevated color="dark" round size="sm"
+                      icon="icon-mat-attach_money" @click="bayarnonkarcis(item?.id, item?.subtotal, 'SharingBpjs')"
+                      :loading="store.loadingpembayaran">
+                      <q-tooltip class="primary" :offset="[10, 10]">
+                        Bayar & Print
+                      </q-tooltip>
+                    </q-btn>
+                    <q-btn v-if="store.form.carabayar === 'Qris'" unelevated color="dark" round size="sm"
+                      icon="icon-mat-qr_code_2">
+                      <q-tooltip class="primary" :offset="[10, 10]">
+                        Bayar & Print
+                      </q-tooltip>
+                    </q-btn>
+                    <q-btn v-if="store.form.carabayar === 'VA'" unelevated color="dark" round size="sm"
+                      icon="icon-eva-bell-outline">
                       <q-tooltip class="primary" :offset="[10, 10]">
                         Bayar & Print
                       </q-tooltip>
@@ -374,6 +460,12 @@ const paymentOptions = [
     color: 'teal-10'
   },
   {
+    value: 'TindakanPsikologi',
+    label: 'Psikologi',
+    icon: 'icon-my-stomach-svgrepo-com',
+    color: 'yellow-7'
+  },
+  {
     value: 'SharingBpjs',
     label: 'Sharing Bpjs',
     icon: 'icon-my-stomach-svgrepo-com',
@@ -388,7 +480,9 @@ const totalbill = computed(() => {
   const totaloperasi = parseFloat(store.itemsoperasi?.reduce((acc, cur) => acc + cur.total, 0) ?? 0)
   const totallaborat = parseFloat(store.itemslaborat?.reduce((acc, cur) => acc + cur.total_subtotal, 0) ?? 0)
   const totalradiologi = parseFloat(store.itemsradiologi?.reduce((acc, cur) => acc + cur.total, 0) ?? 0)
-  const total = parseFloat(totalkarcis + totalobat + totaltindakan + totaloperasi + totallaborat + totalradiologi)
+  const totalpsikologi = parseFloat(store.itemstindakanpsikologi?.reduce((acc, cur) => acc + cur.subtotal, 0) ?? 0)
+  const totalsharing = parseFloat(store.itemssharingbpjs?.reduce((acc, cur) => acc + cur.subtotal, 0) ?? 0)
+  const total = parseFloat(totalkarcis + totalobat + totaltindakan + totaloperasi + totallaborat + totalradiologi + totalpsikologi + totalsharing)
   store.total = total
   return total
 })
@@ -462,32 +556,35 @@ function bayarnonkarcis(nota, total, jenis) {
       timeout: 1000
     })
   } else {
-    $q.dialog({
-      dark: true,
-      title: 'Peringatan',
-      message: 'Apakah Data ini akan DISIMPAN?',
-      cancel: true,
-      persistent: true
-    }).onOk(() => {
-      store.savePembayarannonKarcis(prop.pasien, nota, total, jenis)
-    }).onCancel(() => {
-      console.log('Cancel')
-    }).onDismiss(() => {
-      console.log('I am triggered on both OK and Cancel')
-    })
+    if (store.form.carabayar === 'Tunai') {
+      $q.dialog({
+        dark: true,
+        title: 'Peringatan',
+        message: 'Apakah Data ini akan DISIMPAN?',
+        cancel: true,
+        persistent: true
+      }).onOk(() => {
+        store.savePembayarannonKarcis(prop.pasien, nota, total, jenis)
+      }).onCancel(() => {
+        console.log('Cancel')
+      }).onDismiss(() => {
+        console.log('I am triggered on both OK and Cancel')
+      })
+    }
   }
-}
 
-onMounted(() => {
-  store.loadingbayar = true
-  store.carikarcis(prop.pasien?.noreg)
-  store.cariobat(prop.pasien?.noreg)
-  store.caritindakan(prop.pasien?.noreg)
-  store.carioperasi(prop.pasien?.noreg)
-  store.carilaborat(prop.pasien?.noreg)
-  store.cariradiologi(prop.pasien?.noreg)
-  store.carisharingbpjs(prop.pasien?.noreg)
-})
+  onMounted(() => {
+    store.loadingbayar = true
+    store.carikarcis(prop.pasien?.noreg)
+    store.cariobat(prop.pasien?.noreg)
+    store.caritindakan(prop.pasien?.noreg)
+    store.caritindakanpsikologi(prop.pasien?.noreg)
+    store.carioperasi(prop.pasien?.noreg)
+    store.carilaborat(prop.pasien?.noreg)
+    store.cariradiologi(prop.pasien?.noreg)
+    store.carisharingbpjs(prop.pasien?.noreg)
+  })
+}
 
 
 </script>

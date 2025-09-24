@@ -20,6 +20,7 @@ export const usePembayaranKasirRajalStore = defineStore('pembayaran-kasir-rajal-
     itemslaborat: [],
     itemsradiologi: [],
     itemssharingbpjs: [],
+    itemstindakanpsikologi: [],
     kwitansi: [],
     kwitansinonkarcis: [],
     form: {
@@ -36,7 +37,7 @@ export const usePembayaranKasirRajalStore = defineStore('pembayaran-kasir-rajal-
       // rinci: '',
       tglx: '',
       users: '',
-      carabayar: '',
+      carabayar: 'Tunai',
       jenislayanan: ''
     },
     formqris: {},
@@ -221,6 +222,17 @@ export const usePembayaranKasirRajalStore = defineStore('pembayaran-kasir-rajal-
         })
         .catch(() => { this.loading = false })
     },
+    async caritindakanpsikologi(noreg) {
+      this.loadingbayar = true
+      this.itemstindakan = []
+      const params = { params: { noreg: noreg } }
+      const resp = await api.get('/v1/simrs/kasir/rajal/cari-tindakan-psikologi', params)
+        .then(resp => {
+          this.itemstindakanpsikologi = resp.data
+          this.loadingbayar = false
+        })
+        .catch(() => { this.loading = false })
+    },
     async carioperasi(noreg) {
       this.loadingbayar = true
       this.itemsoperasi = []
@@ -258,7 +270,7 @@ export const usePembayaranKasirRajalStore = defineStore('pembayaran-kasir-rajal-
       this.loadingbayar = true
       this.itemssharingbpjs = []
       const params = { params: { noreg: noreg } }
-      const resp = await api.get('/v1/simrs/kasir/rajal/cari-radiologi', params)
+      const resp = await api.get('/v1/simrs/kasir/rajal/cari-sharingbpjs', params)
         .then(resp => {
           this.itemssharingbpjs = resp.data
           this.loadingbayar = false
