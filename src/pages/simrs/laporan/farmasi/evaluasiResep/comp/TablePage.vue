@@ -41,16 +41,16 @@
             Noreg
           </th>
           <th class="q-px-sm">
+            Nomor Resep
+          </th>
+          <th class="q-px-sm">
+            Tanggal Resep
+          </th>
+          <th class="q-px-sm">
             Nama Dokter
           </th>
           <th class="q-px-sm">
             Poli
-          </th>
-          <th v-if="store.params.jenis === 'detail'" class="q-px-sm">
-            Nomor Resep
-          </th>
-          <th v-if="store.params.jenis === 'detail'" class="q-px-sm">
-            Tgl Resep
           </th>
           <th v-if="store.params.jenis === 'detail'" class="q-px-sm">
             Kode Obat
@@ -85,6 +85,9 @@
           <td>
             <q-skeleton type="text" width="60px" height="25px" />
           </td>
+          <td>
+            <q-skeleton type="text" width="60px" height="25px" />
+          </td>
           <td v-if="store.params.jenis === 'detail'">
             <q-skeleton type="text" width="60px" height="25px" />
           </td>
@@ -95,15 +98,18 @@
             <q-skeleton type="text" width="60px" height="25px" />
           </td>
           <template v-if="store?.params?.tipe == 'item'">
-            <td v-if="store.params.jenis === 'detail'">
+            <td>
               <q-skeleton type="text" width="60px" height="25px" />
             </td>
             <td v-if="store.params.jenis === 'detail'">
               <q-skeleton type="text" width="60px" height="25px" />
             </td>
-            <td v-if="store.params.jenis === 'detail'">
+            <!-- <td v-if="store.params.jenis === 'detail'">
               <q-skeleton type="text" width="60px" height="25px" />
             </td>
+            <td v-if="store.params.jenis === 'detail'">
+              <q-skeleton type="text" width="60px" height="25px" />
+            </td> -->
             <td v-if="store.params.jenis !== 'detail'">
               <q-skeleton type="text" width="60px" height="25px" />
             </td>
@@ -132,8 +138,8 @@
                 {{ n + 1 }}
               </div>
             </td>
+            <td :rowspan="rowspanObat(item)">{{ item.noreg }}</td>
             <template v-if="store?.params?.tipe == 'noreg'">
-              <td :rowspan="rowspanObat(item)">{{ item.noreg }}</td>
               <td :rowspan="rowspanObat(item)">{{ item.poli }}</td>
               <td :rowspan="rowspanObat(item)">{{ item.dokter }}</td>
               <template v-if="store.params.jenis === 'rekap'">
@@ -146,11 +152,39 @@
                 <td v-if='item.detail?.length == 0'>-</td>
               </template>
             </template>
+            <template v-else>
+              <td :rowspan="rowspanObat(item)">{{ item.noresep }}</td>
+              <td :rowspan="rowspanObat(item)">{{ dateFullFormat(item.tgl_permintaan) }}</td>
+              <td :rowspan="rowspanObat(item)">{{ item.poli }}</td>
+              <td :rowspan="rowspanObat(item)">{{ item.dokter }}</td>
+              <template v-if="store.params.jenis == 'rekap'">
+                <td :rowspan="rowspanObat(item)">{{ item.total_item }}</td>
+              </template>
+              <template v-if="store.params.jenis !== 'rekap'">
+                <!-- <td :rowspan="rowspanObat(item)">{{ item.kdobat }}</td>
+                <td :rowspan="rowspanObat(item)">{{ item.nama_obat }}</td>
+                <td :rowspan="rowspanObat(item)">{{ item.jumlah_resep }}</td>
+                <td :rowspan="rowspanObat(item)">{{ item.jumlah_diberikan }}</td> -->
+                <td v-if='item.detail?.length == 0'>-</td>
+                <td v-if='item.detail?.length == 0'>-</td>
+                <td v-if='item.detail?.length == 0'>-</td>
+                <td v-if='item.detail?.length == 0'>-</td>
+              </template>
+            </template>
           </tr>
           <template v-for="det in item.detail" :key="det.id">
             <tr>
-              <td>{{ det.mobat?.nama_obat }}</td>
-              <td>{{ det.jumlah }}</td>
+              <template v-if="store?.params?.tipe == 'noreg'">
+                <td>{{ det.mobat?.nama_obat }}</td>
+                <td>{{ det.jumlah }}</td>
+              </template>
+              <template v-else>
+                <td>{{ det.mobat?.kd_obat }}</td>
+                <td>{{ det.mobat?.nama_obat }}</td>
+                <td>{{ det.jumlah_resep }}</td>
+                <td>{{ det.jumlah_diberikan }}</td>
+
+              </template>
             </tr>
           </template>
         </template>
