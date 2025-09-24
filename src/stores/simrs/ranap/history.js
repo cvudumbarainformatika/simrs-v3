@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia'
+import { defineStore, acceptHMRUpdate } from 'pinia'
 import { api } from 'src/boot/axios'
 // eslint-disable-next-line no-unused-vars
 import { notifErrVue, notifSuccess } from 'src/modules/utils'
@@ -66,9 +66,18 @@ export const useHistoryPasienRanapStore = defineStore('history-pasien-ranap-stor
       pasien.tinjauanulang = hasil?.tinjauanulang
       pasien.rencanaterapidokter = hasil?.rencanaterapidokter
       pasien.skalatransfer = hasil?.skalatransfer
+      pasien.poli = hasil?.poli
+      pasien.dokter = hasil?.dokter
+      pasien.tgl_kunjungan = hasil?.tgl_kunjungan
+      pasien.tglpulang = hasil?.tglpulang
       this.pasienIgd = { ...pasien }
 
       console.log('pasien igd', this.pasienIgd)
     }
   }
 })
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useHistoryPasienRanapStore, import.meta.hot))
+
+}

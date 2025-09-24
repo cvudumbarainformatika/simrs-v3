@@ -6,6 +6,8 @@
           <div><b>Mohon bantuan dokter : </b></div>
           <app-autocomplete-new ref="refPerawat" :model="store.form.kddokterkonsul" label="Dokter" autocomplete="nama"
             option-value="kdpegsimrs" option-label="nama" outlined :source="store.dokters" @on-select="(val) => {
+              console.log('val', val);
+
               store.form.kddokterkonsul = val
             }" @clear="store.form.kddokterkonsul = null" />
           <div class="q-mt-lg">
