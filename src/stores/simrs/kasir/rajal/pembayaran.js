@@ -75,7 +75,6 @@ export const usePembayaranKasirRajalStore = defineStore('pembayaran-kasir-rajal-
           .then((resp) => {
             this.loadingpembayaran = false
             const kwitansikarcis = resp.data?.kwitansikarcis ?? []
-            console.log('aaaaaaaaaaaaaa', kwitansikarcis)
             //this.kwitansi = kwitansikarcis
             const hasilglobal = []
             kwitansikarcis.forEach(k => {
@@ -95,8 +94,6 @@ export const usePembayaranKasirRajalStore = defineStore('pembayaran-kasir-rajal-
             const pengunjung = useKasirRajalListKunjunganStore()
             pengunjung.kwitansiterbayar.push(...hasilglobal)
             notifSuccess(resp.data?.message)
-
-            console.log('sasasa', this.kwitansi)
             const routeData = router.resolve({
               path: '/print/kwitansi',
               query: { kwitansikarcis: JSON.stringify(kwitansikarcis) }
@@ -333,7 +330,7 @@ export const usePembayaranKasirRajalStore = defineStore('pembayaran-kasir-rajal-
       win.print()
       win.close()
     },
-    savePembayarannonKarcis(pasien, nota, subtotal, jenis) {
+    savePembayarannonKarcis(pasien, nota, subtotal, jenis, router) {
       this.loadingpembayaran = true
       this.form.noreg = pasien.noreg
       this.form.nota = nota
@@ -364,7 +361,6 @@ export const usePembayaranKasirRajalStore = defineStore('pembayaran-kasir-rajal-
             }))
 
             // this.kwitansinonkarcis = hasilglobal
-            console.log('kwitansinonkarcissasasasa', this.kwitansinonkarcis)
             const xxx = useKasirRajalListKunjunganStore()
             xxx.kwitansiterbayar.push(...hasilglobal)
 
@@ -372,7 +368,7 @@ export const usePembayaranKasirRajalStore = defineStore('pembayaran-kasir-rajal-
 
             const routeData = router.resolve({
               path: '/print/kwitansinonkarcis',
-              query: { kwitansinonkarcis: JSON.stringify(this.kwitansinonkarcis) }
+              query: { kwitansinonkarcis: JSON.stringify(arr) }
             })
             window.open(routeData.href, '_blank')
 

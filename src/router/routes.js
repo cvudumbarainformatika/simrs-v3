@@ -61,6 +61,11 @@ const routes = [
         path: '/print/kwitansi',
         name: 'print.kwitansi',
         component: () => import('pages/simrs/kasir/rajal/listkunjungan/comp/PrintKwitansiPage.vue')
+      },
+      {
+        path: '/print/kwitansinonkarcis',
+        name: 'print.kwitansinonkarcis',
+        component: () => import('pages/simrs/kasir/rajal/listkunjungan/comp/PrintKwitansinonKarcisPage.vue')
       }
     ]
   },

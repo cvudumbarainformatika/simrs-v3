@@ -564,7 +564,7 @@ function bayarnonkarcis(nota, total, jenis) {
         cancel: true,
         persistent: true
       }).onOk(() => {
-        store.savePembayarannonKarcis(prop.pasien, nota, total, jenis)
+        store.savePembayarannonKarcis(prop.pasien, nota, total, jenis, router)
       }).onCancel(() => {
         console.log('Cancel')
       }).onDismiss(() => {
@@ -572,19 +572,20 @@ function bayarnonkarcis(nota, total, jenis) {
       })
     }
   }
-
-  onMounted(() => {
-    store.loadingbayar = true
-    store.carikarcis(prop.pasien?.noreg)
-    store.cariobat(prop.pasien?.noreg)
-    store.caritindakan(prop.pasien?.noreg)
-    store.caritindakanpsikologi(prop.pasien?.noreg)
-    store.carioperasi(prop.pasien?.noreg)
-    store.carilaborat(prop.pasien?.noreg)
-    store.cariradiologi(prop.pasien?.noreg)
-    store.carisharingbpjs(prop.pasien?.noreg)
-  })
 }
+onMounted(() => {
+  console.log('prop.pasien', prop.pasien)
+  store.loadingbayar = true
+  store.carikarcis(prop.pasien?.noreg)
+  store.cariobat(prop.pasien?.noreg)
+  store.caritindakan(prop.pasien?.noreg)
+  store.caritindakanpsikologi(prop.pasien?.noreg)
+  store.carioperasi(prop.pasien?.noreg)
+  store.carilaborat(prop.pasien?.noreg)
+  store.cariradiologi(prop.pasien?.noreg)
+  store.carisharingbpjs(prop.pasien?.noreg)
+})
+
 
 
 </script>
