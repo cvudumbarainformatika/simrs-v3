@@ -78,6 +78,29 @@ export const usePemintaanReturDepoStore = defineStore('permintaan_retur_depo', {
       })
 
     },
+    selesaiManual (val) {
+      val.loading = true
+      const resepOK = val?.resep?.filter(a => a.noresep?.includes('-D-KO'))?.map(a => a.noresep)
+      const form = {
+        nopermintaan: val.nopermintaan,
+        noresep: resepOK
+      }
+      // console.log('form', form, 'val', val)
+
+      return new Promise(resolve => {
+        api.post('v1/simrs/farmasinew/depo/permintaan-retur/selesai-permintaan-manual', form)
+          .then(resp => {
+            delete val.loading
+            this.getData()
+            console.log('resp', resp)
+            resolve(resp)
+          }).catch(() => {
+            delete val.loading
+          })
+
+      })
+
+    },
   }
 })
 if (import.meta.hot) {

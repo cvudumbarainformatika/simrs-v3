@@ -2,24 +2,27 @@
   <div v-if="store.items?.length">
     <q-item class="q-pa-none" dense>
       <q-item-section>
-        <div class="row bg-dark text-white text-bold q-pa-sm">
-          <div class="col-2">
+        <div class="row bg-dark text-white text-bold q-pa-sm items-center">
+          <div class="col-auto" style="width: 10%;">
             Noreg
           </div>
-          <div class="col-2">
+          <div class="col-auto" style="width: 20%;">
             Norm
           </div>
-          <div class="col-2">
+          <div class="col-auto" style="width: 13%;">
             Nomor Pemintaan
           </div>
-          <div class="col-2">
+          <div class="col-auto" style="width: 15%;">
             Depo Terkait
           </div>
-          <div class="col-2">
+          <div class="col-auto" style="width: 12%;">
             Tanggal Pemintaan
           </div>
-          <div class="col-2">
+          <div class="col-auto" style="width: 17%;">
             User minta
+          </div>
+          <div class="col-auto" style="width: 13%;">
+            #
           </div>
         </div>
       </q-item-section>
@@ -28,24 +31,39 @@
       <q-list separator bordered dense>
         <q-item class="q-pa-none" dense :class="header.detail ? 'bg-yellow-4' : ''">
           <q-item-section>
-            <div class="row q-pa-sm cursor-pointer" @click="showDetail(header)">
-              <div class="col-2">
+            <div class="row q-pa-sm cursor-pointer items-center" @click="showDetail(header)">
+              <div class="col-auto" style="width: 10%;">
                 {{ header?.noreg }}
               </div>
-              <div class="col-2">
-                {{ header?.norm }} || {{ header?.pasien?.rs2 }}
+              <div class="col-auto" style="width: 20%;">
+                <div class="row justify-between">
+                  <div class="col-4">
+                    {{ header?.norm }} ||
+                  </div>
+                  <div class="col-8">
+                    {{ header?.pasien?.rs2 }}
+                  </div>
+                </div>
               </div>
-              <div class="col-2">
+              <div class="col-auto" style="width: 13%;">
                 {{ header?.nopermintaan }}
               </div>
-              <div class="col-2">
+              <div class="col-auto" style="width: 15%;">
                 {{ depo(header?.depo) }}
               </div>
-              <div class="col-2">
+              <div class="col-auto" style="width: 12%;">
                 {{ dateFullFormat(header?.tgl_permintaan) }}
               </div>
-              <div class="col-2">
+              <div class="col-auto" style="width: 17%;">
                 {{ header?.pegawai?.nama }}
+
+
+              </div>
+              <div class="col-auto" style="width: 13%;">
+                <div v-if="(depo(header?.depo)).includes('Depo OK') || header.resep?.length <= 0" class="">
+                  <app-btn label="Selesaikan Permintaan" @click="store.selesaiManual(header)" dense
+                    :loading="header.loading" :disable="header.loading" />
+                </div>
               </div>
             </div>
           </q-item-section>
