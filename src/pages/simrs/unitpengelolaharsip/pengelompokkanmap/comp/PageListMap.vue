@@ -7,14 +7,16 @@
 
     <q-card flat no-shadow square class="my-flex-1" style="overflow: hidden;">
       <q-scroll-area style="height: calc(100% - 1px);">
-        <ListMap :items="store.items" :loading="store.loading" :users="appstore?.user?.pegawai?.kdarteri"
-          :organisasi="store.itemsorganisasi" />
+        <ListMap :items="store.items" :klasifikasi="storeklasifikasi.items" :loading="store.loading"
+          :users="appstore?.user?.pegawai?.kdarteri" :organisasi="store.itemsorganisasi"
+          :kabinet="store.itemscabinet" />
       </q-scroll-area>
       <div class=" absolute-bottom bg-primary text-white z-top">
         <footer-page />
       </div>
     </q-card>
-    <DialogFormPage :organisasi="store.itemsorganisasi" :users="appstore?.user?.pegawai?.kdarteri" />
+    <DialogFormPage :klasifikasi="storeklasifikasi.items" :organisasi="store.itemsorganisasi"
+      :users="appstore?.user?.pegawai?.kdarteri" :kabinet="store.itemscabinet" />
   </q-page>
 </template>
 <script setup>
@@ -28,9 +30,11 @@ import DialogFormPage from './DialogFormPage.vue';
 import { onMounted } from 'vue';
 import { useUnitPengelolaharsipMapStore } from 'src/stores/simrs/unitpengelolaarsip/pengolahanmap';
 import { useAplikasiStore } from 'src/stores/app/aplikasi';
+import { useArsipMasterKelasifikasiStore } from 'src/stores/arsip/master/mkelasifikasi';
 
 const store = useUnitPengelolaharsipMapStore()
 const appstore = useAplikasiStore()
+const storeklasifikasi = useArsipMasterKelasifikasiStore()
 
 function tambahmap() {
   store.initreset()
@@ -46,5 +50,6 @@ onMounted(() => {
   store.getData()
   store.getDataorganisasi()
   store.getdatacabinet()
+  storeklasifikasi.getMkelasifikasi()
 })
 </script>
