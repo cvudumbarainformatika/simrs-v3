@@ -5,7 +5,7 @@ import { computed, defineAsyncComponent, onMounted, ref } from 'vue'
 
 const BaseLayout = defineAsyncComponent(() => import('src/pages/simrs/ranap/layanan/components/BaseLayout.vue'))
 const FormPage = defineAsyncComponent(() => import('./comp/FormPage.vue'))
-// const ListKonsul = defineAsyncComponent(() => import('./comp/ListKonsul.vue'))
+const ListPage = defineAsyncComponent(() => import('./comp/ListPage.vue'))
 // const DetailForm = defineAsyncComponent(() => import('./comp/DetailForm.vue'))
 
 const props = defineProps({
@@ -36,16 +36,17 @@ onMounted(() => {
 
   // store.initReset()
   Promise.all([
+    store.getHistory(props?.pasien),
     store.getData(props?.pasien),
+    store.getMasterAlasanMutasi(),
     store.getKamar()
     // store.getTindakan(props?.pasien)
   ])
 })
 
 const lihatDetail = (data) => {
-  // console.log('detail', data)
-  detail.value = data
-  isDetail.value = true
+  console.log('detail', data)
+
 }
 
 </script>
@@ -58,8 +59,8 @@ const lihatDetail = (data) => {
     </template>
     <template #list>
       <div class="fit">
-        <!-- <ListKonsul v-if="!isDetail" :pasien="props.pasien" :auth="user" @detail="lihatDetail" />
-        <DetailForm v-else :item="detail" :auth="user" :pasien="props.pasien" @to-list="isDetail = false" /> -->
+        <ListPage v-if="!isDetail" :pasien="props.pasien" :auth="user" :store="store" @detail="lihatDetail" />
+        <!-- <DetailForm v-else :item="detail" :auth="user" :pasien="props.pasien" @to-list="isDetail = false" /> -->
       </div>
     </template>
   </BaseLayout>
