@@ -28,9 +28,12 @@ export const useUnitPengelolaharsipMapStore = defineStore('unit-pengelolah-arsip
       id: '',
       namamap: '',
       kodeorganisasi: '',
+      kodekelasifikasi: '',
+      kelasifikasi: '',
       keterangan: '',
       cabinet: '',
-      laci: 1
+      laci: 1,
+      tahunmap: new Date().getFullYear()
     },
     formisi: {
       idmap: '',
@@ -99,9 +102,12 @@ export const useUnitPengelolaharsipMapStore = defineStore('unit-pengelolah-arsip
       this.form.id = ''
       this.form.namamap = ''
       this.form.kodeorganisasi = ''
+      this.form.kodekelasifikasi = ''
+      this.form.kelasifikasi = ''
       this.form.keterangan = ''
       this.form.cabinet = ''
-      this.form.laci = 1
+      this.form.laci = 1,
+        this.form.tahunmap = new Date().getFullYear()
     },
     simpanisimap(val) {
       this.loadingisimap = true

@@ -25,6 +25,24 @@
       <q-separator class="" />
 
       <div class="row q-col-gutter-sm q-pa-md">
+
+        <div class="col-4">Alasan Mutasi </div>
+        <div class="col-8 flex q-gutter-x-sm ">
+          <div class="flex-1 full-width">
+            <app-autocomplete-new ref="refRuangan" :model="store.form.kd_mutasi" label="Alasan" autocomplete="rs2"
+              option-value="rs1" option-label="rs2" outlined :source="store.alasans" @on-select="(val) => {
+                // console.log('val', val);
+
+                store.form.kd_mutasi = val
+
+              }" @clear="() => {
+                store.form.kd_mutasi = null
+
+              }" />
+          </div>
+        </div>
+
+
         <div class="col-4">Ruangan Tujuan </div>
         <div class="col-8 flex q-gutter-x-sm ">
           <div class="flex-1 full-width">

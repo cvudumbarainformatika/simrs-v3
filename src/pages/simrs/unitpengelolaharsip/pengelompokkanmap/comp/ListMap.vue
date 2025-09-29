@@ -33,7 +33,7 @@
       </div>
     </div>
     <DialogRincianPage :hederdetail="props.items" :users="props.users" :organisasi="props.organisasi" />
-    <DialogFormPage />
+    <DialogFormPage :klasifikasi="props.klasifikasi" :kabinet="props.kabinet" />
   </div>
 </template>
 
@@ -55,6 +55,14 @@ const props = defineProps({
     type: Array,
     default: () => []
   },
+  klasifikasi: {
+    type: Object,
+    default: null
+  },
+  kabinet: {
+    type: Array,
+    default: () => []
+  },
 })
 
 const datamap = computed(() => {
@@ -63,10 +71,16 @@ const datamap = computed(() => {
 
 function editmap(item) {
   store.initreset()
+  const klasifikasi = props.klasifikasi.find(x => x.kode === item.kodeklasifikasi)
   store.form.id = item.id
   store.form.namamap = item.namamap
   store.form.kodeorganisasi = item.kodeorganisasi
+  store.form.kodekelasifikasi = item.kodeklasifikasi
+  store.form.kelasifikasi = klasifikasi
+  store.form.cabinet = Number(item.kodefelingkabinet)
+  store.form.laci = item.laci
   store.form.keterangan = item.keterangan
+  store.form.tahunmap = Number(item.tahunMap)
   store.dialog = true
 }
 
