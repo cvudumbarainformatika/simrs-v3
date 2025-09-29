@@ -88,6 +88,8 @@ export const useSPJOPNameStore = defineStore('spjopname', {
     selectGudang (val) {
       console.log('val', val)
       this.gudangSelected = this.gudangs.find(item => item.kode === val)
+      this.setParams('ruang', val)
+      this.getListOpname()
     },
     getInitialData () {
       this.getKepala()
@@ -118,7 +120,7 @@ export const useSPJOPNameStore = defineStore('spjopname', {
                 item.opname = []
               })
             }
-            console.log('gud', this.gudangs, this.items)
+            // console.log('gud', this.gudangs, this.items)
             resolve(resp)
           })
           .catch(() => { this.loading = false })
