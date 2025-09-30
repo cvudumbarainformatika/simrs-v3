@@ -52,7 +52,7 @@ const lihatDetail = (data) => {
 </script>
 
 <template>
-  <BaseLayout :pasien="props.pasien" :kasus="props.kasus" :nakes="props.nakes" :split="50" title-before="MUTASI PASIEN"
+  <BaseLayout :pasien="props.pasien" :kasus="props.kasus" :nakes="props.nakes" :split="60" title-before="MUTASI PASIEN"
     title-after="History Mutasi Pasien">
     <template #form>
       <FormPage :pasien="props.pasien" :kasus="props.kasus" :store="store" />

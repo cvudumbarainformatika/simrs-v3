@@ -19,9 +19,31 @@ export const useMutasiRanapStore = defineStore('mutasi-ranap-store', {
       ruanganTujuan: null,
       kamar: null,
       noBed: null,
-      kd_mutasi: null
+      kd_mutasi: null,
+
+      // document serah terima
+      derajatPasien: null,
+      tensi: null,
+      nadi: null,
+      suhu: null,
+      rr: null,
+      spo2: null,
+      terapis: [],
+      plann: null,
+      ro: null,
+      lab: null,
+      ecg: null,
+      lainlain: null,
+      kelengkapan: null
     },
-    selectRuangan: null
+    selectRuangan: null,
+    terapi: {
+      obat: null,
+      dosis: null,
+      jamMasuk: null,
+      sisa: null,
+      ket: null
+    },
 
   }),
   getters: {
