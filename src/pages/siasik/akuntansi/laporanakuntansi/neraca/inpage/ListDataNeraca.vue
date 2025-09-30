@@ -1,5 +1,152 @@
 <template>
-  <template v-if="store.objsetarakas?.length > 0 || store.objretribusi?.length > 0 ||
+  <template v-if="store.hasilaset?.length || store.hasilkewajiban?.length || store.hasilekuitas?.length">
+    <q-card-section class="full-width">
+      <div class="row full-width justify-center">
+        <q-markup-table class="custom-table full-width" flat bordered wrap-cells :separator="separator">
+          <thead>
+            <tr class="bg-grey-4">
+              <th>KODE REKENING</th>
+              <th>URAIAN</th>
+              <th>NILAI (Rp.)</th>
+            </tr>
+          </thead>
+          <tbody v-if="store.reqs.levelberapa === 6">
+            <tr v-for="it in store.hasilaset" :key="it" :class="it.kode?.length <= 12 ? 'text-bold' : ''">
+              <td>{{ it.kode }}</td>
+              <td>{{ it.uraian }}</td>
+              <td class="text-right">{{ formattanpaRp(it.nilai) }}</td>
+            </tr>
+            <tr>
+              <td colspan="2" class="text-center text-bold">JUMLAH ASET</td>
+              <td class="text-right text-bold">{{ formattanpaRp(jumlahAset()) }}</td>
+            </tr>
+            <tr v-for="it in store.hasilkewajiban" :key="it" :class="it.kode?.length <= 12 ? 'text-bold' : ''">
+              <td>{{ it.kode }}</td>
+              <td>{{ it.uraian }}</td>
+              <td class="text-right">{{ formattanpaRp(it.nilai) }}</td>
+            </tr>
+            <tr v-for="it in store.hasilekuitas" :key="it" :class="it.kode?.length <= 12 ? 'text-bold' : ''">
+              <td>{{ it.kode }}</td>
+              <td>{{ it.uraian }}</td>
+              <td class="text-right">{{ formattanpaRp(it.nilai) }}</td>
+            </tr>
+            <tr>
+              <td colspan="2" class="text-center text-bold">JUMLAH KEWAJIBAN DAN EKUITAS</td>
+              <td class="text-right text-bold">{{ formattanpaRp(jumlahWajibEkuitas()) }}</td>
+            </tr>
+          </tbody>
+          <tbody v-if="store.reqs.levelberapa === 5">
+            <tr v-for="it in store.hasilaset" :key="it" :class="it.kode?.length <= 9 ? 'text-bold' : ''">
+              <td>{{ it.kode }}</td>
+              <td>{{ it.uraian }}</td>
+              <td class="text-right">{{ formattanpaRp(it.nilai) }}</td>
+            </tr>
+            <tr>
+              <td colspan="2" class="text-center text-bold">JUMLAH ASET</td>
+              <td class="text-right text-bold">{{ formattanpaRp(jumlahAset()) }}</td>
+            </tr>
+            <tr v-for="it in store.hasilkewajiban" :key="it" :class="it.kode?.length <= 9 ? 'text-bold' : ''">
+              <td>{{ it.kode }}</td>
+              <td>{{ it.uraian }}</td>
+              <td class="text-right">{{ formattanpaRp(it.nilai) }}</td>
+            </tr>
+            <tr v-for="it in store.hasilekuitas" :key="it" :class="it.kode?.length <= 9 ? 'text-bold' : ''">
+              <td>{{ it.kode }}</td>
+              <td>{{ it.uraian }}</td>
+              <td class="text-right">{{ formattanpaRp(it.nilai) }}</td>
+            </tr>
+            <tr>
+              <td colspan="2" class="text-center text-bold">JUMLAH KEWAJIBAN DAN EKUITAS</td>
+              <td class="text-right text-bold">{{ formattanpaRp(jumlahWajibEkuitas()) }}</td>
+            </tr>
+          </tbody>
+          <tbody v-if="store.reqs.levelberapa === 4">
+            <tr v-for="it in store.hasilaset" :key="it" :class="it.kode?.length <= 6 ? 'text-bold' : ''">
+              <td>{{ it.kode }}</td>
+              <td>{{ it.uraian }}</td>
+              <td class="text-right">{{ formattanpaRp(it.nilai) }}</td>
+            </tr>
+            <tr>
+              <td colspan="2" class="text-center text-bold">JUMLAH ASET</td>
+              <td class="text-right text-bold">{{ formattanpaRp(jumlahAset()) }}</td>
+            </tr>
+            <tr v-for="it in store.hasilkewajiban" :key="it" :class="it.kode?.length <= 6 ? 'text-bold' : ''">
+              <td>{{ it.kode }}</td>
+              <td>{{ it.uraian }}</td>
+              <td class="text-right">{{ formattanpaRp(it.nilai) }}</td>
+            </tr>
+            <tr v-for="it in store.hasilekuitas" :key="it" :class="it.kode?.length <= 6 ? 'text-bold' : ''">
+              <td>{{ it.kode }}</td>
+              <td>{{ it.uraian }}</td>
+              <td class="text-right">{{ formattanpaRp(it.nilai) }}</td>
+            </tr>
+            <tr>
+              <td colspan="2" class="text-center text-bold">JUMLAH KEWAJIBAN DAN EKUITAS</td>
+              <td class="text-right text-bold">{{ formattanpaRp(jumlahWajibEkuitas()) }}</td>
+            </tr>
+          </tbody>
+          <tbody v-if="store.reqs.levelberapa === 3">
+            <tr v-for="it in store.hasilaset" :key="it" :class="it.kode?.length <= 3 ? 'text-bold' : ''">
+              <td>{{ it.kode }}</td>
+              <td>{{ it.uraian }}</td>
+              <td class="text-right">{{ formattanpaRp(it.nilai) }}</td>
+            </tr>
+            <tr>
+              <td colspan="2" class="text-center text-bold">JUMLAH ASET</td>
+              <td class="text-right text-bold">{{ formattanpaRp(jumlahAset()) }}</td>
+            </tr>
+            <tr v-for="it in store.hasilkewajiban" :key="it" :class="it.kode?.length <= 3 ? 'text-bold' : ''">
+              <td>{{ it.kode }}</td>
+              <td>{{ it.uraian }}</td>
+              <td class="text-right">{{ formattanpaRp(it.nilai) }}</td>
+            </tr>
+            <tr v-for="it in store.hasilekuitas" :key="it" :class="it.kode?.length <= 3 ? 'text-bold' : ''">
+              <td>{{ it.kode }}</td>
+              <td>{{ it.uraian }}</td>
+              <td class="text-right">{{ formattanpaRp(it.nilai) }}</td>
+            </tr>
+            <tr>
+              <td colspan="2" class="text-center text-bold">JUMLAH KEWAJIBAN DAN EKUITAS</td>
+              <td class="text-right text-bold">{{ formattanpaRp(jumlahWajibEkuitas()) }}</td>
+            </tr>
+          </tbody>
+          <tbody v-if="store.reqs.levelberapa === 2 || store.reqs.levelberapa === 1">
+            <tr v-for="it in store.hasilaset" :key="it" :class="it.kode?.length <= 1 ? 'text-bold' : ''">
+              <td>{{ it.kode }}</td>
+              <td>{{ it.uraian }}</td>
+              <td class="text-right">{{ formattanpaRp(it.nilai) }}</td>
+            </tr>
+            <tr>
+              <td colspan="2" class="text-center text-bold">JUMLAH ASET</td>
+              <td class="text-right text-bold">{{ formattanpaRp(jumlahAset()) }}</td>
+            </tr>
+            <tr v-for="it in store.hasilkewajiban" :key="it" :class="it.kode?.length <= 1 ? 'text-bold' : ''">
+              <td>{{ it.kode }}</td>
+              <td>{{ it.uraian }}</td>
+              <td class="text-right">{{ formattanpaRp(it.nilai) }}</td>
+            </tr>
+            <tr v-for="it in store.hasilekuitas" :key="it" :class="it.kode?.length <= 1 ? 'text-bold' : ''">
+              <td>{{ it.kode }}</td>
+              <td>{{ it.uraian }}</td>
+              <td class="text-right">{{ formattanpaRp(it.nilai) }}</td>
+            </tr>
+            <tr>
+              <td colspan="2" class="text-center text-bold">JUMLAH KEWAJIBAN DAN EKUITAS</td>
+              <td class="text-right text-bold">{{ formattanpaRp(jumlahWajibEkuitas()) }}</td>
+            </tr>
+          </tbody>
+        </q-markup-table>
+      </div>
+    </q-card-section>
+
+  </template>
+  <template v-else>
+    <div class="row q-pa-md full-width text-subtitle1 flex-center">
+      <q-icon class="q-pr-sm" size="sm" name="icon-mat-warning" />
+      BELUM ADA DATA, SILAHKAN PILIH PARAMETER!!
+    </div>
+  </template>
+  <!-- <template v-if="store.objsetarakas?.length > 0 || store.objretribusi?.length > 0 ||
     store.objpiutang?.length > 0 || store.objpenyisihan?.length > 0 ||
     store.objpersediaan?.length > 0 || store.objinvestasi?.length > 0 ||
     store.objasettetap?.length > 0 || store.objasetlainnya?.length > 0 ||
@@ -266,7 +413,7 @@
         </div>
       </div>
     </q-card-section>
-  </template>
+  </template> -->
 </template>
 <script setup>
 import { formattanpaRp } from 'src/modules/formatter'
@@ -276,51 +423,47 @@ import { ref } from 'vue'
 const separator = ref('cell')
 const store = useNeracaStore()
 
-function totalAsetlancar() {
-  const setarakas = store.objsetarakas.map((x) => parseFloat(x.nilai)).reduce((a, b) => a + b, 0)
-  const retribusi = store.objretribusi.nilai
-  const piutang = store.objpiutang.map((x) => parseFloat(x.nilai)).reduce((a, b) => a + b, 0)
-  const persediaan = store.objpersediaan.map((x) => parseFloat(x.nilai)).reduce((a, b) => a + b, 0)
-  const investasi = store.objinvestasi.nilai
-  return setarakas + retribusi + piutang + persediaan + investasi
-}
-
-function totalAsettetap() {
-  const asettetap = store.objasettetap.map((x) => parseFloat(x.nilai)).reduce((a, b) => a + b, 0)
-  return asettetap
-}
-function totalAsetlainnya() {
-  const asetlainnya = store.objasetlainnya.map((x) => parseFloat(x.nilai)).reduce((a, b) => a + b, 0)
-  return asetlainnya
-}
-
 function jumlahAset() {
-  const asetlancar = parseFloat(totalAsetlancar())
-  const asettetap = parseFloat(totalAsettetap())
-  const asetlainnya = parseFloat(totalAsetlainnya())
-  return asetlancar + asettetap + asetlainnya
+  const totalaset = store.hasilaset.map((x) => parseFloat(x.nilai))[0]
+  return totalaset
 }
 
-function totalKewajiban() {
-  const kewajibanjgkpendek = store.objutang.map((x) => parseFloat(x.nilai)).reduce((a, b) => a + b, 0)
-  const kewajibanjgkpanjang = store.objutangjkpanjang.map((x) => parseFloat(x.nilai)).reduce((a, b) => a + b, 0)
-  const jumlahkewajiban = parseFloat(kewajibanjgkpendek) + parseFloat(kewajibanjgkpanjang)
-  return {
-    kewajibanjgkpendek,
-    kewajibanjgkpanjang,
-    jumlahkewajiban
-  }
+function jumlahWajibEkuitas() {
+  const totalwajib = store.hasilkewajiban.map((x) => parseFloat(x.nilai))[0]
+  const totalekuitas = store.hasilekuitas.map((x) => parseFloat(x.nilai))[0]
+  return totalwajib + totalekuitas
 }
 
-function totalEkuitas() {
-  const ekuitas = store.objekuitas.map((x) => parseFloat(x.nilai)).reduce((a, b) => a + b, 0)
-  return ekuitas
-}
-
-function jumlahKewajibanDanEkuitas() {
-  const kewajiban = parseFloat(totalKewajiban().jumlahkewajiban)
-  const ekuitas = parseFloat(totalEkuitas())
-  return kewajiban + ekuitas
-}
 
 </script>
+<style scoped>
+/* Mengatur warna garis pada seluruh tabel termasuk garis luar */
+.custom-table {
+  border-color: #555555 !important;
+}
+
+/* Menargetkan tabel di dalam komponen q-markup-table */
+.custom-table table {
+  border-color: #555555 !important;
+}
+
+/* Mengatur warna garis pada sel header */
+.custom-table th {
+  border-color: #555555 !important;
+  font-weight: bold;
+}
+
+/* Mengatur warna garis pada sel data */
+.custom-table td {
+  border-color: #555555 !important;
+}
+
+/* Pastikan garis tidak dobel */
+.custom-table table {
+  border-collapse: collapse;
+}
+
+.custom-table thead tr {
+  border-color: #555555 !important;
+}
+</style>

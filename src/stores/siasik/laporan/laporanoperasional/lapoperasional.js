@@ -96,21 +96,6 @@ export const useLaporanOperasionalStore = defineStore('Laporan_Operasional', {
     hasilpendapatan: [],
     hasilbeban: [],
 
-    // psaprealisasipendapatan: [],
-    // psaprealisasipendapatanx: [],
-    // psappendpatanhibah: [],
-    // psapbebanpegawai: [],
-    // psapbebanlain: [],
-    // psappenjualanaset: [],
-    // psapkerugian: [],
-    // psapnonope: [],
-    // psappendapatanluarbiasa: [],
-    // bebanluarbiasa: [],
-
-    // psappendapatan: [],
-    // psapbeban: [],
-    // psapnonoperasional: [],
-    // psapbebanluarbiasa: []
   }),
   actions: {
     setParameter(key, val) {
@@ -125,32 +110,16 @@ export const useLaporanOperasionalStore = defineStore('Laporan_Operasional', {
       const params = { params: this.reqs }
       return new Promise((resolve) => {
         api.get('v1/laporan/lapoperasional/getlo', params).then((resp) => {
-          // console.log('data LO', resp.data)
+          console.log('data LO', resp.data)
           if (resp.status === 200) {
             this.hasilpendapatan = []
             this.hasilbeban = []
-            // this.psappendapatan = []
-            // this.psapbeban = []
-            // this.psapnonoperasional = []
-            // this.psapbebanluarbiasa = []
             this.pagupendapatan = resp.data.pagupendapatan
             this.penyesuaianpendapatan = resp.data.penyesuaianpendapatan
             this.datapendapatans = resp.data.pendapatan
             this.databebans = resp.data.beban
             this.penyesuaianbeban = resp.data.penyesuaianbeban
 
-
-            // this.psaprealisasipendapatan = resp.data.psaprealisasipendapatan
-            // this.psaprealisasipendapatanx = resp.data.psaprealisasipendapatanx
-            // this.psappendpatanhibah = resp.data.psappendpatanhibah
-            // this.psappenyesuaianpendp = resp.data.psappenyesuaianpendp
-            // this.psapbebanpegawai = resp.data.psapbebanpegawai
-            // this.psapbebanlain = resp.data.psapbebanlain
-            // this.psappenjualanaset = resp.data.psappenjualanaset
-            // this.psapkerugian = resp.data.psapkerugian
-            // this.psapnonope = resp.data.psapnonoperasional
-            // this.psappendapatanluarbiasa = resp.data.psappendapatanluarbiasa
-            // this.bebanluarbiasa = resp.data.psapbebanluarbiasa
             this.mapData()
 
             this.loading = false

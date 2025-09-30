@@ -18,7 +18,18 @@
             store.form.uraianpsap13 = cari.uraian
           }"
         /> -->
-        <q-select v-model="store.form.kodepsap13" label="Akun Rekening" class="ellipsis-2-lines q-pt-sm" use-input
+        <q-select v-model="store.form.kodepsap13" use-input outlined standout="bg-yellow-3" dense emit-value map-options
+          option-value="kodeall3" input-debounce="300" label="Pilih Rekening" class="ellipsis-2-lines"
+          :options="options"
+          :option-label="opt => Object(opt) === opt && 'kodeall3' in opt ? opt.kodeall3 + ' - ' + opt.uraian : ''"
+          :disable="store.loading" :loading="store.loading" @filter="filterFn"
+          @clear="store.setFormSaldo('kodepsap13', null)" @update:model-value="(val) => {
+            const arr = store.optionrekening
+            const cari = arr.find(x => x.kodeall3 === val)
+            store.form.uraianpsap13 = cari.uraian
+            console.log('Rekening dipilih:', store.form.uraianpsap13)
+          }">
+          <!-- <q-select v-model="store.form.kodepsap13" label="Akun Rekening" class="ellipsis-2-lines q-pt-sm" use-input
           outlined standout="bg-yellow-3" dense emit-value map-options autocomplete="uraian" option-value="kodeall3"
           :disable="store.loading" :loading="store.loading"
           :option-label="opt => Object(opt) === opt && 'kodeall3' in opt ? opt.kodeall3 + ' - ' + opt.uraian : ''"
@@ -27,7 +38,7 @@
             const arr = store.akuns
             const cari = arr.find(x => x.kodeall3 === val)
             store.form.uraianpsap13 = cari.uraian
-          }">
+          }"> -->
           <template v-if="store.form.kodepsap13" #append>
             <q-icon name="icon-mat-cancel" class="cursor-pointer"
               @click.stop.prevent="store.setFormSaldo('kodepsap13', null)" />
@@ -46,6 +57,8 @@
           :valid="{ required: true, number: true }" :autofocus="false" @update:model-value="() => {
             if (store.form.debit > 0) {
               store.form.debetkredit = 'Debet'
+            } else {
+              store.form.debetkredit = 'DebetKredit'
             }
           }" />
       </div>
@@ -54,6 +67,8 @@
           :valid="{ required: true, number: true }" :autofocus="false" @update:model-value="() => {
             if (store.form.kredit > 0) {
               store.form.debetkredit = 'Kredit'
+            } else {
+              store.form.debetkredit = 'DebetKredit'
             }
           }" />
       </div>
@@ -75,6 +90,7 @@
 <script setup>
 import { saldoawalJurnal } from 'src/stores/siasik/akuntansi/jurnal/saldoawal'
 import { onMounted, ref } from 'vue'
+import { api } from 'src/boot/axios'
 // eslint-disable-next-line no-unused-vars
 const refsaldo = ref([])
 const store = saldoawalJurnal()
@@ -85,26 +101,102 @@ onMounted(() => {
   store.getRekening()
   // store.getDataTable()
 })
-function filterFn(val, update) {
-  if (val === '') {
+async function filterFn(val, update) {
+  // if (val === '') {
+  //   update(() => {
+  //     options.value = store.akuns
+  //   })
+  //   return
+  // }
+  // update(() => {
+  //   const needle = val.toLowerCase()
+
+  //   options.value = store.akuns.filter(
+  //     (v) => v.uraian.toLowerCase().indexOf(needle) > -1 || v.kodeall3.toLowerCase().indexOf(needle) > -1
+  //   )
+  // })
+  if (!val) {
     update(() => {
-      options.value = store.akuns
+      options.value = store.optionrekening || []
+      console.log('Options saat pencarian kosong:', options.value)
     })
+    store.loading = false
     return
   }
+  const needle = val.toLowerCase()
+  const localResults = store.optionrekening?.filter(
+    (item) =>
+    (item.kodeall3?.toLowerCase().includes(needle) ||
+      item.uraian?.toLowerCase().includes(needle))
+  ) || []
+  if (localResults.length > 0) {
+    update(() => {
+      options.value = localResults
+      console.log('Options dari filter lokal:', localResults)
+    })
+    store.loading = false
+    return
+  }
+  if (val.length >= 2) {
+    let allData = []
+    let page = 1
+    let hasMore = true
+
+    // console.log('Mulai iterasi halaman untuk levelberapa:', store.reqs.levelberapa)
+
+    while (hasMore) {
+      try {
+        const resp = await api.get('v1/akuntansi/saldoawal/akunsaldo', {
+          params: {
+            q: val,
+            per_page: 100,
+            page: page,
+          }
+        })
+
+        console.log(`filterFn: Data halaman ${page}:`, resp.data)
+
+        if (resp.status === 200 && resp.data.data?.length) {
+          allData = [...allData, ...resp.data.data]
+          hasMore = resp.data.next_page_url !== null // Untuk SimplePaginator
+          page++
+        } else {
+          hasMore = false
+        }
+      } catch (error) {
+        console.error('Error saat mengambil halaman:', error)
+        hasMore = false
+      }
+    }
+
+    console.log('filterFn: Semua data dari server:', allData)
+
+    // Update opsi berdasarkan hasil server
+    update(() => {
+      if (allData.length > 0) {
+        options.value = allData
+        store.optionrekening = allData // Update hanya jika ada hasil
+      } else {
+        options.value = [] // Kosongkan opsi untuk menampilkan "Tidak ditemukan"
+      }
+      console.log('Options setelah update:', options.value)
+    })
+  } else {
+    // Untuk input pendek, gunakan hasil lokal
+    update(() => {
+      options.value = localResults
+      console.log('Options untuk pencarian pendek:', localResults)
+    })
+  }
+
+  store.loading = false
   // if (val === null) {
   //   update(() => {
   //     options.value = store.akuns
   //   })
   //   return
   // }
-  update(() => {
-    const needle = val.toLowerCase()
 
-    options.value = store.akuns.filter(
-      (v) => v.uraian.toLowerCase().indexOf(needle) > -1 || v.kodeall3.toLowerCase().indexOf(needle) > -1
-    )
-  })
 
   // update(() => {
   //   const filter = ['kodeall3', 'uraian']

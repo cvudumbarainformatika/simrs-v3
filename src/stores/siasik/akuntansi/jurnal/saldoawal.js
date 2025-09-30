@@ -11,6 +11,7 @@ export const saldoawalJurnal = defineStore('saldoawal_Jurnal', {
     dialogEdit: false,
     reqs: {
       q: '',
+      per_page: 100,
       tahun: date.formatDate(Date.now(), 'YYYY'),
       simpanform: []
     },
@@ -24,7 +25,9 @@ export const saldoawalJurnal = defineStore('saldoawal_Jurnal', {
     },
     datasaldo: [],
     akuns: [],
-    saldo: []
+    saldo: [],
+    optionrekening: [],
+
   }),
   actions: {
     setSearch(val) {
