@@ -1,31 +1,39 @@
 <template>
-  <div class="row q-pl-sm q-pt-xs">
-    <div class="col-4">
-      Nama Map : <q-span class="text-weight-bold">{{ store.itemsrinci[0]?.namamap }} </q-span>
+  <q-card flat bordered class="q-pa-sm q-mb-sm">
+    <div class="row q-pl-sm q-pt-xs">
+      <div class="col-6">
+        Nama Map : <q-span class="text-weight-bold">{{ store.itemsrinci[0]?.namamap }} </q-span>
+      </div>
+      <div class="col-6">
+        Klasifikasi : <q-span class="text-weight-bold"> {{ store.itemsrinci[0]?.klasifikasi?.nama }} </q-span>
+      </div>
     </div>
-    <div class="col-5">
-      Klasifikasi : <q-span class="text-weight-bold"> {{ store.itemsrinci[0]?.klasifikasi?.nama }} </q-span>
+
+    <div class="row q-pl-sm">
+      <div class="col-6">
+        Keterangan : <q-span class="text-weight-bold">{{ store.itemsrinci[0]?.keterangan }}</q-span>
+      </div>
+      <div class="col-6">
+        Unit Pengolah :
+        <q-badge outline color="accent">{{ store.itemsrinci[0]?.unitpengolah?.nama }}</q-badge>
+      </div>
     </div>
-  </div>
-  <div class="row q-pl-sm">
-    <div class="col-4">
-      Keterangan : <q-span class="text-weight-bold">{{ store.itemsrinci[0]?.keterangan }}</q-span>
+
+    <div class="row q-pl-sm">
+      <div class="col-6">
+        Tempat :
+        <q-span class="text-weight-bold">
+          <q-badge outline color="red">
+            {{ store.itemsrinci[0]?.kabinet?.namacabinet }} ==> Laci {{ store.itemsrinci[0]?.laci }}
+          </q-badge>
+        </q-span>
+      </div>
+      <div class="col-6">
+        Tahun : {{ store.itemsrinci[0]?.tahunMap }}
+      </div>
     </div>
-    <div class="col-5">
-      Unit Pengolah : <q-badge outline color="accent"> {{
-        store.itemsrinci[0]?.unitpengolah?.nama }}</q-badge>
-    </div>
-  </div>
-  <div class="row q-pl-sm q-pb-sm">
-    <div class="col-4">
-      Tempat : <q-span class="text-weight-bold"><q-badge outline color="red">{{
-        store.itemsrinci[0]?.kabinet?.namacabinet }} ==> Laci {{ store.itemsrinci[0]?.laci }}</q-badge></q-span>
-    </div>
-    <div class="col-5">
-      Tahun : {{ store.itemsrinci[0]?.tahunMap }}
-    </div>
-  </div>
-  <q-separator />
+  </q-card>
+
   <div class="q-pb-xl">
     <ListLoading v-if="store.loadingrinci" />
     <empty-data v-else-if="!store.itemsrinci[0]?.rinciandalammap?.length && !store.loadingrinci" />
