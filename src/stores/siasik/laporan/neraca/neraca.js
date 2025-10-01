@@ -13,78 +13,34 @@ export const useNeracaStore = defineStore('Neraca_Akuntansi', {
       page: 1,
       tgl: date.formatDate(Date.now(), 'YYYY-MM-DD'),
       tglx: date.formatDate(Date.now(), 'YYYY-MM-DD'),
-      tahun: date.formatDate(Date.now(), 'YYYY')
+      tahun: date.formatDate(Date.now(), 'YYYY'),
+      levelberapa: ''
     },
     display: {
       dari: date.formatDate(Date.now(), 'DD MMMM YYYY'),
       sampai: date.formatDate(Date.now(), 'DD MMMM YYYY'),
       sekarang: date.formatDate(Date.now(), 'DD MMMM YYYY')
     },
-    reqpersediaan: [
-      { uraian: 'Penyisihan Piutang', kode: '1.1.10' },
-      { uraian: 'Persediaan', kode: '1.1.12' }
+    level: [
+      { nama: 'Akun', value: '1' },
+      { nama: 'Kelompok', value: '2' },
+      { nama: 'Jenis', value: '3' },
+      { nama: 'Objek', value: '4' },
+      { nama: 'Rincian Objek', value: '5' },
+      { nama: 'SubRincian Objek', value: '6' }
     ],
-    reqinves: [
-      { uraian: 'Investasi Jangka Panjang Non Permanen', kode: '1.2.01' },
-      { uraian: 'Investasi Jangka Panjang Permanen', kode: '1.2.02' }
-    ],
-    reqasettetap: [
-      { uraian: 'Tanah', kode: '1.3.01' },
-      { uraian: 'Peralatan dan Mesin', kode: '1.3.02' },
-      { uraian: 'Gedung dan Bangunan', kode: '1.3.03' },
-      { uraian: 'Jalan, Jaringan, dan Irigasi', kode: '1.3.04' },
-      { uraian: 'aset Tetap Lainnya', kode: '1.3.05' },
-      { uraian: 'Konstruksi Dalam Pengerjaan', kode: '1.3.06' },
-      { uraian: 'Akumulasi Penyusutan', kode: '1.3.07' },
-      { uraian: 'aset Konsesi Jasa', kode: '1.3.08' },
-      { uraian: 'Akumulasi Penyusutan aset Konsesi Jasa', kode: '1.3.09' }
-    ],
-    reqasetlain: [
-      { uraian: 'aset Tidak Berwujud', kode: '1.5.03' },
-      { uraian: 'aset Lain - lain', kode: '1.5.04' },
-      { uraian: 'Akumulasi Amortisasi aset Tidak Berwujud', kode: '1.5.05' },
-      { uraian: 'Akumulasi Penyusutan aset Lainnya', kode: '1.5.06' }
-    ],
-    reqekuitas: [
-      { uraian: 'Ekuitas', kode: '3.1.01' },
-      { uraian: 'RK PPKD', kode: '3.1.03' }
-    ],
-    requtngjgkpanjang: [
-      { uraian: 'Utang kepada Pemerintah Pusat', kode: '2.2.01' },
-      { uraian: 'Utang kepada Lembaga Keuangan Bank (LKB)', kode: '2.2.02' },
-      { uraian: 'Utang kepada Lembaga Keuangan Bukan Bank (LKBB)', kode: '2.2.03' },
-      { uraian: 'Utang kepada Masyarakat', kode: '2.2.04' },
-      { uraian: 'Kewajiban Konsesi Jasa', kode: '2.2.05' }
-    ],
-    requtang: [
-      { uraian: 'Pendapatan Diterima Dimuka', kode: '2.1.05' },
-      { uraian: 'Utang Belanja', kode: '2.1.06' },
-      { uraian: 'Utang Jangka Pendek Lainnya', kode: '2.1.07' }
-    ],
-    setarakas: [],
-    retribusi: [],
-    piutang: [],
-    piutanglain: [],
-    penyisihanpiutang: [],
-    persediaan: [],
-    // investasi: [],
-    aset: [],
-    asetlainnya: [],
-    utang: [],
-    // utangjkpanjang: [],
-    // ekuitas: [],
 
-    objsetarakas: [],
-    objretribusi: [],
-    objpiutang: [],
-    objpenyisihan: [],
-    objpersediaan: [],
-    objinvestasi: [],
-    objasettetap: [],
-    objasetlainnya: [],
-    objutang: [],
-    objutangjkpanjang: [],
-    objekuitas: []
+
+    // REVISI //
+    dataaset: [],
+    datakewajiban: [],
+    dataekuitas: [],
+    hasilaset: [],
+    hasilkewajiban: [],
+    hasilekuitas: [],
+    // REVISI //
+
+
   }),
   actions: {
     setParameter(key, val) {
@@ -97,300 +53,467 @@ export const useNeracaStore = defineStore('Neraca_Akuntansi', {
         api.get('v1/akuntansi/neraca/getneraca', params).then((resp) => {
           // console.log('getData NERACA', resp?.data)
           if (resp.status === 200) {
-            this.setarakas = resp.data?.setarakas
-            this.piutang = resp.data?.piutang
-            this.piutanglain = resp.data?.piutanglain
-            this.persediaan = resp.data?.persediaan
-            // this.investasi = resp.data?.investasi
-            this.aset = resp.data?.aset
-            this.asetlainnya = resp.data?.asetlainnya
-            this.utang = resp.data?.utang
-            // this.utangjkpanjang = resp.data?.utangjkpanjang
-            // this.ekuitas = resp.data?.ekuitas
-            // const coba = this.asetlainnya.map((x) => x.kodex)
-            // const unik = coba?.length ? [...new Set(coba)] : []
-            // console.log('set', unik)
+            this.hasilaset = []
+            this.hasilkewajiban = []
+            this.hasilekuitas = []
+            this.dataaset = resp.data?.aset
+            this.datakewajiban = resp.data?.kewajiban
+            this.dataekuitas = resp.data?.ekuitas
+            this.mapData()
 
-            const objsetarakas = []
-            for (let i = 0; i < this.setarakas?.length; i++) {
-              const el = this.setarakas[i]
-              const saldoawal = el?.saldoawal.map((x) => parseFloat(x.saldo)).reduce((a, b) => a + b, 0)
-              const jurnal = el?.jurnalotom.map((x) => parseFloat(x.totaljurnal)).reduce((a, b) => a + b, 0)
-              const penyesuaian = el?.penyesuaianx.map((x) => parseFloat(x.totalpenyesuaian)).reduce((a, b) => a + b, 0)
-              const obj = {
-                kode: el.kodeall3,
-                uraian: el.uraian,
-                nilai: saldoawal + jurnal + penyesuaian
-              }
-              objsetarakas.push(obj)
-            }
-
-            const objretri = []
-            for (let i = 0; i < this.retribusi?.length; i++) {
-              const el = this.retribusi[i]
-              const saldoawal = el?.saldoawal.map((x) => parseFloat(x.saldo)).reduce((a, b) => a + b, 0)
-              const jurnal = el?.jurnalotom.map((x) => parseFloat(x.totaljurnal)).reduce((a, b) => a + b, 0)
-              const penyesuaian = el?.penyesuaianx.map((x) => parseFloat(x.totalpenyesuaian)).reduce((a, b) => a + b, 0)
-              const retribusi = {
-                kode: '1.1.04',
-                uraian: 'Piutang Retribusi Daerah',
-                nilai: saldoawal + jurnal + penyesuaian
-              }
-              objretri.push(retribusi)
-            }
-            const objretribusi = {
-              kode: '1.1.04',
-              uraian: 'Piutang Retribusi Daerah',
-              nilai: objretri.map((x) => x.nilai).reduce((a, b) => a + b, 0)
-            }
-
-            const objx = []
-            for (let i = 0; i < this.piutang?.length; i++) {
-              const el = this.piutang[i]
-              const saldoawal = el?.saldoawal.map((x) => parseFloat(x.saldo)).reduce((a, b) => a + b, 0)
-              const jurnal = el?.jurnalotom.map((x) => parseFloat(x.totaljurnal)).reduce((a, b) => a + b, 0)
-              const penyesuaian = el?.penyesuaianx.map((x) => parseFloat(x.totalpenyesuaian)).reduce((a, b) => a + b, 0)
-              const piutang = {
-                kode: '1.1.06.16',
-                uraian: 'Piutang Pendapatan BLUD',
-                nilai: saldoawal + jurnal + penyesuaian
-              }
-              objx.push(piutang)
-            }
-            for (let i = 0; i < this.piutanglain?.length; i++) {
-              const el = this.piutanglain[i]
-              const saldoawal = el?.saldoawal.map((x) => parseFloat(x.saldo)).reduce((a, b) => a + b, 0)
-              const jurnal = el?.jurnalotom.map((x) => parseFloat(x.totaljurnal)).reduce((a, b) => a + b, 0)
-              const penyesuaian = el?.penyesuaianx.map((x) => parseFloat(x.totalpenyesuaian)).reduce((a, b) => a + b, 0)
-              const obj = {
-                kode: '1.1.06.00',
-                uraian: 'Piutang Pendapatan lain-lain',
-                nilai: saldoawal + jurnal + penyesuaian
-              }
-              objx.push(obj)
-            }
-            const objpiutang = []
-            const set = objx.map((x) => x.kode)
-            const setunik = set?.length ? [...new Set(set)] : []
-            for (let i = 0; i < setunik?.length; i++) {
-              const el = setunik[i]
-              const obj = {
-                kode: objx.filter((x) => x.kode === el)[0]?.kode,
-                uraian: objx.filter((x) => x.kode === el)[0]?.uraian,
-                nilai: objx.filter((x) => x.kode === el).map((x) => x.nilai).reduce((a, b) => a + b, 0)
-              }
-              objpiutang.push(obj)
-            }
-
-            // const objp = []
-            // for (let i = 0; i < this.penyisihanpiutang?.length; i++) {
-            //   const el = this.penyisihanpiutang[i]
-            //   const saldoawal = el?.saldoawal.map((x) => parseFloat(x.saldo)).reduce((a, b) => a + b, 0)
-            //   const jurnal = el?.jurnalotom.map((x) => parseFloat(x.totaljurnal)).reduce((a, b) => a + b, 0)
-            //   const penyesuaian = el?.penyesuaianx.map((x) => parseFloat(x.totalpenyesuaian)).reduce((a, b) => a + b, 0)
-            //   const penyisihan = {
-            //     kode: '1.1.10',
-            //     uraian: 'Penyisihan Piutang',
-            //     nilai: saldoawal + jurnal + penyesuaian
-            //   }
-            //   objp.push(penyisihan)
-            // }
-            // const objpenyisihan = {
-            //   kode: '1.1.10',
-            //   uraian: 'Penyisihan Piutang',
-            //   nilai: objp.map((x) => x.nilai).reduce((a, b) => a + b, 0)
-            // }
-
-            const objpersediaan = []
-            const setpersedian = this.reqpersediaan.map((x) => x.kode)
-            const filpersediaan = this.aset.filter(x => setpersedian.includes(x.kodex)).map((x) => x.kodex)
-            const setunikpersd = filpersediaan?.length ? [...new Set(filpersediaan)] : []
-            for (let i = 0; i < setunikpersd?.length; i++) {
-              const el = setunikpersd[i]
-              const saldoawal = this.aset.filter((x) => x.kodex === el).map((x) => x.saldoawal.map((x) => parseFloat(x.saldo)).reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0)
-              const jurnal = this.aset.filter((x) => x.kodex === el).map((x) => x.jurnalotom.map((x) => parseFloat(x.totaljurnal)).reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0)
-              const penyesuaian = this.aset.filter((x) => x.kodex === el).map((x) => x.penyesuaianx.map((x) => parseFloat(x.totalpenyesuaian)).reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0)
-
-              const persediaan = {
-                kode: this.aset.filter((x) => x.kodex === el)[0]?.kodex,
-                uraian: this.aset.filter((x) => x.kodex === el).map((x) => x.kode3)[0]?.uraian,
-                nilai: saldoawal + jurnal + penyesuaian
-              }
-              objpersediaan.push(persediaan)
-            }
-            // console.log('persed', objpersediaan)
-
-            // const objpersediaan = {
-            //   kode: '1.1.12',
-            //   uraian: 'Persediaan',
-            //   nilai: objp.map((x) => x.nilai).reduce((a, b) => a + b, 0)
-            // }
-
-            const objinv = []
-            const setinv = this.reqinves.map((x) => x.kode)
-            const filinves = this.aset.filter(x => setinv.includes(x.kodex)).map((x) => x.kodex)
-            const setunikinves = filinves?.length ? [...new Set(filinves)] : []
-            for (let i = 0; i < setunikinves?.length; i++) {
-              const el = setunikinves[i]
-              const saldoawal = this.aset.filter((x) => x.kodex === el).map((x) => x.saldoawal.map((x) => parseFloat(x.saldo)).reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0)
-              const jurnal = this.aset.filter((x) => x.kodex === el).map((x) => x.jurnalotom.map((x) => parseFloat(x.totaljurnal)).reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0)
-              const penyesuaian = this.aset.filter((x) => x.kodex === el).map((x) => x.penyesuaianx.map((x) => parseFloat(x.totalpenyesuaian)).reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0)
-
-              const investasi = {
-                kode: this.aset.filter((x) => x.kodex === el)[0]?.kodex,
-                uraian: this.aset.filter((x) => x.kodex === el).map((x) => x.kode3)[0]?.uraian,
-                nilai: saldoawal + jurnal + penyesuaian
-              }
-              objinv.push(investasi)
-            }
-            const objinvestasi = {
-              kode: '1.2',
-              uraian: 'Investasi Jangka Panjang',
-              nilai: objinv.map((x) => x.nilai).reduce((a, b) => a + b, 0)
-            }
-
-            const objasettetap = []
-            const setaset = this.reqasettetap.map((x) => x.kode)
-            const filasetttp = this.aset.filter(x => setaset.includes(x.kodex)).map((x) => x.kodex)
-            const setunikaset = filasetttp?.length ? [...new Set(filasetttp)] : []
-            for (let i = 0; i < setunikaset?.length; i++) {
-              const el = setunikaset[i]
-              const saldoawal = this.aset.filter((x) => x.kodex === el).map((x) => x.saldoawal.map((x) => parseFloat(x.saldo)).reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0)
-              const jurnal = this.aset.filter((x) => x.kodex === el).map((x) => x.jurnalotom.map((x) => parseFloat(x.totaljurnal)).reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0)
-              const penyesuaian = this.aset.filter((x) => x.kodex === el).map((x) => x.penyesuaianx.map((x) => parseFloat(x.totalpenyesuaian)).reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0)
-
-              const obj = {
-                kode: this.aset.filter((x) => x.kodex === el)[0]?.kodex,
-                uraian: this.aset.filter((x) => x.kodex === el).map((x) => x.kode3)[0]?.uraian,
-                nilai: saldoawal + jurnal + penyesuaian
-              }
-              objasettetap.push(obj)
-            }
-
-            const objasetlainnya = []
-            const setasetlain = this.reqasetlain.map((x) => x.kode)
-            const filasetlain = this.aset.filter(x => setasetlain.includes(x.kodex)).map((x) => x.kodex)
-            const setunikasetlain = filasetlain?.length ? [...new Set(filasetlain)] : []
-            for (let i = 0; i < setunikasetlain?.length; i++) {
-              const el = setunikasetlain[i]
-              const saldoawal = this.aset.filter((x) => x.kodex === el).map((x) => x.saldoawal.map((x) => parseFloat(x.saldo)).reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0)
-              const jurnal = this.aset.filter((x) => x.kodex === el).map((x) => x.jurnalotom.map((x) => parseFloat(x.totaljurnal)).reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0)
-              const penyesuaian = this.aset.filter((x) => x.kodex === el).map((x) => x.penyesuaianx.map((x) => parseFloat(x.totalpenyesuaian)).reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0)
-
-              const obj = {
-                kode: this.aset.filter((x) => x.kodex === el)[0]?.kodex,
-                uraian: this.aset.filter((x) => x.kodex === el).map((x) => x.kode3)[0]?.uraian,
-                nilai: saldoawal + jurnal + penyesuaian
-              }
-              objasetlainnya.push(obj)
-            }
-
-            const objutang = []
-            const setutang = this.requtang.map((x) => x.kode)
-            const filtutang = this.utang.filter(x => setutang.includes(x.kodex)).map((x) => x.kodex)
-            const setunikutang = filtutang?.length ? [...new Set(filtutang)] : []
-
-            for (let i = 0; i < setunikutang?.length; i++) {
-              const el = setunikutang[i]
-              const saldoawal = this.utang.filter((x) => x.kodex === el).map((x) => x.saldoawal.map((x) => parseFloat(x.saldo)).reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0)
-              const jurnal = this.utang.filter((x) => x.kodex === el).map((x) => x.jurnalotom.map((x) => parseFloat(x.totaljurnal)).reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0)
-              const penyesuaian = this.utang.filter((x) => x.kodex === el).map((x) => x.penyesuaianx.map((x) => parseFloat(x.totalpenyesuaian)).reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0)
-
-              const obj = {
-                kode: this.utang.filter((x) => x.kodex === el)[0]?.kodex,
-                uraian: this.utang.filter((x) => x.kodex === el).map((x) => x.kode3)[0]?.uraian,
-                nilai: saldoawal + jurnal + penyesuaian
-              }
-              objutang.push(obj)
-            }
-
-            const objutangjkpanjang = []
-            const setutangpjg = this.requtngjgkpanjang.map((x) => x.kode)
-            const filtutangjgk = this.utang.filter(x => setutangpjg.includes(x.kodex)).map((x) => x.kodex)
-            const setunikutangpjg = filtutangjgk?.length ? [...new Set(filtutangjgk)] : []
-            for (let i = 0; i < setunikutangpjg?.length; i++) {
-              const el = setunikutangpjg[i]
-              const saldoawal = this.utang.filter((x) => x.kodex === el).map((x) => x.saldoawal.map((x) => parseFloat(x.saldo)).reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0)
-              const jurnal = this.utang.filter((x) => x.kodex === el).map((x) => x.jurnalotom.map((x) => parseFloat(x.totaljurnal)).reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0)
-              const penyesuaian = this.utang.filter((x) => x.kodex === el).map((x) => x.penyesuaianx.map((x) => parseFloat(x.totalpenyesuaian)).reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0)
-
-              const obj = {
-                kode: this.utang.filter((x) => x.kodex === el)[0]?.kodex,
-                uraian: this.utang.filter((x) => x.kodex === el).map((x) => x.kode3)[0]?.uraian,
-                nilai: saldoawal + jurnal + penyesuaian
-              }
-              objutangjkpanjang.push(obj)
-            }
-            const k = '2.2.01'
-            const jkp = objutangjkpanjang.filter(x => x.kode === k)
-            const jkplain = objutangjkpanjang.filter(x => x.kode !== k)
-            const nilaijkplainnya = jkplain.map((x) => parseFloat(x.nilai)).reduce((a, b) => a + b, 0)
-            const objjkplain = {
-              kode: '2.2.99',
-              uraian: 'Utang Jangka Panjang Lainnya',
-              nilai: nilaijkplainnya
-            }
-            const hasiljkp = jkp.concat(objjkplain)
-            // console.log('sksksksks', hasiljkp)
-
-            const objekuitas = []
-            const setekuitas = this.reqekuitas.map((x) => x.kode)
-            const filtekuitas = this.utang.filter(x => setekuitas.includes(x.kodex)).map((x) => x.kodex)
-            const setekuitasx = filtekuitas?.length ? [...new Set(filtekuitas)] : []
-            for (let i = 0; i < setekuitasx?.length; i++) {
-              const el = setekuitasx[i]
-              const saldoawal = this.utang.filter((x) => x.kodex === el).map((x) => x.saldoawal.map((x) => parseFloat(x.saldo)).reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0)
-              const jurnal = this.utang.filter((x) => x.kodex === el).map((x) => x.jurnalotom.map((x) => parseFloat(x.totaljurnal)).reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0)
-              const penyesuaian = this.utang.filter((x) => x.kodex === el).map((x) => x.penyesuaianx.map((x) => parseFloat(x.totalpenyesuaian)).reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0)
-
-              const obj = {
-                kode: this.utang.filter((x) => x.kodex === el)[0]?.kodex,
-                uraian: this.utang.filter((x) => x.kodex === el)[1].uraian,
-                nilai: saldoawal + jurnal + penyesuaian
-              }
-              objekuitas.push(obj)
-            }
-            // console.log('12121212', objekuitas)
-            // const objekekuitas = []
-            // const ek = '3.1.01'
-            // const ekuitas = objekuitas.filter(x => x.kode === ek)
-            // const nilaiekuitas = ekuitas.map((x) => parseFloat(x.nilai)).reduce((a, b) => a + b, 0).toFixed(2)
-            // const ekuitasx = {
-            //   kode: objekuitas.filter(x => x.kode === ek)[0].kode,
-            //   uraian: objekuitas.filter(x => x.kode === ek)[0].uraian,
-            //   nilai: nilaiekuitas
-            // }
-            // console.log('xsxs', ekuitasx)
-            // const ekuitasrk = objekuitas.filter(x => x.kode !== ek)
-
-            // const nilaiekuitasrk = ekuitasrk.map((x) => parseFloat(x.nilai)).reduce((a, b) => a + b, 0).toFixed(2)
-            // const ekuitasppkd = {
-            //   kode: '3.1.03',
-            //   uraian: 'R/K PPKD',
-            //   nilai: nilaiekuitasrk
-            // }
-            // objekekuitas.push(ekuitasx, ekuitasppkd)
-
-            // const hasilekuitas = ekuitasx.concat(ekuitasRk)
-
-            this.objsetarakas = objsetarakas
-            this.objretribusi = objretribusi
-            this.objpiutang = objpiutang
-            // this.objpenyisihan = objpenyisihan
-            this.objpersediaan = objpersediaan
-            this.objinvestasi = objinvestasi
-            this.objasettetap = objasettetap
-            this.objasetlainnya = objasetlainnya
-            this.objutang = objutang
-            this.objutangjkpanjang = hasiljkp
-            this.objekuitas = objekuitas
-
-            // console.log('objekuitas', this.objekuitas)
             this.loading = false
             resolve(resp)
           }
         }).catch(() => { this.loading = false })
       })
+    },
+    mapData() {
+      const kode6 = []
+      const kode5 = []
+      const kode4 = []
+      const kode3 = []
+      const kode2 = []
+      const kode1 = []
+
+      const set6 = this.dataaset.map((x) => x.kode6)
+      const set5 = this.dataaset.map((x) => x.kode5)
+      const set4 = this.dataaset.map((x) => x.kode4)
+      const set3 = this.dataaset.map((x) => x.kode3)
+      const set2 = this.dataaset.map((x) => x.kode2)
+      const set1 = this.dataaset.map((x) => x.kode1)
+
+      const setunik6 = set6?.length ? [...new Set(set6)] : []
+      const setunik5 = set5?.length ? [...new Set(set5)] : []
+      const setunik4 = set4?.length ? [...new Set(set4)] : []
+      const setunik3 = set3?.length ? [...new Set(set3)] : []
+      const setunik2 = set2?.length ? [...new Set(set2)] : []
+      const setunik1 = set1?.length ? [...new Set(set1)] : []
+
+      for (let i = 0; i < setunik6?.length; i++) {
+        const el = setunik6[i]
+        const saldoawal = this.dataaset.filter((x) => x.kode6 === el).map((x) => parseFloat(x.saldo)).reduce((a, b) => a + b, 0)
+        const nilaijurnal = this.dataaset.filter((x) => x.kode6 === el).map((x) => (x.jurnalotom).map((y) => parseFloat(y.totaljurnal)).reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0)
+        const penyesuaian = this.dataaset.filter((x) => x.kode6 === el).map((x) => (x.penyesuaian).map((y) => parseFloat(y.totalpenyesuaian)).reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0)
+        const obj = {
+          kode: el,
+          uraian: this.dataaset.filter((x) => x.kode6 === el)[0]?.uraian,
+          nilai: saldoawal + nilaijurnal + penyesuaian
+        }
+        kode6.push(obj)
+      }
+
+      for (let i = 0; i < setunik5?.length; i++) {
+        const el = setunik5[i]
+        const saldoawal = this.dataaset.filter((x) => x.kode5 === el).map((x) => parseFloat(x.saldo)).reduce((a, b) => a + b, 0)
+        const nilaijurnal = this.dataaset.filter((x) => x.kode5 === el).map((x) => (x.jurnalotom).map((y) => parseFloat(y.totaljurnal)).reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0)
+        const penyesuaian = this.dataaset.filter((x) => x.kode5 === el).map((x) => (x.penyesuaian).map((y) => parseFloat(y.totalpenyesuaian)).reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0)
+        const obj = {
+          kode: el,
+          uraian: this.dataaset.filter((x) => x.kode5 === el)[0]?.uraian5,
+          nilai: saldoawal + nilaijurnal + penyesuaian,
+        }
+        kode5.push(obj)
+      }
+
+      for (let i = 0; i < setunik4?.length; i++) {
+        const el = setunik4[i]
+        const saldoawal = this.dataaset.filter((x) => x.kode4 === el).map((x) => parseFloat(x.saldo)).reduce((a, b) => a + b, 0)
+        const nilaijurnal = this.dataaset.filter((x) => x.kode4 === el).map((x) => (x.jurnalotom).map((y) => parseFloat(y.totaljurnal)).reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0)
+        const penyesuaian = this.dataaset.filter((x) => x.kode4 === el).map((x) => (x.penyesuaian).map((y) => parseFloat(y.totalpenyesuaian)).reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0)
+        const obj = {
+          kode: el,
+          uraian: this.dataaset.filter((x) => x.kode4 === el)[0]?.uraian4,
+          nilai: saldoawal + nilaijurnal + penyesuaian,
+        }
+        kode4.push(obj)
+      }
+
+      for (let i = 0; i < setunik3?.length; i++) {
+        const el = setunik3[i]
+        const saldoawal = this.dataaset.filter((x) => x.kode3 === el).map((x) => parseFloat(x.saldo)).reduce((a, b) => a + b, 0)
+        const nilaijurnal = this.dataaset.filter((x) => x.kode3 === el).map((x) => (x.jurnalotom).map((y) => parseFloat(y.totaljurnal)).reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0)
+        const penyesuaian = this.dataaset.filter((x) => x.kode3 === el).map((x) => (x.penyesuaian).map((y) => parseFloat(y.totalpenyesuaian)).reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0)
+        const obj = {
+          kode: el,
+          uraian: this.dataaset.filter((x) => x.kode3 === el)[0]?.uraian3,
+          nilai: saldoawal + nilaijurnal + penyesuaian,
+        }
+        kode3.push(obj)
+      }
+
+      for (let i = 0; i < setunik2?.length; i++) {
+        const el = setunik2[i]
+        const saldoawal = this.dataaset.filter((x) => x.kode2 === el).map((x) => parseFloat(x.saldo)).reduce((a, b) => a + b, 0)
+        const nilaijurnal = this.dataaset.filter((x) => x.kode2 === el).map((x) => (x.jurnalotom).map((y) => parseFloat(y.totaljurnal)).reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0)
+        const penyesuaian = this.dataaset.filter((x) => x.kode2 === el).map((x) => (x.penyesuaian).map((y) => parseFloat(y.totalpenyesuaian)).reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0)
+        const obj = {
+          kode: el,
+          uraian: this.dataaset.filter((x) => x.kode2 === el)[0]?.uraian2,
+          nilai: saldoawal + nilaijurnal + penyesuaian,
+        }
+        kode2.push(obj)
+      }
+
+      for (let i = 0; i < setunik1?.length; i++) {
+        const el = setunik1[i]
+        const saldoawal = this.dataaset.filter((x) => x.kode1 === el).map((x) => parseFloat(x.saldo)).reduce((a, b) => a + b, 0)
+        const nilaijurnal = this.dataaset.filter((x) => x.kode1 === el).map((x) => (x.jurnalotom).map((y) => parseFloat(y.totaljurnal)).reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0)
+        const penyesuaian = this.dataaset.filter((x) => x.kode1 === el).map((x) => (x.penyesuaian).map((y) => parseFloat(y.totalpenyesuaian)).reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0)
+        const obj = {
+          kode: el,
+          uraian: this.dataaset.filter((x) => x.kode1 === el)[0]?.uraian1,
+          nilai: saldoawal + nilaijurnal + penyesuaian,
+        }
+        kode1.push(obj)
+      }
+      kode6.push(...kode5, ...kode4, ...kode3, ...kode2, ...kode1)
+      const sort6 = (kode6) =>
+        kode6.sort(({ kode: a }, { kode: b }) =>
+          a < b ? -1 : a > b ? 1 : 0
+        )
+      const data6 = sort6(kode6)
+
+      kode5.push(...kode4, ...kode3, ...kode2, ...kode1)
+      const sort5 = (kode5) =>
+        kode5.sort(({ kode: a }, { kode: b }) =>
+          a < b ? -1 : a > b ? 1 : 0
+        )
+      const data5 = sort5(kode5)
+
+      kode4.push(...kode3, ...kode2, ...kode1)
+      const sort4 = (kode4) =>
+        kode4.sort(({ kode: a }, { kode: b }) =>
+          a < b ? -1 : a > b ? 1 : 0
+        )
+      const data4 = sort4(kode4)
+
+      kode3.push(...kode2, ...kode1)
+      const sort3 = (kode3) =>
+        kode3.sort(({ kode: a }, { kode: b }) =>
+          a < b ? -1 : a > b ? 1 : 0
+        )
+      const data3 = sort3(kode3)
+
+      kode2.push(...kode1)
+      const sort2 = (kode2) =>
+        kode2.sort(({ kode: a }, { kode: b }) =>
+          a < b ? -1 : a > b ? 1 : 0
+        )
+      const data2 = sort2(kode2)
+
+      const sort1 = (kode1) =>
+        kode1.sort(({ kode: a }, { kode: b }) =>
+          a < b ? -1 : a > b ? 1 : 0
+        )
+      const data1 = sort1(kode1)
+
+
+      // KEWAJIBAN //
+
+      const kode6kewajiban = []
+      const kode5kewajiban = []
+      const kode4kewajiban = []
+      const kode3kewajiban = []
+      const kode2kewajiban = []
+      const kode1kewajiban = []
+
+      const set6kewajiban = this.datakewajiban.map((x) => x.kode6)
+      const set5kewajiban = this.datakewajiban.map((x) => x.kode5)
+      const set4kewajiban = this.datakewajiban.map((x) => x.kode4)
+      const set3kewajiban = this.datakewajiban.map((x) => x.kode3)
+      const set2kewajiban = this.datakewajiban.map((x) => x.kode2)
+      const set1kewajiban = this.datakewajiban.map((x) => x.kode1)
+
+      const setunik6kewajiban = set6kewajiban?.length ? [...new Set(set6kewajiban)] : []
+      const setunik5kewajiban = set5kewajiban?.length ? [...new Set(set5kewajiban)] : []
+      const setunik4kewajiban = set4kewajiban?.length ? [...new Set(set4kewajiban)] : []
+      const setunik3kewajiban = set3kewajiban?.length ? [...new Set(set3kewajiban)] : []
+      const setunik2kewajiban = set2kewajiban?.length ? [...new Set(set2kewajiban)] : []
+      const setunik1kewajiban = set1kewajiban?.length ? [...new Set(set1kewajiban)] : []
+
+      for (let i = 0; i < setunik6kewajiban?.length; i++) {
+        const el = setunik6kewajiban[i]
+        const saldoawal = this.datakewajiban.filter((x) => x.kode6 === el).map((x) => parseFloat(x.saldo)).reduce((a, b) => a + b, 0)
+        const nilaijurnal = this.datakewajiban.filter((x) => x.kode6 === el).map((x) => (x.jurnalotom).map((y) => parseFloat(y.totaljurnal)).reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0)
+        const penyesuaian = this.datakewajiban.filter((x) => x.kode6 === el).map((x) => (x.penyesuaian).map((y) => parseFloat(y.totalpenyesuaian)).reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0)
+        const obj = {
+          kode: el,
+          uraian: this.datakewajiban.filter((x) => x.kode6 === el)[0]?.uraian,
+          nilai: saldoawal + nilaijurnal + penyesuaian
+        }
+        kode6kewajiban.push(obj)
+      }
+
+      for (let i = 0; i < setunik5kewajiban?.length; i++) {
+        const el = setunik5kewajiban[i]
+        const saldoawal = this.datakewajiban.filter((x) => x.kode5 === el).map((x) => parseFloat(x.saldo)).reduce((a, b) => a + b, 0)
+        const nilaijurnal = this.datakewajiban.filter((x) => x.kode5 === el).map((x) => (x.jurnalotom).map((y) => parseFloat(y.totaljurnal)).reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0)
+        const penyesuaian = this.datakewajiban.filter((x) => x.kode5 === el).map((x) => (x.penyesuaian).map((y) => parseFloat(y.totalpenyesuaian)).reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0)
+        const obj = {
+          kode: el,
+          uraian: this.datakewajiban.filter((x) => x.kode5 === el)[0]?.uraian5,
+          nilai: saldoawal + nilaijurnal + penyesuaian,
+        }
+        kode5kewajiban.push(obj)
+      }
+
+      for (let i = 0; i < setunik4kewajiban?.length; i++) {
+        const el = setunik4kewajiban[i]
+        const saldoawal = this.datakewajiban.filter((x) => x.kode4 === el).map((x) => parseFloat(x.saldo)).reduce((a, b) => a + b, 0)
+        const nilaijurnal = this.datakewajiban.filter((x) => x.kode4 === el).map((x) => (x.jurnalotom).map((y) => parseFloat(y.totaljurnal)).reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0)
+        const penyesuaian = this.datakewajiban.filter((x) => x.kode4 === el).map((x) => (x.penyesuaian).map((y) => parseFloat(y.totalpenyesuaian)).reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0)
+        const obj = {
+          kode: el,
+          uraian: this.datakewajiban.filter((x) => x.kode4 === el)[0]?.uraian4,
+          nilai: saldoawal + nilaijurnal + penyesuaian,
+        }
+        kode4kewajiban.push(obj)
+      }
+
+      for (let i = 0; i < setunik3kewajiban?.length; i++) {
+        const el = setunik3kewajiban[i]
+        const saldoawal = this.datakewajiban.filter((x) => x.kode3 === el).map((x) => parseFloat(x.saldo)).reduce((a, b) => a + b, 0)
+        const nilaijurnal = this.datakewajiban.filter((x) => x.kode3 === el).map((x) => (x.jurnalotom).map((y) => parseFloat(y.totaljurnal)).reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0)
+        const penyesuaian = this.datakewajiban.filter((x) => x.kode3 === el).map((x) => (x.penyesuaian).map((y) => parseFloat(y.totalpenyesuaian)).reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0)
+        const obj = {
+          kode: el,
+          uraian: this.datakewajiban.filter((x) => x.kode3 === el)[0]?.uraian3,
+          nilai: saldoawal + nilaijurnal + penyesuaian,
+        }
+        kode3kewajiban.push(obj)
+      }
+
+      for (let i = 0; i < setunik2kewajiban?.length; i++) {
+        const el = setunik2kewajiban[i]
+        const saldoawal = this.datakewajiban.filter((x) => x.kode2 === el).map((x) => parseFloat(x.saldo)).reduce((a, b) => a + b, 0)
+        const nilaijurnal = this.datakewajiban.filter((x) => x.kode2 === el).map((x) => (x.jurnalotom).map((y) => parseFloat(y.totaljurnal)).reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0)
+        const penyesuaian = this.datakewajiban.filter((x) => x.kode2 === el).map((x) => (x.penyesuaian).map((y) => parseFloat(y.totalpenyesuaian)).reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0)
+        const obj = {
+          kode: el,
+          uraian: this.datakewajiban.filter((x) => x.kode2 === el)[0]?.uraian2,
+          nilai: saldoawal + nilaijurnal + penyesuaian,
+        }
+        kode2kewajiban.push(obj)
+      }
+
+      for (let i = 0; i < setunik1kewajiban?.length; i++) {
+        const el = setunik1kewajiban[i]
+        const saldoawal = this.datakewajiban.filter((x) => x.kode1 === el).map((x) => parseFloat(x.saldo)).reduce((a, b) => a + b, 0)
+        const nilaijurnal = this.datakewajiban.filter((x) => x.kode1 === el).map((x) => (x.jurnalotom).map((y) => parseFloat(y.totaljurnal)).reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0)
+        const penyesuaian = this.datakewajiban.filter((x) => x.kode1 === el).map((x) => (x.penyesuaian).map((y) => parseFloat(y.totalpenyesuaian)).reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0)
+        const obj = {
+          kode: el,
+          uraian: this.datakewajiban.filter((x) => x.kode1 === el)[0]?.uraian1,
+          nilai: saldoawal + nilaijurnal + penyesuaian,
+        }
+        kode1kewajiban.push(obj)
+      }
+      kode6kewajiban.push(...kode5kewajiban, ...kode4kewajiban, ...kode3kewajiban, ...kode2kewajiban, ...kode1kewajiban)
+      const sort6kewajiban = (kode6kewajiban) =>
+        kode6kewajiban.sort(({ kode: a }, { kode: b }) =>
+          a < b ? -1 : a > b ? 1 : 0
+        )
+      const data6kewajiban = sort6kewajiban(kode6kewajiban)
+
+      kode5kewajiban.push(...kode4kewajiban, ...kode3kewajiban, ...kode2kewajiban, ...kode1kewajiban)
+      const sort5kewajiban = (kode5kewajiban) =>
+        kode5.sort(({ kode: a }, { kode: b }) =>
+          a < b ? -1 : a > b ? 1 : 0
+        )
+      const data5kewajiban = sort5kewajiban(kode5kewajiban)
+
+      kode4kewajiban.push(...kode3kewajiban, ...kode2kewajiban, ...kode1kewajiban)
+      const sort4kewajiban = (kode4kewajiban) =>
+        kode4kewajiban.sort(({ kode: a }, { kode: b }) =>
+          a < b ? -1 : a > b ? 1 : 0
+        )
+      const data4kewajiban = sort4kewajiban(kode4kewajiban)
+
+      kode3kewajiban.push(...kode2kewajiban, ...kode1kewajiban)
+      const sort3kewajiban = (kode3kewajiban) =>
+        kode3kewajiban.sort(({ kode: a }, { kode: b }) =>
+          a < b ? -1 : a > b ? 1 : 0
+        )
+      const data3kewajiban = sort3kewajiban(kode3kewajiban)
+
+      kode2kewajiban.push(...kode1kewajiban)
+      const sort2kewajiban = (kode2kewajiban) =>
+        kode2kewajiban.sort(({ kode: a }, { kode: b }) =>
+          a < b ? -1 : a > b ? 1 : 0
+        )
+      const data2kewajiban = sort2kewajiban(kode2kewajiban)
+
+      const sort1kewajiban = (kode1kewajiban) =>
+        kode1kewajiban.sort(({ kode: a }, { kode: b }) =>
+          a < b ? -1 : a > b ? 1 : 0
+        )
+      const data1kewajiban = sort1kewajiban(kode1kewajiban)
+
+
+      const kode6ekuitas = []
+      const kode5ekuitas = []
+      const kode4ekuitas = []
+      const kode3ekuitas = []
+      const kode2ekuitas = []
+      const kode1ekuitas = []
+
+      const set6ekuitas = this.dataekuitas.map((x) => x.kode6)
+      const set5ekuitas = this.dataekuitas.map((x) => x.kode5)
+      const set4ekuitas = this.dataekuitas.map((x) => x.kode4)
+      const set3ekuitas = this.dataekuitas.map((x) => x.kode3)
+      const set2ekuitas = this.dataekuitas.map((x) => x.kode2)
+      const set1ekuitas = this.dataekuitas.map((x) => x.kode1)
+
+      const setunik6ekuitas = set6ekuitas?.length ? [...new Set(set6ekuitas)] : []
+      const setunik5ekuitas = set5ekuitas?.length ? [...new Set(set5ekuitas)] : []
+      const setunik4ekuitas = set4ekuitas?.length ? [...new Set(set4ekuitas)] : []
+      const setunik3ekuitas = set3ekuitas?.length ? [...new Set(set3ekuitas)] : []
+      const setunik2ekuitas = set2ekuitas?.length ? [...new Set(set2ekuitas)] : []
+      const setunik1ekuitas = set1ekuitas?.length ? [...new Set(set1ekuitas)] : []
+
+      for (let i = 0; i < setunik6ekuitas?.length; i++) {
+        const el = setunik6ekuitas[i]
+        const saldoawal = this.dataekuitas.filter((x) => x.kode6 === el).map((x) => parseFloat(x.saldo)).reduce((a, b) => a + b, 0)
+        const nilaijurnal = this.dataekuitas.filter((x) => x.kode6 === el).map((x) => (x.jurnalotom).map((y) => parseFloat(y.totaljurnal)).reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0)
+        const penyesuaian = this.dataekuitas.filter((x) => x.kode6 === el).map((x) => (x.penyesuaian).map((y) => parseFloat(y.totalpenyesuaian)).reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0)
+        const obj = {
+          kode: el,
+          uraian: this.dataekuitas.filter((x) => x.kode6 === el)[0]?.uraian,
+          nilai: saldoawal + nilaijurnal + penyesuaian
+        }
+        kode6ekuitas.push(obj)
+      }
+
+      for (let i = 0; i < setunik5ekuitas?.length; i++) {
+        const el = setunik5ekuitas[i]
+        const saldoawal = this.dataekuitas.filter((x) => x.kode5 === el).map((x) => parseFloat(x.saldo)).reduce((a, b) => a + b, 0)
+        const nilaijurnal = this.dataekuitas.filter((x) => x.kode5 === el).map((x) => (x.jurnalotom).map((y) => parseFloat(y.totaljurnal)).reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0)
+        const penyesuaian = this.dataekuitas.filter((x) => x.kode5 === el).map((x) => (x.penyesuaian).map((y) => parseFloat(y.totalpenyesuaian)).reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0)
+        const obj = {
+          kode: el,
+          uraian: this.dataekuitas.filter((x) => x.kode5 === el)[0]?.uraian5,
+          nilai: saldoawal + nilaijurnal + penyesuaian,
+        }
+        kode5ekuitas.push(obj)
+      }
+
+      for (let i = 0; i < setunik4ekuitas?.length; i++) {
+        const el = setunik4ekuitas[i]
+        const saldoawal = this.dataekuitas.filter((x) => x.kode4 === el).map((x) => parseFloat(x.saldo)).reduce((a, b) => a + b, 0)
+        const nilaijurnal = this.dataekuitas.filter((x) => x.kode4 === el).map((x) => (x.jurnalotom).map((y) => parseFloat(y.totaljurnal)).reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0)
+        const penyesuaian = this.dataekuitas.filter((x) => x.kode4 === el).map((x) => (x.penyesuaian).map((y) => parseFloat(y.totalpenyesuaian)).reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0)
+        const obj = {
+          kode: el,
+          uraian: this.dataekuitas.filter((x) => x.kode4 === el)[0]?.uraian4,
+          nilai: saldoawal + nilaijurnal + penyesuaian,
+        }
+        kode4ekuitas.push(obj)
+      }
+
+      for (let i = 0; i < setunik3ekuitas?.length; i++) {
+        const el = setunik3ekuitas[i]
+        const saldoawal = this.dataekuitas.filter((x) => x.kode3 === el).map((x) => parseFloat(x.saldo)).reduce((a, b) => a + b, 0)
+        const nilaijurnal = this.dataekuitas.filter((x) => x.kode3 === el).map((x) => (x.jurnalotom).map((y) => parseFloat(y.totaljurnal)).reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0)
+        const penyesuaian = this.dataekuitas.filter((x) => x.kode3 === el).map((x) => (x.penyesuaian).map((y) => parseFloat(y.totalpenyesuaian)).reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0)
+        const obj = {
+          kode: el,
+          uraian: this.dataekuitas.filter((x) => x.kode3 === el)[0]?.uraian3,
+          nilai: saldoawal + nilaijurnal + penyesuaian,
+        }
+        kode3ekuitas.push(obj)
+      }
+
+      for (let i = 0; i < setunik2ekuitas?.length; i++) {
+        const el = setunik2ekuitas[i]
+        const saldoawal = this.dataekuitas.filter((x) => x.kode2 === el).map((x) => parseFloat(x.saldo)).reduce((a, b) => a + b, 0)
+        const nilaijurnal = this.dataekuitas.filter((x) => x.kode2 === el).map((x) => (x.jurnalotom).map((y) => parseFloat(y.totaljurnal)).reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0)
+        const penyesuaian = this.dataekuitas.filter((x) => x.kode2 === el).map((x) => (x.penyesuaian).map((y) => parseFloat(y.totalpenyesuaian)).reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0)
+        const obj = {
+          kode: el,
+          uraian: this.dataekuitas.filter((x) => x.kode2 === el)[0]?.uraian2,
+          nilai: saldoawal + nilaijurnal + penyesuaian,
+        }
+        kode2ekuitas.push(obj)
+      }
+
+      for (let i = 0; i < setunik1ekuitas?.length; i++) {
+        const el = setunik1ekuitas[i]
+        const saldoawal = this.dataekuitas.filter((x) => x.kode1 === el).map((x) => parseFloat(x.saldo)).reduce((a, b) => a + b, 0)
+        const nilaijurnal = this.dataekuitas.filter((x) => x.kode1 === el).map((x) => (x.jurnalotom).map((y) => parseFloat(y.totaljurnal)).reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0)
+        const penyesuaian = this.dataekuitas.filter((x) => x.kode1 === el).map((x) => (x.penyesuaian).map((y) => parseFloat(y.totalpenyesuaian)).reduce((a, b) => a + b, 0)).reduce((a, b) => a + b, 0)
+        const obj = {
+          kode: el,
+          uraian: this.dataekuitas.filter((x) => x.kode1 === el)[0]?.uraian1,
+          nilai: saldoawal + nilaijurnal + penyesuaian,
+        }
+        kode1ekuitas.push(obj)
+      }
+      kode6ekuitas.push(...kode5ekuitas, ...kode4ekuitas, ...kode3ekuitas, ...kode2ekuitas, ...kode1ekuitas)
+      const sort6ekuitas = (kode6ekuitas) =>
+        kode6ekuitas.sort(({ kode: a }, { kode: b }) =>
+          a < b ? -1 : a > b ? 1 : 0
+        )
+      const data6ekuitas = sort6ekuitas(kode6ekuitas)
+
+      kode5ekuitas.push(...kode4ekuitas, ...kode3ekuitas, ...kode2ekuitas, ...kode1ekuitas)
+      const sort5ekuitas = (kode5ekuitas) =>
+        kode5ekuitas.sort(({ kode: a }, { kode: b }) =>
+          a < b ? -1 : a > b ? 1 : 0
+        )
+      const data5ekuitas = sort5ekuitas(kode5ekuitas)
+
+      kode4ekuitas.push(...kode3ekuitas, ...kode2ekuitas, ...kode1ekuitas)
+      const sort4ekuitas = (kode4ekuitas) =>
+        kode4ekuitas.sort(({ kode: a }, { kode: b }) =>
+          a < b ? -1 : a > b ? 1 : 0
+        )
+      const data4ekuitas = sort4ekuitas(kode4ekuitas)
+
+      kode3ekuitas.push(...kode2ekuitas, ...kode1ekuitas)
+      const sort3ekuitas = (kode3ekuitas) =>
+        kode3ekuitas.sort(({ kode: a }, { kode: b }) =>
+          a < b ? -1 : a > b ? 1 : 0
+        )
+      const data3ekuitas = sort3ekuitas(kode3ekuitas)
+
+      kode2ekuitas.push(...kode1ekuitas)
+      const sort2ekuitas = (kode2ekuitas) =>
+        kode2ekuitas.sort(({ kode: a }, { kode: b }) =>
+          a < b ? -1 : a > b ? 1 : 0
+        )
+      const data2ekuitas = sort2ekuitas(kode2ekuitas)
+
+      const sort1ekuitas = (kode1ekuitas) =>
+        kode1ekuitas.sort(({ kode: a }, { kode: b }) =>
+          a < b ? -1 : a > b ? 1 : 0
+        )
+      const data1ekuitas = sort1ekuitas(kode1ekuitas)
+
+      if (this.reqs.levelberapa === 6) {
+        this.hasilaset = data6
+        this.hasilkewajiban = data6kewajiban
+        this.hasilekuitas = data6ekuitas
+      } else if (this.reqs.levelberapa === 5) {
+        this.hasilaset = data5
+        this.hasilkewajiban = data5kewajiban
+        this.hasilekuitas = data5ekuitas
+      } else if (this.reqs.levelberapa === 4) {
+        this.hasilaset = data4
+        this.hasilkewajiban = data4kewajiban
+        this.hasilekuitas = data4ekuitas
+      } else if (this.reqs.levelberapa === 3) {
+        this.hasilaset = data3
+        this.hasilkewajiban = data3kewajiban
+        this.hasilekuitas = data3ekuitas
+      } else if (this.reqs.levelberapa === 2) {
+        this.hasilaset = data2
+        this.hasilkewajiban = data2kewajiban
+        this.hasilekuitas = data2ekuitas
+      } else if (this.reqs.levelberapa === 1) {
+        this.hasilaset = data1
+        this.hasilkewajiban = data1kewajiban
+        this.hasilekuitas = data1ekuitas
+      }
     }
   }
 })

@@ -1,9 +1,10 @@
-import { defineStore } from 'pinia'
+import { acceptHMRUpdate, defineStore } from 'pinia'
 import { api } from 'boot/axios'
 import { dateDbFormat } from 'src/modules/formatter'
 import { date } from 'quasar'
 import { useFormPendaftaranRanapStore } from './formpendaftaran'
 import { notifSuccessVue } from 'src/modules/utils'
+import { useMutasiRanapStore } from 'src/stores/simrs/ranap/mutasi'
 
 export const useListPendaftaranRanapStore = defineStore('list-pendaftaran-ranap', {
   state: () => ({
@@ -59,13 +60,14 @@ export const useListPendaftaranRanapStore = defineStore('list-pendaftaran-ranap'
     },
     grupKamars: [],
     beds: [],
+    ruangSelected: null,
     loadingSend: false
   }),
   getters: {
     // doubleCount: (state) => state.counter * 2
   },
   actions: {
-    getDataTable () {
+    getDataTable() {
       this.loading = true
       return new Promise((resolve, reject) => {
         api.get('/v1/simrs/pendaftaran/ranap/list-pendaftararan-ranap', {
@@ -80,8 +82,8 @@ export const useListPendaftaranRanapStore = defineStore('list-pendaftaran-ranap'
             this.meta.total = total
             this.items = obj?.data ?? []
 
-            console.log('this.meta', this.meta)
-            console.log('this.items', this.items)
+            // console.log('this.meta', this.meta)
+            // console.log('this.items', this.items)
           }
           this.loading = false
           resolve(res)
@@ -93,7 +95,7 @@ export const useListPendaftaranRanapStore = defineStore('list-pendaftaran-ranap'
       })
     },
 
-    setPeriode (val) {
+    setPeriode(val) {
       this.header.periode = val
       if (val === 'Hari ini') {
         this.hariIni()
@@ -106,28 +108,28 @@ export const useListPendaftaranRanapStore = defineStore('list-pendaftaran-ranap'
       }
     },
 
-    setUrutan (val) {
+    setUrutan(val) {
       this.params.sort = val
       this.getDataTable()
     },
 
-    setPage (val) {
+    setPage(val) {
       this.params.page = val
       this.getDataTable()
     },
 
-    setStatus (val) {
+    setStatus(val) {
       this.params.page = 1
       this.params.status = val
       this.getDataTable()
     },
 
-    hariIni () {
+    hariIni() {
       const cDate = new Date()
       this.params.to = dateDbFormat(cDate)
       this.params.from = dateDbFormat(cDate)
     },
-    bulanIni () {
+    bulanIni() {
       const curr = new Date(), y = curr.getFullYear(), m = curr.getMonth()
       // const firstday = date.formatDate(curr, 'YYYY') + '-' + date.formatDate(curr, 'MM') + '-01'
       // const lastday = date.formatDate(curr, 'YYYY') + '-' + date.formatDate(curr, 'MM') + '-31'
@@ -136,14 +138,14 @@ export const useListPendaftaranRanapStore = defineStore('list-pendaftaran-ranap'
       this.params.to = dateDbFormat(firstday)
       this.params.from = dateDbFormat(lastday)
     },
-    mingguIni () {
+    mingguIni() {
       const curr = new Date()
       const firstday = new Date(curr.setDate(curr.getDate() - curr.getDay()))
       const lastday = new Date(curr.setDate(curr.getDate() - curr.getDay() + 6))
       this.params.to = dateDbFormat(firstday)
       this.params.from = dateDbFormat(lastday)
     },
-    tahunIni () {
+    tahunIni() {
       const curr = new Date()
       const firstday = date.formatDate(curr, 'YYYY') + '-01' + '-01'
       const lastday = date.formatDate(curr, 'YYYY') + '-12' + '-31'
@@ -151,7 +153,7 @@ export const useListPendaftaranRanapStore = defineStore('list-pendaftaran-ranap'
       this.params.from = dateDbFormat(lastday)
     },
 
-    formFromDialogSend (val) {
+    formFromDialogSend(val) {
       this.form = {
         noreglama: val.noreg ?? null,
         norm: val.norm ?? null,
@@ -187,7 +189,7 @@ export const useListPendaftaranRanapStore = defineStore('list-pendaftaran-ranap'
       }
     },
 
-    async cekPesertaBpjs (by, no) {
+    async cekPesertaBpjs(by, no) {
       const params = { params: { by, no } }
       await api.get('v1/simrs/pendaftaran/ranap/cek-peserta-bpjs', params)
         .then(resp => {
@@ -207,7 +209,9 @@ export const useListPendaftaranRanapStore = defineStore('list-pendaftaran-ranap'
     },
 
     // pilih kamar masih salah
-    pilihRuang (val) {
+    pilihRuang(val) {
+      // console.log('pilihRuang', val);
+
       const pendaftaran = useFormPendaftaranRanapStore()
       this.form.kamar = null
       const arr = pendaftaran.kamars
@@ -231,7 +235,7 @@ export const useListPendaftaranRanapStore = defineStore('list-pendaftaran-ranap'
           this.grupKamars = []
           this.beds = []
           const pilihan = pendaftaran.listKamars.find(x => x.groups === group)
-          console.log('pilihan', pilihan)
+          // console.log('pilihan', pilihan)
           const kamarsx = pilihan?.kamars?.length
             ? pilihan?.kamars?.filter(x => {
               return (x.rs6 === group) && (x?.rs5 === `${kodeRuang}` || x?.rs5 === '-')
@@ -242,7 +246,7 @@ export const useListPendaftaranRanapStore = defineStore('list-pendaftaran-ranap'
           const mapKamar = kamarsx?.length ? kamarsx?.map(x => x.rs1) : []
           const grup = [...new Set(mapKamar)]
           // grupKamar.value = grup
-          console.log('grup', grup)
+          // console.log('grup', grup)
           // const thumb = []
           for (let i = 0; i < grup?.length; i++) {
             const el = grup[i]
@@ -254,20 +258,89 @@ export const useListPendaftaranRanapStore = defineStore('list-pendaftaran-ranap'
           }
         })
     },
-    pilihKamar (val) {
+
+    pilihRuang2(val) {
+      // console.log('pilihRuang', val);
+
       const pendaftaran = useFormPendaftaranRanapStore()
-      console.log('listKamar', pendaftaran.listKamars)
-      console.log('form', this.form)
+      this.form.kamar = null
+      const arr = pendaftaran.kamars
+      const obj = arr?.length ? arr.find(x => x.rs1 === val) : null
+      console.log('pilihRuang', obj)
+      const group = obj?.groups ?? null
+      const kodeRuang = obj?.rs1 ?? null
+      const kelas = obj?.rs3 ?? null
+      const flag = obj?.rs6 ?? null
+
+      // this.form.kode_ruang = kodeRuang
+      this.form.kelas = kelas
+      this.form.flag_ruang = flag
+      this.form.group = group
+
+      this.form.kamar = null
+      this.form.no_bed = null
+
+      this.ruangSelected = obj
+      const mutasi = useMutasiRanapStore()
+      mutasi.showKamar(kodeRuang)
+        .then((resp) => {
+          // console.log('resp showKamar', resp);
+          const data = resp?.data || []
+          const res = data.length ? data?.map(x => {
+            return {
+              label: x?.rs1,
+              value: x?.rs1
+            }
+          }) : []
+
+          this.grupKamars = res
+          // console.log('this.grupKamars', this.grupKamars);
+
+        })
+    },
+    pilihKamar(val) {
+      // console.log('pilihKamar', val);
+
+      const pendaftaran = useFormPendaftaranRanapStore()
+      // console.log('listKamar', pendaftaran.listKamars)
+      // console.log('form', this.form)
       const arr = pendaftaran.listKamars?.find(x => x?.groups === this.form.group)?.kamars || []
       // console.log('arr', arr)
       const kdRuang = this.form.isTitipan === 'Tidak' ? this.form.hakruang : this.form.kode_ruang
       const lists = arr?.length ? arr?.filter(x => x.rs1 === val && (x.rs5 === kdRuang || x.rs5 === '-')) : []
-      console.log('lihatKamar', lists)
+      // console.log('lihatKamar', lists)
       this.form.no_bed = null
-      this.beds = lists
+
+
+      const mutasi = useMutasiRanapStore()
+      mutasi.showBed(this.form.kode_ruang, val)
+        .then((resp) => {
+          this.beds = resp.data
+        })
+
+      console.log('beds', this.beds);
+
+      // this.beds = lists
+    },
+    pilihKamar2(val) {
+      console.log('pilihKamar', val);
+
+      this.beds = []
+      this.form.no_bed = null
+
+
+      const mutasi = useMutasiRanapStore()
+      mutasi.showBed(this.ruangSelected?.rs2, val)
+        .then((resp) => {
+          this.beds = resp?.data || []
+          console.log('beds', this.beds);
+        })
+
+
+      // this.beds = lists
     },
 
-    pilihDokter (val) {
+    pilihDokter(val) {
       const pendaftaran = useFormPendaftaranRanapStore()
       const arr = pendaftaran.dokters
       const obj = arr?.length ? arr.find(x => x.kdpegsimrs === val) : null
@@ -276,7 +349,7 @@ export const useListPendaftaranRanapStore = defineStore('list-pendaftaran-ranap'
       this.form.kd_dokter = obj?.kdpegsimrs ?? null
     },
 
-    async mutasiPasien () {
+    async mutasiPasien() {
       this.loadingSend = true
       this.form.hakKelasBpjs = this.cekPeserta?.hakKelas?.kode ?? null
 
@@ -302,7 +375,7 @@ export const useListPendaftaranRanapStore = defineStore('list-pendaftaran-ranap'
           console.log('err', err)
         })
     },
-    async regPasien () {
+    async regPasien() {
       this.loadingSend = true
       this.form.hakKelasBpjs = this.cekPeserta?.hakKelas?.kode ?? null
 
@@ -331,3 +404,9 @@ export const useListPendaftaranRanapStore = defineStore('list-pendaftaran-ranap'
     }
   }
 })
+
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useListPendaftaranRanapStore, import.meta.hot))
+
+}

@@ -25,6 +25,24 @@
       <q-separator class="" />
 
       <div class="row q-col-gutter-sm q-pa-md">
+
+        <div class="col-4">Alasan Mutasi </div>
+        <div class="col-8 flex q-gutter-x-sm ">
+          <div class="flex-1 full-width">
+            <app-autocomplete-new ref="refRuangan" :model="store.form.kd_mutasi" label="Alasan" autocomplete="rs2"
+              option-value="rs1" option-label="rs2" outlined :source="store.alasans" @on-select="(val) => {
+                // console.log('val', val);
+
+                store.form.kd_mutasi = val
+
+              }" @clear="() => {
+                store.form.kd_mutasi = null
+
+              }" />
+          </div>
+        </div>
+
+
         <div class="col-4">Ruangan Tujuan </div>
         <div class="col-8 flex q-gutter-x-sm ">
           <div class="flex-1 full-width">
@@ -85,11 +103,147 @@
         <!-- <div class="col-4">Tarip </div>
         <div class="col-8">: Rp. tarrrrr</div> -->
       </div>
+      <q-separator class="q-my-xs" />
+      <div class="q-pa-md">
+        <b>Doc Penyerahan Pasien</b>
+        <q-separator />
+      </div>
+      <div class="row q-px-md q-col-gutter-x-xs">
+        <div class="col-3">Derajat Pasien :</div>
+        <app-input-simrs v-model="store.form.derajatPasien" label="Derajat Px" outlined dense class="col-4" />
+        <div class="col-12 q-mb-xs">Objective :</div>
+        <app-input-simrs label="Tensi (mmHg)" class="col-3" v-model="store.form.tensi" :valid="{ number: true }"
+          @update:model-value="(val) => {
+            const _removedZeros = val.replace(/^0+/, '')
+            if (val > 1) store.form.tensi = _removedZeros
+            // cekEws('tb', _removedZeros)
+          }" />
+        <app-input-simrs label="Nadi (x/mnt)" class="col-3" v-model="store.form.nadi" :valid="{ number: true }"
+          @update:model-value="(val) => {
+            const _removedZeros = val.replace(/^0+/, '')
+            if (val > 1) store.form.nadi = _removedZeros
+            // cekEws('tb', _removedZeros)
+          }" />
+        <app-input-simrs label="Suhu (°C)" class="col-3" v-model="store.form.suhu" :valid="{ number: true }"
+          @update:model-value="(val) => {
+            const _removedZeros = val.replace(/^0+/, '')
+            if (val > 1) store.form.suhu = _removedZeros
+            // cekEws('tb', _removedZeros)
+          }" />
+        <app-input-simrs label="RR (x/mnt)" class="col-3" v-model="store.form.rr" :valid="{ number: true }"
+          @update:model-value="(val) => {
+            const _removedZeros = val.replace(/^0+/, '')
+            if (val > 1) store.form.rr = _removedZeros
+            // cekEws('tb', _removedZeros)
+          }" />
+        <app-input-simrs label="SPO2 (%)" class="col-3" v-model="store.form.spo2" :valid="{ number: true }"
+          @update:model-value="(val) => {
+            const _removedZeros = val.replace(/^0+/, '')
+            if (val > 1) store.form.spo2 = _removedZeros
+            // cekEws('tb', _removedZeros)
+          }" />
+
+        <div class="col-12 q-mb-xs relative-position">
+          <q-btn color="purple" class="relative-position justify-center" label="Terapi dan Obat" icon="icon-mat-add">
+            <q-menu style="width:40%" class="bg-grey-3">
+              <div class="row q-pa-md">
+                <div class="column">
+                  <div class=" text-weight-bold">Tambah Data Terapi</div>
+                  <q-separator class=""></q-separator>
+                </div>
+
+
+              </div>
+              <q-form class="q-px-md row">
+                <app-input-simrs v-model="store.terapi.obat" label="Terapi / Obat" outlined dense class="col-12"
+                  :valid="{ required: false }" />
+                <app-input-simrs v-model="store.terapi.dosis" label="Dosis" outlined dense class="col-4"
+                  :valid="{ required: false }" />
+                <app-input-simrs v-model="store.terapi.jamMasuk" label="Jam Masuk" outlined dense class="col-4"
+                  :valid="{ required: false }" />
+                <app-input-simrs v-model="store.terapi.sisa" label="Sisa" outlined dense class="col-4"
+                  :valid="{ required: false }" />
+                <app-input-simrs v-model="store.terapi.ket" label="Keterangan" outlined dense class="col-12"
+                  :valid="{ required: false }" />
+
+
+                <q-separator></q-separator>
+                <div class="q-pa-md flex full-width justify-end">
+                  <q-btn color="primary" class="relative-position" icon="icon-mat-save"> Simpan Terapi</q-btn>
+                </div>
+              </q-form>
+
+
+            </q-menu>
+          </q-btn>
+
+          <q-markup-table separator="cell" flat bordered>
+            <thead>
+              <tr>
+                <th class="text-left">Terapi dan Obat</th>
+                <th class="text-right">Dosis</th>
+                <th class="text-right">Jam Masuk</th>
+                <th class="text-right">Sisa Obat</th>
+                <th class="text-right">Keterangan</th>
+              </tr>
+            </thead>
+            <tbody>
+              <template v-if="store.form.terapis?.length">
+                <tr v-for="(item, index) in store.form.terapis" :key="index">
+                  <td class="text-left">
+                    {{ item.obat }}
+                  </td>
+                  <td class="text-right">
+                    {{ item.dosis }}
+                  </td>
+                  <td class="text-right">
+                    {{ item.jamMasuk }}
+                  </td>
+                  <td class="text-right">
+                    {{ item.sisa }}
+                  </td>
+                  <td class="text-right">
+                    {{ item.ket }}
+                  </td>
+                </tr>
+              </template>
+              <template v-else>
+                <tr>
+                  <td colspan="5" class="text-center">Tidak Ada Data Terapi</td>
+                </tr>
+              </template>
+            </tbody>
+          </q-markup-table>
+
+
+        </div>
+
+        <app-input-simrs v-model="store.form.plann" label="Rencana Terapi / Tindakan / Pemeriksaan" outlined autogrow
+          type="textarea" class="col-12 q-mt-sm" :valid="{ required: true }" />
+
+        <div class="col-12 q-mb-xs">Pemeriksaan yg disertakan :</div>
+        <div class="col-2 q-mb-xs">RO : </div>
+        <app-input-simrs v-model="store.form.ro" label="" outlined dense class="col-4" />
+        <div class="col-6 q-mb-xs">Jenis / Tanggal /jam</div>
+        <div class="col-2 q-mb-xs">LAB : </div>
+        <app-input-simrs v-model="store.form.lab" label="" outlined dense class="col-4" />
+        <div class="col-6 q-mb-xs">Jenis / Tanggal /jam</div>
+        <div class="col-2 q-mb-xs">ECG : </div>
+        <app-input-simrs v-model="store.form.ecg" label="" outlined dense class="col-4" />
+        <div class="col-6 q-mb-xs">Jenis / Tanggal /jam</div>
+        <div class="col-2 q-mb-xs">lain : </div>
+        <app-input-simrs v-model="store.form.lain" label="lain-lain" outlined dense class="col-10" />
+        <!-- <div class="col-6 q-mb-xs">Jenis / Tanggal /jam</div> -->
+
+        <app-input-simrs v-model="store.form.kelengkapan" label="Kelengkapan yang disertakan" outlined autogrow
+          type="textarea" class="col-12 q-mt-sm" :valid="{ required: true }" />
+      </div>
       <q-separator class="q-my-md" />
       <div class="row full-width justify-end q-pa-md">
         <q-btn :loading="store.loadingOrder" :disable="store.loadingOrder" label="Simpan Mutasi Pasien" type="submit"
           color="primary" />
       </div>
+      <div style="margin-bottom: 100px;"></div>
     </q-form>
   </div>
 </template>
@@ -118,11 +272,11 @@ const asalRuangan = computed(() => {
   return props.store?.ruanganAsal
 })
 
-console.log('props', props?.pasien);
+// console.log('props', props?.pasien);
 
 
 function onSubmit() {
-  console.log('onSubmit', props.store.form)
+  // console.log('onSubmit', props.store.form)
 
   props.store.simpanMutasi(props.pasien)
 }

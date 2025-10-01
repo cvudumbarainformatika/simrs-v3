@@ -37,12 +37,7 @@
               </div>
 
               <div class="column">
-                <q-btn
-                  :label="pasien.sistembayar"
-                  color="primary"
-                  outline
-                  disabled
-                />
+                <q-btn :label="pasien.sistembayar" color="primary" outline disabled />
                 <div class="text-right q-py-sm f-14 text-weight-bold">
                   {{ store.cekPeserta?.hakKelas?.keterangan }}
                 </div>
@@ -55,159 +50,74 @@
       <q-form @submit="sendPasien">
         <q-card-section class="q-pa-none ">
           <div class="row q-pa-md q-col-gutter-sm">
-            <app-autocomplete
-              v-if="pendaftaran.jnsSistemBayars?.length > 0"
-              ref="refJnsSistemBayar"
-              v-model="store.form.jnsBayar"
-              label="Pilih Sistem Bayar"
-              autocomplete="sistembayar"
-              option-value="kode"
-              option-label="sistembayar"
-              outlined
-              :source="pendaftaran.jnsSistemBayars"
-              class="col-5 q-mb-xs"
-              :rules="[val => (!!val) || 'Harap diisi',]"
-              @selected="(val)=>pendaftaran.filterSistemBayar(val)"
-            />
-            <app-autocomplete
-              ref="refSistemBayar"
-              v-model="store.form.kodesistembayar"
-              label="Sistem Bayar"
-              autocomplete="sistembayar"
-              option-value="kode"
-              option-label="sistembayar"
-              outlined
-              :source="pendaftaran.sistembayars"
-              class="col-7 q-mb-xs"
-              :rules="[val => (!!val) || 'Harap diisi',]"
-            />
-            <app-autocomplete
-              v-if="pendaftaran.kamars?.length > 0"
-              ref="refHakRuang"
-              v-model="store.form.hakruang"
-              label="Hak Ruang"
-              autocomplete="rs2"
-              option-value="rs1"
-              option-label="rs2"
-              outlined
-              :source="pendaftaran.kamars"
-              class="q-mb-xs col-12"
-              :rules="[val => (!!val) || 'Harap diisi',]"
-              @selected="(val)=>store.pilihRuang(val)"
-            />
+            <app-autocomplete v-if="pendaftaran.jnsSistemBayars?.length > 0" ref="refJnsSistemBayar"
+              v-model="store.form.jnsBayar" label="Pilih Sistem Bayar" autocomplete="sistembayar" option-value="kode"
+              option-label="sistembayar" outlined :source="pendaftaran.jnsSistemBayars" class="col-5 q-mb-xs"
+              :rules="[val => (!!val) || 'Harap diisi',]" @selected="(val) => pendaftaran.filterSistemBayar(val)" />
+            <app-autocomplete ref="refSistemBayar" v-model="store.form.kodesistembayar" label="Sistem Bayar"
+              autocomplete="sistembayar" option-value="kode" option-label="sistembayar" outlined
+              :source="pendaftaran.sistembayars" class="col-7 q-mb-xs" :rules="[val => (!!val) || 'Harap diisi',]" />
+            <app-autocomplete v-if="pendaftaran.kamars?.length > 0" ref="refHakRuang" v-model="store.form.hakruang"
+              label="Hak Ruang" autocomplete="rs2" option-value="rs1" option-label="rs2" outlined
+              :source="pendaftaran.kamars" class="q-mb-xs col-12" :rules="[val => (!!val) || 'Harap diisi',]"
+              @selected="(val) => store.pilihRuang2(val)" />
             <div class="flex q-gutter-sm full-width q-mb-sm">
               <div>Titipkan Pasien ? : </div>
-              <q-radio
-                v-for="item in pendaftaran.titipans"
-                :key="item"
-                v-model="store.form.isTitipan"
-                :val="item"
-                :label="item"
-                dense
-                size="xs"
-                @update:model-value="(val)=>{
-                  if (val==='Ya') {
-                    store.form.kode_ruang= null
-                    store.form.kamar= null
-                    store.form.no_bed= null
-                    store.grupKamars= []
-                    store.beds= []
+              <q-radio v-for="item in pendaftaran.titipans" :key="item" v-model="store.form.isTitipan" :val="item"
+                :label="item" dense size="xs" @update:model-value="(val) => {
+                  if (val === 'Ya') {
+                    store.form.kode_ruang = null
+                    store.form.kamar = null
+                    store.form.no_bed = null
+                    store.grupKamars = []
+                    store.beds = []
                   } else {
-                    store.form.kode_ruang= store.form.hakruang
-                    if(store.form.hakruang !== null) store.pilihRuang(store.form.hakruang)
+                    store.form.kode_ruang = store.form.hakruang
+                    if (store.form.hakruang !== null) store.pilihRuang(store.form.hakruang)
                   }
-                }"
-              />
+                }" />
             </div>
-            <app-autocomplete
-              v-if="store.form.isTitipan ==='Ya'"
-              ref="refKodeRuang"
-              v-model="store.form.kode_ruang"
-              label="Pilih Ruangan"
-              autocomplete="rs2"
-              option-value="rs1"
-              option-label="rs2"
-              outlined
-              :source="pendaftaran.kamars"
-              class="q-mb-xs col-12"
-              :rules="[val => (!!val) || 'Harap diisi',]"
-              @selected="(val)=>store.pilihRuang(val)"
-            />
-            <app-autocomplete
-              ref="refGrupKamar"
-              v-model="store.form.kamar"
-              label="Pilih Kamar"
-              autocomplete="label"
-              option-value="value"
-              option-label="label"
-              outlined
-              :source="store.grupKamars"
-              :loading="pendaftaran.loadingShowKamar"
-              :disable="pendaftaran.loadingShowKamar"
-              class="q-mb-xs col-8"
-              :rules="[val => (!!val) || 'Harap diisi',]"
-              @selected="(val)=>store.pilihKamar(val)"
-              :key="store.form.kamar"
-            />
-            <q-select
-              :key="store.grupKamars"
-              dense outlined standout="bg-yellow-3"
-              v-model="store.form.no_bed"
-              :options="store.beds"
-              :loading="pendaftaran.loadingShowKamar"
-              :disable="pendaftaran.loadingShowKamar"
-              label="NO BED"
-              option-value="rs2"
-              :option-label="opt=> Object(opt) === opt && 'rs2' in opt ? `${opt.rs2}  -  ${opt.pasien?.length ? 'Terisi' : 'Kosong'}` : '- Null -'"
-              map-options
-              emit-value
-              :rules="[
+            <app-autocomplete v-if="store.form.isTitipan === 'Ya'" ref="refKodeRuang" v-model="store.form.kode_ruang"
+              label="Pilih Ruangan" autocomplete="rs2" option-value="rs1" option-label="rs2" outlined
+              :source="pendaftaran.kamars" class="q-mb-xs col-12" :rules="[val => (!!val) || 'Harap diisi',]"
+              @selected="(val) => store.pilihRuang2(val)" />
+            <app-autocomplete ref="refGrupKamar" v-model="store.form.kamar" label="Pilih Kamar" autocomplete="label"
+              option-value="value" option-label="label" outlined :source="store.grupKamars"
+              :loading="pendaftaran.loadingShowKamar" :disable="pendaftaran.loadingShowKamar" class="q-mb-xs col-8"
+              :rules="[val => (!!val) || 'Harap diisi',]" @selected="(val) => store.pilihKamar2(val)"
+              :key="store.form.kamar" />
+            <!-- <q-select :key="store.grupKamars" dense outlined standout="bg-yellow-3" v-model="store.form.no_bed"
+              :options="store.beds" :loading="pendaftaran.loadingShowKamar" :disable="pendaftaran.loadingShowKamar"
+              label="NO BED" option-value="rs2"
+              :option-label="opt => Object(opt) === opt && 'rs2' in opt ? `${opt.rs2}  -  ${opt.pasien?.length ? 'Terisi' : 'Kosong'}` : '- Null -'"
+              map-options emit-value :rules="[
                 val => (!!val) || 'Harap diisi',
-                val => (store.beds?.find(item=>item.rs2===val)?.pasien?.length === 0) || 'Bed sudah terisi'
-              ]"
-              class="q-mb-xs col-4"
-              @update:model-value="(val)=>pilihBed(val)"
-              hide-bottom-space
-            />
-            <app-autocomplete
-              ref="refDokter"
-              v-model="store.form.kd_dokter"
-              label="Dokter Utama"
-              autocomplete="nama"
-              option-value="kdpegsimrs"
-              option-label="nama"
-              outlined
-              :source="pendaftaran.dokters"
-              :valid="true"
-              class="col-12 q-mb-xs"
-              :rules="[val => (!!val) || 'Harap diisi',]"
-              @selected="(val)=>store.pilihDokter(val)"
-              :key="store.form.kd_dokter"
-            />
-            <app-autocomplete
-              ref="refCategoryKasus"
-              v-model="store.form.kategoriKasus"
-              label="Kategori Kasus"
-              autocomplete="uraian"
-              option-value="kode"
-              option-label="uraian"
-              outlined
-              :source="pendaftaran.categories"
-              class="q-mb-xs col-12"
-              :rules="[val => (!!val) || 'Harap diisi',]"
-              :key="store.form.kategoriKasus"
-            />
+                val => (store.beds?.find(item => item.rs2 === val)?.pasien?.length === 0) || 'Bed sudah terisi'
+              ]" class="q-mb-xs col-4" @update:model-value="(val) => pilihBed(val)" hide-bottom-space /> -->
+            <app-autocomplete ref="refGrupBed" v-model="store.form.no_bed" label="Pilih Bed" autocomplete="label"
+              option-value="rs2" option-label="rs2" outlined :source="store.beds"
+              :loading="pendaftaran.loadingShowKamar" :disable="pendaftaran.loadingShowKamar" class="q-mb-xs col-4"
+              :rules="[val => (!!val) || 'Harap diisi',]" @selected="(val) => pilihBed(val)" :key="store.form.no_bed" />
+
+            <app-autocomplete ref="refDokter" v-model="store.form.kd_dokter" label="Dokter Utama" autocomplete="nama"
+              option-value="kdpegsimrs" option-label="nama" outlined :source="pendaftaran.dokters" :valid="true"
+              class="col-12 q-mb-xs" :rules="[val => (!!val) || 'Harap diisi',]"
+              @selected="(val) => store.pilihDokter(val)" :key="store.form.kd_dokter" />
+            <app-autocomplete ref="refCategoryKasus" v-model="store.form.kategoriKasus" label="Kategori Kasus"
+              autocomplete="uraian" option-value="kode" option-label="uraian" outlined :source="pendaftaran.categories"
+              class="q-mb-xs col-12" :rules="[val => (!!val) || 'Harap diisi',]" :key="store.form.kategoriKasus" />
           </div>
         </q-card-section>
 
         <q-card-section class="q-pa-none bg-primary text-white">
           <div class="q-pa-md row justify-between items-center">
             <div class="row q-gutter-sm">
-              <q-btn label="Tutup" color="dark" text-color="white" @click="store.dialogSend=false" />
-              <q-btn label="Show Kmr" color="dark" text-color="white" @click="pendaftaran.openDialogShowKamar=true" />
+              <q-btn label="Tutup" color="dark" text-color="white" @click="store.dialogSend = false" />
+              <q-btn label="Show Kmr" color="dark" text-color="white" @click="pendaftaran.openDialogShowKamar = true" />
             </div>
             <div>
-              <q-btn :loading="store.loadingSend" :disable="store.loadingSend" type="submit" label="Kirim Pasien" color="yellow-3" text-color="dark" />
+              <q-btn :loading="store.loadingSend" :disable="store.loadingSend" type="submit" label="Kirim Pasien"
+                color="yellow-3" text-color="dark" />
             </div>
           </div>
         </q-card-section>
@@ -215,22 +125,21 @@
     </q-card>
 
     <!-- dialog kamar -->
-    <page-kamar
-      v-model="pendaftaran.openDialogShowKamar"
-      @close="pendaftaran.openDialogShowKamar = false"
-    />
+    <page-kamar v-model="pendaftaran.openDialogShowKamar" @close="pendaftaran.openDialogShowKamar = false" />
   </q-dialog>
 </template>
 
 <script setup>
 import { useFormPendaftaranRanapStore } from 'src/stores/simrs/pendaftaran/ranap/formpendaftaran'
 import { useListPendaftaranRanapStore } from 'src/stores/simrs/pendaftaran/ranap/listtunggu'
+import { useMutasiRanapStore } from 'src/stores/simrs/ranap/mutasi'
 import { defineAsyncComponent, watch } from 'vue'
 // import { onMounted } from 'vue'
 
 const PageKamar = defineAsyncComponent(() => import('../PageKamar.vue'))
 
 const store = useListPendaftaranRanapStore()
+const mutasi = useMutasiRanapStore()
 const pendaftaran = useFormPendaftaranRanapStore()
 const props = defineProps({
   pasien: {
@@ -244,9 +153,11 @@ const props = defineProps({
 // })
 
 const init = () => {
-  console.log('init', props.pasien)
+  // console.log('init', props.pasien)
   store.formFromDialogSend(props.pasien)
+  store.pilihRuang2(props?.pasien?.koderuangan)
   store.cekPesertaBpjs('nik', props.pasien?.nktp)
+
 }
 
 const sendPasien = () => {
@@ -255,7 +166,7 @@ const sendPasien = () => {
   store.mutasiPasien()
 }
 
-function pilihBed (val) {
+function pilihBed(val) {
   console.log('pilih bed', store.beds)
 }
 

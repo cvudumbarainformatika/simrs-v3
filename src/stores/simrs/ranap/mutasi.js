@@ -12,19 +12,61 @@ export const useMutasiRanapStore = defineStore('mutasi-ranap-store', {
     ruangans: [],
     kamars: [],
     beds: [],
+    alasans: [],
+    historys: [],
 
     form: {
       ruanganTujuan: null,
       kamar: null,
-      noBed: null
+      noBed: null,
+      kd_mutasi: null,
+
+      // document serah terima
+      derajatPasien: null,
+      tensi: null,
+      nadi: null,
+      suhu: null,
+      rr: null,
+      spo2: null,
+      terapis: [],
+      plann: null,
+      ro: null,
+      lab: null,
+      ecg: null,
+      lainlain: null,
+      kelengkapan: null
     },
-    selectRuangan: null
+    selectRuangan: null,
+    terapi: {
+      obat: null,
+      dosis: null,
+      jamMasuk: null,
+      sisa: null,
+      ket: null
+    },
 
   }),
   getters: {
     tarip: (state) => ((state?.taripRuanganAsal?.pelayanan || 0) + (state?.taripRuanganAsal?.sarana || 0)) || 0
   },
   actions: {
+    async getMasterAlasanMutasi() {
+
+
+      try {
+
+        const resp = await api.get('v1/simrs/master/alasanmutasi')
+
+        const data = resp?.data || []
+        if (data) {
+          this.alasans = data
+        }
+        // console.log('resp alasan', resp);
+      } catch (error) {
+        console.log(error);
+
+      }
+    },
     async getData(pasien) {
 
       const params = {
@@ -42,7 +84,27 @@ export const useMutasiRanapStore = defineStore('mutasi-ranap-store', {
           this.ruanganAsal = data?.ruangan[0] || null
           this.taripRuanganAsal = data?.tarif[0] || null
         }
+        // console.log('resp', resp);
+      } catch (error) {
+        console.log(error);
+
+      }
+    },
+    async getHistory(pasien) {
+
+      const params = {
+        params: {
+          noreg: pasien?.noreg
+        }
+      }
+
+      try {
+
+        const resp = await api.get('v1/simrs/ranap/ruangan/historymutasi', params)
+
+
         console.log('resp', resp);
+        this.historys = resp?.data || []
       } catch (error) {
         console.log(error);
 
@@ -69,36 +131,62 @@ export const useMutasiRanapStore = defineStore('mutasi-ranap-store', {
           nama
         }
       }
-      try {
+      // try {
 
-        const resp = await api.get('v1/simrs/master/showkamar', params)
+      //   const resp = await api.get('v1/simrs/master/showkamar', params)
 
-        // console.log('resp list list kamar', resp);
-        this.kamars = resp?.data || []
+      //   // console.log('resp list list kamar', resp);
+      //   this.kamars = resp?.data || []
 
-      } catch (error) {
-        console.log(error);
+      // } catch (error) {
+      //   console.log(error);
 
-      }
+      // }
+
+      return new Promise((resolve, reject) => {
+        api.get('v1/simrs/master/showkamar', params)
+          .then(resp => {
+            // console.log('resp list list kamar', resp);
+            this.kamars = resp?.data || []
+            resolve(resp)
+          })
+          .catch(err => {
+            console.log(err);
+            reject(err)
+          })
+      })
     },
-    async showBed(nama, namax) {
+    showBed(nama, namax) {
       const params = {
         params: {
           nama,
           namax
         }
       }
-      try {
+      // try {
 
-        const resp = await api.get('v1/simrs/master/showBed', params)
+      //   const resp = await api.get('v1/simrs/master/showBed', params)
 
-        // console.log('resp list list Beds', resp);
-        this.beds = resp?.data || []
+      //   // console.log('resp list list Beds', resp);
+      //   this.beds = resp?.data || []
 
-      } catch (error) {
-        console.log(error);
+      // } catch (error) {
+      //   console.log(error);
 
-      }
+      // }
+
+      return new Promise((resolve, reject) => {
+        api.get('v1/simrs/master/showBed', params)
+          .then(resp => {
+            // console.log('resp list list Beds', resp);
+            this.beds = resp?.data || []
+            resolve(resp)
+          })
+          .catch(err => {
+            console.log(err);
+            reject(err)
+          })
+      })
     },
 
 
@@ -121,7 +209,7 @@ export const useMutasiRanapStore = defineStore('mutasi-ranap-store', {
         // const hargalm = pasien.hargalm.value
         // const biaya_dokter1 = pasien.biaya_dokter1.value
 
-        // const kd_mutasi = pasien.kd_mutasi.value
+        const kd_mutasi = this.form.kd_mutasi
         const ruang = this.form.ruanganTujuan
         const kamar = this.form.kamar
         const nobed = this.form.noBed
@@ -138,7 +226,7 @@ export const useMutasiRanapStore = defineStore('mutasi-ranap-store', {
           // hargalm,
           // biaya_dokter1,
           kd_kelas,
-          // kd_mutasi,
+          kd_mutasi,
           ruang,
           kamar,
           nobed,
