@@ -13,7 +13,7 @@
 
         <q-card-section class="q-pt-xs">
           <div class="header bg-primary text-white">
-            <HeaderPage @tambaharsip="dialogtambaharsip()" />
+            <HeaderPage @tambaharsip="dialogtambaharsip()" :hederdetail="props.hederdetail" />
           </div>
           <ListArsipPage />
           <div class="q-pa-sm">
@@ -45,6 +45,10 @@ const storearsip = useUnitPengelolahArsipStore()
 const props = defineProps({
   users: { type: String, default: '' },
   organisasi: {
+    type: Array,
+    default: () => []
+  },
+  hederdetail: {
     type: Array,
     default: () => []
   },

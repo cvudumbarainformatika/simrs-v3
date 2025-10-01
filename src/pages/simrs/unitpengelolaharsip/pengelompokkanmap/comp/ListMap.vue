@@ -32,7 +32,7 @@
         </div>
       </div>
     </div>
-    <DialogRincianPage :hederdetail="props.items" :users="props.users" :organisasi="props.organisasi" />
+    <DialogRincianPage :hederdetail="store.itemsrinci" :users="props.users" :organisasi="props.organisasi" />
     <DialogFormPage :klasifikasi="props.klasifikasi" :kabinet="props.kabinet" />
   </div>
 </template>
