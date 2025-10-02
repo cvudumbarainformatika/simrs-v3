@@ -21,8 +21,8 @@
           </template>
         </q-input>
 
-        <app-input-date-human v-if="adaTanggal" :model="from" dark outlined label="resep dari tanggal"
-          @set-model="setDari" @db-model="setDbDari" />
+        <app-input-date-human v-if="adaTanggal" :model="from" dark outlined :label="labelTanggal" @set-model="setDari"
+          @db-model="setDbDari" />
         <q-option-group v-if="adaFlag" v-model="toFlag" :options="flagOptions" color="primary" class="q-ml-sm" dense
           type="checkbox" inline />
       </div>
@@ -76,6 +76,7 @@ const props = defineProps({
   searchDua: { type: String, default: '' },
   labelCari: { type: String, default: 'Cari ...' },
   labelCariDua: { type: String, default: 'Cari ...' },
+  labelTanggal: { type: String, default: 'Resep dari Taggal .. ' },
   adaPerPage: { type: Boolean, default: false },
   adaRefresh: { type: Boolean, default: false },
   adaSearchDua: { type: Boolean, default: false },

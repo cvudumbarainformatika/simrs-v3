@@ -12,9 +12,9 @@ export const useReturDepoStore = defineStore('retur_dari_depo', {
     items: [],
     params: {
       q: '',
-      nama: '',
       per_page: 10,
       page: 1,
+      nama: '',
       kddepo: '',
       flag: ['3'],
       // to: dateDbFormat(new Date()),
