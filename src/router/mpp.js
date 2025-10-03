@@ -14,6 +14,11 @@ const mpp = {
       name: 'mpp.rajal',
       component: () => import('pages/simrs/mpp/rajal/IndexPage.vue')
     },
+    {
+      path: '/mpp/gawat-darurat',
+      name: 'mpp.gawat-darurat',
+      component: () => import('pages/simrs/mpp/igd/IndexPage.vue')
+    },
     // {
     //   path: '/mpp/suratkontrol',
     //   name: 'mpp.suratkontrol',

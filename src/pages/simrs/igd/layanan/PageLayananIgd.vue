@@ -10,8 +10,8 @@
 
         <!-- LEFT DRAWER ======================================================================================-->
         <q-drawer v-model="drawer" elevated bordered show-if-above :width="230" :breakpoint="400">
-          <LeftDrawer :key="pasien" :pasien="pasien" :menus="menus" :menu="menu" @click-menu="(val) => menuDiganti(val)"
-            @icare="getIcare" @history-pasien="historyPasien" />
+          <LeftDrawer :key="pasien" :pasien="pasien" :menus="filteredMenus" :menu="menu"
+            @click-menu="(val) => menuDiganti(val)" @icare="getIcare" @history-pasien="historyPasien" />
         </q-drawer>
 
         <!-- RIGHT DRAWER ======================================================================================-->
@@ -43,6 +43,7 @@ import { defineAsyncComponent, onMounted, ref, shallowRef, watchEffect } from 'v
 import { usePengunjungIgdStore } from 'src/stores/simrs/igd/pengunjung'
 import { useInacbgIgd } from 'src/stores/simrs/igd/inacbg'
 import { usePemakaianObatStore } from 'src/stores/simrs/igd/pemakaianobat'
+import { useRoute } from 'vue-router'
 const store = usePengunjungIgdStore()
 const storepemakaianobat = usePemakaianObatStore()
 
@@ -81,30 +82,35 @@ const menus = ref([
     name: 'TriagePage',
     label: 'Triage',
     icon: 'icon-fa-warehouse-solid',
+    route: ['igd'],
     comp: shallowRef(defineAsyncComponent(() => import('../layanan/triage/TriagePage.vue')))
   },
   {
     name: 'AnamnesisPage',
     label: 'Anamnesis',
     icon: 'icon-mat-medical_information',
+    route: ['igd'],
     comp: shallowRef(defineAsyncComponent(() => import('../layanan/anamnesis/AnamnesisPage.vue')))
   },
   {
     name: 'PemeriksaanFisikPage',
     label: 'Pemeriksaan Umum & Fisik',
     icon: 'icon-my-stethoscope',
+    route: ['igd'],
     comp: shallowRef(defineAsyncComponent(() => import('../layanan/pemeriksaanfisik/PemeriksaanfisikPage.vue')))
   },
   {
     name: 'AssesmentPage',
     label: 'Assesment',
     icon: 'icon-mat-analytics',
+    route: ['igd'],
     comp: shallowRef(defineAsyncComponent(() => import('../layanan/assesment/AssesmentPage.vue')))
   },
   {
     name: 'penunjang-page',
     label: 'Penunjang',
     icon: 'icon-my-local_hospital',
+    route: ['igd'],
     comp: shallowRef(defineAsyncComponent(() => import('../layanan/penunjang/PenunjangPage.vue')))
   },
   {
@@ -112,6 +118,7 @@ const menus = ref([
     label: 'Konsul Spesialis',
     icon: 'icon-mat-textsms',
     nakes: ['1'],
+    route: ['igd'],
     comp: shallowRef(defineAsyncComponent(() => import('./konsul/IndexPage.vue')))
   },
   {
@@ -119,52 +126,62 @@ const menus = ref([
     label: 'Tinjauan Ulang',
     icon: 'icon-mat-transfer_within_a_station',
     nakes: ['1'],
+    route: ['igd'],
     comp: shallowRef(defineAsyncComponent(() => import('./tinjauanulang/IndexPage.vue')))
   },
   {
     name: 'plann-page',
     label: 'Plan',
     icon: 'icon-mat-next_plan',
+    route: ['igd'],
     comp: shallowRef(defineAsyncComponent(() => import('../layanan/plann/IndexPage.vue')))
   },
   {
     name: 'pemakaianobat-page',
     label: 'Pemaikaian Obat/Cairan',
     icon: 'icon-fa-mortar-pestle-solid',
+    route: ['igd'],
     comp: shallowRef(defineAsyncComponent(() => import('../layanan/pemakaianobat/PemakaianObatPage.vue')))
   },
   {
     name: 'e-resep-page',
     label: 'EResep',
     icon: 'icon-mat-receipt',
+    route: ['igd'],
     comp: shallowRef(defineAsyncComponent(() => import('../../eresep/EresepPage.vue')))
   },
   {
     name: 'upload-dokomen',
     label: 'Upload Dokumen',
     icon: 'icon-fa-folder-tree-solid',
+    route: ['igd'],
     comp: shallowRef(defineAsyncComponent(() => import('../layanan/uploaddokumen/IndexPage.vue')))
   },
   {
     name: 'e-dokumen-page',
     label: 'Dokumen RM & Billing',
     icon: 'icon-mat-print',
+    route: ['igd', 'mpp'],
     comp: shallowRef(defineAsyncComponent(() => import('../../igd/layanan/dokumen/DokumenPage.vue')))
   }
 ])
-const menu = ref(menus.value[0])
+
+
+const route = useRoute()
+const menu = ref()
+const filteredMenus = ref([])
 
 const inacbg = useInacbgIgd()
 
-function menuDiganti(val) {
+function menuDiganti (val) {
   menu.value = val
 }
 
-function historyPasien() {
+function historyPasien () {
   drawerRight.value = !drawerRight.value
 }
 
-function getIcare() {
+function getIcare () {
   store.getDataIcare(props.pasien).then(resp => {
     if (resp) {
       window.open(resp?.response?.url, '_blank')
@@ -177,6 +194,12 @@ onMounted(() => {
   store.getsistembayar()
   store.getsistembayarrinci()
   storepemakaianobat.carisatuan()
+
+  const link = route?.path
+  const pathSegments = link.split('/').filter(Boolean)
+  console.log('index page cuy', pathSegments)
+  filteredMenus.value = menus.value?.filter(menu => menu?.route?.some(r => pathSegments.includes(r)))
+  menu.value = filteredMenus.value[0]
 })
 
 watchEffect(() => {
