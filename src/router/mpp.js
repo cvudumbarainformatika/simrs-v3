@@ -9,6 +9,11 @@ const mpp = {
       name: 'mpp.ranap',
       component: () => import('pages/simrs/mpp/ranap/IndexPage.vue')
     },
+    {
+      path: '/mpp/rajal',
+      name: 'mpp.rajal',
+      component: () => import('pages/simrs/mpp/rajal/IndexPage.vue')
+    },
     // {
     //   path: '/mpp/suratkontrol',
     //   name: 'mpp.suratkontrol',
