@@ -183,7 +183,7 @@ onMounted(() => {
   const pathSegments = link.split('/').filter(Boolean)
   filtered.value = menus.value?.filter(menu => menu?.route?.some(r => pathSegments.includes(r)))
   menu.value = filtered.value[0]
-  console.log('index page cuy', filtered.value)
+  // console.log('index page cuy', filtered.value)
 
   master.getData()
   fisik.initReset(false, props?.pasien)

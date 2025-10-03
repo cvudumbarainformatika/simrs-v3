@@ -197,7 +197,7 @@ onMounted(() => {
 
   const link = route?.path
   const pathSegments = link.split('/').filter(Boolean)
-  console.log('index page cuy', pathSegments)
+  // console.log('index page cuy', pathSegments)
   filteredMenus.value = menus.value?.filter(menu => menu?.route?.some(r => pathSegments.includes(r)))
   menu.value = filteredMenus.value[0]
 })
