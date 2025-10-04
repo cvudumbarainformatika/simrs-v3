@@ -120,6 +120,7 @@ const menus = ref([
     name: 'penunjang-page',
     label: 'Penunjang',
     icon: 'icon-my-local_hospital',
+    route: ['poli'],
     comp: shallowRef(defineAsyncComponent(() => import('./comptindakan/pagemenu/PenunjangPage.vue')))
   },
   {
