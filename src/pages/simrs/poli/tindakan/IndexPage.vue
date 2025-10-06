@@ -163,7 +163,7 @@ const menus = ref([
     name: 'penerbitan-surat-page',
     label: 'Dokumen',
     icon: 'icon-mat-email',
-    route: ['poli', 'mpp'],
+    route: ['poli', 'mpp','rekammedik'],
     comp: shallowRef(defineAsyncComponent(() => import('./comptindakan/pagemenu/PenerbitanSuratPage.vue')))
   },
   {

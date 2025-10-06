@@ -161,7 +161,7 @@ const menus = ref([
     name: 'e-dokumen-page',
     label: 'Dokumen RM & Billing',
     icon: 'icon-mat-print',
-    route: ['igd', 'mpp'],
+    route: ['igd', 'mpp','rekammedik'],
     comp: shallowRef(defineAsyncComponent(() => import('../../igd/layanan/dokumen/DokumenPage.vue')))
   }
 ])
