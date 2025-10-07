@@ -215,7 +215,7 @@ export default function useLayanan (pasien, mpp) {
   const menu = ref(null)
 
   onMounted(() => {
-    console.log('mounted pageLayananRanap', auth?.user?.username)
+    // console.log('mounted pageLayananRanap', auth?.user?.username)
 
     menu.value = filterredMenus.value[0]
   })
@@ -226,7 +226,7 @@ export default function useLayanan (pasien, mpp) {
 
   watchEffect(() => {
     if (!pasien) {
-      console.log('no pasien')
+      // console.log('no pasien')
 
       store.pageLayanan = false
     }

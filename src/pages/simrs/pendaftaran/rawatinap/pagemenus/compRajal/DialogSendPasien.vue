@@ -141,7 +141,7 @@ const props = defineProps({
 // })
 
 const init = () => {
-  console.log('init', props.pasien)
+  // console.log('init', props.pasien)
   store.formFromDialogSend(props.pasien)
   store.cekPesertaBpjs('nik', props.pasien?.nktp)
 }
