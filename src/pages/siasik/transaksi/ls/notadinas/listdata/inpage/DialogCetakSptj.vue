@@ -171,11 +171,11 @@
                   </div>
                   <div style="padding-bottom: 40px" />
                   <div class="underline text-bold q-py-xs">
-                    {{ store.datattd[0]?.nama }}
+                    {{ store.datattd?.direktur?.nama }}
                     <div class="garis-bawah" style="text-decoration-line: underline;" />
                   </div>
                   <div>
-                    NIP. {{ store.datattd[0]?.nip }}
+                    NIP. {{ store.datattd?.direktur?.nip }}
                   </div>
                 </div>
               </div>

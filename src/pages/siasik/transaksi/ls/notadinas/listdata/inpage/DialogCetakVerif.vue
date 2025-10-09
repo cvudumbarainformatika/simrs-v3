@@ -141,11 +141,11 @@
                   </div>
                   <div style="padding-bottom: 40px" />
                   <div class="underline text-bold q-py-xs">
-                    {{ store.datattd[1]?.nama }}
+                    {{ store.datattd?.ppk?.nama }}
                     <div class="garis-bawah" style="text-decoration-line: underline;" />
                   </div>
                   <div>
-                    NIP. {{ store.datattd[1]?.nip }}
+                    NIP. {{ store.datattd?.ppk?.nip }}
                   </div>
                 </div>
               </div>

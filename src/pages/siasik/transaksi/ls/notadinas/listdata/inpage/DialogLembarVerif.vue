@@ -174,7 +174,7 @@
                         <thead>
                           <tr class="text-bold text-center">
                             <th style="width: 50px">Keterangan</th>
-                            <th style="width: 50%">Verivikator</th>
+                            <th style="width: 50%">Verifikator</th>
                             <th style="width: 50%">PPK</th>
                           </tr>
                         </thead>
@@ -192,12 +192,12 @@
                           <tr>
                             <td>Nama</td>
                             <td class="text-center">
-                              <div>{{ store.datattd[3]?.nama }}</div>
-                              <div>NIP. {{ store.datattd[3]?.nip }}</div>
+                              <div>{{ store.datattd?.verifikator?.nama }}</div>
+                              <div>NIP. {{ store.datattd?.verifikator?.nip }}</div>
                             </td>
                             <td class="text-center">
-                              <div>{{ store.datattd[1]?.nama }}</div>
-                              <div>NIP. {{ store.datattd[1]?.nip }}</div>
+                              <div>{{ store.datattd?.ppk?.nama }}</div>
+                              <div>NIP. {{ store.datattd?.ppk?.nip }}</div>
                             </td>
                           </tr>
                           <tr>
