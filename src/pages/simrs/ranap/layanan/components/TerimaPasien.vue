@@ -16,7 +16,7 @@
         <q-card class="col-2 column text-center">
           <q-card-section class="q-px-xs q-py-md">
             <div>Tensi</div>
-            <div class="f-18 text-weight-bold">{{ terima?.tensi }}</div>
+            <div class="f-18 text-weight-bold">{{ terima?.sistole }} / {{ terima?.diastole }}</div>
             <div> mmHg</div>
           </q-card-section>
         </q-card>
@@ -62,10 +62,20 @@
           Pasien</b> </div>
 
       <q-form class="row q-col-gutter-sm" ref="formTerima" @submit="onSubmit">
-        <app-input-simrs label="Tensi (mmHg)" class="col-3" v-model="form.tensi_trm" :valid="{ number: true }"
+
+        <app-input-simrs v-model="form.keadaanUmum" label="Keadaan Umum" outlined dense class="col-6" />
+        <app-input-simrs v-model="form.kesadaran" label="Kesadaran" outlined dense class="col-6" />
+
+        <app-input-simrs label="Sistolik (mmHg)" class="col-3" v-model="form.sistole_trm" :valid="{ number: true }"
           @update:model-value="(val) => {
             const _removedZeros = val.replace(/^0+/, '')
-            if (val > 1) form.tensi_trm = _removedZeros
+            if (val > 1) form.sistole_trm = _removedZeros
+            // cekEws('tb', _removedZeros)
+          }" />
+        <app-input-simrs label="Diastolik (mmHg)" class="col-3" v-model="form.diastole_trm" :valid="{ number: true }"
+          @update:model-value="(val) => {
+            const _removedZeros = val.replace(/^0+/, '')
+            if (val > 1) form.diastole_trm = _removedZeros
             // cekEws('tb', _removedZeros)
           }" />
         <app-input-simrs label="Nadi (x/mnt)" class="col-3" v-model="form.nadi_trm" :valid="{ number: true }"
@@ -126,7 +136,11 @@ const props = defineProps({
 const loading = ref(false)
 
 const form = ref({
+  kesadaranUmum: null,
+  kesadaran: null,
   tensi_trm: null,
+  sistole_trm: null,
+  diastole_trm: null,
   nadi_trm: null,
   suhu_trm: null,
   rr_trm: null,

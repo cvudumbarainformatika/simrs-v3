@@ -1,7 +1,7 @@
 <template>
   <div class="fit column scroll">
     <q-form ref="formRef" @submit="onSubmit" class="">
-      <div class="q-pa-md">
+      <div class="q-pa-sm">
         <b>Ruangan Asal</b>
       </div>
       <q-separator class="" />
@@ -9,11 +9,12 @@
       <div class="row q-col-gutter-sm q-pa-md">
         <div class="col-3">Asal Ruangan </div>
         <div class="col-9">: {{ asalRuangan?.kamar }}</div>
+        <template v-if="asalRuangan?.titipan">
+          <div class="col-3 text-red">Titipan Dari Ruangan </div>
+          <div class="col-9 text-red">: {{ asalRuangan?.titipan_ruang }}</div>
+        </template>
         <div class="col-3">Kamar / No Bed</div>
         <div class="col-9">: {{ asalRuangan?.kd_kmr }} / {{ asalRuangan?.no_bed }}</div>
-        <!-- <div class="col-4"> </div> -->
-        <!-- <div class="col-3">Tarip </div>
-        <div class="col-9">: Rp. {{ formatRp(store?.tarip) }}</div> -->
       </div>
 
 
@@ -116,6 +117,15 @@
         </div> -->
         <!-- <div class="col-4">Tarip </div>
         <div class="col-8">: Rp. tarrrrr</div> -->
+        <template v-if="asalRuangan?.titipan">
+          <div class="col-3">Masih Jadi Titipan ? </div>
+          <div class="col-9 flex q-gutter-x-sm ">
+            <div class="flex-1 full-width">
+              <q-checkbox v-model="store.form.titipan" label="Ya" />
+            </div>
+          </div>
+        </template>
+
       </div>
       <q-separator class="q-my-xs" />
       <div class="q-pa-md">
@@ -123,13 +133,27 @@
         <q-separator />
       </div>
       <div class="row q-px-md q-col-gutter-x-xs">
-        <div class="col-3">Derajat Pasien :</div>
-        <app-input-simrs v-model="store.form.derajatPasien" label="Derajat Px" outlined dense class="col-4" />
+        <app-input-simrs v-model="store.form.derajatPasien" label="Derajat Pasien" outlined dense class="col-6" />
+        <app-input-simrs v-model="store.form.skalaNyeri" label="Skala Nyeri" outlined dense class="col-6" />
+
+
         <div class="col-12 q-mb-xs">Objective :</div>
-        <app-input-simrs label="Tensi (mmHg)" class="col-3" v-model="store.form.tensi" :valid="{ number: true }"
+        <!-- <app-input-simrs label="Tensi (mmHg)" class="col-3" v-model="store.form.tensi" :valid="{ number: true }"
           @update:model-value="(val) => {
             const _removedZeros = val.replace(/^0+/, '')
             if (val > 1) store.form.tensi = _removedZeros
+            // cekEws('tb', _removedZeros)
+          }" /> -->
+        <app-input-simrs label="Sistolik (mmHg)" class="col-3" v-model="store.form.sistole" :valid="{ number: true }"
+          @update:model-value="(val) => {
+            const _removedZeros = val.replace(/^0+/, '')
+            if (val > 1) store.form.sistole = _removedZeros
+            // cekEws('tb', _removedZeros)
+          }" />
+        <app-input-simrs label="Diastole (mmHg)" class="col-3" v-model="store.form.diastole" :valid="{ number: true }"
+          @update:model-value="(val) => {
+            const _removedZeros = val.replace(/^0+/, '')
+            if (val > 1) store.form.diastole = _removedZeros
             // cekEws('tb', _removedZeros)
           }" />
         <app-input-simrs label="Nadi (x/mnt)" class="col-3" v-model="store.form.nadi" :valid="{ number: true }"
@@ -295,6 +319,9 @@ function onSubmit() {
   // console.log('onSubmit', props.store.form)
 
   props.store.simpanMutasi(props.pasien)
+    .then(() => {
+      window.location.reload()
+    })
 }
 
 watchEffect(() => {

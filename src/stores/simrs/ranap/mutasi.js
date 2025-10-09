@@ -20,10 +20,14 @@ export const useMutasiRanapStore = defineStore('mutasi-ranap-store', {
       kamar: null,
       noBed: null,
       kd_mutasi: null,
+      titipan: false,
 
       // document serah terima
       derajatPasien: null,
+      skalaNyeri: null,
       tensi: null,
+      sistole: null,
+      diastole: null,
       nadi: null,
       suhu: null,
       rr: null,
@@ -75,20 +79,37 @@ export const useMutasiRanapStore = defineStore('mutasi-ranap-store', {
         }
       }
 
-      try {
+      // try {
 
-        const resp = await api.get('v1/simrs/ranap/ruangan/ruanganranap', params)
+      //   const resp = await api.get('v1/simrs/ranap/ruangan/ruanganranap', params)
 
-        const data = resp?.data || null
-        if (data) {
-          this.ruanganAsal = data?.ruangan[0] || null
-          this.taripRuanganAsal = data?.tarif[0] || null
-        }
-        // console.log('resp', resp);
-      } catch (error) {
-        console.log(error);
+      //   const data = resp?.data || null
+      //   if (data) {
+      //     this.ruanganAsal = data?.ruangan[0] || null
+      //     this.taripRuanganAsal = data?.tarif[0] || null
+      //   }
+      //   // console.log('resp', resp);
+      // } catch (error) {
+      //   console.log(error);
 
-      }
+      // }
+
+      return new Promise((resolve, reject) => {
+        api.get('v1/simrs/ranap/ruangan/ruanganranap', params)
+          .then(resp => {
+            const data = resp?.data || null
+            if (data) {
+              this.ruanganAsal = data?.ruangan[0] || null
+              this.taripRuanganAsal = data?.tarif[0] || null
+            }
+            // console.log('resp', resp);
+            resolve(resp)
+          })
+          .catch(error => {
+            console.log(error);
+            reject(error)
+          })
+      })
     },
     async getHistory(pasien) {
 
@@ -222,6 +243,7 @@ export const useMutasiRanapStore = defineStore('mutasi-ranap-store', {
         // const biaya_dokter1 = pasien.biaya_dokter1.value
 
         const kd_mutasi = this.form.kd_mutasi
+        const titipan = this.form.titipan
         const ruang = this.form.ruanganTujuan
         const kamar = this.form.kamar
         const nobed = this.form.noBed
@@ -243,6 +265,7 @@ export const useMutasiRanapStore = defineStore('mutasi-ranap-store', {
           // biaya_dokter1,
           kd_kelas,
           kd_mutasi,
+          titipan,
           ruang,
           kamar,
           nobed,
@@ -251,7 +274,10 @@ export const useMutasiRanapStore = defineStore('mutasi-ranap-store', {
           // editable,
 
           derajatPasien: this.form.derajatPasien,
+          skalaNyeri: this.form.skalaNyeri,
           tensi: this.form.tensi,
+          sistole: this.form.sistole,
+          diastole: this.form.diastole,
           nadi: this.form.nadi,
           suhu: this.form.suhu,
           rr: this.form.rr,
@@ -272,15 +298,28 @@ export const useMutasiRanapStore = defineStore('mutasi-ranap-store', {
         if (!yakin) return
 
         // kirim ke server (pakai axios)
-        const response = await api.post('v1/simrs/ranap/ruangan/simpanmutasi', payload)
+        // const response = await api.post('v1/simrs/ranap/ruangan/simpanmutasi', payload)
 
-        // return response.data
-        // console.log('response mutasi', response);
+        // notifSuccess('Data berhasil disimpan')
+        // this.getHistory(pasien)
 
-        notifSuccess('Data berhasil disimpan')
-        this.getHistory(pasien)
+        // this.initForm()
 
-        this.initForm()
+        return new Promise((resolve, reject) => {
+          api.post('v1/simrs/ranap/ruangan/simpanmutasi', payload)
+            .then(resp => {
+              notifSuccess('Data berhasil disimpan')
+              this.getHistory(pasien)
+              this.initForm()
+              resolve(resp)
+            })
+            .catch(err => {
+              notifErrVue(err?.response?.data?.message)
+              reject(err)
+            })
+        })
+
+
 
       } catch (err) {
         this.error = err
@@ -293,11 +332,15 @@ export const useMutasiRanapStore = defineStore('mutasi-ranap-store', {
     initForm() {
       this.form = {
         kd_mutasi: null,
+        titipan: this.ruanganAsal?.titipan ? true : false,
         ruanganTujuan: null,
         kamar: null,
         noBed: null,
         derajatPasien: null,
+        skalaNyeri: null,
         tensi: null,
+        sistole: null,
+        diastole: null,
         nadi: null,
         suhu: null,
         rr: null,

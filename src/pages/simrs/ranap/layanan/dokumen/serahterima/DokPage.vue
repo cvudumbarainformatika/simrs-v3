@@ -1,5 +1,5 @@
 <template>
-  <div id="pdfDoc" class="bg-white print-page">
+  <div id="pdfDoc" class="bg-white relative-position">
 
     <div v-if="store.loading" class="full-height">
       <div class="full-height column flex-center">
@@ -15,8 +15,8 @@
       </div>
 
     </div>
-    <div v-else>
-      <template v-for="item in store.historys" :key="item">
+    <template v-else>
+      <div v-for="item in store.historys" :key="item" class="looping-page">
         <!-- KOP SURAT -->
         <div class="col-grow kotak">
           <div class="row items-center">
@@ -103,7 +103,7 @@
           </table>
         </div>
 
-        <div class="section q-mb-md">
+        <div class="section q-mb-xs" style="margin-top: -5px;">
           <hr>
           <div class="row q-col-gutter-x-sm">
             <div class="col-12 relative-position">
@@ -145,15 +145,16 @@
               </div>
             </div>
             <div class="col-6 ">
-              <div class="row">
-                <div class="col-2">Skala Nyeri</div>
-                <div class="col-10"> : Belum Ada Inputan</div>
+              <div class="flex q-gutter-x-sm">
+                <div>Skala Nyeri</div>
+                <div> : {{ item?.serah_terima?.skalaNyeri }}</div>
               </div>
             </div>
             <div class="col-12 ">
               <div class="flex q-gutter-x-sm">
                 <div class="text-bold">Tensi</div>
-                <div> : {{ item?.serah_terima?.tensi || '-' }} mMHg, </div>
+                <div> : {{ item?.serah_terima?.sistole || '-' }} / {{ item?.serah_terima?.diastole || '-' }} mMHg,
+                </div>
                 <div class="text-bold">Nadi</div>
                 <div> : {{ item?.serah_terima?.nadi || '-' }} x/menit, </div>
                 <div class="text-bold">Suhu</div>
@@ -253,7 +254,7 @@
             <div class="col-12 q-mt-sm">
               <div class="flex q-gutter-x-md">
                 <div>Rencana Terapi / Tindakan /Pemeriksaan</div>
-                <div class="col-10"> : {{ item?.plann }}</div>
+                <div class="col-10"> : {{ item?.serah_terima?.plann }}</div>
               </div>
             </div>
             <div class="col-12">
@@ -261,11 +262,11 @@
                 <div>Pemeriksaan yang disertakan : </div>
                 <div class="row q-col-gutter-x-sm">
                   <div class="col-2">RO </div>
-                  <div class="col-10">: {{ item?.ro || '-' }} </div>
+                  <div class="col-10">: {{ item?.serah_terima?.ro || '-' }} </div>
                   <div class="col-2">LAB </div>
-                  <div class="col-10"> : {{ item?.lab || '-' }} </div>
+                  <div class="col-10"> : {{ item?.serah_terima?.lab || '-' }} </div>
                   <div class="col-2">ECG </div>
-                  <div class="col-10"> : {{ item?.ecg || '-' }} </div>
+                  <div class="col-10"> : {{ item?.serah_terima?.ecg || '-' }} </div>
                   <div class="col-2">Lain-lain </div>
                   <div class="col-10"> : {{ item?.lainlain || '-' }}</div>
                 </div>
@@ -274,7 +275,7 @@
             <div class="col-12">
               <div class="flex q-gutter-x-md">
                 <div>Kelengkapan yang disertakan </div>
-                <div class="col-10"> : {{ item?.kelengkapan || '-' }}</div>
+                <div class="col-10"> : {{ item?.serah_terima?.kelengkapan || '-' }}</div>
               </div>
             </div>
             <div class="col-12 q-mt-sm">
@@ -286,14 +287,14 @@
                   <div class="row">
                     <div class="col-3">Keadaan Umum</div>
                     <div class="col-9 ">
-                      : Belum Ada Inputan
+                      : {{ item?.serah_terima?.keadaanUmum || '-' }}
                     </div>
                   </div>
                 </div>
                 <div class="col-6 ">
                   <div class="row">
                     <div class="col-2">Kesadaran</div>
-                    <div class="col-10"> : Belum Ada Inputan</div>
+                    <div class="col-10"> : {{ item?.serah_terima?.kesadaran || '-' }}</div>
                   </div>
                 </div>
               </div>
@@ -302,7 +303,8 @@
             <div class="col-12 ">
               <div class="flex q-gutter-x-sm">
                 <div class="text-bold">Tensi</div>
-                <div> : {{ item?.serah_terima?.tensi_trm || '-' }} mMHg, </div>
+                <div> : {{ item?.serah_terima?.sistole_trm || '-' }} / {{ item?.serah_terima?.diastole_trm || '-' }}
+                  mMHg, </div>
                 <div class="text-bold">Nadi</div>
                 <div> : {{ item?.serah_terima?.nadi_trm || '-' }} x/menit, </div>
                 <div class="text-bold">Suhu</div>
@@ -337,11 +339,11 @@
           </div>
 
 
-          <div class="row q-pa-xl justify-between items-center">
+          <div class="row q-px-lg q-pt-md justify-between items-center">
             <div class="kiri text-center">
               <div><b>PERAWAT PENERIMA </b></div>
               <div class="column flex-center">
-                <div style="width: 100px;">
+                <div style="width: 80px;">
                   <vue-qrcode :value="getUrl(item)" tag="svg" :options="{
                     errorCorrectionLevel: 'Q',
                     color: {
@@ -353,13 +355,13 @@
                 </div>
               </div>
               <div>
-                <b>{{ item?.user_serah }}</b>
+                <b>{{ item?.serah_terima?.nmuser_serah }}</b>
               </div>
             </div>
             <div class="kanan text-center">
               <div><b>PERAWAT PENGIRIM</b></div>
               <div class="column flex-center">
-                <div style="width: 100px;">
+                <div style="width: 80px;">
                   <vue-qrcode :value="getUrl2(item)" tag="svg" :options="{
                     errorCorrectionLevel: 'Q',
                     color: {
@@ -372,13 +374,16 @@
               </div>
 
               <div>
-                <b>{{ item?.user_trm }}</b>
+                <b>{{ item?.serah_terima?.nmuser_trm }}</b>
               </div>
             </div>
           </div>
         </div>
-      </template>
-    </div>
+
+        <!-- Separator tampil di browser, disembunyikan saat print -->
+        <q-separator class="q-my-xl hide-when-print" />
+      </div>
+    </template>
   </div>
 </template>
 
@@ -502,20 +507,53 @@ th {
   background-color: #f2f2f2;
 }
 
-.print-page {
-  background-color: #ffffff;
+.looping-page {
+  // background-color: #ffffff;
   padding: 20px !important;
   font-size: 12px;
 }
 
+/* Garis pemisah antar halaman di browser */
+.looping-page:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  // background: repeating-linear-gradient(to right,
+  //     transparent,
+  //     transparent 10px,
+  //     #ccc 10px,
+  //     #ccc 20px);
+}
+
 @media print {
-  .print-page {
+  .looping-page {
     padding: 0px !important;
+    -webkit-print-color-adjust: exact;
+    page-break-after: always;
   }
+
+  .hide-when-print {
+    display: none !important;
+  }
+
+  .looping-page {
+    box-shadow: none;
+    margin: 0;
+    page-break-after: always;
+  }
+
+  .looping-page:last-child {
+    page-break-after: auto;
+  }
+
+
 
   @page {
     size: letter;
-    page-break-inside: avoid;
+    page-break-inside: always;
 
     @bottom-right {
       content: "Dokumen Sah dari RSUD MOH SALEH KOTA PROBOLINGGO | Hal Ke-" counter(page);

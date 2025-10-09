@@ -37,9 +37,10 @@ onMounted(() => {
   // store.initReset()
   Promise.all([
     store.getHistory(props?.pasien),
-    store.getData(props?.pasien),
+    store.getData(props?.pasien).then(() => store.initForm()),
     store.getMasterAlasanMutasi(),
-    store.getKamar()
+    store.getKamar(),
+    store.initForm()
     // store.getTindakan(props?.pasien)
   ])
 })
