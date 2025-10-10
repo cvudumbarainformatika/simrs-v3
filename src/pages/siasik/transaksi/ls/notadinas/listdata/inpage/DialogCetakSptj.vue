@@ -74,10 +74,10 @@
                     </div>
                     <div class="col full-width">
                       <div class="q-py-xs">
-                        : {{ store.datattd[0]?.nama }}
+                        : {{ store.datattd?.direktur?.nama }}
                       </div>
                       <div class="q-py-xs">
-                        : {{ store.datattd[0]?.nip }}
+                        : {{ store.datattd?.direktur?.nip }}
                       </div>
                       <div class="q-py-xs">
                         : Direktur UOBK RSUD Dokter Mohamad Saleh selaku Pimpinan Badan Layanan Umum Daerah
