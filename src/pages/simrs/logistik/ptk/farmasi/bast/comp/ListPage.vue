@@ -1,25 +1,9 @@
 <template>
   <div style="width: 100vw;">
-    <app-table-extend
-      :columns="store.columns"
-      :column-hide="store.columnHide"
-      :items="store.items"
-      :meta="store.meta"
-      :per-page="store.param.per_page"
-      :loading="store.loading"
-      :to-search="store.param.q"
-      :click-able="true"
-      :default-btn="false"
-      :ada-tambah="false"
-      :ada-filter="false"
-      row-no
-      use-full
-      @find="store.setSearch"
-      @goto="store.setPage"
-      @set-row="store.setPerPage"
-      @refresh="store.refreshTable"
-      @on-click="onClick"
-    >
+    <app-table-extend :columns="store.columns" :column-hide="store.columnHide" :items="store.items" :meta="store.meta"
+      :per-page="store.param.per_page" :loading="store.loading" :to-search="store.param.q" :click-able="true"
+      :default-btn="false" :ada-tambah="false" :ada-filter="false" row-no use-full @find="store.setSearch"
+      @goto="store.setPage" @set-row="store.setPerPage" @refresh="store.refreshTable" @on-click="onClick">
       <template #col-no_bast>
         <div>Nomor</div>
       </template>
@@ -36,10 +20,7 @@
         <div>Oleh</div>
       </template>
       <template #cell-no_bast="{ row }">
-        <div
-          v-if="row.nomor"
-          class="row no-wrap justify-between items-center q-mb-xs"
-        >
+        <div v-if="row.nomor" class="row no-wrap justify-between items-center q-mb-xs">
           <div class="q-mr-xs text-blue">
             Pemesanan
           </div>
@@ -47,10 +28,7 @@
             {{ row.nomor }}
           </div>
         </div>
-        <div
-          v-if="row.no_penerimaan"
-          class="row no-wrap justify-between items-center q-mb-xs"
-        >
+        <div v-if="row.no_penerimaan" class="row no-wrap justify-between items-center q-mb-xs">
           <div class="q-mr-xs text-cyan">
             Penerimaan
           </div>
@@ -58,10 +36,7 @@
             {{ row.no_penerimaan }}
           </div>
         </div>
-        <div
-          v-if="row.no_bast"
-          class="row no-wrap justify-between items-center q-mb-xs"
-        >
+        <div v-if="row.no_bast" class="row no-wrap justify-between items-center q-mb-xs">
           <div class="q-mr-xs text-teal">
             BAST
           </div>
@@ -69,10 +44,7 @@
             {{ row.no_bast }}
           </div>
         </div>
-        <div
-          v-if="row.no_kwitansi"
-          class="row no-wrap justify-between items-center q-mb-xs"
-        >
+        <div v-if="row.no_kwitansi" class="row no-wrap justify-between items-center q-mb-xs">
           <div class="q-mr-xs text-teal">
             Kwitansi
           </div>
@@ -80,10 +52,7 @@
             {{ row.no_kwitansi }}
           </div>
         </div>
-        <div
-          v-if="row.no_npd"
-          class="row no-wrap justify-between items-center q-mb-xs"
-        >
+        <div v-if="row.no_npd" class="row no-wrap justify-between items-center q-mb-xs">
           <div class="q-mr-xs text-teal">
             No NPD
           </div>
@@ -93,21 +62,15 @@
         </div>
       </template>
       <template #cell-tanggal="{ row }">
-        <div
-          v-if="row.tanggal"
-          class="row no-wrap justify-between items-center q-mb-xs"
-        >
-          {{ row.tanggal_bast?dateFullFormat(row.tanggal_bast):dateFullFormat(row.tanggal) }}
+        <div v-if="row.tanggal" class="row no-wrap justify-between items-center q-mb-xs">
+          {{ row.tanggal_bast ? dateFullFormat(row.tanggal_bast) : dateFullFormat(row.tanggal) }}
           <!-- <div class="q-mr-xs">
             Penerimaan
           </div>
           <div class="text-weight-bold">
           </div> -->
         </div>
-        <div
-          v-if="row.tanggal_faktur"
-          class="row no-wrap justify-between items-center q-mb-xs"
-        >
+        <div v-if="row.tanggal_faktur" class="row no-wrap justify-between items-center q-mb-xs">
           <div class="q-mr-xs">
             Faktur
           </div>
@@ -115,10 +78,7 @@
             {{ dateFullFormat(row.tanggal_faktur) }}
           </div>
         </div>
-        <div
-          v-if="row.tanggal_surat"
-          class="row no-wrap justify-between items-center q-mb-xs"
-        >
+        <div v-if="row.tanggal_surat" class="row no-wrap justify-between items-center q-mb-xs">
           <div class="q-mr-xs">
             Surat Jalan
           </div>
@@ -126,10 +86,7 @@
             {{ dateFullFormat(row.tanggal_surat) }}
           </div>
         </div>
-        <div
-          v-if="row.tanggal_bast"
-          class="row no-wrap justify-between items-center q-mb-xs"
-        >
+        <div v-if="row.tanggal_bast" class="row no-wrap justify-between items-center q-mb-xs">
           <div class="q-mr-xs">
             BAST
           </div>
@@ -137,10 +94,7 @@
             {{ dateFullFormat(row.tanggal_bast) }}
           </div>
         </div>
-        <div
-          v-if="row.tanggal_serahterima"
-          class="row no-wrap justify-between items-center q-mb-xs"
-        >
+        <div v-if="row.tanggal_serahterima" class="row no-wrap justify-between items-center q-mb-xs">
           <div class="q-mr-xs">
             serah terima
           </div>
@@ -148,10 +102,7 @@
             {{ dateFullFormat(row.tanggal_serahterima) }}
           </div>
         </div>
-        <div
-          v-if="row.tanggal_pembayaran"
-          class="row no-wrap justify-between items-center q-mb-xs"
-        >
+        <div v-if="row.tanggal_pembayaran" class="row no-wrap justify-between items-center q-mb-xs">
           <div class="q-mr-xs">
             Pembayaran
           </div>
@@ -166,10 +117,7 @@
         </div>
       </template>
       <template #cell-info="{ row }">
-        <div
-          v-if="row.perusahaan"
-          class="row no-wrap justify-between items-center q-mb-xs"
-        >
+        <div v-if="row.perusahaan" class="row no-wrap justify-between items-center q-mb-xs">
           <div class="q-mr-xs">
             Penyedia
           </div>
@@ -177,10 +125,7 @@
             {{ row.perusahaan.nama }}
           </div>
         </div>
-        <div
-          v-if="row.pengirim"
-          class="row no-wrap justify-between items-center q-mb-xs"
-        >
+        <div v-if="row.pengirim" class="row no-wrap justify-between items-center q-mb-xs">
           <div class="q-mr-xs">
             Pengirim
           </div>
@@ -188,10 +133,7 @@
             {{ row.pengirim }}
           </div>
         </div>
-        <div
-          v-if="row.surat_jalan"
-          class="row no-wrap justify-between items-center q-mb-xs"
-        >
+        <div v-if="row.surat_jalan" class="row no-wrap justify-between items-center q-mb-xs">
           <div class="q-mr-xs">
             No. Surat Jalan
           </div>
@@ -199,10 +141,7 @@
             {{ row.surat_jalan }}
           </div>
         </div>
-        <div
-          v-if="row.faktur"
-          class="row no-wrap justify-between items-center q-mb-xs"
-        >
+        <div v-if="row.faktur" class="row no-wrap justify-between items-center q-mb-xs">
           <div class="q-mr-xs">
             No. Faktur
           </div>
@@ -213,47 +152,35 @@
       </template>
       <template #cell-total="{ row }">
         <div class="text-right text-weight-bold">
-          {{ formatDouble( row.totalSemua,2) }}
+          {{ formatDouble(row.totalSemua, 2) }}
         </div>
-        <div
-          v-if="row.total"
-          class="row no-wrap justify-between items-center q-mb-xs"
-        >
+        <div v-if="row.total" class="row no-wrap justify-between items-center q-mb-xs">
           <div class="q-mr-xs">
             Total
           </div>
           <div class="text-weight-bold text-primary">
-            {{ formatRpDouble( row.total,2) }}
+            {{ formatRpDouble(row.total, 2) }}
           </div>
         </div>
-        <div
-          v-if="row.nilai_tagihan"
-          class="row no-wrap justify-between items-center q-mb-xs"
-        >
+        <div v-if="row.nilai_tagihan" class="row no-wrap justify-between items-center q-mb-xs">
           <div class="q-mr-xs">
             Tagihan
           </div>
           <div class="text-weight-bold text-deep-orange">
-            {{ formatRpDouble( row.nilai_tagihan,2) }}
+            {{ formatRpDouble(row.nilai_tagihan, 2) }}
           </div>
         </div>
-        <div
-          v-if="row.nilai_pembayaran"
-          class="row no-wrap justify-between items-center q-mb-xs"
-        >
+        <div v-if="row.nilai_pembayaran" class="row no-wrap justify-between items-center q-mb-xs">
           <div class="q-mr-xs">
             Pembayaran
           </div>
           <div class="text-weight-bold text-green">
-            {{ formatRpDouble( row.nilai_pembayaran,2) }}
+            {{ formatRpDouble(row.nilai_pembayaran, 2) }}
           </div>
         </div>
       </template>
       <template #cell-oleh="{ row }">
-        <div
-          v-if="row.terima"
-          class="row no-wrap justify-between items-center q-mb-xs"
-        >
+        <div v-if="row.terima" class="row no-wrap justify-between items-center q-mb-xs">
           <div class="q-mr-xs">
             Diterima
           </div>
@@ -261,10 +188,7 @@
             {{ row.terima.nama }}
           </div>
         </div>
-        <div
-          v-if="row.bast"
-          class="row no-wrap justify-between items-center q-mb-xs"
-        >
+        <div v-if="row.bast" class="row no-wrap justify-between items-center q-mb-xs">
           <div class="q-mr-xs">
             BAST
           </div>
@@ -272,10 +196,7 @@
             {{ row.bast.nama }}
           </div>
         </div>
-        <div
-          v-if="row.bayar"
-          class="row no-wrap justify-between items-center q-mb-xs"
-        >
+        <div v-if="row.bayar" class="row no-wrap justify-between items-center q-mb-xs">
           <div class="q-mr-xs">
             Pembayaran
           </div>
@@ -285,30 +206,29 @@
         </div>
       </template>
       <template #cell-act="{ row }">
-        <div v-if="!row?.no_npd && !row?.tgl_pembayaran">
-          <q-btn
-            round
-            flat
-            size="sm"
-            icon="icon-mat-delete_sweep"
-            color="negative"
-            @click="hapus(row)"
-          >
-            <q-tooltip>Batal BAST</q-tooltip>
-          </q-btn>
+        <div class="row q-col-gutter-x-xs">
+          <div class="col-auto" v-if="!row?.no_npd && !row?.tgl_pembayaran">
+            <q-btn round flat size="sm" icon="icon-mat-delete_sweep" color="negative" @click="hapus(row)">
+              <q-tooltip>Batal BAST</q-tooltip>
+            </q-btn>
+          </div>
+          <div class="col-auto">
+            <q-btn round size="sm" color="primary" icon="icon-mat-handshake" no-caps @click="openBast(row)">
+              <q-tooltip>Buka Dokumen BAST</q-tooltip>
+            </q-btn>
+          </div>
+          <div class="col-auto">
+            <q-btn round size="sm" color="green" icon="icon-mat-done" no-caps @click="openPemeriksaan(row)">
+              <q-tooltip>Buka Dokumen Pemeriksaan</q-tooltip>
+            </q-btn>
+          </div>
+
         </div>
       </template>
       <template #expand="{ row }">
         <div v-if="row.penerimaan?.length" style="width: 90vw;">
-          <div
-            v-for="(trm,n) in row.penerimaan"
-            :key="n"
-            class=" "
-          >
-            <div
-              class="row no-wrap terima q-mb-xs cursor-pointer"
-              @click="trm.disp = !trm.disp"
-            >
+          <div v-for="(trm, n) in row.penerimaan" :key="n" class=" ">
+            <div class="row no-wrap terima q-mb-xs cursor-pointer" @click="trm.disp = !trm.disp">
               <div class="col-12">
                 <div class="row no-wrap q-mt-xs">
                   <div class="col-2">
@@ -330,10 +250,8 @@
                   <div class="col-2">
                     Subtotal Penerimaan
                   </div>
-                  <div
-                    class="text-weight-bold"
-                  >
-                    {{ formatRpDouble(trm?.subtotal_terima,2) }}
+                  <div class="text-weight-bold">
+                    {{ formatRpDouble(trm?.subtotal_terima, 2) }}
                   </div>
                 </div>
                 <!-- <div class="row no-wrap q-mt-xs">
@@ -349,7 +267,7 @@
                     Subtotal BAST
                   </div>
                   <div class="text-weight-bold">
-                    {{ formatRpDouble(trm?.subtotal_bast,2) }}
+                    {{ formatRpDouble(trm?.subtotal_bast, 2) }}
                   </div>
                 </div>
               </div>
@@ -362,12 +280,8 @@
                       Penerimaan
                     </div>
                   </div>
-                  <div
-                    v-for="(det,i) in trm.penerimaanrinci"
-                    :key="i"
-                    class="row no-wrap q-mb-xs anu"
-                    :class="i%2===1?'bg-blue-2':''"
-                  >
+                  <div v-for="(det, i) in trm.penerimaanrinci" :key="i" class="row no-wrap q-mb-xs anu"
+                    :class="i % 2 === 1 ? 'bg-blue-2' : ''">
                     <div class="">
                       <div class="row no-wrap q-mt-xs anudua">
                         <div class="text-weight-bold box">
@@ -397,7 +311,7 @@
                           Harga
                         </div>
                         <div class="text-weight-bold">
-                          {{ formatRpDouble(det.harga,2) }}
+                          {{ formatRpDouble(det.harga, 2) }}
                         </div>
                       </div>
                       <div class="row no-wrap justify-between items-center q-mt-xs anudua">
@@ -408,9 +322,7 @@
                           {{ det.diskon }} %
                         </div>
                       </div>
-                      <div
-                        class="row no-wrap justify-between items-center q-mt-xs anudua"
-                      >
+                      <div class="row no-wrap justify-between items-center q-mt-xs anudua">
                         <div class="q-mr-xs">
                           PPN
                         </div>
@@ -418,14 +330,12 @@
                           {{ det.ppn }} %
                         </div>
                       </div>
-                      <div
-                        class="row no-wrap justify-between items-center q-mt-xs anudua"
-                      >
+                      <div class="row no-wrap justify-between items-center q-mt-xs anudua">
                         <div class="q-mr-xs">
                           Subtotal
                         </div>
                         <div class="text-weight-bold text-right">
-                          {{ formatRpDouble(det.subtotal,2) }}
+                          {{ formatRpDouble(det.subtotal, 2) }}
                         </div>
                       </div>
                     </div>
@@ -437,12 +347,8 @@
                       Bast
                     </div>
                   </div>
-                  <div
-                    v-for="(bast,l) in trm.bastr"
-                    :key="l"
-                    class="row no-wrap q-mb-xs anu"
-                    :class="l%2===1?'bg-blue-2':''"
-                  >
+                  <div v-for="(bast, l) in trm.bastr" :key="l" class="row no-wrap q-mb-xs anu"
+                    :class="l % 2 === 1 ? 'bg-blue-2' : ''">
                     <div class="">
                       <div class="row no-wrap q-mt-xs anudua">
                         <div class="text-weight-bold box">
@@ -472,7 +378,7 @@
                           Harga
                         </div>
                         <div class="text-weight-bold">
-                          {{ formatRpDouble(bast.harga,2) }}
+                          {{ formatRpDouble(bast.harga, 2) }}
                         </div>
                       </div>
                       <div class="row no-wrap justify-between items-center q-mt-xs anudua">
@@ -483,9 +389,7 @@
                           {{ bast.diskon }} %
                         </div>
                       </div>
-                      <div
-                        class="row no-wrap justify-between items-center q-mt-xs anudua"
-                      >
+                      <div class="row no-wrap justify-between items-center q-mt-xs anudua">
                         <div class="q-mr-xs">
                           PPN
                         </div>
@@ -493,14 +397,12 @@
                           {{ bast.ppn }} %
                         </div>
                       </div>
-                      <div
-                        class="row no-wrap justify-between items-center q-mt-xs anudua"
-                      >
+                      <div class="row no-wrap justify-between items-center q-mt-xs anudua">
                         <div class="q-mr-xs">
                           Subtotal
                         </div>
                         <div class="text-weight-bold text-right">
-                          {{ formatRpDouble(bast.subtotal,2) }}
+                          {{ formatRpDouble(bast.subtotal, 2) }}
                         </div>
                       </div>
                     </div>
@@ -513,19 +415,43 @@
       </template>
     </app-table-extend>
   </div>
+  <DokumenBastPage v-model="store.openDokBAST" @close="() => { store.openDokBAST = false }" />
+  <DokumenPemeriksaanPage v-model="store.openDokPemeriksaan" @close="() => { store.openDokPemeriksaan = false }" />
+  <TandaTanganPage v-model="tandatangan.isOpen" />
 </template>
 <script setup>
 import { dateFullFormat, formatDouble, formatRpDouble } from 'src/modules/formatter'
 import { useListBastPenerimaanFarmasiStore } from 'src/stores/simrs/farmasi/bast/list'
+import { useTandaTanganStore } from 'src/stores/simrs/logistik/sigarang/tantatangan/tandatangan'
+import { defineAsyncComponent } from 'vue'
 
 const store = useListBastPenerimaanFarmasiStore()
+const tandatangan = useTandaTanganStore()
+const TandaTanganPage = defineAsyncComponent(() => import('src/pages/simrs/sigarang/tandatangan/TandaTanganPage.vue'))
+const DokumenBastPage = defineAsyncComponent(() => import('src/pages/simrs/logistik/ptk/farmasi/bast/comp/dokumen/DokumenBastPage.vue'))
+const DokumenPemeriksaanPage = defineAsyncComponent(() => import('src/pages/simrs/logistik/ptk/farmasi/bast/comp/dokumen/DokumenPemeriksaanPage.vue'))
+
 // click
 function onClick (val) {
   // console.log('click', val)
   val.item.expand = !val.item.expand
   val.item.highlight = !val.item.highlight
 }
-
+function cancelExpandFormRow (val) {
+  // console.log('cancel', val)
+  val.expand = !val.expand
+  val.highlight = !val.highlight
+}
+function openBast (val) {
+  store.openDokBAST = true
+  store.item = val
+  cancelExpandFormRow(val)
+}
+function openPemeriksaan (val) {
+  store.openDokPemeriksaan = true
+  store.item = val
+  cancelExpandFormRow(val)
+}
 function hapus (val) {
   val.expand = !val.expand
   val.highlight = !val.highlight
@@ -538,24 +464,27 @@ function hapus (val) {
 store.getInitialData()
 </script>
 <style scoped>
-
 .box {
   white-space: normal !important;
-    inline-size: 220px;
-    overflow-wrap: break-word;
+  inline-size: 220px;
+  overflow-wrap: break-word;
 }
+
 .box2 {
   white-space: normal !important;
-    inline-size: 150px;
-    overflow-wrap: break-word;
+  inline-size: 150px;
+  overflow-wrap: break-word;
 }
-.terima{
+
+.terima {
   background-color: rgba(120, 231, 51, 0.549);
 }
-.anu:hover{
+
+.anu:hover {
   background-color: rgba(166, 173, 144, 0.548);
 }
-.anudua:hover{
+
+.anudua:hover {
   background-color: rgb(54, 196, 231);
 }
 </style>

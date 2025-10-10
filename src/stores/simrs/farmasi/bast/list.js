@@ -4,6 +4,9 @@ import { notifSuccess } from 'src/modules/utils'
 
 export const useListBastPenerimaanFarmasiStore = defineStore('list_bast_penerimaan_farmasi', {
   state: () => ({
+    openDokBAST: false,
+    openDokPemeriksaan: false,
+    item: {},
     loading: false,
     items: [],
     meta: {},
