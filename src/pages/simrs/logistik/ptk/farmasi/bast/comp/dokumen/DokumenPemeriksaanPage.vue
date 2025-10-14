@@ -54,12 +54,12 @@
                 <div class="q-mb-md">
                   Pada hari ini <span class="text-weight-bold text-italic">{{ date.formatDate(store.item?.tanggal,
                     'dddd')
-                    }}</span>
+                  }}</span>
                   Tanggal <span class="text-weight-bold text-italic">{{
                     tanggalTerbilang(date.formatDate(store.item?.tanggal, 'DD'))
-                  }}</span>
-                  Bulan <span class="text-weight-bold text-italic">{{ date.formatDate(store.item?.tanggal, 'MMMM')
                     }}</span>
+                  Bulan <span class="text-weight-bold text-italic">{{ date.formatDate(store.item?.tanggal, 'MMMM')
+                  }}</span>
                   Tahun <span class="text-weight-bold text-italic">{{
                     tahunTerbilang(date.formatDate(store.item?.tanggal,
                       'YYYY'))
@@ -223,7 +223,7 @@
                     Berdasarkan hasil pemeriksaan dan kemajuan pelaksanaan pekerjaan sebagaimana dimaksud pada angka 1
                     dan 2 di atas,
                     maka PPK menyatakan dapat menerima hasil pekerjaan yang dilaksanakan oleh : <b>{{ namaSupplier
-                      }}</b>
+                    }}</b>
                   </div>
                 </div>
                 <div class="fit row no-wrap justify-start items-start q-my-sm">
@@ -238,7 +238,7 @@
                   <div class="col-11">
                     Terlampir Laporan Pemeriksaan sebagai bagian tak terpisahkan dari Berita Acara Hasil Pemeriksaan
                     Hasil Pekerjaan : <b>{{ store.item?.belanja
-                      }}</b>
+                    }}</b>
                   </div>
                 </div>
                 <div class="row">Demikian Berita Acara ini dibuat sebagai dasar pelaksanaan serah terima pekerjaan.
@@ -657,7 +657,7 @@
                 </div>
                 <div class="row justify-between q-col-gutter-sm q-mt-lg">
                   <div class="col-6 ">
-                    Tik Teknis
+                    Tim Teknis
                   </div>
                   <div class="col-6 " />
                 </div>
