@@ -434,8 +434,6 @@ import { computed, defineAsyncComponent, ref } from 'vue'
 
 const emits = defineEmits(['close', 'show', 'hide'])
 
-
-
 const store = useListBastPenerimaanFarmasiStore()
 const tandatangan = useTandaTanganStore()
 tandatangan.getInitialData()
@@ -620,6 +618,7 @@ const freeTextBawah = ref('')
 function show () {
   emits('show')
   namaRekeningBelanja.value = store?.item?.belanja ?? ''
+  namaSupplier.value = store?.item?.penyedia ?? ''
 }
 const printObj = {
   id: 'printMe',

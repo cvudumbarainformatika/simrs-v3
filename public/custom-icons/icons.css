@@ -1,7 +1,10 @@
 @font-face {
     font-family: "icons";
-    src: url("./icons.woff?3b77dae1424eb03b42cc3340a8e402a1") format("woff"),
-url("./icons.woff2?3b77dae1424eb03b42cc3340a8e402a1") format("woff2");
+    /* src: url("./icons.woff?3b77dae1424eb03b42cc3340a8e402a1") format("woff"),
+url("./icons.woff2?3b77dae1424eb03b42cc3340a8e402a1") format("woff2"); */
+    src:    url("/custom-icons/icons.woff?3b77dae1424eb03b42cc3340a8e402a1") format("woff"),
+            url("/custom-icons/icons.woff2?3b77dae1424eb03b42cc3340a8e402a1") format("woff2");
+    font-display: swap;
 }
 
 i[class^="icon-"]:before, i[class*=" icon-"]:before {

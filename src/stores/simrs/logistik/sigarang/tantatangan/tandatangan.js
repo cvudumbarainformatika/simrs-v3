@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia'
+import { acceptHMRUpdate, defineStore } from 'pinia'
 import { api } from 'src/boot/axios'
 import { notifSuccess } from 'src/modules/utils'
 
@@ -56,6 +56,8 @@ export const useTandaTanganStore = defineStore('tanda_tangan_store_form', {
       this.isOpen = !this.isOpen
     },
     kananSelected (val) {
+      // console.log('kanan', val)
+
       if (val !== null) {
         let data = {}
         if (val !== 'text') {
@@ -335,3 +337,7 @@ export const useTandaTanganStore = defineStore('tanda_tangan_store_form', {
     }
   }
 })
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useTandaTanganStore, import.meta.hot))
+}
