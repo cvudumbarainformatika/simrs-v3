@@ -11,7 +11,7 @@
       </div>
 
       <q-card-section style="max-height: 90vh;" class="fit scroll">
-        <DataPrint id="printMe" :item="props.item" :pasien="props.pasien" />
+        <DataPrint id="printMe" :item="props.item" :pasien="props.pasien" :key="props.item.id" />
       </q-card-section>
       <q-card-section class="q-pa-none bg-primary text-white absolute-bottom full-width">
         <div class="q-pa-md row justify-between items-center">
