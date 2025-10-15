@@ -41,9 +41,9 @@ const router = useRouter()
 function simpanData (val) {
   const dataPasien = refDataPasien.value.set()
   const dataRegis = refRegistrasi.value.set()
-  console.log('pasien', dataPasien,
-    'regis', dataRegis
-  )
+  // console.log('pasien', dataPasien,
+  //   'regis', dataRegis
+  // )
   if (dataPasien.save && dataRegis.save) {
     const keys = Object.keys(dataPasien.form)
     if (keys?.length) {
