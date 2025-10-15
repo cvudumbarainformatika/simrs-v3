@@ -212,17 +212,17 @@
               <q-tooltip>Batal BAST</q-tooltip>
             </q-btn>
           </div>
-          <div class="col-auto">
-            <q-btn round size="sm" color="primary" icon="icon-mat-handshake" no-caps @click="openBast(row)">
-              <q-tooltip>Buka Dokumen BAST</q-tooltip>
-            </q-btn>
-          </div>
+
           <div class="col-auto">
             <q-btn round size="sm" color="green" icon="icon-mat-done" no-caps @click="openPemeriksaan(row)">
               <q-tooltip>Buka Dokumen Pemeriksaan</q-tooltip>
             </q-btn>
           </div>
-
+          <div class="col-auto">
+            <q-btn round size="sm" color="primary" icon="icon-mat-handshake" no-caps @click="openBast(row)">
+              <q-tooltip>Buka Dokumen BAST</q-tooltip>
+            </q-btn>
+          </div>
         </div>
       </template>
       <template #expand="{ row }">

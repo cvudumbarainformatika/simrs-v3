@@ -29,7 +29,7 @@
                 </q-tooltip>
               </q-btn>
             </div>
-            <div id="printMe">
+            <div id="printMe" class="f-12">
               <q-card-section>
                 <div class="row">
                   <app-kop-surat />
@@ -43,12 +43,12 @@
                 <div class="q-mb-md">
                   Pada hari ini <span class="text-weight-bold text-italic">{{ date.formatDate(store.item?.tanggal,
                     'dddd')
-                    }}</span>
+                  }}</span>
                   Tanggal <span class="text-weight-bold text-italic">{{
                     tanggalTerbilang(date.formatDate(store.item?.tanggal, 'DD'))
                   }}</span>
                   Bulan <span class="text-weight-bold text-italic">{{ date.formatDate(store.item?.tanggal, 'MMMM')
-                    }}</span>
+                  }}</span>
                   Tahun <span class="text-weight-bold text-italic">{{
                     tahunTerbilang(date.formatDate(store.item?.tanggal,
                       'YYYY'))
@@ -227,19 +227,19 @@
                 <div v-if="store.item?.penerimaan" class="q-mt-md q-px-xs">
                   <!-- header detail -->
                   <div class="row justify-between q-col-gutter-sm">
-                    <div style="width: 5%;" class="col-auto text-weight-bold border-tb border-left">
+                    <div style="width: 5%;" class="col-auto text-center text-weight-bold border-tb border-left">
                       No.
                     </div>
-                    <div style="width: 60%;" class="col-auto text-weight-bold border-tb border-left">
+                    <div style="width: 60%;" class="col-auto text-center text-weight-bold border-tb border-left">
                       Nama Barang
                     </div>
-                    <div style="width: 10%;" class="col-auto text-weight-bold border-tb border-left">
+                    <div style="width: 10%;" class="col-auto text-center text-weight-bold border-tb border-left">
                       Jumlah
                     </div>
-                    <div style="width: 10%;" class="col-auto text-weight-bold border-tb border-left">
+                    <div style="width: 10%;" class="col-auto text-center text-weight-bold border-tb border-left">
                       Satuan
                     </div>
-                    <div style="width: 15%;" class="col-auto text-weight-bold border-box">
+                    <div style="width: 15%;" class="col-auto text-center text-weight-bold border-box">
                       Kondisi barang
                     </div>
                   </div>
@@ -247,21 +247,21 @@
                 <!-- body details -->
                 <template v-for="(rin, j) in allRinci" :key="j">
                   <div class="row justify-between q-col-gutter-sm q-px-xs">
-                    <div style="width: 5%;" class="col-auto text-weight-bold border-bottom border-left">
+                    <div style="width: 5%;" class="col-auto text-center text-weight-bold border-bottom border-left">
                       {{ j + 1 }}
                     </div>
                     <div style="width: 60%;" class="col-auto text-weight-bold border-bottom border-left">
                       {{ rin?.masterobat?.nama_obat }}
                     </div>
-                    <div style="width: 10%;" class="col-auto text-weight-bold border-bottom border-left">
+                    <div style="width: 10%;" class="col-auto text-center text-weight-bold border-bottom border-left">
                       {{ rin?.jml_terima_k }}
 
                     </div>
-                    <div style="width: 10%;" class="col-auto text-weight-bold border-bottom border-left">
+                    <div style="width: 10%;" class="col-auto text-center text-weight-bold border-bottom border-left">
                       {{ rin?.satuan_kcl }}
 
                     </div>
-                    <div style="width: 15%;" class="col-auto  border-bottom border-left border-right">
+                    <div style="width: 15%;" class="col-auto text-center  border-bottom border-left border-right">
                       Baik Dan Sesuai
                     </div>
                   </div>
@@ -298,9 +298,9 @@
                 <!-- options -->
                 <div class="row justify-between q-col-gutter-sm print-hide">
                   <div class="col-6 text-center">
-                    <app-autocomplete-new v-model="tandatangan.tt.kiri" label="pilih yang berdanda tangan"
+                    <!-- <app-autocomplete-new v-model="tandatangan.tt.kiri" label="pilih yang berdanda tangan"
                       autocomplete="nama" option-label="nama" option-value="value" outlined valid
-                      :source="tandatangan?.optionTT" @on-select="tandatangan?.kiriSelected" />
+                      :source="tandatangan?.optionTT" @on-select="tandatangan?.kiriSelected" /> -->
                   </div>
                   <div class="col-6 text-center">
                     <app-autocomplete-new v-model="tandatangan.tt.kanan" label="pilih yang berdanda tangan"
@@ -311,31 +311,45 @@
                 <!-- Input -->
                 <div class="row justify-between q-col-gutter-sm print-hide">
                   <div class="col-6 text-center">
-                    <app-input v-model="tandatangan.kiri" outlined valid label="Text kiri" />
+                    <!-- <app-input v-model="tandatangan.kiri" outlined valid label="Text kiri" /> -->
                   </div>
                   <div class="col-6 text-center">
-                    <app-input v-model="tandatangan.kanan" outlined valid label="Text kanan" />
+                    <!-- <app-input v-model="tandatangan.kanan" outlined valid label="Text kanan" /> -->
                   </div>
                 </div>
                 <div class="row justify-between q-col-gutter-sm">
                   <div class="col-6 text-center">
-                    {{ tandatangan?.kiri }}
+                    <div class="row justify-center">
+                      Yang Menyerahkan,
+                    </div>
+                    <div class="row justify-center">
+                      PIHAK PERTAMA
+                    </div>
+                    <!-- {{ tandatangan?.kiri }} -->
                   </div>
                   <div class="col-6 text-center">
-                    {{ tandatangan?.kanan }}
+                    <div class="row justify-center">
+                      Yang Menerima,
+                    </div>
+                    <div class="row justify-center">
+                      PIHAK KEDUA
+                    </div>
+                    <!-- {{ tandatangan?.kanan }} -->
                   </div>
                 </div>
-                <div class="row justify-between q-col-gutter-sm q-mb-xl">
+                <!-- <div class="row justify-between q-col-gutter-sm q-mb-xl">
                   <div class="col-6 text-center">
                     {{ tandatangan?.onKiri?.acr }}
                   </div>
                   <div class="col-6 text-center">
                     {{ tandatangan?.onKanan?.acr }}
                   </div>
-                </div>
-                <div class="row justify-between q-col-gutter-sm">
+                </div> -->
+                <div class="row justify-between q-col-gutter-sm q-mt-xl">
                   <div class="col-6 text-center">
-                    <div v-if="!tandatangan?.onKiri?.ada">
+                    <div class="row justify-center">{{ namaSupplier }}</div>
+                    <div class="row justify-center">{{ jabatanSupplier }}</div>
+                    <!-- <div v-if="!tandatangan?.onKiri?.ada">
                       <div v-if="tandatangan?.tt?.kiri !== null">
                         <div class="print-hide">
                           <app-input v-model="freeTextKiri" label="Nama" :filled="false" />
@@ -352,7 +366,7 @@
                       <div class="row justify-center">
                         {{ tandatangan?.onKiri?.nip }}
                       </div>
-                    </div>
+                    </div> -->
                   </div>
                   <div class="col-6 text-center">
                     <div v-if="!tandatangan?.onKanan?.ada">

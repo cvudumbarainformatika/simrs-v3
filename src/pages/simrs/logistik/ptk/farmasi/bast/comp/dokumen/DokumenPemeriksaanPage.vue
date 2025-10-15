@@ -54,12 +54,12 @@
                 <div class="q-mb-md">
                   Pada hari ini <span class="text-weight-bold text-italic">{{ date.formatDate(store.item?.tanggal,
                     'dddd')
-                  }}</span>
+                    }}</span>
                   Tanggal <span class="text-weight-bold text-italic">{{
                     tanggalTerbilang(date.formatDate(store.item?.tanggal, 'DD'))
                     }}</span>
                   Bulan <span class="text-weight-bold text-italic">{{ date.formatDate(store.item?.tanggal, 'MMMM')
-                  }}</span>
+                    }}</span>
                   Tahun <span class="text-weight-bold text-italic">{{
                     tahunTerbilang(date.formatDate(store.item?.tanggal,
                       'YYYY'))
@@ -103,7 +103,7 @@
                     }}
                   </div>
                 </div>
-                <div class="row">Bahwa berdasarkan hal-hal tersebut di ata, Pemeriksaan / Penerima menyatakan sebagai
+                <div class="row">Bahwa berdasarkan hal-hal tersebut di atas, Pemeriksaan / Penerima menyatakan sebagai
                   berikut :</div>
                 <div class="fit row no-wrap justify-start items-center q-my-sm">
                   <div class="col-1">
@@ -223,7 +223,7 @@
                     Berdasarkan hasil pemeriksaan dan kemajuan pelaksanaan pekerjaan sebagaimana dimaksud pada angka 1
                     dan 2 di atas,
                     maka PPK menyatakan dapat menerima hasil pekerjaan yang dilaksanakan oleh : <b>{{ namaSupplier
-                    }}</b>
+                      }}</b>
                   </div>
                 </div>
                 <div class="fit row no-wrap justify-start items-start q-my-sm">
@@ -238,7 +238,7 @@
                   <div class="col-11">
                     Terlampir Laporan Pemeriksaan sebagai bagian tak terpisahkan dari Berita Acara Hasil Pemeriksaan
                     Hasil Pekerjaan : <b>{{ store.item?.belanja
-                    }}</b>
+                      }}</b>
                   </div>
                 </div>
                 <div class="row">Demikian Berita Acara ini dibuat sebagai dasar pelaksanaan serah terima pekerjaan.
@@ -432,10 +432,10 @@
                             <td style="white-space: normal; width: 100px;">
                               <div class="row items-end justify-end">
                                 <div class="col-auto ">
-                                  {{ item?.jml_terima_b }}
+                                  {{ item?.jml_terima_k }}
                                 </div>
                                 <div class="col-auto q-mr-md ">
-                                  ({{ item?.satuan }})
+                                  ({{ item?.satuan_kcl }})
                                 </div>
                               </div>
                             </td>
@@ -569,6 +569,16 @@
                       </template>
                     </tbody>
                   </table>
+                  <div class="row">
+                    Penerimaan :
+                  </div>
+                  <div v-for="pen in noPenerimaan" :key="pen">
+                    <div class="row">
+                      - {{ pen }}
+                    </div>
+
+                  </div>
+
                 </div>
               </q-card-section>
               <!-- tanda tangan -->
@@ -738,7 +748,15 @@ if (tandatangan.optionMengetahui?.length <= 0) {
 // tandatangan.getInitialData()
 // semua rincian penerimaan
 const allRinci = computed(() => {
-  return store.item?.penerimaan?.flatMap(det => det?.penerimaanrinci || []) || []
+  const data = store.item?.penerimaan?.flatMap(det => det?.penerimaanrinci || []) || []
+  return data
+})
+// semua rincian penerimaan
+const noPenerimaan = computed(() => {
+  const data = store.item?.penerimaan?.flatMap(det => det?.penerimaanrinci || []) || []
+  const nper = data.map(x => x.nopenerimaan)
+  const unique = [...new Set(nper)]
+  return unique
 })
 // nomor BAP
 function nomorBap (val) {

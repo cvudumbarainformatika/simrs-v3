@@ -1,42 +1,31 @@
 <template>
   <div>
-    <DataPasien
-      ref="refDataPasien"
-      :full="style.componentfull"
-      pelayanan="homecare"
-      @ganti-pasien="clearFormRegistrasi"
-      @full-screen="style.setComponentFull"
-    />
+    <DataPasien ref="refDataPasien" :full="style.componentfull" pelayanan="homecare" @ganti-pasien="clearFormRegistrasi"
+      @full-screen="style.setComponentFull" />
     <!-- @bisa-simpan="bisaSimpan" -->
-    <FormRegistrasi
-      ref="refRegistrasi"
-    />
+    <FormRegistrasi ref="refRegistrasi" />
     <!-- @bisa-simpan="simpanRegistrasi" -->
-    <q-card
-      class="full-width"
-    >
+    <q-card class="full-width">
       <q-card-actions align="right">
         <div class="q-mr-xl">
-          <app-btn
-            label="Simpan Form"
-            :loading="pasien.loading"
-            :disable="pasien.loading"
-            @click="simpanData"
-          />
+          <app-btn label="Simpan Form" :loading="pasien.loading" :disable="pasien.loading" @click="simpanData" />
         </div>
       </q-card-actions>
     </q-card>
   </div>
 </template>
 <script setup>
-import DataPasien from 'src/pages/simrs/pendaftaran/form/pasien/DataPasien.vue'
-import FormRegistrasi from './FormRegistrasi.vue'
-import { ref } from 'vue'
+// import DataPasien from 'src/pages/simrs/pendaftaran/form/pasien/DataPasien.vue'
+// import FormRegistrasi from './FormRegistrasi.vue'
+import { defineAsyncComponent, ref } from 'vue'
 import { usePendaftaranPasienStore } from 'src/stores/simrs/pendaftaran/form/pasien/pasien'
 
 import { useStyledStore } from 'src/stores/app/styled'
 import { useRouter } from 'vue-router'
 import { useRegistrasiPasienHomeCareStore } from 'src/stores/simrs/pendaftaran/form/homecare/registrasi'
+const DataPasien = defineAsyncComponent(() => import('src/pages/simrs/pendaftaran/form/pasien/DataPasien.vue'))
+const FormRegistrasi = defineAsyncComponent(() => import('./FormRegistrasi.vue'))
+
 const pasien = usePendaftaranPasienStore()
 const register = useRegistrasiPasienHomeCareStore()
 
