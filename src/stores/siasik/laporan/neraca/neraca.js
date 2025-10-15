@@ -413,7 +413,7 @@ export const useNeracaStore = defineStore('Neraca_Akuntansi', {
         const obj = {
           kode: el,
           uraian: this.dataekuitas.filter((x) => x.kode6 === el)[0]?.uraian,
-          nilai: saldoawal + nilaijurnal + penyesuaian + this.surplusdefisit?.nilai
+          nilai: saldoawal + nilaijurnal + penyesuaian - this.surplusdefisit?.nilai
         }
         kode6ekuitas.push(obj)
       }
@@ -426,7 +426,7 @@ export const useNeracaStore = defineStore('Neraca_Akuntansi', {
         const obj = {
           kode: el,
           uraian: this.dataekuitas.filter((x) => x.kode5 === el)[0]?.uraian5,
-          nilai: saldoawal + nilaijurnal + penyesuaian + this.surplusdefisit?.nilai,
+          nilai: saldoawal + nilaijurnal + penyesuaian - this.surplusdefisit?.nilai,
         }
         kode5ekuitas.push(obj)
       }
@@ -439,7 +439,7 @@ export const useNeracaStore = defineStore('Neraca_Akuntansi', {
         const obj = {
           kode: el,
           uraian: this.dataekuitas.filter((x) => x.kode4 === el)[0]?.uraian4,
-          nilai: saldoawal + nilaijurnal + penyesuaian + this.surplusdefisit?.nilai,
+          nilai: saldoawal + nilaijurnal + penyesuaian - this.surplusdefisit?.nilai,
         }
         kode4ekuitas.push(obj)
       }
@@ -452,7 +452,7 @@ export const useNeracaStore = defineStore('Neraca_Akuntansi', {
         const obj = {
           kode: el,
           uraian: this.dataekuitas.filter((x) => x.kode3 === el)[0]?.uraian3,
-          nilai: saldoawal + nilaijurnal + penyesuaian + this.surplusdefisit?.nilai,
+          nilai: saldoawal + nilaijurnal + penyesuaian - this.surplusdefisit?.nilai,
         }
         kode3ekuitas.push(obj)
       }
@@ -465,7 +465,7 @@ export const useNeracaStore = defineStore('Neraca_Akuntansi', {
         const obj = {
           kode: el,
           uraian: this.dataekuitas.filter((x) => x.kode2 === el)[0]?.uraian2,
-          nilai: saldoawal + nilaijurnal + penyesuaian + this.surplusdefisit?.nilai,
+          nilai: saldoawal + nilaijurnal + penyesuaian - this.surplusdefisit?.nilai,
         }
         kode2ekuitas.push(obj)
       }
@@ -478,7 +478,7 @@ export const useNeracaStore = defineStore('Neraca_Akuntansi', {
         const obj = {
           kode: el,
           uraian: this.dataekuitas.filter((x) => x.kode1 === el)[0]?.uraian1,
-          nilai: saldoawal + nilaijurnal + penyesuaian + this.surplusdefisit?.nilai,
+          nilai: saldoawal + nilaijurnal + penyesuaian - this.surplusdefisit?.nilai,
         }
         kode1ekuitas.push(obj)
       }
