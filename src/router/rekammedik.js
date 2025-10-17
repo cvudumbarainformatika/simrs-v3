@@ -9,6 +9,21 @@ const ranap = {
       name: 'rekammedik.mapping',
       component: () => import('pages/simrs/rekammedik/mapping/IndexPage.vue')
     },
+    {
+      path: '/rekammedik/ranap',
+      name: 'rekammedik.ranap',
+      component: () => import('pages/simrs/mpp/ranap/IndexPage.vue')
+    },
+    {
+      path: '/rekammedik/rajal',
+      name: 'rekammedik.rajal',
+      component: () => import('pages/simrs/mpp/rajal/IndexPage.vue')
+    },
+    {
+      path: '/rekammedik/gawat-darurat',
+      name: 'rekammedik.gawat-darurat',
+      component: () => import('pages/simrs/mpp/igd/IndexPage.vue')
+    },
     // {
     //   path: '/ranap/suratkontrol',
     //   name: 'ranap.suratkontrol',

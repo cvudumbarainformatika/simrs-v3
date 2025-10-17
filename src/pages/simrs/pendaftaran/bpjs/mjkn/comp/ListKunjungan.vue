@@ -3,10 +3,7 @@
     <app-loading v-if="loading" />
     <div v-else>
       <div v-if="items?.length <= 0">
-        <div
-          class="column flex-center"
-          style="min-height:50vh"
-        >
+        <div class="column flex-center" style="min-height:50vh">
           <div class="text-h3 q-mb-md">
             🏷️
           </div>
@@ -15,37 +12,32 @@
           </div>
         </div>
       </div>
-      <q-list
-        v-else
-        separator
-      >
-        <q-separator
-          spaced
-          inset
-        />
+      <q-list v-else separator>
+        <q-separator spaced inset />
 
-        <q-item
-          v-for="(item, i) in items"
-          :key="i"
-        >
+        <q-item v-for="(item, i) in items" :key="i">
           <q-item-section avatar>
-            <app-avatar-pasien
-              :pasien="item"
-            />
+            <app-avatar-pasien :pasien="item" />
           </q-item-section>
           <q-item-section>
             <q-item-label class="text-weight-bold">
-              {{ item.nama? item.nama:'-' }} | <span class="text-primary">{{ item.norm? item.norm:'-' }}</span> | <span class="text-orange">{{ item.nomorantrean? item.nomorantrean:'-' }}</span>
+              {{ item.nama ? item.nama : '-' }} | <span class="text-primary">{{ item.norm ? item.norm : '-' }}</span> |
+              <span class="text-orange">{{ item.nomorantrean ? item.nomorantrean : '-' }}</span>
             </q-item-label>
             <q-item-label>
-              NOREG : <span class="text-weight-bold">{{ item.noreg?item.noreg:'-' }} </span>
+              NOREG : <span class="text-weight-bold">{{ item.noreg ? item.noreg : '-' }} </span>
               | Penjamin : <span class="text-weight-bold"> JKN</span>
             </q-item-label>
             <q-item-label>
-              DPJP : <span class="text-negative text-weight-bold">{{ item.namadokter?item.namadokter:'-' }}</span> | RUANGAN : <span class="text-teal text-weight-bold"> {{ item.namapoli?item.namapoli:'-' }}</span>
+              DPJP : <span class="text-negative text-weight-bold">{{ item.namadokter ? item.namadokter : '-' }}</span> |
+              RUANGAN : <span class="text-teal text-weight-bold"> {{ item.namapoli ? item.namapoli : '-' }}</span>
             </q-item-label>
             <q-item-label caption>
-              USIA : <span class="text-weight-bold">{{ item.usia }}</span>  | Kelamin : <span class="text-weight-bold">{{ item.kelamin?item.kelamin:'-' }}</span>
+              USIA : <span class="text-weight-bold">{{ item.usia }}</span> | Kelamin : <span class="text-weight-bold">{{
+                item.kelamin ? item.kelamin : '-' }}</span>
+            </q-item-label>
+            <q-item-label caption>
+              Tanggal Daftar : <span class="text-weight-bold text-accent">{{ dateFull(item.created_at) }}</span>
             </q-item-label>
             <!-- <q-item-label>
               Penjamin : <span class="text-weight-bold"> {{ item.sistembayar }}</span>
@@ -79,81 +71,52 @@
             </figure>
           </q-item-section> -->
 
-          <q-item-section
-            side
-            top
-          >
+          <q-item-section side top>
             <q-item-label caption>
               <div class="row justify-end">
                 <div class="q-ml-sm">
-                  <q-badge
-                    outline
-                    :color="item.seprajal?'teal':'negative'"
-                    :label="item.seprajal?item.seprajal:'SEP Belum terbit'"
-                  />
+                  <q-badge outline :color="item.seprajal ? 'teal' : 'negative'"
+                    :label="item.seprajal ? item.seprajal : 'SEP Belum terbit'" />
                 </div>
               </div>
               <div class="row justify-end q-mt-sm">
                 <div class="q-ml-sm">
-                  <q-badge
-                    outline
-                    :color="item.checkin?'teal':'negative'"
-                    :label="item.checkin?'Sudah Check-in':'Belum Check-in'"
-                  />
+                  <q-badge outline :color="item.checkin ? 'teal' : 'negative'"
+                    :label="item.checkin ? 'Sudah Check-in' : 'Belum Check-in'" />
                 </div>
               </div>
               <div class="row justify-end q-mt-sm">
-                <div
-                  v-if="!(loadingSend && (item.norm ? rm === item.norm:false))"
-                  class="q-ml-sm"
-                  :class="item.noreg?'':'cursor-pointer'"
-                  @click="emits('kirimPoli', item)"
-                >
+                <div v-if="!(loadingSend && (item.norm ? rm === item.norm : false))" class="q-ml-sm"
+                  :class="item.noreg ? '' : 'cursor-pointer'" @click="emits('kirimPoli', item)">
                   <!-- @click="kirimPoli(item)" -->
-                  <q-badge
-                    outline
-                    :color="item.noreg?'teal':'negative'"
-                    :label="item.noreg?'Sudah di poli':'Daftarkan Pasien'"
-                  />
+                  <q-badge outline :color="item.noreg ? 'teal' : 'negative'"
+                    :label="item.noreg ? 'Sudah di poli' : 'Daftarkan Pasien'" />
                 </div>
                 <div
-                  v-if="loadingSend && (item.norm ? (item.norm !== '-' ? rm === item.norm : rm===item.nomorkartu):false)"
-                  class="q-ml-sm"
-                >
-                  <q-btn
-                    loading
-                    outline
-                    size="sm"
-                    :color="item.noreg?'teal':'negative'"
-                    :label="item.noreg?'Sudah di poli':'Daftarkan Pasien'"
-                  />
+                  v-if="loadingSend && (item.norm ? (item.norm !== '-' ? rm === item.norm : rm === item.nomorkartu) : false)"
+                  class="q-ml-sm">
+                  <q-btn loading outline size="sm" :color="item.noreg ? 'teal' : 'negative'"
+                    :label="item.noreg ? 'Sudah di poli' : 'Daftarkan Pasien'" />
                 </div>
               </div>
               <div class="row q-mt-sm text-end">
                 <div class="q-ml-sm">
-                  <q-btn
-                    size="sm"
-                    color="teal"
-                    no-caps
-                    label="Cetak Antrian"
-                    @click="emits('cetakAntrian',item)"
-                  />
+                  <q-btn size="sm" color="teal" no-caps label="Cetak Antrian" @click="emits('cetakAntrian', item)" />
                 </div>
               </div>
             </q-item-label>
           </q-item-section>
         </q-item>
 
-        <q-separator
-          spaced
-          inset
-        />
+        <q-separator spaced inset />
       </q-list>
     </div>
   </div>
 </template>
 
 <script setup>
+import { dateFull } from 'src/modules/formatter'
+
 
 defineProps({
   rm: { type: String, default: '' },
@@ -218,5 +181,4 @@ const emits = defineEmits(['kirimPoli', 'cetakAntrian'])
   margin: 0;
   position: relative;
 }
-
 </style>

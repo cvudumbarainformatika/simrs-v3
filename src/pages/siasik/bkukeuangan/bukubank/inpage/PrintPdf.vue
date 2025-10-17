@@ -87,10 +87,10 @@
                       </div>
                       <div style="padding-bottom: 40px" />
                       <div class="text-bold text-center" style="text-decoration-line: underline;">
-                        {{ store.pegawais[1]?.nama }}
+                        {{ ttd.datattd?.direktur?.nama }}
                       </div>
                       <div class="text-center">
-                        NIP. {{ store.pegawais[1]?.nip }}
+                        NIP. {{ ttd.datattd?.direktur?.nip }}
                       </div>
                     </div>
                     <div class="col flex-end justify-center content-center">
@@ -102,10 +102,10 @@
                       </div>
                       <div style="padding-bottom: 40px" />
                       <div class="underline text-center text-bold" style="text-decoration-line: underline;">
-                        {{ store.pegawais[0]?.nama }}
+                        {{ ttd.datattd?.bendpengeluaran?.nama }}
                       </div>
                       <div class="text-center">
-                        NIP. {{ store.pegawais[0]?.nip }}
+                        NIP. {{ ttd.datattd?.bendpengeluaran?.nip }}
                       </div>
                     </div>
                   </div>
@@ -135,16 +135,16 @@
 <script setup>
 import { formattanpaRp } from 'src/modules/formatter'
 import { onMounted, ref } from 'vue'
-import { useLaporanBkuPengeluaranStore } from 'src/stores/siasik/laporan/bku/bkupengeluaran'
 import listData from './LisaDatabkubank.vue'
 import kopPage from './KopPage.vue'
 import { useLaporanBukuBankStore } from 'src/stores/siasik/laporan/buku_pembantu/bukubank'
+import { listdataNotadinasStore } from 'src/stores/siasik/transaksi/ls/notadinas/list'
 
 
 const store = useLaporanBukuBankStore()
-const pegawai = useLaporanBkuPengeluaranStore()
+const ttd = listdataNotadinasStore()
 onMounted(() => {
-  pegawai.getDataTable()
+  // pegawai.getDataTable()
 })
 
 function totaldebit() {

@@ -35,7 +35,9 @@
               </div>
             </div>
             <div class="col-12 text-right">
-              <div class="text-weight-bold">Probolinggo, {{ humanDate(item?.tgl) }}</div>
+              <!-- INI DISURUH UBAH SAMA MBAK ANE (DISURUH MANAGEMENT) -->
+              <!-- <div class="text-weight-bold">Probolinggo, {{ humanDate(item?.tgl) }}</div> -->
+              <div class="text-weight-bold">Probolinggo, {{ humanDate(item?.rs3) }}</div>
             </div>
           </div>
 
@@ -57,7 +59,9 @@
             .
           </div>
           <div class="kanan text-center">
-            <div><b>Probolinggo, {{ humanDate(item?.tgl) }}</b></div>
+            <!-- <div><b>Probolinggo, {{ humanDate(item?.tgl) }}</b></div> -->
+            <!-- INI DISURUH UBAH SAMA MBAK ANE (DISURUH MANAGEMENT) -->
+            <div><b>Probolinggo, {{ humanDate(item?.rs3) }}</b></div>
             <div class="q-mb-sm">Dokter Penanggung Jawab Pelayanan</div>
             <div class="column flex-center">
               <div style="width: 100px;">

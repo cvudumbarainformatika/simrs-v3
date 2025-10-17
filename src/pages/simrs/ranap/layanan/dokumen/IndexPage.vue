@@ -47,6 +47,15 @@ import { defineAsyncComponent, onMounted, ref, shallowRef } from 'vue'
 
 const menus = ref([
   {
+    name: 'SerahTerimaPasien',
+    label: 'LEMBAR SERAH TERIMA',
+    title: 'LEMBAR SERAH TERIMA',
+    desc: 'PASIEN ANTAR RUANGAN',
+    icon: 'icon-my-file_sign',
+    nakes: ['1', '2', '3'],
+    comp: shallowRef(defineAsyncComponent(() => import('./serahterima/IndexPage.vue')))
+  },
+  {
     name: 'asessment-awal-medis',
     label: 'ASESSMENT AWAL MEDIS',
     title: 'ASESSMENT AWAL MEDIS',

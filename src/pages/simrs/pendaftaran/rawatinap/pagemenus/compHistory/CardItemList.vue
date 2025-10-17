@@ -14,7 +14,7 @@
               <app-avatar-pasien :pasien="item" width="50px" />
             </q-avatar>
           </div>
-          <div class="col full-width flex wrap ellipsis">
+          <div class="col full-width flex wrap ellipsis relative-position">
             <div class="full-width ellipsis">
               {{ item?.nama }}
             </div>
@@ -30,17 +30,28 @@
               Alamat : <i>{{ item?.alamat }}</i>
             </div>
             <div v-if="item?.groups !== '2'">
-              <q-badge outline class="q-mt-sm q-px-sm" dense :color="!item?.sep ? 'red' : 'primary'">
-                <div class="f-12">
-                  {{ !item?.sep ? 'SEP RANAP BELUM TERBIT' : 'SEP RANAP : ' + item?.sep }}
-                </div>
-              </q-badge>
-              <q-badge v-if="item?.sep_igd" outline class="q-mt-sm q-px-sm q-ml-sm" dense
-                :color="!item?.sep_igd ? 'red' : 'dark'">
-                <div class="f-12">
-                  {{ !item?.sep_igd ? 'SEP IGD BELUM TERBIT' : 'SEP IGD : ' + item?.sep_igd }}
-                </div>
-              </q-badge>
+              <template v-if="(item?.sep === item?.sep_igd) && item?.sep !== null">
+                <q-avatar class="absolute-top-right blink-danger" style="top:15px; right:10px" size="lg"
+                  color="negative" text-color="white" icon="icon-mat-info" />
+                <q-badge class="q-mt-sm q-px-sm" dense :color="'negative'">
+                  <div class="f-12">
+                    {{ 'SEP RANAP : ' + item?.sep_igd }} = {{ 'SEP IGD : ' + item?.sep_igd }}
+                  </div>
+                </q-badge>
+              </template>
+              <template v-else>
+                <q-badge outline class="q-mt-sm q-px-sm" dense :color="!item?.sep ? 'red' : 'primary'">
+                  <div class="f-12">
+                    {{ !item?.sep ? 'SEP RANAP BELUM TERBIT' : 'SEP RANAP : ' + item?.sep }}
+                  </div>
+                </q-badge>
+                <q-badge v-if="item?.sep_igd" outline class="q-mt-sm q-px-sm q-ml-sm" dense
+                  :color="!item?.sep_igd ? 'red' : 'dark'">
+                  <div class="f-12">
+                    {{ !item?.sep_igd ? 'SEP IGD BELUM TERBIT' : 'SEP IGD : ' + item?.sep_igd }}
+                  </div>
+                </q-badge>
+              </template>
               <!-- <div class="absolute-bottom-right q-pa-md" v-if="cekReadmisi(item?.last_visit, item?.tglmasuk)"> -->
               <q-badge v-if="cekReadmisi(item?.last_visit, item?.tglmasuk)" outline
                 class="q-mt-sm q-px-sm q-ml-sm cursor-pointer" dense color="negative">
@@ -209,4 +220,22 @@ const cekReadmisi = (last_visit, tglmasuk) => {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.blink-danger {
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+
+  0%,
+  50%,
+  100% {
+    opacity: 1;
+  }
+
+  25%,
+  75% {
+    opacity: 0;
+  }
+}
+</style>

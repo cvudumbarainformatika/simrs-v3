@@ -9,9 +9,9 @@
         </q-header>
         <!-- LEFT DRAWER ======================================================================================-->
         <q-drawer v-model="drawer" elevated bordered show-if-above :width="230" :breakpoint="400">
-          <LeftDrawer :key="pasien" :pasien="pasien" :menus="menus" :menu="menu" @click-menu="(val) => menuDiganti(val)"
-            @history-pasien="historyPasien" @print-rekap="emits('printRekapBill')" @icare="getIcare"
-            @show-profile="profile = !profile" />
+          <LeftDrawer :key="pasien" :pasien="pasien" :menus="filtered" :menu="menu"
+            @click-menu="(val) => menuDiganti(val)" @history-pasien="historyPasien"
+            @print-rekap="emits('printRekapBill')" @icare="getIcare" @show-profile="profile = !profile" />
         </q-drawer>
 
         <!-- RIGHT DRAWER ======================================================================================-->
@@ -61,6 +61,7 @@ import { useMasterPemeriksaanFisik } from 'src/stores/simrs/master/poliklinik/pe
 import { defineAsyncComponent, onBeforeMount, onBeforeUnmount, onMounted, onUnmounted, ref, shallowRef, watchEffect } from 'vue'
 import { useAnamnesis } from 'src/stores/simrs/pelayanan/poli/anamnesis'
 import { useQuasar } from 'quasar'
+import { useRoute } from 'vue-router'
 
 const $q = useQuasar()
 
@@ -78,60 +79,69 @@ const props = defineProps({
   }
 })
 const emits = defineEmits(['printRekapBill'])
-
+const route = useRoute()
 const menus = ref([
   {
     name: 'AnamnesisPage',
     label: 'Anamnesis & Riwayat',
     icon: 'icon-mat-medical_information',
+    route: ['poli'],
     comp: shallowRef(defineAsyncComponent(() => import('./comptindakan/pagemenu/AnamnesisPage.vue')))
   },
   {
     name: 'PemeriksaanPage',
     label: 'Pemeriksaan Umum & Fisik',
     icon: 'icon-my-stethoscope',
+    route: ['poli'],
     comp: shallowRef(defineAsyncComponent(() => import('./comptindakan/pagemenu/PemeriksaanPageBaru.vue')))
   },
   {
     name: 'PsikiatriPage',
     label: 'Pemeriksaan Psikologi',
     icon: 'icon-mat-health_and_safety',
+    route: ['poli'],
     comp: shallowRef(defineAsyncComponent(() => import('./comptindakan/pagemenu/PsikiatriPage.vue')))
   },
   {
     name: 'LayananPage',
     label: 'Assesment',
     icon: 'icon-mat-analytics',
+    route: ['poli'],
     comp: shallowRef(defineAsyncComponent(() => import('./comptindakan/pagemenu/LayananPage.vue')))
   },
   {
     name: 'BayiAnakPage',
     label: 'Bayi & Anak',
     icon: 'icon-my-baby-head',
+    route: ['poli'],
     comp: shallowRef(defineAsyncComponent(() => import('./comptindakan/pagemenu/BayiAnakPage.vue')))
   },
   {
     name: 'penunjang-page',
     label: 'Penunjang',
     icon: 'icon-my-local_hospital',
+    route: ['poli'],
     comp: shallowRef(defineAsyncComponent(() => import('./comptindakan/pagemenu/PenunjangPage.vue')))
   },
   {
     name: 'perencanaan-page',
     label: 'Plann',
     icon: 'icon-mat-style',
+    route: ['poli'],
     comp: shallowRef(defineAsyncComponent(() => import('./comptindakan/pagemenu/PerencanaanPage.vue')))
   },
   {
     name: 'edukasi-page',
     label: 'Edukasi',
     icon: 'icon-mat-tungsten',
+    route: ['poli'],
     comp: shallowRef(defineAsyncComponent(() => import('./comptindakan/pagemenu/EdukasiPage.vue')))
   },
   {
     name: 'e-resep-page',
     label: 'EResep',
     icon: 'icon-mat-receipt',
+    route: ['poli'],
     comp: shallowRef(defineAsyncComponent(() => import('../../eresep/EresepPage.vue')))
     // comp: shallowRef(defineAsyncComponent(() => import('./comptindakan/pagemenu/EResepPage.vue')))
   },
@@ -139,53 +149,62 @@ const menus = ref([
     name: 'sharing-bpjs-page',
     label: 'Sharing',
     icon: 'icon-my-bpjs',
+    route: ['poli'],
     comp: shallowRef(defineAsyncComponent(() => import('./comptindakan/pagemenu/SharingBpjsPage.vue')))
   },
   {
     name: 'upload-dok-page',
     label: 'Upload Dokumen',
     icon: 'icon-mat-cloud_upload',
+    route: ['poli'],
     comp: shallowRef(defineAsyncComponent(() => import('./comptindakan/pagemenu/UploadDokPage.vue')))
   },
   {
     name: 'penerbitan-surat-page',
     label: 'Dokumen',
     icon: 'icon-mat-email',
+    route: ['poli', 'mpp','rekammedik'],
     comp: shallowRef(defineAsyncComponent(() => import('./comptindakan/pagemenu/PenerbitanSuratPage.vue')))
   },
   {
     name: 'jawaban-konsul-page',
     label: 'Jawaban Konsul',
+    route: ['poli'],
     icon: 'icon-eva-message-circle-outline',
     comp: shallowRef(defineAsyncComponent(() => import('./comptindakan/pagemenu/JawabanKonsulPage.vue')))
   }
 ])
-const menu = ref(menus.value[0])
-
+const menu = ref()
+const filtered = ref([])
 const inacbg = useInacbgPoli()
+
 onMounted(() => {
   // console.log('pasien', props?.pasien)
-  menu.value = menus.value[0]
+  const link = route?.path
+  const pathSegments = link.split('/').filter(Boolean)
+  filtered.value = menus.value?.filter(menu => menu?.route?.some(r => pathSegments.includes(r)))
+  menu.value = filtered.value[0]
+  // console.log('index page cuy', filtered.value)
 
   master.getData()
   fisik.initReset(false, props?.pasien)
 })
 
 onBeforeMount(() => {
-  menu.value = menus.value[0]
+  // menu.value = menus.value[0]
   fisik.setFullCanvasFalse()
 })
 
 onBeforeUnmount(() => {
   // console.log('beforeunmount')
-  menu.value = menus.value[0]
+  // menu.value = menus.value[0]
   fisik.setFullCanvasFalse()
   // fisik.initReset(true)
 })
 
 onUnmounted(() => {
   // console.log('pasien', props.pasien)
-  menu.value = menus.value[0]
+  // menu.value = menus.value[0]
   fisik.setFullCanvasFalse()
 })
 

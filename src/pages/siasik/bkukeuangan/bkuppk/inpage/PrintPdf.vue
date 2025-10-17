@@ -82,11 +82,11 @@
                 </div>
                 <div style="padding-bottom: 40px" />
                 <div class="underline text-bold q-py-xs">
-                  {{ pegawai.pegawais[2]?.nama }}
+                  {{ ttd.datattd?.ppk?.nama }}
                   <div class="garis-bawah" style="text-decoration-line: underline;" />
                 </div>
                 <div>
-                  NIP. {{ pegawai.pegawais[2]?.nip }}
+                  NIP. {{ ttd.datattd?.ppk?.nip }}
                 </div>
               </div>
             </div>
@@ -116,11 +116,13 @@ import { useLaporanBkuPpkStore } from 'src/stores/siasik/laporan/bku/bkuppk'
 import { useLaporanBkuPengeluaranStore } from 'src/stores/siasik/laporan/bku/bkupengeluaran'
 import listData from './ListDatabkuppk.vue'
 import kopPage from './KopPage.vue'
+import { listdataNotadinasStore } from 'src/stores/siasik/transaksi/ls/notadinas/list'
 
 const store = useLaporanBkuPpkStore()
-const pegawai = useLaporanBkuPengeluaranStore()
+// const pegawai = useLaporanBkuPengeluaranStore()
+const ttd = listdataNotadinasStore()
 onMounted(() => {
-  pegawai.getDataTable()
+  // pegawai.getDataTable()
 })
 
 function totaldebit() {

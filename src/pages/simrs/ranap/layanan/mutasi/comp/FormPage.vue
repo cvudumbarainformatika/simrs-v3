@@ -1,33 +1,33 @@
 <template>
   <div class="fit column scroll">
     <q-form ref="formRef" @submit="onSubmit" class="">
-      <div class="q-pa-md">
+      <div class="q-pa-sm">
         <b>Ruangan Asal</b>
       </div>
       <q-separator class="" />
 
       <div class="row q-col-gutter-sm q-pa-md">
-        <div class="col-4">Asal Ruangan </div>
-        <div class="col-8">: {{ asalRuangan?.kamar }}</div>
-        <div class="col-4">Kamar </div>
-        <div class="col-8">: {{ asalRuangan?.kd_kmr }}</div>
-        <div class="col-4">Nomor Bed </div>
-        <div class="col-8">: {{ asalRuangan?.no_bed }}</div>
-        <div class="col-4">Tarip </div>
-        <div class="col-8">: Rp. {{ formatRp(store?.tarip) }}</div>
+        <div class="col-3">Asal Ruangan </div>
+        <div class="col-9">: {{ asalRuangan?.kamar }}</div>
+        <template v-if="asalRuangan?.titipan">
+          <div class="col-3 text-red">Titipan Dari Ruangan </div>
+          <div class="col-9 text-red">: {{ asalRuangan?.titipan_ruang }}</div>
+        </template>
+        <div class="col-3">Kamar / No Bed</div>
+        <div class="col-9">: {{ asalRuangan?.kd_kmr }} / {{ asalRuangan?.no_bed }}</div>
       </div>
 
 
       <q-separator class="" />
-      <div class="q-pa-md">
+      <div class="q-pa-sm">
         <b>Ruangan Tujuan</b>
       </div>
       <q-separator class="" />
 
       <div class="row q-col-gutter-sm q-pa-md">
 
-        <div class="col-4">Alasan Mutasi </div>
-        <div class="col-8 flex q-gutter-x-sm ">
+        <div class="col-3">Alasan Mutasi </div>
+        <div class="col-9 flex q-gutter-x-sm ">
           <div class="flex-1 full-width">
             <app-autocomplete-new ref="refRuangan" :model="store.form.kd_mutasi" label="Alasan" autocomplete="rs2"
               option-value="rs1" option-label="rs2" outlined :source="store.alasans" @on-select="(val) => {
@@ -43,8 +43,8 @@
         </div>
 
 
-        <div class="col-4">Ruangan Tujuan </div>
-        <div class="col-8 flex q-gutter-x-sm ">
+        <div class="col-3">Ruangan Tujuan </div>
+        <div class="col-9 flex q-gutter-x-sm ">
           <div class="flex-1 full-width">
             <app-autocomplete-new ref="refRuangan" :model="store.form.ruanganTujuan" label="Tujuan" autocomplete="rs2"
               option-value="rs1" option-label="rs2" outlined :source="store.ruangans" @on-select="(val) => {
@@ -63,11 +63,11 @@
               }" />
           </div>
         </div>
-        <div class="col-4">Kamar </div>
-        <div class="col-8 flex q-gutter-x-sm">
-          <div class="flex-1 full-width">
+        <div class="col-3">Kamar / No Bed</div>
+        <div class="col-9 flex q-gutter-x-sm">
+          <div class="flex-1 full-width row q-col-gutter-x-sm">
             <app-autocomplete-new ref="refKamar" :model="store.form.kamar" label="Kamar" autocomplete="rs1"
-              option-value="rs1" option-label="rs1" outlined :source="store.kamars" @on-select="(val) => {
+              class="col-8" option-value="rs1" option-label="rs1" outlined :source="store.kamars" @on-select="(val) => {
                 // console.log('val', val);
 
                 store.form.kamar = val
@@ -81,10 +81,25 @@
                 store.selectRuangan = null
                 store.form.noBed = null
               }" />
+
+
+
+            <app-autocomplete-new ref="refBed" :model="store.form.noBed" label="No Bed" autocomplete="rs2" class="col-4"
+              option-value="rs2" option-label="rs2" outlined :source="store.beds" @on-select="(val) => {
+                // console.log('val', val);
+
+                store.form.noBed = val
+                // store.showKamar(val)
+                // store.showBed(store.selectRuangan, val)
+              }" @clear="() => {
+                store.form.kamar = null
+                store.selectRuangan = null
+                store.form.noBed = null
+              }" />
           </div>
         </div>
-        <div class="col-4">Nomor Bed </div>
-        <div class="col-8 flex q-gutter-x-sm">
+        <!-- <div class="col-4">Nomor Bed </div> -->
+        <!-- <div class="col-8 flex q-gutter-x-sm">
           <div class="flex-1 full-width">
             <app-autocomplete-new ref="refBed" :model="store.form.noBed" label="No Bed" autocomplete="rs2"
               option-value="rs2" option-label="rs2" outlined :source="store.beds" @on-select="(val) => {
@@ -99,9 +114,18 @@
                 store.form.noBed = null
               }" />
           </div>
-        </div>
+        </div> -->
         <!-- <div class="col-4">Tarip </div>
         <div class="col-8">: Rp. tarrrrr</div> -->
+        <template v-if="asalRuangan?.titipan">
+          <div class="col-3">Masih Jadi Titipan ? </div>
+          <div class="col-9 flex q-gutter-x-sm ">
+            <div class="flex-1 full-width">
+              <q-checkbox v-model="store.form.titipan" label="Ya" />
+            </div>
+          </div>
+        </template>
+
       </div>
       <q-separator class="q-my-xs" />
       <div class="q-pa-md">
@@ -109,13 +133,27 @@
         <q-separator />
       </div>
       <div class="row q-px-md q-col-gutter-x-xs">
-        <div class="col-3">Derajat Pasien :</div>
-        <app-input-simrs v-model="store.form.derajatPasien" label="Derajat Px" outlined dense class="col-4" />
+        <app-input-simrs v-model="store.form.derajatPasien" label="Derajat Pasien" outlined dense class="col-6" />
+        <app-input-simrs v-model="store.form.skalaNyeri" label="Skala Nyeri" outlined dense class="col-6" />
+
+
         <div class="col-12 q-mb-xs">Objective :</div>
-        <app-input-simrs label="Tensi (mmHg)" class="col-3" v-model="store.form.tensi" :valid="{ number: true }"
+        <!-- <app-input-simrs label="Tensi (mmHg)" class="col-3" v-model="store.form.tensi" :valid="{ number: true }"
           @update:model-value="(val) => {
             const _removedZeros = val.replace(/^0+/, '')
             if (val > 1) store.form.tensi = _removedZeros
+            // cekEws('tb', _removedZeros)
+          }" /> -->
+        <app-input-simrs label="Sistolik (mmHg)" class="col-3" v-model="store.form.sistole" :valid="{ number: true }"
+          @update:model-value="(val) => {
+            const _removedZeros = val.replace(/^0+/, '')
+            if (val > 1) store.form.sistole = _removedZeros
+            // cekEws('tb', _removedZeros)
+          }" />
+        <app-input-simrs label="Diastole (mmHg)" class="col-3" v-model="store.form.diastole" :valid="{ number: true }"
+          @update:model-value="(val) => {
+            const _removedZeros = val.replace(/^0+/, '')
+            if (val > 1) store.form.diastole = _removedZeros
             // cekEws('tb', _removedZeros)
           }" />
         <app-input-simrs label="Nadi (x/mnt)" class="col-3" v-model="store.form.nadi" :valid="{ number: true }"
@@ -144,7 +182,7 @@
           }" />
 
         <div class="col-12 q-mb-xs relative-position">
-          <q-btn color="purple" class="relative-position justify-center" label="Terapi dan Obat" icon="icon-mat-add">
+          <q-btn color="dark" class="relative-position justify-center" label="Terapi dan Obat" icon="icon-mat-add">
             <q-menu style="width:40%" class="bg-grey-3">
               <div class="row q-pa-md">
                 <div class="column">
@@ -154,7 +192,7 @@
 
 
               </div>
-              <q-form class="q-px-md row">
+              <q-form class="q-px-md row" @submit="store.addTerapi">
                 <app-input-simrs v-model="store.terapi.obat" label="Terapi / Obat" outlined dense class="col-12"
                   :valid="{ required: false }" />
                 <app-input-simrs v-model="store.terapi.dosis" label="Dosis" outlined dense class="col-4"
@@ -169,7 +207,8 @@
 
                 <q-separator></q-separator>
                 <div class="q-pa-md flex full-width justify-end">
-                  <q-btn color="primary" class="relative-position" icon="icon-mat-save"> Simpan Terapi</q-btn>
+                  <q-btn color="primary" class="relative-position" icon="icon-mat-save" type="submit"> Simpan
+                    Terapi</q-btn>
                 </div>
               </q-form>
 
@@ -178,7 +217,7 @@
           </q-btn>
 
           <q-markup-table separator="cell" flat bordered>
-            <thead>
+            <thead class="bg-dark text-white">
               <tr>
                 <th class="text-left">Terapi dan Obat</th>
                 <th class="text-right">Dosis</th>
@@ -223,16 +262,17 @@
 
         <div class="col-12 q-mb-xs">Pemeriksaan yg disertakan :</div>
         <div class="col-2 q-mb-xs">RO : </div>
-        <app-input-simrs v-model="store.form.ro" label="" outlined dense class="col-4" />
-        <div class="col-6 q-mb-xs">Jenis / Tanggal /jam</div>
+        <app-input-simrs v-model="store.form.ro" label="Jenis / Tanggal /jam" outlined class="col-10" autogrow
+          type="textarea" />
         <div class="col-2 q-mb-xs">LAB : </div>
-        <app-input-simrs v-model="store.form.lab" label="" outlined dense class="col-4" />
-        <div class="col-6 q-mb-xs">Jenis / Tanggal /jam</div>
+        <app-input-simrs v-model="store.form.lab" label="Jenis / Tanggal /jam" outlined class="col-10" autogrow
+          type="textarea" />
         <div class="col-2 q-mb-xs">ECG : </div>
-        <app-input-simrs v-model="store.form.ecg" label="" outlined dense class="col-4" />
-        <div class="col-6 q-mb-xs">Jenis / Tanggal /jam</div>
-        <div class="col-2 q-mb-xs">lain : </div>
-        <app-input-simrs v-model="store.form.lain" label="lain-lain" outlined dense class="col-10" />
+        <app-input-simrs v-model="store.form.ecg" label="Jenis / Tanggal /jam" outlined class="col-10" autogrow
+          type="textarea" />
+        <div class="col-2 q-mb-xs">lain-lain : </div>
+        <app-input-simrs v-model="store.form.lain" label="Jenis / Tanggal /jam" outlined class="col-10" autogrow
+          type="textarea" />
         <!-- <div class="col-6 q-mb-xs">Jenis / Tanggal /jam</div> -->
 
         <app-input-simrs v-model="store.form.kelengkapan" label="Kelengkapan yang disertakan" outlined autogrow
@@ -279,6 +319,9 @@ function onSubmit() {
   // console.log('onSubmit', props.store.form)
 
   props.store.simpanMutasi(props.pasien)
+    .then(() => {
+      window.location.reload()
+    })
 }
 
 watchEffect(() => {

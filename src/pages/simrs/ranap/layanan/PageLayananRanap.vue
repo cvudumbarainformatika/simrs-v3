@@ -22,21 +22,17 @@
         <!-- CONTAINER ============================================================================================-->
         <q-page-container>
           <q-page class="contain bg-grey-3">
-            <!-- <div class="close-btn bg-dark text-white cursor-pointer q-pa-xs z-top">
-              <div class="vertical-xxx">
-                History
-              </div>
-            </div> -->
-            <!-- <Suspense
-              :key="menu.comp"
-              timeout="0"
-            >
-              <template #default> -->
+
             <div class="fit" v-if="loading && !pasien?.anamnesis">
               <AppLoader />
             </div>
             <div v-else class="fit">
-              <div v-if="pasien?.dokter === '' || pasien?.dokter === null"
+              <div v-if="pasien?.status === '1'"
+                class="column full-height flex-center absolute-center z-top full-width scroll"
+                style="background-color: black; opacity: .8;">
+                <TerimaPasien :key="pasien" :pasien="pasien" :store="store" />
+              </div>
+              <div v-else-if="pasien?.dokter === '' || pasien?.dokter === null"
                 class="column full-height flex-center absolute-center z-top full-width"
                 style="background-color: black; opacity: .9;">
                 <div class="text-white">
@@ -53,19 +49,7 @@
               <component v-else :is="menu?.comp" :key="pasien" :pasien="pasien" :kasus="store?.jnsKasusPasien"
                 :nakes="nakes" depo="rnp" />
             </div>
-            <!-- </template>
-<template #fallback>
-                <AppLoader />
-              </template>
-</Suspense> -->
 
-            <!-- <q-page-sticky position="bottom-right" :offset="[18, 18]">
-              <q-btn @click="historyPasien" padding="xs" icon="icon-mat-history" color="dark">
-                <q-tooltip class="bg-dark text-white">
-                  History Pasien
-                </q-tooltip>
-              </q-btn>
-            </q-page-sticky> -->
           </q-page>
           <!-- <q-page v-else>
             <AppLoader />
@@ -84,6 +68,8 @@ import { useAnamnesisRanapStore } from 'src/stores/simrs/ranap/anamnesis'
 import useLayanan from './useLayanan'
 import { useHistoryPasienRanapStore } from 'src/stores/simrs/ranap/history'
 
+
+import TerimaPasien from './components/TerimaPasien.vue'
 const HeaderLayout = defineAsyncComponent(() => import('./layoutcomp/HeaderLayout.vue'))
 const LeftDrawer = defineAsyncComponent(() => import('./layoutcomp/LeftDrawer.vue'))
 const RightDrawer = defineAsyncComponent(() => import('./layoutcomp/RightDrawer.vue'))
@@ -109,7 +95,7 @@ const props = defineProps({
 const { filterredMenus, menu, store, nakes, menuDiganti } = useLayanan(props.pasien)
 
 const onShow = () => {
-  // console.log('pasien pageLayananRanap', props.pasien)
+  console.log('pasien pageLayananRanap', props.pasien)
   Promise.all([
     anamnesis.getRiwayatKehamilan(props.pasien),
     history.historyIgdBefore(props.pasien)

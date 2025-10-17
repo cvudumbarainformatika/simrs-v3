@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia'
+import { acceptHMRUpdate, defineStore } from 'pinia'
 import { api } from 'src/boot/axios'
 import { notifSuccess } from 'src/modules/utils'
 
@@ -56,6 +56,8 @@ export const useTandaTanganStore = defineStore('tanda_tangan_store_form', {
       this.isOpen = !this.isOpen
     },
     kananSelected (val) {
+      // console.log('kanan', val)
+
       if (val !== null) {
         let data = {}
         if (val !== 'text') {
@@ -81,7 +83,7 @@ export const useTandaTanganStore = defineStore('tanda_tangan_store_form', {
         if (val !== 'text') {
           data = this.data[val]
           const anu = this.optionTT.filter(tt => tt.value === val)
-          data.acr = val === 'ptk' ? 'Pejabat Teknis Kegiatan' : (val === 'ppk' ? 'Pejaban Penandatangan Kontrak' : (val === 'mengetahui' ? '' : anu[0].nama))
+          data.acr = val === 'ptk' ? 'Pejabat Teknis Kegiatan' : (val === 'ppk' ? 'Pejabat Penandatangan Kontrak' : (val === 'mengetahui' ? '' : anu[0].nama))
           data.ada = true
         }
         else {
@@ -335,3 +337,7 @@ export const useTandaTanganStore = defineStore('tanda_tangan_store_form', {
     }
   }
 })
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useTandaTanganStore, import.meta.hot))
+}

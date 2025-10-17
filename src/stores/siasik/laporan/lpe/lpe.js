@@ -28,7 +28,9 @@ export const useLPEStore = defineStore('laporan_PerubahanEkuitas', {
 
     ekuitasawal: [],
     surplusdefisit: [],
-    hasilkoreksi: []
+    hasilkoreksi: [],
+
+    dataLpe: []
   }),
   actions: {
     setParameter(key, val) {
@@ -41,12 +43,17 @@ export const useLPEStore = defineStore('laporan_PerubahanEkuitas', {
         api.get('v1/laporan/lpe/getlpe', params).then((resp) => {
           console.log('data LPE', resp.data)
           if (resp.status === 200) {
+            this.ekuitasawal = []
+            this.surplusdefisit = []
+            this.hasilkoreksi = []
             this.dataekuitas = resp.data.ekuitas
             this.datapendapatans = resp.data.pendapatan
             this.datapenyesuaianpendapatans = resp.data.penyesuaianpendapatan
             this.datakoreksi = resp.data.koreksi
             this.databebans = resp.data.beban
             this.pagupendapatan = resp.data.pagupendapatan
+
+            this.dataLpe = resp.data
             // const objekuitas = []
             const datekuitas = this.dataekuitas.map((x) => {
               return {
@@ -68,8 +75,8 @@ export const useLPEStore = defineStore('laporan_PerubahanEkuitas', {
             const penyependapatan = this.datapenyesuaianpendapatans.filter(x => koderekpend.includes(x.kode6))
             const totalpenyependapatan = penyependapatan.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0)
             const totalpendapatan = pendapatan.map((x) => parseFloat(x.realisasi)).reduce((a, b) => a + b, 0)
-            console.log('totalpenyependapatan', totalpenyependapatan)
-            console.log('totalpendapatan', totalpendapatan)
+            // console.log('totalpenyependapatan', totalpenyependapatan)
+            // console.log('totalpendapatan', totalpendapatan)
             const pendapatanx = pendapatan.map((x) => {
               return {
                 uraian: 'Surplus / Defisit LO',
@@ -79,7 +86,7 @@ export const useLPEStore = defineStore('laporan_PerubahanEkuitas', {
                 penyesuaian: x.penyesuaian.map((x) => parseFloat(x.totalpenyesuaian)).reduce((a, b) => a + b, 0)
               }
             })
-            console.log('pendapatan', pendapatanx)
+            // console.log('pendapatan', pendapatanx)
             const beban = this.databebans.map((x) => {
               return {
                 uraian: 'Surplus / Defisit LO',
@@ -95,7 +102,7 @@ export const useLPEStore = defineStore('laporan_PerubahanEkuitas', {
               beban: beban.map((x) => parseFloat(x.nilai)).reduce((a, b) => a + b, 0).toFixed(2),
             }
             this.surplusdefisit = nilaisurplusdef
-            console.log('surplusdefisit', this.surplusdefisit)
+            // console.log('surplusdefisit', this.surplusdefisit)
 
             const objkoreksi = []
             for (let i = 0; i < this.datakoreksi?.length; i++) {

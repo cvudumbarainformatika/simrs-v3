@@ -14,7 +14,7 @@
                   Mutasi Dari : <span class="text-primary">{{ item?.nm_ruanglm }}</span>
                 </q-item-label>
                 <q-item-label lines="1">
-                  KE : <span class="text-primary">{{ item?.nm_ruang }}</span>
+                  Tujuan : <span class="text-dark text-weight-bold">{{ item?.nm_ruang }}</span>
                 </q-item-label>
 
                 <q-item-label caption lines="1">
@@ -25,11 +25,11 @@
                 <q-item-label>
                   Alasan : <span class="text-primary">{{ item?.alasan }}</span>
                 </q-item-label>
-                <q-item-label>
+                <!-- <q-item-label>
                   <q-badge color="orange-9" text-color="white">
                     Blm Ada Dokumen Serah Terima
                   </q-badge>
-                </q-item-label>
+                </q-item-label> -->
               </q-item-section>
 
               <q-item-section side>

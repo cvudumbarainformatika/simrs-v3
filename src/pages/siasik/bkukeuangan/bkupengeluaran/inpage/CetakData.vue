@@ -87,10 +87,10 @@
                     </div>
                     <div style="padding-bottom: 40px" />
                     <div class="text-bold" style="text-decoration-line: underline;">
-                      {{ store.pegawais[1]?.nama }}
+                      {{ ttd.datattd?.direktur?.nama }}
                     </div>
                     <div>
-                      NIP. {{ store.pegawais[1]?.nip }}
+                      NIP. {{ ttd.datattd?.direktur?.nip }}
                     </div>
                   </div>
                   <div class="flex-end text-center" style="width:50%">
@@ -102,10 +102,10 @@
                     </div>
                     <div style="padding-bottom: 40px" />
                     <div class="text-bold" style="text-decoration-line: underline;">
-                      {{ store.pegawais[0]?.nama }}
+                      {{ ttd.datattd?.bendpengeluaran?.nama }}
                     </div>
                     <div>
-                      NIP. {{ store.pegawais[0]?.nip }}
+                      NIP. {{ ttd.datattd?.bendpengeluaran?.nip }}
                     </div>
                   </div>
                 </div>
@@ -140,9 +140,10 @@ import { onMounted, ref } from 'vue';
 import listData from './ListData.vue'
 import kopPage from './KopPage.vue'
 import { formattanpaRp } from 'src/modules/formatter';
+import { listdataNotadinasStore } from 'src/stores/siasik/transaksi/ls/notadinas/list';
 
 const store = useLaporanBkuPengeluaranStore()
-
+const ttd = listdataNotadinasStore()
 // onMounted(() => {
 //   // store.getDataTable()
 // })

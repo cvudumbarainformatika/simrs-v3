@@ -2,7 +2,7 @@ import { acceptHMRUpdate, defineStore } from 'pinia'
 import { api } from 'src/boot/axios'
 import { usePengunjungRanapStore } from './pengunjung'
 // eslint-disable-next-line no-unused-vars
-import { notifErrVue, notifSuccess } from 'src/modules/utils'
+import { notifErrVue, notifSuccess, notifSuccessVue } from 'src/modules/utils'
 import { dateDbFormat } from 'src/modules/formatter'
 
 export const useMutasiRanapStore = defineStore('mutasi-ranap-store', {
@@ -20,10 +20,14 @@ export const useMutasiRanapStore = defineStore('mutasi-ranap-store', {
       kamar: null,
       noBed: null,
       kd_mutasi: null,
+      titipan: false,
 
       // document serah terima
       derajatPasien: null,
+      skalaNyeri: null,
       tensi: null,
+      sistole: null,
+      diastole: null,
       nadi: null,
       suhu: null,
       rr: null,
@@ -75,20 +79,37 @@ export const useMutasiRanapStore = defineStore('mutasi-ranap-store', {
         }
       }
 
-      try {
+      // try {
 
-        const resp = await api.get('v1/simrs/ranap/ruangan/ruanganranap', params)
+      //   const resp = await api.get('v1/simrs/ranap/ruangan/ruanganranap', params)
 
-        const data = resp?.data || null
-        if (data) {
-          this.ruanganAsal = data?.ruangan[0] || null
-          this.taripRuanganAsal = data?.tarif[0] || null
-        }
-        // console.log('resp', resp);
-      } catch (error) {
-        console.log(error);
+      //   const data = resp?.data || null
+      //   if (data) {
+      //     this.ruanganAsal = data?.ruangan[0] || null
+      //     this.taripRuanganAsal = data?.tarif[0] || null
+      //   }
+      //   // console.log('resp', resp);
+      // } catch (error) {
+      //   console.log(error);
 
-      }
+      // }
+
+      return new Promise((resolve, reject) => {
+        api.get('v1/simrs/ranap/ruangan/ruanganranap', params)
+          .then(resp => {
+            const data = resp?.data || null
+            if (data) {
+              this.ruanganAsal = data?.ruangan[0] || null
+              this.taripRuanganAsal = data?.tarif[0] || null
+            }
+            // console.log('resp', resp);
+            resolve(resp)
+          })
+          .catch(error => {
+            console.log(error);
+            reject(error)
+          })
+      })
     },
     async getHistory(pasien) {
 
@@ -103,7 +124,7 @@ export const useMutasiRanapStore = defineStore('mutasi-ranap-store', {
         const resp = await api.get('v1/simrs/ranap/ruangan/historymutasi', params)
 
 
-        console.log('resp', resp);
+        // console.log('resp', resp);
         this.historys = resp?.data || []
       } catch (error) {
         console.log(error);
@@ -189,6 +210,17 @@ export const useMutasiRanapStore = defineStore('mutasi-ranap-store', {
       })
     },
 
+    addTerapi() {
+      this.form.terapis.push(this.terapi)
+      this.terapi = {
+        obat: null,
+        dosis: null,
+        jamMasuk: null,
+        sisa: null,
+        ket: null
+      }
+    },
+
 
     async simpanMutasi(pasien) {
       // this.loading = true
@@ -200,6 +232,7 @@ export const useMutasiRanapStore = defineStore('mutasi-ranap-store', {
       try {
         // ambil value dari form
         const noreg = pasien?.noreg
+        const norm = pasien?.norm
         const tanggal = dateDbFormat(new Date())
         const nama = pasien?.nama
         const ruanglm = pasien?.kdruangan
@@ -210,14 +243,19 @@ export const useMutasiRanapStore = defineStore('mutasi-ranap-store', {
         // const biaya_dokter1 = pasien.biaya_dokter1.value
 
         const kd_mutasi = this.form.kd_mutasi
+        const titipan = this.form.titipan
         const ruang = this.form.ruanganTujuan
         const kamar = this.form.kamar
         const nobed = this.form.noBed
         // const biaya_kamar = pasien.biaya_kamar.value
         // const biaya_dokter2 = pasien.biaya_dokter2.value
 
+
+
+
         const payload = {
           noreg,
+          norm,
           tanggal,
           nama,
           ruanglm,
@@ -227,12 +265,31 @@ export const useMutasiRanapStore = defineStore('mutasi-ranap-store', {
           // biaya_dokter1,
           kd_kelas,
           kd_mutasi,
+          titipan,
           ruang,
           kamar,
           nobed,
           // biaya_kamar,
           // biaya_dokter2,
           // editable,
+
+          derajatPasien: this.form.derajatPasien,
+          skalaNyeri: this.form.skalaNyeri,
+          tensi: this.form.tensi,
+          sistole: this.form.sistole,
+          diastole: this.form.diastole,
+          nadi: this.form.nadi,
+          suhu: this.form.suhu,
+          rr: this.form.rr,
+          spo2: this.form.spo2,
+          terapis: this.form.terapis,
+          plann: this.form.plann,
+          ro: this.form.ro,
+          lab: this.form.lab,
+          ecg: this.form.ecg,
+          lainlain: this.form.lainlain,
+          kelengkapan: this.form.kelengkapan
+
         }
 
 
@@ -241,10 +298,28 @@ export const useMutasiRanapStore = defineStore('mutasi-ranap-store', {
         if (!yakin) return
 
         // kirim ke server (pakai axios)
-        const response = await api.post('v1/simrs/ranap/ruangan/simpanmutasi', payload)
+        // const response = await api.post('v1/simrs/ranap/ruangan/simpanmutasi', payload)
 
-        // return response.data
-        console.log('response mutasi', response);
+        // notifSuccess('Data berhasil disimpan')
+        // this.getHistory(pasien)
+
+        // this.initForm()
+
+        return new Promise((resolve, reject) => {
+          api.post('v1/simrs/ranap/ruangan/simpanmutasi', payload)
+            .then(resp => {
+              notifSuccess('Data berhasil disimpan')
+              this.getHistory(pasien)
+              this.initForm()
+              resolve(resp)
+            })
+            .catch(err => {
+              notifErrVue(err?.response?.data?.message)
+              reject(err)
+            })
+        })
+
+
 
       } catch (err) {
         this.error = err
@@ -253,6 +328,32 @@ export const useMutasiRanapStore = defineStore('mutasi-ranap-store', {
         this.loading = false
       }
     },
+
+    initForm() {
+      this.form = {
+        kd_mutasi: null,
+        titipan: this.ruanganAsal?.titipan ? true : false,
+        ruanganTujuan: null,
+        kamar: null,
+        noBed: null,
+        derajatPasien: null,
+        skalaNyeri: null,
+        tensi: null,
+        sistole: null,
+        diastole: null,
+        nadi: null,
+        suhu: null,
+        rr: null,
+        spo2: null,
+        terapis: [],
+        plann: null,
+        ro: null,
+        lab: null,
+        ecg: null,
+        lainlain: null,
+        kelengkapan: null
+      }
+    }
 
   }
 })

@@ -36,6 +36,11 @@ const tabs = ref([
     name: 'retur',
     comp: shallowRef(defineAsyncComponent(() => import('./ReturDepo.vue')))
   },
+  {
+    label: 'Halaman List Retur',
+    name: 'list',
+    comp: shallowRef(defineAsyncComponent(() => import('./ListReturPage.vue')))
+  },
 ])
 const menu = computed(() => {
   // console.log('tab.value', tab.value)

@@ -6,7 +6,7 @@
         <tr class="text-bold">
           <td class="text-center" style="width: 10%">KODE REKENING</td>
           <td class="text-center" style="width: 70%" colspan="2">URAIAN</td>
-          <td class="text-center" style="width: 20%">PAGU</td>
+          <td class="text-center" style="width: 20%">PAGU (Rp.)</td>
         </tr>
 
       </thead>
@@ -16,10 +16,7 @@
             <td class="text-bold text-left q-px-sm"> {{ item.kode }} </td>
             <td class="text-bold text-left q-px-sm" colspan="2"> {{ item.uraian }} </td>
             <td class="text-bold text-right q-px-sm">
-              <div class="row full-width justify-between">
-                <div class="col-auto flex-start">Rp. </div>
-                <div class="flex-end text-right">{{ formattanpaRp(item.pagu) }}</div>
-              </div>
+              {{ formattanpaRp(item.pagu) }}
             </td>
           </tr>
           <template v-if="item.rincian && item.rincian?.length > 0">
@@ -30,11 +27,12 @@
                   <div class="text-bold text-left q-px-sm">{{ rincian.bidang }}</div>
                   <div class="text-left q-px-sm">Sub Kegiatan: {{ rincian.kegiatan }}</div>
                 </td>
-                <td class="q-px-sm">
-                  <div class="row justify-between">
+                <td class="q-px-sm text-right">
+                  {{ formattanpaRp(rincian.pagu) }}
+                  <!-- <div class="row justify-between">
                     <div class="col-auto flex-start">Rp. </div>
                     <div class="flex-end text-right q-pr-sm">{{ formattanpaRp(rincian.pagu) }}</div>
-                  </div>
+                  </div> -->
                 </td>
               </tr>
               <template v-if="store.reqs.jenis === '2'">
@@ -42,14 +40,14 @@
                   <td></td>
                   <td class="text-left q-px-sm text-grey-8">- {{ item.item }} </td>
                   <td class="text-right q-px-sm text-grey-8" style="width: 20%"> {{ item.volume }} {{ item.satuan }} x
-                    {{
-                      formattanpaRp(item.harga) }}
+                    {{ formattanpaRp(item.harga) }}
                   </td>
-                  <td class="text-right q-px-sm">
-                    <div class="row justify-between">
+                  <td class="text-right q-px-sm text-grey-8">
+                    {{ formattanpaRp(item.pagu) }}
+                    <!-- <div class="row justify-between">
                       <div class="col-auto flex-start text-grey-8">Rp. </div>
                       <div class="flex-end text-right q-pr-sm text-grey-8">{{ formattanpaRp(item.pagu) }}</div>
-                    </div>
+                    </div> -->
                   </td>
                 </tr>
               </template>

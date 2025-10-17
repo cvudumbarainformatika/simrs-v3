@@ -1,9 +1,12 @@
-import { defineStore } from 'pinia'
+import { acceptHMRUpdate, defineStore } from 'pinia'
 import { api } from 'src/boot/axios'
 import { notifSuccess } from 'src/modules/utils'
 
 export const useListBastPenerimaanFarmasiStore = defineStore('list_bast_penerimaan_farmasi', {
   state: () => ({
+    openDokBAST: false,
+    openDokPemeriksaan: false,
+    item: {},
     loading: false,
     items: [],
     meta: {},
@@ -55,18 +58,25 @@ export const useListBastPenerimaanFarmasiStore = defineStore('list_bast_penerima
         api.get('v1/simrs/penunjang/farmasinew/bast/list-bast', param)
           .then(resp => {
             this.loading = false
-            console.log('list bast', resp.data)
             this.items = resp.data.data
             this.meta = resp.data.meta
             this.items.forEach(item => {
               item?.penerimaan?.forEach(trm => {
-                // trm.subtotal_bast = 0
+
                 trm.subtotal_terima = 0
                 if (trm?.jenissurat === 'Faktur') trm.subtotal_terima = trm.total_faktur_pbf
                 else trm.subtotal_terima = trm?.faktur?.total_faktur ?? 0
-                // trm.subtotal_bast = parseFloat(trm.subtotal_terima) - parseFloat(trm?.nilai_retur)
+
+                trm?.penerimaanrinci?.forEach(ri => {
+                  ri.spesifikasi = 'ya'
+                  ri.jumlah_prd = 'ya'
+                  ri.kualitas = 'ya'
+                  ri.jadwal = 'ya'
+                  ri.lokasi = 'ya'
+                })
               })
             })
+            console.log('list bast', this.items)
             resolve(resp)
           })
           .catch(() => { this.loading = false })
@@ -88,3 +98,7 @@ export const useListBastPenerimaanFarmasiStore = defineStore('list_bast_penerima
     }
   }
 })
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useListBastPenerimaanFarmasiStore, import.meta.hot))
+}

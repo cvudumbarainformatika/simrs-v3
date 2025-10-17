@@ -3,7 +3,7 @@ import { usePengunjungRanapStore } from 'src/stores/simrs/ranap/pengunjung'
 import { useAplikasiStore } from 'src/stores/app/aplikasi'
 import { useRoute } from 'vue-router'
 
-export default function useLayanan(pasien, mpp) {
+export default function useLayanan (pasien, mpp) {
   const store = usePengunjungRanapStore()
   const auth = useAplikasiStore()
   const route = useRoute()
@@ -134,14 +134,14 @@ export default function useLayanan(pasien, mpp) {
       name: 'catatan-dan-dokumen',
       label: 'Catatan / Dokumen',
       icon: 'icon-my-file_sign',
-      nakes: ['1', '2', '3', '4', '5', '6', 'mpp'],
+      nakes: ['1', '2', '3', '4', '5', '6', 'mpp', 'rekammedik'],
       comp: shallowRef(defineAsyncComponent(() => import('./dokumen/IndexPage.vue')))
     },
     {
       name: 'billing',
       label: 'Billing & Rekap',
       icon: 'icon-mat-receipt_long',
-      nakes: ['1', '2', '3', '4', '5', '6', 'mpp'],
+      nakes: ['1', '2', '3', '4', '5', '6', 'mpp', 'rekammedik'],
       comp: shallowRef(defineAsyncComponent(() => import('./billing/IndexPage.vue')))
     },
     {
@@ -192,37 +192,41 @@ export default function useLayanan(pasien, mpp) {
 
 
   const filterredMenus = computed(() => {
-    const mpp = route.matched?.map(a => a.path)?.includes('/mpp') ?? false
-    // console.log('mpp', mpp)
+    const link = route?.path
+    const docOnly = ['mpp', 'rekammedik']
+    const pathSegments = link.split('/').filter(Boolean)
+
+    // const mpp = route.matched?.map(a => a.path)?.includes('/mpp') ?? false
+    const mpp = docOnly.some(menu => pathSegments.includes(menu))
+    // console.log('pathSegments', pathSegments, mpp, docOnly.some(menu => pathSegments.includes(menu)))
     if (!mpp) {
       const byPass = ['sa']
       const user = auth?.user?.username
       if (byPass.includes(user)) {
         return menus.value.filter(menu => menu?.mpp !== true)
       }
-
       return menus.value.filter(menu => menu.nakes.includes(nakes.value) && menu?.mpp !== true)
     }
     else {
-      return menus.value.filter(menu => menu.nakes.includes('mpp'))
+      return menus.value.filter(menu => menu.nakes.some(r => pathSegments.includes(r)))
     }
   })
 
   const menu = ref(null)
 
   onMounted(() => {
-    console.log('mounted pageLayananRanap', auth?.user?.username)
+    // console.log('mounted pageLayananRanap', auth?.user?.username)
 
     menu.value = filterredMenus.value[0]
   })
 
-  function menuDiganti(val) {
+  function menuDiganti (val) {
     menu.value = val
   }
 
   watchEffect(() => {
     if (!pasien) {
-      console.log('no pasien')
+      // console.log('no pasien')
 
       store.pageLayanan = false
     }

@@ -96,8 +96,11 @@
 
           </q-item-section>
           <q-item-section side>
-            <q-btn dense outline size="sm" no-caps color="primary" label="LIHAT LAYANAN" class="q-mb-sm"
-              icon-right="icon-mat-eye" style="min-width: 120px;" @click="bukaLayananPage(item)" />
+            <q-btn v-if="item?.status !== '1'" dense outline size="sm" no-caps color="primary" label="LIHAT LAYANAN"
+              class="q-mb-sm" icon-right="icon-mat-eye" style="min-width: 120px;" @click="bukaLayananPage(item)" />
+
+            <q-btn v-else-if="item?.status === '1'" dense size="sm" no-caps color="dark" label="TERIMA PASIEN"
+              class="q-mb-sm" icon-right="icon-mat-eye" style="min-width: 120px;" @click="bukaLayananPage(item)" />
           </q-item-section>
         </q-item>
       </q-list>
@@ -184,6 +187,10 @@ function bukaLayananPage(item) {
         })
       ])
     })
+}
+
+function terimaPasien(item) {
+  pasien.value = item
 }
 
 onBeforeUnmount(() => {
