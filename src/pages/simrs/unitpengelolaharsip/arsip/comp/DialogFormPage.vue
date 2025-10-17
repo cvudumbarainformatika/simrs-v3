@@ -73,15 +73,28 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-6">
+              <!-- <div class="col-6">
                 <q-select v-model="store.form.lokasi" label="Lokasi Arsip" outlined dense :options="lokasiarsip"
                   option-value="id" option-label="nama_lokasi" emit-value map-options
                   :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" style="width: 260px;" />
-              </div>
+              </div> -->
               <div class="col-6">
+
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-4" align="left">
+                <q-option-group v-model="store.form.keaslian" :options="keaslian" color="primary" inline dense
+                  :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" />
+              </div>
+              <div class="col-4">
+                <q-input v-model="store.form.jumlah" label="Jumlah" input-class="text-right" outlined dense
+                  :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" type="number" style="width: 95%;" />
+              </div>
+              <div class="col-4">
                 <q-select label="Jenis Media" v-model="store.form.media" outlined dense :options="media"
                   option-label="nama_media" option-value="id" clearable emit-value map-options @filter="filterFnmedia"
-                  :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" style="width: 260px;">
+                  :rules="[val => !!val || 'Harap Diisi terlebih dahulu']">
                   <template #option="scope">
                     <q-item v-bind="scope.itemProps"><q-item-section avatar>
                         <q-item-label>
@@ -98,20 +111,8 @@
                     </q-item>
                   </template>
                 </q-select>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-4" align="left">
-                <q-option-group v-model="store.form.keaslian" :options="keaslian" color="primary" inline dense
-                  :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" />
-              </div>
-              <div class="col-4">
-                <q-input v-model="store.form.jumlah" label="Jumlah" input-class="text-right" outlined dense
-                  :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" type="number" style="width: 95%;" />
-              </div>
-              <div class="col-4">
-                <q-input v-model="store.form.nobox" label="No. Laci" outlined dense input-class="text-right"
-                  :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" type="number" style="width: 95%;" />
+                <!-- <q-input v-model="store.form.nobox" label="No. Laci" outlined dense input-class="text-right"
+                  :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" type="number" style="width: 95%;" /> -->
               </div>
             </div>
             <div class="row">

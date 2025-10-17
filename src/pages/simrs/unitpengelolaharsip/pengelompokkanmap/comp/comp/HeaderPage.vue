@@ -1,5 +1,5 @@
 <template>
-  <div class="row justify-between items-center q-pa-sm bg-primary text-white">
+  <div class="row justify-between items-center q-pa-sm bg-dark text-white">
     <div class="row items-center">
       <div>
         <q-input v-model="store.params.q" placeholder="Cari Arsip Dalam Map ..." dense outlined dark color="white"
@@ -10,7 +10,7 @@
         </q-input>
       </div>
     </div>
-    <div>
+    <!-- <div>
       <q-btn class="q-ml-sm" unelevated color="orange" flat size="sm" padding="xs" icon="icon-mat-add"
         @click="emits('tambaharsip')">
         <q-tooltip class="primary" :offset="[10, 10]">
@@ -23,7 +23,7 @@
           Refresh Data
         </q-tooltip>
       </q-btn>
-    </div>
+    </div> -->
   </div>
 </template>
 <script setup>
@@ -34,8 +34,9 @@ defineProps({
     type: Array,
     default: () => []
   },
+
 })
 const store = useUnitPengelolaharsipMapStore()
 
-const emits = defineEmits(['tambaharsip'])
+// const emits = defineEmits(['tambaharsip'])
 </script>

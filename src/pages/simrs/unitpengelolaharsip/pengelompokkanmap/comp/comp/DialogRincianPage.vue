@@ -13,22 +13,24 @@
 
         <q-card-section class="q-pt-xs">
           <div class="header bg-primary text-white">
-            <HeaderPage @tambaharsip="dialogtambaharsip()" :hederdetail="props.hederdetail" />
+            <HeaderPage :hederdetail="props.hederdetail" />
           </div>
-          <ListArsipPage />
-          <div class="q-pa-sm">
+          <ListArsipPage @tambaharsip="dialogtambaharsip()" />
+          <!-- <div class="q-pa-sm">
             <q-card flat no-shadow square class="my-flex-1" style="overflow: hidden;">
               <q-scroll-area style="height: calc(100% - 1px);">
                 <ListArsipPage />
               </q-scroll-area>
             </q-card>
-          </div>
+          </div> -->
         </q-card-section>
       </q-card>
+
     </q-dialog>
   </div>
 
-  <DialogCariArsip :items="storearsip.itemsuntukmap" :users="props.users" :organisasi="props.organisasi" />
+  <DialogCariArsip :items="storearsip.itemsuntukmap" :users="props.users" :organisasi="props.organisasi"
+    :arsipyangbelummasukmap="storearsip.itemsuntukmap" />
 </template>
 <script setup>
 import { useUnitPengelolaharsipMapStore } from 'src/stores/simrs/unitpengelolaarsip/pengolahanmap';
@@ -54,13 +56,13 @@ const props = defineProps({
   },
 })
 
-onMounted(() => {
+onMounted(async () => {
   //storearsip.params.bidangbagian = props.users
-  storearsip.getDataarsip()
+  await storearsip.getDataarsip()
 })
 
 function dialogtambaharsip() {
-  storearsip.itemsuntukmap = []
+  //storearsip.itemsuntukmap = []
   store.dialogtambaharsip = true
 }
 </script>

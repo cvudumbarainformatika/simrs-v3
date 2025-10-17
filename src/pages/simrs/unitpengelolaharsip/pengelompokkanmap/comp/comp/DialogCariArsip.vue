@@ -24,11 +24,9 @@
 
       <q-card-section style="max-height: 50vh" class="scroll">
         <div class="q-pb-xl">
-          <ListLoading v-if="storearsip.loadingmap" />
-          <EmptyData v-else-if="!items?.length && !storearsip.loadingmap" />
-          <q-list v-else separator>
-            <q-item v-for="(item, i) in items" :key="i">
 
+          <q-list separator>
+            <q-item v-for="(item, i) in arsipyangbelummasukmap" :key="i">
               <q-item-section class="q-col-gutter-xs">
                 <q-item-label>
                   <span class="text-weight-bold">{{ item.noarsip }}</span>
@@ -83,14 +81,14 @@
           </q-list>
         </div>
       </q-card-section>
-
       <q-separator />
 
       <q-card-actions align="right">
-        <q-btn flat label="Decline" color="primary" v-close-popup />
-        <q-btn flat label="Accept" color="primary" v-close-popup />
+        <!-- <q-btn flat label="Decline" color="primary" v-close-popup /> -->
+        <q-btn label="Tutup" color="primary" v-close-popup unelevated />
       </q-card-actions>
     </q-card>
+
   </q-dialog>
 </template>
 <script setup>
@@ -100,6 +98,7 @@ import { useUnitPengelolaharsipMapStore } from 'src/stores/simrs/unitpengelolaar
 import ListLoading from './ListLoading.vue';
 import EmptyData from './EmptyData.vue';
 import { dateFullFormat } from 'src/modules/formatter';
+import { onMounted, watch } from 'vue';
 
 
 const store = useUnitPengelolaharsipMapStore()
@@ -110,8 +109,15 @@ const props = defineProps({
     type: Array,
     default: () => []
   },
-  users: { type: String, default: '' },
+  users: {
+    type: [String, Object, null],
+    default: ''
+  },
   organisasi: {
+    type: Array,
+    default: () => []
+  },
+  arsipyangbelummasukmap: {
     type: Array,
     default: () => []
   },
@@ -125,5 +131,11 @@ function getUnit(val) {
 function masukkanmap(val, i) {
   store.simpanisimap(val)
 }
+
+onMounted(() => {
+  storearsip.paramsdarimap.q = ''
+  storearsip.paramsdarimap.bidangbagian = props.users
+  storearsip.getDataarsip()
+})
 
 </script>

@@ -20,8 +20,8 @@ export const useUnitPengelolaharsipMapStore = defineStore('unit-pengelolah-arsip
     dialogtambaharsip: false,
     params: {
       q: '',
-      page: 1,
-      per_page: 10,
+      // page: 1,
+      // per_page: 10,
       bidangbagian: ''
     },
     form: {
@@ -121,6 +121,7 @@ export const useUnitPengelolaharsipMapStore = defineStore('unit-pengelolah-arsip
             storearsip.itemsuntukmap = storearsip.itemsuntukmap.filter(
               item => item.noarsip !== noarsip
             )
+
             this.loadingisimap = false
             notifSuccess(resp)
             resolve(resp)
@@ -138,7 +139,6 @@ export const useUnitPengelolaharsipMapStore = defineStore('unit-pengelolah-arsip
       await api.get('v1/simrs/unitpengelolaharsip/map/rincian-map', params)
         .then(resp => {
           this.itemsrinci = resp?.data
-          console.log('itemsrinci', this.itemsrinci)
           this.loadingrinci = false
         })
         .catch(() => { this.loadingrinci = false })

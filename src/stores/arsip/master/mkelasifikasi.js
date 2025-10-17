@@ -36,6 +36,7 @@ export const useArsipMasterKelasifikasiStore = defineStore('arsip-master-kelasif
     },
     async getMkelasifikasi() {
       this.loading = true
+      this.params.q = ''
       const params = { params: this.params }
       const resp = await api.get('/v1/arsip/master/getmasterarsip', params)
       if (resp.status === 200) {

@@ -15,6 +15,11 @@ const unitpengelolaharsip = {
       component: () => import('pages/simrs/unitpengelolaharsip/pengelompokkanmap/IndexPage.vue')
     },
     {
+      path: '/unitpengelolaharsip/peminjamanarsip',
+      name: 'unitpengelolaharsip.peminjamanarsip',
+      component: () => import('pages/simrs/unitpengelolaharsip/peminjamanarsip/IndexPage.vue')
+    },
+    {
       path: '/unitpengelolaharsip/notfound',
       component: () => import('pages/MidlewareNotFound.vue')
     }

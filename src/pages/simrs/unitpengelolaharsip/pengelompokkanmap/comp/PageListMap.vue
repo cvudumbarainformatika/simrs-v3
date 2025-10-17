@@ -42,9 +42,6 @@ function tambahmap() {
   //store.initForm()
 }
 
-
-
-
 onMounted(() => {
   store.params.bidangbagian = appstore?.user?.pegawai?.kdarteri
   store.getData()

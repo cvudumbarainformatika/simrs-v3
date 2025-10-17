@@ -38,7 +38,7 @@
 <script setup>
 import { date } from 'quasar'
 import { dateDbFormat } from 'src/modules/formatter'
-import { computed, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useUnitPengelolahArsipStore } from 'src/stores/simrs/unitpengelolaarsip/arsip'
 const store = useUnitPengelolahArsipStore()
 // const txt = ref('BELUM TERLAYANI')
@@ -64,7 +64,7 @@ function getUnit(val) {
   store.search()
 }
 
-// onMounted(() => {
-//   store.getData()
-// })
+onMounted(() => {
+  store.params.q = ''
+})
 </script>

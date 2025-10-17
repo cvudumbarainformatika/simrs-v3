@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- <pre>{{ items }}</pre> -->
     <div class="q-pb-xl">
       <ListLoading v-if="loading" />
       <empty-data v-else-if="!items?.length && !loading" />
@@ -54,11 +55,14 @@
           <q-separator vertical class="q-mx-md" />
           <q-item-section class="q-col-gutter-xs">
             <q-item-label>
-              Lokasi : <span class="text-negative text-weight-bold">{{ item?.nama_lokasi ?? '-' }}</span>
+              Posisi Arsip : <span class="text-negative text-weight-bold">{{ flagingan(item?.flaging) }}</span>
             </q-item-label>
             <q-item-label>
-              No. Laci :
-              <span class="text-teal text-weight-bold"> {{ item?.nobox ?? '-' }}</span>
+              Lokasi :
+              <span class="text-teal text-weight-bold"> {{ item?.rincianmap?.namacabinet ?? '-' }} || Laci : {{
+                item?.rincianmap?.laci
+                ?? '-' }} ||
+                Map : {{ item?.rincianmap?.namamap ?? '-' }}</span>
             </q-item-label>
             <q-item-label>
               Media :
@@ -75,8 +79,17 @@
             </q-item-label>
           </q-item-section>
           <q-item-section side>
-            <div class="q-gutter-sm">
+            <div class="q-gutter-sm" v-if="!peminjamarsip">
               <q-btn flat round size="sm" icon="icon-mat-edit" @click="editForm(item)" />
+            </div>
+            <div class="q-gutter-sm" v-else>
+
+              <q-checkbox :model-value="isChecked(item.noarsip)" @update:model-value="toggleCheck(item)"
+                :val="{ noarsip: item.noarsip, posisiarsip: item.flaging }">
+                <q-tooltip class="primary" :offset="[10, 10]">
+                  Centang Untuk Pengajukan Peminjaman untuk Arsip ini...!!!!
+                </q-tooltip>
+              </q-checkbox>
             </div>
           </q-item-section>
         </q-item>
@@ -104,10 +117,19 @@ import DialogFormGambarPage from './DialogFormGambarPage.vue';
 import { dateFullFormat, formatJam } from 'src/modules/formatter'
 import { useUnitPengelolahArsipStore } from 'src/stores/simrs/unitpengelolaarsip/arsip';
 import { date } from 'quasar';
+import { useUnitPengelolaharsippeminjamanStore } from 'src/stores/simrs/unitpengelolaarsip/peminjamanarsip';
 
 const emits = defineEmits(['terimapasien', 'bukalayanan', 'kirimcasmix'])
 const store = useUnitPengelolahArsipStore()
+const storepeminjaman = useUnitPengelolaharsippeminjamanStore()
 
+function flagingan(val) {
+  if (val === "1") {
+    return 'Unit Pengolah Arsip'
+  } else {
+    return 'Record Center'
+  }
+}
 
 // const PageLayananIgd = defineAsyncComponent(() => import('src/pages/simrs/igd/layanan/PageLayananIgd.vue'))
 // const pasien = ref(null)
@@ -116,6 +138,50 @@ const store = useUnitPengelolahArsipStore()
 //   store.pageLayanan = true
 //   // store.setTerima(item)
 // }
+
+// fungsi cek apakah arsip sudah dipilih
+const isChecked = (noarsip) => {
+  return storepeminjaman.form.rincian.some(r => r.noarsip === noarsip)
+}
+
+// fungsi toggle centang / hapus
+const toggleCheck = (item) => {
+  const list = storepeminjaman.form.rincian
+  console.log('list', list)
+  const currentMap = list.length > 0 ? list[0].map : null
+  console.log('currentMap', currentMap)
+  const selectedMap = item.rincianmap?.namamap
+  console.log('selectedMap', selectedMap)
+
+  if (currentMap && selectedMap && currentMap !== selectedMap) {
+    $q.notify({
+      type: 'negative',
+      message: `Pilihan ditolak. Map harus sama: ${currentMap}`
+    })
+    return
+  }
+
+
+  const index = list.findIndex(r => r.noarsip === item.noarsip)
+
+  if (index >= 0) {
+    // jika sudah ada, hapus
+    list.splice(index, 1)
+  } else {
+    // jika belum ada, tambahkan
+
+    list.push({
+      noarsip: item.noarsip,
+      posisiarsip: item.flaging,
+      mapstatus: item.flagmap,
+      posisifellingkabinet: item.rincianmap?.namacabinet ?? '-',
+      laci: item.rincianmap?.laci ?? '-',
+      map: item.rincianmap?.namamap ?? '-',
+      unitpengolah: item?.unit_pengolah
+    })
+  }
+
+}
 
 defineProps({
   items: {
@@ -137,6 +203,10 @@ defineProps({
   lokasiarsip: {
     type: Object,
     default: null
+  },
+  peminjamarsip: {
+    type: Boolean,
+    default: false
   },
 })
 
@@ -172,11 +242,8 @@ function editForm(val) {
 }
 
 function addgambar(val) {
-  console.log('val', val)
   store.dialoggambar = true
   store.formgambar.noarsip = val?.noarsip
 }
-
-
 
 </script>

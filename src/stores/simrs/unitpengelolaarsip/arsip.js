@@ -58,6 +58,7 @@ export const useUnitPengelolahArsipStore = defineStore('unit-pengelolah-arsip-st
       this.getData()
     },
     searchdarimap(val) {
+      console.log('val', val)
       this.params.q = val
       this.getDataarsip()
     },
@@ -68,6 +69,7 @@ export const useUnitPengelolahArsipStore = defineStore('unit-pengelolah-arsip-st
     async getData() {
       this.loading = true
       const params = { params: this.params }
+      console.log('params', params)
       await api.get('v1/simrs/unitpengelolaharsip/arsip/listarsip', params)
         .then(resp => {
           this.items = resp?.data?.data
@@ -77,11 +79,14 @@ export const useUnitPengelolahArsipStore = defineStore('unit-pengelolah-arsip-st
         .catch(() => { this.loading = false })
     },
     async getDataarsip() {
+      console.log('paramsxxxxxxxx', this.paramsdarimap)
       this.loadingmap = true
       const params = { params: this.paramsdarimap }
       await api.get('v1/simrs/unitpengelolaharsip/arsip/listarsip-map', params)
         .then(resp => {
           this.itemsuntukmap = resp?.data
+          console.log('xxxxxxxxxxx', resp?.data)
+          console.log('this.itemsuntukmap', this.itemsuntukmap)
           this.loadingmap = false
         })
         .catch(() => { this.loadingmap = false })

@@ -1,37 +1,48 @@
 <template>
   <q-card flat bordered class="q-pa-sm q-mb-sm">
-    <div class="row q-pl-sm q-pt-xs">
-      <div class="col-6">
-        Nama Map : <q-span class="text-weight-bold">{{ store.itemsrinci[0]?.namamap }} </q-span>
+
+    <div class="row items-center justify-between q-pl-sm q-pt-xs">
+      <div class="col-10">
+        <div class="row">
+          <div class="col-6">
+            Nama Map : <span class="text-weight-bold">{{ store.itemsrinci[0]?.namamap }}</span>
+          </div>
+          <div class="col-6">
+            Klasifikasi : <span class="text-weight-bold">{{ store.itemsrinci[0]?.klasifikasi?.nama }}</span>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-6">
+            Keterangan : <span class="text-weight-bold">{{ store.itemsrinci[0]?.keterangan }}</span>
+          </div>
+          <div class="col-6">
+            Unit Pengolah :
+            <q-badge outline color="accent">{{ store.itemsrinci[0]?.unitpengolah?.nama }}</q-badge>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-6">
+            Tempat :
+            <span class="text-weight-bold">
+              <q-badge outline color="red">
+                {{ store.itemsrinci[0]?.kabinet?.namacabinet }} ==> Laci {{ store.itemsrinci[0]?.laci }}
+              </q-badge>
+            </span>
+          </div>
+          <div class="col-6">
+            Tahun : {{ store.itemsrinci[0]?.tahunMap }}
+          </div>
+        </div>
       </div>
-      <div class="col-6">
-        Klasifikasi : <q-span class="text-weight-bold"> {{ store.itemsrinci[0]?.klasifikasi?.nama }} </q-span>
+
+      <!-- Tombol di kanan -->
+      <div class="col-auto">
+        <q-btn unelevated color="primary" label="Tambah Arsip" @click="emits('tambaharsip')" />
       </div>
     </div>
 
-    <div class="row q-pl-sm">
-      <div class="col-6">
-        Keterangan : <q-span class="text-weight-bold">{{ store.itemsrinci[0]?.keterangan }}</q-span>
-      </div>
-      <div class="col-6">
-        Unit Pengolah :
-        <q-badge outline color="accent">{{ store.itemsrinci[0]?.unitpengolah?.nama }}</q-badge>
-      </div>
-    </div>
-
-    <div class="row q-pl-sm">
-      <div class="col-6">
-        Tempat :
-        <q-span class="text-weight-bold">
-          <q-badge outline color="red">
-            {{ store.itemsrinci[0]?.kabinet?.namacabinet }} ==> Laci {{ store.itemsrinci[0]?.laci }}
-          </q-badge>
-        </q-span>
-      </div>
-      <div class="col-6">
-        Tahun : {{ store.itemsrinci[0]?.tahunMap }}
-      </div>
-    </div>
   </q-card>
 
   <div class="q-pb-xl">
@@ -77,7 +88,7 @@
           </q-item-label>
           <q-item-label>
             Jenis Arsip : <span class=" text-weight-bold"><q-badge outline color="teal">{{ item?.dataarsip?.ket ?? '-'
-                }}</q-badge></span>
+            }}</q-badge></span>
           </q-item-label>
           <!-- <q-item-label>
             Unit Pengelolah : <span class=" text-weight-bold"><q-badge outline color="accent">{{
@@ -130,9 +141,15 @@ import { date } from 'quasar';
 import { useUnitPengelolaharsipMapStore } from 'src/stores/simrs/unitpengelolaarsip/pengolahanmap';
 import { onMounted } from 'vue';
 
-const emits = defineEmits(['terimapasien', 'bukalayanan', 'kirimcasmix'])
+const emits = defineEmits(['terimapasien', 'bukalayanan', 'kirimcasmix', 'tambaharsip'])
 const store = useUnitPengelolaharsipMapStore()
 
+const props = defineProps({
+  arsipyangbelummasukmap: {
+    type: Array,
+    default: () => []
+  },
+})
 
 // const PageLayananIgd = defineAsyncComponent(() => import('src/pages/simrs/igd/layanan/PageLayananIgd.vue'))
 // const pasien = ref(null)
