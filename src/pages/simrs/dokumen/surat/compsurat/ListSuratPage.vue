@@ -22,10 +22,10 @@
 
         <q-item-section side>
           <div class="row items-center q-gutter-xs" v-if="item?.batal !== '1'">
-            <q-btn unelevated color="dark" round size="sm" icon="icon-mat-edit" @click="() => $emit('edit', item)"
+            <!-- <q-btn unelevated color="dark" round size="sm" icon="icon-mat-edit" @click="() => $emit('edit', item)"
               :loading="item.cetak" :pasien="props.pasien">
               <q-tooltip class="primary" :offset="[10, 10]">Print</q-tooltip>
-            </q-btn>
+            </q-btn> -->
             <q-btn unelevated color="dark" round size="sm" icon="icon-mat-print" @click="() => $emit('print', item)"
               :loading="item.cetak" :pasien="props.pasien">
               <q-tooltip class="primary" :offset="[10, 10]">Print</q-tooltip>
