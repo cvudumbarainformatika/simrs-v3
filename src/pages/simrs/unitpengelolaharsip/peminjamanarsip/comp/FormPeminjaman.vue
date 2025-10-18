@@ -33,10 +33,9 @@
             <q-btn color="primary" icon="icon-mat-search" label="Cari Arsip" unelevated type="submit"
               :loading="store.loading" />
           </div>
-          <div class="col-12 col-md-2 flex">
-            <q-btn v-if="store.form.rincian.length > 0" color="primary" icon="icon-mat-add" label="Ajukan Peminjaman"
-              unelevated @click="onAjukan()" :loading="store.loading" />
-          </div>
+          <!-- <div class="col-12 col-md-2 flex">
+            <q-btn color="primary" icon="icon-mat-add" label="Ajukan Peminjaman" unelevated :loading="store.loading" />
+          </div> -->
         </div>
       </q-form>
     </q-card>
@@ -100,9 +99,9 @@ function filterFn(val, update) {
   });
 }
 
-function onAjukan() {
-  store.dialog = true
-}
+// function onAjukan() {
+//   store.dialog = true
+// }
 
 onMounted(() => {
   store.params.noarsip = ''

@@ -83,13 +83,14 @@
               <q-btn flat round size="sm" icon="icon-mat-edit" @click="editForm(item)" />
             </div>
             <div class="q-gutter-sm" v-else>
-
-              <q-checkbox :model-value="isChecked(item.noarsip)" @update:model-value="toggleCheck(item)"
-                :val="{ noarsip: item.noarsip, posisiarsip: item.flaging }">
-                <q-tooltip class="primary" :offset="[10, 10]">
-                  Centang Untuk Pengajukan Peminjaman untuk Arsip ini...!!!!
-                </q-tooltip>
-              </q-checkbox>
+              <div v-if="item?.notrans === null">
+                <q-checkbox :model-value="isChecked(item.noarsip)" @update:model-value="toggleCheck(item)"
+                  :val="{ noarsip: item.noarsip, posisiarsip: item.flaging }">
+                  <q-tooltip class="primary" :offset="[10, 10]">
+                    Centang Untuk Pengajukan Peminjaman untuk Arsip ini...!!!!
+                  </q-tooltip>
+                </q-checkbox>
+              </div>
             </div>
           </q-item-section>
         </q-item>
@@ -147,11 +148,11 @@ const isChecked = (noarsip) => {
 // fungsi toggle centang / hapus
 const toggleCheck = (item) => {
   const list = storepeminjaman.form.rincian
-  console.log('list', list)
+
   const currentMap = list.length > 0 ? list[0].map : null
-  console.log('currentMap', currentMap)
+
   const selectedMap = item.rincianmap?.namamap
-  console.log('selectedMap', selectedMap)
+
 
   if (currentMap && selectedMap && currentMap !== selectedMap) {
     $q.notify({
@@ -180,7 +181,11 @@ const toggleCheck = (item) => {
       unitpengolah: item?.unit_pengolah
     })
   }
-
+  if (list.length > 0) {
+    storepeminjaman.dialog = true
+  } else {
+    storepeminjaman.dialog = false
+  }
 }
 
 defineProps({

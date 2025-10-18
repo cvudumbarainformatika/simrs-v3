@@ -65,28 +65,27 @@ export const useUnitPengelolaharsippeminjamanStore = defineStore('unit-pengelola
       return new Promise(resolve => {
         api.post('v1/simrs/unitpengelolaharsip/peminjaman/simpan-pinjaman', this.form)
           .then(resp => {
-            // const newItem = resp?.data?.result
-            // this.items = resp?.data?.result
-            // this.loadingForm = false
-            // this.initreset()
-            // notifSuccess(resp)
+            const updatedItem = resp?.data?.result
+            const index = this.items.findIndex(item => item.id === updatedItem.id)
+            this.items[index] = updatedItem
+            this.initreset()
+            notifSuccess(resp)
+            this.loadingForm = false
             resolve(resp)
           })
           .catch(() => {
+            this.initreset()
             this.loadingForm = false
           })
       })
     },
     initreset() {
-      this.form.id = ''
-      this.form.namamap = ''
-      this.form.kodeorganisasi = ''
-      this.form.kodekelasifikasi = ''
-      this.form.kelasifikasi = ''
+      this.form.nopeminjaman = ''
+      this.form.peminjam = ''
+      this.form.tanggal = date.formatDate(Date.now(), 'YYYY-MM-DD')
       this.form.keterangan = ''
-      this.form.cabinet = ''
-      this.form.laci = 1,
-        this.form.tahunmap = new Date().getFullYear()
+      this.form.rincian = []
+      this.dialog = false
     },
     getdatapegawai() {
       this.loadingpegawai = true
