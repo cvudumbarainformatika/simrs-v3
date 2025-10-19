@@ -430,7 +430,7 @@
                               </div>
                             </td>
                             <td style="white-space: normal; width: 100px;">
-                              <div class="row items-end justify-end">
+                              <div class="row items-end justify-center">
                                 <div class="col-auto ">
                                   {{ item?.jml_terima_k }}
                                 </div>

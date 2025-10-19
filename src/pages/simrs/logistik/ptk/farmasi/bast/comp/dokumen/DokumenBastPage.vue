@@ -104,7 +104,12 @@
                     Alamat
                   </div>
                   <div class="col-7">
-                    {{ store?.item?.alamat_penyedia ?? 'Alamat perusahaan tidak ditemukan' }}
+                    <!-- {{ store?.item?.alamat_penyedia ?? 'Alamat perusahaan tidak ditemukan' }} -->
+                    <app-input v-model="alamatSupplier" valid label="Nama PIC penyedia" :filled="false"
+                      class="print-hide" />
+                    <div class="print-only">
+                      {{ alamatSupplier }}
+                    </div>
                   </div>
                 </div>
                 <div class="fit row no-wrap justify-start items-center q-my-sm">
@@ -622,6 +627,7 @@ function bilangan (val) {
 // identitas supplier
 const namaSupplier = ref('')
 const jabatanSupplier = ref('')
+const alamatSupplier = ref('')
 
 // nama rekening belanja
 const namaRekeningBelanja = ref('')
@@ -633,6 +639,7 @@ function show () {
   emits('show')
   namaRekeningBelanja.value = store?.item?.belanja ?? ''
   namaSupplier.value = store?.item?.penyedia ?? ''
+  alamatSupplier.value = store?.item?.alamat_penyedia ?? ''
 }
 const printObj = {
   id: 'printMe',
