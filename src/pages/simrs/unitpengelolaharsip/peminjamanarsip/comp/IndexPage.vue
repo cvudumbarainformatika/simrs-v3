@@ -30,7 +30,7 @@ const storeorganisasi = useUnitPengelolaharsippeminjamanStore()
 const storeklaisifikasi = useArsipMasterKelasifikasiStore()
 const comp = [
   { nama: 'formpeminjamandokumen', page: defineAsyncComponent(() => import('./FormPeminjaman.vue')) },
-  { nama: 'listpeminjamandokumen', page: defineAsyncComponent(() => import('./ListPeminjaman.vue')) }
+  { nama: 'listpeminjamandokumen', page: defineAsyncComponent(() => import('./PageListPeminjaman.vue')) }
 ]
 const cekPanel = () => {
   const val = store.tab

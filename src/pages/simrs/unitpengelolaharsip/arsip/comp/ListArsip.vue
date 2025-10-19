@@ -44,7 +44,7 @@
             </q-item-label>
             <q-item-label>
               Jenis Arsip : <span class=" text-weight-bold"><q-badge outline color="teal">{{ item?.ket ?? '-'
-              }}</q-badge></span>
+                  }}</q-badge></span>
             </q-item-label>
             <q-item-label>
               Unit Pengelolah : <span class=" text-weight-bold"><q-badge outline color="accent">{{
@@ -81,15 +81,22 @@
           <q-item-section side>
             <div class="q-gutter-sm" v-if="!peminjamarsip">
               <q-btn flat round size="sm" icon="icon-mat-edit" @click="editForm(item)" />
+              <q-btn v-if="users === '' || users === null" flat round size="sm" icon="icon-mat-delete" color="negative"
+                @click="hapusItem(item.noarsip)" :loading="store.loadinghapus === item.noarsip" />
             </div>
             <div class="q-gutter-sm" v-else>
-              <div v-if="item?.notrans === null">
+              <div v-if="item?.caripeminjaman === null">
                 <q-checkbox :model-value="isChecked(item.noarsip)" @update:model-value="toggleCheck(item)"
                   :val="{ noarsip: item.noarsip, posisiarsip: item.flaging }">
                   <q-tooltip class="primary" :offset="[10, 10]">
                     Centang Untuk Pengajukan Peminjaman untuk Arsip ini...!!!!
                   </q-tooltip>
                 </q-checkbox>
+              </div>
+              <div v-else class="q-gutter-xs">
+                <q-badge color="teal" label="Dipinjam" />
+                <q-btn flat round size="sm" icon="icon-mat-swap_horiz" class="bg-primary text-white"
+                  @click="kembalikanberkas(item)" />
               </div>
             </div>
           </q-item-section>
@@ -104,6 +111,7 @@
     <DialogFormPage :items="items" :loading="loading" :klasifikasi="klasifikasi" :media="media"
       :lokasiarsip="lokasiarsip" />
     <DialogFormGambarPage :items="items" :loading="loading" />
+    <DialogFormKembaliPage />
   </div>
 </template>
 
@@ -114,6 +122,7 @@ import ListLoading from './ListLoading.vue'
 import EmptyData from './EmptyData.vue'
 import DialogFormPage from './DialogFormPage.vue';
 import DialogFormGambarPage from './DialogFormGambarPage.vue';
+import DialogFormKembaliPage from '../../peminjamanarsip/comp/DialogFormKembali.vue';
 
 import { dateFullFormat, formatJam } from 'src/modules/formatter'
 import { useUnitPengelolahArsipStore } from 'src/stores/simrs/unitpengelolaarsip/arsip';
@@ -175,9 +184,9 @@ const toggleCheck = (item) => {
       noarsip: item.noarsip,
       posisiarsip: item.flaging,
       mapstatus: item.flagmap,
-      posisifellingkabinet: item.rincianmap?.namacabinet ?? '-',
+      posisifellingkabinet: item.rincianmap?.kodefelingkabinet ?? '-',
       laci: item.rincianmap?.laci ?? '-',
-      map: item.rincianmap?.namamap ?? '-',
+      map: item.rincianmap?.id ?? '-',
       unitpengolah: item?.unit_pengolah
     })
   }
@@ -212,6 +221,10 @@ defineProps({
   peminjamarsip: {
     type: Boolean,
     default: false
+  },
+  users: {
+    type: String,
+    default: ""
   },
 })
 
@@ -249,6 +262,18 @@ function editForm(val) {
 function addgambar(val) {
   store.dialoggambar = true
   store.formgambar.noarsip = val?.noarsip
+}
+
+function kembalikanberkas(val) {
+  console.log('kembalikanberkas', val)
+  storepeminjaman.formkembali.nopeminjaman = val?.caripeminjaman?.notrans
+  storepeminjaman.formkembali.noarsip = val?.noarsip
+  storepeminjaman.dialogkembali = true
+}
+
+function hapusItem(noarsip) {
+
+  store.hapusItem(noarsip)
 }
 
 </script>

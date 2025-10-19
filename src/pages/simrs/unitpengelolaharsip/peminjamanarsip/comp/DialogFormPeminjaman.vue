@@ -10,7 +10,7 @@
         </q-card-section>
         <q-separator />
         <q-card-section align="center" class="full-height full-width ">
-          {{ store.form.unitpengolah }}
+
           <div>
             <div class="row">
               <div class="col-12">
@@ -40,6 +40,13 @@
               <div class="col-12">
                 <app-input-date-human :model="store.tanggal" label="Tanggal Peminjaman" outlined @db-model="setFrom"
                   @set-display="setToFromDisp" :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" />
+              </div>
+            </div>
+            <div class="row q-mt-md q-mb-md">
+              <div class="col-12">
+                <app-input-date-human :model="store.rencanakembali" label="Rencana Pengembalian" outlined
+                  @db-model="setFromx" @set-display="setToFromDispx"
+                  :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" />
               </div>
             </div>
             <div class="row">
@@ -96,6 +103,14 @@ function setFrom(val) {
 
 function setToFromDisp(vaal) {
   store.tanggal = vaal
+}
+
+function setFromx(val) {
+  store.form.rencanakembali = val
+}
+
+function setToFromDispx(vaal) {
+  store.rencanakembali = vaal
 }
 
 function onSubmit() {

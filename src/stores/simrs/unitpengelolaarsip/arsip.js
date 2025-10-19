@@ -41,7 +41,8 @@ export const useUnitPengelolahArsipStore = defineStore('unit-pengelolah-arsip-st
       noarsip: '',
       dokumen: []
     },
-    loadingForm: false
+    loadingForm: false,
+    loadinghapus: false
   }),
   actions: {
     setParams(key, val) {
@@ -110,6 +111,7 @@ export const useUnitPengelolahArsipStore = defineStore('unit-pengelolah-arsip-st
       return new Promise((resolve, reject) => {
         api.post('v1/simrs/unitpengelolaharsip/arsip/simpanarsip', this.form)
           .then((resp) => {
+
             if (resp.status === 200) {
               const datax = resp?.data?.result[0]
               const index = this.items.findIndex(x => x.noarsip === datax.noarsip)
@@ -260,6 +262,28 @@ export const useUnitPengelolahArsipStore = defineStore('unit-pengelolah-arsip-st
       // console.log('masukkan ke form', this.formgambar)
       this.formgambar.dokumen = files
     },
+    async hapusItem(noarsip) {
+      this.loadinghapus = true
+      const payload = { payload: noarsip }
+      return new Promise((resolve, reject) => {
+        api.post(`v1/simrs/unitpengelolaharsip/arsip/hapusarsip`, payload)
+          .then((resp) => {
+            console.log('resp', resp)
+            if (resp.status === 200) {
+              const index = this.items.findIndex(x => x.noarsip === noarsip)
+              if (index >= 0) this.items.splice(index, 1)
+              this.loadinghapus = false
+              notifSuccess(resp)
+            }
+            this.loadinghapus = false
+          })
+          .catch((err) => {
+            notifErr(err)
+            this.loadinghapus = false
+            reject(err)
+          })
+      })
+    }
   }
 })
 

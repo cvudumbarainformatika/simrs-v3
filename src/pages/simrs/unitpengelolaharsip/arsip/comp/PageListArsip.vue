@@ -8,7 +8,7 @@
     <q-card flat no-shadow square class="my-flex-1" style="overflow: hidden;">
       <q-scroll-area style="height: calc(100% - 1px);">
         <ListArsip :items="store.items" :loading="store.loading" :klasifikasi="storeklasifikasi.items"
-          :media="storemedia.items" :lokasiarsip="storelokasiarsip.items" />
+          :media="storemedia.items" :lokasiarsip="storelokasiarsip.items" :users="appstore?.user?.pegawai?.kdarteri" />
       </q-scroll-area>
       <div class=" absolute-bottom bg-primary text-white z-top">
         <footer-page :meta="store.meta" @go-to="store.goToPage" />
