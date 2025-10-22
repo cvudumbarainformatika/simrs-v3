@@ -99,6 +99,53 @@ const siasik = {
 
       ]
     },
+    {
+      path: '/siasik/ls/verifnotadinas',
+      name: 'siasik.ls.verifnotadinas',
+      component: () => import('pages/siasik/transaksi/ls/verifnotadinas/IndexPage.vue')
+    },
+    {
+      path: '/siasik/ls/npkls',
+      name: 'siasik.ls.npkls',
+      component: () => import('pages/siasik/transaksi/ls/npkls/IndexPage.vue'),
+      children: [
+        { path: '', name: 'npkls', redirect: '/siasik/ls/npkls/formdata' },
+        {
+          path: '/siasik/ls/npkls/formdata',
+          name: 'siasik.ls.npkls.formdata',
+          component: () =>
+            import('src/pages/siasik/transaksi/ls/npkls/formdata/IndexPage.vue')
+        },
+        {
+          path: '/siasik/ls/npkls/listdata',
+          name: 'siasik.ls.npkls.listdata',
+          component: () =>
+            import('src/pages/siasik/transaksi/ls/npkls/listdata/IndexPage.vue')
+        },
+
+      ]
+    },
+    {
+      path: '/siasik/rencanabelanja',
+      name: 'siasik.rencanabelanja',
+      component: () => import('pages/siasik/transaksi/rencanaBelanja/IndexPage.vue'),
+      children: [
+        { path: '', name: 'rencana', redirect: '/siasik/rencanabelanja/formdata' },
+        {
+          path: '/siasik/rencanabelanja/formdata',
+          name: 'siasik.rencanabelanja.formdata',
+          component: () =>
+            import('src/pages/siasik/transaksi/rencanaBelanja/FormData/IndexPage.vue')
+        },
+        {
+          path: '/siasik/rencanabelanja/listdata',
+          name: 'siasik.rencanabelanja.listdata',
+          component: () =>
+            import('src/pages/siasik/transaksi/rencanaBelanja/ListData/IndexPage.vue')
+        },
+
+      ]
+    },
     // {
     //   path: '/satset/kunjungan',
     //   name: 'satset.kunjungan',
