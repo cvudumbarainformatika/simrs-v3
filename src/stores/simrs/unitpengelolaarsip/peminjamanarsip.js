@@ -99,6 +99,7 @@ export const useUnitPengelolaharsippeminjamanStore = defineStore('unit-pengelola
     initreset() {
       this.form.nopeminjaman = ''
       this.form.peminjam = ''
+      this.form.unitpengolah = useAppStore?.user?.pegawai?.kdarteri
       this.form.tanggal = date.formatDate(Date.now(), 'YYYY-MM-DD')
       this.form.keterangan = ''
       this.form.rincian = []
@@ -153,6 +154,25 @@ export const useUnitPengelolaharsippeminjamanStore = defineStore('unit-pengelola
       this.formkembali.nopeminjaman = ''
       this.formkembali.keterangan = ''
       this.dialogkembali = false
+    },
+    caripegawai(val) {
+      this.loadingpegawai = true
+      const params = {
+        params: {
+          q: val
+        }
+      }
+      return new Promise(resolve => {
+        api.get('v1/simrs/unitpengelolaharsip/peminjaman/cari-pegawai', params)
+          .then(resp => {
+            this.itemspegawai = resp?.data
+            this.loadingpegawai = false
+            resolve(resp)
+          })
+          .catch(() => {
+            this.loadingpegawai = false
+          })
+      })
     }
   }
 })

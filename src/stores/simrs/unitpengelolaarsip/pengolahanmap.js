@@ -14,6 +14,8 @@ export const useUnitPengelolaharsipMapStore = defineStore('unit-pengelolah-arsip
     loadingForm: false,
     loadingisimap: false,
     loadingrinci: false,
+    loadinghapusrinci: {},
+    loadinghapusmap: {},
     meta: null,
     dialog: false,
     dialogrincian: false,
@@ -37,6 +39,10 @@ export const useUnitPengelolaharsipMapStore = defineStore('unit-pengelolah-arsip
     },
     formisi: {
       idmap: '',
+      noarsip: ''
+    },
+    formhapus: {
+      id: '',
       noarsip: ''
     }
   }),
@@ -142,6 +148,39 @@ export const useUnitPengelolaharsipMapStore = defineStore('unit-pengelolah-arsip
           this.loadingrinci = false
         })
         .catch(() => { this.loadingrinci = false })
+    },
+    async hapusitem(id, noarsip) {
+      this.loadinghapusrinci[id] = true
+      this.formhapus.id = id
+      this.formhapus.noarsip = noarsip
+      await api.post('v1/simrs/unitpengelolaharsip/map/hapus-item', this.formhapus)
+        .then(resp => {
+          if (resp.status === 200) {
+            this.itemsrinci[0].rinciandalammap = this.itemsrinci[0]?.rinciandalammap.filter(
+              item => item.id !== id
+            )
+            const storearsip = useUnitPengelolahArsipStore()
+            storearsip.getDataarsip()
+
+            notifSuccess(resp)
+          }
+          this.loadinghapusrinci[id] = false
+        })
+        .catch(() => { this.loadinghapusrinci[id] = false })
+    },
+    async hapusmap(id) {
+      // console.log('hapus map', id)
+      this.loadinghapusmap[id] = true
+      await api.post('v1/simrs/unitpengelolaharsip/map/hapus-map', { id: id })
+        .then(resp => {
+          if (resp.status === 200) {
+            this.items = this.items.filter(item => item.id !== id)
+            notifSuccess(resp)
+            this.loadinghapusmap[id] = false
+          }
+          this.loadinghapusmap[id] = false
+        })
+        .catch(() => { this.loadinghapusmap[id] = false })
     }
   }
 })

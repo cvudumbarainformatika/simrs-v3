@@ -120,9 +120,10 @@
           </q-item-label>
         </q-item-section>
         <q-item-section side>
-          <!-- <div class="q-gutter-sm">
-              <q-btn flat round size="sm" icon="icon-mat-edit" @click="editForm(item)" />
-            </div> -->
+          <div class="q-gutter-sm">
+            <q-btn flat round size="sm" icon="icon-mat-delete" color="red" @click="hapusitem(item.id, item.noarsip)"
+              :loading="store.loadinghapusrinci[item.id]" :disable="store.loadinghapusrinci[item.id]" />
+          </div>
         </q-item-section>
       </q-item>
     </q-list>
@@ -137,12 +138,13 @@ import ListLoading from './ListLoading.vue'
 import EmptyData from './EmptyData.vue'
 
 import { dateFullFormat, formatJam } from 'src/modules/formatter'
-import { date } from 'quasar';
+import { date, useQuasar } from 'quasar';
 import { useUnitPengelolaharsipMapStore } from 'src/stores/simrs/unitpengelolaarsip/pengolahanmap';
 import { onMounted } from 'vue';
 
 const emits = defineEmits(['terimapasien', 'bukalayanan', 'kirimcasmix', 'tambaharsip'])
 const store = useUnitPengelolaharsipMapStore()
+const $q = useQuasar()
 
 const props = defineProps({
   arsipyangbelummasukmap: {
@@ -159,6 +161,20 @@ const props = defineProps({
 //   // store.setTerima(item)
 // }
 
+function hapusitem(id, noarsip) {
+  $q.dialog({
+    title: 'Peringatan',
+    message: 'Apakah Data ini akan dihapus?',
+    cancel: true,
+    persistent: true
+  }).onOk(() => {
+    store.hapusitem(id, noarsip)
+  }).onCancel(() => {
+    console.log('Cancel')
+  }).onDismiss(() => {
+    // console.log('I am triggered on both OK and Cancel')
+  })
+}
 
 
 const getImg = (file) => {

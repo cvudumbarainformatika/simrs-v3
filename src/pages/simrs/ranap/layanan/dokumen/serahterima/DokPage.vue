@@ -123,17 +123,13 @@
             <div class="col-6">
               <div class="row">
                 <div class="col-2">Subyektif</div>
-                <div class="col-10"> : {{ pasien?.anamnesis[0]?.riwayatalergi }} {{
-                  pasien?.anamnesis[0]?.keteranganalergi
-                  }}</div>
+                <div class="col-10"> : {{ keluhanUtama(pasien) }}</div>
               </div>
             </div>
             <div class="col-6 ">
               <div class="row">
                 <div class="col-2">Alergi</div>
-                <div class="col-10"> : {{ pasien?.anamnesis[0]?.riwayatalergi }} {{
-                  pasien?.anamnesis[0]?.keteranganalergi
-                  }}</div>
+                <div class="col-10"> : {{ alergi(pasien) }}</div>
               </div>
             </div>
             <div class="col-6">
@@ -355,7 +351,7 @@
                 </div>
               </div>
               <div>
-                <b>{{ item?.serah_terima?.nmuser_serah }}</b>
+                <b>{{ item?.serah_terima?.nmuser_terima }}</b>
               </div>
             </div>
             <div class="kanan text-center">
@@ -374,7 +370,7 @@
               </div>
 
               <div>
-                <b>{{ item?.serah_terima?.nmuser_trm }}</b>
+                <b>{{ item?.serah_terima?.nmuser_serah }}</b>
               </div>
             </div>
           </div>
@@ -425,6 +421,22 @@ onMounted(() => {
 
   // console.log('store', store.items);
 })
+
+const keluhanUtama = (pas) => {
+  const anamnesisAwal = pas?.anamnesis?.length > 0 ? pas?.anamnesis?.find(item => item?.awal === '1') ?? null : null
+  // console.log('pas', anamnesisAwal);
+
+  return anamnesisAwal?.keluhanUtama
+}
+
+const alergi = (pas) => {
+  const anamnesisAwal = pas?.anamnesis?.length > 0 ? pas?.anamnesis?.find(item => item?.awal === '1') ?? null : null
+  const alergi = anamnesisAwal?.riwayatalergi
+  // console.log('pas', anamnesisAwal);
+  const split = alergi?.length > 0 ? alergi?.join(', ') : null
+
+  return split
+}
 
 const qrUrl = computed(() => {
   const noreg = props?.pasien?.noreg// noreg
