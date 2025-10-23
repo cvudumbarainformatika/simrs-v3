@@ -169,7 +169,7 @@ export const useUnitPengelolaharsipMapStore = defineStore('unit-pengelolah-arsip
         .catch(() => { this.loadinghapusrinci[id] = false })
     },
     async hapusmap(id) {
-      console.log('hapus map', id)
+      // console.log('hapus map', id)
       this.loadinghapusmap[id] = true
       await api.post('v1/simrs/unitpengelolaharsip/map/hapus-map', { id: id })
         .then(resp => {
