@@ -1,12 +1,12 @@
 <template>
-  <div class="fit column scroll">
-    <q-form ref="formRef" @submit="onSubmit" class="">
-      <div class="q-pa-sm">
+  <div class="fit column scroll-y">
+    <q-form ref="formRef" @submit="onSubmit" class="full-width q-pa-sm" style="max-width: 100%;">
+      <div v-if="!store.isEditted" class="q-pa-sm">
         <b>Ruangan Asal</b>
       </div>
       <q-separator class="" />
 
-      <div class="row q-col-gutter-sm q-pa-md">
+      <div v-if="!store.isEditted" class="row q-col-gutter-sm q-pa-md">
         <div class="col-3">Asal Ruangan </div>
         <div class="col-9">: {{ asalRuangan?.kamar }}</div>
         <template v-if="asalRuangan?.titipan">
@@ -19,12 +19,12 @@
 
 
       <q-separator class="" />
-      <div class="q-pa-sm">
+      <div v-if="!store.isEditted" class="q-pa-sm">
         <b>Ruangan Tujuan</b>
       </div>
       <q-separator class="" />
 
-      <div class="row q-col-gutter-sm q-pa-md">
+      <div v-if="!store.isEditted" class="row q-col-gutter-sm q-pa-md">
 
         <div class="col-3">Alasan Mutasi </div>
         <div class="col-9 flex q-gutter-x-sm ">
@@ -145,43 +145,43 @@
             // cekEws('tb', _removedZeros)
           }" /> -->
         <app-input-simrs label="Sistolik (mmHg)" class="col-3" v-model="store.form.sistole" :valid="{ number: true }"
-          @update:model-value="(val) => {
+          :lazy-rules="false" @update:model-value="(val) => {
             const _removedZeros = val.replace(/^0+/, '')
             if (val > 1) store.form.sistole = _removedZeros
             // cekEws('tb', _removedZeros)
           }" />
         <app-input-simrs label="Diastole (mmHg)" class="col-3" v-model="store.form.diastole" :valid="{ number: true }"
-          @update:model-value="(val) => {
+          :lazy-rules="false" @update:model-value="(val) => {
             const _removedZeros = val.replace(/^0+/, '')
             if (val > 1) store.form.diastole = _removedZeros
             // cekEws('tb', _removedZeros)
           }" />
         <app-input-simrs label="Nadi (x/mnt)" class="col-3" v-model="store.form.nadi" :valid="{ number: true }"
-          @update:model-value="(val) => {
+          :lazy-rules="false" @update:model-value="(val) => {
             const _removedZeros = val.replace(/^0+/, '')
             if (val > 1) store.form.nadi = _removedZeros
             // cekEws('tb', _removedZeros)
           }" />
         <app-input-simrs label="Suhu (°C)" class="col-3" v-model="store.form.suhu" :valid="{ number: true }"
-          @update:model-value="(val) => {
+          :lazy-rules="false" @update:model-value="(val) => {
             const _removedZeros = val.replace(/^0+/, '')
             if (val > 1) store.form.suhu = _removedZeros
             // cekEws('tb', _removedZeros)
           }" />
         <app-input-simrs label="RR (x/mnt)" class="col-3" v-model="store.form.rr" :valid="{ number: true }"
-          @update:model-value="(val) => {
+          :lazy-rules="false" @update:model-value="(val) => {
             const _removedZeros = val.replace(/^0+/, '')
             if (val > 1) store.form.rr = _removedZeros
             // cekEws('tb', _removedZeros)
           }" />
         <app-input-simrs label="SPO2 (%)" class="col-3" v-model="store.form.spo2" :valid="{ number: true }"
-          @update:model-value="(val) => {
+          :lazy-rules="false" @update:model-value="(val) => {
             const _removedZeros = val.replace(/^0+/, '')
             if (val > 1) store.form.spo2 = _removedZeros
             // cekEws('tb', _removedZeros)
           }" />
 
-        <div class="col-12 q-mb-xs relative-position">
+        <div class="col-12 q-mb-xs">
           <q-btn color="dark" class="relative-position justify-center" label="Terapi dan Obat" icon="icon-mat-add">
             <q-menu style="width:40%" class="bg-grey-3">
               <div class="row q-pa-md">
@@ -216,7 +216,7 @@
             </q-menu>
           </q-btn>
 
-          <q-markup-table separator="cell" flat bordered>
+          <q-markup-table dense separator="cell" flat bordered wrap-cells>
             <thead class="bg-dark text-white">
               <tr>
                 <th class="text-left">Terapi dan Obat</th>
@@ -224,6 +224,7 @@
                 <th class="text-right">Jam Masuk</th>
                 <th class="text-right">Sisa Obat</th>
                 <th class="text-right">Keterangan</th>
+                <th class="text-right">#</th>
               </tr>
             </thead>
             <tbody>
@@ -243,6 +244,10 @@
                   </td>
                   <td class="text-right">
                     {{ item.ket }}
+                  </td>
+                  <td class="text-right">
+                    <q-btn size="xs" flat dense color="negative" icon="icon-mat-delete"
+                      @click="store.removeTerapi(index)"></q-btn>
                   </td>
                 </tr>
               </template>
@@ -277,12 +282,74 @@
 
         <app-input-simrs v-model="store.form.kelengkapan" label="Kelengkapan yang disertakan" outlined autogrow
           type="textarea" class="col-12 q-mt-sm" :valid="{ required: true }" />
+
+        <div v-if="store.isEditted" class="col-12">
+          <div class="q-pa-sm">
+            <b>Form Terima Pasien</b>
+          </div>
+          <q-separator class="" />
+
+
+          <div class="row q-col-gutter-x-sm">
+            <app-input-simrs label="Sistolik (mmHg)" class="col-3" v-model="store.form.sistole_trm"
+              :valid="{ number: true }" :lazy-rules="false" @update:model-value="(val) => {
+                const _removedZeros = val.replace(/^0+/, '')
+                if (val > 1) store.form.sistole_trm = _removedZeros
+                // cekEws('tb', _removedZeros)
+              }" />
+            <app-input-simrs label="Diastole (mmHg)" class="col-3" v-model="store.form.diastole_trm"
+              :valid="{ number: true }" :lazy-rules="false" @update:model-value="(val) => {
+                const _removedZeros = val.replace(/^0+/, '')
+                if (val > 1) store.form.diastole_trm = _removedZeros
+                // cekEws('tb', _removedZeros)
+              }" />
+            <app-input-simrs label="Nadi (x/mnt)" class="col-3" v-model="store.form.nadi_trm" :valid="{ number: true }"
+              :lazy-rules="false" @update:model-value="(val) => {
+                const _removedZeros = val.replace(/^0+/, '')
+                if (val > 1) store.form.nadi_trm = _removedZeros
+                // cekEws('tb', _removedZeros)
+              }" />
+            <app-input-simrs label="Suhu (°C)" class="col-3" v-model="store.form.suhu_trm" :valid="{ number: true }"
+              :lazy-rules="false" @update:model-value="(val) => {
+                const _removedZeros = val.replace(/^0+/, '')
+                if (val > 1) store.form.suhu_trm = _removedZeros
+                // cekEws('tb', _removedZeros)
+              }" />
+            <app-input-simrs label="RR (x/mnt)" class="col-3" v-model="store.form.rr_trm" :valid="{ number: true }"
+              :lazy-rules="false" @update:model-value="(val) => {
+                const _removedZeros = val.replace(/^0+/, '')
+                if (val > 1) store.form.rr_trm = _removedZeros
+                // cekEws('tb', _removedZeros)
+              }" />
+            <app-input-simrs label="SPO2 (%)" class="col-3" v-model="store.form.spo2_trm" :valid="{ number: true }"
+              :lazy-rules="false" @update:model-value="(val) => {
+                const _removedZeros = val.replace(/^0+/, '')
+                if (val > 1) store.form.spo2_trm = _removedZeros
+                // cekEws('tb', _removedZeros)
+              }" />
+          </div>
+        </div>
       </div>
+
+
+
+
       <q-separator class="q-my-md" />
-      <div class="row full-width justify-end q-pa-md">
-        <q-btn :loading="store.loadingOrder" :disable="store.loadingOrder" label="Simpan Mutasi Pasien" type="submit"
+      <div class="row full-width justify-between q-pa-md">
+        <q-btn :loading="store.loadingForm" :disable="store.loadingForm" label="Cancel" type="button" color="dark"
+          @click="store.initForm()" />
+        <q-btn v-if="!store.isEditted" :loading="store.loadingForm" :disable="store.loadingForm"
+          label="Simpan Mutasi Pasien" type="submit" color="primary" />
+        <q-btn v-else:loading="store.loadingForm" :disable="store.loadingForm" label="Update Dokumen" type="submit"
           color="primary" />
+
+
+
+
       </div>
+
+
+
       <div style="margin-bottom: 100px;"></div>
     </q-form>
   </div>
@@ -318,10 +385,20 @@ const asalRuangan = computed(() => {
 function onSubmit() {
   // console.log('onSubmit', props.store.form)
 
-  props.store.simpanMutasi(props.pasien)
-    .then(() => {
-      window.location.reload()
-    })
+  if (!props.store.isEditted) {
+    const yakin = confirm('apakah yakin pasien ini akan dimutasikan?')
+
+    if (!yakin) return
+    props.store.simpanMutasi(props.pasien)
+      .then(() => {
+        window.location.reload()
+      })
+
+  } else {
+    props.store.updateDokumen(props.pasien)
+
+  }
+
 }
 
 watchEffect(() => {

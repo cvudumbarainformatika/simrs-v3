@@ -1,7 +1,8 @@
 <template>
   <div class="q-pa-md fit scroll">
     <transition-group v-if="store.historys" name="list">
-      <q-card flat bordered v-for="(item, i) in filterredTable" :key="i" class="q-mb-xs cursor-pointer">
+      <q-card flat bordered v-for="(item, i) in filterredTable" :key="i" class="q-mb-xs cursor-pointer"
+        :class="{ 'bg-yellow-3': store.isEditted === item?.id }">
         <div class="full-width">
           <q-card-section>
             <q-item class="list-move q-pa-none">
@@ -36,24 +37,15 @@
                 <div class="absolute-top-right">
                   {{ jamTnpDetik(item?.rs2) }}
                 </div>
-                <!-- <div class="absolute-bottom-right">
-                  <q-badge color="orange-9" text-color="white">
-                    Belum Ada Dokumen Serah Terima
-                  </q-badge>
-                </div> -->
+                <div class="absolute-bottom-right">
+                  <q-btn flat round color="primary" icon="icon-mat-edit" @click="editData(item)"></q-btn>
+                </div>
               </q-item-section>
             </q-item>
           </q-card-section>
 
         </div>
 
-
-        <!-- <q-badge v-if="item?.user_jawab !== item?.kddokterkonsul" color="orange-9" text-color="white">
-          Belum Terverif Oleh Dokter Konsulan
-        </q-badge>
-        <q-badge v-if="item?.user_jawab === item?.kddokterkonsul" color="primary" text-color="white">
-          Terverifikasi
-        </q-badge> -->
       </q-card>
     </transition-group>
     <div style="margin-bottom: 100px;" />
@@ -88,5 +80,10 @@ const body = ref('lorem ipsum')
 const filterredTable = computed(() => {
   return props.store?.historys
 })
+
+function editData(item) {
+  // console.log('item', item)
+  props.store?.initForm(item)
+}
 
 </script>

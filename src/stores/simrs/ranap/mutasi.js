@@ -14,6 +14,7 @@ export const useMutasiRanapStore = defineStore('mutasi-ranap-store', {
     beds: [],
     alasans: [],
     historys: [],
+    loadingForm: false,
 
     form: {
       ruanganTujuan: null,
@@ -40,6 +41,7 @@ export const useMutasiRanapStore = defineStore('mutasi-ranap-store', {
       lainlain: null,
       kelengkapan: null
     },
+    isEditted: null,
     selectRuangan: null,
     terapi: {
       obat: null,
@@ -223,7 +225,7 @@ export const useMutasiRanapStore = defineStore('mutasi-ranap-store', {
 
 
     async simpanMutasi(pasien) {
-      // this.loading = true
+      this.loadingForm = true
       // this.error = null
 
       // console.log('pasien', pasien, this.ruanganAsal);
@@ -294,8 +296,7 @@ export const useMutasiRanapStore = defineStore('mutasi-ranap-store', {
 
 
         // konfirmasi
-        const yakin = confirm('apakah yakin pasien ini akan dimutasikan?')
-        if (!yakin) return
+
 
         // kirim ke server (pakai axios)
         // const response = await api.post('v1/simrs/ranap/ruangan/simpanmutasi', payload)
@@ -311,13 +312,85 @@ export const useMutasiRanapStore = defineStore('mutasi-ranap-store', {
               notifSuccess('Data berhasil disimpan')
               this.getHistory(pasien)
               this.initForm()
+              this.loadingForm = false
               resolve(resp)
             })
             .catch(err => {
               notifErrVue(err?.response?.data?.message)
+              this.loadingForm = false
               reject(err)
             })
         })
+
+
+
+      } catch (err) {
+        this.error = err
+        console.error(err)
+      } finally {
+        this.loadingForm = false
+      }
+    },
+    async updateDokumen(pasien) {
+      this.loadingForm = true
+      // this.error = null
+
+      // console.log('pasien', pasien, this.ruanganAsal);
+
+
+      try {
+
+        const dataId = this.historys?.find(el => el?.id === this.isEditted)?.serah_terima?.id
+        const payload = {
+
+          derajatPasien: this.form.derajatPasien,
+          skalaNyeri: this.form.skalaNyeri,
+          tensi: this.form.tensi,
+          sistole: this.form.sistole,
+          diastole: this.form.diastole,
+          nadi: this.form.nadi,
+          suhu: this.form.suhu,
+          rr: this.form.rr,
+          spo2: this.form.spo2,
+          terapis: this.form.terapis,
+          plann: this.form.plann,
+          ro: this.form.ro,
+          lab: this.form.lab,
+          ecg: this.form.ecg,
+          lainlain: this.form.lainlain,
+          kelengkapan: this.form.kelengkapan,
+
+          id: dataId,
+          sistole_trm: this.form.sistole_trm,
+          diastole_trm: this.form.diastole_trm,
+          rr_trm: this.form.rr_trm,
+          nadi_trm: this.form.nadi_trm,
+          spo2_trm: this.form.spo2_trm,
+          suhu_trm: this.form.suhu_trm
+
+        }
+
+
+        console.log('payload', payload);
+
+        return new Promise((resolve, reject) => {
+          api.post('v1/simrs/ranap/ruangan/updatedokumenmutasi', payload)
+            .then(resp => {
+              notifSuccess(resp?.data?.message)
+              this.getHistory(pasien)
+              this.initForm()
+              this.loadingForm = false
+              resolve(resp)
+            })
+            .catch(err => {
+              notifErrVue(err?.response?.data?.message)
+              this.loadingForm = false
+              reject(err)
+            })
+        })
+
+
+
 
 
 
@@ -329,30 +402,48 @@ export const useMutasiRanapStore = defineStore('mutasi-ranap-store', {
       }
     },
 
-    initForm() {
+    removeTerapi(index) {
+      this.form.terapis.splice(index, 1)
+    },
+
+    initForm(data) {
+      this.isEditted = data ? data?.id : null
+
       this.form = {
         kd_mutasi: null,
         titipan: this.ruanganAsal?.titipan ? true : false,
         ruanganTujuan: null,
         kamar: null,
         noBed: null,
-        derajatPasien: null,
-        skalaNyeri: null,
+        // ini form serah terima
+        derajatPasien: data?.serah_terima?.derajatPasien || null,
+        skalaNyeri: data?.serah_terima?.skalaNyeri || null,
         tensi: null,
-        sistole: null,
-        diastole: null,
-        nadi: null,
-        suhu: null,
-        rr: null,
-        spo2: null,
-        terapis: [],
-        plann: null,
-        ro: null,
-        lab: null,
-        ecg: null,
-        lainlain: null,
-        kelengkapan: null
+        sistole: data?.serah_terima?.sistole || null,
+        diastole: data?.serah_terima?.diastole || null,
+        nadi: data?.serah_terima?.nadi || null,
+        suhu: data?.serah_terima?.suhu || null,
+        rr: data?.serah_terima?.rr || null,
+        spo2: data?.serah_terima?.spo2 || null,
+        terapis: data?.serah_terima?.terapis || [],
+        plann: data?.serah_terima?.plann || null,
+        ro: data?.serah_terima?.ro || null,
+        lab: data?.serah_terima?.lab || null,
+        ecg: data?.serah_terima?.ecg || null,
+        lainlain: data?.serah_terima?.lainlain || null,
+        kelengkapan: data?.serah_terima?.kelengkapan || null,
+
+        sistole_trm: data?.serah_terima?.sistole_trm || null,
+        diastole_trm: data?.serah_terima?.diastole_trm || null,
+        nadi_trm: data?.serah_terima?.nadi_trm || null,
+        suhu_trm: data?.serah_terima?.suhu_trm || null,
+        rr_trm: data?.serah_terima?.rr_trm || null,
+        spo2_trm: data?.serah_terima?.spo2_trm || null
+
       }
+
+      // console.log('this.form', this.form);
+
     }
 
   }
