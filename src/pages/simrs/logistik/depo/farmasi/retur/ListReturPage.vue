@@ -32,7 +32,7 @@ const HeaderComp = defineAsyncComponent(() => import('./comp/HeaderComp.vue'))
 const BottomComp = defineAsyncComponent(() => import('./comp/BottomComp.vue'))
 const ListPermintaan = defineAsyncComponent(() => import('./comp/ListReturComp.vue'))
 onMounted(() => {
-  const depo = apps.depos.filter.filter(a => a.value === apps?.user?.kdruangansim)
+  const depo = apps.depos.filter(a => a.value === apps?.user?.kdruangansim)
   if (depo?.length) store.setParams('kddepo', apps?.user?.kdruangansim)
   else notifErrVue('Yang bisa Melakukan retur hanya Depo Rawat Inap, Depo IGD dan Depo Rawat Jalan.')
   store.getData()
