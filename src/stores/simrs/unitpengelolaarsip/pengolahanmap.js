@@ -15,6 +15,7 @@ export const useUnitPengelolaharsipMapStore = defineStore('unit-pengelolah-arsip
     loadingisimap: false,
     loadingrinci: false,
     loadinghapusrinci: {},
+    loadinghapusmap: {},
     meta: null,
     dialog: false,
     dialogrincian: false,
@@ -166,6 +167,20 @@ export const useUnitPengelolaharsipMapStore = defineStore('unit-pengelolah-arsip
           this.loadinghapusrinci[id] = false
         })
         .catch(() => { this.loadinghapusrinci[id] = false })
+    },
+    async hapusmap(id) {
+      console.log('hapus map', id)
+      this.loadinghapusmap[id] = true
+      await api.post('v1/simrs/unitpengelolaharsip/map/hapus-map', { id: id })
+        .then(resp => {
+          if (resp.status === 200) {
+            this.items = this.items.filter(item => item.id !== id)
+            notifSuccess(resp)
+            this.loadinghapusmap[id] = false
+          }
+          this.loadinghapusmap[id] = false
+        })
+        .catch(() => { this.loadinghapusmap[id] = false })
     }
   }
 })

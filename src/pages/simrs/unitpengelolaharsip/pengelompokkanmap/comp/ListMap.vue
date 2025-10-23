@@ -15,7 +15,7 @@
               </q-btn>
               <q-btn flat round dense size="sm"
                 style="background: rgba(0,0,0,0.15); top: 0; right: 0; margin: 2px; z-index: 10;" class="absolute"
-                @click="hapusmap(item)">
+                @click.stop="hapusmap(item.id)" :loading="store.loadinghapusmap[item.id]">
                 <q-icon name="icon-mat-delete" size="18px" color="red" />
               </q-btn>
               <q-img :src="folderIcon" style="width:120px; height:130px" fit="contain" no-native-menu />
@@ -45,7 +45,9 @@ import { computed } from 'vue'
 import folderIcon from 'src/assets/images/folderx.png'
 import { useUnitPengelolaharsipMapStore } from 'src/stores/simrs/unitpengelolaarsip/pengolahanmap'
 import DialogFormPage from './DialogFormPage.vue'
+import { useQuasar } from 'quasar'
 
+const q = useQuasar()
 const store = useUnitPengelolaharsipMapStore()
 const props = defineProps({
   items: { type: Array, default: () => [] },
@@ -89,6 +91,22 @@ function dialogrincian(val) {
   store.formisi.idmap = val
   store.getrincianmap(val)
 }
+
+function hapusmap(id) {
+  q.dialog({
+    title: 'Peringatan',
+    message: 'Apakah Data ini akan dihapus?',
+    cancel: true,
+    persistent: true
+  }).onOk(() => {
+    store.hapusmap(id)
+  }).onCancel(() => {
+    console.log('Cancel')
+  }).onDismiss(() => {
+    // console.log('I am triggered on both OK and Cancel')
+  })
+}
+
 </script>
 
 <style scoped>
