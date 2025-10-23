@@ -55,14 +55,17 @@ export const listdataNPKlangsungStore = defineStore('list_data_npklangsung', {
       return new Promise((resolve, reject) => {
         api.get('/v1/transaksi/npkls/listdata', params)
           .then((resp) => {
+            this.loading = false
             if (resp.status === 200) {
-              console.log('data Nota Dinas', resp.data)
+              console.log('data Nota Dinas', resp)
               this.listdata = resp.data
-              this.rincianNotadinas()
+              if (Array.isArray(this.listdata) && this.listdata.length) {
+                this.rincianNotadinas()
+              }
 
-              this.loading = false
               resolve(resp.data)
-
+            } else {
+              reject(resp)
             }
           })
           .catch((err) => {
@@ -73,6 +76,7 @@ export const listdataNPKlangsungStore = defineStore('list_data_npklangsung', {
     },
     rincianNotadinas() {
       if (this.listdata?.length) {
+        this.loading = true
         const sas = []
         for (let i = 0; i < this.listdata?.length; i++) {
           const arr = this.listdata[i]
@@ -96,7 +100,8 @@ export const listdataNPKlangsungStore = defineStore('list_data_npklangsung', {
           sas.push(head)
         }
         this.datanotadinas = sas
-
+        this.loading = false
+        // console.log('this.datanotadinas', this.datanotadinas)
       }
     },
     kunciData(row) {

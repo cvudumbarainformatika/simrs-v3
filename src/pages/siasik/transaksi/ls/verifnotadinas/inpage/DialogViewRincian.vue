@@ -32,7 +32,7 @@
                 <!-- <q-badge color="teal">
                   {{ props.row?.kegiatanblud }}
                 </q-badge> -->
-                <div>{{ props.row?.keterangan }}</div>
+                <div>{{ props.row?.kegiatanblud }}</div>
               </q-td>
               <q-td key="nilai" :props="props">
                 <q-badge size="18px" color="yellow" class="text-bold text-dark">

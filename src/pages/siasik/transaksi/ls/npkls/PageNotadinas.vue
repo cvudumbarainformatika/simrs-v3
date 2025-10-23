@@ -70,7 +70,7 @@ const subtitle = computed(() => {
   // //   return 'List Kunjungan dari m-JKN'
   // }
   else {
-    return 'Form Input Nota Pencairan Kas Langsung'
+    return 'Form Input Nota Pergeseran Kas Langsung'
   }
 })
 
