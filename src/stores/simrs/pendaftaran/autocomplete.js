@@ -24,7 +24,9 @@ export const usePendaftaranAutocompleteStore = defineStore('pendaftaranAutocompl
     jenisKunjungans: [],
     prosedurs: [],
     assesmens: [],
-    penunjangs: []
+    penunjangs: [],
+    // homde care
+    homeCareAdmins: []
   }),
   persist: true,
   actions: {
@@ -52,6 +54,10 @@ export const usePendaftaranAutocompleteStore = defineStore('pendaftaranAutocompl
     },
     setPenunjang (val) {
       this.penunjangs = val
+    },
+    // home care
+    setHomeCareAdmins (val) {
+      this.homeCareAdmins = val
     },
     // pasien
     setBahasa (val) {

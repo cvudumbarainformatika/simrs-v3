@@ -1,28 +1,22 @@
-import { defineStore } from 'pinia'
+import { acceptHMRUpdate, defineStore } from 'pinia'
 import { date } from 'quasar'
 import { api } from 'src/boot/axios'
 import { usePendaftaranAutocompleteStore } from '../../autocomplete'
 
+
 export const useRegistrasiPasienHomeCareStore = defineStore('registrasi_pasien_home_care', {
   state: () => ({
-    autocompleteStore: usePendaftaranAutocompleteStore(),
+
     loading: false,
     form: {
-      tglmasuk: date.formatDate(Date.now(), 'YYYY-MM-DD HH:mm:ss')
+      tglmasuk: date.formatDate(Date.now(), 'YYYY-MM-DD HH:mm:ss'),
+      sistembayar: 'UMUM',
+      kode_poli: 'PEN014'
     },
     display: {},
-    paramKarcis: {},
-    paramDpjp: {
-      tglsep: date.formatDate(Date.now(), 'YYYY-MM-DD'),
-      jenis_pelayanan: 2
-    },
-    asalrujukans: [],
-    sistembayars1: [],
-    sistembayars: [],
-    polis: [],
-    kasrcispoli: null,
-    jenisKarcises: [],
-    dpjps: []
+    homeCareAdminLayanans: [],
+    dpjps: [],
+    polis: []
   }),
   actions: {
     setForm (key, val) {
@@ -30,10 +24,11 @@ export const useRegistrasiPasienHomeCareStore = defineStore('registrasi_pasien_h
     },
     clearForm () {
       this.form = {
-        tglmasuk: date.formatDate(Date.now(), 'YYYY-MM-DD HH:mm:ss')
+        tglmasuk: date.formatDate(Date.now(), 'YYYY-MM-DD HH:mm:ss'),
+        sistembayar: 'UMUM',
+        kode_poli: 'PEN014'
       }
       this.display = {}
-      this.paramKarcis = {}
       this.paramDpjp = {
         tglsep: date.formatDate(Date.now(), 'YYYY-MM-DD'),
         jenis_pelayanan: 2
@@ -41,159 +36,75 @@ export const useRegistrasiPasienHomeCareStore = defineStore('registrasi_pasien_h
     },
     // initial data
     getInitialData () {
-      // this.getAsalRujukan()
-      // this.getSistemBayar()
-      // this.getPoli()
-      // this.getJenisKarcis()
+      const autocompleteStore = usePendaftaranAutocompleteStore()
+      if (autocompleteStore.homeCareAdmins?.length) {
+        this.homeCareAdminLayanans = autocompleteStore.homeCareAdmins
+        console.log('log', this.homeCareAdminLayanans)
 
-      if (this.autocompleteStore.asalrujukans?.length) {
-        this.asalrujukans = this.autocompleteStore.asalrujukans
       }
       else {
-        this.getAsalRujukan()
+        this.getBiayaAdminHomeCare()
       }
+      this.getDokterDpjp()
 
-      if (this.autocompleteStore.sistembayars1?.length) {
-        this.sistembayars1 = this.autocompleteStore.sistembayars1
-      }
-      else {
-        this.getSistemBayar()
-      }
-
-      if (this.autocompleteStore.polis?.length) {
-        this.polis = this.autocompleteStore.polis
-      }
-      else {
-        this.getPoli()
-      }
-
-      if (this.autocompleteStore.jenisKarcises?.length) {
-        this.jenisKarcises = this.autocompleteStore.jenisKarcises
-      }
-      else {
-        this.getJenisKarcis()
-      }
     },
 
     // api related function
     async getDokterDpjp () {
       this.loading = true
-      await api.post('v1/simrs/bridgingbpjs/pendaftaran/dpjpbpjs', this.paramDpjp)
+      await api.get('v1/simrs/pendaftaran/homecare/dokter',)
         .then(resp => {
           this.loading = false
-          if (resp.data.result.list?.length) {
-            const data = resp.data.result.list
-            data.forEach(anu => {
-              anu.dpjp = anu.kode
-            })
-            this.dpjps = data
-            console.log('result ', data)
-          }
-          console.log('dokter DPJp ', resp.data)
+          console.log('dokter', resp?.data)
+          this.dpjps = resp?.data
           return new Promise(resolve => { resolve(resp.data) })
         })
         .catch(() => {
           this.loading = false
         })
     },
-    async getKarcisPoli () {
+    async getBiayaAdminHomeCare () {
       this.loading = true
-      const param = { params: this.paramKarcis }
-      await api.get('v1/simrs/pendaftaran/getkarcispoli', param)
+      const autocompleteStore = usePendaftaranAutocompleteStore()
+      await api.get('v1/simrs/pendaftaran/homecare/admin-home-care')
         .then(resp => {
           this.loading = false
-          this.kasrcispoli = resp.data
-          const temp = Object.keys(resp.data)
-          if (temp?.length) {
-            temp.forEach(key => {
-              this.setForm(key, resp.data[key])
-            })
-          }
-          // console.log('jenis karcis ', resp.data)
+          this.homeCareAdminLayanans = resp.data
+          autocompleteStore.setHomeCareAdmins(resp.data)
+          console.log('Admin homecare ', this.homeCareAdminLayanans)
           return new Promise(resolve => { resolve(resp.data) })
         })
         .catch(() => {
           this.loading = false
         })
     },
-    async getJenisKarcis () {
-      this.loading = true
-      await api.get('v1/simrs/master/jeniskartukarcis')
-        .then(resp => {
-          this.loading = false
-          this.jenisKarcises = resp.data
-          this.autocompleteStore.setJenisKarcis(resp.data)
-        })
-        .catch(() => {
-          this.loading = false
-        })
-    },
-    async getPoli () {
-      this.loading = true
-      await api.get('v1/simrs/master/listmasterpoli')
-        .then(resp => {
-          this.loading = false
-          this.polis = resp.data
-          this.autocompleteStore.setPoli(resp.data)
-        })
-        .catch(() => {
-          this.loading = false
-        })
-    },
-    async getSistemBayar () {
-      this.loading = true
-      await api.get('v1/simrs/master/sistembayar')
-        .then(resp => {
-          this.loading = false
-          this.sistembayars1 = resp.data
-          this.autocompleteStore.setSistemBayar(resp.data)
-          console.log('sistem bayar', resp.data)
-        })
-        .catch(() => {
-          this.loading = false
-        })
-    },
-    async getSistemBayar2 (val) {
-      const param = { params: { sistembayar1: val } }
-      this.loading = true
-      await api.get('v1/simrs/master/sistembayar2', param)
-        .then(resp => {
-          this.loading = false
-          this.sistembayars = resp.data
-          console.log('sistem bayar', resp.data)
-          if (this.sistembayars?.length === 1) {
-            this.setForm('kodesistembayar', this.sistembayars[0].rs2)
-            this.display.rs2 = this.sistembayars[0].rs2
-          }
-        })
-        .catch(() => {
-          this.loading = false
-        })
-    },
-    async getAsalRujukan () {
-      this.loading = true
-      await api.get('v1/simrs/master/listasalrujukan')
-        .then(resp => {
-          this.loading = false
-          this.asalrujukans = resp.data
-          this.autocompleteStore.setAsalRujukan(resp.data)
-          console.log('asal rujukan', resp.data)
-        })
-        .catch(() => {
-          this.loading = false
-        })
+    pilihAdminLayanan (val) {
+      const layanan = this.homeCareAdminLayanans.find(x => x.kode == val)
+      this.setForm('nama_layanan', layanan?.nama)
+      this.setForm('kode_layanan', layanan?.kode)
+      this.setForm('administrasi', layanan?.jumlah)
+      this.setForm('js', layanan?.js)
+      this.setForm('jp', layanan?.jp)
+      console.log('pilih', val, layanan, this.form)
+
     },
     simpanRegistrasi () {
-      return new Promise(resolve => {
+      return new Promise((resolve, reject) => {
         this.loading = true
         api.post('v1/simrs/pendaftaran/homecare/simpan-daftar', this.form)
           .then(resp => {
             console.log('simpan pendaftaran', resp)
             this.loading = false
-            resolve(resp.data)
+            resolve(resp?.data)
           })
-          .catch(() => { this.loading = false })
+          .catch((err) => {
+            this.loading = false
+            reject(err)
+          })
       })
     }
   }
 })
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useRegistrasiPasienHomeCareStore, import.meta.hot))
+}

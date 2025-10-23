@@ -12,62 +12,26 @@
           <!-- kiri -->
           <div class="col-6">
             <!-- no Registrasi -->
-            <div class="row q-col-gutter-sm items-center q-mb-xs">
+            <!-- <div class="row q-col-gutter-sm items-center q-mb-xs">
               <div class="col-4">
                 Nomor Registrasi
               </div>
               <div class="col-8">
                 : {{ store.form.noreg }}
               </div>
-            </div>
-            <!-- asal rujukan -->
+            </div> -->
+            <!-- Jenis Admin Layanan -->
             <div class="row q-col-gutter-sm items-center q-mb-xs">
               <div class="col-12">
-                <app-autocomplete ref="refAsalRujukan" v-model="store.form.asalrujukan" label="Asal Rujukan"
-                  autocomplete="asalrujukan" option-value="kode" option-label="asalrujukan" outlined
-                  :source="store.asalrujukans" :loading="store.loading" :rules="[val => (!!val) || 'Harap diisi',]" />
-              </div>
-            </div>
-            <!-- poli tujuan -->
-            <div class="row q-col-gutter-md items-center q-mb-xs">
-              <div class="col-12">
-                <app-autocomplete ref="refPoliTujuan" v-model="store.form.kodepoli" label="Poli Tujuan"
-                  autocomplete="polirs" option-value="kodepoli" option-label="polirs" outlined :source="store.polis"
-                  :loading="store.loading" :rules="[val => (!!val) || 'Harap diisi',]" @selected="setPoliTujuan" />
-              </div>
-            </div>
-            <!-- kartu / karcis -->
-            <div class="row q-col-gutter-sm items-center q-mb-xs">
-              <div class="col-6">
-                <app-autocomplete ref="refFlagKartu" v-model="store.form.jeniskarcis" label="Flag Kartu"
-                  autocomplete="jeniskarcis" option-value="jeniskarcis" option-label="jeniskarcis" outlined
-                  :disable="!store.paramKarcis.kd_poli" :source="store.jenisKarcises" :loading="store.loading"
-                  :rules="[val => (!!val) || 'Harap diisi',]" @selected="setFlagKarcis" />
-              </div>
-              <div class="col-6">
-                <app-input v-model="store.display.hargakarcis" label="Karcis" outlined disable />
+                <app-autocomplete ref="refJenisAdminLayanan" v-model="store.form.kode_layanan" label="Admin Layanan"
+                  autocomplete="nama" option-value="kode" option-label="nama" outlined
+                  :source="store.homeCareAdminLayanans" :loading="store.loading"
+                  :rules="[val => (!!val) || 'Harap diisi',]" @selected="(val) => store.pilihAdminLayanan(val)" />
               </div>
             </div>
           </div>
           <!-- kanan -->
           <div class="col-6">
-            <!-- sistem bayar -->
-            <div class="row q-col-gutter-md items-center q-mb-xs">
-              <div :class="store.display.kode ? 'col-6' : 'col-12'">
-                <app-autocomplete ref="refSistemBayar" v-model="store.display.kode" label="Sistem bayar"
-                  autocomplete="groupsistembayar" option-value="kode" option-label="groupsistembayar" outlined
-                  :source="store.sistembayars1" :loading="store.loading" :rules="[val => (!!val) || 'Harap diisi',]"
-                  @selected="setSistembayar1" />
-              </div>
-              <!-- </div> -->
-              <!-- sistem bayar 2-->
-              <!-- <div class="row q-col-gutter-md items-center q-mb-xs"> -->
-              <div v-if="store.display.kode" class="col-6">
-                <app-autocomplete ref="refSistemBayar" v-model="store.display.rs2" label="Sistem bayar"
-                  autocomplete="rs2" option-value="rs2" option-label="rs2" outlined :source="store.sistembayars"
-                  :loading="store.loading" :rules="[val => (!!val) || 'Harap diisi',]" @selected="setSistembayar" />
-              </div>
-            </div>
             <!-- DPJP -->
             <div class="row q-col-gutter-sm items-center q-mb-xs">
               <div class="col-12">
@@ -84,55 +48,28 @@
 </template>
 <script setup>
 import { ref } from 'vue'
-import { findWithAttr, notifErrVue } from 'src/modules/utils'
+import { notifErrVue } from 'src/modules/utils'
 import { useRegistrasiPasienHomeCareStore } from 'src/stores/simrs/pendaftaran/form/homecare/registrasi'
 
 const store = useRegistrasiPasienHomeCareStore()
 store.getInitialData()
-function setSistembayar1 (val) {
-  // store.setForm('sistembayar1', val)
-  if (store.form.kodesistembayar) { delete store.form.kodesistembayar }
-  if (store.display.rs2) { delete store.display.rs2 }
-
-  store.setForm('kodesistembayar1', val)
-  store.getSistemBayar2(val)
-  console.log('form', store.form)
-}
-function setSistembayar (val) {
-  store.setForm('sistembayar', val)
-  const index = findWithAttr(store.sistembayars, 'rs2', val)
-  console.log('sistem bayar dua ', store.sistembayars[index])
-  if (index >= 0) {
-    store.setForm('kodesistembayar', store.sistembayars[index].rs1)
-  }
-  console.log('form', store.form)
-}
 // emits
 const emits = defineEmits(['bisaSimpan'])
 // refs
-const refAsalRujukan = ref(null)
-const refFlagKartu = ref(null)
+const refJenisAdminLayanan = ref(null)
 const refDPJP = ref(null)
-const refPoliTujuan = ref(null)
-const refSistemBayar = ref(null)
 // reset validasi
 function resetValidation () {
-  refAsalRujukan.value.$refs.refAuto.resetValidation()
-  refFlagKartu.value.$refs.refAuto.resetValidation()
+  refJenisAdminLayanan.value.$refs.refAuto.resetValidation()
   refDPJP.value.$refs.refAuto.resetValidation()
-  refPoliTujuan.value.$refs.refAuto.resetValidation()
-  refSistemBayar.value.$refs.refAuto.resetValidation()
 }
 // validasi
 let valid = false
 function validasi () {
-  const asalRujukan = refAsalRujukan.value.$refs.refAuto.validate()
-  const flagKartu = refFlagKartu.value.$refs.refAuto.validate()
+  const asalRujukan = refJenisAdminLayanan.value.$refs.refAuto.validate()
   const dpjp = refDPJP.value.$refs.refAuto.validate()
   // const dpjp = true
-  const poliTujuan = refPoliTujuan.value.$refs.refAuto.validate()
-  const sistemBayar = refSistemBayar.value.$refs.refAuto.validate()
-  if (asalRujukan && flagKartu && dpjp && poliTujuan && sistemBayar) { valid = true }
+  if (asalRujukan && dpjp) { valid = true }
   else { valid = false }
 }
 // set
@@ -148,41 +85,7 @@ function set () {
     return { form: store.form, save: false }
   }
 }
-// set kode Poli
-function setPoliTujuan (val) {
-  store.paramKarcis.kd_poli = val
-  const index = findWithAttr(store.polis, 'kodepoli', val)
-  setSistembayar1('2')
-  store.display.kode = '2'
-  // store.paramDpjp.kdmappolibpjs = store.polis[index].jenispoli
-  store.form.dpjp = ''
-  refDPJP.value.$refs.refAuto.resetValidation()
-  setFlagKarcis('Lama')
-  store.form.jeniskarcis = 'Lama'
-  // if (store.paramKarcis.flag) {
-  //   if (store.paramKarcis.flag !== '') {
-  //     store.getKarcisPoli().then(() => {
-  //       store.display.hargakarcis = store.kasrcispoli.tarif
-  //       store.form.karcis = store.kasrcispoli.tarif
-  //     })
-  //   }
-  // }
-  console.log(val)
-  store.paramDpjp.kdmappolbpjs = store.polis[index].kodemapingbpjs
-  store.getDokterDpjp()
-}
-// set flag karcis
-function setFlagKarcis (val) {
-  // const index = findWithAttr(store.jenisKarcises, 'jeniskarcis', val)
-  // const flag = store.jenisKarcises[index]
-  // store.display.hargakarcis = flag.harga
-  store.paramKarcis.flag = val
-  console.log(store.paramKarcis)
-  store.getKarcisPoli().then(() => {
-    store.display.hargakarcis = store?.kasrcispoli?.tarif ?? 0
-    store.form.karcis = store?.kasrcispoli?.tarif ?? 0
-  })
-}
+
 // expose function
-defineExpose({ resetValidation, set, setPoliTujuan })
+defineExpose({ resetValidation, set })
 </script>
