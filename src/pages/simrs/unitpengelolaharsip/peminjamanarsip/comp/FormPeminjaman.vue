@@ -29,7 +29,7 @@
                 store.params.bidangbagian = val.kode
               }" />
           </div>
-          <div class="col-12 col-md-1 flex ">
+          <div class="col-2 ">
             <q-btn color="primary" icon="icon-mat-search" label="Cari Arsip" unelevated type="submit"
               :loading="store.loading" />
           </div>
@@ -54,6 +54,7 @@ import { onMounted, ref } from "vue";
 import ListArsip from "../../arsip/comp/ListArsip.vue";
 import DialogFormPeminjaman from "./DialogFormPeminjaman.vue";
 import pegawai from "src/router/pegawai";
+import { notifErr, notifErrVue } from "src/modules/utils";
 const store = useUnitPengelolaharsippeminjamanStore()
 // const storeorganisasi = useUnitPengelolaharsippeminjamanStore()
 // const storeklaisifikasi = useArsipMasterKelasifikasiStore()
@@ -75,7 +76,12 @@ const props = defineProps({
 })
 
 function onSearch() {
-  store.getCariData()
+  if (store.params.bidangbagian === '' || store.params.bidangbagian === null) {
+    notifErrVue('Unit Pengelolah harus diisi')
+  } else {
+    store.getCariData()
+  }
+
 }
 
 const options = ref(props.kelasifikasi)
