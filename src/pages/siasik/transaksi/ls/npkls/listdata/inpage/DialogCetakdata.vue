@@ -105,7 +105,7 @@
                         Pihak Ketiga
                       </th>
                       <th>
-                        Keterangan
+                        Kegiatan BLUD
                       </th>
                       <th>
                         Nilai
@@ -171,21 +171,21 @@
               </q-card-section>
 
               <div class="row justify-between full-width q-pt-lg">
-                <div class="col flex-start content-center items-center">
-                  <!-- <div class="q-py-xs items-center">
-                Probolinggo {{ store.display.sekarang }}
-              </div>
-              <div class="text-bold q-py-xs q-pt-sm">
-                Pejabat Teknis Kegiatan
-              </div>
-              <div style="padding-bottom: 40px" />
-              <div class="underline text-bold q-py-xs">
-                {{ store.cetaknotadinas.namapptk }}
-                <div class="garis-bawah" style="text-decoration-line: underline;" />
-              </div>
-              <div>
-                NIP. {{ store.cetaknotadinas.kodepptk }}
-              </div> -->
+                <div class="col flex-start content-center text-center q-pb-md">
+                  <div class="q-py-xs items-center">
+                    Mengetahui,
+                  </div>
+                  <div class="text-bold q-py-xs q-pt-sm">
+                    Pimpinan BLUD RSUD Dr. Mohamad Saleh
+                  </div>
+                  <div style="padding-bottom: 40px" />
+                  <div class="underline text-bold q-py-xs">
+                    {{ store.datattd?.direktur?.nama }}
+                    <div class="garis-bawah" style="text-decoration-line: underline;" />
+                  </div>
+                  <div>
+                    NIP. {{ store.datattd?.direktur?.nip }}
+                  </div>
                 </div>
                 <div class="col flex-end content-center text-center q-pb-md">
                   <div class="items-center">
@@ -196,11 +196,11 @@
                   </div>
                   <div style="padding-bottom: 40px" />
                   <div class="underline text-bold q-py-xs">
-                    {{ store.cetaknotadinas.namapptk }}
+                    {{ store.datattd?.bendpengeluaran?.nama }}
                     <div class="garis-bawah" style="text-decoration-line: underline;" />
                   </div>
                   <div>
-                    NIP. {{ store.cetaknotadinas.kodepptk }}
+                    NIP. {{ store.datattd?.bendpengeluaran?.nip }}
                   </div>
                 </div>
               </div>
@@ -240,6 +240,7 @@ const store = listdataNPKlangsungStore()
 onMounted(() => {
   // pegawai.getDataTable()
   // store.listData()
+  console.log('ttd', store.datattd)
 })
 
 const printed = ref(false)
