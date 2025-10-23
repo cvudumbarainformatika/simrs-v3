@@ -11,7 +11,7 @@
       <div class="col-grow">
         <q-tab-panels v-model="store.tab" animated class="full-height">
           <q-tab-panel v-for="(panel, n) in store.tabs" :key="n" :name="panel.page" class="full-height q-pa-none">
-            <component :is="cekPanel()" :pegawai="store.itemspegawai" :organisasi="storeorganisasi.itemsorganisasi"
+            <component :is="cekPanel()" :organisasi="storeorganisasi.itemsorganisasi"
               :kelasifikasi="storeklaisifikasi.items" />
           </q-tab-panel>
         </q-tab-panels>
@@ -40,7 +40,7 @@ const cekPanel = () => {
 }
 
 onMounted(() => {
-  store.getdatapegawai()
+  // store.getdatapegawai()
   storeorganisasi.getDataorganisasi()
   storeklaisifikasi.getMkelasifikasi()
 })

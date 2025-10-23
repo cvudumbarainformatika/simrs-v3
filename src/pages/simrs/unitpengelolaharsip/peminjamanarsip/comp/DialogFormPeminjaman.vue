@@ -1,5 +1,5 @@
 <template>
-  <q-dialog v-model="store.dialog" :backdrop-filter="backdropFilter" transition-show="flip-down"
+  <q-dialog v-model="store.dialog" persistent :backdrop-filter="backdropFilter" transition-show="flip-down"
     transition-hide="flip-up">
     <q-card>
       <q-form ref="refForm" @submit="onSubmit">
@@ -15,8 +15,22 @@
             <div class="row">
               <div class="col-12">
                 <q-select v-model="store.form.peminjam" label="Nama Peminjam" outlined dense
-                  :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" :options="options" option-label="nama"
-                  option-value="nip" emit-value map-options use-input @filter="filterFn" />
+                  :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" :options="store.itemspegawai"
+                  option-label="nama" option-value="nik" emit-value map-options use-input
+                  :loading="store.loadingpegawai" @input-value="store.caripegawai">
+                  <template #append>
+                    <q-icon v-if="store.form.peminjam" name="icon-mat-cancel" class="cursor-pointer"
+                      @click.stop.prevent="store.form.peminjam = null" />
+                  </template>
+
+                  <template v-slot:no-option>
+                    <q-item>
+                      <q-item-section class="text-grey">
+                        No results
+                      </q-item-section>
+                    </q-item>
+                  </template>
+                </q-select>
               </div>
             </div>
             <!-- <div class="row">
@@ -61,7 +75,8 @@
         <q-separator />
 
         <q-card-actions align="right">
-          <q-btn color="red" label="Simpan" tooltip="Simpan Data" type="submit" tip :loading="store.loadingForm" />
+          <q-btn v-close-popup color="dark" label="Cancel" @click="store.initreset()" />
+          <q-btn color="red" label="Simpan" tooltip="Save" type="submit" tip :loading="store.loadingForm" />
         </q-card-actions>
       </q-form>
     </q-card>
