@@ -82,24 +82,13 @@
                         <q-item-section>Lihat Rincian</q-item-section>
                       </q-item>
                       <q-item clickable @click="editdata(props?.row)">
-                        <q-item-section :auth="user">Edit Notadinas</q-item-section>
+                        <q-item-section :auth="user">Edit NPK-LS</q-item-section>
                       </q-item>
                       <template v-if="props?.row.kunci === '1'">
                         <q-item clickable v-close-popup @click="viewCetakData(props?.row)">
-                          <q-item-section>Cetak Nota Dinas</q-item-section>
+                          <q-item-section>Cetak NPK-LS</q-item-section>
                         </q-item>
-                        <q-item clickable v-close-popup @click="LapRealisasi(props?.row)">
-                          <q-item-section>Laporan Realisasi</q-item-section>
-                        </q-item>
-                        <q-item clickable v-close-popup @click="viewLembarverif(props?.row)">
-                          <q-item-section>Cetak Lembar Verif</q-item-section>
-                        </q-item>
-                        <q-item clickable v-close-popup @click="viewCetakSptj(props?.row)">
-                          <q-item-section>Cetak SPTJ</q-item-section>
-                        </q-item>
-                        <q-item clickable v-close-popup @click="viewCetakVerifikasi(props?.row)">
-                          <q-item-section>Cetak Verifikasi</q-item-section>
-                        </q-item>
+
                       </template>
                     </q-list>
                   </q-menu>
@@ -112,10 +101,6 @@
     </q-table>
     <app-dialog-rincian v-model="store.openDialogRinci" :nota="nota" />
     <print-data v-model="store.dialogCetak" :cetakdata="cetakdata" />
-    <cetak-sptj v-model="store.dialogCetakSptj" :cetaksptj="cetaksptj" />
-    <cetak-verif v-model="store.dialogCetakPernyataan" :cetakverif="cetakverif" />
-    <lembar-verif v-model="store.dialogLembarverif" :lembarverif="lembarverif" />
-    <laporan-pengajuan v-model="store.dialogLaporan" :cetaklaporan="cetaklaporan" />
   </div>
 </template>
 <script setup>
@@ -204,8 +189,8 @@ const nota = ref(null)
 function viewRincian(row) {
   store.openDialogRinci = true
   nota.value = row.rincians
-  // console.log('nota', nota.value)
   store.listrinci = nota.value
+  console.log('nota', store.listrinci)
 }
 
 const clearSearch = () => {
@@ -215,7 +200,7 @@ const clearSearch = () => {
 
 const cetakdata = ref([])
 function viewCetakData(row) {
-  // console.log('row cetak', row)
+  console.log('row cetak', row)
   store.dialogCetak = true
   cetakdata.value = row
   store.cetaknotadinas = cetakdata.value

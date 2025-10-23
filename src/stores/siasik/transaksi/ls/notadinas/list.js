@@ -73,6 +73,7 @@ export const listdataNotadinasStore = defineStore('list_data_notadinas', {
     },
     rincianNotadinas() {
       if (this.listdata?.length) {
+        this.loading = true
         const sas = []
         for (let i = 0; i < this.listdata?.length; i++) {
           const arr = this.listdata[i]
@@ -102,7 +103,7 @@ export const listdataNotadinasStore = defineStore('list_data_notadinas', {
           sas.push(head)
         }
         this.datanotadinas = sas
-
+        this.loading = false
       }
     },
     kunciData(row) {
@@ -201,9 +202,7 @@ export const listdataNotadinasStore = defineStore('list_data_notadinas', {
       return new Promise((resolve, reject) => {
         api.post('/v1/transaksi/notadinas/listverif', params)
           .then((resp) => {
-            console.log('RESP verif', resp)
             if (resp.status === 200) {
-              console.log('data LIST verif', resp)
 
               this.listdataverif = resp.data
 

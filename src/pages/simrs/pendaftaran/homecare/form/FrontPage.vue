@@ -53,14 +53,14 @@ function simpanData (val) {
     }
     console.log('form registrasi ', register.form)
     register.simpanRegistrasi().then(resp => {
-      console.log(resp)
-      const antrian = resp.antrian.data
-      const nomor = antrian ? antrian.nomor : '-'
-      const poli = antrian ? antrian.nama_layanan : '-'
-      const norm = antrian ? antrian.id_member : '-'
-      console.log('Antrian ', antrian)
-      const routeData = router.resolve({ path: '/print/antrian', query: { nomor, poli, norm } })
-      window.open(routeData.href, '_blank')
+      // console.log(resp)
+      // const antrian = resp?.antrian?.data ?? ''
+      // const nomor = antrian ? antrian.nomor : '-'
+      // const poli = antrian ? antrian.nama_layanan : '-'
+      // const norm = antrian ? antrian.id_member : '-'
+      // console.log('Antrian ', antrian)
+      // const routeData = router.resolve({ path: '/print/antrian', query: { nomor, poli, norm } })
+      // window.open(routeData.href, '_blank')
       pasien.clearForm()
       register.clearForm()
       // dialogCetak()

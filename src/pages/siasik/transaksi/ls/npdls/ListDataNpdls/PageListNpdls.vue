@@ -24,5 +24,6 @@ const store = listDataNpdlsStore()
 
 onBeforeMount(() => {
   store.listdatanpd()
+  store.ttd()
 })
 </script>

@@ -50,10 +50,10 @@
 <script setup>
 
 import { formattanpaRp } from 'src/modules/formatter'
-import { listdataNotadinasStore } from 'src/stores/siasik/transaksi/ls/notadinas/list'
+import { listdataNPKlangsungStore } from 'src/stores/siasik/transaksi/ls/npkls/list'
 import { ref } from 'vue'
 
-const store = listdataNotadinasStore()
+const store = listdataNPKlangsungStore()
 
 function hiddenDialog() {
   console.log('hidden dialog')

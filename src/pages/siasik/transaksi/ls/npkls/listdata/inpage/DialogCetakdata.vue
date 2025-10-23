@@ -4,7 +4,7 @@
       <q-layout view="lHh Lpr lFf" container class="shadow-2 rounded-borders">
         <q-header elevated>
           <q-bar class="bg-black text-white">
-            <div>Cetak Nota Dinas</div>
+            <div>Cetak NPK-LS</div>
             <q-space />
 
             <q-btn dense flat icon="icon-mat-close" v-close-popup>
@@ -44,8 +44,9 @@
               </div>
               <div class="col-12 q-pt-md">
                 <div class="row justify-center text-weight-bold q-py-xs">
-                  NOTA DINAS BELANJA
+                  NOTA PERGESERAN KAS LANGSUNG (NPK-LS)
                 </div>
+                <div class="row justify-center">Nomor {{ store.cetaknotadinas.nonpk }}</div>
               </div>
 
               <q-card-section class="q-pa-sm full-width q-pt-md">
@@ -59,12 +60,6 @@
                         Dari
                       </div>
                       <div class="q-py-xs">
-                        Bidang/Bagian
-                      </div>
-                      <div class="q-py-xs">
-                        Nomor
-                      </div>
-                      <div class="q-py-xs">
                         Tanggal
                       </div>
                       <div class="q-py-xs">
@@ -73,31 +68,25 @@
                     </div>
                     <div class="col full-width">
                       <div class="q-py-xs">
-                        : Pimpinan BLUD RSUD Dokter Mohamad Saleh
+                        : Pimpinan BLUD selaku Pengguna Anggaran RSUD Dokter Mohamad Saleh
                       </div>
                       <div class="q-py-xs">
-                        : Pejabat Teknis Kegiatan {{ store.cetaknotadinas.kegiatan }}
+                        : Bendahara Pengeluaran BLUD RSUD Dokter Mohamad Saleh
                       </div>
                       <div class="q-py-xs">
-                        : {{ store.cetaknotadinas.bidang }}
+                        : {{ store.cetaknotadinas.tglnpk }}
                       </div>
                       <div class="q-py-xs">
-                        : {{ store.cetaknotadinas.nonotadinas }}
-                      </div>
-                      <div class="q-py-xs">
-                        : {{ store.cetaknotadinas.tglnotadinas }}
-                      </div>
-                      <div class="q-py-xs">
-                        : Belanja Kegiatan {{ store.cetaknotadinas.kegiatan }}
+                        : Permohonan Pergeseran Kas
                       </div>
                     </div>
                   </div>
                   <div class="row q-col-gutter-md q-pr-md q-pt-sm full-width">
                     <div class="col text-justify text-wrap" style="line-height: 1.6;">
                       <span class="invisible">..........</span>Sehubungan dengan pelaksanaan kegiatan di
-                      {{ store.cetaknotadinas.bidang }} TA {{ dateOnlyYears(store.cetaknotadinas.tglnotadinas) }}, maka
-                      bersama ini kami sampaikan dengan hormat permohonan pencairan Belanja LS Kegiatan BLUD
-                      {{ store.cetaknotadinas.kegiatan }} dengan rincian sebagai berikut:
+                      {{ store.cetaknotadinas.bidang }} TA {{ dateOnlyYears(store.cetaknotadinas.tglnpk) }}, maka
+                      bersama ini kami sampaikan dengan hormat permohonan Pergeseran Kas BLUD ke Kas Bendahara
+                      Pengeluaran dengan rincian sebagai berikut:
                     </div>
                   </div>
                 </div>
@@ -116,7 +105,7 @@
                         Pihak Ketiga
                       </th>
                       <th>
-                        Keterangan
+                        Kegiatan BLUD
                       </th>
                       <th>
                         Nilai
@@ -135,7 +124,8 @@
                         <div>{{ item.penerima }}</div>
                       </td>
                       <td>
-                        <div class="text-wrap">{{ item.keterangan }}</div>
+                        <div class="text-uppercase text-wrap">{{ item.kegiatanblud }}</div>
+                        <div>Keterangan : {{ item.keterangan }}</div>
                       </td>
                       <td class="text-right">
                         <div class="row full-width justify-between">
@@ -181,36 +171,36 @@
               </q-card-section>
 
               <div class="row justify-between full-width q-pt-lg">
-                <div class="col flex-start content-center items-center">
-                  <!-- <div class="q-py-xs items-center">
-                Probolinggo {{ store.display.sekarang }}
-              </div>
-              <div class="text-bold q-py-xs q-pt-sm">
-                Pejabat Teknis Kegiatan
-              </div>
-              <div style="padding-bottom: 40px" />
-              <div class="underline text-bold q-py-xs">
-                {{ store.cetaknotadinas.namapptk }}
-                <div class="garis-bawah" style="text-decoration-line: underline;" />
-              </div>
-              <div>
-                NIP. {{ store.cetaknotadinas.kodepptk }}
-              </div> -->
+                <div class="col flex-start content-center text-center q-pb-md">
+                  <div class="q-py-xs items-center">
+                    Mengetahui,
+                  </div>
+                  <div class="text-bold q-py-xs q-pt-sm">
+                    Pimpinan BLUD RSUD Dr. Mohamad Saleh
+                  </div>
+                  <div style="padding-bottom: 40px" />
+                  <div class="underline text-bold q-py-xs">
+                    {{ store.datattd?.direktur?.nama }}
+                    <div class="garis-bawah" style="text-decoration-line: underline;" />
+                  </div>
+                  <div>
+                    NIP. {{ store.datattd?.direktur?.nip }}
+                  </div>
                 </div>
                 <div class="col flex-end content-center text-center q-pb-md">
                   <div class="items-center">
                     Probolinggo {{ store.display.sekarang }}
                   </div>
                   <div class="text-bold q-py-xs q-pt-sm">
-                    Pejabat Teknis Kegiatan
+                    Bendahara Pengeluaran
                   </div>
                   <div style="padding-bottom: 40px" />
                   <div class="underline text-bold q-py-xs">
-                    {{ store.cetaknotadinas.namapptk }}
+                    {{ store.datattd?.bendpengeluaran?.nama }}
                     <div class="garis-bawah" style="text-decoration-line: underline;" />
                   </div>
                   <div>
-                    NIP. {{ store.cetaknotadinas.kodepptk }}
+                    NIP. {{ store.datattd?.bendpengeluaran?.nip }}
                   </div>
                 </div>
               </div>
@@ -240,16 +230,17 @@ import { useLaporanBkuPengeluaranStore } from 'src/stores/siasik/laporan/bku/bku
 import { dateOnlyYears, formattanpaRp } from 'src/modules/formatter'
 import { terbilangRupiah } from 'src/modules/utils'
 import { onMounted, ref } from 'vue'
-import { listdataNotadinasStore } from 'src/stores/siasik/transaksi/ls/notadinas/list'
+import { listdataNPKlangsungStore } from 'src/stores/siasik/transaksi/ls/npkls/list'
 
 
-const store = listdataNotadinasStore()
+const store = listdataNPKlangsungStore()
 // const pegawai = useLaporanBkuPengeluaranStore()
 
 
 onMounted(() => {
   // pegawai.getDataTable()
   // store.listData()
+  console.log('ttd', store.datattd)
 })
 
 const printed = ref(false)

@@ -24,11 +24,11 @@
 
       <select-datanpd v-model="store.openDialog" />
     </q-form>
-    <div v-if="store.rinci.nonpdls" class="q-px-sm">
+    <div v-if="store.rinci.nonpdls || store.transrinci.length" class="q-px-sm">
       <q-card class="full-width bg-grey-4 q-my-sm q-px-sm">
         <div class="row text-primary q-pa-sm q-my-sm q-px-sm">
           <div class="f-14 text-weight-bold">
-            Rincian Nota Pencairan Kas Langsung (NPK-LS)
+            Rincian Nota Pergeseran Kas Langsung (NPK-LS)
           </div>
         </div>
       </q-card>
@@ -39,7 +39,7 @@
         }" />
       </div> -->
     </div>
-    <FormRincian v-if="store.rinci.nonpdls" />
+    <FormRincian v-if="store.rinci.nonpdls || store.transrinci.length" />
   </q-card>
 </template>
 

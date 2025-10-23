@@ -32,7 +32,7 @@
                 <!-- <q-badge color="teal">
                   {{ props.row?.kegiatanblud }}
                 </q-badge> -->
-                <div>{{ props.row?.keterangan }}</div>
+                <div>{{ props.row?.kegiatanblud }}</div>
               </q-td>
               <q-td key="nilai" :props="props">
                 <q-badge size="18px" color="yellow" class="text-bold text-dark">
@@ -110,13 +110,14 @@ async function verifikasiSemua() {
       //   type: 'positive',
       //   message: resp.data.message || 'Verifikasi berhasil dilakukan.'
       // })
-      notifSuccess(resp.data.message)
+
       store.openDialogRinci = false
       selectedNpd.value = []
+      notifSuccess(resp)
       store.dataVerif()
     }
   } catch (err) {
-    notifErr(err.response?.data?.message || err.message)
+    notifErr(err || err.response?.data?.message || err.message)
   } finally {
     loading.value = false
   }
