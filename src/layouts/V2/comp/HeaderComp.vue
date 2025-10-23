@@ -161,24 +161,24 @@ const optionsPolis = computed(() => {
   return props?.polis?.filter(gud => rsim.value?.includes(gud.kodepoli))
 })
 onMounted(() => {
-  console.log('onMounted v2 header layout', auth.aksesApps)
+  // console.log('onMounted v2 header layout', auth.aksesApps)
 
   const temp = props.user?.pegawai?.kdruangansim.split('|')
   const ruang = temp.filter(a => a.includes('R-'))
   if (!props.user?.kdruangansim && temp?.length) emit('setGudang', ruang[0] ?? temp[0])
   // rsim.value = temp
 })
-function labelGd () {
+function labelGd() {
   const anu = props?.gudangs.filter(gud => gud.kode === props.user?.kdruangansim)
   if (anu?.length) return anu[0]?.nama
   else return 'Gudang Tidak Dipilih'
 }
-function labelRu () {
+function labelRu() {
   const anu = props?.ruangs?.filter(gud => gud.kode === props.user?.kdruangansim)
   if (anu?.length) return anu[0]?.uraian
   else return 'Ruangan Tidak Dipilih'
 }
-function poli (val) {
+function poli(val) {
   let fin = null
   let ruang = ''
   const temp = val.kdruangansim.split('|')
@@ -201,7 +201,7 @@ function poli (val) {
   return ruang
 }
 
-function namaPath (val) {
+function namaPath(val) {
   const stringdepan = val[0]
   let res = val
   if (stringdepan === '/') {
