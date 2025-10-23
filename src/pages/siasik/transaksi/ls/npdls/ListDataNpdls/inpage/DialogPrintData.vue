@@ -214,11 +214,11 @@
                 </div>
                 <div style="padding-bottom: 40px" />
                 <div class="underline text-bold q-py-xs">
-                  {{ pegawai.pegawais[0]?.nama }}
+                  {{ store.datattd?.bendpengeluaran?.nama }}
                   <div class="garis-bawah" style="text-decoration-line: underline;" />
                 </div>
                 <div>
-                  NIP. {{ pegawai.pegawais[0]?.nip }}
+                  NIP. {{ store.datattd?.bendpengeluaran?.nip }}
                 </div>
               </div>
               <div class="ttd-kiri">
