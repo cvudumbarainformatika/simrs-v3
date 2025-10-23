@@ -43,7 +43,7 @@
                 <q-separator class="q-my-sm" />
                 <q-checkbox v-for="(al, i) in alergis" :key="i" v-model="store.selection" :val="al" :label="al"
                   color="primary" @update:model-value="updateSelection" />
-                <q-input v-model="store.form.riwayatalergi" outlined label="Riwayat" standout="bg-yellow-3" readonly
+                <q-select v-model="store.form.riwayatalergi" outlined label="Riwayat" standout="bg-yellow-3" readonly
                   class="q-mb-sm hidden" autogrow />
                 <q-input v-model="store.form.keteranganalergi" outlined autogrow label="Keterangan Alergi" stack-label
                   standout="bg-yellow-3" />
@@ -728,7 +728,7 @@ function hitungscorenipsb() {
 }
 // eslint-disable-next-line no-unused-vars
 function updateSelection(val) {
-  store.setForm('riwayatalergi', val.join(', '))
+  store.setForm('riwayatalergi', val)
 }
 
 const iconNyeri = computed(() => {

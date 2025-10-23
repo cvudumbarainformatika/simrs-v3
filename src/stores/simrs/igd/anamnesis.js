@@ -20,7 +20,7 @@ export const useAnamnesis = defineStore('anamnesis', {
       keluhanutama: '',
       riwayatpenyakit: 'Tidak Ada',
       riwayatpenyakitsekarang: '',
-      riwayatalergi: '',
+      riwayatalergi: [],
       keteranganalergi: '',
       riwayatpengobatan: '',
       riwayatbepergian: 'Tidak',
@@ -72,7 +72,7 @@ export const useAnamnesis = defineStore('anamnesis', {
     nilairangsangan: 0,
 
     alergis: ['Obat', 'Makanan', 'Udara', 'Lain-lain', 'Tidak ada Alergi'],
-    selection: ['Tidak ada Alergi'],
+    selection: [],
     historys: [],
     historyMeta: null
   }),
@@ -122,7 +122,7 @@ export const useAnamnesis = defineStore('anamnesis', {
       }
     },
 
-    editForm(val) {
+    async editForm(val) {
       const appstore = useAplikasiStore()
       if (appstore.user?.pegawai?.kdpegsimrs !== val?.user) {
         notifErrVue('Anda Tidak Berhak Merubah Data ini, karena Bukan Anda Yang Menginput...!!!')
@@ -131,6 +131,8 @@ export const useAnamnesis = defineStore('anamnesis', {
           id: val?.id,
           keluhanutama: val?.rs4,
           riwayatpenyakit: val?.riwayatpenyakit,
+          riwayatalergi: [],
+          //riwayatalergi: val?.riwayatalergi,
           riwayatpenyakitsekarang: val?.riwayatpenyakitsekarang,
           selection: val?.riwayatalergi,
           keteranganalergi: val?.keteranganalergi,
@@ -190,8 +192,24 @@ export const useAnamnesis = defineStore('anamnesis', {
         if (val?.anamnesetambahan[0]?.riwayat_bepergian !== null) this.form.riwayatbepergian = val?.anamnesetambahan[0]?.riwayat_bepergian
         if (val?.anamnesetambahan[0]?.riwayat_pemakaian_obat !== null) this.form.obatjangkapanjang = val?.anamnesetambahan[0]?.riwayat_pemakaian_obat
         if (val?.anamnesetambahan[0]?.riwayat_bb_turun !== null) this.form.bbturun = val?.anamnesetambahan[0]?.riwayat_bb_turun
-        const kommatext = val?.riwayatalergi?.split(', ')
-        this.selection = kommatext?.length ? kommatext : []
+
+        console.log('EDIT form dijalankan dengan:', val)
+
+        // ubah string ke array
+        let arr = []
+        if (Array.isArray(val.riwayatalergi)) arr = val.riwayatalergi
+        else if (typeof val.riwayatalergi === 'string')
+          arr = val.riwayatalergi.split(/[;,]/).map(a => a.trim()).filter(Boolean)
+
+        console.log('Set arr =>', arr)
+
+        // isi ke store dua-duanya
+        this.form.riwayatalergi = arr
+        this.selection = []
+        await nextTick()
+        this.selection = [...arr]
+
+        console.log('store.selection =>', this.selection)
         const kommatextx = val?.anamnesetambahan[0]?.nyeri_hilang?.split(', ')
         this.pilihnyerihilang = kommatextx?.length ? kommatextx : []
       }

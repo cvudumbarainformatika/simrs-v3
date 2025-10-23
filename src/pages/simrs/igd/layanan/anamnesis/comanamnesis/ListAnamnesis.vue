@@ -39,19 +39,19 @@
                   </q-item-label>
                   <q-item-label>
                     <span class="">Riwayat Penyakit </span> : <span class="text-weight-bold">{{ item?.riwayatpenyakit
-                      }}</span>
+                    }}</span>
                   </q-item-label>
                   <q-item-label>
                     <span class="">Riwayat Alergi </span> : <span class="text-weight-bold">{{ item?.riwayatalergi
-                      }}</span>
+                    }}</span>
                   </q-item-label>
                   <q-item-label>
                     <span class="">Reaksi berupa </span> : <span class="text-weight-bold">{{ item?.keteranganalergi
-                      }}</span>
+                    }}</span>
                   </q-item-label>
                   <q-item-label>
                     <span class="">Riwayat Pengobatan</span> : <span class="text-weight-bold">{{ item?.riwayatpengobatan
-                      }}</span>
+                    }}</span>
                   </q-item-label>
                   <q-item-label>
                     <span class="">Riwayat Pekerjaan Yang Berhubungan Dengan Zat Berbahaya</span> : <span
@@ -76,19 +76,19 @@
                   </q-item-label>
                   <q-item-label>
                     <span class="">Riwayat Penyakit </span> : <span class="text-weight-bold">{{ item?.riwayatpenyakit
-                      }}</span>
+                    }}</span>
                   </q-item-label>
                   <q-item-label>
                     <span class="">Riwayat Alergi </span> : <span class="text-weight-bold">{{ item?.riwayatalergi
-                      }}</span>
+                    }}</span>
                   </q-item-label>
                   <q-item-label>
                     <span class="">Reaksi berupa </span> : <span class="text-weight-bold">{{ item?.keteranganalergi
-                      }}</span>
+                    }}</span>
                   </q-item-label>
                   <q-item-label>
                     <span class="">Riwayat Pengobatan</span> : <span class="text-weight-bold">{{ item?.riwayatpengobatan
-                      }}</span>
+                    }}</span>
                   </q-item-label>
                   <q-item-label>
                     <span class="">Riwayat Pekerjaan Yang Berhubungan Dengan Zat Berbahaya</span> : <span
@@ -160,7 +160,7 @@
                     <q-item-label>- Lengan : {{ item?.anamnesenips?.lengan ?? '-' }}</q-item-label>
                     <q-item-label>- Kaki : {{ item?.anamnesenips?.kaki ?? '-' }}</q-item-label>
                     <q-item-label>- Keadaan Rangsangan : {{ item?.anamnesenips?.keadaan_rangsangan ?? '-'
-                      }}</q-item-label>
+                    }}</q-item-label>
                     <q-item-label>
                       <q-separator class="q-my-xs" style="width: 300px;" />
                       <div>
@@ -181,9 +181,9 @@
                     <q-item-label>- Lokasi Nyeri : {{ item?.anamnesetambahan[0]?.lokasi_nyeri ?? '-' }}</q-item-label>
                     <q-item-label>- Durasi Nyeri : {{ item?.anamnesetambahan[0]?.durasi_nyeri ?? '-' }}</q-item-label>
                     <q-item-label>- Penyebab Nyeri : {{ item?.anamnesetambahan[0]?.penyebab_nyeri ?? '-'
-                    }}</q-item-label>
-                    <q-item-label>- Frekwensi Nyeri : {{ item?.anamnesetambahan[0]?.frekwensi_nyeri ?? '-'
                       }}</q-item-label>
+                    <q-item-label>- Frekwensi Nyeri : {{ item?.anamnesetambahan[0]?.frekwensi_nyeri ?? '-'
+                    }}</q-item-label>
                     <q-item-label>
                       - Nyeri Hilang : {{ item?.anamnesetambahan[0]?.nyeri_hilang ?? '-' }}
                       <span v-if="item?.anamnesetambahan[0]?.sebutkannyerihilang !== null">
@@ -263,7 +263,7 @@
               </q-item-section>
               <q-item-section v-if="bisaEditHapus" side>
                 <div class="q-gutter-sm">
-                  <q-btn flat round size="sm" icon="icon-mat-edit" @click="store.editForm(item)" />
+                  <q-btn flat round size="sm" icon="icon-mat-edit" @click="editForm(item)" />
                   <q-btn flat round size="sm" icon="icon-mat-delete" color="negative"
                     @click="hapusItem(item.id, item.user)" />
                 </div>
@@ -278,8 +278,9 @@
 
 <script setup>
 import { useQuasar, date } from 'quasar'
+import { useAplikasiStore } from 'src/stores/app/aplikasi'
 import { useAnamnesis } from 'src/stores/simrs/igd/anamnesis'
-import { computed, ref } from 'vue'
+import { computed, nextTick, ref } from 'vue'
 const store = useAnamnesis()
 const $q = useQuasar()
 const props = defineProps({
@@ -362,4 +363,105 @@ function iconNyeri(anu) {
 
   return icon
 }
+
+async function editForm(val) {
+  const appstore = useAplikasiStore()
+  if (appstore.user?.pegawai?.kdpegsimrs !== val?.user) {
+    notifErrVue('Anda Tidak Berhak Merubah Data ini, karena Bukan Anda Yang Menginput...!!!')
+    return
+  }
+
+  store.form = {
+    id: val?.id,
+    keluhanutama: val?.rs4,
+    riwayatpenyakit: val?.riwayatpenyakit,
+    riwayatalergi: [],
+    riwayatpenyakitsekarang: val?.riwayatpenyakitsekarang,
+    selection: val?.riwayatalergi,
+    keteranganalergi: val?.keteranganalergi,
+    riwayatpengobatan: val?.riwayatpengobatan,
+    riwayatpekerjaan: val?.riwayat_pekerjaan_yang_berhubungan_dengan_zat_berbahaya,
+
+    // tambahan baru
+    riwayatpenyakitkeluarga: val?.riwayatpenyakitkeluarga,
+    skreeninggizi: val?.skreeninggizi,
+    asupanmakan: val?.asupanmakan,
+    kondisikhusus: val?.kondisikhusus,
+    skor: val?.skor,
+    keterangan_skor: val?.keterangan_skor,
+
+    metode: val?.anamnesebps ? 'bps' : (val?.anamnesenips ? 'nips' : 'nrt'),
+
+    // metode skala nyeri
+    skornyeri: isNaN(parseInt(val?.scorenyeri)) ? 0 : parseInt(val?.scorenyeri),
+    keteranganscorenyeri: val?.keteranganscorenyeri,
+
+    // metode BPS
+    ekspresiwajah: val?.anamnesebps?.ekspresi_wajah,
+    gerakantangan: val?.anamnesebps?.gerakan_tangan,
+    kepatuhanventilasimekanik: val?.anamnesebps?.kepatuhan_ventilasi_mekanik,
+    scroebps: val?.anamnesebps?.skor,
+    ketscorebps: val?.anamnesebps?.keterangan_skor,
+
+    // metode NIPS
+    ekspresiwajahnips: val?.anamnesenips?.ekspresi_wajah,
+    menangis: val?.anamnesenips?.menangis,
+    polanafas: val?.anamnesenips?.pola_nafas,
+    lengan: val?.anamnesenips?.lengan,
+    kaki: val?.anamnesenips?.kaki,
+    keadaanrangsangan: val?.anamnesenips?.keadaan_rangsangan,
+    scroenips: val?.anamnesenips?.skor,
+    ketscorenips: val?.anamnesenips?.ket_skor
+  }
+
+  // tambahan anamnesetambahan
+  const anamTamb = val?.anamnesetambahan?.[0] || {}
+  if (anamTamb.lokasi_nyeri != null) store.form.lokasinyeri = anamTamb.lokasi_nyeri
+  if (anamTamb.durasi_nyeri != null) store.form.durasinyeri = anamTamb.durasi_nyeri
+  if (anamTamb.penyebab_nyeri != null) store.form.penyebabnyeri = anamTamb.penyebab_nyeri
+  if (anamTamb.frekuensi_nyeri != null) store.form.frekwensinyeri = anamTamb.frekuensi_nyeri
+  if (anamTamb.nyeri_hilang != null) store.form.nyerihilang = anamTamb.nyeri_hilang
+  if (anamTamb.sebutkannyerihilang != null) store.form.sebutkannyerihilang = anamTamb.sebutkannyerihilang
+  if (anamTamb.aktifitas_mobilitas != null) store.form.aktivitasmobilitas = anamTamb.aktifitas_mobilitas
+  if (anamTamb.sebutkanperlubanuan != null) store.form.sebutkanperlubanuan = anamTamb.sebutkanperlubanuan
+  if (anamTamb.alat_bantu_jalan != null) store.form.aktivitasAlatBnatujalan = anamTamb.alat_bantu_jalan
+  if (anamTamb.sebutkanalatbantujalan != null) store.form.sebutkanalatbantujalan = anamTamb.sebutkanalatbantujalan
+  if (anamTamb.bicara != null) store.form.kebutuhankomunikasidanedukasi = anamTamb.bicara
+  if (anamTamb.sebutkankomunaksilainnya != null) store.form.sebutkankomunaksilainnya = anamTamb.sebutkankomunaksilainnya
+  if (anamTamb.penerjemah != null) store.form.penerjemah = anamTamb.penerjemah
+  if (anamTamb.sebutkanpenerjemah != null) store.form.sebutkanpenerjemah = anamTamb.sebutkanpenerjemah
+  if (anamTamb.bahasa_isyarat != null) store.form.bahasaisyarat = anamTamb.bahasa_isyarat
+  if (anamTamb.hambatan != null) store.form.hamabatan = anamTamb.hambatan
+  if (anamTamb.sebutkanhambatan != null) store.form.sebutkanhambatan = anamTamb.sebutkanhambatan
+  if (anamTamb.riwayat_demam != null) store.form.riwayatdemam = anamTamb.riwayat_demam
+  if (anamTamb.berkeringat_malam_hari != null) store.form.berkeringat = anamTamb.berkeringat_malam_hari
+  if (anamTamb.riwayat_bepergian != null) store.form.riwayatbepergian = anamTamb.riwayat_bepergian
+  if (anamTamb.riwayat_pemakaian_obat != null) store.form.obatjangkapanjang = anamTamb.riwayat_pemakaian_obat
+  if (anamTamb.riwayat_bb_turun != null) store.form.bbturun = anamTamb.riwayat_bb_turun
+
+  console.log('EDIT form dijalankan dengan:', val)
+
+  // ubah riwayatalergi jadi array jika belum
+  let arr = []
+  if (Array.isArray(val.riwayatalergi)) {
+    arr = val.riwayatalergi
+  } else if (typeof val.riwayatalergi === 'string') {
+    arr = val.riwayatalergi.split(/[;,]/).map(a => a.trim()).filter(Boolean)
+  }
+
+  console.log('Set arr =>', arr)
+
+  // isi ke form dan selection
+  store.form.riwayatalergi = arr
+  store.selection = []
+  await nextTick()
+  store.selection = [...arr]
+
+  console.log('store.selection =>', store.selection)
+
+  // nyeri hilang (checkbox multi)
+  const kommatextx = anamTamb?.nyeri_hilang?.split(', ')
+  store.pilihnyerihilang = kommatextx?.length ? kommatextx : []
+}
+
 </script>
