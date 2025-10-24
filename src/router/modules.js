@@ -31,6 +31,7 @@ import ruangkonsul from './ruangkonsul'
 import unitpengelolaharsip from './unitpengelolaharsip'
 import mpp from './mpp'
 import penjaminan from './penjaminan'
+import homecare from './homecare'
 
 
 export {
@@ -38,5 +39,5 @@ export {
   masters, pendaftaran, percobaan, farmasi, poli, monitoring,
   kasir, dokumen, gudang, ptk, depo, ruangan, igd, ranap, satset,
   kamaroperasi, rehabmedik, hemodialisa, siasik, radiologi, rekammedik, cathlab, akuntansi,
-  ruangkonsul, unitpengelolaharsip, mpp, penjaminan
+  ruangkonsul, unitpengelolaharsip, mpp, penjaminan, homecare
 }

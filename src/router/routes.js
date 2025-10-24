@@ -2,7 +2,7 @@ import {
   pegawai, sigarang, antrian, laborat, laporan, settings,
   masters, pendaftaran, percobaan, farmasi, poli, monitoring, kasir, dokumen, gudang, ptk, depo, ruangan, igd, ranap, satset,
   kamaroperasi, rehabmedik, hemodialisa, siasik, radiologi, rekammedik, cathlab, akuntansi, ruangkonsul,
-  unitpengelolaharsip, mpp, penjaminan
+  unitpengelolaharsip, mpp, penjaminan, homecare
 } from './modules'
 
 const routes = [
@@ -115,6 +115,7 @@ const routes = [
   unitpengelolaharsip,
   mpp,
   penjaminan,
+  homecare,
   {
     path: '/display_antrian',
     component: () => import('layouts/antrian/display/DisplayLayout.vue'),
