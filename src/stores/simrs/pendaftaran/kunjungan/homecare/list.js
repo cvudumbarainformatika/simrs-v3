@@ -41,7 +41,7 @@ export const useListKunjunganHomeCareStore = defineStore('list_kunjungan_home_ca
       if (item) item.loading = true
       const form = { id: val.id }
       return new Promise((resolve, reject) => {
-        api.post('/v1/simrs/homecare/pengunjung/berangkat', form)
+        api.post('/v1/simrs/pendaftaran/homecare/berangkat', form)
           .then(resp => {
             console.log(resp?.data?.data)
             const data = resp?.data?.data
