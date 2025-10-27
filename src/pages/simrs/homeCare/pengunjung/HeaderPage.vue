@@ -45,14 +45,14 @@
                     <div class="column">
                       <div class="row q-pa-sm q-col-gutter-sm">
                         <div class="col">
-                          <q-date dark v-model="store.params.to" minimal bordered flat mask="YYYY-MM-DD"
+                          <q-date dark v-model="store.params.from" minimal bordered flat mask="YYYY-MM-DD"
                             @update:model-value="store.setPeriode('Custom')" />
                           <div class="f-10 text-grey-8 q-mt-xs">
-                            DARI TANGGAL : <b>{{ store.params.to }}</b>
+                            DARI TANGGAL : <b>{{ store.params.from }}</b>
                           </div>
                         </div>
                         <div class="col">
-                          <q-date dark v-model="store.params.from" minimal bordered flat mask="YYYY-MM-DD"
+                          <q-date dark v-model="store.params.to" minimal bordered flat mask="YYYY-MM-DD"
                             @update:model-value="store.setPeriode('Custom')" />
                           <div class="f-10 text-grey-8 q-mt-xs">
                             SAMPAI TANGGAL : <b>{{ store.params.to }}</b>
@@ -101,7 +101,7 @@ const store = usePengunjungHomeCareStore()
 const showMenuPeriode = ref(false)
 
 function adaInput (val) {
-  // console.log('ada input ', val)
+  console.log('ada input ', val)
   // store.params.q = val
   store.params.page = 1
   if (!store.loading) store.getData()

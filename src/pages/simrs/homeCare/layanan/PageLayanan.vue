@@ -24,8 +24,7 @@
           <q-page class="contain bg-grey-3">
             <Suspense :key="menu.comp" timeout="0">
               <template #default>
-                <component :is="menu.comp" :key="pasien" :pasien="pasien" :loadingaja="loadingaja"
-                  :ruangranap="store.ruangranaps" depo="igd" />
+                <component :is="menu.comp" :key="pasien" :pasien="pasien" :loading="loading" depo="rjl" />
               </template>
               <template #fallback>
                 <AppLoader />
@@ -40,12 +39,9 @@
 
 <script setup>
 import { defineAsyncComponent, onMounted, ref, shallowRef, watchEffect } from 'vue'
-import { useInacbgIgd } from 'src/stores/simrs/igd/inacbg'
-import { usePemakaianObatStore } from 'src/stores/simrs/igd/pemakaianobat'
 import { useRoute } from 'vue-router'
 import { usePengunjungHomeCareStore } from 'src/stores/simrs/homeCare/pengunjung'
 const store = usePengunjungHomeCareStore()
-const storepemakaianobat = usePemakaianObatStore()
 
 const HeaderLayout = defineAsyncComponent(() => import('./layoutcomp/HeaderLayout.vue'))
 const LeftDrawer = defineAsyncComponent(() => import('./layoutcomp/LeftDrawer.vue'))
@@ -60,65 +56,55 @@ const props = defineProps({
     type: Object,
     default: null
   },
-  loadingaja: {
+  loading: {
     type: Boolean,
     default: false
   }
 })
 
-// defineProps({
-//   pasien: {
-//     type: Object,
-//     default: null
-//   },
-//   loadingaja: {
-//     type: Boolean,
-//     default: false
-//   }
-// })
 
 const menus = ref([
   // {
   //   name: 'TriagePage',
   //   label: 'Triage',
   //   icon: 'icon-fa-warehouse-solid',
-  //   route: ['igd'],
+  //   route: ['homecare'],
   //   comp: shallowRef(defineAsyncComponent(() => import('../layanan/triage/TriagePage.vue')))
   // },
   // {
   //   name: 'AnamnesisPage',
   //   label: 'Anamnesis',
   //   icon: 'icon-mat-medical_information',
-  //   route: ['igd'],
+  //   route: ['homecare'],
   //   comp: shallowRef(defineAsyncComponent(() => import('../layanan/anamnesis/AnamnesisPage.vue')))
   // },
   // {
   //   name: 'PemeriksaanFisikPage',
   //   label: 'Pemeriksaan Umum & Fisik',
   //   icon: 'icon-my-stethoscope',
-  //   route: ['igd'],
+  //   route: ['homecare'],
   //   comp: shallowRef(defineAsyncComponent(() => import('../layanan/pemeriksaanfisik/PemeriksaanfisikPage.vue')))
   // },
   // {
   //   name: 'AssesmentPage',
   //   label: 'Assesment',
   //   icon: 'icon-mat-analytics',
-  //   route: ['igd'],
+  //   route: ['homecare'],
   //   comp: shallowRef(defineAsyncComponent(() => import('../layanan/assesment/AssesmentPage.vue')))
   // },
-  // {
-  //   name: 'penunjang-page',
-  //   label: 'Penunjang',
-  //   icon: 'icon-my-local_hospital',
-  //   route: ['igd'],
-  //   comp: shallowRef(defineAsyncComponent(() => import('../layanan/penunjang/PenunjangPage.vue')))
-  // },
+  {
+    name: 'penunjang-page',
+    label: 'Penunjang',
+    icon: 'icon-my-local_hospital',
+    route: ['homecare'],
+    comp: shallowRef(defineAsyncComponent(() => import('../layanan/penunjang/PenunjangPage.vue')))
+  },
   // {
   //   name: 'konsulspesialis',
   //   label: 'Konsul Spesialis',
   //   icon: 'icon-mat-textsms',
   //   nakes: ['1'],
-  //   route: ['igd'],
+  //   route: ['homecare'],
   //   comp: shallowRef(defineAsyncComponent(() => import('./konsul/IndexPage.vue')))
   // },
   // {
@@ -126,43 +112,43 @@ const menus = ref([
   //   label: 'Tinjauan Ulang',
   //   icon: 'icon-mat-transfer_within_a_station',
   //   nakes: ['1'],
-  //   route: ['igd'],
+  //   route: ['homecare'],
   //   comp: shallowRef(defineAsyncComponent(() => import('./tinjauanulang/IndexPage.vue')))
   // },
   // {
   //   name: 'plann-page',
   //   label: 'Plan',
   //   icon: 'icon-mat-next_plan',
-  //   route: ['igd'],
+  //   route: ['homecare'],
   //   comp: shallowRef(defineAsyncComponent(() => import('../layanan/plann/IndexPage.vue')))
   // },
   // {
   //   name: 'pemakaianobat-page',
   //   label: 'Pemaikaian Obat/Cairan',
   //   icon: 'icon-fa-mortar-pestle-solid',
-  //   route: ['igd'],
+  //   route: ['homecare'],
   //   comp: shallowRef(defineAsyncComponent(() => import('../layanan/pemakaianobat/PemakaianObatPage.vue')))
   // },
-  // {
-  //   name: 'e-resep-page',
-  //   label: 'EResep',
-  //   icon: 'icon-mat-receipt',
-  //   route: ['igd'],
-  //   comp: shallowRef(defineAsyncComponent(() => import('../../eresep/EresepPage.vue')))
-  // },
+  {
+    name: 'e-resep-page',
+    label: 'EResep',
+    icon: 'icon-mat-receipt',
+    route: ['homecare'],
+    comp: shallowRef(defineAsyncComponent(() => import('../../eresep/EresepPage.vue')))
+  },
   // {
   //   name: 'upload-dokomen',
   //   label: 'Upload Dokumen',
   //   icon: 'icon-fa-folder-tree-solid',
-  //   route: ['igd'],
+  //   route: ['homecare'],
   //   comp: shallowRef(defineAsyncComponent(() => import('../layanan/uploaddokumen/IndexPage.vue')))
   // },
   // {
   //   name: 'e-dokumen-page',
   //   label: 'Dokumen RM & Billing',
   //   icon: 'icon-mat-print',
-  //   route: ['igd', 'mpp', 'rekammedik'],
-  //   comp: shallowRef(defineAsyncComponent(() => import('../../igd/layanan/dokumen/DokumenPage.vue')))
+  //   route: ['homecare', 'mpp', 'rekammedik'],
+  //   comp: shallowRef(defineAsyncComponent(() => import('../../homecare/layanan/dokumen/DokumenPage.vue')))
   // }
 ])
 
@@ -171,7 +157,6 @@ const route = useRoute()
 const menu = ref()
 const filteredMenus = ref([])
 
-const inacbg = useInacbgIgd()
 
 function menuDiganti (val) {
   menu.value = val
@@ -205,9 +190,6 @@ onMounted(() => {
 watchEffect(() => {
   // console.log('watch effect', store.loadingTerima)
   if (store.loadingTerima === false) {
-    inacbg.getDataIna(props.pasien)
-    inacbg.setTotalTindakan(props.pasien)
-    inacbg.setTotalLaborat(props.pasien)
   }
 })
 
