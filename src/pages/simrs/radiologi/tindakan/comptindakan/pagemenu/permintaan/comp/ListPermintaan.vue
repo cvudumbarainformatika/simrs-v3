@@ -19,8 +19,16 @@
 
           <div class="absolute-right">
             <div class="q-pa-md">
-              <q-btn :loading="store.loadingSelesaikan" :disabled="store.loadingSelesaikan" v-if="pasien.status === '2'"
-                color="primary" label="Selesaikan Layanan" @click="selesaikanLayanan"></q-btn>
+              <div v-if="pasien.status === '2'" class="flex q-gutter-sm">
+                <!-- <q-btn :loading="store.loadingSelesaikan" :disabled="store.loadingSelesaikan" color="negative"
+                  label="Batalkan Layanan" @click="batalkanPermintaan"></q-btn>
+                <q-btn :loading="store.loadingSelesaikan" :disabled="store.loadingSelesaikan" color="primary"
+                  label="Selesaikan Layanan" @click="selesaikanLayanan"></q-btn> -->
+                <q-btn color="primary" rounded disabled outline>
+                  <q-icon name="icon-mat-done" class="q-mr-md"></q-icon>
+                  <div>Proses Layanan ...</div>
+                </q-btn>
+              </div>
               <q-btn v-else-if="pasien.status === '1'" color="primary" rounded disabled outline>
                 <q-icon name="icon-mat-lock" class="q-mr-md"></q-icon>
                 <div>Layanan telah selesai</div>
@@ -102,6 +110,18 @@
 
 
 
+    </div>
+
+    <div v-if="props?.pasien?.duplicates?.has" class="q-pa-md bg-negative text-white text-center">
+      <div>
+        <q-icon name="icon-mat-warning" size="lg"></q-icon>
+      </div>
+      Permintaan ini Sudah Pernah Diinputkan Sebelumnya dengan Permintaan :
+      {{ props?.pasien?.duplicates?.details[0]?.permintaans?.join(', ') }}
+      <div>
+        Pada Nota Permintaan :
+        <b>{{ props?.pasien?.duplicates?.details[0]?.items?.map(item => item?.nota).join(', ') }}</b>
+      </div>
     </div>
 
     <q-separator />
@@ -231,8 +251,12 @@
         </q-list>
 
         <div class="q-pa-md text-right">
-          <q-btn v-if="pasien.status === '2'" :loading="store.loadingSelesaikan" :disabled="store.loadingSelesaikan"
-            color="primary" label="Selesaikan Layanan" @click="selesaikanLayanan"></q-btn>
+          <div class="flex justify-between" v-if="pasien.status === '2'">
+            <q-btn :loading="store.loadingSelesaikan" :disabled="store.loadingSelesaikan" color="negative"
+              label="BATALKAN PERMINTAAN" @click="batalkanPermintaan"></q-btn>
+            <q-btn :loading="store.loadingSelesaikan" :disabled="store.loadingSelesaikan" color="primary"
+              label="Selesaikan Layanan" @click="selesaikanLayanan"></q-btn>
+          </div>
 
 
           <div v-else-if="pasien.status === '1'">
@@ -262,7 +286,7 @@
 
 <script setup>
 import { computed, onMounted, ref } from 'vue'
-import { date } from 'quasar'
+import { date, useQuasar } from 'quasar'
 import { useListPasienRadiologiStore } from 'src/stores/simrs/radiologi/radiologi'
 import { usePermintaanRadiologiStore } from 'src/stores/simrs/radiologi/permintaan'
 import { storeToRefs } from 'pinia';
@@ -289,6 +313,8 @@ const props = defineProps({
     default: false
   }
 })
+
+const $q = useQuasar()
 
 const store = useListPasienRadiologiStore()
 const storePermintaan = usePermintaanRadiologiStore()
@@ -347,10 +373,29 @@ function selesaikanLayanan() {
 
 }
 
-// function batalkan(item) {
-//   console.log('batalkan item', item);
+function batalkanPermintaan() {
+  console.log('batalkan item', props.pasien);
 
-//   // store.batal(item)
-// }
+  $q.dialog({
+    title: 'Alasan Pembatalan',
+    message: `Berikan Alasan Pembatalan Pada Pasien <b>${props?.pasien?.nama} dengan </b> Nota Permintaan <b class="text-negative">${props?.pasien?.nota_permintaan}</b> dari ruangan <b>${props?.pasien?.ruangan}</b> ini`,
+    prompt: {
+      model: '',
+      isValid: val => val.length > 2, // << here is the magic
+      type: 'text' // optional
+    },
+    cancel: true,
+    persistent: true,
+    html: true
+  }).onOk(data => {
+    store.batalkanPasien(props.pasien, data)
+  })
+
+}
+
+
+
+
+
 
 </script>

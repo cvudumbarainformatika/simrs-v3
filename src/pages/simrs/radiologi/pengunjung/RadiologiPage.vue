@@ -81,7 +81,6 @@ function batalkanPasien(dot) {
     persistent: true,
     html: true
   }).onOk(data => {
-    // console.log('>>>> OK, received', data)
     store.batalkanPasien(dot, data)
   })
 }

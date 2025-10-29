@@ -24,9 +24,9 @@ export const usePermintaanOperasiRanapStore = defineStore('permintaan-operasi-ra
   // },
   actions: {
 
-    async getData (pasien) {
+    async getData(pasien) {
       const resp = await api.get(`v1/simrs/penunjang/operasi/getdata?noreg=${pasien?.noreg}`)
-      console.log('permintaan operasi', resp)
+      // console.log('permintaan operasi', resp)
       // console.log('nota fisio', resp.data)
       if (resp.status === 200) {
         // this.setNotas(resp?.data)
@@ -39,7 +39,7 @@ export const usePermintaanOperasiRanapStore = defineStore('permintaan-operasi-ra
       }
     },
 
-    async saveOrder (pasien) {
+    async saveOrder(pasien) {
       if (!pasien?.kodedokter) {
         return notifErrVue('kode Dokter masih kosong, silahkan tutup dulu pasien ini kemudian tekan tombol refresh di pojok kanan atas')
       }
@@ -74,7 +74,7 @@ export const usePermintaanOperasiRanapStore = defineStore('permintaan-operasi-ra
       }
     },
 
-    async getNota (pasien) {
+    async getNota(pasien) {
       const payload = { params: { noreg: pasien?.noreg } }
       const resp = await api.get('v1/simrs/penunjang/operasi/getnota', payload)
       // console.log('nota fisio', resp.data)
@@ -83,7 +83,7 @@ export const usePermintaanOperasiRanapStore = defineStore('permintaan-operasi-ra
       }
     },
 
-    setNotas (array) {
+    setNotas(array) {
       const arr = array.map(x => x.nota)
       this.notas = arr?.length ? arr : []
       this.notas.push('BARU')
@@ -91,7 +91,7 @@ export const usePermintaanOperasiRanapStore = defineStore('permintaan-operasi-ra
       this.form.nota = this.notas[0]
     },
 
-    async hapusPermintaan (pasien, id) {
+    async hapusPermintaan(pasien, id) {
       this.loadingHapus = true
       const payload = { noreg: pasien?.noreg, id }
       try {
@@ -113,7 +113,7 @@ export const usePermintaanOperasiRanapStore = defineStore('permintaan-operasi-ra
       }
     },
 
-    initReset () {
+    initReset() {
       this.form = {
         noreg: '', // rs1
         nota: this.notas?.length ? this.notas[0] : 'SEMUA', // rs2
