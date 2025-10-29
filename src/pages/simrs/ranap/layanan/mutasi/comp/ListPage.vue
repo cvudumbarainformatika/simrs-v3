@@ -26,11 +26,6 @@
                 <q-item-label>
                   Alasan : <span class="text-primary">{{ item?.alasan }}</span>
                 </q-item-label>
-                <!-- <q-item-label>
-                  <q-badge color="orange-9" text-color="white">
-                    Blm Ada Dokumen Serah Terima
-                  </q-badge>
-                </q-item-label> -->
               </q-item-section>
 
               <q-item-section side>

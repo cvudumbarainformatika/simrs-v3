@@ -35,12 +35,12 @@ export const usePermintaanRadiologiStore = defineStore('permintaan-radiologi', {
       const storePasienRadiologi = useListPasienRadiologiStore()
       const master = storePasienRadiologi.namaPemeriksaans
 
-      console.log('dasarPermintaan', this.listPermintaans, pasien);
+      // console.log('dasarPermintaan', this.listPermintaans, pasien);
 
 
       this.listPermintaans = pasien?.permintaan?.rincians?.map(x => {
         const kdPelaksana = this.dokters?.find(d => d.nama === x.pelaksana)?.kdpegsimrs || null
-        console.log('kdPelaksana', kdPelaksana);
+        // console.log('kdPelaksana', kdPelaksana);
 
         const ukuran = x.ukuran || '43 x 35'
         const jumlah = x.jumlah || 1

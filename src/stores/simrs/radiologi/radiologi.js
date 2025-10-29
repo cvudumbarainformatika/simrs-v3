@@ -34,6 +34,7 @@ export const useListPasienRadiologiStore = defineStore('list-pasien-radiologi', 
     bukaLayanan: false,
     pasiens: [],
     pasien: null,
+    duplicateWarning: null,
     newapotekrajal: [],
     diagnosa: [],
     koderuangan: null,
@@ -110,6 +111,9 @@ export const useListPasienRadiologiStore = defineStore('list-pasien-radiologi', 
           if (resp.status === 200) {
             this.pasien['permintaan'] = resp.data?.permintaan ?? null
             this.pasien['newapotekrajal'] = resp.data?.newapotekrajal ?? []
+            this.pasien['permintaansbynoreg'] = resp.data?.permintaansbynoreg ?? []
+
+            this.checkDuplicateTpemeriksaan()
             permintaan.initPermintaan(this.pasien)
 
           }
@@ -123,6 +127,50 @@ export const useListPasienRadiologiStore = defineStore('list-pasien-radiologi', 
 
 
 
+    },
+
+
+    checkDuplicateTpemeriksaan() {
+      const counts = {}
+      const locations = {} // kode -> array of item identifiers (id/nota)
+      const data = this.pasien?.permintaansbynoreg ?? []
+
+      data?.forEach(item => {
+        // rs15 bisa berupa "RD0001;RD0002" atau single code
+        const raw = item?.rs15 || ''
+        const codes = raw.split(';').map(s => s.trim()).filter(Boolean)
+        if (codes.length === 0) {
+          // fallback: ada kemungkinan kode di field lain, abaikan
+        }
+        codes.forEach(code => {
+          counts[code] = (counts[code] || 0) + 1
+          locations[code] = locations[code] || []
+          locations[code].push({
+            id: item?.id,
+            nota: item?.nota,
+            noreg: item?.noreg,
+            permintaan: item?.rs4
+          })
+        })
+      })
+
+      const duplicates = Object.keys(counts).filter(code => counts[code] > 1)
+
+      const duplicateWarning = {
+        has: duplicates.length > 0,
+        codes: duplicates,
+        details: duplicates.map(code => {
+          const items = locations[code] || []
+          const permintaans = Array?.from(new Set(items.map(i => i?.permintaan).filter(Boolean)))
+          return {
+            code,
+            permintaans,
+            count: counts[code],
+            items
+          }
+        })
+      }
+      this.pasien['duplicates'] = duplicateWarning
     },
 
     async terimaPasien(val) {
