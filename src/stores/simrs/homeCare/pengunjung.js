@@ -128,11 +128,11 @@ export const usePengunjungHomeCareStore = defineStore('pengunjung_home_care_stor
         datax.laborats = data?.laborats ?? []
         datax.laboratold = data?.laboratold ?? []
         datax.fisio = data?.fisio ?? []
+        datax.anamnesis = data?.anamnesis ?? []
         // datax.dataigd = data?.dataigd ?? null
         // datax.diagnosa = data?.diagnosa ?? []
-        // datax.anamnesis = data?.anamnesis ?? [] // wes
-        // datax.pemeriksaan = data?.pemeriksaan ?? [] // wes
-        // datax.penilaian = data?.penilaian ?? [] // wes
+        // datax.pemeriksaan = data?.pemeriksaan ?? []
+        // datax.penilaian = data?.penilaian ?? []
         // datax.diagnosamedis = data?.diagnosamedis ?? []
         // datax.tindakan = data?.tindakan ?? []
         // datax.diagnosakeperawatan = data?.diagnosakeperawatan ?? []
@@ -217,7 +217,16 @@ export const usePengunjungHomeCareStore = defineStore('pengunjung_home_care_stor
     setLayananSelesai (val) {
       console.log('selesai layanan', val)
 
-    }
+    },
+
+    hapusDataAnamnesis (pasien, id) {
+      const findPasien = this.items.filter(x => x === pasien)
+      if (findPasien?.length) {
+        const data = findPasien[0].anamnesis
+        const pos = data.findIndex(el => el.id === id)
+        if (pos >= 0) { data.splice(pos, 1) }
+      }
+    },
   }
 })
 if (import.meta.hot) {

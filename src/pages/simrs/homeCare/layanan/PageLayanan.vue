@@ -64,20 +64,14 @@ const props = defineProps({
 
 
 const menus = ref([
-  // {
-  //   name: 'TriagePage',
-  //   label: 'Triage',
-  //   icon: 'icon-fa-warehouse-solid',
-  //   route: ['homecare'],
-  //   comp: shallowRef(defineAsyncComponent(() => import('../layanan/triage/TriagePage.vue')))
-  // },
-  // {
-  //   name: 'AnamnesisPage',
-  //   label: 'Anamnesis',
-  //   icon: 'icon-mat-medical_information',
-  //   route: ['homecare'],
-  //   comp: shallowRef(defineAsyncComponent(() => import('../layanan/anamnesis/AnamnesisPage.vue')))
-  // },
+  // masalah noreg, terlalu panjang di banyak tabel, lebih baik buatkan counter saja
+  {
+    name: 'AnamnesisPage',
+    label: 'Anamnesis',
+    icon: 'icon-mat-medical_information',
+    route: ['homecare'],
+    comp: shallowRef(defineAsyncComponent(() => import('../layanan/anamnesis/AnamnesisPage.vue')))
+  },
   // {
   //   name: 'PemeriksaanFisikPage',
   //   label: 'Pemeriksaan Umum & Fisik',
