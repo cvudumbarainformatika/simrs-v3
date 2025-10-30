@@ -293,7 +293,9 @@ export const useListRadiologiLuarStore = defineStore('list-radiologi-luar', {
         'yangmeminta': pasien?.dari || '',
         // 'tanggal': item?.rs7 || '',
         'hasil': item?.hasil || '',
+        'hasilhtml': item?.hasilhtml || '',
         'kesimpulan': item?.kesimpulan || '',
+        'kesimpulanhtml': item?.kesimpulanhtml || '',
         'kode': item?.rs3 || '',
         'dokter': item?.pelaksana || ''
       }
@@ -305,6 +307,7 @@ export const useListRadiologiLuarStore = defineStore('list-radiologi-luar', {
           console.log('simpan hasil', resp);
           if (resp.status === 200) {
             notifSuccessVue(resp?.data?.message || 'Data berhasil disimpan')
+            this.getDataTable()
           }
         })
         .catch(err => {

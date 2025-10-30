@@ -14,22 +14,22 @@
             <div class="col-12">
               <div class="flex full-width">
                 <div class="flex flex-1 q-gutter-sm q-mb-xs">
-                  <div style="width:80px;" class="text-weight-bold">NAMA</div>
+                  <div style="width:100px;" class="text-weight-bold">NAMA</div>
                   <div>: {{ pasien?.nama }}</div>
                 </div>
 
               </div>
               <div class="flex full-width">
                 <div class="flex flex-1 q-gutter-sm q-mb-xs">
-                  <div style="width:80px;" class="text-weight-bold">UMUR / JENIS</div>
-                  <div>: {{ pasien?.usia }}</div>
+                  <div style="width:100px;" class="text-weight-bold">UMUR / JENIS</div>
+                  <div>: {{ pasien?.usia }} / {{ pasien?.kelamin }}</div>
                 </div>
 
               </div>
               <div class="flex full-width">
                 <div class="flex flex-1 q-gutter-sm q-mb-xs">
-                  <div style="width:80px;" class="text-weight-bold">NOMOR RM</div>
-                  <div>: {{ pasien?.norm }}</div>
+                  <div style="width:100px;" class="text-weight-bold">NOMOR RM / NIK</div>
+                  <div>: {{ pasien?.norm || pasien?.nik }}</div>
                 </div>
 
               </div>
@@ -37,7 +37,7 @@
             <div class="col-12 text-right">
               <!-- INI DISURUH UBAH SAMA MBAK ANE (DISURUH MANAGEMENT) -->
               <!-- <div class="text-weight-bold">Probolinggo, {{ humanDate(item?.tgl) }}</div> -->
-              <div class="text-weight-bold">Probolinggo, {{ humanDate(item?.rs3) }}</div>
+              <div class="text-weight-bold">Probolinggo, {{ humanDate(item?.rs3) || humanDate(pasien?.tglentri) }}</div>
             </div>
           </div>
 
