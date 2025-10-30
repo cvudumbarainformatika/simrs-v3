@@ -59,17 +59,17 @@ export const usePermintaanOperasistore = defineStore('permintaan-operasi-store',
             this.meta = resp.data?.meta ?? resp?.data
             this.items = resp.data.data
             this.items.forEach(xxx => {
-              xxx.noreg = xxx?.rs1
-              xxx.kelamin = xxx?.kunjunganranap?.masterpasien?.rs17 ?? xxx?.kunjunganrajal?.masterpasien?.rs17
-              xxx.norm = xxx?.kunjunganranap?.masterpasien?.rs1 ?? xxx?.kunjunganrajal?.masterpasien?.rs1
-              xxx.groups = xxx?.sistembayar?.groups
-              xxx.kodesistembayar = xxx?.rs14
-              xxx.kodedokter = xxx?.rs8
+              // xxx.noreg = xxx?.rs1
+              // xxx.kelamin = xxx?.kunjunganranap?.masterpasien?.rs17 ?? xxx?.kunjunganrajal?.masterpasien?.rs17
+              // xxx.norm = xxx?.kunjunganranap?.masterpasien?.rs1 ?? xxx?.kunjunganrajal?.masterpasien?.rs1
+              // xxx.groups = xxx?.sistembayar?.groups
+              // xxx.kodesistembayar = xxx?.rs14
+              // xxx.kodedokter = xxx?.rs8
               xxx.kdruangan = 'R-0101021'
-              xxx.usia = this.getUsia(xxx?.rs3, xxx?.kunjunganranap?.masterpasien?.rs16)
+              // xxx.usia = this.getUsia(xxx?.rs3, xxx?.kunjunganranap?.masterpasien?.rs16)
             })
           }
-          console.log('kunjungan Ok', this.items, this.meta)
+          // console.log('kunjungan Ok', this.items, this.meta)
         }).catch((err) => {
           console.log(err)
           this.loading = false
