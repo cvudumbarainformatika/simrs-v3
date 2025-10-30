@@ -54,18 +54,23 @@
               <span class="text-primary">{{ item?.ruangan }}</span>
             </div>
           </div>
-          <div class="col-2 flex justify-end">
-            <div class="text-grey-8 f-12">
-              {{ date.formatDate(item?.tgl_kunjungan, 'MMM DD, YYYY') }}
+          <div class="col-2">
+            <div class="row">
+              <div class="col-12 flex justify-end">
+                <div class="text-grey-8 f-12">
+                  {{ date.formatDate(item?.tgl_kunjungan, 'MMM DD, YYYY') }}
+                </div>
+                <div class="text-grey-6 f-10">
+                  Jam : <b> {{ date.formatDate(item?.tgl_kunjungan, 'HH:mm') }}</b>
+                </div>
+              </div>
+              <div v-if="item.nota_permintaan !== '' && item.kesmik === null" class="col-12 flex justify-end">
+                <q-btn dense outline size="sm" no-caps color="primary" :loading="item?.loadingcesmix"
+                  label="Kirim Penjaminan" class="q-mb-sm" icon-right="icon-mat-attach_money" style="min-width: 120px;"
+                  @click.stop="emits('kirimkesmix', item)" />
+              </div>
+
             </div>
-            <div class="text-grey-6 f-10">
-              Jam : <b> {{ date.formatDate(item?.tgl_kunjungan, 'HH:mm') }}</b>
-            </div>
-          </div>
-          <div v-if="item.nota_permintaan !== '' && item.kesmik === null" class="col-2 flex justify-end">
-            <q-btn dense outline size="sm" no-caps color="primary" :loading="item?.loadingcesmix"
-              label="Kirim Penjaminan" class="q-mb-sm" icon-right="icon-mat-attach_money" style="min-width: 120px;"
-              @click.stop="emits('kirimkesmix', item)" />
           </div>
         </div>
       </div>
