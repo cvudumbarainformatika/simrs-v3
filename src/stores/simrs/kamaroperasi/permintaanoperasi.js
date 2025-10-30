@@ -56,7 +56,7 @@ export const usePermintaanOperasistore = defineStore('permintaan-operasi-store',
         .then((resp) => {
           this.loading = false
           if (resp.status === 200) {
-            this.meta = resp.data
+            this.meta = resp.data?.meta ?? resp?.data
             this.items = resp.data.data
             this.items.forEach(xxx => {
               xxx.noreg = xxx?.rs1
@@ -69,7 +69,7 @@ export const usePermintaanOperasistore = defineStore('permintaan-operasi-store',
               xxx.usia = this.getUsia(xxx?.rs3, xxx?.kunjunganranap?.masterpasien?.rs16)
             })
           }
-          console.log('kunjungan Ok', this.items)
+          console.log('kunjungan Ok', this.items, this.meta)
         }).catch((err) => {
           console.log(err)
           this.loading = false
