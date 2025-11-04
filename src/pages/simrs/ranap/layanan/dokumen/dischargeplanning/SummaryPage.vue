@@ -582,7 +582,12 @@ const perawat = computed(() => {
 })
 
 const KRS = computed(() => {
-  const diag = props?.pasien?.cppt?.length ? props?.pasien?.cppt[0] : null
+  const cppt = props?.pasien?.cppt || []
+  // console.log('CPPT', cppt)
+  const cpptPerawat = cppt?.filter(x => (x?.nakes === '3' || x?.nakes === '2')) || []
+  // console.log('KRS', cpptPerawat)
+
+  const diag = cpptPerawat?.length ? cpptPerawat[0] : null
   // console.log('KRS', diag)
 
   return diag

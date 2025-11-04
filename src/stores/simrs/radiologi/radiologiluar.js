@@ -58,7 +58,7 @@ export const useListRadiologiLuarStore = defineStore('list-radiologi-luar', {
         api.get('/v1/simrs/radiologi/radiologi/pasienradiologiluar', {
           params: this.params
         }).then(res => {
-          console.log('resp pasien radiologi luar', res)
+          // console.log('resp pasien radiologi luar', res)
           if (res.status === 200) {
             const total = res.data?.total
             const obj = res.data?.data
@@ -108,13 +108,13 @@ export const useListRadiologiLuarStore = defineStore('list-radiologi-luar', {
 
     async terimaPasien(val) {
       this.loadingTerima = true
-      console.log('terima pasien', val);
+      // console.log('terima pasien', val);
       const payload = {
         'notrans': val?.rs1
       }
       await api.post('/v1/simrs/radiologi/radiologi/terimapasienradiologiluar', payload)
         .then(resp => {
-          console.log('resp terima pasien radiologi', resp);
+          // console.log('resp terima pasien radiologi', resp);
           if (resp.status === 200) {
             // notifSuccessVue('Pasien berhasil diterima')
             // this.getDataTable()
@@ -132,7 +132,7 @@ export const useListRadiologiLuarStore = defineStore('list-radiologi-luar', {
     },
     async batalkanPasien(val) {
       this.loadingBatal = true
-      console.log('batalkan pasien', val);
+      // console.log('batalkan pasien', val);
       const payload = {
         'notrans': val?.rs1
       }
