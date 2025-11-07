@@ -13,10 +13,10 @@
               <div class="text-weight-bold">👤 {{ pasien?.nama }}</div>
             </div>
             <div class="row no-wrap items-center">
-              <div class="text-caption">⚤ {{ pasien?.kelamin }}</div>
+              <div class="text-caption">⚤ usia {{ pasien?.usia }} / {{ pasien?.kelamin }}</div>
             </div>
             <div class="row no-wrap items-center">
-              <div class="text-caption">⚤ {{ pasien?.alamat }}</div>
+              <div class="text-caption">⚤ {{ pasien?.alamat || '-' }}</div>
             </div>
           </q-card-section>
         </q-card>
@@ -119,18 +119,6 @@
                         <q-card-section>
                           <div class="row q-col-gutter-sm full-width">
 
-                            <!-- <div class="col-3 q-mb-sm"> -->
-                            <!-- <q-select v-model="item.ukuran" dense standout="bg-yellow-3 text-black" outlined
-                              label="Ukuran" :options="ukurans" emit-value map-options input-class="ellipsis" fill-input
-                              hide-bottom-space class="col-3" @update:model-value="(val) => {
-                                item.ukuran = val
-                              }" /> -->
-                            <!-- </div> -->
-                            <!-- <div class="col-3 q-mb-sm"> -->
-                            <!-- <app-input-simrs v-model="item.jumlah" label="Jumlah" class="col-3"
-                              :valid="{ required: false, number: true }" /> -->
-                            <!-- </div> -->
-
                             <app-autocomplete-new ref="refDokter" :model="item.kdPelaksana" label="Pelaksana Tindakan"
                               :key="item" autocomplete="nama" option-value="kdpegsimrs" option-label="nama" outlined
                               :source="store.dokters" class="col-6" @on-select="(val) => {
@@ -150,13 +138,18 @@
                               }" />
 
                             <div class="col-12 q-mb-sm"> Hasil : <span class="text-red">*</span> </div>
-                            <app-input-simrs-mode type="wysiwyg" v-model="item.hasil" :disable="false"
+                            <app-input-simrs-mode type="wysiwyg" v-model="item.hasilhtml" :disable="false"
                               class="col-12 q-mb-md" @update:model-value="(val) => {
                                 item.hasil = val
-                              }" :valid="{ required: true }" />
+                              }" :valid="{ required: true }" @plaintext:model-value="(val) => {
+                                item.hasil = val
+                              }" />
                             <div class="q-mb-sm">kesimpulan :</div>
-                            <app-input-simrs-mode type="wysiwyg" v-model="item.kesimpulan" :disable="false"
+                            <app-input-simrs-mode type="wysiwyg" v-model="item.kesimpulanhtml" :disable="false"
                               @update:model-value="(val) => {
+                                item.kesimpulan = val
+                              }" @plaintext:model-value="(val) => {
+                                // console.log('plaintext', val);
                                 item.kesimpulan = val
                               }" class="col-12 q-mb-md" :valid="{ required: true }" />
                           </div>
@@ -164,10 +157,10 @@
                         <q-separator />
 
                         <q-card-section class="bg-yellow-2">
-                          <div class="row q-col-gutter-sm justify-end">
-                            <!-- <div class="col-auto">
-                              <q-btn label="Batal" color="bg-dark" flat @click="store.batal(item)" />
-                            </div> -->
+                          <div class="row q-col-gutter-sm justify-between">
+                            <div class="col-auto">
+                              <q-btn label="Print" color="dark" icon="icon-mat-print" @click="isPrint = true" />
+                            </div>
                             <div class="col-auto">
                               <q-btn type="submit" label="Simpan" color="primary" class="q-mr-sm" />
                             </div>
@@ -178,6 +171,8 @@
                   </q-expansion-item>
 
                   <q-separator />
+
+                  <PrintModal v-model="isPrint" :item="item" :pasien="pasien" />
                 </template>
 
 
@@ -213,10 +208,12 @@
 import { date } from 'quasar'
 import { formatRp } from 'src/modules/formatter'
 import { storeToRefs } from 'pinia'
-import { onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 
 import { useListRadiologiLuarStore } from 'src/stores/simrs/radiologi/radiologiluar'
 import { usePengunjungRanapStore } from 'src/stores/simrs/ranap/pengunjung'
+
+import PrintModal from 'src/pages/simrs/radiologi/tindakan/comptindakan/pagemenu/permintaan/comp/PrintModal.vue'
 
 
 const props = defineProps({
@@ -229,6 +226,7 @@ const props = defineProps({
     default: false
   }
 })
+const isPrint = ref(false)
 
 
 

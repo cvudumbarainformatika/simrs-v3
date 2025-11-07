@@ -36,7 +36,9 @@ export const useFormRadiologiLuarStore = defineStore('form-radiologi-luar-store'
     ],
     perusahaans: [],
     loading: false,
-    loadingSimpan: false
+    loadingSimpan: false,
+    openDialogPeserta: false,
+    cekPeserta: null
   }),
   getters: {
     doubleCount: (state) => state.counter * 2
@@ -86,6 +88,7 @@ export const useFormRadiologiLuarStore = defineStore('form-radiologi-luar-store'
         nama: null,
         kelamin: null,
         tgllahir: null,
+        temp_lahir: null,
         alamat: null,
         // permintaan
         ygmeminta: null,
@@ -95,7 +98,44 @@ export const useFormRadiologiLuarStore = defineStore('form-radiologi-luar-store'
         jnsPembayaran: null,
         perusahaan_id: null
       }
-    }
+    },
+
+    async cekPesertaBpjs(by, no) {
+      this.cekPeserta = null
+      const params = { params: { by, no } }
+      await api.get('v1/simrs/pendaftaran/ranap/cek-peserta-bpjs', params)
+        .then(resp => {
+          // console.log('cekPesertaBpjs', resp)
+          const bpjs = resp?.data?.bpjs
+          const rs = resp?.data?.rs
+          if (bpjs.metadata.code === '200') {
+            this.cekPeserta = resp?.data?.bpjs?.result?.peserta
+            this.openDialogPeserta = true
+            console.log('cekPesertaBpjs', this.cekPeserta);
+
+          }
+          else {
+            // this.cekPeserta = null
+            // this.pasien.nama = null
+            // this.pasien.nokabpjs = null
+            // this.pasien.barulama = 'Baru'
+          }
+
+          if (rs) {
+            this.form.temp_lahir = rs.templahir
+          }
+          if (!rs) {
+            // this.resetFormPasienIfnotExist()
+          }
+          // if (resp.data.metadata.code === '200') {
+          //   this.cekPeserta = resp?.data.result.peserta
+          //   this.openDialogPeserta = true
+          // }
+        })
+        .catch(err => {
+          // console.log('cekPesertaBpjs', err)
+        })
+    },
 
   }
 })

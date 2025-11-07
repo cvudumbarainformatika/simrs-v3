@@ -4,6 +4,7 @@ import { usePengunjungPoliStore } from './pengunjung'
 import { notifErrVue, notifSuccess } from 'src/modules/utils'
 import { usePengunjungRanapStore } from '../../ranap/pengunjung'
 import { useListPasienHemodialisaStore } from '../../hemodialisa/hemodialisa'
+import { useKunjunganRehabmediStore } from '../rehabmedik/kunjungan'
 // import { dateDbFormat } from 'src/modules/formatter'
 
 export const useRadiologiPoli = defineStore('poli-radiologi', {
@@ -55,8 +56,10 @@ export const useRadiologiPoli = defineStore('poli-radiologi', {
       this.form[key] = value
     },
     async saveRadiologi(pasien, isRanap) {
-      if (!pasien?.kodedokter) {
-        return notifErrVue('kode Dokter masih kosong, silahkan tutup dulu pasien ini kemudian tekan tombol refresh di pojok kanan atas')
+      if (!isRanap) {
+        if (!pasien?.kodedokter) {
+          return notifErrVue('kode Dokter masih kosong, silahkan tutup dulu pasien ini kemudian tekan tombol refresh di pojok kanan atas')
+        }
       }
       this.loadingSave = true
       this.form.keterangan = this.form.diagnosakerja + ' ' + this.form.catatanpermintaan
@@ -77,10 +80,13 @@ export const useRadiologiPoli = defineStore('poli-radiologi', {
           const storePasien = usePengunjungPoliStore()
           const storeRanap = usePengunjungRanapStore()
           const storeHD = useListPasienHemodialisaStore()
+          const storeRemed = useKunjunganRehabmediStore()
           const isi = resp?.data?.result
           storePasien.injectDataPasien(pasien, isi, 'radiologi')
           storeRanap.injectDataPasien(pasien?.noreg, isi, 'radiologi')
           storeHD.injectDataPasien(pasien?.noreg, isi, 'radiologi')
+          storeRemed.injectDataPasien(pasien?.noreg, isi, 'radiologi')
+
           this.setNotas(resp?.data?.nota)
           notifSuccess(resp)
           this.loadingSave = false
@@ -115,6 +121,9 @@ export const useRadiologiPoli = defineStore('poli-radiologi', {
           storeRanap.injectDataPasien(pasien?.noreg, isi, 'radiologi')
           const storeHD = useListPasienHemodialisaStore()
           storeHD.injectDataPasien(pasien?.noreg, isi, 'radiologi')
+
+          const storeRemed = useKunjunganRehabmediStore()
+          storeRemed.injectDataPasien(pasien?.noreg, isi, 'radiologi')
         }
       }
     },
