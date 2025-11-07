@@ -84,7 +84,7 @@ export const useListKunjunganBpjsStore = defineStore('list_kunjungan_bpjs', {
       } catch (e) {
         console.log('e', e)
       } finally {
-        console.log('f', this.antrianBpjs)
+        // console.log('f', this.antrianBpjs)
         this.loadingBpjs = false
       }
     },

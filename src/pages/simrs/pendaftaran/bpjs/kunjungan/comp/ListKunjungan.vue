@@ -64,10 +64,10 @@
                 <q-btn icon="icon-mat-visibility" dense flat round color="grey" @click="showAntiran(item)">
                   <q-tooltip>Lihat Detail</q-tooltip>
                 </q-btn>
-                <q-btn
-                  v-if="getSatusAntrianBpjs(item)?.length == 1 && getSatusAntrianBpjs(item)[0]?.status?.toLowerCase() != 'selesai dilayani' && cekTanggal(item?.tgl_kunjungan)"
-                  icon="icon-mat-send" dense flat round color="primary"
-                  @click="kirimUlangitem(item, getSatusAntrianBpjs(item)[0])" :loading="item?.loading"
+                <q-btn v-if="getSatusAntrianBpjs(item)?.length == 1 &&
+                  getSatusAntrianBpjs(item)[0]?.status?.toLowerCase() != 'selesai dilayani' &&
+                  cekTanggal(item?.tgl_kunjungan) && cekAddAntrian(item)" icon="icon-mat-send" dense flat round
+                  color="primary" @click="kirimUlangitem(item, getSatusAntrianBpjs(item)[0])" :loading="item?.loading"
                   :disable="item?.loading">
 
                   <q-tooltip>Kirim Ulang</q-tooltip>
@@ -226,8 +226,8 @@
                 <div
                   v-if="perseta?.status?.toLowerCase() == 'belum dilayani' && isPeserta?.length == 1 && cekTanggal(perseta?.tanggal)"
                   class="row">
-                  <app-btn label="Kirim Ulang Antrian" @click="kirimUlang(perseta)" :loading="perseta?.loading"
-                    :disable="perseta?.loading" />
+                  <!-- <app-btn label="Kirim Ulang Antrian" @click="kirimUlang(perseta)" :loading="perseta?.loading"
+                    :disable="perseta?.loading" /> -->
                 </div>
               </div>
             </div>
@@ -322,6 +322,16 @@ function cekTanggal (tgl) {
   if (tgl_kunjungan >= semingguLalu) return true
   else return false
 }
+function cekAddAntrian (item) {
+  const addAntr = cariResponse('add', item?.bpjshttprespon)
+  const statusAnt = getSatusAntrianBpjs(item)
+  // console.log('cek add', addAntr[0]?.respon?.metadata?.code, statusAnt, item, statusAnt[0]?.sumberdata == "Mobile JKN")
+  if (statusAnt[0]?.sumberdata == "Mobile JKN") return true
+  else {
+    return addAntr[0]?.respon?.metadata?.code == 200 ? true : false
+  }
+
+}
 function showAntiran (item) {
   isPeserta.value = getSatusAntrianBpjs(item)
   openDialog.value = true
@@ -361,8 +371,9 @@ function kirimUlang (pst) {
   pst.loading = true
   const kodebooking = pst?.kodebooking
   const resBpjs = pesertaTertampung.value?.bpjshttprespon
+  const statusAnt = getSatusAntrianBpjs(pesertaTertampung.value)
   const maxTask = pesertaTertampung.value?.taskid?.map(x => parseInt(x?.taskid)).reduce((a, b) => Math.max(a, b), -Infinity)
-  const taskId = maxTask == 7 ? ['1', '2', '3', '4', '5', '6', '7'] : ['1', '2', '3', '4', '5']
+  const taskId = maxTask == 7 ? (statusAnt[0]?.sumberdata == "Mobile JKN" ? ['3', '4', '5', '6', '7'] : ['1', '2', '3', '4', '5', '6', '7']) : (statusAnt[0]?.sumberdata == "Mobile JKN" ? ['3', '4', '5'] : ['1', '2', '3', '4', '5'])
   const resp = []
   console.log('maks', maxTask)
 
