@@ -99,7 +99,7 @@ onMounted(() => {
   options.value = store.masterlaborat
 
   // cariRef.value.focus()
-  // console.log(formRef.value)
+  console.log(props.unit)
 })
 
 function saveOrderLaborat() {
