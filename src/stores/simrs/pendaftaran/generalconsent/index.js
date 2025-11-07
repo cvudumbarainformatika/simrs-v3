@@ -54,7 +54,7 @@ export const useGeneralConsentStore = defineStore('general_consent', {
 
     setForm (frm, val) {
       this.form[frm] = val
-      console.log('ttd', val, frm)
+      // console.log('ttd', val, frm)
     },
     resetFORM () {
       this.form = {}
@@ -97,7 +97,7 @@ export const useGeneralConsentStore = defineStore('general_consent', {
       return new Promise((resolve, reject) => {
         api.post('/v1/simrs/pendaftaran/generalconscent/simpangeneralcontent', this.form)
           .then(resp => {
-            console.log(resp)
+            // console.log(resp)
             this.form.ttdpasien = resp.data?.ttdpasien_url
             this.form.ttdpetugas = resp.data?.ttdpetugas
 
@@ -110,7 +110,7 @@ export const useGeneralConsentStore = defineStore('general_consent', {
               target.generalcons.pdf = 'generalconsent/' + resp?.data?.norm + '.pdf'
             }
 
-            console.log('inject', target)
+            // console.log('inject', target)
 
             // inject data pegawai
             const app = useAplikasiStore()

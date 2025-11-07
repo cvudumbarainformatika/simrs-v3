@@ -1,49 +1,23 @@
 <template>
   <div class="column full-height">
     <!-- <app-loading-bpjs /> -->
-    <div
-      class="col-auto fixed-top"
-      style="z-index:1"
-    >
-      <HeaderComp
-        :search="store.params.q"
-        :per-page="store.params.per_page"
-        @fullscreen="style.setComponentFull"
-        @set-tanggal="(val)=>store.setDate(val)"
-        @set-search="store.setQ"
-        @set-row="store.setPerPage"
-        @set-periode="store.setPeriodik"
-        @refresh="store.getLists"
-        @filter="store.setFilters"
-      />
+    <div class="col-auto fixed-top" style="z-index:1">
+      <HeaderComp :search="store.params.q" :per-page="store.params.per_page" :params="store.params"
+        :loading-bpjs="store.loadingBpjs" @fullscreen="style.setComponentFull"
+        @set-tanggal="(val) => store.setDate(val)" @set-search="store.setQ" @set-row="store.setPerPage"
+        @set-periode="store.setPeriodik" @refresh="store.getLists" @get-data="store.getLists" @filter="store.setFilters"
+        @flag="store.setFlag" @status="store.setFilterStatus" />
     </div>
-    <div
-      class="col full-height"
-      style="padding-bottom: 60px; padding-top:60px"
-    >
-      <ListKunjungan
-        :key="store.items"
-        :items="store.items"
-        :loading="store.loading"
-        :loading-h="store.loadingH"
-        @hapus="store.hapusPasien"
-      />
+    <div class="col full-height" style="padding-bottom: 60px; padding-top:60px">
+      <ListKunjungan :key="store.items" :items="store.items" :antrian="store.antrianBpjs" :loading="store.loading"
+        :loading-h="store.loadingH" :loading-bpjs="store.loadingBpjs" @hapus="store.hapusPasien"
+        @kirim="store.kirimUlangTask" />
     </div>
     <div class="fixed-bottom">
-      <BottomComp
-        v-if="store.meta !==null"
-        :key="store.meta"
-        :meta="store.meta"
-        @go-to="store.setPage"
-      />
+      <BottomComp v-if="store.meta !== null" :key="store.meta" :meta="store.meta" @go-to="store.setPage" />
     </div>
     <!-- right -->
-    <FilterPage
-      v-model="store.filters"
-
-      @close="store.setFilters"
-      @filter-data="store.filterData"
-    />
+    <FilterPage v-model="store.filters" @close="store.setFilters" @filter-data="store.filterData" />
   </div>
 </template>
 
