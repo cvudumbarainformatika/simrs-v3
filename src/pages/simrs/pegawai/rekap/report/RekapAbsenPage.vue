@@ -815,7 +815,7 @@ function getTerlambatHari(x) {
 }
 
 function getRekapTerlambatPercent(e) {
-  if (e > 0 && e <= 60) {
+  if (e >= 1 && e <= 60) {
     return 5
   }
   else if (e > 60 && e <= 120) {
@@ -836,7 +836,7 @@ function hitungTelat(x) {
   const kategoryMasuk = x.kategory ? x.kategory.masuk : '00:00:00'
 
   let created = new Date(x?.created_at)
-  created = date.subtractFromDate(created, { minutes: 0 }) // 15 menit kompensasi sdh di ganti 0 tgl 9 jul 2024 diganti lagi dengan 15 menit bln agustus 2024 diganti 0 lagi di desember 2024
+  created = date.subtractFromDate(created, { minutes: 1 }) // 15 menit kompensasi (toleransi terlambat) sdh di ganti 0 tgl 9 jul 2024 diganti lagi dengan 15 menit bln agustus 2024 diganti 0 lagi di desember 2024
 
   // const jamMasukServer = formatJam(created.setMinutes() + 15)
   const jamMasukServer = formatJam(created)
