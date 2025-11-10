@@ -17,6 +17,9 @@
                 <q-item-label lines="1">
                   Tujuan : <span class="text-dark text-weight-bold">{{ item?.nm_ruang }}</span>
                 </q-item-label>
+                <!-- <q-item-label v-if="item?.titipan" lines="1">
+                  dititipkan : <span class="text-dark text-weight-bold">{{ item?.nm_titipan }}</span>
+                </q-item-label> -->
 
                 <q-item-label caption lines="1">
                   <span>Pada Tanggal : <span class="text-primary">{{ humanDate(item?.rs2) }}</span></span>
