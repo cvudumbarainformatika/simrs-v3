@@ -1547,13 +1547,13 @@ function validasi () {
   const KelurahanDomisili = store.alamataDomisiliSama || store.form?.kewarganegaraan === 'WNA' ? true : refKelurahanDomisili?.value?.$refs?.refAuto?.validate()
   const KodePosDom = store.alamataDomisiliSama || store.form?.kewarganegaraan === 'WNA' ? true : refKodePosDom?.value?.$refs?.refInput?.validate()
   const bacatulis = !!store.form.bacatulis
-  const angkaantrean = !!store.form.angkaantrean
+  // const angkaantrean = !!store.form.angkaantrean
   if (!bacatulis) {
     notifErrVue('Bisa / Tidak bisa baca tulis belum dipilih')
   }
-  if (!angkaantrean) {
-    notifErrVue('Angka antrean belum Belum ada. Nomor Antrian harus mengandung Angka')
-  }
+  // if (!angkaantrean) {
+  //   notifErrVue('Angka antrean belum Belum ada. Nomor Antrian harus mengandung Angka')
+  // }
 
   if (
     JenisPasien && NoRM && Nama && Sapaan && Kelamin &&
@@ -1563,7 +1563,7 @@ function validasi () {
     Ktp && NoKaBpjs && Alamat && RT && RW && Negara && Propinsi &&
     Kabupaten && Kecamatan && Kelurahan && RTDomisili && RWDomisili &&
     NegaraDomisili && PropinsiDomisili && KabupatenDomisili &&
-    KecamatanDomisili && KodePosDom && KelurahanDomisili && Kitas && Hambatan && bacatulis && angkaantrean
+    KecamatanDomisili && KodePosDom && KelurahanDomisili && Kitas && Hambatan && bacatulis // && angkaantrean
   ) {
     valid = true
   }
