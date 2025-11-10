@@ -10,7 +10,7 @@
         <div class="col-3">Asal Ruangan </div>
         <div class="col-9">: {{ asalRuangan?.kamar }}</div>
         <template v-if="asalRuangan?.titipan">
-          <div class="col-3 text-red">Titipan Dari Ruangan </div>
+          <div class="col-3 text-red">dititipkan ke </div>
           <div class="col-9 text-red">: {{ asalRuangan?.titipan_ruang }}</div>
         </template>
         <div class="col-3">Kamar / No Bed</div>
@@ -42,8 +42,20 @@
           </div>
         </div>
 
+        <div class="col-3">{{ asalRuangan?.titipan ? 'Masih Jadi Titipan ?' : 'Titipkan Pasien ?' }} </div>
+        <div class="col-9 flex q-gutter-x-sm ">
+          <div class="flex-1 full-width">
+            <q-checkbox v-model="store.form.titipan" label="Ya" @update:model-value="() => {
+              store.form.ruanganTujuan = null
+              store.form.ruanganTitipan = null
+              store.selectRuangan = null
+              store.form.kamar = null
+              store.form.noBed = null
+            }" />
+          </div>
+        </div>
 
-        <div class="col-3">Ruangan Tujuan </div>
+        <div class="col-3">Ruangan Tujuan</div>
         <div class="col-9 flex q-gutter-x-sm ">
           <div class="flex-1 full-width">
             <app-autocomplete-new ref="refRuangan" :model="store.form.ruanganTujuan" label="Tujuan" autocomplete="rs2"
@@ -63,6 +75,28 @@
               }" />
           </div>
         </div>
+        <template v-if="store.form.titipan">
+          <div class="col-3">Di titipkan di</div>
+          <div class="col-9 flex q-gutter-x-sm ">
+            <div class="flex-1 full-width">
+              <app-autocomplete-new ref="refRuangan" :model="store.form.ruanganTitipan" label="di titipkan di"
+                autocomplete="rs2" option-value="rs1" option-label="rs2" outlined :source="store.ruangans" @on-select="(val) => {
+                  // console.log('val', val);
+
+                  store.form.ruanganTitipan = val
+                  store.showKamar(val)
+                  store.selectRuangan = store?.ruangans?.find((x) => x?.rs1 === val)?.rs2 || null
+                  store.form.kamar = null
+                  store.form.noBed = null
+                }" @clear="() => {
+                  store.form.ruanganTitipan = null
+                  store.form.kamar = null
+                  store.selectRuangan = null
+                  store.form.noBed = null
+                }" />
+            </div>
+          </div>
+        </template>
         <div class="col-3">Kamar / No Bed</div>
         <div class="col-9 flex q-gutter-x-sm">
           <div class="flex-1 full-width row q-col-gutter-x-sm">
@@ -98,33 +132,10 @@
               }" />
           </div>
         </div>
-        <!-- <div class="col-4">Nomor Bed </div> -->
-        <!-- <div class="col-8 flex q-gutter-x-sm">
-          <div class="flex-1 full-width">
-            <app-autocomplete-new ref="refBed" :model="store.form.noBed" label="No Bed" autocomplete="rs2"
-              option-value="rs2" option-label="rs2" outlined :source="store.beds" @on-select="(val) => {
-                // console.log('val', val);
 
-                store.form.noBed = val
-                // store.showKamar(val)
-                // store.showBed(store.selectRuangan, val)
-              }" @clear="() => {
-                store.form.kamar = null
-                store.selectRuangan = null
-                store.form.noBed = null
-              }" />
-          </div>
-        </div> -->
-        <!-- <div class="col-4">Tarip </div>
-        <div class="col-8">: Rp. tarrrrr</div> -->
-        <template v-if="asalRuangan?.titipan">
-          <div class="col-3">Masih Jadi Titipan ? </div>
-          <div class="col-9 flex q-gutter-x-sm ">
-            <div class="flex-1 full-width">
-              <q-checkbox v-model="store.form.titipan" label="Ya" />
-            </div>
-          </div>
-        </template>
+        <!-- <template> -->
+
+        <!-- </template> -->
 
       </div>
       <q-separator class="q-my-xs" />

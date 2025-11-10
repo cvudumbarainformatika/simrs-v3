@@ -22,6 +22,7 @@ export const useMutasiRanapStore = defineStore('mutasi-ranap-store', {
       noBed: null,
       kd_mutasi: null,
       titipan: false,
+      ruanganTitipan: null,
 
       // document serah terima
       derajatPasien: null,
@@ -249,6 +250,7 @@ export const useMutasiRanapStore = defineStore('mutasi-ranap-store', {
         const ruang = this.form.ruanganTujuan
         const kamar = this.form.kamar
         const nobed = this.form.noBed
+        const ruanganTitipan = this.form.ruanganTitipan
         // const biaya_kamar = pasien.biaya_kamar.value
         // const biaya_dokter2 = pasien.biaya_dokter2.value
 
@@ -268,6 +270,7 @@ export const useMutasiRanapStore = defineStore('mutasi-ranap-store', {
           kd_kelas,
           kd_mutasi,
           titipan,
+          ruanganTitipan,
           ruang,
           kamar,
           nobed,

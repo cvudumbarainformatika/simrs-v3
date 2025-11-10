@@ -3,7 +3,7 @@ const daysInMonth = (month, year) => {
 }
 
 const bulans = (num) => {
-  const arr = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'Novermber', 'Desember']
+  const arr = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember']
   if (num !== null || num !== 0 || num !== 'undefined') {
     return arr[num - 1]
   }
@@ -11,7 +11,7 @@ const bulans = (num) => {
 }
 
 const months = () => {
-  const arr = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'Novermber', 'Desember']
+  const arr = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember']
   return arr
 }
 
