@@ -160,7 +160,7 @@ export const usePendaftaranPasienStore = defineStore('pendaftaran_pasien', {
       this.form[key] = val
     },
     setNoAntrian (val) {
-      console.log('antrian ', val)
+      // console.log('antrian ', val)
       if (val) {
         const regex = /^\d+$/
         if (val?.length > 1) {
