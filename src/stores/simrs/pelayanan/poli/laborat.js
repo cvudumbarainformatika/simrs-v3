@@ -227,7 +227,7 @@ export const useLaboratPoli = defineStore('laborat-poli', {
     async saveOrderLaboratBaru(pasien, isRanap) {
       // console.log('pasien', pasien)
       if (!isRanap) {
-        if (!pasien?.kodedokter || !this.form.kodedokter) {
+        if (!pasien?.kodedokter) {
           return notifErrVue('kode Dokter masih kosong, silahkan tutup dulu pasien ini kemudian tekan tombol refresh di pojok kanan atas')
         }
       }
