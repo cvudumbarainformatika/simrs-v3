@@ -135,7 +135,7 @@ const props = defineProps({
   }
 })
 
-const bulans = ref(['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'Novermber', 'Desember'])
+const bulans = ref(['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'])
 
 const bentukArrBaru = computed(() => {
   const terimalangsung = props?.item?.penerimaanrinci?.filter((x) => x.jenis_penerimaan !== 'Pesanan' && x.kunci === '1')?.map(x => {
@@ -376,7 +376,7 @@ const saldoAwal = computed(() => {
 })
 
 // eslint-disable-next-line no-unused-vars
-function carigudang (val) {
+function carigudang(val) {
   // console.log(app)
   const gud = app?.gudangs?.find(a => a.kode === val)
   const ruang = app?.ruangs?.find(a => a.kode === val)
@@ -384,7 +384,7 @@ function carigudang (val) {
 }
 
 // eslint-disable-next-line no-unused-vars
-function cariHasilAkhirArray (i) {
+function cariHasilAkhirArray(i) {
   // const total = 0
   const arr = bentukArrBaru.value ?? []
   if (arr?.length) {

@@ -10,7 +10,7 @@
         <div class="col-3">Asal Ruangan </div>
         <div class="col-9">: {{ asalRuangan?.kamar }}</div>
         <template v-if="asalRuangan?.titipan">
-          <div class="col-3 text-red">Titipan Dari Ruangan </div>
+          <div class="col-3 text-red">dititipkan ke </div>
           <div class="col-9 text-red">: {{ asalRuangan?.titipan_ruang }}</div>
         </template>
         <div class="col-3">Kamar / No Bed</div>
