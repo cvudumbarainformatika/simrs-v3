@@ -414,7 +414,8 @@ export const useMutasiRanapStore = defineStore('mutasi-ranap-store', {
 
       this.form = {
         kd_mutasi: null,
-        titipan: this.ruanganAsal?.titipan ? true : false,
+        // titipan: this.ruanganAsal?.titipan ? true : false,
+        titipan: false,
         ruanganTujuan: null,
         kamar: null,
         noBed: null,
