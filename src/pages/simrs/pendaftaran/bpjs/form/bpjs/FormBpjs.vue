@@ -126,6 +126,9 @@ function simpanData () {
   // console.log('pasien', dataPasien,
   //   'regis', dataRegis
   // )
+  // console.log('pasien', dataPasien,
+  //   'regis', dataRegis
+  // )
   if (dataPasien.save && dataRegis.save) {
     const keys = Object.keys(dataPasien.form)
     if (keys?.length) {
@@ -135,7 +138,7 @@ function simpanData () {
     }
     console.log('form registrasi ', registrasi.form)
     registrasi.simpanRegistrasi().then(resp => {
-      console.log('resp bpjs', resp)
+      // console.log('resp bpjs', resp)
       const antrian = resp.antrian.data
       const nomor = antrian ? antrian.nomor : '-'
       const poli = antrian ? antrian.nama_layanan : '-'

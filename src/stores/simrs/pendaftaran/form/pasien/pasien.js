@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia'
+import { acceptHMRUpdate, defineStore } from 'pinia'
 import { api } from 'boot/axios'
 import { findWithAttr, notifErrVue } from 'src/modules/utils'
 import { date } from 'quasar'
@@ -6,7 +6,7 @@ import { usePendaftaranAutocompleteStore } from '../../autocomplete'
 
 export const usePendaftaranPasienStore = defineStore('pendaftaran_pasien', {
   state: () => ({
-    autocompleteStore: usePendaftaranAutocompleteStore(),
+
     loading: false,
     cariPasienDialog: false,
     alamataDomisiliSama: false,
@@ -160,9 +160,11 @@ export const usePendaftaranPasienStore = defineStore('pendaftaran_pasien', {
       this.form[key] = val
     },
     setNoAntrian (val) {
-      // console.log('antrian ', val)
+
       if (val) {
         const regex = /^\d+$/
+        let temp = 0
+
         if (val?.length > 1) {
           const txt = val.split('')
           let txtTr = 0
@@ -171,11 +173,14 @@ export const usePendaftaranPasienStore = defineStore('pendaftaran_pasien', {
               txtTr += 1
             }
           })
-          const temp = parseInt(val.slice(txtTr, val?.length))
-          this.setForm('angkaantrean', temp)
+          // console.log('txt', txt, txtTr)
+
+          temp = parseInt(val.slice(txtTr, val?.length))
+          this.setForm('angkaantrean', !isNaN(Number(temp)) ? temp : null)
           this.setForm('noantrian', val)
         }
       }
+      // console.log('antrian ', val, this.form.angkaantrean, this.form.noantrian)
     },
     negaraSelected (val) {
       // cnoantriannst index = findWithAttr(this.negaras, 'kd_negara', val)
@@ -610,9 +615,10 @@ export const usePendaftaranPasienStore = defineStore('pendaftaran_pasien', {
     },
     // initial data
     getInitialData () {
+      const autocompleteStore = usePendaftaranAutocompleteStore()
       this.setTanggalLahir()
-      if (this.autocompleteStore.negaras?.length) {
-        this.negaras = this.autocompleteStore.negaras
+      if (autocompleteStore.negaras?.length) {
+        this.negaras = autocompleteStore.negaras
         this.negaraSelected('62')
       }
       else {
@@ -621,8 +627,8 @@ export const usePendaftaranPasienStore = defineStore('pendaftaran_pasien', {
         })
       }
 
-      if (this.autocompleteStore.domisiliNegaras?.length) {
-        this.domisiliNegaras = this.autocompleteStore.domisiliNegaras
+      if (autocompleteStore.domisiliNegaras?.length) {
+        this.domisiliNegaras = autocompleteStore.domisiliNegaras
         this.negaraDomisiliSelected('62')
       }
       else {
@@ -631,8 +637,8 @@ export const usePendaftaranPasienStore = defineStore('pendaftaran_pasien', {
         })
       }
 
-      if (this.autocompleteStore.propinsies?.length) {
-        this.propinsies = this.autocompleteStore.propinsies
+      if (autocompleteStore.propinsies?.length) {
+        this.propinsies = autocompleteStore.propinsies
         this.propinsiSelected('35')
         this.getKota()
       }
@@ -643,8 +649,8 @@ export const usePendaftaranPasienStore = defineStore('pendaftaran_pasien', {
         })
       }
 
-      if (this.autocompleteStore.domisiliPropinsies?.length) {
-        this.domisiliPropinsies = this.autocompleteStore.domisiliPropinsies
+      if (autocompleteStore.domisiliPropinsies?.length) {
+        this.domisiliPropinsies = autocompleteStore.domisiliPropinsies
         this.propinsiDomisiliSelected('35')
         this.getKotaDomisili()
       }
@@ -655,57 +661,57 @@ export const usePendaftaranPasienStore = defineStore('pendaftaran_pasien', {
         })
       }
 
-      if (this.autocompleteStore.agamas?.length) {
-        this.domisiliNegaras = this.autocompleteStore.domisiliNegaras
-        this.agamas = this.autocompleteStore.agamas
+      if (autocompleteStore.agamas?.length) {
+        this.domisiliNegaras = autocompleteStore.domisiliNegaras
+        this.agamas = autocompleteStore.agamas
       }
       else {
         this.getAgama()
       }
 
-      if (this.autocompleteStore.sapaans?.length) {
-        this.domisiliNegaras = this.autocompleteStore.domisiliNegaras
-        this.sapaans = this.autocompleteStore.sapaans
+      if (autocompleteStore.sapaans?.length) {
+        this.domisiliNegaras = autocompleteStore.domisiliNegaras
+        this.sapaans = autocompleteStore.sapaans
       }
       else {
         this.getSapaan()
       }
 
-      if (this.autocompleteStore.kelamins?.length) {
-        this.kelamins = this.autocompleteStore.kelamins
+      if (autocompleteStore.kelamins?.length) {
+        this.kelamins = autocompleteStore.kelamins
       }
       else {
         this.getKelamin()
       }
 
-      if (this.autocompleteStore.pendidikans?.length) {
-        this.pendidikans = this.autocompleteStore.pendidikans
+      if (autocompleteStore.pendidikans?.length) {
+        this.pendidikans = autocompleteStore.pendidikans
       }
       else {
         this.getPendidikan()
       }
 
-      if (this.autocompleteStore.statuspernikahans?.length) {
-        this.statuspernikahans = this.autocompleteStore.statuspernikahans
+      if (autocompleteStore.statuspernikahans?.length) {
+        this.statuspernikahans = autocompleteStore.statuspernikahans
       }
       else {
         this.getStatusPernikahan()
       }
 
-      if (this.autocompleteStore.pekerjaans?.length) {
-        this.pekerjaans = this.autocompleteStore.pekerjaans
+      if (autocompleteStore.pekerjaans?.length) {
+        this.pekerjaans = autocompleteStore.pekerjaans
       }
       else {
         this.getPekerjaan()
       }
-      if (this.autocompleteStore.bahasas?.length) {
-        this.bahasas = this.autocompleteStore.bahasas
+      if (autocompleteStore.bahasas?.length) {
+        this.bahasas = autocompleteStore.bahasas
       }
       else {
         this.getBahasa()
       }
-      if (this.autocompleteStore.hambatans?.length) {
-        this.hambatans = this.autocompleteStore.hambatans
+      if (autocompleteStore.hambatans?.length) {
+        this.hambatans = autocompleteStore.hambatans
       }
       else {
         this.getHambatan()
@@ -725,43 +731,47 @@ export const usePendaftaranPasienStore = defineStore('pendaftaran_pasien', {
         })
     },
     async getPekerjaan () {
+      const autocompleteStore = usePendaftaranAutocompleteStore()
       this.loading = true
       await api.get('v1/simrs/master/pekerjaan')
         .then(resp => {
           this.loading = false
           this.pekerjaans = resp.data
-          this.autocompleteStore.setPekerjaan(resp.data)
+          autocompleteStore.setPekerjaan(resp.data)
         })
         .catch(() => { this.loading = false })
     },
     async getStatusPernikahan () {
+      const autocompleteStore = usePendaftaranAutocompleteStore()
       this.loading = true
       await api.get('v1/simrs/master/statuspernikahan')
         .then(resp => {
           console.log('status pernikahan', resp.data)
           this.loading = false
-          this.autocompleteStore.setStatusPenikahan(resp.data)
+          autocompleteStore.setStatusPenikahan(resp.data)
           this.statuspernikahans = resp.data
         })
         .catch(() => { this.loading = false })
     },
     async getPendidikan () {
+      const autocompleteStore = usePendaftaranAutocompleteStore()
       this.loading = true
       await api.get('v1/simrs/master/pendidikan')
         .then(resp => {
           this.loading = false
           this.pendidikans = resp.data
-          this.autocompleteStore.setPendidikan(resp.data)
+          autocompleteStore.setPendidikan(resp.data)
         })
         .catch(() => { this.loading = false })
     },
     async getKelamin () {
+      const autocompleteStore = usePendaftaranAutocompleteStore()
       this.loading = true
       await api.get('v1/simrs/master/kelamin')
         .then(resp => {
           this.loading = false
           this.kelamins = resp.data
-          this.autocompleteStore.setKelamin(resp.data)
+          autocompleteStore.setKelamin(resp.data)
         })
         .catch(() => {
           this.kelamins = [
@@ -772,27 +782,30 @@ export const usePendaftaranPasienStore = defineStore('pendaftaran_pasien', {
         })
     },
     async getSapaan () {
+      const autocompleteStore = usePendaftaranAutocompleteStore()
       this.loading = true
       await api.get('v1/simrs/master/sapaan')
         .then(resp => {
           this.loading = false
           this.sapaans = resp.data
-          this.autocompleteStore.setSapaan(resp.data)
+          autocompleteStore.setSapaan(resp.data)
         })
         .catch(() => { this.loading = false })
     },
     async getAgama () {
+      const autocompleteStore = usePendaftaranAutocompleteStore()
       this.loading = true
       await api.get('v1/simrs/master/agama')
         .then(resp => {
           this.loading = false
           this.agamas = resp.data
-          this.autocompleteStore.setAgama(resp.data)
+          autocompleteStore.setAgama(resp.data)
         })
         .catch(() => { this.loading = false })
     },
     // api propinsi kebawah
     async getNegara () {
+      const autocompleteStore = usePendaftaranAutocompleteStore()
       this.loadingSelect = true
       const param = { params: this.paramWilayah }
       await api.get('v1/simrs/master/getnegara', param)
@@ -800,12 +813,13 @@ export const usePendaftaranPasienStore = defineStore('pendaftaran_pasien', {
           this.loadingSelect = false
           // )
           this.negaras = resp.data[0]
-          this.autocompleteStore.setNegara(resp.data[0])
+          autocompleteStore.setNegara(resp.data[0])
         }).catch(() => {
           this.loadingSelect = false
         })
     },
     async getProvinces () {
+      const autocompleteStore = usePendaftaranAutocompleteStore()
       this.loadingPropinsi = true
       const param = { params: this.paramWilayah }
       await api.get('v1/simrs/master/getpropinsi', param)
@@ -814,7 +828,7 @@ export const usePendaftaranPasienStore = defineStore('pendaftaran_pasien', {
           this.loadingPropinsi = false
 
           this.propinsies = resp.data[0]
-          this.autocompleteStore.setPropinsi(resp.data[0])
+          autocompleteStore.setPropinsi(resp.data[0])
           return new Promise(resolve => { resolve(resp) })
         }).catch(() => {
           this.loadingPropinsi = false
@@ -859,25 +873,27 @@ export const usePendaftaranPasienStore = defineStore('pendaftaran_pasien', {
         })
     },
     async getNegaraDomisili () {
+      const autocompleteStore = usePendaftaranAutocompleteStore()
       this.loadingSelectDomisili = true
       const param = { params: this.paramWilayahDomisili }
       await api.get('v1/simrs/master/getnegara', param)
         .then((resp) => {
           this.loadingSelectDomisili = false
           this.domisiliNegaras = resp.data[0]
-          this.autocompleteStore.setNegaraDomisili(resp.data[0])
+          autocompleteStore.setNegaraDomisili(resp.data[0])
         }).catch(() => {
           this.loadingSelectDomisili = false
         })
     },
     async getProvincesDomisili () {
+      const autocompleteStore = usePendaftaranAutocompleteStore()
       this.loadingPropinsiDomisili = true
       const param = { params: this.paramWilayahDomisili }
       await api.get('v1/simrs/master/getpropinsi', param)
         .then((resp) => {
           this.loadingPropinsiDomisili = false
           this.domisiliPropinsies = resp.data[0]
-          this.autocompleteStore.setPropinsiDomisili(resp.data[0])
+          autocompleteStore.setPropinsiDomisili(resp.data[0])
           return new Promise(resolve => { resolve(resp) })
         }).catch(() => {
           this.loadingPropinsiDomisili = false
@@ -921,19 +937,21 @@ export const usePendaftaranPasienStore = defineStore('pendaftaran_pasien', {
         })
     },
     async getBahasa () {
+      const autocompleteStore = usePendaftaranAutocompleteStore()
       this.loadingBahasa = true
       await api.get('v1/simrs/master/listbahasa')
         .then((resp) => {
           this.loadingBahasa = false
           console.log('bahasa', resp.data)
           this.bahasas = resp.data
-          this.autocompleteStore.setBahasa(resp.data)
+          autocompleteStore.setBahasa(resp.data)
           return new Promise(resolve => { resolve(resp) })
         }).catch(() => {
           this.loadingBahasa = false
         })
     },
     async getHambatan () {
+      const autocompleteStore = usePendaftaranAutocompleteStore()
       this.loadingHambatan = true
       await api.get('v1/simrs/master/listmhambatan')
         .then((resp) => {
@@ -945,7 +963,7 @@ export const usePendaftaranPasienStore = defineStore('pendaftaran_pasien', {
               a.kdhambatan = String(a.id)
             })
           }
-          this.autocompleteStore.setHamabatan(resp.data)
+          autocompleteStore.setHamabatan(resp.data)
           return new Promise(resolve => { resolve(resp) })
         }).catch(() => {
           this.loadingHambatan = false
@@ -1100,3 +1118,6 @@ export const usePendaftaranPasienStore = defineStore('pendaftaran_pasien', {
     }
   }
 })
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(usePendaftaranPasienStore, import.meta.hot))
+}

@@ -613,7 +613,7 @@
                 <div class="row q-col-gutter-sm items-center q-mb-xs">
                   <div class="col-12">
                     <app-input ref="refNoAntrian" v-model="store.form.noantrian" label="Nomor Antrian" outlined
-                      @blur="setNoAntrian($event)" />
+                      @update:model-value="setNoAntrian($event)" @blur="setNoAntrian($event)" />
                     <!-- @update:model-value="setNoAntrian" -->
                   </div>
                 </div>
@@ -1216,7 +1216,9 @@ function setRW (val) {
 // set nomor Antrian
 
 function setNoAntrian (evt) {
-  const val = evt.target.value
+  // console.log('set antrian', evt)
+
+  const val = evt?.target?.value ?? evt
   store.noantrian = val
   store.setNoAntrian(val)
 }
@@ -1523,6 +1525,10 @@ function validasi () {
   const NoTlp = refNoTlp.value.$refs.refInput.validate()
   const KodePos = refKodePos.value ? refKodePos.value?.$refs?.refInput.validate() : true
   const NoAntrian = refNoAntrian.value ? refNoAntrian.value.$refs.refInput.validate() : true
+  const angkaantrean = refNoAntrian.value ? !!store.form.angkaantrean : true
+
+  // console.log('no antrian', NoAntrian, refNoAntrian.value)
+
 
   const Ktp = refKtp.value ? refKtp.value?.$refs?.refInput.validate() : true
   const Kitas = refKitas.value ? refKitas.value.$refs.refInput.validate() : true
@@ -1547,13 +1553,12 @@ function validasi () {
   const KelurahanDomisili = store.alamataDomisiliSama || store.form?.kewarganegaraan === 'WNA' ? true : refKelurahanDomisili?.value?.$refs?.refAuto?.validate()
   const KodePosDom = store.alamataDomisiliSama || store.form?.kewarganegaraan === 'WNA' ? true : refKodePosDom?.value?.$refs?.refInput?.validate()
   const bacatulis = !!store.form.bacatulis
-  // const angkaantrean = !!store.form.angkaantrean
   if (!bacatulis) {
     notifErrVue('Bisa / Tidak bisa baca tulis belum dipilih')
   }
-  // if (!angkaantrean) {
-  //   notifErrVue('Angka antrean belum Belum ada. Nomor Antrian harus mengandung Angka')
-  // }
+  if (!angkaantrean) {
+    notifErrVue('Angka antrean belum Belum ada. Nomor Antrian harus mengandung Angka')
+  }
 
   if (
     JenisPasien && NoRM && Nama && Sapaan && Kelamin &&
