@@ -1,38 +1,20 @@
 <template>
-  <q-dialog
-    v-model="fixed"
-    full-width
-    full-height
-  >
-    <q-card
-      style="width: 100%"
-    >
+  <q-dialog v-model="fixed" full-width full-height>
+    <q-card style="width: 100%">
       <q-card-section class="row items-center q-pb-none">
         <div class="text-h6 items-center">
           PEMESANAN OBAT
         </div>
         <q-space />
-        <q-btn
-          v-close-popup
-          icon="icon-mat-close"
-          flat
-          round
-          dense
-        />
+        <q-btn v-close-popup icon="icon-mat-close" flat round dense />
       </q-card-section>
       <q-separator />
-      <div
-        id="printMe"
-        style="width: 17cm;"
-        class="q-pa-xs full-width"
-      >
+      <div id="printMe" style="width: 17cm;" class="q-pa-xs full-width">
         <KopSurat />
         <div>
           <q-card-section>
-            <div
-              class="row justify-center"
-            >
-              <em><b><u>  Nomor Pemesanan Obat : {{ store.cetaks[0]?.nopemesanan }} </u></b></em>
+            <div class="row justify-center">
+              <em><b><u> Nomor Pemesanan Obat : {{ store.cetaks[0]?.nopemesanan }} </u></b></em>
             </div>
 
             <div class="row no-wrap q-mt-md bg-grey-3 full-width">
@@ -82,13 +64,7 @@
         <br>
         <q-separator />
         <br>
-        <q-markup-table
-          separator="vertical"
-          flat
-          bordered
-          dense
-          wrap-cells
-        >
+        <q-markup-table separator="vertical" flat bordered dense wrap-cells>
           <thead>
             <tr>
               <th class="text-center">
@@ -109,10 +85,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr
-              v-for="(rincians, s) in store.cetaks[0]?.rinci"
-              :key="s"
-            >
+            <tr v-for="(rincians, s) in store.cetaks[0]?.rinci" :key="s">
               <td>{{ s + 1 }}.</td>
               <td>
                 {{ rincians?.masterobat?.nama_obat }} <br>
@@ -147,18 +120,39 @@
           </div>
         </div>
         <q-separator class="print-hide" />
+        <div class="row q-my-sm q-px-sm">
+          <div class="col-6"></div>
+          <div class="col-6 text-center">
+            <div class="row justify-center q-mt-sm">
+              <div class="col-12 text-center">
+                Ka. Instalasi Farmasi
+              </div>
+            </div>
+            <div class="row justify-center q-mb-sm">
+              <div class="col-12 text-center">
+                RSUD Dokter Mohamad Saleh
+              </div>
+            </div>
+            <div class="row justify-center q-my-xl">
 
-        <q-card-actions
-          align="right"
-        >
-          <q-btn
-            ref="refPrint"
-            v-print="printObj"
-            color="primary"
-            label="Cetak"
-            class="print-hide"
-            icon-right="icon-mat-print"
-          />
+            </div>
+            <div class="row justify-center q-my-sm">
+              <div class="col-12 text-center">
+                {{ store?.kafarmasi?.nama ?? '(........................)' }}
+              </div>
+            </div>
+            <div class="row justify-center q-my-sm">
+              <div class="col-12 text-center">
+                SIPA : {{ sip(store?.kafarmasi?.regijin)?.nomor ?? '(........................)' }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <q-card-actions align="right">
+          <q-btn ref="refPrint" v-print="printObj" color="primary" label="Cetak" class="print-hide"
+            icon-right="icon-mat-print" />
         </q-card-actions>
       </div>
       <!-- <div v-else>
@@ -177,7 +171,10 @@ const store = useListPemesananStore()
 const angka = (number) => {
   return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')
 }
-
+function sip (data) {
+  const ada = data?.find(f => f?.jenis == 'SIP')
+  return ada ?? null
+}
 const printObj = {
   id: 'printMe',
   popTitle: ' '

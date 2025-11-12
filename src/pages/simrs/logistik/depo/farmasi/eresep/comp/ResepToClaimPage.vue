@@ -2,32 +2,16 @@
   <q-dialog id="endas" maximized>
     <div class="bg-white text-center">
       <div class="row justify-end q-mr-md">
-        <q-btn
-          round
-          class="f-10 q-mr-sm"
-          color="primary"
-          text-color="white"
-          icon="icon-mat-download"
-          @click="printPage()"
-        >
-          <q-tooltip
-            class="primary"
-            :offset="[10, 10]"
-          >
+        <q-btn round class="f-10 q-mr-sm" color="primary" text-color="white" icon="icon-mat-download"
+          @click="printPage()">
+          <q-tooltip class="primary" :offset="[10, 10]">
             Download Resep
           </q-tooltip>
         </q-btn>
       </div>
-      <div
-        ref="content"
-        id="printGueeee"
-        class="column items-center bg-white page-x f-12 "
-        style="width: 216mm;"
-      >
+      <div ref="content" id="printGueeee" class="column items-center bg-white page-x f-12 " style="width: 216mm;">
         <div class="garis-all">
-          <div
-            class="col no-wrap  text-center"
-          >
+          <div class="col no-wrap  text-center">
             <div class="row no-wrap justify-center">
               <div class="col-12">
                 <div class="f-16">
@@ -37,7 +21,8 @@
                   KOTA PROBOLINGGO
                 </div>
                 <div class="f-10 q-mb-xs row no-wrap justify-center">
-                  Jl. Mayjen Panjaitan No. 65 Telp. (0335) 4492119, 433119, 421118 Fax. (0335) 432702 E-mail : rsudprob@probolinggokota.go.id PROBOLINGGO-67219
+                  Jl. Mayjen Panjaitan No. 65 Telp. (0335) 4492119, 433119, 421118 Fax. (0335) 432702 E-mail :
+                  rsudprob@probolinggokota.go.id PROBOLINGGO-67219
                 </div>
               </div>
             </div>
@@ -118,7 +103,7 @@
                     <div class="col-4">
                       Dokter
                     </div>
-                    <div v-if="item?.depo ==='Gd-05010101' && item?.kunjunganrajal?.length" class="col-6">
+                    <div v-if="item?.depo === 'Gd-05010101' && item?.kunjunganrajal?.length" class="col-6">
                       {{ item?.kunjunganrajal[0]?.doktersimpeg?.nama }}
                     </div>
                     <div v-else>
@@ -132,28 +117,25 @@
               </div>
               <!-- obatnya -->
               <div class=" q-ml-xs">
-                <div
-                  v-if="item?.permintaanresep?.length && !head"
-                  class="q-mt-sm full-width"
-                >
+                <div v-if="item?.permintaanresep?.length && !head" class="q-mt-sm full-width">
                   <div class="">
-                    <div v-for="(rinc,i) in item?.permintaanresep" :key="i">
+                    <div v-for="(rinc, i) in item?.permintaanresep" :key="i">
                       <div>
                         <div class="row justify-between q-mb-xs">
                           <div class="col-shrink" style="max-width: 5%;">
-                            {{ i+1 }}
+                            {{ i + 1 }}
                           </div>
                           <div class="col-6 ">
                             {{ rinc?.mobat?.nama_obat }}
                           </div>
                           <div class="col-2">
-                            <i>{{ rinc?.aturan }}  </i>
+                            <i>{{ rinc?.aturan }} </i>
                           </div>
                           <div class="col-2">
-                            <i>{{ rinc?.jumlah }}  {{ rinc?.mobat?.satuan_k }}</i>
+                            <i>{{ rinc?.jumlah }} {{ rinc?.mobat?.satuan_k }}</i>
                           </div>
                         </div>
-                        <div v-if="rinc?.keterangan!=='-'" class="row justify-between f-10 text-italic q-mb-xs">
+                        <div v-if="rinc?.keterangan !== '-'" class="row justify-between f-10 text-italic q-mb-xs">
                           * Ket : {{ rinc?.keterangan }}
                         </div>
                       </div>
@@ -161,32 +143,26 @@
                   </div>
                 </div>
 
-                <div
-                  v-if="item?.listRacikan?.length && !head"
-                  class="full-width"
-                >
-                  <div
-                    v-for="(lirac,i) in item?.listRacikan"
-                    :key="i"
-                    class="full-width q-mb-xs"
-                  >
+                <div v-if="item?.listRacikan?.length && !head" class="full-width">
+                  <div v-for="(lirac, i) in item?.listRacikan" :key="i" class="full-width q-mb-xs">
                     <div class="row items-center justify-between ">
                       <div class="col-shrink ">
-                        {{ item?.permintaanresep?.length+i+1 }}
+                        {{ item?.permintaanresep?.length + i + 1 }}
                       </div>
                       <div class="col-5 ">
                         {{ lirac?.namaracikan }}
                       </div>
                       <div class="col-2 ">
-                        <i>{{ lirac?.aturan }}  </i>
+                        <i>{{ lirac?.aturan }} </i>
                       </div>
                       <div class="col-2 ">
-                        <i>{{ lirac?.jumlahdibutuhkan }}  {{ lirac?.satuan_racik }}</i>
+                        <i>{{ lirac?.jumlahdibutuhkan }} {{ lirac?.satuan_racik }}</i>
                       </div>
                     </div>
-                    <div v-for="(rac,n) in lirac?.rincian" :key="n">
+                    <div v-for="(rac, n) in lirac?.rincian" :key="n">
                       <div class="row q-ml-lg f-12 items-end">
-                        <div>* <i>{{ rac?.mobat?.nama_obat }} - <span class="">(rsp : {{ rac?.jumlahresep }}) - </span> <span class="">{{ rac?.jumlahobat }} ({{ rac?.mobat?.satuan_k }})</span></i></div>
+                        <div>* <i>{{ rac?.mobat?.nama_obat }} - <span class="">(rsp : {{ rac?.jumlahresep }}) - </span>
+                            <span class="">{{ rac?.jumlahobat }} ({{ rac?.mobat?.satuan_k }})</span></i></div>
                       </div>
                     </div>
                     <q-separator class="q-ml-lg q-my-xs" />
@@ -346,18 +322,14 @@
                     <div class="col-6 garis-all text-center">
                       <div>{{ dateFullFormat(new Date()) }} : {{ formatJam(new Date()) }}</div>
                       <div>
-                        <vue-qrcode
-                          :value="qrUrl"
-                          tag="svg"
-                          :options="{
-                            errorCorrectionLevel: 'Q',
-                            color: {
-                              dark: '#000000',
-                              light: '#ffffff',
-                            },
-                            margin:2
-                          }"
-                        />
+                        <vue-qrcode :value="qrUrl" tag="svg" :options="{
+                          errorCorrectionLevel: 'Q',
+                          color: {
+                            dark: '#000000',
+                            light: '#ffffff',
+                          },
+                          margin: 2
+                        }" />
                       </div>
                       <div class="text-center">
                         Petugas RS
@@ -384,16 +356,36 @@ import html2canvas from 'html2canvas'
 import { computed, onMounted, ref } from 'vue'
 const emits = defineEmits(['close'])
 const props = defineProps({
-  item: { type: Object, default: () => {} },
+  item: { type: Object, default: () => { } },
   head: { type: Boolean, default: false }
 })
+// const qrUrl = computed(() => {
+//   const noreg = props?.item?.noreg// noresep
+//   const dok = 'E-RESEP.png'
+//   const asal = 'rajal'
+//   const enc = btoa(`${noreg}|${dok}|${asal}`)
+//   return `https://rsud.probolinggokota.go.id/dokumen-simrs/legalitas/${enc}`
+//   // return `https://xenter.my.id/qr-document?noreg=${noreg}&dokumen=${dok}&asal=${asal}`
+// })
+// const qrUrl = computed(() => {
+//   const noreg = props?.item?.noreg // noreg
+//   const dok = 'RADIOLOGI.png'
+//   const asal = 'RADIOLOGI'
+//   const petugas = props?.item?.kdPelaksana ?? null
+
+//   const enc = btoa(`${noreg}|${dok}|${asal}|${petugas}`)
+//   return `https://rsud.probolinggokota.go.id/dokumen-simrs/legalitas/${enc}`
+// })
 const qrUrl = computed(() => {
-  const noreg = props?.item?.noresep// noresep
-  const dok = 'E-RESEP.png'
-  const asal = 'E-RESEP'
-  const enc = btoa(`${noreg}|${dok}|${asal}`)
+  // console.log('props', props?.item, props?.item?.noreg, props?.item?.user)
+
+  const noreg = props?.item?.noreg // noreg
+  const dok = 'RADIOLOGI.png'
+  const asal = props?.item?.kunjunganrajal?.length > 0 ? (props?.item?.ruangan == 'POL014' ? 'IGD' : 'RAWAT JALAN') : 'RANAP'
+  const petugas = props?.item?.petugas?.kdpegsimrs ?? null
+
+  const enc = btoa(`${noreg}|${dok}|${asal}|${petugas}`)
   return `https://rsud.probolinggokota.go.id/dokumen-simrs/legalitas/${enc}`
-  // return `https://xenter.my.id/qr-document?noreg=${noreg}&dokumen=${dok}&asal=${asal}`
 })
 
 const adaAlergi = ref(false)
@@ -454,9 +446,9 @@ function printPage () {
       doc.addImage(img, 'JPEG', 0, 0, doc.internal.pageSize.getWidth(), doc.internal.pageSize.getHeight(), 'FAST')
       doc.save('Resep ' + props?.item?.datapasien?.nama + ' (' + props?.item?.norm + ')' + '.pdf')
 
-    //   const pdf = new File([doc.output('arraybuffer')], pasien?.value?.norm + '.pdf', { type: 'application/pdf' })
+      //   const pdf = new File([doc.output('arraybuffer')], pasien?.value?.norm + '.pdf', { type: 'application/pdf' })
       // const pdf = new File([doc.output('arraybuffer')], pasien?.value?.norm + '.jpg', { type: 'application/jpg' })
-    //   simpanPdf(pdf)
+      //   simpanPdf(pdf)
     })
     afterPrint()
   }, 100)
@@ -478,43 +470,48 @@ function afterPrint () {
 }
 defineExpose({ printPage })
 </script>
-  <style lang="scss" scoped>
+<style lang="scss" scoped>
+.fnt-10 {
+  font-size: 10px !important;
+}
 
-  .fnt-10{
-    font-size: 10px !important;
-    }
+.page-x {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 27.94cm;
+  height: fit-content;
+  padding: 1mm;
+  // font-size: 10px !important;
+}
 
-  .page-x{
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    max-width: 27.94cm;
-    height: fit-content;
-    padding: 1mm;
-    // font-size: 10px !important;
-  }
+.garis {
+  width: 100%;
+  border-top: 1px solid black;
+  margin-bottom: 2px;
+}
 
-  .garis {
-    width: 100%;
-    border-top: 1px solid black;
-    margin-bottom: 2px;
-  }
-  .garis2 {
-    width: 90%;
-  }
-  .garis-all{
-    border: 1px solid black;
-  }
-  .gb{
-    border-bottom: 1px solid black;
-  }
-  .gl{
-    border-left: 1px solid black;
-  }
-  .gr{
-    border-right: 1px solid black;
-  }
-  .gt{
-    border-top: 1px solid black;
-  }
-  </style>
+.garis2 {
+  width: 90%;
+}
+
+.garis-all {
+  border: 1px solid black;
+}
+
+.gb {
+  border-bottom: 1px solid black;
+}
+
+.gl {
+  border-left: 1px solid black;
+}
+
+.gr {
+  border-right: 1px solid black;
+}
+
+.gt {
+  border-top: 1px solid black;
+}
+</style>
