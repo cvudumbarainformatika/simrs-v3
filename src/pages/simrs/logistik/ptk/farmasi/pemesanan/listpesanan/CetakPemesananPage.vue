@@ -125,7 +125,7 @@
           <div class="col-6 text-center">
             <div class="row justify-center q-mt-sm">
               <div class="col-12 text-center">
-                Ka. Instalasi Farmasi
+                Apoteker Penanggung Jawab Instalasi Farmasi
               </div>
             </div>
             <div class="row justify-center q-mb-sm">

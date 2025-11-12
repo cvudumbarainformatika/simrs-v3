@@ -381,7 +381,7 @@ const qrUrl = computed(() => {
 
   const noreg = props?.item?.noreg // noreg
   const dok = 'RADIOLOGI.png'
-  const asal = props?.item?.kunjunganrajal?.length > 0 ? (props?.item?.ruangan == 'POL014' ? 'IGD' : 'RAWAT JALAN') : 'RANAP'
+  const asal = props?.item?.kunjunganrajal?.length > 0 ? 'RAWAT JALAN' : 'RANAP'
   const petugas = props?.item?.petugas?.kdpegsimrs ?? null
 
   const enc = btoa(`${noreg}|${dok}|${asal}|${petugas}`)
