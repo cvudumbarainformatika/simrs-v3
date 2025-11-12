@@ -205,6 +205,16 @@ const masters = {
           name: 'master.keuangan.sistembayar',
           component: () => import('pages/simrs/master/keuangan/sistembayar/IndexPage.vue')
         },
+        {
+          path: '/master/keuangan/rekeningjurnal',
+          name: 'master.keuangan.rekeningjurnal',
+          component: () => import('pages/siasik/master/rekeningjurnal/IndexPage.vue')
+        },
+        {
+          path: '/master/keuangan/akunlak',
+          name: 'master.keuangan.akunlak',
+          component: () => import('pages/siasik/master/akun_lak/IndexPage.vue')
+        },
       ]
     },
     // {
