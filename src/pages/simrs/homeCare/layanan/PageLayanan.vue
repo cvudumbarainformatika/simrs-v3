@@ -79,13 +79,13 @@ const menus = ref([
   //   route: ['homecare'],
   //   comp: shallowRef(defineAsyncComponent(() => import('../layanan/pemeriksaanfisik/PemeriksaanfisikPage.vue')))
   // },
-  // {
-  //   name: 'AssesmentPage',
-  //   label: 'Assesment',
-  //   icon: 'icon-mat-analytics',
-  //   route: ['homecare'],
-  //   comp: shallowRef(defineAsyncComponent(() => import('../layanan/assesment/AssesmentPage.vue')))
-  // },
+  {
+    name: 'AssesmentPage',
+    label: 'Diagnosa dan Tindakan',
+    icon: 'icon-mat-analytics',
+    route: ['homecare'],
+    comp: shallowRef(defineAsyncComponent(() => import('../layanan/assesment/AssesmentPage.vue')))
+  },
   {
     name: 'penunjang-page',
     label: 'Penunjang',

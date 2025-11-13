@@ -22,6 +22,8 @@ export const usePengunjungHomeCareStore = defineStore('pengunjung_home_care_stor
     statuses: ['Semua', 'Terlayani', 'Dalam Pelayanan', 'Belum Dilayani'],
     statusx: 'Semua',
     pageLayanan: false,
+    listkhasusdiagnosa: null,
+    notaTindakans: [],
   }),
   actions: {
 
@@ -92,6 +94,28 @@ export const usePengunjungHomeCareStore = defineStore('pengunjung_home_care_stor
       this.params.page = 1
       this.getData()
     },
+    gantiMemo (form, pasien) {
+      // console.log(form)
+      this.loadingGantiMemo = true
+      return new Promise((resolve, reject) => {
+        api.post('/v1/simrs/pelayanan/gantimemo', form)
+          .then(resp => {
+            this.loadingGantiMemo = false
+            // console.log(resp)
+            if (resp.status === 200) {
+              const findPasien = this.pasiens.find(x => x.noreg === pasien?.noreg)
+              if (findPasien) {
+                const data = findPasien
+                data.memodiagnosa = resp?.data?.result?.diagnosa
+              }
+            }
+            resolve(resp)
+          }).catch(() => {
+            this.loadingGantiMemo = false
+
+          })
+      })
+    },
     bukaLayanan (val, pasien) {
       this.pageLayanan = val
       this.loadingLayanan = true
@@ -129,12 +153,13 @@ export const usePengunjungHomeCareStore = defineStore('pengunjung_home_care_stor
         datax.laboratold = data?.laboratold ?? []
         datax.fisio = data?.fisio ?? []
         datax.anamnesis = data?.anamnesis ?? []
+        datax.diagnosa = data?.diagnosa ?? []
+        datax.tindakan = data?.tindakan ?? []
+        datax.memodiagnosa = data?.memodiagnosa ?? []
         // datax.dataigd = data?.dataigd ?? null
-        // datax.diagnosa = data?.diagnosa ?? []
         // datax.pemeriksaan = data?.pemeriksaan ?? []
         // datax.penilaian = data?.penilaian ?? []
         // datax.diagnosamedis = data?.diagnosamedis ?? []
-        // datax.tindakan = data?.tindakan ?? []
         // datax.diagnosakeperawatan = data?.diagnosakeperawatan ?? []
         // datax.diagnosakebidanan = data?.diagnosakebidanan ?? []
         // datax.diagnosagizi = data?.diagnosagizi ?? []
@@ -180,13 +205,13 @@ export const usePengunjungHomeCareStore = defineStore('pengunjung_home_care_stor
     },
 
     injectDataPasien (pasien, val, kode, arr) {
-      // console.log('a', pasien)
+      // console.log('injuxt', this.pasiens)
       // console.log('b', val.id)
       // console.log('kode', kode)
-      const findPasien = this.items.filter(x => x === pasien)
-      // console.log('findPasien', findPasien)
-      if (findPasien?.length) {
-        const data = findPasien[0]
+      const data = this.pasiens.find(x => x.noreg == pasien.noreg)
+      // console.log('findPasien', data)
+      if (data) {
+        // const data = findPasien
         // console.log('data', data[kode])
         const target = data[kode]?.find(x => x.id === val.id)
         // console.log('itarget', target)
@@ -220,9 +245,73 @@ export const usePengunjungHomeCareStore = defineStore('pengunjung_home_care_stor
     },
 
     hapusDataAnamnesis (pasien, id) {
-      const findPasien = this.items.filter(x => x === pasien)
-      if (findPasien?.length) {
-        const data = findPasien[0].anamnesis
+      const findPasien = this.pasiens.find(x => x.noreg === pasien.noreg)
+      if (findPasien) {
+        const data = findPasien.anamnesis
+        const pos = data.findIndex(el => el.id === id)
+        if (pos >= 0) { data.splice(pos, 1) }
+      }
+    },
+    async getTipeDiagnosa () {
+      const resp = await api.get('v1/simrs/master/listtipekhasus')
+      if (resp.status === 200) {
+        this.listkhasusdiagnosa = resp.data
+      }
+    },
+
+    async getNota (pasien) {
+      const params = {
+        params: {
+          noreg: pasien?.noreg
+        }
+      }
+
+      const resp = await api.get('v1/simrs/pelayanan/notatindakan', params)
+      if (resp.status === 200) {
+        const arr = resp.data.map(x => x.nota)
+        this.notaTindakans = arr?.length ? arr : []
+        this.notaTindakans.push('BARU')
+        this.notaTindakan = this.notaTindakans[0]
+      }
+    },
+    hapusDataTindakan (pasien, id) {
+      const findPasien = this.pasiens.find(x => x.noreg === pasien.noreg)
+      if (findPasien) {
+        const data = findPasien.tindakan
+        const pos = data.findIndex(el => el.id === id)
+        if (pos >= 0) { data.splice(pos, 1) }
+      }
+    },
+    hapusDataLaboratBaru (pasien, id, databaru) {
+      const findPasien = this.pasiens.find(x => x.noreg === pasien.noreg)
+      if (findPasien) {
+        findPasien.laborats = databaru
+      }
+    },
+
+    hapusDataPenunjangLain (pasien, id) {
+      const findPasien = this.pasiens.find(x => x.noreg === pasien.noreg)
+      if (findPasien) {
+        const data = findPasien?.penunjanglain
+        const pos = data.findIndex(el => el.id === id)
+        if (pos >= 0) { data.splice(pos, 1) }
+      }
+    },
+    hapusDataInjectan (pasien, id, key) {
+      const findPasien = this.pasiens.find(x => x.noreg === pasien.noreg)
+      if (findPasien) {
+        const data = findPasien[key]
+        const pos = data.findIndex(el => el.id === id)
+        if (pos >= 0) { data.splice(pos, 1) }
+      }
+    },
+
+    hapusDataDiagnosa (pasien, id) {
+      const findPasien = this.pasiens.find(x => x.noreg === pasien.noreg)
+      console.log('pas', findPasien)
+
+      if (findPasien) {
+        const data = findPasien.diagnosa
         const pos = data.findIndex(el => el.id === id)
         if (pos >= 0) { data.splice(pos, 1) }
       }
