@@ -7,7 +7,7 @@
       </div>
     </div>
     <div class="col full-height q-pa-md scroll">
-      <EdukasiPage id="kiemedis" ref="refResume" :pasien="pasien" :menu="menu" />
+      <EdukasiPage id="kiemedis" ref="refResume" :pasien="pasien" :menu="menu" :data-header="dataHeader" />
     </div>
   </div>
 </template>
@@ -32,6 +32,10 @@ defineProps({
   },
   menu: {
     type: Object,
+    default: null
+  },
+  dataHeader: {
+    type: Array,
     default: null
   }
 })
