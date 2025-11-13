@@ -112,14 +112,15 @@ async function verifikasiSemua() {
       // })
 
       store.openDialogRinci = false
-      selectedNpd.value = []
       notifSuccess(resp)
-      store.dataVerif()
     }
   } catch (err) {
     notifErr(err || err.response?.data?.message || err.message)
   } finally {
     loading.value = false
+    selectedNpd.value = []
+    store.dataVerif()
+
   }
 }
 </script>

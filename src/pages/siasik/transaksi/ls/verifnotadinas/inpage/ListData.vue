@@ -1,7 +1,8 @@
 <template>
   <div class="justify-content-center full-width">
     <q-table style="height: 100%" :rows="store.listdataverif" :columns="columnsdata" row-key="name" dense flat bordered
-      wrap-cells :filter="store.params.q" :loading="store.loading" :rows-per-page-options="[10, 50, 100]">
+      wrap-cells :filter="store.params.q" :loading="store.loading || !store.listdataverif.length"
+      :rows-per-page-options="[10, 50, 100]">
       <template #loading>
         <q-inner-loading showing color="warning" />
       </template>

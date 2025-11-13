@@ -131,10 +131,11 @@ export const listdataNPKlangsungStore = defineStore('list_data_npklangsung', {
             if (resp.status === 200) {
               console.log('TTD', resp.data)
               this.datattd = resp.data
-              this.loading = false
 
-              resolve(resp.data)
             }
+            this.loading = false
+
+            resolve(resp.data)
           })
           .catch((err) => {
             this.loading = false

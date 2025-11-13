@@ -4,7 +4,7 @@ import { api } from "src/boot/axios"
 import { notifErr, notifSuccess } from "src/modules/utils"
 import { parse } from "vue/compiler-sfc"
 
-export const listdataNotadinasStore = defineStore('list_data_notadinas', {
+export const usePencairanlsStore = defineStore('pencairan_ls', {
   state: () => ({
     loading: false,
     disabled: false,
@@ -22,6 +22,13 @@ export const listdataNotadinasStore = defineStore('list_data_notadinas', {
       // parameters Realsisasi
       kodekegiatan: null,
       tgl: date.formatDate(Date.now(), 'YYYY'),
+    },
+    tanggal: date.formatDate(Date.now(), 'YYYY-MM-DD'),
+    form: {
+      nonpk: '',
+      nopencairan: '',
+      tglpindahbuku: date.formatDate(Date.now(), 'YYYY-MM-DD'),
+      tglpencairan: date.formatDate(Date.now(), 'YYYY-MM-DD'),
     },
     display: {
       sekarang: date.formatDate(Date.now(), 'DD MMMM YYYY'),
@@ -41,8 +48,6 @@ export const listdataNotadinasStore = defineStore('list_data_notadinas', {
     nilaitotal: [],
 
 
-    listdataverif: [],
-
   }),
   actions: {
     goToPage(val) {
@@ -53,17 +58,20 @@ export const listdataNotadinasStore = defineStore('list_data_notadinas', {
       this.loading = true
       const params = { params: this.params }
       return new Promise((resolve, reject) => {
-        api.get('/v1/transaksi/notadinas/listdata', params)
+        api.get('/v1/transaksi/pencairanls/listdata', params)
           .then((resp) => {
             if (resp.status === 200) {
-              console.log('data Nota Dinas', resp.data)
+              console.log('data NPK LS', resp)
               this.listdata = resp.data
-              this.rincianNotadinas()
+              if (Array.isArray(this.listdata) && this.listdata.length) {
+                this.rincianNotadinas()
+              }
 
+              resolve(resp.data)
+            } else {
+              reject(resp)
             }
-            resolve(resp.data)
             this.loading = false
-
           })
           .catch((err) => {
             this.loading = false
@@ -80,17 +88,11 @@ export const listdataNotadinasStore = defineStore('list_data_notadinas', {
           // console.log('rincianqqq', arr)
           const head = {
             id: arr.id,
-            nonotadinas: arr.nonotadinas,
-            nosptjm: arr.nosptjm,
-            noverifikasi: arr.noverifikasi,
-            tglnotadinas: arr.tglnotadinas,
-            kodepptk: arr.kodepptk,
-            namapptk: arr.namapptk,
-            kodebidang: arr.kodebidang,
-            bidang: arr.bidang,
-            kegiatan: arr.kegiatan,
-            kodekegiatan: arr.kodekegiatan,
             nonpk: arr.nonpk,
+            tglnpk: arr.tglnpk,
+            nopencairan: arr.nopencairan,
+            tglpencairan: arr.tglpencairan,
+
             total: arr.rincians?.map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0),
             tglentry: arr.tglentry,
             userentry: arr.userentry,
@@ -103,15 +105,15 @@ export const listdataNotadinasStore = defineStore('list_data_notadinas', {
           sas.push(head)
         }
         this.datanotadinas = sas
-
+        this.loading = false
+        // console.log('this.datanotadinas', this.datanotadinas)
       }
-      this.loading = false
     },
     kunciData(row) {
       // console.log('KUNCI', row)
       this.loading = true;
       return new Promise((resolve) => {
-        api.post('/v1/transaksi/notadinas/kuncidata', row)
+        api.post('/v1/transaksi/npkls/kuncidata', row)
           .then((resp) => {
             // console.log('resp', resp)
             this.loading = false
@@ -197,25 +199,6 @@ export const listdataNotadinasStore = defineStore('list_data_notadinas', {
       // this.realisasi = rek
       // console.log('resp realisasi', this.realisasi)
     },
-    dataVerif() {
-      this.loading = true
-      const params = { params: this.params }
-      return new Promise((resolve, reject) => {
-        api.post('/v1/transaksi/notadinas/listverif', params)
-          .then((resp) => {
-            if (resp.status === 200) {
 
-              this.listdataverif = resp.data
-
-              this.loading = false
-              resolve(resp.data)
-            }
-          })
-          .catch((err) => {
-            this.loading = false
-            reject(err)
-          })
-      })
-    },
   }
 })

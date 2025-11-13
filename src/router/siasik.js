@@ -125,6 +125,11 @@ const siasik = {
 
       ]
     },
+    {
+      path: '/siasik/ls/pencairanls',
+      name: 'siasik.ls.pencairanls',
+      component: () => import('pages/siasik/transaksi/ls/pencairanls/IndexPage.vue')
+    },
     // {
     //   path: '/siasik/rencanabelanja',
     //   name: 'siasik.rencanabelanja',
