@@ -5,11 +5,7 @@
         after-class="overflow-hidden" class="fit">
         <template #before>
           <div class="column fit bg-indigo-1">
-            <!-- <div class="col-auto q-pa-md">
-              <div class="text-h5 text-bold text-center">
-                RKD
-              </div>
-            </div> -->
+
             <div class="col full-height scroll">
               <q-tabs v-model="innerTab" vertical class="text-dark bg-white shadow-1 bo" active-color="orange-10"
                 active-bg-color="indigo-1" no-caps align="left" inline-label>
@@ -85,7 +81,7 @@ const menus = ref([
   {
     name: 'cppt-page',
     label: 'CPPT & EWS',
-    title: 'CPPT PASIEN',
+    title: 'CATATAN PERKEMBANGAN PASIEN TERINTEGRASI',
     desc: 'Catatan Perkembangan Pasien Terintegrasi',
     icon: 'icon-my-file_sign',
     nakes: ['1', '2', '3'],
