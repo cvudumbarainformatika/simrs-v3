@@ -145,7 +145,7 @@ export const useLaporanPenerimaanObatStore = defineStore('laporan_penerimaan_oba
           }
         })
         .catch((err) => {
-          console.log(err)
+          // console.log(err)
           this.loading = false
         })
     },
