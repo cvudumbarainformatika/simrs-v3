@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia'
+import { acceptHMRUpdate, defineStore } from 'pinia'
 import { date } from 'quasar'
 import { api } from 'src/boot/axios'
 
@@ -11,7 +11,7 @@ export const useLaporanPenerimaanObatStore = defineStore('laporan_penerimaan_oba
     pihakTigasx: [],
     meta: {},
     detail: [],
-    kolom: ['NoPenerimaan', 'NoPemesanan', 'JenisPenerimaan', 'Gudang', 'TglPenerimaan', 'TglSurat', 'BatasBayar', 'NoSurat', 'JenisSurat', 'NoFaktur', 'Suplier', 'Total'],
+    kolom: ['NoPenerimaan', 'NoPemesanan', 'JenisPenerimaan', 'Gudang', 'TglPenerimaan', 'TglSurat', 'BatasBayar', 'NoSurat', 'JenisSurat', 'NoFaktur', 'Suplier', 'Uraian50', 'Total'],
     totalall: 0,
     tanggal: {
       from: date.formatDate(Date.now(), 'DD MMMM YYYY'),
@@ -72,7 +72,7 @@ export const useLaporanPenerimaanObatStore = defineStore('laporan_penerimaan_oba
     },
     async laporanRekapPenerimaanObat () {
       this.loading = true
-      this.kolom = ['NoPenerimaan', 'NoPemesanan', 'JenisPenerimaan', 'Gudang', 'TglPenerimaan', 'TglSurat', 'BatasBayar', 'NoSurat', 'JenisSurat', 'Suplier', 'Total']
+      this.kolom = ['NoPenerimaan', 'NoPemesanan', 'JenisPenerimaan', 'Gudang', 'TglPenerimaan', 'TglSurat', 'BatasBayar', 'NoSurat', 'JenisSurat', 'Suplier', 'Uraian50', 'Total']
       if (this.pihakketiga === 'Semua Pbf') {
         this.params.pihakketiga = 'all'
       }
@@ -96,6 +96,12 @@ export const useLaporanPenerimaanObatStore = defineStore('laporan_penerimaan_oba
     sethasil (val) {
       const hasilglobal = []
       val.forEach(x => {
+        // const uraian50 = x.penerimaanrinci[0]?.masterobat?.uraian50 ?? ''
+        const arr50 = x.penerimaanrinci?.flatMap(x => x.masterobat?.uraian50) // flatten array
+        const uni50 = [...new Set(arr50)] // get unique value
+        const uraian50 = uni50.join(', ') // join each unique value
+        // console.log('uraian50', uni50, arr50, uraian50)
+
         const hasil = {
           NoPenerimaan: x?.nopenerimaan,
           NoPemesanan: x?.nopemesanan,
@@ -107,7 +113,8 @@ export const useLaporanPenerimaanObatStore = defineStore('laporan_penerimaan_oba
           NoSurat: x?.nomorsurat,
           JenisSurat: x?.jenissurat,
           Suplier: x?.pihakketiga?.nama,
-          Total: x?.total_faktur_pbf
+          Total: x?.total_faktur_pbf,
+          uraian50
         }
         hasilglobal.push(hasil)
       })
@@ -174,3 +181,6 @@ export const useLaporanPenerimaanObatStore = defineStore('laporan_penerimaan_oba
     // }
   }
 })
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useLaporanPenerimaanObatStore, import.meta.hot))
+}

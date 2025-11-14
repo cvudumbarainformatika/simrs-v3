@@ -1,147 +1,90 @@
 <template>
   <q-card-section>
-    <TablePage
-      :ada-cari="false"
-      :default-btn="false"
-      :right-action="false"
-      :items="store.items"
-      :columns="store.kolom"
-      :column-hide="store.columnHide"
-      :loading="store.loading"
-      row-no
-      click-able
-      @refresh="store.refreshTable"
-    >
+    <TablePage :ada-cari="false" :default-btn="false" :right-action="false" :items="store.items" :columns="store.kolom"
+      :column-hide="store.columnHide" :loading="store.loading" row-no click-able @refresh="store.refreshTable">
       <template #header-left-after-search>
-        <q-form
-          ref="formRef"
-          class="row q-pa-md q-col-gutter-xs"
-          @submit="store.initAmbilData"
-        >
+        <q-form ref="formRef" class="row q-pa-md q-col-gutter-xs" @submit="store.initAmbilData">
           <div class="row q-col-gutter-sm">
             <div>
-              <app-input-date-human
-                :model="store.tanggal.from"
-                label="dari tanggal"
-                outlined
-                @db-model="setFrom"
-                @set-display="setToFromDisp"
-              />
+              <app-input-date-human :model="store.tanggal.from" label="dari tanggal" outlined @db-model="setFrom"
+                @set-display="setToFromDisp" />
             </div>
             <div>
-              <app-input-date-human
-                :model="store.tanggal.to"
-                label="sampai tanggal"
-                outlined
-                @db-model="setTo"
-                @set-display="setToDisp"
-              />
+              <app-input-date-human :model="store.tanggal.to" label="sampai tanggal" outlined @db-model="setTo"
+                @set-display="setToDisp" />
             </div>
             <div>
-              <q-select
-                v-model="store.params.gudang"
-                label="Gudang"
-                dense
-                outlined
-                emit-value
-                map-options
-                option-label="label"
-                option-value="value"
-                :options="pilihgudang"
-                style="width: 200px;"
-              />
+              <q-select v-model="store.params.gudang" label="Gudang" dense outlined emit-value map-options
+                option-label="label" option-value="value" :options="pilihgudang" style="width: 200px;" />
             </div>
             <div>
-              <q-select
-                v-model="store.params.jenispenerimaan"
-                label="Jenis Penerimaan"
-                dense
-                outlined
-                :options="pilihpenerimaan"
-                style="width: 200px;"
-                emit-value
-                map-options
-                option-label="label"
-                option-value="value"
-              />
+              <q-select v-model="store.params.jenispenerimaan" label="Jenis Penerimaan" dense outlined
+                :options="pilihpenerimaan" style="width: 200px;" emit-value map-options option-label="label"
+                option-value="value" />
             </div>
             <div>
-              <q-select
-                v-model="store.pihakketiga"
-                label="PBF"
-                dense
-                outlined
-                :options="options"
-                emit-value
-                map-options
-                option-label="nama"
-                option-value="kode"
-                style="width: 300px;"
-                clearable
-                use-input
-                @filter="filterFn"
-              />
+              <q-select v-model="store.pihakketiga" label="PBF" dense outlined :options="options" emit-value map-options
+                option-label="nama" option-value="kode" style="width: 300px;" clearable use-input @filter="filterFn" />
             </div>
             <div>
-              <q-btn
-                label="Cari"
-                type="submit"
-                color="primary"
-                :loading="store.loading"
-                :disable="store.loading"
-              />
+              <q-btn label="Cari" type="submit" color="primary" :loading="store.loading" :disable="store.loading" />
             </div>
           </div>
         </q-form>
       </template>
-      <template #cell-NoPenerimaan="{row}">
+      <template #cell-NoPenerimaan="{ row }">
         <div class="row justify-center">
           {{ row?.NoPenerimaan }}
         </div>
       </template>
-      <template #cell-TglPenerimaan="{row}">
+      <template #cell-TglPenerimaan="{ row }">
         <div class="row justify-center">
           {{ row?.TglPenerimaan }}
         </div>
       </template>
-      <template #cell-Suplier="{row}">
+      <template #cell-Suplier="{ row }">
         <div class="row justify-center">
           {{ row?.Suplier }}
         </div>
       </template>
-      <template #cell-NoPemesanan="{row}">
+      <template #cell-NoPemesanan="{ row }">
         <div class="row justify-center">
           {{ row?.NoPemesanan }}
         </div>
       </template>
-      <template #cell-TglPemesanan="{row}">
+      <template #cell-TglPemesanan="{ row }">
         <div class="row justify-center">
           {{ row?.TglPemesanan }}
         </div>
       </template>
-      <template #cell-NoDokumen="{row}">
+      <template #cell-NoDokumen="{ row }">
         <div class="row justify-center">
           {{ row?.NoDokumen }}
         </div>
       </template>
-      <template #cell-JenisDokumen="{row}">
+      <template #cell-JenisDokumen="{ row }">
         <div class="row justify-center">
           {{ row?.JenisDokumen }}
         </div>
       </template>
-      <template #cell-TglSurat="{row}">
+      <template #cell-TglSurat="{ row }">
         <div class="row justify-center">
           {{ row?.TglSurat }}
         </div>
       </template>
-      <template #cell-TglJatuhTempo="{row}">
+      <template #cell-TglJatuhTempo="{ row }">
         <div class="row justify-center">
           {{ row?.TglJatuhTempo }}
         </div>
       </template>
-      <template #cell-Total="{row}">
+      <template #cell-Total="{ row }">
         <div class="row justify-end">
           {{ formatDouble(row?.Total) }}
+        </div>
+      </template>
+      <template #cell-Uraian50="{ row }">
+        <div class="row justify-center">
+          {{ row?.uraian50 }}
         </div>
       </template>
       <template #bottom-row>
