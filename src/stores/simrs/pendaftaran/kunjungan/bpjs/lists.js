@@ -159,6 +159,10 @@ export const useListKunjunganBpjsStore = defineStore('list_kunjungan_bpjs', {
       else if (payload == 'BELUM TERLAYANI') {
         pas = this.antrianBpjs.filter(p => p.status == 'Belum dilayani' || p.status == 'Sedang dilayani')?.map(p => p.nokapst)
       }
+      else if (payload == 'GAGAL BRIDGING') {
+        const nokas = this.antrianBpjs?.map(p => p.nokapst)
+        pas = this.items.filter(p => !nokas.includes(p.noka))?.map(p => p.noka)
+      }
       // const terlayani = this.antrianBpjs.filter(p => p.status == 'Selesai dilayani')
       // const belumTerlayani = this.antrianBpjs.filter(p => p.status == 'Belum dilayani')
       // const bukan = this.antrianBpjs.filter(p => p.status != 'Belum dilayani' && p.status != 'Selesai dilayani')

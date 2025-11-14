@@ -52,7 +52,7 @@
         emit-value map-options style="min-width: 150px;" @update:model-value="gantiPeriode" /> -->
       <q-select v-model="txt" dense outlined dark color="white" :options="txts" label="status pasien" class="q-ml-sm"
         emit-value map-options style="min-width: 150px;" @update:model-value="gantiFlag" />
-      <q-select v-model="bpjs" dense outlined dark color="white" :options="txts" label="status antrian bpjs"
+      <q-select v-model="bpjs" dense outlined dark color="white" :options="bpjses" label="status antrian bpjs"
         class="q-ml-sm" emit-value map-options style="min-width: 150px;" @update:model-value="gantiSatus"
         :disable="loadingBpjs" :loading="loadingBpjs" />
     </div>
@@ -150,6 +150,7 @@ import { computed, onMounted, ref } from 'vue'
 const txt = ref('SEMUA')
 const bpjs = ref('SEMUA')
 const txts = ref(['SEMUA', 'TERLAYANI', 'BELUM TERLAYANI'])
+const bpjses = ref(['SEMUA', 'BELUM TERLAYANI', 'TERLAYANI', 'GAGAL BRIDGING'])
 const emits = defineEmits(['fullscreen', 'setTanggal', 'setSearch', 'setRow', 'setPeriode', 'refresh', 'filter', 'flag', 'status', 'getData'])
 const options = ref([5, 10, 20, 50, 100])
 const periods = ref([
