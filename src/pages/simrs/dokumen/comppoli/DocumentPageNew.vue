@@ -13,52 +13,6 @@
       <component :is="cekPanel()" :key="props.pasien" :pasien="props.pasien" />
     </template>
   </app-fullscreen-blue>
-  <!-- <q-card
-    flat
-    bordered
-    square
-    class="full-height"
-  >
-    <div class="full-height column">
-      <div class="col-auto bg-primary text-white">
-        <q-bar>
-          <div>Dokumen Pasien</div>
-        </q-bar>
-        <div class="q-pa-sm row items-center q-gutter-sm ">
-          <q-option-group
-            v-model="doc"
-            :options="documents"
-            color="white"
-            inline
-            dark
-          />
-        </div>
-      </div>
-      <div class="col">
-        <div
-          v-if="doc !== ''"
-          class="q-pa-md"
-        >
-          Dokumen {{ getLabel(doc) }}
-          <q-separator class="q-my-sm" />
-          <div>
-            <component
-              :is="cekPanel()"
-              :key="props.pasien"
-              :pasien="props.pasien"
-            />
-          </div>
-        </div>
-        <div
-          v-else
-          class="column full-height flex-center q-pa-md"
-          style="min-height: 400px;"
-        >
-          Belum Ada Pemilihan Surat
-        </div>
-      </div>
-    </div>
-  </q-card> -->
 </template>
 <script setup>
 import KumpulanSurat from './KumpulanSurat.vue'
@@ -210,7 +164,7 @@ const documents = ref([
   // }
 ])
 // eslint-disable-next-line no-unused-vars
-function getLabel(val) {
+function getLabel (val) {
   const anu = documents.value.filter(a => a.value === val)
   // console.log('anu ', anu)
   return anu?.length ? anu[0].label : '-'
@@ -255,7 +209,7 @@ const cekPanel = () => {
 
   return arr >= 0 ? comp[arr].page : ''
 }
-function goTo(val) {
+function goTo (val) {
   // console.log('got', val)
   doc.value = val.value
   open.value = true
