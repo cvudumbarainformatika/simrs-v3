@@ -2,7 +2,7 @@
   <div class="row items-center justify-between title-page q-mb-md">
     <div class="flex items-center">
       <div class="icon q-mr-md">
-        <q-icon name="icon-eva-google" size="lg" />
+        <q-icon name="icon-mat-verified_user" size="lg" />
       </div>
       <div class="left">
         <div class="text-h6">
@@ -13,24 +13,18 @@
         </div>
       </div>
     </div>
-
-
   </div>
 </template>
 
 <script setup>
-defineProps({
+const props = defineProps({
   title: {
     type: String,
-    default: null
+    default: 'General Consent Rajal'
   },
   subtitle: {
     type: String,
-    default: null
-  },
-  path: {
-    type: String,
-    default: null
+    default: 'General Consent Pengunjung Rajal'
   }
 })
 </script>

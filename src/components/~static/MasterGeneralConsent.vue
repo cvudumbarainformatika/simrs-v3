@@ -1,14 +1,7 @@
 <!-- eslint-disable no-unused-vars -->
 <template>
-  <div
-    id="pdfDoc"
-    ref="rePdfDoc"
-    class="page-A4 f-12 bg-white"
-  >
-    <div
-
-      class="contentx"
-    >
+  <div id="pdfDoc" ref="rePdfDoc" class="page-A4 f-12 bg-white">
+    <div class="contentx">
       <!-- kop -->
       <my-kop-surat v-if="!tanpaKop" />
       <!-- content -->
@@ -26,7 +19,7 @@
                 <td width="1%">
                   :
                 </td>
-                <td>  {{ pasien?.nama? pasien?.name:defaultForm }}</td>
+                <td> {{ pasien?.nama ? pasien?.name : defaultForm }}</td>
               </tr>
               <tr>
                 <td width="20%">
@@ -35,7 +28,7 @@
                 <td width="1%">
                   :
                 </td>
-                <td>  {{ pasien?.kelamin ? pasien?.kelamin:defaultForm }}</td>
+                <td> {{ pasien?.kelamin ? pasien?.kelamin : defaultForm }}</td>
               </tr>
               <tr>
                 <td width="20%">
@@ -44,7 +37,7 @@
                 <td width="1%">
                   :
                 </td>
-                <td>  {{ pasien?.tgllahir? humanDate(pasien?.tgllahir):defaultForm }}</td>
+                <td> {{ pasien?.tgllahir ? humanDate(pasien?.tgllahir) : defaultForm }}</td>
               </tr>
               <tr>
                 <td width="20%">
@@ -53,7 +46,7 @@
                 <td width="1%">
                   :
                 </td>
-                <td>  {{ pasien?.alamat? pasien?.alamat:defaultForm }}</td>
+                <td> {{ pasien?.alamat ? pasien?.alamat : defaultForm }}</td>
               </tr>
               <tr>
                 <td width="20%">
@@ -62,7 +55,7 @@
                 <td width="1%">
                   :
                 </td>
-                <td>  {{ pasien?.nohp? pasien?.nohp:defaultForm }}</td>
+                <td> {{ pasien?.nohp ? pasien?.nohp : defaultForm }}</td>
               </tr>
               <tr>
                 <td width="20%">
@@ -73,7 +66,7 @@
                 </td>
                 <td>
                   {{ pasien?.generalcons?.hubunganpasien ?
-                    pasien?.generalcons?.hubunganpasien: store.form.hubunganpasien
+                    pasien?.generalcons?.hubunganpasien : store.form.hubunganpasien
                   }}
                 </td>
               </tr>
@@ -160,39 +153,23 @@
           </div> -->
         </div>
         <div>
-          <div
-            id="htmlC"
-            ref="refGencon"
-            class="mirror-editor"
-            v-html="parse(isi)"
-          />
-          <q-popup-edit
-            v-if="editableMaster"
-            v-model="isi"
-            max-width="750px"
-          >
-            <q-editor
-              ref="editorRef"
-              v-model="isi"
-              min-height="5rem"
-              paragraph-tag="div"
-              placeholder="Silahkan Ketik disini .."
-              :definitions="{
+          <div id="htmlC" ref="refGencon" class="mirror-editor" v-html="parse(isi)" />
+          <q-popup-edit v-if="editableMaster" v-model="isi" max-width="750px">
+            <q-editor ref="editorRef" v-model="isi" min-height="5rem" paragraph-tag="div"
+              placeholder="Silahkan Ketik disini .." :definitions="{
                 save: {
                   tip: 'Save your work',
                   icon: 'icon-mat-save',
                   label: 'Save',
                   handler: saveWork
                 }
-              }"
-              :toolbar="editableMaster? [
+              }" :toolbar="editableMaster ? [
                 ['save'],
                 ['bold', 'italic', 'strike', 'underline', 'subscript', 'superscript'],
                 ['left', 'center', 'right', 'justify'],
                 ['quote', 'unordered', 'ordered', 'outdent', 'indent'],
                 ['viewsource']
-              ]:[]"
-            />
+              ] : []" />
           </q-popup-edit>
         </div>
         <!-- bottom -->
@@ -220,18 +197,14 @@
                 width="150px"
               /> -->
               <div style="width: 100px;">
-                <vue-qrcode
-                  :value="qrUrl"
-                  tag="svg"
-                  :options="{
-                    errorCorrectionLevel: 'Q',
-                    color: {
-                      dark: '#000000',
-                      light: '#ffffff',
-                    },
-                    margin:2
-                  }"
-                />
+                <vue-qrcode :value="qrUrl" tag="svg" :options="{
+                  errorCorrectionLevel: 'Q',
+                  color: {
+                    dark: '#000000',
+                    light: '#ffffff',
+                  },
+                  margin: 2
+                }" />
               </div>
               <!-- {{ pasien?.ttdpasien }} -->
             </div>
@@ -242,10 +215,7 @@
             <div class="q-mt-xs">
               Pasien / Keluarga
             </div>
-            <div
-              style="min-height: 50px;"
-              class="column flex-center"
-            >
+            <div style="min-height: 50px;" class="column flex-center">
               <div v-if="!store?.form?.ttdpasien">
                 Ttd
               </div>
@@ -255,11 +225,7 @@
                   width="150px"
                 /> -->
                 <!-- {{ pasien?.ttdpasien }} -->
-                <img
-                  :src="store?.form?.ttdpasien"
-                  alt="ttd-pasien-rsudmohsaleh"
-                  width="150"
-                >
+                <img :src="store?.form?.ttdpasien" alt="ttd-pasien-rsudmohsaleh" width="150">
               </div>
             </div>
             <div>{{ pasien?.name ?? 'Nama' }}</div>
@@ -291,7 +257,7 @@ const refGencon = ref()
 const store = useGeneralConsentStore()
 
 const saveWork = () => {
-  changeIsi('irja')
+  changeIsi(props?.kelompok)
 }
 
 const props = defineProps({
@@ -299,9 +265,10 @@ const props = defineProps({
   cetak: { type: Boolean, default: false },
   isiPasien: { type: Object, default: null },
   refresh: { type: Boolean, default: false },
-  tanpaKop: { type: Boolean, default: false }
+  tanpaKop: { type: Boolean, default: false },
+  kelompok: { type: String, default: 'irja' }
 })
-const { isi, pasien, defaultForm, changeIsi, isOk, getDataIrja } = useContent(props?.isiPasien)
+const { isi, pasien, defaultForm, changeIsi, isOk, getDataIrja } = useContent(props?.isiPasien, props?.kelompok)
 
 onMounted(() => {
   const xx = document.getElementById('htmlC')
@@ -326,24 +293,24 @@ watchEffect(() => {
   }
 })
 
-function parse (val) {
+function parse(val) {
   // console.log('store.form.wali1', val)
   // const word = val
   // if (store.form.wali1) {
-  const word = val?.replace(' 1 ) ..............................  (Hubungan dengan pasien: ..... )',
-      ` 1 ) ${store.form.wali1 ? '<b>' + store.form.wali1 + '</b>' : '..............................'}</b> 
+  const word = val?.replace(' 1 ) ..............................  (Hubungan dengan pasien: ..... )',
+    ` 1 ) ${store.form.wali1 ? '<b>' + store.form.wali1 + '</b>' : '..............................'}</b> 
       (Hubungan dengan pasien: ${store.form.hubunganWali1 ? '<b>' + store.form.hubunganWali1 + '</b>' : '.....'} )`)
   // }
   // if (store.form.wali2) {
   const str = word?.replace('2 ) .............................. (Hubungan dengan pasien: ...... )',
-  `2 ) ${store.form.wali2 ? '<b>' + store.form.wali2 + '</b>' : '..............................'}</b> 
+    `2 ) ${store.form.wali2 ? '<b>' + store.form.wali2 + '</b>' : '..............................'}</b> 
       (Hubungan dengan pasien: ${store.form.hubunganWali2 ? '<b>' + store.form.hubunganWali2 + '</b>' : '.....'} )`)
   // }
   return str
 }
 
 // eslint-disable-next-line no-unused-vars
-function createPdf () {
+function createPdf() {
   // console.log(rePdfDoc.value.innerHTML)
   // eslint-disable-next-line new-cap
   const doc = new jsPDF({
@@ -381,14 +348,14 @@ function createPdf () {
 }
 
 // eslint-disable-next-line no-unused-vars
-function blob2file (blobData) {
+function blob2file(blobData) {
   const fd = new FormData()
   fd.set('a', blobData, pasien?.value?.norm + '.pdf')
   return fd.get('a')
 }
 
 // eslint-disable-next-line no-unused-vars
-async function simpanPdf (pdf) {
+async function simpanPdf(pdf) {
   const formData = new FormData()
   formData.append('pdf', pdf)
   formData.append('norm', pasien?.value?.norm)
@@ -411,7 +378,7 @@ watch(() => isOk.value, (n, old) => {
 </script>
 
 <style lang="scss" scoped>
-.page-A4{
+.page-A4 {
   // background: white;
   display: block;
   margin-left: auto;
@@ -420,18 +387,21 @@ watch(() => isOk.value, (n, old) => {
   //width: 21cm;
   width: 21.59cm;
   height: 33cm;
+
   // margin: 30mm 45mm
-  .contentx{
+  .contentx {
     padding: 5mm 5mm
   }
 
-  .b-a{
+  .b-a {
     border: 1px solid black;
   }
-  .b-l{
+
+  .b-l {
     border-left: 1px solid black;
   }
-  .b-r{
+
+  .b-r {
     border-right: 1px solid black;
   }
 }
@@ -442,6 +412,7 @@ watch(() => isOk.value, (n, old) => {
 
 table {
   width: 100%;
+
   td {
     vertical-align: top;
   }
