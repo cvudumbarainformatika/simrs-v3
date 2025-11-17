@@ -29,6 +29,16 @@
             <div>
               <q-btn label="Cari" type="submit" color="primary" :loading="store.loading" :disable="store.loading" />
             </div>
+            <div class="q-ml-sm">
+              <download-excel class="btn" :fields="store.fields" :fetch="store.fetch"
+                :before-generate="store.startDownload" :before-finish="store.finishDownload"
+                :name="'Laporan Penerimaan Obat.xls'" :loading="store.loadingDownload" :disable="store.loadingDownload">
+                <q-btn color="green" round size="sm" icon="icon-mat-download" push>
+                  <q-tooltip>Download Excel</q-tooltip>
+                </q-btn>
+
+              </download-excel>
+            </div>
           </div>
         </q-form>
       </template>

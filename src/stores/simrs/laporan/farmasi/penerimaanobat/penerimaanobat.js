@@ -1,6 +1,8 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
 import { date } from 'quasar'
 import { api } from 'src/boot/axios'
+import { usehutangObatPerTanggalStore } from '../hutang/hutangobatpertanggal'
+import { formatDoubleKoma } from 'src/modules/formatter'
 
 export const useLaporanPenerimaanObatStore = defineStore('laporan_penerimaan_obat', {
   state: () => ({
@@ -42,7 +44,9 @@ export const useLaporanPenerimaanObatStore = defineStore('laporan_penerimaan_oba
       // ruangan: ''
     },
     pihakketiga_rinci: 'Semua Pbf',
-    totalall_rinci: 0
+    totalall_rinci: 0,
+    fields: {},
+    loadingDownload: false
   }),
   actions: {
     async getPihakKetiga () {
@@ -174,11 +178,64 @@ export const useLaporanPenerimaanObatStore = defineStore('laporan_penerimaan_oba
       })
       this.items_rinci = hasilglobal.sort(({ TglPenerimaan: a }, { TglPenerimaan: b }) => b - a)
       this.totalall_rinci = this.items_rinci.reduce((a, b) => parseFloat(a) + parseFloat(b.Total), 0)
-    }
+    },
     // refreshrinci () {
     //   this.tanggal.from = date.formatDate(Date.now(), 'DD MMMM YYYY')
     //   this.tanggal.to = date.formatDate(Date.now(), 'DD MMMM YYYY')
-    // }
+    // },
+    setField () {
+      const lapHut = usehutangObatPerTanggalStore()
+      // console.log('this.params.jenisreport', lapHut.params.jenisreport)
+
+      if (lapHut.params.jenisreport === '1') {
+        this.fields = {
+          No: 'no',
+          'Nomor Penerimaan': 'NoPenerimaan',
+          'Nomor Pemesanan': 'NoPemesanan',
+          'Jenis Penerimaan': 'JenisPenerimaan',
+          'Gudang': 'Gudang',
+          'Tanggal Penerimaan': 'TglPenerimaan',
+          'Tanggal Surat': 'TglSurat',
+          'Batas Bayar': 'BatasBayar',
+          'Nomor Surat': 'NoSurat',
+          'Jenis Surat': 'JenisSurat',
+          'Suplier': 'Suplier',
+          'Uraian 50': 'Uraian50',
+          'Total': 'Total'
+        }
+      }
+    },
+    fetch () {
+      this.setField()
+      const data = []
+      this.items.forEach((item, i) => {
+        const ada = {}
+        ada.no = i + 1
+        ada.NoPenerimaan = item.NoPenerimaan
+        ada.NoPemesanan = item.NoPemesanan
+        ada.JenisPenerimaan = item.JenisPenerimaan
+        ada.Gudang = item.Gudang
+        ada.TglPenerimaan = item.TglPenerimaan
+        ada.TglSurat = item.TglSurat
+        ada.BatasBayar = item.BatasBayar
+        ada.NoSurat = "'   " + item.NoSurat
+        ada.JenisSurat = item.JenisSurat
+        ada.NoFaktur = item.NoFaktur
+        ada.Suplier = item.Suplier
+        ada.Uraian50 = item.uraian50
+        ada.Total = formatDoubleKoma(item.Total, 2)
+        data.push(ada)
+      })
+      // const data = [...this.items]
+
+      // console.log('items', data)
+      data.push({})
+      data.push({ NoPenerimaan: 'TOTAL', Total: formatDoubleKoma(this.totalall, 2) })
+      return data
+
+    },
+    startDownload () { this.loadingDownload = true },
+    finishDownload () { this.loadingDownload = false },
   }
 })
 if (import.meta.hot) {
