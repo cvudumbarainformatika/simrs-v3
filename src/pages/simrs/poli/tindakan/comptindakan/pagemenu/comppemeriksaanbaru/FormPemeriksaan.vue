@@ -26,6 +26,12 @@
       <q-separator />
       <q-scroll-area style="height: calc(100% - 52px);">
         <q-form ref="formRef" class="row q-col-gutter-xs q-pa-lg" @submit.prevent.stop="onSubmit">
+          <div class="col-4">
+            <q-select ref="refKeadaanUmum" v-model="store.formVital.keadaan_umum" dense
+              standout="bg-yellow-3 text-black" outlined label="Keadaan Umum" :options="store.keadaanUmums"
+              input-class="ellipsis" fill-input :rules="[val => !!val || 'Harap diisi']" lazy-rules="ondemand"
+              hide-bottom-space hide-dropdown-icon />
+          </div>
           <div class="col-2">
             <q-input v-model="store.formVital.denyutjantung" dense standout="bg-yellow-3 text-black" outlined label="N"
               :rules="[val => !!val || 'Harap diisi']" hide-bottom-space
@@ -153,7 +159,7 @@
           </div>
           <div class="col-6">
             <q-input v-model="store.formVital.muakuloskeletal" standout="bg-yellow-3 text-black" outlined
-              label="Muakuloskeletal" autogrow />
+              label="Kultural" autogrow />
           </div>
           <div class="col-12">
             <q-separator class="q-my-sm" />
@@ -405,7 +411,7 @@ const props = defineProps({
   }
 })
 
-function setNumber(evt, key) {
+function setNumber (evt, key) {
   // console.log(evt, 'includes', evt.includes('.'), 'indexOf', evt.indexOf('.'), 'length', evt?.length)
   const inc = evt.includes('.')
   const ind = evt.indexOf('.')
@@ -414,7 +420,7 @@ function setNumber(evt, key) {
   // console.log('evt', evt, 'key', key)
   store.setFormVital(key, nilai)
 }
-function sumKesadaran() {
+function sumKesadaran () {
   const jml = parseInt(store.formVital.kesadarane) + parseInt(store.formVital.kesadaranm) + parseInt(store.formVital.kesadaranv)
   store.setTingkatKesadaran(jml)
 }
@@ -428,7 +434,7 @@ onMounted(() => {
   })
 })
 
-async function onSubmit() {
+async function onSubmit () {
   const valid = await formRef.value?.validate()
   if (valid) {
     store.savePemeriksaan(props.pasien, menus.value).then(() => {
@@ -437,7 +443,7 @@ async function onSubmit() {
   }
 }
 
-function historyOpen() {
+function historyOpen () {
   emits('openHistory')
   // store.getHistory(props.pasien?.norm)
 }

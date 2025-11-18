@@ -189,7 +189,7 @@
         <div class="col-6">
           <div class="col-6 flex q-gutter-sm q-my-xs">
             <div>Makanan Pokok : </div>
-            <q-radio dense v-for="m in store.makanans" :val="m" :label="m" v-model="store.form.makananPokok" />
+            <q-radio dense v-for="m in store.makanans" :val="m" :label="m" v-model="store.form.makananPokok" :key="m" />
           </div>
           <app-input-simrs v-if="store.form.makananPokok === 'Selain Nasi'" label="Selain Nasi" class="full-width"
             v-model="store.form.makananPokokLain" />

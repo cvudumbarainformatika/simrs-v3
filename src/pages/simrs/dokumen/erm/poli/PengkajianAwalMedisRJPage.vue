@@ -1,31 +1,14 @@
 <template>
-  <q-bar
-    dense
-    class="bg-white q-mb-md"
-  >
+  <q-bar dense class="bg-white q-mb-md">
     <q-space />
-    <q-btn
-      ref="refPrint"
-      v-print="printObj"
-      unelevated
-      color="dark"
-      round
-      size="sm"
-      icon="icon-mat-print"
-    >
-      <q-tooltip
-        class="primary"
-        :offset="[10, 10]"
-      >
+    <q-btn ref="refPrint" v-print="printObj" unelevated color="dark" round size="sm" icon="icon-mat-print">
+      <q-tooltip class="primary" :offset="[10, 10]">
         Print
       </q-tooltip>
     </q-btn>
   </q-bar>
   <div class="tinggi">
-    <div
-      id="printMe"
-      class="full-width"
-    >
+    <div id="printMe" class="full-width">
       <KopSurat />
       <div class="garis-bawah-dblue q-pb-sm q-mb-md">
         <div class="row justify-center f-20 text-weight-bold q-mb-md">
@@ -114,16 +97,13 @@
         <b>1. <u>ANAMSESIS </u></b>:
       </div>
 
-      <div
-        v-for="(erm,e) in store.item"
-        :key="e"
-      >
+      <div v-for="(erm, e) in store.item" :key="e">
         <div class="row q-my-sm">
           <div class="col-1">
-          &nbsp;
+            &nbsp;
           </div>
           <div class="col-3">
-            -  KELUHAN UTAMA/<em>CHIEF COMPLAINT</em>
+            - KELUHAN UTAMA/<em>CHIEF COMPLAINT</em>
           </div>
           <div class="col-1">
             :
@@ -135,7 +115,7 @@
         <q-separator />
         <div class="row q-my-sm">
           <div class="col-1">
-          &nbsp;
+            &nbsp;
           </div>
           <div class="col-3">
             - RIWAYAT PENYAKIT SEKARANG/<em>PRESENT DISEASE HISTORY</em>
@@ -150,7 +130,7 @@
         <q-separator />
         <div class="row q-my-sm">
           <div class="col-1">
-          &nbsp;
+            &nbsp;
           </div>
           <div class="col-3">
             - RIWAYAT PENYAKIT DAHULU/<em>POST DISEASE HISTORY</em>
@@ -165,7 +145,7 @@
         <q-separator />
         <div class="row q-my-sm">
           <div class="col-1">
-          &nbsp;
+            &nbsp;
           </div>
           <div class="col-3">
             - RIWAYAT PENYAKIT KELUARGA/<em>HISTORY DISEASE IN THE FAMILY</em>
@@ -181,10 +161,10 @@
         <q-separator />
         <div class="row q-my-sm">
           <div class="col-1">
-          &nbsp;
+            &nbsp;
           </div>
           <div class="col-3">
-            -  RIWAYAT PEKERJAAN/<em>HISTORY OF JOB</em>
+            - RIWAYAT PEKERJAAN/<em>HISTORY OF JOB</em>
           </div>
           <div class="col-1">
             :
@@ -196,7 +176,7 @@
         <q-separator />
         <div class="row q-my-sm">
           <div class="col-1">
-          &nbsp;
+            &nbsp;
           </div>
           <div class="col-3">
             - STATUS EKONOMI/<em>PECONOMIC STATUS</em>
@@ -211,7 +191,7 @@
         <q-separator />
         <div class="row q-my-sm">
           <div class="col-1">
-          &nbsp;
+            &nbsp;
           </div>
           <div class="col-3">
             - STATUS KEJIWAAN DAN KEBIASAAN/<em>PSICOLOGICAL STATUS</em>
@@ -226,7 +206,7 @@
         <q-separator />
         <div class="row q-my-sm">
           <div class="col-1">
-          &nbsp;
+            &nbsp;
           </div>
           <div class="col-3">
             - KULTURAL/<em>CULTURAL</em>
@@ -248,7 +228,7 @@
         > -->
         <div class="row">
           <div class="col-1">
-                 &nbsp;
+            &nbsp;
           </div>
           <div class="col-2">
             - Kesadaran
@@ -272,7 +252,7 @@
         <q-separator />
         <div class="row">
           <div class="col-1">
-                &nbsp;
+            &nbsp;
           </div>
           <div class="col-2">
             - Keadaan Gizi
@@ -281,20 +261,14 @@
             :
           </div>
           <div class="col-2">
-            <span
-              v-if="item?.skreeninggizi >= 2 "
-              class="col-1"
-            >Beresiko Mal Nutrisi</span>
-            <span
-              v-else
-              class="col-1"
-            >Tidak Beresiko Mal Nutrisi</span>
+            <span v-if="item?.skreeninggizi >= 2" class="col-1">Beresiko Mal Nutrisi</span>
+            <span v-else class="col-1">Tidak Beresiko Mal Nutrisi</span>
           </div>
         </div>
         <q-separator />
         <div class="row">
           <div class="col-1">
-              &nbsp;
+            &nbsp;
           </div>
           <div class="col-2">
             - Tekanan Darah
@@ -317,7 +291,7 @@
         </div>
         <div class="row">
           <div class="col-1">
-              &nbsp;
+            &nbsp;
           </div>
           <div class="col-2">
             - Suhu
@@ -329,7 +303,7 @@
             {{ erm?.pemeriksaanfisik[0]?.suhutubuh }}
           </div>
           <div class="col-1">
-          &nbsp;
+            &nbsp;
           </div>
           <div class="col-2">
             - Pernapasan
@@ -342,14 +316,7 @@
           </div>
         </div>
         <div class="q-pa-md">
-          <q-markup-table
-            separator="vertical"
-            flat
-            bordered
-            dense
-            center
-            style="width: 50%;"
-          >
+          <q-markup-table separator="vertical" flat bordered dense center style="width: 50%;">
             <thead>
               <tr>
                 <th class="text-left">
@@ -364,33 +331,17 @@
               </tr>
             </thead>
             <tbody>
-              <tr
-                v-for="(detailgambars, dg) in store.item"
-                :key="dg"
-                v-ripple
-                clickable
-              >
-                <td
-                  class="text-left"
-                  style="max-width: 150px;"
-                >
+              <tr v-for="(detailgambars, dg) in store.item" :key="dg" v-ripple clickable>
+                <td class="text-left" style="max-width: 150px;">
                   {{ detailgambars?.pemeriksaanfisik[0]?.detailgambars[0]?.anatomy }}
                 </td>
-                <td
-                  class="text-left"
-                >
+                <td class="text-left">
                   {{ detailgambars?.pemeriksaanfisik[0]?.detailgambars[0]?.ket }}
                 </td>
-                <td
-                  class="text-left"
-                  style="max-width: 150px;"
-                >
+                <td class="text-left" style="max-width: 150px;">
                   <!-- {{ detailgambars.pemeriksaanfisik[0].detailgambars[0].templategambar }} -->
-                  <img
-                    src=" require(' {{ detailgambars?.pemeriksaanfisik[0]?.detailgambars[0]?.templategambar }}')"
-                    height="10"
-                    width="10"
-                  >
+                  <img src=" require(' {{ detailgambars?.pemeriksaanfisik[0]?.detailgambars[0]?.templategambar }}')"
+                    height="10" width="10">
                 </td>
               </tr>
             </tbody>
@@ -404,7 +355,7 @@
       </div>
       <div class="row">
         <div class="col-1">
-                 &nbsp;
+          &nbsp;
         </div>
         <div class="col-1">
           - Laboratorium
@@ -412,16 +363,9 @@
         <div class="col-1">
           :
         </div>
-        <div
-          class="col-7"
-        >
+        <div class="col-7">
           <div>
-            <q-markup-table
-              separator="vertical"
-              flat
-              bordered
-              dense
-            >
+            <q-markup-table separator="vertical" flat bordered dense>
               <thead>
                 <tr>
                   <th class="text-left">
@@ -436,26 +380,14 @@
                 </tr>
               </thead>
               <tbody>
-                <tr
-                  v-for="(lab, lxx) in store?.item[0]?.laborat"
-                  :key="lxx"
-                >
-                  <td
-                    class="text-left f-12 ellipsis"
-                    style="max-width: 250px;"
-                  >
+                <tr v-for="(lab, lxx) in store?.item[0]?.laborat" :key="lxx">
+                  <td class="text-left f-12 ellipsis" style="max-width: 250px;">
                     {{ lab?.pemeriksaanlab?.rs2 }}
                   </td>
-                  <td
-                    class="text-left f-12 ellipsis"
-                    style="max-width: 250px;"
-                  >
-                    {{ lab?.pemeriksaanlab?.rs21 ? lab?.pemeriksaanlab?.rs21:'-' }}
+                  <td class="text-left f-12 ellipsis" style="max-width: 250px;">
+                    {{ lab?.pemeriksaanlab?.rs21 ? lab?.pemeriksaanlab?.rs21 : '-' }}
                   </td>
-                  <td
-                    class="text-right f-12"
-                    style="max-width: 150px;"
-                  >
+                  <td class="text-right f-12" style="max-width: 150px;">
                     {{ lab?.rs21 }}
                   </td>
                 </tr>
@@ -468,7 +400,7 @@
       <q-separator />
       <div class="row">
         <div class="col-1">
-            &nbsp;
+          &nbsp;
         </div>
         <div class="col-1">
           - Hasil Radiologi
@@ -477,7 +409,7 @@
           :
         </div>
         <div class="col-3">
-          {{ store.item[0]?.pembacaanradiologi[0]?.rs3 ? store.item[0]?.pembacaanradiologi[0]?.rs3:'-'
+          {{ store.item[0]?.pembacaanradiologi[0]?.rs3 ? store.item[0]?.pembacaanradiologi[0]?.rs3 : '-'
           }}
         </div>
       </div>
@@ -487,11 +419,7 @@
           <div class="col-2">
             <b>4. <u>DIAGNOSIS KERJA :</u></b>
           </div>
-          <div
-            v-for="(diagp, dp) in store.item[0]?.diagnosa"
-            :key="dp"
-            class="col-3"
-          >
+          <div v-for="(diagp, dp) in store.item[0]?.diagnosa" :key="dp" class="col-3">
             <div>
               - {{ diagp?.rs4 === 'Primer' ? diagp?.masterdiagnosa?.rs4 : ''
 
@@ -506,11 +434,7 @@
           <div class="col-2">
             <b>5. <u>DIAGNOSIS BANDING :</u></b>
           </div>
-          <div
-            v-for="(diagb, db) in store.item[0]?.diagnosa"
-            :key="db"
-            class="col-3"
-          >
+          <div v-for="(diagb, db) in store.item[0]?.diagnosa" :key="db" class="col-3">
             <div>
               - {{ diagb?.rs4 !== 'Primer' ? diagb?.masterdiagnosa?.rs4 : ''
 
@@ -528,8 +452,7 @@
           <div class="col-3">
             <div
               v-if="store.item?.apotekracikanrajal?.length || store.item?.apotekracikanrajallalu?.length || store.item?.apotekrajal?.length || store.item?.apotekrajal?.length"
-              class="row items-center text-weight-bold"
-            >
+              class="row items-center text-weight-bold">
               <div class="col-9">
                 Obat
               </div>
@@ -566,16 +489,12 @@
             </div>
           </div> -->
             <div v-if="store.item[0]?.apotekrajal?.length">
-              <div
-                v-for="(item,i) in store.item[0]?.apotekrajal"
-                :key="i"
-                class="row items-center"
-              >
+              <div v-for="(item, i) in store.item[0]?.apotekrajal" :key="i" class="row items-center">
                 <div class="col-9">
-                  {{ item?.obat??'-' }}
+                  {{ item?.obat ?? '-' }}
                 </div>
                 <div class="col-3">
-                  {{ item?.jumlah??'0' }}
+                  {{ item?.jumlah ?? '0' }}
                 </div>
               </div>
             </div>
@@ -602,11 +521,7 @@
           <div class="col-2">
             <b>7. <u>RENCANA :</u></b>
           </div>
-          <div
-            v-for="(plan, pl) in store.item[0]?.planning"
-            :key="pl"
-            class="col-3"
-          >
+          <div v-for="(plan, pl) in store.item[0]?.planning" :key="pl" class="col-3">
             <div>
               - {{ plan?.rs4
 
@@ -621,9 +536,7 @@
           <div class="col-2">
             <b>8. <u>TARGET KEBERHASILAN :</u></b>
           </div>
-          <div
-            class="col-3"
-          >
+          <div class="col-3">
             <div>
               - ??????????????????
             </div>
@@ -636,11 +549,7 @@
           <div class="col-2">
             <b>9. <u>CATATAN KIE :</u></b>
           </div>
-          <div
-            v-for="(planx, plx) in store.item[0]?.planning"
-            :key="plx"
-            class="col-3"
-          >
+          <div v-for="(planx, plx) in store.item[0]?.planning" :key="plx" class="col-3">
             <div>
               - {{ planx?.rs4 }}
             </div>
@@ -653,7 +562,7 @@
         <div class="row">
           <div class="col-6">
             <div class="text-center text-weight-bold">
-              Probolinggo, {{ date.formatDate(Date.now(),'DD MMMM YYYY') }}
+              Probolinggo, {{ date.formatDate(Date.now(), 'DD MMMM YYYY') }}
             </div>
           </div>
         </div>
@@ -704,7 +613,7 @@ const store = useDokumenpengkajianawalmedisrjStore()
 store.setParams('noreg', props.pasien?.noreg)
 store.getData()
 // eslint-disable-next-line no-unused-vars
-function getYT(val) {
+function getYT (val) {
   if (val === 1 || val === '1') {
     return 'Ya'
   } else if (val === 0 || val === '0') {
@@ -717,24 +626,25 @@ function getYT(val) {
 
 const printObj = {
   id: 'printMe',
-  popTitle: 'Resume Medik'
+  popTitle: ' '
 
 }
 </script>
 <style lang="scss" scoped>
-.tinggi{
-min-height: 100%;
+.tinggi {
+  min-height: 100%;
 }
 
-.garis-bawah-dablue{
+.garis-bawah-dablue {
   border-bottom: 1px solid rgb(56, 150, 239);
   border-bottom-style: dashed;
 }
-.garis-bawah-dblue{
+
+.garis-bawah-dblue {
   border-bottom: 4px solid rgb(56, 150, 239);
   border-bottom-style: double;
 
-  .textinggris-miring{
+  .textinggris-miring {
     font-family: Times New Roman, Times, serif;
     font-style: italic;
   }

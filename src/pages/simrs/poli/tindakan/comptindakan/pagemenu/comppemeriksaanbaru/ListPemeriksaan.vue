@@ -136,6 +136,9 @@
                   <q-item class="q-pa-xs list-move" dark>
                     <q-item-section class="q-pa-xs">
                       <q-item-label lines="2">
+                        Keadaan Umum : <em>{{ item?.keadaan_umum ?? '-' }}</em>
+                      </q-item-label>
+                      <q-item-label lines="2">
                         T Kesadaran : <em>{{ getKesadaran(item?.tingkatkesadaran) ?? '-' }}</em>
                       </q-item-label>
                       <q-item-label lines="2">
@@ -154,7 +157,7 @@
                         Status Neurologis : <em>{{ item?.statusneurologis ?? '-' }}</em>
                       </q-item-label>
                       <q-item-label lines="2">
-                        Muakuloskeletal : <em>{{ item?.muakuloskeletal ?? '-' }}</em>
+                        Kultural : <em>{{ item?.muakuloskeletal ?? '-' }}</em>
                       </q-item-label>
                     </q-item-section>
                   </q-item>
@@ -290,7 +293,7 @@ const props = defineProps({
   }
 })
 
-function getKesadaran(val) {
+function getKesadaran (val) {
   const temp = store.optionsTingkatkesadaran.filter(a => a.value === parseInt(val))
   if (temp?.length) {
     return temp[0].label
@@ -299,7 +302,7 @@ function getKesadaran(val) {
   }
 }
 // eslint-disable-next-line no-unused-vars
-function tekananDarah(val) {
+function tekananDarah (val) {
   const normal = val >= 100 && val <= 120
   const prahipertensi = val >= 121 && val <= 139
   const hipertensiderajat1 = val >= 140 && val <= 159
@@ -324,7 +327,7 @@ function tekananDarah(val) {
   return obj
 }
 // eslint-disable-next-line no-unused-vars
-function tekananDarahDias(val) {
+function tekananDarahDias (val) {
   const normal = val >= 60 && val <= 79
   const prahipertensi = val >= 80 && val <= 89
   const hipertensiderajat1 = val >= 90 && val <= 99
@@ -349,7 +352,7 @@ function tekananDarahDias(val) {
   return obj
 }
 // eslint-disable-next-line no-unused-vars
-function suhu(val) {
+function suhu (val) {
   const hipotermia = val < 35
   const normal = val >= 35 && val < 37
   const pireksia = val >= 37 && val <= 41.1
@@ -372,7 +375,7 @@ function suhu(val) {
   return obj
 }
 // eslint-disable-next-line no-unused-vars
-function nadi(val) {
+function nadi (val) {
   const bradikardi = val < 60
   const normal = val >= 61 && val <= 100
   const takikardi = val > 100
@@ -392,7 +395,7 @@ function nadi(val) {
   return obj
 }
 
-function hapusItem(id) {
+function hapusItem (id) {
   $q.dialog({
     dark: true,
     title: 'Peringatan',
@@ -409,7 +412,7 @@ function hapusItem(id) {
   })
 }
 
-function editForm(item) {
+function editForm (item) {
   // console.log('item on editGambar listPemeriksaan', item)
   store.editForm(item, props?.pasien)
 }

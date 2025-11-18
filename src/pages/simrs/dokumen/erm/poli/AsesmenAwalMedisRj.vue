@@ -11,11 +11,11 @@
     <div id="printMe" class="full-width">
       <KopSurat />
       <IdentitasPage :pasien="props.pasien" />
-      <div class="row justify-end text-weight-bold q-gutter-sm" style="margin-right: 20px;">
+      <!-- <div class="row justify-end text-weight-bold q-gutter-sm" style="margin-right: 20px;">
         <div class="col-1">
           RM IRJA-1a
         </div>
-      </div>
+      </div> -->
       <div class="row justify-center f-20 text-weight-bold q-mb-md">
         ASESMEN AWAL KEPERAWATAN RAWAT JALAN
       </div>
@@ -80,19 +80,19 @@
             </div>
             <div class="row">
               <div class="col-8" style="margin-left: 30px;">
-                - Keadaan Umum: ????????
+                - Keadaan Umum: {{ pfisik?.keadaan_umum ?? '-' }}
               </div>
               <div class="col-8" style="margin-left: 30px;">
                 - Kesadaran: {{ pfisik?.kesadaran }}
               </div>
               <div class="col-8" style="margin-left: 30px;">
-                - Suhu: {{ pfisik?.suhutubuh }} C
+                - Suhu: {{ pfisik?.suhutubuh }} <span class="f-8" style="vertical-align: top;">o</span>C
               </div>
               <div class="col-8" style="margin-left: 30px;">
                 - Nadi: {{ pfisik?.rs4 }} x/menit
               </div>
               <div class="col-8" style="margin-left: 30px;">
-                - TD: {{ pfisik?.diastole }}/{{ pfisik?.sistole }} mmHg
+                - TD: {{ pfisik?.sistole }}/{{ pfisik?.diastole }} mmHg
               </div>
               <div class="col-8" style="margin-left: 30px;">
                 - Pernafasan: {{ pfisik?.pernapasan
@@ -104,24 +104,44 @@
             </div>
             <div class="row">
               <div class="col-8" style="margin-left: 30px;">
-                - Psikologis: {{ pfisik?.statuspsikologis
-                }}
+                - Psikologis: {{ pfisik?.statuspsikologis }}
+              </div>
+              <!-- <div class="col-8" style="margin-left: 30px;">
+                - Sosial Ekonomi: ????????????????????
+              </div> -->
+              <div class="col-8" style="margin-left: 30px;">
+                <div class="row">
+                  <div class="col-2">
+                    - Edukasi:
+                  </div>
+                  <template v-for="ed in erm?.edukasi" :key="ed">
+                    <div class="col-10">
+                      <div class="column">
+                        <div>{{ ed?.perlupenerjemah === 'Iya' ? 'Pasien Perlu Penerjemah' :
+                          'Pasien Tidak Perlu Penerjemah'
+                        }}</div>
+                        <div>{{ ed?.bahasaisyarat === 'Iya' ? 'Pasien Memakai Bahasa Isyarat' :
+                          'Pasien Tidak Memakai Bahasa Isyarat' }}</div>
+                        <div>{{ ed?.caraedukasi === 'Lisan' ? 'Edukasi Memakai Lisan' : 'Edukasi Memakai Tulisan' }}
+                        </div>
+                        <div>{{ (ed?.kesediaan === 'Iya' ? 'Pasien Bersedia' : 'Pasien Tidak Bersedia') +
+                          ' menerima edukasi dan informasi dari Petugas' }}</div>
+                        <div> Kebutuhan : <b><em>{{ ed?.kebutuhanedukasi }}</em></b> </div>
+                        <div> Penerima Edukasi : <b><em>{{ ed?.rs9 }}</em></b> </div>
+                      </div>
+                    </div>
+
+                  </template>
+                </div>
               </div>
               <div class="col-8" style="margin-left: 30px;">
-                - Sosial: ????????????????????
+                - Sosial Ekonomi: {{ pfisik?.sosialekonomi ?? '-' }}
               </div>
               <div class="col-8" style="margin-left: 30px;">
-                - Edukasi: ??????????
+                - Spiritual: {{ pfisik?.spiritual ?? '-' }}
               </div>
               <div class="col-8" style="margin-left: 30px;">
-                - Ekonomi: {{ pfisik?.sosialekonomi ?? '-' }}
-              </div>
-              <div class="col-8" style="margin-left: 30px;">
-                - Spiritual: {{ pfisik?.spiritual ?? '-'
-                }}
-              </div>
-              <div class="col-8" style="margin-left: 30px;">
-                - Kultural: ???????????????????????????????????
+                - Kultural: {{ pfisik?.muakuloskeletal ?? '-' }}
               </div>
             </div>
           </div>
@@ -137,14 +157,28 @@
         <div v-for="(erm, e1) in store.item" :key="e1">
           <div v-for="(anamx, e2x) in erm.anamnesis" :key="e2x">
             <div class="col-5" style="margin-left: 20px;">
-              - Apakah Pasian mengalami penurunan / peningkatan BB yang tidak diinginkan dalam 6 Bulan terakhir ? {{
-                skorgizi(anamx?.skreeninggizi) }}
+              - Pasian <span v-if="anamx?.skreeninggizi == 0" class="text-weight-bold">{{
+                skorgizi(anamx?.skreeninggizi)
+                }}</span> mengalami penurunan / peningkatan BB yang tidak
+              diinginkan dalam 6 Bulan terakhir
             </div>
             <div class="col-5" style="margin-left: 20px;">
-              - Apakah Asupan Makan berkurang karena tidak nafsu makan ? {{ skorgizi(anamx?.asupanmakan) }}
+              - Asupan Makan <span v-if="anamx?.asupanmakan == 0" class="text-weight-bold">{{
+                skorgizi(anamx?.asupanmakan)
+                }}</span> berkurang karena tidak nafsu makan
             </div>
             <div class="col-5" style="margin-left: 20px;">
-              - Kondisi Khusus = {{ skorgizi(anamx?.kondisikhusus) }}
+              - Kondisi Khusus : {{ anamx?.kondisikhusus ?? '-' }}
+            </div>
+            <div class="col-12" style="margin-left: 20px;">
+              <div class="flex">
+                - Skor Skreening Gizi : <div class="q-mx-sm">
+                  <b>{{ anamx?.skor }}</b>
+                </div>
+                <div>
+                  Keterangan : {{ keteranganSkorGizi(anamx?.skor) }}
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -260,7 +294,7 @@ const props = defineProps({
 })
 const printObj = {
   id: 'printMe',
-  popTitle: 'Resume Medik'
+  popTitle: 'Asesmen Awal Keperawatan'
 
 }
 const store = useDokumenpengkajianawalmedisrjStore()
@@ -275,6 +309,15 @@ function skorgizi (val) {
     return 'Ya'
   } else {
     return 'Tidak'
+  }
+}
+function keteranganSkorGizi (nilai) {
+  const skor = nilai || 0
+  if (skor < 2) {
+    return 'tidak beresiko malnutrisi'
+  }
+  else {
+    return 'Beresiko malnutrisi'
   }
 }
 
