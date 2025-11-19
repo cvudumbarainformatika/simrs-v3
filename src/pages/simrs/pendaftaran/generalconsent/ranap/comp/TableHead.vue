@@ -1,163 +1,95 @@
 <template>
-  <div
-    class="row items-center justify-between q-pa-sm"
-    :class="`${color} text-${textColor}`"
-  >
+  <div class="row items-center justify-between q-pa-sm" :class="`${color} text-${textColor}`">
     <div class="row">
-      <q-input
-        v-model="q"
-        outlined
-        dark
-        color="white"
-        dense
-        placeholder="Cari Kunjungan ..."
-        debounce="500"
-      />
-      <q-select
-        v-model="periode"
-        dense
-        outlined
-        dark
-        color="white"
-        :options="periods"
-        label="Periode"
-        class="q-ml-sm"
-        emit-value
-        map-options
-        style="min-width: 150px;"
-        @update:model-value="gantiPeriode"
-      />
-      <q-select
-        v-model="txt"
-        dense
-        outlined
-        dark
-        color="white"
-        :options="txts"
-        label="status pasien"
-        class="q-ml-sm"
-        emit-value
-        map-options
-        style="min-width: 150px;"
-      />
+      <q-input v-model="q" outlined dark color="white" dense placeholder="Cari Kunjungan ..." debounce="500" />
+
+      <q-select v-model="store.params.status" dense outlined dark color="white" :options="store.statuses" label="Status"
+        class="q-ml-sm" emit-value map-options style="min-width: 150px;" @update:model-value="(val) => {
+          // console.log('header status val ', val);
+          store.params.page = 1
+          store.getKunjunganRanap()
+        }" />
+      <div class="q-ml-sm" v-if="store.params.status === 'Pulang'">
+        <q-btn outline color="white" class="bg-primary" size="md" no-caps>
+          <div class="flex items-center q-mx-xs">
+            <div class="f-12 q-mr-sm">
+              {{ store?.periode }}
+            </div>
+            <transition>
+              <q-icon :name="`${showMenuPeriode ? 'icon-mat-keyboard_arrow_up' : 'icon-mat-keyboard_arrow_down'}`"
+                size="16px" />
+            </transition>
+          </div>
+
+          <q-menu dark @show="showMenuPeriode = true" @hide="showMenuPeriode = false">
+            <div class="row no-wrap q-pa-sm">
+              <q-list style="min-width: 100px">
+                <q-item v-for="item in store?.periods" :key="item" clickable :active="item === store?.periode"
+                  active-class="bg-primary text-white" :disable="item === 'Custom'" @click="store.setPeriode(item)">
+                  <q-item-section>{{ item }}</q-item-section>
+                </q-item>
+              </q-list>
+              <q-separator vertical inset />
+
+              <div class="column">
+                <div class="row q-pa-sm q-col-gutter-sm">
+                  <div class="col">
+                    <q-date dark v-model="store.params.to" minimal bordered flat mask="YYYY-MM-DD"
+                      @update:model-value="store.setPeriode('Custom')" />
+                    <div class="f-10 text-grey-8 q-mt-xs">
+                      DARI TANGGAL : <b>{{ store.params.to }}</b>
+                    </div>
+                  </div>
+                  <div class="col">
+                    <q-date dark v-model="store.params.from" minimal bordered flat mask="YYYY-MM-DD"
+                      @update:model-value="store.setPeriode('Custom')" />
+                    <div class="f-10 text-grey-8 q-mt-xs">
+                      SAMPAI TANGGAL : <b>{{ store.params.to }}</b>
+                    </div>
+                  </div>
+                </div>
+                <q-separator />
+                <div class="row q-pa-sm justify-end">
+                  <q-btn v-close-popup color="primary" label="Terapkan" push size="sm" @click="goTo" />
+                </div>
+              </div>
+            </div>
+          </q-menu>
+        </q-btn>
+
+      </div>
+
+      <q-select v-model="store.ruangan" dense outlined dark color="white" :options="store.ruangans" label="Ruangan"
+        class="q-ml-sm" emit-value map-options option-value="groups" option-label="groups_nama"
+        style="min-width: 150px;" @update:model-value="store.gantiRuangan" />
+
+      <!-- <q-select v-model="periode" dense outlined dark color="white" :options="periods" label="Periode" class="q-ml-sm"
+        emit-value map-options style="min-width: 150px;" @update:model-value="gantiPeriode" /> -->
+      <!-- <q-select v-model="txt" dense outlined dark color="white" :options="txts" label="status pasien" class="q-ml-sm"
+        emit-value map-options style="min-width: 150px;" /> -->
     </div>
     <div>
-      <!-- <q-btn
-        flat
-        :color="textColor"
-        icon-right="icon-mat-event"
-        :label="tanggal"
-        size="sm"
-        padding="xs"
-        class="q-mr-sm"
-      >
-        <q-popup-proxy ref="popup">
-          <q-date
-
-            v-model="dateX"
-            minimal
-            mask="YYYY-MM-DD"
-            @update:model-value="lihatRef"
-          />
-        </q-popup-proxy>
-      </q-btn> -->
-      <!-- <q-btn
-        flat
-        :color="textColor"
-        icon-right="icon-mat-dataset"
-        :label="txt"
-        size="sm"
-        padding="xs"
-        class="q-mr-sm"
-      >
-        <q-menu
-          transition-show="flip-left"
-          transition-hide="flip-right"
-          :offset="[0,10]"
-        >
-          <q-list style="min-width: 150px">
-            <q-item
-              v-for="(item, i) in txts"
-              :key="i"
-              v-close-popup
-              clickable
-              :class="item===txt?'bg-secondary text-white':''"
-              @click="txt=item"
-            >
-              <q-item-section>{{ item }}</q-item-section>
-            </q-item>
-            <q-separator />
-          </q-list>
-        </q-menu>
-      </q-btn> -->
 
       <!-- per_page -->
-      <q-btn
-        flat
-        :color="textColor"
-        icon="icon-mat-dashboard"
-        size="xs"
-        padding="xs"
-        @click="emits('filter')"
-      >
-        <q-tooltip
-          class="primary"
-          :offset="[10, 10]"
-        >
+      <q-btn flat :color="textColor" icon="icon-mat-dashboard" size="xs" padding="xs" @click="emits('filter')">
+        <q-tooltip class="primary" :offset="[10, 10]">
           Filter
         </q-tooltip>
       </q-btn>
-      <q-btn
-        flat
-        color="orange"
-        icon="icon-mat-refresh"
-        size="xs"
-        padding="xs"
-        @click="emits('refresh')"
-      >
-        <q-tooltip
-          class="primary"
-          :offset="[10, 10]"
-        >
+      <q-btn flat color="orange" icon="icon-mat-refresh" size="xs" padding="xs" @click="emits('refresh')">
+        <q-tooltip class="primary" :offset="[10, 10]">
           Refresh
         </q-tooltip>
       </q-btn>
-      <q-btn
-        class="q-ml-sm"
-        unelevated
-        color="orange"
-        flat
-        size="sm"
-        padding="xs"
-        icon="icon-mat-layers"
-      >
-        <q-tooltip
-          class="primary"
-          :offset="[10, 10]"
-        >
+      <q-btn class="q-ml-sm" unelevated color="orange" flat size="sm" padding="xs" icon="icon-mat-layers">
+        <q-tooltip class="primary" :offset="[10, 10]">
           per Baris List
         </q-tooltip>
-        <q-menu
-          transition-show="flip-left"
-          transition-hide="flip-right"
-          anchor="top left"
-          self="top right"
-        >
+        <q-menu transition-show="flip-left" transition-hide="flip-right" anchor="top left" self="top right">
           <q-list dense>
-            <q-item
-              v-for="(opt, i) in options"
-              :key="i"
-              v-ripple
-              tag="label"
-            >
+            <q-item v-for="(opt, i) in options" :key="i" v-ripple tag="label">
               <!-- <q-item-section> -->
-              <q-radio
-                v-model="selectPerPage"
-                size="xs"
-                :val="opt"
-                :label="opt + ' Baris'"
-                color="primary"
-              />
+              <q-radio v-model="selectPerPage" size="xs" :val="opt" :label="opt + ' Baris'" color="primary" />
               <!-- </q-item-section> -->
               <!-- <q-item-label /> -->
             </q-item>
@@ -165,18 +97,9 @@
         </q-menu>
       </q-btn>
       <!-- fullscreen -->
-      <q-btn
-        flat
-        :color="textColor"
-        :icon="!fullscreen?'icon-mat-open_in_full':'icon-mat-close_fullscreen'"
-        size="xs"
-        padding="xs"
-        @click="emits('fullscreen')"
-      >
-        <q-tooltip
-          class="primary"
-          :offset="[10, 10]"
-        >
+      <q-btn flat :color="textColor" :icon="!fullscreen ? 'icon-mat-open_in_full' : 'icon-mat-close_fullscreen'"
+        size="xs" padding="xs" @click="emits('fullscreen')">
+        <q-tooltip class="primary" :offset="[10, 10]">
           Fullscreen
         </q-tooltip>
       </q-btn>
@@ -198,6 +121,7 @@ const periods = ref([
   { value: 3, label: 'Bulan Ini' },
   { value: 4, label: 'Tahun Ini' }
 ])
+const showMenuPeriode = ref(false)
 
 const periode = ref(1)
 const props = defineProps({
@@ -218,7 +142,8 @@ const props = defineProps({
     type: String,
     default: dateDbFormat(new Date())
   },
-  fullscreen: { type: Boolean, default: false }
+  fullscreen: { type: Boolean, default: false },
+  store: { type: Object, default: null }
 })
 
 // const popup = ref()
@@ -278,21 +203,12 @@ onMounted(() => {
   hariIni()
 })
 
-// function lihatRef() {
-//   popup.value.hide()
-// }
-// const selectPerPage = computed({
-//   get () { return props.perPage },
-//   set (val) { emits('setRow', val) }
-// })
-// const dateX = computed({
-//   get() {
-//     return props.tanggal
-//   },
-//   set(newVal) {
-//     emits('setTanggal', newVal)
-//   }
-// })
+onMounted(() => {
+  Promise.all([
+    props.store.getRuangan()
+  ])
+})
+
 const q = computed({
   get() {
     return props.search
@@ -301,4 +217,10 @@ const q = computed({
     emits('setSearch', newVal)
   }
 })
+
+
+const goTo = () => {
+  props.store.params.page = 1
+  props.store.getKunjunganRanap()
+}
 </script>

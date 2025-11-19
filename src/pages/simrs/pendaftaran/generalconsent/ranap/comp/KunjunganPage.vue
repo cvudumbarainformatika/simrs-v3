@@ -8,10 +8,10 @@
         <div class="col-auto bg-primary">
           <TableHead :search="store.params.q" :per-page="store.params.per_page" @fullscreen="style.setComponentFull"
             @set-tanggal="(val) => store.setDate(val)" @set-search="store.setQ" @set-row="store.setPerPage"
-            @set-periode="store.setPeriodik" @refresh="store.getLists" @filter="store.setFilters" />
+            @set-periode="store.setPeriodik" @refresh="store.getLists" @filter="store.setFilters" :store="store" />
         </div>
         <div class="col full-height scroll">
-          <ListKunjungan :items="store?.items" />
+          <ListKunjungan :items="store?.ranap" />
         </div>
         <div class="col-auto bg-primary">
           <BottomComp v-if="store.meta !== null" :key="store.meta" :meta="store.meta" @go-to="store.setPage" />
@@ -27,17 +27,16 @@ import HeaderComp from './HeaderComp.vue'
 import ListKunjungan from './ListKunjungan.vue'
 import BottomComp from 'src/pages/simrs/pendaftaran/bpjs/kunjungan/comp/BottomComp.vue'
 import { useStyledStore } from 'src/stores/app/styled'
-import { useListKunjunganBpjsStore } from 'src/stores/simrs/pendaftaran/kunjungan/bpjs/lists'
+import { useListGeneralConsentStore } from 'src/stores/simrs/pendaftaran/generalconsent/kunjungan'
 import { onMounted, onUnmounted } from 'vue'
 // import { loadingBlock } from 'src/modules/utils'
 
 const style = useStyledStore()
-const store = useListKunjunganBpjsStore()
+const store = useListGeneralConsentStore()
 
 onMounted(() => {
-  // loadingBlock('show')
-  store.params.kdbayar = 'ALL'
-  store.getLists()
+
+  store.getKunjunganRanap()
 })
 
 onUnmounted(() => {

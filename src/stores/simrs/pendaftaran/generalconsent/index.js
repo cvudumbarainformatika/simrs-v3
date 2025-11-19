@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia'
+import { defineStore, acceptHMRUpdate } from 'pinia'
 import { api } from 'src/boot/axios'
 import { dateDbFormat } from 'src/modules/formatter'
 // eslint-disable-next-line no-unused-vars
@@ -11,6 +11,20 @@ export const useGeneralConsentStore = defineStore('general_consent', {
     items: [],
     loading: false,
     openPreviewGc: false,
+
+    ranaps: [],
+    params: {
+      q: '',
+      per_page: 10,
+      sort: 'DESC',
+      page: 1,
+      order_by: 'id',
+      // tgl: dateDbFormat(new Date()),
+      to: dateDbFormat(new Date()),
+      from: dateDbFormat(new Date()),
+      kdbayar: null,
+      status: null
+    },
 
     form: {
       tanggal: dateDbFormat(new Date()),
@@ -36,7 +50,7 @@ export const useGeneralConsentStore = defineStore('general_consent', {
   //   doubleCount: (state) => state.counter * 2
   // },
   actions: {
-    async getData () {
+    async getData() {
       this.loading = true
       try {
         const resp = await api.get('/v1/simrs/pendaftaran/generalconscent/mastergeneralconsent')
@@ -52,11 +66,11 @@ export const useGeneralConsentStore = defineStore('general_consent', {
       }
     },
 
-    setForm (frm, val) {
+    setForm(frm, val) {
       this.form[frm] = val
       // console.log('ttd', val, frm)
     },
-    resetFORM () {
+    resetFORM() {
       this.form = {}
       const columns = [
         'tanggal',
@@ -78,7 +92,7 @@ export const useGeneralConsentStore = defineStore('general_consent', {
       }
       this.setForm('tanggal', dateDbFormat(new Date()))
     },
-    saveGeneralConsentPasien (pegawai) {
+    saveGeneralConsentPasien(pegawai) {
       if (!this.form.ttdpasien) {
         notifErrVue('Maaf tanda tangan pasien Belum Ada')
         return
@@ -126,6 +140,11 @@ export const useGeneralConsentStore = defineStore('general_consent', {
             reject(err)
           })
       })
-    }
+    },
+
+
   }
 })
+
+if (import.meta.hot)
+  import.meta.hot.accept(acceptHMRUpdate(useGeneralConsentStore, import.meta.hot))

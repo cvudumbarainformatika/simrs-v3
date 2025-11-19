@@ -27,59 +27,38 @@
             </q-item-label>
             <q-item-label>
               DPJP : <span class="text-negative text-weight-bold">{{ item.dokter }}</span> | RUANGAN : <span
-                class="text-teal text-weight-bold"> {{ item.poli }}</span>
+                class="text-teal text-weight-bold"> {{ item.ruangan }}</span>
             </q-item-label>
             <q-item-label caption>
               USIA : <span class="text-weight-bold">{{ item.usia }}</span> | Kelamin : <span class="text-weight-bold">{{
                 item.kelamin }}</span>
             </q-item-label>
             <q-item-label>
-              Tgl Kunjungan : <span class="text-weight-bold text-accent"> {{ dateFullFormat(item.tgl_kunjungan) }}
-              </span> | jam : {{ formatJam(item.tgl_kunjungan) }}
+              Tgl Kunjungan : <span class="text-weight-bold text-accent"> {{ dateFullFormat(item.tglmasuk) }}
+              </span> | jam : {{ formatJam(item?.tglmasuk) }}
             </q-item-label>
-            <q-item-label caption>
+            <!-- <q-item-label caption>
               <i>Status Pasien: <span class="text-negative text-weight-bold">{{ getStatus(item.taskid) }}</span></i>
-            </q-item-label>
+            </q-item-label> -->
           </q-item-section>
           <q-item-section side top>
             <q-item-label caption>
               <div class="row justify-end" @click="bukaSep(item)">
                 <div :class="item.sep ? 'q-ml-sm' : 'q-ml-sm cursor-pointer'">
-                  <q-badge outline :color="item.sep ? 'teal' : 'negative'" :label="item.sep ? item.sep : 'SEP Belum terbit'" />
+                  <q-badge outline :color="item.sep ? 'teal' : 'negative'"
+                    :label="item.sep ? item.sep : 'SEP Belum terbit'" />
                 </div>
               </div>
               <div class="row q-mt-sm justify-end">
                 <q-btn v-if="!item.ttdpasien" outline size="sm" class="q-px-md"
                   :color="item.generalcons ? 'teal' : 'negative'"
-                  :label="item.generalcons ? 'Lihat General Consent' : 'General Consent Belum Ada'" @click="genCon(item)" />
+                  :label="item.generalcons ? 'Lihat General Consent' : 'General Consent Belum Ada'"
+                  @click="genCon(item)" />
                 <q-btn v-else outline size="sm" class="q-px-md" :color="item.ttdpasien ? 'teal' : 'negative'"
                   :label="item.generalcons ? 'Lihat General Consent' : 'General Consent Belum Ada'"
                   :href="pathImg + item?.generalcons?.pdf" target="_blank" />
               </div>
-              <!-- <div class="row q-mt-sm justify-end">
-                <div class="q-ml-sm">
-                  <q-btn
-                    outline
-                    size="sm"
-                    color="teal"
-                    :loading="loadingP && temp===item.noka"
-                    label="Pengajuan SEP"
-                    @click="PengajuanSep(item)"
-                  />
-                </div>
-              </div> -->
-              <!-- <div class="row q-mt-sm justify-end">
-                <div class="q-ml-sm">
-                  <q-btn
-                    size="sm"
-                    padding="xs"
-                    color="negative"
-                    :loading="loadingH && temp===item.noka"
-                    label="Hapus Pasien"
-                    @click="hapus(item)"
-                  />
-                </div>
-              </div> -->
+
             </q-item-label>
           </q-item-section>
         </q-item>

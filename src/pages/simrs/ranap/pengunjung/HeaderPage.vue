@@ -44,18 +44,6 @@
               }" />
 
             <div class="q-ml-sm" v-if="store.params.status === 'Pulang'">
-              <!-- <app-input-date
-                :model="store.params.from"
-                label="Tanggal"
-                icon="icon-mat-event"
-                outlined
-                dark
-                @set-model="val=>{
-                  store.params.from=val
-                  store.getData()
-                }"
-              /> -->
-
               <q-btn outline color="white" class="bg-primary" size="md" no-caps>
                 <div class="flex items-center q-mx-xs">
                   <div class="f-12 q-mr-sm">
