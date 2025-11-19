@@ -4,52 +4,39 @@
       List Diagnosa Keperawatan Tersimpan
     </div>
     <div class="col full-height">
-      <q-scroll-area
-        v-if="props?.pasien?.diagnosakeperawatan?.length"
-        style="height:calc(100% - 1px)"
-      >
-        <q-list
-          bordered
-          separator
-        >
-          <q-item
-            v-for="item in props.pasien?.diagnosakeperawatan"
-            :key="item.id"
-            v-ripple
-            clickable
-          >
+      <q-scroll-area v-if="props?.pasien?.diagnosakeperawatan?.length" style="height:calc(100% - 1px)">
+        <q-list bordered separator>
+          <q-item v-for="item in props.pasien?.diagnosakeperawatan" :key="item.id" v-ripple clickable>
             <q-item-section>
               <q-item-label> <b>{{ item.kode }} - {{ item.nama }}</b> </q-item-label>
               <q-item-label caption>
                 Intervensi Keperawatan
               </q-item-label>
-              <q-item-label
-                v-for="sub in item.intervensi"
-                :key="sub.id"
-              >
+              <q-item-label v-for="sub in item.intervensi" :key="sub.id">
                 - {{ sub?.masterintervensi?.nama }}
               </q-item-label>
+
+              <div class="q-mt-lg"><b>Evaluasi</b></div>
+              <div class="row q-ma-sm">
+                <q-input v-model="item.evaluasi" class="col-12" label="Evaluasi" autogrow outlined
+                  standout="bg-yellow-3" lazy-rules="ondemand" hide-bottom-space />
+              </div>
+
+              <div class="text-right">
+                <q-btn label="Simpan Evaluasi" color="primary" @click="store.simpanEvaluasi(item, pasien, 'rajal')"
+                  :loading="store.loadingSaveEval" :disable="store.loadingSaveEval" />
+              </div>
             </q-item-section>
 
             <q-item-section side>
-              <q-btn
-                icon="icon-mat-delete"
-                size="xs"
-                round
-                padding="sm"
-                flat
-                color="negative"
-                @click="hapusItem(item.id)"
-              />
+              <q-btn icon="icon-mat-delete" size="xs" round padding="sm" flat color="negative"
+                @click="hapusItem(item.id)" />
             </q-item-section>
           </q-item>
         </q-list>
       </q-scroll-area>
 
-      <div
-        v-else
-        class="column full-height flex-center"
-      >
+      <div v-else class="column full-height flex-center">
         DATA TERSIMPAN BELUM ADA
       </div>
     </div>
@@ -71,7 +58,7 @@ const props = defineProps({
   }
 })
 
-function hapusItem(id) {
+function hapusItem (id) {
   $q.dialog({
     dark: true,
     title: 'Peringatan',

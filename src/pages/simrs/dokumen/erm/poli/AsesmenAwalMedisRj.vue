@@ -119,7 +119,7 @@
                       <div class="column">
                         <div>{{ ed?.perlupenerjemah === 'Iya' ? 'Pasien Perlu Penerjemah' :
                           'Pasien Tidak Perlu Penerjemah'
-                        }}</div>
+                          }}</div>
                         <div>{{ ed?.bahasaisyarat === 'Iya' ? 'Pasien Memakai Bahasa Isyarat' :
                           'Pasien Tidak Memakai Bahasa Isyarat' }}</div>
                         <div>{{ ed?.caraedukasi === 'Lisan' ? 'Edukasi Memakai Lisan' : 'Edukasi Memakai Tulisan' }}
@@ -159,13 +159,13 @@
             <div class="col-5" style="margin-left: 20px;">
               - Pasian <span v-if="anamx?.skreeninggizi == 0" class="text-weight-bold">{{
                 skorgizi(anamx?.skreeninggizi)
-                }}</span> mengalami penurunan / peningkatan BB yang tidak
+              }}</span> mengalami penurunan / peningkatan BB yang tidak
               diinginkan dalam 6 Bulan terakhir
             </div>
             <div class="col-5" style="margin-left: 20px;">
               - Asupan Makan <span v-if="anamx?.asupanmakan == 0" class="text-weight-bold">{{
                 skorgizi(anamx?.asupanmakan)
-                }}</span> berkurang karena tidak nafsu makan
+              }}</span> berkurang karena tidak nafsu makan
             </div>
             <div class="col-5" style="margin-left: 20px;">
               - Kondisi Khusus : {{ anamx?.kondisikhusus ?? '-' }}
@@ -204,7 +204,17 @@
       </div>
       <div class="row">
         <div class="col-5" style="margin-left: 20px;">
-          - ????????????????????
+          <div v-for="(erm, e1) in store.item" :key="e1">
+            <div v-for="(kep, e3x) in erm.diagnosakeperawatan" :key="e3x">
+              <div v-if="kep.intervensi?.filter(x => x.masterintervensi.group === 'plann')?.length"
+                style="margin-left: 20px;">
+                <div v-for="item in kep.intervensi?.filter(x => x.masterintervensi.group === 'plann')" :key="item">
+                  - {{ item?.masterintervensi?.nama }}
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
 
@@ -214,7 +224,16 @@
       </div>
       <div class="row">
         <div class="col-5" style="margin-left: 20px;">
-          - ????????????????????
+          <div v-for="(erm, e1) in store.item" :key="e1">
+            <div v-for="(kep, e3x) in erm.diagnosakeperawatan" :key="e3x">
+              <div v-if="kep.intervensi?.filter(x => x.masterintervensi.group !== 'plann')?.length"
+                style="margin-left: 20px;">
+                <div v-for="item in kep.intervensi?.filter(x => x.masterintervensi.group !== 'plann')" :key="item">
+                  - {{ item?.masterintervensi?.nama }}
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -223,9 +242,17 @@
         <b><u>Evaluasi</u></b>
       </div>
       <div class="row">
-        <div class="col-5" style="margin-left: 20px;">
-          - ????????????????????
+        <div v-for="(erm, e1) in store.item" :key="e1">
+          <div v-for="(kep, e3x) in erm.diagnosakeperawatan" :key="e3x">
+            <div class="col-5" style="margin-left: 20px;">
+              <span v-html="getNewLine(kep?.evaluasi ?? '-')" />
+              <!-- - {{ kep?.evaluasi }} -->
+            </div>
+          </div>
         </div>
+        <!-- <div class="col-5" style="margin-left: 20px;">
+          - ????????????????????
+        </div> -->
       </div>
 
       <q-separator />
@@ -286,6 +313,7 @@ import { date } from 'quasar'
 import KopSurat from '../../comppoli/KopSurat.vue'
 import IdentitasPage from '../../comppoli/IdentitasPage.vue'
 import { useDokumenpengkajianawalmedisrjStore } from 'src/stores/simrs/dokumen/erm/pengkajianawalmedisrj'
+import { getNewLine } from 'src/modules/formatter'
 const props = defineProps({
   pasien: {
     type: Object,

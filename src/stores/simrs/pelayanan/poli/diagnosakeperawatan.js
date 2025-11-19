@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia'
+import { acceptHMRUpdate, defineStore } from 'pinia'
 import { api } from 'src/boot/axios'
 import { usePengunjungPoliStore } from './pengunjung'
 import { notifErr, notifSuccess } from 'src/modules/utils'
@@ -11,7 +11,9 @@ export const useDiagnosaKeperawatan = defineStore('diagnosa-keperawatan', {
     selectDiagnosa: [],
     selectIntervensis: [],
     diagnosa: '',
-    loadingSave: false
+    loadingSave: false,
+    loadingSaveEval: false,
+    evaluasi: '',
     // form: {
     //   norm: '',
     //   noreg: '',
@@ -19,7 +21,6 @@ export const useDiagnosaKeperawatan = defineStore('diagnosa-keperawatan', {
     //   namadiagnosa: ''
     // }
   }),
-  modalOpen: false,
   // getters: {
   //   doubleCount: (state) => state.counter * 2
   // },
@@ -67,7 +68,31 @@ export const useDiagnosaKeperawatan = defineStore('diagnosa-keperawatan', {
         notifErr(error)
       }
     },
+    async simpanEvaluasi (payload, pasien, cat) {
+      this.loadingSaveEval = true
+      const form = {
+        noreg: pasien?.noreg,
+        evaluasi: payload?.evaluasi,
+        id: payload?.id
+      }
+      try {
+        const resp = await api.post('v1/simrs/pelayanan/simpanevaluasikeperawatan', form)
+        this.injectToKunjunganPasien(pasien, resp.data.result, cat)
+        // console.log('simpan', resp)
+        if (resp.status === 200) {
+          notifSuccess(resp)
+          this.initReset()
 
+        }
+      }
+      catch (error) {
+        // console.log(error)
+        notifErr(error)
+      }
+      finally {
+        this.loadingSaveEval = false
+      }
+    },
     tataForm (pasien, cat) {
       let intv = []
       if (this.selectIntervensis?.length) {
@@ -147,6 +172,11 @@ export const useDiagnosaKeperawatan = defineStore('diagnosa-keperawatan', {
     initReset () {
       this.diagnosa = ''
       this.selectDiagnosa = []
+      this.evaluasi = ''
     }
   }
 })
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useDiagnosaKeperawatan, import.meta.hot))
+}
