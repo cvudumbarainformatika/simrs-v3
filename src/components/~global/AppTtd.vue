@@ -1,41 +1,11 @@
 <template>
   <div class="ttd-pad-form">
-    <canvas
-      v-show="imgTtd === null"
-      ref="canvasRef"
-      class="ttd-pad"
-      height="150"
-      width="300"
-      @pointerdown="handlePointerDown"
-      @pointermove="handlePointerMove"
-      @pointerup="handlePointerUp"
-    />
-    <q-img
-      v-show="imgTtd !== null"
-      :src="imgTtd"
-      height="150"
-      width="300"
-    />
-    <div class="absolute-bottom-right q-ma-md">
-      <q-btn
-        flat
-        icon="icon-mat-refresh"
-        size="md"
-        padding="xs"
-        round
-        color="negative"
-
-        @click="clearPad()"
-      />
-      <q-btn
-        flat
-        icon="icon-mat-save"
-        size="md"
-        padding="xs"
-        round
-        color="primary"
-        @click="savePad()"
-      />
+    <canvas v-show="imgTtd === null" ref="canvasRef" class="ttd-pad" height="200" width="320"
+      @pointerdown="handlePointerDown" @pointermove="handlePointerMove" @pointerup="handlePointerUp" />
+    <q-img v-show="imgTtd !== null" :src="imgTtd" height="200" width="320" />
+    <div class="absolute-bottom-right q-ma-sm">
+      <q-btn flat icon="icon-mat-refresh" size="md" padding="xs" round color="negative" @click="clearPad()" />
+      <q-btn flat icon="icon-mat-save" size="md" padding="xs" round color="primary" @click="savePad()" />
     </div>
   </div>
 </template>
@@ -76,7 +46,7 @@ onMounted(() => {
 })
 
 const handlePointerDown = (event) => {
-  console.log('pointerdown', event)
+  // console.log('pointerdown', event)
   writingMode.value = true
   ctx.value.beginPath()
 
@@ -128,9 +98,9 @@ const savePad = () => {
 </script>
 
 <style lang="scss" scoped>
-.ttd-pad-form{
+.ttd-pad-form {
   // min-height: 100px;
-  max-width: 300px;
+  max-width: 320px;
   margin: 0 auto;
   // border: 1px solid black;
   position: relative;
@@ -144,10 +114,9 @@ canvas.ttd-pad {
   color: black;
 }
 
-  @media(pointer:coarse){
-    body {
-      overflow: hidden;
-    }
+@media(pointer:coarse) {
+  body {
+    overflow: hidden;
   }
-
+}
 </style>

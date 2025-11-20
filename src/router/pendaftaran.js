@@ -190,7 +190,28 @@ const pendaftaran = {
     },
     {
       path: '/pendaftaran/general-consent',
-      component: () => import('pages/simrs/pendaftaran/generalconsent/IndexPage.vue')
+      component: () => import('pages/simrs/pendaftaran/generalconsent/IndexPage.vue'),
+      children: [
+        { path: '', redirect: '/pendaftaran/general-consent/irja' },
+        {
+          path: '/pendaftaran/general-consent/irja',
+          name: 'pendaftaran.generalconsent.irja',
+          component: () =>
+            import('pages/simrs/pendaftaran/generalconsent/irja/IndexPage.vue')
+        },
+        {
+          path: '/pendaftaran/general-consent/ranap',
+          name: 'pendaftaran.generalconsent.ranap',
+          component: () =>
+            import('pages/simrs/pendaftaran/generalconsent/ranap/IndexPage.vue')
+        },
+        // {
+        //   path: '/pendaftaran/general-consent/igd',
+        //   name: 'pendaftaran.generalconsent.igd',
+        //   component: () =>
+        //     import('pages/simrs/pendaftaran/generalconsent/igd/IndexPage.vue')
+        // }
+      ]
     },
     {
       path: '/pendaftaran/master-pasien',

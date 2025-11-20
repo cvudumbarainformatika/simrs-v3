@@ -10,6 +10,7 @@ const masters = {
       name: 'master.dashboard',
       component: () => import('pages/simrs/master/IndexPage.vue')
     },
+
     {
       path: '/master/farmasi',
       name: 'master.farmasi',
@@ -107,11 +108,12 @@ const masters = {
         }
       ]
     },
+
     {
       path: '/master/general-consent',
       component: () => import('src/pages/simrs/master/generalconsent/IndexPage.vue'),
       children: [
-        { path: '', redirect: '/master/general-consent/irja' },
+        // { path: '', redirect: '/master/general-consent/irja' },
         {
           path: '/master/general-consent/irja',
           name: 'master.generalconsent.irja',
@@ -121,6 +123,11 @@ const masters = {
           path: '/master/general-consent/ranap',
           name: 'master.generalconsent.ranap',
           component: () => import('pages/simrs/master/generalconsent/ranap/IndexPage.vue')
+        },
+        {
+          path: '/master/general-consent/igd',
+          name: 'master.generalconsent.igd',
+          component: () => import('pages/simrs/master/generalconsent/igd/IndexPage.vue')
         },
         {
           path: '/master/general-consent/spri',

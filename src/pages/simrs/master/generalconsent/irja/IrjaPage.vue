@@ -1,26 +1,13 @@
 <template>
-  <q-page
-    ref="pageRef"
-    class="column full-height full-width"
-    :class="!style.componentfull?'q-pa-md':'q-pa-xs'"
-  >
+  <q-page ref="pageRef" class="column full-height full-width" :class="!style.componentfull ? 'q-pa-md' : 'q-pa-xs'">
     <div class="col-auto ">
-      <PageHead
-        v-if="!style.componentfull"
-        title="Master General Consent"
-        subtitle="Pengaturan Master General Consent Rawat Jalan & IRD"
-      />
+      <PageHead v-if="!style.componentfull" title="Master General Consent"
+        subtitle="Pengaturan Master General Consent Rawat Jalan" />
     </div>
-    <q-card
-      flat
-      class="col full-width full-height"
-      :style="`max-height: ${!style.componentfull? h-60:h+40}px; overflow:hidden`"
-    >
-      <q-scroll-area
-        :style="`height: ${!style.componentfull? h-95:h+40}px; max-width: 100%;`"
-        :thumb-style="thumbStyle"
-        :bar-style="barStyle"
-      >
+    <q-card flat class="col full-width full-height"
+      :style="`max-height: ${!style.componentfull ? h - 60 : h + 40}px; overflow:hidden`">
+      <q-scroll-area :style="`height: ${!style.componentfull ? h - 95 : h + 40}px; max-width: 100%;`" :thumb-style="thumbStyle"
+        :bar-style="barStyle">
         <!-- <ContentPage :editable-master="true" /> -->
         <master-general-consent :editable-master="true" />
       </q-scroll-area>
