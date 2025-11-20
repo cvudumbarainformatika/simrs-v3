@@ -1,49 +1,17 @@
 <template>
-  <div
-    class="column full-height q-ma-sm"
-    style="overflow: hidden;"
-  >
+  <div class="column full-height q-ma-sm" style="overflow: hidden;">
     <div class="column full-height">
       <div class="col-auto bg-red">
-        <q-tabs
-          v-model="tab"
-          no-caps
-          inline-label
-          class="bg-primary text-white shadow-2"
-          align="left"
-          dense
-          active-color="yellow"
-          active-bg-color="dark"
-        >
-          <q-tab
-            v-for="(item, i) in tabs"
-            :key="i"
-            :name="item.menu"
-            :label="item.label"
-          />
+        <q-tabs v-model="tab" no-caps inline-label class="bg-primary text-white shadow-2" align="left" dense
+          active-color="yellow" active-bg-color="dark">
+          <q-tab v-for="(item, i) in tabs" :key="i" :name="item.menu" :label="item.label" />
         </q-tabs>
       </div>
-      <div
-        class="col full-height"
-        style="overflow: hidden;"
-      >
+      <div class="col full-height" style="overflow: hidden;">
         <!-- {{ tab }} {{ menu }} -->
-        <q-tab-panels
-          v-model="menu"
-          animated
-          class="full-height"
-        >
-          <q-tab-panel
-            v-for="(item, i) in tabs"
-            :key="i"
-            :name="item.menu"
-            class="full-height q-pa-none"
-          >
-            <component
-              :is="item.comp"
-              :key="pasien"
-              :pasien="props.pasien"
-            />
+        <q-tab-panels v-model="menu" animated class="full-height">
+          <q-tab-panel v-for="(item, i) in tabs" :key="i" :name="item.menu" class="full-height q-pa-none">
+            <component :is="item.comp" :key="pasien" :pasien="props.pasien" />
           </q-tab-panel>
         </q-tab-panels>
       </div>
@@ -70,6 +38,11 @@ const tabs = ref([
     menu: 'edukasi',
     label: 'Edukasi',
     comp: shallowRef(defineAsyncComponent(() => import('./compedukasi/IndexPage.vue')))
+  },
+  {
+    menu: 'implementasi',
+    label: 'Implementasi & Evaluasi',
+    comp: shallowRef(defineAsyncComponent(() => import('./compedukasi/implementasi/IndexPage.vue')))
   },
   {
     menu: 'informentConsent',
