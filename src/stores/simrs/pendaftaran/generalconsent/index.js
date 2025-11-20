@@ -28,6 +28,7 @@ export const useGeneralConsentStore = defineStore('general_consent', {
     },
 
     form: {
+      isRajal: true,
       tanggal: dateDbFormat(new Date()),
       petugas: null,
       nama: null,
@@ -131,9 +132,9 @@ export const useGeneralConsentStore = defineStore('general_consent', {
             }
 
             if (targetRanap) {
-              target.ttdpasien = resp.data?.ttdpasien
-              target.generalcons = resp.data
-              target.generalcons.pdf = 'generalconsent/' + resp?.data?.norm + '.pdf'
+              targetRanap.ttdpasien = resp.data?.ttdpasien
+              targetRanap.generalcons = resp.data
+              targetRanap.generalcons.pdf = 'generalconsent/' + resp?.data?.noreg + '.pdf'
             }
 
             // console.log('inject', target)

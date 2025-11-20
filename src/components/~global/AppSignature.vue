@@ -3,7 +3,7 @@
   <div class=" q-mx-auto" :style="`width:${width}px;`">
 
     <div v-if="ttd" class="q-pa-sm bg-grey-3 rounded-borders q-mb-md">
-      <img :src="ttd" class="full-width" />
+      <img :src="pathImg + ttd" class="full-width" />
     </div>
 
     <q-btn color="primary" class="full-width q-mb-xs" :label="ttd ? 'Ubah TTD' : 'Buat TTD'"
@@ -30,6 +30,7 @@
 </template>
 
 <script setup>
+import { pathImg } from 'src/boot/axios'
 import { ref, computed } from 'vue'
 
 const props = defineProps({

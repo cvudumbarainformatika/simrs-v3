@@ -54,9 +54,12 @@
                   :color="item.generalcons ? 'teal' : 'negative'"
                   :label="item.generalcons ? 'Lihat General Consent' : 'General Consent Belum Ada'"
                   @click="genCon(item)" />
+                <!-- <q-btn v-else outline size="sm" class="q-px-md" :color="item.ttdpasien ? 'teal' : 'negative'"
+                  :label="item.generalcons ? 'Lihat General Consent' : 'General Consent Belum Ada'"
+                  :href="pathImg + item?.generalcons?.pdf" target="_blank" /> -->
                 <q-btn v-else outline size="sm" class="q-px-md" :color="item.ttdpasien ? 'teal' : 'negative'"
                   :label="item.generalcons ? 'Lihat General Consent' : 'General Consent Belum Ada'"
-                  :href="pathImg + item?.generalcons?.pdf" target="_blank" />
+                  @click="genCon(item)" />
               </div>
 
             </q-item-label>
@@ -69,7 +72,7 @@
     <app-general-consent :key="pasien" v-model="openGen" :pasien="pasien" @close="openGen = !openGen"
       @open-preview-gc="(val) => openPreviewGc(val)" />
     <app-preview-general-consent :key="pasien" v-model="store.openPreviewGc" :pasien="pasien" :cetak="cetak"
-      @close="store.openPreviewGc = !store.openPreviewGc" />
+      @close="store.openPreviewGc = !store.openPreviewGc" kelompok="ranap" />
 
     <!-- dialog hapus -->
   </div>

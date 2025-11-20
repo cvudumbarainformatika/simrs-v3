@@ -19,7 +19,7 @@
                 <td width="1%">
                   :
                 </td>
-                <td> {{ pasien?.nama ? pasien?.name : defaultForm }}</td>
+                <td> {{ pasien?.nama_panggil || pasien?.nama || pasien?.name }}</td>
               </tr>
               <tr>
                 <td width="20%">
@@ -225,10 +225,10 @@
                   width="150px"
                 /> -->
                 <!-- {{ pasien?.ttdpasien }} -->
-                <img :src="store?.form?.ttdpasien" alt="ttd-pasien-rsudmohsaleh" width="150">
+                <img :src="pathImg + pasien?.ttdpasien" alt="ttd-pasien-rsudmohsaleh" width="150">
               </div>
             </div>
-            <div>{{ pasien?.name ?? 'Nama' }}</div>
+            <div>{{ pasien?.name || pasien?.nama_panggil || pasien?.nama || 'Nama' }}</div>
           </div>
         </div>
       </div>
@@ -341,8 +341,19 @@ function createPdf() {
     doc.addImage(img, 'JPEG', 0, 0, doc.internal.pageSize.getWidth(), doc.internal.pageSize.getHeight(), 'FAST')
     // doc.save(pasien?.value?.norm + '.pdf')
 
-    const pdf = new File([doc.output('arraybuffer')], pasien?.value?.norm + '.pdf', { type: 'application/pdf' })
+    // const pdf = new File([doc.output('arraybuffer')], pasien?.value?.norm + '.pdf', { type: 'application/pdf' })
     // const pdf = new File([doc.output('arraybuffer')], pasien?.value?.norm + '.jpg', { type: 'application/jpg' })
+
+    const filename = pasien.value.kelompok === 'irja'
+      ? `${pasien?.value?.norm}.pdf`
+      : `${pasien?.value?.noreg?.replace(/\//g, '')}.pdf`
+
+    const pdf = new File(
+      [doc.output('arraybuffer')],
+      filename,
+      { type: 'application/pdf' }
+    )
+
     simpanPdf(pdf)
   })
 }
@@ -359,9 +370,11 @@ async function simpanPdf(pdf) {
   const formData = new FormData()
   formData.append('pdf', pdf)
   formData.append('norm', pasien?.value?.norm)
+  formData.append('noreg', pasien?.value?.noreg)
+  formData.append('kelompok', props?.kelompok)
 
   const resp = await api.post('/v1/simrs/pendaftaran/generalconscent/simpanpdf', formData)
-  console.log('simpan pdf', resp)
+  // console.log('simpan pdf', resp)
   store.openPreviewGc = false
 }
 

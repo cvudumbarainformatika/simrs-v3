@@ -180,14 +180,15 @@
                 @save-ttd="(val)=> store.setForm('ttdpasien',val)"
               /> -->
               <app-signature :ttd="store.form.ttdpasien" @save-ttd="(val) => store.setForm('ttdpasien', val)" />
-              <div>{{ pasien?.nama }}</div>
+              <div>{{ pasien?.nama_panggil }}</div>
             </div>
           </div>
         </div>
       </q-card-section>
       <q-card-section class="q-mb-xl text-center" style="margin-top: -20px;">
         <q-separator class="q-mb-md" />
-        <q-btn color="primary" label="Simpan General Consent Pasien" @click="saveGeneralConsent" />
+        <q-btn color="primary" label="Simpan General Consent Pasien" @click="saveGeneralConsent" :loading="loading"
+          :disable="loading" />
       </q-card-section>
     </q-card>
   </q-dialog>
@@ -202,6 +203,8 @@ const maximizedToggle = ref(true)
 const pernyataan = ref(false)
 const app = useAplikasiStore()
 const emits = defineEmits(['close', 'openPreviewGc'])
+
+const loading = ref(false)
 
 const props = defineProps({
   pasien: {
@@ -257,9 +260,14 @@ const qrUrl = computed(() => {
 })
 
 function saveGeneralConsent() {
+  loading.value = true
+  store.setForm('isRajal', false) // tambahkan ini jika simpan by noreg
   store.saveGeneralConsentPasien(app?.user?.pegawai)
-    .then(() => {
+    .then((resp) => {
       // ini buat pdf
+      console.log('resp save', resp);
+
+      loading.value = false
       emits('openPreviewGc', 'cetak')
     })
 }
