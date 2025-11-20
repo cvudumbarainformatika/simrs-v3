@@ -13,7 +13,6 @@
                   {{ titleAvatar(item?.nakes) }}
                 </q-avatar>
               </q-item-section>
-              {{ item }}
               <q-item-section caption>
                 <div class="">
                   <span class="text-weight-bold">PPA</span> <span class="text-weight-medium">- {{ item?.petugas?.nama
@@ -183,13 +182,13 @@
 </template>
 
 <script setup>
-import { useQuasar } from 'quasar';
-import { pathImg } from 'src/boot/axios';
-import { dateFullFormat, jamTnpDetik } from 'src/modules/formatter';
-import { notifBottomVue } from 'src/modules/utils';
+import { useQuasar } from 'quasar'
+import { pathImg } from 'src/boot/axios'
+import { dateFullFormat, jamTnpDetik } from 'src/modules/formatter'
+import { notifBottomVue } from 'src/modules/utils'
 import { useAplikasiStore } from 'src/stores/app/aplikasi'
-import { useImplementasiEdukasiRanapStore } from 'src/stores/simrs/ranap/implementasiEdukasi';
-import { computed, defineAsyncComponent } from 'vue';
+import { useImplementasiEdukasiRanapStore } from 'src/stores/simrs/ranap/implementasiEdukasi'
+import { computed, defineAsyncComponent } from 'vue'
 
 const AutocompleteInput = defineAsyncComponent(() => import('src/pages/simrs/ranap/layanan/components/AutocompleteInput.vue'))
 const TtdWacom = defineAsyncComponent(() => {
@@ -318,9 +317,9 @@ const updateData = (pasien, item, nakes) => {
 
   const kdpegsimrs = auth?.user?.pegawai?.kdpegsimrs
   const ygInput = item?.user
-  console.log('update', kdpegsimrs, ygInput);
+  console.log('update', kdpegsimrs, ygInput)
   if (kdpegsimrs !== ygInput) {
-    notifBottomVue('Maaf ... anda bukan USER Peng-input Edukasi ini, Harap Edit inputan Sendiri...');
+    notifBottomVue('Maaf ... anda bukan USER Peng-input Edukasi ini, Harap Edit inputan Sendiri...')
   } else {
     store.updateData(pasien, item, nakes)
   }
