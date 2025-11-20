@@ -133,7 +133,7 @@
                 RSUD Dokter Mohamad Saleh
               </div>
             </div>
-            <div class="row justify-center q-my-xl">
+            <div class="row justify-center q-my-lg">
 
             </div>
             <div class="row justify-center q-my-sm">
