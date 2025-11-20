@@ -170,15 +170,16 @@
           <div class="col-6">
             <div class="text-center">
               <div>Pasien / Wali</div>
-              <div style="width:300px; height:150px; margin:0 auto" class="bg-red">
+              <!-- <div style="width:300px; height:150px; margin:0 auto" class="bg-red">
 
-              </div>
+              </div> -->
               <!-- <app-ttd :ttd="store.form.ttdpasien" @save-ttd="(val) => store.setForm('ttdpasien', val)" /> -->
               <!-- <app-ttd-wacom
                 :key="pasien"
                 :ttd="store.form.ttdpasien"
                 @save-ttd="(val)=> store.setForm('ttdpasien',val)"
               /> -->
+              <app-signature :ttd="store.form.ttdpasien" @save-ttd="(val) => store.setForm('ttdpasien', val)" />
               <div>{{ pasien?.nama }}</div>
             </div>
           </div>
@@ -223,12 +224,14 @@ function changeHubunganPasien() {
   if (store.form.hubunganpasien === 'Diri Sendiri') {
     store.setForm('nama', props.pasien ? props.pasien.nama : '-')
     store.setForm('norm', props.pasien ? props.pasien.norm : '-')
+    store.setForm('noreg', props.pasien ? props.pasien.noreg : '-')
     store.setForm('alamat', props.pasien ? props.pasien.alamat : '-')
     store.setForm('nohp', props.pasien ? props.pasien.nohp : '-')
   }
   else {
     store.setForm('nama', null)
     store.setForm('norm', props.pasien ? props.pasien.norm : '-')
+    store.setForm('noreg', props.pasien ? props.pasien.noreg : '-')
     store.setForm('alamat', null)
     store.setForm('nohp', null)
   }

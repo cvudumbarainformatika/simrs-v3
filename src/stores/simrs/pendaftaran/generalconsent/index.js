@@ -5,6 +5,7 @@ import { dateDbFormat } from 'src/modules/formatter'
 import { notifErrVue } from 'src/modules/utils'
 import { useListKunjunganBpjsStore } from 'src/stores/simrs/pendaftaran/kunjungan/bpjs/lists'
 import { useAplikasiStore } from 'src/stores/app/aplikasi'
+import { useListGeneralConsentStore } from './kunjungan'
 
 export const useGeneralConsentStore = defineStore('general_consent', {
   state: () => ({
@@ -31,6 +32,7 @@ export const useGeneralConsentStore = defineStore('general_consent', {
       petugas: null,
       nama: null,
       norm: null,
+      noreg: null,
       alamat: null,
       nohp: null,
       hubunganpasien: 'Diri Sendiri',
@@ -118,7 +120,17 @@ export const useGeneralConsentStore = defineStore('general_consent', {
             // inject data pasien
             const listpasien = useListKunjunganBpjsStore()
             const target = listpasien.items?.find(x => x.norm === resp?.data?.norm)
+
+            const ListPasienRanap = useListGeneralConsentStore()
+            const targetRanap = ListPasienRanap.ranap?.find(x => x.noreg === resp?.data?.noreg)
+
             if (target) {
+              target.ttdpasien = resp.data?.ttdpasien
+              target.generalcons = resp.data
+              target.generalcons.pdf = 'generalconsent/' + resp?.data?.norm + '.pdf'
+            }
+
+            if (targetRanap) {
               target.ttdpasien = resp.data?.ttdpasien
               target.generalcons = resp.data
               target.generalcons.pdf = 'generalconsent/' + resp?.data?.norm + '.pdf'
