@@ -205,12 +205,12 @@ const pendaftaran = {
           component: () =>
             import('pages/simrs/pendaftaran/generalconsent/ranap/IndexPage.vue')
         },
-        // {
-        //   path: '/pendaftaran/general-consent/igd',
-        //   name: 'pendaftaran.generalconsent.igd',
-        //   component: () =>
-        //     import('pages/simrs/pendaftaran/generalconsent/igd/IndexPage.vue')
-        // }
+        {
+          path: '/pendaftaran/general-consent/igd',
+          name: 'pendaftaran.generalconsent.igd',
+          component: () =>
+            import('pages/simrs/pendaftaran/generalconsent/igd/IndexPage.vue')
+        }
       ]
     },
     {

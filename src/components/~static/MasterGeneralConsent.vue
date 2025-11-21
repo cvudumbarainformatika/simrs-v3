@@ -1,7 +1,7 @@
 <!-- eslint-disable no-unused-vars -->
 <template>
   <div id="pdfDoc" ref="rePdfDoc" class="page-A4 f-12 bg-white">
-    <div class="contentx">
+    <div class="contentx bg-white">
       <!-- kop -->
       <my-kop-surat v-if="!tanpaKop" />
       <!-- content -->
@@ -177,15 +177,8 @@
           <div class="col text-center">
             <div>Mengetahui,</div>
             <div class="q-mt-xs">
-              Petugas Tpp Rawat Jalan
+              Petugas Tpp {{ kelompok === 'irja' ? 'Rawat Jalan' : 'Rawat Inap' }}
             </div>
-            <!-- <div
-              v-if="!store?.form?.ttdpegawai"
-              style="min-height: 50px;"
-              class="column flex-center"
-            >
-              Ttd
-            </div> -->
             <div class="row full-width text-center justify-center">
               <!-- <embed
                 type="image/png"
@@ -211,12 +204,12 @@
             <div>{{ app?.user?.pegawai?.nama || 'Nama' }}</div>
           </div>
           <div class="col text-center">
-            <div>Probolinggo, {{ pasien?.tgl_kunjungan ? humanDate(pasien?.tgl_kunjungan) : defaultForm }}</div>
+            <div>Probolinggo, {{ humanDate(pasien?.tgl_kunjungan) || humanDate(pasien?.tglmasuk) }}</div>
             <div class="q-mt-xs">
               Pasien / Keluarga
             </div>
             <div style="min-height: 50px;" class="column flex-center">
-              <div v-if="!store?.form?.ttdpasien">
+              <div v-if="!pasien?.ttdpasien">
                 Ttd
               </div>
               <div v-else>
@@ -225,7 +218,7 @@
                   width="150px"
                 /> -->
                 <!-- {{ pasien?.ttdpasien }} -->
-                <img :src="pathImg + pasien?.ttdpasien" alt="ttd-pasien-rsudmohsaleh" width="150">
+                <img :src="pasien?.ttdPas" alt="ttd-pasien-rsudmohsaleh" width="150">
               </div>
             </div>
             <div>{{ pasien?.name || pasien?.nama_panggil || pasien?.nama || 'Nama' }}</div>
@@ -272,7 +265,7 @@ const { isi, pasien, defaultForm, changeIsi, isOk, getDataIrja } = useContent(pr
 
 onMounted(() => {
   const xx = document.getElementById('htmlC')
-  console.log('refGencon.value', xx)
+  // console.log('refGencon.value', xx)
 })
 
 const qrUrl = computed(() => {
@@ -294,9 +287,18 @@ watchEffect(() => {
 })
 
 function parse(val) {
-  // console.log('store.form.wali1', val)
-  // const word = val
-  // if (store.form.wali1) {
+  // console.log('parse', val)
+  // console.log('pasien', props.isiPasien)
+  if (props.kelompok === 'irja') {
+    return parseIrja(val)
+  } else if (props.kelompok === 'ranap') {
+    return parseRanap(val)
+  } else if (props.kelompok === 'igd') {
+    return parseIgd(val)
+  }
+}
+
+function parseIrja(val) {
   const word = val?.replace(' 1 ) ..............................  (Hubungan dengan pasien: ..... )',
     ` 1 ) ${store.form.wali1 ? '<b>' + store.form.wali1 + '</b>' : '..............................'}</b> 
       (Hubungan dengan pasien: ${store.form.hubunganWali1 ? '<b>' + store.form.hubunganWali1 + '</b>' : '.....'} )`)
@@ -307,6 +309,41 @@ function parse(val) {
       (Hubungan dengan pasien: ${store.form.hubunganWali2 ? '<b>' + store.form.hubunganWali2 + '</b>' : '.....'} )`)
   // }
   return str
+}
+function parseRanap(val) {
+  const word = val?.replace('Ruang Rawat : .......... Kelas : ..........',
+    ` Ruang Rawat : ${props.isiPasien?.ruangan ? '<b>' + props.isiPasien?.ruangan + '</b>' : '..........'} Kelas : ${props.isiPasien?.kelasruangan ? '<b>' + props.isiPasien?.kelasruangan + '</b>' : '..........'} `)
+  // }
+  // if (store.form.wali2) {
+  const str = word?.replace('Nama :&nbsp; ..............................&nbsp; (L/P)*',
+    ` Nama : ${props.isiPasien?.nama_panggil ? '<b>' + props.isiPasien?.nama_panggil + ' (' + props.isiPasien?.kelamin + ') </b>' : '..............................'}</b>`)
+  // }
+  const str2 = str?.replace('Tanggal/Lahir :&nbsp; ..............................',
+    ` Tanggal/Lahir : ${props.isiPasien?.tgllahir ? '<b>' + humanDate(props.isiPasien?.tgllahir) + ' </b>' : '..............................'}</b>`)
+  const str3 = str2?.replace(' No. RM&nbsp; :&nbsp; ..............................',
+    ` No. RM : ${props.isiPasien?.norm ? '<b>' + props.isiPasien?.norm + ' </b>' : '..............................'}</b>`)
+  const str4 = str3?.replace(' Alamat&nbsp; :&nbsp; .............................. ',
+    ` Alamat : ${props.isiPasien?.alamat ? '<b>' + props.isiPasien?.alamat + ' </b>' : '..............................'}</b>`)
+  // }
+  return str4
+}
+function parseIgd(val) {
+
+  const word = val?.replace('Ruang Rawat : .......... Kelas : ..........',
+    ` <b> Ruang Rawat Darurat </b>`)
+  // }
+  // if (store.form.wali2) {
+  const str = word?.replace('Nama :&nbsp; ..............................&nbsp; (L/P)*',
+    ` Nama : ${props.isiPasien?.name ? '<b>' + props.isiPasien?.name + ' (' + props.isiPasien?.kelamin + ') </b>' : '..............................'}</b>`)
+  // }
+  const str2 = str?.replace('Tanggal/Lahir :&nbsp; ..............................',
+    ` Tanggal/Lahir : ${props.isiPasien?.tgllahir ? '<b>' + humanDate(props.isiPasien?.tgllahir) + ' </b>' : '..............................'}</b>`)
+  const str3 = str2?.replace(' No. RM&nbsp; :&nbsp; ..............................',
+    ` No. RM : ${props.isiPasien?.norm ? '<b>' + props.isiPasien?.norm + ' </b>' : '..............................'}</b>`)
+  const str4 = str3?.replace(' Alamat&nbsp; :&nbsp; ..............................',
+    ` Alamat : ${props.isiPasien?.alamat ? '<b>' + props.isiPasien?.alamat + ' </b>' : '..............................'}</b>`)
+  // }
+  return str4
 }
 
 // eslint-disable-next-line no-unused-vars
@@ -378,15 +415,23 @@ async function simpanPdf(pdf) {
   store.openPreviewGc = false
 }
 
+
+
+
 watch(() => isOk.value, (n, old) => {
   console.log('watcher', n)
   if (n === true) {
     if (props.cetak === true) {
-      // setTimeout(createPdf, 1000)
       setTimeout(createPdf, 500)
     }
   }
-})
+},
+  { immediate: true })
+
+
+
+
+
 
 </script>
 

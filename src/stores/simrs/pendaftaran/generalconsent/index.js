@@ -6,6 +6,7 @@ import { notifErrVue } from 'src/modules/utils'
 import { useListKunjunganBpjsStore } from 'src/stores/simrs/pendaftaran/kunjungan/bpjs/lists'
 import { useAplikasiStore } from 'src/stores/app/aplikasi'
 import { useListGeneralConsentStore } from './kunjungan'
+import { useListKunjunganIgdStore } from './kunjunganIgd'
 
 export const useGeneralConsentStore = defineStore('general_consent', {
   state: () => ({
@@ -110,11 +111,11 @@ export const useGeneralConsentStore = defineStore('general_consent', {
       }
       // console.log('save general cons', pegawai)
       this.form.nikpetugas = pegawai?.nik
-      console.log('save general cons', this.form)
       return new Promise((resolve, reject) => {
         api.post('/v1/simrs/pendaftaran/generalconscent/simpangeneralcontent', this.form)
           .then(resp => {
             // console.log(resp)
+            console.log('save general cons', resp)
             this.form.ttdpasien = resp.data?.ttdpasien_url
             this.form.ttdpetugas = resp.data?.ttdpetugas
 
@@ -125,6 +126,9 @@ export const useGeneralConsentStore = defineStore('general_consent', {
             const ListPasienRanap = useListGeneralConsentStore()
             const targetRanap = ListPasienRanap.ranap?.find(x => x.noreg === resp?.data?.noreg)
 
+            const ListPasienIgd = useListKunjunganIgdStore()
+            const targetIgd = ListPasienIgd.items?.find(x => x?.noreg === resp?.data?.noreg)
+
             if (target) {
               target.ttdpasien = resp.data?.ttdpasien
               target.generalcons = resp.data
@@ -134,7 +138,13 @@ export const useGeneralConsentStore = defineStore('general_consent', {
             if (targetRanap) {
               targetRanap.ttdpasien = resp.data?.ttdpasien
               targetRanap.generalcons = resp.data
-              targetRanap.generalcons.pdf = 'generalconsent/' + resp?.data?.noreg + '.pdf'
+              targetRanap.generalcons.pdf = 'generalconsent/' + resp?.data?.noreg?.replace(/\//g, '') + '.pdf'
+            }
+
+            if (targetIgd) {
+              targetIgd.ttdpasien = resp.data?.ttdpasien
+              targetIgd.generalconsigd = resp.data
+              targetIgd.generalconsigd['pdf'] = 'generalconsent/' + resp?.data?.noreg?.replace(/\//g, '') + '.pdf'
             }
 
             // console.log('inject', target)

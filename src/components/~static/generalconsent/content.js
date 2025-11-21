@@ -1,6 +1,7 @@
-import { api } from 'src/boot/axios'
+import { api, pathImg } from 'src/boot/axios'
 import { notifSuccessVue } from 'src/modules/utils'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
+import { imageToBase64 } from 'src/modules/imgBase64'
 
 export function useContent(isiPasien, kelompok) {
   const items = ref([])
@@ -72,10 +73,30 @@ export function useContent(isiPasien, kelompok) {
     pasien.value = isiPasien ?? null
   }
 
+
+  function initImage(image) {
+    console.log('initImage', image);
+    Promise.all([
+      imageToBase64(image, (base64Image) => {
+        pasien.value.ttdPas = base64Image ?? ''
+      })
+    ])
+  }
+
+  watch(() => pasien.value, (n, old) => {
+    console.log('watcher pasien', n)
+    if (n === true) {
+      setTimeout(initImage, 100)
+    }
+  },
+    { immediate: true })
+
   onMounted(() => {
     getDataIrja()
     getPasien()
     updateIsi()
+
+    initImage(pathImg + pasien?.value?.ttdpasien)
   })
   return {
     items,

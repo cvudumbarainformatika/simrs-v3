@@ -265,7 +265,7 @@ function saveGeneralConsent() {
   store.saveGeneralConsentPasien(app?.user?.pegawai)
     .then((resp) => {
       // ini buat pdf
-      console.log('resp save', resp);
+      // console.log('resp save', resp);
 
       loading.value = false
       emits('openPreviewGc', 'cetak')

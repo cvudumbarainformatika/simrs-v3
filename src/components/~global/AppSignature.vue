@@ -2,12 +2,15 @@
   <!-- Preview -->
   <div class=" q-mx-auto" :style="`width:${width}px;`">
 
-    <div v-if="ttd" class="q-pa-sm bg-grey-3 rounded-borders q-mb-md">
-      <img :src="pathImg + ttd" class="full-width" />
+    <q-btn :color="ttd ? 'teal' : 'primary'" class="full-width q-mb-sm" :label="ttd ? 'Ubah TTD' : 'Buat TTD'"
+      @click="showChooseMethod = true" />
+
+    <div class="rounded-borders q-mb-md">
+      <component v-if="activeComponent" :is="activeComponent" :ttd="ttd" @save-ttd="handleSave" />
+      <img v-else :src="ttd || pathImg + ttd" class="full-width" />
     </div>
 
-    <q-btn color="primary" class="full-width q-mb-xs" :label="ttd ? 'Ubah TTD' : 'Buat TTD'"
-      @click="showChooseMethod = true" />
+
   </div>
 
   <!-- Dialog PILIH METODE -->
@@ -26,7 +29,7 @@
   </q-dialog>
 
   <!-- Dynamic Component -->
-  <component v-if="activeComponent" :is="activeComponent" :ttd="ttd" @save-ttd="handleSave" />
+
 </template>
 
 <script setup>
