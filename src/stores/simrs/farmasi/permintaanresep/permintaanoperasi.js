@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia'
+import { acceptHMRUpdate, defineStore } from 'pinia'
 import { date } from 'quasar'
 import { api } from 'src/boot/axios'
 import { filterDuplicateArrays, notifSuccess } from 'src/modules/utils'
@@ -109,23 +109,36 @@ export const useResepPermintaanOperasiStore = defineStore('resep_permintaan_oper
           this.belums = resp?.data?.belum
           this.sudahs = resp?.data?.sudah
           this.setValues()
-          console.log('permintaan ok', resp?.data)
+          // console.log('permintaan ok', resp?.data)
         })
         .catch(() => { this.loading = false })
     },
-    async simpan () {
+    async simpan (item) {
       this.loadingSimpan = true
+      item.loading = true
+      this.form.obats = item?.rinci?.filter(x => x.jumlah_resep > 0)
+      // this.form.noresep = null
+      // this.form.noreg = item?.noreg
+      // this.form.norm = item?.norm
       this.form.param = this.params
+
+      this.form.nopermintaan = item.nopermintaan
+      console.log('simpan cuy', item, this.form)
+
       await api.post('v1/simrs/penunjang/farmasinew/obatoperasi/simpan-resep', this.form)
         .then(resp => {
           this.loadingSimpan = false
+          item.loading = false
           notifSuccess(resp)
           if (resp?.data.noresep) this.setForm('noresep', resp?.data.noresep)
           this.setForm('obats', [])
           this.getData(true)
           console.log('Simpan resep', resp?.data)
         })
-        .catch(() => { this.loadingSimpan = false })
+        .catch(() => {
+          this.loadingSimpan = false
+          item.loading = false
+        })
     },
     async selesai (item) {
       this.loadingSelesai = true
@@ -165,3 +178,7 @@ export const useResepPermintaanOperasiStore = defineStore('resep_permintaan_oper
     }
   }
 })
+
+if (import.meta?.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useResepPermintaanOperasiStore, import.meta.hot))
+}
