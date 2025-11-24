@@ -3,7 +3,7 @@
     <div class="" style="">
       <q-select v-model="store.form.kode50" use-input outlined standout="bg-yellow-3" dense emit-value map-options
         option-value="kodeall3" input-debounce="300" label="Rekening LRA" class="ellipsis-2-lines" :options="options"
-        :option-label="opt => opt?.kodeall3 ? `${opt.kodeall3} - ${opt.uraian}` : ''" :disable="store.loading"
+        clearable :option-label="opt => opt?.kodeall3 ? `${opt.kodeall3} - ${opt.uraian}` : ''" :disable="store.loading"
         :loading="store.loading" @filter="filterFn" @clear="store.setForm('kode50', null)" @update:model-value="(val) => {
           const arr = store.optionrekening || []
           const cari = arr.find(x => x.kodeall3 === val)
@@ -21,7 +21,7 @@
     <div class="" style="">
       <q-select v-model="store.form.kode_bast" use-input outlined standout="bg-yellow-3" dense emit-value map-options
         option-value="kodeall3" input-debounce="300" label="BAST (Neraca)" class="ellipsis-2-lines" :options="options"
-        :option-label="opt => opt?.kodeall3 ? `${opt.kodeall3} - ${opt.uraian}` : ''" :disable="store.loading"
+        clearable :option-label="opt => opt?.kodeall3 ? `${opt.kodeall3} - ${opt.uraian}` : ''" :disable="store.loading"
         :loading="store.loading" @filter="filterFn" @clear="store.setForm('kode_bast', null)" @update:model-value="(val) => {
           const arr = store.optionrekening || []
           const cari = arr.find(x => x.kodeall3 === val)
@@ -37,7 +37,7 @@
     <div class="" style="">
       <q-select v-model="store.form.kode_bastx" use-input outlined standout="bg-yellow-3" dense emit-value map-options
         option-value="kodeall3" input-debounce="300" label="BAST (LO)" class="ellipsis-2-lines" :options="options"
-        :option-label="opt => opt?.kodeall3 ? `${opt.kodeall3} - ${opt.uraian}` : ''" :disable="store.loading"
+        clearable :option-label="opt => opt?.kodeall3 ? `${opt.kodeall3} - ${opt.uraian}` : ''" :disable="store.loading"
         :loading="store.loading" @filter="filterFn" @clear="store.setForm('kode_bastx', null)" @update:model-value="(val) => {
           const arr = store.optionrekening || []
           const cari = arr.find(x => x.kodeall3 === val)
@@ -53,7 +53,7 @@
     <div class="" style="">
       <q-select v-model="store.form.kode_bastcairx" use-input outlined standout="bg-yellow-3" dense emit-value
         map-options option-value="kodeall3" input-debounce="300" label="Pencairan (Neraca D)" class="ellipsis-2-lines"
-        :options="options" :option-label="opt => opt?.kodeall3 ? `${opt.kodeall3} - ${opt.uraian}` : ''"
+        :options="options" clearable :option-label="opt => opt?.kodeall3 ? `${opt.kodeall3} - ${opt.uraian}` : ''"
         :disable="store.loading" :loading="store.loading" @filter="filterFn"
         @clear="store.setForm('kode_bastcairx', null)" @update:model-value="(val) => {
           const arr = store.optionrekening || []
@@ -69,10 +69,10 @@
     </div>
     <div class="" style="">
       <q-select v-model="store.form.kode_bastcair2" use-input outlined standout="bg-yellow-3" dense emit-value
-        map-options option-value="kodeall3" input-debounce="300" label="Pencairan (Neraca K)" class="ellipsis-2-lines"
-        :options="options" :option-label="opt => opt?.kodeall3 ? `${opt.kodeall3} - ${opt.uraian}` : ''"
-        :disable="store.loading" :loading="store.loading" @filter="filterFn"
-        @clear="store.setForm('kode_bastcair2', null)" @update:model-value="(val) => {
+        map-options clearable option-value="kodeall3" input-debounce="300" label="Pencairan (Neraca K)"
+        class="ellipsis-2-lines" :options="options"
+        :option-label="opt => opt?.kodeall3 ? `${opt.kodeall3} - ${opt.uraian}` : ''" :disable="store.loading"
+        :loading="store.loading" @filter="filterFn" @clear="store.setForm('kode_bastcair2', null)" @update:model-value="(val) => {
           const arr = store.optionrekening || []
           const cari = arr.find(x => x.kodeall3 === val)
           store.form.uraian_bastcair2 = cari ? cari.uraian : ''
@@ -86,10 +86,10 @@
     </div>
     <div class="" style="">
       <q-select v-model="store.form.kode_cairx" use-input outlined standout="bg-yellow-3" dense emit-value map-options
-        option-value="kodeall3" input-debounce="300" label="Pencairan Tanpa BAST (Neraca D)" class="ellipsis-2-lines"
-        :options="options" :option-label="opt => opt?.kodeall3 ? `${opt.kodeall3} - ${opt.uraian}` : ''"
-        :disable="store.loading" :loading="store.loading" @filter="filterFn" @clear="store.setForm('kode_cairx', null)"
-        @update:model-value="(val) => {
+        clearable option-value="kodeall3" input-debounce="300" label="Pencairan Tanpa BAST (Neraca D)"
+        class="ellipsis-2-lines" :options="options"
+        :option-label="opt => opt?.kodeall3 ? `${opt.kodeall3} - ${opt.uraian}` : ''" :disable="store.loading"
+        :loading="store.loading" @filter="filterFn" @clear="store.setForm('kode_cairx', null)" @update:model-value="(val) => {
           const arr = store.optionrekening || []
           const cari = arr.find(x => x.kodeall3 === val)
           store.form.uraian_cairx = cari ? cari.uraian : ''
@@ -103,10 +103,10 @@
     </div>
     <div class="" style="">
       <q-select v-model="store.form.kode_cair2" use-input outlined standout="bg-yellow-3" dense emit-value map-options
-        option-value="kodeall3" input-debounce="300" label="Pencairan Tanpa BAST (Neraca K)" class="ellipsis-2-lines"
-        :options="options" :option-label="opt => opt?.kodeall3 ? `${opt.kodeall3} - ${opt.uraian}` : ''"
-        :disable="store.loading" :loading="store.loading" @filter="filterFn" @clear="store.setForm('kode_cair2', null)"
-        @update:model-value="(val) => {
+        clearable option-value="kodeall3" input-debounce="300" label="Pencairan Tanpa BAST (Neraca K)"
+        class="ellipsis-2-lines" :options="options"
+        :option-label="opt => opt?.kodeall3 ? `${opt.kodeall3} - ${opt.uraian}` : ''" :disable="store.loading"
+        :loading="store.loading" @filter="filterFn" @clear="store.setForm('kode_cair2', null)" @update:model-value="(val) => {
           const arr = store.optionrekening || []
           const cari = arr.find(x => x.kodeall3 === val)
           store.form.uraian_cair2 = cari ? cari.uraian : ''
@@ -121,11 +121,11 @@
 
     <div class="" style="">
       <q-select v-model="store.form.kode_lak" use-input outlined standout="bg-yellow-3" dense emit-value map-options
-        option-value="kodeall3" input-debounce="300" label="LAK" class="ellipsis-2-lines" :options="options"
-        :option-label="opt => opt?.kodeall3 ? `${opt.kodeall3} - ${opt.uraian}` : ''" :disable="store.loading"
-        :loading="store.loading" @filter="filterFn" @clear="store.setForm('kode_lak', null)" @update:model-value="(val) => {
+        option-value="kode" input-debounce="300" label="LAK" class="ellipsis-2-lines" :options="options_lak" clearable
+        :option-label="opt => opt?.kode ? `${opt.kode} - ${opt.uraian}` : ''" :disable="store.loading"
+        :loading="store.loading" @filter="filterFn_lak" @clear="store.setForm('kode_lak', null)" @update:model-value="(val) => {
           const arr = store.optionrekening || []
-          const cari = arr.find(x => x.kodeall3 === val)
+          const cari = arr.find(x => x.kode === val)
           store.form.uraian_lak = cari ? cari.uraian : ''
         }">
         <template #no-option>
@@ -152,6 +152,7 @@ const store = useMasterRekeningJurnalStore()
 const formRef = ref(null)
 
 const options = ref([])
+const options_lak = ref([])
 
 function simpan() {
   console.log('Form yang akan disimpan:', store.form)
@@ -206,6 +207,79 @@ async function filterFn(val, update) {
           }
         })
 
+        if (resp.status === 200 && resp.data.data?.length) {
+          allData = [...allData, ...resp.data.data]
+          hasMore = resp.data.next_page_url !== null && resp.data.next_page_url !== undefined
+          page++
+        } else {
+          hasMore = false
+        }
+      } catch (error) {
+        console.error('Error saat mengambil halaman:', error)
+        hasMore = false
+      }
+    }
+
+    // Update opsi berdasarkan hasil server
+    update(() => {
+      if (allData.length > 0) {
+        options.value = allData
+        store.optionrekening = allData
+      } else {
+        options.value = []
+      }
+      console.log('Options setelah update:', options.value)
+    })
+  } else {
+    update(() => {
+      options.value = localResults
+    })
+  }
+
+  store.loading = false
+
+}
+
+async function filterFn_lak(val, update) {
+  if (!val) {
+    update(() => {
+      options_lak.value = store.optionrekening || []
+      console.log('Options saat pencarian kosong:', options_lak.value)
+    })
+    store.loading = false
+    return
+  }
+  const needle = val.toLowerCase()
+  const localResults = store.optionrekening?.filter(
+    (item) =>
+    (item.kode?.toLowerCase().includes(needle) ||
+      item.uraian?.toLowerCase().includes(needle))
+  ) || []
+  if (localResults.length > 0) {
+    update(() => {
+      options_lak.value = localResults
+      console.log('Options dari filter lokal:', localResults)
+    })
+    store.loading = false
+    return
+  }
+  if (val.length >= 2) {
+    let allData = []
+    let page = 1
+    let hasMore = true
+
+    // console.log('Mulai iterasi halaman untuk levelberapa:', store.reqs.levelberapa)
+
+    while (hasMore) {
+      try {
+        const resp = await api.get('/v1/master/akunlak/select', {
+          params: {
+            q: val,
+            per_page: 100,
+            page: page,
+          }
+        })
+
         console.log(`filterFn: Data halaman ${page}:`, resp.data)
 
         if (resp.status === 200 && resp.data.data?.length) {
@@ -226,17 +300,17 @@ async function filterFn(val, update) {
     // Update opsi berdasarkan hasil server
     update(() => {
       if (allData.length > 0) {
-        options.value = allData
+        options_lak.value = allData
         store.optionrekening = allData // Update hanya jika ada hasil
       } else {
-        options.value = [] // Kosongkan opsi untuk menampilkan "Tidak ditemukan"
+        options_lak.value = [] // Kosongkan opsi untuk menampilkan "Tidak ditemukan"
       }
-      console.log('Options setelah update:', options.value)
+      console.log('Options setelah update:', options_lak.value)
     })
   } else {
     // Untuk input pendek, gunakan hasil lokal
     update(() => {
-      options.value = localResults
+      options_lak.value = localResults
       console.log('Options untuk pencarian pendek:', localResults)
     })
   }

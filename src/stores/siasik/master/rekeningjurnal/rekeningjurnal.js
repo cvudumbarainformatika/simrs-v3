@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { api } from "src/boot/axios";
-import { notifSuccess } from "src/modules/utils";
+import { notifSuccess, notifSuccessVue } from "src/modules/utils";
 
 export const useMasterRekeningJurnalStore = defineStore('keuangan-master-rekeningjurnal', {
   state: () => ({
@@ -68,42 +68,38 @@ export const useMasterRekeningJurnalStore = defineStore('keuangan-master-rekenin
       try {
         const resp = await api.post('v1/master/rekening/simpan', this.form)
         if (resp.success === true) {
-          //this.items.push(resp?.data?.result)
-          // const data = resp?.data?.result
           this.items = resp?.data?.data
-          notifSuccess(resp)
-          this.loadingSave = false
-          // this.form.id = ''
-          this.form = {
-            kodeall: '',
-            kode50: '',
-            uraian50: '',
 
-            kode_bast: '',
-            uraian_bast: '',
-            kode_bastx: '',
-            uraian_bastx: '',
+        }
+        notifSuccessVue(resp?.data?.message)
+        this.form = {
+          kodeall: '',
+          kode50: '',
+          uraian50: '',
 
-            kode_bastcair1: '3.1.02.05.01.0001',
-            uraian_bastcair1: 'Estimasi Perubahan SAL',
-            kode_bastcairx: '',
-            uraian_bastcairx: '',
-            kode_bastcair2: '',
-            uraian_bastcair2: '',
+          kode_bast: '',
+          uraian_bast: '',
+          kode_bastx: '',
+          uraian_bastx: '',
 
-            kode_cair1: '3.1.02.05.01.0001',
-            uraian_cair1: 'Estimasi Perubahan SAL',
-            kode_cairx: '',
-            uraian_cairx: '',
-            kode_cair2: '',
-            uraian_cair2: '',
+          kode_bastcair1: '3.1.02.05.01.0001',
+          uraian_bastcair1: 'Estimasi Perubahan SAL',
+          kode_bastcairx: '',
+          uraian_bastcairx: '',
+          kode_bastcair2: '',
+          uraian_bastcair2: '',
 
-            kode_lak: '',
-            uraian_lak: '',
-            kd_blud: '1.1.01.04.01.0001',
-            ur_blud: 'Kas di BLUD'
-          }
+          kode_cair1: '3.1.02.05.01.0001',
+          uraian_cair1: 'Estimasi Perubahan SAL',
+          kode_cairx: '',
+          uraian_cairx: '',
+          kode_cair2: '',
+          uraian_cair2: '',
 
+          kode_lak: '',
+          uraian_lak: '',
+          kd_blud: '1.1.01.04.01.0001',
+          ur_blud: 'Kas di BLUD'
         }
         this.loadingSave = false
       } catch (error) {
