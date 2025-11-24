@@ -21,12 +21,17 @@ export const useArsipMasterKelasifikasiStore = defineStore('arsip-master-kelasif
           //this.items.push(resp?.data?.result)
           // const data = resp?.data?.result
           this.items = resp?.data?.result
+
           notifSuccess(resp)
           this.loadingSave = false
           this.form.id = ''
           this.form.kode = ''
           this.form.kelasifikasi = ''
           this.form.retensi = ''
+          this.form.retensiinaktif = ''
+          this.form.penyelesaian = ''
+          this.form.hakakses = ''
+          this.form.keamanan = ''
         }
         this.loadingSave = false
       } catch (error) {
@@ -50,6 +55,10 @@ export const useArsipMasterKelasifikasiStore = defineStore('arsip-master-kelasif
       this.form.kode = val?.kode
       this.form.kelasifikasi = val?.nama
       this.form.retensi = val?.retensi
+      this.form.retensiinaktif = val?.retensi_inaktif
+      this.form.penyelesaian = val?.penyelesaian_akhir
+      this.form.hakakses = val?.hak_akses
+      this.form.keamanan = val?.keamanan
     },
     async deleteData(id) {
       const payload = { id }
