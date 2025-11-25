@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia'
+import { acceptHMRUpdate, defineStore } from 'pinia'
 import { api } from 'src/boot/axios'
 import { usePengunjungPoliStore } from './pengunjung'
 import { useInacbgPoli } from './inacbg'
@@ -9,7 +9,9 @@ export const useLayananPoli = defineStore('layanan-poli', {
   state: () => ({
     tab: 'Diagnosa Medik',
     // tabs: ['Tindakan Medik', 'Prosedur (Icd 9)', 'Diagnosa Keperawatan', 'Diagnosa Kebidanan', 'Laporan Tindakan', 'Pra Anestesia'],
-    tabs: ['Diagnosa Medik', 'Tindakan Medik', 'Prosedur (Icd 9)', 'Diagnosa Keperawatan', 'Diagnosa Kebidanan', 'Laporan Tindakan', 'Pra Anestesia'], // diagnosa di hapus
+    tabs: ['Diagnosa Medik', 'Tindakan Medik', 'Prosedur (Icd 9)', 'Diagnosa Keperawatan', 'Diagnosa Kebidanan', 'Laporan Tindakan', 'Pra Anestesia',
+      'Rencana Pengobatan'
+    ], // diagnosa di hapus
     // diagnosa
     searchdiagnosa: '',
     listDiagnosa: [],
@@ -400,7 +402,16 @@ export const useLayananPoli = defineStore('layanan-poli', {
       const tabbed = x ?? 'Diagnosa Medik'
       return new Promise((resolve, reject) => {
         this.tab = tabbed
-        this.tabs = ['Diagnosa Medik', 'Tindakan Medik', 'Prosedur (Icd 9)', 'Diagnosa Keperawatan', 'Diagnosa Kebidanan', 'Laporan Tindakan', 'Pra Anestesia'] // diagnosa medik di hapus
+        this.tabs = [
+          'Diagnosa Medik',
+          'Tindakan Medik',
+          'Prosedur (Icd 9)',
+          'Diagnosa Keperawatan',
+          'Diagnosa Kebidanan',
+          'Laporan Tindakan',
+          'Pra Anestesia',
+          'Rencana Pengobatan'
+        ] // diagnosa medik di hapus
         // this.tabs = ['Tindakan Medik', 'Prosedur (Icd 9)', 'Diagnosa Keperawatan', 'Diagnosa Kebidanan', 'Laporan Tindakan', 'Pra Anestesia']
 
         this.searchdiagnosa = ''
@@ -495,3 +506,6 @@ export const useLayananPoli = defineStore('layanan-poli', {
 
   }
 })
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useLayananPoli, import.meta.hot))
+}

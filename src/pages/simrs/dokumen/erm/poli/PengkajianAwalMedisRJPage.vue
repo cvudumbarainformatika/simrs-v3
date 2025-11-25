@@ -476,12 +476,8 @@
           <div class="col-2">
             <b>6. <u>RENCANA :</u></b>
           </div>
-          <div v-for="(plan, pl) in store.item[0]?.planning" :key="pl" class="col-3">
-            <div>
-              - {{ plan?.rs4
-
-              }}
-            </div>
+          <div>
+            - {{ store.item[0]?.planningdokter?.terapi }}
           </div>
         </div>
       </div>
@@ -493,7 +489,7 @@
           </div>
           <div class="col-3">
             <div>
-              - ??????????????????
+              - {{ store.item[0]?.planningdokter?.target }}
             </div>
           </div>
         </div>
