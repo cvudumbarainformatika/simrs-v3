@@ -75,6 +75,25 @@
 
               </div>
             </div>
+            <div class="col-5 q-mt-sm" style="margin-left: 20px;">
+              3. Assasement Jatuh (skor Up an Go)
+            </div>
+            <div class="row">
+              <div class="col-8" style="margin-left: 30px;">
+                - Setelah diperhatikan cara berjalan pasien saat akan duduk di kursi. Pasien
+                tampak <span class="text-weight-bold" v-if="parseInt(anamnesis?.seimbang) == 1">tidak</span> seimbang
+                (<span class="text-weight-bold" v-if="parseInt(anamnesis?.seimbang) == 0">tidak </span><span
+                  :class="parseInt(anamnesis?.seimbang) == 1 ? 'text-weight-bold' : ''">sempoyongan</span> )
+              </div>
+              <div class="col-8" style="margin-left: 30px;">- Pasien <span class="text-weight-bold"
+                  v-if="parseInt(anamnesis?.penopang) == 0">tidak</span> memegang pinggiran kursi atau benda lain
+                sebagai
+                penopang saat akan duduk
+              </div>
+              <div class="col-8" style="margin-left: 30px;">- Sehingga disimpulkan bahwa resiko jatuh pasien adalah
+                <span class="text-weight-bold">{{ cekHasil(anamnesis) }}</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -131,7 +150,7 @@
                       <div class="column">
                         <div>{{ ed?.perlupenerjemah === 'Iya' ? 'Pasien Perlu Penerjemah' :
                           'Pasien Tidak Perlu Penerjemah'
-                          }}</div>
+                        }}</div>
                         <div>{{ ed?.bahasaisyarat === 'Iya' ? 'Pasien Memakai Bahasa Isyarat' :
                           'Pasien Tidak Memakai Bahasa Isyarat' }}</div>
                         <div>{{ ed?.caraedukasi === 'Lisan' ? 'Edukasi Memakai Lisan' : 'Edukasi Memakai Tulisan' }}
@@ -156,6 +175,7 @@
                 - Kultural: {{ pfisik?.muakuloskeletal ?? '-' }}
               </div>
             </div>
+
           </div>
         </div>
       </div>
@@ -171,13 +191,13 @@
             <div class="col-5" style="margin-left: 20px;">
               - Pasian <span v-if="anamx?.skreeninggizi == 0" class="text-weight-bold">{{
                 skorgizi(anamx?.skreeninggizi)
-                }}</span> mengalami penurunan / peningkatan BB yang tidak
+              }}</span> mengalami penurunan / peningkatan BB yang tidak
               diinginkan dalam 6 Bulan terakhir
             </div>
             <div class="col-5" style="margin-left: 20px;">
               - Asupan Makan <span v-if="anamx?.asupanmakan == 0" class="text-weight-bold">{{
                 skorgizi(anamx?.asupanmakan)
-                }}</span> berkurang karena tidak nafsu makan
+              }}</span> berkurang karena tidak nafsu makan
             </div>
             <div class="col-5" style="margin-left: 20px;">
               - Kondisi Khusus : {{ anamx?.kondisikhusus ?? '-' }}
@@ -375,6 +395,15 @@ function skorgizi (val) {
   } else {
     return 'Tidak'
   }
+}
+function cekHasil (val) {
+  console.log('cek hasil', val)
+
+  let hasil = ''
+  if (val.hasil == 2) hasil = 'Tinggi'
+  else if (val.hasil == 1) hasil = 'Sedang'
+  else hasil = 'Rendah'
+  return hasil
 }
 function keteranganSkorGizi (nilai) {
   const skor = nilai || 0
