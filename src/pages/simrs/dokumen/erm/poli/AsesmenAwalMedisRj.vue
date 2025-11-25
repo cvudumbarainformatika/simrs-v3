@@ -41,7 +41,7 @@
                 - Riwayat Penyakit (Sekarang) : {{ anamnesis?.riwayatpenyakitsekarang ?? '' }}
               </div>
               <div class="col-8" style="margin-left: 30px;">
-                - Riwayat Penyakit : {{ anamnesis?.riwayatpenyakit ?? '' }}
+                - Riwayat Penyakit (Dahulu): {{ anamnesis?.riwayatpenyakit ?? '' }}
               </div>
               <div class="col-8" style="margin-left: 30px;">
                 - Riwayat Penyakit Keluarga: {{ anamnesis?.riwayatpenyakitkeluarga ?? '' }}
@@ -56,11 +56,23 @@
                 - Riwayat Pengobatan : {{ anamnesis?.riwayatpengobatan ?? '' }}
               </div>
               <br>
-              <div class="col-8" style="margin-left: 30px;">
-                - Skreening Gizi : Skor {{ anamnesis?.skreeninggizi }} Ket {{ skorgizi(anamnesis?.skreeninggizi) }}
+              <div class="col-8 " style="margin-left: 20px;">
+                2. Keluhan Nyeri
               </div>
-              <div class="col-8" style="margin-left: 30px;">
-                - Keluhan Nyeri : Skor {{ anamnesis?.scorenyeri }} Ket {{ skornyeri(parseInt(anamnesis?.scorenyeri)) }}
+              <div class="col-8" style="margin-left: 35px;">
+                <div class="text-weight-bold">
+                  Keluhan Nyeri ? <em class="text-primary">{{ anamnesis.keteranganscorenyeri }}</em>
+                  <span class="q-ml-sm">
+                    <q-icon size="lg" color="teal" :name="iconNyeri(anamnesis.scorenyeri)" />
+                  </span>
+                </div>
+              </div>
+              <q-separator class="q-my-xs" />
+              <div class="col-4" style="margin-left: 35px;">
+                <q-slider v-model="anamnesis.scorenyeri" color="primary" thumb-color="primary" label-color="primary"
+                  label-text-color="yellow" markers :marker-labels="(val) => fnMarkerLabel"
+                  marker-labels-class="text-primary" label-always switch-label-side :min="0" :max="10" />
+
               </div>
             </div>
           </div>
@@ -119,7 +131,7 @@
                       <div class="column">
                         <div>{{ ed?.perlupenerjemah === 'Iya' ? 'Pasien Perlu Penerjemah' :
                           'Pasien Tidak Perlu Penerjemah'
-                        }}</div>
+                          }}</div>
                         <div>{{ ed?.bahasaisyarat === 'Iya' ? 'Pasien Memakai Bahasa Isyarat' :
                           'Pasien Tidak Memakai Bahasa Isyarat' }}</div>
                         <div>{{ ed?.caraedukasi === 'Lisan' ? 'Edukasi Memakai Lisan' : 'Edukasi Memakai Tulisan' }}
@@ -275,15 +287,6 @@
         </div>
 
       </div>
-      <!-- <div class="row">
-        <div v-for="(erm, e1) in store.item" :key="e1">
-          <div v-for="(plan, e10) in erm.planning" :key="e10">
-            <div class="col-5" style="margin-left: 20px;">
-              - {{ plan?.rs4 }}
-            </div>
-          </div>
-        </div>
-      </div> -->
       <div class="q-mt-md">
         <div class="row">
           <div class="col-6">
@@ -402,6 +405,30 @@ const jenisPPA = (val) => {
   else {
     return 'Fisoterapis'
   }
+}
+function iconNyeri (val) {
+  const val2 = typeof val === 'string' ? (isNaN(parseInt(val)) ? 0 : parseInt(val)) : 0
+  let icon = 'icon-my-emoticon-excited-outline'
+  if (val < 2) {
+    icon = 'icon-my-emoticon-excited-outline'
+  }
+  else if (val >= 2 && val < 4) {
+    icon = 'icon-my-emoticon-outline'
+  }
+  else if (val >= 4 && val < 6) {
+    icon = 'icon-my-emoticon-neutral-outline'
+  }
+  else if (val >= 6 && val < 8) {
+    icon = 'icon-my-emoticon-confused-outline'
+  }
+  else if (val >= 8 && val < 10) {
+    icon = 'icon-my-emoticon-angry-outline'
+  }
+  else if (val === 10) {
+    icon = 'icon-my-emoticon-cry-outline'
+  }
+
+  return icon
 }
 // function getYT(val) {
 //   if (val === 1 || val === '1') {

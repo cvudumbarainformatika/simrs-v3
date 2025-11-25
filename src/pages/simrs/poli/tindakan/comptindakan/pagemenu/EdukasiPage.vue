@@ -36,12 +36,12 @@ const props = defineProps({
 const tabs = ref([
   {
     menu: 'edukasi',
-    label: 'Edukasi',
+    label: 'Rencana Edukasi',
     comp: shallowRef(defineAsyncComponent(() => import('./compedukasi/IndexPage.vue')))
   },
   {
     menu: 'implementasi',
-    label: 'Implementasi & Evaluasi',
+    label: 'Implementasi & Evaluasi Edukasi',
     comp: shallowRef(defineAsyncComponent(() => import('./compedukasi/implementasi/IndexPage.vue')))
   },
   {

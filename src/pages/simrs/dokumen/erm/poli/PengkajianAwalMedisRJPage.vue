@@ -215,7 +215,7 @@
             :
           </div>
           <div class="col-5">
-            -
+            {{ erm?.pemeriksaanfisik[0]?.muakuloskeletal ?? '-' }}
           </div>
         </div>
         <q-separator />
@@ -246,7 +246,7 @@
             :
           </div>
           <div class="col-3">
-            ????
+            {{ erm?.pemeriksaanfisik[0]?.keadaan_umum }}
           </div>
         </div>
         <q-separator />
@@ -261,7 +261,7 @@
             :
           </div>
           <div class="col-2">
-            <span v-if="item?.skreeninggizi >= 2" class="col-1">Beresiko Mal Nutrisi</span>
+            <span v-if="erm?.skreeninggizi >= 2" class="col-1">Beresiko Mal Nutrisi</span>
             <span v-else class="col-1">Tidak Beresiko Mal Nutrisi</span>
           </div>
         </div>
@@ -277,7 +277,7 @@
             :
           </div>
           <div class="col-2">
-            {{ erm?.pemeriksaanfisik[0]?.diastole }}/{{ erm?.pemeriksaanfisik[0]?.sistole }}
+            {{ erm?.pemeriksaanfisik[0]?.sistole }}/{{ erm?.pemeriksaanfisik[0]?.diastole }} mmHg
           </div>
           <div class="col-2">
             - Nadi
@@ -286,7 +286,7 @@
             :
           </div>
           <div class="col-1">
-            {{ erm?.pemeriksaanfisik[0]?.rs4 }}
+            {{ erm?.pemeriksaanfisik[0]?.rs4 }} x/menit
           </div>
         </div>
         <div class="row">
@@ -300,7 +300,7 @@
             :
           </div>
           <div class="col-1">
-            {{ erm?.pemeriksaanfisik[0]?.suhutubuh }}
+            {{ erm?.pemeriksaanfisik[0]?.suhutubuh }} <span class="f-8" style="vertical-align: top;">o</span>C
           </div>
           <div class="col-1">
             &nbsp;
@@ -312,7 +312,7 @@
             :
           </div>
           <div class="col-1">
-            {{ erm?.pemeriksaanfisik[0]?.pernapasan }}
+            {{ erm?.pemeriksaanfisik[0]?.pernapasan }} x/menit
           </div>
         </div>
         <div class="q-pa-md">
@@ -419,99 +419,54 @@
           <div class="col-2">
             <b>4. <u>DIAGNOSIS KERJA :</u></b>
           </div>
-          <div v-for="(diagp, dp) in store.item[0]?.diagnosa" :key="dp" class="col-3">
-            <div>
-              - {{ diagp?.rs4 === 'Primer' ? diagp?.masterdiagnosa?.rs4 : ''
-
-              }}
+          <template v-if="store.item[0]?.diagnosa?.length">
+            <div v-for="(diagp, dp) in store.item[0]?.diagnosa" :key="dp" class="col-3">
+              <div>
+                - {{ diagp?.rs4 === 'Primer' ? diagp?.masterdiagnosa?.rs4 : '' }}
+              </div>
             </div>
-          </div>
+          </template>
+          <template v-if="store.item[0]?.manymemo?.length">
+            <div v-for="(diagp, dp) in store.item[0]?.manymemo" :key="dp" class="col-3">
+              <div>
+                - {{ diagp?.diagnosa }}
+              </div>
+            </div>
+
+          </template>
         </div>
       </div>
       <q-separator />
       <div class="q-mt-md">
         <div class="row">
           <div class="col-2">
-            <b>5. <u>DIAGNOSIS BANDING :</u></b>
-          </div>
-          <div v-for="(diagb, db) in store.item[0]?.diagnosa" :key="db" class="col-3">
-            <div>
-              - {{ diagb?.rs4 !== 'Primer' ? diagb?.masterdiagnosa?.rs4 : ''
-
-              }}
-            </div>
-          </div>
-        </div>
-      </div>
-      <q-separator />
-      <div class="q-mt-md">
-        <div class="row">
-          <div class="col-2">
-            <b>6. <u>PENGOBATAN :</u></b>
+            <b>5. <u>PENGOBATAN :</u></b>
           </div>
           <div class="col-3">
-            <div
-              v-if="store.item?.apotekracikanrajal?.length || store.item?.apotekracikanrajallalu?.length || store.item?.apotekrajal?.length || store.item?.apotekrajal?.length"
-              class="row items-center text-weight-bold">
-              <div class="col-9">
-                Obat
-              </div>
-              <div class="col-3">
-                Jumlah
-              </div>
-            </div>
-            <!-- <div v-if="store.item?.apotekracikanrajal?.length">
-            <div
-              v-for="(item,i) in store.item?.apotekracikanrajal"
-              :key="i"
-              class="row items-center"
-            >
-              <div class="col-9">
-                {{ item?.obat??'-' }}
-              </div>
-              <div class="col-3">
-                {{ item?.jumlah??'0' }}
-              </div>
-            </div>
-          </div>
-          <div v-if="store.item?.apotekracikanrajallalu?.length">
-            <div
-              v-for="(item,i) in store.item?.apotekracikanrajallalu"
-              :key="i"
-              class="row items-center"
-            >
-              <div class="col-9">
-                {{ item?.obat??'-' }}
-              </div>
-              <div class="col-3">
-                {{ item?.jumlah??'0' }}
-              </div>
-            </div>
-          </div> -->
-            <div v-if="store.item[0]?.apotekrajal?.length">
-              <div v-for="(item, i) in store.item[0]?.apotekrajal" :key="i" class="row items-center">
+            <template
+              v-if="store.item?.apotekracikanrajal?.length || store.item?.apotekracikanrajallalu?.length || store.item?.apotekrajal?.length || store.item?.apotekrajal?.length">
+              <div class="row items-center text-weight-bold">
                 <div class="col-9">
-                  {{ item?.obat ?? '-' }}
+                  Obat
                 </div>
                 <div class="col-3">
-                  {{ item?.jumlah ?? '0' }}
+                  Jumlah
                 </div>
               </div>
+              <div v-if="store.item[0]?.apotekrajal?.length">
+                <div v-for="(item, i) in store.item[0]?.apotekrajal" :key="i" class="row items-center">
+                  <div class="col-9">
+                    {{ item?.obat ?? '-' }}
+                  </div>
+                  <div class="col-3">
+                    {{ item?.jumlah ?? '0' }}
+                  </div>
+                </div>
+              </div>
+            </template>
+            <div v-if="store.item[0]?.newapotekrajal?.length">
+              {{ filteredObat(store.item[0]?.newapotekrajal) }}
             </div>
-            <!-- <div v-if="store.item[0]?.apotekrajal?.length">
-              <div
-                v-for="(item,i) in store.item[0]?.apotekrajal"
-                :key="i"
-                class="row items-center"
-              >
-                <div class="col-9">
-                  {{ item?.obat??'-' }}
-                </div>
-                <div class="col-3">
-                  {{ item?.jumlah??'0' }}
-                </div>
-              </div>
-            </div> -->
           </div>
         </div>
       </div>
@@ -519,7 +474,7 @@
       <div class="q-mt-md">
         <div class="row">
           <div class="col-2">
-            <b>7. <u>RENCANA :</u></b>
+            <b>6. <u>RENCANA :</u></b>
           </div>
           <div v-for="(plan, pl) in store.item[0]?.planning" :key="pl" class="col-3">
             <div>
@@ -534,7 +489,7 @@
       <div class="q-mt-md">
         <div class="row">
           <div class="col-2">
-            <b>8. <u>TARGET KEBERHASILAN :</u></b>
+            <b>7. <u>TARGET KEBERHASILAN :</u></b>
           </div>
           <div class="col-3">
             <div>
@@ -547,11 +502,24 @@
       <div class="q-mt-md">
         <div class="row">
           <div class="col-2">
-            <b>9. <u>CATATAN KIE :</u></b>
+            <b>8. <u>CATATAN KIE :</u></b>
           </div>
-          <div v-for="(planx, plx) in store.item[0]?.planning" :key="plx" class="col-3">
-            <div>
-              - {{ planx?.rs4 }}
+          <div class="row">
+            <div v-for="(erm, e1) in store.item" :key="e1">
+              <div v-for="item in erm?.rs239_implementasi" :key="item">
+                <div>
+                  <div class="col-5" style="margin-left: 20px;" v-if="!item?.materi?.length">
+                    -
+                  </div>
+                  <div v-else>
+                    <div v-for="mat in item?.materi" :key="mat">
+                      <div class="flex no-wrap" style="margin-left: 20px;">{{ mat }}, </div>
+                    </div>
+                  </div>
+
+                  <div v-html="getNewLine(item?.materiLain)" class="text-italic" style="margin-left: 20px;" />
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -566,7 +534,7 @@
             </div>
           </div>
         </div>
-        <div class="row q-mb-xl">
+        <div class="row">
           <div class="col-6">
             <div class="text-center text-weight-bold">
               Pasien / Keluarga
@@ -578,7 +546,7 @@
             </div>
           </div>
         </div>
-        <div class="row">
+        <div class="row items-end">
           <div class="col-6">
             <div class="text-center text-weight-bold">
               (........................)
@@ -586,7 +554,24 @@
           </div>
           <div class="col-6">
             <div class="text-center text-weight-bold">
-              ( {{ pasien?.dokter }} )
+              <div class="row justify-center">
+                <div class="flex-center " style="width: 80px;">
+                  <div class="relative-position">
+                    <vue-qrcode :value="qrPetugas(petugas)" tag="svg" :options="{
+                      errorCorrectionLevel: 'Q',
+                      color: {
+                        dark: '#000000',
+                        light: '#ffffff',
+                      },
+                      margin: 0
+                    }" />
+                    <img class="qrcode__image" src="~assets/logos/logo-rsud.png" alt="RSUD DOKTER MOHAMAD SALEH">
+                  </div>
+                </div>
+              </div>
+              <div class="f-12 text-wrap row justify-center">{{ petugas?.nama }}</div>
+
+
             </div>
           </div>
         </div>
@@ -602,6 +587,8 @@
 import { date } from 'quasar'
 import { useDokumenpengkajianawalmedisrjStore } from 'src/stores/simrs/dokumen/erm/pengkajianawalmedisrj'
 import KopSurat from '../../comppoli/KopSurat.vue'
+import { computed } from 'vue'
+import { getNewLine } from 'src/modules/formatter'
 const props = defineProps({
   pasien: {
     type: Object,
@@ -622,15 +609,122 @@ function getYT (val) {
     return '-'
   }
 }
-// eslint-disable-next-line no-unused-vars
 
+const petugas = computed(() => {
+  const petugas = store.item[0]?.doktersimpeg
+  console.log('petugas', petugas)
+  return petugas
+
+})
+const qrPetugas = (user) => {
+  // console.log('user', user);
+  const noreg = props?.pasien?.noreg// noreg
+  const dok = 'ASSESMENT PERAWAT.png'
+  const asal = 'RAWAT JALAN'
+  const petugas = user?.kdpegsimrs ?? null
+  const enc = btoa(`${noreg}|${dok}|${asal}|${petugas}`)
+  return `https://rsud.probolinggokota.go.id/dokumen-simrs/legalitas/${enc}`
+}
+
+
+function filteredObat (item) {
+  const obats = []
+  const retur = store.item[0]?.newapotekrajalretur
+  // console.log('item', item, retur)
+
+
+  const perRa = item?.flatMap(x => x.permintaanracikan) ?? []
+  const perNoRa = item?.flatMap(x => x.permintaanresep) ?? []
+
+  const rinciannya = item?.flatMap(x => x.rincian) ?? []
+  const rincRacik = item?.flatMap(x => x.rincianracik) ?? []
+
+  const retnya = retur?.flatMap(x => x.rinci) ?? []
+  // console.log('rinciaaan', perRa, perNoRa, rinciannya, rincRacik, retnya,)
+
+  const kdRacik = perRa?.map(x => x?.kdobat)
+  const kdNoRacik = perNoRa?.map(x => x?.kdobat)
+  const kdObats = [...kdRacik, ...kdNoRacik]
+
+  kdObats.forEach(ob => {
+    const adaR = rinciannya?.length ? rinciannya?.filter(x => x.kdobat === ob)?.reduce((a, b) => a + b?.jumlah, 0) : 0
+    const adaNR = rincRacik?.length ? rincRacik?.filter(x => x.kdobat === ob)?.reduce((a, b) => a + b?.jumlah, 0) : 0
+    const adaRet = retnya?.length ? retnya?.filter(x => x.kdobat === ob)?.reduce((a, b) => a + b?.jumlah_retur, 0) : 0
+
+    const ObatR = perRa.find(x => x.kdobat === ob)
+    const ObatNR = perNoRa.find(x => x.kdobat === ob)
+    const jumlah = adaR + adaNR - adaRet
+    if (jumlah > 0) obats.push({
+      nama: ObatR?.mobat?.nama_obat ?? ObatNR?.mobat?.nama_obat,
+      jumlah: jumlah
+    })
+    else {
+      console.log('retur all', ObatR?.mobat?.nama_obat ?? ObatNR?.mobat?.nama_obat)
+
+    }
+  })
+  const obatnya = obats?.map(x => (x.nama + ' (' + x.jumlah + ')'))?.join(', ')
+  // console.log('val', kdObats, obats)
+  return obatnya
+
+}
+// eslint-disable-next-line no-unused-vars
 const printObj = {
   id: 'printMe',
-  popTitle: ' '
+  popTitle: 'Assesment Medis Rawat Jalan'
 
 }
 </script>
 <style lang="scss" scoped>
+.qrcode__image {
+  // background-color: #fff;
+  // border: 0.05rem solid #fff;
+  // border-radius: 0.25rem;
+  // box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.25);
+  height: 20%;
+  width: 20%;
+  left: 50%;
+  overflow: hidden;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.print-page {
+  // width: 100%;
+  // height: 100%;
+  background-color: #ffffff;
+  padding: 20px !important;
+  font-size: 12px;
+}
+
+@media print {
+  .print-page {
+    padding: 0px !important;
+  }
+
+  @page {
+    // size: 8.5in 9in;
+    size: letter;
+    page-break-inside: avoid;
+
+    @bottom-right {
+      content: "Dokumen Sah dari RSUD MOH SALEH KOTA PROBOLINGGO | Hal Ke-" counter(page);
+    }
+  }
+
+  .contentx {
+    page-break-after: auto;
+    // break-after: page;
+  }
+
+}
+
+.t-vertical {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+}
+
 .tinggi {
   min-height: 100%;
 }

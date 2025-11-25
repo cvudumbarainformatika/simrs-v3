@@ -1,25 +1,14 @@
 <template>
-  <q-card
-    flat
-    bordered
-    square
-    class="full-height"
-  >
+  <q-card flat bordered square class="full-height">
     <div class="full-height column">
       <div class="col-auto bg-primary text-white">
         <q-bar>
-          <div>Form Edukasi Pasien</div>
+          <div>Form Rencana Edukasi Pasien</div>
         </q-bar>
       </div>
       <div class="col full-height">
-        <q-form
-          ref="refForm"
-          class="q-pa-sm full-height"
-          @submit="onSubmit"
-        >
-          <q-card-section
-            class="full-height scroll"
-          >
+        <q-form ref="refForm" class="q-pa-sm full-height" @submit="onSubmit">
+          <q-card-section class="full-height scroll">
             <div class="row q-col-gutter-md q-mb-sm items-center">
               <div class="col-4">
                 <div class="text-weight-bold">
@@ -30,13 +19,8 @@
                 </div>
               </div>
               <div class="col-8">
-                <q-option-group
-                  v-model="store.form.perlupenerjemah"
-                  :options="optionsPerluPenerjemah"
-                  color="primary"
-                  inline
-                  dense
-                />
+                <q-option-group v-model="store.form.perlupenerjemah" :options="optionsPerluPenerjemah" color="primary"
+                  inline dense />
               </div>
             </div>
             <div class="row q-col-gutter-md q-mb-sm items-center">
@@ -49,13 +33,8 @@
                 </div>
               </div>
               <div class="col-8">
-                <q-option-group
-                  v-model="store.form.bahasaisyarat"
-                  :options="optionsBahasaIsyarat"
-                  color="primary"
-                  inline
-                  dense
-                />
+                <q-option-group v-model="store.form.bahasaisyarat" :options="optionsBahasaIsyarat" color="primary"
+                  inline dense />
               </div>
             </div>
             <div class="row q-col-gutter-md q-mb-sm items-center">
@@ -68,13 +47,8 @@
                 </div>
               </div>
               <div class="col-8">
-                <q-option-group
-                  v-model="store.form.caraedukasi"
-                  :options="optionsCaraEdukasi"
-                  color="primary"
-                  inline
-                  dense
-                />
+                <q-option-group v-model="store.form.caraedukasi" :options="optionsCaraEdukasi" color="primary" inline
+                  dense />
               </div>
             </div>
             <div class="row q-col-gutter-md q-mb-sm items-center">
@@ -87,13 +61,8 @@
                 </div>
               </div>
               <div class="col-8">
-                <q-option-group
-                  v-model="store.form.kesediaan"
-                  :options="optionsKesediaan"
-                  color="primary"
-                  inline
-                  dense
-                />
+                <q-option-group v-model="store.form.kesediaan" :options="optionsKesediaan" color="primary" inline
+                  dense />
               </div>
             </div>
             <div class="row q-col-gutter-md q-mb-sm items-center">
@@ -106,25 +75,13 @@
                 </div>
               </div>
               <div class="col-8">
-                <q-checkbox
-                  v-for="(al, i) in store.mkebutuhanedukasi"
-                  :key="i"
-                  v-model="store.selectKebutuhanEdukasi"
-                  :val="al?.kebutuhanedukasi"
-                  :label="al?.kebutuhanedukasi"
-                  size="sm"
-                  color="primary"
-                  @update:model-value="updateSelection"
-                />
+                <q-checkbox v-for="(al, i) in store.mkebutuhanedukasi" :key="i" v-model="store.selectKebutuhanEdukasi"
+                  :val="al?.kebutuhanedukasi" :label="al?.kebutuhanedukasi" size="sm" color="primary"
+                  @update:model-value="updateSelection" />
 
                 <div>
-                  <q-input
-                    v-model="store.form.kebutuhanedukasi"
-                    autogrow
-                    label="Kebutuhan Edukasi"
-                    readonly
-                    :rules="[val => !!val || 'Harap dipilih Kebutuhan Edukasi di atas terlebih dahulu']"
-                  />
+                  <q-input v-model="store.form.kebutuhanedukasi" autogrow label="Kebutuhan Edukasi" readonly
+                    :rules="[val => !!val || 'Harap dipilih Kebutuhan Edukasi di atas terlebih dahulu']" />
                 </div>
               </div>
             </div>
@@ -138,26 +95,14 @@
                 </div>
               </div>
               <div class="col-8">
-                <q-option-group
-                  v-model="store.selectPenerimaEdukasi"
-                  :options="opt"
-                  color="primary"
-                  inline
-                  dense
-                  type="checkbox"
-                  @update:model-value="updateSelectionPenerima"
-                />
+                <q-option-group v-model="store.selectPenerimaEdukasi" :options="opt" color="primary" inline dense
+                  type="checkbox" @update:model-value="updateSelectionPenerima" />
               </div>
             </div>
             <q-separator class="q-my-md" />
             <div class="text-right">
-              <q-btn
-                label="Simpan"
-                type="submit"
-                color="primary"
-                :loading="store.loadingSave"
-                :disable="store.loadingSave"
-              />
+              <q-btn label="Simpan" type="submit" color="primary" :loading="store.loadingSave"
+                :disable="store.loadingSave" />
             </div>
           </q-card-section>
         </q-form>
