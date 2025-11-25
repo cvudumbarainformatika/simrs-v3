@@ -1,24 +1,10 @@
 <template>
-  <q-layout
-    :key="tanggal"
-    view="hhr LpR lfr"
-    :class="dark?'':'page-light'"
-  >
+  <q-layout :key="tanggal" view="hhr LpR lfr" :class="dark ? '' : 'page-light'">
     <!-- hHr lpR fFr || hhh LpR lFr-->
-    <HeaderComp
-      v-if="!style.componentfull"
-      :dark="dark"
-      :mobile="mobile"
-      :user="apps.user"
-      :gudangs="apps.gudangs"
-      :polis="apps.polis"
-      :ruangs="apps.ruangs"
-      @go-to-sso="goToSSO"
-      @set-gudang="apps.setUserKey('kdruangansim',$event)"
-    />
-    <LeftDrawer
-      :tampil="!style.componentfull"
-    />
+    <HeaderComp v-if="!style.componentfull" :dark="dark" :mobile="mobile" :user="apps.user" :gudangs="apps.gudangs"
+      :polis="apps.polis" :ruangs="apps.ruangs" @go-to-sso="goToSSO"
+      @set-gudang="apps.setUserKey('kdruangansim', $event)" />
+    <LeftDrawer :tampil="!style.componentfull" />
 
     <!-- <q-drawer
       v-model="style.rightDrawer"
@@ -35,21 +21,17 @@
       v-if="mobile"
       :dark="dark"
     /> -->
-    <q-scroll-area
-      style="height: 100vh; width: 100%;"
-      :bar-style="{
-        width: '4px',
-        borderRadius: '5px',
-        backgroundColor: '#027be3',
-        opacity: 0.2
-      }"
-      :thumb-style="{
+    <q-scroll-area style="height: 100vh; width: 100%;" :bar-style="{
+      width: '4px',
+      borderRadius: '5px',
+      backgroundColor: '#027be3',
+      opacity: 0.2
+    }" :thumb-style="{
         borderRadius: '2px',
         backgroundColor: '#027be3',
         width: '3px',
         opacity: 0.8,
-      }"
-    >
+      }">
       <q-page-container>
         <!-- <div
           v-if="apps?.user?.nama==='Programer'"
@@ -57,36 +39,16 @@
         >
           {{ angka }}
         </div> -->
-        <router-view
-          v-slot="{ Component }"
-          class="transition"
-        >
-          <transition
-            :name="transition.pageTransition.name"
-            :mode="transition.pageTransition.mode"
-          >
+        <router-view v-slot="{ Component }" class="transition">
+          <transition :name="transition.pageTransition.name" :mode="transition.pageTransition.mode">
             <component :is="Component" />
           </transition>
         </router-view>
       </q-page-container>
     </q-scroll-area>
-    <q-page-sticky
-      v-if="!style.componentfull"
-      position="bottom-right"
-      :offset="[5, 5]"
-    >
-      <q-fab
-        size="xs"
-        padding="xs"
-        icon="icon-mat-display_settings"
-        color="primary"
-        direction="up"
-      >
-        <q-fab-action
-          :color="dark?'warning':'dark'"
-          icon="icon-mat-tungsten"
-          @click="setDark(dark)"
-        />
+    <q-page-sticky v-if="!style.componentfull" position="bottom-right" :offset="[5, 5]">
+      <q-fab size="xs" padding="xs" icon="icon-mat-display_settings" color="primary" direction="up">
+        <q-fab-action :color="dark ? 'warning' : 'dark'" icon="icon-mat-tungsten" @click="setDark(dark)" />
       </q-fab>
     </q-page-sticky>
   </q-layout>
@@ -115,7 +77,7 @@ const transition = useTransitionStore()
 const store = useAuthStore()
 const style = useStyledStore()
 const apps = useAplikasiStore()
-function goToSSO () {
+function goToSSO() {
   router.push({ path: '/admin/sso', replace: true })
   // setTimeout(() => {
   // window.location.reload()
@@ -137,7 +99,7 @@ const dark = computed(() => {
   return $q.dark.isActive
 })
 
-function setDark (val) {
+function setDark(val) {
   const x = !val
   $q.dark.set(x)
 }
@@ -153,15 +115,15 @@ function setDark (val) {
 const angka = ref(0)
 document.addEventListener('keypress', intrupt)
 document.addEventListener('mouseover', intrupt)
-function intrupt () {
+function intrupt() {
   localStorage.setItem('activeTime', new Date())
   // console.log('interup')
 }
-function timer () {
+function timer() {
   const lgTime = storage.getActiveTime()
   const skr = new Date()
   angka.value = date.getDateDiff(skr, lgTime, 'minutes')
-  if (angka.value >= 60) {
+  if (angka.value >= 480) {
     store.logout()
   }
 }
@@ -217,5 +179,4 @@ qchannel.subscribed(() => {
 
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

@@ -68,7 +68,7 @@
             <div class="absolute-bottom">
               <div class="row items-center justify-between">
                 <q-btn class="gt-xs" size="md" color="yellow" flat dense round icon="icon-mat-visibility"
-                  :href="pathImg + item.url" target="_blank" />
+                  :href="pathImg + item?.dataarsip?.url" target="_blank" />
 
               </div>
             </div>
@@ -88,7 +88,7 @@
           </q-item-label>
           <q-item-label>
             Jenis Arsip : <span class=" text-weight-bold"><q-badge outline color="teal">{{ item?.dataarsip?.ket ?? '-'
-            }}</q-badge></span>
+                }}</q-badge></span>
           </q-item-label>
           <!-- <q-item-label>
             Unit Pengelolah : <span class=" text-weight-bold"><q-badge outline color="accent">{{
