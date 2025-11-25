@@ -9,17 +9,25 @@
           Kode
         </q-item-section>
         <q-item-section>Nama</q-item-section>
-        <q-item-section>Retensi</q-item-section>
+        <q-item-section>Retensi Aktif</q-item-section>
+        <q-item-section>Retensi Inaktif</q-item-section>
+        <q-item-section>Penyelesaian Akhir</q-item-section>
+        <q-item-section>Hak Akses</q-item-section>
+        <q-item-section>Keamanan Informasi</q-item-section>
         <q-item-section side>
           #
         </q-item-section>
       </q-item>
-      <q-item v-for="row in listmaster" :key="row?.id" v-ripple class="q-py-xs">
+      <q-item v-for="row in listmaster" :key="row?.id" v-ripple class="q-py-xs rounded-borders">
         <q-item-section style="max-width: 100px;">
           {{ row.kode }}
         </q-item-section>
         <q-item-section>{{ row.nama }}</q-item-section>
         <q-item-section>{{ row.retensi }} Tahun</q-item-section>
+        <q-item-section>{{ row.retensi_inaktif }} Tahun</q-item-section>
+        <q-item-section>{{ row.penyelesaian_akhir }}</q-item-section>
+        <q-item-section>{{ row.hak_akses }}</q-item-section>
+        <q-item-section>{{ row.keamanan }}</q-item-section>
         <q-item-section side>
           <div class="row q-gutter-xs">
             <q-btn flat icon="icon-mat-edit" size="sm" round color="primary" @click="emits('edit', row)" />

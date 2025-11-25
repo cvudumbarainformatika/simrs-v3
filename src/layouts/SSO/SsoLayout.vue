@@ -1,8 +1,5 @@
 <template>
-  <q-layout
-    view="lHh LpR lFr"
-    :class="dark?'':'page-light'"
-  >
+  <q-layout view="lHh LpR lFr" :class="dark ? '' : 'page-light'">
     <q-page-container>
       <!-- <router-view /> -->
       <q-page class="fullscreen">
@@ -37,14 +34,14 @@ const store = useAuthStore()
 const angka = ref(0)
 document.addEventListener('keypress', intrupt)
 document.addEventListener('mouseover', intrupt)
-function intrupt () {
+function intrupt() {
   localStorage.setItem('activeTime', new Date())
 }
-function timer () {
+function timer() {
   const lgTime = storage.getActiveTime()
   const skr = new Date()
   angka.value = date.getDateDiff(skr, lgTime, 'minutes')
-  if (angka.value >= 60) {
+  if (angka.value >= 480) {
     store.logout()
   }
 }
@@ -57,11 +54,11 @@ onBeforeUnmount(() => {
 </script>
 
 <style lang="scss" scoped>
-$grad:#187DC1;
+$grad: #187DC1;
 
 * {
-  margin:0;
-  padding:0;
+  margin: 0;
+  padding: 0;
 }
 
 .top-page {
@@ -70,12 +67,12 @@ $grad:#187DC1;
   background: linear-gradient(60deg, $secondary 0%, $primary 100%);
 
   .inner-top-page {
-      width: 100%;
-      height:100vh;
-      margin:0;
-      padding: 0;
-      z-index: 1;
-    }
+    width: 100%;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    z-index: 1;
+  }
 
 }
 
@@ -84,7 +81,7 @@ $grad:#187DC1;
   width: 100%;
   height: 5vh;
   bottom: 0;
-  background-color: #fff  ;
+  background-color: #fff;
 }
 
 .z-- {
