@@ -123,7 +123,16 @@
                     style="font-family: monospace;" v-else>
                     VA: {{ storepembayaran.va }}
                   </div>
-                  <q-btn color="primary" label="Bayar" rounded unelevated class="q-pa-sm" @click="store.bayar" />
+                  <div class="row items-center no-wrap">
+                    <q-btn v-for="item in btnbilling" :key="item.value" flat dense no-caps glossy
+                      class="btn-badge q-mr-xs" @click="billingRekap(item)">
+                      <q-badge color="negative" class="q-pa-xs bill-anim">
+                        {{ item.label }}
+                        <q-icon name="payment" size="22px" class="q-ml-xs bill-icon" />
+                      </q-badge>
+                    </q-btn>
+                  </div>
+
                 </div>
               </div>
             </div>
@@ -151,6 +160,23 @@
       </div>
     </q-card>
   </q-page>
+  <q-dialog v-model="dialogBilling">
+    <q-card style="width: 1000px; max-width: 90vw;">
+      <q-card-section>
+        <div class="text-h6 text-weight-bold text-center">{{ judul }}
+        </div>
+      </q-card-section>
+      <q-separator />
+      <q-card-section style="max-height: 80vh;" class="scroll">
+        <component :is="currentPage" :pasien="prop?.pasien" :btnclose="1" />
+      </q-card-section>
+      <q-separator />
+      <q-card-actions align="right">
+        <q-btn flat label="Decline" color="primary" v-close-popup />
+        <q-btn flat label="Accept" color="primary" v-close-popup />
+      </q-card-actions>
+    </q-card>
+  </q-dialog>
 </template>
 
 <script setup>
@@ -160,7 +186,7 @@ import { useKasirRajalListKunjunganStore } from 'src/stores/simrs/kasir/rajal/ku
 import FormPembayaranDetail from './FormPembayaranDetail.vue'
 import DataPembayaran from './DataPembayaran.vue'
 import { usePembayaranKasirRajalStore } from 'src/stores/simrs/kasir/rajal/pembayaran'
-import { computed } from 'vue'
+import { computed, defineAsyncComponent, ref, shallowRef } from 'vue'
 import DataFlagingNonTunai from './DataFlagingNonTunai.vue'
 import { Loading } from 'quasar'
 
@@ -183,6 +209,34 @@ const prop = defineProps({
   kwitansinontunai: { type: Array, default: () => [] },
   getKwitansiTerbayar: { type: Array, default: () => [] }
 })
+const dialogBilling = ref(false)
+const currentPage = shallowRef(null)
+const judul = ref('')
+const btnbilling = ref([
+  {
+    label: 'Billing Rekap',
+    value: 'billingrekap',
+    page: defineAsyncComponent(() =>
+      import('../../../../kasir/rajal/listkunjungan/comp/CetakRekapBilling.vue')
+    )
+  },
+  {
+    label: 'Billing Detail',
+    value: 'billingdetail',
+    page: defineAsyncComponent(() =>
+      import('../../../../dokumen/comppoli/BillingPage.vue')
+    )
+  }
+])
+
+function billingRekap(item) {
+  console.log('billing rekap', item)
+  currentPage.value = item.page
+  judul.value = item.label
+  console.log('current page', judul.value)
+  dialogBilling.value = true
+}
+
 </script>
 
 <style scoped>
@@ -194,5 +248,68 @@ const prop = defineProps({
   min-height: 22px !important;
   padding-top: 2px !important;
   padding-bottom: 2px !important;
+}
+
+.billing-btn {
+  background: linear-gradient(135deg, #4f8cff, #6a5af9, #8c3eff);
+  color: white !important;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  transition: 0.25s ease;
+  box-shadow: 0 2px 8px rgba(100, 70, 255, 0.4);
+  border-radius: 14px;
+}
+
+.billing-btn:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 6px 16px rgba(120, 70, 255, 0.55);
+}
+
+.billing-btn:active {
+  transform: scale(0.97);
+}
+
+.btn-badge {
+  padding: 0 !important;
+  min-width: auto !important;
+}
+
+/* Animasi badge pulse lembut */
+.bill-anim {
+  animation: pulse 1.8s infinite ease-in-out;
+  cursor: pointer;
+}
+
+/* Animasi ikon blink */
+.bill-icon {
+  animation: iconBlink 1.2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.08);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes iconBlink {
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.4;
+  }
+
+  100% {
+    opacity: 1;
+  }
 }
 </style>

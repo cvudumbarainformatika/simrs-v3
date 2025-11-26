@@ -17,7 +17,9 @@
                 <q-select v-model="store.form.peminjam" label="Nama Peminjam" outlined dense
                   :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" :options="store.itemspegawai"
                   option-label="nama" option-value="nik" emit-value map-options use-input
-                  :loading="store.loadingpegawai" @input-value="store.caripegawai">
+                  :loading="store.loadingpegawai" @input-value="store.caripegawai" @update:model-value="(val) => {
+                    carijabatan(val)
+                  }">
                   <template #append>
                     <q-icon v-if="store.form.peminjam" name="icon-mat-cancel" class="cursor-pointer"
                       @click.stop.prevent="store.form.peminjam = null" />
@@ -33,12 +35,12 @@
                 </q-select>
               </div>
             </div>
-            <!-- <div class="row">
+            <div class="row">
               <div class="col-12">
                 <q-input v-model="store.form.jabatan" label="Jabatan" outlined dense
-                  :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" />
+                  :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" :disable="true" />
               </div>
-            </div> -->
+            </div>
             <div class="row"
               v-if="appstore?.user?.pegawai?.kdarteri === '' || appstore?.user?.pegawai?.kdarteri === null">
               <div class="col-12">
@@ -154,7 +156,15 @@ function filterFn(val, update) {
   });
 }
 
+function carijabatan(val) {
+
+  const xxx = store.itemspegawai.find(x => x.nik === val)
+  store.form.jabatan = xxx.relasi_jabatan?.jabatan
+  store.form.kd_jabatan = xxx.jabatan
+}
+
 onMounted(() => {
+  store.loadingprint = false
   store.form.unitpengolah = appstore?.user?.pegawai?.kdarteri
 })
 </script>

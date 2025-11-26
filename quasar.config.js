@@ -30,7 +30,7 @@ export default defineConfig((ctx) => {
       // 'line-awesome',
       // 'roboto-font-latin-ext', // this or either 'roboto-font', NEVER both!
       // 'roboto-font', // optional, you are not bound to it
-      // 'material-icons' // optional, you are not bound to it yaaa
+      'material-icons' // optional, you are not bound to it yaaa
     ],
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#build
@@ -84,7 +84,7 @@ export default defineConfig((ctx) => {
         plugins: [
           {
             name: 'optimize-images',
-            async generateBundle (options, bundle) {
+            async generateBundle(options, bundle) {
               // Optimize hanya file yang dibutuhkan
               const imagePattern = /\.(jpg|jpeg|png|gif|webp)$/
               for (const fileName in bundle) {
@@ -111,7 +111,7 @@ export default defineConfig((ctx) => {
         reactivityTransform: true
       },
 
-      extendViteConf (viteConf) {
+      extendViteConf(viteConf) {
         viteConf.build.chunkSizeWarningLimit = 5000
         viteConf.build.rollupOptions = {
           output: {
@@ -121,7 +121,7 @@ export default defineConfig((ctx) => {
             chunkFileNames: 'assets/[name].[hash].js',
             assetFileNames: 'assets/[name].[hash].[ext]',
 
-            manualChunks (id) {
+            manualChunks(id) {
               if (id.includes('node_modules')) {
                 return id.toString().split('node_modules/')[1].split('/')[0].toString()
               }

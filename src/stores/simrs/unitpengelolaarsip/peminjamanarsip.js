@@ -8,6 +8,8 @@ import { useAppStore } from "src/stores/app";
 export const useUnitPengelolaharsippeminjamanStore = defineStore('unit-pengelolah-arsip-peminjaman-store', {
   state: () => ({
     itemspegawai: [],
+    loading: false,
+    loadingprint: false,
     tab: 'formpeminjamandokumen',
     tabs: [
       { name: 'form', page: 'formpeminjamandokumen' },
@@ -20,6 +22,7 @@ export const useUnitPengelolaharsippeminjamanStore = defineStore('unit-pengelola
     loadinglist: false,
     loadingpegawai: false,
     dialog: false,
+    dialogprint: false,
     dialogkembali: false,
     loadingForm: false,
     params: {
@@ -31,6 +34,8 @@ export const useUnitPengelolaharsippeminjamanStore = defineStore('unit-pengelola
     form: {
       nopeminjaman: '',
       peminjam: '',
+      kd_jabatan: '',
+      jabatan: '',
       unitpengolah: useAppStore?.user?.pegawai?.kdarteri,
       tanggal: date.formatDate(Date.now(), 'YYYY-MM-DD'),
       rencanakembali: date.formatDate(Date.now(), 'YYYY-MM-DD'),
@@ -49,7 +54,8 @@ export const useUnitPengelolaharsippeminjamanStore = defineStore('unit-pengelola
       per_page: 10
     },
     tanggal: date.formatDate(Date.now(), 'DD MMMM YYYY'),
-    rencanakembali: date.formatDate(Date.now(), 'DD MMMM YYYY')
+    rencanakembali: date.formatDate(Date.now(), 'DD MMMM YYYY'),
+    dataprint: ''
   }),
   actions: {
     async getCariData() {

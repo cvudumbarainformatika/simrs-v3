@@ -39,7 +39,7 @@
             Nama
           </div>
           <div class="col-9">
-            {{ pasien?.pasien }}
+            {{ pasien?.pasien ?? pasien?.nama }}
           </div>
         </div>
         <div class="row no-wrap">
@@ -348,7 +348,8 @@ import { useKasirRajalListKunjunganStore } from 'src/stores/simrs/kasir/rajal/ku
 
 const store = useKasirRajalListKunjunganStore()
 const props = defineProps({
-  pasien: { type: Object, default: () => { } }
+  pasien: { type: Object, default: () => { } },
+  btnclose: { type: Object, default: () => { } }
 })
 function openFaktur() {
   const par = { noreg: props.pasien?.noreg }
