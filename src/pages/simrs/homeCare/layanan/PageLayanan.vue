@@ -24,7 +24,7 @@
           <q-page class="contain bg-grey-3">
             <Suspense :key="menu.comp" timeout="0">
               <template #default>
-                <component :is="menu.comp" :key="pasien" :pasien="pasien" :loading="loading" depo="rjl" />
+                <component :is="menu.comp" :key="pasien" :pasien="pasien" :loading="loading" depo="rnp" />
               </template>
               <template #fallback>
                 <AppLoader />
@@ -93,14 +93,14 @@ const menus = ref([
     route: ['homecare'],
     comp: shallowRef(defineAsyncComponent(() => import('../layanan/penunjang/PenunjangPage.vue')))
   },
-  // {
-  //   name: 'konsulspesialis',
-  //   label: 'Konsul Spesialis',
-  //   icon: 'icon-mat-textsms',
-  //   nakes: ['1'],
-  //   route: ['homecare'],
-  //   comp: shallowRef(defineAsyncComponent(() => import('./konsul/IndexPage.vue')))
-  // },
+  {
+    name: 'edukasi',
+    label: 'Edukasi',
+    icon: 'icon-mat-textsms',
+    nakes: ['1'],
+    route: ['homecare'],
+    comp: shallowRef(defineAsyncComponent(() => import('../layanan/edukasi/EdukasiPage.vue')))
+  },
   // {
   //   name: 'tinjauanulang',
   //   label: 'Tinjauan Ulang',
@@ -130,20 +130,20 @@ const menus = ref([
     route: ['homecare'],
     comp: shallowRef(defineAsyncComponent(() => import('../../eresep/EresepPage.vue')))
   },
-  // {
-  //   name: 'upload-dokomen',
-  //   label: 'Upload Dokumen',
-  //   icon: 'icon-fa-folder-tree-solid',
-  //   route: ['homecare'],
-  //   comp: shallowRef(defineAsyncComponent(() => import('../layanan/uploaddokumen/IndexPage.vue')))
-  // },
-  // {
-  //   name: 'e-dokumen-page',
-  //   label: 'Dokumen RM & Billing',
-  //   icon: 'icon-mat-print',
-  //   route: ['homecare', 'mpp', 'rekammedik'],
-  //   comp: shallowRef(defineAsyncComponent(() => import('../../homecare/layanan/dokumen/DokumenPage.vue')))
-  // }
+  {
+    name: 'upload-dokomen',
+    label: 'Upload Dokumen',
+    icon: 'icon-fa-folder-tree-solid',
+    route: ['homecare'],
+    // comp: shallowRef(defineAsyncComponent(() => import('../layanan/uploaddokumen/IndexPage.vue')))
+  },
+  {
+    name: 'e-dokumen-page',
+    label: 'Dokumen',
+    icon: 'icon-mat-print',
+    route: ['homecare', 'mpp', 'rekammedik'],
+    // comp: shallowRef(defineAsyncComponent(() => import('../../homecare/layanan/dokumen/DokumenPage.vue')))
+  }
 ])
 
 

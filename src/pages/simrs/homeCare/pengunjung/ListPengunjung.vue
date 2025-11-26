@@ -1,7 +1,9 @@
 <template>
   <div>
     <div style="margin-bottom: 100px;">
-      <q-list square separator>
+      <LoadingList v-if="store?.loading" />
+      <empty-data v-else-if="!store.pasiens?.length && !store?.loading" />
+      <q-list v-else square separator>
         <q-item v-for="item in store.pasiens" :key="item" v-ripple>
           <q-item-section avatar top>
             <app-avatar-pasien :pasien="item" width="80px" />
@@ -65,7 +67,8 @@ import { defineAsyncComponent, ref } from 'vue'
 
 const store = usePengunjungHomeCareStore()
 const PageLayanan = defineAsyncComponent(() => import('../layanan/PageLayanan.vue'))
-
+const LoadingList = defineAsyncComponent(() => import('./LoadingList.vue'))
+const EmptyData = defineAsyncComponent(() => import('./EmptyData.vue'))
 
 const pasien = ref(null)
 function label (val) {

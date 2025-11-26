@@ -1,10 +1,9 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
 import { api } from 'src/boot/axios'
-import { usePengunjungPoliStore } from './pengunjung'
+import { usePengunjungHomeCareStore } from './pengunjung'
 import { notifSuccess } from 'src/modules/utils'
-import { usePengunjungRanapStore } from '../../ranap/pengunjung'
 
-export const useEdukasiPoliStore = defineStore('edukasi-poli', {
+export const useEdukasiHomeCareStore = defineStore('edukasi-home-care', {
   state: () => ({
     mpenerimaedukasi: [],
     mkebutuhanedukasi: [],
@@ -55,11 +54,9 @@ export const useEdukasiPoliStore = defineStore('edukasi-poli', {
         const resp = await api.post('v1/simrs/pelayanan/simpanedukasi', this.form)
         // console.log('save edukasi', resp)
         if (resp?.status === 200) {
-          const storePasien = usePengunjungPoliStore()
-          const storeRananp = usePengunjungRanapStore()
+          const storePasien = usePengunjungHomeCareStore()
           const isi = resp?.data?.result
           storePasien.injectDataPasien(pasien, isi, 'edukasi')
-          storeRananp.injectDataPasien(pasien?.noreg, isi, 'edukasi')
           notifSuccess(resp)
           this.loadingSave = false
         }
@@ -76,11 +73,8 @@ export const useEdukasiPoliStore = defineStore('edukasi-poli', {
         const resp = await api.post('v1/simrs/pelayanan/hapusedukasi', payload)
         // console.log('hapus laborat', resp)
         if (resp.status === 200) {
-          const storePasien = usePengunjungPoliStore()
-          const storeRananp = usePengunjungRanapStore()
+          const storePasien = usePengunjungHomeCareStore()
           storePasien.hapusDataEdukasi(pasien, id)
-          storeRananp.hapusDataInjectan(pasien, id, 'edukasi')
-          this.setNotas(resp?.data?.nota)
           notifSuccess(resp)
         }
       }
@@ -92,5 +86,5 @@ export const useEdukasiPoliStore = defineStore('edukasi-poli', {
 })
 
 if (import.meta.hot) {
-  import.meta.hot.accept(acceptHMRUpdate(useEdukasiPoliStore, import.meta.hot))
+  import.meta.hot.accept(acceptHMRUpdate(useEdukasiHomeCareStore, import.meta.hot))
 }
