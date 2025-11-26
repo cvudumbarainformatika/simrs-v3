@@ -135,7 +135,7 @@ const menus = ref([
     label: 'Upload Dokumen',
     icon: 'icon-fa-folder-tree-solid',
     route: ['homecare'],
-    // comp: shallowRef(defineAsyncComponent(() => import('../layanan/uploaddokumen/IndexPage.vue')))
+    comp: shallowRef(defineAsyncComponent(() => import('../layanan/uploadDokumen/IndexPage.vue')))
   },
   {
     name: 'e-dokumen-page',

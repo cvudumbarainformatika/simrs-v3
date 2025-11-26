@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia'
+import { acceptHMRUpdate, defineStore } from 'pinia'
 // eslint-disable-next-line no-unused-vars
 import { api } from 'src/boot/axios'
 // eslint-disable-next-line no-unused-vars
@@ -7,6 +7,7 @@ import { usePengunjungPoliStore } from './pengunjung'
 import { notifErr, notifSuccess } from 'src/modules/utils'
 import { usePengunjungRanapStore } from '../../ranap/pengunjung'
 import { useListPasienHemodialisaStore } from '../../hemodialisa/hemodialisa'
+import { usePengunjungHomeCareStore } from '../../homeCare/pengunjung'
 
 export const useUploadDokStore = defineStore('upload-dok-poli', {
   state: () => ({
@@ -75,11 +76,13 @@ export const useUploadDokStore = defineStore('upload-dok-poli', {
               const storePasien = usePengunjungPoliStore()
               const storeRananp = usePengunjungRanapStore()
               const storeHD = useListPasienHemodialisaStore()
+              const storeHC = usePengunjungHomeCareStore()
               for (let i = 0; i < resp?.data?.result?.length; i++) {
                 const isi = resp.data.result[i]
                 storePasien.injectDataPasien(pasien, isi, 'dokumenluar')
                 storeRananp.injectDataPasien(pasien?.noreg, isi, 'dokumenluar')
                 storeHD.injectDataPasien(pasien?.noreg, isi, 'dokumenluar')
+                storeHC.injectDataPasien(pasien?.noreg, isi, 'dokumenluar')
               }
               notifSuccess(resp)
               this.initForm()
@@ -106,9 +109,11 @@ export const useUploadDokStore = defineStore('upload-dok-poli', {
               const storePasien = usePengunjungPoliStore()
               const storeRananp = usePengunjungRanapStore()
               const storeHD = useListPasienHemodialisaStore()
+              const storeHC = usePengunjungHomeCareStore()
               storePasien.hapusDataInjectan(pasien, id, 'dokumenluar')
               storeRananp.hapusDataInjectan(pasien, id, 'dokumenluar')
               storeHD.hapusDataInjectan(pasien, id, 'dokumenluar')
+              storeHC.hapusDataInjectan(pasien, id, 'dokumenluar')
 
               notifSuccess(resp)
             }
@@ -127,3 +132,7 @@ export const useUploadDokStore = defineStore('upload-dok-poli', {
 
   }
 })
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useUploadDokStore, import.meta.hot))
+}
