@@ -41,7 +41,7 @@
                 - Riwayat Penyakit (Sekarang) : {{ anamnesis?.riwayatpenyakitsekarang ?? '' }}
               </div>
               <div class="col-8" style="margin-left: 30px;">
-                - Riwayat Penyakit : {{ anamnesis?.riwayatpenyakit ?? '' }}
+                - Riwayat Penyakit (Dahulu): {{ anamnesis?.riwayatpenyakit ?? '' }}
               </div>
               <div class="col-8" style="margin-left: 30px;">
                 - Riwayat Penyakit Keluarga: {{ anamnesis?.riwayatpenyakitkeluarga ?? '' }}
@@ -56,11 +56,42 @@
                 - Riwayat Pengobatan : {{ anamnesis?.riwayatpengobatan ?? '' }}
               </div>
               <br>
-              <div class="col-8" style="margin-left: 30px;">
-                - Skreening Gizi : Skor {{ anamnesis?.skreeninggizi }} Ket {{ skorgizi(anamnesis?.skreeninggizi) }}
+              <div class="col-8 " style="margin-left: 20px;">
+                2. Keluhan Nyeri
               </div>
+              <div class="col-8" style="margin-left: 35px;">
+                <div class="text-weight-bold">
+                  Keluhan Nyeri ? <em class="text-primary">{{ anamnesis.keteranganscorenyeri }}</em>
+                  <span class="q-ml-sm">
+                    <q-icon size="lg" color="teal" :name="iconNyeri(anamnesis.scorenyeri)" />
+                  </span>
+                </div>
+              </div>
+              <q-separator class="q-my-xs" />
+              <div class="col-4" style="margin-left: 35px;">
+                <q-slider v-model="anamnesis.scorenyeri" color="primary" thumb-color="primary" label-color="primary"
+                  label-text-color="yellow" markers :marker-labels="(val) => fnMarkerLabel"
+                  marker-labels-class="text-primary" label-always switch-label-side :min="0" :max="10" />
+
+              </div>
+            </div>
+            <div class="col-5 q-mt-sm" style="margin-left: 20px;">
+              3. Assasement Jatuh (skor Up an Go)
+            </div>
+            <div class="row">
               <div class="col-8" style="margin-left: 30px;">
-                - Keluhan Nyeri : Skor {{ anamnesis?.scorenyeri }} Ket {{ skornyeri(parseInt(anamnesis?.scorenyeri)) }}
+                - Setelah diperhatikan cara berjalan pasien saat akan duduk di kursi. Pasien
+                tampak <span class="text-weight-bold" v-if="parseInt(anamnesis?.seimbang) == 1">tidak</span> seimbang
+                (<span class="text-weight-bold" v-if="parseInt(anamnesis?.seimbang) == 0">tidak </span><span
+                  :class="parseInt(anamnesis?.seimbang) == 1 ? 'text-weight-bold' : ''">sempoyongan</span> )
+              </div>
+              <div class="col-8" style="margin-left: 30px;">- Pasien <span class="text-weight-bold"
+                  v-if="parseInt(anamnesis?.penopang) == 0">tidak</span> memegang pinggiran kursi atau benda lain
+                sebagai
+                penopang saat akan duduk
+              </div>
+              <div class="col-8" style="margin-left: 30px;">- Sehingga disimpulkan bahwa resiko jatuh pasien adalah
+                <span class="text-weight-bold">{{ cekHasil(anamnesis) }}</span>
               </div>
             </div>
           </div>
@@ -144,6 +175,7 @@
                 - Kultural: {{ pfisik?.muakuloskeletal ?? '-' }}
               </div>
             </div>
+
           </div>
         </div>
       </div>
@@ -159,13 +191,13 @@
             <div class="col-5" style="margin-left: 20px;">
               - Pasian <span v-if="anamx?.skreeninggizi == 0" class="text-weight-bold">{{
                 skorgizi(anamx?.skreeninggizi)
-                }}</span> mengalami penurunan / peningkatan BB yang tidak
+              }}</span> mengalami penurunan / peningkatan BB yang tidak
               diinginkan dalam 6 Bulan terakhir
             </div>
             <div class="col-5" style="margin-left: 20px;">
               - Asupan Makan <span v-if="anamx?.asupanmakan == 0" class="text-weight-bold">{{
                 skorgizi(anamx?.asupanmakan)
-                }}</span> berkurang karena tidak nafsu makan
+              }}</span> berkurang karena tidak nafsu makan
             </div>
             <div class="col-5" style="margin-left: 20px;">
               - Kondisi Khusus : {{ anamx?.kondisikhusus ?? '-' }}
@@ -275,15 +307,6 @@
         </div>
 
       </div>
-      <!-- <div class="row">
-        <div v-for="(erm, e1) in store.item" :key="e1">
-          <div v-for="(plan, e10) in erm.planning" :key="e10">
-            <div class="col-5" style="margin-left: 20px;">
-              - {{ plan?.rs4 }}
-            </div>
-          </div>
-        </div>
-      </div> -->
       <div class="q-mt-md">
         <div class="row">
           <div class="col-6">
@@ -373,6 +396,15 @@ function skorgizi (val) {
     return 'Tidak'
   }
 }
+function cekHasil (val) {
+  console.log('cek hasil', val)
+
+  let hasil = ''
+  if (val.hasil == 2) hasil = 'Tinggi'
+  else if (val.hasil == 1) hasil = 'Sedang'
+  else hasil = 'Rendah'
+  return hasil
+}
 function keteranganSkorGizi (nilai) {
   const skor = nilai || 0
   if (skor < 2) {
@@ -402,6 +434,30 @@ const jenisPPA = (val) => {
   else {
     return 'Fisoterapis'
   }
+}
+function iconNyeri (val) {
+  const val2 = typeof val === 'string' ? (isNaN(parseInt(val)) ? 0 : parseInt(val)) : 0
+  let icon = 'icon-my-emoticon-excited-outline'
+  if (val < 2) {
+    icon = 'icon-my-emoticon-excited-outline'
+  }
+  else if (val >= 2 && val < 4) {
+    icon = 'icon-my-emoticon-outline'
+  }
+  else if (val >= 4 && val < 6) {
+    icon = 'icon-my-emoticon-neutral-outline'
+  }
+  else if (val >= 6 && val < 8) {
+    icon = 'icon-my-emoticon-confused-outline'
+  }
+  else if (val >= 8 && val < 10) {
+    icon = 'icon-my-emoticon-angry-outline'
+  }
+  else if (val === 10) {
+    icon = 'icon-my-emoticon-cry-outline'
+  }
+
+  return icon
 }
 // function getYT(val) {
 //   if (val === 1 || val === '1') {

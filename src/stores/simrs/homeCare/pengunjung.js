@@ -4,6 +4,7 @@ import { dateDbFormat } from "src/modules/formatter"
 
 export const usePengunjungHomeCareStore = defineStore('pengunjung_home_care_store', {
   state: () => ({
+    loading: true,
     pasiens: [],
     meta: null,
     pasien: null,
@@ -75,12 +76,12 @@ export const usePengunjungHomeCareStore = defineStore('pengunjung_home_care_stor
         if (resp.status === 200) {
           this.meta = resp.data?.meta
           this.pasiens = resp.data?.data
-          this.loading = false
+          // this.loading = false
         }
         console.log('ada ')
       } catch (error) {
         console.log('error', error)
-        this.loading = false
+        // this.loading = false
       } finally {
         this.loading = false
       }
@@ -155,7 +156,9 @@ export const usePengunjungHomeCareStore = defineStore('pengunjung_home_care_stor
         datax.anamnesis = data?.anamnesis ?? []
         datax.diagnosa = data?.diagnosa ?? []
         datax.tindakan = data?.tindakan ?? []
-        datax.memodiagnosa = data?.memodiagnosa ?? []
+        datax.memodiagnosa = data?.memodiagnosa ?? ''
+        datax.edukasi = data?.edukasi ?? []
+        datax.dokumenluar = data?.dokumenluar ?? []
         // datax.dataigd = data?.dataigd ?? null
         // datax.pemeriksaan = data?.pemeriksaan ?? []
         // datax.penilaian = data?.penilaian ?? []
@@ -177,8 +180,6 @@ export const usePengunjungHomeCareStore = defineStore('pengunjung_home_care_stor
         // datax.perawatanjenazah = data?.perawatanjenazah ?? []
         // datax.hais = data?.hais ?? []
         // datax.konsultasi = data?.konsultasi ?? []
-        // datax.edukasi = data?.edukasi ?? []
-        // datax.dokumenluar = data?.dokumenluar ?? []
         // datax.informconcern = data?.informconcern ?? []
         // datax.dischargeplanning = data?.dischargeplanning ?? []
         // datax.skriningdischargeplannings = data?.skriningdischargeplannings ?? []
@@ -248,6 +249,14 @@ export const usePengunjungHomeCareStore = defineStore('pengunjung_home_care_stor
       const findPasien = this.pasiens.find(x => x.noreg === pasien.noreg)
       if (findPasien) {
         const data = findPasien.anamnesis
+        const pos = data.findIndex(el => el.id === id)
+        if (pos >= 0) { data.splice(pos, 1) }
+      }
+    },
+    hapusDataEdukasi (pasien, id) {
+      const findPasien = this.pasiens.find(x => x === pasien)
+      if (findPasien) {
+        const data = findPasien?.edukasi
         const pos = data.findIndex(el => el.id === id)
         if (pos >= 0) { data.splice(pos, 1) }
       }

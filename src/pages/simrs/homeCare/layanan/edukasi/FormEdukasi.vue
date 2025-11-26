@@ -112,7 +112,7 @@
 </template>
 
 <script setup>
-import { useEdukasiPoliStore } from 'src/stores/simrs/pelayanan/poli/edukasi'
+import { useEdukasiHomeCareStore } from 'src/stores/simrs/homeCare/edukasi'
 import { computed, onMounted, ref } from 'vue'
 
 const props = defineProps({
@@ -122,7 +122,7 @@ const props = defineProps({
   }
 })
 
-const store = useEdukasiPoliStore()
+const store = useEdukasiHomeCareStore()
 const optionsPerluPenerjemah = ref([{ label: 'Ya', value: 'Iya' }, { label: 'Tidak', value: 'Tidak' }])
 const optionsBahasaIsyarat = ref([{ label: 'Ya', value: 'Iya' }, { label: 'Tidak', value: 'Tidak' }])
 const optionsCaraEdukasi = ref([{ label: 'Lisan', value: 'Lisan' }, { label: 'Tulisan', value: 'Tulisan' }])

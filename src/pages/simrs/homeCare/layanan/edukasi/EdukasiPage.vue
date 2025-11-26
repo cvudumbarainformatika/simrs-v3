@@ -20,11 +20,11 @@
 </template>
 
 <script setup>
-import { useEdukasiPoliStore } from 'src/stores/simrs/pelayanan/poli/edukasi'
+import { useEdukasiHomeCareStore } from 'src/stores/simrs/homeCare/edukasi'
 import { ref, shallowRef, defineAsyncComponent, onMounted, watchEffect } from 'vue'
 
 // eslint-disable-next-line no-unused-vars
-const store = useEdukasiPoliStore()
+const store = useEdukasiHomeCareStore()
 
 const props = defineProps({
   pasien: {
@@ -37,17 +37,17 @@ const tabs = ref([
   {
     menu: 'edukasi',
     label: 'Rencana Edukasi',
-    comp: shallowRef(defineAsyncComponent(() => import('./compedukasi/IndexPage.vue')))
+    comp: shallowRef(defineAsyncComponent(() => import('./IndexPage.vue')))
   },
   {
     menu: 'implementasi',
     label: 'Implementasi & Evaluasi Edukasi',
-    comp: shallowRef(defineAsyncComponent(() => import('./compedukasi/implementasi/IndexPage.vue')))
+    comp: shallowRef(defineAsyncComponent(() => import('./implementasi/IndexPage.vue')))
   },
   {
-    menu: 'informentConsent',
-    label: 'Informan Consent',
-    comp: shallowRef(defineAsyncComponent(() => import('./compedukasi/InformConsent.vue')))
+    menu: 'informConsent',
+    label: 'Inform Consent',
+    comp: shallowRef(defineAsyncComponent(() => import('./InformConsent.vue')))
   }
 ])
 
