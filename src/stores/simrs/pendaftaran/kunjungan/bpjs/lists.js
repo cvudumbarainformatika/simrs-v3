@@ -125,6 +125,7 @@ export const useListKunjunganBpjsStore = defineStore('list_kunjungan_bpjs', {
       this.getLists()
     },
     setPeriodik (val) {
+      this.params.status = 'SEMUA'
       const { to, from } = val
       this.params.to = to
       this.params.from = from
@@ -141,7 +142,7 @@ export const useListKunjunganBpjsStore = defineStore('list_kunjungan_bpjs', {
     setQ (payload) {
       this.params.page = 1
       this.params.q = payload
-      this.getLists()
+      this.getListPasiens()
     },
     setFlag (payload) {
       this.params.page = 1
@@ -206,7 +207,7 @@ export const useListKunjunganBpjsStore = defineStore('list_kunjungan_bpjs', {
     },
     setPage (payload) {
       this.params.page = payload
-      this.getLists()
+      this.getListPasiens()
     },
     setPerPage (payload) {
       this.params.page = 1
@@ -221,7 +222,7 @@ export const useListKunjunganBpjsStore = defineStore('list_kunjungan_bpjs', {
       this.params.to = to
       this.params.from = from
       this.params.q = q
-      this.getLists()
+      this.getListPasiens()
     },
     kirimUlangTask (payload) {
       const indexReg = this.items.findIndex(p => p.noreg == payload.noreg)
