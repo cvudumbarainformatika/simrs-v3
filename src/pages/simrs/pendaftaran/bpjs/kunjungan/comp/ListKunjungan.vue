@@ -246,7 +246,8 @@
             <div class="col-2">Kode Booking</div>
             <div class="col-3">Nomor Referensi</div>
             <div class="col-1">No Antr</div>
-            <div class="col-2">Angka Antrean</div>
+            <div class="col-1">Ang Antr</div>
+            <div class="col-1">Jns Kunj</div>
             <div class="col-2">Tgl Periksa</div>
           </div>
           <div v-else class="row bg-dark text-white">
@@ -260,7 +261,8 @@
               <div class="col-2">{{ data?.request?.kodebooking }}</div>
               <div class="col-3">{{ data?.request?.nomorreferensi }}</div>
               <div class="col-1">{{ data?.request?.nomorantrean }}</div>
-              <div class="col-2">{{ data?.request?.angkaantrean }}</div>
+              <div class="col-1">{{ data?.request?.angkaantrean }}</div>
+              <div class="col-1">{{ data?.request?.jeniskunjungan }}</div>
               <div class="col-2">{{ dateFullFormat(data?.request?.tanggalperiksa) }}</div>
             </div>
             <div class="row" v-else>
