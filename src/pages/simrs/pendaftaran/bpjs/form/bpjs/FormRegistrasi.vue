@@ -1,9 +1,6 @@
 <template>
   <div class="">
-    <div
-      class="row items-center justify-between bg-grey q-pa-md"
-      style="z-index: 10;"
-    >
+    <div class="row items-center justify-between bg-grey q-pa-md" style="z-index: 10;">
       <div class="f-14 text-weight-bold">
         Registrasi / Kunjungan
       </div>
@@ -21,31 +18,18 @@
               <div class="col-8">
                 <!-- 53355/07/2023/J -->
                 <!-- : {{ store.form.noreg }} -->
-                <app-input
-                  v-model="store.form.noreg"
-                  label="No registrasi"
-                  valid
-                  disable
-                  outlined
-                />
+                <app-input v-model="store.form.noreg" label="No registrasi" valid disable outlined />
               </div>
             </div>
             <!-- No rujukan -->
             <div class="row q-col-gutter-sm items-center q-mb-xs">
               <div class="col-12">
-                <app-input
-                  ref="refNoRujukan"
-                  v-model="store.form.norujukan"
-                  label="nomor Rujukan"
-                  right-icon
-                  :right-icon-name="adaList?'icon-mat-format_list_numbered':''"
-                  :right-icon-tooltip="adaList?'List Rujukan':''"
-                  outlined
+                <app-input ref="refNoRujukan" v-model="store.form.norujukan" label="nomor Rujukan" right-icon
+                  :right-icon-name="adaList ? 'icon-mat-format_list_numbered' : ''"
+                  :right-icon-tooltip="adaList ? 'List Rujukan' : ''" outlined
                   :loading="store.loadingListRujukan || store.loadingCekBpjs"
                   :rules="[val => (!!val || !!store.form.nosuratkontrol) || 'Harap diisi',]"
-                  @icon-right-click="listSuratRujukan"
-                  @keyup.enter="cekSuratRujukanIni($event)"
-                />
+                  @icon-right-click="listSuratRujukan" @keyup.enter="cekSuratRujukanIni($event)" />
               </div>
               <!-- <div class="col-3">
                 <app-btn
@@ -72,26 +56,16 @@
             <!-- v-if="store.jumlahSEP >= 1 || !store.form.norujukan" -->
             <div
               v-if="(store.jumlahSEP >= 1 && !!store.form.norujukan) || (!store.form.norujukan && store.jumlahSEP === 0) || store.rujukanPostMRS || store.rujukanPostMRS"
-              class="row q-col-gutter-sm items-center q-mb-xs"
-            >
+              class="row q-col-gutter-sm items-center q-mb-xs">
               <div class="col-12">
-                <app-input
-                  ref="refNoSuratKontrol"
-                  v-model="store.form.nosuratkontrol"
-                  label="nomor Surat Kontrol"
-                  right-icon
-                  :right-icon-name="adaList?'icon-mat-format_list_numbered':''"
-                  :right-icon-tooltip="adaList?'List Surat Kontrol':''"
-                  outlined
-                  :loading="store.loadingCekBpjs"
+                <app-input ref="refNoSuratKontrol" v-model="store.form.nosuratkontrol" label="nomor Surat Kontrol"
+                  right-icon :right-icon-name="adaList ? 'icon-mat-format_list_numbered' : ''"
+                  :right-icon-tooltip="adaList ? 'List Surat Kontrol' : ''" outlined :loading="store.loadingCekBpjs"
                   :rules="[
-                    val => (!!val ) || 'Harap diisi',
-                    val => (store.rencanaKontrolValid || store.rujukanPostMRS ||store.kontrolDPJP) || 'Rencana Kontrol tidak valid',
-                  ]"
-                  @icon-right-click="cekSuratKontrol"
-                  @keyup.enter="cekSuratKontrolIni($event)"
-                  @update:model-value="validasiSuratKontrol"
-                />
+                    val => (!!val) || 'Harap diisi',
+                    val => (store.rencanaKontrolValid || store.rujukanPostMRS || store.kontrolDPJP) || 'Rencana Kontrol tidak valid',
+                  ]" @icon-right-click="cekSuratKontrol" @keyup.enter="cekSuratKontrolIni($event)"
+                  @update:model-value="validasiSuratKontrol" />
               </div>
               <!-- <div class="col-3">
                 <app-btn
@@ -105,252 +79,113 @@
             <div
               v-if="(!store.loadingCekBpjs || store.loadingListRujukan) &&
                 ((!!store.form.norujukan && store.jumlahSEP === 0) ||
-                  (!!store.form.norujukan && store.jumlahSEP >= 1 && !!store.form.nosuratkontrol && store.rencanaKontrolValid)) || (store.rujukanPostMRS ||store.kontrolDPJP)"
-            >
+                  (!!store.form.norujukan && store.jumlahSEP >= 1 && !!store.form.nosuratkontrol && store.rencanaKontrolValid)) || (store.rujukanPostMRS || store.kontrolDPJP)">
               <!-- Jenis Kunjungan -->
               <div class="row q-col-gutter-sm items-center q-mb-xs">
                 <div class="col-12">
-                  <app-autocomplete
-                    ref="refJenisKunjungan"
-                    v-model="store.display.jeniskunjungan"
-                    label="Jenis Kunjungan"
-                    autocomplete="nilai"
-                    option-value="nilai"
-                    option-label="nilai"
-                    outlined
-                    :source="store.jenisKunjungans"
-                    :loading="store.loading"
-                    :rules="[val => (!!val) || 'Harap diisi',]"
-                    @selected="setJenisKunjungan"
-                  />
+                  <app-autocomplete ref="refJenisKunjungan" v-model="store.display.jeniskunjungan"
+                    label="Jenis Kunjungan" autocomplete="nilai" option-value="nilai" option-label="keterangan" outlined
+                    :source="store.jenisKunjungans" :loading="store.loading" :rules="[val => (!!val) || 'Harap diisi',]"
+                    @selected="setJenisKunjungan" />
                 </div>
               </div>
               <!-- asal rujukan -->
               <div class="row q-col-gutter-sm items-center q-mb-xs">
                 <div class="col-12">
-                  <app-autocomplete
-                    ref="refAsalRujukan"
-                    v-model="store.form.asalrujukan"
-                    label="Asal Rujukan"
-                    autocomplete="asalrujukan"
-                    option-value="kode"
-                    option-label="asalrujukan"
-                    :rules="[val => (!!val) || 'Harap diisi',]"
-                    outlined
-                    :source="store.asalrujukans"
-                    :loading="store.loading"
-                  />
+                  <app-autocomplete ref="refAsalRujukan" v-model="store.form.asalrujukan" label="Asal Rujukan"
+                    autocomplete="asalrujukan" option-value="kode" option-label="asalrujukan"
+                    :rules="[val => (!!val) || 'Harap diisi',]" outlined :source="store.asalrujukans"
+                    :loading="store.loading" />
                 </div>
               </div>
               <!-- poli tujuan -->
-              <div
-                :key="store.form.kodepoli"
-                class="row q-col-gutter-md items-center q-mb-xs"
-              >
+              <div :key="store.form.kodepoli" class="row q-col-gutter-md items-center q-mb-xs">
                 <div class="col-12">
-                  <app-autocomplete
-                    ref="refPoliTujuan"
-                    v-model="store.form.kodepoli"
-                    label="Poli Tujuan"
-                    autocomplete="polirs"
-                    option-value="kodepoli"
-                    option-label="polirs"
-                    outlined
-                    :source="store.polis"
-                    :loading="store.loading"
-                    :rules="[val => (!!val) || 'Harap diisi',]"
-                    @selected="setPoliTujuan"
-                  />
+                  <app-autocomplete ref="refPoliTujuan" v-model="store.form.kodepoli" label="Poli Tujuan"
+                    autocomplete="polirs" option-value="kodepoli" option-label="polirs" outlined :source="store.polis"
+                    :loading="store.loading" :rules="[val => (!!val) || 'Harap diisi',]" @selected="setPoliTujuan" />
                 </div>
               </div>
               <!-- Katarak -->
               <div class="row q-col-gutter-md items-center q-mb-xs">
                 <div class="col-12">
-                  <app-autocomplete
-                    ref="refKatarak"
-                    :key="store.form.katarak"
-                    v-model="store.form.katarak"
-                    label="Katarak"
-                    autocomplete="nama"
-                    option-value="value"
-                    option-label="nama"
-                    outlined
-                    :source="store.kataraks"
-                    :loading="store.loading"
-                    :rules="[val => (!!val) || 'Harap diisi',]"
-                  />
+                  <app-autocomplete ref="refKatarak" :key="store.form.katarak" v-model="store.form.katarak"
+                    label="Katarak" autocomplete="nama" option-value="value" option-label="nama" outlined
+                    :source="store.kataraks" :loading="store.loading" :rules="[val => (!!val) || 'Harap diisi',]" />
                 </div>
               </div>
               <!-- kartu / karcis -->
-              <div
-                :key="store.form.jeniskarcis"
-                class="row q-col-gutter-sm items-center q-mb-xs"
-              >
-                <q-tooltip
-                  v-if="!store.paramKarcis.kd_poli"
-                  class="primary"
-                  :offset="[10, 10]"
-                >
+              <div :key="store.form.jeniskarcis" class="row q-col-gutter-sm items-center q-mb-xs">
+                <q-tooltip v-if="!store.paramKarcis.kd_poli" class="primary" :offset="[10, 10]">
                   Pilih poli tujuan Terlebih dahulu
                 </q-tooltip>
                 <div class="col-6">
-                  <app-autocomplete
-                    ref="refFlagKartu"
-                    v-model="store.form.jeniskarcis"
-                    label="Flag Kartu"
-                    autocomplete="jeniskarcis"
-                    option-value="jeniskarcis"
-                    option-label="jeniskarcis"
-                    outlined
-                    :disable="!store.paramKarcis.kd_poli"
-                    :source="store.jenisKarcises"
-                    :loading="store.loading"
-                    :rules="[val => (!!val) || 'Harap diisi',]"
-                    @selected="setFlagKarcis"
-                  />
+                  <app-autocomplete ref="refFlagKartu" v-model="store.form.jeniskarcis" label="Flag Kartu"
+                    autocomplete="jeniskarcis" option-value="jeniskarcis" option-label="jeniskarcis" outlined
+                    :disable="!store.paramKarcis.kd_poli" :source="store.jenisKarcises" :loading="store.loading"
+                    :rules="[val => (!!val) || 'Harap diisi',]" @selected="setFlagKarcis" />
                 </div>
                 <div class="col-6">
-                  <app-input
-                    v-model="store.display.hargakarcis"
-                    label="Karcis"
-                    outlined
-                    disable
-                  />
-                  <q-tooltip
-                    v-if="store.paramKarcis.kd_poli"
-                    class="primary"
-                    :offset="[10, 10]"
-                  >
+                  <app-input v-model="store.display.hargakarcis" label="Karcis" outlined disable />
+                  <q-tooltip v-if="store.paramKarcis.kd_poli" class="primary" :offset="[10, 10]">
                     Terisi otomatis
                   </q-tooltip>
                 </div>
               </div>
               <!-- Diagnosa awal -->
-              <div
-                :key="store.display.diagnosa.nama"
-                class="row q-col-gutter-sm items-center q-mb-xs"
-              >
+              <div :key="store.display.diagnosa.nama" class="row q-col-gutter-sm items-center q-mb-xs">
                 <div class="col-4">
-                  <app-autocomplete-debounce-input
-                    ref="refKodeDiagnosa"
-                    :model="store.display.diagnosa.kode"
-                    label="Kode Diagnosa"
-                    autocomplete="kode"
-                    option-value="kode"
-                    option-label="kode"
-                    outlined
-                    :source="store.diagnosaAwals"
-                    :loading="store.loadingdiagnosa"
-                    :rules="[val => (!!val) || 'Harap diisi',]"
-                    @on-select="setKodeDiagnosa"
-                    @buang="findKodeDiagnosa"
-                    @clear="clearKodeDiagnosa"
-                  />
+                  <app-autocomplete-debounce-input ref="refKodeDiagnosa" :model="store.display.diagnosa.kode"
+                    label="Kode Diagnosa" autocomplete="kode" option-value="kode" option-label="kode" outlined
+                    :source="store.diagnosaAwals" :loading="store.loadingdiagnosa"
+                    :rules="[val => (!!val) || 'Harap diisi',]" @on-select="setKodeDiagnosa" @buang="findKodeDiagnosa"
+                    @clear="clearKodeDiagnosa" />
                 </div>
                 <div class="col-8">
-                  <app-autocomplete-debounce-input
-                    ref="refNamaDiagnosa"
-                    :model="store.display.diagnosa.nama"
-                    label="Nama Diagnosa"
-                    autocomplete="nama"
-                    option-value="nama"
-                    option-label="nama"
-                    outlined
-                    :source="store.diagnosaAwals"
-                    :loading="store.loadingdiagnosa"
-                    :rules="[val => (!!val) || 'Harap diisi',]"
-                    @on-select="setNamaDiagnosa"
-                    @buang="findNamaDiagnosa"
-                    @clear="clearNamaDiagnosa"
-                  />
+                  <app-autocomplete-debounce-input ref="refNamaDiagnosa" :model="store.display.diagnosa.nama"
+                    label="Nama Diagnosa" autocomplete="nama" option-value="nama" option-label="nama" outlined
+                    :source="store.diagnosaAwals" :loading="store.loadingdiagnosa"
+                    :rules="[val => (!!val) || 'Harap diisi',]" @on-select="setNamaDiagnosa" @buang="findNamaDiagnosa"
+                    @clear="clearNamaDiagnosa" />
                 </div>
               </div>
               <!-- Tujuan Kunjungan -->
               <!-- v-if="store.display.jeniskunjungan==='Kontrol'" -->
-              <div
-                class="row q-col-gutter-sm items-center q-mb-xs"
-              >
+              <div class="row q-col-gutter-sm items-center q-mb-xs">
                 <div class="col-12">
-                  <app-autocomplete
-                    ref="refTujuanKunjungan"
-                    v-model="store.display.tujuankunjungan"
-                    label="Tujuan Kunjungan"
-                    autocomplete="nama"
-                    option-value="value"
-                    option-label="nama"
-                    outlined
-                    :source="store.tujuanKunjungans"
-                    :loading="store.loading"
-                    :rules="[val => (!!val) || 'Harap diisi',]"
-                    @selected="setTujuanKunjungan"
-                  />
+                  <app-autocomplete ref="refTujuanKunjungan" v-model="store.display.tujuankunjungan"
+                    label="Tujuan Kunjungan" autocomplete="nama" option-value="value" option-label="nama" outlined
+                    :source="store.tujuanKunjungans" :loading="store.loading"
+                    :rules="[val => (!!val) || 'Harap diisi',]" @selected="setTujuanKunjungan" />
                 </div>
               </div>
               <!-- Tujuan Prosedur -->
-              <div
-                v-if="store.form.tujuankunjungan!=='0'"
-                class="row q-col-gutter-sm items-center q-mb-xs"
-              >
+              <div v-if="store.form.tujuankunjungan !== '0'" class="row q-col-gutter-sm items-center q-mb-xs">
                 <div class="col-12">
-                  <app-autocomplete
-                    ref="refProsedur"
-                    v-model="store.display.prosedur.kode"
-                    label="Prosedur"
-                    autocomplete="procedure"
-                    option-value="kode"
-                    option-label="procedure"
-                    outlined
-                    valid
-                    :source="store.prosedurs"
-                    :loading="store.loading"
-                    @selected="setProsedur"
-                  />
+                  <app-autocomplete ref="refProsedur" v-model="store.display.prosedur.kode" label="Prosedur"
+                    autocomplete="procedure" option-value="kode" option-label="procedure" outlined valid
+                    :source="store.prosedurs" :loading="store.loading" @selected="setProsedur" />
                   <!-- :rules="[val => (!!val) || 'Harap diisi',]" -->
                 </div>
               </div>
               <!-- Assesment pelayanan -->
               <!-- v-if="(store.display.jeniskunjungan==='Kontrol' && store.form.tujuankunjungan===2) || store.display.jeniskunjungan==='Rujukan Internal'" -->
-              <div
-                v-if="store.form.tujuankunjungan!=='1'"
-                class="row q-col-gutter-sm items-center q-mb-xs"
-              >
+              <div v-if="store.form.tujuankunjungan !== '1'" class="row q-col-gutter-sm items-center q-mb-xs">
                 <div class="col-12">
-                  <app-autocomplete
-                    ref="refAssesmentPel"
-                    v-model="store.display.assesment.kode"
-                    label="Assesment Pelayanan"
-                    autocomplete="assesmentpel"
-                    option-value="kode"
-                    option-label="assesmentpel"
-                    valid
-                    outlined
-                    :source="store.assesmens"
-                    :loading="store.loading"
-                    @selected="setAssesmentPelayanan"
-                  />
+                  <app-autocomplete ref="refAssesmentPel" v-model="store.display.assesment.kode"
+                    label="Assesment Pelayanan" autocomplete="assesmentpel" option-value="kode"
+                    option-label="assesmentpel" valid outlined :source="store.assesmens" :loading="store.loading"
+                    @selected="setAssesmentPelayanan" />
                   <!-- :rules="[val => (!!val) || 'Harap diisi',]" -->
                 </div>
               </div>
               <!-- Penunjang -->
               <!-- v-if="store.display.jeniskunjungan==='Kontrol' && store.form.tujuankunjungan===1" -->
-              <div
-                v-if="store.form.tujuankunjungan!=='0'"
-                class="row q-col-gutter-sm items-center q-mb-xs"
-              >
+              <div v-if="store.form.tujuankunjungan !== '0'" class="row q-col-gutter-sm items-center q-mb-xs">
                 <div class="col-12">
-                  <app-autocomplete
-                    ref="refPenunjang"
-                    v-model="store.display.penunjang.kode"
-                    label="Penunjang"
-                    autocomplete="namapenunjang"
-                    option-value="kode"
-                    option-label="namapenunjang"
-                    valid
-                    outlined
-                    :source="store.penunjangs"
-                    :loading="store.loading"
-                    @selected="setPenunjang"
-                  />
+                  <app-autocomplete ref="refPenunjang" v-model="store.display.penunjang.kode" label="Penunjang"
+                    autocomplete="namapenunjang" option-value="kode" option-label="namapenunjang" valid outlined
+                    :source="store.penunjangs" :loading="store.loading" @selected="setPenunjang" />
                   <!-- :rules="[val => (!!val) || 'Harap diisi',]" -->
                 </div>
               </div>
@@ -360,147 +195,72 @@
           <div
             v-if="(!store.loadingCekBpjs || store.loadingListRujukan) &&
               ((!!store.form.norujukan && store.jumlahSEP === 0) ||
-                (!!store.form.norujukan && store.jumlahSEP >= 1 && !!store.form.nosuratkontrol && store.rencanaKontrolValid)) || (store.rujukanPostMRS ||store.kontrolDPJP)"
-            class="col-6"
-          >
+                (!!store.form.norujukan && store.jumlahSEP >= 1 && !!store.form.nosuratkontrol && store.rencanaKontrolValid)) || (store.rujukanPostMRS || store.kontrolDPJP)"
+            class="col-6">
             <!-- PPK Rujukan -->
-            <div
-              :key="store.display.kode"
-              class="row q-col-gutter-md items-center q-mb-xs"
-            >
+            <div :key="store.display.kode" class="row q-col-gutter-md items-center q-mb-xs">
               <div class="col-12">
-                <app-autocomplete-new
-                  ref="refPpkRujukan"
-                  :model="store.display.kode"
-                  label="PPK Rujukan"
-                  autocomplete="nama"
-                  option-value="kode"
-                  option-label="nama"
-                  outlined
-                  :source="store.ppkRujukans"
-                  :loading="store.loadingPpkRujukan"
-                  :rules="[val => (!!val) || 'Harap diisi',]"
-                  @on-select="setPpkRujukan"
-                  @buang="prosesChange"
-                  @clear="clearPpkRujukan"
-                />
+                <app-autocomplete-new ref="refPpkRujukan" :model="store.display.kode" label="PPK Rujukan"
+                  autocomplete="nama" option-value="kode" option-label="nama" outlined :source="store.ppkRujukans"
+                  :loading="store.loadingPpkRujukan" :rules="[val => (!!val) || 'Harap diisi',]"
+                  @on-select="setPpkRujukan" @buang="prosesChange" @clear="clearPpkRujukan" />
               </div>
             </div>
             <!-- Tanggal Rujukan-->
             <div class="row q-col-gutter-md items-center q-mb-xs">
               <div class="col-12">
-                <app-input-date-human
-                  ref="refTglRujukanr"
-                  :model="store.display.tanggal.rujukan"
-                  label="Tanggal Rujukan"
-                  outlined
-                  :loading="store.loading"
-                  @db-model="setTglRujukan"
-                  @set-display="setDispTglRujukan"
-                />
+                <app-input-date-human ref="refTglRujukanr" :model="store.display.tanggal.rujukan"
+                  label="Tanggal Rujukan" outlined :loading="store.loading" @db-model="setTglRujukan"
+                  @set-display="setDispTglRujukan" />
               </div>
             </div>
             <!-- sistem bayar -->
             <div class="row q-col-gutter-md items-center q-mb-xs">
-              <div :class="store.display.bayar.kode?'col-6':'col-12'">
-                <app-autocomplete
-                  ref="refSistemBayar"
-                  :key="store.display.bayar.kode"
-                  v-model="store.display.bayar.kode"
-                  label="Sistem bayar"
-                  autocomplete="groupsistembayar"
-                  option-value="kode"
-                  option-label="groupsistembayar"
-                  outlined
-                  :source="store.sistembayars1"
-                  :loading="store.loadingsistembayar"
-                  :rules="[val => (!!val) || 'Harap diisi',]"
-                  @selected="setSistembayar1"
-                />
+              <div :class="store.display.bayar.kode ? 'col-6' : 'col-12'">
+                <app-autocomplete ref="refSistemBayar" :key="store.display.bayar.kode"
+                  v-model="store.display.bayar.kode" label="Sistem bayar" autocomplete="groupsistembayar"
+                  option-value="kode" option-label="groupsistembayar" outlined :source="store.sistembayars1"
+                  :loading="store.loadingsistembayar" :rules="[val => (!!val) || 'Harap diisi',]"
+                  @selected="setSistembayar1" />
               </div>
               <!-- </div> -->
               <!-- sistem bayar -->
               <!-- <div class="row q-col-gutter-md items-center q-mb-xs"> -->
-              <div
-                v-if="store.display.bayar.kode"
-                class="col-6"
-              >
-                <app-autocomplete
-                  ref="refSistemBayar"
-                  v-model="store.display.rs2"
-                  label="Sistem bayar"
-                  autocomplete="rs2"
-                  option-value="rs2"
-                  option-label="rs2"
-                  outlined
-                  :source="store.sistembayars"
-                  :loading="store.loadingsistembayar"
-                  :rules="[
+              <div v-if="store.display.bayar.kode" class="col-6">
+                <app-autocomplete ref="refSistemBayar" v-model="store.display.rs2" label="Sistem bayar"
+                  autocomplete="rs2" option-value="rs2" option-label="rs2" outlined :source="store.sistembayars"
+                  :loading="store.loadingsistembayar" :rules="[
                     val => (!!val) || 'Harap diisi',
-                  ]"
-                  @selected="setSistembayar"
-                />
+                  ]" @selected="setSistembayar" />
               </div>
             </div>
             <!-- Tanggal SEP -->
             <div class="row q-col-gutter-md items-center q-mb-xs">
               <div class="col-12">
-                <app-input-date-human
-                  ref="refTglSEP"
-                  :model="store.display.tanggal.sep"
-                  label="Tanggal SEP"
-                  outlined
-                  :loading="store.loading"
-                  @db-model="setTglSEP"
-                  @set-display="setDispTglSEP"
-                />
+                <app-input-date-human ref="refTglSEP" :model="store.display.tanggal.sep" label="Tanggal SEP" outlined
+                  :loading="store.loading" @db-model="setTglSEP" @set-display="setDispTglSEP" />
               </div>
             </div>
             <!-- Catatan -->
             <div class="row q-col-gutter-md items-center q-mb-xs">
               <div class="col-12">
-                <app-input
-                  v-model="store.form.catatan"
-                  label="Catatan"
-                  outlined
-                  valid
-                />
+                <app-input v-model="store.form.catatan" label="Catatan" outlined valid />
               </div>
             </div>
             <!-- No SEP -->
             <div class="row q-col-gutter-md items-center q-mb-xs">
               <div class="col-12">
-                <app-input
-                  v-model="store.form.sep"
-                  label="No SEP"
-                  disable
-                  outlined
-                  valid
-                />
+                <app-input v-model="store.form.sep" label="No SEP" disable outlined valid />
               </div>
             </div>
             <!-- DPJP -->
             <div class="row q-col-gutter-sm items-center q-mb-xs">
               <div class="col-12">
-                <app-autocomplete
-                  ref="refDPJP"
-                  :key="store.form.dpjp"
-                  v-model="store.form.dpjp"
-                  label="DPJP"
-                  autocomplete="nama"
-                  option-value="dpjp"
-                  option-label="nama"
-                  outlined
-                  :source="store.dpjps"
-                  :loading="store.loading || store.loadingJadwalDokter"
-                  :rules="[val => (!!val) || 'Harap diisi',]"
-                  @selected="dpjpSelected"
-                />
-                <q-tooltip
-                  v-if="!store.form.kodepoli"
-                  class="primary"
-                  :offset="[10, 10]"
-                >
+                <app-autocomplete ref="refDPJP" :key="store.form.dpjp" v-model="store.form.dpjp" label="DPJP"
+                  autocomplete="nama" option-value="dpjp" option-label="nama" outlined :source="store.dpjps"
+                  :loading="store.loading || store.loadingJadwalDokter" :rules="[val => (!!val) || 'Harap diisi',]"
+                  @selected="dpjpSelected" />
+                <q-tooltip v-if="!store.form.kodepoli" class="primary" :offset="[10, 10]">
                   Poli belum dipilih
                 </q-tooltip>
               </div>
@@ -508,79 +268,37 @@
             <!-- Kecelakaan -->
             <div class="row q-col-gutter-md items-center q-mb-xs">
               <div class="col-12">
-                <app-autocomplete
-                  ref="refKecelakaan"
-                  v-model="store.display.kecelakaan"
-                  label="Kecelakaan"
-                  autocomplete="nama"
-                  option-value="value"
-                  option-label="nama"
-                  outlined
-                  :source="store.kecelakaans"
-                  :rules="[val => (!!val || val>=0) || 'Harap diisi',]"
-                  :loading="store.loading"
-                  @selected="setKecelakaan"
-                />
+                <app-autocomplete ref="refKecelakaan" v-model="store.display.kecelakaan" label="Kecelakaan"
+                  autocomplete="nama" option-value="value" option-label="nama" outlined :source="store.kecelakaans"
+                  :rules="[val => (!!val || val >= 0) || 'Harap diisi',]" :loading="store.loading"
+                  @selected="setKecelakaan" />
               </div>
             </div>
             <!-- jika kecelakaan -->
-            <div
-              v-if="parseInt(store.display.kecelakaan) > 0"
-            >
+            <div v-if="parseInt(store.display.kecelakaan) > 0">
               <!-- tanggal dan option sulpesi -->
               <div class="row q-col-gutter-md items-center q-mb-xs">
                 <div class="col-6">
-                  <app-input-date-human
-                    ref="refTglKecelakaan"
-                    :model="store.display.tanggal.kecelakaan"
-                    label="Tanggal Kejadian"
-                    outlined
-                    :loading="store.loading"
-                    @db-model="setTglKecelakaan"
-                    @set-display="setDispTglKecelakaan"
-                  />
+                  <app-input-date-human ref="refTglKecelakaan" :model="store.display.tanggal.kecelakaan"
+                    label="Tanggal Kejadian" outlined :loading="store.loading" @db-model="setTglKecelakaan"
+                    @set-display="setDispTglKecelakaan" />
                 </div>
                 <div class="col-6">
-                  <app-autocomplete
-                    ref="refKecelakaan"
-                    v-model="store.form.suplesi"
-                    label="Suplesi"
-                    autocomplete="nama"
-                    option-value="value"
-                    option-label="nama"
-                    outlined
-                    :source="store.optionSuplesi"
-                    :rules="[val => (!!val || val>=0) || 'Harap diisi',]"
-                    :loading="store.loading"
-                  />
+                  <app-autocomplete ref="refKecelakaan" v-model="store.form.suplesi" label="Suplesi" autocomplete="nama"
+                    option-value="value" option-label="nama" outlined :source="store.optionSuplesi"
+                    :rules="[val => (!!val || val >= 0) || 'Harap diisi',]" :loading="store.loading" />
                 </div>
               </div>
               <!-- Nomor Suplesi -->
-              <div
-                v-if="store.form.suplesi===1"
-                class="row q-col-gutter-md items-center q-mb-xs"
-              >
+              <div v-if="store.form.suplesi === 1" class="row q-col-gutter-md items-center q-mb-xs">
                 <div class="col-10">
-                  <app-input
-                    ref="refSuplesi"
-                    v-model="store.form.nosepsuplesi"
-                    label="Nomor Suplesi"
-                    outlined
-                  />
+                  <app-input ref="refSuplesi" v-model="store.form.nosepsuplesi" label="Nomor Suplesi" outlined />
                 </div>
                 <div class="col-2">
-                  <q-btn
-                    no-caps
-                    color="primary"
-                    dense
-                    :loading="store.loadingSuplesi"
-                    :disable="store.loadingSuplesi || store.loading"
-                    @click="emits('cekSuplesi')"
-                  >
+                  <q-btn no-caps color="primary" dense :loading="store.loadingSuplesi"
+                    :disable="store.loadingSuplesi || store.loading" @click="emits('cekSuplesi')">
                     <!-- style="max-width:80px" -->
-                    <div
-                      class="f-12"
-                    >
+                    <div class="f-12">
                       Cek No Suplesi
                     </div>
                   </q-btn>
@@ -592,64 +310,31 @@
                   <!--
                     bentuk data : propinsikecelakaan, kodepropinsikecelakaan
                   -->
-                  <app-autocomplete
-                    ref="refPropinsiKecelakaan"
-                    v-model="store.display.tempatKecelakaan.kode"
-                    label="Propinsi Kecelakaan"
-                    autocomplete="nama"
-                    option-value="kode"
-                    option-label="nama"
-                    outlined
-                    :source="store.propinsies"
-                    :disable="!store.propinsies?.length"
-                    :rules="[val => (!!val || val>=0) || 'Harap diisi',]"
-                    :loading="store.loadingKecelakaan"
-                    @selected="setPropisiKecelakaan"
-                  />
+                  <app-autocomplete ref="refPropinsiKecelakaan" v-model="store.display.tempatKecelakaan.kode"
+                    label="Propinsi Kecelakaan" autocomplete="nama" option-value="kode" option-label="nama" outlined
+                    :source="store.propinsies" :disable="!store.propinsies?.length"
+                    :rules="[val => (!!val || val >= 0) || 'Harap diisi',]" :loading="store.loadingKecelakaan"
+                    @selected="setPropisiKecelakaan" />
                 </div>
                 <div class="col-4">
-                  <app-autocomplete
-                    ref="refKabupatenKecelakaan"
-                    v-model="store.display.kabupatenKecelakaan.kode"
-                    label="Kabupaten Kecelakaan"
-                    autocomplete="nama"
-                    option-value="kode"
-                    option-label="nama"
-                    outlined
-                    :source="store.kabupatens"
-                    :disable="!store.kabupatens?.length"
-                    :rules="[val => (!!val || val>=0) || 'Harap diisi',]"
-                    :loading="store.loadingKecelakaan"
-                    @selected="setKabupatenKecelakaan"
-                  />
+                  <app-autocomplete ref="refKabupatenKecelakaan" v-model="store.display.kabupatenKecelakaan.kode"
+                    label="Kabupaten Kecelakaan" autocomplete="nama" option-value="kode" option-label="nama" outlined
+                    :source="store.kabupatens" :disable="!store.kabupatens?.length"
+                    :rules="[val => (!!val || val >= 0) || 'Harap diisi',]" :loading="store.loadingKecelakaan"
+                    @selected="setKabupatenKecelakaan" />
                 </div>
                 <div class="col-4">
-                  <app-autocomplete
-                    ref="refKabupatenKecelakaan"
-                    v-model="store.display.kecamatanKecelakaan.kode"
-                    label="kecamatan Kecelakaan"
-                    autocomplete="nama"
-                    option-value="kode"
-                    option-label="nama"
-                    outlined
-                    :source="store.kecamatans"
-                    :disable="!store.kecamatans?.length"
-                    :rules="[val => (!!val || val>=0) || 'Harap diisi',]"
-                    :loading="store.loadingKecelakaan"
-                    @selected="setKecamatanKecelakaan"
-                  />
+                  <app-autocomplete ref="refKabupatenKecelakaan" v-model="store.display.kecamatanKecelakaan.kode"
+                    label="kecamatan Kecelakaan" autocomplete="nama" option-value="kode" option-label="nama" outlined
+                    :source="store.kecamatans" :disable="!store.kecamatans?.length"
+                    :rules="[val => (!!val || val >= 0) || 'Harap diisi',]" :loading="store.loadingKecelakaan"
+                    @selected="setKecamatanKecelakaan" />
                 </div>
               </div>
               <!-- keterangan -->
               <div class="row q-col-gutter-md items-center q-mb-xs">
                 <div class="col-12">
-                  <app-input
-                    ref="refKeterangan"
-                    v-model="store.form.keterangan"
-                    label="Keterangan"
-                    valid
-                    outlined
-                  />
+                  <app-input ref="refKeterangan" v-model="store.form.keterangan" label="Keterangan" valid outlined />
                 </div>
               </div>
             </div>
@@ -705,7 +390,7 @@ function listSuratRujukan () {
 // cek surat kontrol
 function cekSuratKontrolIni (evt) {
   const val = evt.target.value
-  console.log('cek surat kontol ini')
+  // console.log('cek surat kontol ini')
   if (!store.rujukanPostMRS) {
     const param = {
       search: val
@@ -721,7 +406,7 @@ function cekSuratKontrolIni (evt) {
 setSistembayar1('1')
 // assign surat kontrol ke form
 function assignSuratKontrol (val) {
-  console.log('assign surat kontrol ', val)
+  // console.log('assign surat kontrol ', val)
 
   const findpoli = val.poliTujuan ? val.poliTujuan : ''
   const indPoli = findpoli !== '' ? findWithAttr(store.polis, 'kodemapingbpjs', findpoli) : -1
@@ -759,7 +444,7 @@ function assignSuratKontrol (val) {
   store.display.bayar.kode = '1'
 
   const diag = val.sep.diagnosa.split('-')
-  console.log(diag)
+  // console.log(diag)
   store.paramDiagnosa.diagnosa = diag[0]
   store.getDiagnosaAwal().then(() => {
     setNamaDiagnosa(val.sep.diagnosa)
@@ -773,15 +458,15 @@ function cekSuratRujukanIni (evt) {
       search: val
     }
     store.cekRujukanPcare(param).then(resp => {
-      console.log('cek P care ', resp)
+      // console.log('cek P care ', resp)
       if (resp.metadata.code === '200') {
         const param = {
           jenisrujukan: 1,
           norujukan: val
         }
         store.getJumlahSep(param).then(resp => {
-          console.log('jumlah sep p care', resp)
-        // store.jumlahSEP = parseInt(resp.jumlahSEP) >= 0 ? parseInt(resp.jumlahSEP) : 0
+          // console.log('jumlah sep p care', resp)
+          // store.jumlahSEP = parseInt(resp.jumlahSEP) >= 0 ? parseInt(resp.jumlahSEP) : 0
         })
       }
       else {
@@ -793,11 +478,11 @@ function cekSuratRujukanIni (evt) {
                 norujukan: val
               }
               store.getJumlahSep(param).then(resp => {
-                console.log('jumlah sep p care', resp)
-              // store.jumlahSEP = parseInt(resp.jumlahSEP) >= 0 ? parseInt(resp.jumlahSEP) : 0
+                // console.log('jumlah sep p care', resp)
+                // store.jumlahSEP = parseInt(resp.jumlahSEP) >= 0 ? parseInt(resp.jumlahSEP) : 0
               })
             }
-            console.log('cek rujukan  RS', resp)
+            // console.log('cek rujukan  RS', resp)
           })
         }
       }
@@ -821,7 +506,7 @@ function setPoliTujuan (val) {
   store.form.dpjp = ''
   if (refDPJP.value) refDPJP.value.$refs.refAuto.resetValidation()
 
-  console.log('set poli ', store.polis[index])
+  // console.log('set poli ', store.polis[index])
   store.paramDpjp.kdmappolbpjs = store.polis[index].kodemapingbpjs
   store.paramDpjp.kodepoli = store.polis[index].kodemapingbpjs
   store.setForm('kodepoli', store.polis[index].kodepoli)
@@ -833,11 +518,11 @@ function setPoliTujuan (val) {
 }
 // dpdjp selected
 function dpjpSelected (val) {
-  console.log('dpjp selected ', val)
+  // console.log('dpjp selected ', val)
   store.dpjpSuratKontrol = val
   const index = findWithAttr(store.jadwalDpjps, 'dpjp', val)
   // console.log('index  ', index)
-  console.log('jadwal  ', store.jadwalDpjps)
+  // console.log('jadwal  ', store.jadwalDpjps)
   // store.getjadwalDokterDpjp()
   if (index >= 0) {
     // console.log('jadwal  ', store.jadwalDpjps[index])
@@ -864,7 +549,7 @@ function setFlagKarcis (val) {
   // const flag = store.jenisKarcises[index]
   // store.display.hargakarcis = flag.harga
   store.paramKarcis.flag = val
-  console.log(store.paramKarcis)
+  // console.log(store.paramKarcis)
   store.getKarcisPoli().then(() => {
     store.display.hargakarcis = store.kasrcispoli.tarif
     store.form.karcis = store.kasrcispoli.tarif
@@ -888,7 +573,7 @@ function setKecelakaan (val) {
   store.display.kabupatenKecelakaan.kode = ''
   store.display.tempatKecelakaan.kode = ''
 
-  console.log('kecelakaan ', val)
+  // console.log('kecelakaan ', val)
   store.setForm('lakalantas', val)
   if (parseInt(val) >= 1) {
     store.setForm('tglKecelakaan', date.formatDate(Date.now(), 'YYYY-MM-DD'))
@@ -941,7 +626,7 @@ function setKecamatanKecelakaan (val) {
   if (index >= 0) {
     store.form.kecamatankecelakaan = store.kecamatans[index].nama
     store.form.kodekecamatankecelakaan = val
-    console.log('form', store.form)
+    // console.log('form', store.form)
   }
   else {
     notifErrVue('Kecamatan tidak ditemukan')
@@ -974,7 +659,7 @@ function myDebounce (func, timeout = 800) {
   }
 }
 const prosesChange = myDebounce((val) => {
-  console.log('proses val', val)
+  // console.log('proses val', val)
   if (val !== '') findPpkRujukan(val)
 }
 )
@@ -1004,17 +689,17 @@ function setSistembayar1 (val) {
     store.setForm('jkn', store.sistembayars1[index].groupsistembayar)
   }
   store.getSistemBayar2(val)
-  console.log('form', store.form)
+  // console.log('form', store.form)
 }
 function setSistembayar (val) {
   // val is rs2
   store.setForm('sistembayar', val)
   const index = findWithAttr(store.sistembayars, 'rs2', val)
-  console.log('sistem bayar dua ', store.sistembayars[index])
+  // console.log('sistem bayar dua ', store.sistembayars[index])
   if (index >= 0) {
     store.setForm('kodesistembayar', store.sistembayars[index].rs1)
   }
-  console.log('form', store.form)
+  // console.log('form', store.form)
 }
 // diagnosa
 function setKodeDiagnosa (val) {
@@ -1065,8 +750,8 @@ function setJenisKunjungan (val) {
   // tujuan kunjungan 0 jika rujukan yang sepnya 0, atau post Mrs atau kontrol
   // tujuan kunjungan 1 jika pasien mau ke penunjang langsung contoh rehab medis
   // tujuan kunjungan 2 khusus untuk form dpjp
-  console.log('jenisKun ', val)
   const kunj = findWithAttr(store.jenisKunjungans, 'nilai', val)
+  // console.log('jenisKun ', val, store.jenisKunjungans, store.jenisKunjungans[kunj])
   if (kunj >= 0) {
     const jen = store.jenisKunjungans[kunj]
     store.setForm('id_kunjungan', jen.id)
@@ -1108,7 +793,7 @@ function setJenisKunjungan (val) {
 }
 // tujuan kunjungan
 function setTujuanKunjungan (val) {
-  console.log('tujuan kunjungan', val)
+  // console.log('tujuan kunjungan', val)
   store.setForm('tujuankunjungan', val)
   store.display.tujuankunjungan = val
   store.setForm('kdPenunjang', '')
@@ -1208,8 +893,8 @@ function validasi () {
   const NoSuratKontrol = refNoSuratKontrol.value ? refNoSuratKontrol.value.$refs.refInput.validate() : true
   const noRujukan = refNoRujukan.value.$refs.refInput.validate()
   if (asalRujukan && flagKartu && dpjp && poliTujuan && sistemBayar &&
-  noRujukan && NamaDiagnosa && KodeDiagnosa && JenisKunjungan &&
-  NoSuratKontrol && TujuanKunjungan) { valid = true }
+    noRujukan && NamaDiagnosa && KodeDiagnosa && JenisKunjungan &&
+    NoSuratKontrol && TujuanKunjungan) { valid = true }
   else { valid = false }
 }
 // set

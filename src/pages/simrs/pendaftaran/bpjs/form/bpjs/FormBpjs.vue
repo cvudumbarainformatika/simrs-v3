@@ -82,6 +82,8 @@ function clearAllRegistrasi () {
 //   registrasi.clearForm()
 // }
 function assignSurat (val) {
+  // console.log('assign', val)
+
   refRegistrasi.value.assignSuratKontrol(val)
 }
 
@@ -104,7 +106,7 @@ function preSEP () {
 function buatSEP () {
   console.log('form registrasi ', registrasi.form)
   registrasi.buatSep().then(resp => {
-    console.log('resp bpjs', resp)
+    // console.log('resp bpjs', resp)
     if (resp.metadata.code === '201') {
       // notifErrVue(resp.data.metadata.message)
       pesanBPJS.value = resp.metadata.message
@@ -136,14 +138,14 @@ function simpanData () {
         registrasi.setForm(key, dataPasien.form[key])
       })
     }
-    console.log('form registrasi ', registrasi.form)
+    // console.log('form registrasi ', registrasi.form)
     registrasi.simpanRegistrasi().then(resp => {
       // console.log('resp bpjs', resp)
       const antrian = resp.antrian.data
       const nomor = antrian ? antrian.nomor : '-'
       const poli = antrian ? antrian.nama_layanan : '-'
       const norm = antrian ? antrian.id_member : '-'
-      console.log('Antrian ', antrian)
+      // console.log('Antrian ', antrian)
       const routeData = router.resolve({ path: '/print/antrian', query: { nomor, poli, norm } })
       window.open(routeData.href, '_blank')
       // dialogCetak()
@@ -160,7 +162,7 @@ function cekFingerPasien (form) {
     loadingFinger.value = false
     // refDataPasien.value.cekBpjs()
     const finger = resp.result.kode
-    console.log('finger', finger)
+    // console.log('finger', finger)
     if (finger === '1') {
       // toSimpan(dataPasien)
       dialogCetak()
@@ -197,23 +199,23 @@ function simpanPengajuan () {
     jenispengajuan: '2',
     keterangan: keterangan.value
   }
-  console.log(data)
+  // console.log(data)
   // dialog.value = false
   return new Promise(resolve => {
     loadingP.value = true
     api.post('v1/simrs/bridgingbpjs/pendaftaran/pengajuansep', data)
       .then(resp => {
         loadingP.value = false
-        console.log('PEngajuan sep', resp)
+        // console.log('PEngajuan sep', resp)
         if (resp.data.message === 'OK' || resp.data.metadata.code === '200') {
           bisaBuatSep.value = true
           pesanBPJS.value = 'Respon BPJS : ' + resp.data.message
           notifCenterVue('Pengajuan SEP sudah disampaikan, tunggu konfirmasi dari penjaminan sebelum Buat SEP')
-          console.log('PEngajuan sep message', resp.data.message)
+          // console.log('PEngajuan sep message', resp.data.message)
         }
         if (resp.data.metadata.code === '201') {
           bisaBuatSep.value = true
-          console.log('PEngajuan sep 201', resp.data.metadata)
+          // console.log('PEngajuan sep 201', resp.data.metadata)
           pesanBPJS.value = resp.data.metadata.message
         }
         // jenisPengajuan.value = '2'
@@ -263,11 +265,11 @@ function simpanPengajuan () {
 //   })
 // }
 function validasiSuratKontrol () {
-  console.log('validasi surat kontrol')
+  // console.log('validasi surat kontrol')
   refRegistrasi.value.validasiSuratKontrol()
 }
 function jenisKunjungan (val) {
-  console.log('jenis kunjungan ', val)
+  // console.log('jenis kunjungan ', val)
   refRegistrasi.value.setJenisKunjungan(val)
 }
 // data nik, norm, noka pasien
@@ -285,7 +287,7 @@ function getListSuratKontrol () {
   registrasi.listSuratKontrols = []
   registrasi.listRencanaKontrols = []
   if (data) {
-    console.log('cek Surat kontrol', data)
+    // console.log('cek Surat kontrol', data)
     registrasi.getListSuratKontrol(data)
     registrasi.getListRencanaKontrol(data)
     registrasi.tampilKontrol = true
@@ -295,19 +297,19 @@ function getListSuratKontrol () {
 function cekSuplesi () {
   const data = refDataPasien.value.validateNoka()
   if (data) {
-    console.log('noka', data)
+    // console.log('noka', data)
     registrasi.getListSuplesi(data)
   }
 }
 // setkodePoli
 function setKodepoli (val) {
-  console.log('poli ditemukan', val, refRegistrasi.value)
+  // console.log('poli ditemukan', val, refRegistrasi.value)
   registrasi.form.kodepoli = val
   refRegistrasi.value.setPoliTujuan(val)
 }
 // cek list rujukan
 function getListRujukan () {
-  console.log('validasi ', refDataPasien.value.validateNokaAndNorm())
+  // console.log('validasi ', refDataPasien.value.validateNokaAndNorm())
   const data = refDataPasien.value.validateNokaAndNorm()
 
   registrasi.listRujukanPcare = []
@@ -316,7 +318,7 @@ function getListRujukan () {
   registrasi.jumlahSEP = 0
   if (data) {
     if (Object.keys(data)?.length) {
-      console.log('cek list rujukan', data)
+      // console.log('cek list rujukan', data)
       registrasi.getListRujukanPCare(data)
       registrasi.getListRujukanRs(data)
       registrasi.getListSepMrs(data)
