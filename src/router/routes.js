@@ -135,8 +135,8 @@ const routes = [
 
       { path: '', redirect: '/login/mode/qr' },
       { path: '/login/mode', redirect: '/login/mode/qr' },
-      // { path: '', redirect: '/login/mode/jadul-login-mode' },
-      // { path: '/login/mode', redirect: '/login/mode/jadul-login-mode' },
+      // { path: '', redirect: '/login/mode/ketiknikpegawai' },
+      // { path: '/login/mode', redirect: '/login/mode/ketiknikpegawai' },
 
       { path: '/login/mode/:mode', name: 'login-mode', component: () => import('pages/auth/LoginPageV2.vue') }
     ]
