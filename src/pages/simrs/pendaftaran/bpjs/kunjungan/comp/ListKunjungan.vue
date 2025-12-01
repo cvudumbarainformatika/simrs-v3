@@ -40,7 +40,11 @@
               </span> | jam : {{ formatJam(item.tgl_kunjungan) }}
             </q-item-label>
             <q-item-label caption>
-              <i>Status Pasien: <span class="text-negative text-weight-bold">{{ getStatus(item.taskid) }}</span></i>
+              <i>Status Pasien : <span class="text-negative text-weight-bold">{{ getStatus(item.taskid) }}</span></i>
+            </q-item-label>
+            <q-item-label caption>
+              <i>Nomor Antrian :<span class="text-primary text-weight-bold">{{ getAntrian(item.antrian_ambil)
+              }}</span></i>
             </q-item-label>
           </q-item-section>
           <q-item-section>
@@ -595,6 +599,11 @@ function simpanPengajuan () {
         loadingP.value = false
       })
   })
+}
+function getAntrian (arr) {
+  // console.log('antr', arr)
+  const antr = arr?.map(x => x?.nomor).join(', ')
+  return antr ?? '-'
 }
 function getStatus (arr) {
   if (arr?.length === 0) {
