@@ -55,7 +55,7 @@ export const useMasterRekeningJurnalStore = defineStore('keuangan-master-rekenin
         api.get('v1/master/rekening/getrekening', params).then((resp) => {
           // console.log('KodeRekening', resp)
           if (resp.status === 200) {
-            this.akuns = resp.data
+            this.akuns = resp.data?.data
             // console.log('KodeRekening', this.akuns)
             this.loading = false
             resolve(resp)

@@ -25,7 +25,7 @@
           </div>
         </div>
         <template v-if="!loading">
-          <div v-if="mode === 'jadul-login-mode' && !isMobile"
+          <div v-if="mode === 'ketiknikpegawai' && !isMobile"
             class="login-form col-md-6 col-lg-6 col-xl-6 col-sm-6 col-xs-12 min-h">
             <FormLogin :key="mode" />
           </div>

@@ -2,7 +2,7 @@ import {
   pegawai, sigarang, antrian, laborat, laporan, settings,
   masters, pendaftaran, percobaan, farmasi, poli, monitoring, kasir, dokumen, gudang, ptk, depo, ruangan, igd, ranap, satset,
   kamaroperasi, rehabmedik, hemodialisa, siasik, radiologi, rekammedik, cathlab, akuntansi, ruangkonsul,
-  unitpengelolaharsip, mpp, penjaminan, homecare
+  unitpengelolaharsip, mpp, penjaminan, homecare, anggaran
 } from './modules'
 
 const routes = [
@@ -116,6 +116,7 @@ const routes = [
   mpp,
   penjaminan,
   homecare,
+  anggaran,
   {
     path: '/display_antrian',
     component: () => import('layouts/antrian/display/DisplayLayout.vue'),
@@ -135,8 +136,8 @@ const routes = [
 
       { path: '', redirect: '/login/mode/qr' },
       { path: '/login/mode', redirect: '/login/mode/qr' },
-      // { path: '', redirect: '/login/mode/jadul-login-mode' },
-      // { path: '/login/mode', redirect: '/login/mode/jadul-login-mode' },
+      // { path: '', redirect: '/login/mode/ketiknikpegawai' },
+      // { path: '/login/mode', redirect: '/login/mode/ketiknikpegawai' },
 
       { path: '/login/mode/:mode', name: 'login-mode', component: () => import('pages/auth/LoginPageV2.vue') }
     ]
