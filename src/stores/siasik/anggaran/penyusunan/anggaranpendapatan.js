@@ -81,9 +81,12 @@ export const useAnggaranPendapatanStore = defineStore('anggaran-pendapatan-store
     },
     editForm(val) {
       console.log('valedit', val)
-      this.form.kode = val?.kode
-      this.form.uraian = val?.uraian
-      this.form.jenis = val?.jenis
+      this.form.koderekeningblud = val?.koderekeningblud
+      this.form.uraian_rekening = val?.uraian_rekening
+      this.form.nilai = val?.nilai
+      this.form.notrans = val?.notrans
+      this.form.tahun = val?.tahun
+      this.form.bidang = val?.bidang
       // this.form.group = val?.groups?.toString()
 
     },
@@ -91,7 +94,7 @@ export const useAnggaranPendapatanStore = defineStore('anggaran-pendapatan-store
       this.loadingDelete = true
       const payload = { id }
       try {
-        const resp = await api.post('/v1/master/akunlak/delete', payload)
+        const resp = await api.post('/v1/anggaran/penyusunan/anggaranpendapatan/delete', payload)
         if (resp.status === 200) {
           // this.items = resp?.data?.data
           notifSuccess(resp)
