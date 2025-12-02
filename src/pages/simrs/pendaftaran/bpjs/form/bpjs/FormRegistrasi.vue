@@ -76,10 +76,10 @@
                 />
               </div> -->
             </div>
-            <div
-              v-if="(!store.loadingCekBpjs || store.loadingListRujukan) &&
-                ((!!store.form.norujukan && store.jumlahSEP === 0) ||
-                  (!!store.form.norujukan && store.jumlahSEP >= 1 && !!store.form.nosuratkontrol && store.rencanaKontrolValid)) || (store.rujukanPostMRS || store.kontrolDPJP)">
+            <div v-if="((!store.loadingCekBpjs || store.loadingListRujukan) &&
+              ((!!store.form.norujukan && store.jumlahSEP === 0) ||
+                (!!store.form.norujukan && store.jumlahSEP >= 1 && !!store.form.nosuratkontrol && store.rencanaKontrolValid)) || (store.rujukanPostMRS || store.kontrolDPJP)) ||
+              store?.errAddAntrian">
               <!-- Jenis Kunjungan -->
               <div class="row q-col-gutter-sm items-center q-mb-xs">
                 <div class="col-12">
@@ -192,11 +192,10 @@
             </div>
           </div>
           <!-- kanan -->
-          <div
-            v-if="(!store.loadingCekBpjs || store.loadingListRujukan) &&
-              ((!!store.form.norujukan && store.jumlahSEP === 0) ||
-                (!!store.form.norujukan && store.jumlahSEP >= 1 && !!store.form.nosuratkontrol && store.rencanaKontrolValid)) || (store.rujukanPostMRS || store.kontrolDPJP)"
-            class="col-6">
+          <div v-if="((!store.loadingCekBpjs || store.loadingListRujukan) &&
+            ((!!store.form.norujukan && store.jumlahSEP === 0) ||
+              (!!store.form.norujukan && store.jumlahSEP >= 1 && !!store.form.nosuratkontrol && store.rencanaKontrolValid)) || (store.rujukanPostMRS || store.kontrolDPJP)) ||
+            store?.errAddAntrian" class="col-6">
             <!-- PPK Rujukan -->
             <div :key="store.display.kode" class="row q-col-gutter-md items-center q-mb-xs">
               <div class="col-12">
@@ -451,7 +450,7 @@ function assignSuratKontrol (val) {
   })
 }
 function cekSuratRujukanIni (evt) {
-  // console.log(evt.target.value)
+  console.log('cek surat C', store.rujukanRSChecked)
   const val = evt.target.value
   if (!store.rujukanPostMRS) {
     const param = {
@@ -887,6 +886,7 @@ function validasi () {
   const sistemBayar = refSistemBayar.value === null ? true : refSistemBayar.value.$refs.refAuto.validate()
   const KodeDiagnosa = refKodeDiagnosa.value === null ? true : refKodeDiagnosa.value.$refs.refAuto.validate()
   const NamaDiagnosa = refNamaDiagnosa.value === null ? true : refNamaDiagnosa.value.$refs.refAuto.validate()
+  // const NamaDiagnosa = refNamaDiagnosa.value === null ? true : true
   const JenisKunjungan = refJenisKunjungan.value === null ? true : refJenisKunjungan.value.$refs.refAuto.validate()
   const TujuanKunjungan = refTujuanKunjungan.value === null ? true : refTujuanKunjungan.value.$refs.refAuto.validate()
   // ref input

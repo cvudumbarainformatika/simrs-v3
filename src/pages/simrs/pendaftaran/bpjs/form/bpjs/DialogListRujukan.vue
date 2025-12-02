@@ -53,7 +53,7 @@
                     <q-item-label>tanggal : <span class="text-weight-bold text-primary">{{
                       dateFullFormat(list.tglKunjungan) }}</span></q-item-label>
                     <q-item-label>No. Kunjungan : <span class="text-weight-bold text-teal">{{ list.noKunjungan
-                        }}</span></q-item-label>
+                    }}</span></q-item-label>
                     <q-item-label>Jns Peserta : <span class="text-weight-bold text-negative">{{
                       list.peserta.jenisPeserta.keterangan }}</span></q-item-label>
                     <q-item-label>Poli Tujuan : <span class="text-weight-bold text-accent">{{
@@ -93,7 +93,7 @@
                     <q-item-label>tanggal : <span class="text-weight-bold text-primary">{{
                       dateFullFormat(list.tglKunjungan) }}</span></q-item-label>
                     <q-item-label>No. Kunjungan : <span class="text-weight-bold text-teal">{{ list.noKunjungan
-                        }}</span></q-item-label>
+                    }}</span></q-item-label>
                     <!-- <q-item-label>Poli Tujuan : <span class="text-weight-bold text-teal">{{ list.poliRujukan?list.poliRujukan.nama:'-' }}</span></q-item-label> -->
                     <q-item-label>Jns Peserta : <span class="text-weight-bold text-negative">{{
                       list.peserta.jenisPeserta.keterangan }}</span></q-item-label>
@@ -133,11 +133,11 @@
                   </q-item-section>
                   <q-item-section>
                     <q-item-label>tanggal : <span class="text-weight-bold text-primary">{{ dateFullFormat(list.rs6)
-                        }}</span></q-item-label>
+                    }}</span></q-item-label>
                     <q-item-label>No. Kunjungan : <span class="text-weight-bold text-teal">{{ list.rs8
-                        }}</span></q-item-label>
+                    }}</span></q-item-label>
                     <q-item-label>Asal Rujukan : <span class="text-weight-bold text-negative">{{ list.rs17
-                        }}</span></q-item-label>
+                    }}</span></q-item-label>
                   </q-item-section>
 
                   <q-item-section side>
@@ -576,8 +576,8 @@ function pilihRujukan (val, jenis) {
 
   // sistaem bayar end
   // console.log('diag ', store.diagnosaAwals, val.diagnosa)
-  store.diagnosaAwals.push(val.diagnosa)
-  store.ppkRujukans.push(val.provPerujuk)
+  store.diagnosaAwals?.push(val.diagnosa)
+  store.ppkRujukans?.push(val.provPerujuk)
   store.display.diagnosa.kode = val.diagnosa.kode
   store.setForm('kodediagnosa', val.diagnosa.kode)
   store.display.diagnosa.nama = val.diagnosa.nama

@@ -7,8 +7,14 @@
       @cek-suplesi="cekSuplesi" />
     <q-card class="full-width q-pb-xl" flat>
       <q-card-actions>
+        <div v-if="errAddAntrian?.metadata?.code == 201" class="row">Pesan Error tambah antrian dari BPJS : {{
+          errAddAntrian?.metadata?.message
+          }}</div>
         <div class="">
           <app-btn label="Simpan Form" :loading="loading" :disable="loading" @click="simpanData" />
+
+          <app-btn class="q-ml-xl" label="Tambah Antrian BPJS" :loading="loading" :disable="loading"
+            @click="addAntrian" />
 
           <app-btn class="q-ml-xl" label="SEP" :loading="loading" :disable="loading" @click="preSEP" />
 
@@ -119,7 +125,13 @@ function buatSEP () {
     }
   })
 }
+const errAddAntrian = ref('')
+function addAntrian () {
+  registrasi.addAntrian().then(resp => {
 
+    errAddAntrian.value = resp?.ambilAntrian
+  })
+}
 const router = useRouter()
 function simpanData () {
   const dataPasien = refDataPasien.value.set()
@@ -140,16 +152,22 @@ function simpanData () {
     }
     // console.log('form registrasi ', registrasi.form)
     registrasi.simpanRegistrasi().then(resp => {
-      // console.log('resp bpjs', resp)
+      console.log('resp bpjs', resp)
       const antrian = resp.antrian.data
       const nomor = antrian ? antrian.nomor : '-'
       const poli = antrian ? antrian.nama_layanan : '-'
       const norm = antrian ? antrian.id_member : '-'
-      // console.log('Antrian ', antrian)
       const routeData = router.resolve({ path: '/print/antrian', query: { nomor, poli, norm } })
       window.open(routeData.href, '_blank')
-      // dialogCetak()
-      cekFingerPasien(form)
+      const respAddAntrian = resp?.ambilAntrian
+      if (respAddAntrian?.metadata?.code == 201) {
+        console.log('Antrian add luput', respAddAntrian)
+        errAddAntrian.value = respAddAntrian
+        notifNegativeCenterVue('Error Tambah Antrian ' + respAddAntrian?.metadata?.message)
+      } else {
+        cekFingerPasien(form)
+      }
+
     })
   }
 }
