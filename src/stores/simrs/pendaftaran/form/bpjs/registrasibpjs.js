@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia'
+import { acceptHMRUpdate, defineStore } from 'pinia'
 import { date } from 'quasar'
 import { api } from 'src/boot/axios'
 import { usePendaftaranAutocompleteStore } from '../../autocomplete'
@@ -6,7 +6,7 @@ import { findWithAttr, loadingRes, notifCenterVue, notifErrVue, notifInfVue, not
 
 export const useRegistrasiPasienBPJSStore = defineStore('registrasi_pasien_BPJS', {
   state: () => ({
-    autocompleteStore: usePendaftaranAutocompleteStore(),
+    // autocompleteStore: usePendaftaranAutocompleteStore(),
     loading: false,
     loadingdiagnosa: false,
     loadingsistembayar: false,
@@ -144,7 +144,8 @@ export const useRegistrasiPasienBPJSStore = defineStore('registrasi_pasien_BPJS'
       lakalantas: '0',
       kodepolibpjs: '',
       catatan: ''
-    }
+    },
+    errAddAntrian: null
   }),
   actions: {
     setForm (key, val) {
@@ -217,57 +218,49 @@ export const useRegistrasiPasienBPJSStore = defineStore('registrasi_pasien_BPJS'
 
       this.rujukanPCareChecked = false
       this.rujukanRSChecked = false
+      this.errAddAntrian = null
     },
     // initial data
     getInitialData () {
+      const autocompleteStore = usePendaftaranAutocompleteStore()
       // if (this.autocompleteStore.asalrujukans?.length) {
       //   this.asalrujukans = this.autocompleteStore.asalrujukans
       // } else {
       //   this.getAsalRujukan()
       // }
 
-      if (this.autocompleteStore.sistembayars1?.length) {
-        this.sistembayars1 = this.autocompleteStore.sistembayars1
+      if (autocompleteStore.sistembayars1?.length) {
+        this.sistembayars1 = autocompleteStore.sistembayars1
       }
       else {
         this.getSistemBayar()
       }
 
-      if (this.autocompleteStore.polis?.length) {
-        this.polis = this.autocompleteStore.polis
+      if (autocompleteStore.polis?.length) {
+        this.polis = autocompleteStore.polis
       }
       else {
         this.getPoli()
       }
 
-      if (this.autocompleteStore.jenisKarcises?.length) {
-        this.jenisKarcises = this.autocompleteStore.jenisKarcises
+      if (autocompleteStore.jenisKarcises?.length) {
+        this.jenisKarcises = autocompleteStore.jenisKarcises
       }
       else {
         this.getJenisKarcis()
       }
 
-      if (this.autocompleteStore.jenisKunjungans?.length) {
-        this.jenisKunjungans = this.autocompleteStore.jenisKunjungans
+      if (autocompleteStore.jenisKunjungans?.length) {
+        this.jenisKunjungans = autocompleteStore.jenisKunjungans
       }
       else {
         this.getJenisKunjungan()
       }
 
-      // if (this.autocompleteStore.prosedurs?.length) {
-      //   this.prosedurs = this.autocompleteStore.prosedurs
-      // } else {
-      //   this.getProsedur()
-      // }
 
-      // if (this.autocompleteStore.assesmens?.length) {
-      //   this.assesmens = this.autocompleteStore.assesmens
-      // } else {
-      //   this.getAssesmen()
-      // }
 
-      if (this.autocompleteStore.penunjangs?.length) {
-        this.penunjangs = this.autocompleteStore.penunjangs
+      if (autocompleteStore.penunjangs?.length) {
+        this.penunjangs = autocompleteStore.penunjangs
       }
       else {
         this.getPenunjang()
@@ -517,6 +510,7 @@ export const useRegistrasiPasienBPJSStore = defineStore('registrasi_pasien_BPJS'
         })
     },
     async getPenunjang () {
+      const autocompleteStore = usePendaftaranAutocompleteStore()
       this.loading = true
       await api.get('v1/simrs/bpjs/master/penunjangbpjs')
         .then(resp => {
@@ -525,43 +519,46 @@ export const useRegistrasiPasienBPJSStore = defineStore('registrasi_pasien_BPJS'
           const tamb = { id: 0, kode: '', namapenunjang: 'penunjang belum dipilih' }
           data.unshift(tamb)
           this.penunjangs = data
-          this.autocompleteStore.setPenunjang(data)
+          autocompleteStore.setPenunjang(data)
         })
         .catch(() => {
           this.loading = false
         })
     },
     async getAssesmen () {
+      const autocompleteStore = usePendaftaranAutocompleteStore()
       this.loading = true
       await api.get('v1/simrs/bpjs/master/assesmenbpjs')
         .then(resp => {
           this.loading = false
           this.assesmens = resp.data
-          this.autocompleteStore.setAssesmen(resp.data)
+          autocompleteStore.setAssesmen(resp.data)
         })
         .catch(() => {
           this.loading = false
         })
     },
     async getProsedur () {
+      const autocompleteStore = usePendaftaranAutocompleteStore()
       this.loading = true
       await api.get('v1/simrs/bpjs/master/procedurebpjs')
         .then(resp => {
           this.loading = false
           this.prosedurs = resp.data
-          this.autocompleteStore.setProsedur(resp.data)
+          autocompleteStore.setProsedur(resp.data)
         })
         .catch(() => {
           this.loading = false
         })
     },
     async getJenisKunjungan () {
+      const autocompleteStore = usePendaftaranAutocompleteStore()
       this.loading = true
       await api.get('v1/simrs/bpjs/master/jeniskunjunganbpjs')
         .then(resp => {
           this.loading = false
           this.jenisKunjungans = resp.data
-          this.autocompleteStore.setJenisKunjungan(resp.data)
+          autocompleteStore.setJenisKunjungan(resp.data)
         })
         .catch(() => {
           this.loading = false
@@ -584,36 +581,39 @@ export const useRegistrasiPasienBPJSStore = defineStore('registrasi_pasien_BPJS'
       })
     },
     async getJenisKarcis () {
+      const autocompleteStore = usePendaftaranAutocompleteStore()
       this.loading = true
       await api.get('v1/simrs/master/jeniskartukarcis')
         .then(resp => {
           this.loading = false
           this.jenisKarcises = resp.data
-          this.autocompleteStore.setJenisKarcis(resp.data)
+          autocompleteStore.setJenisKarcis(resp.data)
         })
         .catch(() => {
           this.loading = false
         })
     },
     async getPoli () {
+      const autocompleteStore = usePendaftaranAutocompleteStore()
       this.loading = true
       await api.get('v1/simrs/master/listmasterpoli')
         .then(resp => {
           this.loading = false
           this.polis = resp.data
-          this.autocompleteStore.setPoli(resp.data)
+          autocompleteStore.setPoli(resp.data)
         })
         .catch(() => {
           this.loading = false
         })
     },
     async getSistemBayar () {
+      const autocompleteStore = usePendaftaranAutocompleteStore()
       this.loadingsistembayar = true
       await api.get('v1/simrs/master/sistembayar')
         .then(resp => {
           this.loadingsistembayar = false
           this.sistembayars1 = resp.data
-          this.autocompleteStore.setSistemBayar(resp.data)
+          autocompleteStore.setSistemBayar(resp.data)
           console.log('sistem bayar', resp.data)
         })
         .catch(() => {
@@ -770,21 +770,45 @@ export const useRegistrasiPasienBPJSStore = defineStore('registrasi_pasien_BPJS'
           })
       })
     },
+    addAntrian () {
+      return new Promise(resolve => {
+        // this.errAddAntrian = null
+        this.loading = true
+        loadingRes('show')
+        api.post('v1/simrs/pendaftaran/tambah-antrian', this.form)
+          .then(resp => {
+            this.loading = false
+            loadingRes('hide')
+            console.log('add', resp?.data)
+            const errAntr = resp?.data?.ambilAntrian
+            this.errAddAntrian = errAntr
+            resolve(resp.data)
+          })
+          .catch(() => {
+            this.loading = false
+            loadingRes('hide')
+          })
+      })
+    },
     simpanRegistrasi () {
       // const router = useRouter()
-
+      this.errAddAntrian = null
       return new Promise(resolve => {
         loadingRes('show')
         this.loading = true
         api.post('v1/simrs/pendaftaran/simpandaftar', this.form)
           .then(resp => {
-            console.log('simpan pendaftaran', resp)
+            // console.log('simpan pendaftaran', resp)
             this.setForm('noreg', resp.data.noreg)
             loadingRes('hide')
             console.log('after simpan ', this.form.noreg)
             this.loading = false
             this.rujukanPostMRS = false
             this.kontrolDPJP = false
+
+            const errAntr = resp?.data?.ambilAntrian
+            if (errAntr?.metadata?.code == 201) this.errAddAntrian = errAntr
+
             resolve(resp.data)
             // const antrian = resp.data.antrian.data
             // const nomor = antrian ? antrian.nomor : '-'
@@ -823,3 +847,7 @@ export const useRegistrasiPasienBPJSStore = defineStore('registrasi_pasien_BPJS'
     }
   }
 })
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useRegistrasiPasienBPJSStore, import.meta.hot))
+}

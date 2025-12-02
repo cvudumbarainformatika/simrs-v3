@@ -2,16 +2,13 @@
   <div class="relative-position">
     <div
       v-if="calculateAgeInMonths(props?.pasien?.tgllahir ?? null) < 24 || calculateAgeInMonths(props?.pasien?.tgllahir ?? null) > 240"
-      class="fit full-height column flex-center" style="width: 100%; min-height: 400px;"
-    >
+      class="fit full-height column flex-center" style="width: 100%; min-height: 400px;">
       <div class="f-14 text-weight-bold">
         Maaf ... Halaman ini Hanya Untuk Pasien Usia 2 - 20 Tahun
       </div>
     </div>
     <div v-else class="relative-position">
-      <div
-        ref="line" style="width:100%; height: 950px;"
-      />
+      <div ref="line" style="width:100%; height: 950px;" />
       <!-- <div style="margin-bottom: 300px;" /> -->
     </div>
   </div>
@@ -54,7 +51,7 @@ onMounted(() => {
   }, 100)
 })
 
-function chartInit () {
+function chartInit() {
   const echart = echarts.init(line.value)
   if (line.value !== null) {
     const option = {
@@ -71,48 +68,6 @@ function chartInit () {
           },
           gridIndex: 2
         }
-        // {
-        //   text: 'Stature-for-age and Weight-for-age percentiles',
-        //   left: 10,
-        //   top: 33,
-        //   textStyle: {
-        //     fontSize: 14
-        //   }
-        // },
-        // {
-        //   text: `Nama : ${props?.pasien?.nama_panggil ?? ''}`,
-        //   left: 10,
-        //   top: 55,
-        //   textStyle: {
-        //     fontSize: 12
-        //   }
-        // },
-        // {
-        //   text: `BB : ${props?.draft?.bb ?? 0} cm, PB : ${props?.draft?.pb ?? 0} kg`,
-        //   left: 10,
-        //   top: 70,
-        //   textStyle: {
-        //     fontSize: 12
-        //   }
-        // },
-        // {
-        //   text: `BBI : ${props?.draft?.titikC[1] ?? 0}`,
-        //   left: 10,
-        //   top: 110,
-        //   textStyle: {
-        //     fontSize: 30,
-        //     fontWeight: 'bold'
-        //   }
-        // },
-        // {
-        //   text: `BMI : ${props?.draft?.bmi ?? 0}`,
-        //   left: 10,
-        //   top: 140,
-        //   textStyle: {
-        //     fontSize: 30,
-        //     fontWeight: 'bold'
-        //   }
-        // }
 
       ],
       legend:
@@ -840,7 +795,7 @@ const usia = (val) => {
   return Math.floor(round).toString() + ' th ' + totalMonths.toFixed(0) + ' bln'
 }
 
-function calculateAgeInMonths (birthdate) {
+function calculateAgeInMonths(birthdate) {
   if (!birthdate) return null // !birthdate return null
   const today = new Date()
   const birthdateObj = new Date(birthdate)
