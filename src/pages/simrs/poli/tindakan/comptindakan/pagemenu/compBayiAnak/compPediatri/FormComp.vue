@@ -45,13 +45,18 @@
         </tr>
         <template v-if="store.pediatris?.length">
           <tr v-for="(item, i) in store.pediatris" :key="i">
-            <td>{{ i+1 }}</td>
-            <td>{{ item.bb }}</td><td>{{ item.pb }}</td>
-            <td>{{ item.lk }}</td><td>{{ item.bbi }}</td>
-            <td>{{ item.sg }} % = {{ item?.ketsg }}</td><td>{{ item.bmi }}</td>
-            <td>{{ item.catatanBmi??'-' }}</td><td>{{ item.keteranganBmi??'-' }}</td>
+            <td>{{ i + 1 }}</td>
+            <td>{{ item.bb }}</td>
+            <td>{{ item.pb }}</td>
+            <td>{{ item.lk }}</td>
+            <td>{{ item.bbi }}</td>
+            <td>{{ item.sg }} % = {{ item?.ketsg }}</td>
+            <td>{{ item.bmi }}</td>
+            <td>{{ item.catatanBmi ?? '-' }}</td>
+            <td>{{ item.keteranganBmi ?? '-' }}</td>
             <td v-if="draft" class="text-right">
-              <q-btn class="sel-end" flat icon="icon-mat-assessment" size="xs" padding="xs" rounded @click="lihatGrafik(item)">
+              <q-btn class="sel-end" flat icon="icon-mat-assessment" size="xs" padding="xs" rounded
+                @click="lihatGrafik(item)">
                 <q-tooltip>Lihat Grafik CDC</q-tooltip>
               </q-btn>
             </td>
@@ -69,58 +74,20 @@
       </table>
 
       <div v-if="!store.isEdited" class="row q-col-gutter-xs q-mb-sm item-center">
-        <app-input-simrs
-          v-model="store.form.bb"
-          label="BB / kg"
-          class-tambahan="col-1"
-          disable
-        />
-        <app-input-simrs
-          v-model="store.form.pb"
-          label="PB / cm"
-          class-tambahan="col-1"
-          disable
-        />
-        <app-input-simrs
-          v-model="store.form.lk"
-          label="LK / cm"
-          class-tambahan="col-1"
-        />
+        <app-input-simrs v-model="store.form.bb" label="BB / kg" class-tambahan="col-1" disable />
+        <app-input-simrs v-model="store.form.pb" label="PB / cm" class-tambahan="col-1" disable />
+        <app-input-simrs v-model="store.form.lk" label="LK / cm" class-tambahan="col-1" />
         <!-- <app-input-simrs
           v-model="store.form.lila"
           label="LILA / cm"
           class-tambahan="col-1"
         /> -->
-        <app-input-simrs
-          v-model="store.form.bbi"
-          label="BBI"
-          class-tambahan="col-1"
-        />
-        <app-input-simrs
-          v-model="store.form.sg"
-          label="Stat.GZ %"
-          class-tambahan="col-1"
-        />
-        <app-input-simrs
-          v-model="store.form.ketsg"
-          label="Keterangan Status Gizi"
-          class-tambahan="col-3"
-        />
-        <app-input-simrs
-          v-model="store.form.bmi"
-          label="BMI"
-          class-tambahan="col-1"
-        />
-        <app-input-simrs
-          v-model="store.form.catatanBmi"
-          label="Catatan"
-          class-tambahan="col-3"
-        />
-        <app-input-simrs
-          v-model="store.form.keteranganBmi"
-          label="Keterangan"
-          class-tambahan="col-4"
-        />
+        <app-input-simrs v-model="store.form.bbi" label="BBI" class-tambahan="col-1" />
+        <app-input-simrs v-model="store.form.sg" label="Stat.GZ %" class-tambahan="col-1" />
+        <app-input-simrs v-model="store.form.ketsg" label="Keterangan Status Gizi" class-tambahan="col-3" />
+        <app-input-simrs v-model="store.form.bmi" label="BMI" class-tambahan="col-1" />
+        <app-input-simrs v-model="store.form.catatanBmi" label="Catatan" class-tambahan="col-3" />
+        <app-input-simrs v-model="store.form.keteranganBmi" label="Keterangan" class-tambahan="col-4" />
         <div class="col-1 ">
           <q-btn class="sel-end" flat icon="icon-mat-assessment" size="md" rounded @click="lihatGrafik(null)">
             <q-tooltip>Lihat Grafik CDC</q-tooltip>
@@ -133,11 +100,7 @@
       </div>
       <q-separator class="q-my-sm" />
       <div class="row q-col-gutter-xs">
-        <app-input-simrs
-          v-model="store.form.riwayatPerinatal"
-          label="Riwayat perinatal"
-          class-tambahan="col-12"
-        />
+        <app-input-simrs v-model="store.form.riwayatPerinatal" label="Riwayat perinatal" class-tambahan="col-12" />
       </div>
       <div class="q-mt-sm">
         <strong>Riwayat Imunisasi :</strong>
@@ -150,15 +113,8 @@
         <div class="col-10">
           <div class="flex q-gutter-xs">
             <div>:</div>
-            <q-checkbox
-              v-for="item in store.imunisasiDasars"
-              :key="item"
-              v-model="store.form.imunisasiDasar"
-              :val="item"
-              :label="item"
-              dense
-              size="xs"
-            />
+            <q-checkbox v-for="item in store.imunisasiDasars" :key="item" v-model="store.form.imunisasiDasar"
+              :val="item" :label="item" dense size="xs" />
           </div>
         </div>
       </div>
@@ -169,15 +125,8 @@
         <div class="col-10">
           <div class="flex q-gutter-xs">
             <div>:</div>
-            <q-checkbox
-              v-for="item in store.imunisasiUlangs"
-              :key="item"
-              v-model="store.form.imunisasiUlang"
-              :val="item"
-              :label="item"
-              dense
-              size="xs"
-            />
+            <q-checkbox v-for="item in store.imunisasiUlangs" :key="item" v-model="store.form.imunisasiUlang"
+              :val="item" :label="item" dense size="xs" />
           </div>
         </div>
       </div>
@@ -194,24 +143,11 @@
           <div class="flex q-gutter-xs">
             <div>:</div>
             <div class="q-gutter-xs">
-              <q-radio
-                v-for="item in store.polaKomunikasis"
-                :key="item"
-                v-model="store.form.polaKomunikasi"
-                :val="item"
-                :label="item"
-                dense
-                size="xs"
-              />
+              <q-radio v-for="item in store.polaKomunikasis" :key="item" v-model="store.form.polaKomunikasi" :val="item"
+                :label="item" dense size="xs" />
             </div>
-            <div
-              v-if="store.form.polaKomunikasi==='Lain-lain'"
-              class="full-width"
-            >
-              <app-input-simrs
-                v-model="store.form.polaKomunikasiLain"
-                label="Sebutkan"
-              />
+            <div v-if="store.form.polaKomunikasi === 'Lain-lain'" class="full-width">
+              <app-input-simrs v-model="store.form.polaKomunikasiLain" label="Sebutkan" />
             </div>
           </div>
         </div>
@@ -226,24 +162,11 @@
           <div class="flex q-gutter-xs">
             <div>:</div>
             <div class="q-gutter-xs">
-              <q-radio
-                v-for="item in store.makananPokoks"
-                :key="item"
-                v-model="store.form.makananPokok"
-                :val="item"
-                :label="item"
-                dense
-                size="xs"
-              />
+              <q-radio v-for="item in store.makananPokoks" :key="item" v-model="store.form.makananPokok" :val="item"
+                :label="item" dense size="xs" />
             </div>
-            <div
-              v-if="store.form.makananPokok==='Selain nasi'"
-              class="full-width"
-            >
-              <app-input-simrs
-                v-model="store.form.makananPokokLain"
-                label="Sebutkan"
-              />
+            <div v-if="store.form.makananPokok === 'Selain nasi'" class="full-width">
+              <app-input-simrs v-model="store.form.makananPokokLain" label="Sebutkan" />
             </div>
           </div>
         </div>
@@ -252,28 +175,12 @@
       <div><b>Asesment Jatuh : </b></div>
       <q-separator class="q-my-xs" />
       <div class="row q-col-gutter-sm">
-        <app-input-simrs
-          v-model="store.form.skorMethodeHumpty"
-          label="Methode Humpty Skor"
-          class-tambahan="col-6"
-        />
-        <app-input-simrs
-          v-model="store.form.resikoMethodeHumpty"
-          label="Resiko"
-          class-tambahan="col-6"
-        />
+        <app-input-simrs v-model="store.form.skorMethodeHumpty" label="Methode Humpty Skor" class-tambahan="col-6" />
+        <app-input-simrs v-model="store.form.resikoMethodeHumpty" label="Resiko" class-tambahan="col-6" />
       </div>
       <div class="row q-col-gutter-sm">
-        <app-input-simrs
-          v-model="store.form.skorMorsefallScale"
-          label="MorsefallScale Skor"
-          class-tambahan="col-6"
-        />
-        <app-input-simrs
-          v-model="store.form.resikoMorsefallScale"
-          label="Resiko"
-          class-tambahan="col-6"
-        />
+        <app-input-simrs v-model="store.form.skorMorsefallScale" label="MorsefallScale Skor" class-tambahan="col-6" />
+        <app-input-simrs v-model="store.form.resikoMorsefallScale" label="Resiko" class-tambahan="col-6" />
       </div>
       <div class="q-mt-sm">
         <b>Asesment Fungsional : </b>
@@ -287,33 +194,14 @@
           <div class="flex q-gutter-xs">
             <div>:</div>
             <div class="q-gutter-xs">
-              <q-radio
-                v-for="item in store.mobilisasis"
-                :key="item"
-                v-model="store.form.mobilisasi"
-                :val="item"
-                :label="item"
-                dense
-                size="xs"
-              />
+              <q-radio v-for="item in store.mobilisasis" :key="item" v-model="store.form.mobilisasi" :val="item"
+                :label="item" dense size="xs" />
             </div>
-            <div
-              v-if="store.form.mobilisasi==='Perlu bantuan'"
-              class="full-width"
-            >
-              <app-input-simrs
-                v-model="store.form.perluBantuan"
-                label="Sebutkan"
-              />
+            <div v-if="store.form.mobilisasi === 'Perlu bantuan'" class="full-width">
+              <app-input-simrs v-model="store.form.perluBantuan" label="Sebutkan" />
             </div>
-            <div
-              v-if="store.form.mobilisasi==='Alat bantu jalan'"
-              class="full-width"
-            >
-              <app-input-simrs
-                v-model="store.form.alatBantu"
-                label="Sebutkan"
-              />
+            <div v-if="store.form.mobilisasi === 'Alat bantu jalan'" class="full-width">
+              <app-input-simrs v-model="store.form.alatBantu" label="Sebutkan" />
             </div>
           </div>
         </div>
@@ -323,163 +211,124 @@
       <q-separator class="q-my-xs" />
 
       <table>
-        <tr>
-          <th width="5%">
-            #
-          </th>
-          <th>
-            PARAMETER
-          </th>
-          <th width="30%">
-            FILLED
-          </th>
-          <th width="5%">
-            SKOR
-          </th>
-        </tr>
-        <tr>
-          <td>1.</td>
-          <td>Apakah Pasien Tampak Kurus ?</td>
-          <td>
-            <q-option-group
-              v-model="store.form.poin1"
-              :options="store.points1"
-              color="primary"
-              inline
-              dense
-              size="xs"
-              @update:model-value="store.setSkorGizi"
-            />
-          </td>
-          <td class="text-center">
-            {{ store.form.poin1 }}
-          </td>
-        </tr>
-        <tr>
-          <td>2.</td>
-          <td>
-            <div>Apakah terdapat penurunan BB selama 1 Bulan Terakhir?</div>
-            <div class="q-ml-lg">
-              - Berdasarkan Penilaian Obyektif
-            </div>
-            <div class="q-ml-lg">
-              - Untuk Bayi kurang dari 1 Tahun BB tidak  naik selama seminggu terakhir
-            </div>
-          </td>
-          <td>
-            <q-option-group
-              v-model="store.form.poin2"
-              :options="store.points2"
-              color="primary"
-              inline
-              dense
-              size="xs"
-              @update:model-value="store.setSkorGizi"
-            />
-          </td>
-          <td class="text-center">
-            {{ store.form.poin2 }}
-          </td>
-        </tr>
+        <thead>
+          <tr>
+            <th width="5%">
+              #
+            </th>
+            <th>
+              PARAMETER
+            </th>
+            <th width="30%">
+              FILLED
+            </th>
+            <th width="5%">
+              SKOR
+            </th>
+          </tr>
+        </thead>
 
-        <tr>
-          <td>3.</td>
-          <td>
-            <div>Apakah terdapat SALAH SATU dari Kondisi Tersebut ? </div>
-            <div class="q-ml-lg">
-              - Diare >= 5 kali sehari dan atau muntah > 3 kali / hari selama seminggu terakhir
-            </div>
-            <div class="q-ml-lg">
-              - Asupan makanan berkurang selama seminggu terakhir
-            </div>
-          </td>
-          <td>
-            <q-option-group
-              v-model="store.form.poin3"
-              :options="store.points3"
-              color="primary"
-              inline
-              dense
-              size="xs"
-              @update:model-value="store.setSkorGizi"
-            />
-          </td>
-          <td class="text-center">
-            {{ store.form.poin3 }}
-          </td>
-        </tr>
+        <tbody>
+          <tr>
+            <td>1.</td>
+            <td>Apakah Pasien Tampak Kurus ?</td>
+            <td>
+              <q-option-group v-model="store.form.poin1" :options="store.points1" color="primary" inline dense size="xs"
+                @update:model-value="store.setSkorGizi" />
+            </td>
+            <td class="text-center">
+              {{ store.form.poin1 }}
+            </td>
+          </tr>
+          <tr>
+            <td>2.</td>
+            <td>
+              <div>Apakah terdapat penurunan BB selama 1 Bulan Terakhir?</div>
+              <div class="q-ml-lg">
+                - Berdasarkan Penilaian Obyektif
+              </div>
+              <div class="q-ml-lg">
+                - Untuk Bayi kurang dari 1 Tahun BB tidak naik selama seminggu terakhir
+              </div>
+            </td>
+            <td>
+              <q-option-group v-model="store.form.poin2" :options="store.points2" color="primary" inline dense size="xs"
+                @update:model-value="store.setSkorGizi" />
+            </td>
+            <td class="text-center">
+              {{ store.form.poin2 }}
+            </td>
+          </tr>
 
-        <tr>
-          <td>4.</td>
-          <td>
-            <div>Apakah terdapat penyakit atau keadaan yg mengakibatkan pasien beresiko mengalamai malnutrisi ?</div>
-            <div class="q-ml-lg">
-              - Berdasarkan Penilaian Obyektif
-            </div>
-            <div class="q-ml-lg">
-              (Penyakit Diare kronis HIV, PJB, hepato, ginjal, stoma dan lain-lain)
-            </div>
-          </td>
-          <td>
-            <q-option-group
-              v-model="store.form.poin4"
-              :options="store.points4"
-              color="primary"
-              inline
-              dense
-              size="xs"
-              @update:model-value="store.setSkorGizi"
-            />
-          </td>
-          <td class="text-center">
-            {{ store.form.poin4 }}
-          </td>
-        </tr>
-        <tr>
-          <td
-            colspan="3"
-            class="text-right"
-          >
-            Jumlah
-          </td>
-          <td class="text-weight-bold text-center">
-            {{ store.form.skorGizi }}
-          </td>
-        </tr>
-        <tr>
-          <td
-            class="text-weight-bold text-center"
-            colspan="4"
-          >
-            <em>Kesimpulan : </em> <span>{{ store.kesimpulanSkreeningGizi }}</span>
-          </td>
-        </tr>
+          <tr>
+            <td>3.</td>
+            <td>
+              <div>Apakah terdapat SALAH SATU dari Kondisi Tersebut ? </div>
+              <div class="q-ml-lg">
+                - Diare >= 5 kali sehari dan atau muntah > 3 kali / hari selama seminggu terakhir
+              </div>
+              <div class="q-ml-lg">
+                - Asupan makanan berkurang selama seminggu terakhir
+              </div>
+            </td>
+            <td>
+              <q-option-group v-model="store.form.poin3" :options="store.points3" color="primary" inline dense size="xs"
+                @update:model-value="store.setSkorGizi" />
+            </td>
+            <td class="text-center">
+              {{ store.form.poin3 }}
+            </td>
+          </tr>
+
+          <tr>
+            <td>4.</td>
+            <td>
+              <div>Apakah terdapat penyakit atau keadaan yg mengakibatkan pasien beresiko mengalamai malnutrisi ?</div>
+              <div class="q-ml-lg">
+                - Berdasarkan Penilaian Obyektif
+              </div>
+              <div class="q-ml-lg">
+                (Penyakit Diare kronis HIV, PJB, hepato, ginjal, stoma dan lain-lain)
+              </div>
+            </td>
+            <td>
+              <q-option-group v-model="store.form.poin4" :options="store.points4" color="primary" inline dense size="xs"
+                @update:model-value="store.setSkorGizi" />
+            </td>
+            <td class="text-center">
+              {{ store.form.poin4 }}
+            </td>
+          </tr>
+          <tr>
+            <td colspan="3" class="text-right">
+              Jumlah
+            </td>
+            <td class="text-weight-bold text-center">
+              {{ store.form.skorGizi }}
+            </td>
+          </tr>
+          <tr>
+            <td class="text-weight-bold text-center" colspan="4">
+              <em>Kesimpulan : </em> <span>{{ store.kesimpulanSkreeningGizi }}</span>
+            </td>
+          </tr>
+        </tbody>
+
       </table>
 
       <q-separator class="q-my-sm" />
       <div class="q-gutter-xs">
-        <app-input-simrs
-          v-model="store.form.kriteriaHasil"
-          label="Kriteria Hasil"
-        />
-        <app-input-simrs
-          v-model="store.form.implementasi"
-          label="Implementasi"
-        />
-        <app-input-simrs
-          v-model="store.form.evaluasi"
-          label="Evaluasi"
-        />
-        <app-input-simrs
-          v-model="store.form.catatanKie"
-          label="Catatan KIE"
-        />
+        <app-input-simrs v-model="store.form.kriteriaHasil" label="Kriteria Hasil" />
+        <app-input-simrs v-model="store.form.implementasi" label="Implementasi" />
+        <app-input-simrs v-model="store.form.evaluasi" label="Evaluasi" />
+        <app-input-simrs v-model="store.form.catatanKie" label="Catatan KIE" />
       </div>
     </div>
 
     <q-dialog v-model="store.bukaCdc" position="right">
       <q-card style="width: 600px" class="full-height bg-grey-4 q-pa-sm scroll">
-        <ChartWhoBbi :pasien="pasien" :draft="draft" :key="store.masterCdc" width="544px" height="644px" class="q-mb-sm" />
+        <ChartWhoBbi :pasien="pasien" :draft="draft" :key="store.masterCdc" width="544px" height="644px"
+          class="q-mb-sm" />
         <ChartWhoBmi :pasien="pasien" :draft="draft" :key="store.masterCdc?.length" width="544px" height="644px" />
       </q-card>
     </q-dialog>
@@ -563,7 +412,7 @@ const cariTabelv2 = () => {
   }
 }
 
-function findClosestValue (target, range) {
+function findClosestValue(target, range) {
   let closestValue = Infinity
   let closestIndex = -1
 
@@ -621,7 +470,7 @@ const cariGrafikChart = () => {
   draft.value = result
 }
 
-function calculateAgeInMonths (birthdate, day) {
+function calculateAgeInMonths(birthdate, day) {
   if (!birthdate) return 0 // !birthdate return null
   const today = day ?? new Date()
   const birthdateObj = new Date(birthdate)
@@ -632,12 +481,12 @@ function calculateAgeInMonths (birthdate, day) {
   return months
 }
 
-function cariStatusGizi (bb, bbi) {
+function cariStatusGizi(bb, bbi) {
   const sg = (bb / bbi) * 100
   return parseInt(sg) ?? 0
 }
 
-function ketSg (sg) {
+function ketSg(sg) {
   if (sg > 120) return 'obesitas'
   if (sg >= 110 && sg < 120) return 'overweight'
   if (sg >= 90 && sg < 110) return 'normal'
@@ -664,14 +513,14 @@ function ketSg (sg) {
 //   return { years, months, days }
 // }
 
-function calculateBMI (weight, height) {
+function calculateBMI(weight, height) {
   // const h = (height / 100) * (height / 100)
   const bmi = weight / (height / 100) ** 2
   // console.log('bmi', h)
   return bmi.toFixed(2)
 }
 
-function cariRangeBmi (master, coord, age) {
+function cariRangeBmi(master, coord, age) {
   const cari = master?.filter(x => x.age_m >= Math.floor(age) && x.age_m < Math.round(age) + 1)
   const range2d = cari?.length
     ? cari.map(x => {
@@ -696,7 +545,7 @@ function cariRangeBmi (master, coord, age) {
   return closestRange
 }
 
-function findClosestNumberIndex (numbers, target) {
+function findClosestNumberIndex(numbers, target) {
   let closestIndex = null
   let minDifference = Infinity
 
@@ -711,7 +560,7 @@ function findClosestNumberIndex (numbers, target) {
   return closestIndex
 }
 
-function findClosestRange (coordinates, targetCoordinate, age, arrayAsli) {
+function findClosestRange(coordinates, targetCoordinate, age, arrayAsli) {
   let closestRange = null
   let minDistance = Infinity
   const coor = []
@@ -787,7 +636,7 @@ function findClosestRange (coordinates, targetCoordinate, age, arrayAsli) {
   return result
 }
 
-function lihatGrafik (item) {
+function lihatGrafik(item) {
   store.pediatri = item
   store.bukaCdc = true
 }
@@ -805,9 +654,11 @@ table {
   border-collapse: collapse;
   width: 100%;
 }
-table, th, td {
+
+table,
+th,
+td {
   border: 1px solid $grey;
   padding: 2px;
 }
-
 </style>
