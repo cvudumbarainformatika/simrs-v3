@@ -285,7 +285,7 @@ async function filterFn(val, update) {
 
   while (hasMore) {
     try {
-      const resp = await api.get('v1/anggaran/penyusunan/anggaranpendapatan/getrekening', {
+      const resp = await api.get('v1/master/rekening/getrekening', {
         params: {
           q: val,
           per_page: 100,

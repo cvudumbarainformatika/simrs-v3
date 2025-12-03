@@ -7,10 +7,10 @@
             <div class="flex flex-column items-center flex-center">
               <div class="col text-left">
                 <div class="f-14 text-weight-bold">
-                  Akun LAK
+                  Pengusulan
                 </div>
                 <div class="title-desc">
-                  Master Data Akun Laporak Arus Kas
+                  Anggaran Pendapatan
                 </div>
               </div>
             </div>
