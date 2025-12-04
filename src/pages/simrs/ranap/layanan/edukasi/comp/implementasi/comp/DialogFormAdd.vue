@@ -90,6 +90,21 @@
                     </q-item>
                   </q-list>
                 </q-card-section>
+                <q-bar class="bg-dark text-white">
+                  <div class="f-12 text-bold">TINGKAT PEMAHAMAN</div>
+                </q-bar>
+                <q-card-section class="q-pa-sm">
+                  <q-list dense separator bordered>
+                    <q-item v-for="item in store.tingkatPemahamans" :key="item" tag="label" v-ripple>
+                      <q-item-section avatar>
+                        <q-radio v-model="store.form.tingkatPemahaman" :val="item" size="sm" />
+                      </q-item-section>
+                      <q-item-section>
+                        <q-item-label>{{ item }}</q-item-label>
+                      </q-item-section>
+                    </q-item>
+                  </q-list>
+                </q-card-section>
               </q-card>
             </div>
             <div class="col-3">

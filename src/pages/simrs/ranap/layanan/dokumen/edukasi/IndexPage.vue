@@ -21,7 +21,7 @@ const refResume = ref()
 
 const printObj = {
   id: 'kiemedis',
-  popTitle: 'Edukasi KIE Medis'
+  popTitle: 'CEIT Rawat Inap'
 
 }
 
