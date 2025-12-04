@@ -37,12 +37,12 @@
 
       <hr>
       <div class="contentx">
-        <div class=" text-center text-bold q-mb-xs" style="text-decoration: underline; text-underline-offset: 5px;">
+        <div class=" text-center text-bold q-mb-xs">
           {{ menu?.desc }}
         </div>
-        <div class=" text-center text-bold q-mb-sm">
+        <!-- <div class=" text-center text-bold q-mb-sm">
           <em>{{ menu?.title }}</em>
-        </div>
+        </div> -->
         <div class="full-width">
           <!-- biodata -->
           <div class="row kotak q-pa-sm">
