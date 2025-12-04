@@ -40,6 +40,8 @@ const props = defineProps({
 })
 
 const plannkematian = props?.pasien?.planheder[0]?.planpulang
+console.log('plannkematian', plannkematian);
+
 
 store.suratkematian(props?.pasien)
 </script>
