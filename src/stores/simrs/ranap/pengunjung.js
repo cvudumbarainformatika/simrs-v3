@@ -195,13 +195,22 @@ export const usePengunjungRanapStore = defineStore('pengunjung-ranap', {
         datax.diagnosaKeperawatanUlangSementara = []
         const memodia = data?.manymemo
         if (memodia?.length) {
-          const memNonIgd = memodia.find(f => f.kdruang !== 'POL014')
-          const memIgd = memodia.find(f => f.kdruang == 'POL014')
-          if (memNonIgd) datax.memodiagnosa = memNonIgd?.diagnosa
-          else datax.memodiagnosa = memodia[0].diagnosa
-          if (memIgd) datax.memodiagnosaigd = memIgd?.diagnosa
+          const memNonIgd = memodia?.find(f => f.kdruang !== 'POL014') ?? null
+          const memIgd = memodia?.find(f => f.kdruang === 'POL014') ?? null
+          // if (memNonIgd) datax.memodiagnosa = memNonIgd?.diagnosa
+          // else datax.memodiagnosa = memodia[0].diagnosa
+          // if (memIgd) datax.memodiagnosaigd = memIgd?.diagnosa
+          datax.memodiagnosa = memNonIgd?.diagnosa ?? null
+          datax.memodiagnosaigd = memIgd?.diagnosa ?? null
+
+          console.log('memo', memodia)
+          console.log('memoRanap', memNonIgd)
+          console.log('memoigd', memIgd)
+        } else {
+          datax.memodiagnosa = null
+          datax.memodiagnosaigd = null
         }
-        // console.log('memo', memodia)
+
 
       }
     },
