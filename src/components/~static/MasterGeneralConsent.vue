@@ -177,7 +177,8 @@
           <div class="col text-center">
             <div>Mengetahui,</div>
             <div class="q-mt-xs">
-              Petugas Tpp {{ kelompok === 'irja' ? 'Rawat Jalan' : 'Rawat Inap' }}
+              Petugas Tpp {{ kelompok === 'irja' ? 'Rawat Jalan' : kelompok === 'ranap' ? 'Rawat Inap' : 'Gawat Darurat'
+              }}
             </div>
             <div class="row full-width text-center justify-center">
               <!-- <embed

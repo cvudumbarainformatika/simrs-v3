@@ -324,7 +324,7 @@ function pilihSuratKontrol (val) {
 
   store.tampilKontrol = false
 
-  console.log(' val ', val)
+  // console.log(' val ', val)
 }
 
 // rencana kontrol
@@ -364,7 +364,7 @@ function pilihRencanaKontrol (val) {
 
 function cekSuratKontrol (val) {
   store.cekSuratKontrol(val).then(resp => {
-    console.log('cek surat kontrol ', resp)
+    // console.log('cek surat kontrol ', resp)
     if (resp.metadata.code === '200') {
       // assignSuratKontrol(resp.result)
       emits('assignSurat', resp.result)

@@ -40,7 +40,11 @@
               </span> | jam : {{ formatJam(item.tgl_kunjungan) }}
             </q-item-label>
             <q-item-label caption>
-              <i>Status Pasien: <span class="text-negative text-weight-bold">{{ getStatus(item.taskid) }}</span></i>
+              <i>Status Pasien : <span class="text-negative text-weight-bold">{{ getStatus(item.taskid) }}</span></i>
+            </q-item-label>
+            <q-item-label caption>
+              <i>Nomor Antrian :<span class="text-primary text-weight-bold">{{ getAntrian(item.antrian_ambil)
+              }}</span></i>
             </q-item-label>
           </q-item-section>
           <q-item-section>
@@ -246,7 +250,8 @@
             <div class="col-2">Kode Booking</div>
             <div class="col-3">Nomor Referensi</div>
             <div class="col-1">No Antr</div>
-            <div class="col-2">Angka Antrean</div>
+            <div class="col-1">Ang Antr</div>
+            <div class="col-1">Jns Kunj</div>
             <div class="col-2">Tgl Periksa</div>
           </div>
           <div v-else class="row bg-dark text-white">
@@ -260,7 +265,8 @@
               <div class="col-2">{{ data?.request?.kodebooking }}</div>
               <div class="col-3">{{ data?.request?.nomorreferensi }}</div>
               <div class="col-1">{{ data?.request?.nomorantrean }}</div>
-              <div class="col-2">{{ data?.request?.angkaantrean }}</div>
+              <div class="col-1">{{ data?.request?.angkaantrean }}</div>
+              <div class="col-1">{{ data?.request?.jeniskunjungan }}</div>
               <div class="col-2">{{ dateFullFormat(data?.request?.tanggalperiksa) }}</div>
             </div>
             <div class="row" v-else>
@@ -593,6 +599,11 @@ function simpanPengajuan () {
         loadingP.value = false
       })
   })
+}
+function getAntrian (arr) {
+  // console.log('antr', arr)
+  const antr = arr?.map(x => x?.nomor).join(', ')
+  return antr ?? '-'
 }
 function getStatus (arr) {
   if (arr?.length === 0) {

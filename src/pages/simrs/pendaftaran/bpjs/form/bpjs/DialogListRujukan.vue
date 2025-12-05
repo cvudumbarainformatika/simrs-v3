@@ -1,9 +1,7 @@
 <template>
   <q-dialog>
     <q-card style="min-width:60vw;">
-      <div
-        class="bg-primary text-white"
-      >
+      <div class="bg-primary text-white">
         <q-bar>
           <q-icon name="icon-mat-dvr" />
           <div class="f-12">
@@ -11,21 +9,13 @@
           </div>
 
           <q-space />
-          <q-btn
-            v-close-popup
-            dense
-            flat
-            icon="icon-mat-close"
-          >
+          <q-btn v-close-popup dense flat icon="icon-mat-close">
             <q-tooltip>Tutup</q-tooltip>
           </q-btn>
         </q-bar>
       </div>
-      <q-card-section
-        v-if="store.loadingListRujukan || store.loadingListRujukanRS || store.loadingListRujukanMrs"
-        style="height: 50vh;"
-        class="scroll"
-      >
+      <q-card-section v-if="store.loadingListRujukan || store.loadingListRujukanRS || store.loadingListRujukanMrs"
+        style="height: 50vh;" class="scroll">
         <app-loading />
       </q-card-section>
       <!-- <q-card-section v-else>
@@ -36,91 +26,44 @@
         </div>
       </q-card-section>
       <q-separator /> -->
-      <div
-        v-else
-      >
-        <q-tabs
-          v-model="tab"
-          class=""
-          align="left"
-          active-class="bg-dark text-white"
-          dense
-        >
-          <q-tab
-            label="Rujukan PCare"
-            name="pcare"
-            class="text-primary"
-          />
-          <q-tab
-            label="Rujukan RS"
-            name="rs"
-            class="text-orange"
-          />
-          <q-tab
-            label="POST MRS"
-            name="mrs"
-            class="text-accent"
-          />
+      <div v-else>
+        <q-tabs v-model="tab" class="" align="left" active-class="bg-dark text-white" dense>
+          <q-tab label="Rujukan PCare" name="pcare" class="text-primary" />
+          <q-tab label="Rujukan RS" name="rs" class="text-orange" />
+          <q-tab label="POST MRS" name="mrs" class="text-accent" />
         </q-tabs>
         <q-separator />
 
-        <q-tab-panels
-          v-model="tab"
-          animated
-        >
-          <q-tab-panel
-            name="pcare"
-            style="padding: 0;"
-          >
+        <q-tab-panels v-model="tab" animated>
+          <q-tab-panel name="pcare" style="padding: 0;">
             <div v-if="!store.listRujukanPcare?.length">
-              <app-no-data-small
-                style="height: 46vh;"
-              />
+              <app-no-data-small style="height: 46vh;" />
             </div>
-            <div
-              v-else
-              style="height: 50vh;"
-              class="scroll"
-            >
+            <div v-else style="height: 50vh;" class="scroll">
               <q-list separator>
-                <q-item
-                  v-for="(list,i) in store.listRujukanPcare"
-                  :key="i"
-                  v-ripple
-                  clickable
-                  class="q-py-md"
-                >
+                <q-item v-for="(list, i) in store.listRujukanPcare" :key="i" v-ripple clickable class="q-py-md">
                   <q-item-section avatar>
-                    <q-avatar
-                      color="primary"
-                      text-color="white"
-                      size="md"
-                    >
+                    <q-avatar color="primary" text-color="white" size="md">
                       <div class="f-12">
-                        {{ i+1 }}
+                        {{ i + 1 }}
                       </div>
                     </q-avatar>
                   </q-item-section>
                   <q-item-section>
-                    <q-item-label>tanggal : <span class="text-weight-bold text-primary">{{ dateFullFormat(list.tglKunjungan) }}</span></q-item-label>
-                    <q-item-label>No. Kunjungan : <span class="text-weight-bold text-teal">{{ list.noKunjungan }}</span></q-item-label>
-                    <q-item-label>Jns Peserta : <span class="text-weight-bold text-negative">{{ list.peserta.jenisPeserta.keterangan }}</span></q-item-label>
-                    <q-item-label>Poli Tujuan : <span class="text-weight-bold text-accent">{{ list.poliRujukan?list.poliRujukan.nama:'-' }}</span></q-item-label>
-                    <q-item-label>Asal Rujukan : <span class="text-weight-bold text-teal">{{ list.provPerujuk?list.provPerujuk.nama:'-' }}</span></q-item-label>
+                    <q-item-label>tanggal : <span class="text-weight-bold text-primary">{{
+                      dateFullFormat(list.tglKunjungan) }}</span></q-item-label>
+                    <q-item-label>No. Kunjungan : <span class="text-weight-bold text-teal">{{ list.noKunjungan
+                    }}</span></q-item-label>
+                    <q-item-label>Jns Peserta : <span class="text-weight-bold text-negative">{{
+                      list.peserta.jenisPeserta.keterangan }}</span></q-item-label>
+                    <q-item-label>Poli Tujuan : <span class="text-weight-bold text-accent">{{
+                      list.poliRujukan ? list.poliRujukan.nama : '-' }}</span></q-item-label>
+                    <q-item-label>Asal Rujukan : <span class="text-weight-bold text-teal">{{
+                      list.provPerujuk ? list.provPerujuk.nama : '-' }}</span></q-item-label>
                   </q-item-section>
 
-                  <q-item-section
-                    side
-                  >
-                    <q-btn
-                      dense
-                      no-caps
-                      color="primary"
-                      size="sm"
-                      padding="sm"
-                      flat
-                      @click="pilihRujukanPCare(list)"
-                    >
+                  <q-item-section side>
+                    <q-btn dense no-caps color="primary" size="sm" padding="sm" flat @click="pilihRujukanPCare(list)">
                       <div class="text-weight-bold">
                         Pilih Rujukan
                       </div>
@@ -132,60 +75,37 @@
             </div>
           </q-tab-panel>
 
-          <q-tab-panel
-            name="rs"
-            style="padding: 0;"
-          >
+          <q-tab-panel name="rs" style="padding: 0;">
             <div v-if="!store.listRujukanRs?.length">
-              <app-no-data-small
-                style="height: 46vh;"
-              />
+              <app-no-data-small style="height: 46vh;" />
             </div>
-            <div
-              v-else
-              style="height: 50vh;"
-              class="scroll"
-            >
+            <div v-else style="height: 50vh;" class="scroll">
               <q-list separator>
-                <q-item
-                  v-for="(list,i) in store.listRujukanRs"
-                  :key="i"
-                  v-ripple
-                  clickable
-                >
+                <q-item v-for="(list, i) in store.listRujukanRs" :key="i" v-ripple clickable>
                   <q-item-section avatar>
-                    <q-avatar
-                      color="orange"
-                      text-color="white"
-                      size="md"
-                    >
+                    <q-avatar color="orange" text-color="white" size="md">
                       <div class="f-12">
-                        {{ i+1 }}
+                        {{ i + 1 }}
                       </div>
                     </q-avatar>
                   </q-item-section>
                   <q-item-section>
-                    <q-item-label>tanggal : <span class="text-weight-bold text-primary">{{ dateFullFormat(list.tglKunjungan) }}</span></q-item-label>
-                    <q-item-label>No. Kunjungan : <span class="text-weight-bold text-teal">{{ list.noKunjungan }}</span></q-item-label>
+                    <q-item-label>tanggal : <span class="text-weight-bold text-primary">{{
+                      dateFullFormat(list.tglKunjungan) }}</span></q-item-label>
+                    <q-item-label>No. Kunjungan : <span class="text-weight-bold text-teal">{{ list.noKunjungan
+                    }}</span></q-item-label>
                     <!-- <q-item-label>Poli Tujuan : <span class="text-weight-bold text-teal">{{ list.poliRujukan?list.poliRujukan.nama:'-' }}</span></q-item-label> -->
-                    <q-item-label>Jns Peserta : <span class="text-weight-bold text-negative">{{ list.peserta.jenisPeserta.keterangan }}</span></q-item-label>
-                    <q-item-label>Poli Tujuan : <span class="text-weight-bold text-accent">{{ list.poliRujukan?list.poliRujukan.nama:'-' }}</span></q-item-label>
-                    <q-item-label>Asal Rujukan : <span class="text-weight-bold text-teal">{{ list.provPerujuk?list.provPerujuk.nama:'-' }}</span></q-item-label>
+                    <q-item-label>Jns Peserta : <span class="text-weight-bold text-negative">{{
+                      list.peserta.jenisPeserta.keterangan }}</span></q-item-label>
+                    <q-item-label>Poli Tujuan : <span class="text-weight-bold text-accent">{{
+                      list.poliRujukan ? list.poliRujukan.nama : '-' }}</span></q-item-label>
+                    <q-item-label>Asal Rujukan : <span class="text-weight-bold text-teal">{{
+                      list.provPerujuk ? list.provPerujuk.nama : '-' }}</span></q-item-label>
                     <!-- <q-item-label>Asal Rujukan : <span class="text-weight-bold text-teal">{{ list.provPerujuk?list.provPerujuk.nama:'-' }}</span></q-item-label> -->
                   </q-item-section>
 
-                  <q-item-section
-                    side
-                  >
-                    <q-btn
-                      dense
-                      no-caps
-                      color="orange"
-                      size="sm"
-                      padding="sm"
-                      flat
-                      @click="pilihRujukanRS(list)"
-                    >
+                  <q-item-section side>
+                    <q-btn dense no-caps color="orange" size="sm" padding="sm" flat @click="pilihRujukanRS(list)">
                       <div class="text-weight-bold">
                         Pilih Rujukan
                       </div>
@@ -197,56 +117,31 @@
             </div>
           </q-tab-panel>
 
-          <q-tab-panel
-            name="mrs"
-            style="padding: 0;"
-          >
+          <q-tab-panel name="mrs" style="padding: 0;">
             <div v-if="!store.listRujukanSepMrs?.length">
-              <app-no-data-small
-                style="height: 46vh;"
-              />
+              <app-no-data-small style="height: 46vh;" />
             </div>
-            <div
-              v-else
-              style="height: 50vh;"
-              class="scroll"
-            >
+            <div v-else style="height: 50vh;" class="scroll">
               <q-list separator>
-                <q-item
-                  v-for="(list,i) in store.listRujukanSepMrs"
-                  :key="i"
-                  v-ripple
-                  clickable
-                >
+                <q-item v-for="(list, i) in store.listRujukanSepMrs" :key="i" v-ripple clickable>
                   <q-item-section avatar>
-                    <q-avatar
-                      color="accent"
-                      text-color="white"
-                      size="md"
-                    >
+                    <q-avatar color="accent" text-color="white" size="md">
                       <div class="f-12">
-                        {{ i+1 }}
+                        {{ i + 1 }}
                       </div>
                     </q-avatar>
                   </q-item-section>
                   <q-item-section>
-                    <q-item-label>tanggal : <span class="text-weight-bold text-primary">{{ dateFullFormat(list.rs6) }}</span></q-item-label>
-                    <q-item-label>No. Kunjungan : <span class="text-weight-bold text-teal">{{ list.rs8 }}</span></q-item-label>
-                    <q-item-label>Asal Rujukan : <span class="text-weight-bold text-negative">{{ list.rs17 }}</span></q-item-label>
+                    <q-item-label>tanggal : <span class="text-weight-bold text-primary">{{ dateFullFormat(list.rs6)
+                    }}</span></q-item-label>
+                    <q-item-label>No. Kunjungan : <span class="text-weight-bold text-teal">{{ list.rs8
+                    }}</span></q-item-label>
+                    <q-item-label>Asal Rujukan : <span class="text-weight-bold text-negative">{{ list.rs17
+                    }}</span></q-item-label>
                   </q-item-section>
 
-                  <q-item-section
-                    side
-                  >
-                    <q-btn
-                      dense
-                      no-caps
-                      color="accent"
-                      size="sm"
-                      padding="sm"
-                      flat
-                      @click="pilihRujukanMrs(list)"
-                    >
+                  <q-item-section side>
+                    <q-btn dense no-caps color="accent" size="sm" padding="sm" flat @click="pilihRujukanMrs(list)">
                       <div class="text-weight-bold">
                         Pilih Rujukan
                       </div>
@@ -641,13 +536,13 @@ const emits = defineEmits([
   'kodePoli',
   'jenisKunjungan'
 ])
-function pilihRujukan(val, jenis) {
-  console.log('karcis', store.jenisKarcises)
-  console.log('rujukan p care', val)
+function pilihRujukan (val, jenis) {
+  // console.log('karcis', store.jenisKarcises)
+  // console.log('rujukan p care', val)
 
   const index = findWithAttr(store.polis, 'kodemapingbpjs', val.poliRujukan.kode)
   if (index >= 0) {
-    console.log('index', index, store.polis[index])
+    // console.log('index', index, store.polis[index])
     store.paramKarcis.kd_poli = store.polis[index].kodepoli
     store.form.dpjp = ''
     if (store.jenisKarcises?.length) {
@@ -680,9 +575,9 @@ function pilihRujukan(val, jenis) {
   store.getSistemBayar2(1)
 
   // sistaem bayar end
-  console.log('diag ', store.diagnosaAwals, val.diagnosa)
-  store.diagnosaAwals.push(val.diagnosa)
-  store.ppkRujukans.push(val.provPerujuk)
+  // console.log('diag ', store.diagnosaAwals, val.diagnosa)
+  store.diagnosaAwals?.push(val.diagnosa)
+  store.ppkRujukans?.push(val.provPerujuk)
   store.display.diagnosa.kode = val.diagnosa.kode
   store.setForm('kodediagnosa', val.diagnosa.kode)
   store.display.diagnosa.nama = val.diagnosa.nama
@@ -702,14 +597,14 @@ function pilihRujukan(val, jenis) {
   store.tampilRujukan = false
 }
 // eslint-disable-next-line no-unused-vars
-function pilihRujukanRS(val) {
+function pilihRujukanRS (val) {
   store.rujukanPostMRS = false
   const param = {
     jenisrujukan: 2,
     norujukan: val.noKunjungan
   }
   store.getJumlahSep(param).then(resp => {
-    console.log('jumlah sep Rs', resp)
+    // console.log('jumlah sep Rs', resp)
     // store.jumlahSEP = parseInt(resp.jumlahSEP) >= 0 ? parseInt(resp.jumlahSEP) : 0
   })
   pilihRujukan(val)
@@ -721,7 +616,7 @@ function pilihRujukanRS(val) {
   emits('jenisKunjungan', store.jenisKunjungans[idexKun].nilai)
 }
 // eslint-disable-next-line no-unused-vars
-function pilihRujukanPCare(val) {
+function pilihRujukanPCare (val) {
   store.rujukanPostMRS = false
   const param = {
     jenisrujukan: 1,
@@ -729,7 +624,7 @@ function pilihRujukanPCare(val) {
 
   }
   store.getJumlahSep(param).then(resp => {
-    console.log('jumlah sep p care', resp)
+    // console.log('jumlah sep p care', resp)
     // store.jumlahSEP = parseInt(resp.jumlahSEP) >= 0 ? parseInt(resp.jumlahSEP) : 0
   })
   pilihRujukan(val)
@@ -741,9 +636,9 @@ function pilihRujukanPCare(val) {
   emits('jenisKunjungan', store.jenisKunjungans[idexKun].nilai)
 }
 // pilih rujukan mrs
-function pilihRujukanMrs(val) {
+function pilihRujukanMrs (val) {
   store.setForm('asalRujukan', '1')
-  console.log('rujukan Mrs', val)
+  // console.log('rujukan Mrs', val)
   store.setForm('norujukan', val.rs8)
   store.rujukanPostMRS = true
   store.tampilRujukan = false

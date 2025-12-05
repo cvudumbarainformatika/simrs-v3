@@ -224,6 +224,33 @@ const masters = {
         },
       ]
     },
+    {
+      path: '/master/siasik',
+      component: () => import('src/pages/simrs/master/keuangan/IndexPage.vue'),
+      children: [
+        { path: '', redirect: '/master/siasik/rekeningjurnal' },
+        {
+          path: '/master/siasik/rekeningjurnal',
+          name: 'master.siasik.rekeningjurnal',
+          component: () => import('pages/siasik/master/rekeningjurnal/IndexPage.vue')
+        },
+        {
+          path: '/master/siasik/akunlak',
+          name: 'master.siasik.akunlak',
+          component: () => import('pages/siasik/master/akun_lak/IndexPage.vue')
+        },
+        {
+          path: '/master/siasik/ptk',
+          name: 'master.siasik.ptk',
+          component: () => import('pages/siasik/master/pejabat_teknis/IndexPage.vue')
+        },
+        {
+          path: '/master/siasik/kegiatanblud',
+          name: 'master.siasik.kegiatanblud',
+          component: () => import('pages/siasik/master/kegiatan_blud/IndexPage.vue')
+        },
+      ]
+    },
     // {
     //   path: '/master/pasien',
     //   component: () => import('src/pages/simrs/master/pasien/IndexPage.vue')

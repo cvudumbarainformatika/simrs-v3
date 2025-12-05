@@ -161,83 +161,165 @@ function simpan() {
   })
 }
 
-onMounted(() => {
-  store.optionrekening = []
-  options.value = store.akuns
-  store.getRekening()
+// onMounted(() => {
+//   store.optionrekening = []
+//   options.value = store.akuns
+//   store.getRekening()
+// })
+
+// async function filterFn(val, update) {
+//   if (!val) {
+//     update(() => {
+//       options.value = store.optionrekening || []
+//       console.log('Options saat pencarian kosong:', options.value)
+//     })
+//     store.loading = false
+//     return
+//   }
+//   const needle = val.toLowerCase()
+//   const localResults = store.optionrekening?.filter(
+//     (item) =>
+//     (item.kodeall3?.toLowerCase().includes(needle) ||
+//       item.uraian?.toLowerCase().includes(needle))
+//   ) || []
+//   if (localResults.length > 0) {
+//     update(() => {
+//       options.value = localResults
+//       console.log('Options dari filter lokal:', localResults)
+//     })
+//     store.loading = false
+//     return
+//   }
+//   if (val.length >= 2) {
+//     let allData = []
+//     let page = 1
+//     let hasMore = true
+
+//     // console.log('Mulai iterasi halaman untuk levelberapa:', store.reqs.levelberapa)
+
+//     while (hasMore) {
+//       try {
+//         const resp = await api.get('v1/master/rekening/getrekening', {
+//           params: {
+//             q: val,
+//             per_page: 100,
+//             page: page,
+//           }
+//         })
+
+//         if (resp.status === 200 && resp.data.data?.length) {
+//           allData = [...allData, ...resp.data.data]
+//           hasMore = resp.data.next_page_url !== null && resp.data.next_page_url !== undefined
+//           page++
+//         } else {
+//           hasMore = false
+//         }
+//       } catch (error) {
+//         console.error('Error saat mengambil halaman:', error)
+//         hasMore = false
+//       }
+//     }
+
+//     // Update opsi berdasarkan hasil server
+//     update(() => {
+//       if (allData.length > 0) {
+//         options.value = allData
+//         store.optionrekening = allData
+//       } else {
+//         options.value = []
+//       }
+//       console.log('Options setelah update:', options.value)
+//     })
+//   } else {
+//     update(() => {
+//       options.value = localResults
+//     })
+//   }
+
+//   store.loading = false
+
+// }
+
+onMounted(async () => {
+
+  await store.getRekening()
+  store.optionrekening = store.akuns   // ← WAJIB
+
+  options.value = store.akuns.map(a => ({
+    ...a,
+    label: `${a.kodeall3} - ${a.uraian}`,
+    value: a.kodeall3
+  }))
+
+  // store.optionrekening = []
+  // await store.getRekening()
+  // options.value = store.akuns
+
 })
 
 async function filterFn(val, update) {
+  // Jika kosong → tampilkan semua data awal (page 1)
   if (!val) {
     update(() => {
-      options.value = store.optionrekening || []
-      console.log('Options saat pencarian kosong:', options.value)
+      options.value = store.akuns.map(a => ({
+        ...a,
+        label: `${a.kodeall3} - ${a.uraian}`,
+        value: a.kodeall3
+      }))
     })
-    store.loading = false
     return
   }
-  const needle = val.toLowerCase()
-  const localResults = store.optionrekening?.filter(
-    (item) =>
-    (item.kodeall3?.toLowerCase().includes(needle) ||
-      item.uraian?.toLowerCase().includes(needle))
-  ) || []
-  if (localResults.length > 0) {
+
+  // Jika panjang key < 2 → jangan call API
+  if (val.length < 2) {
     update(() => {
-      options.value = localResults
-      console.log('Options dari filter lokal:', localResults)
+      options.value = []
     })
-    store.loading = false
     return
   }
-  if (val.length >= 2) {
-    let allData = []
-    let page = 1
-    let hasMore = true
 
-    // console.log('Mulai iterasi halaman untuk levelberapa:', store.reqs.levelberapa)
+  // Mulai pencarian server
+  let allData = []
+  let page = 1
+  let hasMore = true
 
-    while (hasMore) {
-      try {
-        const resp = await api.get('v1/master/rekening/getrekening', {
-          params: {
-            q: val,
-            per_page: 100,
-            page: page,
-          }
-        })
-
-        if (resp.status === 200 && resp.data.data?.length) {
-          allData = [...allData, ...resp.data.data]
-          hasMore = resp.data.next_page_url !== null && resp.data.next_page_url !== undefined
-          page++
-        } else {
-          hasMore = false
+  while (hasMore) {
+    try {
+      const resp = await api.get('v1/master/rekening/getrekening', {
+        params: {
+          q: val,
+          per_page: 100,
+          page: page
         }
-      } catch (error) {
-        console.error('Error saat mengambil halaman:', error)
+      })
+
+      const data = resp.data.data || []
+
+      if (data.length > 0) {
+        allData = [...allData, ...data]
+        hasMore = resp.data.next_page_url !== null
+        page++
+      } else {
         hasMore = false
       }
-    }
 
-    // Update opsi berdasarkan hasil server
-    update(() => {
-      if (allData.length > 0) {
-        options.value = allData
-        store.optionrekening = allData
-      } else {
-        options.value = []
-      }
-      console.log('Options setelah update:', options.value)
-    })
-  } else {
-    update(() => {
-      options.value = localResults
-    })
+    } catch (e) {
+      console.error('Error load page:', e)
+      hasMore = false
+    }
   }
 
-  store.loading = false
+  // Update hasil pencarian
+  update(() => {
+    options.value = allData.map(a => ({
+      ...a,
+      label: `${a.kodeall3} - ${a.uraian}`,
+      value: a.kodeall3
+    }))
 
+    // Simpan supaya next search bisa cepat
+    store.optionrekening = allData
+  })
 }
 
 async function filterFn_lak(val, update) {

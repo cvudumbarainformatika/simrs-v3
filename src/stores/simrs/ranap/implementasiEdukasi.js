@@ -13,6 +13,7 @@ export const useImplementasiEdukasiRanapStore = defineStore('implementasi-edukas
       estimasi: null,
       media: [],
       evaluasi: null,
+      tingkatPemahaman: null,
       penerima: null,
       namaPenerima: null,
       ttdPenerima: null,
@@ -65,6 +66,7 @@ export const useImplementasiEdukasiRanapStore = defineStore('implementasi-edukas
     ],
     medias: ['LEAFLET/LEMBAR BALIK', 'AUDIO/VIDEO', 'ALAT PERAGA'],
     evaluasis: ['TIDAK MENGERTI', 'MENYATAKAN PAHAM', 'MAMPU MENJELASKAN', 'MAMPU DEMONSTRASI'],
+    tingkatPemahamans: ['Edukasi Pertama', 'Re-edukasi ke2/3 atau'],
     penerimaEdukasis: ['Pasien', 'Orang Tua', 'Anak', 'Keluarga']
   }),
   getters: {
@@ -80,6 +82,7 @@ export const useImplementasiEdukasiRanapStore = defineStore('implementasi-edukas
         estimasi: null,
         media: [],
         evaluasi: null,
+        tingkatPemahaman: null,
         penerima: null,
         namaPenerima: null,
         ttdPenerima: null,

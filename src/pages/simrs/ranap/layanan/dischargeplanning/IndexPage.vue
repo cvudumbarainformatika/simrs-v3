@@ -67,6 +67,13 @@ const tabsxx = [
     icon: 'icon-mat-health_and_safety',
     nakes: ['1', '2', '3'],
     comp: defineAsyncComponent(() => import('./pagetabs/SummaryPage.vue'))
+  },
+  {
+    label: 'VCLAIM (Surat Kontrol)',
+    name: 'vclaim',
+    icon: 'icon-mat-health_and_safety',
+    nakes: ['1', '2', '3'],
+    comp: defineAsyncComponent(() => import('./pagetabs/VclaimPage.vue'))
   }
 ]
 

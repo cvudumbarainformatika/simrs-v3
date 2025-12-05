@@ -125,6 +125,7 @@ export const useListKunjunganBpjsStore = defineStore('list_kunjungan_bpjs', {
       this.getLists()
     },
     setPeriodik (val) {
+      this.params.status = 'SEMUA'
       const { to, from } = val
       this.params.to = to
       this.params.from = from
@@ -141,13 +142,26 @@ export const useListKunjunganBpjsStore = defineStore('list_kunjungan_bpjs', {
     setQ (payload) {
       this.params.page = 1
       this.params.q = payload
-      this.getLists()
+      this.getListPasiens()
     },
     setFlag (payload) {
       this.params.page = 1
       this.params.flag = payload
       this.getListPasiens()
     },
+    // getSatusAntrianBpjs (value) {
+    //   return this.antrianBpjs.filter(item => {
+    //     const samePerson =
+    //       item.nokapst === value.noka ||
+    //       item.nik === value.nktp
+
+    //     const sameDate =
+    //       date.formatDate(item.tanggal, 'YYYY-MM-DD') ===
+    //       date.formatDate(value.tgl_kunjungan, 'YYYY-MM-DD')
+
+    //     return samePerson && sameDate
+    //   })
+    // },
     setFilterStatus (payload) {
       this.params.page = 1
       this.params.status = payload
@@ -160,17 +174,26 @@ export const useListKunjunganBpjsStore = defineStore('list_kunjungan_bpjs', {
         pas = this.antrianBpjs.filter(p => p.status == 'Belum dilayani' || p.status == 'Sedang dilayani')?.map(p => p.nokapst)
       }
       else if (payload == 'GAGAL BRIDGING') {
-        const nokas = this.antrianBpjs?.map(p => p.nokapst)
-        pas = this.items.filter(p => !nokas.includes(p.noka))?.map(p => p.noka)
+        // const pasien = []
+        // this.items.forEach(value => {
+        //   const ada = this.getAntrianBPJS(value)
+        //   console.log('ada', ada)
+
+        // })
+        // console.log('nokas', nokas)
+        // const nokas = this.antrianBpjs?.map(p => p.nokapst)
+        // pas = this.items.filter(p => !nokas.includes(p.noka))?.map(p => p.noka)
+        // console.log('nokas', nokas)
       }
       // const terlayani = this.antrianBpjs.filter(p => p.status == 'Selesai dilayani')
       // const belumTerlayani = this.antrianBpjs.filter(p => p.status == 'Belum dilayani')
       // const bukan = this.antrianBpjs.filter(p => p.status != 'Belum dilayani' && p.status != 'Selesai dilayani')
       // const poli = (new Set(terlayani.map(p => p.kodepoli)))
       // console.log('pas', terlayani, terlayani.length, belumTerlayani?.length, bukan?.length, poli)
-      // console.log('pas', pas.length, pas)
-      if (pas.length > 0) {
-        this.params.nokas = pas
+      const filteredNoka = [...new Set(pas)]
+      console.log('filteredNoka', filteredNoka.length, filteredNoka)
+      if (filteredNoka.length > 0) {
+        this.params.nokas = filteredNoka
         this.getListPasiens()
       } else {
         this.params.nokas = null
@@ -184,7 +207,7 @@ export const useListKunjunganBpjsStore = defineStore('list_kunjungan_bpjs', {
     },
     setPage (payload) {
       this.params.page = payload
-      this.getLists()
+      this.getListPasiens()
     },
     setPerPage (payload) {
       this.params.page = 1
@@ -199,7 +222,7 @@ export const useListKunjunganBpjsStore = defineStore('list_kunjungan_bpjs', {
       this.params.to = to
       this.params.from = from
       this.params.q = q
-      this.getLists()
+      this.getListPasiens()
     },
     kirimUlangTask (payload) {
       const indexReg = this.items.findIndex(p => p.noreg == payload.noreg)

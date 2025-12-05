@@ -64,27 +64,28 @@
               <tbody>
                 <tr style="border: none !important; padding: 0px !important;">
                   <td style="border: none !important; padding: 0px !important; width:15%;"> NAMA PASIEN</td>
-                  <td style="border: none !important; padding: 0px !important; width:45%"> : {{
+                  <td style="border: none !important; padding: 0px !important; width:30%"> : {{
                     pasien?.nama_panggil }}
                   </td>
                   <td style="border: none !important; padding: 0px !important; width:15%;"> DPJP</td>
-                  <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{ pasien?.dokter }}
+                  <td style="border: none !important; padding: 0px !important; width: 40%;"> : {{ pasien?.dokter }}
                   </td>
                 </tr>
                 <tr style="border: none !important; padding: 0px !important;">
                   <td style="border: none !important; padding: 0px !important; width:15%;"> NO RM</td>
-                  <td style="border: none !important; padding: 0px !important; width:45%"> : {{ pasien?.norm }}
+                  <td style="border: none !important; padding: 0px !important; width:30%"> : {{ pasien?.norm }}
                   </td>
                   <td style="border: none !important; padding: 0px !important; width:15%;"> Tgl Serah Terima</td>
-                  <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
+                  <td style="border: none !important; padding: 0px !important; width: 40%;"> : {{
                     dateFullFormat(item?.tglmasuk) }}
                   </td>
                 </tr>
                 <tr style="border: none !important; padding: 0px !important;">
                   <td style="border: none !important; padding: 0px !important; width:15%;"> TANGGAL LAHIR</td>
-                  <td style="border: none !important; padding: 0px !important; width:45%"> : {{ pasien?.tgllahir }}</td>
+                  <td style="border: none !important; padding: 0px !important; width:30%"> : {{
+                    dateFullFormat(pasien?.tgllahir) }}</td>
                   <td style="border: none !important; padding: 0px !important; width:15%;"> Jam</td>
-                  <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
+                  <td style="border: none !important; padding: 0px !important; width: 40%;"> : {{
                     jamTnpDetik(item?.tglmasuk) }}
                   </td>
                 </tr>
@@ -108,7 +109,7 @@
               <div class="col-12 relative-position">
                 <div class="row q-col-gutter-x-sm">
                   <div class="col-2">Alasan dirawat</div>
-                  <div class="col-10"> : {{ pasien?.anamnesis[0]?.riwayatpenyakitsekarang || ' - ' }}</div>
+                  <div class="col-8"> : {{ pasien?.anamnesis[0]?.riwayatpenyakitsekarang || ' - ' }}</div>
                 </div>
                 <div class="absolute-right">
                   <div class="column text-center kotak q-pa-sm">
@@ -145,7 +146,7 @@
                   <div> : {{ item?.serah_terima?.skalaNyeri }}</div>
                 </div>
               </div>
-              <div class="col-12 ">
+              <div class="col-12 q-ml-lg">
                 <div class="flex q-gutter-x-sm">
                   <div class="text-bold">Tensi</div>
                   <div> : {{ item?.serah_terima?.sistole || '-' }} / {{ item?.serah_terima?.diastole || '-' }} mMHg,
@@ -162,9 +163,9 @@
               </div>
 
               <div class="col-12">
-                <div class="flex q-gutter-x-md">
+                <div class="flex no-wrap q-gutter-x-md">
                   <div>Diagnosa</div>
-                  <div> : {{ pasien?.manymemo?.length ? pasien?.manymemo[0]?.diagnosa : '-' }}</div>
+                  <div> : {{ pasien?.memodiagnosa }}</div>
                 </div>
               </div>
 
@@ -350,7 +351,7 @@
                   </div>
                 </div>
                 <div>
-                  <b>{{ item?.serah_terima?.nmuser_terima }}</b>
+                  <b>{{ item?.serah_terima?.nmuser_trm }}</b>
                 </div>
               </div>
               <div class="kanan text-center">
@@ -420,7 +421,7 @@ onMounted(() => {
     diag.getDiagnosaByNoreg(props?.pasien)
   ])
 
-  // console.log('store', store.items);
+  // console.log('store', store.historys);
 })
 
 const keluhanUtama = (pas) => {

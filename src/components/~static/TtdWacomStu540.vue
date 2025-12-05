@@ -1,6 +1,7 @@
 <template>
   <div :key="base64">
-    <div :id="uuid" class="boxed relative-position" style="height:35mm;width:60mm;" @click="displaySignatureDetails" title="Click a signature to display its details" />
+    <div :id="uuid" class="boxed relative-position" style="height:35mm;width:60mm;" @click="displaySignatureDetails"
+      title="Click a signature to display its details" />
     <div style="width:60mm;">
       <div class="row">
         <div class="col-6">
@@ -9,7 +10,8 @@
           </q-btn>
         </div>
         <div class="col-6">
-          <q-btn class="full-width bg-negative" icon="icon-mat-delete" size="sm" flat square color="white" @click="clearSignature">
+          <q-btn class="full-width bg-negative" icon="icon-mat-delete" size="sm" flat square color="white"
+            @click="clearSignature">
             <q-tooltip>Hapus Ttd</q-tooltip>
           </q-btn>
         </div>
@@ -40,7 +42,7 @@ export default {
   // },
 
   expose: ['cImage'],
-  data () {
+  data() {
     return {
       callback: null,
       count: 0,
@@ -106,7 +108,7 @@ export default {
   methods:
   {
 
-    userMsg (msg) {
+    userMsg(msg) {
       this.messageText = this.messageText + '\n' + msg
       this.messageTrigger = !this.messageTrigger
       // this.userMsgBox.scrollTop = this.userMsgBox?.scrollHeight
@@ -243,7 +245,7 @@ export default {
       }
       this.sigCtl.AboutBox(onAboutBox)
 
-      function onAboutBox (sigCtlV, status) {
+      function onAboutBox(sigCtlV, status) {
         if (window.wgssSignatureSDK.ResponseStatus.OK !== status) {
           this.userMsg('AboutBox error: ' + status)
           if (window.wgssSignatureSDK.ResponseStatus.INVALID_SESSION === status) {
@@ -593,12 +595,13 @@ export default {
       }
     }
   },
-  mounted () {
+  mounted() {
     this.bodyonload()
   },
   watch: {
     image: function (val) {
       // console.log('watch image', this.uuid)
+      // console.log('watch image', val)
 
       this.$emit(`signature:${this.uuid}`, val)
     }
@@ -607,32 +610,31 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+#signature-div {
+  width: 60mm;
+  height: 35mm;
+  // width:v-bind(WIDTH);
+  // height:v-bind(HEIGHT);
+  // display:block;
+  // margin: 0 auto;
+  // position: relative;
 
-  #signature-div {
-    width:60mm;
-    height:35mm;
-    // width:v-bind(WIDTH);
-    // height:v-bind(HEIGHT);
-    // display:block;
-    // margin: 0 auto;
-    // position: relative;
-
-    .signature-image {
-        border-bottom: 1px solid gray;
-        border-left: 1px solid gray;
-        border-right: 1px solid gray;
-        border-top: 1px solid gray;
-    }
+  .signature-image {
+    border-bottom: 1px solid gray;
+    border-left: 1px solid gray;
+    border-right: 1px solid gray;
+    border-top: 1px solid gray;
   }
+}
 
-  .brder{
+.brder {
 
-    border: 4px solid rgb(126, 126, 126);
-  }
+  border: 4px solid rgb(126, 126, 126);
+}
 
-  #signatureImage {
-    width:320px;
-    height:200px;
+#signatureImage {
+  width: 320px;
+  height: 200px;
 
-  }
-  </style>
+}
+</style>

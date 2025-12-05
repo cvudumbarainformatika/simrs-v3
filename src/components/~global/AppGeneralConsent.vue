@@ -179,7 +179,10 @@
                 :ttd="store.form.ttdpasien"
                 @save-ttd="(val)=> store.setForm('ttdpasien',val)"
               /> -->
-              <app-signature :ttd="store.form.ttdpasien" @save-ttd="(val) => store.setForm('ttdpasien', val)" />
+              <app-signature :ttd="store.form.ttdpasien" @save-ttd="(val) => store.setForm('ttdpasien', val)"
+                :pasien="pasien" uuid="ttdpasien" @signature="(val) => {
+                  store.setForm('ttdpasien', val)
+                }" />
               <div>{{ pasien?.nama_panggil }}</div>
             </div>
           </div>
@@ -260,6 +263,8 @@ const qrUrl = computed(() => {
 })
 
 function saveGeneralConsent() {
+  // console.log(store.form);
+
   loading.value = true
   store.setForm('isRajal', false) // tambahkan ini jika simpan by noreg
   store.saveGeneralConsentPasien(app?.user?.pegawai)
@@ -269,6 +274,10 @@ function saveGeneralConsent() {
 
       loading.value = false
       emits('openPreviewGc', 'cetak')
+    })
+    .catch((err) => {
+      loading.value = false
+      console.log(err)
     })
 }
 </script>

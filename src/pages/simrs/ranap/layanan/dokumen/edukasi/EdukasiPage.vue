@@ -136,7 +136,7 @@
 
           <div class="flex q-gutter-sm text-bold q-mt-sm">
             <div>B. </div>
-            <div>ASESMEN KEBUTUHAN EDUKASI</div>
+            <div>PERENCANAAN</div>
           </div>
           <div class="flex q-gutter-sm">
             <div>1. </div>
@@ -306,7 +306,7 @@
               <td class="t-vertical">
                 <div class="text-right">{{ item?.evaluasi }}</div>
               </td>
-              <td valign="top">-</td>
+              <td valign="top">{{ item?.tingkatPemahaman || '-' }}</td>
               <td valign="top">
 
                 <div v-if="item?.ttdPenerima" class="flex-center " style="width: 60px;">
@@ -384,7 +384,7 @@ onMounted(() => {
   store.getList(props?.pasien)
 })
 
-console.log('props', props.pasien);
+// console.log('props', props.pasien);
 const EDUKASI = computed(() => {
   // console.log('props', props?.pasien?.edukasi);
   return store.items

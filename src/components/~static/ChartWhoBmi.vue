@@ -2,18 +2,13 @@
   <q-card class="relative-position" :style="{ height: height, width: width }">
     <div
       v-if="calculateAgeInMonths(props?.pasien?.tgllahir ?? null) < 24 || calculateAgeInMonths(props?.pasien?.tgllahir ?? null) > 240"
-      class="fit full-height column flex-center" style="width: 100%; min-height: 600px;"
-    >
+      class="fit full-height column flex-center" style="width: 100%; min-height: 600px;">
       <div class="f-14 text-weight-bold">
         Maaf ... Halaman ini Hanya Untuk Pasien Usia 2 - 20 Tahun
       </div>
     </div>
     <div v-else class="fit relative-position">
-      <div
-        class="fit"
-        ref="line"
-        style="min-width:500px; min-height:600px;"
-      />
+      <div class="fit" ref="line" style="min-width:500px; min-height:600px;" />
       <!-- <div style="margin-bottom: 300px;" /> -->
     </div>
   </q-card>
@@ -59,7 +54,7 @@ onMounted(() => {
   }, 100)
 })
 
-function chartInit () {
+function chartInit() {
   const echart = echarts.init(line.value)
   if (line.value !== null) {
     const option = {
@@ -156,52 +151,6 @@ function chartInit () {
           },
           gridIndex: 0
         }
-        // {
-        //   text: 'Nama : ' + props?.pasien?.nama_panggil ?? '',
-        //   right: '3%',
-        //   left: 'auto',
-        //   top: '5%',
-        //   itemGap: 1,
-        //   textStyle: {
-        //     align: 'right',
-        //     fontSize: 12
-        //   }
-        // },
-        // {
-        //   text: `Record : ${props?.pasien?.noreg ?? ''}`,
-        //   right: '3%',
-        //   top: '7%',
-        //   textStyle: {
-        //     fontSize: 12,
-        //     fontWeight: 'normal'
-        //   }
-        // }
-        // {
-        //   text: `BB : ${props?.draft?.bb ?? 0} cm, PB : ${props?.draft?.pb ?? 0} kg`,
-        //   left: 10,
-        //   top: 70,
-        //   textStyle: {
-        //     fontSize: 12
-        //   }
-        // },
-        // {
-        //   text: `BBI : ${props?.draft?.titikC[1] ?? 0}`,
-        //   left: 10,
-        //   top: 110,
-        //   textStyle: {
-        //     fontSize: 30,
-        //     fontWeight: 'bold'
-        //   }
-        // },
-        // {
-        //   text: `BMI : ${props?.draft?.bmi ?? 0}`,
-        //   left: 10,
-        //   top: 140,
-        //   textStyle: {
-        //     fontSize: 30,
-        //     fontWeight: 'bold'
-        //   }
-        // }
 
       ],
       legend:
@@ -273,17 +222,6 @@ function chartInit () {
         }
       ],
       grid: [
-        // {
-        //   id: 'bbi',
-        //   left: '17%',
-        //   right: '10%',
-        //   bottom: '5%',
-        //   top: '9%',
-        //   width: 'auto',
-        //   height: 'auto',
-        //   borderWidth: 2,
-        //   containLabel: true
-        // },
         {
           id: 'bmi',
           left: '17%',
@@ -297,31 +235,15 @@ function chartInit () {
         }
 
       ],
-      // legend: {
-      //   bottom: 2,
-      //   left: 'center',
-      //   data: ['P 3rd', 'P 5rd', 'P 10rd', 'P 25rd', 'P 50rd', 'P 75rd', 'P 90rd', 'P 97rd']
-      // },
       tooltip: {
         show: true,
         trigger: 'axis',
         axisPointer: { type: 'cross' },
         backgroundColor: 'rgba(255, 255, 255, 0.8)',
-        // position: function (pos, params, el, elRect, size) {
-        //   const obj = { top: 10 }
-        //   obj[['left', 'right'][+(pos[0] < size.viewSize[0] / 2)]] = 30
-        //   return obj
-        // },
         extraCssText: 'width: 170px'
-        // formatter: 'Percentiles : <br/> {b}  : {c}'
       },
 
       axisPointer: {
-        // link: [
-        //   {
-        //     xAxisIndex: 'all'
-        //   }
-        // ],
         label: {
           show: true,
           formatter: function (params) {
@@ -601,22 +523,6 @@ function chartInit () {
 
         }
 
-        // {
-        //   type: 'scatter',
-        //   name: 'range',
-        //   data: props.draft?.rangeBmi.coor,
-        //   showSymbol: true,
-        //   symbol: 'circle',
-        //   color: '#000',
-        //   symbolSize: 2,
-        //   cursor: 'pointer',
-        //   markLine: {
-        //     data: [{ type: 'max' }, { type: 'min' }],
-        //     silent: true
-        //   }
-
-        // }
-
       ]
     }
     // }
@@ -671,7 +577,7 @@ const usia = (val) => {
   return Math.floor(round).toString() + ' th ' + totalMonths.toFixed(0) + ' bln'
 }
 
-function calculateAgeInMonths (birthdate) {
+function calculateAgeInMonths(birthdate) {
   if (!birthdate) return null // !birthdate return null
   const today = new Date()
   const birthdateObj = new Date(birthdate)

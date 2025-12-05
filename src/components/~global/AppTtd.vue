@@ -24,8 +24,9 @@ const positionY = ref()
 
 // const imgSrc = ref(null)
 
-const props = defineProps({ ttd: { type: String, default: null } })
-const emits = defineEmits(['saveTtd'])
+const props = defineProps({ ttd: { type: String, default: null }, uuid: { type: String, default: '00000000-0000-0000-0000-000000000000' } })
+
+const emits = defineEmits(['saveTtd', 'signature'])
 
 const imgTtd = computed({
   get() {
@@ -33,6 +34,7 @@ const imgTtd = computed({
   },
   set(nwVal) {
     emits('saveTtd', nwVal)
+    emits(`signature:${props.uuid}`, null)
   }
 })
 
