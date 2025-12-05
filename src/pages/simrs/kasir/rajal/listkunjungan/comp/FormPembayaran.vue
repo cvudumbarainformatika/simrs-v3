@@ -115,8 +115,7 @@
                 <!-- VA + Tombol Bayar -->
                 <div class="row items-center justify-between q-mt-sm">
                   <div class="text-caption text-grey-9 bg-grey-2 q-px-sm q-py-xs rounded-borders"
-                    style="font-family: monospace;"
-                    v-if="storepembayaran.loadingbayar || storepembayaran.loadingpembayaran">
+                    style="font-family: monospace;" v-if="storepembayaran.loadingbuttonbill">
                     <q-spinner-facebook color="blue" size="24px" />
                   </div>
                   <div class="text-caption text-grey-9 bg-grey-2 q-px-sm q-py-xs rounded-borders"
@@ -125,7 +124,7 @@
                   </div>
                   <div class="row items-center no-wrap">
                     <q-btn v-for="item in btnbilling" :key="item.value" flat dense no-caps glossy
-                      class="btn-badge q-mr-xs" @click="billingRekap(item)">
+                      class="btn-badge q-mr-xs" @click="bukaBill">
                       <q-badge color="negative" class="q-pa-xs bill-anim">
                         {{ item.label }}
                         <q-icon name="payment" size="22px" class="q-ml-xs bill-icon" />
@@ -160,7 +159,9 @@
       </div>
     </q-card>
   </q-page>
-  <q-dialog v-model="dialogBilling">
+  <CetakRekapBilling ref="refBilling" v-model="printRekap" :pasien="pasien" style="z-index: 19000;"
+    @tutup="actPrintRekap" />
+  <!-- <q-dialog v-model="dialogBilling">
     <q-card style="width: 1000px; max-width: 90vw;">
       <q-card-section>
         <div class="text-h6 text-weight-bold text-center">{{ judul }}
@@ -168,7 +169,8 @@
       </q-card-section>
       <q-separator />
       <q-card-section style="max-height: 80vh;" class="scroll">
-        <component :is="currentPage" :pasien="prop?.pasien" :btnclose="1" />
+
+        <component :is="currentPage" :pasien="pasienDipilih" />
       </q-card-section>
       <q-separator />
       <q-card-actions align="right">
@@ -176,7 +178,7 @@
         <q-btn flat label="Accept" color="primary" v-close-popup />
       </q-card-actions>
     </q-card>
-  </q-dialog>
+  </q-dialog> -->
 </template>
 
 <script setup>
@@ -186,13 +188,12 @@ import { useKasirRajalListKunjunganStore } from 'src/stores/simrs/kasir/rajal/ku
 import FormPembayaranDetail from './FormPembayaranDetail.vue'
 import DataPembayaran from './DataPembayaran.vue'
 import { usePembayaranKasirRajalStore } from 'src/stores/simrs/kasir/rajal/pembayaran'
-import { computed, defineAsyncComponent, ref, shallowRef } from 'vue'
+import { computed, defineAsyncComponent, markRaw, ref, shallowRef } from 'vue'
 import DataFlagingNonTunai from './DataFlagingNonTunai.vue'
-import { Loading } from 'quasar'
+import CetakRekapBilling from '../../../../kasir/rajal/listkunjungan/comp/CetakRekapBilling.vue'
 
 const store = useKasirRajalListKunjunganStore()
 const storepembayaran = usePembayaranKasirRajalStore()
-
 const qrUrl = computed(() => {
   const qrvalue = storepembayaran.qrcode === '' ? '123456789' : storepembayaran.qrcode// noreg
   // const dok = 'GENERAL-CONSENT.png'
@@ -209,33 +210,43 @@ const prop = defineProps({
   kwitansinontunai: { type: Array, default: () => [] },
   getKwitansiTerbayar: { type: Array, default: () => [] }
 })
-const dialogBilling = ref(false)
+
 const currentPage = shallowRef(null)
+
+currentPage.value = CetakRekapBilling
 const judul = ref('')
 const btnbilling = ref([
   {
     label: 'Billing Rekap',
     value: 'billingrekap',
-    page: defineAsyncComponent(() =>
+    page: markRaw(defineAsyncComponent(() =>
       import('../../../../kasir/rajal/listkunjungan/comp/CetakRekapBilling.vue')
-    )
+    ))
   },
-  {
-    label: 'Billing Detail',
-    value: 'billingdetail',
-    page: defineAsyncComponent(() =>
-      import('../../../../dokumen/comppoli/BillingPage.vue')
-    )
-  }
+  // {
+  //   label: 'Billing Detail',
+  //   value: 'billingdetail',
+  //   page: defineAsyncComponent(() =>
+  //     import('../../../../dokumen/comppoli/BillingPage.vue')
+  //   )
+  // }
 ])
-
-function billingRekap(item) {
-  console.log('billing rekap', item)
-  currentPage.value = item.page
-  judul.value = item.label
-  console.log('current page', judul.value)
-  dialogBilling.value = true
+const printRekap = ref(false)
+const refBilling = ref(null)
+function bukaBill() {
+  refBilling.value.openFaktur()
+  // console.log('ref bill', refBilling.value)
+  printRekap.value = true
 }
+function actPrintRekap() {
+  printRekap.value = false
+}
+// function billingRekap(item, pasien) {
+//   pasienDipilih.value = pasien ?? {}     // hindari undefined
+//   currentPage.value = item.page          // load component
+//   judul.value = item.label               // judul dialog
+//   dialogBilling.value = true
+// }
 
 </script>
 

@@ -83,12 +83,18 @@ const store = useKasirRajalListKunjunganStore()
 // const openPrevGc = ref(false)
 
 function openBill(row) {
+  // if (!row) {
+  //   console.log('openBill param:', param);
+  //   return
+  // } else {
   store.getparams.noreg = row?.noreg
   pasien.value = row
   billOpen.value = !billOpen.value
   store.getBill()
   store.getKwitansinontunai()
   store.getKwitansiTerbayar()
+  // }
+
 }
 function openPrint(val) {
   console.log('print', val)

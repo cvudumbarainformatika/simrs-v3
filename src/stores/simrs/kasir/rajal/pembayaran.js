@@ -12,6 +12,7 @@ export const usePembayaranKasirRajalStore = defineStore('pembayaran-kasir-rajal-
     loading: false,
     loadingpembayaran: false,
     loadingbayar: false,
+    loadingbuttonbill: false,
     loadingQris: false,
     items: [],
     itemsobat: [],
