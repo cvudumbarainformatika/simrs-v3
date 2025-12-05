@@ -1,23 +1,11 @@
 <template>
-  <app-dialog-mm
-    label="Cetak Rekap Billing"
-    label-btn-ok="Print"
-    :btn-ok="false"
-    @on-ok="emits('tutup')"
-  >
+  <app-dialog-mm label="Cetak Rekap Billing" label-btn-ok="Print" :btn-ok="false" @on-ok="emits('tutup')">
     <template #default>
-      <div
-        id="printMe"
-        style="width: 17cm;"
-        class="q-pa-xs full-width"
-      >
+      <div id="printMe" style="width: 17cm;" class="q-pa-xs full-width">
         <div class="row q-col-gutter-xs items-center garis-bawah-double q-mb-md">
           <div class="col-2">
-            <q-img
-              src="~assets/images/logo-kota-grey.png"
-              spinner-color="white"
-              style="height: 2cm; max-width: 1.6cm"
-            />
+            <q-img src="~assets/images/logo-kota-grey.png" spinner-color="white"
+              style="height: 2cm; max-width: 1.6cm" />
           </div>
           <div class="col-8 ">
             <div class="row justify-center">
@@ -35,11 +23,7 @@
             </div>
           </div>
           <div class="col-2 text-right">
-            <q-img
-              src="~assets/logos/logo-rsud.png"
-              spinner-color="white"
-              style="height: 2cm; max-width: 2cm"
-            />
+            <q-img src="~assets/logos/logo-rsud.png" spinner-color="white" style="height: 2cm; max-width: 2cm" />
           </div>
         </div>
 
@@ -74,7 +58,7 @@
                 Tgl Lahir
               </div>
               <div class="col-9">
-                {{ dateFullFormat( pasien.tgllahir) }}
+                {{ dateFullFormat(pasien.tgllahir) }}
               </div>
             </div>
           </div>
@@ -92,7 +76,7 @@
                 Tgl Masuk
               </div>
               <div class="col-8">
-                {{ dateFullFormat( pasien.tgl_kunjungan) }}
+                {{ dateFullFormat(pasien.tgl_kunjungan) }}
               </div>
             </div>
             <div class="row no-wrap">
@@ -188,11 +172,7 @@
             </div>
           </div>
           <div v-if="store.rekapBill.tindakan?.length">
-            <div
-              v-for="(tin,i) in store.rekapBill.tindakan"
-              :key="i"
-              class="row items-center no-wrap "
-            >
+            <div v-for="(tin, i) in store.rekapBill.tindakan" :key="i" class="row items-center no-wrap ">
               <div class="col-1" />
               <div class="col-9">
                 {{ tin.namatindakan }}
@@ -308,10 +288,9 @@
               Biaya Farmasi / Obat
             </div>
             <div class="col-2 garis-bawah-dablue text-right">
-              {{ formatRp(parseInt(store.rekapBill.obat)+parseInt(store.rekapBill.farmasinew)) }}
+              {{ formatRp(parseInt(store.rekapBill.obat) + parseInt(store.rekapBill.farmasinew)) }}
             </div>
           </div>
-
           <div class="row items-center no-wrap ">
             <div class="col-10 text-right">
               Sub Total Rp.
@@ -340,7 +319,7 @@
           <div class="row items-center no-wrap q-mt-xl">
             <div class="col-6 text-right" />
             <div class="col-6 text-weight-bold text-center">
-              Probolinggo, {{ date.formatDate(Date.now(),'DD MMMM YYYY') }}
+              Probolinggo, {{ date.formatDate(Date.now(), 'DD MMMM YYYY') }}
             </div>
           </div>
           <div class="row items-center no-wrap">
@@ -365,20 +344,9 @@
       </div>
     </template>
     <template #right-btn>
-      <q-btn
-        ref="refPrint"
-        v-print="printObj"
-        unelevated
-        color="primary"
-        label="Print"
-        size="md"
-        no-caps
-        @click="emits('tutup')"
-      >
-        <q-tooltip
-          class="primary"
-          :offset="[10, 10]"
-        >
+      <q-btn ref="refPrint" v-print="printObj" unelevated color="primary" label="Print" size="md" no-caps
+        @click="emits('tutup')">
+        <q-tooltip class="primary" :offset="[10, 10]">
           Print
         </q-tooltip>
       </q-btn>
@@ -392,11 +360,12 @@ import { useKasirRajalListKunjunganStore } from 'src/stores/simrs/kasir/rajal/ku
 
 const store = useKasirRajalListKunjunganStore()
 const props = defineProps({
-  pasien: { type: Object, default: () => {} }
+  pasien: { type: Object, default: () => ({}) }
+
 })
 const emits = defineEmits(['tutup'])
 
-function openFaktur () {
+function openFaktur() {
   const par = { noreg: props.pasien?.noreg }
   store.getBill(par)
   // console.log('par', par)
@@ -414,24 +383,27 @@ defineExpose({ openFaktur })
 </script>
 
 <style lang="scss" scoped>
-
-.garis-bawah-double{
+.garis-bawah-double {
   border-bottom: 4px solid rgba(0, 0, 0, 0.572);
   border-bottom-style: double;
 }
-.garis-atas-double{
+
+.garis-atas-double {
   border-top: 4px solid rgba(0, 0, 0, 0.572);
   border-top-style: double;
 }
-.garis-bawah-dablue{
+
+.garis-bawah-dablue {
   border-bottom: 1px solid rgb(56, 150, 239);
   border-bottom-style: dashed;
 }
-.garis-bawah-dblue{
+
+.garis-bawah-dblue {
   border-bottom: 4px solid rgb(56, 150, 239);
   border-bottom-style: double;
 }
-.garis-atas-dblue{
+
+.garis-atas-dblue {
   border-top: 4px solid rgb(56, 150, 239);
   border-top-style: double;
 }

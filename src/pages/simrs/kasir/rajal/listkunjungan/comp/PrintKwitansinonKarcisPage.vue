@@ -1,138 +1,107 @@
 <template>
-  <q-page class="q-pa-md">
-    <kop-surat-new-page />
-    <pre>{{ isikwitansi }}</pre>
-    <div class="row text-right text-weight-bold q-mb-md">
-      <div class="col-12">
-        No. Kwitansi : {{ isikwitansi[0]?.nokwitansi }}
-      </div>
-    </div>
-    <q-separator />
-    <div class="row text-center text-weight-bold q-mb-md">
-      <div class="col-1">No.</div>
-      <div class="col-6">Pemeriksaan</div>
-      <div class="col-5">Harga</div>
-    </div>
-    <div v-for="(item, index) in isikwitansi[0]?.rincian" :key="index" class="row text-center text-weight-bold q-mb-md">
-      <div class="col-1">{{ index + 1 }}.</div>
-      <div class="col-6">{{ item.nama }}</div>
-      <div class="col-5">{{ item.nama }}</div>
-    </div>
-    <div class="row text-right text-weight-bold q-mb-md">
+  <q-page class="q-pa-xl bg-white print:bg-white kwitansi-print">
 
-      <div class="col-5">
-        Tanggal Masuk
-      </div>
-      <div class="col-2 text-center">
-        :
-      </div>
-      <div class="col-5 text-left">
-        {{ humanDate(isikwitansi[0]?.tgl) }}
-      </div>
-      <div class="col-5">
-        No. RM
-      </div>
-      <div class="col-2 text-center">
-        :
-      </div>
-      <div class="col-5 text-left">
-        {{ isikwitansi[0]?.norm }}
-      </div>
-      <div class="col-5">
-        No. Registrasi
-      </div>
-      <div class="col-2 text-center">
-        :
-      </div>
-      <div class="col-5 text-left">
-        {{ isikwitansi[0]?.noreg }}
-      </div>
-      <div class="col-5">
-        Nama
-      </div>
-      <div class="col-2 text-center">
-        :
-      </div>
-      <div class="col-5 text-left">
-        {{ isikwitansi[0]?.nama }}
-      </div>
-      <div class="col-5">
-        Kelamin
-      </div>
-      <div class="col-2 text-center">
-        :
-      </div>
-      <div class="col-5 text-left">
-        {{ isikwitansi[0]?.kelamin }}
-      </div>
-      <div class="col-5">
-        Poli Tujuan
-      </div>
-      <div class="col-2 text-center">
-        :
-      </div>
-      <div class="col-5 text-left">
-        {{ isikwitansi[0]?.poli }}
-      </div>
-      <div class="col-5">
-        No. Antrian
-      </div>
-      <div class="col-2 text-center">
-        :
-      </div>
-      <div class="col-5 text-left">
-        -
-      </div>
-      <div class="col-5">
-        Sisyem Bayar
-      </div>
-      <div class="col-2 text-center">
-        :
-      </div>
-      <div class="col-5 text-left">
-        {{ isikwitansi[0]?.sistembayar }}
-      </div>
-      <div class="col-5">
-        Total
-      </div>
-      <div class="col-2 text-center">
-        :
-      </div>
-      <div class="col-5 text-left">
-        {{formatRpDouble(isikwitansi[0].rincian.reduce((a, x) => a + Number(x.jml), 0), 2)}}
-      </div>
+    <!-- KOP RUMAH SAKIT -->
+    <div class="column items-center text-center q-mb-sm full-width">
+      <kop-surat-new-page class="full-width" />
+      <!-- <div class="text-h6 text-weight-bold">UO</div>
+      <div class="text-caption">Jl. Bengawan Raya No. 12 – Probolinggo</div>
+      <div class="text-caption">Telp: (0335) 123456 – Email: info@rsbengawan.co.id</div> -->
+      <q-separator spaced />
     </div>
-    <div class="row q-pa-xl justify-between items-center">
-      <div class="kiri text-center">
-      </div>
-      <div class="kanan text-center">
-        <div><b>Probolinggo, {{ dateFullFormat(isikwitansi[0]?.created_at) }}</b></div>
-        <div><b>Petugas Kasir</b></div>
-        <div class="column flex-center">
-          <div style="width: 100px;">
-            <vue-qrcode :value="qrUrl" tag="svg" :options="{
-              errorCorrectionLevel: 'Q',
-              color: {
-                dark: '#000000',
-                light: '#ffffff',
-              },
-              margin: 0
-            }" />
-          </div>
+
+    <!-- BOX KWITANSI -->
+    <div class="kwitansi-box q-pa-md">
+
+      <div class="row q-mb-md">
+        <div class="col text-h6 text-weight-bold text-center">
+          KWITANSI PEMBAYARAN
         </div>
+      </div>
 
-        <div>
-          <b>{{ isikwitansi[0]?.pegawai?.nama }}</b>
+      <!-- Nomor Kwitansi -->
+      <div class="row q-mb-sm">
+        <div class="col-3 text-weight-bold">No. Kwitansi</div>
+        <div class="col-1">:</div>
+        <div class="col-8">{{ isikwitansi[0]?.nokwitansi }}</div>
+      </div>
+
+      <div class="row q-mb-sm">
+        <div class="col-3 text-weight-bold">Sudah diterima dari</div>
+        <div class="col-1">:</div>
+        <div class="col-8">{{ isikwitansi[0]?.nama }} ({{ isikwitansi[0]?.norm }})</div>
+      </div>
+
+      <div class="row q-mb-sm">
+        <div class="col-3 text-weight-bold">No. RM</div>
+        <div class="col-1">:</div>
+        <div class="col-8">{{ isikwitansi[0]?.noreg }}</div>
+      </div>
+
+      <div class="row q-mb-sm">
+        <div class="col-3 text-weight-bold">Sistem Bayar</div>
+        <div class="col-1">:</div>
+        <div class="col-8">{{ isikwitansi[0]?.sistembayar }}</div>
+      </div>
+
+      <div class="row q-mb-sm">
+        <div class="col-3 text-weight-bold">Untuk Pembayaran</div>
+        <div class="col-1">:</div>
+        <div class="col-8">
+          <pre>{{ isikwitansi[0]?.rincian[0]?.jenis }}</pre>
+        </div>
+      </div>
+
+      <div class="row q-mb-sm">
+        <div class="col-3 text-weight-bold">Nominal</div>
+        <div class="col-1">:</div>
+        <div class="col-8"> {{formatRpDouble(isikwitansi[0]?.rincian.reduce((a, x) => a + Number(x.jml), 0), 2)}}</div>
+      </div>
+
+      <div class="row q-mb-sm">
+        <div class="col-3 text-weight-bold">Terbilang</div>
+        <div class="col-1">:</div>
+        <div class="col-8"> {{terbilang(isikwitansi[0]?.rincian.reduce((a, x) => a + Number(x.jml), 0), 2)}} Rupiah
+        </div>
+      </div>
+
+
+
+      <div class="q-my-md" style="border-top: 1px dashed #000;"></div>
+
+      <!-- Tanggal -->
+      <div class="row q-mt-lg">
+        <div class="col text-right">
+          Probolinggo, {{ dateFullFormat(isikwitansi[0]?.created_at) }}
+        </div>
+      </div>
+
+      <!-- TTD -->
+      <div class="row text-right q-mt-md">
+        <div class="col text-right text-weight-bold">Petugas Kasir</div>
+      </div>
+
+      <div class="row justify-end q-mt-md">
+        <div style="width: 120px;">
+          <vue-qrcode :value="qrUrl" tag="svg" :options="{
+            errorCorrectionLevel: 'Q',
+            color: { dark: '#000000', light: '#ffffff' },
+            margin: 0
+          }" />
+        </div>
+      </div>
+
+      <div class="row q-mt-sm">
+        <div class="col text-right text-weight-bold">
+          {{ isikwitansi[0]?.pegawai?.nama }}
         </div>
       </div>
     </div>
-    <div class="row q-pa-xl justify-between items-center">
-      <div class="col-12 text-center">
-        🏥 Kwitansi ini adalah bukti pembayaran resmi.
-        Terima kasih atas kepercayaan Anda kepada layanan RSUD Mohamad Saleh Kota Probolinggo.
-        Semoga sehat selalu.
-      </div>
+
+    <div class="text-center q-mt-xl">
+      🏥 Terima kasih telah mempercayai layanan kami. Semoga lekas sembuh.
     </div>
+
   </q-page>
 </template>
 
@@ -163,6 +132,25 @@ const qrUrl = computed(() => {
   return `https://rsud.probolinggokota.go.id/dokumen-simrs/legalitas/${enc}`
   // return `https://xenter.my.id/qr-document?noreg=${noreg}&dokumen=${dok}&asal=${asal}`
 })
+
+function terbilang(n) {
+  const angka = ["", "Satu", "Dua", "Tiga", "Empat", "Lima", "Enam", "Tujuh", "Delapan", "Sembilan", "Sepuluh", "Sebelas"];
+
+  n = Math.floor(n);
+
+  if (n < 12) return angka[n];
+  if (n < 20) return terbilang(n - 10) + " Belas";
+  if (n < 100) return terbilang(Math.floor(n / 10)) + " Puluh " + terbilang(n % 10);
+  if (n < 200) return "seratus " + terbilang(n - 100);
+  if (n < 1000) return terbilang(Math.floor(n / 100)) + " Ratus " + terbilang(n % 100);
+  if (n < 2000) return "seribu " + terbilang(n - 1000);
+  if (n < 1000000) return terbilang(Math.floor(n / 1000)) + " Ribu " + terbilang(n % 1000);
+  if (n < 1000000000) return terbilang(Math.floor(n / 1000000)) + " Juta " + terbilang(n % 1000000);
+  if (n < 1000000000000) return terbilang(Math.floor(n / 1000000000)) + " Milyar " + terbilang(n % 1000000000);
+
+  return "jumlah terlalu besar";
+}
+
 
 onMounted(async () => {
   console.log("✅ Masuk ke onMounted")
@@ -227,3 +215,48 @@ onMounted(async () => {
 //   window.print()
 // })
 </script>
+<style>
+.kwitansi-box {
+  border: 2px solid #000;
+  border-radius: 6px;
+  background: #fff;
+}
+
+.tabel-kwitansi {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.tabel-kwitansi th,
+.tabel-kwitansi td {
+  border: 1px solid #000;
+  padding: 6px;
+}
+
+/* --- PRINT KHUSUS KERTAS 3-PLY (9.5 x 5.5 inch) --- */
+@media print {
+  @page {
+    size: auto !important;
+    margin: 0 !important;
+  }
+
+  html,
+  body {
+    height: auto !important;
+    overflow: visible !important;
+    background: #fff !important;
+  }
+
+  * {
+    page-break-before: avoid !important;
+    page-break-after: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  .q-page {
+    padding: 10px !important;
+  }
+}
+</style>

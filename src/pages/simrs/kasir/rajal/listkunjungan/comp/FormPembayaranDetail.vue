@@ -312,7 +312,6 @@
                           formatRpDouble(item?.subtotal)
                         }}</q-badge></q-item-label>
                   </q-item-section>
-
                   <q-item-section side top>
                     <q-item-label caption>{{ humanDate(item?.tgl) }}</q-item-label>
                     <q-btn v-if="store.form.carabayar === 'Tunai'" unelevated color="dark" round size="sm"

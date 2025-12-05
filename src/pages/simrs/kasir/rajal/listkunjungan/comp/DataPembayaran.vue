@@ -11,7 +11,7 @@
 
             <!-- Tombol di kanan -->
             <q-btn class="absolute-right q-mr-sm" unelevated color="orange" flat size="sm" padding="xs"
-              icon="icon-mat-refresh" @click="storekunjungan.getKwitansiTerbayar(prop.pasien?.noreg)">
+              icon="icon-mat-refresh" @click="refreshdatapembayaran(prop.pasien?.noreg)">
               <q-tooltip class="primary" :offset="[10, 10]">
                 Refresh Data
               </q-tooltip>
@@ -73,7 +73,8 @@
                       </div>
                       <div v-else class="q-gutter-xs row">
                         <!-- <q-btn flat round dense size="sm" icon="icon-mat-print" color="primary" /> -->
-                        <q-btn flat round dense size="sm" icon="icon-mat-delete" color="red" @click="batal(item)" />
+                        <q-btn flat round dense size="sm" icon="icon-mat-delete" color="red" @click="batal(item)"
+                          :loading="store.loadingbatalkwitansi === item.nota" />
                       </div>
                     </q-item-section>
                   </q-item>
@@ -114,13 +115,18 @@ function onScroll(info) {
   }
 }
 
+const refreshdatapembayaran = (val) => {
+  store.getKwitansiTerbayar(val)
+}
+
 const total = computed(() => {
-  const total = prop?.getKwitansiTerbayar?.reduce((acc, cur) => acc + cur.total, 0) ?? 0
-  return total
+  return prop?.getKwitansiTerbayar
+    ?.filter(x => x.batal !== '1')               // hanya yang tidak batal
+    .reduce((acc, cur) => acc + Number(cur.total), 0) ?? 0
 })
 
 function batal(val) {
-  console.log('batal', val)
+  store.batalkwitansi(val)
 }
 
 const printObj = {

@@ -127,8 +127,15 @@ function buatSEP () {
 }
 const errAddAntrian = ref('')
 function addAntrian () {
-  registrasi.addAntrian().then(resp => {
 
+  const dataPasien = refDataPasien.value.set()
+  const keys = Object.keys(dataPasien.form)
+  if (keys?.length) {
+    keys.forEach(key => {
+      registrasi.setForm(key, dataPasien.form[key])
+    })
+  }
+  registrasi.addAntrian().then(resp => {
     errAddAntrian.value = resp?.ambilAntrian
   })
 }

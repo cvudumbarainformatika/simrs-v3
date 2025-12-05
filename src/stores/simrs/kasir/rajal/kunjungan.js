@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import { api } from 'src/boot/axios'
 import { dateDbFormat } from 'src/modules/formatter'
 import { usePembayaranKasirRajalStore } from './pembayaran'
+import { notifErr, notifSuccess } from 'src/modules/utils'
 
 export const useKasirRajalListKunjunganStore = defineStore('kasir_rajal_list_kunjungan_umum', {
   state: () => ({
@@ -9,6 +10,7 @@ export const useKasirRajalListKunjunganStore = defineStore('kasir_rajal_list_kun
     kwitansi: [],
     kwitansikarcis: [],
     kwitansiterbayar: [],
+    loadingbatalkwitansi: false,
     meta: null,
     params: {
       q: '',
@@ -132,6 +134,7 @@ export const useKasirRajalListKunjunganStore = defineStore('kasir_rajal_list_kun
             total: k?.total,
             nama: k?.nama,
             usercetak: k?.nama,
+            jenis: 'karcis',
           }
           hasilglobal.push(hasil)
         })
@@ -145,6 +148,7 @@ export const useKasirRajalListKunjunganStore = defineStore('kasir_rajal_list_kun
             total: k?.total,
             nama: k?.nama,
             usercetak: k?.nama,
+            jenis: 'kwitansi',
           }
           hasilglobal.push(hasil)
         })
@@ -189,6 +193,30 @@ export const useKasirRajalListKunjunganStore = defineStore('kasir_rajal_list_kun
         this.loading = false
       }
       this.loading = false
+    },
+    batalkwitansi(val) {
+      this.loadingbatalkwitansi = true
+      const payload = { nokwitansi: val?.nota, jenis: val?.jenis }
+      return new Promise(resolve => {
+        api.post('/v1/simrs/kasir/rajal/batalkwitansi', payload)
+          .then(resp => {
+            const data = resp.data?.data
+            console.log('data', this.kwitansiterbayar)
+            this.kwitansiterbayar = this.kwitansiterbayar.map(item =>
+              item.nota === data?.nokwitansi
+                ? { ...item, ...data }   // merge item lama + data baru
+                : item                   // selain itu tetap
+            )
+
+            this.loadingbatalkwitansi = false
+            notifSuccess(resp.data?.message)
+            resolve(resp.data)
+          })
+          .catch(() => {
+            this.loadingbatalkwitansi = false
+            notifErr(resp.message)
+          })
+      })
     }
   }
 })
