@@ -39,6 +39,9 @@
                 <div class=" text-italic f-10">
                   {{ store.resep?.datapasien?.alamat ?? '-' }}
                 </div>
+                <div class=" text-italic f-10 text-bold text-orange">
+                  {{ store.resep?.datapasien?.tlp ?? '-' }}
+                </div>
                 <div v-if="store.resep?.kunjunganranap?.rs3" class="q-mt-xs text-weight-bold f-10 text-orange">
                   MRS : {{ dateFull(store.resep?.kunjunganranap?.rs3) }}
                 </div>

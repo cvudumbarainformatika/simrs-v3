@@ -1,13 +1,13 @@
 <template>
   <q-page class="" :class="style.componentfull ? 'container-no-header' : 'container--q-header q-pa-xs'">
     <div class="header">
-      <HeaderComp ada-per-page ada-refresh use-full :ruang="kdruangansim" :search="store.params.q"
+      <HeaderComp ada-per-page ada-refresh use-full ada-pengunjung :ruang="kdruangansim" :search="store.params.q"
         :flag="store.params.flag" :tipe="store.params.tipe" :iter_timing="store.params.iter_timing"
         :per-page="store.params.per_page" @cari="store.setSearch" @refresh="store.refresh"
         @set-per-page="store.setPerPage" @set-flag="store.setFlag" @set-tipe="store.setTipe"
         @set-iter-timing="store.setIterTiming" @set-periode="(val) => store.setPeriodik(val)"
         @terapkan="store.getDataTable()" @set-sistembayar="store.setSistembayar"
-        @set-list-sistembayar="store.setListSistembayar" />
+        @set-list-sistembayar="store.setListSistembayar" @list="bukaList" />
     </div>
     <q-card flat no-shadow square class="my-flex-1 scroll">
       <q-scroll-area style="height:calc( 100% - 40px)">
@@ -32,6 +32,12 @@
       </template>
     </app-fullscreen-blue>
     <DialogAlasan v-model="store.isAlasan" @close="alasanClose" />
+    <!-- List Pengunjung -->
+    <ListPengunjung v-model="openList" @close="openList = false" />
+    <!-- <app-fullscreen-blue v-model="openList" @close="openList = false">
+      <template #default>
+      </template>
+    </app-fullscreen-blue> -->
   </q-page>
 </template>
 
@@ -50,6 +56,7 @@ const ListPage = defineAsyncComponent(() => import('./comp/ListPage.vue'))
 const DialogPage = defineAsyncComponent(() => import('./comp/newDialogPage/DialogPage.vue'))
 const InfoPage = defineAsyncComponent(() => import('./comp/InfoPage.vue'))
 const DialogAlasan = defineAsyncComponent(() => import('./comp/DialogAlasan.vue'))
+const ListPengunjung = defineAsyncComponent(() => import('./comp/listPengunjung/ListPengunjungPage.vue'))
 
 const style = useStyledStore()
 const store = useEResepDepoFarmasiStore()
@@ -160,6 +167,14 @@ function listenForSpeechEvents () {
     console.log('end...')
     speech.isLoading = false
   }
+}
+
+// list pengunjung
+const openList = ref(false)
+function bukaList () {
+  console.log('buka list')
+  openList.value = true
+
 }
 onMounted(() => {
   setting.getPenunjang()
