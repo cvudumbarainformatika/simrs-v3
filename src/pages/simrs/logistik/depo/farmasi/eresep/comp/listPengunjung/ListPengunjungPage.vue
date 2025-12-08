@@ -129,16 +129,8 @@
                     </q-item-label>
                     <q-item-label>
                       Tgl Kunjungan : <span class="text-weight-bold text-accent"> {{ dateFullFormat(item.tgl_kunjungan)
-                      }}
+                        }}
                       </span> | jam : {{ formatJam(item.tgl_kunjungan) }}
-                    </q-item-label>
-                    <q-item-label caption>
-                      <i>Status Pasien : <span class="text-negative text-weight-bold">{{ getStatus(item.taskid)
-                      }}</span></i>
-                    </q-item-label>
-                    <q-item-label caption>
-                      <i>Nomor Antrian :<span class="text-primary text-weight-bold">{{ getAntrian(item.antrian_ambil)
-                      }}</span></i>
                     </q-item-label>
                   </q-item-section>
 
@@ -161,22 +153,22 @@
           <div class="row items-center justify-between q-pa-sm bg-primary text-white">
             <div>
               <div class="row items-center">
-                <q-btn flat :color="textColor" icon="icon-mat-skip_previous" size="sm" round
+                <q-btn flat color="white" icon="icon-mat-skip_previous" size="sm" round
                   :disable="meta.current_page === 1" @click="goToPage(1)" />
-                <q-btn flat :color="textColor" icon="icon-mat-chevron_left" size="sm" round
+                <q-btn flat color="white" icon="icon-mat-chevron_left" size="sm" round
                   :disable="meta.prev_page === null" @click="goToPage(meta.current_page - 1)" />
                 <div class="q-px-sm">
                   <div v-if="meta.total !== 0">
                     | <span class="q-px-sm">Hal <span class="text-negative text-weight-bold">{{ meta.current_page
-                    }}</span> dari {{ meta.last_page }} Hal</span> |
+                        }}</span> dari {{ meta.last_page }} Hal</span> |
                   </div>
                   <div v-else>
                     Tidak Ada Data
                   </div>
                 </div>
-                <q-btn flat :color="textColor" icon="icon-mat-chevron_right" size="sm" round
+                <q-btn flat color="white" icon="icon-mat-chevron_right" size="sm" round
                   :disable="meta.current_page === meta.last_page" @click="goToPage(meta.current_page + 1)" />
-                <q-btn flat :color="textColor" icon="icon-mat-skip_next" size="sm" round
+                <q-btn flat color="white" icon="icon-mat-skip_next" size="sm" round
                   :disable="meta.current_page === meta.last_page" @click="goToPage(meta.last_page)" />
               </div>
             </div>
@@ -189,7 +181,7 @@
 </template>
 <script setup>
 import { api } from 'src/boot/axios'
-import { dateDbFormat } from 'src/modules/formatter'
+import { dateDbFormat, dateFullFormat, formatJam } from 'src/modules/formatter'
 import { useAplikasiStore } from 'src/stores/app/aplikasi'
 import { onMounted, ref } from 'vue'
 
@@ -343,7 +335,7 @@ async function getData () {
       .then(resp => {
         items.value = resp?.data?.data ?? resp?.data
         meta.value = resp?.data?.meta ?? resp?.data
-        console.log('resp', resp, items.value, meta.value)
+        // console.log('resp', resp, items.value, meta.value)
       })
   } catch {
 
