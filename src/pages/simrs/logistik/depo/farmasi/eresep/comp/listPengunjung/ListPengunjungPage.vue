@@ -154,25 +154,25 @@
             <div>
               <div class="row items-center">
                 <q-btn flat color="white" icon="icon-mat-skip_previous" size="sm" round
-                  :disable="meta.current_page === 1" @click="goToPage(1)" />
+                  :disable="meta?.current_page === 1" @click="goToPage(1)" />
                 <q-btn flat color="white" icon="icon-mat-chevron_left" size="sm" round
-                  :disable="meta.prev_page === null" @click="goToPage(meta.current_page - 1)" />
+                  :disable="meta?.prev_page === null" @click="goToPage(meta?.current_page - 1)" />
                 <div class="q-px-sm">
-                  <div v-if="meta.total !== 0">
-                    | <span class="q-px-sm">Hal <span class="text-negative text-weight-bold">{{ meta.current_page
-                        }}</span> dari {{ meta.last_page }} Hal</span> |
+                  <div v-if="meta?.total !== 0">
+                    | <span class="q-px-sm">Hal <span class="text-negative text-weight-bold">{{ meta?.current_page
+                        }}</span> dari {{ meta?.last_page }} Hal</span> |
                   </div>
                   <div v-else>
                     Tidak Ada Data
                   </div>
                 </div>
                 <q-btn flat color="white" icon="icon-mat-chevron_right" size="sm" round
-                  :disable="meta.current_page === meta.last_page" @click="goToPage(meta.current_page + 1)" />
+                  :disable="meta?.current_page === meta?.last_page" @click="goToPage(meta?.current_page + 1)" />
                 <q-btn flat color="white" icon="icon-mat-skip_next" size="sm" round
-                  :disable="meta.current_page === meta.last_page" @click="goToPage(meta.last_page)" />
+                  :disable="meta?.current_page === meta?.last_page" @click="goToPage(meta?.last_page)" />
               </div>
             </div>
-            <div>{{ meta.total }} DATA DITEMUKAN</div>
+            <div>{{ meta?.total }} DATA DITEMUKAN</div>
           </div>
         </div>
       </div>
@@ -272,7 +272,7 @@ function gantiPoli (val) {
   const polinya = [...polis.value]
   polinya.splice(0, 1)
   const sendt = poli.value?.kodepoli === 'SEMUA POLI' ? polinya?.map(x => x?.kodepoli) : [poli.value?.kodepoli ?? '']
-  console.log(sendt)
+  // console.log(sendt)
   param.value.poli = sendt
 
   getData()
