@@ -102,12 +102,12 @@
                     </q-item-label>
                     <q-item-label class=" text-accent">
                       Tgl Permintaan : <span class="text-weight-bold "> {{ dateFullFormat(item.tgl_permintaan)
-                        }}
+                      }}
                       </span> | jam : {{ formatJam(item.tgl_permintaan) }}
                     </q-item-label>
                     <q-item-label class="text-primary">
                       Tgl Selesai : <span class="text-weight-bold"> {{ dateFullFormat(item.tgl_selesai)
-                        }}
+                      }}
                       </span> | jam : {{ formatJam(item.tgl_selesai) }}
                     </q-item-label>
                   </q-item-section>
@@ -122,7 +122,7 @@
                 </template>
                 <q-card>
                   <q-card-section>
-                    <app-loading v-if="item.loading && !item.detail" />
+                    <app-loading v-if="(item.loading && !item.detail) || item.reloading" />
                     <div v-else>
                       <div v-if="!item?.detail">
                         <div class="column flex-center" style="min-height:50vh">
@@ -135,6 +135,17 @@
                         </div>
                       </div>
                       <div v-else>
+                        <div class="row justify-end">
+                          <q-btn dense icon="icon-mat-refresh" flat round :loading="item?.loading || item.reloading"
+                            @click="() => {
+                              item.reloading = true
+                              showItem(item)
+                            }">
+                            <q-tooltip class="bg-white text-primary">
+                              Refresh rincian
+                            </q-tooltip>
+                          </q-btn>
+                        </div>
                         <div v-if="item?.detail?.permintaan?.length > 0">
                           <div class="f-16 text-weight-bold q-mb-sm">
                             Non Racikan
@@ -538,27 +549,33 @@ function getColor (val) {
 }
 
 function showItem (item) {
-  console.log('show item', item)
-  item.loading = true
-  const param = {
-    params: {
-      noresep: item?.noresep,
-      noresep_asal: item?.noresep_asal
+  if (!item.detail || item.reloading) {
+    item.loading = true
+    const param = {
+      params: {
+        noresep: item?.noresep,
+        noresep_asal: item?.noresep_asal
+      }
     }
+    return new Promise(resolve => {
+      api.get('v1/simrs/farmasinew/depo/rincian-resep', param)
+        .then(resp => {
+          // items.value = resp?.data?.data
+          console.log('resp detail', resp)
+          item.detail = resp?.data
+          delete item.loading
+          delete item.reloading
+
+          resolve(resp?.data)
+        })
+        .catch(() => {
+          delete item.loading
+          delete item.reloading
+
+        })
+    })
+
   }
-  return new Promise(resolve => {
-    api.get('v1/simrs/farmasinew/depo/rincian-resep', param)
-      .then(resp => {
-        // items.value = resp?.data?.data
-        console.log('resp detail', resp)
-        item.detail = resp?.data
-        item.loading = false
-        resolve(resp?.data)
-      })
-      .catch(() => {
-        item.loading = false
-      })
-  })
 }
 function keluarNon (permintaan, detail) {
   const keluar = detail?.rincian?.filter(x => x.kdobat == permintaan.kdobat && x.noresep == permintaan.noresep)?.reduce((a, b) => a + b.jumlah, 0)
