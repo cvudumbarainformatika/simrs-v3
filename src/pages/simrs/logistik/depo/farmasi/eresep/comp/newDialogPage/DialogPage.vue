@@ -129,6 +129,12 @@
       </div>
     </div>
     <div class="text-right q-mr-md q-my-sm">
+      <q-btn round push label="" class="f-12 q-mr-sm" color="purple" text-color="white" icon="icon-fa-pills-solid"
+        :loading="histori.loading" @click="openHistoryEresep = true">
+        <q-tooltip class="primary" :offset="[10, 10]">
+          History Eresep
+        </q-tooltip>
+      </q-btn>
       <q-btn round push label="" class="f-12 q-mr-sm" color="orange" text-color="white" icon="icon-fa-vials-solid"
         :loading="historiLab.loading" @click="() => {
           historiLab.isOpen = true
@@ -1374,6 +1380,7 @@
     </q-card>
   </q-dialog>
   <HistoryLabPage v-model="historiLab.isOpen" />
+  <HistoryEresepPage v-model="openHistoryEresep" :norm="store.resep?.norm" @close="openHistoryEresep = false" />
 </template>
 <script setup>
 import { ref, onMounted, defineAsyncComponent } from 'vue'
@@ -1398,6 +1405,7 @@ const refEtiketRajal = ref(null)
 const refEtiketRanap = ref(null)
 
 const openHistory = ref(false)
+const openHistoryEresep = ref(false)
 
 const openIter = ref(false)
 
@@ -1407,6 +1415,7 @@ const EtiketRajal = defineAsyncComponent(() => import('..//EtiketRajal.vue'))
 const EtiketRanap = defineAsyncComponent(() => import('..//EtiketRanap.vue'))
 const historyPage = defineAsyncComponent(() => import('src/pages/simrs/poli/tindakan/complayout/RightDrawer.vue'))
 const HistoryLabPage = defineAsyncComponent(() => import('..//HistoryLabPage.vue'))
+const HistoryEresepPage = defineAsyncComponent(() => import('../HistoryEresepPage.vue'))
 
 function openRajal (val) {
   // console.log('refEtiketRajal', refEtiketRajal.value)
