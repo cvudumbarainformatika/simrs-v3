@@ -129,7 +129,7 @@
                     </q-item-label>
                     <q-item-label>
                       Tgl Kunjungan : <span class="text-weight-bold text-accent"> {{ dateFullFormat(item.tgl_kunjungan)
-                        }}
+                      }}
                       </span> | jam : {{ formatJam(item.tgl_kunjungan) }}
                     </q-item-label>
                   </q-item-section>
@@ -160,7 +160,7 @@
                 <div class="q-px-sm">
                   <div v-if="meta?.total !== 0">
                     | <span class="q-px-sm">Hal <span class="text-negative text-weight-bold">{{ meta?.current_page
-                        }}</span> dari {{ meta?.last_page }} Hal</span> |
+                    }}</span> dari {{ meta?.last_page }} Hal</span> |
                   </div>
                   <div v-else>
                     Tidak Ada Data
@@ -351,8 +351,8 @@ function insertPoli () {
     polirs: 'SEMUA POLI'
   })
   const indexAnastesi = polis.value?.findIndex(x => x?.kodepoli == 'POL001')
-  const indexKonsGizi = polis.value?.findIndex(x => x?.kodepoli == 'POL011')
   if (indexAnastesi >= 0) polis.value?.splice(indexAnastesi, 1)
+  const indexKonsGizi = polis.value?.findIndex(x => x?.kodepoli == 'POL011')
   if (indexKonsGizi >= 0) polis.value?.splice(indexKonsGizi, 1)
   gantiPoli(polis.value[0])
 }
