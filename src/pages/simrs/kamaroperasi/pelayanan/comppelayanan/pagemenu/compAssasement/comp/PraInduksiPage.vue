@@ -1,0 +1,3 @@
+<template>
+  Pra Induksi
+</template>
