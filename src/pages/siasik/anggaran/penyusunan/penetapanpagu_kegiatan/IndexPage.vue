@@ -7,10 +7,10 @@
             <div class="flex flex-column items-center flex-center">
               <div class="col text-left">
                 <div class="f-14 text-weight-bold">
-                  Mapping Data
+                  Penetapan Pagu
                 </div>
                 <div class="title-desc">
-                  Kegiatan BLUD dengan Pejabat Teknis Kegiatan
+                  Pagu Kegiatan BLUD
                 </div>
               </div>
             </div>
@@ -44,7 +44,7 @@
               <FormPage />
             </div>
             <div class="col-8 full-height bg-grey scroll q-pa-sm">
-              <ListPage :listmaster="store.items" @edit="(val) => store.editForm(val)" @kunci="(val) => kunciData(val)"
+              <ListPage :listmaster="store.items" @edit="(val) => store.editForm(val)"
                 :loading="store.loadingDelete || store.loading" @delete="(val) => hapuskelasifikasi(val)" />
             </div>
           </div>
@@ -59,8 +59,8 @@ import { onMounted, ref } from 'vue';
 import FormPage from './comp/FormPage.vue';
 import ListPage from './comp/ListPage.vue';
 import { useQuasar } from 'quasar';
-import { useMasterMappingKegiatanPtkStore } from 'src/stores/siasik/master/mapping_kegiatanptk/mapping_kegiatanptk';
-const store = useMasterMappingKegiatanPtkStore()
+import { usePenetapanPaguStore } from 'src/stores/siasik/anggaran/penyusunan/penetapanpagu';
+const store = usePenetapanPaguStore()
 const $q = useQuasar()
 const options = ref([])
 const tahuns = ref([])
@@ -75,22 +75,6 @@ function hapuskelasifikasi(id) {
     persistent: true
   }).onOk(() => {
     store.deleteData(id)
-  }).onCancel(() => {
-  }).onDismiss(() => {
-    // console.log('I am triggered on both OK and Cancel')
-  })
-}
-
-function kunciData(id) {
-  console.log('kunci', id)
-  $q.dialog({
-    dark: true,
-    title: 'Peringatan',
-    message: 'Apakah Anda Yakin akan Mengunci Data ini?',
-    cancel: true,
-    persistent: true
-  }).onOk(() => {
-    store.kunciData(id)
   }).onCancel(() => {
   }).onDismiss(() => {
     // console.log('I am triggered on both OK and Cancel')

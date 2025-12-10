@@ -8,7 +8,7 @@ const anggaran = {
     {
       path: '/anggaran/penyusunan',
       // name: 'laporan.rekap.datapasien',
-      component: () => import('pages/siasik/anggaran/penyusunan/anggaranpendapatan/IndexPage.vue'),
+      component: () => import('pages/siasik/anggaran/penyusunan/IndexPage.vue'),
       children: [
         { path: '', redirect: '/anggaran/penyusunan/anggaranpendapatan' },
         {
@@ -17,8 +17,12 @@ const anggaran = {
           component: () =>
             import('src/pages/siasik/anggaran/penyusunan/anggaranpendapatan/IndexPage.vue')
         },
-
-
+        {
+          path: '/anggaran/penyusunan/penetapanpagu',
+          name: 'anggaran.penyusunan.penetapanpagu',
+          component: () =>
+            import('src/pages/siasik/anggaran/penyusunan/penetapanpagu_kegiatan/IndexPage.vue')
+        }
       ]
     },
 
