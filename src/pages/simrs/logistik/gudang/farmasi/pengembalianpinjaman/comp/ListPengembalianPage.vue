@@ -179,17 +179,22 @@
           <div class="col-auto" style="width: 10%">
             Satuan
           </div>
-          <div class="col-auto text-right" style="width: calc(35%/3)">
+          <div class="col-auto text-right" style="width: calc(35%/4)">
             <div class="q-mr-xs">
-              Jumlah Dikembalikan
+              Dikembalikan
             </div>
           </div>
-          <div class="col-auto text-right" style="width: calc(35%/3)">
+          <div class="col-auto text-right" style="width: calc(35%/4)">
             <div class="q-mr-xs">
-              Jumlah Stok Alokasi
+              Dikembalikan (FiFo)
             </div>
           </div>
-          <div class="col-auto  text-right" style="width: calc(35%/3)">
+          <div class="col-auto text-right" style="width: calc(35%/4)">
+            <div class="q-mr-xs">
+              Alokasi
+            </div>
+          </div>
+          <div class="col-auto  text-right" style="width: calc(35%/4)">
             <div class="q-mr-xs">
               Harga
             </div>
@@ -214,19 +219,24 @@
             <div class="col-auto" style="width: 10%">
               {{ item?.masterobat?.satuan_k }}
             </div>
-            <div class="col-auto text-right" style="width: calc(35%/3)">
+            <div class="col-auto text-right" style="width: calc(35%/4)">
               <div class="q-mr-xs">
                 {{ formatDouble(parseFloat(item?.jml_dikembalikan), 2) }}
               </div>
             </div>
-            <div class="col-auto text-right" style="width: calc(35%/3)">
+            <div class="col-auto text-right" style="width: calc(35%/4)">
+              <div class="q-mr-xs">
+                {{ formatDouble(parseFloat(kembaliFifo(item, row)), 2) }}
+              </div>
+            </div>
+            <div class="col-auto text-right" style="width: calc(35%/4)">
               <div class="q-mr-xs">
                 {{ formatDouble(parseFloat(item?.jmlstok - (item?.masterobat?.onepermintaandeporinci?.jumlah_minta ??
                   0)),
                   2) }}
               </div>
             </div>
-            <div class="col-auto  text-right" style="width: calc(35%/3)">
+            <div class="col-auto  text-right" style="width: calc(35%/4)">
               <div class="q-mr-xs">
                 {{ formatDouble(parseFloat(item?.harga), 2) }}
               </div>
@@ -295,6 +305,11 @@ function statusName (val) {
   }
 
   return nama
+}
+function kembaliFifo (item, row) {
+  const fifo = row?.rincian_fifo.filter(x => x.kdobat == item?.kdobat)?.reduce((a, b) => a + b?.jml_dikembalikan, 0) ?? 0
+  return fifo
+
 }
 onMounted(() => {
   store.getInitialData()
