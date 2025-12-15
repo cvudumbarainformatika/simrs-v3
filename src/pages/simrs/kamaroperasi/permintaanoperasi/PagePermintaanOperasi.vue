@@ -1,62 +1,25 @@
 <template>
-  <q-page
-    class=""
-    :class="style.componentfull?'container-no-header':'container--q-header q-pa-xs'"
-  >
+  <q-page class="" :class="style.componentfull ? 'container-no-header' : 'container--q-header q-pa-xs'">
     <div class="header bg-primary text-white">
-      <HeaderComp
-        class="q-pa-xs"
-        :tanggal="store.params.tgl"
-        :search="store.params.q"
-        :per-page="store.params.per_page"
-        :full="style.componentfull"
-        :custom="store.custom"
-        @fullscreen="style.setComponentFull"
-        @set-tanggal="(val)=>store.setDate(val)"
-        @set-search="store.setQ"
-        @set-row="store.setPerPage"
-        @refresh="store.getData"
-        @set-periode="(val)=>store.setPeriodik(val)"
-        @filter="store.setFilters"
-        @normal="store.notCustom"
-        @set-poli="(val)=> store.setPolis(val)"
-      />
+      <HeaderComp class="q-pa-xs" :tanggal="store.params.tgl" :search="store.params.q" :per-page="store.params.per_page"
+        :full="style.componentfull" :custom="store.custom" @fullscreen="style.setComponentFull"
+        @set-tanggal="(val) => store.setDate(val)" @set-search="store.setQ" @set-row="store.setPerPage"
+        @refresh="store.getData" @set-periode="(val) => store.setPeriodik(val)" @filter="store.setFilters"
+        @normal="store.notCustom" @set-poli="(val) => store.setPolis(val)" />
     </div>
     <div class="footer absolute-bottom bg-primary text-white z-top">
       <!-- <FooterComp :items="store.items" /> -->
-      <BottomComp
-        v-if="store.meta !==null"
-        :key="store.meta"
-        :meta="store.meta"
-        @go-to="store.setPage"
-      />
+      <BottomComp v-if="store.meta !== null" :key="store.meta" :meta="store.meta" @go-to="store.setPage" />
     </div>
-    <q-card
-      flat
-      no-shadow
-      class="my-flex-1 scroll"
-    >
-      <ListPermintaanok
-        :key="store.items"
-        :items="store.items"
-        :loading="store.loading"
-        :loading-terima="store.loadingTerima"
-        @pelayanan="bukaPelayanan"
-      />
+    <q-card flat no-shadow class="my-flex-1 scroll">
+      <ListPermintaanok :key="store.items" :items="store.items" :loading="store.loading"
+        :loading-terima="store.loadingTerima" @pelayanan="bukaPelayanan" />
     </q-card>
 
-    <FilterPage
-      v-model="store.filters"
-      @close="store.setFilters"
-      @filter-data="store.filterData"
-    />
+    <FilterPage v-model="store.filters" @close="store.setFilters" @filter-data="store.filterData" />
 
-    <page-pelayanan
-      :key="pasien"
-      v-model="store.pagePelayanan"
-      :pasien="pasien"
-      :loading-terima="store?.loadingTerima"
-    />
+    <page-pelayanan :key="pasien" v-model="store.pagePelayanan" :pasien="pasien"
+      :loading-terima="store?.loadingTerima" />
     <!-- <CetakRekapBilling
       v-model="printRekap"
       :pasien="pasien"
@@ -92,7 +55,7 @@ const store = usePermintaanOperasistore()
 function bukaPelayanan (val) {
   pasien.value = val
   store.pagePelayanan = true
-  // store.setTerima(val)
+  store.setTerima(val)
 }
 
 </script>
