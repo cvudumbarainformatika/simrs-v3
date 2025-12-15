@@ -259,10 +259,11 @@ export const usePermintaanOperasistore = defineStore('permintaan-operasi-store',
       if (findPasien) {
         findPasien.newapotekrajal = data?.newapotekrajal ?? []
         findPasien.permintaanobatoperasi = data?.permintaanobatoperasi ?? []
-        findPasien.dokter = data?.dokter ?? []
-        findPasien.sistembayar = data?.sistembayar ?? []
-        findPasien.kunjunganranap = data?.kunjunganranap ?? []
-        findPasien.kunjunganrajal = data?.kunjunganrajal ?? []
+        findPasien.dokter = data?.dokter ?? {}
+        findPasien.sistembayar = data?.sistembayar ?? {}
+        findPasien.kunjunganranap = data?.kunjunganranap ?? {}
+        findPasien.kunjunganrajal = data?.kunjunganrajal ?? {}
+        findPasien.manymemo = data?.manymemo ?? []
       }
     },
 
