@@ -19,6 +19,11 @@ const kasir = {
       name: 'Kwitansi',
       component: () => import('pages/simrs/kasir/rajal/listkunjungan/comp/PrintKwitansiPage.vue')
     },
+    {
+      path: '/kasir/tbp',
+      name: 'kasir.tbp',
+      component: () => import('pages/simrs/kasir/rajal/tbp/IndexPage.vue')
+    },
 
     // {
     //   path: '/kasir/rawatjalan',
