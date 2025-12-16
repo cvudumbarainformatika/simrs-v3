@@ -18,6 +18,7 @@ export const useKasirRajalListKunjunganStore = defineStore('kasir_rajal_list_kun
       sort: 'DESC',
       page: 1,
       order_by: 'id',
+      jenispasien: 'Pasien RS',
       tgl: dateDbFormat(new Date())
     },
     getparams: {

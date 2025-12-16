@@ -413,6 +413,7 @@ const prop = defineProps({
   billing: { type: Object, default: () => { } },
   kwitansi: { type: Array, default: () => [] },
   jenislayanan: { type: String, default: '' },
+  getKwitansiTerbayar: { type: Array, default: () => [] }
 })
 
 const paymentOptions = [
