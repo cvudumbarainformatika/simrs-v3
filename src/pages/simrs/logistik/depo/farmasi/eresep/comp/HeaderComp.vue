@@ -27,6 +27,14 @@
           style="min-width: 150px;" @update:model-value="setSistembayar" />
       </div>
       <div class="kanan">
+        <!-- list pengunjung -->
+
+        <q-btn v-if="ruang === 'Gd-05010101'" unelevated round size="sm" color="negative" icon="icon-mat-personal_injury"
+          @click="emits('list')">
+          <q-tooltip class="primary" :offset="[10, 10]">
+            List Pengunjung
+          </q-tooltip>
+        </q-btn>
         <!-- refresh Ids -->
         <q-btn v-if="props.adaRefresh" unelevated round size="sm" icon="icon-mat-refresh" @click="emits('refresh')">
           <q-tooltip class="primary" :offset="[10, 10]">
@@ -69,13 +77,14 @@ import { useStyledStore } from 'src/stores/app/styled'
 import { useAplikasiStore } from 'src/stores/app/aplikasi'
 
 const style = useStyledStore()
-const emits = defineEmits(['cari', 'refresh', 'setPerPage', 'setFlag', 'setPeriode', 'setTipe', 'setSistembayar', 'setListSistembayar', 'terapkan', 'setIterTiming'])
+const emits = defineEmits(['cari', 'refresh', 'setPerPage', 'setFlag', 'setPeriode', 'setTipe', 'setSistembayar', 'setListSistembayar', 'terapkan', 'setIterTiming', 'list'])
 const props = defineProps({
   ruang: { type: String, default: '' },
   search: { type: String, default: '' },
   labelCari: { type: String, default: 'Cari ...' },
   adaPerPage: { type: Boolean, default: false },
   adaRefresh: { type: Boolean, default: false },
+  adaPengunjung: { type: Boolean, default: false },
   useFull: { type: Boolean, default: false },
   perPage: { type: Number, default: 5 },
   flag: { type: String, default: '1' },

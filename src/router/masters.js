@@ -249,6 +249,11 @@ const masters = {
           name: 'master.siasik.kegiatanblud',
           component: () => import('pages/siasik/master/kegiatan_blud/IndexPage.vue')
         },
+        {
+          path: '/master/siasik/mappingkegiatanptk',
+          name: 'master.siasik.mappingkegiatanptk',
+          component: () => import('pages/siasik/master/mappingkegiatanptk/IndexPage.vue')
+        },
       ]
     },
     // {

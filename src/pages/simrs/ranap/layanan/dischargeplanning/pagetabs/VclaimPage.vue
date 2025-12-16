@@ -4,19 +4,17 @@
       class="fit">
       <template #before>
         <div class="column full-height bg-white scroll">
-          <!-- <FormPage :pasien="pasien" :menu="menu" /> -->
-          MASIH DIPROSES
+          <FormPage :pasien="pasien" :menu="menu" :store="store" />
         </div>
       </template>
 
       <template #after>
         <div class="column full-height">
-          <div v-if="!pasien?.summarydischargeplannings?.length" class="column full-height flex-center">
+          <div v-if="!store.items?.length" class="column full-height flex-center">
             <div>Belum Ada Data</div>
           </div>
           <div v-else class="full-height scroll">
-            <!-- <LisComp :items="pasien?.summarydischargeplannings" :pasien="pasien" /> -->
-            MASIH DIPROSES
+            <LisComp :items="store.items" :pasien="pasien" :store="store" />
           </div>
         </div>
       </template>
@@ -25,19 +23,22 @@
 </template>
 
 <script setup>
-import { defineAsyncComponent, ref } from 'vue'
+import { defineAsyncComponent, ref, onMounted } from 'vue'
+import { useKontrolRanapStore } from 'src/stores/simrs/ranap/kontrol'
 
 const FormPage = defineAsyncComponent(() => {
-  return import('./compSummary/FormPage.vue')
+  return import('./compVclaim/FormPage.vue')
 })
 
 const LisComp = defineAsyncComponent(() => {
-  return import('./compSummary/ListComp.vue')
+  return import('./compVclaim/ListComp.vue')
 })
+
+const store = useKontrolRanapStore()
 
 const splitterModel = ref(60)
 
-defineProps({
+const props = defineProps({
   pasien: {
     type: Object,
     default: null
@@ -46,5 +47,11 @@ defineProps({
     type: Object,
     default: null
   }
+})
+
+onMounted(() => {
+  store.initReset()
+  store.getData(props?.pasien?.noreg)
+  // store.getDataBpjs()
 })
 </script>

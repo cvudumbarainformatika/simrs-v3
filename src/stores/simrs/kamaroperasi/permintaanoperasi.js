@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia'
+import { acceptHMRUpdate, defineStore } from 'pinia'
 import { Notify, date } from 'quasar'
 import { api } from 'src/boot/axios'
 import { dateDbFormat } from 'src/modules/formatter'
@@ -59,17 +59,9 @@ export const usePermintaanOperasistore = defineStore('permintaan-operasi-store',
             this.meta = resp.data?.meta ?? resp?.data
             this.items = resp.data.data
             this.items.forEach(xxx => {
-              // xxx.noreg = xxx?.rs1
-              // xxx.kelamin = xxx?.kunjunganranap?.masterpasien?.rs17 ?? xxx?.kunjunganrajal?.masterpasien?.rs17
-              // xxx.norm = xxx?.kunjunganranap?.masterpasien?.rs1 ?? xxx?.kunjunganrajal?.masterpasien?.rs1
-              // xxx.groups = xxx?.sistembayar?.groups
-              // xxx.kodesistembayar = xxx?.rs14
-              // xxx.kodedokter = xxx?.rs8
               xxx.kdruangan = 'R-0101021'
-              // xxx.usia = this.getUsia(xxx?.rs3, xxx?.kunjunganranap?.masterpasien?.rs16)
             })
           }
-          // console.log('kunjungan Ok', this.items, this.meta)
         }).catch((err) => {
           console.log(err)
           this.loading = false
@@ -220,13 +212,11 @@ export const usePermintaanOperasistore = defineStore('permintaan-operasi-store',
       const form = { noreg: pasien?.noreg }
       this.noreg = pasien?.noreg
       try {
-        const resp = await api.post('v1/simrs/rajal/poli/terimapasien', form)
+        const resp = await api.post('v1/simrs/penunjang/ok/buka-layanan', form)
         // console.log('terima', resp)
         if (resp.status === 200) {
-          const findPasien = this.items.filter(x => x === pasien)
-          if (findPasien?.length) {
-            findPasien[0].status = findPasien[0].status === '' ? '2' : findPasien[0].status
-          }
+          const data = resp?.data?.data
+          this.setPasien(data, pasien)
           this.loadingTerima = false
           this.noreg = null
           this.togglePageTindakan()
@@ -250,7 +240,11 @@ export const usePermintaanOperasistore = defineStore('permintaan-operasi-store',
         await api.post('v1/simrs/rajal/poli/tidakhadir', form)
 
         this.loadingTidakhadir = false
-        this.setinject(pasien?.noreg)
+        const findPasien = this.items.find(x => x.noreg === pasien?.noreg)
+        // console.log('wew', findPasien)
+        if (findPasien) {
+          findPasien.status = '3'
+        }
       }
       catch (error) {
         this.loadingTidakhadir = false
@@ -259,12 +253,17 @@ export const usePermintaanOperasistore = defineStore('permintaan-operasi-store',
       }
     },
 
-    setinject (noreg) {
-      const findPasien = this.items.filter(x => x.noreg === noreg)
-      console.log('wew', findPasien)
-      if (findPasien?.length) {
-        const data = findPasien[0]
-        data.status = '3'
+    setPasien (data, pasien) {
+      const findPasien = this.items.find(x => x.noreg === pasien?.noreg)
+      console.log('inject', data, findPasien)
+      if (findPasien) {
+        findPasien.newapotekrajal = data?.newapotekrajal ?? []
+        findPasien.permintaanobatoperasi = data?.permintaanobatoperasi ?? []
+        findPasien.dokter = data?.dokter ?? {}
+        findPasien.sistembayar = data?.sistembayar ?? {}
+        findPasien.kunjunganranap = data?.kunjunganranap ?? {}
+        findPasien.kunjunganrajal = data?.kunjunganrajal ?? {}
+        findPasien.manymemo = data?.manymemo ?? []
       }
     },
 
@@ -282,14 +281,10 @@ export const usePermintaanOperasistore = defineStore('permintaan-operasi-store',
     },
 
     injectDataPasien (pasien, val, kode) {
-      const findPasien = this.items.filter(x => x === pasien)
-      // console.log('inject pasien', findPasien)
-      if (findPasien?.length) {
-        const data = findPasien[0]
+      const findPasien = this.items.find(x => x.noreg === pasien.noreg)
+      if (findPasien) {
+        const data = findPasien
         const target = data[kode]?.find(x => x.id === val.id)
-        // console.log('inject target pasien', target)
-        // console.log('inject kode pasien', kode)
-        // console.log('inject isi pasien', val)
         if (target) {
           Object.assign(target, val)
         }
@@ -468,3 +463,7 @@ export const usePermintaanOperasistore = defineStore('permintaan-operasi-store',
     }
   }
 })
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(usePermintaanOperasistore, import.meta.hot))
+}
