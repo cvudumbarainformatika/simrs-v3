@@ -15,21 +15,29 @@
           </q-item-label>
         </q-item-section>
       </q-card-section>
-      <q-card-actions align="right">
+      <q-card-actions align="right" class="flex q-gutter-sm">
+
         <q-btn :disable="index === n" :loading="n === index" flat dense round size="sm" padding="sm"
+          icon="icon-mat-print" @click="cetakSuratKontrol(item, n)" />
+        <q-btn :disable="index === n" :loading="n === index" flat dense round color="negative" size="sm" padding="sm"
           icon="icon-mat-delete" @click="hapusItem(item, n)" />
       </q-card-actions>
     </q-card>
+
+
+    <DialogCetakSurakontrol v-model="isCetak" :item="itemx" :pasien="pasien" />
+
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, defineAsyncComponent } from 'vue'
 import { useQuasar } from 'quasar'
 // import { useDischargePlanningRanapStore } from 'src/stores/simrs/ranap/dischargeplanning'
 // import { useSkriiningDischargePlanningRanapStore } from 'src/stores/simrs/ranap/skriingdischargeplanning'
 
 // const store = useSkriiningDischargePlanningRanapStore()
+const DialogCetakSurakontrol = defineAsyncComponent(() => import('./DialogCetakSuratkontrol.vue'))
 
 const props = defineProps({
   items: {
@@ -48,6 +56,14 @@ const props = defineProps({
 
 const $q = useQuasar()
 const index = ref(null)
+
+const isCetak = ref(false)
+const itemx = ref(null)
+
+const cetakSuratKontrol = (item, n) => {
+  itemx.value = item
+  isCetak.value = true
+}
 const hapusItem = (item, n) => {
   $q.dialog({
     title: 'Konfirmasi',
