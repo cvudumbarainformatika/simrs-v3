@@ -56,13 +56,14 @@
       <div class="section-title">Riwayat Kesehatan : </div>
       <div class="data">
         <div class="data-item">1. Diagnosa masuk : {{ pasien?.memodiagnosa || '-' }}</div>
-        <div class="data-item">2. Riwayat Kesehatan Sekarang : {{ anamnesisAwal?.riwayatpenyakitsekarang || '-' }}</div>
-        <div class="data-item">3. Riwayat Penyakit Dahulu : {{ anamnesisAwal?.riwayatpenyakit || '-' }}</div>
-        <div class="data-item">4. Riwayat Penyakit Keluarga : {{ anamnesisAwal?.riwayatpenyakitkeluarga || '-' }}</div>
-        <div class="data-item">5. Riwayat Pekerjaan : {{
+        <div class="data-item">2. Keluhan Utama : {{ anamnesisAwal?.keluhanUtama || '-' }}</div>
+        <div class="data-item">3. Riwayat Kesehatan Sekarang : {{ anamnesisAwal?.riwayatpenyakitsekarang || '-' }}</div>
+        <div class="data-item">4. Riwayat Penyakit Dahulu : {{ anamnesisAwal?.riwayatpenyakit || '-' }}</div>
+        <div class="data-item">5. Riwayat Penyakit Keluarga : {{ anamnesisAwal?.riwayatpenyakitkeluarga || '-' }}</div>
+        <div class="data-item">6. Riwayat Pekerjaan : {{
           anamnesisAwal?.riwayat_pekerjaan_yang_berhubungan_dengan_zat_berbahaya || '-' }}</div>
-        <div class="data-item">6. Keluhan Nyeri : {{ anamnesisAwal?.keluhannyeri?.skor > 0 ? 'Ada' : 'Tidak ada' || '-'
-        }}
+        <div class="data-item">7. Keluhan Nyeri : {{ anamnesisAwal?.keluhannyeri?.skor > 0 ? 'Ada' : 'Tidak ada' || '-'
+          }}
         </div>
       </div>
     </div>
@@ -971,12 +972,12 @@ const qrPenerima = computed(() => {
   const enc = btoa(`${noreg}|${dok}|${asal}|${ttdPenerima}`)
   return `https://rsud.probolinggokota.go.id/dokumen-simrs/legalitas/${enc}`
 })
-function kepPlann (item) {
+function kepPlann(item) {
   const inter = item?.intervensi?.filter(x => x?.masterintervensi?.group === 'plann')
   // console.log('item', item, inter)
   return inter
 }
-function kepInter (item) {
+function kepInter(item) {
   const inter = item?.intervensi?.filter(x => x?.masterintervensi?.group !== 'plann')
   // console.log('item', item, inter)
   return inter
