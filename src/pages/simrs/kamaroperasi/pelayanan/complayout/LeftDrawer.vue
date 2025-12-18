@@ -33,7 +33,7 @@
           {{ pasien ? pasien.rs1 : '-' }} || {{ pasien?.kunjunganranap?.rs2 ?? pasien?.kunjunganrajal?.rs2 }}
         </div>
         <div class="text-yellow text-italic f-10">
-          {{ pasien?.usia ?? '-' }} Tahun || {{ pasien?.kunjunganranap?.masterpasien?.rs17 ??
+          {{ pasien?.usia ?? '-' }} || {{ pasien?.kunjunganranap?.masterpasien?.rs17 ??
             pasien?.kunjunganrajal?.masterpasien?.kelamin }}
         </div>
       </div>

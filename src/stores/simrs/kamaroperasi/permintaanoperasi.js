@@ -3,6 +3,7 @@ import { Notify, date } from 'quasar'
 import { api } from 'src/boot/axios'
 import { dateDbFormat } from 'src/modules/formatter'
 import { notifErrVue } from 'src/modules/utils'
+import { useSurgicalSafetyStore } from './surgicalSafety'
 
 export const usePermintaanOperasistore = defineStore('permintaan-operasi-store', {
   state: () => ({
@@ -254,6 +255,7 @@ export const usePermintaanOperasistore = defineStore('permintaan-operasi-store',
     },
 
     setPasien (data, pasien) {
+      const surgical = useSurgicalSafetyStore()
       const findPasien = this.items.find(x => x.noreg === pasien?.noreg)
       console.log('inject', data, findPasien)
       if (findPasien) {
@@ -264,6 +266,11 @@ export const usePermintaanOperasistore = defineStore('permintaan-operasi-store',
         findPasien.kunjunganranap = data?.kunjunganranap ?? {}
         findPasien.kunjunganrajal = data?.kunjunganrajal ?? {}
         findPasien.manymemo = data?.manymemo ?? []
+        findPasien.manytindakanop = data?.manytindakanop ?? []
+        findPasien.surgical = data?.surgical ?? []
+
+        surgical.pasien = findPasien
+        surgical.resetForm()
       }
     },
 
