@@ -148,6 +148,5 @@ function qrUrl (val) {
 onMounted(() => {
 
   store.resetForm()
-  console.log('sign in', store.form, store.signIn)
 })
 </script>

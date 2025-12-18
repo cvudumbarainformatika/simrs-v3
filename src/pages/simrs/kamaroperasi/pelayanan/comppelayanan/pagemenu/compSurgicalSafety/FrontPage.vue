@@ -67,6 +67,13 @@ const tabs = ref([
     // nakes: ['2', '3'],
     comp: shallowRef(defineAsyncComponent(() => import('./comp/SignOutPage.vue')))
   },
+  {
+    label: 'Implant',
+    name: 'implant',
+    icon: 'support',
+    // nakes: ['2', '3'],
+    comp: shallowRef(defineAsyncComponent(() => import('./comp/PemakaianImplantPage.vue')))
+  },
 ])
 
 const menu = computed(() => {
