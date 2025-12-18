@@ -1,14 +1,18 @@
 <template>
   <div class="row items-center justify-between q-pa-sm" :class="`${color} text-${textColor}`">
-    <div>
-      <q-input v-model="q" outlined dark color="white" dense placeholder="Cari Kunjungan ..." debounce="500" />
+    <div class="row items-center col">
+      <div class="q-mr-sm" style="width: 220px;">
+        <q-input v-model="store.params.q" outlined dark color="white" dense placeholder="Cari Kunjungan ..."
+          debounce="500" />
+      </div>
+      <div class="q-mr-sm" style="width: 220px;">
+        <q-select v-model="store.params.jenispasien"
+          :options="['Pasien RS', 'Pasien Luar Laborat', 'Pasien Luar Radiologi', 'Pasien Luar Apotek']"
+          label="Jenis Pasien" dense outlined dark color="white" emit-value map-options
+          @update:model-value="store.getLists" />
+      </div>
     </div>
-    <div class="col q-pl-sm" style="width: 10px;">
-      <q-select v-model="txt"
-        :options="['Pasien RS', 'Pasien Luar Laborat', 'Pasien Luar Radiologi', 'Pasien Luar Apotek']"
-        label="Jenis Pasien" dense outlined dark color="white" emit-value map-options />
-    </div>
-    <div>
+    <div class="row items-center justify-end col-auto">
       <q-btn flat :color="textColor" icon-right="icon-mat-event" :label="tanggal" size="sm" padding="xs"
         class="q-mr-sm">
         <q-popup-proxy ref="popup">
@@ -56,7 +60,10 @@
 
 <script setup>
 import { dateDbFormat } from 'src/modules/formatter'
+import { useKasirRajalListKunjunganStore } from 'src/stores/simrs/kasir/rajal/kunjungan'
 import { computed, ref } from 'vue'
+
+const store = useKasirRajalListKunjunganStore()
 const txt = ref('SEMUA')
 const txts = ref(['SEMUA', 'TERLAYANI', 'BELUM TERLAYANI'])
 const emits = defineEmits(['fullscreen', 'setTanggal', 'setSearch', 'setRow'])

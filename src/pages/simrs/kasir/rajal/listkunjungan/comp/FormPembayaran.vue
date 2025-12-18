@@ -146,7 +146,7 @@
         <!-- Form Pembayaran -->
         <div class="col-4">
           <form-pembayaran-detail :pasien="prop?.pasien" :jenislayanan="store.jenispembayaran" :billing="prop?.billing"
-            :kwitansikarcis="prop?.kwitansikarcis" />
+            :kwitansikarcis="prop?.kwitansikarcis" :getKwitansiTerbayar="prop?.getKwitansiTerbayar" />
         </div>
         <!-- Data Pembayaran -->
         <div class="col-4">

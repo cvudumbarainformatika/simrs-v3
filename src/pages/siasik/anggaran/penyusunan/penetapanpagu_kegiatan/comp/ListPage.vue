@@ -5,21 +5,25 @@
     </div>
     <q-list v-else bordered class="rounded-borders bg-white" separator square>
       <q-item class="bg-primary text-white">
-        <q-item-section style="max-width: 20px;">No</q-item-section>
-        <q-item-section style="max-width: 20%;">NIP</q-item-section>
-        <q-item-section style="max-width: 30%;">Nama</q-item-section>
-        <q-item-section>Kegiatan</q-item-section>
+        <q-item-section>
+          No Transaksi
+        </q-item-section>
+        <q-item-section style="max-width: 50px;">T.A</q-item-section>
         <q-item-section>Bidang/Bagian</q-item-section>
+        <q-item-section>Kegiatan</q-item-section>
+        <q-item-section class="text-right q-pr-xl">Nilai (Rp)</q-item-section>
         <q-item-section side>
           #
         </q-item-section>
       </q-item>
-      <q-item v-for="(row, i) in listmaster" :key="row?.id" v-ripple class="q-py-xs">
-        <q-item-section style="max-width: 20px;"> {{ i + 1 }} </q-item-section>
-        <q-item-section style="max-width: 20%;">{{ row.kodepptk }}</q-item-section>
-        <q-item-section style="max-width: 30%;">{{ row.namapptk }}</q-item-section>
-        <q-item-section>{{ row.kegiatan }}</q-item-section>
-        <q-item-section>{{ row.bidang }}</q-item-section>
+      <q-item v-for="row in listmaster" :key="row?.id" v-ripple class="q-py-xs">
+        <q-item-section>
+          {{ row.notrans }}
+        </q-item-section>
+        <q-item-section style="max-width: 50px;">{{ row.tahun }}</q-item-section>
+        <q-item-section>{{ row.namaorganisasi }}</q-item-section>
+        <q-item-section>{{ row.kegiatanblud }}</q-item-section>
+        <q-item-section class="text-right">{{ formattanpaRp(row.total) }}</q-item-section>
         <q-item-section side>
           <div class="row q-gutter-xs">
             <!-- <q-btn flat icon="icon-mat-layers" size="sm" round color="primary" @click="openRincian(row)" /> -->
@@ -52,5 +56,5 @@ const openRincian = (row) => {
   showRincian.value = true
 }
 
-const emits = defineEmits(['rinci', 'edit', 'delete'])
+const emits = defineEmits(['rinci', 'edit', 'kunci', 'delete'])
 </script>
