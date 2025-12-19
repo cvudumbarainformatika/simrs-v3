@@ -107,6 +107,52 @@
               </q-list>
             </div>
 
+            <div class="row q-mt-sm"
+              v-if="(selectedPayment === '' || selectedPayment === 'konsulantarpoli') && store.itemskonsulantarpoli">
+
+              <q-list class="full-width kwitansi-card">
+                <q-item>
+                  <q-item-section>
+                    <q-item-label> {{ store.itemskonsulantarpoli?.rs6 }}</q-item-label>
+                    <q-item-label>Subtotal Pelayanan Konsul Antar Poli <q-badge
+                        :color="paymentOptions.find(item => item.value === 'konsulantarpoli')?.color"
+                        class="text-weight-bold">{{
+                          formatRpDouble(store.itemskonsulantarpoli?.subtotal)
+                        }}</q-badge></q-item-label>
+                  </q-item-section>
+                  <q-item-section side top>
+                    <q-item-label caption>{{ humanDate(store.itemskonsulantarpoli?.rs4) }}</q-item-label>
+                    <div class="row q-gutter-xs">
+                      <q-btn v-if="store.form.carabayar === 'Tunai'" unelevated color="dark" round size="sm"
+                        icon="icon-mat-attach_money" :loading="store.loadingpembayaran"
+                        @click="bayarkarcis('konsulantarpoli', store.itemskonsulantarpoli?.subtotal)">
+                        <q-tooltip class="primary" :offset="[10, 10]">
+                          Bayar & Print
+                        </q-tooltip>
+                      </q-btn>
+                      <q-btn v-if="store.form.carabayar === 'Qris'" unelevated color="dark" round size="sm"
+                        icon="icon-mat-qr_code_2" :loading="store.loadingpembayaran"
+                        @click="store.createQris(prop.pasien, store.itemskonsulantarpoli?.subtotal, 'Karcis', store.form.carabayar)">
+                        <q-tooltip class="primary" :offset="[10, 10]">
+                          Bayar & Print
+                        </q-tooltip>
+                      </q-btn>
+                      <q-btn v-if="store.form.carabayar === 'VA'" unelevated color="dark" round size="sm"
+                        icon="icon-eva-bell-outline" :loading="store.loadingpembayaran"
+                        @click="store.createva(prop.pasien, store.itemskonsulantarpoli?.subtotal, 'Karcis', store.form.carabayar)">
+                        <q-tooltip class="primary" :offset="[10, 10]">
+                          Bayar & Print
+                        </q-tooltip>
+                      </q-btn>
+                    </div>
+
+                  </q-item-section>
+                </q-item>
+
+                <q-separator spaced inset />
+              </q-list>
+            </div>
+
             <div class="row q-mt-sm" v-if="(selectedPayment === '' || selectedPayment === 'obat') && store.itemsobat">
               <q-list class="full-width kwitansi-card" v-for="(item, x) in store.itemsobat" :key="x">
                 <q-item>
@@ -430,6 +476,12 @@ const paymentOptions = [
     color: 'primary'
   },
   {
+    value: 'konsulantarpoli',
+    label: 'Konsul Antar Poli',
+    icon: 'icon-mat-medical_information',
+    color: 'indigo-4'
+  },
+  {
     value: 'obat',
     label: 'Pembayaran Obat',
     icon: 'icon-mat-local_pharmacy',
@@ -475,6 +527,7 @@ const paymentOptions = [
 
 const totalbill = computed(() => {
   const totalkarcis = parseFloat(store.items?.subtotal ?? 0)
+  const totalkonsulantarpoli = parseFloat(store.itemskonsulantarpoli?.subtotal ?? 0)
   const totalobat = parseFloat(store.itemsobat?.reduce((acc, cur) => acc + cur.subtotal, 0) ?? 0)
   const totaltindakan = parseFloat(store.itemstindakan?.reduce((acc, cur) => acc + cur.total, 0) ?? 0)
   const totaloperasi = parseFloat(store.itemsoperasi?.reduce((acc, cur) => acc + cur.total, 0) ?? 0)
@@ -482,7 +535,7 @@ const totalbill = computed(() => {
   const totalradiologi = parseFloat(store.itemsradiologi?.reduce((acc, cur) => acc + cur.total, 0) ?? 0)
   const totalpsikologi = parseFloat(store.itemstindakanpsikologi?.reduce((acc, cur) => acc + cur.subtotal, 0) ?? 0)
   const totalsharing = parseFloat(store.itemssharingbpjs?.reduce((acc, cur) => acc + cur.subtotal, 0) ?? 0)
-  const total = parseFloat(totalkarcis + totalobat + totaltindakan + totaloperasi + totallaborat + totalradiologi + totalpsikologi + totalsharing)
+  const total = parseFloat(totalkarcis + totalkonsulantarpoli + totalobat + totaltindakan + totaloperasi + totallaborat + totalradiologi + totalpsikologi + totalsharing)
   store.total = total
   return total
 })
@@ -541,6 +594,22 @@ function bayarkarcis(val, subtotal) {
           console.log('I am triggered on both OK and Cancel')
         })
       }
+    } else if (val === 'konsulantarpoli') {
+      if (store.form.carabayar === 'Tunai') {
+        $q.dialog({
+          dark: true,
+          title: 'Peringatan',
+          message: 'Apakah Data ini akan DISIMPAN?',
+          cancel: true,
+          persistent: true
+        }).onOk(() => {
+          store.savePembayaran(prop.pasien, subtotal, val, store.form.carabayar, router)
+        }).onCancel(() => {
+          console.log('Cancel')
+        }).onDismiss(() => {
+          console.log('I am triggered on both OK and Cancel')
+        })
+      }
     }
   }
 }
@@ -577,6 +646,7 @@ onMounted(() => {
   console.log('prop.pasien', prop.pasien)
   store.loadingbayar = true
   store.carikarcis(prop.pasien?.noreg)
+  store.carikonsulantarpoli(prop.pasien?.noreg)
   store.cariobat(prop.pasien?.noreg)
   store.caritindakan(prop.pasien?.noreg)
   store.caritindakanpsikologi(prop.pasien?.noreg)

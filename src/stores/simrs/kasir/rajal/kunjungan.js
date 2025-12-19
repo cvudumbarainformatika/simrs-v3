@@ -130,11 +130,12 @@ export const useKasirRajalListKunjunganStore = defineStore('kasir_rajal_list_kun
             noreg: k?.noreg,
             norm: k?.norm,
             nota: k?.nokarcis,
+            nokwitansi: k?.nokarcis,
             tgl_pembayaran: k?.tglx,
             batal: k?.batal,
             total: k?.total,
             nama: k?.nama,
-            usercetak: k?.nama,
+            usercetak: k?.pegawai?.nama,
             jenis: 'karcis',
           }
           hasilglobal.push(hasil)
@@ -143,12 +144,13 @@ export const useKasirRajalListKunjunganStore = defineStore('kasir_rajal_list_kun
           const hasil = {
             noreg: k?.noreg,
             norm: k?.norm,
-            nota: k?.nokwitansi,
+            nota: k?.nota,
+            nokwitansi: k?.nokwitansi,
             tgl_pembayaran: k?.tglx,
             batal: k?.batal,
             total: k?.total,
             nama: k?.nama,
-            usercetak: k?.nama,
+            usercetak: k?.pegawai?.nama,
             jenis: 'kwitansi',
           }
           hasilglobal.push(hasil)
@@ -197,17 +199,26 @@ export const useKasirRajalListKunjunganStore = defineStore('kasir_rajal_list_kun
     },
     batalkwitansi(val) {
       this.loadingbatalkwitansi = true
-      const payload = { nokwitansi: val?.nota, jenis: val?.jenis }
+      const payload = { nokwitansi: val?.nokwitansi, jenis: val?.jenis }
       return new Promise(resolve => {
         api.post('/v1/simrs/kasir/rajal/batalkwitansi', payload)
           .then(resp => {
             const data = resp.data?.data
             console.log('data', this.kwitansiterbayar)
-            this.kwitansiterbayar = this.kwitansiterbayar.map(item =>
-              item.nota === data?.nokwitansi
-                ? { ...item, ...data }   // merge item lama + data baru
-                : item                   // selain itu tetap
-            )
+            if (resp.data?.jenis === 'karcis') {
+              this.kwitansiterbayar = this.kwitansiterbayar.map(item =>
+                item.nota === data?.nokarcis
+                  ? { ...item, ...data }   // merge item lama + data baru
+                  : item                   // selain itu tetap
+              )
+            } else {
+              this.kwitansiterbayar = this.kwitansiterbayar.map(item =>
+                item.nokwitansi === data?.nokwitansi
+                  ? { ...item, ...data }   // merge item lama + data baru
+                  : item                   // selain itu tetap
+              )
+              console.log('dataxxx', this.kwitansiterbayar)
+            }
 
             this.loadingbatalkwitansi = false
             notifSuccess(resp.data?.message)

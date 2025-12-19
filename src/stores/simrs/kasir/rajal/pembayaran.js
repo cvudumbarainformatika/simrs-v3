@@ -15,6 +15,7 @@ export const usePembayaranKasirRajalStore = defineStore('pembayaran-kasir-rajal-
     loadingbuttonbill: false,
     loadingQris: false,
     items: [],
+    itemskonsulantarpoli: [],
     itemsobat: [],
     itemstindakan: [],
     itemsoperasi: [],
@@ -88,6 +89,8 @@ export const usePembayaranKasirRajalStore = defineStore('pembayaran-kasir-rajal-
                 total: k?.total,
                 nama: k?.nama,
                 usercetak: k?.nama,
+                nokwitansi: k?.nokarcis,
+                jenis: 'karcis',
               }
               hasilglobal.push(hasil)
             })
@@ -157,6 +160,19 @@ export const usePembayaranKasirRajalStore = defineStore('pembayaran-kasir-rajal-
         })
         .catch(() => { this.loadingbayar = false })
     },
+
+    async carikonsulantarpoli(noreg) {
+      this.loadingbayar = true
+      this.items = []
+      const params = { params: { noreg: noreg } }
+      const resp = await api.get('/v1/simrs/kasir/rajal/carikonsulantarpoli', params)
+        .then(resp => {
+          this.itemskonsulantarpoli = resp.data?.data
+          this.loadingbayar = false
+        })
+        .catch(() => { this.loadingbayar = false })
+    },
+
     async cariobat(noreg) {
       this.loadingbayar = true
       this.itemsobat = []
@@ -359,6 +375,8 @@ export const usePembayaranKasirRajalStore = defineStore('pembayaran-kasir-rajal-
               total: k?.total,
               nama: k?.nama,
               usercetak: k?.nama,
+              nokwitansi: k?.nokwitansi,
+              jenis: 'kwitansi',
             }))
 
             // this.kwitansinonkarcis = hasilglobal

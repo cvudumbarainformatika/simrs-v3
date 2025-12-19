@@ -3,14 +3,14 @@
     <div class="row items-center col">
       <div class="q-mr-sm" style="width: 220px;">
         <q-input v-model="store.params.q" outlined dark color="white" dense placeholder="Cari Kunjungan ..."
-          debounce="500" />
+          debounce="500" @update:model-value="store.getLists" />
       </div>
-      <div class="q-mr-sm" style="width: 220px;">
+      <!-- <div class="q-mr-sm" style="width: 220px;">
         <q-select v-model="store.params.jenispasien"
           :options="['Pasien RS', 'Pasien Luar Laborat', 'Pasien Luar Radiologi', 'Pasien Luar Apotek']"
           label="Jenis Pasien" dense outlined dark color="white" emit-value map-options
           @update:model-value="store.getLists" />
-      </div>
+      </div> -->
     </div>
     <div class="row items-center justify-end col-auto">
       <q-btn flat :color="textColor" icon-right="icon-mat-event" :label="tanggal" size="sm" padding="xs"

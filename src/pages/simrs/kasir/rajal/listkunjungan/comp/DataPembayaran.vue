@@ -36,6 +36,7 @@
         </div>
         <div v-else style="flex: 1; overflow-y: auto; padding-bottom: 12px;">
           <q-list separator>
+            <!-- <pre>{{ prop?.getKwitansiTerbayar }}</pre> -->
             <transition-group name="fade-slide" tag="div" class="column items-center">
               <div v-for="(item, q) in prop?.getKwitansiTerbayar" :key="q"
                 class="q-pl-sm q-pr-sm q-pb-xs full-width flex flex-center">
@@ -45,13 +46,14 @@
                     <q-item-section>
                       <q-item-label lines="1" class="text-body1">
                         <span class="text-weight-medium">
-                          {{ item?.nota }}
+                          {{ item?.nokwitansi }}
                         </span>
+                        <!-- <pre>{{ item }}</pre> -->
                         <span class="text-grey-8"> - {{ item?.nama }} </span>
                       </q-item-label>
 
                       <q-item-label caption lines="1">
-                        {{ item?.tgl_pembayaran }} || {{ item?.batal }}
+                        {{ item?.tgl_pembayaran }} || User Cetak : {{ item?.usercetak }}
                       </q-item-label>
 
                       <q-item-label lines="1" class="q-mt-xs text-body2 text-weight-bold text-primary text-uppercase">
@@ -60,7 +62,7 @@
                         </span>
                         ||
                         <q-badge outline color="teal" class="q-ml-xs">
-                          {{ item?.nota }}
+                          {{ item?.nota }} || {{ item?.jenis }}
                         </q-badge>
                       </q-item-label>
                     </q-item-section>
