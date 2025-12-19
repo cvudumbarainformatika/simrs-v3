@@ -39,10 +39,13 @@ export const useMasterRekeningJurnalStore = defineStore('keuangan-master-rekenin
     },
     params: {
       q: '',
-      levelberapa: 17,
+      per_page: 100,
+      page: 1,
     },
     akuns: [],
+    akunslak: [],
     optionrekening: [],
+    optionrekeninglak: [],
   }),
   actions: {
     setForm(key, val) {
@@ -56,6 +59,21 @@ export const useMasterRekeningJurnalStore = defineStore('keuangan-master-rekenin
           // console.log('KodeRekening', resp)
           if (resp.status === 200) {
             this.akuns = resp.data?.data
+            // console.log('KodeRekening', this.akuns)
+            this.loading = false
+            resolve(resp)
+          }
+        }).catch(() => { this.loading = false })
+      })
+    },
+    getLak() {
+      this.loading = true
+      const params = { params: this.params }
+      return new Promise((resolve) => {
+        api.get('v1/master/akunlak/select', params).then((resp) => {
+          // console.log('KodeRekening', resp)
+          if (resp.status === 200) {
+            this.akunslak = resp.data?.data
             // console.log('KodeRekening', this.akuns)
             this.loading = false
             resolve(resp)
@@ -113,21 +131,78 @@ export const useMasterRekeningJurnalStore = defineStore('keuangan-master-rekenin
       const resp = await api.get('/v1/master/rekening/index', params)
       if (resp.status === 200) {
         this.items = resp.data
-        this.loading = false
+
       }
       this.loading = false
     },
-    editForm(val) {
-      this.form.kode = val?.rs1
-      this.form.nama = val?.rs2
-      // this.form.group = val?.groups?.toString()
-      if (val?.groups === '1')
-        this.form.group = 'BPJS'
-      else if (val?.groups === '2')
-        this.form.group = 'UMUM'
-      else if (val?.groups === '3')
-        this.form.group = 'TAGIHAN'
+
+    OptionRekening(val) {
+      if (!val?.kodeall3) return
+
+      const exists = this.optionrekening.find(
+        o => o.kodeall3 === val.kodeall3
+      )
+
+      if (!exists) {
+        this.optionrekening.unshift({
+          kodeall3: val.kodeall3,
+          uraian: val.uraian
+        })
+      }
     },
+    editForm(val) {
+      // pastikan option edit ada
+      this.OptionRekening({
+        kodeall3: val?.kode50,
+        uraian: val?.uraian50
+      })
+
+      this.OptionRekening({
+        kodeall3: val?.kode_bast,
+        uraian: val?.uraian_bast
+      })
+
+      this.OptionRekening({
+        kodeall3: val?.kode_bastx,
+        uraian: val?.uraian_bastx
+      })
+
+      // isi form
+      Object.assign(this.form, {
+        kodeall: val?.kodeall,
+
+        kode50: val?.kode50,
+        uraian50: val?.uraian50,
+
+        kode_bast: val?.kode_bast,
+        uraian_bast: val?.uraian_bast,
+
+        kode_bastx: val?.kode_bastx,
+        uraian_bastx: val?.uraian_bastx,
+
+        kode_bastcair1: val?.kode_bastcair1,
+        uraian_bastcair1: val?.uraian_bastcair1,
+        kode_bastcairx: val?.kode_bastcairx,
+        uraian_bastcairx: val?.uraian_bastcairx,
+        kode_bastcair2: val?.kode_bastcair2,
+        uraian_bastcair2: val?.uraian_bastcair2,
+
+        kode_cair1: val?.kode_cair1,
+        uraian_cair1: val?.uraian_cair1,
+        kode_cairx: val?.kode_cairx,
+        uraian_cairx: val?.uraian_cairx,
+        kode_cair2: val?.kode_cair2,
+        uraian_cair2: val?.uraian_cair2,
+
+        kode_lak: val?.kode_lak,
+        uraian_lak: val?.uraian_lak,
+
+        kd_blud: val?.kd_blud,
+        ur_blud: val?.ur_blud
+      })
+      console.log('valedit', this.form)
+    },
+
     async deleteData(id) {
       this.loadingDelete = true
       const payload = { id }
@@ -147,7 +222,7 @@ export const useMasterRekeningJurnalStore = defineStore('keuangan-master-rekenin
     },
     search(val) {
       this.params.q = val
-      this.getSistemBayar()
+      // this.getSistemBayar()
     },
   }
 })

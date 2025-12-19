@@ -10,6 +10,9 @@
           </q-item-section>
           <q-item-section>
             <q-item-label>
+              Nota : <span class="text-primary text-weight-bold">{{ item?.rs2 }} </span>
+            </q-item-label>
+            <q-item-label>
               <span class="text-negative text-weight-bold">{{ item?.nama }} ( {{ item?.norm }} )</span> | <span
                 class="text-weight-bold">{{
                   item?.noka }}</span>
