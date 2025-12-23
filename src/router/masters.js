@@ -158,7 +158,7 @@ const masters = {
       name: 'master.tarif',
       component: () => import('src/pages/simrs/master/tarif/IndexPage.vue'),
       children: [
-        { path: '', redirect: '/master/tarif/tindakan' },
+        // { path: '', redirect: '/master/tarif/tindakan' },
         {
           path: '/master/tarif/tindakan',
           component: () => import('pages/simrs/master/tarif/tindakan/IndexPage.vue')
