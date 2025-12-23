@@ -203,6 +203,10 @@
               label="Tanggal Mulai Berlaku" @dbModel="store.setTglMulaiBerlaku" :loading="store.loading" outlined
               :disable="store.loading" />
           </div>
+          <div class="row q-col-gutter-md q-mb-sm">
+            <app-input v-model="store.form.dasar_perubahan" label="Dasar Perubahan" class="col-12" outlined
+              :loading="store.loading" :disable="store.loading" text />
+          </div>
           <q-separator class="q-my-md" />
           <div class="text-right">
             <app-btn type="reset" color="dark" label="Cancel" class="q-mr-md" :loading="store.loading"
