@@ -24,6 +24,11 @@ const kasir = {
       name: 'kasir.tbp',
       component: () => import('pages/simrs/kasir/rajal/tbp/IndexPage.vue')
     },
+    {
+      path: '/kasir/pasienluar',
+      name: 'kasir.pasienluar',
+      component: () => import('pages/simrs/kasir/rajal/pasienluar/IndexPage.vue')
+    },
 
     // {
     //   path: '/kasir/rawatjalan',
