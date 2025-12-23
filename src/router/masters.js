@@ -288,6 +288,19 @@ const masters = {
         },
       ]
     },
+    {
+      path: '/master/aset',
+      component: () => import('src/pages/simrs/master/aset/IndexPage.vue'),
+      children: [
+        { path: '', redirect: '/master/aset/bm' },
+        {
+          path: '/master/aset/bm',
+          name: 'master.aset.bm',
+          component: () => import('pages/simrs/master/aset/barang_modal/IndexPage.vue')
+        },
+
+      ]
+    },
     // {
     //   path: '/master/pasien',
     //   component: () => import('src/pages/simrs/master/pasien/IndexPage.vue')
