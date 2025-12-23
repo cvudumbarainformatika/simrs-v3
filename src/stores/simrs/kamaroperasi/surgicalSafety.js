@@ -203,7 +203,7 @@ export const useSurgicalSafetyStore = defineStore('surgical_safety_store', {
           { value: '0', label: 'Nama tindakan/prosedur operasi yang dilakukan' },
           { value: '1', label: 'Kelengkapan dan kecocokan jumlah instrumen, kassa dan jarum sebelum dan sesudah operasi ( form inventaris kassa dan instrumen )' },
           { value: '2', label: 'Label pada spesimen ( membacakan identitas pasien, jenis spesimen. register, ruangan )' },
-          { value: '2', label: 'Kerusakan alat ( bila ada ) dan akan / sudah dilaporkan' },
+          { value: '3', label: 'Kerusakan alat ( bila ada ) dan akan / sudah dilaporkan' },
         ],
         type: "checkbox",
         jawab: [],

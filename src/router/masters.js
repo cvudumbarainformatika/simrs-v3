@@ -154,6 +154,38 @@ const masters = {
       // ]
     },
     {
+      path: '/master/tarif',
+      name: 'master.tarif',
+      component: () => import('src/pages/simrs/master/tarif/IndexPage.vue'),
+      children: [
+        // { path: '', redirect: '/master/tarif/tindakan' },
+        {
+          path: '/master/tarif/tindakan',
+          component: () => import('pages/simrs/master/tarif/tindakan/IndexPage.vue')
+        },
+        {
+          path: '/master/tarif/tindakan-operasi',
+          component: () => import('pages/simrs/master/tarif/tindakanOperasi/IndexPage.vue')
+        },
+        {
+          path: '/master/tarif/pemeriksaan-laborat',
+          component: () => import('pages/simrs/master/tarif/pemeriksaanLaborat/IndexPage.vue')
+        },
+        {
+          path: '/master/tarif/pemeriksaan-radiologi',
+          component: () => import('pages/simrs/master/tarif/pemeriksaanRadiologi/IndexPage.vue')
+        },
+        {
+          path: '/master/tarif/ambulance',
+          component: () => import('pages/simrs/master/tarif/ambulans/IndexPage.vue')
+        },
+        {
+          path: '/master/tarif/visite-dan-kamar',
+          component: () => import('pages/simrs/master/tarif/visiteDanKamar/IndexPage.vue')
+        },
+      ]
+    },
+    {
       path: '/master/poliklinik',
       component: () => import('src/pages/simrs/master/poliklinik/IndexPage.vue'),
       children: [
@@ -254,6 +286,19 @@ const masters = {
           name: 'master.siasik.mappingkegiatanptk',
           component: () => import('pages/siasik/master/mappingkegiatanptk/IndexPage.vue')
         },
+      ]
+    },
+    {
+      path: '/master/aset',
+      component: () => import('src/pages/simrs/master/aset/IndexPage.vue'),
+      children: [
+        { path: '', redirect: '/master/aset/bm' },
+        {
+          path: '/master/aset/bm',
+          name: 'master.aset.bm',
+          component: () => import('pages/simrs/master/aset/barang_modal/IndexPage.vue')
+        },
+
       ]
     },
     // {
