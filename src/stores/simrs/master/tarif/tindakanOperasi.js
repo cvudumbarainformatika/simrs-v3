@@ -35,6 +35,7 @@ export const useMasterTindakanOperasiStore = defineStore('master_tindakan_operas
     resetForm () {
       this.setForm('kdtindakan', '')
       this.setForm('nmtindakan', '')
+      this.setForm('dasar_perubahan', '')
       const col = [
         'js3',
         'jp3',

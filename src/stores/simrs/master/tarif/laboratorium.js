@@ -3,7 +3,7 @@ import { date } from 'quasar'
 import { api } from 'src/boot/axios'
 import { notifErrVue, notifSuccess } from 'src/modules/utils'
 
-export const useMasterTindakanJsJpStore = defineStore('master_tindakan_js_jp', {
+export const useMasterTarifLaboratoriumStore = defineStore('master_tarif_laboratorium', {
   state: () => ({
     isOpen: false,
     edit: false,
@@ -11,72 +11,41 @@ export const useMasterTindakanJsJpStore = defineStore('master_tindakan_js_jp', {
     items: [],
     meta: {},
     params: {
-      nmtindakan: '',
+      q: '',
       per_page: 10,
       page: 1
     },
     form: {},
     disp: {},
-    columns: [
-      'kode',
-      'nama',
-      'kelas3',
-      'kelas2',
-      'kelas1',
-      'utama',
-      'vip',
-      'vvip'
-    ],
-    polis: [],
-    ruangRanap: [],
-    allRuangs: []
+    kelompoks: [],
+    jenises: [],
   }),
   actions: {
     resetForm () {
-      this.setForm('kdtindakan', '')
-      this.setForm('nmtindakan', '')
+      this.setForm('kode', '')
+      this.setForm('nama', '')
+      this.setForm('kelompok', '')
       this.setForm('dasar_perubahan', '')
       const col = [
-        'js3',
-        'jp3',
-        'tarif3',
-        'tarif2',
-        'tarif1',
-        'tarifutama',
-        'tarifvip',
-        'tarifvvip',
-        'habispake3',
-        'js2',
-        'jp2',
-        'habispake2',
-        'js1',
-        'jp1',
-        'habispake1',
-        'jsutama',
-        'jputama',
-        'habispakeutama',
-        'jsvip',
-        'jpvip',
-        'habispakevip',
+        'hs1',
+        'hp1',
+        'tf1',
 
-        'jsvvip',
-        'jpvvip',
-        'habispakevvip',
+        'hs2',
+        'hp2',
+        'tf2',
 
-        'js_presidential',
-        'jp_presidential',
-        'habispake_presidential',
-        'tarif_presidential',
+        'pss',
+        'psp',
+        'tfps',
 
-        'js_hcu',
-        'jp_hcu',
-        'habispake_hcu',
-        'tarif_hcu',
+        'hcus',
+        'hcup',
+        'tfhcu',
 
-        'js_hc',
-        'jp_hc',
-        'habispake_hc',
-        'tarif_hc',
+        'hcs',
+        'hcp',
+        'tfhc',
 
       ]
       col.forEach(a => {
@@ -111,7 +80,7 @@ export const useMasterTindakanJsJpStore = defineStore('master_tindakan_js_jp', {
       this.getDataTable()
     },
     setSearch (payload) {
-      this.params.nmtindakan = payload
+      this.params.q = payload
       this.params.page = 1
       this.getDataTable()
     },
@@ -170,7 +139,7 @@ export const useMasterTindakanJsJpStore = defineStore('master_tindakan_js_jp', {
 
       const besok = date.addToDate(new Date(), { days: 1 })
       const data = {
-        kdtindakan: payload.kdtindakan,
+        kode: payload.kode,
         tgl_mulai_berlaku: date.formatDate(besok, 'YYYY-MM-DD')
       }
       this.deleteData(data)
@@ -180,50 +149,39 @@ export const useMasterTindakanJsJpStore = defineStore('master_tindakan_js_jp', {
 
       const besok = date.addToDate(new Date(), { days: 1 })
       const data = {
-        kdtindakan: payload.kdtindakan,
+        kode: payload.kode,
         tgl_mulai_berlaku: date.formatDate(besok, 'YYYY-MM-DD')
       }
       this.undeleteData(data)
     },
-    mergeRuangan () {
-      if (this.polis?.length && this.ruangRanap?.length) {
-        this.allRuangs = []
-        this.allRuangs = [...this.polis?.map(a => { return { nama: a.polirs, kode: a.kodepoli } }), ...this.ruangRanap.map(a => { return { nama: a.groups_nama, kode: a.groups } })]
-        // console.log('merge ', this.allRuangs)
 
-      }
-    },
     getInitialData () {
       this.getDataTable()
-      this.getPoli()
-      this.getRuangRanap()
+      this.getKelompoks()
+      this.getJenis()
     },
     // api related function
-    async getPoli () {
-      await api.get('v1/settings/appakses/all-poli')
+    async getKelompoks () {
+      await api.get('v1/simrs/master/tarif-laborat/list-kelompok')
         .then(resp => {
-          this.polis = resp.data
-          // console.log('resp poli', this.polis)
-          this.mergeRuangan()
+          this.kelompoks = resp.data
         })
     },
-    async getRuangRanap () {
-      await api.get('v1/simrs/ranap/ruangan/listruanganranap')
+    async getJenis () {
+      await api.get('v1/simrs/master/tarif-laborat/list-jenis')
         .then(resp => {
-          this.ruangRanap = resp.data
-          // console.log('resp ruangranap', this.ruangRanap)
-          this.mergeRuangan()
+          this.jenises = resp.data
         })
     },
     async getDataTable () {
       this.loading = true
       const param = { params: this.params }
-      await api.get('v1/simrs/master/listtindakan', param)
+      await api.get('v1/simrs/master/tarif-laborat/list', param)
         .then(resp => {
           this.loading = false
-          console.log('resp tindakan', resp.data)
-          this.meta = resp.data
-          this.items = resp.data.data
+          console.log('resp lab', resp.data)
+          this.meta = resp.data?.meta ?? resp.data
+          this.items = resp?.data?.data
         })
         .catch(() => { this.loading = false })
     },
@@ -248,19 +206,19 @@ export const useMasterTindakanJsJpStore = defineStore('master_tindakan_js_jp', {
       }
 
       this.loading = true
-      await api.post('v1/simrs/master/simpanmastertindakan', this.form)
+      await api.post('v1/simrs/master/tarif-laborat/simpan', this.form)
         .then(resp => {
           this.loading = false
           console.log('resp tindakan', resp.data)
           this.setOpen()
-          this.getDataTable()
+          this.getInitialData()
           notifSuccess(resp)
         })
         .catch(() => { this.loading = false })
     },
     async deleteData (val) {
       this.loading = true
-      await api.post('v1/simrs/master/hapusmastertindakan', val)
+      await api.post('v1/simrs/master/tarif-laborat/hapus', val)
         .then(resp => {
           this.loading = false
           console.log('hapus tindakan', resp.data)
@@ -271,7 +229,7 @@ export const useMasterTindakanJsJpStore = defineStore('master_tindakan_js_jp', {
     },
     async undeleteData (val) {
       this.loading = true
-      await api.post('v1/simrs/master/tampilkanmastertindakan', val)
+      await api.post('v1/simrs/master/tarif-laborat/tampilkan', val)
         .then(resp => {
           this.loading = false
           console.log('tampilkan tindakan', resp.data)
@@ -283,5 +241,5 @@ export const useMasterTindakanJsJpStore = defineStore('master_tindakan_js_jp', {
   }
 })
 if (import.meta.hot) {
-  import.meta.hot.accept(acceptHMRUpdate(useMasterTindakanJsJpStore, import.meta.hot))
+  import.meta.hot.accept(acceptHMRUpdate(useMasterTarifLaboratoriumStore, import.meta.hot))
 }
