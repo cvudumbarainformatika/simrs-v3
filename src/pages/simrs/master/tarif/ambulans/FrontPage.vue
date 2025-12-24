@@ -1,3 +1,3 @@
 <template>
-  halaman tarif Ambulans
+  <app-maintenance />
 </template>

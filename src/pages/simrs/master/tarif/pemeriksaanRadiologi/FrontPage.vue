@@ -1,3 +1,3 @@
 <template>
-  halaman pemeriksaan radiologi
+  <app-maintenance />
 </template>

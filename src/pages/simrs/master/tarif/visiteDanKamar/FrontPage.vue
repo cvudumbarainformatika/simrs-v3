@@ -1,3 +1,3 @@
 <template>
-  halaman tarif visite dan kamar
+  <app-maintenance />
 </template>
