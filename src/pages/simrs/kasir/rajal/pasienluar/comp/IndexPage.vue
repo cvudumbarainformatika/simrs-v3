@@ -26,9 +26,10 @@ import { onMounted, ref } from 'vue'
 
 import { usePasienLuarStore } from 'src/stores/simrs/kasir/pasienluar'
 import { usePembayaranKasirRajalStore } from 'src/stores/simrs/kasir/rajal/pembayaran'
+import { useRouter } from 'vue-router'
 const store = usePasienLuarStore()
 const style = useStyledStore()
-
+const router = useRouter()
 const storebayar = usePembayaranKasirRajalStore()
 
 function bayar(val) {
@@ -36,23 +37,24 @@ function bayar(val) {
   if (!val) return
   const pasien = {
     ...val,
-    noreg: val?.nota,
+    // noreg: val?.nota,
     norm: '-',
     nama: val?.nama ?? '-',
     sapaan: '-',
     kelamin: '',
     kodepoli: '',
-    poli: '',
-    sistembayar: '',
+    poli: 'Penjualan Luar',
+    sistembayar: 'UMUM',
     groupssistembayar: '',
+    unit: val?.unit,
   }
 
   console.log('paaaaasss', pasien)
   const nota = val.nota
   const subtotal = val.subtotal
-  const jenis = val.jenislayanan
+  const jenis = 'Farmasi'
 
-  storebayar.savePembayarannonKarcis(pasien, nota, subtotal, jenis)
+  storebayar.savePembayarannonKarcis(pasien, nota, subtotal, jenis, router)
 }
 
 onMounted(() => {
