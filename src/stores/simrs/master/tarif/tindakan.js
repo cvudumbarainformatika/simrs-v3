@@ -2,7 +2,6 @@ import { acceptHMRUpdate, defineStore } from 'pinia'
 import { date } from 'quasar'
 import { api } from 'src/boot/axios'
 import { notifErrVue, notifSuccess } from 'src/modules/utils'
-import ruangan from 'src/router/ruangan'
 
 export const useMasterTindakanJsJpStore = defineStore('master_tindakan_js_jp', {
   state: () => ({
