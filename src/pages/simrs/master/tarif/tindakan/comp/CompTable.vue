@@ -48,6 +48,9 @@
           Tgl Hapus
         </th>
         <th rowspan="2" class="q-px-sm">
+          Dasar Perubahan
+        </th>
+        <th rowspan="2" class="q-px-sm">
           #
         </th>
       </tr>
@@ -215,7 +218,7 @@
       </template>
       <template v-else-if="!items?.length">
         <tr>
-          <td colspan="42">
+          <td colspan="43">
             <app-no-data />
           </td>
         </tr>
@@ -435,6 +438,11 @@
             <td class="text-end">
               <div v-if="item?.tgl_hapus">
                 {{ dateFullFormat(item?.tgl_hapus) }}
+              </div>
+            </td>
+            <td class="text-end">
+              <div>
+                {{ item?.dasar_perubahan }}
               </div>
             </td>
             <td class="text-end">
