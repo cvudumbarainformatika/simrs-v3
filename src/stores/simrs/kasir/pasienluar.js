@@ -29,8 +29,8 @@ export const usePasienLuarStore = defineStore('tbp-pasienluar-store', {
         .then(resp => {
           console.log('kunjungan igd', resp?.data?.data)
           this.loading = false
-          this.items = resp?.data?.data?.data
-          this.meta = resp?.data?.data
+          this.items = resp?.data?.data
+          this.meta = resp?.data
         })
         .catch(() => { this.loading = false })
     },

@@ -5,12 +5,13 @@
       <empty-data v-else-if="!items?.length && !loading" />
       <q-list v-else separator>
         <q-item v-for="(item, i) in items" :key="i">
+          <pre>{{ item }}</pre>
           <q-item-section class="q-col-gutter-xs">
             <q-item-label>
-              NO. Nota : <span class="text-negative text-weight-bold">{{ item?.nota }}</span>
+              NO. Nota : <span class="text-negative text-weight-bold">{{ item?.noresep }}</span>
             </q-item-label>
             <q-item-label>
-              Nama : <span class="text-weight-bold">{{ item?.nama }}</span>
+              Nama : <span class="text-weight-bold">{{ item?.nama_pejabat ?? '-' }}</span>
             </q-item-label>
             <q-item-label>
               Tanggal : <span class="text-teal text-weight-bold"> {{ humanDate(item?.tgl) }}</span>
@@ -27,22 +28,23 @@
                   }}</q-badge></span>
             </q-item-label>
             <q-item-label>
-              Tanggal Bayar : <span class="text-teal text-weight-bold"> {{ item?.tglbayar ??
+              Tanggal Bayar : <span class="text-teal text-weight-bold"> {{ humanDate(item?.tglx) ??
                 '-' }}</span>
             </q-item-label>
             <div>
               <q-badge outline color="primary">
-                {{ item?.kasir }}
+                {{ item?.nokwitansi }}
               </q-badge>
             </div>
           </q-item-section>
           <q-item-section side>
-            <div v-if="item?.tglbyr != null">
-              <q-btn dense size="sm" no-caps color="purple" label="Lunas" class="q-mb-sm" style="min-width: 100px;" />
+            <div v-if="item?.nokwitansi != null">
+              <q-btn dense size="sm" no-caps color="red" label="Batal" class="q-mb-sm" style="min-width: 100px;"
+                @click="emits('batal', item)" />
             </div>
             <div v-else>
-              <q-btn dense size="sm" no-caps color="red" label="Flaging Manual" class="q-mb-sm"
-                style="min-width: 100px;" :loading="item?.loadingbayar" @click="emits('bayar', item)" />
+              <q-btn dense size="sm" no-caps color="red" label="Bayar" class="q-mb-sm" style="min-width: 100px;"
+                :loading="item?.loadingbayar" @click="emits('bayar', item)" />
             </div>
           </q-item-section>
         </q-item>
@@ -57,7 +59,7 @@ import ListLoading from './ListLoading.vue'
 import EmptyData from './EmptyData.vue'
 import { dateFullFormat, formatJam, formatRpDouble, humanDate } from 'src/modules/formatter'
 
-const emits = defineEmits(['bayar'])
+const emits = defineEmits(['bayar', 'batal'])
 
 
 defineProps({
