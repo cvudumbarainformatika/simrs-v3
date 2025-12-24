@@ -2,9 +2,8 @@ import { acceptHMRUpdate, defineStore } from 'pinia'
 import { date } from 'quasar'
 import { api } from 'src/boot/axios'
 import { notifErrVue, notifSuccess } from 'src/modules/utils'
-import ruangan from 'src/router/ruangan'
 
-export const useMasterTindakanJsJpStore = defineStore('master_tindakan_js_jp', {
+export const useMasterTindakanOperasiStore = defineStore('master_tindakan_operasi', {
   state: () => ({
     isOpen: false,
     edit: false,
@@ -283,5 +282,5 @@ export const useMasterTindakanJsJpStore = defineStore('master_tindakan_js_jp', {
   }
 })
 if (import.meta.hot) {
-  import.meta.hot.accept(acceptHMRUpdate(useMasterTindakanJsJpStore, import.meta.hot))
+  import.meta.hot.accept(acceptHMRUpdate(useMasterTindakanOperasiStore, import.meta.hot))
 }
