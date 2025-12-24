@@ -219,9 +219,8 @@
   </q-dialog>
 </template>
 <script setup>
-
-import { useMasterTindakanJsJpStore } from 'src/stores/simrs/master/tarif/tindakan'
-const store = useMasterTindakanJsJpStore()
+import { useMasterTindakanOperasiStore } from 'src/stores/simrs/master/tarif/tindakanOperasi'
+const store = useMasterTindakanOperasiStore()
 function ruanganSelected (evt) {
   console.log('evt', evt)
 

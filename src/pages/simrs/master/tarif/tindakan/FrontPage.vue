@@ -268,9 +268,9 @@
 </template>
 <script setup>
 import { defineAsyncComponent } from 'vue'
-import FormDialog from './comp/FormDialog.vue'
-import { useMasterTindakanJsJpStore } from 'src/stores/simrs/master/tindakan/tindakan'
+import { useMasterTindakanJsJpStore } from 'src/stores/simrs/master/tarif/tindakan'
 
+const FormDialog = defineAsyncComponent(() => import('./comp/FormDialog.vue'))
 const HeaderComp = defineAsyncComponent(() => import('./comp/CompHeader.vue'))
 const TableComp = defineAsyncComponent(() => import('./comp/CompTable.vue'))
 const BottomComp = defineAsyncComponent(() => import('./comp/CompBottom.vue'))

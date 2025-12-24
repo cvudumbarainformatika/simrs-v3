@@ -3,24 +3,11 @@
     <div>
       <app-card :is-header="false">
         <template #content>
-          <CustomTable
-            id="printMe"
-            :columns="store.columns"
-            :meta="store.meta"
-            :items="store.items"
-            :per-page="store.params.per_page"
-            :loading="store.loading"
-            :to-search="store.params.nmtindakan"
-            :enable-head="false"
-            left-btn
-            @goto="store.setPage"
-            @set-row="store.setPerPage"
-            @refresh="store.refreshTable"
-            @find="store.setSearch"
-            @new-data="store.newData"
-            @edit-data="store.editData"
-            @delete="store.deletesData"
-          >
+          <CustomTable id="printMe" :columns="store.columns" :meta="store.meta" :items="store.items"
+            :per-page="store.params.per_page" :loading="store.loading" :to-search="store.params.nmtindakan"
+            :enable-head="false" left-btn @goto="store.setPage" @set-row="store.setPerPage"
+            @refresh="store.refreshTable" @find="store.setSearch" @new-data="store.newData" @edit-data="store.editData"
+            @delete="store.deletesData">
             <template #top-row>
               <th>
                 <div class="row items-center text-weight-bold">
@@ -152,13 +139,13 @@
                 </div>
               </th>
             </template>
-            <template #cell-kode="{row}">
+            <template #cell-kode="{ row }">
               {{ row.kdtindakan }}
             </template>
-            <template #cell-nama="{row}">
+            <template #cell-nama="{ row }">
               {{ row.nmtindakan }}
             </template>
-            <template #cell-kelas3="{row}">
+            <template #cell-kelas3="{ row }">
               <div class="row no-wrap q-col-gutter-md">
                 <div class="col-3 text-right">
                   {{ row.js3 }}
@@ -174,7 +161,7 @@
                 </div>
               </div>
             </template>
-            <template #cell-kelas2="{row}">
+            <template #cell-kelas2="{ row }">
               <div class="row no-wrap q-col-gutter-md">
                 <div class="col-3 text-right">
                   {{ row.js2 }}
@@ -190,7 +177,7 @@
                 </div>
               </div>
             </template>
-            <template #cell-kelas1="{row}">
+            <template #cell-kelas1="{ row }">
               <div class="row no-wrap q-col-gutter-md">
                 <div class="col-3 text-right">
                   {{ row.js1 }}
@@ -206,7 +193,7 @@
                 </div>
               </div>
             </template>
-            <template #cell-utama="{row}">
+            <template #cell-utama="{ row }">
               <div class="row no-wrap q-col-gutter-md">
                 <div class="col-3 text-right">
                   {{ row.jsutama }}
@@ -218,11 +205,11 @@
                   {{ row.habispakeutama }}
                 </div>
                 <div class="col-3 text-right">
-                  {{ row.tarifutama??0 }}
+                  {{ row.tarifutama ?? 0 }}
                 </div>
               </div>
             </template>
-            <template #cell-vip="{row}">
+            <template #cell-vip="{ row }">
               <div class="row no-wrap q-col-gutter-md">
                 <div class="col-3 text-right">
                   {{ row.jsvip }}
@@ -238,7 +225,7 @@
                 </div>
               </div>
             </template>
-            <template #cell-vvip="{row}">
+            <template #cell-vvip="{ row }">
               <div class="row no-wrap q-col-gutter-md">
                 <div class="col-3 text-right">
                   {{ row.jsvvip }}
@@ -264,16 +251,17 @@
 <script setup>
 import FormDialog from './FormDialog.vue'
 import CustomTable from './CustomTable.vue'
-import { useMasterTindakanJsJpStore } from 'src/stores/simrs/master/tindakan/tindakan'
+import { useMasterTindakanJsJpStore } from 'src/stores/simrs/master/tarif/tindakan'
 const store = useMasterTindakanJsJpStore()
 store.getInitialData()
 </script>
 
 <style lang="scss" scoped>
-.garis-bawah{
+.garis-bawah {
   border-bottom: 1px solid black;
 }
-.garis-kiri-kanan{
+
+.garis-kiri-kanan {
   border-left: 1px solid black;
   border-right: 1px solid black;
 }
