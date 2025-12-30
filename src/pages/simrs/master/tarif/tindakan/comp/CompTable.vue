@@ -655,28 +655,30 @@ tr:nth-child(odd) th[scope=row] {
 }
 
 
-th {
+// th {
+//   position: -webkit-sticky;
+//   position: sticky;
+//   // top: 100px;
+//   z-index: 5;
+//   border: inherit;
+// }
+
+thead tr.baris-1 th {
   position: -webkit-sticky;
   position: sticky;
-  // top: 100px;
+  top: 102px;
   z-index: 5;
-  border: inherit;
+  // border: inherit;
+  border: 1px solid black;
 }
 
-thead tr.row-1 th {
+thead tr.baris-2 th {
   position: -webkit-sticky;
   position: sticky;
-  top: 100px;
+  top: 141px;
   z-index: 5;
-  border: inherit;
-}
-
-thead tr.row-2 th {
-  position: -webkit-sticky;
-  position: sticky;
-  top: 180px;
-  z-index: 5;
-  border: inherit;
+  border: 1px solid black;
+  // border: inherit;
 }
 
 th[scope=row] {
