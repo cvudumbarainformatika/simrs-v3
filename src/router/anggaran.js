@@ -22,7 +22,28 @@ const anggaran = {
           name: 'anggaran.penyusunan.penetapanpagu',
           component: () =>
             import('src/pages/siasik/anggaran/penyusunan/penetapanpagu_kegiatan/IndexPage.vue')
-        }
+        },
+        {
+          path: '/anggaran/penyusunan/pengusulan',
+          name: 'anggaran.penyusunan.pengusulan',
+          component: () => import('pages/siasik/anggaran/penyusunan/pengusulan/IndexPage.vue'),
+          children: [
+            { path: '', name: 'pengusulan', redirect: '/anggaran/penyusunan/pengusulan/form' },
+            {
+              path: '/anggaran/penyusunan/pengusulan/form',
+              name: 'anggaran.penyusunan.pengusulan.form',
+              component: () =>
+                import('src/pages/siasik/anggaran/penyusunan/pengusulan/FormData/IndexPage.vue')
+            },
+            {
+              path: '/anggaran/penyusunan/pengusulan/listdata',
+              name: 'anggaran.penyusunan.pengusulan.listdata',
+              component: () =>
+                import('src/pages/siasik/anggaran/penyusunan/pengusulan/ListData/IndexPage.vue')
+            },
+
+          ]
+        },
       ]
     },
 
