@@ -3,10 +3,10 @@
     <q-card class="lebar">
       <q-card-section>
         <div class="f-14 text-weight-bold">
-          Form Tindakan
+          Form Tarif
         </div>
         <div class="title-desc">
-          Input data Tindakan
+          Input data Tarif
         </div>
       </q-card-section>
       <q-separator />
@@ -14,199 +14,100 @@
         <q-form @submit="onSubmit" @reset="onReset">
           <div class="row q-col-gutter-md q-mb-sm">
             <div class="col-md-6 col-xs-12">
-              <app-input v-model="store.form.kdtindakan" label="Kode Tindakan" outlined valid :loading="store.loading"
-                readonly />
+              <app-input v-model="store.form.rs1" label="Kode Tarif" outlined valid :loading="store.loading" readonly />
             </div>
             <div class="col-md-6 col-xs-12">
-              <app-input v-model="store.form.nmtindakan" label="Nama Tindakan" outlined :loading="store.loading"
+              <app-input v-model="store.form.rs2" label="Nama Tarif" outlined :loading="store.loading"
                 :disable="store.loading || store.edit" :autofocus="!store.edit" />
             </div>
           </div>
-          <div class="row q-col-gutter-md q-mb-sm">
-            <div class="col-4">
-              <q-select v-model="store.disp.ruangan" label="Ruangan" map-options emit-value outlined option-label="nama"
-                option-value="kode" autocomplete="nama" :loading="store.loading" :options="store.allRuangs" multiple
-                @update:model-value="ruanganSelected" />
-            </div>
-            <div class="col-8">
-              <span v-for="(kode, i) in store.disp.ruangan" :key="i">
-                {{ cariRuangan(kode, i) }}
-              </span>
-            </div>
-          </div>
+          <!-- tarif 1 -->
           <div class="row q-col-gutter-md q-mb-sm">
             <div class="col-md-3 col-xs-12">
-              <app-input v-model="store.form.js3" valid label="JS Kelas 3" outlined :loading="store.loading"
-                :disable="store.loading" :autofocus="store.edit" @update:model-value="setJs3" />
+              <app-input v-model="store.form.rs6" valid label="JS Tarif 1" outlined :loading="store.loading"
+                :disable="store.loading" :autofocus="store.edit" @update:model-value="SetTarif($event, 'rs6')" />
             </div>
             <div class="col-md-3 col-xs-12">
-              <app-input v-model="store.form.jp3" valid label="JP Kelas 3" outlined :loading="store.loading"
-                :disable="store.loading" @update:model-value="setJp3" />
+              <app-input v-model="store.form.rs7" valid label="JP Tarif 1" outlined :loading="store.loading"
+                :disable="store.loading" @update:model-value="SetTarif($event, 'rs7')" />
             </div>
             <div class="col-md-3 col-xs-12">
-              <app-input v-model="store.form.habispake3" valid label="Habis Pakai Kelas 3" outlined
-                :loading="store.loading" :disable="store.loading" @update:model-value="setHabispake3" />
+              <app-input v-model="store.form.rs8" valid label="Anastesi Tarif 1" outlined :loading="store.loading"
+                :disable="store.loading" @update:model-value="SetTarif($event, 'rs8')" />
             </div>
             <div class="col-md-3 col-xs-12">
-              <app-input v-model="store.form.tarif3" valid label="Tarif Kelas 3" outlined :loading="store.loading"
-                readonly />
+              <app-input v-model="tarif1" valid label="Tarif 1" outlined :loading="store.loading" readonly />
             </div>
           </div>
+
+          <!-- tarif 2 -->
           <div class="row q-col-gutter-md q-mb-sm">
             <div class="col-md-3 col-xs-12">
-              <app-input v-model="store.form.js2" valid label="JS Kelas 2" outlined :loading="store.loading"
-                :disable="store.loading" :autofocus="store.edit" @update:model-value="setJs2" />
+              <app-input v-model="store.form.rs9" valid label="JS Tarif 2" outlined :loading="store.loading"
+                :disable="store.loading" :autofocus="store.edit" @update:model-value="SetTarif($event, 'rs9')" />
             </div>
             <div class="col-md-3 col-xs-12">
-              <app-input v-model="store.form.jp2" valid label="JP Kelas 2" outlined :loading="store.loading"
-                :disable="store.loading" @update:model-value="setJp2" />
+              <app-input v-model="store.form.rs10" valid label="JP Tarif 2" outlined :loading="store.loading"
+                :disable="store.loading" @update:model-value="SetTarif($event, 'rs10')" />
             </div>
             <div class="col-md-3 col-xs-12">
-              <app-input v-model="store.form.habispake2" valid label="Habis Pakai Kelas 2" outlined
-                :loading="store.loading" :disable="store.loading" @update:model-value="setHabispake2" />
+              <app-input v-model="store.form.rs11" valid label="Anastesi Tarif 2" outlined :loading="store.loading"
+                :disable="store.loading" @update:model-value="SetTarif($event, 'rs11')" />
             </div>
             <div class="col-md-3 col-xs-12">
-              <app-input v-model="store.form.tarif2" valid label="Tarif Kelas 2" outlined :loading="store.loading"
-                readonly />
+              <app-input v-model="tarif2" valid label="Tarif 2" outlined :loading="store.loading" readonly />
             </div>
           </div>
+
+          <!-- presidential -->
           <div class="row q-col-gutter-md q-mb-sm">
             <div class="col-md-3 col-xs-12">
-              <app-input v-model="store.form.js1" valid label="JS Kelas 1" outlined :loading="store.loading"
-                :disable="store.loading" :autofocus="store.edit" @update:model-value="setJs1" />
+              <app-input v-model="store.form.ssp" valid label="JS Tarif Presidential" outlined :loading="store.loading"
+                :disable="store.loading" :autofocus="store.edit" @update:model-value="SetTarif($event, 'ssp')" />
             </div>
             <div class="col-md-3 col-xs-12">
-              <app-input v-model="store.form.jp1" valid label="JP Kelas 1" outlined :loading="store.loading"
-                :disable="store.loading" @update:model-value="setJp1" />
+              <app-input v-model="store.form.psp" valid label="JP Tarif Presidential" outlined :loading="store.loading"
+                :disable="store.loading" @update:model-value="SetTarif($event, 'psp')" />
             </div>
             <div class="col-md-3 col-xs-12">
-              <app-input v-model="store.form.habispake1" valid label="Habis Pakai Kelas 1" outlined
-                :loading="store.loading" :disable="store.loading" @update:model-value="setHabispake1" />
+              <app-input v-model="store.form.asp" valid label="Anastesi Tarif Presidential" outlined
+                :loading="store.loading" :disable="store.loading" @update:model-value="SetTarif($event, 'asp')" />
             </div>
             <div class="col-md-3 col-xs-12">
-              <app-input v-model="store.form.tarif1" valid label="Tarif Kelas 1" outlined :loading="store.loading"
-                readonly />
+              <app-input v-model="presidential" valid label="Tarif 2" outlined :loading="store.loading" readonly />
             </div>
           </div>
+          <!-- tarif poli -->
           <div class="row q-col-gutter-md q-mb-sm">
             <div class="col-md-3 col-xs-12">
-              <app-input v-model="store.form.jsutama" valid label="JS Utama" outlined :loading="store.loading"
-                :disable="store.loading" :autofocus="store.edit" @update:model-value="setJsUtama" />
+              <app-input v-model="store.form.rs12" valid label="JS Tarif Poli" outlined :loading="store.loading"
+                :disable="store.loading" :autofocus="store.edit" @update:model-value="SetTarif($event, 'rs12')" />
             </div>
             <div class="col-md-3 col-xs-12">
-              <app-input v-model="store.form.jputama" valid label="JP Utama" outlined :loading="store.loading"
-                :disable="store.loading" @update:model-value="setJpUtama" />
+              <app-input v-model="store.form.rs13" valid label="JP Tarif Poli" outlined :loading="store.loading"
+                :disable="store.loading" @update:model-value="SetTarif($event, 'rs13')" />
             </div>
             <div class="col-md-3 col-xs-12">
-              <app-input v-model="store.form.habispakeutama" valid label="Habis Pakai Kelas Utama" outlined
-                :loading="store.loading" :disable="store.loading" @update:model-value="setHabispakeutama" />
+              <!-- <app-input v-model="store.form.rs11" valid label="Anastesi Tarif Poli" outlined :loading="store.loading"
+                :disable="store.loading" @update:model-value="SetTarif($event, 'rs11')" /> -->
             </div>
             <div class="col-md-3 col-xs-12">
-              <app-input v-model="store.form.tarifutama" valid label="Tarif Kelas utama" outlined
-                :loading="store.loading" readonly />
+              <app-input v-model="poli" valid label="Tarif Poli" outlined :loading="store.loading" readonly />
             </div>
           </div>
-          <div class="row q-col-gutter-md q-mb-sm">
-            <div class="col-md-3 col-xs-12">
-              <app-input v-model="store.form.jsvip" valid label="JS VIP" outlined :loading="store.loading"
-                :disable="store.loading" :autofocus="store.edit" @update:model-value="setJsVip" />
-            </div>
-            <div class="col-md-3 col-xs-12">
-              <app-input v-model="store.form.jpvip" valid label="JP VIP" outlined :loading="store.loading"
-                :disable="store.loading" @update:model-value="setJpVip" />
-            </div>
-            <div class="col-md-3 col-xs-12">
-              <app-input v-model="store.form.habispakevip" valid label="Habis Pakai Kelas Vip" outlined
-                :loading="store.loading" :disable="store.loading" @update:model-value="setHabispakevip" />
-            </div>
-            <div class="col-md-3 col-xs-12">
-              <app-input v-model="store.form.tarifvip" valid label="Tarif Kelas vip" outlined :loading="store.loading"
-                readonly />
-            </div>
-          </div>
-          <div class="row q-col-gutter-md q-mb-sm">
-            <div class="col-md-3 col-xs-12">
-              <app-input v-model="store.form.jsvvip" valid label="JS VVIP" outlined :loading="store.loading"
-                :disable="store.loading" :autofocus="store.edit" @update:model-value="setJsVvip" />
-            </div>
-            <div class="col-md-3 col-xs-12">
-              <app-input v-model="store.form.jpvvip" valid label="JP VVIP" outlined :loading="store.loading"
-                :disable="store.loading" @update:model-value="setJpVvip" />
-            </div>
-            <div class="col-md-3 col-xs-12">
-              <app-input v-model="store.form.habispakevvip" valid label="Habis Pakai Kelas Vvip" outlined
-                :loading="store.loading" :disable="store.loading" @update:model-value="setHabispakevvip" />
-            </div>
-            <div class="col-md-3 col-xs-12">
-              <app-input v-model="store.form.tarifvvip" valid label="Tarif Kelas vvip" outlined :loading="store.loading"
-                readonly />
-            </div>
-          </div>
-          <div class="row q-col-gutter-md q-mb-sm">
-            <div class="col-md-3 col-xs-12">
-              <app-input v-model="store.form.js_presidential" valid label="JS Presedential" outlined
-                :loading="store.loading" :disable="store.loading" :autofocus="store.edit"
-                @update:model-value="SetPresidential($event, 'js')" />
-            </div>
-            <div class="col-md-3 col-xs-12">
-              <app-input v-model="store.form.jp_presidential" valid label="JP Presedential" outlined
-                :loading="store.loading" :disable="store.loading" @update:model-value="SetPresidential($event, 'jp')" />
-            </div>
-            <div class="col-md-3 col-xs-12">
-              <app-input v-model="store.form.habispake_presidential" valid label="Habis Pakai Kelas Presedential"
-                outlined :loading="store.loading" :disable="store.loading"
-                @update:model-value="SetPresidential($event, 'hp')" />
-            </div>
-            <div class="col-md-3 col-xs-12">
-              <app-input v-model="store.form.tarif_presidential" valid label="Tarif Kelas Presedential" outlined
-                :loading="store.loading" readonly />
-            </div>
-          </div>
-          <div class="row q-col-gutter-md q-mb-sm">
-            <div class="col-md-3 col-xs-12">
-              <app-input v-model="store.form.js_hcu" valid label="JS HCU" outlined :loading="store.loading"
-                :disable="store.loading" :autofocus="store.edit" @update:model-value="SetHcu($event, 'js')" />
-            </div>
-            <div class="col-md-3 col-xs-12">
-              <app-input v-model="store.form.jp_hcu" valid label="JP HCU" outlined :loading="store.loading"
-                :disable="store.loading" @update:model-value="SetHcu($event, 'jp')" />
-            </div>
-            <div class="col-md-3 col-xs-12">
-              <app-input v-model="store.form.habispake_hcu" valid label="Habis Pakai Kelas HCU" outlined
-                :loading="store.loading" :disable="store.loading" @update:model-value="SetHcu($event, 'hp')" />
-            </div>
-            <div class="col-md-3 col-xs-12">
-              <app-input v-model="store.form.tarif_hcu" valid label="Tarif Kelas HCU" outlined :loading="store.loading"
-                readonly />
-            </div>
-          </div>
-          <div class="row q-col-gutter-md q-mb-sm">
-            <div class="col-md-3 col-xs-12">
-              <app-input v-model="store.form.js_hc" valid label="JS Home Care" outlined :loading="store.loading"
-                :disable="store.loading" :autofocus="store.edit" @update:model-value="SetHomeCare($event, 'js')" />
-            </div>
-            <div class="col-md-3 col-xs-12">
-              <app-input v-model="store.form.jp_hc" valid label="JP Home Care" outlined :loading="store.loading"
-                :disable="store.loading" @update:model-value="SetHomeCare($event, 'jp')" />
-            </div>
-            <div class="col-md-3 col-xs-12">
-              <app-input v-model="store.form.habispake_hc" valid label="Habis Pakai Kelas Home Care" outlined
-                :loading="store.loading" :disable="store.loading" @update:model-value="SetHomeCare($event, 'hp')" />
-            </div>
-            <div class="col-md-3 col-xs-12">
-              <app-input v-model="store.form.tarif_hc" valid label="Tarif Kelas Home Care" outlined
-                :loading="store.loading" readonly />
-            </div>
-          </div>
+
+          <!-- Masa berlaku -->
           <div class="row q-col-gutter-md q-mb-sm">
             <app-input-date-human :model="store.disp.tgl_mulai_berlaku" class="col-12" valid
               label="Tanggal Mulai Berlaku" @dbModel="store.setTglMulaiBerlaku" :loading="store.loading" outlined
               :disable="store.loading" />
           </div>
+          <!-- Dasar perubahan -->
           <div class="row q-col-gutter-md q-mb-sm">
             <app-input v-model="store.form.dasar_perubahan" label="Dasar Perubahan" class="col-12" outlined
               :loading="store.loading" :disable="store.loading" text />
           </div>
+
           <q-separator class="q-my-md" />
           <div class="text-right">
             <app-btn type="reset" color="dark" label="Cancel" class="q-mr-md" :loading="store.loading"
@@ -220,185 +121,36 @@
 </template>
 <script setup>
 import { useMasterTindakanOperasiStore } from 'src/stores/simrs/master/tarif/tindakanOperasi'
+import { computed } from 'vue'
 const store = useMasterTindakanOperasiStore()
-function ruanganSelected (evt) {
-  console.log('evt', evt)
-
-}
-function cariRuangan (val, i) {
-  const ruangan = store.allRuangs.find(item => item.kode == val)
-  if (!ruangan) console.log('val', val)
-  return ruangan ? ruangan?.nama + (i == store.disp.ruangan.length - 1 ? '' : ', ') : ''
-}
-// set tarif start
-function setJs3 (evt) {
-  console.log('form js 3', evt, isNaN(evt), parseInt(evt))
+function SetTarif (evt, jenis) {
+  // console.log('pres', evt, jenis)
   const val = !isNaN(evt) && evt !== '' ? parseInt(evt) : 0
-  const jp = !isNaN(store.form.jp3) && store.form.jp3 !== '' ? parseInt(store.form.jp3) : 0
-  const habispake = !isNaN(store.form.habispake3) && store.form.habispake3 !== '' ? parseInt(store.form.habispake3) : 0
-  store.setForm('js3', val)
-  store.setForm('tarif3', val + jp + habispake)
+  store.setForm(jenis, val)
 }
-function setJp3 (evt) {
-  const val = !isNaN(evt) && evt !== '' ? parseInt(evt) : 0
-  const js = !isNaN(store.form.js3) && store.form.js3 !== '' ? parseInt(store.form.js3) : 0
-  const habispake = !isNaN(store.form.habispake3) && store.form.habispake3 !== '' ? parseInt(store.form.habispake3) : 0
-  store.setForm('jp3', val)
-  store.setForm('tarif3', val + js + habispake)
-}
-function setHabispake3 (evt) {
-  const val = !isNaN(evt) && evt !== '' ? parseInt(evt) : 0
-  const js = !isNaN(store.form.js3) && store.form.js3 !== '' ? parseInt(store.form.js3) : 0
-  const jp = !isNaN(store.form.jp3) && store.form.jp3 !== '' ? parseInt(store.form.jp3) : 0
-  store.setForm('habispake3', val)
-  store.setForm('tarif3', val + js + jp)
-}
-//
-function setJs2 (evt) {
-  const val = !isNaN(evt) && evt !== '' ? parseInt(evt) : 0
-  const jp = !isNaN(store.form.jp2) && store.form.jp2 !== '' ? parseInt(store.form.jp2) : 0
-  const habispake = !isNaN(store.form.habispake2) && store.form.habispake2 !== '' ? parseInt(store.form.habispake2) : 0
-  store.setForm('js2', val)
-  store.setForm('tarif2', val + jp + habispake)
-}
-function setJp2 (evt) {
-  const val = !isNaN(evt) && evt !== '' ? parseInt(evt) : 0
-  const js = !isNaN(store.form.js2) && store.form.js2 !== '' ? parseInt(store.form.js2) : 0
-  const habispake = !isNaN(store.form.habispake2) && store.form.habispake2 !== '' ? parseInt(store.form.habispake2) : 0
-  store.setForm('jp2', val)
-  store.setForm('tarif2', val + js + habispake)
-}
-function setHabispake2 (evt) {
-  const val = !isNaN(evt) && evt !== '' ? parseInt(evt) : 0
-  const js = !isNaN(store.form.js2) && store.form.js2 !== '' ? parseInt(store.form.js2) : 0
-  const jp = !isNaN(store.form.jp2) && store.form.jp2 !== '' ? parseInt(store.form.jp2) : 0
-  store.setForm('habispake2', val)
-  store.setForm('tarif2', val + js + jp)
-}
-//
-function setJs1 (evt) {
-  const val = !isNaN(evt) && evt !== '' ? parseInt(evt) : 0
-  const jp = !isNaN(store.form.jp1) && store.form.jp1 !== '' ? parseInt(store.form.jp1) : 0
-  const habispake = !isNaN(store.form.habispake1) && store.form.habispake1 !== '' ? parseInt(store.form.habispake1) : 0
-  store.setForm('js1', val)
-  store.setForm('tarif1', val + jp + habispake)
-}
-function setJp1 (evt) {
-  const val = !isNaN(evt) && evt !== '' ? parseInt(evt) : 0
-  const js = !isNaN(store.form.js1) && store.form.js1 !== '' ? parseInt(store.form.js1) : 0
-  const habispake = !isNaN(store.form.habispake1) && store.form.habispake1 !== '' ? parseInt(store.form.habispake1) : 0
-  store.setForm('jp1', val)
-  store.setForm('tarif1', val + js + habispake)
-}
-function setHabispake1 (evt) {
-  const val = !isNaN(evt) && evt !== '' ? parseInt(evt) : 0
-  const js = !isNaN(store.form.js1) && store.form.js1 !== '' ? parseInt(store.form.js1) : 0
-  const jp = !isNaN(store.form.jp1) && store.form.jp1 !== '' ? parseInt(store.form.jp1) : 0
-  store.setForm('habispake1', val)
-  store.setForm('tarif1', val + js + jp)
-}
-//
-function setJsUtama (evt) {
-  const val = !isNaN(evt) && evt !== '' ? parseInt(evt) : 0
-  const jp = !isNaN(store.form.jputama) && store.form.jputama !== '' ? parseInt(store.form.jputama) : 0
-  const habispake = !isNaN(store.form.habispakeutama) && store.form.habispakeutama !== '' ? parseInt(store.form.habispakeutama) : 0
-  store.setForm('jsutama', val)
-  store.setForm('tarifutama', val + jp + habispake)
-}
-function setJpUtama (evt) {
-  const val = !isNaN(evt) && evt !== '' ? parseInt(evt) : 0
-  const js = !isNaN(store.form.jsutama) && store.form.jsutama !== '' ? parseInt(store.form.jsutama) : 0
-  const habispake = !isNaN(store.form.habispakeutama) && store.form.habispakeutama !== '' ? parseInt(store.form.habispakeutama) : 0
-  store.setForm('jputama', val)
-  store.setForm('tarifutama', val + js + habispake)
-}
-function setHabispakeutama (evt) {
-  const val = !isNaN(evt) && evt !== '' ? parseInt(evt) : 0
-  const js = !isNaN(store.form.jsutama) && store.form.jsutama !== '' ? parseInt(store.form.jsutama) : 0
-  const jp = !isNaN(store.form.jputama) && store.form.jputama !== '' ? parseInt(store.form.jputama) : 0
-  store.setForm('habispakeutama', val)
-  store.setForm('tarifutama', val + js + jp)
-}
-//
-function setJsVip (evt) {
-  const val = !isNaN(evt) && evt !== '' ? parseInt(evt) : 0
-  const jp = !isNaN(store.form.jpvip) && store.form.jpvip !== '' ? parseInt(store.form.jpvip) : 0
-  const habispake = !isNaN(store.form.habispakevip) && store.form.habispakevip !== '' ? parseInt(store.form.habispakevip) : 0
-  store.setForm('jsvip', val)
-  store.setForm('tarifvip', val + jp + habispake)
-}
-function setJpVip (evt) {
-  const val = !isNaN(evt) && evt !== '' ? parseInt(evt) : 0
-  const js = !isNaN(store.form.jsvip) && store.form.jsvip !== '' ? parseInt(store.form.jsvip) : 0
-  const habispake = !isNaN(store.form.habispakevip) && store.form.habispakevip !== '' ? parseInt(store.form.habispakevip) : 0
-  store.setForm('jpvip', val)
-  store.setForm('tarifvip', val + js + habispake)
-}
-function setHabispakevip (evt) {
-  const val = !isNaN(evt) && evt !== '' ? parseInt(evt) : 0
-  const js = !isNaN(store.form.jsvip) && store.form.jsvip !== '' ? parseInt(store.form.jsvip) : 0
-  const jp = !isNaN(store.form.jpvip) && store.form.jpvip !== '' ? parseInt(store.form.jpvip) : 0
-  store.setForm('habispakevip', val)
-  store.setForm('tarifvip', val + js + jp)
-}
-//
-function setJsVvip (evt) {
-  const val = !isNaN(evt) && evt !== '' ? parseInt(evt) : 0
-  const jp = !isNaN(store.form.jpvvip) && store.form.jpvvip !== '' ? parseInt(store.form.jpvvip) : 0
-  const habispake = !isNaN(store.form.habispakevvip) && store.form.habispakevvip !== '' ? parseInt(store.form.habispakevvip) : 0
-  store.setForm('jsvvip', val)
-  store.setForm('tarifvvip', val + jp + habispake)
-}
-function setJpVvip (evt) {
-  const val = !isNaN(evt) && evt !== '' ? parseInt(evt) : 0
-  const js = !isNaN(store.form.jsvvip) && store.form.jsvvip !== '' ? parseInt(store.form.jsvvip) : 0
-  const habispake = !isNaN(store.form.habispakevvip) && store.form.habispakevvip !== '' ? parseInt(store.form.habispakevvip) : 0
-  store.setForm('jpvvip', val)
-  store.setForm('tarifvvip', val + js + habispake)
-}
-function setHabispakevvip (evt) {
-  const val = !isNaN(evt) && evt !== '' ? parseInt(evt) : 0
-  const js = !isNaN(store.form.jsvvip) && store.form.jsvvip !== '' ? parseInt(store.form.jsvvip) : 0
-  const jp = !isNaN(store.form.jpvvip) && store.form.jpvvip !== '' ? parseInt(store.form.jpvvip) : 0
-  store.setForm('habispakevvip', val)
-  store.setForm('tarifvvip', val + js + jp)
-}
-function SetPresidential (evt, jenis) {
-  console.log('pres', evt, jenis)
-  const val = !isNaN(evt) && evt !== '' ? parseInt(evt) : 0
-  if (jenis === 'js') store.setForm('js_presidential', val)
-  if (jenis === 'jp') store.setForm('jp_presidential', val)
-  if (jenis === 'habispake') store.setForm('habispake_presidential', val)
-  const js = !isNaN(store.form.js_presidential) && store.form.js_presidential !== '' ? parseInt(store.form.js_presidential) : 0
-  const jp = !isNaN(store.form.jp_presidential) && store.form.jp_presidential !== '' ? parseInt(store.form.jp_presidential) : 0
-  const habispake = !isNaN(store.form.habispake_presidential) && store.form.habispake_presidential !== '' ? parseInt(store.form.habispake_presidential) : 0
-
-  store.setForm('tarif_presidential', js + jp + habispake)
-}
-function SetHcu (evt, jenis) {
-  console.log('pres', evt, jenis)
-  const val = !isNaN(evt) && evt !== '' ? parseInt(evt) : 0
-  if (jenis === 'js') store.setForm('js_hcu', val)
-  if (jenis === 'jp') store.setForm('jp_hcu', val)
-  if (jenis === 'habispake') store.setForm('habispake_hcu', val)
-  const js = !isNaN(store.form.js_hcu) && store.form.js_hcu !== '' ? parseInt(store.form.js_hcu) : 0
-  const jp = !isNaN(store.form.jp_hcu) && store.form.jp_hcu !== '' ? parseInt(store.form.jp_hcu) : 0
-  const habispake = !isNaN(store.form.habispake_hcu) && store.form.habispake_hcu !== '' ? parseInt(store.form.habispake_hcu) : 0
-
-  store.setForm('tarif_hcu', js + jp + habispake)
-}
-function SetHomeCare (evt, jenis) {
-  console.log('pres', evt, jenis)
-  const val = !isNaN(evt) && evt !== '' ? parseInt(evt) : 0
-  if (jenis === 'js') store.setForm('js_hc', val)
-  if (jenis === 'jp') store.setForm('jp_hc', val)
-  if (jenis === 'habispake') store.setForm('habispake_hc', val)
-  const js = !isNaN(store.form.js_hc) && store.form.js_hc !== '' ? parseInt(store.form.js_hc) : 0
-  const jp = !isNaN(store.form.jp_hc) && store.form.jp_hc !== '' ? parseInt(store.form.jp_hc) : 0
-  const habispake = !isNaN(store.form.habispake_hc) && store.form.habispake_hc !== '' ? parseInt(store.form.habispake_hc) : 0
-
-  store.setForm('tarif_hc', js + jp + habispake)
-}
+const tarif1 = computed(() => {
+  const js = !isNaN(store.form.rs6) && store.form.rs6 !== '' ? parseInt(store.form.rs6) : 0
+  const jp = !isNaN(store.form.rs7) && store.form.rs7 !== '' ? parseInt(store.form.rs7) : 0
+  const anastesi = !isNaN(store.form.rs8) && store.form.rs8 !== '' ? parseInt(store.form.rs8) : 0
+  return js + jp + anastesi
+})
+const tarif2 = computed(() => {
+  const js = !isNaN(store.form.rs9) && store.form.rs9 !== '' ? parseInt(store.form.rs9) : 0
+  const jp = !isNaN(store.form.rs10) && store.form.rs10 !== '' ? parseInt(store.form.rs10) : 0
+  const anastesi = !isNaN(store.form.rs11) && store.form.rs11 !== '' ? parseInt(store.form.rs11) : 0
+  return js + jp + anastesi
+})
+const presidential = computed(() => {
+  const js = !isNaN(store.form.ssp) && store.form.ssp !== '' ? parseInt(store.form.ssp) : 0
+  const jp = !isNaN(store.form.psp) && store.form.psp !== '' ? parseInt(store.form.psp) : 0
+  const anastesi = !isNaN(store.form.asp) && store.form.asp !== '' ? parseInt(store.form.asp) : 0
+  return js + jp + anastesi
+})
+const poli = computed(() => {
+  const js = !isNaN(store.form.rs12) && store.form.rs12 !== '' ? parseInt(store.form.rs12) : 0
+  const jp = !isNaN(store.form.rs13) && store.form.rs13 !== '' ? parseInt(store.form.rs13) : 0
+  return js + jp
+})
 // set tarif end
 // simpan
 const onSubmit = () => {

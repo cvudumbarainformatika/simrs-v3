@@ -1,5 +1,5 @@
 <template>
-  <!-- <div class="column">
+  <div class="column">
     <div class="col-auto fixed-top" style="z-index:1; margin-top: 50px; margin-left: 55px; ">
       <HeaderComp :search="store.params.q" :per-page="store.params.per_page" :params="store.params"
         :loading-bpjs="store.loadingBpjs" @set-tanggal="(val) => store.setDate(val)" @set-search="store.setSearch"
@@ -15,20 +15,20 @@
       <BottomComp v-if="store.meta !== null" :key="store.meta" :meta="store.meta" @go-to="store.setPage" />
     </div>
     <FormDialog v-model="store.isOpen" />
-  </div> -->
-  <app-maintenance />
+  </div>
+  <!-- <app-maintenance /> -->
 </template>
 <script setup>
-// import { defineAsyncComponent } from 'vue'
-// import { useMasterTindakanOperasiStore } from 'src/stores/simrs/master/tarif/tindakanOperasi'
+import { defineAsyncComponent } from 'vue'
+import { useMasterTindakanOperasiStore } from 'src/stores/simrs/master/tarif/tindakanOperasi'
 
-// const FormDialog = defineAsyncComponent(() => import('./comp/FormDialog.vue'))
-// const HeaderComp = defineAsyncComponent(() => import('./comp/CompHeader.vue'))
-// const TableComp = defineAsyncComponent(() => import('./comp/CompTable.vue'))
-// const BottomComp = defineAsyncComponent(() => import('./comp/CompBottom.vue'))
+const FormDialog = defineAsyncComponent(() => import('./comp/FormDialog.vue'))
+const HeaderComp = defineAsyncComponent(() => import('./comp/CompHeader.vue'))
+const TableComp = defineAsyncComponent(() => import('./comp/CompTable.vue'))
+const BottomComp = defineAsyncComponent(() => import('./comp/CompBottom.vue'))
 
-// const store = useMasterTindakanOperasiStore()
-// store.getInitialData()
+const store = useMasterTindakanOperasiStore()
+store.getInitialData()
 </script>
 
 <style lang="scss" scoped>

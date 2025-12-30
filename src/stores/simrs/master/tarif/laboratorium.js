@@ -209,7 +209,7 @@ export const useMasterTarifLaboratoriumStore = defineStore('master_tarif_laborat
       await api.post('v1/simrs/master/tarif-laborat/simpan', this.form)
         .then(resp => {
           this.loading = false
-          console.log('resp tindakan', resp.data)
+          // console.log('resp tindakan', resp.data)
           this.setOpen()
           this.getInitialData()
           notifSuccess(resp)

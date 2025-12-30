@@ -1,4 +1,5 @@
 <template>
+  <!-- {{ loading }} -->
   <table style="width: calc(100vw - 70px); margin-right: 7px; margin-left: 5px;">
     <thead class="my-sticky-header-table">
       <tr class="baris-1">
@@ -11,35 +12,17 @@
         <th rowspan="2" class="q-px-sm">
           Nama
         </th>
-        <th rowspan="2" class="q-px-sm">
-          Berlaku di Ruangan
+        <th colspan="4" class="q-px-sm">
+          Tarif 1
         </th>
         <th colspan="4" class="q-px-sm">
-          Kelas 3
+          Tarif 2
+        </th>
+        <th colspan="3" class="q-px-sm">
+          Poli
         </th>
         <th colspan="4" class="q-px-sm">
-          Kelas 2
-        </th>
-        <th colspan="4" class="q-px-sm">
-          Kelas 1
-        </th>
-        <th colspan="4" class="q-px-sm">
-          Utama
-        </th>
-        <th colspan="4" class="q-px-sm">
-          VIP
-        </th>
-        <th colspan="4" class="q-px-sm">
-          VVIP
-        </th>
-        <th colspan="4" class="q-px-sm">
-          Presidential
-        </th>
-        <th colspan="4" class="q-px-sm">
-          HCU
-        </th>
-        <th colspan="4" class="q-px-sm">
-          Home Care
+          Presidensial
         </th>
         <th rowspan="2" class="q-px-sm">
           Tgl Update Tarif
@@ -57,39 +40,18 @@
       <tr class="baris-2">
         <th>JS</th>
         <th>JP</th>
-        <th>HP</th>
+        <th>Anastesi</th>
         <th>Tarif</th>
         <th>JS</th>
         <th>JP</th>
-        <th>HP</th>
+        <th>Anastesi</th>
         <th>Tarif</th>
         <th>JS</th>
         <th>JP</th>
-        <th>HP</th>
         <th>Tarif</th>
         <th>JS</th>
         <th>JP</th>
-        <th>HP</th>
-        <th>Tarif</th>
-        <th>JS</th>
-        <th>JP</th>
-        <th>HP</th>
-        <th>Tarif</th>
-        <th>JS</th>
-        <th>JP</th>
-        <th>HP</th>
-        <th>Tarif</th>
-        <th>JS</th>
-        <th>JP</th>
-        <th>HP</th>
-        <th>Tarif</th>
-        <th>JS</th>
-        <th>JP</th>
-        <th>HP</th>
-        <th>Tarif</th>
-        <th>JS</th>
-        <th>JP</th>
-        <th>HP</th>
+        <th>Anastesi</th>
         <th>Tarif</th>
       </tr>
     </thead>
@@ -118,6 +80,7 @@
           <td>
             <q-skeleton type="text" width="20px" height="14px" />
           </td>
+
           <td>
             <q-skeleton type="text" width="20px" height="14px" />
           </td>
@@ -130,6 +93,7 @@
           <td>
             <q-skeleton type="text" width="20px" height="14px" />
           </td>
+
           <td>
             <q-skeleton type="text" width="20px" height="14px" />
           </td>
@@ -139,57 +103,7 @@
           <td>
             <q-skeleton type="text" width="20px" height="14px" />
           </td>
-          <td>
-            <q-skeleton type="text" width="20px" height="14px" />
-          </td>
-          <td>
-            <q-skeleton type="text" width="20px" height="14px" />
-          </td>
-          <td>
-            <q-skeleton type="text" width="20px" height="14px" />
-          </td>
-          <td>
-            <q-skeleton type="text" width="20px" height="14px" />
-          </td>
-          <td>
-            <q-skeleton type="text" width="20px" height="14px" />
-          </td>
-          <td>
-            <q-skeleton type="text" width="20px" height="14px" />
-          </td>
-          <td>
-            <q-skeleton type="text" width="20px" height="14px" />
-          </td>
-          <td>
-            <q-skeleton type="text" width="20px" height="14px" />
-          </td>
-          <td>
-            <q-skeleton type="text" width="20px" height="14px" />
-          </td>
-          <td>
-            <q-skeleton type="text" width="20px" height="14px" />
-          </td>
-          <td>
-            <q-skeleton type="text" width="20px" height="14px" />
-          </td>
-          <td>
-            <q-skeleton type="text" width="20px" height="14px" />
-          </td>
-          <td>
-            <q-skeleton type="text" width="20px" height="14px" />
-          </td>
-          <td>
-            <q-skeleton type="text" width="20px" height="14px" />
-          </td>
-          <td>
-            <q-skeleton type="text" width="20px" height="14px" />
-          </td>
-          <td>
-            <q-skeleton type="text" width="20px" height="14px" />
-          </td>
-          <td>
-            <q-skeleton type="text" width="20px" height="14px" />
-          </td>
+
           <td>
             <q-skeleton type="text" width="20px" height="14px" />
           </td>
@@ -218,7 +132,7 @@
       </template>
       <template v-else-if="!items?.length">
         <tr>
-          <td colspan="43">
+          <td colspan="22">
             <app-no-data />
           </td>
         </tr>
@@ -232,201 +146,88 @@
               </div>
             </td>
             <td>
-              {{ item?.kdtindakan }}
+              {{ item?.rs1 }}
             </td>
             <td>
-              {{ item?.nmtindakan }}
-            </td>
-            <td>
-              {{ BerlakuDiRuangan(item) }}
+              {{ item?.rs2 }}
             </td>
 
             <td class="text-end">
-              <div v-if="item?.js3">
-                {{ formatRp(item?.js3 ?? 0) }}
+              <div v-if="item?.rs6">
+                {{ formatRp(item?.rs6 ?? 0) }}
               </div>
             </td>
             <td class="text-end">
-              <div v-if="item?.jp3">
-                {{ formatRp(item?.jp3 ?? 0) }}
+              <div v-if="item?.rs7">
+                {{ formatRp(item?.rs7 ?? 0) }}
               </div>
             </td>
             <td class="text-end">
-              <div v-if="item?.habispake3">
-                {{ formatRp(item?.habispake3 ?? 0) }}
+              <div v-if="item?.rs8">
+                {{ formatRp(item?.rs8 ?? 0) }}
               </div>
             </td>
             <td class="text-end">
-              <div v-if="item?.tarif3">
-                {{ formatRp(item?.tarif3 ?? 0) }}
+              <div>
+                {{ formatRp(((item?.rs6 ?? 0) + (item?.rs7 ?? 0) + (item?.rs8 ?? 0)) ?? 0) }}
               </div>
             </td>
 
             <td class="text-end">
-              <div v-if="item?.js2">
-                {{ formatRp(item?.js2 ?? 0) }}
+              <div v-if="item?.rs9">
+                {{ formatRp(item?.rs9 ?? 0) }}
               </div>
             </td>
             <td class="text-end">
-              <div v-if="item?.jp2">
-                {{ formatRp(item?.jp2 ?? 0) }}
+              <div v-if="item?.rs10">
+                {{ formatRp(item?.rs10 ?? 0) }}
               </div>
             </td>
             <td class="text-end">
-              <div v-if="item?.habispake2">
-                {{ formatRp(item?.habispake2 ?? 0) }}
+              <div v-if="item?.rs11">
+                {{ formatRp(item?.rs11 ?? 0) }}
               </div>
             </td>
             <td class="text-end">
-              <div v-if="item?.tarif2">
-                {{ formatRp(item?.tarif2 ?? 0) }}
-              </div>
-            </td>
-
-            <td class="text-end">
-              <div v-if="item?.js1">
-                {{ formatRp(item?.js1 ?? 0) }}
-              </div>
-            </td>
-            <td class="text-end">
-              <div v-if="item?.jp1">
-                {{ formatRp(item?.jp1 ?? 0) }}
-              </div>
-            </td>
-            <td class="text-end">
-              <div v-if="item?.habispake1">
-                {{ formatRp(item?.habispake1 ?? 0) }}
-              </div>
-            </td>
-            <td class="text-end">
-              <div v-if="item?.tarif1">
-                {{ formatRp(item?.tarif1 ?? 0) }}
+              <div>
+                {{ formatRp(((item?.rs9 ?? 0) + (item?.rs10 ?? 0) + (item?.rs11 ?? 0)) ?? 0) }}
               </div>
             </td>
 
             <td class="text-end">
-              <div v-if="item?.jsutama">
-                {{ formatRp(item?.jsutama ?? 0) }}
+              <div v-if="item?.rs12">
+                {{ formatRp(item?.rs12 ?? 0) }}
               </div>
             </td>
             <td class="text-end">
-              <div v-if="item?.jputama">
-                {{ formatRp(item?.jputama ?? 0) }}
+              <div v-if="item?.rs13">
+                {{ formatRp(item?.rs13 ?? 0) }}
               </div>
             </td>
             <td class="text-end">
-              <div v-if="item?.habispakeutama">
-                {{ formatRp(item?.habispakeutama ?? 0) }}
-              </div>
-            </td>
-            <td class="text-end">
-              <div v-if="item?.tarifutama">
-                {{ formatRp(item?.tarifutama ?? 0) }}
+              <div>
+                {{ formatRp(((item?.rs12 ?? 0) + (item?.rs13 ?? 0)) ?? 0) }}
               </div>
             </td>
 
             <td class="text-end">
-              <div v-if="item?.jsvip">
-                {{ formatRp(item?.jsvip ?? 0) }}
+              <div v-if="item?.ssp">
+                {{ formatRp(item?.ssp ?? 0) }}
               </div>
             </td>
             <td class="text-end">
-              <div v-if="item?.jpvip">
-                {{ formatRp(item?.jpvip ?? 0) }}
+              <div v-if="item?.psp">
+                {{ formatRp(item?.psp ?? 0) }}
               </div>
             </td>
             <td class="text-end">
-              <div v-if="item?.habispakevip">
-                {{ formatRp(item?.habispakevip ?? 0) }}
+              <div v-if="item?.asp">
+                {{ formatRp(item?.asp ?? 0) }}
               </div>
             </td>
             <td class="text-end">
-              <div v-if="item?.tarifvip">
-                {{ formatRp(item?.tarifvip ?? 0) }}
-              </div>
-            </td>
-
-            <td class="text-end">
-              <div v-if="item?.jsvvip">
-                {{ formatRp(item?.jsvvip ?? 0) }}
-              </div>
-            </td>
-            <td class="text-end">
-              <div v-if="item?.jpvvip">
-                {{ formatRp(item?.jpvvip ?? 0) }}
-              </div>
-            </td>
-            <td class="text-end">
-              <div v-if="item?.habispakevvip">
-                {{ formatRp(item?.habispakevvip ?? 0) }}
-              </div>
-            </td>
-            <td class="text-end">
-              <div v-if="item?.tarifvvip">
-                {{ formatRp(item?.tarifvvip ?? 0) }}
-              </div>
-            </td>
-
-            <td class="text-end">
-              <div v-if="item?.js_presidential">
-                {{ formatRp(item?.js_presidential ?? 0) }}
-              </div>
-            </td>
-            <td class="text-end">
-              <div v-if="item?.jp_presidential">
-                {{ formatRp(item?.jp_presidential ?? 0) }}
-              </div>
-            </td>
-            <td class="text-end">
-              <div v-if="item?.habispake_presidential">
-                {{ formatRp(item?.habispake_presidential ?? 0) }}
-              </div>
-            </td>
-            <td class="text-end">
-              <div v-if="item?.tarif_presidential">
-                {{ formatRp(item?.tarif_presidential ?? 0) }}
-              </div>
-            </td>
-
-            <td class="text-end">
-              <div v-if="item?.js_hcu">
-                {{ formatRp(item?.js_hcu ?? 0) }}
-              </div>
-            </td>
-            <td class="text-end">
-              <div v-if="item?.jp_hcu">
-                {{ formatRp(item?.jp_hcu ?? 0) }}
-              </div>
-            </td>
-            <td class="text-end">
-              <div v-if="item?.habispake_hcu">
-                {{ formatRp(item?.habispake_hcu ?? 0) }}
-              </div>
-            </td>
-            <td class="text-end">
-              <div v-if="item?.tarif_hcu">
-                {{ formatRp(item?.tarif_hcu ?? 0) }}
-              </div>
-            </td>
-
-            <td class="text-end">
-              <div v-if="item?.js_hc">
-                {{ formatRp(item?.js_hc ?? 0) }}
-              </div>
-            </td>
-            <td class="text-end">
-              <div v-if="item?.jp_hc">
-                {{ formatRp(item?.jp_hc ?? 0) }}
-              </div>
-            </td>
-            <td class="text-end">
-              <div v-if="item?.habispake_hc">
-                {{ formatRp(item?.habispake_hc ?? 0) }}
-              </div>
-            </td>
-            <td class="text-end">
-              <div v-if="item?.tarif_hc">
-                {{ formatRp(item?.tarif_hc ?? 0) }}
+              <div>
+                {{ formatRp(((item?.ssp ?? 0) + (item?.psp ?? 0) + (item?.asp ?? 0)) ?? 0) }}
               </div>
             </td>
 
@@ -533,24 +334,6 @@ function undeleteOne (item) {
   }).onDismiss(() => {
     // console.log('I am triggered on both OK and Cancel')
   })
-}
-function BerlakuDiRuangan (item) {
-  const ruangans = item?.ruangan.split('|')
-  const ruang = []
-  if (ruangans?.length > 1) {
-    ruangans.forEach(element => {
-      if (element != '') {
-        const poli = props?.polis?.find(x => x?.kodepoli == element)
-        const ranap = props?.ruangRanap?.find(x => x?.groups == element)
-        if (poli) ruang.push({ kode: poli?.kodepoli, nama: poli?.polirs })
-        if (ranap) ruang.push({ kode: ranap?.groups, nama: ranap?.groups_nama })
-      }
-      // console.log('poli', props?.polis, element, poli, ranap)
-
-    })
-  }
-  // console.log('berlaku', ruang)
-  return ruang.map(x => x?.nama).join(', ')
 }
 function sudahDiHapus (item) {
   let tampil = true

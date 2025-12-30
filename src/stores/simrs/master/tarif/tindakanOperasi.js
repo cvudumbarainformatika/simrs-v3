@@ -11,73 +11,34 @@ export const useMasterTindakanOperasiStore = defineStore('master_tindakan_operas
     items: [],
     meta: {},
     params: {
-      nmtindakan: '',
+      q: '',
       per_page: 10,
       page: 1
     },
     form: {},
     disp: {},
-    columns: [
-      'kode',
-      'nama',
-      'kelas3',
-      'kelas2',
-      'kelas1',
-      'utama',
-      'vip',
-      'vvip'
-    ],
+
     polis: [],
     ruangRanap: [],
     allRuangs: []
   }),
   actions: {
     resetForm () {
-      this.setForm('kdtindakan', '')
-      this.setForm('nmtindakan', '')
+      this.setForm('rs1', '')
+      this.setForm('rs2', '')
       this.setForm('dasar_perubahan', '')
       const col = [
-        'js3',
-        'jp3',
-        'tarif3',
-        'tarif2',
-        'tarif1',
-        'tarifutama',
-        'tarifvip',
-        'tarifvvip',
-        'habispake3',
-        'js2',
-        'jp2',
-        'habispake2',
-        'js1',
-        'jp1',
-        'habispake1',
-        'jsutama',
-        'jputama',
-        'habispakeutama',
-        'jsvip',
-        'jpvip',
-        'habispakevip',
-
-        'jsvvip',
-        'jpvvip',
-        'habispakevvip',
-
-        'js_presidential',
-        'jp_presidential',
-        'habispake_presidential',
-        'tarif_presidential',
-
-        'js_hcu',
-        'jp_hcu',
-        'habispake_hcu',
-        'tarif_hcu',
-
-        'js_hc',
-        'jp_hc',
-        'habispake_hc',
-        'tarif_hc',
-
+        'rs6',
+        'rs7',
+        'rs8',
+        'rs9',
+        'rs10',
+        'rs11',
+        'rs12',
+        'rs13',
+        'ssp',
+        'psp',
+        'asp',
       ]
       col.forEach(a => {
         this.setForm(a, 0)
@@ -111,7 +72,7 @@ export const useMasterTindakanOperasiStore = defineStore('master_tindakan_operas
       this.getDataTable()
     },
     setSearch (payload) {
-      this.params.nmtindakan = payload
+      this.params.q = payload
       this.params.page = 1
       this.getDataTable()
     },
@@ -148,18 +109,6 @@ export const useMasterTindakanOperasiStore = defineStore('master_tindakan_operas
             }
           }
         }
-        if (a == 'ruangan') {
-          const ruangansAda = []
-          const ruangans = payload[a].split('|')?.filter(a => a != '')
-          ruangans.forEach(b => {
-            const found = this.allRuangs?.find(c => c.kode == b)
-            if (found) {
-              ruangansAda.push(found.kode)
-            }
-          })
-          this.disp[a] = ruangansAda
-          console.log('edit data', a, payload[a], ruangansAda)
-        }
       })
 
       this.setForm('flag', 'edit')
@@ -170,7 +119,7 @@ export const useMasterTindakanOperasiStore = defineStore('master_tindakan_operas
 
       const besok = date.addToDate(new Date(), { days: 1 })
       const data = {
-        kdtindakan: payload.kdtindakan,
+        kode: payload.rs1,
         tgl_mulai_berlaku: date.formatDate(besok, 'YYYY-MM-DD')
       }
       this.deleteData(data)
@@ -180,7 +129,7 @@ export const useMasterTindakanOperasiStore = defineStore('master_tindakan_operas
 
       const besok = date.addToDate(new Date(), { days: 1 })
       const data = {
-        kdtindakan: payload.kdtindakan,
+        kode: payload.rs1,
         tgl_mulai_berlaku: date.formatDate(besok, 'YYYY-MM-DD')
       }
       this.undeleteData(data)
@@ -195,34 +144,18 @@ export const useMasterTindakanOperasiStore = defineStore('master_tindakan_operas
     },
     getInitialData () {
       this.getDataTable()
-      this.getPoli()
-      this.getRuangRanap()
+      // this.getPoli()
+      // this.getRuangRanap()
     },
     // api related function
-    async getPoli () {
-      await api.get('v1/settings/appakses/all-poli')
-        .then(resp => {
-          this.polis = resp.data
-          // console.log('resp poli', this.polis)
-          this.mergeRuangan()
-        })
-    },
-    async getRuangRanap () {
-      await api.get('v1/simrs/ranap/ruangan/listruanganranap')
-        .then(resp => {
-          this.ruangRanap = resp.data
-          // console.log('resp ruangranap', this.ruangRanap)
-          this.mergeRuangan()
-        })
-    },
     async getDataTable () {
       this.loading = true
       const param = { params: this.params }
-      await api.get('v1/simrs/master/listtindakan', param)
+      await api.get('v1/simrs/master/tarif/tindakan-operasi/list', param)
         .then(resp => {
           this.loading = false
-          console.log('resp tindakan', resp.data)
-          this.meta = resp.data
+          // console.log('resp tarif tindakan op', resp.data)
+          this.meta = resp.data?.meta ?? resp.data
           this.items = resp.data.data
         })
         .catch(() => { this.loading = false })
@@ -248,7 +181,7 @@ export const useMasterTindakanOperasiStore = defineStore('master_tindakan_operas
       }
 
       this.loading = true
-      await api.post('v1/simrs/master/simpanmastertindakan', this.form)
+      await api.post('v1/simrs/master/tarif/tindakan-operasi/simpan', this.form)
         .then(resp => {
           this.loading = false
           console.log('resp tindakan', resp.data)
@@ -260,7 +193,7 @@ export const useMasterTindakanOperasiStore = defineStore('master_tindakan_operas
     },
     async deleteData (val) {
       this.loading = true
-      await api.post('v1/simrs/master/hapusmastertindakan', val)
+      await api.post('v1/simrs/master/tarif/tindakan-operasi/hapus', val)
         .then(resp => {
           this.loading = false
           console.log('hapus tindakan', resp.data)
@@ -271,7 +204,7 @@ export const useMasterTindakanOperasiStore = defineStore('master_tindakan_operas
     },
     async undeleteData (val) {
       this.loading = true
-      await api.post('v1/simrs/master/tampilkanmastertindakan', val)
+      await api.post('v1/simrs/master/tarif/tindakan-operasi/tampilkan', val)
         .then(resp => {
           this.loading = false
           console.log('tampilkan tindakan', resp.data)

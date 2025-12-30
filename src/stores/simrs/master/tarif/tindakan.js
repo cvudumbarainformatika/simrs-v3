@@ -221,7 +221,7 @@ export const useMasterTindakanJsJpStore = defineStore('master_tindakan_js_jp', {
       await api.get('v1/simrs/master/listtindakan', param)
         .then(resp => {
           this.loading = false
-          console.log('resp tindakan', resp.data)
+          // console.log('resp tindakan', resp.data)
           this.meta = resp.data
           this.items = resp.data.data
         })
