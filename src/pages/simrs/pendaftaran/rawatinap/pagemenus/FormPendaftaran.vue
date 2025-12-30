@@ -769,7 +769,9 @@ function pilihRuang(val) {
       const kamarsx = pilihan?.kamars?.length
         ? pilihan?.kamars?.filter(x => {
           return x.rs6 === group && ((x?.rs5 === `${group + kelas}` || x?.rs5 === `${group + '-' + kelas}`) || (x?.rs5 === '-') ||
-            (x?.rs5 === `${group + '-ISO'}`) || (x?.rs5 === `${group + 'ISO'}`) || (x?.rs5 === `${group + kelas + '-ISO'}`) || (x?.rs5 === `${group + kelas + 'ISO'}`))
+            (x?.rs5 === `${group + '-ISO'}`) || (x?.rs5 === `${group + 'ISO'}`) ||
+            (x?.rs5 === `${group + kelas + '-ISO'}`) || (x?.rs5 === `${group + kelas + 'ISO'}`) || (x?.rs5 === `${group}`)
+          )
         })
         : []
       // console.log('kamars', kamars)

@@ -77,7 +77,7 @@
                   </td>
                   <td style="border: none !important; padding: 0px !important; width:15%;"> Tgl Serah Terima</td>
                   <td style="border: none !important; padding: 0px !important; width: 40%;"> : {{
-                    dateFullFormat(item?.tglmasuk) }}
+                    dateFullFormat(item?.serah_terima?.created_at) }}
                   </td>
                 </tr>
                 <tr style="border: none !important; padding: 0px !important;">
@@ -86,7 +86,7 @@
                     dateFullFormat(pasien?.tgllahir) }}</td>
                   <td style="border: none !important; padding: 0px !important; width:15%;"> Jam</td>
                   <td style="border: none !important; padding: 0px !important; width: 40%;"> : {{
-                    jamTnpDetik(item?.tglmasuk) }}
+                    jamTnpDetik(item?.serah_terima?.created_at) }}
                   </td>
                 </tr>
                 <tr style="border: none !important; padding: 0px !important;">
@@ -421,7 +421,7 @@ onMounted(() => {
     diag.getDiagnosaByNoreg(props?.pasien)
   ])
 
-  // console.log('store', store.historys);
+  console.log('store', store.historys);
 })
 
 const keluhanUtama = (pas) => {

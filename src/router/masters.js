@@ -286,6 +286,11 @@ const masters = {
           name: 'master.siasik.mappingkegiatanptk',
           component: () => import('pages/siasik/master/mappingkegiatanptk/IndexPage.vue')
         },
+        {
+          path: '/master/siasik/masterjasa',
+          name: 'master.siasik.masterjasa',
+          component: () => import('pages/siasik/master/master_jasa/IndexPage.vue')
+        },
       ]
     },
     {
