@@ -1,5 +1,5 @@
 <template>
-  <q-form ref="formNpdLS" @submit="saveNpd">
+  <q-form ref="formNpdLS" @submit="saveData">
     <div class="col-12 col-md-12">
       <div class="row">
         <div class="col-6 q-pa-sm q-gutter-y-md">
@@ -14,7 +14,7 @@
             :options="optionsBarangs" clearable
             :option-label="opt => opt?.kode ? `${opt.kode} - ${opt.nama}` : `${opt.nama}`" :disable="store.loadingSave"
             :loading="store.loadingSave" @filter="filterFnBarang" @clear="store.setForm('kode', null)"
-            @update:model-value="updateBarangs">
+            @update:model-value="updateBarang">
             <template #no-option>
               <q-item>
                 <q-item-section class="text-grey">Data Tidak Ditemukan / Sudah Ada di List</q-item-section>
@@ -25,22 +25,28 @@
       </div>
       <div class="row">
         <div class="col-3 q-pa-sm q-gutter-y-md">
-          <app-input-simrs label="Volume" v-model="store.form.volume" :disable="store.disabled" outlined dense />
+          <app-input-simrs label="Volume" v-model="store.form.volume" :disable="store.disabled" outlined dense
+            @update:model-value="updateVolume" />
 
 
         </div>
         <div class="col-3 q-pa-sm q-gutter-y-md">
-          <app-input-simrs label="Harga" v-model="store.form.harga" :disable="store.disabled" outlined dense />
+          <app-input-simrs label="Satuan" readonly v-model="store.form.satuan" :disable="store.disabled" outlined
+            dense />
         </div>
         <div class="col-3 q-pa-sm q-gutter-y-md">
-          <app-autocomplete label="Jenis Pengusulan" v-model="store.form.jenis" autocomplete="label"
-            option-value="value" option-label="label" outlined :disable="store.disabled" :source="pilihanJenis"
-            @update:model-value="updateJenis" />
-
+          <app-input-simrs label="Harga" v-model="store.form.harga" :disable="store.disabled" outlined dense
+            :valid="{ number: true }" @update:model-value="updateHarga" />
         </div>
+        <div class="col-3 q-pa-sm q-gutter-y-md">
+          <app-input-simrs label="Total" readonly :model-value="formattanpaRp(store.form.nilai)"
+            :disable="store.disabled" outlined dense />
+        </div>
+
       </div>
-      <div class="col-2">
-        <q-option-group class="q-col-gutter-md" type="checkbox" />
+      <div class="row items-center q-pl-sm q-gutter-y-md">
+        <app-btn label="Simpan Rincian" class="bg-black" type="submit" :disable="store.loading"
+          :loading="store.loading" />
       </div>
     </div>
   </q-form>
@@ -72,6 +78,22 @@ function updateJenis(val) {
   console.log('updatejenis', val)
 }
 
+function updateBarang(val) {
+  const data = store.dataBarangs.find(x => x.kode === val)
+  store.form.satuan = data?.satuan ? data?.satuan?.nama : data?.satuan
+
+}
+
+function updateVolume(val) {
+  const _removedZeros = val.replace(/^0+/, '')
+  if (val > 1) store.form.volume = _removedZeros
+  store.form.nilai = parseInt(store.form.harga) * parseInt(val)
+}
+function updateHarga(val) {
+  const _removedZeros = val.replace(/^0+/, '')
+  if (val > 1) store.form.harga = _removedZeros
+  store.form.nilai = parseInt(store.form.volume) * parseInt(val)
+}
 const optionsBarangs = ref([])
 async function filterFnBarang(val, update) {
   if (!val) {
@@ -131,4 +153,7 @@ async function filterFnBarang(val, update) {
   })
 }
 
+function saveData() {
+  console.log('saved', store.form)
+}
 </script>

@@ -12,7 +12,7 @@ export const useMasterJasadanLainStore = defineStore('master-jasa-lain-store', {
     form: {
       kode: '',
       nama: '',
-
+      satuan: ''
     },
     params: {
       q: '',
@@ -20,6 +20,7 @@ export const useMasterJasadanLainStore = defineStore('master-jasa-lain-store', {
     },
     akuns: [],
     bidangs: [],
+    satuans: [],
     optionrekening: [],
   }),
   actions: {
@@ -40,20 +41,20 @@ export const useMasterJasadanLainStore = defineStore('master-jasa-lain-store', {
         }).catch(() => { this.loading = false })
       })
     },
-    // getBidang() {
-    //   this.loading = true
-    //   const params = { params: this.params }
-    //   return new Promise((resolve) => {
-    //     api.get('v1/master/siasik/ptk/getbidang', params).then((resp) => {
-    //       // console.log('Get Bidang', resp)
-    //       if (resp.status === 200) {
-    //         this.bidangs = resp.data?.data
-    //         this.loading = false
-    //         resolve(resp)
-    //       }
-    //     }).catch(() => { this.loading = false })
-    //   })
-    // },
+    getSatuan() {
+      this.loading = true
+      const params = { params: this.params }
+      return new Promise((resolve) => {
+        api.get('v1/master/siasik/jasa/getsatuan', params).then((resp) => {
+          // console.log('Get Pegawai', resp)
+          if (resp.status === 200) {
+            this.satuans = resp.data?.data
+            this.loading = false
+            resolve(resp)
+          }
+        }).catch(() => { this.loading = false })
+      })
+    },
     async simpanData() {
       this.loadingSave = true
       try {
@@ -68,7 +69,7 @@ export const useMasterJasadanLainStore = defineStore('master-jasa-lain-store', {
         this.form = {
           kode: '',
           nama: '',
-
+          satuan: ''
         }
         this.getData()
         this.loadingSave = false
@@ -92,7 +93,7 @@ export const useMasterJasadanLainStore = defineStore('master-jasa-lain-store', {
       // console.log('valedit', val)
       this.form.kode = val.kode
       this.form.nama = val.nama
-
+      this.form.satuan = val.satuan
     },
     async deleteData(id) {
       this.loadingDelete = true

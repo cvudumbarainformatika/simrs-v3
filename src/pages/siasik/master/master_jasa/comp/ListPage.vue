@@ -8,6 +8,7 @@
         <q-item-section style="max-width: 20px;">No</q-item-section>
         <q-item-section class="col-2">Kode RS</q-item-section>
         <q-item-section class="full-width">Nama</q-item-section>
+        <q-item-section class="col-2">Satuan</q-item-section>
         <q-item-section side>
           #
         </q-item-section>
@@ -16,6 +17,7 @@
         <q-item-section style="max-width: 20px;"> {{ i + 1 }} </q-item-section>
         <q-item-section class="col-2"> {{ row.kode }} </q-item-section>
         <q-item-section class="full-width">{{ row.nama }}</q-item-section>
+        <q-item-section class="col-2">{{ row.satuan }}</q-item-section>
         <q-item-section side>
           <div class="row q-gutter-xs">
             <!-- <q-btn flat icon="icon-mat-layers" size="sm" round color="primary" @click="openRincian(row)" /> -->
