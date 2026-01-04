@@ -5,7 +5,7 @@
         <div class="text-bold">Total Anggaran</div>
         <div class="text-bold text-center">:</div>
         <div class="text-bold text-right">
-          {{ formattanpaRp(store.form.paguanggaran) }}
+          {{ formattanpaRp(store.form.paguanggaran || 0) }}
         </div>
 
         <div class="text-bold">Total Pengusulan</div>

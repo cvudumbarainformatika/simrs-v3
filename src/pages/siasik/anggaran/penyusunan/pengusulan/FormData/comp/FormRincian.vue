@@ -17,7 +17,7 @@
             @update:model-value="updateBarang">
             <template #no-option>
               <q-item>
-                <q-item-section class="text-grey">Data Tidak Ditemukan / Sudah Ada di List</q-item-section>
+                <q-item-section class="text-grey">Tidak Ada Data, Silahkan cari ulang</q-item-section>
               </q-item>
             </template>
           </q-select>
