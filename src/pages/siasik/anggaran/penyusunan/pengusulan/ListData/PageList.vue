@@ -15,15 +15,14 @@
   </div> -->
 </template>
 <script setup>
-import { listDataNpdlsStore } from 'src/stores/siasik/transaksi/ls/newnpdls/listdatanpdls';
 import ListData from './inpage/ListDataNpdls.vue'
-import { onBeforeMount } from 'vue';
+import { onBeforeMount, onMounted } from 'vue';
+import { usePengusulanAnggaranStore } from 'src/stores/siasik/anggaran/penyusunan/pengusulan';
 // import listRegjurnal from './inpage/ListRegjurnal.vue'
 
-const store = listDataNpdlsStore()
+const store = usePengusulanAnggaranStore()
 
 onBeforeMount(() => {
-  store.listdatanpd()
-  store.ttd()
+  store.getData()
 })
 </script>

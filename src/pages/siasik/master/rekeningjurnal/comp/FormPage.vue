@@ -151,11 +151,11 @@ import { computed, onMounted, ref } from 'vue';
 const store = useMasterRekeningJurnalStore()
 const formRef = ref(null)
 
-// const options = ref([])
-// const options_lak = ref([])
+const options = ref([])
+const options_lak = ref([])
 
-const options = computed(() => store.optionrekening)
-const options_lak = computed(() => store.optionrekeninglak)
+// const options = computed(() => store.optionrekening)
+// const options_lak = computed(() => store.optionrekeninglak)
 
 function simpan() {
   console.log('Form yang akan disimpan:', store.form)
@@ -184,8 +184,7 @@ onMounted(async () => {
     kode_lak: null,
     uraian_lak: ''
   }
-  await store.getRekening()
-  store.optionrekening = store.akuns   // ← WAJIB
+  // store.optionrekening = store.akuns   // ← WAJIB
 
   // options.value = store.akuns.map(a => ({
   //   ...a,
@@ -194,8 +193,8 @@ onMounted(async () => {
   // }))
 
 
-  await store.getLak()
-  store.optionrekeninglak = store.akunslak   // ← WAJIB
+  // await store.getLak()
+  // store.optionrekeninglak = store.akunslak   // ← WAJIB
 
   // options_lak.value = store.akunslak.map(a => ({
   //   ...a,
@@ -207,131 +206,73 @@ onMounted(async () => {
 })
 
 async function filterFn(val, update) {
-  // Jika kosong → tampilkan semua data awal (page 1)
-  if (!val) {
-    update(() => {
-      options.value = store.akuns.map(a => ({
-        ...a,
-        label: `${a.kodeall3} - ${a.uraian}`,
-        value: a.kodeall3
-      }))
-    })
-    return
-  }
-
-  // Jika panjang key < 2 → jangan call API
-  if (val.length < 2) {
+  if (!val || val.length < 2) {
     update(() => {
       options.value = []
     })
     return
   }
 
-  // Mulai pencarian server
-  let allData = []
-  let page = 1
-  let hasMore = true
-
-  while (hasMore) {
-    try {
-      const resp = await api.get('v1/master/rekening/getrekening', {
-        params: {
-          q: val,
-          per_page: 100,
-          page: page
-        }
-      })
-
-      const data = resp.data.data || []
-
-      if (data.length > 0) {
-        allData = [...allData, ...data]
-        hasMore = resp.data.next_page_url !== null
-        page++
-      } else {
-        hasMore = false
+  try {
+    const resp = await api.get('v1/master/rekening/getrekening', {
+      params: {
+        q: val,
+        per_page: 20 // kecil saja
       }
+    })
 
-    } catch (e) {
-      console.error('Error load page:', e)
-      hasMore = false
-    }
+    const data = resp.data.data || []
+
+    update(() => {
+      options.value = data.map(a => ({
+        ...a,
+        label: `${a.kodeall3} - ${a.uraian}`,
+        value: a.kodeall3
+      }))
+    })
+
+  } catch (e) {
+    console.error(e)
+    update(() => {
+      options.value = []
+    })
   }
-
-  // Update hasil pencarian
-  update(() => {
-    options.value = allData.map(a => ({
-      ...a,
-      label: `${a.kodeall3} - ${a.uraian}`,
-      value: a.kodeall3
-    }))
-
-    // Simpan supaya next search bisa cepat
-    store.optionrekening = allData
-  })
 }
 
 async function filterFn_lak(val, update) {
-  // Jika kosong → tampilkan semua data awal (page 1)
-  if (!val) {
-    update(() => {
-      options_lak.value = store.akunslak.map(a => ({
-        ...a,
-        label: `${a.kode} - ${a.uraian}`,
-        value: a.kode
-      }))
-    })
-    return
-  }
-
-  // Jika panjang key < 2 → jangan call API
-  if (val.length < 2) {
+  if (!val || val.length < 2) {
     update(() => {
       options_lak.value = []
     })
     return
   }
 
-  // Mulai pencarian server
-  let allData = []
-  let page = 1
-  let hasMore = true
-
-  while (hasMore) {
-    try {
-      const resp = await api.get('v1/master/akunlak/select', {
-        params: {
-          q: val,
-          per_page: 100,
-          page: page
-        }
-      })
-      const data = resp.data.data || []
-      if (data.length > 0) {
-        allData = [...allData, ...data]
-        hasMore = resp.data.next_page_url !== null
-        page++
-      } else {
-        hasMore = false
+  try {
+    const resp = await api.get('v1/master/akunlak/select', {
+      params: {
+        q: val,
+        per_page: 20 // kecil saja
       }
+    })
 
-    } catch (e) {
-      console.error('Error load page:', e)
-      hasMore = false
-    }
+    const data = resp.data.data || []
+
+    update(() => {
+      options_lak.value = data.map(a => ({
+        ...a,
+        label: `${a.kode} - ${a.uraian}`,
+        value: a.kode
+      }))
+    })
+
+  } catch (e) {
+    console.error(e)
+    update(() => {
+      options_lak.value = []
+    })
   }
 
-  // Update hasil pencarian
-  update(() => {
-    options_lak.value = allData.map(a => ({
-      ...a,
-      label: `${a.kode} - ${a.uraian}`,
-      value: a.kode
-    }))
 
-    // Simpan supaya next search bisa cepat
-    store.optionrekeninglak = allData
-  })
 
 }
 </script>

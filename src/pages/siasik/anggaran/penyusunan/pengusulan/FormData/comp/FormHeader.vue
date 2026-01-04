@@ -16,20 +16,21 @@
             outlined dense />
 
           <q-select v-model="store.form.kodeKegiatan" use-input outlined standout="bg-yellow-3" dense emit-value
-            map-options option-value="no" input-debounce="300" label="Kegiatan BLUD" class="ellipsis-2-lines"
-            :options="options_kegiatan" clearable
-            :option-label="opt => opt?.no ? `${opt.kode} - ${opt.nomenklatur}` : `${opt.nomenklatur}`"
+            map-options option-value="value" input-debounce="300" label="Kegiatan BLUD" class="ellipsis-2-lines"
+            :options="options_kegiatan" clearable option-label="label" :display-value="store.form.kegiatan"
             :disable="store.loadingSave" :loading="store.loadingSave" @filter="filterFnKegiatan"
             @clear="store.setForm('kodeKegiatan', null)" @update:model-value="(val) => {
               val = Number(val)
               const arr = store.optionkegiatan || []
               const cari = arr.find(x => Number(x.no) === val)
+              console.log('cari', cari)
               store.form.kodeKegiatan = val
               store.form.kegiatan = cari ? cari.nomenklatur : ''
-              store.form.kodebagian = cari ? cari.kodebidang : ''
-              store.form.organisasi_nama = cari ? cari.bidang : ''
-              store.form.kodeRuangan = cari ? cari.kodebidang : ''
-              store.form.ruangan = cari ? cari.bidang : ''
+              store.form.ruangan = cari ? cari.namaorganisasi : ''
+              store.form.kodeRuangan = cari ? cari.kode : ''
+              store.form.kodebagian = cari ? cari.kode : ''
+              store.form.organisasi_nama = cari ? cari.namaorganisasi : ''
+              store.form.paguanggaran = cari ? Number(cari.total) : 0
             }">
             <template #no-option>
               <q-item>
@@ -85,6 +86,7 @@ function init() {
   store.form.tahun = d.getFullYear()
   if (!store.form.id) { // kalau FORM BARU
     store.form.notrans = null
+    store.rincians = []
   }
   generateArrayOfYears()
 }
@@ -100,23 +102,21 @@ function generateArrayOfYears() {
 }
 
 async function ubahTahun(val) {
-  store.setForm('kodeKegiatan')
   const currentKode = store.form.kodeKegiatan
+
   store.params.tahun = val
   await store.getData()
-
-  options_kegiatan.value = []
-  options.value = []
-
   await store.getKegiatan()
-  const used = store.items.map(x => parseInt(x.kodekegiatan))
-  let hasil = store.kegiatans.filter(k => !used.includes(k.no))
 
+  const used = store.items.map(x => Number(x.kodeKegiatan))
 
+  let hasil = store.kegiatans.filter(k => !used.includes(Number(k.no)))
+
+  // pastikan kegiatan yg sudah dipilih tetap ada
   if (currentKode) {
-    const existing = store.kegiatans.find(k => k.no == currentKode)
-    if (existing && !hasil.some(x => x.no == existing.no)) {
-      hasil.push(existing)
+    const exist = store.kegiatans.find(k => Number(k.no) === Number(currentKode))
+    if (exist && !hasil.some(x => Number(x.no) === Number(exist.no))) {
+      hasil.push(exist)
     }
   }
 
@@ -132,66 +132,105 @@ async function ubahTahun(val) {
 }
 
 async function filterFnKegiatan(val, update) {
-  // 🔹 jika input kosong → tampilkan data awal
-  if (!val) {
+  if (!val || val.length < 2) {
     update(() => {
       options_kegiatan.value = master_kegiatan.value
     })
     return
   }
 
-  const needle = val.toLowerCase()
-
-  // 🔹 filter lokal dulu (kode + nomenklatur)
-  const localFiltered = master_kegiatan.value.filter(v =>
-    v.kode?.toLowerCase().includes(needle) ||
-    v.nomenklatur?.toLowerCase().includes(needle)
-  )
-
-  // kalau ketemu di lokal → langsung pakai
-  if (localFiltered.length) {
-    update(() => {
-      options_kegiatan.value = localFiltered
+  try {
+    const resp = await api.get('v1/anggaran/penyusunan/pengusulan/select', {
+      params: {
+        q: val,
+        per_page: 20,
+        page: 1
+      }
     })
-    return
+    const data = resp.data.data || []
+
+    update(() => {
+      options_kegiatan.value = data.map(a => ({
+        ...a,
+        label: `${a.kode} - ${a.nomenklatur}`,
+        value: a.no
+      }))
+    })
+
+  } catch (e) {
+    console.error(e)
+    update(() => {
+      options_kegiatan.value = []
+    })
   }
 
-  // 🔹 kalau tidak ketemu → baru hit API
-  let allData = []
-  let page = 1
-  let hasMore = true
 
-  while (hasMore) {
-    try {
-      const resp = await api.get(
-        'v1/anggaran/penyusunan/pengusulan/select',
-        {
-          params: {
-            q: val,
-            per_page: 100,
-            page
-          }
-        }
-      )
 
-      const data = resp.data.data || []
 
-      allData.push(...data)
-      hasMore = resp.data.next_page_url !== null
-      page++
-    } catch (err) {
-      console.error(err)
-      hasMore = false
-    }
-  }
 
-  update(() => {
-    options_kegiatan.value = allData.map(a => ({
-      ...a,
-      label: `${a.kode} - ${a.nomenklatur}`,
-      value: a.no
-    }))
-  })
+
+
+
+  // // 🔹 jika input kosong → tampilkan data awal
+  // if (!val) {
+  //   update(() => {
+  //     options_kegiatan.value = master_kegiatan.value
+  //   })
+  //   return
+  // }
+
+  // const needle = val.toLowerCase()
+
+  // // 🔹 filter lokal dulu (kode + nomenklatur)
+  // const localFiltered = master_kegiatan.value.filter(v =>
+  //   v.kode?.toLowerCase().includes(needle) ||
+  //   v.nomenklatur?.toLowerCase().includes(needle)
+  // )
+
+  // // kalau ketemu di lokal → langsung pakai
+  // if (localFiltered.length) {
+  //   update(() => {
+  //     options_kegiatan.value = localFiltered
+  //   })
+  //   return
+  // }
+
+  // // 🔹 kalau tidak ketemu → baru hit API
+  // let allData = []
+  // let page = 1
+  // let hasMore = true
+
+  // while (hasMore) {
+  //   try {
+  //     const resp = await api.get(
+  //       'v1/anggaran/penyusunan/pengusulan/select',
+  //       {
+  //         params: {
+  //           q: val,
+  //           per_page: 100,
+  //           page
+  //         }
+  //       }
+  //     )
+
+  //     const data = resp.data.data || []
+
+  //     allData.push(...data)
+  //     hasMore = resp.data.next_page_url !== null
+  //     page++
+  //   } catch (err) {
+  //     console.error(err)
+  //     hasMore = false
+  //   }
+  // }
+
+  // update(() => {
+  //   options_kegiatan.value = allData.map(a => ({
+  //     ...a,
+  //     label: `${a.kode} - ${a.nomenklatur}`,
+  //     value: a.no
+  //   }))
+  // })
 }
 
 

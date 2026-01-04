@@ -9,10 +9,10 @@
 
         </div>
         <div class="col-6 q-pa-sm q-gutter-y-md">
-          <q-select v-model="store.form.kode" use-input outlined standout="bg-yellow-3" dense emit-value map-options
-            option-value="kode" input-debounce="300" label="Item Pengusulan" class="ellipsis-2-lines"
-            :options="optionsBarangs" clearable
-            :option-label="opt => opt?.kode ? `${opt.kode} - ${opt.nama}` : `${opt.nama}`" :disable="store.loadingSave"
+          <q-select v-model="store.form.keterangan" use-input outlined standout="bg-yellow-3" dense emit-value
+            map-options option-value="value" input-debounce="300"
+            label="Item Pengusulan (ketik min 2 huruf untuk mencari item)" class="ellipsis-2-lines"
+            :options="optionsBarangs" clearable option-label="label" :disable="store.loadingSave"
             :loading="store.loadingSave" @filter="filterFnBarang" @clear="store.setForm('kode', null)"
             @update:model-value="updateBarang">
             <template #no-option>
@@ -58,30 +58,51 @@ import { formInputNpdlsStore } from 'src/stores/siasik/transaksi/ls/newnpdls/for
 import { defineAsyncComponent, onMounted, ref } from 'vue';
 import { formattanpaRp } from 'src/modules/formatter'
 import { usePengusulanAnggaranStore } from 'src/stores/siasik/anggaran/penyusunan/pengusulan';
+import { api } from 'src/boot/axios';
 // const FormInputPajak = defineAsyncComponent(() => import('./formpajak/FormPajak.vue'))
 
 
 const store = usePengusulanAnggaranStore()
 const carisrt = dataBastFarmasiStore()
 onMounted(() => {
-  console.log('store barang', store.dataBarangs)
-  store.getBarangs()
 })
 
 const pilihanJenis = [
-  { label: 'Barang Habis Pakai', value: 'Barang' },
-  { label: 'Barang Modal', value: 'Modal' },
+  { label: 'Barang Persediaan (SIGARANG)', value: 'Barang' },
+  { label: 'Barang Modal (ASET)', value: 'Modal' },
   { label: 'Jasa dan lain-lain', value: 'Jasa' },
 ]
 
 function updateJenis(val) {
-  console.log('updatejenis', val)
+  store.params.jenis = val
+  store.form.jenis = val
+  const params = {
+    jenis: val
+  }
+  store.getBarangs(params)
+  store.form.kode = ''
+  store.form.keterangan = ''
+  store.form.volume = 0
+  store.form.harga = 0
+  store.form.nilai = 0
+  store.form.satuan = ''
+
+  // optionsBarangs.value = []
 }
 
 function updateBarang(val) {
-  const data = store.dataBarangs.find(x => x.kode === val)
-  store.form.satuan = data?.satuan ? data?.satuan?.nama : data?.satuan
+  const data = optionsBarangs.value.find(x => x.kode ? x.kode : x.kdaset === val)
+  console.log('data items', data)
+  store.form.keterangan = data?.nama ? data?.nama : data?.namaaset
+  store.form.kode = data?.kode ? data?.kode : data?.kdaset
 
+  let satuan = ''
+  if (!data?.satuan) satuan = 'Unit'
+  if (data?.satuan) satuan = data?.satuan?.nama || data?.satuan
+  store.form.satuan = satuan
+  store.form.volume = 0
+  store.form.harga = 0
+  store.form.nilai = 0
 }
 
 function updateVolume(val) {
@@ -95,65 +116,47 @@ function updateHarga(val) {
   store.form.nilai = parseInt(store.form.volume) * parseInt(val)
 }
 const optionsBarangs = ref([])
+
 async function filterFnBarang(val, update) {
-  if (!val) {
+  if (!val || val.length < 2) {
     update(() => {
-      optionsBarangs.value = store.dataBarangs
+      optionsBarangs.value = []
     })
     return
   }
 
-  const needle = val.toLowerCase()
-
-  const localFiltered = store.dataBarangs.filter(v =>
-    v.kode?.toLowerCase().includes(needle) ||
-    v.nama?.toLowerCase().includes(needle)
-  )
-
-  if (localFiltered.length) {
-    update(() => {
-      optionsBarangs.value = localFiltered
+  try {
+    const resp = await api.get('v1/anggaran/penyusunan/pengusulan/selectitem', {
+      params: {
+        q: val,
+        per_page: 20,
+        jenis: store.params.jenis
+      }
     })
-    return
+    const data = resp.data.data || []
+
+    update(() => {
+      optionsBarangs.value = data.map(a => ({
+        ...a,
+        label: a.kode
+          ? `${a.kode} - ${a.nama}`
+          : `${a.kdaset} - ${a.namaaset}`,
+        value: a.kode ?? a.kdaset
+      }))
+    })
+
+  } catch (e) {
+    console.error(e)
+    update(() => {
+      optionsBarangs.value = []
+    })
   }
-
-  let allData = []
-  let page = 1
-  let hasMore = true
-
-  while (hasMore) {
-    try {
-      const resp = await api.get(
-        'v1/barangs/index',
-        {
-          params: {
-            q: val,
-            per_page: 100,
-            page
-          }
-        }
-      )
-
-      const data = resp.data.data || []
-      allData.push(...data)
-      hasMore = resp.data.next_page_url !== null
-      page++
-    } catch (err) {
-      console.error(err)
-      hasMore = false
-    }
-  }
-
-  update(() => {
-    optionsBarangs.value = allData.map(a => ({
-      ...a,
-      label: `${a.kode} - ${a.nama}`,
-      value: a.kode
-    }))
-  })
 }
 
 function saveData() {
-  console.log('saved', store.form)
+
+
+  store.simpanData()
+  console.log('saved setlah simpan', store.form)
 }
 </script>

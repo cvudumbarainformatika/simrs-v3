@@ -1,7 +1,7 @@
 <template>
-  <template v-if="store.datanpd">
+  <template v-if="store.items">
     <div class="justify-content-center full-width">
-      <q-table class="my-sticky-table" style="height: 100%;" :rows="store.datanpd" :columns="columnsnpd" row-key="name"
+      <q-table class="my-sticky-table" style="height: 100%;" :rows="store.items" :columns="columnsData" row-key="name"
         dense flat bordered wrap-cells :filter="store.params.q" :loading="store.loading"
         :rows-per-page-options="[10, 50, 100]">
         <template #loading>
@@ -10,7 +10,7 @@
         <template #top-left>
           <div class="flex q-qutter-sm z-top">
             <div>
-              <q-input v-model="store.params.q" outlined dark color="warning" dense placeholder="Cari NPD-LS ..."
+              <q-input v-model="store.params.q" outlined dark color="warning" dense placeholder="Cari Data ..."
                 debounce="500" style="min-width: 300px;">
                 <template v-if="store.params.q" #append>
                   <q-icon name="icon-mat-close" size="xs" class="cursor-pointer" @click.stop.prevent="clearSearch" />
@@ -20,47 +20,38 @@
                 </template>
               </q-input>
 
+              <!-- <q-input v-model="store.params.q" color="warning" placeholder="Cari Data ..." dense dark outlined
+                style="min-width:200px" debounce="800" :loading="store.loading" @update:model-value="store.search">
+                <template #prepend>
+                  <q-icon name="icon-mat-search" />
+                </template>
+              </q-input> -->
+
             </div>
             <div class="q-pl-sm text-white">
               <q-input outlined dark color="warning" dense label="Tahun" v-model="store.params.tahun"
-                :disable="store.disabled && store.loading" :loading="store.loading" :autofocus="false"
+                :disable="store.disabled && store.loading" :loading="store.loading" debounce="500" :autofocus="false"
                 @update:model-value="(val) => {
                   console.log('Tahun berapa?', val)
                   store.params.tahun = val
-                  store.listdatanpd()
+                  store.getData()
                 }" />
             </div>
           </div>
         </template>
         <template #body="props">
           <q-tr>
-            <q-td key="nonpdls" :props="props" class="text-left">
+            <q-td key="notrans" :props="props" class="text-left">
               <div>
-                {{ props.row?.nonpdls }}
+                {{ props.row?.notrans }}
               </div>
-              <q-td key="total">
-                <q-badge color="green" @click="onRowClick(props.row)">
-                  {{ formatRpDouble(props.row?.total) }}
-                </q-badge>
-              </q-td>
             </q-td>
-            <q-td key="tglnpdls" :props="props" class="text-left">
-              {{ props.row?.tglnpdls }}
+            <q-td key="ruangan" :props="props" class="text-left">
+              {{ props.row?.ruangan }}
             </q-td>
-            <q-td key="pptk" :props="props" class="text-left">
-              <div>{{ props.row?.bidang }}</div>
-              <q-badge color="pink">
-                {{ props.row?.pptk }}
-              </q-badge>
-            </q-td>
-            <q-td key="kegiatanblud" :props="props" class="text-left q-gutter-y-sm">
-              {{ props.row?.kegiatanblud }}
-              <q-badge v-if="props.row?.noserahterima" outline class="text-teal-9">
-                {{ props.row?.noserahterima }}
-              </q-badge>
-              <q-badge v-if="props.row?.nonotadinas" outline class="text-orange-9">
-                {{ props.row?.nonotadinas }}
-              </q-badge>
+            <q-td key="kegiatan" :props="props" class="text-left q-gutter-y-sm">
+              {{ props.row?.kegiatan }}
+
             </q-td>
             <q-td key="penerima" :props="props" class="text-left">
               {{ props.row?.penerima }}
@@ -70,19 +61,17 @@
                 {{ props.row?.keterangan }}
               </div>
             </q-td>
-            <q-td key="nopencairan" :props="props" class="text-left wrap-cells">
-              <template v-if="props.row?.nopencairan">
-                <div>
-                  Pencairan Tanggal
-                </div>
-                <div>{{ props.row?.tglcair }}</div>
-                <q-badge>
-                  {{ props.row?.nopencairan }}
+            <q-td key="paguanggaran" :props="props" class="text-left wrap-cells">
+              <div>
+                {{ formattanpaRp(props.row?.paguanggaran) }}
+              </div>
+            </q-td>
+            <q-td key="nilaipengusulan" :props="props" class="text-left wrap-cells">
+              <div>
+                <q-badge color="green">
+                  {{ formattanpaRp(props.row?.nilaipengusulan) }}
                 </q-badge>
-              </template>
-              <template v-else>
-                <q-badge outline class="text-primary">Belum Pencairan</q-badge>
-              </template>
+              </div>
             </q-td>
             <q-td>
               <div class="row justify-center">
@@ -102,15 +91,15 @@
                         <q-item clickable v-close-popup @click="viewRincian(props?.row)">
                           <q-item-section>Lihat Rincian</q-item-section>
                         </q-item>
-                        <q-item clickable @click="editNpdls(props?.row)">
-                          <q-item-section>Edit NPD</q-item-section>
+                        <q-item clickable @click="editDataPangusulan(props?.row)">
+                          <q-item-section>Edit Data</q-item-section>
                         </q-item>
-                        <q-item clickable v-close-popup @click="viewCetakDataNpdls(props?.row)">
-                          <q-item-section>Cetak NPD</q-item-section>
+                        <!-- <q-item clickable v-close-popup @click="viewCetakDataNpdls(props?.row)">
+                          <q-item-section>Cetak Data</q-item-section>
                         </q-item>
                         <q-item clickable v-close-popup @click="PrintPencairan(props?.row)">
                           <q-item-section>Cetak Pencairan</q-item-section>
-                        </q-item>
+                        </q-item> -->
                       </q-list>
                     </q-menu>
                   </q-btn> </div>
@@ -124,8 +113,8 @@
 
       </q-table>
       <app-dialog-rincian v-model="store.openDialogRinci" :npd="npd" />
-      <printdi-npdls v-model="store.dialogCetakNpd" :datanpds="datanpds" />
-      <!-- <editdata-npdls v-model="store.dialogEditNpd" :editnpds="editnpds" /> -->
+      <printdi-npdls v-model="store.dialogCetak" :datanpds="datanpds" />
+      <!-- <editdata-npdls v-model="store.dialogEditNpd" :editData="editData" /> -->
       <cetak-pencairan v-model="store.dialogPrintPencairan" :printcair="printcair" />
     </div>
   </template>
@@ -133,12 +122,12 @@
 
 <script setup>
 import { useQuasar } from 'quasar'
-import { formatRpDouble } from 'src/modules/formatter'
+import { formatRpDouble, formattanpaRp } from 'src/modules/formatter'
 import { useAplikasiStore } from 'src/stores/app/aplikasi'
 import { useAuthStore } from 'src/stores/auth'
+import { usePengusulanAnggaranStore } from 'src/stores/siasik/anggaran/penyusunan/pengusulan'
 import { dataBastFarmasiStore } from 'src/stores/siasik/transaksi/ls/newnpdls/bastfarmasi'
 import { formInputNpdlsStore } from 'src/stores/siasik/transaksi/ls/newnpdls/formnpdls'
-import { listDataNpdlsStore } from 'src/stores/siasik/transaksi/ls/newnpdls/listdatanpdls'
 import { computed, defineAsyncComponent, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
@@ -147,7 +136,7 @@ import { useRouter } from 'vue-router'
 const AppDialogRincian = defineAsyncComponent(() => import('./DialogViewRincian.vue'))
 const PrintdiNpdls = defineAsyncComponent(() => import('./DialogPrintData.vue'))
 const CetakPencairan = defineAsyncComponent(() => import('./DialogPrintPencairan.vue'))
-const store = listDataNpdlsStore()
+const store = usePengusulanAnggaranStore()
 const form = formInputNpdlsStore()
 const router = useRouter()
 const carisrt = dataBastFarmasiStore()
@@ -161,71 +150,59 @@ const clearSearch = () => {
   store.params.q = ''
   store.goToPage(1)
 }
-const listnpdls = [
+const listData = [
   {
-    label: 'No NPD-LS',
-    name: 'nonpdls',
-    field: row => [row.nonpdls, row.total],
-    align: 'center',
-    headerStyle: 'width: 200px; height:50px'
+    label: 'No Transaksi',
+    name: 'notrans',
+    field: row => [row.notrans, row.total],
+    align: 'left',
+    // headerStyle: 'width: 200px; height:50px'
   },
   {
-    label: 'Tanggal',
-    name: 'tglnpdls',
-    align: 'center',
-    field: 'tglnpdls',
+    label: 'Bidang/Bagian',
+    name: 'ruangan',
+    align: 'left',
+    field: 'ruangan',
     sortable: true,
-    headerStyle: 'width: 90px;'
-  },
-  {
-    label: 'Bidang',
-    name: 'pptk',
-    align: 'center',
-    field: row => [row.pptk, row.bidang]
+    // headerStyle: 'width: 90px;'
   },
   {
     label: 'Kegiatan BLUD',
-    name: 'kegiatanblud',
-    align: 'center',
-    field: row => [row.kegiatanblud, row.noserahterima, row.nonotadinas],
-    headerStyle: 'width: 200px;'
+    name: 'kegiatan',
+    align: 'left',
+    field: row => [row.kegiatan],
+    // headerStyle: 'width: 200px;'
   },
   {
-    label: 'Pihak Ketiga',
-    name: 'penerima',
-    align: 'center',
-    field: 'penerima'
+    label: 'Pagu Kegiatan (Rp)',
+    name: 'paguanggaran',
+    align: 'right',
+    field: 'paguanggaran',
+    // headerStyle: 'width: 250px;'
   },
   {
-    label: 'Keterangan',
-    name: 'keterangan',
-    align: 'center',
-    field: 'keterangan',
-    headerStyle: 'width: 250px;'
-  },
-  {
-    label: 'Status',
-    name: 'nopencairan',
-    align: 'center',
-    field: row => [row.nopencairan, row.tglcair],
-    headerStyle: 'width: 120px;'
+    label: 'Nilai Pengusulan (Rp)',
+    name: 'nilaipengusulan',
+    align: 'right',
+    field: 'nilaipengusulan',
+    // headerStyle: 'width: 250px;'
   },
   {
     label: 'Aksi',
     name: 'aksi',
     align: 'center',
-    headerStyle: 'width: 77px;'
+    headerStyle: 'width: 100px;'
   }
 ]
-const columnsnpd = ref(listnpdls)
+const columnsData = ref(listData)
 
 const npd = ref(null)
 function viewRincian(row) {
   store.openDialogRinci = true
   npd.value = row.rincian
-  store.listrinci = npd.value
-  store.npddatasave = row
-  console.log('npd save', store.npddatasave)
+  store.rincians = npd.value
+  store.dataSaved = row
+  console.log('npd save', store.dataSaved)
 
 }
 const onRowClick = (row) =>
@@ -233,13 +210,12 @@ const onRowClick = (row) =>
 
 const datanpds = ref(null)
 function viewCetakDataNpdls(row) {
-  store.dialogCetakNpd = true
+  store.dialogCetak = true
   datanpds.value = row
-  store.npddatasave = datanpds.value
+  store.dataSaved = datanpds.value
 }
 
-const editnpds = ref(null)
-function editNpdls(row) {
+function editDataPangusulan(row) {
   // if (auth.user?.pegawai?.kdpegsimrs !== 'sa') {
   //   $q.notify({
   //     type: 'negative',
@@ -254,33 +230,27 @@ function editNpdls(row) {
     })
     return
   }
-  router.push({ path: '/siasik/ls/npdls/newformnpd', replace: true, query: { id: row.id } })
-  editnpds.value = row
-  form.form = editnpds.value
-  form.form.pptk = editnpds.value.pptk
-  form.form.kodepptk = editnpds.value.kodepptk
-  console.log('formxx', form.form)
-  carisrt.reqs.kodepenerima = editnpds.value?.kodepenerima
-  carisrt.reqs.kodekegiatanblud = editnpds.value?.kodekegiatanblud
-  form.transall = editnpds.value?.rincian
-  carisrt.selectbastFarmasi()
-  form.reqs.kodekegiatan = editnpds.value?.kodekegiatanblud
-  form.getRincianBelanja()
-  form.form.rincians = []
-  form.disabled = true
-  form.disabledx = true
+
+  store.form = {
+    ...store.form,
+    ...row
+  }
+  store.rincians = row.rincian ? [...row.rincian] : []
+
+  router.push({ path: '/anggaran/penyusunan/pengusulan/form', replace: true, query: { id: row.id } })
+
 }
 const printcair = ref(null)
 function PrintPencairan(row) {
-  store.dialogPrintPencairan = true
-  printcair.value = row
-  store.npddatasave = printcair.value
-  // console.log('openNPD', store.npddatasave)
+  // store.dialogPrintPencairan = true
+  // printcair.value = row
+  // store.dataSaved = printcair.value
+  // console.log('openNPD', store.dataSaved)
 }
 function gantiKunci(row) {
-  const nonpdls = row.kunci === "1"
+  const data = row.kunci === "1"
   let lockdata = true
-  if (nonpdls) {
+  if (data) {
     lockdata = true
   } else {
     lockdata = false
@@ -307,7 +277,7 @@ function kunciData(row) {
       persistent: true
     }).onOk(() => {
       const payload = {
-        nonpdls: row.nonpdls,
+        notrasn: row.notrasn,
         kunci: row.kunci,
         nonotadinas: row.nonotadinas
       }
@@ -328,7 +298,7 @@ function kunciData(row) {
       persistent: true
     }).onOk(() => {
       const payload = {
-        nonpdls: row.nonpdls,
+        notrans: row.notrans,
         kunci: row.kunci
       }
       console.log('payload', payload)

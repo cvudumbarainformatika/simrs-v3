@@ -5,7 +5,7 @@
         <FormHeader />
       </div>
       <div class="q-pt-md">
-        <ListRincian />
+        <ListRincian :store="store.rincians" />
       </div>
     </q-card>
   </div>
@@ -17,20 +17,15 @@
     </q-card>
   </div> -->
 </template>
-<script setup>
-import { formInputNpdlsStore } from 'src/stores/siasik/transaksi/ls/newnpdls/formnpdls';
-import { formKontrakPekerjaan } from 'src/stores/siasik/transaksi/ls/kontrak/formkontrak';
+<script setup>import { formKontrakPekerjaan } from 'src/stores/siasik/transaksi/ls/kontrak/formkontrak';
 import { onBeforeMount } from 'vue';
 import FormHeader from './comp/FormHeader.vue'
 import ListRincian from './comp/listrincian/ListRincian.vue'
 import { onUnmounted } from 'vue';
 import { date } from 'quasar';
-const store = formInputNpdlsStore()
-const ambil = formKontrakPekerjaan()
+import { usePengusulanAnggaranStore } from 'src/stores/siasik/anggaran/penyusunan/pengusulan';
+const store = usePengusulanAnggaranStore()
 onBeforeMount(() => {
-  // store.initReset(props.data)
-  store.getDataBidang()
-  ambil.getPihaktiga()
 })
 
 onUnmounted(() => {
@@ -39,19 +34,32 @@ onUnmounted(() => {
 
 
 function resetFormData() {
-  // Call the resetFORM method from your store
-  store.resetFORM()
+  store.params = {
+    q: '',
+    tgl: date.formatDate(Date.now(), 'YYYY-MM-DD'),
+    tahun: date.formatDate(Date.now(), 'YYYY'),
+  }
+  store.form = {
+    notrans: '',
+    kodeRuangan: '',
+    ruangan: '',
+    kodeKegiatan: '',
+    kegiatan: '',
+    kodebagian: '',
+    organisasi_nama: '',
+    kode50: '1.02.01.2.10.01',
+    uraian: 'Pelayanan dan Penunjang Pelayanan BLUD',
+    kunci: '',
+    jenis: '',
 
-  // Set initial values after reset
-  store.params.tgl = date.formatDate(Date.now(), 'YYYY-MM-DD')
-  store.form.tglnpdls = date.formatDate(Date.now(), 'YYYY-MM-DD')
-  store.reqs.tgl = date.formatDate(Date.now(), 'YYYY-MM-DD')
-  store.disabled = false
-  store.disabledx = false
-  store.form.rincians = []
-  store.transall = []
-  // Load initial data
-  store.getDataBidang()
+
+    keterangan: '',
+    volume: 0,
+    harga: 0,
+    nilai: 0,
+    satuan: '',
+    tglTransaksi: date.formatDate(Date.now(), 'YYYY-MM-DD')
+  }
 }
 
 </script>

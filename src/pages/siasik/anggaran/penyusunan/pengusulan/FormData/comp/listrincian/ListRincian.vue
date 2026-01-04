@@ -1,37 +1,57 @@
 <template>
-  <q-card flat class="col full-height q-pt-sm">
+  <q-card flat class="col full-height">
+    <div class="col-6 q-pl-sm">
+      <div class="q-pb-sm" style="width: 280px; display: grid; grid-template-columns: auto 10px 1fr; row-gap: 4px;">
+        <div class="text-bold">Total Anggaran</div>
+        <div class="text-bold text-center">:</div>
+        <div class="text-bold text-right">
+          {{ formattanpaRp(store.form.paguanggaran) }}
+        </div>
+
+        <div class="text-bold">Total Pengusulan</div>
+        <div class="text-bold text-center">:</div>
+        <div class="text-bold text-right">
+          {{ formattanpaRp(subtotal()) }}
+        </div>
+
+        <div class="text-bold">Selisih</div>
+        <div class="text-bold text-center">:</div>
+        <div class="text-bold text-right">
+          {{ formattanpaRp(selisih()) }}
+        </div>
+      </div>
+    </div>
     <q-table class="my-sticky-table" :rows="displayRows" :columns="columns" row-key="name" hide-pagination hide-bottom
       wrap-cells :rows-per-page-options="[0]" :rows-number="[0]">
       <template #body="props">
         <q-tr :props="props">
-          <q-td key="rincianbelanja" :props="props" class="text-left">
-            <template v-if="props.row.uraianrek50">
-              <div> {{ props?.row?.uraianrek50 }} </div>
-
-            </template>
-            <template v-else>
-              <div class="text-bold">{{ props.row.nopenerimaan }}</div>
-              <div>{{ props.row.rincianbelanja }}</div>
-            </template>
+          <q-td key="kode" :props="props" class="text-left">
+            {{ props.row.kode }}
           </q-td>
-          <q-td key="koderek50" :props="props" class="text-left">
-            {{ props.row.koderek50 }}
+          <q-td key="keterangan" :props="props" class="text-left">
+            {{ props.row.keterangan }}
           </q-td>
-          <q-td key="itembelanja" :props="props" class="text-left">
-            {{ props.row.itembelanja }}
+          <q-td key="volume" :props="props" class="text-left">
+            {{ props.row.volume }}
           </q-td>
-          <q-td key="nominalpembayaran" :props="props" class="text-right">
-            {{ formattanpaRp(props.row.nominalpembayaran) }}
+          <q-td key="satuan" :props="props" class="text-left">
+            {{ props.row.satuan }}
+          </q-td>
+          <q-td key="harga" :props="props" class="text-right">
+            {{ formattanpaRp(props.row.harga) }}
+          </q-td>
+          <q-td key="nilai" :props="props" class="text-right">
+            {{ formattanpaRp(props.row.nilai) }}
           </q-td>
           <q-td style="width: 5%">
             <div class="row justify-center">
-              <template v-if="isTransallSerahterima(props.row)">
+              <template v-if="isTransaksiall(props.row)">
                 <q-btn v-if="belumSave(props?.row)" size="sm" class="q-pl-md" color="green" icon="icon-mat-save"
-                  @click="saveRinciSerahterima(props?.row)" :loading="store.loadingHapus" />
+                  @click="saveData(props?.row)" :loading="store.loadingDelete" />
               </template>
               <template v-else>
                 <q-btn size="sm" class="q-pl-md" color="negative" icon="icon-mat-delete"
-                  @click="deleteData(props?.row?.id)" :loading="store.loadingHapus" />
+                  @click="deleteData(props?.row?.id)" :loading="store.loadingDelete" />
               </template>
             </div>
 
@@ -40,7 +60,7 @@
       </template>
       <template #bottom-row>
         <q-tr class="full-width text-bold">
-          <q-td colspan="3" class="text-center" style="font-size: 4em">
+          <q-td colspan="4" class="text-center" style="font-size: 4em">
             SUBTOTAL
           </q-td>
           <q-td colspan="2" class="text-right text-bold" style="font-size: 4em">
@@ -56,41 +76,57 @@
 import { useQuasar } from 'quasar';
 import { formattanpaRp } from 'src/modules/formatter';
 import { notifErrVue, notifSuccess } from 'src/modules/utils';
-import { formInputNpdlsStore } from 'src/stores/siasik/transaksi/ls/newnpdls/formnpdls';
-// import { onMounted } from 'vue';
-import { computed, onMounted, ref } from 'vue';
+import { usePengusulanAnggaranStore } from 'src/stores/siasik/anggaran/penyusunan/pengusulan';
 
+import { computed, onMounted, ref } from 'vue';
+const store = usePengusulanAnggaranStore()
+const props = defineProps({
+  store: {
+    type: Array,
+    default: () => []
+  }
+})
 onMounted(() => {
-  // console.log(compSigna.value)
-  store.getRincianBelanja()
 })
 
 
-const store = formInputNpdlsStore()
+
 const tablerinci = [
   {
-    label: 'Rincian Belanja',
-    name: 'rincianbelanja',
-    align: 'center',
-    field: 'rincianbelanja'
+    label: 'Kode RS',
+    name: 'kode',
+    align: 'left',
+    field: 'kode'
   },
   {
-    label: 'Rekening',
-    name: 'koderek50',
-    align: 'center',
-    field: 'koderek50'
+    label: 'Item Pengusulan',
+    name: 'keterangan',
+    align: 'left',
+    field: 'keterangan'
   },
   {
-    label: 'Item Belanja',
-    name: 'itembelanja',
-    align: 'center',
-    field: 'itembelanja'
+    label: 'Volume',
+    name: 'volume',
+    align: 'left',
+    field: 'volume'
   },
   {
-    label: 'Jumlah',
-    name: 'nominalpembayaran',
-    align: 'center',
-    field: 'nominalpembayaran'
+    label: 'Satuan',
+    name: 'satuan',
+    align: 'left',
+    field: 'satuan'
+  },
+  {
+    label: 'Harga (Rp)',
+    name: 'harga',
+    align: 'right',
+    field: 'harga'
+  },
+  {
+    label: 'Total (Rp)',
+    name: 'nilai',
+    align: 'right',
+    field: 'nilai'
   },
   {
     label: 'Opsi',
@@ -103,113 +139,27 @@ const $q = useQuasar()
 const selected = ref([])
 
 const displayRows = computed(() => {
-  const savedIds = store.transall.map((item) => item.bast_r_id);
-  const unsavedRows = store.transallserahterima.filter(
-    (item) => !savedIds.includes(item.id)
-  );
-
-  // Gabungkan transall (yang sudah disimpan) dengan transallserahterima (yang belum disimpan)
-  return [...store.transall, ...unsavedRows];
+  console.log('displayRows', store.rincians)
+  return store.rincians
 });
 
-function isTransallSerahterima(row) {
-  return store.transallserahterima.some((item) => item.id === row.id);
+function isTransaksiall(row) {
+  console.log('row transall', row)
+  // return store.transallserahterima.some((item) => item.id === row.id);
 }
 
 function subtotal() {
   const subtotalrinci = displayRows.value
-    .map((x) => parseFloat(x.nominalpembayaran))
+    .map((x) => parseFloat(x.nilai))
     .reduce((a, b) => a + b, 0);
   return subtotalrinci;
 }
-
-function belumSave(row) {
-  const bast_id = row?.id
-  const transall = store.transall
-  console.log('transall', store.transall)
-
-  const rinciannpd = transall.find((x) => x?.bast_r_id === bast_id) ?? null
-
-  console.log('row belumSave', rinciannpd)
-  let gantitombol = true
-  if (rinciannpd) {
-    gantitombol = false
-  } else {
-    gantitombol = true
-  }
-  return gantitombol
+function selisih() {
+  return subtotal() - Number(store.form.paguanggaran);
 }
 
-function saveRinciSerahterima(row) {
-
-  console.log('row', row)
-  store.reqs.rekening50 = row.koderek50
-  store.filterItemBelanja()
-  const arrblj = store.itembelanja
-  // console.log('arrblj', arrblj, store.reqs.rekening50)
-  const cari = arrblj.find(x => x.idpp === row.idserahterima_rinci)
-  // console.log('cari', cari)
-  store.rinci.sisapagu = cari.sisapagu
-
-
-
-  store.rinci.koderek50 = row.koderek50
-  store.rinci.rincianbelanja = row.uraianrek50
-  store.rinci.koderek108 = row.koderek108
-  store.rinci.uraian108 = row.uraian108
-  store.rinci.itembelanja = row.itembelanja
-
-  store.rinci.bast_r_id = row.id
-  store.rinci.idserahterima_rinci = row.idserahterima_rinci
-
-  store.rinci.volume = row.volume
-  store.rinci.satuan = row.satuan
-  store.rinci.harga = row.harga
-  store.rinci.total = row.total
-
-  store.rinci.volumels = row.volumels
-  store.rinci.hargals = row.hargals
-  store.rinci.totalls = row.totalls
-  store.rinci.nominalpembayaran = row.nominalpembayaran
-
-  console.log('store.rinci', store.rinci.nominalpembayaran > store.rinci.sisapagu)
-
-  if (store.rinci.nominalpembayaran > store.rinci.sisapagu) {
-    store.form.rincians = []
-    console.log('jumlah', store.rinci.nominalpembayaran > store.rinci.sisapagu)
-
-    return notifErrVue('Maaf Pengajuan Lebih dari Sisa Pagu')
-  }
-  // else {
-  //   notifErrVue('SUKSES')
-  // }
-  else {
-    store.form.rincians.push(store.rinci)
-    store.simpanNpdls().then(() => {
-      store.rinci.koderek50 = ''
-      store.rinci.rincianbelanja = ''
-      store.rinci.koderek108 = ''
-      store.rinci.uraian108 = ''
-      store.rinci.itembelanja = ''
-      store.rinci.idserahterima_rinci = ''
-      store.rinci.volume = ''
-      store.rinci.satuan = ''
-      store.rinci.harga = ''
-      store.rinci.total = ''
-      store.rinci.sisapagu = ''
-      store.rinci.volumels = ''
-      store.rinci.hargals = ''
-      store.rinci.totalls = ''
-      store.rinci.nominalpembayaran = ''
-      store.disabledx = true
-      store.refreshTable()
-      // store.listrincians()
-      // console.log('store.transall', store.transall)
-    })
-  }
-}
 function deleteData(row) {
-  // console.log('row', row)
+  console.log('row delete', row)
   $q.dialog({
     title: 'Peringatan',
     message: 'Apakah Data ini akan dihapus?',
@@ -218,22 +168,21 @@ function deleteData(row) {
   }).onOk(() => {
 
     const payload = {
-      nonpdls: store.form.nonpdls,
-      id: row,
-      nopenerimaan: store.form.noserahterima,
+      notrans: store.form.notrans,
+      id: Number(row),
 
     }
     console.log('payload', payload)
-    store.hapusRinci(payload).then(() => {
-      store.loadingHapus = true
-      // carisrt.refreshTable()
-      store.refreshTable()
-      if (store.transall?.length === 0) {
-        store.initForm()
+    store.deleteData(payload)
+      .then(() => {
+        //   store.loadingHapus = true
+        // carisrt.refreshTable()
+        if (store.rincians?.length === 0) {
+          store.initForm()
 
-      }
-      // console.log('data hapus', store.transall)
-    })
+        }
+        // console.log('data hapus', store.transall)
+      })
     // store.setForm = props?.row
     // console.log('vv', store.hapusRinci(row))
     // const params = { id: selected.value }
