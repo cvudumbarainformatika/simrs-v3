@@ -234,6 +234,8 @@ function kirimOrder () {
   for (let i = 0; i < racikan?.length; i++) {
     const el = racikan[i]
     const rincian = el?.rincian
+    console.log('item rincian nama racikan',)
+
     for (let n = 0; n < rincian?.length; n++) {
       const sub = rincian[n]
       obatRacikan.push({
@@ -243,6 +245,7 @@ function kirimOrder () {
         racikan: el?.kodeobat,
         tiperacikan: el?.tiperacikan,
         namaracikan: el?.namaobat,
+        jumlah_dibutuhkan: el?.jumlah_diminta,
         keteranganx: sub?.keterangan,
         kemasan: el?.satuan_kcl,
         tiperesep: el?.tiperesep,
@@ -271,6 +274,7 @@ function kirimOrder () {
     else {
       sumMap[obj?.kodeobat] = obj?.jumlah_diminta
     }
+
   })
 
   const thumb = []
@@ -278,7 +282,8 @@ function kirimOrder () {
     const el = Object.entries(sumMap)[i]
     const obj = {
       kodeobat: el[0],
-      jumlah_diminta: el[1]
+      jumlah_diminta: el[1],
+
     }
     // console.log('el', el[0])
     thumb.push(obj)
@@ -309,6 +314,8 @@ function kirimOrder () {
     items: merged,
     merged: thumb
   }
+  // console.log('payload', payload)
+
   store.kirimOrder(payload)
     .then(() => {
       emits('back')
