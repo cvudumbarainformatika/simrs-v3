@@ -12,6 +12,9 @@
                 <div class="title-desc">
                   Pagu Kegiatan BLUD
                 </div>
+                <div class="f-12 text-weight-bold q-pt-sm">
+                  Total Pagu : {{ formatRpDouble(totalPagu || 0) }}
+                </div>
               </div>
             </div>
           </div>
@@ -55,11 +58,12 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import FormPage from './comp/FormPage.vue';
 import ListPage from './comp/ListPage.vue';
 import { useQuasar } from 'quasar';
 import { usePenetapanPaguStore } from 'src/stores/siasik/anggaran/penyusunan/penetapanpagu';
+import { formatRpDouble } from 'src/modules/formatter';
 const store = usePenetapanPaguStore()
 const $q = useQuasar()
 const options = ref([])
@@ -101,6 +105,10 @@ onMounted(() => {
   init()
 })
 
+const totalPagu = computed(() => {
+  const items = store.items?.reduce((a, b) => a + Number(b?.total), 0)
+  return items
+})
 function filterFn(val, update) {
   if (val === '') {
     update(() => {

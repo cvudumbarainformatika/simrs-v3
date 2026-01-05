@@ -31,6 +31,18 @@ export const useMasterKegiatanBludStore = defineStore('master-kegiatan-blud-stor
     setForm(key, val) {
       this.form[key] = val
     },
+    resetForm() {
+      this.form = {
+        tahun: date.formatDate(Date.now(), 'YYYY'),
+        no: null,
+        nomenklatur: '',
+        kode: null,
+        organisasi_nama: '',
+        organisasi_kode1: '',
+        organisasi_kode2: '',
+        organisasi_kode3: ''
+      }
+    },
     getPegawai() {
       this.loading = true
       const params = { params: this.params }

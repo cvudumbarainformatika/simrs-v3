@@ -11,6 +11,7 @@ export const usePengusulanAnggaranStore = defineStore('pengusulan-anggaran-store
     loadingDelete: false,
     loadingKunci: false,
     disabled: false,
+    disableSaved: false,
     fixed: false,
     openDialogRinci: false,
     dialogCetak: false,

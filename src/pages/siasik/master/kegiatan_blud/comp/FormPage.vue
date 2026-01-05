@@ -42,7 +42,7 @@
 
 import { api } from 'src/boot/axios';
 import { useMasterKegiatanBludStore } from 'src/stores/siasik/master/kegiatan_blud/kegiatanblud';
-import { onMounted, ref } from 'vue';
+import { onMounted, onUnmounted, ref } from 'vue';
 
 const store = useMasterKegiatanBludStore()
 const formRef = ref(null)
@@ -50,6 +50,10 @@ const formRef = ref(null)
 const options = ref([])
 const options_lak = ref([])
 const tahuns = ref([])
+
+onUnmounted(() => {
+  store.resetForm()
+})
 function simpan() {
   store.simpanData().then(() => {
     formRef.value.resetValidation()

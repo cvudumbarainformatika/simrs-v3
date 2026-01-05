@@ -13,7 +13,7 @@
             map-options option-value="value" input-debounce="300"
             label="Item Pengusulan (ketik min 2 huruf untuk mencari item)" class="ellipsis-2-lines"
             :options="optionsBarangs" clearable option-label="label" :disable="store.loadingSave"
-            :loading="store.loadingSave" @filter="filterFnBarang" @clear="store.setForm('kode', null)"
+            :loading="store.loadingSave" @filter="filterFnBarang" @clear="store.setForm('keterangan', null)"
             @update:model-value="updateBarang">
             <template #no-option>
               <q-item>
@@ -157,6 +157,7 @@ function saveData() {
 
 
   store.simpanData()
+  store.disableSaved = true
   console.log('saved setlah simpan', store.form)
 }
 </script>

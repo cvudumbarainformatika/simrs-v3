@@ -238,7 +238,7 @@ function editDataPangusulan(row) {
   store.rincians = row.rincian ? [...row.rincian] : []
 
   router.push({ path: '/anggaran/penyusunan/pengusulan/form', replace: true, query: { id: row.id } })
-
+  store.disableSaved = true
 }
 const printcair = ref(null)
 function PrintPencairan(row) {

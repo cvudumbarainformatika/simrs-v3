@@ -27,7 +27,7 @@ export const useMasterMappingKegiatanPtkStore = defineStore('master-mapping-kegi
     reqs: {
       tahun: date.formatDate(Date.now(), 'YYYY'),
     },
-    akuns: [],
+    pegawais: [],
     bidangs: [],
     kegiatans: [],
     optionrekening: [],
@@ -37,6 +37,18 @@ export const useMasterMappingKegiatanPtkStore = defineStore('master-mapping-kegi
     setForm(key, val) {
       this.form[key] = val
     },
+    resetForm() {
+      this.form = {
+        tahun: new Date().getFullYear(),
+        kodekegiatan: null,
+        kegiatan: '',
+        kodepptk: null,
+        namapptk: '',
+        bidang: '',
+        kodebidang: '',
+        alias: ''
+      }
+    },
     getPegawai() {
       this.loading = true
       const params = { params: this.reqs }
@@ -44,7 +56,7 @@ export const useMasterMappingKegiatanPtkStore = defineStore('master-mapping-kegi
         api.get('v1/master/siasik/ptk/index', params).then((resp) => {
           // console.log('Get Pegawai', resp)
           if (resp.status === 200) {
-            this.akuns = resp.data
+            this.pegawais = resp.data
             this.loading = false
             resolve(resp)
           }

@@ -54,16 +54,18 @@ const formRef = ref(null)
 const options = ref([])
 const options_kegiatan = ref([])
 const tahuns = ref([])
-function simpan() {
-  store.simpanData().then(() => {
-    formRef.value.resetValidation()
-  })
-}
+
 function init() {
   const d = new Date()
   store.form.tahun = d.getFullYear()
   if (!store.form.id) { // kalau FORM BARU
-    store.form.kodekegiatan = null
+    store.form.kodekegiatan = ''
+    store.form.kegiatanblud = ''
+    store.form.kodeorganisasi1 = ''
+    store.form.kodeorganisasi2 = ''
+    store.form.kodeorganisasi3 = ''
+    store.form.namaorganisasi = ''
+    store.form.total = 0
   }
   generateArrayOfYears()
 }
@@ -135,58 +137,50 @@ async function ubahTahun(val) {
 }
 
 async function filterFnKegiatan(val, update) {
-  if (!val) {
+
+  if (!val || val.length < 2) {
     update(() => {
       options_kegiatan.value = store.optionkegiatan.map(a => ({
         ...a,
         label: `${a.kode} - ${a.nomenklatur}`,
-        value: a.no
+        value: a.kode
       }))
     })
     return
   }
 
-  if (val.length < 2) {
+  try {
+    const resp = await api.get('v1/master/siasik/kegiatanblud/index', {
+      params: {
+        q: val,
+        per_page: 20,
+        page: 1
+      }
+    })
+    const data = resp.data.data || []
+
+    update(() => {
+      options_kegiatan.value = data.map(a => ({
+        ...a,
+        label: `${a.kode} - ${a.nomenklatur}`,
+        value: a.no
+      }))
+    })
+
+  } catch (e) {
+    console.error(e)
     update(() => {
       options_kegiatan.value = []
     })
-    return
   }
 
-  let allData = []
-  let page = 1
-  let hasMore = true
-
-  while (hasMore) {
-    try {
-      const resp = await api.get('v1/master/siasik/kegiatanblud/index', {
-        params: { q: val, per_page: 100, page }
-      })
-
-      const data = resp.data.data || []
-
-      if (data.length > 0) {
-        allData = [...allData, ...data]
-        hasMore = resp.data.next_page_url !== null
-        page++
-      } else {
-        hasMore = false
-      }
-    } catch (e) {
-      console.error('Error load page:', e)
-      hasMore = false
-    }
-  }
-
-  update(() => {
-    options_kegiatan.value = allData.map(a => ({
-      ...a,
-      label: `${a.kode} - ${a.nomenklatur}`,
-      value: a.no
-    }))
-
-    store.optionkegiatan = allData
-  })
 }
+async function simpan() {
+  await store.simpanData()
 
+  formRef.value.resetValidation()
+
+  await store.getData()
+  await ubahTahun(store.form.tahun)
+}
 </script>

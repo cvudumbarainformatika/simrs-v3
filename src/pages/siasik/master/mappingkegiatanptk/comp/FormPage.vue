@@ -59,7 +59,7 @@
 
 import { api } from 'src/boot/axios';
 import { useMasterMappingKegiatanPtkStore } from 'src/stores/siasik/master/mapping_kegiatanptk/mapping_kegiatanptk';
-import { onMounted, ref } from 'vue';
+import { onMounted, onUnmounted, ref } from 'vue';
 
 const store = useMasterMappingKegiatanPtkStore()
 const formRef = ref(null)
@@ -67,12 +67,11 @@ const formRef = ref(null)
 const options = ref([])
 const options_kegiatan = ref([])
 const tahuns = ref([])
-function simpan() {
-  console.log('form store:', store.form)
-  store.simpanData().then(() => {
-    formRef.value.resetValidation()
-  })
-}
+const master_kegiatan = ref([])
+
+onUnmounted(() => {
+  store.resetForm()
+})
 function init() {
   const d = new Date()
   store.form.tahun = d.getFullYear()
@@ -103,9 +102,9 @@ onMounted(async () => {
   // }))
 
   // await store.getPegawai()
-  // store.optionrekening = store.akuns   // ← WAJIB
+  // store.optionrekening = store.pegawais   // ← WAJIB
 
-  // options.value = store.akuns.map(a => ({
+  // options.value = store.pegawais.map(a => ({
   //   ...a,
   //   label: `${a.nip} - ${a.nama}`,
   //   value: a.nip
@@ -113,44 +112,73 @@ onMounted(async () => {
 
   // store.optionrekening = []
   // await store.getRekening()
-  // options.value = store.akuns
+  // options.value = store.pegawais
 
 })
 async function ubahTahun(val) {
 
   store.reqs.tahun = val
   store.params.tahun = val
-  await store.getData()
-  options_kegiatan.value = []
-  options.value = []
-  store.form.kodekegiatan = null
-  store.form.kodepptk = null
+  // await store.getData()
+  // options_kegiatan.value = []
+  // options.value = []
+  // store.form.kodekegiatan = null
+  // store.form.kodepptk = null
 
+  // await store.getKegiatan()
+  // await store.getPegawai()
+
+  // const used = store.items.map(x => Number(x.kodekegiatan))
+  // const hasil = store.kegiatans.filter(k => !used.includes(Number(k.no)))
+  // store.optionkegiatan = hasil
+
+  // options_kegiatan.value = hasil.map(a => ({
+  //   ...a,
+  //   label: `${a.kode} - ${a.nomenklatur}`,
+  //   value: a.no
+  // }))
+
+  const currentKode = store.form.kodekegiatan
+
+  store.params.tahun = val
+  await store.getData()
   await store.getKegiatan()
   await store.getPegawai()
 
-  const used = store.items.map(x => parseInt(x.kodekegiatan))
-  const hasil = store.kegiatans.filter(k => !used.includes(k.no))
+  const used = store.items.map(x => Number(x.kodekegiatan))
+
+  let hasil = store.kegiatans.filter(k => !used.includes(Number(k.no)))
+
+  // pastikan kegiatan yg sudah dipilih tetap ada
+  if (currentKode) {
+    const exist = store.kegiatans.find(k => Number(k.no) === Number(currentKode))
+    if (exist && !hasil.some(x => Number(x.no) === Number(exist.no))) {
+      hasil.push(exist)
+    }
+  }
+
   store.optionkegiatan = hasil
 
-  options_kegiatan.value = hasil.map(a => ({
+  master_kegiatan.value = hasil.map(a => ({
     ...a,
     label: `${a.kode} - ${a.nomenklatur}`,
     value: a.no
   }))
 
-  store.optionrekening = store.akuns
-  options.value = store.akuns.map(a => ({
+  options_kegiatan.value = master_kegiatan.value
+
+  store.optionrekening = store.pegawais
+  options.value = store.pegawais.map(a => ({
     ...a,
     label: `${a.nip} - ${a.nama}`,
     value: a.nip
   }))
 }
+
 async function filterFn(val, update) {
-  // Jika kosong → tampilkan semua data awal (page 1)
-  if (!val) {
+  if (!val || val.length < 2) {
     update(() => {
-      options.value = store.akuns.map(a => ({
+      options.value = store.pegawais.map(a => ({
         ...a,
         label: `${a.nip} - ${a.nama}`,
         value: a.nip
@@ -159,61 +187,36 @@ async function filterFn(val, update) {
     return
   }
 
-  // Jika panjang key < 2 → jangan call API
-  if (val.length < 2) {
+  try {
+    const resp = await api.get('v1/master/siasik/ptk/index', {
+      params: {
+        q: val,
+        per_page: 20,
+        page: 1
+      }
+    })
+    const data = resp.data.data || []
+
+    update(() => {
+      options.value = data.map(a => ({
+        ...a,
+        label: `${a.nip} - ${a.nama}`,
+        value: a.nip
+      }))
+    })
+
+  } catch (e) {
+    console.error(e)
     update(() => {
       options.value = []
     })
-    return
   }
 
-  // Mulai pencarian server
-  let allData = []
-  let page = 1
-  let hasMore = true
-
-  while (hasMore) {
-    try {
-      const resp = await api.get('v1/master/siasik/ptk/index', {
-        params: {
-          q: val,
-          per_page: 100,
-          page: page
-        }
-      })
-
-      const data = resp.data.data || []
-
-      if (data.length > 0) {
-        allData = [...allData, ...data]
-        hasMore = resp.data.next_page_url !== null
-        page++
-      } else {
-        hasMore = false
-      }
-
-    } catch (e) {
-      console.error('Error load page:', e)
-      hasMore = false
-    }
-  }
-
-  // Update hasil pencarian
-  update(() => {
-    options.value = allData.map(a => ({
-      ...a,
-      label: `${a.nip} - ${a.nama}`,
-      value: a.nip
-    }))
-
-    // Simpan supaya next search bisa cepat
-    store.optionrekening = allData
-  })
 }
 
 async function filterFnKegiatan(val, update) {
 
-  if (!val) {
+  if (!val || val.length < 2) {
     update(() => {
       options_kegiatan.value = store.optionkegiatan.map(a => ({
         ...a,
@@ -224,48 +227,40 @@ async function filterFnKegiatan(val, update) {
     return
   }
 
-  if (val.length < 2) {
+  try {
+    const resp = await api.get('v1/master/siasik/kegiatanblud/index', {
+      params: {
+        q: val,
+        per_page: 20,
+        page: 1
+      }
+    })
+    const data = resp.data.data || []
+
+    update(() => {
+      options_kegiatan.value = data.map(a => ({
+        ...a,
+        label: `${a.kode} - ${a.nomenklatur}`,
+        value: a.no
+      }))
+    })
+
+  } catch (e) {
+    console.error(e)
     update(() => {
       options_kegiatan.value = []
     })
-    return
   }
 
-  let allData = []
-  let page = 1
-  let hasMore = true
+}
 
-  while (hasMore) {
-    try {
-      const resp = await api.get('v1/master/siasik/kegiatanblud/index', {
-        params: { q: val, per_page: 100, page }
-      })
+async function simpan() {
+  await store.simpanData()
 
-      const data = resp.data.data || []
+  formRef.value.resetValidation()
 
-      if (data.length > 0) {
-        allData = [...allData, ...data]
-        hasMore = resp.data.next_page_url !== null
-        page++
-      } else {
-        hasMore = false
-      }
-    } catch (e) {
-      console.error('Error load page:', e)
-      hasMore = false
-    }
-  }
-
-
-  update(() => {
-    options_kegiatan.value = allData.map(a => ({
-      ...a,
-      label: `${a.kode} - ${a.nomenklatur}`,
-      value: a.kode
-    }))
-
-    store.optionkegiatan = allData
-  })
+  await store.getData()
+  await ubahTahun(store.form.tahun)
 }
 
 </script>
