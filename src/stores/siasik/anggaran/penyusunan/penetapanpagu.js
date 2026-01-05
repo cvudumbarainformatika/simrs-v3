@@ -156,5 +156,9 @@ export const usePenetapanPaguStore = defineStore('penetapan-pagu-store', {
       this.params.q = val
       this.getData()
     },
+    goToPage(val) {
+      this.params.page = val
+      this.getData()
+    },
   }
 })

@@ -71,6 +71,7 @@ const pilihanJenis = [
   { label: 'Barang Persediaan (SIGARANG)', value: 'Barang' },
   { label: 'Barang Modal (ASET)', value: 'Modal' },
   { label: 'Jasa dan lain-lain', value: 'Jasa' },
+  { label: 'Farmasi', value: 'Farmasi' },
 ]
 
 function updateJenis(val) {

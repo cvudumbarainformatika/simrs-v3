@@ -15,7 +15,7 @@
   </div> -->
 </template>
 <script setup>
-import ListData from './inpage/ListDataNpdls.vue'
+import ListData from './inpage/ListData.vue'
 import { onBeforeMount, onMounted } from 'vue';
 import { usePengusulanAnggaranStore } from 'src/stores/siasik/anggaran/penyusunan/pengusulan';
 // import listRegjurnal from './inpage/ListRegjurnal.vue'

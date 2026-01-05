@@ -91,7 +91,7 @@
                         <q-item clickable v-close-popup @click="viewRincian(props?.row)">
                           <q-item-section>Lihat Rincian</q-item-section>
                         </q-item>
-                        <q-item clickable @click="editDataPangusulan(props?.row)">
+                        <q-item v-if="props?.row?.kunci !== '1'" clickable @click="editDataPangusulan(props?.row)">
                           <q-item-section>Edit Data</q-item-section>
                         </q-item>
                         <!-- <q-item clickable v-close-popup @click="viewCetakDataNpdls(props?.row)">
@@ -276,13 +276,13 @@ function kunciData(row) {
       cancel: true,
       persistent: true
     }).onOk(() => {
-      const payload = {
-        notrasn: row.notrasn,
-        kunci: row.kunci,
-        nonotadinas: row.nonotadinas
-      }
-      console.log('payload', payload)
-      store.kunciData(payload).then(() => {
+      // const payload = {
+      //   notrasn: row.notrasn,
+      //   kunci: row.kunci,
+      //   nonotadinas: row.nonotadinas
+      // }
+      // console.log('payload', payload)
+      store.kunciData(row.id).then(() => {
         row.kunci = row.kunci === '1' ? '' : '1'
       })
     }).onCancel(() => {
@@ -297,12 +297,12 @@ function kunciData(row) {
       cancel: true,
       persistent: true
     }).onOk(() => {
-      const payload = {
-        notrans: row.notrans,
-        kunci: row.kunci
-      }
-      console.log('payload', payload)
-      store.kunciData(payload).then(() => {
+      // const payload = {
+      //   notrans: row.notrans,
+      //   kunci: row.kunci
+      // }
+      // console.log('payload', payload)
+      store.kunciData(row.id).then(() => {
         row.kunci = row.kunci === '1' ? '' : '1'
       })
     }).onCancel(() => {

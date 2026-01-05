@@ -259,7 +259,7 @@ export const usePengusulanAnggaranStore = defineStore('pengusulan-anggaran-store
       this.loadingKunci = true
       const payload = { id }
       try {
-        const resp = await api.post('/v1/anggaran/penyusunan/penetapanpagu/kunci', payload)
+        const resp = await api.post('/v1/anggaran/penyusunan/pengusulan/kunci', payload)
         if (resp.status === 200) {
           // this.items = resp?.data?.data
           notifSuccess(resp)
@@ -271,6 +271,14 @@ export const usePengusulanAnggaranStore = defineStore('pengusulan-anggaran-store
         notifErr(error)
         this.loadingKunci = false
       }
+    },
+    search(val) {
+      this.params.q = val
+      this.getData()
+    },
+    goToPage(val) {
+      this.params.page = val
+      this.getData()
     },
 
   }

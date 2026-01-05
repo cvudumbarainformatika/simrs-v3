@@ -107,9 +107,31 @@ export const useAnggaranPendapatanStore = defineStore('anggaran-pendapatan-store
         this.loadingDelete = false
       }
     },
+    async kunciData(id) {
+      this.loadingKunci = true
+      const payload = { id }
+      try {
+        const resp = await api.post('/v1/anggaran/penyusunan/anggaranpendapatan/kunci', payload)
+        if (resp.status === 200) {
+          // this.items = resp?.data?.data
+          notifSuccess(resp)
+          this.getData()
+        }
+        this.loadingKunci = false
+      }
+      catch (error) {
+        notifErr(error)
+        this.loadingKunci = false
+      }
+    },
     search(val) {
       this.params.q = val
       this.getData()
     },
+    goToPage(val) {
+      this.params.page = val
+      this.getData()
+    },
+
   }
 })
