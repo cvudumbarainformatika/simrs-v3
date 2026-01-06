@@ -13,7 +13,7 @@
             map-options option-value="value" input-debounce="300"
             label="Item Pengusulan (ketik min 2 huruf untuk mencari item)" class="ellipsis-2-lines"
             :options="optionsBarangs" clearable option-label="label" :disable="store.loadingSave"
-            :loading="store.loadingSave" @filter="filterFnBarang" @clear="store.setForm('keterangan', null)"
+            :loading="store.loadingSave" @filter="filterFnBarang" @clear="store.setForm('value', null)"
             @update:model-value="updateBarang">
             <template #no-option>
               <q-item>
@@ -82,6 +82,7 @@ function updateJenis(val) {
   }
   store.getBarangs(params)
   store.form.kode = ''
+  store.form.satuan = ''
   store.form.keterangan = ''
   store.form.volume = 0
   store.form.harga = 0
@@ -95,8 +96,12 @@ function updateJenis(val) {
 }
 
 function updateBarang(val) {
+  store.form.satuan = ''
+  store.form.volume = 0
+  store.form.harga = 0
+  store.form.nilai = 0
   const data = optionsBarangs.value.find(x => x.value === val)
-  // console.log('data items', data)
+  console.log('data items', data)
   if (!data) return
   store.form.keterangan = data?.nama ? data?.nama : data?.namaaset
   store.form.kode = data?.kode ? data?.kode : data?.kdaset
@@ -105,11 +110,10 @@ function updateBarang(val) {
   store.form.uraian50 = data?.uraian_50 ? data?.uraian_50 : data?.uraian50
   store.form.uraian108 = data?.uraian_108 ? data?.uraian_108 : data?.uraian108
   // Catatan di Master Aset Belum ada Satuan jadinya dipakai unit
-  let satuan = data?.satuan?.nama || data?.satuan || 'Unit'
-  store.form.satuan = satuan
-  store.form.volume = 0
-  store.form.harga = 0
-  store.form.nilai = 0
+  if (store.form.jenis === 'Farmasi') return store.form.satuan = 'Tahun'
+  if (store.form.jenis === 'Modal') return store.form.satuan = 'Unit'
+  store.form.satuan = data?.satuan?.nama || data?.satuan
+
 }
 
 function updateVolume(val) {
