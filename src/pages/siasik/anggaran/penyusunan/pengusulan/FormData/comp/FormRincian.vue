@@ -86,7 +86,10 @@ function updateJenis(val) {
   store.form.volume = 0
   store.form.harga = 0
   store.form.nilai = 0
-  store.form.satuan = ''
+  store.form.kode_50 = null
+  store.form.kode_108 = null
+  store.form.uraian50 = null
+  store.form.uraian108 = null
 
   // optionsBarangs.value = []
 }
@@ -96,7 +99,12 @@ function updateBarang(val) {
   console.log('data items', data)
   store.form.keterangan = data?.nama ? data?.nama : data?.namaaset
   store.form.kode = data?.kode ? data?.kode : data?.kdaset
+  store.form.kode_50 = data?.kode_50 ? data?.kode_50 : data?.kd50
+  store.form.kode_108 = data?.kode_108 ? data?.kode_108 : data?.kd108
+  store.form.uraian50 = data?.uraian_50 ? data?.uraian_50 : data?.uraian50
+  store.form.uraian108 = data?.uraian_108 ? data?.uraian_108 : data?.uraian108
 
+  // Catatan di Master Aset Belum ada Satuan jadinya dipakai unit
   let satuan = ''
   if (!data?.satuan) satuan = 'Unit'
   if (data?.satuan) satuan = data?.satuan?.nama || data?.satuan

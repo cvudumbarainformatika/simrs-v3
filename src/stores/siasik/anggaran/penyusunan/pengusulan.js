@@ -32,6 +32,10 @@ export const usePengusulanAnggaranStore = defineStore('pengusulan-anggaran-store
       tahun: date.formatDate(Date.now(), 'YYYY'),
 
       //rincian
+      kode_50: null,
+      kode_108: null,
+      uraian50: null,
+      uraian108: null,
       keterangan: '',
       volume: 0,
       harga: 0,
@@ -145,6 +149,10 @@ export const usePengusulanAnggaranStore = defineStore('pengusulan-anggaran-store
           tglTransaksi: resp?.data?.data?.tglTransaksi,
           tahun: date.formatDate(Date.now(), 'YYYY'),
 
+          kode_50: null,
+          kode_108: null,
+          uraian50: null,
+          uraian108: null,
           keterangan: '',
           volume: 0,
           harga: 0,
@@ -177,6 +185,10 @@ export const usePengusulanAnggaranStore = defineStore('pengusulan-anggaran-store
         tahun: date.formatDate(Date.now(), 'YYYY'),
 
         //rincian
+        kode_50: null,
+        kode_108: null,
+        uraian50: null,
+        uraian108: null,
         keterangan: '',
         volume: 0,
         harga: 0,
