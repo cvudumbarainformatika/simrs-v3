@@ -748,7 +748,7 @@ function getKurang(row) {
 }
 
 function getRekapTerlambat(row) {
-  console.log('row', row)
+  // console.log('row', row)
   const days = daysInMonth(currentMonth.value, tahun.value)
   const bulanX = currentMonth.value <= 9 ? '0' + currentMonth.value : (currentMonth.value).toString()
   const ijin = []
