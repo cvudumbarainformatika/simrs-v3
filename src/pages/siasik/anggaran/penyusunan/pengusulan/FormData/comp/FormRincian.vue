@@ -95,19 +95,17 @@ function updateJenis(val) {
 }
 
 function updateBarang(val) {
-  const data = optionsBarangs.value.find(x => x.kode ? x.kode : x.kdaset === val)
-  console.log('data items', data)
+  const data = optionsBarangs.value.find(x => x.value === val)
+  // console.log('data items', data)
+  if (!data) return
   store.form.keterangan = data?.nama ? data?.nama : data?.namaaset
   store.form.kode = data?.kode ? data?.kode : data?.kdaset
   store.form.kode_50 = data?.kode_50 ? data?.kode_50 : data?.kd50
   store.form.kode_108 = data?.kode_108 ? data?.kode_108 : data?.kd108
   store.form.uraian50 = data?.uraian_50 ? data?.uraian_50 : data?.uraian50
   store.form.uraian108 = data?.uraian_108 ? data?.uraian_108 : data?.uraian108
-
   // Catatan di Master Aset Belum ada Satuan jadinya dipakai unit
-  let satuan = ''
-  if (!data?.satuan) satuan = 'Unit'
-  if (data?.satuan) satuan = data?.satuan?.nama || data?.satuan
+  let satuan = data?.satuan?.nama || data?.satuan || 'Unit'
   store.form.satuan = satuan
   store.form.volume = 0
   store.form.harga = 0
@@ -150,7 +148,9 @@ async function filterFnBarang(val, update) {
         label: a.kode
           ? `${a.kode} - ${a.nama}`
           : `${a.kdaset} - ${a.namaaset}`,
-        value: a.kode ?? a.kdaset
+        value: a.kode
+          ? `${a.kode}`
+          : `${a.kdaset}`
       }))
     })
 
