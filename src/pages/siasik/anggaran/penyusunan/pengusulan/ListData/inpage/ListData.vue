@@ -85,7 +85,8 @@
                     <q-tooltip> Kunci Data </q-tooltip>
                   </q-btn>
                 </div>
-                <div> <q-btn flat round class="bg-dark" size="xs" color="warning" icon="icon-fa-file-regular">
+                <div v-if="props?.row.kunci !== '1'"> <q-btn flat round class="bg-dark" size="xs" color="warning"
+                    icon="icon-fa-file-regular">
                     <q-menu dark style="min-width: 150px">
                       <q-list style="min-width: 150px;">
                         <q-item clickable v-close-popup @click="viewRincian(props?.row)">
@@ -196,13 +197,13 @@ const listData = [
 ]
 const columnsData = ref(listData)
 
-const npd = ref(null)
+const dataRinci = ref(null)
 function viewRincian(row) {
   store.openDialogRinci = true
-  npd.value = row.rincian
-  store.rincians = npd.value
+  dataRinci.value = row.rincian
+  store.rincians = dataRinci.value
   store.dataSaved = row
-  console.log('npd save', store.dataSaved)
+  console.log('npd save', store.dataSaved, 'rinci', store.rincians)
 
 }
 const onRowClick = (row) =>

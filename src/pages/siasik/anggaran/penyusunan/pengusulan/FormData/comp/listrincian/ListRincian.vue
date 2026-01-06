@@ -152,10 +152,10 @@ function subtotal() {
   const subtotalrinci = displayRows.value
     .map((x) => parseFloat(x.nilai))
     .reduce((a, b) => a + b, 0);
-  return subtotalrinci;
+  return Number(subtotalrinci);
 }
 function selisih() {
-  return subtotal() - Number(store.form.paguanggaran);
+  return subtotal() - Number(store.form.paguanggaran || 0);
 }
 
 function deleteData(row) {
@@ -172,7 +172,7 @@ function deleteData(row) {
       id: Number(row),
 
     }
-    console.log('payload', payload)
+    // console.log('payload', payload)
     store.deleteData(payload)
       .then(() => {
         //   store.loadingHapus = true
