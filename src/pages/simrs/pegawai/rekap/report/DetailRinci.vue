@@ -110,6 +110,8 @@ const frTanpaDetik = (val, jns) => {
 
 const hitungTerlambat = (x) => {
   const kategoryMasuk = x.kategory ? x.kategory.masuk : '00:00:00'
+  console.log('kategoryMasuk', kategoryMasuk);
+
   const jamMasukServer = formatJam(x.created_at)
   const tglMasukServer = dateDbFormat(x.created_at)
 
