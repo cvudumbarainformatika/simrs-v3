@@ -25,11 +25,11 @@
           <div class="row q-col-gutter-md q-mb-sm">
             <div class="col-md-6 col-xs-12">
               <app-autocomplete v-model="store.form.kelompok" valid label="Paket Pemeriksaan" :loading="store.loading"
-                :disable="store.loading" :options="store.kelompoks" outlined />
+                :disable="store.loading" :source="store.kelompoks" outlined />
             </div>
             <div class="col-md-6 col-xs-12">
               <app-autocomplete v-model="store.form.jenislab" valid label="Jenis Lab" :loading="store.loading"
-                :disable="store.loading" :options="store.jenises" outlined />
+                :disable="store.loading" :source="store.jenises" outlined />
             </div>
           </div>
 

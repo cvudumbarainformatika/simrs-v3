@@ -8,7 +8,7 @@
     <q-card flat no-shadow square class="my-flex-1" style="overflow: hidden;">
       <q-scroll-area style="height: calc(100% - 1px);">
         <list-pasien-luar v-if="store.meta !== null" :keloading-cesmixy="store.items" :items="store.items"
-          :loading="store.loading" :loadingbayar="store.loadingbayar" @bayar="bayar" />
+          :loading="store.loading" :loadingbayar="store.loadingbayar" />
       </q-scroll-area>
       <div class=" absolute-bottom bg-primary text-white z-top">
         <footer-page :meta="store.meta" @go-to="store.goToPage" />
@@ -32,30 +32,34 @@ const style = useStyledStore()
 const router = useRouter()
 const storebayar = usePembayaranKasirRajalStore()
 
-function bayar(val) {
-  console.log('terimapasien', val)
-  if (!val) return
-  const pasien = {
-    ...val,
-    // noreg: val?.nota,
-    norm: '-',
-    nama: val?.nama ?? '-',
-    sapaan: '-',
-    kelamin: '',
-    kodepoli: '',
-    poli: 'Penjualan Luar',
-    sistembayar: 'UMUM',
-    groupssistembayar: '',
-    unit: val?.unit,
-  }
+// function bayar(val) {
+//   console.log('terimapasien', val)
+//   if (!val) return
+//   const pasien = {
+//     ...val,
+//     // noreg: val?.nota,
+//     norm: '-',
+//     nama: val?.nama ?? '-',
+//     sapaan: '-',
+//     kelamin: '',
+//     kodepoli: '',
+//     poli: 'Penjualan Luar',
+//     sistembayar: 'UMUM',
+//     groupssistembayar: '',
+//     unit: val?.unit,
+//   }
 
-  console.log('paaaaasss', pasien)
-  const nota = val.nota
-  const subtotal = val.subtotal
-  const jenis = 'Farmasi'
+//   console.log('paaaaasss', pasien)
+//   const nota = val.noresep
+//   const subtotal = val.subtotal
+//   const jenis = 'Farmasi'
 
-  storebayar.savePembayarannonKarcis(pasien, nota, subtotal, jenis, router)
-}
+//   storebayar.savePembayarannonKarcis(pasien, nota, subtotal, jenis, router)
+// }
+
+// function buka(val) {
+//   console.log('terimapasien', val)
+// }
 
 onMounted(() => {
   store.getData()

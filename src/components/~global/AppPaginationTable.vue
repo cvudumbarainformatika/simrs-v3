@@ -1,57 +1,23 @@
 <template>
-  <q-card
-    bordered
-    flat
-  >
-    <div class="row items-center q-pa-sm">
-      <div
-        v-if="details"
-        class="col-md-6 col-xs-12"
-      >
+  <q-card bordered flat>
+    <div class="row items-center q-pa-sm" :class="`${bg} text-${textColor}`">
+      <div v-if="details" class="col-md-6 col-xs-12">
         Hal. <strong>{{ meta.current_page }}</strong> dari <strong>{{ meta.last_page }}</strong>
         halaman dan <strong>{{ meta.total }}</strong> data keseluruhan
       </div>
-      <div :class="!details?'col-12':'col-md-6 col-xs-12'">
+      <div :class="!details ? 'col-12' : 'col-md-6 col-xs-12'">
         <div class="flex items-center justify-end">
-          <q-btn
-            :disable="meta.current_page===1"
-            flat
-            round
-            color="primary"
-            icon="icon-mat-skip_previous"
-            size="sm"
-            @click="emits('first')"
-          />
-          <q-btn
-            :disable="!meta.prev_page_url"
-            flat
-            round
-            color="primary"
-            icon="icon-mat-chevron_left"
-            size="sm"
-            @click="emits('prev')"
-          />
+          <q-btn :disable="meta.current_page === 1" flat round :color="btnColor" icon="icon-mat-skip_previous" size="sm"
+            @click="emits('first')" />
+          <q-btn :disable="!meta.prev_page_url" flat round :color="btnColor" icon="icon-mat-chevron_left" size="sm"
+            @click="emits('prev')" />
           <div class="bold q-pa-xs">
-            {{ meta.current_page }}  {{ meta.last_page? `/ ${meta.last_page}`: '' }}
+            {{ meta.current_page }} {{ meta.last_page ? `/ ${meta.last_page}` : '' }}
           </div>
-          <q-btn
-            :disable="!meta.next_page_url"
-            flat
-            round
-            color="primary"
-            icon="icon-mat-chevron_right"
-            size="sm"
-            @click="emits('next')"
-          />
-          <q-btn
-            :disable="meta.current_page === meta.last_page"
-            flat
-            round
-            color="primary"
-            icon="icon-mat-skip_next"
-            size="sm"
-            @click="emits('last')"
-          />
+          <q-btn :disable="!meta.next_page_url" flat round :color="btnColor" icon="icon-mat-chevron_right" size="sm"
+            @click="emits('next')" />
+          <q-btn :disable="meta.current_page === meta.last_page" flat round :color="btnColor" icon="icon-mat-skip_next"
+            size="sm" @click="emits('last')" />
         </div>
       </div>
     </div>
@@ -63,11 +29,24 @@
 defineProps({
   meta: {
     type: Object,
-    default: () => {}
+    default: () => { }
   },
   details: {
     type: Boolean,
     default: true
+  },
+
+  btnColor: {
+    type: String,
+    default: 'primary'
+  },
+  bg: {
+    type: String,
+    default: 'bg-white'
+  },
+  textColor: {
+    type: String,
+    default: 'dark'
   }
 })
 const emits = defineEmits(['next', 'first', 'prev', 'last'])

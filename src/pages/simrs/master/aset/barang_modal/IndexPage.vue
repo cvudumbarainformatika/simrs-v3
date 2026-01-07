@@ -41,7 +41,7 @@
         <div class="absolute full-width full-height">
           <div class="row full-height">
             <div class="col-4 full-height scroll q-pa-sm">
-              <FormPage />
+              <FormPage :barang108s="store.itemsrek108" />
             </div>
             <div class="col-8 full-height bg-grey scroll q-pa-sm">
               <ListPage :listmaster="store.items" @edit="(val) => store.editForm(val)"
@@ -98,6 +98,7 @@ function generateArrayOfYears() {
 
 onMounted(() => {
   store.getData()
+  store.getrek108()
   // init()
 })
 

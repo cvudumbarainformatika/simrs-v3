@@ -633,7 +633,7 @@ function bayarnonkarcis(nota, total, jenis) {
         cancel: true,
         persistent: true
       }).onOk(() => {
-        store.savePembayarannonKarcis(prop.pasien, nota, total, jenis, router)
+        store.savePembayarannonKarcis(prop.pasien, nota, total, jenis, router, 'dalam')
       }).onCancel(() => {
         console.log('Cancel')
       }).onDismiss(() => {

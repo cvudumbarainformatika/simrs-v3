@@ -217,9 +217,7 @@ export const useKasirRajalListKunjunganStore = defineStore('kasir_rajal_list_kun
                   ? { ...item, ...data }   // merge item lama + data baru
                   : item                   // selain itu tetap
               )
-              console.log('dataxxx', this.kwitansiterbayar)
             }
-
             this.loadingbatalkwitansi = false
             notifSuccess(resp.data?.message)
             resolve(resp.data)

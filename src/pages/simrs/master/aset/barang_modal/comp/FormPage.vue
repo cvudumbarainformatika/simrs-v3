@@ -1,34 +1,93 @@
 <template>
+  <!-- <pre>{{ props.barang108s }}</pre> -->
   <q-form ref="formRef" @submit="simpan" class="q-gutter-sm q-pa-sm">
-    <!-- <div class="" style="">
-      <q-select v-model="store.form.tahun" :disable="store.loading" :loading="store.loadingSave" :options="tahuns"
-        outlined dense label="Tahun Anggaran" @update:model-value="val => {
-          console.log('Tahun dipilih:', val)
-        }" />
-    </div> -->
+
     <div>
       <q-input v-model.number="store.form.namaaset" outlined dense label="Nama Barang Modal"
-        :disable="store.loadingSave" :loading="store.loadingSave" />
+        :disable="store.loadingSave" :loading="store.loadingSave"
+        :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" />
     </div>
-    <div class="" style="">
-
-      <q-select v-model="store.form.kd108" use-input outlined standout="bg-yellow-3" dense emit-value map-options
-        option-value="kd108" input-debounce="300" label="Rekening 108" class="ellipsis-2-lines" :options="options"
-        clearable :option-label="opt => opt?.uraian108 ? `${opt.kode108} - ${opt.uraian108}` : ''"
-        :disable="store.loadingSave" :loading="store.loadingSave" @filter="filterFn"
-        @clear="store.setForm('kd108', null)" @update:model-value="(val) => {
-          const arr = store.optionrekening || []
-          const cari = arr.find(x => x.kode108 === val)
-          store.form.uraian108 = cari ? cari.uraian108 : ''
-        }">
+    <div>
+      <q-select v-model="store.form.kode108" label="Kode Rekening 108" outlined emit-value map-options
+        option-label="kode" option-value="kode" standout="bg-yellow-3" dense transition-show="flip-up"
+        transition-hide="flip-down" :options="options" clearable use-input
+        :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" @filter="filterFnx"
+        @update:model-value="(val) => selectedx(val)">
+        <template #option="scopex">
+          <q-item v-bind="scopex.itemProps">
+            <q-item-section>
+              <q-item-label class="text-weight-bold">
+                {{ scopex.opt.uraian }} <br>
+              </q-item-label>
+              <q-item-label caption class="text-italic">
+                {{ scopex.opt.kode }} <br>
+              </q-item-label>
+            </q-item-section>
+          </q-item>
+        </template>
         <template #no-option>
           <q-item>
-            <q-item-section class="text-grey">Tidak ditemukan</q-item-section>
+            <q-item-section class="text-grey">
+              Data Tidak Ditemukan....
+            </q-item-section>
           </q-item>
         </template>
       </q-select>
     </div>
 
+    <div>
+      <q-select v-model="store.form.uraian108" label="Uraian 108" outlined emit-value map-options option-label="uraian"
+        option-value="uraian" standout="bg-yellow-3" dense transition-show="flip-up" transition-hide="flip-down"
+        :options="options" clearable use-input :rules="[val => !!val || 'Harap Diisi terlebih dahulu']"
+        @filter="filterFn" @update:model-value="(val) => selected(val)">
+        <template #option="scopex">
+          <q-item v-bind="scopex.itemProps">
+            <q-item-section>
+              <q-item-label class="text-weight-bold">
+                {{ scopex.opt.uraian }} <br>
+              </q-item-label>
+              <q-item-label caption class="text-italic">
+                {{ scopex.opt.kode }} <br>
+              </q-item-label>
+            </q-item-section>
+          </q-item>
+        </template>
+        <template #no-option>
+          <q-item>
+            <q-item-section class="text-grey">
+              Data Tidak Ditemukan....
+            </q-item-section>
+          </q-item>
+        </template>
+      </q-select>
+    </div>
+
+    <div>
+      <q-select v-model="store.form.kode50" label="Kode Rekening 50" outlined emit-value map-options option-label="kode"
+        option-value="kode" standout="bg-yellow-3" dense transition-show="flip-up" transition-hide="flip-down"
+        :options="options" clearable use-input :rules="[val => !!val || 'Harap Diisi terlebih dahulu']"
+        @filter="filterFnx" @update:model-value="(val) => selectedx(val)">
+        <template #option="scopex">
+          <q-item v-bind="scopex.itemProps">
+            <q-item-section>
+              <q-item-label class="text-weight-bold">
+                {{ scopex.opt.uraian }} <br>
+              </q-item-label>
+              <q-item-label caption class="text-italic">
+                {{ scopex.opt.kode }} <br>
+              </q-item-label>
+            </q-item-section>
+          </q-item>
+        </template>
+        <template #no-option>
+          <q-item>
+            <q-item-section class="text-grey">
+              Data Tidak Ditemukan....
+            </q-item-section>
+          </q-item>
+        </template>
+      </q-select>
+    </div>
 
     <q-separator class="q-my-lg" />
     <div class="text-right">
@@ -37,186 +96,87 @@
   </q-form>
 </template>
 <script setup>
-
-import { api } from 'src/boot/axios';
 import { useMasterBarangModalStore } from 'src/stores/simrs/master/aset/barang_modal/barangmodal';
-import { onMounted, ref } from 'vue';
+import { ref } from 'vue';
 
 const store = useMasterBarangModalStore()
 const formRef = ref(null)
 
-const options = ref([])
-const options_lak = ref([])
-const tahuns = ref([])
+const props = defineProps({
+  barang108s: {
+    type: Array,
+    default: []
+  }
+})
+
+const options = ref([props.barang108s])
+
 function simpan() {
   store.simpanData().then(() => {
     formRef.value.resetValidation()
   })
 }
-function init() {
-  const d = new Date()
-  store.form.tahun = d.getFullYear()
-  generateArrayOfYears()
-}
-function generateArrayOfYears() {
-  const current = new Date().getFullYear()
-  const years = []
 
-  for (let i = current + 2; i >= current - 1; i--) {
-    years.push(i)
+function selected(val) {
+
+  if (val !== null) {
+    const uraian108 = props.barang108s.find((x) => x.uraian === val)
+    store.form.kode108 = uraian108?.kode
+
   }
-
-  tahuns.value = years
 }
 
-onMounted(async () => {
-  init()
-  await store.getPegawai()
-  store.optionrekening = store.akuns   // ← WAJIB
-
-  options.value = store.akuns.map(a => ({
-    ...a,
-    label: `${a.kode} - ${a.nama}`,
-    value: a.kode
-  }))
-
-  // store.optionrekening = []
-  // await store.getRekening()
-  // options.value = store.akuns
-
-})
-
-async function filterFn(val, update) {
-  if (!val) {
-    update(() => {
-      options.value = store.akuns.map(a => ({
-        ...a,
-        label: `${a.kode108} - ${a.uraian108}`,
-        value: a.kode108
-      }))
-    })
-    return
+function selectedx(val) {
+  if (val !== null) {
+    const koderekening = props?.barang108s.find((x) => x.kode === val)
+    store.form.uraian108 = koderekening?.uraian
   }
+}
 
-  if (val.length < 2) {
-    update(() => {
-      options.value = []
-    })
-    return
-  }
-
-  let allData = []
-  let page = 1
-  let hasMore = true
-
-  while (hasMore) {
-    try {
-      const resp = await api.get('v1/master/siasik/kegiatanblud/getbidang', {
-        params: {
-          q: val,
-          per_page: 100,
-          page: page
-        }
-      })
-
-      const data = resp.data.data || []
-
-      if (data.length > 0) {
-        allData = [...allData, ...data]
-        hasMore = resp.data.next_page_url !== null
-        page++
-      } else {
-        hasMore = false
-      }
-
-    } catch (e) {
-      console.error('Error load page:', e)
-      hasMore = false
-    }
-  }
-
+const filterFn = (val, update) => {
   update(() => {
-    options.value = allData.map(a => ({
-      ...a,
-      label: `${a.kode108} - ${a.uraian108}`,
-      value: a.kode108
-    }))
+    if (!Array.isArray(props.barang108s)) {
+      options.value = []
+      return
+    }
 
-    store.optionrekening = allData
+    if (val === '') {
+      options.value = props.barang108s
+      return
+    }
+
+    const needle = val.toLowerCase()
+
+    options.value = props.barang108s.filter(v =>
+      v.uraian?.toLowerCase().indexOf(needle) > -1
+      // || v.kode?.toLowerCase().includes(needle)
+    )
+    // store.form.kode108 = options.value[0].kode
+    // console.log('options', options.value)
   })
 }
 
-// async function filterFn(val, update) {
-//   if (!val) {
-//     update(() => {
-//       options.value = store.optionrekening || []
-//       console.log('Options saat pencarian kosong:', options.value)
-//     })
-//     store.loading = false
-//     return
-//   }
-//   const needle = val.toLowerCase()
-//   const localResults = store.optionrekening?.filter(
-//     (item) =>
-//     (item.kodeall3?.toLowerCase().includes(needle) ||
-//       item.uraian?.toLowerCase().includes(needle))
-//   ) || []
-//   if (localResults.length > 0) {
-//     update(() => {
-//       options.value = localResults
-//       // console.log('Options dari filter lokal:', localResults)
-//     })
-//     store.loading = false
-//     return
-//   }
-//   if (val.length >= 2) {
-//     let allData = []
-//     let page = 1
-//     let hasMore = true
+const filterFnx = (val, update) => {
+  update(() => {
+    if (!Array.isArray(props.barang108s)) {
+      options.value = []
+      return
+    }
 
-//     // console.log('Mulai iterasi halaman untuk levelberapa:', store.reqs.levelberapa)
+    if (val === '') {
+      options.value = props.barang108s
+      return
+    }
 
-//     while (hasMore) {
-//       try {
-//         const resp = await api.get('v1/anggaran/penyusunan/anggaranpendapatan/getrekening', {
-//           params: {
-//             q: val,
-//             per_page: 100,
-//             page: page,
-//           }
-//         })
+    const needle = val.toLowerCase()
 
-//         if (resp.status === 200 && resp.data.data?.length) {
-//           allData = [...allData, ...resp.data.data]
-//           hasMore = resp.data.next_page_url !== null && resp.data.next_page_url !== undefined
-//           page++
-//         } else {
-//           hasMore = false
-//         }
-//       } catch (error) {
-//         console.error('Error saat mengambil halaman:', error)
-//         hasMore = false
-//       }
-//     }
-
-//     // Update opsi berdasarkan hasil server
-//     update(() => {
-//       if (allData.length > 0) {
-//         options.value = allData
-//         store.optionrekening = allData
-//       } else {
-//         options.value = []
-//       }
-//       console.log('Options setelah update:', options.value)
-//     })
-//   } else {
-//     update(() => {
-//       options.value = localResults
-//     })
-//   }
-
-//   store.loading = false
-
-// }
+    options.value = props.barang108s.filter(v =>
+      v.kode?.toLowerCase().indexOf(needle) > -1
+      // || v.kode?.toLowerCase().includes(needle)
+    )
+    // store.form.kode108 = options.value[0].kode
+    // console.log('options', options.value)
+  })
+}
 
 </script>
