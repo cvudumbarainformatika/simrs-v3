@@ -51,7 +51,7 @@
                   </template>
                   <template v-else>
                     <q-select v-model="item.tmp_kode50" use-input outlined standout="bg-yellow-3" dense emit-value
-                      map-options option-value="kodeall2" input-debounce="300" label="Pilih Kode Rekening"
+                      map-options option-value="kodeall2" input-debounce="800" label="Pilih Kode Rekening"
                       :options="options" :option-label="opt => opt?.kodeall2 ? `${opt.kodeall2} - ${opt.uraian}` : ''"
                       clearable :disable="store.loading" :loading="store.loading" @filter="filterFn"
                       @update:model-value="(val) => {
@@ -101,7 +101,8 @@
                       v-model.number="item.tmp_jumlahacc" :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" />
                     <div class="justify-center q-pl-sm q-pt-xs">
                       <q-btn color="primary" type="button" size="sm" round dense icon="check"
-                        :disable="!validItem(item)" @click="tetapkan(item)">
+                        :disable="!validItem(item) || store.loadingSave" :loading="item.loadingSave"
+                        @click="tetapkan(item)">
                         <q-tooltip>
                           Simpan Rincian
                         </q-tooltip>
@@ -168,14 +169,15 @@ const rincianByKegiatan = computed(() => {
 /* validasi tombol */
 const validItem = (item) => {
   return (
-    item.tmp_kode50 &&
-    (item.tmp_kode108 || item.kode_108 === ' ') &&
+    item.tmp_kode50 ||
+    (item.tmp_kode108 || item.kode_108 === ' ') ||
     item.tmp_jumlahacc > 0
   )
 }
 
 /* simpan */
 const tetapkan = async (item) => {
+  item.loadingSave = true
   item.kode_50 = item.tmp_kode50
   item.uraian50 = item.tmp_uraian50
   item.kode_108 = item.tmp_kode108
@@ -205,6 +207,7 @@ const tetapkan = async (item) => {
     harga: item.harga,
     nilai: item.nilai,
     uraian50: item.uraian50,
+    uraian108: item.uraian108,
     koders: item.kode
   })
 
@@ -214,6 +217,8 @@ const tetapkan = async (item) => {
   delete item.tmp_kode108
   delete item.tmp_uraian108
   delete item.tmp_jumlahacc
+  store.disableSaved = true
+  item.loadingSave = false
 }
 
 async function filterFn(val, update) {

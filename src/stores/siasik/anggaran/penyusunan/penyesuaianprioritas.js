@@ -163,6 +163,7 @@ export const usePrioritasAnggaranStore = defineStore('prioritas-anggaran-store',
           masukan: result?.masukan,
           keluaran: result?.keluaran,
           hasil: result?.hasil,
+          pagu: result?.pagu,
           targetcapaian: result?.targetcapaian,
           targetkeluaran: result?.targetkeluaran,
           targethasil: result?.targethasil,
@@ -212,7 +213,7 @@ export const usePrioritasAnggaranStore = defineStore('prioritas-anggaran-store',
         kunci: '',
         tgltrans: date.formatDate(Date.now(), 'YYYY-MM-DD'),
         tahun: date.formatDate(Date.now(), 'YYYY'),
-
+        pagu: 0,
         //rincian
         usulan: '',
         jumalhacc: 0,
@@ -297,7 +298,7 @@ export const usePrioritasAnggaranStore = defineStore('prioritas-anggaran-store',
         )
 
         if (resp.status === 200) {
-          this.rincians = resp.data.data ?? []
+          this.rincianSaved = resp.data.data ?? []
           notifSuccessVue(resp.data.message)
         }
       } catch (error) {

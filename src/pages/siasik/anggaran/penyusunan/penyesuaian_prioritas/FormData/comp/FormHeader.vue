@@ -225,7 +225,7 @@ async function updateKegiatans(val) {
   store.form.pptk = cari ? cari.namapptk : ''
   store.form.kodebidang = cari ? cari.kodebagian : ''
   store.form.namabidang = cari ? cari.ruangan : ''
-  store.form.pagu = cari ? cari.paguanggaran : ''
+  store.form.pagu = cari ? Number(cari.paguanggaran) : 0
   store.form.nousulan = cari ? cari.nousulan : ''
   store.getRincian = cari?.rincian
     ? cari.rincian.map(r => ({ ...r }))

@@ -28,6 +28,12 @@
           <q-td key="usulan" :props="props" class="text-left">
             {{ props.row.usulan }}
           </q-td>
+          <q-td key="uraian50" :props="props" class="text-left">
+            {{ props.row.koderek50 }} - {{ props.row.uraian50 }}
+          </q-td>
+          <q-td key="koderek108" :props="props" class="text-left">
+            {{ props.row.koderek108 }} - {{ props.row.uraian108 }}
+          </q-td>
           <q-td key="volume" :props="props" class="text-left">
             {{ props.row.volume }}
           </q-td>
@@ -40,9 +46,7 @@
           <q-td key="nilai" :props="props" class="text-right">
             {{ formattanpaRp(props.row.nilai) }}
           </q-td>
-          <q-td key="uraian50" :props="props" class="text-left">
-            {{ props.row.uraian50 }}
-          </q-td>
+
 
           <q-td style="width: 5%">
             <div class="row justify-center">
@@ -61,7 +65,7 @@
       </template>
       <template #bottom-row>
         <q-tr class="full-width text-bold">
-          <q-td colspan="4" class="text-center" style="font-size: 4em">
+          <q-td colspan="5" class="text-center" style="font-size: 4em">
             SUBTOTAL
           </q-td>
           <q-td colspan="2" class="text-right text-bold" style="font-size: 4em">
@@ -99,7 +103,18 @@ const tablerinci = [
     align: 'left',
     field: 'usulan'
   },
-
+  {
+    label: 'Rekening 50',
+    name: 'uraian50',
+    align: 'left',
+    field: row => [row.koderek50, row.uraian50],
+  },
+  {
+    label: 'Rekening 108',
+    name: 'koderek108',
+    align: 'left',
+    field: row => [row.koderek108, row.uraian108],
+  },
   {
     label: 'Volume',
     name: 'volume',
@@ -124,12 +139,7 @@ const tablerinci = [
     align: 'right',
     field: 'nilai'
   },
-  {
-    label: 'Rekening',
-    name: 'uraian50',
-    align: 'left',
-    field: 'uraian50'
-  },
+
   {
     label: 'Opsi',
     name: 'opsi',
