@@ -58,13 +58,31 @@ function filterFn (val, update) {
       }
     }
     else {
+
       if (!props.filterred) {
         emits('setSearch', val)
         optionx.value = props.source
       }
       else {
         const needle = val.toLowerCase()
-        optionx.value = props.source.filter(v => v[refAuto.value.optionLabel].toLowerCase().indexOf(needle) > -1)
+        // console.log('tipa', val, needle)
+
+        // optionx.value = props.source.filter(v => v[refAuto.value.optionLabel].toLowerCase().indexOf(needle) > -1)
+        optionx.value = props.source.filter(v => {
+          let text
+          // console.log('tip', typeof v)
+
+          // kalau object (array of object)
+          if (typeof v === 'object' && v !== null) {
+            text = v[refAuto.value.optionLabel]
+          }
+          // kalau array biasa (string / number)
+          else {
+            text = v
+          }
+
+          return text.toLowerCase().indexOf(needle) > -1
+        })
       }
     }
   },
