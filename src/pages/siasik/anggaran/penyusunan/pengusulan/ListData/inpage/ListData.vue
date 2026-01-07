@@ -85,13 +85,14 @@
                     <q-tooltip> Kunci Data </q-tooltip>
                   </q-btn>
                 </div>
-                <div> <q-btn flat round class="bg-dark" size="xs" color="warning" icon="icon-fa-file-regular">
+                <div v-if="props?.row.kunci !== '1'"> <q-btn flat round class="bg-dark" size="xs" color="warning"
+                    icon="icon-fa-file-regular">
                     <q-menu dark style="min-width: 150px">
                       <q-list style="min-width: 150px;">
                         <q-item clickable v-close-popup @click="viewRincian(props?.row)">
                           <q-item-section>Lihat Rincian</q-item-section>
                         </q-item>
-                        <q-item clickable @click="editDataPangusulan(props?.row)">
+                        <q-item v-if="props?.row?.kunci !== '1'" clickable @click="editDataPangusulan(props?.row)">
                           <q-item-section>Edit Data</q-item-section>
                         </q-item>
                         <!-- <q-item clickable v-close-popup @click="viewCetakDataNpdls(props?.row)">
@@ -196,13 +197,13 @@ const listData = [
 ]
 const columnsData = ref(listData)
 
-const npd = ref(null)
+const dataRinci = ref(null)
 function viewRincian(row) {
   store.openDialogRinci = true
-  npd.value = row.rincian
-  store.rincians = npd.value
+  dataRinci.value = row.rincian
+  store.rincians = dataRinci.value
   store.dataSaved = row
-  console.log('npd save', store.dataSaved)
+  console.log('npd save', store.dataSaved, 'rinci', store.rincians)
 
 }
 const onRowClick = (row) =>
@@ -238,7 +239,7 @@ function editDataPangusulan(row) {
   store.rincians = row.rincian ? [...row.rincian] : []
 
   router.push({ path: '/anggaran/penyusunan/pengusulan/form', replace: true, query: { id: row.id } })
-
+  store.disableSaved = true
 }
 const printcair = ref(null)
 function PrintPencairan(row) {
@@ -276,13 +277,13 @@ function kunciData(row) {
       cancel: true,
       persistent: true
     }).onOk(() => {
-      const payload = {
-        notrasn: row.notrasn,
-        kunci: row.kunci,
-        nonotadinas: row.nonotadinas
-      }
-      console.log('payload', payload)
-      store.kunciData(payload).then(() => {
+      // const payload = {
+      //   notrasn: row.notrasn,
+      //   kunci: row.kunci,
+      //   nonotadinas: row.nonotadinas
+      // }
+      // console.log('payload', payload)
+      store.kunciData(row.id).then(() => {
         row.kunci = row.kunci === '1' ? '' : '1'
       })
     }).onCancel(() => {
@@ -297,12 +298,12 @@ function kunciData(row) {
       cancel: true,
       persistent: true
     }).onOk(() => {
-      const payload = {
-        notrans: row.notrans,
-        kunci: row.kunci
-      }
-      console.log('payload', payload)
-      store.kunciData(payload).then(() => {
+      // const payload = {
+      //   notrans: row.notrans,
+      //   kunci: row.kunci
+      // }
+      // console.log('payload', payload)
+      store.kunciData(row.id).then(() => {
         row.kunci = row.kunci === '1' ? '' : '1'
       })
     }).onCancel(() => {

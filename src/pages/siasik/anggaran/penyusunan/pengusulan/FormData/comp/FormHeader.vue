@@ -3,22 +3,23 @@
     <q-form @submit="onSubmit" ref="formNpdLS" class="full-height">
       <div class="row q-pa-sm q-col-gutter-md">
         <div class="col-6 q-gutter-y-md">
-          <app-input-simrs label="Nomor Pengusulan" v-model="store.form.notrans" readonly :disable="store.disabled"
+          <app-input-simrs label="Nomor Pengusulan" v-model="store.form.notrans" readonly :disable="store.disableSaved"
             outlined dense />
-          <q-select v-model="store.form.tahun" :disable="store.loading" :loading="store.loadingSave" :options="tahuns"
-            outlined dense label="Tahun Anggaran" @update:model-value="ubahTahun" />
+          <q-select v-model="store.form.tahun" :disable="store.loadingSave || store.disableSaved"
+            :loading="store.loadingSave" :options="tahuns" outlined dense label="Tahun Anggaran"
+            @update:model-value="ubahTahun" />
           <app-input-date-human label="Tanggal Transaksi" :model="store.params.tgl" icon="icon-mat-event" outlined
-            :autofocus="false" :disable="store.disabled" @db-model="tglTransaksi"
+            :autofocus="false" :disable="store.loadingSave || store.disableSaved" @db-model="tglTransaksi"
             :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" />
         </div>
         <div class="col-6 q-gutter-y-md">
-          <app-input-simrs label="Bidang/Bagian" v-model="store.form.ruangan" readonly :disable="store.disabled"
-            outlined dense />
+          <app-input-simrs label="Bidang/Bagian" v-model="store.form.ruangan" readonly
+            :disable="store.loadingSave || store.disableSaved" outlined dense />
 
           <q-select v-model="store.form.kodeKegiatan" use-input outlined standout="bg-yellow-3" dense emit-value
             map-options option-value="value" input-debounce="300" label="Kegiatan BLUD" class="ellipsis-2-lines"
             :options="options_kegiatan" clearable option-label="label" :display-value="store.form.kegiatan"
-            :disable="store.loadingSave" :loading="store.loadingSave" @filter="filterFnKegiatan"
+            :disable="store.loadingSave || store.disableSaved" :loading="store.loadingSave" @filter="filterFnKegiatan"
             @clear="store.setForm('kodeKegiatan', null)" @update:model-value="(val) => {
               val = Number(val)
               const arr = store.optionkegiatan || []
@@ -164,73 +165,6 @@ async function filterFnKegiatan(val, update) {
     })
   }
 
-
-
-
-
-
-
-
-  // // 🔹 jika input kosong → tampilkan data awal
-  // if (!val) {
-  //   update(() => {
-  //     options_kegiatan.value = master_kegiatan.value
-  //   })
-  //   return
-  // }
-
-  // const needle = val.toLowerCase()
-
-  // // 🔹 filter lokal dulu (kode + nomenklatur)
-  // const localFiltered = master_kegiatan.value.filter(v =>
-  //   v.kode?.toLowerCase().includes(needle) ||
-  //   v.nomenklatur?.toLowerCase().includes(needle)
-  // )
-
-  // // kalau ketemu di lokal → langsung pakai
-  // if (localFiltered.length) {
-  //   update(() => {
-  //     options_kegiatan.value = localFiltered
-  //   })
-  //   return
-  // }
-
-  // // 🔹 kalau tidak ketemu → baru hit API
-  // let allData = []
-  // let page = 1
-  // let hasMore = true
-
-  // while (hasMore) {
-  //   try {
-  //     const resp = await api.get(
-  //       'v1/anggaran/penyusunan/pengusulan/select',
-  //       {
-  //         params: {
-  //           q: val,
-  //           per_page: 100,
-  //           page
-  //         }
-  //       }
-  //     )
-
-  //     const data = resp.data.data || []
-
-  //     allData.push(...data)
-  //     hasMore = resp.data.next_page_url !== null
-  //     page++
-  //   } catch (err) {
-  //     console.error(err)
-  //     hasMore = false
-  //   }
-  // }
-
-  // update(() => {
-  //   options_kegiatan.value = allData.map(a => ({
-  //     ...a,
-  //     label: `${a.kode} - ${a.nomenklatur}`,
-  //     value: a.no
-  //   }))
-  // })
 }
 
 

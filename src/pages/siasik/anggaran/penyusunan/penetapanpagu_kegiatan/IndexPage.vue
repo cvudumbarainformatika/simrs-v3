@@ -12,6 +12,7 @@
                 <div class="title-desc">
                   Pagu Kegiatan BLUD
                 </div>
+
               </div>
             </div>
           </div>
@@ -27,13 +28,25 @@
                 <q-icon name="icon-mat-search" />
               </template>
 </q-input> -->
-            <q-input v-model="store.params.q" placeholder="Cari Akun ..." dense outlined style="min-width:200px"
+            <!-- <q-input v-model="store.params.q" placeholder="Cari Data ..." dense outlined style="min-width:200px"
               debounce="800" :loading="store.loading" @update:model-value="store.search" standout="bg-yellow-3">
               <template #prepend>
                 <q-icon name="icon-mat-search" />
               </template>
+            </q-input> -->
+            <q-input v-model="store.params.q" outlined dense placeholder="Cari Data ..." debounce="500"
+              style="min-width: 300px;" @update:model-value="store.search">
+              <template v-if="store.params.q" #append>
+                <q-icon name="icon-mat-close" size="xs" class="cursor-pointer" @click.stop.prevent="clearSearch" />
+              </template>
+              <template #prepend>
+                <q-icon size="sm" name="icon-mat-search" />
+              </template>
             </q-input>
           </div>
+        </div>
+        <div class="f-14 text-weight-bold q-pt-sm full-width row justify-end items-end content-end">
+          Total Pagu : {{ formatRpDouble(totalPagu || 0) }}
         </div>
       </q-card-section>
       <q-separator />
@@ -45,7 +58,8 @@
             </div>
             <div class="col-8 full-height bg-grey scroll q-pa-sm">
               <ListPage :listmaster="store.items" @edit="(val) => store.editForm(val)"
-                :loading="store.loadingDelete || store.loading" @delete="(val) => hapuskelasifikasi(val)" />
+                :loading="store.loadingDelete || store.loading" @delete="(val) => hapuskelasifikasi(val)"
+                @kunci="(val) => kunciData(val)" />
             </div>
           </div>
         </div>
@@ -55,16 +69,19 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import FormPage from './comp/FormPage.vue';
 import ListPage from './comp/ListPage.vue';
 import { useQuasar } from 'quasar';
 import { usePenetapanPaguStore } from 'src/stores/siasik/anggaran/penyusunan/penetapanpagu';
+import { formatRpDouble } from 'src/modules/formatter';
+import { useAplikasiStore } from 'src/stores/app/aplikasi';
 const store = usePenetapanPaguStore()
 const $q = useQuasar()
 const options = ref([])
 const tahuns = ref([])
-
+const auth = useAplikasiStore()
+const user = computed(() => auth.user?.pegawai?.kdpegsimrs)
 function hapuskelasifikasi(id) {
   console.log('sasa', id)
   $q.dialog({
@@ -80,6 +97,66 @@ function hapuskelasifikasi(id) {
     // console.log('I am triggered on both OK and Cancel')
   })
 }
+const clearSearch = () => {
+  store.params.q = ''
+  store.goToPage(1)
+}
+const selected = ref([])
+function kunciData(row) {
+  console.log('id', row)
+  if (row.kunci === "1") {
+    // Validasi: hanya user super admin yang bisa buka kunci
+    if (user?.value !== 'sa') {
+      $q.notify({
+        type: 'negative',
+        message: 'Anda tidak Memiliki Izin Membuka Kunci Data ini, Silahkan Hubungi Admin'
+      })
+      return
+    }
+    $q.dialog({
+      title: 'Peringatan',
+      message: 'Apakah Anda yakin akan Membuka Kunci?',
+      cancel: true,
+      persistent: true
+    }).onOk(() => {
+      // const payload = {
+      // notrans: row.notrans,
+      // kunci: row.kunci,
+      // id: row?.id
+      // }
+      // console.log('payload', payload)
+      store.kunciData(row?.id).then(() => {
+        row.kunci = row.kunci === '1' ? '' : '1'
+      })
+    }).onCancel(() => {
+      console.log('Cancel')
+      selected.value = []
+    }).onDismiss(() => {
+    })
+  } else {
+    $q.dialog({
+      title: 'Peringatan',
+      message: 'Apakah Anda yakin akan Mengunci Data?',
+      cancel: true,
+      persistent: true
+    }).onOk(() => {
+      // const payload = {
+      // notrans: row.notrans,
+      // kunci: row.kunci
+      // id: row?.id
+      // }
+      // console.log('payload', payload)
+      store.kunciData(row?.id).then(() => {
+        row.kunci = row.kunci === '1' ? '' : '1'
+      })
+    }).onCancel(() => {
+      console.log('Cancel')
+      selected.value = []
+    }).onDismiss(() => {
+    })
+  }
+}
+
 function init() {
   const d = new Date()
   store.params.tahun = d.getFullYear()
@@ -101,6 +178,10 @@ onMounted(() => {
   init()
 })
 
+const totalPagu = computed(() => {
+  const items = store.items?.reduce((a, b) => a + Number(b?.total), 0)
+  return items
+})
 function filterFn(val, update) {
   if (val === '') {
     update(() => {
@@ -123,7 +204,7 @@ function filterFn(val, update) {
       )
       )
     const filteredData = multiFilter(arr, filter, needle)
-    console.log('filterdata', filteredData)
+    // console.log('filterdata', filteredData)
     options.value = filteredData
     // options.value = store.optionrekening.filter(
     //   (v) => v.uraian.toLowerCase().indexOf(needle) > -1 || v.kodeall3.toLowerCase().indexOf(needle) > -1

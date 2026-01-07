@@ -19,8 +19,9 @@
     <app-table-extend v-if="apps?.user?.kdruangansim === 'Gd-04010103'" :columns="store.columns" :items="store.items"
       :meta="store.meta" :per-page="store.params.per_page" :loading="store.loading"
       :to-search="store.params.no_permintaan" :click-able="true" :default-btn="false" :ada-tambah="false"
-      :ada-filter="false" :ada-cari="false" row-no simple-paginasi use-full text-cari="Cari ..." @find="store.setSearch"
-      @goto="store.setPage" @set-row="store.setPerPage" @refresh="store.refreshTable" @on-click="onClick">
+      :ada-filter="false" :ada-cari="false" row-no use-full text-cari="Cari ..." @find="store.setSearch"
+      pgn-bg="bg-primary" pgn-text="white" pgn-btn="white" @goto="store.setPage" @set-row="store.setPerPage"
+      @refresh="store.refreshTable" @on-click="onClick">
       <!-- @edit-data="store.editData" -->
       <!--
             row-image="image"
@@ -203,6 +204,16 @@
               @click="teimaPengembalian(row)">
               <q-tooltip class="primary" :offset="[10, 10]">
                 Terima Pengembalian
+              </q-tooltip>
+            </q-btn>
+          </div>
+          <div v-if="row.flag === ''">
+            <!-- pengembalian -->
+            <q-btn flat icon="icon-mat-delete_sweep" dense color="negative"
+              :loading="store?.loadingHapus && row.loading" :disable="store?.loadingHapus && row.loading"
+              @click="hapus(row)">
+              <q-tooltip class="negative" :offset="[10, 10]">
+                Hapus
               </q-tooltip>
             </q-btn>
           </div>
@@ -637,6 +648,7 @@ function depo (val) {
 }
 // flag
 const flagOptions = ref([
+  { label: 'Draft', value: '' },
   { label: 'Dikirim', value: '1' },
   { label: 'Didistribusikan', value: '2' },
   { label: 'Ada Resep', value: '3' },
@@ -646,6 +658,30 @@ const flagOptions = ref([
 
 const refDistribusi = ref(null)
 const refKembali = ref(null)
+function hapus (val) {
+  console.log('hapus', val)
+  val.expand = !val.expand
+  val.highlight = !val.highlight
+  Dialog.create({
+    title: 'Konfirmasi',
+    message: 'Apakah anda yakin ingin menghapus data ini?',
+    ok: {
+      'no-caps': true,
+      push: true,
+      color: 'negative',
+      label: 'Hapus'
+    },
+    cancel: {
+      'no-caps': true,
+      push: true,
+      color: 'dark',
+      label: 'Tidak Hapus'
+    }
+  }).onOk(() => {
+    store.hapus(val)
+  })
+
+}
 function teimaPengembalian (val) {
   val.expand = !val.expand
   val.highlight = !val.highlight

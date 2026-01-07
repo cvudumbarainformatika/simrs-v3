@@ -13,7 +13,7 @@
             map-options option-value="value" input-debounce="300"
             label="Item Pengusulan (ketik min 2 huruf untuk mencari item)" class="ellipsis-2-lines"
             :options="optionsBarangs" clearable option-label="label" :disable="store.loadingSave"
-            :loading="store.loadingSave" @filter="filterFnBarang" @clear="store.setForm('kode', null)"
+            :loading="store.loadingSave" @filter="filterFnBarang" @clear="store.setForm('value', null)"
             @update:model-value="updateBarang">
             <template #no-option>
               <q-item>
@@ -71,6 +71,7 @@ const pilihanJenis = [
   { label: 'Barang Persediaan (SIGARANG)', value: 'Barang' },
   { label: 'Barang Modal (ASET)', value: 'Modal' },
   { label: 'Jasa dan lain-lain', value: 'Jasa' },
+  { label: 'Farmasi', value: 'Farmasi' },
 ]
 
 function updateJenis(val) {
@@ -81,28 +82,38 @@ function updateJenis(val) {
   }
   store.getBarangs(params)
   store.form.kode = ''
+  store.form.satuan = ''
   store.form.keterangan = ''
   store.form.volume = 0
   store.form.harga = 0
   store.form.nilai = 0
-  store.form.satuan = ''
+  store.form.kode_50 = null
+  store.form.kode_108 = null
+  store.form.uraian50 = null
+  store.form.uraian108 = null
 
   // optionsBarangs.value = []
 }
 
 function updateBarang(val) {
-  const data = optionsBarangs.value.find(x => x.kode ? x.kode : x.kdaset === val)
-  console.log('data items', data)
-  store.form.keterangan = data?.nama ? data?.nama : data?.namaaset
-  store.form.kode = data?.kode ? data?.kode : data?.kdaset
-
-  let satuan = ''
-  if (!data?.satuan) satuan = 'Unit'
-  if (data?.satuan) satuan = data?.satuan?.nama || data?.satuan
-  store.form.satuan = satuan
+  store.form.satuan = ''
   store.form.volume = 0
   store.form.harga = 0
   store.form.nilai = 0
+  const data = optionsBarangs.value.find(x => x.value === val)
+  console.log('data items', data)
+  if (!data) return
+  store.form.keterangan = data?.nama ? data?.nama : data?.namaaset
+  store.form.kode = data?.kode ? data?.kode : data?.kdaset
+  store.form.kode_50 = data?.kode_50 ? data?.kode_50 : data?.kd50
+  store.form.kode_108 = data?.kode_108 ? data?.kode_108 : data?.kd108
+  store.form.uraian50 = data?.uraian_50 ? data?.uraian_50 : data?.uraian50
+  store.form.uraian108 = data?.uraian_108 ? data?.uraian_108 : data?.uraian108
+  // Catatan di Master Aset Belum ada Satuan jadinya dipakai unit
+  if (store.form.jenis === 'Farmasi') return store.form.satuan = 'Tahun'
+  if (store.form.jenis === 'Modal') return store.form.satuan = 'Unit'
+  store.form.satuan = data?.satuan?.nama || data?.satuan
+
 }
 
 function updateVolume(val) {
@@ -141,7 +152,9 @@ async function filterFnBarang(val, update) {
         label: a.kode
           ? `${a.kode} - ${a.nama}`
           : `${a.kdaset} - ${a.namaaset}`,
-        value: a.kode ?? a.kdaset
+        value: a.kode
+          ? `${a.kode}`
+          : `${a.kdaset}`
       }))
     })
 
@@ -157,6 +170,7 @@ function saveData() {
 
 
   store.simpanData()
+  store.disableSaved = true
   console.log('saved setlah simpan', store.form)
 }
 </script>

@@ -11,6 +11,7 @@ export const usePengusulanAnggaranStore = defineStore('pengusulan-anggaran-store
     loadingDelete: false,
     loadingKunci: false,
     disabled: false,
+    disableSaved: false,
     fixed: false,
     openDialogRinci: false,
     dialogCetak: false,
@@ -31,6 +32,10 @@ export const usePengusulanAnggaranStore = defineStore('pengusulan-anggaran-store
       tahun: date.formatDate(Date.now(), 'YYYY'),
 
       //rincian
+      kode_50: null,
+      kode_108: null,
+      uraian50: null,
+      uraian108: null,
       keterangan: '',
       volume: 0,
       harga: 0,
@@ -144,6 +149,10 @@ export const usePengusulanAnggaranStore = defineStore('pengusulan-anggaran-store
           tglTransaksi: resp?.data?.data?.tglTransaksi,
           tahun: date.formatDate(Date.now(), 'YYYY'),
 
+          kode_50: null,
+          kode_108: null,
+          uraian50: null,
+          uraian108: null,
           keterangan: '',
           volume: 0,
           harga: 0,
@@ -176,6 +185,10 @@ export const usePengusulanAnggaranStore = defineStore('pengusulan-anggaran-store
         tahun: date.formatDate(Date.now(), 'YYYY'),
 
         //rincian
+        kode_50: null,
+        kode_108: null,
+        uraian50: null,
+        uraian108: null,
         keterangan: '',
         volume: 0,
         harga: 0,
@@ -258,7 +271,7 @@ export const usePengusulanAnggaranStore = defineStore('pengusulan-anggaran-store
       this.loadingKunci = true
       const payload = { id }
       try {
-        const resp = await api.post('/v1/anggaran/penyusunan/penetapanpagu/kunci', payload)
+        const resp = await api.post('/v1/anggaran/penyusunan/pengusulan/kunci', payload)
         if (resp.status === 200) {
           // this.items = resp?.data?.data
           notifSuccess(resp)
@@ -270,6 +283,14 @@ export const usePengusulanAnggaranStore = defineStore('pengusulan-anggaran-store
         notifErr(error)
         this.loadingKunci = false
       }
+    },
+    search(val) {
+      this.params.q = val
+      this.getData()
+    },
+    goToPage(val) {
+      this.params.page = val
+      this.getData()
     },
 
   }

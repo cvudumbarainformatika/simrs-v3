@@ -11,6 +11,7 @@ export const useDistribusiPersiapanOperasiStore = defineStore('distribusi_persia
     loadingSimpan: false,
     loadingDistribusi: false,
     loadingBatalOperasi: false,
+    loadingHapus: false,
     items: [],
     meta: {},
     params: {
@@ -94,7 +95,7 @@ export const useDistribusiPersiapanOperasiStore = defineStore('distribusi_persia
           .then(resp => {
             this.loading = false
             this.items = resp?.data?.data ?? resp?.data
-            this.meta = resp.data
+            this.meta = resp.data?.meta ?? resp?.data
 
             // console.log('list PErmintaan depo', resp?.data)
             if (this.items?.length) this.metaniRinci()
@@ -182,6 +183,32 @@ export const useDistribusiPersiapanOperasiStore = defineStore('distribusi_persia
             resolve(resp)
           })
           .catch(() => {
+            delete val.loading
+          })
+      })
+    },
+    hapus (val) {
+      // console.log('delete', val)
+      val.loading = true
+      this.loadingHapus = true
+      const form = {
+        nopermintaan: val.nopermintaan
+      }
+      return new Promise(resolve => {
+        api.post('v1/simrs/penunjang/farmasinew/obatoperasi/hapus-draft', form)
+          .then(resp => {
+            delete val.loading
+            this.loadingHapus = false
+            const indexItem = this.items.findIndex(item => item.nopermintaan === val.nopermintaan)
+            if (indexItem >= 0) {
+              this.items.splice(indexItem, 1)
+              // console.log('delete', resp?.data, indexItem, indexRinc)
+            }
+            notifSuccess(resp)
+            resolve(resp)
+          })
+          .catch(() => {
+            this.loadingHapus = false
             delete val.loading
           })
       })
