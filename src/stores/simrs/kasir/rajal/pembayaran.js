@@ -5,6 +5,7 @@ import { useKasirRajalListKunjunganStore } from "./kunjungan";
 import { printNb } from 'src/modules/print'
 import { dateDbFormat } from "src/modules/formatter";
 import { use } from "echarts";
+import { usePasienLuarStore } from "../pasienluar";
 // import { data } from "autoprefixer";
 
 export const usePembayaranKasirRajalStore = defineStore('pembayaran-kasir-rajal-store', {
@@ -347,13 +348,13 @@ export const usePembayaranKasirRajalStore = defineStore('pembayaran-kasir-rajal-
       win.print()
       win.close()
     },
-    savePembayarannonKarcis(pasien, nota, subtotal, jenis, router) {
+    savePembayarannonKarcis(pasien, nota, subtotal, jenis, router, x) {
       this.loadingpembayaran = true
       this.form.noreg = pasien.noreg
       this.form.nota = nota
       this.form.norm = pasien.norm
       this.form.tglkunjungan = pasien.tgl_kunjungan
-      this.form.nama = pasien.nama
+      this.form.nama = pasien.nama ?? '-'
       this.form.sapaan = pasien.sapaan
       this.form.kelamin = pasien.kelamin
       this.form.kodepoli = pasien.kodepoli
@@ -380,8 +381,15 @@ export const usePembayaranKasirRajalStore = defineStore('pembayaran-kasir-rajal-
             }))
 
             // this.kwitansinonkarcis = hasilglobal
-            const xxx = useKasirRajalListKunjunganStore()
-            xxx.kwitansiterbayar.push(...hasilglobal)
+            if (x === 'dalam') {
+              const xxx = useKasirRajalListKunjunganStore()
+              xxx.kwitansiterbayar.push(...hasilglobal)
+            } else {
+              const xxx = usePasienLuarStore()
+              xxx.kwitansiterbayar.push(...hasilglobal)
+            }
+            // const xxx = useKasirRajalListKunjunganStore()
+            // xxx.kwitansiterbayar.push(...hasilglobal)
 
             notifSuccess(resp.data?.message)
 

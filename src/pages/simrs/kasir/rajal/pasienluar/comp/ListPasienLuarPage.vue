@@ -5,13 +5,13 @@
       <empty-data v-else-if="!items?.length && !loading" />
       <q-list v-else separator>
         <q-item v-for="(item, i) in items" :key="i">
-          <pre>{{ item }}</pre>
+          <!-- <pre>{{ item }}</pre> -->
           <q-item-section class="q-col-gutter-xs">
             <q-item-label>
-              NO. Nota : <span class="text-negative text-weight-bold">{{ item?.noresep }}</span>
+              NO. Nota : <span class="text-negative text-weight-bold">{{ item?.nota }}</span>
             </q-item-label>
             <q-item-label>
-              Nama : <span class="text-weight-bold">{{ item?.nama_pejabat ?? '-' }}</span>
+              Nama : <span class="text-weight-bold">{{ item?.nama ?? '-' }}</span>
             </q-item-label>
             <q-item-label>
               Tanggal : <span class="text-teal text-weight-bold"> {{ humanDate(item?.tgl) }}</span>
@@ -27,40 +27,56 @@
                 '-'
                   }}</q-badge></span>
             </q-item-label>
-            <q-item-label>
+            <!-- <q-item-label>
               Tanggal Bayar : <span class="text-teal text-weight-bold"> {{ humanDate(item?.tglx) ??
                 '-' }}</span>
-            </q-item-label>
-            <div>
+            </q-item-label> -->
+            <!-- <div v-for="value in item?.kwitansi" :key="value">
               <q-badge outline color="primary">
-                {{ item?.nokwitansi }}
+                {{ value?.nokwitansi }} || {{ dateFullFormat(value?.tglx)
+                }}
               </q-badge>
-            </div>
+            </div> -->
           </q-item-section>
           <q-item-section side>
-            <div v-if="item?.nokwitansi != null">
-              <q-btn dense size="sm" no-caps color="red" label="Batal" class="q-mb-sm" style="min-width: 100px;"
-                @click="emits('batal', item)" />
-            </div>
-            <div v-else>
-              <q-btn dense size="sm" no-caps color="red" label="Bayar" class="q-mb-sm" style="min-width: 100px;"
-                :loading="item?.loadingbayar" @click="emits('bayar', item)" />
-            </div>
+
+            <q-btn dense size="sm" no-caps color="red" label="Buka" class="q-mb-sm" style="min-width: 100px;"
+              :loading="item?.loadingbayar" @click="bukax(item)" />
+
           </q-item-section>
         </q-item>
       </q-list>
+      <app-fullscreen-blue v-model="billOpen" @close="store.notas = {}">
+        <template #default>
+          <!-- <BillingPage :pasien="pasien" @print="openPrint($event)" @rekap="openFaktur" @nota="getNota" /> -->
+          <FormPembayaran :pasien="pasien" :getKwitansiTerbayar="store.kwitansiterbayar" />
+        </template>
+      </app-fullscreen-blue>
     </div>
   </div>
 </template>
 
 <script setup>
+import { ref } from 'vue'
 // eslint-disable-next-line no-unused-vars
+// import BillingPage from './BillingPage.vue'
 import ListLoading from './ListLoading.vue'
 import EmptyData from './EmptyData.vue'
-import { dateFullFormat, formatJam, formatRpDouble, humanDate } from 'src/modules/formatter'
+import FormPembayaran from './FormPembayaran.vue'
+import { dateFullFormat, formatRpDouble, humanDate } from 'src/modules/formatter'
+import { usePasienLuarStore } from 'src/stores/simrs/kasir/pasienluar'
 
-const emits = defineEmits(['bayar', 'batal'])
-
+const store = usePasienLuarStore()
+const emits = defineEmits(['buka', 'batal'])
+const pasien = ref(null)
+const billOpen = ref(false)
+function bukax(val) {
+  billOpen.value = true
+  pasien.value = val
+  store.getparams.noreg = val?.noreg
+  // store.getKwitansinontunai()
+  store.getKwitansiTerbayar()
+}
 
 defineProps({
   items: {

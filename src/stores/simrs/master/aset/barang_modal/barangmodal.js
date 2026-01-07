@@ -6,15 +6,17 @@ import { notifSuccess, notifSuccessVue } from "src/modules/utils";
 export const useMasterBarangModalStore = defineStore('master-barang-modal-store', {
   state: () => ({
     items: [],
+    itemsrek108: [],
     loading: false,
     loadingSave: false,
     loadingDelete: false,
+    loading108: false,
     form: {
       kdaset: '',
       namaaset: '',
-      kd108: '',
+      kode108: '',
       uraian108: '',
-      kd50: '',
+      kode50: '',
       uraian50: '',
       kdaspak: '',
       uraianaspak: '',
@@ -96,7 +98,7 @@ export const useMasterBarangModalStore = defineStore('master-barang-modal-store'
       const resp = await api.get('/v1/master/maset/index', params)
       console.log('resp Kegiatan BLUD', resp)
       if (resp.status === 200) {
-        this.items = resp?.data
+        this.items = resp?.data?.data
         this.loading = false
       }
       this.loading = false
@@ -135,6 +137,16 @@ export const useMasterBarangModalStore = defineStore('master-barang-modal-store'
     search(val) {
       this.params.q = val
       this.getData()
+    },
+    async getrek108() {
+      this.loading108 = true
+      const params = { params: this.params }
+      const resp = await api.get('/v1/barang108/barang108', params)
+      if (resp.status === 200) {
+        this.itemsrek108 = resp?.data
+        this.loading = false
+      }
+      this.loading = false
     },
   }
 })
