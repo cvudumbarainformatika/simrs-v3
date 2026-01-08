@@ -1,139 +1,58 @@
 <template>
   <q-dialog>
-    <app-card
-      class="my-card"
-      title="Form Barang RS"
-      desc="Input data Beban"
-    >
+    <app-card class="my-card" title="Form Barang RS" desc="Input data Beban" style="min-width: 750px;">
       <template #content>
-        <q-form
-          ref="formReff"
-          @submit="onSubmit"
-          @reset="onReset"
-        >
+        <q-form ref="formReff" @submit="onSubmit" @reset="onReset">
           <div class="row q-col-gutter-md">
             <div class="col-md-6 col-xs-12">
-              <app-input
-                v-model="store.form.kode"
-                label="Kode*"
-                outlined
-                readonly
-              />
+              <app-input v-model="store.form.kode" label="Kode*" outlined readonly />
             </div>
             <div class="col-md-6 col-xs-12">
               <!-- :rules="[ val => val?.length <= 5 || 'Maksimal 5 karakter']" -->
-              <q-input
-                v-model="store.input_kode"
-                dense
-                label="Input Kode*"
-                outlined
-                autofocus
-                :loading="store.loadingCount"
-                :disable="store.edited"
-                @update:model-value="store.setKode"
-              />
+              <q-input v-model="store.input_kode" dense label="Input Kode*" outlined autofocus
+                :loading="store.loadingCount" :disable="store.edited" @update:model-value="store.setKode" />
             </div>
           </div>
           <div class="row q-col-gutter-md q-mt-sm">
             <div class="col-md-6 col-xs-12">
-              <app-input
-                ref="refNama"
-                v-model="store.form.nama"
-                label="Nama*"
-                :disable="store.edited && role!=='root'"
-                outlined
-                autofocus
-              />
+              <app-input ref="refNama" v-model="store.form.nama" label="Nama*"
+                :disable="store.edited && role !== 'root'" outlined autofocus />
             </div>
             <div class="col-md-6 col-xs-12">
-              <app-autocomplete-new
-                ref="refKodeSatuan"
-                v-model="store.form.kode_satuan"
-                outlined
-                label="Satuan"
-                autocomplete="nama"
-                option-value="kode"
-                option-label="nama"
-                :source="store.satuans"
-              />
+              <app-autocomplete-new ref="refKodeSatuan" v-model="store.form.kode_satuan" outlined label="Satuan"
+                autocomplete="nama" option-value="kode" option-label="nama" :source="store.satuans" />
             </div>
           </div>
           <div class="row q-col-gutter-md q-mt-sm">
             <div class="col-md-6 col-xs-12">
-              <app-input
-                v-model="store.form.pengali"
-                label="pengali*"
-                outlined
-                type="number"
-                autofocus
-              />
+              <app-input v-model="store.form.pengali" label="pengali*" outlined type="number" autofocus />
             </div>
             <div class="col-md-6 col-xs-12">
-              <app-autocomplete-new
-                v-model="store.form.kode_satuan_kecil"
-                outlined
-                label="Satuan Kecil"
-                autocomplete="nama"
-                option-value="kode"
-                option-label="nama"
-                valid
-                :source="store.satuans"
-              />
+              <app-autocomplete-new v-model="store.form.kode_satuan_kecil" outlined label="Satuan Kecil"
+                autocomplete="nama" option-value="kode" option-label="nama" valid :source="store.satuans" />
             </div>
           </div>
           <div class="row q-col-gutter-md q-mt-sm">
             <div class="col-md-6 col-xs-12">
-              <app-autocomplete-new
-                v-model="store.form.ssh"
-                outlined
-                label="SSH / Non-SSH"
-                autocomplete="nama"
-                option-value="value"
-                option-label="nama"
-                :source="store.sshOption"
-              />
+              <app-autocomplete-new v-model="store.form.ssh" outlined label="SSH / Non-SSH" autocomplete="nama"
+                option-value="value" option-label="nama" :source="store.sshOption" />
             </div>
             <div class="col-md-6 col-xs-12">
-              <app-autocomplete-new
-                v-model="store.form.tipe"
-                outlined
-                label="Tipe"
-                autocomplete="nama"
-                option-value="value"
-                option-label="nama"
-                :source="store.tipeOption"
-              />
+              <app-autocomplete-new v-model="store.form.tipe" outlined label="Tipe" autocomplete="nama"
+                option-value="value" option-label="nama" :source="store.tipeOption" />
             </div>
           </div>
           <div class="row q-col-gutter-md q-mt-sm">
             <div class="col-md-6 col-xs-12">
               <!-- maping 108 -->
-              <app-autocomplete-debounce-input
-                ref="ref108"
-                v-model="store.form.kode_108"
-                outlined
-                label="Uraian 108"
-                autocomplete="uraian"
-                option-value="kode"
-                option-label="uraian"
-                :source="store.barang108s"
-                :loading="store.loading108"
-                @buang="get108"
-                @on-select="selected108"
-              />
+              <app-autocomplete-debounce-input ref="ref108" v-model="store.form.kode_108" outlined label="Uraian 108"
+                autocomplete="uraian" option-value="kode" option-label="uraian" :source="store.barang108s"
+                :loading="store.loading108" @buang="get108" @on-select="selected108" />
             </div>
             <div class="col-md-6 col-xs-12">
               <!-- Maping Depo -->
-              <app-autocomplete-new
-                ref="refDepo"
-                v-model="store.form.kode_depo"
-                outlined
-                label="Depo"
-                autocomplete="nama"
-                option-value="kode"
-                option-label="nama"
-                :source="store.depos"
-              />
+              <app-autocomplete-new ref="refDepo" v-model="store.form.kode_depo" outlined label="Depo"
+                autocomplete="nama" option-value="kode" option-label="nama" :source="store.depos" />
             </div>
           </div>
           <div class="row q-col-gutter-md q-mt-sm">
@@ -159,16 +78,8 @@
           </div>
           <q-separator class="q-my-md" />
           <div class="text-right">
-            <app-btn
-              type="reset"
-              color="dark"
-              label="Cancel"
-              class="q-mr-md"
-            />
-            <app-btn
-              label="Simpan"
-              :loading="store.loading"
-            />
+            <app-btn type="reset" color="dark" label="Cancel" class="q-mr-md" />
+            <app-btn label="Simpan" :loading="store.loading" />
           </div>
         </q-form>
       </template>
@@ -197,8 +108,8 @@ const apps = useAplikasiStore()
 const role = computed(() => {
   return apps?.user?.pegawai ? apps?.user?.pegawai?.role?.nama : ''
 })
-function get108(val) {
-  console.log('108', val)
+function get108 (val) {
+  // console.log('108', val)
   store.autocompleteParams.q = val
   store.loading108 = true
   store.getData108s()
@@ -208,19 +119,19 @@ function get108(val) {
 //   store.autocompleteParam50s.q = val
 //   store.getRekening50()
 // }
-function selected108(val) {
+function selected108 (val) {
   console.log(val)
-  const temp = store.barang108s.filter(a => a.kode === val)
-  if (temp?.length) {
-    console.log(temp[0])
-    store.setForm('uraian_108', temp[0].uraian)
-    store.setForm('kode_50', temp[0]?.maping?.kode50)
-    store.setForm('uraian_50', temp[0]?.maping?.uraian50)
+  const temp = store.barang108s.find(a => a.kode === val)
+  if (temp) {
+    console.log(temp)
+    store.setForm('uraian_108', temp?.uraian)
+    store.setForm('kode_50', temp?.maping?.kode50)
+    store.setForm('uraian_50', temp?.maping?.uraian50)
   }
 }
 const onSubmit = () => {
   // let nama=false
-// isi uraian 108
+  // isi uraian 108
   // const ur108 = store.barang108s.filter(data => {
   //   return data.kode === store.form.kode_108
   // })

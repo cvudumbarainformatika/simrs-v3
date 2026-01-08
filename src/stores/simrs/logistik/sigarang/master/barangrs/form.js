@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia'
+import { acceptHMRUpdate, defineStore } from 'pinia'
 import { findWithAttr, notifSuccess } from 'src/modules/utils'
 import { api } from 'boot/axios'
 import { useMasterBarangRSTable } from './table'
@@ -126,7 +126,7 @@ export const useMasterBarangRSForm = defineStore('master_barangrs_form', {
       // kecuali yang ada di object user
       this.isOpen = !this.isOpen
     },
-    getInitialData() {
+    getInitialData () {
       this.getDataSatuans()
       this.getData108s()
       this.getRekening50()
@@ -145,7 +145,7 @@ export const useMasterBarangRSForm = defineStore('master_barangrs_form', {
           })
       })
     },
-    getIndexNumber() {
+    getIndexNumber () {
       this.loadingCount = true
       return new Promise(resolve => {
         api.get('v1/barangrs/count-index')
@@ -186,6 +186,10 @@ export const useMasterBarangRSForm = defineStore('master_barangrs_form', {
           api.get('v1/barang108/index', param)
             .then(resp => {
               if (resp.status === 200) {
+                const data = resp.data.data ?? resp.data
+                data.forEach(item => {
+                  item.uraian = item.maping?.uraian108
+                })
                 // console.log('108', resp.data.data)
                 // this.barang108s = resp.data
                 this.barang108s = resp.data.data
@@ -236,3 +240,7 @@ export const useMasterBarangRSForm = defineStore('master_barangrs_form', {
     }
   }
 })
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useMasterBarangRSForm, import.meta.hot))
+}
