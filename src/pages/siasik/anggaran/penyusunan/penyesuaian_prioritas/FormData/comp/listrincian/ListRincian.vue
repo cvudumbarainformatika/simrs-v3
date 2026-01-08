@@ -195,6 +195,7 @@ function deleteData(row) {
         }
         // console.log('data hapus', store.transall)
       })
+
     // store.setForm = props?.row
     // console.log('vv', store.hapusRinci(row))
     // const params = { id: selected.value }

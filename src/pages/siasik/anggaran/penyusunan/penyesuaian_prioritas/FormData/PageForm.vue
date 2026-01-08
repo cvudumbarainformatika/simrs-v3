@@ -5,7 +5,7 @@
         <FormHeader />
       </div>
       <div class="q-pt-md">
-        <ListRincian :store="store.rincians" />
+        <ListRincian :store="store.rincianSaved" />
       </div>
     </q-card>
   </div>
@@ -49,7 +49,7 @@ function resetFormData() {
     kdruang_pengusul: '',
     ruang_pengusul: '',
     capaianprogram: '',
-    masukan: '',
+    masukan: 'Dana yang Dibutuhkan',
     keluaran: '',
     hasil: '',
     targetcapaian: '',

@@ -40,7 +40,7 @@ export const usePrioritasAnggaranStore = defineStore('prioritas-anggaran-store',
 
       //rincian
       usulan: '',
-      jumalhacc: 0,
+      jumlahacc: 0,
       volume: 0,
       harga: 0,
       nilai: 0,
@@ -59,8 +59,9 @@ export const usePrioritasAnggaranStore = defineStore('prioritas-anggaran-store',
       jenis: '',
       page: 1,
       per_page: 50,
+      notrans: ''
     },
-    dataBarangs: [],
+    dataCetaks: [],
     dataModals: [],
     dataJasalain: [],
     akuns: [],
@@ -85,29 +86,7 @@ export const usePrioritasAnggaranStore = defineStore('prioritas-anggaran-store',
       this.form[key] = val
     },
     //get Barangs
-    getBarangs() {
-      waitLoad('show')
-      const params = { params: this.params }
-      return new Promise((resolve, reject) => {
-        api
-          .get('v1/anggaran/penyusunan/pengusulan/selectitem', params)
-          .then((resp) => {
-            waitLoad('done')
-            console.log('resp barang', resp)
-            if (resp.status === 200) {
-              this.dataBarangs = resp.data.data
-              this.meta = resp.data.meta
-              this.setColumns(resp.data.data)
-              // console.log(resp.data.data)
-              resolve(resp.data.data)
-            }
-          })
-          .catch((err) => {
-            waitLoad('done')
-            reject(err)
-          })
-      })
-    },
+
     setColumns(payload) {
       // const thumb = payload.map((x) => Object.keys(x))
       // this.columns = thumb[0]
@@ -143,12 +122,12 @@ export const usePrioritasAnggaranStore = defineStore('prioritas-anggaran-store',
           // this.initModeEdit(result)
         }
         const allrinci = result?.rincian || []
-        const existingIds = new Set(this.rincians.map(r => r.id))
+        const existingIds = new Set(this.rincianSaved.map(r => r.id))
         const newRincians = allrinci.filter(r => !existingIds.has(r.id))
-        this.rincians.unshift(...newRincians)
+        this.rincianSaved.unshift(...newRincians)
 
         notifSuccessVue(resp?.data?.message)
-        console.log('rinciansxxx', this.rincians)
+        console.log('rinciansxxx', this.rincianSaved)
         this.form = {
           notrans: result?.notrans,
           kodepptk: result?.kodepptk,
@@ -172,7 +151,7 @@ export const usePrioritasAnggaranStore = defineStore('prioritas-anggaran-store',
           tahun: date.formatDate(Date.now(), 'YYYY'),
 
           usulan: '',
-          jumalhacc: 0,
+          jumlahacc: 0,
           volume: 0,
           harga: 0,
           nilai: 0,
@@ -186,6 +165,7 @@ export const usePrioritasAnggaranStore = defineStore('prioritas-anggaran-store',
         }
         // this.getData()
         this.loadingSave = false
+        return newRincians[0] || null
       } catch (error) {
         console.log(error)
         this.loadingSave = false
@@ -204,7 +184,7 @@ export const usePrioritasAnggaranStore = defineStore('prioritas-anggaran-store',
         kdruang_pengusul: '',
         ruang_pengusul: '',
         capaianprogram: '',
-        masukan: '',
+        masukan: 'Dana yang Dibutuhkan',
         keluaran: '',
         hasil: '',
         targetcapaian: '',
@@ -216,7 +196,7 @@ export const usePrioritasAnggaranStore = defineStore('prioritas-anggaran-store',
         pagu: 0,
         //rincian
         usulan: '',
-        jumalhacc: 0,
+        jumlahacc: 0,
         volume: 0,
         harga: 0,
         nilai: 0,
@@ -332,6 +312,132 @@ export const usePrioritasAnggaranStore = defineStore('prioritas-anggaran-store',
     goToPage(val) {
       this.params.page = val
       this.getData()
+    },
+
+    dataCetak() {
+      waitLoad('show')
+      const params = { params: this.params }
+      return new Promise((resolve, reject) => {
+        api
+          .get('v1/anggaran/penyusunan/prioritas/cetakdata', params)
+          .then((resp) => {
+            waitLoad('done')
+            console.log('resp Cetak', resp)
+            if (resp.status === 200) {
+              this.dataCetaks = resp.data.data
+              this.meta = resp.data.meta
+              // this.setColumns(resp.data.data)
+              // console.log(resp.data.data)
+              this.mapingDataCetak()
+              resolve(resp.data.data)
+            }
+          })
+          .catch((err) => {
+            waitLoad('done')
+            reject(err)
+          })
+      })
+    },
+    mapingDataCetak() {
+      const rka = []
+      const totalrka = []
+      const rincianAll = this.dataCetaks?.flatMap((x) => x.rincian)
+      console.log('rincianAll', rincianAll)
+      const uniq1 = rincianAll.map((x) => x.kode1)
+      const fils1 = uniq1?.length ? [...new Set(uniq1)] : []
+      for (let i = 0; i < fils1?.length; i++) {
+        const el = fils1[i]
+        const obj = {
+          kode: rincianAll.filter((x) => x.kode1 === el)[0].kode1,
+          uraian: rincianAll.filter((x) => x.kode1 === el)[0]?.uraian1,
+          pagu: rincianAll.filter((x) => x.kode1 === el).map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0),
+          rincian: []
+        }
+        rka.push(obj)
+        totalrka.push(obj)
+      }
+      console.log('rka', rka)
+      const uniq2 = rincianAll.map((x) => x.kode2)
+      const fils2 = uniq2?.length ? [...new Set(uniq2)] : []
+      for (let i = 0; i < fils2?.length; i++) {
+        const el = fils2[i]
+        const obj = {
+          kode: rincianAll.filter((x) => x.kode2 === el)[0].kode2,
+          uraian: rincianAll.filter((x) => x.kode2 === el)[0]?.uraian2,
+          pagu: rincianAll.filter((x) => x.kode2 === el).map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0),
+          rincian: []
+        }
+        rka.push(obj)
+      }
+      const uniq3 = rincianAll.map((x) => x.kode3)
+      const fils3 = uniq3?.length ? [...new Set(uniq3)] : []
+      for (let i = 0; i < fils3?.length; i++) {
+        const el = fils3[i]
+        const obj = {
+          kode: rincianAll.filter((x) => x.kode3 === el)[0].kode3,
+          uraian: rincianAll.filter((x) => x.kode3 === el)[0]?.uraian3,
+          pagu: rincianAll.filter((x) => x.kode3 === el).map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0),
+          rincian: []
+        }
+        rka.push(obj)
+      }
+      const uniq4 = rincianAll.map((x) => x.kode4)
+      const fils4 = uniq4?.length ? [...new Set(uniq4)] : []
+      for (let i = 0; i < fils4?.length; i++) {
+        const el = fils4[i]
+        const obj = {
+          kode: rincianAll.filter((x) => x.kode4 === el)[0].kode4,
+          uraian: rincianAll.filter((x) => x.kode4 === el)[0]?.uraian4,
+          pagu: rincianAll.filter((x) => x.kode4 === el).map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0),
+          rincian: []
+        }
+        rka.push(obj)
+      }
+      const uniq5 = rincianAll.map((x) => x.kode5)
+      const fils5 = uniq5?.length ? [...new Set(uniq5)] : []
+      for (let i = 0; i < fils5?.length; i++) {
+        const el = fils5[i]
+        const obj = {
+          kode: rincianAll.filter((x) => x.kode5 === el)[0].kode5,
+          uraian: rincianAll.filter((x) => x.kode5 === el)[0]?.uraian5,
+          pagu: rincianAll.filter((x) => x.kode5 === el).map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0),
+          rincian: []
+        }
+        rka.push(obj)
+      }
+      const uniq6 = rincianAll.map((x) => x.kode6)
+      const fils6 = uniq6?.length ? [...new Set(uniq6)] : []
+      for (let i = 0; i < fils6?.length; i++) {
+        const el = fils6[i]
+        const obj = {
+          kode: rincianAll.filter((x) => x.kode6 === el)[0].kode6,
+          uraian: rincianAll.filter((x) => x.kode6 === el)[0].uraian6,
+          pagu: rincianAll.filter((x) => x.kode6 === el).map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0),
+          rincian: rincianAll.filter((x) => x.kode6 === el).map((x) => {
+            return {
+              kode108: x.koderek108,
+              usulan: x.usulan,
+              volume: x.volume,
+              harga: x.harga,
+              satuan: x.satuan,
+              pagu: x.pagu
+            }
+          })
+        }
+        rka.push(obj)
+      }
+
+      const sortAnggaran = (rka) =>
+        rka.sort(({ kode: a }, { kode: b }) =>
+          a < b ? -1 : a > b ? 1 : 0
+        )
+      const dataRKA = sortAnggaran(rka)
+      // this.datarka = dataRKA
+      console.log('DATA RKAxxxx', dataRKA)
+
+      // this.totalPagukegiatan = totalrka
+      console.log('DATA total', totalrka)
+
     },
 
   }

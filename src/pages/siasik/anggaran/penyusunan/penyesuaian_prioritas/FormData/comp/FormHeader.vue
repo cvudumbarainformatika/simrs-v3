@@ -146,7 +146,7 @@ const dialogRincian = ref(false)
 
 const openDialogRincian = () => {
 
-
+  store.getKegiatan()
   const cari = store.optionkegiatan.find(
     x => Number(x.kodeKegiatan) === Number(store.form.kodekegiatan)
   )
@@ -226,6 +226,7 @@ async function updateKegiatans(val) {
   store.form.kodebidang = cari ? cari.kodebagian : ''
   store.form.namabidang = cari ? cari.ruangan : ''
   store.form.pagu = cari ? Number(cari.paguanggaran) : 0
+  store.form.masukan = 'Dana yang Dibutuhkan'
   store.form.nousulan = cari ? cari.nousulan : ''
   store.getRincian = cari?.rincian
     ? cari.rincian.map(r => ({ ...r }))

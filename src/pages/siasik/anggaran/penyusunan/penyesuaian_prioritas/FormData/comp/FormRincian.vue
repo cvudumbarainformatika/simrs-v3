@@ -155,7 +155,7 @@ const model = computed({
 const rincianByKegiatan = computed(() => {
   if (!store.form.kodekegiatan) return []
   const all = Array.isArray(store.getRincian) ? store.getRincian : []
-  const used = Array.isArray(store.rincians) ? store.rincians : []
+  const used = Array.isArray(store.rincianSaved) ? store.rincianSaved : []
   const usedKode = new Set(
     used
       .map(r => r.koders)
@@ -178,10 +178,10 @@ const validItem = (item) => {
 /* simpan */
 const tetapkan = async (item) => {
   item.loadingSave = true
-  item.kode_50 = item.tmp_kode50
-  item.uraian50 = item.tmp_uraian50
-  item.kode_108 = item.tmp_kode108
-  item.uraian108 = item.tmp_uraian108
+  item.kode_50 = item.tmp_kode50 || item.kode_50
+  item.uraian50 = item.tmp_uraian50 || item.uraian50
+  item.kode_108 = item.tmp_kode108 || item.kode_108
+  item.uraian108 = item.tmp_uraian108 || item.uraian108
   item.jumlahacc = item.tmp_jumlahacc
 
   store.form.usulan = item.keterangan
@@ -194,24 +194,37 @@ const tetapkan = async (item) => {
   store.form.uraian50 = item.uraian50
   store.form.koderek108 = item.kode_108
   store.form.uraian108 = item.uraian108
-  store.form.jumalhacc = item.jumlahacc
+  store.form.jumlahacc = item.jumlahacc
   store.form.koders = item.kode
   store.form.nousulan = item.notrans
   // console.log('form simpan', store.form)
   await store.simpanData()
-  store.rincianSaved.push({
-    ...item,
-    usulan: item.keterangan,        // ⬅️ WAJIB
-    volume: item.volume,
-    satuan: item.satuan,
-    harga: item.harga,
-    nilai: item.nilai,
-    uraian50: item.uraian50,
-    uraian108: item.uraian108,
-    koders: item.kode
-  })
+  // console.log('rincian saved', store.rincians)
 
-  item.jumlahacc = 0
+  // store.rincianSaved.push({
+  //   ...item,
+  //   usulan: item.keterangan,        // ⬅️ WAJIB
+  //   volume: item.jumlahacc,
+  //   satuan: item.satuan,
+  //   harga: item.harga,
+  //   nilai: item.nilai,
+  //   uraian50: item.uraian50,
+  //   uraian108: item.uraian108,
+  //   koderek50: item.kode_50,
+  //   koderek108: item.kode_108,
+  //   koders: item.kode,
+  //   jumlahacc: item.jumlahacc,
+  // })
+
+  // const savedRincian = await store.simpanData()
+  // console.log('form simpan', savedRincian)
+  // if (savedRincian) {
+  //   // ⬇️ PENTING: tandai item dialog
+  //   item._saved = true
+  //   item._savedId = savedRincian.id
+  // }
+
+
   delete item.tmp_kode50
   delete item.tmp_uraian50
   delete item.tmp_kode108
