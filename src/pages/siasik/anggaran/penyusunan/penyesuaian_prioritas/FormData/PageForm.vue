@@ -34,6 +34,7 @@ onUnmounted(() => {
 
 
 function resetFormData() {
+  store.disableSaved = false
   store.params = {
     q: '',
     tgl: date.formatDate(Date.now(), 'YYYY-MM-DD'),
