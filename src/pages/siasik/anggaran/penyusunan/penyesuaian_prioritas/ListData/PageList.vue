@@ -23,7 +23,7 @@ import { usePrioritasAnggaranStore } from 'src/stores/siasik/anggaran/penyusunan
 
 const store = usePrioritasAnggaranStore()
 
-onBeforeMount(() => {
-  // store.getData()
+onMounted(() => {
+  store.getData()
 })
 </script>

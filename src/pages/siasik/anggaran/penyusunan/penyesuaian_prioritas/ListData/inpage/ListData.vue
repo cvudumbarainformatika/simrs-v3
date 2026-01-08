@@ -40,7 +40,7 @@
           </div>
         </template>
         <template #body="props">
-          <q-tr>
+          <q-tr v-if="!store.loading">
             <q-td key="notrans" :props="props" class="text-left">
               <div>
                 {{ props.row?.notrans }}
