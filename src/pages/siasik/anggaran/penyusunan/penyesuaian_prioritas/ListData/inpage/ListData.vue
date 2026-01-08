@@ -94,7 +94,7 @@
                         <!-- <q-item clickable v-close-popup @click="viewCetakDataNpdls(props?.row)">
                           <q-item-section>Cetak Data</q-item-section>
                         </q-item> -->
-                        <q-item clickable v-close-popup @click="PrintPencairan(props?.row)">
+                        <q-item clickable v-close-popup @click="PrintData(props?.row)">
                           <q-item-section>Cetak Data</q-item-section>
                         </q-item>
                       </q-list>
@@ -112,7 +112,7 @@
       <app-dialog-rincian v-model="store.openDialogRinci" :npd="npd" />
       <printdi-npdls v-model="store.dialogCetak" :datanpds="datanpds" />
       <!-- <editdata-npdls v-model="store.dialogEditNpd" :editData="editData" /> -->
-      <cetak-pencairan v-model="store.dialogCetak" :printcair="printcair" />
+      <cetak-pencairan v-model="store.dialogCetak" :printdatax="printdatax" />
     </div>
   </template>
 </template>
@@ -237,11 +237,15 @@ function editDataPangusulan(row) {
   router.push({ path: '/anggaran/penyusunan/prioritas/form', replace: true, query: { id: row.id } })
   store.disableSaved = true
 }
-const printcair = ref(null)
-function PrintPencairan(row) {
+const printdatax = ref(null)
+function PrintData(row) {
+  store.params.notrans = row.notrans
+
+  store.dataCetak()
+  console.log('store cetak', store.dataCetaks)
   store.dialogCetak = true
-  printcair.value = row
-  store.dataSaved = printcair.value
+  // printdatax.value = row
+  // store.dataSaved = printdatax.value
   // console.log('openNPD', store.dataSaved)
 }
 function gantiKunci(row) {

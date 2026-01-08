@@ -85,8 +85,7 @@
                     <q-tooltip> Kunci Data </q-tooltip>
                   </q-btn>
                 </div>
-                <div v-if="props?.row.kunci !== '1'"> <q-btn flat round class="bg-dark" size="xs" color="warning"
-                    icon="icon-fa-file-regular">
+                <div> <q-btn flat round class="bg-dark" size="xs" color="warning" icon="icon-fa-file-regular">
                     <q-menu dark style="min-width: 150px">
                       <q-list style="min-width: 150px;">
                         <q-item clickable v-close-popup @click="viewRincian(props?.row)">
