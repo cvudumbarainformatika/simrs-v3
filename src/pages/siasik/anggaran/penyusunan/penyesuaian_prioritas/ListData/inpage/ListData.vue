@@ -203,6 +203,8 @@ const onRowClick = (row) =>
 
 const datanpds = ref(null)
 function PrintData(row) {
+  store.params.notrans = row.notrans
+  store.dataCetak()
   store.dialogCetak = true
   datanpds.value = row
 }

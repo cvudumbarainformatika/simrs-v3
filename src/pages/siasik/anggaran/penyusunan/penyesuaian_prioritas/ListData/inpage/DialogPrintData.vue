@@ -1,5 +1,5 @@
 <template>
-  <q-dialog persistent backdrop-filter="blur(4px)">
+  <q-dialog persistent backdrop-filter="blur(4px)" :model-value="modelValue">
     <q-card style="min-width:80vw; max-width: 180vw; height: 600px">
       <q-layout view="lHh Lpr lFf" container class="shadow-2 rounded-borders">
         <q-header elevated>
@@ -15,7 +15,7 @@
         <q-page-container>
           <div id="printMe" class="f-12 row justify-center">
             <q-card-section>
-              <div v-if="store.datarka.length" class="col-auto" style="font-size: 1.2em">
+              <div v-if="store.datarka.length" class="col-auto" style="font-size: 1em">
                 <div class="row  justify-between full-width full-height ">
                   <div class="row b1 justify-between full-width">
                     <div class="row b2" style="width:70%">
@@ -51,53 +51,51 @@
                       </div>
                     </div>
                   </div>
+                  <div class="row b4 full-width">
+                    <div class="col full-width">
 
-                  <div class="row b4 justify-between full-width full-height ">
-                    <div class="row q-pl-sm q-py-xs" style="width:100%">
-                      <div class="row q-pl-sm q-py-xs flex-center">
-                        <div class="col-auto" style="width:150px">
-                          <div class="q-py-xs" style="height: 35px">
-                            URUSAN PEMERINTAHAN
-                          </div>
-                          <div class="q-py-xs" style="height: 35px">
-                            BIDANG URUSAN
-                          </div>
-                          <div class="q-py-xs" style="height: 35px">
-                            PROGRAM
-                          </div>
-                          <div class="q-py-xs" style="height: 35px">
-                            KEGIATAN
-                          </div>
-                          <div class="q-py-xs" style="height: 35px">
-                            ORGANISASI
-                          </div>
-                          <div class="q-py-xs" style="height: 35px">
-                            SUB ORGANISASI
-                          </div>
+                      <div class="row item-row">
+                        <div class="label">URUSAN PEMERINTAHAN</div>
+                        <div class="value">
+                          : 1 - URUSAN PEMERINTAHAN WAJIB YANG BERKAITAN DENGAN PELAYANAN DASAR
                         </div>
-                        <div class="q-px-md" />
-                        <div class="col-auto">
-                          <div class="q-py-xs" style="height: 35px">
-                            : 1 - URUSAN PEMERINTAHAN WAJIB YANG BERKAITAN DENGAN PELAYANAN DASAR
-                          </div>
-                          <div class="q-py-xs" style="height: 35px">
-                            : 1.02 - URUSAN PEMERINTAHAN BIDANG KESEHATAN
-                          </div>
-                          <div class="q-py-xs" style="height: 35px">
-                            : 1.02.01 - PROGRAM PENUNJANG URUSAN PEMERINTAHAN DAERAH KABUPATEN/KOTA
-                          </div>
-                          <div class="q-py-xs" style="height: 35px">
-                            : 1.02.01.2.10 - PENINGKATAN PELAYANAN BLUD
-                          </div>
-                          <div class="q-py-xs" style="height: 35px">
-                            : 1.02.2.14.0.00.03.0000 - DINAS KESEHATAN, PENGENDALIAN PENDUDUK DAN KELUARGA BERENCANA
-                          </div>
-                          <div class="q-py-xs" style="height: 35px">
-                            : 1.02.2.14.0.00.03.0301 - UOBK RSUD DOKTER MOHAMAD SALEH
-                          </div>
-                        </div>
-                        <div class="q-px-md" />
                       </div>
+
+                      <div class="row item-row">
+                        <div class="label">BIDANG URUSAN</div>
+                        <div class="value">
+                          : 1.02 - URUSAN PEMERINTAHAN BIDANG KESEHATAN
+                        </div>
+                      </div>
+
+                      <div class="row item-row">
+                        <div class="label">PROGRAM</div>
+                        <div class="value">
+                          : 1.02.01 - PROGRAM PENUNJANG URUSAN PEMERINTAHAN DAERAH KAB/KOTA
+                        </div>
+                      </div>
+
+                      <div class="row item-row">
+                        <div class="label">KEGIATAN</div>
+                        <div class="value">
+                          : 1.02.01.2.10 - PENINGKATAN PELAYANAN BLUD
+                        </div>
+                      </div>
+
+                      <div class="row item-row">
+                        <div class="label">ORGANISASI</div>
+                        <div class="value">
+                          : 1.02.2.14.0.00.03.0000 - DINAS KESEHATAN
+                        </div>
+                      </div>
+
+                      <div class="row item-row">
+                        <div class="label">SUB ORGANISASI</div>
+                        <div class="value">
+                          : 1.02.2.14.0.00.03.0301 - UOBK RSUD MOHAMAD SALEH
+                        </div>
+                      </div>
+
                     </div>
                   </div>
                   <div class="row b6 justify-between full-width full-height ">
@@ -134,10 +132,10 @@
                               Capaian Kegiatan
                             </td>
                             <td>
-                              capaian
+                              {{ header.capaianprogram }}
                             </td>
                             <td class="text-right">
-                              target capaian
+                              {{ header.targetcapaian }}
                             </td>
                           </tr>
                           <tr style="height: 25px">
@@ -145,10 +143,10 @@
                               Masukan
                             </td>
                             <td>
-                              masukan
+                              {{ header.masukan }}
                             </td>
                             <td class="text-right">
-                              {{ formatRpDouble(store.datarka[0].pagu) }}
+                              {{ formatRpDouble(header.pagu) }}
                             </td>
                           </tr>
                           <tr style="height: 25px">
@@ -156,10 +154,10 @@
                               Keluaran
                             </td>
                             <td>
-                              keluaran
+                              {{ header.keluaran }}
                             </td>
                             <td class="text-right">
-                              target keluaran
+                              {{ header.targetkeluaran }}
                             </td>
                           </tr>
                           <tr style="height: 25px">
@@ -167,10 +165,10 @@
                               Hasil
                             </td>
                             <td>
-                              hasil
+                              {{ header.hasil }}
                             </td>
                             <td class="text-right">
-                              target hasil
+                              {{ header.targethasil }}
                             </td>
                           </tr>
                         </tbody>
@@ -178,40 +176,45 @@
                     </div>
                   </div>
 
-                  <div class="row b4 justify-between full-width full-height ">
-                    <div class="row q-pl-sm q-py-xs" style="width:100%">
-                      <div class="row q-pl-sm q-py-xs flex-center">
-                        <div class="col-auto" style="width:150px">
-                          <div class="q-py-xs" style="height: 35px">
-                            SUB KEGIATAN
-                          </div>
-                          <div class="q-py-xs" style="height: 35px">
-                            KEGIATAN BLUD
-                          </div>
-                          <div class="q-py-xs" style="height: 35px">
-                            SUMBER PENDANAAN
-                          </div>
-                          <div class="q-py-xs" style="height: 35px">
-                            WAKTU PELAKSANAAN
-                          </div>
+                  <div class="row b4 full-width">
+                    <div class="col full-width">
+
+                      <div class="row item-row">
+                        <div class="label">
+                          SUB KEGIATAN
                         </div>
-                        <div class="q-px-md" />
-                        <div class="col-auto">
-                          <div class="q-py-xs" style="height: 35px">
-                            : 1.02.01.2.10.0001 - Pelayanan dan Penunjang Pelayanan BLUD
-                          </div>
-                          <div class="q-py-xs" style="height: 35px">
-                            : Kegiatannya
-                          </div>
-                          <div class="q-py-xs" style="height: 35px">
-                            : Pendapatan dari BLUD
-                          </div>
-                          <div class="q-py-xs" style="height: 35px">
-                            : Januari s/d Desember {{ store.params.tahun }}
-                          </div>
+                        <div class="value">
+                          : 1.02.01.2.10.0001 - Pelayanan dan Penunjang Pelayanan BLUD
                         </div>
-                        <div class="q-px-md" />
                       </div>
+
+                      <div class="row item-row">
+                        <div class="label">
+                          KEGIATAN BLUD
+                        </div>
+                        <div class="value">
+                          : {{ header.kegiatan }}
+                        </div>
+                      </div>
+
+                      <div class="row item-row">
+                        <div class="label">
+                          SUMBER PENDANAAN
+                        </div>
+                        <div class="value">
+                          : Pendapatan dari BLUD
+                        </div>
+                      </div>
+
+                      <div class="row item-row">
+                        <div class="label">
+                          WAKTU PELAKSANAAN
+                        </div>
+                        <div class="value">
+                          : Januari s/d Desember {{ store.params.tahun }}
+                        </div>
+                      </div>
+
                     </div>
                   </div>
 
@@ -295,14 +298,14 @@
                         </div>
                         <div style="padding-bottom: 60px" />
                         <div class="underline text-bold q-py-xs">
-                          pptk
+                          {{ header.pptk }}
                           <div class="garis-bawah" style="text-decoration-line: underline;" />
                         </div>
                         <div>
-                          NIP. kodepptk
+                          NIP. {{ header.kodepptk }}
                         </div>
                       </div>
-                      <!-- <div class="col text-center" v-for="it in tt.ttd" :key="it">
+                      <div class="col text-center" v-for="it in tt.ttd" :key="it">
                         <div class="text-bold">
                           Kuasa Pengguna Anggaran
                         </div>
@@ -314,7 +317,7 @@
                         <div>
                           NIP. {{ it.nip }}
                         </div>
-                      </div> -->
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -344,11 +347,34 @@
 <script setup>
 import { dateFullFormat, formatRpDouble, formattanpaRp } from 'src/modules/formatter'
 import { terbilangRupiah } from 'src/modules/utils'
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { usePrioritasAnggaranStore } from 'src/stores/siasik/anggaran/penyusunan/penyesuaianprioritas'
+import { onMounted } from 'vue'
+import { useBukubesarStore } from 'src/stores/siasik/akuntansi/bukubesar/bukubesar'
 
 const store = usePrioritasAnggaranStore()
+const tt = useBukubesarStore()
+onMounted(() => {
+  tt.getTtd()
+  // store.getDataBukubesar()
+})
+const props = defineProps({
+  modelValue: {
+    type: Boolean,
+    required: true
+  },
+  datanpds: {
+    type: Object,
+    default: null
+  }
+})
+const header = computed(() => {
+  if (!props.datanpds) return null
 
+  // buang rincian
+  const { rincian, ...rest } = props.datanpds
+  return rest
+})
 const printed = ref(false)
 const printObj = {
   id: 'printMe',
@@ -369,6 +395,24 @@ const printObj = {
 
 </script>
 <style>
+.item-row {
+  display: flex;
+  width: 100%;
+  padding: 6px 8px;
+}
+
+.label {
+  width: 220px;
+  /* KUNCI: lebar konsisten */
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.value {
+  flex: 1;
+  word-break: break-word;
+}
+
 .b {
   border-bottom-style: solid;
   border-width: 2px;

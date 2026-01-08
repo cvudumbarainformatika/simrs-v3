@@ -74,7 +74,7 @@ export const usePrioritasAnggaranStore = defineStore('prioritas-anggaran-store',
     columns: [],
 
 
-
+    dataHeader: {},
     rincianSaved: [],
     datarka: [],
     totalPagukegiatan: []
