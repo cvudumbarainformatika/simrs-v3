@@ -76,6 +76,8 @@ export const usePrioritasAnggaranStore = defineStore('prioritas-anggaran-store',
 
 
     rincianSaved: [],
+    datarka: [],
+    totalPagukegiatan: []
   }),
   actions: {
     goToPage(val) {
@@ -322,14 +324,16 @@ export const usePrioritasAnggaranStore = defineStore('prioritas-anggaran-store',
           .get('v1/anggaran/penyusunan/prioritas/cetakdata', params)
           .then((resp) => {
             waitLoad('done')
-            console.log('resp Cetak', resp)
+            // console.log('resp Cetak', resp)
+            this.datarka = []
+            this.totalPagukegiatan = []
             if (resp.status === 200) {
               this.dataCetaks = resp.data.data
               this.meta = resp.data.meta
               // this.setColumns(resp.data.data)
               // console.log(resp.data.data)
               this.mapingDataCetak()
-              resolve(resp.data.data)
+              resolve(resp)
             }
           })
           .catch((err) => {
@@ -420,7 +424,7 @@ export const usePrioritasAnggaranStore = defineStore('prioritas-anggaran-store',
               volume: x.volume,
               harga: x.harga,
               satuan: x.satuan,
-              pagu: x.pagu
+              pagu: x.total
             }
           })
         }
@@ -432,11 +436,11 @@ export const usePrioritasAnggaranStore = defineStore('prioritas-anggaran-store',
           a < b ? -1 : a > b ? 1 : 0
         )
       const dataRKA = sortAnggaran(rka)
-      // this.datarka = dataRKA
-      console.log('DATA RKAxxxx', dataRKA)
+      this.datarka = dataRKA
+      console.log('DATA RKAxxxx', this.datarka)
 
-      // this.totalPagukegiatan = totalrka
-      console.log('DATA total', totalrka)
+      this.totalPagukegiatan = totalrka
+      console.log('DATA total', this.totalPagukegiatan)
 
     },
 
