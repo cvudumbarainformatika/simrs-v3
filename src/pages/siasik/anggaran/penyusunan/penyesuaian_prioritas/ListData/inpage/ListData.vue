@@ -46,8 +46,11 @@
                 {{ props.row?.notrans }}
               </div>
             </q-td>
-            <q-td key="ruangan" :props="props" class="text-left">
-              {{ props.row?.ruangan }}
+            <q-td key="pptk" :props="props" class="text-left">
+              {{ props.row?.pptk }}
+            </q-td>
+            <q-td key="namabidang" :props="props" class="text-left">
+              {{ props.row?.namabidang }}
             </q-td>
             <q-td key="kegiatan" :props="props" class="text-left q-gutter-y-sm">
               {{ props.row?.kegiatan }}
@@ -61,18 +64,12 @@
                 {{ props.row?.keterangan }}
               </div>
             </q-td>
-            <q-td key="paguanggaran" :props="props" class="text-left wrap-cells">
+            <q-td key="pagu" :props="props" class="text-left wrap-cells">
               <div>
-                {{ formattanpaRp(props.row?.paguanggaran) }}
+                {{ formattanpaRp(props.row?.pagu) }}
               </div>
             </q-td>
-            <q-td key="nilaipengusulan" :props="props" class="text-left wrap-cells">
-              <div>
-                <q-badge color="green">
-                  {{ formattanpaRp(props.row?.nilaipengusulan) }}
-                </q-badge>
-              </div>
-            </q-td>
+
             <q-td>
               <div class="row justify-center">
                 <div class="q-pr-xs">
@@ -96,10 +93,10 @@
                         </q-item>
                         <!-- <q-item clickable v-close-popup @click="viewCetakDataNpdls(props?.row)">
                           <q-item-section>Cetak Data</q-item-section>
-                        </q-item>
-                        <q-item clickable v-close-popup @click="PrintPencairan(props?.row)">
-                          <q-item-section>Cetak Pencairan</q-item-section>
                         </q-item> -->
+                        <q-item clickable v-close-popup @click="PrintData(props?.row)">
+                          <q-item-section>Cetak Data</q-item-section>
+                        </q-item>
                       </q-list>
                     </q-menu>
                   </q-btn> </div>
@@ -115,7 +112,7 @@
       <app-dialog-rincian v-model="store.openDialogRinci" :npd="npd" />
       <printdi-npdls v-model="store.dialogCetak" :datanpds="datanpds" />
       <!-- <editdata-npdls v-model="store.dialogEditNpd" :editData="editData" /> -->
-      <cetak-pencairan v-model="store.dialogPrintPencairan" :printcair="printcair" />
+      <cetak-pencairan v-model="store.dialogCetak" :printdatax="printdatax" />
     </div>
   </template>
 </template>
@@ -125,9 +122,7 @@ import { useQuasar } from 'quasar'
 import { formatRpDouble, formattanpaRp } from 'src/modules/formatter'
 import { useAplikasiStore } from 'src/stores/app/aplikasi'
 import { useAuthStore } from 'src/stores/auth'
-import { usePengusulanAnggaranStore } from 'src/stores/siasik/anggaran/penyusunan/pengusulan'
-import { dataBastFarmasiStore } from 'src/stores/siasik/transaksi/ls/newnpdls/bastfarmasi'
-import { formInputNpdlsStore } from 'src/stores/siasik/transaksi/ls/newnpdls/formnpdls'
+import { usePrioritasAnggaranStore } from 'src/stores/siasik/anggaran/penyusunan/penyesuaianprioritas'
 import { computed, defineAsyncComponent, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
@@ -136,10 +131,8 @@ import { useRouter } from 'vue-router'
 const AppDialogRincian = defineAsyncComponent(() => import('./DialogViewRincian.vue'))
 const PrintdiNpdls = defineAsyncComponent(() => import('./DialogPrintData.vue'))
 const CetakPencairan = defineAsyncComponent(() => import('./DialogPrintPencairan.vue'))
-const store = usePengusulanAnggaranStore()
-const form = formInputNpdlsStore()
+const store = usePrioritasAnggaranStore()
 const router = useRouter()
-const carisrt = dataBastFarmasiStore()
 const auth = useAplikasiStore()
 const user = computed(() => auth.user?.pegawai?.kdpegsimrs)
 onMounted(() => {
@@ -160,9 +153,17 @@ const listData = [
   },
   {
     label: 'Bidang/Bagian',
-    name: 'ruangan',
+    name: 'namabidang',
     align: 'left',
-    field: 'ruangan',
+    field: 'namabidang',
+    sortable: true,
+    // headerStyle: 'width: 90px;'
+  },
+  {
+    label: 'Bidang/Bagian',
+    name: 'pptk',
+    align: 'left',
+    field: 'pptk',
     sortable: true,
     // headerStyle: 'width: 90px;'
   },
@@ -175,16 +176,9 @@ const listData = [
   },
   {
     label: 'Pagu Kegiatan (Rp)',
-    name: 'paguanggaran',
+    name: 'pagu',
     align: 'right',
-    field: 'paguanggaran',
-    // headerStyle: 'width: 250px;'
-  },
-  {
-    label: 'Nilai Pengusulan (Rp)',
-    name: 'nilaipengusulan',
-    align: 'right',
-    field: 'nilaipengusulan',
+    field: 'pagu',
     // headerStyle: 'width: 250px;'
   },
   {
@@ -196,13 +190,13 @@ const listData = [
 ]
 const columnsData = ref(listData)
 
-const dataRinci = ref(null)
+const npd = ref(null)
 function viewRincian(row) {
   store.openDialogRinci = true
-  dataRinci.value = row.rincian
-  store.rincians = dataRinci.value
+  npd.value = row.rincian
+  store.rincianSaved = npd.value
   store.dataSaved = row
-  console.log('npd save', store.dataSaved, 'rinci', store.rincians)
+  console.log('npd save', store.dataSaved)
 
 }
 const onRowClick = (row) =>
@@ -235,16 +229,23 @@ function editDataPangusulan(row) {
     ...store.form,
     ...row
   }
-  store.rincians = row.rincian ? [...row.rincian] : []
 
-  router.push({ path: '/anggaran/penyusunan/pengusulan/form', replace: true, query: { id: row.id } })
+  store.rincianSaved = row.rincian
+    ? row.rincian.map(r => ({ ...r }))
+    : []
+  console.log('form saat edit', store.rincianSaved)
+  router.push({ path: '/anggaran/penyusunan/prioritas/form', replace: true, query: { id: row.id } })
   store.disableSaved = true
 }
-const printcair = ref(null)
-function PrintPencairan(row) {
-  // store.dialogPrintPencairan = true
-  // printcair.value = row
-  // store.dataSaved = printcair.value
+const printdatax = ref(null)
+function PrintData(row) {
+  store.params.notrans = row.notrans
+
+  store.dataCetak()
+  console.log('store cetak', store.dataCetaks)
+  store.dialogCetak = true
+  // printdatax.value = row
+  // store.dataSaved = printdatax.value
   // console.log('openNPD', store.dataSaved)
 }
 function gantiKunci(row) {

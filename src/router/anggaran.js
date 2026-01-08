@@ -44,6 +44,27 @@ const anggaran = {
 
           ]
         },
+        {
+          path: '/anggaran/penyusunan/prioritas',
+          name: 'anggaran.penyusunan.prioritas',
+          component: () => import('pages/siasik/anggaran/penyusunan/penyesuaian_prioritas/IndexPage.vue'),
+          children: [
+            { path: '', name: 'prioritas', redirect: '/anggaran/penyusunan/prioritas/form' },
+            {
+              path: '/anggaran/penyusunan/prioritas/form',
+              name: 'anggaran.penyusunan.prioritas.form',
+              component: () =>
+                import('src/pages/siasik/anggaran/penyusunan/penyesuaian_prioritas/FormData/IndexPage.vue')
+            },
+            {
+              path: '/anggaran/penyusunan/prioritas/listdata',
+              name: 'anggaran.penyusunan.prioritas.listdata',
+              component: () =>
+                import('src/pages/siasik/anggaran/penyusunan/penyesuaian_prioritas/ListData/IndexPage.vue')
+            },
+
+          ]
+        },
       ]
     },
 
