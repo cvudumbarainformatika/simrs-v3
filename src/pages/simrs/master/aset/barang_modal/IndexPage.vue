@@ -41,7 +41,7 @@
         <div class="absolute full-width full-height">
           <div class="row full-height">
             <div class="col-4 full-height scroll q-pa-sm">
-              <FormPage :barang108s="store.itemsrek108" />
+              <FormPage :barang108s="store.itemsrek108" :koderek50="store.itemsrek50" :kodeaspak="store.itemsaspak" />
             </div>
             <div class="col-8 full-height bg-grey scroll q-pa-sm">
               <ListPage :listmaster="store.items" @edit="(val) => store.editForm(val)"
@@ -62,7 +62,6 @@ import { useQuasar } from 'quasar';
 import { useMasterBarangModalStore } from 'src/stores/simrs/master/aset/barang_modal/barangmodal';
 const store = useMasterBarangModalStore()
 const $q = useQuasar()
-const options = ref([])
 const tahuns = ref([])
 
 function hapuskelasifikasi(id) {
@@ -99,36 +98,8 @@ function generateArrayOfYears() {
 onMounted(() => {
   store.getData()
   store.getrek108()
+  store.getrek50()
+  store.getkodeaspak()
   // init()
 })
-
-function filterFn(val, update) {
-  if (val === '') {
-    update(() => {
-      options.value = store.items
-      // console.log('opti', options.value)
-    })
-    return
-  }
-  update(() => {
-    const needle = val.toLowerCase()
-    const arr = options.value
-
-    const filter = ['kode', 'nama']
-
-    const multiFilter = (data = [], filterKeys = [], value = '') =>
-      data.filter((item) => filterKeys.some(
-        (key) =>
-          item[key].toString().toLowerCase().includes(value.toLowerCase()) &&
-          item[key]
-      )
-      )
-    const filteredData = multiFilter(arr, filter, needle)
-    console.log('filterdata', filteredData)
-    options.value = filteredData
-    // options.value = store.optionrekening.filter(
-    //   (v) => v.uraian.toLowerCase().indexOf(needle) > -1 || v.kodeall3.toLowerCase().indexOf(needle) > -1
-    // )
-  })
-}
 </script>

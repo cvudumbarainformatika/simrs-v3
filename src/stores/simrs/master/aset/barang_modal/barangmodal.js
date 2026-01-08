@@ -7,16 +7,20 @@ export const useMasterBarangModalStore = defineStore('master-barang-modal-store'
   state: () => ({
     items: [],
     itemsrek108: [],
+    itemsrek50: [],
+    itemsaspak: [],
     loading: false,
+    loadin50: false,
+    loadingaspak: false,
     loadingSave: false,
     loadingDelete: false,
     loading108: false,
     form: {
       kdaset: '',
       namaaset: '',
-      kode108: '',
+      kd108: '',
       uraian108: '',
-      kode50: '',
+      kd50: '',
       uraian50: '',
       kdaspak: '',
       uraianaspak: '',
@@ -68,24 +72,17 @@ export const useMasterBarangModalStore = defineStore('master-barang-modal-store'
       try {
         const resp = await api.post('/v1/master/maset/simpan', this.form)
 
-        if (resp.success === true) {
-          // this.form.no = resp?.data?.data?.no
-          this.items = resp?.data?.data
+        if (this.form.id !== resp?.data?.data?.id) {
+          const data = resp?.data?.data
+          this.items.unshift(data)
+        } else {
+          const index = this.items.findIndex(item => item.id === this.form.id)
+          this.items[index] = resp?.data?.data
+        }
 
-        }
         notifSuccessVue(resp?.data?.message)
-        this.form = {
-          kdaset: '',
-          namaaset: '',
-          kd108: '',
-          uraian108: '',
-          kd50: '',
-          uraian50: '',
-          kdaspak: '',
-          uraianaspak: '',
-          flaging: '',
-        }
-        this.getData()
+        this.resetForm()
+
         this.loadingSave = false
       } catch (error) {
         console.log(error)
@@ -105,6 +102,7 @@ export const useMasterBarangModalStore = defineStore('master-barang-modal-store'
     },
     editForm(val) {
       // console.log('valedit', val)
+      this.form.id = val.id
       this.form.kdaset = val.kdaset
       this.form.namaaset = val.namaaset
       this.form.kd108 = val.kd108
@@ -140,13 +138,45 @@ export const useMasterBarangModalStore = defineStore('master-barang-modal-store'
     },
     async getrek108() {
       this.loading108 = true
-      const params = { params: this.params }
-      const resp = await api.get('/v1/barang108/barang108', params)
+
+      const resp = await api.get('/v1/barang108/barang108')
       if (resp.status === 200) {
         this.itemsrek108 = resp?.data
-        this.loading = false
+        this.loading108 = false
       }
       this.loading = false
     },
+    async getrek50() {
+      this.loadin50 = true
+
+      const resp = await api.get('/v1/rekening50/index')
+      if (resp.status === 200) {
+        this.itemsrek50 = resp?.data?.data
+        this.loadin50 = false
+      }
+      this.loadin50 = false
+    },
+    async getkodeaspak() {
+      this.loadingaspak = true
+      const resp = await api.get('/v1/master/maset/indexaspak')
+      if (resp.status === 200) {
+        this.itemsaspak = resp?.data
+        this.loadingaspak = false
+      }
+      this.loadingaspak = false
+    },
+    resetForm() {
+      this.form = {
+        kdaset: '',
+        namaaset: '',
+        kd108: '',
+        uraian108: '',
+        kd50: '',
+        uraian50: '',
+        kdaspak: '',
+        uraianaspak: '',
+        flaging: '',
+      }
+    }
   }
 })
