@@ -34,8 +34,8 @@
           <q-td key="koderek108" :props="props" class="text-left">
             {{ props.row.koderek108 }} - {{ props.row.uraian108 }}
           </q-td>
-          <q-td key="volume" :props="props" class="text-left">
-            {{ props.row.volume }}
+          <q-td key="jumlahacc" :props="props" class="text-left">
+            {{ props.row.jumlahacc }}
           </q-td>
           <q-td key="satuan" :props="props" class="text-left">
             {{ props.row.satuan }}
@@ -117,9 +117,9 @@ const tablerinci = [
   },
   {
     label: 'Volume',
-    name: 'volume',
+    name: 'jumlahacc',
     align: 'left',
-    field: 'volume'
+    field: 'jumlahacc'
   },
   {
     label: 'Satuan',
@@ -167,7 +167,7 @@ function subtotal() {
   return subtotalrinci;
 }
 function selisih() {
-  return Number(subtotal()) - Number(store.form.pagu || 0);
+  return Number(store.form.pagu || 0) - Number(subtotal());
 }
 
 function deleteData(row) {

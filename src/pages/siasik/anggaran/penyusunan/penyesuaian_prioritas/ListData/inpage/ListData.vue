@@ -196,7 +196,7 @@ function viewRincian(row) {
   npd.value = row.rincian
   store.rincianSaved = npd.value
   store.dataSaved = row
-  console.log('npd save', store.dataSaved)
+  // console.log('npd save', store.dataSaved)
 
 }
 const onRowClick = (row) =>
