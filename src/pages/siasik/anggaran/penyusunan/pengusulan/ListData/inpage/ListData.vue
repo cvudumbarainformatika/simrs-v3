@@ -112,7 +112,7 @@
 
 
       </q-table>
-      <app-dialog-rincian v-model="store.openDialogRinci" :npd="npd" />
+      <app-dialog-rincian v-model="store.openDialogRinci" :dataRinci="dataRinci" />
       <printdi-npdls v-model="store.dialogCetak" :datanpds="datanpds" />
       <!-- <editdata-npdls v-model="store.dialogEditNpd" :editData="editData" /> -->
       <cetak-pencairan v-model="store.dialogPrintPencairan" :printcair="printcair" />
@@ -198,12 +198,12 @@ const columnsData = ref(listData)
 
 const dataRinci = ref(null)
 function viewRincian(row) {
-  store.openDialogRinci = true
+
   dataRinci.value = row.rincian
   store.rincians = dataRinci.value
   store.dataSaved = row
   console.log('npd save', store.dataSaved, 'rinci', store.rincians)
-
+  store.openDialogRinci = true
 }
 const onRowClick = (row) =>
   alert([row?.nopencairan, row?.total])

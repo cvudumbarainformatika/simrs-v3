@@ -31,9 +31,21 @@
 
         </div>
         <div class="col-3 q-pa-sm q-gutter-y-md">
-          <app-input-simrs label="Satuan" readonly v-model="store.form.satuan" :disable="store.disabled" outlined
-            dense />
+          <app-input-simrs v-if="store.form.jenis === 'Barang' || store.form.jenis === 'Jasa'" label="Satuan" readonly
+            v-model="store.form.satuan" :disable="store.disabled" outlined dense />
+          <q-select v-else v-model="satuan" use-input outlined standout="bg-yellow-3" dense emit-value map-options
+            option-value="id" input-debounce="300" label="Pilih Satuan" class="ellipsis-2-lines"
+            :options="optionsSatuans" clearable option-label="satuanBarang" :disable="store.loadingSave"
+            :loading="store.loadingSave" @filter="filterFnSatuan" @clear="store.setForm('id', null)"
+            @update:model-value="updateSatuan">
+            <template #no-option>
+              <q-item>
+                <q-item-section class="text-grey">Tidak Ada Data, Silahkan cari ulang</q-item-section>
+              </q-item>
+            </template>
+          </q-select>
         </div>
+
         <div class="col-3 q-pa-sm q-gutter-y-md">
           <app-input-simrs label="Harga" v-model="store.form.harga" :disable="store.disabled" outlined dense
             :valid="{ number: true }" @update:model-value="updateHarga" />
@@ -64,6 +76,7 @@ import { api } from 'src/boot/axios';
 
 const store = usePengusulanAnggaranStore()
 const carisrt = dataBastFarmasiStore()
+const satuan = ref(null)
 onMounted(() => {
 })
 
@@ -101,19 +114,24 @@ function updateBarang(val) {
   store.form.harga = 0
   store.form.nilai = 0
   const data = optionsBarangs.value.find(x => x.value === val)
-  console.log('data items', data)
+  // console.log('data items', data)
   if (!data) return
-  store.form.keterangan = data?.nama ? data?.nama : data?.namaaset
-  store.form.kode = data?.kode ? data?.kode : data?.kdaset
-  store.form.kode_50 = data?.kode_50 ? data?.kode_50 : data?.kd50
-  store.form.kode_108 = data?.kode_108 ? data?.kode_108 : data?.kdaset
+  store.form.keterangan = data?.nama ? data?.nama : data?.uraian108
+  store.form.kode = data?.kode ? data?.kode : data?.kode108
+  store.form.kode_50 = data?.kode_50 ? data?.kode_50 : data?.kode50
+  store.form.kode_108 = data?.kode_108 ? data?.kode_108 : data?.kode108
   store.form.uraian50 = data?.uraian_50 ? data?.uraian_50 : data?.uraian50
   store.form.uraian108 = data?.uraian_108 ? data?.uraian_108 : data?.uraian108
   // Catatan di Master Aset Belum ada Satuan jadinya dipakai unit
-  if (store.form.jenis === 'Farmasi') return store.form.satuan = 'Tahun'
-  if (store.form.jenis === 'Modal') return store.form.satuan = 'Unit'
+  if (store.form.jenis === 'Farmasi') return updateSatuan()
+  if (store.form.jenis === 'Modal') return updateSatuan()
   store.form.satuan = data?.satuan?.nama || data?.satuan
 
+}
+function updateSatuan(val) {
+  const data = optionsSatuans.value.find(x => x.id === val)
+
+  store.form.satuan = data?.satuanBarang
 }
 
 function updateVolume(val) {
@@ -151,10 +169,10 @@ async function filterFnBarang(val, update) {
         ...a,
         label: a.kode
           ? `${a.kode} - ${a.nama}`
-          : `${a.kdaset} - ${a.namaaset}`,
+          : `${a.kode108} - ${a.uraian108}`,
         value: a.kode
           ? `${a.kode}`
-          : `${a.kdaset}`
+          : `${a.kode108}`
       }))
     })
 
@@ -162,6 +180,39 @@ async function filterFnBarang(val, update) {
     console.error(e)
     update(() => {
       optionsBarangs.value = []
+    })
+  }
+}
+
+const optionsSatuans = ref([])
+
+async function filterFnSatuan(val, update) {
+
+
+  try {
+    const resp = await api.get('v1/anggaran/penyusunan/pengusulan/selectsatuan', {
+      params: {
+        q: val,
+        per_page: 1000,
+      }
+    })
+    const data = resp.data.data || []
+    if (!val || val.length < 2) {
+      update(() => {
+        optionsSatuans.value = data
+      })
+      return
+    }
+    update(() => {
+      optionsSatuans.value = data.map(a => ({
+        ...a,
+      }))
+    })
+
+  } catch (e) {
+    console.error(e)
+    update(() => {
+      optionsSatuans.value = []
     })
   }
 }
