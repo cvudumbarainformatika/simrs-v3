@@ -206,7 +206,7 @@ const props = defineProps({
 })
 
 const options = ref([props.barang108s])
-const koderek50 = ref(props.koderek50)
+const koderek50 = ref([props.koderek50])
 const kodeaspak = ref(props.kodeaspak)
 
 function simpan() {

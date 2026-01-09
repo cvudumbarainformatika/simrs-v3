@@ -14,125 +14,119 @@
   </div>
   <div v-else class="full-height">
     <div v-for="(item, n) in lists" :key="n" class="list-move full-height">
-      <table class="q-mt-sm">
+      <table class="triage-table q-mt-sm">
+        <!-- Tanggal -->
         <tr>
-          <td>TANGGAL TRIASE</td>
-          <td>:</td>
-          <td>{{ dateFullFormat(item?.tanggal) }}</td>
-          <td>JAM TRIASE</td>
-          <td>:</td>
-          <td>{{ tgltriage(item?.tanggal) }}</td>
+          <td class="label">Tanggal Triase</td>
+          <td class="value">{{ dateFullFormat(item?.tanggal) }}</td>
+          <td class="label">Jam</td>
+          <td class="value">{{ tgltriage(item?.tanggal) }}</td>
+          <td colspan="2"></td>
         </tr>
-        <tr>
-          <td colspan="3" class="text-center">DOA</td>
-          <td colspan="3" class="text-center">SECONDARY SURVEI</td>
+
+        <!-- Section -->
+        <tr class="triage-header">
+          <td colspan="3">DOA / PRIMARY SURVEY</td>
+          <td colspan="3">SECONDARY SURVEY</td>
         </tr>
-        <tr>
-          <td colspan="3" rowspan="5" valign="top">Tanda Kehidupan:</td>
-          <td colspan="2" class="text-center">Tanda Tanda Vital</td>
-          <td colspan="1" class="text-center">SKOR</td>
+
+        <!-- Vital Sign -->
+        <tr class="triage-header">
+          <td colspan="3">Tanda Kehidupan</td>
+          <td>Tanda Vital</td>
+          <td class="center">Nilai</td>
+          <td class="center">Skor</td>
         </tr>
+
         <tr>
-          <td colspan="1">Nadi : </td>
-          <td colspan="1" class="text-center">{{ item?.nadi }} x/mnt</td>
-          <td colspan="1" class="text-right">{{ item?.scorenadi }}</td>
+          <td colspan="3">Nadi</td>
+          <td class="center">{{ item?.nadi }} x/mnt</td>
+          <td class="score">{{ item?.scorenadi }}</td>
+          <td></td>
         </tr>
+
         <tr>
-          <td colspan="1">Pernapasan : </td>
-          <td colspan="1" class="text-center">{{ item?.pernapasanx }} x/mnt</td>
-          <td colspan="1" class="text-right">{{ item?.scorepernapasanx }}</td>
+          <td colspan="3">Pernapasan</td>
+          <td class="center">{{ item?.pernapasanx }} x/mnt</td>
+          <td class="score">{{ item?.scorepernapasanx }}</td>
+          <td></td>
         </tr>
+
         <tr>
-          <td colspan="1">Sistole : </td>
-          <td colspan="1" class="text-center">{{ item?.sistole }} mmHg</td>
-          <td colspan="1" class="text-right">{{ item?.scoresistole }}</td>
-        </tr>
-        <tr>
-          <td colspan="1">Diastole : </td>
-          <td colspan="1" class="text-center">{{ item?.diastole }} mmHg</td>
-          <td colspan="1" class="text-right">{{ item?.scorediastole }}</td>
-        </tr>
-        <tr>
-          <td colspan="3" class="text-center">PRIMARY SURVEI </td>
-          <td colspan="1">Suhu : </td>
-          <td colspan="1" class="text-center">{{ item?.suhu }}&deg; C</td>
-          <td colspan="1" class="text-right">{{ item?.scoresuhu }}</td>
-        </tr>
-        <tr>
-          <td colspan="3" rowspan="2" valign="top">Jalan Napas : {{ item?.jalannafas }}</td>
-          <td colspan="1">SpO2 : </td>
-          <td colspan="1" class="text-center">{{ item?.spo2 }} %</td>
-          <td colspan="1" class="text-right">{{ item?.scorespo2 }}</td>
-        </tr>
-        <tr>
-          <td colspan="1">Kesadaran : </td>
-          <td colspan="1" class="text-center">{{ item?.kesadaran }} x/mnt</td>
-          <td colspan="1" class="text-right">{{ item?.scorekesadaran }}</td>
-        </tr>
-        <tr>
-          <td colspan="3" rowspan="2" valign="top">Pernafasan : {{ item?.pernapasan }}</td>
-          <td colspan="1">Eye/Verbal/Motorik : </td>
-          <td colspan="1" class="text-center">{{ item?.eye }} , {{ item?.verbal }} , {{ item?.motorik }}
+          <td colspan="3">Tekanan Darah</td>
+          <td class="center">{{ item?.sistole }}/{{ item?.diastole }} mmHg</td>
+          <td class="score">
+            {{ item?.scoresistole }} / {{ item?.scorediastole }}
           </td>
-          <td colspan="1" class="text-right">-</td>
+          <td></td>
         </tr>
+
         <tr>
-          <td colspan="1">Nyeri : </td>
-          <td colspan="1" class="text-center">{{ item?.nyeri ?? '-' }} x/mnt</td>
-          <td colspan="1" class="text-right">{{ item?.scorenyeri }}</td>
+          <td colspan="3">Suhu</td>
+          <td class="center">{{ item?.suhu }} °C</td>
+          <td class="score">{{ item?.scoresuhu }}</td>
+          <td></td>
         </tr>
+
         <tr>
-          <td colspan="3" rowspan="2" valign="top">Sirkulasi : {{ item?.sirkulasi }}</td>
-          <td colspan="1">Lochea : </td>
-          <td colspan="1" class="text-center">{{ item?.lochea ?? '-' }} x/mnt</td>
-          <td colspan="1" class="text-right">{{ item?.scorelochea }}</td>
+          <td colspan="3">SpO₂</td>
+          <td class="center">{{ item?.spo2 }} %</td>
+          <td class="score">{{ item?.scorespo2 }}</td>
+          <td></td>
         </tr>
-        <tr>
-          <td colspan="1">Protein Urine : </td>
-          <td colspan="1" class="text-center">{{ item?.proteinurin ?? '-' }} x/mnt</td>
-          <td colspan="1" class="text-right">{{ item?.scoreproteinurin }}</td>
+
+        <!-- Neurologi -->
+        <tr class="triage-header">
+          <td colspan="6">NEUROLOGI</td>
         </tr>
+
         <tr>
-          <td colspan="3" class="text-center">Disability </td>
-          <td colspan="2" class="text-center">Jumlah</td>
-          <td colspan="2" class="text-right">{{ item?.totalscore }}</td>
+          <td class="label">Kesadaran</td>
+          <td colspan="2">{{ item?.kesadaran }}</td>
+          <td class="label">GCS</td>
+          <td colspan="2" class="center">
+            {{ item?.eye }} / {{ item?.verbal }} / {{ item?.motorik }}
+          </td>
         </tr>
-        <tr>
-          <td colspan="2" rowspan="2" valign="top">BB : {{ item?.bb }} Kg</td>
-          <td>Riwayat Alergi : </td>
-          <td> {{ props.pasien?.anamnesis?.riwayatalergi ?? '-' }}</td>
-          <td rowspan="4" class="text-center text-h7">KATEGORI TRIASE </td>
-          <td rowspan="4" class="text-center text-bold text-h5"> {{ item?.kategoritriage }}</td>
+
+        <!-- Skor -->
+        <tr class="triage-header">
+          <td colspan="4">TOTAL SKOR</td>
+          <td colspan="2" class="right">{{ item?.totalscore }}</td>
         </tr>
+
+        <!-- Kategori -->
         <tr>
-          <td rowspan="1">Keterangan Alergi :</td>
-          <td rowspan="1">{{ props.pasien?.anamnesis?.keteranganalergi ?? '-' }}</td>
+          <td colspan="4" class="triage-header">KATEGORI TRIASE</td>
+          <td colspan="2" class="center text-bold">
+            {{ item?.kategoritriage }}
+          </td>
         </tr>
+
+        <!-- Lain-lain -->
         <tr>
-          <td colspan="2" rowspan="1">TB : {{ item?.tb }} Cm</td>
-          <td rowspan="2">Gangguan Perilaku :</td>
-          <td rowspan="2">{{ item?.gangguanperilaku ?? '-' }}</td>
+          <td>BB / TB</td>
+          <td colspan="2">{{ item?.bb }} Kg / {{ item?.tb }} Cm</td>
+          <td>Hamil</td>
+          <td colspan="2">{{ hamil(item?.flaghamil) }}</td>
         </tr>
+
         <tr>
-          <td colspan="2">Hamil : {{ hamil(item?.flaghamil) }}</td>
+          <td>Alergi</td>
+          <td colspan="5">
+            {{ props.pasien?.anamnesis?.riwayatalergi ?? '-' }} —
+            {{ props.pasien?.anamnesis?.keteranganalergi ?? '-' }}
+          </td>
         </tr>
+
         <tr>
-          <td colspan="2">HPHT : {{ item?.haid ?? '-' }}</td>
-          <td colspan="4" rowspan="4" valign="top">Anamnesa : {{ props.pasien?.anamnesis[0].rs4 ?? '-' }}</td>
-        </tr>
-        <tr>
-          <td colspan="2">G : {{ item?.gravida ?? '-' }}</td>
-        </tr>
-        <tr>
-          <td colspan="2">P : {{ item?.partus ?? '-' }}</td>
-        </tr>
-        <tr>
-          <td colspan="2">A : {{ item?.abortus ?? '-' }}</td>
-        </tr>
-        <tr>
-          <td colspan="6">Jam Serah Terima : {{ item?.tanggal }}</td>
+          <td>Anamnesa</td>
+          <td colspan="5">
+            {{ props.pasien?.anamnesis?.[0]?.rs4 ?? '-' }}
+          </td>
         </tr>
       </table>
+
       <div class="row items-center no-wrap q-mt-xl">
         <div class="col-6 text-right" />
         <div class="col-6 text-weight-bold text-center">
@@ -187,3 +181,42 @@ function hamil(val) {
   }
 }
 </script>
+<style scoped>
+.triage-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.triage-table td {
+  border: 1px solid #ccc;
+  padding: 4px 6px;
+}
+
+.triage-header {
+  background: #f0f0f0;
+  font-weight: bold;
+  text-align: center;
+}
+
+.label {
+  width: 18%;
+}
+
+.value {
+  width: 15%;
+}
+
+.score {
+  width: 10%;
+  text-align: right;
+}
+
+.center {
+  text-align: center;
+}
+
+.right {
+  text-align: right;
+}
+</style>
