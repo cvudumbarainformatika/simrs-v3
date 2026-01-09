@@ -106,7 +106,7 @@ function updateBarang(val) {
   store.form.keterangan = data?.nama ? data?.nama : data?.namaaset
   store.form.kode = data?.kode ? data?.kode : data?.kdaset
   store.form.kode_50 = data?.kode_50 ? data?.kode_50 : data?.kd50
-  store.form.kode_108 = data?.kode_108 ? data?.kode_108 : data?.kd108
+  store.form.kode_108 = data?.kode_108 ? data?.kode_108 : data?.kdaset
   store.form.uraian50 = data?.uraian_50 ? data?.uraian_50 : data?.uraian50
   store.form.uraian108 = data?.uraian_108 ? data?.uraian_108 : data?.uraian108
   // Catatan di Master Aset Belum ada Satuan jadinya dipakai unit
