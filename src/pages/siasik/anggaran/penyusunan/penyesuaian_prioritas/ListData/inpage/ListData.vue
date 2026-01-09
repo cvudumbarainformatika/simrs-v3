@@ -65,8 +65,11 @@
               </div>
             </q-td>
             <q-td key="pagu" :props="props" class="text-left wrap-cells">
+              <div class="text-weight-bold">
+                Pagu : {{ formattanpaRp(props.row?.pagu) }}
+              </div>
               <div>
-                {{ formattanpaRp(props.row?.pagu) }}
+                Nilai Prioritas : {{ formattanpaRp(hitungRincian(props.row?.rincian)) }}
               </div>
             </q-td>
 
@@ -175,10 +178,10 @@ const listData = [
     // headerStyle: 'width: 200px;'
   },
   {
-    label: 'Pagu Kegiatan (Rp)',
+    label: 'Nilai (Rp)',
     name: 'pagu',
     align: 'right',
-    field: 'pagu',
+    field: row => [row.pagu, row.rincian],
     // headerStyle: 'width: 250px;'
   },
   {
@@ -192,24 +195,26 @@ const columnsData = ref(listData)
 
 const npd = ref(null)
 function viewRincian(row) {
-  store.openDialogRinci = true
+
   npd.value = row.rincian
   store.rincianSaved = npd.value
   store.dataSaved = row
   // console.log('npd save', store.dataSaved)
-
+  store.openDialogRinci = true
 }
 const onRowClick = (row) =>
   alert([row?.nopencairan, row?.total])
 
 const datanpds = ref(null)
-function PrintData(row) {
-  store.dialogCetak = true
-  store.params.notrans = row.notrans
-  store.dataCetak()
+async function PrintData(row) {
   datanpds.value = row
+  store.params.notrans = row.notrans
+
+  await store.dataCetak()   // tunggu data siap
+  store.dialogCetak = true  // buka dialog terakhir
 
 }
+const hitungRincian = (rincian = []) => rincian.reduce((sum, x) => sum + Number(x.nilai || 0), 0)
 
 function editDataPangusulan(row) {
   // if (auth.user?.pegawai?.kdpegsimrs !== 'sa') {
@@ -290,6 +295,13 @@ function kunciData(row) {
       cancel: true,
       persistent: true
     }).onOk(() => {
+      if (row.rincian?.map((x) => Number(x.nilai)).reduce((a, b) => a + b, 0) !== Number(row.pagu)) {
+        $q.notify({
+          type: 'negative',
+          message: 'Nilai Pagu dan Nilai Prioritas Tidak Sama'
+        })
+        return
+      }
       // const payload = {
       //   notrans: row.notrans,
       //   kunci: row.kunci

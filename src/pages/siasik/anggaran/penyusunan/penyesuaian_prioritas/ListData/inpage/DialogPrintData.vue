@@ -1,5 +1,6 @@
 <template>
-  <q-dialog persistent backdrop-filter="blur(4px)" :model-value="modelValue">
+  <q-dialog persistent backdrop-filter="blur(4px)" :model-value="modelValue"
+    @update:model-value="emit('update:modelValue', $event)">
     <q-card style="min-width:80vw; max-width: 180vw; height: 600px">
       <q-layout view="lHh Lpr lFf" container class="shadow-2 rounded-borders">
         <q-header elevated>
@@ -134,7 +135,7 @@
                             <td>
                               {{ header.capaianprogram }}
                             </td>
-                            <td class="text-right">
+                            <td class="">
                               {{ header.targetcapaian }}
                             </td>
                           </tr>
@@ -145,7 +146,7 @@
                             <td>
                               {{ header.masukan }}
                             </td>
-                            <td class="text-right">
+                            <td class="">
                               {{ formatRpDouble(header.pagu) }}
                             </td>
                           </tr>
@@ -153,21 +154,21 @@
                             <td class="text-bold">
                               Keluaran
                             </td>
-                            <td>
-                              {{ header.keluaran }}
+                            <td class="text-multiline">
+                              <div class="q-mt-sm q-mb-sm">{{ header.keluaran }}</div>
                             </td>
-                            <td class="text-right">
-                              {{ header.targetkeluaran }}
+                            <td class="text-multiline">
+                              <div class="q-mt-sm q-mb-sm">{{ header.targetkeluaran }}</div>
                             </td>
                           </tr>
                           <tr style="height: 25px">
                             <td class="text-bold">
                               Hasil
                             </td>
-                            <td>
-                              {{ header.hasil }}
+                            <td class="text-multiline">
+                              <div class="q-mt-sm q-mb-sm">{{ header.hasil }}</div>
                             </td>
-                            <td class="text-right">
+                            <td class="text-multiline">
                               {{ header.targethasil }}
                             </td>
                           </tr>
@@ -358,6 +359,7 @@ onMounted(() => {
   tt.getTtd()
   // store.getDataBukubesar()
 })
+const emit = defineEmits(['update:modelValue'])
 const props = defineProps({
   modelValue: {
     type: Boolean,
@@ -395,6 +397,11 @@ const printObj = {
 
 </script>
 <style>
+.text-multiline {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
 .item-row {
   display: flex;
   width: 100%;

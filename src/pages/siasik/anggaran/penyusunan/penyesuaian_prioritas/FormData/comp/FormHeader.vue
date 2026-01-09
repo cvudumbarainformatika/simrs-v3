@@ -67,7 +67,7 @@
           </div>
 
           <!-- MASUKAN -->
-          <div class="row q-col-gutter-sm q-mb-sm">
+          <div class="row q-col-gutter-sm q-mb-sm" autogrow>
             <div class="col-2 text-weight-bold self-center">
               Masukan
             </div>
@@ -86,12 +86,12 @@
               Keluaran
             </div>
             <div class="col-7">
-              <q-input v-model="store.form.keluaran" :disable="store.loadingSave || store.disableSaved" outlined
-                dense />
+              <q-input v-model="store.form.keluaran" type="textarea" autogrow
+                :disable="store.loadingSave || store.disableSaved" outlined />
             </div>
             <div class="col-3">
-              <q-input v-model="store.form.targetkeluaran" :disable="store.loadingSave || store.disableSaved" outlined
-                dense />
+              <q-input v-model="store.form.targetkeluaran" type="textarea" autogrow
+                :disable="store.loadingSave || store.disableSaved" outlined />
             </div>
           </div>
 
@@ -101,11 +101,12 @@
               Hasil
             </div>
             <div class="col-7">
-              <q-input v-model="store.form.hasil" :disable="store.loadingSave || store.disableSaved" outlined dense />
+              <q-input v-model="store.form.hasil" :disable="store.loadingSave || store.disableSaved" outlined
+                type="textarea" autogrow />
             </div>
             <div class="col-3">
               <q-input v-model="store.form.targethasil" :disable="store.loadingSave || store.disableSaved" outlined
-                dense />
+                type="textarea" autogrow />
             </div>
           </div>
 
@@ -144,25 +145,32 @@ const tahuns = ref([])
 const master_kegiatan = ref([])
 const dialogRincian = ref(false)
 
-const openDialogRincian = () => {
+const openDialogRincian = async () => {
 
-  store.getKegiatan()
+  await store.getKegiatan()
   const cari = store.optionkegiatan.find(
     x => Number(x.kodeKegiatan) === Number(store.form.kodekegiatan)
   )
+  console.log('cari kegiatan', cari)
   const allRincian = Array.isArray(cari?.rincian)
     ? cari.rincian
     : []
+  console.log('allRincian kegiatan', allRincian)
+
   // kode yang sudah dipakai
   const usedKode = new Set(
-    (store.form.rincian || [])
+    (store.rincianSaved || [])
       .map(r => r.koders)
       .filter(Boolean)
   )
+  console.log('usedKode kegiatan', usedKode)
+
   // hanya ambil yang BELUM dipakai
   store.getRincian = allRincian
     .filter(r => !usedKode.has(r.kode))
     .map(r => ({ ...r }))
+  console.log('usedKode kegiatan', store.getRincian)
+
   dialogRincian.value = true
 }
 
@@ -298,3 +306,10 @@ async function filterFnKegiatan(val, update) {
 
 
 </script>
+<style>
+.wrap-text textarea {
+  white-space: pre-wrap !important;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+</style>

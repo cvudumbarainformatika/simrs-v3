@@ -101,8 +101,8 @@
                       v-model.number="item.tmp_jumlahacc" :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" />
                     <div class="justify-center q-pl-sm q-pt-xs">
                       <q-btn color="primary" type="button" size="sm" round dense icon="check"
-                        :disable="!validItem(item) || store.loadingSave" :loading="item.loadingSave"
-                        @click="tetapkan(item)">
+                        :disable="!validItem(item) || store.loadingSave || !item.tmp_jumlahacc"
+                        :loading="item.loadingSave" @click="tetapkan(item)">
                         <q-tooltip>
                           Simpan Rincian
                         </q-tooltip>
@@ -213,16 +213,17 @@ const tetapkan = async (item) => {
     })
     item.loadingSave = false
     return
-  } else {
-    await store.simpanData()
-
-
-    delete item.tmp_kode50
-    delete item.tmp_uraian50
-    delete item.tmp_kode108
-    delete item.tmp_uraian108
-    delete item.tmp_jumlahacc
   }
+
+  await store.simpanData()
+
+
+  delete item.tmp_kode50
+  delete item.tmp_uraian50
+  delete item.tmp_kode108
+  delete item.tmp_uraian108
+  delete item.tmp_jumlahacc
+
 
   store.disableSaved = true
   item.loadingSave = false

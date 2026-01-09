@@ -1,26 +1,41 @@
 <template>
   <q-card flat class="col full-height">
-    <div class="col-6 q-pl-sm">
-      <div class="q-pb-sm" style="width: 280px; display: grid; grid-template-columns: auto 10px 1fr; row-gap: 4px;">
-        <div class="text-bold">Total Anggaran</div>
-        <div class="text-bold text-center">:</div>
-        <div class="text-bold text-right">
-          {{ formattanpaRp(store.form.pagu || 0) }}
-        </div>
+    <div class="row items-start justify-between q-pb-sm">
 
-        <div class="text-bold">Total Pengusulan</div>
-        <div class="text-bold text-center">:</div>
-        <div class="text-bold text-right">
-          {{ formattanpaRp(subtotal()) }}
-        </div>
+      <div class="col-6 q-pl-sm">
+        <div class="q-pb-sm" style="width: 280px; display: grid; grid-template-columns: auto 10px 1fr; row-gap: 4px;">
+          <div class="text-bold">Total Anggaran</div>
+          <div class="text-bold text-center">:</div>
+          <div class="text-bold text-right">
+            {{ formattanpaRp(store.form.pagu || 0) }}
+          </div>
 
-        <div class="text-bold">Selisih</div>
-        <div class="text-bold text-center">:</div>
-        <div class="text-bold text-right">
-          {{ formattanpaRp(selisih()) }}
+          <div class="text-bold">Total Pengusulan</div>
+          <div class="text-bold text-center">:</div>
+          <div class="text-bold text-right">
+            {{ formattanpaRp(subtotal()) }}
+          </div>
+
+          <div class="text-bold">Selisih</div>
+          <div class="text-bold text-center">:</div>
+          <div class="text-bold text-right">
+            {{ formattanpaRp(selisih()) }}
+          </div>
         </div>
       </div>
+      <div class="col-auto q-pa-sm self-end">
+        <q-input v-model="search" dense outlined debounce="300" placeholder="Cari item / rekening / uraian..."
+          style="width: 300px">
+          <template #prepend>
+            <q-icon name="icon-mat-search" />
+          </template>
+          <template v-if="search" #append>
+            <q-icon name="icon-mat-close" class="cursor-pointer" @click="search = ''" />
+          </template>
+        </q-input>
+      </div>
     </div>
+
     <q-table class="my-sticky-table" :rows="displayRows" :columns="columns" row-key="name" hide-pagination hide-bottom
       wrap-cells :rows-per-page-options="[0]" :rows-number="[0]">
       <template #body="props">
@@ -94,7 +109,7 @@ const props = defineProps({
 onMounted(() => {
 })
 
-
+const search = ref('')
 
 const tablerinci = [
   {
@@ -151,9 +166,27 @@ const $q = useQuasar()
 const selected = ref([])
 
 const displayRows = computed(() => {
-  console.log('displayRows', store.rincianSaved)
-  return store.rincianSaved
-});
+  const rows = store.rincianSaved || []
+  const q = search.value.toLowerCase().trim()
+
+  if (!q) return rows
+
+  return rows.filter(row =>
+    [
+      row.usulan,
+      row.koderek50,
+      row.uraian50,
+      row.koderek108,
+      row.uraian108,
+      row.satuan,
+      row.nilai
+    ]
+      .filter(Boolean)
+      .some(val =>
+        String(val).toLowerCase().includes(q)
+      )
+  )
+})
 
 function isTransaksiall(row) {
   // console.log('row transall', row)
@@ -161,17 +194,15 @@ function isTransaksiall(row) {
 }
 
 function subtotal() {
-  const subtotalrinci = displayRows.value
-    .map((x) => Number(x.nilai))
-    .reduce((a, b) => a + b, 0);
-  return subtotalrinci;
+  return (store.rincianSaved || [])
+    .map(x => Number(x.nilai || 0))
+    .reduce((a, b) => a + b, 0)
 }
 function selisih() {
   return Number(store.form.pagu || 0) - Number(subtotal());
 }
 
 function deleteData(row) {
-  console.log('row delete', row)
   $q.dialog({
     title: 'Peringatan',
     message: 'Apakah Data ini akan dihapus?',
@@ -188,7 +219,7 @@ function deleteData(row) {
     store.deleteData(payload)
       .then(() => {
         //   store.loadingHapus = true
-        // carisrt.refreshTable()
+        // store.getData()
         if (store.rincianSaved?.length === 0) {
           store.initForm()
 
