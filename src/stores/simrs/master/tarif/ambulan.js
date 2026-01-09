@@ -3,7 +3,7 @@ import { date } from 'quasar'
 import { api } from 'src/boot/axios'
 import { notifErrVue, notifSuccess } from 'src/modules/utils'
 
-export const useMasterTarifRadiologiStore = defineStore('master_tarif_radiologi', {
+export const useMasterTarifAmbulanStore = defineStore('master_tarif_ambulan', {
   state: () => ({
     isOpen: false,
     edit: false,
@@ -18,22 +18,28 @@ export const useMasterTarifRadiologiStore = defineStore('master_tarif_radiologi'
     form: {},
     disp: {},
 
-    types: [],
+    polis: [],
+    ruangRanap: [],
+    allRuangs: []
   }),
   actions: {
     resetForm () {
       this.setForm('rs1', '')
       this.setForm('rs2', '')
-      this.setForm('rs3', '')
       this.setForm('dasar_perubahan', '')
       const col = [
-        // 'rs3',
+        'rs3',
         'rs4',
         'rs5',
         'rs6',
         'rs7',
-        'pss',
-        'psp',
+        'rs8',
+        'rs9',
+        'rs10',
+        'rs11',
+        'rs12',
+        'rs13',
+        'rs14',
       ]
       col.forEach(a => {
         this.setForm(a, 0)
@@ -129,15 +135,24 @@ export const useMasterTarifRadiologiStore = defineStore('master_tarif_radiologi'
       }
       this.undeleteData(data)
     },
+    mergeRuangan () {
+      if (this.polis?.length && this.ruangRanap?.length) {
+        this.allRuangs = []
+        this.allRuangs = [...this.polis?.map(a => { return { nama: a.polirs, kode: a.kodepoli } }), ...this.ruangRanap.map(a => { return { nama: a.groups_nama, kode: a.groups } })]
+        // console.log('merge ', this.allRuangs)
+
+      }
+    },
     getInitialData () {
       this.getDataTable()
-      this.getType()
+      // this.getPoli()
+      // this.getRuangRanap()
     },
     // api related function
     async getDataTable () {
       this.loading = true
       const param = { params: this.params }
-      await api.get('v1/simrs/master/tarif/radiologi/list', param)
+      await api.get('v1/simrs/master/tarif/ambulan/list', param)
         .then(resp => {
           this.loading = false
           // console.log('resp tarif tindakan op', resp.data)
@@ -146,17 +161,6 @@ export const useMasterTarifRadiologiStore = defineStore('master_tarif_radiologi'
         })
         .catch(() => { this.loading = false })
     },
-    async getType () {
-      await api.get('v1/simrs/master/tarif/radiologi/type')
-        .then(resp => {
-          this.loading = false
-          this.types = resp.data.data ?? resp.data
-          // console.log('type', this.types)
-
-        })
-        .catch(() => { this.loading = false })
-    },
-
     setTglMulaiBerlaku (payload) {
       const besok = date.addToDate(new Date(), { days: 1 })
       const payloadDate = new Date(payload)
@@ -178,7 +182,7 @@ export const useMasterTarifRadiologiStore = defineStore('master_tarif_radiologi'
       }
 
       this.loading = true
-      await api.post('v1/simrs/master/tarif/radiologi/simpan', this.form)
+      await api.post('v1/simrs/master/tarif/ambulan/simpan', this.form)
         .then(resp => {
           this.loading = false
           console.log('resp tindakan', resp.data)
@@ -190,7 +194,7 @@ export const useMasterTarifRadiologiStore = defineStore('master_tarif_radiologi'
     },
     async deleteData (val) {
       this.loading = true
-      await api.post('v1/simrs/master/tarif/radiologi/hapus', val)
+      await api.post('v1/simrs/master/tarif/ambulan/hapus', val)
         .then(resp => {
           this.loading = false
           console.log('hapus tindakan', resp.data)
@@ -201,7 +205,7 @@ export const useMasterTarifRadiologiStore = defineStore('master_tarif_radiologi'
     },
     async undeleteData (val) {
       this.loading = true
-      await api.post('v1/simrs/master/tarif/radiologi/tampilkan', val)
+      await api.post('v1/simrs/master/tarif/ambulan/tampilkan', val)
         .then(resp => {
           this.loading = false
           console.log('tampilkan tindakan', resp.data)
@@ -213,5 +217,5 @@ export const useMasterTarifRadiologiStore = defineStore('master_tarif_radiologi'
   }
 })
 if (import.meta.hot) {
-  import.meta.hot.accept(acceptHMRUpdate(useMasterTarifRadiologiStore, import.meta.hot))
+  import.meta.hot.accept(acceptHMRUpdate(useMasterTarifAmbulanStore, import.meta.hot))
 }
