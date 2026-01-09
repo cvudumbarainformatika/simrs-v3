@@ -40,7 +40,7 @@
           </div>
         </template>
         <template #body="props">
-          <q-tr>
+          <q-tr v-if="!store.loading">
             <q-td key="notrans" :props="props" class="text-left">
               <div>
                 {{ props.row?.notrans }}
@@ -110,9 +110,9 @@
 
       </q-table>
       <app-dialog-rincian v-model="store.openDialogRinci" :npd="npd" />
-      <printdi-npdls v-model="store.dialogCetak" :datanpds="datanpds" />
+      <dialog-print-data v-model="store.dialogCetak" :datanpds="datanpds" />
       <!-- <editdata-npdls v-model="store.dialogEditNpd" :editData="editData" /> -->
-      <cetak-pencairan v-model="store.dialogCetak" :printdatax="printdatax" />
+      <!-- <cetak-pencairan v-model="store.dialogCetak" :printdatax="printdatax" /> -->
     </div>
   </template>
 </template>
@@ -129,8 +129,7 @@ import { useRouter } from 'vue-router'
 
 
 const AppDialogRincian = defineAsyncComponent(() => import('./DialogViewRincian.vue'))
-const PrintdiNpdls = defineAsyncComponent(() => import('./DialogPrintData.vue'))
-const CetakPencairan = defineAsyncComponent(() => import('./DialogPrintPencairan.vue'))
+const DialogPrintData = defineAsyncComponent(() => import('./DialogPrintData.vue'))
 const store = usePrioritasAnggaranStore()
 const router = useRouter()
 const auth = useAplikasiStore()
@@ -152,6 +151,14 @@ const listData = [
     // headerStyle: 'width: 200px; height:50px'
   },
   {
+    label: 'PPTK',
+    name: 'pptk',
+    align: 'left',
+    field: 'pptk',
+    sortable: true,
+    // headerStyle: 'width: 90px;'
+  },
+  {
     label: 'Bidang/Bagian',
     name: 'namabidang',
     align: 'left',
@@ -159,14 +166,7 @@ const listData = [
     sortable: true,
     // headerStyle: 'width: 90px;'
   },
-  {
-    label: 'Bidang/Bagian',
-    name: 'pptk',
-    align: 'left',
-    field: 'pptk',
-    sortable: true,
-    // headerStyle: 'width: 90px;'
-  },
+
   {
     label: 'Kegiatan BLUD',
     name: 'kegiatan',
@@ -196,17 +196,19 @@ function viewRincian(row) {
   npd.value = row.rincian
   store.rincianSaved = npd.value
   store.dataSaved = row
-  console.log('npd save', store.dataSaved)
+  // console.log('npd save', store.dataSaved)
 
 }
 const onRowClick = (row) =>
   alert([row?.nopencairan, row?.total])
 
 const datanpds = ref(null)
-function viewCetakDataNpdls(row) {
+function PrintData(row) {
   store.dialogCetak = true
+  store.params.notrans = row.notrans
+  store.dataCetak()
   datanpds.value = row
-  store.dataSaved = datanpds.value
+
 }
 
 function editDataPangusulan(row) {
@@ -237,17 +239,7 @@ function editDataPangusulan(row) {
   router.push({ path: '/anggaran/penyusunan/prioritas/form', replace: true, query: { id: row.id } })
   store.disableSaved = true
 }
-const printdatax = ref(null)
-function PrintData(row) {
-  store.params.notrans = row.notrans
 
-  store.dataCetak()
-  console.log('store cetak', store.dataCetaks)
-  store.dialogCetak = true
-  // printdatax.value = row
-  // store.dataSaved = printdatax.value
-  // console.log('openNPD', store.dataSaved)
-}
 function gantiKunci(row) {
   const data = row.kunci === "1"
   let lockdata = true

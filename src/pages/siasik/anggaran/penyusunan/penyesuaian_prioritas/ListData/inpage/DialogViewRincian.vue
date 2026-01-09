@@ -33,7 +33,7 @@
               </q-td>
               <q-td key="rinci" :props="props">
                 <q-badge color="green">
-                  Vol : {{ props.row?.volume }} |
+                  Vol : {{ props.row?.jumlahacc }} |
                   Harga : {{ formattanpaRp(props.row?.harga) }}
                 </q-badge>
                 <div class="q-pa-xs">
@@ -62,60 +62,28 @@ const store = usePrioritasAnggaranStore()
 
 function hiddenDialog() {
   console.log('hidden dialog')
+  store.dialogCetak = false
 }
 const rincinpd = [
   {
-    label: 'Nama Item',
+    label: 'Nama Item / Kode Rekening 50',
     name: 'usulan',
     field: row => [row.usulan, row.uraian50]
   },
   {
-    label: 'Item Belanja',
+    label: 'Kode Rekening 108',
     name: 'item',
     field: row => [row.uraian108, row.koderek108]
   },
   {
-    label: 'Rincian',
+    label: 'Nilai',
     name: 'rinci',
-    field: row => [row.volume, row.harga, row.nilai]
+    field: row => [row.jumlahacc, row.harga, row.nilai]
   }
 ]
 const columns = ref(rincinpd)
 
 
-function mapPajakBaru() {
-  const ppnlama = store.npddatasave?.pajak ? parseFloat(store.npddatasave?.pajak.ppnpusat) : parseFloat(0)
-  const ppn = store.npddatasave?.newpajak?.find(x => x.koderekening === '2.1.01.06.01.0001')
-  const ppnbaru = isNaN(parseFloat(ppn?.nilai)) ? parseFloat(0) : parseFloat(ppn?.nilai)
-  const sumppn = parseFloat(ppnlama) + parseFloat(ppnbaru)
-
-  const pajakdaerahlama = store.npddatasave?.pajak ? parseFloat(store.npddatasave?.pajak.pajakdaerah) : parseFloat(0)
-  const pajakdaerah = store.npddatasave?.newpajak?.find(x => x.koderekening === '2.1.01.06.02.0001')
-  const pajakdaerahbaru = isNaN(parseFloat(pajakdaerah?.nilai)) ? parseFloat(0) : parseFloat(pajakdaerah?.nilai)
-  const sumpajakdaerah = parseFloat(pajakdaerahlama) + parseFloat(pajakdaerahbaru)
-
-  const pph21lama = store.npddatasave?.pajak ? parseFloat(store.npddatasave?.pajak.pph21) : parseFloat(0)
-  const arr21 = store.npddatasave?.newpajak?.find(x => x.koderekening === '2.1.01.05.01.0001')
-  const pph21 = isNaN(parseFloat(arr21?.nilai)) ? parseFloat(0) : parseFloat(arr21?.nilai)
-  const sumpph21 = parseFloat(pph21lama) + parseFloat(pph21)
-
-  const pph22lama = store.npddatasave?.pajak ? parseFloat(store.npddatasave?.pajak.pph22) : parseFloat(0)
-  const arr22 = store.npddatasave?.newpajak?.find(x => x.koderekening === '2.1.01.05.02.0001')
-  const pph22 = isNaN(parseFloat(arr22?.nilai)) ? parseFloat(0) : parseFloat(arr22?.nilai)
-  const sumpph22 = parseFloat(pph22lama) + parseFloat(pph22)
-
-  const pph23lama = store.npddatasave?.pajak ? parseFloat(store.npddatasave?.pajak.pph23) : parseFloat(0)
-  const arr23 = store.npddatasave?.newpajak?.find(x => x.koderekening === '2.1.01.05.03.0001')
-  const pph23 = isNaN(parseFloat(arr23?.nilai)) ? parseFloat(0) : parseFloat(arr23?.nilai)
-  const sumpph23 = parseFloat(pph23lama) + parseFloat(pph23)
-
-  const pph25lama = store.npddatasave?.pajak ? parseFloat(store.npddatasave?.pajak.pph25) : parseFloat(0)
-  const arr25 = store.npddatasave?.newpajak?.find(x => x.koderekening === '2.1.01.05.04.0001')
-  const pph25 = isNaN(parseFloat(arr25?.nilai)) ? parseFloat(0) : parseFloat(arr25?.nilai)
-  const sumpph25 = parseFloat(pph25lama) + parseFloat(pph25)
-
-  return { sumppn, sumpajakdaerah, sumpph21, sumpph22, sumpph23, sumpph25 }
-}
 </script>
 
 <style lang="scss">

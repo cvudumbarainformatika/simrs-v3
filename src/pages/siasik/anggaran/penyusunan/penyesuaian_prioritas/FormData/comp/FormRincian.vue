@@ -136,6 +136,7 @@ import { usePrioritasAnggaranStore } from
   'src/stores/siasik/anggaran/penyusunan/penyesuaianprioritas'
 import { formatRpDouble } from 'src/modules/formatter'
 import { api } from 'src/boot/axios'
+import { useQuasar } from 'quasar'
 
 const props = defineProps({
   modelValue: Boolean
@@ -175,6 +176,7 @@ const validItem = (item) => {
   )
 }
 
+const $q = useQuasar()
 /* simpan */
 const tetapkan = async (item) => {
   item.loadingSave = true
@@ -197,39 +199,31 @@ const tetapkan = async (item) => {
   store.form.jumlahacc = item.jumlahacc
   store.form.koders = item.kode
   store.form.nousulan = item.notrans
-  // console.log('form simpan', store.form)
-  await store.simpanData()
-  // console.log('rincian saved', store.rincians)
 
-  // store.rincianSaved.push({
-  //   ...item,
-  //   usulan: item.keterangan,        // ⬅️ WAJIB
-  //   volume: item.jumlahacc,
-  //   satuan: item.satuan,
-  //   harga: item.harga,
-  //   nilai: item.nilai,
-  //   uraian50: item.uraian50,
-  //   uraian108: item.uraian108,
-  //   koderek50: item.kode_50,
-  //   koderek108: item.kode_108,
-  //   koders: item.kode,
-  //   jumlahacc: item.jumlahacc,
-  // })
+  const nilaiLama = store.rincianSaved
+    ?.reduce((sum, r) => sum + Number(r.nilai || 0), 0)
 
-  // const savedRincian = await store.simpanData()
-  // console.log('form simpan', savedRincian)
-  // if (savedRincian) {
-  //   // ⬇️ PENTING: tandai item dialog
-  //   item._saved = true
-  //   item._savedId = savedRincian.id
-  // }
+  const nilaiBaru = Number(item.jumlahacc || 0) * Number(item.harga || 0)
+  const pagu = Number(store.form?.pagu || 0)
+
+  if (nilaiLama + nilaiBaru > pagu) {
+    $q.notify({
+      type: 'negative',
+      message: 'Jumlah yang diinput melebihi pagu anggaran'
+    })
+    item.loadingSave = false
+    return
+  } else {
+    await store.simpanData()
 
 
-  delete item.tmp_kode50
-  delete item.tmp_uraian50
-  delete item.tmp_kode108
-  delete item.tmp_uraian108
-  delete item.tmp_jumlahacc
+    delete item.tmp_kode50
+    delete item.tmp_uraian50
+    delete item.tmp_kode108
+    delete item.tmp_uraian108
+    delete item.tmp_jumlahacc
+  }
+
   store.disableSaved = true
   item.loadingSave = false
 }
