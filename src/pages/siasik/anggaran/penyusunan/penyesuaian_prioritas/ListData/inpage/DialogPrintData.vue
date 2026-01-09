@@ -4,7 +4,7 @@
       <q-layout view="lHh Lpr lFf" container class="shadow-2 rounded-borders">
         <q-header elevated>
           <q-bar class="bg-black text-white">
-            <div>Cetak Pencairan</div>
+            <div>Cetak RKA</div>
             <q-space />
 
             <q-btn dense flat icon="icon-mat-close" v-close-popup>
@@ -15,7 +15,7 @@
         <q-page-container>
           <div id="printMe" class="f-12 row justify-center">
             <q-card-section>
-              <div v-if="store.datarka.length" class="col-auto" style="font-size: 1em">
+              <div class="col-auto" style="font-size: 1em">
                 <div class="row  justify-between full-width full-height ">
                   <div class="row b1 justify-between full-width">
                     <div class="row b2" style="width:70%">

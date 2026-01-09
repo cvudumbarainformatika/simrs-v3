@@ -151,6 +151,14 @@ const listData = [
     // headerStyle: 'width: 200px; height:50px'
   },
   {
+    label: 'PPTK',
+    name: 'pptk',
+    align: 'left',
+    field: 'pptk',
+    sortable: true,
+    // headerStyle: 'width: 90px;'
+  },
+  {
     label: 'Bidang/Bagian',
     name: 'namabidang',
     align: 'left',
@@ -158,14 +166,7 @@ const listData = [
     sortable: true,
     // headerStyle: 'width: 90px;'
   },
-  {
-    label: 'Bidang/Bagian',
-    name: 'pptk',
-    align: 'left',
-    field: 'pptk',
-    sortable: true,
-    // headerStyle: 'width: 90px;'
-  },
+
   {
     label: 'Kegiatan BLUD',
     name: 'kegiatan',
@@ -203,10 +204,11 @@ const onRowClick = (row) =>
 
 const datanpds = ref(null)
 function PrintData(row) {
+  store.dialogCetak = true
   store.params.notrans = row.notrans
   store.dataCetak()
-  store.dialogCetak = true
   datanpds.value = row
+
 }
 
 function editDataPangusulan(row) {

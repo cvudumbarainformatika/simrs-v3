@@ -149,9 +149,9 @@ export const useMasterBarangModalStore = defineStore('master-barang-modal-store'
     async getrek50() {
       this.loadin50 = true
 
-      const resp = await api.get('/v1/rekening50/index')
+      const resp = await api.get('/v1/rekening50/semua')
       if (resp.status === 200) {
-        this.itemsrek50 = resp?.data?.data
+        this.itemsrek50 = resp?.data
         this.loadin50 = false
       }
       this.loadin50 = false
