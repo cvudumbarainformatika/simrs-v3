@@ -59,7 +59,8 @@ export const usePrioritasAnggaranStore = defineStore('prioritas-anggaran-store',
       jenis: '',
       page: 1,
       per_page: 50,
-      notrans: ''
+      notrans: '',
+      nousulan: ''
     },
     dataCetaks: [],
     dataModals: [],
@@ -100,7 +101,7 @@ export const usePrioritasAnggaranStore = defineStore('prioritas-anggaran-store',
       const params = { params: this.params }
       return new Promise((resolve) => {
         api.get('v1/anggaran/penyusunan/prioritas/select', params).then((resp) => {
-          console.log('Get Kegiatan', resp)
+          // console.log('Get Kegiatan', resp)
           if (resp.status === 200) {
             this.kegiatans = resp.data?.data
             this.loading = false
@@ -113,7 +114,7 @@ export const usePrioritasAnggaranStore = defineStore('prioritas-anggaran-store',
       this.loadingSave = true
       try {
         const resp = await api.post('v1/anggaran/penyusunan/prioritas/save', this.form)
-        console.log('simpan', resp)
+        // console.log('simpan', resp)
         const result = resp?.data?.data
         if (resp.success === true) {
 
@@ -129,7 +130,7 @@ export const usePrioritasAnggaranStore = defineStore('prioritas-anggaran-store',
         this.rincianSaved.unshift(...newRincians)
 
         notifSuccessVue(resp?.data?.message)
-        console.log('rinciansxxx', this.rincianSaved)
+        // console.log('rinciansxxx', this.rincianSaved)
         this.form = {
           notrans: result?.notrans,
           kodepptk: result?.kodepptk,
@@ -238,7 +239,7 @@ export const usePrioritasAnggaranStore = defineStore('prioritas-anggaran-store',
           '/v1/anggaran/penyusunan/prioritas/index',
           { params }
         )
-        console.log('data Pengusulan', resp)
+        // console.log('data Pengusulan', resp)
         if (resp.status === 200) {
           this.items = resp?.data
         }
@@ -442,6 +443,27 @@ export const usePrioritasAnggaranStore = defineStore('prioritas-anggaran-store',
       this.totalPagukegiatan = totalrka
       console.log('DATA total', this.totalPagukegiatan)
 
+    },
+    penetapanAnggaran() {
+      waitLoad('show')
+      const params = { nousulan: this.params.nousulan }
+      return new Promise((resolve, reject) => {
+        api
+          .post('v1/anggaran/penyusunan/prioritas/penetapan', params)
+          .then((resp) => {
+            waitLoad('done')
+            // console.log('resp Cetak', resp)
+
+            if (resp.status === 200) {
+              notifSuccessVue(resp?.data?.message)
+              resolve(resp)
+            }
+          })
+          .catch((err) => {
+            waitLoad('done')
+            reject(err)
+          })
+      })
     },
 
   }

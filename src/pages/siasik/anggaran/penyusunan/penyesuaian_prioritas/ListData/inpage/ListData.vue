@@ -94,9 +94,11 @@
                         <q-item v-if="props?.row?.kunci !== '1'" clickable @click="editDataPangusulan(props?.row)">
                           <q-item-section>Edit Data</q-item-section>
                         </q-item>
-                        <!-- <q-item clickable v-close-popup @click="viewCetakDataNpdls(props?.row)">
-                          <q-item-section>Cetak Data</q-item-section>
-                        </q-item> -->
+                        <q-item
+                          v-if="auth.user?.pegawai?.kdpegsimrs === 'sa' && props?.row?.kunci === '1' && !props?.row?.penetapan.length"
+                          clickable v-close-popup @click="penetapanAnggaran(props?.row)">
+                          <q-item-section>Penetapan Anggaran</q-item-section>
+                        </q-item>
                         <q-item clickable v-close-popup @click="PrintData(props?.row)">
                           <q-item-section>Cetak Data</q-item-section>
                         </q-item>
@@ -215,6 +217,15 @@ async function PrintData(row) {
 
 }
 const hitungRincian = (rincian = []) => rincian.reduce((sum, x) => sum + Number(x.nilai || 0), 0)
+
+
+async function penetapanAnggaran(row) {
+
+  store.params.nousulan = row.rincian?.map((x) => x.nousulan)[0]
+
+  await store.penetapanAnggaran()   // tunggu data siap
+
+}
 
 function editDataPangusulan(row) {
   // if (auth.user?.pegawai?.kdpegsimrs !== 'sa') {
