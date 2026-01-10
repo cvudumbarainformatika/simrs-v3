@@ -45,6 +45,14 @@
           <q-td key="keterangan" :props="props" class="text-left">
             {{ props.row.keterangan }}
           </q-td>
+          <q-td key="kode50" :props="props" class="text-left">
+            <div>{{ props.row.kode_50 }}</div>
+            <div>{{ props.row.uraian50 }}</div>
+          </q-td>
+          <q-td key="kode108" :props="props" class="text-left">
+            <div>{{ props.row.kode_108 }}</div>
+            <div>{{ props.row.uraian108 }}</div>
+          </q-td>
           <q-td key="volume" :props="props" class="text-left">
             {{ props.row.volume }}
           </q-td>
@@ -117,6 +125,18 @@ const tablerinci = [
     name: 'keterangan',
     align: 'left',
     field: 'keterangan'
+  },
+  {
+    label: 'Kode Rekening',
+    name: 'kode50',
+    align: 'left',
+    field: row => [row.kode_50, row.uraian50],
+  },
+  {
+    label: 'Kode Aset/Barang ',
+    name: 'kode108',
+    align: 'left',
+    field: row => [row.kode_108, row.uraian108],
   },
   {
     label: 'Volume',
