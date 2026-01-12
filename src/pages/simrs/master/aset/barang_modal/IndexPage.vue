@@ -41,7 +41,7 @@
         <div class="absolute full-width full-height">
           <div class="row full-height">
             <div class="col-4 full-height scroll q-pa-sm">
-              <FormPage :barang108s="store.itemsrek108" :koderek50="store.itemsrek50" :kodeaspak="store.itemsaspak" />
+              <FormPage :kodeaspak="store.itemsaspak" />
             </div>
             <div class="col-8 full-height bg-grey scroll q-pa-sm">
               <ListPage :listmaster="store.items" @edit="(val) => store.editForm(val)"
@@ -79,11 +79,11 @@ function hapuskelasifikasi(id) {
     // console.log('I am triggered on both OK and Cancel')
   })
 }
-function init() {
-  const d = new Date()
-  store.params.tahun = d.getFullYear()
-  generateArrayOfYears()
-}
+// function init() {
+//   const d = new Date()
+//   store.params.tahun = d.getFullYear()
+//   generateArrayOfYears()
+// }
 function generateArrayOfYears() {
   const current = new Date().getFullYear()
   const years = []
@@ -98,7 +98,7 @@ function generateArrayOfYears() {
 onMounted(() => {
   store.getData()
   store.getrek108()
-  store.getrek50()
+  // store.getrek50()
   store.getkodeaspak()
   // init()
 })

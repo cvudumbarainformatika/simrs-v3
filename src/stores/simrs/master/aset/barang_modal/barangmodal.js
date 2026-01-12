@@ -138,10 +138,10 @@ export const useMasterBarangModalStore = defineStore('master-barang-modal-store'
     },
     async getrek108() {
       this.loading108 = true
-
-      const resp = await api.get('/v1/barang108/barang108')
+      const params = { params: this.params }
+      const resp = await api.get('/v1/barang108/maping-50', params)
       if (resp.status === 200) {
-        this.itemsrek108 = resp?.data
+        this.itemsrek108 = resp?.data?.data
         this.loading108 = false
       }
       this.loading = false

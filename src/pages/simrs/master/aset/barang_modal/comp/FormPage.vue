@@ -1,6 +1,5 @@
 <template>
   <q-form ref="formRef" @submit="simpan" class="q-gutter-sm q-pa-sm">
-    <!-- <pre>{{ props.koderek50 }}</pre> -->
     <div>
       <q-input v-model="store.form.kdaset" outlined dense label="Kode Barang Modal" disable
         :loading="store.loadingSave" />
@@ -11,18 +10,24 @@
         :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" />
     </div>
     <div>
-      <q-select v-model="store.form.kd108" label="Kode Rekening 108" outlined emit-value map-options option-label="kode"
-        option-value="kode" standout="bg-yellow-3" dense :options="options" clearable use-input
-        :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" @filter="filterFnx"
-        @update:model-value="(val) => selectedx(val)">
+      <q-select v-model="store.form.kd108" label="Kode Rekening 108" outlined emit-value map-options
+        option-label="kode108" option-value="kode108" standout="bg-yellow-3" dense :options="store.itemsrek108"
+        clearable use-input :rules="[val => !!val || 'Harap Diisi terlebih dahulu']"
+        @input-value="(val) => carikode108(val)" @update:model-value="(val) => selected(val)">
         <template #option="scopex">
           <q-item v-bind="scopex.itemProps">
             <q-item-section>
               <q-item-label class="text-weight-bold">
-                {{ scopex.opt.uraian }} <br>
+                {{ scopex.opt.kode108 }} <br>
               </q-item-label>
               <q-item-label caption class="text-italic">
-                {{ scopex.opt.kode }} <br>
+                {{ scopex.opt.uraian108 }} <br>
+              </q-item-label>
+              <q-item-label caption class="text-italic">
+                {{ scopex.opt.kode50 }} <br>
+              </q-item-label>
+              <q-item-label caption class="text-italic">
+                {{ scopex.opt.uraian50 }} <br>
               </q-item-label>
             </q-item-section>
           </q-item>
@@ -38,18 +43,24 @@
     </div>
 
     <div>
-      <q-select v-model="store.form.uraian108" label="Uraian 108" outlined emit-value map-options option-label="uraian"
-        option-value="uraian" standout="bg-yellow-3" dense :options="options" clearable use-input
-        :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" @filter="filterFn"
-        @update:model-value="(val) => selected(val)">
+      <q-select v-model="store.form.uraian108" label="Uraian 108" outlined emit-value map-options
+        option-label="uraian108" option-value="uraian108" standout="bg-yellow-3" dense :options="store.itemsrek108"
+        clearable use-input :rules="[val => !!val || 'Harap Diisi terlebih dahulu']"
+        @input-value="(val) => carikode108(val)" @update:model-value="(val) => selectedx(val)">
         <template #option="scopex">
           <q-item v-bind="scopex.itemProps">
             <q-item-section>
               <q-item-label class="text-weight-bold">
-                {{ scopex.opt.uraian }} <br>
+                {{ scopex.opt.uraian108 }} <br>
               </q-item-label>
               <q-item-label caption class="text-italic">
-                {{ scopex.opt.kode }} <br>
+                {{ scopex.opt.kode108 }} <br>
+              </q-item-label>
+              <q-item-label caption class="text-italic">
+                {{ scopex.opt.kode50 }} <br>
+              </q-item-label>
+              <q-item-label caption class="text-italic">
+                {{ scopex.opt.uraian50 }} <br>
               </q-item-label>
             </q-item-section>
           </q-item>
@@ -65,59 +76,13 @@
     </div>
 
     <div>
-      <q-select v-model="store.form.kd50" label="Kode Rekening 50" outlined emit-value map-options option-label="kode"
-        option-value="kode" standout="bg-yellow-3" dense :options="koderek50" clearable use-input
-        :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" @filter="filterFn50"
-        @update:model-value="(val) => selected50(val)">
-
-        <template #option="scope">
-          <q-item v-bind="scope.itemProps">
-            <q-item-section>
-              <q-item-label class="text-weight-bold">
-                {{ scope.opt.uraian }} <br>
-              </q-item-label>
-              <q-item-label caption class="text-italic">
-                {{ scope.opt.kode }} <br>
-              </q-item-label>
-            </q-item-section>
-          </q-item>
-        </template>
-        <template #no-option>
-          <q-item>
-            <q-item-section class="text-grey">
-              Data Tidak Ditemukan....
-            </q-item-section>
-          </q-item>
-        </template>
-      </q-select>
+      <q-input v-model="store.form.kd50" outlined dense label="Kode Rekening 50" disable
+        :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" />
     </div>
 
     <div>
-      <q-select v-model="store.form.uraian50" label="Uraian Rekening 50" outlined emit-value map-options
-        option-label="uraian" option-value="uraian" standout="bg-yellow-3" dense :options="koderek50" clearable
-        use-input :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" @filter="filterFn50uraian"
-        @update:model-value="(val) => selected50uraian(val)">
-
-        <template #option="scope">
-          <q-item v-bind="scope.itemProps">
-            <q-item-section>
-              <q-item-label class="text-weight-bold">
-                {{ scope.opt.uraian }} <br>
-              </q-item-label>
-              <q-item-label caption class="text-italic">
-                {{ scope.opt.kode }} <br>
-              </q-item-label>
-            </q-item-section>
-          </q-item>
-        </template>
-        <template #no-option>
-          <q-item>
-            <q-item-section class="text-grey">
-              Data Tidak Ditemukan....
-            </q-item-section>
-          </q-item>
-        </template>
-      </q-select>
+      <q-input v-model="store.form.uraian50" outlined dense label="Uraian Rekening 50" disable
+        :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" />
     </div>
 
     <div>
@@ -191,22 +156,12 @@ const store = useMasterBarangModalStore()
 const formRef = ref(null)
 
 const props = defineProps({
-  barang108s: {
-    type: Array,
-    default: []
-  },
-  koderek50: {
-    type: Array,
-    default: []
-  },
   kodeaspak: {
     type: Array,
     default: []
   }
 })
 
-const options = ref([props.barang108s])
-const koderek50 = ref([props.koderek50])
 const kodeaspak = ref(props.kodeaspak)
 
 function simpan() {
@@ -216,114 +171,32 @@ function simpan() {
 function selected(val) {
 
   if (val !== null) {
-    const uraian108 = props.barang108s.find((x) => x.uraian === val)
-    store.form.kd108 = uraian108?.kode
+    const rek108 = store.itemsrek108.find((x) => x.kode108 === val)
+    store.form.kd108 = rek108?.kode108
+    store.form.uraian108 = rek108?.uraian108
+    store.form.kd50 = rek108?.kode50
+    store.form.uraian50 = rek108?.uraian50
 
   }
 }
 
 function selectedx(val) {
+
   if (val !== null) {
-    const koderekening = props?.barang108s.find((x) => x.kode === val)
-    store.form.uraian108 = koderekening?.uraian
+    const rek108 = store.itemsrek108.find((x) => x.uraian108 === val)
+    store.form.kd108 = rek108?.kode108
+    store.form.uraian108 = rek108?.uraian108
+    store.form.kd50 = rek108?.kode50
+    store.form.uraian50 = rek108?.uraian50
+
   }
 }
 
-const filterFn = (val, update) => {
-  update(() => {
-    if (!Array.isArray(props.barang108s)) {
-      options.value = []
-      return
-    }
-
-    if (val === '') {
-      options.value = props.barang108s
-      return
-    }
-
-    const needle = val.toLowerCase()
-
-    options.value = props.barang108s.filter(v =>
-      v.uraian?.toLowerCase().indexOf(needle) > -1
-    )
-  })
+function carikode108(val) {
+  store.params.q = val
+  store.getrek108()
 }
 
-const filterFnx = (val, update) => {
-  update(() => {
-    if (!Array.isArray(props.barang108s)) {
-      options.value = []
-      return
-    }
-
-    if (val === '') {
-      options.value = props.barang108s
-      return
-    }
-
-    const needle = val.toLowerCase()
-
-    options.value = props.barang108s.filter(v =>
-      v.kode?.toLowerCase().indexOf(needle) > -1
-    )
-  })
-}
-
-const filterFn50 = (val, update) => {
-  update(() => {
-    if (!Array.isArray(props.koderek50)) {
-      koderek50.value = []
-      return
-    }
-
-    if (val === '') {
-      koderek50.value = props.koderek50
-      return
-    }
-
-    const needle = val.toLowerCase()
-
-    koderek50.value = props.koderek50.filter(v =>
-      v.kode?.toLowerCase().indexOf(needle) > -1
-    )
-  })
-}
-
-function selected50(val) {
-  console.log('val', val)
-  if (val !== null) {
-    const koderekening = props?.koderek50.find((x) => x.kode === val)
-    store.form.uraian50 = koderekening?.uraian
-  }
-}
-
-const filterFn50uraian = (val, update) => {
-
-  update(() => {
-    if (!Array.isArray(props.koderek50)) {
-      koderek50.value = []
-      return
-    }
-
-    if (val === '') {
-      koderek50.value = props.koderek50
-      return
-    }
-
-    const needle = val.toLowerCase()
-
-    koderek50.value = props.koderek50.filter(v =>
-      v.uraian?.toLowerCase().indexOf(needle) > -1
-    )
-  })
-}
-
-function selected50uraian(val) {
-  if (val !== null) {
-    const uraian = props?.koderek50.find((x) => x.uraian === val)
-    store.form.kd50 = uraian?.kode
-  }
-}
 
 const filterFnkodeaspak = (val, update) => {
   update(() => {
