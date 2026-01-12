@@ -16,12 +16,17 @@
             <q-item-section caption>
               <div class="">
                 <span class="text-weight-bold">PPA</span> <span class="text-weight-medium">- {{ item?.petugas?.nama
-                  }}</span>
+                }}</span>
               </div>
             </q-item-section>
 
             <q-item-section side>
               <div class="flex q-gutter-lg items-center">
+                <div>
+                  <q-btn v-if="item?.nakes === '1'" size="sm" rounded outline color="primary" label="Notasi DPJP"
+                    @click="handleOpenNotasiDPJP(item)">
+                  </q-btn>
+                </div>
                 <div v-if="auth?.user?.pegawai?.kdpegsimrs === item?.user">
                   <q-btn round flat size="sm" icon="icon-mat-delete" color="negative" @click="deleteItem(item)">
                     <q-tooltip> Hapus </q-tooltip>
@@ -46,6 +51,8 @@
                     </q-badge>
                   </div>
                 </div>
+
+
               </div>
             </q-item-section>
           </template>
@@ -377,6 +384,9 @@
         console.log('storeDiagnosaKeperawatan', storeDiagnosaKeperawatan.selectDiagnosa);
 
       }" />
+
+    <DialogNotasiDpjp v-model="openNotasi" :item="itemx" :pasien="props.pasien" @on-hide="itemx = null"
+      @exit="openNotasi = false" :store="store" />
   </div>
 </template>
 
@@ -389,15 +399,27 @@ import { useQuasar } from 'quasar'
 
 const ItemNyeri = defineAsyncComponent(() => import('./itemlist/ItemNyeri.vue'))
 const DialogFormItem = defineAsyncComponent(() => import('./dialogformchild/DialogFormItem.vue'))
+const DialogNotasiDpjp = defineAsyncComponent(() => import('./dialogformchild/DialogNotasiDpjp.vue'))
 const ModalDiagnosaKeperawatan = defineAsyncComponent(() => import('src/pages/simrs/poli/tindakan/comptindakan/pagemenu/complayanan/ModalDiagnosaKeperawatan.vue'))
 
 const props = defineProps({
   pasien: { type: Object, default: () => null },
   kasus: { type: Object, default: () => null },
   // items: { type: Array, default: () => [] },
-  nakes: { type: String, default: null }
+  nakes: { type: String, default: null },
+  notasis: { type: Array, default: () => [] },
+  store: { type: Object, default: null }
 
 })
+
+const openNotasi = ref(false)
+const itemx = ref(null)
+
+const handleOpenNotasiDPJP = (item) => {
+  openNotasi.value = true
+  itemx.value = item
+
+}
 
 // console.log('props', props?.pasien)
 

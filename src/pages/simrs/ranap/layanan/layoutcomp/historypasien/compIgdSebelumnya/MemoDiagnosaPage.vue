@@ -8,7 +8,7 @@
   <div class="row q-pa-md bg-white items-center">
     <div class="col-2">Memodiagnosa :</div>
     <dic class="col-10 text-center f-14 text-weight-bold">
-      {{ pasien?.memodiagnosa }}
+      {{ pasien?.memodiagnosaigd }}
 
     </dic>
   </div>
