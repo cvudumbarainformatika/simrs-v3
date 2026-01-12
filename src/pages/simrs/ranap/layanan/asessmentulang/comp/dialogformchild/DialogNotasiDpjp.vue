@@ -115,6 +115,8 @@ const initForm = () => {
     form.value.cppt_id = notasis[0].cppt_id
     form.value.noreg = notasis[0].noreg
     form.value.norm = notasis[0].norm
+  } else {
+    resetForm()
   }
 
   console.log('form', form.value);
