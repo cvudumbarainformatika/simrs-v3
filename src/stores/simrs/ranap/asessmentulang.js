@@ -15,6 +15,7 @@ export const useAsessmentUlangRanapStore = defineStore('asesment-ulang-ranap-sto
   state: () => ({
 
     items: [],
+    notasis: [],
     previousData: null,
     loadingSave: false,
 
@@ -51,6 +52,27 @@ export const useAsessmentUlangRanapStore = defineStore('asesment-ulang-ranap-sto
 
     getCppt(cppt) {
       this.items = cppt ?? []
+    },
+
+    getNotasiDpjp(noreg) {
+
+      const params = { params: { noreg } }
+
+      return new Promise((resolve, reject) => {
+        api.get('v1/simrs/ranap/layanan/cppt/notasidpjp', params)
+          .then((resp) => {
+            // console.log('data notasi cppt', resp)
+            this.notasis = resp?.data?.result
+
+            resolve(resp)
+          })
+          .catch((err) => {
+            console.log(err)
+            reject(err)
+          })
+          .finally(() => {
+          })
+      })
     },
 
     getPreviousForm(pasien, nakes) {

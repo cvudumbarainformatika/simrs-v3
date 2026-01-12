@@ -18,7 +18,8 @@
       </div>
     </div>
     <div class="col full-height">
-      <ListSoap :pasien="pasien" :kasus="kasus" :nakes="nakes" :items="store.items" />
+      <ListSoap :pasien="pasien" :kasus="kasus" :nakes="nakes" :items="store.items" :notasis="store.notasis"
+        :store="store" />
     </div>
 
     <DialogForm v-model="settings.isForm" :pasien="pasien" :kasus="kasus" :nakes="nakes"
@@ -48,10 +49,7 @@ onMounted(() => {
 
   store.getCppt(props?.pasien?.cppt)
   Promise.all([
-    // store.getCppt(props.pasien)
-    // storeAnamnesis.getData(props.pasien),
-    // storePemeriksaanUmum.getData(props.pasien),
-    // storePenilaian.getData(props.pasien)
+    store.getNotasiDpjp(props?.pasien?.noreg)
   ])
 })
 
