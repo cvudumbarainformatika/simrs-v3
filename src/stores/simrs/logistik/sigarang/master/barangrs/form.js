@@ -183,16 +183,18 @@ export const useMasterBarangRSForm = defineStore('master_barangrs_form', {
       if (!this.barang108s?.length || this.loading108) {
         return new Promise(resolve => {
           // api.get('v1/barang108/barang108')
-          api.get('v1/barang108/index', param)
+          // api.get('v1/barang108/index', param)
+          api.get('v1/barang108/maping', param)
             .then(resp => {
               if (resp.status === 200) {
                 const data = resp.data.data ?? resp.data
                 data.forEach(item => {
-                  item.uraian = item.maping?.uraian108
+                  item.uraian = item?.uraian108
+                  item.kode = item?.kode108
                 })
                 // console.log('108', resp.data.data)
                 // this.barang108s = resp.data
-                this.barang108s = resp.data.data
+                this.barang108s = data
               }
               this.loading108 = false
             }).catch(() => { this.loading108 = false })
