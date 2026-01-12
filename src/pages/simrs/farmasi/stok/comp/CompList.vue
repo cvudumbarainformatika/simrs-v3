@@ -219,8 +219,8 @@ function simpanFisik (row, key) {
   const diff = date.getDateDiff(date1, date2, 'days')
   // console.log('table param', date1, date2, table.params.to, diff)
   row.tglopname = table.params.to + ' 23:59:58'
-  if (diff < -10) return notifErrVue('Stok Opname dapat di isi dari h-10')
-  if (diff > 7) return notifErrVue('Stok Opname dapat di isi sampai h+7')
+  if (diff < -(table.tutupOpnames?.min_tutup ?? 10)) return notifErrVue('Stok Opname dapat di isi dari h-10')
+  if (diff > (table.tutupOpnames?.max_tutup ?? 7)) return notifErrVue('Stok Opname dapat di isi sampai h+7')
   store.simpanFisik(row)
 }
 function editData (val) {
