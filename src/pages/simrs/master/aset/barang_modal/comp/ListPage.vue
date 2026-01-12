@@ -12,6 +12,7 @@
         <!-- <q-item-section>Uraian 108</q-item-section> -->
         <q-item-section>Kode 50</q-item-section>
         <q-item-section>Kode Aspak</q-item-section>
+        <q-item-section>Satuan</q-item-section>
         <q-item-section side>
           #
         </q-item-section>
@@ -24,6 +25,7 @@
           {{ row.uraian108 }}</q-item-section>
         <q-item-section><span class="text-grey-6">{{ row.kd50 }}</span><br>{{ row.uraian50 }}</q-item-section>
         <q-item-section><span class="text-grey-6">{{ row.kdaspak }}</span><br>{{ row.uraianaspak }}</q-item-section>
+        <q-item-section>{{ row.satuan }}</q-item-section>
         <q-item-section side>
           <div class="row q-gutter-xs">
             <!-- <q-btn flat icon="icon-mat-layers" size="sm" round color="primary" @click="openRincian(row)" /> -->

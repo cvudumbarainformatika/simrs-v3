@@ -9,6 +9,7 @@ export const useMasterBarangModalStore = defineStore('master-barang-modal-store'
     itemsrek108: [],
     itemsrek50: [],
     itemsaspak: [],
+    itemsatuan: [],
     loading: false,
     loadin50: false,
     loadingaspak: false,
@@ -24,6 +25,7 @@ export const useMasterBarangModalStore = defineStore('master-barang-modal-store'
       uraian50: '',
       kdaspak: '',
       uraianaspak: '',
+      satuan: '',
       flaging: '',
     },
     params: {
@@ -39,34 +41,13 @@ export const useMasterBarangModalStore = defineStore('master-barang-modal-store'
     setForm(key, val) {
       this.form[key] = val
     },
-    getPegawai() {
-      this.loading = true
-      const params = { params: this.params }
-      return new Promise((resolve) => {
-        api.get('v1/master/siasik/kegiatanblud/getbidang', params).then((resp) => {
-          // console.log('Get Bidang', resp)
-          if (resp.status === 200) {
-            this.akuns = resp.data?.data
-            this.loading = false
-            resolve(resp)
-          }
-        }).catch(() => { this.loading = false })
-      })
+    async getsatuan() {
+      const resp = await api.get('/v1/satuan/satuan')
+      if (resp.status === 200) {
+        this.itemssatuan = resp?.data
+      }
+      this.loading = false
     },
-    // getBidang() {
-    //   this.loading = true
-    //   const params = { params: this.params }
-    //   return new Promise((resolve) => {
-    //     api.get('v1/master/siasik/ptk/getbidang', params).then((resp) => {
-    //       // console.log('Get Bidang', resp)
-    //       if (resp.status === 200) {
-    //         this.bidangs = resp.data?.data
-    //         this.loading = false
-    //         resolve(resp)
-    //       }
-    //     }).catch(() => { this.loading = false })
-    //   })
-    // },
     async simpanData() {
       this.loadingSave = true
       try {
@@ -93,7 +74,6 @@ export const useMasterBarangModalStore = defineStore('master-barang-modal-store'
       this.loading = true
       const params = { params: this.params }
       const resp = await api.get('/v1/master/maset/index', params)
-      console.log('resp Kegiatan BLUD', resp)
       if (resp.status === 200) {
         this.items = resp?.data?.data
         this.loading = false

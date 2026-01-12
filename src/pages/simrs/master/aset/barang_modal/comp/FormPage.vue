@@ -140,6 +140,11 @@
         </template>
       </q-select>
     </div>
+    <div>
+      <q-select v-model="store.form.satuan" label="Satuan" outlined emit-value map-options option-label="nama"
+        option-value="nama" standout="bg-yellow-3" dense :options="optsatuan" clearable use-input
+        :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" @filter="filterFnsatuan" />
+    </div>
 
 
     <q-separator class="q-my-lg" />
@@ -159,8 +164,14 @@ const props = defineProps({
   kodeaspak: {
     type: Array,
     default: []
+  },
+  satuan: {
+    type: Array,
+    default: []
   }
 })
+
+const optsatuan = ref(props.satuan)
 
 const kodeaspak = ref(props.kodeaspak)
 
@@ -251,6 +262,26 @@ function selecteduraianaspak(val) {
     const uraian = props?.kodeaspak.find((x) => x.uraian === val)
     store.form.kdaspak = uraian?.kode
   }
+}
+
+const filterFnsatuan = (val, update) => {
+  update(() => {
+    if (!Array.isArray(props.satuan)) {
+      optsatuan.value = []
+      return
+    }
+
+    if (val === '') {
+      optsatuan.value = props.satuan
+      return
+    }
+
+    const needle = val.toLowerCase()
+
+    optsatuan.value = props.satuan.filter(v =>
+      v.nama?.toLowerCase().indexOf(needle) > -1
+    )
+  })
 }
 
 
