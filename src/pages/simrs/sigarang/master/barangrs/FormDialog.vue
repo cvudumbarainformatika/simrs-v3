@@ -121,13 +121,14 @@ function get108 (val) {
 // }
 function selected108 (val) {
   console.log(val)
-  const temp = store.barang108s.find(a => a.kode === val)
+  const temp = store.barang108s.find(a => a.kode108 === val)
   if (temp) {
     console.log(temp)
-    store.setForm('uraian_108', temp?.uraian)
-    store.setForm('kode_50', temp?.maping?.kode50)
-    store.setForm('uraian_50', temp?.maping?.uraian50)
+    store.setForm('uraian_108', temp?.uraian108 ?? temp?.uraian)
+    store.setForm('kode_50', temp?.kode50)
+    store.setForm('uraian_50', temp?.uraian50)
   }
+  console.log('form', store.form)
 }
 const onSubmit = () => {
   // let nama=false
