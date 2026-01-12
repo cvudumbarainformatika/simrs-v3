@@ -3,25 +3,10 @@
     {{ table?.keterangan }}
   </div> -->
   <div class="row">
-    <app-table
-      title="obat"
-      :columns="table.columns"
-      :column-hide="table.columnHide"
-      :items="table.items"
-      :meta="table.meta"
-      :per-page="table.params.per_page"
-      :order-by="table.params.order_by"
-      :sort="table.params.sort"
-      :loading="table?.loading"
-      :to-search="table.params.q"
-      :default-btn="false"
-      :ada-paginasi="false"
-      :ada-cari="false"
-      :ada-refresh="false"
-      :ada-per-page="false"
-      :ada-filter="false"
-      :ada-tambah="false"
-    >
+    <app-table title="obat" :columns="table.columns" :column-hide="table.columnHide" :items="table.items"
+      :meta="table.meta" :per-page="table.params.per_page" :order-by="table.params.order_by" :sort="table.params.sort"
+      :loading="table?.loading" :to-search="table.params.q" :default-btn="false" :ada-paginasi="false" :ada-cari="false"
+      :ada-refresh="false" :ada-per-page="false" :ada-filter="false" :ada-tambah="false">
       <template #col-obat>
         <div>Obat</div>
       </template>
@@ -41,7 +26,7 @@
         <div>Selisih</div>
       </template>
 
-      <template #cell-obat="{row}">
+      <template #cell-obat="{ row }">
         <div class="row no-wrap text-weight-bold text-green">
           {{ row.kd_obat }}
         </div>
@@ -49,64 +34,45 @@
           {{ row.nama_obat }}
         </div>
         <div class="row text-weight-bold no-wrap text-italic f-10">
-          ( {{ row.satuan_k ? row.satuan_k :'-' }} )
+          ( {{ row.satuan_k ? row.satuan_k : '-' }} )
         </div>
         <div class="row justify-start no-wrap q-my-xs">
-          <div
-            class="text-weight-bold q-mr-sm text-green"
-            v-if="row.status_fornas === '1'"
-          >
+          <div class="text-weight-bold q-mr-sm text-green" v-if="row.status_fornas === '1'">
             Fornas
           </div>
-          <div
-            class="text-weight-bold q-mr-sm text-green"
-            v-if="row.status_forkid === '1'"
-          >
+          <div class="text-weight-bold q-mr-sm text-green" v-if="row.status_forkid === '1'">
             Forkit
           </div>
-          <div
-            class="text-weight-bold q-mr-sm text-green"
-            v-if="row.status_generik === '1'"
-          >
+          <div class="text-weight-bold q-mr-sm text-green" v-if="row.status_generik === '1'">
             Generik
           </div>
-          <div
-            class="text-weight-bold q-mr-sm text-negative"
-            v-if="row.status_kronis === '1'"
-          >
+          <div class="text-weight-bold q-mr-sm text-negative" v-if="row.status_kronis === '1'">
             Kronis
           </div>
-          <div
-            class="text-weight-bold q-mr-sm text-negative"
-            v-if="row.kelompok_psikotropika === '1'"
-          >
+          <div class="text-weight-bold q-mr-sm text-negative" v-if="row.kelompok_psikotropika === '1'">
             Psikotropika
           </div>
-          <div
-            class="text-weight-bold q-mr-sm text-primary"
-            v-if="row.status_konsinyasi === '1'"
-          >
+          <div class="text-weight-bold q-mr-sm text-primary" v-if="row.status_konsinyasi === '1'">
             Konsinyasi
           </div>
         </div>
         <div class="row justify-start no-wrap q-my-xs">
-          <div
-            class="text-weight-bold"
-            :class="row.gudang === 'Gd-03010100'?'text-blue':(row.gudang === 'Gd-05010100'?'text-primary':'text-green')"
-          >
-            {{ row.gudang==='Gd-03010100' ?'Gudang Floor Stok':(row.gudang === 'Gd-05010100'?'Gudang Kamar Obat':'Semua gudang') }}
+          <div class="text-weight-bold"
+            :class="row.gudang === 'Gd-03010100' ? 'text-blue' : (row.gudang === 'Gd-05010100' ? 'text-primary' : 'text-green')">
+            {{ row.gudang === 'Gd-03010100' ? 'Gudang Floor Stok' : (row.gudang === 'Gd-05010100' ? 'Gudang Kamar Obat'
+              : 'Semua gudang') }}
           </div>
         </div>
       </template>
-      <template #cell-penerimaan="{row}">
+      <template #cell-penerimaan="{ row }">
         <div class="row no-wrap">
           {{ row.nopenerimaan }}
         </div>
         <div class="row no-wrap">
-          {{ dateFullFormat( row.tglpenerimaan ) }}
+          {{ dateFullFormat(row.tglpenerimaan) }}
         </div>
       </template>
-      <template #cell-stok="{row}">
+      <template #cell-stok="{ row }">
         <div v-if="row?.oneopname || row?.onestok">
           <div class="row no-wrap text-italic">
             {{ cariGudang(row.kdruang) }}
@@ -114,58 +80,31 @@
           </div>
           <div class="row no-wrap text-weight-bold  items-end">
             <div>
-              {{ formatDouble(row.total,2) }}
+              {{ formatDouble(row.total, 2) }}
             </div>
             <div class="q-ml-sm f-10 text-italic">
-              ( {{ row.satuan_k ? row.satuan_k :'-' }} )
+              ( {{ row.satuan_k ? row.satuan_k : '-' }} )
             </div>
           </div>
           <div class="row no-wrap text-italic f-10">
-            Rp  {{ formatRp( row.harga ) }}
+            Rp {{ formatRp(row.harga) }}
           </div>
           <div class="row no-wrap text-italic f-10">
-            exp : {{ dateFullFormat( row.tglexp ) }}
+            exp : {{ dateFullFormat(row.tglexp) }}
           </div>
         </div>
         <div v-else>
           Tidak Ada stok
         </div>
       </template>
-      <template #cell-fisik="{row}">
+      <template #cell-fisik="{ row }">
         <div v-if="tutup(row)" class="row q-col-gutter-sm items-center " style="min-width: 200px;">
-          <!-- <div class="col-auto">
-            <app-input-date-human
-              :model="row.tglInputFisik"
-              label="Tanggal Input fisik"
-              outlined
-              valid
-              @set-display="setData('tglInputFisik',$event,row)"
-              @db-model="setData('tgl_input_fisik',$event,row)"
-            />
-          </div>
+
           <div class="col-auto">
-            <app-input-date-human
-              :model="row.jamInput"
-              label="Jam Input fisik"
-              outlined
-              valid
-              :type-date="false"
-              @set-model="setData('jamInput',$event,row)"
-            />
-          </div> -->
-          <div class="col-auto">
-            <q-input
-              v-model="row.fisik"
-              label="Jumlah Fisik Obat"
-              outlined
-              dense
-              standout="bg-yellow-3"
-              :loading="row.loadingSimpan"
-              :disable="row.loadingSimpan"
-              valid
-              @keyup.enter.stop="simpanFisik(row,'fisik')"
-            >
-              <q-tooltip class="bg-white text-weight-bold" anchor="center right" self="center left" :offset="[15,0]">
+            <q-input v-model="row.fisik" label="Jumlah Fisik Obat" outlined dense standout="bg-yellow-3"
+              :loading="row.loadingSimpan" :disable="row.loadingSimpan" valid
+              @keyup.enter.stop="simpanFisik(row, 'fisik')">
+              <q-tooltip class="bg-white text-weight-bold" anchor="center right" self="center left" :offset="[15, 0]">
                 <div class="row text-orange f-12">
                   Di Isi Jumlah Stok Fisik
                 </div>
@@ -180,25 +119,18 @@
           {{ row?.fisik }}
         </div>
       </template>
-      <template #cell-selisih="{row}">
-        <div class="row text-weight-bold" :class="getSelisih(row)===0?'':(getSelisih(row)>0?'text-orange':'text-negative')">
+      <template #cell-selisih="{ row }">
+        <div class="row text-weight-bold"
+          :class="getSelisih(row) === 0 ? '' : (getSelisih(row) > 0 ? 'text-orange' : 'text-negative')">
           {{ getSelisih(row) }}
         </div>
       </template>
-      <template #cell-keterangan="{row}">
+      <template #cell-keterangan="{ row }">
         <!-- label="Keterangan" -->
         <div class="q-px-none" style="min-width: 200px; ">
-          <q-input
-            v-model="row.keterangan"
-            outlined
-            dense
-            standout="bg-yellow-3"
-            type="textarea"
-            :loading="row.loadingSimpan"
-            :disable="row.loadingSimpan"
-            valid
-          >
-            <q-tooltip class="bg-white text-weight-bold" anchor="center right" self="center left" :offset="[15,0]">
+          <q-input v-model="row.keterangan" outlined dense standout="bg-yellow-3" type="textarea"
+            :loading="row.loadingSimpan" :disable="row.loadingSimpan" valid>
+            <q-tooltip class="bg-white text-weight-bold" anchor="center right" self="center left" :offset="[15, 0]">
               <div class="row text-orange f-12">
                 Keterangan
               </div>
@@ -209,63 +141,30 @@
           </q-input>
         </div>
       </template>
-      <template #left-acttion="{row}">
+      <template #left-acttion="{ row }">
         <div>
           <div class="row q-mr-md q-my-sm">
-            <q-btn
-              v-if="tutup(row)"
-              class=""
-              size="sm"
-              color="primary"
-              label="Simpan"
-              no-caps
-              :loading="row?.loadingSimpan"
-              :disable="row?.loadingSimpan || row?.loadingSimpanKet"
-              @click="simpanFisik(row)"
-            >
-              <q-tooltip
-                anchor="top middle"
-                self="center middle"
-              >
+            <q-btn v-if="tutup(row)" class="" size="sm" color="primary" label="Simpan" no-caps
+              :loading="row?.loadingSimpan" :disable="row?.loadingSimpan || row?.loadingSimpanKet"
+              @click="simpanFisik(row)">
+              <q-tooltip anchor="top middle" self="center middle">
                 Simpan Fisik
               </q-tooltip>
             </q-btn>
           </div>
           <div class="row q-mr-md q-my-sm">
-            <q-btn
-              class=""
-              size="sm"
-              color="orange"
-              label="Simpan Keterangan saja"
-              no-caps
-              :loading="row?.loadingSimpanKet"
-              :disable="row?.loadingSimpan || row?.loadingSimpanKet"
-              @click="simpanKeterangan(row)"
-            >
-              <q-tooltip
-                anchor="top middle"
-                self="center middle"
-              >
+            <q-btn class="" size="sm" color="orange" label="Simpan Keterangan saja" no-caps
+              :loading="row?.loadingSimpanKet" :disable="row?.loadingSimpan || row?.loadingSimpanKet"
+              @click="simpanKeterangan(row)">
+              <q-tooltip anchor="top middle" self="center middle">
                 Simpan Keterangan
               </q-tooltip>
             </q-btn>
           </div>
           <div class="row q-mr-md q-my-sm">
-            <q-btn
-              v-if="role===1"
-              class=""
-              size="sm"
-              color="dark"
-              label="Re-Stok Opname"
-              no-caps
-              :loading="row?.loadingRe"
-              :disable="row?.loadingRe"
-              @click="editData(row)"
-            >
-              <q-tooltip
-                anchor="top middle"
-                self="center middle"
-              >
+            <q-btn v-if="role === 1" class="" size="sm" color="dark" label="Re-Stok Opname" no-caps
+              :loading="row?.loadingRe" :disable="row?.loadingRe" @click="editData(row)">
+              <q-tooltip anchor="top middle" self="center middle">
                 Re-stok
               </q-tooltip>
             </q-btn>
@@ -344,15 +243,12 @@ function getSelisih (row) {
   return formatDouble(selisih, 2)
 }
 function tutup (val) {
+
   const date1 = new Date(table.now)
-  // const date1 = new Date('2024/08/07')
   const date2 = new Date(table.params.to + ' 23:59:59')
-  // const diff = date.getDateDiff(date1, date2, 'minutes')
   const diff = date.getDateDiff(date1, date2, 'days')
-  const minim = diff < 0 ? (diff >= -10 && !diff >= 0) : (diff <= 7)
-  // console.log('table param', diff, minim, (diff >= -10 && !diff >= 0), (diff <= 7))
-  // console.log('table param', date1, date2, table.params.to, diff,role.value)
-  // return role.value === 1 ? true : !(diff > 0)
+  const minim = diff < 0 ? (diff >= -(table.tutupOpnames?.min_tutup ?? 10) && !diff >= 0) : (diff <= (table.tutupOpnames?.max_tutup ?? 7))
+  console.log('tutup', table.tutupOpnames, minim, diff)
   return minim
 }
 </script>

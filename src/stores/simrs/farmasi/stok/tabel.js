@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { date } from 'quasar'
 import { api } from 'src/boot/axios'
-import { notifSuccess } from 'src/modules/utils'
+import { notifCenterVue, notifSuccess } from 'src/modules/utils'
 
 export const UseFarmasiStokTable = defineStore('tabel_stok', {
   state: () => ({
@@ -26,7 +26,8 @@ export const UseFarmasiStokTable = defineStore('tabel_stok', {
     ],
     columnHide: [],
     keterangan: 'keterangan',
-    now: null
+    now: null,
+    tutupOpnames: null
   }),
   actions: {
     setParam (key, val) {
@@ -65,6 +66,15 @@ export const UseFarmasiStokTable = defineStore('tabel_stok', {
     getInitialData () {
       // this.getDataTable()
       this.getDataGudang()
+      this.getTutupOpnames()
+    },
+    async getTutupOpnames () {
+      await api.get('v1/simrs/farmasinew/penerimaan/tutupopname')
+        .then(resp => {
+          this.tutupOpnames = resp?.data
+          console.log('tutup', this.tutupOpnames)
+
+        })
     },
     async getDataGudang () {
       this.loading = true
@@ -127,19 +137,20 @@ export const UseFarmasiStokTable = defineStore('tabel_stok', {
       })
     },
     tutupOpname (val) {
-      this.loadingTutup = true
-      return new Promise(resolve => {
-        api.post('v1/simrs/farmasinew/penerimaan/tutup-opname', val)
-          .then(resp => {
-            this.loadingTutup = false
-            notifSuccess(resp)
-            this.tutup = true
-            resolve(resp)
-          })
-          .catch(() => {
-            this.loadingTutup = false
-          })
-      })
+      notifCenterVue('Menu ini belum digunakan')
+      // this.loadingTutup = true
+      // return new Promise(resolve => {
+      //   api.post('v1/simrs/farmasinew/penerimaan/tutup-opname', val)
+      //     .then(resp => {
+      //       this.loadingTutup = false
+      //       notifSuccess(resp)
+      //       this.tutup = true
+      //       resolve(resp)
+      //     })
+      //     .catch(() => {
+      //       this.loadingTutup = false
+      //     })
+      // })
     }
   }
 })
