@@ -47,21 +47,35 @@
         </div>
 
         <q-separator class="q-my-sm"></q-separator>
-        <q-form class="row full-width" @submit.prevent="onSubmit">
-          <q-input v-model="form.notasi" outlined stack-label type="textarea" standout="bg-yellow-3" class="full-width"
-            :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" :lazy-rules="true" rows="10" hide-bottom-space />
-          <div class="full-width">
-            <q-separator class="col-auto q-my-lg"></q-separator>
-            <q-btn :loading="loading" :disable="loading" color="primary" size="md" no-caps type="submit">Simpan
-              Notasi</q-btn>
-          </div>
-        </q-form>
+        <div v-if="(item.user === auth.user.pegawai.kdpegsimrs)">
+          <q-form class="row full-width" @submit.prevent="onSubmit">
+            <q-input v-model="form.notasi" outlined stack-label type="textarea" standout="bg-yellow-3"
+              class="full-width" :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" :lazy-rules="true" rows="10"
+              hide-bottom-space />
+            <div class="full-width">
+              <q-separator class="col-auto q-my-lg"></q-separator>
+              <q-btn :loading="loading" :disable="loading" color="primary" size="md" no-caps type="submit">Simpan
+                Notasi</q-btn>
+            </div>
+          </q-form>
+        </div>
 
+        <div v-else>
+          <div v-if="isNotasiTgl">
+            <div> <b>Tanggal Notasi</b> : {{ dateFullFormat(isNotasiTgl?.tanggal) || '-' }}</div>
+            <div> <b> Notasi</b> : {{ isNotasiTgl?.notasi || '-' }}</div>
+            <div> <b> Oleh</b> : {{ isNotasiTgl?.petugas?.nama || '-' }}</div>
+          </div>
+          <div v-else>
+            <div>Belum ada notasi</div>
+          </div>
+          <!-- {{ isNotasiTgl }} -->
+        </div>
       </q-card-section>
-      <!-- <div class="col-auto">
+      <div class="col-auto">
         <q-separator />
-        Bottom
-      </div> -->
+        <!-- {{ auth.user.pegawai.kdpegsimrs }}, {{ item.user }} -->
+      </div>
     </q-card>
   </q-dialog>
 </template>
@@ -72,7 +86,7 @@
 import { computed, defineAsyncComponent, onMounted, onUnmounted, ref } from 'vue'
 import { api } from 'boot/axios'
 import { notifSuccessVue } from 'src/modules/utils'
-import { dateFullFormat } from 'src/modules/formatter'
+import { dateFullFormat, dateFilter } from 'src/modules/formatter'
 
 const props = defineProps({
   item: {
@@ -87,6 +101,10 @@ const props = defineProps({
     type: Object,
     default: null
   },
+  auth: {
+    type: Object,
+    default: null
+  }
 })
 
 const emits = defineEmits(['onHide', 'onClick', 'exit'])
@@ -98,11 +116,21 @@ const form = ref({
 })
 
 const loading = ref(false)
+const isLewatTgl = ref(false)
 
 
 const onShow = () => {
   // console.log('onShow', props.store.notasis)
   // console.log('onShow item', props.item)
+
+  const today = new Date();
+  today?.setHours(0, 0, 0, 0); // Reset waktu ke awal hari
+
+  const tanggal = props.item?.tgl
+
+  const tanggalLewat = dateFilter(tanggal) < dateFilter(today)
+  console.log('tanggal lewat', tanggalLewat);
+  isLewatTgl.value = tanggalLewat
 
   initForm()
 
@@ -130,11 +158,13 @@ const initForm = () => {
     resetForm()
   }
 
-  // console.log('form', form.value);
-
-
-
 }
+
+const isNotasiTgl = computed(() => {
+  const notasi = props?.store?.notasis?.find((x) => x?.tanggal?.includes(dateFilter(props.item?.tgl))) || null
+
+  return notasi
+})
 
 const onSubmit = async () => {
   form.value.cppt_id = props.item.id
@@ -151,6 +181,15 @@ const onSubmit = async () => {
     if (resp.status === 200) {
       form.value.notasi = result?.notasi
       props.store.getNotasiDpjp(props?.pasien?.noreg)
+
+      const cppt = props.pasien.cppt?.find(x => x.id === props.item.id)
+
+      if (cppt) {
+        cppt.notasi_dpjp = result
+      }
+
+      // console.log('inject notasi pasien di cppt', cppt);
+
     }
 
     notifSuccessVue('Notasi Berhasil disimpan')

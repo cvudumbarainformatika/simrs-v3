@@ -272,6 +272,8 @@
                   <span v-if="cppt?.nakes !== '5'" v-html="getNewLine(cppt?.instruksi ?? '-')" />
                 </td>
                 <td v-if="i === 0" :rowspan="cariRowspan(dateCppt(cppt?.tgl))" class="text-center f-12">
+
+                  <div class="q-pb-md">{{ cariNotasiByTgl(cppt)?.notasi || '' }}</div>
                   <vue-qrcode :value="qrUrl" tag="svg" :options="{
                     errorCorrectionLevel: 'Q',
                     color: {
@@ -443,6 +445,7 @@
 import { dateCppt, getNewLine, jamTnpDetik } from 'src/modules/formatter'
 import useCppt from './useCppt'
 import { computed } from 'vue'
+import { dateFilter } from 'src/modules/formatter'
 
 const props = defineProps({
   pasien: {
@@ -450,6 +453,10 @@ const props = defineProps({
     default: null
   },
   menu: {
+    type: Object,
+    default: null
+  },
+  store: {
     type: Object,
     default: null
   },
@@ -469,7 +476,14 @@ const emits = defineEmits(['openEws'])
 
 const { data } = useCppt(props?.pasien)
 
-console.log('data', data);
+// console.log('data', data);
+
+const cariNotasiByTgl = (item) => {
+
+  const notasi = props?.store?.notasis?.find((x) => x?.tanggal?.includes(dateFilter(item?.tgl))) || null
+
+  return notasi
+}
 
 
 const listFilterredByDate = computed(() => {

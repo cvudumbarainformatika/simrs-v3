@@ -25,22 +25,24 @@
                 <div>
 
                   <div v-if="item?.nakes === '1'">
-                    <q-btn v-if="item?.notasi_dpjp" size="sm" rounded outline color="primary" label="Notasi DPJP"
+                    <q-btn v-if="(item?.notasi_dpjp) || (!isNotasiTgl(item)?.length && !isTanggalLewat(item))" size="sm"
+                      rounded outline :color="item?.notasi_dpjp ? 'primary' : 'negative'"
+                      :label="item?.notasi_dpjp ? 'Edit Notasi DPJP' : 'Belum Ada Notasi DPJP'"
                       @click="handleOpenNotasiDPJP(item)">
                     </q-btn>
-                    <q-badge v-else outline color="teal" class="q-px-sm q-py-xs">{{
+                    <!-- <q-btn v-else outline color="teal" size="sm" @click="handleOpenNotasiDPJP(item)">{{
                       isNotasiTgl(item) ?
-                        'Sudah Ada Notasi' : '' }}</q-badge>
+                        'Lihat Notasi' : 'Notasi Dpjp' }}</q-btn> -->
                   </div>
-                  <div v-else-if="item?.nakes !== '1' && isNotasiTgl(item)">
-                    <q-badge outline color="teal" class="q-px-sm q-py-xs">{{
+                  <!-- <div v-else-if="item?.nakes !== '1' && isNotasiTgl(item)">
+                    <q-btn outline color="teal" size="sm" @click="handleOpenNotasiDPJP(item)">{{
                       isNotasiTgl(item) ?
-                        'Sudah Ada Notasi' : '' }}</q-badge>
-                  </div>
+                        'Lihat Notasi' : '' }}</q-btn>
+                  </div> -->
                 </div>
                 <div v-if="auth?.user?.pegawai?.kdpegsimrs === item?.user">
                   <q-btn round flat size="sm" icon="icon-mat-delete" color="negative" @click="deleteItem(item)">
-                    <q-tooltip> Hapus </q-tooltip>
+                    <q-tooltip> Hapus Cppt </q-tooltip>
                   </q-btn>
                 </div>
                 <div>
@@ -397,7 +399,7 @@
       }" />
 
     <DialogNotasiDpjp v-model="openNotasi" :item="itemx" :pasien="props.pasien" @on-hide="itemx = null"
-      @exit="openNotasi = false" :store="store" />
+      @exit="openNotasi = false" :store="store" :auth="auth" />
   </div>
 </template>
 
@@ -426,19 +428,33 @@ const props = defineProps({
 
 const openNotasi = ref(false)
 const itemx = ref(null)
+const isLewatTgl = ref(false)
 
-const handleOpenNotasiDPJP = (item) => {
-  openNotasi.value = true
-  itemx.value = item
 
+
+
+const isTanggalLewat = (item) => {
+  const tanggal = item?.tgl
+
+  const today = new Date();
+  today?.setHours(0, 0, 0, 0); // Reset waktu ke awal hari
+
+  const tanggalLewat = dateFilter(tanggal) < dateFilter(today)
+  // console.log('tanggal lewat', tanggalLewat);
+  // console.log('tgl', tanggalLewat);
+  return tanggalLewat
+
+  // const notasis = props?.notasis?.find((x) => x?.tanggal?.includes(dateFilter(item?.tgl)))
+  // return notasis
 }
-
 const isNotasiTgl = (item) => {
-  const notasis = props?.notasis?.find((x) => x?.tanggal?.includes(dateFilter(item?.tgl)))
+
+  const notasis = props?.notasis?.filter((x) => x?.tanggal?.includes(dateFilter(item?.tgl)))
+  // console.log('notasis', notasis);
+
   return notasis
 }
 
-// console.log('props', props?.pasien)
 
 // eslint-disable-next-line no-unused-vars
 const {
@@ -460,14 +476,22 @@ const {
   store, storePenilaian, storeDiagnosaKeperawatan
 } = useForm(props?.pasien)
 
+const handleOpenNotasiDPJP = (item) => {
+  // console.log(item);
+
+
+
+  openNotasi.value = true
+  itemx.value = item
+
+}
+
 const items = computed(() => {
-  // function aturCppt (pasien) {
-  //   const cppt = pasien?.cppt
-  //   data.cppt = cppt?.sort((a, b) => a?.id - b?.id) ?? []
-  // }
   const cppt = store.items
   return cppt?.sort((a, b) => b?.id - a?.id)
 })
+
+// console.log('props', items.value)
 
 function getNewLine(text) {
   // console.log('text', text)
@@ -541,7 +565,7 @@ const validInput = (val) => {
 const $q = useQuasar()
 
 const deleteItem = (item) => {
-  console.log('delete', item)
+  // console.log('delete', item)
   $q.dialog({
     dark: true,
     title: 'Peringatan',
