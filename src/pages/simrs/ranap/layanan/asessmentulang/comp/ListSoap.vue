@@ -16,16 +16,27 @@
             <q-item-section caption>
               <div class="">
                 <span class="text-weight-bold">PPA</span> <span class="text-weight-medium">- {{ item?.petugas?.nama
-                }}</span>
+                  }}</span>
               </div>
             </q-item-section>
 
             <q-item-section side>
               <div class="flex q-gutter-lg items-center">
                 <div>
-                  <q-btn v-if="item?.nakes === '1'" size="sm" rounded outline color="primary" label="Notasi DPJP"
-                    @click="handleOpenNotasiDPJP(item)">
-                  </q-btn>
+
+                  <div v-if="item?.nakes === '1'">
+                    <q-btn v-if="item?.notasi_dpjp" size="sm" rounded outline color="primary" label="Notasi DPJP"
+                      @click="handleOpenNotasiDPJP(item)">
+                    </q-btn>
+                    <q-badge v-else outline color="teal" class="q-px-sm q-py-xs">{{
+                      isNotasiTgl(item) ?
+                        'Sudah Ada Notasi' : '' }}</q-badge>
+                  </div>
+                  <div v-else-if="item?.nakes !== '1' && isNotasiTgl(item)">
+                    <q-badge outline color="teal" class="q-px-sm q-py-xs">{{
+                      isNotasiTgl(item) ?
+                        'Sudah Ada Notasi' : '' }}</q-badge>
+                  </div>
                 </div>
                 <div v-if="auth?.user?.pegawai?.kdpegsimrs === item?.user">
                   <q-btn round flat size="sm" icon="icon-mat-delete" color="negative" @click="deleteItem(item)">
@@ -391,11 +402,12 @@
 </template>
 
 <script setup>
-import { dateFullFormat, jamTnpDetik } from 'src/modules/formatter'
+import { dateFullFormat, jamTnpDetik, dateFilter } from 'src/modules/formatter'
 import { computed, defineAsyncComponent, ref } from 'vue'
 import useForm from './useForm'
 import { notifBottomVue } from 'src/modules/utils'
 import { useQuasar } from 'quasar'
+
 
 const ItemNyeri = defineAsyncComponent(() => import('./itemlist/ItemNyeri.vue'))
 const DialogFormItem = defineAsyncComponent(() => import('./dialogformchild/DialogFormItem.vue'))
@@ -419,6 +431,11 @@ const handleOpenNotasiDPJP = (item) => {
   openNotasi.value = true
   itemx.value = item
 
+}
+
+const isNotasiTgl = (item) => {
+  const notasis = props?.notasis?.find((x) => x?.tanggal?.includes(dateFilter(item?.tgl)))
+  return notasis
 }
 
 // console.log('props', props?.pasien)
