@@ -39,6 +39,10 @@
               <div style="width:15%" class="text-bold">Usia </div>
               <div> : {{ pasien?.usia }}</div>
             </div>
+            <div v-if="notasix" class="row full-width">
+              <div style="width:15%" class="text-bold">CPPT Tgl </div>
+              <div> : {{ dateFullFormat(notasix?.tanggal) }}</div>
+            </div>
           </div>
         </div>
 
@@ -68,6 +72,7 @@
 import { computed, defineAsyncComponent, onMounted, onUnmounted, ref } from 'vue'
 import { api } from 'boot/axios'
 import { notifSuccessVue } from 'src/modules/utils'
+import { dateFullFormat } from 'src/modules/formatter'
 
 const props = defineProps({
   item: {
@@ -104,7 +109,13 @@ const onShow = () => {
 }
 
 const notasix = computed(() => {
-  return props.store.notasis.filter(x => x?.cppt_id === props.item.id) || []
+  const notasis = props.store.notasis.filter(x => x?.cppt_id === props.item.id) || []
+  // console.log('notasis', notasis);
+
+  if (notasis.length) {
+    return notasis[0]
+  }
+  return null
 })
 
 const initForm = () => {
@@ -119,7 +130,7 @@ const initForm = () => {
     resetForm()
   }
 
-  console.log('form', form.value);
+  // console.log('form', form.value);
 
 
 
@@ -135,9 +146,10 @@ const onSubmit = async () => {
 
   try {
     const resp = await api.post('v1/simrs/ranap/layanan/cppt/simpanNotasi', formData)
-    console.log('resp notasi', resp);
-
+    // console.log('resp notasi', resp);
+    const result = resp?.data?.result || null
     if (resp.status === 200) {
+      form.value.notasi = result?.notasi
       props.store.getNotasiDpjp(props?.pasien?.noreg)
     }
 
