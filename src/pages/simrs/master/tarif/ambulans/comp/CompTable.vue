@@ -177,7 +177,7 @@
           </td>
         </tr>
       </template>
-      <template v-else-if="!items?.length">
+      <template v-else-if="!items?.length && !loading">
         <tr>
           <td colspan="18">
             <app-no-data />

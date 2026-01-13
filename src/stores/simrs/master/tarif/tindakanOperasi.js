@@ -150,15 +150,27 @@ export const useMasterTindakanOperasiStore = defineStore('master_tindakan_operas
     // api related function
     async getDataTable () {
       this.loading = true
-      const param = { params: this.params }
-      await api.get('v1/simrs/master/tarif/tindakan-operasi/list', param)
-        .then(resp => {
-          this.loading = false
-          // console.log('resp tarif tindakan op', resp.data)
-          this.meta = resp.data?.meta ?? resp.data
-          this.items = resp.data.data
-        })
-        .catch(() => { this.loading = false })
+
+
+      try {
+        const param = { params: this.params }
+        const resp = await api.get('v1/simrs/master/tarif/tindakan-operasi/list', param)
+        this.meta = resp.data?.meta ?? resp.data
+        this.items = resp.data.data
+      } catch (e) {
+        notifErrVue(e?.response?.data?.message)
+      } finally {
+        this.loading = false
+      }
+      // const param = { params: this.params }
+      // await api.get('v1/simrs/master/tarif/tindakan-operasi/list', param)
+      //   .then(resp => {
+      //     this.loading = false
+      //     // console.log('resp tarif tindakan op', resp.data)
+      //     this.meta = resp.data?.meta ?? resp.data
+      //     this.items = resp.data.data
+      //   })
+      //   .catch(() => { this.loading = false })
     },
     setTglMulaiBerlaku (payload) {
       const besok = date.addToDate(new Date(), { days: 1 })

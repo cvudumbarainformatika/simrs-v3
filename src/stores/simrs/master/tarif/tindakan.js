@@ -217,15 +217,26 @@ export const useMasterTindakanJsJpStore = defineStore('master_tindakan_js_jp', {
     },
     async getDataTable () {
       this.loading = true
-      const param = { params: this.params }
-      await api.get('v1/simrs/master/listtindakan', param)
-        .then(resp => {
-          this.loading = false
-          // console.log('resp tindakan', resp.data)
-          this.meta = resp.data
-          this.items = resp.data.data
-        })
-        .catch(() => { this.loading = false })
+
+      try {
+        const param = { params: this.params }
+        const resp = await api.get('v1/simrs/master/listtindakan', param)
+        this.meta = resp.data?.meta ?? resp.data
+        this.items = resp.data.data
+      } catch (e) {
+        notifErrVue(e?.response?.data?.message)
+      } finally {
+        this.loading = false
+      }
+      // const param = { params: this.params }
+      // await api.get('v1/simrs/master/listtindakan', param)
+      //   .then(resp => {
+      //     this.loading = false
+      //     // console.log('resp tindakan', resp.data)
+      //     this.meta = resp.data
+      //     this.items = resp.data.data
+      //   })
+      //   .catch(() => { this.loading = false })
     },
     setTglMulaiBerlaku (payload) {
       const besok = date.addToDate(new Date(), { days: 1 })

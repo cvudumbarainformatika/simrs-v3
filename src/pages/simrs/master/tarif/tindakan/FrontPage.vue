@@ -251,7 +251,7 @@
   <div class="column">
     <div class="col-auto fixed-top" style="z-index:1; margin-top: 50px; margin-left: 55px; ">
       <HeaderComp :search="store.params.q" :per-page="store.params.per_page" :params="store.params"
-        :loading-bpjs="store.loadingBpjs" @set-tanggal="(val) => store.setDate(val)" @set-search="store.setSearch"
+        :loading-bpjs="store.loading" @set-tanggal="(val) => store.setDate(val)" @set-search="store.setSearch"
         @set-row="store.setPerPage" @refresh="store.refreshTable" @get-data="store.getDataTable"
         @new-data="store.newData" />
     </div>

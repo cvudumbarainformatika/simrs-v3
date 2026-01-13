@@ -136,15 +136,16 @@ export const useMasterTarifRadiologiStore = defineStore('master_tarif_radiologi'
     // api related function
     async getDataTable () {
       this.loading = true
-      const param = { params: this.params }
-      await api.get('v1/simrs/master/tarif/radiologi/list', param)
-        .then(resp => {
-          this.loading = false
-          // console.log('resp tarif tindakan op', resp.data)
-          this.meta = resp.data?.meta ?? resp.data
-          this.items = resp.data.data
-        })
-        .catch(() => { this.loading = false })
+      try {
+        const param = { params: this.params }
+        const resp = await api.get('v1/simrs/master/tarif/radiologi/list', param)
+        this.meta = resp.data?.meta ?? resp.data
+        this.items = resp.data.data
+      } catch (e) {
+        notifErrVue(e?.response?.data?.message)
+      } finally {
+        this.loading = false
+      }
     },
     async getType () {
       await api.get('v1/simrs/master/tarif/radiologi/type')
