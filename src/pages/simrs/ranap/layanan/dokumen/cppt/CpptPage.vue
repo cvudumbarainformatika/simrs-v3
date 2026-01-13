@@ -413,7 +413,7 @@
                       </div>
                     </div>
                     <div v-else-if="awal?.nakes === '1'">
-                      --
+                      ---
                     </div>
                   </q-item-label>
                 </td>
