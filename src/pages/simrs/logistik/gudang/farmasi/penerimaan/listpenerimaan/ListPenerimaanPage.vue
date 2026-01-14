@@ -126,6 +126,14 @@
             {{ row.jenis_penerimaan ?? '-' }}
           </div>
         </div>
+        <div class="row justify-between">
+          <div class="col-auto">
+            Jenis Pengadaan
+          </div>
+          <div class="col-auto text-weight-bold">
+            {{ row.jenis_pengadaan ?? '-' }}
+          </div>
+        </div>
         <div class="row text-italic f-10">
           {{ getGudang(row.gudang) }}
         </div>

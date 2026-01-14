@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia'
+import { acceptHMRUpdate, defineStore } from 'pinia'
 import { date } from 'quasar'
 import { api } from 'src/boot/axios'
 import { useTabelPemesananObatStore } from './tabelObat'
@@ -10,7 +10,7 @@ export const usePemesananObatStore = defineStore('pemesanan_obat_store', {
     isOpen: false,
     loading: false,
     loadingPihakTiga: false,
-    loadingAnggap:false,
+    loadingAnggap: false,
     items: [],
     param: {
       nopemesanan: '',
@@ -24,34 +24,47 @@ export const usePemesananObatStore = defineStore('pemesanan_obat_store', {
     disp: {
       tanggal: date.formatDate(Date.now(), 'DD MMMM YYYY')
     },
+
+    jenisPengadaans: [
+      { nama: 'Epurchasing' },
+      { nama: 'Pengadaan Langsung' }
+    ],
     namaPihakKetiga: '',
     pihakTigas: [],
     columns: [],
     columnHide: ['id', 'created_at', 'updated_at', 'deleted_at']
   }),
   actions: {
-    setForm(key, val) {
+    setForm (key, val) {
       this.form[key] = val
     },
-    resetForm() {
+    resetForm () {
       this.form = {
         tanggal: date.formatDate(Date.now(), 'YYYY-MM-DD'),
-        nopemesanan: ''
+        nopemesanan: '',
+        jenis_pengadaan: '',
+        catatan: ''
       }
       this.namaPihakKetiga = ''
       this.getInitialData()
       const tabel = useTabelPemesananObatStore()
       tabel.getInitialData()
     },
-    setClose() {
+    setClose () {
       this.isOpen = false
       this.resetForm()
     },
-    getInitialData() {
+    jenisPengadaanSelected (val) {
+      this.setForm('jenis_pengadaan', val)
+    },
+    clearJenisPengadaan () {
+      this.setForm('jenis_pengadaan', null)
+    },
+    getInitialData () {
       this.getPihakKetiga()
     },
 
-    getPihakKetiga() {
+    getPihakKetiga () {
       const param = { params: { nama: this.namaPihakKetiga } }
       this.loadingPihakTiga = true
       return new Promise(resolve => {
@@ -64,12 +77,14 @@ export const usePemesananObatStore = defineStore('pemesanan_obat_store', {
           })
       })
     },
-    kirimRencana(val) {
+    kirimRencana (val) {
       // console.log('kirim pesanan', val)
       const data = {
         nopemesanan: this.form.nopemesanan,
         kdpbf: this.form.kdpbf,
         gudang: this.form.gudang,
+        jenis_pengadaan: this.form.jenis_pengadaan,
+        catatan: this.form.catatan,
         noperencanaan: val.noperencanaan,
         kdobat: val.kdobat,
         kd_ruang: val.kd_ruang,
@@ -107,7 +122,7 @@ export const usePemesananObatStore = defineStore('pemesanan_obat_store', {
           .catch(() => { this.loading = false })
       })
     },
-    selesaiDanKunci() {
+    selesaiDanKunci () {
       this.loading = true
       const data = {
         nopemesanan: this.form.nopemesanan
@@ -125,7 +140,7 @@ export const usePemesananObatStore = defineStore('pemesanan_obat_store', {
           })
       })
     },
-    kunci(val) {
+    kunci (val) {
       this.loading = true
       const data = {
         nopemesanan: val
@@ -143,7 +158,7 @@ export const usePemesananObatStore = defineStore('pemesanan_obat_store', {
           })
       })
     },
-    batal(val) {
+    batal (val) {
       this.loading = true
       val.loading = true
       const tabel = useTabelPemesananObatStore()
@@ -162,7 +177,7 @@ export const usePemesananObatStore = defineStore('pemesanan_obat_store', {
           })
       })
     },
-    batalRinci(val) {
+    batalRinci (val) {
       this.loading = true
       val.loading = true
       const tabel = useTabelPemesananObatStore()
@@ -182,20 +197,24 @@ export const usePemesananObatStore = defineStore('pemesanan_obat_store', {
           })
       })
     },
-    anggapSelesaiRencana(){
-      this.loadingAnggap=true
-      return new Promise(resolve=>{
-        api.post('v1/simrs/farmasinew/pemesananobat/anggap-selesai',this.form)
-        .then(resp=>{
-          this.loadingAnggap=false
-          this.setClose()
-          notifSuccess(resp)
-          resolve(resp)
-        })
-        .catch(()=>{
-          this.loadingAnggap=false
-        })
+    anggapSelesaiRencana () {
+      this.loadingAnggap = true
+      return new Promise(resolve => {
+        api.post('v1/simrs/farmasinew/pemesananobat/anggap-selesai', this.form)
+          .then(resp => {
+            this.loadingAnggap = false
+            this.setClose()
+            notifSuccess(resp)
+            resolve(resp)
+          })
+          .catch(() => {
+            this.loadingAnggap = false
+          })
       })
     }
   }
 })
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(usePemesananObatStore, import.meta.hot))
+}
