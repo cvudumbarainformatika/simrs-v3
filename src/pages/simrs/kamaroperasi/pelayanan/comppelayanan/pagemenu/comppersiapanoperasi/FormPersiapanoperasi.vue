@@ -235,7 +235,8 @@ function validate () {
 }
 
 function simpanObat () {
-  console.log('simpan', store.form)
+  console.log('simpan', store.pasien, store.form)
+  if (!store.form?.noreg) setPasien()
   if (validate()) {
     store.simpanObat()
   }
