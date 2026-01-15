@@ -68,7 +68,7 @@
                     </div>
                     <div class="col full-width">
                       <div class="q-py-xs">
-                        : Pimpinan BLUD selaku Pengguna Anggaran RSUD Dokter Mohamad Saleh
+                        : Pimpinan BLUD selaku Kuasa Pengguna Anggaran RSUD Dokter Mohamad Saleh
                       </div>
                       <div class="q-py-xs">
                         : Bendahara Pengeluaran BLUD RSUD Dokter Mohamad Saleh

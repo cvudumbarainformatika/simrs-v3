@@ -1,13 +1,23 @@
 <template>
   <div class="column full-height q-ma-sm" style="overflow: hidden;">
     <div class="column full-height">
-      <div class="col-auto bg-primary ">
-        <div style="max-width: 900px;">
-          <q-tabs ref="tabsRef" v-model="store.tab" no-caps inline-label class="bg-primary text-white shadow-2"
-            align="left" dense active-color="yellow" active-bg-color="dark">
-            <!-- style="flex-wrap: wrap !important;"> -->
-            <q-tab v-for="(item, i) in store.tabs" :key="i" :name="item" :label="item">
+      <div class="col-auto">
+        <div class="full-width">
+          <!-- <q-tabs ref="tabsRef" v-model="store.tab" no-caps inline-label class="bg-primary text-white shadow-2"
+            align="left" dense active-color="yellow" active-bg-color="dark"> -->
 
+          <q-tabs ref="tabsRef" v-model="store.tab" dense no-caps inline-label narrow-indicator
+            indicator-color="transparent" align="left" class="bg-transparent text-grey-8 mytabs" active-color="white"
+            active-bg-color="dark" :mobile-arrows="false" :outside-arrows="false">
+            <!-- style="flex-wrap: wrap !important;"> -->
+            <!-- <q-tab v-for="(item, i) in store.tabs" :key="i" :name="item" :label="item"></q-tab> -->
+            <q-tab v-for="(tb, i) in store.tabs" :key="i" :ripple="true" :name="tb" content-class="tab-classes">
+              <template #default>
+                <div class="row q-gutter-x-xs items-center q-px-sm no-wrap" style="border-radius: 10px;">
+                  <!-- <q-icon :name="tb?.icon" size="18px" /> -->
+                  <div><strong>{{ tb }}</strong></div>
+                </div>
+              </template>
             </q-tab>
           </q-tabs>
         </div>
@@ -24,6 +34,10 @@
           <q-tab-panel name="Prosedur (Icd 9)" class="full-height q-pa-none">
             <IcdPage :pasien="props.pasien" />
           </q-tab-panel>
+
+          <q-tab-panel name="Rencana Pengobatan" class="full-height q-pa-none">
+            <RencanaPengobatan :key="props.pasien" :pasien="props.pasien" />
+          </q-tab-panel>
           <q-tab-panel name="Diagnosa Keperawatan" class="full-height q-pa-none">
             <DiagnosaKeperawatanPage :pasien="props.pasien" />
           </q-tab-panel>
@@ -35,9 +49,6 @@
           </q-tab-panel>
           <q-tab-panel name="Laporan Tindakan" class="full-height q-pa-none">
             <LaporanTindakan :key="props.pasien" :pasien="props.pasien" />
-          </q-tab-panel>
-          <q-tab-panel name="Rencana Pengobatan" class="full-height q-pa-none">
-            <RencanaPengobatan :key="props.pasien" :pasien="props.pasien" />
           </q-tab-panel>
         </q-tab-panels>
       </div>
@@ -76,3 +87,10 @@ onMounted(() => {
 })
 
 </script>
+
+<style lang="scss" scoped>
+.q-tab {
+  border-top-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+</style>

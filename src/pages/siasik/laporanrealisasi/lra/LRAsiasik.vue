@@ -354,7 +354,7 @@
                 Probolinggo {{ store.display.sekarang }}
               </div>
               <div class="text-bold">
-                Pengguna Anggaran
+                Kuasa Pengguna Anggaran
               </div>
               <div style="padding-bottom: 40px" />
               <div class="underline text-bold">
