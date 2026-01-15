@@ -201,6 +201,7 @@ export const useListPenerimaanStore = defineStore('list_penerimaan_store', {
             delete val.loading
             console.log('simpan', resp)
             val.nomorsurat = resp?.data?.data?.nomorsurat
+            val.jenis_pengadaan = resp?.data?.data?.jenis_pengadaan
             notifSuccess(resp)
             resolve(resp)
           })
