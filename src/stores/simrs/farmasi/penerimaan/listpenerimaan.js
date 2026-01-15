@@ -44,7 +44,11 @@ export const useListPenerimaanStore = defineStore('list_penerimaan_store', {
       { nama: 'penggantian barang' },
       { nama: 'Hibah' }
 
-    ]
+    ],
+    jenisPengadaans: [
+      { nama: 'Epurchasing' },
+      { nama: 'Pengadaan Langsung' }
+    ],
   }),
   actions: {
     setParam (key, val) {
@@ -103,6 +107,16 @@ export const useListPenerimaanStore = defineStore('list_penerimaan_store', {
       const lastday = curr.setFullYear(y, m + 1, 0)
       this.param.from = dateDbFormat(firstday)
       this.param.to = dateDbFormat(lastday)
+    },
+
+    jenisPengadaanSelected (evt, val) {
+      val.jenis_pengadaanedit = evt
+      console.log('jenis', evt, val)
+
+    },
+    clearJenisPengadaan (evt, val) {
+      val.jenis_pengadaanedit = null
+      console.log('clear', evt, val)
     },
     mingguIni () {
       const curr = new Date()
@@ -177,7 +191,8 @@ export const useListPenerimaanStore = defineStore('list_penerimaan_store', {
 
       const form = {
         id: val?.id,
-        nomorsurat: val?.noSuratEdit
+        nomorsurat: val?.noSuratEdit,
+        jenis_pengadaan: val?.jenis_pengadaanedit
       }
       val.loading = true
       return new Promise(resolve => {
