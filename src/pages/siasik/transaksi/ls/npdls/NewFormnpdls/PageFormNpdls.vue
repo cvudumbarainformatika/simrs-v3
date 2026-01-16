@@ -50,6 +50,7 @@ function resetFormData() {
   store.disabledx = false
   store.form.rincians = []
   store.transall = []
+  store.transallserahterima = []
   // Load initial data
   store.getDataBidang()
 }

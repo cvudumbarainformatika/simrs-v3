@@ -137,6 +137,7 @@ import { formatRpDouble } from 'src/modules/formatter'
 import { useAplikasiStore } from 'src/stores/app/aplikasi'
 import { useAuthStore } from 'src/stores/auth'
 import { dataBastFarmasiStore } from 'src/stores/siasik/transaksi/ls/newnpdls/bastfarmasi'
+import { dataBastSigarangStore } from 'src/stores/siasik/transaksi/ls/newnpdls/bastsigarang'
 import { formInputNpdlsStore } from 'src/stores/siasik/transaksi/ls/newnpdls/formnpdls'
 import { listDataNpdlsStore } from 'src/stores/siasik/transaksi/ls/newnpdls/listdatanpdls'
 import { computed, defineAsyncComponent, onMounted, ref } from 'vue'
@@ -151,6 +152,7 @@ const store = listDataNpdlsStore()
 const form = formInputNpdlsStore()
 const router = useRouter()
 const carisrt = dataBastFarmasiStore()
+const bastsigarang = dataBastSigarangStore()
 const auth = useAplikasiStore()
 const user = computed(() => auth.user?.pegawai?.kdpegsimrs)
 onMounted(() => {
@@ -259,10 +261,12 @@ function editNpdls(row) {
   form.form = editnpds.value
   form.form.pptk = editnpds.value.pptk
   form.form.kodepptk = editnpds.value.kodepptk
-  console.log('formxx', form.form)
   carisrt.reqs.kodepenerima = editnpds.value?.kodepenerima
   carisrt.reqs.kodekegiatanblud = editnpds.value?.kodekegiatanblud
+  bastsigarang.reqs.kodepenerima = editnpds.value?.kodepenerima
+  bastsigarang.reqs.kodekegiatanblud = editnpds.value?.kodekegiatanblud
   form.transall = editnpds.value?.rincian
+  bastsigarang.listBastSigarang()
   carisrt.selectbastFarmasi()
   form.reqs.kodekegiatan = editnpds.value?.kodekegiatanblud
   form.getRincianBelanja()

@@ -5,33 +5,45 @@
       <template #body="props">
         <q-tr :props="props">
           <q-td key="rincianbelanja" :props="props" class="text-left">
-            <template v-if="props.row.uraianrek50">
-              <div> {{ props?.row?.uraianrek50 }} </div>
+            <template v-if="props.row.uraianrek50 || props.row.pagu">
+              <div>{{ props?.row?.uraianrek50 ||
+                props?.row?.pagu?.uraian50 }} </div>
 
             </template>
             <template v-else>
-              <div class="text-bold">{{ props.row.nopenerimaan }}</div>
+              <div v-if="store.form.bast !== 'Sigarang'" class="text-bold">{{ props.row.nopenerimaan }}</div>
               <div>{{ props.row.rincianbelanja }}</div>
             </template>
           </q-td>
           <q-td key="koderek50" :props="props" class="text-left">
-            {{ props.row.koderek50 }}
+            <!-- <div class="text-bold text-red" v-if="tidakAdapagu(props?.row)">
+              BELUM DIANGGARKAN
+            </div>
+            <div v-else> -->
+            {{ props.row.koderek50 || props?.row?.pagu?.koderek50 }}
+            <div class="q-pl-sm">{{ props.row.koderek108 || props?.row?.pagu?.koderek108 }}</div>
+
+            <!-- </div> -->
           </q-td>
           <q-td key="itembelanja" :props="props" class="text-left">
-            {{ props.row.itembelanja }}
+            {{ props.row.itembelanja || props.row.nama_barang }}
           </q-td>
           <q-td key="nominalpembayaran" :props="props" class="text-right">
-            {{ formattanpaRp(props.row.nominalpembayaran) }}
+            {{ formattanpaRp(props.row.nominalpembayaran || props?.row?.sub_total) }}
           </q-td>
           <q-td style="width: 5%">
             <div class="row justify-center">
               <template v-if="isTransallSerahterima(props.row)">
-                <q-btn v-if="belumSave(props?.row)" size="sm" class="q-pl-md" color="green" icon="icon-mat-save"
-                  @click="saveRinciSerahterima(props?.row)" :loading="store.loadingHapus" />
+                <q-btn v-if="belumSave(props?.row) && !tidakAdapagu(props?.row)" size="sm" class="q-pl-md" color="green"
+                  icon="icon-mat-save" @click="saveRinciSerahterima(props?.row)"
+                  :loading="loadingRow[props.row.id] === true" />
+                <div v-if="tidakAdapagu(props?.row)" class="text-center text-bold text-red"> BELUM DIANGGARKAN </div>
+
               </template>
+
               <template v-else>
                 <q-btn size="sm" class="q-pl-md" color="negative" icon="icon-mat-delete"
-                  @click="deleteData(props?.row?.id)" :loading="store.loadingHapus" />
+                  @click="deleteData(props?.row?.id)" :loading="loadingRowdelete[props.row.id] === true" />
               </template>
             </div>
 
@@ -65,31 +77,32 @@ onMounted(() => {
   store.getRincianBelanja()
 })
 
-
+const loadingRow = ref({})
+const loadingRowdelete = ref({})
 const store = formInputNpdlsStore()
 const tablerinci = [
   {
     label: 'Rincian Belanja',
     name: 'rincianbelanja',
-    align: 'center',
+    align: 'left',
     field: 'rincianbelanja'
   },
   {
     label: 'Rekening',
     name: 'koderek50',
-    align: 'center',
+    align: 'left',
     field: 'koderek50'
   },
   {
     label: 'Item Belanja',
     name: 'itembelanja',
-    align: 'center',
-    field: 'itembelanja'
+    align: 'left',
+    field: 'itembelanja || nama_barang'
   },
   {
-    label: 'Jumlah',
+    label: 'Jumlah (Rp)',
     name: 'nominalpembayaran',
-    align: 'center',
+    align: 'right',
     field: 'nominalpembayaran'
   },
   {
@@ -118,7 +131,7 @@ function isTransallSerahterima(row) {
 
 function subtotal() {
   const subtotalrinci = displayRows.value
-    .map((x) => parseFloat(x.nominalpembayaran))
+    .map((x) => parseFloat(x.nominalpembayaran || x?.sub_total))
     .reduce((a, b) => a + b, 0);
   return subtotalrinci;
 }
@@ -126,11 +139,11 @@ function subtotal() {
 function belumSave(row) {
   const bast_id = row?.id
   const transall = store.transall
-  console.log('transall', store.transall)
+  // console.log('transall', store.transall)
 
   const rinciannpd = transall.find((x) => x?.bast_r_id === bast_id) ?? null
 
-  console.log('row belumSave', rinciannpd)
+  // console.log('row belumSave', rinciannpd)
   let gantitombol = true
   if (rinciannpd) {
     gantitombol = false
@@ -139,111 +152,128 @@ function belumSave(row) {
   }
   return gantitombol
 }
-
-function saveRinciSerahterima(row) {
-
-  console.log('row', row)
-  store.reqs.rekening50 = row.koderek50
-  store.filterItemBelanja()
-  const arrblj = store.itembelanja
-  // console.log('arrblj', arrblj, store.reqs.rekening50)
-  const cari = arrblj.find(x => x.idpp === row.idserahterima_rinci)
-  // console.log('cari', cari)
-  store.rinci.sisapagu = cari.sisapagu
-
-
-
-  store.rinci.koderek50 = row.koderek50
-  store.rinci.rincianbelanja = row.uraianrek50
-  store.rinci.koderek108 = row.koderek108
-  store.rinci.uraian108 = row.uraian108
-  store.rinci.itembelanja = row.itembelanja
-
-  store.rinci.bast_r_id = row.id
-  store.rinci.idserahterima_rinci = row.idserahterima_rinci
-
-  store.rinci.volume = row.volume
-  store.rinci.satuan = row.satuan
-  store.rinci.harga = row.harga
-  store.rinci.total = row.total
-
-  store.rinci.volumels = row.volumels
-  store.rinci.hargals = row.hargals
-  store.rinci.totalls = row.totalls
-  store.rinci.nominalpembayaran = row.nominalpembayaran
-
-  console.log('store.rinci', store.rinci.nominalpembayaran > store.rinci.sisapagu)
-
-  if (store.rinci.nominalpembayaran > store.rinci.sisapagu) {
-    store.form.rincians = []
-    console.log('jumlah', store.rinci.nominalpembayaran > store.rinci.sisapagu)
-
-    return notifErrVue('Maaf Pengajuan Lebih dari Sisa Pagu')
+function tidakAdapagu(row) {
+  if (store.form.bast === 'Sigarang') {
+    const pagu = row?.pagu
+    return !pagu
   }
-  // else {
-  //   notifErrVue('SUKSES')
-  // }
-  else {
+
+}
+
+function resetRinci() {
+  Object.assign(store.rinci, {
+    koderek50: '',
+    rincianbelanja: '',
+    koderek108: '',
+    uraian108: '',
+    itembelanja: '',
+    idserahterima_rinci: '',
+    volume: '',
+    satuan: '',
+    harga: '',
+    total: '',
+    sisapagu: '',
+    volumels: '',
+    hargals: '',
+    totalls: '',
+    nominalpembayaran: '',
+    nopenerimaan: '',
+    bast_r_id: ''
+  })
+}
+async function saveRinciSerahterima(row) {
+  loadingRow.value[row.id] = true
+  try {
+    // console.log('row', row)
+    store.reqs.rekening50 = row.koderek50
+    store.filterItemBelanja()
+    const arrblj = store.itembelanja
+    const cari = arrblj.find(x => x.idpp === row.idserahterima_rinci)
+
+    if (cari) {
+      store.rinci.sisapagu = cari.sisapagu
+    } else {
+      store.rinci.sisapagu = Number(row.pagu?.pagu) -
+        (
+          row?.pagu?.realisasi.map((x) => Number(x.nominalpembayaran)).reduce((a, b) => a + b, 0) +
+          row?.pagu?.realisasi_spjpanjar.map((x) => Number(x.jumlahbelanjapanjar)).reduce((a, b) => a + b, 0) -
+          row?.pagu?.contrapost.map((x) => Number(x.nominalcontrapost)).reduce((a, b) => a + b, 0)
+        )
+    }
+
+    store.rinci.nopenerimaan = row?.id
+    store.rinci.koderek50 = row.koderek50 || row?.pagu?.koderek50
+    store.rinci.rincianbelanja = row.uraianrek50 || row?.pagu?.uraian50
+    store.rinci.koderek108 = row.koderek108 || row?.pagu?.koderek108
+    store.rinci.uraian108 = row.uraian108 || row?.pagu?.uraian108
+    store.rinci.itembelanja = row.itembelanja || row?.nama_barang
+
+    store.rinci.bast_r_id = row.id
+    store.rinci.idserahterima_rinci = row?.pagu?.idpp
+
+    store.rinci.volume = row.volume || row?.pagu?.volume
+    store.rinci.satuan = row.satuan || row?.pagu?.satuan
+    store.rinci.harga = row.harga || row?.pagu?.harga
+    store.rinci.total = row.total || row?.pagu?.pagu
+
+    store.rinci.volumels = row.volumels || row?.qty
+    store.rinci.hargals = row.hargals || row?.satuan_besar
+    store.rinci.totalls = row.totalls || row?.harga_jadi
+    store.rinci.nominalpembayaran = row.nominalpembayaran || row?.sub_total
+    // console.log('row rinci', store.rinci)
+    // console.log('store.rinci', store.rinci.nominalpembayaran > store.rinci.sisapagu)
+
+    if (store.rinci.nominalpembayaran > store.rinci.sisapagu) {
+      store.form.rincians = []
+      // console.log('jumlah', store.rinci.nominalpembayaran > store.rinci.sisapagu)
+      notifErrVue('Maaf Pengajuan Lebih dari Sisa Pagu')
+      return
+    }
+
     store.form.rincians.push(store.rinci)
-    store.simpanNpdls().then(() => {
-      store.rinci.koderek50 = ''
-      store.rinci.rincianbelanja = ''
-      store.rinci.koderek108 = ''
-      store.rinci.uraian108 = ''
-      store.rinci.itembelanja = ''
-      store.rinci.idserahterima_rinci = ''
-      store.rinci.volume = ''
-      store.rinci.satuan = ''
-      store.rinci.harga = ''
-      store.rinci.total = ''
-      store.rinci.sisapagu = ''
-      store.rinci.volumels = ''
-      store.rinci.hargals = ''
-      store.rinci.totalls = ''
-      store.rinci.nominalpembayaran = ''
-      store.disabledx = true
-      store.refreshTable()
-      // store.listrincians()
-      // console.log('store.transall', store.transall)
-    })
+    await store.simpanNpdls()
+    store.refreshTable()
+    store.disabledx = true
+    resetRinci()
+  } catch (e) {
+    notifErrVue('Gagal menyimpan data')
+  } finally {
+    loadingRow.value[row.id] = false
   }
 }
-function deleteData(row) {
-  // console.log('row', row)
-  $q.dialog({
+async function deleteData(row) {
+  const ok = await $q.dialog({
     title: 'Peringatan',
     message: 'Apakah Data ini akan dihapus?',
     cancel: true,
     persistent: true
-  }).onOk(() => {
+  }).onOk(() => true).onCancel(() => false)
 
-    const payload = {
-      nonpdls: store.form.nonpdls,
-      id: row,
-      nopenerimaan: store.form.noserahterima,
+  if (!ok) return
 
+  const payload = {
+    nonpdls: store.form.nonpdls,
+    id: row,
+    nopenerimaan: store.form.noserahterima
+  }
+
+  loadingRowdelete.value[row] = true
+
+  try {
+    await store.hapusRinci(payload)
+    store.refreshTable()
+
+    if (store.transall?.length === 0) {
+      store.initForm()
     }
-    console.log('payload', payload)
-    store.hapusRinci(payload).then(() => {
-      store.loadingHapus = true
-      // carisrt.refreshTable()
-      store.refreshTable()
-      if (store.transall?.length === 0) {
-        store.initForm()
-
-      }
-      // console.log('data hapus', store.transall)
+  } catch (e) {
+    $q.notify({
+      type: 'negative',
+      message: 'Gagal menghapus data'
     })
-    // store.setForm = props?.row
-    // console.log('vv', store.hapusRinci(row))
-    // const params = { id: selected.value }
-    // emits('deleteIds', selected.value)
-  }).onCancel(() => {
-    console.log('Cancel')
-    selected.value = []
-  }).onDismiss(() => {
-    // console.log('I am triggered on both OK and Cancel')
-  })
+  } finally {
+    loadingRowdelete.value[row] = false
+  }
 }
 
 </script>

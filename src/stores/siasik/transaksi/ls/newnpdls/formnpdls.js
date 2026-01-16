@@ -150,6 +150,7 @@ export const formInputNpdlsStore = defineStore('forminput_NPD_LS', {
     dialogCetakNpd: false,
     openDialogFarmasi: false,
     openDialogSiasik: false,
+    openDialogSigarang: false,
     openDialogRinci: false,
     openDialogPajak: false,
   }),
@@ -389,9 +390,10 @@ export const formInputNpdlsStore = defineStore('forminput_NPD_LS', {
           if (resp.status === 200) {
             this.transall = resp.data
             // console.log('hasilall', this.transall)
-            this.loading = false
-            resolve(resp)
+
           }
+          this.loading = false
+          resolve(resp)
         }).catch(() => { this.loading = false })
       })
     },

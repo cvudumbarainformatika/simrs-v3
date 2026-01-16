@@ -69,21 +69,26 @@
             <div class="q-px-md">
               <q-btn color="dark" round size="sm" :loading="store.loading" icon="icon-mat-add"
                 :source="store.dariserahterima" @click="() => {
+                  console.log('store.form.bast', bastsigarang.reqs)
                   carisrt.reqs.kodebast = ''
-                  store.openDialogFarmasi = true
+                  if (store.form.bast === 'Farmasi') return store.openDialogFarmasi = true
+                  if (store.form.bast === 'Sigarang') return store.openDialogSigarang = true
+                  if (store.form.bast === 'Siasik') return store.openDialogSiasik = true
                 }" />
             </div>
           </div>
         </template>
         <app-input-simrs style="width: 50%;" v-model="store.form.biayatransfer" label="Biaya Administrasi" outlined
           :autofocus="false" :valid="{ required: true, number: true }" :disable="store.disabled" />
-        <div v-if="store.form?.bast === 'Siasik' && store.transall.length > 0" class="row items-center q-gutter-y-md">
+        <div v-if="(store.form?.bast === 'Siasik' || store.form?.bast === 'Sigarang') && store.transall.length > 0"
+          class="row items-center q-gutter-y-md">
           <app-btn label="Tambah Pajak" class="bg-orange-8" :disable="store.loading" :loading="store.loading"
             @click="tambahPajak()" />
         </div>
 
       </div>
       <select-serahterima v-model="store.openDialogFarmasi" :key="carisrt.reqs.kodepenerima" />
+      <select-serahterimasigarang v-model="store.openDialogSigarang" :key="bastsigarang.reqs.kodepenerima" />
       <select-serahterimapekerjaan v-model="store.openDialogSiasik" />
       <div class="q-px-sm">
         <q-card class="full-width bg-grey-4 q-my-sm q-px-sm">
@@ -95,7 +100,7 @@
         </q-card>
       </div>
     </q-form>
-    <FormRincianNpdls v-if="store.form?.bast !== 'Siasik'" />
+    <FormRincianNpdls v-if="store.form?.bast !== 'Siasik' && store.form?.bast !== 'Sigarang'" />
     <form-input-pajak v-model="store.openDialogPajak" />
   </q-card>
 </template>
@@ -107,24 +112,33 @@ import { defineAsyncComponent, ref, watch } from 'vue';
 import FormRincianNpdls from './FormRincian.vue'
 import { dataBastPekerjaanStore } from 'src/stores/siasik/transaksi/ls/newnpdls/bastpekerjaan';
 import { formInputPajakStore } from 'src/stores/siasik/transaksi/ls/newnpdls/formpajak';
+import { dataBastSigarangStore } from 'src/stores/siasik/transaksi/ls/newnpdls/bastsigarang';
 
 const FormInputPajak = defineAsyncComponent(() => import('./formpajak/FormPajak.vue'))
 const SelectSerahterima = defineAsyncComponent(() => import('./selectbast/SelectBastFarmasi.vue'))
 const SelectSerahterimapekerjaan = defineAsyncComponent(() => import('./selectbast/SelectBastPekerjaan.vue'))
+const SelectSerahterimasigarang = defineAsyncComponent(() => import('./selectbast/SelectBastSigarang.vue'))
 const store = formInputNpdlsStore()
 const ambil = formKontrakPekerjaan()
 const carisrt = dataBastFarmasiStore()
 const stpekerjaan = dataBastPekerjaanStore()
+const bastsigarang = dataBastSigarangStore()
 const formNpdLS = ref(null)
 const options = ref([])
 
 const pjk = formInputPajakStore()
-watch(() => store.form.kodepptk, (newVal) => {
-  // Perbarui options saat kodepptk berubah
-  if (newVal && store.ptks?.length) {
-    options.value = store.ptks;
-  }
-});
+watch(
+  [() => store.form.kodepptk, () => store.ptks],
+  ([kodepptk, ptks]) => {
+    if (!kodepptk || !ptks?.length) return
+
+    const selected = ptks.find(p => p.nip === kodepptk)
+    if (selected) {
+      options.value = [selected]
+    }
+  },
+  { immediate: true }
+)
 
 function onSubmit() {
   store.fixed = true
@@ -134,16 +148,19 @@ function tglTransaksi(val) {
   store.reqs.tgl = val
   store.form.tglnpdls = val
   carisrt.reqs.tgl = val
+  bastsigarang.reqs.tgl = val
   store.setParams('tgl', val)
   store.getRincianBelanja()
   store.getDataBidang()
   carisrt.getDataBast()
-  stpekerjaan.listBastPekerjaan()
+
+
 }
 const serahTerima = (val) => {
   // console.log('serahTerima', store.form.bast)
   if (val === 'Sigarang') {
-    store.openDialogSigarang = false
+    bastsigarang.listBastSigarang()
+    store.openDialogSigarang = true
   }
   else if (val === 'Farmasi') {
     store.openDialogFarmasi = true
@@ -151,6 +168,7 @@ const serahTerima = (val) => {
     // carisrt.selectbastFarmasi()
   }
   else if (val === 'Siasik') {
+    stpekerjaan.listBastPekerjaan()
     store.openDialogSiasik = true
   }
 }
@@ -205,8 +223,10 @@ function pilihKegiatan(val) {
 
   carisrt.reqs.kodekegiatanblud = obj?.kodekegiatan
   stpekerjaan.reqs.kodekegiatanblud = obj?.kodekegiatan ?? ''
+  bastsigarang.reqs.kodekegiatanblud = obj?.kodekegiatan ?? ''
   store.reqs.kodekegiatan = obj?.kodekegiatan
   store.getRincianBelanja()
+  // bastsigarang.listBastSigarang()
 }
 function pilihPihaktiga(val) {
 
@@ -217,6 +237,7 @@ function pilihPihaktiga(val) {
   store.form.kodepenerima = obj?.kode ?? ''
   carisrt.reqs.kodepenerima = obj?.kode ?? ''
   stpekerjaan.reqs.kodepenerima = obj?.kode ?? ''
+  bastsigarang.reqs.kodepenerima = obj?.kode ?? ''
   store.form.serahterimapekerjaan = '2'
   carisrt.reqs.kodebast = '1'
   store.form.bast = '-'
@@ -261,6 +282,6 @@ function tambahPajak() {
   pjk.form.nonpdls = store.form.nonpdls
   pjk.reqs.nonpdls = store.form.nonpdls
   pjk.getListpajak()
-  console.log('nonpdls pajak', pjk.form.nonpdls)
+  // console.log('nonpdls pajak', pjk.form.nonpdls)
 }
 </script>
