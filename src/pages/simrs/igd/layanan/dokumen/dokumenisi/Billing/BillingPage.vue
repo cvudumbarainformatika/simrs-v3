@@ -14,19 +14,34 @@
       </q-btn>
     </div>
   </div>
-
-  <div class="full-height full-height q-pa-sm ">
-    <div id="printMe" style="width: 21cm;" class="q-pa-xs full-width full-height">
-      <KopSurat :judul="props?.judul" :pasien="props?.pasien" :jangantampil=false />
-      <IsiBillingPage :pasien="props?.pasien" />
+  <q-scroll-area style="height: calc(100vh - 56px);">
+    <div v-if="!storebill.rekapBill && !storebill.loading">
+      <div class="column flex-center">
+        <app-no-data />
+      </div>
     </div>
-  </div>
+    <div v-else-if="storebill.loading">
+      <div class="column flex-center">
+        <app-loading />
+      </div>
+    </div>
+    <div v-else>
+      <div class="q-pa-sm bg-grey-6">
+        <div id="printMe" class="full-width bg-white q-px-md q-py-lg ">
+          <KopSurat :judul="props?.judul" :pasien="props?.pasien" :jangantampil=false />
+          <IsiBillingPage :pasien="props?.pasien" />
+        </div>
+      </div>
+    </div>
+  </q-scroll-area>
 </template>
 <script setup>
+import { useKasirIgdStore } from 'src/stores/simrs/kasir/igd/kasirigd';
 import KopSurat from '../../KopSurat.vue';
 import IsiBillingPage from './IsiBillingPage.vue';
 import html2pdf from 'html2pdf.js';
 
+const storebill = useKasirIgdStore()
 const printObj = {
   id: 'printMe',
   popTitle: ' '
@@ -47,7 +62,7 @@ function exportPdf() {
   const concern = document.getElementById('printMe')
   const nama = props?.pasien?.nama ?? props?.pasien?.pasien
   const pdfConfig = {
-    margin: 0,
+    margin: [12, 12, 12, 12],
     filename: 'billing-' + props?.pasien?.noreg + '_' + nama + '_' + props?.pasien?.norm + '.pdf',
     image: {
       type: 'jpeg',

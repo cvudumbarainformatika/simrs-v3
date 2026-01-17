@@ -14,25 +14,27 @@
       </q-btn>
     </div>
   </div>
-  <div v-if="props?.pasien?.anamnesis?.length <= 0">
-    <div class="column full-height flex-center">
-      <div>
-        Belum Ada data tersimpan
+  <q-scroll-area style="height: calc(100vh - 56px);">
+    <div v-if="props?.pasien?.anamnesis?.length <= 0">
+      <div class="column full-height flex-center">
+        <div>
+          <app-no-data />
+        </div>
       </div>
     </div>
-  </div>
-  <div v-else-if="store.loadingTerima">
-    <div class="column full-height flex-center">
-      <app-loading />
+    <div v-else-if="store.loadingTerima">
+      <div class="column full-height flex-center">
+        <app-loading />
+      </div>
     </div>
-  </div>
-  <div v-else class="q-pa-sm bg-grey-6">
-    <div id="printMe" class="q-pa-lg full-width bg-white">
-      <KopSurat :judul="props?.judul ?? 'PENGKAJIAN AWAL MEDIS'" :pasien="props?.pasien" :jangantampil=false />
+    <div v-else class="q-pa-sm bg-grey-6">
+      <div id="printMe" class="q-pa-lg full-width bg-white">
+        <KopSurat :judul="props?.judul ?? 'PENGKAJIAN AWAL MEDIS'" :pasien="props?.pasien" :jangantampil=false />
 
-      <IsiPengkajianAwalMedis :pasien="props?.pasien" />
+        <IsiPengkajianAwalMedis :pasien="props?.pasien" />
+      </div>
     </div>
-  </div>
+  </q-scroll-area>
 </template>
 <script setup>
 

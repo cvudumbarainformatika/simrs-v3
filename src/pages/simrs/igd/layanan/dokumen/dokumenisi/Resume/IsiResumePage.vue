@@ -1,11 +1,5 @@
 <template>
-  <div v-if="!store?.rekapBill && !store.loading">
-    <app-no-data />
-  </div>
-  <div v-if="store.loading">
-    <app-loading />
-  </div>
-  <div v-if="store?.rekapBill && !store?.loading" class="full-height q-mt-md">
+  <div class="q-mt-md">
     <div class="row q-gutter-sm items-center no-wrap ">
       <div class="col-auto">
         1.
@@ -281,7 +275,7 @@
             <span v-else-if="carakeluar?.rs4 === 'Rawat Inap'">{{ carakeluar?.rs4 }} Ke {{
               carakeluar?.planranap?.ruangranap?.rs2 }}</span>
             <span v-else-if="carakeluar?.rs4 === 'Rujuk'">{{ carakeluar?.rs4 }} Ke {{ carakeluar?.transrujukan?.rs7
-              }}</span>
+            }}</span>
             <span v-else></span>
           </div>
         </div>
@@ -317,7 +311,7 @@
         </div>
       </div>
     </div>
-    <div class="row items-center no-wrap q-mt-lg">
+    <div class="row items-center no-wrap q-mt-lg q-mb-xl">
       <div class="col-6 text-center">(..........................)</div>
       <div class="col-6 text-weight-bold text-center">
         {{ pasien.dokter }}
@@ -372,11 +366,11 @@ const filterredTableobat = computed(() => {
   const dataawalobat = props?.pasien?.newapotekrajal
   // console.log('dataawalobat', dataawalobat);
   const hasilglobal = []
-  dataawalobat.forEach(x => {
+  dataawalobat?.forEach(x => {
     const permintaanresep = x?.permintaanresep
     // console.log('permintaanresep', permintaanresep);
     const hasil = []
-    permintaanresep.forEach(y => {
+    permintaanresep?.forEach(y => {
       // console.log('y', y?.mobat);
       const obat = {
         kode: y?.mobat?.kd_obat,
@@ -391,7 +385,7 @@ const filterredTableobat = computed(() => {
 
   const flattenedArray = hasilglobal.flat();
   const uniqueMap = new Map()
-  flattenedArray.forEach(item => uniqueMap.set(item.kode, item));
+  flattenedArray?.forEach(item => uniqueMap.set(item.kode, item));
 
   return [...uniqueMap.values()]
 })
