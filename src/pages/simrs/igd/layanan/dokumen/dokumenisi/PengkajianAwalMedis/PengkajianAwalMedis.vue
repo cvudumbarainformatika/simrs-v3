@@ -14,19 +14,34 @@
       </q-btn>
     </div>
   </div>
-
-  <div class="q-pa-sm bg-grey-6">
+  <div v-if="props?.pasien?.anamnesis?.length <= 0">
+    <div class="column full-height flex-center">
+      <div>
+        Belum Ada data tersimpan
+      </div>
+    </div>
+  </div>
+  <div v-else-if="store.loadingTerima">
+    <div class="column full-height flex-center">
+      <app-loading />
+    </div>
+  </div>
+  <div v-else class="q-pa-sm bg-grey-6">
     <div id="printMe" class="q-pa-lg full-width bg-white">
-      <KopSurat :judul="props?.judul ?? 'RESUME MEDIS'" :pasien="props?.pasien" :jangantampil=false />
-      <IsiResumePage :pasien="props?.pasien" />
+      <KopSurat :judul="props?.judul ?? 'PENGKAJIAN AWAL MEDIS'" :pasien="props?.pasien" :jangantampil=false />
+
+      <IsiPengkajianAwalMedis :pasien="props?.pasien" />
     </div>
   </div>
 </template>
 <script setup>
 
+import { usePengunjungIgdStore } from 'src/stores/simrs/igd/pengunjung';
 import KopSurat from '../../KopSurat.vue';
-import IsiResumePage from './IsiResumePage.vue';
+import IsiPengkajianAwalMedis from './IsiPengkajianAwalMedis.vue';
 import html2pdf from 'html2pdf.js';
+
+const store = usePengunjungIgdStore()
 
 const printObj = {
   id: 'printMe',
@@ -48,8 +63,8 @@ function exportPdf() {
   const concern = document.getElementById('printMe')
   const nama = props?.pasien?.nama ?? props?.pasien?.pasien
   const pdfConfig = {
-    margin: [10, 10, 10, 10],
-    filename: 'Resume-Medis_' + props?.pasien?.noreg + '_' + nama + '_' + props?.pasien?.norm + '.pdf',
+    margin: [12, 12, 12, 12],
+    filename: 'Pengkajian-Awal-Medis_' + props?.pasien?.noreg + '_' + nama + '_' + props?.pasien?.norm + '.pdf',
     image: {
       type: 'jpeg',
       quality: 0.98
@@ -62,7 +77,7 @@ function exportPdf() {
     },
     jsPDF: {
       unit: 'mm', // mm | pt | in
-      format: 'letter', // a4 | letter
+      format: 'a4', // a4 | letter
       orientation: 'portrait' // landscape | portrait
     }
   }
@@ -70,3 +85,4 @@ function exportPdf() {
   html2pdf().set(pdfConfig).from(concern).save()
 }
 </script>
+<style lang="scss" scoped></style>

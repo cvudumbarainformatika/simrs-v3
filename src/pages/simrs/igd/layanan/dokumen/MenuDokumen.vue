@@ -1,12 +1,13 @@
 <template>
-  <div class=" full-height full-width bg-red">
+  <div class=" full-height full-width q-pa-xs">
     <div class="col-auto bg-red">
       <q-tabs v-model="store.tab" inline-label outside-arrows mobile-arrows align="left" active-color="yellow"
-        class="bg-grey-4 text-white shadow-2 text-grey-8" active-bg-color="primary">
-        <q-tab v-for="(item, i) in store.tabs" :key="i" :name="item.page" :label="item.name" style="width: 100%;" />
+        active-bg-color="primary" class="bg-grey-4 text-grey-8 shadow-2">
+
+        <q-tab v-for="(item, i) in store.tabs" :key="i" :name="item.page" :label="item.name" />
       </q-tabs>
     </div>
-    <div class="col full-height" style="overflow: hidden;">
+    <div class="col full-height q-pa-md" style="overflow: hidden;">
       <q-tab-panels v-model="store.tab" animated class="full-height">
         <q-tab-panel name="Billing" class="full-height q-pa-none">
           <BillingPage :judul="billing" :pasien="props?.pasien" />
@@ -42,6 +43,9 @@
         <q-tab-panel name="Konsul" class="full-height q-pa-none">
           <KonsulDokterPage judul="Konsul Dokter" :pasien="props?.pasien" />
         </q-tab-panel>
+        <q-tab-panel name="Pengkajian Awal Medis" class="full-height q-pa-none">
+          <PengkajianAwalMedis judul="Pengkajian Awal Medis" :pasien="props?.pasien" />
+        </q-tab-panel>
       </q-tab-panels>
     </div>
   </div>
@@ -69,6 +73,7 @@ import LaboratPage from './dokumenisi/Laborat/LaboratPage.vue';
 import RadiologiPage from './dokumenisi/Radiologi/RadiologiPage.vue';
 import KonsulDokterPage from './dokumenisi/konsulDokter/KonsulDokterPage.vue';
 import { usePlannStore } from 'src/stores/simrs/igd/plann';
+import PengkajianAwalMedis from './dokumenisi/PengkajianAwalMedis/PengkajianAwalMedis.vue';
 
 const billing = ref('BILLING')
 const triase = ref('TRIASE')
