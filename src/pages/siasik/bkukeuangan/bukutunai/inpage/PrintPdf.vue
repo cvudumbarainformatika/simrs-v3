@@ -83,7 +83,7 @@
                         .
                       </div>
                       <div class="text-bold text-center">
-                        Pengguna Anggaran
+                        Kuasa Pengguna Anggaran
                       </div>
                       <div style="padding-bottom: 40px" />
                       <div class="text-bold text-center" style="text-decoration-line: underline;">

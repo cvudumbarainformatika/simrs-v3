@@ -1,6 +1,7 @@
 <template>
-  <div class="row no-wrap items-center justify-between q-mx-sm bg-white q-mt-lg q-pt-lg" style="z-index: 10;">
-    <div>
+  <div class="row no-wrap items-center justify-between q-mx-sm bg-white q-mt-lg q-pt-lg q-col-gutter-x-md"
+    style="z-index: 10;">
+    <div class="col-3">
       <div class="row items-center">
         <div class="q-mr-md">
           No Pemesanan:
@@ -25,7 +26,12 @@
         </div>
       </div>
     </div>
-    <div>
+    <div class="col-6">
+      <app-autocomplete-new ref="refJnsPengadaan" :model="store.form.jenis_pengadaan" valid autocomplete="nama"
+        option-label="nama" option-value="nama" label="Jenis Pengadaan" outlined :source="store.jenisPengadaans"
+        @on-select="store.jenisPengadaanSelected" @clear="store.clearJenisPengadaan" />
+    </div>
+    <div class="col-3">
       <div class="row items-center no-wrap">
         <div class="q-mr-md">
           Tanggal Pemesanan:
@@ -66,6 +72,11 @@
             <app-input v-model="table.gudang" label="Direncanakan Oleh" outlined readonly />
           </div>
         </div>
+      </div>
+    </div>
+    <div class="row q-pa-sm">
+      <div class="col-12">
+        <q-input v-model="store.form.catatan" label="Catatan" autogrow type="textarea" />
       </div>
     </div>
     <div class="row justify-between items-center q-pb-md">

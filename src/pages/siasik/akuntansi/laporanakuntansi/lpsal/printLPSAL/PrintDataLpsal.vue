@@ -63,7 +63,7 @@
                 <div class="q-py-xs text-center" v-for="it in tt.ttd" :key="it">
                   Probolinggo {{ store.display.sekarang }}
                   <div class="text-bold">
-                    Pengguna Anggaran
+                    Kuasa Pengguna Anggaran
                   </div>
                   <div style="padding-bottom: 40px" />
                   <div class="underline text-bold q-py-xs">

@@ -425,7 +425,7 @@ const props = defineProps({
 const store = usePagtStore()
 
 
-console.log('props', props.pasien);
+// console.log('props', props.pasien);
 
 
 const dpjp = ref(null)
@@ -479,7 +479,7 @@ const getDiag = () => {
 
 
 const getGroupIntervensi = (arr, val) => {
-  console.log('arr', arr, val);
+  // console.log('arr', arr, val);
 
   const dx = arr
   const intervensi = dx?.filter(x => x?.masterintervensi?.group?.toLowerCase() === val?.toLowerCase())

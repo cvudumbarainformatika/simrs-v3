@@ -4,17 +4,14 @@
       Form Penerimaan
     </div>
   </div>
-  <div
-    class="row no-wrap items-center justify-between q-mx-sm bg-white"
-    style="z-index: 10;"
-  >
+  <div class="row no-wrap items-center justify-between q-mx-sm bg-white" style="z-index: 10;">
     <div>
       <div class="row items-center">
         <div class="q-mr-md">
           No Penerimaan:
         </div>
         <div class="q-mr-sm">
-          {{ store.form.nopenerimaan ? store.form.nopenerimaan :'-' }}
+          {{ store.form.nopenerimaan ? store.form.nopenerimaan : '-' }}
         </div>
         <!-- <app-input
           v-model="store.form.nopenerimaan"
@@ -25,19 +22,9 @@
           :loading="store.loading"
         /> -->
         <div class="q-ml-md">
-          <q-btn
-            v-if="store.form.nopenerimaan"
-            flat
-            icon="icon-mat-done"
-            dense
-            color="primary"
-            :loading="store.loadingKunci"
-            @click="store.selesaiDanKunci()"
-          >
-            <q-tooltip
-              class="primary"
-              :offset="[10, 10]"
-            >
+          <q-btn v-if="store.form.nopenerimaan" flat icon="icon-mat-done" dense color="primary"
+            :loading="store.loadingKunci" @click="store.selesaiDanKunci()">
+            <q-tooltip class="primary" :offset="[10, 10]">
               Selesai dan Kunci Penerimaan
             </q-tooltip>
           </q-btn>
@@ -54,12 +41,7 @@
           <div v-if="store.namaPenyedia">
             <div class="row">
               <div class="col-12">
-                <app-input
-                  v-model="store.namaPenyedia.nama "
-                  label="Penyedia"
-                  outlined
-                  readonly
-                />
+                <app-input v-model="store.namaPenyedia.nama" label="Penyedia" outlined readonly />
               </div>
             </div>
           </div>
@@ -70,12 +52,7 @@
 
         <div class="row q-mb-xs">
           <div class="col-12">
-            <app-input
-              v-model="store.form.nopemesanan"
-              label="Nomor Pemesanan"
-              outlined
-              readonly
-            />
+            <app-input v-model="store.form.nopemesanan" label="Nomor Pemesanan" outlined readonly />
             <!--
             <app-autocomplete-new
               :model="store.form.nopemesanan"
@@ -94,82 +71,45 @@
 
         <div class="row q-mb-xs">
           <div class="col-12">
-            <app-autocomplete-new
-              ref="refJenisSurat"
-              :model="store.form.jenissurat"
-              autocomplete="nama"
-              option-label="nama"
-              option-value="nama"
-              label="Pilih Jenis Surat"
-              outlined
-              :source="store.jenisSurats"
-              @on-select="store.jenisSuratSelected"
-              @clear="store.clearJenisSurat"
-            />
+            <app-autocomplete-new ref="refJenisSurat" :model="store.form.jenissurat" autocomplete="nama"
+              option-label="nama" option-value="nama" label="Pilih Jenis Surat" outlined :source="store.jenisSurats"
+              @on-select="store.jenisSuratSelected" @clear="store.clearJenisSurat" />
           </div>
         </div>
         <div class="row q-mb-xs">
           <div class="col-12">
-            <app-input
-              ref="refNoSurat"
-              v-model="store.form.nomorsurat"
-              label="Nomor Surat"
-              outlined
-            />
+            <app-input ref="refNoSurat" v-model="store.form.nomorsurat" label="Nomor Surat" outlined />
           </div>
         </div>
         <div class="row q-mb-xs">
           <div class="col-12">
-            <app-input
-              ref="refPengirim"
-              v-model="store.form.pengirim"
-              label="Nama Pengirim"
-              outlined
-            />
+            <app-input ref="refPengirim" v-model="store.form.pengirim" label="Nama Pengirim" outlined />
           </div>
         </div>
       </div>
       <div class="col-6">
+
         <div class="row q-mb-xs">
-          <div
-            v-if="!gudang && apps.user.pegawai.role_id===1"
-            class="col-12"
-          >
-            <app-autocomplete-new
-              ref="refGudang"
-              :model="store.form.gudang"
-              autocomplete="nama"
-              option-label="nama"
-              option-value="value"
-              label="Pilih Gudang"
-              outlined
-              :source="store.gudangs"
-              @on-select="store.gudangSelected"
-              @clear="store.clearGudang"
-            />
+          <div class="col-12">
+            <app-autocomplete-new ref="refJnsPengadaan" :model="store.form.jenis_pengadaan" valid autocomplete="nama"
+              option-label="nama" option-value="nama" label="Jenis Pengadaan" outlined :source="store.jenisPengadaans"
+              readonly />
           </div>
-          <div
-            v-else
-            class="col-12"
-          >
+        </div>
+        <div class="row q-mb-xs">
+          <div v-if="!gudang && apps.user.pegawai.role_id === 1" class="col-12">
+            <app-autocomplete-new ref="refGudang" :model="store.form.gudang" autocomplete="nama" option-label="nama"
+              option-value="value" label="Pilih Gudang" outlined :source="store.gudangs"
+              @on-select="store.gudangSelected" @clear="store.clearGudang" />
+          </div>
+          <div v-else class="col-12">
             <div class="row justify-between no-wrap">
               <!-- <div>Gudang tujuan </div> -->
-              <div
-                v-if="gudang"
-                class="col-12"
-              >
-                <app-input
-                  v-model="gudang.nama "
-                  label="Gudang"
-                  outlined
-                  readonly
-                />
+              <div v-if="gudang" class="col-12">
+                <app-input v-model="gudang.nama" label="Gudang" outlined readonly />
                 <!-- {{ gudang.nama }} -->
               </div>
-              <div
-                v-if="!gudang"
-                class="text-negative text-weight-bold q-mr-lg"
-              >
+              <div v-if="!gudang" class="text-negative text-weight-bold q-mr-lg">
                 Anda tidak memiliki akses Penerimaan Gudang
               </div>
             </div>
@@ -178,35 +118,20 @@
 
         <div class="row q-mb-xs">
           <div class="col-12">
-            <app-input-date-human
-              :model="store.disp.tanggal"
-              label="Tanggal Transaksi"
-              outlined
-              @set-display="dispTanggal"
-              @db-model="setTanggal"
-            />
+            <app-input-date-human :model="store.disp.tanggal" label="Tanggal Transaksi" outlined
+              @set-display="dispTanggal" @db-model="setTanggal" />
           </div>
         </div>
         <div class="row q-mb-xs">
           <div class="col-12">
-            <app-input-date-human
-              :model="store.disp.surat"
-              label="Tanggal Surat"
-              outlined
-              @set-display="dispSurat"
-              @db-model="setSurat"
-            />
+            <app-input-date-human :model="store.disp.surat" label="Tanggal Surat" outlined @set-display="dispSurat"
+              @db-model="setSurat" />
           </div>
         </div>
         <div class="row q-mb-xs">
           <div class="col-12">
-            <app-input-date-human
-              :model="store.disp.batasbayar"
-              label="Batas Akhir Pembayaran"
-              outlined
-              @set-display="dispTempo"
-              @db-model="setTempo"
-            />
+            <app-input-date-human :model="store.disp.batasbayar" label="Batas Akhir Pembayaran" outlined
+              @set-display="dispTempo" @db-model="setTempo" />
           </div>
         </div>
         <!-- <div class="row q-mb-xs">
@@ -227,28 +152,14 @@
     </div>
     <q-separator />
     <!-- details -->
-    <div
-      v-if="store.details?.length && !store.loading"
-      class="bg-grey-2"
-    >
-      <div
-        class="row bg-grey q-pa-sm"
-      >
+    <div v-if="store.details?.length && !store.loading" class="bg-grey-2">
+      <div class="row bg-grey q-pa-sm">
         <div class="f-14 text-weight-bold">
           Rincian Pemesanan
         </div>
       </div>
-      <div
-        v-for="(det, i) in store.details"
-        :key="i"
-      >
-        <CompDetail
-          ref="refComDetail"
-          :i="i"
-          :det="det"
-          @simpan-obat="simpanObat(det)"
-          @tolak="tolak(det)"
-        />
+      <div v-for="(det, i) in store.details" :key="i">
+        <CompDetail ref="refComDetail" :i="i" :det="det" @simpan-obat="simpanObat(det)" @tolak="tolak(det)" />
         <!-- <div class="row items-center q-mt-md justify-between no-wrap">
           <div class="anu q-mr-sm">
             <div
@@ -541,11 +452,7 @@
       <app-loading />
     </div>
     <div v-if="!store.details?.length && !store.loading">
-      <app-no-selected-page
-        color="primary"
-        icon="icon-mat-receipt_long"
-        text="Tidak ada rinci"
-      />
+      <app-no-selected-page color="primary" icon="icon-mat-receipt_long" text="Tidak ada rinci" />
     </div>
   </div>
 </template>
@@ -599,8 +506,8 @@ function simpanObat (det) {
         if (pes) store.pemesananSelected(pes)
         setTimeout(() => {
           refComDetail.value.forEach(com => {
-          // console.log('ambil obat', com)
-          // console.log('ambil obat2', com.$refs)
+            // console.log('ambil obat', com)
+            // console.log('ambil obat2', com.$refs)
             com.resetValidasi()
           })
         }, 100)
@@ -662,7 +569,7 @@ onMounted(() => {
 // store.getInitialData()
 </script>
 <style lang="scss" scoped>
-.rounded{
+.rounded {
   border-radius: 5px;
   margin-top: -10px;
 }

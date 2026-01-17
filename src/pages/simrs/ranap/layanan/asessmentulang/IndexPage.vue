@@ -45,7 +45,7 @@ const props = defineProps({
 const { settings, store, storeAnamnesis, storePemeriksaanUmum, storePenilaian } = useForm(props.pasien)
 
 onMounted(() => {
-  console.log('props', props?.pasien?.cppt)
+  // console.log('props', props.nakes)
 
   store.getCppt(props?.pasien?.cppt)
   Promise.all([

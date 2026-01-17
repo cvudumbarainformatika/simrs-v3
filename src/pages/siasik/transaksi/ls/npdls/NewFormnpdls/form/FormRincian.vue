@@ -3,7 +3,7 @@
     <div class="row">
       <div class="q-pa-sm q-gutter-y-md" style="width: 50%">
 
-        <app-input-simrs v-if="store.form.serahterimapekerjaan === '3'" label="Rincian Belanja"
+        <app-input-simrs v-if="store.form.serahterimapekerjaan === '3'" label="Rekening Belanja"
           v-model="store.rinci.rincianbelanja" disable outlined :autofocus="false" :valid="{ required: true }" />
 
         <q-select v-else label="Rekening Belanja" v-model="store.rinci.koderek50" class="ellipsis-2-lines" use-input
@@ -28,7 +28,7 @@
       </div>
 
       <div class="q-pa-sm q-gutter-y-md" style="width: 50%">
-        <app-input-simrs v-if="store.form.serahterimapekerjaan === '3'" label="Rincian Belanja"
+        <app-input-simrs v-if="store.form.serahterimapekerjaan === '3'" label="Item Belanja"
           v-model="store.rinci.itembelanja" disable outlined :autofocus="false" :valid="{ required: true }" />
         <app-autocomplete v-else v-model="store.rinci.idserahterima_rinci" label="Item Belanja"
           autocomplete="itembelanja" option-label="itembelanja" option-value="idpp" outlined :key="store.reqs"
@@ -75,7 +75,8 @@
         }" />
       <app-input-simrs :model-value="formattanpaRp(store.rinci.nominalpembayaran)" class="q-pa-sm q-gutter-y-md"
         style="width: 25%" label="Total Permintaan" outlined readonly />
-      <div class="row items-center q-pb-md q-pa-sm q-gutter-y-md">
+      <div v-if="store.form.bast !== 'Sigarang' && store.form.bast !== 'Siasik'"
+        class="row items-center q-pb-md q-pa-sm q-gutter-y-md">
         <app-btn label="Simpan Rincian" class="bg-black" type="submit" :disable="store.loading"
           :loading="store.loading" />
       </div>
@@ -203,7 +204,7 @@ function saveNpd() {
     if (obj?.jumlah > obj?.sisapagu) {
       formNpdLS.value.resetValidation()
       store.form.rincians = []
-      console.log('pxpxpxpx', (obj?.jumlah > obj?.sisapagu))
+      // console.log('pxpxpxpx', (obj?.jumlah > obj?.sisapagu))
       return notifErrVue('Maaf Pengajuan Lebih dari Sisa Pagu')
     }
 
@@ -229,11 +230,11 @@ function saveNpd() {
   })
 }
 function tambahPajak() {
-  console.log('open Dialog')
+  // console.log('open Dialog')
   store.openDialogPajak = true
   pjk.form.nonpdls = store.form.nonpdls
   pjk.reqs.nonpdls = store.form.nonpdls
   pjk.getListpajak()
-  console.log('nonpdls pajak', pjk.form.nonpdls)
+  // console.log('nonpdls pajak', pjk.form.nonpdls)
 }
 </script>

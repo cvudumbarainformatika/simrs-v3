@@ -95,12 +95,15 @@
                           <q-item-section>Edit Data</q-item-section>
                         </q-item>
                         <q-item
-                          v-if="auth.user?.pegawai?.kdpegsimrs === 'sa' && props?.row?.kunci === '1' && !props?.row?.penetapan.length"
+                          v-if="auth.user?.pegawai?.kdpegsimrs === 'sa' && props?.row?.kunci === '1' && props?.row?.penetapan.length"
                           clickable v-close-popup @click="penetapanAnggaran(props?.row)">
                           <q-item-section>Penetapan Anggaran</q-item-section>
                         </q-item>
                         <q-item clickable v-close-popup @click="PrintData(props?.row)">
                           <q-item-section>Cetak Data</q-item-section>
+                        </q-item>
+                        <q-item v-if="props?.row?.kunci === '1' && props?.row?.penetapan.length" v-close-popup>
+                          <q-item-section>Sudah Penetapan</q-item-section>
                         </q-item>
                       </q-list>
                     </q-menu>

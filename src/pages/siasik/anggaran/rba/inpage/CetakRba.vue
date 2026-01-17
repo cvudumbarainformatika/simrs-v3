@@ -28,7 +28,7 @@
                   Probolinggo {{ store.tglcetak }}
                 </div>
                 <div class="text-bold">
-                  Pengguna Anggaran
+                  Kuasa Pengguna Anggaran
                 </div>
                 <div style="padding-bottom: 40px" />
                 <div class="underline text-bold">
@@ -71,6 +71,7 @@ const ttd = listdataNotadinasStore()
 const store = useRbaStore()
 
 onMounted(() => {
+  ttd.ttd()
 })
 const printed = ref(false)
 const printObj = {

@@ -26,7 +26,9 @@ export const useListPemesananStore = defineStore('list_pemesanan_store', {
       'nopemesanan',
       'tgl',
       'penyedia',
-      'gudang'
+      'gudang',
+      'jenis_pengadaan',
+      'catatan',
     ],
     columnHide: []
   }),

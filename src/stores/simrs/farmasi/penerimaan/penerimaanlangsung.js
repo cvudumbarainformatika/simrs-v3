@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia'
+import { acceptHMRUpdate, defineStore } from 'pinia'
 import { date } from 'quasar'
 import { api } from 'src/boot/axios'
 import { filterDuplicateArrays, findWithAttr, notifErrVue, notifSuccess } from 'src/modules/utils'
@@ -40,6 +40,10 @@ export const usePenerimaanLangsungFarmasiStore = defineStore('farmasi_penerimaan
     jenisSurats: [
       { nama: 'Faktur' },
       { nama: 'Surat Jalan' }
+    ],
+    jenisPengadaans: [
+      { nama: 'Epurchasing' },
+      { nama: 'Pengadaan Langsung' }
     ],
     jenisSuratLs: [
       { nama: 'Faktur' },
@@ -108,6 +112,7 @@ export const usePenerimaanLangsungFarmasiStore = defineStore('farmasi_penerimaan
         tglsurat: date.formatDate(Date.now(), 'YYYY-MM-DD'),
         kdobat: '',
         jenispenerimaan: '',
+        jenis_pegadaan: 'Pengadaan Langsung',
         total_faktur_pbf: 0
       }
       this.disp = {
@@ -265,6 +270,12 @@ export const usePenerimaanLangsungFarmasiStore = defineStore('farmasi_penerimaan
     clearJenisPenerimaan () {
       this.setForm('jenispenerimaan', null)
     },
+    jenisPengadaanSelected (val) {
+      this.setForm('jenis_pengadaan', val)
+    },
+    clearJenisPengadaan () {
+      this.setForm('jenis_pengadaan', null)
+    },
     jenisSuratSelected (val) {
       this.setForm('jenissurat', val)
     },
@@ -377,3 +388,8 @@ export const usePenerimaanLangsungFarmasiStore = defineStore('farmasi_penerimaan
     }
   }
 })
+
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(usePenerimaanLangsungFarmasiStore, import.meta.hot))
+}

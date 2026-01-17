@@ -97,6 +97,11 @@
           {{ row?.uraian50 }}
         </div>
       </template>
+      <template #cell-Uraian108="{ row }">
+        <div class="row justify-center">
+          {{ row?.uraian108 }}
+        </div>
+      </template>
       <template #bottom-row>
         <td style="color: red;" colspan="10" class="col-1 text-right text-bold">
           Total

@@ -13,7 +13,7 @@ export const useLaporanPenerimaanObatStore = defineStore('laporan_penerimaan_oba
     pihakTigasx: [],
     meta: {},
     detail: [],
-    kolom: ['NoPenerimaan', 'NoPemesanan', 'JenisPenerimaan', 'Gudang', 'TglPenerimaan', 'TglSurat', 'BatasBayar', 'NoSurat', 'JenisSurat', 'NoFaktur', 'Suplier', 'Uraian50', 'Total'],
+    kolom: ['NoPenerimaan', 'NoPemesanan', 'JenisPenerimaan', 'Gudang', 'TglPenerimaan', 'TglSurat', 'BatasBayar', 'NoSurat', 'JenisSurat', 'NoFaktur', 'Suplier', 'Uraian50', 'Uraian108', 'Total'],
     totalall: 0,
     tanggal: {
       from: date.formatDate(Date.now(), 'DD MMMM YYYY'),
@@ -76,7 +76,7 @@ export const useLaporanPenerimaanObatStore = defineStore('laporan_penerimaan_oba
     },
     async laporanRekapPenerimaanObat () {
       this.loading = true
-      this.kolom = ['NoPenerimaan', 'NoPemesanan', 'JenisPenerimaan', 'Gudang', 'TglPenerimaan', 'TglSurat', 'BatasBayar', 'NoSurat', 'JenisSurat', 'Suplier', 'Uraian50', 'Total']
+      this.kolom = ['NoPenerimaan', 'NoPemesanan', 'JenisPenerimaan', 'Gudang', 'TglPenerimaan', 'TglSurat', 'BatasBayar', 'NoSurat', 'JenisSurat', 'Suplier', 'Uraian50', 'Uraian108', 'Total']
       if (this.pihakketiga === 'Semua Pbf') {
         this.params.pihakketiga = 'all'
       }
@@ -104,6 +104,10 @@ export const useLaporanPenerimaanObatStore = defineStore('laporan_penerimaan_oba
         const arr50 = x.penerimaanrinci?.flatMap(x => x.masterobat?.uraian50) // flatten array
         const uni50 = [...new Set(arr50)] // get unique value
         const uraian50 = uni50.join(', ') // join each unique value
+
+        const arr108 = x.penerimaanrinci?.flatMap(x => x.masterobat?.uraian108) // flatten array
+        const uni108 = [...new Set(arr108)] // get unique value
+        const uraian108 = uni108.join(', ') // join each unique value
         // console.log('uraian50', uni50, arr50, uraian50)
 
         const hasil = {
@@ -118,7 +122,8 @@ export const useLaporanPenerimaanObatStore = defineStore('laporan_penerimaan_oba
           JenisSurat: x?.jenissurat,
           Suplier: x?.pihakketiga?.nama,
           Total: x?.total_faktur_pbf,
-          uraian50
+          uraian50,
+          uraian108
         }
         hasilglobal.push(hasil)
       })
@@ -201,6 +206,7 @@ export const useLaporanPenerimaanObatStore = defineStore('laporan_penerimaan_oba
           'Jenis Surat': 'JenisSurat',
           'Suplier': 'Suplier',
           'Uraian 50': 'Uraian50',
+          'Uraian 108': 'Uraian108',
           'Total': 'Total'
         }
       }
@@ -223,6 +229,7 @@ export const useLaporanPenerimaanObatStore = defineStore('laporan_penerimaan_oba
         ada.NoFaktur = item.NoFaktur
         ada.Suplier = item.Suplier
         ada.Uraian50 = item.uraian50
+        ada.Uraian108 = item.uraian108
         ada.Total = formatDoubleKoma(item.Total, 2)
         data.push(ada)
       })

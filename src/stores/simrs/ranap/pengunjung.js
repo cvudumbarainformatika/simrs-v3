@@ -203,9 +203,9 @@ export const usePengunjungRanapStore = defineStore('pengunjung-ranap', {
           datax.memodiagnosa = memNonIgd?.diagnosa ?? null
           datax.memodiagnosaigd = memIgd?.diagnosa ?? null
 
-          console.log('memo', memodia)
-          console.log('memoRanap', memNonIgd)
-          console.log('memoigd', memIgd)
+          // console.log('memo', memodia)
+          // console.log('memoRanap', memNonIgd)
+          // console.log('memoigd', memIgd)
         } else {
           datax.memodiagnosa = null
           datax.memodiagnosaigd = null

@@ -1,3 +1,4 @@
+import { useAsessmentUlangRanapStore } from 'src/stores/simrs/ranap/asessmentulang'
 import { onMounted, reactive } from 'vue'
 
 export default function useCppt(pasien) {
@@ -11,11 +12,19 @@ export default function useCppt(pasien) {
     openEws: false
   })
 
+  const store = useAsessmentUlangRanapStore()
+
   onMounted(() => {
+    Promise.all([
+      store.getNotasiDpjp(pasien?.noreg)
+
+    ])
     kelompokkanDataAwalKeperawatan(pasien)
     kelompokkanDataAwalMedis(pasien)
     aturCppt(pasien)
     ambilEws(pasien)
+    // console.log('notasis', store.notasis);
+
   })
 
   function kelompokkanDataAwalKeperawatan(pasien) {
@@ -81,5 +90,5 @@ export default function useCppt(pasien) {
     // console.log('openEws', other.openEws)
   }
 
-  return { data, other, toggleEws }
+  return { data, other, toggleEws, store }
 }

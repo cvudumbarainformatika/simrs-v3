@@ -164,7 +164,7 @@
                   <tbody class="align-middle q-pl-sm">
                     <tr v-for="item in store.npddatasave.rincian" :key="item">
                       <td>
-                        <div>{{ item.nopenerimaan }}</div>
+                        <div v-if="store.npddatasave.bast !== 'Sigarang'">{{ item.nopenerimaan }}</div>
                         <div>{{ item.koderek50 }}</div>
                       </td>
                       <td>

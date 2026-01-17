@@ -1,7 +1,8 @@
 <template>
   <div class="fit">
     <ews-page v-if="other.openEws" :pasien="pasien" :menu="menu" @close="other.openEws = false" />
-    <cppt-page v-else :pasien="pasien" :menu="menu" @open-ews="other.openEws = true" :data-header="dataHeader" />
+    <cppt-page v-else :pasien="pasien" :menu="menu" @open-ews="other.openEws = true" :data-header="dataHeader"
+      :store="store" />
   </div>
 </template>
 
@@ -31,6 +32,6 @@ const props = defineProps({
 })
 
 // eslint-disable-next-line no-unused-vars
-const { other } = useCppt(props?.pasien)
+const { other, store } = useCppt(props?.pasien)
 
 </script>

@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia'
+import { acceptHMRUpdate, defineStore } from 'pinia'
 import { date } from 'quasar'
 import { api } from 'src/boot/axios'
 import { filterDuplicateArrays, notifErrVue, notifSuccess } from 'src/modules/utils'
@@ -36,6 +36,10 @@ export const usePenerimaanFarmasiStore = defineStore('farmasi_penerimaan', {
     jenisSurats: [
       { nama: 'Faktur' },
       { nama: 'Surat Jalan' }
+    ],
+    jenisPengadaans: [
+      { nama: 'Epurchasing' },
+      { nama: 'Pengadaan Langsung' }
     ],
     jenisSuratLs: [
       { nama: 'Faktur' },
@@ -111,6 +115,7 @@ export const usePenerimaanFarmasiStore = defineStore('farmasi_penerimaan', {
       }
       // }
       this.setForm('nopemesanan', val?.nopemesanan)
+      this.setForm('jenis_pengadaan', val?.jenis_pengadaan)
     },
     clearPemesanan () {
       this.form = {
@@ -225,6 +230,12 @@ export const usePenerimaanFarmasiStore = defineStore('farmasi_penerimaan', {
     },
     clearJenisPenerimaan () {
       this.setForm('jenispenerimaan', null)
+    },
+    jenisPengadaanSelected (val) {
+      this.setForm('jenis_pengadaan', val)
+    },
+    clearJenisPengadaan () {
+      this.setForm('jenis_pengadaan', null)
     },
     jenisSuratSelected (val) {
       this.setForm('jenissurat', val)
@@ -437,3 +448,7 @@ export const usePenerimaanFarmasiStore = defineStore('farmasi_penerimaan', {
     }
   }
 })
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(usePenerimaanFarmasiStore, import.meta.hot))
+}

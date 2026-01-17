@@ -126,6 +126,14 @@
             {{ row.jenis_penerimaan ?? '-' }}
           </div>
         </div>
+        <div class="row justify-between">
+          <div class="col-auto">
+            Jenis Pengadaan
+          </div>
+          <div class="col-auto text-weight-bold">
+            {{ row.jenis_pengadaan ?? '-' }}
+          </div>
+        </div>
         <div class="row text-italic f-10">
           {{ getGudang(row.gudang) }}
         </div>
@@ -440,6 +448,12 @@
           Belum ada contoh untuk edit Faktur jenis ini, silahkan hubungi tim IT untuk informasi lebih lanjut
         </div>
       </div>
+      <q-separator class="q-my-md" />
+      <div class="row text-weight-bold f-14 q-mb-sm">Edit Jenis Pengadaan</div>
+      <app-autocomplete-new ref="refJnsPengadaan" :model="dataPenerimaan.jenis_pengadaanedit" valid autocomplete="nama"
+        option-label="nama" option-value="nama" label="Jenis Pengadaan" outlined :source="store.jenisPengadaans"
+        @on-select="store.jenisPengadaanSelected($event, dataPenerimaan)"
+        @clear="store.clearJenisPengadaan($event, dataPenerimaan)" />
     </template>
   </dialog-edit-faktur>
 </template>
@@ -626,6 +640,7 @@ function editNomorFaktur (val) {
   val.expand = !val.expand
   val.highlight = !val.highlight
   val.noSuratEdit = val?.nomorsurat
+  val.jenis_pengadaanedit = val?.jenis_pengadaan
   editFaktur.value = true
   dataPenerimaan.value = val
   console.log('editNomorFaktur', val)

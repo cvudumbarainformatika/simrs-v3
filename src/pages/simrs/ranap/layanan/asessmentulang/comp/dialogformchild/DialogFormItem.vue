@@ -106,7 +106,7 @@ onMounted(() => {
     currentTime.value = `${hours}:${minutes}:${seconds}`
   }, 1000) // 1000ms = 1s
 
-  console.log('currentTime', currentTime.value)
+  // console.log('currentTime', currentTime.value)
 })
 
 onUnmounted(() => {

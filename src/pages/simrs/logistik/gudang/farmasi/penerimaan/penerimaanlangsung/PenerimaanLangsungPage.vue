@@ -27,23 +27,31 @@
   <!-- penerimaan -->
   <div class="q-mt-lg q-py-md q-px-sm">
     <!-- header -->
+    <div class="row q-col-gutter-md no-wrap q-px-sm q-pb-sm">
+      <div class="col-12">
+        <app-autocomplete-debounce-input ref="refPbf" v-model="store.form.kdpbf" label="Cari Penyedia"
+          autocomplete="nama" option-label="nama" option-value="kode" outlined :loading="store.loadingPihakTiga"
+          :source="store.pihakTigas" :rules="[
+            val => !!val || 'tidak boleh kosong'
+          ]" @buang="cariPihakTiga" />
+      </div>
+    </div>
     <div class="row items-center q-col-gutter-md q-px-sm q-pb-md">
       <div class="col-6">
-        <div class="row q-col-gutter-md no-wrap q-mb-xs">
-          <div class="col-12">
-            <app-autocomplete-debounce-input ref="refPbf" v-model="store.form.kdpbf" label="Cari Penyedia"
-              autocomplete="nama" option-label="nama" option-value="kode" outlined :loading="store.loadingPihakTiga"
-              :source="store.pihakTigas" :rules="[
-                val => !!val || 'tidak boleh kosong'
-              ]" @buang="cariPihakTiga" />
-          </div>
-        </div>
 
         <div class="row q-mb-xs">
           <div class="col-12">
             <app-autocomplete-new ref="refJnsPenerimaan" :model="store.form.jenispenerimaan" autocomplete="nama"
               option-label="nama" option-value="nama" label="Jenis Penerimaan" outlined :source="store.jenisPenerimaans"
               @on-select="store.jenisPenerimaanSelected" @clear="store.clearJenisPenerimaan" />
+          </div>
+        </div>
+
+        <div class="row q-mb-xs">
+          <div class="col-12">
+            <app-autocomplete-new ref="refJnsPengadaan" :model="store.form.jenis_pengadaan" valid autocomplete="nama"
+              option-label="nama" option-value="nama" label="Jenis Pengadaan" outlined :source="store.jenisPengadaans"
+              readonly />
           </div>
         </div>
 
@@ -59,13 +67,13 @@
             <app-input ref="refNoSurat" v-model="store.form.nomorsurat" label="Nomor Surat" outlined />
           </div>
         </div>
+      </div>
+      <div class="col-6">
         <div class="row q-mb-xs">
           <div class="col-12">
             <app-input ref="refPengirim" v-model="store.form.pengirim" label="Nama Pengirim" outlined />
           </div>
         </div>
-      </div>
-      <div class="col-6">
         <div class="row q-mb-xs">
           <div class="col-12">
             <app-autocomplete-new ref="refGudang" :model="store.form.gudang" autocomplete="nama" option-label="nama"
@@ -86,32 +94,6 @@
               @set-display="dispSurat" @db-model="setSurat" />
           </div>
         </div>
-        <!-- <div class="row q-mb-xs">
-          <div class="col-12">
-            <app-input-date-human
-              ref="refTglTempo"
-              :model="store.disp.tempo"
-              label="Batas Akhir Pembayaran"
-              outlined
-              valid
-              @set-display="dispTempo"
-              @db-model="setTempo"
-            />
-          </div>
-        </div> -->
-        <!-- <div class="row q-mb-xs">
-          <div class="col-12">
-            <app-input
-              ref="refTotalFaktur"
-              v-model="store.form.total_faktur_pbf"
-              label="Total Nilai"
-              outlined
-              :rules="[
-                val => !isNaN(val) || 'Harus pakai Nomor'
-              ]"
-            />
-          </div>
-        </div> -->
       </div>
     </div>
     <q-separator class="q-mb-xs" />
@@ -476,6 +458,7 @@ function kunci () {
 // head
 const refPbf = ref(null) // auto
 const refJnsPenerimaan = ref(null) // auto
+const refJnsPengadaan = ref(null) // auto , sementara tanpa validasi
 const refJenisSurat = ref(null) // auto
 const refNoSurat = ref(null) // inp
 const refPengirim = ref(null) // inp

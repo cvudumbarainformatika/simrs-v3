@@ -1,8 +1,8 @@
 <template>
   <q-dialog persistent>
-    <q-card>
+    <q-card class="q-pa-md">
       <q-card-section>
-        <div class="text-h6">
+        <div class="text-h6 q-ml-md">
           {{ label }}
         </div>
       </q-card-section>

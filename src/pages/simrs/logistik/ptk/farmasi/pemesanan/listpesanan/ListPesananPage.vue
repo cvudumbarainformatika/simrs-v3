@@ -43,6 +43,12 @@
       <template #col-gudang>
         <div>Gudang</div>
       </template>
+      <template #col-jenis_pengadaan>
+        <div>Jenis Pengadaan</div>
+      </template>
+      <template #col-catatan>
+        <div>Catatan</div>
+      </template>
       <template #cell-penyedia="{ row }">
         <div>{{ row.pihakketiga ? row.pihakketiga.nama : '-' }}</div>
       </template>
@@ -51,6 +57,9 @@
       </template>
       <template #cell-tgl="{ row }">
         <div>{{ row.tgl_pemesanan ? dateFullFormat(row.tgl_pemesanan) : '-' }}</div>
+      </template>
+      <template #cell-catatan="{ row }">
+        <div><span v-html="getNewLine(row?.catatan ?? '-')" /></div>
       </template>
       <template #expand="{ row }">
         <div v-if="row.rinci?.length">
@@ -165,7 +174,7 @@
   </div>
 </template>
 <script setup>
-import { dateFullFormat, formatRp } from 'src/modules/formatter'
+import { dateFullFormat, formatRp, getNewLine } from 'src/modules/formatter'
 import { notifSuccessVue } from 'src/modules/utils'
 // import { useStyledStore } from 'src/stores/app/styled'
 import { useListPemesananStore } from 'src/stores/simrs/farmasi/pemesanan/listpesanan'
