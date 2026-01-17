@@ -8,6 +8,7 @@ export const useFlagingVaStore = defineStore('flaging-va', {
     meta: null,
     loading: false,
     loadingbayar: false,
+    loadingbatal: false,
     pasiens: [],
     noreg: '',
     params: {
@@ -53,6 +54,26 @@ export const useFlagingVaStore = defineStore('flaging-va', {
         val.loadingbayar = false
         notifErr(error)
       }
+    },
+    async batalva(val) {
+
+      this.loadingbatal = true
+      console.log('batalva', val, this.loadingbatal)
+      // const payload = {
+      //   nova: val
+      // }
+      // await api.post('v1/simrs/kasir/va/batal-va', payload)
+      //   .then(resp => {
+      //     if (resp.status === 200) {
+      //       this.loadingbatal = false
+      //       const xxx = resp?.data?.result[0]
+      //       const cariVa = this.items.findIndex((q) => q.id === xxx?.id)
+      //       this.items[cariVa] = xxx
+      //       notifSuccess(resp)
+      //       // this.getDataVa()
+      //     }
+      //   })
+      //   .catch(() => { this.loadingbatal = false })
     },
     setQ(payload) {
       this.params.page = 1
