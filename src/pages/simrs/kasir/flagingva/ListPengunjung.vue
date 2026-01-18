@@ -36,12 +36,20 @@
             </div>
           </q-item-section>
           <q-item-section side>
-            <div v-if="item?.tglbyr != null">
-              <q-btn dense size="sm" no-caps color="purple" label="Lunas" class="q-mb-sm" style="min-width: 100px;" />
+            <div v-if="item?.tglbyr != null" class="q-gutter-xs">
+              <q-badge rounded color="purple" label="Lunas" />
+
             </div>
-            <div v-else>
-              <q-btn dense size="sm" no-caps color="red" label="Flaging Manual" class="q-mb-sm"
-                style="min-width: 100px;" :loading="item?.loadingbayar" @click="emits('flaging', item)" />
+            <div v-else class="q-gutter-xs">
+              <div v-if="item?.batal === '1'">
+                <q-badge outline rounded color="red" label="SUDAH DIBATAL" />
+              </div>
+              <div v-else class="q-gutter-xs">
+                <q-btn dense size="sm" rounded no-caps color="primary" label="Flaging Manual" class="q-mb-sm"
+                  style="min-width: 100px;" :loading="item?.loadingbayar" @click="emits('flaging', item)" /> <br>
+                <q-btn dense size="sm" rounded no-caps color="red" label="Batal" class="q-mb-sm"
+                  style="min-width: 100px;" @click="batalva(item.nova)" :loading="store.loadingbatal && item.nova" />
+              </div>
             </div>
           </q-item-section>
         </q-item>
@@ -60,6 +68,9 @@ import { useFlagingVaStore } from 'src/stores/simrs/kasir/va/flagingva'
 const emits = defineEmits(['flaging'])
 const store = useFlagingVaStore()
 
+function batalva(val) {
+  store.batalva(val)
+}
 console.log('sasa', store.noreg)
 
 defineProps({

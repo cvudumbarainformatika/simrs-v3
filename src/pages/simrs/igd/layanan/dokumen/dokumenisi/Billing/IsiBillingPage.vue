@@ -1,10 +1,4 @@
 <template>
-  <div v-if="!store.rekapBill && !store.loading">
-    <app-no-data />
-  </div>
-  <div v-if="store.loading">
-    <app-loading />
-  </div>
   <div v-if="store.rekapBill && !store.loading" class="full-height">
     <div class="row items-center no-wrap ">
       <div class="col-1">

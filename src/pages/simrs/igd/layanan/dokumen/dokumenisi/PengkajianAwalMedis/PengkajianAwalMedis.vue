@@ -15,33 +15,36 @@
     </div>
   </div>
   <q-scroll-area style="height: calc(100vh - 56px);">
-    <div v-if="!storebill.rekapBill && !storebill.loading">
-      <div class="column flex-center">
-        <app-no-data />
+    <div v-if="props?.pasien?.anamnesis?.length <= 0">
+      <div class="column full-height flex-center">
+        <div>
+          <app-no-data />
+        </div>
       </div>
     </div>
-    <div v-else-if="storebill.loading">
-      <div class="column flex-center">
+    <div v-else-if="store.loadingTerima">
+      <div class="column full-height flex-center">
         <app-loading />
       </div>
     </div>
-    <div v-else>
-      <div class="q-pa-sm bg-grey-6">
-        <div id="printMe" class="full-width bg-white q-px-md q-py-lg ">
-          <KopSurat :judul="props?.judul" :pasien="props?.pasien" :jangantampil=false />
-          <IsiBillingPage :pasien="props?.pasien" />
-        </div>
+    <div v-else class="q-pa-sm bg-grey-6">
+      <div id="printMe" class="q-pa-lg full-width bg-white">
+        <KopSurat :judul="props?.judul ?? 'PENGKAJIAN AWAL MEDIS'" :pasien="props?.pasien" :jangantampil=false />
+
+        <IsiPengkajianAwalMedis :pasien="props?.pasien" />
       </div>
     </div>
   </q-scroll-area>
 </template>
 <script setup>
-import { useKasirIgdStore } from 'src/stores/simrs/kasir/igd/kasirigd';
+
+import { usePengunjungIgdStore } from 'src/stores/simrs/igd/pengunjung';
 import KopSurat from '../../KopSurat.vue';
-import IsiBillingPage from './IsiBillingPage.vue';
+import IsiPengkajianAwalMedis from './IsiPengkajianAwalMedis.vue';
 import html2pdf from 'html2pdf.js';
 
-const storebill = useKasirIgdStore()
+const store = usePengunjungIgdStore()
+
 const printObj = {
   id: 'printMe',
   popTitle: ' '
@@ -63,7 +66,7 @@ function exportPdf() {
   const nama = props?.pasien?.nama ?? props?.pasien?.pasien
   const pdfConfig = {
     margin: [12, 12, 12, 12],
-    filename: 'billing-' + props?.pasien?.noreg + '_' + nama + '_' + props?.pasien?.norm + '.pdf',
+    filename: 'Pengkajian-Awal-Medis_' + props?.pasien?.noreg + '_' + nama + '_' + props?.pasien?.norm + '.pdf',
     image: {
       type: 'jpeg',
       quality: 0.98
@@ -84,3 +87,4 @@ function exportPdf() {
   html2pdf().set(pdfConfig).from(concern).save()
 }
 </script>
+<style lang="scss" scoped></style>
