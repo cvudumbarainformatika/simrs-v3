@@ -115,6 +115,8 @@ function filterFn (val, update, abort) {
   update(() => {
     const needle = val.toLowerCase()
     const arr = store.listTindakan//?.filter(x => x.kdpoli?.includes(props.pasien?.kodepoli))
+    console.log('list tind HC', arr)
+
     // console.log('sasa', arr)
     const filter = ['kdtindakan', 'tindakan', 'icd9']
     const multiFilter = (data = [], filterKeys = [], value = '') =>
