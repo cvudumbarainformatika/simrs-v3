@@ -69,7 +69,7 @@ export const useDiagnosaHomeCare = defineStore('diagnosa-home-care', {
       })
     },
     async getTindakanDropdown () {
-      const resp = await api.get('v1/simrs/pelayanan/dialogtindakanpoli')
+      const resp = await api.get('v1/simrs/pelayanan/cari-tindakan-hc')
       // console.log('list tindakan', resp)
       if (resp.status === 200) {
         this.listTindakan = resp.data
