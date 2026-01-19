@@ -201,7 +201,7 @@ async function saveRinciSerahterima(row) {
         )
     }
 
-    store.rinci.nopenerimaan = row?.id
+    store.rinci.nopenerimaan = row?.reff
     store.rinci.koderek50 = row.koderek50 || row?.pagu?.koderek50
     store.rinci.rincianbelanja = row.uraianrek50 || row?.pagu?.uraian50
     store.rinci.koderek108 = row.koderek108 || row?.pagu?.koderek108
@@ -211,14 +211,14 @@ async function saveRinciSerahterima(row) {
     store.rinci.bast_r_id = row.id
     store.rinci.idserahterima_rinci = row?.pagu?.idpp
 
-    store.rinci.volume = row.volume || row?.pagu?.volume
-    store.rinci.satuan = row.satuan || row?.pagu?.satuan
-    store.rinci.harga = row.harga || row?.pagu?.harga
-    store.rinci.total = row.total || row?.pagu?.pagu
+    store.rinci.volume = row.pagu ? row?.pagu?.volume : row.volume
+    store.rinci.satuan = row.pagu ? row?.pagu?.satuan : row.satuan
+    store.rinci.harga = row.pagu ? row?.pagu?.harga : row.harga
+    store.rinci.total = row.pagu ? row?.pagu?.pagu : row.total
 
     store.rinci.volumels = row.volumels || row?.qty
-    store.rinci.hargals = row.hargals || row?.satuan_besar
-    store.rinci.totalls = row.totalls || row?.harga_jadi
+    store.rinci.hargals = row.hargals || row?.harga_jadi
+    store.rinci.totalls = row.totalls || row?.sub_total
     store.rinci.nominalpembayaran = row.nominalpembayaran || row?.sub_total
     // console.log('row rinci', store.rinci)
     // console.log('store.rinci', store.rinci.nominalpembayaran > store.rinci.sisapagu)
@@ -241,39 +241,37 @@ async function saveRinciSerahterima(row) {
     loadingRow.value[row.id] = false
   }
 }
-async function deleteData(row) {
-  const ok = await $q.dialog({
+function deleteData(row) {
+  $q.dialog({
     title: 'Peringatan',
-    message: 'Apakah Data ini akan dihapus?',
+    message: 'Apakah data ini akan dihapus?',
     cancel: true,
     persistent: true
-  }).onOk(() => true).onCancel(() => false)
-
-  if (!ok) return
-
-  const payload = {
-    nonpdls: store.form.nonpdls,
-    id: row,
-    nopenerimaan: store.form.noserahterima
-  }
-
-  loadingRowdelete.value[row] = true
-
-  try {
-    await store.hapusRinci(payload)
-    store.refreshTable()
-
-    if (store.transall?.length === 0) {
-      store.initForm()
+  }).onOk(async () => {
+    const payload = {
+      nonpdls: store.form.nonpdls,
+      id: row,
+      nopenerimaan: store.form.noserahterima
     }
-  } catch (e) {
-    $q.notify({
-      type: 'negative',
-      message: 'Gagal menghapus data'
-    })
-  } finally {
-    loadingRowdelete.value[row] = false
-  }
+
+    loadingRowdelete.value[row] = true
+
+    try {
+      await store.hapusRinci(payload)
+
+      if (store.transall?.length === 0) {
+        store.initForm()
+      }
+    } catch (e) {
+      $q.notify({
+        type: 'negative',
+        message: 'Gagal menghapus data'
+      })
+    } finally {
+      store.refreshTable()
+      loadingRowdelete.value[row] = false
+    }
+  })
 }
 
 </script>

@@ -367,7 +367,7 @@ export const formInputNpdlsStore = defineStore('forminput_NPD_LS', {
             this.rinci.nonpdls = resp.data?.result?.nonpdls
             this.paramsrinci.nonpdls = resp.data?.result?.nonpdls
             this.loading = false
-            notifSuccess(resp)
+            notifSuccess(resp || resp.data.message)
             this.resetformrinci()
             this.listrincians()
             bst.filterRekening50()
