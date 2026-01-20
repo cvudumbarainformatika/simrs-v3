@@ -209,7 +209,7 @@ async function saveRinciSerahterima(row) {
     store.rinci.itembelanja = row.itembelanja || row?.nama_barang
 
     store.rinci.bast_r_id = row.id
-    store.rinci.idserahterima_rinci = row?.pagu?.idpp
+    store.rinci.idserahterima_rinci = row.pagu ? row?.pagu?.idpp : row.idserahterima_rinci
 
     store.rinci.volume = row.pagu ? row?.pagu?.volume : row.volume
     store.rinci.satuan = row.pagu ? row?.pagu?.satuan : row.satuan
