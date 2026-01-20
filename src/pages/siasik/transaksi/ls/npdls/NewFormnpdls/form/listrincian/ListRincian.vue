@@ -201,7 +201,7 @@ async function saveRinciSerahterima(row) {
         )
     }
 
-    store.rinci.nopenerimaan = row?.reff
+    store.rinci.nopenerimaan = row?.reff ? row?.reff : store.form.noserahterima
     store.rinci.koderek50 = row.koderek50 || row?.pagu?.koderek50
     store.rinci.rincianbelanja = row.uraianrek50 || row?.pagu?.uraian50
     store.rinci.koderek108 = row.koderek108 || row?.pagu?.koderek108
