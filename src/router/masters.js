@@ -306,6 +306,11 @@ const masters = {
 
       ]
     },
+    {
+      path: '/master/pihakketiga',
+      name: 'master.pihakketiga',
+      component: () => import('pages/simrs/master/pihakketiga/IndexPage.vue')
+    },
     // {
     //   path: '/master/pasien',
     //   component: () => import('src/pages/simrs/master/pasien/IndexPage.vue')

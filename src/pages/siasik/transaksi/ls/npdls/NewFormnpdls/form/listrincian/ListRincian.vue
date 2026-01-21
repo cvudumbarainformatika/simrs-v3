@@ -201,7 +201,7 @@ async function saveRinciSerahterima(row) {
         )
     }
 
-    store.rinci.nopenerimaan = row?.reff
+    store.rinci.nopenerimaan = row?.reff ? row?.reff : store.form.noserahterima
     store.rinci.koderek50 = row.koderek50 || row?.pagu?.koderek50
     store.rinci.rincianbelanja = row.uraianrek50 || row?.pagu?.uraian50
     store.rinci.koderek108 = row.koderek108 || row?.pagu?.koderek108
@@ -209,7 +209,7 @@ async function saveRinciSerahterima(row) {
     store.rinci.itembelanja = row.itembelanja || row?.nama_barang
 
     store.rinci.bast_r_id = row.id
-    store.rinci.idserahterima_rinci = row?.pagu?.idpp
+    store.rinci.idserahterima_rinci = row.pagu ? row?.pagu?.idpp : row.idserahterima_rinci
 
     store.rinci.volume = row.pagu ? row?.pagu?.volume : row.volume
     store.rinci.satuan = row.pagu ? row?.pagu?.satuan : row.satuan
