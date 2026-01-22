@@ -167,6 +167,11 @@
               % POT
             </div>
           </template>
+          <template #col-TAP="{ right }">
+            <div :class="right">
+              TAP
+            </div>
+          </template>
           <template #cell-default-img="{ row }">
             <div class="row">
               <q-avatar size="30px" class="cursor-pointer"
@@ -304,6 +309,12 @@
             <div :class="`text-negative ${right}`">
               <!-- {{ getKurang(row) }} -  -->
               {{ getRekapTerlambatMinute(getRekapTerlambat(row)) }}
+            </div>
+          </template>
+          <template #cell-TAP="{ row, right }">
+            <div :class="`text-negative ${right}`">
+              <!-- {{ getKurang(row) }} -  -->
+              {{ getRekapTAP(row) === 0 ? '-' : getRekapTAP(row) }}
             </div>
           </template>
           <template #cell-per-t="{ row, right }">
@@ -554,6 +565,15 @@ function getAlpha(row) {
   // store.pushAlpha(row.id, absensi)
   // console.log('getAlpha', row.id)
   return absensi
+}
+
+function getRekapTAP(row) {
+  // console.log('getRekapTAP', row);
+
+  const absensi = row.transaksi_absen.filter(x => !x.pulang)?.length
+  console.log('absensi', absensi)
+  return absensi
+
 }
 
 function getImage(kelamin, row) {
