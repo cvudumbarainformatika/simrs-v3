@@ -3,6 +3,7 @@ import { Notify } from 'quasar'
 import { api } from 'src/boot/axios'
 import { dateDbFormat } from 'src/modules/formatter'
 import { notifErrVue } from 'src/modules/utils'
+import { useKunjunganRehabmediStore } from '../rehabmedik/kunjungan'
 
 export const usePengunjungPoliStore = defineStore('pengunjung-poli-store', {
   state: () => ({
@@ -179,6 +180,9 @@ export const usePengunjungPoliStore = defineStore('pengunjung-poli-store', {
                 const data = findPasien[0]
                 data.memodiagnosa = resp?.data?.result?.diagnosa
               }
+
+              const pengunjungRehab = useKunjunganRehabmediStore()
+              pengunjungRehab.injectMemo(pasien?.noreg, resp?.data?.result?.diagnosa)
             }
             resolve(resp)
           }).catch(err => {

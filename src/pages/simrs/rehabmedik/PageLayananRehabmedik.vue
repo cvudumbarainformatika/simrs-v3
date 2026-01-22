@@ -102,6 +102,12 @@ const menus = ref([
     icon: 'icon-mat-medical_information',
     comp: shallowRef(defineAsyncComponent(() => import('./layanan/pengkajian/comp/pengkajian/IndexPage.vue')))
   },
+  {
+    name: 'DiagnosaPage',
+    label: 'Diagnosa & Tindakan',
+    icon: 'icon-mat-medical_information',
+    comp: shallowRef(defineAsyncComponent(() => import('./layanan/diagnosadantindakan/IndexPage.vue')))
+  },
 
   {
     name: 'e-resep-page',
