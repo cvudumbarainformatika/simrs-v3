@@ -76,7 +76,7 @@
                         : Pimpinan BLUD RSUD Dokter Mohamad Saleh
                       </div>
                       <div class="q-py-xs">
-                        : Pejabat Teknis Kegiatan {{ store.cetaknotadinas.kegiatan }}
+                        : Pejabat Pelaksana Teknis Kegiatan {{ store.cetaknotadinas.kegiatan }}
                       </div>
                       <div class="q-py-xs">
                         : {{ store.cetaknotadinas.bidang }}
@@ -202,7 +202,7 @@
                     Probolinggo {{ store.display.sekarang }}
                   </div>
                   <div class="text-bold q-py-xs q-pt-sm">
-                    Pejabat Teknis Kegiatan
+                    Pejabat Pelaksana Teknis Kegiatan
                   </div>
                   <div style="padding-bottom: 40px" />
                   <div class="underline text-bold q-py-xs">
