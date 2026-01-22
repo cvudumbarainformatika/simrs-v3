@@ -312,13 +312,13 @@
             </td>
             <td class="text-end">
               <div class="row no-wrap q-col-gutter-x-xs justify-end">
-                <q-btn v-if="sudahDiHapus(item)" flat class="" size="sm" round color="grey" icon="icon-mat-edit"
-                  @click="emits('editData', item)">
+                <q-btn v-if="sudahDiHapus(item) && lewatBerlaku(item)" flat class="" size="sm" round color="grey"
+                  icon="icon-mat-edit" @click="emits('editData', item)">
                   <q-tooltip anchor="top middle" self="center middle">
                     Edit Data
                   </q-tooltip>
                 </q-btn>
-                <q-btn v-if="sudahDiHapus(item)" flat class="" size=" sm" round color="grey"
+                <q-btn v-if="sudahDiHapus(item) && lewatBerlaku(item)" flat class="" size=" sm" round color="grey"
                   icon="icon-mat-delete_sweep" @click="deleteOne(item)">
                   <q-tooltip anchor="top middle" self="center middle">
                     Delete Data
@@ -407,6 +407,17 @@ function sudahDiHapus (item) {
     const diff = date.getDateDiff(tglHapus, hariIni, 'days')
     // console.log('diff', diff, tglHapus, item?.tgl_hapus)
     if (diff < 0) tampil = false
+  }
+  return tampil
+}
+function lewatBerlaku (item) {
+  let tampil = true
+  if (item?.tgl_mulai_berlaku) {
+    const hariIni = new Date()
+    const tglBErlaku = new Date(item?.tgl_mulai_berlaku)
+    const diff = date.getDateDiff(tglBErlaku, hariIni, 'days')
+    // console.log('diff', diff, tglHapus, item?.tgl_hapus)
+    if (diff <= 0) tampil = false
   }
   return tampil
 }

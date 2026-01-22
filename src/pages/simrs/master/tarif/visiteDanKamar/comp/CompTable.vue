@@ -494,13 +494,13 @@
             </td>
             <td class="text-end">
               <div class="row no-wrap q-col-gutter-x-xs justify-end">
-                <q-btn v-if="sudahDiHapus(item)" flat class="" size="sm" round color="grey" icon="icon-mat-edit"
-                  @click="emits('editData', item)">
+                <q-btn v-if="sudahDiHapus(item) && lewatBerlaku(item)" flat class="" size="sm" round color="grey"
+                  icon="icon-mat-edit" @click="emits('editData', item)">
                   <q-tooltip anchor="top middle" self="center middle">
                     Edit Data
                   </q-tooltip>
                 </q-btn>
-                <q-btn v-if="sudahDiHapus(item)" flat class="" size=" sm" round color="grey"
+                <q-btn v-if="sudahDiHapus(item) && lewatBerlaku(item)" flat class="" size=" sm" round color="grey"
                   icon="icon-mat-delete_sweep" @click="deleteOne(item)">
                   <q-tooltip anchor="top middle" self="center middle">
                     Delete Data
@@ -581,24 +581,6 @@ function undeleteOne (item) {
     // console.log('I am triggered on both OK and Cancel')
   })
 }
-function BerlakuDiRuangan (item) {
-  const ruangans = item?.rs4.split('|')
-  const ruang = []
-  if (ruangans?.length > 1) {
-    ruangans.forEach(element => {
-      if (element != '') {
-        const poli = props?.polis?.find(x => x?.kodepoli == element)
-        const ranap = props?.ruangRanap?.find(x => x?.groups == element)
-        if (poli) ruang.push({ kode: poli?.kodepoli, nama: poli?.polirs })
-        if (ranap) ruang.push({ kode: ranap?.groups, nama: ranap?.groups_nama })
-      }
-      // console.log('poli', props?.polis, element, poli, ranap)
-
-    })
-  }
-  // console.log('berlaku', ruang)
-  return ruang.map(x => x?.nama).join(', ')
-}
 function sudahDiHapus (item) {
   let tampil = true
   if (item?.tgl_hapus) {
@@ -607,6 +589,19 @@ function sudahDiHapus (item) {
     const diff = date.getDateDiff(tglHapus, hariIni, 'days')
     // console.log('diff', diff, tglHapus, item?.tgl_hapus)
     if (diff < 0) tampil = false
+  }
+
+  return tampil
+}
+
+function lewatBerlaku (item) {
+  let tampil = true
+  if (item?.tgl_mulai_berlaku) {
+    const hariIni = new Date()
+    const tglBErlaku = new Date(item?.tgl_mulai_berlaku)
+    const diff = date.getDateDiff(tglBErlaku, hariIni, 'days')
+    // console.log('diff', diff, tglHapus, item?.tgl_hapus)
+    if (diff <= 0) tampil = false
   }
   return tampil
 }
