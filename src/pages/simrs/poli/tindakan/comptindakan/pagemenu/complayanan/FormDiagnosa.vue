@@ -310,10 +310,11 @@ function gantiMemo(val) {
   // console.log('form', form)
 
   pengunjung.gantiMemo(form, props.pasien)
+
 }
 
 watch(() => props.pasien?.diagnosa, (obj) => {
-  console.log('watch pilihan kasus', obj)
+  // console.log('watch pilihan kasus', obj)
   ganti(store.formdiagnosa.kasus)
 }, { deep: true })
 

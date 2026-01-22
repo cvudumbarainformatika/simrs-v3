@@ -98,6 +98,7 @@ export const useKunjunganRehabmediStore = defineStore('kunjungan-rehabmedik-stor
         datax.newapotekrajal = data?.newapotekrajal ?? []
         datax.anamnesis = data?.anamnesis ?? []
         datax.pengkajian = data?.pengkajian ?? []
+        datax.memodiagnosa = data?.memodiagnosa ?? null
       }
 
       console.log('find pasien', findPasien);
@@ -195,6 +196,19 @@ export const useKunjunganRehabmediStore = defineStore('kunjungan-rehabmedik-stor
         if (pos >= 0) { data.splice(pos, 1) }
       }
     },
+
+
+    injectMemo(noreg, isi) {
+
+      const findPasien = this.items?.filter(x => x?.noreg === noreg)
+      if (findPasien?.length) {
+        const data = findPasien[0]
+        data.memodiagnosa = isi
+      }
+
+    },
+
+
   }
 })
 

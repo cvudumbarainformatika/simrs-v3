@@ -21,10 +21,10 @@ export const useReportAbsensiStore = defineStore('report_absensi', {
     },
     defaultColumn: ['nama', 'status', 'IJIN', 'SAKIT', 'DL', 'DSPEN', 'CUTI', 'A',
       'masuk', 'th',
-      'hari', 'kurang', 'per-t'],
+      'hari', 'kurang', 'TAP', 'per-t'],
     columns: ['nama', 'status', 'IJIN', 'SAKIT', 'DL', 'DSPEN', 'CUTI', 'A',
       'masuk', 'th',
-      'hari', 'kurang', 'per-t'],
+      'hari', 'kurang', 'TAP', 'per-t'],
     columnHide: ['id', 'masuk'],
     jenis_pegawai: [
       {
@@ -58,17 +58,17 @@ export const useReportAbsensiStore = defineStore('report_absensi', {
   }),
 
   getters: {
-    getterColumns (state) {
+    getterColumns(state) {
       return state.columns.filter((el) => !state.columnHide.includes(el))
     }
   },
 
   actions: {
-    setPeriode (val) {
+    setPeriode(val) {
       this.params.periode = val
       this.getDataTable()
     },
-    filterByFlag (val) {
+    filterByFlag(val) {
       if (val !== 'all') {
         this.params.flag = val
       }
@@ -78,7 +78,7 @@ export const useReportAbsensiStore = defineStore('report_absensi', {
 
       this.getDataTable()
     },
-    filterByRuang (val) {
+    filterByRuang(val) {
       if (val !== 'all') {
         this.params.ruang = val
       }
@@ -89,32 +89,32 @@ export const useReportAbsensiStore = defineStore('report_absensi', {
       this.ruanganPrint = this.ruangan.filter(x => x.koderuangan === val)
       this.getDataTable()
     },
-    setSearch (val) {
+    setSearch(val) {
       this.params.q = val
     },
-    setFilterBy (val) {
+    setFilterBy(val) {
       this.params.filter_by = val
     },
-    enterSearch (val) {
+    enterSearch(val) {
       this.params.q = val
       this.getDataTable()
     },
-    setOder (payload) {
+    setOder(payload) {
       this.params.order_by = payload
       this.params.sort === 'desc' ? this.params.sort = 'asc' : this.params.sort = 'desc'
       this.getDataTable()
     },
-    setPage (payload) {
+    setPage(payload) {
       // console.log('setPage', payload)
       this.params.page = payload
       this.getDataTable()
     },
-    setPerPage (payload) {
+    setPerPage(payload) {
       this.params.per_page = payload
       this.params.page = 1
       this.getDataTable()
     },
-    setColumns (payload) {
+    setColumns(payload) {
       // if (payload) {
       //   const thumb = payload.map(x => Object.keys(x))
       //   this.columns = thumb[0]
@@ -133,7 +133,7 @@ export const useReportAbsensiStore = defineStore('report_absensi', {
       }
     },
 
-    refreshTable () {
+    refreshTable() {
       this.params.page = 1
       this.getDataTable()
     },
@@ -150,7 +150,7 @@ export const useReportAbsensiStore = defineStore('report_absensi', {
     //   }
     //   this.loading = false
     // },
-    getDataTable () {
+    getDataTable() {
       this.total = 0
       this.loading = true
       const params = { params: this.params }
@@ -167,7 +167,7 @@ export const useReportAbsensiStore = defineStore('report_absensi', {
           })
       })
     },
-    async autocomplete () {
+    async autocomplete() {
       const resp = await api.get('/v1/pegawai/absensi/autocomplete')
       // console.log('autocomplete', resp)
       if (resp.status === 200) {
@@ -188,7 +188,7 @@ export const useReportAbsensiStore = defineStore('report_absensi', {
         this.ruanganPrint = this.ruangan
       }
     },
-    async prota (periode) {
+    async prota(periode) {
       const params = {
         params: {
           periode
@@ -201,7 +201,7 @@ export const useReportAbsensiStore = defineStore('report_absensi', {
         this.protas = resp.data
       }
     },
-    async getDataPrint (periode) {
+    async getDataPrint(periode) {
       this.loadingDialog = true
       const params = { params: this.params }
       const resp = await api.get('/v1/pegawai/absensi/print', params)
@@ -213,11 +213,11 @@ export const useReportAbsensiStore = defineStore('report_absensi', {
       this.loadingDialog = false
     },
 
-    setSettings (key, value) {
+    setSettings(key, value) {
       this.settingsTable[key] = value
     },
 
-    setSorting (val) {
+    setSorting(val) {
       // console.log(val)
       this.sorting.head = val
       this.sorting.sortBy === 'desc'
@@ -276,12 +276,12 @@ export const useReportAbsensiStore = defineStore('report_absensi', {
       // // console.log('sorting', this.items)
     },
 
-    pushAlpha (id, jml) {
+    pushAlpha(id, jml) {
       const el = this.items.filter(x => x.id === id)[0]
       el.TAKMASOK = jml
     },
 
-    pushData (id, data) {
+    pushData(id, data) {
       const el = this.items.filter(x => x.id === id)[0]
       el.TERLAMBAT = data.TERLAMBAT
       el.TAKMASOK = data.TAKMASOK

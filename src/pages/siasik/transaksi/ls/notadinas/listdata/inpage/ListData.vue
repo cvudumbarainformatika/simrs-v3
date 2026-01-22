@@ -190,7 +190,7 @@ const listdatanota = [
   },
   {
     name: 'namapptk',
-    label: 'Pejabat Teknis Kegiatan',
+    label: 'PPTK',
     align: 'left',
     field: 'namapptk',
     sortable: true,
