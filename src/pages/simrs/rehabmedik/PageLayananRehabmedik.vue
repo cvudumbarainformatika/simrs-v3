@@ -26,7 +26,8 @@
                     Maaf, DPJP Pasien Ini Belum Ada ... Harap Input DPJP Terlebih dahulu
                   </div>
                 </div> -->
-                <component :is="menu.comp" :key="pasien" :pasien="pasien" :depo="pasien?.flagdepo" />
+                <component :is="menu.comp" :key="pasien" :pasien="pasien" :depo="pasien?.flagdepo" :store="store"
+                  :loading-terima="store.loadingTerima" />
               </template>
               <template #fallback>
                 <AppLoader />
@@ -53,6 +54,10 @@ const props = defineProps({
   pasien: {
     type: Object,
     default: null
+  },
+  store: {
+    type: Object,
+    default: null
   }
 })
 
@@ -61,7 +66,8 @@ const radiologi = useRadiologiPoli()
 const storeRanap = usePengunjungRanapStore()
 
 onMounted(() => {
-  console.log('pasien', props.pasien)
+  console.log('pasien rehabmedik', props.pasien)
+  // console.log('store rehabmedik', props.store)
   Promise.all([
     // penunjang
 
@@ -76,6 +82,27 @@ onMounted(() => {
 const emits = defineEmits(['tutup'])
 
 const menus = ref([
+  {
+    name: 'AnamnesisPage',
+    label: 'Anamnesis & Riwayat',
+    icon: 'icon-mat-medical_information',
+    route: ['poli'],
+    comp: shallowRef(defineAsyncComponent(() => import('src/pages/simrs/poli/tindakan/comptindakan/pagemenu/AnamnesisPage.vue')))
+  },
+  {
+    name: 'PemeriksaanPage',
+    label: 'Pemeriksaan Umum & Fisik',
+    icon: 'icon-my-stethoscope',
+    route: ['poli'],
+    comp: shallowRef(defineAsyncComponent(() => import('src/pages/simrs/poli/tindakan/comptindakan/pagemenu/PemeriksaanPageBaru.vue')))
+  },
+  {
+    name: 'PengkajianPage',
+    label: 'Pengkajian Rehab Medik',
+    icon: 'icon-mat-medical_information',
+    comp: shallowRef(defineAsyncComponent(() => import('./layanan/pengkajian/comp/pengkajian/IndexPage.vue')))
+  },
+
   {
     name: 'e-resep-page',
     label: 'EResep',
