@@ -3,6 +3,7 @@ import { Notify } from 'quasar'
 import { api } from 'src/boot/axios'
 import { dateDbFormat } from 'src/modules/formatter'
 import { notifErrVue } from 'src/modules/utils'
+import { useKunjunganRehabmediStore } from '../rehabmedik/kunjungan'
 
 export const usePengunjungPoliStore = defineStore('pengunjung-poli-store', {
   state: () => ({
@@ -38,12 +39,12 @@ export const usePengunjungPoliStore = defineStore('pengunjung-poli-store', {
   // },
   actions: {
 
-    init (val) {
+    init(val) {
       // console.log('')
       this.params = val
       this.getData()
     },
-    async sendPanggil (pasien, channel) {
+    async sendPanggil(pasien, channel) {
       this.loadingCall = true
       const params = { noreg: pasien?.noreg, noantrian: pasien?.noantrian, kdpoli: pasien?.kodepoli, tglkunjungan: pasien?.tgl_kunjungan, channel }
       this.noreg = pasien?.noreg
@@ -61,11 +62,11 @@ export const usePengunjungPoliStore = defineStore('pengunjung-poli-store', {
           this.loadingCall = false
         })
     },
-    setPolis (val) {
+    setPolis(val) {
       this.params.kodepoli = val
       this.getData()
     },
-    async getData () {
+    async getData() {
       this.loading = true
       const params = { params: this.params }
       await api.get('/v1/simrs/rajal/poli/kunjunganpoli', params)
@@ -87,24 +88,24 @@ export const usePengunjungPoliStore = defineStore('pengunjung-poli-store', {
           this.loading = false
         })
     },
-    togglePageTindakan () {
+    togglePageTindakan() {
       this.pageTindakan = !this.pageTindakan
     },
-    setDate (val) {
+    setDate(val) {
       this.params.tgl = val
     },
-    setQ (val) {
+    setQ(val) {
       this.params.page = 1
       this.params.q = val
       this.getData()
     },
-    setTo (val) {
+    setTo(val) {
       this.params.to = val
     },
-    setFrom (val) {
+    setFrom(val) {
       this.params.from = val
     },
-    setPeriodik (val) {
+    setPeriodik(val) {
       this.params.page = 1
       const { to, from, status } = val
       this.params.to = to
@@ -113,7 +114,7 @@ export const usePengunjungPoliStore = defineStore('pengunjung-poli-store', {
       // console.log('periodik', this.params)
       this.getData()
     },
-    filterData (val) {
+    filterData(val) {
       this.params.page = 1
       const { to, from, q, status } = val // status
       this.params.to = to
@@ -124,25 +125,25 @@ export const usePengunjungPoliStore = defineStore('pengunjung-poli-store', {
       this.getData()
       // console.log(val)
     },
-    setPage (payload) {
+    setPage(payload) {
       this.params.page = payload
       this.getData()
     },
-    setPerPage (payload) {
+    setPerPage(payload) {
       this.params.per_page = payload
       this.getData()
     },
-    setFilters () {
+    setFilters() {
       this.filters = !this.filters
     },
-    setCustom () {
+    setCustom() {
       this.custom = true
     },
-    notCustom () {
+    notCustom() {
       this.custom = false
     },
 
-    async gantiDpjp (form, pasien) {
+    async gantiDpjp(form, pasien) {
       // console.log(form)
       this.loadingSaveGantiDpjp = true
       try {
@@ -167,7 +168,7 @@ export const usePengunjungPoliStore = defineStore('pengunjung-poli-store', {
         this.loadingSaveGantiDpjp = false
       }
     },
-    gantiMemo (form, pasien) {
+    gantiMemo(form, pasien) {
       // console.log(form)
       return new Promise((resolve, reject) => {
         api.post('/v1/simrs/pelayanan/gantimemo', form)
@@ -179,6 +180,9 @@ export const usePengunjungPoliStore = defineStore('pengunjung-poli-store', {
                 const data = findPasien[0]
                 data.memodiagnosa = resp?.data?.result?.diagnosa
               }
+
+              const pengunjungRehab = useKunjunganRehabmediStore()
+              pengunjungRehab.injectMemo(pasien?.noreg, resp?.data?.result?.diagnosa)
             }
             resolve(resp)
           }).catch(err => {
@@ -188,7 +192,7 @@ export const usePengunjungPoliStore = defineStore('pengunjung-poli-store', {
     },
 
     // inject pasien
-    async setLayananSelesai (pasien) {
+    async setLayananSelesai(pasien) {
       this.loadingTerima = true
       // '' : 'Belum Terlayanani'
       // '1': 'Terlayani'
@@ -226,7 +230,7 @@ export const usePengunjungPoliStore = defineStore('pengunjung-poli-store', {
       }
     },
 
-    async setTerima (pasien) {
+    async setTerima(pasien) {
       this.loadingCall = false
       this.loadingTerima = true
       const form = { noreg: pasien?.noreg }
@@ -294,7 +298,7 @@ export const usePengunjungPoliStore = defineStore('pengunjung-poli-store', {
       await api.post('v1/simrs/rajal/poli/updatewaktubpjs', form)
     },
 
-    async settidakdatang (pasien) {
+    async settidakdatang(pasien) {
       this.loadingTidakhadir = true
       this.loadingCall = false
       const form = { noreg: pasien?.noreg }
@@ -313,7 +317,7 @@ export const usePengunjungPoliStore = defineStore('pengunjung-poli-store', {
       }
     },
 
-    setinject (noreg) {
+    setinject(noreg) {
       const findPasien = this.items.filter(x => x.noreg === noreg)
       // console.log('wew', findPasien)
       if (findPasien?.length) {
@@ -322,7 +326,7 @@ export const usePengunjungPoliStore = defineStore('pengunjung-poli-store', {
       }
     },
 
-    notifikasiError (msg) {
+    notifikasiError(msg) {
       Notify.create({
         message: msg,
         // icon: 'icon-eva-message-circle-outline',
@@ -335,15 +339,12 @@ export const usePengunjungPoliStore = defineStore('pengunjung-poli-store', {
       })
     },
 
-    injectDataPasien (pasien, val, kode, arr) {
+    injectDataPasien(pasien, val, kode, arr) {
       const findPasien = this.items.filter(x => x === pasien)
       // console.log('inject pasien', findPasien)
       if (findPasien?.length) {
         const data = findPasien[0]
         const target = data[kode]?.find(x => x.id === val.id)
-        // console.log('inject target pasien', target)
-        // console.log('inject kode pasien', kode)
-        // console.log('inject isi pasien', val)
 
         if (target) {
           Object.assign(target, val)
@@ -365,7 +366,7 @@ export const usePengunjungPoliStore = defineStore('pengunjung-poli-store', {
         }
       }
     },
-    hapusDataAnamnesis (pasien, id) {
+    hapusDataAnamnesis(pasien, id) {
       const findPasien = this.items.filter(x => x === pasien)
       if (findPasien?.length) {
         const data = findPasien[0].anamnesis
@@ -373,7 +374,7 @@ export const usePengunjungPoliStore = defineStore('pengunjung-poli-store', {
         if (pos >= 0) { data.splice(pos, 1) }
       }
     },
-    hapusDataPemeriksaanfisik (pasien, id) {
+    hapusDataPemeriksaanfisik(pasien, id) {
       const findPasien = this.items.filter(x => x === pasien)
       if (findPasien?.length) {
         const data = findPasien[0].pemeriksaanfisik
@@ -381,7 +382,7 @@ export const usePengunjungPoliStore = defineStore('pengunjung-poli-store', {
         if (pos >= 0) { data.splice(pos, 1) }
       }
     },
-    hapusGambars (pasien, nama) {
+    hapusGambars(pasien, nama) {
       const findPasien = this.items.filter(x => x === pasien)
       if (findPasien?.length) {
         const data = findPasien[0].gambars
@@ -389,7 +390,7 @@ export const usePengunjungPoliStore = defineStore('pengunjung-poli-store', {
         if (pos >= 0) { data.splice(pos, 1) }
       }
     },
-    hapusDataDiagnosa (pasien, id) {
+    hapusDataDiagnosa(pasien, id) {
       const findPasien = this.items.filter(x => x === pasien)
       if (findPasien?.length) {
         const data = findPasien[0].diagnosa
@@ -397,7 +398,7 @@ export const usePengunjungPoliStore = defineStore('pengunjung-poli-store', {
         if (pos >= 0) { data.splice(pos, 1) }
       }
     },
-    hapusDataTindakan (pasien, id) {
+    hapusDataTindakan(pasien, id) {
       const findPasien = this.items.filter(x => x === pasien)
       if (findPasien?.length) {
         const data = findPasien[0].tindakan
@@ -405,7 +406,7 @@ export const usePengunjungPoliStore = defineStore('pengunjung-poli-store', {
         if (pos >= 0) { data.splice(pos, 1) }
       }
     },
-    hapusDataProsedur (pasien, id) {
+    hapusDataProsedur(pasien, id) {
       const findPasien = this.items.filter(x => x === pasien)
       if (findPasien?.length) {
         const data = findPasien[0].prosedur
@@ -413,7 +414,7 @@ export const usePengunjungPoliStore = defineStore('pengunjung-poli-store', {
         if (pos >= 0) { data.splice(pos, 1) }
       }
     },
-    hapusDataLaborat (pasien, id) {
+    hapusDataLaborat(pasien, id) {
       const findPasien = this.items.filter(x => x === pasien)
       if (findPasien?.length) {
         const data = findPasien[0].laborats
@@ -421,13 +422,13 @@ export const usePengunjungPoliStore = defineStore('pengunjung-poli-store', {
         if (pos >= 0) { data.splice(pos, 1) }
       }
     },
-    hapusDataLaboratBaru (pasien, id, databaru) {
+    hapusDataLaboratBaru(pasien, id, databaru) {
       const findPasien = this.items.filter(x => x === pasien)
       if (findPasien?.length) {
         findPasien[0].laborats = databaru
       }
     },
-    hapusDataRadiologi (pasien, id) {
+    hapusDataRadiologi(pasien, id) {
       const findPasien = this.items.filter(x => x === pasien)
       if (findPasien?.length) {
         const data = findPasien[0]?.radiologi
@@ -435,7 +436,7 @@ export const usePengunjungPoliStore = defineStore('pengunjung-poli-store', {
         if (pos >= 0) { data.splice(pos, 1) }
       }
     },
-    hapusDataPenunjangLain (pasien, id) {
+    hapusDataPenunjangLain(pasien, id) {
       const findPasien = this.items.filter(x => x === pasien)
       if (findPasien?.length) {
         const data = findPasien[0]?.penunjanglain
@@ -443,7 +444,7 @@ export const usePengunjungPoliStore = defineStore('pengunjung-poli-store', {
         if (pos >= 0) { data.splice(pos, 1) }
       }
     },
-    hapusDataOk (pasien, id) {
+    hapusDataOk(pasien, id) {
       const findPasien = this.items.filter(x => x === pasien)
       if (findPasien?.length) {
         const data = findPasien[0]?.ok
@@ -451,7 +452,7 @@ export const usePengunjungPoliStore = defineStore('pengunjung-poli-store', {
         if (pos >= 0) { data.splice(pos, 1) }
       }
     },
-    hapusDataFisio (pasien, id) {
+    hapusDataFisio(pasien, id) {
       const findPasien = this.items.filter(x => x === pasien)
       if (findPasien?.length) {
         const data = findPasien[0]?.fisio
@@ -459,7 +460,7 @@ export const usePengunjungPoliStore = defineStore('pengunjung-poli-store', {
         if (pos >= 0) { data.splice(pos, 1) }
       }
     },
-    hapusDataPlanning (pasien, id) {
+    hapusDataPlanning(pasien, id) {
       const findPasien = this.items.filter(x => x === pasien)
       if (findPasien?.length) {
         const data = findPasien[0]?.planning
@@ -467,7 +468,7 @@ export const usePengunjungPoliStore = defineStore('pengunjung-poli-store', {
         if (pos >= 0) { data.splice(pos, 1) }
       }
     },
-    hapusDataDiet (pasien, id) {
+    hapusDataDiet(pasien, id) {
       const findPasien = this.items.filter(x => x === pasien)
       if (findPasien?.length) {
         const data = findPasien[0]?.diet
@@ -475,7 +476,7 @@ export const usePengunjungPoliStore = defineStore('pengunjung-poli-store', {
         if (pos >= 0) { data.splice(pos, 1) }
       }
     },
-    hapusDataEdukasi (pasien, id) {
+    hapusDataEdukasi(pasien, id) {
       const findPasien = this.items.filter(x => x === pasien)
       if (findPasien?.length) {
         const data = findPasien[0]?.edukasi
@@ -483,7 +484,7 @@ export const usePengunjungPoliStore = defineStore('pengunjung-poli-store', {
         if (pos >= 0) { data.splice(pos, 1) }
       }
     },
-    hapusDataDiagnosaKeperawatan (pasien, id) {
+    hapusDataDiagnosaKeperawatan(pasien, id) {
       const findPasien = this.items.filter(x => x === pasien)
       if (findPasien?.length) {
         const data = findPasien[0].diagnosakeperawatan
@@ -491,7 +492,7 @@ export const usePengunjungPoliStore = defineStore('pengunjung-poli-store', {
         if (pos >= 0) { data.splice(pos, 1) }
       }
     },
-    hapusDataDiagnosaKebidanan (pasien, id) {
+    hapusDataDiagnosaKebidanan(pasien, id) {
       const findPasien = this.items.filter(x => x === pasien)
       if (findPasien?.length) {
         const data = findPasien[0].diagnosakebidanan
@@ -499,7 +500,7 @@ export const usePengunjungPoliStore = defineStore('pengunjung-poli-store', {
         if (pos >= 0) { data.splice(pos, 1) }
       }
     },
-    hapusDataLaporanTindakan (pasien, id) {
+    hapusDataLaporanTindakan(pasien, id) {
       const findPasien = this.items.filter(x => x === pasien)
       if (findPasien?.length) {
         const data = findPasien[0].laporantindakan
@@ -507,7 +508,7 @@ export const usePengunjungPoliStore = defineStore('pengunjung-poli-store', {
         if (pos >= 0) { data.splice(pos, 1) }
       }
     },
-    hapusDataPsikiatri (pasien, id) {
+    hapusDataPsikiatri(pasien, id) {
       const findPasien = this.items.filter(x => x === pasien)
       if (findPasien?.length) {
         const data = findPasien[0].psikiatri
@@ -515,7 +516,7 @@ export const usePengunjungPoliStore = defineStore('pengunjung-poli-store', {
         if (pos >= 0) { data.splice(pos, 1) }
       }
     },
-    hapusDataNeonatusmedis (pasien, id) {
+    hapusDataNeonatusmedis(pasien, id) {
       const findPasien = this.items.filter(x => x === pasien)
       if (findPasien?.length) {
         const data = findPasien[0].neonatusmedis
@@ -523,7 +524,7 @@ export const usePengunjungPoliStore = defineStore('pengunjung-poli-store', {
         if (pos >= 0) { data.splice(pos, 1) }
       }
     },
-    hapusDataNeonatusKeperawatan (pasien, id) {
+    hapusDataNeonatusKeperawatan(pasien, id) {
       const findPasien = this.items.filter(x => x === pasien)
       if (findPasien?.length) {
         const data = findPasien[0].neonatuskeperawatan
@@ -531,7 +532,7 @@ export const usePengunjungPoliStore = defineStore('pengunjung-poli-store', {
         if (pos >= 0) { data.splice(pos, 1) }
       }
     },
-    hapusDataInjectan (pasien, id, key) {
+    hapusDataInjectan(pasien, id, key) {
       const findPasien = this.items.filter(x => x === pasien)
       if (findPasien?.length) {
         const data = findPasien[0][key]
@@ -540,7 +541,7 @@ export const usePengunjungPoliStore = defineStore('pengunjung-poli-store', {
       }
     },
 
-    injectDokumenTindakan (pasien, res) {
+    injectDokumenTindakan(pasien, res) {
       const findPasien = this.items.filter(x => x === pasien)
       if (findPasien?.length) {
         const tindakan = findPasien[0]?.tindakan
@@ -551,7 +552,7 @@ export const usePengunjungPoliStore = defineStore('pengunjung-poli-store', {
         }
       }
     },
-    getDataIcare (pasien) {
+    getDataIcare(pasien) {
       this.loadingIcare = true
       // console.log('get data icare', pasien)
       const param = {
@@ -576,7 +577,7 @@ export const usePengunjungPoliStore = defineStore('pengunjung-poli-store', {
           .catch(() => { this.loadingIcare = false })
       })
     },
-    async kirimpenjaminan (val) {
+    async kirimpenjaminan(val) {
       // this.noreg = val?.noreg
       val.loadingcasmix = true
 

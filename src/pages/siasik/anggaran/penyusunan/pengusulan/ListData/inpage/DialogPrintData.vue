@@ -330,7 +330,7 @@
                   .
                 </div>
                 <div class="text-bold q-py-xs q-pt-sm">
-                  Pejabat Teknis Kegiatan
+                  Pejabat Pelaksana Teknis Kegiatan
                 </div>
                 <div style="padding-bottom: 40px" />
                 <div class="underline text-bold q-py-xs">

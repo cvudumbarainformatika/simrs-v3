@@ -4,7 +4,7 @@
     <template v-if="store.pasien">
       <!-- <DetailsPasien /> -->
       <page-layanan-rehabmedik :pasien="store.pasien" :key="store.pasien" v-model="store.bukaLayanan"
-        @tutup="store.pasien = null" />
+        @tutup="store.pasien = null" :store="store" />
     </template>
     <template v-else>
       <div class="fit column relative-position">

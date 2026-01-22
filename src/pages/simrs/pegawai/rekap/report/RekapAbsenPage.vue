@@ -232,70 +232,12 @@
                 :style="`fonst-size: ${store.settingsTable.fontSize - 2}px !mportant`">
                 {{ row.flag === 'P01' ? row.nip : row.nik }}
               </div>
-              <!-- <q-linear-progress
-                class="q-mt-xs"
-                rounded
-                size="xl"
-                :value="hitungPercent(row)"
-                :color="hitungPercent(row) > 0.99 ? 'primary'
-                  : hitungPercent(row) <= 0.8 ? hitungPercent(row) <= 0.5 ? 'negative' : 'orange'
-                    : 'secondary'"
-              >
-                <div class="absolute-full flex flex-center">
-                  <q-badge
-                    color="transparent"
-                    :text-color="hitungPercent(row) > 0.99 ? 'white': 'dark'"
-                  >
-                    <div class="f-10">
-                      {{ (hitungPercent(row) * 100).toFixed(0) >= 100? 'complete': (hitungPercent(row) * 100).toFixed(0) + '%' }}
-                    </div>
-                  </q-badge>
-                </div>
-              </q-linear-progress> -->
+
             </div>
           </template>
           <template #cell-status="{ row }">
             <div class="">
-              <!-- <div v-if="getStatus(row)"> -->
-              <!-- <q-linear-progress
-                  class="q-mt-xs"
-                  rounded
-                  size="20px"
-                  :value="hitungPercent(row)"
-                  :color="hitungPercent(row) > 0.99 ? 'primary'
-                    : hitungPercent(row) <= 0.8 ? hitungPercent(row) <= 0.5 ? 'negative' : 'orange'
-                      : 'secondary'"
-                >
-                  <div class="absolute-full flex flex-center">
-                    <q-badge
-                      color="transparent"
-                      :text-color="hitungPercent(row) > 0.99 ? 'white': 'dark'"
-                    >
-                      <div class="f-10">
-                        {{ (hitungPercent(row) * 100).toFixed(0) >= 100? 'complete': (hitungPercent(row) * 100).toFixed(0) + '%' }}
-                      </div>
-                    </q-badge>
-                  </div>
-                </q-linear-progress> -->
-              <!-- <q-badge
-                  v-if="getStatus(row)"
-                  outline
-                  color="primary"
-                >
-                  <div class="f-10">
-                    Installed
-                  </div>
-                </q-badge> -->
-              <!-- </div> -->
-              <!-- <q-badge
-                v-else
-                outline
-                color="negative"
-              >
-                <div class="f-10">
-                  Blm Install
-                </div>
-              </q-badge> -->
+
               {{ row.jenis_pegawai ? row.jenis_pegawai.jenispegawai : '-' }}
             </div>
           </template>

@@ -96,6 +96,9 @@ export const useKunjunganRehabmediStore = defineStore('kunjungan-rehabmedik-stor
         datax.radiologi = data?.radiologi ?? []
         datax.diagnosa = data?.diagnosa ?? []
         datax.newapotekrajal = data?.newapotekrajal ?? []
+        datax.anamnesis = data?.anamnesis ?? []
+        datax.pengkajian = data?.pengkajian ?? []
+        datax.memodiagnosa = data?.memodiagnosa ?? null
       }
 
       console.log('find pasien', findPasien);
@@ -162,7 +165,7 @@ export const useKunjunganRehabmediStore = defineStore('kunjungan-rehabmedik-stor
 
     injectDataPasien(noreg, val, kode, arr) {
       const findPasien = this.items?.find(x => x.noreg === noreg)
-      // console.log('inject pasien', findPasien)
+      console.log('inject pasien rehab', findPasien)
       if (findPasien) {
         const data = findPasien
         // data[kode] = val
@@ -173,10 +176,7 @@ export const useKunjunganRehabmediStore = defineStore('kunjungan-rehabmedik-stor
         }
         else {
           const target = data[kode]?.find(x => x.id === val?.id) ?? null
-          // console.log('inject target pasien', target, kode, val, data)
-          // console.log('inject kode pasien', kode)
-          // console.log('inject isi pasien', val)
-
+          console.log('inject target pasien', target, kode, val, data)
           if (target) {
             Object.assign(target, val)
           }
@@ -187,6 +187,28 @@ export const useKunjunganRehabmediStore = defineStore('kunjungan-rehabmedik-stor
         }
       }
     },
+
+    hapusDataInjectan(noreg, id, key) {
+      const findPasien = this.items.filter(x => x?.noreg === noreg)
+      if (findPasien?.length) {
+        const data = findPasien[0][key]
+        const pos = data.findIndex(el => el.id === id)
+        if (pos >= 0) { data.splice(pos, 1) }
+      }
+    },
+
+
+    injectMemo(noreg, isi) {
+
+      const findPasien = this.items?.filter(x => x?.noreg === noreg)
+      if (findPasien?.length) {
+        const data = findPasien[0]
+        data.memodiagnosa = isi
+      }
+
+    },
+
+
   }
 })
 
