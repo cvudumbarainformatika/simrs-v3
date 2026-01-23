@@ -10,6 +10,7 @@ export const useUnitPengelolaharsipMapStore = defineStore('unit-pengelolah-arsip
     itemsorganisasi: [],
     itemscabinet: [],
     itemsrinci: [],
+    meta: null,
     loading: false,
     loadingForm: false,
     loadingisimap: false,
@@ -22,8 +23,9 @@ export const useUnitPengelolaharsipMapStore = defineStore('unit-pengelolah-arsip
     dialogtambaharsip: false,
     params: {
       q: '',
-      // page: 1,
-      // per_page: 10,
+      page: 1,
+      per_page: 10,
+      tahunmap: new Date().getFullYear(),
       bidangbagian: ''
     },
     form: {
@@ -44,7 +46,8 @@ export const useUnitPengelolaharsipMapStore = defineStore('unit-pengelolah-arsip
     formhapus: {
       id: '',
       noarsip: ''
-    }
+    },
+
   }),
   actions: {
     setParams(key, val) {
@@ -68,7 +71,9 @@ export const useUnitPengelolaharsipMapStore = defineStore('unit-pengelolah-arsip
       const params = { params: this.params }
       await api.get('v1/simrs/unitpengelolaharsip/map/list-data', params)
         .then(resp => {
-          this.items = resp?.data
+          this.items = resp?.data?.data
+          this.meta = resp?.data
+          console.log('meta', this.meta)
           this.loading = false
         })
         .catch(() => { this.loading = false })

@@ -9,6 +9,10 @@
           </template>
         </q-input>
       </div>
+      <div>
+        <q-select v-model="store.params.tahunmap" dense outlined dark color="white" :options="tahun" label="Tahun"
+          class="q-ml-sm" emit-value map-options style="min-width: 150px;" @update:model-value="store.search" />
+      </div>
       <div v-if="users === '' || users === null">
         <q-select v-model="store.params.bidangbagian" dense outlined dark color="white" :options="organisasi"
           label="Unit Pengelolah.." option-label="nama" option-value="kode" class="q-ml-sm" emit-value map-options
@@ -59,5 +63,18 @@ function getUnit(val) {
   store.params.bidangbagian = val
   store.search()
 }
+
+
+const tahun = computed(() => {
+  const currentYear = new Date().getFullYear()
+  const yearList = []
+
+  for (let i = 0; i < 3; i++) {
+    yearList.push(currentYear - i)
+  }
+
+  return yearList
+})
+
 
 </script>

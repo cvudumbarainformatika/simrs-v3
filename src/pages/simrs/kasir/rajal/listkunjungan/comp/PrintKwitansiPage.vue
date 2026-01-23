@@ -1,15 +1,22 @@
 <template>
-  <q-page class="q-pa-md">
+  <q-page class="q-pa-md karcis-print">
     <kop-surat-new-page />
     <div class="row text-right text-weight-bold q-mb-md">
-      <div class="col-6 h-8">
+      <div class="col-12 text-center">
         Karcis Pendaftaran
       </div>
-      <div class="col-6">
-        No. Karcis : {{ isikwitansi[0]?.nokarcis }}
-      </div>
+
     </div>
     <div class="row text-right text-weight-bold q-mb-md">
+      <div class="col-5">
+        No. Karcis
+      </div>
+      <div class="col-2 text-center">
+        :
+      </div>
+      <div class="col-5 text-left">
+        {{ isikwitansi[0]?.nokarcis }}
+      </div>
       <div class="col-5">
         Tanggal Masuk
       </div>
@@ -96,7 +103,7 @@
       <div class="kiri text-center">
       </div>
       <div class="kanan text-center">
-        <div><b>Probolinggo, {{ dateFullFormat(isikwitansi[0]?.created_at) }}</b></div>
+        <div><b>Probolinggo, {{ dateFullFormat(new Date()) }}</b></div>
         <div><b>Petugas Kasir</b></div>
         <div class="column flex-center">
           <div style="width: 100px;">
@@ -177,7 +184,9 @@ onMounted(async () => {
   }
 
   await nextTick()
-  window.print()
+  setTimeout(() => {
+    window.print()
+  }, 200)
 })
 
 // onMounted(async () => {
@@ -215,3 +224,17 @@ onMounted(async () => {
 //   window.print()
 // })
 </script>
+<style scoped>
+.karcis-print {
+  font-size: 13px;
+  /* default Quasar ±14px */
+}
+
+.karcis-print .text-weight-bold {
+  font-size: 16px;
+}
+
+.karcis-print b {
+  font-size: 15.5px;
+}
+</style>

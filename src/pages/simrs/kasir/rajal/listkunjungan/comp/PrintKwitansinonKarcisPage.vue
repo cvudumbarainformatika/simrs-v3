@@ -72,12 +72,12 @@
       <!-- Tanggal -->
       <div class="row q-mt-lg">
         <div class="col text-right">
-          Probolinggo, {{ dateFullFormat(isikwitansi[0]?.created_at) }}
+          Probolinggo, {{ dateFullFormat(new Date()) }}
         </div>
       </div>
 
       <!-- TTD -->
-      <div class="row text-right q-mt-md">
+      <div class="row text-right q-mt-md q-pr-lg">
         <div class="col text-right text-weight-bold">Petugas Kasir</div>
       </div>
 
@@ -91,7 +91,7 @@
         </div>
       </div>
 
-      <div class="row q-mt-sm">
+      <div class="row q-mt-sm q-pr-md">
         <div class="col text-right text-weight-bold">
           {{ isikwitansi[0]?.pegawai?.nama }}
         </div>

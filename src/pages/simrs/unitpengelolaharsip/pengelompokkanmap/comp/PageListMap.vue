@@ -12,7 +12,7 @@
           :kabinet="store.itemscabinet" />
       </q-scroll-area>
       <div class=" absolute-bottom bg-primary text-white z-top">
-        <footer-page />
+        <footer-page :meta="store.meta" @go-to="store.goToPage" />
       </div>
     </q-card>
     <DialogFormPage :klasifikasi="storeklasifikasi.items" :organisasi="store.itemsorganisasi"

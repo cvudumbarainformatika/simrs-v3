@@ -5,28 +5,47 @@
       <EmptyData v-else-if="!props?.items?.length && !props?.loading" />
 
       <div v-else class="row q-mt-sm q-ml-sm q-col-gutter-md justify-center items-start">
+        <!-- <pre>{{ datamap }}</pre> -->
         <div v-for="(item, i) in datamap" :key="i" class="col-auto">
-          <q-card class="cursor-pointer folder-card" flat bordered @click="dialogrincian(item.id)">
-            <div class="flex justify-center q-pa-sm">
-              <q-btn flat round dense size="sm"
-                style="background: rgba(0,0,0,0.15); top: 0; left: 0; margin: 2px;z-index: 10;" class="absolute"
-                @click.stop="editmap(item)">
-                <q-icon name="icon-mat-edit" size="18px" color="primary" />
-              </q-btn>
-              <q-btn flat round dense size="sm"
-                style="background: rgba(0,0,0,0.15); top: 0; right: 0; margin: 2px; z-index: 10;" class="absolute"
-                @click.stop="hapusmap(item.id)" :loading="store.loadinghapusmap[item.id]">
-                <q-icon name="icon-mat-delete" size="18px" color="red" />
-              </q-btn>
-              <q-img :src="folderIcon" style="width:120px; height:130px" fit="contain" no-native-menu />
+          <q-card class="cursor-pointer folder-card-elegant" flat bordered @click="dialogrincian(item.id)">
+            <!-- ACTION BUTTON -->
+            <div class="absolute-top-left q-pa-xs z-top">
+              <q-btn round dense flat size="sm" class="action-btn" icon="icon-mat-edit" color="primary"
+                @click.stop="editmap(item)" />
             </div>
-            <q-card-section class="q-pa-xs text-center">
-              <div class="text-subtitle2 text-weight-medium ellipsis" style="max-width: 120px" :title="item.namamap">
-                {{ item?.namamap }}
+
+            <div class="absolute-top-right q-pa-xs z-top">
+              <q-btn round dense flat size="sm" class="action-btn" icon="icon-mat-delete" color="red"
+                :loading="store.loadinghapusmap[item.id]" @click.stop="hapusmap(item.id)" />
+            </div>
+
+            <!-- ICON -->
+            <div class="flex justify-center q-pt-lg q-pb-md">
+              <q-img :src="folderIcon" style="width:150px; height:160px" fit="contain" no-native-menu />
+            </div>
+
+            <!-- CONTENT -->
+            <q-card-section class="q-pt-none">
+              <div class="row">
+                <div class="col-12 text-weight-bold ellipsis" :title="item.namamap">
+                  Nama Map : {{ item.namamap }}
+                </div>
+                <div class="col-12" :title="item.keterangan">
+                  Tempat : Filing Cabinet {{ item?.kodefelingkabinet }} || Laci : {{ item.laci }}
+                </div>
+                <div class="col-12">
+                  Keterangan : {{ item.keterangan || 'Tidak ada keterangan' }}
+                </div>
+                <div class="col-12">
+                  Tahun : {{ item.tahunMap }}
+                </div>
+                <div class="col-12">
+                  Klasifikasi : {{ item?.klasifikasi?.nama }} ({{ item?.klasifikasi?.kode }})
+                </div>
+                <div class="col-12">
+                  Unit Pengolah : {{ item?.unitpengolah?.nama }}
+                </div>
               </div>
-              <q-tooltip anchor="top middle" self="bottom middle">
-                {{ item?.namamap }} <br> {{ item?.keterangan }}
-              </q-tooltip>
             </q-card-section>
           </q-card>
         </div>
@@ -111,12 +130,36 @@ function hapusmap(id) {
 
 <style scoped>
 .folder-card {
-  width: 140px;
+  width: 280px;
   transition: all 0.2s ease-in-out;
 }
 
 .folder-card:hover {
   transform: translateY(-4px) scale(1.05);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.folder-card-elegant {
+  width: 440px;
+  min-height: 280px;
+  border-radius: 16px;
+  transition: all 0.25s ease;
+}
+
+.folder-card-elegant:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+}
+
+.action-btn {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(4px);
+}
+
+.ellipsis-2-lines {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 </style>

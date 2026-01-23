@@ -2,7 +2,8 @@
   <div class="kop-surat row items-start q-mb-xs">
     <!-- Logo -->
     <div class="col-auto">
-      <q-img src="~assets/images/logo-kota-grey.png" spinner-color="white" style="width: 80px;" />
+      <img src="/src/assets/images/logo-kota-grey.png" alt=" Logo Kota Probolinggo"
+        style="width: 80px; height: auto;" />
     </div>
 
     <!-- Teks -->
