@@ -27,7 +27,7 @@
                   </div>
                 </div> -->
                 <component :is="menu.comp" :key="pasien" :pasien="pasien" :depo="pasien?.flagdepo" :store="store"
-                  :loading-terima="store.loadingTerima" />
+                  :loading-terima="store.loadingTerima" :user="user" />
               </template>
               <template #fallback>
                 <AppLoader />
@@ -41,13 +41,14 @@
 </template>
 
 <script setup>
-import { defineAsyncComponent, onMounted, ref, shallowRef } from 'vue'
+import { defineAsyncComponent, onMounted, ref, shallowRef, computed } from 'vue'
 import HeaderLayout from './layoutcomp/HeaderLayout.vue'
 import LeftDrawer from './layoutcomp/LeftDrawer.vue'
 
 import { useLaboratPoli } from 'src/stores/simrs/pelayanan/poli/laborat'
 import { useRadiologiPoli } from 'src/stores/simrs/pelayanan/poli/radiologi'
 import { usePengunjungRanapStore } from 'src/stores/simrs/ranap/pengunjung'
+import { useAplikasiStore } from 'src/stores/app/aplikasi';
 
 const drawer = ref(false)
 const props = defineProps({
@@ -64,6 +65,13 @@ const props = defineProps({
 const lab = useLaboratPoli()
 const radiologi = useRadiologiPoli()
 const storeRanap = usePengunjungRanapStore()
+
+
+const auth = useAplikasiStore();
+
+const user = computed(() => {
+  return auth?.user?.pegawai
+})
 
 onMounted(() => {
   console.log('pasien rehabmedik', props.pasien)
@@ -83,29 +91,39 @@ const emits = defineEmits(['tutup'])
 
 const menus = ref([
   {
+    name: 'AssesmentDokter',
+    label: 'Assesment Dokter',
+    icon: 'icon-mat-medical_information',
+    route: ['poli'],
+    nakes: ['1', '2', '3', '4', '5', '6'],
+    comp: shallowRef(defineAsyncComponent(() => import('src/pages/simrs/rehabmedik/layanan/asessment/IndexPage.vue')))
+  },
+  {
     name: 'AnamnesisPage',
     label: 'Anamnesis & Riwayat',
     icon: 'icon-mat-medical_information',
-    route: ['poli'],
+    nakes: ['1', '2', '3', '4', '5', '6'],
     comp: shallowRef(defineAsyncComponent(() => import('src/pages/simrs/poli/tindakan/comptindakan/pagemenu/AnamnesisPage.vue')))
   },
   {
     name: 'PemeriksaanPage',
     label: 'Pemeriksaan Umum & Fisik',
     icon: 'icon-my-stethoscope',
-    route: ['poli'],
+    nakes: ['1', '2', '3', '4', '5', '6'],
     comp: shallowRef(defineAsyncComponent(() => import('src/pages/simrs/poli/tindakan/comptindakan/pagemenu/PemeriksaanPageBaru.vue')))
   },
   {
     name: 'PengkajianPage',
     label: 'Pengkajian Rehab Medik',
     icon: 'icon-mat-medical_information',
+    nakes: ['1', '2', '3', '4', '5', '6'],
     comp: shallowRef(defineAsyncComponent(() => import('./layanan/pengkajian/comp/pengkajian/IndexPage.vue')))
   },
   {
     name: 'DiagnosaPage',
     label: 'Diagnosa & Tindakan',
     icon: 'icon-mat-medical_information',
+    nakes: ['1', '2', '3', '4', '5', '6'],
     comp: shallowRef(defineAsyncComponent(() => import('./layanan/diagnosadantindakan/IndexPage.vue')))
   },
 
@@ -113,12 +131,14 @@ const menus = ref([
     name: 'e-resep-page',
     label: 'EResep',
     icon: 'icon-mat-receipt',
+    nakes: ['1', '2', '3', '4', '5', '6'],
     comp: shallowRef(defineAsyncComponent(() => import('src/pages/simrs/eresep/EresepPage.vue')))
   },
   {
     name: 'Penunjang',
     label: 'Penunjang',
     icon: 'icon-mat-post_add',
+    nakes: ['1', '2', '3', '4', '5', '6'],
     comp: shallowRef(defineAsyncComponent(() => import('./layanan/penunjang/IndexPage.vue')))
   },
 ])
