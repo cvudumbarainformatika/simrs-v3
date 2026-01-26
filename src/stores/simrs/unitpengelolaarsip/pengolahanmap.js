@@ -62,6 +62,11 @@ export const useUnitPengelolaharsipMapStore = defineStore('unit-pengelolah-arsip
       this.params.page = 1
       this.getData()
     },
+    searchtahun(val) {
+      this.params.tahunmap = val
+      this.params.page = 1
+      this.getData()
+    },
     refresh(val) {
       this.params.page = 1
       this.getData()
