@@ -40,7 +40,7 @@
                   Tahun : {{ item.tahunMap }}
                 </div>
                 <div class="col-12">
-                  Klasifikasi : {{ item?.klasifikasi?.nama }} ({{ item?.klasifikasi?.kode }})
+                  Klasifikasi : {{ item?.keterangan_kode }} ({{ item?.kode_master }})
                 </div>
                 <div class="col-12">
                   Unit Pengolah : {{ item?.unitpengolah?.nama }}

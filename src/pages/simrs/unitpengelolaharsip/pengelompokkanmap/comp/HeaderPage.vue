@@ -3,7 +3,8 @@
     <div class="row items-center">
       <div>
         <q-input v-model="store.params.q" placeholder="Cari Map ..." dense outlined dark color="white"
-          style="min-width:200px" debounce="800" :loading="store.loading" @update:model-value="store.search">
+          style="min-width:200px" debounce="800" :loading="store.loading"
+          @update:model-value="store.search(store.params.q, store.params.tahunmap)">
           <template #prepend>
             <q-icon name="icon-mat-search" />
           </template>
@@ -11,7 +12,7 @@
       </div>
       <div>
         <q-select v-model="store.params.tahunmap" dense outlined dark color="white" :options="tahun" label="Tahun"
-          class="q-ml-sm" emit-value map-options style="min-width: 150px;" @update:model-value="store.search" />
+          class="q-ml-sm" emit-value map-options style="min-width: 150px;" @update:model-value="store.searchtahun" />
       </div>
       <div v-if="users === '' || users === null">
         <q-select v-model="store.params.bidangbagian" dense outlined dark color="white" :options="organisasi"
