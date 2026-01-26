@@ -36,6 +36,9 @@
           {{ pasien?.usia ?? '-' }} || {{ pasien?.kunjunganranap?.masterpasien?.rs17 ??
             pasien?.kunjunganrajal?.masterpasien?.kelamin }}
         </div>
+        <div class="text-orange  f-10">
+          {{ (pasien?.poli ?? pasien?.ruangan) ?? '-' }}
+        </div>
       </div>
       <q-bar>
         <q-space />
