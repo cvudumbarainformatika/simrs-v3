@@ -65,7 +65,7 @@
 
         <div class="col-3">
           <q-select filled dense v-model="store.form.kasir" :options="kasir" option-label="nama"
-            option-value="kdpegsimrs" label="Jenis Layanan" emit-value map-options @update:model-value="isikasir" />
+            option-value="kdpegsimrs" label="Kasir" emit-value map-options @update:model-value="isikasir" />
         </div>
       </div>
 
@@ -184,8 +184,9 @@ if (!apps.user?.pegawai?.kdkasir) {
     x => x.kdpegsimrs === apps.user?.pegawai?.kdpegsimrs
   )
 }
+
 function setTanggal(value) {
-  console.log('set tanggal', value)
+  // console.log('set tanggal', value)
   store.form.tgl_tbp = value
   store.formx.tgl_tbp = date.formatDate(value, 'DD MMMM YYYY')
 }

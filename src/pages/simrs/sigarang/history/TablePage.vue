@@ -539,14 +539,14 @@
 
               <div class="q-mb-md">
                 Pada hari ini <span class="text-weight-bold text-italic">{{ date.formatDate(item.tanggal, 'dddd')
-                  }}</span>
+                }}</span>
                 tanggal <span class="text-weight-bold text-italic">{{
                   tanggalTerbilang(date.formatDate(item.tanggal, 'DD'))
-                }}</span>
+                  }}</span>
                 bulan <span class="text-weight-bold text-italic">{{ date.formatDate(item.tanggal, 'MMMM') }}</span>
                 tahun <span class="text-weight-bold text-italic">{{ tahunTerbilang(date.formatDate(item.tanggal,
                   'YYYY'))
-                  }}</span>,
+                }}</span>,
                 <!-- tahun <span class="text-weight-bold text-italic">{{ tahunTerbilang('3211') }}</span>, -->
                 bertempat di UOBK RSUD Dokter Mohamad Saleh Kota Probolinggo, kami yang bertanda tangan di bawah ini:
               </div>
@@ -646,8 +646,8 @@
                   Jabatan
                 </div>
                 <div class="col-7">
-                  {{ tandatangan?.data?.ppk?.relasi_jabatan ? tandatangan?.data?.ppk?.relasi_jabatan?.jabatan :
-                    'jabatan tidak ditemukan' }}
+                  <!-- {{ tandatangan?.data?.ppk?.relasi_jabatan ? tandatangan?.data?.ppk?.relasi_jabatan?.jabatan :
+                    'jabatan tidak ditemukan' }} --> Pejabat Penandatangan Kontrak
                 </div>
               </div>
               <div class="fit row no-wrap justify-start items-center q-my-sm">
@@ -1012,7 +1012,7 @@ const freeTextKiri = ref('')
 const freeTextKanan = ref('')
 const freeTextBawah = ref('')
 // tanggal terbilang
-function tanggalTerbilang (val) {
+function tanggalTerbilang(val) {
   console.log(val)
   switch (val) {
     case '01':
@@ -1113,7 +1113,7 @@ function tanggalTerbilang (val) {
   }
 }
 // tahun terbilang
-function tahunTerbilang (val) {
+function tahunTerbilang(val) {
   const temp = val.split('')
   let satuan = ''
   let puluhan = ''
@@ -1136,7 +1136,7 @@ function tahunTerbilang (val) {
   return ribuan + ' ' + ratusan + ' ' + puluhan + ' ' + satuan
 }
 // bilangan
-function bilangan (val) {
+function bilangan(val) {
   switch (val) {
     case '1':
       return 'Satu'
@@ -1177,17 +1177,17 @@ const role = computed(() => {
   return apps.user.pegawai ? apps.user.pegawai.role.nama : ''
 })
 // set tanggal print
-function setTanggal (val) {
+function setTanggal(val) {
   table.dispPrint.tanggal = val
   console.log('tanggal ', val)
 }
-function setTanggalDisp (val) {
+function setTanggalDisp(val) {
   table.dispPrint.tanggalDisp = val
   console.log('tanggal disp', val)
 }
 /// ////////
 // kembalikan status ke verif (akses gudang)
-function backToVerif (val, index) {
+function backToVerif(val, index) {
   // console.log('back to', val, index)
   table.setForm('id', val.id)
   table.setForm('status', 4)
@@ -1199,7 +1199,7 @@ function backToVerif (val, index) {
     table.getItBackToVerif(index)
   })
 }
-function reqQ (val) {
+function reqQ(val) {
   let x = ''
   if (val === 'Pemesanan' || val === 'Penerimaan' || val === 'Gudang') {
     x = 'Nomor Pemesanan'
@@ -1217,7 +1217,7 @@ const openPrint = ref(false)
 // let title = ''
 const printed = ref(false)
 const item = ref({})
-function toPrint (val) {
+function toPrint(val) {
   // console.log('print', val)
   item.value = val
   // title = 'Print ' + val.nama
@@ -1228,14 +1228,14 @@ const printObj = {
   // popTitle: title,
   // extraCss: 'https://cdn.bootcdn.net/ajax/libs/animate.css/4.1.1/animate.compat.css, https://cdn.bootcdn.net/ajax/libs/hover.css/2.3.1/css/hover-min.css',
   // extraHead: '<meta http-equiv="Content-Language"content="zh-cn"/>',
-  beforeOpenCallback (vue) {
+  beforeOpenCallback(vue) {
     printed.value = true
     console.log('wait...', vue)
   },
-  openCallback (vue) {
+  openCallback(vue) {
     console.log('opened', vue)
   },
-  closeCallback (vue) {
+  closeCallback(vue) {
     openPrint.value = false
     printed.value = false
     // changePeriode()
@@ -1290,7 +1290,7 @@ const hapus = val => {
 // ------------ edit pemesanan -------
 const editPemesanan = useEditPemesananStore()
 const kontrakStore = useKontrakPemensananStore()
-function editRow (val, i) {
+function editRow(val, i) {
   // console.log(val)
   kontrakStore.setSearch(val.kontrak)
   editPemesanan.assignForm(val, i)
@@ -1302,14 +1302,14 @@ const ladingPemesanan = computed(() => {
 const ladingPenerimaan = computed(() => {
   return editPenerimaan.loading
 })
-function loadingEdit (index) {
+function loadingEdit(index) {
   return (editPemesanan.index === index || editPenerimaan.index === index) && (ladingPemesanan.value === true || ladingPenerimaan.value === true)
 }
 // ------------------------------------
 
 // --------edit penerimaan -----------
 const editPenerimaan = useEditPenerimaanStore()
-function editRowTerima (val, i) {
+function editRowTerima(val, i) {
   console.log('edit penerimaan', val)
   editPenerimaan.assignForm(val, i)
   editPenerimaan.setOpen()
