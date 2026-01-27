@@ -126,7 +126,7 @@ const form = ref({
   tindakan: null,
   edukasi: null,
   frekuensi: null,
-  rencana: null
+  rencana: null,
 })
 
 
