@@ -77,7 +77,7 @@
             <div class="q-pl-sm">d. Frekuensi Kunjungan</div>
           </div>
           <div class="col-9">
-            <q-input v-model="form.edukasi" outlined autogrow stack-label standout="bg-yellow-3" label="Edukasi"
+            <q-input v-model="form.frekuensi" outlined autogrow stack-label standout="bg-yellow-3" label="Edukasi"
               hide-bottom-space />
           </div>
         </div>
@@ -132,6 +132,7 @@ const form = ref({
 
 const onSubmit = () => {
   console.log('submit')
+
 }
 const onReset = () => {
   console.log('reset')
