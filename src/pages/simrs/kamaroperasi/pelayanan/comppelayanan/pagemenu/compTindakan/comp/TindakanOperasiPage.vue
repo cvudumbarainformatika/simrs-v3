@@ -19,6 +19,6 @@ const props = defineProps({
     default: null
   },
 })
-const FormPage = defineAsyncComponent(() => import('./FormTindakanOperasi.vue'))
-const ListPage = defineAsyncComponent(() => import('./ListTindakanOperasi.vue'))
+const FormPage = defineAsyncComponent(() => import('./tindakanOp/FormTindakanOperasi.vue'))
+const ListPage = defineAsyncComponent(() => import('./tindakanOp/ListTindakanOperasi.vue'))
 </script>
