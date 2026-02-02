@@ -4,6 +4,7 @@
       <div class="row q-pa-sm q-col-gutter-md">
         <div class="col q-gutter-y-md">
           <app-input-simrs v-model="store.formheader.nonpk" label="Nomer NPK-LS" readonly outlined dense />
+          <app-input-simrs v-model="store.formheader.nomorcek" label="Nomor Cek" outlined dense />
         </div>
         <div class="col q-gutter-y-md">
           <app-input-date-human label="Tanggal NPK-LS" :model="store.params.tgl" icon="icon-mat-event" outlined

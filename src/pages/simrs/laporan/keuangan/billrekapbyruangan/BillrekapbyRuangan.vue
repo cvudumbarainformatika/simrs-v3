@@ -4,11 +4,8 @@
       <q-card-section>
         <div class="row items-center garis-bawah">
           <div class="col-2">
-            <q-img
-              src="~assets/images/logo-kota-grey.png"
-              spinner-color="white"
-              style="height: 3.56cm; max-width: 2.86cm"
-            />
+            <q-img src="~assets/images/logo-kota-grey.png" spinner-color="white"
+              style="height: 3.56cm; max-width: 2.86cm" />
           </div>
 
           <div class="col-8">
@@ -28,15 +25,11 @@
               E-mail : rsudprob@probolinggokota.go.id
             </div>
             <div class="row justify-center f-14 text-weight-bold">
-              PROBOLINGGO  67219
+              PROBOLINGGO 67219
             </div>
           </div>
           <div class="col-2">
-            <q-img
-              src="~assets/logos/logo-rsud.png"
-              spinner-color="white"
-              style="height: 4cm; max-width: 4cm"
-            />
+            <q-img src="~assets/logos/logo-rsud.png" spinner-color="white" style="height: 4cm; max-width: 4cm" />
           </div>
         </div>
         <div class="row fit justify-center items-center text-weight-bold f-18">
@@ -47,16 +40,8 @@
         </div>
       </q-card-section>
       <q-card-section>
-        <Customtable
-          :ada-cari="false"
-          :items="store.items"
-          :columns="store.kolom"
-          :column-hide="store.kolomhide"
-          :default-btn="false"
-          :right-action="false"
-          :loading="store.loading"
-          row-no
-        >
+        <Customtable :ada-cari="false" :items="store.items" :columns="store.kolom" :column-hide="store.kolomhide"
+          :default-btn="false" :right-action="false" :loading="store.loading" row-no>
           <!-- tombol print -->
           <template #header-right-before>
             <!-- <q-btn
@@ -77,50 +62,22 @@
             </q-btn> -->
           </template>
           <template #header-left-after-search>
-            <q-form
-              ref="formRef"
-              class="row q-pa-md q-col-gutter-xs"
-              @submit="store.initAmbilData"
-            >
+            <q-form ref="formRef" class="row q-pa-md q-col-gutter-xs" @submit="store.initAmbilData">
               <div class="row q-col-gutter-sm">
                 <div>
-                  <app-input-date-human
-                    :model="store.tanggal.from"
-                    label="dari tanggal"
-                    outlined
-                    @db-model="setTo"
-                    @set-display="setToDisp"
-                  />
+                  <app-input-date-human :model="store.tanggal.from" label="dari tanggal" outlined @db-model="setTo"
+                    @set-display="setToDisp" />
                 </div>
                 <div>
-                  <app-input-date-human
-                    :model="store.tanggal.to"
-                    label="sampai tanggal"
-                    outlined
-                    @db-model="setTox"
-                    @set-display="setToFromDisp"
-                  />
+                  <app-input-date-human :model="store.tanggal.to" label="sampai tanggal" outlined @db-model="setTox"
+                    @set-display="setToFromDisp" />
                 </div>
                 <div>
-                  <q-select
-                    v-model="store.params.layanan"
-                    use-input
-                    fill-input
-                    hide-selected
-                    option-value="kodelayanan"
-                    option-label="namalayanan"
-                    :options="layanan"
-                    emit-value
-                    map-options
-                    dense
-                    outlined
-                    label="Pilih Layanan"
-                    transition-show="scale"
-                    transition-hide="scale"
-                    :rules="[
+                  <q-select v-model="store.params.layanan" use-input fill-input hide-selected option-value="kodelayanan"
+                    option-label="namalayanan" :options="layanan" emit-value map-options dense outlined
+                    label="Pilih Layanan" transition-show="scale" transition-hide="scale" :rules="[
                       val => !!val || 'Harus diisi'
-                    ]"
-                  />
+                    ]" />
                 </div>
                 <!-- <div>
                   <q-select
@@ -144,51 +101,45 @@
                   />
                 </div> -->
                 <div>
-                  <q-btn
-                    label="Cari"
-                    type="submit"
-                    color="primary"
-                    :loading="store.loading"
-                    :disable="store.loading"
-                  />
+                  <q-btn label="Cari" type="submit" color="primary" :loading="store.loading" :disable="store.loading" />
                 </div>
               </div>
             </q-form>
           </template>
-          <template #cell-NamaRuangan="{row}">
+          <template #cell-NamaRuangan="{ row }">
             {{ row?.namaruangan }}
           </template>
-          <template #cell-Admin="{row}">
+          <template #cell-Admin="{ row }">
             <div class="row justify-end">
               {{ formatDouble(row.Admin) }}
             </div>
           </template>
-          <template #cell-AkomodasiKamar="{row}">
+          <template #cell-AkomodasiKamar="{ row }">
             <div class="row justify-end">
               {{ formatDouble(row?.AkomodasiKamar) }}
             </div>
           </template>
-          <template #cell-TindakanDokter="{row}">
+          <template #cell-TindakanDokter="{ row }">
             <div class="row justify-end">
               {{ formatDouble(row?.TindakanDokter) }}
             </div>
           </template>
-          <template #cell-TindakanKeperawatan="{row}">
+          <template #cell-TindakanKeperawatan="{ row }">
             <div class="row justify-end">
               {{ formatDouble(row?.TindakanKeperawatan) }}
             </div>
           </template>
-          <template #cell-Askep="{row}">
+          <template #cell-Askep="{ row }">
             <div class="row justify-end">
               {{ formatDouble(row?.Askep) }}
             </div>
           </template>
-          <template #cell-Visite="{row}">
+          <template #cell-Visite="{ row }">
             <div class="row justify-end">
               {{ formatDouble(row?.Visite) }}
             </div>
           </template>
-          <template #cell-Total="{row}">
+          <template #cell-Total="{ row }">
             <div class="row justify-end">
               {{ formatDouble(row?.Total) }}
             </div>
@@ -261,19 +212,19 @@ const layanan = ref([
 //   }
 // }
 
-function setToDisp (vaal) {
+function setToDisp(vaal) {
   store.tanggal.from = vaal
 }
 
-function setToFromDisp (vaal) {
+function setToFromDisp(vaal) {
   store.tanggal.to = vaal
 }
 
-function setTo (val) {
+function setTo(val) {
   store.params.tgldari = val
 }
 
-function setTox (val) {
+function setTox(val) {
   store.params.tglsampai = val
 }
 
@@ -284,21 +235,24 @@ store.getTigaPuluhTarif()
 </script>
 
 <style lang="scss" scoped>
-.garis-bawah{
+.garis-bawah {
   border-bottom: 6px solid black;
   border-bottom-style: double;
 }
-.anu{
+
+.anu {
   max-width: 150px;
   min-width: 50px;
 }
-.wrap_it{
+
+.wrap_it {
   overflow-wrap: normal !important;
   word-wrap: normal !important;
   white-space: normal !important;
   word-break: break-word;
 }
-.kecilin{
+
+.kecilin {
   min-width: 10px;
   max-width: 100px;
   white-space: normal !important;
@@ -306,5 +260,4 @@ store.getTigaPuluhTarif()
   word-wrap: normal !important;
   word-break: break-word;
 }
-
 </style>

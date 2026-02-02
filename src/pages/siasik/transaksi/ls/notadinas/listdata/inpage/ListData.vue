@@ -95,7 +95,9 @@
                         <q-item clickable v-close-popup @click="LapRealisasi(props?.row)">
                           <q-item-section>Laporan Realisasi</q-item-section>
                         </q-item>
-                        <q-item clickable v-close-popup @click="viewLembarverif(props?.row)">
+                        <q-item
+                          v-if="auth.user?.pegawai?.kdpegsimrs === 'sa' || auth.user?.pegawai?.kdpegsimrs === '38' || auth.user?.pegawai?.kdpegsimrs === '39'"
+                          clickable v-close-popup @click="viewLembarverif(props?.row)">
                           <q-item-section>Cetak Lembar Verif</q-item-section>
                         </q-item>
                         <q-item clickable v-close-popup @click="viewCetakSptj(props?.row)">

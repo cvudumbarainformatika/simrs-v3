@@ -46,6 +46,11 @@ const laporan = {
       component: () => import('pages/simrs/laporan/keuangan/inacbg/IndexPage.vue')
     },
     {
+      path: '/laporan/keuangan/kuitansitercetak',
+      // name: 'laporan.keuangan.kuitansitercetak',
+      component: () => import('pages/simrs/laporan/keuangan/kuitansitercetak/IndexPage.vue')
+    },
+    {
       path: '/laporan/sigarang/penerimaansimperda108',
       // name: 'laporan.sigarang.penerimaansimperda108',
       component: () => import('pages/simrs/laporan/sigarang/penerimaansimperda108/IndexPage.vue')
@@ -258,6 +263,11 @@ const laporan = {
       path: '/laporan/farmasi/mutasi-fifo',
       // name: 'laporan.farmasi.mutasi-fifo',
       component: () => import('pages/simrs/laporan/farmasi/mutasififo/IndexPage.vue')
+    },
+    {
+      path: '/laporan/farmasi/mutasi-fifo-2',
+      // name: 'laporan.farmasi.mutasi-fifo-2',
+      component: () => import('pages/simrs/laporan/farmasi/mutasififo2/IndexPage.vue')
     },
     {
       path: '/laporan/farmasi/barang-rusak',

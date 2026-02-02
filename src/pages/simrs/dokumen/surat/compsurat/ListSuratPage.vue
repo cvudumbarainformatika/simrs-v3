@@ -1,9 +1,10 @@
 <template>
   <div class="column fit ">
+    <!-- <pre>{{ props.pasien }}</pre> -->
     <q-toolbar class="bg-primary text-white shadow-2">
+
       <q-toolbar-title>Daftar Surat Keterangan Dokter</q-toolbar-title>
     </q-toolbar>
-
     <q-list class="q-pa-xs">
       <!-- <div class="column"> -->
       <q-item class="q-my-sm full-width bg-white" clickable v-ripple
@@ -17,6 +18,8 @@
             <b v-if="item?.kdsurat === 'SRT01'"> Kesimpulan: {{ item?.kesimpulan }}</b>
             <b v-else-if="item?.kdsurat === 'SRT02'"> SKD: Surat Keterangan Pemeriksaan Kesehatan Jiwa</b>
             <b v-else-if="item?.kdsurat === 'SRT03'"> SKD: NAPZA</b>
+            || <span class="text-negative">Nota Tindakan:
+              {{ item?.tindakaanbilling?.rs2 }}</span>
           </q-item-label>
         </q-item-section>
 

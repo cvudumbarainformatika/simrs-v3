@@ -145,6 +145,12 @@
                         </div>
                       </td>
                     </tr>
+                    <tr>
+                      <td colspan="5" class="text-center text-bold">
+                        <div>Nomor CEK : {{ store.cetaknotadinas.nomorcek }}</div>
+                      </td>
+
+                    </tr>
                   </tbody>
                 </table>
                 <div class="col-auto q-pt-sm text-bold">
