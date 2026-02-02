@@ -44,7 +44,8 @@
         <div class="col-4">Jenis Operasi</div>
         <div class="col-8">
           <q-input v-model="store.form.rs7" outlined
-            :label="'Jumlah karakter : ' + (store.form?.rs7?.length ?? 0) + ' (Maksimal 255 Karakter)'" dense :rules="[
+            :label="'Jumlah karakter : ' + (store.form?.rs7?.length ?? 0) + ' (Maksimal 255 Karakter)'" dense
+            hide-bottom-space :rules="[
               val => val.length <= 255 || 'masimal 255 karakter'
             ]" />
         </div>
@@ -91,6 +92,26 @@
         <div class="col-4">Laporan Operasi</div>
         <div class="col-8">
           <q-input v-model="store.form.rs14" outlined label="" autogrow type="textarea" />
+        </div>
+      </div>
+      <div class="row items-center q-my-xs no-wrap">
+        <div class="col-4">Jumlah Kehilangan Darah</div>
+        <div class="col-8">
+          <q-input v-model="store.form.jd_keluar" :key="store.form.jd_keluar" outlined label="" dense autofocus
+            @update:model-value="setForm('jd_keluar', Number($event))" />
+        </div>
+      </div>
+      <div class="row items-center q-my-xs no-wrap">
+        <div class="col-4">Jenis Darah Yang Masuk</div>
+        <div class="col-8">
+          <q-input v-model="store.form.jenis_darah_masuk" outlined label="" dense autofocus />
+        </div>
+      </div>
+      <div class="row items-center q-my-xs no-wrap">
+        <div class="col-4">Jumlah Darah Yang Masuk</div>
+        <div class="col-8">
+          <q-input v-model="store.form.jd_masuk" :key="store.form.jd_masuk" outlined label="" dense autofocus
+            @update:model-value="setForm('jd_masuk', Number($event))" />
         </div>
       </div>
 
@@ -140,82 +161,6 @@ function setForm (key, val) {
 
   store.setForm(key, val)
 }
-function setTanpaAnas (key, val) {
-  store.setFormTindakan(key, val)
-  tarifSelected(tindakan.value)
-  // if (val) store.setFormTindakan('subtotal', store.form.tarif)
-  // else store.setFormTindakan('subtotal', store.form.tarif - store.form.anastesi)
-}
-function penentuanMarkUp () {
-  const ruang = props.pasien.rs10
-  const ruangRanap = props.pasien.ruangranap
-  if (ruang == 'POL014') return 20
-  else if (ruang?.includes('POL') && ruang != 'POL014') return 20
-  else {
-    if (['2', '3', 'HCU'].includes(ruangRanap?.rs3)) return 20
-    else return 25
-  }
-
-}
-function setCito (key, val) {
-  store.setFormTindakan(key, val)
-  tarifSelected(tindakan.value)
-  // if (val) store.setFormTindakan('subtotal', store.form.tarif)
-  // else store.setFormTindakan('subtotal', store.form.tarif)
-}
-function selectValid (val) {
-  return (val !== null && val !== '') || ''
-}
-function penentuanTarif (val) {
-  const ruang = props.pasien.rs10
-  const ruangRanap = props.pasien.ruangranap
-  if (ruang == 'POL014') return { tarif: val?.tarif3, js: val?.js3, jp: val?.jp3, an: val?.an3 }
-  else if (ruang?.includes('POL') && ruang != 'POL014') return { tarif: val?.tarif_poli, js: val?.js_poli, jp: val?.jp_poli, an: 0 }
-  else {
-    if (ruangRanap?.rs3 == 'PS') return { tarif: val?.tarif_presiden, js: val?.ssp, jp: val?.psp, an: val?.asp }
-    else if (['2', '3'].includes(ruangRanap?.rs3)) return { tarif: val?.tarif3, js: val?.js3, jp: val?.jp3, an: val?.an3 }
-    else return { tarif: val?.tarif1, js: val?.js1, jp: val?.jp1, an: val?.an1 }
-  }
-
-}
-function tarifSelected (val) {
-  const tarifB = val ? penentuanTarif(val) : { tarif: 0, js: 0, jp: 0, an: 0 }
-  const up = store?.form?.cito ? penentuanMarkUp() : 0
-  // console.log('tarif selected', val, tarif)
-  const markUp = up / 100
-  const tarif = (markUp * tarifB.tarif) + tarifB.tarif
-  const anasDisplay = (markUp * tarifB.an) + tarifB.an
-  const anas = store.form.tanpaAnas ? 0 : (markUp * tarifB.an) + tarifB.an
-
-  const js = (markUp * tarifB.js) + tarifB.js
-  const jp = (markUp * tarifB.jp) + tarifB.jp
-  store.setFormTindakan('kode', val?.kode)
-  store.setFormTindakan('tarif', tarif)
-  store.setFormTindakan('an', anas)
-  store.setFormTindakan('js', js)
-  store.setFormTindakan('jp', jp)
-  if (store.form.tanpaAnas) store.setFormTindakan('subtotal', tarif - anasDisplay)
-  else store.setFormTindakan('subtotal', tarif)
-
-}
-async function filterFn (val, update, abort) {
-  console.log('filter', val)
-
-  if (val?.length < 1) {
-    abort()
-    return
-  }
-
-  const resp = await store.getTarifOp(val)
-  console.log('resp', resp)
-  const data = resp.data ?? []
-
-  update(() => {
-    // const needle = val?.toLowerCase()
-    // options.value = data?.length ? data?.filter(v => v?.namaobat.toLowerCase().indexOf(needle) > -1) : []
-    options.value = data
-  })
-}
 const refTindakan = ref(null)
 function validate () {
   console.log('ref', refTindakan.value?.validate())
@@ -229,6 +174,7 @@ function validate () {
 function simpan () {
   console.log('form', store.form)
   // if (validate()) store.simpanLaporan()
+  store.simpanLaporan()
 }
 onMounted(() => {
   store.resetForm()
