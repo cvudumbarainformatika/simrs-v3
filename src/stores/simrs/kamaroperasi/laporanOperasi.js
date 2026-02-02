@@ -16,7 +16,11 @@ export const useLaporanOperasiStore = defineStore('laporan_operasi_store', {
     },
     tarif: [],
     form: {},
-    formTindakan: {}
+    formTindakan: {},
+    optionJenisAnastesis: ['General Tiva', 'General FM', 'General Intubasi', 'Lokal', 'Regional'],
+    optionKlasifikasiOperasis: ['Operasi Bersih', 'Operasi Bersih Terkontaminasi', 'Operasi Kotor', 'Operasi Terkontaminasi'],
+    optionYT: ['YA', 'TIDAK'],
+    optionAsa: ['-', '1', '2', '3', '4', '5'],
   }),
   actions: {
     setForm (key, val) {
@@ -24,13 +28,33 @@ export const useLaporanOperasiStore = defineStore('laporan_operasi_store', {
     },
     resetForm () {
       console.log('reset Form')
+
+      this.setForm('tanggal', date.formatDate(Date.now(), 'YYYY-MM-DD'))
+      this.setForm('noreg', this.pasien?.noreg)
+      this.setForm('nota', this.pasien?.rs2)
+      this.setForm('tindakan', this.pasien?.tindakanop?.id)
+
+      this.setForm('rs4', '')
+      this.setForm('rs5', '')
+      this.setForm('rs6', '')
+      this.setForm('rs7', '')
+      this.setForm('rs8', '')
+      this.setForm('rs9', '')
+      this.setForm('rs10', date.formatDate(Date.now(), 'YYYY-MM-DD'))
+      this.setForm('rs11', date.formatDate(Date.now(), 'HH:mm:ss'))
+      this.setForm('rs12', date.formatDate(Date.now(), 'HH:mm:ss'))
+      this.setForm('rs13', '')
+      this.setForm('rs14', '')
+      this.setForm('asa', '')
+
+      this.setForm('tTime', false)
     },
     setFormTindakan (key, val) {
       this.formTindakan[key] = val
     },
     resetFormTindakan () {
-      console.log('reset Form tindakan')
       let kelas = null
+      console.log('reset Form Tindakan')
 
       if (this.pasien.rs10 == 'POL014') kelas = 'IRD'
       else if (this.pasien.rs10.includes('POL') && !this.pasien.rs10 == 'POL014') kelas = 'poli'

@@ -79,6 +79,35 @@
         <div class="col-4">Subtotal </div>
         <div class="col-8">{{ formatDouble(store.formTindakan.subtotal) }}</div>
       </div>
+      <div class="row items-center q-my-xs">
+        <div class="col-4">Dokter Operator </div>
+        <div class="col-8">{{ surgical?.dr_operator?.nama ?? 'Belum diisi di Surgical Safety' }}</div>
+      </div>
+      <div class="row items-center q-my-xs">
+        <div class="col-4">Dokter Anastesi </div>
+        <div class="col-8">{{ surgical?.dr_anastesi?.nama ?? 'Belum diisi di Surgical Safety' }}</div>
+      </div>
+      <div class="row items-center q-my-xs">
+        <div class="col-4">Penata Anastesi </div>
+        <div class="col-8">{{ surgical?.pen_anastesi?.nama ?? 'Belum diisi di Surgical Safety' }}</div>
+      </div>
+      <div class="row items-center q-my-xs">
+        <div class="col-4">Perawat Instrumen </div>
+        <div class="col-8">{{ surgical?.per_instrumen?.nama ?? 'Belum diisi di Surgical Safety' }}</div>
+      </div>
+      <div class="row items-center q-my-xs">
+        <div class="col-4">Perawat Sirkuler </div>
+        <div class="col-8">{{ surgical?.per_sirkuler?.nama ?? 'Belum diisi di Surgical Safety' }}</div>
+      </div>
+      <div class="row items-center q-my-xs">
+        <div class="col-4">Asisten 1 </div>
+        <div class="col-8">{{ surgical?.ass1?.nama ?? 'Belum diisi di Surgical Safety' }}</div>
+      </div>
+      <div class="row items-center q-my-xs">
+        <div class="col-4">Asisten 2 </div>
+        <div class="col-8">{{ surgical?.ass2?.nama ?? 'Belum diisi di Surgical Safety' }}</div>
+      </div>
+      <!-- {{ surgical }} -->
       <div class="row q-ma-sm q-mb-xl q-mr-xl justify-end absolute-bottom">
         <app-btn label="Simpan" :loading="store.loading" :disable="store.loading || pasien?.tindakanop?.laporanoperasi"
           @click="simpan()" />
@@ -105,7 +134,7 @@ const store = useLaporanOperasiStore()
 const app = useAplikasiStore()
 const options = ref([])
 const tindakan = ref(null)
-
+const surgical = props?.pasien?.surgical?.find(x => x.nota === props.pasien.rs2)
 function setForm (key, val) {
   console.log('st form', key, val)
 

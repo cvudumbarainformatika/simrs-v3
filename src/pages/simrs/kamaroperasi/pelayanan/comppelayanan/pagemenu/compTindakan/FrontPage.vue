@@ -15,10 +15,9 @@
         </q-tabs>
       </div>
       <div class="col full-height">
-        <q-tab-panels v-model="tab" animated class="bg-transparent q-pa-none relative-position"
-          style="height: calc(100vh - 100px);">
+        <q-tab-panels v-model="tab" animated class="bg-transparent q-pa-none relative-position">
           <!-- PANEL -->
-          <q-tab-panel :name="menu?.name" class="q-pa-none">
+          <q-tab-panel :name="menu?.name" class="q-pa-none" style="height: calc(100vh - 100px); overflow: hidden;">
             <component :is="menu?.comp" :pasien="pasien" :key="pasien" />
           </q-tab-panel>
         </q-tab-panels>
