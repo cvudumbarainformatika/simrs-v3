@@ -11,6 +11,10 @@
         store.verifikasi = data?.status_verif
         isList = false
       }
+    " @hapus="
+      (data) => {
+        store.hapusTbp(data)
+      }
     " />
 
     <FormPage v-else :data="store?.item" @back="isList = true" />

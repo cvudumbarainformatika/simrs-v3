@@ -231,7 +231,8 @@ export const usePembayaranKasirRajalStore = defineStore(
                 subtotal: rincian + rincianracik - retur,
               };
               // console.log('hasil', hasil)
-              hasilglobal.push(hasil);
+              const hasilfix = hasil.filter(x => x && x.subtotal > 0)
+              hasilglobal.push(hasilfix);
             });
             this.itemsobat = hasilglobal;
             // const totalSemua = hasilglobal.reduce((acc, h) => {

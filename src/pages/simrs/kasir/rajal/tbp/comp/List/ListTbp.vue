@@ -89,8 +89,11 @@
                   {{ formatRpDouble(item?.total) }}
                 </div>
 
-                <div class="text-body2 q-mt-xs">
-                  <q-btn color="red" dense icon="icon-mat-visibility" @click="emits('edit', item)" />
+                <div class="text-body2 q-gutter-x-sm q-mt-xs">
+                  <q-btn v-if="item?.status_verif !== '1'" color="red" dense rounded icon="delete_forever"
+                    @click="store.hapusTbp(item)" :loading="store.loadinghapus === item?.no_tbp"
+                    :disable="store.loadinghapus === item?.no_tbp" />
+                  <q-btn color="primary" rounded dense icon="icon-mat-visibility" @click="emits('edit', item)" />
                 </div>
                 <!-- <q-badge color="primary" class="q-mt-sm q-pa-sm" style="font-size: 12px; border-radius: 10px;">
                   TBP
@@ -121,7 +124,8 @@ const props = defineProps({
     default: true,
   },
 });
-const emits = defineEmits(["edit"]);
+const emits = defineEmits(["edit", "hapus"]);
+
 function flagverif(val) {
   if (val === "1") {
     return "Sudah Verif";
