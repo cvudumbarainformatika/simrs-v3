@@ -1,7 +1,7 @@
 <template>
   <q-page class="" :class="style.componentfull ? 'container-no-header' : 'container--q-header q-pa-xs'">
     <div class="header bg-primary text-white">
-      anu
+
       <HeaderComp class="q-pa-xs" :tanggal="store.params.tgl" :search="store.params.q" :per-page="store.params.per_page"
         :full="style.componentfull" :custom="store.custom" @fullscreen="style.setComponentFull"
         @set-tanggal="(val) => store.setDate(val)" @set-search="store.setQ" @set-row="store.setPerPage"

@@ -258,17 +258,21 @@ export const usePermintaanOperasistore = defineStore('permintaan-operasi-store',
       const surgical = useSurgicalSafetyStore()
       const findPasien = this.items.find(x => x.noreg === pasien?.noreg)
       console.log('inject', data, findPasien)
-      if (findPasien) {
-        findPasien.newapotekrajal = data?.newapotekrajal ?? []
-        findPasien.permintaanobatoperasi = data?.permintaanobatoperasi ?? []
-        findPasien.dokter = data?.dokter ?? {}
-        findPasien.sistembayar = data?.sistembayar ?? {}
-        findPasien.kunjunganranap = data?.kunjunganranap ?? {}
-        findPasien.kunjunganrajal = data?.kunjunganrajal ?? {}
-        findPasien.manymemo = data?.manymemo ?? []
-        findPasien.manytindakanop = data?.manytindakanop ?? []
-        findPasien.surgical = data?.surgical ?? []
-
+      const keys = Object.keys(data)
+      if (findPasien && keys?.length > 0) {
+        // findPasien.newapotekrajal = data?.newapotekrajal ?? []
+        // findPasien.permintaanobatoperasi = data?.permintaanobatoperasi ?? []
+        // findPasien.dokter = data?.dokter ?? {}
+        // findPasien.sistembayar = data?.sistembayar ?? {}
+        // findPasien.kunjunganranap = data?.kunjunganranap ?? {}
+        // findPasien.kunjunganrajal = data?.kunjunganrajal ?? {}
+        // findPasien.ruangranap = data?.ruangranap ?? {}
+        // findPasien.manymemo = data?.manymemo ?? []
+        // findPasien.manytindakanop = data?.manytindakanop ?? []
+        // findPasien.surgical = data?.surgical ?? []
+        keys.forEach(key => {
+          findPasien[key] = data[key]
+        })
         surgical.pasien = findPasien
         surgical.resetForm()
       }
@@ -288,20 +292,27 @@ export const usePermintaanOperasistore = defineStore('permintaan-operasi-store',
     },
 
     injectDataPasien (pasien, val, kode) {
-      const findPasien = this.items.find(x => x.noreg === pasien.noreg)
-      if (findPasien) {
-        const data = findPasien
-        const target = data[kode]?.find(x => x.id === val.id)
-        if (target) {
-          Object.assign(target, val)
-        }
-        else {
-          if (kode === 'diagnosa') {
-            data[kode]?.push(val)
+      const data = this.items.find(x => x.noreg === pasien.noreg)
+      if (!!data) {
+        const tipe = typeof data[kode]
+        console.log('tipe', tipe)
+
+        if (tipe === 'object') {
+          Object.assign(data[kode], val)
+        } else {
+          const target = data[kode]?.find(x => x.id === val.id)
+          if (target) {
+            Object.assign(target, val)
           }
           else {
-            data[kode]?.splice(0, 0, val)
+            if (kode === 'diagnosa') {
+              data[kode]?.push(val)
+            }
+            else {
+              data[kode]?.splice(0, 0, val)
+            }
           }
+
         }
       }
     },

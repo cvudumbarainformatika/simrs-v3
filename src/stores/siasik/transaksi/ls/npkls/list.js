@@ -87,6 +87,7 @@ export const listdataNPKlangsungStore = defineStore('list_data_npklangsung', {
             tglnpk: arr.tglnpk,
             nopencairan: arr.nopencairan,
             tglpencairan: arr.tglpencairan,
+            nomorcek: arr.nomorcek,
 
             total: arr.rincians?.map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0),
             tglentry: arr.tglentry,

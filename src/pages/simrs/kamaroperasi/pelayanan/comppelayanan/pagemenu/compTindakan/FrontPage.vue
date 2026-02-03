@@ -15,11 +15,10 @@
         </q-tabs>
       </div>
       <div class="col full-height">
-        <q-tab-panels v-model="tab" animated class="bg-transparent q-pa-none relative-position"
-          style="height: calc(100vh - 100px);">
+        <q-tab-panels v-model="tab" animated class="bg-transparent q-pa-none relative-position">
           <!-- PANEL -->
-          <q-tab-panel :name="menu?.name" class="q-pa-none">
-            <component :is="menu?.comp" :pasien="pasien" />
+          <q-tab-panel :name="menu?.name" class="q-pa-none" style="height: calc(100vh - 100px); overflow: hidden;">
+            <component :is="menu?.comp" :pasien="pasien" :key="pasien" />
           </q-tab-panel>
         </q-tab-panels>
       </div>
@@ -44,7 +43,7 @@ const props = defineProps({
   },
 })
 const store = useLaporanOperasiStore()
-const tab = ref('laporan')
+const tab = ref('tindOp')
 
 // const tabsxx = [
 const tabs = ref([
@@ -62,7 +61,7 @@ const tabs = ref([
   //   comp: shallowRef(defineAsyncComponent(() => import('./comp/SignOutPage.vue')))
   // },
   {
-    label: 'Tindakan Bukan Operasi',
+    label: 'Tindakan',
     name: 'tindakan',
     icon: 'monitor_heart',
     // nakes: ['2', '3'],
@@ -86,9 +85,10 @@ const menu = computed(() => {
 //   return tabsxx.filter(i => i.nakes.includes(nakes.value))
 // })
 onMounted(() => {
-  // store.getNakes()
+  // store.getTarifOp()
   store.pasien = props?.pasien
   store.setForm('noreg', props?.pasien?.noreg)
+  store.setFormTindakan('noreg', props?.pasien?.noreg)
 })
 
 </script>

@@ -99,6 +99,7 @@ export const useKunjunganRehabmediStore = defineStore('kunjungan-rehabmedik-stor
         datax.anamnesis = data?.anamnesis ?? []
         datax.pengkajian = data?.pengkajian ?? []
         datax.memodiagnosa = data?.memodiagnosa ?? null
+        datax.soap = data?.soap ?? null
       }
 
       console.log('find pasien', findPasien);

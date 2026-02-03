@@ -77,7 +77,7 @@
             <div class="q-pl-sm">d. Frekuensi Kunjungan</div>
           </div>
           <div class="col-9">
-            <q-input v-model="form.edukasi" outlined autogrow stack-label standout="bg-yellow-3" label="Edukasi"
+            <q-input v-model="form.frekuensi" outlined autogrow stack-label standout="bg-yellow-3" label="Frekuensi"
               hide-bottom-space />
           </div>
         </div>
@@ -96,7 +96,8 @@
       <q-card-section class="col-auto">
         <div class="row justify-between">
           <q-btn unelevated color="dark" label="Reset / Cancel" type="reset"> </q-btn>
-          <q-btn unelevated color="primary" label="Simpan Asessment" type="submit"> </q-btn>
+          <q-btn unelevated :loading="loading" :disabled="loading" color="primary" label="Simpan Asessment"
+            type="submit"> </q-btn>
         </div>
       </q-card-section>
     </q-form>
@@ -104,9 +105,12 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted, watch } from 'vue'
+import { api } from 'src/boot/axios'
+import { notifSuccessVue } from 'src/modules/utils'
+import { useRehabmedikAsessmentStore } from 'src/stores/simrs/pelayanan/rehabmedik/asessment'
 
-defineProps({
+const props = defineProps({
   pasien: {
     type: Object,
     default: null
@@ -114,9 +118,14 @@ defineProps({
   user: {
     type: Object,
     default: null
+  },
+  storeKunjungan: {
+    type: Object,
+    default: null
   }
 })
 
+const store = useRehabmedikAsessmentStore()
 
 const form = ref({
   subjective: null,
@@ -127,13 +136,62 @@ const form = ref({
   edukasi: null,
   frekuensi: null,
   rencana: null,
+  procedure: null
+})
+
+const loading = ref(false)
+
+onMounted(() => {
+  initReset()
 })
 
 
-const onSubmit = () => {
-  console.log('submit')
+const onSubmit = async () => {
+  loading.value = true
+
+  form.value.noreg = props.pasien.noreg
+  form.value.norm = props.pasien.norm
+
+  try {
+    const resp = await api.post('v1/simrs/rehabmedik/soap/store', form.value)
+    // console.log('resp simpan', resp);
+
+    if (resp.status === 200) {
+      const data = resp?.data
+      props.storeKunjungan?.injectDataPasien(props.pasien?.noreg, data, 'soap')
+      initReset()
+      notifSuccessVue('SOAP berhasil disimpan')
+    }
+  } catch (error) {
+    console.log(error)
+  } finally {
+    loading.value = false
+  }
 }
+
+const initReset = () => {
+  store.setItem(null)
+  form.value = {
+    subjective: null,
+    objective: null,
+    assessment: null,
+    goal: null,
+    tindakan: null,
+    edukasi: null,
+    frekuensi: null,
+    rencana: null,
+  }
+}
+
 const onReset = () => {
-  console.log('reset')
+  initReset()
 }
+
+watch(() => store.item, (obj) => {
+  if (obj) {
+    form.value = {
+      ...obj
+    }
+  }
+}, { immediate: true })
 </script>

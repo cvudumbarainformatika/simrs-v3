@@ -46,7 +46,8 @@ export const useTandaTanganStore = defineStore('tanda_tangan_store_form', {
     onKiri: {},
     onKanan1: {},
     onKiri1: {},
-    onTengah: {}
+    onTengah: {},
+    nomorSurat: null
   }),
   actions: {
     setForm (key, val) {
@@ -179,6 +180,7 @@ export const useTandaTanganStore = defineStore('tanda_tangan_store_form', {
           this.getDataIndex()
         })
       }
+      this.getNomorSurat()
     },
     getDataIndex () {
       this.loading = false
@@ -330,6 +332,20 @@ export const useTandaTanganStore = defineStore('tanda_tangan_store_form', {
             notifSuccess(resp)
             this.getDataIndex()
             this.setOpen()
+            resolve(resp)
+          })
+          .catch(() => { this.loading = false })
+      })
+    },
+    getNomorSurat () {
+      this.loading = true
+      return new Promise(resolve => {
+        api.get('v1/tandatangan/get-nomor-surat')
+          .then(resp => {
+            this.loading = false
+            console.log('nomor ', resp.data)
+            this.nomorSurat = resp.data?.data
+            // this.setForm('nomor', resp.data)
             resolve(resp)
           })
           .catch(() => { this.loading = false })

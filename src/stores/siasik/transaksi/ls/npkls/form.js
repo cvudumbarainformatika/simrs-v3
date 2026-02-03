@@ -31,6 +31,7 @@ export const useFormNPKlangsungStore = defineStore('formNPKlangsung', {
       akun: 'BLUD',
       tglnpk: date.formatDate(Date.now(), 'YYYY-MM-DD'),
       nonpdls: '',
+      nomorcek: '',
       rincians: [],
     },
     // State untuk item rincian sementara (saat menambah/edit rincian)

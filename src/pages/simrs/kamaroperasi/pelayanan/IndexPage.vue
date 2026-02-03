@@ -113,12 +113,12 @@ const menus = ref([
     icon: 'icon-mat-tune',
     comp: shallowRef(defineAsyncComponent(() => import('./comppelayanan/pagemenu/compPenunjang/IndexPage.vue')))
   },
-  {
-    name: 'tindakan',
-    label: 'Tindakan dan Laporan',
-    icon: 'healing',
-    comp: shallowRef(defineAsyncComponent(() => import('./comppelayanan/pagemenu/compTindakan/IndexPage.vue')))
-  },
+  // {
+  //   name: 'tindakan',
+  //   label: 'Tindakan dan Laporan',
+  //   icon: 'healing',
+  //   comp: shallowRef(defineAsyncComponent(() => import('./comppelayanan/pagemenu/compTindakan/IndexPage.vue')))
+  // },
 ])
 const menu = ref(menus.value[0])
 
