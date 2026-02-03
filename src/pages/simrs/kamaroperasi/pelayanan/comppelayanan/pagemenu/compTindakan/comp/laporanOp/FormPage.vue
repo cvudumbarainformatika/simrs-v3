@@ -177,7 +177,7 @@ function simpan () {
   store.simpanLaporan()
 }
 onMounted(() => {
-  store.resetForm()
+  // store.resetForm()
   // store.setFormTindakan('tanggal', date.formatDate(Date.now(), 'YYYY-MM-DD'))
   // store.setFormTindakan('noreg', props?.pasien?.noreg)
   // store.setFormTindakan('nota', props?.pasien?.rs2)

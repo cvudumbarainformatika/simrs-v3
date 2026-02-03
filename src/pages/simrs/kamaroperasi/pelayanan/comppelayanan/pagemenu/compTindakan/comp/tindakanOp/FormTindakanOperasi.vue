@@ -109,8 +109,8 @@
       </div>
       <!-- {{ surgical }} -->
       <div class="row q-ma-sm q-mb-xl q-mr-xl justify-end absolute-bottom">
-        <app-btn label="Simpan" :loading="store.loading" :disable="store.loading || pasien?.tindakanop?.laporanoperasi"
-          @click="simpan()" />
+        <app-btn label="Simpan" :loading="store.loading"
+          :disable="store.loading || !!pasien?.tindakanop?.laporanoperasi" @click="simpan()" />
       </div>
     </div>
   </div>
@@ -231,7 +231,7 @@ function simpan () {
   if (validate()) store.simpanFormTindakan()
 }
 onMounted(() => {
-  store.resetFormTindakan()
+  // store.resetFormTindakan()
   // store.setFormTindakan('tanggal', date.formatDate(Date.now(), 'YYYY-MM-DD'))
   // store.setFormTindakan('noreg', props?.pasien?.noreg)
   // store.setFormTindakan('nota', props?.pasien?.rs2)

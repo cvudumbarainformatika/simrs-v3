@@ -8,7 +8,7 @@
     </div>
     <div class="col full-height relative-position">
       <!-- lap: {{ pasien?.laporanop }} -->
-      <div v-if="!!pasien?.laporanop">
+      <div v-if="!!pasien?.laporanop" class="cursor-pointer" @click="assignForm(pasien?.laporanop)">
         <div class="row items-center q-my-xs">
           <div class="col-4">Tanggal</div>
           <div class="col-8">{{ dateFullFormat(pasien?.laporanop?.rs3) }}</div>
@@ -102,7 +102,8 @@
 
         <div class="row items-center q-my-xs">
           <div class="col-4">Jenis / Jumlah Darah Yang Masuk</div>
-          <div class="col-8">{{ pasien?.laporanop?.jenis_darah_masuk + ' / ' + pasien?.laporanop?.jd_masuk ?? '-' }}
+          <div class="col-8">{{ (pasien?.laporanop?.jenis_darah_masuk ?? '-') + ' / ' + pasien?.laporanop?.jd_masuk ??
+            '-' }}
           </div>
         </div>
 
@@ -155,4 +156,7 @@ function lamaOperasi (data) {
   return `${jam} jam ${menit} menit`
 }
 const store = useLaporanOperasiStore()
+function assignForm (data) {
+  store.assignForm(data)
+}
 </script>

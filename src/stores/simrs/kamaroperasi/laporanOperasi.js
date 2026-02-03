@@ -1,7 +1,6 @@
 import { acceptHMRUpdate, defineStore } from "pinia"
 import { api } from "src/boot/axios"
 import { notifSuccess } from "src/modules/utils"
-import { toRaw } from "vue"
 import { usePermintaanOperasistore } from "./permintaanoperasi"
 import { date } from "quasar"
 
@@ -52,6 +51,35 @@ export const useLaporanOperasiStore = defineStore('laporan_operasi_store', {
 
       this.setForm('tTime', false)
     },
+    assignForm (data) {
+      console.log('assignForm laporan', data)
+      const keys = Object.keys(data)
+      if (keys?.length <= 0) return this.resetForm()
+      this.setForm('tanggal', data.rs3)
+      this.setForm('noreg', data.rs1)
+      this.setForm('nota', data.rs?.rs2)
+      this.setForm('tindakan', data.tindakan)
+
+      this.setForm('rs4', data.rs4)
+      this.setForm('rs5', data.rs5)
+      this.setForm('rs6', data.rs6)
+      this.setForm('rs7', data.rs7)
+      this.setForm('rs8', data.rs8)
+      this.setForm('rs9', data.rs9)
+      this.setForm('rs10', data.rs10)
+      this.setForm('rs11', data.rs11)
+      this.setForm('rs12', data.rs12)
+      this.setForm('rs13', data.rs13)
+      this.setForm('rs14', data.rs14)
+      this.setForm('rs15', data.rs15)
+      this.setForm('asa', data.asa)
+      this.setForm('jenis_darah_masuk', data.jenis_darah_masuk)
+      this.setForm('jd_keluar', data.jd_keluar)
+      this.setForm('jd_masuk', data.jd_masuk)
+
+      this.setForm('tTime', parseInt(data.ttime) == 1 ? true : false)
+    },
+
     setFormTindakan (key, val) {
       this.formTindakan[key] = val
     },
@@ -81,6 +109,31 @@ export const useLaporanOperasiStore = defineStore('laporan_operasi_store', {
       this.setFormTindakan('jumlah', 1)
       this.setFormTindakan('sisbaysplit', '')
       this.setFormTindakan('total_split', 0)
+    },
+
+    assignFormTindakan (data) {
+      console.log('assignForm Tindakan', data)
+      const keys = Object.keys(data)
+      if (keys?.length <= 0) return this.resetFormTindakan()
+
+      this.setFormTindakan('noreg', data?.rs1)
+      this.setFormTindakan('nota', data?.rs2)
+      this.setFormTindakan('tanggal', data.rs3)
+      this.setFormTindakan('kode', data.rs4)
+      this.setFormTindakan('js', parseInt(data.rs5))
+      this.setFormTindakan('jp', parseInt(data.rs6))
+      this.setFormTindakan('an', parseInt(data.rs7))
+      this.setFormTindakan('jumlah', data.rs8)
+      this.setFormTindakan('rs9', data?.rs9)
+      this.setFormTindakan('rs14', data?.rs14)
+      this.setFormTindakan('rs15', data?.rs15)
+      this.setFormTindakan('rs16', data.rs16)
+      this.setFormTindakan('tanpaAnas', parseInt(data.rs7) > 1 ? true : false)
+      this.setFormTindakan('cito', data.rs18 == 'cito' ? true : false)
+      this.setFormTindakan('tarif', parseInt(data.rs5) + parseInt(data.rs6) + parseInt(data.rs7))
+      this.setFormTindakan('subtotal', parseInt(data.rs5) + parseInt(data.rs6) + parseInt(data.rs7))
+      this.setFormTindakan('sisbaysplit', data.rs19)
+      this.setFormTindakan('total_split', data.rs20)
     },
     getTarifOp (val) {
       const param = {

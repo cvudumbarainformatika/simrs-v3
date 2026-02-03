@@ -7,7 +7,7 @@
       </div>
     </div>
     <div class="col full-height relative-position">
-      <div v-if="!!pasien?.tindakanop">
+      <div v-if="!!pasien?.tindakanop" class="cursor-pointer" @click="assignForm(pasien?.tindakanop)">
         <div class="row">
           <div class="col-4">Tanggal</div>
           <div class="col-8">{{ dateFull(pasien?.tindakanop?.rs3) }}</div>
@@ -25,8 +25,7 @@
         </div>
         <div class="row q-mt-lg justify-end">
           <q-btn icon="delete" flat dense color="negative" :loading="store.loading"
-            :disable="store.loading || pasien?.tindakanop?.laporanoperasi"
-            @click="store.hapusTindakanOp(pasien?.tindakanop)" />
+            :disable="store.loading || !!pasien?.laporanop" @click="store.hapusTindakanOp(pasien?.tindakanop)" />
         </div>
 
       </div>
@@ -46,6 +45,9 @@ const props = defineProps({
     default: null
   },
 })
-
 const store = useLaporanOperasiStore()
+function assignForm (data) {
+  console.log('data', data)
+
+}
 </script>
