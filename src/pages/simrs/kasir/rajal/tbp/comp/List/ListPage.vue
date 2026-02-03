@@ -10,7 +10,8 @@
 
       <q-card flat no-shadow square class="my-flex-1" style="overflow: hidden;">
         <q-scroll-area style="height: calc(100% - 1px);">
-          <ListTbp :key="store.items" :items="store.items" :loading="store.loading" @edit="edit($event)" />
+          <ListTbp :key="store.items" :items="store.items" :loading="store.loading" @edit="edit($event)"
+            @hapus="hapus($event)" />
         </q-scroll-area>
         <!-- <div class=" absolute-bottom bg-primary text-white z-top">
           <BottomComp :meta="store?.meta" @go-to="store.goToPage" />
@@ -29,13 +30,17 @@ import { useTbpKasirStore } from 'src/stores/simrs/kasir/tbp';
 
 const style = useStyledStore()
 const store = useTbpKasirStore()
-const emits = defineEmits(['add', 'edit'])
+const emits = defineEmits(['add', 'edit', 'hapus'])
 const props = defineProps({
   masterkasir: {
     type: Array,
     default: () => []
   }
 })
+
+function hapus(val) {
+  emits('hapus', val)
+}
 
 function edit(val) {
   emits('edit', val)

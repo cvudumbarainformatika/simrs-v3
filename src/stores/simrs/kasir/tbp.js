@@ -17,6 +17,7 @@ export const useTbpKasirStore = defineStore('tbp-kasir-store', {
     loadingcarikuitansi: false,
     loadingbatalkwitansi: false,
     loadingcetaktbp: false,
+    loadinghapus: false,
     nokwitansi: '',
     dialogCetakTbp: false,
     masterkasir: [],
@@ -54,7 +55,8 @@ export const useTbpKasirStore = defineStore('tbp-kasir-store', {
     paramscarikuitansi: {
       tgldari: date.formatDate(Date.now(), 'YYYY-MM-DD'),
       tglsampai: date.formatDate(Date.now(), 'YYYY-MM-DD'),
-      kasir: ''
+      kasir: '',
+      kodekasirtbp: ''
     },
     formtanggal: {
       dari: date.formatDate(Date.now(), 'DD MMMM YYYY'),
@@ -142,7 +144,7 @@ export const useTbpKasirStore = defineStore('tbp-kasir-store', {
             // const data = resp.data?.data[0]
             // this.items.unshift(data)
             // this.itemskuitansi = []
-            this.itemskuitansi = resp.data?.data[0]?.kwitansi
+            this.itemskuitansi = resp.data?.data[0]?.kwitansi.length > 0 ? resp.data?.data[0]?.kwitansi : resp.data?.data[0]?.karcis
             this.form.no_tbp = resp?.data?.data[0]?.no_tbp
             notifSuccessVue('Data sukses tersimpan')
             // console.log('simpan tbp', resp?.data?.data[0]?.no_tbp)
@@ -193,6 +195,24 @@ export const useTbpKasirStore = defineStore('tbp-kasir-store', {
         .catch(err => {
           console.log(err)
           this.loadingcetaktbp = false
+        })
+    },
+    async hapusTbp(data) {
+      this.loadinghapus = data?.no_tbp
+      const payload = { no_tbp: data?.no_tbp }
+      await api.post('/v1/simrs/kasir/tbp/hapusTbp', payload)
+        .then(resp => {
+          if (resp.status === 200) {
+            this.loadinghapus = false
+            this.items = this.items.filter(x => x.no_tbp !== data?.no_tbp)
+
+            // this.getDataTbp()
+            notifSuccessVue('Data sukses dihapus')
+          }
+        })
+        .catch(err => {
+          console.log(err)
+          this.loadinghapus = false
         })
     }
   }

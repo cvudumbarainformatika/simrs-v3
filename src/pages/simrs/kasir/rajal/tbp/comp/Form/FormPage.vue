@@ -53,12 +53,12 @@
       </div>
 
       <div class="row q-col-gutter-md">
-        <div class="col-4 ">
+        <div class="col-3 ">
           <app-input-date-human :model="store.formtanggal.dari" filled label="Dari Tanggal" dense outlined
             @db-model="setTo" @set-display="setToDisp" />
         </div>
 
-        <div class="col-4">
+        <div class="col-3">
           <app-input-date-human :model="store.formtanggal.sampai" filled label="Sampai Tanggal" dense outlined
             @db-model="setTox" @set-display="setToDispx" />
         </div>
@@ -67,6 +67,14 @@
           <q-select filled dense v-model="store.form.kasir" :options="kasir" option-label="nama"
             option-value="kdpegsimrs" label="Kasir" emit-value map-options @update:model-value="isikasir" />
         </div>
+        <div class="col-3" v-if="store.form.kasir === 'lukman_pendaftaran'">
+          <q-select filled dense v-model="store.paramscarikuitansi.kodekasirtbp" :options="['a', 'c']"
+            option-label="nama" label="kdkasir" @update:model-value="updatekasir" />
+        </div>
+        <!-- <div class="col-3">
+          <q-select filled dense v-model="store.form.jenislayanan" :options="['RAJAL', 'RANAP']" label="Jenis Layanan"
+            emit-value map-options />
+        </div> -->
       </div>
 
       <q-btn color="primary" outline icon="search" label="Tampilkan Kwitansi" class="full-btn q-mt-md"
@@ -118,10 +126,16 @@ function kembali() {
 }
 
 function isikasir(val) {
+  console.log('kasir', val)
   store.paramscarikuitansi.kasir = val
   store.form.kdkasir = store.itemskasir.find(x => x.kdpegsimrs === val).kdkasir
+  // store.paramscarikuitansi.kodekasirtbp = store.form.kdkasir
   console.log('kasir', store.form.kdkasir)
 
+}
+
+function updatekasir(val) {
+  store.form.kdkasir = val
 }
 
 function isipenerima(val) {
