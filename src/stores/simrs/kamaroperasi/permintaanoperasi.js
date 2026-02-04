@@ -31,7 +31,9 @@ export const usePermintaanOperasistore = defineStore('permintaan-operasi-store',
     pagePelayanan: false,
     filters: false,
     custom: false,
-    loadingSaveGantiDpjp: false
+    loadingSaveGantiDpjp: false,
+    periods: ['Hari ini', 'Minggu ini', 'Bulan ini', 'Custom'],
+    periode: 'Hari Ini',
   }),
   // getters: {
   //   doubleCount: (state) => state.counter * 2
@@ -49,7 +51,41 @@ export const usePermintaanOperasistore = defineStore('permintaan-operasi-store',
     init (val) {
       // console.log('')
       this.params = val
+      this.setPeriode('Hari ini')
       this.getData()
+    },
+
+    setPeriode (val) {
+      this.periode = val
+      if (val === 'Hari ini') {
+        this.hariIni()
+      }
+      else if (val === 'Minggu ini') {
+        this.mingguIni()
+      }
+      else if (val === 'Bulan ini') {
+        this.bulanIni()
+      }
+    },
+
+    hariIni () {
+      const cDate = new Date()
+      this.params.to = dateDbFormat(cDate)
+      this.params.from = dateDbFormat(cDate)
+    },
+    bulanIni () {
+      const curr = new Date(), y = curr.getFullYear(), m = curr.getMonth()
+      const firstday = curr.setFullYear(y, m, 1)
+      const lastday = curr.setFullYear(y, m + 1, 0)
+      this.params.from = dateDbFormat(firstday)
+      this.params.to = dateDbFormat(lastday)
+    },
+    mingguIni () {
+      const curr = new Date()
+      const firstday = new Date(curr.setDate(curr.getDate() - curr.getDay()))
+      const lastday = new Date(curr.setDate(curr.getDate() - curr.getDay() + 6))
+      this.params.from = dateDbFormat(firstday)
+      this.params.to = dateDbFormat(lastday)
     },
     async getData () {
       this.loading = true

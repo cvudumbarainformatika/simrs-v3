@@ -233,6 +233,7 @@ export const useSurgicalSafetyStore = defineStore('surgical_safety_store', {
       noreg: null,
       id: null,
     },
+    implant: {},
     nakes: [],
   }),
   actions: {
