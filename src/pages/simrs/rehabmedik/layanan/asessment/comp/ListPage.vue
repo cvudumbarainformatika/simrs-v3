@@ -48,8 +48,8 @@
                   <div class="q-my-xs">
                     b. Tindakan Program Rehabmedik : <b>{{ item?.tindakan || '-' }}</b>
                   </div>
-                  <div>c. Edukasi : <em>{{ item?.neurologis || '-' }}</em> </div>
-                  <div>d. Frekuensi : <em>{{ item?.muskuloskeletal || '-' }}</em> </div>
+                  <div>c. Edukasi : <em>{{ item?.edukasi || '-' }}</em> </div>
+                  <div>d. Frekuensi : <em>{{ item?.frek || '-' }}</em> </div>
 
                 </q-item-label>
 
@@ -69,7 +69,7 @@
               </q-item-section>
               <div class="absolute-bottom-right q-pa-sm">
                 <div class="q-gutter-sm">
-                  <q-btn flat round size="sm" icon="icon-mat-edit" @click="store.setItem(item)" />
+                  <q-btn flat round size="sm" icon="icon-mat-edit" @click="setItem(item)" />
                   <q-btn flat round size="sm" icon="icon-mat-delete" color="negative" @click="hapusItem(item.id)" />
                 </div>
               </div>
@@ -86,7 +86,7 @@
 import { useQuasar } from 'quasar'
 import { api } from 'src/boot/axios'
 import { notifSuccessVue } from 'src/modules/utils'
-import { useRehabmedikPengkajianStore } from 'src/stores/simrs/pelayanan/rehabmedik/pengkajian'
+import { useRehabmedikSoapStore } from 'src/stores/simrs/pelayanan/rehabmedik/soap'
 import { computed } from 'vue'
 const $q = useQuasar()
 const props = defineProps({
@@ -104,7 +104,7 @@ const props = defineProps({
   }
 })
 
-const store = useRehabmedikPengkajianStore()
+const store = useRehabmedikSoapStore()
 
 const lists = computed(() => {
   const arr = props.pasien?.soap
@@ -137,9 +137,9 @@ async function deleteData(id) {
     id
   }
   try {
-    const resp = await api.post(`v1/simrs/rehabmedik/pengkajian/delete`, payload)
+    const resp = await api.post(`v1/simrs/rehabmedik/soap/delete`, payload)
     if (resp.status === 200) {
-      props.storeKunjungan.hapusDataInjectan(props.pasien?.noreg, id, 'pengkajian')
+      props.storeKunjungan.hapusDataInjectan(props.pasien?.noreg, id, 'soap')
       store.setItem(null)
       notifSuccessVue('Data berhasil dihapus')
     }
@@ -148,6 +148,12 @@ async function deleteData(id) {
     console.log('error', error);
 
   }
+}
+
+function setItem(item) {
+  // console.log(item);
+
+  store.setItem(item)
 }
 
 

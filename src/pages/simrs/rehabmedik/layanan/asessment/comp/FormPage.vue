@@ -108,7 +108,7 @@
 import { ref, onMounted, watch } from 'vue'
 import { api } from 'src/boot/axios'
 import { notifSuccessVue } from 'src/modules/utils'
-import { useRehabmedikAsessmentStore } from 'src/stores/simrs/pelayanan/rehabmedik/asessment'
+import { useRehabmedikSoapStore } from 'src/stores/simrs/pelayanan/rehabmedik/soap'
 
 const props = defineProps({
   pasien: {
@@ -125,7 +125,7 @@ const props = defineProps({
   }
 })
 
-const store = useRehabmedikAsessmentStore()
+const store = useRehabmedikSoapStore()
 
 const form = ref({
   subjective: null,
@@ -188,10 +188,12 @@ const onReset = () => {
 }
 
 watch(() => store.item, (obj) => {
+  console.log('obj watch store item', obj);
+
   if (obj) {
     form.value = {
       ...obj
     }
   }
-}, { immediate: true })
+}, { deep: true })
 </script>
