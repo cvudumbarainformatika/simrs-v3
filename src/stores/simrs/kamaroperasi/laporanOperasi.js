@@ -46,6 +46,9 @@ export const useLaporanOperasiStore = defineStore('laporan_operasi_store', {
       this.setForm('rs13', '')
       this.setForm('rs14', '')
       this.setForm('asa', '')
+      this.setForm('jenis_darah_masuk', '')
+      this.setForm('jd_keluar', 0)
+      this.setForm('jd_masuk', 0)
 
       this.setForm('tTime', false)
     },
@@ -99,13 +102,35 @@ export const useLaporanOperasiStore = defineStore('laporan_operasi_store', {
       this.loading = true
       const pengunjung = usePermintaanOperasistore()
       return new Promise(resolve => {
-        api.post('v1/simrs/penunjang/ok/tindakan-op/simpan-laporan', this.form)
+        api.post('v1/simrs/penunjang/ok/laporan-op/simpan', this.form)
           .then(resp => {
             this.loading = false
             console.log('simpan', resp?.data)
+            this.pasien.laporanop = resp?.data?.data
             // this.form = resp?.data?.data
             // pengunjung.injectDataPasien(pasien, resp?.data?.data, 'tindakanop')
-            // notifSuccess(resp)
+            notifSuccess(resp)
+            resolve(resp)
+          })
+          .catch(() => { this.loading = false })
+      })
+    },
+    hapusLaporan (data) {
+      this.loading = true
+      const form = {
+        id: data?.id,
+        noreg: data?.rs1,
+        nota: data?.rs2,
+      }
+      return new Promise(resolve => {
+        api.post('v1/simrs/penunjang/ok/laporan-op/hapus', form)
+          .then(resp => {
+            this.loading = false
+            const data = resp?.data?.data
+            console.log('s hapus', data, this.pasien)
+            this.pasien.laporanop = null
+            // this.hapusDariPengunjung(data, 'tindakanop')
+            notifSuccess(resp)
             resolve(resp)
           })
           .catch(() => { this.loading = false })
