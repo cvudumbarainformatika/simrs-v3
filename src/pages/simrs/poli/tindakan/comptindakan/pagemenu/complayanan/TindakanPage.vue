@@ -1,28 +1,17 @@
 <template>
   <div class="full-height full-width">
     <div class="row full-height">
-      <q-card
-        flat
-        bordered
-        square
-        class="col-6 full-height"
-      >
+      <q-card flat bordered square class="col-6 full-height">
         <div class="column full-height">
           <div class="col-12">
-            <FormTindakan
-              ref="reffForm"
-              :pasien="props.pasien"
-            />
+            <FormTindakan ref="reffForm" :pasien="props.pasien" />
           </div>
         </div>
       </q-card>
       <div class="col-6 full-height ">
         <div class="column full-height">
           <div class="col">
-            <TindakanTable
-              :key="pasien"
-              :pasien="props.pasien"
-            />
+            <TindakanTable :key="pasien" :pasien="props.pasien" />
           </div>
           <div class="col-6">
             <SimulasiPage :pasien="props.pasien" />
@@ -49,5 +38,5 @@ const props = defineProps({
     default: null
   }
 })
-// console.log('tindakan', props.pasien)
+// console.log('tindakan', props.pasien?.tindakan)
 </script>

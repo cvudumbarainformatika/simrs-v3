@@ -35,6 +35,7 @@
 
 <script setup>
 import { useAplikasiStore } from 'src/stores/app/aplikasi'
+import { useLayananPoli } from 'src/stores/simrs/pelayanan/poli/layanan'
 import { computed, defineAsyncComponent, onMounted, ref } from 'vue'
 
 const auth = useAplikasiStore()
@@ -59,12 +60,20 @@ const nakes = computed(() => {
 const tab = ref('diagnosa')
 
 const tabsRef = ref(null)
+const layananPoli = useLayananPoli()
 
 onMounted(() => {
   tabsRef?.value?.$el?.classList?.remove('no-wrap')
   // console.log('qtabs', tabsRef.value.$el.classList.value)
 
   tab.value = tabs.value[0]?.name
+
+
+  Promise.all([
+    layananPoli.getTindakanDropdown(),
+    layananPoli.getNota(props.pasien)
+  ])
+
 })
 
 const tabsxx = [
