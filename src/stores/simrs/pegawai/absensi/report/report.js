@@ -158,7 +158,7 @@ export const useReportAbsensiStore = defineStore('report_absensi', {
         api.get('/v1/pegawai/absensi/report', params)
           .then((resp) => {
             if (resp.status === 200) {
-              console.log('items', resp)
+              // console.log('items', resp)
               this.items = resp.data.data
               this.meta = resp.data
               this.loading = false
