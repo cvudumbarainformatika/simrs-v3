@@ -611,11 +611,12 @@ function getStatus(row) {
 }
 
 function getIjin(row, fx) {
-  const user = row.user
+  const user = row?.user
   if (user) {
     const ada = user.libur?.length
     if (ada > 0) {
       const libur = user.libur
+      console.log('libur', libur)
       if (fx) {
         return libur.filter(x => x.flag === fx)?.length
       }
