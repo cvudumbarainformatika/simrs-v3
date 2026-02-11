@@ -571,7 +571,7 @@ function getRekapTAP(row) {
   // console.log('getRekapTAP', row);
 
   const absensi = row.transaksi_absen.filter(x => !x.pulang)?.length
-  console.log('absensi', absensi)
+  // console.log('absensi', absensi)
   return absensi
 
 }
@@ -611,11 +611,12 @@ function getStatus(row) {
 }
 
 function getIjin(row, fx) {
-  const user = row.user
+  const user = row?.user
   if (user) {
     const ada = user.libur?.length
     if (ada > 0) {
       const libur = user.libur
+      // console.log('libur', libur)
       if (fx) {
         return libur.filter(x => x.flag === fx)?.length
       }
@@ -757,6 +758,9 @@ function getTerlambatHari(x) {
       const jadwal = new Date(tgl + ' ' + kategoryMasuk)
       const absen = new Date(tgl + ' ' + jamMasukServer)
 
+      jadwal.setSeconds(0, 0)
+      absen.setSeconds(0, 0)
+
       // const absensi = { jadwal, absen }
       const terlambat = absen > jadwal
       // console.log('terlambat', terlambat)
@@ -772,6 +776,8 @@ function getTerlambatHari(x) {
   else {
     th = []
   }
+
+  // console.log('th', th)
 
   return th?.length ? th?.length + ' hr' : ''
 }

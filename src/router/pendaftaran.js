@@ -174,6 +174,19 @@ const pendaftaran = {
       //   }
       // ]
     },
+    {
+      path: '/pendaftaran/ketersediaan-tt',
+      name: 'pendaftaran.ketersediaan-tt',
+      component: () => import('pages/simrs/pendaftaran/ketersediaantt/IndexPage.vue')
+      // children: [
+      //   {
+      //     path: '/pendaftaran/pasien/daftar',
+      //     name: 'pendaftaran.pasien.daftar',
+      //     component: () =>
+      //       import('pages/simrs/pendaftaran/pasien/daftar/IndexPage.vue')
+      //   }
+      // ]
+    },
 
     {
       path: '/pendaftaran/data-pasien',
