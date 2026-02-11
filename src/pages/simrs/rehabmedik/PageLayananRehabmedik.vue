@@ -97,13 +97,13 @@ const menus = ref([
     nakes: ['1', '2', '3', '4', '5', '6'],
     comp: shallowRef(defineAsyncComponent(() => import('src/pages/simrs/rehabmedik/layanan/asessment/IndexPage.vue')))
   },
-  {
-    name: 'AnamnesisPage',
-    label: 'Anamnesis & Riwayat',
-    icon: 'icon-mat-medical_information',
-    nakes: ['1', '2', '3', '4', '5', '6'],
-    comp: shallowRef(defineAsyncComponent(() => import('src/pages/simrs/poli/tindakan/comptindakan/pagemenu/AnamnesisPage.vue')))
-  },
+  // {
+  //   name: 'AnamnesisPage',
+  //   label: 'Anamnesis & Riwayat',
+  //   icon: 'icon-mat-medical_information',
+  //   nakes: ['1', '2', '3', '4', '5', '6'],
+  //   comp: shallowRef(defineAsyncComponent(() => import('src/pages/simrs/poli/tindakan/comptindakan/pagemenu/AnamnesisPage.vue')))
+  // },
   // {
   //   name: 'PemeriksaanPage',
   //   label: 'Pemeriksaan Umum & Fisik',
