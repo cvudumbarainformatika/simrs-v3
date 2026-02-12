@@ -233,7 +233,8 @@ export const useSurgicalSafetyStore = defineStore('surgical_safety_store', {
       noreg: null,
       id: null,
     },
-    implant: {},
+    implants: [],
+    seri: null,
     nakes: [],
   }),
   actions: {
@@ -288,8 +289,91 @@ export const useSurgicalSafetyStore = defineStore('surgical_safety_store', {
           })
           .catch(() => { this.loading = false })
       })
-    }
+    },
+    assignImplats (data, implant, seri) {
+      // const implantMap = new Map(
+      //   implant?.map(i => [i.persiapan_operasi_distribusi_id, i]) ?? []
+      // )
+      // data.forEach(x => {
+      //   const ada = implantMap.get(x.distribusi_id)
+      //   if (ada) {
+      //     // hanya assign field yang dibutuhkan
+      //     Object.assign(x, {
+      //       id: ada.id ?? null,
+      //       seri: ada.seri ?? '',
+      //       jenis: ada.jenis ?? '',
+      //       pemakaian: ada.pemakaian
+      //         ?? ((x.jumlah ?? 0) - (x.jumlah_retur ?? 0)),
+      //       jumlah_retur: ada.jumlah_retur ?? x.jumlah_retur ?? 0
+      //     })
+
+      //     x.simpan = true
+      //   } else {
+      //     // kondisi data baru / tidak ada implant
+      //     x.simpan = false
+      //     x.id = null
+      //     x.seri = ''
+      //     x.jenis = ''
+      //     x.pemakaian = (x.jumlah ?? 0) - (x.jumlah_retur ?? 0)
+      //   }
+      // })
+      // console.log('implants', data, implant)
+      data.forEach(x => {
+        // console.log('x', x)
+        const ada = implant?.find(f => x?.distribusi_id === f?.persiapan_operasi_distribusi_id)
+        // console.log('ada', ada, typeof ada)
+
+        if (ada && typeof ada == 'object') {
+          Object.assign(x, ada)
+          x.simpan = true
+        } else {
+          x.simpan = false
+          x.seri = ''
+          x.jenis = ''
+          x.pemakaian = (x.jumlah ?? 0) - (x.jumlah_retur ?? 0)
+        }
+      })
+    },
+    async getImplants () {
+      this.loading = true
+      const param = {
+        params: {
+          noreg: this.pasien.noreg,
+          nota: this.pasien.rs2
+        }
+      }
+      try {
+        const { data } = await api.get('v1/simrs/penunjang/surgical/get-implant', param)
+        this.implants = data?.data ?? data
+        this.pasien.implant = data?.implant ?? null
+        this.pasien.implant_seri = data?.implant_seri ?? null
+        this.assignImplats(this.implants, this.pasien.implant, this.pasien.implant_seri)
+        // console.log('implants', data, this.implants)
+      }
+      finally {
+        this.loading = false
+      }
+    },
+    async simpanImplants () {
+      this.loading = true
+      const data = this.implants.filter(x => x.simpan)
+      const form = {
+        data,
+        noreg: this.pasien.noreg,
+        nota: this.pasien.rs2
+      }
+      console.log('simpan', form)
+      try {
+        const resp = await api.post('v1/simrs/penunjang/surgical/simpan-implant', form)
+        console.log('data', resp)
+
+        notifSuccess(resp)
+        this.getImplants()
+      } finally { this.loading = false }
+    },
+    simpanGambar () { }
   },
+
 })
 if (import.meta.hot) {
   import.meta.hot.accept(acceptHMRUpdate(useSurgicalSafetyStore, import.meta.hot))

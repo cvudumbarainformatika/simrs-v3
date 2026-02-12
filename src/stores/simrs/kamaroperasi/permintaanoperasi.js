@@ -313,6 +313,7 @@ export const usePermintaanOperasistore = defineStore('permintaan-operasi-store',
         })
         surgical.pasien = findPasien
         surgical.resetForm()
+        surgical.getImplants()
         laporan.pasien = findPasien
         laporan.assignForm(findPasien?.laporanop)
         laporan.assignFormTindakan(findPasien?.tindakanop)
