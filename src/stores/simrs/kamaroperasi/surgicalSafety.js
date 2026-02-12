@@ -234,6 +234,7 @@ export const useSurgicalSafetyStore = defineStore('surgical_safety_store', {
       id: null,
     },
     implants: [],
+    implant_seri: null,
     seri: null,
     nakes: [],
   }),
@@ -291,48 +292,48 @@ export const useSurgicalSafetyStore = defineStore('surgical_safety_store', {
       })
     },
     assignImplats (data, implant, seri) {
-      // const implantMap = new Map(
-      //   implant?.map(i => [i.persiapan_operasi_distribusi_id, i]) ?? []
-      // )
-      // data.forEach(x => {
-      //   const ada = implantMap.get(x.distribusi_id)
-      //   if (ada) {
-      //     // hanya assign field yang dibutuhkan
-      //     Object.assign(x, {
-      //       id: ada.id ?? null,
-      //       seri: ada.seri ?? '',
-      //       jenis: ada.jenis ?? '',
-      //       pemakaian: ada.pemakaian
-      //         ?? ((x.jumlah ?? 0) - (x.jumlah_retur ?? 0)),
-      //       jumlah_retur: ada.jumlah_retur ?? x.jumlah_retur ?? 0
-      //     })
-
-      //     x.simpan = true
-      //   } else {
-      //     // kondisi data baru / tidak ada implant
-      //     x.simpan = false
-      //     x.id = null
-      //     x.seri = ''
-      //     x.jenis = ''
-      //     x.pemakaian = (x.jumlah ?? 0) - (x.jumlah_retur ?? 0)
-      //   }
-      // })
-      // console.log('implants', data, implant)
+      const implantMap = new Map(
+        implant?.map(i => [i.persiapan_operasi_distribusi_id, i]) ?? []
+      )
       data.forEach(x => {
-        // console.log('x', x)
-        const ada = implant?.find(f => x?.distribusi_id === f?.persiapan_operasi_distribusi_id)
-        // console.log('ada', ada, typeof ada)
+        const ada = implantMap.get(x.distribusi_id)
+        if (ada) {
+          // hanya assign field yang dibutuhkan
+          Object.assign(x, {
+            id: ada.id ?? null,
+            seri: ada.seri ?? '',
+            jenis: ada.jenis ?? '',
+            pemakaian: ada.pemakaian
+              ?? ((x.jumlah ?? 0) - (x.jumlah_retur ?? 0)),
+            jumlah_retur: ada.jumlah_retur ?? x.jumlah_retur ?? 0
+          })
 
-        if (ada && typeof ada == 'object') {
-          Object.assign(x, ada)
           x.simpan = true
         } else {
+          // kondisi data baru / tidak ada implant
           x.simpan = false
+          x.id = null
           x.seri = ''
           x.jenis = ''
           x.pemakaian = (x.jumlah ?? 0) - (x.jumlah_retur ?? 0)
         }
       })
+      // console.log('implants', data, implant)
+      // data.forEach(x => {
+      //   // console.log('x', x)
+      //   const ada = implant?.find(f => x?.distribusi_id === f?.persiapan_operasi_distribusi_id)
+      //   // console.log('ada', ada, typeof ada)
+
+      //   if (ada && typeof ada == 'object') {
+      //     Object.assign(x, ada)
+      //     x.simpan = true
+      //   } else {
+      //     x.simpan = false
+      //     x.seri = ''
+      //     x.jenis = ''
+      //     x.pemakaian = (x.jumlah ?? 0) - (x.jumlah_retur ?? 0)
+      //   }
+      // })
     },
     async getImplants () {
       this.loading = true
@@ -362,16 +363,48 @@ export const useSurgicalSafetyStore = defineStore('surgical_safety_store', {
         noreg: this.pasien.noreg,
         nota: this.pasien.rs2
       }
-      console.log('simpan', form)
+      // console.log('simpan', form)
       try {
         const resp = await api.post('v1/simrs/penunjang/surgical/simpan-implant', form)
-        console.log('data', resp)
+        // console.log('data', resp)
 
         notifSuccess(resp)
         this.getImplants()
       } finally { this.loading = false }
     },
-    simpanGambar () { }
+    async simpanGambar () {
+      console.log('simpan gambar', this.seri)
+      const form = new FormData()
+      form.append('file', this.seri)
+      form.append('noreg', this.pasien.noreg)
+      form.append('nota', this.pasien.rs2)
+      this.loading = true
+      try {
+        const resp = await api.post('v1/simrs/penunjang/surgical/simpan-gambar', form)
+        notifSuccess(resp)
+        this.getImplants()
+      } finally {
+        this.loading = false
+        this.seri = null
+      }
+
+
+    },
+    async hapusGambar (file) {
+      const form = {
+        id: file.id,
+      }
+      this.loading = true
+      try {
+        const resp = await api.post('v1/simrs/penunjang/surgical/hapus-gambar', form)
+        // console.log('hapus', resp)
+
+        notifSuccess(resp)
+        this.getImplants()
+      } finally {
+        this.loading = false
+      }
+    }
   },
 
 })

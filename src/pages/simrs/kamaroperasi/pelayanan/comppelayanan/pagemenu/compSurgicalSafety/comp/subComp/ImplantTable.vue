@@ -1,5 +1,5 @@
 <template>
-  <table style="width: calc(80vw + 10px);">
+  <table style="width: calc(80vw + 10px); margin-bottom: 10px;">
     <thead class="my-sticky-header-table">
       <tr>
         <th width="5%">
