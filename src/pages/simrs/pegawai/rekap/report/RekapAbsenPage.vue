@@ -615,15 +615,25 @@ function getStatus(row) {
 
 function getIjin(row, fx) {
   const user = row?.user
+  // console.log('row', row)
   if (user) {
     const ada = user.libur?.length
     if (ada > 0) {
       const libur = user.libur
-      // console.log('libur', libur)
+      const bulanX = currentMonth.value <= 9 ? '0' + currentMonth.value : (currentMonth.value).toString()
+      const periode = tahun.value + '-' + bulanX
+
       if (fx) {
-        return libur.filter(x => x.flag === fx)?.length
+        // Filter by month/year AND flag, then count unique dates
+        const filtered = libur.filter(x => x.flag === fx && x.tanggal?.startsWith(periode))
+        const uniqueDates = [...new Set(filtered.map(x => x.tanggal))]
+        return uniqueDates.length
       }
-      return libur?.length
+
+      // If no fx specified, count unique dates for all entries in that period
+      const filteredAll = libur.filter(x => x.tanggal?.startsWith(periode))
+      const uniqueDatesAll = [...new Set(filteredAll.map(x => x.tanggal))]
+      return uniqueDatesAll.length
     }
     return 0
   }
