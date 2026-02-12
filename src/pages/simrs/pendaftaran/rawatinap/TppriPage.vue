@@ -9,18 +9,13 @@
         <div class="col full-height scroll">
           <menu-comp v-if="tab?.name === 'tppri-page'" :lists="lists" @on-select="pilihMenu" />
 
-          <component
-            :is="tab?.comp"
-            v-else
-          />
+          <component :is="tab?.comp" v-else />
         </div>
       </div>
     </q-card>
 
-    <page-kamar
-      v-model="store.openDialogShowKamar"
-      @close="store.openDialogShowKamar = false"
-    />
+    <!-- <page-kamar v-model="store.openDialogShowKamar" @close="store.openDialogShowKamar = false" /> -->
+    <modal-status-kamar v-model="store.openDialogShowKamar" @close="store.openDialogShowKamar = false" />
   </q-page>
 </template>
 
@@ -29,7 +24,8 @@ import { useFormPendaftaranRanapStore } from 'src/stores/simrs/pendaftaran/ranap
 import { defineAsyncComponent, ref, onMounted, shallowRef } from 'vue'
 const HeaderComp = defineAsyncComponent(() => import('./compTppri/HeaderComp.vue'))
 const MenuComp = defineAsyncComponent(() => import('./compTppri/MenuComp.vue'))
-const PageKamar = defineAsyncComponent(() => import('./pagemenus/PageKamar.vue'))
+// const PageKamar = defineAsyncComponent(() => import('./pagemenus/PageKamar.vue'))
+const ModalStatusKamar = defineAsyncComponent(() => import('./pagemenus/ModalStatusKamar.vue'))
 
 const lists = ref([
   {

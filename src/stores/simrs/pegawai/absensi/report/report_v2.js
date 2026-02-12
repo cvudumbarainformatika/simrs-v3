@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { api } from 'src/boot/axios'
 // import { daysInMonth } from 'src/modules/utils'
 
-export const useReportAbsensiStore = defineStore('report_absensi', {
+export const useReportAbsensiStoreV2 = defineStore('report_absensi_v2', {
   state: () => ({
     items: [],
     prints: [],
@@ -154,16 +154,18 @@ export const useReportAbsensiStore = defineStore('report_absensi', {
       this.total = 0
       this.loading = true
       const params = { params: this.params }
-      return new Promise((resolve, reject) => {
-        api.get('/v1/pegawai/absensi/report', params)
+      return new Promise((resolve) => {
+        api.get('/v1/pegawai/absensi/report-v2', params)
           .then((resp) => {
             if (resp.status === 200) {
-              // console.log('items', resp)
               this.items = resp.data.data
               this.meta = resp.data
               this.loading = false
               resolve(resp)
             }
+          })
+          .catch(() => {
+            this.loading = false
           })
       })
     },
@@ -218,79 +220,33 @@ export const useReportAbsensiStore = defineStore('report_absensi', {
     },
 
     setSorting(val) {
-      // console.log(val)
       this.sorting.head = val
       this.sorting.sortBy === 'desc'
         ? this.sorting.sortBy = 'asc'
         : this.sorting.sortBy = 'desc'
+
+      const sortMap = {
+        'A': 'alpha',
+        'kurang': 'terlambat_menit',
+        'CUTI': 'cuti',
+        'IJIN': 'ijin',
+        'SAKIT': 'sakit',
+        'DL': 'dl',
+        'DSPEN': 'dispen'
+      }
+
+      const field = sortMap[val]
+      if (field) {
+        this.items.sort((a, b) => {
+          const valA = a.summary?.[field] || 0
+          const valB = b.summary?.[field] || 0
+          return this.sorting.sortBy === 'asc' ? valA - valB : valB - valA
+        })
+      }
+
       setTimeout(() => {
         this.sorting.head = null
       }, 3000)
-
-      if (val === 'A') {
-        this.sorting.sortBy === 'asc'
-          ? this.items = this.items.sort((a, b) => a.TAKMASOK - b.TAKMASOK)
-          : this.items = this.items.sort((a, b) => b.TAKMASOK - a.TAKMASOK)
-      }
-      else if (val === 'kurang') {
-        this.sorting.sortBy === 'asc'
-          ? this.items = this.items.sort((a, b) => a.TERLAMBAT - b.TERLAMBAT)
-          : this.items = this.items.sort((a, b) => b.TERLAMBAT - a.TERLAMBAT)
-      }
-      else if (val === 'CUTI') {
-        this.sorting.sortBy === 'asc'
-          ? this.items = this.items.sort((a, b) => a.CUTI - b.CUTI)
-          : this.items = this.items.sort((a, b) => b.CUTI - a.CUTI)
-      }
-      else if (val === 'IJIN') {
-        this.sorting.sortBy === 'asc'
-          ? this.items = this.items.sort((a, b) => a.IJIN - b.IJIN)
-          : this.items = this.items.sort((a, b) => b.IJIN - a.IJIN)
-      }
-      else if (val === 'CUTI') {
-        this.sorting.sortBy === 'asc'
-          ? this.items = this.items.sort((a, b) => a.CUTI - b.CUTI)
-          : this.items = this.items.sort((a, b) => b.CUTI - a.CUTI)
-      }
-      else if (val === 'SAKIT') {
-        this.sorting.sortBy === 'asc'
-          ? this.items = this.items.sort((a, b) => a.SAKIT - b.SAKIT)
-          : this.items = this.items.sort((a, b) => b.SAKIT - a.SAKIT)
-      }
-      else if (val === 'DL') {
-        this.sorting.sortBy === 'asc'
-          ? this.items = this.items.sort((a, b) => a.DL - b.DL)
-          : this.items = this.items.sort((a, b) => b.DL - a.DL)
-      }
-      else if (val === 'CUTI') {
-        this.sorting.sortBy === 'asc'
-          ? this.items = this.items.sort((a, b) => a.CUTI - b.CUTI)
-          : this.items = this.items.sort((a, b) => b.CUTI - a.CUTI)
-      }
-      else if (val === 'DSPEN') {
-        this.sorting.sortBy === 'asc'
-          ? this.items = this.items.sort((a, b) => a.DISPEN - b.DISPEN)
-          : this.items = this.items.sort((a, b) => b.DISPEN - a.DISPEN)
-      }
-
-      // // console.log('sorting', this.items)
-    },
-
-    pushAlpha(id, jml) {
-      const el = this.items.filter(x => x.id === id)[0]
-      el.TAKMASOK = jml
-    },
-
-    pushData(id, data) {
-      const el = this.items.filter(x => x.id === id)[0]
-      el.TERLAMBAT = data.TERLAMBAT
-      el.TAKMASOK = data.TAKMASOK
-      el.CUTI = data.CUTI
-      el.SAKIT = data.SAKIT
-      el.IJIN = data.IJIN
-      el.DL = data.DL
-      el.DISPEN = data.DISPEN
     }
-
   }
 })

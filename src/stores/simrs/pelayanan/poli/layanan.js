@@ -296,7 +296,7 @@ export const useLayananPoli = defineStore('layanan-poli', {
       }
 
       const resp = await api.get('v1/simrs/pelayanan/notatindakan', params)
-      // console.log('notas', resp)
+      console.log('notas', resp)
       if (resp.status === 200) {
         const arr = resp.data.map(x => x.nota)
         this.notaTindakans = arr?.length ? arr : []

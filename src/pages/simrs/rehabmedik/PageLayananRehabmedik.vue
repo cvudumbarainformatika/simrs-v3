@@ -4,7 +4,8 @@
     <q-card square flat class="container-no-header">
       <q-layout view="lHr Lpr lFf" container class="shadow-2 rounded-borders z-top">
         <q-header elevated class="bg-primary">
-          <HeaderLayout :pasien="pasien" @toggle-left-drawer="() => drawer = !drawer" />
+          <HeaderLayout :pasien="pasien" @toggle-left-drawer="() => drawer = !drawer"
+            @gantidpjp="(val) => store.gantiDpjp(val, pasien)" />
         </q-header>
         <!-- LEFT DRAWER ======================================================================================-->
         <q-drawer v-model="drawer" elevated bordered show-if-above :width="230" :breakpoint="400">
@@ -17,16 +18,14 @@
           <q-page class="contain bg-grey-3">
             <Suspense :key="menu.comp" timeout="0">
               <template #default>
-                <!-- <div
-                  v-if="pasien?.dokter==='' || pasien?.dokter === null"
+                <div v-if="pasien?.dokter === '' || pasien?.dokter === null"
                   class="column full-height flex-center absolute-center z-top full-width"
-                  style="background-color: black; opacity: .9;"
-                >
+                  style="background-color: black; opacity: .9;">
                   <div class="text-white">
                     Maaf, DPJP Pasien Ini Belum Ada ... Harap Input DPJP Terlebih dahulu
                   </div>
-                </div> -->
-                <component :is="menu.comp" :key="pasien" :pasien="pasien" :depo="pasien?.flagdepo" :store="store"
+                </div>
+                <component v-else :is="menu.comp" :key="pasien" :pasien="pasien" :depo="pasien?.flagdepo" :store="store"
                   :loading-terima="store.loadingTerima" :user="user" />
               </template>
               <template #fallback>
@@ -98,20 +97,20 @@ const menus = ref([
     nakes: ['1', '2', '3', '4', '5', '6'],
     comp: shallowRef(defineAsyncComponent(() => import('src/pages/simrs/rehabmedik/layanan/asessment/IndexPage.vue')))
   },
-  {
-    name: 'AnamnesisPage',
-    label: 'Anamnesis & Riwayat',
-    icon: 'icon-mat-medical_information',
-    nakes: ['1', '2', '3', '4', '5', '6'],
-    comp: shallowRef(defineAsyncComponent(() => import('src/pages/simrs/poli/tindakan/comptindakan/pagemenu/AnamnesisPage.vue')))
-  },
-  {
-    name: 'PemeriksaanPage',
-    label: 'Pemeriksaan Umum & Fisik',
-    icon: 'icon-my-stethoscope',
-    nakes: ['1', '2', '3', '4', '5', '6'],
-    comp: shallowRef(defineAsyncComponent(() => import('src/pages/simrs/poli/tindakan/comptindakan/pagemenu/PemeriksaanPageBaru.vue')))
-  },
+  // {
+  //   name: 'AnamnesisPage',
+  //   label: 'Anamnesis & Riwayat',
+  //   icon: 'icon-mat-medical_information',
+  //   nakes: ['1', '2', '3', '4', '5', '6'],
+  //   comp: shallowRef(defineAsyncComponent(() => import('src/pages/simrs/poli/tindakan/comptindakan/pagemenu/AnamnesisPage.vue')))
+  // },
+  // {
+  //   name: 'PemeriksaanPage',
+  //   label: 'Pemeriksaan Umum & Fisik',
+  //   icon: 'icon-my-stethoscope',
+  //   nakes: ['1', '2', '3', '4', '5', '6'],
+  //   comp: shallowRef(defineAsyncComponent(() => import('src/pages/simrs/poli/tindakan/comptindakan/pagemenu/PemeriksaanPageBaru.vue')))
+  // },
   {
     name: 'PengkajianPage',
     label: 'Pengkajian Rehab Medik',
