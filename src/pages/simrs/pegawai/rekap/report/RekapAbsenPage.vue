@@ -510,6 +510,8 @@ function getTransaksiAbsens(num, data) {
   const alpha = getAlphaRinci(num, data)
   // console.log('trans', trans)
   // console.log('libur', libur)
+  const shift = data.transaksi_absen?.find(x => x.kategory_id > 2) ? true : false
+  // console.log('shift', shift)
   if (trans?.length && !ijin) {
     return 'MSK'
   }
@@ -517,7 +519,8 @@ function getTransaksiAbsens(num, data) {
     if (ijin) {
       return ijin
     }
-    else if (libur?.length) {
+    else if (libur?.length && !shift) {
+      // console.log('shift', shift)
       return 'CB'
     }
     else if (alpha) {
@@ -548,7 +551,7 @@ function getAlpha(row) {
       if (ijin) {
         absen[i] = 'I'
       }
-      else if (libur?.length) {
+      else if (libur?.length && (row.transaksi_absen?.find(x => x.kategory_id)?.kategory_id === 1 || row.transaksi_absen?.find(x => x.kategory_id)?.kategory_id === 2)) {
         absen[i] = 'C'
       }
       else if (alpha) {
