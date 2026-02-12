@@ -510,6 +510,8 @@ function getTransaksiAbsens(num, data) {
   const alpha = getAlphaRinci(num, data)
   // console.log('trans', trans)
   // console.log('libur', libur)
+  const shift = data.transaksi_absen?.find(x => x.kategory_id > 2) ? true : false
+  // console.log('shift', shift)
   if (trans?.length && !ijin) {
     return 'MSK'
   }
@@ -517,7 +519,8 @@ function getTransaksiAbsens(num, data) {
     if (ijin) {
       return ijin
     }
-    else if (libur?.length) {
+    else if (libur?.length && !shift) {
+      // console.log('shift', shift)
       return 'CB'
     }
     else if (alpha) {
@@ -548,7 +551,7 @@ function getAlpha(row) {
       if (ijin) {
         absen[i] = 'I'
       }
-      else if (libur?.length) {
+      else if (libur?.length && (row.transaksi_absen?.find(x => x.kategory_id)?.kategory_id === 1 || row.transaksi_absen?.find(x => x.kategory_id)?.kategory_id === 2)) {
         absen[i] = 'C'
       }
       else if (alpha) {
@@ -612,15 +615,25 @@ function getStatus(row) {
 
 function getIjin(row, fx) {
   const user = row?.user
+  // console.log('row', row)
   if (user) {
     const ada = user.libur?.length
     if (ada > 0) {
       const libur = user.libur
-      // console.log('libur', libur)
+      const bulanX = currentMonth.value <= 9 ? '0' + currentMonth.value : (currentMonth.value).toString()
+      const periode = tahun.value + '-' + bulanX
+
       if (fx) {
-        return libur.filter(x => x.flag === fx)?.length
+        // Filter by month/year AND flag, then count unique dates
+        const filtered = libur.filter(x => x.flag === fx && x.tanggal?.startsWith(periode))
+        const uniqueDates = [...new Set(filtered.map(x => x.tanggal))]
+        return uniqueDates.length
       }
-      return libur?.length
+
+      // If no fx specified, count unique dates for all entries in that period
+      const filteredAll = libur.filter(x => x.tanggal?.startsWith(periode))
+      const uniqueDatesAll = [...new Set(filteredAll.map(x => x.tanggal))]
+      return uniqueDatesAll.length
     }
     return 0
   }
