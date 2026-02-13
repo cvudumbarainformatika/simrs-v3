@@ -139,13 +139,13 @@ const clearSearch = () => {
 
 function editKontrak(row) {
   // console.log('edit', row);
-  if (auth.user?.pegawai?.kdpegsimrs !== 'sa') {
-    $q.notify({
-      type: 'negative',
-      message: 'Anda tidak Memiliki Akses Edit Data ini, Silahkan Hubungi Admin'
-    })
-    return
-  }
+  // if (auth.user?.pegawai?.kdpegsimrs !== 'sa') {
+  //   $q.notify({
+  //     type: 'negative',
+  //     message: 'Anda tidak Memiliki Akses Edit Data ini, Silahkan Hubungi Admin'
+  //   })
+  //   return
+  // }
   if (row?.kunci === '1') {
     $q.notify({
       type: 'negative',
@@ -159,13 +159,13 @@ function editKontrak(row) {
 }
 
 function deleteData(nokontrak) {
-  if (auth.user?.pegawai?.kdpegsimrs !== 'sa') {
-    $q.notify({
-      type: 'negative',
-      message: 'Anda tidak Memiliki Izin Menghapus Data ini, Silahkan Hubungi Admin'
-    })
-    return
-  }
+  // if (auth.user?.pegawai?.kdpegsimrs !== 'sa') {
+  //   $q.notify({
+  //     type: 'negative',
+  //     message: 'Anda tidak Memiliki Izin Menghapus Data ini, Silahkan Hubungi Admin'
+  //   })
+  //   return
+  // }
   $q.dialog({
     title: 'Peringatan',
     message: 'Apakah Data ini akan dihapus?',
