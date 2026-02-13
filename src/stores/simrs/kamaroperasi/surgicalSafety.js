@@ -237,6 +237,8 @@ export const useSurgicalSafetyStore = defineStore('surgical_safety_store', {
     implant_seri: null,
     seri: null,
     nakes: [],
+    formKasa: {},
+    masterKasa: [],
   }),
   actions: {
     setForm (key, val) {
@@ -404,7 +406,19 @@ export const useSurgicalSafetyStore = defineStore('surgical_safety_store', {
       } finally {
         this.loading = false
       }
-    }
+    },
+    async ambilMasterkasa () {
+      this.loading = true
+      try {
+        const resp = await api.get('v1/simrs/penunjang/surgical/get-master-kasa')
+        this.masterKasa = resp?.data?.data ?? resp?.data
+        // console.log('kasa', resp?.data?.data, this.masterKasa)
+
+      } finally {
+        this.loading = false
+      }
+    },
+    simpanKasa () { }
   },
 
 })
