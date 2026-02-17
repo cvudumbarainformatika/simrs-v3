@@ -100,11 +100,22 @@
                 </q-list>
               </q-menu>
             </q-btn>
-            <q-btn ref="refPrint" v-print="printObj" unelevated color="dark" round size="sm" icon="icon-mat-print">
+            <q-btn class="q-mr-sm" ref="refPrint" v-print="printObj" unelevated color="dark" round size="sm"
+              icon="icon-mat-print">
               <q-tooltip class="primary" :offset="[10, 10]">
                 Print model 2
               </q-tooltip>
             </q-btn>
+            <download-excel v-if="store.items.length > 0" class="q-mr-sm" style="display: inline-block"
+              :fields="store.fields" :fetch="store.fetchExport" :before-generate="() => store.loadingDownload = true"
+              :before-finish="() => store.loadingDownload = false" :name="`Rekap_Absensi_${bulanName}_${tahun}.xls`">
+              <q-btn unelevated color="green-7" round size="sm" icon="icon-mat-download"
+                :loading="store.loadingDownload">
+                <q-tooltip class="primary">
+                  Export Excel
+                </q-tooltip>
+              </q-btn>
+            </download-excel>
           </template>
 
           <!-- Column Overrides for Summary -->
@@ -161,16 +172,16 @@
                         <img :ratio="1" fit="cover" :src="getImage(row.kelamin, row)">
                       </q-avatar>
                       <div class=" q-mt-md">{{ row.nama }}</div>
-                      <div class="text-primary">{{ row.nama_jabatan || '-' }}</div>
-                      <div class="">{{ row.jenis_pegawai_ket || '-' }}</div>
-                      <div class="text-grey">{{ row.nama_ruangan || '-' }}</div>
+                      <div class="text-primary">{{ row?.relasi_jabatan?.jabatan || '---' }}</div>
+                      <div class="">{{ row.jenis_pegawai?.jenispegawai || '-' }}</div>
+                      <div class="text-grey">{{ row.ruangan?.namaruang || '-' }}</div>
                     </div>
-                    <q-separator vertical inset class="q-mx-lg" />
-                    <div class="column">
-                      <div class=" q-mt-md">Alamat : {{ row.alamat_detil }}</div>
+                    <!-- <q-separator vertical inset class="q-mx-lg" /> -->
+                    <!-- <div class="column">
+                      <div class=" q-mt-md">Alamat : {{ row.alamat }}</div>
                       <div class="">{{ row.kelurahan }} {{ row.kecamatan }} {{ row.kota }}</div>
                       <div class="">Email : {{ row.email }}</div>
-                    </div>
+                    </div> -->
                   </div>
                 </q-menu>
               </q-avatar>
@@ -182,13 +193,13 @@
               {{ row.nama }}
               <div v-if="store.settingsTable.tampilNip" class="text-gray"
                 :style="`font-size: ${store.settingsTable.fontSize - 2}px`">
-                {{ row.nip || row.nik }}
+                {{ row.nik || row?.nip }}
               </div>
             </div>
           </template>
 
           <template #cell-status="{ row }">
-            <div>{{ row.jenis_pegawai_ket || '-' }}</div>
+            <div>{{ row.jenis_pegawai?.jenispegawai || '-' }}</div>
           </template>
 
           <template #cell-IJIN="{ row, right }">
@@ -423,4 +434,11 @@ watch(() => store.rincian, (obj) => {
 })
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+:deep(.col-one) {
+  display: flex !important;
+  align-items: center !important;
+  gap: 4px;
+  flex-wrap: nowrap;
+}
+</style>

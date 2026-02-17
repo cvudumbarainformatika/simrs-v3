@@ -11,6 +11,7 @@ export const useReportAbsensiStoreV2 = defineStore('report_absensi_v2', {
     total: 0,
     loading: false,
     loadingDialog: false,
+    loadingDownload: false,
     params: {
       periode: null,
       q: '',
@@ -54,6 +55,25 @@ export const useReportAbsensiStoreV2 = defineStore('report_absensi_v2', {
     sorting: {
       head: null,
       sortBy: 'desc'
+    },
+
+    fields: {
+      Nama: 'nama',
+      'NIK / NIP': 'nik_nip',
+      Status: 'status_pegawai',
+      IJIN: 'summary.ijin',
+      SAKIT: 'summary.sakit',
+      DL: 'summary.dl',
+      DISPEN: 'summary.dispen',
+      CUTI: 'summary.cuti',
+      ALPHA: 'summary.alpha',
+      'TELAT (HR)': 'summary.terlambat_hari',
+      'JAM MSK': 'summary.jam_masuk',
+      'HARI MSK': 'summary.hari_masuk',
+      'TELAT (MENIT)': 'summary.terlambat_menit',
+      'TAP (PULANG)': 'summary.tap',
+      '% HADIR': 'summary.presentase',
+      'POT (%)': 'summary.potongan_persen'
     }
   }),
 
@@ -247,6 +267,22 @@ export const useReportAbsensiStoreV2 = defineStore('report_absensi_v2', {
       setTimeout(() => {
         this.sorting.head = null
       }, 3000)
+    },
+
+    async fetchExport() {
+      if (!this.items?.length) {
+        await this.getDataTable()
+      }
+
+      const data = this.items.map(item => {
+        return {
+          ...item,
+          nik_nip: item.nik || item.nip || '-',
+          status_pegawai: item.jenis_pegawai?.jenispegawai || '-'
+        }
+      })
+
+      return data
     }
   }
 })
