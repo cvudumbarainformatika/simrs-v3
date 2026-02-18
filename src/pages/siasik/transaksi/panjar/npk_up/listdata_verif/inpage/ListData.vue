@@ -24,7 +24,7 @@
               @update:model-value="(val) => {
                 console.log('Tahun berapa?', val)
                 store.params.tahun = val
-                store.getDatabelumVerif()
+                store.getDatasudahVerif()
               }" />
           </div> -->
         </div>
@@ -51,8 +51,8 @@
           <q-td>
             <div class="row justify-center">
               <div class="q-pr-xs">
-                <q-btn flat size="sm" class="bg-yellow-9 text-white" label="VERIF" :auth="user"
-                  @click="verifData(props?.row)">
+                <q-btn flat size="sm" class="bg-green text-white" label="CETAK" :auth="user"
+                  @click="viewCetakData(props?.row)">
 
                 </q-btn>
               </div>
@@ -61,6 +61,7 @@
         </q-tr>
       </template>
     </q-table>
+    <print-data v-model="store.dialogCetak" :cetakdata="cetakdata" />
   </div>
 </template>
 <script setup>
@@ -69,13 +70,15 @@ import { formatDenganRp, formatRpDouble } from 'src/modules/formatter';
 import { useAplikasiStore } from 'src/stores/app/aplikasi';
 import { useTransaksiNPDUP } from 'src/stores/siasik/transaksi/panjar/npd_up/store_npd_up';
 import { computed, defineAsyncComponent, onMounted, ref } from 'vue';
-
+import { useRouter } from 'vue-router';
+const PrintData = defineAsyncComponent(() => import('./DialogCetakdata.vue'))
 const store = useTransaksiNPDUP()
 
 const auth = useAplikasiStore()
 const user = computed(() => auth.user?.pegawai?.kdpegsimrs)
+const router = useRouter()
 onMounted(() => {
-  store.getDatabelumVerif()
+  store.getDatasudahcreate()
 })
 const listdatanota = [
   {
@@ -131,7 +134,7 @@ const listdatanota = [
   },
   {
     name: 'aksi',
-    label: 'Aksi',
+    label: 'Keterangan',
     align: 'center',
     headerStyle: 'width: 77px; height:50px; font-weight: bold;'
   }
@@ -144,45 +147,11 @@ const clearSearch = () => {
   store.goToPage(1)
 }
 
-
-
-const $q = useQuasar()
-const selected = ref([])
-function verifData(row) {
-  console.log('row verif', row)
-  if (row.verif === "") {
-    // Validasi: hanya user super admin yang bisa buka kunci
-    if (auth.user?.pegawai?.kdpegsimrs !== 'sa') {
-      $q.notify({
-        type: 'negative',
-        message: 'Anda tidak Memiliki Izin Memverifikasi Data ini, Silahkan Hubungi Admin'
-      })
-      return
-    }
-    $q.dialog({
-      title: 'Peringatan',
-      message: 'Apakah Anda yakin akan Memverifikasi Data?',
-      cancel: true,
-      persistent: true
-    }).onOk(() => {
-      const payload = {
-        nosppup: row.nosppup,
-        verif: row.verif,
-      }
-      console.log('payload', payload)
-      store.verifData(payload)
-      // .then(() => {
-      //   row.kunci = row.kunci === '1' ? '' : '1'
-      // })
-    }).onCancel(() => {
-      console.log('Cancel')
-      selected.value = []
-    }).onDismiss(() => {
-    })
-  }
-
+const cetakdata = ref([])
+function viewCetakData(row) {
+  console.log('row cetak', row)
+  store.dialogCetak = true
+  cetakdata.value = row
+  store.cetaknotadinas = cetakdata.value
 }
-
-
-
 </script>
