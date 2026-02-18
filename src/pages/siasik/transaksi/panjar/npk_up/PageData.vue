@@ -100,7 +100,7 @@ const barStyle = ref({
 const page = useRoute()
 const title = computed(() => {
   if (page.path === '/siasik/panjar/npkup/listsudah') {
-    return 'LIST DATA NPD-UP TERVERIFIKASI'
+    return 'LIST DATA NPK-UP'
   }
 
   // else if (page.path === '/akuntansi/jurnal/postingjurnal') {
@@ -110,13 +110,13 @@ const title = computed(() => {
   // //   return 'LIST MOBILE JKN'
   // }
   else {
-    return 'LIST DATA BELUM TERVERIFIKASI'
+    return 'LIST DATA BELUM DIBUAT NPK-UP'
   }
 })
 
 const subtitle = computed(() => {
   if (page.path === '/siasik/panjar/npkup/listsudah') {
-    return 'List Data Terverifikasi'
+    return 'List Data NPK-UP yang Sudah Dibuat'
   }
 
   // else if (page.path === '/akuntansi/jurnal/postingjurnal') {
@@ -126,7 +126,7 @@ const subtitle = computed(() => {
   // //   return 'List Kunjungan dari m-JKN'
   // }
   else {
-    return 'List Data Belum Terverifikasi'
+    return 'List Data Belum Dibuat NPK-UP'
   }
 })
 
