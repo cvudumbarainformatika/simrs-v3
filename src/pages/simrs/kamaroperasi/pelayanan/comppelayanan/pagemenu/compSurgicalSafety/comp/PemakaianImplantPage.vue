@@ -128,5 +128,6 @@ const getImg = (file) => {
 }
 onMounted(() => {
   store.ambilMasterkasa()
+  store.resetFormKasa()
 })
 </script>

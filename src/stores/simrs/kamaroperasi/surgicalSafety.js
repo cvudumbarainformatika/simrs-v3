@@ -407,6 +407,23 @@ export const useSurgicalSafetyStore = defineStore('surgical_safety_store', {
         this.loading = false
       }
     },
+    setFormKasa (key, val) {
+      this.formKasa[key] = val
+    },
+    resetFormKasa () {
+      this.formKasa = {
+        noreg: this.pasien.noreg,
+        nota: this.pasien.rs2,
+        norm: this.pasien.norm,
+        kode: '',
+        nama: '',
+        pakai: 0,
+        awal: 0,
+        tambah: 0,
+        sisa: 0,
+        akhir: 0,
+      }
+    },
     async ambilMasterkasa () {
       this.loading = true
       try {
@@ -418,7 +435,34 @@ export const useSurgicalSafetyStore = defineStore('surgical_safety_store', {
         this.loading = false
       }
     },
-    simpanKasa () { }
+    simpanKasa () {
+      this.loading = true
+      return new Promise(resolve => {
+        api.post('v1/simrs/penunjang/surgical/simpan-inventaris-kasa', this.formKasa)
+          .then(resp => {
+            this.loading = false
+            this.injectKasa(resp?.data?.data)
+            notifSuccess(resp)
+            resolve(resp)
+          })
+          .catch(() => { this.loading = false })
+      })
+    },
+    injectKasa (data) {
+      console.log('inject', data)
+      if (data?.id) {
+        console.log('inject ada id')
+        const index = this.pasien.inventaris_kasa.findIndex(x => x.id === data.id)
+        if (index >= 0) {
+          console.log('inject ada id update')
+          this.pasien.inventaris_kasa[index] = data
+        } else {
+          console.log('inject ada id push')
+          this.pasien.inventaris_kasa.push(data)
+        }
+      }
+
+    },
   },
 
 })

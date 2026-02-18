@@ -15,17 +15,17 @@
           Penambahan
         </th>
         <th>
-          Total
-        </th>
-        <th>
           Pemakaian
         </th>
         <th>
           Sisa
         </th>
         <th>
-          Jumlah Akhir
+          Total
         </th>
+        <!-- <th>
+          Jumlah Akhir
+        </th> -->
         <th>
           #
         </th>
@@ -34,7 +34,7 @@
         <th colspan="2" style="max-width: 200px;">
           <div>
             <app-autocomplete-new v-model="store.formKasa.kode" label="" :source="store.masterKasa" outlined dense
-              clearable option-label="nama" option-value="kode" autocomplete="nama" />
+              clearable option-label="nama" option-value="kode" autocomplete="nama" @update:model-value="setKasa" />
           </div>
         </th>
         <th style="max-width: 100px;">
@@ -42,11 +42,8 @@
             @update:model-value="hitung($event, 'awal')" />
         </th>
         <th style="max-width: 100px;">
-          <app-input v-model="store.formKasa.tambah" label="" outlined dense
+          <app-input v-model="store.formKasa.tambah" label="" outlined dense valid
             @update:model-value="hitung($event, 'tambah')" />
-        </th>
-        <th>
-          {{ parseInt(store.formKasa.tambah ?? 0) + parseInt(store.formKasa.awal ?? 0) }}
         </th>
         <th style="max-width: 100px;">
           <app-input v-model="store.formKasa.pakai" label="" outlined dense
@@ -58,12 +55,94 @@
         <th>
           {{ store.formKasa.akhir ?? 0 }}
         </th>
+        <!-- <th>
+          {{ parseInt(store.formKasa.tambah ?? 0) + parseInt(store.formKasa.awal ?? 0) }}
+        </th> -->
         <th>
           <q-btn dense color="green" label="simpan" no-caps :loading="store.loading" :disable="store.loading"
             @click="store.simpanKasa" />
         </th>
       </tr>
     </thead>
+
+    <tbody>
+      <!-- inventaris_kasa -->
+      <template v-if="store.loading">
+        <tr>
+          <td>
+            <app-loading />
+          </td>
+        </tr>
+      </template>
+
+      <template v-else-if="!store?.pasien?.inventaris_kasa?.length">
+        <tr>
+          <td colspan="8">
+            <app-no-data />
+          </td>
+        </tr>
+      </template>
+      <template v-else>
+        <template v-for="(item, n) in store?.pasien?.inventaris_kasa" :key="n">
+          <tr :class="n % 2 === 0 ? 'even' : 'odd'">
+            <td width="5%">
+              <div class="row items-center">
+                {{ n + 1 }}
+              </div>
+            </td>
+            <td style="white-space: normal;">
+              <div class="row items-end">
+                <div class="col-auto">
+                  {{ item?.nama }}
+                </div>
+              </div>
+            </td>
+            <td style="white-space: normal;">
+              <div class="row items-end">
+                <div class="col-auto">
+                  {{ item?.awal }}
+                </div>
+              </div>
+            </td>
+            <td style="white-space: normal;">
+              <div class="row items-end">
+                <div class="col-auto">
+                  {{ item?.tambah }}
+                </div>
+              </div>
+            </td>
+            <td style="white-space: normal;">
+              <div class="row items-end">
+                <div class="col-auto">
+                  {{ item?.pakai }}
+                </div>
+              </div>
+            </td>
+            <td style="white-space: normal;">
+              <div class="row items-end">
+                <div class="col-auto">
+                  {{ item?.sisa }}
+                </div>
+              </div>
+            </td>
+            <td style="white-space: normal;">
+              <div class="row items-end">
+                <div class="col-auto">
+                  {{ item?.akhir }}
+                </div>
+              </div>
+            </td>
+            <td style="white-space: normal;">
+              <div class="row items-end">
+                <div class="col-auto">
+
+                </div>
+              </div>
+            </td>
+          </tr>
+        </template>
+      </template>
+    </tbody>
   </table>
 </template>
 
@@ -80,6 +159,12 @@ function hitung (event, type) {
   store.formKasa.sisa = awal + tambah - pakai
   store.formKasa.akhir = store.formKasa.sisa + pakai
 
+}
+function setKasa (val) {
+  const master = store.masterKasa.find(item => item?.kode === val)
+  console.log('set', val, master)
+  if (val) store.setFormKasa('nama', master?.nama)
+  else store.setFormKasa('nama', '')
 }
 </script>
 <style lang="scss" scoped>
