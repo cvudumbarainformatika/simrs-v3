@@ -61,7 +61,6 @@
         </q-tr>
       </template>
     </q-table>
-    <print-data v-model="store.dialogCetak" :cetakdata="cetakdata" />
   </div>
 </template>
 <script setup>
@@ -72,7 +71,6 @@ import { useTransaksiNPDUP } from 'src/stores/siasik/transaksi/panjar/npd_up/sto
 import { computed, defineAsyncComponent, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
-const PrintData = defineAsyncComponent(() => import('./DialogCetakdata.vue'))
 const store = useTransaksiNPDUP()
 
 const auth = useAplikasiStore()
