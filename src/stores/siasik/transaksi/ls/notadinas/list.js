@@ -50,13 +50,15 @@ export const listdataNotadinasStore = defineStore('list_data_notadinas', {
       this.listData()
     },
     listData() {
+      this.listdata = []
+      this.datanotadinas = []
       this.loading = true
       const params = { params: this.params }
       return new Promise((resolve, reject) => {
         api.get('/v1/transaksi/notadinas/listdata', params)
           .then((resp) => {
             if (resp.status === 200) {
-              console.log('data Nota Dinas', resp.data)
+              // console.log('data Nota Dinas', resp.data)
               this.listdata = resp.data
               this.rincianNotadinas()
 

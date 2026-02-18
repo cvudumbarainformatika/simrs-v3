@@ -26,7 +26,7 @@ export const useTransaksiNPDUP = defineStore('transaksi-npd-up-store', {
     },
     params: {
       q: '',
-      // tahun: date.formatDate(Date.now(), 'YYYY'),
+      tahun: date.formatDate(Date.now(), 'YYYY'),
     },
     bendahara: {},
     datattd: [],
@@ -44,7 +44,7 @@ export const useTransaksiNPDUP = defineStore('transaksi-npd-up-store', {
       const params = { params: this.params }
       return new Promise((resolve) => {
         api.get('v1/transaksi/panjar/bendaharapengeluaran', params).then((resp) => {
-          console.log('Get Bendahara', resp)
+          // console.log('Get Bendahara', resp)
           if (resp.status === 200) {
             this.bendahara = resp.data
             this.form.kdBendaharaKeluar = resp.data.nip
@@ -60,7 +60,7 @@ export const useTransaksiNPDUP = defineStore('transaksi-npd-up-store', {
       const params = { params: this.params }
       return new Promise((resolve) => {
         api.get('v1/transaksi/panjar/bank', params).then((resp) => {
-          console.log('Get Bank', resp)
+          // console.log('Get Bank', resp)
           if (resp.status === 200) {
             this.bank = resp.data
             this.form.bank = resp.data.namaRek
@@ -79,7 +79,7 @@ export const useTransaksiNPDUP = defineStore('transaksi-npd-up-store', {
         api.get('/v1/siasik/ttd/ttdpengesahan')
           .then((resp) => {
             if (resp.status === 200) {
-              console.log('TTD', resp.data)
+              // console.log('TTD', resp.data)
               this.datattd = resp.data
 
             }
@@ -97,7 +97,7 @@ export const useTransaksiNPDUP = defineStore('transaksi-npd-up-store', {
       this.loadingSave = true
       try {
         const resp = await api.post('v1/transaksi/panjar/save', this.form)
-        console.log('resp', resp)
+        // console.log('resp', resp)
         if (resp.success === true) {
           this.form.nosppup = resp?.data?.data?.nosppup
           this.items = resp?.data?.data
@@ -121,9 +121,12 @@ export const useTransaksiNPDUP = defineStore('transaksi-npd-up-store', {
       } catch (error) {
         console.log(error)
         this.loadingSave = false
+      } finally {
+        this.loadingSave = false
       }
     },
     async getData() {
+      this.items = []
       this.loading = true
       const params = { params: this.params }
       const resp = await api.get('/v1/transaksi/panjar/index', params)
@@ -178,11 +181,106 @@ export const useTransaksiNPDUP = defineStore('transaksi-npd-up-store', {
         notifErr(error)
         this.loading = false
       }
+      finally {
+        this.loading = false
+      }
     },
 
     search(val) {
       this.params.q = val
       this.getData()
     },
+
+
+    async getDatabelumVerif() {
+      this.items = []
+      this.loading = true
+      const params = { params: this.params }
+      const resp = await api.get('/v1/transaksi/panjar/belumverif', params)
+      // console.log('resp Data PTK', resp)
+      if (resp.status === 200) {
+        this.items = resp?.data
+      }
+      this.loading = false
+    },
+    async getDatasudahVerif() {
+      this.items = []
+      this.loading = true
+      const params = { params: this.params }
+      const resp = await api.get('/v1/transaksi/panjar/sudahverif', params)
+      // console.log('resp Data PTK', resp)
+      if (resp.status === 200) {
+        this.items = resp?.data
+      }
+      this.loading = false
+    },
+
+    async verifData(row) {
+      this.loading = true
+      // const payload = { id: row.id }
+      try {
+        const resp = await api.post('/v1/transaksi/panjar/verif', row)
+        if (resp.status === 200) {
+          // this.items = resp?.data?.data
+          notifSuccess(resp)
+          this.getDatabelumVerif()
+        }
+        this.loading = false
+      }
+      catch (error) {
+        notifErr(error)
+        this.loading = false
+      }
+      finally {
+        this.loading = false
+      }
+    },
+
+
+    async getDatabelumcreate() {
+      this.items = []
+      this.loading = true
+      const params = { params: this.params }
+      const resp = await api.get('/v1/transaksi/panjar/databelumcreate', params)
+      // console.log('resp Data PTK', resp)
+      if (resp.status === 200) {
+        this.items = resp?.data
+      }
+      this.loading = false
+    },
+
+    async getDatasudahcreate() {
+      this.items = []
+      this.loading = true
+      const params = { params: this.params }
+      const resp = await api.get('/v1/transaksi/panjar/datasudahcreate', params)
+      // console.log('resp Data PTK', resp)
+      if (resp.status === 200) {
+        this.items = resp?.data
+      }
+      this.loading = false
+    },
+
+    async createNpk(row) {
+      this.loading = true
+      // const payload = { id: row.id }
+      try {
+        const resp = await api.post('/v1/transaksi/panjar/createnpk', row)
+        if (resp.status === 200) {
+          // this.items = resp?.data?.data
+          notifSuccess(resp)
+          this.getDatabelumcreate()
+        }
+        this.loading = false
+      }
+      catch (error) {
+        notifErr(error)
+        this.loading = false
+      }
+      finally {
+        this.loading = false
+      }
+    },
+
   }
 })
