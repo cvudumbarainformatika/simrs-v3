@@ -51,8 +51,8 @@
           <q-td>
             <div class="row justify-center">
               <div class="q-pr-xs">
-                <q-btn flat size="sm" class="bg-yellow-9 text-white" label="VERIF" :auth="user"
-                  @click="verifData(props?.row)">
+                <q-btn flat size="sm" class="bg-yellow-9 text-white" label="CREATE" :auth="user"
+                  @click="createNpk(props?.row)">
 
                 </q-btn>
               </div>
@@ -69,13 +69,15 @@ import { formatDenganRp, formatRpDouble } from 'src/modules/formatter';
 import { useAplikasiStore } from 'src/stores/app/aplikasi';
 import { useTransaksiNPDUP } from 'src/stores/siasik/transaksi/panjar/npd_up/store_npd_up';
 import { computed, defineAsyncComponent, onMounted, ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 const store = useTransaksiNPDUP()
 
 const auth = useAplikasiStore()
 const user = computed(() => auth.user?.pegawai?.kdpegsimrs)
+const router = useRouter()
 onMounted(() => {
-  store.getDatabelumVerif()
+  store.getDatabelumcreate()
 })
 const listdatanota = [
   {
@@ -148,20 +150,20 @@ const clearSearch = () => {
 
 const $q = useQuasar()
 const selected = ref([])
-function verifData(row) {
+function createNpk(row) {
   console.log('row verif', row)
-  if (row.verif === "") {
+  if (row.buktiCreateSpm === "") {
     // Validasi: hanya user super admin yang bisa buka kunci
     if (auth.user?.pegawai?.kdpegsimrs !== 'sa') {
       $q.notify({
         type: 'negative',
-        message: 'Anda tidak Memiliki Izin Memverifikasi Data ini, Silahkan Hubungi Admin'
+        message: 'Anda tidak Memiliki Izin Membuat NPK ini, Silahkan Hubungi Admin'
       })
       return
     }
     $q.dialog({
       title: 'Peringatan',
-      message: 'Apakah Anda yakin akan Memverifikasi Data?',
+      message: 'Apakah Anda yakin akan Membuat NPK?',
       cancel: true,
       persistent: true
     }).onOk(() => {
@@ -170,7 +172,7 @@ function verifData(row) {
         verif: row.verif,
       }
       console.log('payload', payload)
-      store.verifData(payload)
+      store.createNpk(payload)
       // .then(() => {
       //   row.kunci = row.kunci === '1' ? '' : '1'
       // })

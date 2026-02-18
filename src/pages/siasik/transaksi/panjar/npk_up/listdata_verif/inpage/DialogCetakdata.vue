@@ -4,7 +4,7 @@
       <q-layout view="lHh Lpr lFf" container class="shadow-2 rounded-borders">
         <q-header elevated>
           <q-bar class="bg-black text-white">
-            <div>Cetak NPD-UP</div>
+            <div>Cetak NPK-UP</div>
             <q-space />
 
             <q-btn dense flat icon="icon-mat-close" v-close-popup>
@@ -44,7 +44,7 @@
               </div>
               <div class="col-12 q-pt-md">
                 <div class="row justify-center text-weight-bold q-py-xs">
-                  NOTA PERMINTAAN DANA UANG PERSEDIAAN (NPD-UP)
+                  NOTA PERGESERAN KAS UANG PERSEDIAAN (NPK-UP)
                 </div>
                 <div class="row justify-center">Nomor {{ store.cetaknotadinas.nosppup }}</div>
               </div>
@@ -77,16 +77,16 @@
                         : {{ store.cetaknotadinas.tglTrans }}
                       </div>
                       <div class="q-py-xs">
-                        : Permohonan Permintaan Dana Uang Persediaan
+                        : Permohonan Pergeseran Kas
                       </div>
                     </div>
                   </div>
                   <div class="row q-col-gutter-md q-pr-md q-pt-sm full-width">
                     <div class="col text-justify text-wrap" style="line-height: 1.6;">
                       <span class="invisible">..........</span>Sehubungan dengan pelaksanaan kegiatan di
-                      RSUD Dokter Mohamad Saleh TA {{ dateOnlyYears(store.cetaknotadinas.tglTrans) }}, maka
-                      bersama ini kami sampaikan dengan hormat permohonan permintaan dana uang persediaan dengan rincian
-                      sebagai berikut:
+                      TA {{ dateOnlyYears(store.cetaknotadinas.tglTrans) }}, maka
+                      bersama ini kami sampaikan dengan hormat permohonan Pergeseran Kas BLUD ke Kas Bendahara
+                      Pengeluaran dengan rincian sebagai berikut:
                     </div>
                   </div>
                 </div>

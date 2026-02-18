@@ -235,5 +235,52 @@ export const useTransaksiNPDUP = defineStore('transaksi-npd-up-store', {
         this.loading = false
       }
     },
+
+
+    async getDatabelumcreate() {
+      this.items = []
+      this.loading = true
+      const params = { params: this.params }
+      const resp = await api.get('/v1/transaksi/panjar/databelumcreate', params)
+      // console.log('resp Data PTK', resp)
+      if (resp.status === 200) {
+        this.items = resp?.data
+      }
+      this.loading = false
+    },
+
+    async getDatasudahcreate() {
+      this.items = []
+      this.loading = true
+      const params = { params: this.params }
+      const resp = await api.get('/v1/transaksi/panjar/datasudahcreate', params)
+      // console.log('resp Data PTK', resp)
+      if (resp.status === 200) {
+        this.items = resp?.data
+      }
+      this.loading = false
+    },
+
+    async createNpk(row) {
+      this.loading = true
+      // const payload = { id: row.id }
+      try {
+        const resp = await api.post('/v1/transaksi/panjar/createnpk', row)
+        if (resp.status === 200) {
+          // this.items = resp?.data?.data
+          notifSuccess(resp)
+          this.getDatabelumcreate()
+        }
+        this.loading = false
+      }
+      catch (error) {
+        notifErr(error)
+        this.loading = false
+      }
+      finally {
+        this.loading = false
+      }
+    },
+
   }
 })
