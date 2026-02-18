@@ -405,7 +405,8 @@ export const dataBastFarmasiStore = defineStore('data_Bast_Farmasi_Store', {
         }
         this.itembelanja = arr
         console.log('DATA PENERIMAAN', this.itembelanja)
-      } else if (this.konsinyasis?.length) {
+      }
+      if (this.konsinyasis?.length) {
         const kons = []
         for (let i = 0; i < this.konsinyasis?.length; i++) {
           const el = this.konsinyasis[i].rinci
