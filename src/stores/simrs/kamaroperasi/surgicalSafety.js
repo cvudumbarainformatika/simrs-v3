@@ -441,26 +441,47 @@ export const useSurgicalSafetyStore = defineStore('surgical_safety_store', {
         api.post('v1/simrs/penunjang/surgical/simpan-inventaris-kasa', this.formKasa)
           .then(resp => {
             this.loading = false
-            this.injectKasa(resp?.data?.data)
+            this.injectKasa('baru', resp?.data?.data)
+            this.resetFormKasa()
             notifSuccess(resp)
             resolve(resp)
           })
           .catch(() => { this.loading = false })
       })
     },
-    injectKasa (data) {
+    injectKasa (type, data) {
       console.log('inject', data)
       if (data?.id) {
         console.log('inject ada id')
         const index = this.pasien.inventaris_kasa.findIndex(x => x.id === data.id)
-        if (index >= 0) {
-          console.log('inject ada id update')
-          this.pasien.inventaris_kasa[index] = data
-        } else {
-          console.log('inject ada id push')
-          this.pasien.inventaris_kasa.push(data)
+        if (type == 'hapus') {
+          this.pasien.inventaris_kasa.splice(index, 1)
+        }
+        else {
+          if (index >= 0) {
+            console.log('inject ada id update')
+            this.pasien.inventaris_kasa[index] = data
+          } else {
+            console.log('inject ada id push')
+            this.pasien.inventaris_kasa.push(data)
+          }
         }
       }
+
+    },
+    hapusKasa (val) {
+      console.log('hapus', val)
+      this.loading = true
+      return new Promise(resolve => {
+        api.post('v1/simrs/penunjang/surgical/hapus-inventaris-kasa', val)
+          .then(resp => {
+            this.loading = false
+            this.injectKasa('hapus', resp?.data?.data)
+            notifSuccess(resp)
+            resolve(resp)
+          })
+          .catch(() => { this.loading = false })
+      })
 
     },
   },

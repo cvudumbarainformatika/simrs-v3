@@ -38,7 +38,7 @@
           </div>
         </th>
         <th style="max-width: 100px;">
-          <app-input v-model="store.formKasa.awal" label="" outlined dense
+          <app-input ref="refAwal" v-model="store.formKasa.awal" label="" outlined dense
             @update:model-value="hitung($event, 'awal')" />
         </th>
         <th style="max-width: 100px;">
@@ -46,7 +46,7 @@
             @update:model-value="hitung($event, 'tambah')" />
         </th>
         <th style="max-width: 100px;">
-          <app-input v-model="store.formKasa.pakai" label="" outlined dense
+          <app-input ref="refPakai" v-model="store.formKasa.pakai" label="" outlined dense
             @update:model-value="hitung($event, 'pakai')" />
         </th>
         <th>
@@ -60,7 +60,7 @@
         </th> -->
         <th>
           <q-btn dense color="green" label="simpan" no-caps :loading="store.loading" :disable="store.loading"
-            @click="store.simpanKasa" />
+            @click="simpan" />
         </th>
       </tr>
     </thead>
@@ -91,51 +91,54 @@
               </div>
             </td>
             <td style="white-space: normal;">
-              <div class="row items-end">
+              <div class="row  q-mr-sm">
                 <div class="col-auto">
                   {{ item?.nama }}
                 </div>
               </div>
             </td>
             <td style="white-space: normal;">
-              <div class="row items-end">
+              <div class="row justify-end q-mr-sm">
                 <div class="col-auto">
                   {{ item?.awal }}
                 </div>
               </div>
             </td>
             <td style="white-space: normal;">
-              <div class="row items-end">
+              <div class="row justify-end q-mr-sm">
                 <div class="col-auto">
                   {{ item?.tambah }}
                 </div>
               </div>
             </td>
             <td style="white-space: normal;">
-              <div class="row items-end">
+              <div class="row justify-end q-mr-sm">
                 <div class="col-auto">
                   {{ item?.pakai }}
                 </div>
               </div>
             </td>
             <td style="white-space: normal;">
-              <div class="row items-end">
+              <div class="row justify-end q-mr-sm">
                 <div class="col-auto">
                   {{ item?.sisa }}
                 </div>
               </div>
             </td>
             <td style="white-space: normal;">
-              <div class="row items-end">
+              <div class="row justify-end q-mr-sm">
                 <div class="col-auto">
                   {{ item?.akhir }}
                 </div>
               </div>
             </td>
             <td style="white-space: normal;">
-              <div class="row items-end">
-                <div class="col-auto">
-
+              <div class="row justify-end items-center">
+                <div class="col-auto q-mr-sm">
+                  <q-btn dense flat rounded color="primary" icon="edit" size="10px" @click="edit(item)" />
+                </div>
+                <div class="col-auto q-mr-sm">
+                  <q-btn dense flat rounded color="negative" icon="delete_sweep" size="10px" @click="hapus(item)" />
                 </div>
               </div>
             </td>
@@ -147,7 +150,10 @@
 </template>
 
 <script setup>
+import { Dialog } from 'quasar'
+import { notifErrVue } from 'src/modules/utils'
 import { useSurgicalSafetyStore } from 'src/stores/simrs/kamaroperasi/surgicalSafety'
+import { onMounted, ref } from 'vue'
 
 const store = useSurgicalSafetyStore()
 function hitung (event, type) {
@@ -160,12 +166,59 @@ function hitung (event, type) {
   store.formKasa.akhir = store.formKasa.sisa + pakai
 
 }
+const refAwal = ref(null)
+const refPakai = ref(null)
+function simpan () {
+  console.log('awal', refAwal.value?.refInput)
+  if (refAwal.value?.refInput?.validate() && refPakai.value?.refInput?.validate()) {
+
+    store.simpanKasa().then(() => {
+      refAwal.value?.refInput?.resetValidation()
+      refPakai.value?.refInput?.resetValidation()
+    })
+  } else notifErrVue('Silahkan Isi yang belum lengkap')
+}
 function setKasa (val) {
   const master = store.masterKasa.find(item => item?.kode === val)
   console.log('set', val, master)
   if (val) store.setFormKasa('nama', master?.nama)
   else store.setFormKasa('nama', '')
 }
+function edit (val) {
+  console.log('edit', val)
+  store.resetFormKasa()
+  store.setFormKasa('awal', val?.awal)
+  store.setFormKasa('tambah', val?.tambah)
+  store.setFormKasa('pakai', val?.pakai)
+  store.setFormKasa('sisa', val?.sisa)
+  store.setFormKasa('akhir', val?.akhir)
+  store.setFormKasa('nama', val?.nama)
+  store.setFormKasa('kode', val?.kode)
+
+  const awal = parseInt(store.formKasa.awal ?? 0)
+  const tambah = parseInt(store.formKasa.tambah ?? 0)
+  const pakai = parseInt(store.formKasa.pakai ?? 0)
+  store.formKasa.sisa = awal + tambah - pakai
+  store.formKasa.akhir = store.formKasa.sisa + pakai
+}
+function hapus (val) {
+  // console.log('hapus', val)
+  Dialog.create({
+    title: 'Konfirmasi',
+    message: 'Apakah anda yakin akan menghapus data ini ?',
+    cancel: true,
+    persistent: true,
+  }).onOk(() => {
+    store.hapusKasa(val)
+  })
+
+}
+onMounted(() => {
+  setTimeout(() => {
+    refAwal.value?.refInput?.resetValidation()
+    refPakai.value?.refInput?.resetValidation()
+  }, 200)
+})
 </script>
 <style lang="scss" scoped>
 .hv:hover {
