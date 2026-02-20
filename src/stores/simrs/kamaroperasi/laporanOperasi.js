@@ -53,6 +53,7 @@ export const useLaporanOperasiStore = defineStore('laporan_operasi_store', {
     },
     assignForm (data) {
       console.log('assignForm laporan', data)
+      if (!data) return this.resetForm()
       const keys = Object.keys(data)
       if (keys?.length <= 0) return this.resetForm()
       this.setForm('tanggal', data.rs3)
@@ -113,6 +114,7 @@ export const useLaporanOperasiStore = defineStore('laporan_operasi_store', {
 
     assignFormTindakan (data) {
       console.log('assignForm Tindakan', data)
+      if (!data) return this.resetFormTindakan()
       const keys = Object.keys(data)
       if (keys?.length <= 0) return this.resetFormTindakan()
 

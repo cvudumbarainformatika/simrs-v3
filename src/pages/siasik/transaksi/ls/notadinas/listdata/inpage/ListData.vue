@@ -1,8 +1,7 @@
 <template>
   <div class="justify-content-center full-width">
     <q-table style="height: 100%" :rows="store.datanotadinas" :columns="columnsdata" row-key="name" dense flat bordered
-      wrap-cells :filter="store.params.q" :loading="store.loading || !store.datanotadinas"
-      :rows-per-page-options="[10, 50, 100]">
+      wrap-cells :filter="store.params.q" :loading="store.loading" :rows-per-page-options="[10, 50, 100]">
       <template #loading>
         <q-inner-loading showing color="warning" />
       </template>
@@ -23,6 +22,7 @@
             <q-input outlined dense label="Tahun" v-model="store.params.tahun" debounce="400"
               :disable="store.disabled && store.loading" :loading="store.loading" :autofocus="false"
               @update:model-value="(val) => {
+                store.datanotadinas = []
                 console.log('Tahun berapa?', val)
                 store.params.tahun = val
                 store.listData()

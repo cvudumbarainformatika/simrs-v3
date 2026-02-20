@@ -130,36 +130,26 @@
                   </tr>
                 </thead>
                 <tbody class="align-middle q-pl-sm">
-                  <tr v-for="item in store.pendapatans" :key="item">
-                    <td class="text-left q-pl-sm q-pr-sm">
-                      <div :class="item.kodeall3?.length <= 12 ? 'text-bold' : ''"> {{ item.kodeall3 }} </div>
-                    </td>
-                    <td class="text-left q-pl-sm q-pr-sm">
-                      <div :class="item.kodeall3?.length <= 12 ? 'text-bold' : ''"> {{ item.uraian }} </div>
+                  <tr v-for="item in store.pendapatans" :key="item" :class="item.kode?.length <= 12 ? 'text-bold' : ''">
+                    <td class="text-left q-pl-sm q-pr-sm"> {{ item.kode }}</td>
+                    <td class="text-left q-pl-sm q-pr-sm">{{ item.uraian }}</td>
+                    <td class="text-right q-pl-sm q-pr-sm">
+                      {{ formattanpaRp(item.pagupend) }}
                     </td>
                     <td class="text-right q-pl-sm q-pr-sm">
-                      <div :class="item.kodeall3?.length <= 12 ? 'text-bold' : ''">{{
-                        formattanpaRp(store.realisasipends?.totalPaguPendapatan) }}</div>
+                      {{ formattanpaRp(item.nilaisblm) }}
                     </td>
                     <td class="text-right q-pl-sm q-pr-sm">
-                      <div :class="item.kodeall3?.length <= 12 ? 'text-bold' : ''">{{
-                        formattanpaRp(store.realisasipends?.totalSebelumnya) }}</div>
+                      {{ formattanpaRp(item.nilaiskg) }}
                     </td>
                     <td class="text-right q-pl-sm q-pr-sm">
-                      <div :class="item.kodeall3?.length <= 12 ? 'text-bold' : ''">{{
-                        formattanpaRp(store.realisasipends?.totalSekarang) }}</div>
+                      {{ formattanpaRp(item.nilaisemua) }}
                     </td>
                     <td class="text-right q-pl-sm q-pr-sm">
-                      <div :class="item.kodeall3?.length <= 12 ? 'text-bold' : ''">{{
-                        formattanpaRp(store.realisasipends?.totalRealisasi) }}</div>
+                      {{ formattanpaRp(item.selisih) }}
                     </td>
                     <td class="text-right q-pl-sm q-pr-sm">
-                      <div :class="item.kodeall3?.length <= 12 ? 'text-bold' : ''"> {{
-                        formattanpaRp(store.realisasipends?.selisih) }} </div>
-                    </td>
-                    <td class="text-right q-pl-sm q-pr-sm">
-                      <div :class="item.kodeall3?.length <= 12 ? 'text-bold' : ''"> {{
-                        formattanpaRp(store.realisasipends?.persen) }} </div>
+                      {{ item.persen }}
                     </td>
                   </tr>
                   <tr class="total text-bold">
@@ -167,22 +157,22 @@
                       TOTAL PENDAPATAN
                     </td>
                     <td class="text-right q-pl-sm q-pr-sm">
-                      <div>{{ formattanpaRp(store.realisasipends?.totalPaguPendapatan) }}</div>
+                      {{ formattanpaRp(totalPendapatan().totalpend) }}
                     </td>
                     <td class="text-right q-pl-sm q-pr-sm">
-                      <div> {{ formattanpaRp(store.realisasipends?.totalSebelumnya) }} </div>
+                      {{ formattanpaRp(totalPendapatan().totalsblm) }}
                     </td>
                     <td class="text-right q-pl-sm q-pr-sm">
-                      <div> {{ formattanpaRp(store.realisasipends?.totalSekarang) }} </div>
+                      {{ formattanpaRp(totalPendapatan().totalskg) }}
                     </td>
                     <td class="text-right q-pl-sm q-pr-sm">
-                      <div>{{ formattanpaRp(store.realisasipends?.totalRealisasi) }}</div>
+                      {{ formattanpaRp(totalPendapatan().totalsemua) }}
                     </td>
                     <td class="text-right q-pl-sm q-pr-sm">
-                      <div> {{ formattanpaRp(store.realisasipends?.selisih) }} </div>
+                      {{ formattanpaRp(totalPendapatan().totalselisih) }}
                     </td>
                     <td class="text-right q-pl-sm q-pr-sm">
-                      <div> {{ formattanpaRp(store.realisasipends?.persen) }} </div>
+                      {{ formattanpaRp(totalPendapatan().totalpersen) }}
                     </td>
                   </tr>
                   <tr v-for="item in store.items" :key="item">
@@ -381,7 +371,7 @@ import { onMounted, ref } from 'vue'
 // import { ref } from 'vue'
 const store = useLaporanLraLaprealisasianggaranStore()
 
-store.realisasiPendapatan()
+// store.realisasiPendapatan()
 // store.getDataPendapatan()
 onMounted(() => {
   store.getDataBidang()
@@ -419,10 +409,26 @@ const printObj = {
     console.log('closePrint')
   }
 }
+function totalPendapatan() {
+  const totalpend = store.pendapatans.map((x) => x.pagupend)[0]
+  const totalsblm = store.pendapatans.map((x) => x.nilaisblm)[0]
+  const totalskg = store.pendapatans.map((x) => x.nilaiskg)[0]
+  const totalsemua = store.pendapatans.map((x) => x.nilaisemua)[0]
+  const totalselisih = store.pendapatans.map((x) => x.selisih)[0]
+  const totalpersen = store.pendapatans.map((x) => x.persen)[0]
+  return {
+    totalpend,
+    totalsblm,
+    totalskg,
+    totalsemua,
+    totalselisih,
+    totalpersen
+  }
+}
 function hitungPagu() {
   const saldo = store.items
   const PaguBelanja = saldo[0]?.totalPagu
-  const PaguPendapatan = store.realisasipends?.totalPaguPendapatan
+  const PaguPendapatan = totalPendapatan().totalpend
   const pembiayaan = store.realisasiPembiayaans?.totalPaguPembiayaan
   const NilaiPagu = PaguPendapatan - PaguBelanja
   const silpa = NilaiPagu + pembiayaan
@@ -435,7 +441,7 @@ function hitungPagu() {
 function hitungSebelumnya() {
   const saldo = store.items
   const PaguBelanja = saldo[0]?.totalRealisasiSebelumnya
-  const PaguPendapatan = store.realisasipends?.totalSebelumnya
+  const PaguPendapatan = totalPendapatan().totalsblm
   const pembiayaan = store.realisasiPembiayaans?.totalSebelumnya
   const NilaiPagu = PaguPendapatan - PaguBelanja
   const silpa = NilaiPagu + pembiayaan
@@ -448,7 +454,7 @@ function hitungSebelumnya() {
 function hitungSekarang() {
   const saldo = store.items
   const PaguBelanja = saldo[0]?.totalRealisasi
-  const PaguPendapatan = store.realisasipends?.totalSekarang
+  const PaguPendapatan = totalPendapatan().totalskg
   const pembiayaan = store.realisasiPembiayaans?.totalSekarang
   const NilaiPagu = PaguPendapatan - PaguBelanja
   const silpa = NilaiPagu + pembiayaan
@@ -461,7 +467,7 @@ function hitungSekarang() {
 function hitungTotalRealisasi() {
   const saldo = store.items
   const PaguBelanja = saldo[0]?.RealisasiSemua
-  const PaguPendapatan = store.realisasipends?.totalRealisasi
+  const PaguPendapatan = totalPendapatan().totalsemua
   const pembiayaan = store.realisasiPembiayaans?.totalRealisasi
   const NilaiPagu = PaguPendapatan - PaguBelanja
   const silpa = NilaiPagu + pembiayaan
@@ -474,7 +480,7 @@ function hitungTotalRealisasi() {
 function hitungSelisih() {
   const saldo = store.items
   const PaguBelanja = saldo[0]?.selisih
-  const PaguPendapatan = store.realisasipends?.selisih
+  const PaguPendapatan = totalPendapatan().totalselisih
   const pembiayaan = store.realisasiPembiayaans?.selisih
   const NilaiPagu = PaguPendapatan - PaguBelanja
   const silpa = NilaiPagu + pembiayaan
@@ -487,7 +493,7 @@ function hitungSelisih() {
 function HitungPersen() {
   const saldo = store.items
   const PaguBelanja = parseFloat(saldo[0]?.persen)
-  const PaguPendapatan = parseFloat(store.realisasipends?.persen)
+  const PaguPendapatan = parseFloat(totalPendapatan().totalpersen)
   const pembiayaan = parseFloat(store.realisasiPembiayaans?.persen)
   const NilaiPagu = parseFloat(PaguPendapatan - PaguBelanja).toFixed(2)
   const silpa = parseFloat(NilaiPagu + pembiayaan).toFixed(2)
@@ -517,7 +523,6 @@ table {
 }
 
 thead th {
-  background: #ffed86;
   height: 50px;
   border-collapse: collapse;
   border-radius: 6px;
