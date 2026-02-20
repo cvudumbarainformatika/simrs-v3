@@ -32,7 +32,7 @@ export const useLaporanLraLaprealisasianggaranStore = defineStore('laporan_reali
     },
     reqlevels: null,
     realisasibelanja: [],
-    // pendapatans: [],
+    pendapatans: [],
     nilaipends: [],
     realisasipends: [],
     mapbidangptk: [],
@@ -45,7 +45,14 @@ export const useLaporanLraLaprealisasianggaranStore = defineStore('laporan_reali
     pembiayaans: [],
     realisasiPembiayaans: [],
     paguPembiayaans: [],
+
+    //PENDAPATAN
     pagupendapatans: [],
+    datapendapatans: [],
+    datapendpsblm: [],
+    datareklas: [],
+    datareklas_sblm: [],
+
     realpendapatans: [],
     kurangiKASs: [],
     level: [
@@ -158,16 +165,21 @@ export const useLaporanLraLaprealisasianggaranStore = defineStore('laporan_reali
 
             this.realisasibelanja = resp.data?.belanja
             this.realpendapatans = resp.data?.realisasipendapatan
-            this.pagupendapatans = resp.data?.nilaipendapatan
+            // this.pagupendapatans = resp.data?.nilaipendapatan
+            this.pagupendapatans = resp.data.pagupendapatan
+            this.datapendapatans = resp.data.pendapatan
+            this.datapendpsblm = resp.data.pendapatansblm
+            this.datareklas = resp.data.datareklas
+            this.datareklas_sblm = resp.data.datareklas_sblm
             // this.realisasiPembiayaans = resp.data?.silpa
             this.paguPembiayaans = resp.data?.silpa
             this.kurangiKASs = resp.data?.kurangikaskecil
             // this.dataitems = resp.data
             this.paguAnggaran()
             this.mapRekening()
-            this.mapPendapatan(resp.data?.pendapatan)
-            this.nilaiPendapatan()
-            this.realisasiPendapatan()
+            this.mapPendapatan()
+            // this.nilaiPendapatan()
+            // this.realisasiPendapatan()
             this.rekPembiayaan(resp.data?.pembiayaan)
             this.realisasiPembiayaan()
             // this.paguPembiayaan()
@@ -182,70 +194,257 @@ export const useLaporanLraLaprealisasianggaranStore = defineStore('laporan_reali
       })
     },
 
-    mapPendapatan(val) {
-      this.pendapatans = val
+    mapPendapatan() {
+      const pendsblm = this.datapendpsblm
+      const pendapatan = this.datapendapatans
+      const pagupendapatan = this.pagupendapatans
+      const datareklas = this.datareklas
+      const datareklas_sblm = this.datareklas_sblm
+      const kode6 = []
+      const kode5 = []
+      const kode4 = []
+      const kode3 = []
+      const kode2 = []
+      const kode1 = []
+
+      const setkod = pagupendapatan.map((x) => x.kode6)
+      const unikset = setkod?.length ? [...new Set(setkod)] : []
+      for (let i = 0; i < unikset?.length; i++) {
+        const el = unikset[i];
+        const totalpagu = pagupendapatan.filter((x) => x.kode6 === el).reduce((a, b) => parseFloat(a) + parseFloat(b.pagupendapatan), 0)
+
+        const nilaiskg = pendapatan.filter((x) => x.kode6 === el).reduce((a, b) => parseFloat(a) + parseFloat(b.subtotal), 0)
+        const penyesuaiskg = datareklas.filter((x) => x.kode6 === el).map((x) => parseFloat(x.totalpenyesuaian))
+        const totalpeny = penyesuaiskg.reduce((x, y) => parseFloat(x) + parseFloat(y), 0).toFixed(2)
+        const totalnilaiskg = (parseFloat(nilaiskg) + parseFloat(totalpeny)).toFixed(2)
+
+        const nilaisblm = pendsblm.filter((x) => x.kode6 === el).map((x) => parseFloat(x.pendpsebelumnya)).reduce((a, b) => parseFloat(a) + parseFloat(b), 0)
+        const penyesblm = datareklas_sblm.filter((x) => x.kode6 === el).map((x) => parseFloat(x.totalpenyesuaian))
+        const totalpenysblm = penyesblm.reduce((x, y) => parseFloat(x) + parseFloat(y), 0).toFixed(2)
+        const totalnilaisblm = (isNaN(parseFloat(nilaisblm) + parseFloat(totalpenysblm)) ? parseFloat(0) : parseFloat(nilaisblm) + parseFloat(totalpenysblm)).toFixed(2)
+        // console.log('penyesuaian', totalpeny)
+        // console.log('penyesblm', totalpenysblm)
+        const obj6 = {
+          kode: pagupendapatan.filter((x) => x.kode6 === el)[0].kode6,
+          uraian: pagupendapatan.filter((x) => x.kode6 === el)[0].uraian,
+          pagupend: parseFloat(totalpagu),
+          nilaiskg: parseFloat(totalnilaiskg),
+          nilaisblm: parseFloat(totalnilaisblm),
+          nilaisemua: parseFloat(totalnilaiskg) + parseFloat(totalnilaisblm),
+          selisih: parseFloat(totalpagu) - (parseFloat(totalnilaiskg) + parseFloat(totalnilaisblm)),
+          persen: (((parseFloat(totalnilaiskg) + parseFloat(totalnilaisblm)) / parseFloat(totalpagu)) * 100).toFixed(2),
+        }
+        kode6.push(obj6)
+      }
+
+      const setkod5 = pagupendapatan.map((x) => x.kode5)
+      const unikset5 = setkod5?.length ? [...new Set(setkod5)] : []
+      for (let i = 0; i < unikset5?.length; i++) {
+        const el = unikset5[i];
+        const totalpagu = pagupendapatan.filter((x) => x.kode5 === el).reduce((a, b) => parseFloat(a) + parseFloat(b.pagupendapatan), 0)
+
+        const nilaiskg = pendapatan.filter((x) => x.kode5 === el).reduce((a, b) => parseFloat(a) + parseFloat(b.subtotal), 0)
+        const penyesuaiskg = datareklas.filter((x) => x.kode5 === el).map((x) => parseFloat(x.totalpenyesuaian))
+        const totalpeny = penyesuaiskg.reduce((x, y) => parseFloat(x) + parseFloat(y), 0).toFixed(2)
+        const totalnilaiskg = (parseFloat(nilaiskg) + parseFloat(totalpeny)).toFixed(2)
+
+        const nilaisblm = pendsblm.filter((x) => x.kode5 === el).map((x) => parseFloat(x.pendpsebelumnya)).reduce((a, b) => parseFloat(a) + parseFloat(b), 0)
+        const penyesblm = datareklas_sblm.filter((x) => x.kode5 === el).map((x) => parseFloat(x.totalpenyesuaian))
+        const totalpenysblm = penyesblm.reduce((x, y) => parseFloat(x) + parseFloat(y), 0).toFixed(2)
+        const totalnilaisblm = (isNaN(parseFloat(nilaisblm) + parseFloat(totalpenysblm)) ? parseFloat(0) : parseFloat(nilaisblm) + parseFloat(totalpenysblm)).toFixed(2)
+        const obj5 = {
+          kode: pagupendapatan.filter((x) => x.kode5 === el)[0].kode5,
+          uraian: pagupendapatan.filter((x) => x.kode5 === el)[0].uraian5,
+          pagupend: parseFloat(totalpagu),
+          nilaiskg: parseFloat(totalnilaiskg),
+          nilaisblm: parseFloat(totalnilaisblm),
+          nilaisemua: parseFloat(totalnilaiskg) + parseFloat(totalnilaisblm),
+          selisih: parseFloat(totalpagu) - (parseFloat(totalnilaiskg) + parseFloat(totalnilaisblm)),
+          persen: (((parseFloat(totalnilaiskg) + parseFloat(totalnilaisblm)) / parseFloat(totalpagu)) * 100).toFixed(2),
+        }
+        kode5.push(obj5)
+      }
+      const setkod4 = pagupendapatan.map((x) => x.kode4)
+      const unikset4 = setkod4?.length ? [...new Set(setkod4)] : []
+      for (let i = 0; i < unikset4?.length; i++) {
+        const el = unikset4[i];
+        const totalpagu = pagupendapatan.filter((x) => x.kode4 === el).reduce((a, b) => parseFloat(a) + parseFloat(b.pagupendapatan), 0)
+
+        const nilaiskg = pendapatan.filter((x) => x.kode4 === el).reduce((a, b) => parseFloat(a) + parseFloat(b.subtotal), 0)
+        const penyesuaiskg = datareklas.filter((x) => x.kode4 === el).map((x) => parseFloat(x.totalpenyesuaian))
+        const totalpeny = penyesuaiskg.reduce((x, y) => parseFloat(x) + parseFloat(y), 0).toFixed(2)
+        const totalnilaiskg = (parseFloat(nilaiskg) + parseFloat(totalpeny)).toFixed(2)
+
+        const nilaisblm = pendsblm.filter((x) => x.kode4 === el).map((x) => parseFloat(x.pendpsebelumnya)).reduce((a, b) => parseFloat(a) + parseFloat(b), 0)
+        const penyesblm = datareklas_sblm.filter((x) => x.kode4 === el).map((x) => parseFloat(x.totalpenyesuaian))
+        const totalpenysblm = penyesblm.reduce((x, y) => parseFloat(x) + parseFloat(y), 0).toFixed(2)
+        const totalnilaisblm = (isNaN(parseFloat(nilaisblm) + parseFloat(totalpenysblm)) ? parseFloat(0) : parseFloat(nilaisblm) + parseFloat(totalpenysblm)).toFixed(2)
+        const obj4 = {
+          kode: pagupendapatan.filter((x) => x.kode4 === el)[0].kode4,
+          uraian: pagupendapatan.filter((x) => x.kode4 === el)[0].uraian4,
+          pagupend: parseFloat(totalpagu),
+          nilaiskg: parseFloat(totalnilaiskg),
+          nilaisblm: parseFloat(totalnilaisblm),
+          nilaisemua: parseFloat(totalnilaiskg) + parseFloat(totalnilaisblm),
+          selisih: parseFloat(totalpagu) - (parseFloat(totalnilaiskg) + parseFloat(totalnilaisblm)),
+          persen: (((parseFloat(totalnilaiskg) + parseFloat(totalnilaisblm)) / parseFloat(totalpagu)) * 100).toFixed(2),
+        }
+        kode4.push(obj4)
+      }
+
+      const setkod3 = pagupendapatan.map((x) => x.kode3)
+      const unikset3 = setkod3?.length ? [...new Set(setkod3)] : []
+      for (let i = 0; i < unikset3?.length; i++) {
+        const el = unikset3[i];
+        const totalpagu = pagupendapatan.filter((x) => x.kode3 === el).reduce((a, b) => parseFloat(a) + parseFloat(b.pagupendapatan), 0)
+
+        const nilaiskg = pendapatan.filter((x) => x.kode3 === el).reduce((a, b) => parseFloat(a) + parseFloat(b.subtotal), 0)
+        const penyesuaiskg = datareklas.filter((x) => x.kode3 === el).map((x) => parseFloat(x.totalpenyesuaian))
+        const totalpeny = penyesuaiskg.reduce((x, y) => parseFloat(x) + parseFloat(y), 0).toFixed(2)
+        const totalnilaiskg = (parseFloat(nilaiskg) + parseFloat(totalpeny)).toFixed(2)
+
+        const nilaisblm = pendsblm.filter((x) => x.kode3 === el).map((x) => parseFloat(x.pendpsebelumnya)).reduce((a, b) => parseFloat(a) + parseFloat(b), 0)
+        const penyesblm = datareklas_sblm.filter((x) => x.kode3 === el).map((x) => parseFloat(x.totalpenyesuaian))
+        const totalpenysblm = penyesblm.reduce((x, y) => parseFloat(x) + parseFloat(y), 0).toFixed(2)
+        const totalnilaisblm = (isNaN(parseFloat(nilaisblm) + parseFloat(totalpenysblm)) ? parseFloat(0) : parseFloat(nilaisblm) + parseFloat(totalpenysblm)).toFixed(2)
+        const obj3 = {
+          kode: pagupendapatan.filter((x) => x.kode3 === el)[0].kode3,
+          uraian: pagupendapatan.filter((x) => x.kode3 === el)[0].uraian3,
+          pagupend: parseFloat(totalpagu),
+          nilaiskg: parseFloat(totalnilaiskg),
+          nilaisblm: parseFloat(totalnilaisblm),
+          nilaisemua: parseFloat(totalnilaiskg) + parseFloat(totalnilaisblm),
+          selisih: parseFloat(totalpagu) - (parseFloat(totalnilaiskg) + parseFloat(totalnilaisblm)),
+          persen: (((parseFloat(totalnilaiskg) + parseFloat(totalnilaisblm)) / parseFloat(totalpagu)) * 100).toFixed(2),
+        }
+        kode3.push(obj3)
+      }
+
+      const setkod2 = pagupendapatan.map((x) => x.kode2)
+      const unikset2 = setkod2?.length ? [...new Set(setkod2)] : []
+      for (let i = 0; i < unikset2?.length; i++) {
+        const el = unikset2[i];
+        const totalpagu = pagupendapatan.filter((x) => x.kode2 === el).reduce((a, b) => parseFloat(a) + parseFloat(b.pagupendapatan), 0)
+
+        const nilaiskg = pendapatan.filter((x) => x.kode2 === el).reduce((a, b) => parseFloat(a) + parseFloat(b.subtotal), 0)
+        const penyesuaiskg = datareklas.filter((x) => x.kode2 === el).map((x) => parseFloat(x.totalpenyesuaian))
+        const totalpeny = penyesuaiskg.reduce((x, y) => parseFloat(x) + parseFloat(y), 0).toFixed(2)
+        const totalnilaiskg = (parseFloat(nilaiskg) + parseFloat(totalpeny)).toFixed(2)
+
+        const nilaisblm = pendsblm.filter((x) => x.kode2 === el).map((x) => parseFloat(x.pendpsebelumnya)).reduce((a, b) => parseFloat(a) + parseFloat(b), 0)
+        const penyesblm = datareklas_sblm.filter((x) => x.kode2 === el).map((x) => parseFloat(x.totalpenyesuaian))
+        const totalpenysblm = penyesblm.reduce((x, y) => parseFloat(x) + parseFloat(y), 0).toFixed(2)
+        const totalnilaisblm = (isNaN(parseFloat(nilaisblm) + parseFloat(totalpenysblm)) ? parseFloat(0) : parseFloat(nilaisblm) + parseFloat(totalpenysblm)).toFixed(2)
+        const obj2 = {
+          kode: pagupendapatan.filter((x) => x.kode2 === el)[0].kode2,
+          uraian: pagupendapatan.filter((x) => x.kode2 === el)[0].uraian2,
+          pagupend: parseFloat(totalpagu),
+          nilaiskg: parseFloat(totalnilaiskg),
+          nilaisblm: parseFloat(totalnilaisblm),
+          nilaisemua: parseFloat(totalnilaiskg) + parseFloat(totalnilaisblm),
+          selisih: parseFloat(totalpagu) - (parseFloat(totalnilaiskg) + parseFloat(totalnilaisblm)),
+          persen: (((parseFloat(totalnilaiskg) + parseFloat(totalnilaisblm)) / parseFloat(totalpagu)) * 100).toFixed(2),
+        }
+        kode2.push(obj2)
+      }
+
+
+      const setkod1 = pagupendapatan.map((x) => x.kode1)
+      const unikset1 = setkod1?.length ? [...new Set(setkod1)] : []
+      for (let i = 0; i < unikset1?.length; i++) {
+        const el = unikset1[i];
+        const totalpagu = pagupendapatan.filter((x) => x.kode1 === el).reduce((a, b) => parseFloat(a) + parseFloat(b.pagupendapatan), 0)
+
+        const nilaiskg = pendapatan.filter((x) => x.kode1 === el).reduce((a, b) => parseFloat(a) + parseFloat(b.subtotal), 0)
+        const penyesuaiskg = datareklas.filter((x) => x.kode1 === el).map((x) => parseFloat(x.totalpenyesuaian))
+        const totalpeny = penyesuaiskg.reduce((x, y) => parseFloat(x) + parseFloat(y), 0).toFixed(2)
+        const totalnilaiskg = (parseFloat(nilaiskg) + parseFloat(totalpeny)).toFixed(2)
+
+        const nilaisblm = pendsblm.filter((x) => x.kode1 === el).map((x) => parseFloat(x.pendpsebelumnya)).reduce((a, b) => parseFloat(a) + parseFloat(b), 0)
+        const penyesblm = datareklas_sblm.filter((x) => x.kode1 === el).map((x) => parseFloat(x.totalpenyesuaian))
+        const totalpenysblm = penyesblm.reduce((x, y) => parseFloat(x) + parseFloat(y), 0).toFixed(2)
+        const totalnilaisblm = (isNaN(parseFloat(nilaisblm) + parseFloat(totalpenysblm)) ? parseFloat(0) : parseFloat(nilaisblm) + parseFloat(totalpenysblm)).toFixed(2)
+        const obj1 = {
+          kode: pagupendapatan.filter((x) => x.kode1 === el)[0].kode1,
+          uraian: pagupendapatan.filter((x) => x.kode1 === el)[0].uraian1,
+          pagupend: parseFloat(totalpagu),
+          nilaiskg: parseFloat(totalnilaiskg),
+          nilaisblm: parseFloat(totalnilaisblm),
+          nilaisemua: parseFloat(totalnilaiskg) + parseFloat(totalnilaisblm),
+          selisih: parseFloat(totalpagu) - (parseFloat(totalnilaiskg) + parseFloat(totalnilaisblm)),
+          persen: (((parseFloat(totalnilaiskg) + parseFloat(totalnilaisblm)) / parseFloat(totalpagu)) * 100).toFixed(2),
+        }
+        kode1.push(obj1)
+      }
+      kode6.push(...kode5, ...kode4, ...kode3, ...kode2, ...kode1)
+      const sortpend6 = (kode6) =>
+        kode6.sort(({ kode: a }, { kode: b }) =>
+          a < b ? -1 : a > b ? 1 : 0
+        )
+      const pendapatan6 = sortpend6(kode6)
+      this.pendapatans = pendapatan6
     },
 
     // NILAI PAGU PENDAPATAN
-    nilaiPendapatan(val) {
-      const real = this.pagupendapatans?.map((x) => parseFloat(x.nilai))
-      // console.log('datapendapatanmmm', real)
-      const total = {
-        totalPaguPendapatan: real?.reduce((a, b) => a + b, 0)
-      }
+    // nilaiPendapatan(val) {
+    //   const real = this.pagupendapatans?.map((x) => parseFloat(x.nilai))
+    //   // console.log('datapendapatanmmm', real)
+    //   const total = {
+    //     totalPaguPendapatan: real?.reduce((a, b) => a + b, 0)
+    //   }
 
-      this.nilaipends = total
-      // console.log('anggaran', this.nilaipends)
-      // for (let i = 0; i < val?.length; i++) {
-      //   val.nilaipends =
-      //     val?.map((x) => parseInt(x.nilai)).reduce((a, b) => a + b, 0)
+    //   this.nilaipends = total
+    //   // console.log('anggaran', this.nilaipends)
+    //   // for (let i = 0; i < val?.length; i++) {
+    //   //   val.nilaipends =
+    //   //     val?.map((x) => parseInt(x.nilai)).reduce((a, b) => a + b, 0)
 
-      //   console.log('nilai', val.nilaipends)
+    //   //   console.log('nilai', val.nilaipends)
 
-      //   this.nilaipends.push(val.nilaipends)
-      // }
-    },
+    //   //   this.nilaipends.push(val.nilaipends)
+    //   // }
+    // },
 
     // NILAI REALISASI PENDAPATAN
-    realisasiPendapatan(val) {
-      const kasSebelumnya = this.kurangiKASs?.filter((x) => {
-        const tgl = new Date(x?.tanggalpengeluaran).getTime()
-        return tgl < new Date(this.params.tgl).getTime()
-      }).map((x) => parseFloat(x.nominal))
+    // realisasiPendapatan(val) {
+    //   const kasSebelumnya = this.kurangiKASs?.filter((x) => {
+    //     const tgl = new Date(x?.tanggalpengeluaran).getTime()
+    //     return tgl < new Date(this.params.tgl).getTime()
+    //   }).map((x) => parseFloat(x.nominal))
 
-      const kasSekarang = this.kurangiKASs?.filter((x) => {
-        const tgl = new Date(x?.tanggalpengeluaran).getTime()
-        return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
-      }).map((x) => parseFloat(x.nominal))
+    //   const kasSekarang = this.kurangiKASs?.filter((x) => {
+    //     const tgl = new Date(x?.tanggalpengeluaran).getTime()
+    //     return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
+    //   }).map((x) => parseFloat(x.nominal))
 
-      const realSebelumnya = this.realpendapatans?.filter((x) => {
-        const tgl = new Date(x?.tgltrans).getTime()
-        return tgl < new Date(this.params.tgl).getTime()
-      }).map((x) => parseFloat(x.nilai))
+    //   const realSebelumnya = this.realpendapatans?.filter((x) => {
+    //     const tgl = new Date(x?.tgltrans).getTime()
+    //     return tgl < new Date(this.params.tgl).getTime()
+    //   }).map((x) => parseFloat(x.nilai))
 
-      const real = this.realpendapatans?.filter((x) => {
-        const tgl = new Date(x?.tgltrans).getTime()
-        return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
-      }).map((x) => parseFloat(x.nilai))
+    //   const real = this.realpendapatans?.filter((x) => {
+    //     const tgl = new Date(x?.tgltrans).getTime()
+    //     return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
+    //   }).map((x) => parseFloat(x.nilai))
 
-      const totalPagu = this.nilaipends?.totalPaguPendapatan
+    //   const totalPagu = this.nilaipends?.totalPaguPendapatan
 
-      const total = {
-        totalPaguPendapatan: totalPagu,
-        totalSekarang: real?.reduce((a, b) => a + b, 0) - kasSekarang?.reduce((a, b) => a + b, 0),
-        totalSebelumnya: realSebelumnya?.reduce((a, b) => a + b, 0) - kasSebelumnya?.reduce((a, b) => a + b, 0),
-        totalRealisasi: (real?.reduce((a, b) => a + b, 0) + realSebelumnya?.reduce((a, b) => a + b, 0)) - (kasSekarang?.reduce((a, b) => a + b, 0) + kasSebelumnya?.reduce((a, b) => a + b, 0)),
-        selisih: totalPagu - ((realSebelumnya?.reduce((a, b) => a + b, 0) + real?.reduce((a, b) => a + b, 0)) - (kasSekarang?.reduce((a, b) => a + b, 0) + kasSebelumnya?.reduce((a, b) => a + b, 0))),
-        persen: (((((realSebelumnya?.reduce((a, b) => a + b, 0) + real?.reduce((a, b) => a + b, 0)) - (kasSekarang?.reduce((a, b) => a + b, 0) + kasSebelumnya?.reduce((a, b) => a + b, 0)))) / parseFloat(totalPagu)) * 100).toFixed(2)
-      }
+    //   const total = {
+    //     totalPaguPendapatan: totalPagu,
+    //     totalSekarang: real?.reduce((a, b) => a + b, 0) - kasSekarang?.reduce((a, b) => a + b, 0),
+    //     totalSebelumnya: realSebelumnya?.reduce((a, b) => a + b, 0) - kasSebelumnya?.reduce((a, b) => a + b, 0),
+    //     totalRealisasi: (real?.reduce((a, b) => a + b, 0) + realSebelumnya?.reduce((a, b) => a + b, 0)) - (kasSekarang?.reduce((a, b) => a + b, 0) + kasSebelumnya?.reduce((a, b) => a + b, 0)),
+    //     selisih: totalPagu - ((realSebelumnya?.reduce((a, b) => a + b, 0) + real?.reduce((a, b) => a + b, 0)) - (kasSekarang?.reduce((a, b) => a + b, 0) + kasSebelumnya?.reduce((a, b) => a + b, 0))),
+    //     persen: (((((realSebelumnya?.reduce((a, b) => a + b, 0) + real?.reduce((a, b) => a + b, 0)) - (kasSekarang?.reduce((a, b) => a + b, 0) + kasSebelumnya?.reduce((a, b) => a + b, 0)))) / parseFloat(totalPagu)) * 100).toFixed(2)
+    //   }
 
-      this.realisasipends = total
-      // console.log('realisasi', this.realisasipends)
-      // for (let i = 0; i < val?.length; i++) {
-      //   val[i].realpendapatan = val?.map((x) => parseInt(x.nilai)).reduce((a, b) => a + b, 0)
-      //   console.log('real', val[i].realpendapatan)
-      // }
-    },
+    //   this.realisasipends = total
+    //   // console.log('realisasi', this.realisasipends)
+    //   // for (let i = 0; i < val?.length; i++) {
+    //   //   val[i].realpendapatan = val?.map((x) => parseInt(x.nilai)).reduce((a, b) => a + b, 0)
+    //   //   console.log('real', val[i].realpendapatan)
+    //   // }
+    // },
     rekPembiayaan(val) {
       this.pembiayaans = val
     },

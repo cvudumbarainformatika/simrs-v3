@@ -130,6 +130,72 @@ const siasik = {
       name: 'siasik.ls.pencairanls',
       component: () => import('pages/siasik/transaksi/ls/pencairanls/IndexPage.vue')
     },
+    {
+      path: '/siasik/panjar/up',
+      name: 'siasik.panjar.up',
+      component: () => import('pages/siasik/transaksi/panjar/npd_up/IndexPage.vue'),
+      children: [
+        { path: '', name: 'up', redirect: '/siasik/panjar/up/formdata' },
+        {
+          path: '/siasik/panjar/up/formdata',
+          name: 'siasik.panjar.up.formdata',
+          component: () =>
+            import('src/pages/siasik/transaksi/panjar/npd_up/form/IndexPage.vue')
+        },
+        {
+          path: '/siasik/panjar/up/listdata',
+          name: 'siasik.panjar.up.listdata',
+          component: () =>
+            import('src/pages/siasik/transaksi/panjar/npd_up/listdata/IndexPage.vue')
+        },
+
+
+      ]
+    },
+    {
+      path: '/siasik/panjar/verifup',
+      name: 'siasik.panjar.verifup',
+      component: () => import('pages/siasik/transaksi/panjar/verif_npd_up/IndexPage.vue'),
+      children: [
+        { path: '', name: 'verif_up', redirect: '/siasik/panjar/verifup/listbelum' },
+        {
+          path: '/siasik/panjar/verifup/listbelum',
+          name: 'siasik.panjar.verifup.listbelum',
+          component: () =>
+            import('src/pages/siasik/transaksi/panjar/verif_npd_up/listdata/IndexPage.vue')
+        },
+        {
+          path: '/siasik/panjar/verifup/listsudah',
+          name: 'siasik.panjar.verifup.listsudah',
+          component: () =>
+            import('src/pages/siasik/transaksi/panjar/verif_npd_up/listdata_verif/IndexPage.vue')
+        },
+
+
+      ]
+    },
+    {
+      path: '/siasik/panjar/npkup',
+      name: 'siasik.panjar.npkup',
+      component: () => import('pages/siasik/transaksi/panjar/npk_up/IndexPage.vue'),
+      children: [
+        { path: '', name: 'npk_up', redirect: '/siasik/panjar/npkup/listbelum' },
+        {
+          path: '/siasik/panjar/npkup/listbelum',
+          name: 'siasik.panjar.npkup.listbelum',
+          component: () =>
+            import('src/pages/siasik/transaksi/panjar/npk_up/listdata/IndexPage.vue')
+        },
+        {
+          path: '/siasik/panjar/npkup/listsudah',
+          name: 'siasik.panjar.npkup.listsudah',
+          component: () =>
+            import('src/pages/siasik/transaksi/panjar/npk_up/listdata_verif/IndexPage.vue')
+        },
+
+
+      ]
+    },
     // {
     //   path: '/siasik/rencanabelanja',
     //   name: 'siasik.rencanabelanja',
