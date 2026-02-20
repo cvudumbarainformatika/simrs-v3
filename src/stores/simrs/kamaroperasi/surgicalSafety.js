@@ -239,6 +239,8 @@ export const useSurgicalSafetyStore = defineStore('surgical_safety_store', {
     nakes: [],
     formKasa: {},
     masterKasa: [],
+    // instrumen
+    formInstrumen: {},
   }),
   actions: {
     setForm (key, val) {
@@ -482,6 +484,49 @@ export const useSurgicalSafetyStore = defineStore('surgical_safety_store', {
           })
           .catch(() => { this.loading = false })
       })
+
+    },
+
+    setFormInstrumen (key, val) {
+      this.formInstrumen[key] = val
+    },
+    resetFormInstrumen () {
+      const dataAwal = [
+        {
+          noreg: this.pasien.noreg,
+          nota: this.pasien.rs2,
+          norm: this.pasien.norm,
+          nama: 'Instrumen',
+          pakai: 0,
+          awal: 0,
+          tambah: 0,
+          sisa: 0,
+          akhir: 0,
+        },
+        {
+          noreg: this.pasien.noreg,
+          nota: this.pasien.rs2,
+          norm: this.pasien.norm,
+          nama: 'Jarum',
+          pakai: 0,
+          awal: 0,
+          tambah: 0,
+          sisa: 0,
+          akhir: 0,
+        },
+        {
+          noreg: this.pasien.noreg,
+          nota: this.pasien.rs2,
+          norm: this.pasien.norm,
+          nama: 'Permasalahan Pada Instrumen',
+          pakai: 0,
+          awal: 0,
+          tambah: 0,
+          sisa: 0,
+          akhir: 0,
+        },
+      ]
+      this.formInstrumen = this.pasien?.inventaris_Instrumen?.length ? this.pasien?.inventaris_Instrumen : dataAwal
 
     },
   },
