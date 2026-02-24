@@ -41,13 +41,15 @@
       <div class="row">
         <div class="col-auto" style="width: 25%;">Tanggal</div>
         <div class="col-auto" style="width: 5%;">:</div>
-        <div class="col-auto" style="width: 70%;">{{ dateFullFormat(pasien?.manytindakanop[0]?.laporanoperasi?.rs3) }}
+        <div class="col-auto" style="width: 70%;">{{ pasien?.laporanop?.rs3 ? dateFullFormat(pasien?.laporanop?.rs3)
+          : 'belum dibuatkan laporan' }}
         </div>
       </div>
       <div class="row">
         <div class="col-auto" style="width: 25%;">Jam</div>
         <div class="col-auto" style="width: 5%;">:</div>
-        <div class="col-auto" style="width: 70%;">{{ formatJam(pasien?.manytindakanop[0]?.laporanoperasi?.rs3) }}
+        <div class="col-auto" style="width: 70%;">{{ pasien?.laporanop?.rs3 ? formatJam(pasien?.laporanop?.rs3)
+          : 'belum dibuatkan laporan' }}
         </div>
       </div>
       <div class="row no-wrap">
