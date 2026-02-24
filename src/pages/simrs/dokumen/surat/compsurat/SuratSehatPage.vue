@@ -13,6 +13,7 @@
         <q-separator class="q-my-sm"></q-separator>
         <div v-if="store.defaultJenis === 'SRT01'">
           <div class="row q-col-gutter-sm q-mb-sm">
+
             <div class="col-6">
               <app-input v-model="store.form.nomorSurat" label="Nomor Surat" outlined dense disable />
             </div>
@@ -71,6 +72,9 @@
 
         <div v-else-if="store.defaultJenis === 'SRT02'">
           <div class="row q-col-gutter-sm q-mb-sm">
+            <div class="col-12">
+              <q-checkbox v-model="adopsi" label="Keperluan Adopsi" :update:model-value="resetForm()" />
+            </div>
             <div class="col-6">
               <app-input v-model="store.form.nomorSurat" label="Nomor Surat (otomatis)" outlined dense disable />
             </div>
@@ -98,7 +102,18 @@
               <q-option-group v-model="store.form.statusperkawinan" :options="store.kawins" inline
                 :rules="[val => !!val || 'Harap pilih salah satu']" />
             </div>
-
+          </div>
+          <div v-if="store.form.adopsi === true" class="row q-col-gutter-sm q-mb-sm">
+            <div class="col-12">
+              <q-separator class="q-my-xs"></q-separator>
+              <div class="text-weight-bold">Setelah Di lakukan Pemeriksaan Fisik dan Psikologis, Kesimpulan :</div>
+              <div class="col-12">
+                <q-option-group v-model="store.form.hasil" :options="pilihanhasil" inline
+                  :rules="[val => !!val || 'Harap pilih salah satu']" />
+              </div>
+            </div>
+          </div>
+          <div v-else class="row q-col-gutter-sm q-mb-sm">
             <div class="col-12">
               <q-separator class="q-my-xs"></q-separator>
               <div class="text-weight-bold">Psikatopologi</div>
@@ -113,18 +128,16 @@
                 :rules="[val => !!val || 'Harap pilih salah satu']" />
             </div>
 
-
-          </div>
-
-          <q-separator class="q-my-sm"></q-separator>
-
-          <div class="row q-col-gutter-sm q-mb-sm">
             <div class="col-12">
               <app-input v-model="store.form.kecerdasan" label="Kecerdasan" outlined dense />
             </div>
+
+
+            <q-separator class="q-my-xs"></q-separator>
+
           </div>
 
-          <q-separator class="q-my-xs"></q-separator>
+
 
 
         </div>
@@ -241,7 +254,7 @@ import SuratKesehatanJiwaPage from './SuratKesehatanJiwaPage.vue';
 import SuratKeteranganNapza from './SuratKeteranganNapza.vue';
 
 const store = useDokumenSuratSehatStore()
-
+const adopsi = ref(false)
 const props = defineProps({
   pasien: {
     type: Object,
@@ -250,7 +263,19 @@ const props = defineProps({
 })
 
 // console.log('props surat sehat page', props.pasien);
-
+function resetForm() {
+  if (adopsi === true) {
+    store.form.adopsi = 1
+    store.form.psikatopologi = null
+    store.form.kepribadian.forEach(item => {
+      item.nilai = null
+    })
+    store.form.kecerdasan = ''
+  } else {
+    store.form.adopsi = null
+    store.form.hasil = ''
+  }
+}
 
 const suhats = ref('SRT01')
 
@@ -279,6 +304,21 @@ const documents = ref([
   {
     label: 'TIDAK BAIK',
     value: 'TIDAK BAIK'
+  }
+])
+
+const pilihanhasil = ref([
+  {
+    label: 'Tidak Ditemukan tanda-tanda Gangung Jiwa yang nyata',
+    value: 'Tidak Ditemukan tanda-tanda Gangung Jiwa yang nyata'
+  },
+  {
+    label: 'Ditemukan tanda-tanda Gangung Jiwa yang nyata',
+    value: 'Ditemukan tanda-tanda Gangung Jiwa yang nyata'
+  },
+  {
+    label: 'Masih memerlukan Pemeriksaan Kesehatan Jiwa lanjutan dan Observasi tambahan',
+    value: 'Masih memerlukan Pemeriksaan Kesehatan Jiwa lanjutan dan Observasi tambahan'
   }
 ])
 function onSubmit() {
