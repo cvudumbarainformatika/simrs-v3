@@ -17,6 +17,8 @@ export const useDokumenSuratSehatStore = defineStore('dokumen_suratsehat_new', {
       noreg: '',
       norm: '',
       pekerjaan: '',
+      adopsi: false,
+      hasil: '',
 
       // SKJ
       pendidikan: '',
