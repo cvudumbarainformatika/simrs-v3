@@ -5,7 +5,8 @@
       <q-card class="bg-grey-4 text-white">
         <q-bar class="bg-primary text-white">
           <q-space />
-          <q-btn ref="refPrint" v-print="printObj" unelevated color="dark" round size="sm" icon="icon-mat-print">
+          <q-btn v-if="store.hiddenprint === false" ref="refPrint" v-print="printObj" unelevated color="dark" round
+            size="sm" icon="icon-mat-print">
             <q-tooltip class="primary" :offset="[10, 10]">
               Print
             </q-tooltip>
@@ -181,7 +182,7 @@
                 <div class="col-12">
                   Dengan Hasil Pemeriksaan Kesehatan Jiwa pada saat ini :
                 </div>
-                <div class="col-12">
+                <div class="col-12 q-pl-lg">
                   {{ props.data?.hasil }}
                 </div>
                 <div class="col-12">
@@ -211,14 +212,14 @@
                   <div>Psikopatologi</div>
                 </div>
                 <div class="column flex q-ml-md">
-                  <div class="text-weight-bold">{{ props.data?.psikatopologi || '-' }}</div>
+                  <div class="text-weight-bold q-pl-lg">{{ props.data?.psikatopologi || '-' }}</div>
                 </div>
                 <div class="flex q-gutter-sm">
                   <div>2.</div>
                   <div>Kepribadian</div>
                 </div>
                 <div class="column flex q-ml-md">
-                  <div v-for="(item, index) in props.data?.kepribadian" :key="index" class="text-weight-bold">
+                  <div v-for="(item, index) in props.data?.kepribadian" :key="index" class="text-weight-bold q-pl-lg">
                     {{ String.fromCharCode(97 + index) }}. {{ item.form }} : {{ item?.nilai || '-' }}
                   </div>
                 </div>
@@ -228,7 +229,7 @@
                   <div>Kecerdasan</div>
                 </div>
                 <div class="column flex q-ml-md">
-                  <div class="text-weight-bold">{{ props.data?.kecerdasan || '-' }}</div>
+                  <div class="text-weight-bold q-pl-lg">{{ props.data?.kecerdasan || '-' }}</div>
                 </div>
               </div>
 
@@ -295,6 +296,10 @@ const props = defineProps({
     type: Object,
     default: null
   },
+  hiddenprint: {
+    type: Boolean,
+    default: false
+  }
 })
 
 console.log('sasasa', props.data, props.pasien);
@@ -332,14 +337,35 @@ const printObj = {
 .page-a4 {
   width: 794px;
   min-height: 1123px;
-  padding-right: 40px;
-  padding-left: 40px;
-  padding-top: 10px;
+  padding: 40px;
   margin: auto;
   background-color: white;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-  font-family: "Times New Roman", serif;
-  font-size: 14px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 12pt;
   position: relative;
+}
+</style>
+
+<style>
+@media print {
+  body {
+    margin: 0;
+  }
+
+  .page-a4 {
+    width: 210mm;
+    min-height: 297mm;
+    padding: 20mm;
+    margin: 0;
+    box-shadow: none;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 12pt;
+  }
+
+  .page-a4,
+  .page-a4 * {
+    font-family: Arial, Helvetica, sans-serif !important;
+  }
 }
 </style>

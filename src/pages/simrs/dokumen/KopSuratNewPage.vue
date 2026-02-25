@@ -34,7 +34,7 @@
 
 <style scoped>
 .kop-surat {
-  font-family: "Times New Roman", Times, serif;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 /* Judul kop surat (bold, 14pt, uppercase) */

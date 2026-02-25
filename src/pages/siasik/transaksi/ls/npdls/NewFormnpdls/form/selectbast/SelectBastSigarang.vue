@@ -24,7 +24,7 @@
                 <div class="flex q-qutter-sm z-top">
                   <div>
                     <q-input v-model="carisrt.reqs.q" outlined dark color="white" dense placeholder="Cari BAST ..."
-                      debounce="500" style="min-width: 200px;" @keyup.enter="carisrt.goToPage(1)">
+                      debounce="1200" style="min-width: 200px;" @keyup.enter="carisrt.goToPage(1)">
                       <template v-if="carisrt.reqs.q" #append>
                         <q-icon name="icon-mat-close" size="xs" class="cursor-pointer"
                           @click.stop.prevent="clearSearch" />

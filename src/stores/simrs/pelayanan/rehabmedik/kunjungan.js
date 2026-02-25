@@ -26,7 +26,8 @@ export const useKunjunganRehabmediStore = defineStore('kunjungan-rehabmedik-stor
     statuses: ['Semua', 'Terlayani', 'Belum terlayani'],
     isViewList: false,
     pasien: null,
-    bukaLayanan: false
+    bukaLayanan: false,
+    loadingSaveGantiDpjp: false
   }),
   getters: {
     // doubleCount: (state) => state.counter * 2
@@ -101,10 +102,40 @@ export const useKunjunganRehabmediStore = defineStore('kunjungan-rehabmedik-stor
         datax.memodiagnosa = data?.memodiagnosa ?? null
         datax.soap = data?.soap ?? [],
           datax.tindakan = data?.tindakan ?? []
+        datax.datasimpeg = data?.datasimpeg ?? null
       }
 
       console.log('find pasien', findPasien);
 
+    },
+
+    async gantiDpjp(form, pasien) {
+      // console.log('form', form)
+      // console.log('pasien', pasien)
+      this.loadingSaveGantiDpjp = true
+      try {
+        const resp = await api.post('/v1/simrs/rehabmedik/gantidpjp', form)
+        console.log('resp', resp);
+
+        if (resp.status === 200) {
+          const findPasien = this.items.find(x => x?.noreg === pasien?.noreg)
+          console.log('findPasien', findPasien);
+
+          if (findPasien) {
+            const data = findPasien
+            data.datasimpeg = resp?.data?.result?.datasimpeg
+            data.dokter = resp?.data?.result?.datasimpeg?.nama
+            data.kodedokter = resp?.data?.result?.datasimpeg?.kdpegsimrs
+            this.loadingSaveGantiDpjp = false
+          }
+
+          this.loadingSaveGantiDpjp = false
+        }
+        this.loadingSaveGantiDpjp = false
+      }
+      catch (error) {
+        this.loadingSaveGantiDpjp = false
+      }
     },
 
     setPeriode(val) {

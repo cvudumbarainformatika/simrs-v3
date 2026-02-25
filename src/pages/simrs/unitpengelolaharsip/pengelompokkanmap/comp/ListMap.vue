@@ -28,7 +28,7 @@
             <q-card-section class="q-pt-none">
               <div class="row">
                 <div class="col-12 text-weight-bold ellipsis" :title="item.namamap">
-                  Nama Map : {{ item.namamap }}
+                  Nama Berkas : {{ item.namamap }}
                 </div>
                 <div class="col-12" :title="item.keterangan">
                   Tempat : Filing Cabinet {{ item?.kodefelingkabinet }} || Laci : {{ item.laci }}
@@ -40,10 +40,16 @@
                   Tahun : {{ item.tahunMap }}
                 </div>
                 <div class="col-12">
-                  Klasifikasi : {{ item?.keterangan_kode }} ({{ item?.kode_master }})
+                  Klasifikasi : {{ item?.keterangan_kode }} <span class="text-weight-bold"> ({{ item?.kode_master }})
+                  </span>
                 </div>
                 <div class="col-12">
                   Unit Pengolah : {{ item?.unitpengolah?.nama }}
+                </div>
+                <div class="col-12">
+                  Status Berkas : <q-badge outline :color="item?.status_arsip === 'AKTIF' ? 'primary' : 'negative'">
+                    {{ item?.status_arsip }}
+                  </q-badge>
                 </div>
               </div>
             </q-card-section>

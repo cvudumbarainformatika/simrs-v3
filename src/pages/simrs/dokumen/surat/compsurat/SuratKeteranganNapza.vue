@@ -316,7 +316,6 @@ const pemeriksaanLaborat = computed(() => {
   return data
 })
 
-
 const getPemeriksaanLaborat = (kode) => {
   const data = pemeriksaanLaborat.value?.find((item) => item?.rs4 === kode)
   console.log('data', data);
@@ -359,14 +358,35 @@ const printObj = {
 .page-a4 {
   width: 794px;
   min-height: 1123px;
-  padding-right: 40px;
-  padding-left: 40px;
-  padding-top: 10px;
+  padding: 40px;
   margin: auto;
   background-color: white;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-  font-family: "Times New Roman", serif;
-  font-size: 14px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 12pt;
   position: relative;
+}
+</style>
+
+<style>
+@media print {
+  body {
+    margin: 0;
+  }
+
+  .page-a4 {
+    width: 210mm;
+    min-height: 297mm;
+    padding: 20mm;
+    margin: 0;
+    box-shadow: none;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 12pt;
+  }
+
+  .page-a4,
+  .page-a4 * {
+    font-family: Arial, Helvetica, sans-serif !important;
+  }
 }
 </style>

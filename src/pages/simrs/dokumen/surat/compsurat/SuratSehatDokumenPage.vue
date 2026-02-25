@@ -5,7 +5,8 @@
       <q-card class="bg-grey-4 text-white">
         <q-bar class="bg-primary text-white">
           <q-space />
-          <q-btn ref="refPrint" v-print="printObj" unelevated color="dark" round size="sm" icon="icon-mat-print">
+          <q-btn v-if="store.hiddenprint === false" ref="refPrint" v-print="printObj" unelevated color="dark" round
+            size="sm" icon="icon-mat-print">
             <q-tooltip class="primary" :offset="[10, 10]">
               Print
             </q-tooltip>
@@ -414,8 +415,31 @@ const printObj = {
   margin: auto;
   background-color: white;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-  font-family: "Times New Roman", serif;
-  font-size: 14px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 12pt;
   position: relative;
+}
+</style>
+
+<style>
+@media print {
+  body {
+    margin: 0;
+  }
+
+  .page-a4 {
+    width: 210mm;
+    min-height: 297mm;
+    padding: 20mm;
+    margin: 0;
+    box-shadow: none;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 12pt;
+  }
+
+  .page-a4,
+  .page-a4 * {
+    font-family: Arial, Helvetica, sans-serif !important;
+  }
 }
 </style>
