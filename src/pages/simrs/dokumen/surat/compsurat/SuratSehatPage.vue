@@ -103,7 +103,7 @@
                 :rules="[val => !!val || 'Harap pilih salah satu']" />
             </div>
           </div>
-          <div v-if="store.form.adopsi === true" class="row q-col-gutter-sm q-mb-sm">
+          <div v-if="adopsi === true" class="row q-col-gutter-sm q-mb-sm">
             <div class="col-12">
               <q-separator class="q-my-xs"></q-separator>
               <div class="text-weight-bold">Setelah Di lakukan Pemeriksaan Fisik dan Psikologis, Kesimpulan :</div>
@@ -276,7 +276,7 @@ const props = defineProps({
 
 // console.log('props surat sehat page', props.pasien);
 function resetForm() {
-  if (adopsi === true) {
+  if (adopsi.value === true) {
     store.form.adopsi = 1
     store.form.psikatopologi = null
     store.form.kepribadian.forEach(item => {
