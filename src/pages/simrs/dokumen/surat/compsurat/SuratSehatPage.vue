@@ -242,7 +242,7 @@
       <div class="row full-height">
         <div class="col-12 full-height">
           <ListSuratPage :kdsurat="suhats" :pasien="props.pasien" @delete="deleteData" @print="cetakData"
-            @edit="editdata" />
+            @view="viewData" @edit="editdata" />
         </div>
       </div>
     </div>
@@ -384,9 +384,15 @@ function deleteData(item) {
 }
 
 function cetakData(val) {
+
   store.cekpembayaran(props.pasien, val)
   // store.cetakdata = val
   // store.dialog = true
+}
+
+function viewData(item) {
+  store.cetakdata = item
+  store.dialog = true
 }
 
 function editdata(item) {

@@ -10,7 +10,8 @@
       <q-item class="q-my-sm full-width bg-white" clickable v-ripple
         v-for="(item, n) in props.pasien?.suratketerangandokter" :key="n">
         <q-item-section>
-          <q-item-label class="text-subtitle1">{{ item?.nosurat }}</q-item-label>
+          <q-item-label class="text-subtitle1">{{ item?.nosurat }} <q-btn icon="visibility" size="sm" flat
+              @click="() => $emit('view', item)" /></q-item-label>
           <q-item-label caption lines="2">
             Keperluan: {{ item?.untukKeperluan }}
           </q-item-label>
@@ -29,8 +30,8 @@
               :loading="item.cetak" :pasien="props.pasien">
               <q-tooltip class="primary" :offset="[10, 10]">Print</q-tooltip>
             </q-btn> -->
-            <q-btn unelevated color="dark" round size="sm" icon="icon-mat-print" @click="() => $emit('print', item)"
-              :loading="item.cetak" :pasien="props.pasien">
+            <q-btn unelevated color="dark" round size="sm" icon="icon-mat-print"
+              @click="() => $emit('print', item, 'print')" :loading="item.cetak" :pasien="props.pasien">
               <q-tooltip class="primary" :offset="[10, 10]">Print</q-tooltip>
             </q-btn>
             <q-btn unelevated round size="sm" icon="icon-mat-delete" color="dark" :loading="item.loadinghapus"
