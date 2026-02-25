@@ -391,6 +391,8 @@ function cetakData(val) {
 }
 
 function viewData(item) {
+  store.hiddenprint = true
+  console.log('view', store.hiddenprint)
   store.cetakdata = item
   store.dialog = true
 }
