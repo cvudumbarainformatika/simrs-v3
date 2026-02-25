@@ -316,7 +316,6 @@ const pemeriksaanLaborat = computed(() => {
   return data
 })
 
-
 const getPemeriksaanLaborat = (kode) => {
   const data = pemeriksaanLaborat.value?.find((item) => item?.rs4 === kode)
   console.log('data', data);

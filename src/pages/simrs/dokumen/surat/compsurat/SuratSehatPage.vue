@@ -145,6 +145,18 @@
 
         <div v-else-if="store.defaultJenis === 'SRT03'">
           <div class="row q-col-gutter-sm q-mb-sm">
+            <div class="col-12">
+              <q-select v-model="store.form.notalab" :options="optionsNota" label="Pilih Nota Laborat" outlined dense
+                emit-value map-options :rules="[
+                  val => !!val || 'Nota Laborat wajib dipilih'
+                ]">
+                <template v-slot:prepend>
+                  <q-icon name="search" />
+                </template>
+              </q-select>
+            </div>
+          </div>
+          <div class="row q-col-gutter-sm q-mb-sm">
             <div class="col-6">
               <app-input v-model="store.form.nomorSurat" label="Nomor Surat (otomatis)" outlined dense disable />
             </div>
@@ -246,7 +258,7 @@
 
 </template>
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { useDokumenSuratSehatStore } from '../../../../../stores/simrs/dokumen/erm/suratsehat';
 import ListSuratPage from './ListSuratPage.vue'
 import SuratSehatDokumenPage from './SuratSehatDokumenPage.vue';
@@ -276,6 +288,35 @@ function resetForm() {
     store.form.hasil = ''
   }
 }
+
+const optionsNota = computed(() => {
+  const data = props.pasien?.laboratold ?? []
+  const uniqueMap = new Map()
+
+  data.forEach(item => {
+    const nota = item.rs2
+    const pemeriksaanLab = item.pemeriksaanlab ?? {}
+
+    const rs21 = pemeriksaanLab.rs21?.trim()
+    const namaPemeriksaan = rs21 ? rs21 : pemeriksaanLab.rs1
+
+    if (rs21) {
+      if (!uniqueMap.has(nota)) {
+        uniqueMap.set(nota, {
+          label: `${nota} - ${namaPemeriksaan}`,
+          value: nota
+        })
+      }
+    } else {
+      uniqueMap.set(Symbol(), {
+        label: `${nota} - ${namaPemeriksaan}`,
+        value: nota
+      })
+    }
+  })
+
+  return Array.from(uniqueMap.values())
+})
 
 const suhats = ref('SRT01')
 

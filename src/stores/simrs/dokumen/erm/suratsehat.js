@@ -16,6 +16,7 @@ export const useDokumenSuratSehatStore = defineStore('dokumen_suratsehat_new', {
       nomorSurat: '',
       noreg: '',
       norm: '',
+      notalab: '',
       pekerjaan: '',
       adopsi: false,
       hasil: '',
