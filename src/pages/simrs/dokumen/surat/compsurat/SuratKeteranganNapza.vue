@@ -29,19 +29,19 @@
                 Yang bertanda tangan di bawah ini:
               </div>
             </div>
-            <div class="row q-col-gutter-sm f-16">
-              <div class="col-2">
+            <div class="flex q-gutter-sm f-16">
+              <div class="" style="width: 20%">
                 Nama
               </div>
-              <div class="col-1">
+              <div class="">
                 :
               </div>
-              <div class="col-9">
+              <div class="">
                 {{ props.pasien?.dokter }}
               </div>
             </div>
-            <div class="row q-col-gutter-sm f-16">
-              <div class="col-2">
+            <div class="flex q-gutter-sm f-16">
+              <div class="" style="width: 20%">
                 NIP
               </div>
               <div class="col-1">
@@ -51,8 +51,8 @@
                 {{ props.pasien?.datasimpeg?.nip }}
               </div>
             </div>
-            <div class="row q-col-gutter-sm f-16">
-              <div class="col-2">
+            <div class="flex q-gutter-sm f-16">
+              <div class="" style="width: 20%">
                 Jabatan
               </div>
               <div class="col-1">
@@ -62,8 +62,8 @@
                 Dokter Spesialis Kedokteran Jiwa
               </div>
             </div>
-            <div class="row q-col-gutter-sm f-16">
-              <div class="col-2">
+            <div class="flex q-gutter-sm f-16">
+              <div class="" style="width: 20%">
                 Instansi
               </div>
               <div class="col-1">
@@ -315,7 +315,6 @@ const pemeriksaanLaborat = computed(() => {
   // console.log('filt', filt);
   return data
 })
-
 
 const getPemeriksaanLaborat = (kode) => {
   const data = pemeriksaanLaborat.value?.find((item) => item?.rs4 === kode)

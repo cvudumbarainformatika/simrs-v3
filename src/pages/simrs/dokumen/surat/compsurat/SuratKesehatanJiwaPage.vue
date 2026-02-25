@@ -29,8 +29,8 @@
                 Yang bertanda tangan di bawah ini:
               </div>
             </div>
-            <div class="row q-col-gutter-sm f-16">
-              <div class="col-2">
+            <div class="flex q-gutter-sm f-16">
+              <div class="" style="width: 20%">
                 Nama
               </div>
               <div class="col-1">
@@ -40,8 +40,8 @@
                 {{ props.pasien?.dokter }}
               </div>
             </div>
-            <div class="row q-col-gutter-sm f-16">
-              <div class="col-2">
+            <div class="flex q-gutter-sm f-16">
+              <div class="" style="width: 20%">
                 NIP
               </div>
               <div class="col-1">
@@ -51,8 +51,8 @@
                 {{ props.pasien?.datasimpeg?.nip }}
               </div>
             </div>
-            <div class="row q-col-gutter-sm f-16">
-              <div class="col-2">
+            <div class="flex q-gutter-sm f-16">
+              <div class="" style="width: 20%">
                 Jabatan
               </div>
               <div class="col-1">
@@ -62,8 +62,8 @@
                 Dokter Spesialis Kedokteran Jiwa
               </div>
             </div>
-            <div class="row q-col-gutter-sm f-16">
-              <div class="col-2">
+            <div class="flex q-gutter-sm f-16">
+              <div class="" style="width: 20%">
                 Instansi
               </div>
               <div class="col-1">
@@ -176,50 +176,68 @@
                 {{ props.pasien?.alamat }}
               </div>
             </div> -->
-            <div class="row q-col-gutter-sm f-16 q-mt-sm">
-              <div class="col-12">
-                Dengan Hasil Pemeriksaan Kesehatan Jiwa pada saat ini :
+            <div v-if="props.data?.adopsi === '1'">
+              <div class="row q-col-gutter-sm f-16 q-mt-sm">
+                <div class="col-12">
+                  Dengan Hasil Pemeriksaan Kesehatan Jiwa pada saat ini :
+                </div>
+                <div class="col-12">
+                  {{ props.data?.hasil }}
+                </div>
+                <div class="col-12">
+                  Demikian Surat Keterangan Pemeriksaan Kesehatan Jiwa ini dibuat dengan sebenar-benarnya untuk
+                  keperluan
+                  Adopsi <b>{{ props.data?.untukKeperluan }}</b>
+                </div>
               </div>
             </div>
+            <div v-else>
+              <div class="row q-col-gutter-sm f-16 q-mt-sm">
+                <div class="col-12">
+                  Dengan Hasil Pemeriksaan Kesehatan Jiwa pada saat ini :
+                </div>
+              </div>
 
-            <!-- <div class="row q-col-gutter-sm f-16">
+              <!-- <div class="row q-col-gutter-sm f-16">
               <div class="col-12">
                 ---------------------------------------------- {{ props.data?.kesimpulan }}
                 ---------------------------------------------
               </div>
             </div> -->
 
-            <div class="column f-16">
-              <div class="flex q-gutter-sm">
-                <div>1.</div>
-                <div>Psikopatologi</div>
-              </div>
-              <div class="column flex q-ml-md">
-                <div class="text-weight-bold">{{ props.data?.psikatopologi || '-' }}</div>
-              </div>
-              <div class="flex q-gutter-sm">
-                <div>2.</div>
-                <div>Kepribadian</div>
-              </div>
-              <div class="column flex q-ml-md">
-                <div v-for="(item, index) in props.data?.kepribadian" :key="index" class="text-weight-bold">
-                  {{ String.fromCharCode(97 + index) }}. {{ item.form }} : {{ item?.nilai || '-' }}
+              <div class="column f-16">
+                <div class="flex q-gutter-sm">
+                  <div>1.</div>
+                  <div>Psikopatologi</div>
+                </div>
+                <div class="column flex q-ml-md">
+                  <div class="text-weight-bold">{{ props.data?.psikatopologi || '-' }}</div>
+                </div>
+                <div class="flex q-gutter-sm">
+                  <div>2.</div>
+                  <div>Kepribadian</div>
+                </div>
+                <div class="column flex q-ml-md">
+                  <div v-for="(item, index) in props.data?.kepribadian" :key="index" class="text-weight-bold">
+                    {{ String.fromCharCode(97 + index) }}. {{ item.form }} : {{ item?.nilai || '-' }}
+                  </div>
+                </div>
+
+                <div class="flex q-gutter-sm">
+                  <div>3.</div>
+                  <div>Kecerdasan</div>
+                </div>
+                <div class="column flex q-ml-md">
+                  <div class="text-weight-bold">{{ props.data?.kecerdasan || '-' }}</div>
                 </div>
               </div>
 
-              <div class="flex q-gutter-sm">
-                <div>3.</div>
-                <div>Kecerdasan</div>
-              </div>
-              <div class="column flex q-ml-md">
-                <div class="text-weight-bold">{{ props.data?.kecerdasan || '-' }}</div>
-              </div>
-            </div>
-
-            <div class="row q-col-gutter-sm q-mb-lg f-16 q-mt-sm">
-              <div class="col-12">
-                Demikian Surat Keterangan Pemeriksaan Kesehatan Jiwa ini dibuat dengan sebenar-benarnya untuk keperluan
-                Administrasi <b>{{ props.data?.untukKeperluan }}</b>
+              <div class="row q-col-gutter-sm q-mb-lg f-16 q-mt-sm">
+                <div class="col-12">
+                  Demikian Surat Keterangan Pemeriksaan Kesehatan Jiwa ini dibuat dengan sebenar-benarnya untuk
+                  keperluan
+                  Administrasi <b>{{ props.data?.untukKeperluan }}</b>
+                </div>
               </div>
             </div>
 
@@ -279,7 +297,7 @@ const props = defineProps({
   },
 })
 
-// console.log('sasasa', props.data, props.pasien);
+console.log('sasasa', props.data, props.pasien);
 
 const qrUrl = computed(() => {
   // console.log('pasien', props?.pasien)
@@ -314,14 +332,35 @@ const printObj = {
 .page-a4 {
   width: 794px;
   min-height: 1123px;
-  padding-right: 40px;
-  padding-left: 40px;
-  padding-top: 10px;
+  padding: 40px;
   margin: auto;
   background-color: white;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-  font-family: "Times New Roman", serif;
-  font-size: 14px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 12pt;
   position: relative;
+}
+</style>
+
+<style>
+@media print {
+  body {
+    margin: 0;
+  }
+
+  .page-a4 {
+    width: 210mm;
+    min-height: 297mm;
+    padding: 20mm;
+    margin: 0;
+    box-shadow: none;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 12pt;
+  }
+
+  .page-a4,
+  .page-a4 * {
+    font-family: Arial, Helvetica, sans-serif !important;
+  }
 }
 </style>

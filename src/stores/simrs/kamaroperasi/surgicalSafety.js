@@ -233,8 +233,14 @@ export const useSurgicalSafetyStore = defineStore('surgical_safety_store', {
       noreg: null,
       id: null,
     },
-    implant: {},
+    implants: [],
+    implant_seri: null,
+    seri: null,
     nakes: [],
+    formKasa: {},
+    masterKasa: [],
+    // instrumen
+    formInstrumen: {},
   }),
   actions: {
     setForm (key, val) {
@@ -288,8 +294,243 @@ export const useSurgicalSafetyStore = defineStore('surgical_safety_store', {
           })
           .catch(() => { this.loading = false })
       })
-    }
+    },
+    assignImplats (data, implant, seri) {
+      const implantMap = new Map(
+        implant?.map(i => [i.persiapan_operasi_distribusi_id, i]) ?? []
+      )
+      data.forEach(x => {
+        const ada = implantMap.get(x.distribusi_id)
+        if (ada) {
+          // hanya assign field yang dibutuhkan
+          Object.assign(x, {
+            id: ada.id ?? null,
+            seri: ada.seri ?? '',
+            jenis: ada.jenis ?? '',
+            pemakaian: ada.pemakaian
+              ?? ((x.jumlah ?? 0) - (x.jumlah_retur ?? 0)),
+            jumlah_retur: ada.jumlah_retur ?? x.jumlah_retur ?? 0
+          })
+
+          x.simpan = true
+        } else {
+          // kondisi data baru / tidak ada implant
+          x.simpan = false
+          x.id = null
+          x.seri = ''
+          x.jenis = ''
+          x.pemakaian = (x.jumlah ?? 0) - (x.jumlah_retur ?? 0)
+        }
+      })
+      // console.log('implants', data, implant)
+      // data.forEach(x => {
+      //   // console.log('x', x)
+      //   const ada = implant?.find(f => x?.distribusi_id === f?.persiapan_operasi_distribusi_id)
+      //   // console.log('ada', ada, typeof ada)
+
+      //   if (ada && typeof ada == 'object') {
+      //     Object.assign(x, ada)
+      //     x.simpan = true
+      //   } else {
+      //     x.simpan = false
+      //     x.seri = ''
+      //     x.jenis = ''
+      //     x.pemakaian = (x.jumlah ?? 0) - (x.jumlah_retur ?? 0)
+      //   }
+      // })
+    },
+    async getImplants () {
+      this.loading = true
+      const param = {
+        params: {
+          noreg: this.pasien.noreg,
+          nota: this.pasien.rs2
+        }
+      }
+      try {
+        const { data } = await api.get('v1/simrs/penunjang/surgical/get-implant', param)
+        this.implants = data?.data ?? data
+        this.pasien.implant = data?.implant ?? null
+        this.pasien.implant_seri = data?.implant_seri ?? null
+        this.assignImplats(this.implants, this.pasien.implant, this.pasien.implant_seri)
+        // console.log('implants', data, this.implants)
+      }
+      finally {
+        this.loading = false
+      }
+    },
+    async simpanImplants () {
+      this.loading = true
+      const data = this.implants.filter(x => x.simpan)
+      const form = {
+        data,
+        noreg: this.pasien.noreg,
+        nota: this.pasien.rs2
+      }
+      // console.log('simpan', form)
+      try {
+        const resp = await api.post('v1/simrs/penunjang/surgical/simpan-implant', form)
+        // console.log('data', resp)
+
+        notifSuccess(resp)
+        this.getImplants()
+      } finally { this.loading = false }
+    },
+    async simpanGambar () {
+      console.log('simpan gambar', this.seri)
+      const form = new FormData()
+      form.append('file', this.seri)
+      form.append('noreg', this.pasien.noreg)
+      form.append('nota', this.pasien.rs2)
+      this.loading = true
+      try {
+        const resp = await api.post('v1/simrs/penunjang/surgical/simpan-gambar', form)
+        notifSuccess(resp)
+        this.getImplants()
+      } finally {
+        this.loading = false
+        this.seri = null
+      }
+
+
+    },
+    async hapusGambar (file) {
+      const form = {
+        id: file.id,
+      }
+      this.loading = true
+      try {
+        const resp = await api.post('v1/simrs/penunjang/surgical/hapus-gambar', form)
+        // console.log('hapus', resp)
+
+        notifSuccess(resp)
+        this.getImplants()
+      } finally {
+        this.loading = false
+      }
+    },
+    setFormKasa (key, val) {
+      this.formKasa[key] = val
+    },
+    resetFormKasa () {
+      this.formKasa = {
+        noreg: this.pasien.noreg,
+        nota: this.pasien.rs2,
+        norm: this.pasien.norm,
+        kode: '',
+        nama: '',
+        pakai: 0,
+        awal: 0,
+        tambah: 0,
+        sisa: 0,
+        akhir: 0,
+      }
+    },
+    async ambilMasterkasa () {
+      this.loading = true
+      try {
+        const resp = await api.get('v1/simrs/penunjang/surgical/get-master-kasa')
+        this.masterKasa = resp?.data?.data ?? resp?.data
+        // console.log('kasa', resp?.data?.data, this.masterKasa)
+
+      } finally {
+        this.loading = false
+      }
+    },
+    simpanKasa () {
+      this.loading = true
+      return new Promise(resolve => {
+        api.post('v1/simrs/penunjang/surgical/simpan-inventaris-kasa', this.formKasa)
+          .then(resp => {
+            this.loading = false
+            this.injectKasa('baru', resp?.data?.data)
+            this.resetFormKasa()
+            notifSuccess(resp)
+            resolve(resp)
+          })
+          .catch(() => { this.loading = false })
+      })
+    },
+    injectKasa (type, data) {
+      console.log('inject', data)
+      if (data?.id) {
+        console.log('inject ada id')
+        const index = this.pasien.inventaris_kasa.findIndex(x => x.id === data.id)
+        if (type == 'hapus') {
+          this.pasien.inventaris_kasa.splice(index, 1)
+        }
+        else {
+          if (index >= 0) {
+            console.log('inject ada id update')
+            this.pasien.inventaris_kasa[index] = data
+          } else {
+            console.log('inject ada id push')
+            this.pasien.inventaris_kasa.push(data)
+          }
+        }
+      }
+
+    },
+    hapusKasa (val) {
+      console.log('hapus', val)
+      this.loading = true
+      return new Promise(resolve => {
+        api.post('v1/simrs/penunjang/surgical/hapus-inventaris-kasa', val)
+          .then(resp => {
+            this.loading = false
+            this.injectKasa('hapus', resp?.data?.data)
+            notifSuccess(resp)
+            resolve(resp)
+          })
+          .catch(() => { this.loading = false })
+      })
+
+    },
+
+    setFormInstrumen (key, val) {
+      this.formInstrumen[key] = val
+    },
+    resetFormInstrumen () {
+      const dataAwal = [
+        {
+          noreg: this.pasien.noreg,
+          nota: this.pasien.rs2,
+          norm: this.pasien.norm,
+          nama: 'Instrumen',
+          pakai: 0,
+          awal: 0,
+          tambah: 0,
+          sisa: 0,
+          akhir: 0,
+        },
+        {
+          noreg: this.pasien.noreg,
+          nota: this.pasien.rs2,
+          norm: this.pasien.norm,
+          nama: 'Jarum',
+          pakai: 0,
+          awal: 0,
+          tambah: 0,
+          sisa: 0,
+          akhir: 0,
+        },
+        {
+          noreg: this.pasien.noreg,
+          nota: this.pasien.rs2,
+          norm: this.pasien.norm,
+          nama: 'Permasalahan Pada Instrumen',
+          pakai: 0,
+          awal: 0,
+          tambah: 0,
+          sisa: 0,
+          akhir: 0,
+        },
+      ]
+      this.formInstrumen = this.pasien?.inventaris_Instrumen?.length ? this.pasien?.inventaris_Instrumen : dataAwal
+
+    },
   },
+
 })
 if (import.meta.hot) {
   import.meta.hot.accept(acceptHMRUpdate(useSurgicalSafetyStore, import.meta.hot))

@@ -33,7 +33,7 @@ defineProps({
 const hoverred = ref(false)
 
 function goToQr() {
-  router.push({ name: 'login-mode', params: { mode: 'ketiknikpegawai' }, replace: true })
+  router.push({ name: 'login-mode', params: { mode: 'khususit' }, replace: true })
   // location.reload()
 }
 </script>

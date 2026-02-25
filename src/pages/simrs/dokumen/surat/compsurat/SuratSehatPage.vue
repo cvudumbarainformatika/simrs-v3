@@ -13,6 +13,7 @@
         <q-separator class="q-my-sm"></q-separator>
         <div v-if="store.defaultJenis === 'SRT01'">
           <div class="row q-col-gutter-sm q-mb-sm">
+
             <div class="col-6">
               <app-input v-model="store.form.nomorSurat" label="Nomor Surat" outlined dense disable />
             </div>
@@ -71,6 +72,9 @@
 
         <div v-else-if="store.defaultJenis === 'SRT02'">
           <div class="row q-col-gutter-sm q-mb-sm">
+            <div class="col-12">
+              <q-checkbox v-model="adopsi" label="Keperluan Adopsi" :update:model-value="resetForm()" />
+            </div>
             <div class="col-6">
               <app-input v-model="store.form.nomorSurat" label="Nomor Surat (otomatis)" outlined dense disable />
             </div>
@@ -98,7 +102,18 @@
               <q-option-group v-model="store.form.statusperkawinan" :options="store.kawins" inline
                 :rules="[val => !!val || 'Harap pilih salah satu']" />
             </div>
-
+          </div>
+          <div v-if="adopsi === true" class="row q-col-gutter-sm q-mb-sm">
+            <div class="col-12">
+              <q-separator class="q-my-xs"></q-separator>
+              <div class="text-weight-bold">Setelah Di lakukan Pemeriksaan Fisik dan Psikologis, Kesimpulan :</div>
+              <div class="col-12">
+                <q-option-group v-model="store.form.hasil" :options="pilihanhasil" inline
+                  :rules="[val => !!val || 'Harap pilih salah satu']" />
+              </div>
+            </div>
+          </div>
+          <div v-else class="row q-col-gutter-sm q-mb-sm">
             <div class="col-12">
               <q-separator class="q-my-xs"></q-separator>
               <div class="text-weight-bold">Psikatopologi</div>
@@ -113,24 +128,34 @@
                 :rules="[val => !!val || 'Harap pilih salah satu']" />
             </div>
 
-
-          </div>
-
-          <q-separator class="q-my-sm"></q-separator>
-
-          <div class="row q-col-gutter-sm q-mb-sm">
             <div class="col-12">
               <app-input v-model="store.form.kecerdasan" label="Kecerdasan" outlined dense />
             </div>
+
+
+            <q-separator class="q-my-xs"></q-separator>
+
           </div>
 
-          <q-separator class="q-my-xs"></q-separator>
+
 
 
         </div>
 
 
         <div v-else-if="store.defaultJenis === 'SRT03'">
+          <div class="row q-col-gutter-sm q-mb-sm">
+            <div class="col-12">
+              <q-select v-model="store.form.notalab" :options="optionsNota" label="Pilih Nota Laborat" outlined dense
+                emit-value map-options :rules="[
+                  val => !!val || 'Nota Laborat wajib dipilih'
+                ]">
+                <template v-slot:prepend>
+                  <q-icon name="search" />
+                </template>
+              </q-select>
+            </div>
+          </div>
           <div class="row q-col-gutter-sm q-mb-sm">
             <div class="col-6">
               <app-input v-model="store.form.nomorSurat" label="Nomor Surat (otomatis)" outlined dense disable />
@@ -217,7 +242,7 @@
       <div class="row full-height">
         <div class="col-12 full-height">
           <ListSuratPage :kdsurat="suhats" :pasien="props.pasien" @delete="deleteData" @print="cetakData"
-            @edit="editdata" />
+            @view="viewData" @edit="editdata" />
         </div>
       </div>
     </div>
@@ -233,7 +258,7 @@
 
 </template>
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { useDokumenSuratSehatStore } from '../../../../../stores/simrs/dokumen/erm/suratsehat';
 import ListSuratPage from './ListSuratPage.vue'
 import SuratSehatDokumenPage from './SuratSehatDokumenPage.vue';
@@ -241,7 +266,7 @@ import SuratKesehatanJiwaPage from './SuratKesehatanJiwaPage.vue';
 import SuratKeteranganNapza from './SuratKeteranganNapza.vue';
 
 const store = useDokumenSuratSehatStore()
-
+const adopsi = ref(false)
 const props = defineProps({
   pasien: {
     type: Object,
@@ -250,7 +275,48 @@ const props = defineProps({
 })
 
 // console.log('props surat sehat page', props.pasien);
+function resetForm() {
+  if (adopsi.value === true) {
+    store.form.adopsi = 1
+    store.form.psikatopologi = null
+    store.form.kepribadian.forEach(item => {
+      item.nilai = null
+    })
+    store.form.kecerdasan = ''
+  } else {
+    store.form.adopsi = null
+    store.form.hasil = ''
+  }
+}
 
+const optionsNota = computed(() => {
+  const data = props.pasien?.laboratold ?? []
+  const uniqueMap = new Map()
+
+  data.forEach(item => {
+    const nota = item.rs2
+    const pemeriksaanLab = item.pemeriksaanlab ?? {}
+
+    const rs21 = pemeriksaanLab.rs21?.trim()
+    const namaPemeriksaan = rs21 ? rs21 : pemeriksaanLab.rs1
+
+    if (rs21) {
+      if (!uniqueMap.has(nota)) {
+        uniqueMap.set(nota, {
+          label: `${nota} - ${namaPemeriksaan}`,
+          value: nota
+        })
+      }
+    } else {
+      uniqueMap.set(Symbol(), {
+        label: `${nota} - ${namaPemeriksaan}`,
+        value: nota
+      })
+    }
+  })
+
+  return Array.from(uniqueMap.values())
+})
 
 const suhats = ref('SRT01')
 
@@ -281,6 +347,21 @@ const documents = ref([
     value: 'TIDAK BAIK'
   }
 ])
+
+const pilihanhasil = ref([
+  {
+    label: 'Tidak Ditemukan tanda-tanda Gangung Jiwa yang nyata',
+    value: 'Tidak Ditemukan tanda-tanda Gangung Jiwa yang nyata'
+  },
+  {
+    label: 'Ditemukan tanda-tanda Gangung Jiwa yang nyata',
+    value: 'Ditemukan tanda-tanda Gangung Jiwa yang nyata'
+  },
+  {
+    label: 'Masih memerlukan Pemeriksaan Kesehatan Jiwa lanjutan dan Observasi tambahan',
+    value: 'Masih memerlukan Pemeriksaan Kesehatan Jiwa lanjutan dan Observasi tambahan'
+  }
+])
 function onSubmit() {
   // Handle form submission logic here
   store.form.noreg = props.pasien?.noreg
@@ -303,9 +384,15 @@ function deleteData(item) {
 }
 
 function cetakData(val) {
+
   store.cekpembayaran(props.pasien, val)
   // store.cetakdata = val
   // store.dialog = true
+}
+
+function viewData(item) {
+  store.cetakdata = item
+  store.dialog = true
 }
 
 function editdata(item) {

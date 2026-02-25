@@ -16,7 +16,10 @@ export const useDokumenSuratSehatStore = defineStore('dokumen_suratsehat_new', {
       nomorSurat: '',
       noreg: '',
       norm: '',
+      notalab: '',
       pekerjaan: '',
+      adopsi: false,
+      hasil: '',
 
       // SKJ
       pendidikan: '',
@@ -61,7 +64,9 @@ export const useDokumenSuratSehatStore = defineStore('dokumen_suratsehat_new', {
     defaultJenis: 'SRT01',
     kawins: [
       { value: 'Kawin', label: 'Kawin' },
-      { value: 'Belum Kawin', label: 'Belum Kawin' }
+      { value: 'Belum Kawin', label: 'Belum Kawin' },
+      { value: 'Cerai Hidup', label: 'Cerai Hidup' },
+      { value: 'Cerai Mati', label: 'Cerai Mati' }
     ],
 
     psikatopologis: [
