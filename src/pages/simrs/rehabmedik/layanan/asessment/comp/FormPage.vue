@@ -3,7 +3,7 @@
     <q-form class="fit column" @submit="onSubmit" @reset="onReset">
       <q-card-section class="col-auto">
         <div class="column">
-          <div class="text-bold">Form Asessment Dokter</div>
+          <div class="text-bold"> {{ isDokter ? 'Form Asessment Dokter' : 'Form Asessment Fisioterapis' }}</div>
         </div>
       </q-card-section>
       <q-separator></q-separator>
@@ -17,7 +17,7 @@
               :lazy-rules="true" :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" hide-bottom-space />
           </div>
         </div>
-        <q-separator class="q-my-xs"></q-separator>
+        <q-separator class="q-my-sm"></q-separator>
         <div class="row">
           <div class="col-2">
             <div class="text-weight-bold">Objective</div>
@@ -27,7 +27,7 @@
               hide-bottom-space />
           </div>
         </div>
-        <q-separator class="q-my-xs"></q-separator>
+        <q-separator class="q-my-sm"></q-separator>
         <div class="row">
           <div class="col-2">
             <div class="text-weight-bold">Assesment</div>
@@ -37,58 +37,76 @@
               hide-bottom-space />
           </div>
         </div>
-        <q-separator class="q-my-xs"></q-separator>
-        <div class="row">
-          <div class="text-weight-bold">Planning</div>
+        <q-separator class="q-my-sm"></q-separator>
+        <div v-if="isDokter">
+          <div class="row">
+            <div class="text-weight-bold">Planning</div>
+          </div>
+          <q-separator class="q-my-xs"></q-separator>
+          <div class="row">
+            <div class="col-3">
+              <div class="q-pl-sm">a. Goal Of Threatment</div>
+            </div>
+            <div class="col-9">
+              <q-input v-model="form.goal" outlined autogrow stack-label standout="bg-yellow-3"
+                label="Goal Of Threatment" hide-bottom-space />
+            </div>
+          </div>
+          <q-separator class="q-my-xs"></q-separator>
+          <div class="row">
+            <div class="col-3">
+              <div class="q-pl-sm">b. Tindakan Program Rehabmedik</div>
+            </div>
+            <div class="col-9">
+              <q-input v-model="form.tindakan" outlined autogrow stack-label standout="bg-yellow-3"
+                label="Tindakan Program Rehabmedik" hide-bottom-space />
+            </div>
+          </div>
+          <q-separator class="q-my-xs"></q-separator>
+          <div class="row">
+            <div class="col-3">
+              <div class="q-pl-sm">c. Edukasi</div>
+            </div>
+            <div class="col-9">
+              <q-input v-model="form.edukasi" outlined autogrow stack-label standout="bg-yellow-3" label="Edukasi"
+                hide-bottom-space />
+            </div>
+          </div>
+          <q-separator class="q-my-xs"></q-separator>
+          <div class="row">
+            <div class="col-3">
+              <div class="q-pl-sm">d. Frekuensi Kunjungan</div>
+            </div>
+            <div class="col-9">
+              <!-- <q-input v-model="form.frekuensi" outlined autogrow stack-label standout="bg-yellow-3" label="Frekuensi"
+              hide-bottom-space /> -->
+              <div>
+                <q-select v-model="form.frekuensi" :options="store.frekuensis" dense map-options emit-value
+                  option-label="nama" option-value="nama" outlined standout="bg-yellow-3" label="Frekuensi"
+                  hide-bottom-space />
+              </div>
+            </div>
+          </div>
+          <q-separator class="q-my-xs"></q-separator>
+          <div class="row">
+            <div class="col-3">
+              <div class="text-weight-bold">Rencana Tindak Lanjut</div>
+            </div>
+            <div class="col-9">
+              <q-input v-model="form.rencana" outlined autogrow stack-label standout="bg-yellow-3"
+                label="Rencana Tindak Lanjut" hide-bottom-space />
+            </div>
+          </div>
         </div>
-        <q-separator class="q-my-xs"></q-separator>
-        <div class="row">
-          <div class="col-3">
-            <div class="q-pl-sm">a. Goal Of Threatment</div>
-          </div>
-          <div class="col-9">
-            <q-input v-model="form.goal" outlined autogrow stack-label standout="bg-yellow-3" label="Goal Of Threatment"
-              hide-bottom-space />
-          </div>
-        </div>
-        <q-separator class="q-my-xs"></q-separator>
-        <div class="row">
-          <div class="col-3">
-            <div class="q-pl-sm">b. Tindakan Program Rehabmedik</div>
-          </div>
-          <div class="col-9">
-            <q-input v-model="form.tindakan" outlined autogrow stack-label standout="bg-yellow-3"
-              label="Tindakan Program Rehabmedik" hide-bottom-space />
-          </div>
-        </div>
-        <q-separator class="q-my-xs"></q-separator>
-        <div class="row">
-          <div class="col-3">
-            <div class="q-pl-sm">c. Edukasi</div>
-          </div>
-          <div class="col-9">
-            <q-input v-model="form.edukasi" outlined autogrow stack-label standout="bg-yellow-3" label="Edukasi"
-              hide-bottom-space />
-          </div>
-        </div>
-        <q-separator class="q-my-xs"></q-separator>
-        <div class="row">
-          <div class="col-3">
-            <div class="q-pl-sm">d. Frekuensi Kunjungan</div>
-          </div>
-          <div class="col-9">
-            <q-input v-model="form.frekuensi" outlined autogrow stack-label standout="bg-yellow-3" label="Frekuensi"
-              hide-bottom-space />
-          </div>
-        </div>
-        <q-separator class="q-my-xs"></q-separator>
-        <div class="row">
-          <div class="col-3">
-            <div class="text-weight-bold">Rencana Tindak Lanjut</div>
-          </div>
-          <div class="col-9">
-            <q-input v-model="form.rencana" outlined autogrow stack-label standout="bg-yellow-3"
-              label="Rencana Tindak Lanjut" hide-bottom-space />
+        <div v-else>
+          <div class="row">
+            <div class="col-2">
+              <div class="text-weight-bold">Procedure</div>
+            </div>
+            <div class="col-10">
+              <q-input v-model="form.procedure" outlined autogrow stack-label standout="bg-yellow-3" label="Procedure"
+                hide-bottom-space />
+            </div>
           </div>
         </div>
       </q-card-section>
@@ -122,6 +140,10 @@ const props = defineProps({
   storeKunjungan: {
     type: Object,
     default: null
+  },
+  isDokter: {
+    type: Boolean,
+    default: false
   }
 })
 
@@ -142,7 +164,10 @@ const form = ref({
 const loading = ref(false)
 
 onMounted(() => {
-  initReset()
+  initReset(),
+    Promise.all([
+      store.getMasterFrekuensis(),
+    ])
 })
 
 
