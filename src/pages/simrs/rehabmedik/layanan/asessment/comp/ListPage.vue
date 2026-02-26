@@ -15,7 +15,7 @@
           Sinkron Data Ke DATABASE
         </div>
       </div>
-      <div v-if="pasien?.soap?.length <= 0" class="column full-height flex-center">
+      <div v-if="lists?.length <= 0" class="column full-height flex-center">
         <div class="text-white">
           Belum Ada data tersimpan
         </div>
@@ -27,7 +27,7 @@
               <q-item-section class="q-pb-xl">
                 <q-item-label class="f-12">
                   <span class="">Subjective </span> : <span class="text-weight-bold">{{ item?.subjective || '-'
-                    }}</span>
+                  }}</span>
                 </q-item-label>
                 <q-item-label>
                   <span class="">Objective </span> : <span class="text-weight-bold">{{
@@ -101,6 +101,10 @@ const props = defineProps({
   loadingTerima: {
     type: Boolean,
     default: false
+  },
+  isDokter: {
+    type: Boolean,
+    default: false
   }
 })
 
@@ -108,9 +112,10 @@ const store = useRehabmedikSoapStore()
 
 const lists = computed(() => {
   const arr = props.pasien?.soap
+  const res = props.isDokter ? arr?.filter(item => item?.nakes === '1') : arr?.filter(item => item?.nakes !== '1')
   // console.log('arr', arr)
 
-  return arr?.sort((a, b) => { return b.id - a.id })
+  return res?.sort((a, b) => { return b.id - a.id })
 })
 
 function hapusItem(id) {

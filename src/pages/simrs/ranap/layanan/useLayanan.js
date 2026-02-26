@@ -3,7 +3,7 @@ import { usePengunjungRanapStore } from 'src/stores/simrs/ranap/pengunjung'
 import { useAplikasiStore } from 'src/stores/app/aplikasi'
 import { useRoute } from 'vue-router'
 
-export default function useLayanan (pasien, mpp) {
+export default function useLayanan(pasien, mpp) {
   const store = usePengunjungRanapStore()
   const auth = useAplikasiStore()
   const route = useRoute()
@@ -120,7 +120,7 @@ export default function useLayanan (pasien, mpp) {
       name: 'jasa-dan-konsul-page',
       label: 'Jaspel',
       icon: 'icon-mat-move_to_inbox',
-      nakes: ['2', '3'],
+      nakes: ['1', '2', '3'],
       comp: shallowRef(defineAsyncComponent(() => import('./jasadankonsul/IndexPage.vue')))
     },
     {
@@ -220,7 +220,7 @@ export default function useLayanan (pasien, mpp) {
     menu.value = filterredMenus.value[0]
   })
 
-  function menuDiganti (val) {
+  function menuDiganti(val) {
     menu.value = val
   }
 
