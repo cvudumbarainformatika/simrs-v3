@@ -87,10 +87,6 @@
           <div class="col-8">{{ lamaOperasi(pasien?.laporanop) ?? '-' }}</div>
         </div>
         <div class="row items-center q-my-xs">
-          <div class="col-4">Nomor Seri Implan</div>
-          <div class="col-8">{{ 'belum dibuat' }}</div>
-        </div>
-        <div class="row items-center q-my-xs">
           <div class="col-4">Catatan Komplikasi</div>
           <div class="col-8" v-html="getNewLine(pasien?.laporanop?.rs13)" />
         </div>
@@ -105,6 +101,31 @@
           <div class="col-8">{{ (pasien?.laporanop?.jenis_darah_masuk ?? '-') + ' / ' + pasien?.laporanop?.jd_masuk ??
             '-' }}
           </div>
+        </div>
+
+
+        <div class="row items-center q-my-xs">
+          <div class="col-4">No Seri Implan</div>
+          <div class="col-8">{{ SeriImplant }}</div>
+        </div>
+        <div v-if="pasien?.implant_seri?.length">
+          <q-card v-for="(file, i) in pasien?.implant_seri" :key="i" flat bordered class="q-mb-sm">
+            <q-card-section>
+              <div style="border: 1px solid grey;" class="q-mb-md">
+                <!-- {{ getImg(file?.url) }} -->
+                <q-img :src="getImg(file?.url)" :key="file.url" style="height: 170px; max-width: 300px">
+                  <div class="absolute-bottom">
+
+                    <div class="row items-center justify-between">
+                      <q-btn class="gt-xs" size="md" color="yellow" flat dense round icon="icon-mat-visibility"
+                        :href="pathImg + file.url" target="_blank" />
+
+                    </div>
+                  </div>
+                </q-img>
+              </div>
+            </q-card-section>
+          </q-card>
         </div>
 
         <div class="row items-center q-my-xs">
@@ -124,8 +145,10 @@
   </div>
 </template>
 <script setup>
+import { pathImg } from 'src/boot/axios'
 import { dateFull, dateFullFormat, formatDouble, getNewLine } from 'src/modules/formatter'
 import { useLaporanOperasiStore } from 'src/stores/simrs/kamaroperasi/laporanOperasi'
+import { computed } from 'vue'
 
 
 const props = defineProps({
@@ -134,7 +157,11 @@ const props = defineProps({
     default: null
   },
 })
+const SeriImplant = computed(() => {
+  console.log('implat ', props?.pasien?.implant?.filter(x => !!x.seri), props?.pasien?.implant?.filter(x => !!x.seri)?.map(x => x.seri)?.join(', '))
 
+  return props?.pasien?.implant?.filter(x => !!x.seri)?.length > 0 ? props?.pasien?.implant?.filter(x => !!x.seri)?.map(x => x.seri)?.join(', ') : '-'
+})
 const surgical = props?.pasien?.surgical?.find(x => x.nota === props.pasien.rs2)
 function lamaOperasi (data) {
   const awal = data?.rs11
@@ -158,5 +185,17 @@ function lamaOperasi (data) {
 const store = useLaporanOperasiStore()
 function assignForm (data) {
   store.assignForm(data)
+}
+const getImg = (file) => {
+  const spl = file.split('.')
+  const ext = spl[spl?.length - 1]
+  // console.log(ext)
+
+  if (ext === 'pdf') {
+    return new URL('../../../../../../../assets/images/PDF_file_icon.png', import.meta.url).href
+  }
+  else {
+    return pathImg + file
+  }
 }
 </script>
