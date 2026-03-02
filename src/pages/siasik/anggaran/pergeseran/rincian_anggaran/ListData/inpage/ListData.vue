@@ -32,7 +32,6 @@
               <q-input outlined dark color="warning" dense label="Tahun" v-model="store.params.tahun"
                 :disable="store.disabled && store.loading" :loading="store.loading" debounce="500" :autofocus="false"
                 @update:model-value="(val) => {
-                  console.log('Tahun berapa?', val)
                   store.params.tahun = val
                   store.getData()
                 }" />
@@ -40,42 +39,36 @@
           </div>
         </template>
         <template #body="props">
-          <q-tr v-if="!store.loading">
+          <q-tr>
             <q-td key="notrans" :props="props" class="text-left">
               <div>
                 {{ props.row?.notrans }}
               </div>
             </q-td>
-            <q-td key="pptk" :props="props" class="text-left">
-              {{ props.row?.pptk }}
-            </q-td>
             <q-td key="namabidang" :props="props" class="text-left">
               {{ props.row?.namabidang }}
             </q-td>
+            <q-td key="pptk" :props="props" class="text-left">
+              {{ props.row?.pptk }}
+            </q-td>
             <q-td key="kegiatan" :props="props" class="text-left q-gutter-y-sm">
               {{ props.row?.kegiatan }}
-
-            </q-td>
-            <q-td key="penerima" :props="props" class="text-left">
-              {{ props.row?.penerima }}
             </q-td>
             <q-td key="keterangan" :props="props" class="text-left wrap-cells">
               <div>
                 {{ props.row?.keterangan }}
               </div>
             </q-td>
-            <q-td key="pagu" :props="props" class="text-left wrap-cells">
-              <div class="text-weight-bold">
-                Pagu : {{ formattanpaRp(props.row?.pagu) }}
-              </div>
+            <q-td key="nilaipengusulan" :props="props" class="text-left wrap-cells">
               <div>
-                Nilai Prioritas : {{ formattanpaRp(hitungRincian(props.row?.rincian)) }}
+                <q-badge color="green">
+                  {{ formattanpaRp(props.row?.nilaipengusulan) }}
+                </q-badge>
               </div>
             </q-td>
-
             <q-td>
               <div class="row justify-center">
-                <div class="q-pr-xs">
+                <!-- <div class="q-pr-xs">
                   <q-btn :auth="user" v-if="gantiKunci(props?.row)" flat round size="xs" class="bg-red-10 text-white"
                     icon="icon-mat-lock" @click="kunciData(props?.row)">
                     <q-tooltip> Buka Kunci </q-tooltip>
@@ -84,28 +77,10 @@
                     @click="kunciData(props?.row)">
                     <q-tooltip> Kunci Data </q-tooltip>
                   </q-btn>
-                </div>
-                <div> <q-btn flat round class="bg-dark" size="xs" color="warning" icon="icon-fa-file-regular">
-                    <q-menu dark style="min-width: 150px">
-                      <q-list style="min-width: 150px;">
-                        <q-item clickable v-close-popup @click="viewRincian(props?.row)">
-                          <q-item-section>Lihat Rincian</q-item-section>
-                        </q-item>
-                        <q-item v-if="props?.row?.kunci !== '1'" clickable @click="editDataPangusulan(props?.row)">
-                          <q-item-section>Edit Data</q-item-section>
-                        </q-item>
-                        <q-item v-if="auth.user?.pegawai?.kdpegsimrs === 'sa' && props?.row?.kunci === '1'" clickable
-                          v-close-popup @click="penetapanAnggaran(props?.row)">
-                          <q-item-section>Penetapan Anggaran</q-item-section>
-                        </q-item>
-                        <q-item clickable v-close-popup @click="PrintData(props?.row)">
-                          <q-item-section>Cetak Data</q-item-section>
-                        </q-item>
-                        <q-item v-if="props?.row?.kunci === '1' && props?.row?.penetapan.length" v-close-popup>
-                          <q-item-section>Sudah Penetapan</q-item-section>
-                        </q-item>
-                      </q-list>
-                    </q-menu>
+                </div> -->
+                <div> <q-btn flat round class="bg-dark" size="xs" color="warning" icon="icon-mat-edit"
+                    @click="editDataPangusulan(props?.row)">
+                    <q-tooltip>Edit Data</q-tooltip>
                   </q-btn> </div>
 
               </div>
@@ -113,32 +88,28 @@
           </q-tr>
 
         </template>
-
-
       </q-table>
-      <app-dialog-rincian v-model="store.openDialogRinci" :npd="npd" />
-      <dialog-print-data v-model="store.dialogCetak" :datanpds="datanpds" />
-      <!-- <editdata-npdls v-model="store.dialogEditNpd" :editData="editData" /> -->
-      <!-- <cetak-pencairan v-model="store.dialogCetak" :printdatax="printdatax" /> -->
     </div>
   </template>
 </template>
 
 <script setup>
-import { useQuasar } from 'quasar'
+import { date, useQuasar } from 'quasar'
 import { formatRpDouble, formattanpaRp } from 'src/modules/formatter'
 import { useAplikasiStore } from 'src/stores/app/aplikasi'
 import { useAuthStore } from 'src/stores/auth'
-import { usePrioritasAnggaranStore } from 'src/stores/siasik/anggaran/penyusunan/penyesuaianprioritas'
+import { usePergeseranAnggaranStore } from 'src/stores/siasik/anggaran/pergeseran/pergeseranrincian'
+import { dataBastFarmasiStore } from 'src/stores/siasik/transaksi/ls/newnpdls/bastfarmasi'
+import { formInputNpdlsStore } from 'src/stores/siasik/transaksi/ls/newnpdls/formnpdls'
 import { computed, defineAsyncComponent, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 
 
-const AppDialogRincian = defineAsyncComponent(() => import('./DialogViewRincian.vue'))
-const DialogPrintData = defineAsyncComponent(() => import('./DialogPrintData.vue'))
-const store = usePrioritasAnggaranStore()
+const store = usePergeseranAnggaranStore()
+const form = formInputNpdlsStore()
 const router = useRouter()
+const carisrt = dataBastFarmasiStore()
 const auth = useAplikasiStore()
 const user = computed(() => auth.user?.pegawai?.kdpegsimrs)
 onMounted(() => {
@@ -158,14 +129,6 @@ const listData = [
     // headerStyle: 'width: 200px; height:50px'
   },
   {
-    label: 'PPTK',
-    name: 'pptk',
-    align: 'left',
-    field: 'pptk',
-    sortable: true,
-    // headerStyle: 'width: 90px;'
-  },
-  {
     label: 'Bidang/Bagian',
     name: 'namabidang',
     align: 'left',
@@ -173,7 +136,13 @@ const listData = [
     sortable: true,
     // headerStyle: 'width: 90px;'
   },
-
+  {
+    label: 'PPTK',
+    name: 'pptk',
+    align: 'left',
+    field: row => [row.pptk],
+    // headerStyle: 'width: 200px;'
+  },
   {
     label: 'Kegiatan BLUD',
     name: 'kegiatan',
@@ -182,10 +151,10 @@ const listData = [
     // headerStyle: 'width: 200px;'
   },
   {
-    label: 'Nilai (Rp)',
-    name: 'pagu',
+    label: 'Pagu Kegiatan (Rp)',
+    name: 'nilaipengusulan',
     align: 'right',
-    field: row => [row.pagu, row.rincian],
+    field: 'nilaipengusulan',
     // headerStyle: 'width: 250px;'
   },
   {
@@ -197,67 +166,53 @@ const listData = [
 ]
 const columnsData = ref(listData)
 
-const npd = ref(null)
+const dataRinci = ref(null)
 function viewRincian(row) {
 
-  npd.value = row.rincian
-  store.rincianSaved = npd.value
+  dataRinci.value = row.penetapan
+  store.rincians = dataRinci.value
   store.dataSaved = row
-  // console.log('npd save', store.dataSaved)
+  console.log('npd save', store.dataSaved, 'rinci', store.rincians)
   store.openDialogRinci = true
 }
 const onRowClick = (row) =>
   alert([row?.nopencairan, row?.total])
 
 const datanpds = ref(null)
-async function PrintData(row) {
+function viewCetakDataNpdls(row) {
+  store.dialogCetak = true
   datanpds.value = row
-  store.params.notrans = row.notrans
-
-  await store.dataCetak()   // tunggu data siap
-  store.dialogCetak = true  // buka dialog terakhir
-
-}
-const hitungRincian = (rincian = []) => rincian.reduce((sum, x) => sum + Number(x.nilai || 0), 0)
-
-
-async function penetapanAnggaran(row) {
-
-  store.params.notrans = row.rincian?.map((x) => x.notrans)[0]
-
-  await store.penetapanAnggaran()   // tunggu data siap
-
+  store.dataSaved = datanpds.value
 }
 
 function editDataPangusulan(row) {
-  // if (auth.user?.pegawai?.kdpegsimrs !== 'sa') {
-  //   $q.notify({
-  //     type: 'negative',
-  //     message: 'Anda tidak Memiliki Akses Edit Data ini, Silahkan Hubungi Admin'
-  //   })
-  //   return
-  // }
-  if (row?.kunci === '1') {
-    $q.notify({
-      type: 'negative',
-      message: 'Data Masih Terkunci, Silahkan Buka Kunci Terlebih Dahulu'
-    })
-    return
-  }
+  // console.log('edit data', row)
 
   store.form = {
-    ...store.form,
-    ...row
+    // ...row,
+    notrans: row.notrans,
+    uraianblud: row.kegiatan,
+    kodekegiatanblud: row.kodekegiatan,
+    bidang: row.namabidang,
+    kodebidang: row.kodebidang,
+    pagu: row.pagu,
+    tglperubahan: date.formatDate(Date.now(), 'YYYY-MM-DD'),
   }
 
-  store.rincianSaved = row.rincian
-    ? row.rincian.map(r => ({ ...r }))
-    : []
-  console.log('form saat edit', store.rincianSaved)
-  router.push({ path: '/anggaran/penyusunan/prioritas/form', replace: true, query: { id: row.id } })
+  store.rincians = row.penetapan ? [...row.penetapan] : []
+
+  // console.log('form edit', store.form)
+  // console.log('store.rincians', store.rincians)
+  router.push({ path: '/anggaran/pergeseran/rinci/form', replace: true, query: { id: row.id } })
   store.disableSaved = true
 }
-
+const printcair = ref(null)
+function PrintPencairan(row) {
+  // store.dialogPrintPencairan = true
+  // printcair.value = row
+  // store.dataSaved = printcair.value
+  // console.log('openNPD', store.dataSaved)
+}
 function gantiKunci(row) {
   const data = row.kunci === "1"
   let lockdata = true
@@ -308,13 +263,6 @@ function kunciData(row) {
       cancel: true,
       persistent: true
     }).onOk(() => {
-      if (row.rincian?.map((x) => Number(x.nilai)).reduce((a, b) => a + b, 0) !== Number(row.pagu)) {
-        $q.notify({
-          type: 'negative',
-          message: 'Nilai Pagu dan Nilai Prioritas Tidak Sama'
-        })
-        return
-      }
       // const payload = {
       //   notrans: row.notrans,
       //   kunci: row.kunci
