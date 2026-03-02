@@ -1,5 +1,5 @@
 <template>
-  Pra Induksi
+  Pra Bedah
 </template>
 
 <script setup>

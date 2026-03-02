@@ -17,15 +17,12 @@
       <div class="col full-height">
         <q-tab-panels v-model="tab" animated class="bg-transparent q-pa-none relative-position"
           style="height: calc(100vh - 100px);">
-          <!-- PANEL -->
+
           <q-tab-panel :name="menu?.name" class="q-pa-none">
             <component :is="menu?.comp" :pasien="pasien" />
           </q-tab-panel>
         </q-tab-panels>
       </div>
-      <!-- <div class="absolute-bottom bg-dark text-white">
-        Footer
-      </div> -->
     </div>
   </div>
 </template>
