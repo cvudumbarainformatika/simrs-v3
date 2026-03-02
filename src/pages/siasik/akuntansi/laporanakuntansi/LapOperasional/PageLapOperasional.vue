@@ -8,7 +8,7 @@
   </div>
   <div class="container q-px-sm">
     <q-card class="items-center full-width">
-      <template v-if="store.hasilpendapatan?.length > 0 && store.hasilbeban?.length > 0">
+      <template v-if="store.hasilpendapatan && store.hasilbeban && store.hasilsurplusdefisit && store.hasilluarbiasa">
         <listData />
       </template>
       <!-- <template
@@ -35,5 +35,6 @@ const store = useLaporanOperasionalStore()
 onBeforeMount(() => {
   store.hasilpendapatan = []
   store.hasilbeban = []
+  store.hasilsurplusdefisit = []
 })
 </script>
