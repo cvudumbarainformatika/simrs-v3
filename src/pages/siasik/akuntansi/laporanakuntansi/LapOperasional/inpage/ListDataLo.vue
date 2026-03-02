@@ -17,7 +17,7 @@
               </tr>
             </thead>
             <tbody v-if="store.reqs.levelberapa === 6">
-              <tr class="bg-grey-2">
+              <tr class="">
                 <td class="text-center text-bold" colspan="3">
                   KEGIATAN OPERASIONAL
                 </td>
@@ -68,7 +68,7 @@
                   {{ formattanpaRp(surplusdefisitOperasional()) }}
                 </td>
               </tr>
-              <tr class="bg-grey-2">
+              <tr class="">
                 <td class="text-center text-bold" colspan="3">
                   KEGIATAN NON OPERASIONAL
                 </td>
@@ -93,7 +93,7 @@
                   {{ formattanpaRp(totalSurplusDefisitNonOperasional()) }}
                 </td>
               </tr>
-              <tr class="bg-grey-2">
+              <tr class="">
                 <td class="text-center text-bold" colspan="3">
                   POS LUAR BIASA
                 </td>
@@ -131,7 +131,7 @@
 
 
             <tbody v-if="store.reqs.levelberapa === 5">
-              <tr class="bg-grey-2">
+              <tr class="">
                 <td class="text-center text-bold" colspan="3">
                   KEGIATAN OPERASIONAL
                 </td>
@@ -182,7 +182,7 @@
                   {{ formattanpaRp(surplusdefisitOperasional()) }}
                 </td>
               </tr>
-              <tr class="bg-grey-2">
+              <tr class="">
                 <td class="text-center text-bold" colspan="3">
                   KEGIATAN NON OPERASIONAL
                 </td>
@@ -214,7 +214,7 @@
                   {{ formattanpaRp(totalSebelumPosLuarbiasa()) }}
                 </td>
               </tr>
-              <tr class="bg-grey-2">
+              <tr class="">
                 <td class="text-center text-bold" colspan="3">
                   POS LUAR BIASA
                 </td>
@@ -244,7 +244,7 @@
 
 
             <tbody v-if="store.reqs.levelberapa === 4">
-              <tr class="bg-grey-2">
+              <tr class="">
                 <td class="text-center text-bold" colspan="3">
                   KEGIATAN OPERASIONAL
                 </td>
@@ -295,7 +295,7 @@
                   {{ formattanpaRp(surplusdefisitOperasional()) }}
                 </td>
               </tr>
-              <tr class="bg-grey-2">
+              <tr class="">
                 <td class="text-center text-bold" colspan="3">
                   KEGIATAN NON OPERASIONAL
                 </td>
@@ -327,7 +327,7 @@
                   {{ formattanpaRp(totalSebelumPosLuarbiasa()) }}
                 </td>
               </tr>
-              <tr class="bg-grey-2">
+              <tr class="">
                 <td class="text-center text-bold" colspan="3">
                   POS LUAR BIASA
                 </td>
@@ -366,7 +366,7 @@
 
 
             <tbody v-if="store.reqs.levelberapa === 3">
-              <tr class="bg-grey-2">
+              <tr class="">
                 <td class="text-center text-bold" colspan="3">
                   KEGIATAN OPERASIONAL
                 </td>
@@ -417,7 +417,7 @@
                   {{ formattanpaRp(surplusdefisitOperasional()) }}
                 </td>
               </tr>
-              <tr class="bg-grey-2">
+              <tr class="">
                 <td class="text-center text-bold" colspan="3">
                   KEGIATAN NON OPERASIONAL
                 </td>
@@ -449,7 +449,7 @@
                   {{ formattanpaRp(totalSebelumPosLuarbiasa()) }}
                 </td>
               </tr>
-              <tr class="bg-grey-2">
+              <tr class="">
                 <td class="text-center text-bold" colspan="3">
                   POS LUAR BIASA
                 </td>
@@ -486,7 +486,7 @@
 
 
             <tbody v-if="store.reqs.levelberapa === 2 || store.reqs.levelberapa === 1">
-              <tr class="bg-grey-2">
+              <tr class="">
                 <td class="text-center text-bold" colspan="3">
                   KEGIATAN OPERASIONAL
                 </td>
@@ -537,7 +537,7 @@
                   {{ formattanpaRp(surplusdefisitOperasional()) }}
                 </td>
               </tr>
-              <tr class="bg-grey-2">
+              <tr class="">
                 <td class="text-center text-bold" colspan="3">
                   KEGIATAN NON OPERASIONAL
                 </td>
@@ -569,7 +569,7 @@
                   {{ formattanpaRp(totalSebelumPosLuarbiasa()) }}
                 </td>
               </tr>
-              <tr class="bg-grey-2">
+              <tr class="">
                 <td class="text-center text-bold" colspan="3">
                   POS LUAR BIASA
                 </td>
