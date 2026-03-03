@@ -208,7 +208,6 @@ function selisih() {
 }
 
 function editData(row) {
-
   store.form.nousulan = row.nousulan
   store.form.usulan = row.usulan
   store.form.volume = row.volume
@@ -229,14 +228,13 @@ function editData(row) {
   store.form.totalbaru = 0
   store.form.jumlahacc = 0
 
-  store.form.realisasi = row.realisasi.map((x) => parseFloat(x.nominalpembayaran)).reduce((a, b) => a + b, 0) +
-    row.realisasi_spjpanjar.map((x) => parseFloat(x.jumlahbelanjapanjar)).reduce((a, b) => a + b, 0) -
-    row.contrapost.map((x) => parseFloat(x.nominalcontrapost)).reduce((a, b) => a + b, 0)
-  store.form.sisapagu = parseFloat(row.pagu) - (row.realisasi.map((x) => parseFloat(x.nominalpembayaran)).reduce((a, b) => a + b, 0) +
-    row.realisasi_spjpanjar.map((x) => parseFloat(x.jumlahbelanjapanjar)).reduce((a, b) => a + b, 0) -
-    row.contrapost.map((x) => parseFloat(x.nominalcontrapost)).reduce((a, b) => a + b, 0))
+  store.form.realisasi = row.realisasi?.map((x) => parseFloat(x.nominalpembayaran)).reduce((a, b) => a + b, 0) +
+    row.realisasi_spjpanjar?.map((x) => parseFloat(x.jumlahbelanjapanjar)).reduce((a, b) => a + b, 0) -
+    row.contrapost?.map((x) => parseFloat(x.nominalcontrapost)).reduce((a, b) => a + b, 0)
+  store.form.sisapagu = parseFloat(row.pagu) - (row.realisasi?.map((x) => parseFloat(x.nominalpembayaran)).reduce((a, b) => a + b, 0) +
+    row.realisasi_spjpanjar?.map((x) => parseFloat(x.jumlahbelanjapanjar)).reduce((a, b) => a + b, 0) -
+    row.contrapost?.map((x) => parseFloat(x.nominalcontrapost)).reduce((a, b) => a + b, 0))
 
-  console.log('row edit', store.form)
 }
 
 function deleteData(row) {
