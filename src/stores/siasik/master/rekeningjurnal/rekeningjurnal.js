@@ -150,7 +150,22 @@ export const useMasterRekeningJurnalStore = defineStore('keuangan-master-rekenin
         })
       }
     },
+    OptionLak(val) {
+      if (!val?.kode) return
+
+      const exists = this.optionrekeninglak.find(
+        o => o.kode === val.kode
+      )
+
+      if (!exists) {
+        this.optionrekeninglak.unshift({
+          kode: val.kode,
+          uraian: val.uraian
+        })
+      }
+    },
     editForm(val) {
+      console.log('valedit xx', val)
       // pastikan option edit ada
       this.OptionRekening({
         kodeall3: val?.kode50,
@@ -165,6 +180,21 @@ export const useMasterRekeningJurnalStore = defineStore('keuangan-master-rekenin
       this.OptionRekening({
         kodeall3: val?.kode_bastx,
         uraian: val?.uraian_bastx
+      })
+
+      this.OptionRekening({
+        kodeall3: val?.kode_bastcair2,
+        uraian: val?.uraian_bastcair2
+      })
+
+      this.OptionRekening({
+        kodeall3: val?.kode_cair2,
+        uraian: val?.uraian_cair2
+      })
+
+      this.OptionLak({
+        kode: val?.kode_lak,
+        uraian: val?.uraian_lak
       })
 
       // isi form
