@@ -92,9 +92,15 @@ export const useLaporanOperasionalStore = defineStore('Laporan_Operasional', {
     datapendapatans: [],
     databebans: [],
     penyesuaianbeban: [],
+    surplusnonoperasional: [],
+    defisitnonoperasional: [],
+    pendapatanluarbiasa: [],
+    bebanluarbiasa: [],
 
     hasilpendapatan: [],
     hasilbeban: [],
+    hasilsurplusdefisit: [],
+    hasilluarbiasa: []
 
   }),
   actions: {
@@ -119,6 +125,10 @@ export const useLaporanOperasionalStore = defineStore('Laporan_Operasional', {
             this.datapendapatans = resp.data.pendapatan
             this.databebans = resp.data.beban
             this.penyesuaianbeban = resp.data.penyesuaianbeban
+            this.surplusnonoperasional = resp.data.surplusnonoperasional
+            this.defisitnonoperasional = resp.data.defisitnonoperasional
+            this.pendapatanluarbiasa = resp.data.pendapatanluarbiasa
+            this.bebanluarbiasa = resp.data.bebanluarbiasa
 
             this.mapData()
 
@@ -255,7 +265,8 @@ export const useLaporanOperasionalStore = defineStore('Laporan_Operasional', {
       // DATA BEBAN
       const beban = this.databebans
       const rekbeban = beban.map((x) => x.kode6)
-      const penyebeban = this.penyesuaianbeban.filter(x => rekbeban.includes(x.kode6))
+      const penyebeban = this.penyesuaianbeban
+      // .filter(x => rekbeban.includes(x.kode6))
 
       const allbeban = beban.concat(penyebeban)
 
@@ -374,6 +385,243 @@ export const useLaporanOperasionalStore = defineStore('Laporan_Operasional', {
       const level2 = sortBeban2(beban2)
 
 
+
+      // DATA SURPLUSDEFISIT NON OPERASIONAL
+
+      const allsurplusdefisit = this.surplusnonoperasional.concat(this.defisitnonoperasional)
+      const surplusdefisit6 = []
+      const surplusdefisit5 = []
+      const surplusdefisit4 = []
+      const surplusdefisit3 = []
+      const surplusdefisit2 = []
+      const surplusdefisit1 = []
+
+      const f6 = allsurplusdefisit.map((x) => x.kode6)
+      const un6 = f6?.length ? [...new Set(f6)] : []
+      for (let i = 0; i < un6?.length; i++) {
+        const el = un6[i]
+        const obj6 = {
+          kode: allsurplusdefisit.filter((x) => x.kode6 === el)[0].kode6,
+          uraian: allsurplusdefisit.filter((x) => x.kode6 === el)[0]?.uraian,
+          nilai: allsurplusdefisit.filter((x) => x.kode6 === el)?.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0)
+        }
+        surplusdefisit6.push(obj6)
+      }
+
+      const f5 = allsurplusdefisit.map((x) => x.kode5)
+      const un5 = f5?.length ? [...new Set(f5)] : []
+      for (let i = 0; i < un5?.length; i++) {
+        const el = un5[i]
+        const obj = {
+          kode: allsurplusdefisit.filter((x) => x.kode5 === el)[0].kode5,
+          uraian: allsurplusdefisit.filter((x) => x.kode5 === el)[0]?.uraian5,
+          nilai: allsurplusdefisit.filter((x) => x.kode5 === el)?.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0)
+        }
+        surplusdefisit5.push(obj)
+      }
+
+      const f4 = allsurplusdefisit.map((x) => x.kode4)
+      const un4 = f4?.length ? [...new Set(f4)] : []
+      for (let i = 0; i < un4?.length; i++) {
+        const el = un4[i]
+        const obj = {
+          kode: allsurplusdefisit.filter((x) => x.kode4 === el)[0].kode4,
+          uraian: allsurplusdefisit.filter((x) => x.kode4 === el)[0]?.uraian4,
+          nilai: allsurplusdefisit.filter((x) => x.kode4 === el)?.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0)
+        }
+        surplusdefisit4.push(obj)
+      }
+
+      const f3 = allsurplusdefisit.map((x) => x.kode3)
+      const un3 = f3?.length ? [...new Set(f3)] : []
+      for (let i = 0; i < un3?.length; i++) {
+        const el = un3[i]
+        const obj = {
+          kode: allsurplusdefisit.filter((x) => x.kode3 === el)[0].kode3,
+          uraian: allsurplusdefisit.filter((x) => x.kode3 === el)[0]?.uraian3,
+          nilai: allsurplusdefisit.filter((x) => x.kode3 === el)?.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0)
+        }
+        surplusdefisit3.push(obj)
+      }
+
+      const f2 = allsurplusdefisit.map((x) => x.kode2)
+      const un2 = f2?.length ? [...new Set(f2)] : []
+      for (let i = 0; i < un2?.length; i++) {
+        const el = un2[i]
+        const obj = {
+          kode: allsurplusdefisit.filter((x) => x.kode2 === el)[0].kode2,
+          uraian: allsurplusdefisit.filter((x) => x.kode2 === el)[0]?.uraian2,
+          nilai: allsurplusdefisit.filter((x) => x.kode2 === el)?.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0)
+        }
+        surplusdefisit2.push(obj)
+      }
+
+      const f1 = allsurplusdefisit.map((x) => x.kode1)
+      const un1 = f1?.length ? [...new Set(f1)] : []
+      for (let i = 0; i < un1?.length; i++) {
+        const el = un1[i]
+        const obj = {
+          kode: allsurplusdefisit.filter((x) => x.kode1 === el)[0].kode1,
+          uraian: allsurplusdefisit.filter((x) => x.kode1 === el)[0]?.uraian1,
+          nilai: allsurplusdefisit.filter((x) => x.kode1 === el)?.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0)
+        }
+        surplusdefisit1.push(obj)
+      }
+
+      surplusdefisit6.push(...surplusdefisit1, ...surplusdefisit2, ...surplusdefisit3, ...surplusdefisit4, ...surplusdefisit5)
+      const sortSurplusDefisit6 = (surplusdefisit6) =>
+        surplusdefisit6.sort(({ kode: a }, { kode: b }) =>
+          a < b ? -1 : a > b ? 1 : 0
+        )
+      const lvl6 = sortSurplusDefisit6(surplusdefisit6)
+      // console.log('lvl6', lvl6)
+      surplusdefisit5.push(...surplusdefisit1, ...surplusdefisit2, ...surplusdefisit3, ...surplusdefisit4)
+      const sortSurplusDefisit5 = (surplusdefisit5) =>
+        surplusdefisit5.sort(({ kode: a }, { kode: b }) =>
+          a < b ? -1 : a > b ? 1 : 0
+        )
+      const lvl5 = sortSurplusDefisit5(surplusdefisit5)
+      // console.log('lvl5', lvl5)
+      surplusdefisit4.push(...surplusdefisit1, ...surplusdefisit2, ...surplusdefisit3)
+      const sortSurplusDefisit4 = (surplusdefisit4) =>
+        surplusdefisit4.sort(({ kode: a }, { kode: b }) =>
+          a < b ? -1 : a > b ? 1 : 0
+        )
+      const lvl4 = sortSurplusDefisit4(surplusdefisit4)
+      // console.log('lvl4', lvl4)
+      surplusdefisit3.push(...surplusdefisit1, ...surplusdefisit2)
+      const sortSurplusDefisit3 = (surplusdefisit3) =>
+        surplusdefisit3.sort(({ kode: a }, { kode: b }) =>
+          a < b ? -1 : a > b ? 1 : 0
+        )
+      const lvl3 = sortSurplusDefisit3(surplusdefisit3)
+      // console.log('lvl3', lvl3)
+      surplusdefisit2.push(...surplusdefisit1)
+      const sortSurplusDefisit2 = (surplusdefisit2) =>
+        surplusdefisit2.sort(({ kode: a }, { kode: b }) =>
+          a < b ? -1 : a > b ? 1 : 0
+        )
+      const lvl2 = sortSurplusDefisit2(surplusdefisit2)
+      // console.log('lvl2', lvl2)
+
+
+
+      // DATA SURPLUSDEFISIT NON OPERASIONAL
+
+      const allluarbiasa = this.pendapatanluarbiasa.concat(this.bebanluarbiasa)
+      const luarbiasa6 = []
+      const luarbiasa5 = []
+      const luarbiasa4 = []
+      const luarbiasa3 = []
+      const luarbiasa2 = []
+      const luarbiasa1 = []
+
+      const bl6 = allluarbiasa.map((x) => x.kode6)
+      const unbl6 = bl6?.length ? [...new Set(bl6)] : []
+      for (let i = 0; i < unbl6?.length; i++) {
+        const el = unbl6[i]
+        const obj6 = {
+          kode: allluarbiasa.filter((x) => x.kode6 === el)[0].kode6,
+          uraian: allluarbiasa.filter((x) => x.kode6 === el)[0]?.uraian,
+          nilai: allluarbiasa.filter((x) => x.kode6 === el)?.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0)
+        }
+        luarbiasa6.push(obj6)
+      }
+
+      const bl5 = allluarbiasa.map((x) => x.kode5)
+      const unbl5 = bl5?.length ? [...new Set(bl5)] : []
+      for (let i = 0; i < unbl5?.length; i++) {
+        const el = unbl5[i]
+        const obj = {
+          kode: allluarbiasa.filter((x) => x.kode5 === el)[0].kode5,
+          uraian: allluarbiasa.filter((x) => x.kode5 === el)[0]?.uraian5,
+          nilai: allluarbiasa.filter((x) => x.kode5 === el)?.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0)
+        }
+        luarbiasa5.push(obj)
+      }
+
+      const bl4 = allluarbiasa.map((x) => x.kode4)
+      const unbl4 = bl4?.length ? [...new Set(bl4)] : []
+      for (let i = 0; i < unbl4?.length; i++) {
+        const el = unbl4[i]
+        const obj = {
+          kode: allluarbiasa.filter((x) => x.kode4 === el)[0].kode4,
+          uraian: allluarbiasa.filter((x) => x.kode4 === el)[0]?.uraian4,
+          nilai: allluarbiasa.filter((x) => x.kode4 === el)?.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0)
+        }
+        luarbiasa4.push(obj)
+      }
+
+      const bl3 = allluarbiasa.map((x) => x.kode3)
+      const unbl3 = bl3?.length ? [...new Set(bl3)] : []
+      for (let i = 0; i < unbl3?.length; i++) {
+        const el = unbl3[i]
+        const obj = {
+          kode: allluarbiasa.filter((x) => x.kode3 === el)[0].kode3,
+          uraian: allluarbiasa.filter((x) => x.kode3 === el)[0]?.uraian3,
+          nilai: allluarbiasa.filter((x) => x.kode3 === el)?.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0)
+        }
+        luarbiasa3.push(obj)
+      }
+
+      const bl2 = allluarbiasa.map((x) => x.kode2)
+      const unbl2 = bl2?.length ? [...new Set(bl2)] : []
+      for (let i = 0; i < unbl2?.length; i++) {
+        const el = unbl2[i]
+        const obj = {
+          kode: allluarbiasa.filter((x) => x.kode2 === el)[0].kode2,
+          uraian: allluarbiasa.filter((x) => x.kode2 === el)[0]?.uraian2,
+          nilai: allluarbiasa.filter((x) => x.kode2 === el)?.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0)
+        }
+        luarbiasa2.push(obj)
+      }
+
+      const bl1 = allluarbiasa.map((x) => x.kode1)
+      const unbl1 = bl1?.length ? [...new Set(bl1)] : []
+      for (let i = 0; i < unbl1?.length; i++) {
+        const el = unbl1[i]
+        const obj = {
+          kode: allluarbiasa.filter((x) => x.kode1 === el)[0].kode1,
+          uraian: allluarbiasa.filter((x) => x.kode1 === el)[0]?.uraian1,
+          nilai: allluarbiasa.filter((x) => x.kode1 === el)?.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0)
+        }
+        luarbiasa1.push(obj)
+      }
+
+      luarbiasa6.push(...luarbiasa1, ...luarbiasa2, ...luarbiasa3, ...luarbiasa4, ...luarbiasa5)
+      const sortLuarBiasa6 = (luarbiasa6) =>
+        luarbiasa6.sort(({ kode: a }, { kode: b }) =>
+          a < b ? -1 : a > b ? 1 : 0
+        )
+      const lvl_lb6 = sortLuarBiasa6(luarbiasa6)
+
+      luarbiasa5.push(...luarbiasa1, ...luarbiasa2, ...luarbiasa3, ...luarbiasa4)
+      const sortLuarBiasa5 = (luarbiasa5) =>
+        luarbiasa5.sort(({ kode: a }, { kode: b }) =>
+          a < b ? -1 : a > b ? 1 : 0
+        )
+      const lvl_lb5 = sortLuarBiasa5(luarbiasa5)
+
+      luarbiasa4.push(...luarbiasa1, ...luarbiasa2, ...luarbiasa3)
+      const sortLuarBiasa4 = (luarbiasa4) =>
+        luarbiasa4.sort(({ kode: a }, { kode: b }) =>
+          a < b ? -1 : a > b ? 1 : 0
+        )
+      const lvl_lb4 = sortLuarBiasa4(luarbiasa4)
+
+      luarbiasa3.push(...luarbiasa1, ...luarbiasa2)
+      const sortLuarBiasa3 = (luarbiasa3) =>
+        luarbiasa3.sort(({ kode: a }, { kode: b }) =>
+          a < b ? -1 : a > b ? 1 : 0
+        )
+      const lvl_lb3 = sortLuarBiasa3(luarbiasa3)
+      luarbiasa2.push(...luarbiasa1)
+
+      const sortLuarBiasa2 = (luarbiasa2) =>
+        luarbiasa2.sort(({ kode: a }, { kode: b }) =>
+          a < b ? -1 : a > b ? 1 : 0
+        )
+      const lvl_lb2 = sortLuarBiasa2(luarbiasa2)
       // // PSAP 13
       // const psappendapatan = []
       // const penyspendpatan = this.psappenyesuaianpendp
@@ -586,22 +834,33 @@ export const useLaporanOperasionalStore = defineStore('Laporan_Operasional', {
       if (this.reqs.levelberapa === 6) {
         this.hasilpendapatan = pendapatan6
         this.hasilbeban = level6
+        this.hasilsurplusdefisit = lvl6
+        this.hasilluarbiasa = lvl_lb6
+        console.log('hasil surplusdefisit', this.hasilsurplusdefisit)
       }
       else if (this.reqs.levelberapa === 5) {
         this.hasilpendapatan = pendapatan5
         this.hasilbeban = level5
+        this.hasilsurplusdefisit = lvl5
+        this.hasilluarbiasa = lvl_lb5
       }
       else if (this.reqs.levelberapa === 4) {
         this.hasilpendapatan = pendapatan4
         this.hasilbeban = level4
+        this.hasilsurplusdefisit = lvl4
+        this.hasilluarbiasa = lvl_lb4
       }
       else if (this.reqs.levelberapa === 3) {
         this.hasilpendapatan = pendapatan3
         this.hasilbeban = level3
+        this.hasilsurplusdefisit = lvl3
+        this.hasilluarbiasa = lvl_lb3
       }
       else if (this.reqs.levelberapa === 2) {
         this.hasilpendapatan = pendapatan2
         this.hasilbeban = level2
+        this.hasilsurplusdefisit = lvl2
+        this.hasilluarbiasa = lvl_lb2
       }
       // else if (this.reqs.jenislo === 2) {
       //   this.psappendapatan = psappendapatan
@@ -616,7 +875,12 @@ export const useLaporanOperasionalStore = defineStore('Laporan_Operasional', {
       else {
         this.hasilpendapatan = kode1
         this.hasilbeban = beban1
+        this.hasilsurplusdefisit = surplusdefisit1
+        this.hasilluarbiasa = luarbiasa1
+        console.log('hasil surplusdefisit', this.hasilsurplusdefisit)
+        console.log('hasil luar biasa', this.hasilluarbiasa)
       }
+
     }
   }
 })

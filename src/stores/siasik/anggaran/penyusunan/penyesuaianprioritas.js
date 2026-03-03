@@ -446,7 +446,7 @@ export const usePrioritasAnggaranStore = defineStore('prioritas-anggaran-store',
     },
     penetapanAnggaran() {
       waitLoad('show')
-      const params = { nousulan: this.params.nousulan }
+      const params = { notrans: this.params.notrans }
       return new Promise((resolve, reject) => {
         api
           .post('v1/anggaran/penyusunan/prioritas/penetapan', params)

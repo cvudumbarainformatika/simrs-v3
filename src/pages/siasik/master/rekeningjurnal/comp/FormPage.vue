@@ -5,10 +5,11 @@
         option-value="kodeall3" input-debounce="300" label="Rekening LRA" class="ellipsis-2-lines" :options="options"
         clearable :option-label="opt => opt?.kodeall3 ? `${opt.kodeall3} - ${opt.uraian}` : ''" :disable="store.loading"
         :loading="store.loading" @filter="filterFn" @clear="store.setForm('kode50', null)" @update:model-value="(val) => {
-          const arr = store.optionrekening || []
+          const arr = options || []
           const cari = arr.find(x => x.kodeall3 === val)
           store.form.uraian50 = cari ? cari.uraian : ''
           store.form.kodeall = cari ? cari.kodeall2 : ''
+
         }">
         <template #no-option>
           <q-item>
@@ -23,7 +24,7 @@
         option-value="kodeall3" input-debounce="300" label="BAST (LO)" class="ellipsis-2-lines" :options="options"
         clearable :option-label="opt => opt?.kodeall3 ? `${opt.kodeall3} - ${opt.uraian}` : ''" :disable="store.loading"
         :loading="store.loading" @filter="filterFn" @clear="store.setForm('kode_bast', null)" @update:model-value="(val) => {
-          const arr = store.optionrekening || []
+          const arr = options || []
           const cari = arr.find(x => x.kodeall3 === val)
           store.form.uraian_bast = cari ? cari.uraian : ''
         }">
@@ -39,7 +40,7 @@
         option-value="kodeall3" input-debounce="300" label="BAST (Neraca)" class="ellipsis-2-lines" :options="options"
         clearable :option-label="opt => opt?.kodeall3 ? `${opt.kodeall3} - ${opt.uraian}` : ''" :disable="store.loading"
         :loading="store.loading" @filter="filterFn" @clear="store.setForm('kode_bastx', null)" @update:model-value="(val) => {
-          const arr = store.optionrekening || []
+          const arr = options || []
           const cari = arr.find(x => x.kodeall3 === val)
           store.form.uraian_bastx = cari ? cari.uraian : ''
         }">
@@ -56,7 +57,7 @@
         :options="options" clearable :option-label="opt => opt?.kodeall3 ? `${opt.kodeall3} - ${opt.uraian}` : ''"
         :disable="store.loading" :loading="store.loading" @filter="filterFn"
         @clear="store.setForm('kode_bastcairx', null)" @update:model-value="(val) => {
-          const arr = store.optionrekening || []
+          const arr = options || []
           const cari = arr.find(x => x.kodeall3 === val)
           store.form.uraian_bastcairx = cari ? cari.uraian : ''
         }">
@@ -73,7 +74,7 @@
         class="ellipsis-2-lines" :options="options"
         :option-label="opt => opt?.kodeall3 ? `${opt.kodeall3} - ${opt.uraian}` : ''" :disable="store.loading"
         :loading="store.loading" @filter="filterFn" @clear="store.setForm('kode_bastcair2', null)" @update:model-value="(val) => {
-          const arr = store.optionrekening || []
+          const arr = options || []
           const cari = arr.find(x => x.kodeall3 === val)
           store.form.uraian_bastcair2 = cari ? cari.uraian : ''
         }">
@@ -90,7 +91,7 @@
         class="ellipsis-2-lines" :options="options"
         :option-label="opt => opt?.kodeall3 ? `${opt.kodeall3} - ${opt.uraian}` : ''" :disable="store.loading"
         :loading="store.loading" @filter="filterFn" @clear="store.setForm('kode_cairx', null)" @update:model-value="(val) => {
-          const arr = store.optionrekening || []
+          const arr = options || []
           const cari = arr.find(x => x.kodeall3 === val)
           store.form.uraian_cairx = cari ? cari.uraian : ''
         }">
@@ -107,7 +108,7 @@
         class="ellipsis-2-lines" :options="options"
         :option-label="opt => opt?.kodeall3 ? `${opt.kodeall3} - ${opt.uraian}` : ''" :disable="store.loading"
         :loading="store.loading" @filter="filterFn" @clear="store.setForm('kode_cair2', null)" @update:model-value="(val) => {
-          const arr = store.optionrekening || []
+          const arr = options || []
           const cari = arr.find(x => x.kodeall3 === val)
           store.form.uraian_cair2 = cari ? cari.uraian : ''
         }">
@@ -124,7 +125,7 @@
         option-value="kode" input-debounce="300" label="LAK" class="ellipsis-2-lines" :options="options_lak" clearable
         :option-label="opt => opt?.kode ? `${opt.kode} - ${opt.uraian}` : ''" :disable="store.loading"
         :loading="store.loading" @filter="filterFn_lak" @clear="store.setForm('kode_lak', null)" @update:model-value="(val) => {
-          const arr = store.optionrekeninglak || []
+          const arr = options_lak || []
           const cari = arr.find(x => x.kode === val)
           store.form.uraian_lak = cari ? cari.uraian : ''
         }">
@@ -146,22 +147,25 @@
 
 import { api } from 'src/boot/axios';
 import { useMasterRekeningJurnalStore } from 'src/stores/siasik/master/rekeningjurnal/rekeningjurnal';
+import { watch } from 'vue';
 import { computed, onMounted, ref } from 'vue';
 
 const store = useMasterRekeningJurnalStore()
 const formRef = ref(null)
 
-const options = ref([])
-const options_lak = ref([])
+// const options = ref([])
+// const options_lak = ref([])
+const options = computed(() => store.optionrekening)
+const options_lak = computed(() => store.optionrekeninglak)
 
 // const options = computed(() => store.optionrekening)
 // const options_lak = computed(() => store.optionrekeninglak)
 
 function simpan() {
   console.log('Form yang akan disimpan:', store.form)
-  store.simpanData().then(() => {
-    formRef.value.resetValidation()
-  })
+  // store.simpanData().then(() => {
+  //   formRef.value.resetValidation()
+  // })
 }
 
 onMounted(async () => {
@@ -204,7 +208,15 @@ onMounted(async () => {
 
 
 })
+watch(
+  () => store.form.id,
+  async (id) => {
+    if (!id) return   // hanya jalan saat edit
 
+    // await loadRekeningEdit()
+  },
+  { immediate: true }
+)
 async function filterFn(val, update) {
   if (!val || val.length < 2) {
     update(() => {

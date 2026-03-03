@@ -8,6 +8,7 @@ export const useDokumenSuratSehatStore = defineStore('dokumen_suratsehat_new', {
     // loadinghapus: false,
     dialog: false,
     cetakdata: '',
+    hiddenprint: false,
     items: [],
     item: {},
     meta: {},
@@ -16,7 +17,10 @@ export const useDokumenSuratSehatStore = defineStore('dokumen_suratsehat_new', {
       nomorSurat: '',
       noreg: '',
       norm: '',
+      notalab: '',
       pekerjaan: '',
+      adopsi: false,
+      hasil: '',
 
       // SKJ
       pendidikan: '',
@@ -193,6 +197,7 @@ export const useDokumenSuratSehatStore = defineStore('dokumen_suratsehat_new', {
 
       // this.cetakdata = item
       // this.dialog = true
+      this.hiddenprint = false
       item.cetak = true
       const sistembayar = pasien?.kodesistembayar
       const tindakan_id = item.tindakan_id

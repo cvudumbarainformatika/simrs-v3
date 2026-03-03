@@ -9,6 +9,8 @@ export const useRehabmedikSoapStore = defineStore('rehabmedik-soap-store', {
     meta: null,
     loading: false,
     item: null,
+    frekuensis: [],
+    loadingFrekuensi: false
 
   }),
   // getters: {
@@ -18,6 +20,22 @@ export const useRehabmedikSoapStore = defineStore('rehabmedik-soap-store', {
 
     setItem(item) {
       this.item = item
+    },
+
+    async getMasterFrekuensis() {
+      this.loadingFrekuensi = true
+      try {
+        const resp = await api.get('v1/simrs/rehabmedik/master/frekuensi')
+        // console.log('resp', resp);
+
+        if (resp.status === 200) {
+          this.frekuensis = resp.data?.result
+        }
+      } catch (error) {
+        console.log(error)
+      } finally {
+        this.loadingFrekuensi = false
+      }
     },
 
 

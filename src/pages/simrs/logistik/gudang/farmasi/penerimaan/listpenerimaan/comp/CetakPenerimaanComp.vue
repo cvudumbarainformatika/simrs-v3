@@ -1,42 +1,28 @@
 <template>
-  <q-dialog
-    v-model="fixed"
-    full-width
-    full-height
-  >
-    <q-card
-      style="width: 100%"
-    >
+  <q-dialog v-model="fixed" full-width full-height>
+    <q-card style="width: 100%">
       <q-card-section class="row items-center q-pb-none">
         <div class="text-h6 items-center">
           PENERIMAAN OBAT
         </div>
         <q-space />
-        <q-btn
-          v-close-popup
-          icon="icon-mat-close"
-          flat
-          round
-          dense
-        />
+        <q-btn v-close-popup icon="icon-mat-close" flat round dense />
       </q-card-section>
       <q-separator />
-      <div
-        v-if="store.loadingcetak === false"
-        id="printMe"
-        style="width: 17cm;"
-        class="q-pa-xs full-width"
-      >
+      <div v-if="store.loadingcetak === false" id="printMe" style="width: 17cm;" class="q-pa-xs full-width">
         <KopSurat />
         <div>
           <q-card-section>
-            <div
-              class="row justify-center"
-            >
-              <em><b><u>  Nomor Penerimaan Obat : {{ store.cetaks[0]?.nopenerimaan }} </u></b></em>
+            <div class="row q-mb-md justify-center">
+              <em><b><u> Nomor Penerimaan Obat : {{ store.cetaks[0]?.nopenerimaan }} </u></b></em>
             </div>
 
-            <div class="row no-wrap q-mt-md bg-grey-3 full-width">
+            <div v-if="store.cetaks[0]?.jenis_pengadaan" class="row no-wrap  full-width">
+              <div class="col-2">Jenis Pengadann</div>
+              <div class="col-1">:</div>
+              <div class="col-4">{{ store.cetaks[0]?.jenis_pengadaan }}</div>
+            </div>
+            <div class="row no-wrap  bg-grey-3 full-width">
               <div class="col-2">
                 No. Pemesanan
               </div>
@@ -123,13 +109,7 @@
         <br>
         <q-separator />
         <br>
-        <q-markup-table
-          separator="vertical"
-          flat
-          bordered
-          dense
-          wrap-cells
-        >
+        <q-markup-table separator="vertical" flat bordered dense wrap-cells>
           <thead>
             <tr>
               <th class="text-center">
@@ -153,10 +133,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr
-              v-for="(rincians, s) in store.cetaks[0]?.penerimaanrinci"
-              :key="s"
-            >
+            <tr v-for="(rincians, s) in store.cetaks[0]?.penerimaanrinci" :key="s">
               <td>{{ s + 1 }}.</td>
               <td>
                 {{ rincians?.masterobat?.nama_obat }} <br>
@@ -192,22 +169,14 @@
             Total
           </div>
           <div class="col text-center">
-            Rp.  {{ angka(Math.round(store.cetaks[0]?.total)) }}
+            Rp. {{ angka(Math.round(store.cetaks[0]?.total)) }}
           </div>
         </div>
         <q-separator class="print-hide" />
 
-        <q-card-actions
-          align="right"
-        >
-          <q-btn
-            ref="refPrint"
-            v-print="printObj"
-            color="primary"
-            label="Cetak"
-            class="print-hide"
-            icon-right="icon-mat-print"
-          />
+        <q-card-actions align="right">
+          <q-btn ref="refPrint" v-print="printObj" color="primary" label="Cetak" class="print-hide"
+            icon-right="icon-mat-print" />
         </q-card-actions>
       </div>
       <div v-else>
