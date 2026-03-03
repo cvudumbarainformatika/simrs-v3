@@ -192,7 +192,8 @@ function updateJenis(val) {
   store.form.uraian108 = ''
   store.form.tmp_kode50 = ''
   store.form.tmp_kode108 = ''
-
+  store.form.realisasi = 0
+  store.form.sisapagu = 0
   // optionsBarangs.value = []
 }
 
@@ -214,6 +215,8 @@ function updateBarang(val) {
   store.form.uraian108 = ''
   store.form.tmp_kode50 = ''
   store.form.tmp_kode108 = ''
+  store.form.realisasi = 0
+  store.form.sisapagu = 0
   const data = optionsBarangs.value.find(x => x.value === val)
   // console.log('data items', data)
   if (!data) return
@@ -360,15 +363,25 @@ const isWarningRealisasi = computed(() => {
 
   return total < realisasi
 })
+// const ifLebihdariPagu = computed(() => {
+//   const subtotalrinci = store.rincians
+//     .map((x) => parseFloat(x.pagu))
+//     .reduce((a, b) => a + b, 0) - Number(store.form.totalbaru || 0);
+//   const pagu = Number(store.form.pagu || 0)
+
+//   return subtotalrinci > pagu
+// })
 function saveData() {
   if (isWarningRealisasi.value) {
     notifErrVue('Total Baru tidak boleh lebih kecil dari Realisasi')
     return
   }
-
+  // if (ifLebihdariPagu.value) {
+  //   notifErrVue('Total Rincian tidak boleh melebihi Pagu')
+  //   return
+  // }
   store.simpanData()
   store.disableSaved = true
-  console.log('saved setlah simpan', store.form)
 }
 
 // watch(
