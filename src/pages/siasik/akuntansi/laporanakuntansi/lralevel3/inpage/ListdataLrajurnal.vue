@@ -1035,7 +1035,8 @@ function totalPendapatan() {
   const totalskg = store.hasilpendapatan.map((x) => x.nilaiskg)[0]
   const totalsemua = store.hasilpendapatan.map((x) => x.nilaisemua)[0]
   const totalselisih = store.hasilpendapatan.map((x) => x.selisih)[0]
-  const totalpersen = store.hasilpendapatan.map((x) => x.persen)[0]
+  // const totalpersen = store.hasilpendapatan.map((x) => x.persen)[0]
+  const totalpersen = totalsemua / totalpend * 100
   return {
     totalpend,
     totalsblm,
@@ -1051,7 +1052,8 @@ function totalBelanja() {
   const totalskg = store.hasilbelanja.map((x) => x.nilaiskg)[0]
   const totalsemua = store.hasilbelanja.map((x) => x.nilaisemua)[0]
   const totalselisih = store.hasilbelanja.map((x) => x.selisih)[0]
-  const totalpersen = store.hasilbelanja.map((x) => x.persen)[0]
+  // const totalpersen = store.hasilbelanja.map((x) => x.persen)[0]
+  const totalpersen = totalsemua / totalpagu * 100
   return {
     totalpagu,
     totalsblm,
@@ -1067,7 +1069,8 @@ function totalSilpa() {
   const totalskg = store.hasilsilpa.map((x) => x.nilaiskg)[0]
   const totalsemua = store.hasilsilpa.map((x) => x.nilaisemua)[0]
   const totalselisih = store.hasilsilpa.map((x) => x.selisih)[0]
-  const totalpersen = store.hasilsilpa.map((x) => x.persen)[0]
+  // const totalpersen = store.hasilsilpa.map((x) => x.persen)[0]
+  const totalpersen = totalsemua / totalpagu * 100
   return {
     totalpagu,
     totalsblm,
@@ -1083,7 +1086,8 @@ function surplusDefisit() {
   const totalskg = store.hasilpendapatan.map((x) => x.nilaiskg)[0] - store.hasilbelanja.map((x) => x.nilaiskg)[0]
   const totalsemua = store.hasilpendapatan.map((x) => x.nilaisemua)[0] - store.hasilbelanja.map((x) => x.nilaisemua)[0]
   const totalselisih = store.hasilpendapatan.map((x) => x.selisih)[0] - store.hasilbelanja.map((x) => x.selisih)[0]
-  const totalpersen = store.hasilpendapatan.map((x) => x.persen)[0] - store.hasilbelanja.map((x) => x.persen)[0]
+  // const totalpersen = store.hasilpendapatan.map((x) => x.persen)[0] - store.hasilbelanja.map((x) => x.persen)[0]
+  const totalpersen = totalsemua / totalpagu * 100
   return {
     totalpagu,
     totalsblm,
@@ -1099,7 +1103,8 @@ function sisaLebih() {
   const totalskg = (store.hasilpendapatan.map((x) => x.nilaiskg)[0] - store.hasilbelanja.map((x) => x.nilaiskg)[0]) + store.hasilsilpa.map((x) => x.nilaiskg)[0]
   const totalsemua = (store.hasilpendapatan.map((x) => x.nilaisemua)[0] - store.hasilbelanja.map((x) => x.nilaisemua)[0]) + store.hasilsilpa.map((x) => x.nilaisemua)[0]
   const totalselisih = (store.hasilpendapatan.map((x) => x.selisih)[0] - store.hasilbelanja.map((x) => x.selisih)[0]) + store.hasilsilpa.map((x) => x.selisih)[0]
-  const totalpersen = (store.hasilpendapatan.map((x) => parseFloat(x.persen))[0] - store.hasilbelanja.map((x) => parseFloat(x.persen))[0]) + store.hasilsilpa.map((x) => parseFloat(x.persen))[0]
+  // const totalpersen = (store.hasilpendapatan.map((x) => parseFloat(x.persen))[0] - store.hasilbelanja.map((x) => parseFloat(x.persen))[0]) + store.hasilsilpa.map((x) => parseFloat(x.persen))[0]
+  const totalpersen = totalsemua / totalpagu * 100
   return {
     totalpagu,
     totalsblm,
