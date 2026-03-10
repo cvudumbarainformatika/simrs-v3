@@ -46,9 +46,9 @@
 
 
 
-          <!-- <app-input-simrs-mode view v-model="html" :disable="true" class="col-12 q-mb-md" /> -->
+          <app-input-simrs-mode view v-model="html" :disable="true" class="col-12 q-mb-md" />
           <!-- <app-input-simrs-mode view v-model="item.kesimpulanhtml" :disable="true" class="col-12 q-mb-md" /> -->
-          <div class="laporan-rad" v-html="html"></div>
+          <!-- <div class="laporan-rad" v-html="html"></div> -->
         </div>
 
 
@@ -110,7 +110,8 @@ const props = defineProps({
 const html = computed(() => {
   console.log(formatRadiologi(props?.item?.hasilhtml));
 
-  return formatRadiologi(props?.item?.hasilhtml)
+  // return formatRadiologi(props?.item?.hasilhtml)
+  return props?.item?.hasilhtml
 })
 
 const qrUrl = computed(() => {
