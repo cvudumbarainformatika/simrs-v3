@@ -24,6 +24,20 @@ export const useTransaksiNPDUP = defineStore('transaksi-npd-up-store', {
       tglentry: '',
       rekening: ''
     },
+
+    formnpk: {
+      nospm: '',
+      nosppup: '',
+      tglSpm: date.formatDate(Date.now(), 'YYYY-MM-DD'),
+      tgltransSpp: date.formatDate(Date.now(), 'YYYY-MM-DD'),
+      kdBendaharaKeluar: '',
+      bendaharapengeluaran: '',
+      jumlahspp: '',
+      namabank: '',
+      norekening: '',
+      uraian: '',
+      uraianPekerjaan: '',
+    },
     params: {
       q: '',
       tahun: date.formatDate(Date.now(), 'YYYY'),
@@ -261,24 +275,52 @@ export const useTransaksiNPDUP = defineStore('transaksi-npd-up-store', {
       this.loading = false
     },
 
-    async createNpk(row) {
-      this.loading = true
-      // const payload = { id: row.id }
+    // async createNpk(row) {
+    //   this.loading = true
+    //   // const payload = { id: row.id }
+    //   try {
+    //     const resp = await api.post('/v1/transaksi/panjar/createnpk', row)
+    //     if (resp.status === 200) {
+    //       // this.items = resp?.data?.data
+    //       notifSuccess(resp)
+    //       this.getDatabelumcreate()
+    //     }
+    //     this.loading = false
+    //   }
+    //   catch (error) {
+    //     notifErr(error)
+    //     this.loading = false
+    //   }
+    //   finally {
+    //     this.loading = false
+    //   }
+    // },
+    async createNpk() {
+      this.loadingSave = true
+      const params = {
+        // nospm: this.formnpk.nospm,
+        nosppup: this.formnpk.nosppup,
+        tglSpm: this.formnpk.tglSpm,
+        uraianPekerjaan: this.formnpk.uraianPekerjaan,
+      }
       try {
-        const resp = await api.post('/v1/transaksi/panjar/createnpk', row)
-        if (resp.status === 200) {
-          // this.items = resp?.data?.data
-          notifSuccess(resp)
-          this.getDatabelumcreate()
+        const resp = await api.post('v1/transaksi/panjar/createnpk', params)
+        // console.log('resp', resp)
+        if (resp.success === true) {
+          this.formnpk.nospm = resp?.data?.data?.nospm
+          this.items = resp?.data?.data
+
         }
-        this.loading = false
-      }
-      catch (error) {
-        notifErr(error)
-        this.loading = false
-      }
-      finally {
-        this.loading = false
+        notifSuccessVue(resp?.data?.message)
+
+        this.getDatabelumcreate()
+        this.dialogCetak = false
+        this.loadingSave = false
+      } catch (error) {
+        console.log(error)
+        this.loadingSave = false
+      } finally {
+        this.loadingSave = false
       }
     },
 

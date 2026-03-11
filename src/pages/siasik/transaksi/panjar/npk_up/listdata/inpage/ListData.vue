@@ -52,7 +52,7 @@
             <div class="row justify-center">
               <div class="q-pr-xs">
                 <q-btn flat size="sm" class="bg-yellow-9 text-white" label="CREATE" :auth="user"
-                  @click="createNpk(props?.row)">
+                  @click="viewData(props?.row)">
 
                 </q-btn>
               </div>
@@ -61,16 +61,17 @@
         </q-tr>
       </template>
     </q-table>
+    <form-data v-model="store.dialogCetak" :cetakdata="cetakdata" />
   </div>
 </template>
 <script setup>
 import { useQuasar } from 'quasar';
-import { formatDenganRp, formatRpDouble } from 'src/modules/formatter';
+import { formatDenganRp, formatRpDouble, formattanpaRp } from 'src/modules/formatter';
 import { useAplikasiStore } from 'src/stores/app/aplikasi';
 import { useTransaksiNPDUP } from 'src/stores/siasik/transaksi/panjar/npd_up/store_npd_up';
 import { computed, defineAsyncComponent, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
-
+const FormData = defineAsyncComponent(() => import('./FormData.vue'))
 const store = useTransaksiNPDUP()
 
 const auth = useAplikasiStore()
@@ -146,6 +147,20 @@ const clearSearch = () => {
   store.goToPage(1)
 }
 
+const cetakdata = ref([])
+function viewData(row) {
+  console.log('row cetak', row)
+  store.dialogCetak = true
+  cetakdata.value = row
+  store.formnpk.nosppup = row.nosppup
+  store.formnpk.tgltransSpp = row.tglTrans
+  store.formnpk.bendaharapengeluaran = row.bendaharaKeluar
+  store.formnpk.kdBendaharaKeluar = row.kdBendaharaKeluar
+  store.formnpk.uraian = row.uraian
+  store.formnpk.jumlahspp = formattanpaRp(row.jumlahspp)
+  store.formnpk.namabank = row.bank
+  store.formnpk.norekening = row.kodeRek
+}
 
 
 const $q = useQuasar()

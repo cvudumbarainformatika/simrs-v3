@@ -74,7 +74,7 @@
                         : Bendahara Pengeluaran BLUD RSUD Dokter Mohamad Saleh
                       </div>
                       <div class="q-py-xs">
-                        : {{ store.cetaknotadinas.tglTrans }}
+                        : {{ store.cetaknotadinas.tglSpm }}
                       </div>
                       <div class="q-py-xs">
                         : Permohonan Pergeseran Kas
@@ -84,7 +84,7 @@
                   <div class="row q-col-gutter-md q-pr-md q-pt-sm full-width">
                     <div class="col text-justify text-wrap" style="line-height: 1.6;">
                       <span class="invisible">..........</span>Sehubungan dengan pelaksanaan kegiatan di
-                      TA {{ dateOnlyYears(store.cetaknotadinas.tglTrans) }}, maka
+                      TA {{ dateOnlyYears(store.cetaknotadinas.tglSpm) }}, maka
                       bersama ini kami sampaikan dengan hormat permohonan Pergeseran Kas BLUD ke Kas Bendahara
                       Pengeluaran dengan rincian sebagai berikut:
                     </div>
@@ -115,7 +115,7 @@
                         <div>{{ store.cetaknotadinas.nosppup }}</div>
                       </td>
                       <td>
-                        <div>{{ store.cetaknotadinas.tglTrans }}</div>
+                        <div>{{ store.cetaknotadinas.tglSpm }}</div>
                       </td>
                       <td>
                         <div>{{ store.cetaknotadinas.uraian }}</div>
