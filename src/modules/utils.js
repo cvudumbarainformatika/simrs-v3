@@ -480,7 +480,7 @@ const inputMustNumber = (value) => {
   return temp
 }
 
-function terbilangRupiah (nilai) {
+function terbilangRupiah(nilai) {
   nilai = Math.floor(Math.abs(nilai))
   const huruf = [
     '',
@@ -536,7 +536,7 @@ function terbilangRupiah (nilai) {
   }
   return penyimpanan
 }
-function setNumerKoma (val, koma) {
+function setNumerKoma(val, koma) {
   const inc = val.includes('.')
   const ind = val.indexOf('.')
   const panj = val?.length
