@@ -127,3 +127,46 @@ h1,h2,h3,h4,h5 {
   }
 }
 
+
+// ===================================================== BUAT PRINT Radiologi
+// ===================================================== BUAT 
+
+.laporan-rad {
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+/* baris organ */
+.rad-row {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  column-gap: 10px;
+}
+
+/* label kiri */
+.rad-label {
+  font-weight: 600;
+}
+
+/* isi kanan */
+.rad-value {
+  word-break: normal;
+  white-space: normal;
+}
+
+.rad-value::before {
+  content: ": ";
+  font-weight: normal;
+}
+
+/* kesimpulan */
+.rad-kesimpulan-title {
+  margin-top: 20px;
+  font-weight: bold;
+  font-size: 15px;
+}
+
+.laporan-rad ul {
+  margin-top: 4px;
+  padding-left: 20px;
+}

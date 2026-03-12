@@ -37,16 +37,18 @@
             <div class="col-12 text-right">
               <!-- INI DISURUH UBAH SAMA MBAK ANE (DISURUH MANAGEMENT) -->
               <!-- <div class="text-weight-bold">Probolinggo, {{ humanDate(item?.tgl) }}</div> -->
-              <div class="text-weight-bold">Probolinggo, {{ humanDate(item?.rs3) || humanDate(pasien?.tglentri) }}</div>
+              <!-- INI DISURUH GANTI LAGI SAMA MAS SUBHAN (DISURUH MANAGEMENT) tgl 6 maret 2026 -->
+              <!-- <div class="text-weight-bold">Probolinggo, {{ humanDate(item?.rs3) || humanDate(pasien?.tglentri) }}</div> -->
+              <div class="text-weight-bold">Probolinggo, {{ humanDate(pasien?.permintaan?.trmtgl) }}</div>
             </div>
           </div>
 
 
 
 
-          <app-input-simrs-mode view v-model="item.hasilhtml" :disable="true" class="col-12 q-mb-md" />
+          <app-input-simrs-mode view v-model="html" :disable="true" class="col-12 q-mb-md" />
           <!-- <app-input-simrs-mode view v-model="item.kesimpulanhtml" :disable="true" class="col-12 q-mb-md" /> -->
-
+          <!-- <div class="laporan-rad" v-html="html"></div> -->
         </div>
 
 
@@ -61,7 +63,9 @@
           <div class="kanan text-center">
             <!-- <div><b>Probolinggo, {{ humanDate(item?.tgl) }}</b></div> -->
             <!-- INI DISURUH UBAH SAMA MBAK ANE (DISURUH MANAGEMENT) -->
-            <div><b>Probolinggo, {{ humanDate(item?.rs3) }}</b></div>
+            <!-- <div><b>Probolinggo, {{ humanDate(item?.rs3) }}</b></div> -->
+            <!-- INI DISURUH GANTI LAGI SAMA MAS SUBHAN (DISURUH MANAGEMENT) tgl 6 maret 2026 -->
+            <div><b>Probolinggo, {{ humanDate(pasien?.permintaan?.trmtgl) }}</b></div>
             <div class="q-mb-sm">Dokter Penanggung Jawab Pelayanan</div>
             <div class="column flex-center">
               <div style="width: 100px;">
@@ -90,6 +94,7 @@
 <script setup>
 import { computed } from 'vue'
 import { humanDate } from 'src/modules/formatter'
+import { formatRadiologi } from 'src/modules/formatRadiologi'
 const props = defineProps({
   item: {
     type: Object,
@@ -102,7 +107,12 @@ const props = defineProps({
 })
 
 // console.log('props', props.item);
+const html = computed(() => {
+  console.log(formatRadiologi(props?.item?.hasilhtml));
 
+  // return formatRadiologi(props?.item?.hasilhtml)
+  return props?.item?.hasilhtml
+})
 
 const qrUrl = computed(() => {
   const noreg = props?.item?.rs2 // noreg
