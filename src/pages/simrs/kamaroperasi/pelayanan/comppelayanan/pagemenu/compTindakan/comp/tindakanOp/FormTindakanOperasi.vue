@@ -6,11 +6,19 @@
       </div>
     </div>
     <div class="col full-height relative-position">
+
       <div class="row items-center q-my-xs">
         <div class="col-4">Tanggal </div>
         <div class="col-8">
           <app-input-date :model="store.formTindakan.tanggal" outlined label="" clearable
             @set-model="setForm('tanggal', $event)" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-4">Nota </div>
+        <div class="col-8">
+          <app-autocomplete v-model="store.formTindakan.nota" :source="store.notaTindakans" label="Nota Tindakan"
+            outlined hideDropdownIcon />
         </div>
       </div>
       <div class="row items-center q-my-xs no-wrap">
@@ -81,21 +89,37 @@
       </div>
       <div class="row items-center q-my-xs">
         <div class="col-4">Dokter Operator </div>
-        <div class="col-8">{{ surgical?.dr_operator?.nama ?? 'Belum diisi di Surgical Safety' }}</div>
+        <div class="col-8">
+          <app-autocomplete v-model="store.formTindakan.rs9" :key="store.nakes" :source="dokters" autocomplete="nama"
+            option-label="nama" option-value="kdpegsimrs" outlined valid label=""
+            @update:model-value="setForm('rs9', $event)" />
+        </div>
+      </div>
+      <div class="row items-center q-my-xs">
+        <div class="col-4">Asisten Operator </div>
+        <div class="col-8">
+          <app-autocomplete-new v-model="store.formTindakan.rs11" :key="store.nakes" :source="nonDokters"
+            autocomplete="nama" option-label="nama" option-value="kdpegsimrs" outlined valid label="" multiple
+            @update:model-value="setForm('rs11', $event)" />
+        </div>
       </div>
       <div class="row items-center q-my-xs">
         <div class="col-4">Dokter Anastesi </div>
-        <div class="col-8">{{ surgical?.dr_anastesi?.nama ?? 'Belum diisi di Surgical Safety' }}</div>
+        <div class="col-8"><app-autocomplete v-model="store.formTindakan.rs12" :key="store.nakes" :source="dokters"
+            autocomplete="nama" option-label="nama" option-value="kdpegsimrs" outlined valid label=""
+            @update:model-value="setForm('rs12', $event)" /></div>
       </div>
       <div class="row items-center q-my-xs">
-        <div class="col-4">Penata Anastesi </div>
-        <div class="col-8">{{ surgical?.pen_anastesi?.nama ?? 'Belum diisi di Surgical Safety' }}</div>
+        <div class="col-4">Asisten Anastesi </div>
+        <div class="col-8">
+          <app-autocomplete-new v-model="store.formTindakan.rs13" :key="store.nakes" :source="nonDokters"
+            autocomplete="nama" option-label="nama" option-value="kdpegsimrs" outlined valid label="" multiple
+            @update:model-value="setForm('rs13', $event)" />
+        </div>
       </div>
-      <div class="row items-center q-my-xs">
-        <div class="col-4">Perawat Instrumen </div>
-        <div class="col-8">{{ surgical?.per_instrumen?.nama ?? 'Belum diisi di Surgical Safety' }}</div>
-      </div>
-      <div class="row items-center q-my-xs">
+
+
+      <!-- <div class="row items-center q-my-xs">
         <div class="col-4">Perawat Sirkuler </div>
         <div class="col-8">{{ surgical?.per_sirkuler?.nama ?? 'Belum diisi di Surgical Safety' }}</div>
       </div>
@@ -106,11 +130,16 @@
       <div class="row items-center q-my-xs">
         <div class="col-4">Asisten 2 </div>
         <div class="col-8">{{ surgical?.ass2?.nama ?? 'Belum diisi di Surgical Safety' }}</div>
-      </div>
+      </div> -->
       <!-- {{ surgical }} -->
-      <div class="row q-ma-sm q-mb-xl q-mr-xl justify-end absolute-bottom">
-        <app-btn label="Simpan" :loading="store.loading"
-          :disable="store.loading || !!pasien?.tindakanop?.laporanoperasi" @click="simpan()" />
+      <div class="row q-ma-sm q-mb-xl q-mr-xl justify-end absolute-bottom q-col-gutter-x-md">
+        <app-btn label="Reset Form" class="col-auto q-mr-lg" color="orange" :loading="store.loading"
+          :disable="store.loading || !!pasien?.tindakanop?.laporanoperasi" @click="() => {
+            tindakan = null
+            store.resetFormTindakan()
+          }" />
+        <app-btn label="Simpan" class="col-auto" :loading="store.loading" :disable="store.loading || getLaporan()"
+          @click="simpan()" />
       </div>
     </div>
   </div>
@@ -121,7 +150,7 @@ import { formatDouble } from 'src/modules/formatter'
 import { notifErrVue } from 'src/modules/utils'
 import { useAplikasiStore } from 'src/stores/app/aplikasi'
 import { useLaporanOperasiStore } from 'src/stores/simrs/kamaroperasi/laporanOperasi'
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 
 
 const props = defineProps({
@@ -135,8 +164,19 @@ const app = useAplikasiStore()
 const options = ref([])
 const tindakan = ref(null)
 const surgical = props?.pasien?.surgical?.find(x => x.nota === props.pasien.rs2)
+const dokters = computed(() => {
+  return store.nakes.filter(x => x.kdgroupnakes == '1')
+})
+const nonDokters = computed(() => {
+  return store.nakes.filter(x => x.kdgroupnakes != '1')
+})
+
+function getLaporan () {
+  return props.pasien?.laporanop?.find(x => x.rs2 === store.formTindakan.nota) ?? false
+}
+
 function setForm (key, val) {
-  console.log('st form', key, val)
+  console.log('set form tindakan', key, val)
 
   store.setFormTindakan(key, val)
 }
@@ -200,20 +240,20 @@ function tarifSelected (val) {
 }
 async function filterFn (val, update, abort) {
   console.log('filter', val)
+  const data = store.tarif ?? []
 
-  if (val?.length < 1) {
-    abort()
-    return
-  }
+  // if (val?.length < 1) {
+  //   options.value = data
+  //   return
+  // }
 
-  const resp = await store.getTarifOp(val)
-  console.log('resp', resp)
-  const data = resp.data ?? []
+  // const resp = await store.getTarifOp(val)
+  // console.log('resp', resp)
 
   update(() => {
-    // const needle = val?.toLowerCase()
-    // options.value = data?.length ? data?.filter(v => v?.namaobat.toLowerCase().indexOf(needle) > -1) : []
-    options.value = data
+    const needle = val?.toLowerCase()
+    options.value = data?.length ? data?.filter(v => v?.nama.toLowerCase().indexOf(needle) > -1) : []
+    // options.value = data
   })
 }
 const refTindakan = ref(null)
@@ -230,7 +270,19 @@ function simpan () {
   console.log('form', store.formTindakan)
   if (validate()) store.simpanFormTindakan()
 }
+function setTindakan (val) {
+  const tarif = store.tarif.find(v => v.kode == val.rs4)
+  if (tarif) {
+    tindakan.value = tarif
+    tarifSelected(tarif)
+  }
+  console.log('set Tindakan', tarif, val, store.tarif)
+
+}
+defineExpose({ setTindakan })
 onMounted(() => {
+  store.getTarifOp()
+  store.getNakes()
   // store.resetFormTindakan()
   // store.setFormTindakan('tanggal', date.formatDate(Date.now(), 'YYYY-MM-DD'))
   // store.setFormTindakan('noreg', props?.pasien?.noreg)
