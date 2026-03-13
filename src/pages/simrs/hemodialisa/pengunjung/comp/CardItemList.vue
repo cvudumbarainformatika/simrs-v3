@@ -21,6 +21,8 @@
             <div class="flex q-gutter-sm q-pt-xs">
               <div> <b>No. RM :</b> <span class="text-primary">{{ item?.norm }}</span></div>
               <div> <b>No. REG :</b> <span class="text-grey-8">{{ item?.noreg }}</span></div>
+              <div v-if="item?.nota_permintaan"> <b>No. NOTA :</b> <span class="text-grey-8">{{ item?.nota_permintaan
+              }}</span></div>
             </div>
             <div class="ellipsis text-grey-8 q-pt-xs">
               Alamat : <i>{{ item?.alamat }}</i>

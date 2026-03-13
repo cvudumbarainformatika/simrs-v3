@@ -300,6 +300,10 @@ const detailOrang = ref(null)
 
 const bulanName = computed(() => bulans(currentMonth.value))
 
+
+console.log('store', store?.items);
+
+
 const changePeriode = () => {
   const mm = currentMonth.value.toString().padStart(2, '0')
   const periode = `${tahun.value}-${mm}`
@@ -363,6 +367,9 @@ function getTransaksiAbsen(num, data, jns) {
 }
 
 function getTransaksiAbsens(num, row) {
+  // console.log('num', num);
+  // console.log('row', row);
+
   const bulanX = currentMonth.value.toString().padStart(2, '0')
   const cellDate = `${tahun.value}-${bulanX}-${num.toString().padStart(2, '0')}`
   const trans = row.transaksi_absen?.filter(x => x.tanggal === cellDate) || []

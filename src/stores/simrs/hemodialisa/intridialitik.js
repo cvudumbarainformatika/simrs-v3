@@ -85,6 +85,9 @@ export const useIntridialitikHemodialisaStore = defineStore('intridialitik-hemod
 
     simpan () {
       this.loading = true
+      this.form.tgl_kunjungan = this.pengunjung?.pasien?.tgl_kunjungan
+      console.log('simpan', this.form, this.pengunjung?.pasien)
+
       return new Promise(resolve => {
         api.post('v1/simrs/hemodialisa/layanan/intradialitik/simpan', this.form)
           .then(resp => {

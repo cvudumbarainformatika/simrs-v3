@@ -189,6 +189,7 @@
   </div>
 </template>
 <script setup>
+import { date } from 'quasar'
 import KopSurat from 'src/components/KopSurat.vue'
 
 import { computed } from 'vue'
@@ -201,7 +202,7 @@ const props = defineProps({
 })
 
 const header = computed(() => {
-  const head = props?.pasien?.intradialitik?.map(item => item?.rs4)
+  const head = props?.pasien?.intradialitik?.filter(item => date.formatDate(item?.rs3, 'YYYY-MM-DD') === date.formatDate(props?.pasien?.tgl_kunjungan, 'YYYY-MM-DD'))?.map(item => item?.rs4)
   return head
 })
 const maping = computed(() => {
@@ -222,8 +223,9 @@ const maping = computed(() => {
     { title: 'Perawat', value: 'user' },
   ]
   hasil.forEach(item => {
+    const intranya = props?.pasien?.intradialitik?.filter(item => date.formatDate(item?.rs3, 'YYYY-MM-DD') === date.formatDate(props?.pasien?.tgl_kunjungan, 'YYYY-MM-DD'))
     header.value?.forEach(head => {
-      const data = props?.pasien?.intradialitik?.find(it => it?.rs4 === head)
+      const data = intranya?.find(it => it?.rs4 === head)
       if (data) {
         if (data?.rs4.includes('PRE')) {
           if (item.value == 'user') item.pre = data[item.value]?.nama
@@ -261,6 +263,8 @@ const maping = computed(() => {
       }
     })
   })
+  console.log('hasil', props?.pasien, hasil)
+
   return hasil
 })
 
