@@ -176,13 +176,14 @@ const displayRows = computed(() => {
 
   return rows.filter(row =>
     [
-      row.keterangan,
+      row.koders,
+      row.usulan,
       row.koderek50,
       row.uraian50,
       row.koderek108,
       row.uraian108,
       row.satuan,
-      row.nilai
+      row.pagu
     ]
       .filter(Boolean)
       .some(val =>
