@@ -312,11 +312,14 @@ export const useListPasienHemodialisaStore = defineStore('list-pasien-hemodialis
       return new Promise((resolve, reject) => {
         api.post('v1/simrs/hemodialisa/hemodialisa/terima-pasien', pas)
           .then((resp) => {
-            // console.log('resp', resp)
-            const findPasien = this.items.find(x => x?.noreg === pas?.noreg)
+            console.log('pas', pas?.nota_permintaan)
+            const findPasien = pas?.nota_permintaan ? this.items.find(x => x?.noreg === pas?.noreg && x?.nota_permintaan === pas?.nota_permintaan) : this.items.find(x => x?.noreg === pas?.noreg)
+            console.log('find', findPasien)
+
             if (findPasien) {
               const datanya = resp?.data?.data
               const objectName = Object.keys(datanya)
+
               objectName?.forEach((key) => {
                 findPasien[key] = datanya[key]
               })
