@@ -70,11 +70,11 @@ function subscribedChannel () {
   channel.subscribed(() => {
     console.log('subscribed private.notif.depo-farmasi channel !!!')
   }).listen('.notif-message', (e) => {
-    console.log('listen notif', e)
-    if (apps?.user?.kdruangansim === e?.message?.data?.depo && e?.message?.data?.status === '1') {
-      if (store.params.page === 1 && store.items?.length < store.params.per_page && store.meta?.last_page === 1) store.getSatuResep(e?.message?.data)
-      else store.getDataTable(true)
-    }
+    // console.log('listen notif', e)
+    // if (apps?.user?.kdruangansim === e?.message?.data?.depo && e?.message?.data?.status === '1') {
+    //   if (store.params.page === 1 && store.items?.length < store.params.per_page && store.meta?.last_page === 1) store.getSatuResep(e?.message?.data)
+    //   else store.getDataTable(true)
+    // }
   })
 }
 const kdruangansim = computed(() => {

@@ -69,6 +69,22 @@ const props = defineProps({
   pasien: {
     type: Object,
     default: null
+  },
+  loadingTerima: {
+    type: Boolean,
+    default: false
+  },
+  nakes: {
+    type: String,
+    default: null
+  },
+  depo: {
+    type: String,
+    default: null
+  },
+  headheight: {
+    type: Number,
+    default: 0
   }
 })
 

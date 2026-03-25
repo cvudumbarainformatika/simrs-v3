@@ -32,7 +32,7 @@
                   </div>
                 </div>
                 <component :is="menu.comp" v-else :key="pasien" :pasien="pasien" :loading-terima="store.loadingTerima"
-                  :kasus="store?.jnsKasusPasien" :nakes="nakes" depo="rnp" :headheight='headerHeight' />
+                  :nakes="nakes" depo="rnp" :headheight='headerHeight' />
               </template>
               <template #fallback>
                 <AppLoader />

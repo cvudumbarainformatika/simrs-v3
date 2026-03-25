@@ -9,7 +9,7 @@
         </q-header>
         <!-- LEFT DRAWER ======================================================================================-->
         <q-drawer v-model="drawer" elevated bordered show-if-above :width="230" :breakpoint="400">
-          <LeftDrawer :key="pasien" :pasien="pasien" :menus="menus" :menu="menu"
+          <LeftDrawer :key="pasien" :pasien="pasien" :menus="filterredMenus" :menu="menu"
             @click-menu="(val) => menuDiganti(val)" />
         </q-drawer>
 
@@ -26,7 +26,7 @@
                   </div>
                 </div>
                 <component v-else :is="menu.comp" :key="pasien" :pasien="pasien" :depo="pasien?.flagdepo" :store="store"
-                  :loading-terima="store.loadingTerima" :user="user" />
+                  :loading-terima="store.loadingTerima" :user="user" v-bind="menu.props" />
               </template>
               <template #fallback>
                 <AppLoader />
@@ -48,6 +48,7 @@ import { useLaboratPoli } from 'src/stores/simrs/pelayanan/poli/laborat'
 import { useRadiologiPoli } from 'src/stores/simrs/pelayanan/poli/radiologi'
 import { usePengunjungRanapStore } from 'src/stores/simrs/ranap/pengunjung'
 import { useAplikasiStore } from 'src/stores/app/aplikasi';
+import { useRoute } from 'vue-router'
 
 const drawer = ref(false)
 const props = defineProps({
@@ -61,6 +62,7 @@ const props = defineProps({
   }
 })
 
+const route = useRoute()
 const lab = useLaboratPoli()
 const radiologi = useRadiologiPoli()
 const storeRanap = usePengunjungRanapStore()
@@ -69,7 +71,13 @@ const storeRanap = usePengunjungRanapStore()
 const auth = useAplikasiStore();
 
 const user = computed(() => {
+  // console.log('auth', auth?.user?.pegawai);
   return auth?.user?.pegawai
+})
+
+
+const nakes = computed(() => {
+  return auth?.user?.pegawai?.kdgroupnakes
 })
 
 onMounted(() => {
@@ -92,9 +100,19 @@ const menus = ref([
   {
     name: 'AssesmentDokter',
     label: 'Assesment Dokter',
-    icon: 'icon-mat-medical_information',
+    icon: 'icon-my-stethoscope',
     route: ['poli'],
-    nakes: ['1', '2', '3', '4', '5', '6'],
+    nakes: ['1', null],
+    props: { isDokter: true },
+    comp: shallowRef(defineAsyncComponent(() => import('src/pages/simrs/rehabmedik/layanan/asessment/IndexPage.vue')))
+  },
+  {
+    name: 'AssesmentFisioterapis',
+    label: 'Assesment Fisioterapis',
+    icon: 'icon-mat-app_registration',
+    route: ['poli'],
+    nakes: ['6', null],
+    props: { isDokter: false },
     comp: shallowRef(defineAsyncComponent(() => import('src/pages/simrs/rehabmedik/layanan/asessment/IndexPage.vue')))
   },
   // {
@@ -111,13 +129,13 @@ const menus = ref([
   //   nakes: ['1', '2', '3', '4', '5', '6'],
   //   comp: shallowRef(defineAsyncComponent(() => import('src/pages/simrs/poli/tindakan/comptindakan/pagemenu/PemeriksaanPageBaru.vue')))
   // },
-  {
-    name: 'PengkajianPage',
-    label: 'Pengkajian Rehab Medik',
-    icon: 'icon-mat-medical_information',
-    nakes: ['1', '2', '3', '4', '5', '6'],
-    comp: shallowRef(defineAsyncComponent(() => import('./layanan/pengkajian/comp/pengkajian/IndexPage.vue')))
-  },
+  // {
+  //   name: 'PengkajianPage',
+  //   label: 'Pengkajian Rehab Medik',
+  //   icon: 'icon-mat-medical_information',
+  //   nakes: ['1', '2', '3', '4', '5', '6'],
+  //   comp: shallowRef(defineAsyncComponent(() => import('./layanan/pengkajian/comp/pengkajian/IndexPage.vue')))
+  // },
   {
     name: 'DiagnosaPage',
     label: 'Diagnosa & Tindakan',
@@ -141,6 +159,30 @@ const menus = ref([
     comp: shallowRef(defineAsyncComponent(() => import('./layanan/penunjang/IndexPage.vue')))
   },
 ])
+
+const filterredMenus = computed(() => {
+  const link = route?.path
+  const docOnly = ['mpp', 'rekammedik']
+  const pathSegments = link.split('/').filter(Boolean)
+  // console.log('pathSegments', pathSegments);
+
+
+  // const mpp = route.matched?.map(a => a.path)?.includes('/mpp') ?? false
+  const mpp = docOnly.some(menu => pathSegments.includes(menu))
+  // console.log('pathSegments', pathSegments, mpp, docOnly.some(menu => pathSegments.includes(menu)))
+  if (!mpp) {
+    const byPass = ['sa']
+    const user = auth?.user?.username
+    if (byPass.includes(user)) {
+      return menus.value.filter(menu => menu?.mpp !== true)
+    }
+    return menus.value.filter(menu => menu.nakes.includes(nakes.value) && menu?.mpp !== true)
+  }
+  else {
+
+    return menus.value.filter(menu => menu.nakes.some(r => pathSegments.includes(r)))
+  }
+})
 const menu = ref(menus.value[0])
 
 function menuDiganti(val) {

@@ -18,7 +18,8 @@
           store.reqs.levelberapa = aa
           store.hasilpendapatan = []
           store.hasilbeban = []
-          console.log('lvl', store.reqs.levelberapa)
+          store.hasilsurplusdefisit = []
+          store.hasilluarbiasa = []
         }" />
     </div>
     <div class="q-pa-sm" style="width:25%">
@@ -96,7 +97,7 @@ function cetakData() {
   store.dialogCetak = true
 }
 async function exportToExcel() {
-  if (!store.hasilpendapatan?.length && !store.hasilbeban?.length) {
+  if (!store.hasilpendapatan?.length && !store.hasilbeban?.length && !store.hasilsurplusdefisit?.length) {
     notifErrVue('Tidak ada data untuk diekspor!');
     return;
   }
@@ -145,7 +146,19 @@ async function exportToExcel() {
     totalBeban(),
   ])
 
+  store.hasilsurplusdefisit.forEach((item) => {
+    data.push([
+      item.kode,
+      item.uraian,
+      item.nilai,
+    ])
+  });
 
+  data.push([
+    '',
+    'JUMLAH SURPLUS/DEFISIT KEGIATAN NON OPERASIONAL BEBAN DAERAH',
+    surplusdefisit(),
+  ])
   // Surplus/Defisit
   data.push([
     '',

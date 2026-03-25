@@ -149,8 +149,11 @@
                       <div class="col-shrink ">
                         {{ item?.permintaanresep?.length + i + 1 }}
                       </div>
-                      <div class="col-5 ">
+                      <div class="col-2 ">
                         {{ lirac?.namaracikan }}
+                      </div>
+                      <div class="col-3 ">
+                        {{ lirac?.tiperacikan }} ({{ lirac?.keterangan }})
                       </div>
                       <div class="col-2 ">
                         <i>{{ lirac?.aturan }} </i>
@@ -161,8 +164,11 @@
                     </div>
                     <div v-for="(rac, n) in lirac?.rincian" :key="n">
                       <div class="row q-ml-lg f-12 items-end">
-                        <div>* <i>{{ rac?.mobat?.nama_obat }} - <span class="">(rsp : {{ rac?.jumlahresep }}) - </span>
-                            <span class="">{{ rac?.jumlahobat }} ({{ rac?.mobat?.satuan_k }})</span></i></div>
+                        <div>* <i>{{ rac?.mobat?.nama_obat }} <span v-if="lirac?.tiperacikan == 'DTD'">- ( dosis resep :
+                              {{ rac?.dosismaksimum }} )</span> - <span class="">(rsp : {{
+                                rac?.jumlah }}) -
+                            </span>
+                            <span class="">{{ rac?.obatkeluar }} ({{ rac?.mobat?.satuan_k }})</span></i></div>
                       </div>
                     </div>
                     <q-separator class="q-ml-lg q-my-xs" />

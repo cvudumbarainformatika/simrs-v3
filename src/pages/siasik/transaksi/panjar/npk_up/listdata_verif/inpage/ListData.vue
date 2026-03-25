@@ -31,16 +31,16 @@
       </template>
       <template #body="props">
         <q-tr>
-          <q-td key="nosppup" :props="props">
+          <q-td key="nospm" :props="props">
             <div>
-              {{ props.row.nosppup }}
+              {{ props.row.noSpm }}
             </div>
           </q-td>
-          <q-td key="tglTrans" :props="props">
-            {{ props.row?.tglTrans }}
+          <q-td key="tglSpm" :props="props">
+            {{ props.row?.tglSpm }}
           </q-td>
           <q-td key="bendahara" :props="props">
-            {{ props.row.bendaharaKeluar }}
+            {{ props.row.bendaharapengeluaran }}
           </q-td>
           <q-td key="uraian" :props="props">
             {{ props.row?.uraian }}
@@ -82,19 +82,19 @@ onMounted(() => {
 })
 const listdatanota = [
   {
-    name: 'nosppup',
+    name: 'nospm',
     label: 'No Transaksi',
     align: 'left',
-    field: 'nosppup',
+    field: 'noSpm',
     // field: row => [row.nosppup, row.total],
     sortable: true,
     headerStyle: 'height:50px; font-weight: bold;'
   },
   {
-    name: 'tglTrans',
+    name: 'tglSpm',
     label: 'Tanggal',
     align: 'left',
-    field: 'tglTrans',
+    field: 'tglSpm',
     sortable: true,
     headerStyle: 'height:50px; font-weight: bold;'
   },
@@ -102,7 +102,7 @@ const listdatanota = [
     name: 'bendahara',
     label: 'Bendahara Pengeluaran',
     align: 'left',
-    field: 'bendaharaKeluar',
+    field: 'bendaharapengeluaran',
     // field: row => [row.nonpk],
     sortable: true,
     // style: 'width: 200px',

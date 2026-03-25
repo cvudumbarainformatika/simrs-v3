@@ -81,7 +81,7 @@
             <q-separator class="q-my-sm" size="1px" />
             <!-- Inventaris Instrumen -->
             <div v-if="tampilInst">
-              <div>instrumen</div>
+              <InstrumenTable />
 
               <q-separator class="q-my-sm" size="1px" />
             </div>
@@ -100,6 +100,7 @@ import { defineAsyncComponent, onMounted, ref } from 'vue'
 const Info = defineAsyncComponent(() => import('./InfoPasienPage.vue'))
 const ImplatTable = defineAsyncComponent(() => import('./subComp/ImplantTable.vue'))
 const KasaTable = defineAsyncComponent(() => import('./subComp/KasaTable.vue'))
+const InstrumenTable = defineAsyncComponent(() => import('./subComp/InstrumenTable.vue'))
 const props = defineProps({
   pasien: {
     type: Object,
@@ -129,5 +130,6 @@ const getImg = (file) => {
 onMounted(() => {
   store.ambilMasterkasa()
   store.resetFormKasa()
+  store.resetFormInstrumen()
 })
 </script>
