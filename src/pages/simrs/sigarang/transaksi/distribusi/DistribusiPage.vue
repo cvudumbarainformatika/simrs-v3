@@ -313,7 +313,7 @@
                         </div>
                         <div class="col-1 text-right">
                           <div v-if="row.status >= 5">
-                            {{ item.jumlah_disetujui }}
+                            {{ item.jumlah_distribusi }}
                           </div>
                           <div v-if="row.status < 5">
                             -

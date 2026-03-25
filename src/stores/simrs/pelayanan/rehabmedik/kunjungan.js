@@ -115,11 +115,11 @@ export const useKunjunganRehabmediStore = defineStore('kunjungan-rehabmedik-stor
       this.loadingSaveGantiDpjp = true
       try {
         const resp = await api.post('/v1/simrs/rehabmedik/gantidpjp', form)
-        console.log('resp', resp);
+        // console.log('resp', resp);
 
         if (resp.status === 200) {
           const findPasien = this.items.find(x => x?.noreg === pasien?.noreg)
-          console.log('findPasien', findPasien);
+          // console.log('findPasien', findPasien);
 
           if (findPasien) {
             const data = findPasien

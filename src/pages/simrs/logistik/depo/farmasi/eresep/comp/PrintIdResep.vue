@@ -182,16 +182,16 @@
           <div class="ttd-pasien">
             <div>Penerima Resep</div>
           </div>
-          <div class="ttd-petugas">
+          <div class="ttd-petugas column items-center">
             <div>{{ dateFullFormat(new Date()) }} : {{ formatJam(new Date()) }}</div>
-            <div>
+            <div class="text-center" style="width: 60px;">
               <vue-qrcode :value="qrUrl" tag="svg" :options="{
                 errorCorrectionLevel: 'Q',
                 color: {
                   dark: '#000000',
                   light: '#ffffff',
                 },
-                margin: 2
+                margin: 2,
               }" />
             </div>
             <div class="text-center">

@@ -530,18 +530,18 @@ export const useLaporanLraLaprealisasianggaranStore = defineStore('laporan_reali
         // }
 
         // NILAI PAGU
-        xy[i].totalPagu = el?.map((x) => parseInt(x.pagu)).reduce((a, b) => a + b, 0)
+        xy[i].totalPagu = el?.map((x) => parseFloat(x.pagu)).reduce((a, b) => a + b, 0)
         // console.log('dataxxx', val[i])
         // NILAI REALISASI SEBELUMNYA
-        xy[i].sumLSsebelumnya = lsAwal?.map((x) => parseInt(x.nominalpembayaran)).reduce((a, b) => a + b, 0)
-        xy[i].sumPanjarsebelumnya = pjrAwal?.map((x) => parseInt(x.jumlahbelanjapanjar)).reduce((a, b) => a + b, 0)
-        xy[i].sumCPsebelumnya = cpAwal?.map((x) => parseInt(x.nominalcontrapost)).reduce((a, b) => a + b, 0)
+        xy[i].sumLSsebelumnya = lsAwal?.map((x) => parseFloat(x.nominalpembayaran)).reduce((a, b) => a + b, 0)
+        xy[i].sumPanjarsebelumnya = pjrAwal?.map((x) => parseFloat(x.jumlahbelanjapanjar)).reduce((a, b) => a + b, 0)
+        xy[i].sumCPsebelumnya = cpAwal?.map((x) => parseFloat(x.nominalcontrapost)).reduce((a, b) => a + b, 0)
         xy[i].totalRealisasiSebelumnya = xy[i].sumLSsebelumnya + xy[i].sumPanjarsebelumnya - xy[i].sumCPsebelumnya
 
         // NILAI REALISASI SEKARANG
-        xy[i].sumLS = ls?.map((x) => parseInt(x.nominalpembayaran)).reduce((a, b) => a + b, 0)
-        xy[i].sumPanjar = pjr?.map((x) => parseInt(x.jumlahbelanjapanjar)).reduce((a, b) => a + b, 0)
-        xy[i].sumCP = cp?.map((x) => parseInt(x.nominalcontrapost)).reduce((a, b) => a + b, 0)
+        xy[i].sumLS = ls?.map((x) => parseFloat(x.nominalpembayaran)).reduce((a, b) => a + b, 0)
+        xy[i].sumPanjar = pjr?.map((x) => parseFloat(x.jumlahbelanjapanjar)).reduce((a, b) => a + b, 0)
+        xy[i].sumCP = cp?.map((x) => parseFloat(x.nominalcontrapost)).reduce((a, b) => a + b, 0)
         xy[i].totalRealisasi = xy[i].sumLS + xy[i].sumPanjar - xy[i].sumCP
 
         // NILAI REALISASI KESELURUHAN

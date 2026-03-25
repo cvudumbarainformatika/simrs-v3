@@ -38,9 +38,15 @@
                 <div class="kanan column">
                   <div class="text-right">
                     Periode
-                  </div>
-                  <div>
                     Bulan {{ bulans[parseInt(params?.bulan) - 1 ?? 0] }} Tahun {{ params?.tahun }}
+                  </div>
+                  <div class="col-auto q-ml-sm">
+                    <div v-if="bentukArrBaru?.length" class="row justify-end">
+                      <download-excel class="btn" :data="bentukArrBaru" :fields="jsonFields" :fetch="fetch"
+                        :name="'Rincian ' + item?.nama_obat + ' Bulan ' + bulans[parseInt(params?.bulan) - 1 ?? 0] + ' ' + params?.tahun + '.xls'">
+                        <app-btn color="green" label="Download Excel" icon="icon-mat-download" dense push />
+                      </download-excel>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -134,7 +140,47 @@ const props = defineProps({
     default: null
   }
 })
+const jsonFields = {
+  No: 'no',
+  'Tanggal': 'tgl',
+  'Keterangan': 'keterangan',
+  'Masuk': 'masuk',
+  Keluar: 'keluar',
+  'Stok': 'stok',
+}
+function fetch () {
+  const data = []
+  data.push({
+    no: ' ',
+    tgl: 'Saldo Awal ',
+    keterangan: '',
+    masuk: '',
+    keluar: '',
+    stok: saldoAwal.value
+  })
+  bentukArrBaru.value.forEach((item, i) => {
+    const temp = {}
 
+    temp.no = i + 1
+    temp.tgl = item.tanggal + ' ' + item.jam
+    temp.keterangan = item.keterangan
+    temp.masuk = item.masuk
+    temp.keluar = item.keluar
+    temp.stok = formatDouble((cariHasilAkhirArray(i) ?? 0), 1)
+
+
+    data.push(temp)
+  })
+  data.push({
+    no: ' ',
+    tgl: 'Saldo Akhir',
+    keterangan: ' ',
+    masuk: '',
+    keluar: '',
+    stok: formatDouble((cariHasilAkhirArray(bentukArrBaru?.value?.length) ?? 0), 1)
+  })
+  return data
+}
 const bulans = ref(['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'])
 
 const bentukArrBaru = computed(() => {
@@ -376,7 +422,7 @@ const saldoAwal = computed(() => {
 })
 
 // eslint-disable-next-line no-unused-vars
-function carigudang(val) {
+function carigudang (val) {
   // console.log(app)
   const gud = app?.gudangs?.find(a => a.kode === val)
   const ruang = app?.ruangs?.find(a => a.kode === val)
@@ -384,7 +430,7 @@ function carigudang(val) {
 }
 
 // eslint-disable-next-line no-unused-vars
-function cariHasilAkhirArray(i) {
+function cariHasilAkhirArray (i) {
   // const total = 0
   const arr = bentukArrBaru.value ?? []
   if (arr?.length) {

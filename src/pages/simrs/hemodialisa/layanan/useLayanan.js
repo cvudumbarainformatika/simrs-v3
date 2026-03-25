@@ -122,7 +122,6 @@ export default function useLayanan (pasien) {
 
   onMounted(() => {
     console.log('mounted pageLayananRanap', auth?.user?.username)
-
     menu.value = filterredMenus.value[0]
   })
 
@@ -132,8 +131,7 @@ export default function useLayanan (pasien) {
 
   watchEffect(() => {
     if (!pasien) {
-      console.log('no pasien')
-
+      // console.log('no pasien')
       store.pageLayanan = false
     }
   })
@@ -143,7 +141,6 @@ export default function useLayanan (pasien) {
     store,
     filterredMenus,
     nakes,
-
     menuDiganti
   }
 }

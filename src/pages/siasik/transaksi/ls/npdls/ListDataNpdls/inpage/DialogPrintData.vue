@@ -404,7 +404,7 @@ function mapPajakBaru() {
   const sumppn = parseFloat(ppnlama) + parseFloat(ppnbaru)
 
   const pajakdaerahlama = store.npddatasave?.pajak ? parseFloat(store.npddatasave?.pajak.pajakdaerah) : parseFloat(0)
-  const pajakdaerah = store.npddatasave?.newpajak?.find(x => x.koderekening === '2.1.01.06.02.0001')
+  const pajakdaerah = store.npddatasave?.newpajak?.find(x => x.koderekening === '2.1.01.05.05.0001')
   const pajakdaerahbaru = isNaN(parseFloat(pajakdaerah?.nilai)) ? parseFloat(0) : parseFloat(pajakdaerah?.nilai)
   const sumpajakdaerah = parseFloat(pajakdaerahlama) + parseFloat(pajakdaerahbaru)
 

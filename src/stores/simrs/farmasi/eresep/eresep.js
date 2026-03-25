@@ -635,7 +635,7 @@ export const useEResepDepoFarmasiStore = defineStore('e_resep_depo_farmasi', {
           this.loadingTerima = false
           delete val.loading
           this.afterTerima(resp?.data?.data)
-          notifSuccess(resp)
+          // notifSuccess(resp)
         })
         .catch((err) => {
           // console.log('err', err?.response?.data?.message, 'val', val)

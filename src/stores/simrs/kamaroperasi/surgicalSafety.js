@@ -491,6 +491,7 @@ export const useSurgicalSafetyStore = defineStore('surgical_safety_store', {
       this.formInstrumen[key] = val
     },
     resetFormInstrumen () {
+      // console.log('reset instrumen atas')
       const dataAwal = [
         {
           noreg: this.pasien.noreg,
@@ -526,8 +527,28 @@ export const useSurgicalSafetyStore = defineStore('surgical_safety_store', {
           akhir: 0,
         },
       ]
-      this.formInstrumen = this.pasien?.inventaris_Instrumen?.length ? this.pasien?.inventaris_Instrumen : dataAwal
+      // console.log('reset instrumen', this.pasien?.inventaris_instrumen)
 
+      this.formInstrumen = this.pasien?.inventaris_instrumen?.length > 0 ? this.pasien?.inventaris_instrumen : dataAwal
+
+    },
+    simpanFormInstrumen () {
+      this.loading = true
+      const data = {
+        data: this.formInstrumen
+      }
+      return new Promise(resolve => {
+        api.post('v1/simrs/penunjang/surgical/simpan-inventaris-Instrumen', data)
+          .then(resp => {
+            this.loading = false
+            // this.injectKasa('baru', resp?.data?.data)
+            this.pasien.inventaris_instrumen = resp?.data?.data
+            this.resetFormInstrumen()
+            notifSuccess(resp)
+            resolve(resp)
+          })
+          .catch(() => { this.loading = false })
+      })
     },
   },
 

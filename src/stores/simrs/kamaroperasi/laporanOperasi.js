@@ -15,11 +15,13 @@ export const useLaporanOperasiStore = defineStore('laporan_operasi_store', {
     },
     tarif: [],
     form: {},
+    notaTindakans: ['Baru'],
     formTindakan: {},
     optionJenisAnastesis: ['General Tiva', 'General FM', 'General Intubasi', 'Lokal', 'Regional'],
     optionKlasifikasiOperasis: ['Operasi Bersih', 'Operasi Bersih Terkontaminasi', 'Operasi Kotor', 'Operasi Terkontaminasi'],
     optionYT: ['YA', 'TIDAK'],
     optionAsa: ['-', '1', '2', '3', '4', '5'],
+    nakes: []
   }),
   actions: {
     setForm (key, val) {
@@ -94,9 +96,12 @@ export const useLaporanOperasiStore = defineStore('laporan_operasi_store', {
 
       this.setFormTindakan('tanggal', date.formatDate(Date.now(), 'YYYY-MM-DD'))
       this.setFormTindakan('noreg', this.pasien?.noreg)
-      this.setFormTindakan('nota', this.pasien?.rs2)
+      this.setFormTindakan('nota', 'Baru')
       this.setFormTindakan('rs14', this.pasien?.rs14)
-      this.setFormTindakan('rs9', this.pasien?.rs11)
+      this.setFormTindakan('rs9', this.pasien?.kodedokter)
+      this.setFormTindakan('rs11', [])
+      this.setFormTindakan('rs12', '')
+      this.setFormTindakan('rs13', [])
       this.setFormTindakan('rs15', this.pasien?.rs13)
       this.setFormTindakan('rs16', kelas)
       this.setFormTindakan('tanpaAnas', false)
@@ -126,16 +131,34 @@ export const useLaporanOperasiStore = defineStore('laporan_operasi_store', {
       this.setFormTindakan('jp', parseInt(data.rs6))
       this.setFormTindakan('an', parseInt(data.rs7))
       this.setFormTindakan('jumlah', data.rs8)
-      this.setFormTindakan('rs9', data?.rs9)
+      const dk = this.cariNakes(data?.rs9, 'dokter')
+      this.setFormTindakan('rs9', dk)
+      this.setFormTindakan('rs10', data?.rs10)
+      const aop = this.cariNakes(data?.rs11, 'perawat')
+      this.setFormTindakan('rs11', aop)
+      const an = this.cariNakes(data?.rs12, 'dokter')
+      this.setFormTindakan('rs12', an)
+      const asn = this.cariNakes(data?.rs13, 'perawat')
+      this.setFormTindakan('rs13', asn)
       this.setFormTindakan('rs14', data?.rs14)
       this.setFormTindakan('rs15', data?.rs15)
       this.setFormTindakan('rs16', data.rs16)
-      this.setFormTindakan('tanpaAnas', parseInt(data.rs7) > 1 ? true : false)
+      this.setFormTindakan('tanpaAnas', parseInt(data.rs7) <= 0 ? true : false)
       this.setFormTindakan('cito', data.rs18 == 'cito' ? true : false)
       this.setFormTindakan('tarif', parseInt(data.rs5) + parseInt(data.rs6) + parseInt(data.rs7))
       this.setFormTindakan('subtotal', parseInt(data.rs5) + parseInt(data.rs6) + parseInt(data.rs7))
       this.setFormTindakan('sisbaysplit', data.rs19)
       this.setFormTindakan('total_split', data.rs20)
+    },
+    cariNakes (val, type) {
+      const dat = val?.split(';').filter(x => !!x)
+      const nakes = []
+      dat.forEach(x => {
+        const nak = this.nakes.find(y => y.kdpegsimrs === x)
+        if (nak) nakes.push(nak)
+      })
+      // console.log('cari nakes', dat)
+      return nakes.length > 0 ? (type == 'dokter' ? nakes.map(x => x.kdpegsimrs)[0] : nakes.map(x => x.kdpegsimrs)) : (type == 'dokter' ? '' : [])
     },
     getTarifOp (val) {
       const param = {
@@ -147,11 +170,21 @@ export const useLaporanOperasiStore = defineStore('laporan_operasi_store', {
         api.get('v1/simrs/penunjang/ok/tindakan-op/get-tindakan-op', param)
           .then(({ data }) => {
             this.tarif = data?.data ?? data
-            console.log('tarif', this.tarif)
+            // console.log('tarif', this.tarif)
             resolve(data)
           })
       })
 
+    },
+    async getNakes () {
+      try {
+        const { data } = await api.get('v1/simrs/penunjang/surgical/get-nakes')
+        this.nakes = data?.data ?? data
+        console.log('nakes', this.nakes)
+
+      } catch (e) {
+
+      }
     },
     simpanLaporan (pasien) {
       this.loading = true
@@ -194,13 +227,30 @@ export const useLaporanOperasiStore = defineStore('laporan_operasi_store', {
     simpanFormTindakan () {
       this.loading = true
       // const pengunjung = usePermintaanOperasistore()
+      const payload = { ...this.formTindakan }
+      const p1 = payload.rs9 + ';'
+      payload.rs9 = p1
+      const p2 = payload?.rs11?.join(';') + ';'
+      payload.rs11 = p2
+      const p3 = payload.rs12 + ';'
+      payload.rs12 = p3
+      const p4 = payload?.rs13?.join(';') + ';'
+      payload.rs13 = p4
       return new Promise(resolve => {
-        api.post('v1/simrs/penunjang/ok/tindakan-op/simpan', this.formTindakan)
+        api.post('v1/simrs/penunjang/ok/tindakan-op/simpan', payload)
           .then(resp => {
             this.loading = false
             const data = resp?.data?.data
+            const nota = resp?.data?.nota
             console.log('simpan', data, this.pasien)
+            const indexMany = this.pasien.manytindakanop.findIndex(item => item.id === data?.id)
+            if (indexMany >= 0) this.pasien.manytindakanop[indexMany] = data
+            else this.pasien.manytindakanop.push(data)
+
             this.pasien.tindakanop = data
+            const indexNota = this.notaTindakans.findIndex(item => item === nota)
+            if (indexNota < 0) this.notaTindakans.push(nota)
+            this.resetFormTindakan()
             // this.form = resp?.data?.data
             // pengunjung.injectDataPasien(this.pasien, data, 'tindakanop')
             notifSuccess(resp)

@@ -571,12 +571,36 @@ function getAlpha(row) {
 }
 
 function getRekapTAP(row) {
-  // console.log('getRekapTAP', row);
+  // console.log('getRekapTAP', row)
+  const tapTransactions = row.transaksi_absen.filter(x => !x.pulang)
 
-  const absensi = row.transaksi_absen.filter(x => !x.pulang)?.length
-  // console.log('absensi', absensi)
-  return absensi
+  if (tapTransactions.length === 0) {
+    return 0
+  }
 
+  const dispentDates = new Set()
+  const user = row?.user
+  // console.log('user', row?.user);
+
+  if (user && user.libur?.length > 0) {
+    const bulanX = currentMonth.value <= 9 ? '0' + currentMonth.value : (currentMonth.value).toString()
+    const periode = tahun.value + '-' + bulanX
+    user.libur.forEach(l => {
+      if (l.flag === 'DISPEN' && l.tanggal?.startsWith(periode)) {
+        dispentDates.add(l.tanggal)
+      }
+    })
+  }
+
+  if (dispentDates.size === 0) {
+    return tapTransactions.length
+  }
+
+  const validTaps = tapTransactions.filter(tap => {
+    return !dispentDates.has(tap.tanggal)
+  })
+
+  return validTaps.length
 }
 
 function getImage(kelamin, row) {

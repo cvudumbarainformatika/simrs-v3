@@ -67,31 +67,31 @@
       <div class="q-pl-sm q-mt-md">
         <div class="q-pl-md">
           1. Kepala : <span class="text-weight-bold"> {{ props?.pasien?.pemeriksaanfisikpsikologidll[0]?.rs5 ?? '-'
-            }}</span>
+          }}</span>
         </div>
         <div class="q-pl-md">
           2. Leher : <span class="text-weight-bold"> {{ props?.pasien?.pemeriksaanfisikpsikologidll[0]?.rs6 ?? '-'
-            }}</span>
+          }}</span>
         </div>
         <div class="q-pl-md">
           3. Dada : <span class="text-weight-bold"> {{ props?.pasien?.pemeriksaanfisikpsikologidll[0]?.rs7 ?? '-'
-            }}</span>
+          }}</span>
         </div>
         <div class="q-pl-md">
           4. Punggung : <span class="text-weight-bold"> {{ props?.pasien?.pemeriksaanfisikpsikologidll[0]?.rs8 ?? '-'
-            }}</span>
+          }}</span>
         </div>
         <div class="q-pl-md">
           5. Perut : <span class="text-weight-bold"> {{ props?.pasien?.pemeriksaanfisikpsikologidll[0]?.rs9 ?? '-'
-            }}</span>
+          }}</span>
         </div>
         <div class="q-pl-md">
           6. Tangan : <span class="text-weight-bold"> {{ props?.pasien?.pemeriksaanfisikpsikologidll[0]?.rs10 ?? '-'
-            }}</span>
+          }}</span>
         </div>
         <div class="q-pl-md">
           7. Kaki : <span class="text-weight-bold"> {{ props?.pasien?.pemeriksaanfisikpsikologidll[0]?.rs11 ?? '-'
-            }}</span>
+          }}</span>
         </div>
         <div class="q-pl-md">
           8. Status Neurologis : <span class="text-weight-bold"> {{
@@ -116,8 +116,9 @@
         <div class="q-pl-md q-mt-sm">
           2. Radiologi :
           <div class="q-pl-lg q-gutter-xs row">
-            <div v-for="(radiologi, l) in props?.pasien?.hasilradiologi" :key="l">
-              <q-badge outline color="black">{{ radiologi?.haradio?.rs3 ?? '-' }}</q-badge>
+            <div v-for="(radiologi, l) in props?.pasien?.radiologi" :key="l">
+              <q-badge outline color="black">{{ radiologi?.rs4
+                }}</q-badge>
             </div>
           </div>
         </div>
@@ -125,23 +126,28 @@
       <div class=" q-mt-md">
         <span class="text-bold">4. Diagnosa Medis</span>
         <div class="q-pl-lg q-gutter-xs row q-mt-sm">
-          <div v-for="(diagnosa, l) in props?.pasien?.diagnosa" :key="l">
-            {{ diagnosa?.masterdiagnosa?.rs4 ?? '-' }} ({{ diagnosa?.rs3 }}),
+          <div>
+            {{ props?.pasien?.memodiagnosa }},
           </div>
         </div>
       </div>
       <div class=" q-mt-md">
         <span class="text-bold">5. Rencana Terapi</span>
         <div class="q-pl-lg q-gutter-xs row q-mt-sm">
-
+          <div style="white-space: pre-line" v-for="(rencanaterapi, rt) in props?.pasien?.rencanaterapidokter"
+            :key="rt">
+            {{ rencanaterapi?.rencanaterapi }} <br>
+          </div>
         </div>
       </div>
       <div class=" q-mt-md">
         <span class="text-bold">6. Konsultasi Dokter</span>
         <div class="q-pl-lg q-gutter-xs row q-mt-sm">
           <div v-for="(konsul, l) in props?.pasien?.konsultasi" :key="l">
-            Konsulan : <span class="text-bold"> {{ konsul?.permintaan }}</span><br>
-            Jawaban : <span class="text-bold">{{ konsul?.jawaban }}</span><br>
+            Konsulan Dari : <span class="text-bold"> {{ konsul?.nakesminta?.nama }}</span><br>
+            <span class="q-pl-lg">Isi Konsulan : <span class="text-bold"> {{ konsul?.permintaan }}</span></span><br>
+            Jawaban Dari : <span class="text-bold"> {{ konsul?.dokterkonsul?.nama }}</span><br>
+            <span class="q-pl-lg">Isi Jawaban : <span class="text-bold">{{ konsul?.jawaban ?? '-' }}</span></span><br>
           </div>
         </div>
       </div>

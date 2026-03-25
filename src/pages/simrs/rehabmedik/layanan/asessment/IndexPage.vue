@@ -2,11 +2,11 @@
   <div class="full-height full-width">
     <div class="row full-height q-pa-xs">
       <div flat bordered square class="col-7 full-height q-pa-xs">
-        <FormPage :pasien="pasien" :user="user" :store-kunjungan="props.store" />
+        <FormPage :pasien="pasien" :user="user" :store-kunjungan="props.store" :is-dokter="isDokter" />
       </div>
       <div class="col-5 full-height ">
 
-        <ListPage :pasien="pasien" :user="user" :store-kunjungan="props.store" />
+        <ListPage :pasien="pasien" :user="user" :store-kunjungan="props.store" :is-dokter="isDokter" />
 
       </div>
     </div>
@@ -30,6 +30,10 @@ const props = defineProps({
   store: {
     type: Object,
     default: null
+  },
+  isDokter: {
+    type: Boolean,
+    default: false
   }
 })
 
