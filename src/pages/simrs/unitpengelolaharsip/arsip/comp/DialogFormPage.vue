@@ -287,7 +287,7 @@ function setToFromDisp(vaal) {
 }
 
 function onSubmit() {
-  const thn = 2024;
+  const thn = 2025;
   const year = date.formatDate(store.form.tgl, 'YYYY');
 
   if (store.form.keaslian === '' || store.form.keaslian === null) {
@@ -303,7 +303,7 @@ function onSubmit() {
       color: 'red-5',
       textColor: 'white',
       icon: 'icon-mat-warning',
-      message: 'Maaf Harus Tahun 2024'
+      message: 'Maaf Harus Tahun 2025'
     })
     store.loading = false
   } else {
