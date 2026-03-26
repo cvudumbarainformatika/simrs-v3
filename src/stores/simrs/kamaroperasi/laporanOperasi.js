@@ -21,7 +21,9 @@ export const useLaporanOperasiStore = defineStore('laporan_operasi_store', {
     optionKlasifikasiOperasis: ['Operasi Bersih', 'Operasi Bersih Terkontaminasi', 'Operasi Kotor', 'Operasi Terkontaminasi'],
     optionYT: ['YA', 'TIDAK'],
     optionAsa: ['-', '1', '2', '3', '4', '5'],
-    nakes: []
+    nakes: [],
+    notaLapOperasis: [],
+    notaLapOperasi: null
   }),
   actions: {
     setForm (key, val) {
@@ -60,7 +62,7 @@ export const useLaporanOperasiStore = defineStore('laporan_operasi_store', {
       if (keys?.length <= 0) return this.resetForm()
       this.setForm('tanggal', data.rs3)
       this.setForm('noreg', data.rs1)
-      this.setForm('nota', data.rs?.rs2)
+      this.setForm('nota', data?.rs2)
       this.setForm('tindakan', data.tindakan)
 
       this.setForm('rs4', data.rs4)
@@ -180,7 +182,7 @@ export const useLaporanOperasiStore = defineStore('laporan_operasi_store', {
       try {
         const { data } = await api.get('v1/simrs/penunjang/surgical/get-nakes')
         this.nakes = data?.data ?? data
-        console.log('nakes', this.nakes)
+        // console.log('nakes', this.nakes)
 
       } catch (e) {
 

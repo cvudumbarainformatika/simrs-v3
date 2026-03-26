@@ -298,6 +298,11 @@ export const usePermintaanOperasistore = defineStore('permintaan-operasi-store',
       console.log('inject', data, findPasien)
       const keys = Object.keys(data)
       if (findPasien && keys?.length > 0) {
+        if (data?.manytindakanop?.length > 0) {
+          data?.manytindakanop?.forEach(element => {
+            element.nama = element?.mastertindakanoperasi?.rs2
+          })
+        }
         // findPasien.newapotekrajal = data?.newapotekrajal ?? []
         // findPasien.permintaanobatoperasi = data?.permintaanobatoperasi ?? []
         // findPasien.dokter = data?.dokter ?? {}
