@@ -8,7 +8,7 @@
     </div>
     <div class="col full-height relative-position">
       <!-- lap: {{ pasien?.laporanop }} -->
-      <div v-if="pasien?.laporanop?.length > 0">
+      <div v-if="store.pasien?.laporanop?.length > 0">
         <div v-for="laporanop in pasien?.laporanop" :key="laporanop">
           <q-expansion-item v-model="laporanop.expand" :label="laporanop.rs2">
 

@@ -34,8 +34,8 @@ export const useLaporanOperasiStore = defineStore('laporan_operasi_store', {
 
       this.setForm('tanggal', date.formatDate(Date.now(), 'YYYY-MM-DD'))
       this.setForm('noreg', this.pasien?.noreg)
-      this.setForm('nota', this.pasien?.rs2)
-      this.setForm('tindakan', this.pasien?.tindakanop?.id)
+      // this.setForm('nota', this.pasien?.rs2)
+      // this.setForm('tindakan', this.pasien?.tindakanop?.id)
 
       this.setForm('rs4', '')
       this.setForm('rs5', '')
@@ -196,7 +196,10 @@ export const useLaporanOperasiStore = defineStore('laporan_operasi_store', {
           .then(resp => {
             this.loading = false
             console.log('simpan', resp?.data)
-            this.pasien.laporanop = resp?.data?.data
+            const index = this?.pasien?.laporanop.findIndex(item => item.id === resp?.data?.data?.id)
+            if (index >= 0) this.pasien.laporanop[index] = resp?.data?.data
+            else this.pasien.laporanop.push(resp?.data?.data)
+            // this.pasien.laporanop = resp?.data?.data
             // this.form = resp?.data?.data
             // pengunjung.injectDataPasien(pasien, resp?.data?.data, 'tindakanop')
             notifSuccess(resp)

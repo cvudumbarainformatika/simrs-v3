@@ -21,8 +21,11 @@
           <!-- {{ pasien?.tindakanop?.mastertindakanoperasi?.rs2 }} -->
           <app-autocomplete v-model="store.form.nota" :source="pasien?.manytindakanop" option-value="rs2"
             option-label="nama" outlined label="" @update:model-value="(val) => {
-              console.log('val tindakan', val);
-
+              store.resetForm()
+              const tindakanNya = pasien?.manytindakanop?.find(t => t.rs2 == val)
+              console.log('val tindakan', val, tindakanNya);
+              store.setForm('tindakan', tindakanNya?.id)
+              store.setForm('nota', val)
             }" />
         </div>
       </div>
@@ -58,7 +61,7 @@
           <q-input v-model="store.form.rs7" outlined
             :label="'Jumlah karakter : ' + (store.form?.rs7?.length ?? 0) + ' (Maksimal 255 Karakter)'" dense
             hide-bottom-space :rules="[
-              val => val.length <= 255 || 'masimal 255 karakter'
+              val => val?.length <= 255 || 'masimal 255 karakter'
             ]" />
         </div>
       </div>
@@ -110,7 +113,7 @@
         <div class="col-4">Jumlah Kehilangan Darah</div>
         <div class="col-8">
           <q-input v-model="store.form.jd_keluar" :key="store.form.jd_keluar" outlined label="" dense autofocus
-            @update:model-value="setForm('jd_keluar', Number($event))" />
+            @update:model-value="setNumber('jd_keluar', Number($event))" />
         </div>
       </div>
       <div class="row items-center q-my-xs no-wrap">
@@ -123,7 +126,7 @@
         <div class="col-4">Jumlah Darah Yang Masuk</div>
         <div class="col-8">
           <q-input v-model="store.form.jd_masuk" :key="store.form.jd_masuk" outlined label="" dense autofocus
-            @update:model-value="setForm('jd_masuk', Number($event))" />
+            @update:model-value="setNumber('jd_masuk', Number($event))" />
         </div>
       </div>
 
@@ -167,7 +170,11 @@ const store = useLaporanOperasiStore()
 const app = useAplikasiStore()
 const options = ref([])
 const tindakan = ref(null)
-
+function setNumber (key, val) {
+  const number = Number(val)
+  if (isNaN(number)) store.setForm(key, 0)
+  else store.setForm(key, Number(val))
+}
 function setForm (key, val) {
   // console.log('st form', key, val)
 
