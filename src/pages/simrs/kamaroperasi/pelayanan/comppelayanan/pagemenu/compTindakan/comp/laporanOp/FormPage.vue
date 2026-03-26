@@ -21,8 +21,11 @@
           <!-- {{ pasien?.tindakanop?.mastertindakanoperasi?.rs2 }} -->
           <app-autocomplete v-model="store.form.nota" :source="pasien?.manytindakanop" option-value="rs2"
             option-label="nama" outlined label="" @update:model-value="(val) => {
-              console.log('val tindakan', val);
-
+              store.resetForm()
+              const tindakanNya = pasien?.manytindakanop?.find(t => t.rs2 == val)
+              console.log('val tindakan', val, tindakanNya);
+              store.setForm('tindakan', tindakanNya?.id)
+              store.setForm('nota', val)
             }" />
         </div>
       </div>
