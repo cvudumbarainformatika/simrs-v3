@@ -103,6 +103,7 @@ export const useKunjunganRehabmediStore = defineStore('kunjungan-rehabmedik-stor
         datax.soap = data?.soap ?? [],
           datax.tindakan = data?.tindakan ?? []
         datax.datasimpeg = data?.datasimpeg ?? null
+        datax.kunjungan_rehab = data?.kunjungan_rehab ?? []
       }
 
       console.log('find pasien', findPasien);
@@ -136,6 +137,28 @@ export const useKunjunganRehabmediStore = defineStore('kunjungan-rehabmedik-stor
       catch (error) {
         this.loadingSaveGantiDpjp = false
       }
+    },
+
+    async mulaiRehab(pasien) {
+
+      const form = {
+        noreg: pasien?.noreg,
+        norm: pasien?.norm
+      }
+      return new Promise((resolve, reject) => {
+        api.post('/v1/simrs/rehabmedik/mulairehab', form).then(res => {
+          const findPasien = this.items.filter(x => x?.noreg === pasien?.noreg)
+          // this.pasiens[indexPasien] = data
+          // // console.log('wew', this.pasiens[indexPasien])
+          if (findPasien?.length) {
+            const datax = findPasien[0]
+            // datax.kunjungan_rehab = res?.result ?? []
+          }
+          resolve(res)
+        }).catch(err => {
+          reject(err)
+        })
+      })
     },
 
     setPeriode(val) {
@@ -240,6 +263,59 @@ export const useKunjunganRehabmediStore = defineStore('kunjungan-rehabmedik-stor
       }
 
     },
+
+    async selesaikanRehab(pasien) {
+      try {
+        const resp = await api.post('/v1/simrs/rehabmedik/selesaikanrehab', {
+          noreg: pasien?.noreg,
+          norm: pasien?.norm
+        })
+        if (resp.status === 200) {
+          const findPasien = this.items.find(x => x?.noreg === pasien?.noreg)
+          if (findPasien) {
+            findPasien.kunjungan_rehab = [] // Reset atau sesuaikan dengan response
+          }
+          return resp
+        }
+      } catch (error) {
+        console.error('Error selesaikan rehab:', error)
+        throw error
+      }
+    },
+
+    async mulaiRehab(pasien) {
+      try {
+        const resp = await api.post('/v1/simrs/rehabmedik/mulairehab', {
+          noreg: pasien?.noreg,
+          norm: pasien?.norm
+        })
+        return resp
+      } catch (error) {
+        console.error('Error mulai rehab:', error)
+        throw error
+      }
+    },
+
+    async pilihRangkaian(pasien, data) {
+      try {
+        const resp = await api.post('/v1/simrs/rehabmedik/pilihrangkaian', {
+          noreg: pasien?.noreg,
+          norm: pasien?.norm,
+          ...data
+        })
+        if (resp.status === 200) {
+          const findPasien = this.items.find(x => x?.noreg === pasien?.noreg)
+          if (findPasien) {
+            // Update data kunjungan_rehab dengan data baru dari server
+            findPasien.kunjungan_rehab = resp.data?.result ?? []
+          }
+        }
+        return resp
+      } catch (error) {
+        console.error('Error pilih rangkaian:', error)
+        throw error
+      }
+    }
 
 
   }
