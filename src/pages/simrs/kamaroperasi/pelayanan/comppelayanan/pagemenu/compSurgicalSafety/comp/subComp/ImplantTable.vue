@@ -96,7 +96,7 @@
             <td style="white-space: normal;">
               <div class="row items-center justify-center">
                 <div class="col-auto text-center">
-                  <q-checkbox v-model="item.simpan" dense :disable="item.flag != '4'" />
+                  <q-checkbox v-model="item.simpan" dense :disable="item.flag != '4' || !store.nota" />
                 </div>
               </div>
             </td>

@@ -21,11 +21,17 @@
                 <app-btn label="Ambil ulang data implant" @click="store.getImplants" :loading="store.loading"
                   :disable="store.loading" />
               </div> -->
+              <app-autocomplete v-model="store.nota" :source="pasien?.manytindakanop" option-value="rs2"
+                option-label="nama" outlined label="" @update:model-value="(val) => {
+                  store.nota = val
+                  store.assignImplats(store?.implants, store?.pasien?.implant, store.pasien?.implant_seri)
+                  // store.setForm('nota', val)
+                }" />
               <div v-if="store.implants?.length" class="bg-white">
                 <ImplatTable />
                 <div class="row items-end justify-end q-my-xs">
                   <app-btn label="Simpan Implant" @click="store.simpanImplants" :loading="store.loading"
-                    :disable="store.loading || bisaSimpan()" />
+                    :disable="store.loading || bisaSimpan() || !store.nota" />
                 </div>
               </div>
               <div v-else>
@@ -35,7 +41,7 @@
               <div class="row justify-between">
                 <div class="col-4"><q-file outlined v-model="store.seri" label="seri Implant" dense /></div>
                 <div class="col-2 text-end"> <app-btn label="Simpan Gambar" @click="store.simpanGambar"
-                    :loading="store.loading" :disable="store.loading" /> </div>
+                    :loading="store.loading" :disable="store.loading || !store.nota" /> </div>
               </div>
               <div v-if="store.pasien?.implant_seri?.length">
                 <q-card v-for="(file, i) in store.pasien?.implant_seri" :key="i" flat bordered class="q-mb-sm">
@@ -44,10 +50,12 @@
                       <!-- {{ getImg(file?.url) }} -->
                       <q-img :src="getImg(file?.url)" :key="file.url" style="height: 170px; max-width: 300px">
                         <div class="absolute-bottom">
-
                           <div class="row items-center justify-between">
                             <q-btn class="gt-xs" size="md" color="yellow" flat dense round icon="icon-mat-visibility"
                               :href="pathImg + file.url" target="_blank" />
+                            <div>
+                              {{ getTindakan(file?.nota) }}
+                            </div>
                             <q-btn class="gt-xs" size="md" color="negative" flat dense round icon="icon-mat-delete"
                               @click="store.hapusGambar(file)" />
                           </div>
@@ -127,9 +135,15 @@ const getImg = (file) => {
     return pathImg + file
   }
 }
+
+function getTindakan (val) {
+  const tindakan = props?.pasien?.manytindakanop?.find(x => x.rs2 === val)
+  return tindakan?.mastertindakanoperasi?.rs2 ?? '-'
+}
 onMounted(() => {
   store.ambilMasterkasa()
   store.resetFormKasa()
   store.resetFormInstrumen()
+  store.getImplants()
 })
 </script>
