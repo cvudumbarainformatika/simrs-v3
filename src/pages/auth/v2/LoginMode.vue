@@ -6,7 +6,7 @@
     <div class="square" style="--i:3;" />
     <div class="square" style="--i:4;" />
     <div class="container">
-      <div class="row q-pa-sm">
+      <div class="row q-pa-sm justify-center">
         <div v-if="!isMobile" class="col-md-6 col-lg-6 col-xl-6 col-sm-6 col-xs-12 bg-x min-h z-top">
           <div class="column flex-center full-height  text-white">
             <div class="text-subtitle1">
@@ -25,16 +25,20 @@
           </div>
         </div>
         <template v-if="!loading">
-          <div v-if="mode === 'khususit' && !isMobile"
-            class="login-form col-md-6 col-lg-6 col-xl-6 col-sm-6 col-xs-12 min-h">
+          <div
+            v-if="mode === 'khususit'"
+            class="login-form col-md-6 col-lg-6 col-xl-6 col-sm-10 col-xs-12 min-h"
+          >
             <FormLogin :key="mode" />
           </div>
-          <div v-else-if="mode === 'qr' && isMobile"
-            class="login-form col-md-6 col-lg-6 col-xl-6 col-sm-6 col-xs-12 min-h">
-            <FormLogin :key="isMobile" />
-          </div>
-          <div v-else class="login-qr col-md-6 col-lg-6 col-xl-6 col-sm-6 col-xs-12 min-h">
-            <FormQr :key="mode" :qr="store.qrCode" />
+          <div
+            v-else
+            class="login-qr col-md-6 col-lg-6 col-xl-6 col-sm-10 col-xs-12 min-h"
+          >
+            <FormQr
+              :key="mode"
+              :qr="store.qrCode"
+            />
           </div>
         </template>
 
