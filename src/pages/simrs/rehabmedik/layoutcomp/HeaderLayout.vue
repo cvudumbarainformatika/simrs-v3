@@ -92,6 +92,11 @@
       </div>
     </q-toolbar-title>
 
+    <q-btn flat dense :color="openRehabInfo ? 'yellow' : 'white'" icon="icon-my-medical_services" class="q-mr-sm"
+      @click="emits('toggleRehabInfo')">
+      <q-tooltip>Info Rehabilitasi</q-tooltip>
+    </q-btn>
+
     <!-- <div v-if="pasien?.dokter !== '' ">
       <q-btn
         v-if="pasien?.status==='' || pasien?.status==='2'"
@@ -135,7 +140,7 @@ import { usePermintaanEResepStore } from 'src/stores/simrs/farmasi/permintaanres
 
 const store = usePermintaanEResepStore()
 
-const emits = defineEmits(['toggleLeftDrawer', 'gantidpjp', 'layananSelesai'])
+const emits = defineEmits(['toggleLeftDrawer', 'gantidpjp', 'layananSelesai', 'toggleRehabInfo'])
 
 const search = ref('')
 const kodedpjp = ref(null)
@@ -151,6 +156,10 @@ const props = defineProps({
     default: false
   },
   loadingFinish: {
+    type: Boolean,
+    default: false
+  },
+  openRehabInfo: {
     type: Boolean,
     default: false
   }
