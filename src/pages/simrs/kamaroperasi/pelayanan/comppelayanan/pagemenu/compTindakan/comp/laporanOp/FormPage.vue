@@ -5,7 +5,7 @@
         Form Laporan Operasi
       </div>
     </div>
-    <div v-if="!pasien?.tindakanop" class="col full-height relative-position"><app-maintenance
+    <div v-if="pasien?.manytindakanop?.length == 0" class="col full-height relative-position"><app-maintenance
         text="Belum ada Input Tondakan Operasi Belum bisa dibuatkan laporan" /> </div>
     <div v-else class="col full-height relative-position">
       <div class="row items-center q-my-xs">
@@ -18,7 +18,19 @@
       <div class="row items-center q-my-xs no-wrap">
         <div class="col-4">Tindakan Operasi</div>
         <div class="col-8">
-          {{ pasien?.tindakanop?.mastertindakanoperasi?.rs2 }}
+          <!-- {{ pasien?.tindakanop?.mastertindakanoperasi?.rs2 }} -->
+          <app-autocomplete v-model="store.form.nota" :source="pasien?.manytindakanop" option-value="rs2"
+            option-label="nama" outlined label="" @update:model-value="(val) => {
+              console.log('val tindakan', val);
+
+            }" />
+        </div>
+      </div>
+      <div class="row items-center q-my-xs no-wrap">
+        <div class="col-4">Nota</div>
+        <div class="col-8">
+          {{ store.form.nota }}
+          <!-- <app-autocomplete v-model="store.form.rs4" :source="pasien?.manytindakanop" outlined label="" /> -->
         </div>
       </div>
       <div class="row items-center q-my-xs no-wrap">
@@ -130,7 +142,7 @@
 
       </div>
       <div class="row q-ma-sm q-pb-xl q-mr-xl justify-end">
-        <app-btn label="Simpan" :loading="store.loading" :disable="store.loading || !pasien?.tindakanop"
+        <app-btn label="Simpan" :loading="store.loading" :disable="store.loading || pasien?.manytindakanop?.length == 0"
           @click="simpan()" />
       </div>
     </div>
@@ -157,13 +169,13 @@ const options = ref([])
 const tindakan = ref(null)
 
 function setForm (key, val) {
-  console.log('st form', key, val)
+  // console.log('st form', key, val)
 
   store.setForm(key, val)
 }
 const refTindakan = ref(null)
 function validate () {
-  console.log('ref', refTindakan.value?.validate())
+  // console.log('ref', refTindakan.value?.validate())
   if (refTindakan.value?.validate()) return true
   else {
     notifErrVue('Tindakan belum dipilih')
