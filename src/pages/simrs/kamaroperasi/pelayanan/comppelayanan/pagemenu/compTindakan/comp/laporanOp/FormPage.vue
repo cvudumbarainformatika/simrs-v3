@@ -21,11 +21,8 @@
           <!-- {{ pasien?.tindakanop?.mastertindakanoperasi?.rs2 }} -->
           <app-autocomplete v-model="store.form.nota" :source="pasien?.manytindakanop" option-value="rs2"
             option-label="nama" outlined label="" @update:model-value="(val) => {
-              store.resetForm()
-              const tindakanNya = pasien?.manytindakanop?.find(t => t.rs2 == val)
-              console.log('val tindakan', val, tindakanNya);
-              store.setForm('tindakan', tindakanNya?.id)
-              store.setForm('nota', val)
+              console.log('val tindakan', val);
+
             }" />
         </div>
       </div>
@@ -170,18 +167,18 @@ const store = useLaporanOperasiStore()
 const app = useAplikasiStore()
 const options = ref([])
 const tindakan = ref(null)
-function setNumber (key, val) {
+function setNumber(key, val) {
   const number = Number(val)
   if (isNaN(number)) store.setForm(key, 0)
   else store.setForm(key, Number(val))
 }
-function setForm (key, val) {
+function setForm(key, val) {
   // console.log('st form', key, val)
 
   store.setForm(key, val)
 }
 const refTindakan = ref(null)
-function validate () {
+function validate() {
   // console.log('ref', refTindakan.value?.validate())
   if (refTindakan.value?.validate()) return true
   else {
@@ -190,7 +187,7 @@ function validate () {
   }
 
 }
-function simpan () {
+function simpan() {
   console.log('form', store.form)
   // if (validate()) store.simpanLaporan()
   store.simpanLaporan()
