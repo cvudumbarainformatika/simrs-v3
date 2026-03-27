@@ -11,7 +11,8 @@
   </div>
 </template>
 <script setup>
-import { defineAsyncComponent } from 'vue'
+import { useSurgicalSafetyStore } from 'src/stores/simrs/kamaroperasi/surgicalSafety'
+import { defineAsyncComponent, onMounted } from 'vue'
 
 const props = defineProps({
   pasien: {
@@ -21,4 +22,9 @@ const props = defineProps({
 })
 const FormPage = defineAsyncComponent(() => import('./laporanOp/FormPage.vue'))
 const ListPage = defineAsyncComponent(() => import('./laporanOp/ListPage.vue'))
+
+const surgicalSt = useSurgicalSafetyStore()
+onMounted(() => {
+  surgicalSt.getImplants()
+})
 </script>
