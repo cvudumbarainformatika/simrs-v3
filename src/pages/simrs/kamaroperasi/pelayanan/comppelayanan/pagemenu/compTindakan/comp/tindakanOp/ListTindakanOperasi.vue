@@ -79,7 +79,9 @@ function assignForm (data) {
 
 }
 function getLaporan (val) {
-  return props.pasien?.laporanop?.find(x => x.rs2 === val?.rs2) ?? false
+  console.log('get laporan', props.pasien?.laporanop?.find(x => x.rs2 === val?.rs2))
+
+  return !!props.pasien?.laporanop?.find(x => x.rs2 === val?.rs2) ?? false
 }
 function cariNaker (val) {
   const dat = val?.split(';').filter(x => !!x)

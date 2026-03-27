@@ -128,19 +128,19 @@
 
               <div class="row items-center q-my-xs">
                 <div class="col-4">No Seri Implan</div>
-                <div class="col-8">{{ SeriImplant }}</div>
+                <div class="col-8">{{ SeriImplant(laporanop) }}</div>
               </div>
-              <div v-if="pasien?.implant_seri?.length">
-                <q-card v-for="(file, i) in pasien?.implant_seri" :key="i" flat bordered class="q-mb-sm">
+              <div v-if="store.pasien?.implant_seri?.length">
+                <q-card flat bordered class="q-mb-sm">
                   <q-card-section>
                     <div style="border: 1px solid grey;" class="q-mb-md">
-                      <!-- {{ getImg(file?.url) }} -->
-                      <q-img :src="getImg(file?.url)" :key="file.url" style="height: 170px; max-width: 300px">
+                      <q-img :src="getImg(laporanop)" :key="getFile(laporanop)?.url"
+                        style="height: 170px; max-width: 300px">
                         <div class="absolute-bottom">
 
                           <div class="row items-center justify-between">
                             <q-btn class="gt-xs" size="md" color="yellow" flat dense round icon="icon-mat-visibility"
-                              :href="pathImg + file.url" target="_blank" />
+                              :href="pathImg + getFile(laporanop)?.url" target="_blank" />
 
                           </div>
                         </div>
@@ -175,6 +175,7 @@
 import { pathImg } from 'src/boot/axios'
 import { dateFull, dateFullFormat, formatDouble, getNewLine } from 'src/modules/formatter'
 import { useLaporanOperasiStore } from 'src/stores/simrs/kamaroperasi/laporanOperasi'
+import { useSurgicalSafetyStore } from 'src/stores/simrs/kamaroperasi/surgicalSafety'
 import { computed } from 'vue'
 
 
@@ -184,11 +185,11 @@ const props = defineProps({
     default: null
   },
 })
-const SeriImplant = computed(() => {
-  console.log('implat ', props?.pasien?.implant?.filter(x => !!x.seri), props?.pasien?.implant?.filter(x => !!x.seri)?.map(x => x.seri)?.join(', '))
+function SeriImplant (val) {
+  // console.log('implat ', val, ' seri ', store?.pasien, store?.pasien?.implant?.filter(x => !!x.seri)?.filter(x => x.nota == val.rs2), ' map  ', store?.pasien?.implant?.filter(x => !!x.seri)?.filter(x => x.nota == val.rs2)?.map(x => x.seri)?.join(', '))
 
-  return props?.pasien?.implant?.filter(x => !!x.seri)?.length > 0 ? props?.pasien?.implant?.filter(x => !!x.seri)?.map(x => x.seri)?.join(', ') : '-'
-})
+  return store?.pasien?.implant?.filter(x => !!x.seri)?.filter(x => x.nota == val.rs2)?.length > 0 ? store?.pasien?.implant?.filter(x => !!x.seri)?.filter(x => x.nota == val.rs2)?.map(x => x.seri)?.join(', ') : '-'
+}
 const surgical = props?.pasien?.surgical?.find(x => x.nota === props.pasien.rs2)
 function lamaOperasi (data) {
   if (!data) return ''
@@ -214,10 +215,12 @@ const store = useLaporanOperasiStore()
 function assignForm (data) {
   store.assignForm(data)
 }
-const getImg = (file) => {
-  const spl = file.split('.')
+const getImg = (val) => {
+  const file = store.pasien?.implant_seri.find(x => x.nota == val?.rs2)?.url
+  // console.log('get img', file, val)
+
+  const spl = file?.split('.')
   const ext = spl[spl?.length - 1]
-  // console.log(ext)
 
   if (ext === 'pdf') {
     return new URL('../../../../../../../assets/images/PDF_file_icon.png', import.meta.url).href
@@ -226,10 +229,14 @@ const getImg = (file) => {
     return pathImg + file
   }
 }
+const getFile = (val) => {
+  const file = store.pasien?.implant_seri.find(x => x.nota == val?.rs2)
+  return file
+}
 function cariNakes (val, w) {
 
   const tindakan = props?.pasien?.manytindakanop?.find(x => x.rs2 === val?.rs2)
-  console.log('nakes', val, tindakan)
+  // console.log('nakes', val, tindakan)
   if (tindakan) {
     if (w == 'operator') return nakesnya(tindakan?.rs9)
     else if (w == 'asisten op') return nakesnya(tindakan?.rs11)
@@ -256,4 +263,5 @@ function cariTindakan (val) {
   // console.log('cari tin', val, tindakan)
   return tindakan?.mastertindakanoperasi?.rs2 ?? '-'
 }
+
 </script>

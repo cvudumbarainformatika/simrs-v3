@@ -239,7 +239,7 @@ function tarifSelected (val) {
 
 }
 async function filterFn (val, update, abort) {
-  console.log('filter', val)
+  // console.log('filter', val)
   const data = store.tarif ?? []
 
   // if (val?.length < 1) {

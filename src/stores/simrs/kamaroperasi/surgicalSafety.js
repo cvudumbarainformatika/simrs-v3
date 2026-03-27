@@ -298,14 +298,14 @@ export const useSurgicalSafetyStore = defineStore('surgical_safety_store', {
       })
     },
     assignImplats (data, implant, seri) {
-      console.log('imp', implant)
+      // console.log('imp', implant)
 
       const implantMap = new Map(
         implant?.map(i => [`${i.persiapan_operasi_distribusi_id}||${i.nota}`, i]) ?? []
       )
       data.forEach(x => {
         const ada = implantMap.get(`${x.distribusi_id}||${this.nota}`)
-        console.log('ada', implantMap, ada)
+        // console.log('ada', implantMap, ada)
 
         if (ada) {
           // hanya assign field yang dibutuhkan
