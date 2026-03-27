@@ -258,7 +258,7 @@ async function filterFn (val, update, abort) {
 }
 const refTindakan = ref(null)
 function validate () {
-  console.log('ref', refTindakan.value?.validate())
+  // console.log('ref', refTindakan.value?.validate())
   if (refTindakan.value?.validate()) return true
   else {
     notifErrVue('Tindakan belum dipilih')
@@ -267,7 +267,7 @@ function validate () {
 
 }
 function simpan () {
-  console.log('form', store.formTindakan)
+  // console.log('form', store.formTindakan)
   if (validate()) store.simpanFormTindakan()
 }
 function setTindakan (val) {
@@ -276,7 +276,7 @@ function setTindakan (val) {
     tindakan.value = tarif
     tarifSelected(tarif)
   }
-  console.log('set Tindakan', tarif, val, store.tarif)
+  // console.log('set Tindakan', tarif, val, store.tarif)
 
 }
 defineExpose({ setTindakan })

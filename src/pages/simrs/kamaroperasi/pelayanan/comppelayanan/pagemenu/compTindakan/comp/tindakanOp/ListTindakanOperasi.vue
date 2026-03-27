@@ -75,11 +75,11 @@ const props = defineProps({
 const emits = defineEmits(['assignForm'])
 const store = useLaporanOperasiStore()
 function assignForm (data) {
-  console.log('data', data)
+  // console.log('data', data)
 
 }
 function getLaporan (val) {
-  console.log('get laporan', props.pasien?.laporanop?.find(x => x.rs2 === val?.rs2))
+  // console.log('get laporan', props.pasien?.laporanop?.find(x => x.rs2 === val?.rs2))
 
   return !!props.pasien?.laporanop?.find(x => x.rs2 === val?.rs2) ?? false
 }
