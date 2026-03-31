@@ -27,7 +27,8 @@ export const useKunjunganRehabmediStore = defineStore('kunjungan-rehabmedik-stor
     isViewList: false,
     pasien: null,
     bukaLayanan: false,
-    loadingSaveGantiDpjp: false
+    loadingSaveGantiDpjp: false,
+    riwayats: null,
   }),
   getters: {
     // doubleCount: (state) => state.counter * 2
@@ -147,13 +148,10 @@ export const useKunjunganRehabmediStore = defineStore('kunjungan-rehabmedik-stor
       }
       return new Promise((resolve, reject) => {
         api.post('/v1/simrs/rehabmedik/mulairehab', form).then(res => {
-          const findPasien = this.items.filter(x => x?.noreg === pasien?.noreg)
-          // this.pasiens[indexPasien] = data
-          // // console.log('wew', this.pasiens[indexPasien])
-          if (findPasien?.length) {
-            const datax = findPasien[0]
-            // datax.kunjungan_rehab = res?.result ?? []
-          }
+
+          this.riwayats = res?.data?.result ?? []
+          console.log('riwayats store', this.riwayats);
+
           resolve(res)
         }).catch(err => {
           reject(err)
@@ -283,18 +281,7 @@ export const useKunjunganRehabmediStore = defineStore('kunjungan-rehabmedik-stor
       }
     },
 
-    async mulaiRehab(pasien) {
-      try {
-        const resp = await api.post('/v1/simrs/rehabmedik/mulairehab', {
-          noreg: pasien?.noreg,
-          norm: pasien?.norm
-        })
-        return resp
-      } catch (error) {
-        console.error('Error mulai rehab:', error)
-        throw error
-      }
-    },
+
 
     async pilihRangkaian(pasien, data) {
       try {
@@ -303,8 +290,13 @@ export const useKunjunganRehabmediStore = defineStore('kunjungan-rehabmedik-stor
           norm: pasien?.norm,
           ...data
         })
+
+        // console.log('response rangkaian', resp);
+
         if (resp.status === 200) {
           const findPasien = this.items.find(x => x?.noreg === pasien?.noreg)
+          console.log('findPasien', findPasien);
+
           if (findPasien) {
             // Update data kunjungan_rehab dengan data baru dari server
             findPasien.kunjungan_rehab = resp.data?.result ?? []

@@ -273,7 +273,10 @@
                 </td>
                 <td v-if="i === 0" :rowspan="cariRowspan(dateCppt(cppt?.tgl))" class="text-center f-12">
 
-                  <div class="q-pb-md">{{ cariNotasiByTgl(cppt)?.notasi || '' }}</div>
+                  <div class="q-pb-md">
+                    <div v-if="cariNotasiByTgl(cppt?.notasi)">Review</div>
+                    {{ cariNotasiByTgl(cppt)?.notasi || '' }}
+                  </div>
                   <vue-qrcode :value="qrUrl" tag="svg" :options="{
                     errorCorrectionLevel: 'Q',
                     color: {
@@ -282,12 +285,14 @@
                     },
                     margin: 0
                   }" />
+                  <div class="f-10">{{ pasien?.dokter }}</div>
                 </td>
               </tr>
             </template>
 
             <!-- Awal -->
-            <template v-for="awal in data?.awal" :key="awal">
+            <!-- INI SAYA GANTI AKHIR SUPAYA GAK MUNCUL -->
+            <template v-for="awal in data?.akhir" :key="awal">
               <tr v-if="awal?.anamnesis !== null">
                 <td class="text-left f-12 q-py-xs" style="vertical-align:top">
                   <div>{{ dateCppt(pasien?.tglmasuk) }}</div>
@@ -540,6 +545,8 @@ const jenisPPA = (val) => {
 
 // eslint-disable-next-line no-unused-vars
 const cariRowspan = (val) => {
+  // console.log('cariRowspan', val);
+
   const dataBytgl = data?.cppt?.filter(x => dateCppt(x?.tgl) === val)?.length
   // console.log('cari rowspan', dataBytgl)
   return dataBytgl
@@ -562,12 +569,14 @@ const lihatSkorJatuh = (val) => {
 }
 
 const qrUrl = computed(() => {
+  // console.log('dpjp', props.pasien);
+
   const noreg = props?.pasien?.noreg// noreg
   const dok = 'CPPT.png'
   const asal = 'RANAP'
-  const enc = btoa(`${noreg}|${dok}|${asal}`)
+  const petugas = props?.pasien?.kddokter ?? null
+  const enc = btoa(`${noreg}|${dok}|${asal}|${petugas}`)
   return `https://rsud.probolinggokota.go.id/dokumen-simrs/legalitas/${enc}`
-  // return `https://xenter.my.id/qr-document?noreg=${noreg}&dokumen=${dok}&asal=${asal}`
 })
 
 </script>
