@@ -156,7 +156,7 @@
               </th>
               <th class="text-center" width="15%">
                 <div class="text-bold">
-                  Verif DPJP
+                  Review / Verif DPJP
                 </div>
               </th>
             </tr>
