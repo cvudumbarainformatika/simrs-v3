@@ -45,10 +45,21 @@
 
     <!-- Pasien -->
     <div class="flex justify-between kotak q-mt-xs q-pa-sm" style="gap:0 10px">
-      <div class="col-auto">Nama : {{ pasien?.nama_panggil }}</div>
+      <!-- <div class="col-auto">Nama : {{ pasien?.nama_panggil }}</div>
       <div class="col-auto">No. Register : {{ pasien?.noreg }}</div>
       <div class="col-auto">Tanggal : {{ dateFullFormat(pasien?.tglmasuk) }}</div>
-      <div class="col-auto">Jam : {{ jamTnpDetik(pasien?.tglmasuk) }}</div>
+      <div class="col-auto">Jam : {{ jamTnpDetik(pasien?.tglmasuk) }}</div> -->
+
+      <div class="column">
+        <div class="col-auto">NAMA : {{ pasien?.nama_panggil }}</div>
+        <div class="col-auto">NORM : {{ pasien?.norm }}</div>
+        <div class="col-auto">No. Register : {{ pasien?.noreg }}</div>
+
+      </div>
+      <div class="column">
+        <div class="col-auto">Tanggal : {{ dateFullFormat(pasien?.tglmasuk) }}</div>
+        <div class="col-auto">Jam : {{ jamTnpDetik(pasien?.tglmasuk) }}</div>
+      </div>
     </div>
 
     <!-- Riwayat Kesehatan -->
@@ -63,7 +74,7 @@
         <div class="data-item">6. Riwayat Pekerjaan : {{
           anamnesisAwal?.riwayat_pekerjaan_yang_berhubungan_dengan_zat_berbahaya || '-' }}</div>
         <div class="data-item">7. Keluhan Nyeri : {{ anamnesisAwal?.keluhannyeri?.skor > 0 ? 'Ada' : 'Tidak ada' || '-'
-          }}
+        }}
         </div>
       </div>
     </div>
