@@ -5,6 +5,7 @@ import { dateDbFormat } from 'src/modules/formatter'
 import { notifErrVue } from 'src/modules/utils'
 import { useSurgicalSafetyStore } from './surgicalSafety'
 import { useLaporanOperasiStore } from './laporanOperasi'
+import { useAssasementPraBedahStore } from './assasement/praBedah'
 
 export const usePermintaanOperasistore = defineStore('permintaan-operasi-store', {
   state: () => ({
@@ -294,6 +295,7 @@ export const usePermintaanOperasistore = defineStore('permintaan-operasi-store',
     setPasien (data, pasien) {
       const surgical = useSurgicalSafetyStore()
       const laporan = useLaporanOperasiStore()
+      const praBed = useAssasementPraBedahStore()
       const findPasien = this.items.find(x => x.noreg === pasien?.noreg)
       console.log('inject', data, findPasien)
       const keys = Object.keys(data)
@@ -325,6 +327,7 @@ export const usePermintaanOperasistore = defineStore('permintaan-operasi-store',
         laporan.notaTindakans.unshift('Baru')
         laporan.assignForm(findPasien?.laporanop)
         laporan.assignFormTindakan(findPasien?.tindakanop)
+        if (findPasien.pra_bedah) praBed.form = { ...findPasien.pra_bedah }
       }
     },
 

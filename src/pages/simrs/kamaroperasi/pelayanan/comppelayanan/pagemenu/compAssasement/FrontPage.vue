@@ -1,5 +1,5 @@
 <template>
-  <div class="row fit relative-position">
+  <div class="row fit relative-position ">
     <div class="absolute-top columm fit q-pa-xs" style="padding-bottom: 41px;">
       <div class="col-auto">
         <q-tabs v-model="tab" dense no-caps inline-label narrow-indicator indicator-color="transparent" align="left"
@@ -14,8 +14,7 @@
         </q-tabs>
       </div>
       <div class="col full-height">
-        <q-tab-panels v-model="tab" animated class="bg-transparent q-pa-none relative-position"
-          style="height: calc(100vh - 100px);">
+        <q-tab-panels v-model="tab" animated class="q-pa-none relative-position" style="height: calc(100vh - 100px);">
 
           <q-tab-panel :name="menu?.name" class="q-pa-none">
             <component :is="menu?.comp" :pasien="pasien" />
