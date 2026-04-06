@@ -4,13 +4,8 @@
     <q-card square flat class="container-no-header">
       <q-layout view="lHr Lpr lFf" container class="shadow-2 rounded-borders z-top">
         <q-header elevated class="bg-primary">
-          <HeaderLayout
-            :pasien="pasien"
-            :open-rehab-info="openRehabInfo"
-            @toggle-left-drawer="() => drawer = !drawer"
-            @gantidpjp="(val) => store.gantiDpjp(val, pasien)"
-            @toggle-rehab-info="openRehabInfo = !openRehabInfo"
-          />
+          <HeaderLayout :pasien="pasien" :open-rehab-info="openRehabInfo" @toggle-left-drawer="() => drawer = !drawer"
+            @gantidpjp="(val) => store.gantiDpjp(val, pasien)" @toggle-rehab-info="openRehabInfo = !openRehabInfo" />
         </q-header>
         <!-- LEFT DRAWER ======================================================================================-->
         <q-drawer v-model="drawer" elevated bordered show-if-above :width="230" :breakpoint="400">
@@ -57,16 +52,9 @@
                             Informasi mengenai kunjungan pasien dalam rangkaian rehabilitasi ini.
                           </div>
                           <div class="row q-gutter-sm">
-                            <q-btn
-                              flat
-                              color="negative"
-                              label="Selesaikan Rangkaian Perawatan Ini"
-                              icon="icon-mat-done_all"
-                              class="text-underline"
-                              dense
-                              :loading="loadingSelesaiRehab"
-                              @click="confirmSelesaikanRehab"
-                            />
+                            <q-btn flat color="negative" label="Selesaikan Rangkaian Perawatan Ini"
+                              icon="icon-mat-done_all" class="text-underline" dense :loading="loadingSelesaiRehab"
+                              @click="confirmSelesaikanRehab" />
                           </div>
                         </div>
                       </div>
@@ -139,7 +127,10 @@
                       <q-icon name="icon-mat-medical_information" size="80px" color="primary" />
                       <div class="text-h5 text-weight-bold q-mt-md">Rangkaian Perawatan</div>
                       <div class="text-grey-7 q-mt-sm">
-                        {{ riwayatDatabase?.length ? 'Ditemukan riwayat rangkaian aktif. Silakan pilih atau buat rangkaian baru.' : 'Klik tombol di bawah untuk mengecek riwayat rangkaian perawatan pasien.' }}
+                        {{ props.store.riwayats?.length
+                          ? `Ditemukan riwayat rangkaian aktif. Silakan pilih atau buat rangkaian baru.`
+                          : `Klik tombol di bawah untuk mengecek apakah pasien ini memiliki riwayat rangkaian perawatan
+                        yang masih aktif dalam database.` }}
                       </div>
                     </div>
 
@@ -150,51 +141,32 @@
                     </div>
 
                     <!-- RESULT LIST FROM DATABASE -->
-                    <div v-else-if="riwayatDatabase?.length" class="q-mb-md">
-                      <div class="text-caption text-weight-bold q-mb-xs">RIWAYAT RANGKAIAN AKTIF:</div>
-                      <q-list bordered separator class="rounded-borders bg-white">
-                        <q-item v-for="(item, index) in riwayatDatabase" :key="index">
+                    <div v-else-if="props.store.riwayats?.length" class="q-mb-md">
+                      <div class="text-caption text-weight-bold q-mb-xs text-primary">RIWAYAT RANGKAIAN AKTIF:</div>
+                      <q-list bordered separator class="rounded-borders bg-white shadow-1">
+                        <q-item v-for="(item, index) in props.store.riwayats" :key="index">
                           <q-item-section>
-                            <q-item-label class="text-weight-bold">Rangkaian #{{ item.id }}</q-item-label>
-                            <q-item-label caption>No. Reg: {{ item.noreg }}</q-item-label>
-                            <q-item-label caption>Mulai: {{ date.formatDate(item.created_at, 'DD/MM/YYYY') }}</q-item-label>
+                            <q-item-label class="text-weight-bold">Rangkaian # {{ item?.no }}</q-item-label>
+                            <q-item-label caption>No. Reg: {{ item?.noreg }}</q-item-label>
+                            <q-item-label caption>Mulai: {{ date?.formatDate(item?.created_at, 'DD MMMM YYYY')
+                              }}</q-item-label>
                           </q-item-section>
                           <q-item-section side>
-                            <q-btn 
-                              label="Link ke Sini" 
-                              color="primary" 
-                              size="sm" 
-                              unelevated 
-                              :loading="loadingPilih === item.id"
-                              @click="pilihRangkaian(item)"
-                            />
+                            <q-btn label="Hubungkan" color="primary" size="sm" unelevated
+                              :loading="loadingPilih === item.id" @click="pilihRangkaian(item)" />
                           </q-item-section>
                         </q-item>
                       </q-list>
                     </div>
 
                     <!-- ACTION BUTTONS -->
-                    <div class="column q-gutter-sm justify-center q-mt-md">
-                      <q-btn 
-                        v-if="!riwayatDatabase?.length"
-                        unelevated 
-                        color="primary" 
-                        icon="icon-mat-search" 
-                        label="Cek Riwayat Rangkaian" 
-                        class="full-width q-py-sm"
-                        :loading="loadingMulaiRehab"
-                        @click="mulaiRehab"
-                      />
-                      <q-btn 
-                        v-if="riwayatDatabase !== null"
-                        outline 
-                        color="primary" 
-                        icon="icon-mat-add" 
-                        label="Mulai Sebagai Rehab Baru" 
-                        class="full-width q-py-sm"
-                        :loading="loadingPilih === 'baru'"
-                        @click="pilihRangkaian('baru')"
-                      />
+                    <div :key="props.pasien?.noreg" class="column q-gutter-sm justify-center q-mt-md">
+                      <q-btn v-if="!props.store.riwayats?.length" unelevated color="primary" icon="icon-mat-search"
+                        label="Cek Riwayat Rangkaian" class="full-width q-py-sm" :loading="loadingMulaiRehab"
+                        @click="mulaiRehab" />
+                      <q-btn v-if="props.store.riwayats !== null" outline color="primary" icon="icon-mat-add"
+                        label="Mulai Sebagai Rehab Baru" class="full-width q-py-sm" :loading="loadingPilih === 'baru'"
+                        @click="pilihRangkaian('baru')" />
                     </div>
                   </q-card>
                 </div>
@@ -232,7 +204,7 @@ const openRehabInfo = ref(false)
 const loadingSelesaiRehab = ref(false)
 const loadingMulaiRehab = ref(false)
 const loadingPilih = ref(null)
-const riwayatDatabase = ref(null)
+// const props.store.riwayats = ref([])
 
 const props = defineProps({
   pasien: {
@@ -264,8 +236,9 @@ const nakes = computed(() => {
 })
 
 onMounted(() => {
-  console.log('pasien rehabmedik', props.pasien)
+  // console.log('pasien rehabmedik', props.pasien)
   // console.log('store rehabmedik', props.store)
+  props.store.riwayats = null
   Promise.all([
     // penunjang
 
@@ -402,11 +375,14 @@ async function mulaiRehab() {
   try {
     const resp = await props.store.mulaiRehab(props.pasien)
     if (resp.status === 200) {
-      riwayatDatabase.value = resp.data?.result ?? []
-      if (!riwayatDatabase.value.length) {
+      // props.store.riwayats = resp.data?.result ?? []
+      // console.log('riwayats', props.store.riwayats);
+
+      if (!props.store.riwayats?.length) {
         $q.notify({
           message: 'Tidak ditemukan riwayat rangkaian aktif.',
-          color: 'info'
+          color: 'info',
+          position: 'top-right'
         })
       }
     }
@@ -418,14 +394,17 @@ async function mulaiRehab() {
 }
 
 async function pilihRangkaian(item) {
+  console.log('item', item);
+
   const isBaru = item === 'baru'
   loadingPilih.value = isBaru ? 'baru' : item.id
-  
+
   const payload = isBaru ? { mode: 'baru' } : { mode: 'link', linked_id: item.id, link_noreg: item.noreg }
-  
+
   try {
     const resp = await props.store.pilihRangkaian(props.pasien, payload)
     if (resp.status === 200) {
+
       $q.notify({
         color: 'positive',
         message: isBaru ? 'Berhasil memulai rangkaian rehab baru' : 'Berhasil menghubungkan ke rangkaian sebelumnya',
@@ -471,5 +450,3 @@ async function pilihRangkaian(item) {
   text-decoration: underline;
 }
 </style>
-
-

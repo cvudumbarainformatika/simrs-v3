@@ -40,6 +40,7 @@
                 <div>NORM</div>
                 <div>A / N</div>
                 <div>Tgl Lahir</div>
+                <div>Kelamin</div>
                 <div>USIA</div>
                 <div>No. Telp</div>
                 <div>Alamat</div>
@@ -50,6 +51,7 @@
                 <div>{{ pasien?.norm || '-' }}</div>
                 <div>{{ pasien?.nama || pasien?.name || pasien?.nama_panggil || '-' }}</div>
                 <div>{{ pasien?.tgllahir }}</div>
+                <div>{{ pasien?.kelamin }}</div>
                 <div>{{ pasien?.usia }}</div>
                 <div>{{ pasien?.nohp }}</div>
                 <div>{{ pasien?.alamat }}</div>
@@ -142,7 +144,7 @@ const props = defineProps({
 const printed = ref(false)
 const printObj = {
   id: 'printMe',
-  popTitle: 'CETAK SEP',
+  popTitle: 'CETAK PERMINTAAN RADIOLOGI',
   beforeOpenCallback(vue) {
     printed.value = true
     console.log('wait...')
