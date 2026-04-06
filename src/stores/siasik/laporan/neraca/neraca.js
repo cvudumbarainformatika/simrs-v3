@@ -69,6 +69,9 @@ export const useNeracaStore = defineStore('Neraca_Akuntansi', {
             this.datapenyesuaianbebans = resp.data.penyesuaianbeban
             this.pagupendapatan = resp.data.pagupendapatan
             this.datakoreksi = resp.data.koreksi
+
+            this.surplusnonoperasional = resp.data.surplusnonoperasional
+            this.defisitnonoperasional = resp.data.defisitnonoperasional
             this.mapData()
 
             this.loading = false
@@ -116,6 +119,9 @@ export const useNeracaStore = defineStore('Neraca_Akuntansi', {
         objkoreksi.push(koreksi)
       }
       this.hasilkoreksi = objkoreksi.map((x) => parseFloat(x.nilai)).reduce((a, b) => a + b, 0)
+
+      const allnonoperasional = this.surplusnonoperasional.concat(this.defisitnonoperasional)
+      const nonoperasional = allnonoperasional.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0)
 
       const kode6 = []
       const kode5 = []
@@ -428,7 +434,7 @@ export const useNeracaStore = defineStore('Neraca_Akuntansi', {
         const obj = {
           kode: el,
           uraian: this.dataekuitas.filter((x) => x.kode6 === el)[0]?.uraian,
-          nilai: saldoawal + nilaijurnal + penyesuaian + this.surplusdefisit + this.hasilkoreksi
+          nilai: saldoawal + nilaijurnal + penyesuaian + this.surplusdefisit + this.hasilkoreksi + nonoperasional
         }
         kode6ekuitas.push(obj)
       }
@@ -441,7 +447,7 @@ export const useNeracaStore = defineStore('Neraca_Akuntansi', {
         const obj = {
           kode: el,
           uraian: this.dataekuitas.filter((x) => x.kode5 === el)[0]?.uraian5,
-          nilai: saldoawal + nilaijurnal + penyesuaian + this.surplusdefisit + this.hasilkoreksi
+          nilai: saldoawal + nilaijurnal + penyesuaian + this.surplusdefisit + this.hasilkoreksi + nonoperasional
         }
         kode5ekuitas.push(obj)
       }
@@ -454,7 +460,7 @@ export const useNeracaStore = defineStore('Neraca_Akuntansi', {
         const obj = {
           kode: el,
           uraian: this.dataekuitas.filter((x) => x.kode4 === el)[0]?.uraian4,
-          nilai: saldoawal + nilaijurnal + penyesuaian + this.surplusdefisit + this.hasilkoreksi
+          nilai: saldoawal + nilaijurnal + penyesuaian + this.surplusdefisit + this.hasilkoreksi + nonoperasional
         }
         kode4ekuitas.push(obj)
       }
@@ -468,7 +474,7 @@ export const useNeracaStore = defineStore('Neraca_Akuntansi', {
         const obj = {
           kode: el,
           uraian: this.dataekuitas.filter((x) => x.kode3 === el)[0]?.uraian3,
-          nilai: saldoawal + nilaijurnal + penyesuaian + this.surplusdefisit + this.hasilkoreksi
+          nilai: saldoawal + nilaijurnal + penyesuaian + this.surplusdefisit + this.hasilkoreksi + nonoperasional
         }
         kode3ekuitas.push(obj)
       }
@@ -481,7 +487,7 @@ export const useNeracaStore = defineStore('Neraca_Akuntansi', {
         const obj = {
           kode: el,
           uraian: this.dataekuitas.filter((x) => x.kode2 === el)[0]?.uraian2,
-          nilai: saldoawal + nilaijurnal + penyesuaian + this.surplusdefisit + this.hasilkoreksi
+          nilai: saldoawal + nilaijurnal + penyesuaian + this.surplusdefisit + this.hasilkoreksi + nonoperasional
         }
         kode2ekuitas.push(obj)
       }
@@ -494,7 +500,7 @@ export const useNeracaStore = defineStore('Neraca_Akuntansi', {
         const obj = {
           kode: el,
           uraian: this.dataekuitas.filter((x) => x.kode1 === el)[0]?.uraian1,
-          nilai: saldoawal + nilaijurnal + penyesuaian + this.surplusdefisit + this.hasilkoreksi
+          nilai: saldoawal + nilaijurnal + penyesuaian + this.surplusdefisit + this.hasilkoreksi + nonoperasional
         }
         kode1ekuitas.push(obj)
       }
