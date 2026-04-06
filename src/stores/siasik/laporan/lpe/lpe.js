@@ -96,12 +96,12 @@ export const useLPEStore = defineStore('laporan_PerubahanEkuitas', {
                 // + x.penyesuaian.map((x) => parseFloat(x.totalpenyesuaian)).reduce((a, b) => a + b, 0)
               }
             })
-            const pendapatanzzz = pendapatanx.map((x) => parseFloat(x.nilai)).reduce((a, b) => a + b, 0).toFixed(2)
-            const bebans = beban.map((x) => parseFloat(x.nilai)).reduce((a, b) => a + b, 0).toFixed(2)
+            // const pendapatanzzz = pendapatanx.map((x) => parseFloat(x.nilai)).reduce((a, b) => a + b, 0).toFixed(2)
+            // const bebans = beban.map((x) => parseFloat(x.nilai)).reduce((a, b) => a + b, 0).toFixed(2)
             const penyesuaianbeban = this.datapenyesuaianbebans.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0)
-            console.log('pendapatan', pendapatanzzz)
-            console.log('penyeseuaianbeban', penyesuaianbeban)
-            console.log('bebans', bebans)
+            // console.log('pendapatan', pendapatanzzz)
+            // console.log('penyeseuaianbeban', penyesuaianbeban)
+            // console.log('bebans', bebans)
             const nilaisurplusdef = {
               kode: '3.1.01',
               uraian: 'Surplus / Defisit LO',
