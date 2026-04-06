@@ -5,9 +5,13 @@ import { notifErrVue } from "src/modules/utils"
 export const useAssasementPraBedahStore = defineStore('assasement_pra_bedah_store', {
   state: () => ({
     loading: false,
+    loadingInduksi: false,
     form: {
       komplikasi: []
     },
+    formInduksi: {
+      obat_pre_medikasi: []
+    }
   }),
   actions: {
     simpan (pasien) {
@@ -25,7 +29,7 @@ export const useAssasementPraBedahStore = defineStore('assasement_pra_bedah_stor
 
       this.loading = true
       return new Promise(resolve => {
-        api.post('v1/simrs/penunjang/ok/assasement/simpan', payload)
+        api.post('v1/simrs/penunjang/ok/assasement/pra-bedah/simpan', payload)
           .then(resp => {
             this.loading = false
             console.log('simpan', resp?.data)
