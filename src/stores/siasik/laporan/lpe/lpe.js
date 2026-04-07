@@ -54,6 +54,8 @@ export const useLPEStore = defineStore('laporan_PerubahanEkuitas', {
             this.databebans = resp.data.beban
             this.datapenyesuaianbebans = resp.data.penyesuaianbeban
             this.pagupendapatan = resp.data.pagupendapatan
+            this.surplusnonoperasional = resp.data.surplusnonoperasional
+            this.defisitnonoperasional = resp.data.defisitnonoperasional
 
             this.dataLpe = resp.data
             // const objekuitas = []
@@ -96,16 +98,19 @@ export const useLPEStore = defineStore('laporan_PerubahanEkuitas', {
                 // + x.penyesuaian.map((x) => parseFloat(x.totalpenyesuaian)).reduce((a, b) => a + b, 0)
               }
             })
-            const pendapatanzzz = pendapatanx.map((x) => parseFloat(x.nilai)).reduce((a, b) => a + b, 0).toFixed(2)
-            const bebans = beban.map((x) => parseFloat(x.nilai)).reduce((a, b) => a + b, 0).toFixed(2)
+            // const pendapatanzzz = pendapatanx.map((x) => parseFloat(x.nilai)).reduce((a, b) => a + b, 0).toFixed(2)
+            // const bebans = beban.map((x) => parseFloat(x.nilai)).reduce((a, b) => a + b, 0).toFixed(2)
             const penyesuaianbeban = this.datapenyesuaianbebans.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0)
-            console.log('pendapatan', pendapatanzzz)
-            console.log('penyeseuaianbeban', penyesuaianbeban)
-            console.log('bebans', bebans)
+            const allnonoperasional = this.surplusnonoperasional.concat(this.defisitnonoperasional)
+            const nonoperasional = allnonoperasional.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0)
+
+            console.log('nonoperasional', nonoperasional)
+            // console.log('penyeseuaianbeban', penyesuaianbeban)
+            // console.log('bebans', bebans)
             const nilaisurplusdef = {
               kode: '3.1.01',
               uraian: 'Surplus / Defisit LO',
-              nilai: pendapatanx.map((x) => parseFloat(x.nilai)).reduce((a, b) => a + b, 0).toFixed(2) - beban.map((x) => parseFloat(x.nilai)).reduce((a, b) => a + b, 0).toFixed(2) - penyesuaianbeban.toFixed(2),
+              nilai: pendapatanx.map((x) => parseFloat(x.nilai)).reduce((a, b) => a + b, 0).toFixed(2) - beban.map((x) => parseFloat(x.nilai)).reduce((a, b) => a + b, 0).toFixed(2) - penyesuaianbeban.toFixed(2) + nonoperasional,
               pendapatan: pendapatanx.map((x) => parseFloat(x.nilai)).reduce((a, b) => a + b, 0).toFixed(2),
               beban: beban.map((x) => parseFloat(x.nilai)).reduce((a, b) => a + b, 0).toFixed(2)
             }
