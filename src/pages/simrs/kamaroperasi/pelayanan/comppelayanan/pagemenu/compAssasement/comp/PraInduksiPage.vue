@@ -470,6 +470,18 @@
         </div>
       </div>
     </div>
+    <div class="row q-my-sm q-col-gutter-x-sm">
+      <div class="col-4"><app-input-date :model="store.formInduksi.tgl" label="Tanggal" dense outlined @set-model="(val) => {
+        store.formInduksi.tgl = val
+      }" /></div>
+      <div class="col-4"><app-input-date :model="store.formInduksi.jam" label="Jam" :type-date="false" dense outlined
+          @set-model="(val) => {
+            store.formInduksi.jam = val
+          }" /></div>
+      <div class="col-4"><app-autocomplete v-model="store.formInduksi.dokter_anastesi" label="Dokter Anastesi" outlined
+          dense :source="laporanOp.nakes?.filter(y => y?.kdgroupnakes == '1')" option-label="nama"
+          option-value="kdpegsimrs" hide-dropdown-icon /></div>
+    </div>
     <div class="row justify-end q-my-lg q-mr-md">
       <q-btn label="Simpan" no-caps color="primary" glossy :loading="store.loadingInduksi"
         :disable="store.loadingInduksi" @click="store.simpanFormInduksi(props.pasien)" />
