@@ -397,7 +397,8 @@
                 <th colspan="2" class="q-pa-xs"><q-input v-model="obatMedikasi.obat_pre_medikasi" label="" dense /></th>
                 <th class="q-pa-xs"><q-input v-model="obatMedikasi.dosis" label="" dense /></th>
                 <th class="q-pa-xs"><q-input v-model="obatMedikasi.jam" label="" dense /></th>
-                <th class="q-pa-xs"><q-input v-model="obatMedikasi.pelaksana" label="" dense /></th>
+                <th class="q-pa-xs"><app-autocomplete v-model="obatMedikasi.pelaksana" label="" dense
+                    :source="laporanOp.nakes" option-label="nama" hide-dropdown-icon /></th>
                 <th class="q-pa-xs"><q-btn icon="add" @click="addObatMedikasi" dense color="primary" rounded /></th>
               </tr>
             </thead>
@@ -418,7 +419,7 @@
               </template>
               <template v-else>
                 <template v-for="(item, n) in store.formInduksi?.obat_pre_medikasi" :key="n">
-                  <tr :class="n % 2 === 0 ? 'even' : 'odd'">
+                  <tr :class="obatBaru(item) ? 'obat-baru' : (n % 2 === 0 ? 'even' : 'odd')">
                     <td width="5%">
                       <div class="row items-center">
                         {{ n + 1 }}
@@ -448,14 +449,14 @@
                     <td style="white-space: normal;">
                       <div class="row items-center">
                         <div class="col-auto">
-                          {{ item?.pelaksana }}
+                          {{ item?.pelaksana?.nama }}
                         </div>
                       </div>
                     </td>
                     <td style="white-space: normal;">
                       <div class="row justify-center">
                         <div class="col-auto">
-                          <q-btn icon="delete_sweep" color="negative" dense flat @click="() => {
+                          <q-btn icon="delete_sweep" :color="obatBaru(item) ? 'yellow' : 'negative'" dense flat @click="() => {
                             store.formInduksi.obat_pre_medikasi.splice(n, 1)
                           }" />
                         </div>
@@ -469,14 +470,18 @@
         </div>
       </div>
     </div>
-
+    <div class="row justify-end q-my-lg q-mr-md">
+      <q-btn label="Simpan" no-caps color="primary" glossy :loading="store.loadingInduksi"
+        :disable="store.loadingInduksi" @click="store.simpanFormInduksi(props.pasien)" />
+    </div>
   </div>
 </template>
 
 <script setup>
 import { notifErrVue } from 'src/modules/utils'
 import { useAssasementPraBedahStore } from 'src/stores/simrs/kamaroperasi/assasement/praBedah'
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
+import { useLaporanOperasiStore } from 'src/stores/simrs/kamaroperasi/laporanOperasi'
 
 
 const props = defineProps({
@@ -486,6 +491,12 @@ const props = defineProps({
   },
 })
 const obatMedikasi = ref({})
+function obatBaru (item) {
+  const baru = props.pasien?.pra_induksi?.obat_pre_medikasi?.find(el => el.obat_pre_medikasi === item.obat_pre_medikasi && el.dosis === item.dosis && el.jam === item.jam && el.pelaksana?.id === item.pelaksana?.id)
+  console.log('obat bar', baru, item, props.pasien?.pra_induksi?.obat_pre_medikasi)
+  if (!baru) return true
+
+}
 function addObatMedikasi () {
   if (!obatMedikasi.value?.obat_pre_medikasi) return notifErrVue('Obat pre medikasi tidak boleh kosong')
   else store.formInduksi.obat_pre_medikasi.push(obatMedikasi.value)
@@ -628,6 +639,8 @@ const RencManagementNyesiOptions = ref([
 ])
 
 const store = useAssasementPraBedahStore()
+const laporanOp = useLaporanOperasiStore()
+
 const refDiagnosa = ref(null)
 function clearJenis (evt, key, value) {
   // console.log('clear', evt, key, value)
@@ -636,10 +649,18 @@ function clearJenis (evt, key, value) {
   }
 
 }
+onMounted(() => {
+  if (laporanOp.nakes.length == 0) laporanOp.getNakes()
+})
 </script>
 
 
 <style lang="scss" scoped>
+.obat-baru {
+  background-color: #d30f0fb6;
+  color: #fff
+}
+
 .depan {
   width: 20%;
 }
