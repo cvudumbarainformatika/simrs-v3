@@ -5,8 +5,9 @@
       <thead>
         <tr class="text-bold">
           <td class="text-center" style="width: 10%">KODE REKENING</td>
-          <td class="text-center" style="width: 70%" colspan="2">URAIAN</td>
-          <td class="text-center" style="width: 20%">PAGU (Rp.)</td>
+          <td class="text-center" style="width: 50%">URAIAN</td>
+          <td class="text-center" style="width: 20%" colspan="2">PAGU AWAL (Rp.)</td>
+          <td class="text-center" style="width: 20%" colspan="2">PAGU PERGESERAN (Rp.)</td>
         </tr>
 
       </thead>
@@ -14,8 +15,11 @@
         <template v-for="item in store.items" :key="item">
           <tr>
             <td class="text-bold text-left q-px-sm"> {{ item.kode }} </td>
-            <td class="text-bold text-left q-px-sm" colspan="2"> {{ item.uraian }} </td>
-            <td class="text-bold text-right q-px-sm">
+            <td class="text-bold text-left q-px-sm"> {{ item.uraian }} </td>
+            <td class="text-bold text-right q-px-sm" colspan="2">
+              {{ formattanpaRp(item.paguawal) }}
+            </td>
+            <td class="text-bold text-right q-px-sm" colspan="2">
               {{ formattanpaRp(item.pagu) }}
             </td>
           </tr>
@@ -23,23 +27,31 @@
             <template v-for="(rincian, index) in item.rincian" :key="index">
               <tr>
                 <td class="text-right text-bold q-px-sm"> > </td>
-                <td colspan="2">
+                <td>
                   <div class="text-bold text-left q-px-sm">{{ rincian.bidang }}</div>
                   <div class="text-left q-px-sm">Sub Kegiatan: {{ rincian.kegiatan }}</div>
                 </td>
-                <td class="q-px-sm text-right">
+                <td class="q-px-sm text-right" colspan="2">
+                  {{ formattanpaRp(rincian.paguawal) }}
+                </td>
+
+                <td class="q-px-sm text-right" colspan="2">
                   {{ formattanpaRp(rincian.pagu) }}
-                  <!-- <div class="row justify-between">
-                    <div class="col-auto flex-start">Rp. </div>
-                    <div class="flex-end text-right q-pr-sm">{{ formattanpaRp(rincian.pagu) }}</div>
-                  </div> -->
                 </td>
               </tr>
               <template v-if="store.reqs.jenis === '2'">
                 <tr v-for="(item, n) in rincian.items" :key="n">
                   <td></td>
                   <td class="text-left q-px-sm text-grey-8">- {{ item.item }} </td>
-                  <td class="text-right q-px-sm text-grey-8" style="width: 20%"> {{ item.volume }} {{ item.satuan }} x
+                  <td class="text-right q-px-sm text-grey-8" style="width: 20%"> {{ item.volumeawal }} {{ item.satuan }}
+                    x
+                    {{ formattanpaRp(item.hargaawal) }}
+                  </td>
+                  <td class="text-right q-px-sm text-grey-8">
+                    {{ formattanpaRp(item.paguawal) }}
+                  </td>
+                  <td class="text-right q-px-sm text-grey-8" style="width: 20%"> {{ item.volume }} {{ item.satuan }}
+                    x
                     {{ formattanpaRp(item.harga) }}
                   </td>
                   <td class="text-right q-px-sm text-grey-8">
