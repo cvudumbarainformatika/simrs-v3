@@ -7,7 +7,8 @@
             <tr class="bg-grey-4">
               <th>KODE REKENING</th>
               <th>URAIAN</th>
-              <th>NILAI (Rp.)</th>
+              <th>NILAI TAHUN {{ tahunsekarang() }} (Rp)</th>
+              <th>NILAI TAHUN {{ tahunsekarang() - 1 }} (Rp)</th>
             </tr>
           </thead>
           <tbody v-if="store.reqs.levelberapa === 6">
@@ -15,6 +16,7 @@
               <td>{{ it.kode }}</td>
               <td>{{ it.uraian }}</td>
               <td class="text-right">{{ formattanpaRp(it.nilai) }}</td>
+              <td class="text-right">{{ formattanpaRp(it.nilai_lalu) }}</td>
             </tr>
             <tr>
               <td colspan="2" class="text-center text-bold">JUMLAH ASET</td>
@@ -24,15 +26,18 @@
               <td>{{ it.kode }}</td>
               <td>{{ it.uraian }}</td>
               <td class="text-right">{{ formattanpaRp(it.nilai) }}</td>
+              <td class="text-right">{{ formattanpaRp(it.nilai_lalu) }}</td>
             </tr>
             <tr v-for="it in store.hasilekuitas" :key="it" :class="it.kode?.length <= 12 ? 'text-bold' : ''">
               <td>{{ it.kode }}</td>
               <td>{{ it.uraian }}</td>
               <td class="text-right">{{ formattanpaRp(it.nilai) }}</td>
+              <td class="text-right">{{ formattanpaRp(it.nilai_lalu) }}</td>
             </tr>
             <tr>
               <td colspan="2" class="text-center text-bold">JUMLAH KEWAJIBAN DAN EKUITAS</td>
               <td class="text-right text-bold">{{ formattanpaRp(jumlahWajibEkuitas()) }}</td>
+              <td class="text-right text-bold">{{ formattanpaRp(jumlahWajibEkuitas_lalu()) }}</td>
             </tr>
           </tbody>
           <tbody v-if="store.reqs.levelberapa === 5">
@@ -40,24 +45,29 @@
               <td>{{ it.kode }}</td>
               <td>{{ it.uraian }}</td>
               <td class="text-right">{{ formattanpaRp(it.nilai) }}</td>
+              <td class="text-right">{{ formattanpaRp(it.nilai_lalu) }}</td>
             </tr>
             <tr>
               <td colspan="2" class="text-center text-bold">JUMLAH ASET</td>
               <td class="text-right text-bold">{{ formattanpaRp(jumlahAset()) }}</td>
+              <td class="text-right text-bold">{{ formattanpaRp(jumlahAset_lalu()) }}</td>
             </tr>
             <tr v-for="it in store.hasilkewajiban" :key="it" :class="it.kode?.length <= 9 ? 'text-bold' : ''">
               <td>{{ it.kode }}</td>
               <td>{{ it.uraian }}</td>
               <td class="text-right">{{ formattanpaRp(it.nilai) }}</td>
+              <td class="text-right">{{ formattanpaRp(it.nilai_lalu) }}</td>
             </tr>
             <tr v-for="it in store.hasilekuitas" :key="it" :class="it.kode?.length <= 9 ? 'text-bold' : ''">
               <td>{{ it.kode }}</td>
               <td>{{ it.uraian }}</td>
               <td class="text-right">{{ formattanpaRp(it.nilai) }}</td>
+              <td class="text-right">{{ formattanpaRp(it.nilai_lalu) }}</td>
             </tr>
             <tr>
               <td colspan="2" class="text-center text-bold">JUMLAH KEWAJIBAN DAN EKUITAS</td>
               <td class="text-right text-bold">{{ formattanpaRp(jumlahWajibEkuitas()) }}</td>
+              <td class="text-right text-bold">{{ formattanpaRp(jumlahWajibEkuitas_lalu()) }}</td>
             </tr>
           </tbody>
           <tbody v-if="store.reqs.levelberapa === 4">
@@ -65,24 +75,29 @@
               <td>{{ it.kode }}</td>
               <td>{{ it.uraian }}</td>
               <td class="text-right">{{ formattanpaRp(it.nilai) }}</td>
+              <td class="text-right">{{ formattanpaRp(it.nilai_lalu) }}</td>
             </tr>
             <tr>
               <td colspan="2" class="text-center text-bold">JUMLAH ASET</td>
               <td class="text-right text-bold">{{ formattanpaRp(jumlahAset()) }}</td>
+              <td class="text-right text-bold">{{ formattanpaRp(jumlahAset_lalu()) }}</td>
             </tr>
             <tr v-for="it in store.hasilkewajiban" :key="it" :class="it.kode?.length <= 6 ? 'text-bold' : ''">
               <td>{{ it.kode }}</td>
               <td>{{ it.uraian }}</td>
               <td class="text-right">{{ formattanpaRp(it.nilai) }}</td>
+              <td class="text-right">{{ formattanpaRp(it.nilai_lalu) }}</td>
             </tr>
             <tr v-for="it in store.hasilekuitas" :key="it" :class="it.kode?.length <= 6 ? 'text-bold' : ''">
               <td>{{ it.kode }}</td>
               <td>{{ it.uraian }}</td>
               <td class="text-right">{{ formattanpaRp(it.nilai) }}</td>
+              <td class="text-right">{{ formattanpaRp(it.nilai_lalu) }}</td>
             </tr>
             <tr>
               <td colspan="2" class="text-center text-bold">JUMLAH KEWAJIBAN DAN EKUITAS</td>
               <td class="text-right text-bold">{{ formattanpaRp(jumlahWajibEkuitas()) }}</td>
+              <td class="text-right text-bold">{{ formattanpaRp(jumlahWajibEkuitas_lalu()) }}</td>
             </tr>
           </tbody>
           <tbody v-if="store.reqs.levelberapa === 3">
@@ -90,24 +105,29 @@
               <td>{{ it.kode }}</td>
               <td>{{ it.uraian }}</td>
               <td class="text-right">{{ formattanpaRp(it.nilai) }}</td>
+              <td class="text-right">{{ formattanpaRp(it.nilai_lalu) }}</td>
             </tr>
             <tr>
               <td colspan="2" class="text-center text-bold">JUMLAH ASET</td>
               <td class="text-right text-bold">{{ formattanpaRp(jumlahAset()) }}</td>
+              <td class="text-right text-bold">{{ formattanpaRp(jumlahAset_lalu()) }}</td>
             </tr>
             <tr v-for="it in store.hasilkewajiban" :key="it" :class="it.kode?.length <= 3 ? 'text-bold' : ''">
               <td>{{ it.kode }}</td>
               <td>{{ it.uraian }}</td>
               <td class="text-right">{{ formattanpaRp(it.nilai) }}</td>
+              <td class="text-right">{{ formattanpaRp(it.nilai_lalu) }}</td>
             </tr>
             <tr v-for="it in store.hasilekuitas" :key="it" :class="it.kode?.length <= 3 ? 'text-bold' : ''">
               <td>{{ it.kode }}</td>
               <td>{{ it.uraian }}</td>
               <td class="text-right">{{ formattanpaRp(it.nilai) }}</td>
+              <td class="text-right">{{ formattanpaRp(it.nilai_lalu) }}</td>
             </tr>
             <tr>
               <td colspan="2" class="text-center text-bold">JUMLAH KEWAJIBAN DAN EKUITAS</td>
               <td class="text-right text-bold">{{ formattanpaRp(jumlahWajibEkuitas()) }}</td>
+              <td class="text-right text-bold">{{ formattanpaRp(jumlahWajibEkuitas_lalu()) }}</td>
             </tr>
           </tbody>
           <tbody v-if="store.reqs.levelberapa === 2 || store.reqs.levelberapa === 1">
@@ -115,24 +135,29 @@
               <td>{{ it.kode }}</td>
               <td>{{ it.uraian }}</td>
               <td class="text-right">{{ formattanpaRp(it.nilai) }}</td>
+              <td class="text-right">{{ formattanpaRp(it.nilai_lalu) }}</td>
             </tr>
             <tr>
               <td colspan="2" class="text-center text-bold">JUMLAH ASET</td>
               <td class="text-right text-bold">{{ formattanpaRp(jumlahAset()) }}</td>
+              <td class="text-right text-bold">{{ formattanpaRp(jumlahAset_lalu()) }}</td>
             </tr>
             <tr v-for="it in store.hasilkewajiban" :key="it" :class="it.kode?.length <= 1 ? 'text-bold' : ''">
               <td>{{ it.kode }}</td>
               <td>{{ it.uraian }}</td>
               <td class="text-right">{{ formattanpaRp(it.nilai) }}</td>
+              <td class="text-right">{{ formattanpaRp(it.nilai_lalu) }}</td>
             </tr>
             <tr v-for="it in store.hasilekuitas" :key="it" :class="it.kode?.length <= 1 ? 'text-bold' : ''">
               <td>{{ it.kode }}</td>
               <td>{{ it.uraian }}</td>
               <td class="text-right">{{ formattanpaRp(it.nilai) }}</td>
+              <td class="text-right">{{ formattanpaRp(it.nilai_lalu) }}</td>
             </tr>
             <tr>
               <td colspan="2" class="text-center text-bold">JUMLAH KEWAJIBAN DAN EKUITAS</td>
               <td class="text-right text-bold">{{ formattanpaRp(jumlahWajibEkuitas()) }}</td>
+              <td class="text-right text-bold">{{ formattanpaRp(jumlahWajibEkuitas_lalu()) }}</td>
             </tr>
           </tbody>
         </q-markup-table>
@@ -423,14 +448,27 @@ import { ref } from 'vue'
 const separator = ref('cell')
 const store = useNeracaStore()
 
+
+function tahunsekarang() {
+  const tahun = store.reqs.tgl ? new Date(store.reqs.tgl).getFullYear() : new Date().getFullYear()
+  return tahun
+}
 function jumlahAset() {
   const totalaset = store.hasilaset.map((x) => parseFloat(x.nilai))[0]
   return totalaset
 }
-
+function jumlahAset_lalu() {
+  const totalaset = store.hasilaset.map((x) => parseFloat(x.nilai_lalu))[0]
+  return totalaset
+}
 function jumlahWajibEkuitas() {
   const totalwajib = store.hasilkewajiban.map((x) => parseFloat(x.nilai))[0]
   const totalekuitas = store.hasilekuitas.map((x) => parseFloat(x.nilai))[0]
+  return totalwajib + totalekuitas
+}
+function jumlahWajibEkuitas_lalu() {
+  const totalwajib = store.hasilkewajiban.map((x) => parseFloat(x.nilai_lalu))[0]
+  const totalekuitas = store.hasilekuitas.map((x) => parseFloat(x.nilai_lalu))[0]
   return totalwajib + totalekuitas
 }
 
