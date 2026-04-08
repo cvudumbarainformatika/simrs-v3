@@ -223,21 +223,6 @@ const optionRiwayat = ref([
   },
 ])
 
-// function getNakesNya (val) {
-//   return store.nakes?.find(i => i.kdpegsimrs == val)
-// }
-
-// function qrUrl (val) {
-//   console.log('pasien', props?.pasien)
-
-//   const noreg = props?.pasien?.noreg// noreg
-//   const dok = 'SIGN IN CHECKLIST SEFETY.png'
-//   const asal = props?.pasien?.rs13?.includes('POL0') ? 'RAWAT JALAN' : 'RAWAT INAP'
-//   const petugas = props?.pasien?.dokter?.kdpegsimrs
-//   const enc = btoa(`${noreg}|${dok}|${asal}|${petugas}`)
-//   return `https://rsud.probolinggokota.go.id/dokumen-simrs/legalitas/${enc}`
-//   // return `https://xenter.my.id/qr-document?noreg=${noreg}&dokumen=${dok}&asal=${asal}`
-// }
 onMounted(() => {
   if (props?.pasien?.pra_bedah) {
     store.form = { ...props?.pasien?.pra_bedah }

@@ -6,6 +6,7 @@ import { notifErrVue } from 'src/modules/utils'
 import { useSurgicalSafetyStore } from './surgicalSafety'
 import { useLaporanOperasiStore } from './laporanOperasi'
 import { useAssasementPraBedahStore } from './assasement/praBedah'
+import { toRaw } from 'vue'
 
 export const usePermintaanOperasistore = defineStore('permintaan-operasi-store', {
   state: () => ({
@@ -327,7 +328,10 @@ export const usePermintaanOperasistore = defineStore('permintaan-operasi-store',
         laporan.notaTindakans.unshift('Baru')
         laporan.assignForm(findPasien?.laporanop)
         laporan.assignFormTindakan(findPasien?.tindakanop)
-        if (findPasien.pra_bedah) praBed.form = { ...findPasien.pra_bedah }
+        const rawBed = toRaw(findPasien.pra_bedah)
+        const rawInd = toRaw(findPasien.pra_induksi)
+        if (findPasien.pra_bedah) praBed.form = structuredClone(rawBed)
+        if (findPasien.pra_induksi) praBed.formInduksi = structuredClone(rawInd)
       }
     },
 
