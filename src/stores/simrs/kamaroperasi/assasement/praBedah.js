@@ -41,6 +41,8 @@ export const useAssasementPraBedahStore = defineStore('assasement_pra_bedah_stor
       })
     },
     simpanFormInduksi (pasien) {
+      const obat = this.formInduksi.obat_pre_medikasi.filter(item => !item.delete)
+      if (obat.length > 0) this.formInduksi.obat_pre_medikasi = obat
       const payload = { ...this.formInduksi }
       if (!payload.noreg) {
         if (!!pasien?.noreg) {

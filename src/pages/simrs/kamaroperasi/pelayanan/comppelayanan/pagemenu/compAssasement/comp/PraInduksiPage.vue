@@ -394,7 +394,8 @@
                 // console.log('enter');
                 addObatMedikasi()
               }">
-                <th colspan="2" class="q-pa-xs"><q-input v-model="obatMedikasi.obat_pre_medikasi" label="" dense /></th>
+                <th colspan="2" class="q-pa-xs"><q-input ref="inputObatMedikasi"
+                    v-model="obatMedikasi.obat_pre_medikasi" label="" dense /></th>
                 <th class="q-pa-xs"><q-input v-model="obatMedikasi.dosis" label="" dense /></th>
                 <th class="q-pa-xs"><q-input v-model="obatMedikasi.jam" label="" dense /></th>
                 <th class="q-pa-xs"><app-autocomplete v-model="obatMedikasi.pelaksana" label="" dense
@@ -419,7 +420,7 @@
               </template>
               <template v-else>
                 <template v-for="(item, n) in store.formInduksi?.obat_pre_medikasi" :key="n">
-                  <tr :class="obatBaru(item) ? 'obat-baru' : (n % 2 === 0 ? 'even' : 'odd')">
+                  <tr :class="obatBaru(item) || item.delete ? 'obat-baru' : (n % 2 === 0 ? 'even' : 'odd')">
                     <td width="5%">
                       <div class="row items-center">
                         {{ n + 1 }}
@@ -456,9 +457,23 @@
                     <td style="white-space: normal;">
                       <div class="row justify-center">
                         <div class="col-auto">
-                          <q-btn icon="delete_sweep" :color="obatBaru(item) ? 'yellow' : 'negative'" dense flat @click="() => {
-                            store.formInduksi.obat_pre_medikasi.splice(n, 1)
-                          }" />
+                          <q-btn v-if="!item.delete" icon="delete_sweep" :color="obatBaru(item) ? 'yellow' : 'negative'"
+                            dense flat @click="() => {
+                              // store.formInduksi.obat_pre_medikasi.splice(n, 1)
+                              // store.formInduksi.obat_pre_medikasi[n].delete = true
+                              item.delete = true
+                            }" />
+                          <div v-if="item.delete">
+                            <div class="row">
+                              klik simpan
+                            </div>
+                            <div class="row">
+                              untuk hapus
+                            </div>
+                            <div class="row">
+                              permanen data
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </td>
@@ -478,9 +493,9 @@
           @set-model="(val) => {
             store.formInduksi.jam = val
           }" /></div>
-      <div class="col-4"><app-autocomplete v-model="store.formInduksi.dokter_anastesi" label="Dokter Anastesi" outlined
-          dense :source="laporanOp.nakes?.filter(y => y?.kdgroupnakes == '1')" option-label="nama"
-          option-value="kdpegsimrs" hide-dropdown-icon /></div>
+      <div class="col-4"><app-autocomplete v-model="store.formInduksi.dokter_anastesi" :key="laporanOp.nakes"
+          label="Dokter Anastesi" outlined dense :source="laporanOp.nakes?.filter(y => y?.kdgroupnakes == '1')"
+          option-label="nama" option-value="kdpegsimrs" hide-dropdown-icon /></div>
     </div>
     <div class="row justify-end q-my-lg q-mr-md">
       <q-btn label="Simpan" no-caps color="primary" glossy :loading="store.loadingInduksi"
@@ -503,6 +518,7 @@ const props = defineProps({
   },
 })
 const obatMedikasi = ref({})
+const inputObatMedikasi = ref({})
 function obatBaru (item) {
   const baru = props.pasien?.pra_induksi?.obat_pre_medikasi?.find(el => el.obat_pre_medikasi === item.obat_pre_medikasi && el.dosis === item.dosis && el.jam === item.jam && el.pelaksana?.id === item.pelaksana?.id)
   console.log('obat bar', baru, item, props.pasien?.pra_induksi?.obat_pre_medikasi)
@@ -510,9 +526,12 @@ function obatBaru (item) {
 
 }
 function addObatMedikasi () {
+  console.log('add', inputObatMedikasi.value)
   if (!obatMedikasi.value?.obat_pre_medikasi) return notifErrVue('Obat pre medikasi tidak boleh kosong')
   else store.formInduksi.obat_pre_medikasi.push(obatMedikasi.value)
   obatMedikasi.value = {}
+  inputObatMedikasi.value.focus()
+
 }
 const options = ref([
   {
