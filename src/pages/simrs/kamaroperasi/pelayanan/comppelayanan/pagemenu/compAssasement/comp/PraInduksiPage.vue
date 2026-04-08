@@ -459,11 +459,21 @@
                         <div class="col-auto">
                           <q-btn v-if="!item.delete" icon="delete_sweep" :color="obatBaru(item) ? 'yellow' : 'negative'"
                             dense flat @click="() => {
-                              // store.formInduksi.obat_pre_medikasi.splice(n, 1)
-                              // store.formInduksi.obat_pre_medikasi[n].delete = true
-                              item.delete = true
+                              if (obatBaru(item)) store.formInduksi.obat_pre_medikasi.splice(n, 1)
+                              else item.delete = true
                             }" />
-                          <div v-if="item.delete">
+                          <div v-if="obatBaru(item)">
+                            <div class="row">
+                              klik simpan
+                            </div>
+                            <div class="row">
+                              untuk tambah
+                            </div>
+                            <div class="row">
+                              obat baru
+                            </div>
+                          </div>
+                          <div v-if="item.delete && !obatBaru(item)">
                             <div class="row">
                               klik simpan
                             </div>
