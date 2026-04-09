@@ -149,7 +149,7 @@
                             <q-item-label class="text-weight-bold">Rangkaian # {{ item?.no }}</q-item-label>
                             <q-item-label caption>No. Reg: {{ item?.noreg }}</q-item-label>
                             <q-item-label caption>Mulai: {{ date?.formatDate(item?.created_at, 'DD MMMM YYYY')
-                              }}</q-item-label>
+                            }}</q-item-label>
                           </q-item-section>
                           <q-item-section side>
                             <q-btn label="Hubungkan" color="primary" size="sm" unelevated
@@ -296,7 +296,7 @@ const menus = ref([
     name: 'DiagnosaPage',
     label: 'Diagnosa & Tindakan',
     icon: 'icon-mat-medical_information',
-    nakes: ['1', '2', '3', '4', '5', '6'],
+    nakes: ['1', '2', '3', '4', '5', '6', null],
     comp: shallowRef(defineAsyncComponent(() => import('./layanan/diagnosadantindakan/IndexPage.vue')))
   },
 
@@ -304,15 +304,22 @@ const menus = ref([
     name: 'e-resep-page',
     label: 'EResep',
     icon: 'icon-mat-receipt',
-    nakes: ['1', '2', '3', '4', '5', '6'],
+    nakes: ['1', '2', '3', '4', '5', '6', null],
     comp: shallowRef(defineAsyncComponent(() => import('src/pages/simrs/eresep/EresepPage.vue')))
   },
   {
     name: 'Penunjang',
     label: 'Penunjang',
     icon: 'icon-mat-post_add',
-    nakes: ['1', '2', '3', '4', '5', '6'],
+    nakes: ['1', '2', '3', '4', '5', '6', null],
     comp: shallowRef(defineAsyncComponent(() => import('./layanan/penunjang/IndexPage.vue')))
+  },
+  {
+    name: 'Plann',
+    label: 'Plann',
+    icon: 'icon-mat-app_registration',
+    nakes: ['1', '2', '3', '4', '5', '6', null],
+    comp: shallowRef(defineAsyncComponent(() => import('./layanan/plann/IndexPage.vue')))
   },
 ])
 
@@ -339,7 +346,7 @@ const filterredMenus = computed(() => {
     return menus.value.filter(menu => menu.nakes.some(r => pathSegments.includes(r)))
   }
 })
-const menu = ref(menus.value[0])
+const menu = ref(filterredMenus.value[0])
 
 function menuDiganti(val) {
   menu.value = val

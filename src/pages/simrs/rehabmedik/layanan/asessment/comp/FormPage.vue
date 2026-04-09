@@ -176,6 +176,7 @@ const onSubmit = async () => {
 
   form.value.noreg = props.pasien.noreg
   form.value.norm = props.pasien.norm
+  form.value.nakes = props.isDokter ? '1' : '6'
 
   try {
     const resp = await api.post('v1/simrs/rehabmedik/soap/store', form.value)
