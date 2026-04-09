@@ -149,7 +149,7 @@
                             <q-item-label class="text-weight-bold">Rangkaian # {{ item?.no }}</q-item-label>
                             <q-item-label caption>No. Reg: {{ item?.noreg }}</q-item-label>
                             <q-item-label caption>Mulai: {{ date?.formatDate(item?.created_at, 'DD MMMM YYYY')
-                            }}</q-item-label>
+                              }}</q-item-label>
                           </q-item-section>
                           <q-item-section side>
                             <q-btn label="Hubungkan" color="primary" size="sm" unelevated
@@ -258,7 +258,7 @@ const menus = ref([
     label: 'Assesment Dokter',
     icon: 'icon-my-stethoscope',
     route: ['poli'],
-    nakes: ['1', null],
+    nakes: ['1', '2', '3', '4', '5', '6', null],
     props: { isDokter: true },
     comp: shallowRef(defineAsyncComponent(() => import('src/pages/simrs/rehabmedik/layanan/asessment/IndexPage.vue')))
   },
@@ -267,7 +267,7 @@ const menus = ref([
     label: 'Assesment Fisioterapis',
     icon: 'icon-mat-app_registration',
     route: ['poli'],
-    nakes: ['6', null],
+    nakes: ['1', '2', '3', '4', '5', '6', null],
     props: { isDokter: false },
     comp: shallowRef(defineAsyncComponent(() => import('src/pages/simrs/rehabmedik/layanan/asessment/IndexPage.vue')))
   },
@@ -311,7 +311,7 @@ const menus = ref([
     name: 'Penunjang',
     label: 'Penunjang',
     icon: 'icon-mat-post_add',
-    nakes: ['1', '2', '3', '4', '5', '6', null],
+    nakes: ['1', null],
     comp: shallowRef(defineAsyncComponent(() => import('./layanan/penunjang/IndexPage.vue')))
   },
   {
@@ -320,6 +320,13 @@ const menus = ref([
     icon: 'icon-mat-app_registration',
     nakes: ['1', '2', '3', '4', '5', '6', null],
     comp: shallowRef(defineAsyncComponent(() => import('./layanan/plann/IndexPage.vue')))
+  },
+  {
+    name: 'Dokumen',
+    label: 'Dokumen',
+    icon: 'icon-mat-receipt',
+    nakes: ['1', '2', '3', '4', '5', '6', null],
+    comp: shallowRef(defineAsyncComponent(() => import('./layanan/dokumen/IndexPage.vue')))
   },
 ])
 
