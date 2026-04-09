@@ -27,7 +27,7 @@
               <q-item-section class="q-pb-xl">
                 <q-item-label class="f-12">
                   <span class="">Subjective </span> : <span class="text-weight-bold">{{ item?.subjective || '-'
-                  }}</span>
+                    }}</span>
                 </q-item-label>
                 <q-item-label>
                   <span class="">Objective </span> : <span class="text-weight-bold">{{
@@ -67,7 +67,7 @@
 
 
               </q-item-section>
-              <div class="absolute-bottom-right q-pa-sm">
+              <div v-if="item?.petugas?.kdpegsimrs === kdpegsimrs" class="absolute-bottom-right q-pa-sm">
                 <div class="q-gutter-sm">
                   <q-btn flat round size="sm" icon="icon-mat-edit" @click="setItem(item)" />
                   <q-btn flat round size="sm" icon="icon-mat-delete" color="negative" @click="hapusItem(item.id)" />
@@ -86,6 +86,7 @@
 import { useQuasar } from 'quasar'
 import { api } from 'src/boot/axios'
 import { notifSuccessVue } from 'src/modules/utils'
+import { useAplikasiStore } from 'src/stores/app/aplikasi'
 import { useRehabmedikSoapStore } from 'src/stores/simrs/pelayanan/rehabmedik/soap'
 import { computed } from 'vue'
 const $q = useQuasar()
@@ -109,6 +110,12 @@ const props = defineProps({
 })
 
 const store = useRehabmedikSoapStore()
+
+const app = useAplikasiStore()
+const kdpegsimrs = app?.user?.pegawai?.kdpegsimrs
+
+// console.log('app', kdpegsimrs);
+
 
 const lists = computed(() => {
   const arr = props.pasien?.soap
