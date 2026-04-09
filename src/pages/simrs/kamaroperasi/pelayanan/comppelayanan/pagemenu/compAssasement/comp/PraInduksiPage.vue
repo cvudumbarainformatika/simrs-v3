@@ -420,7 +420,8 @@
               </template>
               <template v-else>
                 <template v-for="(item, n) in store.formInduksi?.obat_pre_medikasi" :key="n">
-                  <tr :class="obatBaru(item) || item.delete ? 'obat-baru' : (n % 2 === 0 ? 'even' : 'odd')">
+                  <tr
+                    :class="item.delete ? 'obat-hapus' : (obatBaru(item, n) ? 'obat-baru' : (n % 2 === 0 ? 'even' : 'odd'))">
                     <td width="5%">
                       <div class="row items-center">
                         {{ n + 1 }}
@@ -456,13 +457,12 @@
                     </td>
                     <td style="white-space: normal;">
                       <div class="row justify-center">
-                        <div class="col-auto">
-                          <q-btn v-if="!item.delete" icon="delete_sweep" :color="obatBaru(item) ? 'yellow' : 'negative'"
-                            dense flat @click="() => {
-                              if (obatBaru(item)) store.formInduksi.obat_pre_medikasi.splice(n, 1)
-                              else item.delete = true
-                            }" />
-                          <div v-if="obatBaru(item)">
+                        <div class="col-auto text-center">
+                          <q-btn v-if="!item.delete" icon="delete_sweep" color="negative" dense flat @click="() => {
+                            if (obatBaru(item, n)) store.formInduksi.obat_pre_medikasi.splice(n, 1)
+                            else item.delete = true
+                          }" />
+                          <div v-if="obatBaru(item, n)">
                             <div class="row">
                               klik simpan
                             </div>
@@ -470,10 +470,10 @@
                               untuk tambah
                             </div>
                             <div class="row">
-                              obat baru
+                              permanen data
                             </div>
                           </div>
-                          <div v-if="item.delete && !obatBaru(item)">
+                          <div v-if="item.delete && !obatBaru(item, n)">
                             <div class="row">
                               klik simpan
                             </div>
@@ -529,8 +529,9 @@ const props = defineProps({
 })
 const obatMedikasi = ref({})
 const inputObatMedikasi = ref({})
-function obatBaru (item) {
-  const baru = props.pasien?.pra_induksi?.obat_pre_medikasi?.find(el => el.obat_pre_medikasi === item.obat_pre_medikasi && el.dosis === item.dosis && el.jam === item.jam && el.pelaksana?.id === item.pelaksana?.id)
+function obatBaru (item, n) {
+  // const baru = props.pasien?.pra_induksi?.obat_pre_medikasi?.find(el => el.obat_pre_medikasi === item.obat_pre_medikasi && el.dosis === item.dosis && el.jam === item.jam && el.pelaksana?.id === item.pelaksana?.id)
+  const baru = props.pasien?.pra_induksi?.obat_pre_medikasi[n]
   console.log('obat bar', baru, item, props.pasien?.pra_induksi?.obat_pre_medikasi)
   if (!baru) return true
 
@@ -698,6 +699,11 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .obat-baru {
+  background-color: #0fd30fdc;
+  color: #fff
+}
+
+.obat-hapus {
   background-color: #d30f0fb6;
   color: #fff
 }
