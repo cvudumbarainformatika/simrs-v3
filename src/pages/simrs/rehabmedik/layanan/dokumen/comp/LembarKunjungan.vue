@@ -80,12 +80,35 @@
                 <th class="border px-2 py-1" style="text-align: center;">PETUGAS</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody v-if="lists?.length > 0">
               <tr class="border" v-for="(item, i) in lists">
                 <td>{{ i + 1 }}</td>
                 <td>{{ item?.tgl_kunjungan }}</td>
-                <td>3</td>
-                <td>tindakan</td>
+                <td>{{ item?.sep }}</td>
+                <td>
+                  <div v-for="(t, x) in item?.tindakan">
+                    - {{ t?.mastertindakan?.rs2 }}
+                  </div>
+                </td>
+                <td>-</td>
+                <td>-</td>
+              </tr>
+              <!-- FILLER -->
+              <tr v-for="n in (10 - lists.length)" :key="'f' + n" class="border">
+                <td>{{ lists.length + n }}</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+            </tbody>
+            <tbody v-else>
+              <tr class="border" v-for="i in 8">
+                <td>{{ i + 1 }}</td>
+                <td></td>
+                <td></td>
+                <td></td>
                 <td>-</td>
                 <td>-</td>
               </tr>

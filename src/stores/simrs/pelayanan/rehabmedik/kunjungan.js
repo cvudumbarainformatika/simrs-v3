@@ -105,6 +105,7 @@ export const useKunjunganRehabmediStore = defineStore('kunjungan-rehabmedik-stor
           datax.tindakan = data?.tindakan ?? []
         datax.datasimpeg = data?.datasimpeg ?? null
         datax.kunjungan_rehab = data?.kunjungan_rehab ?? []
+        datax.link_noreg = data?.link_noreg ?? null
       }
 
       console.log('find pasien', findPasien);
