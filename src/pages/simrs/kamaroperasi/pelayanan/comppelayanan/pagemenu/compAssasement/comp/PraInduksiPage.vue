@@ -33,7 +33,7 @@
         <q-option-group v-model="store.formInduksi.riwayat_anastesi" :options="options" inline dense
           @update:model-value="clearJenis($event, 'jenis_riwayat_anastesi', 'Tidak')" />
         <q-input v-if="store?.formInduksi?.riwayat_anastesi == 'Ya'" v-model="store.formInduksi.jenis_riwayat_anastesi"
-          label="Jenis Anastesi" :rules="[
+          label="Jenis Anastesi" dense :rules="[
             val => (!val || val?.length <= 255) || 'Maksimal 255 karakter'
           ]" />
       </div>
@@ -62,7 +62,7 @@
         <q-option-group v-model="store.formInduksi.riwayat_alergi" :options="options" inline dense
           @update:model-value="clearJenis($event, 'jenis_alergi', 'Tidak')" />
         <q-input v-if="store?.formInduksi?.riwayat_alergi == 'Ya'" v-model="store.formInduksi.jenis_alergi"
-          label="Jenis " :rules="[
+          label="Jenis Alergi" dense :rules="[
             val => (!val || val?.length <= 255) || 'Maksimal 255 karakter'
           ]" />
       </div>
@@ -79,14 +79,14 @@
           }" />
         <div v-if="store?.formInduksi?.persiapan_transfusi == 'Ya'" class="row q-col-gutter-x-sm">
           <div class="col-6">
-            <q-input v-model="store.formInduksi.jenis_transfusi" label="Jenis " :rules="[
+            <q-input v-model="store.formInduksi.jenis_transfusi" label="Jenis Transfusi" dense :rules="[
               val => (!val || val?.length <= 255) || 'Maksimal 255 karakter'
             ]" />
           </div>
           <div class="col-6">
             <div class="row no-wrap items-center">
               <div class="col-10">
-                <q-input v-model="store.formInduksi.jumlah_transfusi" label="Jumlah " :rules="[
+                <q-input v-model="store.formInduksi.jumlah_transfusi" label="Jumlah Transfusi" dense :rules="[
                   val => (!val || /^-?\d*[.,]?\d*$/.test(val)) || 'Format angka tidak valid'
                 ]" />
               </div>
@@ -323,12 +323,19 @@
           <div class="col-auto depan">Rencana Anastesi</div>
           <div class="col-auto dua">:</div>
           <div class="col-auto belakang">
-            <div class="row">
+            <div class="row items-center">
               <div class="col-4">
                 <q-option-group v-model="store.formInduksi.renc_anastesi" :options="RenAnasOptions" inline dense
                   @update:model-value="clearJenis($event, 'region_anas', 'Umum')" />
               </div>
               <div class="col-6">
+
+              </div>
+            </div>
+            <div class="row items-center q-my-xs">
+              <div class="col-1">
+              </div>
+              <div class="col-10 q-ml-xs">
                 <q-option-group v-if="store.formInduksi.renc_anastesi == 'Regional'"
                   v-model="store.formInduksi.region_anas" :options="RegionAnasOptions" inline dense />
               </div>
@@ -584,6 +591,22 @@ const RegionAnasOptions = ref([
   {
     label: 'Blok Syaraf',
     value: 'Blok Syaraf'
+  },
+  {
+    label: 'Intubasi',
+    value: 'Intubasi'
+  },
+  {
+    label: 'LMA',
+    value: 'LMA'
+  },
+  {
+    label: 'Face mask',
+    value: 'Face mask'
+  },
+  {
+    label: 'TIVA',
+    value: 'TIVA'
   },
 ])
 
