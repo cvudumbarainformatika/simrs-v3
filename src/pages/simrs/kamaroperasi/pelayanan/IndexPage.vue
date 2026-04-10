@@ -119,6 +119,12 @@ const menus = ref([
     icon: 'healing',
     comp: shallowRef(defineAsyncComponent(() => import('./comppelayanan/pagemenu/compTindakan/IndexPage.vue')))
   },
+  {
+    name: 'serahterima',
+    label: 'Serah Terima Pasien',
+    icon: 'sync_alt',
+    comp: shallowRef(defineAsyncComponent(() => import('./comppelayanan/pagemenu/compSerahTerima/IndexPage.vue')))
+  },
 ])
 const menu = ref(menus.value[0])
 

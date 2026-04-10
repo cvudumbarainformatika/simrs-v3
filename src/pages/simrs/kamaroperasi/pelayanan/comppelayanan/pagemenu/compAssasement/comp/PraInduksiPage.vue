@@ -390,16 +390,22 @@
                 <th class="q-pa-xs">Pelaksana</th>
                 <th class="q-pa-xs">#</th>
               </tr>
-              <tr @keyup.enter="() => {
-                // console.log('enter');
-                addObatMedikasi()
-              }">
-                <th colspan="2" class="q-pa-xs"><q-input ref="inputObatMedikasi"
-                    v-model="obatMedikasi.obat_pre_medikasi" label="" dense /></th>
+              <tr>
+                <th colspan="2" class="q-pa-xs">
+
+                  <app-autocomplete v-model="obatMedikasi.obat_pre_medikasi" label="" dense :source="store.obats"
+                    option-label="nama_obat" hide-dropdown-icon :filled="false" />
+                  <!-- <q-input ref="inputObatMedikasi" v-model="obatMedikasi.obat_pre_medikasi" label="" dense /> -->
+                </th>
                 <th class="q-pa-xs"><q-input v-model="obatMedikasi.dosis" label="" dense /></th>
                 <th class="q-pa-xs"><q-input v-model="obatMedikasi.jam" label="" dense /></th>
-                <th class="q-pa-xs"><app-autocomplete v-model="obatMedikasi.pelaksana" label="" dense
-                    :source="laporanOp.nakes" option-label="nama" hide-dropdown-icon /></th>
+                <th class="q-pa-xs" @keyup.enter="() => {
+                  // console.log('enter');
+                  addObatMedikasi()
+                }">
+                  <app-autocomplete v-model="obatMedikasi.pelaksana" label="" dense :source="laporanOp.nakes"
+                    option-label="nama" hide-dropdown-icon :filled="false" />
+                </th>
                 <th class="q-pa-xs"><q-btn icon="add" @click="addObatMedikasi" dense color="primary" rounded /></th>
               </tr>
             </thead>
@@ -430,7 +436,7 @@
                     <td style="white-space: normal;">
                       <div class="row items-center">
                         <div class="col-auto">
-                          {{ item?.obat_pre_medikasi }}
+                          {{ item?.obat_pre_medikasi?.nama_obat }}
                         </div>
                       </div>
                     </td>
