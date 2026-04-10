@@ -45,11 +45,14 @@ export const useRbaStore = defineStore('store_rba_siasik', {
       for (let i = 0; i < elunik1?.length; i++) {
         const el = elunik1[i];
         const arr = this.datarba.concat(this.datarbaawal)
+        const pagu = arr.filter((x) => x.kode1 === el).map((x) => parseFloat(x?.pagu) || 0).reduce((a, b) => a + b, 0)
+        const paguawal = arr.filter((x) => x.kode1 === el).map((x) => parseFloat(x?.paguawal) || 0).reduce((a, b) => a + b, 0)
         const obj = {
           kode: arr.filter((x) => x.kode1 === el)[0].kode1,
           uraian: arr.filter((x) => x.kode1 === el)[0].uraian1,
-          pagu: arr.filter((x) => x.kode1 === el).map((x) => parseFloat(x?.pagu) || 0).reduce((a, b) => a + b, 0),
-          paguawal: arr.filter((x) => x.kode1 === el).map((x) => parseFloat(x?.paguawal) || 0).reduce((a, b) => a + b, 0),
+          pagu,
+          paguawal,
+          selisih: pagu - paguawal,
           rincian: []
         }
         rba.push(obj)
@@ -59,11 +62,14 @@ export const useRbaStore = defineStore('store_rba_siasik', {
       for (let i = 0; i < elunik2?.length; i++) {
         const el = elunik2[i];
         const arr = this.datarba.concat(this.datarbaawal)
+        const pagu = arr.filter((x) => x.kode2 === el).map((x) => parseFloat(x?.pagu) || 0).reduce((a, b) => a + b, 0)
+        const paguawal = arr.filter((x) => x.kode2 === el).map((x) => parseFloat(x?.paguawal) || 0).reduce((a, b) => a + b, 0)
         const obj = {
           kode: arr.filter((x) => x.kode2 === el)[0].kode2,
           uraian: arr.filter((x) => x.kode2 === el)[0].uraian2,
-          pagu: arr.filter((x) => x.kode2 === el).map((x) => parseFloat(x?.pagu) || 0).reduce((a, b) => a + b, 0),
-          paguawal: arr.filter((x) => x.kode2 === el).map((x) => parseFloat(x?.paguawal) || 0).reduce((a, b) => a + b, 0),
+          pagu,
+          paguawal,
+          selisih: pagu - paguawal,
           rincian: []
         }
         rba.push(obj)
@@ -74,11 +80,14 @@ export const useRbaStore = defineStore('store_rba_siasik', {
       for (let i = 0; i < elunik3?.length; i++) {
         const el = elunik3[i];
         const arr = this.datarba.concat(this.datarbaawal)
+        const pagu = arr.filter((x) => x.kode3 === el).map((x) => parseFloat(x?.pagu) || 0).reduce((a, b) => a + b, 0)
+        const paguawal = arr.filter((x) => x.kode3 === el).map((x) => parseFloat(x?.paguawal) || 0).reduce((a, b) => a + b, 0)
         const obj = {
           kode: arr.filter((x) => x.kode3 === el)[0].kode3,
           uraian: arr.filter((x) => x.kode3 === el)[0].uraian3,
-          pagu: arr.filter((x) => x.kode3 === el).map((x) => parseFloat(x?.pagu) || 0).reduce((a, b) => a + b, 0),
-          paguawal: arr.filter((x) => x.kode3 === el).map((x) => parseFloat(x?.paguawal) || 0).reduce((a, b) => a + b, 0),
+          pagu,
+          paguawal,
+          selisih: pagu - paguawal,
           rincian: []
         }
         rba.push(obj)
@@ -89,11 +98,14 @@ export const useRbaStore = defineStore('store_rba_siasik', {
       for (let i = 0; i < elunik4?.length; i++) {
         const el = elunik4[i];
         const arr = this.datarba.concat(this.datarbaawal)
+        const pagu = arr.filter((x) => x.kode4 === el).map((x) => parseFloat(x?.pagu) || 0).reduce((a, b) => a + b, 0)
+        const paguawal = arr.filter((x) => x.kode4 === el).map((x) => parseFloat(x?.paguawal) || 0).reduce((a, b) => a + b, 0)
         const obj = {
           kode: arr.filter((x) => x.kode4 === el)[0].kode4,
           uraian: arr.filter((x) => x.kode4 === el)[0].uraian4,
-          pagu: arr.filter((x) => x.kode4 === el).map((x) => parseFloat(x?.pagu) || 0).reduce((a, b) => a + b, 0),
-          paguawal: arr.filter((x) => x.kode4 === el).map((x) => parseFloat(x?.paguawal) || 0).reduce((a, b) => a + b, 0),
+          pagu,
+          paguawal,
+          selisih: pagu - paguawal,
           rincian: []
         }
         rba.push(obj)
@@ -103,11 +115,14 @@ export const useRbaStore = defineStore('store_rba_siasik', {
       for (let i = 0; i < elunik5?.length; i++) {
         const el = elunik5[i];
         const arr = this.datarba.concat(this.datarbaawal)
+        const pagu = arr.filter((x) => x.kode5 === el).map((x) => parseFloat(x?.pagu) || 0).reduce((a, b) => a + b, 0)
+        const paguawal = arr.filter((x) => x.kode5 === el).map((x) => parseFloat(x?.paguawal) || 0).reduce((a, b) => a + b, 0)
         const obj = {
           kode: arr.filter((x) => x.kode5 === el)[0].kode5,
           uraian: arr.filter((x) => x.kode5 === el)[0].uraian5,
-          pagu: arr.filter((x) => x.kode5 === el).map((x) => parseFloat(x?.pagu) || 0).reduce((a, b) => a + b, 0),
-          paguawal: arr.filter((x) => x.kode5 === el).map((x) => parseFloat(x?.paguawal) || 0).reduce((a, b) => a + b, 0),
+          pagu,
+          paguawal,
+          selisih: pagu - paguawal,
           rincian: []
         }
         rba.push(obj)
@@ -176,6 +191,7 @@ export const useRbaStore = defineStore('store_rba_siasik', {
             hargaawal: parseFloat(item.hargaawal) || 0,
             volume: parseFloat(item.volume) || 0,
             volumeawal: parseFloat(item.volumeawal) || 0,
+            selisih: (parseFloat(item.pagu) || 0) - (parseFloat(item.paguawal) || 0)
           }
         } else {
           groupedByIdpp[key].pagu += parseFloat(item.pagu) || 0
@@ -184,6 +200,8 @@ export const useRbaStore = defineStore('store_rba_siasik', {
           groupedByIdpp[key].hargaawal += parseFloat(item.hargaawal) || 0
           groupedByIdpp[key].volume += parseFloat(item.volume) || 0
           groupedByIdpp[key].volumeawal += parseFloat(item.volumeawal) || 0
+          groupedByIdpp[key].selisih = groupedByIdpp[key].pagu - groupedByIdpp[key].paguawal
+
         }
       })
 
@@ -207,7 +225,6 @@ export const useRbaStore = defineStore('store_rba_siasik', {
           const bidangkegiatan = data.filter(
             (x) => x.kodebidang === kodebidang && x.kodekegiatan === kodekegiatan
           )
-          console.log('Bidang Kegiatan', bidangkegiatan)
           const totalrinci = bidangkegiatan.reduce(
             (total, item) => total + (parseFloat(item?.pagu) || 0),
             0
@@ -223,6 +240,7 @@ export const useRbaStore = defineStore('store_rba_siasik', {
             kegiatan: bidangkegiatan[0]?.kegiatan,
             pagu: totalrinci,
             paguawal: totalrinciawal,
+            selisih: totalrinci - totalrinciawal,
             items: bidangkegiatan.map((item) => ({
               hargaawal: item.hargaawal || 0,
               harga: item.harga || 0,
@@ -232,6 +250,7 @@ export const useRbaStore = defineStore('store_rba_siasik', {
               satuan: item.satuan,
               volumeawal: item.volumeawal || 0,
               volume: item.volume || 0,
+              selisih: (parseFloat(item.pagu) || 0) - (parseFloat(item.paguawal) || 0)
             })),
           }
         })
@@ -253,6 +272,7 @@ export const useRbaStore = defineStore('store_rba_siasik', {
           uraian: uraian,
           pagu: totalPagu,
           paguawal: totalPaguawal,
+          selisih: totalPagu - totalPaguawal,
           rincian: rincian,
         })
       })
