@@ -426,7 +426,7 @@
                 <td class="text-right">
                   {{ formattanpaRp(it.nilai) }}
                 </td>
-                <td class="text-right text-bold">
+                <td class="text-right">
                   {{ formattanpaRp(it.nilai_lalu) }}
                 </td>
               </tr>
@@ -474,7 +474,7 @@
                 <td class="text-right">
                   {{ formattanpaRp(it.nilai) }}
                 </td>
-                <td class="text-right text-bold">
+                <td class="text-right">
                   {{ formattanpaRp(it.nilai_lalu) }}
                 </td>
               </tr>
@@ -540,7 +540,7 @@
                 <td class="text-right">
                   {{ formattanpaRp(it.nilai) }}
                 </td>
-                <td class="text-right text-bold">
+                <td class="text-right">
                   {{ formattanpaRp(it.nilai_lalu) }}
                 </td>
               </tr>
@@ -581,7 +581,7 @@
                 <td class="text-right">
                   {{ formattanpaRp(it.nilai) }}
                 </td>
-                <td class="text-right text-bold">
+                <td class="text-right">
                   {{ formattanpaRp(it.nilai_lalu) }}
                 </td>
               </tr>
@@ -652,7 +652,7 @@
                 <td class="text-right">
                   {{ formattanpaRp(it.nilai) }}
                 </td>
-                <td class="text-right text-bold">
+                <td class="text-right">
                   {{ formattanpaRp(it.nilai_lalu) }}
                 </td>
               </tr>
