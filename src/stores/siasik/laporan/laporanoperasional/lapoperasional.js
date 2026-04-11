@@ -97,6 +97,17 @@ export const useLaporanOperasionalStore = defineStore('Laporan_Operasional', {
     pendapatanluarbiasa: [],
     bebanluarbiasa: [],
 
+
+    pagupendapatan_lalu: [],
+    penyesuaianpendapatan_lalu: [],
+    datapendapatans_lalu: [],
+    databebans_lalu: [],
+    penyesuaianbeban_lalu: [],
+    surplusnonoperasional_lalu: [],
+    defisitnonoperasional_lalu: [],
+    pendapatanluarbiasa_lalu: [],
+    bebanluarbiasa_lalu: [],
+
     hasilpendapatan: [],
     hasilbeban: [],
     hasilsurplusdefisit: [],
@@ -130,6 +141,18 @@ export const useLaporanOperasionalStore = defineStore('Laporan_Operasional', {
             this.pendapatanluarbiasa = resp.data.pendapatanluarbiasa
             this.bebanluarbiasa = resp.data.bebanluarbiasa
 
+
+            this.pagupendapatan_lalu = resp.data.pagupendapatan_lalu
+            this.penyesuaianpendapatan_lalu = resp.data.penyesuaianpendapatan_lalu
+            this.datapendapatans_lalu = resp.data.pendapatan_lalu
+            this.databebans_lalu = resp.data.beban_lalu
+            this.penyesuaianbeban_lalu = resp.data.penyesuaianbeban_lalu
+            this.surplusnonoperasional_lalu = resp.data.surplusnonoperasional_lalu
+            this.defisitnonoperasional_lalu = resp.data.defisitnonoperasional_lalu
+            this.pendapatanluarbiasa_lalu = resp.data.pendapatanluarbiasa_lalu
+            this.bebanluarbiasa_lalu = resp.data.bebanluarbiasa_lalu
+
+
             this.mapData()
             this.loading = false
             resolve(resp.data)
@@ -138,16 +161,21 @@ export const useLaporanOperasionalStore = defineStore('Laporan_Operasional', {
       })
     },
     mapData() {
-      const koderekpend = this.pagupendapatan.map((x) => x.kode6)
+      const allpagu = this.pagupendapatan.concat(this.pagupendapatan_lalu)
+      const koderekpend = allpagu.map((x) => x.kode6)
       const newsetpend = koderekpend?.length ? [...new Set(koderekpend)] : []
 
       const pendapatan = this.datapendapatans.filter(x => koderekpend.includes(x.kode6))
       const penyepend = this.penyesuaianpendapatan.filter(x => koderekpend.includes(x.kode6))
-      console.log('newsetpend', newsetpend)
-      console.log('pendapatan', pendapatan)
-      console.log('penyesuaian pendapatan', penyepend)
+
+      const pendapatan_lalu = this.datapendapatans_lalu.filter(x => koderekpend.includes(x.kode6))
+      const penyepend_lalu = this.penyesuaianpendapatan_lalu.filter(x => koderekpend.includes(x.kode6))
+
+
       const allpendpatan = pendapatan.concat(penyepend)
+      const allpendpatan_lalu = pendapatan_lalu.concat(penyepend_lalu)
       console.log('allpendpatan', allpendpatan)
+      console.log('allpendpatan_lalu', allpendpatan_lalu)
       const kode6x = []
       const kode5x = []
       const kode4x = []
@@ -159,85 +187,103 @@ export const useLaporanOperasionalStore = defineStore('Laporan_Operasional', {
         const el = newsetpend[i]
 
         const data = allpendpatan.filter((x) => x.kode6 === el)
+        const data_lalu = allpendpatan_lalu.filter((x) => x.kode6 === el)
+        const alldata = data.concat(data_lalu)
 
         if (!data.length) continue
 
         const obj6 = {
-          kode: data[0].kode6,
-          uraian: data[0].uraian,
+          kode: alldata[0].kode6,
+          uraian: alldata[0].uraian,
+          nilai_lalu: data_lalu.reduce((a, b) => a + parseFloat(b.subtotal), 0),
           nilai: data.reduce((a, b) => a + parseFloat(b.subtotal), 0),
         }
 
         kode6x.push(obj6)
       }
       const kode6 = kode6x.filter(x => x.kode !== undefined)
-      // console.log('kode6', hasilkode6)
 
-      const pend5 = this.pagupendapatan?.length ? [...new Set(this.pagupendapatan.map((x) => x.kode5))] : []
+
+      const pend5 = allpagu?.length ? [...new Set(allpagu.map((x) => x.kode5))] : []
       for (let i = 0; i < pend5?.length; i++) {
         const el = pend5[i]
         const data = allpendpatan.filter((x) => x.kode5 === el)
-        if (!data.length) continue
+        const data_lalu = allpendpatan_lalu.filter((x) => x.kode5 === el)
+        const alldata = data.concat(data_lalu)
+        if (!alldata.length) continue
         const obj5 = {
-          kode: data[0].kode5,
-          uraian: data[0].uraian5,
+          kode: alldata[0].kode5,
+          uraian: alldata[0].uraian5,
           nilai: data.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0),
+          nilai_lalu: data_lalu.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0),
         }
         kode5x.push(obj5)
       }
       const kode5 = kode5x.filter(x => x.kode !== undefined)
 
-      const pend4 = this.pagupendapatan?.length ? [...new Set(this.pagupendapatan.map((x) => x.kode4))] : []
+      const pend4 = allpagu?.length ? [...new Set(allpagu.map((x) => x.kode4))] : []
       for (let i = 0; i < pend4?.length; i++) {
         const el = pend4[i]
         const data = allpendpatan.filter((x) => x.kode4 === el)
-        if (!data.length) continue
+        const data_lalu = allpendpatan_lalu.filter((x) => x.kode4 === el)
+        const alldata = data.concat(data_lalu)
+        if (!alldata.length) continue
         const obj4 = {
-          kode: data[0].kode4,
-          uraian: data[0].uraian4,
+          kode: alldata[0].kode4,
+          uraian: alldata[0].uraian4,
           nilai: data.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0),
+          nilai_lalu: data_lalu.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0),
         }
         kode4x.push(obj4)
       }
       const kode4 = kode4x.filter(x => x.kode !== undefined)
 
-      const pend3 = this.pagupendapatan?.length ? [...new Set(this.pagupendapatan.map((x) => x.kode3))] : []
+      const pend3 = allpagu?.length ? [...new Set(allpagu.map((x) => x.kode3))] : []
       for (let i = 0; i < pend3?.length; i++) {
         const el = pend3[i]
         const data = allpendpatan.filter((x) => x.kode3 === el)
-        if (!data.length) continue
+        const data_lalu = allpendpatan_lalu.filter((x) => x.kode3 === el)
+        const alldata = data.concat(data_lalu)
+        if (!alldata.length) continue
         const obj3 = {
-          kode: data[0].kode3,
-          uraian: data[0].uraian3,
+          kode: alldata[0].kode3,
+          uraian: alldata[0].uraian3,
           nilai: data.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0),
+          nilai_lalu: data_lalu.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0),
         }
         kode3x.push(obj3)
       }
       const kode3 = kode3x.filter(x => x.kode !== undefined)
 
-      const pend2 = this.pagupendapatan?.length ? [...new Set(this.pagupendapatan.map((x) => x.kode2))] : []
+      const pend2 = allpagu?.length ? [...new Set(allpagu.map((x) => x.kode2))] : []
       for (let i = 0; i < pend2?.length; i++) {
         const el = pend2[i]
         const data = allpendpatan.filter((x) => x.kode2 === el)
-        if (!data.length) continue
+        const data_lalu = allpendpatan_lalu.filter((x) => x.kode2 === el)
+        const alldata = data.concat(data_lalu)
+        if (!alldata.length) continue
         const obj2 = {
-          kode: data[0].kode2,
-          uraian: data[0].uraian2,
+          kode: alldata[0].kode2,
+          uraian: alldata[0].uraian2,
           nilai: data.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0),
+          nilai_lalu: data_lalu.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0),
         }
         kode2x.push(obj2)
       }
       const kode2 = kode2x.filter(x => x.kode !== undefined)
 
-      const pend1 = this.pagupendapatan?.length ? [...new Set(this.pagupendapatan.map((x) => x.kode1))] : []
+      const pend1 = allpagu?.length ? [...new Set(allpagu.map((x) => x.kode1))] : []
       for (let i = 0; i < pend1?.length; i++) {
         const el = pend1[i]
         const data = allpendpatan.filter((x) => x.kode1 === el)
-        if (!data.length) continue
+        const data_lalu = allpendpatan_lalu.filter((x) => x.kode1 === el)
+        const alldata = data.concat(data_lalu)
+        if (!alldata.length) continue
         const obj1 = {
-          kode: data[0].kode1,
-          uraian: data[0].uraian1,
+          kode: alldata[0].kode1,
+          uraian: alldata[0].uraian1,
           nilai: data.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0),
+          nilai_lalu: data_lalu.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0),
         }
         kode1x.push(obj1)
       }
@@ -289,6 +335,7 @@ export const useLaporanOperasionalStore = defineStore('Laporan_Operasional', {
 
       // const allbeban = beban.concat(penyebeban)
       const allbeban = [...this.databebans, ...this.penyesuaianbeban]
+      const allbeban_lalu = [...this.databebans_lalu, ...this.penyesuaianbeban_lalu]
 
       const beban6x = []
       const beban5x = []
@@ -297,92 +344,110 @@ export const useLaporanOperasionalStore = defineStore('Laporan_Operasional', {
       const beban2x = []
       const beban1x = []
 
-      const fil6 = allbeban.map((x) => x.kode6)
+      const fil6 = allbeban.concat(allbeban_lalu).map((x) => x.kode6)
       const unik6 = fil6?.length ? [...new Set(fil6)] : []
       for (let i = 0; i < unik6?.length; i++) {
         const el = unik6[i]
         const data = allbeban.filter((x) => x.kode6 === el)
-        if (!data.length) continue
+        const data_lalu = allbeban_lalu.filter((x) => x.kode6 === el)
+        const alldata = data.concat(data_lalu)
+        if (!alldata.length) continue
         const obj6 = {
-          kode: data[0]?.kode6,
-          uraian: data[0]?.uraian,
-          nilai: data?.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0)
+          kode: alldata[0]?.kode6,
+          uraian: alldata[0]?.uraian,
+          nilai: data?.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0),
+          nilai_lalu: data_lalu?.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0)
         }
         beban6x.push(obj6)
       }
       const beban6 = beban6x.filter(x => x.kode !== undefined)
 
 
-      const fil5 = allbeban.map((x) => x.kode5)
+      const fil5 = allbeban.concat(allbeban_lalu).map((x) => x.kode5)
       const unik5 = fil5?.length ? [...new Set(fil5)] : []
       for (let i = 0; i < unik5?.length; i++) {
         const el = unik5[i]
         const data = allbeban.filter((x) => x.kode5 === el)
-        if (!data.length) continue
+        const data_lalu = allbeban_lalu.filter((x) => x.kode5 === el)
+        const alldata = data.concat(data_lalu)
+        if (!alldata.length) continue
         const obj = {
-          kode: data[0]?.kode5,
-          uraian: data[0]?.uraian5,
-          nilai: data?.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0)
+          kode: alldata[0]?.kode5,
+          uraian: alldata[0]?.uraian5,
+          nilai: data?.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0),
+          nilai_lalu: data_lalu?.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0)
         }
         beban5x.push(obj)
       }
       const beban5 = beban5x.filter(x => x.kode !== undefined)
 
-      const fil4 = allbeban.map((x) => x.kode4)
+      const fil4 = allbeban.concat(allbeban_lalu).map((x) => x.kode4)
       const unik4 = fil4?.length ? [...new Set(fil4)] : []
       for (let i = 0; i < unik4?.length; i++) {
         const el = unik4[i]
         const data = allbeban.filter((x) => x.kode4 === el)
-        if (!data.length) continue
+        const data_lalu = allbeban_lalu.filter((x) => x.kode4 === el)
+        const alldata = data.concat(data_lalu)
+        if (!alldata.length) continue
         const obj = {
-          kode: data[0]?.kode4,
-          uraian: data[0]?.uraian4,
-          nilai: data?.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0)
+          kode: alldata[0]?.kode4,
+          uraian: alldata[0]?.uraian4,
+          nilai: data?.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0),
+          nilai_lalu: data_lalu?.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0)
         }
         beban4x.push(obj)
       }
       const beban4 = beban4x.filter(x => x.kode !== undefined)
 
-      const fil3 = allbeban.map((x) => x.kode3)
+      const fil3 = allbeban.concat(allbeban_lalu).map((x) => x.kode3)
       const unik3 = fil3?.length ? [...new Set(fil3)] : []
       for (let i = 0; i < unik3?.length; i++) {
         const el = unik3[i]
         const data = allbeban.filter((x) => x.kode3 === el)
-        if (!data.length) continue
+        const data_lalu = allbeban_lalu.filter((x) => x.kode3 === el)
+        const alldata = data.concat(data_lalu)
+        if (!alldata.length) continue
         const obj = {
-          kode: data[0]?.kode3,
-          uraian: data[0]?.uraian3,
-          nilai: data?.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0)
+          kode: alldata[0]?.kode3,
+          uraian: alldata[0]?.uraian3,
+          nilai: data?.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0),
+          nilai_lalu: data_lalu?.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0)
         }
         beban3x.push(obj)
       }
       const beban3 = beban3x.filter(x => x.kode !== undefined)
 
-      const fil2 = allbeban.map((x) => x.kode2)
+      const fil2 = allbeban.concat(allbeban_lalu).map((x) => x.kode2)
       const unik2 = fil2?.length ? [...new Set(fil2)] : []
       for (let i = 0; i < unik2?.length; i++) {
         const el = unik2[i]
         const data = allbeban.filter((x) => x.kode2 === el)
-        if (!data.length) continue
+        const data_lalu = allbeban_lalu.filter((x) => x.kode2 === el)
+        const alldata = data.concat(data_lalu)
+        if (!alldata.length) continue
         const obj = {
-          kode: data[0]?.kode2,
-          uraian: data[0]?.uraian2,
-          nilai: data?.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0)
+          kode: alldata[0]?.kode2,
+          uraian: alldata[0]?.uraian2,
+          nilai: data?.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0),
+          nilai_lalu: data_lalu?.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0)
         }
         beban2x.push(obj)
       }
       const beban2 = beban2x.filter(x => x.kode !== undefined)
 
-      const fil1 = allbeban.map((x) => x.kode1)
+      const fil1 = allbeban.concat(allbeban_lalu).map((x) => x.kode1)
       const unik1 = fil1?.length ? [...new Set(fil1)] : []
       for (let i = 0; i < unik1?.length; i++) {
         const el = unik1[i]
         const data = allbeban.filter((x) => x.kode1 === el)
-        if (!data.length) continue
+        const data_lalu = allbeban_lalu.filter((x) => x.kode1 === el)
+        const alldata = data.concat(data_lalu)
+        if (!alldata.length) continue
         const obj = {
-          kode: data[0]?.kode1,
-          uraian: data[0]?.uraian1,
-          nilai: data?.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0)
+          kode: alldata[0]?.kode1,
+          uraian: alldata[0]?.uraian1,
+          nilai: data?.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0),
+          nilai_lalu: data_lalu?.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0)
         }
         beban1x.push(obj)
       }
@@ -428,81 +493,88 @@ export const useLaporanOperasionalStore = defineStore('Laporan_Operasional', {
       // DATA SURPLUSDEFISIT NON OPERASIONAL
 
       const allsurplusdefisit = this.surplusnonoperasional.concat(this.defisitnonoperasional)
+      const allsurplusdefisit_lalu = this.surplusnonoperasional_lalu.concat(this.defisitnonoperasional_lalu)
       const surplusdefisit6 = []
       const surplusdefisit5 = []
       const surplusdefisit4 = []
       const surplusdefisit3 = []
       const surplusdefisit2 = []
       const surplusdefisit1 = []
-      const f6 = allsurplusdefisit.map((x) => x.kode6)
-      console.log('f6', f6)
+      const f6 = allsurplusdefisit.concat(allsurplusdefisit_lalu).map((x) => x.kode6)
+
       const un6 = f6?.length ? [...new Set(f6)] : []
       for (let i = 0; i < un6?.length; i++) {
         const el = un6[i]
         const obj6 = {
-          kode: allsurplusdefisit.filter((x) => x.kode6 === el)[0]?.kode6,
-          uraian: allsurplusdefisit.filter((x) => x.kode6 === el)[0]?.uraian,
-          nilai: allsurplusdefisit.filter((x) => x.kode6 === el)?.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0)
+          kode: allsurplusdefisit.concat(allsurplusdefisit_lalu).filter((x) => x.kode6 === el)[0]?.kode6,
+          uraian: allsurplusdefisit.concat(allsurplusdefisit_lalu).filter((x) => x.kode6 === el)[0]?.uraian,
+          nilai: allsurplusdefisit.filter((x) => x.kode6 === el)?.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0),
+          nilai_lalu: allsurplusdefisit_lalu.filter((x) => x.kode6 === el)?.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0)
         }
         surplusdefisit6.push(obj6)
       }
 
-      const f5 = allsurplusdefisit.map((x) => x.kode5)
+      const f5 = allsurplusdefisit.concat(allsurplusdefisit_lalu).map((x) => x.kode5)
       const un5 = f5?.length ? [...new Set(f5)] : []
       for (let i = 0; i < un5?.length; i++) {
         const el = un5[i]
         const obj = {
-          kode: allsurplusdefisit.filter((x) => x.kode5 === el)[0]?.kode5,
-          uraian: allsurplusdefisit.filter((x) => x.kode5 === el)[0]?.uraian5,
-          nilai: allsurplusdefisit.filter((x) => x.kode5 === el)?.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0)
+          kode: allsurplusdefisit.concat(allsurplusdefisit_lalu).filter((x) => x.kode5 === el)[0]?.kode5,
+          uraian: allsurplusdefisit.concat(allsurplusdefisit_lalu).filter((x) => x.kode5 === el)[0]?.uraian5,
+          nilai: allsurplusdefisit.filter((x) => x.kode5 === el)?.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0),
+          nilai_lalu: allsurplusdefisit_lalu.filter((x) => x.kode5 === el)?.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0)
         }
         surplusdefisit5.push(obj)
       }
 
-      const f4 = allsurplusdefisit.map((x) => x.kode4)
+      const f4 = allsurplusdefisit.concat(allsurplusdefisit_lalu).map((x) => x.kode4)
       const un4 = f4?.length ? [...new Set(f4)] : []
       for (let i = 0; i < un4?.length; i++) {
         const el = un4[i]
         const obj = {
-          kode: allsurplusdefisit.filter((x) => x.kode4 === el)[0]?.kode4,
-          uraian: allsurplusdefisit.filter((x) => x.kode4 === el)[0]?.uraian4,
-          nilai: allsurplusdefisit.filter((x) => x.kode4 === el)?.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0)
+          kode: allsurplusdefisit.concat(allsurplusdefisit_lalu).filter((x) => x.kode4 === el)[0]?.kode4,
+          uraian: allsurplusdefisit.concat(allsurplusdefisit_lalu).filter((x) => x.kode4 === el)[0]?.uraian4,
+          nilai: allsurplusdefisit.filter((x) => x.kode4 === el)?.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0),
+          nilai_lalu: allsurplusdefisit_lalu.filter((x) => x.kode4 === el)?.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0)
         }
         surplusdefisit4.push(obj)
       }
 
-      const f3 = allsurplusdefisit.map((x) => x.kode3)
+      const f3 = allsurplusdefisit.concat(allsurplusdefisit_lalu).map((x) => x.kode3)
       const un3 = f3?.length ? [...new Set(f3)] : []
       for (let i = 0; i < un3?.length; i++) {
         const el = un3[i]
         const obj = {
-          kode: allsurplusdefisit.filter((x) => x.kode3 === el)[0]?.kode3,
-          uraian: allsurplusdefisit.filter((x) => x.kode3 === el)[0]?.uraian3,
-          nilai: allsurplusdefisit.filter((x) => x.kode3 === el)?.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0)
+          kode: allsurplusdefisit.concat(allsurplusdefisit_lalu).filter((x) => x.kode3 === el)[0]?.kode3,
+          uraian: allsurplusdefisit.concat(allsurplusdefisit_lalu).filter((x) => x.kode3 === el)[0]?.uraian3,
+          nilai: allsurplusdefisit.filter((x) => x.kode3 === el)?.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0),
+          nilai_lalu: allsurplusdefisit_lalu.filter((x) => x.kode3 === el)?.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0)
         }
         surplusdefisit3.push(obj)
       }
 
-      const f2 = allsurplusdefisit.map((x) => x.kode2)
+      const f2 = allsurplusdefisit.concat(allsurplusdefisit_lalu).map((x) => x.kode2)
       const un2 = f2?.length ? [...new Set(f2)] : []
       for (let i = 0; i < un2?.length; i++) {
         const el = un2[i]
         const obj = {
-          kode: allsurplusdefisit.filter((x) => x.kode2 === el)[0]?.kode2,
-          uraian: allsurplusdefisit.filter((x) => x.kode2 === el)[0]?.uraian2,
-          nilai: allsurplusdefisit.filter((x) => x.kode2 === el)?.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0)
+          kode: allsurplusdefisit.concat(allsurplusdefisit_lalu).filter((x) => x.kode2 === el)[0]?.kode2,
+          uraian: allsurplusdefisit.concat(allsurplusdefisit_lalu).filter((x) => x.kode2 === el)[0]?.uraian2,
+          nilai: allsurplusdefisit.filter((x) => x.kode2 === el)?.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0),
+          nilai_lalu: allsurplusdefisit_lalu.filter((x) => x.kode2 === el)?.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0)
         }
         surplusdefisit2.push(obj)
       }
 
-      const f1 = allsurplusdefisit.map((x) => x.kode1)
+      const f1 = allsurplusdefisit.concat(allsurplusdefisit_lalu).map((x) => x.kode1)
       const un1 = f1?.length ? [...new Set(f1)] : []
       for (let i = 0; i < un1?.length; i++) {
         const el = un1[i]
         const obj = {
-          kode: allsurplusdefisit.filter((x) => x.kode1 === el)[0]?.kode1,
-          uraian: allsurplusdefisit.filter((x) => x.kode1 === el)[0]?.uraian1,
-          nilai: allsurplusdefisit.filter((x) => x.kode1 === el)?.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0)
+          kode: allsurplusdefisit.concat(allsurplusdefisit_lalu).filter((x) => x.kode1 === el)[0]?.kode1,
+          uraian: allsurplusdefisit.concat(allsurplusdefisit_lalu).filter((x) => x.kode1 === el)[0]?.uraian1,
+          nilai: allsurplusdefisit.filter((x) => x.kode1 === el)?.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0),
+          nilai_lalu: allsurplusdefisit_lalu.filter((x) => x.kode1 === el)?.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0)
         }
         surplusdefisit1.push(obj)
       }
@@ -548,6 +620,7 @@ export const useLaporanOperasionalStore = defineStore('Laporan_Operasional', {
       // DATA SURPLUSDEFISIT NON OPERASIONAL
 
       const allluarbiasa = this.pendapatanluarbiasa.concat(this.bebanluarbiasa)
+      const allluarbiasa_lalu = this.pendapatanluarbiasa_lalu.concat(this.bebanluarbiasa_lalu)
       const luarbiasa6 = []
       const luarbiasa5 = []
       const luarbiasa4 = []
@@ -555,74 +628,80 @@ export const useLaporanOperasionalStore = defineStore('Laporan_Operasional', {
       const luarbiasa2 = []
       const luarbiasa1 = []
 
-      const bl6 = allluarbiasa.map((x) => x.kode6)
+      const bl6 = allluarbiasa.concat(allluarbiasa_lalu).map((x) => x.kode6)
       const unbl6 = bl6?.length ? [...new Set(bl6)] : []
       for (let i = 0; i < unbl6?.length; i++) {
         const el = unbl6[i]
         const obj6 = {
-          kode: allluarbiasa.filter((x) => x.kode6 === el)[0]?.kode6,
-          uraian: allluarbiasa.filter((x) => x.kode6 === el)[0]?.uraian,
-          nilai: allluarbiasa.filter((x) => x.kode6 === el)?.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0)
+          kode: allluarbiasa.concat(allluarbiasa_lalu).filter((x) => x.kode6 === el)[0]?.kode6,
+          uraian: allluarbiasa.concat(allluarbiasa_lalu).filter((x) => x.kode6 === el)[0]?.uraian,
+          nilai: allluarbiasa.filter((x) => x.kode6 === el)?.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0),
+          nilai_lalu: allluarbiasa_lalu.filter((x) => x.kode6 === el)?.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0)
         }
         luarbiasa6.push(obj6)
       }
 
-      const bl5 = allluarbiasa.map((x) => x.kode5)
+      const bl5 = allluarbiasa.concat(allluarbiasa_lalu).map((x) => x.kode5)
       const unbl5 = bl5?.length ? [...new Set(bl5)] : []
       for (let i = 0; i < unbl5?.length; i++) {
         const el = unbl5[i]
         const obj = {
-          kode: allluarbiasa.filter((x) => x.kode5 === el)[0]?.kode5,
-          uraian: allluarbiasa.filter((x) => x.kode5 === el)[0]?.uraian5,
-          nilai: allluarbiasa.filter((x) => x.kode5 === el)?.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0)
+          kode: allluarbiasa.concat(allluarbiasa_lalu).filter((x) => x.kode5 === el)[0]?.kode5,
+          uraian: allluarbiasa.concat(allluarbiasa_lalu).filter((x) => x.kode5 === el)[0]?.uraian5,
+          nilai: allluarbiasa.filter((x) => x.kode5 === el)?.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0),
+          nilai_lalu: allluarbiasa_lalu.filter((x) => x.kode5 === el)?.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0)
         }
         luarbiasa5.push(obj)
       }
 
-      const bl4 = allluarbiasa.map((x) => x.kode4)
+      const bl4 = allluarbiasa.concat(allluarbiasa_lalu).map((x) => x.kode4)
       const unbl4 = bl4?.length ? [...new Set(bl4)] : []
       for (let i = 0; i < unbl4?.length; i++) {
         const el = unbl4[i]
         const obj = {
-          kode: allluarbiasa.filter((x) => x.kode4 === el)[0]?.kode4,
-          uraian: allluarbiasa.filter((x) => x.kode4 === el)[0]?.uraian4,
-          nilai: allluarbiasa.filter((x) => x.kode4 === el)?.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0)
+          kode: allluarbiasa.concat(allluarbiasa_lalu).filter((x) => x.kode4 === el)[0]?.kode4,
+          uraian: allluarbiasa.concat(allluarbiasa_lalu).filter((x) => x.kode4 === el)[0]?.uraian4,
+          nilai: allluarbiasa.filter((x) => x.kode4 === el)?.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0),
+          nilai_lalu: allluarbiasa_lalu.filter((x) => x.kode4 === el)?.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0)
         }
         luarbiasa4.push(obj)
       }
 
-      const bl3 = allluarbiasa.map((x) => x.kode3)
+      const bl3 = allluarbiasa.concat(allluarbiasa_lalu).map((x) => x.kode3)
       const unbl3 = bl3?.length ? [...new Set(bl3)] : []
       for (let i = 0; i < unbl3?.length; i++) {
         const el = unbl3[i]
         const obj = {
-          kode: allluarbiasa.filter((x) => x.kode3 === el)[0]?.kode3,
-          uraian: allluarbiasa.filter((x) => x.kode3 === el)[0]?.uraian3,
-          nilai: allluarbiasa.filter((x) => x.kode3 === el)?.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0)
+          kode: allluarbiasa.concat(allluarbiasa_lalu).filter((x) => x.kode3 === el)[0]?.kode3,
+          uraian: allluarbiasa.concat(allluarbiasa_lalu).filter((x) => x.kode3 === el)[0]?.uraian3,
+          nilai: allluarbiasa.filter((x) => x.kode3 === el)?.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0),
+          nilai_lalu: allluarbiasa_lalu.filter((x) => x.kode3 === el)?.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0)
         }
         luarbiasa3.push(obj)
       }
 
-      const bl2 = allluarbiasa.map((x) => x.kode2)
+      const bl2 = allluarbiasa.concat(allluarbiasa_lalu).map((x) => x.kode2)
       const unbl2 = bl2?.length ? [...new Set(bl2)] : []
       for (let i = 0; i < unbl2?.length; i++) {
         const el = unbl2[i]
         const obj = {
-          kode: allluarbiasa.filter((x) => x.kode2 === el)[0]?.kode2,
-          uraian: allluarbiasa.filter((x) => x.kode2 === el)[0]?.uraian2,
-          nilai: allluarbiasa.filter((x) => x.kode2 === el)?.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0)
+          kode: allluarbiasa.concat(allluarbiasa_lalu).filter((x) => x.kode2 === el)[0]?.kode2,
+          uraian: allluarbiasa.concat(allluarbiasa_lalu).filter((x) => x.kode2 === el)[0]?.uraian2,
+          nilai: allluarbiasa.filter((x) => x.kode2 === el)?.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0),
+          nilai_lalu: allluarbiasa_lalu.filter((x) => x.kode2 === el)?.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0)
         }
         luarbiasa2.push(obj)
       }
 
-      const bl1 = allluarbiasa.map((x) => x.kode1)
+      const bl1 = allluarbiasa.concat(allluarbiasa_lalu).map((x) => x.kode1)
       const unbl1 = bl1?.length ? [...new Set(bl1)] : []
       for (let i = 0; i < unbl1?.length; i++) {
         const el = unbl1[i]
         const obj = {
-          kode: allluarbiasa.filter((x) => x.kode1 === el)[0]?.kode1,
-          uraian: allluarbiasa.filter((x) => x.kode1 === el)[0]?.uraian1,
-          nilai: allluarbiasa.filter((x) => x.kode1 === el)?.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0)
+          kode: allluarbiasa.concat(allluarbiasa_lalu).filter((x) => x.kode1 === el)[0]?.kode1,
+          uraian: allluarbiasa.concat(allluarbiasa_lalu).filter((x) => x.kode1 === el)[0]?.uraian1,
+          nilai: allluarbiasa.filter((x) => x.kode1 === el)?.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0),
+          nilai_lalu: allluarbiasa_lalu.filter((x) => x.kode1 === el)?.map((x) => parseFloat(x.subtotal)).reduce((a, b) => a + b, 0)
         }
         luarbiasa1.push(obj)
       }
