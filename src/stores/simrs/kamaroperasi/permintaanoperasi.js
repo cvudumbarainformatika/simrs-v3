@@ -332,6 +332,27 @@ export const usePermintaanOperasistore = defineStore('permintaan-operasi-store',
         const rawInd = toRaw(findPasien.pra_induksi)
         if (findPasien.pra_bedah) praBed.form = structuredClone(rawBed)
         if (findPasien.pra_induksi) praBed.formInduksi = structuredClone(rawInd)
+        if (data?.permintaanobatoperasi?.length > 0) {
+          const uniqueRinci = [
+            ...new Map(
+              data?.permintaanobatoperasi
+                .flatMap(item => item.rinci) // 1. Gabungkan semua rinci
+                .filter(r => r.obat?.jenis_perbekalan === 'Obat') // 2. Filter hanya yang jenisnya 'Obat'
+                // 3. Ratakan struktur: gabungkan isi 'r' dan isi 'r.obat'
+                .map(r => {
+                  const { obat, ...sisaRinci } = r // Pisahkan 'obat' dari properti lainnya
+                  return {
+                    ...sisaRinci,
+                    ...obat // Keluarkan semua isi di dalam 'obat' ke level atas
+                  }
+                })
+                .map(r => [r.kd_obat, r]) // 4. Siapkan untuk Map (key: kd_obat, value: object-nya)
+            ).values()
+          ]
+          praBed.obats = uniqueRinci
+          console.log('obat', uniqueRinci)
+
+        }
       }
     },
 
