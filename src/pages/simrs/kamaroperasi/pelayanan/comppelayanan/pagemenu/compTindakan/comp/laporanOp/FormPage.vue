@@ -170,18 +170,18 @@ const store = useLaporanOperasiStore()
 const app = useAplikasiStore()
 const options = ref([])
 const tindakan = ref(null)
-function setNumber(key, val) {
+function setNumber (key, val) {
   const number = Number(val)
   if (isNaN(number)) store.setForm(key, 0)
   else store.setForm(key, Number(val))
 }
-function setForm(key, val) {
+function setForm (key, val) {
   // console.log('st form', key, val)
 
   store.setForm(key, val)
 }
 const refTindakan = ref(null)
-function validate() {
+function validate () {
   // console.log('ref', refTindakan.value?.validate())
   if (refTindakan.value?.validate()) return true
   else {
@@ -190,7 +190,7 @@ function validate() {
   }
 
 }
-function simpan() {
+function simpan () {
   console.log('form', store.form)
   // if (validate()) store.simpanLaporan()
   store.simpanLaporan()

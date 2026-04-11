@@ -12,7 +12,8 @@ export const useAssasementPraBedahStore = defineStore('assasement_pra_bedah_stor
     },
     formInduksi: {
       obat_pre_medikasi: []
-    }
+    },
+    obats: []
   }),
   actions: {
     simpan (pasien) {

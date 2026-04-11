@@ -4,10 +4,11 @@
     <table style="width: 100%;" wrap-cells>
       <thead>
         <tr class="text-bold">
-          <td class="text-center" style="width: 10%">KODE REKENING</td>
-          <td class="text-center" style="width: 50%">URAIAN</td>
-          <td class="text-center" style="width: 20%" colspan="2">PAGU AWAL (Rp.)</td>
-          <td class="text-center" style="width: 20%" colspan="2">PAGU PERGESERAN (Rp.)</td>
+          <td class="text-center">KODE REKENING</td>
+          <td class="text-center">URAIAN</td>
+          <td class="text-center" colspan="2">PAGU AWAL (Rp.)</td>
+          <td class="text-center" colspan="2">PAGU PERGESERAN (Rp.)</td>
+          <td class="text-center">SELISIH (Rp.)</td>
         </tr>
 
       </thead>
@@ -21,6 +22,9 @@
             </td>
             <td class="text-bold text-right q-px-sm" colspan="2">
               {{ formattanpaRp(item.pagu) }}
+            </td>
+            <td class="text-bold text-right q-px-sm">
+              {{ formattanpaRp(item.selisih) }}
             </td>
           </tr>
           <template v-if="item.rincian && item.rincian?.length > 0">
@@ -37,6 +41,9 @@
 
                 <td class="q-px-sm text-right" colspan="2">
                   {{ formattanpaRp(rincian.pagu) }}
+                </td>
+                <td class="q-px-sm text-right">
+                  {{ formattanpaRp(rincian.selisih) }}
                 </td>
               </tr>
               <template v-if="store.reqs.jenis === '2'">
@@ -61,6 +68,9 @@
                       <div class="flex-end text-right q-pr-sm text-grey-8">{{ formattanpaRp(item.pagu) }}</div>
                     </div> -->
                   </td>
+                  <td class="text-right q-px-sm text-grey-8">
+                    {{ formattanpaRp(item.selisih) }}
+                  </td>
                 </tr>
               </template>
             </template>
@@ -72,8 +82,8 @@
 
 </template>
 <script setup>
-import { formattanpaRp } from 'src/modules/formatter';
-import { useRbaStore } from 'src/stores/siasik/anggaran/storerba';
+import { formattanpaRp } from 'src/modules/formatter'
+import { useRbaStore } from 'src/stores/siasik/anggaran/storerba'
 // import { ref } from 'vue';
 
 

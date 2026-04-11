@@ -34,7 +34,7 @@ export const useKunjunganRehabmediStore = defineStore('kunjungan-rehabmedik-stor
     // doubleCount: (state) => state.counter * 2
   },
   actions: {
-    getDataTable() {
+    getDataTable () {
       this.loading = true
       return new Promise((resolve, reject) => {
         api.get('/v1/simrs/rehabmedik/kunjunganpasien', {
@@ -60,7 +60,7 @@ export const useKunjunganRehabmediStore = defineStore('kunjungan-rehabmedik-stor
       })
     },
 
-    terimaPasien(pasien) {
+    terimaPasien (pasien) {
       this.loadingTerima = true
 
       const payload = {
@@ -85,13 +85,13 @@ export const useKunjunganRehabmediStore = defineStore('kunjungan-rehabmedik-stor
 
     },
 
-    setPasien(pasien, data) {
+    setPasien (pasien, data) {
       const findPasien = this.items.filter(x => x?.noreg === pasien?.noreg)
       // this.pasiens[indexPasien] = data
       // // console.log('wew', this.pasiens[indexPasien])
       if (findPasien?.length) {
         const datax = findPasien[0]
-        // 
+        //
         datax.laborats = data?.laborats ?? []
         datax.laboratold = data?.laboratold ?? []
         datax.hasilradiologi = data?.hasilradiologi ?? []
@@ -105,13 +105,14 @@ export const useKunjunganRehabmediStore = defineStore('kunjungan-rehabmedik-stor
           datax.tindakan = data?.tindakan ?? []
         datax.datasimpeg = data?.datasimpeg ?? null
         datax.kunjungan_rehab = data?.kunjungan_rehab ?? []
+        datax.link_noreg = data?.link_noreg ?? null
       }
 
-      console.log('find pasien', findPasien);
+      console.log('find pasien', findPasien)
 
     },
 
-    async gantiDpjp(form, pasien) {
+    async gantiDpjp (form, pasien) {
       // console.log('form', form)
       // console.log('pasien', pasien)
       this.loadingSaveGantiDpjp = true
@@ -140,7 +141,7 @@ export const useKunjunganRehabmediStore = defineStore('kunjungan-rehabmedik-stor
       }
     },
 
-    async mulaiRehab(pasien) {
+    async mulaiRehab (pasien) {
 
       const form = {
         noreg: pasien?.noreg,
@@ -150,7 +151,7 @@ export const useKunjunganRehabmediStore = defineStore('kunjungan-rehabmedik-stor
         api.post('/v1/simrs/rehabmedik/mulairehab', form).then(res => {
 
           this.riwayats = res?.data?.result ?? []
-          console.log('riwayats store', this.riwayats);
+          console.log('riwayats store', this.riwayats)
 
           resolve(res)
         }).catch(err => {
@@ -159,7 +160,7 @@ export const useKunjunganRehabmediStore = defineStore('kunjungan-rehabmedik-stor
       })
     },
 
-    setPeriode(val) {
+    setPeriode (val) {
       this.header.periode = val
       if (val === 'Hari ini') {
         this.hariIni()
@@ -172,28 +173,28 @@ export const useKunjunganRehabmediStore = defineStore('kunjungan-rehabmedik-stor
       }
     },
 
-    setUrutan(val) {
+    setUrutan (val) {
       this.params.sort = val
       this.getDataTable()
     },
 
-    setPage(val) {
+    setPage (val) {
       this.params.page = val
       this.getDataTable()
     },
 
-    setStatus(val) {
+    setStatus (val) {
       this.params.page = 1
       this.params.status = val
       this.getDataTable()
     },
 
-    hariIni() {
+    hariIni () {
       const cDate = new Date()
       this.params.to = dateDbFormat(cDate)
       this.params.from = dateDbFormat(cDate)
     },
-    bulanIni() {
+    bulanIni () {
       const curr = new Date(), y = curr.getFullYear(), m = curr.getMonth()
       // const firstday = date.formatDate(curr, 'YYYY') + '-' + date.formatDate(curr, 'MM') + '-01'
       // const lastday = date.formatDate(curr, 'YYYY') + '-' + date.formatDate(curr, 'MM') + '-31'
@@ -202,14 +203,14 @@ export const useKunjunganRehabmediStore = defineStore('kunjungan-rehabmedik-stor
       this.params.to = dateDbFormat(firstday)
       this.params.from = dateDbFormat(lastday)
     },
-    mingguIni() {
+    mingguIni () {
       const curr = new Date()
       const firstday = new Date(curr.setDate(curr.getDate() - curr.getDay()))
       const lastday = new Date(curr.setDate(curr.getDate() - curr.getDay() + 6))
       this.params.to = dateDbFormat(firstday)
       this.params.from = dateDbFormat(lastday)
     },
-    tahunIni() {
+    tahunIni () {
       const curr = new Date()
       const firstday = date.formatDate(curr, 'YYYY') + '-01' + '-01'
       const lastday = date.formatDate(curr, 'YYYY') + '-12' + '-31'
@@ -217,7 +218,7 @@ export const useKunjunganRehabmediStore = defineStore('kunjungan-rehabmedik-stor
       this.params.from = dateDbFormat(lastday)
     },
 
-    injectDataPasien(noreg, val, kode, arr) {
+    injectDataPasien (noreg, val, kode, arr) {
       const findPasien = this.items?.find(x => x.noreg === noreg)
       console.log('inject pasien rehab', findPasien)
       if (findPasien) {
@@ -242,7 +243,7 @@ export const useKunjunganRehabmediStore = defineStore('kunjungan-rehabmedik-stor
       }
     },
 
-    hapusDataInjectan(noreg, id, key) {
+    hapusDataInjectan (noreg, id, key) {
       const findPasien = this.items.filter(x => x?.noreg === noreg)
       if (findPasien?.length) {
         const data = findPasien[0][key]
@@ -252,7 +253,7 @@ export const useKunjunganRehabmediStore = defineStore('kunjungan-rehabmedik-stor
     },
 
 
-    injectMemo(noreg, isi) {
+    injectMemo (noreg, isi) {
 
       const findPasien = this.items?.filter(x => x?.noreg === noreg)
       if (findPasien?.length) {
@@ -262,7 +263,7 @@ export const useKunjunganRehabmediStore = defineStore('kunjungan-rehabmedik-stor
 
     },
 
-    async selesaikanRehab(pasien) {
+    async selesaikanRehab (pasien) {
       try {
         const resp = await api.post('/v1/simrs/rehabmedik/selesaikanrehab', {
           noreg: pasien?.noreg,
@@ -283,7 +284,7 @@ export const useKunjunganRehabmediStore = defineStore('kunjungan-rehabmedik-stor
 
 
 
-    async pilihRangkaian(pasien, data) {
+    async pilihRangkaian (pasien, data) {
       try {
         const resp = await api.post('/v1/simrs/rehabmedik/pilihrangkaian', {
           noreg: pasien?.noreg,
@@ -295,7 +296,7 @@ export const useKunjunganRehabmediStore = defineStore('kunjungan-rehabmedik-stor
 
         if (resp.status === 200) {
           const findPasien = this.items.find(x => x?.noreg === pasien?.noreg)
-          console.log('findPasien', findPasien);
+          console.log('findPasien', findPasien)
 
           if (findPasien) {
             // Update data kunjungan_rehab dengan data baru dari server

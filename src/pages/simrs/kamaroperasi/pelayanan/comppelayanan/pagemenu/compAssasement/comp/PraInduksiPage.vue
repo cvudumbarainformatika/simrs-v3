@@ -62,7 +62,7 @@
         <q-option-group v-model="store.formInduksi.riwayat_alergi" :options="options" inline dense
           @update:model-value="clearJenis($event, 'jenis_alergi', 'Tidak')" />
         <q-input v-if="store?.formInduksi?.riwayat_alergi == 'Ya'" v-model="store.formInduksi.jenis_alergi"
-          label="Jenis " :rules="[
+          label="Jenis Alergi" dense :rules="[
             val => (!val || val?.length <= 255) || 'Maksimal 255 karakter'
           ]" />
       </div>
@@ -79,14 +79,14 @@
           }" />
         <div v-if="store?.formInduksi?.persiapan_transfusi == 'Ya'" class="row q-col-gutter-x-sm">
           <div class="col-6">
-            <q-input v-model="store.formInduksi.jenis_transfusi" label="Jenis " :rules="[
+            <q-input v-model="store.formInduksi.jenis_transfusi" label="Jenis Transfusi" dense :rules="[
               val => (!val || val?.length <= 255) || 'Maksimal 255 karakter'
             ]" />
           </div>
           <div class="col-6">
             <div class="row no-wrap items-center">
               <div class="col-10">
-                <q-input v-model="store.formInduksi.jumlah_transfusi" label="Jumlah " :rules="[
+                <q-input v-model="store.formInduksi.jumlah_transfusi" label="Jumlah Transfusi" dense :rules="[
                   val => (!val || /^-?\d*[.,]?\d*$/.test(val)) || 'Format angka tidak valid'
                 ]" />
               </div>
@@ -323,12 +323,19 @@
           <div class="col-auto depan">Rencana Anastesi</div>
           <div class="col-auto dua">:</div>
           <div class="col-auto belakang">
-            <div class="row">
+            <div class="row items-center">
               <div class="col-4">
                 <q-option-group v-model="store.formInduksi.renc_anastesi" :options="RenAnasOptions" inline dense
                   @update:model-value="clearJenis($event, 'region_anas', 'Umum')" />
               </div>
               <div class="col-6">
+
+              </div>
+            </div>
+            <div class="row items-center q-my-xs">
+              <div class="col-1">
+              </div>
+              <div class="col-10 q-ml-xs">
                 <q-option-group v-if="store.formInduksi.renc_anastesi == 'Regional'"
                   v-model="store.formInduksi.region_anas" :options="RegionAnasOptions" inline dense />
               </div>
@@ -390,16 +397,22 @@
                 <th class="q-pa-xs">Pelaksana</th>
                 <th class="q-pa-xs">#</th>
               </tr>
-              <tr @keyup.enter="() => {
-                // console.log('enter');
-                addObatMedikasi()
-              }">
-                <th colspan="2" class="q-pa-xs"><q-input ref="inputObatMedikasi"
-                    v-model="obatMedikasi.obat_pre_medikasi" label="" dense /></th>
+              <tr>
+                <th colspan="2" class="q-pa-xs">
+
+                  <app-autocomplete v-model="obatMedikasi.obat_pre_medikasi" label="" dense :source="store.obats"
+                    option-label="nama_obat" hide-dropdown-icon :filled="false" />
+                  <!-- <q-input ref="inputObatMedikasi" v-model="obatMedikasi.obat_pre_medikasi" label="" dense /> -->
+                </th>
                 <th class="q-pa-xs"><q-input v-model="obatMedikasi.dosis" label="" dense /></th>
                 <th class="q-pa-xs"><q-input v-model="obatMedikasi.jam" label="" dense /></th>
-                <th class="q-pa-xs"><app-autocomplete v-model="obatMedikasi.pelaksana" label="" dense
-                    :source="laporanOp.nakes" option-label="nama" hide-dropdown-icon /></th>
+                <th class="q-pa-xs" @keyup.enter="() => {
+                  // console.log('enter');
+                  addObatMedikasi()
+                }">
+                  <app-autocomplete v-model="obatMedikasi.pelaksana" label="" dense :source="laporanOp.nakes"
+                    option-label="nama" hide-dropdown-icon :filled="false" />
+                </th>
                 <th class="q-pa-xs"><q-btn icon="add" @click="addObatMedikasi" dense color="primary" rounded /></th>
               </tr>
             </thead>
@@ -430,7 +443,7 @@
                     <td style="white-space: normal;">
                       <div class="row items-center">
                         <div class="col-auto">
-                          {{ item?.obat_pre_medikasi }}
+                          {{ item?.obat_pre_medikasi?.nama_obat }}
                         </div>
                       </div>
                     </td>
@@ -578,6 +591,22 @@ const RegionAnasOptions = ref([
   {
     label: 'Blok Syaraf',
     value: 'Blok Syaraf'
+  },
+  {
+    label: 'Intubasi',
+    value: 'Intubasi'
+  },
+  {
+    label: 'LMA',
+    value: 'LMA'
+  },
+  {
+    label: 'Face mask',
+    value: 'Face mask'
+  },
+  {
+    label: 'TIVA',
+    value: 'TIVA'
   },
 ])
 

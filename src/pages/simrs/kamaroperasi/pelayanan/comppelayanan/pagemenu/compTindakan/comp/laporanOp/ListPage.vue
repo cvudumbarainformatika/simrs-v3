@@ -185,13 +185,13 @@ const props = defineProps({
     default: null
   },
 })
-function SeriImplant(val) {
+function SeriImplant (val) {
   // console.log('implat ', val, ' seri ', store?.pasien, store?.pasien?.implant?.filter(x => !!x.seri)?.filter(x => x.nota == val.rs2), ' map  ', store?.pasien?.implant?.filter(x => !!x.seri)?.filter(x => x.nota == val.rs2)?.map(x => x.seri)?.join(', '))
 
   return store?.pasien?.implant?.filter(x => !!x.seri)?.filter(x => x.nota == val.rs2)?.length > 0 ? store?.pasien?.implant?.filter(x => !!x.seri)?.filter(x => x.nota == val.rs2)?.map(x => x.seri)?.join(', ') : '-'
 }
 const surgical = props?.pasien?.surgical?.find(x => x.nota === props.pasien.rs2)
-function lamaOperasi(data) {
+function lamaOperasi (data) {
   if (!data) return ''
   const awal = data?.rs11
   const akhir = data?.rs12
@@ -212,7 +212,7 @@ function lamaOperasi(data) {
   return `${jam} jam ${menit} menit`
 }
 const store = useLaporanOperasiStore()
-function assignForm(data) {
+function assignForm (data) {
   store.assignForm(data)
 }
 const getImg = (val) => {
@@ -233,7 +233,7 @@ const getFile = (val) => {
   const file = store.pasien?.implant_seri.find(x => x.nota == val?.rs2)
   return file
 }
-function cariNakes(val, w) {
+function cariNakes (val, w) {
 
   const tindakan = props?.pasien?.manytindakanop?.find(x => x.rs2 === val?.rs2)
   // console.log('nakes', val, tindakan)
@@ -247,7 +247,7 @@ function cariNakes(val, w) {
 
 
 }
-function nakesnya(val) {
+function nakesnya (val) {
 
   const dat = val?.split(';').filter(x => !!x)
   const nakes = []
@@ -258,7 +258,7 @@ function nakesnya(val) {
   // console.log('cari nakes', dat)
   return nakes.length > 0 ? nakes.map(x => x.nama).join(', ') : ''
 }
-function cariTindakan(val) {
+function cariTindakan (val) {
   const tindakan = props?.pasien?.manytindakanop?.find(x => x.rs2 === val?.rs2)
   // console.log('cari tin', val, tindakan)
   return tindakan?.mastertindakanoperasi?.rs2 ?? '-'
