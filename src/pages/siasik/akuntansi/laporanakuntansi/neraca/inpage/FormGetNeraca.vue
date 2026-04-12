@@ -29,21 +29,12 @@
       </q-btn>
     </div>
     <div class="q-pa-sm">
-      <!-- <download-excel
-      class="btn"
-      :fields="store.fields"
-      :fetch="store.getDataBukubesar"
-      :before-generate="store.startDownload"
-      :before-finish="store.finishDownload"
-      :name="'Buku Besar ' + store.reqs.tahun +'.xls'"
-    > -->
       <q-btn icon="icon-mat-download" color="green" round size="sm" push :disable="store.loading"
-        :loading="store.loading" @click="store.exportExcel = !store.exportExcel">
+        :loading="store.loading" @click="exportToExcel">
         <q-tooltip class="bg-green" :offset="[10, 10]">
           Export to Excel
         </q-tooltip>
       </q-btn>
-      <!-- </download-excel> -->
     </div>
   </div>
   <cetak-neraca v-model="store.dialogCetak" :printneraca="printneraca" />
@@ -52,6 +43,7 @@
 import { useQuasar } from 'quasar'
 import { useNeracaStore } from 'src/stores/siasik/laporan/neraca/neraca'
 import { ref, defineAsyncComponent, watchEffect } from 'vue'
+import * as XLSX from 'xlsx'
 
 const CetakNeraca = defineAsyncComponent(() => import('../printNeraca/PrintDataNeraca.vue'))
 const store = useNeracaStore()
@@ -93,31 +85,101 @@ function cetakData() {
 //     return store.kodejenis
 //   }
 // }
-function exportToExcel(tableId, filename) {
-  // const el = document.getElementById(tableId)
-  // const filenames = filename ? filename + '.xls' : 'KartuStokFarmasi.xls'
-  // const columns = store.items
-  // const content = [columns.map(col => wrapCsvValue(col.label))].concat(
-  //   rows.map(row => columns.map(col => wrapCsvValue(
-  //     typeof col.field === 'function'
-  //       ? col.field(row)
-  //       : row[col.field === void 0 ? col.name : col.field],
-  //     col.format,
-  //     row
-  //   )).join(','))
-  // ).join('\r\n')
+async function exportToExcel() {
+  if (!store.hasilaset?.length && !store.hasilkewajiban?.length && !store.hasilekuitas?.length) {
+    notifErrVue('Tidak ada data untuk diekspor!');
+    return;
+  }
 
-  // const status = exportFile(
-  //   'table-export.csv',
-  //   content,
-  //   'text/csv'
-  // )
-  // console.log('mulai export', el?.parentElement)
-  $q.notify({
-    message: 'Masih dibuatkan ... harap tunggu',
-    color: 'negative',
-    icon: 'icon-mat-warning'
-  })
+  // Siapkan data untuk Excel
+  const data = [];
+
+  // Header tabel
+  const headers = [
+    'KODE REKENING',
+    'URAIAN',
+    `NILAI TAHUN ${tahunsekarang()} (Rp) `,
+    `NILAI TAHUN ${tahunsekarang() - 1} (Rp) `,
+  ];
+  data.push(headers);
+
+
+  // ASET
+  store.hasilaset.map((item) => {
+    data.push([
+      item.kode,
+      item.uraian,
+      item.nilai,
+      item.nilai_lalu,
+    ])
+  });
+
+  // Tambahkan total Pendapatan (tebal)
+  data.push([
+    '',
+    'JUMLAH ASET',
+    jumlahAset(),
+    jumlahAset_lalu(),
+  ])
+
+  // Data Kewajiban
+  store.hasilkewajiban.forEach((item) => {
+    data.push([
+      item.kode,
+      item.uraian,
+      item.nilai,
+      item.nilai_lalu,
+    ])
+  });
+
+  // Tambahkan total Pendapatan (tebal)
+  data.push([
+    '',
+    'JUMLAH KEWAJIBAN DAN EKUITAS',
+    jumlahWajibEkuitas(),
+    jumlahWajibEkuitas_lalu(),
+  ])
+
+  const worksheet = XLSX.utils.aoa_to_sheet(data);
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'Neraca');
+
+  // Atur lebar kolom (opsional)
+  const colWidths = data[0].map((_, colIndex) => {
+    return Math.max(
+      ...data.map((row) => (row[colIndex] ? row[colIndex].toString()?.length : 0)),
+      10
+    );
+  });
+  worksheet['!cols'] = colWidths.map((width) => ({ wch: width }));
+
+  // Download file Excel
+  XLSX.writeFile(workbook, `Neraca_Report_${new Date().toISOString().slice(0, 10)}.xlsx`);
+}
+
+function tahunsekarang() {
+  const tahun = store.reqs.tgl ? new Date(store.reqs.tgl).getFullYear() : new Date().getFullYear()
+  return tahun
+}
+
+
+function jumlahAset() {
+  const totalaset = store.hasilaset.map((x) => parseFloat(x.nilai))[0]
+  return totalaset
+}
+function jumlahAset_lalu() {
+  const totalaset = store.hasilaset.map((x) => parseFloat(x.nilai_lalu))[0]
+  return totalaset
+}
+function jumlahWajibEkuitas() {
+  const totalwajib = store.hasilkewajiban.map((x) => parseFloat(x.nilai))[0]
+  const totalekuitas = store.hasilekuitas.map((x) => parseFloat(x.nilai))[0]
+  return totalwajib + totalekuitas
+}
+function jumlahWajibEkuitas_lalu() {
+  const totalwajib = store.hasilkewajiban.map((x) => parseFloat(x.nilai_lalu))[0]
+  const totalekuitas = store.hasilekuitas.map((x) => parseFloat(x.nilai_lalu))[0]
+  return totalwajib + totalekuitas
 }
 
 watchEffect(() => {
