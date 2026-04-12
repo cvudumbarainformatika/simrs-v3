@@ -109,7 +109,8 @@ async function exportToExcel() {
   const headers = [
     'KODE REKENING',
     'URAIAN',
-    'NILAI (Rp.)',
+    `NILAI TAHUN ${tahunsekarang()} (Rp) `,
+    `NILAI TAHUN ${tahunsekarang() - 1} (Rp) `,
   ];
   data.push(headers);
 
@@ -120,6 +121,7 @@ async function exportToExcel() {
       item.kode,
       item.uraian,
       item.nilai,
+      item.nilai_lalu,
     ])
   });
 
@@ -128,6 +130,7 @@ async function exportToExcel() {
     '',
     'JUMLAH PENDAPATAN DAERAH-LO',
     totalPendapatan(),
+    totalPendapatan_lalu(),
   ])
 
   // Data Beban
@@ -136,6 +139,7 @@ async function exportToExcel() {
       item.kode,
       item.uraian,
       item.nilai,
+      item.nilai_lalu,
     ])
   });
 
@@ -144,6 +148,7 @@ async function exportToExcel() {
     '',
     'JUMLAH BEBAN DAERAH',
     totalBeban(),
+    totalBeban_lalu(),
   ])
 
   store.hasilsurplusdefisit.forEach((item) => {
@@ -151,6 +156,7 @@ async function exportToExcel() {
       item.kode,
       item.uraian,
       item.nilai,
+      item.nilai_lalu,
     ])
   });
 
@@ -158,12 +164,14 @@ async function exportToExcel() {
     '',
     'JUMLAH SURPLUS/DEFISIT KEGIATAN NON OPERASIONAL BEBAN DAERAH',
     surplusdefisit(),
+    surplusdefisit_lalu(),
   ])
   // Surplus/Defisit
   data.push([
     '',
     'SURPLUS / DEFISIT LO',
     surplusdefisit(),
+    surplusdefisit_lalu(),
   ])
 
   const worksheet = XLSX.utils.aoa_to_sheet(data);
@@ -187,8 +195,16 @@ function totalPendapatan() {
   const totalpend = store.hasilpendapatan.map((x) => x.nilai)[0]
   return totalpend
 }
+function totalPendapatan_lalu() {
+  const totalpend = store.hasilpendapatan.map((x) => x.nilai_lalu)[0]
+  return totalpend
+}
 function totalBeban() {
   const totalbeban = store.hasilbeban.map((x) => x.nilai)[0]
+  return totalbeban
+}
+function totalBeban_lalu() {
+  const totalbeban = store.hasilbeban.map((x) => x.nilai_lalu)[0]
   return totalbeban
 }
 
@@ -196,5 +212,15 @@ function surplusdefisit() {
   const totalpend = store.hasilpendapatan.map((x) => x.nilai)[0]
   const totalbeban = store.hasilbeban.map((x) => x.nilai)[0]
   return totalpend - totalbeban
+}
+function surplusdefisit_lalu() {
+  const totalpend = store.hasilpendapatan.map((x) => x.nilai_lalu)[0]
+  const totalbeban = store.hasilbeban.map((x) => x.nilai_lalu)[0]
+  return totalpend - totalbeban
+}
+
+function tahunsekarang() {
+  const tahun = store.reqs.tgl ? new Date(store.reqs.tgl).getFullYear() : new Date().getFullYear()
+  return tahun
 }
 </script>
