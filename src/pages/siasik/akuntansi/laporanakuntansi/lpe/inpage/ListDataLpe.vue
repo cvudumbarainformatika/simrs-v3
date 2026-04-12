@@ -86,20 +86,21 @@
       </div>
     </q-card-section>
   </template>
+  <template v-else>
+    <div class="row q-pa-md full-width text-subtitle1 flex-center">
+      <q-icon class="q-pr-sm" size="sm" name="icon-mat-warning" />
+      BELUM ADA DATA, SILAHKAN PILIH PARAMETER!!
+    </div>
+  </template>
 </template>
 <script setup>
 import { formattanpaRp } from 'src/modules/formatter'
 import { useLPEStore } from 'src/stores/siasik/laporan/lpe/lpe'
-import { onMounted, ref } from 'vue'
+import { onBeforeMount, onBeforeUnmount, onMounted, ref } from 'vue'
 
 const store = useLPEStore()
 const separator = ref('cell')
 
-onMounted(() => {
-  store.ekuitasawal = []
-  store.surplusdefisit = []
-  store.hasilkoreksi = []
-})
 function tahunsekarang() {
   const tahun = store.reqs.tgl ? new Date(store.reqs.tgl).getFullYear() : new Date().getFullYear()
   return tahun
