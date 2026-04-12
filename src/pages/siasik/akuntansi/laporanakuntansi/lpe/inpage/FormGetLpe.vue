@@ -1,109 +1,64 @@
 <template>
   <div class="row full-width justify-center">
     <div class="q-pa-sm" style="width:25%">
-      <app-input-date-human
-        :model="store.reqs.tgl"
-        label="dari tangal"
-        outlined
-        :disable="store.loading"
-        :loading="store.loading"
-        @db-model="tglDari"
-        @set-display="setDari"
-      />
+      <app-input-date-human :model="store.reqs.tgl" label="dari tangal" outlined :disable="store.loading"
+        :loading="store.loading" @db-model="tglDari" @set-display="setDari" />
     </div>
     <div class="q-pa-sm" style="width:25%">
-      <app-input-date-human
-        :model="store.reqs.tglx"
-        label="sampai tangal"
-        outlined
-        :disable="store.loading"
-        :loading="store.loading"
-        @db-model="tglSampai"
-        @set-display="setSampai"
-      />
+      <app-input-date-human :model="store.reqs.tglx" label="sampai tangal" outlined :disable="store.loading"
+        :loading="store.loading" @db-model="tglSampai" @set-display="setSampai" />
     </div>
     <div class="q-pa-sm">
-      <app-btn
-        label="Ambil Data"
-        :disable="store.loading"
-        :loading="store.loading"
-        @click="ambilData()"
-      />
+      <app-btn label="Ambil Data" :disable="store.loading" :loading="store.loading" @click="ambilData()" />
     </div>
     <div class="q-pa-sm">
-      <q-btn
-        icon="icon-mat-print"
-        color="orange"
-        round
-        size="sm"
-        :disable="store.loading"
-        :loading="store.loading"
-        @click="cetakData()"
-      >
+      <q-btn icon="icon-mat-print" color="orange" round size="sm" :disable="store.loading" :loading="store.loading"
+        @click="cetakData()">
         <q-tooltip class="bg-orange" :offset="[10, 10]">
           Cetak
         </q-tooltip>
       </q-btn>
     </div>
     <div class="q-pa-sm">
-      <!-- <download-excel
-      class="btn"
-      :fields="store.fields"
-      :fetch="store.getDataBukubesar"
-      :before-generate="store.startDownload"
-      :before-finish="store.finishDownload"
-      :name="'Buku Besar ' + store.reqs.tahun +'.xls'"
-    > -->
-      <q-btn
-        icon="icon-mat-download"
-        color="green"
-        round
-        size="sm"
-        push
-        :disable="store.loading"
-        :loading="store.loading"
-        @click="store.exportExcel= !store.exportExcel"
-      >
+      <q-btn icon="icon-mat-download" color="green" round size="sm" push :disable="store.loading"
+        :loading="store.loading" @click="exportToExcel">
         <q-tooltip class="bg-green" :offset="[10, 10]">
           Export to Excel
         </q-tooltip>
       </q-btn>
-    <!-- </download-excel> -->
     </div>
   </div>
-  <cetak-lpe
-    v-model="store.dialogCetak"
-    :printlpe="printlpe"
-  />
+  <cetak-lpe v-model="store.dialogCetak" :printlpe="printlpe" />
 </template>
 <script setup>
 import { useQuasar } from 'quasar'
+import { formattanpaRp } from 'src/modules/formatter'
 import { useLPEStore } from 'src/stores/siasik/laporan/lpe/lpe'
 import { ref, defineAsyncComponent, watchEffect } from 'vue'
+import * as XLSX from 'xlsx'
 
 const CetakLpe = defineAsyncComponent(() => import('../printLPE/PrintDataLpe.vue'))
 const store = useLPEStore()
 const $q = useQuasar()
 // Model berdasarkan ref agar tidak updte
 // const berdasar = ref('')
-
-function tglDari (val) {
+function tglDari(val) {
   store.setParameter('tgl', val)
 }
-function setDari (val) {
+function setDari(val) {
   store.display.dari = val
 }
-function tglSampai (val) {
+function tglSampai(val) {
   store.setParameter('tglx', val)
 }
-function setSampai (val) {
+function setSampai(val) {
   store.display.sampai = val
 }
-function ambilData () {
+function ambilData() {
   store.getDataLap()
 }
 const printlpe = ref(null)
-function cetakData () {
+function cetakData() {
   store.dialogCetak = true
 }
 
@@ -121,31 +76,122 @@ function cetakData () {
 //     return store.kodejenis
 //   }
 // }
-function exportToExcel (tableId, filename) {
-  // const el = document.getElementById(tableId)
-  // const filenames = filename ? filename + '.xls' : 'KartuStokFarmasi.xls'
-  // const columns = store.items
-  // const content = [columns.map(col => wrapCsvValue(col.label))].concat(
-  //   rows.map(row => columns.map(col => wrapCsvValue(
-  //     typeof col.field === 'function'
-  //       ? col.field(row)
-  //       : row[col.field === void 0 ? col.name : col.field],
-  //     col.format,
-  //     row
-  //   )).join(','))
-  // ).join('\r\n')
+async function exportToExcel() {
+  if (!store.ekuitasawal?.length && !store.surplusdefisit?.length && !store.hasilkoreksi?.length) {
+    notifErrVue('Tidak ada data untuk diekspor!');
+    return;
+  }
 
-  // const status = exportFile(
-  //   'table-export.csv',
-  //   content,
-  //   'text/csv'
-  // )
-  // console.log('mulai export', el?.parentElement)
-  $q.notify({
-    message: 'Masih dibuatkan ... harap tunggu',
-    color: 'negative',
-    icon: 'icon-mat-warning'
-  })
+  // Siapkan data untuk Excel
+  const data = [];
+
+  // Header tabel
+  const headers = [
+    'URAIAN',
+    `NILAI TAHUN ${tahunsekarang()} (Rp) `,
+    `NILAI TAHUN ${tahunsekarang() - 1} (Rp) `,
+  ];
+  data.push(headers);
+
+
+  // Data Pendapatan
+  // store.ekuitasawal.map((item) => {
+  //   data.push([
+  //     item.uraian,
+  //     item.nilai,
+  //     item.nilai_lalu,
+  //   ])
+  // });
+  data.push([
+    store.ekuitasawal.uraian,
+    store.ekuitasawal?.nilai,
+    store.ekuitasawal?.nilai_lalu,
+  ])
+
+  data.push([
+    store.surplusdefisit.uraian,
+    store.surplusdefisit?.nilai,
+    store.surplusdefisit?.nilai_lalu,
+  ])
+
+  // Tambahkan total Pendapatan (tebal)
+  data.push([
+    '',
+    'Dampak Kumuatif Perubahan Kebijakan / Penyesuaian Ekuitas',
+    totalKoreksi(),
+    totalKoreksi_lalu(),
+  ])
+
+  // Data Beban
+  store.hasilkoreksi.forEach((item) => {
+    data.push([
+      item.uraian,
+      item.nilai,
+      item.nilai_lalu,
+    ])
+  });
+
+  // Tambahkan total Pendapatan (tebal)
+  data.push([
+    '',
+    'Sub Jumlah',
+    totalKoreksi(),
+    totalKoreksi_lalu(),
+  ])
+
+  data.push([
+    '',
+    'Ekuitas Akhir',
+    ekuitasAkhir(),
+    ekuitasAkhir_lalu(),
+  ])
+
+
+  const worksheet = XLSX.utils.aoa_to_sheet(data);
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'LO');
+
+  // Atur lebar kolom (opsional)
+  const colWidths = data[0].map((_, colIndex) => {
+    return Math.max(
+      ...data.map((row) => (row[colIndex] ? row[colIndex].toString()?.length : 0)),
+      10
+    );
+  });
+  worksheet['!cols'] = colWidths.map((width) => ({ wch: width }));
+
+  // Download file Excel
+  XLSX.writeFile(workbook, `LPE_Report_${new Date().toISOString().slice(0, 10)}.xlsx`);
+}
+
+function tahunsekarang() {
+  const tahun = store.reqs.tgl ? new Date(store.reqs.tgl).getFullYear() : new Date().getFullYear()
+  return tahun
+}
+
+function totalKoreksi() {
+  const total = store.hasilkoreksi.map((x) => parseFloat(x.nilai)).reduce((a, b) => a + b, 0)
+  return total
+}
+function totalKoreksi_lalu() {
+  const total = store.hasilkoreksi.map((x) => parseFloat(x.nilai_lalu)).reduce((a, b) => a + b, 0)
+  return total
+}
+
+function ekuitasAkhir() {
+  const ekuitas = parseFloat(store.ekuitasawal.nilai)
+  const surplusdef = parseFloat(store.surplusdefisit.nilai)
+  const koreksi = store.hasilkoreksi.map((x) => parseFloat(x.nilai)).reduce((a, b) => a + b, 0)
+
+  return ekuitas + surplusdef + koreksi
+}
+
+function ekuitasAkhir_lalu() {
+  const ekuitas = parseFloat(store.ekuitasawal.nilai_lalu)
+  const surplusdef = parseFloat(store.surplusdefisit.nilai_lalu)
+  const koreksi = store.hasilkoreksi.map((x) => parseFloat(x.nilai_lalu)).reduce((a, b) => a + b, 0)
+
+  return ekuitas + surplusdef + koreksi
 }
 
 watchEffect(() => {
