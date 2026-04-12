@@ -149,7 +149,7 @@ async function exportToExcel() {
 
   const worksheet = XLSX.utils.aoa_to_sheet(data);
   const workbook = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(workbook, worksheet, 'LPE');
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'LO');
 
   // Atur lebar kolom (opsional)
   const colWidths = data[0].map((_, colIndex) => {
