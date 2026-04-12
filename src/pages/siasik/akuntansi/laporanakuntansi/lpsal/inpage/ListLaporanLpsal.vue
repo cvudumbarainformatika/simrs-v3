@@ -107,6 +107,12 @@
       </div>
     </q-card-section>
   </template>
+  <template v-else>
+    <div class="row q-pa-md full-width text-subtitle1 flex-center">
+      <q-icon class="q-pr-sm" size="sm" name="icon-mat-warning" />
+      BELUM ADA DATA, SILAHKAN PILIH PARAMETER!!
+    </div>
+  </template>
 </template>
 <script setup>
 import { formattanpaRp } from 'src/modules/formatter'
