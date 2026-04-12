@@ -92,8 +92,8 @@ export const useLPEStore = defineStore('laporan_PerubahanEkuitas', {
             const nilaiekuitas = {
               kode: '3.1.01',
               uraian: 'Ekuitas Awal',
-              nilai: datekuitas.map((x) => parseFloat(x.nilai)).reduce((a, b) => a + b, 0).toFixed(2),
-              nilai_lalu: datekuitas.map((x) => parseFloat(x.nilai_lalu)).reduce((a, b) => a + b, 0).toFixed(2)
+              nilai: datekuitas.map((x) => parseFloat(x.nilai)).reduce((a, b) => a + b, 0),
+              nilai_lalu: datekuitas.map((x) => parseFloat(x.nilai_lalu)).reduce((a, b) => a + b, 0)
             }
             this.ekuitasawal = nilaiekuitas
             // console.log('ekuitasawal', this.ekuitasawal)
