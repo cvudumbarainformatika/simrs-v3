@@ -21,6 +21,7 @@
             <tr>
               <td colspan="2" class="text-center text-bold">JUMLAH ASET</td>
               <td class="text-right text-bold">{{ formattanpaRp(jumlahAset()) }}</td>
+              <td class="text-right text-bold">{{ formattanpaRp(jumlahAset_lalu()) }}</td>
             </tr>
             <tr v-for="it in store.hasilkewajiban" :key="it" :class="it.kode?.length <= 12 ? 'text-bold' : ''">
               <td>{{ it.kode }}</td>
