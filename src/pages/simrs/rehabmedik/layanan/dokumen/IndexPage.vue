@@ -42,24 +42,35 @@
 import { defineAsyncComponent, onMounted, ref, shallowRef } from 'vue'
 
 const menus = ref([
+
+  {
+    name: 'asessment-awal-medis',
+    label: 'ASESSMENT DOKTER',
+    title: 'ASESSMENT DOKTER',
+    desc: 'Asessment DOKTER',
+    icon: 'icon-my-file_sign',
+    nakes: ['1', '2', '3', '4', '5', '6', null],
+    comp: shallowRef(defineAsyncComponent(() => import('./comp/AsessmentDokter.vue')))
+  },
+  {
+    name: 'asessment-awal-fisioterapis',
+    label: 'ASESSMENT FISIOTERAPIS',
+    title: 'ASESSMENT FISIOTERAPIS',
+    desc: 'Asessment FISIOTERAPIS',
+    icon: 'icon-my-file_sign',
+    nakes: ['1', '2', '3', '4', '5', '6', null],
+    comp: shallowRef(defineAsyncComponent(() => import('./comp/AsessmentFisioterapis.vue')))
+  },
   {
     name: 'LembarKunjungan',
-    label: 'LEMBAR KUNJUNGAN',
-    title: 'LEMBAR KUNJUNGAN',
-    desc: 'LEMBAR KUNJUNGAN',
+    label: 'LEMBAR PROTOKOL',
+    title: 'LEMBAR PROTOKOL',
+    desc: 'LEMBAR PROTOKOL',
     icon: 'icon-my-file_sign',
     nakes: ['1', '2', '3', '4', '5', '6', null],
     comp: shallowRef(defineAsyncComponent(() => import('./comp/LembarKunjungan.vue')))
   },
-  // {
-  //   name: 'asessment-awal-medis',
-  //   label: 'ASESSMENT AWAL MEDIS',
-  //   title: 'ASESSMENT AWAL MEDIS',
-  //   desc: 'Asessment Awal Medis Pasien',
-  //   icon: 'icon-my-file_sign',
-  //   nakes: ['1', '2', '3'],
-  //   comp: shallowRef(defineAsyncComponent(() => import('./asessmentawal/medis/IndexPage.vue')))
-  // },
+
   // {
   //   name: 'asessment-awal-keperawatan',
   //   label: 'ASESSMENT AWAL KEPERAWATAN',

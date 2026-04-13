@@ -10,7 +10,12 @@
         <!-- LEFT DRAWER ======================================================================================-->
         <q-drawer v-model="drawer" elevated bordered show-if-above :width="230" :breakpoint="400">
           <LeftDrawer :key="pasien" :pasien="pasien" :menus="filterredMenus" :menu="menu"
-            @click-menu="(val) => menuDiganti(val)" />
+            @click-menu="(val) => menuDiganti(val)" @history-pasien="historyPasien" @icare="getIcare" />
+        </q-drawer>
+
+        <!-- RIGHT DRAWER ======================================================================================-->
+        <q-drawer v-model="drawerRight" side="right" show-if-above overlay bordered :width="845" :breakpoint="500">
+          <RightDrawer :key="pasien" :pasien="pasien" @close="drawerRight = false" />
         </q-drawer>
 
         <!-- CONTAINER ============================================================================================-->
@@ -149,7 +154,7 @@
                             <q-item-label class="text-weight-bold">Rangkaian # {{ item?.no }}</q-item-label>
                             <q-item-label caption>No. Reg: {{ item?.noreg }}</q-item-label>
                             <q-item-label caption>Mulai: {{ date?.formatDate(item?.created_at, 'DD MMMM YYYY')
-                              }}</q-item-label>
+                            }}</q-item-label>
                           </q-item-section>
                           <q-item-section side>
                             <q-btn label="Hubungkan" color="primary" size="sm" unelevated
@@ -190,6 +195,7 @@
 import { defineAsyncComponent, onMounted, ref, shallowRef, computed } from 'vue'
 import HeaderLayout from './layoutcomp/HeaderLayout.vue'
 import LeftDrawer from './layoutcomp/LeftDrawer.vue'
+import RightDrawer from 'src/pages/simrs/poli/tindakan/complayout/RightDrawer.vue'
 
 import { useLaboratPoli } from 'src/stores/simrs/pelayanan/poli/laborat'
 import { useRadiologiPoli } from 'src/stores/simrs/pelayanan/poli/radiologi'
@@ -197,13 +203,16 @@ import { usePengunjungRanapStore } from 'src/stores/simrs/ranap/pengunjung'
 import { useAplikasiStore } from 'src/stores/app/aplikasi';
 import { useRoute } from 'vue-router'
 import { useQuasar, date } from 'quasar'
+import { usePengunjungPoliStore } from 'src/stores/simrs/pelayanan/poli/pengunjung'
 
 const $q = useQuasar()
 const drawer = ref(false)
+const drawerRight = ref(false)
 const openRehabInfo = ref(false)
 const loadingSelesaiRehab = ref(false)
 const loadingMulaiRehab = ref(false)
 const loadingPilih = ref(null)
+const storePoli = usePengunjungPoliStore()
 // const props.store.riwayats = ref([])
 
 const props = defineProps({
@@ -234,6 +243,19 @@ const user = computed(() => {
 const nakes = computed(() => {
   return auth?.user?.pegawai?.kdgroupnakes
 })
+
+function historyPasien() {
+  drawerRight.value = !drawerRight.value
+}
+
+function getIcare() {
+  storePoli.getDataIcare(props.pasien).then(resp => {
+    if (resp) {
+      console.log('anu', resp?.response?.url)
+      window.open(resp?.response?.url, '_blank')
+    }
+  })
+}
 
 onMounted(() => {
   // console.log('pasien rehabmedik', props.pasien)

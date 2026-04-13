@@ -49,7 +49,7 @@
                     b. Tindakan Program Rehabmedik : <b>{{ item?.tindakan || '-' }}</b>
                   </div>
                   <div>c. Edukasi : <em>{{ item?.edukasi || '-' }}</em> </div>
-                  <div>d. Frekuensi : <em>{{ item?.frek || '-' }}</em> </div>
+                  <div>d. Frekuensi : <em>{{ item?.frekuensi || '-' }}</em> </div>
 
                 </q-item-label>
 
@@ -57,7 +57,7 @@
                 <q-item-label>
                   <span>Rencana Tindak Lanjut : <b> {{ item?.rencana || '-' }}</b></span>
                 </q-item-label>
-                <q-item-label>
+                <q-item-label v-if="!isDokter">
                   <span>Procedure : <b> {{ item?.procedure || '-' }}</b></span>
                 </q-item-label>
                 <q-separator class="q-my-md" />
