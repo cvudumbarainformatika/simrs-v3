@@ -90,8 +90,8 @@
                     - {{ t?.mastertindakan?.rs2 }}
                   </div>
                 </td>
-                <td>-</td>
-                <td>-</td>
+                <td></td>
+                <td></td>
               </tr>
               <!-- FILLER -->
               <tr v-for="n in (10 - lists.length)" :key="'f' + n" class="border">
