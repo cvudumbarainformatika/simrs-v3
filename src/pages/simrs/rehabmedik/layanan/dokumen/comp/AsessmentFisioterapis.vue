@@ -68,6 +68,8 @@
 
         <div class="full-width row justify-between">
 
+          <!-- TTD Dokter -->
+
           <div class="col-auto" style="width: 300px; margin-left: 0; text-align: center;">
 
             <!-- Tanggal -->
