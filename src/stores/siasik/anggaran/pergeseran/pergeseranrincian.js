@@ -24,6 +24,7 @@ export const usePergeseranAnggaranStore = defineStore('pergeseran-anggaran-store
       kodekegiatanblud: '',
       uraianblud: '',
       kodebidang: '',
+      namabidang: '',
       bidang: '',
 
       //rinci
@@ -159,7 +160,8 @@ export const usePergeseranAnggaranStore = defineStore('pergeseran-anggaran-store
           kodekegiatanblud: result?.kodekegiatan,
           uraianblud: result?.kegiatan,
           kodebidang: result?.kodebidang,
-          bidang: result?.namabidang,
+          namabidang: result?.namabidang,
+          bidang: result?.kodebidang,
           pagu: result?.pagu,
           koders: '',
           idpp: '',
@@ -260,6 +262,7 @@ export const usePergeseranAnggaranStore = defineStore('pergeseran-anggaran-store
       this.form.kodekegiatanblud = val.kodekegiatanblud
       this.form.uraianblud = val.uraianblud
       this.form.kodebidang = val.kodebidang
+      this.form.namabidang = val.bidang
       this.form.bidang = val.bidang
       this.form.koders = val.koders
       this.form.idpp = val.idpp

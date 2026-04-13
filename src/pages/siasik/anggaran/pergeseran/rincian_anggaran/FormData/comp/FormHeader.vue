@@ -12,7 +12,7 @@
             :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" />
         </div>
         <div class="col-6 q-gutter-y-md">
-          <app-input-simrs label="Bidang/Bagian" v-model="store.form.bidang" readonly
+          <app-input-simrs label="Bidang/Bagian" v-model="store.form.namabidang" readonly
             :disable="store.loadingSave || store.disableSaved" outlined dense />
           <app-input-simrs label="Kegiatan BLUD" v-model="store.form.uraianblud" readonly
             :disable="store.loadingSave || store.disableSaved" outlined dense />
