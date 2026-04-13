@@ -43,7 +43,7 @@
                   </div>
                   <div class="row full-width">
                     <div class="col-5">RENCANA TERAPI</div>
-                    <div class="col-7"> : {{ asessmentDokter?.rencana }}</div>
+                    <div class="col-7"> : {{ asessmentDokter?.frekuensi }} {{ asessmentDokter?.rencana }}</div>
                   </div>
                   <div class="row full-width">
                     <div class="col-5">GOL TERAPI</div>

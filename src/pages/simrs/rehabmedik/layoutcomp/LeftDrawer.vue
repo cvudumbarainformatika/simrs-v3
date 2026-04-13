@@ -1,11 +1,8 @@
 <template>
-  <q-scroll-area :style="`height: calc(100% - ${tinggiDetailPas * 2}px); margin-top: ${tinggiDetailPas}px; border-right: 1px solid #ddd`">
+  <q-scroll-area
+    :style="`height: calc(100% - ${tinggiDetailPas * 2}px); margin-top: ${tinggiDetailPas}px; border-right: 1px solid #ddd`">
     <q-separator />
-    <list-menu
-      :menus="menus"
-      :menu="menu"
-      @menu-click="(val)=> emits('clickMenu', val)"
-    />
+    <list-menu :menus="menus" :menu="menu" @menu-click="(val) => emits('clickMenu', val)" />
   </q-scroll-area>
 
   <!-- <div
@@ -15,36 +12,20 @@
     <SimulasiPageTwo :pasien="pasien" />
   </div> -->
 
-  <div
-    class="absolute-top bg-dark text-white"
-    :style=" `height: ${tinggiDetailPas}px`"
-  >
+  <div class="absolute-top bg-dark text-white" :style="`height: ${tinggiDetailPas}px`">
     <div class="absolute-top-right">
       <div class="q-pa-sm">
-        <q-btn
-          outline
-          round
-          style="color: goldenrod;"
-          label="id"
-        />
+        <q-btn outline round style="color: goldenrod;" label="id" />
       </div>
     </div>
     <div class="absolute-top">
       <div class="q-pa-sm">
-        <q-badge
-          outline
-          color="orange"
-          :label="`${pasien?.sistembayar?? '-'}`"
-        />
+        <q-badge outline color="orange" :label="`${pasien?.sistembayar ?? '-'}`" />
       </div>
     </div>
     <div class="absolute-bottom">
       <div class="q-pa-md">
-        <app-avatar-pasien
-          :key="pasien"
-          :pasien="pasien"
-          width="50px"
-        />
+        <app-avatar-pasien :key="pasien" :pasien="pasien" width="50px" />
         <div class="text-weight-bold f-12 q-mt-sm">
           {{ pasien ? pasien.nama : '-' }}
         </div>
@@ -52,43 +33,25 @@
           {{ pasien ? pasien.norm : '-' }}
         </div> -->
         <div class="text-teal">
-          {{ pasien ? pasien.noreg : '-' }} || {{ pasien?.norm??'-' }}
+          {{ pasien ? pasien.noreg : '-' }} || {{ pasien?.norm ?? '-' }}
         </div>
         <div class="text-yellow text-italic f-10">
-          {{ pasien?.usia?? '-' }}
+          {{ pasien?.usia ?? '-' }}
         </div>
       </div>
       <q-bar>
         <q-space />
-        <!-- <q-btn
-          dense
-          flat
-          icon="icon-mat-attach_money"
-          class="gt-xs"
-          @click="bukaBill"
-        >
+        <!-- <q-btn dense flat icon="icon-mat-attach_money" class="gt-xs" @click="bukaBill">
           <q-tooltip class="bg-dark text-white">
             Billing Pasien
           </q-tooltip>
         </q-btn> -->
-        <!-- <q-btn
-          dense
-          flat
-          icon="icon-mat-menu_book"
-          class="gt-xs"
-          @click="emits('icare')"
-        >
+        <q-btn dense flat icon="icon-mat-menu_book" class="gt-xs" @click="emits('icare')">
           <q-tooltip class="bg-dark text-white">
             i-care
           </q-tooltip>
-        </q-btn> -->
-        <q-btn
-          dense
-          flat
-          icon="icon-mat-history"
-          class="gt-xs"
-          @click="emits('historyPasien')"
-        >
+        </q-btn>
+        <q-btn dense flat icon="icon-mat-history" class="gt-xs" @click="emits('historyPasien')">
           <q-tooltip class="bg-dark text-white">
             History Pasien
           </q-tooltip>
