@@ -193,15 +193,14 @@ function editDataPangusulan(row) {
     notrans: row.notrans,
     uraianblud: row.kegiatan,
     kodekegiatanblud: row.kodekegiatan,
-    bidang: row.namabidang,
+    bidang: row.kodebidang,
+    namabidang: row.namabidang,
     kodebidang: row.kodebidang,
     pagu: row.pagu,
     tglperubahan: date.formatDate(Date.now(), 'YYYY-MM-DD'),
   }
-
   store.rincians = row.penetapan ? [...row.penetapan] : []
 
-  // console.log('form edit', store.form)
   // console.log('store.rincians', store.rincians)
   router.push({ path: '/anggaran/pergeseran/rinci/form', replace: true, query: { id: row.id } })
   store.disableSaved = true
