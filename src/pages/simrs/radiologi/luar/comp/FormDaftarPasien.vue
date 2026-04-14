@@ -28,7 +28,7 @@
                     </div>
                     <!-- <app-input v-model="store.form.nik" label="Nomor KTP" class="col-12" outlined /> -->
                     <div class="col-12 row q-col-gutter-x-sm">
-                      <app-input-simrs v-model="store.form.nik" label="NIK / NO. KTP" :valid="{ min: 16, number: true }"
+                      <app-input-simrs v-model="store.form.nik" label="NIK / NO. KTP" :valid="{ min: 8, number: true }"
                         :autofocus="false" class="col-6" />
                       <div class="col-6">
                         <i>Harap diisi NIK / NO. KTP dengan benar untuk otomatisasi data</i>
