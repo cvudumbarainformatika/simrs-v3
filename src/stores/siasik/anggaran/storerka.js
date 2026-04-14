@@ -388,7 +388,7 @@ export const useRkaStore = defineStore('store_rka_siasik', {
               volumebaru: x.volumebaru,
               hargabaru: x.hargabaru,
               pagubaru: x.totalbaru,
-              selisih: parseFloat(x.total) - parseFloat(x.totalbaru)
+              selisih: parseFloat(x.totalbaru) - parseFloat(x.total)
             }
           })
         }
@@ -518,7 +518,7 @@ export const useRkaStore = defineStore('store_rka_siasik', {
         )
       const dataRKAperubahan = sortAnggaran(rka)
       this.datarkaperubahan = dataRKAperubahan
-      console.log('rka PAK', this.datarkaperubahan)
+      // console.log('rka PAK', this.datarkaperubahan)
     }
   }
 })

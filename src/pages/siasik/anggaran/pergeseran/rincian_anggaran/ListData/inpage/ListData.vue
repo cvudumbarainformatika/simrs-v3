@@ -78,10 +78,29 @@
                     <q-tooltip> Kunci Data </q-tooltip>
                   </q-btn>
                 </div> -->
-                <div> <q-btn flat round class="bg-dark" size="xs" color="warning" icon="icon-mat-edit"
+                <!-- <div>
+                  <q-btn flat round class="bg-dark" size="xs" color="warning" icon="icon-mat-edit"
                     @click="editDataPangusulan(props?.row)">
                     <q-tooltip>Edit Data</q-tooltip>
-                  </q-btn> </div>
+                  </q-btn>
+                </div> -->
+
+                <div> <q-btn flat round class="bg-dark" size="xs" color="warning" icon="icon-fa-file-regular">
+                    <q-menu dark style="min-width: 150px">
+                      <q-list style="min-width: 150px;">
+                        <q-item clickable v-close-popup @click="editDataPangusulan(props?.row)">
+                          <q-item-section>Edit Data</q-item-section>
+                        </q-item>
+                        <q-item v-if="user === 'sa'" clickable v-close-popup @click="verifikasi(props?.row)">
+                          <q-item-section>Verif Data</q-item-section>
+                        </q-item>
+                        <q-item clickable v-close-popup @click="PrintData(props?.row)">
+                          <q-item-section>Cetak Data</q-item-section>
+                        </q-item>
+                      </q-list>
+                    </q-menu>
+                  </q-btn>
+                </div>
 
               </div>
             </q-td>
@@ -89,6 +108,7 @@
 
         </template>
       </q-table>
+      <dialog-print-data v-model="store.dialogCetak" :datanpds="datanpds" />
     </div>
   </template>
 </template>
@@ -105,7 +125,7 @@ import { computed, defineAsyncComponent, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 
-
+const DialogPrintData = defineAsyncComponent(() => import('./DialogPrintData.vue'))
 const store = usePergeseranAnggaranStore()
 const form = formInputNpdlsStore()
 const router = useRouter()
@@ -169,7 +189,7 @@ const columnsData = ref(listData)
 const dataRinci = ref(null)
 function viewRincian(row) {
 
-  dataRinci.value = row.penetapan
+  dataRinci.value = row.penetapancopy
   store.rincians = dataRinci.value
   store.dataSaved = row
   console.log('npd save', store.dataSaved, 'rinci', store.rincians)
@@ -183,6 +203,17 @@ function viewCetakDataNpdls(row) {
   store.dialogCetak = true
   datanpds.value = row
   store.dataSaved = datanpds.value
+}
+
+async function PrintData(row) {
+  datanpds.value = row
+  store.params.notrans = row.notrans
+  store.kegiatanblud = row.kegiatan
+  store.namapptk = row.pptk
+  store.kodepptk = row.kodepptk
+  await store.dataCetak()   // tunggu data siap
+  store.dialogCetak = true  // buka dialog terakhir
+
 }
 
 function editDataPangusulan(row) {
@@ -199,11 +230,19 @@ function editDataPangusulan(row) {
     pagu: row.pagu,
     tglperubahan: date.formatDate(Date.now(), 'YYYY-MM-DD'),
   }
-  store.rincians = row.penetapan ? [...row.penetapan] : []
+  store.rincians = row.penetapancopy ? [...row.penetapancopy] : []
 
   // console.log('store.rincians', store.rincians)
   router.push({ path: '/anggaran/pergeseran/rinci/form', replace: true, query: { id: row.id } })
   store.disableSaved = true
+}
+
+async function verifikasi(row) {
+  const payload = {
+    notrans: row.notrans,
+  }
+
+  await store.verifikasi(payload)
 }
 const printcair = ref(null)
 function PrintPencairan(row) {
