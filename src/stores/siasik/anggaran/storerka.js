@@ -15,7 +15,7 @@ export const useRkaStore = defineStore('store_rka_siasik', {
       jenisrka: ''
     },
     jenisrka: [
-      { label: 'RKA Awal', value: '1' },
+      { label: 'RKA Sekarang', value: '1' },
       { label: 'RKA Pergeseran', value: '2' },
       { label: 'RKA Perubahan', value: '3' },
     ],
