@@ -402,7 +402,6 @@ export const useNeracaStore = defineStore('Neraca_Akuntansi', {
         }
         kode5kewajiban.push(obj)
       }
-
       for (let i = 0; i < setunik4kewajiban?.length; i++) {
         const el = setunik4kewajiban[i]
         const saldoawal = this.datakewajiban.filter((x) => x.kode4 === el).map((x) => parseFloat(x.saldo)).reduce((a, b) => a + b, 0)
@@ -479,7 +478,7 @@ export const useNeracaStore = defineStore('Neraca_Akuntansi', {
 
       kode5kewajiban.push(...kode4kewajiban, ...kode3kewajiban, ...kode2kewajiban, ...kode1kewajiban)
       const sort5kewajiban = (kode5kewajiban) =>
-        kode5.sort(({ kode: a }, { kode: b }) =>
+        kode5kewajiban.sort(({ kode: a }, { kode: b }) =>
           a < b ? -1 : a > b ? 1 : 0
         )
       const data5kewajiban = sort5kewajiban(kode5kewajiban)
