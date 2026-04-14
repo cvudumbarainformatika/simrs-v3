@@ -33,7 +33,7 @@
             <div class="text-weight-bold">Assesment</div>
           </div>
           <div class="col-10">
-            <q-input v-model="form.assessment" outlined autogrow stack-label standout="bg-yellow-3" label="Assesment"
+            <q-input v-model="form.asessment" outlined autogrow stack-label standout="bg-yellow-3" label="Assesment"
               hide-bottom-space />
           </div>
         </div>
@@ -152,7 +152,7 @@ const store = useRehabmedikSoapStore()
 const form = ref({
   subjective: null,
   objective: null,
-  assessment: null,
+  asessment: null,
   goal: null,
   tindakan: null,
   edukasi: null,
@@ -200,7 +200,7 @@ const initReset = () => {
   form.value = {
     subjective: null,
     objective: null,
-    assessment: null,
+    asessment: null,
     goal: null,
     tindakan: null,
     edukasi: null,
