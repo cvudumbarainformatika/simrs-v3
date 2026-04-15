@@ -27,7 +27,7 @@
               <q-item-section class="q-pb-xl">
                 <q-item-label class="f-12">
                   <span class="">Subjective </span> : <span class="text-weight-bold">{{ item?.subjective || '-'
-                    }}</span>
+                  }}</span>
                 </q-item-label>
                 <q-item-label>
                   <span class="">Objective </span> : <span class="text-weight-bold">{{
@@ -35,7 +35,7 @@
                 </q-item-label>
                 <q-item-label>
                   <span class="">Asessment </span> : <span class="text-weight-bold">{{
-                    item?.asessment || '-' }}</span>
+                    item?.asessment || item?.assessment || '-' }}</span>
                 </q-item-label>
 
 

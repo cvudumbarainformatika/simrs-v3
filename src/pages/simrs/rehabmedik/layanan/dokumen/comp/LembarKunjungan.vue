@@ -30,24 +30,24 @@
               <tr>
                 <td style="border: none;">
                   <div class="row full-width">
-                    <div class="col-5">NAMA</div>
-                    <div class="col-7"> : {{ pasien?.nama_panggil }}</div>
+                    <div class="col-3">NAMA</div>
+                    <div class="col-9"> : {{ pasien?.nama_panggil }}</div>
                   </div>
                   <div class="row full-width">
-                    <div class="col-5">NO. KARTU</div>
-                    <div class="col-7"> : {{ pasien?.noka }}</div>
+                    <div class="col-3">NO. KARTU</div>
+                    <div class="col-9"> : {{ pasien?.noka }}</div>
                   </div>
                   <div class="row full-width">
-                    <div class="col-5">DIAGNOSIS MEDIS</div>
-                    <div class="col-7"> : {{ pasien?.memodiagnosa }}</div>
+                    <div class="col-3">DIAGNOSIS MEDIS</div>
+                    <div class="col-9"> : {{ pasien?.memodiagnosa }}</div>
                   </div>
                   <div class="row full-width">
-                    <div class="col-5">RENCANA TERAPI</div>
-                    <div class="col-7"> : {{ asessmentDokter?.frekuensi }} {{ asessmentDokter?.rencana }}</div>
+                    <div class="col-3">RENCANA TERAPI</div>
+                    <div class="col-9"> : {{ asessmentDokter?.frekuensi }} {{ asessmentDokter?.tindakan }}</div>
                   </div>
                   <div class="row full-width">
-                    <div class="col-5">GOL TERAPI</div>
-                    <div class="col-7"> : {{ asessmentDokter?.goal }}</div>
+                    <div class="col-3">GOL TERAPI</div>
+                    <div class="col-9"> : {{ asessmentDokter?.goal }}</div>
                   </div>
                 </td>
                 <td style="border: none; vertical-align: top;">
