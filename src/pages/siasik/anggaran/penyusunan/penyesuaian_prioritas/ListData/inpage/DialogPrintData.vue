@@ -295,7 +295,7 @@
                     <div class="row q-pl-sm q-py-xs text-weight-bold" style="width:100%">
                       <div class="col text-center">
                         <div class="text-bold">
-                          Pejabat Teknis Kegiatan
+                          Pejabat Pelaksana Teknis Kegiatan
                         </div>
                         <div style="padding-bottom: 60px" />
                         <div class="underline text-bold q-py-xs">
