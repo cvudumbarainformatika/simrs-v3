@@ -227,13 +227,13 @@ onMounted(() => {
   if (props?.pasien?.pra_bedah) {
     store.form = { ...props?.pasien?.pra_bedah }
   }
-  console.log('form', store.form)
+  // console.log('form', store.form)
 })
 onUnmounted(() => {
   store.form = {
     komplikasi: []
   }
-  console.log('form', store.form)
+  // console.log('form', store.form)
 })
 </script>
 <style lang="scss" scoped>
