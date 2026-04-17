@@ -14,7 +14,7 @@
       <div class="row q-col-gutter-sm">
         <div class="col-5">
           <app-input-date :model="store.formKontrol.tglrencanakunjungan" label="Tgl Rencana Kontrol" outlined
-            @set-model="gantiTanggal" />
+            @set-model="gantiTanggal" :rules="tglRencanaRules" />
         </div>
         <div class="col-5">
           <app-autocomplete :key="store.formKontrol.kodedokterdpjp" v-model="store.formKontrol.kodedokterdpjp" outlined
@@ -23,13 +23,13 @@
         </div>
         <div class="col-5">
           <app-autocomplete :key="store.formKontrol.keterangan" v-model="store.formKontrol.keterangan" outlined
-            label="Pilih Keterangan" autocomplete="keterangan" option-label="keterangan" option-value="keterangan"
-            :loading="store.loadingKeterangan" :disable="store.loadingKeterangan" :source="store.keterangan"
-            @update:model-value="isiketerangan(store.formKontrol.keterangan)" />
+            label="Pilih Keterangan Fragmentasi" autocomplete="keterangan" option-label="keterangan"
+            option-value="keterangan" :loading="store.loadingKeterangan" :disable="store.loadingKeterangan"
+            :source="store.keterangan" @update:model-value="isiketerangan(store.formKontrol.keterangan)" />
         </div>
         <div class="col-5">
           <q-input v-model="store.formKontrol.keterangan2" filled type="textarea"
-            :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" />
+            :rules="[val => (!!val || !!store.formKontrol.keterangan) || 'Harap Diisi terlebih dahulu']" />
         </div>
         <div class="col-12">
           <q-separator class=" q-my-md" />
@@ -95,7 +95,8 @@
 <script setup>
 import { dateFullFormat } from 'src/modules/formatter'
 import { usePerencanaanPoliStore } from 'src/stores/simrs/pelayanan/poli/perencanaan'
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
+import { date } from 'quasar'
 
 const store = usePerencanaanPoliStore()
 const props = defineProps({
@@ -106,16 +107,47 @@ const props = defineProps({
 })
 
 const formRef = ref()
-function simpan() {
-  store.saveKontrol(props.pasien).then(resp => {
-    console.log('fr', resp?.data)
-  })
+function simpan () {
+  console.log('simpan', store.formKontrol)
+
+  // store.saveKontrol(props.pasien).then(resp => {
+  //   // console.log('fr', resp?.data)
+  // })
 }
-function gantiTanggal(val) {
+const tglRencanaRules = computed(() => [
+  (val) => {
+    // Jika keterangan terisi → bebas (valid)
+    if (store.formKontrol.keterangan?.trim()) {
+      return true
+    }
+
+    // Jika keterangan kosong → harus cek selisih tanggal
+    if (!val) {
+      return 'Tanggal Rencana Kontrol harus diisi'
+    }
+
+    if (!store.formKontrol.tgl_kunjungan) {
+      return 'Tanggal Kunjungan belum diisi'
+    }
+
+    const tglKunjungan = new Date(store.formKontrol.tgl_kunjungan)
+    const tglRencana = new Date(val)
+
+    const diffTime = tglRencana - tglKunjungan
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+
+    if (diffDays > 7) {
+      return true
+    } else {
+      return 'Karena Keterangan Fragmentasi kosong, Tgl Rencana Kontrol harus lebih dari 7 hari dari Tgl Kunjungan'
+    }
+  }
+])
+function gantiTanggal (val) {
   store.setFormKontrol('tglrencanakunjungan', val)
   store.getjadwalDokterDpjp(props.pasien, val)
 }
-function gunkanSep(item) {
+function gunkanSep (item) {
   store.setFormKontrol('nosep', item?.noSep)
   store.openDialogSep = false
   console.log('form', store.formKontrol)
@@ -127,8 +159,8 @@ onMounted(() => {
   // store.getListSep(props.pasien)
 })
 
-function isiketerangan(val) {
-  console.log('sasas', val)
-  store.formKontrol.keterangan2 = val
+function isiketerangan (val) {
+  // console.log('sasas', val)
+  // store.formKontrol.keterangan2 = val
 }
 </script>
