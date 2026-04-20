@@ -74,7 +74,7 @@
                   </q-item-label> -->
                   <q-item-label>
                     <span class="">{{ dateFullFormat(item?.tglSep) }}</span> | <span class="text-cyan ">{{ item?.noSep
-                    }}</span>
+                      }}</span>
                   </q-item-label>
                 </q-item-section>
               </q-item>
@@ -110,9 +110,9 @@ const formRef = ref()
 function simpan () {
   console.log('simpan', store.formKontrol)
 
-  // store.saveKontrol(props.pasien).then(resp => {
-  //   // console.log('fr', resp?.data)
-  // })
+  store.saveKontrol(props.pasien).then(resp => {
+    // console.log('fr', resp?.data)
+  })
 }
 const tglRencanaRules = computed(() => [
   (val) => {
