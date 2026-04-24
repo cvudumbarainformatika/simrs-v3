@@ -65,11 +65,15 @@
             </div>
 
             <div v-for="(item, index) in dynamicItems" :key="index" class="row q-col-gutter-xs q-mb-xs items-center">
-              <div class="col-5">
+              <div :class="item.type == 'obat' ? 'col-4' : 'col-5'">
                 <q-input v-model="item.nama" placeholder="Nama Obat/Cairan" filled dense />
               </div>
-              <div class="col-4">
+              <div :class="item.type == 'obat' ? 'col-3' : 'col-4'">
                 <q-input v-model="item.val" placeholder="Dosis/Vol" filled dense />
+              </div>
+              <div v-if="item.type == 'obat'" class="col-2">
+                <q-select v-model="item.cara_masuk" :options="['IV', 'IM', 'IT']" plceholder="Cara masuk" filled
+                  dense />
               </div>
               <div class="col-2">
                 <q-select v-model="item.type" :options="['obat', 'cairan']" filled dense />
@@ -105,7 +109,7 @@ const minuteOptions = Array.from({ length: 30 }, (_, i) => ({
   value: i * 5
 }))
 // const show = ref(props.modelValue)
-const selectedMilestones = reactive([])
+const selectedMilestones = ref([])
 const dynamicItems = ref([]) // Untuk obat/cairan dinamis
 // / Di dalam script setup InputObservasi.vue
 const milestoneOptions = [
@@ -188,7 +192,7 @@ const processAndSave = () => {
   const finalData = {
     ...form,
     ...milestoneData,
-    obat: dynamicItems.value.filter(i => i.type === 'obat').map(i => ({ nama: i.nama, dosis: i.val })),
+    obat: dynamicItems.value.filter(i => i.type === 'obat').map(i => ({ nama: i.nama, dosis: i.val, cara_masuk: i.cara_masuk })),
     cairan: dynamicItems.value.filter(i => i.type === 'cairan').map(i => ({ nama: i.nama, volume: i.val })),
     // Jika checkbox dicentang, beri nilai (misal 20 untuk posisi Y di chart)
 
@@ -237,7 +241,7 @@ watch(() => form.time, (newTime) => {
     selectedMilestones.value = activeMilestones
     // Re-map Obat & Cairan agar muncul lagi di list dinamis
     dynamicItems.value = [
-      ...(existingData.obat || []).map(o => ({ nama: o.nama, val: o.dosis, type: 'obat' })),
+      ...(existingData.obat || []).map(o => ({ nama: o.nama, val: o.dosis, cara_masuk: o.cara_masuk, type: 'obat' })),
       ...(existingData.cairan || []).map(c => ({ nama: c.nama, val: c.volume, type: 'cairan' }))
     ]
   } else {
