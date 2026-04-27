@@ -141,7 +141,7 @@
 
           <!-- Nama Dokter -->
           <div style="margin-top: 10px; font-weight: 500;">
-            {{ asessmentDokter?.petugas?.nama }}
+            <div>{{ asessmentDokter?.petugas?.nama }}</div>
           </div>
 
         </div>
@@ -184,7 +184,7 @@ const printObj = {
 
 const asessmentDokter = computed(() => {
 
-  const a = props?.pasien?.soap
+  const a = props?.pasien?.soap || props.pasien?.kunjungan_rehab
   return a?.length ? a?.find(item => item?.awal === '1' && item?.nakes === '1') ?? null : null
 })
 

@@ -24,7 +24,7 @@
         <q-list class="">
           <transition-group name="list">
             <q-item v-for="(item, n) in lists" :key="n" class="list-move q-mb-sm bg-white">
-              <q-item-section class="q-pb-xl">
+              <q-item-section class="q-pb-sm">
                 <q-item-label class="f-12">
                   <span class="">Subjective </span> : <span class="text-weight-bold">{{ item?.subjective || '-'
                   }}</span>
@@ -64,6 +64,9 @@
                 <q-item-label>
                   <em>By {{ item?.petugas?.nama || '-' }}</em>
                 </q-item-label>
+                <q-item-label>
+                  <em>Tertanggal : {{ humanDate(item?.created_at) }}</em>
+                </q-item-label>
 
 
               </q-item-section>
@@ -89,6 +92,7 @@ import { notifSuccessVue } from 'src/modules/utils'
 import { useAplikasiStore } from 'src/stores/app/aplikasi'
 import { useRehabmedikSoapStore } from 'src/stores/simrs/pelayanan/rehabmedik/soap'
 import { computed } from 'vue'
+import { humanDate } from 'src/modules/formatter'
 const $q = useQuasar()
 const props = defineProps({
   pasien: {
