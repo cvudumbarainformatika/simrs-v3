@@ -29,7 +29,8 @@ export const useMasterTindakanJsJpStore = defineStore('master_tindakan_js_jp', {
     ],
     polis: [],
     ruangRanap: [],
-    allRuangs: []
+    allRuangs: [],
+    filteredRuangs: []
   }),
   actions: {
     resetForm () {
@@ -189,6 +190,8 @@ export const useMasterTindakanJsJpStore = defineStore('master_tindakan_js_jp', {
       if (this.polis?.length && this.ruangRanap?.length) {
         this.allRuangs = []
         this.allRuangs = [...this.polis?.map(a => { return { nama: a.polirs, kode: a.kodepoli } }), ...this.ruangRanap.map(a => { return { nama: a.groups_nama, kode: a.groups } })]
+        this.filteredRuangs = []
+        this.filteredRuangs = [...this.polis?.map(a => { return { nama: a.polirs, kode: a.kodepoli } }), ...this.ruangRanap.map(a => { return { nama: a.groups_nama, kode: a.groups } })]
         // console.log('merge ', this.allRuangs)
 
       }
@@ -200,7 +203,8 @@ export const useMasterTindakanJsJpStore = defineStore('master_tindakan_js_jp', {
     },
     // api related function
     async getPoli () {
-      await api.get('v1/settings/appakses/all-poli')
+      // await api.get('v1/settings/appakses/all-poli')
+      await api.get('v1/simrs/master/list-all-poli')
         .then(resp => {
           this.polis = resp.data
           // console.log('resp poli', this.polis)
