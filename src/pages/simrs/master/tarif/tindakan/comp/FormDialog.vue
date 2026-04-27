@@ -25,8 +25,8 @@
           <div class="row q-col-gutter-md q-mb-sm">
             <div class="col-4">
               <q-select v-model="store.disp.ruangan" label="Ruangan" map-options emit-value outlined option-label="nama"
-                option-value="kode" autocomplete="nama" :loading="store.loading" :options="store.allRuangs" multiple
-                @update:model-value="ruanganSelected" />
+                option-value="kode" autocomplete="nama" :loading="store.loading" :options="store.filteredRuangs"
+                multiple use-input input-debounce="200" @filter="filterRuangan" @update:model-value="ruanganSelected" />
             </div>
             <div class="col-8">
               <span v-for="(kode, i) in store.disp.ruangan" :key="i">
@@ -225,6 +225,21 @@ const store = useMasterTindakanJsJpStore()
 function ruanganSelected (evt) {
   console.log('evt', evt)
 
+}
+function filterRuangan (val, update) {
+  if (val === '') {
+    update(() => {
+      store.filteredRuangs = store.allRuangs  // tampilkan semua
+    })
+    return
+  }
+
+  update(() => {
+    const needle = val.toLowerCase()
+    store.filteredRuangs = store.allRuangs.filter(
+      ruang => ruang.nama.toLowerCase().includes(needle)
+    )
+  })
 }
 function cariRuangan (val, i) {
   const ruangan = store.allRuangs.find(item => item.kode == val)
