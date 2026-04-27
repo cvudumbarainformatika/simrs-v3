@@ -154,7 +154,7 @@
                             <q-item-label class="text-weight-bold">Rangkaian # {{ item?.no }}</q-item-label>
                             <q-item-label caption>No. Reg: {{ item?.noreg }}</q-item-label>
                             <q-item-label caption>Mulai: {{ date?.formatDate(item?.created_at, 'DD MMMM YYYY')
-                            }}</q-item-label>
+                              }}</q-item-label>
                           </q-item-section>
                           <q-item-section side>
                             <q-btn label="Hubungkan" color="primary" size="sm" unelevated
