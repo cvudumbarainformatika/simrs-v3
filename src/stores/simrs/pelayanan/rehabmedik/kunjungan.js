@@ -295,12 +295,17 @@ export const useKunjunganRehabmediStore = defineStore('kunjungan-rehabmedik-stor
         // console.log('response rangkaian', resp);
 
         if (resp.status === 200) {
+          const result = resp.data?.result ?? []
           const findPasien = this.items.find(x => x?.noreg === pasien?.noreg)
           console.log('findPasien', findPasien);
 
           if (findPasien) {
             // Update data kunjungan_rehab dengan data baru dari server
-            findPasien.kunjungan_rehab = resp.data?.result ?? []
+            findPasien.kunjungan_rehab = result
+          }
+
+          if (this.pasien && this.pasien.noreg === pasien?.noreg) {
+            this.pasien.kunjungan_rehab = result
           }
         }
         return resp

@@ -300,7 +300,7 @@
               </div>
               <div class="row q-col-gutter-xs">
                 <div>ROUTE : </div>
-                <div v-for="DIET in getGroupIntervensi(pasien?.diagnosagizi[0]?.intervensi, 'Route')">
+                <div v-for="DIET in getGroupIntervensi(pasien?.diagnosagizi[0]?.intervensi, ['Route', 'Rute'])">
                   {{ DIET?.masterintervensi?.nama }}
                 </div>
               </div>
@@ -478,14 +478,27 @@ const getDiag = () => {
 }
 
 
+// const getGroupIntervensi = (arr, val) => {
+//   // console.log('arr', arr, val);
+
+//   const dx = arr
+//   const intervensi = dx?.filter(x => x?.masterintervensi?.group?.toLowerCase() === val?.toLowerCase())
+//   return intervensi
+// }
+
 const getGroupIntervensi = (arr, val) => {
-  // console.log('arr', arr, val);
+  if (!arr) return []
 
-  const dx = arr
-  const intervensi = dx?.filter(x => x?.masterintervensi?.group?.toLowerCase() === val?.toLowerCase())
-  return intervensi
+  // pastikan val selalu array
+  const values = Array.isArray(val) ? val : [val]
+
+  // normalize ke lowercase
+  const normalized = values.map(v => v?.toLowerCase())
+
+  return arr.filter(x =>
+    normalized.includes(x?.masterintervensi?.group?.toLowerCase())
+  )
 }
-
 </script>
 
 
