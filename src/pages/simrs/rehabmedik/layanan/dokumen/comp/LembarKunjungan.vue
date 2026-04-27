@@ -91,10 +91,14 @@
                   </div>
                 </td>
                 <td></td>
-                <td></td>
+                <td>
+                  <!-- <div v-for="(t, x) in item?.tindakan">
+                    {{ t?.rs2 }}
+                  </div> -->
+                </td>
               </tr>
               <!-- FILLER -->
-              <tr v-for="n in (10 - lists.length)" :key="'f' + n" class="border">
+              <tr v-for="n in (8 - lists.length)" :key="'f' + n" class="border">
                 <td>{{ lists.length + n }}</td>
                 <td></td>
                 <td></td>
