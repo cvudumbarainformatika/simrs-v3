@@ -108,6 +108,12 @@ const menus = ref([
     comp: shallowRef(defineAsyncComponent(() => import('./comppelayanan/pagemenu/compAssasement/IndexPage.vue')))
   },
   {
+    name: 'assasement_post_op',
+    label: 'Assasement Post Operasi',
+    icon: 'icon-fa-book-medical-solid',
+    comp: shallowRef(defineAsyncComponent(() => import('./comppelayanan/pagemenu/compAssPostOp/IndexPage.vue')))
+  },
+  {
     name: 'penunjang',
     label: 'Penunjang',
     icon: 'icon-mat-tune',
