@@ -28,6 +28,9 @@
           <q-tab-panel name="IGD" class="full-height q-pa-none">
             <IgdPage :pasien="pasien" :no-header="noHeader" />
           </q-tab-panel>
+          <q-tab-panel name="Rehab Medik" class="full-height q-pa-none">
+            <RehabPage :pasien="pasien" :no-header="noHeader" />
+          </q-tab-panel>
         </q-tab-panels>
       </div>
     </div>
@@ -47,6 +50,7 @@ const KonsulPoli = defineAsyncComponent(() => import('./compRight/KonsulPoli.vue
 const RawatJalan = defineAsyncComponent(() => import('./compRight/RawatJalan.vue'))
 const RawatInap = defineAsyncComponent(() => import('./compRight/RawatInap.vue'))
 const IgdPage = defineAsyncComponent(() => import('./compRight/IgdPage.vue'))
+const RehabPage = defineAsyncComponent(() => import('./compRight/RehabPage.vue'))
 
 // const PraAnestesi = defineAsyncComponent(() => import('src/pages/simrs/dokumen/erm/poli/AsesmenPraAnestesia.vue'))
 
@@ -68,6 +72,7 @@ const tanggal = (val) => {
 }
 
 const store = useHistoryPasien()
+
 onMounted(() => {
   store.metaEresep = null
   store.getData(props.pasien)
