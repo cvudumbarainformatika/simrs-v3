@@ -42,10 +42,21 @@
           </div>
 
           <q-separator class="col-12 q-my-sm" />
-
+          <!--
           <div class="col-12 text-subtitle2 text-primary">Gas Inhalasi (L/mnt atau %)</div>
           <div class="col-4" v-for="gas in ['o2', 'n2o', 'halothan', 'isoflurane', 'sevoflurane']" :key="gas">
             <q-input v-model.number="form[gas]" :label="gas.toUpperCase()" filled dense />
+          </div> -->
+          <div class="col-12 text-subtitle2 text-primary">Gas Inhalasi (Maintenance)</div>
+          <div class="col-4" v-for="gas in ['o2', 'n2o', 'halothan', 'isoflurane', 'sevoflurane']" :key="gas">
+            <q-item tag="label" v-ripple class="bg-grey-2 rounded-borders">
+              <q-item-section>
+                <q-item-label class="text-caption text-bold">{{ gas.toUpperCase() }}</q-item-label>
+              </q-item-section>
+              <q-item-section avatar>
+                <q-toggle v-model="form[gas]" :true-value="15" :false-value="null" dense color="primary" />
+              </q-item-section>
+            </q-item>
           </div>
 
           <q-separator class="col-12 q-my-sm" />
@@ -95,7 +106,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, watch } from 'vue'
+import { ref, reactive, watch, computed } from 'vue'
 
 const props = defineProps({
   logs: {
@@ -104,10 +115,30 @@ const props = defineProps({
   }
 })
 const emit = defineEmits(['update:modelValue', 'add-log', 'close'])
-const minuteOptions = Array.from({ length: 30 }, (_, i) => ({
-  label: `Menit ke-${i * 5}`,
-  value: i * 5
-}))
+// const minuteOptions = Array.from({ length: 30 }, (_, i) => ({
+//   label: `Menit ke-${i * 5}`,
+//   value: i * 5
+// }))
+const minuteOptions = computed(() => {
+  // 1. Cari menit tertinggi yang sudah ada di data
+  const lastTime = props.logs.length > 0
+    ? Math.max(...props.logs.map(l => l.time))
+    : 0
+
+  // 2. Tentukan batas atas (minimal 145, atau lastTime + 30 menit cadangan)
+  const limit = Math.max(145, lastTime + 30)
+
+  // 3. Generate array kelipatan 5 sampai batas limit
+  const length = Math.floor(limit / 5) + 1
+
+  return Array.from({ length }, (_, i) => {
+    const val = i * 5
+    return {
+      label: `Menit ke-${val}`,
+      value: val
+    }
+  })
+})
 // const show = ref(props.modelValue)
 const selectedMilestones = ref([])
 const dynamicItems = ref([]) // Untuk obat/cairan dinamis
@@ -119,7 +150,9 @@ const milestoneOptions = [
   { label: 'Extubasi', value: 'extubasi' },
   { label: 'e-N-o O.R.O', value: 'eno_oro' },
   { label: 'X-Ana-X', value: 'x_ana' },
-  { label: 'Ass. Resep', value: 'ass_resep' }
+  { label: 'Ass. Resep', value: 'ass_resep' },
+  { label: 'Conrt Resep', value: 'cn_resp' },
+  { label: 'Spont Resep', value: 'sp_resp' },
 ]
 const form = reactive({
   time: 0,
@@ -139,6 +172,8 @@ const form = reactive({
   eno_oro: null,
   x_ana: null,
   ass_resep: null,
+  cn_resp: null,
+  sp_resp: null,
 
 })
 // Letakkan di bawah deklarasi form dan milestones
@@ -162,6 +197,8 @@ const resetFormExceptTime = () => {
     eno_oro: null,
     x_ana: null,
     ass_resep: null,
+    cn_resp: null,
+    sp_resp: null,
 
   })
 
@@ -184,6 +221,8 @@ const processAndSave = () => {
     eno_oro: null,
     x_ana: null,
     ass_resep: null,
+    cn_resp: null,
+    sp_resp: null,
   }
   // Jika item ada di dalam array pilihan, beri nilai (misal 20 untuk posisi Y di chart)
   selectedMilestones.value.forEach(key => {
@@ -208,7 +247,8 @@ function show () {
   const lastTime = props.logs.length > 0
     ? Math.max(...props.logs.map(l => l.time))
     : -5
-  form.time = lastTime + 5 > 145 ? 145 : lastTime + 5
+  // form.time = lastTime + 5 > 145 ? 145 : lastTime + 5
+  form.time = lastTime + 5
 }
 
 // Di dalam InputObservasi.vue
@@ -237,6 +277,8 @@ watch(() => form.time, (newTime) => {
     if (existingData.eno_oro) activeMilestones.push('eno_oro')
     if (existingData.x_ana) activeMilestones.push('x_ana')
     if (existingData.ass_resep) activeMilestones.push('ass_resep')
+    if (existingData.cn_resp) activeMilestones.push('cn_resp')
+    if (existingData.sp_resp) activeMilestones.push('sp_resp')
 
     selectedMilestones.value = activeMilestones
     // Re-map Obat & Cairan agar muncul lagi di list dinamis

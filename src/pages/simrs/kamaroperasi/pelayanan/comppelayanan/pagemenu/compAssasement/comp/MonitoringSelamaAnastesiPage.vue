@@ -4,8 +4,10 @@
 
       <div class="chart-section upper-section">
         <div class="chart-wrapper">
-          <apexchart type="scatter" height="250" :key="'upper-' + logs.length" :options="upperChartOptions"
-            :series="upperSeries" />
+          <!-- <div style="overflow-x: auto;"> -->
+          <apexchart type="scatter" height="300" :width="dynamicChartWidth" :key="'upper-' + logs.length"
+            :options="upperChartOptions" :series="upperSeries" />
+          <!-- </div> -->
         </div>
       </div>
 
@@ -24,18 +26,86 @@
         </div>
 
         <div class="chart-wrapper flex-grow">
+          <!-- <div style="overflow-x: auto;"> -->
           <apexchart ref="chartWrapperRef" type="line" :key="'lower-' + logs.length" :options="lowerChartOptions"
-            :series="lowerSeries" height="400px" />
+            :series="lowerSeries" height="400px" :width="dynamicChartWidth" />
+          <!-- </div> -->
         </div>
       </div>
     </q-card>
+    <q-card flat bordered class="bg-white q-mt-sm">
+      <div class="q-pa-sm">
+        <div class="row items-center">
+          <div class="col-2">Respirasi</div>
+          <div class="col-10">
+            <app-input v-model="store.inputForm.respirasi" valid label="Respirasi" outlined />
+          </div>
+        </div>
+        <div class="row text-weight-bold q-mt-sm"> Jumlah Cairan / transfusi </div>
+        <div class="row items-center q-col-gutter-x-sm">
+          <div class="col-3">
+            <app-input v-model="store.inputForm.kristaloid" valid label="Kristaloid (cc)" outlined
+              @update:model-value="store.updateMasuk($event, 'kristaloid')" />
+          </div>
+          <div class="col-3">
+            <app-input v-model="store.inputForm.koloid" valid label="Koloid (cc)" outlined
+              @update:model-value="store.updateMasuk($event, 'koloid')" />
+          </div>
+          <div class="col-3">
+            <app-input v-model="store.inputForm.transfusi" valid label="Transfusi (cc)" outlined
+              @update:model-value="store.updateMasuk($event, 'transfusi')" />
+          </div>
+          <div class="col-3">
+            <app-input v-model="store.inputForm.jumlah_tr" readonly valid label="Jumlah (cc)" outlined />
+          </div>
+        </div>
+        <div class="row text-weight-bold q-mt-sm"> Jumlah Cairan Keluar </div>
+        <div class="row items-center q-col-gutter-x-sm">
+          <div class="col-3">
+            <app-input v-model="store.inputForm.pendarahan" valid label="Pendarahan (cc)" outlined
+              @update:model-value="store.updateKeluar($event, 'pendarahan')" />
+          </div>
+          <div class="col-3">
+            <app-input v-model="store.inputForm.urine" valid label="Urine (cc)" outlined
+              @update:model-value="store.updateKeluar($event, 'urine')" />
+          </div>
+          <div class="col-3">
+            <app-input v-model="store.inputForm.lain" valid label="Lain-Lain (cc)" outlined
+              @update:model-value="store.updateKeluar($event, 'lain')" />
+          </div>
+          <div class="col-3">
+            <app-input v-model="store.inputForm.jumlah_kel" readonly valid label="Jumlah (cc)" outlined />
+          </div>
+        </div>
+        <div class="row text-weight-bold q-mt-sm"> Catatan </div>
+        <div class="row items-center q-col-gutter-x-sm">
+          <div class="col-12">
+            <q-input v-model="store.inputForm.catatan" valid label="Catatan" outlined type="textarea" />
+          </div>
+        </div>
+        <div class="row q-mt-sm q-col-gutter-x-md">
+          <div class="col-6"><app-autocomplete v-model="store.inputForm.penata_anastesi" :key="laporanOp.nakes"
+              label="Penata Anastesi" outlined dense :source="laporanOp.nakes?.filter(y => y?.kdgroupnakes != '1')"
+              option-label="nama" option-value="kdpegsimrs" hide-dropdown-icon /></div>
+          <div class="col-6"><app-autocomplete v-model="store.inputForm.dokter_anastesi" :key="laporanOp.nakes"
+              label="Dokter Anastesi" outlined dense :source="laporanOp.nakes?.filter(y => y?.kdgroupnakes == '1')"
+              option-label="nama" option-value="kdpegsimrs" hide-dropdown-icon /></div>
+        </div>
 
+        <div class="row justify-end q-mt-sm q-col-gutter-x-md">
+          <div class="col-2">
+            <q-btn label="Simpan " no-caps color="primary" glossy :loading="store.loadingMonitoringSaat"
+              :disable="store.loadingMonitoringSaat" @click="store.simpanBawahMonitoringSelama(props.pasien)" />
+          </div>
+          <div class="col-1"></div>
+        </div>
+      </div>
+    </q-card>
     <q-page-sticky position="bottom-right" :offset="[18, 18]">
       <q-btn fab icon="edit_note" color="primary" @click="(val) => {
-
         showInputForm = true
       }">
-        <q-tooltip>Input Data Observasi</q-tooltip>
+        <q-tooltip anchor="top left" self="bottom right" :offset="[10, 10]">Input Data Observasi</q-tooltip>
       </q-btn>
     </q-page-sticky>
   </q-page>
@@ -43,6 +113,8 @@
     @add-log="handleNewLog" @close="showInputForm = false" />
 </template>
 <script setup>
+import { useMonitoringSaatStore } from 'src/stores/simrs/kamaroperasi/assasement/monitoringSaat'
+import { useLaporanOperasiStore } from 'src/stores/simrs/kamaroperasi/laporanOperasi'
 import { ref, computed, onMounted, nextTick, defineAsyncComponent } from 'vue'
 const props = defineProps({
   pasien: {
@@ -50,25 +122,29 @@ const props = defineProps({
     default: null
   },
 })
+
+const laporanOp = useLaporanOperasiStore()
+const store = useMonitoringSaatStore()
 const InputObservasi = defineAsyncComponent(() => import('./InputObservasi.vue'))
 const showInputForm = ref(false)
 
-const handleNewLog = async (newLog) => {
+async function handleNewLog (newLog) {
   // Cari apakah menit (time) tersebut sudah ada di logs
-  const index = logs.value.findIndex(l => l.time === newLog.time)
-  // console.log('log', newLog, logs.value[index])
+  // const index = logs.value.findIndex(l => l.time === newLog.time)
+  // // console.log('log', newLog, logs.value[index])
 
-  if (index !== -1) {
-    // Jika ADA, timpa data lama dengan data baru (Update)
-    // logs.value[index] = { ...newLog }
-    logs.value.splice(index, 1, { ...newLog })
-  } else {
-    // Jika TIDAK ADA, tambah data baru (Insert)
-    logs.value.push(newLog)
-  }
+  // if (index !== -1) {
+  //   // Jika ADA, timpa data lama dengan data baru (Update)
+  //   // logs.value[index] = { ...newLog }
+  //   logs.value.splice(index, 1, { ...newLog })
+  // } else {
+  //   // Jika TIDAK ADA, tambah data baru (Insert)
+  //   logs.value.push(newLog)
+  // }
 
-  // Selalu sort setelah perubahan agar garis grafik tidak berantakan
-  logs.value.sort((a, b) => a.time - b.time)
+  // // Selalu sort setelah perubahan agar garis grafik tidak berantakan
+  // logs.value.sort((a, b) => a.time - b.time)
+  await store.simpanLogMonitoringSelama(props.pasien, newLog)
 
   const charts = document.querySelectorAll('.vue-apexcharts')
   charts.forEach(el => el.style.pointerEvents = 'none')
@@ -92,70 +168,7 @@ const scaleR = (val) => {
   return 140 + ((val - 12) * (220 - 140)) / (28 - 12)
 }
 // Data Dummy sesuai gambar
-const logs = ref([
-  {
-    time: 0, td_sistolik: 100, td_diastolik: 81, nadi: 95, resp: 17,
-    mulai_op: 20, selesai_op: null, eno_oro: null, x_ana: null, ass_resep: null,
-    obat: [], cairan: [],
-    o2: 20, n2o: 20, halothan: 20, isoflurane: 20, sevoflurane: 20
-  },
-  {
-    time: 5, td_sistolik: 120, td_diastolik: 80, nadi: 105, resp: 16,
-    mulai_op: null, selesai_op: null, eno_oro: null, x_ana: null, ass_resep: null,
-    obat: [{ nama: 'Paracetamol', dosis: '2 mg', cara_masuk: 'IV' }],
-    cairan: [], o2: 20, n2o: 20, halothan: 20, isoflurane: null, sevoflurane: null
-  },
-  {
-    time: 10, td_sistolik: 110, td_diastolik: 75, nadi: null, resp: 18,
-    mulai_op: null, selesai_op: null, eno_oro: null, x_ana: null, ass_resep: null,
-    obat: [], cairan: [], o2: 20, n2o: 2, halothan: 20, isoflurane: null, sevoflurane: null
-  },
-  {
-    time: 15, td_sistolik: 115, td_diastolik: 82, nadi: 110, resp: 16,
-    mulai_op: null, selesai_op: null, eno_oro: null, x_ana: null, ass_resep: null,
-    obat: [], cairan: [{ nama: 'Normal Saline', volume: '100 ml' }],
-    o2: null, n2o: null, halothan: null, isoflurane: null, sevoflurane: null
-  },
-  {
-    time: 20, td_sistolik: 115, td_diastolik: 82, nadi: 110, resp: 16,
-    mulai_op: null, selesai_op: null, eno_oro: null, x_ana: null, ass_resep: null,
-    obat: [{ nama: 'Propopol', dosis: '5 mg', cara_masuk: 'IV' }],
-    cairan: [], o2: null, n2o: null, halothan: null, isoflurane: null, sevoflurane: null
-  },
-  {
-    time: 25, td_sistolik: 115, td_diastolik: 82, nadi: 110, resp: 16,
-    mulai_op: null, selesai_op: null, eno_oro: 20, x_ana: null, ass_resep: null,
-    obat: [], cairan: [], o2: null, n2o: null, halothan: 1.5, isoflurane: null, sevoflurane: null
-  },
-  {
-    time: 30, td_sistolik: 115, td_diastolik: 82, nadi: 110, resp: 16,
-    mulai_op: null, selesai_op: null, eno_oro: null, x_ana: null, ass_resep: null,
-    obat: [], cairan: [], o2: null, n2o: null, halothan: null, isoflurane: null, sevoflurane: null
-  },
-  {
-    time: 35, td_sistolik: 115, td_diastolik: 82, nadi: 110, resp: 16,
-    mulai_op: null, selesai_op: null, eno_oro: null, x_ana: 20, ass_resep: null,
-    obat: [], cairan: [], o2: 2, n2o: null, halothan: null, isoflurane: null, sevoflurane: null
-  },
-  {
-    time: 40, td_sistolik: 115, td_diastolik: 82, nadi: 110, resp: 16,
-    mulai_op: null, selesai_op: null, eno_oro: null, x_ana: null, ass_resep: null,
-    obat: [{ nama: 'Paracetamol', dosis: '2 mg', cara_masuk: 'IV' }],
-    cairan: [], o2: null, n2o: null, halothan: null, isoflurane: 1.2, sevoflurane: null
-  },
-  {
-    time: 45, td_sistolik: 115, td_diastolik: 82, nadi: 110, resp: 16,
-    mulai_op: null, selesai_op: null, eno_oro: null, x_ana: null, ass_resep: 20,
-    obat: [], cairan: [], o2: null, n2o: null, halothan: null, isoflurane: null, sevoflurane: null
-  },
-  {
-    time: 50, td_sistolik: 115, td_diastolik: 82, nadi: 110, resp: 16,
-    mulai_op: null, selesai_op: 20, eno_oro: null, x_ana: null, ass_resep: null,
-    obat: [], cairan: [{ nama: 'Normal Saline', volume: '100 ml' }],
-    o2: null, n2o: null, halothan: null, isoflurane: null, sevoflurane: 1.8
-  }
-])
-
+const logs = computed(() => store.data)
 // Data label kustom kita berdasarkan kertas asli
 const medicalYLabels = [
   // grid: nilai Y pada chart (misal 220), r: label R, n: label N, td: label TD
@@ -174,7 +187,26 @@ const medicalYLabels = [
 
 const chartWrapperRef = ref(null) // Gunakan ref untuk mengambil elemen chart
 const labelRowHeight = ref(40) // Default awal
+const dynamicMaxTime = computed(() => {
+  if (logs.value.length === 0) return 145
 
+  // Cari menit paling ujung dari data
+  const lastLogTime = Math.max(...logs.value.map(l => l.time))
+
+  // Berikan ruang kosong sedikit di depan (misal +30 menit) agar grafik tidak mentok
+  const calculatedMax = lastLogTime + 30
+
+  // Minimal tetap 145
+  return calculatedMax < 145 ? 145 : calculatedMax
+})
+const dynamicChartWidth = computed(() => {
+  const pixelsPerMinute = 6 // Sesuaikan angka ini (40px per 5 menit = 8px per menit)
+  const totalWidth = dynamicMaxTime.value * pixelsPerMinute
+
+  // Minimal selebar container (misal 100%), maksimalnya mengikuti durasi
+  return totalWidth + 'px'
+})
+const maxTime = 480
 // Konfigurasi Chart Bawah (Vital Signs)
 const lowerChartOptions = computed(() => ({
   chart: {
@@ -191,10 +223,20 @@ const lowerChartOptions = computed(() => ({
     }
   },
   xaxis: {
-    type: 'numeric', min: 0, max: 145, tickAmount: 29,
+    type: 'numeric', min: 0, max: dynamicMaxTime.value, tickAmount: dynamicMaxTime.value / 5,
     labels: {
       offsetY: 0,
-      style: { fontSize: '10px' }
+      style: { fontSize: '10px' },
+      rotate: -45,
+      formatter: (val) => {
+        // Tampilkan label tiap 15 atau 30 menit saja agar tidak penuh sesak
+        if (val % 15 === 0) {
+          const jam = Math.floor(val / 60).toString().padStart(2, '0')
+          const menit = (val % 60).toString().padStart(2, '0')
+          return `${jam}:${menit}`
+        }
+        return ''
+      }
     },
     axisTicks: { show: false } // Hilangkan 'tanda petik' di sumbu X agar lebih bersih
 
@@ -242,6 +284,8 @@ const lowerChartOptions = computed(() => ({
       if (seriesIndex === 8) return 'X' // X-Ana-X
       if (seriesIndex === 9) return 'E' // e-N-o O.R.O
       if (seriesIndex === 10) return 'AR' // Ass. Resep
+      if (seriesIndex === 11) return 'CR' // Ass. Resep
+      if (seriesIndex === 12) return 'SR' // Ass. Resep
       return val
     },
     style: {
@@ -315,6 +359,10 @@ const lowerChartOptions = computed(() => ({
           symbol = 'X'; color = '#000000'; break // Teks X
         case 'e-N-o O.R.O':
           symbol = 'E'; color = '#000000'; break // Teks X
+        case 'Conrt Resep':
+          symbol = 'CR'; color = '#000000'; break // Teks X
+        case 'Spont Resep':
+          symbol = 'SR'; color = '#000000'; break // Teks X
         default:
           symbol = '•'; color = '#999'
       }
@@ -420,6 +468,16 @@ const lowerSeries = computed(() => [
     type: 'scatter',
     data: logs.value.map(l => ({ x: l.time, y: l.ass_resep ? 25 : null, originalValue: l.ass_resep }))
   },
+  {
+    name: 'Conrt Resep',
+    type: 'scatter',
+    data: logs.value.map(l => ({ x: l.time, y: l?.cn_resp ? 25 : null, originalValue: l?.cn_resp }))
+  },
+  {
+    name: 'Spont Resep',
+    type: 'scatter',
+    data: logs.value.map(l => ({ x: l.time, y: l?.sp_resp ? 25 : null, originalValue: l?.sp_resp }))
+  },
 ])
 
 // Konfigurasi Chart Atas (Obat/Cairan)
@@ -429,13 +487,28 @@ const upperChartOptions = computed(() => ({
     id: 'meds',
     group: 'anesthesia2', // Sinkron dengan lower chart
     toolbar: { show: false },
-    animations: { enabled: false }
+    // animations: { enabled: false }
   },
   xaxis: {
     type: 'numeric',
     min: 0,
-    max: 145,
-    tickAmount: 29,
+    max: dynamicMaxTime.value,
+    tickAmount: dynamicMaxTime.value / 5,
+    labels: {
+      offsetY: 0,
+      style: { fontSize: '10px' },
+      rotate: -45,
+      formatter: (val) => {
+        // Tampilkan label tiap 15 atau 30 menit saja agar tidak penuh sesak
+        if (val % 15 === 0) {
+          const jam = Math.floor(val / 60).toString().padStart(2, '0')
+          const menit = (val % 60).toString().padStart(2, '0')
+          return `${jam}:${menit}`
+        }
+        return ''
+      }
+    },
+
     // labels: { show: false } // Sembunyikan karena sudah ada di chart bawah
   },
   yaxis: {
@@ -447,7 +520,16 @@ const upperChartOptions = computed(() => ({
       formatter: (val) => {
         // val adalah index 1, 2, 3...
         const idx = Math.round(val) - 1
-        return allRows.value[idx] || ''
+        const obat = store.data.flatMap(o => o.obat).find(o => o.nama === allRows.value[idx])
+        const cairan = store.data.flatMap(o => o.cairan).find(o => o.nama === allRows.value[idx])
+        let nama = ''
+
+        if (obat) nama = obat.nama + ' ' + obat.dosis + ' ' + obat.cara_masuk
+        else if (cairan) nama = cairan.nama + ' ' + cairan.volume
+        else nama = allRows.value[idx] ?? ''
+        // console.log(allRows.value[idx], obat, cairan)
+
+        return nama
       }
     }
   },
@@ -556,47 +638,53 @@ const allRows = computed(() => {
   // Kita balik urutan penggabungannya
   return [...gasKeys, ...uniqueObat, ...uniqueCairan].reverse()
 })
+
+// ... data label medicalYLabels Anda yang sebelumnya ...
+
 const upperSeries = computed(() => {
   return allRows.value.map((itemName, index) => {
-    const yValue = index + 1 // Baris ke-1, ke-2, dst.
+    const yValue = index + 1
     const isGas = gasKeys.includes(itemName)
-    return {
-      name: itemName,
-      type: isGas ? 'line' : 'scatter',
-      data: logs.value.map(l => {
-        let info = null
-        let markerLabel = ''
 
-        // Cek apakah ini Gas (Statis)
-        if (isGas) {
-          if (l[itemName] !== null && l[itemName] !== undefined) {
-            info = '-'
-            markerLabel = itemName.charAt(0).toUpperCase()
-            return { x: l.time, y: yValue, info: info, markerLabel: markerLabel }
-          }
-          return { x: l.time, y: null }
-        }
-        // Cek apakah ini Obat/Cairan (Dinamis)
-        else {
-          const item = [...(l.obat || []), ...(l.cairan || [])].find(i => i.nama === itemName)
-          if (item) {
-            info = item.dosis || item.volume
-            markerLabel = itemName.charAt(0).toUpperCase() + ' ' + (item.dosis || item.volume)
-            return { x: l.time, y: yValue, info: info, markerLabel: markerLabel }
-          }
-        }
+    if (isGas) {
+      // 1. Cari X (waktu) terbesar yang nilainya >= 1 untuk gas ini
+      const gasEntries = logs.value.filter(l => l[itemName] >= 1)
+      const lastTrueTime = gasEntries.length > 0
+        ? Math.max(...gasEntries.map(l => l.time))
+        : -1
 
-        return null
-      }).filter(d => isGas ? true : d !== null),
-      stroke: {
-        width: isGas ? 2 : 0,
-        curve: 'stepline' // Sangat cocok untuk start-stop data
+      // 2. Petakan data: Jika waktu <= lastTrueTime, beri yValue (nyambung terus)
+      const seriesData = logs.value.map(l => {
+        return {
+          x: l.time,
+          // Selama menit log kurang dari atau sama dengan menit terakhir di-input true
+          y: l.time <= lastTrueTime ? yValue : null,
+          markerLabel: l.time <= lastTrueTime ? itemName.charAt(0).toUpperCase() : '',
+        }
+      })
+
+      return {
+        name: itemName,
+        type: 'line',
+        data: seriesData, // Jangan di-filter agar null bisa memutus garis
+
+        // stroke: { width: 3, curve: 'straight' }
+      }
+    } else {
+      // --- LOGIKA OBAT & CAIRAN (Tetap Scatter) ---
+      const seriesData = logs.value.map(l => {
+        const item = [...(l.obat || []), ...(l.cairan || [])].find(i => i.nama === itemName)
+        return item ? { x: l.time, y: yValue, info: item.dosis || item.volume, markerLabel: itemName.charAt(0).toUpperCase() + ' ' + (item.dosis || item.volume) } : null
+      }).filter(d => d !== null)
+
+      return {
+        name: itemName,
+        type: 'scatter',
+        data: seriesData
       }
     }
   })
 })
-// ... data label medicalYLabels Anda yang sebelumnya ...
-
 function syncLabels () {
   if (!chartWrapperRef.value) return
 
@@ -626,16 +714,22 @@ onMounted(async () => {
   //   syncLabels()
   // })
   // console.log('gas', allRows.value.map(name => gasKeys.includes(name) ? 3 : 0))
+  try {
+    await store.getMonitoringSelama(props.pasien)
+    const charts = document.querySelectorAll('.vue-apexcharts')
+    charts.forEach(el => el.style.pointerEvents = 'none')
+    await nextTick()
+    if (typeof syncLabels === 'function') {
+      syncLabels()
+    }
+    setTimeout(() => {
+      charts.forEach(el => el.style.pointerEvents = 'auto')
+    }, 500)
+  } catch (e) {
+    console.log('gagal memuat data monitoring', e)
 
-  const charts = document.querySelectorAll('.vue-apexcharts')
-  charts.forEach(el => el.style.pointerEvents = 'none')
-  await nextTick()
-  if (typeof syncLabels === 'function') {
-    syncLabels()
   }
-  setTimeout(() => {
-    charts.forEach(el => el.style.pointerEvents = 'auto')
-  }, 500)
+
 })
 </script>
 <style scoped>
@@ -643,6 +737,7 @@ onMounted(async () => {
   /* Pastikan ada border atau pemisah yang jelas */
   border-bottom: 2px solid #444;
   background: white;
+  height: 350px;
 }
 
 :deep(.apexcharts-yaxis-label) {
@@ -674,7 +769,7 @@ onMounted(async () => {
 
   /* 1. Atur margin-top secara manual agar angka '220' sejajar garis grid teratas.
      Coba angka di kisaran 15px - 25px */
-  margin-top: -80px;
+  margin-top: -89px;
 }
 
 .label-row {
@@ -682,7 +777,7 @@ onMounted(async () => {
      Coba sesuaikan angka ini sedikit demi sedikit (misal: 31px, 31.5px, atau 32px)
      sampai angka '20' di paling bawah sejajar garis grid terbawah. */
   /* height: 31.5px; */
-  height: calc((290px) / 10);
+  height: calc((280px) / 10);
   display: flex;
   align-items: right;
   /* justify-content: space-around; */
@@ -701,9 +796,11 @@ onMounted(async () => {
 }
 
 .anesthesia-chart-container {
-  max-width: 900px;
+  max-width: 90vw;
+  height: 800px;
   margin: auto;
   background: white;
+  overflow-x: auto;
 }
 
 .chart-section {
@@ -738,7 +835,7 @@ onMounted(async () => {
   padding: 0 4px;
 }
 
-.chart-wrapper {
+/* .chart-wrapper {
   flex-grow: 1;
-}
+} */
 </style>
