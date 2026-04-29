@@ -108,6 +108,7 @@ export const useMonitoringSaatStore = defineStore('monitoring_saat', {
           nota: pasien.rs2,
           norm: pasien.norm
         }
+        this.data.sort((a, b) => a.time - b.time)
         return resp?.data
       } catch (e) {
         console.log('err', e)
@@ -126,8 +127,9 @@ export const useMonitoringSaatStore = defineStore('monitoring_saat', {
           const index = this.data.findIndex(x => x.id === hasil.id)
           if (index >= 0) this.data[index] = hasil
           else this.data.push(hasil)
+          this.data.sort((a, b) => a.time - b.time)
         }
-        console.log('data', this.data)
+        // console.log('data', this.data)
 
         return resp?.data
       } catch (e) { }
