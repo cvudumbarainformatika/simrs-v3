@@ -27,7 +27,7 @@ export const useHistoryPasien = defineStore('history-pasien', {
       { value: 5, label: 'Acute Confusional States' }
     ],
     tab: 'Rawat Jalan',
-    tabs: ['Rawat Jalan', 'Rawat Inap', 'IGD']
+    tabs: ['Rawat Jalan', 'Rawat Inap', 'IGD', 'Rehab Medik']
   }),
   // getters: {
   //   doubleCount: (state) => state.counter * 2
