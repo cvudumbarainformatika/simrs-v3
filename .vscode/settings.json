@@ -22,7 +22,16 @@
   // "typescript.tsdk": "node_modules/typescript/lib",
   "files.autoSave": "off",
   "beautify.config": "",
-  "workbench.colorTheme": "Dark Modern",
+  "workbench.colorTheme": "Default Dark+",
+  "editor.tokenColorCustomizations": {},
+  "editor.semanticTokenColorCustomizations": {},
+  "editor.semanticHighlighting.enabled": true,
+  "editor.links": true,
+  "editor.multiCursorModifier": "alt",
+  "files.associations": {
+    "*.vue": "vue",
+    "*.js": "javascript"
+  },
   "vue.codeActions.enabled": false,
   "[javascript]": {
     "editor.defaultFormatter": "vscode.typescript-language-features"

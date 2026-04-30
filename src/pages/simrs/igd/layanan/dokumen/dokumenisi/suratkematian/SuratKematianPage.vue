@@ -1,22 +1,32 @@
 <template>
-  <!-- <div v-if="store.nosurat === null || store.nosurat === ''"> -->
-  <!-- <div>
-    <span class="text-bold text-h5"> Belum Ada Dokumen </span>
-  </div> -->
-  <!-- <div class="full-height full-height q-pa-sm" v-else> -->
-  <div class="full-height full-height q-pa-sm">
-    <q-btn ref="refPrint" v-print="printObj" unelevated color="dark" round size="sm" icon="icon-mat-print">
-      <q-tooltip class="primary" :offset="[10, 10]">
-        Print
-      </q-tooltip>
-    </q-btn>
-    <div id="printMe" style="width: 21cm;" class="q-pa-xs full-width full-height">
-      <KopSurat :judul="props?.judul ?? 'SURAT KEMATIAN'" :pasien="props?.pasien" :jangantampil=true />
-      <IsiSuratKematianPage :pasien="props?.pasien" :plannkematian="plannkematian" />
+  <div class="flex-center">
+    <div class="q-pa-sm row justify-between bg-teal text-white items-center">
+      <div class="col-6">{{ props?.judul }}</div>
+      <div class="col-6 text-right">
+        <q-btn flat dense size="md" icon="icon-mat-download" @click="exportPdf()">
+          <q-tooltip class="primary" :offset="[10, 10]">
+            Download
+          </q-tooltip>
+        </q-btn>
+        <q-btn icon="icon-mat-print" flat dense size="md" v-print="printObj">
+          <q-tooltip class="primary" :offset="[10, 10]">
+            Print
+          </q-tooltip>
+        </q-btn>
+      </div>
     </div>
+    <q-scroll-area style="height: calc(100vh - 56px);">
+      <div class="q-pa-none bg-grey-6" style="padding-bottom: 108px;">
+        <div id="printMe" class="full-width bg-white q-px-md q-py-lg" style="min-height: 1060px;">
+          <KopSurat :judul="props?.judul ?? 'SURAT KEMATIAN'" :pasien="props?.pasien" :jangantampil=true />
+          <IsiSuratKematianPage :pasien="props?.pasien" :plannkematian="plannkematian" />
+        </div>
+      </div>
+    </q-scroll-area>
   </div>
 </template>
 <script setup>
+import html2pdf from 'html2pdf.js'
 import KopSurat from '../../KopSurat.vue'
 import IsiSuratKematianPage from './IsiSuratKematianPage.vue'
 import { usePlannStore } from 'src/stores/simrs/igd/plann'
@@ -40,8 +50,32 @@ const props = defineProps({
 })
 
 const plannkematian = props?.pasien?.planheder[0]?.planpulang
-console.log('plannkematian', plannkematian);
 
+function exportPdf() {
+  const concern = document.getElementById('printMe')
+  const nama = props?.pasien?.nama ?? props?.pasien?.pasien
+  const pdfConfig = {
+    margin: [12, 12, 12, 12],
+    filename: 'Surat-Kematian_' + props?.pasien?.noreg + '_' + nama + '_' + props?.pasien?.norm + '.pdf',
+    image: {
+      type: 'jpeg',
+      quality: 0.98
+    },
+    html2canvas: {
+      scale: 2,
+      logging: true,
+      dpi: 192,
+      letterRendering: true
+    },
+    jsPDF: {
+      unit: 'mm',
+      format: 'a4',
+      orientation: 'portrait'
+    }
+  }
+
+  html2pdf().set(pdfConfig).from(concern).save()
+}
 
 store.suratkematian(props?.pasien)
 </script>

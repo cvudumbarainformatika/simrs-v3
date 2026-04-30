@@ -26,8 +26,8 @@
       </div>
     </div>
     <div v-else>
-      <div class="q-pa-sm bg-grey-6">
-        <div id="printMe" class="full-width bg-white q-px-md q-py-lg ">
+      <div class="q-pa-none bg-grey-6" style="padding-bottom: 108px;">
+        <div id="printMe" class="full-width bg-white q-px-md q-py-lg" style="min-height: 1060px;">
           <KopSurat :judul="props?.judul" :pasien="props?.pasien" :jangantampil=false />
           <IsiBillingPage :pasien="props?.pasien" />
         </div>

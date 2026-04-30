@@ -39,7 +39,10 @@ const SERVER = SERV + '/api'
 const api = axios.create({ baseURL: SERVER })
 api.defaults.headers.get.Accepts = 'application/json'
 
-api.defaults.headers.common.Authorization = `Bearer ${getLocalToken()}`
+const token = getLocalToken()
+if (token) {
+  api.defaults.headers.common.Authorization = `Bearer ${token}`
+}
 // api.defaults.headers.common['Access-Control-Allow-Origin'] = '*'
 
 /* Response Interceptors */

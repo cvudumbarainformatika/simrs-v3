@@ -1,5 +1,5 @@
 <template>
-  <div v-if="loadingaja" class="column full-height flex-center">
+  <div v-if="loadingaja" class="column flex-center">
     <div class="text-white">
       Harap Tunggu .....
     </div>
@@ -7,142 +7,212 @@
       Sinkron Data Ke DATABASE
     </div>
   </div>
-  <div v-if="pasien?.triage?.length <= 0" class="column full-height flex-center">
+  <div v-if="pasien?.triage?.length <= 0" class="column flex-center">
     <div class="text-white">
       Belum Ada data tersimpan
     </div>
   </div>
   <div v-else class="full-height">
-    <div v-for="(item, n) in lists" :key="n" class="list-move full-height">
+    <div v-for="(item, n) in lists" :key="n" class="list-move">
       <table class="triage-table q-mt-sm">
-        <!-- Tanggal -->
+
+        <!-- TANGGAL -->
         <tr>
-          <td class="label">Tanggal Triase</td>
-          <td class="value">{{ dateFullFormat(item?.tanggal) }}</td>
-          <td class="label">Jam</td>
-          <td class="value">{{ tgltriage(item?.tanggal) }}</td>
+          <td>TANGGAL TRIASE</td>
+          <td>:</td>
+          <td>{{ dateFullFormat(item?.tanggal) }}</td>
+          <td>JAM TRIASE</td>
+          <td>:</td>
+          <td>{{ tgltriage(item?.tanggal) }}</td>
+        </tr>
+
+        <!-- HEADER -->
+        <tr>
+          <td colspan="3" class="center bold">DOA</td>
+          <td colspan="3" class="center bold">SECONDARY SURVEI</td>
+        </tr>
+
+        <!-- TANDA KEHIDUPAN -->
+        <tr>
+          <td colspan="3" rowspan="5">
+            Tanda Kehidupan : {{ item?.doa ?? '-' }}
+          </td>
+          <td colspan="2" class="center">Tanda Tanda Vital</td>
+          <td class="center">SKOR</td>
+        </tr>
+
+        <tr>
+          <td>Nadi</td>
+          <td>: {{ item?.nadi ?? '-' }} x/mnt</td>
+          <td class="center">{{ item?.scorenadi ?? '-' }}</td>
+        </tr>
+
+        <tr>
+          <td>Pernapasan</td>
+          <td>: {{ item?.pernapasanx ?? '-' }} x/mnt</td>
+          <td class="center">{{ item?.scorepernapasanx ?? '-' }}</td>
+        </tr>
+
+        <tr>
+          <td>Sistole</td>
+          <td>: {{ item?.sistole ?? '-' }} mmHg</td>
+          <td class="center">{{ item?.scoresistole ?? '-' }}</td>
+        </tr>
+
+        <tr>
+          <td>Diastole</td>
+          <td>: {{ item?.diastole ?? '-' }} mmHg</td>
+          <td class="center">{{ item?.scorediastole ?? '-' }}</td>
+        </tr>
+
+        <!-- PRIMARY -->
+        <tr>
+          <td colspan="3" class="center bold">PRIMARY SURVEI</td>
+          <td>Suhu</td>
+          <td>: {{ item?.suhu ?? '-' }} °C</td>
+          <td class="center">{{ item?.scoresuhu ?? '-' }}</td>
+        </tr>
+
+        <tr>
+          <td colspan="3" rowspan="2">
+            Jalan Napas : {{ item?.jalannapas ?? '-' }}
+          </td>
+          <td>SpO2</td>
+          <td>: {{ item?.spo2 ?? '-' }} %</td>
+          <td class="center">{{ item?.scorespo2 ?? '-' }}</td>
+        </tr>
+
+        <tr>
+          <td>Kesadaran</td>
+          <td>: {{ item?.kesadaran ?? '-' }}</td>
+          <td class="center">{{ item?.scorekesadaran ?? '-' }}</td>
+        </tr>
+
+        <tr>
+          <td colspan="3" rowspan="2">
+            Pernafasan : {{ item?.pernapasanq ?? '-' }}
+          </td>
+          <td>Eye/Verbal/Motorik</td>
+          <td>: {{ item?.eye ?? '-' }}/{{ item?.verbal ?? '-' }}/{{ item?.motorik ?? '-' }}</td>
+          <td></td>
+        </tr>
+
+        <tr>
+          <td>Nyeri</td>
+          <td>: {{ item?.nyeri ?? '-' }}</td>
+          <td class="center">{{ item?.scorenyeri ?? '-' }}</td>
+        </tr>
+
+        <tr>
+          <td colspan="3" rowspan="2">
+            Sirkulasi : {{ item?.sirkulasi ?? '-' }}
+          </td>
+          <td>Lochea</td>
+          <td>: {{ item?.lochea ?? '-' }}</td>
+          <td class="center">{{ item?.scorelochea ?? '-' }}</td>
+        </tr>
+
+        <tr>
+          <td>Protein Urine</td>
+          <td>: {{ item?.proteinurin ?? '-' }}</td>
+          <td class="center">{{ item?.scoreproteinurin ?? '-' }}</td>
+        </tr>
+
+        <tr>
+          <td colspan="3">
+            Disability : {{ item?.disability ?? '-' }}
+          </td>
+          <td colspan="2" class="right">Jumlah</td>
+          <td class="center">{{ item?.totalscore ?? '-' }}</td>
+        </tr>
+
+        <!-- KATEGORI -->
+        <tr>
+          <td>BB : {{ item?.bb ?? '-' }} Kg</td>
+          <td colspan="2">Riwayat Alergi :</td>
+          <td>{{ props.pasien?.anamnesis?.[0]?.riwayatalergi ?? '-' }}</td>
+          <td rowspan="5" class="center bold">KATEGORI TRIASE</td>
+          <td rowspan="5" class="center bold">{{ item?.kategoritriage ?? '-' }}</td>
+        </tr>
+
+        <tr>
+          <td></td>
+          <td colspan="2">Keterangan Alergi :</td>
+          <td>{{ props.pasien?.anamnesis?.[0]?.keteranganalergi ?? '-' }}</td>
+        </tr>
+
+        <tr>
+          <td>TB : {{ item?.tb ?? '-' }} Cm</td>
           <td colspan="2"></td>
-        </tr>
-
-        <!-- Section -->
-        <tr class="triage-header">
-          <td colspan="3">DOA / PRIMARY SURVEY</td>
-          <td colspan="3">SECONDARY SURVEY</td>
-        </tr>
-
-        <!-- Vital Sign -->
-        <tr class="triage-header">
-          <td colspan="3">Tanda Kehidupan</td>
-          <td>Tanda Vital</td>
-          <td class="center">Nilai</td>
-          <td class="center">Skor</td>
-        </tr>
-
-        <tr>
-          <td colspan="3">Nadi</td>
-          <td class="center">{{ item?.nadi }} x/mnt</td>
-          <td class="score">{{ item?.scorenadi }}</td>
           <td></td>
         </tr>
 
         <tr>
-          <td colspan="3">Pernapasan</td>
-          <td class="center">{{ item?.pernapasanx }} x/mnt</td>
-          <td class="score">{{ item?.scorepernapasanx }}</td>
           <td></td>
+          <td colspan="2">Gangguan Perilaku :</td>
+          <td>{{ item?.gangguanperilaku ?? '-' }}</td>
         </tr>
 
         <tr>
-          <td colspan="3">Tekanan Darah</td>
-          <td class="center">{{ item?.sistole }}/{{ item?.diastole }} mmHg</td>
-          <td class="score">
-            {{ item?.scoresistole }} / {{ item?.scorediastole }}
-          </td>
-          <td></td>
+          <td colspan="1">Hamil : {{ hamil(item?.flaghamil) }}</td>
+          <td colspan="2"></td>
+          <td colspan="1"></td>
         </tr>
 
         <tr>
-          <td colspan="3">Suhu</td>
-          <td class="center">{{ item?.suhu }} °C</td>
-          <td class="score">{{ item?.scoresuhu }}</td>
-          <td></td>
-        </tr>
-
-        <tr>
-          <td colspan="3">SpO₂</td>
-          <td class="center">{{ item?.spo2 }} %</td>
-          <td class="score">{{ item?.scorespo2 }}</td>
-          <td></td>
-        </tr>
-
-        <!-- Neurologi -->
-        <tr class="triage-header">
-          <td colspan="6">NEUROLOGI</td>
-        </tr>
-
-        <tr>
-          <td class="label">Kesadaran</td>
-          <td colspan="2">{{ item?.kesadaran }}</td>
-          <td class="label">GCS</td>
-          <td colspan="2" class="center">
-            {{ item?.eye }} / {{ item?.verbal }} / {{ item?.motorik }}
-          </td>
-        </tr>
-
-        <!-- Skor -->
-        <tr class="triage-header">
-          <td colspan="4">TOTAL SKOR</td>
-          <td colspan="2" class="right">{{ item?.totalscore }}</td>
-        </tr>
-
-        <!-- Kategori -->
-        <tr>
-          <td colspan="4" class="triage-header">KATEGORI TRIASE</td>
-          <td colspan="2" class="center text-bold">
-            {{ item?.kategoritriage }}
-          </td>
-        </tr>
-
-        <!-- Lain-lain -->
-        <tr>
-          <td>BB / TB</td>
-          <td colspan="2">{{ item?.bb }} Kg / {{ item?.tb }} Cm</td>
-          <td>Hamil</td>
-          <td colspan="2">{{ hamil(item?.flaghamil) }}</td>
-        </tr>
-
-        <tr>
-          <td>Alergi</td>
-          <td colspan="5">
-            {{ props.pasien?.anamnesis?.riwayatalergi ?? '-' }} —
-            {{ props.pasien?.anamnesis?.keteranganalergi ?? '-' }}
+          <td colspan="1">HPHT : {{ item?.haidterakir ?? '-' }}</td>
+          <td colspan="5" rowspan="4">
+            Anamnesa : {{ props.pasien?.anamnesis?.[0]?.rs4 ?? '-' }}
           </td>
         </tr>
 
         <tr>
-          <td>Anamnesa</td>
-          <td colspan="5">
-            {{ props.pasien?.anamnesis?.[0]?.rs4 ?? '-' }}
-          </td>
+          <td>G : {{ item?.gravida ?? '-' }}</td>
         </tr>
+        <tr>
+          <td>P : {{ item?.partus ?? '-' }}</td>
+        </tr>
+
+        <tr>
+          <td>A : {{ item?.abortus ?? '-' }}</td>
+        </tr>
+
+        <tr>
+          <td colspan="6">Jam Serah Terima :</td>
+        </tr>
+
       </table>
-
-      <div class="row items-center no-wrap q-mt-xl">
-        <div class="col-6 text-right" />
-        <div class="col-6 text-weight-bold text-center">
-          Probolinggo, {{ date.formatDate(Date.now(), 'DD MMMM YYYY') }}
+      <div class="row q-mt-xl q-mb-xl">
+        <div class="col-6">
+          <div class="text-center text-weight-bold">
+            Pasien/Keluarga
+          </div>
+          <div class="text-center" style="height: 120px;">
+            <div class="signature-line">(..........................)</div>
+          </div>
         </div>
-      </div>
-      <div class="row items-center no-wrap">
-        <div class="col-6 text-right" />
-        <div class="col-6 text-weight-bold text-center">
-          Dokter
-        </div>
-      </div>
-      <div class="row items-center no-wrap q-mt-lg">
-        <div class="col-6 text-right" />
-        <div class="col-6 text-weight-bold text-center">
-          {{ pasien?.dokter }}
+        <div class="col-6">
+          <div class="text-center text-weight-bold">
+            Probolinggo, {{ date.formatDate(Date.now(), 'DD MMMM YYYY') }}
+          </div>
+          <div class="text-center text-weight-bold q-mt-xs">
+            Dokter
+          </div>
+          <div class="column flex-center q-mt-md">
+            <div style="width: 100px;">
+              <vue-qrcode :value="qrUrl" tag="svg" :options="{
+                errorCorrectionLevel: 'Q',
+                color: {
+                  dark: '#000000',
+                  light: '#ffffff'
+                },
+                margin: 0
+              }" />
+            </div>
+            <div class="q-mt-sm text-weight-bold text-center">
+              {{ pasien?.dokter }}
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -160,6 +230,15 @@ const props = defineProps({
     type: Object,
     default: null
   }
+})
+
+const qrUrl = computed(() => {
+  const noreg = props?.pasien?.noreg// noreg
+  const dok = 'Reseume-Medis.png'
+  const asal = 'RAWAT JALAN'
+  const enc = btoa(`${noreg}|${dok}|${asal}`)
+  return `https://rsud.probolinggokota.go.id/dokumen-simrs/legalitas/${enc}`
+  // return `https://xenter.my.id/qr-document?noreg=${noreg}&dokumen=${dok}&asal=${asal}`
 })
 
 const lists = computed(() => {
@@ -189,27 +268,9 @@ function hamil(val) {
 }
 
 .triage-table td {
-  border: 1px solid #ccc;
-  padding: 4px 6px;
-}
-
-.triage-header {
-  background: #f0f0f0;
-  font-weight: bold;
-  text-align: center;
-}
-
-.label {
-  width: 18%;
-}
-
-.value {
-  width: 15%;
-}
-
-.score {
-  width: 10%;
-  text-align: right;
+  border: 1px solid #000;
+  padding: 4px;
+  vertical-align: top;
 }
 
 .center {
@@ -218,5 +279,39 @@ function hamil(val) {
 
 .right {
   text-align: right;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.resume-scroll {
+  max-height: 100vh;
+  overflow-y: auto;
+  padding-bottom: 80px;
+  /* penting buat kasih ruang tanda tangan */
+}
+
+.signature-line {
+  padding-top: 95px;
+}
+
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 5mm;
+  }
+
+  .triage-table {
+    font-size: 10px;
+  }
+
+  .triage-table td {
+    padding: 2px;
+  }
+
+  table {
+    page-break-inside: avoid;
+  }
 }
 </style>

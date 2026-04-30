@@ -282,24 +282,25 @@
       </div>
     </div>
     <q-separator class=" q-mt-sm q-mb-sm" style="border-top: 1px solid black;" />
-    <div class="row items-center no-wrap q-mt-xl ">
-      <div class="col-6 text-center " />
-      <div class="col-6 text-weight-bold text-center">
-        Probolinggo, {{ date.formatDate(Date.now(), 'DD MMMM YYYY') }}
+    <div class="row q-mt-xl q-mb-xl">
+      <div class="col-6">
+        <div class="text-center text-weight-bold">
+          Pasien/Keluarga
+        </div>
+        <div class="text-center" style="height: 120px;">
+          <div class="signature-line">(..........................)</div>
+        </div>
       </div>
-    </div>
-    <div class="row items-center no-wrap">
-      <div class="col-6 text-center text-weight-bold">Pasien/Keluarga </div>
-      <div class="col-6 text-weight-bold text-center">
-        Dokter
-      </div>
-    </div>
-    <div class="row items-center no-wrap">
-      <div class="col-6 text-right" />
-      <div class="col-6 text-weight-bold text-center">
-        <div class="column flex-center">
+      <div class="col-6">
+        <div class="text-center text-weight-bold">
+          Probolinggo, {{ date.formatDate(Date.now(), 'DD MMMM YYYY') }}
+        </div>
+        <div class="text-center text-weight-bold q-mt-xs">
+          Dokter
+        </div>
+        <div class="column flex-center q-mt-md">
           <div style="width: 100px;">
-            <vue-qrcode :value="qrUrl" tag="svg" :options="{
+            <vue-qrcode :value="qrDokter" tag="svg" :options="{
               errorCorrectionLevel: 'Q',
               color: {
                 dark: '#000000',
@@ -308,13 +309,10 @@
               margin: 0
             }" />
           </div>
+          <div class="q-mt-sm text-weight-bold text-center">
+            {{ pasien.dokter }}
+          </div>
         </div>
-      </div>
-    </div>
-    <div class="row items-center no-wrap q-mt-lg q-mb-xl">
-      <div class="col-6 text-center">(..........................)</div>
-      <div class="col-6 text-weight-bold text-center">
-        {{ pasien.dokter }}
       </div>
     </div>
   </div>
@@ -333,11 +331,22 @@ const props = defineProps({
   pasien: { type: Object, default: () => { } }
 })
 
-const qrUrl = computed(() => {
+// const qrDokter = computed(() => {
+//   const noreg = props?.pasien?.noreg// noreg
+//   const dok = 'SUMMARY.png'
+//   const asal = 'RANAP'
+//   const petugas = props?.pasien?.kddokter ?? null
+//   const enc = btoa(`${noreg}|${dok}|${asal}|${petugas}`)
+//   return `https://rsud.probolinggokota.go.id/dokumen-simrs/legalitas/${enc}`
+//   // return `https://xenter.my.id/qr-document?noreg=${noreg}&dokumen=${dok}&asal=${asal}`
+// })
+
+const qrDokter = computed(() => {
   const noreg = props?.pasien?.noreg// noreg
-  const dok = 'Reseume-Medis.png'
+  const dok = 'DOKUMEN RESUME.png'
   const asal = 'IGD'
-  const enc = btoa(`${noreg}|${dok}|${asal}`)
+  const petugas = props?.pasien?.kddokter ?? null
+  const enc = btoa(`${noreg}|${dok}|${asal}|${petugas}`)
   return `https://rsud.probolinggokota.go.id/dokumen-simrs/legalitas/${enc}`
   // return `https://xenter.my.id/qr-document?noreg=${noreg}&dokumen=${dok}&asal=${asal}`
 })
@@ -416,5 +425,9 @@ const filterredTabletindakan = computed(() => {
 .garis-bawah-dablue {
   border-bottom: 1px solid rgb(56, 150, 239);
   border-bottom-style: dashed;
+}
+
+.signature-line {
+  padding-top: 95px;
 }
 </style>

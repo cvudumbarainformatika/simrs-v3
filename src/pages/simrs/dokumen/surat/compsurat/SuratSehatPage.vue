@@ -350,12 +350,12 @@ const documents = ref([
 
 const pilihanhasil = ref([
   {
-    label: 'Tidak Ditemukan tanda-tanda Gangung Jiwa yang nyata',
-    value: 'Tidak Ditemukan tanda-tanda Gangung Jiwa yang nyata'
+    label: 'Tidak Ditemukan tanda-tanda Gangguan Jiwa yang nyata',
+    value: 'Tidak Ditemukan tanda-tanda Gangguan Jiwa yang nyata'
   },
   {
-    label: 'Ditemukan tanda-tanda Gangung Jiwa yang nyata',
-    value: 'Ditemukan tanda-tanda Gangung Jiwa yang nyata'
+    label: 'Ditemukan tanda-tanda Gangguan Jiwa yang nyata',
+    value: 'Ditemukan tanda-tanda Gangguan Jiwa yang nyata'
   },
   {
     label: 'Masih memerlukan Pemeriksaan Kesehatan Jiwa lanjutan dan Observasi tambahan',
