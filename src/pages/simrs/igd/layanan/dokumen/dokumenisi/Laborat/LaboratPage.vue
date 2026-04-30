@@ -1,12 +1,6 @@
 <template>
-  <div v-if="store.loadingTerima">
-    <app-loading />
-  </div>
-  <div v-else-if="pasien?.laboratold?.length <= 0 && !store.loadingTerima">
-    <app-no-data />
-  </div>
-  <div v-else class="q-pa-md" style="max-width: 100%">
-    <div class="q-pa-sm row flex justify-between bg-teal text-white items-center">
+  <div class="flex-center">
+    <div class="q-pa-sm row justify-between bg-teal text-white items-center">
       <div class="col-6">{{ props?.judul }}</div>
       <div class="col-6 text-right">
         <q-btn flat dense size="md" icon="icon-mat-download" @click="exportPdf()">
@@ -21,21 +15,35 @@
         </q-btn>
       </div>
     </div>
-
-    <div class="full-height full-height q-pa-sm bg-indigo-1">
-      <div id="printMe" style="width: 21cm;" class="q-pa-xs full-width full-height bg-white">
-        <KopSurat :judul="props?.judul" :pasien="props?.pasien" :jangantampil=false />
-        <IsiLaboratPage :pasien="props?.pasien" ref="laboratRef" />
+    <q-scroll-area style="height: calc(100vh - 56px);">
+      <div v-if="props?.pasien?.laboratold?.length <= 0">
+        <div class="column flex-center">
+          <div>
+            <app-no-data />
+          </div>
+        </div>
       </div>
-    </div>
+      <div v-else-if="store.loadingTerima">
+        <div class="column flex-center">
+          <app-loading />
+        </div>
+      </div>
+      <div v-else>
+        <div class="q-pa-none bg-grey-6" style="padding-bottom: 108px;">
+          <div id="printMe" class="full-width bg-white q-px-md q-py-lg" style="min-height: 1060px;">
+            <KopSurat :judul="props?.judul" :pasien="props?.pasien" :jangantampil=false />
+            <IsiLaboratPage :pasien="props?.pasien" />
+          </div>
+        </div>
+      </div>
+    </q-scroll-area>
   </div>
 </template>
 <script setup>
-import { computed, onMounted, ref } from 'vue';
+import { computed } from 'vue';
 import KopSurat from '../../KopSurat.vue';
 import IsiLaboratPage from './IsiLaboratPage.vue';
 import html2pdf from 'html2pdf.js';
-import { formatRp } from 'src/modules/formatter';
 import { usePengunjungIgdStore } from 'src/stores/simrs/igd/pengunjung';
 import { usePengunjungPoliStore } from 'src/stores/simrs/pelayanan/poli/pengunjung';
 

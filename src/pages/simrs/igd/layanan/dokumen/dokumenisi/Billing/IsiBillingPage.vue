@@ -1,5 +1,5 @@
 <template>
-  <div v-if="store.rekapBill && !store.loading" class="full-height">
+  <div v-if="store.rekapBill && !store.loading">
     <div class="row items-center no-wrap ">
       <div class="col-1">
         1.
@@ -239,39 +239,27 @@
       </div>
     </div>
 
-    <div class="row items-center no-wrap q-mt-xl">
-      <div class="col-6 text-right" />
-      <div class="col-6 text-weight-bold text-center">
-        Probolinggo, {{ date.formatDate(Date.now(), 'DD MMMM YYYY') }}
-      </div>
-    </div>
-    <div class="row items-center no-wrap">
-      <div class="col-6 text-right" />
-      <div class="col-6 text-weight-bold text-center">
-        Dokter
-      </div>
-    </div>
-    <div class="row items-center no-wrap">
-      <div class="col-6 text-right" />
-      <div class="col-6 text-weight-bold text-center">
-        <div class="column flex-center">
+    <div class="row q-mt-xl justify-end">
+      <div class="col-6">
+        <div class="text-center text-weight-bold">
+          Probolinggo, {{ date.formatDate(Date.now(), 'DD MMMM YYYY') }}
+        </div>
+        <div class="text-center text-weight-bold q-mt-xs">
+          Dokter
+        </div>
+        <div class="column flex-center q-mt-md">
           <div style="width: 100px;">
             <vue-qrcode :value="qrUrl" tag="svg" :options="{
               errorCorrectionLevel: 'Q',
-              color: {
-                dark: '#000000',
-                light: '#ffffff',
-              },
+              color: { dark: '#000000', light: '#ffffff' },
               margin: 0
             }" />
           </div>
+
+          <div class="q-mt-sm text-weight-bold text-center">
+            {{ props?.pasien?.dokter || '-' }}
+          </div>
         </div>
-      </div>
-    </div>
-    <div class="row items-center no-wrap q-mt-lg">
-      <div class="col-6 text-right" />
-      <div class="col-6 text-weight-bold text-center">
-        {{ pasien.dokter }}
       </div>
     </div>
   </div>

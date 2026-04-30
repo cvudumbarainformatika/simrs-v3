@@ -1,25 +1,28 @@
 <template>
-  <div class="q-pa-sm row flex justify-between bg-teal text-white items-center">
-    <div class="col-6">{{ props?.judul }}</div>
-    <div class="col-6 text-right">
-      <q-btn flat dense size="md" icon="icon-mat-download" @click="exportPdf()">
-        <q-tooltip class="primary" :offset="[10, 10]">
-          Download
-        </q-tooltip>
-      </q-btn>
-      <q-btn icon="icon-mat-print" flat dense size="md" v-print="printObj"> <q-tooltip class="primary"
-          :offset="[10, 10]">
-          Print
-        </q-tooltip>
-      </q-btn>
+  <div class="flex-center">
+    <div class="q-pa-sm row flex justify-between bg-teal text-white items-center">
+      <div class="col-6">{{ props?.judul }}</div>
+      <div class="col-6 text-right">
+        <q-btn flat dense size="md" icon="icon-mat-download" @click="exportPdf()">
+          <q-tooltip class="primary" :offset="[10, 10]">
+            Download
+          </q-tooltip>
+        </q-btn>
+        <q-btn icon="icon-mat-print" flat dense size="md" v-print="printObj"> <q-tooltip class="primary"
+            :offset="[10, 10]">
+            Print
+          </q-tooltip>
+        </q-btn>
+      </div>
     </div>
-  </div>
-
-  <div class="q-pa-sm">
-    <div id="printMe" style="width: 21cm;" class="q-ma-xl full-width full-height">
-      <KopSurat :judul="props?.judul" :pasien="props?.pasien" :jangantampil=false />
-      <IsiBillingDetailPage :pasien="props?.pasien" />
-    </div>
+    <q-scroll-area style="height: calc(100vh - 56px);">
+      <div class="q-pa-none" style="padding-bottom: 108px;">
+        <div id="printMe" style="width: 21cm; min-height: 1060px;" class="q-ma-xl full-width bg-white q-px-md q-py-lg">
+          <KopSurat :judul="props?.judul" :pasien="props?.pasien" :jangantampil=false />
+          <IsiBillingDetailPage :pasien="props?.pasien" />
+        </div>
+      </div>
+    </q-scroll-area>
   </div>
 </template>
 <script setup>
