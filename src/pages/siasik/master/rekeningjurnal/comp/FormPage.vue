@@ -7,6 +7,7 @@
         :loading="store.loading" @filter="filterFn" @clear="store.setForm('kode50', null)" @update:model-value="(val) => {
           const arr = options || []
           const cari = arr.find(x => x.kodeall3 === val)
+          console.log('Rekening yang dipilih:', cari)
           store.form.uraian50 = cari ? cari.uraian : ''
           store.form.kodeall = cari ? cari.kodeall2 : ''
 
@@ -153,10 +154,10 @@ import { computed, onMounted, ref } from 'vue';
 const store = useMasterRekeningJurnalStore()
 const formRef = ref(null)
 
-// const options = ref([])
-// const options_lak = ref([])
-const options = computed(() => store.optionrekening)
-const options_lak = computed(() => store.optionrekeninglak)
+const options = ref([])
+const options_lak = ref([])
+// const options = computed(() => store.optionrekening)
+// const options_lak = computed(() => store.optionrekeninglak)
 
 // const options = computed(() => store.optionrekening)
 // const options_lak = computed(() => store.optionrekeninglak)
