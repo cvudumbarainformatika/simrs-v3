@@ -174,7 +174,7 @@ onMounted(() => {
 const onSubmit = async () => {
   loading.value = true
 
-  form.value.noreg = props.pasien.noreg
+  form.value.noreg = props.pasien?.link_noreg || props.pasien.noreg
   form.value.norm = props.pasien.norm
   form.value.nakes = props.isDokter ? '1' : '6'
 
