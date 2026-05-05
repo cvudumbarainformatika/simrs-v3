@@ -282,7 +282,7 @@ const lowerChartOptions = computed(() => ({
       if (seriesIndex === 1) return '∧'  // Diastolik
       if (seriesIndex === 2) return '●'  // Nadi
       if (seriesIndex === 3) return '✱'  // Respirasi
-      if (seriesIndex === 4) return '•  '  // suhu
+      if (seriesIndex === 4) return '△  '  // suhu
       return val
     },
     style: {
@@ -291,7 +291,7 @@ const lowerChartOptions = computed(() => ({
       offsetY: -10,
       colors: [
         function ({ seriesIndex }) {
-          const colors = ['#2E7D32', '#f44336', '#2196f3', '#ff9800', '#999']
+          const colors = ['#2E7D32', '#f44336', '#2196f3', '#ff9800', '#fe9000']
           return colors[seriesIndex] || '#000'
         }
       ]
@@ -317,6 +317,7 @@ const lowerChartOptions = computed(() => ({
         case 'Diastolik': symbol = '∧'; color = '#f44336'; break
         case 'Nadi': symbol = '●'; color = '#2196f3'; break
         case 'Respirasi': symbol = '✱'; color = '#ff9800'; break
+        case 'Suhu': symbol = '△'; color = '#fe9000'; break
         default: symbol = '•'; color = '#999'
       }
       return `
