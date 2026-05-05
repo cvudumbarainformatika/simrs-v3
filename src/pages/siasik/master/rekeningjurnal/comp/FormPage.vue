@@ -163,10 +163,10 @@ const options_lak = ref([])
 // const options_lak = computed(() => store.optionrekeninglak)
 
 function simpan() {
-  console.log('Form yang akan disimpan:', store.form)
-  // store.simpanData().then(() => {
-  //   formRef.value.resetValidation()
-  // })
+  // console.log('Form yang akan disimpan:', store.form)
+  store.simpanData().then(() => {
+    formRef.value.resetValidation()
+  })
 }
 
 onMounted(async () => {
@@ -230,7 +230,7 @@ async function filterFn(val, update) {
     const resp = await api.get('v1/master/rekening/getrekening', {
       params: {
         q: val,
-        per_page: 20 // kecil saja
+        per_page: 100 // kecil saja
       }
     })
 
