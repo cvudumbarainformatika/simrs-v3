@@ -163,10 +163,10 @@ const options_lak = ref([])
 // const options_lak = computed(() => store.optionrekeninglak)
 
 function simpan() {
-  // console.log('Form yang akan disimpan:', store.form)
-  store.simpanData().then(() => {
-    formRef.value.resetValidation()
-  })
+  console.log('Form yang akan disimpan:', store.form)
+  // store.simpanData().then(() => {
+  //   formRef.value.resetValidation()
+  // })
 }
 
 onMounted(async () => {
@@ -187,7 +187,13 @@ onMounted(async () => {
     kode_cair2: null,
     uraian_cair2: '',
     kode_lak: null,
-    uraian_lak: ''
+    uraian_lak: '',
+    kode_bastcair1: '3.1.02.05.01.0001',
+    uraian_bastcair1: 'Estimasi Perubahan SAL',
+    kode_cair1: '3.1.02.05.01.0001',
+    uraian_cair1: 'Estimasi Perubahan SAL',
+    kd_blud: '1.1.01.04.01.0001',
+    ur_blud: 'Kas di BLUD'
   }
   // store.optionrekening = store.akuns   // ← WAJIB
 

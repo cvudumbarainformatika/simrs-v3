@@ -6,6 +6,7 @@ export const useMasterRekeningJurnalStore = defineStore('keuangan-master-rekenin
   state: () => ({
     items: [],
     loading: false,
+    loadingdata: false,
     loadingSave: false,
     loadingDelete: false,
     form: {
@@ -39,6 +40,7 @@ export const useMasterRekeningJurnalStore = defineStore('keuangan-master-rekenin
     },
     params: {
       q: '',
+      cari: '',
       per_page: 100,
       page: 1,
     },
@@ -126,14 +128,14 @@ export const useMasterRekeningJurnalStore = defineStore('keuangan-master-rekenin
       }
     },
     async getData() {
-      this.loading = true
+      this.loadingdata = true
       const params = { params: this.params }
       const resp = await api.get('/v1/master/rekening/index', params)
       if (resp.status === 200) {
         this.items = resp.data
 
       }
-      this.loading = false
+      this.loadingdata = false
     },
 
     OptionRekening(val) {
@@ -251,8 +253,8 @@ export const useMasterRekeningJurnalStore = defineStore('keuangan-master-rekenin
       }
     },
     search(val) {
-      this.params.q = val
-      // this.getSistemBayar()
+      this.params.cari = val
+      this.getData()
     },
   }
 })
