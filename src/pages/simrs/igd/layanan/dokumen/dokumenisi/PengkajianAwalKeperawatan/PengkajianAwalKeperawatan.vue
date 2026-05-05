@@ -31,7 +31,7 @@
       <div id="printMe" class="q-pa-lg full-width bg-white">
         <KopSurat :judul="props?.judul ?? 'PENGKAJIAN AWAL MEDIS'" :pasien="props?.pasien" :jangantampil=false />
 
-        <IsiPengkajianAwalMedis :pasien="props?.pasien" />
+        <IsiPengkajianAwalKeperawatan :pasien="props?.pasien" />
       </div>
     </div>
   </q-scroll-area>
@@ -40,8 +40,8 @@
 
 import { usePengunjungIgdStore } from 'src/stores/simrs/igd/pengunjung';
 import KopSurat from '../../KopSurat.vue';
-import IsiPengkajianAwalMedis from './IsiPengkajianAwalMedis.vue';
 import html2pdf from 'html2pdf.js';
+import IsiPengkajianAwalKeperawatan from './IsiPengkajianAwalKeperawatan.vue';
 
 const store = usePengunjungIgdStore()
 
