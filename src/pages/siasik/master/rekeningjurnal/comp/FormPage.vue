@@ -7,6 +7,7 @@
         :loading="store.loading" @filter="filterFn" @clear="store.setForm('kode50', null)" @update:model-value="(val) => {
           const arr = options || []
           const cari = arr.find(x => x.kodeall3 === val)
+          console.log('Rekening yang dipilih:', cari)
           store.form.uraian50 = cari ? cari.uraian : ''
           store.form.kodeall = cari ? cari.kodeall2 : ''
 
@@ -153,10 +154,10 @@ import { computed, onMounted, ref } from 'vue';
 const store = useMasterRekeningJurnalStore()
 const formRef = ref(null)
 
-// const options = ref([])
-// const options_lak = ref([])
-const options = computed(() => store.optionrekening)
-const options_lak = computed(() => store.optionrekeninglak)
+const options = ref([])
+const options_lak = ref([])
+// const options = computed(() => store.optionrekening)
+// const options_lak = computed(() => store.optionrekeninglak)
 
 // const options = computed(() => store.optionrekening)
 // const options_lak = computed(() => store.optionrekeninglak)
@@ -186,7 +187,13 @@ onMounted(async () => {
     kode_cair2: null,
     uraian_cair2: '',
     kode_lak: null,
-    uraian_lak: ''
+    uraian_lak: '',
+    kode_bastcair1: '3.1.02.05.01.0001',
+    uraian_bastcair1: 'Estimasi Perubahan SAL',
+    kode_cair1: '3.1.02.05.01.0001',
+    uraian_cair1: 'Estimasi Perubahan SAL',
+    kd_blud: '1.1.01.04.01.0001',
+    ur_blud: 'Kas di BLUD'
   }
   // store.optionrekening = store.akuns   // ← WAJIB
 
@@ -229,7 +236,7 @@ async function filterFn(val, update) {
     const resp = await api.get('v1/master/rekening/getrekening', {
       params: {
         q: val,
-        per_page: 20 // kecil saja
+        per_page: 100 // kecil saja
       }
     })
 

@@ -35,6 +35,14 @@
     </q-card>
     <q-card flat bordered class="bg-white q-mt-sm">
       <div class="q-pa-sm">
+        <div class="row q-py-xs">
+          <div class="col-6">
+            <q-input v-model="store.inputForm.waktu" valid label="Waktu" dense outlined mask="##:##" />
+          </div>
+          <div class="col-6">
+            <app-input v-model="store.inputForm.konversi_anastesi" valid label="Konversi Anastesi" outlined />
+          </div>
+        </div>
         <div class="row items-center">
           <div class="col-2">Respirasi</div>
           <div class="col-10">
@@ -80,7 +88,7 @@
         <div class="row text-weight-bold q-mt-sm"> Catatan </div>
         <div class="row items-center q-col-gutter-x-sm">
           <div class="col-12">
-            <q-input v-model="store.inputForm.catatan" valid label="Catatan" outlined type="textarea" />
+            <q-input v-model="store.inputForm.catatan" valid label="Catatan" outlined type="textarea" rows="2" />
           </div>
         </div>
         <div class="row q-mt-sm q-col-gutter-x-md">
@@ -129,21 +137,6 @@ const InputObservasi = defineAsyncComponent(() => import('./InputObservasi.vue')
 const showInputForm = ref(false)
 
 async function handleNewLog (newLog) {
-  // Cari apakah menit (time) tersebut sudah ada di logs
-  // const index = logs.value.findIndex(l => l.time === newLog.time)
-  // // console.log('log', newLog, logs.value[index])
-
-  // if (index !== -1) {
-  //   // Jika ADA, timpa data lama dengan data baru (Update)
-  //   // logs.value[index] = { ...newLog }
-  //   logs.value.splice(index, 1, { ...newLog })
-  // } else {
-  //   // Jika TIDAK ADA, tambah data baru (Insert)
-  //   logs.value.push(newLog)
-  // }
-
-  // // Selalu sort setelah perubahan agar garis grafik tidak berantakan
-  // logs.value.sort((a, b) => a.time - b.time)
   await store.simpanLogMonitoringSelama(props.pasien, newLog)
 
   const charts = document.querySelectorAll('.vue-apexcharts')

@@ -46,6 +46,9 @@
         <q-tab-panel name="Pengkajian Awal Medis" class="full-height q-pa-none">
           <PengkajianAwalMedis judul="Pengkajian Awal Medis" :pasien="props?.pasien" />
         </q-tab-panel>
+        <q-tab-panel name="Pengkajian Awal Keperawatan" class="full-height q-pa-none">
+          <PengkajianAwalKeperawatan judul="Pengkajian Awal Keperawatan" :pasien="props?.pasien" />
+        </q-tab-panel>
       </q-tab-panels>
     </div>
   </div>
@@ -74,6 +77,7 @@ import RadiologiPage from './dokumenisi/Radiologi/RadiologiPage.vue';
 import KonsulDokterPage from './dokumenisi/konsulDokter/KonsulDokterPage.vue';
 import { usePlannStore } from 'src/stores/simrs/igd/plann';
 import PengkajianAwalMedis from './dokumenisi/PengkajianAwalMedis/PengkajianAwalMedis.vue';
+import PengkajianAwalKeperawatan from './dokumenisi/PengkajianAwalKeperawatan/PengkajianAwalKeperawatan.vue';
 
 const billing = ref('BILLING')
 const triase = ref('TRIASE')

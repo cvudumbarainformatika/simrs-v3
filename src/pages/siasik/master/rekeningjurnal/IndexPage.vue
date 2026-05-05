@@ -22,8 +22,8 @@
                 <q-icon name="icon-mat-search" />
               </template>
 </q-input> -->
-            <q-input v-model="store.params.q" placeholder="Cari Rekening ..." dense outlined style="min-width:200px"
-              debounce="800" :loading="store.loading" @update:model-value="store.search" standout="bg-yellow-3">
+            <q-input v-model="store.params.cari" placeholder="Cari Rekening ..." dense outlined style="min-width:200px"
+              debounce="800" :loading="store.loadingdata" @update:model-value="store.search" standout="bg-yellow-3">
               <template #prepend>
                 <q-icon name="icon-mat-search" />
               </template>
