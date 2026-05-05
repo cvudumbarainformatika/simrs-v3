@@ -4,7 +4,6 @@ import { api } from "src/boot/axios"
 export const useMonitoringSaatStore = defineStore('monitoring_saat', {
   state: () => ({
     loading: false,
-    form: {},
     inputForm: {},
     data: [
       // {
@@ -68,10 +67,16 @@ export const useMonitoringSaatStore = defineStore('monitoring_saat', {
       //   obat: [], cairan: [{ nama: 'Normal Saline', volume: '100 ml' }],
       //   o2: null, n2o: null, halothan: null, isoflurane: null, sevoflurane: null
       // }
-    ]
+    ],
+    inputFormPasca: {
+      jam_masuk: '',
+      keadaan_umum: []
+    },
+    dataPasca: []
 
   }),
   actions: {
+    // ---- selama anast ---- //
     updateMasuk (evt, key) {
       const input = !isNaN(parseFloat(evt)) ? (parseFloat(evt) < 0 ? 0 : parseFloat(evt)) : 0
       this.inputForm[key] = input
@@ -142,6 +147,46 @@ export const useMonitoringSaatStore = defineStore('monitoring_saat', {
         return resp?.data
       } catch (e) { }
     },
+    // ---- selama anast end ---- //
+    // ---- pasca anast  ---- //
+    // Tambahkan di actions store
+    async getMonitoringPasca (pasien) {
+      const param = { params: { noreg: pasien.noreg, nota: pasien.rs2, norm: pasien.norm } }
+      const resp = await api.get('v1/simrs/penunjang/ok/monitoring/pasca/get', param)
+      this.dataPasca = resp?.data?.monitoring // Simpan di state terpisah
+      this.inputFormPasca = resp?.data?.medikasi
+      if (!resp?.data?.medikasi) this.inputFormPasca = {
+        noreg: pasien.noreg,
+        nota: pasien.rs2,
+        norm: pasien.norm
+      }
+      this.dataPasca.sort((a, b) => a.time - b.time)
+      return resp?.data
+    },
+
+    async simpanLogPasca (pasien, anu) {
+      const payload = { ...anu }
+      payload.noreg = pasien.noreg
+      payload.nota = pasien.rs2
+      payload.norm = pasien.norm
+      const resp = await api.post('v1/simrs/penunjang/ok/monitoring/pasca/simpan', payload)
+      // Update local state...
+      const hasil = resp?.data?.data
+      if (hasil) {
+        const index = this.dataPasca.findIndex(x => x.id === hasil.id)
+        if (index >= 0) this.dataPasca[index] = hasil
+        else this.dataPasca.push(hasil)
+        this.dataPasca.sort((a, b) => a.time - b.time)
+      }
+      return resp?.data
+    },
+    async simpanMedikasiPasca () {
+      try {
+        const resp = await api.post('v1/simrs/penunjang/ok/monitoring/pasca/simpan-medikasi', this.inputFormPasca)
+        return resp?.data
+      } catch (e) { }
+    },
+    // ---- pasca anast end ---- //
   }
 })
 if (import.meta.hot) {
