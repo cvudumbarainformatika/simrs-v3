@@ -72,7 +72,29 @@ export const useMonitoringSaatStore = defineStore('monitoring_saat', {
       jam_masuk: '',
       keadaan_umum: []
     },
-    dataPasca: []
+    loadingPasca: false,
+    dataPasca: [],
+    // aldrete
+    loadingAldrete: false,
+    aldreteLogs: [
+      // { waktu: '13:50', oksigenasi: 2, aktifitas: 2, pernafasan: 2, sirkulasi: 2, kesadaran: 0, total: 8 }
+    ],
+    formKeluar: {
+      jam_masuk: '',
+      jam_keluar: '',
+      td_sistolik: '',
+      td_diastolik: '',
+      nadi: '',
+      rr: '',
+      infus: '',
+      urine: '',
+      muntah: '',
+      dipindah_ke: '',
+      ruangan: '',
+      penata_anestesi: '',
+      dokter_anestesi: ''
+    },
+    kamars: []
 
   }),
   actions: {
@@ -120,6 +142,7 @@ export const useMonitoringSaatStore = defineStore('monitoring_saat', {
       }
     },
     async simpanLogMonitoringSelama (pasien, anu) {
+      this.loading = true
       const payload = { ...anu }
       payload.noreg = pasien.noreg
       payload.nota = pasien.rs2
@@ -137,15 +160,25 @@ export const useMonitoringSaatStore = defineStore('monitoring_saat', {
         // console.log('data', this.data)
 
         return resp?.data
-      } catch (e) { }
+      } catch (e) {
+        throw e
+      }
+      finally {
+        this.loading = false
+      }
 
     },
     async simpanBawahMonitoringSelama () {
+      this.loading = true
       try {
         const resp = await api.post('v1/simrs/penunjang/ok/monitoring/selama/simpan-medikasi', this.inputForm)
 
         return resp?.data
-      } catch (e) { }
+      } catch (e) {
+        throw e
+      } finally {
+        this.loading = false
+      }
     },
     // ---- selama anast end ---- //
     // ---- pasca anast  ---- //
@@ -187,6 +220,85 @@ export const useMonitoringSaatStore = defineStore('monitoring_saat', {
       } catch (e) { }
     },
     // ---- pasca anast end ---- //
+    // ---- Aldrete start ---- //
+    async getKamars () {
+      try {
+        const resp = await api.get('v1/simrs/master/kamar')
+        this.kamars = resp?.data
+        this.kamars.sort((a, b) => a.rs4 - b.rs4)
+        console.log('kamar', this.kamars)
+
+        return resp?.data
+      } catch (e) { }
+    },
+    async getSkolrAldrete (pasien) {
+      this.loadingAldrete = true
+      const param = { params: { noreg: pasien.noreg, nota: pasien.rs2, norm: pasien.norm } }
+      const resp = await api.get('v1/simrs/penunjang/ok/monitoring/aldrete/get', param)
+      this.aldreteLogs = resp?.data?.monitoring // Simpan di state terpisah
+      this.formKeluar = resp?.data?.medikasi
+      if (!resp?.data?.medikasi) this.formKeluar = {
+        noreg: pasien.noreg,
+        nota: pasien.rs2,
+        norm: pasien.norm
+      }
+      this.aldreteLogs.sort((a, b) => a.waktu.localeCompare(b.waktu))
+      this.loadingAldrete = false
+      return resp?.data
+    },
+    async simpanSkorAldrete (payload) {
+      this.loadingAldrete = true
+      try {
+        const resp = await api.post('v1/simrs/penunjang/ok/monitoring/aldrete/simpan', payload)
+        // Update local state...
+        const hasil = resp?.data?.data
+        if (hasil) {
+          const index = this.aldreteLogs.findIndex(x => x.id === hasil.id)
+          if (index >= 0) this.aldreteLogs[index] = hasil
+          else this.aldreteLogs.push(hasil)
+          this.aldreteLogs.sort((a, b) => a.waktu - b.waktu)
+        }
+        return resp?.data
+
+      } catch (e) {
+        throw e
+      }
+      finally {
+        this.loadingAldrete = false
+      }
+    },
+    async hapusSkorAldrete (payload) {
+      this.loadingAldrete = true
+      try {
+        const resp = await api.post('v1/simrs/penunjang/ok/monitoring/aldrete/hapus', payload)
+        // Update local state...
+        const hasil = resp?.data?.data
+        if (hasil) {
+          const index = this.aldreteLogs.findIndex(x => x.id === hasil.id)
+          if (index >= 0) this.aldreteLogs.splice(index, 1)
+          // else this.aldreteLogs.push(hasil)
+          this.aldreteLogs.sort((a, b) => a.waktu - b.waktu)
+        }
+        return resp?.data
+      } catch (e) {
+        throw e
+      }
+      finally {
+        this.loadingAldrete = false
+      }
+    },
+    async simpanFormKeluar () {
+      this.loadingAldrete = true
+      try {
+        const resp = await api.post('v1/simrs/penunjang/ok/monitoring/aldrete/simpan-keluar', this.formKeluar)
+        return resp?.data
+      } catch (e) {
+        throw e
+      } finally {
+        this.loadingAldrete = false
+      }
+    }
+    // ---- Aldrete end ---- //
   }
 })
 if (import.meta.hot) {
