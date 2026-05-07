@@ -164,9 +164,9 @@ const options_lak = ref([])
 
 function simpan() {
   console.log('Form yang akan disimpan:', store.form)
-  // store.simpanData().then(() => {
-  //   formRef.value.resetValidation()
-  // })
+  store.simpanData().then(() => {
+    formRef.value.resetValidation()
+  })
 }
 
 onMounted(async () => {
