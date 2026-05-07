@@ -22,7 +22,7 @@
   // "typescript.tsdk": "node_modules/typescript/lib",
   "files.autoSave": "off",
   "beautify.config": "",
-  "workbench.colorTheme": "Default Dark+",
+  "workbench.colorTheme": "Dark+",
   "editor.tokenColorCustomizations": {},
   "editor.semanticTokenColorCustomizations": {},
   "editor.semanticHighlighting.enabled": true,

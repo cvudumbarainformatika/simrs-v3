@@ -249,7 +249,7 @@
         </div>
       </div>
       <q-separator class="q-mt-md" />
-      <div class="row items-center no-wrap q-mt-xl ">
+      <div class="row items-center no-wrap q-mt-xl q-pt-md">
         <div class="col-6 text-center " />
         <div class="col-6 text-weight-bold text-center">
           Probolinggo, {{ date.formatDate(Date.now(), 'DD MMMM YYYY') }}
@@ -278,7 +278,7 @@
           </div>
         </div>
       </div>
-      <div class="row items-center no-wrap q-mt-lg">
+      <div class="row items-center no-wrap q-mt-xl q-pt-xl q-pb-xl q-mb-xl">
         <div class="col-6 text-center">(..........................)</div>
         <div class="col-6 text-weight-bold text-center">
           {{ pasien.dokter }}

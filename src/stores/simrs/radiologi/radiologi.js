@@ -175,9 +175,14 @@ export const useListPasienRadiologiStore = defineStore('list-pasien-radiologi', 
 
     async terimaPasien(val) {
       this.loadingTerima = true
-      // console.log('terima pasien', val);
+      console.log('terima pasien', val);
       const payload = {
-        'notrans': val?.nota_permintaan
+        'notrans': val?.nota_permintaan,
+        'noreg': val?.noreg,
+        'norm': val?.norm,
+        'nama': val?.nama,
+        'tgllahir': val?.tgllahir,
+        'kelamin': val?.kelamin
       }
       await api.post('/v1/simrs/radiologi/radiologi/terimapasienradiologi', payload)
         .then(resp => {

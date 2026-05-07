@@ -30,7 +30,7 @@ export const useDokumenSuratSehatStore = defineStore('dokumen_suratsehat_new', {
       kepribadian: [
         { form: 'Ketaatan Pada Peraturan', nilai: '' },
         { form: 'Kemampuan Mengendalikan Emosi', nilai: '' },
-        { form: 'Kemampuan Mengatasi Permaslahan', nilai: '' },
+        { form: 'Kemampuan Mengatasi Permasalahan', nilai: '' },
       ],
       kecerdasan: '',
 
@@ -148,7 +148,7 @@ export const useDokumenSuratSehatStore = defineStore('dokumen_suratsehat_new', {
         kepribadian: [
           { form: 'Ketaatan Pada Peraturan', nilai: '' },
           { form: 'Kemampuan Mengendalikan Emosi', nilai: '' },
-          { form: 'Kemampuan Mengatasi Permaslahan', nilai: '' },
+          { form: 'Kemampuan Mengatasi Permasalahan', nilai: '' },
         ],
         kecerdasan: '',
 
