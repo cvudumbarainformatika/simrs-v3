@@ -256,7 +256,7 @@ export const useMonitoringSaatStore = defineStore('monitoring_saat', {
           const index = this.aldreteLogs.findIndex(x => x.id === hasil.id)
           if (index >= 0) this.aldreteLogs[index] = hasil
           else this.aldreteLogs.push(hasil)
-          this.aldreteLogs.sort((a, b) => a.waktu - b.waktu)
+          this.aldreteLogs.sort((a, b) => a.waktu.localeCompare(b.waktu))
         }
         return resp?.data
 
@@ -277,7 +277,7 @@ export const useMonitoringSaatStore = defineStore('monitoring_saat', {
           const index = this.aldreteLogs.findIndex(x => x.id === hasil.id)
           if (index >= 0) this.aldreteLogs.splice(index, 1)
           // else this.aldreteLogs.push(hasil)
-          this.aldreteLogs.sort((a, b) => a.waktu - b.waktu)
+          this.aldreteLogs.sort((a, b) => a.waktu.localeCompare(b.waktu))
         }
         return resp?.data
       } catch (e) {

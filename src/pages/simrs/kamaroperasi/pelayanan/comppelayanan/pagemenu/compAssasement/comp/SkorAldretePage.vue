@@ -147,7 +147,7 @@
 
     <!-- DIALOG INPUT ALDRETE -->
     <q-dialog v-model="showDialogAldrete" persistent>
-      <q-card style="min-width: 600px; max-width: 90vw;">
+      <q-card style="min-width: 700px; max-width: 70vw;">
         <q-card-section class="bg-teal-8 text-white row items-center q-pb-none">
           <div class="text-h6">Input Skor Aldrete</div>
           <q-space />
