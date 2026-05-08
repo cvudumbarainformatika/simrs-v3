@@ -131,7 +131,7 @@
 </template>
 
 <script setup>
-import { computed, defineAsyncComponent } from 'vue';
+import { computed, defineAsyncComponent } from 'vue'
 
 const KopSurat = defineAsyncComponent(() => import('./compLembarKunjungan/KopSurat.vue'))
 const props = defineProps({

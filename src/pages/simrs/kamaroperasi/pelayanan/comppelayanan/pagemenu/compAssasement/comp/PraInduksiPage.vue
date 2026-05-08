@@ -33,7 +33,7 @@
         <q-option-group v-model="store.formInduksi.riwayat_anastesi" :options="options" inline dense
           @update:model-value="clearJenis($event, 'jenis_riwayat_anastesi', 'Tidak')" />
         <q-input v-if="store?.formInduksi?.riwayat_anastesi == 'Ya'" v-model="store.formInduksi.jenis_riwayat_anastesi"
-          label="Jenis Anastesi" dense :rules="[
+          label="Jenis Anastesi" :rules="[
             val => (!val || val?.length <= 255) || 'Maksimal 255 karakter'
           ]" />
       </div>
