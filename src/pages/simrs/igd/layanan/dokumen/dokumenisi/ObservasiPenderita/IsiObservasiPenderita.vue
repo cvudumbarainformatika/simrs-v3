@@ -1,59 +1,6 @@
-<template>
-  <div class="q-pa-md">
-
-    <div class="text-h6 text-weight-bold q-mb-sm">
-      MONITORING PASIEN
-    </div>
-
-    <q-table :rows="rows" :columns="columns" row-key="id" flat bordered dense separator="cell" hide-bottom
-      :pagination="{ rowsPerPage: 0 }">
-
-      <!-- HEADER CUSTOM -->
-      <template v-slot:header="props">
-        <q-tr :props="props" class="bg-grey-3 text-weight-bold text-uppercase">
-          <q-th v-for="col in props.cols" :key="col.name" align="center">
-            {{ col.label }}
-          </q-th>
-        </q-tr>
-      </template>
-
-      <!-- BODY CUSTOM -->
-      <template v-slot:body="props">
-        <q-tr :props="props">
-
-          <q-td v-for="col in props.cols" :key="col.name">
-
-            <!-- 🔥 KHUSUS KOLOM PERAWAT -->
-            <div v-if="col.name === 'perawat'" class="column items-center">
-
-              <!-- QR -->
-              <vue-qrcode :value="generateQr(props.row)" tag="svg" :options="{
-                width: 60,
-                margin: 0,
-                errorCorrectionLevel: 'Q'
-              }" />
-
-              <!-- Nama -->
-              <div class="text-weight-bold q-mt-xs">
-                {{ props.row[col.field] }}
-              </div>
-
-            </div>
-
-            <!-- 🔥 KOLOM LAIN NORMAL -->
-            <div v-else>
-              {{ props.row[col.field] }}
-            </div>
-
-          </q-td>
-
-        </q-tr>
-      </template>
-
-    </q-table>
-
+  <div v-if="col.name === 'tindakan'" class="text-wrap">
+    {{ props.row[col.field] }}
   </div>
-</template>
 
 <script setup>
 import { computed } from 'vue'
@@ -66,20 +13,20 @@ const props = defineProps({
 })
 
 const columns = [
-  { name: 'tgl', label: 'TGL', field: 'tgl' },
-  { name: 'jam', label: 'JAM', field: 'jam' },
-  { name: 'tensi', label: 'TENSI(MmHg)', field: 'tensi' },
-  { name: 'nadi', label: 'NADI(x/mnt)', field: 'nadi' },
-  { name: 'rr', label: 'RR(x/mnt)', field: 'rr' },
-  { name: 'suhu', label: 'SUHU(C)', field: 'suhu' },
-  { name: 'spo2', label: 'SP.O2(%)', field: 'spo2' },
-  { name: 'gcs', label: 'GCS', field: 'gcs' },
-  { name: 'pupil', label: 'PUPIL', field: 'pupil' },
-  { name: 'output', label: 'OUTPUT', field: 'output' },
-  { name: 'obat', label: 'NAMA OBAT', field: 'obat' },
-  { name: 'keluhan', label: 'KELUHAN', field: 'keluhan' },
-  { name: 'tindakan', label: 'TINDAKAN', field: 'tindakan' },
-  { name: 'perawat', label: 'PERAWAT', field: 'perawat' }
+  { name: 'tgl', label: 'TGL', field: 'tgl', style: 'width: 70px' },
+  { name: 'jam', label: 'JAM', field: 'jam', style: 'width: 60px' },
+  { name: 'tensi', label: 'TENSI', field: 'tensi', style: 'width: 80px' },
+  { name: 'nadi', label: 'NADI', field: 'nadi', style: 'width: 60px' },
+  { name: 'rr', label: 'RR', field: 'rr', style: 'width: 60px' },
+  { name: 'suhu', label: 'SUHU', field: 'suhu', style: 'width: 60px' },
+  { name: 'spo2', label: 'SP.O2', field: 'spo2', style: 'width: 70px' },
+  { name: 'gcs', label: 'GCS', field: 'gcs', style: 'width: 70px' },
+  { name: 'pupil', label: 'PUPIL', field: 'pupil', style: 'width: 80px' },
+  { name: 'output', label: 'OUTPUT', field: 'output', style: 'width: 70px' },
+  { name: 'obat', label: 'OBAT', field: 'obat', style: 'width: 100px' },
+  { name: 'keluhan', label: 'KELUHAN', field: 'keluhan', style: 'width: 120px' },
+  { name: 'tindakan', label: 'TINDAKAN', field: 'tindakan', style: 'width: 150px' },
+  { name: 'perawat', label: 'PERAWAT', field: 'perawat', style: 'width: 120px' }
 ]
 
 const rows = computed(() => {
@@ -108,48 +55,66 @@ const rows = computed(() => {
         : '-',
 
       pupil: item?.keadaan_pupil || '-',
-
       output: item?.output || '-',
 
-      obat: '-', // belum ada field obat di data ini
-
+      obat: '-',
       keluhan: item?.keluhan || '-',
-
       tindakan: item?.keterangan || '-',
 
-      perawat: item?.nama || '-'
+      perawat: item?.nama || '-',
+      noreg: item?.noreg,
+      tglFull: item?.tgl
     }
   })
 })
 
 const generateQr = (item) => {
-  const noreg = item?.noreg || '-'
-  const perawat = item?.perawat || item?.nama || '-'
-  const tgl = item?.tgl || '-'
-
-  const enc = btoa(`${noreg}|${perawat}|${tgl}`)
+  const enc = btoa(`${item?.noreg}|${item?.perawat}|${item?.tglFull}`)
   return `https://rsud.probolinggokota.go.id/dokumen-simrs/legalitas/${enc}`
 }
 </script>
 
 <style scoped>
-/* 🔥 MODE PRINT */
+/* WRAPPER */
+.print-wrapper {
+  width: 100%;
+}
+
+/* PRINT MODE */
 @media print {
+  @page {
+    size: A4 landscape;
+    margin: 10mm;
+  }
+
   .q-table {
-    font-size: 10px;
+    width: 100%;
+    table-layout: fixed;
+    font-size: 9px;
   }
 
   .q-table th,
   .q-table td {
-    padding: 4px 6px;
-  }
-
-  .q-table {
-    border: 1px solid #000;
+    padding: 2px 4px;
+    word-break: break-word;
+    white-space: normal;
   }
 
   .q-tr {
     page-break-inside: avoid;
   }
+}
+
+.text-wrap {
+  white-space: pre-line;
+  /* 🔥 support enter (\n) */
+  word-break: break-word;
+  max-width: 250px;
+  /* 🔥 biar gak dorong tabel */
+  line-height: 1.2;
+}
+
+.q-table td {
+  vertical-align: top;
 }
 </style>

@@ -15,7 +15,7 @@
     </div>
   </div>
   <q-scroll-area style="height: calc(100vh - 56px);">
-    <div v-if="props?.pasien?.anamnesis?.length <= 0">
+    <div v-if="props?.pasien?.tinjauanulang?.length <= 0">
       <div class="column full-height flex-center">
         <div>
           <app-no-data />
@@ -28,8 +28,8 @@
       </div>
     </div>
     <div v-else class="q-pa-sm">
-      <div id="printMe" class="q-pa-lg full-width bg-white">
-        <KopSurat :judul="props?.judul ?? 'Observasi Penderita'" :pasien="props?.pasien" :jangantampil=false />
+      <div id="printMe" class="q-pa-lg bg-white print-area">
+        <KopSurat :judul="props?.judul ?? 'Observasi Penderita'" :pasien="props?.pasien" :jangantampil="false" />
 
         <IsiObservasiPenderita :pasien="props?.pasien" />
       </div>
@@ -62,29 +62,64 @@ const props = defineProps({
 })
 
 function exportPdf() {
-  const concern = document.getElementById('printMe')
+  const element = document.getElementById('printMe')
   const nama = props?.pasien?.nama ?? props?.pasien?.pasien
-  const pdfConfig = {
-    margin: [12, 12, 12, 12],
-    filename: 'ObservasiPenderita_' + props?.pasien?.noreg + '_' + nama + '_' + props?.pasien?.norm + '.pdf',
+
+  const opt = {
+    margin: [5, 5, 5, 5], // 🔥 kecilin margin biar luas
+
+    filename:
+      'ObservasiPenderita_' +
+      props?.pasien?.noreg +
+      '_' +
+      nama +
+      '.pdf',
+
     image: {
       type: 'jpeg',
-      quality: 0.98
+      quality: 1
     },
+
     html2canvas: {
-      scale: 2,
-      logging: true,
-      dpi: 192,
-      letterRendering: true
+      scale: 1.5,       // 🔥 jangan 2 (biar gak shrink)
+      useCORS: true,
+      scrollX: 0,
+      scrollY: 0
     },
+
     jsPDF: {
-      unit: 'mm', // mm | pt | in
-      format: 'a4', // a4 | letter
-      orientation: 'landscape' // landscape | portrait
+      unit: 'mm',
+      format: 'a4',
+      orientation: 'landscape'
     }
   }
 
-  html2pdf().set(pdfConfig).from(concern).save()
+  html2pdf().set(opt).from(element).save()
 }
 </script>
-<style lang="scss" scoped></style>
+<style scoped>
+.print-area {
+  width: 100%;
+  margin: 0;
+  font-size: 11px;
+  /* 🔥 sedikit dibesarin */
+}
+
+/* tabel biar gak ngelebar liar */
+.print-area .q-table {
+  width: 100%;
+  table-layout: fixed;
+}
+
+.print-area .q-table th,
+.print-area .q-table td {
+  padding: 2px 4px;
+  word-break: break-word;
+  white-space: normal;
+}
+
+/* biar tidak overflow */
+#printMe {
+  overflow: hidden;
+}
+</style>
