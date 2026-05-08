@@ -707,6 +707,8 @@ onMounted(async () => {
   //   syncLabels()
   // })
   // console.log('gas', allRows.value.map(name => gasKeys.includes(name) ? 3 : 0))
+
+  if (laporanOp.nakes.length == 0) laporanOp.getNakes()
   try {
     await store.getMonitoringSelama(props.pasien)
     const charts = document.querySelectorAll('.vue-apexcharts')
