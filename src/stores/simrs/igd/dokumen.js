@@ -16,7 +16,7 @@ export const useDokumenIgdStore = defineStore('dokumen-igd-store', {
       { name: 'Konsul Dokter', page: 'Konsul' },
       { name: 'Pengkajian Awal Medis', page: 'Pengkajian Awal Medis' },
       { name: 'Pengkajian Awal Keperawatan', page: 'Pengkajian Awal Keperawatan' },
-      // { name: 'Bank Darah', page: 'BankDarah' },
+      { name: 'Observasi Penderita', page: 'Observasi Penderita' },
       // { name: 'Bank Darah', page: 'BankDarah' },
       // { name: 'Bank Darah', page: 'BankDarah' },
       // { name: 'Bank Darah', page: 'BankDarah' },
