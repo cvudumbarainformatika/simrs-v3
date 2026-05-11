@@ -103,13 +103,13 @@ const menus = ref([
   },
   {
     name: 'assasement',
-    label: 'Assasement',
+    label: 'Assesement',
     icon: 'icon-mat-analytics',
     comp: shallowRef(defineAsyncComponent(() => import('./comppelayanan/pagemenu/compAssasement/IndexPage.vue')))
   },
   {
     name: 'assasement_post_op',
-    label: 'Assasement Post Operasi',
+    label: 'Assesement Post Operasi',
     icon: 'icon-fa-book-medical-solid',
     comp: shallowRef(defineAsyncComponent(() => import('./comppelayanan/pagemenu/compAssPostOp/IndexPage.vue')))
   },
