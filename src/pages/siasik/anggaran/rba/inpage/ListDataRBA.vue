@@ -82,8 +82,8 @@
 
 </template>
 <script setup>
-import { formattanpaRp } from 'src/modules/formatter';
-import { useRbaStore } from 'src/stores/siasik/anggaran/storerba';
+import { formattanpaRp } from 'src/modules/formatter'
+import { useRbaStore } from 'src/stores/siasik/anggaran/storerba'
 // import { ref } from 'vue';
 
 

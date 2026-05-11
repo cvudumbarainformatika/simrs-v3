@@ -271,11 +271,14 @@
       <div class="col-8">
         <div class="row q-gutter-xs">
           <div v-for="(carakeluar, t) in pasien?.planheder" :key="t">
-            <span v-if="carakeluar?.rs4 === 'Pulang'">{{ carakeluar?.rs4 }}</span>
+            <span v-if="carakeluar?.rs4 === 'Pulang'">{{ carakeluar?.rs4 }} Dengan Kondisi
+              {{ carakeluar?.planpulang?.atas_dasar
+              }}
+            </span>
             <span v-else-if="carakeluar?.rs4 === 'Rawat Inap'">{{ carakeluar?.rs4 }} Ke {{
               carakeluar?.planranap?.ruangranap?.rs2 }}</span>
             <span v-else-if="carakeluar?.rs4 === 'Rujuk'">{{ carakeluar?.rs4 }} Ke {{ carakeluar?.transrujukan?.rs7
-            }}</span>
+              }}</span>
             <span v-else></span>
           </div>
         </div>
@@ -322,9 +325,6 @@ import { formatRp } from 'src/modules/formatter';
 import { useKasirIgdStore } from 'src/stores/simrs/kasir/igd/kasirigd';
 import { date } from 'quasar';
 import { computed } from 'vue';
-
-console.log('props', 'ooooi');
-
 
 const store = useKasirIgdStore()
 const props = defineProps({
