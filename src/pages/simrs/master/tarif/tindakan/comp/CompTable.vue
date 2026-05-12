@@ -14,7 +14,7 @@
         <th rowspan="2" class="q-px-sm">
           Berlaku di Ruangan
         </th>
-        <th colspan="4" class="q-px-sm">
+        <th colspan="5" class="q-px-sm">
           Kelas 3
         </th>
         <th colspan="4" class="q-px-sm">
@@ -58,6 +58,7 @@
         <th>JS</th>
         <th>JP</th>
         <th>HP</th>
+        <th>AN</th>
         <th>Tarif</th>
         <th>JS</th>
         <th>JP</th>
@@ -254,6 +255,11 @@
             <td class="text-end">
               <div v-if="item?.habispake3">
                 {{ formatRp(item?.habispake3 ?? 0) }}
+              </div>
+            </td>
+            <td class="text-end">
+              <div v-if="item?.anastesi">
+                {{ formatRp(item?.anastesi ?? 0) }}
               </div>
             </td>
             <td class="text-end">
@@ -571,7 +577,7 @@ function lewatBerlaku (item) {
     const hariIni = new Date()
     const tglBErlaku = new Date(item?.tgl_mulai_berlaku)
     const diff = date.getDateDiff(tglBErlaku, hariIni, 'days')
-    // console.log('diff', diff, tglHapus, item?.tgl_hapus)
+    console.log('diff', diff, item?.tgl_hapus)
     if (diff <= 0) tampil = false
   }
   return tampil
