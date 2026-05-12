@@ -40,6 +40,7 @@ export const useMasterTindakanJsJpStore = defineStore('master_tindakan_js_jp', {
       const col = [
         'js3',
         'jp3',
+        'anastesi',
         'tarif3',
         'tarif2',
         'tarif1',
