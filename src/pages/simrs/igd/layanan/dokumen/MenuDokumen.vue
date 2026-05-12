@@ -47,7 +47,7 @@
           <PengkajianAwalMedis judul="Pengkajian Awal Medis" :pasien="props?.pasien" />
         </q-tab-panel>
         <q-tab-panel name="Pengkajian Awal Keperawatan" class="full-height q-pa-none">
-          <PengkajianAwalKeperawatan judul="Pengkajian Awal Keperawatan" :pasien="props?.pasien" />
+          <PengkajianAwalKeperawatan judul="Pengkajian Awal Keperawatan IGD" :pasien="props?.pasien" />
         </q-tab-panel>
         <q-tab-panel name="Observasi Penderita" class="full-height q-pa-none">
           <ObservasiPenderita judul="Observasi Penderita" :pasien="props?.pasien" />

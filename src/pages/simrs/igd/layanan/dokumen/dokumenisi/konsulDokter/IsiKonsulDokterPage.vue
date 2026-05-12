@@ -8,6 +8,8 @@
         <div class="f-20 text-weight-light">
           {{ item?.ketuntuk }}
         </div>
+        ( {{ item.tgl_permintaan
+        }} )
         <div class="q-mt-lg">
           <div>Dengan Hormat,</div>
           <div>Mohon Bantuan Dokter <b>{{ item?.dokterkonsul?.nama }}</b>, untuk konsultasi Masalah medik saat

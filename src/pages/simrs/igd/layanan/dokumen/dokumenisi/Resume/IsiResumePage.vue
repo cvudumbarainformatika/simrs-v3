@@ -199,6 +199,18 @@
         <div v-for="(triagex, xx) in pasien?.triage" :key="xx">
           Kategori Triage : {{ triagex?.kategoritriage ?? '-' }}
         </div>
+        <div>
+          Skor Nyeri :
+          <q-icon v-if="nyeri && nyeri.skor !== null" size="xs" color="teal" :name="iconNyeri(nyeri.skor)" />
+
+          <span class="text-weight-medium">
+            {{ nyeri?.text || '-' }}
+          </span>
+
+          <em v-if="nyeri?.ket" class="text-primary">
+            ({{ nyeri.ket }})
+          </em>
+        </div>
       </div>
     </div>
     <q-separator class=" q-mt-sm q-mb-sm" style="border-top: 1px solid black;" />
@@ -278,7 +290,7 @@
             <span v-else-if="carakeluar?.rs4 === 'Rawat Inap'">{{ carakeluar?.rs4 }} Ke {{
               carakeluar?.planranap?.ruangranap?.rs2 }}</span>
             <span v-else-if="carakeluar?.rs4 === 'Rujuk'">{{ carakeluar?.rs4 }} Ke {{ carakeluar?.transrujukan?.rs7
-              }}</span>
+            }}</span>
             <span v-else></span>
           </div>
         </div>
@@ -418,7 +430,38 @@ const filterredTabletindakan = computed(() => {
   return [...uniqueMap.values()]
 })
 
+function iconNyeri(skor) {
+  const nilai = Number(skor)
 
+  if (nilai <= 0) return 'sentiment_very_satisfied'
+  if (nilai <= 3) return 'sentiment_satisfied'
+  if (nilai <= 6) return 'sentiment_neutral'
+  if (nilai <= 9) return 'sentiment_dissatisfied'
+
+  return 'sentiment_very_dissatisfied'
+}
+
+const nyeri = computed(() => {
+  const anamnesis = props?.pasien?.anamnesis || []
+
+  const data = anamnesis.find(
+    i => String(i?.datasimpeg?.kdgroupnakes) === '2'
+  )
+
+  if (!data) {
+    return {
+      skor: null,
+      text: '-',
+      ket: null
+    }
+  }
+
+  return {
+    skor: data?.scorenyeri ?? null,
+    text: data?.scorenyeri ?? '-',
+    ket: data?.keteranganscorenyeri ?? null
+  }
+})
 </script>
 
 <style lang="scss" scoped>

@@ -29,7 +29,8 @@
     </div>
     <div v-else class="q-pa-sm">
       <div id="printMe" class="q-pa-lg full-width bg-white">
-        <KopSurat :judul="props?.judul ?? 'PENGKAJIAN AWAL MEDIS'" :pasien="props?.pasien" :jangantampil=false />
+        <KopSurat :judul="props?.judul ?? 'PENGKAJIAN AWAL KEPERAWATAN IGD'" :pasien="props?.pasien"
+          :jangantampil=false />
 
         <IsiPengkajianAwalKeperawatan :pasien="props?.pasien" />
       </div>
