@@ -248,10 +248,18 @@ function deleteOne (item) {
   Dialog.create({
     title: 'Peringatan',
     message: 'Apakah Data ini akan dihapus?',
+    options: {
+      type: 'radio',
+      model: 'delete',
+      items: [
+        { label: 'Hapus Data perubahan (Data Ini akan dihapus)', value: 'delete' },
+        { label: 'Set Hapus (Data Ini akan menjadi dasar penghapusan tindakan)', value: 'archive' }
+      ]
+    },
     cancel: true
     // persistent: true
-  }).onOk(() => {
-    emits('delete', item)
+  }).onOk((val) => {
+    emits('delete', item, val)
   }).onCancel(() => {
     console.log('Cancel')
     selected.value = []
