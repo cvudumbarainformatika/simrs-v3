@@ -167,13 +167,15 @@ export const useMasterTindakanJsJpStore = defineStore('master_tindakan_js_jp', {
       this.setForm('flag', 'edit')
       // console.log('edit data', key)
     },
-    deletesData (payload) {
+    deletesData (payload, param) {
       // console.log('delete data', payload)
 
       const besok = date.addToDate(new Date(), { days: 1 })
       const data = {
+        idx: payload.idx,
         kdtindakan: payload.kdtindakan,
-        tgl_mulai_berlaku: date.formatDate(besok, 'YYYY-MM-DD')
+        tgl_mulai_berlaku: date.formatDate(besok, 'YYYY-MM-DD'),
+        action: param
       }
       this.deleteData(data)
     },
