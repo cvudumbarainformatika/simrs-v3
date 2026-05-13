@@ -290,7 +290,7 @@ function deleteOne (item) {
       model: 'delete',
       items: [
         { label: 'Hapus Data perubahan (Data Ini akan dihapus)', value: 'delete' },
-        { label: 'Set Hapus (Data Ini akan menjadi dasar penghapusan tarid)', value: 'archive' }
+        { label: 'Set Hapus (Data Ini akan menjadi dasar penghapusan tarif)', value: 'archive' }
       ]
     },
     cancel: true
