@@ -172,9 +172,9 @@ export const useMasterTindakanJsJpStore = defineStore('master_tindakan_js_jp', {
 
       const besok = date.addToDate(new Date(), { days: 1 })
       const data = {
-        idx: payload.idx,
         kdtindakan: payload.kdtindakan,
         tgl_mulai_berlaku: date.formatDate(besok, 'YYYY-MM-DD'),
+        idx: payload.idx,
         action: param
       }
       this.deleteData(data)
@@ -184,6 +184,7 @@ export const useMasterTindakanJsJpStore = defineStore('master_tindakan_js_jp', {
 
       const besok = date.addToDate(new Date(), { days: 1 })
       const data = {
+        idx: payload.idx,
         kdtindakan: payload.kdtindakan,
         tgl_mulai_berlaku: date.formatDate(besok, 'YYYY-MM-DD')
       }
