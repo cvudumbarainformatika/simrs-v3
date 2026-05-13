@@ -52,49 +52,10 @@
     <tbody>
       <template v-if="loading">
         <tr v-for="n in params.per_page" :key="n">
-          <td width="5%">
-            <q-skeleton type="text" width="20px" height="14px" />
-          </td>
-          <td>
-            <q-skeleton type="text" width="20px" height="14px" />
-          </td>
-          <td>
-            <q-skeleton type="text" width="20px" height="14px" />
+          <td v-for="i in 18" :key="i">
+            <q-skeleton type="text" width="100%" height="14px" />
           </td>
 
-          <td>
-            <q-skeleton type="text" width="20px" height="14px" />
-          </td>
-          <td>
-            <q-skeleton type="text" width="20px" height="14px" />
-          </td>
-          <td>
-            <q-skeleton type="text" width="20px" height="14px" />
-          </td>
-
-          <td>
-            <q-skeleton type="text" width="20px" height="14px" />
-          </td>
-          <td>
-            <q-skeleton type="text" width="20px" height="14px" />
-          </td>
-          <td>
-            <q-skeleton type="text" width="20px" height="14px" />
-          </td>
-
-          <td>
-            <q-skeleton type="text" width="20px" height="14px" />
-          </td>
-          <td>
-            <q-skeleton type="text" width="20px" height="14px" />
-          </td>
-          <td>
-            <q-skeleton type="text" width="20px" height="14px" />
-          </td>
-
-          <td>
-            <q-skeleton type="text" width="20px" height="14px" />
-          </td>
         </tr>
       </template>
       <template v-else-if="!items?.length">
@@ -253,7 +214,7 @@ function deleteOne (item) {
       model: 'delete',
       items: [
         { label: 'Hapus Data perubahan (Data Ini akan dihapus)', value: 'delete' },
-        { label: 'Set Hapus (Data Ini akan menjadi dasar penghapusan tindakan)', value: 'archive' }
+        { label: 'Set Hapus (Data Ini akan menjadi dasar penghapusan tarid)', value: 'archive' }
       ]
     },
     cancel: true
