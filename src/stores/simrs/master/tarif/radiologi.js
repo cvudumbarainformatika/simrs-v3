@@ -109,13 +109,15 @@ export const useMasterTarifRadiologiStore = defineStore('master_tarif_radiologi'
       this.setForm('flag', 'edit')
       // console.log('edit data', key)
     },
-    deletesData (payload) {
+    deletesData (payload, param) {
       // console.log('delete data', payload)
 
       const besok = date.addToDate(new Date(), { days: 1 })
       const data = {
         kode: payload.rs1,
-        tgl_mulai_berlaku: date.formatDate(besok, 'YYYY-MM-DD')
+        tgl_mulai_berlaku: date.formatDate(besok, 'YYYY-MM-DD'),
+        id1: payload.id1,
+        action: param
       }
       this.deleteData(data)
     },
@@ -124,6 +126,7 @@ export const useMasterTarifRadiologiStore = defineStore('master_tarif_radiologi'
 
       const besok = date.addToDate(new Date(), { days: 1 })
       const data = {
+        id1: payload.id1,
         kode: payload.rs1,
         tgl_mulai_berlaku: date.formatDate(besok, 'YYYY-MM-DD')
       }

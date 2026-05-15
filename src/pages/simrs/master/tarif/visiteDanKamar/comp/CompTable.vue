@@ -111,123 +111,8 @@
     <tbody>
       <template v-if="loading">
         <tr v-for="n in params.per_page" :key="n">
-          <td width="5%">
-            <q-skeleton type="text" width="20px" height="14px" />
-          </td>
-          <td>
-            <q-skeleton type="text" width="20px" height="14px" />
-          </td>
-          <td>
-            <q-skeleton type="text" width="20px" height="14px" />
-          </td>
-
-          <td>
-            <q-skeleton type="text" width="20px" height="14px" />
-          </td>
-          <td>
-            <q-skeleton type="text" width="20px" height="14px" />
-          </td>
-          <td>
-            <q-skeleton type="text" width="20px" height="14px" />
-          </td>
-          <td>
-            <q-skeleton type="text" width="20px" height="14px" />
-          </td>
-          <td>
-            <q-skeleton type="text" width="20px" height="14px" />
-          </td>
-          <td>
-            <q-skeleton type="text" width="20px" height="14px" />
-          </td>
-          <td>
-            <q-skeleton type="text" width="20px" height="14px" />
-          </td>
-          <td>
-            <q-skeleton type="text" width="20px" height="14px" />
-          </td>
-          <td>
-            <q-skeleton type="text" width="20px" height="14px" />
-          </td>
-          <td>
-            <q-skeleton type="text" width="20px" height="14px" />
-          </td>
-          <td>
-            <q-skeleton type="text" width="20px" height="14px" />
-          </td>
-          <td>
-            <q-skeleton type="text" width="20px" height="14px" />
-          </td>
-          <td>
-            <q-skeleton type="text" width="20px" height="14px" />
-          </td>
-          <td>
-            <q-skeleton type="text" width="20px" height="14px" />
-          </td>
-          <td>
-            <q-skeleton type="text" width="20px" height="14px" />
-          </td>
-          <td>
-            <q-skeleton type="text" width="20px" height="14px" />
-          </td>
-          <td>
-            <q-skeleton type="text" width="20px" height="14px" />
-          </td>
-          <td>
-            <q-skeleton type="text" width="20px" height="14px" />
-          </td>
-          <td>
-            <q-skeleton type="text" width="20px" height="14px" />
-          </td>
-          <td>
-            <q-skeleton type="text" width="20px" height="14px" />
-          </td>
-          <td>
-            <q-skeleton type="text" width="20px" height="14px" />
-          </td>
-          <td>
-            <q-skeleton type="text" width="20px" height="14px" />
-          </td>
-          <td>
-            <q-skeleton type="text" width="20px" height="14px" />
-          </td>
-          <td>
-            <q-skeleton type="text" width="20px" height="14px" />
-          </td>
-          <td>
-            <q-skeleton type="text" width="20px" height="14px" />
-          </td>
-          <td>
-            <q-skeleton type="text" width="20px" height="14px" />
-          </td>
-          <td>
-            <q-skeleton type="text" width="20px" height="14px" />
-          </td>
-          <td>
-            <q-skeleton type="text" width="20px" height="14px" />
-          </td>
-          <td>
-            <q-skeleton type="text" width="20px" height="14px" />
-          </td>
-          <td>
-            <q-skeleton type="text" width="20px" height="14px" />
-          </td>
-          <td>
-            <q-skeleton type="text" width="20px" height="14px" />
-          </td>
-          <td>
-            <q-skeleton type="text" width="20px" height="14px" />
-          </td>
-          <td>
-            <q-skeleton type="text" width="20px" height="14px" />
-          </td>
-          <td>
-            <q-skeleton type="text" width="20px" height="14px" />
-          </td>
-          <td>
-            <q-skeleton type="text" width="20px" height="14px" />
-          </td>
-          <td>
-            <q-skeleton type="text" width="20px" height="14px" />
+          <td v-for="i in 46" :key="i">
+            <q-skeleton type="text" width="100%" height="14px" />
           </td>
         </tr>
       </template>
@@ -555,10 +440,18 @@ function deleteOne (item) {
   Dialog.create({
     title: 'Peringatan',
     message: 'Apakah Data ini akan dihapus?',
+    options: {
+      type: 'radio',
+      model: 'delete',
+      items: [
+        { label: 'Hapus Data perubahan (Data Ini akan dihapus)', value: 'delete' },
+        { label: 'Set Hapus (Data Ini akan menjadi dasar penghapusan tarif)', value: 'archive' }
+      ]
+    },
     cancel: true
     // persistent: true
-  }).onOk(() => {
-    emits('delete', item)
+  }).onOk((val) => {
+    emits('delete', item, val)
   }).onCancel(() => {
     console.log('Cancel')
     selected.value = []

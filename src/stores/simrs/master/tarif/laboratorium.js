@@ -134,13 +134,15 @@ export const useMasterTarifLaboratoriumStore = defineStore('master_tarif_laborat
       this.setForm('flag', 'edit')
       // console.log('edit data', key)
     },
-    deletesData (payload) {
+    deletesData (payload, param) {
       // console.log('delete data', payload)
 
       const besok = date.addToDate(new Date(), { days: 1 })
       const data = {
         kode: payload.kode,
-        tgl_mulai_berlaku: date.formatDate(besok, 'YYYY-MM-DD')
+        tgl_mulai_berlaku: date.formatDate(besok, 'YYYY-MM-DD'),
+        id: payload.id,
+        action: param
       }
       this.deleteData(data)
     },
@@ -149,6 +151,7 @@ export const useMasterTarifLaboratoriumStore = defineStore('master_tarif_laborat
 
       const besok = date.addToDate(new Date(), { days: 1 })
       const data = {
+        id: payload.id,
         kode: payload.kode,
         tgl_mulai_berlaku: date.formatDate(besok, 'YYYY-MM-DD')
       }

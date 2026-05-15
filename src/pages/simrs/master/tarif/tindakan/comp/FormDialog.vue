@@ -35,19 +35,23 @@
             </div>
           </div>
           <div class="row q-col-gutter-md q-mb-sm">
-            <div class="col-md-3 col-xs-12">
+            <div class="col-md-4 col-xs-12">
               <app-input v-model="store.form.js3" valid label="JS Kelas 3" outlined :loading="store.loading"
                 :disable="store.loading" :autofocus="store.edit" @update:model-value="setJs3" />
             </div>
-            <div class="col-md-3 col-xs-12">
+            <div class="col-md-4 col-xs-12">
               <app-input v-model="store.form.jp3" valid label="JP Kelas 3" outlined :loading="store.loading"
                 :disable="store.loading" @update:model-value="setJp3" />
             </div>
-            <div class="col-md-3 col-xs-12">
+            <div class="col-md-4 col-xs-12">
               <app-input v-model="store.form.habispake3" valid label="Habis Pakai Kelas 3" outlined
                 :loading="store.loading" :disable="store.loading" @update:model-value="setHabispake3" />
             </div>
-            <div class="col-md-3 col-xs-12">
+            <div class="col-md-6 col-xs-12">
+              <app-input v-model="store.form.anastesi" valid label="Anastesi (Poli & kelas 3)" outlined
+                :loading="store.loading" :disable="store.loading" @update:model-value="setAnastesi" />
+            </div>
+            <div class="col-md-6 col-xs-12">
               <app-input v-model="store.form.tarif3" valid label="Tarif Kelas 3" outlined :loading="store.loading"
                 readonly />
             </div>
@@ -259,15 +263,25 @@ function setJp3 (evt) {
   const val = !isNaN(evt) && evt !== '' ? parseInt(evt) : 0
   const js = !isNaN(store.form.js3) && store.form.js3 !== '' ? parseInt(store.form.js3) : 0
   const habispake = !isNaN(store.form.habispake3) && store.form.habispake3 !== '' ? parseInt(store.form.habispake3) : 0
+  const anastesi = !isNaN(store.form.anastesi) && store.form.anastesi !== '' ? parseInt(store.form.anastesi) : 0
   store.setForm('jp3', val)
-  store.setForm('tarif3', val + js + habispake)
+  store.setForm('tarif3', val + js + habispake + anastesi)
 }
 function setHabispake3 (evt) {
   const val = !isNaN(evt) && evt !== '' ? parseInt(evt) : 0
   const js = !isNaN(store.form.js3) && store.form.js3 !== '' ? parseInt(store.form.js3) : 0
   const jp = !isNaN(store.form.jp3) && store.form.jp3 !== '' ? parseInt(store.form.jp3) : 0
+  const anastesi = !isNaN(store.form.anastesi) && store.form.anastesi !== '' ? parseInt(store.form.anastesi) : 0
   store.setForm('habispake3', val)
-  store.setForm('tarif3', val + js + jp)
+  store.setForm('tarif3', val + js + jp + anastesi)
+}
+function setAnastesi (evt) {
+  const val = !isNaN(evt) && evt !== '' ? parseInt(evt) : 0
+  const js = !isNaN(store.form.js3) && store.form.js3 !== '' ? parseInt(store.form.js3) : 0
+  const jp = !isNaN(store.form.jp3) && store.form.jp3 !== '' ? parseInt(store.form.jp3) : 0
+  const habispake = !isNaN(store.form.habispake3) && store.form.habispake3 !== '' ? parseInt(store.form.habispake3) : 0
+  store.setForm('anastesi', val)
+  store.setForm('tarif3', val + js + jp + habispake)
 }
 //
 function setJs2 (evt) {

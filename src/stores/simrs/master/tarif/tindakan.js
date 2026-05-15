@@ -40,6 +40,7 @@ export const useMasterTindakanJsJpStore = defineStore('master_tindakan_js_jp', {
       const col = [
         'js3',
         'jp3',
+        'anastesi',
         'tarif3',
         'tarif2',
         'tarif1',
@@ -166,13 +167,15 @@ export const useMasterTindakanJsJpStore = defineStore('master_tindakan_js_jp', {
       this.setForm('flag', 'edit')
       // console.log('edit data', key)
     },
-    deletesData (payload) {
+    deletesData (payload, param) {
       // console.log('delete data', payload)
 
       const besok = date.addToDate(new Date(), { days: 1 })
       const data = {
         kdtindakan: payload.kdtindakan,
-        tgl_mulai_berlaku: date.formatDate(besok, 'YYYY-MM-DD')
+        tgl_mulai_berlaku: date.formatDate(besok, 'YYYY-MM-DD'),
+        idx: payload.idx,
+        action: param
       }
       this.deleteData(data)
     },
@@ -181,6 +184,7 @@ export const useMasterTindakanJsJpStore = defineStore('master_tindakan_js_jp', {
 
       const besok = date.addToDate(new Date(), { days: 1 })
       const data = {
+        idx: payload.idx,
         kdtindakan: payload.kdtindakan,
         tgl_mulai_berlaku: date.formatDate(besok, 'YYYY-MM-DD')
       }
