@@ -42,7 +42,7 @@
               color="dark">
               <div>PACS</div>
             </q-btn> -->
-            <q-badge v-if="item?.rinciansementara[0]?.relmasterpemeriksaan?.alat" outline align="middle" color="orange"
+            <q-badge v-if="item?.rinciansementara[0]?.relmasterpemeriksaan?.alat" outline align="middle" color="teal"
               class="" style="max-width: 250px;">
               <div class="ellipsis">
                 PACS
