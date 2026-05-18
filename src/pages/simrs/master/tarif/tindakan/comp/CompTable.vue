@@ -552,7 +552,7 @@ function undeleteOne (item) {
 function BerlakuDiRuangan (item) {
   const ruangans = item?.ruangan.split('|')
   const ruang = []
-  if (ruangans?.length > 1) {
+  if (ruangans?.length >= 1) {
     ruangans.forEach(element => {
       if (element != '') {
         const poli = props?.polis?.find(x => x?.kodepoli == element)
