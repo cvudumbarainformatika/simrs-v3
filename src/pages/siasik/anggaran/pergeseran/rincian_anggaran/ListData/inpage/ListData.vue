@@ -2,7 +2,7 @@
   <template v-if="store.items">
     <div class="justify-content-center full-width">
       <q-table class="my-sticky-table" style="height: 100%;" :rows="store.items" :columns="columnsData" row-key="name"
-        dense flat bordered wrap-cells :filter="store.params.q" :loading="store.loading"
+        dense flat bordered wrap-cells :filter="store.params.q" :loading="store.loading || store.loadingSave"
         :rows-per-page-options="[10, 50, 100]">
         <template #loading>
           <q-inner-loading showing color="warning" />
@@ -218,7 +218,7 @@ async function PrintData(row) {
 
 function editDataPangusulan(row) {
   // console.log('edit data', row)
-
+  store.loadingSave = true
   store.form = {
     // ...row,
     notrans: row.notrans,
@@ -235,6 +235,7 @@ function editDataPangusulan(row) {
   // console.log('store.rincians', store.rincians)
   router.push({ path: '/anggaran/pergeseran/rinci/form', replace: true, query: { id: row.id } })
   store.disableSaved = true
+  store.loadingSave = false
 }
 
 async function verifikasi(row) {

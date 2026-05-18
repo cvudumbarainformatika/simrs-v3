@@ -182,7 +182,7 @@
                 </div>
                 <div class="col flex-end content-center text-center q-pb-md">
                   <div class="items-center">
-                    Probolinggo, {{ dateFullFormat(store.cetaknotadinas.tglTrans) }}
+                    Probolinggo, {{ dateFullFormat(store.cetaknotadinas.tglSpm) }}
                   </div>
                   <div class="text-bold q-py-xs q-pt-sm">
                     Bendahara Pengeluaran
