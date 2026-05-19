@@ -413,7 +413,27 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
         }
         saldo6.push(obj)
       }
-      saldo6.push(...Salbefore6)
+      // Merge saldo6 dan Salbefore6 berdasarkan kodereqs untuk menghindari double counting
+      const allsaldo6 = [...saldo6, ...Salbefore6]
+      const uniquekodereqs6 = [...new Set(allsaldo6.map((x) => x.kodereqs))]
+      const mergedSaldo6 = []
+      for (const k6 of uniquekodereqs6) {
+        const filtered = allsaldo6.filter((x) => x.kodereqs === k6)
+        const totalDebit = filtered.reduce((a, b) => a + (parseFloat(b.debit) || 0), 0)
+        const totalKredit = filtered.reduce((a, b) => a + (parseFloat(b.kredit) || 0), 0)
+        mergedSaldo6.push({
+          tanggal: filtered[0].tanggal,
+          notrans: '',
+          kodereqs: k6,
+          kode: k6,
+          kegiatan: 'SALDO AWAL PERIODE',
+          keterangan: '',
+          debit: totalDebit,
+          kredit: totalKredit
+        })
+      }
+      saldo6.length = 0
+      saldo6.push(...mergedSaldo6)
       // console.log('coba saldo', saldo6)
       const saldo5 = []
       const unsaldo5 = arrsaldoawal.map((x) => x.kode6)
@@ -515,12 +535,24 @@ export const useBukubesarStore = defineStore('Buku_besarakuntansi', {
 
       // HASIL DATA SALDO AWAL LEVEL 5 kebawah//
       const salsebelum5 = this.hasilSal5
-      if (this.hasilSal5?.length === 0) {
-        bukuSaldo5.push(...saldo5, ...saldo4, ...saldo3, ...saldo2)
+      bukuSaldo5.push(...salsebelum5, ...saldo5, ...saldo4, ...saldo3, ...saldo2)
+      // Merge berdasarkan kodereqs untuk menghindari double counting
+      const uniquekodereqs5 = [...new Set(bukuSaldo5.map((x) => x.kodereqs))]
+      const mergedBukuSaldo5 = []
+      for (const k5 of uniquekodereqs5) {
+        const filtered = bukuSaldo5.filter((x) => x.kodereqs === k5)
+        const totalDebit = filtered.reduce((a, b) => a + (parseFloat(b.debit) || 0), 0)
+        const totalKredit = filtered.reduce((a, b) => a + (parseFloat(b.kredit) || 0), 0)
+        mergedBukuSaldo5.push({
+          kodereqs: k5,
+          kode: filtered[0]?.kode ?? '',
+          uraian: filtered[0]?.uraian ?? 'SALDO AWAL PERIODE',
+          debit: totalDebit,
+          kredit: totalKredit
+        })
       }
-      else {
-        bukuSaldo5.push(...salsebelum5, ...saldo5, ...saldo4, ...saldo3, ...saldo2)
-      }
+      bukuSaldo5.length = 0
+      bukuSaldo5.push(...mergedBukuSaldo5)
 
       const filtersaldo5 = bukuSaldo5.filter(x => x.kodereqs === this.reqs.rekenings)
       const set5akhir = []

@@ -105,6 +105,14 @@
               </div>
             </div>
           </div>
+
+          <div v-if="permintaan?.rincians?.length" class="q-my-sm flex justify-end">
+            <!-- {{ permintaan?.rincians[0] }} -->
+            <q-btn v-if="permintaan?.rincians[0]?.view_url" label="Lihat View PACS" color="dark" @click="() => {
+              viewUrl = permintaan?.rincians[0]?.view_url
+              isView = true
+            }" />
+          </div>
         </q-banner>
       </q-list>
 
@@ -120,7 +128,7 @@
       {{ props?.pasien?.duplicates?.details[0]?.permintaans?.join(', ') }}
       <div>
         Pada Nota Permintaan :
-        <b>{{ props?.pasien?.duplicates?.details[0]?.items?.map(item => item?.nota).join(', ') }}</b>
+        <b>{{props?.pasien?.duplicates?.details[0]?.items?.map(item => item?.nota).join(', ')}}</b>
       </div>
     </div>
 
@@ -282,6 +290,9 @@
 
   </q-card>
 
+
+  <DialogView v-model="isView" :viewerUrl="viewUrl" />
+
 </template>
 
 <script setup>
@@ -294,6 +305,7 @@ import { formatRp } from 'src/modules/formatter'
 import { notifErrVue } from 'src/modules/utils'
 
 import PrintModal from './PrintModal.vue'
+import DialogView from './DialogView.vue'
 
 const props = defineProps({
   pasien: {
@@ -324,6 +336,8 @@ const { permintaan, listPermintaans, ukurans, } = storeToRefs(storePermintaan)
 const refDialogPrint = ref(null)
 const isActive = ref(null)
 const isPrint = ref(false)
+const isView = ref(false)
+const viewUrl = ref(null)
 
 
 function formatDate(dateStr) {

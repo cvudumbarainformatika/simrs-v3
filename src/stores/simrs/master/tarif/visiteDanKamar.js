@@ -11,7 +11,7 @@ export const useMasterVisiteDanKamarStore = defineStore('master_visite_dan_kamar
     items: [],
     meta: {},
     params: {
-      nmtindakan: '',
+      q: '',
       per_page: 10,
       page: 1
     },
@@ -90,7 +90,7 @@ export const useMasterVisiteDanKamarStore = defineStore('master_visite_dan_kamar
       this.getDataTable()
     },
     setSearch (payload) {
-      this.params.nmtindakan = payload
+      this.params.q = payload
       this.params.page = 1
       this.getDataTable()
     },
@@ -144,13 +144,15 @@ export const useMasterVisiteDanKamarStore = defineStore('master_visite_dan_kamar
       this.setForm('flag', 'edit')
       // console.log('edit data', key)
     },
-    deletesData (payload) {
+    deletesData (payload, param) {
       // console.log('delete data', payload)
 
       const besok = date.addToDate(new Date(), { days: 1 })
       const data = {
         kdtindakan: payload.kdtindakan,
-        tgl_mulai_berlaku: date.formatDate(besok, 'YYYY-MM-DD')
+        tgl_mulai_berlaku: date.formatDate(besok, 'YYYY-MM-DD'),
+        id: payload.id,
+        action: param
       }
       this.deleteData(data)
     },
@@ -159,6 +161,7 @@ export const useMasterVisiteDanKamarStore = defineStore('master_visite_dan_kamar
 
       const besok = date.addToDate(new Date(), { days: 1 })
       const data = {
+        id: payload.id,
         kdtindakan: payload.kdtindakan,
         tgl_mulai_berlaku: date.formatDate(besok, 'YYYY-MM-DD')
       }

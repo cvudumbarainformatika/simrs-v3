@@ -11,7 +11,7 @@
       </div>
     </q-card>
     <div class="row items-center full-width">
-      <div class="col-6">
+      <div class="col-6 relative-position">
         <div class="row fit q-pa-none items-center q-col-gutter-md">
           <div class="col-auto">
             <q-avatar size="40px">
@@ -36,6 +36,19 @@
               <span class="text-grey-8 q-ml-md"> <b>Kelamin : </b><i>{{ item?.kelamin }}</i></span>
             </div>
           </div>
+
+          <div class="absolute-right">
+            <!-- <q-btn v-if="item?.rinciansementara[0]?.relmasterpemeriksaan?.alat" outline rounded size="xs" padding="xs"
+              color="dark">
+              <div>PACS</div>
+            </q-btn> -->
+            <q-badge v-if="item?.rinciansementara[0]?.relmasterpemeriksaan?.alat" outline align="middle" color="teal"
+              class="" style="max-width: 250px;">
+              <div class="ellipsis">
+                PACS
+              </div>
+            </q-badge>
+          </div>
         </div>
       </div>
       <div class="col-6">
@@ -51,6 +64,7 @@
                     item?.rinciansementara[0]?.relmasterpemeriksaan?.rs3 || '-' }})</div>
               </q-btn>
             </div>
+
           </div>
           <div class="col full-width flex wrap ellipsis">
 
@@ -105,6 +119,8 @@
           </div>
         </div>
       </div>
+
+
     </div>
   </q-item>
 </template>

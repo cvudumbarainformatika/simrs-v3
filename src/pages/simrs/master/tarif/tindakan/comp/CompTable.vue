@@ -514,10 +514,19 @@ function deleteOne (item) {
   Dialog.create({
     title: 'Peringatan',
     message: 'Apakah Data ini akan dihapus?',
+    options: {
+      type: 'radio',
+      model: 'delete',
+      items: [
+        { label: 'Hapus Data perubahan (Data Ini akan dihapus)', value: 'delete' },
+        { label: 'Set Hapus (Data Ini akan menjadi dasar penghapusan tindakan)', value: 'archive' }
+      ]
+    },
     cancel: true
     // persistent: true
-  }).onOk(() => {
-    emits('delete', item)
+  }).onOk((val) => {
+    console.log('delete', item, val)
+    emits('delete', item, val)
   }).onCancel(() => {
     console.log('Cancel')
     selected.value = []
@@ -543,7 +552,7 @@ function undeleteOne (item) {
 function BerlakuDiRuangan (item) {
   const ruangans = item?.ruangan.split('|')
   const ruang = []
-  if (ruangans?.length > 1) {
+  if (ruangans?.length >= 1) {
     ruangans.forEach(element => {
       if (element != '') {
         const poli = props?.polis?.find(x => x?.kodepoli == element)
