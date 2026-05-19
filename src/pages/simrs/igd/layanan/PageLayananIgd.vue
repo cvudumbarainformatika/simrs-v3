@@ -158,10 +158,17 @@ const menus = ref([
     comp: shallowRef(defineAsyncComponent(() => import('../layanan/uploaddokumen/IndexPage.vue')))
   },
   {
+    name: 'visum',
+    label: 'Visum',
+    icon: 'icon-my-medication',
+    route: ['igd'],
+    comp: shallowRef(defineAsyncComponent(() => import('../layanan/visum/IndexPage.vue')))
+  },
+  {
     name: 'e-dokumen-page',
     label: 'Dokumen RM & Billing',
     icon: 'icon-mat-print',
-    route: ['igd', 'mpp','rekammedik'],
+    route: ['igd', 'mpp', 'rekammedik'],
     comp: shallowRef(defineAsyncComponent(() => import('../../igd/layanan/dokumen/DokumenPage.vue')))
   }
 ])
@@ -173,15 +180,15 @@ const filteredMenus = ref([])
 
 const inacbg = useInacbgIgd()
 
-function menuDiganti (val) {
+function menuDiganti(val) {
   menu.value = val
 }
 
-function historyPasien () {
+function historyPasien() {
   drawerRight.value = !drawerRight.value
 }
 
-function getIcare () {
+function getIcare() {
   store.getDataIcare(props.pasien).then(resp => {
     if (resp) {
       window.open(resp?.response?.url, '_blank')
