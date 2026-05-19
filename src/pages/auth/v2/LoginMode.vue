@@ -74,7 +74,8 @@ const auth = useAuthStore()
 const store = useIdentityStore()
 const $q = useQuasar()
 
-const isMobile = ref($q.platform.is.mobile)
+// const isMobile = ref($q.platform.is.mobile)
+const isMobile = ref(false)
 
 defineProps({
   mode: {
@@ -94,6 +95,7 @@ const img = computed(() => {
 onMounted(() => {
   store.makeQr()
   // console.log('login', $q)
+  console.log('login', $q)
 })
 
 </script>
