@@ -234,12 +234,23 @@ const props = defineProps({
 
 const qrUrl = computed(() => {
   const noreg = props?.pasien?.noreg// noreg
-  const dok = 'Reseume-Medis.png'
-  const asal = 'RAWAT JALAN'
-  const enc = btoa(`${noreg}|${dok}|${asal}`)
+  const dok = 'Triage.png'
+  const asal = 'IGD'
+  const petugas = props?.pasien?.kodedokter ?? null
+  const enc = btoa(`${noreg}|${dok}|${asal}|${petugas}`)
   return `https://rsud.probolinggokota.go.id/dokumen-simrs/legalitas/${enc}`
   // return `https://xenter.my.id/qr-document?noreg=${noreg}&dokumen=${dok}&asal=${asal}`
 })
+
+
+// const qrUrl = computed(() => {
+//   const noreg = props?.pasien?.noreg// noreg
+//   const dok = 'Reseume-Medis.png'
+//   const asal = 'RAWAT JALAN'
+//   const enc = btoa(`${noreg}|${dok}|${asal}`)
+//   return `https://rsud.probolinggokota.go.id/dokumen-simrs/legalitas/${enc}`
+//   // return `https://xenter.my.id/qr-document?noreg=${noreg}&dokumen=${dok}&asal=${asal}`
+// })
 
 const lists = computed(() => {
   const arr = props.pasien?.triage

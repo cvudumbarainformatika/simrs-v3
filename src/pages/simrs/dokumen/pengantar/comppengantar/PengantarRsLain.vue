@@ -3,75 +3,35 @@
     <!-- input -->
     <div class="row q-col-gutter-sm q-mb-xs">
       <div class="col-6">
-        <app-input
-          v-model="norujukan"
-          label="no rujukan"
-          outlined
-        />
+        <app-input v-model="norujukan" label="no rujukan" outlined />
       </div>
       <div class="col-6">
-        <app-input
-          v-model="faskes"
-          label="Faskes rujukan"
-          outlined
-        />
+        <app-input v-model="faskes" label="Faskes rujukan" outlined />
       </div>
     </div>
     <div class="row q-col-gutter-sm q-mb-xs">
       <div class="col-12">
-        <app-input
-          v-model="diberi"
-          label="Diberi"
-          outlined
-        />
+        <app-input v-model="diberi" label="Diberi" outlined />
       </div>
     </div>
     <div class="row q-col-gutter-sm q-mb-xs">
       <div class="col-6">
-        <app-input-date
-          :model="berangkat"
-          label="jam berangkat"
-          outlined
-          :type-date="false"
-          @set-model="val=>berangkat=val"
-        />
+        <app-input-date :model="berangkat" label="jam berangkat" outlined :type-date="false"
+          @set-model="val => berangkat = val" />
       </div>
       <div class="col-6">
-        <app-input-date
-          :model="tiba"
-          label="jam tiba"
-          outlined
-          :type-date="false"
-          @set-model="val=>tiba=val"
-        />
+        <app-input-date :model="tiba" label="jam tiba" outlined :type-date="false" @set-model="val => tiba = val" />
       </div>
     </div>
-    <q-bar
-      dense
-      class="bg-white q-mt-lg"
-    >
+    <q-bar dense class="bg-white q-mt-lg">
       <q-space />
-      <q-btn
-        ref="refPrint"
-        v-print="printObj"
-        unelevated
-        color="dark"
-        round
-        size="sm"
-        icon="icon-mat-print"
-      >
-        <q-tooltip
-          class="primary"
-          :offset="[10, 10]"
-        >
+      <q-btn ref="refPrint" v-print="printObj" unelevated color="dark" round size="sm" icon="icon-mat-print">
+        <q-tooltip class="primary" :offset="[10, 10]">
           Print
         </q-tooltip>
       </q-btn>
     </q-bar>
-    <div
-      id="printMe"
-      class="full-width"
-    >
+    <div id="printMe" class="full-width">
       <KopSuratPage />
       <!-- isi -->
       <div>
@@ -135,47 +95,32 @@
             Dengan Anamnesa
           </div>
           <div class="col-8">
-            <q-list
-              class="bg-white"
-              separator
-            >
+            <q-list class="bg-white" separator>
               <transition-group name="list">
-                <q-item
-                  v-for="(item , n) in pasien?.anamnesis"
-                  :key="n"
-                  class="list-move q-pa-none"
-                >
+                <q-item v-for="(item, n) in pasien?.anamnesis" :key="n" class="list-move q-pa-none">
                   <q-item-section class="">
-                    <q-item-label
-                      lines="2"
-                      class="f-12"
-                    >
+                    <q-item-label lines="2" class="f-12">
                       <span class="">Keluhan Utama </span> : <span class="text-weight-bold">{{ item?.rs4 }}</span>
                     </q-item-label>
-                    <q-item-label
-                      lines="2"
-                    >
-                      <span class="">Riwayat Penyakit (Sekarang) </span> : <span class="text-weight-bold">{{ item?.riwayatpenyakitsekarang }}</span>
+                    <q-item-label lines="2">
+                      <span class="">Riwayat Penyakit (Sekarang) </span> : <span class="text-weight-bold">{{
+                        item?.riwayatpenyakitsekarang }}</span>
                     </q-item-label>
-                    <q-item-label
-                      lines="2"
-                    >
-                      <span class="">Riwayat Penyakit </span> : <span class="text-weight-bold">{{ item?.riwayatpenyakit }}</span>
+                    <q-item-label lines="2">
+                      <span class="">Riwayat Penyakit </span> : <span class="text-weight-bold">{{ item?.riwayatpenyakit
+                      }}</span>
                     </q-item-label>
-                    <q-item-label
-                      lines="2"
-                    >
-                      <span class="">Riwayat Alergi </span> : <span class="text-weight-bold">{{ item?.riwayatalergi }}</span>
+                    <q-item-label lines="2">
+                      <span class="">Riwayat Alergi </span> : <span class="text-weight-bold">{{ item?.riwayatalergi
+                      }}</span>
                     </q-item-label>
-                    <q-item-label
-                      lines="2"
-                    >
-                      <span class="">Reaksi berupa </span> : <span class="text-weight-bold">{{ item?.keteranganalergi }}</span>
+                    <q-item-label lines="2">
+                      <span class="">Reaksi berupa </span> : <span class="text-weight-bold">{{ item?.keteranganalergi
+                      }}</span>
                     </q-item-label>
-                    <q-item-label
-                      lines="2"
-                    >
-                      <span class="">Riwayat Pengobatan</span> : <span class="text-weight-bold">{{ item?.riwayatpengobatan }}</span>
+                    <q-item-label lines="2">
+                      <span class="">Riwayat Pengobatan</span> : <span class="text-weight-bold">{{
+                        item?.riwayatpengobatan }}</span>
                     </q-item-label>
                     <q-separator class="q-my-xs" />
                     <!--
@@ -194,16 +139,12 @@
                       <div>- Kondisi Khusus : <em>{{ item?.kondisikhusus }}</em> <b>Skor : {{ item?.skor }}</b> </div>
                     </q-item-label>
                     -->
-                    <q-item-label
-                      lines="1"
-                    >
+                    <q-item-label lines="1">
                       <span class="text-weight-bold">Keluhan Nyeri</span>
                     </q-item-label>
-                    <q-item-label
-                      lines="7"
-                    >
+                    <q-item-label lines="7">
                       <div>
-                        - Skor Nyeri : <b>{{ item?.scorenyeri??'-' }}</b>
+                        - Skor Nyeri : <b>{{ item?.scorenyeri ?? '-' }}</b>
 
                         <em class="text-primary q-ml-sm"> {{ item?.keteranganscorenyeri ?? '-' }}</em>
                       </div>
@@ -220,13 +161,10 @@
             Diagnosa Sementara
           </div>
           <div class="col-8">
-            <div
-              v-for="(item,i) in pasien?.diagnosa"
-              :key="i"
-              class="row"
-            >
+            <div v-for="(item, i) in pasien?.diagnosa" :key="i" class="row">
               <div class="col-12">
-                {{ item?.masterdiagnosa?.rs1 }} {{ item?.masterdiagnosa?.diagnosa??item?.masterdiagnosa?.rs4 }} <span v-if="item?.jenisdiagnosa">({{ item?.jenisdiagnosa }})</span>
+                {{ item?.masterdiagnosa?.rs1 }} {{ item?.masterdiagnosa?.diagnosa ?? item?.masterdiagnosa?.rs4 }} <span
+                  v-if="item?.jenisdiagnosa">({{ item?.jenisdiagnosa }})</span>
               </div>
             </div>
           </div>
@@ -247,43 +185,74 @@
       </div>
       <!-- bottom -->
       <div class="q-mt-lg">
+
         <div class="row">
-          <div class="col-4" />
-          <div class="col-4" />
+          <div class="col-4"></div>
+          <div class="col-4"></div>
+
           <div class="col-4 text-center">
-            Probolinggo, {{ date.formatDate(Date.now(),'DD MMMM YYYY') }}
+            Probolinggo,
+            {{ date.formatDate(Date.now(), 'DD MMMM YYYY') }}
           </div>
         </div>
-        <div class="row">
+
+        <div class="row q-mt-md">
+
+          <!-- DOKTER -->
+          <div class="col-4 column items-center">
+
+            <div class="text-center">
+              Dokter Pengirim,
+            </div>
+
+            <div style="width: 90px;" class="q-my-sm">
+              <vue-qrcode :value="qrDokter" tag="svg" :options="{
+                errorCorrectionLevel: 'Q',
+                color: {
+                  dark: '#000000',
+                  light: '#ffffff'
+                },
+                margin: 0
+              }" />
+            </div>
+
+            <div class="text-center q-mt-md">
+              {{ props?.pasien?.dokter }}
+            </div>
+
+          </div>
+
+          <!-- PETUGAS -->
           <div class="col-4 text-center">
-            Dokter Pengirim,
+            <div>Petugas RS Rujukan</div>
+
+            <div style="height:120px"></div>
+
+            <div>
+              ( ......................................................... )
+            </div>
           </div>
-          <div class="col-4  text-center">
-            Petugas RS Rujukan
-          </div>
+
+          <!-- KELUARGA -->
           <div class="col-4 text-center">
-            Peserta / Keluarga
+            <div>Peserta / Keluarga</div>
+
+            <div style="height:120px"></div>
+
+            <div>
+              ( ......................................................... )
+            </div>
           </div>
+
         </div>
-        <div class="row q-my-xl" />
-        <div class="row q-mt-xl">
-          <div class="col-4 text-center">
-            {{ props?.pasien?.dokter }}
-          </div>
-          <div class="col-4 text-center">
-            ( ......................................................... )
-          </div>
-          <div class="col-4 text-center">
-            ( ......................................................... )
-          </div>
-        </div>
+
       </div>
     </div>
   </div>
 </template>
 <script setup>
 import { date } from 'quasar'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import KopSuratPage from '../../surat/compsurat/KopSuratPage.vue'
 // eslint-disable-next-line no-unused-vars
 const props = defineProps({
@@ -314,13 +283,24 @@ const printObj = {
   popTitle: 'Surat Pengantar Peserta BPJS'
 
 }
+
+const qrDokter = computed(() => {
+  const noreg = props?.pasien?.noreg// noreg
+  const dok = 'Surat Rujukan Peserta BPJS.png'
+  const asal = 'RAWAT JALAN'
+  const petugas = props?.pasien?.kddokter ?? null
+  const enc = btoa(`${noreg}|${dok}|${asal}|${petugas}`)
+  return `https://rsud.probolinggokota.go.id/dokumen-simrs/legalitas/${enc}`
+  // return `https://xenter.my.id/qr-document?noreg=${noreg}&dokumen=${dok}&asal=${asal}`
+})
 </script>
 <style lang="scss" scoped>
-.endas{
+.endas {
   border-bottom: 1px black solid;
   font-size: 24px;
 }
-.indent{
+
+.indent {
   text-indent: 50px;
 }
 </style>

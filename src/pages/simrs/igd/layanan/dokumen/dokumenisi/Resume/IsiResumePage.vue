@@ -296,6 +296,7 @@
         </div>
       </div>
     </div>
+
     <q-separator class=" q-mt-sm q-mb-sm" style="border-top: 1px solid black;" />
     <div class="row q-mt-xl q-mb-xl">
       <div class="col-6">
@@ -331,6 +332,7 @@
       </div>
     </div>
   </div>
+  <pre>{{ props?.pasien }}</pre>
 </template>
 <script setup>
 import { formatRp } from 'src/modules/formatter';
@@ -343,25 +345,21 @@ const props = defineProps({
   pasien: { type: Object, default: () => { } }
 })
 
-// const qrDokter = computed(() => {
-//   const noreg = props?.pasien?.noreg// noreg
-//   const dok = 'SUMMARY.png'
-//   const asal = 'RANAP'
-//   const petugas = props?.pasien?.kddokter ?? null
-//   const enc = btoa(`${noreg}|${dok}|${asal}|${petugas}`)
-//   return `https://rsud.probolinggokota.go.id/dokumen-simrs/legalitas/${enc}`
-//   // return `https://xenter.my.id/qr-document?noreg=${noreg}&dokumen=${dok}&asal=${asal}`
-// })
 
 const qrDokter = computed(() => {
+  // const petugas = 'Nama : ' + dpjp?.value?.nama ?? '' + 'NIP : ' + dpjp?.value?.nip ?? ''
+  // const enc = btoa(`${petugas}`)
+  // return `${enc}`
+
   const noreg = props?.pasien?.noreg// noreg
-  const dok = 'DOKUMEN RESUME.png'
-  const asal = 'IGD'
-  const petugas = props?.pasien?.kddokter ?? null
+  const dok = 'RESUME.png'
+  const asal = 'RAWAT JALAN'
+  const petugas = props?.pasien?.kddokter ?? props?.pasien?.kodedokter ?? null
   const enc = btoa(`${noreg}|${dok}|${asal}|${petugas}`)
   return `https://rsud.probolinggokota.go.id/dokumen-simrs/legalitas/${enc}`
-  // return `https://xenter.my.id/qr-document?noreg=${noreg}&dokumen=${dok}&asal=${asal}`
+
 })
+
 
 const dataanamnesis = props?.pasien?.anamnesis
 const hasilanamnesis = dataanamnesis?.filter(item => {

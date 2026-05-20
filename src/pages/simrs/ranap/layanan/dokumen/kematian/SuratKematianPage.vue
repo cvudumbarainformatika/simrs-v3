@@ -252,9 +252,6 @@ const diagnosa = ref(null)
 const diag = useDiagnosaStore()
 
 const qrDokter = computed(() => {
-  // const petugas = 'Nama : ' + dpjp?.value?.nama ?? '' + 'NIP : ' + dpjp?.value?.nip ?? ''
-  // const enc = btoa(`${petugas}`)
-  // return `${enc}`
 
   const noreg = props?.pasien?.noreg// noreg
   const dok = 'SURAT-KEMATIAN.png'

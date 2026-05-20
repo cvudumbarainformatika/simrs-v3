@@ -239,7 +239,7 @@
       </div>
     </div>
 
-    <div class="row q-mt-xl justify-end">
+    <!-- <div class="row q-mt-xl justify-end">
       <div class="col-6">
         <div class="text-center text-weight-bold">
           Probolinggo, {{ date.formatDate(Date.now(), 'DD MMMM YYYY') }}
@@ -261,7 +261,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
 
 </template>
