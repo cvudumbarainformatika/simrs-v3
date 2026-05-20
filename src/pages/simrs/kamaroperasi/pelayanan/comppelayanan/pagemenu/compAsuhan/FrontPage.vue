@@ -1,7 +1,7 @@
 <template>
   <div class="row fit relative-position">
-    <div class="absolute-top columm fit q-pa-xs" style="padding-bottom: 41px;">
-      <div class="col-auto">
+    <div class="absolute-top column fit q-pa-xs" style="padding-bottom: 41px; ">
+      <div class="col-auto" style="z-index: 10;">
         <q-tabs v-model="tab" dense no-caps inline-label narrow-indicator indicator-color="transparent" align="left"
           class=" bg-transparent text-grey-8" active-color="white" active-bg-color="dark">
           <q-tab v-for="tb in tabs" :key="tb.name" :ripple="true" :name="tb?.name" content-class="tab-classes">
@@ -14,10 +14,11 @@
           </q-tab>
         </q-tabs>
       </div>
-      <div class="col full-height">
+      <div class="col-auto full-height">
         <q-tab-panels v-model="tab" animated class="bg-transparent q-pa-none relative-position">
           <!-- PANEL -->
-          <q-tab-panel :name="menu?.name" class="q-pa-none">
+          <q-tab-panel :name="menu?.name" class="q-pa-none"
+            style="height: calc(100vh - 100px); overflow-y: auto; margin-top: 40px;">
             <component :is="menu?.comp" :pasien="pasien" />
           </q-tab-panel>
         </q-tab-panels>
