@@ -67,31 +67,31 @@
       <div class="q-pl-sm q-mt-md">
         <div class="q-pl-md">
           1. Kepala : <span class="text-weight-bold"> {{ props?.pasien?.pemeriksaanfisikpsikologidll[0]?.rs5 ?? '-'
-          }}</span>
+            }}</span>
         </div>
         <div class="q-pl-md">
           2. Leher : <span class="text-weight-bold"> {{ props?.pasien?.pemeriksaanfisikpsikologidll[0]?.rs6 ?? '-'
-          }}</span>
+            }}</span>
         </div>
         <div class="q-pl-md">
           3. Dada : <span class="text-weight-bold"> {{ props?.pasien?.pemeriksaanfisikpsikologidll[0]?.rs7 ?? '-'
-          }}</span>
+            }}</span>
         </div>
         <div class="q-pl-md">
           4. Punggung : <span class="text-weight-bold"> {{ props?.pasien?.pemeriksaanfisikpsikologidll[0]?.rs8 ?? '-'
-          }}</span>
+            }}</span>
         </div>
         <div class="q-pl-md">
           5. Perut : <span class="text-weight-bold"> {{ props?.pasien?.pemeriksaanfisikpsikologidll[0]?.rs9 ?? '-'
-          }}</span>
+            }}</span>
         </div>
         <div class="q-pl-md">
           6. Tangan : <span class="text-weight-bold"> {{ props?.pasien?.pemeriksaanfisikpsikologidll[0]?.rs10 ?? '-'
-          }}</span>
+            }}</span>
         </div>
         <div class="q-pl-md">
           7. Kaki : <span class="text-weight-bold"> {{ props?.pasien?.pemeriksaanfisikpsikologidll[0]?.rs11 ?? '-'
-          }}</span>
+            }}</span>
         </div>
         <div class="q-pl-md">
           8. Status Neurologis : <span class="text-weight-bold"> {{
@@ -118,7 +118,7 @@
           <div class="q-pl-lg q-gutter-xs row">
             <div v-for="(radiologi, l) in props?.pasien?.radiologi" :key="l">
               <q-badge outline color="black">{{ radiologi?.rs4
-                }}</q-badge>
+              }}</q-badge>
             </div>
           </div>
         </div>
@@ -248,8 +248,44 @@
           </div>
         </div>
       </div>
-      <q-separator class="q-mt-md" />
-      <div class="row items-center no-wrap q-mt-xl q-pt-md">
+      <q-separator class=" q-mt-sm q-mb-sm" style="border-top: 1px solid;" />
+      <div class="row q-mt-xl q-mb-xl">
+        <div class="col-6">
+          <div class="text-center text-weight-bold q-pt-md">
+            Pasien/Keluarga
+          </div>
+          <div class="text-center" style="height: 120px;">
+            <div class="signature-line">(......................................................................)</div>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="text-center text-weight-bold">
+            Probolinggo, {{ date.formatDate(Date.now(), 'DD MMMM YYYY') }}
+          </div>
+          <div class="text-center text-weight-bold q-mt-xs">
+            Dokter
+          </div>
+          <div class="col-6 text-weight-bold text-center">
+
+            <div class="column flex-center q-mt-md">
+              <div style="width: 100px;">
+                <vue-qrcode :value="qrUrl" tag="svg" :options="{
+                  errorCorrectionLevel: 'Q',
+                  color: {
+                    dark: '#000000',
+                    light: '#ffffff',
+                  },
+                  margin: 0
+                }" />
+              </div>
+              <div class="q-mt-sm text-weight-bold text-center">
+                {{ pasien.dokter }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- <div class="row items-center no-wrap q-mt-xl q-pt-md">
         <div class="col-6 text-center " />
         <div class="col-6 text-weight-bold text-center">
           Probolinggo, {{ date.formatDate(Date.now(), 'DD MMMM YYYY') }}
@@ -283,7 +319,7 @@
         <div class="col-6 text-weight-bold text-center">
           {{ pasien.dokter }}
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -300,10 +336,21 @@ const props = defineProps({
 
 const qrUrl = computed(() => {
   const noreg = props?.pasien?.noreg// noreg
-  const dok = 'Reseume-Medis.png'
-  const asal = 'IGD'
-  const enc = btoa(`${noreg}|${dok}|${asal}`)
+  const dok = 'Pengkajian Awal Medis.png'
+  const asal = 'RAWAT JALAN'
+  const petugas = props?.pasien?.kddokter ?? props?.pasien?.kodedokter ?? null
+  const enc = btoa(`${noreg}|${dok}|${asal}|${petugas}`)
   return `https://rsud.probolinggokota.go.id/dokumen-simrs/legalitas/${enc}`
   // return `https://xenter.my.id/qr-document?noreg=${noreg}&dokumen=${dok}&asal=${asal}`
 })
 </script>
+<style lang="scss" scoped>
+.garis-bawah-dablue {
+  border-bottom: 1px solid rgb(56, 150, 239);
+  border-bottom-style: dashed;
+}
+
+.signature-line {
+  padding-top: 130px;
+}
+</style>

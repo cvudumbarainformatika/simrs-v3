@@ -27,7 +27,7 @@
         <app-loading />
       </div>
     </div>
-    <div v-else class="q-pa-sm">
+    <div v-else class="q-pa-sm" style="padding-bottom: 108px;">
       <div id="printMe" class="q-pa-lg bg-white print-area">
         <KopSurat :judul="props?.judul ?? 'Observasi Penderita'" :pasien="props?.pasien" :jangantampil="false" />
 

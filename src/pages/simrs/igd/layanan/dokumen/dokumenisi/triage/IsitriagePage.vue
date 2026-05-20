@@ -184,11 +184,11 @@
       </table>
       <div class="row q-mt-xl q-mb-xl">
         <div class="col-6">
-          <div class="text-center text-weight-bold">
+          <div class="text-center text-weight-bold q-pt-md">
             Pasien/Keluarga
           </div>
           <div class="text-center" style="height: 120px;">
-            <div class="signature-line">(..........................)</div>
+            <div class="signature-line">(......................................................................)</div>
           </div>
         </div>
         <div class="col-6">
@@ -235,7 +235,7 @@ const props = defineProps({
 const qrUrl = computed(() => {
   const noreg = props?.pasien?.noreg// noreg
   const dok = 'Triage.png'
-  const asal = 'IGD'
+  const asal = 'RAWAT JALAN'
   const petugas = props?.pasien?.kodedokter ?? null
   const enc = btoa(`${noreg}|${dok}|${asal}|${petugas}`)
   return `https://rsud.probolinggokota.go.id/dokumen-simrs/legalitas/${enc}`
@@ -304,7 +304,7 @@ function hamil(val) {
 }
 
 .signature-line {
-  padding-top: 95px;
+  padding-top: 130px;
 }
 
 @media print {

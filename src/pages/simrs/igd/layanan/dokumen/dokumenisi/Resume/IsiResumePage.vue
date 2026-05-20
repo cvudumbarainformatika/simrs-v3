@@ -290,7 +290,7 @@
             <span v-else-if="carakeluar?.rs4 === 'Rawat Inap'">{{ carakeluar?.rs4 }} Ke {{
               carakeluar?.planranap?.ruangranap?.rs2 }}</span>
             <span v-else-if="carakeluar?.rs4 === 'Rujuk'">{{ carakeluar?.rs4 }} Ke {{ carakeluar?.transrujukan?.rs7
-            }}</span>
+              }}</span>
             <span v-else></span>
           </div>
         </div>
@@ -300,11 +300,11 @@
     <q-separator class=" q-mt-sm q-mb-sm" style="border-top: 1px solid black;" />
     <div class="row q-mt-xl q-mb-xl">
       <div class="col-6">
-        <div class="text-center text-weight-bold">
+        <div class="text-center text-weight-bold q-pt-md">
           Pasien/Keluarga
         </div>
         <div class="text-center" style="height: 120px;">
-          <div class="signature-line">(..........................)</div>
+          <div class="signature-line">(......................................................................)</div>
         </div>
       </div>
       <div class="col-6">
@@ -332,7 +332,7 @@
       </div>
     </div>
   </div>
-  <pre>{{ props?.pasien }}</pre>
+  <!-- <pre>{{ props?.pasien }}</pre> -->
 </template>
 <script setup>
 import { formatRp } from 'src/modules/formatter';
@@ -469,6 +469,6 @@ const nyeri = computed(() => {
 }
 
 .signature-line {
-  padding-top: 95px;
+  padding-top: 130px;
 }
 </style>
