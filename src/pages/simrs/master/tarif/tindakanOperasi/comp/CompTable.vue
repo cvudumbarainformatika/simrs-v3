@@ -18,7 +18,7 @@
         <th colspan="4" class="q-px-sm">
           Tarif 2
         </th>
-        <th colspan="3" class="q-px-sm">
+        <th colspan="4" class="q-px-sm">
           Poli
         </th>
         <th colspan="4" class="q-px-sm">
@@ -48,6 +48,7 @@
         <th>Tarif</th>
         <th>JS</th>
         <th>JP</th>
+        <th>Anastesi</th>
         <th>Tarif</th>
         <th>JS</th>
         <th>JP</th>
@@ -94,6 +95,9 @@
             <q-skeleton type="text" width="20px" height="14px" />
           </td>
 
+          <td>
+            <q-skeleton type="text" width="20px" height="14px" />
+          </td>
           <td>
             <q-skeleton type="text" width="20px" height="14px" />
           </td>
@@ -205,8 +209,13 @@
               </div>
             </td>
             <td class="text-end">
+              <div v-if="item?.rs15">
+                {{ formatRp(item?.rs15 ?? 0) }}
+              </div>
+            </td>
+            <td class="text-end">
               <div>
-                {{ formatRp(((item?.rs12 ?? 0) + (item?.rs13 ?? 0)) ?? 0) }}
+                {{ formatRp(((item?.rs12 ?? 0) + (item?.rs13 ?? 0) + (item?.rs15 ?? 0)) ?? 0) }}
               </div>
             </td>
 
@@ -305,7 +314,7 @@ const props = defineProps({
 })
 const emits = defineEmits(['editData', 'delete', 'undelete'])
 
-function deleteOne (item) {
+function deleteOne(item) {
   Dialog.create({
     title: 'Peringatan',
     message: 'Apakah Data ini akan dihapus?',
@@ -328,7 +337,7 @@ function deleteOne (item) {
     // console.log('I am triggered on both OK and Cancel')
   })
 }
-function undeleteOne (item) {
+function undeleteOne(item) {
   Dialog.create({
     title: 'Peringatan',
     message: 'Apakah Data ini akan di tampilkan kembali?',
@@ -343,7 +352,7 @@ function undeleteOne (item) {
     // console.log('I am triggered on both OK and Cancel')
   })
 }
-function sudahDiHapus (item) {
+function sudahDiHapus(item) {
   let tampil = true
   if (item?.tgl_hapus) {
     const hariIni = new Date()
@@ -354,7 +363,7 @@ function sudahDiHapus (item) {
   }
   return tampil
 }
-function lewatBerlaku (item) {
+function lewatBerlaku(item) {
   let tampil = true
   if (item?.tgl_mulai_berlaku) {
     const hariIni = new Date()

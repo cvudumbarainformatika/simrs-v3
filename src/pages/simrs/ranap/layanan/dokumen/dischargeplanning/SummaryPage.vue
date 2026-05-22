@@ -513,6 +513,7 @@
 import { computed, onMounted, ref } from 'vue'
 import { humanDate, jamTnpDetik, getNewLine } from 'src/modules/formatter.js'
 import { usePengunjungRanapStore } from 'src/stores/simrs/ranap/pengunjung'
+import { useAplikasiStore } from 'src/stores/app/aplikasi'
 // import { pathImg } from 'src/boot/axios'
 // import { imageToBase64 } from 'src/modules/imgBase64'
 
@@ -529,7 +530,7 @@ const props = defineProps({
 
 // console.log('props', props?.pasien);
 
-
+const auth = useAplikasiStore()
 const pengunjung = usePengunjungRanapStore()
 const ttdPasien = ref(null)
 
@@ -538,7 +539,7 @@ onMounted(() => {
   ttdPasien.value = summ?.ttdPasien
   // initTtd(summ)
 })
-
+console.log('auth', auth.user?.pegawai?.kdpegsimrs);
 const PRMRJ = computed(() => {
   const xx = props?.pasien?.skriningdischargeplannings?.length ? props?.pasien?.skriningdischargeplannings[0] : null
   const no9 = xx?.rs12 ?? null
@@ -568,7 +569,8 @@ const SUMMARY = computed(() => {
   const diag = props?.pasien?.summarydischargeplannings?.length ? props?.pasien?.summarydischargeplannings[0] : null
   return diag
 })
-
+// Hasil Summary array kosong
+console.log('SUMMARY', SUMMARY.value);
 const perawat = computed(() => {
   const diag = props?.pasien?.summarydischargeplannings?.length ? props?.pasien?.summarydischargeplannings[0] : null
   const petugas = diag?.user_input ?? null
@@ -577,6 +579,8 @@ const perawat = computed(() => {
   let nama = null
   if (petugas) {
     nama = pengunjung?.nakes?.find(x => x?.kdpegsimrs === petugas)?.nama ?? null
+  } else {
+    nama = auth.user?.pegawai?.nama ?? null
   }
   return nama
 })
@@ -620,7 +624,8 @@ const qrPerawat = computed(() => {
   const noreg = props?.pasien?.noreg// noreg
   const dok = 'SUMMARY.png'
   const asal = 'RANAP'
-  const petugas = SUMMARY?.value?.user_input ?? null
+  // const petugas = SUMMARY?.value?.user_input ?? null
+  const petugas = auth.user?.pegawai?.kdpegsimrs ?? null
   const enc = btoa(`${noreg}|${dok}|${asal}|${petugas}`)
   // console.log('enc', enc);
 

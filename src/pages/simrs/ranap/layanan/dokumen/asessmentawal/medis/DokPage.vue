@@ -391,8 +391,8 @@
 
         <div class="column flex-center ">
 
-          <div>DOKTER</div>
-          <div style="margin-top: -5px; margin-bottom: 10px;">DOCTOR</div>
+          <!-- <div>DOKTER</div> -->
+          <div style="margin-top: -5px; margin-bottom: 10px;">DOKTER</div>
 
           <div class="relative-position" style="width: 80px;">
             <vue-qrcode :value="qrDokter" tag="svg" :options="{
@@ -491,7 +491,7 @@ const qrDokter = computed(() => {
   const asal = 'RANAP'
   const petugas = dpjp?.value?.nip || null
   const enc = btoa(`${noreg}|${dok}|${asal}|${petugas}`)
-  return `${enc}`
+  return `https://rsud.probolinggokota.go.id/dokumen-simrs/legalitas/${enc}`
 })
 
 </script>

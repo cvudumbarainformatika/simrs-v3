@@ -878,7 +878,7 @@
             <div>
               Pasien / Keluarga
             </div>
-            <div class="relative-position" style="width: 80px;">
+            <!-- <div v-if="penerimanEdu?.ttdPenerima" class="relative-position" style="width: 80px;">
               <vue-qrcode :value="qrPenerima" tag="svg" :options="{
                 errorCorrectionLevel: 'Q',
                 color: {
@@ -887,7 +887,9 @@
                 },
                 margin: 0
               }" />
-              <!-- <img class="qrcode__image" src="~assets/logos/logo-rsud.png" alt="RSUD DOKTER MOHAMAD SALEH"> -->
+            </div> -->
+            <div class="column flex-center" style="height: 80px;">
+              ttd
             </div>
             <div class="text-wrap text-center">{{ penerimanEdu?.namaPenerima }}</div>
           </div>
@@ -970,10 +972,11 @@ const qrDokter = computed(() => {
   const noreg = props?.pasien?.noreg// noreg
   const dok = 'ASESSMENT-AWAL-KEPERAWATAN.png'
   const asal = 'RANAP'
-  const petugas = anamnesisAwal.value?.petugas?.nik || null
+  const petugas = anamnesisAwal.value?.petugas?.kdpegsimrs || null
   const enc = btoa(`${noreg}|${dok}|${asal}|${petugas}`)
-  return `${enc}`
+  return `https://rsud.probolinggokota.go.id/dokumen-simrs/legalitas/${enc}`
 })
+
 const qrPenerima = computed(() => {
   // console.log('user', user);
   const noreg = props?.pasien?.noreg// noreg
@@ -1002,6 +1005,7 @@ const anamnesisAwal = computed(() => {
 
   return awal
 })
+
 const edukasi = computed(() => {
   const edu = JSON.parse(pemeriksaanUmum.value?.edukasi)
   // console.log('edu', edu)
@@ -1079,7 +1083,9 @@ th {
 }
 
 
-
+.signature-line {
+  padding-top: 85px;
+}
 
 .print-page {
   // width: 100%;

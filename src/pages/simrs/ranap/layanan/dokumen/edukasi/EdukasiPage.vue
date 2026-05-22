@@ -309,8 +309,8 @@
               <td valign="top">{{ item?.tingkatPemahaman || '-' }}</td>
               <td valign="top">
 
-                <div v-if="item?.ttdPenerima" class="flex-center " style="width: 60px;">
-                  <div class="relative-position">
+                <div v-if="item?.ttdPenerima" class="flex-center" style="width: 60px;">
+                  <!-- <div class="relative-position">
                     <vue-qrcode :value="qrPenerima(item?.ttdPenerima)" tag="svg" :options="{
                       errorCorrectionLevel: 'Q',
                       color: {
@@ -320,6 +320,9 @@
                       margin: 0
                     }" />
                     <img class="qrcode__image" src="~assets/logos/logo-rsud.png" alt="RSUD DOKTER MOHAMAD SALEH">
+                  </div> -->
+                  <div class="f-8 column flex-center" style="height: 80px;">
+                    ttd
                   </div>
                   <div class="f-8 text-wrap text-center">{{ item?.namaPenerima }}</div>
                 </div>
@@ -418,16 +421,15 @@ const jenisPPA = (val) => {
 
 
 const qrPetugas = (user) => {
-  // console.log('user', user);
   const noreg = props?.pasien?.noreg// noreg
   const dok = 'KIE.png'
   const asal = 'RANAP'
-  const petugas = user?.nik ?? null
+  const petugas = user?.kdpegsimrs ?? null
   const enc = btoa(`${noreg}|${dok}|${asal}|${petugas}`)
   return `https://rsud.probolinggokota.go.id/dokumen-simrs/legalitas/${enc}`
 }
 const qrPenerima = (ttd) => {
-  // console.log('user', user);
+  console.log('ttd', ttd);
   const noreg = props?.pasien?.noreg// noreg
   const dok = 'KIE.png'
   const asal = 'RANAP'
@@ -537,7 +539,9 @@ td {
   margin-bottom: 8px;
 }
 
-
+.signature-line {
+  padding-top: 70px;
+}
 
 .print-page {
   background-color: #ffffff;

@@ -23,7 +23,7 @@ export const useMasterTindakanOperasiStore = defineStore('master_tindakan_operas
     allRuangs: []
   }),
   actions: {
-    resetForm () {
+    resetForm() {
       this.setForm('rs1', '')
       this.setForm('rs2', '')
       this.setForm('dasar_perubahan', '')
@@ -36,6 +36,7 @@ export const useMasterTindakanOperasiStore = defineStore('master_tindakan_operas
         'rs11',
         'rs12',
         'rs13',
+        'rs15',
         'ssp',
         'psp',
         'asp',
@@ -49,41 +50,41 @@ export const useMasterTindakanOperasiStore = defineStore('master_tindakan_operas
       // console.log('reset', date.formatDate(besok, 'YYYY-MM-DD'))
 
     },
-    setOpen () {
+    setOpen() {
       this.isOpen = !this.isOpen
     },
-    setForm (key, val) {
+    setForm(key, val) {
       this.form[key] = val
     },
-    setParams (key, val) {
+    setParams(key, val) {
       this.params[key] = val
     },
-    setPage (payload) {
+    setPage(payload) {
       this.params.page = payload
       this.getDataTable()
     },
-    setPerPage (payload) {
+    setPerPage(payload) {
       this.params.per_page = payload
       this.params.page = 1
       this.getDataTable()
     },
-    refreshTable () {
+    refreshTable() {
       this.params.page = 1
       this.getDataTable()
     },
-    setSearch (payload) {
+    setSearch(payload) {
       this.params.q = payload
       this.params.page = 1
       this.getDataTable()
     },
-    newData (payload) {
+    newData(payload) {
       this.edit = false
       this.resetForm()
       this.setOpen()
       this.setForm('flag', 'baru')
       console.log('new data', payload)
     },
-    editData (payload) {
+    editData(payload) {
       this.edit = true
       this.setOpen()
       const key = Object.keys(payload)
@@ -114,7 +115,7 @@ export const useMasterTindakanOperasiStore = defineStore('master_tindakan_operas
       this.setForm('flag', 'edit')
       // console.log('edit data', key)
     },
-    deletesData (payload, param) {
+    deletesData(payload, param) {
       // console.log('delete data', payload)
 
       const besok = date.addToDate(new Date(), { days: 1 })
@@ -126,7 +127,7 @@ export const useMasterTindakanOperasiStore = defineStore('master_tindakan_operas
       }
       this.deleteData(data)
     },
-    undeletesData (payload) {
+    undeletesData(payload) {
       // console.log('delete data', payload)
 
       const besok = date.addToDate(new Date(), { days: 1 })
@@ -137,7 +138,7 @@ export const useMasterTindakanOperasiStore = defineStore('master_tindakan_operas
       }
       this.undeleteData(data)
     },
-    mergeRuangan () {
+    mergeRuangan() {
       if (this.polis?.length && this.ruangRanap?.length) {
         this.allRuangs = []
         this.allRuangs = [...this.polis?.map(a => { return { nama: a.polirs, kode: a.kodepoli } }), ...this.ruangRanap.map(a => { return { nama: a.groups_nama, kode: a.groups } })]
@@ -145,13 +146,13 @@ export const useMasterTindakanOperasiStore = defineStore('master_tindakan_operas
 
       }
     },
-    getInitialData () {
+    getInitialData() {
       this.getDataTable()
       // this.getPoli()
       // this.getRuangRanap()
     },
     // api related function
-    async getDataTable () {
+    async getDataTable() {
       this.loading = true
 
 
@@ -175,7 +176,7 @@ export const useMasterTindakanOperasiStore = defineStore('master_tindakan_operas
       //   })
       //   .catch(() => { this.loading = false })
     },
-    setTglMulaiBerlaku (payload) {
+    setTglMulaiBerlaku(payload) {
       const besok = date.addToDate(new Date(), { days: 1 })
       const payloadDate = new Date(payload)
       const diff = date.getDateDiff(payloadDate, besok, 'days')
@@ -189,7 +190,7 @@ export const useMasterTindakanOperasiStore = defineStore('master_tindakan_operas
       }
       console.log('tgl mulai', payload, diff)
     },
-    async saveForm () {
+    async saveForm() {
       // isi form ruangan
       if (this.disp.ruangan?.length) {
         this.setForm('ruangan', this.disp.ruangan.join('|'))
@@ -206,7 +207,7 @@ export const useMasterTindakanOperasiStore = defineStore('master_tindakan_operas
         })
         .catch(() => { this.loading = false })
     },
-    async deleteData (val) {
+    async deleteData(val) {
       this.loading = true
       await api.post('v1/simrs/master/tarif/tindakan-operasi/hapus', val)
         .then(resp => {
@@ -217,7 +218,7 @@ export const useMasterTindakanOperasiStore = defineStore('master_tindakan_operas
         })
         .catch(() => { this.loading = false })
     },
-    async undeleteData (val) {
+    async undeleteData(val) {
       this.loading = true
       await api.post('v1/simrs/master/tarif/tindakan-operasi/tampilkan', val)
         .then(resp => {
