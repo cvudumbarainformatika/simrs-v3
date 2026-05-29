@@ -113,6 +113,14 @@
               : {{ ket }}
             </div>
           </div>
+          <div v-if="toItem?.rs4 === 'Kontrol'" class="row items-center justify-between q-mb-xs">
+            <div class="col-3">
+              Keterangan
+            </div>
+            <div class="col-9">
+              : {{ toItem?.kontrol?.keterangan }}
+            </div>
+          </div>
           <div v-if="toItem?.rs4 === 'Rumah Sakit Lain'" class="row items-center justify-between q-mb-xs">
             <div class="col-3">
               Keterangan
