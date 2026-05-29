@@ -5,6 +5,7 @@
         <PlanningPage :key="props.pasien" :pasien="props.pasien" />
       </div>
       <div class="col-4 full-height">
+
         <div v-if="pasien?.planning?.length">
           <q-card v-for="(item, i) in pasien?.planning" :key="i" flat bordered>
             <div class="q-pa-md">
@@ -53,6 +54,8 @@
                   </q-badge>
                 </div>
               </div>
+              <div v-if="item?.rs4 == 'Kontrol'" class="row">Ket : <span class="text-weight-bold">{{
+                item?.kontrol?.keterangan }}</span> </div>
             </q-card-section>
 
             <q-separator />
@@ -133,7 +136,7 @@
           </div>
           <div class="col-9">
             : {{ pasien?.diagnosa?.length ? pasien?.diagnosa[0].masterdiagnosa?.rs1 + ' - ' +
-              pasien?.diagnosa[0].masterdiagnosa?.rs4 :'-' }}
+              pasien?.diagnosa[0].masterdiagnosa?.rs4 : '-' }}
           </div>
         </div>
         <div class="row items-center justify-between q-mb-xl">
@@ -145,7 +148,7 @@
         <div class="row items-center justify-between ">
           <div class="col-7 f-10">
             Tgl Entri {{ date.formatDate(pasien.tgl_kunjungan, 'DD/MM/YYYY') }} | Tgl Cetak {{
-              date.formatDate(Date.now(),'DD/MM/YYYY') }} <span class="text-italic">dari RS</span>
+              date.formatDate(Date.now(), 'DD/MM/YYYY') }} <span class="text-italic">dari RS</span>
           </div>
           <div class="col-4 text-center">
             {{ pasien?.dokter }}
@@ -172,7 +175,7 @@ const props = defineProps({
     default: null
   }
 })
-function editItem(val) {
+function editItem (val) {
   console.log('edit', val)
   const renc = val.rs4
   if (store.plann !== renc) {
@@ -220,7 +223,7 @@ function editItem(val) {
     }
   }
 }
-function setKepada(val) {
+function setKepada (val) {
   if (val?.rs4 === 'Kontrol') {
     if (val?.kontrol) {
       return val?.kontrol?.namaDokter
@@ -246,7 +249,7 @@ function setKepada(val) {
     else { return '-' }
   }
 }
-function setNomor(val) {
+function setNomor (val) {
   if (val?.rs4 === 'Kontrol') {
     if (val?.kontrol) {
       return val?.kontrol?.noSuratKontrol
@@ -277,7 +280,7 @@ onMounted(() => {
   store.getMasterPoli()
 })
 
-function hapusItem(item) {
+function hapusItem (item) {
   $q.dialog({
     dark: true,
     title: 'Peringatan',
