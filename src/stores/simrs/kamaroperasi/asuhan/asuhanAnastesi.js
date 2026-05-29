@@ -21,8 +21,10 @@ export const useAsuhanAnastesiStore = defineStore('asuhan_anastesi', {
       pra_gds: null,
       pra_informed_consent: null, // Tipe TEXT di DB (Radio: Ada/Tidak)
       pra_respirasi_status: null, // Tipe TEXT di DB (Radio: Normal/Tidak)
+      pra_respirasi_status_keterangan: null, // Tipe TEXT di DB (Input: Sebutkan) - NEW
       pra_respirasi_sat: null,
       pra_kardio_status: null, // Tipe TEXT di DB (Radio: Normal/Tidak)
+      pra_kardio_status_keterangan: null, // Tipe TEXT di DB (Input: Sebutkan) - NEW
       pra_kardio_crt_detik: null, // Tipe TEXT di DB (Radio: < 2 detik / > 2 detik)
       pra_kardio_kulit: null, // Tipe TEXT di DB (Radio: Hangat/Dingin)
       pra_kardio_perdarahan_status: null, // Tipe TEXT di DB (Radio: Tidak/Ada)
@@ -315,8 +317,11 @@ export const useAsuhanAnastesiStore = defineStore('asuhan_anastesi', {
         pra_hb: null,
         pra_ht: null,
         pra_gds: null,
+        pra_respirasi_status: null,
+        pra_respirasi_status_keterangan: null,
         pra_respirasi_sat: null,
-        pra_kardio_crt: null,
+        pra_kardio_status: null,
+        pra_kardio_status_keterangan: null,
         pra_kesadaran: null,
         pra_gcs: null,
         pra_renal_hepato: null,

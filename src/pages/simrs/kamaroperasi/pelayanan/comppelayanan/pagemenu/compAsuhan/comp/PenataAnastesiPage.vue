@@ -24,16 +24,25 @@
 
           <q-card-section>
             <!-- Data Dasar -->
-            <div class="text-subtitle2 text-weight-bold text-grey-8 q-mb-md"> Diagnosa</div>
+            <div class="text-subtitle2 text-weight-bold text-grey-8 q-mb-md"> Diagnosa & Tindakan</div>
             <div class="row q-col-gutter-lg q-mb-lg">
               <div class="col-xs-12 col-sm-4">
                 <q-input v-model="store.form.pra_diagnosa" label="Diagnosa" outlined dense maxlength="255" />
+              </div>
+              <div class="col-xs-12 col-sm-4">
+                <div class="text-weight-bold q-mb-xs">Tindakan Operasi</div>
+                <div class="text-primary text-weight-medium">
+                  {{ ambilTidakanOperasi(pasien?.manytindakanop) }}
+                </div>
               </div>
             </div>
 
             <!-- Vital Signs -->
             <div class="text-subtitle2 text-weight-bold text-grey-8 q-mb-md">Vital Signs & Antropometri</div>
             <div class="row q-col-gutter-lg q-mb-lg vital-signs-box q-pa-md">
+              <div class="col-xs-12 col-sm-3">
+                <q-input v-model="store.form.pra_keadaan_umum" label="Keadaan Umum" outlined dense maxlength="255" />
+              </div>
               <div class="col-xs-6 col-sm-3">
                 <q-input v-model="store.form.pra_bb" label="BB (kg)" outlined dense type="number" />
               </div>
@@ -42,9 +51,6 @@
               </div>
               <div class="col-xs-6 col-sm-3">
                 <q-input v-model="store.form.pra_gol_darah" label="Gol. Darah" outlined dense maxlength="255" />
-              </div>
-              <div class="col-xs-12 col-sm-3">
-                <q-input v-model="store.form.pra_keadaan_umum" label="Keadaan Umum" outlined dense maxlength="255" />
               </div>
               <div class="col-xs-6 col-sm-3">
                 <q-input v-model="store.form.pra_td" label="Tensi (TD)" outlined dense placeholder="120/80"
@@ -82,7 +88,11 @@
                 <div class="exam-box q-pa-md">
                   <div class="text-weight-bold q-mb-sm text-primary">I. Respirasi</div>
                   <q-option-group v-model="store.form.pra_respirasi_status" :options="store.opsiNormal" color="primary"
-                    inline dense size="sm" />
+                    inline dense size="sm"
+                    @update:model-value="(val) => { setNullIf(val, 'pra_respirasi_status_keterangan', 'Normal') }" />
+                  <q-input v-if="store.form.pra_respirasi_status === 'Tidak'"
+                    v-model="store.form.pra_respirasi_status_keterangan" label="Sebutkan" outlined dense class="q-mt-md"
+                    maxlength="255" />
                   <q-input v-model="store.form.pra_respirasi_sat" label="Saturasi O2 (%)" outlined dense class="q-mt-md"
                     maxlength="255" />
                 </div>
@@ -93,7 +103,11 @@
                   <div class="q-mb-sm">
                     <span class="text-grey-8">Status:</span>
                     <q-option-group v-model="store.form.pra_kardio_status" :options="store.opsiNormal" color="primary"
-                      inline dense size="sm" />
+                      inline dense size="sm"
+                      @update:model-value="(val) => { setNullIf(val, 'pra_kardio_status_keterangan', 'Normal') }" />
+                    <q-input v-if="store.form.pra_kardio_status === 'Tidak'"
+                      v-model="store.form.pra_kardio_status_keterangan" label="Sebutkan" outlined dense class="q-mt-sm"
+                      maxlength="255" />
                   </div>
                   <div class="q-mb-sm">
                     <span class="text-grey-8">CRT:</span>
@@ -482,6 +496,12 @@ function resetData () {
   }).onOk(() => {
     store.resetForm(props.pasien)
   })
+}
+
+
+function ambilTidakanOperasi (val) {
+  const data = val?.length > 0 ? val?.map(v => v?.mastertindakanoperasi?.rs2).join(', ') : 'Belum ada Tindakan Operasi'
+  return data
 }
 
 onMounted(() => {
