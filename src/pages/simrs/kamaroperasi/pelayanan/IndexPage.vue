@@ -107,12 +107,12 @@ const menus = ref([
     icon: 'icon-mat-analytics',
     comp: shallowRef(defineAsyncComponent(() => import('./comppelayanan/pagemenu/compAssasement/IndexPage.vue')))
   },
-  {
-    name: 'assasement_post_op',
-    label: 'Assesement Post Operasi',
-    icon: 'icon-fa-book-medical-solid',
-    comp: shallowRef(defineAsyncComponent(() => import('./comppelayanan/pagemenu/compAssPostOp/IndexPage.vue')))
-  },
+  // { // masih belum pasti apakah diperluka atau tidak
+  //   name: 'assasement_post_op',
+  //   label: 'Assesement Post Operasi',
+  //   icon: 'icon-fa-book-medical-solid',
+  //   comp: shallowRef(defineAsyncComponent(() => import('./comppelayanan/pagemenu/compAssPostOp/IndexPage.vue')))
+  // },
   {
     name: 'penunjang',
     label: 'Penunjang',
@@ -129,6 +129,12 @@ const menus = ref([
     name: 'serahterima',
     label: 'Serah Terima Pasien',
     icon: 'sync_alt',
+    comp: shallowRef(defineAsyncComponent(() => import('./comppelayanan/pagemenu/compSerahTerima/IndexPage.vue')))
+  },
+  {
+    name: 'konsultasi',
+    label: 'Konsult Spesialis',
+    icon: 'textsms',
     comp: shallowRef(defineAsyncComponent(() => import('./comppelayanan/pagemenu/compSerahTerima/IndexPage.vue')))
   },
 ])

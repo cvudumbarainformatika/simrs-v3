@@ -41,7 +41,7 @@
             <div class="row q-my-md print-hide">
               <div class="col-12">
                 <app-autocomplete v-model="store.form.perawat_sirkuler" valid label="Pilih Perawat Sirkuler"
-                  :source="dokters" option-label="nama" option-value="kdpegsimrs" outlined clearable />
+                  :source="perawats" option-label="nama" option-value="kdpegsimrs" outlined clearable />
               </div>
             </div>
             <div class="row">

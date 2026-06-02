@@ -245,6 +245,7 @@ export const useSurgicalSafetyStore = defineStore('surgical_safety_store', {
     allImplants: [],
   }),
   actions: {
+
     setForm (key, val) {
       this.form[key] = val
     },
@@ -263,8 +264,8 @@ export const useSurgicalSafetyStore = defineStore('surgical_safety_store', {
         this.setForm('asisten_1', null)
         this.setForm('asisten_2', null)
         this.setForm('id', null)
-        this.setForm('nota', this.pasien.rs2)
-        this.setForm('noreg', this.pasien.noreg)
+        this.setForm('nota', this.pasien?.rs2)
+        this.setForm('noreg', this.pasien?.noreg)
       } else if (surgical) {
         this.form = surgical
         console.log('else reset', surgical)
@@ -291,6 +292,10 @@ export const useSurgicalSafetyStore = defineStore('surgical_safety_store', {
             console.log('simpan', resp?.data)
             this.form = resp?.data?.data
             pengunjung.injectDataPasien(pasien, resp?.data?.data, 'surgical')
+            const index = this.pasien.surgical.findIndex(item => item.id === resp?.data?.data?.id)
+            if (index >= 0) this.pasien.surgical[index] = resp?.data?.data
+            else this.pasien.surgical.push(resp?.data?.data)
+            // this.injectDataPasien(this.pasien, resp?.data?.data, 'surgical')
             notifSuccess(resp)
             resolve(resp)
           })
