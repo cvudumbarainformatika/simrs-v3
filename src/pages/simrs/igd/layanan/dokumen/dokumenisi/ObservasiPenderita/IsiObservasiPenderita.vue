@@ -3,9 +3,17 @@
     <q-table flat bordered dense :rows="rows" :columns="columns" row-key="id" hide-bottom>
       <template v-slot:body-cell="slotProps">
         <q-td :props="slotProps">
+          <div v-if="slotProps.col.name === 'tgl'" class="text-center">
+            <div>
+              {{ slotProps.row.tanggal }}
+            </div>
 
+            <div class="text-caption">
+              {{ slotProps.row.jam }}
+            </div>
+          </div>
           <!-- TINDAKAN -->
-          <div v-if="slotProps.col.name === 'tindakan'" class="text-wrap">
+          <div v-else-if="slotProps.col.name === 'tindakan'" class="text-wrap">
             {{ slotProps.row[slotProps.col.field] }}
           </div>
 
@@ -52,14 +60,6 @@ const columns = [
     field: 'tgl',
     align: 'left',
     style: 'width:70px'
-  },
-
-  {
-    name: 'jam',
-    label: 'JAM',
-    field: 'jam',
-    align: 'left',
-    style: 'width:60px'
   },
 
   {
@@ -161,7 +161,7 @@ const rows = computed(() => {
     return {
       id: item?.id,
 
-      tgl: splitTgl[0] || '-',
+      tanggal: splitTgl[0] || '-',
       jam: splitTgl[1] || '-',
 
       tensi:
