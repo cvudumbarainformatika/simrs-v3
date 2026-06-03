@@ -228,6 +228,12 @@ const laporan = {
 
     // },
 
+    {
+      path: '/laporan/arsip/daftarberkasarsip',
+      // name: 'laporan.farmasi.stok',
+      component: () => import('pages/simrs/laporan/Arsip/Laporandaftarberkasarsip/IndexPage.vue')
+    },
+
     // farmasi
     {
       path: '/laporan/farmasi/stok',
