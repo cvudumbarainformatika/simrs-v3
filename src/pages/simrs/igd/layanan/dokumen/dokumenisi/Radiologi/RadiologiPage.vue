@@ -5,7 +5,7 @@
   <div v-else-if="pasien?.radiologi?.length <= 0 && !store.loadingTerima">
     <app-no-data />
   </div>
-  <div v-else class="q-pa-md" style="max-width: 100%">
+  <div v-else class="" style="max-width: 100%">
     <div class="q-pa-sm row flex justify-between bg-teal text-white items-center">
       <div class="col-6">{{ props?.judul }}</div>
       <div class="col-6 text-right">

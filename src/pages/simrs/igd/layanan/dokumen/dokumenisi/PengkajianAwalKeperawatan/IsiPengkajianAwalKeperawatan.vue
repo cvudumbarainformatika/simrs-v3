@@ -202,40 +202,41 @@
       <div class="text-weight-bold text-uppercase" style="width: 10px;"> : </div>
       <div class="col"> {{ diagnosaKeperawatan }}</div>
     </div>
-    <q-separator class="q-mt-md" />
-    <div class="row items-center no-wrap q-mt-xl q-pt-md">
-      <div class="col-6 text-center " />
-      <div class="col-6 text-weight-bold text-center">
-        Probolinggo, {{ date.formatDate(Date.now(), 'DD MMMM YYYY') }}
-      </div>
-    </div>
-    <div class="row items-center no-wrap">
-      <div class="col-6 text-center text-weight-bold">Pasien/Keluarga </div>
-      <div class="col-6 text-weight-bold text-center">
-        Perawat
-      </div>
-    </div>
-    <div class="row items-center no-wrap">
-      <div class="col-6 text-right" />
-      <div class="col-6 text-weight-bold text-center">
-        <div class="column flex-center">
-          <div style="width: 100px;">
-            <vue-qrcode :value="qrUrl" tag="svg" :options="{
-              errorCorrectionLevel: 'Q',
-              color: {
-                dark: '#000000',
-                light: '#ffffff',
-              },
-              margin: 0
-            }" />
-          </div>
+    <q-separator class="q-mt-md q-mb-sm" style="border-top: 1px solid;" />
+    <div class="row q-mt-xl q-mb-xl">
+      <div class="col-6">
+        <div class="text-center text-weight-bold q-pt-md">
+          Pasien/Keluarga
+        </div>
+        <div class="text-center" style="height: 120px;">
+          <div class="signature-line">(......................................................................)</div>
         </div>
       </div>
-    </div>
-    <div class="row items-center no-wrap q-mt-xl q-pt-xl q-pb-xl q-mb-xl">
-      <div class="col-6 text-center">(..........................)</div>
-      <div class="col-6 text-weight-bold text-center">
-        (..........................)
+      <div class="col-6">
+        <div class="text-center text-weight-bold">
+          Probolinggo, {{ date.formatDate(Date.now(), 'DD MMMM YYYY') }}
+        </div>
+        <div class="text-center text-weight-bold q-mt-xs">
+          Perawat
+        </div>
+        <div class="col-6 text-weight-bold text-center">
+
+          <div class="column flex-center q-mt-md">
+            <div style="width: 100px;">
+              <vue-qrcode :value="qrUrl" tag="svg" :options="{
+                errorCorrectionLevel: 'Q',
+                color: {
+                  dark: '#000000',
+                  light: '#ffffff',
+                },
+                margin: 0
+              }" />
+            </div>
+            <div class="q-mt-sm text-center">
+              {{ perawat?.nama || '(..........................)' }}
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -388,16 +389,26 @@ const diagnosaKeperawatan = computed(() => {
 
 // hasilnya tinggal kamu pakai
 console.log('filtered', props?.pasien?.anamnesis?.find(i => i?.datasimpeg?.kdgroupnakes === "2"))
+const perawat = computed(() => {
+  const data = props?.pasien?.tinjauanulang || []
+
+  return data?.map(items => items || [])?.[0]
+})
 
 const qrUrl = computed(() => {
+  // console.log('props pasien', props?.pasien)
   const noreg = props?.pasien?.noreg// noreg
-  const dok = 'Reseume-Medis.png'
-  const asal = 'IGD'
-  const enc = btoa(`${noreg}| ${dok}| ${asal} `)
+  const dok = 'Pengkajian Awal Keperawatan.png'
+  const asal = 'RAWAT JALAN'
+  const petugas = perawat.value?.user
+  const enc = btoa(`${noreg}|${dok}|${asal}|${petugas}`)
   return `https://rsud.probolinggokota.go.id/dokumen-simrs/legalitas/${enc}`
   // return `https://xenter.my.id/qr-document?noreg=${noreg}&dokumen=${dok}&asal=${asal}`
 })
 
+
+
+console.log('perawat', perawat.value)
 function iconNyeri(anu) {
   const val = typeof anu === 'string' ? (isNaN(parseInt(anu)) ? 0 : parseInt(anu)) : 0
   // console.log('val nyeri', val)
@@ -425,3 +436,13 @@ function iconNyeri(anu) {
   return icon
 }
 </script>
+<style lang="scss" scoped>
+.garis-bawah-dablue {
+  border-bottom: 1px solid rgb(56, 150, 239);
+  border-bottom-style: dashed;
+}
+
+.signature-line {
+  padding-top: 130px;
+}
+</style>

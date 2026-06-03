@@ -128,7 +128,6 @@ function qrUrl (val) {
   // return `https://xenter.my.id/qr-document?noreg=${noreg}&dokumen=${dok}&asal=${asal}`
 }
 onMounted(() => {
-
   store.resetForm()
 })
 </script>

@@ -88,8 +88,8 @@
                 :disable="store.loading" @update:model-value="SetTarif($event, 'rs13')" />
             </div>
             <div class="col-md-3 col-xs-12">
-              <!-- <app-input v-model="store.form.rs11" valid label="Anastesi Tarif Poli" outlined :loading="store.loading"
-                :disable="store.loading" @update:model-value="SetTarif($event, 'rs11')" /> -->
+              <app-input v-model="store.form.rs15" valid label="Anastesi Tarif Poli" outlined :loading="store.loading"
+                :disable="store.loading" @update:model-value="SetTarif($event, 'rs15')" />
             </div>
             <div class="col-md-3 col-xs-12">
               <app-input v-model="poli" valid label="Tarif Poli" outlined :loading="store.loading" readonly />
@@ -123,7 +123,7 @@
 import { useMasterTindakanOperasiStore } from 'src/stores/simrs/master/tarif/tindakanOperasi'
 import { computed } from 'vue'
 const store = useMasterTindakanOperasiStore()
-function SetTarif (evt, jenis) {
+function SetTarif(evt, jenis) {
   // console.log('pres', evt, jenis)
   const val = !isNaN(evt) && evt !== '' ? parseInt(evt) : 0
   store.setForm(jenis, val)
@@ -149,7 +149,8 @@ const presidential = computed(() => {
 const poli = computed(() => {
   const js = !isNaN(store.form.rs12) && store.form.rs12 !== '' ? parseInt(store.form.rs12) : 0
   const jp = !isNaN(store.form.rs13) && store.form.rs13 !== '' ? parseInt(store.form.rs13) : 0
-  return js + jp
+  const anastesi = !isNaN(store.form.rs15) && store.form.rs15 !== '' ? parseInt(store.form.rs15) : 0
+  return js + jp + anastesi
 })
 // set tarif end
 // simpan

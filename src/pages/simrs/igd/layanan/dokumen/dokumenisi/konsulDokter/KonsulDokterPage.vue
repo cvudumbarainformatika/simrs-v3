@@ -5,7 +5,7 @@
   <div v-else-if="pasien?.konsultasi?.length <= 0 && !store.loadingTerima">
     <app-no-data />
   </div>
-  <div v-else class="q-pa-md" style="max-width: 100%">
+  <div v-else class="" style="max-width: 100%">
     <div class="q-pa-sm row flex justify-between bg-teal text-white items-center">
       <div class="col-6">{{ props?.judul }}</div>
       <div class="col-6 text-right">
@@ -21,13 +21,14 @@
         </q-btn>
       </div>
     </div>
-
-    <div class="full-height full-height q-pa-sm bg-indigo-1">
-      <div id="printMe" style="width: 21cm;" class="q-pa-xs full-width full-height bg-white">
-        <KopSurat :judul="props?.judul" :pasien="props?.pasien" :jangantampil=false />
-        <IsiKonsulDokterPage :pasien="props?.pasien" />
+    <q-scroll-area style="height: calc(100vh - 56px);">
+      <div class="full-height full-height q-pa-sm bg-indigo-1" style="padding-bottom: 108px;">
+        <div id="printMe" style="width: 21cm;" class="q-pa-xs full-width full-height bg-white">
+          <KopSurat :judul="props?.judul" :pasien="props?.pasien" :jangantampil=false />
+          <IsiKonsulDokterPage :pasien="props?.pasien" />
+        </div>
       </div>
-    </div>
+    </q-scroll-area>
   </div>
 </template>
 <script setup>

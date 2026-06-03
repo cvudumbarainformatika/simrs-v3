@@ -86,7 +86,7 @@
     <div class="row q-mt-xl">
       <div class="col-5 q-ml-auto q-mr-xl">
         <div class="column flex-center">
-          <div>Probolinggo, Tgl {{ humanDate(plannkematian?.tgl_meninggal) }}</div>
+          <div>Probolinggo, Tgl {{ humanDate(plannkematianx?.tgl_meninggal) }}</div>
           <div>Mengetahui</div>
           <div class="q-mb-sm">Dokter,</div>
 
@@ -133,16 +133,18 @@ const props = defineProps({
     default: null
   },
 })
+const plannkematianx = computed(() => {
+  return props?.pasien?.planheder[0]?.planpulang
+})
 
 const qrDokter = computed(() => {
   // const petugas = 'Nama : ' + dpjp?.value?.nama ?? '' + 'NIP : ' + dpjp?.value?.nip ?? ''
   // const enc = btoa(`${petugas}`)
   // return `${enc}`
-
   const noreg = props?.pasien?.noreg// noreg
   const dok = 'SURAT-KEMATIAN.png'
   const asal = 'RAWAT JALAN'
-  const petugas = props?.pasien?.kddokter ?? props?.pasien?.kodedokter ?? null
+  const petugas = store.isisuratkematian?.dokterpenangungjawabpulang?.nama
   const enc = btoa(`${noreg}|${dok}|${asal}|${petugas}`)
   return `https://rsud.probolinggokota.go.id/dokumen-simrs/legalitas/${enc}`
 

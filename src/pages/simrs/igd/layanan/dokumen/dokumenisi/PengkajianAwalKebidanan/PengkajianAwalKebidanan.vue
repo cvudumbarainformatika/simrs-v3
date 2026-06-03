@@ -15,7 +15,7 @@
     </div>
   </div>
   <q-scroll-area style="height: calc(100vh - 56px);">
-    <div v-if="props?.pasien?.anamnesis?.length <= 0">
+    <div v-if="props?.pasien?.anamnesekebidanan?.length <= 0">
       <div class="column full-height flex-center">
         <div>
           <app-no-data />
@@ -28,11 +28,11 @@
       </div>
     </div>
     <div v-else class="q-pa-sm " style="padding-bottom: 108px;">
-      <div id="printMe" class="q-pa-lg full-width bg-white">
-        <KopSurat :judul="props?.judul ?? 'PENGKAJIAN AWAL KEPERAWATAN IGD'" :pasien="props?.pasien"
+      <div id="printMe" class="q-pa-sm full-width bg-white">
+        <KopDokumen :judul="props?.judul ?? 'PENGKAJIAN AWAL KEBIDANAN IGD'" :pasien="props?.pasien"
           :jangantampil=false />
 
-        <IsiPengkajianAwalKeperawatan :pasien="props?.pasien" />
+        <IsiPengkajianAwalKebidanan :pasien="props?.pasien" />
       </div>
     </div>
   </q-scroll-area>
@@ -40,10 +40,9 @@
 <script setup>
 
 import { usePengunjungIgdStore } from 'src/stores/simrs/igd/pengunjung';
-import KopSurat from '../../KopSurat.vue';
+import KopDokumen from './KopDokumen.vue';
 import html2pdf from 'html2pdf.js';
-import IsiPengkajianAwalKeperawatan from './IsiPengkajianAwalKeperawatan.vue';
-
+import IsiPengkajianAwalKebidanan from './IsiPengkajianAwalKebidanan.vue';
 const store = usePengunjungIgdStore()
 
 const printObj = {
@@ -62,30 +61,57 @@ const props = defineProps({
   }
 })
 
-function exportPdf() {
-  const concern = document.getElementById('printMe')
+async function exportPdf() {
+  const source = document.getElementById('printMe')
   const nama = props?.pasien?.nama ?? props?.pasien?.pasien
+
+  // A4 portrait width in px at screen resolution (~794px)
+  const a4Width = 794
+
+  const wrapper = document.createElement('div')
+  wrapper.style.position = 'fixed'
+  wrapper.style.left = '-9999px'
+  wrapper.style.top = '0'
+  wrapper.style.width = a4Width + 'px'
+  wrapper.style.background = 'white'
+
+  const clone = source.cloneNode(true)
+  clone.style.width = a4Width + 'px'
+  clone.style.height = 'auto'
+  clone.style.overflow = 'visible'
+  clone.style.maxHeight = 'none'
+  clone.style.padding = '0px'
+  clone.style.fontSize = '12px'
+  clone.style.backgroundColor = '#ffffff'
+  wrapper.appendChild(clone)
+  document.body.appendChild(wrapper)
+
   const pdfConfig = {
-    margin: [12, 12, 12, 12],
-    filename: 'Pengkajian-Awal-Medis_' + props?.pasien?.noreg + '_' + nama + '_' + props?.pasien?.norm + '.pdf',
+    margin: [5, 5, 5, 5],
+    filename: 'Pengkajian-Awal-Kebidanan-IGD_' + props?.pasien?.noreg + '_' + nama + '_' + props?.pasien?.norm + '.pdf',
     image: {
       type: 'jpeg',
       quality: 0.98
     },
     html2canvas: {
       scale: 2,
-      logging: true,
-      dpi: 192,
-      letterRendering: true
+      useCORS: true,
+      logging: false,
+      letterRendering: true,
+      scrollY: 0,
+      scrollX: 0,
+      windowWidth: a4Width
     },
+    pagebreak: { mode: ['css', 'legacy'] },
     jsPDF: {
-      unit: 'mm', // mm | pt | in
-      format: 'a4', // a4 | letter
-      orientation: 'portrait' // landscape | portrait
+      unit: 'mm',
+      format: 'a4',
+      orientation: 'portrait'
     }
   }
 
-  html2pdf().set(pdfConfig).from(concern).save()
+  await html2pdf().set(pdfConfig).from(clone).save()
+  document.body.removeChild(wrapper)
 }
 </script>
 <style lang="scss" scoped></style>

@@ -148,13 +148,16 @@
 
           <div class="row q-pa-xl justify-between items-center">
             <div class="kiri text-center">
-              <div><b>Pasien / Keluarga</b></div>
-              <div style="margin-top:100px">
-                <b>(................)</b>
+              <div class="text-center text-weight-bold q-pt-md">
+                Pasien/Keluarga
+              </div>
+              <div class="text-center" style="height: 120px;">
+                <div class="signature-line">(......................................................................)
+                </div>
               </div>
             </div>
             <div class="kanan text-center">
-              <div><b>Probolinggo, {{ pasien?.tanggalkeluar }}</b></div>
+              <div><b>Probolinggo, {{ dateFullFormat(pasien?.tglkeluar) }}</b></div>
               <div><b>Dokter Penanggung Jawab Pelayanan</b></div>
               <div class="column flex-center">
                 <div style="width: 100px;">
@@ -187,7 +190,7 @@ import { computed } from 'vue'
 import useResume from './useResume'
 import html2pdf from 'html2pdf.js'
 // eslint-disable-next-line no-unused-vars
-import { getNewLine } from 'src/modules/formatter'
+import { dateFullFormat, getNewLine } from 'src/modules/formatter'
 
 const props = defineProps({
   pasien: {
@@ -204,10 +207,12 @@ const { usiaTh, resume } = useResume(props?.pasien)
 // console.log('resume', data)
 
 const qrUrl = computed(() => {
+  console.log('pasien', props?.pasien)
   const noreg = props?.pasien?.noreg// noreg
   const dok = 'RESUME-MEDIS.png'
   const asal = 'RANAP'
-  const enc = btoa(`${noreg}|${dok}|${asal}`)
+  const petugas = props?.pasien?.kddokter ?? props?.pasien?.kodedokter ?? null
+  const enc = btoa(`${noreg}|${dok}|${asal}|${petugas}`)
   return `https://rsud.probolinggokota.go.id/dokumen-simrs/legalitas/${enc}`
   // return `https://xenter.my.id/qr-document?noreg=${noreg}&dokumen=${dok}&asal=${asal}`
 })
@@ -258,6 +263,10 @@ td {
   // height: 100%;
   background-color: #ffffff;
   padding: 20px !important;
+}
+
+.signature-line {
+  padding-top: 100px;
 }
 
 @media print {
