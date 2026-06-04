@@ -16,6 +16,16 @@ export const useAssasementPraBedahStore = defineStore('assasement_pra_bedah_stor
     obats: []
   }),
   actions: {
+    resetForm () {
+      this.form = {
+        komplikasi: []
+      }
+    },
+    resetFormInduksi () {
+      this.formInduksi = {
+        obat_pre_medikasi: []
+      }
+    },
     simpan (pasien) {
       // console.log('simpan pasien', pasien)
       const payload = { ...this.form }
