@@ -51,7 +51,7 @@
                 store.assignFormTindakan(tindakanop)
               }" />
             <q-btn icon="delete" flat dense color="negative" :loading="store.loading"
-              :disable="store.loading || getLaporan(tindakanop)" @click="store.hapusTindakanOp(tindakanop)" />
+              :disable="store.loading || getLaporan(tindakanop)" @click="store.hapusTindakanOp(tindakanop, pasien)" />
           </div>
           <q-separator class="q-mt-sm" />
         </div>

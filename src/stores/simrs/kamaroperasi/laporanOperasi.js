@@ -264,7 +264,7 @@ export const useLaporanOperasiStore = defineStore('laporan_operasi_store', {
           .catch(() => { this.loading = false })
       })
     },
-    hapusTindakanOp (data) {
+    hapusTindakanOp (data, tujuan) {
       this.loading = true
       const form = {
         id: data?.id,
@@ -278,6 +278,11 @@ export const useLaporanOperasiStore = defineStore('laporan_operasi_store', {
             const data = resp?.data?.data
             console.log('s hapus', data, this.pasien)
             this.pasien.tindakanop = null
+            const index = tujuan?.manytindakanop?.findIndex(item => item.id === data?.id)
+            if (index >= 0) tujuan.manytindakanop.splice(index, 1)
+            this.pasien.tindakanop = null
+            const index2 = this.pasien?.manytindakanop?.findIndex(item => item.id === data?.id)
+            if (index >= 0) this.pasien.manytindakanop.splice(index, 1)
             // this.hapusDariPengunjung(data, 'tindakanop')
             notifSuccess(resp)
             resolve(resp)
