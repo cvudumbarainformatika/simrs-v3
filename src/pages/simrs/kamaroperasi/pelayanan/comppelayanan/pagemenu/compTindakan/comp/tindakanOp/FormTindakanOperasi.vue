@@ -189,10 +189,10 @@ function setTanpaAnas (key, val) {
 function penentuanMarkUp () {
   const ruang = props.pasien.rs10
   const ruangRanap = props.pasien.ruangranap
-  if (ruang == 'POL014') return 20
-  else if (ruang?.includes('POL') && ruang != 'POL014') return 20
+  if (ruang == 'POL014') return 25
+  else if (ruang?.includes('POL') && ruang != 'POL014') return 25
   else {
-    if (['2', '3', 'HCU'].includes(ruangRanap?.rs3)) return 20
+    if (['2', '3', 'HCU'].includes(ruangRanap?.rs3)) return 25
     else return 25
   }
 
