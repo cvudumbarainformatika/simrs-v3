@@ -268,7 +268,7 @@ function validate () {
 }
 function simpan () {
   // console.log('form', store.formTindakan)
-  if (validate()) store.simpanFormTindakan()
+  if (validate()) store.simpanFormTindakan(props.pasien)
 }
 function setTindakan (val) {
   const tarif = store.tarif.find(v => v.kode == val.rs4)
