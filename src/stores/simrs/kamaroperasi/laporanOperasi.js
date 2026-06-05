@@ -229,7 +229,7 @@ export const useLaporanOperasiStore = defineStore('laporan_operasi_store', {
           .catch(() => { this.loading = false })
       })
     },
-    simpanFormTindakan () {
+    simpanFormTindakan (dataPasien) {
       this.loading = true
       // const pengunjung = usePermintaanOperasistore()
       const payload = { ...this.formTindakan }
@@ -247,14 +247,18 @@ export const useLaporanOperasiStore = defineStore('laporan_operasi_store', {
             this.loading = false
             const data = resp?.data?.data
             const nota = resp?.data?.nota
+            if (Object.keys(data)?.length > 0) data.nama = data?.mastertindakanoperasi?.rs2
             console.log('simpan', data, this.pasien)
             const indexMany = this.pasien.manytindakanop.findIndex(item => item.id === data?.id)
             if (indexMany >= 0) this.pasien.manytindakanop[indexMany] = data
             else this.pasien.manytindakanop.push(data)
-
             this.pasien.tindakanop = data
             const indexNota = this.notaTindakans.findIndex(item => item === nota)
             if (indexNota < 0) this.notaTindakans.push(nota)
+            // bawa ke pasien yang di list juga
+            const indexManyPas = dataPasien.manytindakanop.findIndex(item => item.id === data?.id)
+            if (indexManyPas >= 0) dataPasien.manytindakanop[indexManyPas] = data
+            else dataPasien.manytindakanop.push(data)
             this.resetFormTindakan()
             // this.form = resp?.data?.data
             // pengunjung.injectDataPasien(this.pasien, data, 'tindakanop')
