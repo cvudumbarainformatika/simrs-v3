@@ -108,7 +108,7 @@
               </div>
               <!-- <div class="q-px-md" /> -->
               <div class="col-6">
-                : {{ '-' }}
+                : {{ props?.historyperkawinan?.[0]?.namasuami ?? '-' }}
               </div>
             </div>
             <div class="row">
@@ -117,7 +117,7 @@
               </div>
               <!-- <div class="q-px-md" /> -->
               <div class="col-6">
-                : {{ '-' }}
+                : {{ props?.historyperkawinan?.[0]?.pendidikansuami ?? '-' }}
               </div>
             </div>
             <div class="row">
@@ -126,7 +126,7 @@
               </div>
               <!-- <div class="q-px-md" /> -->
               <div class="col-6">
-                : {{ '-' }}
+                : {{ props?.historyperkawinan?.[0]?.pekerjaansuami ?? '-' }}
               </div>
             </div>
             <div class="row">
@@ -135,7 +135,7 @@
               </div>
               <!-- <div class="q-px-md" /> -->
               <div class="col-6">
-                : {{ '-' }}
+                : {{ props?.historyperkawinan?.[0]?.agamasuami ?? '-' }}
               </div>
             </div>
             <div class="row">
@@ -144,7 +144,7 @@
               </div>
               <!-- <div class="q-px-md" /> -->
               <div class="col-6">
-                : {{ '-' }}
+                : {{ props?.historyperkawinan?.[0]?.goldarahsuami ?? '-' }}
               </div>
             </div>
 
@@ -265,11 +265,11 @@
           Jenis :
           <span class="q-pr-sm">{{ selectedKontrasepsi !== 'Tidak' ?
             getDetailKontrasepsi() : '-'
-            }}, </span>
+          }}, </span>
           Lama Pemakaian :
           <span class="">{{ selectedKontrasepsi !== 'Tidak' ?
             getLamaPemakaian() : '-'
-            }}</span>
+          }}</span>
         </div>
       </div>
       <div class="row items-center q-px-sm q-pb-xs full-width">
@@ -279,7 +279,7 @@
           Keluahan :
           <span class="q-pr-sm">{{ selectedKontrasepsi !== 'Tidak' ?
             getKeluhanKontrasepsi() : '-'
-            }}</span>
+          }}</span>
         </div>
       </div>
 
@@ -694,7 +694,7 @@
         <div class="col q-pl-md">
           <div class="row">
             <div class="col text-weight-bold">Hasil : {{ pasien?.penilaiananamnesis?.[0]?.morse_fall?.skorMorse?.label
-            }}</div>
+              }}</div>
           </div>
         </div>
       </div>
@@ -797,7 +797,7 @@
           <div>- Ekspresi Wajah : {{ item?.ekspresiwajah }}</div>
           <div>- Gerakan Tangan : {{ item?.gerakantangan }}</div>
           <div>- Kepatuhan terhadap ventilasi mekanik : {{ item?.kepatuhanventilasimekanik
-          }}</div>
+            }}</div>
           <div>
             <div>
               Skor Nyeri (BPS) =
