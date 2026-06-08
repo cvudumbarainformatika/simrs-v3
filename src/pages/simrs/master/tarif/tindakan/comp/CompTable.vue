@@ -453,8 +453,8 @@
             </td>
             <td class="text-end">
               <div class="row no-wrap q-col-gutter-x-xs justify-end">
-                <q-btn v-if="sudahDiHapus(item) && lewatBerlaku(item)" flat class="" size="sm" round color="grey"
-                  icon="icon-mat-edit" @click="emits('editData', item)">
+                <q-btn v-if="sudahDiHapus(item)" flat class="" size="sm" round color="grey" icon="icon-mat-edit"
+                  @click="emits('editData', item)">
                   <q-tooltip anchor="top middle" self="center middle">
                     Edit Data
                   </q-tooltip>
