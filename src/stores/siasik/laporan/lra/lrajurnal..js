@@ -65,6 +65,8 @@ export const useLRAjurnalStore = defineStore('lap_realisasi_anggaran', {
     pagubelanjas: [],
     databelanjas: [],
     belanjasblm: [],
+    penyesuaian_belanja: [],
+    penyesuaian_belanjasblm: [],
     pagusilpa: [],
     silpasblm: [],
     silpaskg: [],
@@ -115,19 +117,28 @@ export const useLRAjurnalStore = defineStore('lap_realisasi_anggaran', {
             this.psappendapatan = []
             this.psapbelanja = []
             this.psapsilpa = []
+
+
             this.pagupendapatans = resp.data.pagupendapatan
             this.datapendapatans = resp.data.pendapatan
             this.datapendpsblm = resp.data.pendapatansblm
+            this.datareklas = resp.data.datareklas
+            this.datareklas_sblm = resp.data.datareklas_sblm
+
+
             this.pagubelanjas = resp.data.pagu
             this.databelanjas = resp.data.belanja
             this.belanjasblm = resp.data.belanjasblm
+            this.penyesuaian_belanja = resp.data.penyesuaian_belanja
+            this.penyesuaian_belanjasblm = resp.data.penyesuaian_belanjasblm
+
+
             this.pagusilpa = resp.data.pagusilpa
             this.silpasblm = resp.data.silpasblm
             this.silpaskg = resp.data.silpaskg
 
             //Semua Data Reklas
-            this.datareklas = resp.data.datareklas
-            this.datareklas_sblm = resp.data.datareklas_sblm
+
 
             // this.psappagupendapatan = resp.data.psappagupendapatan
             // this.psaprealisasipendapatan = resp.data.psaprealisasipendapatan
@@ -388,12 +399,12 @@ export const useLRAjurnalStore = defineStore('lap_realisasi_anggaran', {
         const el = unik6[i]
         const pagu = belanja.filter((x) => x.kode6 === el).map((x) => parseFloat(x.pagu)).reduce((a, b) => a + b, 0)
         const bljskg = nilaiskg.filter((x) => x.kode6 === el).map((x) => parseFloat(x.subtotalx)).reduce((a, b) => a + b, 0)
-        const penyesuaiskg = datareklas.filter((x) => x.kode6 === el).map((x) => parseFloat(x.totalpenyesuaian))
+        const penyesuaiskg = this.penyesuaian_belanja.filter((x) => x.kode6 === el).map((x) => parseFloat(x.totalpenyesuaian))
         const totalpeny = penyesuaiskg.reduce((x, y) => parseFloat(x) + parseFloat(y), 0).toFixed(2)
         const totalnilaiskg = (parseFloat(bljskg) + parseFloat(totalpeny)).toFixed(2)
 
         const bljsblm = nilaisblm.filter((x) => x.kode6 === el).map((x) => parseFloat(x.nilaisebelumnya)).reduce((a, b) => a + b, 0)
-        const penyesblm = datareklas_sblm.filter((x) => x.kode6 === el).map((x) => parseFloat(x.totalpenyesuaian))
+        const penyesblm = this.penyesuaian_belanjasblm.filter((x) => x.kode6 === el).map((x) => parseFloat(x.totalpenyesuaian))
         const totalpenysblm = penyesblm.reduce((x, y) => parseFloat(x) + parseFloat(y), 0).toFixed(2)
         const totalnilaisblm = (isNaN(parseFloat(bljsblm) + parseFloat(totalpenysblm)) ? parseFloat(0) : parseFloat(bljsblm) + parseFloat(totalpenysblm)).toFixed(2)
         const obj6 = {
@@ -415,12 +426,12 @@ export const useLRAjurnalStore = defineStore('lap_realisasi_anggaran', {
         const el = unik5[i]
         const pagu = belanja.filter((x) => x.kode5 === el).map((x) => parseFloat(x.pagu)).reduce((a, b) => a + b, 0)
         const bljskg = nilaiskg.filter((x) => x.kode5 === el).map((x) => parseFloat(x.subtotalx)).reduce((a, b) => a + b, 0)
-        const penyesuaiskg = datareklas.filter((x) => x.kode5 === el).map((x) => parseFloat(x.totalpenyesuaian))
+        const penyesuaiskg = this.penyesuaian_belanja.filter((x) => x.kode5 === el).map((x) => parseFloat(x.totalpenyesuaian))
         const totalpeny = penyesuaiskg.reduce((x, y) => parseFloat(x) + parseFloat(y), 0).toFixed(2)
         const totalnilaiskg = (parseFloat(bljskg) + parseFloat(totalpeny)).toFixed(2)
 
         const bljsblm = nilaisblm.filter((x) => x.kode5 === el).map((x) => parseFloat(x.nilaisebelumnya)).reduce((a, b) => a + b, 0)
-        const penyesblm = datareklas_sblm.filter((x) => x.kode5 === el).map((x) => parseFloat(x.totalpenyesuaian))
+        const penyesblm = this.penyesuaian_belanjasblm.filter((x) => x.kode5 === el).map((x) => parseFloat(x.totalpenyesuaian))
         const totalpenysblm = penyesblm.reduce((x, y) => parseFloat(x) + parseFloat(y), 0).toFixed(2)
         const totalnilaisblm = (isNaN(parseFloat(bljsblm) + parseFloat(totalpenysblm)) ? parseFloat(0) : parseFloat(bljsblm) + parseFloat(totalpenysblm)).toFixed(2)
         const obj = {
@@ -442,12 +453,12 @@ export const useLRAjurnalStore = defineStore('lap_realisasi_anggaran', {
         const el = unik4[i]
         const pagu = belanja.filter((x) => x.kode4 === el).map((x) => parseFloat(x.pagu)).reduce((a, b) => a + b, 0)
         const bljskg = nilaiskg.filter((x) => x.kode4 === el).map((x) => parseFloat(x.subtotalx)).reduce((a, b) => a + b, 0)
-        const penyesuaiskg = datareklas.filter((x) => x.kode4 === el).map((x) => parseFloat(x.totalpenyesuaian))
+        const penyesuaiskg = this.penyesuaian_belanja.filter((x) => x.kode4 === el).map((x) => parseFloat(x.totalpenyesuaian))
         const totalpeny = penyesuaiskg.reduce((x, y) => parseFloat(x) + parseFloat(y), 0).toFixed(2)
         const totalnilaiskg = (parseFloat(bljskg) + parseFloat(totalpeny)).toFixed(2)
 
         const bljsblm = nilaisblm.filter((x) => x.kode4 === el).map((x) => parseFloat(x.nilaisebelumnya)).reduce((a, b) => a + b, 0)
-        const penyesblm = datareklas_sblm.filter((x) => x.kode4 === el).map((x) => parseFloat(x.totalpenyesuaian))
+        const penyesblm = this.penyesuaian_belanjasblm.filter((x) => x.kode4 === el).map((x) => parseFloat(x.totalpenyesuaian))
         const totalpenysblm = penyesblm.reduce((x, y) => parseFloat(x) + parseFloat(y), 0).toFixed(2)
         const totalnilaisblm = (isNaN(parseFloat(bljsblm) + parseFloat(totalpenysblm)) ? parseFloat(0) : parseFloat(bljsblm) + parseFloat(totalpenysblm)).toFixed(2)
         const obj = {
@@ -469,12 +480,12 @@ export const useLRAjurnalStore = defineStore('lap_realisasi_anggaran', {
         const el = unik3[i]
         const pagu = belanja.filter((x) => x.kode3 === el).map((x) => parseFloat(x.pagu)).reduce((a, b) => a + b, 0)
         const bljskg = nilaiskg.filter((x) => x.kode3 === el).map((x) => parseFloat(x.subtotalx)).reduce((a, b) => a + b, 0)
-        const penyesuaiskg = datareklas.filter((x) => x.kode3 === el).map((x) => parseFloat(x.totalpenyesuaian))
+        const penyesuaiskg = this.penyesuaian_belanja.filter((x) => x.kode3 === el).map((x) => parseFloat(x.totalpenyesuaian))
         const totalpeny = penyesuaiskg.reduce((x, y) => parseFloat(x) + parseFloat(y), 0).toFixed(2)
         const totalnilaiskg = (parseFloat(bljskg) + parseFloat(totalpeny)).toFixed(2)
 
         const bljsblm = nilaisblm.filter((x) => x.kode3 === el).map((x) => parseFloat(x.nilaisebelumnya)).reduce((a, b) => a + b, 0)
-        const penyesblm = datareklas_sblm.filter((x) => x.kode3 === el).map((x) => parseFloat(x.totalpenyesuaian))
+        const penyesblm = this.penyesuaian_belanjasblm.filter((x) => x.kode3 === el).map((x) => parseFloat(x.totalpenyesuaian))
         const totalpenysblm = penyesblm.reduce((x, y) => parseFloat(x) + parseFloat(y), 0).toFixed(2)
         const totalnilaisblm = (isNaN(parseFloat(bljsblm) + parseFloat(totalpenysblm)) ? parseFloat(0) : parseFloat(bljsblm) + parseFloat(totalpenysblm)).toFixed(2)
         const obj = {
@@ -496,12 +507,12 @@ export const useLRAjurnalStore = defineStore('lap_realisasi_anggaran', {
         const el = unik2[i]
         const pagu = belanja.filter((x) => x.kode2 === el).map((x) => parseFloat(x.pagu)).reduce((a, b) => a + b, 0)
         const bljskg = nilaiskg.filter((x) => x.kode2 === el).map((x) => parseFloat(x.subtotalx)).reduce((a, b) => a + b, 0)
-        const penyesuaiskg = datareklas.filter((x) => x.kode2 === el).map((x) => parseFloat(x.totalpenyesuaian))
+        const penyesuaiskg = this.penyesuaian_belanja.filter((x) => x.kode2 === el).map((x) => parseFloat(x.totalpenyesuaian))
         const totalpeny = penyesuaiskg.reduce((x, y) => parseFloat(x) + parseFloat(y), 0).toFixed(2)
         const totalnilaiskg = (parseFloat(bljskg) + parseFloat(totalpeny)).toFixed(2)
 
         const bljsblm = nilaisblm.filter((x) => x.kode2 === el).map((x) => parseFloat(x.nilaisebelumnya)).reduce((a, b) => a + b, 0)
-        const penyesblm = datareklas_sblm.filter((x) => x.kode2 === el).map((x) => parseFloat(x.totalpenyesuaian))
+        const penyesblm = this.penyesuaian_belanjasblm.filter((x) => x.kode2 === el).map((x) => parseFloat(x.totalpenyesuaian))
         const totalpenysblm = penyesblm.reduce((x, y) => parseFloat(x) + parseFloat(y), 0).toFixed(2)
         const totalnilaisblm = (isNaN(parseFloat(bljsblm) + parseFloat(totalpenysblm)) ? parseFloat(0) : parseFloat(bljsblm) + parseFloat(totalpenysblm)).toFixed(2)
         const obj = {
@@ -523,12 +534,12 @@ export const useLRAjurnalStore = defineStore('lap_realisasi_anggaran', {
         const el = unik1[i]
         const pagu = belanja.filter((x) => x.kode1 === el).map((x) => parseFloat(x.pagu)).reduce((a, b) => a + b, 0)
         const bljskg = nilaiskg.filter((x) => x.kode1 === el).map((x) => parseFloat(x.subtotalx)).reduce((a, b) => a + b, 0)
-        const penyesuaiskg = datareklas.filter((x) => x.kode1 === el).map((x) => parseFloat(x.totalpenyesuaian))
+        const penyesuaiskg = this.penyesuaian_belanja.filter((x) => x.kode1 === el).map((x) => parseFloat(x.totalpenyesuaian))
         const totalpeny = penyesuaiskg.reduce((x, y) => parseFloat(x) + parseFloat(y), 0).toFixed(2)
         const totalnilaiskg = (parseFloat(bljskg) + parseFloat(totalpeny)).toFixed(2)
 
         const bljsblm = nilaisblm.filter((x) => x.kode1 === el).map((x) => parseFloat(x.nilaisebelumnya)).reduce((a, b) => a + b, 0)
-        const penyesblm = datareklas_sblm.filter((x) => x.kode1 === el).map((x) => parseFloat(x.totalpenyesuaian))
+        const penyesblm = this.penyesuaian_belanjasblm.filter((x) => x.kode1 === el).map((x) => parseFloat(x.totalpenyesuaian))
         const totalpenysblm = penyesblm.reduce((x, y) => parseFloat(x) + parseFloat(y), 0).toFixed(2)
         const totalnilaisblm = (isNaN(parseFloat(bljsblm) + parseFloat(totalpenysblm)) ? parseFloat(0) : parseFloat(bljsblm) + parseFloat(totalpenysblm)).toFixed(2)
         const obj = {

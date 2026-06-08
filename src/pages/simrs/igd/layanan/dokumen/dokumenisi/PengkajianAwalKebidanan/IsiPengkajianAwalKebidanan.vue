@@ -97,7 +97,7 @@
             </div>
           </div>
         </div>
-        <div class="row" style="width:50%; color: red">
+        <div class="row" style="width:50%;">
           <div class="col-12 text-center text-weight-bold">
             SUAMI
           </div>
@@ -108,7 +108,7 @@
               </div>
               <!-- <div class="q-px-md" /> -->
               <div class="col-6">
-                : xx
+                : {{ props?.historyperkawinan?.[0]?.namasuami ?? '-' }}
               </div>
             </div>
             <div class="row">
@@ -117,7 +117,7 @@
               </div>
               <!-- <div class="q-px-md" /> -->
               <div class="col-6">
-                : xx
+                : {{ props?.historyperkawinan?.[0]?.pendidikansuami ?? '-' }}
               </div>
             </div>
             <div class="row">
@@ -126,7 +126,7 @@
               </div>
               <!-- <div class="q-px-md" /> -->
               <div class="col-6">
-                : xx
+                : {{ props?.historyperkawinan?.[0]?.pekerjaansuami ?? '-' }}
               </div>
             </div>
             <div class="row">
@@ -135,7 +135,7 @@
               </div>
               <!-- <div class="q-px-md" /> -->
               <div class="col-6">
-                : xx
+                : {{ props?.historyperkawinan?.[0]?.agamasuami ?? '-' }}
               </div>
             </div>
             <div class="row">
@@ -144,7 +144,7 @@
               </div>
               <!-- <div class="q-px-md" /> -->
               <div class="col-6">
-                : xx
+                : {{ props?.historyperkawinan?.[0]?.goldarahsuami ?? '-' }}
               </div>
             </div>
 
@@ -390,8 +390,8 @@
             <div class="col-9">
               <div class="row">
                 <span class="q-pr-xs">: </span>
-                <span class="q-pr-xs">xxx,</span>
-                <span class="q-pr-xs">Taksiran Partus : </span>
+                <span class="q-pr-xs">{{ item?.haid }},</span>
+                <span class="q-pr-xs">Taksiran Partus : {{ item?.taksiranpartus }} </span>
               </div>
             </div>
           </div>
@@ -699,7 +699,7 @@
         </div>
       </div>
       <div class="row items-center q-px-sm q-pb-xs full-width">
-        <div class="col q-pl-md" style="color: red">
+        <div class="col q-pl-md">
           <div class="row">
             <div class="col">c. Gelisah : </div>
             <div class="col">Restrain : </div>
@@ -868,49 +868,96 @@
       </div>
       <div class="row items-center q-px-sm q-pb-xs full-width">
         <div class="col q-pl-md">
-          <div class="row q-pb-xs">
-            <div class="col">Untuk pasien dengan masalah Obstetri/Kehamilan/Nifas</div>
-          </div>
-          <div class="row q-pb-xs">
-            <table class="items-center full-width">
-              <thead>
-                <tr style="">
-                  <th class="text-center">
-                    No.
-                  </th>
-                  <th class="text-center">
-                    Parameter
-                  </th>
-                  <th class="text-center">
-                    Penilaian
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="(it, x) in skriningGizi" :key="x">
-                  <td class="text-center">
-                    {{ x + 1 }}
-                  </td>
-                  <td class="text-rigth">
-                    {{ it?.label }}
-                  </td>
-                  <td class="text-rigth">
-                    {{ getYT(it?.value) }} ({{ it?.value }})
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                  </td>
-                  <td class="text-center text-weight-bold">
-                    Total Skor
-                  </td>
-                  <td>
-                    {{ item?.skorgizix }}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+          <template v-if="item?.riwayatginekologi === 'Tidak'">
+            <div class="row q-pb-xs">
+              <div class="col">Untuk pasien dengan masalah Obstetri/Kehamilan/Nifas</div>
+            </div>
+            <div class="row q-pb-xs">
+              <table class="items-center full-width">
+                <thead>
+                  <tr style="">
+                    <th class="text-center">
+                      No.
+                    </th>
+                    <th class="text-center">
+                      Parameter
+                    </th>
+                    <th class="text-center">
+                      Penilaian
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="(it, x) in skriningGizi" :key="x">
+                    <td class="text-center">
+                      {{ x + 1 }}
+                    </td>
+                    <td class="text-rigth">
+                      {{ it?.label }}
+                    </td>
+                    <td class="text-rigth">
+                      {{ getYT(it?.value) }} ({{ it?.value }})
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                    </td>
+                    <td class="text-center text-weight-bold">
+                      Total Skor
+                    </td>
+                    <td>
+                      {{ item?.skorgizix }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </template>
+          <template v-else>
+            <div class="row q-pb-xs">
+              <div class="col">Untuk pasien dengan masalah Ginekologi/Onkologi</div>
+            </div>
+            <div class="row q-pb-xs">
+              <table class="items-center full-width">
+                <thead>
+                  <tr style="">
+                    <th class="text-center">
+                      No.
+                    </th>
+                    <th class="text-center">
+                      Parameter
+                    </th>
+                    <th class="text-center">
+                      Penilaian
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="(it, x) in masalahGinekologi" :key="x">
+                    <td class="text-center">
+                      {{ x + 1 }}
+                    </td>
+                    <td class="text-rigth">
+                      {{ it?.label }}
+                    </td>
+                    <td class="text-rigth">
+                      {{ getYT(it?.value) }} ({{ it?.value }})
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                    </td>
+                    <td class="text-center text-weight-bold">
+                      Total Skor
+                    </td>
+                    <td>
+                      {{ item?.skorgizix }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </template>
           <div class="row">
             <div class="col text-weight-bold">Bila jawaban ya lebih dari sama dengan 1, dilaporkan pada tim terapi gizi.
             </div>
@@ -919,50 +966,6 @@
             <div class="col text-weight-bold">Bila Skor lebih dari sama dengan 2 dan pasien dengan diagnosa khusus
               dilakukan pengkajian
               lebih lanjut oleh Nutrisionis</div>
-          </div>
-
-          <div class="row q-pb-xs">
-            <div class="col">Untuk pasien dengan masalah Ginekologi/Onkologi</div>
-          </div>
-          <div class="row q-pb-xs">
-            <table class="items-center full-width">
-              <thead>
-                <tr style="">
-                  <th class="text-center">
-                    No.
-                  </th>
-                  <th class="text-center">
-                    Parameter
-                  </th>
-                  <th class="text-center">
-                    Penilaian
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="(it, x) in masalahGinekologi" :key="x">
-                  <td class="text-center">
-                    {{ x + 1 }}
-                  </td>
-                  <td class="text-rigth">
-                    {{ it?.label }}
-                  </td>
-                  <td class="text-rigth">
-                    {{ getYT(it?.value) }} ({{ it?.value }})
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                  </td>
-                  <td class="text-center text-weight-bold">
-                    Total Skor
-                  </td>
-                  <td>
-                    {{ item?.skorgizix }}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
           </div>
         </div>
       </div>
@@ -1429,7 +1432,8 @@ td {
     page-break-inside: avoid;
 
     @bottom-right {
-      content: "Dokumen Sah dari RSUD MOH SALEH KOTA PROBOLINGGO | Hal Ke-" counter(page);
+      content: "Dokumen Sah dari RSUD Mohamad Saleh | Hal Ke-" counter(page);
+      font-size: 8pt;
     }
   }
 

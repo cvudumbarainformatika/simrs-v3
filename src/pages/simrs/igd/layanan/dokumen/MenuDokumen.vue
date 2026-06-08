@@ -55,6 +55,9 @@
         <q-tab-panel name="Pengkajian Awal Kebidanan" class="full-height q-pa-none">
           <PengkajianAwalKebidanan judul="Pengkajian Awal Kebidanan" :pasien="props?.pasien" />
         </q-tab-panel>
+        <q-tab-panel name="Serah Terima Ruangan" class="full-height q-pa-none">
+          <SerahTerimaRuangan judul="Serah Terima Ruangan" :pasien="props?.pasien" />
+        </q-tab-panel>
       </q-tab-panels>
     </div>
   </div>
@@ -86,6 +89,7 @@ import PengkajianAwalMedis from './dokumenisi/PengkajianAwalMedis/PengkajianAwal
 import PengkajianAwalKeperawatan from './dokumenisi/PengkajianAwalKeperawatan/PengkajianAwalKeperawatan.vue';
 import ObservasiPenderita from './dokumenisi/ObservasiPenderita/ObservasiPenderita.vue';
 import PengkajianAwalKebidanan from './dokumenisi/PengkajianAwalKebidanan/PengkajianAwalKebidanan.vue';
+import SerahTerimaRuangan from './dokumenisi/SerahTerimaRuangan/SerahTerimaRuangan.vue';
 
 const billing = ref('BILLING')
 const triase = ref('TRIASE')

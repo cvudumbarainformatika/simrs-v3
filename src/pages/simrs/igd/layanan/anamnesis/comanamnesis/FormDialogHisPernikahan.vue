@@ -1,11 +1,7 @@
 <template>
   <q-dialog v-model="store.fixed">
     <q-card>
-      <q-form
-        ref="refForm"
-        @submit="onSubmit"
-        class="column full-height"
-      >
+      <q-form ref="refForm" @submit="onSubmit" class="column full-height">
         <q-card-section>
           <div class="text-h6 text-center">
             Form History Pernikahan
@@ -20,7 +16,23 @@
               <q-input v-model="store.form.suamike" outlined type="number" dense label="Suami Ke" />
             </div>
             <div class="col-12">
-              <q-input v-model="store.form.lamapernikahan" outlined type="number" dense label="Lama Pernikahan(Tahun)" />
+              <q-input v-model="store.form.namasuami" outlined type="text" dense label="Nama Suami" />
+            </div>
+            <div class="col-12">
+              <q-input v-model="store.form.lamapernikahan" outlined type="number" dense
+                label="Lama Pernikahan(Tahun)" />
+            </div>
+            <div class="col-12">
+              <q-input v-model="store.form.pendidikansuami" outlined type="text" dense label="Pendidikan Suami" />
+            </div>
+            <div class="col-12">
+              <q-input v-model="store.form.pekerjaansuami" outlined type="text" dense label="Pekerjaan Suami" />
+            </div>
+            <div class="col-12">
+              <q-input v-model="store.form.agamasuami" outlined type="text" dense label="Agama Suami" />
+            </div>
+            <div class="col-12">
+              <q-input v-model="store.form.goldarahsuami" outlined type="text" dense label="Golongan Darah Suami" />
             </div>
           </div>
         </q-card-section>
@@ -42,7 +54,7 @@ import { ref } from 'vue'
 const store = useHistoryPernikahanStore()
 const refForm = ref()
 
-function onSubmit () {
+function onSubmit() {
   console.log('sasa')
   store.saveData(props.pasien).then(() => {
     refForm.value.resetValidation()

@@ -331,7 +331,9 @@ export const usePermintaanOperasistore = defineStore('permintaan-operasi-store',
         const rawBed = toRaw(findPasien.pra_bedah)
         const rawInd = toRaw(findPasien.pra_induksi)
         if (findPasien.pra_bedah) praBed.form = structuredClone(rawBed)
+        else praBed.resetForm()
         if (findPasien.pra_induksi) praBed.formInduksi = structuredClone(rawInd)
+        else praBed.resetFormInduksi()
       }
     },
 

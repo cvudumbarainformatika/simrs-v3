@@ -45,7 +45,12 @@
         @update:model-value="(val) => {
           store.reqs.levelberapa = parseInt(val)
           // Filter store.alllevel berdasarkan panjang kodeall3
-          store.optionrekening = store.alllevel?.filter(x => x?.kodeall3?.length === parseInt(val)) || []
+          if (parseInt(val) === 17) {
+            store.optionrekening = store.alllevel?.filter(x => x?.kodeall3?.length >= parseInt(val)) || []
+          }
+          else {
+            store.optionrekening = store.alllevel?.filter(x => x?.kodeall3?.length === parseInt(val)) || []
+          }
           store.form.kode = '' // Reset kode saat jenis akun berubah
           options.value = store.optionrekening // Update options untuk q-select
         }" />
@@ -54,10 +59,17 @@
         :loading="store.loading || !store.alllevel?.length" v-if="store.reqs.jenisbukubesar === 2"
         :source="store.levelrinci" @update:model-value="(val) => {
           store.reqs.levelberapa = parseInt(val)
+          if (parseInt(val) === 17) {
+            store.optionrekening = store.alllevel?.filter(x => x?.kodeall3?.length >= parseInt(val)) || []
+          }
+          else {
+            store.optionrekening = store.alllevel?.filter(x => x?.kodeall3?.length === parseInt(val)) || []
+          }
           // Filter store.alllevel berdasarkan panjang kodeall3
-          store.optionrekening = store.alllevel?.filter(x => x?.kodeall3?.length === parseInt(val)) || []
-          store.form.kode = '' // Reset kode saat jenis akun berubah
-          options.value = store.optionrekening // Update options untuk q-select
+          // Reset kode saat jenis akun berubah
+          store.form.kode = ''
+          // Update options untuk q-select
+          options.value = store.optionrekening
         }" />
     </div>
     <div class="q-pa-sm" style="width:50%">
@@ -197,7 +209,6 @@ async function filterFn(val, update, abort) {
     store.loading = false
     return
   }
-
   // Filter lokal
   const needle = val.toLowerCase()
   const localResults = store.optionrekening?.filter(

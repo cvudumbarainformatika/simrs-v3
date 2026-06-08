@@ -41,7 +41,7 @@
                   <div> : {{ pasien.kelamin }}</div>
                 </div>
                 <div class="text-right justify-end">
-                  <span class="text-weight-bold">Dokter Anestesi : </span> {{ pasien.dokter }}
+                  <span class="text-weight-bold">Dokter Anestesi : </span> {{ dokter() }}
                 </div>
               </div>
             </div>
@@ -240,7 +240,7 @@
                 </div>
                 <div class="col q-ml-sm">
                   {{ store.resultPraAnastesi?.length ? store.resultPraAnastesi[0]?.keteranganLaborat :
-                  '..................................................' }}
+                    '..................................................' }}
                 </div>
               </div>
             </div>
@@ -387,12 +387,12 @@
                 <div class="">
                   Jam : {{ store.resultPraAnastesi?.length ? store.resultPraAnastesi[0]?.mulaiPuasajam ??
                     '...............' :
-                  '..................................................' }}
+                    '..................................................' }}
                 </div>
                 <div class="">
                   Tanggal : {{ store.resultPraAnastesi?.length ? store.resultPraAnastesi[0]?.mulaiPuasaTgl ??
                     '...............' :
-                  '..................................................' }}
+                    '..................................................' }}
                 </div>
               </div>
             </div>
@@ -402,12 +402,12 @@
                 <div class="">
                   Jam : {{ store.resultPraAnastesi?.length ? store.resultPraAnastesi[0]?.preMedikasiJam ??
                     '...............' :
-                  '..................................................' }}
+                    '..................................................' }}
                 </div>
                 <div class="">
                   Tanggal : {{ store.resultPraAnastesi?.length ? store.resultPraAnastesi[0]?.preMedikasiTgl ??
                     '...............' :
-                  '..................................................' }}
+                    '..................................................' }}
                 </div>
               </div>
             </div>
@@ -431,7 +431,7 @@
                 <div class="">
                   Jam : {{ store.resultPraAnastesi?.length ? store.resultPraAnastesi[0]?.rencanaOperasiJam ??
                     '...............' :
-                  '..................................................' }}
+                    '..................................................' }}
                 </div>
                 <div class="">
                   Tanggal : {{ store.resultPraAnastesi?.length ? store.resultPraAnastesi[0]?.rencanaOperasiTgl ??
@@ -477,7 +477,7 @@
                 ttd
               </div>
             </div>
-            <div>({{ pasien?.dokter }})</div>
+            <div>({{ dokter() }})</div>
           </div>
 
           <div class="q-my-sm">
@@ -517,7 +517,11 @@ const props = defineProps({
 const store = usePraAnastesiStore()
 const refPrint = ref()
 const rawatkhususLainlain = ref(false)
-
+function dokter () {
+  const keys = Object.keys(props.pasien?.dokter)
+  if (keys.length) return props.pasien?.dokter?.nama
+  else return props.pasien?.dokter
+}
 onMounted(async () => {
   await store.getMaster()
   await store.getData(props.pasien)
