@@ -2,7 +2,7 @@
   <div class="column full-height q-ma-sm">
 
     <div class="q-pa-md bg-primary text-white text-weight-bold text-subtitle1">
-      LAPORAN DAFTAR BERKAS ARSIP
+      LAPORAN DAFTAR ARSIP
     </div>
 
     <q-card flat bordered class="q-mt-md">
@@ -69,11 +69,23 @@
           </q-td>
         </template>
 
-        <template #body-cell-jumlah_berkas="props">
-          <q-td :props="props" class="text-center">
-            <q-badge color="purple">
-              {{ props.value || 0 }}
-            </q-badge>
+        <template #body-cell-rinciandalammap="props">
+          <q-td :props="props">
+
+            <div v-if="props.row.rinciandalammap?.length">
+
+              <div v-for="(item, index) in props.row.rinciandalammap" :key="item.id" class="q-mb-xs">
+                {{ index + 1 }}.
+                {{ item.dataarsip?.uraian }}
+                ({{ item.noarsip }})
+              </div>
+
+            </div>
+
+            <div v-else>
+              -
+            </div>
+
           </q-td>
         </template>
 
@@ -112,10 +124,10 @@
 <script setup>
 import { onMounted } from 'vue'
 import { date } from 'quasar'
-import { useLaporandataberkasarsip } from 'src/stores/simrs/laporan/arsip/laporandataberkasarsip/laporandataberkasarsip'
-import * as XLSX from 'xlsx'
+import * as XLSX from 'xlsx-js-style'
+import { useLaporandataarsip } from 'src/stores/simrs/laporan/arsip/laporandataarsip/laporandataarsip'
 
-const store = useLaporandataberkasarsip()
+const store = useLaporandataarsip()
 
 const tahunSekarang = new Date().getFullYear()
 
@@ -138,7 +150,7 @@ const columns = [
   { name: 'namamap', label: 'Nama Berkas', field: 'namamap', align: 'left' },
   { name: 'kodeklasifikasi', label: 'Kode Klasifikasi', field: 'kodeklasifikasi', align: 'center' },
   { name: 'keterangan_kode', label: 'Klasifikasi', field: 'keterangan_kode', align: 'left' },
-  { name: 'jumlah_berkas', label: 'Jumlah Item', field: 'rinciandalammap_count', align: 'center' },
+  { name: 'rinciandalammap', label: 'Nama Arsip', field: 'rinciandalammap', align: 'left' },
   {
     name: 'unitpengolah',
     label: 'Unit Pengolah',
@@ -173,43 +185,113 @@ function resetFilter() {
 }
 
 function exportExcel() {
-  const rows = store.items.map((row, index) => ({
-    No: index + 1,
-    'Nama Berkas': row.namamap ?? '-',
-    'Kode Klasifikasi': row.kodeklasifikasi ?? '-',
-    Klasifikasi: row.keterangan_kode ?? '-',
-    'Jumlah Item': row.rinciandalammap_count ?? 0,
-    'Unit Pengolah': row.unitpengolah?.nama ?? '-',
-    Kabinet: row.kabinet?.namacabinet ?? '-',
-    'Tanggal Buat Berkas': formatTanggal(row.created_at),
-    Status: row.status_arsip ?? '-'
-  }))
+  const data = [
+    ['LAPORAN DAFTAR ARSIP'],
+    [`Tahun ${store.params.tahunDari} s/d ${store.params.tahunSampai} | Status: ${store.params.inactive || 'SEMUA'}`],
+    [],
+    [
+      'No',
+      'Nama Berkas',
+      'Kode Klasifikasi',
+      'Klasifikasi',
+      'Nama Arsip',
+      'Unit Pengolah',
+      'Kabinet',
+      'Tanggal Buat Berkas',
+      'Status'
+    ]
+  ]
 
-  const worksheet = XLSX.utils.json_to_sheet(rows)
+  store.items.forEach((row, index) => {
+    const namaArsip = row.rinciandalammap?.length
+      ? row.rinciandalammap
+        .map((item, i) => {
+          const uraian = item.dataarsip?.uraian ?? '-'
+          const noarsip = item.noarsip ?? '-'
+          return `${i + 1}. ${uraian} (${noarsip})`
+        })
+        .join('\n')
+      : '-'
+
+    data.push([
+      index + 1,
+      row.namamap ?? '-',
+      row.kodeklasifikasi ?? '-',
+      row.keterangan_kode ?? '-',
+      namaArsip,
+      row.unitpengolah?.nama ?? '-',
+      row.kabinet?.namacabinet ?? '-',
+      formatTanggal(row.created_at),
+      row.status_arsip ?? '-'
+    ])
+  })
+
+  const worksheet = XLSX.utils.aoa_to_sheet(data)
+
+  worksheet['!merges'] = [
+    { s: { r: 0, c: 0 }, e: { r: 0, c: 8 } },
+    { s: { r: 1, c: 0 }, e: { r: 1, c: 8 } }
+  ]
 
   worksheet['!cols'] = [
     { wch: 6 },
-    { wch: 45 },
-    { wch: 20 },
-    { wch: 40 },
-    { wch: 12 },
+    { wch: 35 },
+    { wch: 18 },
+    { wch: 35 },
+    { wch: 80 },
     { wch: 30 },
     { wch: 25 },
-    { wch: 25 },
+    { wch: 22 },
     { wch: 15 }
   ]
 
-  const workbook = XLSX.utils.book_new()
+  worksheet['!rows'] = data.map((row, index) => {
+    if (index < 3) return { hpt: 24 }
 
-  XLSX.utils.book_append_sheet(
-    workbook,
-    worksheet,
-    'Daftar Berkas Arsip'
-  )
+    const namaArsip = row[4] || ''
+    const jumlahBaris = String(namaArsip).split('\n').length
+
+    return {
+      hpt: Math.max(24, jumlahBaris * 18)
+    }
+  })
+
+  const range = XLSX.utils.decode_range(worksheet['!ref'])
+
+  for (let R = range.s.r; R <= range.e.r; ++R) {
+    for (let C = range.s.c; C <= range.e.c; ++C) {
+      const cellAddress = XLSX.utils.encode_cell({ r: R, c: C })
+
+      if (!worksheet[cellAddress]) continue
+
+      worksheet[cellAddress].s = {
+        font: {
+          bold: R === 0 || R === 3,
+          sz: R === 0 ? 14 : 10
+        },
+        alignment: {
+          horizontal: R === 0 || R === 1 || R === 3 ? 'center' : 'left',
+          vertical: 'top',
+          wrapText: true
+        },
+        border: R >= 3
+          ? {
+            top: { style: 'thin' },
+            bottom: { style: 'thin' },
+            left: { style: 'thin' },
+            right: { style: 'thin' }
+          }
+          : {}
+      }
+    }
+  }
+
+  const workbook = XLSX.utils.book_new()
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'Daftar Arsip')
 
   XLSX.writeFile(
     workbook,
-    `Laporan_Daftar_Berkas_Arsip_${store.params.tahunDari}_${store.params.tahunSampai}.xlsx`
+    `Laporan_Daftar_Arsip_${store.params.tahunDari}_${store.params.tahunSampai}.xlsx`
   )
 }
 
