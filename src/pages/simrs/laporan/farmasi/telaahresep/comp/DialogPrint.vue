@@ -132,7 +132,7 @@
                   {{ admin.question }}
                 </div>
                 <div class="col-3 text-left">
-                  <q-option-group v-model="admin.value" :options="options" color="green" dense inline />
+                  <q-option-group v-model="admin.value" :options="options" color="dark" dense inline disable />
                 </div>
               </div>
             </div>
@@ -148,7 +148,7 @@
                 {{ komp.question }}
               </div>
               <div class="col-3 text-left">
-                <q-option-group v-model="komp.value" :options="options" color="green" dense inline />
+                <q-option-group v-model="komp.value" :options="options" color="dark" dense inline disable />
               </div>
             </div>
             <q-separator class="q-my-md" />
@@ -163,7 +163,7 @@
                 {{ farm.question }}
               </div>
               <div class="col-3 text-left">
-                <q-option-group v-model="farm.value" :options="tOptions" color="green" dense inline />
+                <q-option-group v-model="farm.value" :options="tOptions" color="dark" dense inline disable />
               </div>
             </div>
             <!-- tt -->
