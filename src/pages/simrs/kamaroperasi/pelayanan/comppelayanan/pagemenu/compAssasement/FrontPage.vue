@@ -38,11 +38,11 @@ const props = defineProps({
 
 const tab = ref('praBedah')
 const tabs = ref([
-  { // ini harusnya ada di ranap dan rajal
-    label: 'Pra Bedah',
-    name: 'praBedah',
-    comp: shallowRef(defineAsyncComponent(() => import('./comp/PraBedahPage.vue')))
-  },
+  // { // ini harusnya ada di ranap dan rajal
+  //   label: 'Pra Bedah',
+  //   name: 'praBedah',
+  //   comp: shallowRef(defineAsyncComponent(() => import('./comp/PraBedahPage.vue')))
+  // },
   {
     label: 'Pra Induksi',
     name: 'praInduksi',
