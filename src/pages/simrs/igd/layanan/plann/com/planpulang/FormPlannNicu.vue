@@ -16,6 +16,8 @@
           color="teal" /> <br>
         <q-checkbox v-model="store.form.isi" val="Asfiksia berat, syok, sering apnoe atau kejang, gangguan perdarahan"
           label="Asfiksia berat, syok, sering apnoe atau kejang, gangguan perdarahan" color="teal" /> <br>
+        <q-checkbox v-model="store.form.isi" val="Mengalami masalah metabolic" label="Mengalami masalah metabolic"
+          color="teal" /> <br>
         <q-checkbox v-model="store.form.isi" val="Bayi dengan kelainan congenital berat"
           label="Bayi dengan kelainan congenital berat" color="teal" /> <br>
 
