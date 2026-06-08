@@ -28,7 +28,7 @@
           <app-loading />
         </div>
       </div>
-      <div v-else>
+      <div v-else class="" style="padding-bottom: 120px;">
         <div id="printMe" style="width: 21cm;" class="q-pa-xs full-width full-height">
           <KopSurat :judul="props?.judul ?? 'Indikasi Masuk Ranap'" :pasien="props?.pasien" :jangantampil=false
             :kelas="props.kelas" />
@@ -42,7 +42,7 @@
 </template>
 <script setup>
 import { usePlannStore } from 'src/stores/simrs/igd/plann';
-import KopSurat from '../../KopSurat.vue';
+import KopSurat from '../../KopDokumen.vue';
 import Isiindikasimasuknicudaninter from './Isiindikasimasuknicudaninter.vue';
 import html2pdf from 'html2pdf.js';
 const store = usePlannStore()
@@ -66,11 +66,11 @@ const props = defineProps({
     default: () => []
   },
   kelas: {
-    type: Object,
+    type: String,
     default: null
   },
   keterangan: {
-    type: Object,
+    type: String,
     default: null
   },
   loading: {

@@ -90,7 +90,7 @@ const props = defineProps({
     default: true
   },
   kelas: {
-    type: Object,
+    type: String,
     default: null
   },
 })

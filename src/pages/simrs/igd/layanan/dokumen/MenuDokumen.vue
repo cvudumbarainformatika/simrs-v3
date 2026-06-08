@@ -23,7 +23,7 @@
         </q-tab-panel>
         <q-tab-panel name="Indikasi Masuk Rawat Inap" class="full-height q-pa-none">
           <Indikasimasuknicudaninter :judul="indikasinicu" :pasien="props?.pasien" :isi="isi" :kelas="kelas"
-            :loading="storex?.loading" :keterangan="keterangan" />
+            :keterangan="keterangan" />
         </q-tab-panel>
         <q-tab-panel name="Sep" class="full-height q-pa-none">
           <SepPage :judul="sep" :pasien="props?.pasien" />
@@ -102,10 +102,9 @@ const store = useDokumenIgdStore()
 // const kelas = storex?.isiindikasimasuknicu?.planranap?.dokumentransfer?.kelas
 // const keterangan = storex?.isiindikasimasuknicu?.planranap?.keterangan
 
-const isi = props.pasien?.planheder[0]?.planranap?.dokumentransfer?.isi ? JSON.parse(props.pasien?.planheder[0]?.planranap?.dokumentransfer?.isi) : '-'
+const isi = props.pasien?.planheder[0]?.planranap?.dokumentransfer?.isi ? JSON.parse(props.pasien?.planheder[0]?.planranap?.dokumentransfer?.isi) : []
 const kelas = props.pasien?.planheder[0]?.planranap?.dokumentransfer?.kelas
 const keterangan = props.pasien?.planheder[0]?.planranap?.keterangan
-
 // console.log('sassa', props.pasien?.planheder[0]?.planranap)
 
 // storex.indikasimasuknicuinter(props.pasien)

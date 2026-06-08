@@ -13,7 +13,7 @@
         </div>
         <div class="row">
           <div class="col-3">DPJP Utama</div>
-          <div class="col-9">: {{ '-' }}</div>
+          <div class="col-9">: {{ props.pasien?.dokter ?? '-' }}</div>
         </div>
       </div>
       <div class="col">
