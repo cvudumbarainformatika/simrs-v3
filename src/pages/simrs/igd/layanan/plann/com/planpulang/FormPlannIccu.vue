@@ -16,6 +16,8 @@
           label="Aritmia maligna atau dengan gangguan hemodinamik" color="teal" /> <br>
         <q-checkbox v-model="store.form.isi" val="Syokkardiogenik : HR > 100 x per mnt, TDS < 100 mmHg"
           label="Syokkardiogenik : HR > 100 x per mnt, TDS < 100 mmHg" color="teal" /> <br>
+        <q-checkbox v-model="store.form.isi" val="Pasca tindakan Invasive kardiologi, post pemasangan TPM/PPM"
+          label="Pasca tindakan Invasive kardiologi, post pemasangan TPM/PPM" color="teal" /> <br>
         <q-checkbox v-model="store.form.isi" val="Miokarditis" label="Miokarditis" color="teal" /> <br>
         <q-checkbox v-model="store.form.isi" val="Penyakit lain yang memerlukan pemantauan hemodinamik"
           label="Penyakit lain yang memerlukan pemantauan hemodinamik" color="teal" /> <br>
