@@ -23,7 +23,7 @@
             option-label="nama" outlined label="" @update:model-value="(val) => {
               store.resetForm()
               const tindakanNya = pasien?.manytindakanop?.find(t => t.rs2 == val)
-              console.log('val tindakan', val, tindakanNya);
+              //  console.log('val tindakan', val, tindakanNya);
               store.setForm('tindakan', tindakanNya?.id)
               store.setForm('nota', val)
             }" />

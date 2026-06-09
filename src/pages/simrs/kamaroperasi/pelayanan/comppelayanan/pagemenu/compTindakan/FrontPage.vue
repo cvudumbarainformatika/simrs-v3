@@ -65,7 +65,8 @@ const tabs = ref([
     name: 'tindakan',
     icon: 'monitor_heart',
     // nakes: ['2', '3'],
-    comp: shallowRef(defineAsyncComponent(() => import('./comp/TindakanPage.vue')))
+    // comp: shallowRef(defineAsyncComponent(() => import('./comp/TindakanPage.vue')))
+    comp: shallowRef(defineAsyncComponent(() => import('src/pages/simrs/poli/tindakan/comptindakan/pagemenu/complayanan/TindakanPage.vue')))
   },
   {
     label: 'Laporan Operasi',

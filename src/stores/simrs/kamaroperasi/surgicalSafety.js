@@ -268,7 +268,7 @@ export const useSurgicalSafetyStore = defineStore('surgical_safety_store', {
         this.setForm('noreg', this.pasien?.noreg)
       } else if (surgical) {
         this.form = surgical
-        console.log('else reset', surgical)
+        // console.log('else reset', surgical)
 
       }
     },
@@ -289,7 +289,7 @@ export const useSurgicalSafetyStore = defineStore('surgical_safety_store', {
         api.post('v1/simrs/penunjang/surgical/simpan', this.form)
           .then(resp => {
             this.loading = false
-            console.log('simpan', resp?.data)
+            // console.log('simpan', resp?.data)
             this.form = resp?.data?.data
             pengunjung.injectDataPasien(pasien, resp?.data?.data, 'surgical')
             const index = this.pasien.surgical.findIndex(item => item.id === resp?.data?.data?.id)
@@ -373,7 +373,7 @@ export const useSurgicalSafetyStore = defineStore('surgical_safety_store', {
       } finally { this.loading = false }
     },
     async simpanGambar () {
-      console.log('simpan gambar', this.seri)
+      // console.log('simpan gambar', this.seri)
       const form = new FormData()
       form.append('file', this.seri)
       form.append('noreg', this.pasien.noreg)
@@ -448,19 +448,19 @@ export const useSurgicalSafetyStore = defineStore('surgical_safety_store', {
       })
     },
     injectKasa (type, data) {
-      console.log('inject', data)
+      // console.log('inject', data)
       if (data?.id) {
-        console.log('inject ada id')
+        // console.log('inject ada id')
         const index = this.pasien.inventaris_kasa.findIndex(x => x.id === data.id)
         if (type == 'hapus') {
           this.pasien.inventaris_kasa.splice(index, 1)
         }
         else {
           if (index >= 0) {
-            console.log('inject ada id update')
+            // console.log('inject ada id update')
             this.pasien.inventaris_kasa[index] = data
           } else {
-            console.log('inject ada id push')
+            // console.log('inject ada id push')
             this.pasien.inventaris_kasa.push(data)
           }
         }
@@ -468,7 +468,7 @@ export const useSurgicalSafetyStore = defineStore('surgical_safety_store', {
 
     },
     hapusKasa (val) {
-      console.log('hapus', val)
+      // console.log('hapus', val)
       this.loading = true
       return new Promise(resolve => {
         api.post('v1/simrs/penunjang/surgical/hapus-inventaris-kasa', val)

@@ -160,7 +160,7 @@ function filterFn (val, update, abort) {
     const needle = val.toLowerCase()
     // const arr = kodePoli === 'POL041' ? store.listTindakan : store.listTindakan?.filter(x => x.kdpoli?.includes(kodePoli))
     const arr = kodePoli === 'POL041' ? store.listTindakan : store.listTindakan?.filter(x => matchRs4(x.kdpoli, kodePoli))
-    // console.log('arr', arr)
+    // console.log('arr', kodePoli, arr, store.listTindakan)
     const filter = ['kdtindakan', 'tindakan', 'icd9']
     const multiFilter = (data = [], filterKeys = [], value = '') =>
       data.filter((item) => filterKeys.some(
