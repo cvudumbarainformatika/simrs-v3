@@ -31,10 +31,10 @@
       <div v-else class="" style="padding-bottom: 120px;">
         <div id="printMe" style="width: 21cm;" class="q-pa-xs full-width full-height">
           <KopSurat :judul="props?.judul ?? 'Indikasi Masuk Ranap'" :pasien="props?.pasien" :jangantampil=false
-            :kelas="props.kelas" />
+            :kelas="props.kelas" :pulang="props?.pulang" :dasarpulang="props?.dasarpulang" />
 
-          <Isiindikasimasuknicudaninter :pasien="props?.pasien" :isi="props.isi" :kelas="props.kelas"
-            :keterangan="props.keterangan" :loading="props.loading" />
+          <Isi :pulang="props?.pulang" :pasien="props?.pasien" :isi="props.isi" :kelas="props.kelas"
+            :loading="props.loading" />
         </div>
       </div>
     </q-scroll-area>
@@ -43,7 +43,7 @@
 <script setup>
 import { usePlannStore } from 'src/stores/simrs/igd/plann';
 import KopSurat from '../../KopDokumen.vue';
-import Isiindikasimasuknicudaninter from './Isiindikasimasuknicudaninter.vue';
+import Isi from './IsiPasienPulang.vue';
 import html2pdf from 'html2pdf.js';
 const store = usePlannStore()
 
@@ -76,8 +76,18 @@ const props = defineProps({
   loading: {
     type: Boolean,
     default: false
+  },
+  pulang: {
+    type: Object,
+    default: null
+  },
+  dasarpulang: {
+    type: String,
+    default: null
   }
+
 })
+
 
 function exportPdf() {
   const concern = document.getElementById('printMe')

@@ -159,7 +159,7 @@ const props = defineProps({
   loading: {
     type: Boolean,
     default: false
-  },
+  }
 })
 
 const iccu = [

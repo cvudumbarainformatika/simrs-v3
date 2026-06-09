@@ -58,13 +58,17 @@
         <q-tab-panel name="Serah Terima Ruangan" class="full-height q-pa-none">
           <SerahTerimaRuangan judul="Serah Terima Ruangan" :pasien="props?.pasien" />
         </q-tab-panel>
+
+        <q-tab-panel name="Pasien Pulang" class="full-height q-pa-none">
+          <PasienPulang :judul="pasienpulang" :pulang="pulang" :dasarpulang="dasarpulang" :pasien="props?.pasien" />
+        </q-tab-panel>
       </q-tab-panels>
     </div>
   </div>
 </template>
 <script setup>
 import { useDokumenIgdStore } from 'src/stores/simrs/igd/dokumen'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 
 const props = defineProps({
   pasien: {
@@ -90,11 +94,14 @@ import PengkajianAwalKeperawatan from './dokumenisi/PengkajianAwalKeperawatan/Pe
 import ObservasiPenderita from './dokumenisi/ObservasiPenderita/ObservasiPenderita.vue';
 import PengkajianAwalKebidanan from './dokumenisi/PengkajianAwalKebidanan/PengkajianAwalKebidanan.vue';
 import SerahTerimaRuangan from './dokumenisi/SerahTerimaRuangan/SerahTerimaRuangan.vue';
+import PasienPulang from './dokumenisi/PasienPulang/PasienPulang.vue';
+
 
 const billing = ref('BILLING')
 const triase = ref('TRIASE')
 const suratkematian = ref('Surat Kematian')
 const indikasinicu = ref('Indikasi Pasien Masuk Ruang')
+const pasienpulang = ref('Pasien Pulang')
 const sep = ref('Sep')
 const store = useDokumenIgdStore()
 // const storex = usePlannStore()
@@ -105,7 +112,21 @@ const store = useDokumenIgdStore()
 const isi = props.pasien?.planheder[0]?.planranap?.dokumentransfer?.isi ? JSON.parse(props.pasien?.planheder[0]?.planranap?.dokumentransfer?.isi) : []
 const kelas = props.pasien?.planheder[0]?.planranap?.dokumentransfer?.kelas
 const keterangan = props.pasien?.planheder[0]?.planranap?.keterangan
+const pulang = props.pasien?.planheder[0]?.planpulang
+const dasarpulang = props.pasien?.planheder[0]?.planpulang?.atas_dasar
 // console.log('sassa', props.pasien?.planheder[0]?.planranap)
 
 // storex.indikasimasuknicuinter(props.pasien)
+
+// const indikasinicu = computed(() => {
+//   if (pulang) {
+//     return 'Indikasi Pasien Pulang'
+//   }
+
+//   if (keterangan) {
+//     return 'Indikasi Pasien Masuk Ruang'
+//   }
+
+//   return 'Indikasi Pasien'
+// })
 </script>

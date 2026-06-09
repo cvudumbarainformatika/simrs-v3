@@ -191,6 +191,26 @@
                           <q-option-group v-model="group" :options="optionKondisiKhusus" color="primary" inline dense />
                         </div> -->
                       </div>
+                      <div class="col-12 q-col-gutter-sm" v-if="store.form.atasdasarpulang === 'Paksa'">
+                        <div class="text-weight-bold"> Informasi Penanggung Jawab</div>
+                        <q-input v-model="store.form.nama_penanggungjawab" dense outlined standout="bg-yellow-3"
+                          label="Nama" />
+                        <q-input v-model="store.form.identitas_penanggungjawab" dense outlined standout="bg-yellow-3"
+                          label="Kartu Identitas" />
+                        <div class="row q-col-gutter-sm">
+                          <div class="col-6">
+                            <q-input v-model="store.form.umur_penanggungjawab" dense outlined standout="bg-yellow-3"
+                              label="Umur" type="number" :rules="[val => !!val || 'Diisi dengan angka']" />
+                          </div>
+                          <div class="col-6">
+                            <q-select v-model="store.form.kelamin_penanggungjawab" label="Jenis Kelamin"
+                              :options="optionkelamin" dense outlined standout="bg-yellow-3" transition-show="flip-up"
+                              transition-hide="flip-down" :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" />
+                          </div>
+                        </div>
+                        <q-input v-model="store.form.alamat_penanggungjawab" dense outlined standout="bg-yellow-3"
+                          label="Alamat" />
+                      </div>
                     </div>
                   </q-tab-panel>
                 </q-tab-panels>
@@ -230,6 +250,7 @@ const optiontypefaskes = ref(['Penuh', 'Partial'])
 const optionsFaskes2 = ref([])
 const optionsPoli = ref([])
 const optionpulangs = ref(['Sembuh', 'Paksa', 'Meninggal'])
+const optionkelamin = ref(['Perempuan', 'Laki-laki'])
 // const optionKondisiKhusus = ref([
 //   {
 //     label: 'Tidak Ada',
@@ -372,6 +393,11 @@ function kosongkanpulang() {
   store.form.tglmeninggal = ''
   store.form.jammeninggal = ''
   store.form.keteranganrujuk = ''
+  store.form.nama_penanggungjawab = ''
+  store.form.identitas_penanggungjawab = ''
+  store.form.umur_penanggungjawab = ''
+  store.form.kelamin_penanggungjawab = ''
+  store.form.alamat_penanggungjawab = ''
 }
 
 function carinama(val) {
@@ -394,6 +420,11 @@ function cekpulang(val) {
     store.form.tglmeninggal = ''
     store.form.jammeninggal = ''
     store.form.keteranganrujuk = ''
+    store.form.nama_penanggungjawab = ''
+    store.form.identitas_penanggungjawab = ''
+    store.form.umur_penanggungjawab = ''
+    store.form.kelamin_penanggungjawab = ''
+    store.form.alamat_penanggungjawab = ''
   }
 }
 
