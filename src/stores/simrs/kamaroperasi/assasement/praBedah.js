@@ -63,7 +63,7 @@ export const useAssasementPraBedahStore = defineStore('assasement_pra_bedah_stor
         }
         else return notifErrVue('Maaf, Data Pasien tidak valid, silahkan refresh halaman kemudian coba lagi')
       }
-      console.log('simpan', payload)
+      // console.log('simpan', payload)
       this.loadingInduksi = true
       return new Promise(resolve => {
         api.post('v1/simrs/penunjang/ok/assasement/pra-induksi/simpan', payload)
@@ -73,8 +73,8 @@ export const useAssasementPraBedahStore = defineStore('assasement_pra_bedah_stor
             const data = resp?.data?.data
             pasien.pra_induksi = data
             // this.formInduksi = structuredClone(data)
-            console.log('simpan', resp?.data)
-            console.log('simpan induksi', resp?.data)
+            // console.log('simpan', resp?.data)
+            // console.log('simpan induksi', resp?.data)
             notifSuccess(resp)
             resolve(resp)
           })

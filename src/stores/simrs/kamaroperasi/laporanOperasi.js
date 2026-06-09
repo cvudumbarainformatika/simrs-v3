@@ -30,7 +30,7 @@ export const useLaporanOperasiStore = defineStore('laporan_operasi_store', {
       this.form[key] = val
     },
     resetForm () {
-      console.log('reset Form')
+      // console.log('reset Form')
 
       this.setForm('tanggal', date.formatDate(Date.now(), 'YYYY-MM-DD'))
       this.setForm('noreg', this.pasien?.noreg)
@@ -56,7 +56,7 @@ export const useLaporanOperasiStore = defineStore('laporan_operasi_store', {
       this.setForm('tTime', false)
     },
     assignForm (data) {
-      console.log('assignForm laporan', data)
+      // console.log('assignForm laporan', data)
       if (!data) return this.resetForm()
       const keys = Object.keys(data)
       if (keys?.length <= 0) return this.resetForm()
@@ -90,7 +90,7 @@ export const useLaporanOperasiStore = defineStore('laporan_operasi_store', {
     },
     resetFormTindakan () {
       let kelas = null
-      console.log('reset Form Tindakan')
+      // console.log('reset Form Tindakan')
 
       if (this.pasien.rs10 == 'POL014') kelas = 'IRD'
       else if (this.pasien.rs10.includes('POL') && !this.pasien.rs10 == 'POL014') kelas = 'poli'
@@ -120,7 +120,7 @@ export const useLaporanOperasiStore = defineStore('laporan_operasi_store', {
     },
 
     assignFormTindakan (data) {
-      console.log('assignForm Tindakan', data)
+      // console.log('assignForm Tindakan', data)
       if (!data) return this.resetFormTindakan()
       const keys = Object.keys(data)
       if (keys?.length <= 0) return this.resetFormTindakan()
@@ -195,7 +195,7 @@ export const useLaporanOperasiStore = defineStore('laporan_operasi_store', {
         api.post('v1/simrs/penunjang/ok/laporan-op/simpan', this.form)
           .then(resp => {
             this.loading = false
-            console.log('simpan', resp?.data)
+            // console.log('simpan', resp?.data)
             const index = this?.pasien?.laporanop.findIndex(item => item.id === resp?.data?.data?.id)
             if (index >= 0) this.pasien.laporanop[index] = resp?.data?.data
             else this.pasien.laporanop.push(resp?.data?.data)
@@ -220,7 +220,7 @@ export const useLaporanOperasiStore = defineStore('laporan_operasi_store', {
           .then(resp => {
             this.loading = false
             const data = resp?.data?.data
-            console.log('s hapus', data, this.pasien)
+            // console.log('s hapus', data, this.pasien)
             this.pasien.laporanop = null
             // this.hapusDariPengunjung(data, 'tindakanop')
             notifSuccess(resp)
@@ -248,7 +248,7 @@ export const useLaporanOperasiStore = defineStore('laporan_operasi_store', {
             const data = resp?.data?.data
             const nota = resp?.data?.nota
             if (Object.keys(data)?.length > 0) data.nama = data?.mastertindakanoperasi?.rs2
-            console.log('simpan', data, this.pasien)
+            // console.log('simpan', data, this.pasien)
             const indexMany = this.pasien.manytindakanop.findIndex(item => item.id === data?.id)
             if (indexMany >= 0) this.pasien.manytindakanop[indexMany] = data
             else this.pasien.manytindakanop.push(data)
@@ -280,7 +280,7 @@ export const useLaporanOperasiStore = defineStore('laporan_operasi_store', {
           .then(resp => {
             this.loading = false
             const data = resp?.data?.data
-            console.log('s hapus', data, this.pasien)
+            // console.log('s hapus', data, this.pasien)
             this.pasien.tindakanop = null
             const index = tujuan?.manytindakanop?.findIndex(item => item.id === data?.id)
             if (index >= 0) tujuan.manytindakanop.splice(index, 1)
@@ -299,7 +299,7 @@ export const useLaporanOperasiStore = defineStore('laporan_operasi_store', {
       // const pasien = pengunjung.items.find(x => x.noreg === data.noreg)
       const pasien = this.pasien
       const tipe = typeof pasien[kode]
-      console.log('hapus', pasien, tipe, data)
+      // console.log('hapus', pasien, tipe, data)
 
       if (tipe === 'object') {
         pasien[kode] = null

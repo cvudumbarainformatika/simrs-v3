@@ -103,7 +103,7 @@ export const usePermintaanOperasistore = defineStore('permintaan-operasi-store',
             })
           }
         }).catch((err) => {
-          console.log(err)
+          // console.log(err)
           this.loading = false
         })
     },
@@ -167,7 +167,7 @@ export const usePermintaanOperasistore = defineStore('permintaan-operasi-store',
       this.loadingSaveGantiDpjp = true
       try {
         const resp = await api.post('/v1/simrs/pelayanan/gantidpjp', form)
-        console.log(resp)
+        // console.log(resp)
         if (resp.status === 200) {
           const findPasien = this.items.filter(x => x === pasien)
           if (findPasien?.length) {
@@ -183,7 +183,7 @@ export const usePermintaanOperasistore = defineStore('permintaan-operasi-store',
         this.loadingSaveGantiDpjp = false
       }
       catch (error) {
-        console.log(error)
+        // console.log(error)
         this.loadingSaveGantiDpjp = false
       }
     },
@@ -192,7 +192,7 @@ export const usePermintaanOperasistore = defineStore('permintaan-operasi-store',
       return new Promise((resolve, reject) => {
         api.post('/v1/simrs/pelayanan/gantimemo', form)
           .then(resp => {
-            console.log(resp)
+            // console.log(resp)
             if (resp.status === 200) {
               const findPasien = this.items.filter(x => x === pasien)
               if (findPasien?.length) {
@@ -202,7 +202,7 @@ export const usePermintaanOperasistore = defineStore('permintaan-operasi-store',
             }
             resolve(resp)
           }).catch(err => {
-            console.log(err)
+            // console.log(err)
           })
       })
     },
@@ -230,7 +230,7 @@ export const usePermintaanOperasistore = defineStore('permintaan-operasi-store',
       }
       try {
         const resp = await api.post('v1/simrs/rajal/poli/flagfinish', form)
-        console.log('rsp ', form, resp)
+        // console.log('rsp ', form, resp)
         if (resp.status === 200) {
           const findPasien = this.items.filter(x => x === pasien)
           if (findPasien?.length) {
@@ -240,7 +240,7 @@ export const usePermintaanOperasistore = defineStore('permintaan-operasi-store',
         }
       }
       catch (error) {
-        console.log(error)
+        // console.log(error)
         this.loadingTerima = false
         // this.notifikasiError('Maaf.. Harap ulangi, Ada Kesalahan ')
       }
@@ -263,7 +263,7 @@ export const usePermintaanOperasistore = defineStore('permintaan-operasi-store',
         }
       }
       catch (error) {
-        console.log(error)
+        // console.log(error)
         this.loadingTerima = false
         this.noreg = null
         this.notifikasiError('Maaf.. Harap ulangi, Ada Kesalahan ')
@@ -299,7 +299,7 @@ export const usePermintaanOperasistore = defineStore('permintaan-operasi-store',
       const laporan = useLaporanOperasiStore()
       const praBed = useAssasementPraBedahStore()
       const findPasien = this.items.find(x => x.noreg === pasien?.noreg)
-      console.log('inject', data, findPasien)
+      // console.log('inject', data, findPasien)
       const keys = Object.keys(data)
       if (findPasien && keys?.length > 0) {
         if (data?.manytindakanop?.length > 0) {
@@ -563,7 +563,7 @@ export const usePermintaanOperasistore = defineStore('permintaan-operasi-store',
     },
     getDataIcare (pasien) {
       this.loadingIcare = true
-      console.log('get data icare', pasien)
+      // console.log('get data icare', pasien)
       const param = {
         params: {
           noka: pasien.noka,
@@ -574,7 +574,7 @@ export const usePermintaanOperasistore = defineStore('permintaan-operasi-store',
         api.get('v1/simrs/pelayanan/icare', param)
           .then(resp => {
             this.loadingIcare = false
-            console.log('resp icare', resp)
+            // console.log('resp icare', resp)
             if (resp?.data?.metadata?.code === '200' || resp?.data?.metadata?.code === 200) {
               resolve(resp.data)
             }
