@@ -253,7 +253,7 @@ table {
 table,
 th,
 td {
-  border-width: 2px;
+  border-width: 1px;
   border-style: solid;
   border-collapse: collapse;
 }
