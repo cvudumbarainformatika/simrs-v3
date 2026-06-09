@@ -53,7 +53,7 @@
         </div>
       </div>
 
-      <div v-for="item in nicu" :key="item">
+      <div v-for="item in nicu?.a" :key="item">
         <div class="row q-px-sm q-py-xs">
           <div class="col-auto" style="width:24px">
             {{ isChecked(item) ? '☑' : '☐' }}
@@ -63,13 +63,21 @@
             {{ item }}
           </div>
         </div>
+      </div>
+      <div class="row q-px-sm q-pb-xs full-width">
+        <div class="col-12 text-weight-bold">
+          Kriteria pasien yang membutuhkan perawatan intermediate :
+        </div>
+      </div>
+      <div v-for="item in nicu?.b" :key="item">
+        <div class="row q-px-sm q-py-xs">
+          <div class="col-auto" style="width:24px">
+            {{ isChecked(item) ? '☑' : '☐' }}
+          </div>
 
-        <!-- selalu tampil tepat di bawah Edema Paru Akut -->
-        <div v-if="item === 'Edema Paru Akut'" class="q-ml-xl q-mb-sm">
-          <div>• Dyspnoe</div>
-          <div>• RR &gt; 28 x/mnt</div>
-          <div>• Ronkhi +</div>
-          <div>• Akral dingin, basah</div>
+          <div class="col">
+            {{ item }}
+          </div>
         </div>
       </div>
     </template>
@@ -165,14 +173,30 @@ const iccu = [
   'Penyakit lain yang memerlukan pemantauan hemodinamik'
 ]
 
-const nicu = [
-  'Memerlukan O2 > 60%',
-  'Memerlukan CPAP/Ventilator',
-  'NKB < 32 mg, BBL < 1500 gr',
-  'Asfiksia berat, syok, sering apnoe atau kejang, gangguan perdarahan',
-  'Mengalami masalah metabolic',
-  'Bayi dengan kelainan congenital berat',
-]
+const nicu = {
+  a: [
+    'Memerlukan O2 > 60%',
+    'Memerlukan CPAP/Ventilator',
+    'NKB < 32 mg, BBL < 1500 gr',
+    'Asfiksia berat, syok, sering apnoe atau kejang, gangguan perdarahan',
+    'Mengalami masalah metabolic',
+    'Bayi dengan kelainan congenital berat',
+  ],
+  b: [
+    'Bayi yang baru keluar dari NICU, masih perlu monitor dan observasi',
+    'Bayi yang memerlukan O2 < 60%',
+    'NKB 32-34 mg, kondisi stabil, BBL > 1500 gr',
+    'NKB 34-36 mg, kondisi stabil, reflek hisap lemah',
+    'Bayi yang dipuasakan atau EKN',
+    'Bayi yang memerlukan tranfusi tukar',
+    'Bayi yang sering muntah',
+    'Bayi dengan kelainan kronik (CLD)',
+    'Bayi yang memerlukan foto terapi dengan masalah lain : dehidrasi, minum personde',
+    'Bayi dengan kelainan congenital ringan, missal celah bibir',
+    'Bayi dengan ibu DM',
+    'Bayi dengan asfiksia sesdang, nilai APGAR pada 5 menit < 7',
+  ]
+}
 
 const isChecked = (item) => props.isi?.includes(item)
 
