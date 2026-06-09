@@ -294,6 +294,7 @@ export const usePermintaanOperasistore = defineStore('permintaan-operasi-store',
     },
 
     setPasien (data, pasien) {
+      data.kodepoli = 'PEN001'
       const surgical = useSurgicalSafetyStore()
       const laporan = useLaporanOperasiStore()
       const praBed = useAssasementPraBedahStore()
@@ -319,6 +320,7 @@ export const usePermintaanOperasistore = defineStore('permintaan-operasi-store',
         keys.forEach(key => {
           findPasien[key] = data[key]
         })
+        // findPasien.kodepoli = 'PEN001'
         surgical.pasien = findPasien
         surgical.resetForm()
         // surgical.getImplants()
@@ -350,28 +352,74 @@ export const usePermintaanOperasistore = defineStore('permintaan-operasi-store',
       })
     },
 
-    injectDataPasien (pasien, val, kode) {
-      const data = this.items.find(x => x.noreg === pasien.noreg)
-      if (!!data) {
-        const tipe = typeof data[kode]
-        console.log('tipe', tipe)
+    // injectDataPasien (pasien, val, kode) {
+    //   const data = this.items.find(x => x.noreg === pasien.noreg)
+    //   if (!!data) {
+    //     const tipe = typeof data[kode]
+    //     console.log('tipe', tipe)
 
-        if (tipe === 'object') {
-          Object.assign(data[kode], val)
-        } else {
-          const target = data[kode]?.find(x => x.id === val.id)
-          if (target) {
-            Object.assign(target, val)
+    //     if (tipe === 'object') {
+    //       Object.assign(data[kode], val)
+    //     } else {
+    //       const target = data[kode]?.find(x => x.id === val.id)
+    //       if (target) {
+    //         Object.assign(target, val)
+    //       }
+    //       else {
+    //         if (kode === 'diagnosa') {
+    //           data[kode]?.push(val)
+    //         }
+    //         else {
+    //           data[kode]?.splice(0, 0, val)
+    //         }
+    //       }
+
+    //     }
+    //   }
+    // },
+    injectDataPasien (pasien, val, kode) {
+      const findPasien = this.items.filter(x => x === pasien)
+      // console.log('inject pasien', findPasien)
+      if (findPasien?.length) {
+        const data = findPasien[0]
+        const target = data[kode]?.find(x => x.id === val.id)
+
+        if (target) {
+          Object.assign(target, val)
+        }
+        else {
+          if (kode === 'diagnosa') {
+            data[kode]?.push(val)
+          }
+          else if (kode === 'dokumenluar') {
+            const trg = data[kode]
+            if (trg) {
+              data[kode] = []
+              data[kode] = val
+            }
           }
           else {
-            if (kode === 'diagnosa') {
-              data[kode]?.push(val)
-            }
-            else {
-              data[kode]?.splice(0, 0, val)
-            }
+            data[kode]?.splice(0, 0, val)
           }
-
+        }
+      }
+    },
+    hapusDataTindakan (pasien, id) {
+      const findPasien = this.items.filter(x => x === pasien)
+      if (findPasien?.length) {
+        const data = findPasien[0].tindakan
+        const pos = data.findIndex(el => el.id === id)
+        if (pos >= 0) { data.splice(pos, 1) }
+      }
+    },
+    injectDokumenTindakan (pasien, res) {
+      const findPasien = this.items.filter(x => x === pasien)
+      if (findPasien?.length) {
+        const tindakan = findPasien[0]?.tindakan
+        const findTindakan = tindakan?.filter(x => x.id === res?.id)
+        if (findTindakan?.length) {
+          findTindakan[0].gambardokumens = []
+          findTindakan[0].gambardokumens = res?.gambardokumens
         }
       }
     },

@@ -32,8 +32,8 @@
 <script setup>
 import { useStyledStore } from 'src/stores/app/styled'
 import { usePermintaanOperasistore } from 'src/stores/simrs/kamaroperasi/permintaanoperasi'
-// import { useLayananPoli } from 'src/stores/simrs/pelayanan/poli/layanan'
-import { ref } from 'vue'
+import { useLayananPoli } from 'src/stores/simrs/pelayanan/poli/layanan'
+import { onMounted, ref } from 'vue'
 import HeaderComp from './comp/HeaderComp.vue'
 import FilterPage from './comp/FilterPage.vue'
 import BottomComp from './comp/BottomComp.vue'
@@ -49,7 +49,7 @@ const style = useStyledStore()
 const pasien = ref(null)
 // const speech = useSpeechStore()
 const store = usePermintaanOperasistore()
-// const diagnosa = useLayananPoli()
+const diagnosa = useLayananPoli()
 // const pasien = ref(null)
 // const indexVoices = ref(0)
 
@@ -58,5 +58,7 @@ function bukaPelayanan (val) {
   store.pagePelayanan = true
   store.setTerima(val)
 }
-
+onMounted(() => {
+  diagnosa.getTindakanDropdown()
+})
 </script>
