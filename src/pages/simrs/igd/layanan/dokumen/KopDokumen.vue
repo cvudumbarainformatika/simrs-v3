@@ -28,10 +28,12 @@
           <!-- </div> -->
         </div>
         <div class="col-2 b5 flex items-center justify-center text-center">
-          <div class="text-bold q-px-sm" style="font-size: 12px;">{{ props?.judul }} {{ props.kelas }}</div>
+          <div class="text-bold q-px-sm" style="font-size: 12px;">{{ props?.judul }} {{ props?.kelas }}
+            {{ props?.dasarpulang }}</div>
         </div>
       </div>
     </div>
+
     <div class="col b4 q-pa-sm">
       <div class="row flex-center">
         <div class="col-3">
@@ -97,6 +99,14 @@ const props = defineProps({
     type: String,
     default: null
   },
+  pulang: {
+    type: Object,
+    default: null
+  },
+  dasarpulang: {
+    type: String,
+    default: null
+  }
 })
 function usia(val) {
   const x = val.split(' ')
