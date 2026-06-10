@@ -11,12 +11,14 @@
 
       <div id="pdfDoc" class="bg-white relative-position">
         <!-- KOP SURAT -->
-        <KopSurat :dataHeader="dataHeader" :pasien="pasien" />
+        <!-- <KopSurat :dataHeader="dataHeader" :pasien="pasien" /> -->
+        <AppKopSuratStandard :dataHeader="dataHeader" :pasien="pasien"
+          :header="['ASESSMENT MEDIS', 'FISIOTERAPI', '']" />
         <q-separator style="padding-bottom: 2px;" color="black"></q-separator>
         <div class="text-center q-py-sm text-bold">Formulir Rawat Jalan KTR Asessment Re-Asessment Protokol Terapi</div>
 
         <div class="section-title">Identitas Pasien</div>
-        <div class="section" style="margin-top: -25px;">
+        <div class="section q-px-md" style="margin-top: -25px;">
           <!-- <div class="row justify-between full-width">
             <div class="column q-ml-xs">
               <div class="row flex full-width">
@@ -158,6 +160,7 @@
 <script setup>
 import { computed, defineAsyncComponent } from 'vue';
 import { humanDate } from 'src/modules/formatter';
+import AppKopSuratStandard from 'src/components/~global/AppKopSuratStandard.vue';
 
 const KopSurat = defineAsyncComponent(() => import('./compLembarKunjungan/KopSurat.vue'))
 const props = defineProps({
