@@ -404,14 +404,6 @@ export const usePermintaanOperasistore = defineStore('permintaan-operasi-store',
         }
       }
     },
-    hapusDataTindakan (pasien, id) {
-      const findPasien = this.items.filter(x => x === pasien)
-      if (findPasien?.length) {
-        const data = findPasien[0].tindakan
-        const pos = data.findIndex(el => el.id === id)
-        if (pos >= 0) { data.splice(pos, 1) }
-      }
-    },
     injectDokumenTindakan (pasien, res) {
       const findPasien = this.items.filter(x => x === pasien)
       if (findPasien?.length) {
