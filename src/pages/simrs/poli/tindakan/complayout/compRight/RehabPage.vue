@@ -14,53 +14,43 @@
               </q-bar>
             </q-card-section>
             <q-card-section class="q-pa-none">
-              <div v-if="item?.anamnesis?.length">
+              <div v-if="item?.soap?.length">
                 <q-bar class="bg-accent">
-                  <div>ANAMNESIS</div>
+                  <div>ASESSMENT MEDIS</div>
                 </q-bar>
                 <q-list dark>
-                  <q-item v-for="(anamnesis, a) in item?.anamnesis?.filter((v) => v?.awal === '1')" :key="a">
+                  <q-item v-for="(soap, a) in item?.soap?.filter((v) => v?.nakes === '1')" :key="a">
                     <q-item-section>
-                      <q-item-label>Keluhan Utama</q-item-label>
+                      <q-item-label>Subjective</q-item-label>
                       <q-item-label caption lines="2">
-                        {{ anamnesis?.rs4 }}
+                        {{ soap?.subjective }}
                       </q-item-label>
-                      <q-item-label>Riwayat Penyakit (Sekarang)</q-item-label>
+                      <q-item-label>Objective</q-item-label>
                       <q-item-label caption lines="2">
-                        {{ anamnesis?.riwayatpenyakitsekarang }}
+                        {{ soap?.Objective }}
                       </q-item-label>
                       <q-item-label>Riwayat Penyakit</q-item-label>
                       <q-item-label caption lines="2">
-                        {{ anamnesis?.riwayatpenyakit }}
+                        {{ soap?.riwayatpenyakit }}
                       </q-item-label>
-                      <q-item-label>Riwayat Alergi</q-item-label>
+                      <q-item-label>Asessment</q-item-label>
                       <q-item-label caption lines="2">
-                        {{ anamnesis?.riwayatalergi }}
+                        {{ soap?.asessment }}
                       </q-item-label>
-                      <q-item-label>Reaksi berupa</q-item-label>
+                      <q-item-label>Planning</q-item-label>
+                      <q-item-label caption lines="10">
+                        <div>
+                          <div>a. Goal of Treatment : <b>{{ soap?.goal || '-' }}</b></div>
+                          <div>b. Tindakan Program Rehabmedik : <b>{{ soap?.tindakan || '-' }}</b></div>
+                          <div>c. Edukasi : <b>{{ soap?.edukasi || '-' }}</b></div>
+                          <div>d. Frekuensi : <b>{{ soap?.frekuensi || '-' }}</b></div>
+                        </div>
+                      </q-item-label>
+                      <q-item-label>Rencana Tindak Lanjut</q-item-label>
                       <q-item-label caption lines="2">
-                        {{ anamnesis?.keteranganalergi }}
+                        {{ soap?.rencana }}
                       </q-item-label>
-                      <q-item-label>Riwayat Pengobatan</q-item-label>
-                      <q-item-label caption lines="2">
-                        {{ anamnesis?.riwayatpengobatan }}
-                      </q-item-label>
-                      <q-item-label>Penurunan Berat Badan</q-item-label>
-                      <q-item-label caption lines="2">
-                        {{ anamnesis?.skreeninggizi == 0 ? "Tidak" : "Ya" }}
-                      </q-item-label>
-                      <q-item-label>Asupan Makan Berkurang</q-item-label>
-                      <q-item-label caption lines="2">
-                        {{ anamnesis?.asupanmakan == 0 ? "Tidak" : "Ya" }}
-                      </q-item-label>
-                      <q-item-label>Kondisi Khusus</q-item-label>
-                      <q-item-label caption lines="2">
-                        {{ anamnesis?.kondisikhusus }}
-                      </q-item-label>
-                      <q-item-label>Score Nyeri</q-item-label>
-                      <q-item-label caption lines="2">
-                        {{ anamnesis?.scorenyeri }} ( {{ anamnesis?.keteranganscorenyeri }} )
-                      </q-item-label>
+
                     </q-item-section>
                   </q-item>
                 </q-list>
