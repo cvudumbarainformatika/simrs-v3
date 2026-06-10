@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!props.pulang && !props.loading">
+  <div v-if="props.dasarpulang !== 'Paksa' && !props.loading">
     <app-no-data />
   </div>
   <div v-if="props.loading">
@@ -7,7 +7,7 @@
   </div>
 
 
-  <div v-if="props.pulang && !props.loading" class="b full-height q-pa-sm">
+  <div v-if="props.dasarpulang === 'Paksa' && !props.loading" class="b full-height q-pa-sm">
     <div class="row q-px-sm q-pb-xs full-width">
       <div class="col-12">
         Yang bertanda tangan di bawah ini Suami / Istri / Ibu / Ayah / Anak dari :
@@ -74,9 +74,8 @@
           Yang membuat pernyataan
         </div>
         <div style="padding-bottom: 80px" />
-        <div class="underline q-py-xs">
-          (...............................................................)
-          <div class="garis-bawah" style="text-decoration-line: underline;" />
+        <div class="q-py-xs">
+          {{ pulang?.nama_penanggungjawab ?? '(...............................................................)' }}
         </div>
 
       </div>
@@ -134,6 +133,10 @@ const props = defineProps({
   },
   pulang: {
     type: Object,
+    default: null
+  },
+  dasarpulang: {
+    type: String,
     default: null
   }
 })

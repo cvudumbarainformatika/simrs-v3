@@ -113,7 +113,7 @@ const isi = props.pasien?.planheder[0]?.planranap?.dokumentransfer?.isi ? JSON.p
 const kelas = props.pasien?.planheder[0]?.planranap?.dokumentransfer?.kelas
 const keterangan = props.pasien?.planheder[0]?.planranap?.keterangan
 const pulang = props.pasien?.planheder[0]?.planpulang
-const dasarpulang = props.pasien?.planheder[0]?.planpulang?.atas_dasar
+const dasarpulang = props.pasien?.planheder[0]?.planpulang?.atas_dasar === 'Paksa' ? 'Paksa' : ''
 // console.log('sassa', props.pasien?.planheder[0]?.planranap)
 
 // storex.indikasimasuknicuinter(props.pasien)
