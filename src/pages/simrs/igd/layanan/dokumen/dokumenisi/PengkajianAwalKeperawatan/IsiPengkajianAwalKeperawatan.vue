@@ -1,5 +1,5 @@
 <template>
-  <div class="q-pa-md">
+  <div class="b q-pa-md">
     <div class="q-pt-lg">
       <div class="row q-pl-xs items-start">
         <div class="text-weight-bold text-uppercase" style="width: 300px;">1. Diperiksa</div>
@@ -195,7 +195,7 @@
       <div class="text-weight-bold text-uppercase" style="width: 300px;">15. SKRINING GIZI</div>
       <div class="text-weight-bold text-uppercase" style="width: 10px;"> : </div>
       <div class="col">Apakah Ada Penurunan Berat badan yang tidak diinginkan selama 6 Bulan terakhir? : {{ skriningGizi
-      }}</div><br>
+        }}</div><br>
     </div>
     <div class="row q-pl-xs q-mt-md items-start">
       <div class="text-weight-bold text-uppercase" style="width: 300px;">16. DIAGNOSA KEPERAWATAN</div>
@@ -444,5 +444,12 @@ function iconNyeri(anu) {
 
 .signature-line {
   padding-top: 130px;
+}
+
+.b {
+  border-right-style: solid;
+  border-left-style: solid;
+  border-bottom-style: solid;
+  border-width: 2px;
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div v-if="store.rekapBill && !store.loading">
+  <div class="b q-pa-sm" v-if="store.rekapBill && !store.loading">
     <div class="row items-center no-wrap ">
       <div class="col-1">
         1.
@@ -291,5 +291,43 @@ const qrUrl = computed(() => {
 .garis-bawah-dablue {
   border-bottom: 1px solid rgb(56, 150, 239);
   border-bottom-style: dashed;
+}
+
+.b {
+  border-right-style: solid;
+  border-left-style: solid;
+  border-bottom-style: solid;
+  border-width: 2px;
+}
+
+.b_double {
+  border-bottom: 4px double rgb(30, 30, 30);
+  padding-top: 8px;
+}
+
+.b1 {
+  border-style: solid;
+  border-width: 2px;
+}
+
+.b2 {
+  border-right-style: solid;
+  border-width: 2px;
+}
+
+.b3 {
+  border-bottom-style: solid;
+  border-width: 2px;
+}
+
+.b4 {
+  border-right-style: solid;
+  border-left-style: solid;
+  border-width: 2px;
+}
+
+.b5 {
+  border-left-style: solid;
+  border-width: 2px;
 }
 </style>

@@ -28,7 +28,7 @@
       </div>
     </div>
     <div v-else class="q-pa-sm" style="padding-bottom: 108px;">
-      <div id="printMe" class="q-pa-lg bg-white print-area">
+      <div id="printMe" class="q-pa-xs bg-white print-area">
         <KopSurat :judul="props?.judul ?? 'Observasi Penderita'" :pasien="props?.pasien" :jangantampil="false" />
 
         <IsiObservasiPenderita :pasien="props?.pasien" />
@@ -39,7 +39,7 @@
 <script setup>
 
 import { usePengunjungIgdStore } from 'src/stores/simrs/igd/pengunjung';
-import KopSurat from '../../KopSurat.vue';
+import KopSurat from '../../KopDokumen.vue';
 import html2pdf from 'html2pdf.js';
 import IsiObservasiPenderita from './IsiObservasiPenderita.vue';
 

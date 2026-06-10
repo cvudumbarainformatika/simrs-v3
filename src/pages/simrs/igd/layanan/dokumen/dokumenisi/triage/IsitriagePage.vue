@@ -12,9 +12,9 @@
       Belum Ada data tersimpan
     </div>
   </div>
-  <div v-else class="full-height">
-    <div v-for="(item, n) in lists" :key="n" class="list-move">
-      <table class="triage-table q-mt-sm">
+  <div v-else class="b full-height">
+    <div v-for="(item, n) in lists" :key="n" class="row justify-center full-width list-move">
+      <table class="triage-table q-pa-sm" style="width: 97%">
 
         <!-- TANGGAL -->
         <tr>
@@ -182,36 +182,38 @@
         </tr>
 
       </table>
-      <div class="row q-mt-xl q-mb-xl">
-        <div class="col-6">
-          <div class="text-center text-weight-bold q-pt-md">
-            Pasien/Keluarga
-          </div>
-          <div class="text-center" style="height: 120px;">
-            <div class="signature-line">(......................................................................)</div>
-          </div>
+
+    </div>
+
+    <div class="row q-mt-xl q-mb-xl">
+      <div class="col-6">
+        <div class="text-center text-weight-bold q-pt-md">
+          Pasien/Keluarga
         </div>
-        <div class="col-6">
-          <div class="text-center text-weight-bold">
-            Probolinggo, {{ date.formatDate(Date.now(), 'DD MMMM YYYY') }}
+        <div class="text-center" style="height: 120px;">
+          <div class="signature-line">(......................................................................)</div>
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="text-center text-weight-bold">
+          Probolinggo, {{ date.formatDate(Date.now(), 'DD MMMM YYYY') }}
+        </div>
+        <div class="text-center text-weight-bold q-mt-xs">
+          Dokter
+        </div>
+        <div class="column flex-center q-mt-md">
+          <div style="width: 100px;">
+            <vue-qrcode :value="qrUrl" tag="svg" :options="{
+              errorCorrectionLevel: 'Q',
+              color: {
+                dark: '#000000',
+                light: '#ffffff'
+              },
+              margin: 0
+            }" />
           </div>
-          <div class="text-center text-weight-bold q-mt-xs">
-            Dokter
-          </div>
-          <div class="column flex-center q-mt-md">
-            <div style="width: 100px;">
-              <vue-qrcode :value="qrUrl" tag="svg" :options="{
-                errorCorrectionLevel: 'Q',
-                color: {
-                  dark: '#000000',
-                  light: '#ffffff'
-                },
-                margin: 0
-              }" />
-            </div>
-            <div class="q-mt-sm text-weight-bold text-center">
-              {{ pasien?.dokter }}
-            </div>
+          <div class="q-mt-sm text-weight-bold text-center">
+            {{ pasien?.dokter }}
           </div>
         </div>
       </div>
@@ -305,6 +307,13 @@ function hamil(val) {
 
 .signature-line {
   padding-top: 130px;
+}
+
+.b {
+  border-right-style: solid;
+  border-left-style: solid;
+  border-bottom-style: solid;
+  border-width: 2px;
 }
 
 @media print {

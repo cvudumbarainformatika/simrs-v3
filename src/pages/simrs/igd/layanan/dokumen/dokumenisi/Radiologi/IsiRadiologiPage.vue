@@ -1,5 +1,5 @@
 <template>
-  <div class="q-pa-md">
+  <div class="b q-pa-md">
     * Pemeriksasan Radiologi
     <div>
       <div class="q-ma-sm text-bold" v-for="(item, i) in props.pasien?.radiologi" :key="i">
@@ -24,3 +24,11 @@ const props = defineProps({
   }
 })
 </script>
+<style scoped>
+.b {
+  border-right-style: solid;
+  border-left-style: solid;
+  border-bottom-style: solid;
+  border-width: 2px;
+}
+</style>
