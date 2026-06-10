@@ -16,7 +16,7 @@
       </div>
     </div>
     <q-scroll-area style="height: calc(100vh - 56px);">
-      <div v-if="props?.pasien?.anamnesis?.length <= 0">
+      <div v-if="!props.keterangan && !props.loading">
         <div class="column flex-center">
           <div>
             <app-no-data />

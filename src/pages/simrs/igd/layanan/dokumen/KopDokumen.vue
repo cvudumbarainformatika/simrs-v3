@@ -33,13 +33,8 @@
         </div>
       </div>
     </div>
-    <div v-if="pulang" class="col b4 q-pa-sm">
-      <div class="row flex-center text-weight-bold" style="font-size: 16px">
-        SURAT PERNYATAAN PULANG PAKSA
-      </div>
 
-    </div>
-    <div v-else class="col b4 q-pa-sm">
+    <div class="col b4 q-pa-sm">
       <div class="row flex-center">
         <div class="col-3">
           No. RM

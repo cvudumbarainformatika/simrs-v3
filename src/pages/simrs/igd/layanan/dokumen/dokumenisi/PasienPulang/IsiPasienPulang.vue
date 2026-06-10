@@ -36,7 +36,7 @@
     </div>
     <div class="row q-px-sm q-pb-xs full-width">
       <div class="col-12 text-justify">
-        Dengan ini menyatakan dengan sesungguhnya bahwa saya dari keluarga pasien atau pasien sendiri
+        Dengan ini menyatakan bahwa saya dari keluarga pasien atau pasien sendiri
       </div>
     </div>
     <div class="row items-center q-px-sm q-pb-xs full-width">
