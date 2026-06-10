@@ -11,7 +11,9 @@
 
       <div id="pdfDoc" class="bg-white relative-position">
         <!-- KOP SURAT -->
-        <KopSurat :dataHeader="dataHeader" :pasien="pasien" />
+        <!-- <KopSurat :dataHeader="dataHeader" :pasien="pasien" /> -->
+        <AppKopSuratStandard :dataHeader="dataHeader" :pasien="pasien"
+          :header="['LEMBAR PROTOKOL', 'FISIOTERAPI', '']" />
         <q-separator style="padding-bottom: 2px;" color="black"></q-separator>
 
         <div class="section" style="margin-top: -20px;">
