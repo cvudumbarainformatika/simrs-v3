@@ -21,8 +21,7 @@
         <q-tab-panels v-model="tab" animated class="bg-transparent q-pa-none relative-position fit">
           <!-- PANEL -->
           <q-tab-panel :name="menu?.name" class="q-pa-none">
-            <!-- <PemeriksaanUmumPage :pasien="props?.pasien" /> -->
-            <component :is="menu?.comp" :pasien="pasien" :store="store" :key="pasien" />
+            <component :is="menu?.comp" :pasien="pasienForComponent" :store="store" :key="pasien" />
           </q-tab-panel>
         </q-tab-panels>
       </div>
@@ -54,6 +53,26 @@ const props = defineProps({
     default: false
   }
 })
+
+const pasienForComponent = computed(() => {
+  if (!props.pasien) return null
+
+  // if (menu.value?.name === 'rehab') {
+  return {
+    ...props.pasien,
+    kodepoli: 'PEN004',
+    kdgroup_ruangan: 'PEN004',
+    kdruangan: 'PEN004',
+    koderuangan: 'PEN004',
+    ruangan: 'Rehabilitasi Medik',
+    isPoli: 1,
+
+  }
+  // }
+
+  // return props.pasien
+})
+
 const nakes = computed(() => {
   return auth?.user?.pegawai?.kdgroupnakes
 })
