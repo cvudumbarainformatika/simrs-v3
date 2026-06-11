@@ -5,6 +5,7 @@ import { notifErrVue, notifSuccess } from 'src/modules/utils'
 import { usePengunjungRanapStore } from '../../ranap/pengunjung'
 import { useListPasienHemodialisaStore } from '../../hemodialisa/hemodialisa'
 import { useKunjunganRehabmediStore } from '../rehabmedik/kunjungan'
+import { usePermintaanOperasistore } from '../../kamaroperasi/permintaanoperasi'
 // import { dateDbFormat } from 'src/modules/formatter'
 
 export const useRadiologiPoli = defineStore('poli-radiologi', {
@@ -38,24 +39,24 @@ export const useRadiologiPoli = defineStore('poli-radiologi', {
   //   doubleCount: (state) => state.counter * 2
   // },
   actions: {
-    async getRadiologi() {
+    async getRadiologi () {
       const resp = await api.get('v1/simrs/penunjang/radiologi/listpermintaanradiologirinci')
       // console.log('master radiologi', resp)
       if (resp.status === 200) {
         this.namaPemeriksaans = resp.data
       }
     },
-    async getJenisRadiologi() {
+    async getJenisRadiologi () {
       const resp = await api.get('v1/simrs/penunjang/radiologi/jenispermintaanradiologi')
       // console.log('jenis radiologi', resp)
       if (resp.status === 200) {
         this.jenisPemeriksaans = resp.data
       }
     },
-    setForm(key, value) {
+    setForm (key, value) {
       this.form[key] = value
     },
-    async saveRadiologi(pasien, isRanap) {
+    async saveRadiologi (pasien, isRanap) {
       if (!isRanap) {
         if (!pasien?.kodedokter) {
           return notifErrVue('kode Dokter masih kosong, silahkan tutup dulu pasien ini kemudian tekan tombol refresh di pojok kanan atas')
@@ -81,8 +82,10 @@ export const useRadiologiPoli = defineStore('poli-radiologi', {
           const storeRanap = usePengunjungRanapStore()
           const storeHD = useListPasienHemodialisaStore()
           const storeRemed = useKunjunganRehabmediStore()
+          const kamarOp = usePermintaanOperasistore()
           const isi = resp?.data?.result
           storePasien.injectDataPasien(pasien, isi, 'radiologi')
+          kamarOp.injectDataPasien(pasien, isi, 'radiologi')
           storeRanap.injectDataPasien(pasien?.noreg, isi, 'radiologi')
           storeHD.injectDataPasien(pasien?.noreg, isi, 'radiologi')
           storeRemed.injectDataPasien(pasien?.noreg, isi, 'radiologi')
@@ -99,7 +102,7 @@ export const useRadiologiPoli = defineStore('poli-radiologi', {
         this.loadingSave = false
       }
     },
-    async getNota(pasien, isRanap) {
+    async getNota (pasien, isRanap) {
       const params = { params: { noreg: pasien?.noreg, isRanap } }
       const resp = await api.get('v1/simrs/penunjang/radiologi/getnota', params)
       // console.log('nota rad', resp)
@@ -107,7 +110,7 @@ export const useRadiologiPoli = defineStore('poli-radiologi', {
         this.setNotas(resp.data)
       }
     },
-    async getData(pasien, isRanap) {
+    async getData (pasien, isRanap) {
       const params = { params: { noreg: pasien?.noreg, isRanap } }
       const resp = await api.get('v1/simrs/penunjang/radiologi/getdata', params)
       // console.log('nota rad', resp)
@@ -124,17 +127,20 @@ export const useRadiologiPoli = defineStore('poli-radiologi', {
 
           const storeRemed = useKunjunganRehabmediStore()
           storeRemed.injectDataPasien(pasien?.noreg, isi, 'radiologi')
+
+          const kamarOp = usePermintaanOperasistore()
+          kamarOp.injectDataPasien(pasien, isi, 'radiologi')
         }
       }
     },
-    setNotas(array) {
+    setNotas (array) {
       const arr = array.map(x => x.nota)
       this.notas = arr?.length ? arr : []
       this.notas.push('BARU')
       this.form.nota = this.notas[0]
     },
 
-    async hapusRadiologi(pasien, id) {
+    async hapusRadiologi (pasien, id) {
       const payload = { noreg: pasien?.noreg, id }
       try {
         const resp = await api.post('v1/simrs/penunjang/radiologi/hapusradiologi', payload)
@@ -142,9 +148,11 @@ export const useRadiologiPoli = defineStore('poli-radiologi', {
           const storePasien = usePengunjungPoliStore()
           const storeRanap = usePengunjungRanapStore()
           const storeHD = useListPasienHemodialisaStore()
+          const kamarOp = usePermintaanOperasistore()
           storePasien.hapusDataRadiologi(pasien, id)
           storeRanap.hapusDataInjectan(pasien, id, 'radiologi')
           storeHD.hapusDataInjectan(pasien, id, 'radiologi')
+          kamarOp.hapusDataInjectan(pasien, id, 'radiologi')
           this.setNotas(resp?.data?.nota)
           notifSuccess(resp)
         }
@@ -154,7 +162,7 @@ export const useRadiologiPoli = defineStore('poli-radiologi', {
       }
     },
 
-    initReset() {
+    initReset () {
       this.form = {
         noreg: '', // rs1
         nota: this.notas?.length ? this.notas[0] : 'BARU', // rs2
@@ -180,7 +188,7 @@ export const useRadiologiPoli = defineStore('poli-radiologi', {
       })
     },
 
-    mappingArrayItems(val) {
+    mappingArrayItems (val) {
       const arr = val?.length ? val.map(x => x.val) : []
 
       const arr2 = val?.length ? val.map(x => x.kode) : []
@@ -192,12 +200,12 @@ export const useRadiologiPoli = defineStore('poli-radiologi', {
       this.setForm('items', val)
     },
 
-    hapusFormItems(item) {
-      console.log('form', this.form);
+    hapusFormItems (item) {
+      console.log('form', this.form)
 
-      console.log('item', item);
+      console.log('item', item)
       const data = this.form.items
-      const dataBaru = data.filter(x => x?.kode !== item?.kode);
+      const dataBaru = data.filter(x => x?.kode !== item?.kode)
 
       this.form.items = dataBaru
       this.mappingArrayItems(dataBaru)

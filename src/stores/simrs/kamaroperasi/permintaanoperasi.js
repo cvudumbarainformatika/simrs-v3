@@ -295,6 +295,7 @@ export const usePermintaanOperasistore = defineStore('permintaan-operasi-store',
 
     setPasien (data, pasien) {
       data.kodepoli = 'PEN001'
+      data.kdgroup_ruangan = 'PEN001'
       const surgical = useSurgicalSafetyStore()
       const laporan = useLaporanOperasiStore()
       const praBed = useAssasementPraBedahStore()
@@ -415,6 +416,22 @@ export const usePermintaanOperasistore = defineStore('permintaan-operasi-store',
         }
       }
     },
+
+    hapusDataInjectan (pasien, id, key) {
+      // console.log('hapusDataInjectan', key, id, pasien)
+
+      const findPasien = this.items.filter(x => x?.noreg === pasien?.noreg)
+      console.log('find pasien', findPasien)
+
+      if (findPasien?.length) {
+        const data = findPasien[0][key]
+        // console.log('data', data)
+
+        const pos = data.findIndex(el => el.id === id)
+        if (pos >= 0) { data.splice(pos, 1) }
+      }
+    },
+
     hapusDataAnamnesis (pasien, id) {
       const findPasien = this.items.filter(x => x === pasien)
       if (findPasien?.length) {
