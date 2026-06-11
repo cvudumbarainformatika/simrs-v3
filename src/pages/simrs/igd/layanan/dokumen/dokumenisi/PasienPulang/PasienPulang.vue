@@ -1,7 +1,7 @@
 <template>
   <div class="flex-center">
     <div class="q-pa-sm row justify-between bg-teal text-white items-center">
-      <div class="col-6">{{ props?.judul }}</div>
+      <div class="col-6">{{ props?.judul ?? 'Indikasi Masuk Ranap' }}</div>
       <div class="col-6 text-right">
         <q-btn flat dense size="md" icon="icon-mat-download" @click="exportPdf()">
           <q-tooltip class="primary" :offset="[10, 10]">
@@ -16,7 +16,7 @@
       </div>
     </div>
     <q-scroll-area style="height: calc(100vh - 56px);">
-      <div v-if="props?.pasien?.anamnesis?.length <= 0">
+      <div v-if="props.dasarpulang !== 'Paksa'">
         <div class="column flex-center">
           <div>
             <app-no-data />
@@ -28,26 +28,25 @@
           <app-loading />
         </div>
       </div>
-      <div v-else>
-        <div class="q-pa-none bg-grey-6" style="padding-bottom: 108px;">
-          <div id="printMe" class="full-width bg-white q-px-md q-py-lg" style="min-height: 1060px;">
-            <KopSurat :judul="props?.judul ?? 'RESUME MEDIS'" :pasien="props?.pasien" :jangantampil=false />
-            <IsiResumePage :pasien="props?.pasien" />
-          </div>
+      <div v-else class="" style="padding-bottom: 120px;">
+        <div id="printMe" style="width: 21cm;" class="q-pa-xs full-width full-height">
+          <KopSurat :judul="props?.judul ?? 'Indikasi Masuk Ranap'" :pasien="props?.pasien" :jangantampil=false
+            :kelas="props.kelas" :pulang="props?.pulang" :dasarpulang="props?.dasarpulang" />
+
+          <Isi :pulang="props?.pulang" :dasarpulang="props?.dasarpulang" :pasien="props?.pasien" :isi="props.isi"
+            :kelas="props.kelas" :loading="props.loading" />
         </div>
       </div>
     </q-scroll-area>
   </div>
 </template>
-
 <script setup>
-
-import { usePengunjungIgdStore } from 'src/stores/simrs/igd/pengunjung';
+import { usePlannStore } from 'src/stores/simrs/igd/plann';
 import KopSurat from '../../KopDokumen.vue';
-import IsiResumePage from './IsiResumePage.vue';
+import Isi from './IsiPasienPulang.vue';
 import html2pdf from 'html2pdf.js';
+const store = usePlannStore()
 
-const store = usePengunjungIgdStore()
 const printObj = {
   id: 'printMe',
   popTitle: ' '
@@ -61,8 +60,34 @@ const props = defineProps({
   pasien: {
     type: Object,
     default: null
+  },
+  isi: {
+    type: Array,
+    default: () => []
+  },
+  kelas: {
+    type: String,
+    default: null
+  },
+  keterangan: {
+    type: String,
+    default: null
+  },
+  loading: {
+    type: Boolean,
+    default: false
+  },
+  pulang: {
+    type: Object,
+    default: null
+  },
+  dasarpulang: {
+    type: String,
+    default: null
   }
+
 })
+
 
 function exportPdf() {
   const concern = document.getElementById('printMe')
@@ -89,4 +114,5 @@ function exportPdf() {
 
   html2pdf().set(pdfConfig).from(concern).save()
 }
+
 </script>

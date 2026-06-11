@@ -16,7 +16,7 @@
       </div>
     </div>
     <q-scroll-area style="height: calc(100vh - 56px);">
-      <div v-if="props?.pasien?.anamnesis?.length <= 0">
+      <div v-if="!props.keterangan && !props.loading">
         <div class="column flex-center">
           <div>
             <app-no-data />
@@ -28,7 +28,7 @@
           <app-loading />
         </div>
       </div>
-      <div v-else>
+      <div v-else class="" style="padding-bottom: 120px;">
         <div id="printMe" style="width: 21cm;" class="q-pa-xs full-width full-height">
           <KopSurat :judul="props?.judul ?? 'Indikasi Masuk Ranap'" :pasien="props?.pasien" :jangantampil=false
             :kelas="props.kelas" />
@@ -42,7 +42,7 @@
 </template>
 <script setup>
 import { usePlannStore } from 'src/stores/simrs/igd/plann';
-import KopSurat from '../../KopSurat.vue';
+import KopSurat from '../../KopDokumen.vue';
 import Isiindikasimasuknicudaninter from './Isiindikasimasuknicudaninter.vue';
 import html2pdf from 'html2pdf.js';
 const store = usePlannStore()
@@ -66,17 +66,17 @@ const props = defineProps({
     default: () => []
   },
   kelas: {
-    type: Object,
+    type: String,
     default: null
   },
   keterangan: {
-    type: Object,
+    type: String,
     default: null
   },
   loading: {
     type: Boolean,
     default: false
-  },
+  }
 })
 
 function exportPdf() {

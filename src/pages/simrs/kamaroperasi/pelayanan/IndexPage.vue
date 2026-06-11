@@ -109,7 +109,7 @@ const menus = ref([
   },
   { // diminta oleh dokter
     name: 'assasement_post_op',
-    label: 'Assesement Post Operasi',
+    label: 'Instruksi Post Operasi',
     icon: 'icon-fa-book-medical-solid',
     comp: shallowRef(defineAsyncComponent(() => import('./comppelayanan/pagemenu/compAssPostOp/IndexPage.vue')))
   },

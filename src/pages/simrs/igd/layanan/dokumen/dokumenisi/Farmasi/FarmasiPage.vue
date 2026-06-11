@@ -25,16 +25,18 @@
       <div class="full-height full-height" style="padding-bottom: 108px;">
         <div id="printMe" style="width: 21cm;" class="q-pa-md full-width full-height bg-white">
           <KopSurat :judul="props?.judul" :pasien="props?.pasien" :jangantampil=false />
-          <ObatPage :pasien="props?.pasien" ref="obatRef" />
-          <returObatPage :pasien="props?.pasien" ref="returobatRef" />
-          <q-separator class="q-mt-sm q-mb-sm" style="border-top: 1px solid black;" />
-          <div class="row q-gutter-sm q-mr-lg items-center no-wrap ">
+          <div class="b q-pa-md">
+            <ObatPage :pasien="props?.pasien" ref="obatRef" />
+            <returObatPage :pasien="props?.pasien" ref="returobatRef" />
+            <q-separator class="q-mt-sm q-mb-sm" style="border-top: 1px solid black;" />
+            <div class="row q-gutter-sm q-mr-lg items-center no-wrap ">
 
-            <div class="col-10 text-right text-bold">
-              Total Akhir
-            </div>
-            <div class="col-2 garis-bawah-dablue text-right text-bold">
-              {{ formatRp(totalakhir) }}
+              <div class="col-10 text-right text-bold">
+                Total Akhir
+              </div>
+              <div class="col-2 garis-bawah-dablue text-right text-bold">
+                {{ formatRp(totalakhir) }}
+              </div>
             </div>
           </div>
         </div>
@@ -45,7 +47,7 @@
 </template>
 <script setup>
 import { computed, ref } from 'vue';
-import KopSurat from '../../KopSurat.vue';
+import KopSurat from '../../KopDokumen.vue';
 import ObatPage from '../Billdetail/comp/ObatPage.vue';
 import ReturObatPage from '../Billdetail/comp/ReturObatPage.vue';
 import html2pdf from 'html2pdf.js';
@@ -111,3 +113,42 @@ function exportPdf() {
   html2pdf().set(pdfConfig).from(concern).save()
 }
 </script>
+<style lang="scss" scoped>
+.b {
+  border-right-style: solid;
+  border-left-style: solid;
+  border-bottom-style: solid;
+  border-width: 2px;
+}
+
+.b_double {
+  border-bottom: 4px double rgb(30, 30, 30);
+  padding-top: 8px;
+}
+
+.b1 {
+  border-style: solid;
+  border-width: 2px;
+}
+
+.b2 {
+  border-right-style: solid;
+  border-width: 2px;
+}
+
+.b3 {
+  border-bottom-style: solid;
+  border-width: 2px;
+}
+
+.b4 {
+  border-right-style: solid;
+  border-left-style: solid;
+  border-width: 2px;
+}
+
+.b5 {
+  border-left-style: solid;
+  border-width: 2px;
+}
+</style>

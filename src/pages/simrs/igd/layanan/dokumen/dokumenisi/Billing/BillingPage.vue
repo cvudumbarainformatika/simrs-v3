@@ -28,7 +28,7 @@
     <div v-else>
       <div class="q-pa-none bg-grey-6" style="padding-bottom: 108px;">
         <div id="printMe" class="full-width bg-white q-px-md q-py-lg" style="min-height: 1060px;">
-          <KopSurat :judul="props?.judul" :pasien="props?.pasien" :jangantampil=false />
+          <KopSurat class="" :judul="props?.judul" :pasien="props?.pasien" :jangantampil=false />
           <IsiBillingPage :pasien="props?.pasien" />
         </div>
       </div>
@@ -37,7 +37,7 @@
 </template>
 <script setup>
 import { useKasirIgdStore } from 'src/stores/simrs/kasir/igd/kasirigd';
-import KopSurat from '../../KopSurat.vue';
+import KopSurat from '../../KopDokumen.vue';
 import IsiBillingPage from './IsiBillingPage.vue';
 import html2pdf from 'html2pdf.js';
 
@@ -84,3 +84,42 @@ function exportPdf() {
   html2pdf().set(pdfConfig).from(concern).save()
 }
 </script>
+<style lang="scss" scoped>
+.b {
+  border-right-style: solid;
+  border-left-style: solid;
+  border-bottom-style: solid;
+  border-width: 2px;
+}
+
+.b_double {
+  border-bottom: 4px double rgb(30, 30, 30);
+  padding-top: 8px;
+}
+
+.b1 {
+  border-style: solid;
+  border-width: 2px;
+}
+
+.b2 {
+  border-right-style: solid;
+  border-width: 2px;
+}
+
+.b3 {
+  border-bottom-style: solid;
+  border-width: 2px;
+}
+
+.b4 {
+  border-right-style: solid;
+  border-left-style: solid;
+  border-width: 2px;
+}
+
+.b5 {
+  border-left-style: solid;
+  border-width: 2px;
+}
+</style>

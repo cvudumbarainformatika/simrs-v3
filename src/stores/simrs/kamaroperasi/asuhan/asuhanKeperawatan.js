@@ -139,7 +139,7 @@ export const useAsuhanKeperawatanStore = defineStore('asuhan_keperawatan', {
   }),
   actions: {
     resetForm (pasien) {
-      console.log('resetForm')
+      // console.log('resetForm')
       this.form = {
         noreg: pasien?.noreg,
         norm: pasien?.norm,
@@ -219,7 +219,7 @@ export const useAsuhanKeperawatanStore = defineStore('asuhan_keperawatan', {
       this.loading = true
       try {
         const resp = await api.post('v1/simrs/penunjang/ok/asuhan/keperawatan/simpan', this.form)
-        console.log('resp simpan', resp)
+        // console.log('resp simpan', resp)
         if (resp?.status === 200) {
           notifSuccess(resp)
           this.getData(pasien)

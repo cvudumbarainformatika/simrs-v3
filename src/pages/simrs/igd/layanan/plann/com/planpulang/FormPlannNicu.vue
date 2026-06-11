@@ -16,10 +16,12 @@
           color="teal" /> <br>
         <q-checkbox v-model="store.form.isi" val="Asfiksia berat, syok, sering apnoe atau kejang, gangguan perdarahan"
           label="Asfiksia berat, syok, sering apnoe atau kejang, gangguan perdarahan" color="teal" /> <br>
+        <q-checkbox v-model="store.form.isi" val="Mengalami masalah metabolic" label="Mengalami masalah metabolic"
+          color="teal" /> <br>
         <q-checkbox v-model="store.form.isi" val="Bayi dengan kelainan congenital berat"
           label="Bayi dengan kelainan congenital berat" color="teal" /> <br>
 
-        <!-- Kriteria pasien yang membutuhkan perawatan intermediate :
+        Kriteria pasien yang membutuhkan perawatan intermediate :
         <q-checkbox v-model="store.form.isi" val="Bayi yang baru keluar dari NICU, masih perlu monitor dan observasi"
           label="Bayi yang baru keluar dari NICU, masih perlu monitor dan observasi" color="teal" /> <br>
         <q-checkbox v-model="store.form.isi" val="Bayi yang memerlukan O2 < 60%" label="Bayi yang memerlukan O2 < 60%"
@@ -43,7 +45,7 @@
           label="Bayi dengan kelainan congenital ringan, missal celah bibir" color="teal" /> <br>
         <q-checkbox v-model="store.form.isi" val="Bayi dengan ibu DM" label="Bayi dengan ibu DM" color="teal" /> <br>
         <q-checkbox v-model="store.form.isi" val="Bayi dengan asfiksia sesdang, nilai APGAR pada 5 menit < 7"
-          label="Bayi dengan asfiksia sesdang, nilai APGAR pada 5 menit < 7" color="teal" /> <br> -->
+          label="Bayi dengan asfiksia sesdang, nilai APGAR pada 5 menit < 7" color="teal" /> <br>
       </q-card-section>
       <q-separator />
 

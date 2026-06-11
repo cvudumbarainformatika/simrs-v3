@@ -77,15 +77,9 @@ const props = defineProps({
   }
 })
 
-// const jikaEcg = computed(() => {
-//   return store.searchtindakan
-// })
+console.log(props.pasien);
 
-// function resetValidasi() {
-//   formmRef.value?.resetValidation()
-// }
 
-// defineExpose({ resetValidasi })
 const KODE_POLI_MAP = {
   POL042: 'POL018',
 }
@@ -136,19 +130,19 @@ onMounted(() => {
   // formmRef.value?.resetValidation()
 })
 
-function updateSearchTindakan (val) {
+function updateSearchTindakan(val) {
   store.setKdTindakan(val).then(() => {
     inpQtyRef.value.focus()
   })
 }
 
-function onSubmit () {
+function onSubmit() {
   store.saveTindakan(props.pasien).then(() => {
     formmRef.value.resetValidation()
   })
 }
 
-function filterFn (val, update, abort) {
+function filterFn(val, update, abort) {
   if (val?.length < 1) {
     abort()
     return
@@ -160,7 +154,7 @@ function filterFn (val, update, abort) {
     const needle = val.toLowerCase()
     // const arr = kodePoli === 'POL041' ? store.listTindakan : store.listTindakan?.filter(x => x.kdpoli?.includes(kodePoli))
     const arr = kodePoli === 'POL041' ? store.listTindakan : store.listTindakan?.filter(x => matchRs4(x.kdpoli, kodePoli))
-    // console.log('arr', arr)
+    // console.log('arr', kodePoli, arr, store.listTindakan)
     const filter = ['kdtindakan', 'tindakan', 'icd9']
     const multiFilter = (data = [], filterKeys = [], value = '') =>
       data.filter((item) => filterKeys.some(

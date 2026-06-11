@@ -27,7 +27,7 @@
 </template>
 <script setup>
 import html2pdf from 'html2pdf.js'
-import KopSurat from '../../KopSurat.vue'
+import KopSurat from '../../KopDokumen.vue'
 import IsiSuratKematianPage from './IsiSuratKematianPage.vue'
 import { usePlannStore } from 'src/stores/simrs/igd/plann'
 

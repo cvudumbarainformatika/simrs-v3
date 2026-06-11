@@ -127,7 +127,7 @@ export const useMonitoringSaatStore = defineStore('monitoring_saat', {
         }
 
         const resp = await api.get('v1/simrs/penunjang/ok/monitoring/selama/get', param)
-        console.log('get monitoring', resp?.data)
+        // console.log('get monitoring', resp?.data)
         this.data = resp?.data?.monitoring
         this.inputForm = resp?.data?.medikasi
         if (!resp?.data?.medikasi) this.inputForm = {
@@ -138,7 +138,7 @@ export const useMonitoringSaatStore = defineStore('monitoring_saat', {
         this.data.sort((a, b) => a.time - b.time)
         return resp?.data
       } catch (e) {
-        console.log('err', e)
+        // console.log('err', e)
       }
     },
     async simpanLogMonitoringSelama (pasien, anu) {
@@ -149,7 +149,7 @@ export const useMonitoringSaatStore = defineStore('monitoring_saat', {
       payload.norm = pasien.norm
       try {
         const resp = await api.post('v1/simrs/penunjang/ok/monitoring/selama/simpan', payload)
-        console.log('simpan monitoring', resp?.data)
+        // console.log('simpan monitoring', resp?.data)
         const hasil = resp?.data?.data
         if (hasil) {
           const index = this.data.findIndex(x => x.id === hasil.id)
@@ -226,7 +226,7 @@ export const useMonitoringSaatStore = defineStore('monitoring_saat', {
         const resp = await api.get('v1/simrs/master/kamar')
         this.kamars = resp?.data
         this.kamars.sort((a, b) => a.rs4 - b.rs4)
-        console.log('kamar', this.kamars)
+        // console.log('kamar', this.kamars)
 
         return resp?.data
       } catch (e) { }

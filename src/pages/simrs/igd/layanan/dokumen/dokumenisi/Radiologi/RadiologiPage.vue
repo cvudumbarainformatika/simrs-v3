@@ -33,7 +33,7 @@
 <script setup>
 
 import { usePengunjungIgdStore } from 'src/stores/simrs/igd/pengunjung';
-import KopSurat from '../../KopSurat.vue';
+import KopSurat from '../../KopDokumen.vue';
 import IsiRadiologiPage from './IsiRadiologiPage.vue';
 import html2pdf from 'html2pdf.js';
 import { computed } from 'vue';

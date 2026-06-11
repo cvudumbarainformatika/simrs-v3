@@ -17,7 +17,7 @@
     </div>
     <q-scroll-area style="height: calc(100vh - 56px);">
       <div class="q-pa-none" style="padding-bottom: 108px;">
-        <div id="printMe" style="width: 21cm; min-height: 1060px;" class="q-ma-xl full-width bg-white q-px-md q-py-lg">
+        <div id="printMe" style="width: 21cm; min-height: 1060px;" class="q-ma-xs full-width bg-white q-px-xs q-py-xs">
           <KopSurat :judul="props?.judul" :pasien="props?.pasien" :jangantampil=false />
           <IsiBillingDetailPage :pasien="props?.pasien" />
         </div>
@@ -26,7 +26,7 @@
   </div>
 </template>
 <script setup>
-import KopSurat from '../../KopSurat.vue';
+import KopSurat from '../../KopDokumen.vue';
 import IsiBillingDetailPage from './IsiBillingDetailPage.vue';
 import html2pdf from 'html2pdf.js';
 
