@@ -302,8 +302,56 @@
                     v-if="store?.pilihnyerihilang?.includes('Lainnya')" />
                 </div>
                 <div class="col-12 text-bold">
+                  Resiko Pasien Jatuh
+                </div>
+                <div class="col-12 ">
+                  I. Perhatikan Cara Berjalan Pasien saat akan duduk di kursi. Apakah Pasien Tampak Tidak
+                  Seimbang(Sempoyongan)?
+                </div>
+                <div class="col-12">
+                  <q-option-group v-model="store.form.sempoyongan" :options="opstionsempoyongan" color="primary" inline
+                    dense />
+                </div>
+                <div class="col-12 ">
+                  II. Apakah Pasien Memegang Pinggiran Kursi atau meja atau benda lain sebagai Penopang Saat Akan Duduk?
+                </div>
+                <div class="col-12">
+                  <q-option-group v-model="store.form.penopang" :options="opstionpenopang" color="primary" inline
+                    dense />
+                </div>
+                <div class="col-12 ">
+                  III. Gelisah
+                </div>
+                <div class="col-12">
+                  <q-option-group v-model="store.form.gelisah" :options="opstiongelisah" color="primary" inline dense />
+                </div>
+                <div class="col-12 ">
+                  IV. Restrain
+                </div>
+                <div class="col-12">
+                  <q-option-group v-model="store.form.restrain" :options="opstionrestrain" color="primary" inline
+                    dense /><q-input label="Sebutkan" dense v-model="store.form.restrainlainnya"
+                    v-if="store.form.restrain === 'Body Jaket'" />
+                </div>
+                <div class="col-12 ">
+                  V. Hasil
+                </div>
+                <div class="col-12">
+                  <q-option-group v-model="store.form.hasil_resiko_pasien_jatuh" :options="opstionhasil" color="primary"
+                    inline dense />
+                </div>
+                <div class="col-12 ">
+                  VI. Diberitaukan ke dokter
+                </div>
+                <div class="col-12">
+                  <q-option-group v-model="store.form.diberitaukankedokterjikaya" :options="opstiondiberitaukankedokter"
+                    color="primary" inline dense /><q-input label="Keterangan" dense v-model="store.form.keterangan"
+                    v-if="store.form.diberitaukankedokterjikaya === 'Ya'" />
+                </div>
+                <div class="col-12 text-bold">
                   Status Fungsional
                 </div>
+
                 <div class="col-6">
                   - Aktivitas Dan Mobilitas
                 </div>
@@ -420,10 +468,43 @@ import { computed, ref } from 'vue'
 const store = useAnamnesis()
 const emits = defineEmits(['openHistory'])
 
+
 const refForm = ref()
 const appstore = useAplikasiStore()
 //console.log('sa', appstore.user)
 // const metode = ref('nrt')
+
+
+const opstionsempoyongan = ref([
+  { label: 'Iya', value: 'Iya' },
+  { label: 'Tidak', value: 'Tidak' }
+])
+
+const opstionpenopang = ref([
+  { label: 'Iya', value: 'Iya' },
+  { label: 'Tidak', value: 'Tidak' }
+])
+
+const opstiongelisah = ref([
+  { label: 'Iya', value: 'Iya' },
+  { label: 'Tidak', value: 'Tidak' }
+])
+
+const opstionrestrain = ref([
+  { label: 'Gelang Tali', value: 'Gelang Tali' },
+  { label: 'Body Jaket', value: 'Body Jaket' }
+])
+
+const opstionhasil = ref([
+  { label: 'Tidak Beresiko(Tidak, I dan II)', value: 'Tidak Beresiko(Tidak, I dan II)' },
+  { label: 'Resiko Tinggi(Ya, I dan II)', value: 'Resiko Tinggi(Ya, I dan II)' },
+  { label: 'Resiko Rendah(Ya, I atau II)', value: 'Resiko Rendah(Ya, I atau II)' }
+])
+
+const opstiondiberitaukankedokter = ref([
+  { label: 'Tidak', value: 'Tidak' },
+  { label: 'Ya', value: 'Ya' },
+])
 
 const optionSkreening = ref([
   { label: 'Iya (2)', value: 2 },

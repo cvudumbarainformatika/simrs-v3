@@ -193,8 +193,35 @@
                   </div>
                   <div>
                     <q-item-label>
+                      <span class="text-weight-bold"><q-badge outline color="red">Resiko Pasien Jatuh</q-badge></span>
+                    </q-item-label>
+                  </div>
+                  <q-item-label>
+                    - Sempoyongan : {{ item?.sempoyongan ?? '-' }}
+                  </q-item-label>
+                  <q-item-label>
+                    - Penopang : {{ item?.penopangx ?? '-' }}
+                  </q-item-label>
+                  <q-item-label>
+                    - Gelisa : {{ item?.gelisah ?? '-' }}
+                  </q-item-label>
+                  <q-item-label>
+                    - Restrain : {{ item?.restrain ?? '-' }}
+                  </q-item-label>
+                  <q-item-label>
+                    - Restrain Lainnya : {{ item?.restrainlainnya ?? '-' }}
+                  </q-item-label>
+                  <q-item-label>
+                    - Hasil : {{ item?.hasil ?? '-' }}
+                  </q-item-label>
+                  <q-item-label>
+                    - Keterangan : {{ item?.keterangan ?? '-' }}
+                  </q-item-label>
+                  <div>
+                    <q-item-label>
                       <span class="text-weight-bold"><q-badge outline color="red">Status Fungsional</q-badge></span>
                     </q-item-label>
+
                     <q-item-label>
                       - Aktivitas Dan Mobilitas : {{ item?.anamnesetambahan[0]?.aktifitas_mobilitas ?? '-' }}
                       <span v-if="item?.anamnesetambahan[0]?.sebutkanperlubanuan !== null">
