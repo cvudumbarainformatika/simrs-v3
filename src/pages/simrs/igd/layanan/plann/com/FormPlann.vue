@@ -196,7 +196,7 @@
                         <q-input v-model="store.form.nama_penanggungjawab" dense outlined standout="bg-yellow-3"
                           label="Nama" />
                         <q-input v-model="store.form.identitas_penanggungjawab" dense outlined standout="bg-yellow-3"
-                          label="Kartu Identitas" />
+                          label="Kartu Identitas / NIK" />
                         <div class="row q-col-gutter-sm">
                           <div class="col-6">
                             <q-input v-model="store.form.umur_penanggungjawab" dense outlined standout="bg-yellow-3"

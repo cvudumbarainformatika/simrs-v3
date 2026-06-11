@@ -33,28 +33,34 @@
         </div>
       </div>
     </div>
-    <div v-if="pulang" class="col b4 q-pa-sm">
-      <div class="row flex-center text-weight-bold" style="font-size: 16px">
-        SURAT PERNYATAAN PULANG PAKSA
-      </div>
 
-    </div>
-    <div v-else class="col b4 q-pa-sm">
+    <div v-if="props?.jangantampil !== true" class="col b4 q-pa-sm">
       <div class="row flex-center">
         <div class="col-3">
           No. RM
         </div>
-        <!-- <div class="q-px-md" /> -->
-        <div class="col-9">
+        <div class="col-3">
           : {{ pasien?.norm }}
+        </div>
+        <div class="col-3">
+          No. Reg
+        </div>
+        <div class="col-3">
+          : {{ pasien?.noreg }}
         </div>
       </div>
       <div class="row flex-center">
         <div class="col-3">
           Nama Pasien
         </div>
-        <div class="col-9">
+        <div class="col-3">
           : {{ pasien?.nama }}
+        </div>
+        <div class="col-3">
+          Ruangan
+        </div>
+        <div class="col-3">
+          : {{ pasien?.poli }}
         </div>
       </div>
 
@@ -62,24 +68,42 @@
         <div class="col-3">
           Jenis Kelamin
         </div>
-        <div class="col-9">
+        <div class="col-3">
           : {{ pasien?.kelamin }}
         </div>
+        <div class="col-3">
+          Tanggal Masuk
+        </div>
+        <div class="col-3">
+          : {{ dateFull(pasien?.tgl_kunjungan) }}
+        </div>
       </div>
       <div class="row">
         <div class="col-3">
-          Tanggal Lahir/Umur
+          Tanggal Lahir
         </div>
-        <div class="col-9">
-          : {{ pasien?.tgllahir }} / {{ usia(pasien?.usia) }} Tahun
+        <div class="col-3">
+          : {{ pasien?.tgllahir }}
+        </div>
+        <div class="col-3">
+          Sistem Bayar
+        </div>
+        <div class="col-3">
+          : {{ pasien?.sistembayar }}
         </div>
       </div>
       <div class="row">
         <div class="col-3">
-          Alamat
+          Umur
         </div>
-        <div class="col-9">
-          : {{ pasien?.alamat }}
+        <div class="col-3">
+          : {{ usia(pasien?.usia) }} Tahun
+        </div>
+        <div class="col-3">
+          DPJP
+        </div>
+        <div class="col-3">
+          : {{ pasien?.dokter }}
         </div>
       </div>
       <div class="q-px-sm b_double"></div>
@@ -87,6 +111,7 @@
   </div>
 </template>
 <script setup>
+import { dateFullFormat, dateFull } from 'src/modules/formatter';
 const props = defineProps({
   judul: {
     type: String,

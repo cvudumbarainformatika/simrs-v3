@@ -19,7 +19,7 @@
     </div> -->
 
 
-    <template v-if="kelas === 'ICCU'">
+    <template v-if="props.kelas === 'ICCU' && !props.loading">
       <div class="row q-px-sm q-pb-xs full-width">
         <div class="col-12 text-weight-bold">
           Prioritas I
@@ -46,7 +46,7 @@
         </div>
       </div>
     </template>
-    <template v-if="kelas === 'NICU'">
+    <template v-if="props.kelas === 'NICU' && !props.loading">
       <div class="row q-px-sm q-pb-xs full-width">
         <div class="col-12 text-weight-bold">
           Pasien yang membutuhkan perawatan NICU adalah semua bayi yang memerlukan monitor / observasi ketat :
@@ -81,11 +81,11 @@
         </div>
       </div>
     </template>
-    <template v-else>
+    <!-- <template v-else>
       <div class="row q-pb-xs q-pt-sm justify-center full-width full-height">
         Tidak Ada Data
       </div>
-    </template>
+    </template> -->
 
     <div class="row q-pb-xs q-pt-sm justify-center full-width full-height ">
       <div class="row" style="width: 98%;">

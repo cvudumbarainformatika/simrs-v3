@@ -10,31 +10,20 @@
 
       <q-separator />
 
-      <q-card-section
-        style="width: 100%; height: 100%"
-        class="scroll"
-      >
-        <div
-          id="printMe"
-          class="full-width"
-        >
+      <q-card-section style="width: 100%; height: 100%" class="scroll">
+        <div id="printMe" class="full-width">
           <div class="row">
             <div class="col">
               <div class="full-height column flex-center items-center text-white">
                 <figure class="qrcode full-width q-pa-xl absolute-center">
-                  <vue-qrcode
-                    style="margin-top: -55;"
-                    :value="patien.norm"
-                    tag="svg"
-                    :options="{
-                      errorCorrectionLevel: 'Q',
-                      color: {
-                        dark: '#000000',
-                        light: '#ffffff',
-                      },
-                      margin:2
-                    }"
-                  />
+                  <vue-qrcode style="margin-top: -55;" :value="patien.norm" tag="svg" :options="{
+                    errorCorrectionLevel: 'Q',
+                    color: {
+                      dark: '#000000',
+                      light: '#ffffff',
+                    },
+                    margin: 2
+                  }" />
                   <!-- <img
                     class="qrcode__image"
                     src="~assets/logos/logo-rsud.png"
@@ -70,28 +59,54 @@
       <q-separator />
 
       <q-card-actions align="right">
-        <q-btn
-          v-print="printObj"
-          color="orange"
-          label="CETAK"
-        />
-        <q-btn
-          v-close-popup
-          color="orange"
-          label="BATAL"
-        />
+        <q-btn color="primary" label="CETAK ID Grow" @click="kirimidgrow(patien)" />
+        <q-btn v-print="printObj" color="orange" label="CETAK" />
+        <q-btn v-close-popup color="orange" label="BATAL" />
       </q-card-actions>
     </q-card>
   </q-dialog>
 </template>
 <script setup>
 defineProps({
-  patien: { type: Object, default: () => {} }
+  patien: { type: Object, default: () => { } }
 })
 
 const printObj = {
   id: 'printMe',
   popTitle: 'RSUD Dr Mohamad Saleh Kota Probolinggo'
+}
+
+import axios from 'axios'
+
+async function kirimidgrow(val) {
+  try {
+    const payload = {
+      no_rm: val.norm,
+      nama: val.nama,
+      nik: val.nktp,
+      kelamin: val.kelamin,
+      tgl_lahir: val.tgllahir,
+      alamat: val.alamat
+    }
+
+    console.log('Payload:', payload)
+
+    const { data } = await axios.post(
+      'http://localhost:3030/api/print',
+      payload,
+      {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+    )
+
+    console.log('Sukses:', data)
+
+    return data
+  } catch (err) {
+    console.error('Gagal kirim:', err.response?.data || err.message)
+  }
 }
 </script>
 
@@ -116,5 +131,4 @@ const printObj = {
   transform: translate(-50%, -50%);
   width: 10%;
 }
-
 </style>

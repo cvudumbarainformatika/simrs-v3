@@ -1,6 +1,6 @@
 <template>
 
-  <div class="q-pa-md" style="max-width: 100%">
+  <div class="b q-pa-md" style="max-width: 100%">
     <AdminitrasiPage :pasien="props?.pasien" ref="adminRef" />
     <LaboratPage :pasien="props?.pasien" ref="laboratRef" />
     <RadiologiPage :pasien="props?.pasien" ref="radioRef" />
@@ -97,5 +97,43 @@ const store = useSepBpjsStore()
 .garis-bawah-dablue {
   border-bottom: 1px solid rgb(56, 150, 239);
   border-bottom-style: dashed;
+}
+
+.b {
+  border-right-style: solid;
+  border-left-style: solid;
+  border-bottom-style: solid;
+  border-width: 2px;
+}
+
+.b_double {
+  border-bottom: 4px double rgb(30, 30, 30);
+  padding-top: 8px;
+}
+
+.b1 {
+  border-style: solid;
+  border-width: 2px;
+}
+
+.b2 {
+  border-right-style: solid;
+  border-width: 2px;
+}
+
+.b3 {
+  border-bottom-style: solid;
+  border-width: 2px;
+}
+
+.b4 {
+  border-right-style: solid;
+  border-left-style: solid;
+  border-width: 2px;
+}
+
+.b5 {
+  border-left-style: solid;
+  border-width: 2px;
 }
 </style>

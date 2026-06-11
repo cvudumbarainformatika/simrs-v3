@@ -35,7 +35,10 @@ onMounted(() => {
 })
 
 const filterArrayTindakan = (arr, pasien) => {
+  // console.log('pasien', pasien)
   const val = arr?.filter(x => x.kdpoli?.includes(pasien?.kdgroup_ruangan))
+  // console.log('tindakans', val);
+
   // let val = arr
   // if (pasien?.kodepoli === 'POL041') val = arr
   // else val = arr?.filter(x => x.kdpoli?.includes(pasien?.kdgroup_ruangan))

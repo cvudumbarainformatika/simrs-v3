@@ -1,5 +1,5 @@
 <template>
-  <div class="q-mt-md">
+  <div class="b q-pa-md">
     <div class="row q-gutter-sm items-center no-wrap ">
       <div class="col-auto">
         1.
@@ -470,5 +470,43 @@ const nyeri = computed(() => {
 
 .signature-line {
   padding-top: 130px;
+}
+
+.b {
+  border-right-style: solid;
+  border-left-style: solid;
+  border-bottom-style: solid;
+  border-width: 2px;
+}
+
+.b_double {
+  border-bottom: 4px double rgb(30, 30, 30);
+  padding-top: 8px;
+}
+
+.b1 {
+  border-style: solid;
+  border-width: 2px;
+}
+
+.b2 {
+  border-right-style: solid;
+  border-width: 2px;
+}
+
+.b3 {
+  border-bottom-style: solid;
+  border-width: 2px;
+}
+
+.b4 {
+  border-right-style: solid;
+  border-left-style: solid;
+  border-width: 2px;
+}
+
+.b5 {
+  border-left-style: solid;
+  border-width: 2px;
 }
 </style>

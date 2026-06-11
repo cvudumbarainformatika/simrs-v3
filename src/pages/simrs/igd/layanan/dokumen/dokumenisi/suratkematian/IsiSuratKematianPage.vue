@@ -1,5 +1,5 @@
 <template>
-  <div class="contentx">
+  <div class="b q-pa-md contentx">
     <div class="f-16 text-center text-bold q-mb-xs" style="text-decoration: underline; text-underline-offset: 5px;">
     </div>
     <div class="f-12 text-center text-bold q-my-sm">
@@ -153,3 +153,42 @@ const qrDokter = computed(() => {
 
 
 </script>
+<style scoped>
+.b {
+  border-right-style: solid;
+  border-left-style: solid;
+  border-bottom-style: solid;
+  border-width: 2px;
+}
+
+.b_double {
+  border-bottom: 4px double rgb(30, 30, 30);
+  padding-top: 8px;
+}
+
+.b1 {
+  border-style: solid;
+  border-width: 2px;
+}
+
+.b2 {
+  border-right-style: solid;
+  border-width: 2px;
+}
+
+.b3 {
+  border-bottom-style: solid;
+  border-width: 2px;
+}
+
+.b4 {
+  border-right-style: solid;
+  border-left-style: solid;
+  border-width: 2px;
+}
+
+.b5 {
+  border-left-style: solid;
+  border-width: 2px;
+}
+</style>

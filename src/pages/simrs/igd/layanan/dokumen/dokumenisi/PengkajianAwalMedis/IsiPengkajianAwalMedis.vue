@@ -1,6 +1,6 @@
 <template>
-  <div class="q-pa-md">
-    <div class="q-pt-lg">
+  <div class="b q-pa-md">
+    <div class="q-pt-xs">
       <span class="text-bold"> 1. Anamnesis dan Pemeriksaan Fisik</span>
       <div class="q-pl-sm">
         A. Anamnesis
@@ -67,31 +67,31 @@
       <div class="q-pl-sm q-mt-md">
         <div class="q-pl-md">
           1. Kepala : <span class="text-weight-bold"> {{ props?.pasien?.pemeriksaanfisikpsikologidll[0]?.rs5 ?? '-'
-            }}</span>
+          }}</span>
         </div>
         <div class="q-pl-md">
           2. Leher : <span class="text-weight-bold"> {{ props?.pasien?.pemeriksaanfisikpsikologidll[0]?.rs6 ?? '-'
-            }}</span>
+          }}</span>
         </div>
         <div class="q-pl-md">
           3. Dada : <span class="text-weight-bold"> {{ props?.pasien?.pemeriksaanfisikpsikologidll[0]?.rs7 ?? '-'
-            }}</span>
+          }}</span>
         </div>
         <div class="q-pl-md">
           4. Punggung : <span class="text-weight-bold"> {{ props?.pasien?.pemeriksaanfisikpsikologidll[0]?.rs8 ?? '-'
-            }}</span>
+          }}</span>
         </div>
         <div class="q-pl-md">
           5. Perut : <span class="text-weight-bold"> {{ props?.pasien?.pemeriksaanfisikpsikologidll[0]?.rs9 ?? '-'
-            }}</span>
+          }}</span>
         </div>
         <div class="q-pl-md">
           6. Tangan : <span class="text-weight-bold"> {{ props?.pasien?.pemeriksaanfisikpsikologidll[0]?.rs10 ?? '-'
-            }}</span>
+          }}</span>
         </div>
         <div class="q-pl-md">
           7. Kaki : <span class="text-weight-bold"> {{ props?.pasien?.pemeriksaanfisikpsikologidll[0]?.rs11 ?? '-'
-            }}</span>
+          }}</span>
         </div>
         <div class="q-pl-md">
           8. Status Neurologis : <span class="text-weight-bold"> {{
@@ -118,7 +118,7 @@
           <div class="q-pl-lg q-gutter-xs row">
             <div v-for="(radiologi, l) in props?.pasien?.radiologi" :key="l">
               <q-badge outline color="black">{{ radiologi?.rs4
-              }}</q-badge>
+                }}</q-badge>
             </div>
           </div>
         </div>
@@ -352,5 +352,12 @@ const qrUrl = computed(() => {
 
 .signature-line {
   padding-top: 130px;
+}
+
+.b {
+  border-right-style: solid;
+  border-left-style: solid;
+  border-bottom-style: solid;
+  border-width: 2px;
 }
 </style>

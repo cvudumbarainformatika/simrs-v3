@@ -95,7 +95,7 @@ const img = computed(() => {
 onMounted(() => {
   store.makeQr()
   // console.log('login', $q)
-  console.log('login', $q)
+  // console.log('login', $q)
 })
 
 </script>

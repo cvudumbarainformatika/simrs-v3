@@ -1,5 +1,5 @@
 <template>
-  <div class="print-wrapper">
+  <div class="print-wrapper b">
     <q-table flat bordered dense :rows="rows" :columns="columns" row-key="id" hide-bottom>
       <template v-slot:body-cell="slotProps">
         <q-td :props="slotProps">
@@ -219,6 +219,13 @@ const generateQr = (item) => {
 
 .q-table td {
   vertical-align: top;
+}
+
+.b {
+  border-right-style: solid;
+  border-left-style: solid;
+  border-bottom-style: solid;
+  border-width: 2px;
 }
 
 @media print {

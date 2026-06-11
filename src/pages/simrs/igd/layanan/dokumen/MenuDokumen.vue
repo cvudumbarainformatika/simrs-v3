@@ -101,7 +101,7 @@ const billing = ref('BILLING')
 const triase = ref('TRIASE')
 const suratkematian = ref('Surat Kematian')
 const indikasinicu = ref('Indikasi Pasien Masuk Ruang')
-const pasienpulang = ref('Pasien Pulang')
+const pasienpulang = ref('Surat Pernyataan Pulang')
 const sep = ref('Sep')
 const store = useDokumenIgdStore()
 // const storex = usePlannStore()
@@ -109,12 +109,26 @@ const store = useDokumenIgdStore()
 // const kelas = storex?.isiindikasimasuknicu?.planranap?.dokumentransfer?.kelas
 // const keterangan = storex?.isiindikasimasuknicu?.planranap?.keterangan
 
-const isi = props.pasien?.planheder[0]?.planranap?.dokumentransfer?.isi ? JSON.parse(props.pasien?.planheder[0]?.planranap?.dokumentransfer?.isi) : []
-const kelas = props.pasien?.planheder[0]?.planranap?.dokumentransfer?.kelas
-const keterangan = props.pasien?.planheder[0]?.planranap?.keterangan
-const pulang = props.pasien?.planheder[0]?.planpulang
-const dasarpulang = props.pasien?.planheder[0]?.planpulang?.atas_dasar
-// console.log('sassa', props.pasien?.planheder[0]?.planranap)
+const isi = computed(() => {
+  const data = props.pasien?.planheder?.[0]?.planranap?.dokumentransfer?.isi
+  return data ? JSON.parse(data) : []
+})
+
+const kelas = computed(() => {
+  return props.pasien?.planheder?.[0]?.planranap?.dokumentransfer?.kelas
+})
+
+const keterangan = computed(() => {
+  return props.pasien?.planheder?.[0]?.planranap?.keterangan
+})
+
+const pulang = computed(() => {
+  return props.pasien?.planheder?.[0]?.planpulang
+})
+
+const dasarpulang = computed(() => {
+  return pulang.value?.atas_dasar === 'Paksa' ? 'Paksa' : ''
+})
 
 // storex.indikasimasuknicuinter(props.pasien)
 

@@ -77,15 +77,9 @@ const props = defineProps({
   }
 })
 
-// const jikaEcg = computed(() => {
-//   return store.searchtindakan
-// })
+console.log(props.pasien);
 
-// function resetValidasi() {
-//   formmRef.value?.resetValidation()
-// }
 
-// defineExpose({ resetValidasi })
 const KODE_POLI_MAP = {
   POL042: 'POL018',
 }
@@ -136,19 +130,19 @@ onMounted(() => {
   // formmRef.value?.resetValidation()
 })
 
-function updateSearchTindakan (val) {
+function updateSearchTindakan(val) {
   store.setKdTindakan(val).then(() => {
     inpQtyRef.value.focus()
   })
 }
 
-function onSubmit () {
+function onSubmit() {
   store.saveTindakan(props.pasien).then(() => {
     formmRef.value.resetValidation()
   })
 }
 
-function filterFn (val, update, abort) {
+function filterFn(val, update, abort) {
   if (val?.length < 1) {
     abort()
     return

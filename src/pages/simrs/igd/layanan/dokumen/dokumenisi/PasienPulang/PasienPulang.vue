@@ -16,7 +16,7 @@
       </div>
     </div>
     <q-scroll-area style="height: calc(100vh - 56px);">
-      <div v-if="props?.pasien?.anamnesis?.length <= 0">
+      <div v-if="props.dasarpulang !== 'Paksa'">
         <div class="column flex-center">
           <div>
             <app-no-data />
@@ -33,8 +33,8 @@
           <KopSurat :judul="props?.judul ?? 'Indikasi Masuk Ranap'" :pasien="props?.pasien" :jangantampil=false
             :kelas="props.kelas" :pulang="props?.pulang" :dasarpulang="props?.dasarpulang" />
 
-          <Isi :pulang="props?.pulang" :pasien="props?.pasien" :isi="props.isi" :kelas="props.kelas"
-            :loading="props.loading" />
+          <Isi :pulang="props?.pulang" :dasarpulang="props?.dasarpulang" :pasien="props?.pasien" :isi="props.isi"
+            :kelas="props.kelas" :loading="props.loading" />
         </div>
       </div>
     </q-scroll-area>

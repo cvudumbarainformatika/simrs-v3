@@ -40,7 +40,7 @@
 <script setup>
 
 import { usePengunjungIgdStore } from 'src/stores/simrs/igd/pengunjung';
-import KopDokumen from './KopDokumen.vue';
+import KopDokumen from '../../KopDokumen.vue';
 import html2pdf from 'html2pdf.js';
 import IsiPengkajianAwalKebidanan from './IsiSerahTerimaRuangan.vue';
 const store = usePengunjungIgdStore()

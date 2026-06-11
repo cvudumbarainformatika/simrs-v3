@@ -22,7 +22,7 @@
     <q-scroll-area class="scroll-fix">
       <div class="q-pa-none bg-grey-6 content-wrapper">
 
-        <div id="printMe" class="full-width bg-white q-px-md q-py-lg print-wrapper">
+        <div id="printMe" class="full-width bg-white q-px-md q-py-md print-wrapper">
           <KopSurat :judul="props?.judul ?? 'TRIASE'" :pasien="props?.pasien" :jangantampil="false" />
 
           <IsitriagePage :pasien="props?.pasien" />
@@ -35,7 +35,7 @@
 
 <script setup>
 import html2pdf from 'html2pdf.js'
-import KopSurat from '../../KopSurat.vue'
+import KopSurat from '../../KopDokumen.vue'
 import IsitriagePage from './IsitriagePage.vue'
 
 const printObj = {

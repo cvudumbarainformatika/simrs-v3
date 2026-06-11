@@ -1,5 +1,5 @@
 <template>
-  <div class="fit column scroll">
+  <div class="b fit column scroll">
     <div class="col full-height bg-grey-1 scroll" v-for="(item, i) in props.pasien?.konsultasi" :key="i">
       <div class="q-pa-lg">
         <div class="text-h6 text-weight-light">
@@ -49,3 +49,11 @@ const props = defineProps({
 
 
 </script>
+<style scoped>
+.b {
+  border-right-style: solid;
+  border-left-style: solid;
+  border-bottom-style: solid;
+  border-width: 2px;
+}
+</style>
