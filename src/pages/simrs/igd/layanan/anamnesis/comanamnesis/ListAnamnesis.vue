@@ -212,7 +212,10 @@
                     - Restrain Lainnya : {{ item?.restrainlainnya ?? '-' }}
                   </q-item-label>
                   <q-item-label>
-                    - Hasil : {{ item?.hasil ?? '-' }}
+                    - Hasil : {{ item?.hasil_resiko_pasien_jatuh ?? '-' }}
+                  </q-item-label>
+                  <q-item-label>
+                    - Diberitaukan Kepada dokter : {{ item?.diberitaukankedokterjikaya ?? '-' }}
                   </q-item-label>
                   <q-item-label>
                     - Keterangan : {{ item?.keterangan ?? '-' }}
