@@ -55,7 +55,16 @@ export const useAnamnesis = defineStore('anamnesis', {
       kebutuhankomunikasidanedukasi: 'Normal',
       aktivitasmobilitas: 'Mandiri',
       aktivitasAlatBnatujalan: 'Tidak',
-      selection: []
+      selection: [],
+
+      sempoyongan: '',
+      penopang: '',
+      gelisah: '',
+      restrain: '',
+      restrainlainnya: '',
+      diberitaukankedokterjikaya: '',
+      hasil_resiko_pasien_jatuh: '',
+      keterangan: ''
 
     },
     // nilai bps
@@ -106,7 +115,7 @@ export const useAnamnesis = defineStore('anamnesis', {
             this.form.rs4 = this.form.keluhanutama
           }
           const isi = resp.data.result[0]
-          console.log('isi', isi)
+
           storePasien.injectDataPasien(pasien, isi, 'anamnesis')
           notifSuccess(resp)
           this.initReset()

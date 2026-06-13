@@ -3,6 +3,7 @@ import { api } from 'src/boot/axios'
 import { usePengunjungRanapStore } from './pengunjung'
 // eslint-disable-next-line no-unused-vars
 import { notifErrVue, notifSuccess } from 'src/modules/utils'
+import { usePermintaanOperasistore } from '../kamaroperasi/permintaanoperasi'
 
 export const usePermintaanBankDarahStore = defineStore('permintaan-bank-darah-store', {
   state: () => ({
@@ -107,9 +108,11 @@ export const usePermintaanBankDarahStore = defineStore('permintaan-bank-darah-st
         if (resp.status === 200) {
           // const storePasien = usePengunjungPoliStore()
           const storeRanap = usePengunjungRanapStore()
+          const kamarOp = usePermintaanOperasistore()
           const isi = resp?.data?.result
           // storePasien.injectDataPasien(pasien, isi, 'fisio')
           storeRanap.injectDataPasien(pasien?.noreg, isi, 'bankdarah')
+          kamarOp.injectDataPasien(pasien, isi, 'bankdarah')
           this.setNotas(resp?.data?.nota)
           notifSuccess(resp)
           this.loadingOrder = false
@@ -149,8 +152,10 @@ export const usePermintaanBankDarahStore = defineStore('permintaan-bank-darah-st
         if (resp.status === 200) {
           // const storePasien = usePengunjungPoliStore()
           const storeRanap = usePengunjungRanapStore()
+          const kamarOp = usePermintaanOperasistore()
           // storePasien.hapusDataFisio(pasien, id)
           storeRanap.hapusDataInjectan(pasien, id, 'bankdarah')
+          kamarOp.hapusDataInjectan(pasien, id, 'bankdarah')
           this.setNotas(resp?.data?.nota)
           notifSuccess(resp)
         }
