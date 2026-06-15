@@ -265,11 +265,11 @@
           Jenis :
           <span class="q-pr-sm">{{ selectedKontrasepsi !== 'Tidak' ?
             getDetailKontrasepsi() : '-'
-          }}, </span>
+            }}, </span>
           Lama Pemakaian :
           <span class="">{{ selectedKontrasepsi !== 'Tidak' ?
             getLamaPemakaian() : '-'
-          }}</span>
+            }}</span>
         </div>
       </div>
       <div class="row items-center q-px-sm q-pb-xs full-width">
@@ -279,7 +279,7 @@
           Keluahan :
           <span class="q-pr-sm">{{ selectedKontrasepsi !== 'Tidak' ?
             getKeluhanKontrasepsi() : '-'
-          }}</span>
+            }}</span>
         </div>
       </div>
 
@@ -800,7 +800,7 @@
           <div>- Ekspresi Wajah : {{ item?.ekspresiwajah }}</div>
           <div>- Gerakan Tangan : {{ item?.gerakantangan }}</div>
           <div>- Kepatuhan terhadap ventilasi mekanik : {{ item?.kepatuhanventilasimekanik
-            }}</div>
+          }}</div>
           <div>
             <div>
               Skor Nyeri (BPS) =
@@ -1088,36 +1088,7 @@ const props = defineProps({
 
 const store = usePengunjungIgdStore()
 const kunjungan = useListKunjunganIgdStore()
-const opstionsempoyongan = ref([
-  { label: 'Iya', value: 'Iya' },
-  { label: 'Tidak', value: 'Tidak' }
-])
 
-const opstionpenopang = ref([
-  { label: 'Iya', value: 'Iya' },
-  { label: 'Tidak', value: 'Tidak' }
-])
-
-const opstiongelisah = ref([
-  { label: 'Iya', value: 'Iya' },
-  { label: 'Tidak', value: 'Tidak' }
-])
-
-const opstionrestrain = ref([
-  { label: 'Gelang Tali', value: 'Gelang Tali' },
-  { label: 'Body Jaket', value: 'Body Jaket' }
-])
-
-const opstionhasil = ref([
-  { label: 'Tidak Beresiko(Tidak, I dan II)', value: 'Tidak Beresiko(Tidak, I dan II)' },
-  { label: 'Resiko Tinggi(Ya, I dan II)', value: 'Resiko Tinggi(Ya, I dan II)' },
-  { label: 'Resiko Rendah(Ya, I atau II)', value: 'Resiko Rendah(Ya, I atau II)' }
-])
-
-const opstiondiberitaukankedokter = ref([
-  { label: 'Tidak', value: 'Tidak' },
-  { label: 'Ya', value: 'Ya' },
-])
 // Cari data kunjungan berdasarkan rs1 dari store.items
 const kunjunganFromStore = computed(() => {
   // Ambil rs1 dari store.items (data pengunjung IGD)
