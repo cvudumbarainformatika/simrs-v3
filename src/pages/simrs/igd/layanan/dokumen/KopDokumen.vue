@@ -1,35 +1,37 @@
 <template>
   <div class="col-auto print-page">
-    <div class="row b1 justify-between full-width full-height ">
-      <div class="row full-width">
-        <div class="col-2 q-px-xs flex items-center justify-center text-center">
-          <q-img src="~assets/logos/logo-rsud.png" style="width: 2.5cm;" fit="contain" :ratio="1" />
-        </div>
-        <div class="col q-py-sm flex items-center justify-center text-center">
-          <!-- <div class="row flex-center"> -->
-          <div class="flex-center text-center">
-            <div class="text-bold">PEMERINTAH KOTA PROBOLINGGO</div>
-            <div class="text-bold">
-              DINAS KESEHATAN, PENGENDALIAN PENDUDUK, DAN KELUARGA BERENCANA
-            </div>
-            <div class="text-bold" style="font-size: 16px">
-              UOBK RSUD DOKTER MOHAMAD SALEH
-            </div>
-            <div class="row  justify-center">
-              Jl. Mayjend Panjaitan No. 65 Telp. (0335) 433119,421118 Fax. (0335) 432705
-            </div>
-            <div class="row justify-center ">
-              E-mail : rsudprob@probolinggokota.go.id
-            </div>
-            <div class="row justify-center ">
-              PROBOLINGGO 67219
-            </div>
+    <div class="b1">
+      <div class="row justify-between full-width full-height ">
+        <div class="row full-width">
+          <div class="col-2 q-px-xs flex items-center justify-center text-center">
+            <q-img src="~assets/logos/logo-rsud.png" style="width: 2.5cm;" fit="contain" :ratio="1" />
           </div>
-          <!-- </div> -->
-        </div>
-        <div class="col-2 b5 flex items-center justify-center text-center">
-          <div class="text-bold q-px-sm" style="font-size: 12px;">{{ props?.judul }} {{ props?.kelas }}
-            {{ props?.dasarpulang }}</div>
+          <div class="col q-py-sm flex items-center justify-center text-center">
+            <!-- <div class="row flex-center"> -->
+            <div class="flex-center text-center">
+              <div class="text-bold">PEMERINTAH KOTA PROBOLINGGO</div>
+              <div class="text-bold">
+                DINAS KESEHATAN, PENGENDALIAN PENDUDUK, DAN KELUARGA BERENCANA
+              </div>
+              <div class="text-bold" style="font-size: 16px">
+                UOBK RSUD DOKTER MOHAMAD SALEH
+              </div>
+              <div class="row  justify-center">
+                Jl. Mayjend Panjaitan No. 65 Telp. (0335) 433119,421118 Fax. (0335) 432705
+              </div>
+              <div class="row justify-center ">
+                E-mail : rsudprob@probolinggokota.go.id
+              </div>
+              <div class="row justify-center ">
+                PROBOLINGGO 67219
+              </div>
+            </div>
+            <!-- </div> -->
+          </div>
+          <div class="col-2 b5 flex items-center justify-center text-center">
+            <div class="text-bold q-px-sm" style="font-size: 12px;">{{ props?.judul }} {{ props?.kelas }}
+              {{ props?.dasarpulang }}</div>
+          </div>
         </div>
       </div>
     </div>
@@ -145,10 +147,9 @@ function usia(val) {
 </script>
 <style lang="scss" scoped>
 .b {
-  border-right-style: solid;
-  border-left-style: solid;
-  border-bottom-style: solid;
-  border-width: 2px;
+  border-right: 2px solid #000;
+  border-left: 2px solid #000;
+  border-bottom: 2px solid #000;
 }
 
 .b_double {
@@ -157,29 +158,24 @@ function usia(val) {
 }
 
 .b1 {
-  border-style: solid;
-  border-width: 2px;
+  border: 2px solid #000;
 }
 
 .b2 {
-  border-right-style: solid;
-  border-width: 2px;
+  border-right: 2px solid #000;
 }
 
 .b3 {
-  border-bottom-style: solid;
-  border-width: 2px;
+  border-bottom: 2px solid #000;
 }
 
 .b4 {
-  border-right-style: solid;
-  border-left-style: solid;
-  border-width: 2px;
+  border-right: 2px solid #000;
+  border-left: 2px solid #000;
 }
 
 .b5 {
-  border-left-style: solid;
-  border-width: 2px;
+  border-left: 2px solid #000;
 }
 
 table {
