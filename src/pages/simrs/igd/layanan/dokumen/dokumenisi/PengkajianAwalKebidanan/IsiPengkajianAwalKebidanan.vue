@@ -265,11 +265,11 @@
           Jenis :
           <span class="q-pr-sm">{{ selectedKontrasepsi !== 'Tidak' ?
             getDetailKontrasepsi() : '-'
-            }}, </span>
+          }}, </span>
           Lama Pemakaian :
           <span class="">{{ selectedKontrasepsi !== 'Tidak' ?
             getLamaPemakaian() : '-'
-            }}</span>
+          }}</span>
         </div>
       </div>
       <div class="row items-center q-px-sm q-pb-xs full-width">
@@ -279,7 +279,7 @@
           Keluahan :
           <span class="q-pr-sm">{{ selectedKontrasepsi !== 'Tidak' ?
             getKeluhanKontrasepsi() : '-'
-            }}</span>
+          }}</span>
         </div>
       </div>
 
@@ -675,7 +675,7 @@
           <div class="row">
             <div class="col">a. Perhatikan cara berjalan pasien saat akan duduk di kursi. Apakah pasien tampak tidak
               seimbang (sempoyongan)?
-              <b> {{ getYT(pasien?.penilaiananamnesis?.[0]?.morse_fall?.gayaJalan?.skor) }}</b>
+              <b> {{ pasien?.anamnesis?.[0]?.sempoyongan }}</b>
             </div>
           </div>
         </div>
@@ -685,7 +685,7 @@
           <div class="row">
             <div class="col">b. Apakah pasien memegang pinggiran kursi atau meja atau benda lain sebagai penopang saat
               akan duduk?
-              <b> {{ getYT(pasien?.penilaiananamnesis?.[0]?.morse_fall?.alatBantu?.skor) }}</b>
+              <b> {{ pasien?.anamnesis?.[0]?.penopangx ?? '-' }}</b>
             </div>
           </div>
         </div>
@@ -693,19 +693,22 @@
       <div class="row items-center q-px-sm q-pb-xs full-width">
         <div class="col q-pl-md">
           <div class="row">
-            <div class="col text-weight-bold">Hasil : {{ pasien?.penilaiananamnesis?.[0]?.morse_fall?.skorMorse?.label
-            }}</div>
+            <div class="col text-weight-bold">Hasil : {{ pasien?.anamnesis?.[0]?.hasil_resiko_pasien_jatuh ?? '-' }}
+            </div>
           </div>
         </div>
       </div>
       <div class="row items-center q-px-sm q-pb-xs full-width">
         <div class="col q-pl-md">
           <div class="row">
-            <div class="col">c. Gelisah : </div>
-            <div class="col">Restrain : </div>
+            <div class="col">c. Gelisah : {{ pasien?.anamnesis?.[0]?.gelisah ?? '-' }}</div>
+            <div class="col">Restrain : {{ pasien?.anamnesis?.[0]?.restrain ?? '-' }}</div>
           </div>
           <div class="row">
-            <div class="col">Diberikan ke dokter :</div>
+            <div class="col">Diberikan ke dokter : {{ pasien?.anamnesis?.[0]?.diberitaukankedokterjikaya ?? '-' }}
+              <span v-if="pasien?.anamnesis?.[0]?.diberitaukankedokterjikaya === 'Ya'"> {{
+                pasien?.anamnesis?.[0]?.keterangan ?? '-' }}</span>
+            </div>
             <div class="col">Jam : </div>
           </div>
         </div>
@@ -797,7 +800,7 @@
           <div>- Ekspresi Wajah : {{ item?.ekspresiwajah }}</div>
           <div>- Gerakan Tangan : {{ item?.gerakantangan }}</div>
           <div>- Kepatuhan terhadap ventilasi mekanik : {{ item?.kepatuhanventilasimekanik
-          }}</div>
+            }}</div>
           <div>
             <div>
               Skor Nyeri (BPS) =
@@ -1085,7 +1088,36 @@ const props = defineProps({
 
 const store = usePengunjungIgdStore()
 const kunjungan = useListKunjunganIgdStore()
+const opstionsempoyongan = ref([
+  { label: 'Iya', value: 'Iya' },
+  { label: 'Tidak', value: 'Tidak' }
+])
 
+const opstionpenopang = ref([
+  { label: 'Iya', value: 'Iya' },
+  { label: 'Tidak', value: 'Tidak' }
+])
+
+const opstiongelisah = ref([
+  { label: 'Iya', value: 'Iya' },
+  { label: 'Tidak', value: 'Tidak' }
+])
+
+const opstionrestrain = ref([
+  { label: 'Gelang Tali', value: 'Gelang Tali' },
+  { label: 'Body Jaket', value: 'Body Jaket' }
+])
+
+const opstionhasil = ref([
+  { label: 'Tidak Beresiko(Tidak, I dan II)', value: 'Tidak Beresiko(Tidak, I dan II)' },
+  { label: 'Resiko Tinggi(Ya, I dan II)', value: 'Resiko Tinggi(Ya, I dan II)' },
+  { label: 'Resiko Rendah(Ya, I atau II)', value: 'Resiko Rendah(Ya, I atau II)' }
+])
+
+const opstiondiberitaukankedokter = ref([
+  { label: 'Tidak', value: 'Tidak' },
+  { label: 'Ya', value: 'Ya' },
+])
 // Cari data kunjungan berdasarkan rs1 dari store.items
 const kunjunganFromStore = computed(() => {
   // Ambil rs1 dari store.items (data pengunjung IGD)
