@@ -66,7 +66,8 @@ const tabs = ref([
     icon: 'monitor_heart',
     // nakes: ['2', '3'],
     // comp: shallowRef(defineAsyncComponent(() => import('./comp/TindakanPage.vue')))
-    comp: shallowRef(defineAsyncComponent(() => import('src/pages/simrs/poli/tindakan/comptindakan/pagemenu/complayanan/TindakanPage.vue')))
+    comp: shallowRef(defineAsyncComponent(() => import('src/pages/simrs/poli/tindakan/comptindakan/pagemenu/complayanan/TindakanPage.vue'))) // rajal
+    // comp: shallowRef(defineAsyncComponent(() => import('src/pages/simrs/ranap/layanan/diagnosaDanTindakan/tindakan/TindakanPage.vue'))) // ranap
   },
   {
     label: 'Laporan Operasi',
