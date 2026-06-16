@@ -53,7 +53,7 @@ function exportPdf() {
   const nama = props?.pasien?.nama ?? props?.pasien?.pasien
 
   const pdfConfig = {
-    margin: [12, 12, 12, 12],
+    margin: [5, 5, 5, 5],
     filename: `Resume-Medis_${props?.pasien?.noreg}_${nama}_${props?.pasien?.norm}.pdf`,
     image: { type: 'jpeg', quality: 0.98 },
     html2canvas: {
@@ -90,5 +90,18 @@ function exportPdf() {
   min-height: 1280px;
   padding-bottom: 120px;
   box-sizing: border-box;
+}
+
+
+@media print {
+  #printMe {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  .print-wrapper {
+    min-height: auto !important;
+    padding-bottom: 0 !important;
+  }
 }
 </style>

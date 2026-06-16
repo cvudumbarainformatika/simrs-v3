@@ -219,7 +219,7 @@
 
         <tr>
           <td colspan="3" class="center bold">DOA</td>
-          <td rowspan="1" class="">Pemeriksaan GDA : </td>
+          <td rowspan="1" class="">Pemeriksaan GDA : {{ item?.hasil_gda ?? '-' }} </td>
           <td colspan="2" class="">Hamil : {{ hamil(item?.flaghamil) }}</td>
         </tr>
         <tr>
@@ -233,7 +233,7 @@
                 <div v-for="pilihan in store.doak" :key="pilihan">
                   <div class="row q-px-xs">
                     <div class="col-auto" style="width:24px">
-                      {{ isChecked(item, 'doa', pilihan) ? '☑' : '☐' }}
+                      {{ isCheckedDOA(item, 'doa', pilihan) ? '☑' : '☐' }}
                     </div>
                     <div class="col">
                       {{ pilihan }}
@@ -305,23 +305,19 @@
             Anamnesa : {{ props.pasien?.anamnesis?.[0]?.rs4 ?? '-' }}
           </td>
         </tr>
-
-
         <tr>
           <td colspan="6">Jam Serah Terima : {{ date.formatDate(Date.now(), 'hh:mm:ss') }}</td>
         </tr>
-
       </table>
-
     </div>
 
-    <div class="row q-mt-xl q-mb-xl">
+    <div class="row q-pt-sm q-mb-xl">
       <div class="col-6">
         <div class="text-center text-weight-bold q-pt-xs">
           TIM TRIASE
         </div>
-        <div class="column flex-center q-mt-md">
-          <div style="width: 100px;">
+        <div class="column flex-center q-mt-sm">
+          <div style="width: 70px;">
             <vue-qrcode :value="qrUrl" tag="svg" :options="{
               errorCorrectionLevel: 'Q',
               color: {
@@ -340,9 +336,9 @@
         <div class="text-center text-weight-bold q-mt-xs">
           TIM P1/P2/P3
         </div>
-        <div class="column flex-center q-mt-md">
-          <!-- <div style="width: 100px;">
-            <vue-qrcode :value="qrUrl" tag="svg" :options="{
+        <div class="column flex-center q-mt-sm">
+          <div v-if="dataPerawat" style="width: 70px;">
+            <vue-qrcode :value="qrPerawat" tag="svg" :options="{
               errorCorrectionLevel: 'Q',
               color: {
                 dark: '#000000',
@@ -352,9 +348,8 @@
             }" />
           </div>
           <div class="q-mt-sm text-weight-bold text-center">
-            {{ pasien?.dokter }}
-          </div> -->
-          BELUM ADA DATA PETUGAS DI TRIASE
+            {{ dataPerawat?.nama ?? '-' }}
+          </div>
         </div>
       </div>
     </div>
@@ -410,11 +405,55 @@ const qrUrl = computed(() => {
   // return `https://xenter.my.id/qr-document?noreg=${noreg}&dokumen=${dok}&asal=${asal}`
 })
 
+const dataDokter = computed(() => {
+  return props?.pasien?.anamnesis?.find(
+    item => item?.datasimpeg?.kdgroupnakes === '1'
+  )?.datasimpeg || null
+})
+const dataPerawat = computed(() => {
+  return props?.pasien?.anamnesis?.find(
+    item => item?.datasimpeg?.kdgroupnakes === '2'
+  )?.datasimpeg || null
+})
+console.log('perawat', dataPerawat.value)
+const dataBidan = computed(() => {
+  return props?.pasien?.anamnesis?.find(
+    item => item?.datasimpeg?.kdgroupnakes === '3'
+  )?.datasimpeg || null
+})
+console.log('Bidan', dataBidan.value)
+
+
+
+const qrPerawat = computed(() => {
+  const noreg = props?.pasien?.noreg// noreg
+  const dok = 'Triagep1.png'
+  const asal = 'RAWAT JALAN'
+  const perawat = dataPerawat?.value?.kdpegsimrs ?? null
+  const enc = btoa(`${noreg}|${dok}|${asal}|${perawat}`)
+  return `https://rsud.probolinggokota.go.id/dokumen-simrs/legalitas/${enc}`
+  // return `https://xenter.my.id/qr-document?noreg=${noreg}&dokumen=${dok}&asal=${asal}`
+})
 const lists = computed(() => {
   const arr = props.pasien?.triage
   return arr?.sort((a, b) => { return b.id - a.id })
 })
+const isCheckedDOA = (triage, field, value) => {
+  const data = triage?.[field]
 
+  if (!data) return false
+
+  // Jika berupa array
+  if (Array.isArray(data)) {
+    return data.includes(value)
+  }
+
+  // Jika berupa string dipisahkan koma
+  return data
+    .split(',')
+    .map(v => v.trim())
+    .includes(value)
+}
 const isChecked = (triage, field, value) => {
   return triage?.[field] === value
 }
