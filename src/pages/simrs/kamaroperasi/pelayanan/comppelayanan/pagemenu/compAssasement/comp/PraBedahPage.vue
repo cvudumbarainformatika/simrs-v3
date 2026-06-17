@@ -1,7 +1,6 @@
 <template>
   <div class="">
-    <div class="q-pa-sm">
-
+    <div v-if="store.notas?.length > 0" class="q-pa-sm">
       <div class="row items-center">
         <div class="col-auto depan ">Pilih Nota Operasi</div>
         <div class="col-auto dua">:</div>
@@ -183,6 +182,9 @@
         </div>
       </div>
        -->
+    </div>
+    <div v-else>
+      <app-maintenance text="!!!  Belum Ada Nota permintaan Operasi !!!" color="negative" />
     </div>
   </div>
 </template>

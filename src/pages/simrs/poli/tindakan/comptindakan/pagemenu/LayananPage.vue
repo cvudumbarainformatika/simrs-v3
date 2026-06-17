@@ -50,6 +50,9 @@
           <q-tab-panel name="Laporan Tindakan" class="full-height q-pa-none">
             <LaporanTindakan :key="props.pasien" :pasien="props.pasien" />
           </q-tab-panel>
+          <q-tab-panel name="Pra Bedah" class="full-height q-pa-none">
+            <PraBedah :key="props.pasien" :pasien="props.pasien" />
+          </q-tab-panel>
         </q-tab-panels>
       </div>
     </div>
@@ -69,6 +72,7 @@ import LaporanTindakan from './complayanan/LaporanTindakan.vue'
 import { defineAsyncComponent, onMounted, ref } from 'vue'
 
 const RencanaPengobatan = defineAsyncComponent(() => import('./complayanan/compRencanaPengobatan/IndexPage.vue'))
+const PraBedah = defineAsyncComponent(() => import('src/pages/simrs/kamaroperasi/pelayanan/comppelayanan/pagemenu/compAssasement/comp/PraBedahPage.vue'))
 const props = defineProps({
   pasien: {
     type: Object,
