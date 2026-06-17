@@ -28,6 +28,9 @@
           <q-tab-panel name="Pra Anastesi" class="full-height q-pa-none">
             <PraAnastesiPage :pasien="props.pasien" />
           </q-tab-panel>
+          <q-tab-panel name="Pra Bedah" class="full-height q-pa-none">
+            <PraBedah :key="props.pasien" :pasien="props.pasien" />
+          </q-tab-panel>
         </q-tab-panels>
       </div>
     </div>
@@ -44,9 +47,11 @@ import DiagnosaKebidananPage from './diagnosakebidanan/DiagnosaKebidananPage.vue
 import PraAnastesiPage from './praanastesi/PraAnastesiPage.vue'
 import RencanaTerapaiDokterPage from './rencanatrapidokter/RencanaTerapaiDokterPage.vue'
 
-import { onMounted } from 'vue'
+import { defineAsyncComponent, onMounted } from 'vue'
 import { useDiagnosaDokter } from 'src/stores/simrs/igd/diagnosadokter'
 
+
+const PraBedah = defineAsyncComponent(() => import('src/pages/simrs/kamaroperasi/pelayanan/comppelayanan/pagemenu/compAssasement/comp/PraBedahPage.vue'))
 const props = defineProps({
   pasien: {
     type: Object,
