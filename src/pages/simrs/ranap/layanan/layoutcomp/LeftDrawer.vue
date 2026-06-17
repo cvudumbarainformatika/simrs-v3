@@ -1,12 +1,8 @@
 <template>
-  <q-scroll-area :style="`height: calc(100% - ${tinggiDetailPas}px); margin-top: ${tinggiDetailPas}px; border-right: 1px solid #ddd`">
+  <q-scroll-area
+    :style="`height: calc(100% - ${tinggiDetailPas}px); margin-top: ${tinggiDetailPas}px; border-right: 1px solid #ddd`">
     <q-separator />
-    <list-menu
-      :menus="menus"
-      :menu="menu"
-      :pasien="pasien"
-      @menu-click="(val)=> emits('clickMenu', val)"
-    />
+    <list-menu :menus="menus" :menu="menu" :pasien="pasien" @menu-click="(val) => emits('clickMenu', val)" />
   </q-scroll-area>
 
   <!-- <div
@@ -16,10 +12,7 @@
     <SimulasiPageTwo :pasien="pasien" />
   </div> -->
 
-  <div
-    class="absolute-top bg-dark text-white"
-    :style=" `height: ${tinggiDetailPas}px`"
-  >
+  <div class="absolute-top bg-dark text-white" :style="`height: ${tinggiDetailPas}px`">
     <!-- <div class="absolute-top-right">
       <div class="q-pa-sm">
         <q-btn
@@ -32,20 +25,12 @@
     </div> -->
     <div class="absolute-top-right">
       <div class="q-pa-sm">
-        <q-badge
-          outline
-          color="orange"
-          :label="`${pasien?.sistembayar?? '-'}`"
-        />
+        <q-badge outline color="orange" :label="`${pasien?.sistembayar ?? '-'}`" />
       </div>
     </div>
     <div class="absolute-bottom">
       <div class="q-pa-md">
-        <app-avatar-pasien
-          :key="pasien"
-          :pasien="pasien"
-          width="50px"
-        />
+        <app-avatar-pasien :key="pasien" :pasien="pasien" width="50px" />
         <div class="text-weight-bold f-12 q-mt-sm">
           {{ pasien ? pasien.nama : '-' }}
         </div>
@@ -53,10 +38,10 @@
           TELP. {{ pasien ? pasien.nohp : '-' }}
         </div>
         <div class="text-teal">
-          {{ pasien ? pasien.noreg : '-' }} || {{ pasien?.norm??'-' }}
+          {{ pasien ? pasien.noreg : '-' }} || {{ pasien?.norm ?? '-' }}
         </div>
         <div class="text-yellow text-italic f-10">
-          {{ pasien?.usia?? '-' }}
+          {{ pasien?.usia ?? '-' }}
         </div>
       </div>
       <q-bar>
@@ -83,17 +68,18 @@
             i-care
           </q-tooltip>
         </q-btn> -->
-        <q-btn
-          dense
-          flat
-          icon="icon-mat-history"
-          class="gt-xs"
-          @click="emits('historyPasien')"
-        >
+
+        <q-btn dense flat icon="icon-mat-dvr" class="gt-xs" @click="emits('logActivity')">
+          <q-tooltip class="bg-dark text-white">
+            Log Activity
+          </q-tooltip>
+        </q-btn>
+        <q-btn dense flat icon="icon-mat-history" class="gt-xs" @click="emits('historyPasien')">
           <q-tooltip class="bg-dark text-white">
             History Pasien
           </q-tooltip>
         </q-btn>
+
       </q-bar>
     </div>
   </div>
@@ -115,7 +101,7 @@ import { ref } from 'vue'
 const tinggiDetailPas = ref(180)
 // const printRekap = ref(false)
 // const tinggiBot = ref(180)
-const emits = defineEmits(['clickMenu', 'historyPasien', 'printRekap', 'icare'])
+const emits = defineEmits(['clickMenu', 'historyPasien', 'printRekap', 'icare', 'logActivity'])
 defineProps({
   pasien: {
     type: Object,

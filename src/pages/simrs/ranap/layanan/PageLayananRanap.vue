@@ -11,12 +11,17 @@
         <!-- LEFT DRAWER ======================================================================================-->
         <q-drawer v-model="drawer" elevated bordered show-if-above :width="230" :breakpoint="400">
           <LeftDrawer :key="pasien" :pasien="pasien" :menus="filterredMenus" :menu="menu"
-            @click-menu="(val) => menuDiganti(val)" @history-pasien="historyPasien" />
+            @click-menu="(val) => menuDiganti(val)" @history-pasien="historyPasien" @log-activity="logActivity" />
         </q-drawer>
 
         <!-- RIGHT DRAWER ======================================================================================-->
         <q-drawer v-model="drawerRight" side="right" show-if-above overlay bordered :width="845" :breakpoint="500">
           <RightDrawer :key="pasien" :pasien="pasien" @close="drawerRight = false" />
+        </q-drawer>
+
+        <!-- LOG ACTIVITY DRAWER ===============================================================================-->
+        <q-drawer v-model="drawerLog" side="right" show-if-above overlay bordered :width="drawerLogWidth" :breakpoint="500">
+          <LogActivityDrawer :key="pasien" :pasien="pasien" @close="drawerLog = false" />
         </q-drawer>
 
         <!-- CONTAINER ============================================================================================-->
@@ -73,10 +78,15 @@ import TerimaPasien from './components/TerimaPasien.vue'
 const HeaderLayout = defineAsyncComponent(() => import('./layoutcomp/HeaderLayout.vue'))
 const LeftDrawer = defineAsyncComponent(() => import('./layoutcomp/LeftDrawer.vue'))
 const RightDrawer = defineAsyncComponent(() => import('./layoutcomp/RightDrawer.vue'))
+const LogActivityDrawer = defineAsyncComponent(() => import('./layoutcomp/LogActivityDrawer.vue'))
 const AppLoader = defineAsyncComponent(() => import('src/components/~global/AppLoader.vue'))
 
 const drawer = ref(false)
 const drawerRight = ref(false)
+const drawerLog = ref(false)
+const drawerLogWidth = computed(() => {
+  return window.innerWidth * 0.9
+})
 
 const anamnesis = useAnamnesisRanapStore()
 const history = useHistoryPasienRanapStore()
@@ -104,6 +114,10 @@ const onShow = () => {
 
 function historyPasien() {
   drawerRight.value = !drawerRight.value
+}
+
+function logActivity() {
+  drawerLog.value = !drawerLog.value
 }
 // function getIcare () {
 //   store.getDataIcare(props.pasien).then(resp => {

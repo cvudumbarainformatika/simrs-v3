@@ -12,6 +12,9 @@
               {{ slotProps.row.jam }}
             </div>
           </div>
+          <div v-else-if="slotProps.col.name === 'pemeriksaan'" class="text-wrap">
+            {{ slotProps.row.pemeriksaan }}
+          </div>
           <!-- TINDAKAN -->
           <div v-else-if="slotProps.col.name === 'tindakan'" class="text-wrap">
             {{ slotProps.row[slotProps.col.field] }}
@@ -62,60 +65,67 @@ const columns = [
     style: 'width:70px'
   },
 
-  {
-    name: 'tensi',
-    label: 'TENSI',
-    field: 'tensi',
-    align: 'left',
-    style: 'width:80px'
-  },
+  // {
+  //   name: 'tensi',
+  //   label: 'TENSI',
+  //   field: 'tensi',
+  //   align: 'left',
+  //   style: 'width:80px'
+  // },
 
-  {
-    name: 'nadi',
-    label: 'NADI',
-    field: 'nadi',
-    align: 'left',
-    style: 'width:60px'
-  },
+  // {
+  //   name: 'nadi',
+  //   label: 'NADI',
+  //   field: 'nadi',
+  //   align: 'left',
+  //   style: 'width:60px'
+  // },
 
-  {
-    name: 'rr',
-    label: 'RR',
-    field: 'rr',
-    align: 'left',
-    style: 'width:60px'
-  },
+  // {
+  //   name: 'rr',
+  //   label: 'RR',
+  //   field: 'rr',
+  //   align: 'left',
+  //   style: 'width:60px'
+  // },
 
-  {
-    name: 'suhu',
-    label: 'SUHU',
-    field: 'suhu',
-    align: 'left',
-    style: 'width:60px'
-  },
+  // {
+  //   name: 'suhu',
+  //   label: 'SUHU',
+  //   field: 'suhu',
+  //   align: 'left',
+  //   style: 'width:60px'
+  // },
 
-  {
-    name: 'spo2',
-    label: 'SP.O2',
-    field: 'spo2',
-    align: 'left',
-    style: 'width:70px'
-  },
+  // {
+  //   name: 'spo2',
+  //   label: 'SP.O2',
+  //   field: 'spo2',
+  //   align: 'left',
+  //   style: 'width:70px'
+  // },
 
-  {
-    name: 'gcs',
-    label: 'GCS',
-    field: 'gcs',
-    align: 'left',
-    style: 'width:70px'
-  },
+  // {
+  //   name: 'gcs',
+  //   label: 'GCS',
+  //   field: 'gcs',
+  //   align: 'left',
+  //   style: 'width:70px'
+  // },
 
+  // {
+  //   name: 'pupil',
+  //   label: 'PUPIL',
+  //   field: 'pupil',
+  //   align: 'left',
+  //   style: 'width:80px'
+  // },
   {
-    name: 'pupil',
-    label: 'PUPIL',
-    field: 'pupil',
+    name: 'pemeriksaan',
+    label: 'PEMERIKSAAN',
+    field: 'pemeriksaan',
     align: 'left',
-    style: 'width:80px'
+    style: 'width:100px'
   },
 
   {
@@ -139,7 +149,7 @@ const columns = [
     label: 'TINDAKAN',
     field: 'tindakan',
     align: 'left',
-    style: 'width:150px'
+    style: 'width:200px'
   },
 
   {
@@ -164,22 +174,31 @@ const rows = computed(() => {
       tanggal: splitTgl[0] || '-',
       jam: splitTgl[1] || '-',
 
-      tensi:
-        item?.sistole && item?.diastole
-          ? `${item.sistole}/${item.diastole}`
-          : '-',
+      // tensi:
+      //   item?.sistole && item?.diastole
+      //     ? `${item.sistole}/${item.diastole}`
+      //     : '-',
 
-      nadi: item?.nadi || '-',
-      rr: item?.pernapasanx || '-',
-      suhu: item?.suhu || '-',
-      spo2: item?.spo2 || '-',
+      // nadi: item?.nadi || '-',
+      // rr: item?.pernapasanx || '-',
+      // suhu: item?.suhu || '-',
+      // spo2: item?.spo2 || '-',
 
-      gcs:
-        item?.eye && item?.verbal && item?.motorik
-          ? `${item.eye}/${item.verbal}/${item.motorik}`
-          : '-',
+      // gcs:
+      //   item?.eye && item?.verbal && item?.motorik
+      //     ? `${item.eye}/${item.verbal}/${item.motorik}`
+      //     : '-',
 
-      pupil: item?.keadaan_pupil || '-',
+      // pupil: item?.keadaan_pupil || '-',
+
+      pemeriksaan:
+        `TD : ${item?.sistole && item?.diastole ? parseInt(item.sistole) + '/' + parseInt(item.diastole) : '-'}\n` +
+        `N : ${parseInt(item?.nadi) || '-'}\n` +
+        `RR : ${parseInt(item?.pernapasanx) || '-'}\n` +
+        `S : ${parseInt(item?.suhu) || '-'}\n` +
+        `SpO₂ : ${parseInt(item?.spo2) || '-'}\n` +
+        `GCS : ${item?.eye && item?.verbal && item?.motorik ? `${item.eye}/${item.verbal}/${item.motorik}` : '-'}\n` +
+        `Pupil : ${item?.keadaan_pupil || '-'}`,
       output: item?.output || '-',
 
       obat: '-',
