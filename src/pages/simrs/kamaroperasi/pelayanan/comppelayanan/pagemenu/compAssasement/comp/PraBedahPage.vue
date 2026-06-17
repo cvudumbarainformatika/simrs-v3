@@ -1,6 +1,15 @@
 <template>
   <div class="">
     <div class="q-pa-sm">
+
+      <div class="row items-center">
+        <div class="col-auto depan ">Pilih Nota Operasi</div>
+        <div class="col-auto dua">:</div>
+        <div class="col-auto belakang">
+          <app-autocomplete v-model="store.form.nota" label="Nota" dense :source="store.notas" option-value="nota"
+            option-label="nota" outlined @selected="updateNota" />
+        </div>
+      </div>
       <div class="row items-center">
         <div class="col-auto depan ">Riwayat Operasi</div>
         <div class="col-auto dua">:</div>
@@ -223,10 +232,18 @@ const optionRiwayat = ref([
   },
 ])
 
+function updateNota (val) {
+  console.log('update nota', val)
+  store.resetForm()
+  store.getPraBedah(val)
+}
 onMounted(() => {
-  if (props?.pasien?.pra_bedah) {
-    store.form = { ...props?.pasien?.pra_bedah }
-  }
+  store.getNotas(props.pasien)
+  // store.getPraBedah(props.pasien)
+  // if (props?.pasien?.pra_bedah?.length > 0) {
+  //   const data = props?.pasien?.pra_bedah[0]
+  //   store.form = { ...data }
+  // }
   // console.log('form', store.form)
 })
 onUnmounted(() => {

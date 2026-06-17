@@ -13,12 +13,45 @@ export const useAssasementPraBedahStore = defineStore('assasement_pra_bedah_stor
     formInduksi: {
       obat_pre_medikasi: []
     },
-    obats: []
+    obats: [],
+    notas: [],
+
   }),
   actions: {
     resetForm () {
       this.form = {
         komplikasi: []
+      }
+    },
+    async getNotas (pasien) {
+      this.resetForm()
+      const param = { params: { noreg: pasien.noreg } }
+      const resp = await api.get('/v1/simrs/penunjang/ok/assasement/getnota', param)
+      if (resp.status === 200) {
+        this.notas = resp.data
+        // console.log('get nota', notas)
+        if (this.notas?.length > 0) {
+          const nota = this.notas[0].nota
+          this.form.nota = nota
+          this.getPraBedah(nota)
+        }
+
+      }
+    },
+    async getPraBedah (nota) {
+      const param = { params: { nota } }
+      const resp = await api.get('/v1/simrs/penunjang/ok/assasement/pra-bedah/ambil', param)
+      if (resp.status === 200) {
+        // this.notas = resp.data
+        const data = resp.data
+        if (Object.keys(data).length > 0) {
+          this.form = { ...data }
+        } else {
+          this.resetForm()
+          this.form.nota = nota
+        }
+        console.log('get prabedah', resp?.data)
+
       }
     },
     resetFormInduksi () {
@@ -32,7 +65,7 @@ export const useAssasementPraBedahStore = defineStore('assasement_pra_bedah_stor
       if (!payload.noreg) {
         if (!!pasien?.noreg) {
           payload.noreg = pasien.rs1
-          payload.nota = pasien.rs2
+          // payload.nota = pasien.rs2
           payload.norm = pasien.norm
         }
         else return notifErrVue('Maaf, Data Pasien tidak valid, silahkan refresh halaman kemudian coba lagi')
