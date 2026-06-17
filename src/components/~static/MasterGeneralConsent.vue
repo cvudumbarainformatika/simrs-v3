@@ -300,15 +300,34 @@ function parse(val) {
 }
 
 function parseIrja(val) {
-  const word = val?.replace(' 1 ) ..............................  (Hubungan dengan pasien: ..... )',
-    ` 1 ) ${store.form.wali1 ? '<b>' + store.form.wali1 + '</b>' : '..............................'}</b> 
-      (Hubungan dengan pasien: ${store.form.hubunganWali1 ? '<b>' + store.form.hubunganWali1 + '</b>' : '.....'} )`)
-  // }
-  // if (store.form.wali2) {
-  const str = word?.replace('2 ) .............................. (Hubungan dengan pasien: ...... )',
-    `2 ) ${store.form.wali2 ? '<b>' + store.form.wali2 + '</b>' : '..............................'}</b> 
-      (Hubungan dengan pasien: ${store.form.hubunganWali2 ? '<b>' + store.form.hubunganWali2 + '</b>' : '.....'} )`)
-  // }
+  // const word = val?.replace(' 1 ) ..............................  (Hubungan dengan pasien: ..... )',
+  //   ` 1 ) ${store.form.wali1 ? '<b>' + store.form.wali1 + '</b>' : '..............................'}</b>
+  //     (Hubungan dengan pasien: ${store.form.hubunganWali1 ? '<b>' + store.form.hubunganWali1 + '</b>' : '.....'} )`)
+  // // }
+  // // if (store.form.wali2) {
+  // const str = word?.replace('2 ) .............................. (Hubungan dengan pasien: ...... )',
+  //   `2 ) ${store.form.wali2 ? '<b>' + store.form.wali2 + '</b>' : '..............................'}</b>
+  //     (Hubungan dengan pasien: ${store.form.hubunganWali2 ? '<b>' + store.form.hubunganWali2 + '</b>' : '.....'} )`)
+  // // }
+  // return str
+  let str = val
+
+  str = str?.replace(
+    /<li id="wali-1">[\s\S]*?<\/li>/,
+    `<li id="wali-1">
+      1) Nama : ${store.form.wali1 ? `<b>${store.form.wali1}</b>` : '...............'}
+      Hubungan dengan pasien : ${store.form.hubunganWali1 ? `<b>${store.form.hubunganWali1}</b>` : '...............'}
+    </li>`
+  )
+
+  str = str?.replace(
+    /<li id="wali-2">[\s\S]*?<\/li>/,
+    `<li id="wali-2">
+      2) Nama : ${store.form.wali2 ? `<b>${store.form.wali2}</b>` : '...............'}
+      Hubungan dengan pasien : ${store.form.hubunganWali2 ? `<b>${store.form.hubunganWali2}</b>` : '...............'}
+    </li>`
+  )
+
   return str
 }
 function parseRanap(val) {
