@@ -44,29 +44,14 @@
         </div>
         <div class="row items-center no-wrap q-gutter-x-sm">
           <div style="min-width: 250px;">
-            <q-input
-              v-model="searchQuery"
-              dense
-              outlined
-              placeholder="Cari aksi atau layanan..."
-              bg-color="grey-2"
-              class="q-my-xs"
-              clearable
-            >
+            <q-input v-model="searchQuery" dense outlined placeholder="Cari aksi atau layanan..." bg-color="grey-2"
+              class="q-my-xs" clearable>
               <template v-slot:append>
                 <q-icon name="icon-mat-search" size="sm" />
               </template>
             </q-input>
           </div>
-          <q-btn
-            flat
-            round
-            dense
-            color="primary"
-            icon="icon-mat-refresh"
-            @click="refreshData"
-            :loading="store.loading"
-          >
+          <q-btn flat round dense color="primary" icon="icon-mat-refresh" @click="refreshData" :loading="store.loading">
             <q-tooltip class="bg-dark text-white">
               Refresh Log Terbaru
             </q-tooltip>
@@ -82,32 +67,25 @@
         <div class="text-caption q-mt-sm text-grey-6">Memuat data log aktivitas...</div>
       </div>
 
-      <div v-else-if="!filteredLogs || filteredLogs.length === 0" class="absolute-center column items-center text-grey-6">
+      <div v-else-if="!filteredLogs || filteredLogs.length === 0"
+        class="absolute-center column items-center text-grey-6">
         <q-icon name="icon-mat-hourglass_empty" size="4em" />
         <div class="text-subtitle2 q-mt-sm">
-          {{ store.logs.length > 0 ? 'Tidak ada data aktivitas yang cocok dengan pencarian.' : 'Belum ada data aktivitas untuk pasien ini.' }}
+          {{ store.logs.length > 0
+            ? 'Tidak ada data aktivitas yang cocok dengan pencarian.'
+            : 'Belum ada data aktivitas untuk pasien ini.' }}
         </div>
       </div>
 
       <div v-else class="q-pa-md">
         <!-- Log Activity Accordion / Timeline -->
         <q-list bordered class="rounded-borders bg-white shadow-1 overflow-hidden">
-          <q-expansion-item
-            v-for="(log, index) in filteredLogs"
-            :key="log.id"
-            group="log-group"
-            header-class="q-py-md hover-bg"
-            expand-icon-class="text-grey-7"
-            :default-opened="index === 0"
-          >
+          <q-expansion-item v-for="(log, index) in filteredLogs" :key="log.id" group="log-group"
+            header-class="q-py-md hover-bg" expand-icon-class="text-grey-7" :default-opened="index === 0">
             <!-- Header Item Custom Template -->
             <template v-slot:header>
               <q-item-section avatar>
-                <q-avatar
-                  :color="getBadgeColor(log.action)"
-                  text-color="white"
-                  size="38px"
-                >
+                <q-avatar :color="getBadgeColor(log.action)" text-color="white" size="38px">
                   <q-icon :name="getIconByAction(log.action)" size="sm" />
                 </q-avatar>
               </q-item-section>
@@ -189,9 +167,12 @@
                                     <div class="flex-wrap items-center">
                                       <!-- Coret lama, highlight baru (Inline diff) -->
                                       <template v-for="(part, pIdx) in diffWords(diff.before, diff.after)" :key="pIdx">
-                                        <span v-if="part.type === 'removed'" class="diff-removed line-through q-mr-xs">{{ part.text }}</span>
-                                        <span v-else-if="part.type === 'added'" class="diff-added text-weight-bold q-mr-xs">{{ part.text }}</span>
-                                        <span v-else class="text-grey-9" style="white-space: pre-wrap;">{{ part.text }}</span>
+                                        <span v-if="part.type === 'removed'"
+                                          class="diff-removed line-through q-mr-xs">{{ part.text }}</span>
+                                        <span v-else-if="part.type === 'added'"
+                                          class="diff-added text-weight-bold q-mr-xs">{{ part.text }}</span>
+                                        <span v-else class="text-grey-9" style="white-space: pre-wrap;">{{ part.text
+                                        }}</span>
                                       </template>
                                     </div>
                                   </div>
@@ -212,20 +193,22 @@
                   <!-- Section Right: Technical Metadata -->
                   <div class="col-12 col-md-4">
                     <div class="bg-white rounded-borders border-grey q-pa-md shadow-sm full-height">
-                      <div class="text-subtitle2 text-weight-bold text-grey-8 border-bottom q-pb-xs q-mb-md row items-center q-gutter-xs">
+                      <div
+                        class="text-subtitle2 text-weight-bold text-grey-8 border-bottom q-pb-xs q-mb-md row items-center q-gutter-xs">
                         <q-icon name="icon-mat-settings" size="sm" />
                         <span>Detail Teknis</span>
                       </div>
 
                       <div class="q-gutter-y-sm">
-                        <div>
+                        <!-- <div>
                           <div class="text-caption text-grey-6">Eksekusi Sumber (Code Source)</div>
-                          <div class="text-body2 text-primary font-mono word-break q-pa-xs bg-grey-2 rounded-borders text-caption">
+                          <div
+                            class="text-body2 text-primary font-mono word-break q-pa-xs bg-grey-2 rounded-borders text-caption">
                             {{ log.source || '-' }}
                           </div>
-                        </div>
+                        </div> -->
 
-                        <q-separator class="q-my-sm" />
+                        <!-- <q-separator class="q-my-sm" /> -->
 
                         <div>
                           <div class="text-caption text-grey-6 font-semibold">User Operator</div>
@@ -376,7 +359,7 @@ function formatVal(val) {
 // Parse deskripsi JSON before dan after menjadi flat list untuk diff tabel
 function parseChanges(description) {
   if (!description) return []
-  
+
   let descObj = description
   if (typeof description === 'string') {
     try {
@@ -490,15 +473,19 @@ function diffWords(oldStr, newStr) {
 .border-bottom {
   border-bottom: 1px solid #e0e0e0;
 }
+
 .border-grey {
   border: 1px solid #e0e0e0;
 }
+
 .height-fit {
   height: fit-content;
 }
+
 .font-mono {
   font-family: 'Courier New', Courier, monospace;
 }
+
 .word-break {
   word-break: break-all;
   white-space: pre-wrap;
@@ -541,12 +528,13 @@ function diffWords(oldStr, newStr) {
 .diff-table {
   border-collapse: collapse;
   margin-top: 5px;
-  
-  th, td {
+
+  th,
+  td {
     border: 1px solid #e0e0e0;
     text-align: left;
   }
-  
+
   th {
     background-color: #f7f7f7;
     font-weight: 600;
