@@ -264,7 +264,11 @@
               <div class="col-xs-12 col-sm-6">
                 <div class="exam-box q-pa-md">
                   <div class="text-weight-bold q-mb-sm text-primary">Teknik Anestesi</div>
-                  <q-option-group v-model="store.form.intra_teknik_anestesi" :options="store.opsiTeknikAnestesi"
+                  <q-option-group v-model="store.form.intra_teknik_anestesi" :options="store.opsiTeknikAnestesiA"
+                    type="checkbox" color="primary" inline dense size="sm" />
+                  <q-option-group v-model="store.form.intra_teknik_anestesi" :options="store.opsiTeknikAnestesiB"
+                    type="checkbox" color="primary" inline dense size="sm" />
+                  <q-option-group v-model="store.form.intra_teknik_anestesi" :options="store.opsiTeknikAnestesiC"
                     type="checkbox" color="primary" inline dense size="sm" />
                 </div>
               </div>

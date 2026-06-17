@@ -147,19 +147,22 @@ export const useAsuhanAnastesiStore = defineStore('asuhan_anastesi', {
     ],
 
     // ====== INTRA ANESTESI OPTIONS ======
-    opsiTeknikAnestesi: [
+    opsiTeknikAnestesiA: [
       { label: 'GA', value: 'GA' },
       { label: 'ETT', value: 'ETT' },
-      { label: 'NTT', value: 'NTT' },
       { label: 'FM', value: 'FM' },
       { label: 'LMA', value: 'LMA' },
       { label: 'Tiva', value: 'Tiva' },
+    ],
+    opsiTeknikAnestesiB: [
       { label: 'Regional', value: 'Regional' },
       { label: 'Spinal', value: 'Spinal' },
       { label: 'Epidural', value: 'Epidural' },
       { label: 'Caudal', value: 'Caudal' },
       { label: 'Blok', value: 'Blok' },
-      { label: 'Kombinasi Regional dan GA', value: 'Kombinasi Regional GA' }
+    ],
+    opsiTeknikAnestesiC: [
+      { label: 'Konversi Anastesi', value: 'Konversi Anastesi' }
     ],
     opsiTeknikPengkajian: [
       { label: 'NTT', value: 'NTT' },
