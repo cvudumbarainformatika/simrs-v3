@@ -25,11 +25,11 @@ export const useAssasementPraBedahStore = defineStore('assasement_pra_bedah_stor
     },
     async getNotas (pasien) {
       this.resetForm()
-      const param = { params: { noreg: pasien.noreg } }
+      const param = { params: { noreg: pasien.noreg, ruang: pasien.kodepoli } }
       const resp = await api.get('/v1/simrs/penunjang/ok/assasement/getnota', param)
       if (resp.status === 200) {
         this.notas = resp.data
-        // console.log('get nota', notas)
+        console.log('get nota', this.notas, pasien)
         if (this.notas?.length > 0) {
           const nota = this.notas[0].nota
           this.form.nota = nota
@@ -50,7 +50,7 @@ export const useAssasementPraBedahStore = defineStore('assasement_pra_bedah_stor
           this.resetForm()
           this.form.nota = nota
         }
-        console.log('get prabedah', resp?.data)
+        // console.log('get prabedah', resp?.data)
 
       }
     },
