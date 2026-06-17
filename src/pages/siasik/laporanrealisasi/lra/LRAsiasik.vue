@@ -519,7 +519,9 @@ function HitungPersen() {
 
 function ambilData() {
   // store.hitungharidalamBulan();
-  store.getLRA()
+  store.getLRA().then(() => {
+    store.emptyForm()
+  })
   // store.getDataRealisasi().then(() => {
   //   store.emptyForm()
   // })

@@ -1342,8 +1342,6 @@ export const useLaporanLraLaprealisasianggaranStore = defineStore('laporan_reali
 
       this.realisasiPembiayaans = total
 
-      console.log('pembiayaan', this.realisasiPembiayaans)
-
 
       // PENDAPATAN
       const pendapatan = []
@@ -2119,7 +2117,6 @@ export const useLaporanLraLaprealisasianggaranStore = defineStore('laporan_reali
           a < b ? -1 : a > b ? 1 : 0
         )
       this.items = sortBelanja(belanja_kode)
-      console.log('Belanja (LRA)', this.items)
 
     },
 
