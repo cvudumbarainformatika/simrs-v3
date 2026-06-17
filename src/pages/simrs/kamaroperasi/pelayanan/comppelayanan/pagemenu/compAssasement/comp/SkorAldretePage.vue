@@ -116,9 +116,8 @@
             <q-input v-model="store.formKeluar.muntah" label="Muntah" dense outlined />
           </div>
           <div :class="store.formKeluar.dipindah_ke == 'Ruangan' ? 'col-md-3 col-xs-6' : 'col-md-6 col-xs-12'">
-            <q-select v-model="store.formKeluar.dipindah_ke"
-              :options="['Ruangan', 'Direncanakan ICU', 'Tidak Direncanakan ICU', 'Pulang']" label="Dipindahkan ke"
-              dense outlined />
+            <q-select v-model="store.formKeluar.dipindah_ke" :options="['Ruangan', 'ICU', 'Pulang']"
+              label="Dipindahkan ke" dense outlined />
           </div>
           <div v-if="store.formKeluar.dipindah_ke == 'Ruangan'" class="col-md-3 col-xs-6">
             <q-select v-model="store.formKeluar.ruangan" option-label="rs2" option-value="rs1" :options="store.kamars"

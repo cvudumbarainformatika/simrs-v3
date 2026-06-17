@@ -36,7 +36,7 @@ const props = defineProps({
   },
 })
 
-const tab = ref('praBedah')
+const tab = ref('praInduksi')
 const tabs = ref([
   // { // ini harusnya ada di ranap dan rajal
   //   label: 'Pra Bedah',

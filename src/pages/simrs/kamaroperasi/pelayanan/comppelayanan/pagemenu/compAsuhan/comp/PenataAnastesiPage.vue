@@ -372,7 +372,7 @@
             </div>
 
             <!-- Skoring Pemulihan -->
-            <div class="text-subtitle2 text-weight-bold text-grey-8 q-mb-md">Skoring Pemulihan</div>
+            <!-- <div class="text-subtitle2 text-weight-bold text-grey-8 q-mb-md">Skoring Pemulihan</div>
             <div class="scoring-box q-pa-md q-mb-lg">
               <div class="row q-col-gutter-lg">
                 <div class="col-xs-12 col-sm-6">
@@ -384,7 +384,7 @@
                     placeholder="Isi total / kriteria" maxlength="255" />
                 </div>
               </div>
-            </div>
+            </div> -->
 
             <!-- Proses Keperawatan -->
             <div class="text-subtitle2 text-weight-bold text-grey-8 q-mb-md">Proses Keperawatan</div>
