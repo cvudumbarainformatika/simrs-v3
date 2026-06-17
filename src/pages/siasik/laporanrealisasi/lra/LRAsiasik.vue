@@ -49,9 +49,12 @@
                   <div class="row justify-center text-weight-bold">
                     Laporan Realisasi Anggaran Periode {{ store.display.dari + ' - ' + store.display.sampai }}
                   </div>
-                  <!-- <div class="row justify-center text-weight-bold">
-                  Periode Bulan {{ bulan(store.params.bulan) }} {{ store.params.tahun }}
-                </div> -->
+                  <div v-if="store.display.bidang" class="row q-pt-sm text-weight-bold">
+                    BIDANG / BAGIAN : {{ store.display.bidang }}
+                  </div>
+                  <div v-if="store.display.kegiatan" class="row text-weight-bold">
+                    Kegiatan : {{ store.display.kegiatan }}
+                  </div>
                 </div>
                 <div class="q-pl-lg" />
               </div>
@@ -69,13 +72,20 @@
                 const arr = store.bidangs
                 const obj = arr?.length ? arr.find(x => x.kodebidang === val) : null
                 store.params.kodebidang = obj?.kodebidang ?? ''
+                store.display.bidang = obj?.bidang
                 store.params.kegiatan = ''
+                store.display.kegiatan = ''
                 console.log('kode bidang', store.params.kodebidang)
                 store.filterKegiatan()
               }" />
             <app-autocomplete v-model="store.params.kegiatan" label="Pilih Kegiatan" autocomplete="kegiatan"
               option-label="kegiatan" option-value="kodekegiatan" outlined :source="store.kegiatans"
-              :loading="store.loading" />
+              :loading="store.loading" @selected="(val) => {
+                const arr = store.kegiatans
+                const obj = arr?.length ? arr.find(x => x.kodekegiatan === val) : null
+                store.display.kegiatan = obj?.kegiatan
+
+              }" />
             <div>
               <app-btn label="Ambil Data" :disable="store.loading" :loading="store.loading" @click="ambilData()" />
             </div>
@@ -101,7 +111,7 @@
               </div>
             </div>
           </template>
-          <template v-else-if="store.items?.length === 0">
+          <template v-else-if="!store.items?.length && !store.pendapatans?.length">
             <div class="row flex flex-center">
               <div class="kosong">
                 <div>Data Belum Ada</div>
@@ -134,7 +144,7 @@
                     <td class="text-left q-pl-sm q-pr-sm"> {{ item.kode }}</td>
                     <td class="text-left q-pl-sm q-pr-sm">{{ item.uraian }}</td>
                     <td class="text-right q-pl-sm q-pr-sm">
-                      {{ formattanpaRp(item.pagupend) }}
+                      {{ formattanpaRp(item.pagupend ?? item?.pagu) }}
                     </td>
                     <td class="text-right q-pl-sm q-pr-sm">
                       {{ formattanpaRp(item.nilaisblm) }}
@@ -177,36 +187,36 @@
                   </tr>
                   <tr v-for="item in store.items" :key="item">
                     <td class="text-left q-pl-sm q-pr-sm">
-                      <div :class="item.kodeall3?.length <= 12 ? 'text-bold' : ''"> {{ item.kodeall3 }} </div>
+                      <div :class="item.kode?.length <= 12 ? 'text-bold' : ''"> {{ item.kode }} </div>
                     </td>
                     <td class="text-left q-pl-sm q-pr-sm">
-                      <div :class="item.kodeall3?.length <= 12 ? 'text-bold' : ''"> {{ item.uraian }} </div>
+                      <div :class="item.kode?.length <= 12 ? 'text-bold' : ''"> {{ item.uraian }} </div>
                     </td>
                     <td class="text-right q-pl-sm q-pr-sm">
-                      <div :class="item.kodeall3?.length <= 12 ? 'text-bold' : ''">{{ formattanpaRp(item.totalPagu) }}
+                      <div :class="item.kode?.length <= 12 ? 'text-bold' : ''">{{ formattanpaRp(item.pagu) }}
                       </div>
                     </td>
                     <td class="text-right q-pl-sm q-pr-sm">
-                      <div :class="item.kodeall3?.length <= 12 ? 'text-bold' : ''">{{
-                        formattanpaRp(item.totalRealisasiSebelumnya) }}</div>
+                      <div :class="item.kode?.length <= 12 ? 'text-bold' : ''">{{
+                        formattanpaRp(item.realisasi_sblm) }}</div>
                     </td>
                     <td class="text-right q-pl-sm q-pr-sm">
-                      <div :class="item.kodeall3?.length <= 12 ? 'text-bold' : ''">
-                        {{ formattanpaRp(item.totalRealisasi) }}
+                      <div :class="item.kode?.length <= 12 ? 'text-bold' : ''">
+                        {{ formattanpaRp(item.realisasi_skg) }}
                       </div>
                     </td>
                     <td class="text-right q-pl-sm q-pr-sm">
-                      <div :class="item.kodeall3?.length <= 12 ? 'text-bold' : ''">
-                        {{ formattanpaRp(item.RealisasiSemua) }}
+                      <div :class="item.kode?.length <= 12 ? 'text-bold' : ''">
+                        {{ formattanpaRp(item.total_realisasi) }}
                       </div>
                     </td>
                     <td class="text-right q-pl-sm q-pr-sm">
-                      <div :class="item.kodeall3?.length <= 12 ? 'text-bold' : ''">
+                      <div :class="item.kode?.length <= 12 ? 'text-bold' : ''">
                         {{ formattanpaRp(item.selisih) }}
                       </div>
                     </td>
                     <td class="text-right q-pl-sm q-pr-sm">
-                      <div :class="item.kodeall3?.length <= 12 ? 'text-bold' : ''">
+                      <div :class="item.kode?.length <= 12 ? 'text-bold' : ''">
                         {{ item.persen }}
                       </div>
                     </td>
@@ -216,16 +226,16 @@
                       TOTAL BELANJA
                     </td>
                     <td class="text-right q-pl-sm q-pr-sm">
-                      {{ formattanpaRp(store.items[0]?.totalPagu) }}
+                      {{ formattanpaRp(store.items[0]?.pagu) }}
                     </td>
                     <td class="text-right q-pl-sm q-pr-sm">
-                      {{ formattanpaRp(store.items[0]?.totalRealisasiSebelumnya) }}
+                      {{ formattanpaRp(store.items[0]?.realisasi_sblm) }}
                     </td>
                     <td class="text-right q-pl-sm q-pr-sm">
-                      {{ formattanpaRp(store.items[0]?.totalRealisasi) }}
+                      {{ formattanpaRp(store.items[0]?.realisasi_skg) }}
                     </td>
                     <td class="text-right q-pl-sm q-pr-sm">
-                      {{ formattanpaRp(store.items[0]?.RealisasiSemua) }}
+                      {{ formattanpaRp(store.items[0]?.total_realisasi) }}
                     </td>
                     <td class="text-right q-pl-sm q-pr-sm">
                       {{ formattanpaRp(store.items[0]?.selisih) }}
@@ -374,8 +384,11 @@ const store = useLaporanLraLaprealisasianggaranStore()
 // store.realisasiPendapatan()
 // store.getDataPendapatan()
 onMounted(() => {
+  store.params.bidang = ''
+  store.params.kegiatan = ''
   store.getDataBidang()
   // store.getDataRealisasi()
+
 })
 function tglDari(val) {
   // console.log('val Parameter', val)
@@ -410,7 +423,7 @@ const printObj = {
   }
 }
 function totalPendapatan() {
-  const totalpend = store.pendapatans.map((x) => x.pagupend)[0]
+  const totalpend = store.pendapatans.map((x) => x.pagupend ?? x.pagu)[0]
   const totalsblm = store.pendapatans.map((x) => x.nilaisblm)[0]
   const totalskg = store.pendapatans.map((x) => x.nilaiskg)[0]
   const totalsemua = store.pendapatans.map((x) => x.nilaisemua)[0]
@@ -427,7 +440,7 @@ function totalPendapatan() {
 }
 function hitungPagu() {
   const saldo = store.items
-  const PaguBelanja = saldo[0]?.totalPagu
+  const PaguBelanja = saldo[0]?.pagu
   const PaguPendapatan = totalPendapatan().totalpend
   const pembiayaan = store.realisasiPembiayaans?.totalPaguPembiayaan
   const NilaiPagu = PaguPendapatan - PaguBelanja
@@ -440,7 +453,7 @@ function hitungPagu() {
 }
 function hitungSebelumnya() {
   const saldo = store.items
-  const PaguBelanja = saldo[0]?.totalRealisasiSebelumnya
+  const PaguBelanja = saldo[0]?.realisasi_sblm
   const PaguPendapatan = totalPendapatan().totalsblm
   const pembiayaan = store.realisasiPembiayaans?.totalSebelumnya
   const NilaiPagu = PaguPendapatan - PaguBelanja
@@ -453,7 +466,7 @@ function hitungSebelumnya() {
 }
 function hitungSekarang() {
   const saldo = store.items
-  const PaguBelanja = saldo[0]?.totalRealisasi
+  const PaguBelanja = saldo[0]?.realisasi_skg
   const PaguPendapatan = totalPendapatan().totalskg
   const pembiayaan = store.realisasiPembiayaans?.totalSekarang
   const NilaiPagu = PaguPendapatan - PaguBelanja
@@ -466,7 +479,7 @@ function hitungSekarang() {
 }
 function hitungTotalRealisasi() {
   const saldo = store.items
-  const PaguBelanja = saldo[0]?.RealisasiSemua
+  const PaguBelanja = saldo[0]?.total_realisasi
   const PaguPendapatan = totalPendapatan().totalsemua
   const pembiayaan = store.realisasiPembiayaans?.totalRealisasi
   const NilaiPagu = PaguPendapatan - PaguBelanja
@@ -506,9 +519,10 @@ function HitungPersen() {
 
 function ambilData() {
   // store.hitungharidalamBulan();
-  store.getDataRealisasi().then(() => {
-    store.emptyForm()
-  })
+  store.getLRA()
+  // store.getDataRealisasi().then(() => {
+  //   store.emptyForm()
+  // })
 }
 
 </script>
