@@ -517,7 +517,11 @@ const props = defineProps({
 const store = usePraAnastesiStore()
 const refPrint = ref()
 const rawatkhususLainlain = ref(false)
+let dc = null
 function dokter () {
+
+  if (dc) return dc?.nama
+
   const keys = Object.keys(props.pasien?.dokter)
   if (keys.length) return props.pasien?.dokter?.nama
   else return props.pasien?.dokter
@@ -525,7 +529,15 @@ function dokter () {
 onMounted(async () => {
   await store.getMaster()
   await store.getData(props.pasien)
-    .then(() => store.initForm(store.resultPraAnastesi?.length ? store.resultPraAnastesi[0] : null))
+    .then((resp) => {
+      const data = resp?.data[0] ?? null
+
+      const key = Object.keys(data)
+      if (key.length > 0) dc = data?.user
+      console.log('resp', key, data)
+
+      store.initForm(store.resultPraAnastesi?.length ? store.resultPraAnastesi[0] : null)
+    })
 })
 
 const qrUrl = computed(() => {
