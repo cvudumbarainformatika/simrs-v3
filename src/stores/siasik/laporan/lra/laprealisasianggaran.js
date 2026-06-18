@@ -1741,6 +1741,10 @@ export const useLaporanLraLaprealisasianggaranStore = defineStore('laporan_reali
         summaryIdpp[idpp] = {
           usulan: row.usulan,
           pagu: Number(row.pagu),
+          volume: Number(row.volume),
+          harga: Number(row.harga),
+          satuan: row.satuan,
+          koderek108: row.koderek108,
           realisasi_sekarang: npdLS + spjpanjar - cp,
           realisasi_sebelum: npdLS_sebelum + spjpanjar_sebelum - cp_sebelum
         }
@@ -1766,6 +1770,10 @@ export const useLaporanLraLaprealisasianggaranStore = defineStore('laporan_reali
           rincian.push({
             usulan: data.usulan,
             pagu: data.pagu,
+            volume: data.volume,
+            harga: data.harga,
+            satuan: data.satuan,
+            koderek108: data.koderek108,
             realisasi_sekarang: data.realisasi_sekarang,
             realisasi_sebelum: data.realisasi_sebelum,
             total:
@@ -1790,6 +1798,11 @@ export const useLaporanLraLaprealisasianggaranStore = defineStore('laporan_reali
         const total_realisasi =
           realisasi_skg + realisasi_sblm
 
+        // rincian.sort((a, b) => {
+        //   const kodeA = a.koderek108 || '';
+        //   const kodeB = b.koderek108 || '';
+        //   return kodeA.localeCompare(kodeB, undefined, { numeric: true, sensitivity: 'base' });
+        // })
         belanja_kode.push({
           kode: kode6,
           uraian: rows[0].uraian,
@@ -1820,26 +1833,30 @@ export const useLaporanLraLaprealisasianggaranStore = defineStore('laporan_reali
           (a, b) => a + Number(b.pagu || 0),
           0
         )
-        const unikIdpp = [...new Set(rows.map(x => x.idpp))]
+        // const unikIdpp = [...new Set(rows.map(x => x.idpp))]
 
-        unikIdpp.forEach(idpp => {
-          const data = summaryIdpp[idpp]
-          rincian.push({
-            usulan: data.usulan,
-            pagu: data.pagu,
-            realisasi_sekarang: data.realisasi_sekarang,
-            realisasi_sebelum: data.realisasi_sebelum,
-            total:
-              data.realisasi_sekarang +
-              data.realisasi_sebelum,
-            sisa_pagu:
-              data.pagu -
-              (
-                data.realisasi_sekarang +
-                data.realisasi_sebelum
-              )
-          })
-        })
+        // unikIdpp.forEach(idpp => {
+        //   const data = summaryIdpp[idpp]
+        //   rincian.push({
+        //     usulan: data.usulan,
+        //     pagu: data.pagu,
+        //     volume: data.volume,
+        //     harga: data.harga,
+        //     satuan: data.satuan,
+        //     koderek108: data.koderek108,
+        //     realisasi_sekarang: data.realisasi_sekarang,
+        //     realisasi_sebelum: data.realisasi_sebelum,
+        //     total:
+        //       data.realisasi_sekarang +
+        //       data.realisasi_sebelum,
+        //     sisa_pagu:
+        //       data.pagu -
+        //       (
+        //         data.realisasi_sekarang +
+        //         data.realisasi_sebelum
+        //       )
+        //   })
+        // })
         const realisasi_skg = rincian.reduce(
           (a, b) => a + b.realisasi_sekarang,
           0
@@ -1850,7 +1867,11 @@ export const useLaporanLraLaprealisasianggaranStore = defineStore('laporan_reali
         )
         const total_realisasi =
           realisasi_skg + realisasi_sblm
-
+        // rincian.sort((a, b) => {
+        //   const kodeA = a.koderek108 || '';
+        //   const kodeB = b.koderek108 || '';
+        //   return kodeA.localeCompare(kodeB, undefined, { numeric: true, sensitivity: 'base' });
+        // })
         belanja_kode.push({
           kode: kode5,
           uraian: rows[0].uraian5,
@@ -1882,26 +1903,30 @@ export const useLaporanLraLaprealisasianggaranStore = defineStore('laporan_reali
           (a, b) => a + Number(b.pagu || 0),
           0
         )
-        const unikIdpp = [...new Set(rows.map(x => x.idpp))]
+        // const unikIdpp = [...new Set(rows.map(x => x.idpp))]
 
-        unikIdpp.forEach(idpp => {
-          const data = summaryIdpp[idpp]
-          rincian.push({
-            usulan: data.usulan,
-            pagu: data.pagu,
-            realisasi_sekarang: data.realisasi_sekarang,
-            realisasi_sebelum: data.realisasi_sebelum,
-            total:
-              data.realisasi_sekarang +
-              data.realisasi_sebelum,
-            sisa_pagu:
-              data.pagu -
-              (
-                data.realisasi_sekarang +
-                data.realisasi_sebelum
-              )
-          })
-        })
+        // unikIdpp.forEach(idpp => {
+        //   const data = summaryIdpp[idpp]
+        //   rincian.push({
+        //     usulan: data.usulan,
+        //     pagu: data.pagu,
+        //     volume: data.volume,
+        //     harga: data.harga,
+        //     satuan: data.satuan,
+        //     koderek108: data.koderek108,
+        //     realisasi_sekarang: data.realisasi_sekarang,
+        //     realisasi_sebelum: data.realisasi_sebelum,
+        //     total:
+        //       data.realisasi_sekarang +
+        //       data.realisasi_sebelum,
+        //     sisa_pagu:
+        //       data.pagu -
+        //       (
+        //         data.realisasi_sekarang +
+        //         data.realisasi_sebelum
+        //       )
+        //   })
+        // })
         const realisasi_skg = rincian.reduce(
           (a, b) => a + b.realisasi_sekarang,
           0
@@ -1912,7 +1937,11 @@ export const useLaporanLraLaprealisasianggaranStore = defineStore('laporan_reali
         )
         const total_realisasi =
           realisasi_skg + realisasi_sblm
-
+        // rincian.sort((a, b) => {
+        //   const kodeA = a.koderek108 || '';
+        //   const kodeB = b.koderek108 || '';
+        //   return kodeA.localeCompare(kodeB, undefined, { numeric: true, sensitivity: 'base' });
+        // })
         belanja_kode.push({
           kode: kode4,
           uraian: rows[0].uraian4,
@@ -1943,26 +1972,30 @@ export const useLaporanLraLaprealisasianggaranStore = defineStore('laporan_reali
           (a, b) => a + Number(b.pagu || 0),
           0
         )
-        const unikIdpp = [...new Set(rows.map(x => x.idpp))]
+        // const unikIdpp = [...new Set(rows.map(x => x.idpp))]
 
-        unikIdpp.forEach(idpp => {
-          const data = summaryIdpp[idpp]
-          rincian.push({
-            usulan: data.usulan,
-            pagu: data.pagu,
-            realisasi_sekarang: data.realisasi_sekarang,
-            realisasi_sebelum: data.realisasi_sebelum,
-            total:
-              data.realisasi_sekarang +
-              data.realisasi_sebelum,
-            sisa_pagu:
-              data.pagu -
-              (
-                data.realisasi_sekarang +
-                data.realisasi_sebelum
-              )
-          })
-        })
+        // unikIdpp.forEach(idpp => {
+        //   const data = summaryIdpp[idpp]
+        //   rincian.push({
+        //     usulan: data.usulan,
+        //     pagu: data.pagu,
+        //     volume: data.volume,
+        //     harga: data.harga,
+        //     satuan: data.satuan,
+        //     koderek108: data.koderek108,
+        //     realisasi_sekarang: data.realisasi_sekarang,
+        //     realisasi_sebelum: data.realisasi_sebelum,
+        //     total:
+        //       data.realisasi_sekarang +
+        //       data.realisasi_sebelum,
+        //     sisa_pagu:
+        //       data.pagu -
+        //       (
+        //         data.realisasi_sekarang +
+        //         data.realisasi_sebelum
+        //       )
+        //   })
+        // })
         const realisasi_skg = rincian.reduce(
           (a, b) => a + b.realisasi_sekarang,
           0
@@ -1973,7 +2006,11 @@ export const useLaporanLraLaprealisasianggaranStore = defineStore('laporan_reali
         )
         const total_realisasi =
           realisasi_skg + realisasi_sblm
-
+        // rincian.sort((a, b) => {
+        //   const kodeA = a.koderek108 || '';
+        //   const kodeB = b.koderek108 || '';
+        //   return kodeA.localeCompare(kodeB, undefined, { numeric: true, sensitivity: 'base' });
+        // })
         belanja_kode.push({
           kode: kode3,
           uraian: rows[0].uraian3,
@@ -2004,26 +2041,30 @@ export const useLaporanLraLaprealisasianggaranStore = defineStore('laporan_reali
           (a, b) => a + Number(b.pagu || 0),
           0
         )
-        const unikIdpp = [...new Set(rows.map(x => x.idpp))]
+        // const unikIdpp = [...new Set(rows.map(x => x.idpp))]
 
-        unikIdpp.forEach(idpp => {
-          const data = summaryIdpp[idpp]
-          rincian.push({
-            usulan: data.usulan,
-            pagu: data.pagu,
-            realisasi_sekarang: data.realisasi_sekarang,
-            realisasi_sebelum: data.realisasi_sebelum,
-            total:
-              data.realisasi_sekarang +
-              data.realisasi_sebelum,
-            sisa_pagu:
-              data.pagu -
-              (
-                data.realisasi_sekarang +
-                data.realisasi_sebelum
-              )
-          })
-        })
+        // unikIdpp.forEach(idpp => {
+        //   const data = summaryIdpp[idpp]
+        //   rincian.push({
+        //     usulan: data.usulan,
+        //     pagu: data.pagu,
+        //     volume: data.volume,
+        //     harga: data.harga,
+        //     satuan: data.satuan,
+        //     koderek108: data.koderek108,
+        //     realisasi_sekarang: data.realisasi_sekarang,
+        //     realisasi_sebelum: data.realisasi_sebelum,
+        //     total:
+        //       data.realisasi_sekarang +
+        //       data.realisasi_sebelum,
+        //     sisa_pagu:
+        //       data.pagu -
+        //       (
+        //         data.realisasi_sekarang +
+        //         data.realisasi_sebelum
+        //       )
+        //   })
+        // })
         const realisasi_skg = rincian.reduce(
           (a, b) => a + b.realisasi_sekarang,
           0
@@ -2035,6 +2076,11 @@ export const useLaporanLraLaprealisasianggaranStore = defineStore('laporan_reali
         const total_realisasi =
           realisasi_skg + realisasi_sblm
 
+        // rincian.sort((a, b) => {
+        //   const kodeA = a.koderek108 || '';
+        //   const kodeB = b.koderek108 || '';
+        //   return kodeA.localeCompare(kodeB, undefined, { numeric: true, sensitivity: 'base' });
+        // })
         belanja_kode.push({
           kode: kode2,
           uraian: rows[0].uraian2,
@@ -2065,26 +2111,30 @@ export const useLaporanLraLaprealisasianggaranStore = defineStore('laporan_reali
           (a, b) => a + Number(b.pagu || 0),
           0
         )
-        const unikIdpp = [...new Set(rows.map(x => x.idpp))]
+        // const unikIdpp = [...new Set(rows.map(x => x.idpp))]
 
-        unikIdpp.forEach(idpp => {
-          const data = summaryIdpp[idpp]
-          rincian.push({
-            usulan: data.usulan,
-            pagu: data.pagu,
-            realisasi_sekarang: data.realisasi_sekarang,
-            realisasi_sebelum: data.realisasi_sebelum,
-            total:
-              data.realisasi_sekarang +
-              data.realisasi_sebelum,
-            sisa_pagu:
-              data.pagu -
-              (
-                data.realisasi_sekarang +
-                data.realisasi_sebelum
-              )
-          })
-        })
+        // unikIdpp.forEach(idpp => {
+        //   const data = summaryIdpp[idpp]
+        //   rincian.push({
+        //     usulan: data.usulan,
+        //     pagu: data.pagu,
+        //     volume: data.volume,
+        //     harga: data.harga,
+        //     satuan: data.satuan,
+        //     koderek108: data.koderek108,
+        //     realisasi_sekarang: data.realisasi_sekarang,
+        //     realisasi_sebelum: data.realisasi_sebelum,
+        //     total:
+        //       data.realisasi_sekarang +
+        //       data.realisasi_sebelum,
+        //     sisa_pagu:
+        //       data.pagu -
+        //       (
+        //         data.realisasi_sekarang +
+        //         data.realisasi_sebelum
+        //       )
+        //   })
+        // })
         const realisasi_skg = rincian.reduce(
           (a, b) => a + b.realisasi_sekarang,
           0
@@ -2096,6 +2146,11 @@ export const useLaporanLraLaprealisasianggaranStore = defineStore('laporan_reali
         const total_realisasi =
           realisasi_skg + realisasi_sblm
 
+        // rincian.sort((a, b) => {
+        //   const kodeA = a.koderek108 || '';
+        //   const kodeB = b.koderek108 || '';
+        //   return kodeA.localeCompare(kodeB, undefined, { numeric: true, sensitivity: 'base' });
+        // })
         belanja_kode.push({
           kode: kode1,
           uraian: rows[0].uraian1,
