@@ -77,12 +77,12 @@ const props = defineProps({
   }
 })
 
-// console.log(props.pasien)
 
 // filter tindakan
 const listTindakanTerseleksi = computed(() => {
+  console.log(props.pasien)
   const dataAsli = store.listTindakan
-  const ruanganPasien = props.pasien?.rs4
+  const ruanganPasien = props.pasien?.kodepoli
 
   // -------------------------------------------------------------
   // LANGKAH 1: Hitung kemunculan nama tindakan & Kelompokkan
@@ -205,7 +205,8 @@ onMounted(() => {
 
   // if (kodePoli === 'POL041') options.value = store.listTindakan
   // else options.value = store.listTindakan?.filter(x => x.kdpoli?.includes(kodePoli))
-  if (kodePoli === 'POL041' || kodePoli === 'PEN001') options.value = listTindakanTerseleksi.value
+  // if (kodePoli === 'POL041' || kodePoli === 'PEN001') options.value = listTindakanTerseleksi.value
+  if (kodePoli === 'POL041' || kodePoli === 'OPERASI') options.value = listTindakanTerseleksi.value
   else options.value = store.listTindakan?.filter(x => matchRs4(x.kdpoli, kodePoli))
   // console.log('options', options.value)
   // store.initReset()
@@ -223,7 +224,8 @@ function filterFn (val, update, abort) {
     const kodePoli = props.pasien?.kodepoli
     const needle = val.toLowerCase()
     // const arr = kodePoli === 'POL041' ? store.listTindakan : store.listTindakan?.filter(x => x.kdpoli?.includes(kodePoli))
-    const arr = kodePoli === 'POL041' || kodePoli === 'PEN001' ? listTindakanTerseleksi.value : store.listTindakan?.filter(x => matchRs4(x.kdpoli, kodePoli))
+    // const arr = kodePoli === 'POL041' || kodePoli === 'PEN001' ? listTindakanTerseleksi.value : store.listTindakan?.filter(x => matchRs4(x.kdpoli, kodePoli))
+    const arr = kodePoli === 'POL041' || kodePoli === 'OPERASI' ? listTindakanTerseleksi.value : store.listTindakan?.filter(x => matchRs4(x.kdpoli, kodePoli))
     console.log('arr', kodePoli, arr, store.listTindakan)
     const filter = ['kdtindakan', 'tindakan', 'icd9']
     const multiFilter = (data = [], filterKeys = [], value = '') =>

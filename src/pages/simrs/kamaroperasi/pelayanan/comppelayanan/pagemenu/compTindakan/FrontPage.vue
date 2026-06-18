@@ -18,7 +18,7 @@
         <q-tab-panels v-model="tab" animated class="bg-transparent q-pa-none relative-position">
           <!-- PANEL -->
           <q-tab-panel :name="menu?.name" class="q-pa-none" style="height: calc(100vh - 100px); overflow: hidden;">
-            <component :is="menu?.comp" :pasien="pasien" :key="pasien" />
+            <component :is="menu?.comp" :pasien="menu?.name == 'tindakan' ? refinedPasien : pasien" :key="pasien" />
           </q-tab-panel>
         </q-tab-panels>
       </div>
@@ -32,7 +32,8 @@
 <script setup>
 import { useAplikasiStore } from 'src/stores/app/aplikasi'
 import { useLaporanOperasiStore } from 'src/stores/simrs/kamaroperasi/laporanOperasi'
-import { computed, defineAsyncComponent, onMounted, ref, shallowRef } from 'vue'
+import { useLayananPoli } from 'src/stores/simrs/pelayanan/poli/layanan.js'
+import { computed, defineAsyncComponent, onMounted, ref, shallowRef, toRaw } from 'vue'
 
 const auth = useAplikasiStore()
 
@@ -41,6 +42,14 @@ const props = defineProps({
     type: Object,
     default: null
   },
+})
+
+const refinedPasien = computed(() => {
+  const raw = toRaw(props?.pasien)
+  const pas = structuredClone(raw)
+  pas.kdgroup_ruangan = pas.rs10
+  pas.kodepoli = 'OPERASI'
+  return pas
 })
 const store = useLaporanOperasiStore()
 const tab = ref('tindOp')
@@ -86,11 +95,13 @@ const menu = computed(() => {
 // const tabs = computed(() => {
 //   return tabsxx.filter(i => i.nakes.includes(nakes.value))
 // })
+const layananPoli = useLayananPoli()
 onMounted(() => {
   // store.getTarifOp()
   store.pasien = props?.pasien
   store.setForm('noreg', props?.pasien?.noreg)
   store.setFormTindakan('noreg', props?.pasien?.noreg)
+  layananPoli.getNota(props?.pasien)
 })
 
 </script>
