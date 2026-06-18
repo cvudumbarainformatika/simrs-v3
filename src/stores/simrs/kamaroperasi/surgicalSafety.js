@@ -243,6 +243,10 @@ export const useSurgicalSafetyStore = defineStore('surgical_safety_store', {
     formInstrumen: {},
     nota: null,
     allImplants: [],
+    // hasil data dari API
+    resultSignIn: [],
+    resultTimeOut: [],
+    resultSignOut: [],
   }),
   actions: {
 
@@ -280,6 +284,42 @@ export const useSurgicalSafetyStore = defineStore('surgical_safety_store', {
 
       } catch (e) {
 
+      }
+    },
+    async getDataSignIn (pasien) {
+      this.loading = true
+      try {
+        const param = { params: { noreg: pasien?.noreg } }
+        const { data } = await api.get('v1/simrs/penunjang/surgical/get-sign-in', param)
+        this.resultSignIn = data?.data ?? []
+      } catch (e) {
+        this.resultSignIn = []
+      } finally {
+        this.loading = false
+      }
+    },
+    async getDataTimeOut (pasien) {
+      this.loading = true
+      try {
+        const param = { params: { noreg: pasien?.noreg } }
+        const { data } = await api.get('v1/simrs/penunjang/surgical/get-time-out', param)
+        this.resultTimeOut = data?.data ?? []
+      } catch (e) {
+        this.resultTimeOut = []
+      } finally {
+        this.loading = false
+      }
+    },
+    async getDataSignOut (pasien) {
+      this.loading = true
+      try {
+        const param = { params: { noreg: pasien?.noreg } }
+        const { data } = await api.get('v1/simrs/penunjang/surgical/get-sign-out', param)
+        this.resultSignOut = data?.data ?? []
+      } catch (e) {
+        this.resultSignOut = []
+      } finally {
+        this.loading = false
       }
     },
     simpan (pasien) {
