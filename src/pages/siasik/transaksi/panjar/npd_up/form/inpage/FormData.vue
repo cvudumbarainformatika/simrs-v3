@@ -62,9 +62,9 @@ onMounted(() => {
 })
 const formInput = ref(null)
 
-function onSubmit() {
+async function onSubmit() {
   // console.log('submit', store.form);
-  store.simpanData()
+  await store.simpanData()
   formInput.value.resetValidation()
 }
 

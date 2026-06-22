@@ -165,6 +165,13 @@ const menus = ref([
     comp: shallowRef(defineAsyncComponent(() => import('../layanan/visum/IndexPage.vue')))
   },
   {
+    name: 'mutasi-page',
+    label: 'Mutasi Pasien',
+    icon: 'icon-mat-exit_to_app',
+    route: ['igd'],
+    comp: shallowRef(defineAsyncComponent(() => import('../layanan/mutasi/IndexPage.vue')))
+  },
+  {
     name: 'e-dokumen-page',
     label: 'Dokumen RM & Billing',
     icon: 'icon-mat-print',
