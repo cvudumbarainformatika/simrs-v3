@@ -265,11 +265,11 @@
           Jenis :
           <span class="q-pr-sm">{{ selectedKontrasepsi !== 'Tidak' ?
             getDetailKontrasepsi() : '-'
-            }}, </span>
+          }}, </span>
           Lama Pemakaian :
           <span class="">{{ selectedKontrasepsi !== 'Tidak' ?
             getLamaPemakaian() : '-'
-            }}</span>
+          }}</span>
         </div>
       </div>
       <div class="row items-center q-px-sm q-pb-xs full-width">
@@ -279,7 +279,7 @@
           Keluahan :
           <span class="q-pr-sm">{{ selectedKontrasepsi !== 'Tidak' ?
             getKeluhanKontrasepsi() : '-'
-            }}</span>
+          }}</span>
         </div>
       </div>
 
@@ -800,7 +800,7 @@
           <div>- Ekspresi Wajah : {{ item?.ekspresiwajah }}</div>
           <div>- Gerakan Tangan : {{ item?.gerakantangan }}</div>
           <div>- Kepatuhan terhadap ventilasi mekanik : {{ item?.kepatuhanventilasimekanik
-          }}</div>
+            }}</div>
           <div>
             <div>
               Skor Nyeri (BPS) =
@@ -1375,25 +1375,51 @@ watch(() => props.pasien, (newVal) => {
   border-width: 2px;
 }
 
+.b {
+  border-right: 2px solid #000;
+  border-left: 2px solid #000;
+  border-bottom: 2px solid #000;
+  border-top: none;
+}
+
+.b_double {
+  border-bottom: 4px double rgb(30, 30, 30);
+  border-left: none;
+  border-right: none;
+  border-top: none;
+  padding-top: 8px;
+}
+
 .b1 {
-  border-style: solid;
-  border-width: 2px;
+  border: 2px solid #000;
 }
 
 .b2 {
-  border-right-style: solid;
-  border-width: 2px;
+  border-right: 2px solid #000;
+  border-left: none;
+  border-bottom: none;
+  border-top: none;
 }
 
 .b3 {
-  border-bottom-style: solid;
-  border-width: 2px;
+  border-bottom: 2px solid #000;
+  border-left: none;
+  border-right: none;
+  border-top: none;
 }
 
 .b4 {
-  border-right-style: solid;
-  border-left-style: solid;
-  border-width: 2px;
+  border-right: 2px solid #000;
+  border-left: 2px solid #000;
+  border-bottom: none;
+  border-top: none;
+}
+
+.b5 {
+  border-left: 2px solid #000;
+  border-right: none;
+  border-bottom: none;
+  border-top: none;
 }
 
 table {

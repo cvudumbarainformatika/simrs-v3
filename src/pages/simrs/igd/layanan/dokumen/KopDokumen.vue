@@ -5,7 +5,7 @@
         <div class="col-2 q-px-xs flex items-center justify-center text-center">
           <q-img src="~assets/logos/logo-rsud.png" style="width: 2.5cm;" fit="contain" :ratio="1" />
         </div>
-        <div class="col q-py-sm flex items-center justify-center text-center">
+        <div class=" col q-py-sm flex items-center justify-center text-center">
           <!-- <div class="row flex-center"> -->
           <div class="flex-center text-center">
             <div class="text-bold">PEMERINTAH KOTA PROBOLINGGO</div>
@@ -27,7 +27,7 @@
           </div>
           <!-- </div> -->
         </div>
-        <div class="col-2 b5 flex items-center justify-center text-center">
+        <div class="b5 col-2 flex items-center justify-center text-center">
           <div class="text-bold q-px-sm" style="font-size: 12px;">{{ props?.judul }} {{ props?.kelas }}
             {{ props?.dasarpulang }}</div>
         </div>
@@ -148,10 +148,14 @@ function usia(val) {
   border-right: 2px solid #000;
   border-left: 2px solid #000;
   border-bottom: 2px solid #000;
+  border-top: none;
 }
 
 .b_double {
   border-bottom: 4px double rgb(30, 30, 30);
+  border-left: none;
+  border-right: none;
+  border-top: none;
   padding-top: 8px;
 }
 
@@ -161,19 +165,30 @@ function usia(val) {
 
 .b2 {
   border-right: 2px solid #000;
+  border-left: none;
+  border-bottom: none;
+  border-top: none;
 }
 
 .b3 {
   border-bottom: 2px solid #000;
+  border-left: none;
+  border-right: none;
+  border-top: none;
 }
 
 .b4 {
   border-right: 2px solid #000;
   border-left: 2px solid #000;
+  border-bottom: none;
+  border-top: none;
 }
 
 .b5 {
   border-left: 2px solid #000;
+  border-right: none;
+  border-bottom: none;
+  border-top: none;
 }
 
 table {
