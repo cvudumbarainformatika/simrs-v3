@@ -42,7 +42,16 @@ export const useAnamneseKebidananStore = defineStore('anamnese-kebidanan-store',
       ketscorenips: 0,
       ketcolornips: 'light-green',
 
-      nyerihilang: ''
+      nyerihilang: '',
+
+      sempoyongan: null,
+      penopang: null,
+      gelisah: null,
+      restrain: null,
+      restrainlainnya: null,
+      hasil_resiko_pasien_jatuh: null,
+      diberitaukankedokterjikaya: null,
+      keterangan: null
 
     },
     nilaiekspresiwajah: 0,
