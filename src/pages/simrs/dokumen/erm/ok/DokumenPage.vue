@@ -109,7 +109,7 @@ const documents = ref([
   {
     icon: 'icon-mat-email',
     color: 'primary',
-    jenis: 'SUR-SAFE',
+    jenis: 'SURGICAL',
     label: 'Checklist Surgical Safety',
     value: 'SurgicalSafety'
   },
