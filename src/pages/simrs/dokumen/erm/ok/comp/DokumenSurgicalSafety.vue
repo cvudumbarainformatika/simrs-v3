@@ -160,7 +160,7 @@
                   }" />
                 </div>
                 <div class="f-10">{{ getNakesNya(surgical?.perawat_instrumen)?.nama ?? 'Belum dipilih'
-                  }}</div>
+                }}</div>
               </div>
             </div>
           </div>
@@ -217,28 +217,47 @@
               PEMAKAIAN IMPLANT
             </div>
 
-            <table v-if="store.implants?.length" class="implant-table">
-              <thead>
-                <tr>
-                  <th>No</th>
-                  <th>Nama Implant</th>
-                  <th>Seri</th>
-                  <th>Qty</th>
-                  <th>Harga</th>
-                  <th>Total</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="(item, idx) in store.implants" :key="idx">
-                  <td class="text-center">{{ idx + 1 }}</td>
-                  <td>{{ item?.masterimplant?.rs1 }}</td>
-                  <td>{{ item?.rs3 }}</td>
-                  <td class="text-center">{{ item?.rs4 }}</td>
-                  <td class="text-right">{{ formatRupiah(item?.rs5) }}</td>
-                  <td class="text-right">{{ formatRupiah(item?.rs6) }}</td>
-                </tr>
-              </tbody>
-            </table>
+            <div v-if="groupedImplants?.length">
+              <div v-for="group in groupedImplants" :key="group.nota" class="q-mb-md">
+                <div class="text-weight-bold f-12 q-mb-sm">Nota: {{ group.nota }}</div>
+                <table class="implant-table">
+                  <thead>
+                    <tr>
+                      <th>No</th>
+                      <th>Nama Implant</th>
+                      <th>Seri</th>
+                      <th>Qty</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="(item, idx) in group.items" :key="`${group.nota}-${idx}`">
+                      <td class="text-center">{{ idx + 1 }}</td>
+                      <td>{{ getImplantName(item) }}</td>
+                      <td>{{ item?.seri || item?.rs3 }}</td>
+                      <td class="text-center">{{ item?.pemakaian ?? (item?.rs4 ?? 0) }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div v-if="group.images?.length" class="q-mt-sm">
+                  <div class="text-weight-bold f-12 q-mb-xs">Gambar Implant untuk Nota {{ group.nota }}</div>
+                  <div class="row q-col-gutter-sm">
+                    <div v-for="(image, imgIdx) in group.images" :key="`${group.nota}-${imgIdx}`" class="col-auto">
+                      <q-card flat bordered class="q-pa-sm" style="max-width: 180px;">
+                        <q-card-section class="q-pa-none">
+                          <template v-if="!isPdfFile(image?.url)">
+                            <img :src="getImplantImage(image?.url)" :alt="image?.url?.split('/')?.pop()"
+                              style="display: block; max-width: 180px; max-height: 120px; width: auto; height: auto;" />
+                          </template>
+                          <div v-else class="text-center q-pa-sm" style="min-width: 180px; min-height: 120px;">
+                            PDF File<br />{{ image?.url?.split('/')?.pop() }}
+                          </div>
+                        </q-card-section>
+                      </q-card>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
             <div v-else class="text-center text-grey f-12 q-py-md">
               Tidak ada data implant
             </div>
@@ -333,6 +352,7 @@
 
 <script setup>
 // import { useSurgicalSafetyStore } from 'src/stores/simrs/kamaroperasi/surgicalSafety'
+import { pathImg } from 'src/boot/axios'
 import { useSurgicalSafetyStore } from 'src/stores/simrs/kamaroperasi/surgicalSafety'
 import { onMounted, ref, computed } from 'vue'
 
@@ -392,6 +412,57 @@ const surgicalSignOut = computed(() => {
   }
   return value
 })
+
+const implantNotes = computed(() => {
+  const implants = store.pasien?.implant ?? props.pasien?.implant ?? []
+  return [...new Set(implants.filter(item => item?.nota !== undefined && item?.nota !== null).map(item => String(item.nota)))]
+})
+
+const groupedImplants = computed(() => {
+  const implants = store.pasien?.implant ?? props.pasien?.implant ?? []
+  const series = store.pasien?.implant_seri ?? props.pasien?.implant_seri ?? []
+  return implantNotes.value.map(nota => ({
+    nota,
+    items: implants.filter(item => String(item?.nota) === nota),
+    images: series.filter(file => String(file?.nota) === nota)
+  }))
+})
+
+function getImplantUrl (file) {
+  if (!file) return ''
+  const value = typeof file === 'string' ? file : file?.url || file?.path || ''
+  if (!value) return ''
+  if (value.startsWith('http://') || value.startsWith('https://')) return value
+  if (value.startsWith('/storage/')) {
+    return process.env.PATHIMG + value
+  }
+  if (value.startsWith('storage/')) {
+    return pathImg + value.replace(/^storage\//, '')
+  }
+  return pathImg + value
+}
+
+function getImplantImage (file) {
+  const url = getImplantUrl(file)
+  if (!url) return ''
+  return url
+}
+
+function isPdfFile (file) {
+  const value = typeof file === 'string' ? file : file?.url || file?.path || ''
+  if (!value) return false
+  return value.split('.').pop()?.toLowerCase() === 'pdf'
+}
+
+function getImplantName (item) {
+  const distribusiId = item?.persiapan_operasi_distribusi_id ?? item?.distribusi_id
+  const master = store.implants?.find(i => i?.distribusi_id === distribusiId)
+  return master?.masterimplant?.rs1
+    || master?.nama_obat
+    || item?.masterimplant?.rs1
+    || item?.nama_obat
+    || '-'
+}
 
 function getNakesNya (kdpegsimrs) {
   return store.nakes?.find(i => i.kdpegsimrs === kdpegsimrs)
