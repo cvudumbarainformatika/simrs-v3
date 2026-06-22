@@ -25,7 +25,7 @@
                 TGL. LAHIR
               </div>
               <div>
-                : {{ pasien?.tgllahir }}
+                : {{ dateFullFormat(pasien?.tgllahir) }}
               </div>
             </div>
           </div>
@@ -270,7 +270,7 @@
               INVENTARIS KASA
             </div>
 
-            <table v-if="store.formKasa?.length" class="kasa-table">
+            <table v-if="inventarisKasa?.length" class="kasa-table">
               <thead>
                 <tr>
                   <th>No</th>
@@ -282,13 +282,13 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="(item, idx) in store.formKasa" :key="idx">
+                <tr v-for="(item, idx) in inventarisKasa" :key="idx">
                   <td class="text-center">{{ idx + 1 }}</td>
-                  <td>{{ item?.masterkasa?.rs1 }}</td>
-                  <td class="text-center">{{ item?.rs3 }}</td>
-                  <td class="text-center">{{ item?.rs4 }}</td>
-                  <td class="text-center">{{ item?.rs5 }}</td>
-                  <td class="text-center">{{ item?.rs6 }}</td>
+                  <td>{{ item?.masterkasa?.rs1 ?? item?.nama ?? '-' }}</td>
+                  <td class="text-center">{{ item?.rs3 ?? item?.awal ?? '-' }}</td>
+                  <td class="text-center">{{ item?.rs4 ?? item?.pakai ?? '-' }}</td>
+                  <td class="text-center">{{ item?.rs5 ?? item?.sisa ?? '-' }}</td>
+                  <td class="text-center">{{ item?.rs6 ?? item?.akhir ?? '-' }}</td>
                 </tr>
               </tbody>
             </table>
@@ -304,7 +304,7 @@
               INVENTARIS INSTRUMEN
             </div>
 
-            <table v-if="store.formInstrumen?.length" class="instrumen-table">
+            <table v-if="inventarisInstrumen?.length" class="instrumen-table">
               <thead>
                 <tr>
                   <th>No</th>
@@ -316,13 +316,13 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="(item, idx) in store.formInstrumen" :key="idx">
+                <tr v-for="(item, idx) in inventarisInstrumen" :key="idx">
                   <td class="text-center">{{ idx + 1 }}</td>
-                  <td>{{ item?.masterinstrumen?.rs1 }}</td>
-                  <td class="text-center">{{ item?.rs3 }}</td>
-                  <td class="text-center">{{ item?.rs4 }}</td>
-                  <td class="text-center">{{ item?.rs5 }}</td>
-                  <td class="text-center">{{ item?.rs6 }}</td>
+                  <td>{{ item?.masterinstrumen?.rs1 ?? item?.nama ?? '-' }}</td>
+                  <td class="text-center">{{ item?.rs3 ?? item?.awal ?? '-' }}</td>
+                  <td class="text-center">{{ item?.rs4 ?? item?.pakai ?? '-' }}</td>
+                  <td class="text-center">{{ item?.rs5 ?? item?.sisa ?? '-' }}</td>
+                  <td class="text-center">{{ item?.rs6 ?? item?.akhir ?? '-' }}</td>
                 </tr>
               </tbody>
             </table>
@@ -333,13 +333,13 @@
         </div>
 
         <!-- CATATAN SECTION -->
-        <div v-if="!history" class="q-my-sm">
+        <!-- <div v-if="!history" class="q-my-sm">
           <div class="text-weight-bold f-14" style="margin-bottom: 5px;">
             CATATAN / OBSERVASI
           </div>
           <q-input v-model="store.form.catatan" type="textarea" outlined standout="bg-yellow-3" rows="3" class="q-mb-xs"
             readonly dense />
-        </div>
+        </div> -->
       </div>
     </div>
 
@@ -353,6 +353,7 @@
 <script setup>
 // import { useSurgicalSafetyStore } from 'src/stores/simrs/kamaroperasi/surgicalSafety'
 import { pathImg } from 'src/boot/axios'
+import { dateFullFormat } from 'src/modules/formatter'
 import { useSurgicalSafetyStore } from 'src/stores/simrs/kamaroperasi/surgicalSafety'
 import { onMounted, ref, computed } from 'vue'
 
@@ -426,6 +427,14 @@ const groupedImplants = computed(() => {
     items: implants.filter(item => String(item?.nota) === nota),
     images: series.filter(file => String(file?.nota) === nota)
   }))
+})
+
+const inventarisKasa = computed(() => {
+  return props.pasien?.inventaris_kasa ?? store.pasien?.inventaris_kasa ?? []
+})
+
+const inventarisInstrumen = computed(() => {
+  return props.pasien?.inventaris_instrumen ?? store.pasien?.inventaris_instrumen ?? []
 })
 
 function getImplantUrl (file) {
