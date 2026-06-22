@@ -388,6 +388,8 @@ const selectedRincian = ref(null)
 // store.realisasiPendapatan()
 // store.getDataPendapatan()
 onMounted(() => {
+  store.items = []
+  store.pendapatans = []
   store.params.bidang = ''
   store.params.kegiatan = ''
   store.getDataBidang()
