@@ -675,7 +675,7 @@
           <div class="row">
             <div class="col">a. Perhatikan cara berjalan pasien saat akan duduk di kursi. Apakah pasien tampak tidak
               seimbang (sempoyongan)?
-              <b> {{ pasien?.anamnesis?.[0]?.sempoyongan }}</b>
+              <b> {{ item?.sempoyongan ?? '-' }}</b>
             </div>
           </div>
         </div>
@@ -685,7 +685,7 @@
           <div class="row">
             <div class="col">b. Apakah pasien memegang pinggiran kursi atau meja atau benda lain sebagai penopang saat
               akan duduk?
-              <b> {{ pasien?.anamnesis?.[0]?.penopangx ?? '-' }}</b>
+              <b> {{ item?.penopangx ?? '-' }}</b>
             </div>
           </div>
         </div>
@@ -693,7 +693,7 @@
       <div class="row items-center q-px-sm q-pb-xs full-width">
         <div class="col q-pl-md">
           <div class="row">
-            <div class="col text-weight-bold">Hasil : {{ pasien?.anamnesis?.[0]?.hasil_resiko_pasien_jatuh ?? '-' }}
+            <div class="col text-weight-bold">Hasil : {{ item?.hasil_resiko_pasien_jatuh ?? '-' }}
             </div>
           </div>
         </div>
@@ -701,13 +701,13 @@
       <div class="row items-center q-px-sm q-pb-xs full-width">
         <div class="col q-pl-md">
           <div class="row">
-            <div class="col">c. Gelisah : {{ pasien?.anamnesis?.[0]?.gelisah ?? '-' }}</div>
-            <div class="col">Restrain : {{ pasien?.anamnesis?.[0]?.restrain ?? '-' }}</div>
+            <div class="col">c. Gelisah : {{ item?.gelisah ?? '-' }}</div>
+            <div class="col">Restrain : {{ item?.restrain ?? '-' }}</div>
           </div>
           <div class="row">
-            <div class="col">Diberikan ke dokter : {{ pasien?.anamnesis?.[0]?.diberitaukankedokterjikaya ?? '-' }}
-              <span v-if="pasien?.anamnesis?.[0]?.diberitaukankedokterjikaya === 'Ya'"> {{
-                pasien?.anamnesis?.[0]?.keterangan ?? '-' }}</span>
+            <div class="col">Diberikan ke dokter : {{ item?.diberitaukankedokterjikaya ?? '-' }}
+              <span v-if="item?.diberitaukankedokterjikaya === 'Ya'"> {{
+                item?.keterangan ?? '-' }}</span>
             </div>
             <div class="col">Jam : </div>
           </div>
@@ -1075,6 +1075,7 @@
 <script setup>
 import { date } from 'quasar';
 import { dateFull, dateFullFormat, dateHalfFormat, formatJam } from 'src/modules/formatter';
+import CardItemList from 'src/pages/simrs/radiologi/pengunjung/comp/CardItemList.vue';
 import { usePengunjungIgdStore } from 'src/stores/simrs/igd/pengunjung';
 import { useListKunjunganIgdStore } from 'src/stores/simrs/pendaftaran/generalconsent/kunjunganIgd';
 import { ref, watch, computed, onMounted } from 'vue';
