@@ -1,6 +1,6 @@
 <template>
   <div class="print-wrapper b">
-    <q-table flat bordered dense :rows="rows" :columns="columns" row-key="id" hide-bottom>
+    <q-table flat dense :rows="rows" :columns="columns" row-key="id" hide-bottom>
       <template v-slot:body-cell="slotProps">
         <q-td :props="slotProps">
           <div v-if="slotProps.col.name === 'tgl'" class="text-center">
@@ -257,6 +257,8 @@ const generateQr = (item) => {
     width: 100%;
     table-layout: fixed;
     font-size: 9px;
+    border-collapse: collapse;
+    border: none !important;
   }
 
   .q-table th,
@@ -264,6 +266,13 @@ const generateQr = (item) => {
     padding: 2px 4px;
     white-space: normal;
     word-break: break-word;
+    border: none !important;
+  }
+
+  .q-table tr,
+  .q-table th,
+  .q-table td {
+    border-color: transparent !important;
   }
 
   .q-tr {
