@@ -51,19 +51,17 @@
 
             <div v-if="surgicalSignIn?.length">
               <div v-for="(item, idx) in surgicalSignIn" :key="idx" class="checklist-item q-mb-sm">
-                <div class="row q-col-gutter-md">
-                  <div class="col-auto">
-                    <span class="text-weight-bold">{{ idx + 1 }}.</span>
-                  </div>
-                  <div class="col">
-                    <div class="f-12">{{ item?.tanya }}</div>
-                  </div>
-                  <div class="col-auto">
-                    <span v-if="item?.jawab === '1'" class="badge-yes">YA</span>
-                    <span v-else class="badge-no">TIDAK</span>
-                  </div>
-                  <div v-if="item?.adaInput && item?.jawab === '1' && item?.input" class="col-auto">
-                    <span class="text-italic">{{ item?.input }}</span>
+                <div class="row q-col-gutter-md items-center">
+                  <div class="col-12">
+                    <div class="f-12 text-weight-bold q-mb-xs">{{ idx + 1 }}. {{ item?.tanya }}</div>
+                    <q-option-group :model-value="item?.jawab" :options="withChecklistIcon(item?.options)"
+                      :type="item?.type === 'checkbox' ? 'checkbox' : 'radio'" color="primary" inline dense disable
+                      class="q-mb-xs" />
+                    <div
+                      v-if="item?.adaInput && (Array.isArray(item?.jawab) ? item.jawab.includes('1') : item?.jawab === '1') && item?.input"
+                      class="q-mt-xs">
+                      <div class="text-italic">{{ item?.input }}</div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -111,27 +109,27 @@
 
             <div v-if="surgicalTimeOut?.length">
               <div v-for="(item, idx) in surgicalTimeOut" :key="idx" class="checklist-item q-mb-sm">
-                <div class="row q-col-gutter-md">
-                  <div class="col-auto">
-                    <span class="text-weight-bold">{{ idx + 1 }}.</span>
-                  </div>
-                  <div class="col">
-                    <div class="f-12">{{ item?.tanya }}</div>
-                  </div>
-                  <div class="col-auto">
-                    <span v-if="item?.jawab === '1'" class="badge-yes">YA</span>
-                    <span v-else-if="item?.jawab === '0'" class="badge-no">TIDAK</span>
-                    <span v-else class="badge-neutral">{{ item?.jawab }}</span>
-                  </div>
-                  <div v-if="item?.adaInput && item?.jawab === '1' && item?.input" class="col-auto">
-                    <span class="text-italic">{{ item?.input }}</span>
-                  </div>
-                </div>
-                <div v-if="item?.adaInputArray && item?.jawab === '1' && item?.inputArray?.length"
-                  class="q-ml-lg q-mt-xs">
-                  <div v-for="(sub, subIdx) in item.inputArray" :key="subIdx" class="row q-col-gutter-md f-11">
-                    <div class="col-2">{{ sub?.label }}:</div>
-                    <div class="col-10">{{ sub?.input }}</div>
+                <div class="row q-col-gutter-md items-center">
+                  <div class="col-12">
+                    <div class="f-12 text-weight-bold q-mb-xs">{{ idx + 1 }}. {{ item?.tanya }}</div>
+                    <q-option-group :model-value="item?.jawab" :options="withChecklistIcon(item?.options)"
+                      :type="item?.type === 'checkbox' ? 'checkbox' : 'radio'" color="primary" inline dense disable
+                      class="q-mb-xs" />
+                    <div
+                      v-if="item?.adaInput && (Array.isArray(item?.jawab) ? item.jawab.includes('1') : item?.jawab === '1') && item?.input"
+                      class="q-mt-xs">
+                      <div class="text-italic">{{ item?.input }}</div>
+                    </div>
+                    <div
+                      v-if="item?.adaInputArray && (Array.isArray(item?.jawab) ? item.jawab.includes('1') : item?.jawab === '1')"
+                      class="q-mt-xs">
+                      <div v-for="(sub, subIdx) in item.inputArray" :key="subIdx" class="row q-col-gutter-md q-mb-xs">
+                        <div class="col-3 f-11">{{ sub?.label }}</div>
+                        <div class="col-9">
+                          <div class="text-italic">{{ sub?.input }}</div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -179,19 +177,17 @@
 
             <div v-if="surgicalSignOut?.length">
               <div v-for="(item, idx) in surgicalSignOut" :key="idx" class="checklist-item q-mb-sm">
-                <div class="row q-col-gutter-md">
-                  <div class="col-auto">
-                    <span class="text-weight-bold">{{ idx + 1 }}.</span>
-                  </div>
-                  <div class="col">
-                    <div class="f-12">{{ item?.tanya }}</div>
-                  </div>
-                  <div class="col-auto">
-                    <span v-if="item?.jawab === '1'" class="badge-yes">YA</span>
-                    <span v-else class="badge-no">TIDAK</span>
-                  </div>
-                  <div v-if="item?.adaInput && item?.jawab === '1' && item?.input" class="col-auto">
-                    <span class="text-italic">{{ item?.input }}</span>
+                <div class="row q-col-gutter-md items-center">
+                  <div class="col-12">
+                    <div class="f-12 text-weight-bold q-mb-xs">{{ idx + 1 }}. {{ item?.tanya }}</div>
+                    <q-option-group :model-value="item?.jawab" :options="withChecklistIcon(item?.options)"
+                      :type="item?.type === 'checkbox' ? 'checkbox' : 'radio'" color="primary" inline dense disable
+                      class="q-mb-xs" />
+                    <div
+                      v-if="item?.adaInput && (Array.isArray(item?.jawab) ? item.jawab.includes('1') : item?.jawab === '1') && item?.input"
+                      class="q-mt-xs">
+                      <div class="text-italic">{{ item?.input }}</div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -399,6 +395,15 @@ const surgicalSignOut = computed(() => {
 
 function getNakesNya (kdpegsimrs) {
   return store.nakes?.find(i => i.kdpegsimrs === kdpegsimrs)
+}
+
+function withChecklistIcon (options) {
+  if (!Array.isArray(options)) return options
+  return options.map(option => ({
+    ...option,
+    checkedIcon: 'check_circle',
+    uncheckedIcon: 'radio_button_unchecked'
+  }))
 }
 
 function formatRupiah (value) {
