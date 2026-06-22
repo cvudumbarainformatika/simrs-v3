@@ -163,7 +163,7 @@ const menus = ref([
     icon: 'icon-my-medication',
     route: ['igd'],
     comp: shallowRef(defineAsyncComponent(() => import('../layanan/visum/IndexPage.vue')))
-  }
+  },
   {
     name: 'e-dokumen-page',
     label: 'Dokumen RM & Billing',
