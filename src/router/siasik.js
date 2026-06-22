@@ -196,6 +196,27 @@ const siasik = {
 
       ]
     },
+    {
+      path: '/siasik/panjar/npdpanjar',
+      name: 'siasik.panjar.npdpanjar',
+      component: () => import('pages/siasik/transaksi/panjar/npd_panjar/IndexPage.vue'),
+      children: [
+        { path: '', name: 'npd_panjae', redirect: '/siasik/panjar/npdpanjar/formdata' },
+        {
+          path: '/siasik/panjar/npdpanjar/formdata',
+          name: 'siasik.panjar.npdpanjar.formdata',
+          component: () =>
+            import('src/pages/siasik/transaksi/panjar/npd_panjar/formdata/IndexPage.vue')
+        },
+        {
+          path: '/siasik/panjar/npdpanjar/listdata',
+          name: 'siasik.panjar.npdpanjar.listdata',
+          component: () =>
+            import('src/pages/siasik/transaksi/panjar/npd_panjar/listdata/IndexPage.vue')
+        },
+
+      ]
+    },
     // {
     //   path: '/siasik/rencanabelanja',
     //   name: 'siasik.rencanabelanja',

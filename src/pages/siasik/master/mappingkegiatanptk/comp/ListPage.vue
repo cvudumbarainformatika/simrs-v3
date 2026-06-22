@@ -23,7 +23,7 @@
         <q-item-section side>
           <div class="row q-gutter-xs">
             <!-- <q-btn flat icon="icon-mat-layers" size="sm" round color="primary" @click="openRincian(row)" /> -->
-            <!-- <q-btn flat icon="icon-mat-edit" size="sm" round color="primary" @click="emits('edit', row)" /> -->
+            <q-btn flat icon="icon-mat-edit" size="sm" round color="primary" @click="emits('edit', row)" />
             <q-btn flat icon="icon-mat-delete" size="sm" round color="negative" @click="emits('delete', row?.id)" />
           </div>
         </q-item-section>

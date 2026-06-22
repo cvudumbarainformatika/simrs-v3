@@ -185,7 +185,7 @@
                       {{ formattanpaRp(totalPendapatan().totalpersen) }}
                     </td>
                   </tr>
-                  <tr v-for="item in store.items" :key="item">
+                  <tr v-for="item in store.items" :key="item.kode" @click="bukaRincian(item)" class="cursor-pointer">
                     <td class="text-left q-pl-sm q-pr-sm">
                       <div :class="item.kode?.length <= 12 ? 'text-bold' : ''"> {{ item.kode }} </div>
                     </td>
@@ -371,25 +371,41 @@
       </div>
     </div>
   </div>
+
+  <lihat-rincian v-model="showRincian" :listrincian="selectedRincian" />
 </template>
 
 <script setup>
 // import { date } from 'quasar'
 import { formattanpaRp } from 'src/modules/formatter'
 import { useLaporanLraLaprealisasianggaranStore } from 'src/stores/siasik/laporan/lra/laprealisasianggaran'
-import { onMounted, ref } from 'vue'
+import { defineAsyncComponent, onMounted, ref } from 'vue'
 // import { ref } from 'vue'
+const LihatRincian = defineAsyncComponent(() => import('./DialogRincian.vue'))
 const store = useLaporanLraLaprealisasianggaranStore()
-
+const showRincian = ref(false)
+const selectedRincian = ref(null)
 // store.realisasiPendapatan()
 // store.getDataPendapatan()
 onMounted(() => {
+  store.items = []
+  store.pendapatans = []
   store.params.bidang = ''
   store.params.kegiatan = ''
   store.getDataBidang()
   // store.getDataRealisasi()
 
 })
+
+const bukaRincian = (item) => {
+  console.log('rincian', item)
+  if (item?.rincian?.length > 0) {
+    selectedRincian.value = item
+    showRincian.value = true
+  } else {
+    showRincian.value = false
+  }
+}
 function tglDari(val) {
   // console.log('val Parameter', val)
   // this.getDataBidang()

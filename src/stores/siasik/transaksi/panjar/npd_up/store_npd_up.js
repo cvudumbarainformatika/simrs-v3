@@ -118,18 +118,7 @@ export const useTransaksiNPDUP = defineStore('transaksi-npd-up-store', {
 
         }
         notifSuccessVue(resp?.data?.message)
-        this.form = {
-          nosppup: '',
-          tglTrans: date.formatDate(Date.now(), 'YYYY-MM-DD'),
-          kdBendaharaKeluar: '',
-          bendaharaKeluar: '',
-          jumlahspp: '',
-          bank: '',
-          kodeRek: '',
-          uraian: '',
-          userentry: '',
-          tglentry: '',
-        }
+        await this.resetForm()
         this.getData()
         this.loadingSave = false
       } catch (error) {
@@ -150,6 +139,22 @@ export const useTransaksiNPDUP = defineStore('transaksi-npd-up-store', {
         this.loading = false
       }
       this.loading = false
+    },
+    async resetForm() {
+      this.form = {
+        nosppup: '',
+        tglTrans: date.formatDate(Date.now(), 'YYYY-MM-DD'),
+        kdBendaharaKeluar: '',
+        bendaharaKeluar: '',
+        jumlahspp: '',
+        bank: '',
+        kodeRek: '',
+        uraian: '',
+        userentry: '',
+        tglentry: '',
+      }
+      await this.getBendahara()
+      await this.getBank()
     },
     editForm(val) {
       // console.log('valedit', val)
