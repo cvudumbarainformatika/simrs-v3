@@ -1,5 +1,7 @@
 <template>
+  <app-maintenance text="Diagendakan setelah Akreditasi" />
   <div class="row fit relative-position ">
+
     <div>Halaman Assasement post op. ini sama dengan halaman assasement ulang di rananp. persis sama</div>
   </div>
 </template>

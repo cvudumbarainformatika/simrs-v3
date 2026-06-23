@@ -6,7 +6,7 @@ import { notifErrVue, notifSuccess } from 'src/modules/utils'
 export const usePengunjungIgdStore = defineStore('pengunjung-igd', {
   state: () => ({
     tab: 'Diagnosa Medik',
-    tabs: ['Diagnosa Medik', 'Rencana Terapi Dokter', 'Tindakan Medik', 'Diagnosa Keperawatan', 'Diagnosa Kebidanan', 'Pra Anastesi'],
+    tabs: ['Diagnosa Medik', 'Rencana Terapi Dokter', 'Tindakan Medik', 'Diagnosa Keperawatan', 'Diagnosa Kebidanan', 'Pra Anastesi', 'Pra Bedah'],
     items: [],
     ruangranaps: [],
     loadingfinish: false,

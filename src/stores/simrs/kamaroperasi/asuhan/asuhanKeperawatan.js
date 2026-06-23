@@ -1,4 +1,5 @@
 import { acceptHMRUpdate, defineStore } from "pinia"
+import { date } from "quasar"
 import { api } from "src/boot/axios"
 
 export const useAsuhanKeperawatanStore = defineStore('asuhan_keperawatan', {
@@ -205,6 +206,8 @@ export const useAsuhanKeperawatanStore = defineStore('asuhan_keperawatan', {
           const data = resp.data?.data
           if (!!data) {
             this.form = resp.data?.data
+            this.display.tanggal = date.formatDate(this.form.pengkajian_tanggal, 'DD MMMM YYYY')
+            this.display.tanggal_eval = date.formatDate(this.form.eval_tanggal, 'DD MMMM YYYY')
             delete this.form.created_at
             delete this.form.updated_at
 

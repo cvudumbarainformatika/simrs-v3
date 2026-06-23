@@ -62,7 +62,7 @@
 
 <script setup>
 import { useLayananPoli } from 'src/stores/simrs/pelayanan/poli/layanan'
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 
 const store = useLayananPoli()
 
@@ -77,9 +77,91 @@ const props = defineProps({
   }
 })
 
-console.log(props.pasien);
 
+// filter tindakan
+const listTindakanTerseleksi = computed(() => {
+  console.log(props.pasien)
+  const dataAsli = store.listTindakan
+  const ruanganPasien = props.pasien?.kodepoli
 
+  // -------------------------------------------------------------
+  // LANGKAH 1: Hitung kemunculan nama tindakan & Kelompokkan
+  // -------------------------------------------------------------
+  const counts = {}
+  dataAsli.forEach(item => {
+    counts[item.tindakan] = (counts[item.tindakan] || 0) + 1
+  })
+
+  // Pisahkan yang unik sejak awal
+  const dataUnik = dataAsli.filter(item => counts[item.tindakan] === 1)
+  const dataDuplikatMentah = dataAsli.filter(item => counts[item.tindakan] > 1)
+
+  // Kelompokkan data duplikat berdasarkan nama tindakannya
+  // Contoh: { "Reparasi Protesa": [obj1, obj2], "Tindakan B": [obj3, obj4] }
+  const groupedDuplikat = {}
+  dataDuplikatMentah.forEach(item => {
+    if (!groupedDuplikat[item.tindakan]) {
+      groupedDuplikat[item.tindakan] = []
+    }
+    groupedDuplikat[item.tindakan].push(item)
+  })
+
+  // -------------------------------------------------------------
+  // LANGKAH 2 & 3: Seleksi kelompok duplikat untuk ambil 1 pemenang
+  // -------------------------------------------------------------
+  const pemenangDuplikat = []
+
+  Object.keys(groupedDuplikat).forEach(namaTindakan => {
+    const kandidat = groupedDuplikat[namaTindakan]
+
+    // ATURAN 2: Prioritaskan tindakan yang ada di ruangan pasien (kdpoli mengandung rs4)
+    const cocokRuangan = kandidat.filter(item => {
+      if (!item.kdpoli || !ruanganPasien) return false
+      return item.kdpoli.split('|').includes(ruanganPasien)
+    })
+
+    // Jika tepat ada 1 yang cocok ruangan pasien, dia langsung menang
+    if (cocokRuangan.length === 1) {
+      pemenangDuplikat.push(cocokRuangan[0])
+      return // Lanjut ke nama tindakan berikutnya
+    }
+
+    // Jika ada banyak yang cocok ruangan, atau tidak ada sama sekali yang cocok,
+    // kita gunakan array 'kandidatEliminasi' untuk lanjut ke filter tarif
+    const kandidatEliminasi = cocokRuangan.length > 1 ? cocokRuangan : kandidat
+
+    // ATURAN 3: Cek apakah tarifnya sama semua atau beda
+    const tarifPertama = kandidatEliminasi[0].tarif
+    const apakahSemuaTarifSama = kandidatEliminasi.every(item => item.tarif === tarifPertama)
+
+    if (apakahSemuaTarifSama) {
+      // Jika tarif sama, ambil salah satu saja (yang pertama)
+      pemenangDuplikat.push(kandidatEliminasi[0])
+    } else {
+      // Jika tarif beda, ambil yang kode ruangan-nya paling banyak BUKAN "POL%"
+      let pemenangSementera = kandidatEliminasi[0]
+      let jumlahNonPolTerbanyak = -1
+
+      kandidatEliminasi.forEach(item => {
+        const daftarKode = item.kdpoli ? item.kdpoli.split('|') : []
+        // Hitung berapa banyak kode yang TIDAK dimulai dengan "POL"
+        const jumlahNonPol = daftarKode.filter(kode => !kode.startsWith('POL')).length
+
+        if (jumlahNonPol > jumlahNonPolTerbanyak) {
+          jumlahNonPolTerbanyak = jumlahNonPol
+          pemenangSementera = item
+        }
+      })
+
+      pemenangDuplikat.push(pemenangSementera)
+    }
+  })
+
+  // -------------------------------------------------------------
+  // LANGKAH FINAL: Satukan data unik dengan pemenang duplikat
+  // -------------------------------------------------------------
+  return [...dataUnik, ...pemenangDuplikat]
+})
 const KODE_POLI_MAP = {
   POL042: 'POL018',
 }
@@ -123,26 +205,15 @@ onMounted(() => {
 
   // if (kodePoli === 'POL041') options.value = store.listTindakan
   // else options.value = store.listTindakan?.filter(x => x.kdpoli?.includes(kodePoli))
-  if (kodePoli === 'POL041') options.value = store.listTindakan
+  // if (kodePoli === 'POL041' || kodePoli === 'PEN001') options.value = listTindakanTerseleksi.value
+  if (kodePoli === 'POL041' || kodePoli === 'OPERASI') options.value = listTindakanTerseleksi.value
   else options.value = store.listTindakan?.filter(x => matchRs4(x.kdpoli, kodePoli))
   // console.log('options', options.value)
   // store.initReset()
   // formmRef.value?.resetValidation()
 })
 
-function updateSearchTindakan(val) {
-  store.setKdTindakan(val).then(() => {
-    inpQtyRef.value.focus()
-  })
-}
-
-function onSubmit() {
-  store.saveTindakan(props.pasien).then(() => {
-    formmRef.value.resetValidation()
-  })
-}
-
-function filterFn(val, update, abort) {
+function filterFn (val, update, abort) {
   if (val?.length < 1) {
     abort()
     return
@@ -153,8 +224,9 @@ function filterFn(val, update, abort) {
     const kodePoli = props.pasien?.kodepoli
     const needle = val.toLowerCase()
     // const arr = kodePoli === 'POL041' ? store.listTindakan : store.listTindakan?.filter(x => x.kdpoli?.includes(kodePoli))
-    const arr = kodePoli === 'POL041' ? store.listTindakan : store.listTindakan?.filter(x => matchRs4(x.kdpoli, kodePoli))
-    // console.log('arr', kodePoli, arr, store.listTindakan)
+    // const arr = kodePoli === 'POL041' || kodePoli === 'PEN001' ? listTindakanTerseleksi.value : store.listTindakan?.filter(x => matchRs4(x.kdpoli, kodePoli))
+    const arr = kodePoli === 'POL041' || kodePoli === 'OPERASI' ? listTindakanTerseleksi.value : store.listTindakan?.filter(x => matchRs4(x.kdpoli, kodePoli))
+    console.log('arr', kodePoli, arr, store.listTindakan)
     const filter = ['kdtindakan', 'tindakan', 'icd9']
     const multiFilter = (data = [], filterKeys = [], value = '') =>
       data.filter((item) => filterKeys.some(
@@ -167,5 +239,19 @@ function filterFn(val, update, abort) {
     options.value = filteredData
   })
 }
+
+function updateSearchTindakan (val) {
+  store.setKdTindakan(val).then(() => {
+    inpQtyRef.value.focus()
+  })
+}
+
+function onSubmit () {
+  store.saveTindakan(props.pasien).then(() => {
+    formmRef.value.resetValidation()
+  })
+}
+
+
 
 </script>

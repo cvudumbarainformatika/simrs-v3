@@ -3,7 +3,7 @@
     <div class="" style="">
       <q-select v-model="store.form.kode50" use-input outlined standout="bg-yellow-3" dense emit-value map-options
         option-value="kodeall3" input-debounce="300" label="Rekening LRA" class="ellipsis-2-lines" :options="options"
-        clearable :option-label="opt => opt?.kodeall3 ? `${opt.kodeall3} - ${opt.uraian}` : ''" :disable="store.loading"
+        clearable option-label="label" :display-value="store.form.uraian50" :disable="store.loading"
         :loading="store.loading" @filter="filterFn" @clear="store.setForm('kode50', null)" @update:model-value="(val) => {
           const arr = options || []
           const cari = arr.find(x => x.kodeall3 === val)
@@ -23,7 +23,7 @@
     <div class="" style="">
       <q-select v-model="store.form.kode_bast" use-input outlined standout="bg-yellow-3" dense emit-value map-options
         option-value="kodeall3" input-debounce="300" label="BAST (LO)" class="ellipsis-2-lines" :options="options"
-        clearable :option-label="opt => opt?.kodeall3 ? `${opt.kodeall3} - ${opt.uraian}` : ''" :disable="store.loading"
+        clearable option-label="label" :display-value="store.form.uraian_bast" :disable="store.loading"
         :loading="store.loading" @filter="filterFn" @clear="store.setForm('kode_bast', null)" @update:model-value="(val) => {
           const arr = options || []
           const cari = arr.find(x => x.kodeall3 === val)
@@ -39,7 +39,7 @@
     <div class="" style="">
       <q-select v-model="store.form.kode_bastx" use-input outlined standout="bg-yellow-3" dense emit-value map-options
         option-value="kodeall3" input-debounce="300" label="BAST (Neraca)" class="ellipsis-2-lines" :options="options"
-        clearable :option-label="opt => opt?.kodeall3 ? `${opt.kodeall3} - ${opt.uraian}` : ''" :disable="store.loading"
+        clearable option-label="label" :display-value="store.form.uraian_bastx" :disable="store.loading"
         :loading="store.loading" @filter="filterFn" @clear="store.setForm('kode_bastx', null)" @update:model-value="(val) => {
           const arr = options || []
           const cari = arr.find(x => x.kodeall3 === val)
@@ -55,7 +55,7 @@
     <div class="" style="">
       <q-select v-model="store.form.kode_bastcairx" use-input outlined standout="bg-yellow-3" dense emit-value
         map-options option-value="kodeall3" input-debounce="300" label="Pencairan (Neraca D)" class="ellipsis-2-lines"
-        :options="options" clearable :option-label="opt => opt?.kodeall3 ? `${opt.kodeall3} - ${opt.uraian}` : ''"
+        :options="options" clearable option-label="label" :display-value="store.form.uraian_bastcairx"
         :disable="store.loading" :loading="store.loading" @filter="filterFn"
         @clear="store.setForm('kode_bastcairx', null)" @update:model-value="(val) => {
           const arr = options || []
@@ -72,9 +72,9 @@
     <div class="" style="">
       <q-select v-model="store.form.kode_bastcair2" use-input outlined standout="bg-yellow-3" dense emit-value
         map-options clearable option-value="kodeall3" input-debounce="300" label="Pencairan (Neraca K)"
-        class="ellipsis-2-lines" :options="options"
-        :option-label="opt => opt?.kodeall3 ? `${opt.kodeall3} - ${opt.uraian}` : ''" :disable="store.loading"
-        :loading="store.loading" @filter="filterFn" @clear="store.setForm('kode_bastcair2', null)" @update:model-value="(val) => {
+        class="ellipsis-2-lines" :options="options" option-label="label" :display-value="store.form.uraian_bastcair2"
+        :disable="store.loading" :loading="store.loading" @filter="filterFn"
+        @clear="store.setForm('kode_bastcair2', null)" @update:model-value="(val) => {
           const arr = options || []
           const cari = arr.find(x => x.kodeall3 === val)
           store.form.uraian_bastcair2 = cari ? cari.uraian : ''
@@ -89,9 +89,9 @@
     <div class="" style="">
       <q-select v-model="store.form.kode_cairx" use-input outlined standout="bg-yellow-3" dense emit-value map-options
         clearable option-value="kodeall3" input-debounce="300" label="Pencairan Tanpa BAST (Neraca D)"
-        class="ellipsis-2-lines" :options="options"
-        :option-label="opt => opt?.kodeall3 ? `${opt.kodeall3} - ${opt.uraian}` : ''" :disable="store.loading"
-        :loading="store.loading" @filter="filterFn" @clear="store.setForm('kode_cairx', null)" @update:model-value="(val) => {
+        class="ellipsis-2-lines" :options="options" option-label="label" :display-value="store.form.uraian_bastcairx"
+        :disable="store.loading" :loading="store.loading" @filter="filterFn" @clear="store.setForm('kode_cairx', null)"
+        @update:model-value="(val) => {
           const arr = options || []
           const cari = arr.find(x => x.kodeall3 === val)
           store.form.uraian_cairx = cari ? cari.uraian : ''
@@ -106,9 +106,9 @@
     <div class="" style="">
       <q-select v-model="store.form.kode_cair2" use-input outlined standout="bg-yellow-3" dense emit-value map-options
         clearable option-value="kodeall3" input-debounce="300" label="Pencairan Tanpa BAST (Neraca K)"
-        class="ellipsis-2-lines" :options="options"
-        :option-label="opt => opt?.kodeall3 ? `${opt.kodeall3} - ${opt.uraian}` : ''" :disable="store.loading"
-        :loading="store.loading" @filter="filterFn" @clear="store.setForm('kode_cair2', null)" @update:model-value="(val) => {
+        class="ellipsis-2-lines" :options="options" option-label="label" :display-value="store.form.uraian_cair2"
+        :disable="store.loading" :loading="store.loading" @filter="filterFn" @clear="store.setForm('kode_cair2', null)"
+        @update:model-value="(val) => {
           const arr = options || []
           const cari = arr.find(x => x.kodeall3 === val)
           store.form.uraian_cair2 = cari ? cari.uraian : ''
@@ -124,8 +124,8 @@
     <div class="" style="">
       <q-select v-model="store.form.kode_lak" use-input outlined standout="bg-yellow-3" dense emit-value map-options
         option-value="kode" input-debounce="300" label="LAK" class="ellipsis-2-lines" :options="options_lak" clearable
-        :option-label="opt => opt?.kode ? `${opt.kode} - ${opt.uraian}` : ''" :disable="store.loading"
-        :loading="store.loading" @filter="filterFn_lak" @clear="store.setForm('kode_lak', null)" @update:model-value="(val) => {
+        option-label="label" :display-value="store.form.uraian_lak" :disable="store.loading" :loading="store.loading"
+        @filter="filterFn_lak" @clear="store.setForm('kode_lak', null)" @update:model-value="(val) => {
           const arr = options_lak || []
           const cari = arr.find(x => x.kode === val)
           store.form.uraian_lak = cari ? cari.uraian : ''

@@ -22,4 +22,7 @@ const props = defineProps({
 const AsyncComp = defineAsyncComponent(() =>
   import('./FrontPage.vue')
 )
+// const AsyncComp = defineAsyncComponent(() =>
+//   import('src/pages/simrs/ranap/layanan/mutasi/IndexPage.vue')
+// )
 </script>

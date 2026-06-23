@@ -22,7 +22,7 @@
           <!-- PANEL -->
           <q-tab-panel :name="menu?.name" class="q-pa-none">
             <!-- <PemeriksaanUmumPage :pasien="props?.pasien" /> -->
-            <component :is="menu?.comp" :pasien="pasien" :kasus="kasus" />
+            <component :is="menu?.comp" :pasien="refinedPasien" :kasus="kasus" />
           </q-tab-panel>
         </q-tab-panels>
       </div>
@@ -38,7 +38,7 @@ import { useAplikasiStore } from 'src/stores/app/aplikasi'
 import { useLaboratPoli } from 'src/stores/simrs/pelayanan/poli/laborat'
 import { usePermintaanBankDarahStore } from 'src/stores/simrs/ranap/bankdarah'
 import { usePengunjungRanapStore } from 'src/stores/simrs/ranap/pengunjung'
-import { computed, defineAsyncComponent, onMounted, ref } from 'vue'
+import { computed, defineAsyncComponent, onMounted, ref, toRaw } from 'vue'
 
 const auth = useAplikasiStore()
 
@@ -51,6 +51,13 @@ const props = defineProps({
     type: Object,
     default: null
   }
+})
+const refinedPasien = computed(() => {
+  const raw = toRaw(props?.pasien)
+  const pas = structuredClone(raw)
+  pas.kdgroup_ruangan = pas.rs10
+  pas.kodepoli = pas.rs13
+  return pas
 })
 const nakes = computed(() => {
   return auth?.user?.pegawai?.kdgroupnakes

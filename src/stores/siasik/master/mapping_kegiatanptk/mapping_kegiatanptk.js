@@ -11,6 +11,7 @@ export const useMasterMappingKegiatanPtkStore = defineStore('master-mapping-kegi
     loadingDelete: false,
     loadingKunci: false,
     form: {
+      id: '',
       kodepptk: '',
       namapptk: '',
       kodekegiatan: '',
@@ -27,6 +28,7 @@ export const useMasterMappingKegiatanPtkStore = defineStore('master-mapping-kegi
     reqs: {
       tahun: date.formatDate(Date.now(), 'YYYY'),
     },
+    isEdit: false,
     pegawais: [],
     bidangs: [],
     kegiatans: [],
@@ -38,6 +40,7 @@ export const useMasterMappingKegiatanPtkStore = defineStore('master-mapping-kegi
       this.form[key] = val
     },
     resetForm() {
+      this.isEdit = false
       this.form = {
         tahun: new Date().getFullYear(),
         kodekegiatan: null,
@@ -68,7 +71,7 @@ export const useMasterMappingKegiatanPtkStore = defineStore('master-mapping-kegi
       const params = { params: this.reqs }
       return new Promise((resolve) => {
         api.get('v1/master/siasik/kegiatanblud/index', params).then((resp) => {
-          console.log('Get Kegiatang', resp)
+          console.log('Get Kegiatan', resp)
           if (resp.status === 200) {
             this.kegiatans = resp.data
             this.loading = false
@@ -115,8 +118,10 @@ export const useMasterMappingKegiatanPtkStore = defineStore('master-mapping-kegi
       }
       this.loading = false
     },
-    editForm(val) {
-      // console.log('valedit', val)
+    async editForm(val) {
+      this.isEdit = true
+
+      this.form.id = val.id
       this.form.kodepptk = val.kodepptk
       this.form.namapptk = val.namapptk
       this.form.kodekegiatan = val.kodekegiatan
@@ -125,7 +130,6 @@ export const useMasterMappingKegiatanPtkStore = defineStore('master-mapping-kegi
       this.form.bidang = val.bidang
       this.form.alias = val.alias
       this.form.tahun = val.tahun
-
     },
     async deleteData(id) {
       this.loadingDelete = true

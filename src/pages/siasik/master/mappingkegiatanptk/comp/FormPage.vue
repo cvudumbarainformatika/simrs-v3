@@ -7,7 +7,7 @@
     <div class="" style="">
       <q-select v-model="store.form.kodekegiatan" use-input outlined standout="bg-yellow-3" dense emit-value map-options
         option-value="no" input-debounce="300" label="Kegiatan BLUD" class="ellipsis-2-lines"
-        :options="options_kegiatan" clearable :option-label="opt => opt?.no ? `${opt.kode} - ${opt.nomenklatur}` : ''"
+        :display-value="store.form.kegiatan" :options="options_kegiatan" clearable option-label="label"
         :disable="store.loadingSave" :loading="store.loadingSave" @filter="filterFnKegiatan"
         @clear="store.setForm('kodekegiatan', null)" @update:model-value="(val) => {
           const arr = store.optionkegiatan || []
@@ -59,6 +59,7 @@
 
 import { api } from 'src/boot/axios';
 import { useMasterMappingKegiatanPtkStore } from 'src/stores/siasik/master/mapping_kegiatanptk/mapping_kegiatanptk';
+import { computed, watch } from 'vue';
 import { onMounted, onUnmounted, ref } from 'vue';
 
 const store = useMasterMappingKegiatanPtkStore()
@@ -138,7 +139,7 @@ async function ubahTahun(val) {
   //   value: a.no
   // }))
 
-  const currentKode = store.form.kodekegiatan
+  const currentKode = Number(store.form.kodekegiatan)
 
   store.params.tahun = val
   await store.getData()
@@ -147,8 +148,16 @@ async function ubahTahun(val) {
 
   const used = store.items.map(x => Number(x.kodekegiatan))
 
-  let hasil = store.kegiatans.filter(k => !used.includes(Number(k.no)))
+  // let hasil = store.kegiatans.filter(k => !used.includes(Number(k.no)))
 
+  let hasil = store.kegiatans.filter(k => {
+    const no = Number(k.no)
+
+    return (
+      !used.includes(no) ||
+      no === currentKode
+    )
+  })
   // pastikan kegiatan yg sudah dipilih tetap ada
   if (currentKode) {
     const exist = store.kegiatans.find(k => Number(k.no) === Number(currentKode))
@@ -262,5 +271,47 @@ async function simpan() {
   await store.getData()
   await ubahTahun(store.form.tahun)
 }
+
+const filteredKegiatan = computed(() => {
+  const used = store.items.map(x => Number(x.kodekegiatan))
+  const currentKode = Number(store.form.kodekegiatan)
+
+  return store.kegiatans.filter(k => {
+    const no = Number(k.no)
+
+    return (
+      !used.includes(no) ||
+      no === currentKode
+    )
+  })
+})
+
+watch(filteredKegiatan, (val) => {
+  // console.log(' val', val)
+  store.optionkegiatan = val
+
+  options_kegiatan.value = val.map(a => ({
+    ...a,
+    label: `${a.kode} - ${a.nomenklatur}`,
+    value: a.no
+  }))
+  // console.log('option kegiatan', options_kegiatan.value)
+}, {
+  immediate: true
+})
+
+// watch(
+//   () => store.form.kodekegiatan,
+//   () => {
+//     console.log('model', store.form.kodekegiatan)
+//     console.log(
+//       'find',
+//       options_kegiatan.value.find(
+//         x => x.no == store.form.kodekegiatan
+//       )
+//     )
+//   },
+//   { immediate: true }
+// )
 
 </script>

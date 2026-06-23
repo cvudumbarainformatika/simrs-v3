@@ -47,7 +47,8 @@ export const useTriageIgd = defineStore('triageigd', {
       kategoritriage: '',
       hasilprimarysurve: '',
       hasilsecondsurve: '',
-      falsetriage: false
+      falsetriage: false,
+      hasil_gda: null
     }
   }),
   actions: {
@@ -171,6 +172,7 @@ export const useTriageIgd = defineStore('triageigd', {
       this.form.verbal = val?.verbal
       this.form.motorik = val?.motorik
       this.form.scorekesadaran = val?.scorekesadaran
+      this.form.hasil_gda = val?.hasil_gda
 
       this.form.bb = val?.bb
       this.form.tinggibadan = val?.tb

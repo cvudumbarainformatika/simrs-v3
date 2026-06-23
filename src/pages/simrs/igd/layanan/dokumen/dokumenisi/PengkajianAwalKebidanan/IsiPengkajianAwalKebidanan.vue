@@ -265,11 +265,11 @@
           Jenis :
           <span class="q-pr-sm">{{ selectedKontrasepsi !== 'Tidak' ?
             getDetailKontrasepsi() : '-'
-            }}, </span>
+          }}, </span>
           Lama Pemakaian :
           <span class="">{{ selectedKontrasepsi !== 'Tidak' ?
             getLamaPemakaian() : '-'
-            }}</span>
+          }}</span>
         </div>
       </div>
       <div class="row items-center q-px-sm q-pb-xs full-width">
@@ -279,7 +279,7 @@
           Keluahan :
           <span class="q-pr-sm">{{ selectedKontrasepsi !== 'Tidak' ?
             getKeluhanKontrasepsi() : '-'
-            }}</span>
+          }}</span>
         </div>
       </div>
 
@@ -675,7 +675,7 @@
           <div class="row">
             <div class="col">a. Perhatikan cara berjalan pasien saat akan duduk di kursi. Apakah pasien tampak tidak
               seimbang (sempoyongan)?
-              <b> {{ getYT(pasien?.penilaiananamnesis?.[0]?.morse_fall?.gayaJalan?.skor) }}</b>
+              <b> {{ item?.sempoyongan ?? '-' }}</b>
             </div>
           </div>
         </div>
@@ -685,7 +685,7 @@
           <div class="row">
             <div class="col">b. Apakah pasien memegang pinggiran kursi atau meja atau benda lain sebagai penopang saat
               akan duduk?
-              <b> {{ getYT(pasien?.penilaiananamnesis?.[0]?.morse_fall?.alatBantu?.skor) }}</b>
+              <b> {{ item?.penopangx ?? '-' }}</b>
             </div>
           </div>
         </div>
@@ -693,19 +693,22 @@
       <div class="row items-center q-px-sm q-pb-xs full-width">
         <div class="col q-pl-md">
           <div class="row">
-            <div class="col text-weight-bold">Hasil : {{ pasien?.penilaiananamnesis?.[0]?.morse_fall?.skorMorse?.label
-            }}</div>
+            <div class="col text-weight-bold">Hasil : {{ item?.hasil_resiko_pasien_jatuh ?? '-' }}
+            </div>
           </div>
         </div>
       </div>
       <div class="row items-center q-px-sm q-pb-xs full-width">
         <div class="col q-pl-md">
           <div class="row">
-            <div class="col">c. Gelisah : </div>
-            <div class="col">Restrain : </div>
+            <div class="col">c. Gelisah : {{ item?.gelisah ?? '-' }}</div>
+            <div class="col">Restrain : {{ item?.restrain ?? '-' }}</div>
           </div>
           <div class="row">
-            <div class="col">Diberikan ke dokter :</div>
+            <div class="col">Diberikan ke dokter : {{ item?.diberitaukankedokterjikaya ?? '-' }}
+              <span v-if="item?.diberitaukankedokterjikaya === 'Ya'"> {{
+                item?.keterangan ?? '-' }}</span>
+            </div>
             <div class="col">Jam : </div>
           </div>
         </div>
@@ -797,7 +800,7 @@
           <div>- Ekspresi Wajah : {{ item?.ekspresiwajah }}</div>
           <div>- Gerakan Tangan : {{ item?.gerakantangan }}</div>
           <div>- Kepatuhan terhadap ventilasi mekanik : {{ item?.kepatuhanventilasimekanik
-          }}</div>
+            }}</div>
           <div>
             <div>
               Skor Nyeri (BPS) =
@@ -1072,6 +1075,7 @@
 <script setup>
 import { date } from 'quasar';
 import { dateFull, dateFullFormat, dateHalfFormat, formatJam } from 'src/modules/formatter';
+import CardItemList from 'src/pages/simrs/radiologi/pengunjung/comp/CardItemList.vue';
 import { usePengunjungIgdStore } from 'src/stores/simrs/igd/pengunjung';
 import { useListKunjunganIgdStore } from 'src/stores/simrs/pendaftaran/generalconsent/kunjunganIgd';
 import { ref, watch, computed, onMounted } from 'vue';
@@ -1371,25 +1375,51 @@ watch(() => props.pasien, (newVal) => {
   border-width: 2px;
 }
 
+.b {
+  border-right: 2px solid #000;
+  border-left: 2px solid #000;
+  border-bottom: 2px solid #000;
+  border-top: none;
+}
+
+.b_double {
+  border-bottom: 4px double rgb(30, 30, 30);
+  border-left: none;
+  border-right: none;
+  border-top: none;
+  padding-top: 8px;
+}
+
 .b1 {
-  border-style: solid;
-  border-width: 2px;
+  border: 2px solid #000;
 }
 
 .b2 {
-  border-right-style: solid;
-  border-width: 2px;
+  border-right: 2px solid #000;
+  border-left: none;
+  border-bottom: none;
+  border-top: none;
 }
 
 .b3 {
-  border-bottom-style: solid;
-  border-width: 2px;
+  border-bottom: 2px solid #000;
+  border-left: none;
+  border-right: none;
+  border-top: none;
 }
 
 .b4 {
-  border-right-style: solid;
-  border-left-style: solid;
-  border-width: 2px;
+  border-right: 2px solid #000;
+  border-left: 2px solid #000;
+  border-bottom: none;
+  border-top: none;
+}
+
+.b5 {
+  border-left: 2px solid #000;
+  border-right: none;
+  border-bottom: none;
+  border-top: none;
 }
 
 table {

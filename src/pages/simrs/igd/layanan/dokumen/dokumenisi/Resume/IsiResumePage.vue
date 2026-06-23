@@ -290,7 +290,7 @@
             <span v-else-if="carakeluar?.rs4 === 'Rawat Inap'">{{ carakeluar?.rs4 }} Ke {{
               carakeluar?.planranap?.ruangranap?.rs2 }}</span>
             <span v-else-if="carakeluar?.rs4 === 'Rujuk'">{{ carakeluar?.rs4 }} Ke {{ carakeluar?.transrujukan?.rs7
-            }}</span>
+              }}</span>
             <span v-else></span>
           </div>
         </div>
@@ -473,40 +473,49 @@ const nyeri = computed(() => {
 }
 
 .b {
-  border-right-style: solid;
-  border-left-style: solid;
-  border-bottom-style: solid;
-  border-width: 2px;
+  border-right: 2px solid #000;
+  border-left: 2px solid #000;
+  border-bottom: 2px solid #000;
+  border-top: none;
 }
 
 .b_double {
   border-bottom: 4px double rgb(30, 30, 30);
+  border-left: none;
+  border-right: none;
+  border-top: none;
   padding-top: 8px;
 }
 
 .b1 {
-  border-style: solid;
-  border-width: 2px;
+  border: 2px solid #000;
 }
 
 .b2 {
-  border-right-style: solid;
-  border-width: 2px;
+  border-right: 2px solid #000;
+  border-left: none;
+  border-bottom: none;
+  border-top: none;
 }
 
 .b3 {
-  border-bottom-style: solid;
-  border-width: 2px;
+  border-bottom: 2px solid #000;
+  border-left: none;
+  border-right: none;
+  border-top: none;
 }
 
 .b4 {
-  border-right-style: solid;
-  border-left-style: solid;
-  border-width: 2px;
+  border-right: 2px solid #000;
+  border-left: 2px solid #000;
+  border-bottom: none;
+  border-top: none;
 }
 
 .b5 {
-  border-left-style: solid;
-  border-width: 2px;
+  border-left: 2px solid #000;
+  border-right: none;
+  border-bottom: none;
+  border-top: none;
 }
 </style>

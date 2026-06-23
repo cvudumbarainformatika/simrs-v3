@@ -17,7 +17,7 @@ export const useLaporanOperasiStore = defineStore('laporan_operasi_store', {
     form: {},
     notaTindakans: ['Baru'],
     formTindakan: {},
-    optionJenisAnastesis: ['General Tiva', 'General FM', 'General Intubasi', 'Lokal', 'Regional'],
+    optionJenisAnastesis: ['General Tiva', 'General FM', 'General Intubasi', 'Lokal', 'Regional', 'LMA'],
     optionKlasifikasiOperasis: ['Operasi Bersih', 'Operasi Bersih Terkontaminasi', 'Operasi Kotor', 'Operasi Terkontaminasi'],
     optionYT: ['YA', 'TIDAK'],
     optionAsa: ['-', '1', '2', '3', '4', '5'],

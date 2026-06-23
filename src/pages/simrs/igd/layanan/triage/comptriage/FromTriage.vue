@@ -256,6 +256,10 @@
                   <q-input ref="reftinggibadan" v-model="store.form.tinggibadan" label="Tinggi Badan/Cm" type="number"
                     outlined standout="bg-yellow-3" dense :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" />
                 </div>
+                <div class="col-12">
+                  <q-input v-model="store.form.hasil_gda" label="Hasil GDA (mg/dL)" type="number" outlined
+                    standout="bg-yellow-3" dense />
+                </div>
               </div>
               <div class="row q-col-gutter-sm q-pb-sm">
                 <div class="col-6">
@@ -454,6 +458,7 @@ function kuis1() {
   store.form.scorelochea = null
   store.form.scoreproteinurin = null
   store.form.totalscore = null
+  store.form.hasil_gda = null
 }
 
 function cekjalannafas(val) {

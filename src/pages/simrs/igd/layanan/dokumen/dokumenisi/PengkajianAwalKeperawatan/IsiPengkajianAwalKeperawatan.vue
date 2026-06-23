@@ -90,12 +90,41 @@
         11. Resiko Pasien Jatuh
       </div>
 
-      <div class="text-weight-bold text-uppercase q-mx-sm">:</div>
+      <div class="text-weight-bold text-uppercase" style="width: 10px;">:</div>
 
       <div class="col" v-if="resikoJatuh">
-
+        <div class="row items-center q-pb-xs full-width">
+          <div class="col">i. Perhatikan cara berjalan pasien saat akan duduk di kursi. Apakah pasien tampak tidak
+            seimbang (sempoyongan)?
+            <span> {{ resikoJatuh?.sempoyongan === '' ? '-' : resikoJatuh?.sempoyongan }}</span>
+          </div>
+        </div>
+        <div class="row items-center q-pb-xs full-width">
+          <div class="col">ii. Apakah pasien memegang pinggiran kursi atau meja atau benda lain sebagai penopang saat
+            akan duduk?
+            <span> {{ resikoJatuh?.penopangx === '' ? '-' : resikoJatuh?.penopangx }}</span>
+          </div>
+        </div>
+        <div class="row items-center q-pb-xs full-width">
+          <div class="col">iii. Gelisah :
+            <span> {{ resikoJatuh?.gelisah === '' ? '-' : resikoJatuh?.gelisah }}</span>
+          </div>
+        </div>
+        <div class="row items-center q-pb-xs full-width">
+          <div class="col">Hasil :
+            <span> {{ resikoJatuh?.hasil_resiko_pasien_jatuh === '' ? '-' : resikoJatuh?.hasil_resiko_pasien_jatuh
+              }}</span>
+          </div>
+        </div>
+        <div class="row items-center q-pb-xs full-width">
+          <div class="col">Diberikan ke dokter : {{ resikoJatuh?.diberitaukankedokterjikaya === '' ? '-' :
+            resikoJatuh?.diberitaukankedokterjikaya }}
+            <span v-if="resikoJatuh?.diberitaukankedokterjikaya === 'Ya'"> {{
+              resikoJatuh?.keterangan === '' ? '-' : resikoJatuh?.keterangan }}</span>
+          </div>
+        </div>
         <!-- MORSE -->
-        <div v-if="resikoJatuh?.morse_fall">
+        <!-- <div v-if="resikoJatuh?.morse_fall">
           <div class="text-weight-bold q-mt-md">MORSE FALL</div>
 
           <div v-for="(sub, key) in resikoJatuh.morse_fall" :key="key" v-if="key !== 'skorMorse'" class="row q-mb-xs">
@@ -114,10 +143,10 @@
               => ( {{ resikoJatuh.morse_fall.skorMorse?.skor }} )
             </div>
           </div>
-        </div>
+        </div> -->
 
         <!-- HUMPTY -->
-        <div v-if="resikoJatuh?.humpty_dumpty">
+        <!-- <div v-if="resikoJatuh?.humpty_dumpty">
           <div class="text-weight-bold q-mt-md">HUMPTY DUMPTY</div>
 
           <div v-for="(sub, key) in resikoJatuh.humpty_dumpty" :key="key" class="row q-mb-xs">
@@ -127,10 +156,10 @@
               {{ sub?.label }} => ( {{ sub?.skor }} )
             </div>
           </div>
-        </div>
+        </div> -->
 
         <!-- BARTHEL -->
-        <div v-if="resikoJatuh?.barthel">
+        <!-- <div v-if="resikoJatuh?.barthel">
           <div class="text-weight-bold q-mt-md">BARTHEL INDEX</div>
 
           <div v-for="(sub, key) in resikoJatuh.barthel" :key="key" class="row q-mb-xs">
@@ -140,10 +169,10 @@
               {{ sub?.label }} => ( {{ sub?.skor }} )
             </div>
           </div>
-        </div>
+        </div> -->
 
         <!-- NORTON -->
-        <div v-if="resikoJatuh?.norton">
+        <!-- <div v-if="resikoJatuh?.norton">
           <div class="text-weight-bold q-mt-md">NORTON</div>
 
           <div v-for="(sub, key) in resikoJatuh.norton" :key="key" class="row q-mb-xs">
@@ -153,10 +182,10 @@
               {{ sub?.label }} => ( {{ sub?.skor }} )
             </div>
           </div>
-        </div>
+        </div> -->
 
         <!-- ONTARIO -->
-        <div v-if="resikoJatuh?.ontario">
+        <!-- <div v-if="resikoJatuh?.ontario">
           <div class="text-weight-bold q-mt-md">ONTARIO</div>
 
           <div v-for="(sub, key) in resikoJatuh.ontario" :key="key" class="row q-mb-xs">
@@ -166,7 +195,7 @@
               {{ sub?.label }} => ( {{ sub?.skor }} )
             </div>
           </div>
-        </div>
+        </div> -->
 
       </div>
     </div>
@@ -325,7 +354,8 @@ const hitungKategori = (morse) => {
 }
 
 const resikoJatuh = computed(() => {
-  const data = props?.pasien?.penilaiananamnesis
+  // const data = props?.pasien?.penilaiananamnesis
+  const data = props?.pasien?.anamnesis
 
   if (!Array.isArray(data) || !data.length) return null
 

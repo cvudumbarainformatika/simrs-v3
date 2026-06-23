@@ -28,7 +28,9 @@ export const useLaporanLraLaprealisasianggaranStore = defineStore('laporan_reali
     display: {
       dari: date.formatDate(Date.now(), 'DD MMMM YYYY'),
       sampai: date.formatDate(Date.now(), 'DD MMMM YYYY'),
-      sekarang: date.formatDate(Date.now(), 'DD MMMM YYYY')
+      sekarang: date.formatDate(Date.now(), 'DD MMMM YYYY'),
+      bidang: null,
+      kegiatan: null
     },
     reqlevels: null,
     realisasibelanja: [],
@@ -72,18 +74,22 @@ export const useLaporanLraLaprealisasianggaranStore = defineStore('laporan_reali
       this.params[key] = val
     },
     emptyForm() {
-      // this.params.bidang = ''
+      this.params.bidang = ''
       this.params.kegiatan = ''
     },
 
     // eslint-disable-next-line space-before-function-paren
     getDataBidang() {
+      this.params.bidang = ''
+      this.params.kegiatan = ''
       this.loading = true
       const params = { params: this.params }
       return new Promise((resolve) => {
         api.get('v1/laporan/lra/bidang', params).then((resp) => {
           // console.log('bidang', resp)
           if (resp.status === 200) {
+            this.bidangs = []
+            this.kegiatans = []
             this.mapbidangptk = resp.data
             // this.bidangs = resp.data
             // this.kegiatans = resp.data
@@ -1275,6 +1281,882 @@ export const useLaporanLraLaprealisasianggaranStore = defineStore('laporan_reali
       // )
 
       return sort && sortkode1 && sortkode2 && sortkode3 && sortkode4 && sortkode5
+    },
+
+    getLRA() {
+      this.loadingdata = true
+      const params = { params: this.params }
+      return new Promise(resolve => {
+        api.get('v1/laporan/lra/datalra', params).then(resp => {
+          if (resp.status === 200) {
+            console.log('Data LRA', resp)
+            this.pagupendapatans = resp.data.pagupendapatan
+            this.realisasi_pendapatan = resp.data?.realisasi_pendapatan
+            this.realisasi_pendapatan_sebelum = resp.data?.realisasi_pendapatan_sebelum
+            this.reklas_pendapatan = resp.data?.reklas_pendapatan
+            this.reklas_pendapatan_sebelum = resp.data?.reklas_pendapatan_sebelum
+
+            this.pembiayaans = resp.data?.pembiayaan
+            this.paguPembiayaans = resp.data?.silpa
+
+            this.realisasibelanja = resp.data?.belanja
+            this.realisasibelanja_sebelum = resp.data?.belanja_sebelum
+            this.mapingData()
+
+            this.loadingdata = false
+            resolve(resp)
+          }
+        }).catch(() => {
+          this.loadingdata = false
+          // this.items = []
+        })
+      })
+    },
+
+    mapingData() {
+
+      // PEMBIAYAAN
+      const realSebelumnya = this.paguPembiayaans?.filter((x) => {
+        const tgl = new Date(x?.tanggal).getTime()
+        return tgl < new Date(this.params.tgl).getTime()
+      }).map((x) => parseFloat(x.nominal))
+
+      const realsekarang = this.paguPembiayaans?.filter((x) => {
+        const tgl = new Date(x?.tanggal).getTime()
+        return tgl >= new Date(this.params.tgl).getTime() && tgl <= new Date(this.params.tglx).getTime()
+      }).map((x) => parseFloat(x.nominal))
+
+      const totalPagu = this.paguPembiayaans?.map((x) => parseFloat(x.nominal)).reduce((a, b) => a + b, 0)
+
+      // console.log('klklkl', totalPagu)
+
+      const total = {
+        totalPaguPembiayaan: totalPagu,
+        totalSekarang: realsekarang?.reduce((a, b) => a + b, 0),
+        totalSebelumnya: realSebelumnya?.reduce((a, b) => a + b, 0),
+        totalRealisasi: realsekarang?.reduce((a, b) => a + b, 0) + realSebelumnya?.reduce((a, b) => a + b, 0),
+        selisih: totalPagu - (realSebelumnya?.reduce((a, b) => a + b, 0) + realsekarang?.reduce((a, b) => a + b, 0)),
+        persen: isNaN((((realSebelumnya?.reduce((a, b) => parseFloat(a) + parseFloat(b), 0) + realsekarang?.reduce((a, b) => parseFloat(a) + parseFloat(b), 0)) / parseFloat(totalPagu)) * 100).toFixed(2)) ?
+          parseFloat(0).toFixed(2) : (((realSebelumnya?.reduce((a, b) => parseFloat(a) + parseFloat(b), 0) + realsekarang?.reduce((a, b) => parseFloat(a) + parseFloat(b), 0)) / parseFloat(totalPagu)) * 100).toFixed(2)
+      }
+
+      this.realisasiPembiayaans = total
+
+
+      // PENDAPATAN
+      const pendapatan = []
+
+      const groupBypendapatan = (arr, field) =>
+        arr.reduce((acc, item) => {
+          if (!acc[item[field]]) acc[item[field]] = []
+          acc[item[field]].push(item)
+          return acc
+        }, {})
+      const paguByKode6 = groupBypendapatan(this.pagupendapatans, 'kode6')
+      const realisasiByKode6 = groupBypendapatan(this.realisasi_pendapatan, 'kode6')
+      const realisasiSebelumByKode6 = groupBypendapatan(this.realisasi_pendapatan_sebelum, 'kode6')
+      const reklasByKode6 = groupBypendapatan(this.reklas_pendapatan, 'kode6')
+      const reklasSebelumByKode6 = groupBypendapatan(this.reklas_pendapatan_sebelum, 'kode6')
+
+      Object.entries(paguByKode6).forEach(([kode6, paguRows]) => {
+
+        const realisasiRows = realisasiByKode6[kode6] || []
+        const realisasiSebelumRows = realisasiSebelumByKode6[kode6] || []
+        const reklasRows = reklasByKode6[kode6] || []
+        const reklasSebelumRows = reklasSebelumByKode6[kode6] || []
+
+        const totalPagu = paguRows.reduce(
+          (a, b) => a + Number(b.pagupendapatan || 0),
+          0
+        )
+
+        const realisasi_skg = realisasiRows.reduce(
+          (a, b) => a + Number(b.subtotal || 0),
+          0
+        )
+
+        const realisasi_sblm = realisasiSebelumRows.reduce(
+          (a, b) => a + Number(b.pendpsebelumnya || 0),
+          0
+        )
+
+        const totalpeny = reklasRows.reduce(
+          (a, b) => a + Number(b.totalpenyesuaian || 0),
+          0
+        )
+
+        const totalpenysblm = reklasSebelumRows.reduce(
+          (a, b) => a + Number(b.totalpenyesuaian || 0),
+          0
+        )
+
+        const nilaiskg = realisasi_skg + totalpeny
+        const nilaisblm = realisasi_sblm + totalpenysblm
+        const nilaisemua = nilaiskg + nilaisblm
+
+        pendapatan.push({
+          kode: kode6,
+          uraian: paguRows[0].uraian,
+          pagu: totalPagu,
+          nilaiskg,
+          nilaisblm,
+          nilaisemua,
+          selisih: totalPagu - nilaisemua,
+          persen: totalPagu > 0
+            ? ((nilaisemua / totalPagu) * 100).toFixed(2)
+            : '0.00'
+        })
+      })
+
+
+      const paguByKode5 = groupBypendapatan(this.pagupendapatans, 'kode5')
+      const realisasiByKode5 = groupBypendapatan(this.realisasi_pendapatan, 'kode5')
+      const realisasiSebelumByKode5 = groupBypendapatan(this.realisasi_pendapatan_sebelum, 'kode5')
+      const reklasByKode5 = groupBypendapatan(this.reklas_pendapatan, 'kode5')
+      const reklasSebelumByKode5 = groupBypendapatan(this.reklas_pendapatan_sebelum, 'kode5')
+
+      Object.entries(paguByKode5).forEach(([kode5, paguRows]) => {
+
+        const realisasiRows = realisasiByKode5[kode5] || []
+        const realisasiSebelumRows = realisasiSebelumByKode5[kode5] || []
+        const reklasRows = reklasByKode5[kode5] || []
+        const reklasSebelumRows = reklasSebelumByKode5[kode5] || []
+
+        const totalPagu = paguRows.reduce(
+          (a, b) => a + Number(b.pagupendapatan || 0),
+          0
+        )
+
+        const realisasi_skg = realisasiRows.reduce(
+          (a, b) => a + Number(b.subtotal || 0),
+          0
+        )
+
+        const realisasi_sblm = realisasiSebelumRows.reduce(
+          (a, b) => a + Number(b.pendpsebelumnya || 0),
+          0
+        )
+
+        const totalpeny = reklasRows.reduce(
+          (a, b) => a + Number(b.totalpenyesuaian || 0),
+          0
+        )
+
+        const totalpenysblm = reklasSebelumRows.reduce(
+          (a, b) => a + Number(b.totalpenyesuaian || 0),
+          0
+        )
+
+        const nilaiskg = realisasi_skg + totalpeny
+        const nilaisblm = realisasi_sblm + totalpenysblm
+        const nilaisemua = nilaiskg + nilaisblm
+
+        pendapatan.push({
+          kode: kode5,
+          uraian: paguRows[0].uraian5,
+          pagu: totalPagu,
+          nilaiskg,
+          nilaisblm,
+          nilaisemua,
+          selisih: totalPagu - nilaisemua,
+          persen: totalPagu > 0
+            ? ((nilaisemua / totalPagu) * 100).toFixed(2)
+            : '0.00'
+        })
+      })
+
+
+
+      const paguByKode4 = groupBypendapatan(this.pagupendapatans, 'kode4')
+      const realisasiByKode4 = groupBypendapatan(this.realisasi_pendapatan, 'kode4')
+      const realisasiSebelumByKode4 = groupBypendapatan(this.realisasi_pendapatan_sebelum, 'kode4')
+      const reklasByKode4 = groupBypendapatan(this.reklas_pendapatan, 'kode4')
+      const reklasSebelumByKode4 = groupBypendapatan(this.reklas_pendapatan_sebelum, 'kode4')
+
+      Object.entries(paguByKode4).forEach(([kode4, paguRows]) => {
+
+        const realisasiRows = realisasiByKode4[kode4] || []
+        const realisasiSebelumRows = realisasiSebelumByKode4[kode4] || []
+        const reklasRows = reklasByKode4[kode4] || []
+        const reklasSebelumRows = reklasSebelumByKode4[kode4] || []
+
+        const totalPagu = paguRows.reduce(
+          (a, b) => a + Number(b.pagupendapatan || 0),
+          0
+        )
+
+        const realisasi_skg = realisasiRows.reduce(
+          (a, b) => a + Number(b.subtotal || 0),
+          0
+        )
+
+        const realisasi_sblm = realisasiSebelumRows.reduce(
+          (a, b) => a + Number(b.pendpsebelumnya || 0),
+          0
+        )
+
+        const totalpeny = reklasRows.reduce(
+          (a, b) => a + Number(b.totalpenyesuaian || 0),
+          0
+        )
+
+        const totalpenysblm = reklasSebelumRows.reduce(
+          (a, b) => a + Number(b.totalpenyesuaian || 0),
+          0
+        )
+
+        const nilaiskg = realisasi_skg + totalpeny
+        const nilaisblm = realisasi_sblm + totalpenysblm
+        const nilaisemua = nilaiskg + nilaisblm
+
+        pendapatan.push({
+          kode: kode4,
+          uraian: paguRows[0].uraian4,
+          pagu: totalPagu,
+          nilaiskg,
+          nilaisblm,
+          nilaisemua,
+          selisih: totalPagu - nilaisemua,
+          persen: totalPagu > 0
+            ? ((nilaisemua / totalPagu) * 100).toFixed(2)
+            : '0.00'
+        })
+      })
+
+
+      const paguByKode3 = groupBypendapatan(this.pagupendapatans, 'kode3')
+      const realisasiByKode3 = groupBypendapatan(this.realisasi_pendapatan, 'kode3')
+      const realisasiSebelumByKode3 = groupBypendapatan(this.realisasi_pendapatan_sebelum, 'kode3')
+      const reklasByKode3 = groupBypendapatan(this.reklas_pendapatan, 'kode3')
+      const reklasSebelumByKode3 = groupBypendapatan(this.reklas_pendapatan_sebelum, 'kode3')
+
+      Object.entries(paguByKode3).forEach(([kode3, paguRows]) => {
+
+        const realisasiRows = realisasiByKode3[kode3] || []
+        const realisasiSebelumRows = realisasiSebelumByKode3[kode3] || []
+        const reklasRows = reklasByKode3[kode3] || []
+        const reklasSebelumRows = reklasSebelumByKode3[kode3] || []
+
+        const totalPagu = paguRows.reduce(
+          (a, b) => a + Number(b.pagupendapatan || 0),
+          0
+        )
+
+        const realisasi_skg = realisasiRows.reduce(
+          (a, b) => a + Number(b.subtotal || 0),
+          0
+        )
+
+        const realisasi_sblm = realisasiSebelumRows.reduce(
+          (a, b) => a + Number(b.pendpsebelumnya || 0),
+          0
+        )
+
+        const totalpeny = reklasRows.reduce(
+          (a, b) => a + Number(b.totalpenyesuaian || 0),
+          0
+        )
+
+        const totalpenysblm = reklasSebelumRows.reduce(
+          (a, b) => a + Number(b.totalpenyesuaian || 0),
+          0
+        )
+
+        const nilaiskg = realisasi_skg + totalpeny
+        const nilaisblm = realisasi_sblm + totalpenysblm
+        const nilaisemua = nilaiskg + nilaisblm
+
+        pendapatan.push({
+          kode: kode3,
+          uraian: paguRows[0].uraian3,
+          pagu: totalPagu,
+          nilaiskg,
+          nilaisblm,
+          nilaisemua,
+          selisih: totalPagu - nilaisemua,
+          persen: totalPagu > 0
+            ? ((nilaisemua / totalPagu) * 100).toFixed(2)
+            : '0.00'
+        })
+      })
+
+      const paguByKode2 = groupBypendapatan(this.pagupendapatans, 'kode2')
+      const realisasiByKode2 = groupBypendapatan(this.realisasi_pendapatan, 'kode2')
+      const realisasiSebelumByKode2 = groupBypendapatan(this.realisasi_pendapatan_sebelum, 'kode2')
+      const reklasByKode2 = groupBypendapatan(this.reklas_pendapatan, 'kode2')
+      const reklasSebelumByKode2 = groupBypendapatan(this.reklas_pendapatan_sebelum, 'kode2')
+
+      Object.entries(paguByKode2).forEach(([kode2, paguRows]) => {
+
+        const realisasiRows = realisasiByKode2[kode2] || []
+        const realisasiSebelumRows = realisasiSebelumByKode2[kode2] || []
+        const reklasRows = reklasByKode2[kode2] || []
+        const reklasSebelumRows = reklasSebelumByKode2[kode2] || []
+
+        const totalPagu = paguRows.reduce(
+          (a, b) => a + Number(b.pagupendapatan || 0),
+          0
+        )
+
+        const realisasi_skg = realisasiRows.reduce(
+          (a, b) => a + Number(b.subtotal || 0),
+          0
+        )
+
+        const realisasi_sblm = realisasiSebelumRows.reduce(
+          (a, b) => a + Number(b.pendpsebelumnya || 0),
+          0
+        )
+
+        const totalpeny = reklasRows.reduce(
+          (a, b) => a + Number(b.totalpenyesuaian || 0),
+          0
+        )
+
+        const totalpenysblm = reklasSebelumRows.reduce(
+          (a, b) => a + Number(b.totalpenyesuaian || 0),
+          0
+        )
+
+        const nilaiskg = realisasi_skg + totalpeny
+        const nilaisblm = realisasi_sblm + totalpenysblm
+        const nilaisemua = nilaiskg + nilaisblm
+
+        pendapatan.push({
+          kode: kode2,
+          uraian: paguRows[0].uraian2,
+          pagu: totalPagu,
+          nilaiskg,
+          nilaisblm,
+          nilaisemua,
+          selisih: totalPagu - nilaisemua,
+          persen: totalPagu > 0
+            ? ((nilaisemua / totalPagu) * 100).toFixed(2)
+            : '0.00'
+        })
+      })
+
+
+      const paguByKode1 = groupBypendapatan(this.pagupendapatans, 'kode1')
+      const realisasiByKode1 = groupBypendapatan(this.realisasi_pendapatan, 'kode1')
+      const realisasiSebelumByKode1 = groupBypendapatan(this.realisasi_pendapatan_sebelum, 'kode1')
+      const reklasByKode1 = groupBypendapatan(this.reklas_pendapatan, 'kode1')
+      const reklasSebelumByKode1 = groupBypendapatan(this.reklas_pendapatan_sebelum, 'kode1')
+
+      Object.entries(paguByKode1).forEach(([kode1, paguRows]) => {
+
+        const realisasiRows = realisasiByKode1[kode1] || []
+        const realisasiSebelumRows = realisasiSebelumByKode1[kode1] || []
+        const reklasRows = reklasByKode1[kode1] || []
+        const reklasSebelumRows = reklasSebelumByKode1[kode1] || []
+
+        const totalPagu = paguRows.reduce(
+          (a, b) => a + Number(b.pagupendapatan || 0),
+          0
+        )
+
+        const realisasi_skg = realisasiRows.reduce(
+          (a, b) => a + Number(b.subtotal || 0),
+          0
+        )
+
+        const realisasi_sblm = realisasiSebelumRows.reduce(
+          (a, b) => a + Number(b.pendpsebelumnya || 0),
+          0
+        )
+
+        const totalpeny = reklasRows.reduce(
+          (a, b) => a + Number(b.totalpenyesuaian || 0),
+          0
+        )
+
+        const totalpenysblm = reklasSebelumRows.reduce(
+          (a, b) => a + Number(b.totalpenyesuaian || 0),
+          0
+        )
+
+        const nilaiskg = realisasi_skg + totalpeny
+        const nilaisblm = realisasi_sblm + totalpenysblm
+        const nilaisemua = nilaiskg + nilaisblm
+
+        pendapatan.push({
+          kode: kode1,
+          uraian: paguRows[0].uraian1,
+          pagu: totalPagu,
+          nilaiskg,
+          nilaisblm,
+          nilaisemua,
+          selisih: totalPagu - nilaisemua,
+          persen: totalPagu > 0
+            ? ((nilaisemua / totalPagu) * 100).toFixed(2)
+            : '0.00'
+        })
+      })
+
+      const sortpendapatan = (pendapatan) =>
+        pendapatan.sort(({ kode: a }, { kode: b }) =>
+          a < b ? -1 : a > b ? 1 : 0
+        )
+      this.pendapatans = sortpendapatan(pendapatan)
+
+
+
+
+      // BELANJA
+      const belanja_kode = []
+      const summaryIdpp = {}
+      // hitung sekali saja
+      const semuaIdpp = [...new Set(this.realisasibelanja.map(x => x.idpp))]
+
+      semuaIdpp.forEach(idpp => {
+        const rows = this.realisasibelanja.filter(x => x.idpp === idpp)
+        const row = rows[0]
+
+        const npdLS = rows
+          .flatMap(x => x.realisasi || [])
+          .reduce((a, b) => a + Number(b.realisasi || 0), 0)
+
+        const spjpanjar = rows
+          .flatMap(x => x.realisasi_spjpanjar || [])
+          .reduce((a, b) => a + Number(b.jumlahbelanjapanjar || 0), 0)
+
+        const cp = rows
+          .flatMap(x => x.contrapost || [])
+          .reduce((a, b) => a + Number(b.nominalcontrapost || 0), 0)
+
+        const rowsSebelum = this.realisasibelanja_sebelum.filter(x => x.idpp === idpp)
+
+        const npdLS_sebelum = rowsSebelum
+          .flatMap(x => x.realisasi || [])
+          .reduce((a, b) => a + Number(b.realisasi || 0), 0)
+
+        const spjpanjar_sebelum = rowsSebelum
+          .flatMap(x => x.realisasi_spjpanjar || [])
+          .reduce((a, b) => a + Number(b.jumlahbelanjapanjar || 0), 0)
+
+        const cp_sebelum = rowsSebelum
+          .flatMap(x => x.contrapost || [])
+          .reduce((a, b) => a + Number(b.nominalcontrapost || 0), 0)
+
+        summaryIdpp[idpp] = {
+          usulan: row.usulan,
+          pagu: Number(row.pagu),
+          volume: Number(row.volume),
+          harga: Number(row.harga),
+          satuan: row.satuan,
+          koderek108: row.koderek108,
+          realisasi_sekarang: npdLS + spjpanjar - cp,
+          realisasi_sebelum: npdLS_sebelum + spjpanjar_sebelum - cp_sebelum
+        }
+      })
+
+      const byKode6 = this.realisasibelanja.reduce((acc, item) => {
+        if (!acc[item.kode6]) acc[item.kode6] = []
+        acc[item.kode6].push(item)
+        return acc
+      }, {})
+
+      Object.entries(byKode6).forEach(([kode6, rows]) => {
+
+        const rincian = []
+        const pagu = rows.reduce(
+          (a, b) => a + Number(b.pagu || 0),
+          0
+        )
+        const unikIdpp = [...new Set(rows.map(x => x.idpp))]
+
+        unikIdpp.forEach(idpp => {
+          const data = summaryIdpp[idpp]
+          rincian.push({
+            usulan: data.usulan,
+            pagu: data.pagu,
+            volume: data.volume,
+            harga: data.harga,
+            satuan: data.satuan,
+            koderek108: data.koderek108,
+            realisasi_sekarang: data.realisasi_sekarang,
+            realisasi_sebelum: data.realisasi_sebelum,
+            total:
+              data.realisasi_sekarang +
+              data.realisasi_sebelum,
+            sisa_pagu:
+              data.pagu -
+              (
+                data.realisasi_sekarang +
+                data.realisasi_sebelum
+              )
+          })
+        })
+        const realisasi_skg = rincian.reduce(
+          (a, b) => a + b.realisasi_sekarang,
+          0
+        )
+        const realisasi_sblm = rincian.reduce(
+          (a, b) => a + b.realisasi_sebelum,
+          0
+        )
+        const total_realisasi =
+          realisasi_skg + realisasi_sblm
+
+        // rincian.sort((a, b) => {
+        //   const kodeA = a.koderek108 || '';
+        //   const kodeB = b.koderek108 || '';
+        //   return kodeA.localeCompare(kodeB, undefined, { numeric: true, sensitivity: 'base' });
+        // })
+        belanja_kode.push({
+          kode: kode6,
+          uraian: rows[0].uraian,
+          pagu,
+          realisasi_skg,
+          realisasi_sblm,
+          total_realisasi,
+          selisih: pagu - total_realisasi,
+          persen:
+            pagu > 0
+              ? ((total_realisasi / pagu) * 100).toFixed(2)
+              : '0.00',
+          rincian
+        })
+      })
+
+      //KODE 5
+      const byKode5 = this.realisasibelanja.reduce((acc, item) => {
+        if (!acc[item.kode5]) acc[item.kode5] = []
+        acc[item.kode5].push(item)
+        return acc
+      }, {})
+
+      Object.entries(byKode5).forEach(([kode5, rows]) => {
+
+        const rincian = []
+        const pagu = rows.reduce(
+          (a, b) => a + Number(b.pagu || 0),
+          0
+        )
+        const unikIdpp = [...new Set(rows.map(x => x.idpp))]
+
+        unikIdpp.forEach(idpp => {
+          const data = summaryIdpp[idpp]
+          rincian.push({
+            // usulan: data.usulan,
+            // pagu: data.pagu,
+            // volume: data.volume,
+            // harga: data.harga,
+            // satuan: data.satuan,
+            // koderek108: data.koderek108,
+            realisasi_sekarang: data.realisasi_sekarang,
+            realisasi_sebelum: data.realisasi_sebelum,
+            // total:
+            //   data.realisasi_sekarang +
+            //   data.realisasi_sebelum,
+            // sisa_pagu:
+            //   data.pagu -
+            //   (
+            //     data.realisasi_sekarang +
+            //     data.realisasi_sebelum
+            //   )
+          })
+        })
+        const realisasi_skg = rincian.reduce(
+          (a, b) => a + b.realisasi_sekarang,
+          0
+        )
+        const realisasi_sblm = rincian.reduce(
+          (a, b) => a + b.realisasi_sebelum,
+          0
+        )
+        const total_realisasi =
+          realisasi_skg + realisasi_sblm
+        // rincian.sort((a, b) => {
+        //   const kodeA = a.koderek108 || '';
+        //   const kodeB = b.koderek108 || '';
+        //   return kodeA.localeCompare(kodeB, undefined, { numeric: true, sensitivity: 'base' });
+        // })
+        belanja_kode.push({
+          kode: kode5,
+          uraian: rows[0].uraian5,
+          pagu,
+          realisasi_skg,
+          realisasi_sblm,
+          total_realisasi,
+          selisih: pagu - total_realisasi,
+          persen:
+            pagu > 0
+              ? ((total_realisasi / pagu) * 100).toFixed(2)
+              : '0.00',
+          rincian
+        })
+      })
+
+
+      //KODE 4
+      const byKode4 = this.realisasibelanja.reduce((acc, item) => {
+        if (!acc[item.kode4]) acc[item.kode4] = []
+        acc[item.kode4].push(item)
+        return acc
+      }, {})
+
+      Object.entries(byKode4).forEach(([kode4, rows]) => {
+
+        const rincian = []
+        const pagu = rows.reduce(
+          (a, b) => a + Number(b.pagu || 0),
+          0
+        )
+        const unikIdpp = [...new Set(rows.map(x => x.idpp))]
+
+        unikIdpp.forEach(idpp => {
+          const data = summaryIdpp[idpp]
+          rincian.push({
+            // usulan: data.usulan,
+            // pagu: data.pagu,
+            // volume: data.volume,
+            // harga: data.harga,
+            // satuan: data.satuan,
+            // koderek108: data.koderek108,
+            realisasi_sekarang: data.realisasi_sekarang,
+            realisasi_sebelum: data.realisasi_sebelum,
+            // total:
+            //   data.realisasi_sekarang +
+            //   data.realisasi_sebelum,
+            // sisa_pagu:
+            //   data.pagu -
+            //   (
+            //     data.realisasi_sekarang +
+            //     data.realisasi_sebelum
+            //   )
+          })
+        })
+        const realisasi_skg = rincian.reduce(
+          (a, b) => a + b.realisasi_sekarang,
+          0
+        )
+        const realisasi_sblm = rincian.reduce(
+          (a, b) => a + b.realisasi_sebelum,
+          0
+        )
+        const total_realisasi =
+          realisasi_skg + realisasi_sblm
+        // rincian.sort((a, b) => {
+        //   const kodeA = a.koderek108 || '';
+        //   const kodeB = b.koderek108 || '';
+        //   return kodeA.localeCompare(kodeB, undefined, { numeric: true, sensitivity: 'base' });
+        // })
+        belanja_kode.push({
+          kode: kode4,
+          uraian: rows[0].uraian4,
+          pagu,
+          realisasi_skg,
+          realisasi_sblm,
+          total_realisasi,
+          selisih: pagu - total_realisasi,
+          persen:
+            pagu > 0
+              ? ((total_realisasi / pagu) * 100).toFixed(2)
+              : '0.00',
+          rincian
+        })
+      })
+
+      //KODE 3
+      const byKode3 = this.realisasibelanja.reduce((acc, item) => {
+        if (!acc[item.kode3]) acc[item.kode3] = []
+        acc[item.kode3].push(item)
+        return acc
+      }, {})
+
+      Object.entries(byKode3).forEach(([kode3, rows]) => {
+
+        const rincian = []
+        const pagu = rows.reduce(
+          (a, b) => a + Number(b.pagu || 0),
+          0
+        )
+        const unikIdpp = [...new Set(rows.map(x => x.idpp))]
+
+        unikIdpp.forEach(idpp => {
+          const data = summaryIdpp[idpp]
+          rincian.push({
+            // usulan: data.usulan,
+            // pagu: data.pagu,
+            // volume: data.volume,
+            // harga: data.harga,
+            // satuan: data.satuan,
+            // koderek108: data.koderek108,
+            realisasi_sekarang: data.realisasi_sekarang,
+            realisasi_sebelum: data.realisasi_sebelum,
+            // total:
+            //   data.realisasi_sekarang +
+            //   data.realisasi_sebelum,
+            // sisa_pagu:
+            //   data.pagu -
+            //   (
+            //     data.realisasi_sekarang +
+            //     data.realisasi_sebelum
+            //   )
+          })
+        })
+        const realisasi_skg = rincian.reduce(
+          (a, b) => a + b.realisasi_sekarang,
+          0
+        )
+        const realisasi_sblm = rincian.reduce(
+          (a, b) => a + b.realisasi_sebelum,
+          0
+        )
+        const total_realisasi =
+          realisasi_skg + realisasi_sblm
+        // rincian.sort((a, b) => {
+        //   const kodeA = a.koderek108 || '';
+        //   const kodeB = b.koderek108 || '';
+        //   return kodeA.localeCompare(kodeB, undefined, { numeric: true, sensitivity: 'base' });
+        // })
+        belanja_kode.push({
+          kode: kode3,
+          uraian: rows[0].uraian3,
+          pagu,
+          realisasi_skg,
+          realisasi_sblm,
+          total_realisasi,
+          selisih: pagu - total_realisasi,
+          persen:
+            pagu > 0
+              ? ((total_realisasi / pagu) * 100).toFixed(2)
+              : '0.00',
+          rincian
+        })
+      })
+
+      //KODE 2
+      const byKode2 = this.realisasibelanja.reduce((acc, item) => {
+        if (!acc[item.kode2]) acc[item.kode2] = []
+        acc[item.kode2].push(item)
+        return acc
+      }, {})
+
+      Object.entries(byKode2).forEach(([kode2, rows]) => {
+
+        const rincian = []
+        const pagu = rows.reduce(
+          (a, b) => a + Number(b.pagu || 0),
+          0
+        )
+        const unikIdpp = [...new Set(rows.map(x => x.idpp))]
+
+        unikIdpp.forEach(idpp => {
+          const data = summaryIdpp[idpp]
+          rincian.push({
+            // usulan: data.usulan,
+            // pagu: data.pagu,
+            // volume: data.volume,
+            // harga: data.harga,
+            // satuan: data.satuan,
+            // koderek108: data.koderek108,
+            realisasi_sekarang: data.realisasi_sekarang,
+            realisasi_sebelum: data.realisasi_sebelum,
+            // total:
+            //   data.realisasi_sekarang +
+            //   data.realisasi_sebelum,
+            // sisa_pagu:
+            //   data.pagu -
+            //   (
+            //     data.realisasi_sekarang +
+            //     data.realisasi_sebelum
+            //   )
+          })
+        })
+        const realisasi_skg = rincian.reduce(
+          (a, b) => a + b.realisasi_sekarang,
+          0
+        )
+        const realisasi_sblm = rincian.reduce(
+          (a, b) => a + b.realisasi_sebelum,
+          0
+        )
+        const total_realisasi =
+          realisasi_skg + realisasi_sblm
+
+        // rincian.sort((a, b) => {
+        //   const kodeA = a.koderek108 || '';
+        //   const kodeB = b.koderek108 || '';
+        //   return kodeA.localeCompare(kodeB, undefined, { numeric: true, sensitivity: 'base' });
+        // })
+        belanja_kode.push({
+          kode: kode2,
+          uraian: rows[0].uraian2,
+          pagu,
+          realisasi_skg,
+          realisasi_sblm,
+          total_realisasi,
+          selisih: pagu - total_realisasi,
+          persen:
+            pagu > 0
+              ? ((total_realisasi / pagu) * 100).toFixed(2)
+              : '0.00',
+          rincian
+        })
+      })
+
+      //KODE 1
+      const byKode1 = this.realisasibelanja.reduce((acc, item) => {
+        if (!acc[item.kode1]) acc[item.kode1] = []
+        acc[item.kode1].push(item)
+        return acc
+      }, {})
+
+      Object.entries(byKode1).forEach(([kode1, rows]) => {
+        const rincian = []
+        const pagu = rows.reduce(
+          (a, b) => a + Number(b.pagu || 0),
+          0
+        )
+        const unikIdpp = [...new Set(rows.map(x => x.idpp))]
+
+        unikIdpp.forEach(idpp => {
+          const data = summaryIdpp[idpp]
+          rincian.push({
+            realisasi_sekarang: data.realisasi_sekarang,
+            realisasi_sebelum: data.realisasi_sebelum,
+
+          })
+        })
+        const realisasi_skg = rincian.reduce(
+          (a, b) => a + b.realisasi_sekarang,
+          0
+        )
+        const realisasi_sblm = rincian.reduce(
+          (a, b) => a + b.realisasi_sebelum,
+          0
+        )
+        const total_realisasi =
+          realisasi_skg + realisasi_sblm
+        // rincian.sort((a, b) => {
+        //   const kodeA = a.koderek108 || '';
+        //   const kodeB = b.koderek108 || '';
+        //   return kodeA.localeCompare(kodeB, undefined, { numeric: true, sensitivity: 'base' });
+        // })
+        belanja_kode.push({
+          kode: kode1,
+          uraian: rows[0].uraian1,
+          pagu,
+          realisasi_skg,
+          realisasi_sblm,
+          total_realisasi,
+          selisih: pagu - total_realisasi,
+          persen:
+            pagu > 0
+              ? ((total_realisasi / pagu) * 100).toFixed(2)
+              : '0.00',
+          rincian
+        })
+      })
+
+      const sortBelanja = (belanja_kode) =>
+        belanja_kode.sort(({ kode: a }, { kode: b }) =>
+          a < b ? -1 : a > b ? 1 : 0
+        )
+      this.items = sortBelanja(belanja_kode)
+
     },
 
     dataUnik(x) {

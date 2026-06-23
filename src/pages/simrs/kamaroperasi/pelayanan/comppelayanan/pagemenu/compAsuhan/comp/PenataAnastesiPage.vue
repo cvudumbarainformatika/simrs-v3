@@ -264,7 +264,11 @@
               <div class="col-xs-12 col-sm-6">
                 <div class="exam-box q-pa-md">
                   <div class="text-weight-bold q-mb-sm text-primary">Teknik Anestesi</div>
-                  <q-option-group v-model="store.form.intra_teknik_anestesi" :options="store.opsiTeknikAnestesi"
+                  <q-option-group v-model="store.form.intra_teknik_anestesi" :options="store.opsiTeknikAnestesiA"
+                    type="checkbox" color="primary" inline dense size="sm" />
+                  <q-option-group v-model="store.form.intra_teknik_anestesi" :options="store.opsiTeknikAnestesiB"
+                    type="checkbox" color="primary" inline dense size="sm" />
+                  <q-option-group v-model="store.form.intra_teknik_anestesi" :options="store.opsiTeknikAnestesiC"
                     type="checkbox" color="primary" inline dense size="sm" />
                 </div>
               </div>
@@ -372,7 +376,7 @@
             </div>
 
             <!-- Skoring Pemulihan -->
-            <div class="text-subtitle2 text-weight-bold text-grey-8 q-mb-md">Skoring Pemulihan</div>
+            <!-- <div class="text-subtitle2 text-weight-bold text-grey-8 q-mb-md">Skoring Pemulihan</div>
             <div class="scoring-box q-pa-md q-mb-lg">
               <div class="row q-col-gutter-lg">
                 <div class="col-xs-12 col-sm-6">
@@ -384,7 +388,7 @@
                     placeholder="Isi total / kriteria" maxlength="255" />
                 </div>
               </div>
-            </div>
+            </div> -->
 
             <!-- Proses Keperawatan -->
             <div class="text-subtitle2 text-weight-bold text-grey-8 q-mb-md">Proses Keperawatan</div>

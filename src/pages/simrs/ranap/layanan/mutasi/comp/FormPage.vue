@@ -351,7 +351,7 @@
           @click="store.initForm()" />
         <q-btn v-if="!store.isEditted" :loading="store.loadingForm" :disable="store.loadingForm"
           label="Simpan Mutasi Pasien" type="submit" color="primary" />
-        <q-btn v-else:loading="store.loadingForm" :disable="store.loadingForm" label="Update Dokumen" type="submit"
+        <q-btn v-else :loading="store.loadingForm" :disable="store.loadingForm" label="Update Dokumen" type="submit"
           color="primary" />
 
 
@@ -393,7 +393,7 @@ const asalRuangan = computed(() => {
 // console.log('props', props?.pasien);
 
 
-function onSubmit() {
+function onSubmit () {
   // console.log('onSubmit', props.store.form)
 
   if (!props.store.isEditted) {

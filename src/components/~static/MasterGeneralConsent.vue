@@ -300,51 +300,108 @@ function parse(val) {
 }
 
 function parseIrja(val) {
-  const word = val?.replace(' 1 ) ..............................  (Hubungan dengan pasien: ..... )',
-    ` 1 ) ${store.form.wali1 ? '<b>' + store.form.wali1 + '</b>' : '..............................'}</b> 
-      (Hubungan dengan pasien: ${store.form.hubunganWali1 ? '<b>' + store.form.hubunganWali1 + '</b>' : '.....'} )`)
-  // }
-  // if (store.form.wali2) {
-  const str = word?.replace('2 ) .............................. (Hubungan dengan pasien: ...... )',
-    `2 ) ${store.form.wali2 ? '<b>' + store.form.wali2 + '</b>' : '..............................'}</b> 
-      (Hubungan dengan pasien: ${store.form.hubunganWali2 ? '<b>' + store.form.hubunganWali2 + '</b>' : '.....'} )`)
-  // }
+  // const word = val?.replace(' 1 ) ..............................  (Hubungan dengan pasien: ..... )',
+  //   ` 1 ) ${store.form.wali1 ? '<b>' + store.form.wali1 + '</b>' : '..............................'}</b>
+  //     (Hubungan dengan pasien: ${store.form.hubunganWali1 ? '<b>' + store.form.hubunganWali1 + '</b>' : '.....'} )`)
+  // // }
+  // // if (store.form.wali2) {
+  // const str = word?.replace('2 ) .............................. (Hubungan dengan pasien: ...... )',
+  //   `2 ) ${store.form.wali2 ? '<b>' + store.form.wali2 + '</b>' : '..............................'}</b>
+  //     (Hubungan dengan pasien: ${store.form.hubunganWali2 ? '<b>' + store.form.hubunganWali2 + '</b>' : '.....'} )`)
+  // // }
+  // return str
+  let str = val
+
+  str = str?.replace(
+    /<li id="wali-1">[\s\S]*?<\/li>/,
+    `<li id="wali-1">
+      1) Nama : ${store.form.wali1 ? `<b>${store.form.wali1}</b>` : '...............'}
+      Hubungan dengan pasien : ${store.form.hubunganWali1 ? `<b>${store.form.hubunganWali1}</b>` : '...............'}
+    </li>`
+  )
+
+  str = str?.replace(
+    /<li id="wali-2">[\s\S]*?<\/li>/,
+    `<li id="wali-2">
+      2) Nama : ${store.form.wali2 ? `<b>${store.form.wali2}</b>` : '...............'}
+      Hubungan dengan pasien : ${store.form.hubunganWali2 ? `<b>${store.form.hubunganWali2}</b>` : '...............'}
+    </li>`
+  )
+
   return str
 }
 function parseRanap(val) {
-  const word = val?.replace('Ruang Rawat : .......... Kelas : ..........',
-    ` Ruang Rawat : ${props.isiPasien?.ruangan ? '<b>' + props.isiPasien?.ruangan + '</b>' : '..........'} Kelas : ${props.isiPasien?.kelasruangan ? '<b>' + props.isiPasien?.kelasruangan + '</b>' : '..........'} `)
-  // }
-  // if (store.form.wali2) {
-  const str = word?.replace('Nama :&nbsp; ..............................&nbsp; (L/P)*',
-    ` Nama : ${props.isiPasien?.nama_panggil ? '<b>' + props.isiPasien?.nama_panggil + ' (' + props.isiPasien?.kelamin + ') </b>' : '..............................'}</b>`)
-  // }
-  const str2 = str?.replace('Tanggal/Lahir :&nbsp; ..............................',
-    ` Tanggal/Lahir : ${props.isiPasien?.tgllahir ? '<b>' + humanDate(props.isiPasien?.tgllahir) + ' </b>' : '..............................'}</b>`)
-  const str3 = str2?.replace(' No. RM&nbsp; :&nbsp; ..............................',
-    ` No. RM : ${props.isiPasien?.norm ? '<b>' + props.isiPasien?.norm + ' </b>' : '..............................'}</b>`)
-  const str4 = str3?.replace(' Alamat&nbsp; :&nbsp; .............................. ',
-    ` Alamat : ${props.isiPasien?.alamat ? '<b>' + props.isiPasien?.alamat + ' </b>' : '..............................'}</b>`)
-  // }
-  return str4
+  // const word = val?.replace('Ruang Rawat : .......... Kelas : ..........',
+  //   ` Ruang Rawat : ${props.isiPasien?.ruangan ? '<b>' + props.isiPasien?.ruangan + '</b>' : '..........'} Kelas : ${props.isiPasien?.kelasruangan ? '<b>' + props.isiPasien?.kelasruangan + '</b>' : '..........'} `)
+  // // }
+  // // if (store.form.wali2) {
+  // const str = word?.replace('Nama :&nbsp; ..............................&nbsp; (L/P)*',
+  //   ` Nama : ${props.isiPasien?.nama_panggil ? '<b>' + props.isiPasien?.nama_panggil + ' (' + props.isiPasien?.kelamin + ') </b>' : '..............................'}</b>`)
+  // // }
+  // const str2 = str?.replace('Tanggal/Lahir :&nbsp; ..............................',
+  //   ` Tanggal/Lahir : ${props.isiPasien?.tgllahir ? '<b>' + humanDate(props.isiPasien?.tgllahir) + ' </b>' : '..............................'}</b>`)
+  // const str3 = str2?.replace(' No. RM&nbsp; :&nbsp; ..............................',
+  //   ` No. RM : ${props.isiPasien?.norm ? '<b>' + props.isiPasien?.norm + ' </b>' : '..............................'}</b>`)
+  // const str4 = str3?.replace(' Alamat&nbsp; :&nbsp; .............................. ',
+  //   ` Alamat : ${props.isiPasien?.alamat ? '<b>' + props.isiPasien?.alamat + ' </b>' : '..............................'}</b>`)
+  // // }
+  // return str4
+  let str = val
+
+  str = str?.replace(
+    /<li id="wali-1">[\s\S]*?<\/li>/,
+    `<li id="wali-1">
+      1) Nama : ${store.form.wali1 ? `<b>${store.form.wali1}</b>` : '...............'}
+      Hubungan dengan pasien : ${store.form.hubunganWali1 ? `<b>${store.form.hubunganWali1}</b>` : '...............'}
+    </li>`
+  )
+
+  str = str?.replace(
+    /<li id="wali-2">[\s\S]*?<\/li>/,
+    `<li id="wali-2">
+      2) Nama : ${store.form.wali2 ? `<b>${store.form.wali2}</b>` : '...............'}
+      Hubungan dengan pasien : ${store.form.hubunganWali2 ? `<b>${store.form.hubunganWali2}</b>` : '...............'}
+    </li>`
+  )
+
+  return str
 }
 function parseIgd(val) {
 
-  const word = val?.replace('Ruang Rawat : .......... Kelas : ..........',
-    ` <b> Ruang Rawat Darurat </b>`)
-  // }
-  // if (store.form.wali2) {
-  const str = word?.replace('Nama :&nbsp; ..............................&nbsp; (L/P)*',
-    ` Nama : ${props.isiPasien?.name ? '<b>' + props.isiPasien?.name + ' (' + props.isiPasien?.kelamin + ') </b>' : '..............................'}</b>`)
-  // }
-  const str2 = str?.replace('Tanggal/Lahir :&nbsp; ..............................',
-    ` Tanggal/Lahir : ${props.isiPasien?.tgllahir ? '<b>' + humanDate(props.isiPasien?.tgllahir) + ' </b>' : '..............................'}</b>`)
-  const str3 = str2?.replace(' No. RM&nbsp; :&nbsp; ..............................',
-    ` No. RM : ${props.isiPasien?.norm ? '<b>' + props.isiPasien?.norm + ' </b>' : '..............................'}</b>`)
-  const str4 = str3?.replace(' Alamat&nbsp; :&nbsp; ..............................',
-    ` Alamat : ${props.isiPasien?.alamat ? '<b>' + props.isiPasien?.alamat + ' </b>' : '..............................'}</b>`)
-  // }
-  return str4
+  // const word = val?.replace('Ruang Rawat : .......... Kelas : ..........',
+  //   ` <b> Ruang Rawat Darurat </b>`)
+  // // }
+  // // if (store.form.wali2) {
+  // const str = word?.replace('Nama :&nbsp; ..............................&nbsp; (L/P)*',
+  //   ` Nama : ${props.isiPasien?.name ? '<b>' + props.isiPasien?.name + ' (' + props.isiPasien?.kelamin + ') </b>' : '..............................'}</b>`)
+  // // }
+  // const str2 = str?.replace('Tanggal/Lahir :&nbsp; ..............................',
+  //   ` Tanggal/Lahir : ${props.isiPasien?.tgllahir ? '<b>' + humanDate(props.isiPasien?.tgllahir) + ' </b>' : '..............................'}</b>`)
+  // const str3 = str2?.replace(' No. RM&nbsp; :&nbsp; ..............................',
+  //   ` No. RM : ${props.isiPasien?.norm ? '<b>' + props.isiPasien?.norm + ' </b>' : '..............................'}</b>`)
+  // const str4 = str3?.replace(' Alamat&nbsp; :&nbsp; ..............................',
+  //   ` Alamat : ${props.isiPasien?.alamat ? '<b>' + props.isiPasien?.alamat + ' </b>' : '..............................'}</b>`)
+  // // }
+  // return str4
+  let str = val
+
+  str = str?.replace(
+    /<li id="wali-1">[\s\S]*?<\/li>/,
+    `<li id="wali-1">
+      1) Nama : ${store.form.wali1 ? `<b>${store.form.wali1}</b>` : '...............'}
+      Hubungan dengan pasien : ${store.form.hubunganWali1 ? `<b>${store.form.hubunganWali1}</b>` : '...............'}
+    </li>`
+  )
+
+  str = str?.replace(
+    /<li id="wali-2">[\s\S]*?<\/li>/,
+    `<li id="wali-2">
+      2) Nama : ${store.form.wali2 ? `<b>${store.form.wali2}</b>` : '...............'}
+      Hubungan dengan pasien : ${store.form.hubunganWali2 ? `<b>${store.form.hubunganWali2}</b>` : '...............'}
+    </li>`
+  )
+
+  return str
 }
 
 // eslint-disable-next-line no-unused-vars
