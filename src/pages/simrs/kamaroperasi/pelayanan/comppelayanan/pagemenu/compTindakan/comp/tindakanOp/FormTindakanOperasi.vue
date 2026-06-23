@@ -55,13 +55,13 @@
       <div class="row items-center q-my-xs">
         <div class="col-4"></div>
         <div class="col-4">
-          <q-checkbox v-model="store.formTindakan.tanpaAnas" left-label label="Tanpa Anastesi"
+          <q-checkbox v-model="store.formTindakan.tanpaAnas" label="Tanpa Anastesi"
             @update:model-value="setTanpaAnas('tanpaAnas', $event)" />
         </div>
-        <div class="col-4">
-          <q-checkbox v-model="store.formTindakan.cito" left-label label="Cito"
+        <!-- <div class="col-4">
+          <q-checkbox v-model="store.formTindakan.cito"  label="Cito"
             @update:model-value="setCito('cito', $event)" />
-        </div>
+        </div> -->
 
       </div>
       <div class="row items-center q-my-xs">
@@ -71,6 +71,17 @@
             option-label="nama" option-value="kode" outlined valid label=""
             @update:model-value="setForm('sisbaysplit', $event)" />
         </div>
+      </div>
+      <div class="row items-center q-my-xs">
+        <div class="col-4"></div>
+        <!-- <div class="col-4">
+          <q-checkbox v-model="store.formTindakan.tanpaAnas"  label="Tanpa Anastesi"
+            @update:model-value="setTanpaAnas('tanpaAnas', $event)" />
+        </div> -->
+        <div class="col-4">
+          <q-checkbox v-model="store.formTindakan.cito" label="Cito" @update:model-value="setCito('cito', $event)" />
+        </div>
+
       </div>
       <div class="row items-center q-my-xs">
         <div class="col-4">Biaya Split</div>
