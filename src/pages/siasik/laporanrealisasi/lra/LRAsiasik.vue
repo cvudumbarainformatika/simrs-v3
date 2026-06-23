@@ -392,6 +392,9 @@ onMounted(() => {
   store.pendapatans = []
   store.params.bidang = ''
   store.params.kegiatan = ''
+  store.display.bidang = ''
+  store.display.kegiatan = ''
+  store.params.kodebidang = null
   store.getDataBidang()
   // store.getDataRealisasi()
 
