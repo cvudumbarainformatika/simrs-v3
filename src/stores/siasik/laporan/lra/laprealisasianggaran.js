@@ -1833,30 +1833,30 @@ export const useLaporanLraLaprealisasianggaranStore = defineStore('laporan_reali
           (a, b) => a + Number(b.pagu || 0),
           0
         )
-        // const unikIdpp = [...new Set(rows.map(x => x.idpp))]
+        const unikIdpp = [...new Set(rows.map(x => x.idpp))]
 
-        // unikIdpp.forEach(idpp => {
-        //   const data = summaryIdpp[idpp]
-        //   rincian.push({
-        //     usulan: data.usulan,
-        //     pagu: data.pagu,
-        //     volume: data.volume,
-        //     harga: data.harga,
-        //     satuan: data.satuan,
-        //     koderek108: data.koderek108,
-        //     realisasi_sekarang: data.realisasi_sekarang,
-        //     realisasi_sebelum: data.realisasi_sebelum,
-        //     total:
-        //       data.realisasi_sekarang +
-        //       data.realisasi_sebelum,
-        //     sisa_pagu:
-        //       data.pagu -
-        //       (
-        //         data.realisasi_sekarang +
-        //         data.realisasi_sebelum
-        //       )
-        //   })
-        // })
+        unikIdpp.forEach(idpp => {
+          const data = summaryIdpp[idpp]
+          rincian.push({
+            // usulan: data.usulan,
+            // pagu: data.pagu,
+            // volume: data.volume,
+            // harga: data.harga,
+            // satuan: data.satuan,
+            // koderek108: data.koderek108,
+            realisasi_sekarang: data.realisasi_sekarang,
+            realisasi_sebelum: data.realisasi_sebelum,
+            // total:
+            //   data.realisasi_sekarang +
+            //   data.realisasi_sebelum,
+            // sisa_pagu:
+            //   data.pagu -
+            //   (
+            //     data.realisasi_sekarang +
+            //     data.realisasi_sebelum
+            //   )
+          })
+        })
         const realisasi_skg = rincian.reduce(
           (a, b) => a + b.realisasi_sekarang,
           0
@@ -1903,30 +1903,30 @@ export const useLaporanLraLaprealisasianggaranStore = defineStore('laporan_reali
           (a, b) => a + Number(b.pagu || 0),
           0
         )
-        // const unikIdpp = [...new Set(rows.map(x => x.idpp))]
+        const unikIdpp = [...new Set(rows.map(x => x.idpp))]
 
-        // unikIdpp.forEach(idpp => {
-        //   const data = summaryIdpp[idpp]
-        //   rincian.push({
-        //     usulan: data.usulan,
-        //     pagu: data.pagu,
-        //     volume: data.volume,
-        //     harga: data.harga,
-        //     satuan: data.satuan,
-        //     koderek108: data.koderek108,
-        //     realisasi_sekarang: data.realisasi_sekarang,
-        //     realisasi_sebelum: data.realisasi_sebelum,
-        //     total:
-        //       data.realisasi_sekarang +
-        //       data.realisasi_sebelum,
-        //     sisa_pagu:
-        //       data.pagu -
-        //       (
-        //         data.realisasi_sekarang +
-        //         data.realisasi_sebelum
-        //       )
-        //   })
-        // })
+        unikIdpp.forEach(idpp => {
+          const data = summaryIdpp[idpp]
+          rincian.push({
+            // usulan: data.usulan,
+            // pagu: data.pagu,
+            // volume: data.volume,
+            // harga: data.harga,
+            // satuan: data.satuan,
+            // koderek108: data.koderek108,
+            realisasi_sekarang: data.realisasi_sekarang,
+            realisasi_sebelum: data.realisasi_sebelum,
+            // total:
+            //   data.realisasi_sekarang +
+            //   data.realisasi_sebelum,
+            // sisa_pagu:
+            //   data.pagu -
+            //   (
+            //     data.realisasi_sekarang +
+            //     data.realisasi_sebelum
+            //   )
+          })
+        })
         const realisasi_skg = rincian.reduce(
           (a, b) => a + b.realisasi_sekarang,
           0
@@ -1972,30 +1972,30 @@ export const useLaporanLraLaprealisasianggaranStore = defineStore('laporan_reali
           (a, b) => a + Number(b.pagu || 0),
           0
         )
-        // const unikIdpp = [...new Set(rows.map(x => x.idpp))]
+        const unikIdpp = [...new Set(rows.map(x => x.idpp))]
 
-        // unikIdpp.forEach(idpp => {
-        //   const data = summaryIdpp[idpp]
-        //   rincian.push({
-        //     usulan: data.usulan,
-        //     pagu: data.pagu,
-        //     volume: data.volume,
-        //     harga: data.harga,
-        //     satuan: data.satuan,
-        //     koderek108: data.koderek108,
-        //     realisasi_sekarang: data.realisasi_sekarang,
-        //     realisasi_sebelum: data.realisasi_sebelum,
-        //     total:
-        //       data.realisasi_sekarang +
-        //       data.realisasi_sebelum,
-        //     sisa_pagu:
-        //       data.pagu -
-        //       (
-        //         data.realisasi_sekarang +
-        //         data.realisasi_sebelum
-        //       )
-        //   })
-        // })
+        unikIdpp.forEach(idpp => {
+          const data = summaryIdpp[idpp]
+          rincian.push({
+            // usulan: data.usulan,
+            // pagu: data.pagu,
+            // volume: data.volume,
+            // harga: data.harga,
+            // satuan: data.satuan,
+            // koderek108: data.koderek108,
+            realisasi_sekarang: data.realisasi_sekarang,
+            realisasi_sebelum: data.realisasi_sebelum,
+            // total:
+            //   data.realisasi_sekarang +
+            //   data.realisasi_sebelum,
+            // sisa_pagu:
+            //   data.pagu -
+            //   (
+            //     data.realisasi_sekarang +
+            //     data.realisasi_sebelum
+            //   )
+          })
+        })
         const realisasi_skg = rincian.reduce(
           (a, b) => a + b.realisasi_sekarang,
           0
@@ -2041,30 +2041,30 @@ export const useLaporanLraLaprealisasianggaranStore = defineStore('laporan_reali
           (a, b) => a + Number(b.pagu || 0),
           0
         )
-        // const unikIdpp = [...new Set(rows.map(x => x.idpp))]
+        const unikIdpp = [...new Set(rows.map(x => x.idpp))]
 
-        // unikIdpp.forEach(idpp => {
-        //   const data = summaryIdpp[idpp]
-        //   rincian.push({
-        //     usulan: data.usulan,
-        //     pagu: data.pagu,
-        //     volume: data.volume,
-        //     harga: data.harga,
-        //     satuan: data.satuan,
-        //     koderek108: data.koderek108,
-        //     realisasi_sekarang: data.realisasi_sekarang,
-        //     realisasi_sebelum: data.realisasi_sebelum,
-        //     total:
-        //       data.realisasi_sekarang +
-        //       data.realisasi_sebelum,
-        //     sisa_pagu:
-        //       data.pagu -
-        //       (
-        //         data.realisasi_sekarang +
-        //         data.realisasi_sebelum
-        //       )
-        //   })
-        // })
+        unikIdpp.forEach(idpp => {
+          const data = summaryIdpp[idpp]
+          rincian.push({
+            // usulan: data.usulan,
+            // pagu: data.pagu,
+            // volume: data.volume,
+            // harga: data.harga,
+            // satuan: data.satuan,
+            // koderek108: data.koderek108,
+            realisasi_sekarang: data.realisasi_sekarang,
+            realisasi_sebelum: data.realisasi_sebelum,
+            // total:
+            //   data.realisasi_sekarang +
+            //   data.realisasi_sebelum,
+            // sisa_pagu:
+            //   data.pagu -
+            //   (
+            //     data.realisasi_sekarang +
+            //     data.realisasi_sebelum
+            //   )
+          })
+        })
         const realisasi_skg = rincian.reduce(
           (a, b) => a + b.realisasi_sekarang,
           0
@@ -2105,36 +2105,21 @@ export const useLaporanLraLaprealisasianggaranStore = defineStore('laporan_reali
       }, {})
 
       Object.entries(byKode1).forEach(([kode1, rows]) => {
-
         const rincian = []
         const pagu = rows.reduce(
           (a, b) => a + Number(b.pagu || 0),
           0
         )
-        // const unikIdpp = [...new Set(rows.map(x => x.idpp))]
+        const unikIdpp = [...new Set(rows.map(x => x.idpp))]
 
-        // unikIdpp.forEach(idpp => {
-        //   const data = summaryIdpp[idpp]
-        //   rincian.push({
-        //     usulan: data.usulan,
-        //     pagu: data.pagu,
-        //     volume: data.volume,
-        //     harga: data.harga,
-        //     satuan: data.satuan,
-        //     koderek108: data.koderek108,
-        //     realisasi_sekarang: data.realisasi_sekarang,
-        //     realisasi_sebelum: data.realisasi_sebelum,
-        //     total:
-        //       data.realisasi_sekarang +
-        //       data.realisasi_sebelum,
-        //     sisa_pagu:
-        //       data.pagu -
-        //       (
-        //         data.realisasi_sekarang +
-        //         data.realisasi_sebelum
-        //       )
-        //   })
-        // })
+        unikIdpp.forEach(idpp => {
+          const data = summaryIdpp[idpp]
+          rincian.push({
+            realisasi_sekarang: data.realisasi_sekarang,
+            realisasi_sebelum: data.realisasi_sebelum,
+
+          })
+        })
         const realisasi_skg = rincian.reduce(
           (a, b) => a + b.realisasi_sekarang,
           0
@@ -2145,7 +2130,6 @@ export const useLaporanLraLaprealisasianggaranStore = defineStore('laporan_reali
         )
         const total_realisasi =
           realisasi_skg + realisasi_sblm
-
         // rincian.sort((a, b) => {
         //   const kodeA = a.koderek108 || '';
         //   const kodeB = b.koderek108 || '';
