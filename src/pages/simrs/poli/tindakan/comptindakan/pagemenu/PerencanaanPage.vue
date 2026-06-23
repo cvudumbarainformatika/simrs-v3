@@ -175,7 +175,7 @@ const props = defineProps({
     default: null
   }
 })
-function editItem (val) {
+function editItem(val) {
   console.log('edit', val)
   const renc = val.rs4
   if (store.plann !== renc) {
@@ -223,7 +223,7 @@ function editItem (val) {
     }
   }
 }
-function setKepada (val) {
+function setKepada(val) {
   if (val?.rs4 === 'Kontrol') {
     if (val?.kontrol) {
       return val?.kontrol?.namaDokter
@@ -249,7 +249,7 @@ function setKepada (val) {
     else { return '-' }
   }
 }
-function setNomor (val) {
+function setNomor(val) {
   if (val?.rs4 === 'Kontrol') {
     if (val?.kontrol) {
       return val?.kontrol?.noSuratKontrol
@@ -280,7 +280,7 @@ onMounted(() => {
   store.getMasterPoli()
 })
 
-function hapusItem (item) {
+function hapusItem(item) {
   $q.dialog({
     dark: true,
     title: 'Peringatan',

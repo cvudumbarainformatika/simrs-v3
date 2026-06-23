@@ -107,6 +107,15 @@
           </div>
           <div v-if="toItem?.rs4 === 'Rawat Inap'" class="row items-center justify-between q-mb-xs">
             <div class="col-3">
+              Tujuan Ranap
+            </div>
+            <div class="col-9">
+              :
+              {{ toItem?.spri?.tujuanranap ?? '-' }}
+            </div>
+          </div>
+          <div v-if="toItem?.rs4 === 'Rawat Inap'" class="row items-center justify-between q-mb-xs">
+            <div class="col-3">
               Keterangan
             </div>
             <div class="col-9">
@@ -171,7 +180,7 @@ const props = defineProps({
 const ket = ref('')
 const plan = ref('')
 const toItem = ref(null)
-function terpilih (val) {
+function terpilih(val) {
   const temp = props?.pasien?.planning?.find(a => a.id === val)
   if (temp) {
     toItem.value = temp
@@ -182,7 +191,7 @@ onMounted(() => {
   toItem.value = props?.pasien?.planning[0]
   plan.value = props?.pasien?.planning[0].rs4
 })
-function diagnosa (item) {
+function diagnosa(item) {
   console.log(item)
 
   const dariPasien = props?.pasien?.memodiagnosa ?? '-'
@@ -191,7 +200,7 @@ function diagnosa (item) {
 
   return item?.transrujukan ? transrujukan : dariPasien
 }
-function setKepada (val) {
+function setKepada(val) {
   if (val?.rs4 === 'Kontrol') {
     if (val?.kontrol) {
       return val?.kontrol?.namaDokter
@@ -224,7 +233,7 @@ function setKepada (val) {
     else { return '-' }
   }
 }
-function setNomor (val) {
+function setNomor(val) {
   if (val?.rs4 === 'Kontrol') {
     if (val?.kontrol) {
       return val?.kontrol?.noSuratKontrol
@@ -262,7 +271,7 @@ function setNomor (val) {
     else { return '-' }
   }
 }
-function setTgl (val) {
+function setTgl(val) {
   if (val?.rs4 === 'Kontrol') {
     if (val?.kontrol) {
       return date.formatDate(val?.kontrol?.tglRencanaKontrol, 'DD MMMM YYYY')
@@ -297,7 +306,7 @@ function setTgl (val) {
     else { return '-' }
   }
 }
-function setNama (val) {
+function setNama(val) {
   if (val?.rs4 === 'Konsultasi') {
     const nama = val?.listkonsul ? 'Konsultasi' : 'Konsultasi Internal'
     // console.log(val, props.pasien)
