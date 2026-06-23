@@ -130,6 +130,7 @@ const menus = ref([
     label: 'Serah Terima Pasien',
     icon: 'sync_alt',
     comp: shallowRef(defineAsyncComponent(() => import('./comppelayanan/pagemenu/compSerahTerima/IndexPage.vue')))
+    // comp: shallowRef(defineAsyncComponent(() => import('src/pages/simrs/ranap/layanan/mutasi/IndexPage.vue')))
   },
   {
     name: 'konsultasi',
