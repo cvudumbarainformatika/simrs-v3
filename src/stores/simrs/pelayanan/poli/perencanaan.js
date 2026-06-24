@@ -94,7 +94,8 @@ export const usePerencanaanPoliStore = defineStore('perencanaan-poli', {
       kelamin: '',
       tgllahir: '',
       status: 'Tidak',
-      planing: 'Rawat Inap'
+      planing: 'Rawat Inap',
+      tujuanranap: ''
 
     },
     editRanap: false,

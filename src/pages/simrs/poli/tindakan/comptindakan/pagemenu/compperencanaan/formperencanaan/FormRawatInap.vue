@@ -1,99 +1,39 @@
 <template>
-  <q-form
-    ref="formRef"
-    @submit="simpan"
-  >
+  <q-form ref="formRef" @submit="simpan">
     <div class="row q-col-gutter-sm">
       <div class="col-3">
-        <q-input
-          v-model="store.formRanap.norm"
-          label="NORM (Automatis)"
-          dense
-          outlined
-          standout="bg-yellow-3"
-          readonly
-          :rules="[val => !!val || 'Harus diisi']"
-          hide-bottom-space
-        />
+        <q-input v-model="store.formRanap.norm" label="NORM (Automatis)" dense outlined standout="bg-yellow-3" readonly
+          :rules="[val => !!val || 'Harus diisi']" hide-bottom-space />
       </div>
       <div class="col-3">
-        <q-input
-          v-model="store.formRanap.noka"
-          label="NOKA (Automatis)"
-          dense
-          outlined
-          standout="bg-yellow-3"
-          readonly
-        />
+        <q-input v-model="store.formRanap.noka" label="NOKA (Automatis)" dense outlined standout="bg-yellow-3"
+          readonly />
       </div>
       <div class="col-3">
-        <q-select
-          v-model="store.formRanap.status"
-          label="Operasi"
-          dense
-          outlined
-          standout="bg-yellow-3"
-          use-input
-          input-debounce="0"
-          :options="optionTipe"
-          map-options
-          emit-value
-          @update:model-value="setOperasi"
-        />
+        <q-select v-model="store.formRanap.status" label="Operasi" dense outlined standout="bg-yellow-3" use-input
+          input-debounce="0" :options="optionTipe" map-options emit-value @update:model-value="setOperasi" />
       </div>
 
-      <div
-        class="col-3"
-      >
-        <app-autocomplete
-          v-model="store.formRanap.jenisoperasi"
-          label="Jenis Operasi"
-          dense
-          outlined
-          standout="bg-yellow-3"
-          use-input
-          :source="optionsJenisOperasi"
-          option-value="nama"
-          option-label="nama"
-          autocomplete="nama"
-        />
-      </div>
-
-      <div
-        class="col-4"
-      >
-        <app-autocomplete
-          :key="store.formRanap.kdruangtujuan"
-          v-model="store.formRanap.kdruangtujuan"
-          label="Ruangan Tujuan"
-          dense
-          outlined
-          standout="bg-yellow-3"
-          use-input
-          :source="optionsRtujuan"
-          option-value="groups"
-          option-label="groups_nama"
-          autocomplete="groups_nama"
-          @selected="ruangRanapSelected"
-        />
+      <div class="col-3">
+        <app-autocomplete v-model="store.formRanap.jenisoperasi" label="Jenis Operasi" dense outlined
+          standout="bg-yellow-3" use-input :source="optionsJenisOperasi" option-value="nama" option-label="nama"
+          autocomplete="nama" />
       </div>
 
       <div class="col-4">
-        <app-input-date
-          :model="store.formRanap.tglrencanakunjungan"
-          label="Tgl Rencana Kontrol"
-          outlined
-          @set-model="(val) => store.setFormRanap('tglrencanakunjungan', val)"
-        />
+        <app-autocomplete :key="store.formRanap.kdruangtujuan" v-model="store.formRanap.kdruangtujuan"
+          label="Ruangan Tujuan" dense outlined standout="bg-yellow-3" use-input :source="optionsRtujuan"
+          option-value="groups" option-label="groups_nama" autocomplete="groups_nama" @selected="ruangRanapSelected" />
+      </div>
+
+      <div class="col-4">
+        <app-input-date :model="store.formRanap.tglrencanakunjungan" label="Tgl Rencana Kontrol" outlined
+          @set-model="(val) => store.setFormRanap('tglrencanakunjungan', val)" />
       </div>
       <div class="col-4">
-        <app-input-date
-          :model="store.formRanap.tanggaloperasi"
-          label="Tgl Operasi"
-          outlined
-          :disable="store.formRanap.status==='Tidak'"
-          @set-model="(val) => store.setFormRanap('tanggaloperasi', val)"
-        />
+        <app-input-date :model="store.formRanap.tanggaloperasi" label="Tgl Operasi" outlined
+          :disable="store.formRanap.status === 'Tidak'"
+          @set-model="(val) => store.setFormRanap('tanggaloperasi', val)" />
       </div>
       <!-- <div class="col-4">
         <app-input-date
@@ -126,22 +66,14 @@
       </div>
         -->
       <div class="col-6">
-        <app-autocomplete-debounce-input
-          :key="store.formRanap.status"
-          v-model="store.formRanap.icd9"
-          label="Icd 9"
-          outlined
-          standout="bg-yellow-3"
-          :source="store.optionsIcd9"
-          option-value="kd_prosedur"
-          option-label="prosedur"
-          autocomplete="prosedur"
-          :valid="store.formRanap.status === 'Tidak'"
-          :loading="store.loadingIcd"
-          @buang="store.cariIcd9"
-          @clear="store.setFormRanap('icd9', null)"
-          @on-select="setIcd"
-        />
+        <app-autocomplete-debounce-input :key="store.formRanap.status" v-model="store.formRanap.icd9" label="Icd 9"
+          outlined standout="bg-yellow-3" :source="store.optionsIcd9" option-value="kd_prosedur" option-label="prosedur"
+          autocomplete="prosedur" :valid="store.formRanap.status === 'Tidak'" :loading="store.loadingIcd"
+          @buang="store.cariIcd9" @clear="store.setFormRanap('icd9', null)" @on-select="setIcd" />
+      </div>
+      <div class="col-6">
+        <q-select label="Tujuan Rawat Inap" v-model="store.formRanap.tujuanranap" :options="optiontujuanranap"
+          option-label="label" option-value="value" emit-value map-options outlined dense />
       </div>
       <!-- <div class="col-12">
         <q-input
@@ -155,13 +87,8 @@
       <div class="col-12">
         <q-separator class=" q-my-md" />
         <div class="text-right q-gutter-sm">
-          <q-btn
-            label="Simpan"
-            color="primary"
-            type="submit"
-            :loading="store.loadingSave"
-            :disable="store.loadingSave"
-          />
+          <q-btn label="Simpan" color="primary" type="submit" :loading="store.loadingSave"
+            :disable="store.loadingSave" />
           <!-- <q-btn
             label="simpan Edit"
             color="primary"
@@ -187,6 +114,13 @@ const props = defineProps({
     default: null
   }
 })
+
+const optiontujuanranap = ref([
+  { value: 'Preventif', label: 'Preventif' },
+  { value: 'Paliatif', label: 'Paliatif' },
+  { value: 'Kuratif', label: 'Kuratif' },
+  { value: 'Rehabilitatif', label: 'Rehabilitatif' },
+])
 
 const store = usePerencanaanPoliStore()
 // const $q = useQuasar()
@@ -239,7 +173,7 @@ onMounted(() => {
 })
 
 function simpan() {
-  console.log('simpan', store.formRanap)
+  // console.log('simpan', store.formRanap)
   store.saveRanap(props.pasien)
   // console.log('opt', optionsIcd9.value, optionsJenisTindakan.value)
   // $q.notify({

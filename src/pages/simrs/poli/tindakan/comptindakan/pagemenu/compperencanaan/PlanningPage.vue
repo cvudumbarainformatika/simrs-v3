@@ -1,45 +1,24 @@
 <template>
-  <q-card
-    flat
-    bordered
-    square
-    class="full-height"
-  >
+  <q-card flat bordered square class="full-height">
     <div class="full-height column">
       <div class="col-auto bg-primary text-white">
         <q-bar>
           <div>Planning Pasien</div>
         </q-bar>
         <div class="q-pa-sm row items-center q-gutter-sm ">
-          <q-option-group
-            v-model="store.plann"
-            :options="masterPlann"
-            color="white"
-            inline
-            dark
-          />
+          <q-option-group v-model="store.plann" :options="masterPlann" color="white" inline dark />
         </div>
       </div>
       <div class="col full-height">
         <!-- <q-scroll-area style="height:calc(100% - 1px)"> -->
-        <div
-          v-if="store.plann !== ''"
-          class="q-pa-md"
-        >
+        <div v-if="store.plann !== ''" class="q-pa-md">
           Form {{ store.plann }}
           <q-separator class="q-my-sm" />
           <div>
-            <component
-              :is="cekPanel()"
-              :key="props.pasien"
-              :pasien="props.pasien"
-            />
+            <component :is="cekPanel()" :key="props.pasien" :pasien="props.pasien" />
           </div>
         </div>
-        <div
-          v-else
-          class="column full-height flex-center q-pa-md"
-        >
+        <div v-else class="column full-height flex-center q-pa-md">
           Belum Ada Pemilihan Planning Pasien
         </div>
         <!-- </q-scroll-area> -->

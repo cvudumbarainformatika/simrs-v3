@@ -5,7 +5,7 @@
 <template>
   <div id="printMe">
     <div class="container q-pl-sm q-pr-sm">
-      <div class="q-card q-mt-xs q-mt-ms">
+      <div class="q-card print-hide q-mt-xs q-mt-ms">
         <q-card class="q-pa-xs">
           <div class="row bg-primary text-white q-pa-sm q-mb-xs q-mt-xs">
             <div class="f-14 text-weight-bold">
@@ -14,49 +14,52 @@
           </div>
         </q-card>
       </div>
-      <div class="q-card q-mt-sm q-pr-lg">
+      <div class="q-card q-mt-sm">
         <q-card class="q-pa-xs">
           <q-card-section>
-            <div class="row justify-center q-pt-md">
-              <div class="row">
-                <div class="col-1">
-                  <q-img src="~assets/images/logo_kota_original.png" spinner-color="white"
-                    style="height: 3.3cm; width: 2.6cm" />
-                </div>
-                <div class="col-10">
-                  <div class="row justify-center text-h6">
-                    PEMERINTAH KOTA PROBOLINGGO
-                  </div>
-                  <div class="row justify-center text-h7 text-weight-bold">
-                    DINAS KESEHATAN, PENGENDALIAN PENDUDUK, DAN KELUARGA BERENCANA
-                  </div>
-                  <div class="row justify-center text-h5 text-weight-bold">
-                    UOBK RSUD DOKTER MOHAMAD SALEH
-                  </div>
-                  <div class="row justify-center text-h8">
-                    Jl. Mayjen Panjaitan No.65 Telp.(0335) 433119, 42118 Fax (0335)
-                    432702
-                  </div>
-                  <div class="row justify-center text-h8 text-weight-bold">
-                    PROBOLINGGO 67219
-                  </div>
-                </div>
-                <div class="col-1">
-                  <q-img src="~assets/logos/logo-rsud.png" spinner-color="white" style="height: 3cm; width: 3cm" />
+            <div class="kop-surat">
+              <div class="logo-kiri">
+                <img src="~assets/images/logo_kota_original.png" style="height:95px;width:auto" />
+              </div>
+
+              <div class="judul-kop">
+                <div class="kop-1">
+                  PEMERINTAH KOTA PROBOLINGGO
                 </div>
 
-                <div class="col-12 q-pt-md">
-                  <div class="row justify-center text-weight-bold">
-                    Laporan Realisasi Anggaran Periode {{ store.display.dari + ' - ' + store.display.sampai }}
-                  </div>
-                  <div v-if="store.display.bidang" class="row q-pt-sm text-weight-bold">
-                    BIDANG / BAGIAN : {{ store.display.bidang }}
-                  </div>
-                  <div v-if="store.display.kegiatan" class="row text-weight-bold">
-                    Kegiatan : {{ store.display.kegiatan }}
-                  </div>
+                <div class="kop-2">
+                  DINAS KESEHATAN, PENGENDALIAN PENDUDUK, DAN KELUARGA BERENCANA
                 </div>
-                <div class="q-pl-lg" />
+
+                <div class="kop-3">
+                  UOBK RSUD DOKTER MOHAMAD SALEH
+                </div>
+
+                <div class="kop-4">
+                  Jl. Mayjen Panjaitan No.65 Telp.(0335) 433119, 42118 Fax (0335) 432702
+                </div>
+
+                <div class="kop-5">
+                  PROBOLINGGO 67219
+                </div>
+              </div>
+
+              <div class="logo-kanan">
+                <img src="~assets/logos/logo-rsud.png" style="height:85px;width:auto" />
+              </div>
+            </div>
+
+            <hr class="garis-kop">
+
+            <div class="col-12 q-pt-xs">
+              <div class="row justify-center text-weight-bold">
+                Laporan Realisasi Anggaran Periode {{ store.display.dari + ' - ' + store.display.sampai }}
+              </div>
+              <div v-if="store.display.bidang" class="row q-pt-sm text-weight-bold">
+                BIDANG / BAGIAN : {{ store.display.bidang }}
+              </div>
+              <div v-if="store.display.kegiatan" class="row text-weight-bold">
+                Kegiatan : {{ store.display.kegiatan }}
               </div>
             </div>
           </q-card-section>
@@ -122,13 +125,13 @@
 
           <template v-else>
             <div class="row flex flex-center" id="printMe">
-              <table class="table table-responsive" style="font-size: 13px">
+              <table class="table-print" style="font-size: 13px">
                 <thead class="align-middle text-center display-block">
                   <tr style="font-size: 14px">
-                    <th width="150px">
+                    <th>
                       Kode Rekening
                     </th>
-                    <th width="500px">
+                    <th style="width: 25%">
                       Uraian
                     </th>
                     <th>Anggaran (Rp.)</th>
@@ -432,6 +435,7 @@ const printObj = {
   beforeOpenCallback(vue) {
     printed.value = true
     console.log('wait...')
+    document.title = 'Laporan_Realisasi_Anggaran'
   },
   openCallback(vue) {
     console.log('opened')
@@ -439,6 +443,7 @@ const printObj = {
   closeCallback(vue) {
     printed.value = false
     console.log('closePrint')
+    document.title = 'Laporan_Realisasi_Anggaran'
   }
 }
 function totalPendapatan() {
@@ -548,7 +553,7 @@ function ambilData() {
 
 </script>
 
-<style>
+<style scoped>
 table {
   border-collapse: collapse;
   border-radius: 6px;
@@ -562,7 +567,7 @@ thead th {
   border-collapse: collapse;
   border-radius: 6px;
   border: 1px solid rgb(163, 163, 163);
-  font-size: 1em;
+  font-size: 12px;
 }
 
 tbody tr td {
@@ -571,7 +576,7 @@ tbody tr td {
   border-collapse: collapse;
   border-radius: 6px;
   border: 1px solid rgb(163, 163, 163);
-  font-size: 1em;
+  font-size: 11px;
 }
 
 .total {
@@ -600,5 +605,115 @@ tbody tr td {
   width: 25%;
   height: 270px;
   font-size: 1.5em;
+}
+
+@page {
+  size: A4 landscape;
+  margin: 5mm;
+}
+
+@media print {
+
+  html,
+  body {
+    width: 210mm;
+    margin: 0;
+    padding: 0;
+  }
+
+  #printMe {
+    width: 100%;
+    overflow: hidden;
+  }
+
+  table {
+    width: 100% !important;
+    max-width: 100% !important;
+    table-layout: fixed;
+    word-wrap: break-word;
+    font-size: 10px;
+  }
+
+  th,
+  td {
+    word-break: break-word;
+    overflow-wrap: break-word;
+    padding: 4px;
+    font-size: 10px;
+  }
+
+  .container,
+  .q-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+
+  .q-card__section {
+    padding: 0 !important;
+  }
+
+  .print-hide {
+    display: none !important;
+  }
+}
+
+.table-print {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+
+
+.kop-surat {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 0 10px;
+}
+
+.logo-kiri,
+.logo-kanan {
+  width: 100px;
+  flex-shrink: 0;
+  text-align: center;
+}
+
+.judul-kop {
+  flex: 1;
+  text-align: center;
+  padding: 0 10px;
+}
+
+.kop-1 {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.kop-2 {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.kop-3 {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.kop-4 {
+  font-size: 13px;
+}
+
+.kop-5 {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.garis-kop {
+  border: none;
+  border-top: 2px solid #000;
+  margin-top: 8px;
+  margin-bottom: 10px;
 }
 </style>
