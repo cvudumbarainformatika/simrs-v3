@@ -14,8 +14,11 @@
         </div>
         <div class="col-5">
           <div class="flex items-center q-gutter-sm">
-            <q-radio v-for="(item, i) in store.yaTidaks" :key="i" v-model="store.form.rs4" :val="item" :label="item" size="sm" dense />
+            <q-radio v-for="(item, i) in store.yaTidaks" :key="i" v-model="store.form.rs4" :val="item" :label="item"
+              size="sm" dense />
           </div>
+          <app-input-simrs v-if="store.form.rs4 === 'Ya'" v-model="store.form.rs4Ket" label="Sebutkan Jika Ya "
+            class="q-mt-sm" />
         </div>
       </div>
       <q-separator class="q-my-xs" />
@@ -25,9 +28,11 @@
         </div>
         <div class="col-5">
           <div class="flex items-center q-gutter-sm">
-            <q-radio v-for="(item, i) in store.yaTidaks" :key="i" v-model="store.form.rs5" :val="item" :label="item" size="sm" dense />
+            <q-radio v-for="(item, i) in store.yaTidaks" :key="i" v-model="store.form.rs5" :val="item" :label="item"
+              size="sm" dense />
           </div>
-          <app-input-simrs v-if="store.form.rs5 === 'Ya'" v-model="store.form.rs5ket" label="Sebutkan Jika Ya " class="q-mt-sm" />
+          <app-input-simrs v-if="store.form.rs5 === 'Ya'" v-model="store.form.rs5Ket" label="Sebutkan Jika Ya "
+            class="q-mt-sm" />
         </div>
       </div>
       <q-separator class="q-my-xs" />
@@ -38,9 +43,11 @@
         </div>
         <div class="col-5">
           <div class="flex items-center q-gutter-sm">
-            <q-radio v-for="(item, i) in store.yaTidaks" :key="i" v-model="store.form.rs6" :val="item" :label="item" size="sm" dense />
+            <q-radio v-for="(item, i) in store.yaTidaks" :key="i" v-model="store.form.rs6" :val="item" :label="item"
+              size="sm" dense />
           </div>
-        <!-- <app-input-simrs v-if="store.form.rs5 === 'Ya'" v-model="store.form.rs5ket" label="Sebutkan Jika Ya " class="q-mt-sm" /> -->
+          <app-input-simrs v-if="store.form.rs6 === 'Ya'" v-model="store.form.rs6Ket" label="Sebutkan Jika Ya "
+            class="q-mt-sm" />
         </div>
       </div>
       <q-separator class="q-my-xs" />
@@ -51,9 +58,11 @@
         </div>
         <div class="col-5">
           <div class="flex items-center q-gutter-sm">
-            <q-radio v-for="(item, i) in store.yaTidaks" :key="i" v-model="store.form.rs7" :val="item" :label="item" size="sm" dense />
+            <q-radio v-for="(item, i) in store.yaTidaks" :key="i" v-model="store.form.rs7" :val="item" :label="item"
+              size="sm" dense />
           </div>
-        <!-- <app-input-simrs v-if="store.form.rs5 === 'Ya'" v-model="store.form.rs5ket" label="Sebutkan Jika Ya " class="q-mt-sm" /> -->
+          <app-input-simrs v-if="store.form.rs7 === 'Ya'" v-model="store.form.rs7Ket" label="Sebutkan Jika Ya "
+            class="q-mt-sm" />
         </div>
       </div>
       <q-separator class="q-my-xs" />
@@ -62,19 +71,9 @@
           Bagaimana jenis tempat tinggal pasien
         </div>
         <div class="col-5">
-          <q-select
-            v-model="store.form.rs8"
-            dense
-            standout="bg-yellow-3 text-black"
-            outlined
-            label="Tempat Tinggal"
-            :options="['Rumah milik sendiri', 'Menumpang', 'Kost/Kontrakan']"
-            emit-value
-            map-options
-            input-class="ellipsis"
-            fill-input
-            hide-bottom-space
-          />
+          <q-select v-model="store.form.rs8" dense standout="bg-yellow-3 text-black" outlined label="Tempat Tinggal"
+            :options="['Rumah milik sendiri', 'Menumpang', 'Kost/Kontrakan']" emit-value map-options
+            input-class="ellipsis" fill-input hide-bottom-space />
         </div>
       </div>
       <q-separator class="q-my-xs" />
@@ -85,9 +84,11 @@
         </div>
         <div class="col-5">
           <div class="flex items-center q-gutter-sm">
-            <q-radio v-for="(item, i) in store.yaTidaks" :key="i" v-model="store.form.rs9" :val="item" :label="item" size="sm" dense />
+            <q-radio v-for="(item, i) in store.yaTidaks" :key="i" v-model="store.form.rs9" :val="item" :label="item"
+              size="sm" dense />
           </div>
-        <!-- <app-input-simrs v-if="store.form.rs5 === 'Ya'" v-model="store.form.rs5ket" label="Sebutkan Jika Ya " class="q-mt-sm" /> -->
+          <app-input-simrs v-if="store.form.rs9 === 'Ya'" v-model="store.form.rs9Ket" label="Sebutkan Jika Ya "
+            class="q-mt-sm" />
         </div>
       </div>
       <q-separator class="q-my-xs" />
@@ -98,9 +99,11 @@
         </div>
         <div class="col-5">
           <div class="flex items-center q-gutter-sm">
-            <q-radio v-for="(item, i) in store.yaTidaks" :key="i" v-model="store.form.rs10" :val="item" :label="item" size="sm" dense />
+            <q-radio v-for="(item, i) in store.yaTidaks" :key="i" v-model="store.form.rs10" :val="item" :label="item"
+              size="sm" dense />
           </div>
-        <!-- <app-input-simrs v-if="store.form.rs5 === 'Ya'" v-model="store.form.rs5ket" label="Sebutkan Jika Ya " class="q-mt-sm" /> -->
+          <app-input-simrs v-if="store.form.rs10 === 'Ya'" v-model="store.form.rs10Ket" label="Sebutkan Jika Ya "
+            class="q-mt-sm" />
         </div>
       </div>
       <q-separator class="q-my-xs" />
@@ -111,9 +114,11 @@
         </div>
         <div class="col-5">
           <div class="flex items-center q-gutter-sm">
-            <q-radio v-for="(item, i) in store.yaTidaks" :key="i" v-model="store.form.rs11" :val="item" :label="item" size="sm" dense />
+            <q-radio v-for="(item, i) in store.yaTidaks" :key="i" v-model="store.form.rs11" :val="item" :label="item"
+              size="sm" dense />
           </div>
-        <!-- <app-input-simrs v-if="store.form.rs5 === 'Ya'" v-model="store.form.rs5ket" label="Sebutkan Jika Ya " class="q-mt-sm" /> -->
+          <app-input-simrs v-if="store.form.rs11 === 'Ya'" v-model="store.form.rs11Ket" label="Sebutkan Jika Ya "
+            class="q-mt-sm" />
         </div>
       </div>
       <q-separator class="q-my-xs" />
@@ -124,9 +129,11 @@
         </div>
         <div class="col-5">
           <div class="flex items-center q-gutter-sm">
-            <q-radio v-for="(item, i) in store.yaTidaks" :key="i" v-model="store.form.rs12" :val="item" :label="item" size="sm" dense />
+            <q-radio v-for="(item, i) in store.yaTidaks" :key="i" v-model="store.form.rs12" :val="item" :label="item"
+              size="sm" dense />
           </div>
-        <!-- <app-input-simrs v-if="store.form.rs5 === 'Ya'" v-model="store.form.rs5ket" label="Sebutkan Jika Ya " class="q-mt-sm" /> -->
+          <app-input-simrs v-if="store.form.rs12 === 'Ya'" v-model="store.form.rs12Ket" label="Sebutkan Jika Ya "
+            class="q-mt-sm" />
         </div>
       </div>
       <q-separator class="q-my-xs" />
@@ -137,9 +144,11 @@
         </div>
         <div class="col-5">
           <div class="flex items-center q-gutter-sm">
-            <q-radio v-for="(item, i) in store.yaTidaks" :key="i" v-model="store.form.rs13" :val="item" :label="item" size="sm" dense />
+            <q-radio v-for="(item, i) in store.yaTidaks" :key="i" v-model="store.form.rs13" :val="item" :label="item"
+              size="sm" dense />
           </div>
-        <!-- <app-input-simrs v-if="store.form.rs5 === 'Ya'" v-model="store.form.rs5ket" label="Sebutkan Jika Ya " class="q-mt-sm" /> -->
+          <app-input-simrs v-if="store.form.rs13 === 'Ya'" v-model="store.form.rs13Ket" label="Sebutkan Jika Ya "
+            class="q-mt-sm" />
         </div>
       </div>
       <q-separator class="q-my-xs" />
@@ -150,9 +159,11 @@
         </div>
         <div class="col-5">
           <div class="flex items-center q-gutter-sm">
-            <q-radio v-for="(item, i) in store.yaTidaks" :key="i" v-model="store.form.rs14" :val="item" :label="item" size="sm" dense />
+            <q-radio v-for="(item, i) in store.yaTidaks" :key="i" v-model="store.form.rs14" :val="item" :label="item"
+              size="sm" dense />
           </div>
-        <!-- <app-input-simrs v-if="store.form.rs5 === 'Ya'" v-model="store.form.rs5ket" label="Sebutkan Jika Ya " class="q-mt-sm" /> -->
+          <app-input-simrs v-if="store.form.rs14 === 'Ya'" v-model="store.form.rs14Ket" label="Sebutkan Jika Ya "
+            class="q-mt-sm" />
         </div>
       </div>
       <q-separator class="q-my-xs" />
@@ -163,9 +174,11 @@
         </div>
         <div class="col-5">
           <div class="flex items-center q-gutter-sm">
-            <q-radio v-for="(item, i) in store.yaTidaks" :key="i" v-model="store.form.rs15" :val="item" :label="item" size="sm" dense />
+            <q-radio v-for="(item, i) in store.yaTidaks" :key="i" v-model="store.form.rs15" :val="item" :label="item"
+              size="sm" dense />
           </div>
-        <!-- <app-input-simrs v-if="store.form.rs5 === 'Ya'" v-model="store.form.rs5ket" label="Sebutkan Jika Ya " class="q-mt-sm" /> -->
+          <app-input-simrs v-if="store.form.rs15 === 'Ya'" v-model="store.form.rs15Ket" label="Sebutkan Jika Ya "
+            class="q-mt-sm" />
         </div>
       </div>
       <q-separator class="q-my-xs" />
@@ -176,9 +189,11 @@
         </div>
         <div class="col-5">
           <div class="flex items-center q-gutter-sm">
-            <q-radio v-for="(item, i) in store.yaTidaks" :key="i" v-model="store.form.rs22" :val="item" :label="item" size="sm" dense />
+            <q-radio v-for="(item, i) in store.yaTidaks" :key="i" v-model="store.form.rs22" :val="item" :label="item"
+              size="sm" dense />
           </div>
-        <!-- <app-input-simrs v-if="store.form.rs5 === 'Ya'" v-model="store.form.rs5ket" label="Sebutkan Jika Ya " class="q-mt-sm" /> -->
+          <app-input-simrs v-if="store.form.rs22 === 'Ya'" v-model="store.form.rs22Ket" label="Sebutkan Jika Ya "
+            class="q-mt-sm" />
         </div>
       </div>
       <q-separator class="q-my-xs" />
@@ -189,9 +204,11 @@
         </div>
         <div class="col-5">
           <div class="flex items-center q-gutter-sm">
-            <q-radio v-for="(item, i) in store.yaTidaks" :key="i" v-model="store.form.rs16" :val="item" :label="item" size="sm" dense />
+            <q-radio v-for="(item, i) in store.yaTidaks" :key="i" v-model="store.form.rs16" :val="item" :label="item"
+              size="sm" dense />
           </div>
-          <app-input-simrs v-if="store.form.rs16 === 'Ya'" v-model="store.form.rs16Ket" label="Sebutkan Jika Ya " class="q-mt-sm" />
+          <app-input-simrs v-if="store.form.rs16 === 'Ya'" v-model="store.form.rs16Ket" label="Sebutkan Jika Ya "
+            class="q-mt-sm" />
         </div>
       </div>
       <q-separator class="q-my-xs" />
@@ -202,9 +219,11 @@
         </div>
         <div class="col-5">
           <div class="flex items-center q-gutter-sm">
-            <q-radio v-for="(item, i) in store.yaTidaks" :key="i" v-model="store.form.rs17" :val="item" :label="item" size="sm" dense />
+            <q-radio v-for="(item, i) in store.yaTidaks" :key="i" v-model="store.form.rs17" :val="item" :label="item"
+              size="sm" dense />
           </div>
-        <!-- <app-input-simrs v-if="store.form.rs16 === 'Ya'" v-model="store.form.rs16ket" label="Sebutkan Jika Ya " class="q-mt-sm" /> -->
+          <app-input-simrs v-if="store.form.rs17 === 'Ya'" v-model="store.form.rs17Ket" label="Sebutkan Jika Ya "
+            class="q-mt-sm" />
         </div>
       </div>
       <q-separator class="q-my-xs" />
@@ -215,9 +234,11 @@
         </div>
         <div class="col-5">
           <div class="flex items-center q-gutter-sm">
-            <q-radio v-for="(item, i) in store.yaTidaks" :key="i" v-model="store.form.rs18" :val="item" :label="item" size="sm" dense />
+            <q-radio v-for="(item, i) in store.yaTidaks" :key="i" v-model="store.form.rs18" :val="item" :label="item"
+              size="sm" dense />
           </div>
-          <app-input-simrs v-if="store.form.rs18 === 'Ya'" v-model="store.form.rs18Ket" label="Sebutkan Jika Ya " class="q-mt-sm" />
+          <app-input-simrs v-if="store.form.rs18 === 'Ya'" v-model="store.form.rs18Ket" label="Sebutkan Jika Ya "
+            class="q-mt-sm" />
         </div>
       </div>
       <q-separator class="q-my-xs" />
@@ -228,9 +249,11 @@
         </div>
         <div class="col-5">
           <div class="flex items-center q-gutter-sm">
-            <q-radio v-for="(item, i) in store.yaTidaks" :key="i" v-model="store.form.rs19" :val="item" :label="item" size="sm" dense />
+            <q-radio v-for="(item, i) in store.yaTidaks" :key="i" v-model="store.form.rs19" :val="item" :label="item"
+              size="sm" dense />
           </div>
-        <!-- <app-input-simrs v-if="store.form.rs18 === 'Ya'" v-model="store.form.rs18ket" label="Sebutkan Jika Ya " class="q-mt-sm" /> -->
+          <app-input-simrs v-if="store.form.rs19 === 'Ya'" v-model="store.form.rs19Ket" label="Sebutkan Jika Ya "
+            class="q-mt-sm" />
         </div>
       </div>
       <q-separator class="q-my-xs" />
@@ -243,16 +266,12 @@
           Bisa dipastikan
         </div>
         <div class="col-4">
-          <app-input-date
-            :model="store.form.tglRencanaPulang"
-            label=""
-            outlined
-            valid
-            @set-model="val=>store.form.tglRencanaPulang=val"
-          />
+          <app-input-date :model="store.form.tglRencanaPulang" label="" outlined valid
+            @set-model="val => store.form.tglRencanaPulang = val" />
         </div>
         <div class="col-4">
-          <app-input-simrs v-model="store.form.rs20" label="Berapa hari Rawat " class="q-mt-sm" :valid="{ required: true}" />
+          <app-input-simrs v-model="store.form.rs20" label="Berapa hari Rawat " class="q-mt-sm"
+            :valid="{ required: true }" />
         </div>
       </div>
       <q-separator class="q-my-xs" />
