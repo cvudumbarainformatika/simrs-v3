@@ -379,7 +379,7 @@ export const usePermintaanOperasistore = defineStore('permintaan-operasi-store',
     //   }
     // },
     injectDataPasien (pasien, val, kode) {
-      const findPasien = this.items.filter(x => x === pasien)
+      const findPasien = this.items.filter(x => x?.noreg === pasien?.noreg)
       // console.log('inject pasien', findPasien)
       if (findPasien?.length) {
         const data = findPasien[0]
@@ -403,6 +403,7 @@ export const usePermintaanOperasistore = defineStore('permintaan-operasi-store',
             data[kode]?.splice(0, 0, val)
           }
         }
+        // console.log('inject pasien if', findPasien)
       }
     },
     injectDokumenTindakan (pasien, res) {
@@ -421,7 +422,7 @@ export const usePermintaanOperasistore = defineStore('permintaan-operasi-store',
       // console.log('hapusDataInjectan', key, id, pasien)
 
       const findPasien = this.items.filter(x => x?.noreg === pasien?.noreg)
-      console.log('find pasien', findPasien)
+      // console.log('find pasien', findPasien)
 
       if (findPasien?.length) {
         const data = findPasien[0][key]
