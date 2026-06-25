@@ -26,15 +26,20 @@
       class="fit"
     >
       <template #before>
-        <div class="full-height q-pa-lg scroll-y">
-          <div class="text-h6">
-            {{ menu?.label }}
+        <div class="column full-height bg-grey-2">
+          <!-- Fixed Header -->
+          <div class="col-auto bg-dark text-white q-pa-md">
+            <div class="text-subtitle1 text-bold">
+              {{ menu?.label }}
+            </div>
+            <div class="text-grey-4 text-caption">{{ menu?.desc }}</div>
           </div>
-          <div>{{ menu?.desc }}</div>
-
-          <q-card flat class="q-mt-md full-width">
-            <component :is="formComponent" :pasien="pasien" :menu="menu" :key="menu" />
-          </q-card>
+          <!-- Scrollable Form Body -->
+          <div class="col full-height scroll q-pa-md">
+            <q-card class="full-width bg-white shadow-2" style="border-radius: 8px;">
+              <component :is="formComponent" :pasien="pasien" :menu="menu" :key="menu" />
+            </q-card>
+          </div>
         </div>
       </template>
 

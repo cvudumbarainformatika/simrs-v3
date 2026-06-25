@@ -289,7 +289,18 @@ const cekHubunganPasien = () => {
     store.form.tglLahir = pasien?.tgllahir
     store.form.alamat = pasien?.alamat
     store.form.telepon = pasien?.nohp
-    store.form.lp = pasien?.kelamin
+    const kel = pasien?.kelamin
+    if (kel) {
+      if (kel.toLowerCase() === 'l' || kel.toLowerCase().startsWith('laki')) {
+        store.form.lp = 'Laki-Laki'
+      } else if (kel.toLowerCase() === 'p' || kel.toLowerCase().startsWith('perempuan')) {
+        store.form.lp = 'Perempuan'
+      } else {
+        store.form.lp = kel
+      }
+    } else {
+      store.form.lp = null
+    }
   }
   else {
     store.form.nama = null

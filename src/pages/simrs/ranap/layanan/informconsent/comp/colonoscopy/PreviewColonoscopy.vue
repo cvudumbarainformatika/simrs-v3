@@ -1,9 +1,9 @@
 <template>
-  <div id="pdfDoc" class="q-pa-lg bg-white f-12">
+  <div id="pdfDoc" class="f-12">
     <!-- page 1 -->
     <div class="page-1">
       <!-- KOP SURAT -->
-      <div class="col-grow ba-black">
+      <div class="col-auto ba-black">
         <div class="row items-center">
           <div class="col-9 br-black">
             <div class="row items-center q-pa-sm">
@@ -402,30 +402,101 @@ function getNewLine (text) {
   return text?.replace(/\n/g, '<br/>')
 }
 
-const exportPdf = () => {
-  const concern = document.getElementById('pdfDoc')
+// const exportPdf = () => {
+//   const concern = document.getElementById('pdfDoc')
+// 
+//   const pdfConfig = {
+//     margin: 0,
+//     filename: 'inform-consent-' + props?.item?.jenis + '.pdf',
+//     image: {
+//       type: 'jpeg',
+//       quality: 0.98
+//     },
+//     html2canvas: {
+//       scale: 2,
+//       logging: true,
+//       dpi: 192,
+//       letterRendering: true
+//     },
+//     jsPDF: {
+//       unit: 'mm', // mm | pt | in
+//       format: 'a4', // a4 | letter
+//       orientation: 'portrait' // landscape | portrait
+//     },
+//     pagebreak: { mode: ['css', 'legacy'] }
+//   }
+// 
+//   html2pdf().set(pdfConfig).from(concern).save()
+// }
+// defineExpose({ exportPdf })
+</script>
 
-  const pdfConfig = {
-    margin: 0,
-    filename: 'inform-consent-' + props?.item?.jenis + '.pdf',
-    image: {
-      type: 'jpeg',
-      quality: 0.98
-    },
-    html2canvas: {
-      scale: 2,
-      logging: true,
-      dpi: 192,
-      letterRendering: true
-    },
-    jsPDF: {
-      unit: 'mm', // mm | pt | in
-      format: 'a4', // a4 | letter
-      orientation: 'portrait' // landscape | portrait
-    }
+<style lang="scss" scoped>
+/* Tampilan preview per page di layar browser (seperti layout kertas A4) */
+#pdfDoc {
+  background-color: #e0e0e0 !important; /* warna abu-abu untuk background desktop workspace */
+  padding: 30px 10px !important;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px; /* jarak antar halaman */
+  box-sizing: border-box;
+}
+
+.page-1 {
+  background-color: #ffffff !important;
+  width: 210mm;
+  min-height: 297mm; /* memaksa tinggi minimum A4 */
+  padding: 15mm 15mm 20mm 15mm; /* margin halaman */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* efek shadow agar mirip lembaran kertas nyata */
+  border-radius: 4px;
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Sembunyikan garis separator horizontal di layar browser karena sudah dipisah oleh gap & shadow */
+.pemisah {
+  display: none !important;
+}
+
+/* CSS khusus untuk menetralisir margin/padding/shadow saat html2pdf melakukan rendering/cloning */
+/*
+:global(.html2pdf__container) {
+  #pdfDoc {
+    background-color: transparent !important;
+    padding: 0 !important;
+    gap: 0 !important;
+  }
+  .page-1 {
+    margin: 0 !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    height: 297mm !important; 
+  }
+}
+*/
+
+/* Pengaturan CSS khusus saat Cetak (Print) dan Ekspor PDF */
+@media print {
+  #pdfDoc {
+    background-color: transparent !important;
+    padding: 0 !important;
+    gap: 0;
   }
 
-  html2pdf().set(pdfConfig).from(concern).save()
+  .page-1 {
+    width: 210mm !important;
+    height: 297mm !important; /* Memaksa tinggi pas A4 */
+    padding: 15mm 15mm 20mm 15mm !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    margin: 0 !important;
+    page-break-after: always !important; /* memaksa pemisahan halaman */
+    page-break-inside: avoid !important;
+  }
 }
-defineExpose({ exportPdf })
-</script>
+</style>
+
+

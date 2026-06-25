@@ -130,29 +130,51 @@
             <div class="row q-col-gutter-sm">
               <div class="col-6" bordered style="min-height: 150px; border: 1px solid #ccc;">
                 <div class="column full-height flex-center relative-position q-pa-sm">
-                  <div v-if="!store.form.ttdYgMenyatakan" class="absolute-center">
+                  <!-- <div v-if="!store.form.ttdYgMenyatakan" class="absolute-center">
                     Ttd yg Menyatakan
                   </div>
                   <TtdWacom uuid="ttd-yg-menyatakan" :ttd-name="store.form.nama ?? 'yg menyatakan'"
                     @signature:ttd-yg-menyatakan="(val) => {
                       // console.log('ttd yg menyatakan',val);
                       store.form.ttdYgMenyatakan = val
-                    }" />
+                    }" /> -->
+
+                  <div>
+                    <app-signature :ttd="store.form.ttdYgMenyatakan" :width="250" :height="150"
+                      label-ttd="TTD yg Menyatakan" @save-ttd="(val) => store.form.ttdYgMenyatakan = val"
+                      :pasien="pasien" uuid="ttdYgMenyatakan" @signature="(val) => {
+                        // store.setForm('ttdpasien', val)
+                        store.form.ttdYgMenyatakan = val
+                      }" />
+                  </div>
                 </div>
               </div>
               <div class="col-6" bordered style="min-height: 150px; border: 1px solid #ccc;">
                 <div class="column full-height flex-center relative-position q-pa-sm">
-                  <div v-if="!store.form.ttdSaksiPasien" class="absolute-center">
-                    Ttd Saksi Pasien
-                  </div>
-                  <TtdWacom uuid="ttd-saksi-pasien" :ttd-name="store.form.saksiPasien ?? 'saksi pasien'"
+
+                  <!-- <TtdWacom uuid="ttd-saksi-pasien" :ttd-name="store.form.saksiPasien ?? 'saksi pasien'"
                     @signature:ttd-saksi-pasien="(val) => {
                       // console.log('ttd-saksi-pasien',val);
                       store.form.ttdSaksiPasien = val
-                    }" />
+                    }" /> -->
+
+                  <div>
+                    <app-signature :ttd="store.form.ttdSaksiPasien" :width="250" label-ttd="TTD Saksi Pasien"
+                      @save-ttd="(val) => store.form.ttdSaksiPasien = val" :pasien="pasien" uuid="ttdSaksiPasien"
+                      @signature="(val) => {
+                        // store.setForm('ttdpasien', val)
+                        store.form.ttdSaksiPasien = val
+                      }" />
+                  </div>
+
+                  <!-- <div v-if="!store.form.ttdSaksiPasien" class="absolute-center">
+                    Ttd Saksi Pasien
+                  </div> -->
+
+
                 </div>
               </div>
-              <div class="col-6" bordered style="min-height: 150px; border: 1px solid #ccc;">
+              <!-- <div class="col-6" bordered style="min-height: 150px; border: 1px solid #ccc;">
                 <div class="column full-height flex-center relative-position q-pa-sm">
                   <div v-if="!store.form.ttdDokter" class="absolute-center">
                     Ttd Dokter
@@ -162,8 +184,8 @@
                     store.form.ttdDokter = val
                   }" />
                 </div>
-              </div>
-              <div class="col-6" bordered style="min-height: 150px; border: 1px solid #ccc;">
+              </div> -->
+              <!-- <div class="col-6" bordered style="min-height: 150px; border: 1px solid #ccc;">
                 <div class="column full-height flex-center relative-position q-pa-sm">
                   <div v-if="!store.form.ttdPetugas" class="absolute-center">
                     Ttd Saksi RS
@@ -174,7 +196,7 @@
                       store.form.ttdPetugas = val
                     }" />
                 </div>
-              </div>
+              </div> -->
             </div>
           </div>
         </div>
@@ -224,12 +246,25 @@ const cekHubunganPasien = () => {
   const pasien = props.pasien
   const val = store.form.hubunganDgPasien
   if (val === 'Diri Sendiri') {
-    store.form.nama = pasien?.nama
+    store.form.nama = pasien?.nama_panggil
     store.form.noKtp = pasien?.nktp
     store.form.tglLahir = pasien?.tgllahir
     store.form.alamat = pasien?.alamat
     store.form.telepon = pasien?.nohp
-    store.form.lp = pasien?.kelamin
+    const kel = pasien?.kelamin
+    if (kel) {
+      if (kel.toLowerCase() === 'l' || kel.toLowerCase().startsWith('laki')) {
+        store.form.lp = 'Laki-Laki'
+      } else if (kel.toLowerCase() === 'p' || kel.toLowerCase().startsWith('perempuan')) {
+        store.form.lp = 'Perempuan'
+      } else {
+        store.form.lp = kel
+      }
+    } else {
+      store.form.lp = null
+    }
+
+    // console.log('form', store.form)
   }
   else {
     store.form.nama = null
