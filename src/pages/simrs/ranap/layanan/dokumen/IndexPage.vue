@@ -109,7 +109,7 @@ const menus = ref([
     name: 'summary-page',
     label: 'Surat Kontrol',
     title: 'SURAT KONTROL',
-    desc: 'Ringkasan Pulang Pasien',
+    desc: 'Surat Kontrol',
     icon: 'icon-my-file_sign',
     nakes: ['1', '2', '3'],
     comp: shallowRef(defineAsyncComponent(() => import('./dischargeplanning/IndexPage.vue')))
