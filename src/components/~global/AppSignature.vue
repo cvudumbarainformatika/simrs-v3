@@ -2,15 +2,16 @@
   <!-- Preview -->
   <div class=" q-mx-auto" :style="`width:${width}px;`">
 
-    <q-btn :color="ttd ? 'teal' : 'primary'" class="full-width q-mb-sm" :label="ttd ? 'Ubah TTD' : 'Buat TTD'"
-      @click="showChooseMethod = true" />
+    <q-btn :color="ttd ? 'teal' : 'primary'" class="full-width q-mb-sm"
+      :label="ttd ? 'Ubah ' + labelTtd : `${labelTtd}`" @click="showChooseMethod = true" />
 
     <div class="rounded-borders q-mb-md">
       <!-- <component :is="activeComponent" :ttd="ttd" @save-ttd="handleSave" :id="uuid" :uuid="uuid"
         @signature:ttdpasien="handleSignature" /> -->
       <!-- <img v-else :src="ttd || pathImg + ttd" class="full-width full-height" /> -->
 
-      <AppTtd v-if="selectedMethod === 'normal'" :ttd="ttd" @save-ttd="handleSave" :id="uuid" :uuid="uuid" />
+      <AppTtd v-if="selectedMethod === 'normal'" :ttd="ttd" @save-ttd="handleSave" :id="uuid" :uuid="uuid"
+        :width="width" :height="height" />
 
       <TtdWacom v-else-if="selectedMethod === 'wacom'" uuid="ttdpasien"
         :ttd-name="pasien?.nama_panggil ?? 'nama pasien / keluarga'" @signature:ttdpasien="(val) => {
@@ -59,6 +60,10 @@ const props = defineProps({
   ttd: {
     type: String,
     default: null
+  },
+  labelTtd: {
+    type: String,
+    default: 'TTD'
   },
   uuid: {
     type: String,
