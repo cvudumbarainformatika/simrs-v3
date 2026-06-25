@@ -57,7 +57,8 @@
           <div class="col text-justify">Menyatakan menolak nasehat Dokter / Petugas {{ pasien?.dokter }} untuk dirawat
             selanjutnya
             dan telah memaksa pulang atas
-            kemauan sendiri dengan menanggung sendiri segala akibatnya.
+            kemauan sendiri dengan menanggung sendiri segala akibatnya karena <span class="text-weight-bold">{{
+              pulang?.alasan ?? '-' }}</span>.
           </div>
 
         </div>
