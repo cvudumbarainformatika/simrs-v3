@@ -119,7 +119,7 @@
               Keterangan
             </div>
             <div class="col-9">
-              : {{ ket }}
+              : {{ toItem?.ranap?.rs5 }}
             </div>
           </div>
           <div v-if="toItem?.rs4 === 'Kontrol'" class="row items-center justify-between q-mb-xs">
