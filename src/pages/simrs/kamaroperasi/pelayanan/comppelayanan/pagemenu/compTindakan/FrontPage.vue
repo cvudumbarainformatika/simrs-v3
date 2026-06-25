@@ -31,9 +31,10 @@
 
 <script setup>
 import { useAplikasiStore } from 'src/stores/app/aplikasi'
+import { useTindakanKamarOperasiStore } from 'src/stores/simrs/kamaroperasi/assasement/tindakan.js'
 import { useLaporanOperasiStore } from 'src/stores/simrs/kamaroperasi/laporanOperasi'
 import { useLayananPoli } from 'src/stores/simrs/pelayanan/poli/layanan.js'
-import { computed, defineAsyncComponent, onMounted, ref, shallowRef, toRaw } from 'vue'
+import { computed, defineAsyncComponent, onMounted, ref, shallowRef, toRaw, watch } from 'vue'
 
 const auth = useAplikasiStore()
 
@@ -44,13 +45,26 @@ const props = defineProps({
   },
 })
 
-const refinedPasien = computed(() => {
-  const raw = toRaw(props?.pasien)
-  const pas = structuredClone(raw)
-  pas.kdgroup_ruangan = pas.rs10
-  pas.kodepoli = 'OPERASI'
-  return pas
-})
+const refinedPasien = ref(null)
+
+watch(
+  () => props.pasien,
+  (newPasien) => {
+    if (!newPasien) {
+      refinedPasien.value = null
+      return
+    }
+
+    const raw = toRaw(newPasien)
+    const pas = structuredClone(raw)
+    pas.kdgroup_ruangan = pas.rs10
+    pas.kodepoli = 'OPERASI'
+    // console.log('refined', pas)
+
+    refinedPasien.value = pas
+  },
+  { immediate: true, deep: true }
+)
 const store = useLaporanOperasiStore()
 const tab = ref('tindOp')
 
@@ -74,8 +88,8 @@ const tabs = ref([
     name: 'tindakan',
     icon: 'monitor_heart',
     // nakes: ['2', '3'],
-    // comp: shallowRef(defineAsyncComponent(() => import('./comp/TindakanPage.vue')))
-    comp: shallowRef(defineAsyncComponent(() => import('src/pages/simrs/poli/tindakan/comptindakan/pagemenu/complayanan/TindakanPage.vue'))) // rajal
+    comp: shallowRef(defineAsyncComponent(() => import('./comp/tindakan/TindakanPage.vue')))
+    // comp: shallowRef(defineAsyncComponent(() => import('src/pages/simrs/poli/tindakan/comptindakan/pagemenu/complayanan/TindakanPage.vue'))) // rajal
     // comp: shallowRef(defineAsyncComponent(() => import('src/pages/simrs/ranap/layanan/diagnosaDanTindakan/tindakan/TindakanPage.vue'))) // ranap
   },
   {

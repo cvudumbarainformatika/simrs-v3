@@ -1,8 +1,8 @@
 <template>
-  <div class="ttd-pad-form">
-    <canvas v-show="imgTtd === null" ref="canvasRef" class="ttd-pad" height="200" width="320"
+  <div class="ttd-pad-form" :style="`max-width: ${width}px;`">
+    <canvas v-show="imgTtd === null" ref="canvasRef" class="ttd-pad" :height="height" :width="width"
       @pointerdown="handlePointerDown" @pointermove="handlePointerMove" @pointerup="handlePointerUp" />
-    <q-img v-show="imgTtd !== null" :src="imgTtd" height="200" width="320" />
+    <q-img v-show="imgTtd !== null" :src="imgTtd" :height="height" :width="width" />
     <div class="absolute-bottom-right q-ma-sm">
       <q-btn flat icon="icon-mat-refresh" size="md" padding="xs" round color="negative" @click="clearPad()" />
       <q-btn flat icon="icon-mat-save" size="md" padding="xs" round color="primary" @click="savePad()" />
@@ -24,7 +24,24 @@ const positionY = ref()
 
 // const imgSrc = ref(null)
 
-const props = defineProps({ ttd: { type: String, default: null }, uuid: { type: String, default: '00000000-0000-0000-0000-000000000000' } })
+const props = defineProps({
+  ttd: {
+    type: String,
+    default: null
+  },
+  uuid: {
+    type: String,
+    default: '00000000-0000-0000-0000-000000000000'
+  },
+  width: {
+    type: [Number, String],
+    default: 320
+  },
+  height: {
+    type: [Number, String],
+    default: 200
+  }
+})
 
 const emits = defineEmits(['saveTtd', 'signature'])
 

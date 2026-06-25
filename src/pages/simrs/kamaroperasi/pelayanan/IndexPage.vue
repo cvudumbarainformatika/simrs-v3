@@ -31,7 +31,7 @@
                     Maaf, DPJP Pasien Ini Belum Ada ... Harap Input DPJP Terlebih dahulu
                   </div>
                 </div>
-                <component :is="menu.comp" v-else :key="pasien" :pasien="pasien" :loading-terima="store.loadingTerima"
+                <component v-else :is="menu.comp" :key="pasien" :pasien="pasien" :loading-terima="store.loadingTerima"
                   depo="ok" />
               </template>
               <template #fallback>

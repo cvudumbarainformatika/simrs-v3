@@ -1883,8 +1883,8 @@ export const useLaporanLraLaprealisasianggaranStore = defineStore('laporan_reali
           persen:
             pagu > 0
               ? ((total_realisasi / pagu) * 100).toFixed(2)
-              : '0.00',
-          rincian
+              : '0.00'
+          // rincian
         })
       })
 
@@ -1953,8 +1953,8 @@ export const useLaporanLraLaprealisasianggaranStore = defineStore('laporan_reali
           persen:
             pagu > 0
               ? ((total_realisasi / pagu) * 100).toFixed(2)
-              : '0.00',
-          rincian
+              : '0.00'
+          // rincian
         })
       })
 
@@ -2022,8 +2022,8 @@ export const useLaporanLraLaprealisasianggaranStore = defineStore('laporan_reali
           persen:
             pagu > 0
               ? ((total_realisasi / pagu) * 100).toFixed(2)
-              : '0.00',
-          rincian
+              : '0.00'
+          // rincian
         })
       })
 
@@ -2092,8 +2092,8 @@ export const useLaporanLraLaprealisasianggaranStore = defineStore('laporan_reali
           persen:
             pagu > 0
               ? ((total_realisasi / pagu) * 100).toFixed(2)
-              : '0.00',
-          rincian
+              : '0.00'
+          // rincian
         })
       })
 
@@ -2146,8 +2146,8 @@ export const useLaporanLraLaprealisasianggaranStore = defineStore('laporan_reali
           persen:
             pagu > 0
               ? ((total_realisasi / pagu) * 100).toFixed(2)
-              : '0.00',
-          rincian
+              : '0.00'
+          // rincian
         })
       })
 

@@ -12,28 +12,41 @@ export const useSkriiningDischargePlanningRanapStore = defineStore('skriining-di
       rs1: null,
       rs2: null,
       rs4: null,
+      rs4Ket: null,
       rs5: null,
       rs5Ket: null,
       rs6: null,
+      rs6Ket: null,
       rs7: null,
+      rs7Ket: null,
       rs8: null,
       rs9: null,
+      rs9Ket: null,
       rs10: null,
+      rs10Ket: null,
       rs11: null,
+      rs11Ket: null,
       rs12: null,
+      rs12Ket: null,
       rs13: null,
+      rs13Ket: null,
       rs14: null,
+      rs14Ket: null,
       rs15: null,
+      rs15Ket: null,
       rs16: null,
       rs16Ket: null,
       rs17: null,
+      rs17Ket: null,
       rs18: null,
       rs18Ket: null,
       rs19: null,
+      rs19Ket: null,
       tglRencanaPulang: date.formatDate(Date.now(), 'YYYY-MM-DD'),
       rs20: null,
       rs21: null,
-      rs22: null
+      rs22: null,
+      rs22Ket: null,
     },
 
     dokters: [],
@@ -53,7 +66,7 @@ export const useSkriiningDischargePlanningRanapStore = defineStore('skriining-di
   // },
   actions: {
 
-    async simpandata (pasien) {
+    async simpandata(pasien) {
       this.loadingOrder = true
 
       // const form = {
@@ -85,7 +98,7 @@ export const useSkriiningDischargePlanningRanapStore = defineStore('skriining-di
       }
     },
 
-    async hapusdata (pasien, id) {
+    async hapusdata(pasien, id) {
       this.loadingHapus = true
       const payload = { noreg: pasien?.noreg, id }
       try {
@@ -106,31 +119,44 @@ export const useSkriiningDischargePlanningRanapStore = defineStore('skriining-di
       }
     },
 
-    initReset () {
+    initReset() {
       this.form = {
         rs4: null,
+        rs4Ket: null,
         rs5: null,
         rs5Ket: null,
         rs6: null,
+        rs6Ket: null,
         rs7: null,
+        rs7Ket: null,
         rs8: null,
         rs9: null,
+        rs9Ket: null,
         rs10: null,
+        rs10Ket: null,
         rs11: null,
+        rs11Ket: null,
         rs12: null,
+        rs12Ket: null,
         rs13: null,
+        rs13Ket: null,
         rs14: null,
+        rs14Ket: null,
         rs15: null,
+        rs15Ket: null,
         rs16: null,
         rs16Ket: null,
         rs17: null,
+        rs17Ket: null,
         rs18: null,
         rs18Ket: null,
         rs19: null,
+        rs19Ket: null,
         tglRencanaPulang: null,
         rs20: null,
         rs21: null,
-        rs22: null
+        rs22: null,
+        rs22Ket: null
       }
 
       const pengunjung = usePengunjungRanapStore()

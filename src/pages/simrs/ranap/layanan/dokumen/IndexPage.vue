@@ -97,10 +97,19 @@ const menus = ref([
     comp: shallowRef(defineAsyncComponent(() => import('./resume/IndexPage.vue')))
   },
   {
+    name: 'discharge-page',
+    label: 'Discharge Planning',
+    title: 'DISCHARGE PLANNING',
+    desc: 'Discharge Planning',
+    icon: 'icon-my-file_sign',
+    nakes: ['1', '2', '3'],
+    comp: shallowRef(defineAsyncComponent(() => import('./dischargeplanning/dischargeplanning_skrining/IndexPage.vue')))
+  },
+  {
     name: 'summary-page',
-    label: 'Discharge Summary',
-    title: 'DISCHARGE SUMMARY',
-    desc: 'Ringkasan Pulang Pasien',
+    label: 'Surat Kontrol',
+    title: 'SURAT KONTROL',
+    desc: 'Surat Kontrol',
     icon: 'icon-my-file_sign',
     nakes: ['1', '2', '3'],
     comp: shallowRef(defineAsyncComponent(() => import('./dischargeplanning/IndexPage.vue')))

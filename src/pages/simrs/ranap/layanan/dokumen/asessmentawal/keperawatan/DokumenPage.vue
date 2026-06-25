@@ -852,11 +852,29 @@
       <!-- Discharge Planning -->
       <div class="section">
         <div class="section-title">Dhischarge Planning</div>
+        <div class="row q-pb-sm">
+          <div class="col-4">
+            Perkiraan Lama Rawat :
+          </div>
+          <div class="col-8">
+            Sudah bisa ditetapkan <span class="q-px-xs text-weight-bold">{{
+              jawabdischargeplanning?.rs20
+              }}</span>hari; Rencana tanggal pulang : <span class="q-px-xs text-weight-bold">{{
+                jawabdischargeplanning?.tglRencanaPulang ?? '-' }}</span>
+          </div>
+          <div class="col-4">
+          </div>
+          <div class="col-8">
+            Belum bisa ditetapkan, karena <span class="q-px-xs text-weight-bold">{{
+              jawabdischargeplanning?.rs21 ?? '-' }}</span>
+          </div>
+        </div>
         <table style="margin-top: -5px;">
           <thead>
             <tr>
-              <th>KETERANGAN</th>
-              <th>HASIL</th>
+              <th>Faktor Resiko Pasien Pulang</th>
+              <th>Ya/Tidak</th>
+              <th>Keterangan</th>
             </tr>
           </thead>
           <tbody>
@@ -864,6 +882,7 @@
               <tr>
                 <td>{{ item?.label }}</td>
                 <td>{{ item?.value }}</td>
+                <td>{{ item?.ket ?? '-' }}</td>
               </tr>
             </template>
           </tbody>
@@ -1051,29 +1070,25 @@ const penilaian = computed(() => {
   return awal
 })
 const jawabdischargeplanning = props.pasien?.skriningdischargeplannings?.[0]
-const rs5 = jawabdischargeplanning?.rs5 === 'Ya' ? `${jawabdischargeplanning?.rs5}, ${jawabdischargeplanning?.rs5Ket ? jawabdischargeplanning?.rs5Ket : '-'}` : '-'
-const rs16 = jawabdischargeplanning?.rs16 === 'Ya' ? `${jawabdischargeplanning?.rs16}, ${jawabdischargeplanning?.rs16Ket ? jawabdischargeplanning?.rs16Ket : '-'}` : '-'
-const rs18 = jawabdischargeplanning?.rs18 === 'Ya' ? `${jawabdischargeplanning?.rs18}, ${jawabdischargeplanning?.rs18Ket ? jawabdischargeplanning?.rs18Ket : '-'}` : '-'
+
 const dischargeplanning = computed(() => [
-  { label: 'Apakah pasien tinggal sendiri', value: jawabdischargeplanning?.rs4 },
-  { label: 'Apakah pasien tinggal bersama keluarga', value: rs5 },
-  { label: 'Apakah pasien khawatir jika pulang ke rumah', value: jawabdischargeplanning?.rs6 },
-  { label: 'Apakah saat di rumah pasien ada yang merawat', value: jawabdischargeplanning?.rs7 },
-  { label: 'Bagaimana jenis tempat tinggal pasien', value: jawabdischargeplanning?.rs8 },
-  { label: 'Apakah tempat tinggal pasien ada tetangga', value: jawabdischargeplanning?.rs9 },
-  { label: 'Apakah pasien mempunyai tanggung jawab menafkahi keluarga/saudara', value: jawabdischargeplanning?.rs10 },
-  { label: 'Apakah pasien mempunyai tanggung jawab memelihara hewan peliharaan', value: jawabdischargeplanning?.rs11 },
-  { label: 'Apakah ketika pulang, masih ada perawatan lanjutan yang harus dilakukan', value: jawabdischargeplanning?.rs12 },
-  { label: 'Apakah ketika pulang, pasien harus kontrol ke lebih dari 2 dokter', value: jawabdischargeplanning?.rs13 },
-  { label: 'Apakah pasien pulang dengan membawa obat lebih dari 6 jenis obat', value: jawabdischargeplanning?.rs14 },
-  { label: 'Apakah pasien mengajukan permohonan untuk pendamping (care giver) dari rumah sakit', value: jawabdischargeplanning?.rs15 },
-  { label: 'Apakah pasien memiliki transportasi untuk pulang', value: jawabdischargeplanning?.rs22 },
-  { label: 'Apakah pasien memerlukan alat bantu', value: rs16 },
-  { label: 'Apakah pasien memerlukan pemantauan minum obat', value: jawabdischargeplanning?.rs17 },
-  { label: 'Apakah pasien memerlukan pemantauan diet/makanan', value: rs18 },
-  { label: 'Apakah pasien memerlukan latihan fisik', value: jawabdischargeplanning?.rs19 },
-  { label: 'Perkiraan Lama Rawat bisa dipastikan', value: `selama ${jawabdischargeplanning?.rs20} Hari, ${jawabdischargeplanning?.tglRencanaPulang ? `'tanggal pulang '${jawabdischargeplanning?.tglRencanaPulang}` : ''} ` },
-  { label: 'Alasan belum bisa dipastikan', value: jawabdischargeplanning?.rs21 ?? '-' }
+  { label: 'Apakah pasien tinggal sendiri', value: jawabdischargeplanning?.rs4, ket: jawabdischargeplanning?.rs4Ket },
+  { label: 'Apakah pasien tinggal bersama keluarga', value: jawabdischargeplanning?.rs5, ket: jawabdischargeplanning?.rs5Ket },
+  { label: 'Apakah pasien khawatir jika pulang ke rumah', value: jawabdischargeplanning?.rs6, ket: jawabdischargeplanning?.rs6Ket },
+  { label: 'Apakah saat di rumah pasien ada yang merawat', value: jawabdischargeplanning?.rs7, ket: jawabdischargeplanning?.rs7Ket },
+  { label: 'Bagaimana jenis tempat tinggal pasien', value: jawabdischargeplanning?.rs8, ket: '' },
+  { label: 'Apakah tempat tinggal pasien ada tetangga', value: jawabdischargeplanning?.rs9, ket: jawabdischargeplanning?.rs9Ket },
+  { label: 'Apakah pasien mempunyai tanggung jawab menafkahi keluarga/saudara', value: jawabdischargeplanning?.rs10, ket: jawabdischargeplanning?.rs10Ket },
+  { label: 'Apakah pasien mempunyai tanggung jawab memelihara hewan peliharaan', value: jawabdischargeplanning?.rs11, ket: jawabdischargeplanning?.rs11Ket },
+  { label: 'Apakah ketika pulang, masih ada perawatan lanjutan yang harus dilakukan', value: jawabdischargeplanning?.rs12, ket: jawabdischargeplanning?.rs12Ket },
+  { label: 'Apakah ketika pulang, pasien harus kontrol ke lebih dari 2 dokter', value: jawabdischargeplanning?.rs13, ket: jawabdischargeplanning?.rs13Ket },
+  { label: 'Apakah pasien pulang dengan membawa obat lebih dari 6 jenis obat', value: jawabdischargeplanning?.rs14, ket: jawabdischargeplanning?.rs14Ket },
+  { label: 'Apakah pasien mengajukan permohonan untuk pendamping (care giver) dari rumah sakit', value: jawabdischargeplanning?.rs15, ket: jawabdischargeplanning?.rs15Ket },
+  { label: 'Apakah pasien memiliki transportasi untuk pulang', value: jawabdischargeplanning?.rs22, ket: jawabdischargeplanning?.rs22Ket },
+  { label: 'Apakah pasien memerlukan alat bantu', value: jawabdischargeplanning?.rs16, ket: jawabdischargeplanning?.rs16Ket },
+  { label: 'Apakah pasien memerlukan pemantauan minum obat', value: jawabdischargeplanning?.rs17, ket: jawabdischargeplanning?.rs17Ket },
+  { label: 'Apakah pasien memerlukan pemantauan diet/makanan', value: jawabdischargeplanning?.rs18, ket: jawabdischargeplanning?.rs18Ket },
+  { label: 'Apakah pasien memerlukan latihan fisik', value: jawabdischargeplanning?.rs19, ket: jawabdischargeplanning?.rs19Ket }
 ])
 
 </script>
