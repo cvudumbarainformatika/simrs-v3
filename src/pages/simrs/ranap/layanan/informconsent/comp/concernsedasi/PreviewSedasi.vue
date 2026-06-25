@@ -7,10 +7,7 @@
           <div class="col-9 br-black">
             <div class="row items-center q-pa-sm">
               <div class="col-auto">
-                <img
-                  src="~assets/images/logo-kota-grey.png"
-                  width="60"
-                >
+                <img src="~assets/images/logo-kota-grey.png" width="60">
               </div>
               <div class="col flex-wrap q-px-md">
                 <div class="text-center">
@@ -62,7 +59,7 @@
           </div>
           <div class="flex q-py-xs">
             <div style="width: 40%;">
-              Penerima informasi /pemberi  persetujuan*
+              Penerima informasi /pemberi persetujuan*
             </div>
             <div style="width: 60%;">
               : {{ item?.nama }}
@@ -84,7 +81,7 @@
                 <th class="text-left f-12">
                   ISI INFORMASI
                 </th>
-                <th class="text-right" width="20%">
+                <th class="text-right" width="10%">
                   TANDA (v)
                 </th>
               </tr>
@@ -101,7 +98,7 @@
                   <div v-for="diag in item?.diagnosis" :key="diag" class="flex">
                     <div>- {{ diag }} </div>
                     <div class="q-ml-sm">
-                      {{ pasien?.diagnosamedis?.find(x => x?.rs3 === diag)?.masterdiagnosa?.rs4 ?? '-' }}
+                      {{pasien?.diagnosamedis?.find(x => x?.rs3 === diag)?.masterdiagnosa?.rs4 ?? '-'}}
                     </div>
                   </div>
                 </td>
@@ -133,10 +130,10 @@
                   Tindakan Kedokteran
                 </td>
                 <td class="text-left f-12">
-                  {{ item?.tindakanMedis.join(' | ') }}
+                  {{ Array.isArray(item?.tindakanMedis) ? item?.tindakanMedis.join(' | ') : item?.tindakanMedis }}
                 </td>
                 <td class="text-right">
-                  <q-icon v-if="item?.tindakanMedis?.length > 0" name="icon-mat-check" size="sm" />
+                  <q-icon v-if="item?.tindakanMedis" name="icon-mat-check" size="sm" />
                 </td>
               </tr>
 
@@ -164,9 +161,9 @@
                 </td>
                 <td class="text-left f-12">
                   <div v-for="tj in item?.tujuan" :key="tj" class="flex">
-                    <div>*  </div>
+                    <div>* </div>
                     <div class="q-ml-sm">
-                      {{ tj==='Lain-lain'? item?.tujuanLain : (tj ?? '-') }}
+                      {{ tj === 'Lain-lain' ? item?.tujuanLain : (tj ?? '-') }}
                     </div>
                   </div>
                 </td>
@@ -219,17 +216,25 @@
                   Komplikasi
                 </td>
                 <td class="text-left f-12">
-                  <div v-for="it in item?.tindakanMedis" :key="it">
-                    <div class="text-bold">
-                      {{ it }} :
-                    </div>
-                    <div v-for="tj in store?.komplikasiSedasis.find(x => x?.nama === it)?.details" :key="tj" class="flex">
-                      * {{ tj }}
+                  <div v-for="it in tindakanArray" :key="it" class="q-mb-sm">
+                    <div class="text-bold text-caption">{{ it }} :</div>
+                    <div class="row q-col-gutter-xs">
+                      <div v-for="tj in store?.komplikasiSedasis.find(x => x?.nama === it)?.details" :key="tj"
+                        class="col-6 flex items-center" style="padding: 1px 0; line-height: 1.1;">
+                        <div class="relative-position q-mr-xs"
+                          style="width: 12px; height: 12px; border: 1.5px solid #000; border-radius: 2px; flex-shrink: 0;">
+                          <q-icon v-if="isKomplikasiSelected(it, tj)" name="icon-mat-check" class="absolute-center"
+                            size="12px"
+                            style="font-weight: bold; top: 50%; left: 50%; transform: translate(-50%, -50%);" />
+                        </div>
+                        <div class="q-ml-xs f-10">{{ tj }}</div>
+                      </div>
                     </div>
                   </div>
+                  <div v-if="tindakanArray.length === 0">-</div>
                 </td>
                 <td class="text-right">
-                  <q-icon v-if="item?.tindakanMedis?.length > 0" name="icon-mat-check" size="sm" />
+                  <q-icon v-if="item?.komplikasi?.length > 0" name="icon-mat-check" size="sm" />
                 </td>
               </tr>
 
@@ -264,16 +269,22 @@
               </tr>
               <tr>
                 <td colspan="3" class="text-left f-12 f-12">
-                  Dengan ini menyatakan bahwa saya telah menerangkan hal-hal diatas secara benar dan  jelas, dan memberikan kesempatan untuk bertanya/berdiskusi.
+                  Dengan ini menyatakan bahwa saya telah menerangkan hal-hal diatas secara benar dan jelas, dan
+                  memberikan kesempatan untuk bertanya/berdiskusi.
                 </td>
 
                 <td class="text-right">
-                  <img :src="item?.ttd_petugas" alt="ttd-petugas" width="70">
+                  <!-- <img :src="item?.ttd_petugas" alt="ttd-petugas" width="70"> -->
+                  <div class="full-width flex justify-center">
+                    <app-qr-petugas :noreg="item?.noreg" :jnssurat="'IC-SEDASI.png'" :asal="'RANAP'"
+                      :kdpegsimrs="item?.kdPetugas" width="50px" height="50px" />
+                  </div>
                 </td>
               </tr>
               <tr>
                 <td colspan="3" class="text-left f-12 f-12">
-                  Dengan ini menyatakan bahwa saya telah menerima informasi sebagaimana diatas yang  saya  beri tanda/paraf di kolom kanannya, dan  telah memahaminya.
+                  Dengan ini menyatakan bahwa saya telah menerima informasi sebagaimana diatas yang saya beri
+                  tanda/paraf di kolom kanannya, dan telah memahaminya.
                 </td>
 
                 <td class="text-right">
@@ -282,7 +293,8 @@
               </tr>
               <tr>
                 <td colspan="4" class="text-left f-12 f-12">
-                  *Bila pasien tidak kompeten  atau  tidak mau  menerima informasi, maka penerima informasi adalah wali atau  keluarga terdekat.
+                  *Bila pasien tidak kompeten atau tidak mau menerima informasi, maka penerima informasi adalah wali
+                  atau keluarga terdekat.
                 </td>
               </tr>
             </tbody>
@@ -299,7 +311,7 @@
       <!-- section 1 -->
       <div class="section-1">
         <div class="text-center f-14 text-bold q-mb-lg">
-          <span v-if="item?.setuju==='Iya'">PERSETUJUAN TINDAKAN KEDOKTERAN({{ menu?.title }})</span>
+          <span v-if="item?.setuju === 'Iya'">PERSETUJUAN TINDAKAN KEDOKTERAN({{ menu?.title }})</span>
           <span v-else>PENOLAKAN TINDAKAN KEDOKTERAN (Operasi / Tindakan Invasif)</span>
         </div>
         <div>Saya yang bertanda tangan dibawah ini :</div>
@@ -352,7 +364,8 @@
             </div>
             <div class="col-8">
               <div class="flex">
-                : {{ item?.hubunganDgPasien }} <span v-if="item?.hubunganDgPasien === 'Keluarga'"> {{ item?.keluarga }}</span>
+                : {{ item?.hubunganDgPasien }} <span v-if="item?.hubunganDgPasien === 'Keluarga'"> {{ item?.keluarga
+                  }}</span>
               </div>
             </div>
           </div>
@@ -360,15 +373,16 @@
       </div>
 
       <div class="section-2 q-mt-lg">
-        <div v-if="item?.setuju==='Iya'">
-          Dengan ini menyatakan sesungguhnya,  bahwa saya telah menerima informasi yang diberikan oleh Dokter
+        <div v-if="item?.setuju === 'Iya'">
+          Dengan ini menyatakan sesungguhnya, bahwa saya telah menerima informasi yang diberikan oleh Dokter
           sebagaimana diatas dan telah memahaminya untuk itu saya memberikan <b>PERSETUJUAN</b> untuk dilakukan Tindakan
-          PEMBIUSAN  tersebut terhadap  :
+          PEMBIUSAN tersebut terhadap :
         </div>
 
         <div v-else>
           Dengan ini menyatakan sesungguhnya, bahwa saya telah menerima informasi yang diberikan oleh dokter sebagaimana
-          di atas dan telah memahaminya. Untuk itu saya memberikan  <b>PENOLAKAN / PEMBATALAN</b> untuk dilakukan Tindakan PEMBIUSAN tersebut terhadap :
+          di atas dan telah memahaminya. Untuk itu saya memberikan <b>PENOLAKAN / PEMBATALAN</b> untuk dilakukan
+          Tindakan PEMBIUSAN tersebut terhadap :
         </div>
 
         <!-- <div v-html="getNewLine(item?.tindakanMedis)" />
@@ -384,7 +398,8 @@
             </div>
             <div class="col-8">
               <div class="flex justify-between">
-                <div>: {{ pasien?.nama }} <span class="q-ml-lg">({{ pasien?.kelamin === 'Perempuan' ? 'P' : 'L' }})*</span></div>
+                <div>: {{ pasien?.nama }} <span class="q-ml-lg">({{ pasien?.kelamin === 'Perempuan' ? 'P' : 'L'
+                    }})*</span></div>
                 <div class="self-end">
                   Tanggal Lahir : {{ pasien?.tgllahir }}
                 </div>
@@ -431,7 +446,7 @@
           </div>
         </div>
 
-        <div v-if="item?.setuju==='Iya'" class="q-mt-lg">
+        <div v-if="item?.setuju === 'Iya'" class="q-mt-lg">
           Saya Memahami perlunya dan manfaat tindakan tersebut termasuk risiko
           dan komplikasi yang akan timbul. Saya juga menyadari bahwa ilmu kedokteran
           bukanlah ilmu pasti, maka keberhasilan tindakan kedokteran bukanlah keniscayaan,
@@ -439,7 +454,7 @@
         </div>
 
         <div v-else class="q-mt-lg">
-          Saya  memahami perlunya dan manfaat tindakan tersebut termasuk risiko dan komplikasi
+          Saya memahami perlunya dan manfaat tindakan tersebut termasuk risiko dan komplikasi
           yang akan timbul bila tidak dilakukan tindakan tersebut. Saya akan bertanggung jawab secara penuh
           atas segala akibat yang mungkin timbul akibat penolakan dilakukan tindakan tersebut.
         </div>
@@ -492,10 +507,18 @@
                 Tanda Tangan
               </td>
               <td class="text-center f-12">
-                <img :src="item?.ttd_dokter" class="ttd-dokter" alt="ttd dokter" width="70">
+                <!-- <img :src="item?.ttd_dokter" class="ttd-dokter" alt="ttd dokter" width="70"> -->
+                <div class="full-width flex justify-center">
+                  <app-qr-petugas :noreg="item?.noreg" :jnssurat="'IC-SEDASI.png'" :asal="'RANAP'"
+                    :kdpegsimrs="item?.kdDokter" width="70px" height="70px" />
+                </div>
               </td>
               <td class="text-center f-12">
-                <img :src="item?.ttd_petugas" class="ttd-petugas" alt="ttd-petugas" width="70">
+                <!-- <img :src="item?.ttd_petugas" class="ttd-petugas" alt="ttd-petugas" width="70"> -->
+                <div class="full-width flex justify-center">
+                  <app-qr-petugas :noreg="item?.noreg" :jnssurat="'IC-SEDASI.png'" :asal="'RANAP'"
+                    :kdpegsimrs="item?.kdPetugas" width="70px" height="70px" />
+                </div>
               </td>
               <td class="text-center">
                 <img :src="item?.ttd_saksi_pasien" alt="ttd-saksi-pasien" width="70">
@@ -517,9 +540,39 @@ import { pathImg } from 'src/boot/axios'
 import { humanDate, jamTnpDetik } from 'src/modules/formatter'
 import { imageToBase64 } from 'src/modules/imgBase64'
 import { useConcernOperasiInvasifRanapStore } from 'src/stores/simrs/ranap/concernoperasiinvasif'
-import { onMounted } from 'vue'
+import { onMounted, computed } from 'vue'
 
 const store = useConcernOperasiInvasifRanapStore()
+
+const tindakanArray = computed(() => {
+  if (Array.isArray(props.item?.tindakanMedis)) {
+    return props.item?.tindakanMedis
+  }
+  if (typeof props.item?.tindakanMedis === 'string' && props.item?.tindakanMedis.trim() !== '') {
+    return props.item?.tindakanMedis.split(' | ').map(x => x.trim()).filter(Boolean)
+  }
+  return []
+})
+
+const isKomplikasiSelected = (anestesiNama, komplikasiNama) => {
+  let list = props.item?.komplikasi
+  if (typeof list === 'string' && list.trim() !== '') {
+    if (list.startsWith('[')) {
+      try {
+        list = JSON.parse(list)
+      } catch (e) {
+        list = [list]
+      }
+    } else {
+      list = list.split(',').map(x => x.trim()).filter(Boolean)
+    }
+  }
+
+  if (!Array.isArray(list)) return false
+
+  const prefixed = `${anestesiNama}: ${komplikasiNama}`
+  return list.includes(prefixed) || list.includes(komplikasiNama)
+}
 
 const props = defineProps({
   item: {
@@ -540,7 +593,7 @@ onMounted(() => {
   initImage(props.item)
 })
 
-function initImage (item) {
+function initImage(item) {
   const ttdPetugas = pathImg + item?.ttdPetugas
   const ttdDokter = pathImg + item?.ttdDokter
   const ttdSaksiPasien = pathImg + item?.ttdSaksiPasien
@@ -568,7 +621,7 @@ function initImage (item) {
   ])
 }
 
-function getNewLine (text) {
+function getNewLine(text) {
   return text?.replace(/\n/g, '<br/>')
 }
 
@@ -590,7 +643,7 @@ function getNewLine (text) {
 
 // const exportPdf = () => {
 //   const concern = document.getElementById('pdfDoc')
-// 
+//
 //   const pdfConfig = {
 //     margin: 0,
 //     filename: 'inform-consent-' + props?.item?.jenis + '.pdf',
@@ -611,7 +664,7 @@ function getNewLine (text) {
 //     },
 //     pagebreak: { mode: ['css', 'legacy'] }
 //   }
-// 
+//
 //   html2pdf().set(pdfConfig).from(concern).save()
 // }
 // defineExpose({ exportPdf })
@@ -621,21 +674,27 @@ function getNewLine (text) {
 <style lang="scss" scoped>
 /* Tampilan preview per page di layar browser (seperti layout kertas A4) */
 #pdfDoc {
-  background-color: #e0e0e0 !important; /* warna abu-abu untuk background desktop workspace */
+  background-color: #e0e0e0 !important;
+  /* warna abu-abu untuk background desktop workspace */
   padding: 30px 10px !important;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 24px; /* jarak antar halaman */
+  gap: 24px;
+  /* jarak antar halaman */
   box-sizing: border-box;
 }
 
-.page-1, .page-2 {
+.page-1,
+.page-2 {
   background-color: #ffffff !important;
   width: 210mm;
-  min-height: 297mm; /* memaksa tinggi minimum A4 */
-  padding: 8mm; /* margin halaman minimum */
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* efek shadow agar mirip lembaran kertas nyata */
+  min-height: 297mm;
+  /* memaksa tinggi minimum A4 */
+  padding: 8mm;
+  /* margin halaman minimum */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  /* efek shadow agar mirip lembaran kertas nyata */
   border-radius: 4px;
   position: relative;
   box-sizing: border-box;
@@ -660,7 +719,7 @@ function getNewLine (text) {
     margin: 0 !important;
     box-shadow: none !important;
     border-radius: 0 !important;
-    height: 297mm !important; 
+    height: 297mm !important;
   }
 }
 */
@@ -678,20 +737,24 @@ function getNewLine (text) {
     gap: 0 !important;
   }
 
-  .page-1, .page-2 {
+  .page-1,
+  .page-2 {
     width: 210mm !important;
-    height: 297mm !important; /* Memaksa tinggi pas A4 */
+    height: 297mm !important;
+    /* Memaksa tinggi pas A4 */
     padding: 8mm !important;
     box-shadow: none !important;
     border-radius: 0 !important;
     margin: 0 !important;
-    page-break-after: always !important; /* memaksa pemisahan halaman */
+    page-break-after: always !important;
+    /* memaksa pemisahan halaman */
     page-break-inside: avoid !important;
     box-sizing: border-box !important;
   }
 
   .page-2 {
-    page-break-after: avoid !important; /* Halaman terakhir tidak memerlukan page break setelahnya */
+    page-break-after: avoid !important;
+    /* Halaman terakhir tidak memerlukan page break setelahnya */
   }
 }
 </style>

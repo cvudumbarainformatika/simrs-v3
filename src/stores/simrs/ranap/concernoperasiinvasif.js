@@ -181,6 +181,20 @@ export const useConcernOperasiInvasifRanapStore = defineStore('concern-operasi-i
     editForm(item) {
       this.menuTab = item?.jenis
       this.form = { ...item }
+      if (this.menuTab === 'Sedasi') {
+        if (!Array.isArray(this.form.komplikasi)) {
+          if (typeof this.form.komplikasi === 'string' && this.form.komplikasi.trim() !== '') {
+            try {
+              const parsed = JSON.parse(this.form.komplikasi)
+              this.form.komplikasi = Array.isArray(parsed) ? parsed : [this.form.komplikasi]
+            } catch (e) {
+              this.form.komplikasi = this.form.komplikasi.split(',').map(x => x.trim()).filter(Boolean)
+            }
+          } else {
+            this.form.komplikasi = []
+          }
+        }
+      }
       const pengunjung = usePengunjungRanapStore()
       this.dokters = pengunjung?.nakes?.filter(x => x?.kdgroupnakes === '1') ?? []
       this.perawats = pengunjung?.nakes?.filter(x => x?.kdgroupnakes === '2' || x?.kdgroupnakes === '3') ?? []
@@ -243,7 +257,7 @@ export const useConcernOperasiInvasifRanapStore = defineStore('concern-operasi-i
         this.form.tindakanMedis = this.tindakanMedisSedasis.join(' | ')
         this.form.tujuan = this.tujuanSedasis
         this.form.resiko = this.resikoSedasis
-        this.form.komplikasi = null
+        this.form.komplikasi = []
       }
       else if (this.menuTab === 'Colonoscopy') {
         this.form.indikasi = this.pengertianColonoscopy
