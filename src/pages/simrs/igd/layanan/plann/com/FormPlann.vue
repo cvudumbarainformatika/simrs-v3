@@ -147,6 +147,11 @@
                           :rules="[val => !!val || 'Harap Diisi terlebih dahulu']"
                           @update:model-value="(val) => cekpulang(val)" />
                       </div>
+                      <div class="col-6" v-if="store.form.atasdasarpulang === 'Paksa'">
+                        <q-select v-model="store.form.alasan" label="Alasan" :options="optionalasan" dense outlined
+                          standout="bg-yellow-3" transition-show="flip-up" transition-hide="flip-down"
+                          :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" />
+                      </div>
                       <div class="col-3" v-if="store.form.atasdasarpulang === 'Meninggal'">
                         <app-input-date :model="store.form.tglmeninggal" mask="date" outlined standout="bg-yellow-3"
                           label="Tanggal Meninggal" @set-model="val => store.form.tglmeninggal = val"
@@ -251,6 +256,7 @@ const optionsFaskes2 = ref([])
 const optionsPoli = ref([])
 const optionpulangs = ref(['Sembuh', 'Paksa', 'Meninggal'])
 const optionkelamin = ref(['Perempuan', 'Laki-laki'])
+const optionalasan = ref(['Biaya', 'Menolak Asuhan', 'Pengobatan Alternatif'])
 // const optionKondisiKhusus = ref([
 //   {
 //     label: 'Tidak Ada',
@@ -425,6 +431,7 @@ function cekpulang(val) {
     store.form.umur_penanggungjawab = ''
     store.form.kelamin_penanggungjawab = ''
     store.form.alamat_penanggungjawab = ''
+    store.form.alasan = ''
   }
 }
 
