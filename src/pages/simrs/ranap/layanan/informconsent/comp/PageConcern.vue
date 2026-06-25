@@ -58,6 +58,9 @@
                   store.initReset(pasien)
                   store.item = val
                 }"
+                @edit="(val) => {
+                  store.editForm(val)
+                }"
                 @delete="(val) => {
                   hapusItem(val?.id)
                 }"

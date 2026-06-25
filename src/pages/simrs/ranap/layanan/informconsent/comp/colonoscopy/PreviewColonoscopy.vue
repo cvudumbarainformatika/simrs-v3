@@ -447,7 +447,7 @@ function getNewLine (text) {
   background-color: #ffffff !important;
   width: 210mm;
   min-height: 297mm; /* memaksa tinggi minimum A4 */
-  padding: 15mm 15mm 20mm 15mm; /* margin halaman */
+  padding: 8mm; /* margin halaman minimum */
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* efek shadow agar mirip lembaran kertas nyata */
   border-radius: 4px;
   position: relative;
@@ -480,21 +480,27 @@ function getNewLine (text) {
 
 /* Pengaturan CSS khusus saat Cetak (Print) dan Ekspor PDF */
 @media print {
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
   #pdfDoc {
     background-color: transparent !important;
     padding: 0 !important;
-    gap: 0;
+    gap: 0 !important;
   }
 
   .page-1 {
     width: 210mm !important;
     height: 297mm !important; /* Memaksa tinggi pas A4 */
-    padding: 15mm 15mm 20mm 15mm !important;
+    padding: 8mm !important;
     box-shadow: none !important;
     border-radius: 0 !important;
     margin: 0 !important;
     page-break-after: always !important; /* memaksa pemisahan halaman */
     page-break-inside: avoid !important;
+    box-sizing: border-box !important;
   }
 }
 </style>

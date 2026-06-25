@@ -15,7 +15,8 @@
           </div>
         </div>
         <div class="col full-height scroll">
-          <component ref="refPreview" :is="previewComponent" :pasien="pasien" :menu="activeMenu" :item="store.item" :key="store.item.id" />
+          <component ref="refPreview" :is="previewComponent" :pasien="pasien" :menu="activeMenu" :item="store.item"
+            :key="store.item.id" />
           <div style="margin-bottom: 100px;" />
         </div>
       </div>
@@ -25,19 +26,9 @@
     <div class="absolute-top column fit q-pa-xs" style="padding-bottom: 41px;">
       <!-- Top Tabs -->
       <div class="col-auto">
-        <q-tabs
-          v-model="store.menuTab"
-          dense
-          no-caps
-          inline-label
-          narrow-indicator
-          indicator-color="transparent"
-          align="left"
-          class="bg-transparent text-grey-8"
-          active-color="white"
-          active-bg-color="dark"
-          @update:model-value="(val) => store.initReset(pasien)"
-        >
+        <q-tabs v-model="store.menuTab" dense no-caps inline-label narrow-indicator indicator-color="transparent"
+          align="left" class="bg-transparent text-grey-8" active-color="white" active-bg-color="dark"
+          @update:model-value="(val) => store.initReset(pasien)">
           <q-tab v-for="tb in menus" :key="tb.name" :ripple="true" :name="tb?.name" content-class="tab-classes">
             <template #default>
               <div class="row q-gutter-x-xs items-center q-px-sm" style="border-radius: 10px;">
@@ -51,13 +42,8 @@
 
       <!-- Splitter for Form & List -->
       <div class="col full-height">
-        <q-splitter
-          v-model="splitterModel"
-          :limits="[0, 100]"
-          before-class="overflow-hidden"
-          after-class="overflow-hidden"
-          class="fit"
-        >
+        <q-splitter v-model="splitterModel" :limits="[0, 100]" before-class="overflow-hidden"
+          after-class="overflow-hidden" class="fit">
           <template #before>
             <q-tab-panels v-model="store.menuTab" animated class="bg-transparent q-pa-none relative-position fit">
               <!-- PANEL -->
@@ -90,16 +76,15 @@
               </div>
               <div class="col full-height">
                 <div class="full-height scroll" v-if="pasien?.informconcern?.length > 0">
-                  <ListPage
-                    :pasien="pasien" :menu="activeMenu" @preview="(val) => {
-                      store.menuTab = val.jenis
-                      store.initReset(pasien)
-                      store.item = val
-                    }"
-                    @delete="(val) => {
+                  <ListPage :pasien="pasien" :menu="activeMenu" @preview="(val) => {
+                    store.menuTab = val.jenis
+                    store.initReset(pasien)
+                    store.item = val
+                  }" @edit="(val) => {
+                      store.editForm(val)
+                    }" @delete="(val) => {
                       hapusItem(val?.id)
-                    }"
-                  />
+                    }" />
                 </div>
                 <div v-else class="column full-height flex-center bg-grey-1">
                   <div>No Data</div>
@@ -146,7 +131,7 @@ const menus = ref([
   },
   {
     name: 'Sedasi',
-    label: 'SP Anestesi Sedasi',
+    label: 'IC Anestesi Sedasi',
     title: 'TINDAKAN ANESTESI/SEDASI',
     desc: 'Surat Persetujuan Anestesi Sedasi',
     icon: 'icon-fa-file-regular',
@@ -155,7 +140,7 @@ const menus = ref([
   },
   {
     name: 'Colonoscopy',
-    label: 'SPT Colonoscopy',
+    label: 'IC Colonoscopy',
     title: 'TINDAKAN COLONOSCOPY',
     desc: 'Surat Persetujuan Tindakan Colonoscopy',
     icon: 'icon-fa-file-regular',
@@ -182,7 +167,7 @@ const previewComponent = computed(() => {
   return asyncComponentPreviews[store.item?.jenis ?? 'OperasiInvasif']
 })
 
-function hapusItem (id) {
+function hapusItem(id) {
   $q.dialog({
     dark: true,
     title: 'Peringatan',

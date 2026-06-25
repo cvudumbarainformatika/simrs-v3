@@ -111,36 +111,43 @@ export const useConcernOperasiInvasifRanapStore = defineStore('concern-operasi-i
   actions: {
 
     async saveData(pasien, jns) {
-      // if (!pasien?.kodedokter) {
-      //   return notifErrVue('kode Dokter masih kosong, silahkan tutup dulu pasien ini kemudian tekan tombol refresh di pojok kanan atas')
-      // }
       this.loadingSave = true
 
-      this.form.noreg = pasien?.noreg
-      this.form.norm = pasien?.norm
-      this.form.kdRuang = pasien?.kodepoli
-      this.form.jenis = jns
+      const payload = { ...this.form }
+      payload.noreg = pasien?.noreg
+      payload.norm = pasien?.norm
+      payload.kdRuang = pasien?.kodepoli
+      payload.jenis = jns
 
-      console.log('save inform form', this.form)
+      // Sanitize signatures to prevent backend explosion (Undefined array key 1)
+      const signatureFields = ['ttdDokter', 'ttdPetugas', 'ttdSaksiPasien', 'ttdYgMenyatakan']
+      signatureFields.forEach(field => {
+        if (payload[field] && typeof payload[field] === 'string' && !payload[field].startsWith('data:image')) {
+          delete payload[field]
+        }
+      })
 
-      // eslint-disable-next-line no-unused-vars
+      console.log('save inform form payload', payload)
+
       const storeRanap = usePengunjungRanapStore()
-      // storeRanap.injectDataPasien(pasien?.noreg, this.form, 'informconcern')
 
       try {
-        const resp = await api.post('v1/simrs/ranap/layanan/informconcern/simpandata', this.form)
+        const resp = await api.post('v1/simrs/ranap/layanan/informconcern/simpandata', payload)
         console.log('save inform concern', resp.data)
         if (resp.status === 200) {
           storeRanap.deleteInjectanNull2(pasien?.noreg, 'informconcern')
           const isi = resp?.data?.result
           storeRanap.injectDataPasien(pasien?.noreg, isi, 'informconcern')
           notifSuccess(resp)
+          this.loadingSave = false
           this.loadingOrder = false
           this.initReset()
         }
+        this.loadingSave = false
         this.loadingOrder = false
       }
       catch (error) {
+        this.loadingSave = false
         this.loadingOrder = false
       }
     },
@@ -169,6 +176,15 @@ export const useConcernOperasiInvasifRanapStore = defineStore('concern-operasi-i
         this.loadingHapus = false
         // console.log(error)
       }
+    },
+
+    editForm(item) {
+      this.menuTab = item?.jenis
+      this.form = { ...item }
+      const pengunjung = usePengunjungRanapStore()
+      this.dokters = pengunjung?.nakes?.filter(x => x?.kdgroupnakes === '1') ?? []
+      this.perawats = pengunjung?.nakes?.filter(x => x?.kdgroupnakes === '2' || x?.kdgroupnakes === '3') ?? []
+      this.nonNakes = pengunjung?.nonNakes
     },
 
     initReset(pasien) {
