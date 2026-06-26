@@ -106,12 +106,20 @@ const splitterModel = ref(75)
 const asyncComponents = {
   OperasiInvasif: defineAsyncComponent(() => import('./concernoperasi/FormPage.vue')),
   Sedasi: defineAsyncComponent(() => import('./concernsedasi/FormComp.vue')),
-  Colonoscopy: defineAsyncComponent(() => import('./colonoscopy/FormColonoscopy.vue'))
+  Colonoscopy: defineAsyncComponent(() => import('./colonoscopy/FormColonoscopy.vue')),
+  TransfusiDarah: defineAsyncComponent(() => import('./transfusi/FormTransfusi.vue')),
+  PenandaanLokasiOperasi: defineAsyncComponent(() => import('./penandaan/FormPenandaan.vue')),
+  Resusitasi: defineAsyncComponent(() => import('./resusitasi/FormResusitasi.vue')),
+  Restrain: defineAsyncComponent(() => import('./restrain/FormRestrain.vue'))
 }
 const asyncComponentPreviews = {
   OperasiInvasif: defineAsyncComponent(() => import('./concernoperasi/PreviewPage.vue')),
   Sedasi: defineAsyncComponent(() => import('./concernsedasi/PreviewSedasi.vue')),
-  Colonoscopy: defineAsyncComponent(() => import('./colonoscopy/PreviewColonoscopy.vue'))
+  Colonoscopy: defineAsyncComponent(() => import('./colonoscopy/PreviewColonoscopy.vue')),
+  TransfusiDarah: defineAsyncComponent(() => import('./transfusi/PreviewTransfusi.vue')),
+  PenandaanLokasiOperasi: defineAsyncComponent(() => import('./penandaan/PreviewPenandaan.vue')),
+  Resusitasi: defineAsyncComponent(() => import('./resusitasi/PreviewResusitasi.vue')),
+  Restrain: defineAsyncComponent(() => import('./restrain/PreviewRestrain.vue'))
 }
 
 const formComponent = computed(() => {

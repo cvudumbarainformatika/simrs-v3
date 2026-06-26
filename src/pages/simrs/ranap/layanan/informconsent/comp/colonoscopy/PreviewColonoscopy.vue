@@ -8,10 +8,7 @@
           <div class="col-9 br-black">
             <div class="row items-center q-pa-sm">
               <div class="col-auto">
-                <img
-                  src="~assets/images/logo-kota-grey.png"
-                  width="60"
-                >
+                <img src="~assets/images/logo-kota-grey.png" width="60">
               </div>
               <div class="col flex-wrap q-px-md">
                 <div class="text-center">
@@ -139,7 +136,8 @@
               </div>
               <div class="col-8">
                 <div class="flex justify-between">
-                  <div>: {{ item?.nama }} <span class="q-ml-lg">({{ item?.lp === 'Perempuan' ? 'P' : 'L' }})*</span></div>
+                  <div>: {{ item?.nama }} <span class="q-ml-lg">({{ item?.lp === 'Perempuan' ? 'P' : 'L' }})*</span>
+                  </div>
                   <div class="self-end">
                     Tanggal Lahir : {{ item?.tglLahir }}
                   </div>
@@ -184,9 +182,11 @@
                   <div v-for="n in store.hubunganDgPasiens" :key="n">
                     <div class="flex">
                       <div class="ba-black relative-position" style="width: 15px; height: 15px;">
-                        <q-icon v-if="n === item?.hubunganDgPasien" name="icon-mat-check" class="absolute-center" size="sm" />
-                      </div> <div class="q-ml-sm">
-                        {{ n }} <span v-if="n==='Keluarga'">..................................</span>
+                        <q-icon v-if="n === item?.hubunganDgPasien" name="icon-mat-check" class="absolute-center"
+                          size="sm" />
+                      </div>
+                      <div class="q-ml-sm">
+                        {{ n }} <span v-if="n === 'Keluarga'">..................................</span>
                       </div>
                     </div>
                   </div>
@@ -208,7 +208,8 @@
               </div>
               <div class="col-8">
                 <div class="flex justify-between">
-                  <div>: {{ pasien?.nama }} <span class="q-ml-lg">({{ pasien?.kelamin === 'Perempuan' ? 'P' : 'L' }})*</span></div>
+                  <div>: {{ pasien?.nama }} <span class="q-ml-lg">({{ pasien?.kelamin === 'Perempuan' ? 'P' : 'L'
+                  }})*</span></div>
                 </div>
               </div>
             </div>
@@ -306,10 +307,18 @@
                   Tanda Tangan
                 </td>
                 <td class="text-center f-12">
-                  <img :src="item?.ttd_dokter" alt="ttd dokter" width="70">
+                  <!-- <img :src="item?.ttd_dokter" alt="ttd dokter" width="70"> -->
+                  <div class="full-width flex justify-center">
+                    <app-qr-petugas :noreg="item?.noreg" :jnssurat="'IC-COLONOSCOPY.png'" :asal="'RANAP'"
+                      :kdpegsimrs="item?.kdDokter" width="70px" height="70px" />
+                  </div>
                 </td>
                 <td class="text-center f-12">
-                  <img :src="item?.ttd_petugas" alt="ttd-petugas" width="70">
+                  <!-- <img :src="item?.ttd_petugas" alt="ttd-petugas" width="70"> -->
+                  <div class="full-width flex justify-center">
+                    <app-qr-petugas :noreg="item?.noreg" :jnssurat="'IC-COLONOSCOPY.png'" :asal="'RANAP'"
+                      :kdpegsimrs="item?.kdPetugas" width="70px" height="70px" />
+                  </div>
                 </td>
                 <td class="text-center">
                   <img :src="item?.ttd_saksi_pasien" alt="ttd-saksi-pasien" width="70">
@@ -360,7 +369,7 @@ onMounted(() => {
   initImage(props.item)
 })
 
-function initImage (item) {
+function initImage(item) {
   const ttdPetugas = pathImg + item?.ttdPetugas
   const ttdDokter = pathImg + item?.ttdDokter
   const ttdSaksiPasien = pathImg + item?.ttdSaksiPasien
@@ -390,13 +399,13 @@ function initImage (item) {
 
 const modP = ref([])
 
-function hubDgPas () {
+function hubDgPas() {
   const a = []
   a.push(props.item?.hubunganDgPasien)
   modP.value = a
 }
 
-function getNewLine (text) {
+function getNewLine(text) {
   // console.log('text', text)
 
   return text?.replace(/\n/g, '<br/>')
@@ -404,7 +413,7 @@ function getNewLine (text) {
 
 // const exportPdf = () => {
 //   const concern = document.getElementById('pdfDoc')
-// 
+//
 //   const pdfConfig = {
 //     margin: 0,
 //     filename: 'inform-consent-' + props?.item?.jenis + '.pdf',
@@ -425,7 +434,7 @@ function getNewLine (text) {
 //     },
 //     pagebreak: { mode: ['css', 'legacy'] }
 //   }
-// 
+//
 //   html2pdf().set(pdfConfig).from(concern).save()
 // }
 // defineExpose({ exportPdf })
@@ -434,21 +443,26 @@ function getNewLine (text) {
 <style lang="scss" scoped>
 /* Tampilan preview per page di layar browser (seperti layout kertas A4) */
 #pdfDoc {
-  background-color: #e0e0e0 !important; /* warna abu-abu untuk background desktop workspace */
+  background-color: #e0e0e0 !important;
+  /* warna abu-abu untuk background desktop workspace */
   padding: 30px 10px !important;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 24px; /* jarak antar halaman */
+  gap: 24px;
+  /* jarak antar halaman */
   box-sizing: border-box;
 }
 
 .page-1 {
   background-color: #ffffff !important;
   width: 210mm;
-  min-height: 297mm; /* memaksa tinggi minimum A4 */
-  padding: 8mm; /* margin halaman minimum */
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* efek shadow agar mirip lembaran kertas nyata */
+  min-height: 297mm;
+  /* memaksa tinggi minimum A4 */
+  padding: 8mm;
+  /* margin halaman minimum */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  /* efek shadow agar mirip lembaran kertas nyata */
   border-radius: 4px;
   position: relative;
   box-sizing: border-box;
@@ -473,7 +487,7 @@ function getNewLine (text) {
     margin: 0 !important;
     box-shadow: none !important;
     border-radius: 0 !important;
-    height: 297mm !important; 
+    height: 297mm !important;
   }
 }
 */
@@ -493,16 +507,16 @@ function getNewLine (text) {
 
   .page-1 {
     width: 210mm !important;
-    height: 297mm !important; /* Memaksa tinggi pas A4 */
+    height: 297mm !important;
+    /* Memaksa tinggi pas A4 */
     padding: 8mm !important;
     box-shadow: none !important;
     border-radius: 0 !important;
     margin: 0 !important;
-    page-break-after: always !important; /* memaksa pemisahan halaman */
+    page-break-after: always !important;
+    /* memaksa pemisahan halaman */
     page-break-inside: avoid !important;
     box-sizing: border-box !important;
   }
 }
 </style>
-
-

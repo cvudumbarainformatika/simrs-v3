@@ -22,7 +22,7 @@
             autocomplete="nama" option-value="kdpegsimrs" option-label="nama" outlined :source="store.perawats"
             class="col-6" @on-select="(val) => {
               store.form.kdPetugas = val
-              store.form.pengedukasi = store.nonNakes?.find(item => item?.kdpegsimrs === val)?.nama
+              store.form.pengedukasi = store.perawats?.find(item => item?.kdpegsimrs === val)?.nama
             }" @clear="() => {
               store.form.kdPetugas = null
               store.form.pengedukasi = null

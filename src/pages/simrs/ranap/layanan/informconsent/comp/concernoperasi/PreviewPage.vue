@@ -67,19 +67,19 @@
           </div>
         </div>
         <div class="section-2">
-          <q-markup-table separator="cell" flat bordered wrap-cells>
+          <q-markup-table dense separator="cell" flat bordered wrap-cells class="table-info text-black font-body">
             <thead>
               <tr>
                 <th class="text-left f-12" width="5%">
                   NO
                 </th>
-                <th class="text-left f-12" width="10%">
+                <th class="text-left f-12" width="20%">
                   JENIS INFORMASI
                 </th>
                 <th class="text-left f-12">
                   ISI INFORMASI
                 </th>
-                <th class="text-right" width="10%">
+                <th class="text-center f-12" width="7%">
                   TANDA (v)
                 </th>
               </tr>
@@ -100,7 +100,7 @@
                     </div>
                   </div>
                 </td>
-                <td class="text-right">
+                <td class="text-center">
                   <q-icon v-if="item?.diagnosis?.length > 0" name="icon-mat-check" size="sm" />
                 </td>
               </tr>
@@ -115,7 +115,7 @@
                 <td class="text-left f-12">
                   <div v-html="getNewLine(item?.dasarDiagnosis)" />
                 </td>
-                <td class="text-right">
+                <td class="text-center">
                   <q-icon v-if="item?.dasarDiagnosis" name="icon-mat-check" size="sm" />
                 </td>
               </tr>
@@ -130,7 +130,7 @@
                 <td class="text-left f-12">
                   <div v-html="getNewLine(item?.tindakanMedis)" />
                 </td>
-                <td class="text-right">
+                <td class="text-center">
                   <q-icon v-if="item?.tindakanMedis" name="icon-mat-check" size="sm" />
                 </td>
               </tr>
@@ -145,7 +145,7 @@
                 <td class="text-left f-12">
                   <div v-html="getNewLine(item?.indikasi)" />
                 </td>
-                <td class="text-right">
+                <td class="text-center">
                   <q-icon v-if="item?.indikasi" name="icon-mat-check" size="sm" />
                 </td>
               </tr>
@@ -158,14 +158,16 @@
                   Tujuan
                 </td>
                 <td class="text-left f-12">
-                  <div v-for="tj in item?.tujuan" :key="tj" class="flex">
-                    <div>- </div>
-                    <div class="q-ml-sm">
-                      {{ tj === 'Lain-lain' ? item?.tujuanLain : (tj ?? '-') }}
+                  <div v-for="(opt, idx) in tujuanOptions" :key="opt" class="row no-wrap items-start q-mt-xs">
+                    <div class="q-mr-xs text-bold text-center" style="width: 20px; font-size: 15px; line-height: 1.2;">
+                      {{ isSelected(opt, item?.tujuan) ? '☑' : '☐' }}
+                    </div>
+                    <div class="col">
+                      {{ opt === 'Lain-lain' ? (isSelected(opt, item?.tujuan) ? `Lain-lain: ${item?.tujuanLain || '...'}` : 'Lain-lain') : opt }}
                     </div>
                   </div>
                 </td>
-                <td class="text-right">
+                <td class="text-center">
                   <q-icon v-if="item?.tujuan?.length > 0" name="icon-mat-check" size="sm" />
                 </td>
               </tr>
@@ -180,7 +182,7 @@
                 <td class="text-left f-12">
                   <div v-html="getNewLine(item?.tatacara)" />
                 </td>
-                <td class="text-right">
+                <td class="text-center">
                   <q-icon v-if="item?.tatacara" name="icon-mat-check" size="sm" />
                 </td>
               </tr>
@@ -193,14 +195,16 @@
                   Resiko
                 </td>
                 <td class="text-left f-12">
-                  <div v-for="tj in item?.resiko" :key="tj" class="flex">
-                    <div>- </div>
-                    <div class="q-ml-sm">
-                      {{ tj === 'Lain-lain' ? item?.resikoLain : (tj ?? '-') }}
+                  <div v-for="(opt, idx) in resikoOptions" :key="opt" class="row no-wrap items-start q-mt-xs">
+                    <div class="q-mr-xs text-bold text-center" style="width: 20px; font-size: 15px; line-height: 1.2;">
+                      {{ isSelected(opt, item?.resiko) ? '☑' : '☐' }}
+                    </div>
+                    <div class="col">
+                      {{ opt === 'Lain-lain' ? (isSelected(opt, item?.resiko) ? `Lain-lain: ${item?.resikoLain || '...'}` : 'Lain-lain') : opt }}
                     </div>
                   </div>
                 </td>
-                <td class="text-right">
+                <td class="text-center">
                   <q-icon v-if="item?.resiko?.length > 0" name="icon-mat-check" size="sm" />
                 </td>
               </tr>
@@ -215,7 +219,7 @@
                 <td class="text-left f-12">
                   <div v-html="getNewLine(item?.komplikasi)" />
                 </td>
-                <td class="text-right">
+                <td class="text-center">
                   <q-icon v-if="item?.komplikasi" name="icon-mat-check" size="sm" />
                 </td>
               </tr>
@@ -228,9 +232,16 @@
                   Prognosis
                 </td>
                 <td class="text-left f-12">
-                  {{ item?.prognosis?.join(', ') }}
+                  <div v-for="(opt, idx) in prognosisOptions" :key="opt" class="row no-wrap items-start q-mt-xs">
+                    <div class="q-mr-xs text-bold text-center" style="width: 20px; font-size: 15px; line-height: 1.2;">
+                      {{ isSelected(opt, item?.prognosis) ? '☑' : '☐' }}
+                    </div>
+                    <div class="col">
+                      {{ opt }}
+                    </div>
+                  </div>
                 </td>
-                <td class="text-right">
+                <td class="text-center">
                   <q-icon v-if="item?.prognosis?.length > 0" name="icon-mat-check" size="sm" />
                 </td>
               </tr>
@@ -245,7 +256,7 @@
                 <td class="text-left f-12">
                   <div v-html="getNewLine(item?.alternatif)" />
                 </td>
-                <td class="text-right">
+                <td class="text-center">
                   <q-icon v-if="item?.alternatif" name="icon-mat-check" size="sm" />
                 </td>
               </tr>
@@ -255,7 +266,7 @@
                   memberikan kesempatan untuk bertanya/berdiskusi.
                 </td>
 
-                <td class="text-right">
+                <td class="text-center">
                   <div class="full-width flex justify-center">
                     <app-qr-petugas :noreg="item?.noreg" :jnssurat="'IC-OPERASI-INVASIF.png'" :asal="'RANAP'"
                       :kdpegsimrs="item?.kdPetugas" width="50px" height="50px" />
@@ -270,7 +281,7 @@
                   tanda/paraf di kolom kanannya, dan telah memahaminya.
                 </td>
 
-                <td class="text-right">
+                <td class="text-center">
                   <img :src="item?.ttd_yg_menyatakan" alt="ttd-yg-menyatakan" width="70">
                 </td>
               </tr>
@@ -884,65 +895,45 @@
           <div class="text-right f-12 q-mb-lg q-mr-sm">
             Probolinggo, {{ humanDate(item?.tanggal) }}, pkl: {{ jamTnpDetik(item?.tanggal) }}
           </div>
-          <q-markup-table dense separator="cell" flat bordered wrap-cells>
+          <q-markup-table dense separator="cell" flat bordered wrap-cells class="table-signature text-black font-body q-mt-sm">
             <thead>
-              <tr>
-                <th class="text-left f-12" width="20%" />
-                <th class="text-center f-12" width="20%">
-                  Dokter
-                </th>
-                <th class="text-center f-12" width="20%">
-                  Saksi RS
-                </th>
-                <th class="text-center" width="20%">
-                  Saksi Pasien
-                </th>
-                <th class="text-center" width="20%">
-                  Yang Menyatakan
-                </th>
+              <tr class="bg-grey-2">
+                <th class="text-left text-bold f-11 text-black" width="20%" />
+                <th class="text-center text-bold f-11 text-black" width="20%">Dokter</th>
+                <th class="text-center text-bold f-11 text-black" width="20%">Saksi RS</th>
+                <th class="text-center text-bold f-11 text-black" width="20%">Saksi Pasien</th>
+                <th class="text-center text-bold f-11 text-black" width="20%">Yang Menyatakan</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td class="text-left f-12">
-                  Nama Jelas
-                </td>
-                <td class="text-center f-12">
-                  {{ item?.pelaksana }}
-                </td>
-                <td class="text-center f-12">
-                  {{ item?.pengedukasi }}
-                </td>
-                <td class="text-center">
-                  {{ item?.saksiPasien }}
-                </td>
-                <td class="text-center">
-                  {{ item?.nama }}
-                </td>
+                <td class="text-left text-bold f-10 text-black">Nama Jelas</td>
+                <td class="text-center f-10 text-black">{{ item?.pelaksana || '-' }}</td>
+                <td class="text-center f-10 text-black">{{ item?.pengedukasi || '-' }}</td>
+                <td class="text-center f-10 text-black">{{ item?.saksiPasien || '-' }}</td>
+                <td class="text-center f-10 text-black">{{ item?.nama || '-' }}</td>
               </tr>
               <tr>
-                <td class="text-left f-12">
-                  Tanda Tangan
-                </td>
-                <td class="text-center f-12">
-                  <!-- <img :src="item?.ttd_dokter" alt="ttd dokter" width="70"> -->
-                  <div class="full-width flex justify-center">
+                <td class="text-left text-bold f-10 text-black" style="height: 75px;">Tanda Tangan</td>
+                <td class="text-center q-pa-xs">
+                  <div class="full-width flex justify-center items-center">
                     <app-qr-petugas :noreg="item?.noreg" :jnssurat="'IC-OPERASI-INVASIF.png'" :asal="'RANAP'"
-                      :kdpegsimrs="item?.kdDokter" width="70px" height="70px" />
+                      :kdpegsimrs="item?.kdDokter" width="65px" height="65px" />
                   </div>
                 </td>
-                <td class="text-center f-12">
-                  <!-- <img :src="item?.ttd_petugas" alt="ttd-petugas" width="70"> -->
-                  <div class="full-width flex justify-center">
+                <td class="text-center q-pa-xs">
+                  <div class="full-width flex justify-center items-center">
                     <app-qr-petugas :noreg="item?.noreg" :jnssurat="'IC-OPERASI-INVASIF.png'" :asal="'RANAP'"
-                      :kdpegsimrs="item?.kdPetugas" width="70px" height="70px" />
+                      :kdpegsimrs="item?.kdPetugas" width="65px" height="65px" />
                   </div>
                 </td>
-                <td class="text-center">
-                  <img :src="item?.ttd_saksi_pasien" alt="ttd-saksi-pasien" width="70">
+                <td class="text-center q-pa-xs">
+                  <img v-if="item?.ttd_saksi_pasien" :src="item?.ttd_saksi_pasien" alt="ttd saksi pasien" width="65">
+                  <div v-else class="text-grey-4 f-9">Belum Ttd</div>
                 </td>
-                <td class="text-center">
-                  <img :src="item?.ttd_yg_menyatakan" alt="ttd-yg-menyatakan" width="70">
+                <td class="text-center q-pa-xs">
+                  <img v-if="item?.ttd_yg_menyatakan" :src="item?.ttd_yg_menyatakan" alt="ttd yang menyatakan" width="65">
+                  <div v-else class="text-grey-4 f-9">Belum Ttd</div>
                 </td>
               </tr>
             </tbody>
@@ -1014,6 +1005,40 @@ function initImage(item) {
 
 const modP = ref([])
 
+const tujuanOptions = [
+  'Mengangkat Tumor',
+  'Menghilangkan Sumber Infeksi',
+  'Mengambil Spesimen',
+  'Mengembalikan fungsi tubuh',
+  'Melahirkan Bayi',
+  'Lain-lain'
+]
+
+const resikoOptions = [
+  'Pendarahan',
+  'Infeksi Luka Operasi',
+  'Perlukaan Jaringan',
+  'Kematian',
+  'Lain-lain'
+]
+
+const prognosisOptions = [
+  'Baik',
+  'Buruk'
+]
+
+function isSelected(opt, selectedList) {
+  if (!selectedList) return false
+  if (Array.isArray(selectedList)) {
+    return selectedList.includes(opt)
+  }
+  try {
+    const parsed = JSON.parse(selectedList)
+    if (Array.isArray(parsed)) return parsed.includes(opt)
+  } catch (e) {}
+  return typeof selectedList === 'string' && selectedList.includes(opt)
+}
+
 function hubDgPas() {
   const a = []
   a.push(props.item?.hubunganDgPasien)
@@ -1083,6 +1108,15 @@ function getNewLine(text) {
 /* Sembunyikan garis separator horizontal di layar browser karena sudah dipisah oleh gap & shadow */
 .pemisah {
   display: none !important;
+}
+
+.table-info, .table-signature {
+  border-collapse: collapse;
+  width: 100%;
+  td, th {
+    border: 1px solid #000 !important;
+    padding: 3px 4px !important;
+  }
 }
 
 /* CSS khusus untuk menetralisir margin/padding/shadow saat html2pdf melakukan rendering/cloning */

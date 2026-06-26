@@ -146,6 +146,42 @@ const menus = ref([
     icon: 'icon-fa-file-regular',
     nakes: ['1', '2', '3'],
     comp: shallowRef(defineAsyncComponent(() => import('./comp/colonoscopy/FormColonoscopy.vue')))
+  },
+  {
+    name: 'TransfusiDarah',
+    label: 'IC Transfusi Darah',
+    title: 'TINDAKAN TRANSFUSI DARAH',
+    desc: 'Surat Persetujuan / Penolakan Tindakan Transfusi Darah',
+    icon: 'icon-fa-file-regular',
+    nakes: ['1', '2', '3'],
+    comp: shallowRef(defineAsyncComponent(() => import('./comp/transfusi/FormTransfusi.vue')))
+  },
+  {
+    name: 'PenandaanLokasiOperasi',
+    label: 'IC Penandaan Lokasi Operasi',
+    title: 'PENANDAAN LOKASI OPERASI',
+    desc: 'Surat Persetujuan Penandaan Lokasi Operasi',
+    icon: 'icon-fa-file-regular',
+    nakes: ['1', '2', '3'],
+    comp: shallowRef(defineAsyncComponent(() => import('./comp/penandaan/FormPenandaan.vue')))
+  },
+  {
+    name: 'Resusitasi',
+    label: 'IC Resusitasi (DNR)',
+    title: 'PENOLAKAN RESUSITASI (DNR)',
+    desc: 'Surat Penolakan Tindakan Resusitasi (Do Not Resuscitate)',
+    icon: 'icon-fa-file-regular',
+    nakes: ['1', '2', '3'],
+    comp: shallowRef(defineAsyncComponent(() => import('./comp/resusitasi/FormResusitasi.vue')))
+  },
+  {
+    name: 'Restrain',
+    label: 'IC Pemasangan Restrain',
+    title: 'PEMASANGAN RESTRAIN',
+    desc: 'Surat Persetujuan Tindakan Pemasangan Restrain',
+    icon: 'icon-fa-file-regular',
+    nakes: ['1', '2', '3'],
+    comp: shallowRef(defineAsyncComponent(() => import('./comp/restrain/FormRestrain.vue')))
   }
 ])
 
@@ -156,7 +192,11 @@ const ListPage = defineAsyncComponent(() => {
 const asyncComponentPreviews = {
   OperasiInvasif: defineAsyncComponent(() => import('./comp/concernoperasi/PreviewPage.vue')),
   Sedasi: defineAsyncComponent(() => import('./comp/concernsedasi/PreviewSedasi.vue')),
-  Colonoscopy: defineAsyncComponent(() => import('./comp/colonoscopy/PreviewColonoscopy.vue'))
+  Colonoscopy: defineAsyncComponent(() => import('./comp/colonoscopy/PreviewColonoscopy.vue')),
+  TransfusiDarah: defineAsyncComponent(() => import('./comp/transfusi/PreviewTransfusi.vue')),
+  PenandaanLokasiOperasi: defineAsyncComponent(() => import('./comp/penandaan/PreviewPenandaan.vue')),
+  Resusitasi: defineAsyncComponent(() => import('./comp/resusitasi/PreviewResusitasi.vue')),
+  Restrain: defineAsyncComponent(() => import('./comp/restrain/PreviewRestrain.vue'))
 }
 
 const activeMenu = computed(() => {
