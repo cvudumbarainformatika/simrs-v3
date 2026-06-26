@@ -256,6 +256,8 @@ export const useSurgicalSafetyStore = defineStore('surgical_safety_store', {
     resetForm () {
       // const id = this.form.id
       const surgical = this.pasien?.surgical?.find(x => x.nota === this.pasien.rs2)
+      console.log('sur', this.pasien, surgical)
+
       if (!surgical) {
         this.setForm('signIn', structuredClone(toRaw(this.signIn)))
         this.setForm('signOut', structuredClone(toRaw(this.signOut)))

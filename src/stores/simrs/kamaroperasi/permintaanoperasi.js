@@ -249,11 +249,13 @@ export const usePermintaanOperasistore = defineStore('permintaan-operasi-store',
     async setTerima (pasien) {
       this.loadingCall = false
       this.loadingTerima = true
-      const form = { noreg: pasien?.noreg }
+      const form = { noreg: pasien?.noreg, nota: pasien?.rs2 }
       this.noreg = pasien?.noreg
+      console.log('form', form)
+
       try {
         const resp = await api.post('v1/simrs/penunjang/ok/buka-layanan', form)
-        // console.log('terima', resp)
+        console.log('terima', resp)
         if (resp.status === 200) {
           const data = resp?.data?.data
           this.setPasien(data, pasien)
@@ -299,8 +301,9 @@ export const usePermintaanOperasistore = defineStore('permintaan-operasi-store',
       const surgical = useSurgicalSafetyStore()
       const laporan = useLaporanOperasiStore()
       const praBed = useAssasementPraBedahStore()
-      const findPasien = this.items.find(x => x.noreg === pasien?.noreg)
+      const findPasien = this.items.find(x => x.rs2 === pasien?.rs2)
       // console.log('inject', data, findPasien)
+      console.log('inject', findPasien)
       const keys = Object.keys(data)
       if (findPasien && keys?.length > 0) {
         if (data?.manytindakanop?.length > 0) {
