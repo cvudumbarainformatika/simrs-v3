@@ -125,13 +125,13 @@
           </div>
 
           <div class="col-md-6 col-xs-12">
-            <app-autocomplete v-model="store.formKeluar.penata_anestesi" :key="laporanOp.nakes" label="Penata Anastesi"
+            <app-autocomplete v-model="store.formKeluar.penata_anastesi" :key="laporanOp.nakes" label="Penata Anestesi"
               outlined dense :source="laporanOp.nakes?.filter(y => y?.kdgroupnakes != '1')" option-label="nama"
               option-value="kdpegsimrs" hide-dropdown-icon />
             <!-- <q-input v-model="store.formKeluar.penata_anestesi" label="Penata Anestesi" dense outlined /> -->
           </div>
           <div class="col-md-6 col-xs-12">
-            <app-autocomplete v-model="store.formKeluar.dokter_anastesi" :key="laporanOp.nakes" label="Dokter Anastesi"
+            <app-autocomplete v-model="store.formKeluar.dokter_anastesi" :key="laporanOp.nakes" label="Dokter Anestesi"
               outlined dense :source="laporanOp.nakes?.filter(y => y?.kdgroupnakes == '1')" option-label="nama"
               option-value="kdpegsimrs" hide-dropdown-icon />
             <!-- <q-input v-model="store.formKeluar.dokter_anestesi" label="Dokter Anestesi" dense outlined /> -->

@@ -40,7 +40,7 @@
             <q-input v-model="store.inputForm.waktu" valid label="Waktu" dense outlined mask="##:##" />
           </div>
           <div class="col-6">
-            <app-input v-model="store.inputForm.konversi_anastesi" valid label="Konversi Anastesi" outlined />
+            <app-input v-model="store.inputForm.konversi_anastesi" valid label="Konversi Anestesi" outlined />
           </div>
         </div>
         <div class="row items-center">
@@ -93,10 +93,10 @@
         </div>
         <div class="row q-mt-sm q-col-gutter-x-md">
           <div class="col-6"><app-autocomplete v-model="store.inputForm.penata_anastesi" :key="laporanOp.nakes"
-              label="Penata Anastesi" outlined dense :source="laporanOp.nakes?.filter(y => y?.kdgroupnakes != '1')"
+              label="Penata Anestesi" outlined dense :source="laporanOp.nakes?.filter(y => y?.kdgroupnakes != '1')"
               option-label="nama" option-value="kdpegsimrs" hide-dropdown-icon /></div>
           <div class="col-6"><app-autocomplete v-model="store.inputForm.dokter_anastesi" :key="laporanOp.nakes"
-              label="Dokter Anastesi" outlined dense :source="laporanOp.nakes?.filter(y => y?.kdgroupnakes == '1')"
+              label="Dokter Anestesi" outlined dense :source="laporanOp.nakes?.filter(y => y?.kdgroupnakes == '1')"
               option-label="nama" option-value="kdpegsimrs" hide-dropdown-icon /></div>
         </div>
 

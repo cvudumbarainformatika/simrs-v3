@@ -10,7 +10,7 @@
           <div class="q-px-sm">
             <div class="row ">
               <div class="text-bold f-14 q-mr-sm">Sign In </div>
-              ( Sebelum Induksi ) oleh instrumen dan anastesi
+              ( Sebelum Induksi ) oleh instrumen dan anestesi
             </div>
             <q-separator class="q-my-sm" size="1px" />
             <div v-for="item in store.form.signIn" :key="item">
@@ -34,17 +34,17 @@
             </div>
             <div class="row q-my-md print-hide">
               <div class="col-6">
-                <app-autocomplete v-model="store.form.dokter_anastesi" valid label="Pilih Dokter Anastesi"
+                <app-autocomplete v-model="store.form.dokter_anastesi" valid label="Pilih Dokter Anestesi"
                   :source="dokters" option-label="nama" option-value="kdpegsimrs" outlined clearable />
               </div>
               <div class="col-6">
-                <app-autocomplete v-model="store.form.penata_anastesi" valid label="Pilih Penata Anastesi"
+                <app-autocomplete v-model="store.form.penata_anastesi" valid label="Pilih Penata Anestesi"
                   :source="perawats" option-label="nama" option-value="kdpegsimrs" outlined clearable />
               </div>
             </div>
             <div class="row">
-              <div class="col-6 text-center">Dokter Anastesi</div>
-              <div class="col-6 text-center">Penata Anastesi</div>
+              <div class="col-6 text-center">Dokter Anestesi</div>
+              <div class="col-6 text-center">Penata Anestesi</div>
             </div>
             <div class="row q-my-md">
               <div class="col-6 text-center ">

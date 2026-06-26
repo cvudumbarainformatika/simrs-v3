@@ -10,7 +10,7 @@
           <div class="q-px-sm">
             <div class="row ">
               <div class="text-bold f-14 q-mr-sm">Sign Out </div>
-              ( Sebelum Keluar OK ) oleh instrumen, anastesi, dan operator
+              ( Sebelum Keluar OK ) oleh instrumen, anestesi, dan operator
             </div>
             <q-separator class="q-my-sm" size="1px" />
             <div v-for="item in store.form.signOut" :key="item">
