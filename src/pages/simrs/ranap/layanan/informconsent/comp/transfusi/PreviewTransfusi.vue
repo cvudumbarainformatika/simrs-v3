@@ -8,41 +8,25 @@
         <span v-if="item?.setuju === 'Iya'">RM IRNA-18</span>
         <span v-else>RM IRNA-19</span>
       </div>
-
       <!-- KOP SURAT -->
-      <div class="col-auto ba-black">
-        <div class="row items-center">
-          <div class="col-9 br-black">
-            <div class="row items-center q-pa-sm">
-              <div class="col-auto">
-                <img src="~assets/images/logo-kota-grey.png" width="60">
-              </div>
-              <div class="col flex-wrap q-px-md">
-                <div class="text-center">
-                  <div class="text-weight-bold f-12 font-header">
-                    PEMERINTAH KOTA PROBOLINGGO
-                  </div>
-                  <div class="text-weight-bold f-16 font-header">
-                    RSUD DOKTER MOHAMAD SALEH
-                  </div>
-                  <div class="f-10 font-header">
-                    <div>Jl. Mayjend Panjaitan No.65 Telp: (0335)433119 Fax.(0335)432702</div>
-                    <div>email: rsudprob@probolinggokota.go.id</div>
-                    <div>PROBOLINGGO – 67219</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-3 text-center q-pa-sm">
-            <div class="text-bold f-11 uppercase line-height-normal">
-              <span v-if="item?.setuju === 'Iya'">Persetujuan Tindakan<br/>Transfusi Darah</span>
-              <span v-else>Penolakan / Pembatalan<br/>Tindakan Transfusi Darah</span>
-            </div>
-          </div>
-        </div>
+      <div class="col-auto">
+        <AppKopSuratStandard
+          :dataHeader="[
+            'PEMERINTAH KOTA PROBOLINGGO',
+            'DINAS KESEHATAN, PENGENDALIAN PENDUDUK DAN KELUARGA BERENCANA',
+            'UOBK RSUD DOKTER MOHAMAD SALEH',
+            'Jl. Mayjend Panjaitan No.65 Telp: (0335)433119 Fax.(0335)432702',
+            'email: rsudprob@probolinggokota.go.id',
+            'PROBOLINGGO – 67219'
+          ]"
+          :pasien="pasien"
+          :header="[
+            item?.setuju === 'Iya' ? 'Persetujuan Tindakan' : 'Penolakan / Pembatalan',
+            item?.setuju === 'Iya' ? 'Transfusi Darah' : 'Tindakan Transfusi Darah',
+            ''
+          ]"
+        />
       </div>
-
       <!-- ==================== LAYOUT PERSETUJUAN (RM IRNA-18) ==================== -->
       <div v-if="item?.setuju === 'Iya'" class="column fit">
         <!-- Dokter Pelaksana Statement -->
@@ -317,6 +301,7 @@ import { pathImg } from 'src/boot/axios'
 import { humanDate, jamTnpDetik } from 'src/modules/formatter'
 import { imageToBase64 } from 'src/modules/imgBase64'
 import { useConcernOperasiInvasifRanapStore } from 'src/stores/simrs/ranap/concernoperasiinvasif'
+import AppKopSuratStandard from 'src/components/~global/AppKopSuratStandard.vue'
 import { onMounted, ref } from 'vue'
 
 const store = useConcernOperasiInvasifRanapStore()
@@ -460,7 +445,7 @@ function getNewLine(text) {
     box-shadow: none !important;
     border-radius: 0 !important;
     margin: 0 !important;
-    page-break-after: always !important;
+    page-break-after: avoid !important;
     page-break-inside: avoid !important;
     box-sizing: border-box !important;
   }

@@ -80,7 +80,7 @@
               <tr>
                 <td class="" style="border: none; "></td>
                 <td style="border: none; ">{{ asessmentDokter?.goal ?? '.........'
-                }}</td>
+                  }}</td>
               </tr>
               <tr class="text-bold">
                 <td class="" style="border: none; ">b.</td>
@@ -89,7 +89,7 @@
               <tr>
                 <td class="" style="border: none; "></td>
                 <td style="border: none; ">{{ asessmentDokter?.tindakan ?? '.........'
-                }}</td>
+                  }}</td>
               </tr>
               <tr class="text-bold">
                 <td class="" style="border: none; ">c.</td>
@@ -98,7 +98,7 @@
               <tr>
                 <td class="" style="border: none; "></td>
                 <td style="border: none; ">{{ asessmentDokter?.edukasi ?? '.........'
-                }}</td>
+                  }}</td>
               </tr>
               <tr class="text-bold">
                 <td class="" style="border: none; ">d.</td>
@@ -107,7 +107,7 @@
               <tr>
                 <td class="" style="border: none; "></td>
                 <td style="border: none; ">{{ asessmentDokter?.frekuensi ?? '-'
-                }}</td>
+                  }}</td>
               </tr>
             </table>
 
