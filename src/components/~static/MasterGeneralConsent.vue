@@ -19,7 +19,8 @@
                 <td width="1%">
                   :
                 </td>
-                <td> {{ pasien?.nama_panggil || pasien?.nama || pasien?.name }}</td>
+                <!-- <td> {{ pasien?.nama_panggil || pasien?.nama || pasien?.name }}</td> -->
+                <td> {{ store.form?.nama }}</td>
               </tr>
               <tr>
                 <td width="20%">
@@ -28,7 +29,8 @@
                 <td width="1%">
                   :
                 </td>
-                <td> {{ pasien?.kelamin ? pasien?.kelamin : defaultForm }}</td>
+                <!-- <td> {{ pasien?.kelamin ? pasien?.kelamin : defaultForm }}</td> -->
+                <td> {{ store.form?.kelamin }}</td>
               </tr>
               <tr>
                 <td width="20%">
@@ -37,7 +39,8 @@
                 <td width="1%">
                   :
                 </td>
-                <td> {{ pasien?.tgllahir ? humanDate(pasien?.tgllahir) : defaultForm }}</td>
+                <!-- <td> {{ pasien?.tgllahir ? humanDate(pasien?.tgllahir) : defaultForm }}</td> -->
+                <td> {{ humanDate(store.form?.tgllahir) }}</td>
               </tr>
               <tr>
                 <td width="20%">
@@ -46,7 +49,8 @@
                 <td width="1%">
                   :
                 </td>
-                <td> {{ pasien?.alamat ? pasien?.alamat : defaultForm }}</td>
+                <!-- <td> {{ pasien?.alamat ? pasien?.alamat : defaultForm }}</td> -->
+                <td> {{ store.form?.alamat }}</td>
               </tr>
               <tr>
                 <td width="20%">
@@ -55,7 +59,8 @@
                 <td width="1%">
                   :
                 </td>
-                <td> {{ pasien?.nohp ? pasien?.nohp : defaultForm }}</td>
+                <!-- <td> {{ pasien?.nohp ? pasien?.nohp : defaultForm }}</td> -->
+                <td> {{ store.form?.nohp }}</td>
               </tr>
               <tr>
                 <td width="20%">
@@ -65,9 +70,10 @@
                   :
                 </td>
                 <td>
-                  {{ pasien?.generalcons?.hubunganpasien ?
+                  <!-- {{ pasien?.generalcons?.hubunganpasien ?
                     pasien?.generalcons?.hubunganpasien : store.form.hubunganpasien
-                  }}
+                  }} -->
+                  {{ store.form.hubunganpasien }}
                 </td>
               </tr>
             </tbody>
@@ -431,14 +437,35 @@ function createPdf() {
     allowTaint: false,
     useCORS: false
   }).then((canvas) => {
-    const img = canvas.toDataURL('image/jpeg', 0.8)
+    // const img = canvas.toDataURL('image/jpeg', 0.8)
 
-    doc.addImage(img, 'JPEG', 0, 0, doc.internal.pageSize.getWidth(), doc.internal.pageSize.getHeight(), 'FAST')
-    // doc.save(pasien?.value?.norm + '.pdf')
+    // doc.addImage(img, 'JPEG', 0, 0, doc.internal.pageSize.getWidth(), doc.internal.pageSize.getHeight(), 'FAST')
+    // // doc.save(pasien?.value?.norm + '.pdf')
 
-    // const pdf = new File([doc.output('arraybuffer')], pasien?.value?.norm + '.pdf', { type: 'application/pdf' })
-    // const pdf = new File([doc.output('arraybuffer')], pasien?.value?.norm + '.jpg', { type: 'application/jpg' })
+    // // const pdf = new File([doc.output('arraybuffer')], pasien?.value?.norm + '.pdf', { type: 'application/pdf' })
+    // // const pdf = new File([doc.output('arraybuffer')], pasien?.value?.norm + '.jpg', { type: 'application/jpg' })
 
+    const imgData = canvas.toDataURL('image/jpeg', 1.0)
+
+    const pdfWidth = doc.internal.pageSize.getWidth()
+    const pdfHeight = doc.internal.pageSize.getHeight()
+
+    const imgWidth = pdfWidth
+    const imgHeight = (canvas.height * imgWidth) / canvas.width
+
+    let heightLeft = imgHeight
+    let position = 0
+
+    doc.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight)
+
+    heightLeft -= pdfHeight
+
+    while (heightLeft > 0) {
+      position = heightLeft - imgHeight
+      doc.addPage()
+      doc.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight)
+      heightLeft -= pdfHeight
+    }
     const filename = pasien.value.kelompok === 'irja'
       ? `${pasien?.value?.norm}.pdf`
       : `${pasien?.value?.noreg?.replace(/\//g, '')}.pdf`

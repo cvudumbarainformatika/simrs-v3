@@ -44,11 +44,19 @@ export const useGeneralConsentStore = defineStore('general_consent', {
       wali1: null,
       wali2: null,
       hubunganWali1: null,
-      hubunganWali2: null
+      hubunganWali2: null,
+      kelamin: null,
+      tgllahir: null
     },
 
-    options: ['Diri Sendiri', 'Ayah Kandung', 'Ibu Kandung', 'Kakak Kandung', 'Adik Kandung', 'Paman', 'Kakek', 'Cucu', 'Saudara'],
-    wali: ['Suami', 'Istri', 'Orang tua kandung / Adopsi', 'Saudara kandung', 'Wali']
+    // options: ['Diri Sendiri', 'Ayah Kandung', 'Ibu Kandung', 'Kakak Kandung', 'Adik Kandung', 'Paman', 'Kakek', 'Cucu', 'Saudara'],
+    // wali: ['Suami', 'Istri', 'Orang tua kandung / Adopsi', 'Saudara kandung', 'Wali']
+
+    options: ['Diri Sendiri', 'Suami', 'Istri', 'Anak', 'Saudara', 'Wali'],
+    wali: ['Suami', 'Istri', 'Anak', 'Saudara', 'Wali'],
+
+    optionskelamin: ['Laki-laki', 'Perempuan'],
+
   }),
   // getters: {
   //   doubleCount: (state) => state.counter * 2
@@ -89,7 +97,10 @@ export const useGeneralConsentStore = defineStore('general_consent', {
         'wali1',
         'wali2',
         'hubunganWali1',
-        'hubunganWali2'
+        'hubunganWali2',
+
+        'kelamin',
+        'tgllahir'
       ]
       for (let i = 0; i < columns?.length; i++) {
         this.setForm(columns[i], null)
