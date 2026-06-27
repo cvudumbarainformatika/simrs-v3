@@ -23,7 +23,7 @@
     </div>
 
     <!-- Main Content -->
-    <div class="absolute-top column fit q-pa-xs" style="padding-bottom: 41px;">
+    <div class="absolute-top column fit q-pa-xs">
       <!-- Top Tabs -->
       <div class="col-auto">
         <q-tabs v-model="store.menuTab" dense no-caps inline-label narrow-indicator indicator-color="transparent"
@@ -230,5 +230,23 @@ onMounted(() => {
 .q-tab {
   border-top-left-radius: 10px;
   border-bottom-right-radius: 10px;
+}
+
+/* Mengizinkan tabs melipat (wrap) menjadi beberapa baris saat lebar layar tidak cukup */
+:deep(.q-tabs__content) {
+  flex-wrap: wrap !important;
+  overflow: visible !important;
+}
+
+/* Menyembunyikan tombol scroll panah kiri-kanan bawaan Quasar */
+:deep(.q-tabs__arrows) {
+  display: none !important;
+}
+
+/* Memastikan layout tab tetap inline dan proporsional */
+:deep(.q-tab) {
+  min-height: 36px !important;
+  height: auto !important;
+  padding: 4px 6px !important;
 }
 </style>

@@ -73,42 +73,44 @@
                 <col style="width: 30px;">
                 <col>
               </colgroup>
-              <tr class="text-bold">
-                <td class="" style="border: none; ">a.</td>
-                <td style="border: none; ">goal of treatment</td>
-              </tr>
-              <tr>
-                <td class="" style="border: none; "></td>
-                <td style="border: none; ">{{ asessmentDokter?.goal ?? '.........'
-                }}</td>
-              </tr>
-              <tr class="text-bold">
-                <td class="" style="border: none; ">b.</td>
-                <td style="border: none; ">Tindakan Program rehabiliasi Medik</td>
-              </tr>
-              <tr>
-                <td class="" style="border: none; "></td>
-                <td style="border: none; ">{{ asessmentDokter?.tindakan ?? '.........'
-                }}</td>
-              </tr>
-              <tr class="text-bold">
-                <td class="" style="border: none; ">c.</td>
-                <td style="border: none; ">Edukasi</td>
-              </tr>
-              <tr>
-                <td class="" style="border: none; "></td>
-                <td style="border: none; ">{{ asessmentDokter?.edukasi ?? '.........'
-                }}</td>
-              </tr>
-              <tr class="text-bold">
-                <td class="" style="border: none; ">d.</td>
-                <td style="border: none; ">Frekuensi Kunjungan</td>
-              </tr>
-              <tr>
-                <td class="" style="border: none; "></td>
-                <td style="border: none; ">{{ asessmentDokter?.frekuensi ?? '-'
-                }}</td>
-              </tr>
+              <tbody>
+                <tr class="text-bold">
+                  <td class="" style="border: none; ">a.</td>
+                  <td style="border: none; ">goal of treatment</td>
+                </tr>
+                <tr>
+                  <td class="" style="border: none; "></td>
+                  <td style="border: none; ">{{ asessmentDokter?.goal ?? '.........'
+                    }}</td>
+                </tr>
+                <tr class="text-bold">
+                  <td class="" style="border: none; ">b.</td>
+                  <td style="border: none; ">Tindakan Program rehabiliasi Medik</td>
+                </tr>
+                <tr>
+                  <td class="" style="border: none; "></td>
+                  <td style="border: none; ">{{ asessmentDokter?.tindakan ?? '.........'
+                    }}</td>
+                </tr>
+                <tr class="text-bold">
+                  <td class="" style="border: none; ">c.</td>
+                  <td style="border: none; ">Edukasi</td>
+                </tr>
+                <tr>
+                  <td class="" style="border: none; "></td>
+                  <td style="border: none; ">{{ asessmentDokter?.edukasi ?? '.........'
+                    }}</td>
+                </tr>
+                <tr class="text-bold">
+                  <td class="" style="border: none; ">d.</td>
+                  <td style="border: none; ">Frekuensi Kunjungan</td>
+                </tr>
+                <tr>
+                  <td class="" style="border: none; "></td>
+                  <td style="border: none; ">{{ asessmentDokter?.frekuensi ?? '-'
+                    }}</td>
+                </tr>
+              </tbody>
             </table>
 
             <div class="section-title text-italic" style=" margin-bottom: -2px;">Rencana Tindak Lanjut (Evaluasi Rujuk

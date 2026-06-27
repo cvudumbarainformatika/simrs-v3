@@ -59,7 +59,7 @@ const tabs = ref([
     comp: shallowRef(defineAsyncComponent(() => import('./comp/KeperawatanPage.vue')))
   },
   {
-    label: 'Penata Anastesi',
+    label: 'Penata Anestesi',
     name: 'anastesi',
     icon: 'icon-mat-description',
     // nakes: ['2', '3'],

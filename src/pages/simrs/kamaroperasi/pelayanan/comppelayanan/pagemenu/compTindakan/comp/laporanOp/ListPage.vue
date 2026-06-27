@@ -27,11 +27,11 @@
                 <div class="col-8">{{ cariNakes(laporanop, 'asisten op') }}</div>
               </div>
               <div class="row text-weight-bold">
-                <div class="col-4">Dokter Anastesi</div>
+                <div class="col-4">Dokter Anestesi</div>
                 <div class="col-8">{{ cariNakes(laporanop, 'anastesi') }}</div>
               </div>
               <div class="row">
-                <div class="col-4">Asisten Anastesi</div>
+                <div class="col-4">Asisten Anestesi</div>
                 <div class="col-8">{{ cariNakes(laporanop, 'asisten an') }}</div>
               </div>
               <!-- <div class="row items-center q-my-xs">
@@ -39,11 +39,11 @@
                 <div class="col-8">{{ surgical?.dr_operator?.nama ?? 'Belum diisi di Surgical Safety' }}</div>
               </div>
               <div class="row items-center q-my-xs">
-                <div class="col-4">Dokter Anastesi </div>
+                <div class="col-4">Dokter Anestesi </div>
                 <div class="col-8">{{ surgical?.dr_anastesi?.nama ?? 'Belum diisi di Surgical Safety' }}</div>
               </div>
               <div class="row items-center q-my-xs">
-                <div class="col-4">Penata Anastesi </div>
+                <div class="col-4">Penata Anestesi </div>
                 <div class="col-8">{{ surgical?.pen_anastesi?.nama ?? 'Belum diisi di Surgical Safety' }}</div>
               </div>
               <div class="row items-center q-my-xs">
@@ -64,7 +64,7 @@
               </div> -->
 
               <div class="row items-center q-my-xs">
-                <div class="col-4">Jenis Anastesi</div>
+                <div class="col-4">Jenis Anestesi</div>
                 <div class="col-8">{{ laporanop?.rs4 ?? '-' }}</div>
               </div>
               <div class="row items-center q-my-xs">

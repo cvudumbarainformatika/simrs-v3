@@ -49,12 +49,12 @@ const tabs = ref([
     comp: shallowRef(defineAsyncComponent(() => import('./comp/PraInduksiPage.vue')))
   },
   {
-    label: 'Monitoring Selama Anastesi',
+    label: 'Monitoring Selama Anestesi',
     name: 'selamaAnastesi',
     comp: shallowRef(defineAsyncComponent(() => import('./comp/MonitoringSelamaAnastesiPage.vue')))
   },
   {
-    label: 'Monitoring Pasca Anastesi',
+    label: 'Monitoring Pasca Anestesi',
     name: 'pascaAnastesi',
     comp: shallowRef(defineAsyncComponent(() => import('./comp/MonitoringPascaAnastesiPage.vue')))
   },

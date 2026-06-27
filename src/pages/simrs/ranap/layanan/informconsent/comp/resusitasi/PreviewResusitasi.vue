@@ -7,40 +7,21 @@
       <div class="text-right text-bold f-10 q-mb-xs">
         RM IRNA-DNR (Hal. 1)
       </div>
-
       <!-- KOP SURAT -->
-      <div class="col-auto ba-black">
-        <div class="row items-center">
-          <div class="col-9 br-black">
-            <div class="row items-center q-pa-sm">
-              <div class="col-auto">
-                <img src="~assets/images/logo-kota-grey.png" width="60">
-              </div>
-              <div class="col flex-wrap q-px-md">
-                <div class="text-center">
-                  <div class="text-weight-bold f-12 font-header">
-                    PEMERINTAH KOTA PROBOLINGGO
-                  </div>
-                  <div class="text-weight-bold f-16 font-header">
-                    RSUD DOKTER MOHAMAD SALEH
-                  </div>
-                  <div class="f-10 font-header">
-                    <div>Jl. Mayjend Panjaitan No.65 Telp: (0335)433119 Fax.(0335)432702</div>
-                    <div>email: rsudprob@probolinggokota.go.id</div>
-                    <div>PROBOLINGGO – 67219</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-3 text-center q-pa-sm">
-            <div class="text-bold f-11 uppercase line-height-normal">
-              PEMBERIAN INFORMASI<br/>RESUSITASI (DNR)
-            </div>
-          </div>
-        </div>
+      <div class="col-auto">
+        <AppKopSuratStandard
+          :dataHeader="[
+            'PEMERINTAH KOTA PROBOLINGGO',
+            'DINAS KESEHATAN, PENGENDALIAN PENDUDUK DAN KELUARGA BERENCANA',
+            'UOBK RSUD DOKTER MOHAMAD SALEH',
+            'Jl. Mayjend Panjaitan No.65 Telp: (0335)433119 Fax.(0335)432702',
+            'email: rsudprob@probolinggokota.go.id',
+            'PROBOLINGGO – 67219'
+          ]"
+          :pasien="pasien"
+          :header="['PEMBERIAN INFORMASI', 'RESUSITASI (DNR)', '']"
+        />
       </div>
-
       <!-- Tanggal Pemberian Informasi -->
       <div class="ba-black f-11 q-mt-xs q-pa-sm line-height-normal">
         <div class="row">
@@ -193,40 +174,21 @@
       <div class="text-right text-bold f-10 q-mb-xs">
         RM IRNA-DNR (Hal. 2)
       </div>
-
-      <!-- KOP SURAT HALAMAN 2 -->
-      <div class="col-auto ba-black">
-        <div class="row items-center">
-          <div class="col-9 br-black">
-            <div class="row items-center q-pa-sm">
-              <div class="col-auto">
-                <img src="~assets/images/logo-kota-grey.png" width="60">
-              </div>
-              <div class="col flex-wrap q-px-md">
-                <div class="text-center">
-                  <div class="text-weight-bold f-12 font-header">
-                    PEMERINTAH KOTA PROBOLINGGO
-                  </div>
-                  <div class="text-weight-bold f-16 font-header">
-                    RSUD DOKTER MOHAMAD SALEH
-                  </div>
-                  <div class="f-10 font-header">
-                    <div>Jl. Mayjend Panjaitan No.65 Telp: (0335)433119 Fax.(0335)432702</div>
-                    <div>email: rsudprob@probolinggokota.go.id</div>
-                    <div>PROBOLINGGO – 67219</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-3 text-center q-pa-sm">
-            <div class="text-bold f-11 uppercase line-height-normal">
-              Surat Pernyataan<br/>Penolakan Resusitasi
-            </div>
-          </div>
-        </div>
+      <!-- KOP SURAT -->
+      <div class="col-auto">
+        <AppKopSuratStandard
+          :dataHeader="[
+            'PEMERINTAH KOTA PROBOLINGGO',
+            'DINAS KESEHATAN, PENGENDALIAN PENDUDUK DAN KELUARGA BERENCANA',
+            'UOBK RSUD DOKTER MOHAMAD SALEH',
+            'Jl. Mayjend Panjaitan No.65 Telp: (0335)433119 Fax.(0335)432702',
+            'email: rsudprob@probolinggokota.go.id',
+            'PROBOLINGGO – 67219'
+          ]"
+          :pasien="pasien"
+          :header="['Surat Pernyataan', 'Penolakan Resusitasi', '']"
+        />
       </div>
-
       <!-- Judul Dokumen Tengah -->
       <div class="text-center text-bold f-12 q-my-md uppercase tracking-wide">
         PENOLAKAN RESUSITASI (DNR)
@@ -384,6 +346,7 @@
 import { pathImg } from 'src/boot/axios'
 import { humanDate, jamTnpDetik } from 'src/modules/formatter'
 import { imageToBase64 } from 'src/modules/imgBase64'
+import AppKopSuratStandard from 'src/components/~global/AppKopSuratStandard.vue'
 import { onMounted } from 'vue'
 
 const props = defineProps({

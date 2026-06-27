@@ -8,7 +8,7 @@
           }" />
       </div>
       <div class="col-6">
-        <app-input v-model="store.form.konversi_anastesi" label="Konversi Anastesi" :rules="[
+        <app-input v-model="store.form.konversi_anastesi" label="Konversi Anestesi" :rules="[
           val => (!val || val?.length <= 255) || 'Maksimal 255 karakter'
         ]" outlined />
       </div>

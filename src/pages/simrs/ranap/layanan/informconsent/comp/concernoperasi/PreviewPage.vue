@@ -3,34 +3,20 @@
     <!-- page 1 -->
     <div class="page-1">
       <!-- KOP SURAT -->
-      <div class="col-auto ba-black">
-        <div class="row items-center">
-          <div class="col-9 br-black">
-            <div class="row items-center q-pa-sm">
-              <div class="col-auto">
-                <img src="~assets/images/logo-kota-grey.png" width="60">
-              </div>
-              <div class="col flex-wrap q-px-md">
-                <div class="text-center">
-                  <div class="text-weight-bold f-14">
-                    RSUD DOKTER MOHAMAD SALEH
-                  </div>
-                  <div>Jl. Mayjend Panjaitan No.65 Telp: (0335)433119 Fax.(0335)432702</div>
-                  <div>email: rsudprob@probolinggokota.go.id</div>
-                  <div>PROBOLINGGO – 67219</div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-3">
-            <div class="text-center text-bold">
-              PEMBERIAN EDUKASI
-              PEMBERITAHUAN INFORMASI OPERASI/TINDAKAN INVASIF
-            </div>
-          </div>
-        </div>
+      <div class="col-auto">
+        <AppKopSuratStandard
+          :dataHeader="[
+            'PEMERINTAH KOTA PROBOLINGGO',
+            'DINAS KESEHATAN, PENGENDALIAN PENDUDUK DAN KELUARGA BERENCANA',
+            'UOBK RSUD DOKTER MOHAMAD SALEH',
+            'Jl. Mayjend Panjaitan No.65 Telp: (0335)433119 Fax.(0335)432702',
+            'email: rsudprob@probolinggokota.go.id',
+            'PROBOLINGGO – 67219'
+          ]"
+          :pasien="pasien"
+          :header="['PEMBERIAN EDUKASI', 'PEMBERITAHUAN INFORMASI', 'OPERASI/TINDAKAN INVASIF']"
+        />
       </div>
-      <!-- CONTENT -->
       <div class="ba-black">
         <div class="section-1 q-pa-md">
           <div class="flex q-py-xs">
@@ -525,46 +511,20 @@
     <!-- Page 3 -->
     <div class="page-3">
       <!-- KOP SURAT -->
-      <div class="col-auto ba-black">
-        <div class="row items-center">
-          <div class="col-9 br-black">
-            <div class="row items-center q-pa-sm">
-              <div class="col-auto">
-                <img src="~assets/images/logo-kota-grey.png" width="60">
-              </div>
-              <div class="col flex-wrap q-px-md">
-                <div class="text-center">
-                  <div class="text-weight-bold f-12">
-                    PEMERINTAH KOTA PROBOLINGGO
-                  </div>
-                  <div class="text-weight-bold f-10">
-                    DINAS KESEHATAN, PENGENDALIAN PENDUDUK DAN KELUARGA BERENCANA
-                  </div>
-                  <div class="text-weight-bold f-14">
-                    UOBK RSUD DOKTER MOHAMAD SALEH
-                  </div>
-                  <div class="f-10">
-                    <div>Jl. Mayjend Panjaitan No.65 Telp: (0335)433119 Fax.(0335)432702</div>
-                    <div>email: rsudprob@probolinggokota.go.id</div>
-                    <div>PROBOLINGGO – 67219</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-3">
-            <div class="text-center text-bold">
-              PERSETUJUAN
-              TINDAKAN KEDOKTERAN
-            </div>
-            <div class="text-center text-bold">
-              OPERASI / TINDAKAN INVASIF
-            </div>
-          </div>
-        </div>
+      <div class="col-auto">
+        <AppKopSuratStandard
+          :dataHeader="[
+            'PEMERINTAH KOTA PROBOLINGGO',
+            'DINAS KESEHATAN, PENGENDALIAN PENDUDUK DAN KELUARGA BERENCANA',
+            'UOBK RSUD DOKTER MOHAMAD SALEH',
+            'Jl. Mayjend Panjaitan No.65 Telp: (0335)433119 Fax.(0335)432702',
+            'email: rsudprob@probolinggokota.go.id',
+            'PROBOLINGGO – 67219'
+          ]"
+          :pasien="pasien"
+          :header="['PERSETUJUAN', 'TINDAKAN KEDOKTERAN', 'OPERASI / TINDAKAN INVASIF']"
+        />
       </div>
-
-      <!-- section-1 -->
       <div class="ba-black f-12 q-mt-xs">
         <div class="q-pa-sm">
           Saya , Dokter Pelaksana tindakan menyatakan bahwa telah menerangkan hal dibawah ini secara benar dan jelas dan
@@ -951,6 +911,7 @@ import { pathImg } from 'src/boot/axios'
 import { humanDate, jamTnpDetik } from 'src/modules/formatter'
 import { imageToBase64 } from 'src/modules/imgBase64'
 import { useConcernOperasiInvasifRanapStore } from 'src/stores/simrs/ranap/concernoperasiinvasif'
+import AppKopSuratStandard from 'src/components/~global/AppKopSuratStandard.vue'
 import { onMounted, ref } from 'vue'
 const store = useConcernOperasiInvasifRanapStore()
 

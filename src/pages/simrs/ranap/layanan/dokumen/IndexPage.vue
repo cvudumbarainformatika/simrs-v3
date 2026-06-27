@@ -140,8 +140,16 @@ const menus = ref([
     icon: 'icon-my-file_sign',
     nakes: ['1', '2', '3'],
     comp: shallowRef(defineAsyncComponent(() => import('./kematian/IndexPage.vue')))
+  },
+  {
+    name: 'informed-consent',
+    label: 'INFORMED CONSENT',
+    title: 'INFORMED CONSENT',
+    desc: 'Daftar Persetujuan / Penolakan Tindakan Medis',
+    icon: 'icon-my-file_sign',
+    nakes: ['1', '2', '3'],
+    comp: shallowRef(defineAsyncComponent(() => import('./informconsent/IndexPage.vue')))
   }
-
 ])
 
 

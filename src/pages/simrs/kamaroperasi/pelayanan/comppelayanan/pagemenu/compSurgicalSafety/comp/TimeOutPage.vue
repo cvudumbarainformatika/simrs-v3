@@ -10,7 +10,7 @@
           <div class="q-px-sm">
             <div class="row ">
               <div class="text-bold f-14 q-mr-sm">Time Out </div>
-              ( Sebelum Insisi ) oleh instrumen, anastesi, dan operator
+              ( Sebelum Insisi ) oleh instrumen, anestesi, dan operator
             </div>
             <q-separator class="q-my-sm" size="1px" />
             <div v-for="item in store.form.timeOut" :key="item">

@@ -27,13 +27,13 @@
     </div>
 
     <div class="row items-center q-py-xs">
-      <div class="col-auto depan ">Riwayat Anastesi</div>
+      <div class="col-auto depan ">Riwayat Anestesi</div>
       <div class="col-auto dua">:</div>
       <div class="col-auto belakang">
         <q-option-group v-model="store.formInduksi.riwayat_anastesi" :options="options" inline dense
           @update:model-value="clearJenis($event, 'jenis_riwayat_anastesi', 'Tidak')" />
         <q-input v-if="store?.formInduksi?.riwayat_anastesi == 'Ya'" v-model="store.formInduksi.jenis_riwayat_anastesi"
-          label="Jenis Anastesi" :rules="[
+          label="Jenis Anestesi" :rules="[
             val => (!val || val?.length <= 255) || 'Maksimal 255 karakter'
           ]" />
       </div>
@@ -320,7 +320,7 @@
       </div>
       <div class="col-auto" style="width: 98%;">
         <div class="row items-start q-mm-xs">
-          <div class="col-auto depan">Rencana Anastesi</div>
+          <div class="col-auto depan">Rencana Anestesi</div>
           <div class="col-auto dua">:</div>
           <div class="col-auto belakang">
             <div class="row items-center">
@@ -350,7 +350,7 @@
       </div>
       <div class="col-auto" style="width: 98%;">
         <div class="row items-start q-mm-xs">
-          <div class="col-auto depan">Rencana Pemulihan Pasca Anastesi</div>
+          <div class="col-auto depan">Rencana Pemulihan Pasca Anestesi</div>
           <div class="col-auto dua">:</div>
           <div class="col-auto belakang">
             <q-option-group v-model="store.formInduksi.renc_pemulihan_pasca_anas"
@@ -517,7 +517,7 @@
             store.formInduksi.jam = val
           }" /></div>
       <div class="col-4"><app-autocomplete v-model="store.formInduksi.dokter_anastesi" :key="laporanOp.nakes"
-          label="Dokter Anastesi" outlined dense :source="laporanOp.nakes?.filter(y => y?.kdgroupnakes == '1')"
+          label="Dokter Anestesi" outlined dense :source="laporanOp.nakes?.filter(y => y?.kdgroupnakes == '1')"
           option-label="nama" option-value="kdpegsimrs" hide-dropdown-icon /></div>
     </div>
     <div class="row justify-end q-my-lg q-mr-md">
