@@ -411,73 +411,177 @@ function parseIgd(val) {
 }
 
 // eslint-disable-next-line no-unused-vars
-function createPdf() {
-  // console.log(rePdfDoc.value.innerHTML)
-  // eslint-disable-next-line new-cap
+// function createPdf() {
+//   // console.log(rePdfDoc.value.innerHTML)
+//   // eslint-disable-next-line new-cap
+//   const doc = new jsPDF({
+//     orientation: 'p',
+//     unit: 'px',
+//     format: 'legal',
+//     hotfixes: ['px_scaling']
+//   })
+//   const source = rePdfDoc.value
+
+//   // doc.html(source, {
+//   //   callback: function (pdf) {
+//   //     doc.addImage(pathImg + pasien?.value.ttdpasien, 'JPEG', 15, 40, 200, 114)
+//   //     // doc.output('datauri')
+//   //     pdf.save()
+//   //   }
+//   // })
+//   html2canvas(source, {
+//     width: doc.internal.pageSize.getWidth(),
+//     height: doc.internal.pageSize.getHeight(),
+//     logging: false,
+//     letterRendering: 1,
+//     allowTaint: false,
+//     useCORS: false
+//   }).then((canvas) => {
+//     // const img = canvas.toDataURL('image/jpeg', 0.8)
+
+//     // doc.addImage(img, 'JPEG', 0, 0, doc.internal.pageSize.getWidth(), doc.internal.pageSize.getHeight(), 'FAST')
+//     // // doc.save(pasien?.value?.norm + '.pdf')
+
+//     // // const pdf = new File([doc.output('arraybuffer')], pasien?.value?.norm + '.pdf', { type: 'application/pdf' })
+//     // // const pdf = new File([doc.output('arraybuffer')], pasien?.value?.norm + '.jpg', { type: 'application/jpg' })
+
+//     const imgData = canvas.toDataURL('image/jpeg', 1.0)
+
+//     const pdfWidth = doc.internal.pageSize.getWidth()
+//     const pdfHeight = doc.internal.pageSize.getHeight()
+
+//     const imgWidth = pdfWidth
+//     const imgHeight = (canvas.height * imgWidth) / canvas.width
+
+//     let heightLeft = imgHeight
+//     let position = 0
+
+//     doc.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight)
+
+//     heightLeft -= pdfHeight
+
+//     while (heightLeft > 0) {
+//       position = heightLeft - imgHeight
+//       doc.addPage()
+//       doc.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight)
+//       heightLeft -= pdfHeight
+//     }
+//     const filename = pasien.value.kelompok === 'irja'
+//       ? `${pasien?.value?.norm}.pdf`
+//       : `${pasien?.value?.noreg?.replace(/\//g, '')}.pdf`
+
+//     const pdf = new File(
+//       [doc.output('arraybuffer')],
+//       filename,
+//       { type: 'application/pdf' }
+//     )
+
+//     simpanPdf(pdf)
+//   })
+// }
+
+
+async function createPdf() {
+  const source = rePdfDoc.value
+  if (!source) return
+
+  // Tunggu render Vue selesai
+  await new Promise(resolve => setTimeout(resolve, 300))
+
   const doc = new jsPDF({
     orientation: 'p',
-    unit: 'px',
+    unit: 'mm',
     format: 'legal',
-    hotfixes: ['px_scaling']
+    compress: true
   })
-  const source = rePdfDoc.value
 
-  // doc.html(source, {
-  //   callback: function (pdf) {
-  //     doc.addImage(pathImg + pasien?.value.ttdpasien, 'JPEG', 15, 40, 200, 114)
-  //     // doc.output('datauri')
-  //     pdf.save()
-  //   }
-  // })
-  html2canvas(source, {
-    width: doc.internal.pageSize.getWidth(),
-    height: doc.internal.pageSize.getHeight(),
+  console.log({
+    clientHeight: source.clientHeight,
+    scrollHeight: source.scrollHeight,
+    offsetHeight: source.offsetHeight
+  })
+
+  const canvas = await html2canvas(source, {
+    scale: 1.3,
+    useCORS: true,
+    allowTaint: true,
+    backgroundColor: '#ffffff',
     logging: false,
-    letterRendering: 1,
-    allowTaint: false,
-    useCORS: false
-  }).then((canvas) => {
-    // const img = canvas.toDataURL('image/jpeg', 0.8)
+    width: source.scrollWidth,
+    height: source.scrollHeight,
+    windowWidth: source.scrollWidth,
+    windowHeight: source.scrollHeight
+  })
 
-    // doc.addImage(img, 'JPEG', 0, 0, doc.internal.pageSize.getWidth(), doc.internal.pageSize.getHeight(), 'FAST')
-    // // doc.save(pasien?.value?.norm + '.pdf')
+  const pdfWidth = doc.internal.pageSize.getWidth()
+  const pdfHeight = doc.internal.pageSize.getHeight()
 
-    // // const pdf = new File([doc.output('arraybuffer')], pasien?.value?.norm + '.pdf', { type: 'application/pdf' })
-    // // const pdf = new File([doc.output('arraybuffer')], pasien?.value?.norm + '.jpg', { type: 'application/jpg' })
+  const marginTop = 8
+  const marginBottom = 8
+  const printableHeight = pdfHeight - marginTop - marginBottom
+  const pxPerMm = canvas.width / pdfWidth
+  const slicePxHeight = printableHeight * pxPerMm
+  const imgWidth = pdfWidth
 
-    const imgData = canvas.toDataURL('image/jpeg', 1.0)
+  let pageIndex = 0
+  let remainingPx = canvas.height
 
-    const pdfWidth = doc.internal.pageSize.getWidth()
-    const pdfHeight = doc.internal.pageSize.getHeight()
+  while (remainingPx > 0) {
+    const currentSlicePxHeight = Math.min(slicePxHeight, remainingPx)
+    const currentSliceMmHeight = currentSlicePxHeight / pxPerMm
 
-    const imgWidth = pdfWidth
-    const imgHeight = (canvas.height * imgWidth) / canvas.width
+    const tempCanvas = document.createElement('canvas')
+    tempCanvas.width = canvas.width
+    tempCanvas.height = currentSlicePxHeight
+    const tempCtx = tempCanvas.getContext('2d')
 
-    let heightLeft = imgHeight
-    let position = 0
-
-    doc.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight)
-
-    heightLeft -= pdfHeight
-
-    while (heightLeft > 0) {
-      position = heightLeft - imgHeight
-      doc.addPage()
-      doc.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight)
-      heightLeft -= pdfHeight
-    }
-    const filename = pasien.value.kelompok === 'irja'
-      ? `${pasien?.value?.norm}.pdf`
-      : `${pasien?.value?.noreg?.replace(/\//g, '')}.pdf`
-
-    const pdf = new File(
-      [doc.output('arraybuffer')],
-      filename,
-      { type: 'application/pdf' }
+    tempCtx.drawImage(
+      canvas,
+      0,
+      pageIndex * slicePxHeight,
+      canvas.width,
+      currentSlicePxHeight,
+      0,
+      0,
+      canvas.width,
+      currentSlicePxHeight
     )
 
-    simpanPdf(pdf)
-  })
+    const pageImageData = tempCanvas.toDataURL('image/jpeg', 0.85)
+
+    if (pageIndex > 0) {
+      doc.addPage()
+    }
+
+    doc.addImage(
+      pageImageData,
+      'JPEG',
+      0,
+      marginTop,
+      imgWidth,
+      currentSliceMmHeight,
+      undefined,
+      'FAST'
+    )
+
+    pageIndex += 1
+    remainingPx -= currentSlicePxHeight
+  }
+
+  const filename =
+    props.kelompok === 'irja'
+      ? `${pasien.value.norm}.pdf`
+      : `${pasien.value.noreg.replace(/\//g, '')}.pdf`
+
+  const pdf = new File(
+    [doc.output('arraybuffer')],
+    filename,
+    {
+      type: 'application/pdf'
+    }
+  )
+
+  await simpanPdf(pdf)
 }
 
 // eslint-disable-next-line no-unused-vars
@@ -529,7 +633,8 @@ watch(() => isOk.value, (n, old) => {
 
   //width: 21cm;
   width: 21.59cm;
-  height: 33cm;
+  min-height: 33cm;
+  height: auto !important;
 
   // margin: 30mm 45mm
   .contentx {
