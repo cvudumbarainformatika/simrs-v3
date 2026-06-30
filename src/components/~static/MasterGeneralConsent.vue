@@ -320,6 +320,26 @@ function parseIrja(val) {
   let str = val
 
   str = str?.replace(
+    `Nama : ...............<br>`,
+    `Nama : ${props.isiPasien?.nama ? store.form.nama : '...............'}<br>`
+  )
+  str = str?.replace(
+    `No. RM : ...............<br>`,
+    `No. RM : ${props.isiPasien?.norm ? store.form.norm : '...............'}<br>`
+  )
+  str = str?.replace(
+    `Tgl Lahir : ...............<br>`,
+    `Tgl Lahir : ${props.isiPasien?.tgllahir ? store.form.tgllahir : '...............'}<br>`
+  )
+  str = str?.replace(
+    `Kelamin : ...............<br>`,
+    `Kelamin : ${props.isiPasien?.kelamin ? store.form.kelamin : '...............'}<br>`
+  )
+  str = str?.replace(
+    `Alamat : ...............<br>`,
+    `Alamat : ${props.isiPasien?.alamat ? store.form.alamat : '...............'}<br>`
+  )
+  str = str?.replace(
     /<li id="wali-1">[\s\S]*?<\/li>/,
     `<li id="wali-1">
       1) Nama : ${store.form.wali1 ? `<b>${store.form.wali1}</b>` : '...............'}
@@ -338,6 +358,8 @@ function parseIrja(val) {
   return str
 }
 function parseRanap(val) {
+  console.log('store form', store.form)
+  console.log('Pasien', props.isiPasien)
   // const word = val?.replace('Ruang Rawat : .......... Kelas : ..........',
   //   ` Ruang Rawat : ${props.isiPasien?.ruangan ? '<b>' + props.isiPasien?.ruangan + '</b>' : '..........'} Kelas : ${props.isiPasien?.kelasruangan ? '<b>' + props.isiPasien?.kelasruangan + '</b>' : '..........'} `)
   // // }
@@ -356,6 +378,27 @@ function parseRanap(val) {
   let str = val
 
   str = str?.replace(
+    `Nama : ...............<br>`,
+    `Nama : ${props.isiPasien?.nama ? store.form.nama : '...............'}<br>`
+  )
+  str = str?.replace(
+    `No. RM : ...............<br>`,
+    `No. RM : ${props.isiPasien?.norm ? store.form.norm : '...............'}<br>`
+  )
+  str = str?.replace(
+    `Tgl Lahir : ...............<br>`,
+    `Tgl Lahir : ${props.isiPasien?.tgllahir ? store.form.tgllahir : '...............'}<br>`
+  )
+  str = str?.replace(
+    `Kelamin : ...............<br>`,
+    `Kelamin : ${props.isiPasien?.kelamin ? store.form.kelamin : '...............'}<br>`
+  )
+  str = str?.replace(
+    `Alamat : ...............<br>`,
+    `Alamat : ${props.isiPasien?.alamat ? store.form.alamat : '...............'}<br>`
+  )
+
+  str = str?.replace(
     /<li id="wali-1">[\s\S]*?<\/li>/,
     `<li id="wali-1">
       1) Nama : ${store.form.wali1 ? `<b>${store.form.wali1}</b>` : '...............'}
@@ -370,6 +413,8 @@ function parseRanap(val) {
       Hubungan dengan pasien : ${store.form.hubunganWali2 ? `<b>${store.form.hubunganWali2}</b>` : '...............'}
     </li>`
   )
+
+
 
   return str
 }
@@ -392,6 +437,26 @@ function parseIgd(val) {
   // return str4
   let str = val
 
+  str = str?.replace(
+    `Nama : ...............<br>`,
+    `Nama : ${props.isiPasien?.nama ? store.form.nama : '...............'}<br>`
+  )
+  str = str?.replace(
+    `No. RM : ...............<br>`,
+    `No. RM : ${props.isiPasien?.norm ? store.form.norm : '...............'}<br>`
+  )
+  str = str?.replace(
+    `Tgl Lahir : ...............<br>`,
+    `Tgl Lahir : ${props.isiPasien?.tgllahir ? store.form.tgllahir : '...............'}<br>`
+  )
+  str = str?.replace(
+    `Kelamin : ...............<br>`,
+    `Kelamin : ${props.isiPasien?.kelamin ? store.form.kelamin : '...............'}<br>`
+  )
+  str = str?.replace(
+    `Alamat : ...............<br>`,
+    `Alamat : ${props.isiPasien?.alamat ? store.form.alamat : '...............'}<br>`
+  )
   str = str?.replace(
     /<li id="wali-1">[\s\S]*?<\/li>/,
     `<li id="wali-1">
