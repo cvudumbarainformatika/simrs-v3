@@ -228,7 +228,8 @@
                 <img :src="pasien?.ttdPas" alt="ttd-pasien-rsudmohsaleh" width="150">
               </div>
             </div>
-            <div>{{ pasien?.name || pasien?.nama_panggil || pasien?.nama || 'Nama' }}</div>
+            <!-- <div>{{ pasien?.name || pasien?.nama_panggil || pasien?.nama || 'Nama' }}</div> -->
+            <div>{{ store.form?.nama || 'Nama' }}</div>
           </div>
         </div>
       </div>
