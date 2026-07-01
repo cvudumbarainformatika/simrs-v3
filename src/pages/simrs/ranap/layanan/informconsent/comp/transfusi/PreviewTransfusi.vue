@@ -2,12 +2,6 @@
   <div id="pdfDoc" class="f-12">
     <!-- page 1 -->
     <div class="page-1">
-      
-      <!-- IDENTIFIKASI DOKUMEN (RM IRNA-18 / RM IRNA-19) -->
-      <div class="text-right text-bold f-10 q-mb-xs">
-        <span v-if="item?.setuju === 'Iya'">RM IRNA-18</span>
-        <span v-else>RM IRNA-19</span>
-      </div>
       <!-- KOP SURAT -->
       <div class="col-auto">
         <AppKopSuratStandard
@@ -257,7 +251,7 @@
             <tr>
               <td class="text-left text-bold f-10 text-black">Nama Jelas</td>
               <td class="text-center f-10 text-black">{{ item?.pelaksana || '-' }}</td>
-              <td class="text-center f-10 text-black">{{ item?.pengedukasi || '-' }}</td>
+              <td class="text-center f-10 text-black">{{ item?.pelaksana || '-' }}</td>
               <td class="text-center f-10 text-black">{{ item?.saksiPasien || '-' }}</td>
               <td class="text-center f-10 text-black">{{ item?.nama || '-' }}</td>
             </tr>
@@ -271,8 +265,8 @@
               </td>
               <td class="text-center q-pa-xs">
                 <div class="full-width flex justify-center items-center">
-                  <app-qr-petugas :noreg="item?.noreg" :jnssurat="'IC-TRANSFUSI.png'" :asal="'RANAP'"
-                    :kdpegsimrs="item?.kdPetugas" width="65px" height="65px" />
+                    <app-qr-petugas :noreg="item?.noreg" :jnssurat="'IC-TRANSFUSI.png'" :asal="'RANAP'"
+                      :kdpegsimrs="item?.kdDokter" width="65px" height="65px" />
                 </div>
               </td>
               <td class="text-center q-pa-xs">

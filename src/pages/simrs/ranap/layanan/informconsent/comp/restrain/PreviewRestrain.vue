@@ -2,11 +2,6 @@
   <div id="pdfDoc" class="f-12">
     <!-- page 1 -->
     <div class="page-1">
-      
-      <!-- IDENTIFIKASI DOKUMEN -->
-      <div class="text-right text-bold f-10 q-mb-xs">
-        IRNA 101
-      </div>
       <!-- KOP SURAT -->
       <div class="col-auto">
         <AppKopSuratStandard
@@ -156,7 +151,7 @@
             <tr>
               <td class="text-left text-bold f-10 text-black">Nama Jelas</td>
               <td class="text-center f-10 text-black">{{ item?.pelaksana || '-' }}</td>
-              <td class="text-center f-10 text-black">{{ item?.pengedukasi || '-' }}</td>
+              <td class="text-center f-10 text-black">{{ item?.pelaksana || '-' }}</td>
               <td class="text-center f-10 text-black">{{ item?.saksiPasien || '-' }}</td>
               <td class="text-center f-10 text-black">{{ item?.nama || '-' }}</td>
             </tr>
@@ -170,8 +165,8 @@
               </td>
               <td class="text-center q-pa-xs">
                 <div class="full-width flex justify-center items-center">
-                  <app-qr-petugas :noreg="item?.noreg" :jnssurat="'IC-RESTRAIN.png'" :asal="'RANAP'"
-                    :kdpegsimrs="item?.kdPetugas" width="60px" height="60px" />
+                    <app-qr-petugas :noreg="item?.noreg" :jnssurat="'IC-RESTRAIN.png'" :asal="'RANAP'"
+                      :kdpegsimrs="item?.kdDokter" width="60px" height="60px" />
                 </div>
               </td>
               <td class="text-center q-pa-xs">

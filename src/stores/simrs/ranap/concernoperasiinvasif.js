@@ -1,9 +1,10 @@
 import { defineStore } from 'pinia'
-import { api } from 'src/boot/axios'
+import { api, pathImg } from 'src/boot/axios'
 import { usePengunjungRanapStore } from './pengunjung'
 // eslint-disable-next-line no-unused-vars
 import { notifErrVue, notifSuccess } from 'src/modules/utils'
 import { date } from 'quasar'
+import { imageToBase64 } from 'src/modules/imgBase64'
 
 export const useConcernOperasiInvasifRanapStore = defineStore('concern-operasi-invasif-ranap-store', {
   state: () => ({
@@ -182,6 +183,20 @@ export const useConcernOperasiInvasifRanapStore = defineStore('concern-operasi-i
     editForm(item) {
       this.menuTab = item?.jenis
       this.form = { ...item }
+
+      // Convert existing sign paths to base64 images so they are not deleted during saveData payload sanitization
+      const signatureFields = ['ttdDokter', 'ttdPetugas', 'ttdSaksiPasien', 'ttdYgMenyatakan']
+      signatureFields.forEach(field => {
+        const val = this.form[field]
+        if (val && typeof val === 'string' && !val.startsWith('data:image')) {
+          const fullUrl = pathImg + val
+          imageToBase64(fullUrl, (base64Image) => {
+            if (base64Image) {
+              this.form[field] = base64Image
+            }
+          })
+        }
+      })
       
       // Parse diagnosis if it is a string representation of array
       if (typeof this.form.diagnosis === 'string' && this.form.diagnosis.trim() !== '') {

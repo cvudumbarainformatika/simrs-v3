@@ -268,7 +268,7 @@
                   {{ item?.pelaksana }}
                 </td>
                 <td class="text-center f-12">
-                  {{ item?.pengedukasi }}
+                  {{ item?.pelaksana }}
                 </td>
                 <td class="text-center">
                   {{ item?.saksiPasien }}
@@ -292,7 +292,7 @@
                   <!-- <img :src="item?.ttd_petugas" alt="ttd-petugas" width="70"> -->
                   <div class="full-width flex justify-center">
                     <app-qr-petugas :noreg="item?.noreg" :jnssurat="'IC-COLONOSCOPY.png'" :asal="'RANAP'"
-                      :kdpegsimrs="item?.kdPetugas" width="70px" height="70px" />
+                      :kdpegsimrs="item?.kdDokter" width="70px" height="70px" />
                   </div>
                 </td>
                 <td class="text-center">

@@ -13,18 +13,14 @@
         </div>
         <div class="col full-height scroll">
           <!-- <preview-page :item="store.item" :pasien="pasien" /> -->
-          <component ref="refPreview" :is="previewComponent" :pasien="pasien" :menu="menu" :item="store.item" :key="store.item.id" />
+          <component ref="refPreview" :is="previewComponent" :pasien="pasien" :menu="menu" :item="store.item"
+            :key="store.item.id" />
           <div style="margin-bottom: 100px;" />
         </div>
       </div>
     </div>
-    <q-splitter
-      v-model="splitterModel"
-      :limits="[0, 100]"
-      before-class="overflow-hidden"
-      after-class="overflow-hidden"
-      class="fit"
-    >
+    <q-splitter v-model="splitterModel" :limits="[0, 100]" before-class="overflow-hidden" after-class="overflow-hidden"
+      class="fit">
       <template #before>
         <div class="column full-height bg-grey-2">
           <!-- Fixed Header -->
@@ -52,19 +48,15 @@
           </div>
           <div class="col full-height">
             <div class="full-height scroll" v-if="pasien?.informconcern?.length > 0">
-              <ListPage
-                :pasien="pasien" :menu="menu" @preview="(val) => {
-                  store.menuTab = val.jenis
-                  store.initReset(pasien)
-                  store.item = val
-                }"
-                @edit="(val) => {
-                  store.editForm(val)
-                }"
-                @delete="(val) => {
+              <ListPage :pasien="pasien" :menu="menu" @preview="(val) => {
+                store.menuTab = val.jenis
+                store.initReset(pasien)
+                store.item = val
+              }" @edit="(val) => {
+                store.editForm(val)
+              }" @delete="(val) => {
                   hapusItem(val?.id)
-                }"
-              />
+                }" />
             </div>
             <div v-else class="column full-height flex-center">
               <div>No Data</div>
@@ -101,6 +93,8 @@ const props = defineProps({
   }
 })
 
+
+
 const splitterModel = ref(75)
 
 const asyncComponents = {
@@ -131,7 +125,7 @@ const previewComponent = computed(() => {
 
 const $q = useQuasar()
 
-function hapusItem (id) {
+function hapusItem(id) {
   console.log('id', id)
   $q.dialog({
     dark: true,

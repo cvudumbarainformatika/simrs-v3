@@ -81,8 +81,8 @@
                     store.initReset(pasien)
                     store.item = val
                   }" @edit="(val) => {
-                      store.editForm(val)
-                    }" @delete="(val) => {
+                    store.editForm(val)
+                  }" @delete="(val) => {
                       hapusItem(val?.id)
                     }" />
                 </div>
@@ -109,6 +109,8 @@ const props = defineProps({
     default: null
   }
 })
+
+console.log(props.pasien)
 
 const store = useConcernOperasiInvasifRanapStore()
 const $q = useQuasar()

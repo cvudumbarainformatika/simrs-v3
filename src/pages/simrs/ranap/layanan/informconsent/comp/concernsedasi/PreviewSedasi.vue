@@ -3,18 +3,14 @@
     <div class="page-1">
       <!-- KOP SURAT -->
       <div class="col-auto">
-        <AppKopSuratStandard
-          :dataHeader="[
-            'PEMERINTAH KOTA PROBOLINGGO',
-            'DINAS KESEHATAN, PENGENDALIAN PENDUDUK DAN KELUARGA BERENCANA',
-            'UOBK RSUD DOKTER MOHAMAD SALEH',
-            'Jl. Mayjend Panjaitan No.65 Telp: (0335)433119 Fax.(0335)432702',
-            'email: rsudprob@probolinggokota.go.id',
-            'PROBOLINGGO – 67219'
-          ]"
-          :pasien="pasien"
-          :header="['PEMBERIAN EDUKASI', 'PEMBERITAHUAN INFORMASI', menu?.title]"
-        />
+        <AppKopSuratStandard :dataHeader="[
+          'PEMERINTAH KOTA PROBOLINGGO',
+          'DINAS KESEHATAN, PENGENDALIAN PENDUDUK DAN KELUARGA BERENCANA',
+          'UOBK RSUD DOKTER MOHAMAD SALEH',
+          'Jl. Mayjend Panjaitan No.65 Telp: (0335)433119 Fax.(0335)432702',
+          'email: rsudprob@probolinggokota.go.id',
+          'PROBOLINGGO – 67219'
+        ]" :pasien="pasien" :header="['PEMBERIAN EDUKASI', 'TINDAKAN ANESTESI / SEDASI', menu?.title]" />
       </div>
       <div class="ba-black">
         <!-- SECTION 1 -->
@@ -40,7 +36,7 @@
               Pemberi Informasi
             </div>
             <div style="width: 60%;">
-              : {{ item?.pengedukasi }}
+              : {{ item?.pelaksana }}
             </div>
           </div>
           <div class="flex q-py-xs">
@@ -81,15 +77,10 @@
                   Diagnosis
                 </td>
                 <td class="text-left f-12 f-12">
-                  <div v-for="diag in item?.diagnosis" :key="diag" class="flex">
-                    <div>- {{ diag }} </div>
-                    <div class="q-ml-sm">
-                      {{pasien?.diagnosamedis?.find(x => x?.rs3 === diag)?.masterdiagnosa?.rs4 ?? '-'}}
-                    </div>
-                  </div>
+                  <div>{{ pasien?.memodiagnosa || '-' }}</div>
                 </td>
                 <td class="text-right">
-                  <q-icon v-if="item?.diagnosis?.length > 0" name="icon-mat-check" size="sm" />
+                  <q-icon v-if="pasien?.memodiagnosa" name="icon-mat-check" size="sm" />
                 </td>
               </tr>
 
@@ -263,7 +254,7 @@
                   <!-- <img :src="item?.ttd_petugas" alt="ttd-petugas" width="70"> -->
                   <div class="full-width flex justify-center">
                     <app-qr-petugas :noreg="item?.noreg" :jnssurat="'IC-SEDASI.png'" :asal="'RANAP'"
-                      :kdpegsimrs="item?.kdPetugas" width="50px" height="50px" />
+                      :kdpegsimrs="item?.kdDokter" width="50px" height="50px" />
                   </div>
                 </td>
               </tr>
@@ -479,7 +470,7 @@
                 {{ item?.pelaksana }}
               </td>
               <td class="text-center f-12">
-                {{ item?.pengedukasi }}
+                {{ item?.pelaksana }}
               </td>
               <td class="text-center">
                 {{ item?.saksiPasien }}
@@ -503,7 +494,7 @@
                 <!-- <img :src="item?.ttd_petugas" class="ttd-petugas" alt="ttd-petugas" width="70"> -->
                 <div class="full-width flex justify-center">
                   <app-qr-petugas :noreg="item?.noreg" :jnssurat="'IC-SEDASI.png'" :asal="'RANAP'"
-                    :kdpegsimrs="item?.kdPetugas" width="70px" height="70px" />
+                    :kdpegsimrs="item?.kdDokter" width="70px" height="70px" />
                 </div>
               </td>
               <td class="text-center">

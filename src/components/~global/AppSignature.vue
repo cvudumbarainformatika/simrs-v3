@@ -9,8 +9,8 @@
       style="border: 1px solid #ddd; min-height: 120px; background-color: #fafafa;">
 
       <!-- Loading / Active Wacom -->
-      <TtdWacom v-if="selectedMethod === 'wacom'" uuid="ttdpasien"
-        :ttd-name="pasien?.nama_panggil ?? 'nama pasien / keluarga'" @signature:ttdpasien="(val) => {
+      <TtdWacom v-if="selectedMethod === 'wacom'" :uuid="uuid"
+        :ttd-name="pasien?.nama_panggil ?? 'nama pasien / keluarga'" @[signatureEventName]="(val) => {
           handleSignature(val)
         }" />
 
@@ -134,9 +134,17 @@ const props = defineProps({
   }
 })
 
-console.log('uuid', props.uuid);
-
 const emit = defineEmits(['save-ttd', 'signature'])
+
+const signatureEventName = computed(() => `signature:${props.uuid}`)
+
+import { watch } from 'vue'
+watch(() => props.ttd, (newVal, oldVal) => {
+  console.log(`[AppSignature LOG - ${props.uuid}] props.ttd changed:`, {
+    old: oldVal ? oldVal.substring(0, 30) + '...' : 'null',
+    new: newVal ? newVal.substring(0, 30) + '...' : 'null'
+  })
+})
 
 const showChooseMethod = ref(false)
 const selectedMethod = ref(null)

@@ -2,11 +2,6 @@
   <div id="pdfDoc" class="f-12">
     <!-- Halaman 1: Pemberian Informasi -->
     <div class="page-container page-1">
-      
-      <!-- IDENTIFIKASI DOKUMEN -->
-      <div class="text-right text-bold f-10 q-mb-xs">
-        RM IRNA-DNR (Hal. 1)
-      </div>
       <!-- KOP SURAT -->
       <div class="col-auto">
         <AppKopSuratStandard
@@ -46,12 +41,12 @@
               <td class="text-center">1</td>
               <td class="text-left text-bold">Diagnosis (WD & DD)</td>
               <td class="text-left text-justify line-height-tight">
-                <div v-if="Array.isArray(item?.diagnosis)">
-                  <div v-for="(diag, idx) in item?.diagnosis" :key="diag">{{ idx+1 }}. {{ diag }}</div>
-                </div>
-                <div v-else v-html="getNewLine(item?.diagnosis || '-')" />
+                <div>{{ pasien?.memodiagnosa || '-' }}</div>
               </td>
-              <td class="text-center text-bold text-h6">✓</td>
+              <td class="text-center text-bold text-h6">
+                <span v-if="pasien?.memodiagnosa">✓</span>
+                <span v-else>-</span>
+              </td>
             </tr>
             <tr>
               <td class="text-center">2</td>
@@ -169,11 +164,6 @@
 
     <!-- Halaman 2: Surat Penolakan Resusitasi (DNR) -->
     <div class="page-container page-2 q-mt-xl">
-      
-      <!-- IDENTIFIKASI DOKUMEN -->
-      <div class="text-right text-bold f-10 q-mb-xs">
-        RM IRNA-DNR (Hal. 2)
-      </div>
       <!-- KOP SURAT -->
       <div class="col-auto">
         <AppKopSuratStandard
@@ -294,7 +284,7 @@
           <tr>
             <td class="text-left text-bold f-10 text-black">Nama Jelas</td>
             <td class="text-center f-10 text-black">{{ item?.pelaksana || '-' }}</td>
-            <td class="text-center f-10 text-black">{{ item?.pengedukasi || '-' }}</td>
+            <td class="text-center f-10 text-black">{{ item?.pelaksana || '-' }}</td>
             <td class="text-center f-10 text-black">{{ item?.saksiPasien || '-' }}</td>
             <td class="text-center f-10 text-black">{{ item?.nama || '-' }}</td>
           </tr>
@@ -309,7 +299,7 @@
             <td class="text-center q-pa-xs">
               <div class="full-width flex justify-center items-center">
                 <app-qr-petugas :noreg="item?.noreg" :jnssurat="'IC-RESUSITASI.png'" :asal="'RANAP'"
-                  :kdpegsimrs="item?.kdPetugas" width="65px" height="65px" />
+                  :kdpegsimrs="item?.kdDokter" width="65px" height="65px" />
               </div>
             </td>
             <td class="text-center q-pa-xs">
