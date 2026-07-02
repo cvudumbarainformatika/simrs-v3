@@ -94,6 +94,12 @@
               </q-badge>
             </div>
 
+            <!-- Indikator Tambahan Pasien (Alergi, dll) -->
+            <div class="row q-gutter-xs q-mt-xs items-center">
+              <PopupAlergi v-if="item?.alergis && item?.alergis?.length > 0" :alergis="item.alergis" />
+              <PopupResikoJatuh v-if="item?.resiko_jatuh && item?.resiko_jatuh?.length > 0" :resiko-jatuh="item.resiko_jatuh" />
+            </div>
+
           </q-item-section>
           <q-item-section side>
             <q-btn v-if="item?.status !== '1'" dense outline size="sm" no-caps color="primary" label="LIHAT LAYANAN"
@@ -114,6 +120,8 @@
 <script setup>
 import { date } from 'quasar'
 import PageLayananRanap from '../layanan/PageLayananRanap.vue'
+import PopupAlergi from './PopupAlergi.vue'
+import PopupResikoJatuh from './PopupResikoJatuh.vue'
 import { calcDate, humanDate } from 'src/modules/formatter'
 import { useTriageIgd } from 'src/stores/simrs/igd/triage'
 import { usePengunjungRanapStore } from 'src/stores/simrs/ranap/pengunjung'
@@ -187,10 +195,6 @@ function bukaLayananPage(item) {
         })
       ])
     })
-}
-
-function terimaPasien(item) {
-  pasien.value = item
 }
 
 onBeforeUnmount(() => {
