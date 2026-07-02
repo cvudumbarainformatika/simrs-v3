@@ -34,19 +34,19 @@
                 </q-item-label>
                 <q-item-label>
                   <span class="">Riwayat Penyakit </span> : <span class="text-weight-bold">{{ item?.riwayatpenyakit
-                  }}</span>
+                    }}</span>
                 </q-item-label>
                 <q-item-label>
                   <span class="">Riwayat Alergi </span> : <span class="text-weight-bold">{{ item?.riwayatalergi
-                  }}</span>
+                    }}</span>
                 </q-item-label>
                 <q-item-label>
                   <span class="">Reaksi berupa </span> : <span class="text-weight-bold">{{ item?.keteranganalergi
-                  }}</span>
+                    }}</span>
                 </q-item-label>
                 <q-item-label>
                   <span class="">Riwayat Pengobatan</span> : <span class="text-weight-bold">{{ item?.riwayatpengobatan
-                  }}</span>
+                    }}</span>
                 </q-item-label>
                 <q-separator class="q-my-md" />
                 <q-item-label v-if="getSkrinig(item)">
@@ -68,6 +68,7 @@
                 <q-item-label v-if="getSkrinig(item)?.hambatan_penerjemah">
                   <span class="">- Pasien {{ getPenerjemah(item) }}</span>
                 </q-item-label>
+                <q-separator class="q-my-sm" />
                 <q-item-label>
                   <span class="text-weight-bold">Skreening Gizi</span>
                 </q-item-label>
@@ -79,6 +80,7 @@
                   </div>
                   <div>- Kondisi Khusus : <em>{{ item?.kondisikhusus }}</em> <b>Skor : {{ item?.skor }}</b> </div>
                 </q-item-label>
+                <q-separator class="q-my-sm" />
                 <q-item-label>
                   <div class="row q-mt-sm">
                     <div class="col-2">Pernafasan</div>
@@ -91,6 +93,7 @@
                     <div class="col-7">{{ getSkrinig(item)?.nyeri_dada }}</div>
                   </div>
                 </q-item-label>
+                <q-separator class="q-my-sm" />
                 <q-item-label>
                   <span class="text-weight-bold">Keluhan Nyeri</span>
                 </q-item-label>
@@ -103,6 +106,7 @@
                     <em class="text-primary"> {{ item?.keteranganscorenyeri ?? '-' }}</em>
                   </div>
                 </q-item-label>
+                <q-separator class="q-my-sm" />
                 <q-item-label>
                   <div class="row q-mt-sm">
                     <div class="col-2">Batuk</div>
@@ -115,6 +119,7 @@
                     <div class="col-7">{{ getSkrinig(item)?.keputusan }}</div>
                   </div>
                 </q-item-label>
+                <q-separator class="q-my-sm" />
                 <q-item-label>
                   <span class="text-weight-bold">Assasement Jatuh (skor Up an Go)</span>
                 </q-item-label>
