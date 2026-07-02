@@ -43,13 +43,13 @@ export const useAnamnesis = defineStore('anamnesis', {
   // },
   actions: {
 
-    hitungNilaiSkor() {
+    hitungNilaiSkor () {
       // const skorKondKhusus = this.form?.kondisikhusus?.trim()?.length === 0 ? 0 : 2
       const skorKondKhusus = this.form?.kondisikhusus?.trim()?.length ? 2 : 0
       const skor = parseInt(this.form?.skreeninggizi) + parseInt(this.form?.asupanmakan) + parseInt(skorKondKhusus)
       this.form.skor = skor
     },
-    hitungResikoJatuh() {
+    hitungResikoJatuh () {
       if (parseInt(this.form.seimbang) > 0 && parseInt(this.form.penopang) > 0) {
         this.form.hasil = 2
       } else if (parseInt(this.form.seimbang) > 0 || parseInt(this.form.penopang) > 0) {
@@ -59,7 +59,7 @@ export const useAnamnesis = defineStore('anamnesis', {
       }
 
     },
-    cekHasil(val) {
+    cekHasil (val) {
       // console.log('cek hasil', val)
 
       let hasil = ''
@@ -68,7 +68,7 @@ export const useAnamnesis = defineStore('anamnesis', {
       else hasil = 'Rendah'
       return hasil
     },
-    async saveData(pasien) {
+    async saveData (pasien) {
       this.loadingForm = true
       this.form.norm = pasien ? pasien.norm : ''
       this.form.noreg = pasien ? pasien.noreg : ''
@@ -88,11 +88,13 @@ export const useAnamnesis = defineStore('anamnesis', {
           const storePasien = usePengunjungPoliStore()
           const storePasienRehab = useKunjunganRehabmediStore()
           let isi = resp.data.result
+          let skri = resp.data.skrining
           if (resp.data.result === 1) {
             this.form.rs4 = this.form.keluhanutama
             isi = this.form
           }
           storePasien.injectDataPasien(pasien, isi, 'anamnesis')
+          storePasien.injectDataPasien(pasien, skri, 'anamnesis_skrining')
           storePasienRehab.injectDataPasien(pasien?.noreg, isi, 'anamnesis')
           notifSuccess(resp)
           this.initReset()
@@ -108,7 +110,7 @@ export const useAnamnesis = defineStore('anamnesis', {
       }
     },
 
-    editForm(val) {
+    editForm (val, skri) {
       this.form = {
         id: val.id,
         keluhanutama: val.rs4,
@@ -128,13 +130,23 @@ export const useAnamnesis = defineStore('anamnesis', {
         seimbang: val?.seimbang,
         penopang: val?.penopang,
         hasil: val?.hasil,
+        // skrinig
+        pernafasan: skri?.pernafasan,
+        hambatan_fisik: skri?.hambatan_fisik,
+        hambatan_fisik_kursi_roda: skri?.hambatan_fisik_kursi_roda,
+        hambatan_fisik_lain: skri?.hambatan_fisik_lain,
+        hambatan_bahasa: skri?.hambatan_bahasa,
+        hambatan_penerjemah: skri?.hambatan_penerjemah,
+        nyeri_dada: skri?.nyeri_dada,
+        batuk: skri?.batuk,
+        keputusan: skri?.keputusan
       }
       const kommatext = val?.riwayatalergi?.split(', ')
       this.selection = kommatext
       // console.log('form', this.form)
       // console.log('xxx', val)
     },
-    copyForm(val) {
+    copyForm (val) {
       this.form = {
         keluhanutama: val.keluhanutama,
         riwayatpenyakit: val.riwayatpenyakit,
@@ -160,11 +172,11 @@ export const useAnamnesis = defineStore('anamnesis', {
       // console.log('xxx', val)
     },
 
-    setForm(key, val) {
+    setForm (key, val) {
       this.form[key] = val
     },
 
-    setKeteranganSkornyeri(val) {
+    setKeteranganSkornyeri (val) {
       if (val === 0) {
         this.form.keteranganscorenyeri = 'tidak ada nyeri'
       }
@@ -179,7 +191,7 @@ export const useAnamnesis = defineStore('anamnesis', {
       }
     },
 
-    async deleteData(pasien, id) {
+    async deleteData (pasien, id) {
       const payload = { id }
       try {
         const resp = await api.post('v1/simrs/pelayanan/hapusanamnesis', payload)
@@ -197,7 +209,7 @@ export const useAnamnesis = defineStore('anamnesis', {
       }
     },
 
-    async getHistory(norm) {
+    async getHistory (norm) {
       this.loadingHistory = true
       const params = { params: { norm } }
       try {
@@ -220,7 +232,7 @@ export const useAnamnesis = defineStore('anamnesis', {
         notifErr(error)
       }
     },
-    async nextHistory(cursor) {
+    async nextHistory (cursor) {
       this.loadingHistory = true
       const params = { params: { cursor } }
       try {
@@ -244,7 +256,7 @@ export const useAnamnesis = defineStore('anamnesis', {
       }
     },
 
-    pilihHistory(val) {
+    pilihHistory (val) {
       this.form = {
         keluhanutama: val.keluhanutama,
         riwayatpenyakit: val.riwayatpenyakit,
@@ -257,7 +269,7 @@ export const useAnamnesis = defineStore('anamnesis', {
       this.selection = kommatext
     },
 
-    initReset() {
+    initReset () {
       this.form = null
       return new Promise((resolve, reject) => {
         this.form = {
@@ -277,7 +289,18 @@ export const useAnamnesis = defineStore('anamnesis', {
 
           // baru skornyeri
           skornyeri: 0,
-          keteranganskornyeri: 'tidak ada nyeri'
+          keteranganskornyeri: 'tidak ada nyeri',
+
+          // baru skrining rajal
+          pernafasan: null,
+          hambatan_fisik: null,
+          hambatan_fisik_kursi_roda: null,
+          hambatan_fisik_lain: null,
+          hambatan_bahasa: null,
+          hambatan_penerjemah: null,
+          nyeri_dada: null,
+          batuk: null,
+          keputusan: null
         }
         this.selection = []
 
@@ -285,7 +308,7 @@ export const useAnamnesis = defineStore('anamnesis', {
       })
     },
 
-    keteranganSkorGizi(nilai) {
+    keteranganSkorGizi (nilai) {
       const skor = nilai || 0
       if (skor < 2) {
         return 'tidak beresiko malnutrisi'

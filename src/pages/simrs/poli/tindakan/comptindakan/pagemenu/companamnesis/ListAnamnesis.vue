@@ -49,6 +49,25 @@
                   }}</span>
                 </q-item-label>
                 <q-separator class="q-my-md" />
+                <q-item-label v-if="getSkrinig(item)">
+                  <span class="text-weight-bold">Hambatan</span>
+                </q-item-label>
+                <q-item-label v-if="getSkrinig(item)?.hambatan_fisik">
+                  <span class="">- Pasien {{ getFisik(item) }}</span>
+                </q-item-label>
+                <q-item-label v-if="getSkrinig(item)?.hambatan_fisik_kursi_roda">
+                  <span class="">- Pasien {{ getRoda(item) }}</span>
+                </q-item-label>
+                <q-item-label v-if="getSkrinig(item)?.hambatan_fisik_lain">
+                  <span class="">- Hambatan lain : {{ getSkrinig(item)?.hambatan_fisik_lain }}</span>
+                </q-item-label>
+
+                <q-item-label v-if="getSkrinig(item)?.hambatan_bahasa">
+                  <span class="">- Pasien {{ getBahasa(item) }}</span>
+                </q-item-label>
+                <q-item-label v-if="getSkrinig(item)?.hambatan_penerjemah">
+                  <span class="">- Pasien {{ getPenerjemah(item) }}</span>
+                </q-item-label>
                 <q-item-label>
                   <span class="text-weight-bold">Skreening Gizi</span>
                 </q-item-label>
@@ -61,6 +80,18 @@
                   <div>- Kondisi Khusus : <em>{{ item?.kondisikhusus }}</em> <b>Skor : {{ item?.skor }}</b> </div>
                 </q-item-label>
                 <q-item-label>
+                  <div class="row q-mt-sm">
+                    <div class="col-2">Pernafasan</div>
+                    <div class="col-1">:</div>
+                    <div class="col-7">{{ getSkrinig(item)?.pernafasan }}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-2">Nyeri Dada</div>
+                    <div class="col-1">:</div>
+                    <div class="col-7">{{ getSkrinig(item)?.nyeri_dada }}</div>
+                  </div>
+                </q-item-label>
+                <q-item-label>
                   <span class="text-weight-bold">Keluhan Nyeri</span>
                 </q-item-label>
                 <q-item-label>
@@ -70,6 +101,18 @@
                       <q-icon size="xs" color="teal" :name="iconNyeri(item?.scorenyeri)" />
                     </span>
                     <em class="text-primary"> {{ item?.keteranganscorenyeri ?? '-' }}</em>
+                  </div>
+                </q-item-label>
+                <q-item-label>
+                  <div class="row q-mt-sm">
+                    <div class="col-2">Batuk</div>
+                    <div class="col-1">:</div>
+                    <div class="col-7">{{ getSkrinig(item)?.batuk }}</div>
+                  </div>
+                  <div class="row q-mb-sm">
+                    <div class="col-2">Keputusan</div>
+                    <div class="col-1">:</div>
+                    <div class="col-7">{{ getSkrinig(item)?.keputusan }}</div>
                   </div>
                 </q-item-label>
                 <q-item-label>
@@ -89,10 +132,11 @@
                     <span class="text-weight-bold">{{ store.cekHasil(item) }}</span>
                   </div>
                 </q-item-label>
+
               </q-item-section>
               <q-item-section side>
                 <div class="q-gutter-sm">
-                  <q-btn flat round size="sm" icon="icon-mat-edit" @click="store.editForm(item)" />
+                  <q-btn flat round size="sm" icon="icon-mat-edit" @click="store.editForm(item, getSkrinig(item))" />
                   <q-btn flat round size="sm" icon="icon-mat-delete" color="negative" @click="hapusItem(item.id)" />
                 </div>
               </q-item-section>
@@ -108,7 +152,7 @@
 <script setup>
 import { useQuasar } from 'quasar'
 import { useAnamnesis } from 'src/stores/simrs/pelayanan/poli/anamnesis'
-import { computed } from 'vue'
+import { computed, toRaw } from 'vue'
 const store = useAnamnesis()
 const $q = useQuasar()
 const props = defineProps({
@@ -128,7 +172,48 @@ const lists = computed(() => {
 
   return arr?.sort((a, b) => { return b.id - a.id })
 })
+function getSkrinig (val) {
+  const data = props.pasien?.anamnesis_skrining?.find(x => x.rs209_id == val.id)
+  if (data) return data
+  else return null
 
+}
+function getPenerjemah (val) {
+  const data = props.pasien?.anamnesis_skrining?.find(x => x.rs209_id == val.id)
+  if (data) {
+    if (data.hambatan_penerjemah == 'Iya') return 'Membutuhkan Penerjemah'
+    else return 'Tidak Membutuhkan Penerjemah'
+  }
+  else return 'Tidak mengikuti skrining'
+
+}
+function getBahasa (val) {
+  const data = props.pasien?.anamnesis_skrining?.find(x => x.rs209_id == val.id)
+  if (data) {
+    if (data.hambatan_bahasa == 'Iya') return 'Mengalami Hambatan Bahasa'
+    else return 'Tidak Mengalami Hambatan Bahasa'
+  }
+  else return 'Tidak Mengikuti skrining hambatan Bahasa'
+
+}
+function getFisik (val) {
+  const data = props.pasien?.anamnesis_skrining?.find(x => x.rs209_id == val.id)
+  if (data) {
+    if (data.hambatan_fisik == 'Iya') return 'Mengalami Hambatan Fisik'
+    else return 'Tidak Mengalami Hambatan Fisik'
+  }
+  else return 'Tidak Mengikuti skrining hambatan fisik'
+
+}
+function getRoda (val) {
+  const data = props.pasien?.anamnesis_skrining?.find(x => x.rs209_id == val.id)
+  if (data) {
+    if (data.hambatan_fisik_kursi_roda == 'Iya') return 'Menggukanan Kursi Roda'
+    else return 'Tidak Menggukanan Kursi Roda'
+  }
+  else return 'Tidak Mengikuti skrining'
+
+}
 function getYT (val) {
   if (val === 1 || val === '1') {
     return 'Ya'
