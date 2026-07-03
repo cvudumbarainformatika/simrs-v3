@@ -141,6 +141,13 @@ const documents = ref([
     label: 'Laporan Operasi',
     value: 'LapOperasi'
   },
+  {
+    icon: 'icon-mat-email',
+    color: 'primary',
+    jenis: 'Skr-Rajal',
+    label: 'Skrining Rajal',
+    value: 'SkrRajal'
+  },
   // {
   //   icon: 'icon-mat-email',
   //   color: 'primary',
@@ -200,6 +207,7 @@ const comp = [
   { nama: 'LapOperasi', page: defineAsyncComponent(() => import('../../../simrs/poli/dokumen/lapoperasi/LapOperasiPage.vue')) },
   // { nama: 'SrtKnslAnPol', page: defineAsyncComponent(() => import('../../../simrs/poli/dokumen/SuratKonsulAntarPoli/SuratKonsulAntarPoli.vue')) },
   // { nama: 'SrtKnslinternal', page: defineAsyncComponent(() => import('../../../simrs/poli/dokumen/KonsulInternal/SuratKonsulInternalPage.vue')) },
+  { nama: 'SkrRajal', page: defineAsyncComponent(() => import('src/pages/simrs/dokumen/erm/poli/SkriningRajalPage.vue')) },
 ]
 // eslint-disable-next-line no-unused-vars
 const cekPanel = () => {

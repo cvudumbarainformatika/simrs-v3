@@ -2,7 +2,7 @@
   <div class="fit bg-grey-4 column q-pa-lg q-pb-xl scroll">
     <div id="pdfDoc" ref="rePdfDoc" class="page-legal f-12 bg-white">
       <div class="contentx">
-        <my-kop-surat v-if="!history" title1="SURGICAL SAFETY" title2="CHECKLIST" />
+        <app-kop-surat-Internal v-if="!history" title1="SURGICAL SAFETY" title2="CHECKLIST" />
 
         <div v-if="!history" class="biodata-pasien q-my-md">
           <div class="flex justify-between">
@@ -160,7 +160,7 @@
                   }" />
                 </div>
                 <div class="f-10">{{ getNakesNya(surgical?.perawat_instrumen)?.nama ?? 'Belum dipilih'
-                }}</div>
+                  }}</div>
               </div>
             </div>
           </div>

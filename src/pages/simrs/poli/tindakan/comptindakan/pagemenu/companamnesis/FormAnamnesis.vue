@@ -31,7 +31,30 @@
             style="width:50%" label="Riwayat Penyakit Keluarga" stack-label />
           <q-input v-model="store.form.riwayatpekerjaan" outlined autogrow standout="bg-yellow-3" style="width:50%"
             label="Riwayat Pekerjaan yg berhubungan dgn zat berbahaya" stack-label />
+          <div class="col-12"><q-separator class="q-my-sm" /></div>
+          <div class="col-12 text-weight-bold">Hambatan</div>
+
+          <div class="col-4">Fisik</div>
+          <div class="col-8"><q-option-group v-model="store.form.hambatan_fisik" :options="optionYT" inline
+              :rules="[val => !!val || 'Harap pilih salah satu']" dense /></div>
+          <div class="col-12"><q-separator class="q-my-sm" /></div>
+          <div class="col-4">Kursi Roda</div>
+          <div class="col-8"><q-option-group v-model="store.form.hambatan_fisik_kursi_roda" :options="optionYT" inline
+              :rules="[val => !!val || 'Harap pilih salah satu']" dense /></div>
+          <div class="col-12"><q-separator class="q-my-sm" /></div>
+          <div class="col-4">Lain-lain</div>
+          <div class="col-8"><q-input v-model="store.form.hambatan_fisik_lain" outlined type="textarea" rows="2" />
+          </div>
+          <div class="col-12"><q-separator class="q-my-sm" /></div>
+          <div class="col-4">Bahasa</div>
+          <div class="col-8"><q-option-group v-model="store.form.hambatan_bahasa" :options="optionYT" inline
+              :rules="[val => !!val || 'Harap pilih salah satu']" dense /></div>
+          <div class="col-12"><q-separator class="q-my-sm" /></div>
+          <div class="col-4">Penerjemah</div>
+          <div class="col-8"><q-option-group v-model="store.form.hambatan_penerjemah" :options="optionYT" inline
+              :rules="[val => !!val || 'Harap pilih salah satu']" dense /></div>
           <div class="col-12">
+            <q-separator class="q-my-sm" />
             <div class="text-weight-bold">
               Riwayat Alergi
             </div>
@@ -109,6 +132,12 @@
 
             <q-separator class="q-my-xs" />
           </div>
+          <app-autocomplete v-model="store.form.pernafasan" outlined class="col-6"
+            :source="['Nafas Normal', 'Tampak Sesak', 'Tidak Bernafas']" hide-dropdown-icon label="Pernafasan" />
+          <app-autocomplete v-model="store.form.nyeri_dada" outlined class="col-6"
+            :source="['Tidak ada', 'Ada (Tingkat sedang)', 'Nyeri dada kiri tembus ke punggung']" hide-dropdown-icon
+            label="Nyeri Dada" />
+          <div class="col-12"><q-separator class="q-my-sm" /></div>
           <div class="col-6">
             <div class="text-weight-bold">
               Keluhan Nyeri ? <em class="text-primary">{{ store.form.keteranganscorenyeri }}</em>
@@ -122,6 +151,12 @@
               marker-labels-class="text-primary" label-always switch-label-side :min="0" :max="10"
               @update:model-value="store.setKeteranganSkornyeri" />
           </div>
+          <div class="col-6"></div>
+          <div class="col-12"><q-separator class="q-my-sm" /></div>
+          <app-autocomplete v-model="store.form.batuk" outlined class="col-6  q-mt-sm"
+            :source="['Tidak ada', 'Batuk lebih dari 2 minggu']" hide-dropdown-icon label="Batuk" />
+          <app-autocomplete v-model="store.form.keputusan" outlined class="col-6 q-mt-sm"
+            :source="['Sesuai antrian', 'Poliklinik disegerakan', 'IGD']" hide-dropdown-icon label="Keputusan" />
         </div>
         <q-separator class="q-my-md" />
         <div class="col-12 q-mt-xs">
@@ -183,6 +218,10 @@ const emits = defineEmits(['openHistory'])
 
 const refForm = ref()
 
+const optionYT = ref([
+  { label: 'Iya', value: 'Iya' },
+  { label: 'Tidak', value: 'Tidak' }
+])
 const optionSkreening = ref([
   { label: 'Iya (2)', value: 2 },
   { label: 'Tidak (0)', value: 0 }
