@@ -335,7 +335,7 @@
             <div class="col-8">
               <div class="flex">
                 : {{ item?.hubunganDgPasien }} <span v-if="item?.hubunganDgPasien === 'Keluarga'"> {{ item?.keluarga
-                }}</span>
+                  }}</span>
               </div>
             </div>
           </div>
@@ -369,7 +369,7 @@
             <div class="col-8">
               <div class="flex justify-between">
                 <div>: {{ pasien?.nama }} <span class="q-ml-lg">({{ pasien?.kelamin === 'Perempuan' ? 'P' : 'L'
-                }})*</span></div>
+                    }})*</span></div>
                 <div class="self-end">
                   Tanggal Lahir : {{ pasien?.tgllahir }}
                 </div>
@@ -769,7 +769,7 @@
               <div class="col-8">
                 <div class="flex justify-between">
                   <div>: {{ pasien?.nama }} <span class="q-ml-lg">({{ pasien?.kelamin === 'Perempuan' ? 'P' : 'L'
-                  }})*</span></div>
+                      }})*</span></div>
                 </div>
               </div>
             </div>
@@ -843,7 +843,7 @@
               <tr>
                 <td class="text-left text-bold f-10 text-black">Nama Jelas</td>
                 <td class="text-center f-10 text-black">{{ item?.pelaksana || '-' }}</td>
-                <td class="text-center f-10 text-black">{{ item?.pelaksana || '-' }}</td>
+                <td class="text-center f-10 text-black">{{ item?.pengedukasi || '-' }}</td>
                 <td class="text-center f-10 text-black">{{ item?.saksiPasien || '-' }}</td>
                 <td class="text-center f-10 text-black">{{ item?.nama || '-' }}</td>
               </tr>
@@ -858,7 +858,7 @@
                 <td class="text-center q-pa-xs">
                   <div class="full-width flex justify-center items-center">
                     <app-qr-petugas :noreg="item?.noreg" :jnssurat="'IC-OPERASI-INVASIF.png'" :asal="'RANAP'"
-                      :kdpegsimrs="item?.kdDokter" width="65px" height="65px" />
+                      :kdpegsimrs="item?.kdPetugas" width="65px" height="65px" />
                   </div>
                 </td>
                 <td class="text-center q-pa-xs">

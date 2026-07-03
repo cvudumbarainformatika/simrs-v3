@@ -4,18 +4,14 @@
     <div class="page-container page-1">
       <!-- KOP SURAT -->
       <div class="col-auto">
-        <AppKopSuratStandard
-          :dataHeader="[
-            'PEMERINTAH KOTA PROBOLINGGO',
-            'DINAS KESEHATAN, PENGENDALIAN PENDUDUK DAN KELUARGA BERENCANA',
-            'UOBK RSUD DOKTER MOHAMAD SALEH',
-            'Jl. Mayjend Panjaitan No.65 Telp: (0335)433119 Fax.(0335)432702',
-            'email: rsudprob@probolinggokota.go.id',
-            'PROBOLINGGO – 67219'
-          ]"
-          :pasien="pasien"
-          :header="['PEMBERIAN INFORMASI', 'RESUSITASI (DNR)', '']"
-        />
+        <AppKopSuratStandard :dataHeader="[
+          'PEMERINTAH KOTA PROBOLINGGO',
+          'DINAS KESEHATAN, PENGENDALIAN PENDUDUK DAN KELUARGA BERENCANA',
+          'UOBK RSUD DOKTER MOHAMAD SALEH',
+          'Jl. Mayjend Panjaitan No.65 Telp: (0335)433119 Fax.(0335)432702',
+          'email: rsudprob@probolinggokota.go.id',
+          'PROBOLINGGO – 67219'
+        ]" :pasien="pasien" :header="['PEMBERIAN INFORMASI', 'RESUSITASI (DNR)', '']" />
       </div>
       <!-- Tanggal Pemberian Informasi -->
       <div class="ba-black f-11 q-mt-xs q-pa-sm line-height-normal">
@@ -131,11 +127,12 @@
               </td>
               <td class="text-center text-bold text-h6">✓</td>
             </tr>
-            
+
             <!-- Konfirmasi Edukasi Dokter -->
             <tr>
               <td colspan="3" class="text-left line-height-normal text-justify q-pa-sm">
-                Dengan ini menyatakan bahwa saya telah menerangkan hal-hal di atas secara benar, jelas dan memberikan kesempatan untuk bertanya / berdiskusi
+                Dengan ini menyatakan bahwa saya telah menerangkan hal-hal di atas secara benar, jelas dan memberikan
+                kesempatan untuk bertanya / berdiskusi
               </td>
               <td class="text-center q-pa-xs">
                 <div class="full-width flex justify-center items-center" style="height: 50px;">
@@ -147,7 +144,8 @@
             <!-- Konfirmasi Edukasi Penerima -->
             <tr>
               <td colspan="3" class="text-left line-height-normal text-justify q-pa-sm">
-                Dengan ini menyatakan bahwa saya telah menerima informasi sebagaimana di atas yang diberi tanda dan telah memahaminya
+                Dengan ini menyatakan bahwa saya telah menerima informasi sebagaimana di atas yang diberi tanda dan
+                telah memahaminya
               </td>
               <td class="text-center q-pa-xs">
                 <div class="full-width flex justify-center items-center" style="height: 50px;">
@@ -166,18 +164,14 @@
     <div class="page-container page-2 q-mt-xl">
       <!-- KOP SURAT -->
       <div class="col-auto">
-        <AppKopSuratStandard
-          :dataHeader="[
-            'PEMERINTAH KOTA PROBOLINGGO',
-            'DINAS KESEHATAN, PENGENDALIAN PENDUDUK DAN KELUARGA BERENCANA',
-            'UOBK RSUD DOKTER MOHAMAD SALEH',
-            'Jl. Mayjend Panjaitan No.65 Telp: (0335)433119 Fax.(0335)432702',
-            'email: rsudprob@probolinggokota.go.id',
-            'PROBOLINGGO – 67219'
-          ]"
-          :pasien="pasien"
-          :header="['Surat Pernyataan', 'Penolakan Resusitasi', '']"
-        />
+        <AppKopSuratStandard :dataHeader="[
+          'PEMERINTAH KOTA PROBOLINGGO',
+          'DINAS KESEHATAN, PENGENDALIAN PENDUDUK DAN KELUARGA BERENCANA',
+          'UOBK RSUD DOKTER MOHAMAD SALEH',
+          'Jl. Mayjend Panjaitan No.65 Telp: (0335)433119 Fax.(0335)432702',
+          'email: rsudprob@probolinggokota.go.id',
+          'PROBOLINGGO – 67219'
+        ]" :pasien="pasien" :header="['Surat Pernyataan', 'Penolakan Resusitasi', '']" />
       </div>
       <!-- Judul Dokumen Tengah -->
       <div class="text-center text-bold f-12 q-my-md uppercase tracking-wide">
@@ -206,8 +200,9 @@
           </div>
           <div class="row q-mt-2">
             <div class="col-3">Hubungan dengan Pasien</div>
-            <div class="col-9">: 
-              {{ item?.hubunganDgPasien === 'Keluarga' ? `Keluarga (${item?.keluarga || '...........'})` : item?.hubunganDgPasien }}
+            <div class="col-9">:
+              {{ item?.hubunganDgPasien === 'Keluarga' ? `Keluarga (${item?.keluarga || '...........'})` :
+                item?.hubunganDgPasien }}
             </div>
           </div>
         </div>
@@ -218,7 +213,7 @@
         <div class="text-center text-bold q-mb-sm">
           Dengan ini menyatakan PENOLAKAN untuk dilakukan tindakan resusitasi terhadap:
         </div>
-        
+
         <div class="q-pl-sm">
           <div class="row q-mt-2">
             <div class="col-3 text-bold">Nama Pasien</div>
@@ -233,9 +228,9 @@
             <div class="col-9 flex items-center">
               <span class="q-mr-sm">:</span>
               <div class="flex" style="border: 1px solid #000; width: fit-content; background-color: #fff;">
-                <div v-for="(digit, idx) in getNormDigits(pasien?.norm || item?.norm)" :key="idx" 
-                  class="text-center flex flex-center text-bold" 
-                  style="width: 25px; height: 25px; border-right: 1px solid #000; font-size: 13px;" 
+                <div v-for="(digit, idx) in getNormDigits(pasien?.norm || item?.norm)" :key="idx"
+                  class="text-center flex flex-center text-bold"
+                  style="width: 25px; height: 25px; border-right: 1px solid #000; font-size: 13px;"
                   :style="idx === 5 ? 'border-right: none;' : ''">
                   {{ digit }}
                 </div>
@@ -259,7 +254,10 @@
 
       <!-- Klausul Tanggung Jawab Penolakan -->
       <div class="ba-black f-11 q-mt-md q-pa-sm line-height-normal text-justify">
-        Saya memahami perlunya dan manfaat tindakan tersebut sebagaimana telah dijelaskan seperti di atas kepada saya, termasuk risiko dan komplikasi yang timbul apabila tindakan tersebut tidak dilakukan. Saya bertanggung jawab secara penuh atas segala akibat yang mungkin timbul sebagai akibat tidak dilakukannya tindakan RESUSITASI tersebut.
+        Saya memahami perlunya dan manfaat tindakan tersebut sebagaimana telah dijelaskan seperti di atas kepada saya,
+        termasuk risiko dan komplikasi yang timbul apabila tindakan tersebut tidak dilakukan. Saya bertanggung jawab
+        secara penuh atas segala akibat yang mungkin timbul sebagai akibat tidak dilakukannya tindakan RESUSITASI
+        tersebut.
       </div>
 
       <!-- Waktu Cetak & Lokasi -->
@@ -270,7 +268,8 @@
       </div>
 
       <!-- TABEL TANDA TANGAN (STANDARD BER-BORDER) -->
-      <q-markup-table dense separator="cell" flat bordered wrap-cells class="table-signature text-black font-body q-mt-sm">
+      <q-markup-table dense separator="cell" flat bordered wrap-cells
+        class="table-signature text-black font-body q-mt-sm">
         <thead>
           <tr class="bg-grey-2">
             <th class="text-left text-bold f-11 text-black" width="20%" />
@@ -284,7 +283,7 @@
           <tr>
             <td class="text-left text-bold f-10 text-black">Nama Jelas</td>
             <td class="text-center f-10 text-black">{{ item?.pelaksana || '-' }}</td>
-            <td class="text-center f-10 text-black">{{ item?.pelaksana || '-' }}</td>
+            <td class="text-center f-10 text-black">{{ item?.pengedukasi || '-' }}</td>
             <td class="text-center f-10 text-black">{{ item?.saksiPasien || '-' }}</td>
             <td class="text-center f-10 text-black">{{ item?.nama || '-' }}</td>
           </tr>
@@ -299,7 +298,7 @@
             <td class="text-center q-pa-xs">
               <div class="full-width flex justify-center items-center">
                 <app-qr-petugas :noreg="item?.noreg" :jnssurat="'IC-RESUSITASI.png'" :asal="'RANAP'"
-                  :kdpegsimrs="item?.kdDokter" width="65px" height="65px" />
+                  :kdpegsimrs="item?.kdPetugas" width="65px" height="65px" />
               </div>
             </td>
             <td class="text-center q-pa-xs">
@@ -316,7 +315,8 @@
 
       <!-- Catatan Kaki dan Footer rev -->
       <div class="f-9 text-grey-8 q-mt-sm">
-        *Bila pasien tidak kompeten atau tidak mau menerima informasi, maka penerima informasi adalah wali atau keluarga terdekat.
+        *Bila pasien tidak kompeten atau tidak mau menerima informasi, maka penerima informasi adalah wali atau keluarga
+        terdekat.
       </div>
 
       <div class="row justify-between items-center q-mt-md">
@@ -446,7 +446,9 @@ function getNewLine(text) {
 .table-info {
   border-collapse: collapse;
   width: 100%;
-  td, th {
+
+  td,
+  th {
     border: 1px solid #000 !important;
     padding: 4px 6px !important;
   }
@@ -455,7 +457,9 @@ function getNewLine(text) {
 .table-signature {
   border-collapse: collapse;
   width: 100%;
-  td, th {
+
+  td,
+  th {
     border: 1px solid #000 !important;
     padding: 3px 4px !important;
   }
@@ -487,7 +491,7 @@ function getNewLine(text) {
     page-break-inside: avoid !important;
     box-sizing: border-box !important;
   }
-  
+
   .page-1 {
     page-break-after: always !important;
   }
