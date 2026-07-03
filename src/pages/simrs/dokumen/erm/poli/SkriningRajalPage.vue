@@ -4,147 +4,104 @@
       <div class="contentx">
         <app-kop-surat-Internal title1="SKRINING" title2="RAWAT JALAN" />
 
-        <div class="biodata-pasien q-my-md">
-          <div class="row q-col-gutter-sm">
-            <div class="col-6">
-              <span class="text-weight-bold">NO. RM</span> : {{ pasien?.norm || '-' }}
-            </div>
-            <div class="col-6">
-              <span class="text-weight-bold">NO. REG</span> : {{ pasien?.noreg || '-' }}
-            </div>
-            <div class="col-12 q-mt-sm">
-              <span class="text-weight-bold">NAMA PASIEN</span> : {{ pasien?.nama_panggil || pasien?.namapasien || '-'
-              }}
-            </div>
-            <div class="col-6 q-mt-sm">
-              <span class="text-weight-bold">JENIS KELAMIN</span> : {{ pasien?.kelamin || pasien?.jeniskelamin || '-' }}
-            </div>
-            <div class="col-6 q-mt-sm">
-              <span class="text-weight-bold">USIA</span> : {{ pasien?.usia || '-' }}
-            </div>
-          </div>
+        <div class="row justify-center f-18 text-weight-bold q-mb-md">
+          SKRINING RAWAT JALAN
         </div>
 
-        <div class="overview-card q-mb-md">
-          <div class="section-title">Tujuan Skrining</div>
-          <div class="overview-text">
-            Dokumen ini digunakan untuk menilai kondisi awal pasien rawat jalan secara sistematis, mencakup risiko
-            klinis, nyeri, risiko jatuh, dan tingkat kesadaran. Hasil skrining membantu tenaga kesehatan menentukan
-            tindakan pendukung yang aman dan sesuai kebutuhan pasien.
-          </div>
-        </div>
-
-        <div class="assessment-grid q-mb-md">
-          <div class="assessment-card">
-            <div class="section-title">Penilaian Nyeri</div>
-            <div v-if="latestAnamnesis" class="info-block">
-              <div class="info-row">
-                <span class="text-weight-bold">Skor Nyeri</span>
-                <span class="value-pill">{{ displayValue(latestAnamnesis?.scorenyeri) }}</span>
+        <div class="dokumen-content">
+          <div class="biodata-pasien q-mb-md">
+            <div class="row q-col-gutter-sm biodata-row">
+              <div class="biodata-item">
+                <span class="text-weight-bold">NO. RM</span> : {{ pasien?.norm || '-' }}
               </div>
-              <div class="info-row">
-                <span class="text-weight-bold">Status</span>
-                <span>{{ nyeriKeterangan(latestAnamnesis?.scorenyeri) }}</span>
+              <div class="biodata-item">
+                <span class="text-weight-bold">NO. REG</span> : {{ pasien?.noreg || '-' }}
               </div>
-              <div class="info-row items-center">
-                <span class="text-weight-bold">Skala</span>
-                <span class="row items-center q-gutter-xs">
-                  <q-icon :name="iconNyeri(latestAnamnesis?.scorenyeri)" size="sm" color="teal" />
-                  <span>{{ nyeriKeterangan(latestAnamnesis?.scorenyeri) }}</span>
-                </span>
+              <div class="biodata-item full-width q-mt-sm">
+                <span class="text-weight-bold">NAMA PASIEN</span> : {{ pasien?.nama_panggil || pasien?.namapasien || '-'
+                }}
+              </div>
+              <div class="biodata-item">
+                <span class="text-weight-bold">JENIS KELAMIN</span> : {{ pasien?.kelamin || pasien?.jeniskelamin || '-'
+                }}
+              </div>
+              <div class="biodata-item">
+                <span class="text-weight-bold">USIA</span> : {{ pasien?.usia || '-' }}
               </div>
             </div>
-            <div v-else class="text-grey">Belum ada data nyeri.</div>
           </div>
 
-          <div class="assessment-card">
-            <div class="section-title">Penilaian Risiko Jatuh</div>
-            <div v-if="latestAnamnesis" class="info-block">
-              <div class="info-row">
-                <span class="text-weight-bold">Hasil</span>
-                <span class="value-pill">{{ hasilJatuh(latestAnamnesis) }}</span>
-              </div>
-              <div class="info-row">
-                <span class="text-weight-bold">Catatan</span>
-                <span>{{ detailJatuh(latestAnamnesis) }}</span>
-              </div>
+          <div class="data-list q-mb-md">
+            <div class="data-row row q-col-gutter-sm q-mb-xs">
+              <div class="col-4 text-weight-bold">Kesadaran</div>
+              <div class="col-8">: {{ displayValue(latestPemeriksaan?.kesadaran) }}</div>
             </div>
-            <div v-else class="text-grey">Belum ada data risiko jatuh.</div>
-          </div>
-
-          <div class="assessment-card">
-            <div class="section-title">Kesadaran</div>
-            <div v-if="latestPemeriksaan" class="info-block">
-              <div class="info-row">
-                <span class="text-weight-bold">Status</span>
-                <span>{{ displayValue(latestPemeriksaan?.kesadaran) }}</span>
-              </div>
-            </div>
-            <div v-else class="text-grey">Belum ada data kesadaran.</div>
-          </div>
-        </div>
-
-        <div v-if="loading" class="text-center q-py-md text-grey">
-          Memuat data skrining...
-        </div>
-
-        <div v-else-if="displayData.length" class="section-wrapper">
-          <div class="section-title q-mb-sm">Data Skrining Klinis</div>
-          <div v-for="(item, idx) in displayData" :key="item?.id || idx" class="skrining-block q-mb-lg">
-            <div class="text-weight-bold f-14 q-mb-sm">Skrining {{ idx + 1 }}</div>
-
-            <div class="row q-col-gutter-sm q-mb-xs">
+            <div class="data-row row q-col-gutter-sm q-mb-xs">
               <div class="col-4 text-weight-bold">Pernafasan</div>
-              <div class="col-8">: {{ displayValue(item?.pernafasan) }}</div>
+              <div class="col-8">: {{ displayValue(latestSkrining?.pernafasan) }}</div>
             </div>
-
-            <div class="row q-col-gutter-sm q-mb-xs">
-              <div class="col-4 text-weight-bold">Hambatan Fisik</div>
-              <div class="col-8">: {{ yesNoLabel(item?.hambatan_fisik) }}</div>
-            </div>
-
-            <div class="row q-col-gutter-sm q-mb-xs">
-              <div class="col-4 text-weight-bold">Kursi Roda</div>
-              <div class="col-8">: {{ yesNoLabel(item?.hambatan_fisik_kursi_roda) }}</div>
-            </div>
-
-            <div class="row q-col-gutter-sm q-mb-xs">
-              <div class="col-4 text-weight-bold">Hambatan Fisik Lain</div>
-              <div class="col-8">: {{ displayValue(item?.hambatan_fisik_lain) }}</div>
-            </div>
-
-            <div class="row q-col-gutter-sm q-mb-xs">
-              <div class="col-4 text-weight-bold">Hambatan Bahasa</div>
-              <div class="col-8">: {{ yesNoLabel(item?.hambatan_bahasa) }}</div>
-            </div>
-
-            <div class="row q-col-gutter-sm q-mb-xs">
-              <div class="col-4 text-weight-bold">Hambatan Penerjemah</div>
-              <div class="col-8">: {{ yesNoLabel(item?.hambatan_penerjemah) }}</div>
-            </div>
-
-            <div class="row q-col-gutter-sm q-mb-xs">
+            <div class="data-row row q-col-gutter-sm q-mb-xs">
               <div class="col-4 text-weight-bold">Nyeri Dada</div>
-              <div class="col-8">: {{ displayValue(item?.nyeri_dada) }}</div>
+              <div class="col-8">: {{ displayValue(latestSkrining?.nyeri_dada) }}</div>
             </div>
+            <div class="data-row row q-col-gutter-sm q-mb-xs">
+              <div class="col-4 text-weight-bold">Penilaian Nyeri</div>
+              <div class="col-8">:
+                {{ displayValue(latestAnamnesis?.scorenyeri) }}
+                <span v-if="latestAnamnesis">({{ nyeriKeterangan(latestAnamnesis?.scorenyeri) }})</span>
+              </div>
+            </div>
+            <div class="data-row row q-col-gutter-sm q-mb-xs">
+              <div class="col-4 text-weight-bold">Hambatan Fisik</div>
+              <div class="col-8">: {{ yesNoLabel(latestSkrining?.hambatan_fisik) }}</div>
+            </div>
+            <div class="data-row row q-col-gutter-sm q-mb-xs">
+              <div class="col-4 text-weight-bold">Kursi Roda</div>
+              <div class="col-8">: {{ yesNoLabel(latestSkrining?.hambatan_fisik_kursi_roda) }}</div>
+            </div>
+            <div class="data-row row q-col-gutter-sm q-mb-xs">
+              <div class="col-4 text-weight-bold">Hambatan Fisik Lain</div>
+              <div class="col-8">: {{ displayValue(latestSkrining?.hambatan_fisik_lain) }}</div>
+            </div>
+            <div class="data-row row q-col-gutter-sm q-mb-xs">
+              <div class="col-4 text-weight-bold">Hambatan Bahasa</div>
+              <div class="col-8">: {{ yesNoLabel(latestSkrining?.hambatan_bahasa) }}</div>
+            </div>
+            <div class="data-row row q-col-gutter-sm q-mb-xs">
+              <div class="col-4 text-weight-bold">Resiko Jatuh</div>
+              <div class="col-8">: {{ latestSkrining ? hasilJatuh(latestSkrining) : '-' }}
+                <span v-if="detailJatuh(latestSkrining)" class="f-10">({{ detailJatuh(latestSkrining) }})</span>
 
-            <div class="row q-col-gutter-sm q-mb-xs">
+              </div>
+            </div>
+            <!-- <div class="data-row row q-col-gutter-sm q-mb-xs">
+              <div class="col-4 text-weight-bold">Detail Jatuh</div>
+              <div class="col-8">: {{ latestSkrining ? detailJatuh(latestSkrining) : '-' }}</div>
+            </div> -->
+            <div class="data-row row q-col-gutter-sm q-mb-xs">
               <div class="col-4 text-weight-bold">Batuk</div>
-              <div class="col-8">: {{ displayValue(item?.batuk) }}</div>
+              <div class="col-8">: {{ displayValue(latestSkrining?.batuk) }}</div>
             </div>
-
-            <div class="row q-col-gutter-sm q-mb-xs">
+            <div class="data-row row q-col-gutter-sm q-mb-xs">
               <div class="col-4 text-weight-bold">Keputusan</div>
-              <div class="col-8">: {{ displayValue(item?.keputusan) }}</div>
-            </div>
-
-            <div v-if="item?.user_input?.nama" class="user-input-footer q-mt-sm">
-              <span class="text-weight-bold">User Input</span> : {{ item.user_input.nama }}
+              <div class="col-8">: {{ displayValue(latestSkrining?.keputusan) }}</div>
             </div>
           </div>
-        </div>
-        <div v-else class="text-center text-grey q-py-md">
-          Tidak ada data skrining rawat jalan.
+
+          <div v-if="loading" class="text-center q-py-md text-grey">
+            Memuat data skrining...
+          </div>
+
+          <div class="signature-block row q-col-gutter-md q-mt-lg justify-end items-center text-center">
+            <div class="col-5 text-center">
+              <div class="text-weight-bold row justify-center">Petugas</div>
+              <div class="qr-signature q-mx-auto q-mt-sm q-mb-xs row justify-center">
+                <AppQrPetugas :noreg="props.pasien?.noreg" :jnssurat="'SKRINING RAWAT JALAN'" :asal="'RAWAT JALAN'"
+                  :kdpegsimrs="petugasKd" :height="'80px'" :width="'80px'" />
+              </div>
+              <div class="f-12 row justify-center">{{ petugasName || '-' }}</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -158,6 +115,7 @@
 
 <script setup>
 import { api } from 'src/boot/axios'
+import AppQrPetugas from 'src/components/~global/AppQrPetugas.vue'
 import { computed, ref, watch } from 'vue'
 
 const props = defineProps({
@@ -191,6 +149,25 @@ const latestPemeriksaan = computed(() => {
   const propData = props.pasien?.pemeriksaanfisik
   const source = Array.isArray(propData) && propData.length ? propData : pemeriksaanFisikData.value
   return Array.isArray(source) && source.length ? source[0] : null
+})
+
+const latestSkrining = computed(() => {
+  const data = displayData.value
+  return Array.isArray(data) && data.length ? data[0] : null
+})
+
+const petugasUser = computed(() => {
+  const data = displayData.value
+
+  return Array.isArray(data) && data.length ? data[0]?.user_input ?? null : null
+})
+
+const petugasName = computed(() => {
+  return petugasUser.value?.nama || petugasUser.value?.nama_petugas || petugasUser.value?.nama_pekerja || null
+})
+
+const petugasKd = computed(() => {
+  return petugasUser.value?.kdpegsimrs || petugasUser.value?.kdpeg || petugasUser.value?.id || ''
 })
 
 function displayValue (value) {
@@ -316,14 +293,58 @@ const printObj = {
 
 .biodata-pasien {
   border: 1px solid #ddd;
-  padding: 10px;
-  border-radius: 4px;
+  padding: 14px;
+  border-radius: 8px;
   background-color: #fafafa;
+}
+
+.dokumen-content {
+  padding: 0;
+}
+
+.biodata-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.biodata-item {
+  min-width: calc(50% - 6px);
+}
+
+.biodata-item.full-width {
+  min-width: 100%;
 }
 
 .section-wrapper {
   border-left: 3px solid #1976d2;
   padding-left: 12px;
+}
+
+.data-list {
+  padding: 8px 0;
+}
+
+.data-row {
+  border-bottom: 1px solid #eee;
+  padding: 8px 0;
+}
+
+.data-row:last-child {
+  border-bottom: none;
+}
+
+.data-row .text-weight-bold {
+  color: #333;
+}
+
+.biodata-pasien {
+  border: 1px solid #ddd;
+  padding: 14px;
+  border-radius: 8px;
+  background-color: #fafafa;
+  color: #555;
+  margin-bottom: 10px;
 }
 
 .overview-card,
@@ -393,12 +414,17 @@ const printObj = {
   margin-top: 14px;
 }
 
-.f-12 {
-  font-size: 12px;
+.qr-wrapper {
+  min-width: 72px;
+  min-height: 72px;
 }
 
-.f-14 {
-  font-size: 14px;
+.user-input-footer {
+  align-items: center;
+}
+
+.user-input-footer .text-right {
+  text-align: right;
 }
 
 .text-weight-bold {
