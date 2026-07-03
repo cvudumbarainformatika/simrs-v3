@@ -342,7 +342,7 @@
             <div class="col-8">
               <div class="flex">
                 : {{ item?.hubunganDgPasien }} <span v-if="item?.hubunganDgPasien === 'Keluarga'"> {{ item?.keluarga
-                  }}</span>
+                }}</span>
               </div>
             </div>
           </div>
@@ -376,7 +376,7 @@
             <div class="col-8">
               <div class="flex justify-between">
                 <div>: {{ pasien?.nama }} <span class="q-ml-lg">({{ pasien?.kelamin === 'Perempuan' ? 'P' : 'L'
-                    }})*</span></div>
+                }})*</span></div>
                 <div class="self-end">
                   Tanggal Lahir : {{ pasien?.tgllahir }}
                 </div>
@@ -470,7 +470,7 @@
                 {{ item?.pelaksana }}
               </td>
               <td class="text-center f-12">
-                {{ item?.pelaksana }}
+                {{ item?.pengedukasi }}
               </td>
               <td class="text-center">
                 {{ item?.saksiPasien }}
@@ -494,7 +494,7 @@
                 <!-- <img :src="item?.ttd_petugas" class="ttd-petugas" alt="ttd-petugas" width="70"> -->
                 <div class="full-width flex justify-center">
                   <app-qr-petugas :noreg="item?.noreg" :jnssurat="'IC-SEDASI.png'" :asal="'RANAP'"
-                    :kdpegsimrs="item?.kdDokter" width="70px" height="70px" />
+                    :kdpegsimrs="item?.kdPetugas" width="70px" height="70px" />
                 </div>
               </td>
               <td class="text-center">
