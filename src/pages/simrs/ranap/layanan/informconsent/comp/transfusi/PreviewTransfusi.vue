@@ -12,10 +12,10 @@
           'email: rsudprob@probolinggokota.go.id',
           'PROBOLINGGO – 67219'
         ]" :pasien="pasien" :header="[
-            item?.setuju === 'Iya' ? 'Persetujuan Tindakan' : 'Penolakan / Pembatalan',
-            item?.setuju === 'Iya' ? 'Transfusi Darah' : 'Tindakan Transfusi Darah',
-            ''
-          ]" />
+          item?.setuju === 'Iya' ? 'PERSETUJUAN TINDAKAN' : 'PENOLAKAN / PEMBATALAN',
+          item?.setuju === 'Iya' ? 'TRANSFUSI DARAH' : 'TRANSFUSI DARAH',
+          ''
+        ]" />
       </div>
       <!-- ==================== LAYOUT PERSETUJUAN (RM IRNA-18) ==================== -->
       <div v-if="item?.setuju === 'Iya'" class="column fit">
@@ -207,7 +207,7 @@
             <div class="row q-mt-2">
               <div class="col-3">Nama Pasien</div>
               <div class="col-9">: {{ pasien?.nama }} <span class="q-ml-sm">({{ pasien?.kelamin === 'Perempuan' ? 'P' :
-                  'L' }})*</span></div>
+                'L' }})*</span></div>
             </div>
             <div class="row q-mt-2">
               <div class="col-3">Tgl. Lahir Pasien</div>

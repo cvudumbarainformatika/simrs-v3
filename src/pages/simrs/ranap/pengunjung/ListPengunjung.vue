@@ -98,6 +98,8 @@
             <div class="row q-gutter-xs q-mt-xs items-center">
               <PopupAlergi v-if="item?.alergis && item?.alergis?.length > 0" :alergis="item.alergis" />
               <PopupResikoJatuh v-if="item?.resiko_jatuh && item?.resiko_jatuh?.length > 0" :resiko-jatuh="item.resiko_jatuh" />
+              <PopupNamaSama v-if="item?.nama_sama_mirip && item?.nama_sama_mirip?.length > 0" :nama-sama-mirip="item.nama_sama_mirip" />
+              <PopupPenolakanResusitasi v-if="item?.penolakan_resusitasi && item?.penolakan_resusitasi?.length > 0" :penolakan-resusitasi="item.penolakan_resusitasi" />
             </div>
 
           </q-item-section>
@@ -122,6 +124,8 @@ import { date } from 'quasar'
 import PageLayananRanap from '../layanan/PageLayananRanap.vue'
 import PopupAlergi from './PopupAlergi.vue'
 import PopupResikoJatuh from './PopupResikoJatuh.vue'
+import PopupNamaSama from './PopupNamaSama.vue'
+import PopupPenolakanResusitasi from './PopupPenolakanResusitasi.vue'
 import { calcDate, humanDate } from 'src/modules/formatter'
 import { useTriageIgd } from 'src/stores/simrs/igd/triage'
 import { usePengunjungRanapStore } from 'src/stores/simrs/ranap/pengunjung'
