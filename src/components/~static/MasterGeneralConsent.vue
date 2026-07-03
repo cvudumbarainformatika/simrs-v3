@@ -321,23 +321,23 @@ function parseIrja(val) {
 
   str = str?.replace(
     `Nama : ...............<br>`,
-    `Nama : ${props.isiPasien?.nama ? store.form.nama : '...............'}<br>`
+    `Nama : ${props.isiPasien?.nama ? props.isiPasien?.nama : '...............'}<br>`
   )
   str = str?.replace(
     `No. RM : ...............<br>`,
-    `No. RM : ${props.isiPasien?.norm ? store.form.norm : '...............'}<br>`
+    `No. RM : ${props.isiPasien?.norm ? props.isiPasien?.norm : '...............'}<br>`
   )
   str = str?.replace(
     `Tgl Lahir : ...............<br>`,
-    `Tgl Lahir : ${props.isiPasien?.tgllahir ? store.form.tgllahir : '...............'}<br>`
+    `Tgl Lahir : ${props.isiPasien?.tgllahir ? props.isiPasien?.tgllahir : '...............'}<br>`
   )
   str = str?.replace(
     `Kelamin : ...............<br>`,
-    `Kelamin : ${props.isiPasien?.kelamin ? store.form.kelamin : '...............'}<br>`
+    `Kelamin : ${props.isiPasien?.kelamin ? props.isiPasien?.kelamin : '...............'}<br>`
   )
   str = str?.replace(
     `Alamat : ...............<br>`,
-    `Alamat : ${props.isiPasien?.alamat ? store.form.alamat : '...............'}<br>`
+    `Alamat : ${props.isiPasien?.alamat ? props.isiPasien?.alamat : '...............'}<br>`
   )
   str = str?.replace(
     /<li id="wali-1">[\s\S]*?<\/li>/,
@@ -379,23 +379,23 @@ function parseRanap(val) {
 
   str = str?.replace(
     `Nama : ...............<br>`,
-    `Nama : ${props.isiPasien?.nama ? store.form.nama : '...............'}<br>`
+    `Nama : ${props.isiPasien?.nama ? props.isiPasien?.nama : '...............'}<br>`
   )
   str = str?.replace(
     `No. RM : ...............<br>`,
-    `No. RM : ${props.isiPasien?.norm ? store.form.norm : '...............'}<br>`
+    `No. RM : ${props.isiPasien?.norm ? props.isiPasien?.norm : '...............'}<br>`
   )
   str = str?.replace(
     `Tgl Lahir : ...............<br>`,
-    `Tgl Lahir : ${props.isiPasien?.tgllahir ? store.form.tgllahir : '...............'}<br>`
+    `Tgl Lahir : ${props.isiPasien?.tgllahir ? props.isiPasien?.tgllahir : '...............'}<br>`
   )
   str = str?.replace(
     `Kelamin : ...............<br>`,
-    `Kelamin : ${props.isiPasien?.kelamin ? store.form.kelamin : '...............'}<br>`
+    `Kelamin : ${props.isiPasien?.kelamin ? props.isiPasien?.kelamin : '...............'}<br>`
   )
   str = str?.replace(
     `Alamat : ...............<br>`,
-    `Alamat : ${props.isiPasien?.alamat ? store.form.alamat : '...............'}<br>`
+    `Alamat : ${props.isiPasien?.alamat ? props.isiPasien?.alamat : '...............'}<br>`
   )
 
   str = str?.replace(
@@ -439,23 +439,23 @@ function parseIgd(val) {
 
   str = str?.replace(
     `Nama : ...............<br>`,
-    `Nama : ${props.isiPasien?.nama ? store.form.nama : '...............'}<br>`
+    `Nama : ${props.isiPasien?.nama ? props.isiPasien?.nama : '...............'}<br>`
   )
   str = str?.replace(
     `No. RM : ...............<br>`,
-    `No. RM : ${props.isiPasien?.norm ? store.form.norm : '...............'}<br>`
+    `No. RM : ${props.isiPasien?.norm ? props.isiPasien?.norm : '...............'}<br>`
   )
   str = str?.replace(
     `Tgl Lahir : ...............<br>`,
-    `Tgl Lahir : ${props.isiPasien?.tgllahir ? store.form.tgllahir : '...............'}<br>`
+    `Tgl Lahir : ${props.isiPasien?.tgllahir ? props.isiPasien?.tgllahir : '...............'}<br>`
   )
   str = str?.replace(
     `Kelamin : ...............<br>`,
-    `Kelamin : ${props.isiPasien?.kelamin ? store.form.kelamin : '...............'}<br>`
+    `Kelamin : ${props.isiPasien?.kelamin ? props.isiPasien?.kelamin : '...............'}<br>`
   )
   str = str?.replace(
     `Alamat : ...............<br>`,
-    `Alamat : ${props.isiPasien?.alamat ? store.form.alamat : '...............'}<br>`
+    `Alamat : ${props.isiPasien?.alamat ? props.isiPasien?.alamat : '...............'}<br>`
   )
   str = str?.replace(
     /<li id="wali-1">[\s\S]*?<\/li>/,
