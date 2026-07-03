@@ -2,39 +2,33 @@
   <div id="pdfDoc" class="f-12">
     <!-- page 1 -->
     <div class="page-1">
-      
-      <!-- IDENTIFIKASI DOKUMEN -->
-      <div class="text-right text-bold f-10 q-mb-xs">
-        IRNA 101
-      </div>
       <!-- KOP SURAT -->
       <div class="col-auto">
-        <AppKopSuratStandard
-          :dataHeader="[
-            'PEMERINTAH KOTA PROBOLINGGO',
-            'DINAS KESEHATAN, PENGENDALIAN PENDUDUK DAN KELUARGA BERENCANA',
-            'UOBK RSUD DOKTER MOHAMAD SALEH',
-            'Jl. Mayjend Panjaitan No.65 Telp: (0335)433119 Fax.(0335)432702',
-            'email: rsudprob@probolinggokota.go.id',
-            'PROBOLINGGO – 67219'
-          ]"
-          :pasien="pasien"
-          :header="['Persetujuan Pemasangan', 'Restrain', '']"
-        />
+        <AppKopSuratStandard :dataHeader="[
+          'PEMERINTAH KOTA PROBOLINGGO',
+          'DINAS KESEHATAN, PENGENDALIAN PENDUDUK DAN KELUARGA BERENCANA',
+          'UOBK RSUD DOKTER MOHAMAD SALEH',
+          'Jl. Mayjend Panjaitan No.65 Telp: (0335)433119 Fax.(0335)432702',
+          'email: rsudprob@probolinggokota.go.id',
+          'PROBOLINGGO – 67219'
+        ]" :pasien="pasien" :header="['Persetujuan Pemasangan', 'Restrain', '']" />
       </div>
       <!-- Dokter DPJP Statement -->
       <div class="ba-black f-11 q-mt-xs q-pa-sm line-height-normal text-justify">
-        Saya Dokter Penanggung Jawab Pelayanan menyatakan bahwa telah menerangkan hal yang berkaitan dengan tindakan pemasangan restrain secara benar dan jelas, dan sudah memberi kesempatan pada keluarga untuk bertanya dan berdiskusi.
+        Saya Dokter Penanggung Jawab Pelayanan menyatakan bahwa telah menerangkan hal yang berkaitan dengan tindakan
+        pemasangan restrain secara benar dan jelas, dan sudah memberi kesempatan pada keluarga untuk bertanya dan
+        berdiskusi.
       </div>
 
       <!-- Poin Informasi Restrain -->
       <div class="ba-black f-11 q-mt-xs q-pa-sm line-height-normal">
         <div class="text-bold q-mb-xs uppercase text-grey-9">JENIS INFORMASI</div>
-        
+
         <div class="row q-mt-sm">
           <div class="col-2 text-bold">1. Pengertian :</div>
           <div class="col-10 text-justify text-grey-10">
-            <div v-html="getNewLine(item?.indikasi || 'Restrain adalah suatu metode atau cara pembatasan/restriksi yang disengaja terhadap gerakan/perilaku seseorang. Merupakan intervensi yang terakhir jika perilaku klien sudah tidak bisa diatasi atau dikontrol dengan strategi perilaku maupun modifikasi lingkungan.')" />
+            <div
+              v-html="getNewLine(item?.indikasi || 'Restrain adalah suatu metode atau cara pembatasan/restriksi yang disengaja terhadap gerakan/perilaku seseorang. Merupakan intervensi yang terakhir jika perilaku klien sudah tidak bisa diatasi atau dikontrol dengan strategi perilaku maupun modifikasi lingkungan.')" />
           </div>
         </div>
 
@@ -46,7 +40,7 @@
               <div class="q-mr-xs text-bold text-center" style="width: 20px; font-size: 15px; line-height: 1.2;">
                 {{ isSelectedTujuan(opt, item?.tujuan) ? '☑' : '☐' }}
               </div>
-              <div class="col">{{ idx+1 }}. {{ opt }}</div>
+              <div class="col">{{ idx + 1 }}. {{ opt }}</div>
             </div>
           </div>
         </div>
@@ -59,7 +53,7 @@
               <div class="q-mr-xs text-bold text-center" style="width: 20px; font-size: 15px; line-height: 1.2;">
                 {{ isSelectedKomplikasi(opt, item?.komplikasi) ? '☑' : '☐' }}
               </div>
-              <div class="col">{{ idx+1 }}. {{ opt }}</div>
+              <div class="col">{{ idx + 1 }}. {{ opt }}</div>
             </div>
           </div>
         </div>
@@ -71,7 +65,8 @@
         <div class="q-mt-xs q-pl-sm">
           <div class="row q-mt-2">
             <div class="col-3">Nama</div>
-            <div class="col-9">: {{ item?.nama || '-' }} <span class="q-ml-md">({{ item?.lp === 'Perempuan' ? 'P' : 'L' }})*</span> <span class="q-ml-lg">Tgl. Lahir : {{ item?.tglLahir || '-' }}</span></div>
+            <div class="col-9">: {{ item?.nama || '-' }} <span class="q-ml-md">({{ item?.lp === 'Perempuan' ? 'P' : 'L'
+                }})*</span> <span class="q-ml-lg">Tgl. Lahir : {{ item?.tglLahir || '-' }}</span></div>
           </div>
           <div class="row q-mt-2">
             <div class="col-3">No KTP / SIM / PASPOR</div>
@@ -79,12 +74,14 @@
           </div>
           <div class="row q-mt-2">
             <div class="col-3">Alamat</div>
-            <div class="col-9">: {{ item?.alamat || '-' }} <span class="q-ml-lg">Telepon : {{ item?.telepon || '-' }}</span></div>
+            <div class="col-9">: {{ item?.alamat || '-' }} <span class="q-ml-lg">Telepon : {{ item?.telepon || '-'
+                }}</span></div>
           </div>
           <div class="row q-mt-2">
             <div class="col-3">Hubungan dengan pasien</div>
-            <div class="col-9">: 
-              {{ item?.hubunganDgPasien === 'Keluarga' ? `Keluarga (${item?.keluarga || '...........'})` : item?.hubunganDgPasien }}
+            <div class="col-9">:
+              {{ item?.hubunganDgPasien === 'Keluarga' ? `Keluarga (${item?.keluarga || '...........'})` :
+                item?.hubunganDgPasien }}
             </div>
           </div>
         </div>
@@ -92,8 +89,10 @@
 
       <!-- Pernyataan Persetujuan Pemasangan Restrain terhadap Pasien -->
       <div class="ba-black f-11 q-mt-xs q-pa-sm line-height-normal text-justify">
-        Dengan ini menyatakan sesungguhnya bahwa saya telah menerima informasi yang diberikan oleh dokter sebagaimana diatas dan telah memahaminya. Untuk itu saya memberikan <strong>PERSETUJUAN</strong> dilaksanakan tindakan pemasangan restrain terhadap :
-        
+        Dengan ini menyatakan sesungguhnya bahwa saya telah menerima informasi yang diberikan oleh dokter sebagaimana
+        diatas dan telah memahaminya. Untuk itu saya memberikan <strong>PERSETUJUAN</strong> dilaksanakan tindakan
+        pemasangan restrain terhadap :
+
         <div class="q-mt-sm q-pl-sm">
           <div class="row q-mt-2">
             <div class="col-3 text-bold">Nama Pasien</div>
@@ -101,7 +100,8 @@
           </div>
           <div class="row q-mt-2">
             <div class="col-3 text-bold">Tanggal Lahir</div>
-            <div class="col-9">: {{ pasien?.tgllahir || '-' }} <span class="q-ml-sm">({{ pasien?.kelamin === 'Perempuan' ? 'P' : 'L' }})*</span></div>
+            <div class="col-9">: {{ pasien?.tgllahir || '-' }} <span class="q-ml-sm">({{ pasien?.kelamin === 'Perempuan'
+                ? 'P' : 'L' }})*</span></div>
           </div>
           <div class="row q-mt-2">
             <div class="col-3 text-bold">No KTP / SIM / PASPOR</div>
@@ -116,9 +116,9 @@
             <div class="col-9 flex items-center">
               <span class="q-mr-sm">:</span>
               <div class="flex" style="border: 1px solid #000; width: fit-content; background-color: #fff;">
-                <div v-for="(digit, idx) in getNormDigits(pasien?.norm || item?.norm)" :key="idx" 
-                  class="text-center flex flex-center text-bold" 
-                  style="width: 25px; height: 25px; border-right: 1px solid #000; font-size: 13px;" 
+                <div v-for="(digit, idx) in getNormDigits(pasien?.norm || item?.norm)" :key="idx"
+                  class="text-center flex flex-center text-bold"
+                  style="width: 25px; height: 25px; border-right: 1px solid #000; font-size: 13px;"
                   :style="idx === 5 ? 'border-right: none;' : ''">
                   {{ digit }}
                 </div>
@@ -130,7 +130,9 @@
 
       <!-- Klausul Pertanggungjawaban -->
       <div class="ba-black f-11 q-mt-xs q-pa-sm line-height-normal text-justify">
-        Saya memahami perlunya tindakan pemasangan restrain termasuk komplikasi yang akan timbul akibat tindakan pemasangan restrain. Saya akan bertanggung jawab secara penuh atas segala akibat yang mungkin terjadi dan tidak akan menyalahkan pihak manapun.
+        Saya memahami perlunya tindakan pemasangan restrain termasuk komplikasi yang akan timbul akibat tindakan
+        pemasangan restrain. Saya akan bertanggung jawab secara penuh atas segala akibat yang mungkin terjadi dan tidak
+        akan menyalahkan pihak manapun.
       </div>
 
       <!-- Waktu & Tempat Tanda Tangan -->
@@ -142,7 +144,8 @@
 
       <!-- TABEL TANDA TANGAN (STANDARD BER-BORDER) -->
       <div class="q-mt-xs grow-1">
-        <q-markup-table dense separator="cell" flat bordered wrap-cells class="table-signature text-black font-body q-mt-xs">
+        <q-markup-table dense separator="cell" flat bordered wrap-cells
+          class="table-signature text-black font-body q-mt-xs">
           <thead>
             <tr class="bg-grey-2">
               <th class="text-left text-bold f-11 text-black" width="20%" />
@@ -265,7 +268,7 @@ function isSelectedTujuan(opt, selectedTujuan) {
   try {
     const parsed = JSON.parse(selectedTujuan)
     if (Array.isArray(parsed)) return parsed.includes(opt)
-  } catch (e) {}
+  } catch (e) { }
   return selectedTujuan.includes(opt)
 }
 
@@ -277,7 +280,7 @@ function isSelectedKomplikasi(opt, selectedKomplikasi) {
   try {
     const parsed = JSON.parse(selectedKomplikasi)
     if (Array.isArray(parsed)) return parsed.includes(opt)
-  } catch (e) {}
+  } catch (e) { }
   return selectedKomplikasi.includes(opt)
 }
 
@@ -353,7 +356,9 @@ function getNewLine(text) {
 .table-signature {
   border-collapse: collapse;
   width: 100%;
-  td, th {
+
+  td,
+  th {
     border: 1px solid #000 !important;
     padding: 3px 4px !important;
   }

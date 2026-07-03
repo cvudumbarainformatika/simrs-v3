@@ -42,6 +42,8 @@
                 class="q-mb-xs"
                 @update:model-value="changeHubunganPasien"
               /> -->
+              <q-select v-model="store.form.hubunganpasien" outlined :options="store.options" dense
+                label="Hubungan Dengan Pasien" class="q-mb-xs" @update:model-value="changeHubunganPasien" />
               <app-input v-model="store.form.nama" label="Nama" class="q-mb-xs" outlined />
               <q-select v-model="store.form.kelamin" label="Jenis Kelamin" :options="store.optionskelamin" dense
                 outlined standout="bg-yellow-3" class="q-mb-xs" />
@@ -49,8 +51,7 @@
                 @db-model="tanggal" />
               <app-input v-model="store.form.nohp" label="No Telp / Hp" class="q-mb-xs" outlined />
               <q-input v-model="store.form.alamat" outlined type="textarea" rows="2" class="q-mb-xs" label="Alamat" />
-              <q-select v-model="store.form.hubunganpasien" outlined :options="store.options" dense
-                label="Hubungan Dengan Pasien" class="q-mb-xs" @update:model-value="changeHubunganPasien" />
+
             </q-card>
           </div>
 
@@ -187,7 +188,7 @@
                 :pasien="pasien" uuid="ttdpasien" @signature="(val) => {
                   store.setForm('ttdpasien', val)
                 }" />
-              <div>{{ pasien?.nama_panggil }}</div>
+              <div>{{ store.form.nama }}</div>
             </div>
           </div>
         </div>

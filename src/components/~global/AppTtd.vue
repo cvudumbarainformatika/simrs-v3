@@ -70,17 +70,9 @@ const props = defineProps({
   }
 })
 
-const emits = defineEmits(['saveTtd', 'signature'])
+const emits = defineEmits(['save-ttd', 'signature'])
 
-const imgTtd = computed({
-  get() {
-    return props.ttd
-  },
-  set(nwVal) {
-    emits('saveTtd', nwVal)
-    emits(`signature:${props.uuid}`, null)
-  }
-})
+const imgTtd = computed(() => props.ttd)
 
 onMounted(() => {
   ctx.value = canvasRef.value.getContext('2d')
@@ -130,9 +122,9 @@ const savePad = () => {
   const isBlank = !buffer.some(color => color !== 0)
 
   if (isBlank) {
-    emits('saveTtd', null)
+    emits('save-ttd', null)
   } else {
-    emits('saveTtd', imageURL)
+    emits('save-ttd', imageURL)
   }
 }
 </script>

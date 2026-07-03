@@ -38,11 +38,11 @@
 <script setup>
 
 import { api } from 'src/boot/axios';
-import { useAnggaranPendapatanStore } from 'src/stores/siasik/anggaran/penyusunan/anggaranpendapatan';
+import { usePerubahanAnggaranPendapatanStore } from 'src/stores/siasik/anggaran/perubahan/anggaranpendapatan';
 import { useMasterRekeningJurnalStore } from 'src/stores/siasik/master/rekeningjurnal/rekeningjurnal';
 import { onMounted, ref, watch } from 'vue';
 
-const store = useAnggaranPendapatanStore()
+const store = usePerubahanAnggaranPendapatanStore()
 const formRef = ref(null)
 
 const options = ref([])
@@ -140,7 +140,6 @@ watch(
   },
   { immediate: true }
 )
-
 // async function filterFn(val, update) {
 //   if (!val) {
 //     update(() => {

@@ -67,7 +67,11 @@
                           @update:model-value="(val) => cekindikasi(val)" />
                       </div>
                       <div class="col-12">
-                        <q-input v-model="store.form.keterangan" outlined standout="bg-yellow-3" label="Keterangan"
+                        <!-- <q-input v-model="store.form.keterangan" outlined standout="bg-yellow-3" label="Keterangan xx"
+                          :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" /> -->
+
+                        <q-select v-model="store.form.keterangan" label="Keterangan" :options="optionketerangan" dense
+                          standout="bg-yellow-3" outlined transition-show="flip-up" transition-hide="flip-down"
                           :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" />
                       </div>
                     </div>
@@ -257,6 +261,7 @@ const optionsPoli = ref([])
 const optionpulangs = ref(['Sembuh', 'Paksa', 'Meninggal'])
 const optionkelamin = ref(['Perempuan', 'Laki-laki'])
 const optionalasan = ref(['Biaya', 'Menolak Asuhan', 'Pengobatan Alternatif'])
+const optionketerangan = ref(['Preventif', 'Paliatif', 'Kuratif', 'Rehabilitatif'])
 // const optionKondisiKhusus = ref([
 //   {
 //     label: 'Tidak Ada',

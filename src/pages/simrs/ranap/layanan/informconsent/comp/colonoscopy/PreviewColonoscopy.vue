@@ -4,18 +4,14 @@
     <div class="page-1">
       <!-- KOP SURAT -->
       <div class="col-auto">
-        <AppKopSuratStandard
-          :dataHeader="[
-            'PEMERINTAH KOTA PROBOLINGGO',
-            'DINAS KESEHATAN, PENGENDALIAN PENDUDUK DAN KELUARGA BERENCANA',
-            'UOBK RSUD DOKTER MOHAMAD SALEH',
-            'Jl. Mayjend Panjaitan No.65 Telp: (0335)433119 Fax.(0335)432702',
-            'email: rsudprob@probolinggokota.go.id',
-            'PROBOLINGGO – 67219'
-          ]"
-          :pasien="pasien"
-          :header="['PERSETUJUAN', menu?.title, '']"
-        />
+        <AppKopSuratStandard :dataHeader="[
+          'PEMERINTAH KOTA PROBOLINGGO',
+          'DINAS KESEHATAN, PENGENDALIAN PENDUDUK DAN KELUARGA BERENCANA',
+          'UOBK RSUD DOKTER MOHAMAD SALEH',
+          'Jl. Mayjend Panjaitan No.65 Telp: (0335)433119 Fax.(0335)432702',
+          'email: rsudprob@probolinggokota.go.id',
+          'PROBOLINGGO – 67219'
+        ]" :pasien="pasien" :header="['PERSETUJUAN', menu?.title, '']" />
       </div>
       <!-- section-1 -->
       <div class="ba-black f-12 q-mt-xs">
@@ -184,7 +180,7 @@
               <div class="col-8">
                 <div class="flex justify-between">
                   <div>: {{ pasien?.nama }} <span class="q-ml-lg">({{ pasien?.kelamin === 'Perempuan' ? 'P' : 'L'
-                  }})*</span></div>
+                      }})*</span></div>
                 </div>
               </div>
             </div>

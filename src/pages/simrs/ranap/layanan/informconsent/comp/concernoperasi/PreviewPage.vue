@@ -4,18 +4,14 @@
     <div class="page-1">
       <!-- KOP SURAT -->
       <div class="col-auto">
-        <AppKopSuratStandard
-          :dataHeader="[
-            'PEMERINTAH KOTA PROBOLINGGO',
-            'DINAS KESEHATAN, PENGENDALIAN PENDUDUK DAN KELUARGA BERENCANA',
-            'UOBK RSUD DOKTER MOHAMAD SALEH',
-            'Jl. Mayjend Panjaitan No.65 Telp: (0335)433119 Fax.(0335)432702',
-            'email: rsudprob@probolinggokota.go.id',
-            'PROBOLINGGO – 67219'
-          ]"
-          :pasien="pasien"
-          :header="['PEMBERIAN EDUKASI', 'PEMBERITAHUAN INFORMASI', 'OPERASI/TINDAKAN INVASIF']"
-        />
+        <AppKopSuratStandard :dataHeader="[
+          'PEMERINTAH KOTA PROBOLINGGO',
+          'DINAS KESEHATAN, PENGENDALIAN PENDUDUK DAN KELUARGA BERENCANA',
+          'UOBK RSUD DOKTER MOHAMAD SALEH',
+          'Jl. Mayjend Panjaitan No.65 Telp: (0335)433119 Fax.(0335)432702',
+          'email: rsudprob@probolinggokota.go.id',
+          'PROBOLINGGO – 67219'
+        ]" :pasien="pasien" :header="['PEMBERIAN EDUKASI', 'OPERASI/TINDAKAN INVASIF']" />
       </div>
       <div class="ba-black">
         <div class="section-1 q-pa-md">
@@ -40,7 +36,7 @@
               Pemberi Informasi
             </div>
             <div style="width: 60%;">
-              : {{ item?.pengedukasi }}
+              : {{ item?.pelaksana }}
             </div>
           </div>
           <div class="flex q-py-xs">
@@ -79,15 +75,10 @@
                   Diagnosis
                 </td>
                 <td class="text-left f-12 f-12">
-                  <div v-for="diag in item?.diagnosis" :key="diag" class="flex">
-                    <div>- {{ diag }} </div>
-                    <div class="q-ml-sm">
-                      {{pasien?.diagnosamedis?.find(x => x?.rs3 === diag)?.masterdiagnosa?.rs4 ?? '-'}}
-                    </div>
-                  </div>
+                  <div>{{ pasien?.memodiagnosa || '-' }}</div>
                 </td>
                 <td class="text-center">
-                  <q-icon v-if="item?.diagnosis?.length > 0" name="icon-mat-check" size="sm" />
+                  <q-icon v-if="pasien?.memodiagnosa" name="icon-mat-check" size="sm" />
                 </td>
               </tr>
 
@@ -149,7 +140,8 @@
                       {{ isSelected(opt, item?.tujuan) ? '☑' : '☐' }}
                     </div>
                     <div class="col">
-                      {{ opt === 'Lain-lain' ? (isSelected(opt, item?.tujuan) ? `Lain-lain: ${item?.tujuanLain || '...'}` : 'Lain-lain') : opt }}
+                      {{ opt === 'Lain-lain' ? (isSelected(opt, item?.tujuan) ? `Lain-lain: ${item?.tujuanLain ||
+                        '...'}` : 'Lain-lain') : opt }}
                     </div>
                   </div>
                 </td>
@@ -186,7 +178,8 @@
                       {{ isSelected(opt, item?.resiko) ? '☑' : '☐' }}
                     </div>
                     <div class="col">
-                      {{ opt === 'Lain-lain' ? (isSelected(opt, item?.resiko) ? `Lain-lain: ${item?.resikoLain || '...'}` : 'Lain-lain') : opt }}
+                      {{ opt === 'Lain-lain' ? (isSelected(opt, item?.resiko) ? `Lain-lain: ${item?.resikoLain ||
+                        '...'}` : 'Lain-lain') : opt }}
                     </div>
                   </div>
                 </td>
@@ -467,7 +460,7 @@
                 {{ item?.pelaksana }}
               </td>
               <td class="text-center f-12">
-                {{ item?.pengedukasi }}
+                {{ item?.pelaksana }}
               </td>
               <td class="text-center">
                 {{ item?.saksiPasien }}
@@ -512,18 +505,14 @@
     <div class="page-3">
       <!-- KOP SURAT -->
       <div class="col-auto">
-        <AppKopSuratStandard
-          :dataHeader="[
-            'PEMERINTAH KOTA PROBOLINGGO',
-            'DINAS KESEHATAN, PENGENDALIAN PENDUDUK DAN KELUARGA BERENCANA',
-            'UOBK RSUD DOKTER MOHAMAD SALEH',
-            'Jl. Mayjend Panjaitan No.65 Telp: (0335)433119 Fax.(0335)432702',
-            'email: rsudprob@probolinggokota.go.id',
-            'PROBOLINGGO – 67219'
-          ]"
-          :pasien="pasien"
-          :header="['PERSETUJUAN', 'TINDAKAN KEDOKTERAN', 'OPERASI / TINDAKAN INVASIF']"
-        />
+        <AppKopSuratStandard :dataHeader="[
+          'PEMERINTAH KOTA PROBOLINGGO',
+          'DINAS KESEHATAN, PENGENDALIAN PENDUDUK DAN KELUARGA BERENCANA',
+          'UOBK RSUD DOKTER MOHAMAD SALEH',
+          'Jl. Mayjend Panjaitan No.65 Telp: (0335)433119 Fax.(0335)432702',
+          'email: rsudprob@probolinggokota.go.id',
+          'PROBOLINGGO – 67219'
+        ]" :pasien="pasien" :header="['PERSETUJUAN', 'TINDAKAN KEDOKTERAN', 'OPERASI / TINDAKAN INVASIF']" />
       </div>
       <div class="ba-black f-12 q-mt-xs">
         <div class="q-pa-sm">
@@ -552,23 +541,7 @@
                   Diagnosis
                 </td>
                 <td class="text-left f-12 f-12">
-                  <div class="flex">
-                    <div v-for="diag in item?.diagnosis" :key="diag" class="flex">
-                      <div class="">
-                        {{pasien?.diagnosamedis?.find(x => x?.rs3 === diag)?.masterdiagnosa?.rs4 ?? '-'}}
-                      </div>
-                      <div class="q-mr-xs">
-                        ,
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- <div v-for="diag in item?.diagnosis" :key="diag" class="flex">
-                    <div>- {{ diag }} </div>
-                    <div class="q-ml-sm">
-                      {{ pasien?.diagnosamedis?.find(x => x?.rs3 === diag)?.masterdiagnosa?.rs4 ?? '-' }}
-                    </div>
-                  </div> -->
+                  <div>{{ pasien?.memodiagnosa || '-' }}</div>
                 </td>
               </tr>
 
@@ -855,7 +828,8 @@
           <div class="text-right f-12 q-mb-lg q-mr-sm">
             Probolinggo, {{ humanDate(item?.tanggal) }}, pkl: {{ jamTnpDetik(item?.tanggal) }}
           </div>
-          <q-markup-table dense separator="cell" flat bordered wrap-cells class="table-signature text-black font-body q-mt-sm">
+          <q-markup-table dense separator="cell" flat bordered wrap-cells
+            class="table-signature text-black font-body q-mt-sm">
             <thead>
               <tr class="bg-grey-2">
                 <th class="text-left text-bold f-11 text-black" width="20%" />
@@ -892,7 +866,8 @@
                   <div v-else class="text-grey-4 f-9">Belum Ttd</div>
                 </td>
                 <td class="text-center q-pa-xs">
-                  <img v-if="item?.ttd_yg_menyatakan" :src="item?.ttd_yg_menyatakan" alt="ttd yang menyatakan" width="65">
+                  <img v-if="item?.ttd_yg_menyatakan" :src="item?.ttd_yg_menyatakan" alt="ttd yang menyatakan"
+                    width="65">
                   <div v-else class="text-grey-4 f-9">Belum Ttd</div>
                 </td>
               </tr>
@@ -996,7 +971,7 @@ function isSelected(opt, selectedList) {
   try {
     const parsed = JSON.parse(selectedList)
     if (Array.isArray(parsed)) return parsed.includes(opt)
-  } catch (e) {}
+  } catch (e) { }
   return typeof selectedList === 'string' && selectedList.includes(opt)
 }
 
@@ -1014,7 +989,7 @@ function getNewLine(text) {
 
 // const exportPdf = () => {
 //   const concern = document.getElementById('pdfDoc')
-// 
+//
 //   const pdfConfig = {
 //     margin: 0,
 //     filename: 'inform-consent-' + props?.item?.jenis + '.pdf',
@@ -1035,7 +1010,7 @@ function getNewLine(text) {
 //     },
 //     pagebreak: { mode: ['css', 'legacy'] }
 //   }
-// 
+//
 //   html2pdf().set(pdfConfig).from(concern).save()
 // }
 // defineExpose({ exportPdf })
@@ -1044,21 +1019,28 @@ function getNewLine(text) {
 <style lang="scss" scoped>
 /* Tampilan preview per page di layar browser (seperti layout kertas A4) */
 #pdfDoc {
-  background-color: #e0e0e0 !important; /* warna abu-abu untuk background desktop workspace */
+  background-color: #e0e0e0 !important;
+  /* warna abu-abu untuk background desktop workspace */
   padding: 30px 10px !important;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 24px; /* jarak antar halaman */
+  gap: 24px;
+  /* jarak antar halaman */
   box-sizing: border-box;
 }
 
-.page-1, .page-2, .page-3 {
+.page-1,
+.page-2,
+.page-3 {
   background-color: #ffffff !important;
   width: 210mm;
-  min-height: 297mm; /* memaksa tinggi minimum A4 */
-  padding: 8mm; /* margin halaman minimum */
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* efek shadow agar mirip lembaran kertas nyata */
+  min-height: 297mm;
+  /* memaksa tinggi minimum A4 */
+  padding: 8mm;
+  /* margin halaman minimum */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  /* efek shadow agar mirip lembaran kertas nyata */
   border-radius: 4px;
   position: relative;
   box-sizing: border-box;
@@ -1071,10 +1053,13 @@ function getNewLine(text) {
   display: none !important;
 }
 
-.table-info, .table-signature {
+.table-info,
+.table-signature {
   border-collapse: collapse;
   width: 100%;
-  td, th {
+
+  td,
+  th {
     border: 1px solid #000 !important;
     padding: 3px 4px !important;
   }
@@ -1092,7 +1077,7 @@ function getNewLine(text) {
     margin: 0 !important;
     box-shadow: none !important;
     border-radius: 0 !important;
-    height: 297mm !important; 
+    height: 297mm !important;
   }
 }
 */
@@ -1110,20 +1095,25 @@ function getNewLine(text) {
     gap: 0 !important;
   }
 
-  .page-1, .page-2, .page-3 {
+  .page-1,
+  .page-2,
+  .page-3 {
     width: 210mm !important;
-    height: 297mm !important; /* Memaksa tinggi pas A4 */
+    height: 297mm !important;
+    /* Memaksa tinggi pas A4 */
     padding: 8mm !important;
     box-shadow: none !important;
     border-radius: 0 !important;
     margin: 0 !important;
-    page-break-after: always !important; /* memaksa pemisahan halaman */
+    page-break-after: always !important;
+    /* memaksa pemisahan halaman */
     page-break-inside: avoid !important;
     box-sizing: border-box !important;
   }
 
   .page-3 {
-    page-break-after: avoid !important; /* Halaman terakhir tidak memerlukan page break setelahnya */
+    page-break-after: avoid !important;
+    /* Halaman terakhir tidak memerlukan page break setelahnya */
   }
 }
 </style>

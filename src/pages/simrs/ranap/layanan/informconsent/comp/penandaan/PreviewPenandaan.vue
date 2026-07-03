@@ -2,25 +2,16 @@
   <div id="pdfDoc" class="f-12">
     <!-- page 1 -->
     <div class="page-1">
-      
-      <!-- IDENTIFIKASI DOKUMEN -->
-      <div class="text-right text-bold f-10 q-mb-xs">
-        RM IRNA-37
-      </div>
       <!-- KOP SURAT -->
       <div class="col-auto">
-        <AppKopSuratStandard
-          :dataHeader="[
-            'PEMERINTAH KOTA PROBOLINGGO',
-            'DINAS KESEHATAN, PENGENDALIAN PENDUDUK DAN KELUARGA BERENCANA',
-            'UOBK RSUD DOKTER MOHAMAD SALEH',
-            'Jl. Mayjend Panjaitan No.65 Telp: (0335)433119 Fax.(0335)432702',
-            'email: rsudprob@probolinggokota.go.id',
-            'PROBOLINGGO – 67219'
-          ]"
-          :pasien="pasien"
-          :header="['Persetujuan Penandaan', 'Lokasi Operasi', '']"
-        />
+        <AppKopSuratStandard :dataHeader="[
+          'PEMERINTAH KOTA PROBOLINGGO',
+          'DINAS KESEHATAN, PENGENDALIAN PENDUDUK DAN KELUARGA BERENCANA',
+          'UOBK RSUD DOKTER MOHAMAD SALEH',
+          'Jl. Mayjend Panjaitan No.65 Telp: (0335)433119 Fax.(0335)432702',
+          'email: rsudprob@probolinggokota.go.id',
+          'PROBOLINGGO – 67219'
+        ]" :pasien="pasien" :header="['Persetujuan Penandaan', 'Lokasi Operasi', '']" />
       </div>
       <!-- Identitas Pemberi Pernyataan -->
       <div class="ba-black f-11 q-mt-xs q-pa-sm line-height-normal">
@@ -32,7 +23,8 @@
           </div>
           <div class="row q-mt-2">
             <div class="col-3">Tanggal lahir</div>
-            <div class="col-9">: {{ item?.tglLahir || '-' }} <span class="q-ml-sm">({{ item?.lp === 'Perempuan' ? 'P' : 'L' }})*</span></div>
+            <div class="col-9">: {{ item?.tglLahir || '-' }} <span class="q-ml-sm">({{ item?.lp === 'Perempuan' ? 'P' :
+                'L' }})*</span></div>
           </div>
           <div class="row q-mt-2">
             <div class="col-3">Alamat</div>
@@ -43,9 +35,9 @@
             <div class="col-9 flex items-center">
               <span class="q-mr-sm">:</span>
               <div class="flex" style="border: 1px solid #000; width: fit-content; background-color: #fff;">
-                <div v-for="(digit, idx) in getNormDigits(pasien?.norm || item?.norm)" :key="idx" 
-                  class="text-center flex flex-center text-bold" 
-                  style="width: 25px; height: 25px; border-right: 1px solid #000; font-size: 13px;" 
+                <div v-for="(digit, idx) in getNormDigits(pasien?.norm || item?.norm)" :key="idx"
+                  class="text-center flex flex-center text-bold"
+                  style="width: 25px; height: 25px; border-right: 1px solid #000; font-size: 13px;"
                   :style="idx === 5 ? 'border-right: none;' : ''">
                   {{ digit }}
                 </div>
@@ -63,17 +55,24 @@
       <div class="ba-black f-11 q-mt-xs line-height-normal text-justify">
         <!-- Teks Atas -->
         <div class="q-pa-sm">
-          Dengan ini saya menyatakan dengan sesungguhnya telah dilibatkan dalam penandaan lokasi operasi dan memberikan persetujuan dilakukan penandaan lokasi operasi seperti yang tergambar di bawah ini. Adapun tujuan dari penandaan lokasi operasi ini adalah untuk menghindari kesalahan lokasi, kesalahan prosedur dan kesalahan pasien saat operasi.
+          Dengan ini saya menyatakan dengan sesungguhnya telah dilibatkan dalam penandaan lokasi operasi dan memberikan
+          persetujuan dilakukan penandaan lokasi operasi seperti yang tergambar di bawah ini. Adapun tujuan dari
+          penandaan lokasi operasi ini adalah untuk menghindari kesalahan lokasi, kesalahan prosedur dan kesalahan
+          pasien saat operasi.
         </div>
-        
+
         <!-- Gambar Tengah -->
-        <div class="q-pa-sm flex flex-center bg-white" style="border-top: 1px solid #000; border-bottom: 1px solid #000;">
-          <div class="overflow-hidden bg-white relative-position" style="width: 100%; max-width: 100%; aspect-ratio: 1024/601; margin: 0 auto;">
+        <div class="q-pa-sm flex flex-center bg-white"
+          style="border-top: 1px solid #000; border-bottom: 1px solid #000;">
+          <div class="overflow-hidden bg-white relative-position"
+            style="width: 100%; max-width: 100%; aspect-ratio: 1024/601; margin: 0 auto;">
             <!-- Background Template -->
-            <img src="~assets/human/anatomys/body-marker-irna37.png" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain; z-index: 1;" />
-            
+            <img src="~assets/human/anatomys/body-marker-irna37.png"
+              style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain; z-index: 1;" />
+
             <!-- Coretan Merah -->
-            <img v-if="item?.alternatif" :src="item?.alternatif_base64 || getImageUrl(item?.alternatif)" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain; z-index: 2;" />
+            <img v-if="item?.alternatif" :src="item?.alternatif_base64 || getImageUrl(item?.alternatif)"
+              style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain; z-index: 2;" />
           </div>
         </div>
 
@@ -90,8 +89,9 @@
             Probolinggo, {{ humanDate(item?.tanggal) }}, Pkl : {{ jamTnpDetik(item?.tanggal) }}
           </div>
         </div>
-        
-        <q-markup-table dense separator="cell" flat bordered wrap-cells class="table-signature text-black font-body q-mt-sm">
+
+        <q-markup-table dense separator="cell" flat bordered wrap-cells
+          class="table-signature text-black font-body q-mt-sm">
           <thead>
             <tr class="bg-grey-2">
               <th class="text-left text-bold f-11 text-black" width="20%" />
@@ -300,7 +300,9 @@ const getNormDigits = (norm) => {
 .table-signature {
   border-collapse: collapse;
   width: 100%;
-  td, th {
+
+  td,
+  th {
     border: 1px solid #000 !important;
     padding: 3px 4px !important;
   }

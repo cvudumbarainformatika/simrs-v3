@@ -2,36 +2,27 @@
   <div id="pdfDoc" class="f-12">
     <!-- page 1 -->
     <div class="page-1">
-      
-      <!-- IDENTIFIKASI DOKUMEN (RM IRNA-18 / RM IRNA-19) -->
-      <div class="text-right text-bold f-10 q-mb-xs">
-        <span v-if="item?.setuju === 'Iya'">RM IRNA-18</span>
-        <span v-else>RM IRNA-19</span>
-      </div>
       <!-- KOP SURAT -->
       <div class="col-auto">
-        <AppKopSuratStandard
-          :dataHeader="[
-            'PEMERINTAH KOTA PROBOLINGGO',
-            'DINAS KESEHATAN, PENGENDALIAN PENDUDUK DAN KELUARGA BERENCANA',
-            'UOBK RSUD DOKTER MOHAMAD SALEH',
-            'Jl. Mayjend Panjaitan No.65 Telp: (0335)433119 Fax.(0335)432702',
-            'email: rsudprob@probolinggokota.go.id',
-            'PROBOLINGGO – 67219'
-          ]"
-          :pasien="pasien"
-          :header="[
-            item?.setuju === 'Iya' ? 'Persetujuan Tindakan' : 'Penolakan / Pembatalan',
-            item?.setuju === 'Iya' ? 'Transfusi Darah' : 'Tindakan Transfusi Darah',
-            ''
-          ]"
-        />
+        <AppKopSuratStandard :dataHeader="[
+          'PEMERINTAH KOTA PROBOLINGGO',
+          'DINAS KESEHATAN, PENGENDALIAN PENDUDUK DAN KELUARGA BERENCANA',
+          'UOBK RSUD DOKTER MOHAMAD SALEH',
+          'Jl. Mayjend Panjaitan No.65 Telp: (0335)433119 Fax.(0335)432702',
+          'email: rsudprob@probolinggokota.go.id',
+          'PROBOLINGGO – 67219'
+        ]" :pasien="pasien" :header="[
+          item?.setuju === 'Iya' ? 'PERSETUJUAN TINDAKAN' : 'PENOLAKAN / PEMBATALAN',
+          item?.setuju === 'Iya' ? 'TRANSFUSI DARAH' : 'TRANSFUSI DARAH',
+          ''
+        ]" />
       </div>
       <!-- ==================== LAYOUT PERSETUJUAN (RM IRNA-18) ==================== -->
       <div v-if="item?.setuju === 'Iya'" class="column fit">
         <!-- Dokter Pelaksana Statement -->
         <div class="ba-black f-11 q-mt-xs q-pa-sm line-height-normal text-justify">
-          Saya, Dokter Pelaksana transfusi menyatakan bahwa telah menerangkan hal terkait dengan transfusi darah dibawah ini secara benar dan jelas, dan sudah memberi kesempatan pada Pasien/ keluarga untuk bertanya dan berdiskusi.
+          Saya, Dokter Pelaksana transfusi menyatakan bahwa telah menerangkan hal terkait dengan transfusi darah dibawah
+          ini secara benar dan jelas, dan sudah memberi kesempatan pada Pasien/ keluarga untuk bertanya dan berdiskusi.
         </div>
 
         <!-- Tabel Informasi Tindakan -->
@@ -47,31 +38,36 @@
               <tr>
                 <td class="text-left text-bold f-11 text-black">1. Pengertian Transfusi</td>
                 <td class="text-left f-11 text-black text-justify line-height-tight">
-                  <div v-html="getNewLine(item?.indikasi || 'Suatu proses pemindahan darah dari orang sehat ( Donor) ke tubuh orang sakit (Pasien)')" />
+                  <div
+                    v-html="getNewLine(item?.indikasi || 'Suatu proses pemindahan darah dari orang sehat ( Donor) ke tubuh orang sakit (Pasien)')" />
                 </td>
               </tr>
               <tr>
                 <td class="text-left text-bold f-11 text-black">2. Jenis Darah</td>
                 <td class="text-left f-11 text-black text-justify line-height-tight">
-                  <div v-html="getNewLine(item?.tindakanMedis || 'Darah yang dipindahkan dapat berupa darah lengkap atau hanya komponen darah')" />
+                  <div
+                    v-html="getNewLine(item?.tindakanMedis || 'Darah yang dipindahkan dapat berupa darah lengkap atau hanya komponen darah')" />
                 </td>
               </tr>
               <tr>
                 <td class="text-left text-bold f-11 text-black">3. Tujuan Transfusi</td>
                 <td class="text-left f-11 text-black text-justify line-height-tight">
-                  <div v-html="getNewLine(item?.tujuanLain || 'Untuk menolong pasien yang mengalami kurang darah baik dalam bentuk sel darah maupun komponen-komponennya')" />
+                  <div
+                    v-html="getNewLine(item?.tujuanLain || 'Untuk menolong pasien yang mengalami kurang darah baik dalam bentuk sel darah maupun komponen-komponennya')" />
                 </td>
               </tr>
               <tr>
                 <td class="text-left text-bold f-11 text-black">4. Risiko</td>
                 <td class="text-left f-11 text-black text-justify line-height-tight">
-                  <div v-html="getNewLine(item?.resikoLain || 'Pemindahan darah selain dapat menolong orang dapat juga menimbulkan penyulit tergantung pada masing-masing individu penerimanya, terlebih pada pasien yang ada riwayat alergi')" />
+                  <div
+                    v-html="getNewLine(item?.resikoLain || 'Pemindahan darah selain dapat menolong orang dapat juga menimbulkan penyulit tergantung pada masing-masing individu penerimanya, terlebih pada pasien yang ada riwayat alergi')" />
                 </td>
               </tr>
               <tr>
                 <td class="text-left text-bold f-11 text-black">5. Komplikasi</td>
                 <td class="text-left f-11 text-black text-justify line-height-tight">
-                  <div v-html="getNewLine(item?.komplikasi || 'Penyulit atau komplikasi yang biasa timbul sifatnya dapat terjadi cepat (akut) atau lambat, selain itu bila dilakukan Tranfusi dalam jumlah banyak dan cepat juga dapat menimbulkan akibat seperti Hipotermi yaitu suhu tubuh menurun, dan beberapa penyakit lainnya.')" />
+                  <div
+                    v-html="getNewLine(item?.komplikasi || 'Penyulit atau komplikasi yang biasa timbul sifatnya dapat terjadi cepat (akut) atau lambat, selain itu bila dilakukan Tranfusi dalam jumlah banyak dan cepat juga dapat menimbulkan akibat seperti Hipotermi yaitu suhu tubuh menurun, dan beberapa penyakit lainnya.')" />
                 </td>
               </tr>
             </tbody>
@@ -84,7 +80,8 @@
           <div class="q-mt-xs">
             <div class="row q-mt-2">
               <div class="col-3">Nama</div>
-              <div class="col-9">: {{ item?.nama }} <span class="q-ml-sm">({{ item?.lp === 'Perempuan' ? 'P' : 'L' }})*</span> <span class="q-ml-lg">Tgl. Lahir : {{ item?.tglLahir || '-' }}</span></div>
+              <div class="col-9">: {{ item?.nama }} <span class="q-ml-sm">({{ item?.lp === 'Perempuan' ? 'P' : 'L'
+                  }})*</span> <span class="q-ml-lg">Tgl. Lahir : {{ item?.tglLahir || '-' }}</span></div>
             </div>
             <div class="row q-mt-2">
               <div class="col-3">No. KTP / SIM / PASPOR</div>
@@ -102,7 +99,8 @@
               <div class="col-3">Hubungan dengan Pasien</div>
               <div class="col-9 flex items-center q-gutter-x-sm">
                 <div v-for="hub in store.hubunganDgPasiens" :key="hub" class="flex items-center q-mr-sm">
-                  <div class="border-box flex items-center justify-center text-bold" style="width: 14px; height: 14px; border: 1px solid #000; font-size: 10px; margin-right: 4px;">
+                  <div class="border-box flex items-center justify-center text-bold"
+                    style="width: 14px; height: 14px; border: 1px solid #000; font-size: 10px; margin-right: 4px;">
                     <q-icon v-if="hub === item?.hubunganDgPasien" name="icon-mat-check" size="10px" color="black" />
                   </div>
                   <span>{{ hub === 'Keluarga' ? `Keluarga : ${item?.keluarga || '...........'}` : hub }}</span>
@@ -114,7 +112,9 @@
 
         <!-- Pernyataan Persetujuan Tindakan -->
         <div class="ba-black f-11 q-mt-xs q-pa-sm line-height-normal text-justify">
-          Dengan ini menyatakan sesungguhnya, bahwa saya telah menerima informasi yang diberikan oleh Petugas sebagaimana diatas dan telah memahaminya. Untuk itu saya memberikan <strong>PERSETUJUAN</strong> untuk diberikan <strong>TRANSFUSI DARAH</strong> terhadap :
+          Dengan ini menyatakan sesungguhnya, bahwa saya telah menerima informasi yang diberikan oleh Petugas
+          sebagaimana diatas dan telah memahaminya. Untuk itu saya memberikan <strong>PERSETUJUAN</strong> untuk
+          diberikan <strong>TRANSFUSI DARAH</strong> terhadap :
           <div class="q-mt-sm">
             <div class="row q-mt-2">
               <div class="col-3 text-bold">Nama Pasien</div>
@@ -133,9 +133,9 @@
               <div class="col-9 flex items-center">
                 <span class="q-mr-sm">:</span>
                 <div class="flex" style="border: 1px solid #000; width: fit-content;">
-                  <div v-for="(digit, idx) in getNormDigits(pasien?.norm || item?.norm)" :key="idx" 
-                    class="text-center flex flex-center text-bold" 
-                    style="width: 25px; height: 25px; border-right: 1px solid #000; font-size: 13px;" 
+                  <div v-for="(digit, idx) in getNormDigits(pasien?.norm || item?.norm)" :key="idx"
+                    class="text-center flex flex-center text-bold"
+                    style="width: 25px; height: 25px; border-right: 1px solid #000; font-size: 13px;"
                     :style="idx === 5 ? 'border-right: none;' : ''">
                     {{ digit }}
                   </div>
@@ -147,7 +147,9 @@
 
         <!-- Footer Pernyataan & Klausul Tanggung Jawab -->
         <div class="ba-black f-11 q-mt-xs q-pa-sm line-height-normal text-justify">
-          Saya memahami perlunya dan manfaat tindakan tersebut termasuk risiko dan komplikasi yang akan timbul bila tidak dilakukan tindakan tersebut, dan bila pada saat atau dikemudian hari terjadi keadaan penyulit akibat tindakan TRANSFUSI DARAH, saya tidak menyalahkan siapapun.
+          Saya memahami perlunya dan manfaat tindakan tersebut termasuk risiko dan komplikasi yang akan timbul bila
+          tidak dilakukan tindakan tersebut, dan bila pada saat atau dikemudian hari terjadi keadaan penyulit akibat
+          tindakan TRANSFUSI DARAH, saya tidak menyalahkan siapapun.
         </div>
       </div>
 
@@ -160,7 +162,8 @@
           <div class="q-mt-xs">
             <div class="row q-mt-2">
               <div class="col-3">Nama</div>
-              <div class="col-9">: {{ item?.nama }} <span class="q-ml-sm">({{ item?.lp === 'Perempuan' ? 'P' : 'L' }})*</span></div>
+              <div class="col-9">: {{ item?.nama }} <span class="q-ml-sm">({{ item?.lp === 'Perempuan' ? 'P' : 'L'
+                  }})*</span></div>
             </div>
             <div class="row q-mt-2">
               <div class="col-3">Tgl. Lahir</div>
@@ -183,12 +186,16 @@
 
         <!-- Pernyataan Penolakan / Pembatalan Tindakan -->
         <div class="ba-black f-11 q-mt-xs q-pa-sm line-height-normal text-justify">
-          Dengan Ini menyatakan sesungguhnya, bahwa saya telah menerima informasi yang diberikan oleh petugas sebagaimana di atas dan telah memahaminya. Untuk itu saya memberikan <strong>PENOLAKAN / PEMBATALAN</strong> untuk diberikan <strong>TRANSFUSI</strong> terhadap :
-          
+          Dengan Ini menyatakan sesungguhnya, bahwa saya telah menerima informasi yang diberikan oleh petugas
+          sebagaimana di atas dan telah memahaminya. Untuk itu saya memberikan <strong>PENOLAKAN / PEMBATALAN</strong>
+          untuk diberikan <strong>TRANSFUSI</strong> terhadap :
+
           <div class="row q-mt-sm items-center">
             <div class="col-12 flex items-center q-gutter-x-sm bg-grey-1 q-pa-xs rounded">
-              <div v-for="hub in store.hubunganDgPasiens.filter(x => x !== 'Orang Tua')" :key="hub" class="flex items-center q-mr-sm">
-                <div class="border-box flex items-center justify-center text-bold" style="width: 14px; height: 14px; border: 1px solid #000; font-size: 10px; margin-right: 4px;">
+              <div v-for="hub in store.hubunganDgPasiens.filter(x => x !== 'Orang Tua')" :key="hub"
+                class="flex items-center q-mr-sm">
+                <div class="border-box flex items-center justify-center text-bold"
+                  style="width: 14px; height: 14px; border: 1px solid #000; font-size: 10px; margin-right: 4px;">
                   <q-icon v-if="hub === item?.hubunganDgPasien" name="icon-mat-check" size="10px" color="black" />
                 </div>
                 <span>{{ hub === 'Keluarga' ? 'Keluarga' : hub }}</span>
@@ -199,7 +206,8 @@
           <div class="q-mt-sm">
             <div class="row q-mt-2">
               <div class="col-3">Nama Pasien</div>
-              <div class="col-9">: {{ pasien?.nama }} <span class="q-ml-sm">({{ pasien?.kelamin === 'Perempuan' ? 'P' : 'L' }})*</span></div>
+              <div class="col-9">: {{ pasien?.nama }} <span class="q-ml-sm">({{ pasien?.kelamin === 'Perempuan' ? 'P' :
+                'L' }})*</span></div>
             </div>
             <div class="row q-mt-2">
               <div class="col-3">Tgl. Lahir Pasien</div>
@@ -218,9 +226,9 @@
               <div class="col-9 flex items-center">
                 <span class="q-mr-sm">:</span>
                 <div class="flex" style="border: 1px solid #000; width: fit-content;">
-                  <div v-for="(digit, idx) in getNormDigits(pasien?.norm || item?.norm)" :key="idx" 
-                    class="text-center flex flex-center text-bold" 
-                    style="width: 25px; height: 25px; border-right: 1px solid #000; font-size: 13px;" 
+                  <div v-for="(digit, idx) in getNormDigits(pasien?.norm || item?.norm)" :key="idx"
+                    class="text-center flex flex-center text-bold"
+                    style="width: 25px; height: 25px; border-right: 1px solid #000; font-size: 13px;"
                     :style="idx === 5 ? 'border-right: none;' : ''">
                     {{ digit }}
                   </div>
@@ -232,7 +240,9 @@
 
         <!-- Footer Pernyataan & Klausul Tanggung Jawab Penolakan -->
         <div class="ba-black f-11 q-mt-xs q-pa-sm line-height-normal text-justify">
-          Saya memahami perlunya dan manfaat tindakan tersebut termasuk risiko dan komplikasi yang akan timbul bila tidak dilakukan tindakan tersebut. Saya akan bertanggung jawab secara penuh atas segala akibat yang mungkin timbul akibat penolakan dilakukan tindakan tersebut.
+          Saya memahami perlunya dan manfaat tindakan tersebut termasuk risiko dan komplikasi yang akan timbul bila
+          tidak dilakukan tindakan tersebut. Saya akan bertanggung jawab secara penuh atas segala akibat yang mungkin
+          timbul akibat penolakan dilakukan tindakan tersebut.
         </div>
       </div>
 
@@ -242,7 +252,7 @@
         <div class="text-right f-11 q-mb-xs q-mr-sm font-header">
           Probolinggo, {{ humanDate(item?.tanggal) }}, Pkl : {{ jamTnpDetik(item?.tanggal) }}
         </div>
-        
+
         <q-markup-table dense separator="cell" flat bordered wrap-cells class="table-signature text-black font-body">
           <thead>
             <tr class="bg-grey-2">
@@ -272,7 +282,7 @@
               <td class="text-center q-pa-xs">
                 <div class="full-width flex justify-center items-center">
                   <app-qr-petugas :noreg="item?.noreg" :jnssurat="'IC-TRANSFUSI.png'" :asal="'RANAP'"
-                    :kdpegsimrs="item?.kdPetugas" width="65px" height="65px" />
+                    :kdpegsimrs="item?.kdDokter" width="65px" height="65px" />
                 </div>
               </td>
               <td class="text-center q-pa-xs">
@@ -395,7 +405,9 @@ function getNewLine(text) {
 .table-info {
   border-collapse: collapse;
   width: 100%;
-  td, th {
+
+  td,
+  th {
     border: 1px solid #000 !important;
     padding: 4px 6px !important;
   }
@@ -404,7 +416,9 @@ function getNewLine(text) {
 .table-signature {
   border-collapse: collapse;
   width: 100%;
-  td, th {
+
+  td,
+  th {
     border: 1px solid #000 !important;
     padding: 3px 4px !important;
   }

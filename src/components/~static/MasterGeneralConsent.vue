@@ -228,7 +228,8 @@
                 <img :src="pasien?.ttdPas" alt="ttd-pasien-rsudmohsaleh" width="150">
               </div>
             </div>
-            <div>{{ pasien?.name || pasien?.nama_panggil || pasien?.nama || 'Nama' }}</div>
+            <!-- <div>{{ pasien?.name || pasien?.nama_panggil || pasien?.nama || 'Nama' }}</div> -->
+            <div>{{ store.form?.nama || 'Nama' }}</div>
           </div>
         </div>
       </div>
@@ -319,6 +320,26 @@ function parseIrja(val) {
   let str = val
 
   str = str?.replace(
+    `Nama : ...............<br>`,
+    `Nama : ${props.isiPasien?.nama ? props.isiPasien?.nama : '...............'}<br>`
+  )
+  str = str?.replace(
+    `No. RM : ...............<br>`,
+    `No. RM : ${props.isiPasien?.norm ? props.isiPasien?.norm : '...............'}<br>`
+  )
+  str = str?.replace(
+    `Tgl Lahir : ...............<br>`,
+    `Tgl Lahir : ${props.isiPasien?.tgllahir ? props.isiPasien?.tgllahir : '...............'}<br>`
+  )
+  str = str?.replace(
+    `Kelamin : ...............<br>`,
+    `Kelamin : ${props.isiPasien?.kelamin ? props.isiPasien?.kelamin : '...............'}<br>`
+  )
+  str = str?.replace(
+    `Alamat : ...............<br>`,
+    `Alamat : ${props.isiPasien?.alamat ? props.isiPasien?.alamat : '...............'}<br>`
+  )
+  str = str?.replace(
     /<li id="wali-1">[\s\S]*?<\/li>/,
     `<li id="wali-1">
       1) Nama : ${store.form.wali1 ? `<b>${store.form.wali1}</b>` : '...............'}
@@ -337,6 +358,8 @@ function parseIrja(val) {
   return str
 }
 function parseRanap(val) {
+  console.log('store form', store.form)
+  console.log('Pasien', props.isiPasien)
   // const word = val?.replace('Ruang Rawat : .......... Kelas : ..........',
   //   ` Ruang Rawat : ${props.isiPasien?.ruangan ? '<b>' + props.isiPasien?.ruangan + '</b>' : '..........'} Kelas : ${props.isiPasien?.kelasruangan ? '<b>' + props.isiPasien?.kelasruangan + '</b>' : '..........'} `)
   // // }
@@ -355,6 +378,27 @@ function parseRanap(val) {
   let str = val
 
   str = str?.replace(
+    `Nama : ...............<br>`,
+    `Nama : ${props.isiPasien?.nama ? props.isiPasien?.nama : '...............'}<br>`
+  )
+  str = str?.replace(
+    `No. RM : ...............<br>`,
+    `No. RM : ${props.isiPasien?.norm ? props.isiPasien?.norm : '...............'}<br>`
+  )
+  str = str?.replace(
+    `Tgl Lahir : ...............<br>`,
+    `Tgl Lahir : ${props.isiPasien?.tgllahir ? props.isiPasien?.tgllahir : '...............'}<br>`
+  )
+  str = str?.replace(
+    `Kelamin : ...............<br>`,
+    `Kelamin : ${props.isiPasien?.kelamin ? props.isiPasien?.kelamin : '...............'}<br>`
+  )
+  str = str?.replace(
+    `Alamat : ...............<br>`,
+    `Alamat : ${props.isiPasien?.alamat ? props.isiPasien?.alamat : '...............'}<br>`
+  )
+
+  str = str?.replace(
     /<li id="wali-1">[\s\S]*?<\/li>/,
     `<li id="wali-1">
       1) Nama : ${store.form.wali1 ? `<b>${store.form.wali1}</b>` : '...............'}
@@ -369,6 +413,8 @@ function parseRanap(val) {
       Hubungan dengan pasien : ${store.form.hubunganWali2 ? `<b>${store.form.hubunganWali2}</b>` : '...............'}
     </li>`
   )
+
+
 
   return str
 }
@@ -391,6 +437,26 @@ function parseIgd(val) {
   // return str4
   let str = val
 
+  str = str?.replace(
+    `Nama : ...............<br>`,
+    `Nama : ${props.isiPasien?.nama ? props.isiPasien?.nama : '...............'}<br>`
+  )
+  str = str?.replace(
+    `No. RM : ...............<br>`,
+    `No. RM : ${props.isiPasien?.norm ? props.isiPasien?.norm : '...............'}<br>`
+  )
+  str = str?.replace(
+    `Tgl Lahir : ...............<br>`,
+    `Tgl Lahir : ${props.isiPasien?.tgllahir ? props.isiPasien?.tgllahir : '...............'}<br>`
+  )
+  str = str?.replace(
+    `Kelamin : ...............<br>`,
+    `Kelamin : ${props.isiPasien?.kelamin ? props.isiPasien?.kelamin : '...............'}<br>`
+  )
+  str = str?.replace(
+    `Alamat : ...............<br>`,
+    `Alamat : ${props.isiPasien?.alamat ? props.isiPasien?.alamat : '...............'}<br>`
+  )
   str = str?.replace(
     /<li id="wali-1">[\s\S]*?<\/li>/,
     `<li id="wali-1">
