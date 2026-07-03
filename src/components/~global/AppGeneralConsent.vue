@@ -227,6 +227,7 @@ onMounted(() => {
   // store.getData()
   // console.log(props.pasien)
   // store.resetFORM()
+  store.setForm('hubunganpasien', 'Diri Sendiri')
   cekTtdPasien()
   changeHubunganPasien()
 })
