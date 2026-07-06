@@ -7,34 +7,18 @@
         </div>
         <q-space />
         <div class="q-my-sm">
-          <q-select
-            v-model="store.nopermintaan"
-            outlined
-            standout="bg-yellow-3"
-            bg-color="white"
-            dense
+          <q-select v-model="store.nopermintaan" outlined standout="bg-yellow-3" bg-color="white" dense
             :options="store.nopermintaans"
             :display-value="`${store.nopermintaan === null || store.nopermintaan === '' || store.nopermintaan === 'BARU' ? 'BARU' : store.nopermintaan}`"
-            style="min-width: 200px;"
-            @update:model-value="store.setResep"
-          />
+            style="min-width: 200px;" @update:model-value="store.setResep" />
         </div>
       </q-bar>
     </div>
 
-    <div
-      class="col-12"
-    >
-      <div
-        v-if="store.listSudah "
-        class="q-my-md q-ml-md"
-      >
-        <q-chip
-          square
-          class="f-10"
-          :color="color(store.listSudah?.flag)"
-          :text-color="store.listSudah?.flag==='2'?'':'white'"
-        >
+    <div class="col-12">
+      <div v-if="store.listSudah" class="q-my-md q-ml-md">
+        <q-chip square class="f-10" :color="color(store.listSudah?.flag)"
+          :text-color="store.listSudah?.flag === '2' ? '' : 'white'">
           {{ status(store.listSudah?.flag) }}
         </q-chip>
         <!-- {{ store?.pasien?.newapotekrajal[store.indexRacikan]?.flag }} -->
@@ -42,12 +26,7 @@
       <!-- {{ store?.pasien?.newapotekrajal[store.indexRacikan]?.permintaanresep?.length }} -->
       <template v-if="store.listSudah?.rinci?.length">
         <q-list class="full-height scroll">
-          <q-item
-            v-for="(item, i) in store.listSudah?.rinci"
-            :key="i"
-            class="q-pl-sm row"
-            bordered
-          >
+          <q-item v-for="(item, i) in store.listSudah?.rinci" :key="i" class="q-pl-sm row" bordered>
             <!-- {{ item }} -->
             <q-item-section style="width: 50%;">
               <div class="row">
@@ -57,20 +36,13 @@
                 {{ item?.kd_obat }}
               </div>
             </q-item-section>
-            <q-item-section
-              side
-              style="width:50%"
-            >
+            <q-item-section side style="width:50%">
               <div class="row items-center q-col-gutter-sm full-width">
-                <div
-                  class="text-right col-5"
-                >
+                <div class="text-right col-5">
                   {{ item?.jumlah_minta }}
                 </div>
 
-                <div
-                  class="col text-right"
-                >
+                <div class="col text-right">
                   <!-- {{ item?.keterangan }} -->
                 </div>
               </div>
@@ -80,10 +52,7 @@
       </template>
       <!-- {{ store.listRacikan }} -->
     </div>
-    <div
-      v-if="store?.listSudah?.flag===''"
-      class=""
-    >
+    <div v-if="store?.listSudah?.flag === ''" class="">
       <app-no-data text="Belum ada Resep terkirim ke depo" />
     </div>
   </div>
@@ -155,6 +124,7 @@ function color (val) {
 onUnmounted(() => {
   store.nopermintaan = ''
   store.listSudah = null
+  store.listBelum = null
   // subscribedChannel()
 })
 </script>

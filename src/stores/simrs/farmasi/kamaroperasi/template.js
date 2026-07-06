@@ -179,7 +179,10 @@ export const useTemplatePersiapanOperasiStore = defineStore('template_persiapan_
               resepSementara.nopermintaans.splice(0, 1)
               resepSementara.nopermintaans.unshift(resp?.data?.nopermintaan)
               resepSementara.nopermintaans.unshift('BARU')
-              if (resp?.data?.nopermintaan) resepSementara.nopermintaan = resp?.data?.nopermintaan
+              if (resp?.data?.nopermintaan) {
+                resepSementara.nopermintaan = resp?.data?.nopermintaan
+                resepSementara.form.nopermintaan = resp?.data?.nopermintaan
+              }
               // inseert data
               const res = resp?.data?.head
               const reseps = resepSementara.pasien?.permintaanobatoperasi
@@ -202,7 +205,9 @@ export const useTemplatePersiapanOperasiStore = defineStore('template_persiapan_
             }
             resolve(resp)
           })
-          .catch(() => {
+          .catch((err) => {
+            // console.log('err',err?.response);
+
             item.loading = false
             this.loadingKirim = false
           })

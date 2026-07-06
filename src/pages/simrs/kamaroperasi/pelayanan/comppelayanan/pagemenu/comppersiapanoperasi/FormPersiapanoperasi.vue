@@ -243,6 +243,7 @@ function simpanObat () {
 }
 onMounted(() => {
   console.log('depo', props.pasien)
+  store.clearFormForNewPasien()
   store.pasien = props?.pasien
   store.depo = 'ok'
   store.dpPar = 'Gd-04010103'
@@ -255,7 +256,11 @@ onMounted(() => {
 
 })
 onUnmounted(() => {
-
+  // Comprehensive cleanup saat component unmount
   store.resetForm()
+  store.resetObat()
+  store.resetRacikan()
+  store.namaObat = null
+  store.Obats = []
 })
 </script>

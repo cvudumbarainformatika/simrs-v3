@@ -113,7 +113,8 @@ export const usePersiapanOperasiStore = defineStore('resep_sementara', {
         kodeincbg,
         uraianinacbg,
         tarifina,
-        kdruangan
+        kdruangan,
+        nopermintaan: ''
       }
       if (jenisresep === 'Racikan') {
         this.setForm('jenisresep', jenisresep)
@@ -149,7 +150,8 @@ export const usePersiapanOperasiStore = defineStore('resep_sementara', {
         tagihanrs,
         kodeincbg,
         uraianinacbg,
-        tarifina
+        tarifina,
+        // nopermintaan: '' reset obat hanya mereset obatnya, tidak membuat nomor permintaan baru
       }
 
       this.setPasien()
@@ -166,6 +168,27 @@ export const usePersiapanOperasiStore = defineStore('resep_sementara', {
         dosisobat: 1,
         dosismaksimum: 1 // dosis resep
       }
+    },
+    clearFormForNewPasien () {
+      // Clear semua state ketika pasien berubah untuk mencegah data tercampur
+      this.nopermintaan = ''
+      this.nopermintaans = []
+      this.listBelum = null
+      this.listSudah = null
+      this.namaObat = null
+      this.Obats = []
+      this.nonFilteredObat = []
+      this.form = {
+        kodeobat: '',
+        keterangan: '-',
+        jumlah_minta: 1,
+        tiperesep: 'normal',
+        nopermintaan: ''
+      }
+      this.resetRacikan()
+      this.listRacikan = []
+      this.listRincianRacikan = []
+      this.counterRacikan = 1
     },
     hapusList (data) {
       console.log('data', data)
