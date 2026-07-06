@@ -213,7 +213,7 @@
               <div class="col-8">
                 Sudah bisa ditetapkan <span class="q-px-xs text-weight-bold">{{
                   jawabdischargeplanning?.rs20
-                }}</span>hari; Rencana tanggal pulang : <span class="q-px-xs text-weight-bold">{{
+                  }}</span>hari; Rencana tanggal pulang : <span class="q-px-xs text-weight-bold">{{
                     jawabdischargeplanning?.tglRencanaPulang ?? '-' }}</span>
               </div>
               <div class="col-4">
@@ -374,10 +374,11 @@ const dischargeplanning = computed(() => [
 onMounted(() => {
   const summ = props?.pasien?.summarydischargeplannings?.length ? props?.pasien?.summarydischargeplannings[0] : null
   ttdPasien.value = summ?.ttdPasien
-  console.log('jawaban', jawabdischargeplanning)
+  // console.log('pasien', props.pasien)
   // initTtd(summ)
+
 })
-console.log('auth', auth.user?.pegawai?.kdpegsimrs);
+// console.log('auth', auth.user?.pegawai?.kdpegsimrs);
 const PRMRJ = computed(() => {
   const xx = props?.pasien?.skriningdischargeplannings?.length ? props?.pasien?.skriningdischargeplannings[0] : null
   const no9 = xx?.rs12 ?? null

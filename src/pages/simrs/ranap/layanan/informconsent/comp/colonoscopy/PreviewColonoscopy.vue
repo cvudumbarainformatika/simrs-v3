@@ -180,7 +180,7 @@
               <div class="col-8">
                 <div class="flex justify-between">
                   <div>: {{ pasien?.nama }} <span class="q-ml-lg">({{ pasien?.kelamin === 'Perempuan' ? 'P' : 'L'
-                      }})*</span></div>
+                  }})*</span></div>
                 </div>
               </div>
             </div>
@@ -340,6 +340,7 @@ onMounted(() => {
   hubDgPas()
   initImage(props.item)
 })
+
 
 function initImage(item) {
   const ttdPetugas = pathImg + item?.ttdPetugas
