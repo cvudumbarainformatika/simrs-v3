@@ -74,7 +74,7 @@
         <div class="data-item">6. Riwayat Pekerjaan : {{
           anamnesisAwal?.riwayat_pekerjaan_yang_berhubungan_dengan_zat_berbahaya || '-' }}</div>
         <div class="data-item">7. Keluhan Nyeri : {{ anamnesisAwal?.keluhannyeri?.skor > 0 ? 'Ada' : 'Tidak ada' || '-'
-          }}
+        }}
         </div>
       </div>
     </div>
@@ -859,7 +859,7 @@
           <div class="col-8">
             Sudah bisa ditetapkan <span class="q-px-xs text-weight-bold">{{
               jawabdischargeplanning?.rs20
-              }}</span>hari; Rencana tanggal pulang : <span class="q-px-xs text-weight-bold">{{
+            }}</span>hari; Rencana tanggal pulang : <span class="q-px-xs text-weight-bold">{{
                 jawabdischargeplanning?.tglRencanaPulang ?? '-' }}</span>
           </div>
           <div class="col-4">
@@ -1003,7 +1003,7 @@ onMounted(() => {
 const penerimanEdu = computed(() => {
   const ttd = impEdukasi?.items[0]
 
-  // console.log('ttd', ttd)
+  console.log('ttd', ttd)
   return ttd
 })
 const qrDokter = computed(() => {

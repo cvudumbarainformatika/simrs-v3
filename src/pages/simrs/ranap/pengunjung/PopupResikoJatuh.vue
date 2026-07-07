@@ -72,28 +72,6 @@ const getDetailResiko = (res) => {
       label
     })
   }
-
-  if (res.norton) {
-    const norton = res.norton
-    const skor = norton?.skorNorton?.skor ?? norton?.skor ?? '-'
-    const label = norton?.skorNorton?.label ?? norton?.label ?? '-'
-    details.push({
-      nama: 'Norton (Dekubitus)',
-      skor,
-      label
-    })
-  }
-
-  if (res.barthel) {
-    const barthel = res.barthel
-    const skor = barthel?.skorBarthel?.skor ?? barthel?.skor ?? '-'
-    const label = barthel?.skorBarthel?.label ?? barthel?.label ?? '-'
-    details.push({
-      nama: 'Barthel Index (Kemampuan Fungsional)',
-      skor,
-      label
-    })
-  }
   
   return details
 }

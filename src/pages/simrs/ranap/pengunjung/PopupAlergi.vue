@@ -8,7 +8,7 @@
         
         <q-card-section class="q-pt-sm">
           <q-list dense separator class="text-caption">
-            <q-item v-for="(alergi, idx) in alergis" :key="idx" class="q-px-none">
+            <q-item v-for="(alergi, idx) in uniqueAlergis" :key="idx" class="q-px-none">
               <q-item-section>
                 <div class="text-bold text-dark">{{ idx + 1 }}. {{ formatAlergi(alergi?.riwayatalergi) }}</div>
                 <div class="text-grey-8">Keterangan: {{ alergi?.keteranganalergi || '-' }}</div>
@@ -22,7 +22,9 @@
 </template>
 
 <script setup>
-defineProps({
+import { computed } from 'vue'
+
+const props = defineProps({
   alergis: {
     type: Array,
     default: () => []
@@ -35,6 +37,19 @@ const formatAlergi = (val) => {
   }
   return val || '-'
 }
+
+const uniqueAlergis = computed(() => {
+  const seen = new Set()
+  return props.alergis.filter(item => {
+    const riwayat = formatAlergi(item?.riwayatalergi).toLowerCase().trim()
+    
+    if (seen.has(riwayat)) {
+      return false
+    }
+    seen.add(riwayat)
+    return true
+  })
+})
 </script>
 
 <style lang="scss" scoped>
