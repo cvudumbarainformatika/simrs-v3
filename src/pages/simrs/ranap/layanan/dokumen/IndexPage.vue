@@ -26,7 +26,8 @@
               <q-tab-panels v-model="innerTab" animated swipeable vertical transition-prev="jump-up"
                 transition-next="jump-up" class="bg-indigo-1 fit">
                 <q-tab-panel v-for="menu in menus" :key="menu.name" :name="menu?.name" class="fit q-pa-none">
-                  <component :is="menu?.comp" :pasien="pasien" :menu="menu" :kasus="kasus" :data-header="dataHeader" />
+                  <component :is="menu?.comp" :pasien="pasien" :menu="menu" :kasus="kasus" :data-header="dataHeader"
+                    :pulang="pulang" />
                 </q-tab-panel>
               </q-tab-panels>
             </div>
@@ -39,6 +40,7 @@
 
 <script setup>
 // eslint-disable-next-line no-unused-vars
+import { computed } from 'vue'
 import { defineAsyncComponent, onMounted, ref, shallowRef } from 'vue'
 
 const menus = ref([
@@ -71,7 +73,7 @@ const menus = ref([
   },
   {
     name: 'asessment-gizi',
-    label: 'Asuhan Gizi',
+    label: 'ASUHAN GIZI',
     title: 'FORM PAGT',
     desc: '(Proses Asuhan Gizi Terstandar)',
     icon: 'icon-my-file_sign',
@@ -89,7 +91,7 @@ const menus = ref([
   },
   {
     name: 'resume-page',
-    label: 'Resume Medis',
+    label: 'RESUME MEDIS',
     title: 'RESUME MEDIS ( MEDICAL DISCHARGE SUMMARY )',
     desc: 'Resume Medis Pasien',
     icon: 'icon-my-file_sign',
@@ -98,7 +100,7 @@ const menus = ref([
   },
   {
     name: 'discharge-page',
-    label: 'Discharge Planning',
+    label: 'DISCHARGE PLANNING',
     title: 'DISCHARGE PLANNING',
     desc: 'Discharge Planning',
     icon: 'icon-my-file_sign',
@@ -107,7 +109,7 @@ const menus = ref([
   },
   {
     name: 'summary-page',
-    label: 'Surat Kontrol',
+    label: 'SURAT KONTROL',
     title: 'SURAT KONTROL',
     desc: 'Surat Kontrol',
     icon: 'icon-my-file_sign',
@@ -116,7 +118,7 @@ const menus = ref([
   },
   {
     name: 'edukasi-page',
-    label: 'Edukasi Pasien',
+    label: 'EDUKASI PASIEN',
     title: 'EDUKASI PASIEN',
     desc: 'Edukasi KIE Pasien',
     icon: 'icon-my-file_sign',
@@ -134,7 +136,7 @@ const menus = ref([
   },
   {
     name: 'surat-kematian',
-    label: 'Surat Kematian',
+    label: 'SURAT KEMATIAN',
     title: 'SURAT KETERANGAN KEMATIAN',
     desc: 'Surat Kematian Pasien',
     icon: 'icon-my-file_sign',
@@ -149,6 +151,15 @@ const menus = ref([
     icon: 'icon-my-file_sign',
     nakes: ['1', '2', '3'],
     comp: shallowRef(defineAsyncComponent(() => import('./informconsent/IndexPage.vue')))
+  },
+  {
+    name: 'pulang-paksa',
+    label: 'PULANG PAKSA',
+    title: 'SURAT PERNYATAAN PULANG PAKSA',
+    desc: 'Formulir Pulang Paksa',
+    icon: 'icon-my-file_sign',
+    nakes: ['1', '2', '3'],
+    comp: shallowRef(defineAsyncComponent(() => import('./pulangpaksa/IndexPage.vue')))
   }
 ])
 
@@ -177,8 +188,13 @@ const splitterModel = ref(18)
 
 const innerTab = ref(menus.value[0].name)
 
+const pulang = computed(() => {
+
+  // BELUM PASTI
+  return props.pasien
+})
 onMounted(() => {
-  // console.log('pasien', props?.kasus)
+  console.log('pasien', props?.pasien)
   innerTab.value = menus.value[0].name
   Promise.all([
     // pengunjungRanap.getNakes(),
