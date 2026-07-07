@@ -54,8 +54,9 @@ export const usePasienPulangRanapStore = defineStore('pasien-pulang-ranap-store'
     // },
     async getmastercarakeluar() {
       const resp = await api.get('v1/simrs/ranap/layanan/pulang/getmastercarakeluar')
-      console.log('getmastercarakeluar', resp)
+      // console.log('getmastercarakeluar', resp)
 
+      // Permintaan sendiri dijadikan 1 dengan PULANG PAKSA
       const tanpaPermintaansendiri = resp.data.filter(x => x?.rs1 !== 'C002')
       this.carakeluars = tanpaPermintaansendiri
     },
