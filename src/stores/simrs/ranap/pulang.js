@@ -54,9 +54,10 @@ export const usePasienPulangRanapStore = defineStore('pasien-pulang-ranap-store'
     // },
     async getmastercarakeluar() {
       const resp = await api.get('v1/simrs/ranap/layanan/pulang/getmastercarakeluar')
-      // console.log('getmastercarakeluar', resp)
+      console.log('getmastercarakeluar', resp)
 
-      this.carakeluars = resp.data
+      const tanpaPermintaansendiri = resp.data.filter(x => x?.rs1 !== 'C002')
+      this.carakeluars = tanpaPermintaansendiri
     },
 
     async simpandata(pasien) {
@@ -131,7 +132,7 @@ export const usePasienPulangRanapStore = defineStore('pasien-pulang-ranap-store'
       this.form = {
 
         prognosis: pasien?.prognosis ?? null,
-        caraKeluar: pasien?.carakeluar ?? null,
+        caraKeluar: pasien?.carakeluar === 'C002' ? 'C010' : (pasien?.carakeluar ?? null),
         tglKeluar: pasien?.tglKeluar ? date.formatDate(pasien?.tglKeluar, 'YYYY-MM-DD') : date.formatDate(Date.now(), 'YYYY-MM-DD'),
 
         jamMeninggal: pasien?.jamMeninggal ?? null,
