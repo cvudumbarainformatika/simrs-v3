@@ -499,7 +499,7 @@ const listFilterredByDate = computed(() => {
 })
 
 const lihatResikoJatuh = computed(() => {
-  // console.log('computed', data)
+  console.log('computed', data)
   let resikoJatuh = '-'
   let val = data?.awal?.find(x => x?.nakes === '2')?.penilaian
   if (data?.cppt?.length) {
