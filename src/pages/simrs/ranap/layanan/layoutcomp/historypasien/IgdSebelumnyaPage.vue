@@ -21,7 +21,7 @@
       <template #after>
         <div class="column fit">
           <div class="col fit">
-            <q-tab-panels v-model="menuTab" animated swipeable vertical transition-prev="jump-up"
+            <q-tab-panels v-model="menuTab" animated vertical transition-prev="jump-up"
               transition-next="jump-up" class="fit">
               <q-tab-panel v-for="menu in menus" :key="menu.name" :name="menu?.name" class="fit q-pa-none">
                 <div class="fit">
