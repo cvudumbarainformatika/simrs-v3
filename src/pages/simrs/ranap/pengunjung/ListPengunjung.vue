@@ -103,6 +103,7 @@
                 :nama-sama-mirip="item.nama_sama_mirip" />
               <PopupPenolakanResusitasi v-if="item?.penolakan_resusitasi && item?.penolakan_resusitasi?.length > 0"
                 :penolakan-resusitasi="item.penolakan_resusitasi" />
+              <PopupMpp v-if="item?.pasien_mpp === true" />
             </div>
 
           </q-item-section>
@@ -129,6 +130,7 @@ import PopupAlergi from './PopupAlergi.vue'
 import PopupResikoJatuh from './PopupResikoJatuh.vue'
 import PopupNamaSama from './PopupNamaSama.vue'
 import PopupPenolakanResusitasi from './PopupPenolakanResusitasi.vue'
+import PopupMpp from './PopupMpp.vue'
 import { calcDate, humanDate } from 'src/modules/formatter'
 import { useTriageIgd } from 'src/stores/simrs/igd/triage'
 import { usePengunjungRanapStore } from 'src/stores/simrs/ranap/pengunjung'
