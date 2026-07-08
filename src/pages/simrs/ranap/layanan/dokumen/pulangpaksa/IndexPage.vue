@@ -7,7 +7,7 @@
       </div>
     </div>
     <div class="col full-height q-pa-md scroll">
-      <PulangPaksaPage id="resume" ref="refResume" :pasien="pasien" :pulang="props?.pulang" :menu="menu" />
+      <PulangPaksaPage id="resume" ref="refResume" :pasien="pasien" :menu="menu" />
     </div>
   </div>
 </template>
@@ -32,11 +32,7 @@ defineProps({
   menu: {
     type: Object,
     default: null
-  },
-  pulang: {
-    type: Object,
-    default: null
-  },
+  }
 })
 
 </script>
