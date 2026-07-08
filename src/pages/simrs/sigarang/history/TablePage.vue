@@ -539,14 +539,14 @@
 
               <div class="q-mb-md">
                 Pada hari ini <span class="text-weight-bold text-italic">{{ date.formatDate(item.tanggal, 'dddd')
-                }}</span>
+                  }}</span>
                 tanggal <span class="text-weight-bold text-italic">{{
                   tanggalTerbilang(date.formatDate(item.tanggal, 'DD'))
-                  }}</span>
+                }}</span>
                 bulan <span class="text-weight-bold text-italic">{{ date.formatDate(item.tanggal, 'MMMM') }}</span>
                 tahun <span class="text-weight-bold text-italic">{{ tahunTerbilang(date.formatDate(item.tanggal,
                   'YYYY'))
-                }}</span>,
+                  }}</span>,
                 <!-- tahun <span class="text-weight-bold text-italic">{{ tahunTerbilang('3211') }}</span>, -->
                 bertempat di UOBK RSUD Dokter Mohamad Saleh Kota Probolinggo, kami yang bertanda tangan di bawah ini:
               </div>
@@ -683,7 +683,7 @@
                   tanggal {{ dateFullFormat(tandatangan?.nomorSurat?.tgl_pentepan) ?? 'Tgl Penetapan tidak ditemukan' }}
                   Tentang
                   Pejabat Pengelolaan Keuangan dan Barang pada UOBK RSUD Dokter Mohamad Saleh Kota Probolinggo Tahun
-                  Anggaran 2025,
+                  Anggaran {{ getYear(tandatangan?.nomorSurat?.tgl_pentepan) }},
                   yang selanjutnya disebut <span class="text-weight-bold">PIHAK KEDUA.</span>
                 </div>
               </div>
@@ -984,7 +984,7 @@
 <script setup>
 // import { date } from '.quasar'
 import { computed, onMounted, ref, watch } from 'vue'
-import { dateFullFormat, dateFull, formatRp } from 'src/modules/formatter'
+import { dateFullFormat, dateFull, formatRp, getYear } from 'src/modules/formatter'
 import { useDetailHistoryTable } from 'src/stores/simrs/logistik/sigarang/history/details'
 import { useEditPemesananStore } from 'src/stores/simrs/logistik/sigarang/history/edit/pemesanan'
 import { useEditPenerimaanStore } from 'src/stores/simrs/logistik/sigarang/history/edit/penerimaan'

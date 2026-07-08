@@ -92,33 +92,33 @@ const formatDoubleKoma = (value, dg) => {
 
 const formattanpaRp = (value) => {
   if (value !== null && value !== '') {
-    const numValue = Number(value);
+    const numValue = Number(value)
     const formattedValue = Math.abs(numValue)
       .toFixed(2)
-      .replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, '$1,');
+      .replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, '$1,')
 
     if (numValue < 0) {
-      return `(${formattedValue})`;
+      return `(${formattedValue})`
     }
-    return `${formattedValue}`;
+    return `${formattedValue}`
   }
-  return '';
+  return ''
 }
 
 const formatDenganRp = (value) => {
   if (value !== null && value !== '') {
-    const numValue = Number(value);
+    const numValue = Number(value)
     const formattedValue = Math.abs(numValue)
       .toFixed(2)
-      .replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, '$1,');
+      .replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g, '$1,')
 
     if (numValue < 0) {
-      return `(Rp. ${formattedValue})`;
+      return `(Rp. ${formattedValue})`
     }
-    return `Rp. ${formattedValue}`;
+    return `Rp. ${formattedValue}`
   }
-  return '';
-};
+  return ''
+}
 const dateFullFormat = (val) => {
   return date.formatDate(val, 'DD MMMM YYYY')
 }
@@ -149,8 +149,11 @@ const dateOnly = (val) => {
 const dayName = (val) => {
   return date.formatDate(val, 'dddd')
 }
+const getYear = (val) => {
+  return date.formatDate(val, 'YYYY')
+}
 
-function titleCase(str) {
+function titleCase (str) {
   const splitStr = str.toLowerCase().split(' ')
   for (let i = 0; i < splitStr.length; i++) {
     // You do not need to check if i is larger than splitStr length, as your for does that for you
@@ -179,55 +182,55 @@ const olahUang = (val) => {
 
 // **Format Waktu ke Bahasa Indonesia dengan Update Real-Time**
 const formatTime = (timestamp) => {
-  const now = new Date();
-  const past = new Date(timestamp);
-  const diffMs = now - past;
-  const diffSec = Math.floor(diffMs / 1000);
-  const diffMin = Math.floor(diffSec / 60);
-  const diffHour = Math.floor(diffMin / 60);
-  const diffDay = Math.floor(diffHour / 24);
+  const now = new Date()
+  const past = new Date(timestamp)
+  const diffMs = now - past
+  const diffSec = Math.floor(diffMs / 1000)
+  const diffMin = Math.floor(diffSec / 60)
+  const diffHour = Math.floor(diffMin / 60)
+  const diffDay = Math.floor(diffHour / 24)
 
-  if (diffSec < 60) return "baru saja";
-  if (diffMin < 60) return `${diffMin} menit yang lalu`;
-  if (diffHour < 24) return `${diffHour} jam yang lalu`;
-  if (diffDay < 7) return `${diffDay} hari yang lalu`;
+  if (diffSec < 60) return "baru saja"
+  if (diffMin < 60) return `${diffMin} menit yang lalu`
+  if (diffHour < 24) return `${diffHour} jam yang lalu`
+  if (diffDay < 7) return `${diffDay} hari yang lalu`
 
   return past.toLocaleDateString("id-ID", {
     weekday: "long",
     day: "numeric",
     month: "long",
     year: "numeric",
-  });
-};
-
-
-function numberToWordsID(num) {
-  const angka = ["", "Satu", "Dua", "Tiga", "Empat", "Lima", "Enam", "Tujuh", "Delapan", "Sembilan", "Sepuluh", "Sebelas"];
-
-  if (num < 12) return angka[num];
-  if (num < 20) return numberToWordsID(num - 10) + " Belas";
-  if (num < 100) return numberToWordsID(Math.floor(num / 10)) + " Puluh " + numberToWordsID(num % 10);
-  if (num < 200) return "Seratus " + numberToWordsID(num - 100);
-  if (num < 1000) return numberToWordsID(Math.floor(num / 100)) + " Ratus " + numberToWordsID(num % 100);
-  if (num < 2000) return "Seribu " + numberToWordsID(num - 1000);
-  if (num < 1000000) return numberToWordsID(Math.floor(num / 1000)) + " Ribu " + numberToWordsID(num % 1000);
-  if (num < 1000000000) return numberToWordsID(Math.floor(num / 1000000)) + " Juta " + numberToWordsID(num % 1000000);
-
-  return "";
+  })
 }
 
-function tanggalEjaIndonesia(dateStr) {
+
+function numberToWordsID (num) {
+  const angka = ["", "Satu", "Dua", "Tiga", "Empat", "Lima", "Enam", "Tujuh", "Delapan", "Sembilan", "Sepuluh", "Sebelas"]
+
+  if (num < 12) return angka[num]
+  if (num < 20) return numberToWordsID(num - 10) + " Belas"
+  if (num < 100) return numberToWordsID(Math.floor(num / 10)) + " Puluh " + numberToWordsID(num % 10)
+  if (num < 200) return "Seratus " + numberToWordsID(num - 100)
+  if (num < 1000) return numberToWordsID(Math.floor(num / 100)) + " Ratus " + numberToWordsID(num % 100)
+  if (num < 2000) return "Seribu " + numberToWordsID(num - 1000)
+  if (num < 1000000) return numberToWordsID(Math.floor(num / 1000)) + " Ribu " + numberToWordsID(num % 1000)
+  if (num < 1000000000) return numberToWordsID(Math.floor(num / 1000000)) + " Juta " + numberToWordsID(num % 1000000)
+
+  return ""
+}
+
+function tanggalEjaIndonesia (dateStr) {
   const bulan = [
     "", "Januari", "Februari", "Maret", "April", "Mei", "Juni",
     "Juli", "Agustus", "September", "Oktober", "November", "Desember"
-  ];
+  ]
 
-  const d = new Date(dateStr);
-  const tgl = d.getDate();
-  const bln = d.getMonth() + 1;
-  const thn = d.getFullYear();
+  const d = new Date(dateStr)
+  const tgl = d.getDate()
+  const bln = d.getMonth() + 1
+  const thn = d.getFullYear()
 
-  return `Tanggal ${numberToWordsID(tgl)}, Bulan ${bulan[bln]}, Tahun ${numberToWordsID(thn)}`.replace(/\s+/g, " ").trim();
+  return `Tanggal ${numberToWordsID(tgl)}, Bulan ${bulan[bln]}, Tahun ${numberToWordsID(thn)}`.replace(/\s+/g, " ").trim()
 }
 
 // Contoh penggunaan
@@ -260,5 +263,5 @@ export {
   formattanpaRp,
   formatDenganRp,
   formatDoubleKoma,
-  getNewLine, tanggalEjaIndonesia
+  getNewLine, tanggalEjaIndonesia, getYear
 }
