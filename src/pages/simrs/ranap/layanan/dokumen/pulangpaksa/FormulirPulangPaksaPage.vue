@@ -208,7 +208,11 @@ const props = defineProps({
   menu: {
     type: Object,
     default: null
-  }
+  },
+  pulang: {
+    type: Object,
+    default: null
+  },
 })
 
 // console.log('props', props?.pasien);
