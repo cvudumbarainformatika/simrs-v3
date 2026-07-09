@@ -250,6 +250,7 @@ export const usePengunjungPoliStore = defineStore('pengunjung-poli-store', {
             findPasien[0].diagnosa = responseData?.diagnosa
             findPasien[0].diagnosakeperawatan = responseData?.diagnosakeperawatan
             findPasien[0].diagnosakebidanan = responseData?.diagnosakebidanan
+            findPasien[0].diagnosamedis = responseData?.diagnosamedis
             findPasien[0].diet = responseData?.diet
             findPasien[0].edukasi = responseData?.edukasi
             findPasien[0].fisio = responseData?.fisio

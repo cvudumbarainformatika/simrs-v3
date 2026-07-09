@@ -107,6 +107,7 @@
             </div>
           </div>
           <div class="col-7">
+            <!-- {{ pasien?.diagnosamedis }} -->
             <div v-if="pasien?.memodiagnosa" class="row">
               <div>{{ pasien?.memodiagnosa }} (Diagnosa Dokter)</div>
             </div>
@@ -746,7 +747,7 @@ const fisik = usePemeriksaanFisik()
 store.setParams('noreg', props.pasien?.noreg)
 store.getData()
 // eslint-disable-next-line no-unused-vars
-function getYT(val) {
+function getYT (val) {
   if (val === 1 || val === '1') {
     return 'Ya'
   }
@@ -758,7 +759,7 @@ function getYT(val) {
   }
 }
 // eslint-disable-next-line no-unused-vars
-function getKesadaran(val) {
+function getKesadaran (val) {
   const temp = fisik.optionsTingkatkesadaran.filter(a => parseInt(a.value) === parseInt(val))
   if (temp?.length) {
     return temp[0].label
@@ -767,7 +768,7 @@ function getKesadaran(val) {
     return '-'
   }
 }
-function filteredObat(item) {
+function filteredObat (item) {
   const obats = []
   const retur = store.item?.newapotekrajalretur
   // console.log('item', item, retur)
@@ -809,7 +810,7 @@ function filteredObat(item) {
 
 }
 // eslint-disable-next-line no-unused-vars
-function tekananDarah(val) {
+function tekananDarah (val) {
   const normal = val >= 100 && val <= 120
   const prahipertensi = val >= 121 && val <= 139
   const hipertensiderajat1 = val >= 140 && val <= 159
@@ -838,7 +839,7 @@ function tekananDarah(val) {
   return obj
 }
 // eslint-disable-next-line no-unused-vars
-function tekananDarahDias(val) {
+function tekananDarahDias (val) {
   const normal = val >= 60 && val <= 79
   const prahipertensi = val >= 80 && val <= 89
   const hipertensiderajat1 = val >= 90 && val <= 99
@@ -867,7 +868,7 @@ function tekananDarahDias(val) {
   return obj
 }
 // eslint-disable-next-line no-unused-vars
-function suhu(val) {
+function suhu (val) {
   const hipotermia = val < 35
   const normal = val >= 35 && val < 37
   const pireksia = val >= 37 && val <= 41.1
@@ -893,7 +894,7 @@ function suhu(val) {
   return obj
 }
 // eslint-disable-next-line no-unused-vars
-function nadi(val) {
+function nadi (val) {
   const bradikardi = val < 60
   const normal = val >= 61 && val <= 100
   const takikardi = val > 100
