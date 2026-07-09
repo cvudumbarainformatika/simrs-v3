@@ -23,11 +23,10 @@
         <template #after>
           <div class="column fit">
             <div class="col fit">
-              <q-tab-panels v-model="innerTab" animated vertical transition-prev="jump-up"
-                transition-next="jump-up" class="bg-indigo-1 fit">
+              <q-tab-panels v-model="innerTab" animated vertical transition-prev="jump-up" transition-next="jump-up"
+                class="bg-indigo-1 fit">
                 <q-tab-panel v-for="menu in menus" :key="menu.name" :name="menu?.name" class="fit q-pa-none">
-                  <component :is="menu?.comp" :pasien="pasien" :menu="menu" :kasus="kasus" :data-header="dataHeader"
-                    :pulang="pulang" />
+                  <component :is="menu?.comp" :pasien="pasien" :menu="menu" :kasus="kasus" :data-header="dataHeader" />
                 </q-tab-panel>
               </q-tab-panels>
             </div>
@@ -188,11 +187,6 @@ const splitterModel = ref(18)
 
 const innerTab = ref(menus.value[0].name)
 
-const pulang = computed(() => {
-
-  // BELUM PASTI
-  return props.pasien
-})
 onMounted(() => {
   console.log('pasien', props?.pasien)
   innerTab.value = menus.value[0].name

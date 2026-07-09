@@ -41,27 +41,27 @@
           <!-- biodata -->
           <div class="row q-px-sm q-pb-xs full-width">
             <div class="col-12">
-              Yang bertanda tangan di bawah ini Suami / Istri / Ibu / Ayah / Anak dari :
+              Yang bertanda tangan di bawah ini :
             </div>
           </div>
           <div class="row items-center q-px-md q-pb-xs full-width">
             <div class="col">
               <div class="row">
                 <div class="col-3">Nama</div>
-                <div class="col-9">:{{ pulang?.nama_penanggungjawab ?? '-' }}</div>
+                <div class="col-9">: {{ pasien?.nama_penanggungjawab ?? '-' }}</div>
               </div>
               <div class="row">
                 <div class="col-3">Umur / Kelamin</div>
-                <div class="col-9">: {{ pulang?.umur_penanggungjawab ?? '-' }} / {{ pulang?.kelamin_penanggungjawab ??
+                <div class="col-9">: {{ pasien?.umur_penanggungjawab ?? '-' }} / {{ pasien?.kelamin_penanggungjawab ??
                   '-' }} </div>
               </div>
               <div class="row">
                 <div class="col-3">Alamat</div>
-                <div class="col-9">: {{ pulang?.alamat_penanggungjawab ?? '-' }}</div>
+                <div class="col-9">: {{ pasien?.alamat_penanggungjawab ?? '-' }}</div>
               </div>
               <div class="row">
                 <div class="col-3">Bukti diri / KTP</div>
-                <div class="col-9">: {{ pulang?.identitas_penanggungjawab ?? '-' }}</div>
+                <div class="col-9">: {{ pasien?.identitas_penanggungjawab ?? '-' }}</div>
               </div>
             </div>
           </div>
@@ -85,17 +85,16 @@
                 <div class="col-3">Nomor Reg. / RM</div>
                 <div class="col-9">: {{ pasien?.noreg ?? '-' }} / {{ pasien?.norm ?? '-' }}</div>
               </div>
-              <div class="row">
-                <div class="col text-justify">Menyatakan menolak nasehat Dokter / Petugas {{ pasien?.dokter }} untuk
-                  dirawat
-                  selanjutnya
-                  dan telah memaksa pulang atas
-                  kemauan sendiri dengan menanggung sendiri segala akibatnya, dengan alasan karena <span
-                    class="text-weight-bold">{{
-                      pasien?.tindaklanjut_sambung ?? '-' }}</span>.
-                </div>
-
-              </div>
+            </div>
+          </div>
+          <div class="row q-px-sm q-pb-xs full-width">
+            <div class="col text-justify">Menyatakan menolak nasehat Dokter / Petugas {{ pasien?.dokter }} untuk
+              dirawat
+              selanjutnya
+              dan telah memaksa pulang atas
+              kemauan sendiri dengan menanggung sendiri segala akibatnya, dengan alasan karena <span
+                class="text-weight-bold">{{
+                  pasien?.alasan_pulangpaksa ?? '-' }}</span>.
             </div>
           </div>
 
@@ -108,9 +107,13 @@
               <div class="text-bold q-py-xs q-pt-sm">
                 Yang membuat pernyataan
               </div>
-              <div style="padding-bottom: 80px" />
+              <div style="padding-bottom: 20px" />
+              <div>
+                <img v-if="pasien?.ttd_yg_menyatakan" :src="pasien?.ttd_yg_menyatakan" alt="ttd yang menyatakan"
+                  width="80">
+              </div>
               <div class="q-py-xs">
-                {{ pulang?.nama_penanggungjawab ?? '(...............................................................)'
+                {{ pasien?.nama_penanggungjawab ?? '(...............................................................)'
                 }}
               </div>
 
@@ -174,11 +177,6 @@
 
           </div> -->
 
-
-
-
-
-
         </div>
         <!-- end -->
       </div>
@@ -195,8 +193,9 @@
 import { computed, onBeforeMount, onMounted, ref } from 'vue'
 import { humanDate, jamTnpDetik, getNewLine } from 'src/modules/formatter.js'
 import { usePengunjungRanapStore } from 'src/stores/simrs/ranap/pengunjung'
-import { api } from 'src/boot/axios';
+import { api, pathImg } from 'src/boot/axios';
 import { useDiagnosaStore } from 'src/stores/simrs/ranap/diagnosa';
+import { imageToBase64 } from 'src/modules/imgBase64';
 // import { pathImg } from 'src/boot/axios'
 // import { imageToBase64 } from 'src/modules/imgBase64'
 
@@ -209,7 +208,7 @@ const props = defineProps({
     type: Object,
     default: null
   },
-  pulang: {
+  item: {
     type: Object,
     default: null
   },
@@ -248,6 +247,9 @@ const qrDokter = computed(() => {
   return `https://rsud.probolinggokota.go.id/dokumen-simrs/legalitas/${enc}`
 
 })
+onMounted(() => {
+  initImage(props?.pasien)
+})
 
 onBeforeMount(() => {
   // console.log('pasien', props?.pasien);
@@ -263,6 +265,20 @@ const getDpjpData = async () => {
 
   }
 
+}
+
+function initImage(item) {
+  console.log('item imgeee', item);
+
+  const ttdYgMenyatakan = pathImg + item?.ttdYgMenyatakan
+
+  Promise.all([
+    imageToBase64(ttdYgMenyatakan, (base64Image) => {
+      // document.getElementsByClassName('ttd-yg-menyatakan')[0].src = base64Image
+      // document.getElementsByClassName('ttd-yg-menyatakan')[1].src = base64Image
+      item.ttd_yg_menyatakan = base64Image ?? ''
+    })
+  ])
 }
 
 const getSurat = async () => {

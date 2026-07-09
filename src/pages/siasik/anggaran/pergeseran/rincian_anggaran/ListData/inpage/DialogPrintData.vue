@@ -1,6 +1,6 @@
 <template>
   <q-dialog persistent backdrop-filter="blur(4px)">
-    <q-card style="width:100%; max-width: 1200vw; height: 600px">
+    <q-card style="width: 95vw; max-width: 1400px; height: 95vh;">
       <q-layout view="lHh Lpr lFf" container class="shadow-2 rounded-borders">
         <q-header elevated>
           <q-bar class="bg-black text-white">
@@ -543,5 +543,52 @@ td {
   max-height: 50px;
   padding-left: 10px;
   padding-right: 10px;
+}
+
+@page {
+  size: A4 portrait;
+  margin: 10mm;
+}
+
+@page {
+  size: A4 landscape;
+  margin: 8mm;
+}
+
+@media print {
+
+  html,
+  body {
+    width: 297mm;
+    height: 210mm;
+  }
+
+  #printMe {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    font-size: 10px !important;
+    line-height: 1.15;
+    box-sizing: border-box;
+  }
+
+  #printMe * {
+    font-size: 10px !important;
+    line-height: 1.15;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+  }
+
+  th,
+  td {
+    padding: 2px 3px !important;
+    vertical-align: middle;
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
 }
 </style>
