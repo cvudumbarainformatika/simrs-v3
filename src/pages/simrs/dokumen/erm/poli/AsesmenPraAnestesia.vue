@@ -533,9 +533,9 @@ onMounted(async () => {
     .then((resp) => {
       const data = resp?.data[0] ?? null
 
-      const key = Object.keys(data)
+      const key = resp?.data?.length > 0 ? Object.keys(data) : []
       if (key.length > 0) dc = data?.user
-      console.log('resp', key, data)
+      // console.log('resp', key, data)
 
       store.initForm(store.resultPraAnastesi?.length ? store.resultPraAnastesi[0] : null)
     })
