@@ -335,7 +335,7 @@
             <div class="col-8">
               <div class="flex">
                 : {{ item?.hubunganDgPasien }} <span v-if="item?.hubunganDgPasien === 'Keluarga'"> {{ item?.keluarga
-                  }}</span>
+                }}</span>
               </div>
             </div>
           </div>
@@ -369,7 +369,7 @@
             <div class="col-8">
               <div class="flex justify-between">
                 <div>: {{ pasien?.nama }} <span class="q-ml-lg">({{ pasien?.kelamin === 'Perempuan' ? 'P' : 'L'
-                    }})*</span></div>
+                }})*</span></div>
                 <div class="self-end">
                   Tanggal Lahir : {{ pasien?.tgllahir }}
                 </div>
@@ -460,7 +460,7 @@
                 {{ item?.pelaksana }}
               </td>
               <td class="text-center f-12">
-                {{ item?.pelaksana }}
+                {{ item?.pengedukasi }}
               </td>
               <td class="text-center">
                 {{ item?.saksiPasien }}
@@ -769,7 +769,7 @@
               <div class="col-8">
                 <div class="flex justify-between">
                   <div>: {{ pasien?.nama }} <span class="q-ml-lg">({{ pasien?.kelamin === 'Perempuan' ? 'P' : 'L'
-                      }})*</span></div>
+                  }})*</span></div>
                 </div>
               </div>
             </div>
