@@ -220,6 +220,26 @@
                         <q-input v-model="store.form.alamat_penanggungjawab" dense outlined standout="bg-yellow-3"
                           label="Alamat" />
                       </div>
+
+                      <div class="col-12" v-if="store.form.atasdasarpulang === 'Paksa'">
+                        <div class="row q-col-gutter-sm">
+
+                          <div class="col-12" style="min-height: 150px;">
+                            <div class="column full-height flex-center relative-position q-pa-sm">
+                              <div>
+                                <app-signature :ttd="store.form.ttdYgMenyatakan" :width="250" :height="150"
+                                  label-ttd="TTD Penanggung Jawab" @save-ttd="(val) => store.form.ttdYgMenyatakan = val"
+                                  :pasien="pasien" uuid="ttdYgMenyatakan" @signature="(val) => {
+                                    // store.setForm('ttdpasien', val)
+                                    store.form.ttdYgMenyatakan = val
+                                  }" />
+                              </div>
+                            </div>
+                          </div>
+
+                        </div>
+                      </div>
+
                     </div>
                   </q-tab-panel>
                 </q-tab-panels>
@@ -248,6 +268,7 @@ import FormPlannNicu from './planpulang/FormPlannNicu.vue'
 import FormPlannIccu from './planpulang/FormPlannIccu.vue'
 import FormPlanHcu from './planpulang/FormPlanHcu.vue'
 import { ref } from 'vue'
+import { defineAsyncComponent } from 'vue'
 
 const store = usePlannStore()
 const refForm = ref()
@@ -262,6 +283,11 @@ const optionpulangs = ref(['Sembuh', 'Paksa', 'Meninggal'])
 const optionkelamin = ref(['Perempuan', 'Laki-laki'])
 const optionalasan = ref(['Biaya', 'Menolak Asuhan', 'Pengobatan Alternatif'])
 const optionketerangan = ref(['Preventif', 'Paliatif', 'Kuratif', 'Rehabilitatif'])
+
+const TtdWacom = defineAsyncComponent(() => {
+  return import('src/components/~static/TtdWacomStu540.vue')
+})
+
 // const optionKondisiKhusus = ref([
 //   {
 //     label: 'Tidak Ada',
