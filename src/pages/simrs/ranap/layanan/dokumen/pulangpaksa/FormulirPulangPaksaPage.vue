@@ -85,17 +85,16 @@
                 <div class="col-3">Nomor Reg. / RM</div>
                 <div class="col-9">: {{ pasien?.noreg ?? '-' }} / {{ pasien?.norm ?? '-' }}</div>
               </div>
-              <div class="row">
-                <div class="col text-justify">Menyatakan menolak nasehat Dokter / Petugas {{ pasien?.dokter }} untuk
-                  dirawat
-                  selanjutnya
-                  dan telah memaksa pulang atas
-                  kemauan sendiri dengan menanggung sendiri segala akibatnya, dengan alasan karena <span
-                    class="text-weight-bold">{{
-                      pasien?.alasan_pulangpaksa ?? '-' }}</span>.
-                </div>
-
-              </div>
+            </div>
+          </div>
+          <div class="row q-px-sm q-pb-xs full-width">
+            <div class="col text-justify">Menyatakan menolak nasehat Dokter / Petugas {{ pasien?.dokter }} untuk
+              dirawat
+              selanjutnya
+              dan telah memaksa pulang atas
+              kemauan sendiri dengan menanggung sendiri segala akibatnya, dengan alasan karena <span
+                class="text-weight-bold">{{
+                  pasien?.alasan_pulangpaksa ?? '-' }}</span>.
             </div>
           </div>
 
