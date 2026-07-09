@@ -109,6 +109,13 @@ const documents = ref([
   {
     icon: 'icon-mat-email',
     color: 'primary',
+    jenis: 'PRA-BEDAH',
+    label: 'Asesmen Pra Bedah',
+    value: 'AsesmenPraBedah'
+  },
+  {
+    icon: 'icon-mat-email',
+    color: 'primary',
     jenis: 'SURGICAL',
     label: 'Checklist Surgical Safety',
     value: 'SurgicalSafety'
@@ -199,6 +206,7 @@ const comp = [
   { nama: 'Catatan', page: defineAsyncComponent(() => import('src/pages/simrs/dokumen/erm/poli/CatatanRawatJalanPage.vue')) },
   { nama: 'AsesmenAwalKeperawatan', page: defineAsyncComponent(() => import('src/pages/simrs/dokumen/erm/poli/AsesmenAwalMedisRj.vue')) },
   { nama: 'AsesmenPraAnestesia', page: defineAsyncComponent(() => import('src/pages/simrs/dokumen/erm/poli/AsesmenPraAnestesia.vue')) },
+  { nama: 'AsesmenPraBedah', page: defineAsyncComponent(() => import('src/pages/simrs/dokumen/erm/poli/AssesmentPraBedah.vue')) },
   { nama: 'SurgicalSafety', page: defineAsyncComponent(() => import('src/pages/simrs/dokumen/erm/ok/comp/DokumenSurgicalSafety.vue')) },
   { nama: 'SEP', page: defineAsyncComponent(() => import('src/pages/simrs/poli/dokumen/Sep/SepPage.vue')) },
   { nama: 'ERESEP', page: defineAsyncComponent(() => import('src/pages/simrs/igd/layanan/dokumen/dokumenisi/Farmasi/FarmasiPage.vue')) },

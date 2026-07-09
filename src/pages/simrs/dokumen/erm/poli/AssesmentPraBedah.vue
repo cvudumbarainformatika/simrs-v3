@@ -102,33 +102,6 @@
             PEMERIKSAAN FISIK
           </div>
 
-          <div class="row q-col-gutter-md q-mb-md">
-            <div class="col-auto flex">
-              <div>Tinggi : </div>
-              <div> {{ pasien?.pemeriksaanfisik?.length ? pasien?.pemeriksaanfisik[0]?.tinggibadan : '..........' }} cm
-              </div>
-            </div>
-            <div class="col-auto flex">
-              <div>Berat : </div>
-              <div> {{ pasien?.pemeriksaanfisik?.length ? pasien?.pemeriksaanfisik[0]?.beratbadan : '..........' }} kg
-              </div>
-            </div>
-            <div class="col-auto flex">
-              <div>Tekanan Darah : </div>
-              <div> {{ pasien?.pemeriksaanfisik?.length ? pasien?.pemeriksaanfisik[0]?.sistole + '/' +
-                pasien?.pemeriksaanfisik[0]?.diastole : '..........' }}</div>
-            </div>
-            <div class="col-auto flex">
-              <div>Nadi : </div>
-              <div> {{ pasien?.pemeriksaanfisik?.length ? pasien?.pemeriksaanfisik[0]?.rs4 : '..........' }}</div>
-            </div>
-            <div class="col-auto flex">
-              <div>Suhu : </div>
-              <div> {{ pasien?.pemeriksaanfisik?.length ? pasien?.pemeriksaanfisik[0]?.suhutubuh : '..........' }}
-                <span>&#8451;</span>C
-              </div>
-            </div>
-          </div>
 
           <div class="row q-col-gutter-md">
             <div class="col-6">
