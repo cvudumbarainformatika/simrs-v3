@@ -101,10 +101,17 @@ const documents = ref([
   },
   {
     icon: 'icon-mat-email',
-    color: 'primary',
+    color: 'orange',
     jenis: 'PRA-ANES',
     label: 'Asesmen Pra Anestesia',
     value: 'AsesmenPraAnestesia'
+  },
+  {
+    icon: 'icon-mat-email',
+    color: 'orange',
+    jenis: 'PRA-BEDAH',
+    label: 'Asesmen Pra Bedah',
+    value: 'AsesmenPraBedah'
   },
   {
     icon: 'icon-mat-email',
@@ -199,6 +206,7 @@ const comp = [
   { nama: 'Catatan', page: defineAsyncComponent(() => import('../erm/poli/CatatanRawatJalanPage.vue')) },
   { nama: 'AsesmenAwalKeperawatan', page: defineAsyncComponent(() => import('../erm/poli/AsesmenAwalMedisRj.vue')) },
   { nama: 'AsesmenPraAnestesia', page: defineAsyncComponent(() => import('../erm/poli/AsesmenPraAnestesia.vue')) },
+  { nama: 'AsesmenPraBedah', page: defineAsyncComponent(() => import('../erm/poli/AssesmentPraBedah.vue')) },
   { nama: 'SEP', page: defineAsyncComponent(() => import('../../../simrs/poli/dokumen/Sep/SepPage.vue')) },
   { nama: 'ERESEP', page: defineAsyncComponent(() => import('../../../simrs/igd/layanan/dokumen/dokumenisi/Farmasi/FarmasiPage.vue')) },
   { nama: 'Laborat', page: defineAsyncComponent(() => import('../../../simrs/igd/layanan/dokumen/dokumenisi/Laborat/LaboratPage.vue')) },

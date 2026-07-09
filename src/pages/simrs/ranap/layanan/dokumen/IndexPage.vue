@@ -159,6 +159,24 @@ const menus = ref([
     icon: 'icon-my-file_sign',
     nakes: ['1', '2', '3'],
     comp: shallowRef(defineAsyncComponent(() => import('./pulangpaksa/IndexPage.vue')))
+  },
+  {
+    name: 'AsesmenPraAnestesia',
+    label: 'ASESMEN PRA ANESTESIA',
+    title: 'ASESMEN PRA ANESTESIA',
+    desc: 'Dokumen Asesmen Pra Anestesia',
+    icon: 'icon-my-file_sign',
+    nakes: ['1', '2', '3'],
+    comp: shallowRef(defineAsyncComponent(() => import('src/pages/simrs/dokumen/erm/poli/AsesmenPraAnestesia.vue')))
+  },
+  {
+    name: 'AsesmenPraBedah',
+    label: 'ASESMEN PRA BEDAH',
+    title: 'ASESMEN PRA BEDAH',
+    desc: 'Dokumen Asesmen Pra Bedah',
+    icon: 'icon-my-file_sign',
+    nakes: ['1', '2', '3'],
+    comp: shallowRef(defineAsyncComponent(() => import('src/pages/simrs/dokumen/erm/poli/AssesmentPraBedah.vue')))
   }
 ])
 

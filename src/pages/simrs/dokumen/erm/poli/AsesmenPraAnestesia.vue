@@ -458,7 +458,8 @@
             </div>
 
             <div style="height: 150px; width: 150px;" class="column flex-center">
-              <figure v-if="pasien?.rs19 === '1'" class="qrcode full-width">
+              <!-- <figure v-if="pasien?.rs19 === '1'" class="qrcode full-width"> -->
+              <figure v-if="store.resultPraAnastesi?.length > 0" class="qrcode full-width">
                 <vue-qrcode :value="qrUrl" tag="svg" :options="{
                   errorCorrectionLevel: 'Q',
                   color: {
@@ -532,9 +533,9 @@ onMounted(async () => {
     .then((resp) => {
       const data = resp?.data[0] ?? null
 
-      const key = Object.keys(data)
+      const key = resp?.data?.length > 0 ? Object.keys(data) : []
       if (key.length > 0) dc = data?.user
-      console.log('resp', key, data)
+      // console.log('resp', key, data)
 
       store.initForm(store.resultPraAnastesi?.length ? store.resultPraAnastesi[0] : null)
     })
@@ -543,8 +544,9 @@ onMounted(async () => {
 const qrUrl = computed(() => {
   const noreg = props?.pasien?.noreg
   const dok = 'DOKUMEN PRA-ANESTESI.png'
-  const asal = 'RAWAT JALAN'
-  const enc = btoa(`${noreg}|${dok}|${asal}`)
+  const asal = 'PENUNJANG'
+  const petugas = dc?.kdpegsimrs ?? null
+  const enc = btoa(`${noreg}|${dok}|${asal}|${petugas}`)
   return `https://rsud.probolinggokota.go.id/dokumen-simrs/legalitas/${enc}`
   // return `https://xenter.my.id/qr-document?noreg=${noreg}&dokumen=${dok}&asal=${asal}`
 })

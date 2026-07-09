@@ -21,6 +21,8 @@ export const useDokumenIgdStore = defineStore('dokumen-igd-store', {
       { name: 'Serah Terima Ruangan', page: 'Serah Terima Ruangan' },
       { name: 'Pasien Pulang', page: 'Pasien Pulang' },
       { name: 'Surat Rencana Rawat Inap', page: 'Surat Rencana Rawat Inap' },
+      { name: 'Asesmen Pra Anestesia', page: 'Asesmen Pra Anestesia' },
+      { name: 'Asesmen Pra Bedah', page: 'Asesmen Pra Bedah' },
       // { name: 'Bank Darah', page: 'BankDarah' },
       // { name: 'Bank Darah', page: 'BankDarah' },
       // { name: 'Bank Darah', page: 'BankDarah' },
