@@ -71,12 +71,13 @@ const validate = () => {
 
   myForm.value.validate().then(success => {
     if (success) {
-      if (!settings?.ppaTambahan?.includes(props.nakes)) { // jika bukan nakes 4, 5, dan 6
-        if (storePemeriksaanUmum.form.keadaanUmum === null) {
-          notifErrVue('Harap isi form Objective Terlebih dahulu!')
-          return
-        }
-      }
+      // Di kamar operasi, subjective dan objective di-comment/tidak diisi
+      // if (!settings?.ppaTambahan?.includes(props.nakes)) { // jika bukan nakes 4, 5, dan 6
+      //   if (storePemeriksaanUmum.form.keadaanUmum === null) {
+      //     notifErrVue('Harap isi form Objective Terlebih dahulu!')
+      //     return
+      //   }
+      // }
       store.saveCppt(props.pasien, props.kasus)
         .then((res) => {
           emits('exit')
@@ -182,6 +183,7 @@ watch(() => props.pasien?.diagnosamedis, (val) => {
   <q-form ref="myForm" class="fit q-pa-md scroll">
     <div class="row q-col-gutter-md ">
       <!-- subjective / adime(asessment)-->
+      <!-- COMMENTED OUT FOR OK POST-OP
       <div class="col-3">
         <q-card flat bordered rounded class="column full-height" style="min-height: 350px; ">
           <q-card-section class="col-auto flex justify-between items-center">
@@ -206,7 +208,6 @@ watch(() => props.pasien?.diagnosamedis, (val) => {
                 <b>Keluhan Utama : </b>
               </div>
               <div class="q-mt-sm">
-                <!-- <q-input v-model="storeAnamnesis.form.keluhanUtama" type="textarea" class="full-width" /> -->
                 <q-input v-if="!settings?.ppaTambahan?.includes(nakes)" ref="refInputKeluhanUtama"
                   v-model="storeAnamnesis.form.keluhanUtama" outlined type="textarea" stack-label standout="bg-yellow-3"
                   :rules="[val => !!val || 'Harap Diisi terlebih dahulu']" :lazy-rules="true" rows="10"
@@ -218,8 +219,10 @@ watch(() => props.pasien?.diagnosamedis, (val) => {
           </q-card-section>
         </q-card>
       </div>
+      -->
 
       <!-- objective / adime(diagnosa) -->
+      <!-- COMMENTED OUT FOR OK POST-OP
       <div class="col-3">
         <q-card flat bordered rounded class="column full-height" style="min-height: 350px;">
           <q-card-section class="col-auto flex justify-between items-center">
@@ -252,35 +255,26 @@ watch(() => props.pasien?.diagnosamedis, (val) => {
               <div><b>T/k : </b> <span>{{ storePemeriksaanUmum?.form?.tkKesadaran }}</span></div>
 
               <q-separator class="q-my-xs" />
-              <!-- Penilaian -->
-              <div>
-                <!-- <div v-if="storePenilaian?.nortons?.grupings?.includes(jnsKasusKep)">
-                  <div v-for="(val, key) in storePenilaian?.formNorton" :key="key">
-                    {{ storePenilaian?.nortons?.form.find(x => x.kode === key)?.label ?? '' }} {{ val?.label }}
-                  </div>
-                </div> -->
-                <!-- <q-separator class="q-my-xs" /> -->
-                <div v-if="storePenilaian?.humptys?.grupings?.includes(jnsKasusKep) && (storePenilaian.usia < 18)">
-                  <div class="column">
-                    <b>Skor Humpty Dumpty : </b>
-                    <div> - {{ storePenilaian?.formHumpty?.skorHumpty?.label }} ({{
-                      storePenilaian?.formHumpty?.skorHumpty?.skor }})</div>
-                  </div>
+              <div v-if="storePenilaian?.humptys?.grupings?.includes(jnsKasusKep) && (storePenilaian.usia < 18)">
+                <div class="column">
+                  <b>Skor Humpty Dumpty : </b>
+                  <div> - {{ storePenilaian?.formHumpty?.skorHumpty?.label }} ({{
+                    storePenilaian?.formHumpty?.skorHumpty?.skor }})</div>
                 </div>
-                <div
-                  v-if="storePenilaian?.morses?.grupings?.includes(jnsKasusKep) && (storePenilaian.usia >= 18 && storePenilaian.usia < 60)">
-                  <div class="column">
-                    <b>Skor Morse Fall : </b>
-                    <div> - {{ storePenilaian?.formMorse?.skorMorse?.label }} ({{
-                      storePenilaian?.formMorse?.skorMorse?.skor }})</div>
-                  </div>
+              </div>
+              <div
+                v-if="storePenilaian?.morses?.grupings?.includes(jnsKasusKep) && (storePenilaian.usia >= 18 && storePenilaian.usia < 60)">
+                <div class="column">
+                  <b>Skor Morse Fall : </b>
+                  <div> - {{ storePenilaian?.formMorse?.skorMorse?.label }} ({{
+                    storePenilaian?.formMorse?.skorMorse?.skor }})</div>
                 </div>
-                <div v-if="storePenilaian?.ontarios?.grupings?.includes(jnsKasusKep) && (storePenilaian.usia >= 60)">
-                  <div class="column">
-                    <b>Skor Ontario : </b>
-                    <div> - {{ storePenilaian?.formOntario?.skorOntario?.label }} ({{
-                      storePenilaian?.formOntario?.skorOntario?.skor }})</div>
-                  </div>
+              </div>
+              <div v-if="storePenilaian?.ontarios?.grupings?.includes(jnsKasusKep) && (storePenilaian.usia >= 60)">
+                <div class="column">
+                  <b>Skor Ontario : </b>
+                  <div> - {{ storePenilaian?.formOntario?.skorOntario?.label }} ({{
+                    storePenilaian?.formOntario?.skorOntario?.skor }})</div>
                 </div>
               </div>
 
@@ -293,7 +287,6 @@ watch(() => props.pasien?.diagnosamedis, (val) => {
                 <ItemNyeri :item="storeAnamnesis?.formPediatrik?.keluhannyeri" v-if="kasus?.gruping === '4.4'" />
               </div>
 
-              <!-- free text tambahan objective-->
               <q-input ref="refInputOsambung" v-model="store.form.o_sambung" outlined type="textarea" stack-label
                 standout="bg-yellow-3" :lazy-rules="true" rows="5" hide-bottom-space />
             </div>
@@ -304,9 +297,10 @@ watch(() => props.pasien?.diagnosamedis, (val) => {
           </q-card-section>
         </q-card>
       </div>
+      -->
 
       <!-- assessment / adime(intervensi) -->
-      <div class="col-3">
+      <div class="col-6">
         <q-card flat bordered rounded class="column full-height" style="min-height: 350px; max-height: 350px;">
           <q-card-section class="col-quto">
             <div class="flex justify-between items-center">
@@ -351,7 +345,7 @@ watch(() => props.pasien?.diagnosamedis, (val) => {
       </div>
 
       <!-- planning / adime(monitoring) -->
-      <div class="col-3">
+      <div class="col-6">
         <q-card flat bordered rounded class="column full-height" style="min-height: 350px; max-height: 350px;">
           <q-card-section class="col-quto">
             <div class="flex justify-between items-center">
@@ -389,7 +383,7 @@ watch(() => props.pasien?.diagnosamedis, (val) => {
       </div>
 
       <!-- instruksi / adime(evaluasi) -->
-      <div class="col-8">
+      <div class="col-12">
         <q-card flat bordered class="col-12">
           <q-card-section>
             <div class="flex justify-between items-center">

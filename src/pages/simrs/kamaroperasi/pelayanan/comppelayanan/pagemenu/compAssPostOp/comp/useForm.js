@@ -102,7 +102,7 @@ export default function useForm (pasien) {
       form: formDefault,
       noreg: editable?.item?.noreg,
       norm: editable?.item?.norm,
-      kdruang: pasien?.kdruangan,
+      kdruang: 'PEN001',
       formKebidanan: kasusKep === '4.2' ? storeAnamnesis.formKebidanan : null, // ini storeAnamnesis.formKebidanan,
       formNeoNatal: kasusKep === '4.3' ? storeAnamnesis.formNeoNatal : null,
       formPediatrik: kasusKep === '4.4' ? storeAnamnesis.formPediatrik : null // ini storeAnamnesis.formPediatrik
@@ -231,7 +231,7 @@ export default function useForm (pasien) {
       humpty_dumpty: (storePenilaian.humptys.grupings?.includes(kasusKep) && (storePenilaian.usia < 18)) ? storePenilaian.formHumpty : null,
       morse_fall: (storePenilaian.morses.grupings?.includes(kasusKep) && (storePenilaian.usia >= 18 && storePenilaian.usia < 60)) ? storePenilaian.formMorse : null,
       ontario: (storePenilaian.ontarios.grupings?.includes(kasusKep) && (storePenilaian.usia >= 60)) ? storePenilaian.formOntario : null,
-      kdruang: pasien?.kdruangan ?? null,
+      kdruang: 'PEN001',
       noreg: pasien?.noreg,
       norm: pasien?.norm,
       id: editable?.item?.penilaian_id
@@ -250,7 +250,7 @@ export default function useForm (pasien) {
       // formPediatrik: null,
       noreg: pasien?.noreg,
       norm: pasien?.norm,
-      kdruang: pasien?.kdruangan,
+      kdruang: 'PEN001',
       o_sambung: store.form.o_sambung,
       penilaian
     }

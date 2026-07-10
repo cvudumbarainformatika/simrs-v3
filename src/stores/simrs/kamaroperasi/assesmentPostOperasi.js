@@ -33,11 +33,11 @@ export const useAssesmentPostOperasiStore = defineStore('assesment-post-operasi-
     doubleCount: (state) => state.counter * 2
   },
   actions: {
-    getCppt(cppt) {
+    getCppt (cppt) {
       this.items = cppt ?? []
     },
 
-    getNotasiDpjp(noreg) {
+    getNotasiDpjp (noreg) {
       const params = { params: { noreg } }
 
       return new Promise((resolve, reject) => {
@@ -53,7 +53,7 @@ export const useAssesmentPostOperasiStore = defineStore('assesment-post-operasi-
       })
     },
 
-    getPreviousForm(pasien, nakes) {
+    getPreviousForm (pasien, nakes) {
       const dataAwal = {
         anamnesis: pasien?.anamnesis?.length
           ? pasien.anamnesis?.filter((a) => a?.kdruang !== 'POL014')?.length
@@ -88,79 +88,61 @@ export const useAssesmentPostOperasiStore = defineStore('assesment-post-operasi-
 
       const cekInputanSendiriTerbaru = this.items?.find((a) => a?.user === kdpegsimrs) || null
 
-      if (!cekTerbaru) {
-        dataSebelumnya = dataAwal
-        storeAnamnesis.initReset(dataAwal?.anamnesis)
-        storePemeriksaan.initReset(dataAwal?.pemeriksaan)
-        storePenilaian.initReset(pasien, dataAwal?.penilaian)
-      } else {
-        if (nakes === '1') {
-          dataSebelumnya = cekTerbaru
-          storeAnamnesis.initReset(dataSebelumnya?.anamnesis)
-          storePemeriksaan.initReset(dataSebelumnya?.pemeriksaan)
-          storePenilaian.initReset(pasien, dataSebelumnya?.penilaian)
-        } else {
-          dataSebelumnya = cekTerbaru
-          storeAnamnesis.initReset(dataSebelumnya?.anamnesis)
-          storePemeriksaan.initReset(dataSebelumnya?.pemeriksaan)
-          storePenilaian.initReset(pasien, dataSebelumnya?.penilaian)
-        }
-      }
+      dataSebelumnya = cekTerbaru || dataAwal
+      storeAnamnesis.initReset(null)
+      storePemeriksaan.initReset(null)
+      storePenilaian.initReset(pasien, null)
       this.previousData = dataSebelumnya
 
-      // untuk diagnosa keperawatan
-      if (nakes === '2') {
-        this.initDiagnosaKeperawatan(dataSebelumnya)
-        this.form.asessment = dataSebelumnya?.asessment
-        this.form.plann = dataSebelumnya?.plann
-        this.form.instruksi = dataSebelumnya?.instruksi
-        this.form.o_sambung = dataSebelumnya?.o_sambung
-        this.form.s_sambung = dataSebelumnya?.s_sambung
-      } else if (nakes === '1') {
-        this.initMemoDiagnosaToText(pasien?.memodiagnosa)
-
-        if (dataSebelumnya?.plann) { this.form.plann = dataSebelumnya?.plann }
-        else { this.initPlannToText(pasien?.planningdokter) }
-        if (dataSebelumnya?.instruksi) { this.form.instruksi = dataSebelumnya?.instruksi }
-        else { this.initInstruksiToText(pasien?.planningdokter) }
-        this.form.o_sambung = dataSebelumnya?.o_sambung
-        this.form.s_sambung = dataSebelumnya?.s_sambung
-      } else if (nakes === '3') {
-        this.initDiagnosaKebidanan(dataSebelumnya)
-        this.form.asessment = dataSebelumnya?.asessment
-        this.form.plann = dataSebelumnya?.plann
-        this.form.instruksi = dataSebelumnya?.instruksi
-        this.form.o_sambung = dataSebelumnya?.s_sambung
-      } else {
-        this.form.asessment = null
-        this.form.plann = null
-        this.form.instruksi = null
-        this.form.o_sambung = null
-        this.form.s_sambung = null
-      }
+      // untuk diagnosa keperawatan (di Kamar Operasi tidak copy dari CPPT sebelumnya)
+      // if (nakes === '2') {
+      //   this.form.asessment = null
+      //   this.form.plann = null
+      //   this.form.instruksi = null
+      //   this.form.o_sambung = null
+      //   this.form.s_sambung = null
+      // } else if (nakes === '1') {
+      //   this.initMemoDiagnosaToText(pasien?.memodiagnosa)
+      //   this.initPlannToText(pasien?.planningdokter)
+      //   this.initInstruksiToText(pasien?.planningdokter)
+      //   this.form.o_sambung = null
+      //   this.form.s_sambung = null
+      // } else if (nakes === '3') {
+      //   this.form.asessment = null
+      //   this.form.plann = null
+      //   this.form.instruksi = null
+      //   this.form.o_sambung = null
+      //   this.form.s_sambung = null
+      // } else {
+      //   this.form.asessment = null
+      //   this.form.plann = null
+      //   this.form.instruksi = null
+      //   this.form.o_sambung = null
+      //   this.form.s_sambung = null
+      // }
     },
 
-    initPlannToText(diag) {
+    initPlannToText (diag) {
       const text = getNewLine(diag?.terapi)
       this.form.plann = text
     },
-    initInstruksiToText(data) {
+    initInstruksiToText (data) {
       const monitor = data?.monitor
       const text = getNewLine(monitor)
       this.form.instruksi = text
     },
 
-    initDiagnosaMedisToText(diag) {
+    initDiagnosaMedisToText (diag) {
       const diagnosa = diag?.length ? diag?.filter(x => x?.rs13 !== 'POL014') : []
       const text = diagnosa?.length ? diagnosa.map(x => '* ' + x?.rs3 + ' - ' + x?.masterdiagnosa?.rs4).join('\n') : null
       this.form.asessment = text
     },
-    initMemoDiagnosaToText(diag) {
+    initMemoDiagnosaToText (diag) {
       const text = getNewLine(diag)
       this.form.asessment = text ?? null
     },
 
-    initDiagnosaKeperawatan(dataSebelumnya) {
+    initDiagnosaKeperawatan (dataSebelumnya) {
       const storeDiagnosaKeperawatan = useDiagnosaKeperawatan()
       const diagnosKep = dataSebelumnya?.asessment?.replace(/\n/g, '')
       const masterDiagnosaKep = storeDiagnosaKeperawatan.diagnosas
@@ -184,7 +166,7 @@ export const useAssesmentPostOperasiStore = defineStore('assesment-post-operasi-
       if (cariIntervensiKep?.length) storeDiagnosaKeperawatan.selectIntervensis = intervensis
     },
 
-    initDiagnosaKebidanan(dataSebelumnya) {
+    initDiagnosaKebidanan (dataSebelumnya) {
       const storeDiagnosaKebidanan = useDiagnosaKebidananStore()
       const diagnosKep = dataSebelumnya?.asessment?.replace(/\n/g, '')
       const masterDiagnosaKep = storeDiagnosaKebidanan.diagnosas
@@ -208,7 +190,7 @@ export const useAssesmentPostOperasiStore = defineStore('assesment-post-operasi-
       if (cariIntervensiKep?.length) storeDiagnosaKebidanan.selectIntervensis = intervensis
     },
 
-    saveCppt(pasien, jnsKasus) {
+    saveCppt (pasien, jnsKasus) {
       this.loadingSave = true
       const kasusKep = jnsKasus?.gruping
 
@@ -224,7 +206,7 @@ export const useAssesmentPostOperasiStore = defineStore('assesment-post-operasi-
       const anamnesis = {
         noreg: pasien?.noreg ?? null,
         norm: pasien?.norm,
-        kdruang: pasien?.kdruangan,
+        kdruang: 'PEN001',
         id: null,
         form: formDefault,
         formKebidanan: kasusKep === '4.2' ? storeAnamnesis.formKebidanan : null,
@@ -244,7 +226,7 @@ export const useAssesmentPostOperasiStore = defineStore('assesment-post-operasi-
       const pemeriksaan = {
         noreg: pasien?.noreg ?? null,
         norm: pasien?.norm,
-        kdruang: pasien?.kdruangan,
+        kdruang: 'PEN001',
         id: null,
         form: frm,
         formKebidanan: kasusKep === '4.2' ? storePemeriksaan.formKebidanan : null,
@@ -260,7 +242,7 @@ export const useAssesmentPostOperasiStore = defineStore('assesment-post-operasi-
         humpty_dumpty: (storePenilaian.humptys.grupings?.includes(kasusKep) && (storePenilaian.usia < 18)) ? storePenilaian.formHumpty : null,
         morse_fall: (storePenilaian.morses.grupings?.includes(kasusKep) && (storePenilaian.usia >= 18 && storePenilaian.usia < 60)) ? storePenilaian.formMorse : null,
         ontario: (storePenilaian.ontarios.grupings?.includes(kasusKep) && (storePenilaian.usia >= 60)) ? storePenilaian.formOntario : null,
-        kdruang: pasien?.kdruangan ?? null,
+        kdruang: 'PEN001',
         noreg: pasien?.noreg,
         norm: pasien?.norm,
         id: null
@@ -272,17 +254,17 @@ export const useAssesmentPostOperasiStore = defineStore('assesment-post-operasi-
         penilaian,
         noreg: pasien?.noreg ?? null,
         norm: pasien?.norm,
-        kdruang: pasien?.kdruangan,
+        kdruang: 'PEN001',
         id: null,
         form: this.form,
-        kdgroup_ruangan: pasien?.kdgroup_ruangan,
+        kdgroup_ruangan: 'PEN001',
         kelas_ruangan: pasien?.kelas_ruangan,
         hak_kelas: pasien?.hak_kelas,
         kodesistembayar: pasien?.kodesistembayar
       }
 
       return new Promise((resolve, reject) => {
-        api.post('v1/simrs/ranap/layanan/cppt/savecppt', payload)
+        api.post('v1/simrs/ranap/layanan/cppt/savecpptok', payload)
           .then((resp) => {
             if (resp.status === 200) {
               this.items = resp.data?.result
@@ -310,7 +292,7 @@ export const useAssesmentPostOperasiStore = defineStore('assesment-post-operasi-
       })
     },
 
-    async deleteData(pasien, id) {
+    async deleteData (pasien, id) {
       const payload = { id }
       return new Promise((resolve, reject) => {
         api.post('v1/simrs/ranap/layanan/cppt/deletecppt', payload)
