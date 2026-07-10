@@ -33,8 +33,14 @@
           </div>
         </div>
         <div class="col-3 f-14">
-          <div class="flex q-gutter-x-sm">
-            <div>Nama</div>
+          <div class="text-center text-bold">
+            {{ menu?.title }}
+          </div>
+          <div class="text-center text-bold">
+            RAWAT INAP
+          </div>
+          <div class="text-center text-bold">
+            {{ kasus?.uraian.toUpperCase() }}
           </div>
         </div>
       </div>
@@ -73,6 +79,68 @@
             <div>- Pola Komunikasi {{ pemeriksaanUmum?.komunikasi }}</div>
             <div>- Pantangan Makanan {{ pemeriksaanUmum?.pantanganMkanan }}</div>
             <div>- makanan Pokok : {{ pemeriksaanUmum?.makananPokok }}</div>
+          </div>
+        </div>
+        <div class="data-item">10. Riwayat Alergi : <span v-html="getNewLine(ALERGI || '-')" /></div>
+
+        <div class="data-item flex">11. Kajian Nyeri NIPS :
+          <div class="q-ml-sm">
+            <div>- Keluhan : {{ anamnesisAwal?.keluhannyeri?.keluhan || '-' }}</div>
+            <div>- Ekspresi Wajah : {{ anamnesisAwal?.keluhannyeri?.neonatal?.form?.ekspresiWajah?.text }}</div>
+            <div>- Menangis : {{ anamnesisAwal?.keluhannyeri?.neonatal?.form?.menangis?.text }}</div>
+            <div>- Pola Nafas : {{ anamnesisAwal?.keluhannyeri?.neonatal?.form?.polaNafas?.text }}</div>
+            <div>- Lengan : {{ anamnesisAwal?.keluhannyeri?.neonatal?.form?.lengan?.text }}</div>
+            <div>- Kaki : {{ anamnesisAwal?.keluhannyeri?.neonatal?.form?.kaki?.text }}</div>
+            <div>- Keadaan Rangsangan : {{ anamnesisAwal?.keluhannyeri?.neonatal?.form?.keadaanRangsangan?.text }}</div>
+          </div>
+        </div>
+
+        <div class="data-item flex">12. Skrining Gizi :
+          <div class="q-ml-sm">
+            <div>- Keterangan : {{ anamnesisAwal?.skreeninggizi?.keterangan || '-' }}</div>
+            <div>- Nafsu Makan : {{ anamnesisAwal?.skreeninggizi?.neonatal?.form?.nm?.text }}</div>
+            <div>- Kemampuan Untuk Makan : {{ anamnesisAwal?.skreeninggizi?.neonatal?.form?.km?.text }}</div>
+            <div>- Faktor Stress : {{ anamnesisAwal?.skreeninggizi?.neonatal?.form?.fs?.text }}</div>
+            <div>- Persentil BB : {{ anamnesisAwal?.skreeninggizi?.neonatal?.form?.bb?.text }}</div>
+          </div>
+        </div>
+        <div class="data-item flex">13. Form 4.3 (Neonatal) :
+          <div class="q-ml-sm">
+            <div class="text-bold">Informasi Bayi</div>
+            <div>- Cara Masuk : {{ anamnesisAwal?.neonatal?.crMasuk || '-' }}</div>
+            <div>- Asal Masuk : {{ anamnesisAwal?.neonatal?.asalMasuk || '-' }}</div>
+            <div>- Nama Penanggung Jawab : {{ anamnesisAwal?.neonatal?.hubPj || '-' }}</div>
+            <div>- Hubungan dengan Pasien : {{ anamnesisAwal?.neonatal?.penanggungJawab || '-' }}</div>
+            <div>- No HP/Telp Penanggung Jawab : {{ anamnesisAwal?.neonatal?.noHpPj || '-' }}</div>
+            <div>- Alamat : {{ anamnesisAwal?.neonatal?.alamatPj || '-' }}</div>
+
+            <div class="text-bold">Riwayat Kehamilan</div>
+            <div>- GPA : {{ anamnesisAwal?.neonatal?.g || '-' }} {{ anamnesisAwal?.neonatal?.p || '-' }} {{
+              anamnesisAwal?.neonatal?.a || '-' }}</div>
+            <div>- UG : {{ anamnesisAwal?.neonatal?.usiaGestasi || '-' }}</div>
+            <div>- Status Gizi Ibu : {{ anamnesisAwal?.neonatal?.sgIbu || '-' }}</div>
+            <div>- Obat Ibu Selama Hamil : {{ anamnesisAwal?.neonatal?.rwObat || '-' }}</div>
+            <div>- Kebiasaan Ibu : {{ anamnesisAwal?.neonatal?.kebiasaanIbu || '-' }}</div>
+            <div>- Riwayat Persalinan : {{ anamnesisAwal?.neonatal?.rwPersalinan || '-' }}</div>
+            <div>- Ketuban : {{ anamnesisAwal?.neonatal?.ketuban || '-' }}</div>
+            <div>- Volume : {{ anamnesisAwal?.neonatal?.volume || '-' }}</div>
+
+            <div class="text-bold">Golongan Darah</div>
+            <div>- Ayah : {{ anamnesisAwal?.neonatal?.golDarahAyah || '-' }}</div>
+            <div>- Ibu : {{ anamnesisAwal?.neonatal?.golDarahIbu || '-' }}</div>
+            <div>- Bayi : {{ anamnesisAwal?.neonatal?.golDarahBayi || '-' }}</div>
+
+            <div class="text-bold">Riwayat Kelahiran</div>
+            <div>- Cara Kelahiran : {{ anamnesisAwal?.neonatal?.crLahir || '-' }}</div>
+            <div>- APGAR Score : {{ anamnesisAwal?.neonatal?.apgarScore || '-' }}</div>
+            <div>- Volume Air Ketuban : {{ anamnesisAwal?.neonatal?.volumeKetuban || '-' }}</div>
+            <div>- Warna Air Ketuban : {{ anamnesisAwal?.neonatal?.warnaKetuban || '-' }}</div>
+            <div>- Ketuban Pecah dini : {{ anamnesisAwal?.neonatal?.pecahDini || '-' }}</div>
+
+            <div class="text-bold">Riwayat Lainnya</div>
+            <div>- Transfusi Darah : {{ anamnesisAwal?.neonatal?.rwTransDarah || '-' }}</div>
+            <div>- Reaksi Ketika Trnasfusi Darah : {{ anamnesisAwal?.neonatal?.reaksiTrans || '-' }}</div>
+            <div>- Riwayat Imunisasi : {{ anamnesisAwal?.neonatal?.rwImunisasi || '-' }}</div>
           </div>
         </div>
       </div>
@@ -375,13 +443,31 @@
           <div class="f-8 text-wrap text-center">{{ dpjp?.nama }}</div>
         </div> -->
 
-        <div></div>
+        <div class="column flex-center">
+          <div>
+            Pasien / Keluarga
+          </div>
+          <!-- <div v-if="penerimanEdu?.ttdPenerima" class="relative-position" style="width: 80px;">
+              <vue-qrcode :value="qrPenerima" tag="svg" :options="{
+                errorCorrectionLevel: 'Q',
+                color: {
+                  dark: '#000000',
+                  light: '#ffffff',
+                },
+                margin: 0
+              }" />
+            </div> -->
+          <div style="padding-bottom: 20px" />
+          <div>
+            <img v-if="penerimanEdu?.ttd_penerima" :src="penerimanEdu?.ttd_penerima" alt="ttd penerima" width="80">
+          </div>
+          <div class="text-wrap text-center">{{ penerimanEdu?.namaPenerima }}</div>
+        </div>
 
 
         <div class="column flex-center ">
 
-          <div>DOKTER</div>
-          <div style="margin-top: -5px; margin-bottom: 10px;">DOCTOR</div>
+          <div style="margin-top: -5px; margin-bottom: 10px;">DOKTER</div>
 
           <div class="relative-position" style="width: 80px;">
             <vue-qrcode :value="qrDokter" tag="svg" :options="{
@@ -406,11 +492,13 @@
 </template>
 
 <script setup>
-import { api } from 'src/boot/axios';
-import { dateFullFormat, jamTnpDetik } from 'src/modules/formatter';
+import { api, pathImg } from 'src/boot/axios';
+import { dateFullFormat, getNewLine, jamTnpDetik } from 'src/modules/formatter';
+import { imageToBase64 } from 'src/modules/imgBase64';
+import { useImplementasiEdukasiRanapStore } from 'src/stores/simrs/ranap/implementasiEdukasi';
 import { computed, onMounted, ref } from 'vue';
 
-
+const impEdukasi = useImplementasiEdukasiRanapStore()
 
 
 const props = defineProps({
@@ -434,23 +522,52 @@ const props = defineProps({
 
 const dpjp = ref(null)
 
-onMounted(() => {
-  getDpjpData()
+onMounted(async () => {
+  await getDpjpData()
+  await impEdukasi.getList(props.pasien)
+
+  if (penerimanEdu.value) {
+    initImage(penerimanEdu.value)
+  }
 })
 
+const penerimanEdu = computed(() => {
+  const ttd = impEdukasi?.items[0]
+  console.log('ttd', ttd)
+  return ttd
+})
 
+function initImage(item) {
+  console.log('item imgeee', item);
 
+  const ttdPenerima = pathImg + item?.ttdPenerima
+
+  Promise.all([
+    imageToBase64(ttdPenerima, (base64Image) => {
+      // document.getElementsByClassName('ttd-yg-menyatakan')[0].src = base64Image
+      // document.getElementsByClassName('ttd-yg-menyatakan')[1].src = base64Image
+      item.ttd_penerima = base64Image ?? ''
+    })
+  ])
+}
 // console.log('props', props?.pasien);
 
 const anamnesisAwal = computed(() => {
   const awal = props?.pasien?.anamnesis?.find(x => x?.awal === '1' && x?.nakes === '1') || null
-  console.log('awal', awal);
+  console.log('anamnesis awal', awal);
 
   return awal
 })
+
+const ALERGI = computed(() => {
+  const finder = props?.pasien?.anamnesis?.find(x => x?.awal === '1')?.riwayatalergi ?? []
+  const alergy = finder?.map((item) => item)?.join(', ') ?? null
+  const keterangan = props?.pasien?.anamnesis?.find(x => x?.awal === '1')?.keteranganalergi ?? null
+  return alergy + ' ' + (keterangan ?? null)
+})
 const pemeriksaanUmum = computed(() => {
   const awal = props?.pasien?.pemeriksaan?.find(x => x?.awal === '1' && x?.nakes === '1') || null
-  console.log('awal', awal);
+  console.log('pemeriksaan awal', awal);
 
   return awal
 })

@@ -37,7 +37,7 @@
             {{ menu?.title }}
           </div>
           <div class="text-center text-bold">
-            RAWAT INAP
+            RAWAT INAP / KEBIDANAN
           </div>
           <div class="text-center text-bold">
             {{ kasus?.uraian.toUpperCase() }}
