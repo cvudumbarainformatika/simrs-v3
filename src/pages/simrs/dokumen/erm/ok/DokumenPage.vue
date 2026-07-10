@@ -10,7 +10,7 @@
   </div>
   <app-fullscreen-blue v-model="open">
     <template #default>
-      <component :is="cekPanel()" :key="props.pasien" :pasien="props.pasien" />
+      <component :is="cekPanel()" :key="props.pasien" :pasien="props.pasien" :menu="selectedMenu" :data-header="dataHeader" />
     </template>
   </app-fullscreen-blue>
 </template>
@@ -28,6 +28,15 @@ const props = defineProps({
 const KumpulanSurat = defineAsyncComponent(() => import('src/pages/simrs/dokumen/comppoli/KumpulanSurat.vue'))
 const open = ref(false)
 const doc = ref('')
+const selectedMenu = ref(null)
+const dataHeader = ref([
+  'PEMERINTAH KOTA PROBOLINGGO',
+  'DINAS KESEHATAN, PENGENDALIAN PENDUDUK DAN KELUARGA BERENCANA',
+  'RSUD DOKTER MOHAMMAD SALEH',
+  'Jalan Mayjend Panjaitan No.65 Telp : (0335) 433119,421118 Fax. (0335) 432705',
+  'e-mail : rsudprob@probolinggokota.go.id',
+  'PROBOLINGGO 67219'
+])
 const documents = ref([
   // {
   //   icon: 'icon-fa-file-regular',
@@ -120,6 +129,15 @@ const documents = ref([
     label: 'Checklist Surgical Safety',
     value: 'SurgicalSafety'
   },
+  {
+    icon: 'icon-mat-email',
+    color: 'primary',
+    jenis: 'CPPT',
+    label: 'Catatan Perkembangan Pasien Terintegrasi (CPPT)',
+    value: 'CPPT',
+    title: 'CATATAN PERKEMBANGAN PASIEN TERINTEGRASI',
+    desc: 'Catatan Perkembangan Pasien Terintegrasi'
+  },
   // {
   //   icon: 'icon-mat-email',
   //   color: 'primary',
@@ -208,6 +226,7 @@ const comp = [
   { nama: 'AsesmenPraAnestesia', page: defineAsyncComponent(() => import('src/pages/simrs/dokumen/erm/poli/AsesmenPraAnestesia.vue')) },
   { nama: 'AsesmenPraBedah', page: defineAsyncComponent(() => import('src/pages/simrs/dokumen/erm/poli/AssesmentPraBedah.vue')) },
   { nama: 'SurgicalSafety', page: defineAsyncComponent(() => import('src/pages/simrs/dokumen/erm/ok/comp/DokumenSurgicalSafety.vue')) },
+  { nama: 'CPPT', page: defineAsyncComponent(() => import('src/pages/simrs/ranap/layanan/dokumen/cppt/IndexPage.vue')) },
   { nama: 'SEP', page: defineAsyncComponent(() => import('src/pages/simrs/poli/dokumen/Sep/SepPage.vue')) },
   { nama: 'ERESEP', page: defineAsyncComponent(() => import('src/pages/simrs/igd/layanan/dokumen/dokumenisi/Farmasi/FarmasiPage.vue')) },
   { nama: 'Laborat', page: defineAsyncComponent(() => import('src/pages/simrs/igd/layanan/dokumen/dokumenisi/Laborat/LaboratPage.vue')) },
@@ -228,6 +247,7 @@ const cekPanel = () => {
 function goTo (val) {
   // console.log('got', val)
   doc.value = val.value
+  selectedMenu.value = val
   open.value = true
 }
 const filteredDocuments = computed(() =>
