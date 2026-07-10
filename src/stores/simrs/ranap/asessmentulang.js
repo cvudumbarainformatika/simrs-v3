@@ -76,20 +76,21 @@ export const useAsessmentUlangRanapStore = defineStore('asesment-ulang-ranap-sto
     },
 
     getPreviousForm(pasien, nakes) {
+      const excludes = ['POL014', 'PEN001']
       const dataAwal = {
         anamnesis: pasien?.anamnesis?.length
-          ? pasien.anamnesis?.filter((a) => a?.kdruang !== 'POL014')?.length
-            ? pasien.anamnesis?.filter((a) => a?.kdruang !== 'POL014')[0]
+          ? pasien.anamnesis?.filter((a) => !excludes.includes(a?.kdruang))?.length
+            ? pasien.anamnesis?.filter((a) => !excludes.includes(a?.kdruang))[0]
             : null
           : null,
         pemeriksaan: pasien?.pemeriksaan?.length
-          ? pasien.pemeriksaan?.filter((a) => a?.kdruang !== 'POL014')?.length
-            ? pasien.pemeriksaan?.filter((a) => a?.kdruang !== 'POL014')[0]
+          ? pasien.pemeriksaan?.filter((a) => !excludes.includes(a?.kdruang))?.length
+            ? pasien.pemeriksaan?.filter((a) => !excludes.includes(a?.kdruang))[0]
             : null
           : null,
         penilaian: pasien?.penilaian?.length
-          ? pasien.penilaian?.filter((a) => a?.kdruang !== 'POL014')?.length
-            ? pasien.penilaian?.filter((a) => a?.kdruang !== 'POL014')[0]
+          ? pasien.penilaian?.filter((a) => !excludes.includes(a?.kdruang))?.length
+            ? pasien.penilaian?.filter((a) => !excludes.includes(a?.kdruang))[0]
             : null
           : null
 
@@ -99,8 +100,8 @@ export const useAsessmentUlangRanapStore = defineStore('asesment-ulang-ranap-sto
       const storePenilaian = usePenilaianRanapStore()
 
       const cekTerbaru = this.items?.length
-        ? this.items?.filter((a) => a?.nakes === nakes)?.length
-          ? this.items?.filter((a) => a?.nakes === nakes)[0]
+        ? this.items?.filter((a) => a?.nakes === nakes && !excludes.includes(a?.kdruang))?.length
+          ? this.items?.filter((a) => a?.nakes === nakes && !excludes.includes(a?.kdruang))[0]
           : null
         : null
       let dataSebelumnya = null
