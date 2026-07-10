@@ -249,9 +249,9 @@ export const useAssesmentPostOperasiStore = defineStore('assesment-post-operasi-
       }
 
       const payload = {
-        anamnesis,
-        pemeriksaan,
-        penilaian,
+        // anamnesis,
+        // pemeriksaan,
+        // penilaian,
         noreg: pasien?.noreg ?? null,
         norm: pasien?.norm,
         kdruang: 'PEN001',
