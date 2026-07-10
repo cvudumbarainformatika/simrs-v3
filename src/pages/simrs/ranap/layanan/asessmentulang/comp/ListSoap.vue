@@ -24,7 +24,7 @@
               <div class="flex q-gutter-lg items-center">
                 <div>
 
-                  <div v-if="item?.nakes === '1'">
+                  <div v-if="item?.nakes === '1' && item?.kdruang !== 'PEN001'">
                     <q-btn v-if="(item?.notasi_dpjp) || (!isNotasiTgl(item)?.length && !isTanggalLewat(item))" size="sm"
                       rounded outline :color="item?.notasi_dpjp ? 'primary' : 'negative'"
                       :label="item?.notasi_dpjp ? 'Edit Notasi DPJP' : 'Belum Ada Notasi DPJP'"
@@ -40,7 +40,7 @@
                         'Lihat Notasi' : '' }}</q-btn>
                   </div> -->
                 </div>
-                <div v-if="auth?.user?.pegawai?.kdpegsimrs === item?.user">
+                <div v-if="auth?.user?.pegawai?.kdpegsimrs === item?.user && item?.kdruang !== 'PEN001'">
                   <q-btn round flat size="sm" icon="icon-mat-delete" color="negative" @click="deleteItem(item)">
                     <q-tooltip> Hapus Cppt </q-tooltip>
                   </q-btn>
