@@ -22,6 +22,12 @@ export const listdataNotadinasStore = defineStore('list_data_notadinas', {
       // parameters Realsisasi
       kodekegiatan: null,
       tgl: date.formatDate(Date.now(), 'YYYY'),
+      per_page: 20
+    },
+    pagination: {
+      page: 1,
+      rowsPerPage: 20,
+      rowsNumber: 0
     },
     display: {
       sekarang: date.formatDate(Date.now(), 'DD MMMM YYYY'),
@@ -59,7 +65,12 @@ export const listdataNotadinasStore = defineStore('list_data_notadinas', {
           .then((resp) => {
             if (resp.status === 200) {
               // console.log('data Nota Dinas', resp.data)
-              this.listdata = resp.data
+              this.listdata = resp.data.data
+              this.pagination = {
+                page: resp.data.current_page,
+                rowsPerPage: resp.data.per_page,
+                rowsNumber: resp.data.total
+              }
               this.rincianNotadinas()
 
             }

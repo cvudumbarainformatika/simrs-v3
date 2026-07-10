@@ -8,7 +8,7 @@
       <q-select v-model="store.form.kodekegiatan" use-input outlined standout="bg-yellow-3" dense emit-value map-options
         option-value="no" input-debounce="300" label="Kegiatan BLUD" class="ellipsis-2-lines"
         :options="options_kegiatan" clearable
-        :option-label="opt => opt?.no ? `${opt.kode} - ${opt.nomenklatur}` : `${opt.nomenklatur}`"
+        :option-label="opt => opt?.no ? `${opt.no} - ${opt.nomenklatur}` : `${opt.nomenklatur}`"
         :disable="store.loadingSave" :loading="store.loadingSave" @filter="filterFnKegiatan"
         @clear="store.setForm('kodekegiatan', null)" @update:model-value="(val) => {
 
@@ -46,7 +46,7 @@
 
 import { api } from 'src/boot/axios';
 import { usePenetapanPerubahanPaguStore } from 'src/stores/siasik/anggaran/perubahan/perubahanpagu';
-import { nextTick, onMounted, ref } from 'vue';
+import { nextTick, onMounted, ref, watch } from 'vue';
 
 const store = usePenetapanPerubahanPaguStore()
 const formRef = ref(null)
@@ -130,7 +130,7 @@ async function ubahTahun(val) {
 
   options_kegiatan.value = hasil.map(a => ({
     ...a,
-    label: `${a.kode} - ${a.nomenklatur}`,
+    label: `${a.no} - ${a.nomenklatur}`,
     value: a.no
   }))
 
@@ -142,8 +142,8 @@ async function filterFnKegiatan(val, update) {
     update(() => {
       options_kegiatan.value = store.optionkegiatan.map(a => ({
         ...a,
-        label: `${a.kode} - ${a.nomenklatur}`,
-        value: a.kode
+        label: `${a.no} - ${a.nomenklatur}`,
+        value: a.no
       }))
     })
     return
@@ -162,7 +162,7 @@ async function filterFnKegiatan(val, update) {
     update(() => {
       options_kegiatan.value = data.map(a => ({
         ...a,
-        label: `${a.kode} - ${a.nomenklatur}`,
+        label: `${a.no} - ${a.nomenklatur}`,
         value: a.no
       }))
     })
@@ -183,4 +183,25 @@ async function simpan() {
   await store.getData()
   await ubahTahun(store.form.tahun)
 }
+
+watch(
+  () => store.form.kodekegiatan,
+  (val) => {
+    if (!val) return
+    console.log('kodekegiatan changed:', val)
+    const exist = options_kegiatan.value.find(x => x.no === val)
+
+    if (!exist) {
+      options_kegiatan.value.push({
+        no: val,
+        nomenklatur: store.form.kegiatanblud,
+        label: `${val} - ${store.form.kegiatanblud}`,
+        value: val
+      })
+      console.log('options_kegiatan after push:', options_kegiatan.value)
+    }
+    console.log('options_kegiatan after update:', options_kegiatan.value)
+  },
+  { immediate: true }
+)
 </script>

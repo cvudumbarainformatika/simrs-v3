@@ -1301,6 +1301,8 @@ export const useLaporanLraLaprealisasianggaranStore = defineStore('laporan_reali
 
             this.realisasibelanja = resp.data?.belanja
             this.realisasibelanja_sebelum = resp.data?.belanja_sebelum
+
+            console.log('realisasibelanja_sebelum', this.realisasibelanja_sebelum)
             this.mapingData()
 
             this.loadingdata = false
@@ -1726,6 +1728,7 @@ export const useLaporanLraLaprealisasianggaranStore = defineStore('laporan_reali
 
         const rowsSebelum = this.realisasibelanja_sebelum.filter(x => x.idpp === idpp)
 
+        console.log('rowsSebelum', rowsSebelum)
         const npdLS_sebelum = rowsSebelum
           .flatMap(x => x.realisasi || [])
           .reduce((a, b) => a + Number(b.realisasi || 0), 0)
@@ -1749,6 +1752,7 @@ export const useLaporanLraLaprealisasianggaranStore = defineStore('laporan_reali
           realisasi_sebelum: npdLS_sebelum + spjpanjar_sebelum - cp_sebelum
         }
       })
+      console.log('semua idpp', semuaIdpp)
 
       const byKode6 = this.realisasibelanja.reduce((acc, item) => {
         if (!acc[item.kode6]) acc[item.kode6] = []

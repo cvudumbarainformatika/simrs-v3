@@ -1,7 +1,8 @@
 <template>
   <div class="justify-content-center full-width">
-    <q-table style="height: 100%" :rows="store.datanotadinas" :columns="columnsdata" row-key="name" dense flat bordered
-      wrap-cells :filter="store.params.q" :loading="store.loading" :rows-per-page-options="[10, 50, 100]">
+    <q-table v-model:pagination="store.pagination" style="height: 100%" :rows="store.datanotadinas"
+      :columns="columnsdata" row-key="name" dense flat bordered wrap-cells :loading="store.loading"
+      :pagination="store.pagination" @request="onRequest">
       <template #loading>
         <q-inner-loading showing color="warning" />
       </template>
@@ -9,7 +10,10 @@
         <div class="flex q-gutter-sm z-top">
           <div>
             <q-input v-model="store.params.q" outlined dense placeholder="Cari Data Nota Dinas ..." debounce="500"
-              style="min-width: 300px">
+              style="min-width: 300px" @update:model-value="() => {
+                store.params.page = 1
+                store.listData()
+              }">
               <template v-if="store.params.q" #append>
                 <q-icon name="icon-mat-close" size="xs" class="cursor-pointer" @click.stop.prevent="clearSearch" />
               </template>
@@ -146,6 +150,15 @@ const form = useFormNotadinasStore()
 const auth = useAplikasiStore()
 const user = computed(() => auth.user?.pegawai?.kdpegsimrs)
 const router = useRouter()
+
+function onRequest(props) {
+  const { page, rowsPerPage } = props.pagination
+
+  store.params.page = page
+  store.params.per_page = rowsPerPage
+
+  store.listData()
+}
 const listdatanota = [
   {
     name: 'nonotadinas',
