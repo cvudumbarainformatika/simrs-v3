@@ -17,6 +17,12 @@ export const listDataNpdlsStore = defineStore('list_data_npdls', {
       q: '',
       tahun: date.formatDate(Date.now(), 'YYYY'),
       page: 1,
+      per_page: 20
+    },
+    pagination: {
+      page: 1,
+      rowsPerPage: 20,
+      rowsNumber: 0
     },
     display: {
       sekarang: date.formatDate(Date.now(), 'DD MMMM YYYY')
@@ -44,12 +50,18 @@ export const listDataNpdlsStore = defineStore('list_data_npdls', {
             if (resp.status === 200) {
               console.log('data NPD', resp)
 
-              this.listnpdls = resp.data
+              this.listnpdls = resp.data?.data
+              this.pagination = {
+                page: resp.data.current_page,
+                rowsPerPage: resp.data.per_page,
+                rowsNumber: resp.data.total
+              }
               this.rincianNpd()
 
-              this.loading = false
-              resolve(resp.data)
+
+              resolve(resp.data.data)
             }
+            this.loading = false
           })
           .catch((err) => {
             this.loading = false

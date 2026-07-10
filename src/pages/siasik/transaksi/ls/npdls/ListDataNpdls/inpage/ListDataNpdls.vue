@@ -1,9 +1,9 @@
 <template>
   <template v-if="store.datanpd">
     <div class="justify-content-center full-width">
-      <q-table class="my-sticky-table" style="height: 100%;" :rows="store.datanpd" :columns="columnsnpd" row-key="name"
-        dense flat bordered wrap-cells :filter="store.params.q" :loading="store.loading"
-        :rows-per-page-options="[10, 50, 100]">
+      <q-table v-model:pagination="store.pagination" class="my-sticky-table" style="height: 100%;" :rows="store.datanpd"
+        :columns="columnsnpd" row-key="name" dense flat bordered wrap-cells :loading="store.loading"
+        :pagination="store.pagination" @request="onRequest">
         <template #loading>
           <q-inner-loading showing color="warning" />
         </template>
@@ -11,7 +11,10 @@
           <div class="flex q-qutter-sm z-top">
             <div>
               <q-input v-model="store.params.q" outlined dark color="warning" dense placeholder="Cari NPD-LS ..."
-                debounce="500" style="min-width: 300px;">
+                debounce="500" @update:model-value="() => {
+                  store.params.page = 1
+                  store.listdatanpd()
+                }" style="min-width: 300px;">
                 <template v-if="store.params.q" #append>
                   <q-icon name="icon-mat-close" size="xs" class="cursor-pointer" @click.stop.prevent="clearSearch" />
                 </template>
@@ -158,7 +161,14 @@ const user = computed(() => auth.user?.pegawai?.kdpegsimrs)
 onMounted(() => {
 
 })
+function onRequest(props) {
+  const { page, rowsPerPage } = props.pagination
 
+  store.params.page = page
+  store.params.per_page = rowsPerPage
+
+  store.listdatanpd()
+}
 const clearSearch = () => {
   store.params.q = ''
   store.goToPage(1)

@@ -26,7 +26,10 @@
         <q-item-section class="text-right">{{ formattanpaRp(row.total) }}</q-item-section>
         <q-item-section side>
           <div class="row q-gutter-xs">
-
+            <!-- EDIT BUTTON -->
+            <q-btn flat icon="icon-mat-edit" size="sm" round color="primary" @click="emits('edit', row)">
+              <q-tooltip>Edit Data</q-tooltip>
+            </q-btn>
             <!-- DELETE (HANYA JIKA BELUM TERKUNCI) -->
             <q-btn v-if="row.kunci !== '1'" flat icon="icon-mat-delete" size="sm" round color="negative"
               @click="emits('delete', row?.id)">
