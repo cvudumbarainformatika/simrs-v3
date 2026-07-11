@@ -87,6 +87,95 @@
             <div>- makanan Pokok : {{ pemeriksaanUmum?.makananPokok }}</div>
           </div>
         </div>
+        <div class="data-item">10. Riwayat Alergi : <span v-html="getNewLine(ALERGI || '-')" /></div>
+        <div class="data-item flex">11. Kajian Nyeri :
+          <div class="q-ml-sm" v-if="anamnesisAwal?.keluhannyeri?.dewasa !== null">
+            <div>{{ anamnesisAwal?.keluhannyeri?.dewasa?.kajianNyeri }}</div>
+            <div>- Keterangan : {{ anamnesisAwal?.keluhannyeri?.dewasa?.ket }}</div>
+            <div>- Ekpresi Wajah : {{ anamnesisAwal?.keluhannyeri?.dewasa?.form?.ekspresiWajah?.text }}</div>
+            <div>- Gerakan Tangan : {{ anamnesisAwal?.keluhannyeri?.dewasa?.form?.gerakanTangan?.text }}</div>
+            <div>- Kepatuhan terhadap ventilasi mekanik : {{
+              anamnesisAwal?.keluhannyeri?.dewasa?.form?.kebutuhanVentilasi?.text }}</div>
+          </div>
+          <div class="q-ml-sm" v-if="anamnesisAwal?.keluhannyeri?.pediatrik !== null">
+            <div>{{ anamnesisAwal?.keluhannyeri?.pediatrik?.kajianNyeri }}</div>
+            <div>- Keterangan : {{ anamnesisAwal?.keluhannyeri?.pediatrik?.ket }}</div>
+            <div>- Ekpresi Wajah : {{ anamnesisAwal?.keluhannyeri?.pediatrik?.form?.ekspresiWajah?.text }}</div>
+            <div>- Gerakan Tangan : {{ anamnesisAwal?.keluhannyeri?.pediatrik?.form?.gerakanTangan?.text }}</div>
+            <div>- Kepatuhan terhadap ventilasi mekanik : {{
+              anamnesisAwal?.keluhannyeri?.pediatrik?.form?.kebutuhanVentilasi?.text }}</div>
+          </div>
+
+        </div>
+        <div class="data-item flex">12. Skrining Gizi :
+          <div class="q-ml-sm" v-if="anamnesisAwal?.skreeninggizi?.pediatrik !== null">
+            <div>- Keterangan : {{ anamnesisAwal?.skreeninggizi?.pediatrik?.ket || '-' }}</div>
+            <div>- Apakah pasien tampak kurus? {{ anamnesisAwal?.skreeninggizi?.pediatrik?.form?.tk?.text }}</div>
+            <div>- Apakah terdapat penurunan BB selama 1 bulan terakhir? {{
+              anamnesisAwal?.skreeninggizi?.pediatrik?.form?.bb?.text }}</div>
+            <div>- Diare >= 5 kali/hari dan/atau muntah > 3 kali/hari dalam seminggu terakhir atau Asupan makanan
+              berkurang selama satu minggu terakhir? {{ anamnesisAwal?.skreeninggizi?.pediatrik?.form?.kk?.text }}</div>
+            <div>- Apakah terdapat penyakit atau keadaan yang mengakibatkan pasien beresiko malnutrisi? {{
+              anamnesisAwal?.skreeninggizi?.pediatrik?.form?.penyakit?.text }}</div>
+          </div>
+          <div class="q-ml-sm" v-if="anamnesisAwal?.skreeninggizi?.dewasa !== null">
+            <div>- Keterangan : {{ anamnesisAwal?.skreeninggizi?.dewasa?.ket || '-' }}</div>
+            <div>- Apakah Ada Penurunan Berat badan yang tidak diinginkan selama 6 Bulan terakhir ? {{
+              anamnesisAwal?.skreeninggizi?.dewasa?.form?.bb?.text }}</div>
+            <div>- Apakah Asupan Makan berkurang karena tidak nafsu makan ? {{
+              anamnesisAwal?.skreeninggizi?.dewasa?.form?.am?.text }}</div>
+            <div>- Apakah pasien memiliki diagnosa khusus / kondisi khusus ? {{
+              anamnesisAwal?.skreeninggizi?.dewasa?.form?.kk?.text }}</div>
+          </div>
+        </div>
+
+        <div v-if="anamnesisAwal?.pediatrik" class="data-item flex">13. Form 4.4 (Pediatrik) :
+          <div class="q-ml-sm">
+            <div class="text-bold">Riwayat Penyakit Kelahiran</div>
+            <div>- Anak ke : {{ anamnesisAwal?.pediatrik?.anakKe || '-' }}</div>
+            <div>- Jumlah Saudara : {{ anamnesisAwal?.pediatrik?.jmlSaudara || '-' }}</div>
+            <div>- Cara Kelahiran : {{ anamnesisAwal?.pediatrik?.crKelahiran || '-' }}</div>
+            <div>- Umur Kelahiran : {{ anamnesisAwal?.pediatrik?.umurKelahiran || '-' }}</div>
+            <div>- Kelainan Bawaan : {{ anamnesisAwal?.pediatrik?.klainanBawaan || '-' }}</div>
+
+            <div class="text-bold">Riwayat Imunisasi</div>
+            <div>- {{ anamnesisAwal?.pediatrik?.rwImunisasi?.join(', ') || '-' }}</div>
+
+            <div class="text-bold">Riwayat Tumbuh Kembang Anak</div>
+            <div>- Gigi Pertama, Usia : {{ anamnesisAwal?.pediatrik?.gigiPertama || '-' }}</div>
+            <div>- Mulai Berjalan, Usia : {{ anamnesisAwal?.pediatrik?.berjalan || '-' }}</div>
+            <div>- Bisa membaca, usia : {{ anamnesisAwal?.pediatrik?.membaca || '-' }}</div>
+            <div>- Bisa duduk, usia : {{ anamnesisAwal?.pediatrik?.duduk || '-' }}</div>
+            <div>- Bisa Bicara, usia : {{ anamnesisAwal?.pediatrik?.bicara || '-' }}</div>
+
+            <div class="text-bold">Kebutuhan Dasar Saat Ini</div>
+            <div>- Makanan yang disukai : {{ anamnesisAwal?.pediatrik?.sukaMknan || '-' }}</div>
+            <div>- Makanan yang tidak disukai : {{ anamnesisAwal?.pediatrik?.tdkSukaMknan || '-' }}</div>
+            <div>- Nafsu makan : {{ anamnesisAwal?.pediatrik?.nafsuMkn || '-' }}</div>
+            <div>- Pola makan : {{ anamnesisAwal?.pediatrik?.polaMakan || '-' }}</div>
+            <div>- Makanan yang diberikan : {{ anamnesisAwal?.pediatrik?.mknYgdiberikan || '-' }}</div>
+
+            <div class="text-bold">Pola Tidur</div>
+            <div>- Tidur Siang : {{ anamnesisAwal?.pediatrik?.tidurSiang || '-' }} jam / hari</div>
+            <div>- Tidur Malam : {{ anamnesisAwal?.pediatrik?.tidurMalam || '-' }} jam / hari</div>
+            <div>- Kebiasaan Sebelum Makan : {{ anamnesisAwal?.pediatrik?.kebiasaanSblmMkn || '-' }}</div>
+            <div>- Adakah Nyeri : {{ anamnesisAwal?.pediatrik?.nyeri || '-' }}</div>
+
+            <div class="text-bold">Pola Kebersihan Diri</div>
+            <div>- Mandi Sendiri : {{ anamnesisAwal?.pediatrik?.mandiSendiri || '-' }} kali / hari</div>
+            <div>- Dimandikan : {{ anamnesisAwal?.pediatrik?.dimandikan || '-' }} jam / hari</div>
+            <div>- Gosok Gigi : {{ anamnesisAwal?.pediatrik?.gosokGigi || '-' }} kali / hari</div>
+            <div>- Keramas : {{ anamnesisAwal?.pediatrik?.keramas || '-' }} kali / minggu</div>
+            <div>- Kebersihan Kuku : {{ anamnesisAwal?.pediatrik?.kbersihanKuku || '-' }}</div>
+            <div>- Aktifitas Bermain : {{ anamnesisAwal?.pediatrik?.aktifitas || '-' }}</div>
+            <div>- Frekuensi BAB : {{ anamnesisAwal?.pediatrik?.babFrekuensi || '-' }} kali / hari</div>
+            <div>- Konsistensi BAB : {{ anamnesisAwal?.pediatrik?.babKonsistensi || '-' }} kali / hari</div>
+            <div>- Bau BAB : {{ anamnesisAwal?.pediatrik?.babBau || '-' }} kali / hari</div>
+            <div>- Buang Air Kecil : {{ anamnesisAwal?.pediatrik?.bakFrekuensi || '-' }} kali / hari</div>
+            <div>- Warna Buang Air Kecil : {{ anamnesisAwal?.pediatrik?.bakWarna || '-' }}</div>
+            <div>- Bau Buang Air Kecil : {{ anamnesisAwal?.pediatrik?.bakBau || '-' }}</div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -418,7 +507,7 @@
 
 <script setup>
 import { api } from 'src/boot/axios'
-import { dateFullFormat, jamTnpDetik } from 'src/modules/formatter'
+import { dateFullFormat, getNewLine, jamTnpDetik } from 'src/modules/formatter'
 import { computed, onMounted, ref } from 'vue'
 
 
@@ -455,17 +544,22 @@ onMounted(() => {
 
 const anamnesisAwal = computed(() => {
   const awal = props?.pasien?.anamnesis?.find(x => x?.awal === '1' && x?.nakes === '1') || null
-  // console.log('awal', awal);
+  console.log('aanamnesisAwalwal', awal);
 
   return awal
 })
 const pemeriksaanUmum = computed(() => {
   const awal = props?.pasien?.pemeriksaan?.find(x => x?.awal === '1' && x?.nakes === '1') || null
-  // console.log('awal', awal);
+  console.log('pemeriksaanUmum', awal);
 
   return awal
 })
-
+const ALERGI = computed(() => {
+  const finder = props?.pasien?.anamnesis?.find(x => x?.awal === '1')?.riwayatalergi ?? []
+  const alergy = finder?.map((item) => item)?.join(', ') ?? null
+  const keterangan = props?.pasien?.anamnesis?.find(x => x?.awal === '1')?.keteranganalergi ?? null
+  return alergy + ' ' + (keterangan ?? null)
+})
 const diagnosa = computed(() => {
   const primer = props?.pasien?.diagnosa?.find(x => x?.rs4 === 'Primer' && x?.rs13 === 'POL014') || null
   // console.log('awal', primer);

@@ -115,7 +115,7 @@
             <div>- Alamat : {{ anamnesisAwal?.neonatal?.alamatPj || '-' }}</div>
 
             <div class="text-bold">Riwayat Kehamilan</div>
-            <div>- GPA : {{ anamnesisAwal?.neonatal?.g || '-' }} {{ anamnesisAwal?.neonatal?.p || '-' }} {{
+            <div>- G/P/A : {{ anamnesisAwal?.neonatal?.g || '-' }}/{{ anamnesisAwal?.neonatal?.p || '-' }}/{{
               anamnesisAwal?.neonatal?.a || '-' }}</div>
             <div>- UG : {{ anamnesisAwal?.neonatal?.usiaGestasi || '-' }}</div>
             <div>- Status Gizi Ibu : {{ anamnesisAwal?.neonatal?.sgIbu || '-' }}</div>
