@@ -475,7 +475,26 @@
           <div class="f-8 text-wrap text-center">{{ dpjp?.nama }}</div>
         </div> -->
 
-        <div></div>
+        <div class="column flex-center">
+          <div>
+            Pasien / Keluarga
+          </div>
+          <!-- <div v-if="penerimanEdu?.ttdPenerima" class="relative-position" style="width: 80px;">
+              <vue-qrcode :value="qrPenerima" tag="svg" :options="{
+                errorCorrectionLevel: 'Q',
+                color: {
+                  dark: '#000000',
+                  light: '#ffffff',
+                },
+                margin: 0
+              }" />
+            </div> -->
+          <div style="padding-bottom: 20px" />
+          <div>
+            <img v-if="penerimanEdu?.ttd_penerima" :src="penerimanEdu?.ttd_penerima" alt="ttd penerima" width="80">
+          </div>
+          <div class="text-wrap text-center">{{ penerimanEdu?.namaPenerima }}</div>
+        </div>
 
 
         <div class="column flex-center ">
@@ -506,12 +525,14 @@
 </template>
 
 <script setup>
-import { api } from 'src/boot/axios'
+import { api, pathImg } from 'src/boot/axios'
 import { dateFullFormat, getNewLine, jamTnpDetik } from 'src/modules/formatter'
+import { imageToBase64 } from 'src/modules/imgBase64'
+import { useImplementasiEdukasiRanapStore } from 'src/stores/simrs/ranap/implementasiEdukasi'
 import { computed, onMounted, ref } from 'vue'
 
 
-
+const impEdukasi = useImplementasiEdukasiRanapStore()
 
 const props = defineProps({
   pasien: {
@@ -534,8 +555,12 @@ const props = defineProps({
 
 const dpjp = ref(null)
 
-onMounted(() => {
-  getDpjpData()
+onMounted(async () => {
+  await getDpjpData()
+
+  if (penerimanEdu.value) {
+    initImage(penerimanEdu.value)
+  }
 })
 
 
@@ -587,6 +612,26 @@ const qrDokter = computed(() => {
   const enc = btoa(`${noreg}|${dok}|${asal}|${petugas}`)
   return `https://rsud.probolinggokota.go.id/dokumen-simrs/legalitas/${enc}`
 })
+
+const penerimanEdu = computed(() => {
+  const ttd = impEdukasi?.items[0]
+  console.log('ttd', ttd)
+  return ttd
+})
+
+function initImage(item) {
+  console.log('item imgeee', item);
+
+  const ttdPenerima = pathImg + item?.ttdPenerima
+
+  Promise.all([
+    imageToBase64(ttdPenerima, (base64Image) => {
+      // document.getElementsByClassName('ttd-yg-menyatakan')[0].src = base64Image
+      // document.getElementsByClassName('ttd-yg-menyatakan')[1].src = base64Image
+      item.ttd_penerima = base64Image ?? ''
+    })
+  ])
+}
 
 </script>
 
