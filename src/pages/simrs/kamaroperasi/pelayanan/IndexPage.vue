@@ -142,7 +142,7 @@ const menus = ref([
     name: 'konsultasi',
     label: 'Konsult Spesialis',
     icon: 'textsms',
-    comp: shallowRef(defineAsyncComponent(() => import('./comppelayanan/pagemenu/compSerahTerima/IndexPage.vue')))
+    comp: shallowRef(defineAsyncComponent(() => import('./comppelayanan/pagemenu/konsul/IndexPage.vue')))
   },
   {
     name: 'edukasi-page',
