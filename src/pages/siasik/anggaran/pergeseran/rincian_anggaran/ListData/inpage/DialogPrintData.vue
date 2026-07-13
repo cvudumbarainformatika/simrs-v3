@@ -116,9 +116,9 @@
                   </div>
 
                   <div class="row justify-between full-width full-height ">
-                    <div class="row full-width" style="width:100%">
+                    <div class="full-width" style="width:100%">
 
-                      <table class="justify-center full-width">
+                      <table class="full-width">
                         <thead>
                           <tr style="height: 25px">
                             <th rowspan="2">
@@ -259,9 +259,9 @@
                   </div>
 
                   <div class="row justify-between full-width full-height ">
-                    <div class="row full-width" style="width:100%">
+                    <div class="full-width" style="width:100%">
 
-                      <table class="justify-center full-width">
+                      <table class="full-width">
                         <thead>
                           <tr class="text-bold text-center" style="height:50px">
                             <td class="text-center" colspan="2">REKENING</td>
