@@ -32,7 +32,7 @@
                   </div>
                 </div>
                 <component v-else :is="menu.comp" :key="pasien" :pasien="pasien" :loading-terima="store.loadingTerima"
-                  depo="ok" />
+                  :nakes="nakes" depo="ok" />
               </template>
               <template #fallback>
                 <AppLoader />
@@ -58,12 +58,14 @@ import { useInacbgPoli } from 'src/stores/simrs/pelayanan/poli/inacbg'
 import { usePengunjungPoliStore } from 'src/stores/simrs/pelayanan/poli/pengunjung'
 import { usePemeriksaanFisik } from 'src/stores/simrs/pelayanan/poli/pemeriksaanfisik'
 import { useMasterPemeriksaanFisik } from 'src/stores/simrs/master/poliklinik/pemeriksaanfisik'
-import { defineAsyncComponent, onBeforeUnmount, onMounted, onUnmounted, ref, shallowRef } from 'vue'
+import { useAplikasiStore } from 'src/stores/app/aplikasi'
+import { computed, defineAsyncComponent, onBeforeUnmount, onMounted, onUnmounted, ref, shallowRef } from 'vue'
 // import { useAnamnesis } from 'src/stores/simrs/pelayanan/poli/anamnesis'
 
 const store = usePengunjungPoliStore()
 const master = useMasterPemeriksaanFisik()
 const fisik = usePemeriksaanFisik()
+const auth = useAplikasiStore()
 const drawer = ref(false)
 const drawerRight = ref(false)
 const profile = ref(false)
@@ -74,6 +76,10 @@ const props = defineProps({
   }
 })
 const emits = defineEmits(['printRekapBill'])
+
+const nakes = computed(() => {
+  return auth?.user?.pegawai?.kdgroupnakes
+})
 
 const menus = ref([
   {
@@ -139,11 +145,17 @@ const menus = ref([
     comp: shallowRef(defineAsyncComponent(() => import('./comppelayanan/pagemenu/compSerahTerima/IndexPage.vue')))
   },
   {
+    name: 'edukasi-page',
+    label: 'Edukasi Pasien',
+    icon: 'icon-mat-people_alt',
+    comp: shallowRef(defineAsyncComponent(() => import('src/pages/simrs/ranap/layanan/edukasi/IndexPage.vue')))
+  },
+  {
     name: 'dokumen',
     label: 'Dokumnen',
     icon: 'email',
     comp: shallowRef(defineAsyncComponent(() => import('./comppelayanan/pagemenu/compDokumen/IndexPage.vue')))
-  },
+  }
 ])
 const menu = ref(menus.value[0])
 

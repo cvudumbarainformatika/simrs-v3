@@ -2,8 +2,9 @@ import { defineStore, acceptHMRUpdate } from 'pinia'
 import { api } from 'src/boot/axios'
 import { usePengunjungPoliStore } from 'src/stores/simrs/pelayanan/poli/pengunjung'
 import { notifSuccess } from 'src/modules/utils'
-import { usePengunjungRanapStore } from './pengunjung'
+import { usePengunjungRanapStore } from 'src/stores/simrs/ranap/pengunjung'
 import { useListPasienHemodialisaStore } from '../hemodialisa/hemodialisa'
+import { usePermintaanOperasistore } from 'src/stores/simrs/kamaroperasi/permintaanoperasi'
 
 export const usePerencanaanEdukasiRanapStore = defineStore('perencanaan-edukasi-ranap', {
   state: () => ({
@@ -59,10 +60,12 @@ export const usePerencanaanEdukasiRanapStore = defineStore('perencanaan-edukasi-
           const storePasien = usePengunjungPoliStore()
           const storeRananp = usePengunjungRanapStore()
           const storeHD = useListPasienHemodialisaStore()
+          const storeOK = usePermintaanOperasistore()
           const isi = resp?.data?.result
           storePasien.injectDataPasien(pasien, isi, 'edukasi')
           storeRananp.injectDataPasien(pasien?.noreg, isi, 'edukasi')
           storeHD.injectDataPasien(pasien?.noreg, isi, 'edukasi')
+          storeOK.injectDataPasien(pasien, isi, 'edukasi')
           notifSuccess(resp)
           this.loadingSave = false
         }
@@ -82,10 +85,11 @@ export const usePerencanaanEdukasiRanapStore = defineStore('perencanaan-edukasi-
           const storePasien = usePengunjungPoliStore()
           const storeRananp = usePengunjungRanapStore()
           const storeHD = useListPasienHemodialisaStore()
+          const storeOK = usePermintaanOperasistore()
           storePasien.hapusDataEdukasi(pasien, id)
           storeRananp.hapusDataInjectan(pasien, id, 'edukasi')
           storeHD.hapusDataInjectan(pasien, id, 'edukasi')
-          this.setNotas(resp?.data?.nota)
+          storeOK.hapusDataInjectan(pasien, id, 'edukasi')
           notifSuccess(resp)
         }
       }
