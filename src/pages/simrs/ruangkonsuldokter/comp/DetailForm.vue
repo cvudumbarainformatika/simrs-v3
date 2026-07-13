@@ -21,11 +21,14 @@
             {{ getStatusLabel(item) }}
           </q-badge>
           <div class="text-right">
-            <div class="text-subtitle1 text-weight-medium">{{ item?.kunjunganranap?.nama }}</div>
+            <div class="text-subtitle1 text-weight-medium">
+              {{ item?.kunjunganranap?.nama ?? item?.kunjunganpoli?.nama ?? item?.kunjunganigd?.nama ?? '-' }}
+            </div>
             <div class="text-caption">
-              {{ item?.kunjunganranap?.rs2 }} ||
+              {{ item?.kunjunganranap?.rs2 ?? item?.kunjunganpoli?.rs2 ?? item?.kunjunganigd?.rs2 ?? '-' }} ||
               <span v-if="item?.kdruang === 'POL014'">{{ item?.kunjunganigd?.ruangan ?? '-' }}</span>
-              <span v-if="item?.kdruang !== 'POL014'">{{ item?.kunjunganranap?.ruangan ?? '-' }}</span>
+              <span v-else-if="item?.kdruang === 'PEN001'">Kamar Operasi</span>
+              <span v-else>{{ item?.kunjunganranap?.ruangan ?? '-' }}</span>
             </div>
           </div>
         </div>
@@ -50,6 +53,7 @@
                 <q-separator class="q-my-sm" />
                 <div class="text-subtitle2 q-mt-sm">
                   [ Konsultasi Dokter ] Kunjungan Pasien <span class="text-primary">{{ item?.kunjunganranap?.rs1 ||
+                    item?.kunjunganpoli?.rs1 ||
                     item?.kunjunganigd?.rs1
                     }}</span>
                 </div>

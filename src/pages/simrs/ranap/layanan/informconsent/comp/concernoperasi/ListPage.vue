@@ -47,7 +47,11 @@ console.log('list data : ', props.pasien?.informconcern)
 const mapJenis = {
   OperasiInvasif: 'Operasi Invasif',
   Sedasi: 'Sedasi',
-  Colonoscopy: 'Colonoscopy'
+  Colonoscopy: 'Colonoscopy',
+  TransfusiDarah: 'Transfusi Darah',
+  PenandaanLokasiOperasi: 'Penandaan Lokasi Operasi',
+  Resusitasi: 'Penolakan Resusitasi (DNR)',
+  Restrain: 'Persetujuan Pemasangan Restrain'
 }
 
 const emits = defineEmits(['preview', 'delete', 'edit'])

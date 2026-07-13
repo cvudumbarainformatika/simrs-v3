@@ -55,7 +55,7 @@
       <div class="row items-center q-my-xs">
         <div class="col-4"></div>
         <div class="col-4">
-          <q-checkbox v-model="store.formTindakan.tanpaAnas" label="Tanpa Anastesi"
+          <q-checkbox v-model="store.formTindakan.tanpaAnas" label="Tanpa Anestesi"
             @update:model-value="setTanpaAnas('tanpaAnas', $event)" />
         </div>
         <!-- <div class="col-4">
@@ -75,7 +75,7 @@
       <div class="row items-center q-my-xs">
         <div class="col-4"></div>
         <!-- <div class="col-4">
-          <q-checkbox v-model="store.formTindakan.tanpaAnas"  label="Tanpa Anastesi"
+          <q-checkbox v-model="store.formTindakan.tanpaAnas"  label="Tanpa Anestesi"
             @update:model-value="setTanpaAnas('tanpaAnas', $event)" />
         </div> -->
         <div class="col-4">
@@ -115,13 +115,13 @@
         </div>
       </div>
       <div class="row items-center q-my-xs">
-        <div class="col-4">Dokter Anastesi </div>
+        <div class="col-4">Dokter Anestesi </div>
         <div class="col-8"><app-autocomplete v-model="store.formTindakan.rs12" :key="store.nakes" :source="dokters"
             autocomplete="nama" option-label="nama" option-value="kdpegsimrs" outlined valid label=""
             @update:model-value="setForm('rs12', $event)" /></div>
       </div>
       <div class="row items-center q-my-xs">
-        <div class="col-4">Asisten Anastesi </div>
+        <div class="col-4">Asisten Anestesi </div>
         <div class="col-8">
           <app-autocomplete-new v-model="store.formTindakan.rs13" :key="store.nakes" :source="nonDokters"
             autocomplete="nama" option-label="nama" option-value="kdpegsimrs" outlined valid label="" multiple

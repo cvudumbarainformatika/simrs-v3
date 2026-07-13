@@ -321,8 +321,8 @@
                     }" />
                     <img class="qrcode__image" src="~assets/logos/logo-rsud.png" alt="RSUD DOKTER MOHAMAD SALEH">
                   </div> -->
-                  <div class="f-8 column flex-center" style="height: 80px;">
-                    ttd
+                  <div class="f-8 column flex-center" style="height: 60px;">
+                    <img :src="pathImg + item?.ttdPenerima" alt="ttd-penerima" width="60">
                   </div>
                   <div class="f-8 text-wrap text-center">{{ item?.namaPenerima }}</div>
                 </div>
@@ -364,6 +364,7 @@ import { getNewLine, humanDate, jamTnpDetik } from 'src/modules/formatter';
 import { computed, onMounted } from 'vue';
 import { useImplementasiEdukasiRanapStore } from 'src/stores/simrs/ranap/implementasiEdukasi';
 import { pathImg } from 'src/boot/axios';
+import { imageToBase64 } from 'src/modules/imgBase64'
 
 
 const props = defineProps({
@@ -387,9 +388,21 @@ onMounted(() => {
   store.getList(props?.pasien)
 })
 
+// function initImage(item) {
+//   const ttdPenerima = pathImg + item?.ttdPenerima
+
+//   Promise.all([
+//     imageToBase64(ttdPenerima, (base64Image) => {
+//       item.ttd_penerima = base64Image ?? ''
+//     })
+
+//   ])
+
+// }
+
 // console.log('props', props.pasien);
 const EDUKASI = computed(() => {
-  // console.log('props', props?.pasien?.edukasi);
+  // console.log('props edukasi', store?.items);
   return store.items
 })
 

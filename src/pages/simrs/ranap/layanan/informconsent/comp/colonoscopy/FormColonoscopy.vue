@@ -22,7 +22,7 @@
             autocomplete="nama" option-value="kdpegsimrs" option-label="nama" outlined :source="store.perawats"
             class="col-6" @on-select="(val) => {
               store.form.kdPetugas = val
-              store.form.pengedukasi = store.nonNakes?.find(item => item?.kdpegsimrs === val)?.nama
+              store.form.pengedukasi = store.perawats?.find(item => item?.kdpegsimrs === val)?.nama
             }" @clear="() => {
               store.form.kdPetugas = null
               store.form.pengedukasi = null
@@ -212,35 +212,49 @@
             <div class="row q-col-gutter-sm">
               <div class="col-6" bordered style="min-height: 150px; border: 1px solid #ccc;">
                 <div class="column full-height flex-center relative-position q-pa-sm">
-                  <div v-if="!store.form.ttdYgMenyatakan" class="absolute-center">
+                  <!-- <div v-if="!store.form.ttdYgMenyatakan" class="absolute-center">
                     Ttd yg Menyatakan
                   </div>
                   <TtdWacom uuid="ttd-yg-menyatakan" :ttd-name="store.form.nama ?? 'yg menyatakan'"
                     @signature:ttd-yg-menyatakan="(val) => {
-                      // console.log('ttd yg menyatakan',val);
                       store.form.ttdYgMenyatakan = val
-                    }" />
+                    }" /> -->
+
+                  <div>
+                    <app-signature :ttd="store.form.ttdYgMenyatakan" :width="250" :height="150"
+                      label-ttd="TTD yg Menyatakan" @save-ttd="(val) => store.form.ttdYgMenyatakan = val"
+                      :pasien="pasien" uuid="ttdYgMenyatakan" @signature="(val) => {
+                        // store.setForm('ttdpasien', val)
+                        store.form.ttdYgMenyatakan = val
+                      }" />
+                  </div>
                 </div>
               </div>
               <div class="col-6" bordered style="min-height: 150px; border: 1px solid #ccc;">
                 <div class="column full-height flex-center relative-position q-pa-sm">
-                  <div v-if="!store.form.ttdSaksiPasien" class="absolute-center">
+                  <!-- <div v-if="!store.form.ttdSaksiPasien" class="absolute-center">
                     Ttd Saksi Pasien
                   </div>
                   <TtdWacom uuid="ttd-saksi-pasien" :ttd-name="store.form.saksiPasien ?? 'saksi pasien'"
                     @signature:ttd-saksi-pasien="(val) => {
-                      // console.log('ttd-saksi-pasien',val);
                       store.form.ttdSaksiPasien = val
-                    }" />
+                    }" /> -->
+                  <div>
+                    <app-signature :ttd="store.form.ttdSaksiPasien" :width="250" :height="150"
+                      label-ttd="TTD Saksi Pasien" @save-ttd="(val) => store.form.ttdSaksiPasien = val" :pasien="pasien"
+                      uuid="ttdSaksiPasien" @signature="(val) => {
+                        store.form.ttdSaksiPasien = val
+                      }" />
+                  </div>
                 </div>
               </div>
-              <div class="col-6" bordered style="min-height: 150px; border: 1px solid #ccc;">
+              <!-- <div class="col-6" bordered style="min-height: 150px; border: 1px solid #ccc;">
                 <div class="column full-height flex-center relative-position q-pa-sm">
                   <div v-if="!store.form.ttdDokter" class="absolute-center">
                     Ttd Dokter
                   </div>
                   <TtdWacom uuid="ttd-dokter" :ttd-name="store.form.pelaksana ?? 'nama dokter'" @signature:ttd-dokter="(val) => {
-                    // console.log('ttd-dokter',val);
+
                     store.form.ttdDokter = val
                   }" />
                 </div>
@@ -252,11 +266,11 @@
                   </div>
                   <TtdWacom uuid="ttd-saksi-rs" :ttd-name="store.form.pengedukasi ?? 'nama saksi rs'"
                     @signature:ttd-saksi-rs="(val) => {
-                      // console.log('ttd-saksi-rs',val);
+
                       store.form.ttdPetugas = val
                     }" />
                 </div>
-              </div>
+              </div> -->
             </div>
           </div>
         </div>

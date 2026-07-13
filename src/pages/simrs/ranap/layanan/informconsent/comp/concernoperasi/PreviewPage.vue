@@ -3,34 +3,16 @@
     <!-- page 1 -->
     <div class="page-1">
       <!-- KOP SURAT -->
-      <div class="col-auto ba-black">
-        <div class="row items-center">
-          <div class="col-9 br-black">
-            <div class="row items-center q-pa-sm">
-              <div class="col-auto">
-                <img src="~assets/images/logo-kota-grey.png" width="60">
-              </div>
-              <div class="col flex-wrap q-px-md">
-                <div class="text-center">
-                  <div class="text-weight-bold f-14">
-                    RSUD DOKTER MOHAMAD SALEH
-                  </div>
-                  <div>Jl. Mayjend Panjaitan No.65 Telp: (0335)433119 Fax.(0335)432702</div>
-                  <div>email: rsudprob@probolinggokota.go.id</div>
-                  <div>PROBOLINGGO – 67219</div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-3">
-            <div class="text-center text-bold">
-              PEMBERIAN EDUKASI
-              PEMBERITAHUAN INFORMASI OPERASI/TINDAKAN INVASIF
-            </div>
-          </div>
-        </div>
+      <div class="col-auto">
+        <AppKopSuratStandard :dataHeader="[
+          'PEMERINTAH KOTA PROBOLINGGO',
+          'DINAS KESEHATAN, PENGENDALIAN PENDUDUK DAN KELUARGA BERENCANA',
+          'UOBK RSUD DOKTER MOHAMAD SALEH',
+          'Jl. Mayjend Panjaitan No.65 Telp: (0335)433119 Fax.(0335)432702',
+          'email: rsudprob@probolinggokota.go.id',
+          'PROBOLINGGO – 67219'
+        ]" :pasien="pasien" :header="['PEMBERIAN EDUKASI', 'OPERASI/TINDAKAN INVASIF']" />
       </div>
-      <!-- CONTENT -->
       <div class="ba-black">
         <div class="section-1 q-pa-md">
           <div class="flex q-py-xs">
@@ -54,7 +36,7 @@
               Pemberi Informasi
             </div>
             <div style="width: 60%;">
-              : {{ item?.pengedukasi }}
+              : {{ item?.pelaksana }}
             </div>
           </div>
           <div class="flex q-py-xs">
@@ -67,19 +49,19 @@
           </div>
         </div>
         <div class="section-2">
-          <q-markup-table separator="cell" flat bordered wrap-cells>
+          <q-markup-table dense separator="cell" flat bordered wrap-cells class="table-info text-black font-body">
             <thead>
               <tr>
                 <th class="text-left f-12" width="5%">
                   NO
                 </th>
-                <th class="text-left f-12" width="10%">
+                <th class="text-left f-12" width="20%">
                   JENIS INFORMASI
                 </th>
                 <th class="text-left f-12">
                   ISI INFORMASI
                 </th>
-                <th class="text-right" width="10%">
+                <th class="text-center f-12" width="7%">
                   TANDA (v)
                 </th>
               </tr>
@@ -93,15 +75,10 @@
                   Diagnosis
                 </td>
                 <td class="text-left f-12 f-12">
-                  <div v-for="diag in item?.diagnosis" :key="diag" class="flex">
-                    <div>- {{ diag }} </div>
-                    <div class="q-ml-sm">
-                      {{pasien?.diagnosamedis?.find(x => x?.rs3 === diag)?.masterdiagnosa?.rs4 ?? '-'}}
-                    </div>
-                  </div>
+                  <div>{{ pasien?.memodiagnosa || '-' }}</div>
                 </td>
-                <td class="text-right">
-                  <q-icon v-if="item?.diagnosis?.length > 0" name="icon-mat-check" size="sm" />
+                <td class="text-center">
+                  <q-icon v-if="pasien?.memodiagnosa" name="icon-mat-check" size="sm" />
                 </td>
               </tr>
 
@@ -115,7 +92,7 @@
                 <td class="text-left f-12">
                   <div v-html="getNewLine(item?.dasarDiagnosis)" />
                 </td>
-                <td class="text-right">
+                <td class="text-center">
                   <q-icon v-if="item?.dasarDiagnosis" name="icon-mat-check" size="sm" />
                 </td>
               </tr>
@@ -130,7 +107,7 @@
                 <td class="text-left f-12">
                   <div v-html="getNewLine(item?.tindakanMedis)" />
                 </td>
-                <td class="text-right">
+                <td class="text-center">
                   <q-icon v-if="item?.tindakanMedis" name="icon-mat-check" size="sm" />
                 </td>
               </tr>
@@ -145,7 +122,7 @@
                 <td class="text-left f-12">
                   <div v-html="getNewLine(item?.indikasi)" />
                 </td>
-                <td class="text-right">
+                <td class="text-center">
                   <q-icon v-if="item?.indikasi" name="icon-mat-check" size="sm" />
                 </td>
               </tr>
@@ -158,14 +135,17 @@
                   Tujuan
                 </td>
                 <td class="text-left f-12">
-                  <div v-for="tj in item?.tujuan" :key="tj" class="flex">
-                    <div>- </div>
-                    <div class="q-ml-sm">
-                      {{ tj === 'Lain-lain' ? item?.tujuanLain : (tj ?? '-') }}
+                  <div v-for="(opt, idx) in tujuanOptions" :key="opt" class="row no-wrap items-start q-mt-xs">
+                    <div class="q-mr-xs text-bold text-center" style="width: 20px; font-size: 15px; line-height: 1.2;">
+                      {{ isSelected(opt, item?.tujuan) ? '☑' : '☐' }}
+                    </div>
+                    <div class="col">
+                      {{ opt === 'Lain-lain' ? (isSelected(opt, item?.tujuan) ? `Lain-lain: ${item?.tujuanLain ||
+                        '...'}` : 'Lain-lain') : opt }}
                     </div>
                   </div>
                 </td>
-                <td class="text-right">
+                <td class="text-center">
                   <q-icon v-if="item?.tujuan?.length > 0" name="icon-mat-check" size="sm" />
                 </td>
               </tr>
@@ -180,7 +160,7 @@
                 <td class="text-left f-12">
                   <div v-html="getNewLine(item?.tatacara)" />
                 </td>
-                <td class="text-right">
+                <td class="text-center">
                   <q-icon v-if="item?.tatacara" name="icon-mat-check" size="sm" />
                 </td>
               </tr>
@@ -193,14 +173,17 @@
                   Resiko
                 </td>
                 <td class="text-left f-12">
-                  <div v-for="tj in item?.resiko" :key="tj" class="flex">
-                    <div>- </div>
-                    <div class="q-ml-sm">
-                      {{ tj === 'Lain-lain' ? item?.resikoLain : (tj ?? '-') }}
+                  <div v-for="(opt, idx) in resikoOptions" :key="opt" class="row no-wrap items-start q-mt-xs">
+                    <div class="q-mr-xs text-bold text-center" style="width: 20px; font-size: 15px; line-height: 1.2;">
+                      {{ isSelected(opt, item?.resiko) ? '☑' : '☐' }}
+                    </div>
+                    <div class="col">
+                      {{ opt === 'Lain-lain' ? (isSelected(opt, item?.resiko) ? `Lain-lain: ${item?.resikoLain ||
+                        '...'}` : 'Lain-lain') : opt }}
                     </div>
                   </div>
                 </td>
-                <td class="text-right">
+                <td class="text-center">
                   <q-icon v-if="item?.resiko?.length > 0" name="icon-mat-check" size="sm" />
                 </td>
               </tr>
@@ -215,7 +198,7 @@
                 <td class="text-left f-12">
                   <div v-html="getNewLine(item?.komplikasi)" />
                 </td>
-                <td class="text-right">
+                <td class="text-center">
                   <q-icon v-if="item?.komplikasi" name="icon-mat-check" size="sm" />
                 </td>
               </tr>
@@ -228,9 +211,16 @@
                   Prognosis
                 </td>
                 <td class="text-left f-12">
-                  {{ item?.prognosis?.join(', ') }}
+                  <div v-for="(opt, idx) in prognosisOptions" :key="opt" class="row no-wrap items-start q-mt-xs">
+                    <div class="q-mr-xs text-bold text-center" style="width: 20px; font-size: 15px; line-height: 1.2;">
+                      {{ isSelected(opt, item?.prognosis) ? '☑' : '☐' }}
+                    </div>
+                    <div class="col">
+                      {{ opt }}
+                    </div>
+                  </div>
                 </td>
-                <td class="text-right">
+                <td class="text-center">
                   <q-icon v-if="item?.prognosis?.length > 0" name="icon-mat-check" size="sm" />
                 </td>
               </tr>
@@ -245,7 +235,7 @@
                 <td class="text-left f-12">
                   <div v-html="getNewLine(item?.alternatif)" />
                 </td>
-                <td class="text-right">
+                <td class="text-center">
                   <q-icon v-if="item?.alternatif" name="icon-mat-check" size="sm" />
                 </td>
               </tr>
@@ -255,7 +245,7 @@
                   memberikan kesempatan untuk bertanya/berdiskusi.
                 </td>
 
-                <td class="text-right">
+                <td class="text-center">
                   <div class="full-width flex justify-center">
                     <app-qr-petugas :noreg="item?.noreg" :jnssurat="'IC-OPERASI-INVASIF.png'" :asal="'RANAP'"
                       :kdpegsimrs="item?.kdPetugas" width="50px" height="50px" />
@@ -270,7 +260,7 @@
                   tanda/paraf di kolom kanannya, dan telah memahaminya.
                 </td>
 
-                <td class="text-right">
+                <td class="text-center">
                   <img :src="item?.ttd_yg_menyatakan" alt="ttd-yg-menyatakan" width="70">
                 </td>
               </tr>
@@ -345,7 +335,7 @@
             <div class="col-8">
               <div class="flex">
                 : {{ item?.hubunganDgPasien }} <span v-if="item?.hubunganDgPasien === 'Keluarga'"> {{ item?.keluarga
-                  }}</span>
+                }}</span>
               </div>
             </div>
           </div>
@@ -379,7 +369,7 @@
             <div class="col-8">
               <div class="flex justify-between">
                 <div>: {{ pasien?.nama }} <span class="q-ml-lg">({{ pasien?.kelamin === 'Perempuan' ? 'P' : 'L'
-                    }})*</span></div>
+                }})*</span></div>
                 <div class="self-end">
                   Tanggal Lahir : {{ pasien?.tgllahir }}
                 </div>
@@ -514,46 +504,16 @@
     <!-- Page 3 -->
     <div class="page-3">
       <!-- KOP SURAT -->
-      <div class="col-auto ba-black">
-        <div class="row items-center">
-          <div class="col-9 br-black">
-            <div class="row items-center q-pa-sm">
-              <div class="col-auto">
-                <img src="~assets/images/logo-kota-grey.png" width="60">
-              </div>
-              <div class="col flex-wrap q-px-md">
-                <div class="text-center">
-                  <div class="text-weight-bold f-12">
-                    PEMERINTAH KOTA PROBOLINGGO
-                  </div>
-                  <div class="text-weight-bold f-10">
-                    DINAS KESEHATAN, PENGENDALIAN PENDUDUK DAN KELUARGA BERENCANA
-                  </div>
-                  <div class="text-weight-bold f-14">
-                    UOBK RSUD DOKTER MOHAMAD SALEH
-                  </div>
-                  <div class="f-10">
-                    <div>Jl. Mayjend Panjaitan No.65 Telp: (0335)433119 Fax.(0335)432702</div>
-                    <div>email: rsudprob@probolinggokota.go.id</div>
-                    <div>PROBOLINGGO – 67219</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-3">
-            <div class="text-center text-bold">
-              PERSETUJUAN
-              TINDAKAN KEDOKTERAN
-            </div>
-            <div class="text-center text-bold">
-              OPERASI / TINDAKAN INVASIF
-            </div>
-          </div>
-        </div>
+      <div class="col-auto">
+        <AppKopSuratStandard :dataHeader="[
+          'PEMERINTAH KOTA PROBOLINGGO',
+          'DINAS KESEHATAN, PENGENDALIAN PENDUDUK DAN KELUARGA BERENCANA',
+          'UOBK RSUD DOKTER MOHAMAD SALEH',
+          'Jl. Mayjend Panjaitan No.65 Telp: (0335)433119 Fax.(0335)432702',
+          'email: rsudprob@probolinggokota.go.id',
+          'PROBOLINGGO – 67219'
+        ]" :pasien="pasien" :header="['PERSETUJUAN', 'TINDAKAN KEDOKTERAN', 'OPERASI / TINDAKAN INVASIF']" />
       </div>
-
-      <!-- section-1 -->
       <div class="ba-black f-12 q-mt-xs">
         <div class="q-pa-sm">
           Saya , Dokter Pelaksana tindakan menyatakan bahwa telah menerangkan hal dibawah ini secara benar dan jelas dan
@@ -581,23 +541,7 @@
                   Diagnosis
                 </td>
                 <td class="text-left f-12 f-12">
-                  <div class="flex">
-                    <div v-for="diag in item?.diagnosis" :key="diag" class="flex">
-                      <div class="">
-                        {{pasien?.diagnosamedis?.find(x => x?.rs3 === diag)?.masterdiagnosa?.rs4 ?? '-'}}
-                      </div>
-                      <div class="q-mr-xs">
-                        ,
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- <div v-for="diag in item?.diagnosis" :key="diag" class="flex">
-                    <div>- {{ diag }} </div>
-                    <div class="q-ml-sm">
-                      {{ pasien?.diagnosamedis?.find(x => x?.rs3 === diag)?.masterdiagnosa?.rs4 ?? '-' }}
-                    </div>
-                  </div> -->
+                  <div>{{ pasien?.memodiagnosa || '-' }}</div>
                 </td>
               </tr>
 
@@ -825,7 +769,7 @@
               <div class="col-8">
                 <div class="flex justify-between">
                   <div>: {{ pasien?.nama }} <span class="q-ml-lg">({{ pasien?.kelamin === 'Perempuan' ? 'P' : 'L'
-                      }})*</span></div>
+                  }})*</span></div>
                 </div>
               </div>
             </div>
@@ -884,65 +828,47 @@
           <div class="text-right f-12 q-mb-lg q-mr-sm">
             Probolinggo, {{ humanDate(item?.tanggal) }}, pkl: {{ jamTnpDetik(item?.tanggal) }}
           </div>
-          <q-markup-table dense separator="cell" flat bordered wrap-cells>
+          <q-markup-table dense separator="cell" flat bordered wrap-cells
+            class="table-signature text-black font-body q-mt-sm">
             <thead>
-              <tr>
-                <th class="text-left f-12" width="20%" />
-                <th class="text-center f-12" width="20%">
-                  Dokter
-                </th>
-                <th class="text-center f-12" width="20%">
-                  Saksi RS
-                </th>
-                <th class="text-center" width="20%">
-                  Saksi Pasien
-                </th>
-                <th class="text-center" width="20%">
-                  Yang Menyatakan
-                </th>
+              <tr class="bg-grey-2">
+                <th class="text-left text-bold f-11 text-black" width="20%" />
+                <th class="text-center text-bold f-11 text-black" width="20%">Dokter</th>
+                <th class="text-center text-bold f-11 text-black" width="20%">Saksi RS</th>
+                <th class="text-center text-bold f-11 text-black" width="20%">Saksi Pasien</th>
+                <th class="text-center text-bold f-11 text-black" width="20%">Yang Menyatakan</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td class="text-left f-12">
-                  Nama Jelas
-                </td>
-                <td class="text-center f-12">
-                  {{ item?.pelaksana }}
-                </td>
-                <td class="text-center f-12">
-                  {{ item?.pengedukasi }}
-                </td>
-                <td class="text-center">
-                  {{ item?.saksiPasien }}
-                </td>
-                <td class="text-center">
-                  {{ item?.nama }}
-                </td>
+                <td class="text-left text-bold f-10 text-black">Nama Jelas</td>
+                <td class="text-center f-10 text-black">{{ item?.pelaksana || '-' }}</td>
+                <td class="text-center f-10 text-black">{{ item?.pengedukasi || '-' }}</td>
+                <td class="text-center f-10 text-black">{{ item?.saksiPasien || '-' }}</td>
+                <td class="text-center f-10 text-black">{{ item?.nama || '-' }}</td>
               </tr>
               <tr>
-                <td class="text-left f-12">
-                  Tanda Tangan
-                </td>
-                <td class="text-center f-12">
-                  <!-- <img :src="item?.ttd_dokter" alt="ttd dokter" width="70"> -->
-                  <div class="full-width flex justify-center">
+                <td class="text-left text-bold f-10 text-black" style="height: 75px;">Tanda Tangan</td>
+                <td class="text-center q-pa-xs">
+                  <div class="full-width flex justify-center items-center">
                     <app-qr-petugas :noreg="item?.noreg" :jnssurat="'IC-OPERASI-INVASIF.png'" :asal="'RANAP'"
-                      :kdpegsimrs="item?.kdDokter" width="70px" height="70px" />
+                      :kdpegsimrs="item?.kdDokter" width="65px" height="65px" />
                   </div>
                 </td>
-                <td class="text-center f-12">
-                  <!-- <img :src="item?.ttd_petugas" alt="ttd-petugas" width="70"> -->
-                  <div class="full-width flex justify-center">
+                <td class="text-center q-pa-xs">
+                  <div class="full-width flex justify-center items-center">
                     <app-qr-petugas :noreg="item?.noreg" :jnssurat="'IC-OPERASI-INVASIF.png'" :asal="'RANAP'"
-                      :kdpegsimrs="item?.kdPetugas" width="70px" height="70px" />
+                      :kdpegsimrs="item?.kdPetugas" width="65px" height="65px" />
                   </div>
                 </td>
-                <td class="text-center">
-                  <img :src="item?.ttd_saksi_pasien" alt="ttd-saksi-pasien" width="70">
+                <td class="text-center q-pa-xs">
+                  <img v-if="item?.ttd_saksi_pasien" :src="item?.ttd_saksi_pasien" alt="ttd saksi pasien" width="65">
+                  <div v-else class="text-grey-4 f-9">Belum Ttd</div>
                 </td>
-                <td class="text-center">
-                  <img :src="item?.ttd_yg_menyatakan" alt="ttd-yg-menyatakan" width="70">
+                <td class="text-center q-pa-xs">
+                  <img v-if="item?.ttd_yg_menyatakan" :src="item?.ttd_yg_menyatakan" alt="ttd yang menyatakan"
+                    width="65">
+                  <div v-else class="text-grey-4 f-9">Belum Ttd</div>
                 </td>
               </tr>
             </tbody>
@@ -960,6 +886,7 @@ import { pathImg } from 'src/boot/axios'
 import { humanDate, jamTnpDetik } from 'src/modules/formatter'
 import { imageToBase64 } from 'src/modules/imgBase64'
 import { useConcernOperasiInvasifRanapStore } from 'src/stores/simrs/ranap/concernoperasiinvasif'
+import AppKopSuratStandard from 'src/components/~global/AppKopSuratStandard.vue'
 import { onMounted, ref } from 'vue'
 const store = useConcernOperasiInvasifRanapStore()
 
@@ -1014,6 +941,40 @@ function initImage(item) {
 
 const modP = ref([])
 
+const tujuanOptions = [
+  'Mengangkat Tumor',
+  'Menghilangkan Sumber Infeksi',
+  'Mengambil Spesimen',
+  'Mengembalikan fungsi tubuh',
+  'Melahirkan Bayi',
+  'Lain-lain'
+]
+
+const resikoOptions = [
+  'Pendarahan',
+  'Infeksi Luka Operasi',
+  'Perlukaan Jaringan',
+  'Kematian',
+  'Lain-lain'
+]
+
+const prognosisOptions = [
+  'Baik',
+  'Buruk'
+]
+
+function isSelected(opt, selectedList) {
+  if (!selectedList) return false
+  if (Array.isArray(selectedList)) {
+    return selectedList.includes(opt)
+  }
+  try {
+    const parsed = JSON.parse(selectedList)
+    if (Array.isArray(parsed)) return parsed.includes(opt)
+  } catch (e) { }
+  return typeof selectedList === 'string' && selectedList.includes(opt)
+}
+
 function hubDgPas() {
   const a = []
   a.push(props.item?.hubunganDgPasien)
@@ -1028,7 +989,7 @@ function getNewLine(text) {
 
 // const exportPdf = () => {
 //   const concern = document.getElementById('pdfDoc')
-// 
+//
 //   const pdfConfig = {
 //     margin: 0,
 //     filename: 'inform-consent-' + props?.item?.jenis + '.pdf',
@@ -1049,7 +1010,7 @@ function getNewLine(text) {
 //     },
 //     pagebreak: { mode: ['css', 'legacy'] }
 //   }
-// 
+//
 //   html2pdf().set(pdfConfig).from(concern).save()
 // }
 // defineExpose({ exportPdf })
@@ -1058,21 +1019,28 @@ function getNewLine(text) {
 <style lang="scss" scoped>
 /* Tampilan preview per page di layar browser (seperti layout kertas A4) */
 #pdfDoc {
-  background-color: #e0e0e0 !important; /* warna abu-abu untuk background desktop workspace */
+  background-color: #e0e0e0 !important;
+  /* warna abu-abu untuk background desktop workspace */
   padding: 30px 10px !important;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 24px; /* jarak antar halaman */
+  gap: 24px;
+  /* jarak antar halaman */
   box-sizing: border-box;
 }
 
-.page-1, .page-2, .page-3 {
+.page-1,
+.page-2,
+.page-3 {
   background-color: #ffffff !important;
   width: 210mm;
-  min-height: 297mm; /* memaksa tinggi minimum A4 */
-  padding: 8mm; /* margin halaman minimum */
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* efek shadow agar mirip lembaran kertas nyata */
+  min-height: 297mm;
+  /* memaksa tinggi minimum A4 */
+  padding: 8mm;
+  /* margin halaman minimum */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  /* efek shadow agar mirip lembaran kertas nyata */
   border-radius: 4px;
   position: relative;
   box-sizing: border-box;
@@ -1083,6 +1051,18 @@ function getNewLine(text) {
 /* Sembunyikan garis separator horizontal di layar browser karena sudah dipisah oleh gap & shadow */
 .pemisah {
   display: none !important;
+}
+
+.table-info,
+.table-signature {
+  border-collapse: collapse;
+  width: 100%;
+
+  td,
+  th {
+    border: 1px solid #000 !important;
+    padding: 3px 4px !important;
+  }
 }
 
 /* CSS khusus untuk menetralisir margin/padding/shadow saat html2pdf melakukan rendering/cloning */
@@ -1097,7 +1077,7 @@ function getNewLine(text) {
     margin: 0 !important;
     box-shadow: none !important;
     border-radius: 0 !important;
-    height: 297mm !important; 
+    height: 297mm !important;
   }
 }
 */
@@ -1115,20 +1095,25 @@ function getNewLine(text) {
     gap: 0 !important;
   }
 
-  .page-1, .page-2, .page-3 {
+  .page-1,
+  .page-2,
+  .page-3 {
     width: 210mm !important;
-    height: 297mm !important; /* Memaksa tinggi pas A4 */
+    height: 297mm !important;
+    /* Memaksa tinggi pas A4 */
     padding: 8mm !important;
     box-shadow: none !important;
     border-radius: 0 !important;
     margin: 0 !important;
-    page-break-after: always !important; /* memaksa pemisahan halaman */
+    page-break-after: always !important;
+    /* memaksa pemisahan halaman */
     page-break-inside: avoid !important;
     box-sizing: border-box !important;
   }
 
   .page-3 {
-    page-break-after: avoid !important; /* Halaman terakhir tidak memerlukan page break setelahnya */
+    page-break-after: avoid !important;
+    /* Halaman terakhir tidak memerlukan page break setelahnya */
   }
 }
 </style>

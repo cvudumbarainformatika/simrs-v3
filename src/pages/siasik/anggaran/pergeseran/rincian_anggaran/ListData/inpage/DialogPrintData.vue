@@ -1,6 +1,6 @@
 <template>
   <q-dialog persistent backdrop-filter="blur(4px)">
-    <q-card style="width:100%; max-width: 1200vw; height: 600px">
+    <q-card style="width: 95vw; max-width: 1400px; height: 95vh;">
       <q-layout view="lHh Lpr lFf" container class="shadow-2 rounded-borders">
         <q-header elevated>
           <q-bar class="bg-black text-white">
@@ -13,8 +13,8 @@
           </q-bar>
         </q-header>
         <q-page-container>
-          <div id="printMe" class="f-12 q-py-md row justify-center">
-            <q-card-section>
+          <div id="printMe" class="print-container">
+            <q-card-section class="print-contentx">
               <div class="col-auto" style="font-size: 1.2em">
                 <div class="row justify-between full-width full-height ">
                   <div class="row b1 justify-between full-width">
@@ -543,5 +543,58 @@ td {
   max-height: 50px;
   padding-left: 10px;
   padding-right: 10px;
+}
+
+.print-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 12px;
+  box-sizing: border-box;
+}
+
+.print-content {
+  width: 100%;
+  max-width: 1123px;
+  /* preview */
+  box-sizing: border-box;
+}
+
+@page {
+  size: A4 landscape;
+  margin: 8mm;
+}
+
+@media print {
+
+  .print-container {
+    display: block;
+    padding: 0;
+  }
+
+  .print-content {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  #printMe {
+    width: 100%;
+    font-size: 11px;
+  }
+
+  table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+  }
+
+  th,
+  td {
+    padding: 2px 4px;
+    font-size: 10px;
+    word-break: break-word;
+  }
 }
 </style>

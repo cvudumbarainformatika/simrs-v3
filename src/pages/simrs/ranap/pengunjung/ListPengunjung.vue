@@ -12,7 +12,7 @@
             <div><b>NIK : {{ item?.nktp }}</b></div>
             <div><b>NOKA : {{ item?.noka }}</b></div>
             <div>Norm|Reg : <span class="text-primary">{{ item?.norm }}</span> | <span class="text-orange">{{ item.noreg
-                }}</span></div>
+            }}</span></div>
             <div>Usia : {{ item?.usia }} | <em class="text-grey">{{ item.kelamin }}</em></div>
             <div class="f-10">
               {{ item?.alamat }}
@@ -26,8 +26,8 @@
                   </div>
                 </q-badge>
                 <!-- <div class="absolute-bottom-right q-pa-md" v-if="cekReadmisi(item?.last_visit, item?.tglmasuk)"> -->
-                <q-badge v-if="cekReadmisi(item?.last_visit, item?.tglmasuk) && item?.status !== '3'" outline
-                  class="q-mt-sm q-px-sm cursor-pointer" dense color="negative">
+                <q-badge v-if="cekReadmisi(item?.last_visit, item?.tglmasuk) && item?.status !== '3'"
+                  class="q-mt-sm q-px-sm cursor-pointer" dense color="dark">
                   <q-popup-proxy dark>
                     <q-banner dark>
                       <template v-slot:avatar>
@@ -94,6 +94,18 @@
               </q-badge>
             </div>
 
+            <!-- Indikator Tambahan Pasien (Alergi, dll) -->
+            <div class="row q-gutter-xs q-mt-xs items-center">
+              <PopupAlergi v-if="item?.alergis && item?.alergis?.length > 0" :alergis="item.alergis" />
+              <PopupResikoJatuh v-if="item?.resiko_jatuh && item?.resiko_jatuh?.length > 0"
+                :resiko-jatuh="item.resiko_jatuh" />
+              <PopupNamaSama v-if="item?.nama_sama_mirip && item?.nama_sama_mirip?.length > 0"
+                :nama-sama-mirip="item.nama_sama_mirip" />
+              <PopupPenolakanResusitasi v-if="item?.penolakan_resusitasi && item?.penolakan_resusitasi?.length > 0"
+                :penolakan-resusitasi="item.penolakan_resusitasi" />
+              <PopupMpp v-if="item?.pasien_mpp === true" />
+            </div>
+
           </q-item-section>
           <q-item-section side>
             <q-btn v-if="item?.status !== '1'" dense outline size="sm" no-caps color="primary" label="LIHAT LAYANAN"
@@ -114,6 +126,11 @@
 <script setup>
 import { date } from 'quasar'
 import PageLayananRanap from '../layanan/PageLayananRanap.vue'
+import PopupAlergi from './PopupAlergi.vue'
+import PopupResikoJatuh from './PopupResikoJatuh.vue'
+import PopupNamaSama from './PopupNamaSama.vue'
+import PopupPenolakanResusitasi from './PopupPenolakanResusitasi.vue'
+import PopupMpp from './PopupMpp.vue'
 import { calcDate, humanDate } from 'src/modules/formatter'
 import { useTriageIgd } from 'src/stores/simrs/igd/triage'
 import { usePengunjungRanapStore } from 'src/stores/simrs/ranap/pengunjung'
@@ -187,10 +204,6 @@ function bukaLayananPage(item) {
         })
       ])
     })
-}
-
-function terimaPasien(item) {
-  pasien.value = item
 }
 
 onBeforeUnmount(() => {

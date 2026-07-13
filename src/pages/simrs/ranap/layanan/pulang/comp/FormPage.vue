@@ -26,13 +26,22 @@
         Cara Keluar
       </div>
       <div class="col-9">
-        <q-select v-model="store.form.caraKeluar" dense standout="bg-yellow-3 text-black" outlined label="Cara Keluar"
-          :options="store.carakeluars" option-value="rs1" option-label="rs2" map-options emit-value hide-selected
-          fill-input use-input input-debounce="0" hide-bottom-space
-          :rules="[val => val && val?.length > 0 || 'harap diisi']" style="width: 40%;" @update:model-value="(val) => {
-            console.log('val', val);
+        <div class="row">
+          <q-select v-model="store.form.caraKeluar" dense standout="bg-yellow-3 text-black" outlined label="Cara Keluar"
+            :options="store.carakeluars" option-value="rs1" option-label="rs2" map-options emit-value hide-selected
+            fill-input use-input input-debounce="0" hide-bottom-space
+            :rules="[val => val && val?.length > 0 || 'harap diisi']" style="width: 40%;" @update:model-value="(val) => {
+              console.log('val', val);
+            }" />
+          <div v-if="store.form.caraKeluar === 'C010'" class="q-px-sm col-3">
+            <q-select v-model="store.form.alasan" dense standout="bg-yellow-3 text-black" outlined label="Alasan Pulang"
+              :options="optionalasan" emit-value hide-selected fill-input use-input input-debounce="0" hide-bottom-space
+              :rules="[val => val && val?.length > 0 || 'Alasan harap diisi']" @update:model-value="(val) => {
+                console.log('val', val);
+              }" />
+          </div>
 
-          }" />
+        </div>
       </div>
     </div>
 
@@ -146,8 +155,86 @@
       </div>
     </div>
 
-    <q-separator class="q-my-md" />
 
+    <div class="col-12 q-col-gutter-sm" v-if="store.form.caraKeluar === 'C010'">
+      <div class="text-weight-bold"> Informasi Penanggung Jawab</div>
+      <div class="row q-mt-sm">
+        <div class="col-3">
+          Nama
+        </div>
+        <div class="col-6">
+          <q-input v-model="store.form.nama_penanggungjawab" dense outlined standout="bg-yellow-3" label="Nama"
+            hide-bottom-space :rules="[val => val && val?.length > 0 || 'Nama harus diisi']" />
+        </div>
+      </div>
+      <div class="row q-mt-sm">
+        <div class="col-3">
+          Kartu Identitas / NIK
+        </div>
+        <div class="col-6">
+          <q-input v-model="store.form.identitas_penanggungjawab" dense outlined standout="bg-yellow-3"
+            label="Kartu Identitas / NIK" hide-bottom-space
+            :rules="[val => val && val?.length > 0 || 'Identitas harus diisi']" />
+        </div>
+      </div>
+
+      <div class="row q-mt-sm">
+        <div class="col-3">
+          Umur / Kelamin
+        </div>
+        <div class="col-6">
+          <div class="row">
+            <div class="q-pr-sm">
+              <q-input v-model="store.form.umur_penanggungjawab" dense outlined standout="bg-yellow-3" label="Umur"
+                hide-bottom-space type="number" :rules="[val => val && val?.length > 0 || 'Umur harus diisi']" />
+            </div>
+            <div>
+              <q-select v-model="store.form.kelamin_penanggungjawab" dense standout="bg-yellow-3 text-black" outlined
+                label="Jenis Kelamin" :options="optionkelamin" emit-value hide-selected fill-input use-input
+                input-debounce="0" hide-bottom-space :rules="[val => val && val?.length > 0 || 'Kelamin harap diisi']"
+                @update:model-value="(val) => {
+                  console.log('val', val);
+                }" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row q-mt-xs">
+        <div class="col-3">
+          Alamat
+        </div>
+        <div class="col-6">
+          <q-input v-model="store.form.alamat_penanggungjawab" dense outlined standout="bg-yellow-3" label="Alamat"
+            :rules="[val => val && val?.length > 0 || 'Alamat harus diisi']" />
+        </div>
+      </div>
+    </div>
+
+
+    <div class="col-12" v-if="store.form.caraKeluar === 'C010'">
+      <div class="row q-col-gutter-sm">
+
+        <div class="col-12" style="min-height: 150px;">
+          <div class="column full-height flex-center relative-position q-pa-sm">
+            <div>
+              <!-- <app-signature :ttd="store.form.ttdPasien" :width="250" label-ttd="TTD Pasien"
+                @save-ttd="(val) => store.form.ttdPasien = val" :pasien="pasien" uuid="ttdPasien" @signature="(val) => {
+                  // store.setForm('ttdpasien', val)
+                  store.form.ttdPasien = val
+                }" /> -->
+              <app-signature :ttd="store.form.ttdYgMenyatakan" :width="250" :height="150"
+                label-ttd="TTD Penanggung Jawab" @save-ttd="(val) => store.form.ttdYgMenyatakan = val" :pasien="pasien"
+                uuid="ttdYgMenyatakan" @signature="(val) => {
+                  // store.setForm('ttdpasien', val)
+                  store.form.ttdYgMenyatakan = val
+                }" />
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <q-separator class="q-my-md" />
     <div class="row q-mt-sm flex justify-center">
       <q-btn :loading="store.loadingOrder" :disable="store.loadingOrder"
         :label="(pasien?.status === '2' || pasien?.status === '3') ? 'EDIT INPUTAN' : 'PULANG / PULANGKAN PASIEN'"
@@ -159,7 +246,7 @@
 <script setup>
 import { useDiagnosaStore } from 'src/stores/simrs/ranap/diagnosa'
 import { usePasienPulangRanapStore } from 'src/stores/simrs/ranap/pulang'
-import { onMounted, ref } from 'vue'
+import { defineAsyncComponent, onMounted, ref } from 'vue'
 
 const store = usePasienPulangRanapStore()
 const diag = useDiagnosaStore()
@@ -174,7 +261,9 @@ const props = defineProps({
     default: null
   }
 })
-
+const TtdWacom = defineAsyncComponent(() => {
+  return import('src/components/~static/TtdWacomStu540.vue')
+})
 onMounted(() => {
   // console.log('props', props?.pasien);
 
@@ -186,6 +275,8 @@ onMounted(() => {
 
 const options = ref([])
 const options2 = ref([])
+const optionalasan = ref(['Biaya', 'Menolak Asuhan', 'Pengobatan Alternatif'])
+const optionkelamin = ref(['Perempuan', 'Laki-laki'])
 
 function filterFn(val, update, abort) {
   if (val?.length < 2) {

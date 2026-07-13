@@ -67,7 +67,7 @@
 
               <q-item-label caption lines="1">
                 <q-icon name="icon-mat-local_hospital" size="xs" class="q-mr-xs" />
-                Diagnosa: {{ item?.kunjunganranap?.diagnosamedis[0]?.masterdiagnosa?.rs4 ?? 'Belum Ada Diagnosa' }}
+                Diagnosa: {{ aturDiagnosa(item) }}
               </q-item-label>
             </q-item-section>
 
@@ -91,11 +91,14 @@
             </q-item-section>
 
 
-            <q-badge v-if="item?.kdruang !== 'POL014'" class="absolute-bottom-left">
+            <q-badge v-if="item?.kdruang !== 'POL014' && item?.kdruang !== 'PEN001'" class="absolute-bottom-left">
               {{ item?.kunjunganranap?.ruangan || 'Tidak Ada Ruangan' }}
             </q-badge>
             <q-badge v-if="item?.kdruang === 'POL014'" class="absolute-bottom-left">
               IRD
+            </q-badge>
+            <q-badge v-if="item?.kdruang === 'PEN001'" color="purple" text-color="white" class="absolute-bottom-left">
+              Kamar Operasi (OK)
             </q-badge>
           </q-item>
         </q-slide-transition>
@@ -165,12 +168,32 @@ const pelabelanFilter = computed(() => {
 })
 
 const aturPasien = (item) => {
-  if (item?.kdruang !== 'POL014') {
-    return `${item?.kunjunganranap?.nama ?? '-'} (${item?.kunjunganranap?.rs2 ?? '-'}, ${item?.kunjunganranap?.ruangan ?? '-'}) `
+  if (item?.kdruang === 'POL014') {
+    return `${item?.kunjunganigd?.nama ?? '-'} (${item?.kunjunganigd?.rs2 ?? '-'}, IRD) `
+  }
+  else if (item?.kdruang === 'PEN001') {
+    const nama = item?.kunjunganranap?.nama ?? item?.kunjunganpoli?.nama ?? '-'
+    const norm = item?.kunjunganranap?.rs2 ?? item?.kunjunganpoli?.rs2 ?? '-'
+    return `${nama} (${norm}, Kamar Operasi) `
   }
   else {
-    return `${item?.kunjunganigd?.nama ?? '-'} (${item?.kunjunganigd?.rs2 ?? '-'}, ${item?.kunjunganigd?.ruangan ?? '-'}) `
+    return `${item?.kunjunganranap?.nama ?? '-'} (${item?.kunjunganranap?.rs2 ?? '-'}, ${item?.kunjunganranap?.ruangan ?? '-'}) `
   }
+}
+
+const aturDiagnosa = (item) => {
+  if (item?.kdruang === 'POL014') {
+    return item?.kunjunganigd?.diagnosa?.[0]?.masterdiagnosa?.rs4 ?? 'Belum Ada Diagnosa'
+  }
+  else if (item?.kdruang === 'PEN001') {
+    if (item?.kunjunganranap) {
+      return item?.kunjunganranap?.diagnosamedis?.[0]?.masterdiagnosa?.rs4 ?? 'Belum Ada Diagnosa'
+    } else if (item?.kunjunganpoli) {
+      return item?.kunjunganpoli?.diagnosamedis?.[0]?.masterdiagnosa?.rs4 ?? 
+             item?.kunjunganpoli?.diagnosa?.[0]?.masterdiagnosa?.rs4 ?? 'Belum Ada Diagnosa'
+    }
+  }
+  return item?.kunjunganranap?.diagnosamedis?.[0]?.masterdiagnosa?.rs4 ?? 'Belum Ada Diagnosa'
 }
 
 const getInitials = (name) => {

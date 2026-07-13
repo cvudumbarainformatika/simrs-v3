@@ -46,7 +46,7 @@
                 <div class="row justify-center text-weight-bold q-py-xs">
                   NOTA PERGESERAN KAS UANG PERSEDIAAN (NPK-UP)
                 </div>
-                <div class="row justify-center">Nomor {{ store.cetaknotadinas.nosppup }}</div>
+                <div class="row justify-center">Nomor {{ store.cetaknotadinas.noSpm }}</div>
               </div>
 
               <q-card-section class="q-pa-sm full-width q-pt-md">

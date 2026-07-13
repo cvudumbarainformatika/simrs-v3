@@ -23,7 +23,7 @@
     </div>
 
     <!-- Main Content -->
-    <div class="absolute-top column fit q-pa-xs" style="padding-bottom: 41px;">
+    <div class="absolute-top column fit q-pa-xs">
       <!-- Top Tabs -->
       <div class="col-auto">
         <q-tabs v-model="store.menuTab" dense no-caps inline-label narrow-indicator indicator-color="transparent"
@@ -81,8 +81,8 @@
                     store.initReset(pasien)
                     store.item = val
                   }" @edit="(val) => {
-                      store.editForm(val)
-                    }" @delete="(val) => {
+                    store.editForm(val)
+                  }" @delete="(val) => {
                       hapusItem(val?.id)
                     }" />
                 </div>
@@ -109,6 +109,8 @@ const props = defineProps({
     default: null
   }
 })
+
+console.log(props.pasien)
 
 const store = useConcernOperasiInvasifRanapStore()
 const $q = useQuasar()
@@ -146,6 +148,42 @@ const menus = ref([
     icon: 'icon-fa-file-regular',
     nakes: ['1', '2', '3'],
     comp: shallowRef(defineAsyncComponent(() => import('./comp/colonoscopy/FormColonoscopy.vue')))
+  },
+  {
+    name: 'TransfusiDarah',
+    label: 'IC Transfusi Darah',
+    title: 'TINDAKAN TRANSFUSI DARAH',
+    desc: 'Surat Persetujuan / Penolakan Tindakan Transfusi Darah',
+    icon: 'icon-fa-file-regular',
+    nakes: ['1', '2', '3'],
+    comp: shallowRef(defineAsyncComponent(() => import('./comp/transfusi/FormTransfusi.vue')))
+  },
+  {
+    name: 'PenandaanLokasiOperasi',
+    label: 'IC Penandaan Lokasi Operasi',
+    title: 'PENANDAAN LOKASI OPERASI',
+    desc: 'Surat Persetujuan Penandaan Lokasi Operasi',
+    icon: 'icon-fa-file-regular',
+    nakes: ['1', '2', '3'],
+    comp: shallowRef(defineAsyncComponent(() => import('./comp/penandaan/FormPenandaan.vue')))
+  },
+  {
+    name: 'Resusitasi',
+    label: 'IC Resusitasi (DNR)',
+    title: 'PENOLAKAN RESUSITASI (DNR)',
+    desc: 'Surat Penolakan Tindakan Resusitasi (Do Not Resuscitate)',
+    icon: 'icon-fa-file-regular',
+    nakes: ['1', '2', '3'],
+    comp: shallowRef(defineAsyncComponent(() => import('./comp/resusitasi/FormResusitasi.vue')))
+  },
+  {
+    name: 'Restrain',
+    label: 'IC Pemasangan Restrain',
+    title: 'PEMASANGAN RESTRAIN',
+    desc: 'Surat Persetujuan Tindakan Pemasangan Restrain',
+    icon: 'icon-fa-file-regular',
+    nakes: ['1', '2', '3'],
+    comp: shallowRef(defineAsyncComponent(() => import('./comp/restrain/FormRestrain.vue')))
   }
 ])
 
@@ -156,7 +194,11 @@ const ListPage = defineAsyncComponent(() => {
 const asyncComponentPreviews = {
   OperasiInvasif: defineAsyncComponent(() => import('./comp/concernoperasi/PreviewPage.vue')),
   Sedasi: defineAsyncComponent(() => import('./comp/concernsedasi/PreviewSedasi.vue')),
-  Colonoscopy: defineAsyncComponent(() => import('./comp/colonoscopy/PreviewColonoscopy.vue'))
+  Colonoscopy: defineAsyncComponent(() => import('./comp/colonoscopy/PreviewColonoscopy.vue')),
+  TransfusiDarah: defineAsyncComponent(() => import('./comp/transfusi/PreviewTransfusi.vue')),
+  PenandaanLokasiOperasi: defineAsyncComponent(() => import('./comp/penandaan/PreviewPenandaan.vue')),
+  Resusitasi: defineAsyncComponent(() => import('./comp/resusitasi/PreviewResusitasi.vue')),
+  Restrain: defineAsyncComponent(() => import('./comp/restrain/PreviewRestrain.vue'))
 }
 
 const activeMenu = computed(() => {
@@ -190,5 +232,23 @@ onMounted(() => {
 .q-tab {
   border-top-left-radius: 10px;
   border-bottom-right-radius: 10px;
+}
+
+/* Mengizinkan tabs melipat (wrap) menjadi beberapa baris saat lebar layar tidak cukup */
+:deep(.q-tabs__content) {
+  flex-wrap: wrap !important;
+  overflow: visible !important;
+}
+
+/* Menyembunyikan tombol scroll panah kiri-kanan bawaan Quasar */
+:deep(.q-tabs__arrows) {
+  display: none !important;
+}
+
+/* Memastikan layout tab tetap inline dan proporsional */
+:deep(.q-tab) {
+  min-height: 36px !important;
+  height: auto !important;
+  padding: 4px 6px !important;
 }
 </style>

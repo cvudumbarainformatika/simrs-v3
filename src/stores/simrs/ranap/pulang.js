@@ -19,7 +19,9 @@ export const usePasienPulangRanapStore = defineStore('pasien-pulang-ranap-store'
       noLp: null,
       diagnosaAkhir: null,
       diagnosaPenyebabMeninggal: null,
-      tindakLanjut: null
+      tindakLanjut: null,
+
+      ttdYgMenyatakan: null
     },
 
     search1: null,
@@ -56,7 +58,9 @@ export const usePasienPulangRanapStore = defineStore('pasien-pulang-ranap-store'
       const resp = await api.get('v1/simrs/ranap/layanan/pulang/getmastercarakeluar')
       // console.log('getmastercarakeluar', resp)
 
-      this.carakeluars = resp.data
+      // Permintaan sendiri dijadikan 1 dengan PULANG PAKSA
+      const tanpaPermintaansendiri = resp.data.filter(x => x?.rs1 !== 'C002')
+      this.carakeluars = tanpaPermintaansendiri
     },
 
     async simpandata(pasien) {
@@ -77,7 +81,7 @@ export const usePasienPulangRanapStore = defineStore('pasien-pulang-ranap-store'
 
       try {
         const resp = await api.post('v1/simrs/ranap/layanan/pulang/simpandata', this.form)
-        // console.log('save pulang', resp.data)
+        console.log('save pulang', resp)
         if (resp.status === 200) {
           // const storePasien = usePengunjungPoliStore()
           const storeRanap = usePengunjungRanapStore()
@@ -94,6 +98,7 @@ export const usePasienPulangRanapStore = defineStore('pasien-pulang-ranap-store'
           storeRanap.injectDataPasien(pasien?.noreg, resp?.data?.surat[0]?.nosrtmeninggal, 'nosrtmeninggal')
           storeRanap.injectDataPasien(pasien?.noreg, resp?.data?.surat[0]?.kddrygmenyatakan, 'kddrygmenyatakan')
           storeRanap.injectDataPasien(pasien?.noreg, resp?.data?.sambungan[0]?.ket, 'tindaklanjut_sambung')
+          storeRanap.injectDataPasien(pasien?.noreg, resp?.data?.pulangpaksa[0]?.alasan, 'alasan')
 
           notifSuccess(resp)
           this.loadingOrder = false
@@ -131,7 +136,7 @@ export const usePasienPulangRanapStore = defineStore('pasien-pulang-ranap-store'
       this.form = {
 
         prognosis: pasien?.prognosis ?? null,
-        caraKeluar: pasien?.carakeluar ?? null,
+        caraKeluar: pasien?.carakeluar === 'C002' ? 'C010' : (pasien?.carakeluar ?? null),
         tglKeluar: pasien?.tglKeluar ? date.formatDate(pasien?.tglKeluar, 'YYYY-MM-DD') : date.formatDate(Date.now(), 'YYYY-MM-DD'),
 
         jamMeninggal: pasien?.jamMeninggal ?? null,
@@ -140,7 +145,14 @@ export const usePasienPulangRanapStore = defineStore('pasien-pulang-ranap-store'
         noLp: null,
         diagnosaAkhir: pasien?.diagakhir ?? null,
         diagnosaPenyebabMeninggal: pasien?.sebabkematian ?? null,
-        tindakLanjut: pasien?.tindaklanjut_sambung || pasien?.tindaklanjut || null
+        tindakLanjut: pasien?.tindaklanjut_sambung || pasien?.tindaklanjut || null,
+        alasan: pasien?.alasan_pulangpaksa ?? null,
+        nama_penanggungjawab: pasien?.nama_penanggungjawab ?? null,
+        umur_penanggungjawab: pasien?.umur_penanggungjawab ?? null,
+        kelamin_penanggungjawab: pasien?.kelamin_penanggungjawab ?? null,
+        alamat_penanggungjawab: pasien?.alamat_penanggungjawab ?? null,
+        identitas_penanggungjawab: pasien?.identitas_penanggungjawab ?? null,
+        ttdYgMenyatakan: pasien?.ttdYgMenyatakan ?? null
       }
       this.search1 = pasien?.diagakhir ?? null
       this.search2 = pasien?.sebabkematian ?? null

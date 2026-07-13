@@ -25,7 +25,7 @@
         </div>
       </div>
       <div class="row no-wrap">
-        <div class="col-auto" style="width: 25%;">Anastesi</div>
+        <div class="col-auto" style="width: 25%;">Anestesi</div>
         <div class="col-auto" style="width: 5%;">:</div>
         <div class="col-auto" style="width: 70%;">{{ getNakesNya(store.form?.dokter_anastesi)?.nama ?? 'belum di isi' }}
         </div>

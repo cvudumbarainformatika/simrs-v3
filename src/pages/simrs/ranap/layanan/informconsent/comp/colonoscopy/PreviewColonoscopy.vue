@@ -3,48 +3,16 @@
     <!-- page 1 -->
     <div class="page-1">
       <!-- KOP SURAT -->
-      <div class="col-auto ba-black">
-        <div class="row items-center">
-          <div class="col-9 br-black">
-            <div class="row items-center q-pa-sm">
-              <div class="col-auto">
-                <img
-                  src="~assets/images/logo-kota-grey.png"
-                  width="60"
-                >
-              </div>
-              <div class="col flex-wrap q-px-md">
-                <div class="text-center">
-                  <div class="text-weight-bold f-12">
-                    PEMERINTAH KOTA PROBOLINGGO
-                  </div>
-                  <!-- <div class="text-weight-bold f-10">
-                    DINAS KESEHATAN, PENGENDALIAN PENDUDUK DAN KELUARGA BERENCANA
-                  </div> -->
-                  <div class="text-weight-bold f-16">
-                    RSUD DOKTER MOHAMAD SALEH
-                  </div>
-                  <div class="f-10">
-                    <div>Jl. Mayjend Panjaitan No.65 Telp: (0335)433119 Fax.(0335)432702</div>
-                    <div>email: rsudprob@probolinggokota.go.id</div>
-                    <div>PROBOLINGGO – 67219</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-3">
-            <div class="text-center text-bold">
-              PERSETUJUAN
-              {{ menu?.title }}
-            </div>
-            <!-- <div class="text-center text-bold">
-              OPERASI / TINDAKAN INVASIF
-            </div> -->
-          </div>
-        </div>
+      <div class="col-auto">
+        <AppKopSuratStandard :dataHeader="[
+          'PEMERINTAH KOTA PROBOLINGGO',
+          'DINAS KESEHATAN, PENGENDALIAN PENDUDUK DAN KELUARGA BERENCANA',
+          'UOBK RSUD DOKTER MOHAMAD SALEH',
+          'Jl. Mayjend Panjaitan No.65 Telp: (0335)433119 Fax.(0335)432702',
+          'email: rsudprob@probolinggokota.go.id',
+          'PROBOLINGGO – 67219'
+        ]" :pasien="pasien" :header="['PERSETUJUAN', menu?.title, '']" />
       </div>
-
       <!-- section-1 -->
       <div class="ba-black f-12 q-mt-xs">
         <div class="q-pa-sm">
@@ -139,7 +107,8 @@
               </div>
               <div class="col-8">
                 <div class="flex justify-between">
-                  <div>: {{ item?.nama }} <span class="q-ml-lg">({{ item?.lp === 'Perempuan' ? 'P' : 'L' }})*</span></div>
+                  <div>: {{ item?.nama }} <span class="q-ml-lg">({{ item?.lp === 'Perempuan' ? 'P' : 'L' }})*</span>
+                  </div>
                   <div class="self-end">
                     Tanggal Lahir : {{ item?.tglLahir }}
                   </div>
@@ -184,9 +153,11 @@
                   <div v-for="n in store.hubunganDgPasiens" :key="n">
                     <div class="flex">
                       <div class="ba-black relative-position" style="width: 15px; height: 15px;">
-                        <q-icon v-if="n === item?.hubunganDgPasien" name="icon-mat-check" class="absolute-center" size="sm" />
-                      </div> <div class="q-ml-sm">
-                        {{ n }} <span v-if="n==='Keluarga'">..................................</span>
+                        <q-icon v-if="n === item?.hubunganDgPasien" name="icon-mat-check" class="absolute-center"
+                          size="sm" />
+                      </div>
+                      <div class="q-ml-sm">
+                        {{ n }} <span v-if="n === 'Keluarga'">..................................</span>
                       </div>
                     </div>
                   </div>
@@ -208,7 +179,8 @@
               </div>
               <div class="col-8">
                 <div class="flex justify-between">
-                  <div>: {{ pasien?.nama }} <span class="q-ml-lg">({{ pasien?.kelamin === 'Perempuan' ? 'P' : 'L' }})*</span></div>
+                  <div>: {{ pasien?.nama }} <span class="q-ml-lg">({{ pasien?.kelamin === 'Perempuan' ? 'P' : 'L'
+                  }})*</span></div>
                 </div>
               </div>
             </div>
@@ -306,10 +278,18 @@
                   Tanda Tangan
                 </td>
                 <td class="text-center f-12">
-                  <img :src="item?.ttd_dokter" alt="ttd dokter" width="70">
+                  <!-- <img :src="item?.ttd_dokter" alt="ttd dokter" width="70"> -->
+                  <div class="full-width flex justify-center">
+                    <app-qr-petugas :noreg="item?.noreg" :jnssurat="'IC-COLONOSCOPY.png'" :asal="'RANAP'"
+                      :kdpegsimrs="item?.kdDokter" width="70px" height="70px" />
+                  </div>
                 </td>
                 <td class="text-center f-12">
-                  <img :src="item?.ttd_petugas" alt="ttd-petugas" width="70">
+                  <!-- <img :src="item?.ttd_petugas" alt="ttd-petugas" width="70"> -->
+                  <div class="full-width flex justify-center">
+                    <app-qr-petugas :noreg="item?.noreg" :jnssurat="'IC-COLONOSCOPY.png'" :asal="'RANAP'"
+                      :kdpegsimrs="item?.kdPetugas" width="70px" height="70px" />
+                  </div>
                 </td>
                 <td class="text-center">
                   <img :src="item?.ttd_saksi_pasien" alt="ttd-saksi-pasien" width="70">
@@ -333,6 +313,7 @@ import { pathImg } from 'src/boot/axios'
 import { humanDate, jamTnpDetik } from 'src/modules/formatter'
 import { imageToBase64 } from 'src/modules/imgBase64'
 import { useConcernOperasiInvasifRanapStore } from 'src/stores/simrs/ranap/concernoperasiinvasif'
+import AppKopSuratStandard from 'src/components/~global/AppKopSuratStandard.vue'
 import { onMounted, ref } from 'vue'
 const store = useConcernOperasiInvasifRanapStore()
 
@@ -360,7 +341,8 @@ onMounted(() => {
   initImage(props.item)
 })
 
-function initImage (item) {
+
+function initImage(item) {
   const ttdPetugas = pathImg + item?.ttdPetugas
   const ttdDokter = pathImg + item?.ttdDokter
   const ttdSaksiPasien = pathImg + item?.ttdSaksiPasien
@@ -390,13 +372,13 @@ function initImage (item) {
 
 const modP = ref([])
 
-function hubDgPas () {
+function hubDgPas() {
   const a = []
   a.push(props.item?.hubunganDgPasien)
   modP.value = a
 }
 
-function getNewLine (text) {
+function getNewLine(text) {
   // console.log('text', text)
 
   return text?.replace(/\n/g, '<br/>')
@@ -404,7 +386,7 @@ function getNewLine (text) {
 
 // const exportPdf = () => {
 //   const concern = document.getElementById('pdfDoc')
-// 
+//
 //   const pdfConfig = {
 //     margin: 0,
 //     filename: 'inform-consent-' + props?.item?.jenis + '.pdf',
@@ -425,7 +407,7 @@ function getNewLine (text) {
 //     },
 //     pagebreak: { mode: ['css', 'legacy'] }
 //   }
-// 
+//
 //   html2pdf().set(pdfConfig).from(concern).save()
 // }
 // defineExpose({ exportPdf })
@@ -434,21 +416,26 @@ function getNewLine (text) {
 <style lang="scss" scoped>
 /* Tampilan preview per page di layar browser (seperti layout kertas A4) */
 #pdfDoc {
-  background-color: #e0e0e0 !important; /* warna abu-abu untuk background desktop workspace */
+  background-color: #e0e0e0 !important;
+  /* warna abu-abu untuk background desktop workspace */
   padding: 30px 10px !important;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 24px; /* jarak antar halaman */
+  gap: 24px;
+  /* jarak antar halaman */
   box-sizing: border-box;
 }
 
 .page-1 {
   background-color: #ffffff !important;
   width: 210mm;
-  min-height: 297mm; /* memaksa tinggi minimum A4 */
-  padding: 8mm; /* margin halaman minimum */
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* efek shadow agar mirip lembaran kertas nyata */
+  min-height: 297mm;
+  /* memaksa tinggi minimum A4 */
+  padding: 8mm;
+  /* margin halaman minimum */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  /* efek shadow agar mirip lembaran kertas nyata */
   border-radius: 4px;
   position: relative;
   box-sizing: border-box;
@@ -473,7 +460,7 @@ function getNewLine (text) {
     margin: 0 !important;
     box-shadow: none !important;
     border-radius: 0 !important;
-    height: 297mm !important; 
+    height: 297mm !important;
   }
 }
 */
@@ -493,16 +480,16 @@ function getNewLine (text) {
 
   .page-1 {
     width: 210mm !important;
-    height: 297mm !important; /* Memaksa tinggi pas A4 */
+    height: 297mm !important;
+    /* Memaksa tinggi pas A4 */
     padding: 8mm !important;
     box-shadow: none !important;
     border-radius: 0 !important;
     margin: 0 !important;
-    page-break-after: always !important; /* memaksa pemisahan halaman */
+    page-break-after: avoid !important;
+    /* memaksa pemisahan halaman */
     page-break-inside: avoid !important;
     box-sizing: border-box !important;
   }
 }
 </style>
-
-

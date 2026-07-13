@@ -2,34 +2,16 @@
   <div id="pdfDoc" class="f-12">
     <div class="page-1">
       <!-- KOP SURAT -->
-      <div class="col-auto ba-black">
-        <div class="row items-center">
-          <div class="col-9 br-black">
-            <div class="row items-center q-pa-sm">
-              <div class="col-auto">
-                <img src="~assets/images/logo-kota-grey.png" width="60">
-              </div>
-              <div class="col flex-wrap q-px-md">
-                <div class="text-center">
-                  <div class="text-weight-bold f-14">
-                    RSUD DOKTER MOHAMAD SALEH
-                  </div>
-                  <div>Jl. Mayjend Panjaitan No.65 Telp: (0335)433119 Fax.(0335)432702</div>
-                  <div>email: rsudprob@probolinggokota.go.id</div>
-                  <div>PROBOLINGGO – 67219</div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-3">
-            <div class="text-center text-bold">
-              PEMBERIAN EDUKASI
-              PEMBERITAHUAN INFORMASI {{ menu?.title }}
-            </div>
-          </div>
-        </div>
+      <div class="col-auto">
+        <AppKopSuratStandard :dataHeader="[
+          'PEMERINTAH KOTA PROBOLINGGO',
+          'DINAS KESEHATAN, PENGENDALIAN PENDUDUK DAN KELUARGA BERENCANA',
+          'UOBK RSUD DOKTER MOHAMAD SALEH',
+          'Jl. Mayjend Panjaitan No.65 Telp: (0335)433119 Fax.(0335)432702',
+          'email: rsudprob@probolinggokota.go.id',
+          'PROBOLINGGO – 67219'
+        ]" :pasien="pasien" :header="['PEMBERIAN EDUKASI', 'TINDAKAN ANESTESI / SEDASI', menu?.title]" />
       </div>
-      <!-- CONTENT -->
       <div class="ba-black">
         <!-- SECTION 1 -->
         <div class="section-1 q-pa-md">
@@ -54,7 +36,7 @@
               Pemberi Informasi
             </div>
             <div style="width: 60%;">
-              : {{ item?.pengedukasi }}
+              : {{ item?.pelaksana }}
             </div>
           </div>
           <div class="flex q-py-xs">
@@ -95,15 +77,10 @@
                   Diagnosis
                 </td>
                 <td class="text-left f-12 f-12">
-                  <div v-for="diag in item?.diagnosis" :key="diag" class="flex">
-                    <div>- {{ diag }} </div>
-                    <div class="q-ml-sm">
-                      {{pasien?.diagnosamedis?.find(x => x?.rs3 === diag)?.masterdiagnosa?.rs4 ?? '-'}}
-                    </div>
-                  </div>
+                  <div>{{ pasien?.memodiagnosa || '-' }}</div>
                 </td>
                 <td class="text-right">
-                  <q-icon v-if="item?.diagnosis?.length > 0" name="icon-mat-check" size="sm" />
+                  <q-icon v-if="pasien?.memodiagnosa" name="icon-mat-check" size="sm" />
                 </td>
               </tr>
 
@@ -277,7 +254,7 @@
                   <!-- <img :src="item?.ttd_petugas" alt="ttd-petugas" width="70"> -->
                   <div class="full-width flex justify-center">
                     <app-qr-petugas :noreg="item?.noreg" :jnssurat="'IC-SEDASI.png'" :asal="'RANAP'"
-                      :kdpegsimrs="item?.kdPetugas" width="50px" height="50px" />
+                      :kdpegsimrs="item?.kdDokter" width="50px" height="50px" />
                   </div>
                 </td>
               </tr>
@@ -365,7 +342,7 @@
             <div class="col-8">
               <div class="flex">
                 : {{ item?.hubunganDgPasien }} <span v-if="item?.hubunganDgPasien === 'Keluarga'"> {{ item?.keluarga
-                  }}</span>
+                }}</span>
               </div>
             </div>
           </div>
@@ -399,7 +376,7 @@
             <div class="col-8">
               <div class="flex justify-between">
                 <div>: {{ pasien?.nama }} <span class="q-ml-lg">({{ pasien?.kelamin === 'Perempuan' ? 'P' : 'L'
-                    }})*</span></div>
+                }})*</span></div>
                 <div class="self-end">
                   Tanggal Lahir : {{ pasien?.tgllahir }}
                 </div>
@@ -540,6 +517,7 @@ import { pathImg } from 'src/boot/axios'
 import { humanDate, jamTnpDetik } from 'src/modules/formatter'
 import { imageToBase64 } from 'src/modules/imgBase64'
 import { useConcernOperasiInvasifRanapStore } from 'src/stores/simrs/ranap/concernoperasiinvasif'
+import AppKopSuratStandard from 'src/components/~global/AppKopSuratStandard.vue'
 import { onMounted, computed } from 'vue'
 
 const store = useConcernOperasiInvasifRanapStore()

@@ -58,9 +58,17 @@
         <q-tab-panel name="Serah Terima Ruangan" class="full-height q-pa-none">
           <SerahTerimaRuangan judul="Serah Terima Ruangan" :pasien="props?.pasien" />
         </q-tab-panel>
-
         <q-tab-panel name="Pasien Pulang" class="full-height q-pa-none">
           <PasienPulang :judul="pasienpulang" :pulang="pulang" :dasarpulang="dasarpulang" :pasien="props?.pasien" />
+        </q-tab-panel>
+        <q-tab-panel name="Surat Rencana Rawat Inap" class="full-height q-pa-none">
+          <SuratRanap judul="Surat Rencana Rawat Inap" :pasien="props?.pasien" />
+        </q-tab-panel>
+        <q-tab-panel name="Asesmen Pra Anestesia" class="full-height q-pa-none">
+          <AsesmenPraAnestesia :pasien="props?.pasien" />
+        </q-tab-panel>
+        <q-tab-panel name="Asesmen Pra Bedah" class="full-height q-pa-none">
+          <AsesmenPraBedah :pasien="props?.pasien" />
         </q-tab-panel>
       </q-tab-panels>
     </div>
@@ -68,7 +76,7 @@
 </template>
 <script setup>
 import { useDokumenIgdStore } from 'src/stores/simrs/igd/dokumen'
-import { computed, ref } from 'vue'
+import { computed, ref, defineAsyncComponent } from 'vue'
 
 const props = defineProps({
   pasien: {
@@ -95,6 +103,10 @@ import ObservasiPenderita from './dokumenisi/ObservasiPenderita/ObservasiPenderi
 import PengkajianAwalKebidanan from './dokumenisi/PengkajianAwalKebidanan/PengkajianAwalKebidanan.vue';
 import SerahTerimaRuangan from './dokumenisi/SerahTerimaRuangan/SerahTerimaRuangan.vue';
 import PasienPulang from './dokumenisi/PasienPulang/PasienPulang.vue';
+import SuratRanap from './dokumenisi/suratrencanainap/SuratRencanaInap.vue';
+
+const AsesmenPraAnestesia = defineAsyncComponent(() => import('src/pages/simrs/dokumen/erm/poli/AsesmenPraAnestesia.vue'))
+const AsesmenPraBedah = defineAsyncComponent(() => import('src/pages/simrs/dokumen/erm/poli/AssesmentPraBedah.vue'))
 
 
 const billing = ref('BILLING')

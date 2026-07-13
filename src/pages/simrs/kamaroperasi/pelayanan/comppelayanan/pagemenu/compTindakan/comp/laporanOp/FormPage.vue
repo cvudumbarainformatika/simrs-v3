@@ -37,7 +37,7 @@
         </div>
       </div>
       <div class="row items-center q-my-xs no-wrap">
-        <div class="col-4">Jenis Anastesi</div>
+        <div class="col-4">Jenis Anestesi</div>
         <div class="col-8">
           <app-autocomplete v-model="store.form.rs4" :source="store.optionJenisAnastesis" outlined label="" />
         </div>

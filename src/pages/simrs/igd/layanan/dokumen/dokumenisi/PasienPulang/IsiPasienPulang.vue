@@ -57,7 +57,8 @@
           <div class="col text-justify">Menyatakan menolak nasehat Dokter / Petugas {{ pasien?.dokter }} untuk dirawat
             selanjutnya
             dan telah memaksa pulang atas
-            kemauan sendiri dengan menanggung sendiri segala akibatnya.
+            kemauan sendiri dengan menanggung sendiri segala akibatnya karena <span class="text-weight-bold">{{
+              pulang?.alasan ?? '-' }}</span>.
           </div>
 
         </div>
@@ -73,7 +74,10 @@
         <div class="text-bold q-py-xs q-pt-sm">
           Yang membuat pernyataan
         </div>
-        <div style="padding-bottom: 80px" />
+        <div style="padding-bottom: 20px" />
+        <div>
+          <img v-if="pulang?.ttd_yg_menyatakan" :src="pulang?.ttd_yg_menyatakan" alt="ttd yang menyatakan" width="80">
+        </div>
         <div class="q-py-xs">
           {{ pulang?.nama_penanggungjawab ?? '(...............................................................)' }}
         </div>
@@ -107,6 +111,8 @@
 </template>
 <script setup>
 import { date } from 'quasar'
+import { imageToBase64 } from 'src/modules/imgBase64';
+import { onMounted } from 'vue';
 import { computed } from 'vue'
 
 
@@ -141,6 +147,23 @@ const props = defineProps({
   }
 })
 
+onMounted(() => {
+  initImage(props?.pasien)
+})
+
+function initImage(item) {
+  console.log('item imgeee', item);
+
+  const ttdYgMenyatakan = pathImg + item?.ttdYgMenyatakan
+
+  Promise.all([
+    imageToBase64(ttdYgMenyatakan, (base64Image) => {
+      // document.getElementsByClassName('ttd-yg-menyatakan')[0].src = base64Image
+      // document.getElementsByClassName('ttd-yg-menyatakan')[1].src = base64Image
+      item.ttd_yg_menyatakan = base64Image ?? ''
+    })
+  ])
+}
 
 const qrDokter = computed(() => {
   // const petugas = 'Nama : ' + dpjp?.value?.nama ?? '' + 'NIP : ' + dpjp?.value?.nip ?? ''

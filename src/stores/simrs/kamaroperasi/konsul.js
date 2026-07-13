@@ -1,0 +1,117 @@
+import { defineStore } from 'pinia'
+import { api } from 'src/boot/axios'
+import { usePermintaanOperasistore } from 'src/stores/simrs/kamaroperasi/permintaanoperasi'
+// eslint-disable-next-line no-unused-vars
+import { notifErrVue, notifSuccess } from 'src/modules/utils'
+
+export const useKonsulKamarOperasiStore = defineStore('konsul-kamaroperasi-store', {
+  state: () => ({
+    form: {
+      kddokterkonsul: null,
+      kduntuk: '1',
+      ketuntuk: 'Konsultasikan tindakan masalah medik saat ini',
+      permintaan: null
+    },
+    dokters: [],
+    perawats: [],
+
+    untuks: [
+      { value: '1', label: 'Konsultasikan tindakan masalah medik saat ini' }
+      // { value: '2', label: 'Perawatan Bersama untuk selanjutnya' },
+      // { value: '3', label: 'Alih rawat kasus untuk selanjutnya' }
+    ],
+
+    loadingOrder: false,
+    loadingHapus: false
+
+  }),
+  // getters: {
+  //   doubleCount: (state) => state.counter * 2
+  // },
+  actions: {
+    async getNakes() {
+      const resp = await api.get('/v1/simrs/master/pegawai/listnakes')
+      if (resp.status === 200) {
+        const nakes = resp.data
+        this.dokters = nakes?.filter(x => x?.kdgroupnakes === '1') ?? []
+        this.perawats = nakes?.filter(x => x?.kdgroupnakes === '2' || x?.kdgroupnakes === '3') ?? []
+      }
+    },
+
+    async saveData(pasien) {
+      if (!pasien?.kodedokter) {
+        return notifErrVue('kode Dokter masih kosong, silahkan tutup dulu pasien ini kemudian tekan tombol refresh di pojok kanan atas')
+      }
+      this.loadingOrder = true
+
+      this.form.noreg = pasien?.noreg
+      this.form.norm = pasien?.norm
+      this.form.kodepoli = 'PEN001'
+      this.form.kdruang = 'PEN001'
+      this.form.kodesistembayar = pasien?.kodesistembayar
+      this.form.kdgroup_ruangan = 'PEN001'
+      this.form.kelas_ruangan = pasien?.kelas_ruangan
+
+      // console.log('form', this.form)
+
+      const storeOK = usePermintaanOperasistore()
+
+      try {
+        const resp = await api.post('v1/simrs/ranap/layanan/konsultasi/simpandata', this.form)
+        console.log('save permintaan konsultasi', resp.data)
+        if (resp.status === 200) {
+          const isi = resp?.data?.result
+          storeOK.injectDataPasien(pasien, isi, 'konsultasi')
+          notifSuccess(resp)
+          this.loadingOrder = false
+          this.initReset()
+        }
+        this.loadingOrder = false
+      }
+      catch (error) {
+        this.loadingOrder = false
+      }
+    },
+
+    async hapusPermintaan(pasien, id) {
+      this.loadingHapus = true
+
+      if (!id) {
+        return notifErrVue('Tidak dapat dihapus')
+      }
+
+      const payload = { noreg: pasien?.noreg, id }
+      try {
+        const resp = await api.post('v1/simrs/ranap/layanan/konsultasi/hapusdata', payload)
+        this.loadingHapus = false
+        // console.log(resp)
+        if (resp.status === 200) {
+          const storeOK = usePermintaanOperasistore()
+          storeOK.hapusDataInjectan(pasien, id, 'konsultasi')
+          notifSuccess(resp)
+        }
+      }
+      catch (error) {
+        this.loadingHapus = false
+        // console.log(error)
+      }
+    },
+
+    async initReset() {
+      this.form = {
+        dokterkonsul: null,
+        kduntuk: '1',
+        ketuntuk: 'Konsultasikan tindakan masalah medik saat ini',
+        permintaan: 'Atas pasien ini dengan kondisi ' + '\n'
+      }
+
+      if (!this.dokters || !this.dokters.length) {
+        await this.getNakes()
+      }
+
+      return new Promise((resolve, reject) => {
+        resolve()
+      })
+    }
+  }
+})

@@ -14,9 +14,11 @@
             </q-item-section>
 
             <q-item-section caption>
-              <div class="">
-                <span class="text-weight-bold">PPA</span> <span class="text-weight-medium">- {{ item?.petugas?.nama
-                  }}</span>
+              <div class="flex items-center">
+                <span class="text-weight-bold">PPA</span> <span class="text-weight-medium">- {{ item?.petugas?.nama }}</span>
+                <span v-if="item?.kdruang === 'PEN001'" class="q-ml-sm">
+                  <q-badge color="deep-purple" text-color="white" label="Instruksi Post Op" />
+                </span>
               </div>
             </q-item-section>
 
@@ -24,7 +26,7 @@
               <div class="flex q-gutter-lg items-center">
                 <div>
 
-                  <div v-if="item?.nakes === '1'">
+                  <div v-if="item?.nakes === '1' && item?.kdruang !== 'PEN001'">
                     <q-btn v-if="(item?.notasi_dpjp) || (!isNotasiTgl(item)?.length && !isTanggalLewat(item))" size="sm"
                       rounded outline :color="item?.notasi_dpjp ? 'primary' : 'negative'"
                       :label="item?.notasi_dpjp ? 'Edit Notasi DPJP' : 'Belum Ada Notasi DPJP'"
@@ -40,7 +42,7 @@
                         'Lihat Notasi' : '' }}</q-btn>
                   </div> -->
                 </div>
-                <div v-if="auth?.user?.pegawai?.kdpegsimrs === item?.user">
+                <div v-if="auth?.user?.pegawai?.kdpegsimrs === item?.user && item?.kdruang !== 'PEN001'">
                   <q-btn round flat size="sm" icon="icon-mat-delete" color="negative" @click="deleteItem(item)">
                     <q-tooltip> Hapus Cppt </q-tooltip>
                   </q-btn>
@@ -84,7 +86,7 @@
                       <div v-else class="f-20">
                         Assessment
                       </div>
-                      <q-btn v-if="nakes !== '4' && nakes !== '5' && nakes !== '6'" dense bordered outline round
+                      <q-btn v-if="nakes !== '4' && nakes !== '5' && nakes !== '6' && item?.kdruang !== 'PEN001'" dense bordered outline round
                         icon="icon-mat-edit" size="sm" color="primary" @click="() => {
                           if (auth?.user?.pegawai?.kdpegsimrs !== item?.user) {
                             notifBottomVue('Maaf ... anda bukan USER Peng-input CPPT ini, Harap Edit Punya Sendiri...');
@@ -119,9 +121,8 @@
                           <item-nyeri :item="item?.anamnesis?.keluhannyeri?.dewasa" v-else />
                         </div>
                       </div>
-                      <q-input v-else ref="refInputSsambung" v-model="item.s_sambung" outlined type="textarea"
+                      <q-input v-else ref="refInputSsambung" v-model="item.s_sambung" :readonly="item?.kdruang === 'PEN001'" outlined type="textarea"
                         stack-label standout="bg-yellow-3" :lazy-rules="true" rows="8" hide-bottom-space @blur="(val) => {
-                          // console.log('val', val?.target?.value);
                           const valuex = val?.target?.value
                           updateSsambung(item, valuex, 's_sambung')
                         }" />
@@ -141,7 +142,7 @@
                         Diagnosa
                       </div>
                       <q-btn
-                        v-if="(nakes !== '4' && nakes !== '5' && nakes !== '6') && (item?.petugas?.kdgroupnakes !== '4' && item?.petugas?.kdgroupnakes !== '5' && item?.petugas?.kdgroupnakes !== '6')"
+                        v-if="(nakes !== '4' && nakes !== '5' && nakes !== '6') && (item?.petugas?.kdgroupnakes !== '4' && item?.petugas?.kdgroupnakes !== '5' && item?.petugas?.kdgroupnakes !== '6') && item?.kdruang !== 'PEN001'"
                         dense bordered outline round icon="icon-mat-edit" size="sm" color="primary" @click="() => {
                           if (auth?.user?.pegawai?.kdpegsimrs !== item?.user && auth?.user?.pegawai?.kdpegsimrs !== 'sa') {
                             notifBottomVue('Maaf ... anda bukan USER Peng-input CPPT ini, Harap Edit Punya Sendiri...');
@@ -200,9 +201,8 @@
                           </div>
                         </div>
                       </div>
-                      <q-input ref="refInputOsambung" v-model="item.o_sambung" outlined type="textarea" stack-label
+                      <q-input ref="refInputOsambung" v-model="item.o_sambung" :readonly="item?.kdruang === 'PEN001'" outlined type="textarea" stack-label
                         standout="bg-yellow-3" :lazy-rules="true" rows="5" hide-bottom-space @blur="(val) => {
-                          // console.log('val', val?.target?.value);
                           const valuex = val?.target?.value
                           updateOsambung(item, valuex, 'o_sambung')
                         }" />
@@ -222,7 +222,7 @@
                         Intervensi
                       </div>
                       <q-btn
-                        v-if="(nakes !== '4' && nakes !== '5' && nakes !== '6') && (item?.petugas?.kdgroupnakes !== '4' && item?.petugas?.kdgroupnakes !== '5' && item?.petugas?.kdgroupnakes !== '6')"
+                        v-if="(nakes !== '4' && nakes !== '5' && nakes !== '6') && (item?.petugas?.kdgroupnakes !== '4' && item?.petugas?.kdgroupnakes !== '5' && item?.petugas?.kdgroupnakes !== '6') && item?.kdruang !== 'PEN001'"
                         dense bordered outline round icon="icon-mat-edit" size="sm" color="primary" @click="() => {
 
                           if (auth?.user?.pegawai?.kdpegsimrs !== item?.user && auth?.user?.pegawai?.kdpegsimrs !== 'sa') {
@@ -247,7 +247,7 @@
                         <div>
                           <span v-html="getNewLine(item?.asessment ?? 'Belum Terisi')" />
                           <q-popup-edit fit
-                            v-if="auth?.user?.pegawai?.kdpegsimrs === item?.user || auth?.user?.pegawai?.kdpegsimrs === 'sa'"
+                            v-if="(auth?.user?.pegawai?.kdpegsimrs === item?.user || auth?.user?.pegawai?.kdpegsimrs === 'sa') && item?.kdruang !== 'PEN001'"
                             buttons v-model="item.asessment" :cover="false" :offset="[0, 10]" v-slot="scope"
                             :validate="validInput" @hide="validInput" @save="(val, initial) => {
                               // console.log('initial', initial); // before
@@ -274,7 +274,7 @@
                         Monitoring
                       </div>
                       <q-btn
-                        v-if="(nakes !== '4' && nakes !== '5' && nakes !== '6') && (item?.petugas?.kdgroupnakes !== '4' && item?.petugas?.kdgroupnakes !== '5' && item?.petugas?.kdgroupnakes !== '6')"
+                        v-if="(nakes !== '4' && nakes !== '5' && nakes !== '6') && (item?.petugas?.kdgroupnakes !== '4' && item?.petugas?.kdgroupnakes !== '5' && item?.petugas?.kdgroupnakes !== '6') && item?.kdruang !== 'PEN001'"
                         dense bordered outline round icon="icon-mat-edit" size="sm" color="primary" @click="() => {
 
                           if (auth?.user?.pegawai?.kdpegsimrs !== item?.user && auth?.user?.pegawai?.kdpegsimrs !== 'sa') {
@@ -299,7 +299,7 @@
                         <div>
                           <span v-html="getNewLine(item?.plann ?? 'Belum Terisi')" />
                           <q-popup-edit
-                            v-if="auth?.user?.pegawai?.kdpegsimrs === item?.user || auth?.user?.pegawai?.kdpegsimrs === 'sa'"
+                            v-if="(auth?.user?.pegawai?.kdpegsimrs === item?.user || auth?.user?.pegawai?.kdpegsimrs === 'sa') && item?.kdruang !== 'PEN001'"
                             fit buttons v-model="item.plann" :cover="false" :offset="[0, 10]" v-slot="scope"
                             :validate="validInput" @hide="validInput" @save="(val, initial) => {
                               // console.log('initial', initial); // before
@@ -321,7 +321,7 @@
                         {{ (nakes !== '5' && item?.petugas?.kdgroupnakes !== '5') ? 'Instruksi PPA' : 'Evaluasi' }}
                       </div>
 
-                      <q-btn v-if="nakes === '2' || nakes === '3'" dense bordered outline round icon="icon-mat-edit"
+                      <q-btn v-if="(nakes === '2' || nakes === '3') && item?.kdruang !== 'PEN001'" dense bordered outline round icon="icon-mat-edit"
                         size="sm" color="primary" @click="() => {
 
                           if (auth?.user?.pegawai?.kdpegsimrs !== item?.user && auth?.user?.pegawai?.kdpegsimrs !== 'sa') {
@@ -346,7 +346,7 @@
                         <div>
                           <span v-html="getNewLine(item?.instruksi ?? 'Belum Terisi')" />
                           <q-popup-edit
-                            v-if="auth?.user?.pegawai?.kdpegsimrs === item?.user || auth?.user?.pegawai?.kdpegsimrs === 'sa'"
+                            v-if="(auth?.user?.pegawai?.kdpegsimrs === item?.user || auth?.user?.pegawai?.kdpegsimrs === 'sa') && item?.kdruang !== 'PEN001'"
                             fit buttons v-model="item.instruksi" :cover="false" :offset="[0, 10]" class="full-width"
                             v-slot="scope" @save="(val, initial) => {
                               // console.log('initial', initial); // before

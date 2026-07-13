@@ -43,7 +43,7 @@
         'DD MMMM YYYY') }}, petugas farmasi yang disebutkan di bawah ini:</p>
       <div class="row print-hide justify-between">
         <div class="col-6">
-          <app-autocomplete v-model="store.tempPeg" label="Pilih pegawai" :source="store.pegawaies" option-label="nama"
+          <app-autocomplete v-model="store.tempPeg" label="Pilih pegawai" :source="store.pelaksanas" option-label="nama"
             option-value="id" outlined clearable />
         </div>
         <div class="col-auto">

@@ -19,7 +19,8 @@
                 <td width="1%">
                   :
                 </td>
-                <td> {{ pasien?.nama_panggil || pasien?.nama || pasien?.name }}</td>
+                <!-- <td> {{ pasien?.nama_panggil || pasien?.nama || pasien?.name }}</td> -->
+                <td> {{ store.form?.nama }}</td>
               </tr>
               <tr>
                 <td width="20%">
@@ -28,7 +29,8 @@
                 <td width="1%">
                   :
                 </td>
-                <td> {{ pasien?.kelamin ? pasien?.kelamin : defaultForm }}</td>
+                <!-- <td> {{ pasien?.kelamin ? pasien?.kelamin : defaultForm }}</td> -->
+                <td> {{ store.form?.kelamin }}</td>
               </tr>
               <tr>
                 <td width="20%">
@@ -37,7 +39,8 @@
                 <td width="1%">
                   :
                 </td>
-                <td> {{ pasien?.tgllahir ? humanDate(pasien?.tgllahir) : defaultForm }}</td>
+                <!-- <td> {{ pasien?.tgllahir ? humanDate(pasien?.tgllahir) : defaultForm }}</td> -->
+                <td> {{ humanDate(store.form?.tgllahir) }}</td>
               </tr>
               <tr>
                 <td width="20%">
@@ -46,7 +49,8 @@
                 <td width="1%">
                   :
                 </td>
-                <td> {{ pasien?.alamat ? pasien?.alamat : defaultForm }}</td>
+                <!-- <td> {{ pasien?.alamat ? pasien?.alamat : defaultForm }}</td> -->
+                <td> {{ store.form?.alamat }}</td>
               </tr>
               <tr>
                 <td width="20%">
@@ -55,7 +59,8 @@
                 <td width="1%">
                   :
                 </td>
-                <td> {{ pasien?.nohp ? pasien?.nohp : defaultForm }}</td>
+                <!-- <td> {{ pasien?.nohp ? pasien?.nohp : defaultForm }}</td> -->
+                <td> {{ store.form?.nohp }}</td>
               </tr>
               <tr>
                 <td width="20%">
@@ -65,9 +70,10 @@
                   :
                 </td>
                 <td>
-                  {{ pasien?.generalcons?.hubunganpasien ?
+                  <!-- {{ pasien?.generalcons?.hubunganpasien ?
                     pasien?.generalcons?.hubunganpasien : store.form.hubunganpasien
-                  }}
+                  }} -->
+                  {{ store.form.hubunganpasien }}
                 </td>
               </tr>
             </tbody>
@@ -222,7 +228,8 @@
                 <img :src="pasien?.ttdPas" alt="ttd-pasien-rsudmohsaleh" width="150">
               </div>
             </div>
-            <div>{{ pasien?.name || pasien?.nama_panggil || pasien?.nama || 'Nama' }}</div>
+            <!-- <div>{{ pasien?.name || pasien?.nama_panggil || pasien?.nama || 'Nama' }}</div> -->
+            <div>{{ store.form?.nama || 'Nama' }}</div>
           </div>
         </div>
       </div>
@@ -313,6 +320,26 @@ function parseIrja(val) {
   let str = val
 
   str = str?.replace(
+    `Nama : ...............<br>`,
+    `Nama : ${props.isiPasien?.nama ? props.isiPasien?.nama : '...............'}<br>`
+  )
+  str = str?.replace(
+    `No. RM : ...............<br>`,
+    `No. RM : ${props.isiPasien?.norm ? props.isiPasien?.norm : '...............'}<br>`
+  )
+  str = str?.replace(
+    `Tgl Lahir : ...............<br>`,
+    `Tgl Lahir : ${props.isiPasien?.tgllahir ? props.isiPasien?.tgllahir : '...............'}<br>`
+  )
+  str = str?.replace(
+    `Kelamin : ...............<br>`,
+    `Kelamin : ${props.isiPasien?.kelamin ? props.isiPasien?.kelamin : '...............'}<br>`
+  )
+  str = str?.replace(
+    `Alamat : ...............<br>`,
+    `Alamat : ${props.isiPasien?.alamat ? props.isiPasien?.alamat : '...............'}<br>`
+  )
+  str = str?.replace(
     /<li id="wali-1">[\s\S]*?<\/li>/,
     `<li id="wali-1">
       1) Nama : ${store.form.wali1 ? `<b>${store.form.wali1}</b>` : '...............'}
@@ -331,6 +358,8 @@ function parseIrja(val) {
   return str
 }
 function parseRanap(val) {
+  console.log('store form', store.form)
+  console.log('Pasien', props.isiPasien)
   // const word = val?.replace('Ruang Rawat : .......... Kelas : ..........',
   //   ` Ruang Rawat : ${props.isiPasien?.ruangan ? '<b>' + props.isiPasien?.ruangan + '</b>' : '..........'} Kelas : ${props.isiPasien?.kelasruangan ? '<b>' + props.isiPasien?.kelasruangan + '</b>' : '..........'} `)
   // // }
@@ -349,6 +378,27 @@ function parseRanap(val) {
   let str = val
 
   str = str?.replace(
+    `Nama : ...............<br>`,
+    `Nama : ${props.isiPasien?.nama ? props.isiPasien?.nama : '...............'}<br>`
+  )
+  str = str?.replace(
+    `No. RM : ...............<br>`,
+    `No. RM : ${props.isiPasien?.norm ? props.isiPasien?.norm : '...............'}<br>`
+  )
+  str = str?.replace(
+    `Tgl Lahir : ...............<br>`,
+    `Tgl Lahir : ${props.isiPasien?.tgllahir ? props.isiPasien?.tgllahir : '...............'}<br>`
+  )
+  str = str?.replace(
+    `Kelamin : ...............<br>`,
+    `Kelamin : ${props.isiPasien?.kelamin ? props.isiPasien?.kelamin : '...............'}<br>`
+  )
+  str = str?.replace(
+    `Alamat : ...............<br>`,
+    `Alamat : ${props.isiPasien?.alamat ? props.isiPasien?.alamat : '...............'}<br>`
+  )
+
+  str = str?.replace(
     /<li id="wali-1">[\s\S]*?<\/li>/,
     `<li id="wali-1">
       1) Nama : ${store.form.wali1 ? `<b>${store.form.wali1}</b>` : '...............'}
@@ -363,6 +413,8 @@ function parseRanap(val) {
       Hubungan dengan pasien : ${store.form.hubunganWali2 ? `<b>${store.form.hubunganWali2}</b>` : '...............'}
     </li>`
   )
+
+
 
   return str
 }
@@ -386,6 +438,26 @@ function parseIgd(val) {
   let str = val
 
   str = str?.replace(
+    `Nama : ...............<br>`,
+    `Nama : ${props.isiPasien?.nama ? props.isiPasien?.nama : '...............'}<br>`
+  )
+  str = str?.replace(
+    `No. RM : ...............<br>`,
+    `No. RM : ${props.isiPasien?.norm ? props.isiPasien?.norm : '...............'}<br>`
+  )
+  str = str?.replace(
+    `Tgl Lahir : ...............<br>`,
+    `Tgl Lahir : ${props.isiPasien?.tgllahir ? props.isiPasien?.tgllahir : '...............'}<br>`
+  )
+  str = str?.replace(
+    `Kelamin : ...............<br>`,
+    `Kelamin : ${props.isiPasien?.kelamin ? props.isiPasien?.kelamin : '...............'}<br>`
+  )
+  str = str?.replace(
+    `Alamat : ...............<br>`,
+    `Alamat : ${props.isiPasien?.alamat ? props.isiPasien?.alamat : '...............'}<br>`
+  )
+  str = str?.replace(
     /<li id="wali-1">[\s\S]*?<\/li>/,
     `<li id="wali-1">
       1) Nama : ${store.form.wali1 ? `<b>${store.form.wali1}</b>` : '...............'}
@@ -405,52 +477,177 @@ function parseIgd(val) {
 }
 
 // eslint-disable-next-line no-unused-vars
-function createPdf() {
-  // console.log(rePdfDoc.value.innerHTML)
-  // eslint-disable-next-line new-cap
+// function createPdf() {
+//   // console.log(rePdfDoc.value.innerHTML)
+//   // eslint-disable-next-line new-cap
+//   const doc = new jsPDF({
+//     orientation: 'p',
+//     unit: 'px',
+//     format: 'legal',
+//     hotfixes: ['px_scaling']
+//   })
+//   const source = rePdfDoc.value
+
+//   // doc.html(source, {
+//   //   callback: function (pdf) {
+//   //     doc.addImage(pathImg + pasien?.value.ttdpasien, 'JPEG', 15, 40, 200, 114)
+//   //     // doc.output('datauri')
+//   //     pdf.save()
+//   //   }
+//   // })
+//   html2canvas(source, {
+//     width: doc.internal.pageSize.getWidth(),
+//     height: doc.internal.pageSize.getHeight(),
+//     logging: false,
+//     letterRendering: 1,
+//     allowTaint: false,
+//     useCORS: false
+//   }).then((canvas) => {
+//     // const img = canvas.toDataURL('image/jpeg', 0.8)
+
+//     // doc.addImage(img, 'JPEG', 0, 0, doc.internal.pageSize.getWidth(), doc.internal.pageSize.getHeight(), 'FAST')
+//     // // doc.save(pasien?.value?.norm + '.pdf')
+
+//     // // const pdf = new File([doc.output('arraybuffer')], pasien?.value?.norm + '.pdf', { type: 'application/pdf' })
+//     // // const pdf = new File([doc.output('arraybuffer')], pasien?.value?.norm + '.jpg', { type: 'application/jpg' })
+
+//     const imgData = canvas.toDataURL('image/jpeg', 1.0)
+
+//     const pdfWidth = doc.internal.pageSize.getWidth()
+//     const pdfHeight = doc.internal.pageSize.getHeight()
+
+//     const imgWidth = pdfWidth
+//     const imgHeight = (canvas.height * imgWidth) / canvas.width
+
+//     let heightLeft = imgHeight
+//     let position = 0
+
+//     doc.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight)
+
+//     heightLeft -= pdfHeight
+
+//     while (heightLeft > 0) {
+//       position = heightLeft - imgHeight
+//       doc.addPage()
+//       doc.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight)
+//       heightLeft -= pdfHeight
+//     }
+//     const filename = pasien.value.kelompok === 'irja'
+//       ? `${pasien?.value?.norm}.pdf`
+//       : `${pasien?.value?.noreg?.replace(/\//g, '')}.pdf`
+
+//     const pdf = new File(
+//       [doc.output('arraybuffer')],
+//       filename,
+//       { type: 'application/pdf' }
+//     )
+
+//     simpanPdf(pdf)
+//   })
+// }
+
+
+async function createPdf() {
+  const source = rePdfDoc.value
+  if (!source) return
+
+  // Tunggu render Vue selesai
+  await new Promise(resolve => setTimeout(resolve, 300))
+
   const doc = new jsPDF({
     orientation: 'p',
-    unit: 'px',
+    unit: 'mm',
     format: 'legal',
-    hotfixes: ['px_scaling']
+    compress: true
   })
-  const source = rePdfDoc.value
 
-  // doc.html(source, {
-  //   callback: function (pdf) {
-  //     doc.addImage(pathImg + pasien?.value.ttdpasien, 'JPEG', 15, 40, 200, 114)
-  //     // doc.output('datauri')
-  //     pdf.save()
-  //   }
-  // })
-  html2canvas(source, {
-    width: doc.internal.pageSize.getWidth(),
-    height: doc.internal.pageSize.getHeight(),
+  console.log({
+    clientHeight: source.clientHeight,
+    scrollHeight: source.scrollHeight,
+    offsetHeight: source.offsetHeight
+  })
+
+  const canvas = await html2canvas(source, {
+    scale: 1.3,
+    useCORS: true,
+    allowTaint: true,
+    backgroundColor: '#ffffff',
     logging: false,
-    letterRendering: 1,
-    allowTaint: false,
-    useCORS: false
-  }).then((canvas) => {
-    const img = canvas.toDataURL('image/jpeg', 0.8)
+    width: source.scrollWidth,
+    height: source.scrollHeight,
+    windowWidth: source.scrollWidth,
+    windowHeight: source.scrollHeight
+  })
 
-    doc.addImage(img, 'JPEG', 0, 0, doc.internal.pageSize.getWidth(), doc.internal.pageSize.getHeight(), 'FAST')
-    // doc.save(pasien?.value?.norm + '.pdf')
+  const pdfWidth = doc.internal.pageSize.getWidth()
+  const pdfHeight = doc.internal.pageSize.getHeight()
 
-    // const pdf = new File([doc.output('arraybuffer')], pasien?.value?.norm + '.pdf', { type: 'application/pdf' })
-    // const pdf = new File([doc.output('arraybuffer')], pasien?.value?.norm + '.jpg', { type: 'application/jpg' })
+  const marginTop = 8
+  const marginBottom = 8
+  const printableHeight = pdfHeight - marginTop - marginBottom
+  const pxPerMm = canvas.width / pdfWidth
+  const slicePxHeight = printableHeight * pxPerMm
+  const imgWidth = pdfWidth
 
-    const filename = pasien.value.kelompok === 'irja'
-      ? `${pasien?.value?.norm}.pdf`
-      : `${pasien?.value?.noreg?.replace(/\//g, '')}.pdf`
+  let pageIndex = 0
+  let remainingPx = canvas.height
 
-    const pdf = new File(
-      [doc.output('arraybuffer')],
-      filename,
-      { type: 'application/pdf' }
+  while (remainingPx > 0) {
+    const currentSlicePxHeight = Math.min(slicePxHeight, remainingPx)
+    const currentSliceMmHeight = currentSlicePxHeight / pxPerMm
+
+    const tempCanvas = document.createElement('canvas')
+    tempCanvas.width = canvas.width
+    tempCanvas.height = currentSlicePxHeight
+    const tempCtx = tempCanvas.getContext('2d')
+
+    tempCtx.drawImage(
+      canvas,
+      0,
+      pageIndex * slicePxHeight,
+      canvas.width,
+      currentSlicePxHeight,
+      0,
+      0,
+      canvas.width,
+      currentSlicePxHeight
     )
 
-    simpanPdf(pdf)
-  })
+    const pageImageData = tempCanvas.toDataURL('image/jpeg', 0.85)
+
+    if (pageIndex > 0) {
+      doc.addPage()
+    }
+
+    doc.addImage(
+      pageImageData,
+      'JPEG',
+      0,
+      marginTop,
+      imgWidth,
+      currentSliceMmHeight,
+      undefined,
+      'FAST'
+    )
+
+    pageIndex += 1
+    remainingPx -= currentSlicePxHeight
+  }
+
+  const filename =
+    props.kelompok === 'irja'
+      ? `${pasien.value.norm}.pdf`
+      : `${pasien.value.noreg.replace(/\//g, '')}.pdf`
+
+  const pdf = new File(
+    [doc.output('arraybuffer')],
+    filename,
+    {
+      type: 'application/pdf'
+    }
+  )
+
+  await simpanPdf(pdf)
 }
 
 // eslint-disable-next-line no-unused-vars
@@ -502,7 +699,8 @@ watch(() => isOk.value, (n, old) => {
 
   //width: 21cm;
   width: 21.59cm;
-  height: 33cm;
+  min-height: 33cm;
+  height: auto !important;
 
   // margin: 30mm 45mm
   .contentx {

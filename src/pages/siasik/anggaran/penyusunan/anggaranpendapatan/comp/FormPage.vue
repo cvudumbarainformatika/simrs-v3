@@ -40,7 +40,7 @@
 import { api } from 'src/boot/axios';
 import { useAnggaranPendapatanStore } from 'src/stores/siasik/anggaran/penyusunan/anggaranpendapatan';
 import { useMasterRekeningJurnalStore } from 'src/stores/siasik/master/rekeningjurnal/rekeningjurnal';
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 
 const store = useAnggaranPendapatanStore()
 const formRef = ref(null)
@@ -88,69 +88,58 @@ onMounted(async () => {
 })
 
 async function filterFn(val, update) {
-  // Jika kosong → tampilkan semua data awal (page 1)
-  if (!val) {
-    update(() => {
-      options.value = store.akuns.map(a => ({
-        ...a,
-        label: `${a.kodeall3} - ${a.uraian}`,
-        value: a.kodeall3
-      }))
-    })
-    return
-  }
-
-  // Jika panjang key < 2 → jangan call API
-  if (val.length < 2) {
+  if (!val || val.length < 2) {
     update(() => {
       options.value = []
     })
     return
   }
 
-  // Mulai pencarian server
-  let allData = []
-  let page = 1
-  let hasMore = true
-
-  while (hasMore) {
-    try {
-      const resp = await api.get('v1/anggaran/penyusunan/anggaranpendapatan/getrekening', {
-        params: {
-          q: val,
-          per_page: 100,
-          page: page
-        }
-      })
-
-      const data = resp.data.data || []
-
-      if (data.length > 0) {
-        allData = [...allData, ...data]
-        hasMore = resp.data.next_page_url !== null
-        page++
-      } else {
-        hasMore = false
+  try {
+    const resp = await api.get('v1/anggaran/pergeseran/pendapatan/getrekening', {
+      params: {
+        q: val,
+        per_page: 20 // kecil saja
       }
+    })
+    console.log('rekening', resp)
+    const data = resp.data.data || []
 
-    } catch (e) {
-      console.error('Error load page:', e)
-      hasMore = false
-    }
+    update(() => {
+      options.value = data.map(a => ({
+        ...a,
+        label: `${a.kodeall3} - ${a.uraian}`,
+        value: a.kodeall3
+      }))
+      console.log('Options setelah filter:', options.value)
+    })
+
+  } catch (e) {
+    console.error(e)
+    update(() => {
+      options.value = []
+    })
   }
-
-  // Update hasil pencarian
-  update(() => {
-    options.value = allData.map(a => ({
-      ...a,
-      label: `${a.kodeall3} - ${a.uraian}`,
-      value: a.kodeall3
-    }))
-
-    // Simpan supaya next search bisa cepat
-    store.optionrekening = allData
-  })
 }
+// SUPAYA EDIT KELUAR DI FORM
+watch(
+  () => store.form.koderekeningblud,
+  (val) => {
+    if (!val) return
+
+    const exist = options.value.find(x => x.kodeall3 === val)
+
+    if (!exist) {
+      options.value.push({
+        kodeall3: val,
+        uraian: store.form.uraian_rekening,
+        label: `${val} - ${store.form.uraian_rekening}`,
+        value: val
+      })
+    }
+  },
+  { immediate: true }
+)
 
 // async function filterFn(val, update) {
 //   if (!val) {

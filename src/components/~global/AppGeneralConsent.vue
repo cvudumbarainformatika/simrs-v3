@@ -42,11 +42,16 @@
                 class="q-mb-xs"
                 @update:model-value="changeHubunganPasien"
               /> -->
-              <app-input v-model="store.form.nama" label="Nama" class="q-mb-xs" outlined />
-              <app-input v-model="store.form.nohp" label="No Telp / Hp" class="q-mb-xs" outlined />
-              <q-input v-model="store.form.alamat" outlined type="textarea" rows="2" class="q-mb-xs" label="Alamat" />
               <q-select v-model="store.form.hubunganpasien" outlined :options="store.options" dense
                 label="Hubungan Dengan Pasien" class="q-mb-xs" @update:model-value="changeHubunganPasien" />
+              <app-input v-model="store.form.nama" label="Nama" class="q-mb-xs" outlined />
+              <q-select v-model="store.form.kelamin" label="Jenis Kelamin" :options="store.optionskelamin" dense
+                outlined standout="bg-yellow-3" class="q-mb-xs" />
+              <app-input-date-human :model="store.form.tgllahir" label="Tanggal Lahir" outlined class="q-mb-xs"
+                @db-model="tanggal" />
+              <app-input v-model="store.form.nohp" label="No Telp / Hp" class="q-mb-xs" outlined />
+              <q-input v-model="store.form.alamat" outlined type="textarea" rows="2" class="q-mb-xs" label="Alamat" />
+
             </q-card>
           </div>
 
@@ -183,7 +188,7 @@
                 :pasien="pasien" uuid="ttdpasien" @signature="(val) => {
                   store.setForm('ttdpasien', val)
                 }" />
-              <div>{{ pasien?.nama_panggil }}</div>
+              <div>{{ store.form.nama }}</div>
             </div>
           </div>
         </div>
@@ -222,9 +227,15 @@ onMounted(() => {
   // store.getData()
   // console.log(props.pasien)
   // store.resetFORM()
+  store.setForm('hubunganpasien', 'Diri Sendiri')
   cekTtdPasien()
   changeHubunganPasien()
 })
+
+function tanggal(val) {
+  store.form.tgllahir = val
+  console.log('tgl', val)
+}
 
 function changeHubunganPasien() {
   if (store.form.hubunganpasien === 'Diri Sendiri') {
@@ -233,6 +244,8 @@ function changeHubunganPasien() {
     store.setForm('noreg', props.pasien ? props.pasien.noreg : '-')
     store.setForm('alamat', props.pasien ? props.pasien.alamat : '-')
     store.setForm('nohp', props.pasien ? props.pasien.nohp : '-')
+    store.setForm('kelamin', props.pasien ? props.pasien.kelamin : '-')
+    store.setForm('tgllahir', props.pasien ? props.pasien.tgllahir : '-')
   }
   else {
     store.setForm('nama', null)
@@ -240,6 +253,8 @@ function changeHubunganPasien() {
     store.setForm('noreg', props.pasien ? props.pasien.noreg : '-')
     store.setForm('alamat', null)
     store.setForm('nohp', null)
+    store.setForm('kelamin', null)
+    store.setForm('tgllahir', null)
   }
 }
 

@@ -37,11 +37,11 @@
             <div class="col-8">{{ cariNaker(tindakanop?.rs11) }}</div>
           </div>
           <div class="row text-weight-bold">
-            <div class="col-4">Dokter Anastesi</div>
+            <div class="col-4">Dokter Anestesi</div>
             <div class="col-8">{{ cariNaker(tindakanop?.rs12) }}</div>
           </div>
           <div class="row">
-            <div class="col-4">Asisten Anastesi</div>
+            <div class="col-4">Asisten Anestesi</div>
             <div class="col-8">{{ cariNaker(tindakanop?.rs13) }}</div>
           </div>
           <div class="row q-mt-lg justify-end">
