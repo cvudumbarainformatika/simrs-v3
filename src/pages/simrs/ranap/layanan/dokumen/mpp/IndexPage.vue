@@ -520,28 +520,6 @@
               </div>
 
             </div>
-
-            <!-- Footer Tanda Tangan MPP -->
-            <div class="row justify-end q-mt-xl q-pr-md" style="font-size: 11px;">
-              <div class="text-center" style="width: 250px;">
-                <div>Probolinggo, {{ humanDate(item.created_at) }}</div>
-                <div class="text-weight-bold q-mt-xs">Manajer Pelayanan Pasien</div>
-                <div class="q-my-md flex justify-center items-center" style="height: 70px;">
-                  <app-qr-petugas
-                    :noreg="item.noreg"
-                    :jnssurat="'MPP-FORM-A.png'"
-                    :asal="'RANAP'"
-                    :kdpegsimrs="item.kdpegsimrs_updated || item.kdpegsimrs"
-                    width="70px"
-                    height="70px"
-                  />
-                </div>
-                <div class="text-weight-bold text-underline">
-                  {{ item.petugas_updated?.nama || item.petugas?.nama || '-' }}
-                </div>
-                <div class="text-grey-7">NIP. {{ item.petugas_updated?.nip || item.petugas?.nip || '-' }}</div>
-              </div>
-            </div>
           </div>
 
           <!-- Page Break Halaman -->
@@ -1094,31 +1072,17 @@
                     </div>
                   </div>
 
+                  <!-- Tanda Tangan MPP inside Terminasi Column -->
+                  <div class="q-mt-sm text-center q-pb-xs" style="font-size: 8px; border-top: 1px dashed #ccc; padding-top: 4px;">
+                    <div class="q-mb-xs">Mengetahui</div>
+                    <div class="text-weight-bold">Manajer Pelayanan Pasien</div>
+                    <div style="height: 30px;"></div>
+                    <div>( ...................................................... )</div>
+                  </div>
+
                 </div>
               </div>
 
-            </div>
-
-            <!-- Footer Tanda Tangan MPP -->
-            <div class="row justify-end q-mt-xl q-pr-md" style="font-size: 11px;">
-              <div class="text-center" style="width: 250px;">
-                <div>Probolinggo, {{ humanDate(item.created_at) }}</div>
-                <div class="text-weight-bold q-mt-xs">Manajer Pelayanan Pasien</div>
-                <div class="q-my-md flex justify-center items-center" style="height: 70px;">
-                  <app-qr-petugas
-                    :noreg="item.noreg"
-                    :jnssurat="'MPP-FORM-B.png'"
-                    :asal="'RANAP'"
-                    :kdpegsimrs="item.kdpegsimrs_updated || item.kdpegsimrs"
-                    width="70px"
-                    height="70px"
-                  />
-                </div>
-                <div class="text-weight-bold text-underline">
-                  {{ item.petugas_updated?.nama || item.petugas?.nama || '-' }}
-                </div>
-                <div class="text-grey-7">NIP. {{ item.petugas_updated?.nip || item.petugas?.nip || '-' }}</div>
-              </div>
             </div>
           </div>
 
@@ -1129,7 +1093,7 @@
 </template>
 
 <script setup>
-import { computed, watch } from 'vue'
+import { computed, watch, onMounted, onUnmounted } from 'vue'
 import { useMppRanapStore } from 'src/stores/simrs/ranap/mpp'
 import AppKopSuratStandard from 'src/components/~global/AppKopSuratStandard.vue'
 import AppQrPetugas from 'src/components/~global/AppQrPetugas.vue'
@@ -1152,6 +1116,28 @@ watch(() => props.pasien, (val) => {
     store.getData(val)
   }
 }, { immediate: true })
+
+let styleEl = null
+
+onMounted(() => {
+  styleEl = document.createElement('style')
+  styleEl.id = 'print-mpp-landscape-style'
+  styleEl.innerHTML = `
+    @media print {
+      @page {
+        size: A4 landscape !important;
+        margin: 6mm !important;
+      }
+    }
+  `
+  document.head.appendChild(styleEl)
+})
+
+onUnmounted(() => {
+  if (styleEl) {
+    styleEl.remove()
+  }
+})
 
 const dataHeader = [
   'PEMERINTAH KOTA PROBOLINGGO',
@@ -1230,15 +1216,15 @@ const getCaraPulangKet = (item, key) => getTerminasi(item).cara_pulang_ket?.[key
 
 <style lang="scss" scoped>
 .document-container {
-  width: 210mm;
+  width: 297mm;
   margin: 0 auto;
 }
 
 .print-page {
   background-color: #ffffff !important;
-  width: 210mm;
-  min-height: 297mm;
-  padding: 8mm;
+  width: 297mm;
+  min-height: 210mm;
+  padding: 4mm;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   border-radius: 4px;
   box-sizing: border-box;
@@ -1301,19 +1287,36 @@ const getCaraPulangKet = (item, key) => getTerminasi(item).cara_pulang_ket?.[key
 .mpp-col-header {
   background-color: #f5f5f5;
   border-bottom: 1px solid #000;
-  padding: 6px 4px;
-  font-size: 10px;
+  padding: 4px 2px;
+  font-size: 9px;
   font-weight: bold;
   text-align: center;
   box-sizing: border-box;
 }
 
 .mpp-col-content {
-  padding: 6px 4px;
-  font-size: 9px;
-  line-height: 1.35;
+  padding: 3px 2px;
+  font-size: 8px;
+  line-height: 1.25;
   box-sizing: border-box;
   flex-grow: 1;
+}
+
+.mpp-col-content .q-mb-sm,
+.mpp-col-content .q-mb-xs {
+  margin-bottom: 2px !important;
+}
+
+.mpp-col-content .q-pl-sm,
+.mpp-col-content .q-pl-md,
+.mpp-col-content .q-pl-xs {
+  padding-left: 4px !important;
+}
+
+.mpp-col-content .border-t {
+  border-top: 1px solid #000;
+  margin-top: 2px !important;
+  padding-top: 2px !important;
 }
 
 .text-underline {
@@ -1346,26 +1349,26 @@ const getCaraPulangKet = (item, key) => getTerminasi(item).cara_pulang_ket?.[key
   }
 
   @page {
-    size: A4 portrait;
-    margin: 0;
+    size: A4 landscape;
+    margin: 6mm;
   }
 
   .document-container {
-    width: 210mm !important;
+    width: 285mm !important;
     margin: 0 !important;
     padding: 0 !important;
     box-shadow: none !important;
   }
 
   .print-page {
-    width: 210mm !important;
-    height: 297mm !important;
-    padding: 8mm !important;
+    width: 285mm !important;
+    height: auto !important;
+    min-height: 0 !important;
+    padding: 2mm !important;
     box-shadow: none !important;
     border-radius: 0 !important;
     margin: 0 !important;
     page-break-inside: avoid !important;
-    page-break-after: always !important;
     box-sizing: border-box !important;
   }
 
