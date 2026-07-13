@@ -2,7 +2,7 @@ import { defineStore, acceptHMRUpdate } from 'pinia'
 import { api } from 'src/boot/axios'
 import { usePengunjungPoliStore } from 'src/stores/simrs/pelayanan/poli/pengunjung'
 import { notifSuccess } from 'src/modules/utils'
-import { usePengunjungRanapStore } from './pengunjung'
+import { usePengunjungRanapStore } from 'src/stores/simrs/ranap/pengunjung'
 
 export const useImplementasiEdukasiRanapStore = defineStore('implementasi-edukasi-ranap', {
   state: () => ({
@@ -17,8 +17,7 @@ export const useImplementasiEdukasiRanapStore = defineStore('implementasi-edukas
       penerima: null,
       namaPenerima: null,
       ttdPenerima: null,
-      nakes: null,
-      ttdPenerima: null
+      nakes: null
     },
     loadingSave: false,
     items: [],
@@ -86,8 +85,7 @@ export const useImplementasiEdukasiRanapStore = defineStore('implementasi-edukas
         penerima: null,
         namaPenerima: null,
         ttdPenerima: null,
-        nakes: null,
-        ttdPenerima: null
+        nakes: null
       }
     },
 
@@ -158,7 +156,7 @@ export const useImplementasiEdukasiRanapStore = defineStore('implementasi-edukas
         // console.log('respon implementasi', resp);
 
         if (resp?.status === 200) {
-          this.items?.map(obj => obj?.id === resp.data?.result?.id ? { ...obj, ...resp.data.result } : obj);
+          this.items = this.items?.map(obj => obj?.id === resp.data?.result?.id ? { ...obj, ...resp.data.result } : obj);
           notifSuccess(resp)
         }
         this.loadingSave = false
