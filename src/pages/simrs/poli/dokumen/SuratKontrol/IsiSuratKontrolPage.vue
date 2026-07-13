@@ -74,7 +74,7 @@
         </div>
         <div class="row">
           <div class="col-6" style="font-size: x-small;">*Tgl Entry {{ humanDate(pasien?.bpjssuratkontrol?.created_at)
-          }}
+            }}
             <br>
             *Tgl Cetak {{ humanDate(Date.now()) }} dari RS
           </div>

@@ -77,7 +77,7 @@
           </div>
           <div>
             <div :key="toItem" class="row">
-              Surat Rencana {{ toItem?.rs4 }}
+              Surat Rencanaxx{{ toItem?.rs4 }}
             </div>
             <div class="row">
               UOBK RSUD dr. MOH SALEH
