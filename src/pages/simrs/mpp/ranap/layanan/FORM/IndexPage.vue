@@ -14,8 +14,16 @@
       </div>
     </div>
 
+    <!-- Loading State -->
+    <div v-if="loading && !items.length" class="col flex flex-center bg-grey-2">
+      <div class="text-center q-pa-xl">
+        <q-spinner-dots size="50px" color="indigo-10" />
+        <div class="text-body2 text-grey-7 q-mt-md">Memuat data skrining pasien...</div>
+      </div>
+    </div>
+
     <!-- Body: 2 kolom -->
-    <div class="col q-pa-md mpp-grid-container">
+    <div v-else-if="items.length > 0" class="col q-pa-md mpp-grid-container">
       <div class="row q-col-gutter-md mpp-grid">
 
         <!-- ═══ KIRI: FORM ═══ -->
@@ -836,7 +844,7 @@
                       <q-slide-transition>
                         <div v-show="form.monitoring.includes('kie_dimengerti')" class="q-mt-sm row items-center gap-sm">
                           <span class="text-caption text-grey-7 q-mr-xs">Tanggal:</span>
-                          <q-input v-model="form.monitoring_tgl.kie_dimengerti" outlined dense type="date" style="max-width: 150px;" />
+                          <app-input-date :model="form.monitoring_tgl.kie_dimengerti" label="Tanggal" outlined @set-model="val => form.monitoring_tgl.kie_dimengerti = val" style="max-width: 150px;" />
                         </div>
                       </q-slide-transition>
                     </q-item-section>
@@ -853,7 +861,7 @@
                       <q-slide-transition>
                         <div v-show="form.monitoring.includes('pertemuan_ppa')" class="q-mt-sm row items-center gap-sm">
                           <span class="text-caption text-grey-7 q-mr-xs">Tanggal:</span>
-                          <q-input v-model="form.monitoring_tgl.pertemuan_ppa" outlined dense type="date" style="max-width: 150px;" />
+                          <app-input-date :model="form.monitoring_tgl.pertemuan_ppa" label="Tanggal" outlined @set-model="val => form.monitoring_tgl.pertemuan_ppa = val" style="max-width: 150px;" />
                         </div>
                       </q-slide-transition>
                     </q-item-section>
@@ -870,7 +878,7 @@
                       <q-slide-transition>
                         <div v-show="form.monitoring.includes('perkembangan_kondisi')" class="q-mt-sm row items-center gap-sm">
                           <span class="text-caption text-grey-7 q-mr-xs">Tanggal:</span>
-                          <q-input v-model="form.monitoring_tgl.perkembangan_kondisi" outlined dense type="date" style="max-width: 150px;" />
+                          <app-input-date :model="form.monitoring_tgl.perkembangan_kondisi" label="Tanggal" outlined @set-model="val => form.monitoring_tgl.perkembangan_kondisi = val" style="max-width: 150px;" />
                         </div>
                       </q-slide-transition>
                     </q-item-section>
@@ -903,7 +911,7 @@
                       <q-slide-transition>
                         <div v-show="form.monitoring.includes('billing_melebihi')" class="q-mt-sm row items-center gap-sm">
                           <span class="text-caption text-grey-7 q-mr-xs">Tanggal:</span>
-                          <q-input v-model="form.monitoring_tgl.billing_melebihi" outlined dense type="date" style="max-width: 150px;" />
+                          <app-input-date :model="form.monitoring_tgl.billing_melebihi" label="Tanggal" outlined @set-model="val => form.monitoring_tgl.billing_melebihi = val" style="max-width: 150px;" />
                         </div>
                       </q-slide-transition>
                     </q-item-section>
@@ -931,7 +939,7 @@
                           <q-slide-transition>
                             <div v-show="form.monitoring_koding" class="row items-center gap-sm q-mt-sm">
                               <span class="text-caption text-grey-7 q-mr-xs">Tanggal:</span>
-                              <q-input v-model="form.monitoring_tgl.koding_diagnosa" outlined dense type="date" style="max-width: 150px;" />
+                              <app-input-date :model="form.monitoring_tgl.koding_diagnosa" label="Tanggal" outlined @set-model="val => form.monitoring_tgl.koding_diagnosa = val" style="max-width: 150px;" />
                             </div>
                           </q-slide-transition>
                         </div>
@@ -947,7 +955,7 @@
                       <q-slide-transition>
                         <div v-show="form.monitoring.includes('kendala_pembiayaan')" class="q-mt-sm row items-center gap-sm">
                           <span class="text-caption text-grey-7 q-mr-xs">Tanggal:</span>
-                          <q-input v-model="form.monitoring_tgl.kendala_pembiayaan" outlined dense type="date" style="max-width: 150px;" />
+                          <app-input-date :model="form.monitoring_tgl.kendala_pembiayaan" label="Tanggal" outlined @set-model="val => form.monitoring_tgl.kendala_pembiayaan = val" style="max-width: 150px;" />
                         </div>
                       </q-slide-transition>
                     </q-item-section>
@@ -964,7 +972,7 @@
                       <q-slide-transition>
                         <div v-show="form.monitoring.includes('pulang_administrasi')" class="q-mt-sm row items-center gap-sm">
                           <span class="text-caption text-grey-7 q-mr-xs">Tanggal:</span>
-                          <q-input v-model="form.monitoring_tgl.pulang_administrasi" outlined dense type="date" style="max-width: 150px;" />
+                          <app-input-date :model="form.monitoring_tgl.pulang_administrasi" label="Tanggal" outlined @set-model="val => form.monitoring_tgl.pulang_administrasi = val" style="max-width: 150px;" />
                         </div>
                       </q-slide-transition>
                     </q-item-section>
@@ -1007,7 +1015,7 @@
                                 <q-input v-model="form.fasilitasi_ket.dietisen" outlined dense label="Mengedukasi tentang..." />
                               </div>
                               <div class="col-auto">
-                                <q-input v-model="form.fasilitasi_tgl.dietisen" outlined dense type="date" label="Tanggal" style="max-width: 140px;" />
+                                <app-input-date :model="form.fasilitasi_tgl.dietisen" label="Tanggal" outlined @set-model="val => form.fasilitasi_tgl.dietisen = val" style="max-width: 140px;" />
                               </div>
                             </div>
                           </div>
@@ -1017,7 +1025,7 @@
                             <div class="text-body2 text-grey-9">DPJP : Memberikan informasi tentang pemeriksaan penunjang, diagnosa, penatalaksanaan</div>
                             <div class="q-mt-xs q-pl-md row q-col-gutter-sm items-center">
                               <div class="col-auto">
-                                <q-input v-model="form.fasilitasi_tgl.dpjp" outlined dense type="date" label="Tanggal" style="max-width: 140px;" />
+                                <app-input-date :model="form.fasilitasi_tgl.dpjp" label="Tanggal" outlined @set-model="val => form.fasilitasi_tgl.dpjp = val" style="max-width: 140px;" />
                               </div>
                             </div>
                           </div>
@@ -1027,7 +1035,7 @@
                             <div class="text-body2 text-grey-9">Farmasi : cara minum obat dan efek samping</div>
                             <div class="q-mt-xs q-pl-md row q-col-gutter-sm items-center">
                               <div class="col-auto">
-                                <q-input v-model="form.fasilitasi_tgl.farmasi" outlined dense type="date" label="Tanggal" style="max-width: 140px;" />
+                                <app-input-date :model="form.fasilitasi_tgl.farmasi" label="Tanggal" outlined @set-model="val => form.fasilitasi_tgl.farmasi = val" style="max-width: 140px;" />
                               </div>
                             </div>
                           </div>
@@ -1037,7 +1045,7 @@
                             <div class="text-body2 text-grey-9">Fisioterapi : Latihan fisik</div>
                             <div class="q-mt-xs q-pl-md row q-col-gutter-sm items-center">
                               <div class="col-auto">
-                                <q-input v-model="form.fasilitasi_tgl.fisioterapi" outlined dense type="date" label="Tanggal" style="max-width: 140px;" />
+                                <app-input-date :model="form.fasilitasi_tgl.fisioterapi" label="Tanggal" outlined @set-model="val => form.fasilitasi_tgl.fisioterapi = val" style="max-width: 140px;" />
                               </div>
                             </div>
                           </div>
@@ -1050,7 +1058,7 @@
                                 <q-input v-model="form.fasilitasi_ket.perawat" outlined dense label="Edukasi tentang..." />
                               </div>
                               <div class="col-auto">
-                                <q-input v-model="form.fasilitasi_tgl.perawat" outlined dense type="date" label="Tanggal" style="max-width: 140px;" />
+                                <app-input-date :model="form.fasilitasi_tgl.perawat" label="Tanggal" outlined @set-model="val => form.fasilitasi_tgl.perawat = val" style="max-width: 140px;" />
                               </div>
                             </div>
                           </div>
@@ -1068,7 +1076,7 @@
                         <div class="text-body2 text-grey-9">Koordinasi dengan PPA untuk rencana pemulangan pasien dengan pelayanan pasca rawat inap</div>
                         <div class="q-mt-sm row items-center gap-sm">
                           <span class="text-caption text-grey-7 q-mr-xs">Tanggal:</span>
-                          <q-input v-model="form.fasilitasi_tgl.pelayanan_pasca_rawat" outlined dense type="date" style="max-width: 150px;" />
+                          <app-input-date :model="form.fasilitasi_tgl.pelayanan_pasca_rawat" label="Tanggal" outlined @set-model="val => form.fasilitasi_tgl.pelayanan_pasca_rawat = val" style="max-width: 150px;" />
                         </div>
                       </div>
                     </div>
@@ -1082,7 +1090,7 @@
                         <div class="text-body2 text-grey-9">Koordinasi dengan PPA untuk pelayanan sesuai dengan PPK dan Clinical Pathway</div>
                         <div class="q-mt-sm row items-center gap-sm">
                           <span class="text-caption text-grey-7 q-mr-xs">Tanggal:</span>
-                          <q-input v-model="form.fasilitasi_tgl.pelayanan_ppk_cp" outlined dense type="date" style="max-width: 150px;" />
+                          <app-input-date :model="form.fasilitasi_tgl.pelayanan_ppk_cp" label="Tanggal" outlined @set-model="val => form.fasilitasi_tgl.pelayanan_ppk_cp = val" style="max-width: 150px;" />
                         </div>
                       </div>
                     </div>
@@ -1096,7 +1104,7 @@
                         <div class="text-body2 text-grey-9">Berkomunikasi dengan pasien dan keluarga setiap ada perubahan rencana perawatan</div>
                         <div class="q-mt-sm row items-center gap-sm">
                           <span class="text-caption text-grey-7 q-mr-xs">Tanggal:</span>
-                          <q-input v-model="form.fasilitasi_tgl.perubahan_rencana" outlined dense type="date" style="max-width: 150px;" />
+                          <app-input-date :model="form.fasilitasi_tgl.perubahan_rencana" label="Tanggal" outlined @set-model="val => form.fasilitasi_tgl.perubahan_rencana = val" style="max-width: 150px;" />
                         </div>
                       </div>
                     </div>
@@ -1112,7 +1120,7 @@
                           <q-input v-model="form.fasilitasi_ket.pihak_dalam_rs" outlined dense label="Dengan..." />
                           <div class="row items-center gap-sm">
                             <span class="text-caption text-grey-7 q-mr-xs">Tanggal:</span>
-                            <q-input v-model="form.fasilitasi_tgl.pihak_dalam_rs" outlined dense type="date" style="max-width: 150px;" />
+                            <app-input-date :model="form.fasilitasi_tgl.pihak_dalam_rs" label="Tanggal" outlined @set-model="val => form.fasilitasi_tgl.pihak_dalam_rs = val" style="max-width: 150px;" />
                           </div>
                         </div>
                       </div>
@@ -1129,7 +1137,7 @@
                           <q-input v-model="form.fasilitasi_ket.pihak_luar_rs" outlined dense label="Dengan..." />
                           <div class="row items-center gap-sm">
                             <span class="text-caption text-grey-7 q-mr-xs">Tanggal:</span>
-                            <q-input v-model="form.fasilitasi_tgl.pihak_luar_rs" outlined dense type="date" style="max-width: 150px;" />
+                            <app-input-date :model="form.fasilitasi_tgl.pihak_luar_rs" label="Tanggal" outlined @set-model="val => form.fasilitasi_tgl.pihak_luar_rs = val" style="max-width: 150px;" />
                           </div>
                         </div>
                       </div>
@@ -1144,7 +1152,7 @@
                         <div class="text-body2 text-grey-9">Fasilitasi pasien dalam proses transisi ke fasilitas pelayanan kesehatan lain</div>
                         <div class="q-mt-sm row items-center gap-sm">
                           <span class="text-caption text-grey-7 q-mr-xs">Tanggal:</span>
-                          <q-input v-model="form.fasilitasi_tgl.transisi_faskes" outlined dense type="date" style="max-width: 150px;" />
+                          <app-input-date :model="form.fasilitasi_tgl.transisi_faskes" label="Tanggal" outlined @set-model="val => form.fasilitasi_tgl.transisi_faskes = val" style="max-width: 150px;" />
                         </div>
                       </div>
                     </div>
@@ -1158,7 +1166,7 @@
                         <div class="text-body2 text-grey-9">Meeting Case</div>
                         <div class="q-mt-sm row items-center gap-sm">
                           <span class="text-caption text-grey-7 q-mr-xs">Tanggal:</span>
-                          <q-input v-model="form.fasilitasi_tgl.meeting_case" outlined dense type="date" style="max-width: 150px;" />
+                          <app-input-date :model="form.fasilitasi_tgl.meeting_case" label="Tanggal" outlined @set-model="val => form.fasilitasi_tgl.meeting_case = val" style="max-width: 150px;" />
                         </div>
                       </div>
                     </div>
@@ -1172,7 +1180,7 @@
                         <div class="text-body2 text-grey-9">Koordinasi dengan penjaminan untuk koding pasien</div>
                         <div class="q-mt-sm row items-center gap-sm">
                           <span class="text-caption text-grey-7 q-mr-xs">Tanggal:</span>
-                          <q-input v-model="form.fasilitasi_tgl.penjaminan_koding" outlined dense type="date" style="max-width: 150px;" />
+                          <app-input-date :model="form.fasilitasi_tgl.penjaminan_koding" label="Tanggal" outlined @set-model="val => form.fasilitasi_tgl.penjaminan_koding = val" style="max-width: 150px;" />
                         </div>
                       </div>
                     </div>
@@ -1204,7 +1212,7 @@
                         <div class="text-body2 text-grey-9">Pasien dan keluarga sudah berperan serta secara aktif dalam proses perawatan and pasca rawat inap</div>
                         <div class="q-mt-sm row items-center gap-sm">
                           <span class="text-caption text-grey-7 q-mr-xs">Tanggal:</span>
-                          <q-input v-model="form.advokasi_tgl.peran_aktif" outlined dense type="date" style="max-width: 150px;" />
+                          <app-input-date :model="form.advokasi_tgl.peran_aktif" label="Tanggal" outlined @set-model="val => form.advokasi_tgl.peran_aktif = val" style="max-width: 150px;" />
                         </div>
                       </div>
                     </div>
@@ -1222,7 +1230,7 @@
                             <div class="text-body2 text-grey-9 text-weight-medium">Discharge Planning</div>
                             <div class="q-mt-xs q-pl-md row q-col-gutter-sm items-center">
                               <div class="col-auto">
-                                <q-input v-model="form.advokasi_tgl.dpjp_discharge" outlined dense type="date" label="Tanggal" style="max-width: 140px;" />
+                                <app-input-date :model="form.advokasi_tgl.dpjp_discharge" label="Tanggal" outlined @set-model="val => form.advokasi_tgl.dpjp_discharge = val" style="max-width: 140px;" />
                               </div>
                             </div>
                           </div>
@@ -1231,7 +1239,7 @@
                             <div class="text-body2 text-grey-9 text-weight-medium">Konsultasi</div>
                             <div class="q-mt-xs q-pl-md row q-col-gutter-sm items-center">
                               <div class="col-auto">
-                                <q-input v-model="form.advokasi_tgl.dpjp_konsultasi" outlined dense type="date" label="Tanggal" style="max-width: 140px;" />
+                                <app-input-date :model="form.advokasi_tgl.dpjp_konsultasi" label="Tanggal" outlined @set-model="val => form.advokasi_tgl.dpjp_konsultasi = val" style="max-width: 140px;" />
                               </div>
                             </div>
                           </div>
@@ -1240,7 +1248,7 @@
                             <div class="text-body2 text-grey-9 text-weight-medium">Pembiayaan</div>
                             <div class="q-mt-xs q-pl-md row q-col-gutter-sm items-center">
                               <div class="col-auto">
-                                <q-input v-model="form.advokasi_tgl.dpjp_pembiayaan" outlined dense type="date" label="Tanggal" style="max-width: 140px;" />
+                                <app-input-date :model="form.advokasi_tgl.dpjp_pembiayaan" label="Tanggal" outlined @set-model="val => form.advokasi_tgl.dpjp_pembiayaan = val" style="max-width: 140px;" />
                               </div>
                             </div>
                           </div>
@@ -1258,7 +1266,7 @@
                         <div class="text-body2 text-grey-9">Menghubungi rumah sakit rujukan bila diperlukan</div>
                         <div class="q-mt-sm row items-center gap-sm">
                           <span class="text-caption text-grey-7 q-mr-xs">Tanggal:</span>
-                          <q-input v-model="form.advokasi_tgl.rs_rujukan" outlined dense type="date" style="max-width: 150px;" />
+                          <app-input-date :model="form.advokasi_tgl.rs_rujukan" label="Tanggal" outlined @set-model="val => form.advokasi_tgl.rs_rujukan = val" style="max-width: 150px;" />
                         </div>
                       </div>
                     </div>
@@ -1276,7 +1284,7 @@
                             <div class="text-body2 text-grey-9 text-weight-medium">Laboratorium</div>
                             <div class="q-mt-xs q-pl-md row q-col-gutter-sm items-center">
                               <div class="col-auto">
-                                <q-input v-model="form.advokasi_tgl.pemeriksaan_lab" outlined dense type="date" label="Tanggal" style="max-width: 140px;" />
+                                <app-input-date :model="form.advokasi_tgl.pemeriksaan_lab" label="Tanggal" outlined @set-model="val => form.advokasi_tgl.pemeriksaan_lab = val" style="max-width: 140px;" />
                               </div>
                             </div>
                           </div>
@@ -1285,7 +1293,7 @@
                             <div class="text-body2 text-grey-9 text-weight-medium">Radiologi</div>
                             <div class="q-mt-xs q-pl-md row q-col-gutter-sm items-center">
                               <div class="col-auto">
-                                <q-input v-model="form.advokasi_tgl.pemeriksaan_rad" outlined dense type="date" label="Tanggal" style="max-width: 140px;" />
+                                <app-input-date :model="form.advokasi_tgl.pemeriksaan_rad" label="Tanggal" outlined @set-model="val => form.advokasi_tgl.pemeriksaan_rad = val" style="max-width: 140px;" />
                               </div>
                             </div>
                           </div>
@@ -1294,7 +1302,7 @@
                             <div class="text-body2 text-grey-9 text-weight-medium">EEG</div>
                             <div class="q-mt-xs q-pl-md row q-col-gutter-sm items-center">
                               <div class="col-auto">
-                                <q-input v-model="form.advokasi_tgl.pemeriksaan_eeg" outlined dense type="date" label="Tanggal" style="max-width: 140px;" />
+                                <app-input-date :model="form.advokasi_tgl.pemeriksaan_eeg" label="Tanggal" outlined @set-model="val => form.advokasi_tgl.pemeriksaan_eeg = val" style="max-width: 140px;" />
                               </div>
                             </div>
                           </div>
@@ -1303,7 +1311,7 @@
                             <div class="text-body2 text-grey-9 text-weight-medium">Endoscopi/Kolonoscopi</div>
                             <div class="q-mt-xs q-pl-md row q-col-gutter-sm items-center">
                               <div class="col-auto">
-                                <q-input v-model="form.advokasi_tgl.pemeriksaan_endo" outlined dense type="date" label="Tanggal" style="max-width: 140px;" />
+                                <app-input-date :model="form.advokasi_tgl.pemeriksaan_endo" label="Tanggal" outlined @set-model="val => form.advokasi_tgl.pemeriksaan_endo = val" style="max-width: 140px;" />
                               </div>
                             </div>
                           </div>
@@ -1312,7 +1320,7 @@
                             <div class="text-body2 text-grey-9 text-weight-medium">Lain-lain</div>
                             <div class="q-mt-xs q-pl-md row q-col-gutter-sm items-center">
                               <div class="col-auto">
-                                <q-input v-model="form.advokasi_tgl.pemeriksaan_lain" outlined dense type="date" label="Tanggal" style="max-width: 140px;" />
+                                <app-input-date :model="form.advokasi_tgl.pemeriksaan_lain" label="Tanggal" outlined @set-model="val => form.advokasi_tgl.pemeriksaan_lain = val" style="max-width: 140px;" />
                               </div>
                             </div>
                           </div>
@@ -1459,7 +1467,7 @@
                       <q-slide-transition>
                         <div v-show="form.terminasi.includes('tujuan_tercapai')" class="q-mt-sm row items-center gap-sm">
                           <span class="text-caption text-grey-7 q-mr-xs">Tanggal:</span>
-                          <q-input v-model="form.terminasi_tgl.tujuan_tercapai" outlined dense type="date" style="max-width: 150px;" />
+                          <app-input-date :model="form.terminasi_tgl.tujuan_tercapai" label="Tanggal" outlined @set-model="val => form.terminasi_tgl.tujuan_tercapai = val" style="max-width: 150px;" />
                         </div>
                       </q-slide-transition>
                     </q-item-section>
@@ -1476,7 +1484,7 @@
                       <q-slide-transition>
                         <div v-show="form.terminasi.includes('transisi_faskes_terlaksana')" class="q-mt-sm row items-center gap-sm">
                           <span class="text-caption text-grey-7 q-mr-xs">Tanggal:</span>
-                          <q-input v-model="form.terminasi_tgl.transisi_faskes_terlaksana" outlined dense type="date" style="max-width: 150px;" />
+                          <app-input-date :model="form.terminasi_tgl.transisi_faskes_terlaksana" label="Tanggal" outlined @set-model="val => form.terminasi_tgl.transisi_faskes_terlaksana = val" style="max-width: 150px;" />
                         </div>
                       </q-slide-transition>
                     </q-item-section>
@@ -1493,7 +1501,7 @@
                       <q-slide-transition>
                         <div v-show="form.terminasi.includes('pasien_menolak')" class="q-mt-sm row items-center gap-sm">
                           <span class="text-caption text-grey-7 q-mr-xs">Tanggal:</span>
-                          <q-input v-model="form.terminasi_tgl.pasien_menolak" outlined dense type="date" style="max-width: 150px;" />
+                          <app-input-date :model="form.terminasi_tgl.pasien_menolak" label="Tanggal" outlined @set-model="val => form.terminasi_tgl.pasien_menolak = val" style="max-width: 150px;" />
                         </div>
                       </q-slide-transition>
                     </q-item-section>
@@ -1519,7 +1527,7 @@
                                   <q-input v-model="form.cara_pulang_ket.kontrol_poli" outlined dense label="Kontrol ke Poli..." />
                                 </div>
                                 <div class="col-auto">
-                                  <q-input v-model="form.cara_pulang_tgl.kontrol_poli" outlined dense type="date" label="Tanggal" style="max-width: 140px;" />
+                                  <app-input-date :model="form.cara_pulang_tgl.kontrol_poli" label="Tanggal" outlined @set-model="val => form.cara_pulang_tgl.kontrol_poli = val" style="max-width: 140px;" />
                                 </div>
                               </div>
                             </q-slide-transition>
@@ -1551,7 +1559,7 @@
                             <q-slide-transition>
                               <div v-show="form.cara_pulang_val === 'melarikan_diri'" class="q-mt-xs q-pl-md row q-col-gutter-sm items-center">
                                 <div class="col-auto">
-                                  <q-input v-model="form.cara_pulang_tgl.melarikan_diri" outlined dense type="date" label="Tanggal" style="max-width: 140px;" />
+                                  <app-input-date :model="form.cara_pulang_tgl.melarikan_diri" label="Tanggal" outlined @set-model="val => form.cara_pulang_tgl.melarikan_diri = val" style="max-width: 140px;" />
                                 </div>
                               </div>
                             </q-slide-transition>
@@ -1563,7 +1571,7 @@
                             <q-slide-transition>
                               <div v-show="form.cara_pulang_val === 'meninggal'" class="q-mt-xs q-pl-md row q-col-gutter-sm items-center">
                                 <div class="col">
-                                  <q-input v-model="form.cara_pulang_tgl.meninggal" outlined dense type="date" label="Tanggal" />
+                                  <app-input-date :model="form.cara_pulang_tgl.meninggal" label="Tanggal" outlined @set-model="val => form.cara_pulang_tgl.meninggal = val" />
                                 </div>
                                 <div class="col-auto">
                                   <q-input v-model="form.cara_pulang_jam" outlined dense type="time" label="Jam" style="max-width: 120px;" />
@@ -1632,31 +1640,99 @@
                 >
                   <q-card-section class="q-py-sm q-px-md">
                     <div class="row items-center justify-between q-mb-xs">
-                      <div class="text-caption text-grey-6 text-bold">MPP #{{ items.length - i }}</div>
                       <div class="text-caption text-grey-6">{{ humanDate(item.created_at) }}</div>
                     </div>
 
-                    <!-- Level hasil -->
-                    <q-badge
-                      :color="item.data?.level_hasil ? 'teal-8' : 'grey-5'"
-                      class="text-caption q-mb-xs"
-                    >
-                      {{ item.data?.level_hasil ? 'Level ' + item.data.level_hasil : 'Proses' }}
-                    </q-badge>
 
-                    <div class="row items-center justify-between q-mt-xs">
-                      <div class="text-caption text-grey-8">
-                        Asuransi: <b>{{ item.data?.asuransi || '—' }}</b>
-                      </div>
-                      <div class="text-caption text-grey-7">
-                        Oleh: <b>{{ item.kdpegsimrs || 'Petugas' }}</b>
+                    <!-- Skrining Summary -->
+                    <div v-if="displaySkriningForm()?.length" class="q-my-xs q-pa-sm rounded-borders" :style="isFieldDirty('skrining') ? 'background-color: #ffebee; color: #c62828;' : 'background-color: #e8eaf6; color: #1a237e;'" style="font-size: 11px; line-height: 1.4;">
+                      <div class="text-weight-bold q-mb-xs">SKRINING:</div>
+                      <div v-for="(line, idx) in displaySkriningForm()" :key="idx">
+                        • {{ line }}
                       </div>
                     </div>
 
+                    <!-- Asesmen Summary -->
+                    <div v-if="displayAsesmenForm()?.length" class="q-my-xs q-pa-sm rounded-borders" :style="isFieldDirty('asesmen') ? 'background-color: #ffebee; color: #c62828;' : 'background-color: #e0f2f1; color: #004d40;'" style="font-size: 11px; line-height: 1.4;">
+                      <div class="text-weight-bold q-mb-xs">ASESMEN:</div>
+                      <div v-for="(line, idx) in displayAsesmenForm()" :key="idx">
+                        • {{ line }}
+                      </div>
+                    </div>
+
+                    <!-- Masalah Summary -->
+                    <div v-if="displayMasalahForm()?.length" class="q-my-xs q-pa-sm rounded-borders" :style="isFieldDirty('identifikasi_masalah') ? 'background-color: #ffebee; color: #c62828;' : 'background-color: #e0f7fa; color: #006064;'" style="font-size: 11px; line-height: 1.4;">
+                      <div class="text-weight-bold q-mb-xs">IDENTIFIKASI MASALAH:</div>
+                      <div v-for="(line, idx) in displayMasalahForm()" :key="idx">
+                        • {{ line }}
+                      </div>
+                    </div>
+
+                    <!-- Sasaran Summary -->
+                    <div v-if="displaySasaranForm()?.length" class="q-my-xs q-pa-sm rounded-borders" :style="isFieldDirty('sasaran') ? 'background-color: #ffebee; color: #c62828;' : 'background-color: #e3f2fd; color: #0d47a1;'" style="font-size: 11px; line-height: 1.4;">
+                      <div class="text-weight-bold q-mb-xs">SASARAN:</div>
+                      <div v-for="(line, idx) in displaySasaranForm()" :key="idx">
+                        • {{ line }}
+                      </div>
+                    </div>
+
+                    <!-- Perencanaan Summary -->
+                    <div v-if="displayPerencanaanForm()?.length" class="q-my-xs q-pa-sm rounded-borders" :style="isFieldDirty('perencanaan') ? 'background-color: #ffebee; color: #c62828;' : 'background-color: #f3e5f5; color: #4a148c;'" style="font-size: 11px; line-height: 1.4;">
+                      <div class="text-weight-bold q-mb-xs">PERENCANAAN:</div>
+                      <div v-for="(line, idx) in displayPerencanaanForm()" :key="idx">
+                        • {{ line }}
+                      </div>
+                    </div>
+
+                    <!-- Monitoring Summary -->
+                    <div v-if="displayMonitoringForm()?.length" class="q-my-xs q-pa-sm rounded-borders" :style="isFieldDirty('monitoring') ? 'background-color: #ffebee; color: #c62828;' : 'background-color: #fff3e0; color: #e65100;'" style="font-size: 11px; line-height: 1.4;">
+                      <div class="text-weight-bold q-mb-xs">MONITORING:</div>
+                      <div v-for="(line, idx) in displayMonitoringForm()" :key="idx">
+                        • {{ line }}
+                      </div>
+                    </div>
+
+                    <!-- Fasilitasi Summary -->
+                    <div v-if="displayFasilitasiForm()?.length" class="q-my-xs q-pa-sm rounded-borders" :style="isFieldDirty('fasilitasi') ? 'background-color: #ffebee; color: #c62828;' : 'background-color: #efebe9; color: #3e2723;'" style="font-size: 11px; line-height: 1.4;">
+                      <div class="text-weight-bold q-mb-xs">FASILITASI:</div>
+                      <div v-for="(line, idx) in displayFasilitasiForm()" :key="idx">
+                        • {{ line }}
+                      </div>
+                    </div>
+
+                    <!-- Advokasi Summary -->
+                    <div v-if="displayAdvokasiForm()?.length" class="q-my-xs q-pa-sm rounded-borders" :style="isFieldDirty('advokasi') ? 'background-color: #ffebee; color: #c62828;' : 'background-color: #fbe9e7; color: #bf360c;'" style="font-size: 11px; line-height: 1.4;">
+                      <div class="text-weight-bold q-mb-xs">ADVOKASI:</div>
+                      <div v-for="(line, idx) in displayAdvokasiForm()" :key="idx">
+                        • {{ line }}
+                      </div>
+                    </div>
+
+                    <!-- Hasil Summary -->
+                    <div v-if="displayHasilForm()?.length" class="q-my-xs q-pa-sm rounded-borders" :style="isFieldDirty('hasil_pelayanan') ? 'background-color: #ffebee; color: #c62828;' : 'background-color: #e8f5e9; color: #1b5e20;'" style="font-size: 11px; line-height: 1.4;">
+                      <div class="text-weight-bold q-mb-xs">HASIL PELAYANAN:</div>
+                      <div v-for="(line, idx) in displayHasilForm()" :key="idx">
+                        • {{ line }}
+                      </div>
+                    </div>
+
+                    <!-- Terminasi Summary -->
+                    <div v-if="displayTerminasiForm()?.length" class="q-my-xs q-pa-sm rounded-borders" :style="isFieldDirty('terminasi') ? 'background-color: #ffebee; color: #c62828;' : 'background-color: #ffebee; color: #b71c1c;'" style="font-size: 11px; line-height: 1.4;">
+                      <div class="text-weight-bold q-mb-xs">TERMINASI:</div>
+                      <div v-for="(line, idx) in displayTerminasiForm()" :key="idx">
+                        • {{ line }}
+                      </div>
+                    </div>
                     <div class="q-mt-sm border-t q-pt-sm">
-                      <div class="text-xs text-grey-7 text-wrap">
-                        <b class="text-indigo-10">Sasaran:</b>
-                        {{ item.data?.sasaran || '—' }}
+                      <div class="text-caption text-grey-7 bg-grey-1 q-pa-xs rounded-borders border-l-light">
+                        <div class="flex items-center gap-xs" v-if="item.petugas">
+                          <span>Oleh:</span>
+                          <b class="text-grey-9">{{ item.petugas?.nama || item.kdpegsimrs }}</b>
+                        </div>
+                        <div class="flex items-center gap-xs q-mt-xs" v-if="item.petugas_updated">
+                          <span>Diupdate Oleh:</span>
+                          <b class="text-grey-9">{{ item.petugas_updated?.nama || item.kdpegsimrs_updated }}</b>
+                        </div>
                       </div>
                     </div>
                   </q-card-section>
@@ -1685,6 +1761,20 @@
 
       </div>
     </div>
+
+    <!-- Empty State / Bukan Pasien MPP -->
+    <div v-else class="col flex flex-center q-pa-md bg-grey-2">
+      <div class="text-center bg-white q-pa-xl rounded-borders shadow-sm border-card" style="max-width: 600px; width: 100%;">
+        <q-icon name="icon-mat-warning" size="80px" color="orange-8" class="q-mb-md" />
+        <div class="text-h6 text-bold text-indigo-10 q-mb-xs">Bukan Pasien MPP</div>
+        <div class="text-body2 text-grey-8 q-mb-lg">
+          (Belum Ada Skrining Dari Perawat / Bidan / Karu)
+        </div>
+        <div class="text-caption text-grey-6" style="line-height: 1.5;">
+          Halaman formulir dan riwayat MPP hanya dapat diakses apabila pasien telah disaring dan diidentifikasi sebagai pasien MPP oleh perawat, bidan, atau kepala ruangan (Karu).
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -1692,18 +1782,27 @@
 import { ref, reactive, computed, watch } from 'vue'
 import { useQuasar } from 'quasar'
 import { humanDate } from 'src/modules/formatter'
+import { useMppRanapStore } from 'src/stores/simrs/ranap/mpp'
 
 const $q = useQuasar()
+const store = useMppRanapStore()
 
 const props = defineProps({
   pasien: { type: Object, default: null }
 })
 
-// ── State ──────────────────────────────────────────
-const loading = ref(false)
+// ── State / Store Connection ──────────────────────
+const loading = computed(() => store.loading)
 const editingId = ref(null)
 const hoveredId = ref(null)
-const items = ref([])
+const items = computed(() => store.items)
+
+// Fetch data saat pasien berubah
+watch(() => props.pasien, (val) => {
+  if (val) {
+    store.getData(val)
+  }
+}, { immediate: true })
 
 // Sections expanded/collapsed
 const sec = reactive({
@@ -1856,16 +1955,452 @@ const skriningScore = computed(() => {
 
 
 
-// ── Actions ────────────────────────────────────────
+const isFieldDirty = (section) => {
+  if (!items.value || items.value.length === 0) return false
+  const saved = items.value[0]
+  
+  const parseVal = (val) => {
+    if (typeof val === 'string') {
+      try { return JSON.parse(val) } catch { return val }
+    }
+    return val
+  }
+
+  const isEquivalent = (val1, val2) => {
+    const clean = (v) => (v === null || v === undefined ? '' : v.toString().trim())
+    return clean(val1) === clean(val2)
+  }
+
+  const isArrayEquivalent = (arr1, arr2) => {
+    const a1 = Array.isArray(arr1) ? arr1 : []
+    const a2 = Array.isArray(arr2) ? arr2 : []
+    if (a1.length !== a2.length) return false
+    const sorted1 = [...a1].sort()
+    const sorted2 = [...a2].sort()
+    return sorted1.every((v, i) => v === sorted2[i])
+  }
+
+  const isObjectEquivalent = (obj1, obj2) => {
+    const o1 = obj1 && typeof obj1 === 'object' ? obj1 : {}
+    const o2 = obj2 && typeof obj2 === 'object' ? obj2 : {}
+    const keys = [...new Set([...Object.keys(o1), ...Object.keys(o2)])]
+    return keys.every(k => isEquivalent(o1[k], o2[k]))
+  }
+
+  if (section === 'skrining') {
+    const savedSkrining = parseVal(saved.skrining) || {}
+    const skriningKeys = [
+      'usia', 'kognitif_rendah', 'resiko_tinggi', 'potensi_komplain', 'kasus_penyakit',
+      'keterbatasan_adl', 'pakai_alat_medis', 'riwayatalat_medis', 'readmisi',
+      'biaya_tinggi', 'pembiayaan_komplek', 'melebihi_los', 'transfer_rujukan',
+      'kerjasama_sektor', 'kontinuitas_pelayanan'
+    ]
+    const keysMatch = skriningKeys.every(k => isEquivalent(form.skrining[k], savedSkrining[k]))
+    const psychMatch = isArrayEquivalent(form.skrining.riwayat_psikologis, savedSkrining.riwayat_psikologis)
+    return !keysMatch || !psychMatch
+  }
+  
+  if (section === 'asesmen') {
+    const savedAsesmen = parseVal(saved.asesmen) || {}
+    const asesmenKeys = [
+      'tgl_kajian', 'fisik_fungsional', 'riwayat_kesehatan', 'psiko_sosio_kultural',
+      'kesehatan_mental', 'dukungan_keluarga', 'masalah_finansial', 'asuransi',
+      'asuransi_ket', 'pakai_alat_obat', 'riwayat_trauma', 'riwayat_trauma_ket',
+      'health_literacy', 'health_literacy_ket', 'harapan_asuhan', 'aspek_legal',
+      'aspek_legal_ket'
+    ]
+    return asesmenKeys.some(key => !isEquivalent(form[key], savedAsesmen[key]))
+  }
+
+  if (section === 'identifikasi_masalah') {
+    const savedMasalah = parseVal(saved.identifikasi_masalah) || {}
+    const matchArray = isArrayEquivalent(form.masalah, savedMasalah.masalah)
+    const matchKet = isEquivalent(form.masalah_ket, savedMasalah.masalah_ket)
+    return !matchArray || !matchKet
+  }
+
+  if (section === 'sasaran') {
+    const savedSasaran = parseVal(saved.sasaran) || {}
+    const matchArray = isArrayEquivalent(form.sasaran, savedSasaran.sasaran)
+    const matchKet = isEquivalent(form.sasaran_ket, savedSasaran.sasaran_ket)
+    return !matchArray || !matchKet
+  }
+
+  if (section === 'perencanaan') {
+    const savedPerencanaan = parseVal(saved.perencanaan) || {}
+    const matchArray = isArrayEquivalent(form.perencanaan, savedPerencanaan.perencanaan)
+    const matchKet = isEquivalent(form.perencanaan_ket, savedPerencanaan.perencanaan_ket)
+    const matchKolab1 = isEquivalent(form.kolaborasi_unit_lain_ket, savedPerencanaan.kolaborasi_unit_lain_ket)
+    const matchKolab2 = isEquivalent(form.kolaborasi_dll_ket, savedPerencanaan.kolaborasi_dll_ket)
+    return !matchArray || !matchKet || !matchKolab1 || !matchKolab2
+  }
+
+  if (section === 'monitoring') {
+    const savedMonitoring = parseVal(saved.monitoring) || {}
+    const matchArray = isArrayEquivalent(form.monitoring, savedMonitoring.monitoring)
+    const matchTgl = isObjectEquivalent(form.monitoring_tgl, savedMonitoring.monitoring_tgl)
+    const matchPpk = isEquivalent(form.monitoring_ppk_cp, savedMonitoring.monitoring_ppk_cp)
+    const matchKoding = isEquivalent(form.monitoring_koding, savedMonitoring.monitoring_koding)
+    const matchKodingKet = isEquivalent(form.monitoring_koding_ket, savedMonitoring.monitoring_koding_ket)
+    return !matchArray || !matchTgl || !matchPpk || !matchKoding || !matchKodingKet
+  }
+
+  if (section === 'fasilitasi') {
+    const savedFasilitasi = parseVal(saved.fasilitasi) || {}
+    const matchArray = isArrayEquivalent(form.fasilitasi, savedFasilitasi.fasilitasi)
+    const matchTgl = isObjectEquivalent(form.fasilitasi_tgl, savedFasilitasi.fasilitasi_tgl)
+    const matchKet = isObjectEquivalent(form.fasilitasi_ket, savedFasilitasi.fasilitasi_ket)
+    return !matchArray || !matchTgl || !matchKet
+  }
+
+  if (section === 'advokasi') {
+    const savedAdvokasi = parseVal(saved.advokasi) || {}
+    const matchArray = isArrayEquivalent(form.advokasi, savedAdvokasi.advokasi)
+    const matchTgl = isObjectEquivalent(form.advokasi_tgl, savedAdvokasi.advokasi_tgl)
+    return !matchArray || !matchTgl
+  }
+
+  if (section === 'hasil_pelayanan') {
+    const savedHasil = parseVal(saved.hasil_pelayanan) || {}
+    const matchArray = isArrayEquivalent(form.hasil, savedHasil.hasil)
+    const matchKet = isObjectEquivalent(form.hasil_ket, savedHasil.hasil_ket)
+    const matchLevel = isEquivalent(form.level_hasil, savedHasil.level_hasil)
+    return !matchArray || !matchKet || !matchLevel
+  }
+
+  if (section === 'terminasi') {
+    const savedTerminasi = parseVal(saved.terminasi) || {}
+    const matchArray = isArrayEquivalent(form.terminasi, savedTerminasi.terminasi)
+    const matchTgl = isObjectEquivalent(form.terminasi_tgl, savedTerminasi.terminasi_tgl)
+    const matchCara = isEquivalent(form.cara_pulang_val, savedTerminasi.cara_pulang_val)
+    const matchCaraKet = isObjectEquivalent(form.cara_pulang_ket, savedTerminasi.cara_pulang_ket)
+    const matchCaraTgl = isObjectEquivalent(form.cara_pulang_tgl, savedTerminasi.cara_pulang_tgl)
+    const matchCaraJam = isEquivalent(form.cara_pulang_jam, savedTerminasi.cara_pulang_jam)
+    return !matchArray || !matchTgl || !matchCara || !matchCaraKet || !matchCaraTgl || !matchCaraJam
+  }
+
+  return false
+}
+
+
+const displaySasaranForm = () => {
+  const s = form.sasaran
+  const list = []
+  if (s.length > 0) {
+    list.push(`Sasaran: ${s.join(', ')}`)
+  }
+  if (form.sasaran_ket) {
+    list.push(`Keterangan: ${form.sasaran_ket}`)
+  }
+  return list
+}
+
+const displayAsesmenForm = () => {
+  const list = []
+  if (form.fisik_fungsional) list.push(`Fisik & Fungsional: ${form.fisik_fungsional}`)
+  if (form.riwayat_kesehatan) list.push(`Riwayat Kesehatan: ${form.riwayat_kesehatan}`)
+  if (form.psiko_sosio_kultural) list.push(`Psiko-Sosio-Kultural: ${form.psiko_sosio_kultural}`)
+  if (form.kesehatan_mental) list.push(`Kesehatan Mental: ${form.kesehatan_mental}`)
+  if (form.dukungan_keluarga) list.push(`Dukungan Keluarga: ${form.dukungan_keluarga}`)
+  if (form.masalah_finansial) list.push(`Masalah Finansial: ${form.masalah_finansial}`)
+  if (form.asuransi) {
+    const ket = form.asuransi_ket ? ` (${form.asuransi_ket})` : ''
+    list.push(`Asuransi: ${form.asuransi}${ket}`)
+  }
+  if (form.pakai_alat_obat) list.push(`Penggunaan Alat/Obat: ${form.pakai_alat_obat}`)
+  if (form.riwayat_trauma) {
+    const ket = form.riwayat_trauma_ket ? ` (${form.riwayat_trauma_ket})` : ''
+    list.push(`Riwayat Trauma: ${form.riwayat_trauma}${ket}`)
+  }
+  if (form.health_literacy) {
+    const ket = form.health_literacy_ket ? ` (${form.health_literacy_ket})` : ''
+    list.push(`Health Literacy: ${form.health_literacy}${ket}`)
+  }
+  if (form.harapan_asuhan) list.push(`Harapan Asuhan: ${form.harapan_asuhan}`)
+  if (form.aspek_legal) {
+    const ket = form.aspek_legal_ket ? ` (${form.aspek_legal_ket})` : ''
+    list.push(`Aspek Legal: ${form.aspek_legal}${ket}`)
+  }
+  return list
+}
+
+const displayMasalahForm = () => {
+  const list = []
+  if (form.masalah.length > 0) {
+    list.push(`Masalah: ${form.masalah.join(', ')}`)
+  }
+  if (form.masalah_ket) {
+    list.push(`Keterangan: ${form.masalah_ket}`)
+  }
+  return list
+}
+
+const displayPerencanaanForm = () => {
+  const list = []
+  if (form.perencanaan.length > 0) {
+    list.push(`Rencana: ${form.perencanaan.join(', ')}`)
+  }
+  if (form.perencanaan_ket) list.push(`Keterangan: ${form.perencanaan_ket}`)
+  if (form.kolaborasi_unit_lain_ket) list.push(`Kolaborasi Unit Lain: ${form.kolaborasi_unit_lain_ket}`)
+  if (form.kolaborasi_dll_ket) list.push(`Kolaborasi Lain-lain: ${form.kolaborasi_dll_ket}`)
+  return list
+}
+
+const displayMonitoringForm = () => {
+  const list = []
+  if (form.monitoring.length > 0) {
+    const details = form.monitoring.map(m => {
+      const tgl = form.monitoring_tgl[m] ? ` (${form.monitoring_tgl[m]})` : ''
+      return `${m}${tgl}`
+    })
+    list.push(`Monitoring: ${details.join(', ')}`)
+  }
+  if (form.monitoring_ppk_cp) list.push(`PPK/CP: ${form.monitoring_ppk_cp}`)
+  if (form.monitoring_koding) {
+    const ket = form.monitoring_koding_ket ? ` (${form.monitoring_koding_ket})` : ''
+    list.push(`Koding: ${form.monitoring_koding}${ket}`)
+  }
+  return list
+}
+
+const displayFasilitasiForm = () => {
+  const list = []
+  const labelMap = {
+    dietisen: 'Dietisen',
+    dpjp: 'DPJP',
+    farmasi: 'Farmasi',
+    fisioterapi: 'Fisioterapi',
+    perawat: 'Perawat',
+    pelayanan_pasca_rawat: 'Pasca Rawat',
+    pelayanan_ppk_cp: 'PPK/CP',
+    perubahan_rencana: 'Perubahan Rencana',
+    pihak_dalam_rs: 'Pihak Dalam RS',
+    pihak_luar_rs: 'Pihak Luar RS',
+    transisi_faskes: 'Transisi Faskes',
+    meeting_case: 'Case Meeting',
+    penjaminan_koding: 'Koding & Penjaminan'
+  }
+  
+  Object.keys(labelMap).forEach(key => {
+    const tgl = form.fasilitasi_tgl?.[key]
+    const ket = form.fasilitasi_ket?.[key]
+    
+    const hasTgl = tgl && tgl.trim() !== ''
+    const hasKet = ket && ket.trim() !== ''
+    
+    if (hasTgl || hasKet) {
+      const parts = []
+      parts.push(labelMap[key])
+      if (hasTgl) parts.push(`(${tgl})`)
+      if (hasKet) parts.push(`[${ket}]`)
+      list.push(parts.join(' '))
+    }
+  })
+  return list
+}
+
+const displayAdvokasiForm = () => {
+  const list = []
+  const labelMap = {
+    peran_aktif: 'Peran Aktif memfasilitasi PPA',
+    dpjp_discharge: 'Discharge Planning DPJP',
+    dpjp_konsultasi: 'Konsultasi DPJP',
+    dpjp_pembiayaan: 'Pembiayaan DPJP',
+    rs_rujukan: 'Rujukan ke RS Lain',
+    pemeriksaan_lab: 'Pemeriksaan Lab',
+    pemeriksaan_rad: 'Pemeriksaan Radiologi',
+    pemeriksaan_eeg: 'Pemeriksaan EEG',
+    pemeriksaan_endo: 'Pemeriksaan Endoskopi',
+    pemeriksaan_lain: 'Pemeriksaan Lainnya'
+  }
+  
+  Object.keys(labelMap).forEach(key => {
+    const tgl = form.advokasi_tgl?.[key]
+    const hasTgl = tgl && tgl.trim() !== ''
+    
+    if (hasTgl) {
+      list.push(`${labelMap[key]} (${tgl})`)
+    }
+  })
+  return list
+}
+
+const displayHasilForm = () => {
+  const list = []
+  if (form.level_hasil) list.push(`Level Capaian: ${form.level_hasil}`)
+  if (form.hasil.length > 0) {
+    const details = form.hasil.map(h => {
+      const ket = form.hasil_ket[h] ? ` [${form.hasil_ket[h]}]` : ''
+      return `${h}${ket}`
+    })
+    list.push(`Hasil: ${details.join(', ')}`)
+  }
+  return list
+}
+
+const displayTerminasiForm = () => {
+  const list = []
+  if (form.terminasi.length > 0) {
+    const details = form.terminasi.map(t => {
+      const tgl = form.terminasi_tgl[t] ? ` (${form.terminasi_tgl[t]})` : ''
+      return `${t}${tgl}`
+    })
+    list.push(`Terminasi: ${details.join(', ')}`)
+  }
+  if (form.cara_pulang_val) {
+    const cleanVal = form.cara_pulang_val.replace('_', ' ')
+    const tgl = form.cara_pulang_tgl.cara_pulang ? ` (${form.cara_pulang_tgl.cara_pulang})` : ''
+    const jam = form.cara_pulang_jam ? ` jam ${form.cara_pulang_jam}` : ''
+    list.push(`Cara Pulang: ${cleanVal}${tgl}${jam}`)
+  }
+  return list
+}
+
+const displaySkriningForm = () => {
+  const s = form.skrining
+  if (!s) return []
+
+  const list = []
+  if (s.usia) list.push(`Usia: ${s.usia}`)
+  if (s.kasus_penyakit) list.push(`Kasus: ${s.kasus_penyakit}`)
+  
+  const criteria = []
+  if (s.kognitif_rendah) criteria.push('Kognitif Rendah')
+  if (s.resiko_tinggi) criteria.push('Resiko Tinggi')
+  if (s.potensi_komplain) criteria.push('Potensi Komplain')
+  if (s.keterbatasan_adl) criteria.push('Keterbatasan ADL')
+  if (s.pakai_alat_medis) {
+    const alat = s.riwayatalat_medis ? ` (${s.riwayatalat_medis})` : ''
+    criteria.push(`Peralatan Medis${alat}`)
+  }
+  if (s.readmisi) criteria.push('Readmisi < 30 Hari')
+  if (s.biaya_tinggi) criteria.push('Biaya Tinggi')
+  if (s.pembiayaan_komplek) criteria.push('Pembiayaan Kompleks')
+  if (s.melebihi_los) criteria.push('Melebihi LOS')
+  if (s.transfer_rujukan) criteria.push('Transfer/Rujukan')
+  if (s.kerjasama_sektor) criteria.push('Lintas Sektor')
+  if (s.kontinuitas_pelayanan) criteria.push('Kontinuitas Pelayanan')
+  if (Array.isArray(s.riwayat_psikologis) && s.riwayat_psikologis.length > 0) {
+    const labels = s.riwayat_psikologis.map(val => {
+      const match = opsiPsikologis.find(opt => opt.value === val)
+      return match ? match.label : val
+    })
+    criteria.push(`Masalah Psikologis: ${labels.join(', ')}`)
+  }
+
+  if (criteria.length > 0) {
+    list.push(`Kriteria: ${criteria.join(', ')}`)
+  }
+
+  return list
+}
+
+// ── Actions & Data Loading ─────────────────────────
+const loadDataToForm = (item) => {
+  if (!item) return
+  editingId.value = item.id
+  
+  // Clean Form B defaults first
+  Object.assign(form, formDefault())
+  
+  // 1. Skrining (Form A)
+  if (item.skrining) {
+    const sData = typeof item.skrining === 'string' ? JSON.parse(item.skrining) : item.skrining
+    Object.assign(form.skrining, sData)
+  }
+  
+  // 2. Asesmen (Form A)
+  if (item.asesmen) {
+    const aData = typeof item.asesmen === 'string' ? JSON.parse(item.asesmen) : item.asesmen
+    Object.keys(aData).forEach(key => {
+      form[key] = aData[key]
+    })
+  }
+  
+  // 3. Identifikasi Masalah (Form B)
+  if (item.identifikasi_masalah) {
+    const mData = typeof item.identifikasi_masalah === 'string' ? JSON.parse(item.identifikasi_masalah) : item.identifikasi_masalah
+    form.masalah = mData.masalah || []
+    form.masalah_ket = mData.masalah_ket || null
+  }
+  
+  // 4. Sasaran (Form B)
+  if (item.sasaran) {
+    const sasData = typeof item.sasaran === 'string' ? JSON.parse(item.sasaran) : item.sasaran
+    form.sasaran = sasData.sasaran || []
+    form.sasaran_ket = sasData.sasaran_ket || null
+  }
+  
+  // 5. Perencanaan (Form B)
+  if (item.perencanaan) {
+    const pData = typeof item.perencanaan === 'string' ? JSON.parse(item.perencanaan) : item.perencanaan
+    form.perencanaan = pData.perencanaan || []
+    form.perencanaan_ket = pData.perencanaan_ket || null
+    form.kolaborasi_unit_lain_ket = pData.kolaborasi_unit_lain_ket || null
+    form.kolaborasi_dll_ket = pData.kolaborasi_dll_ket || null
+  }
+  
+  // 6. Monitoring (Form B)
+  if (item.monitoring) {
+    const monData = typeof item.monitoring === 'string' ? JSON.parse(item.monitoring) : item.monitoring
+    form.monitoring = monData.monitoring || []
+    form.monitoring_tgl = monData.monitoring_tgl || {}
+    form.monitoring_ppk_cp = monData.monitoring_ppk_cp || null
+    form.monitoring_koding = monData.monitoring_koding || null
+    form.monitoring_koding_ket = monData.monitoring_koding_ket || null
+  }
+  
+  // 7. Fasilitasi (Form B)
+  if (item.fasilitasi) {
+    const fData = typeof item.fasilitasi === 'string' ? JSON.parse(item.fasilitasi) : item.fasilitasi
+    form.fasilitasi = fData.fasilitasi || []
+    form.fasilitasi_tgl = fData.fasilitasi_tgl || {}
+    form.fasilitasi_ket = fData.fasilitasi_ket || {}
+  }
+  
+  // 8. Advokasi (Form B)
+  if (item.advokasi) {
+    const advData = typeof item.advokasi === 'string' ? JSON.parse(item.advokasi) : item.advokasi
+    form.advokasi = advData.advokasi || []
+    form.advokasi_tgl = advData.advokasi_tgl || {}
+  }
+  
+  // 9. Hasil Pelayanan (Form B)
+  if (item.hasil_pelayanan) {
+    const hData = typeof item.hasil_pelayanan === 'string' ? JSON.parse(item.hasil_pelayanan) : item.hasil_pelayanan
+    form.hasil = hData.hasil || []
+    form.hasil_ket = hData.hasil_ket || {}
+    form.level_hasil = hData.level_hasil || null
+  }
+  
+  // 10. Terminasi (Form B)
+  if (item.terminasi) {
+    const tData = typeof item.terminasi === 'string' ? JSON.parse(item.terminasi) : item.terminasi
+    form.terminasi = tData.terminasi || []
+    form.terminasi_tgl = tData.terminasi_tgl || {}
+    form.cara_pulang_val = tData.cara_pulang_val || null
+    form.cara_pulang_ket = tData.cara_pulang_ket || {}
+    form.cara_pulang_tgl = tData.cara_pulang_tgl || {}
+    form.cara_pulang_jam = tData.cara_pulang_jam || null
+  }
+}
+
+// Watch list data MPP dari database untuk auto-load ke form (mengupdate data perawat)
+watch(items, (newItems) => {
+  if (newItems && newItems.length > 0) {
+    loadDataToForm(newItems[0])
+  } else {
+    resetForm()
+  }
+}, { immediate: true })
+
 const resetForm = () => {
   editingId.value = null
   Object.assign(form, formDefault())
 }
 
 const onEdit = (item) => {
-  editingId.value = item.id
-  const d = item.data || {}
-  Object.assign(form, { ...formDefault(), ...d })
+  loadDataToForm(item)
   // Buka semua section saat edit
   Object.keys(sec).forEach(k => { sec[k] = true })
 }
@@ -1876,14 +2411,12 @@ const onDelete = (id) => {
     message: 'Yakin ingin menghapus data MPP ini?',
     cancel: true, persistent: true
   }).onOk(() => {
-    items.value = items.value.filter(x => x.id !== id)
-    $q.notify({ type: 'positive', message: 'Data berhasil dihapus' })
+    store.deleteData(props.pasien, id)
   })
 }
 
 const onSubmit = () => {
-  // TODO: connect ke store / API
-  $q.notify({ type: 'info', message: 'Form MPP siap dikoneksikan ke backend' })
+  store.simpanData(props.pasien, form)
 }
 </script>
 
