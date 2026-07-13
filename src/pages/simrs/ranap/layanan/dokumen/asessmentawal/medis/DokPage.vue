@@ -37,7 +37,7 @@
             {{ menu?.title }}
           </div>
           <div class="text-center text-bold">
-            RAWAT INAP
+            RAWAT INAP / KEBIDANAN
           </div>
           <div class="text-center text-bold">
             {{ kasus?.uraian.toUpperCase() }}
@@ -74,7 +74,7 @@
           anamnesisAwal?.riwayatpenyakitkeluarga || '-' }}</div>
         <div class="data-item">5. Riwayat Pekerjaan / History of Job : {{
           anamnesisAwal?.riwayat_pekerjaan_yang_berhubungan_dengan_zat_berbahaya || '-' }}</div>
-        <div class="data-item">6. Status Sosial / Social Status : {{ pemeriksaanUmum?.sosial || '-' }}</div>
+        <!-- <div class="data-item">6. Status Sosial / Social Status : {{ pemeriksaanUmum?.sosial || '-' }}</div>
         <div class="data-item">7. Status Ekonomi / Economic Status : {{ pemeriksaanUmum?.ansuransi || '-' }} {{
           pemeriksaanUmum?.ansuransi ? 'Ansuransi' : '' }}
         </div>
@@ -86,12 +86,101 @@
             <div>- Pantangan Makanan {{ pemeriksaanUmum?.pantanganMkanan }}</div>
             <div>- makanan Pokok : {{ pemeriksaanUmum?.makananPokok }}</div>
           </div>
+        </div> -->
+        <div class="data-item">6. Riwayat Alergi : <span v-html="getNewLine(ALERGI || '-')" /></div>
+        <div class="data-item flex">7. Kajian Nyeri :
+          <div class="q-ml-sm" v-if="anamnesisAwal?.keluhannyeri?.dewasa !== null">
+            <div>{{ anamnesisAwal?.keluhannyeri?.dewasa?.kajianNyeri }}</div>
+            <div>- Keterangan : {{ anamnesisAwal?.keluhannyeri?.dewasa?.ket }}</div>
+            <div>- Ekpresi Wajah : {{ anamnesisAwal?.keluhannyeri?.dewasa?.form?.ekspresiWajah?.text }}</div>
+            <div>- Gerakan Tangan : {{ anamnesisAwal?.keluhannyeri?.dewasa?.form?.gerakanTangan?.text }}</div>
+            <div>- Kepatuhan terhadap ventilasi mekanik : {{
+              anamnesisAwal?.keluhannyeri?.dewasa?.form?.kebutuhanVentilasi?.text }}</div>
+          </div>
+          <div class="q-ml-sm" v-if="anamnesisAwal?.keluhannyeri?.pediatrik !== null">
+            <div>{{ anamnesisAwal?.keluhannyeri?.pediatrik?.kajianNyeri }}</div>
+            <div>- Keterangan : {{ anamnesisAwal?.keluhannyeri?.pediatrik?.ket }}</div>
+            <div>- Ekpresi Wajah : {{ anamnesisAwal?.keluhannyeri?.pediatrik?.form?.ekspresiWajah?.text }}</div>
+            <div>- Gerakan Tangan : {{ anamnesisAwal?.keluhannyeri?.pediatrik?.form?.gerakanTangan?.text }}</div>
+            <div>- Kepatuhan terhadap ventilasi mekanik : {{
+              anamnesisAwal?.keluhannyeri?.pediatrik?.form?.kebutuhanVentilasi?.text }}</div>
+          </div>
+
+        </div>
+        <div class="data-item flex">8. Skrining Gizi :
+          <div class="q-ml-sm" v-if="anamnesisAwal?.skreeninggizi?.pediatrik !== null">
+            <div>- Keterangan : {{ anamnesisAwal?.skreeninggizi?.pediatrik?.ket || '-' }}</div>
+            <div>- Apakah pasien tampak kurus? {{ anamnesisAwal?.skreeninggizi?.pediatrik?.form?.tk?.text }}</div>
+            <div>- Apakah terdapat penurunan BB selama 1 bulan terakhir? {{
+              anamnesisAwal?.skreeninggizi?.pediatrik?.form?.bb?.text }}</div>
+            <div>- Apakah Diare >= 5 kali/hari dan/atau muntah > 3 kali/hari dalam seminggu terakhir atau Asupan makanan
+              berkurang selama satu minggu terakhir? {{ anamnesisAwal?.skreeninggizi?.pediatrik?.form?.kk?.text }}</div>
+            <div>- Apakah terdapat penyakit atau keadaan yang mengakibatkan pasien beresiko malnutrisi? {{
+              anamnesisAwal?.skreeninggizi?.pediatrik?.form?.penyakit?.text }}</div>
+          </div>
+          <div class="q-ml-sm" v-if="anamnesisAwal?.skreeninggizi?.dewasa !== null">
+            <div>- Keterangan : {{ anamnesisAwal?.skreeninggizi?.dewasa?.ket || '-' }}</div>
+            <div>- Apakah Ada Penurunan Berat badan yang tidak diinginkan selama 6 Bulan terakhir ? {{
+              anamnesisAwal?.skreeninggizi?.dewasa?.form?.bb?.text }}</div>
+            <div>- Apakah Asupan Makan berkurang karena tidak nafsu makan ? {{
+              anamnesisAwal?.skreeninggizi?.dewasa?.form?.am?.text }}</div>
+            <div>- Apakah pasien memiliki diagnosa khusus / kondisi khusus ? {{
+              anamnesisAwal?.skreeninggizi?.dewasa?.form?.kk?.text }}</div>
+          </div>
+        </div>
+
+        <div v-if="anamnesisAwal?.pediatrik" class="data-item flex">9. Form 4.4 (Pediatrik) :
+          <div class="q-ml-sm">
+            <div class="text-bold">Riwayat Penyakit Kelahiran</div>
+            <div>- Anak ke : {{ anamnesisAwal?.pediatrik?.anakKe || '-' }}</div>
+            <div>- Jumlah Saudara : {{ anamnesisAwal?.pediatrik?.jmlSaudara || '-' }}</div>
+            <div>- Cara Kelahiran : {{ anamnesisAwal?.pediatrik?.crKelahiran || '-' }}</div>
+            <div>- Umur Kelahiran : {{ anamnesisAwal?.pediatrik?.umurKelahiran || '-' }}</div>
+            <div>- Kelainan Bawaan : {{ anamnesisAwal?.pediatrik?.klainanBawaan || '-' }}</div>
+
+            <div class="text-bold">Riwayat Imunisasi</div>
+            <div>- {{ anamnesisAwal?.pediatrik?.rwImunisasi?.join(', ') || '-' }}</div>
+
+            <div class="text-bold">Riwayat Tumbuh Kembang Anak</div>
+            <div>- Gigi Pertama, Usia : {{ anamnesisAwal?.pediatrik?.gigiPertama || '-' }}</div>
+            <div>- Mulai Berjalan, Usia : {{ anamnesisAwal?.pediatrik?.berjalan || '-' }}</div>
+            <div>- Bisa membaca, usia : {{ anamnesisAwal?.pediatrik?.membaca || '-' }}</div>
+            <div>- Bisa duduk, usia : {{ anamnesisAwal?.pediatrik?.duduk || '-' }}</div>
+            <div>- Bisa Bicara, usia : {{ anamnesisAwal?.pediatrik?.bicara || '-' }}</div>
+
+            <div class="text-bold">Kebutuhan Dasar Saat Ini</div>
+            <div>- Makanan yang disukai : {{ anamnesisAwal?.pediatrik?.sukaMknan || '-' }}</div>
+            <div>- Makanan yang tidak disukai : {{ anamnesisAwal?.pediatrik?.tdkSukaMknan || '-' }}</div>
+            <div>- Nafsu makan : {{ anamnesisAwal?.pediatrik?.nafsuMkn || '-' }}</div>
+            <div>- Pola makan : {{ anamnesisAwal?.pediatrik?.polaMakan || '-' }}</div>
+            <div>- Makanan yang diberikan : {{ anamnesisAwal?.pediatrik?.mknYgdiberikan || '-' }}</div>
+
+            <div class="text-bold">Pola Tidur</div>
+            <div>- Tidur Siang : {{ anamnesisAwal?.pediatrik?.tidurSiang || '-' }} jam / hari</div>
+            <div>- Tidur Malam : {{ anamnesisAwal?.pediatrik?.tidurMalam || '-' }} jam / hari</div>
+            <div>- Kebiasaan Sebelum Makan : {{ anamnesisAwal?.pediatrik?.kebiasaanSblmMkn || '-' }}</div>
+            <div>- Adakah Nyeri : {{ anamnesisAwal?.pediatrik?.nyeri || '-' }}</div>
+
+            <div class="text-bold">Pola Kebersihan Diri</div>
+            <div>- Mandi Sendiri : {{ anamnesisAwal?.pediatrik?.mandiSendiri || '-' }} kali / hari</div>
+            <div>- Dimandikan : {{ anamnesisAwal?.pediatrik?.dimandikan || '-' }} jam / hari</div>
+            <div>- Gosok Gigi : {{ anamnesisAwal?.pediatrik?.gosokGigi || '-' }} kali / hari</div>
+            <div>- Keramas : {{ anamnesisAwal?.pediatrik?.keramas || '-' }} kali / minggu</div>
+            <div>- Kebersihan Kuku : {{ anamnesisAwal?.pediatrik?.kbersihanKuku || '-' }}</div>
+            <div>- Aktifitas Bermain : {{ anamnesisAwal?.pediatrik?.aktifitas || '-' }}</div>
+            <div>- Frekuensi BAB : {{ anamnesisAwal?.pediatrik?.babFrekuensi || '-' }} kali / hari</div>
+            <div>- Konsistensi BAB : {{ anamnesisAwal?.pediatrik?.babKonsistensi || '-' }} kali / hari</div>
+            <div>- Bau BAB : {{ anamnesisAwal?.pediatrik?.babBau || '-' }} kali / hari</div>
+            <div>- Buang Air Kecil : {{ anamnesisAwal?.pediatrik?.bakFrekuensi || '-' }} kali / hari</div>
+            <div>- Warna Buang Air Kecil : {{ anamnesisAwal?.pediatrik?.bakWarna || '-' }}</div>
+            <div>- Bau Buang Air Kecil : {{ anamnesisAwal?.pediatrik?.bakBau || '-' }}</div>
+          </div>
         </div>
       </div>
     </div>
 
     <div class="section">
-      <div class="section-title">Pemeriksaan Umum : </div>
+      <div class="section-title" style="margin-top: 5px;">Pemeriksaan Umum : </div>
       <!-- <div class="data">
         <div class="data-item">Kesadaran: ............................................</div>
         <div class="data-item">Tekanan Darah: ............................................ mmHg</div>
@@ -124,114 +213,210 @@
             <td style="border: none !important; padding: 0px !important;"> - Nadi</td>
             <td style="border: none !important; padding: 0px !important;">: {{ pemeriksaanUmum?.nadi || ' - ' }} x/menit
             </td>
-            <td style="border: none !important; padding: 0px !important;"></td>
-            <td style="border: none !important; padding: 0px !important;"></td>
+            <td style="border: none !important; padding: 0px !important;"> - Berat Badan</td>
+            <td style="border: none !important; padding: 0px !important;">: {{ pemeriksaanUmum?.bb || ' - ' }} kg
+            </td>
           </tr>
           <tr style="border: none !important; padding: 0px !important;">
             <td style="border: none !important; padding: 0px !important;"> - Suhu </td>
             <td style="border: none !important; padding: 0px !important;">: {{ pemeriksaanUmum?.suhu || ' - ' }} &deg;C
             </td>
-            <td style="border: none !important; padding: 0px !important;"></td>
-            <td style="border: none !important; padding: 0px !important;"></td>
+            <td style="border: none !important; padding: 0px !important;"> - Tinggi Badan</td>
+            <td style="border: none !important; padding: 0px !important;">: {{ pemeriksaanUmum?.tb || ' - ' }} cm </td>
           </tr>
           <tr style="border: none !important; padding: 0px !important;">
             <td style="border: none !important; padding: 0px !important;"> - Pernapasan</td>
             <td style="border: none !important; padding: 0px !important;">: {{ pemeriksaanUmum?.pernapasan || ' - ' }}
               x/menit</td>
-            <td style="border: none !important; padding: 0px !important;"></td>
-            <td style="border: none !important; padding: 0px !important;"></td>
+            <td style="border: none !important; padding: 0px !important;"> - Sistole</td>
+            <td style="border: none !important; padding: 0px !important;">: {{ pemeriksaanUmum?.sistole || ' -' }} mmHg
+            </td>
+          </tr>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td style="border: none !important; padding: 0px !important;"> - Saturasi Oksigen</td>
+            <td style="border: none !important; padding: 0px !important;">: {{ pemeriksaanUmum?.spo || ' - ' }} %</td>
+            <td style="border: none !important; padding: 0px !important;"> - Diastole</td>
+            <td style="border: none !important; padding: 0px !important;">: {{ pemeriksaanUmum?.diastole || ' -' }} mmHg
+            </td>
+          </tr>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td style="border: none !important; padding: 0px !important;"> - Lika</td>
+            <td style="border: none !important; padding: 0px !important;">: {{ pemeriksaanUmum?.pediatrik?.lilengtas ||
+              ' - ' }} cm</td>
+            <td style="border: none !important; padding: 0px !important;"> - Lida</td>
+            <td style="border: none !important; padding: 0px !important;">: {{ pemeriksaanUmum?.pediatrik?.lida || '-'
+              }} cm</td>
+          </tr>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td style="border: none !important; padding: 0px !important;"> - Lirut</td>
+            <td style="border: none !important; padding: 0px !important;">: {{ pemeriksaanUmum?.pediatrik?.lirut || '-'
+              }} cm</td>
+            <td style="border: none !important; padding: 0px !important;"> - Lila</td>
+            <td style="border: none !important; padding: 0px !important;">: {{ pemeriksaanUmum?.pediatrik?.lila || '-'
+              }}
+            </td>
           </tr>
 
 
         </tbody>
       </table>
-    </div>
+      <div class="section-title" style="margin-top: 5px;">Kultural : </div>
+      <!-- <div class="data">
+        <div class="data-item">Kesadaran: ............................................</div>
+        <div class="data-item">Tekanan Darah: ............................................ mmHg</div>
+        <div class="data-item">Nadi: ............................................ x/menit</div>
+        <div class="data-item">Suhu: ............................................ &deg;C</div>
+        <div class="data-item">Pernapasan: ............................................ x/menit</div>
+        <div class="data-item">Keadaan Umum: Baik / Sedang / Buruk</div>
+        <div class="data-item">Keadaan Gizi: Baik / Sedang / Buruk</div>
+      </div> -->
+      <table border="0" style="border: none !important; margin-left: 10px; margin-top: -5px;">
+        <tbody>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td style="border: none !important; padding: 0px !important; width:15%;"> - Penyebab Penyakit</td>
+            <td style="border: none !important; padding: 0px !important; width: 35%;"> : {{
+              pemeriksaanUmum?.penyebabSakit || ' - ' }}</td>
+            <td style="border: none !important; padding: 0px !important; width: 15%;"> - Pola Komunikasi </td>
+            <td style="border: none !important; padding: 0px !important;">: {{ pemeriksaanUmum?.komunikasi || ' - ' }}
+            </td>
+          </tr>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td style="border: none !important; padding: 0px !important; width:15%;"> - Makanan Pokok</td>
+            <td style="border: none !important; padding: 0px !important; width: 35%;"> : {{
+              pemeriksaanUmum?.makananPokok || ' - ' }}</td>
+            <td style="border: none !important; padding: 0px !important; width: 15%;"> - Pantangan Makanan </td>
+            <td style="border: none !important; padding: 0px !important;">: {{ pemeriksaanUmum?.pantanganMkanan || ' - '
+            }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="section-title" style="margin-top: 5px;">Pemeriksaan Psikologis, Sosial Ekonomi, Spiritual : </div>
+      <table border="0" style="border: none !important; margin-left: 10px; margin-top: -5px;">
+        <tbody>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td style="border: none !important; padding: 0px !important; width:15%;"> - Status Sosial</td>
+            <td style="border: none !important; padding: 0px !important; width: 35%;"> : {{
+              pemeriksaanUmum?.sosial || ' - ' }}</td>
+            <td style="border: none !important; padding: 0px !important; width: 15%;"> - Spiritual </td>
+            <td style="border: none !important; padding: 0px !important;">: {{ pemeriksaanUmum?.spiritual || ' - ' }}
+            </td>
+          </tr>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td style="border: none !important; padding: 0px !important; width:15%;"> - Status Kejiwaaan
+            </td>
+            <td style="border: none !important; padding: 0px !important; width: 35%;"> : {{
+              pemeriksaanUmum?.statusPsikologis || ' - ' }}</td>
+            <td style="border: none !important; padding: 0px !important; width: 15%;"> - Status Ekonomi </td>
+            <td style="border: none !important; padding: 0px !important;">: {{ pemeriksaanUmum?.ansuransi || ' - '
+              }} Asuransi
+            </td>
+          </tr>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td colspan="2" style="border: none !important; padding: 0px !important; width:15%;"> - Apakah pasien /
+              keluarga tahu mengenai penyakit dan perawatannya?</td>
+            <td colspan="2" style="border: none !important; padding: 0px !important; width: 35%;"> : {{
+              EDUKASI?.tahuPenanganan?.value || ' - ' }}</td>
+          </tr>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td colspan="2" style="border: none !important; padding: 0px !important; width:15%;"> - Apakah membutuhkan
+              edukasi?</td>
+            <td colspan="2" style="border: none !important; padding: 0px !important; width: 35%;"> : {{
+              EDUKASI?.butuhEdukasi?.value || ' - ' }}</td>
+          </tr>
+        </tbody>
+      </table>
 
-    <table>
-      <thead>
-        <tr>
-          <th>Bagian</th>
-          <th>Keterangan</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Kepala (Head)</td>
-          <!-- <td>{{ pemeriksaanUmum?.rs5?.toUpperCase() === 'TAK' ? 'TAK' : '' }}</td> -->
-          <td> {{ pemeriksaanUmum?.rs5?.toUpperCase() !== 'TAK' ? pemeriksaanUmum?.rs5 : '' }} </td>
-        </tr>
-        <!-- <tr>
+      <div class="section-title" style="margin-top: 5px;">Pemeriksaan Fisik : </div>
+      <table style="margin-left: 7px; margin-top: -5px;">
+        <thead>
+          <tr>
+            <th>Bagian</th>
+            <th>Keterangan</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Kepala (Head)</td>
+            <!-- <td>{{ pemeriksaanUmum?.rs5?.toUpperCase() === 'TAK' ? 'TAK' : '' }}</td> -->
+            <td> {{ pemeriksaanUmum?.rs5?.toUpperCase() !== 'TAK' ? pemeriksaanUmum?.rs5 : '' }} </td>
+          </tr>
+          <!-- <tr>
           <td>Mata (Eyes)</td>
           <td>............................................</td>
           <td>............................................</td>
         </tr> -->
-        <!-- <tr>
+          <!-- <tr>
           <td>THT (ENT)</td>
           <td>............................................</td>
           <td>............................................</td>
         </tr> -->
-        <!-- <tr>
+          <!-- <tr>
           <td>Mulut (Mouth)</td>
           <td>............................................</td>
           <td>............................................</td>
         </tr> -->
-        <tr>
-          <td>Leher (Neck)</td>
-          <!-- <td>{{ pemeriksaanUmum?.rs6?.toUpperCase() === 'TAK' ? 'TAK' : '' }}</td> -->
-          <td> {{ pemeriksaanUmum?.rs6?.toUpperCase() !== 'TAK' ? pemeriksaanUmum?.rs6 : '' }} </td>
-        </tr>
-        <!-- <tr>
+          <tr>
+            <td>Leher (Neck)</td>
+            <!-- <td>{{ pemeriksaanUmum?.rs6?.toUpperCase() === 'TAK' ? 'TAK' : '' }}</td> -->
+            <td> {{ pemeriksaanUmum?.rs6?.toUpperCase() !== 'TAK' ? pemeriksaanUmum?.rs6 : '' }} </td>
+          </tr>
+          <!-- <tr>
           <td>Jantung (Heart)</td>
           <td>............................................</td>
           <td>............................................</td>
         </tr> -->
-        <tr>
-          <td>Dada & Payudara (Chest & Breast)</td>
-          <!-- <td>{{ pemeriksaanUmum?.rs7?.toUpperCase() === 'TAK' ? 'TAK' : '' }}</td> -->
-          <td> {{ pemeriksaanUmum?.rs7?.toUpperCase() !== 'TAK' ? pemeriksaanUmum?.rs7 : '' }} </td>
-        </tr>
-        <tr>
-          <td>Punggung (Back)</td>
-          <!-- <td>{{ pemeriksaanUmum?.rs8?.toUpperCase() === 'TAK' ? 'TAK' : '' }}</td> -->
-          <td> {{ pemeriksaanUmum?.rs8?.toUpperCase() !== 'TAK' ? pemeriksaanUmum?.rs8 : '' }} </td>
-        </tr>
-        <tr>
-          <td>Perut (Abdomen)</td>
-          <!-- <td>{{ pemeriksaanUmum?.rs9?.toUpperCase() === 'TAK' ? 'TAK' : '' }}</td> -->
-          <td> {{ pemeriksaanUmum?.rs9?.toUpperCase() !== 'TAK' ? pemeriksaanUmum?.rs9 : '' }} </td>
-        </tr>
-        <tr>
-          <td>Urogenital</td>
-          <!-- <td>{{ pemeriksaanUmum?.rs13?.toUpperCase() === 'TAK' ? 'TAK' : '' }}</td> -->
-          <td> {{ pemeriksaanUmum?.rs13?.toUpperCase() !== 'TAK' ? pemeriksaanUmum?.rs13 : '' }} </td>
-        </tr>
-        <!-- <tr>
+          <tr>
+            <td>Dada & Payudara (Chest & Breast)</td>
+            <!-- <td>{{ pemeriksaanUmum?.rs7?.toUpperCase() === 'TAK' ? 'TAK' : '' }}</td> -->
+            <td> {{ pemeriksaanUmum?.rs7?.toUpperCase() !== 'TAK' ? pemeriksaanUmum?.rs7 : '' }} </td>
+          </tr>
+          <tr>
+            <td>Punggung (Back)</td>
+            <!-- <td>{{ pemeriksaanUmum?.rs8?.toUpperCase() === 'TAK' ? 'TAK' : '' }}</td> -->
+            <td> {{ pemeriksaanUmum?.rs8?.toUpperCase() !== 'TAK' ? pemeriksaanUmum?.rs8 : '' }} </td>
+          </tr>
+          <tr>
+            <td>Perut (Abdomen)</td>
+            <!-- <td>{{ pemeriksaanUmum?.rs9?.toUpperCase() === 'TAK' ? 'TAK' : '' }}</td> -->
+            <td> {{ pemeriksaanUmum?.rs9?.toUpperCase() !== 'TAK' ? pemeriksaanUmum?.rs9 : '' }} </td>
+          </tr>
+          <tr>
+            <td>Urogenital</td>
+            <!-- <td>{{ pemeriksaanUmum?.rs13?.toUpperCase() === 'TAK' ? 'TAK' : '' }}</td> -->
+            <td> {{ pemeriksaanUmum?.rs13?.toUpperCase() !== 'TAK' ? pemeriksaanUmum?.rs13 : '' }} </td>
+          </tr>
+          <!-- <tr>
           <td>Anggota Gerak (Extremities)</td>
           <td>............................................</td>
           <td>............................................</td>
         </tr> -->
-        <tr>
-          <td>Tangan (Hand)</td>
-          <!-- <td>{{ pemeriksaanUmum?.rs10?.toUpperCase() === 'TAK' ? 'TAK' : '' }}</td> -->
-          <td> {{ pemeriksaanUmum?.rs10?.toUpperCase() !== 'TAK' ? pemeriksaanUmum?.rs10 : '' }} </td>
-        </tr>
-        <tr>
-          <td>Kaki (Foot)</td>
-          <!-- <td>{{ pemeriksaanUmum?.rs11?.toUpperCase() === 'TAK' ? 'TAK' : '' }}</td> -->
-          <td> {{ pemeriksaanUmum?.rs11?.toUpperCase() !== 'TAK' ? pemeriksaanUmum?.rs11 : '' }} </td>
-        </tr>
-        <tr>
-          <td>Status Neurologis (Neurological Status)</td>
-          <!-- <td>{{ pemeriksaanUmum?.rs12?.toUpperCase() === 'TAK' ? 'TAK' : '' }}</td> -->
-          <td> {{ pemeriksaanUmum?.rs12?.toUpperCase() !== 'TAK' ? pemeriksaanUmum?.rs12 : '' }} </td>
-        </tr>
-        <!-- <tr>
+          <tr>
+            <td>Tangan (Hand)</td>
+            <!-- <td>{{ pemeriksaanUmum?.rs10?.toUpperCase() === 'TAK' ? 'TAK' : '' }}</td> -->
+            <td> {{ pemeriksaanUmum?.rs10?.toUpperCase() !== 'TAK' ? pemeriksaanUmum?.rs10 : '' }} </td>
+          </tr>
+          <tr>
+            <td>Kaki (Foot)</td>
+            <!-- <td>{{ pemeriksaanUmum?.rs11?.toUpperCase() === 'TAK' ? 'TAK' : '' }}</td> -->
+            <td> {{ pemeriksaanUmum?.rs11?.toUpperCase() !== 'TAK' ? pemeriksaanUmum?.rs11 : '' }} </td>
+          </tr>
+          <tr>
+            <td>Status Neurologis (Neurological Status)</td>
+            <!-- <td>{{ pemeriksaanUmum?.rs12?.toUpperCase() === 'TAK' ? 'TAK' : '' }}</td> -->
+            <td> {{ pemeriksaanUmum?.rs12?.toUpperCase() !== 'TAK' ? pemeriksaanUmum?.rs12 : '' }} </td>
+          </tr>
+          <!-- <tr>
           <td>Muskuloskeletal</td>
           <td>............................................</td>
           <td>............................................</td>
         </tr> -->
-      </tbody>
-    </table>
+        </tbody>
+      </table>
+    </div>
+
+
+
 
 
 
@@ -386,7 +571,27 @@
           <div class="f-8 text-wrap text-center">{{ dpjp?.nama }}</div>
         </div> -->
 
-        <div></div>
+        <div class="column flex-center">
+          <div>
+            Pasien / Keluarga
+          </div>
+          <!-- <div v-if="penerimanEdu?.ttdPenerima" class="relative-position" style="width: 80px;">
+              <vue-qrcode :value="qrPenerima" tag="svg" :options="{
+                errorCorrectionLevel: 'Q',
+                color: {
+                  dark: '#000000',
+                  light: '#ffffff',
+                },
+                margin: 0
+              }" />
+            </div> -->
+          <div style="padding-bottom: 20px" />
+          <div>
+            <img v-if="penerimanEdu?.ttd_penerima" :src="penerimanEdu?.ttd_penerima" alt="ttd penerima" width="80">
+            <div v-else>ttd</div>
+          </div>
+          <div class="text-wrap text-center">{{ penerimanEdu?.namaPenerima }}</div>
+        </div>
 
 
         <div class="column flex-center ">
@@ -417,12 +622,14 @@
 </template>
 
 <script setup>
-import { api } from 'src/boot/axios'
-import { dateFullFormat, jamTnpDetik } from 'src/modules/formatter'
+import { api, pathImg } from 'src/boot/axios'
+import { dateFullFormat, getNewLine, jamTnpDetik } from 'src/modules/formatter'
+import { imageToBase64 } from 'src/modules/imgBase64'
+import { useImplementasiEdukasiRanapStore } from 'src/stores/simrs/ranap/implementasiEdukasi'
 import { computed, onMounted, ref } from 'vue'
 
 
-
+const impEdukasi = useImplementasiEdukasiRanapStore()
 
 const props = defineProps({
   pasien: {
@@ -445,8 +652,12 @@ const props = defineProps({
 
 const dpjp = ref(null)
 
-onMounted(() => {
-  getDpjpData()
+onMounted(async () => {
+  await getDpjpData()
+  await impEdukasi.getList(props.pasien)
+  if (penerimanEdu.value) {
+    initImage(penerimanEdu.value)
+  }
 })
 
 
@@ -455,17 +666,30 @@ onMounted(() => {
 
 const anamnesisAwal = computed(() => {
   const awal = props?.pasien?.anamnesis?.find(x => x?.awal === '1' && x?.nakes === '1') || null
-  // console.log('awal', awal);
+  console.log('aanamnesisAwalwal', awal);
 
   return awal
 })
 const pemeriksaanUmum = computed(() => {
   const awal = props?.pasien?.pemeriksaan?.find(x => x?.awal === '1' && x?.nakes === '1') || null
-  // console.log('awal', awal);
+  console.log('pemeriksaanUmum', awal);
 
   return awal
 })
 
+const EDUKASI = computed(() => {
+  try {
+    return JSON.parse(pemeriksaanUmum?.value?.edukasi || '{}')
+  } catch {
+    return {}
+  }
+})
+const ALERGI = computed(() => {
+  const finder = props?.pasien?.anamnesis?.find(x => x?.awal === '1')?.riwayatalergi ?? []
+  const alergy = finder?.map((item) => item)?.join(', ') ?? null
+  const keterangan = props?.pasien?.anamnesis?.find(x => x?.awal === '1')?.keteranganalergi ?? null
+  return alergy + ' ' + (keterangan ?? null)
+})
 const diagnosa = computed(() => {
   const primer = props?.pasien?.diagnosa?.find(x => x?.rs4 === 'Primer' && x?.rs13 === 'POL014') || null
   // console.log('awal', primer);
@@ -493,6 +717,29 @@ const qrDokter = computed(() => {
   const enc = btoa(`${noreg}|${dok}|${asal}|${petugas}`)
   return `https://rsud.probolinggokota.go.id/dokumen-simrs/legalitas/${enc}`
 })
+
+const penerimanEdu = computed(() => {
+  const ttd = impEdukasi?.items[0]
+  console.log('ttd', ttd)
+  return ttd
+})
+
+function initImage(item) {
+  console.log('item imgeee', item);
+  if (!item?.ttdPenerima) {
+    item.ttd_penerima = null
+    return
+  }
+  const ttdPenerima = pathImg + item?.ttdPenerima
+
+  Promise.all([
+    imageToBase64(ttdPenerima, (base64Image) => {
+      // document.getElementsByClassName('ttd-yg-menyatakan')[0].src = base64Image
+      // document.getElementsByClassName('ttd-yg-menyatakan')[1].src = base64Image
+      item.ttd_penerima = base64Image ?? ''
+    })
+  ])
+}
 
 </script>
 

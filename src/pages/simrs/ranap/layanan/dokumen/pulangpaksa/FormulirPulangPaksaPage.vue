@@ -111,6 +111,7 @@
               <div>
                 <img v-if="pasien?.ttd_yg_menyatakan" :src="pasien?.ttd_yg_menyatakan" alt="ttd yang menyatakan"
                   width="80">
+                <div v-else>ttd</div>
               </div>
               <div class="q-py-xs">
                 {{ pasien?.nama_penanggungjawab ?? '(...............................................................)'
@@ -269,7 +270,10 @@ const getDpjpData = async () => {
 
 function initImage(item) {
   console.log('item imgeee', item);
-
+  if (!item?.ttdYgMenyatakan) {
+    item.ttd_yg_menyatakan = null
+    return
+  }
   const ttdYgMenyatakan = pathImg + item?.ttdYgMenyatakan
 
   Promise.all([

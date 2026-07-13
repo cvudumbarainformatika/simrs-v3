@@ -63,8 +63,8 @@ const menus = ref([
   },
   {
     name: 'asessment-awal-keperawatan',
-    label: 'ASESSMENT AWAL KEPERAWATAN',
-    title: 'ASESSMENT AWAL KEPERAWATAN',
+    label: 'ASS AWAL KEPERAWATAN / KEBIDANAN',
+    title: 'ASESSMENT AWAL',
     desc: 'Asessment Awal Keperawatan Pasien',
     icon: 'icon-my-file_sign',
     nakes: ['1', '2', '3'],
