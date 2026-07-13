@@ -105,31 +105,13 @@
             <div>- Kepatuhan terhadap ventilasi mekanik : {{
               anamnesisAwal?.keluhannyeri?.pediatrik?.form?.kebutuhanVentilasi?.text }}</div>
           </div>
-
-        </div>
-        <div class="data-item flex">8. Skrining Gizi :
-          <div class="q-ml-sm" v-if="anamnesisAwal?.skreeninggizi?.pediatrik !== null">
-            <div>- Keterangan : {{ anamnesisAwal?.skreeninggizi?.pediatrik?.ket || '-' }}</div>
-            <div>- Apakah pasien tampak kurus? {{ anamnesisAwal?.skreeninggizi?.pediatrik?.form?.tk?.text }}</div>
-            <div>- Apakah terdapat penurunan BB selama 1 bulan terakhir? {{
-              anamnesisAwal?.skreeninggizi?.pediatrik?.form?.bb?.text }}</div>
-            <div>- Apakah Diare >= 5 kali/hari dan/atau muntah > 3 kali/hari dalam seminggu terakhir atau Asupan makanan
-              berkurang selama satu minggu terakhir? {{ anamnesisAwal?.skreeninggizi?.pediatrik?.form?.kk?.text }}</div>
-            <div>- Apakah terdapat penyakit atau keadaan yang mengakibatkan pasien beresiko malnutrisi? {{
-              anamnesisAwal?.skreeninggizi?.pediatrik?.form?.penyakit?.text }}</div>
-          </div>
-          <div class="q-ml-sm" v-if="anamnesisAwal?.skreeninggizi?.dewasa !== null">
-            <div>- Keterangan : {{ anamnesisAwal?.skreeninggizi?.dewasa?.ket || '-' }}</div>
-            <div>- Apakah Ada Penurunan Berat badan yang tidak diinginkan selama 6 Bulan terakhir ? {{
-              anamnesisAwal?.skreeninggizi?.dewasa?.form?.bb?.text }}</div>
-            <div>- Apakah Asupan Makan berkurang karena tidak nafsu makan ? {{
-              anamnesisAwal?.skreeninggizi?.dewasa?.form?.am?.text }}</div>
-            <div>- Apakah pasien memiliki diagnosa khusus / kondisi khusus ? {{
-              anamnesisAwal?.skreeninggizi?.dewasa?.form?.kk?.text }}</div>
+          <div class="q-ml-sm" v-else>
+            <div> - </div>
           </div>
         </div>
 
-        <div v-if="anamnesisAwal?.pediatrik" class="data-item flex">9. Form 4.4 (Pediatrik) :
+
+        <div v-if="anamnesisAwal?.pediatrik" class="data-item flex">8. Form 4.4 (Pediatrik) :
           <div class="q-ml-sm">
             <div class="text-bold">Riwayat Penyakit Kelahiran</div>
             <div>- Anak ke : {{ anamnesisAwal?.pediatrik?.anakKe || '-' }}</div>
@@ -228,35 +210,29 @@
             <td style="border: none !important; padding: 0px !important;"> - Pernapasan</td>
             <td style="border: none !important; padding: 0px !important;">: {{ pemeriksaanUmum?.pernapasan || ' - ' }}
               x/menit</td>
-            <td style="border: none !important; padding: 0px !important;"> - Sistole</td>
-            <td style="border: none !important; padding: 0px !important;">: {{ pemeriksaanUmum?.sistole || ' -' }} mmHg
-            </td>
-          </tr>
-          <tr style="border: none !important; padding: 0px !important;">
             <td style="border: none !important; padding: 0px !important;"> - Saturasi Oksigen</td>
             <td style="border: none !important; padding: 0px !important;">: {{ pemeriksaanUmum?.spo || ' - ' }} %</td>
-            <td style="border: none !important; padding: 0px !important;"> - Diastole</td>
-            <td style="border: none !important; padding: 0px !important;">: {{ pemeriksaanUmum?.diastole || ' -' }} mmHg
-            </td>
           </tr>
-          <tr style="border: none !important; padding: 0px !important;">
-            <td style="border: none !important; padding: 0px !important;"> - Lika</td>
-            <td style="border: none !important; padding: 0px !important;">: {{ pemeriksaanUmum?.pediatrik?.lilengtas ||
-              ' - ' }} cm</td>
-            <td style="border: none !important; padding: 0px !important;"> - Lida</td>
-            <td style="border: none !important; padding: 0px !important;">: {{ pemeriksaanUmum?.pediatrik?.lida || '-'
+          <template v-if="pemeriksaanUmum?.pediatrik">
+            <tr style="border: none !important; padding: 0px !important;">
+              <td style="border: none !important; padding: 0px !important;"> - Lika</td>
+              <td style="border: none !important; padding: 0px !important;">: {{ pemeriksaanUmum?.pediatrik?.lilengtas
+                || '-' }} cm</td>
+              <td style="border: none !important; padding: 0px !important;"> - Lida</td>
+              <td style="border: none !important; padding: 0px !important;">: {{ pemeriksaanUmum?.pediatrik?.lida || '-'
               }} cm</td>
-          </tr>
-          <tr style="border: none !important; padding: 0px !important;">
-            <td style="border: none !important; padding: 0px !important;"> - Lirut</td>
-            <td style="border: none !important; padding: 0px !important;">: {{ pemeriksaanUmum?.pediatrik?.lirut || '-'
+            </tr>
+            <tr style="border: none !important; padding: 0px !important;">
+              <td style="border: none !important; padding: 0px !important;"> - Lirut</td>
+              <td style="border: none !important; padding: 0px !important;">: {{ pemeriksaanUmum?.pediatrik?.lirut ||
+                '-'
               }} cm</td>
-            <td style="border: none !important; padding: 0px !important;"> - Lila</td>
-            <td style="border: none !important; padding: 0px !important;">: {{ pemeriksaanUmum?.pediatrik?.lila || '-'
+              <td style="border: none !important; padding: 0px !important;"> - Lila</td>
+              <td style="border: none !important; padding: 0px !important;">: {{ pemeriksaanUmum?.pediatrik?.lila || '-'
               }}
-            </td>
-          </tr>
-
+              </td>
+            </tr>
+          </template>
 
         </tbody>
       </table>
@@ -286,7 +262,7 @@
               pemeriksaanUmum?.makananPokok || ' - ' }}</td>
             <td style="border: none !important; padding: 0px !important; width: 15%;"> - Pantangan Makanan </td>
             <td style="border: none !important; padding: 0px !important;">: {{ pemeriksaanUmum?.pantanganMkanan || ' - '
-            }}
+              }}
             </td>
           </tr>
         </tbody>
@@ -309,23 +285,174 @@
               pemeriksaanUmum?.statusPsikologis || ' - ' }}</td>
             <td style="border: none !important; padding: 0px !important; width: 15%;"> - Status Ekonomi </td>
             <td style="border: none !important; padding: 0px !important;">: {{ pemeriksaanUmum?.ansuransi || ' - '
-              }} Asuransi
+            }} Asuransi
             </td>
           </tr>
           <tr style="border: none !important; padding: 0px !important;">
-            <td colspan="2" style="border: none !important; padding: 0px !important; width:15%;"> - Apakah pasien /
+            <td colspan="4" style="border: none !important; padding: 0px !important; width:15%;"> - Edukasi :</td>
+
+          </tr>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td colspan="2"
+              style="border: none !important; padding-left: 10px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important; width:15%;">
+              Apakah pasien /
               keluarga tahu mengenai penyakit dan perawatannya?</td>
             <td colspan="2" style="border: none !important; padding: 0px !important; width: 35%;"> : {{
               EDUKASI?.tahuPenanganan?.value || ' - ' }}</td>
           </tr>
           <tr style="border: none !important; padding: 0px !important;">
-            <td colspan="2" style="border: none !important; padding: 0px !important; width:15%;"> - Apakah membutuhkan
+            <td colspan="2"
+              style="border: none !important; padding-left: 10px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important; width:15%;">
+              Apakah membutuhkan
               edukasi?</td>
             <td colspan="2" style="border: none !important; padding: 0px !important; width: 35%;"> : {{
               EDUKASI?.butuhEdukasi?.value || ' - ' }}</td>
           </tr>
         </tbody>
       </table>
+
+      <!-- Skreening gizi Dewasa-->
+      <div v-if="anamnesisAwal?.skreeninggizi?.dewasa" class="section">
+        <div class="section-title">Skrining Gizi : </div>
+        <table style="margin-top: -5px; margin-bottom: 5px;">
+          <thead>
+            <tr>
+              <th>Parameter</th>
+              <th>Skor</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Apakah Ada Penurunan Berat badan yang tidak diinginkan selama 6 Bulan terakhir ?</td>
+              <td> {{ anamnesisAwal?.skreeninggizi?.dewasa?.form?.bb?.skor }} </td>
+            </tr>
+            <tr>
+              <td>Apakah Asupan Makan berkurang karena tidak nafsu makan ?</td>
+              <td> {{ anamnesisAwal?.skreeninggizi?.dewasa?.form?.am?.skor }} </td>
+            </tr>
+            <tr>
+              <td>Apakah pasien memiliki diagnosa khusus / kondisi khusus ?</td>
+              <td> {{ anamnesisAwal?.skreeninggizi?.dewasa?.form?.kk?.skor }} </td>
+            </tr>
+            <tr class="text-weight-bold">
+              <td colspan="2">
+                <div class="row justify-between q-px-lg">
+                  <div class="col-auto">
+                    Total Skor :
+                  </div>
+                  <div class="col-auto">
+                    {{ anamnesisAwal?.skreeninggizi?.dewasa?.skor }} ( {{
+                      anamnesisAwal?.skreeninggizi?.dewasa?.ket }} )
+                  </div>
+                </div>
+              </td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+      <!-- Skrining gizi Kebidanan-->
+      <div v-if="anamnesisAwal?.skreeninggizi?.kebidanan" class="section">
+        <div class="section-title">Skrining Gizi Pasien Obstetric / Kehamilan / Nifas : </div>
+        <table style="margin-top: -5px; margin-bottom: 5px;">
+          <thead>
+            <tr>
+              <th>Parameter</th>
+              <th>Skor</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Apakah asupan makan berkurang karena tidak nafsu makan?</td>
+              <td> {{ anamnesisAwal?.skreeninggizi?.kebidanan?.form?.am?.skor }} </td>
+            </tr>
+            <tr>
+              <td>Apakah ada pertambahan BB yang kurang atau lebih selama kehamilan?</td>
+              <td> {{ anamnesisAwal?.skreeninggizi?.kebidanan?.form?.bb?.skor }} </td>
+            </tr>
+            <tr>
+              <td>Nilai Hb {{ '<' }} 10 g/dl atau HCT 30%</td>
+              <td> {{ anamnesisAwal?.skreeninggizi?.kebidanan?.form?.hb?.skor }} </td>
+            </tr>
+            <tr>
+              <td>Ada gangguan metabolisme / kondisi khusus. (Penyakit tertentu)</td>
+              <td> {{ anamnesisAwal?.skreeninggizi?.kebidanan?.form?.metabolisme?.skor }} </td>
+            </tr>
+            <tr class="text-weight-bold">
+              <td colspan="2">
+                <div class="row justify-between q-px-lg">
+                  <div class="col-auto">
+                    Total Skor :
+                  </div>
+                  <div class="col-auto">
+                    {{ anamnesisAwal?.skreeninggizi?.kebidanan?.skor }} ( {{
+                      anamnesisAwal?.skreeninggizi?.kebidanan?.ket }} )
+                  </div>
+                </div>
+              </td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Skreening gizi Pediatrik-->
+      <div v-if="anamnesisAwal?.skreeninggizi?.pediatrik" class="section">
+        <div class="section-title">Skrining Gizi Pediatrik : </div>
+        <table style="margin-top: -5px; margin-bottom: 5px;">
+          <thead>
+            <tr>
+              <th>Parameter</th>
+              <th>Skor</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Apakah pasien tampak kurus?</td>
+              <td> {{ anamnesisAwal?.skreeninggizi?.pediatrik?.form?.tk?.skor }} </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="row">Apakah terdapat penurunan BB selama 1 bulan terakhir?</div>
+                <div class="row f-10 text-italic"> - Berdasarkan penilaian objektif data BB bila ada satu penilaian
+                  subjektif orang tua pasien</div>
+                <div class="row f-10 text-italic"> - Untuk bayi {{ '<' }} 1 tahun berat badan tidak naik selama 3 bulan
+                    terakhir</div>
+              </td>
+              <td> {{ anamnesisAwal?.skreeninggizi?.pediatrik?.form?.bb?.skor }} </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="row">Apakah terdapat salah satu dari kondisi ini?</div>
+                <div class="row f-10 text-italic"> - Diare >= 5 kali/hari dan/atau muntah > 3 kali/hari dalam seminggu
+                  terakhir</div>
+                <div class="row f-10 text-italic"> - Asupan makanan berkurang selama satu minggu terakhir</div>
+              </td>
+              <td> {{ anamnesisAwal?.skreeninggizi?.pediatrik?.form?.kk?.skor }} </td>
+            </tr>
+            <tr>
+              <td>Apakah terdapat penyakit atau keadaan yang mengakibatkan pasien beresiko malnutrisi? (Diare kronis,
+                HIV,
+                PJB, Hepato, Ginjal, Stoma, Lain-lain)</td>
+              <td> {{ anamnesisAwal?.skreeninggizi?.pediatrik?.form?.penyakit?.skor }} </td>
+            </tr>
+            <tr class="text-weight-bold">
+              <td colspan="3">
+                <div class="row justify-between q-px-lg">
+                  <div class="col-auto">
+                    Total Skor :
+                  </div>
+                  <div class="col-auto">
+                    {{ anamnesisAwal?.skreeninggizi?.pediatrik?.skor }} ( {{
+                      anamnesisAwal?.skreeninggizi?.pediatrik?.ket }} )
+                  </div>
+                </div>
+              </td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
 
       <div class="section-title" style="margin-top: 5px;">Pemeriksaan Fisik : </div>
       <table style="margin-left: 7px; margin-top: -5px;">

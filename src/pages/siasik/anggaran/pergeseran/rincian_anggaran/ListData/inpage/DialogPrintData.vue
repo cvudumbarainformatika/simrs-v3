@@ -13,8 +13,8 @@
           </q-bar>
         </q-header>
         <q-page-container>
-          <div id="printMe" class="f-12 q-py-md row justify-center">
-            <q-card-section>
+          <div id="printMe" class="print-container">
+            <q-card-section class="print-contentx">
               <div class="col-auto" style="font-size: 1.2em">
                 <div class="row justify-between full-width full-height ">
                   <div class="row b1 justify-between full-width">
@@ -545,9 +545,19 @@ td {
   padding-right: 10px;
 }
 
-@page {
-  size: A4 portrait;
-  margin: 10mm;
+.print-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 12px;
+  box-sizing: border-box;
+}
+
+.print-content {
+  width: 100%;
+  max-width: 1123px;
+  /* preview */
+  box-sizing: border-box;
 }
 
 @page {
@@ -557,38 +567,34 @@ td {
 
 @media print {
 
-  html,
-  body {
-    width: 297mm;
-    height: 210mm;
+  .print-container {
+    display: block;
+    padding: 0;
+  }
+
+  .print-content {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 0;
   }
 
   #printMe {
     width: 100%;
-    margin: 0;
-    padding: 0;
-    font-size: 10px !important;
-    line-height: 1.15;
-    box-sizing: border-box;
-  }
-
-  #printMe * {
-    font-size: 10px !important;
-    line-height: 1.15;
+    font-size: 11px;
   }
 
   table {
     width: 100%;
-    border-collapse: collapse;
     table-layout: fixed;
+    border-collapse: collapse;
   }
 
   th,
   td {
-    padding: 2px 3px !important;
-    vertical-align: middle;
+    padding: 2px 4px;
+    font-size: 10px;
     word-break: break-word;
-    overflow-wrap: break-word;
   }
 }
 </style>
