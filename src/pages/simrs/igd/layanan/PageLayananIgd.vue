@@ -154,7 +154,7 @@ const menus = ref([
     name: 'upload-dokomen',
     label: 'Upload Dokumen',
     icon: 'icon-fa-folder-tree-solid',
-    route: ['igd'],
+    route: ['igd', 'rekammedik'],
     comp: shallowRef(defineAsyncComponent(() => import('../layanan/uploaddokumen/IndexPage.vue')))
   },
   {
