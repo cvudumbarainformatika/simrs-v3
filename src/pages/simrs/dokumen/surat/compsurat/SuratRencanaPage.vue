@@ -28,7 +28,7 @@
             </div>
             <div>
               <div :key="toItem" class="row">
-                Surat Rencana {{ setNama(toItem) }}
+                Surat Rencanax {{ setNama(toItem) }}
               </div>
               <div class="row">
                 UOBK RSUD dr. MOH SALEH
@@ -155,8 +155,30 @@
                 date.formatDate(Date.now(), 'DD/MM/YYYY') }} <span class="text-italic">dari RS</span>
             </div>
             <div class="col-4 text-center">
-              {{ pasien?.dokter }}
+              <div class="text-center text-weight-bold">
+                <div class="row justify-center">
+                  <div class="flex-center " style="width: 80px;">
+                    <div class="relative-position">
+                      <vue-qrcode :value="qrPetugas(petugas)" tag="svg" :options="{
+                        errorCorrectionLevel: 'Q',
+                        color: {
+                          dark: '#000000',
+                          light: '#ffffff',
+                        },
+                        margin: 0
+                      }" />
+                      <img class="qrcode__image" src="~assets/logos/logo-rsud.png" alt="RSUD DOKTER MOHAMAD SALEH">
+                    </div>
+                  </div>
+                </div>
+                <div class="f-12 text-wrap row justify-center">{{ pasien?.dokter }}</div>
+
+
+              </div>
             </div>
+            <!-- <div class="col-4 text-center">
+              {{ pasien?.dokter }}
+            </div> -->
           </div>
         </div>
       </div>
@@ -169,7 +191,7 @@
 </template>
 <script setup>
 import { date } from 'quasar'
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 // eslint-disable-next-line no-unused-vars
 const props = defineProps({
   pasien: {
@@ -324,6 +346,22 @@ function setNama(val) {
     return val?.rs4
   }
 }
+
+const petugas = computed(() => {
+  const petugas = props.pasien?.datasimpeg?.kdpegsimrs
+  console.log('petugas', petugas)
+  return petugas
+
+})
+
+const qrPetugas = (user) => {
+  const noreg = props?.pasien?.noreg// noreg
+  const dok = 'ASSESMENT PERAWAT.png'
+  const asal = 'RAWAT JALAN'
+  const petugas = props.pasien?.datasimpeg?.kdpegsimrs
+  const enc = btoa(`${noreg}|${dok}|${asal}|${petugas}`)
+  return `https://rsud.probolinggokota.go.id/dokumen-simrs/legalitas/${enc}`
+}
 // function tglEntry (val) {
 //   // date.formatDate(pasien.tgl_kunjungan, 'DD/MM/YYYY')
 //   console.log('tglEntry', val)
@@ -347,5 +385,17 @@ const printObj = {
 .endas {
   border-bottom: 1px black solid;
   font-size: 24px;
+}
+
+.qrcode__image {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 14px;
+  height: 14px;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  padding: 1px;
+  border-radius: 3px;
 }
 </style>
