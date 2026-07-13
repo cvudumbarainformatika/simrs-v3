@@ -177,6 +177,15 @@ const menus = ref([
     icon: 'icon-my-file_sign',
     nakes: ['1', '2', '3'],
     comp: shallowRef(defineAsyncComponent(() => import('src/pages/simrs/dokumen/erm/poli/AssesmentPraBedah.vue')))
+  },
+  {
+    name: 'mpp-document',
+    label: 'DOKUMEN MPP',
+    title: 'MANAJEMEN PELAYANAN PASIEN (MPP)',
+    desc: 'Formulir A & Formulir B Manajemen Pelayanan Pasien',
+    icon: 'icon-my-file_sign',
+    nakes: ['1', '2', '3'],
+    comp: shallowRef(defineAsyncComponent(() => import('./mpp/IndexPage.vue')))
   }
 ])
 

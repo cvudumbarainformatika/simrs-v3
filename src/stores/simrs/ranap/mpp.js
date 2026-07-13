@@ -42,14 +42,99 @@ export const useMppRanapStore = defineStore('mpp-ranap-store', {
       }
     },
 
-    async simpanData(pasien) {
+    async simpanData(pasien, customForm = null) {
       this.loading = true
+      const formData = customForm || this.form
+      
       const payload = {
         noreg: pasien?.noreg,
         norm: pasien?.norm,
         kdruang: pasien?.kdruangan,
-        skrining: this.form
+        
+        // 1. Skrining (Form A)
+        skrining: formData.skrining,
+        
+        // 2. Asesmen (Form A)
+        asesmen: {
+          tgl_kajian: formData.tgl_kajian,
+          fisik_fungsional: formData.fisik_fungsional,
+          riwayat_kesehatan: formData.riwayat_kesehatan,
+          psiko_sosio_kultural: formData.psiko_sosio_kultural,
+          kesehatan_mental: formData.kesehatan_mental,
+          dukungan_keluarga: formData.dukungan_keluarga,
+          masalah_finansial: formData.masalah_finansial,
+          asuransi: formData.asuransi,
+          asuransi_ket: formData.asuransi_ket,
+          pakai_alat_obat: formData.pakai_alat_obat,
+          riwayat_trauma: formData.riwayat_trauma,
+          riwayat_trauma_ket: formData.riwayat_trauma_ket,
+          health_literacy: formData.health_literacy,
+          health_literacy_ket: formData.health_literacy_ket,
+          harapan_asuhan: formData.harapan_asuhan,
+          aspek_legal: formData.aspek_legal,
+          aspek_legal_ket: formData.aspek_legal_ket,
+        },
+        
+        // 3. Identifikasi Masalah (Form B)
+        identifikasi_masalah: {
+          masalah: formData.masalah,
+          masalah_ket: formData.masalah_ket,
+        },
+        
+        // 4. Sasaran (Form B)
+        sasaran: {
+          sasaran: formData.sasaran,
+          sasaran_ket: formData.sasaran_ket,
+        },
+        
+        // 5. Perencanaan (Form B)
+        perencanaan: {
+          perencanaan: formData.perencanaan,
+          perencanaan_ket: formData.perencanaan_ket,
+          kolaborasi_unit_lain_ket: formData.kolaborasi_unit_lain_ket,
+          kolaborasi_dll_ket: formData.kolaborasi_dll_ket,
+        },
+        
+        // 6. Monitoring (Form B)
+        monitoring: {
+          monitoring: formData.monitoring,
+          monitoring_tgl: formData.monitoring_tgl,
+          monitoring_ppk_cp: formData.monitoring_ppk_cp,
+          monitoring_koding: formData.monitoring_koding,
+          monitoring_koding_ket: formData.monitoring_koding_ket,
+        },
+        
+        // 7. Fasilitasi (Form B)
+        fasilitasi: {
+          fasilitasi: formData.fasilitasi,
+          fasilitasi_tgl: formData.fasilitasi_tgl,
+          fasilitasi_ket: formData.fasilitasi_ket,
+        },
+        
+        // 8. Advokasi (Form B)
+        advokasi: {
+          advokasi: formData.advokasi,
+          advokasi_tgl: formData.advokasi_tgl,
+        },
+        
+        // 9. Hasil Pelayanan (Form B)
+        hasil_pelayanan: {
+          hasil: formData.hasil,
+          hasil_ket: formData.hasil_ket,
+          level_hasil: formData.level_hasil,
+        },
+        
+        // 10. Terminasi (Form B)
+        terminasi: {
+          terminasi: formData.terminasi,
+          terminasi_tgl: formData.terminasi_tgl,
+          cara_pulang_val: formData.cara_pulang_val,
+          cara_pulang_ket: formData.cara_pulang_ket,
+          cara_pulang_tgl: formData.cara_pulang_tgl,
+          cara_pulang_jam: formData.cara_pulang_jam,
+        }
       }
+
       if (this.editingId) {
         payload.id = this.editingId
       }
@@ -58,7 +143,7 @@ export const useMppRanapStore = defineStore('mpp-ranap-store', {
         if (resp.status === 200) {
           notifSuccess(resp)
           this.getData(pasien)
-          this.initReset(pasien)
+          // Jangan reset form setelah simpan karena ini update data tunggal secara berkelanjutan
         }
         this.loading = false
       } catch (error) {
