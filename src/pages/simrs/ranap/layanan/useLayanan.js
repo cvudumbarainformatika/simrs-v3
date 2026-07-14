@@ -47,8 +47,8 @@ export default function useLayanan(pasien, mpp) {
       comp: shallowRef(defineAsyncComponent(() => import('./penunjang/IndexPage.vue')))
     },
     {
-      name: 'AsessmentUlang',
-      label: 'Asessment Ulang',
+      name: 'Cppt',
+      label: 'CPPT',
       icon: 'icon-fa-book-medical-solid',
       nakes: ['1', '2', '3', '4', '5', '6'],
       comp: shallowRef(defineAsyncComponent(() => import('./asessmentulang/IndexPage.vue')))
@@ -59,6 +59,13 @@ export default function useLayanan(pasien, mpp) {
       icon: 'icon-mat-note_alt',
       nakes: ['2', '3'],
       comp: shallowRef(defineAsyncComponent(() => import('./nursenote/IndexPage.vue')))
+    },
+    {
+      name: 'AsesmenUlang',
+      label: 'Asesmen Ulang',
+      icon: 'icon-mat-layers',
+      nakes: ['2', '3'],
+      comp: shallowRef(defineAsyncComponent(() => import('./asesmenJatuhNyeri/IndexPage.vue')))
     },
     {
       name: 'AsessmentPraBedah',
