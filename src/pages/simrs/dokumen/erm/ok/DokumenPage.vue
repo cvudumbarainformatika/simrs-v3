@@ -125,6 +125,34 @@ const documents = ref([
   {
     icon: 'icon-mat-email',
     color: 'primary',
+    jenis: 'PRA-IND',
+    label: 'Pra Induksi',
+    value: 'Prainduksi'
+  },
+  {
+    icon: 'icon-mat-email',
+    color: 'primary',
+    jenis: 'MON-SEL',
+    label: 'Monitoring Selama Anestesi',
+    value: 'Monitoringselamaanestesi'
+  },
+  {
+    icon: 'icon-mat-email',
+    color: 'primary',
+    jenis: 'MON-PASCA',
+    label: 'Monitoring Pasca Anestesi',
+    value: 'Monitoringpascaanestesi'
+  },
+  {
+    icon: 'icon-mat-email',
+    color: 'primary',
+    jenis: 'ALDRETE',
+    label: 'Skor Aldrete',
+    value: 'Skoraldrete'
+  },
+  {
+    icon: 'icon-mat-email',
+    color: 'primary',
     jenis: 'SURGICAL',
     label: 'Checklist Surgical Safety',
     value: 'SurgicalSafety'
@@ -132,9 +160,16 @@ const documents = ref([
   {
     icon: 'icon-mat-email',
     color: 'primary',
-    jenis: 'ASKEP-PERIOPERATIF',
+    jenis: 'ASK-PERI',
     label: 'Asuhan Keperawatan Perioperatif',
     value: 'Askepperioperatif'
+  },
+  {
+    icon: 'icon-mat-email',
+    color: 'primary',
+    jenis: 'ASK-ANES',
+    label: 'Asuhan Penata Anestesi',
+    value: 'Askepanestesi'
   },
   {
     icon: 'icon-mat-email',
@@ -243,6 +278,11 @@ const comp = [
   { nama: 'AsesmenPraBedah', page: defineAsyncComponent(() => import('src/pages/simrs/dokumen/erm/poli/AssesmentPraBedah.vue')) },
   { nama: 'SurgicalSafety', page: defineAsyncComponent(() => import('src/pages/simrs/dokumen/erm/ok/comp/DokumenSurgicalSafety.vue')) },
   { nama: 'Askepperioperatif', page: defineAsyncComponent(() => import('./comp/AsuhanKeperawatanPerioperatif.vue')) },
+  { nama: 'Askepanestesi', page: defineAsyncComponent(() => import('./comp/AsuhanPenataAnastesi.vue')) },
+  { nama: 'Prainduksi', page: defineAsyncComponent(() => import('./comp/PraInduksiDoc.vue')) },
+  { nama: 'Monitoringselamaanestesi', page: defineAsyncComponent(() => import('./comp/MonitoringSelamaAnastesiDoc.vue')) },
+  { nama: 'Monitoringpascaanestesi', page: defineAsyncComponent(() => import('./comp/MonitoringPascaAnastesiDoc.vue')) },
+  { nama: 'Skoraldrete', page: defineAsyncComponent(() => import('./comp/SkorAldreteDoc.vue')) },
   { nama: 'CPPT', page: defineAsyncComponent(() => import('src/pages/simrs/ranap/layanan/dokumen/cppt/IndexPage.vue')) },
   { nama: 'EDUKASI', page: defineAsyncComponent(() => import('src/pages/simrs/ranap/layanan/dokumen/edukasi/IndexPage.vue')) },
   { nama: 'SEP', page: defineAsyncComponent(() => import('src/pages/simrs/poli/dokumen/Sep/SepPage.vue')) },

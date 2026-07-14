@@ -231,7 +231,7 @@ export const useMonitoringSaatStore = defineStore('monitoring_saat', {
         return resp?.data
       } catch (e) { }
     },
-    async getSkolrAldrete (pasien) {
+    async getSkorAldrete (pasien) {
       this.loadingAldrete = true
       const param = { params: { noreg: pasien.noreg, nota: pasien.rs2, norm: pasien.norm } }
       const resp = await api.get('v1/simrs/penunjang/ok/monitoring/aldrete/get', param)

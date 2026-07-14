@@ -322,6 +322,6 @@ onMounted(() => {
 
   if (laporanOp.nakes.length == 0) laporanOp.getNakes()
   store.getKamars()
-  store.getSkolrAldrete(props.pasien)
+  store.getSkorAldrete(props.pasien)
 })
 </script>

@@ -413,7 +413,7 @@ function generateQRUrl (noreg, dokumen, petugas, asal) {
 
 const qrUrl = computed(() => {
   const code = perawat.value?.kdpegsimrs || perawat.value?.nip || perawat.value?.nama || ''
-  return generateQRUrl(props.pasien?.noreg, 'Asuhan Keperawatan Perioperatif', code, 'OK')
+  return generateQRUrl(props.pasien?.noreg, 'Asuhan Keperawatan Perioperatif', code, 'PENUNJANG')
 })
 
 const printObj = {
