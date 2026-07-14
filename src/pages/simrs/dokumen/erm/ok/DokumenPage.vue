@@ -153,6 +153,13 @@ const documents = ref([
   {
     icon: 'icon-mat-email',
     color: 'primary',
+    jenis: 'LAP-OP',
+    label: 'Laporan Operasi',
+    value: 'Laporanoperasi'
+  },
+  {
+    icon: 'icon-mat-email',
+    color: 'primary',
     jenis: 'SURGICAL',
     label: 'Checklist Surgical Safety',
     value: 'SurgicalSafety'
@@ -283,6 +290,7 @@ const comp = [
   { nama: 'Monitoringselamaanestesi', page: defineAsyncComponent(() => import('./comp/MonitoringSelamaAnastesiDoc.vue')) },
   { nama: 'Monitoringpascaanestesi', page: defineAsyncComponent(() => import('./comp/MonitoringPascaAnastesiDoc.vue')) },
   { nama: 'Skoraldrete', page: defineAsyncComponent(() => import('./comp/SkorAldreteDoc.vue')) },
+  { nama: 'Laporanoperasi', page: defineAsyncComponent(() => import('./comp/LaporanOperasiDoc.vue')) },
   { nama: 'CPPT', page: defineAsyncComponent(() => import('src/pages/simrs/ranap/layanan/dokumen/cppt/IndexPage.vue')) },
   { nama: 'EDUKASI', page: defineAsyncComponent(() => import('src/pages/simrs/ranap/layanan/dokumen/edukasi/IndexPage.vue')) },
   { nama: 'SEP', page: defineAsyncComponent(() => import('src/pages/simrs/poli/dokumen/Sep/SepPage.vue')) },
