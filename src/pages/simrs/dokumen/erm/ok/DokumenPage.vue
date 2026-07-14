@@ -138,6 +138,15 @@ const documents = ref([
     title: 'CATATAN PERKEMBANGAN PASIEN TERINTEGRASI',
     desc: 'Catatan Perkembangan Pasien Terintegrasi'
   },
+  {
+    icon: 'icon-mat-email',
+    color: 'primary',
+    jenis: 'EDUKASI',
+    label: 'Edukasi Pasien KIE',
+    value: 'EDUKASI',
+    title: 'EDUKASI PASIEN',
+    desc: 'Edukasi KIE Pasien'
+  },
   // {
   //   icon: 'icon-mat-email',
   //   color: 'primary',
@@ -227,6 +236,7 @@ const comp = [
   { nama: 'AsesmenPraBedah', page: defineAsyncComponent(() => import('src/pages/simrs/dokumen/erm/poli/AssesmentPraBedah.vue')) },
   { nama: 'SurgicalSafety', page: defineAsyncComponent(() => import('src/pages/simrs/dokumen/erm/ok/comp/DokumenSurgicalSafety.vue')) },
   { nama: 'CPPT', page: defineAsyncComponent(() => import('src/pages/simrs/ranap/layanan/dokumen/cppt/IndexPage.vue')) },
+  { nama: 'EDUKASI', page: defineAsyncComponent(() => import('src/pages/simrs/ranap/layanan/dokumen/edukasi/IndexPage.vue')) },
   { nama: 'SEP', page: defineAsyncComponent(() => import('src/pages/simrs/poli/dokumen/Sep/SepPage.vue')) },
   { nama: 'ERESEP', page: defineAsyncComponent(() => import('src/pages/simrs/igd/layanan/dokumen/dokumenisi/Farmasi/FarmasiPage.vue')) },
   { nama: 'Laborat', page: defineAsyncComponent(() => import('src/pages/simrs/igd/layanan/dokumen/dokumenisi/Laborat/LaboratPage.vue')) },
