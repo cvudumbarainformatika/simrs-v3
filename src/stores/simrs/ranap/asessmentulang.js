@@ -100,8 +100,8 @@ export const useAsessmentUlangRanapStore = defineStore('asesment-ulang-ranap-sto
       const storePenilaian = usePenilaianRanapStore()
 
       const cekTerbaru = this.items?.length
-        ? this.items?.filter((a) => a?.nakes === nakes && !excludes.includes(a?.kdruang))?.length
-          ? this.items?.filter((a) => a?.nakes === nakes && !excludes.includes(a?.kdruang))[0]
+        ? this.items?.filter((a) => a?.nakes == nakes && !excludes.includes(a?.kdruang))?.length
+          ? this.items?.filter((a) => a?.nakes == nakes && !excludes.includes(a?.kdruang))[0]
           : null
         : null
       let dataSebelumnya = null
@@ -125,18 +125,10 @@ export const useAsessmentUlangRanapStore = defineStore('asesment-ulang-ranap-sto
         storePenilaian.initReset(pasien, dataAwal?.penilaian)
       }
       else {
-        if (nakes === '1') {
-          // dataSebelumnya = cekInputanSendiriTerbaru || cekTerbaru
-          dataSebelumnya = cekTerbaru
-          storeAnamnesis.initReset(dataSebelumnya?.anamnesis)
-          storePemeriksaan.initReset(dataSebelumnya?.pemeriksaan)
-          storePenilaian.initReset(pasien, dataSebelumnya?.penilaian)
-        } else {
-          dataSebelumnya = cekTerbaru
-          storeAnamnesis.initReset(dataSebelumnya?.anamnesis)
-          storePemeriksaan.initReset(dataSebelumnya?.pemeriksaan)
-          storePenilaian.initReset(pasien, dataSebelumnya?.penilaian)
-        }
+        dataSebelumnya = cekTerbaru
+        storeAnamnesis.initReset(dataSebelumnya?.anamnesis)
+        storePemeriksaan.initReset(dataSebelumnya?.pemeriksaan)
+        storePenilaian.initReset(pasien, dataSebelumnya?.penilaian)
       }
       this.previousData = dataSebelumnya
 

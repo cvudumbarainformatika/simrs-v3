@@ -408,7 +408,7 @@ export const usePemeriksaanUmumHemodialisaStore = defineStore('pemeriksaan-umum-
   },
   actions: {
 
-    async getData (pasien) {
+    async getData(pasien) {
       this.loading = true
       const params = {
         params: {
@@ -429,7 +429,7 @@ export const usePemeriksaanUmumHemodialisaStore = defineStore('pemeriksaan-umum-
       }
     },
 
-    initReset (data) {
+    initReset(data) {
       this.form = {
         // ini untuk 4.1
 
@@ -672,7 +672,7 @@ export const usePemeriksaanUmumHemodialisaStore = defineStore('pemeriksaan-umum-
       this.hitungSkorGlasgow()
     },
 
-    setForm (frm, data, $except = [], responseName) {
+    setForm(frm, data, $except = [], responseName) {
       // set form
       // console.groupCollapsed('[setForm]')
       // console.log(`frm: ${frm}`)
@@ -693,7 +693,7 @@ export const usePemeriksaanUmumHemodialisaStore = defineStore('pemeriksaan-umum-
       // console.groupEnd()
     },
 
-    setAnotherForm (arr, data, key, frm) {
+    setAnotherForm(arr, data, key, frm) {
       let isData = null
       if (key === 'edukasi') isData = JSON.parse(data[key]) ?? null
       else isData = data[key]
@@ -715,7 +715,7 @@ export const usePemeriksaanUmumHemodialisaStore = defineStore('pemeriksaan-umum-
         // console.groupEnd()
       }
     },
-    hitungSkorApgar () {
+    hitungSkorApgar() {
       let skor = 0
       let ket = null
       // skor = parseInt(this.formNeonatal?.appearance?.value ?? 0) + parseInt(this.formNeonatal?.pulse?.value ?? 0) + parseInt(this.formNeonatal?.grimace?.value ?? 0) + parseInt(this.formNeonatal?.activity?.value ?? 0) + parseInt(this.formNeonatal?.respiration?.value ?? 0)
@@ -729,7 +729,7 @@ export const usePemeriksaanUmumHemodialisaStore = defineStore('pemeriksaan-umum-
       this.formNeonatal.apgarScore = skor
       this.formNeonatal.apgarKet = ket
     },
-    hitungSkorGlasgow () {
+    hitungSkorGlasgow() {
       let skor = 0
       let ket = null
       // skor = parseInt(this.formNeonatal?.appearance?.value ?? 0) + parseInt(this.formNeonatal?.pulse?.value ?? 0) + parseInt(this.formNeonatal?.grimace?.value ?? 0) + parseInt(this.formNeonatal?.activity?.value ?? 0) + parseInt(this.formNeonatal?.respiration?.value ?? 0)
@@ -744,7 +744,7 @@ export const usePemeriksaanUmumHemodialisaStore = defineStore('pemeriksaan-umum-
       this.formPediatrik.glasgowKet = ket
     },
 
-    async saveForm (jnsKasus, pasien, cat) {
+    async saveForm(jnsKasus, pasien, cat) {
       // console.log('jnsKasus', jnsKasus, pasien)
 
       this.loadingSave = true
@@ -814,7 +814,7 @@ export const usePemeriksaanUmumHemodialisaStore = defineStore('pemeriksaan-umum-
       }
     },
 
-    PISAH_DATA_RANAP_IGD (arr, pasien, cat) {
+    PISAH_DATA_RANAP_IGD(arr, pasien, cat) {
       const auth = useAplikasiStore()
       const jns = auth?.user?.pegawai?.kdgroupnakes
 
@@ -827,7 +827,7 @@ export const usePemeriksaanUmumHemodialisaStore = defineStore('pemeriksaan-umum-
       if (cat == 'awal') this.items.awal = [...awal]
       else this.items.ranap = [...harian]
 
-      console.log('items pemeriksaan', awal, harian, this.items)
+      // console.log('items pemeriksaan', awal, harian, this.items)
 
       const isianDokter = arr?.filter(x => x?.kdruang == 'PEN005' && x?.nakes === '1') ?? []
       const isianKeperawatan = arr?.filter(x => x?.kdruang == 'PEN005' && x?.nakes === '2') ?? []
@@ -860,11 +860,11 @@ export const usePemeriksaanUmumHemodialisaStore = defineStore('pemeriksaan-umum-
 
     },
 
-    SPLICE_ITEMS_RANAP (arr) {
+    SPLICE_ITEMS_RANAP(arr) {
       const idx = arr?.findIndex(x => x.id === null)
       this.items.ranap = arr.splice(1, idx)
     },
-    SPLICE_ITEMS_AWAL (arr) {
+    SPLICE_ITEMS_AWAL(arr) {
       const idx = arr?.findIndex(x => x.id === null)
       this.items.awal = arr.splice(1, idx)
     }
