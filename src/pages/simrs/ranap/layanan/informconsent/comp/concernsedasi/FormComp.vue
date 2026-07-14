@@ -61,23 +61,21 @@
             </q-list>
           </div>
           <app-input-simrs v-model="store.form.dasarDiagnosis" label="Dasar Diagnosis" class="col-12" />
-          <!-- <div class="text-bold">
+          <div class="text-bold col-12">
             Pilih Tindakan Medis
           </div>
-          <div class="col-12">
+          <div class="col-12 q-mb-md">
             <q-list separator bordered>
               <q-item v-for="item in store.tindakanMedisSedasis" :key="item" tag="label" v-ripple>
                 <q-item-section avatar>
-                  <q-checkbox dense v-model="store.form.tindakanMedis" :val="item" color="teal" />
+                  <q-checkbox dense v-model="selectedTindakan" :val="item" color="teal" />
                 </q-item-section>
                 <q-item-section>
                   <q-item-label>{{ item }}</q-item-label>
                 </q-item-section>
               </q-item>
             </q-list>
-          </div> -->
-          <q-input v-model="store.form.tindakanMedis" label="Tindakan Medis" outlined standout="bg-yellow-3" rows="3"
-            type="textarea" class="col-12" />
+          </div>
           <q-input v-model="store.form.indikasi" label="Indikasi" outlined standout="bg-yellow-3" rows="3"
             type="textarea" class="col-12" />
 
@@ -144,24 +142,19 @@
           </div> -->
 
           <div class="col-12 text-bold">
-            Komplikasi Sedasi
+            Pilih Komplikasi Anestesi / Sedasi
           </div>
-          <div v-for="item in store.komplikasiSedasis" :key="item">
-            <div class="text-bold">
-              {{ item?.nama }}
-            </div>
-            <div class="col-12">
-              <q-list separator bordered>
-                <q-item v-for="sub in item?.details" :key="sub" tag="label" v-ripple>
-                  <q-item-section avatar>
-                    <q-checkbox dense v-model="store.form.komplikasi" :val="item?.nama + ': ' + sub" color="teal" />
-                  </q-item-section>
-                  <q-item-section>
-                    <q-item-label>{{ sub }}</q-item-label>
-                  </q-item-section>
-                </q-item>
-              </q-list>
-            </div>
+          <div class="col-12 q-mb-md">
+            <q-list separator bordered>
+              <q-item v-for="item in store.komplikasiSedasis" :key="item.nama" tag="label" v-ripple>
+                <q-item-section avatar>
+                  <q-checkbox dense v-model="store.form.komplikasi" :val="item.nama" color="teal" />
+                </q-item-section>
+                <q-item-section>
+                  <q-item-label>{{ item.nama }}</q-item-label>
+                </q-item-section>
+              </q-item>
+            </q-list>
           </div>
           <!-- <q-input
             v-model="store.form.komplikasi"
@@ -179,6 +172,9 @@
           </div>
 
           <q-input v-model="store.form.alternatif" label="Alternatif Tindakan" outlined standout="bg-yellow-3" rows="3"
+            type="textarea" class="col-12" />
+
+          <q-input v-model="store.form.resikoLain" label="Rencana Pemberian Analgesik Pasca Tindakan" outlined standout="bg-yellow-3" rows="3"
             type="textarea" class="col-12" />
 
           <div class="col-12 flex items-center">
@@ -272,9 +268,26 @@
 <script setup>
 import { notifErrVue } from 'src/modules/utils'
 import { useConcernOperasiInvasifRanapStore } from 'src/stores/simrs/ranap/concernoperasiinvasif'
-import { defineAsyncComponent, onMounted, ref } from 'vue'
+import { defineAsyncComponent, onMounted, ref, watch } from 'vue'
 
 const store = useConcernOperasiInvasifRanapStore()
+
+const selectedTindakan = ref([])
+
+// Sinkronisasi dua arah dari array selectedTindakan ke store.form.tindakanMedis (string dipisah '|')
+watch(selectedTindakan, (newVal) => {
+  store.form.tindakanMedis = newVal.join(' | ')
+}, { deep: true })
+
+watch(() => store.form.tindakanMedis, (newVal) => {
+  if (typeof newVal === 'string' && newVal.trim() !== '') {
+    selectedTindakan.value = newVal.split(' | ').map(x => x.trim()).filter(Boolean)
+  } else if (Array.isArray(newVal)) {
+    selectedTindakan.value = newVal
+  } else {
+    selectedTindakan.value = []
+  }
+}, { immediate: true })
 
 const TtdWacom = defineAsyncComponent(() => {
   return import('src/components/~static/TtdWacomStu540.vue')
