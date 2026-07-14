@@ -132,6 +132,13 @@ const documents = ref([
   {
     icon: 'icon-mat-email',
     color: 'primary',
+    jenis: 'ASKEP-PERIOPERATIF',
+    label: 'Asuhan Keperawatan Perioperatif',
+    value: 'Askepperioperatif'
+  },
+  {
+    icon: 'icon-mat-email',
+    color: 'primary',
     jenis: 'CPPT',
     label: 'Catatan Perkembangan Pasien Terintegrasi (CPPT)',
     value: 'CPPT',
@@ -235,6 +242,7 @@ const comp = [
   { nama: 'AsesmenPraAnestesia', page: defineAsyncComponent(() => import('src/pages/simrs/dokumen/erm/poli/AsesmenPraAnestesia.vue')) },
   { nama: 'AsesmenPraBedah', page: defineAsyncComponent(() => import('src/pages/simrs/dokumen/erm/poli/AssesmentPraBedah.vue')) },
   { nama: 'SurgicalSafety', page: defineAsyncComponent(() => import('src/pages/simrs/dokumen/erm/ok/comp/DokumenSurgicalSafety.vue')) },
+  { nama: 'Askepperioperatif', page: defineAsyncComponent(() => import('./comp/AsuhanKeperawatanPerioperatif.vue')) },
   { nama: 'CPPT', page: defineAsyncComponent(() => import('src/pages/simrs/ranap/layanan/dokumen/cppt/IndexPage.vue')) },
   { nama: 'EDUKASI', page: defineAsyncComponent(() => import('src/pages/simrs/ranap/layanan/dokumen/edukasi/IndexPage.vue')) },
   { nama: 'SEP', page: defineAsyncComponent(() => import('src/pages/simrs/poli/dokumen/Sep/SepPage.vue')) },
