@@ -1,6 +1,6 @@
 <template>
   <q-dialog persistent backdrop-filter="blur(4px)">
-    <q-card style="width: 95vw; max-width: 1400px; height: 95vh;">
+    <q-card style="width: 100%; max-width: 1700px; height: 95vh;">
       <q-layout view="lHh Lpr lFf" container class="shadow-2 rounded-borders">
         <q-header elevated>
           <q-bar class="bg-black text-white">
@@ -561,7 +561,7 @@ td {
 }
 
 @page {
-  size: A4 landscape;
+  size: landscape;
   margin: 8mm;
 }
 

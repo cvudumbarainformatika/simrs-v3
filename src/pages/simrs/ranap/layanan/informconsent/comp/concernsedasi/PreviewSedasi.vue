@@ -244,6 +244,21 @@
                   <q-icon v-if="item?.alternatif" name="icon-mat-check" size="sm" />
                 </td>
               </tr>
+
+              <tr>
+                <td class="text-left f-12">
+                  11
+                </td>
+                <td class="text-left f-12">
+                  Rencana Pemberian Analgesik Pasca Tindakan
+                </td>
+                <td class="text-left f-12">
+                  <div v-html="getNewLine(item?.resikoLain)" />
+                </td>
+                <td class="text-right">
+                  <q-icon v-if="item?.resikoLain" name="icon-mat-check" size="sm" />
+                </td>
+              </tr>
               <tr>
                 <td colspan="3" class="text-left f-12 f-12">
                   Dengan ini menyatakan bahwa saya telah menerangkan hal-hal diatas secara benar dan jelas, dan
@@ -549,7 +564,7 @@ const isKomplikasiSelected = (anestesiNama, komplikasiNama) => {
   if (!Array.isArray(list)) return false
 
   const prefixed = `${anestesiNama}: ${komplikasiNama}`
-  return list.includes(prefixed) || list.includes(komplikasiNama)
+  return list.includes(prefixed) || list.includes(komplikasiNama) || list.includes(anestesiNama)
 }
 
 const props = defineProps({

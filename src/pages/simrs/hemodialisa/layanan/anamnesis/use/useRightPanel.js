@@ -4,7 +4,7 @@ import { useAnamnesisHemodialisaStore } from 'src/stores/simrs/hemodialisa/anamn
 // eslint-disable-next-line no-unused-vars
 import { onMounted, reactive, ref, watch, watchEffect } from 'vue'
 
-export default function useRightPanel (pasien) {
+export default function useRightPanel(pasien) {
   const store = useAnamnesisHemodialisaStore()
   const auth = useAplikasiStore()
 
@@ -43,7 +43,7 @@ export default function useRightPanel (pasien) {
 
 
   watch(() => pasien.anamnesis_awal_hd, (val) => {
-    console.log('watch', val)
+    // console.log('watch', val)
     store.PISAH_DATA_RANAP_IGD(pasien?.anamnesis_awal_hd, pasien)
   }, { deep: true })
 

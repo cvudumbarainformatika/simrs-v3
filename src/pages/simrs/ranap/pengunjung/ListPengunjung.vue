@@ -119,7 +119,8 @@
     </div>
 
     <!-- Layanan -->
-    <page-layanan-ranap v-model="store.pageLayanan" :pasien="pasien" :loading="store.loadingLayanan" />
+    <page-layanan-ranap v-model="store.pageLayanan" :pasien="pasien" :loading="store.loadingLayanan"
+      @layanan-closed="startTimer" />
   </div>
 </template>
 
@@ -180,23 +181,34 @@ function toHoursAndMinutes(totalMinutes) {
   return `${hari} ${jam} ${mnt} ${dtk}`
 }
 
-const timerJam = setInterval(() => {
-  currTime.value = new Date()
-}, 1000)
+let timerJam = null
+
+function startTimer() {
+  if (timerJam) return
+  timerJam = setInterval(() => {
+    currTime.value = new Date()
+  }, 1000)
+}
+
+function stopTimer() {
+  if (timerJam) {
+    clearInterval(timerJam)
+    timerJam = null
+  }
+}
+
+startTimer()
 
 function bukaLayananPage(item) {
-  // console.log('item', item)
   pasien.value = item
-
-  // console.log('route', pageMpp);
-
-
+  
   store.bukaLayanan(true, item)
     .then((val) => {
       pasien.value = val
       store.pasien = val
 
-      // ambil data igd (triage)
+      stopTimer()
+
       const dataIgd = useTriageIgd()
       Promise.all([
         dataIgd.getDataTriage(val?.noreg).then(() => {
@@ -207,7 +219,7 @@ function bukaLayananPage(item) {
 }
 
 onBeforeUnmount(() => {
-  clearInterval(timerJam)
+  stopTimer()
 })
 
 </script>

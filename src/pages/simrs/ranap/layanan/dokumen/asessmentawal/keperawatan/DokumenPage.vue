@@ -61,6 +61,22 @@
         <div class="col-auto">Jam : {{ jamTnpDetik(pasien?.tglmasuk) }}</div>
       </div>
     </div>
+    <div class="section">
+      <div class="section-title">Pengkajian Keperawatan : </div>
+      <table border="0" style="border: none !important; margin-left: 10px; margin-top: -5px;">
+        <tbody>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td style="border: none !important; padding: 0px !important; width:15%;">Masuk Ruang Rawat</td>
+            <td style="border: none !important; padding: 0px !important; width: 35%;"> : {{
+              pasien?.ruangan || ' - ' }}</td>
+            <td style="border: none !important; padding: 0px !important; width: 15%;">Tanggal / Pkl </td>
+            <td style="border: none !important; padding: 0px !important;">: {{ dateFullFormat(pasien?.tglmasuk) }} / {{
+              jamTnpDetik(pasien?.tglmasuk) }} WIB
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
     <!-- Riwayat Kesehatan -->
     <div class="section">
@@ -85,6 +101,14 @@
             <div>- Kepatuhan terhadap ventilasi mekanik : {{
               anamnesisAwal?.keluhannyeri?.dewasa?.form?.kebutuhanVentilasi?.text ?? '-' }}</div>
           </div>
+          <div class="q-ml-sm" v-if="anamnesisAwal?.keluhannyeri?.kebidanan !== null">
+            <div>{{ anamnesisAwal?.keluhannyeri?.kebidanan?.kajianNyeri ?? '-' }}</div>
+            <div>- Keterangan : {{ anamnesisAwal?.keluhannyeri?.kebidanan?.ket ?? '-' }}</div>
+            <div>- Ekpresi Wajah : {{ anamnesisAwal?.keluhannyeri?.kebidanan?.form?.ekspresiWajah?.text ?? '-' }}</div>
+            <div>- Gerakan Tangan : {{ anamnesisAwal?.keluhannyeri?.kebidanan?.form?.gerakanTangan?.text ?? '-' }}</div>
+            <div>- Kepatuhan terhadap ventilasi mekanik : {{
+              anamnesisAwal?.keluhannyeri?.kebidanan?.form?.kebutuhanVentilasi?.text ?? '-' }}</div>
+          </div>
           <div class="q-ml-sm" v-if="anamnesisAwal?.keluhannyeri?.pediatrik !== null">
             <div>{{ anamnesisAwal?.keluhannyeri?.pediatrik?.kajianNyeri ?? '-' }}</div>
             <div>- Keterangan : {{ anamnesisAwal?.keluhannyeri?.pediatrik?.ket ?? '-' }}</div>
@@ -101,10 +125,27 @@
             <div>- Lengan : {{ anamnesisAwal?.keluhannyeri?.neonatal?.form?.lengan?.text ?? '-' }}</div>
             <div>- Kaki : {{ anamnesisAwal?.keluhannyeri?.neonatal?.form?.kaki?.text ?? '-' }}</div>
             <div>- Keadaan Rangsangan : {{ anamnesisAwal?.keluhannyeri?.neonatal?.form?.keadaanRangsangan?.text ?? '-'
-              }}</div>
+            }}</div>
           </div>
         </div>
 
+        <div v-if="anamnesisAwal?.kebidanan" class="data-item flex">8. Form 4.2 (Kebidanan) :
+          <div class="q-ml-sm">
+            <!-- <div class="text-bold">Riwayat Penyakit Kelahiran</div> -->
+            <div>- Pernah Dirawat : {{ anamnesisAwal?.kebidanan?.rwRawat || '-' }}</div>
+            <div>- Pernah Operasi : {{ anamnesisAwal?.kebidanan?.rwOperasi || '-' }}</div>
+
+            <div class="text-bold">Riwayat KB</div>
+            <div>- {{ anamnesisAwal?.kebidanan?.rwImunisasi?.join(', ') || '-' }}</div>
+
+            <div class="text-bold">Riwayat Tumbuh Kembang Anak</div>
+            <div>- Gigi Pertama, Usia : {{ anamnesisAwal?.kebidanan?.gigiPertama || '-' }}</div>
+            <div>- Mulai Berjalan, Usia : {{ anamnesisAwal?.kebidanan?.berjalan || '-' }}</div>
+            <div>- Bisa membaca, usia : {{ anamnesisAwal?.kebidanan?.membaca || '-' }}</div>
+            <div>- Bisa duduk, usia : {{ anamnesisAwal?.kebidanan?.duduk || '-' }}</div>
+            <div>- Bisa Bicara, usia : {{ anamnesisAwal?.kebidanan?.bicara || '-' }}</div>
+          </div>
+        </div>
 
 
         <div v-if="anamnesisAwal?.pediatrik" class="data-item flex">9. Form 4.4 (Pediatrik) :
