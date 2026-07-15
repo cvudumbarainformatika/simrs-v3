@@ -1,6 +1,6 @@
 <template>
   <q-dialog ref="refDialog" persistent :maximized="true" transition-show="slide-left" transition-hide="slide-right"
-    @show="onShow">
+    @show="onShow" @hide="onHide">
     <q-card square flat class="container-no-header">
       <q-layout view="lHr Lpr lFf" container class="shadow-2 rounded-borders z-top">
         <q-header elevated class="bg-primary">
@@ -10,25 +10,25 @@
         </q-header>
         <!-- LEFT DRAWER ======================================================================================-->
         <q-drawer v-model="drawer" elevated bordered show-if-above :width="230" :breakpoint="400">
-          <LeftDrawer :key="pasien" :pasien="pasien" :menus="filterredMenus" :menu="menu"
+          <LeftDrawer :key="pasien?.noreg" :pasien="pasien" :menus="filterredMenus" :menu="menu"
             @click-menu="(val) => menuDiganti(val)" @history-pasien="historyPasien" @log-activity="logActivity" />
         </q-drawer>
 
         <!-- RIGHT DRAWER ======================================================================================-->
         <q-drawer v-model="drawerRight" side="right" show-if-above overlay bordered :width="845" :breakpoint="500">
-          <RightDrawer :key="pasien" :pasien="pasien" @close="drawerRight = false" />
+          <RightDrawer :key="pasien?.noreg" :pasien="pasien" @close="drawerRight = false" />
         </q-drawer>
 
         <!-- LOG ACTIVITY DRAWER ===============================================================================-->
         <q-drawer v-model="drawerLog" side="right" show-if-above overlay bordered :width="drawerLogWidth" :breakpoint="500">
-          <LogActivityDrawer :key="pasien" :pasien="pasien" @close="drawerLog = false" />
+          <LogActivityDrawer :key="pasien?.noreg" :pasien="pasien" @close="drawerLog = false" />
         </q-drawer>
 
         <!-- CONTAINER ============================================================================================-->
         <q-page-container>
           <q-page class="contain bg-grey-3">
 
-            <div class="fit" v-if="loading && !pasien?.anamnesis">
+            <div class="fit" v-if="loading">
               <AppLoader />
             </div>
             <div v-else class="fit">
@@ -51,7 +51,7 @@
                   MAAF, HARAP TENTUKAN DAHULU JENIS KASUS PASIEN
                 </div>
               </div>
-              <component v-else :is="menu?.comp" :key="pasien" :pasien="pasien" :kasus="store?.jnsKasusPasien"
+              <component v-else :is="menu?.comp" :key="pasien?.noreg" :pasien="pasien" :kasus="store?.jnsKasusPasien"
                 :nakes="nakes" depo="rnp" />
             </div>
 
@@ -104,12 +104,34 @@ const props = defineProps({
 
 const { filterredMenus, menu, store, nakes, menuDiganti } = useLayanan(props.pasien)
 
+const emit = defineEmits(['layanan-closed'])
+
 const onShow = () => {
-  // console.log('pasien pageLayananRanap', props.pasien)
-  Promise.all([
-    anamnesis.getRiwayatKehamilan(props.pasien),
-    history.historyIgdBefore(props.pasien)
-  ])
+  console.log('--- DEBUG FRONTEND: PageLayananRanap.vue onShow DI-TRIGGER ---')
+  console.time('TIMER: PageLayananRanap.onShow TOTAL TIME')
+  
+  console.time('TIMER: API anamnesis.getRiwayatKehamilan')
+  const p1 = anamnesis.getRiwayatKehamilan(props.pasien).then(() => {
+    console.timeEnd('TIMER: API anamnesis.getRiwayatKehamilan')
+  })
+  
+  console.time('TIMER: API history.historyIgdBefore')
+  const p2 = history.historyIgdBefore(props.pasien).then(() => {
+    console.timeEnd('TIMER: API history.historyIgdBefore')
+  })
+
+  Promise.all([p1, p2]).then(() => {
+    console.timeEnd('TIMER: PageLayananRanap.onShow TOTAL TIME')
+    console.log('--- DEBUG FRONTEND: PageLayananRanap.vue onShow SELESAI ---')
+  })
+}
+
+function onHide() {
+  console.log('--- DEBUG FRONTEND: PageLayananRanap.vue onHide DI-TRIGGER ---')
+  console.time('TIMER: PageLayananRanap.onHide (Tutup Dialog)')
+  emit('layanan-closed')
+  console.timeEnd('TIMER: PageLayananRanap.onHide (Tutup Dialog)')
+  console.log('--- DEBUG FRONTEND: PageLayananRanap.vue onHide SELESAI ---')
 }
 
 function historyPasien() {

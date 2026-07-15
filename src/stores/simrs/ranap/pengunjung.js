@@ -3,6 +3,7 @@ import { date } from 'quasar'
 import { api } from 'src/boot/axios'
 import { dateDbFormat } from 'src/modules/formatter'
 import { useAplikasiStore } from 'src/stores/app/aplikasi'
+import { markRaw } from 'vue'
 
 export const usePengunjungRanapStore = defineStore('pengunjung-ranap', {
   state: () => ({
@@ -114,19 +115,22 @@ export const usePengunjungRanapStore = defineStore('pengunjung-ranap', {
       this.getData()
     },
     bukaLayanan(val, pasien) {
+      console.log('--- DEBUG FRONTEND: pengunjung.js bukaLayanan DI-TRIGGER ---')
       this.pageLayanan = val
       this.loadingLayanan = true
       const form = { noreg: pasien?.noreg }
 
-      // this.persiapanInjectPasien(pasien)
-
       return new Promise((resolve, reject) => {
+        console.time('TIMER: API POST v1/simrs/ranap/ruangan/bukalayanan')
         api.post('v1/simrs/ranap/ruangan/bukalayanan', form)
           .then(resp => {
-            // console.log('ranap', resp)
+            console.timeEnd('TIMER: API POST v1/simrs/ranap/ruangan/bukalayanan')
             this.loadingLayanan = false
-            // if (resp.status === 200) {
+            
+            console.time('TIMER: pengunjung.js setPasien() execution')
             this.setPasien(pasien, resp.data)
+            console.timeEnd('TIMER: pengunjung.js setPasien() execution')
+            
             const indexPasien = this.pasiens.findIndex(x => x.noreg === pasien.noreg)
 
             const jnsKasus = this.pasiens[indexPasien]?.kd_jeniskasus
@@ -138,7 +142,7 @@ export const usePengunjungRanapStore = defineStore('pengunjung-ranap', {
             resolve(this.pasiens[indexPasien])
           })
           .catch(err => {
-            // console.log('error buka layanan', err)
+            console.timeEnd('TIMER: API POST v1/simrs/ranap/ruangan/bukalayanan')
             this.loadingLayanan = false
             reject(err)
           })
@@ -147,49 +151,47 @@ export const usePengunjungRanapStore = defineStore('pengunjung-ranap', {
 
     setPasien(pasien, data) {
       const findPasien = this.pasiens.filter(x => x?.noreg === pasien?.noreg)
-      // this.pasiens[indexPasien] = data
-      // // console.log('wew', this.pasiens[indexPasien])
       if (findPasien?.length) {
         const datax = findPasien[0]
-        datax.dataigd = data?.dataigd ?? null
-        datax.newapotekrajal = data?.newapotekrajal ?? []
-        datax.diagnosa = data?.diagnosa ?? []
-        datax.anamnesis = data?.anamnesis ?? [] // wes
-        datax.pemeriksaan = data?.pemeriksaan ?? [] // wes
-        datax.penilaian = data?.penilaian ?? [] // wes
-        datax.diagnosamedis = data?.diagnosamedis ?? []
-        datax.tindakan = data?.tindakan ?? []
-        datax.diagnosakeperawatan = data?.diagnosakeperawatan ?? []
-        datax.diagnosakebidanan = data?.diagnosakebidanan ?? []
-        datax.diagnosagizi = data?.diagnosagizi ?? []
-        datax.cppt = data?.cppt ?? []
-        datax.laborats = data?.laborats ?? []
-        datax.laboratold = data?.laboratold ?? []
-        datax.hasilradiologi = data?.hasilradiologi ?? []
-        datax.radiologi = data?.radiologi ?? []
-        datax.fisio = data?.fisio ?? []
-        datax.operasi = data?.operasi ?? []
-        // datax.operasi_ird = data?.operasi_ird ?? []
-        datax.bankdarah = data?.bankdarah ?? []
-        datax.apheresis = data?.apheresis ?? []
-        datax.cathlab = data?.cathlab ?? []
-        datax.penunjanglain = data?.penunjanglain ?? []
-        datax.permintaanambulan = data?.permintaanambulan ?? []
-        // datax.oksigen = data?.oksigen ?? []
-        datax.perawatanjenazah = data?.perawatanjenazah ?? []
-        datax.hais = data?.hais ?? []
-        datax.konsultasi = data?.konsultasi ?? []
-        datax.edukasi = data?.edukasi ?? []
-        datax.dokumenluar = data?.dokumenluar ?? []
-        datax.informconcern = data?.informconcern ?? []
-        datax.dischargeplanning = data?.dischargeplanning ?? []
-        datax.skriningdischargeplannings = data?.skriningdischargeplannings ?? []
-        datax.summarydischargeplannings = data?.summarydischargeplannings ?? []
-        datax.statuscovid = data?.statuscovid ?? []
-        datax.procedure = data?.procedure ?? []
-        datax.keterangantindakan = data?.keterangantindakan ?? []
+        // markRaw: mencegah Vue mem-proxy data layanan besar secara rekursif
+        // Data ini hanya dibaca (display), tidak perlu deep reactive
+        datax.dataigd = data?.dataigd ? markRaw(data.dataigd) : null
+        datax.newapotekrajal = markRaw(data?.newapotekrajal ?? [])
+        datax.diagnosa = markRaw(data?.diagnosa ?? [])
+        datax.anamnesis = markRaw(data?.anamnesis ?? []) // wes
+        datax.pemeriksaan = markRaw(data?.pemeriksaan ?? []) // wes
+        datax.penilaian = markRaw(data?.penilaian ?? []) // wes
+        datax.diagnosamedis = markRaw(data?.diagnosamedis ?? [])
+        datax.tindakan = markRaw(data?.tindakan ?? [])
+        datax.diagnosakeperawatan = markRaw(data?.diagnosakeperawatan ?? [])
+        datax.diagnosakebidanan = markRaw(data?.diagnosakebidanan ?? [])
+        datax.diagnosagizi = markRaw(data?.diagnosagizi ?? [])
+        datax.cppt = markRaw(data?.cppt ?? [])
+        datax.laborats = markRaw(data?.laborats ?? [])
+        datax.laboratold = markRaw(data?.laboratold ?? [])
+        datax.hasilradiologi = markRaw(data?.hasilradiologi ?? [])
+        datax.radiologi = markRaw(data?.radiologi ?? [])
+        datax.fisio = markRaw(data?.fisio ?? [])
+        datax.operasi = markRaw(data?.operasi ?? [])
+        datax.bankdarah = markRaw(data?.bankdarah ?? [])
+        datax.apheresis = markRaw(data?.apheresis ?? [])
+        datax.cathlab = markRaw(data?.cathlab ?? [])
+        datax.penunjanglain = markRaw(data?.penunjanglain ?? [])
+        datax.permintaanambulan = markRaw(data?.permintaanambulan ?? [])
+        datax.perawatanjenazah = markRaw(data?.perawatanjenazah ?? [])
+        datax.hais = markRaw(data?.hais ?? [])
+        datax.konsultasi = markRaw(data?.konsultasi ?? [])
+        datax.edukasi = markRaw(data?.edukasi ?? [])
+        datax.dokumenluar = markRaw(data?.dokumenluar ?? [])
+        datax.informconcern = markRaw(data?.informconcern ?? [])
+        datax.dischargeplanning = markRaw(data?.dischargeplanning ?? [])
+        datax.skriningdischargeplannings = markRaw(data?.skriningdischargeplannings ?? [])
+        datax.summarydischargeplannings = markRaw(data?.summarydischargeplannings ?? [])
+        datax.statuscovid = markRaw(data?.statuscovid ?? [])
+        datax.procedure = markRaw(data?.procedure ?? [])
+        datax.keterangantindakan = markRaw(data?.keterangantindakan ?? [])
         datax.planningdokter = data?.planningdokter ?? null
-        datax.serah_terima = data?.serah_terima ?? []
+        datax.serah_terima = markRaw(data?.serah_terima ?? [])
 
         // data sementara
         datax.diagnosaKeperawatanUlangSementara = []
@@ -197,21 +199,12 @@ export const usePengunjungRanapStore = defineStore('pengunjung-ranap', {
         if (memodia?.length) {
           const memNonIgd = memodia?.find(f => f.kdruang !== 'POL014') ?? null
           const memIgd = memodia?.find(f => f.kdruang === 'POL014') ?? null
-          // if (memNonIgd) datax.memodiagnosa = memNonIgd?.diagnosa
-          // else datax.memodiagnosa = memodia[0].diagnosa
-          // if (memIgd) datax.memodiagnosaigd = memIgd?.diagnosa
           datax.memodiagnosa = memNonIgd?.diagnosa ?? null
           datax.memodiagnosaigd = memIgd?.diagnosa ?? null
-
-          // console.log('memo', memodia)
-          // console.log('memoRanap', memNonIgd)
-          // console.log('memoigd', memIgd)
         } else {
           datax.memodiagnosa = null
           datax.memodiagnosaigd = null
         }
-
-
       }
     },
     getRuangan() {

@@ -84,7 +84,7 @@ export function useContent(isiPasien, kelompok) {
   }
 
   watch(() => pasien.value, (n, old) => {
-    console.log('watcher pasien', n)
+    // console.log('watcher pasien', n)
     if (n === true) {
       setTimeout(initImage, 100)
     }

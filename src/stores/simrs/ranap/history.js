@@ -72,7 +72,7 @@ export const useHistoryPasienRanapStore = defineStore('history-pasien-ranap-stor
       pasien.tglpulang = hasil?.tglpulang
       this.pasienIgd = { ...pasien }
 
-      console.log('pasien igd', this.pasienIgd)
+      // console.log('pasien igd', this.pasienIgd)
     }
   }
 })
