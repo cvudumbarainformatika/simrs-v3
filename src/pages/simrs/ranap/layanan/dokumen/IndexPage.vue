@@ -225,3 +225,15 @@ onMounted(() => {
 })
 
 </script>
+
+<style lang="scss" scoped>
+:deep(.q-tabs) {
+  height: auto !important;
+}
+:deep(.q-tabs__content) {
+  overflow: visible !important;
+}
+:deep(.q-tabs__arrows) {
+  display: none !important;
+}
+</style>
