@@ -18,12 +18,14 @@
 
     <!-- List Data -->
     <div class="col q-pa-md scroll">
-      <div v-if="storeUlang.loading" class="fit flex flex-center bg-white" style="border-radius: 8px; border: 1px solid #ddd; min-height: 350px;">
+      <div v-if="storeUlang.loading" class="fit flex flex-center bg-white"
+        style="border-radius: 8px; border: 1px solid #ddd; min-height: 350px;">
         <q-spinner color="primary" size="3em" />
-        <div class="text-grey-6 q-ml-md">Memuat data riwayat...</div>
+        <div class="text-grey-6 q-ml-md">Memuat data riwayat....</div>
       </div>
 
-      <div v-else-if="!mappedItems.length" class="fit flex flex-center bg-white" style="border-radius: 8px; border: 1px solid #ddd; min-height: 350px;">
+      <div v-else-if="!mappedItems.length" class="fit flex flex-center bg-white"
+        style="border-radius: 8px; border: 1px solid #ddd; min-height: 350px;">
         <div class="text-center">
           <q-icon name="icon-my-personal_injury" size="80px" color="grey-4" />
           <div class="text-h6 text-grey-5 q-mt-md">Belum Ada Riwayat Asesmen Jatuh</div>
@@ -38,7 +40,7 @@
               <template #header>
                 <q-item-section avatar>
                   <q-avatar color="primary" text-color="white" size="32px">
-                    <div>{{ item.petugas ? item.petugas.slice(0,2).toUpperCase() : 'N' }}</div>
+                    <div>{{ item.petugas ? item.petugas.slice(0, 2).toUpperCase() : 'N' }}</div>
                   </q-avatar>
                 </q-item-section>
 
@@ -52,25 +54,15 @@
 
                 <q-item-section side>
                   <div class="row items-center q-gutter-x-sm">
-                    <q-badge 
-                      :color="item.kuning ? 'yellow-9' : 'grey-5'" 
-                      :text-color="item.kuning ? 'black' : 'white'" 
-                      class="q-pa-sm text-weight-bold text-subtitle2"
-                    >
+                    <q-badge :color="item.kuning ? 'yellow-9' : 'grey-5'" :text-color="item.kuning ? 'black' : 'white'"
+                      class="q-pa-sm text-weight-bold text-subtitle2">
                       {{ item.kategori }} - Skor: {{ item.skor }}
                     </q-badge>
-                    <q-btn 
-                      v-if="String(currentUserPegawai) === String(item.kdpegsimrs) || currentUserPegawai === 'sa'"
-                      flat round dense color="primary" 
-                      icon="icon-mat-edit" size="sm" 
-                      @click.stop="bukaEdit(item)" 
-                    />
-                    <q-btn 
-                      v-if="String(currentUserPegawai) === String(item.kdpegsimrs) || currentUserPegawai === 'sa'"
-                      flat round dense color="negative" 
-                      icon="icon-mat-delete" size="sm" 
-                      @click.stop="hapusItem(item)" 
-                    />
+                    <q-btn v-if="String(currentUserPegawai) === String(item.kdpegsimrs) || currentUserPegawai === 'sa'"
+                      flat round dense color="primary" icon="icon-mat-edit" size="sm" @click.stop="bukaEdit(item)" />
+                    <q-btn v-if="String(currentUserPegawai) === String(item.kdpegsimrs) || currentUserPegawai === 'sa'"
+                      flat round dense color="negative" icon="icon-mat-delete" size="sm"
+                      @click.stop="hapusItem(item)" />
                   </div>
                 </q-item-section>
               </template>
@@ -79,7 +71,9 @@
 
               <q-card class="bg-grey-1">
                 <q-card-section class="q-pa-md">
-                  <div class="text-weight-bold text-grey-9 q-mb-md">Rincian Penilaian Risiko Jatuh ({{ item.metode.toUpperCase() }}):</div>
+                  <div class="text-weight-bold text-grey-9 q-mb-md">Rincian Penilaian Risiko Jatuh ({{
+                    item.metode.toUpperCase() }}):
+                  </div>
                   <div class="row q-col-gutter-md">
                     <div v-for="(cat, cIdx) in item.details" :key="cIdx" class="col-12 col-md-6 q-mb-sm">
                       <q-card flat bordered class="bg-white rounded-borders">
@@ -121,7 +115,8 @@
             <div class="col-12 q-mb-md">
               <div class="bg-indigo-1 q-pa-sm rounded-borders text-indigo-10">
                 <div>Usia Pasien: <strong>{{ store.usia }} Tahun</strong></div>
-                <div>Metode Skoring Otomatis: <strong class="text-uppercase text-negative">{{ openSkoringJatuh || 'Belum Ditentukan' }}</strong></div>
+                <div>Metode Skoring Otomatis: <strong class="text-uppercase text-negative">{{ openSkoringJatuh ||
+                  'BelumDitentukan' }}</strong></div>
               </div>
             </div>
 
@@ -135,12 +130,15 @@
                     <div class="col-3 text-weight-bold text-grey-9">{{ obj?.label }}</div>
                     <div class="col-9 row q-col-gutter-xs">
                       <div v-for="(item, i) in obj?.categories" :key="i" class="col-6">
-                        <q-radio dense size="sm" v-model="store.formHumpty[obj.kode]" :val="item" :label="`${item?.label} (Skor: ${item?.skor})`" @update:model-value="store.hitungSkorHumpty" />
+                        <q-radio dense size="sm" v-model="store.formHumpty[obj.kode]" :val="item"
+                          :label="`${item?.label} (Skor: ${item?.skor})`"
+                          @update:model-value="store.hitungSkorHumpty" />
                       </div>
                     </div>
                   </div>
                 </div>
-                <div v-if="store.formHumpty?.skorHumpty" :class="['q-pa-md rounded-borders flex justify-between items-center q-mt-md transition-bg', store.formHumpty.skorHumpty?.kuning ? 'blink-yellow-bg text-black text-weight-bold' : 'bg-grey-3']">
+                <div v-if="store.formHumpty?.skorHumpty"
+                  :class="['q-pa-md rounded-borders flex justify-between items-center q-mt-md transition-bg', store.formHumpty.skorHumpty?.kuning ? 'blink-yellow-bg text-black text-weight-bold' : 'bg-grey-3']">
                   <div class="text-h6 text-accent">Total Skor: {{ store.formHumpty.skorHumpty?.skor }}</div>
                   <div class="text-h6 text-negative">Kategori: {{ store.formHumpty.skorHumpty?.label }}</div>
                 </div>
@@ -157,12 +155,14 @@
                     <div class="col-3 text-weight-bold text-grey-9">{{ obj?.label }}</div>
                     <div class="col-9 row q-col-gutter-xs">
                       <div v-for="(item, i) in obj?.categories" :key="i" class="col-6">
-                        <q-radio dense size="sm" v-model="store.formMorse[obj.kode]" :val="item" :label="`${item?.label} (Skor: ${item?.skor})`" @update:model-value="store.hitungSkorMorse" />
+                        <q-radio dense size="sm" v-model="store.formMorse[obj.kode]" :val="item"
+                          :label="`${item?.label} (Skor: ${item?.skor})`" @update:model-value="store.hitungSkorMorse" />
                       </div>
                     </div>
                   </div>
                 </div>
-                <div v-if="store.formMorse?.skorMorse" :class="['q-pa-md rounded-borders flex justify-between items-center q-mt-md transition-bg', store.formMorse.skorMorse?.kuning ? 'blink-yellow-bg text-black text-weight-bold' : 'bg-grey-3']">
+                <div v-if="store.formMorse?.skorMorse"
+                  :class="['q-pa-md rounded-borders flex justify-between items-center q-mt-md transition-bg', store.formMorse.skorMorse?.kuning ? 'blink-yellow-bg text-black text-weight-bold' : 'bg-grey-3']">
                   <div class="text-h6 text-accent">Total Skor: {{ store.formMorse.skorMorse?.skor }}</div>
                   <div class="text-h6 text-negative">Kategori: {{ store.formMorse.skorMorse?.label }}</div>
                 </div>
@@ -184,7 +184,9 @@
                         </q-item-section>
                         <q-item-section side>
                           <div class="flex q-gutter-x-sm">
-                            <q-radio dense size="sm" v-for="n in item.categories" :key="n.label" v-model="store.formOntario[item.kode]" :val="n" :label="`${n?.label} (${n?.skor})`" @update:model-value="store.hitungSkorOntario()" />
+                            <q-radio dense size="sm" v-for="n in item.categories" :key="n.label"
+                              v-model="store.formOntario[item.kode]" :val="n" :label="`${n?.label} (${n?.skor})`"
+                              @update:model-value="store.hitungSkorOntario()" />
                           </div>
                         </q-item-section>
                       </q-item>
@@ -193,11 +195,14 @@
                   <div v-else class="row items-center">
                     <div class="col-5 text-weight-bold text-grey-9">{{ obj?.label }}</div>
                     <div class="col-7 column q-gutter-y-xs">
-                      <q-radio dense size="sm" v-for="n in obj.categories" :key="n.label" v-model="store.formOntario[obj.kode]" :val="n" :label="`${n?.label} (Skor: ${n?.skor})`" @update:model-value="store.hitungSkorOntario()" />
+                      <q-radio dense size="sm" v-for="n in obj.categories" :key="n.label"
+                        v-model="store.formOntario[obj.kode]" :val="n" :label="`${n?.label} (Skor: ${n?.skor})`"
+                        @update:model-value="store.hitungSkorOntario()" />
                     </div>
                   </div>
                 </div>
-                <div v-if="store.formOntario?.skorOntario" :class="['q-pa-md rounded-borders flex justify-between items-center q-mt-md transition-bg', store.formOntario.skorOntario?.kuning ? 'blink-yellow-bg text-black text-weight-bold' : 'bg-grey-3']">
+                <div v-if="store.formOntario?.skorOntario"
+                  :class="['q-pa-md rounded-borders flex justify-between items-center q-mt-md transition-bg', store.formOntario.skorOntario?.kuning ? 'blink-yellow-bg text-black text-weight-bold' : 'bg-grey-3']">
                   <div class="text-h6 text-accent">Total Skor: {{ store.formOntario.skorOntario?.skor }}</div>
                   <div class="text-h6 text-negative">Kategori: {{ store.formOntario.skorOntario?.label }}</div>
                 </div>
@@ -477,10 +482,10 @@ function bukaForm() {
   // 1. Cek history Asesmen Ulang Jatuh terakhir
   if (storeUlang.itemsJatuh && storeUlang.itemsJatuh.length > 0) {
     const latestHistory = storeUlang.itemsJatuh[0]
-    
+
     let parsedDetails = latestHistory.details
     if (typeof parsedDetails === 'string') {
-      try { parsedDetails = JSON.parse(parsedDetails) } catch(e) { parsedDetails = {} }
+      try { parsedDetails = JSON.parse(parsedDetails) } catch (e) { parsedDetails = {} }
     }
 
     // Map ke format yang diharapkan oleh store.initReset
@@ -504,18 +509,18 @@ function bukaForm() {
       morse_fall: latestHistory.metode === 'morse' ? JSON.stringify(mappedDetails) : null,
       ontario: latestHistory.metode === 'ontario' ? JSON.stringify(mappedDetails) : null
     }
-    
+
     targetData = mockPenilaian
-  } 
+  }
   // 2. Jika tidak ada history, ambil dari Penilaian awal terbaru
   else {
     const excludes = ['POL014', 'PEN001']
     const dataPenilaian = props.pasien?.penilaian?.length
       ? [...props.pasien.penilaian]
-          .filter(a => !excludes.includes(a?.kdruang))
-          .sort((a, b) => b.id - a.id) // Urutkan ID terbesar (terbaru) dahulu
+        .filter(a => !excludes.includes(a?.kdruang))
+        .sort((a, b) => b.id - a.id) // Urutkan ID terbesar (terbaru) dahulu
       : []
-    
+
     if (dataPenilaian.length > 0) {
       targetData = dataPenilaian[0]
     }
@@ -626,7 +631,7 @@ function bukaEdit(item) {
     morse_fall: item.metode === 'morse' ? JSON.stringify(mappedDetails) : null,
     ontario: item.metode === 'ontario' ? JSON.stringify(mappedDetails) : null
   }
-  
+
   store.initReset(props.pasien, mockPenilaian)
   dialogForm.value = true
 }
@@ -655,21 +660,31 @@ function hapusItem(item) {
 .border-b {
   border-bottom: 1px solid #ddd;
 }
+
 .transition-bg {
   transition: background-color 0.3s ease;
 }
+
 @keyframes blink-yellow {
-  0%, 100% {
-    background-color: #fffde7; /* kuning sangat muda */
+
+  0%,
+  100% {
+    background-color: #fffde7;
+    /* kuning sangat muda */
   }
+
   50% {
-    background-color: #fff176; /* kuning menyala */
+    background-color: #fff176;
+    /* kuning menyala */
   }
 }
+
 .blink-yellow-bg {
   animation: blink-yellow 1.5s infinite ease-in-out;
-  border: 2px solid #fbc02d; /* border kuning gelap agar kontras */
+  border: 2px solid #fbc02d;
+  /* border kuning gelap agar kontras */
 }
+
 .min-height-auto {
   min-height: auto !important;
 }
