@@ -1,12 +1,12 @@
 <template>
-  <div class="bg-white full-height column scroll q-pb-xl">
+  <div class="bg-white full-height column">
 
     <div class="col-auto bg-teal text-white">
       <div class="q-pa-sm">
         Laporan Operasi tersimpan
       </div>
     </div>
-    <div class="col full-height relative-position">
+    <div class="col scroll relative-position q-pa-sm q-pb-md">
       <!-- lap: {{ pasien?.laporanop }} -->
       <div v-if="store.pasien?.laporanop?.length > 0">
         <div v-for="laporanop in pasien?.laporanop" :key="laporanop">

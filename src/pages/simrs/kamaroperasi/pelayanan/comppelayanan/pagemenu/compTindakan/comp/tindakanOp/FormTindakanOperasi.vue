@@ -5,7 +5,7 @@
         Form Persiapan Operasi
       </div>
     </div>
-    <div class="col full-height relative-position">
+    <div class="col scroll relative-position q-pa-sm q-pb-md">
 
       <div class="row items-center q-my-xs">
         <div class="col-4">Tanggal </div>
@@ -143,7 +143,9 @@
         <div class="col-8">{{ surgical?.ass2?.nama ?? 'Belum diisi di Surgical Safety' }}</div>
       </div> -->
       <!-- {{ surgical }} -->
-      <div class="row q-ma-sm q-mb-xl q-mr-xl justify-end absolute-bottom q-col-gutter-x-md">
+    </div>
+    <div class="col-auto bg-grey-2 q-pa-sm border-top">
+      <div class="row justify-end q-col-gutter-x-md">
         <app-btn label="Reset Form" class="col-auto q-mr-lg" color="orange" :loading="store.loading"
           :disable="store.loading || !!pasien?.tindakanop?.laporanoperasi" @click="() => {
             tindakan = null

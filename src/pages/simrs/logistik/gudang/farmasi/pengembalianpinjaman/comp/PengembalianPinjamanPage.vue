@@ -74,7 +74,7 @@
           <div class="col-auto" style="width: 10%;">
             Kode Obat
           </div>
-          <div class="col-auto" style="width: 30%;">
+          <div class="col-auto" style="width: 25%;">
             Nama Obat
           </div>
           <div class="col-auto" style="width: 10%;">
@@ -87,6 +87,11 @@
           </div>
           <div class="col-auto text-right" style="width: 10%;">
             <div class="q-mr-xs">
+              Stok Alokasi
+            </div>
+          </div>
+          <div class="col-auto text-right" style="width: 10%;">
+            <div class="q-mr-xs">
               Dikembalikan
             </div>
           </div>
@@ -95,7 +100,7 @@
               Total Kembali
             </div>
           </div>
-          <div class="col-auto text-right" style="width: 10%;">
+          <div class="col-auto text-right" style="width: 5%;">
             <div class="q-mr-xs">
               Harga
             </div>
@@ -114,7 +119,7 @@
             <div class="col-auto" style="width: 10%;">
               {{ item?.masterobat?.kd_obat }}
             </div>
-            <div class="col-auto" style="width: 30%;">
+            <div class="col-auto" style="width: 25%;">
               {{ item?.masterobat?.nama_obat }}
             </div>
             <div class="col-auto" style="width: 10%;">
@@ -123,6 +128,11 @@
             <div class="col-auto text-right" style="width: 10%;">
               <div class="q-mr-xs">
                 {{ formatDouble(parseFloat(item?.jml_terima_k),2) }}
+              </div>
+            </div>
+            <div class="col-auto text-right" style="width: 10%;">
+              <div class="q-mr-xs">
+                {{ formatDouble(parseFloat(item?.alokasi ?? 0), 2) }}
               </div>
             </div>
             <div class="col-auto text-right" style="width: 10%;">
@@ -143,9 +153,15 @@
                     item.jml_dikembalikan=nilai
                     const sudahDiterima=item?.pengembalian_rinci?.reduce((a, b) => a + parseFloat(b?.jml_dikembalikan), 0)
                     const sisa=item?.jml_terima_k-sudahDiterima
-                    if (nilai > sisa) {
-                      item.jml_dikembalikan = sisa
-                      notifErrVue('Jumlah dikembalikan tidak boleh melebihi jumlah pinjam')
+                    const alokasi = parseFloat(item?.alokasi ?? 0)
+                    const limit = Math.min(sisa, alokasi)
+                    if (nilai > limit) {
+                      item.jml_dikembalikan = limit
+                      if (sisa <= alokasi) {
+                        notifErrVue('Jumlah dikembalikan tidak boleh melebihi sisa pinjaman')
+                      } else {
+                        notifErrVue('Jumlah dikembalikan tidak boleh melebihi stok alokasi')
+                      }
                     }
 
                   }"
@@ -158,7 +174,7 @@
                 {{ item?.pengembalian_rinci?.reduce((a, b) => a + parseFloat(b?.jml_dikembalikan), 0) }}
               </div>
             </div>
-            <div class="col-auto text-right" style="width: 10%;">
+            <div class="col-auto text-right" style="width: 5%;">
               <div class="q-mr-xs">
                 {{ formatDouble(parseFloat(item?.harga),2) }}
               </div>
