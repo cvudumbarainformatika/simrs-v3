@@ -51,17 +51,26 @@
                 </q-item-section>
 
                 <q-item-section side>
-                  <div class="row items-center q-gutter-x-md">
-                    <div class="text-right">
-                      <div class="text-subtitle2 text-weight-bold">
-                        Skor: <span class="text-accent">{{ item.skor }}</span>
-                      </div>
-                      <div class="text-caption text-grey-8">
-                        Kategori: <span class="text-weight-bold text-negative">{{ item.kategori }}</span>
-                      </div>
-                    </div>
-                    <q-badge v-if="item.kuning" color="yellow-9" text-color="black" class="q-pa-xs">Stiker Kuning</q-badge>
-                    <q-badge color="primary" outline class="text-capitalize">{{ item.metode }}</q-badge>
+                  <div class="row items-center q-gutter-x-sm">
+                    <q-badge 
+                      :color="item.kuning ? 'yellow-9' : 'grey-5'" 
+                      :text-color="item.kuning ? 'black' : 'white'" 
+                      class="q-pa-sm text-weight-bold text-subtitle2"
+                    >
+                      {{ item.kategori }} - Skor: {{ item.skor }}
+                    </q-badge>
+                    <q-btn 
+                      v-if="String(currentUserPegawai) === String(item.kdpegsimrs) || currentUserPegawai === 'sa'"
+                      flat round dense color="primary" 
+                      icon="icon-mat-edit" size="sm" 
+                      @click.stop="bukaEdit(item)" 
+                    />
+                    <q-btn 
+                      v-if="String(currentUserPegawai) === String(item.kdpegsimrs) || currentUserPegawai === 'sa'"
+                      flat round dense color="negative" 
+                      icon="icon-mat-delete" size="sm" 
+                      @click.stop="hapusItem(item)" 
+                    />
                   </div>
                 </q-item-section>
               </template>
@@ -70,13 +79,24 @@
 
               <q-card class="bg-grey-1">
                 <q-card-section class="q-pa-md">
-                  <div class="text-weight-bold text-grey-8 q-mb-sm">Rincian Penilaian Risiko Jatuh ({{ item.metode.toUpperCase() }}):</div>
-                  <div class="row q-col-gutter-sm">
-                    <div v-for="(val, kIdx) in item.details" :key="kIdx" class="col-12 col-sm-6">
-                      <div class="row justify-between border-b q-py-xs">
-                        <div class="text-grey-7">{{ val.label }}:</div>
-                        <div class="text-weight-bold text-dark">{{ val.value }} (Skor: {{ val.skor }})</div>
-                      </div>
+                  <div class="text-weight-bold text-grey-9 q-mb-md">Rincian Penilaian Risiko Jatuh ({{ item.metode.toUpperCase() }}):</div>
+                  <div class="row q-col-gutter-md">
+                    <div v-for="(cat, cIdx) in item.details" :key="cIdx" class="col-12 col-md-6 q-mb-sm">
+                      <q-card flat bordered class="bg-white rounded-borders">
+                        <q-card-section class="q-pa-sm bg-blue-grey-1 text-blue-grey-10 text-weight-bold text-caption">
+                          {{ cat.title.toUpperCase() }}
+                        </q-card-section>
+                        <q-list dense separator class="q-py-none">
+                          <q-item v-for="(sub, sIdx) in cat.items" :key="sIdx" class="q-px-sm q-py-xs min-height-auto">
+                            <q-item-section>
+                              <div class="text-caption text-grey-8" style="line-height: 1.2;">{{ sub.label }}</div>
+                            </q-item-section>
+                            <q-item-section side class="text-right">
+                              <div class="text-weight-bold text-dark text-caption">{{ sub.value }}</div>
+                            </q-item-section>
+                          </q-item>
+                        </q-list>
+                      </q-card>
                     </div>
                   </div>
                 </q-card-section>
@@ -120,7 +140,7 @@
                     </div>
                   </div>
                 </div>
-                <div v-if="store.formHumpty?.skorHumpty" class="bg-grey-3 q-pa-md rounded-borders flex justify-between items-center q-mt-md">
+                <div v-if="store.formHumpty?.skorHumpty" :class="['q-pa-md rounded-borders flex justify-between items-center q-mt-md transition-bg', store.formHumpty.skorHumpty?.kuning ? 'blink-yellow-bg text-black text-weight-bold' : 'bg-grey-3']">
                   <div class="text-h6 text-accent">Total Skor: {{ store.formHumpty.skorHumpty?.skor }}</div>
                   <div class="text-h6 text-negative">Kategori: {{ store.formHumpty.skorHumpty?.label }}</div>
                 </div>
@@ -142,7 +162,7 @@
                     </div>
                   </div>
                 </div>
-                <div v-if="store.formMorse?.skorMorse" class="bg-grey-3 q-pa-md rounded-borders flex justify-between items-center q-mt-md">
+                <div v-if="store.formMorse?.skorMorse" :class="['q-pa-md rounded-borders flex justify-between items-center q-mt-md transition-bg', store.formMorse.skorMorse?.kuning ? 'blink-yellow-bg text-black text-weight-bold' : 'bg-grey-3']">
                   <div class="text-h6 text-accent">Total Skor: {{ store.formMorse.skorMorse?.skor }}</div>
                   <div class="text-h6 text-negative">Kategori: {{ store.formMorse.skorMorse?.label }}</div>
                 </div>
@@ -177,7 +197,7 @@
                     </div>
                   </div>
                 </div>
-                <div v-if="store.formOntario?.skorOntario" class="bg-grey-3 q-pa-md rounded-borders flex justify-between items-center q-mt-md">
+                <div v-if="store.formOntario?.skorOntario" :class="['q-pa-md rounded-borders flex justify-between items-center q-mt-md transition-bg', store.formOntario.skorOntario?.kuning ? 'blink-yellow-bg text-black text-weight-bold' : 'bg-grey-3']">
                   <div class="text-h6 text-accent">Total Skor: {{ store.formOntario.skorOntario?.skor }}</div>
                   <div class="text-h6 text-negative">Kategori: {{ store.formOntario.skorOntario?.label }}</div>
                 </div>
@@ -198,8 +218,11 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
+import { useQuasar } from 'quasar'
 import { usePenilaianRanapStore } from 'src/stores/simrs/ranap/penilaian.js'
 import { useAsesmenJatuhNyeriStore } from 'src/stores/simrs/ranap/asesmenJatuhNyeri.js'
+import { useAuthStore } from 'src/stores/auth'
+import * as storage from 'src/modules/storage'
 
 const props = defineProps({
   pasien: {
@@ -212,9 +235,18 @@ const props = defineProps({
   }
 })
 
+const $q = useQuasar()
 const store = usePenilaianRanapStore()
 const storeUlang = useAsesmenJatuhNyeriStore()
+const authStore = useAuthStore()
+
+const currentUserPegawai = computed(() => {
+  const userObj = authStore.user || storage.getUser()
+  return userObj?.pegawai?.kdpegsimrs || null
+})
+
 const dialogForm = ref(false)
+const editId = ref(null)
 
 onMounted(async () => {
   await store.getMaster()
@@ -222,48 +254,275 @@ onMounted(async () => {
   storeUlang.getData(props.pasien)
 })
 
+const mapOntario = (details) => {
+  const categories = []
+  const getValStr = (obj) => {
+    if (!obj) return '-'
+    const ans = obj.value ?? obj.label ?? '-'
+    const skor = obj.skor ?? 0
+    return `${ans} (Skor: ${skor})`
+  }
+
+  // 1. Riwayat Jatuh
+  if (details.riwayatJth_a || details.riwayatJth_b) {
+    const items = []
+    if (details.riwayatJth_a) {
+      items.push({
+        label: 'a. Apakah pasien datang ke rumah sakit karena jatuh?',
+        value: getValStr(details.riwayatJth_a)
+      })
+    }
+    if (details.riwayatJth_b) {
+      items.push({
+        label: 'b. Jika tidak, apakah pasien mengalami jatuh dalam 2 bulan terakhir ini?',
+        value: getValStr(details.riwayatJth_b)
+      })
+    }
+    categories.push({ title: 'Riwayat Jatuh', items })
+  }
+
+  // 2. Status Mental
+  if (details.statusMental_a || details.statusMental_b || details.statusMental_c) {
+    const items = []
+    if (details.statusMental_a) {
+      items.push({
+        label: 'a. Apakah pasien delirium? (tidak dapat membuat keputusan, dll)',
+        value: getValStr(details.statusMental_a)
+      })
+    }
+    if (details.statusMental_b) {
+      items.push({
+        label: 'b. Apakah pasien disorientasi? (salah menyebutkan waktu, dll)',
+        value: getValStr(details.statusMental_b)
+      })
+    }
+    if (details.statusMental_c) {
+      items.push({
+        label: 'c. Apakah pasien agitasi? (ketakutan, gelisah dan cemas)',
+        value: getValStr(details.statusMental_c)
+      })
+    }
+    categories.push({ title: 'Status Mental', items })
+  }
+
+  // 3. Penglihatan
+  if (details.penglihatan_a || details.penglihatan_b || details.penglihatan_c) {
+    const items = []
+    if (details.penglihatan_a) {
+      items.push({
+        label: 'a. Apakah pasien memakai kacamata?',
+        value: getValStr(details.penglihatan_a)
+      })
+    }
+    if (details.penglihatan_b) {
+      items.push({
+        label: 'b. Apakah pasien mengeluh adanya penglihatan buram?',
+        value: getValStr(details.penglihatan_b)
+      })
+    }
+    if (details.penglihatan_c) {
+      items.push({
+        label: 'c. Apakah pasien memiliki glaukoma, katarak, atau degenerasi makula?',
+        value: getValStr(details.penglihatan_c)
+      })
+    }
+    categories.push({ title: 'Penglihatan', items })
+  }
+
+  // 4. Kebiasaan Berkemih
+  if (details.berkemih_a) {
+    categories.push({
+      title: 'Kebiasaan Berkemih',
+      items: [{
+        label: 'Apakah terdapat perubahan perilaku berkemih? (frekuensi, urgensi, dll)',
+        value: getValStr(details.berkemih_a)
+      }]
+    })
+  }
+
+  // 5. Transfer
+  if (details.transfertk) {
+    categories.push({
+      title: 'Transfer',
+      items: [{
+        label: 'Transfer (dari tempat tidur ke kursi & sebaliknya)',
+        value: getValStr(details.transfertk)
+      }]
+    })
+  }
+
+  // 6. Mobilitas
+  if (details.mobilitas) {
+    categories.push({
+      title: 'Mobilitas',
+      items: [{
+        label: 'Mobilitas / Gaya Berjalan',
+        value: getValStr(details.mobilitas)
+      }]
+    })
+  }
+
+  return categories
+}
+
+const mapMorse = (details) => {
+  const getValStr = (obj) => {
+    if (!obj) return '-'
+    const ans = obj.value ?? obj.label ?? '-'
+    const skor = obj.skor ?? 0
+    return `${ans} (Skor: ${skor})`
+  }
+
+  const friendlyLabels = {
+    riwayatJatuh: 'Riwayat Jatuh (baru-baru ini / dalam 3 bulan)',
+    diagnosisSekunder: 'Diagnosis Sekunder (>= 2 diagnosis medis)',
+    alatBantu: 'Alat Bantu Jalan',
+    heparin: 'Terapi Intravena / Heparin Lock',
+    gayaBerjalan: 'Gaya Berjalan / Transfer',
+    statusMental: 'Status Mental / Kognitif'
+  }
+
+  return Object.keys(details).map(key => ({
+    title: friendlyLabels[key] || key,
+    items: [{
+      label: 'Penilaian',
+      value: getValStr(details[key])
+    }]
+  }))
+}
+
+const mapHumpty = (details) => {
+  const getValStr = (obj) => {
+    if (!obj) return '-'
+    const ans = obj.value ?? obj.label ?? '-'
+    const skor = obj.skor ?? 0
+    return `${ans} (Skor: ${skor})`
+  }
+
+  const friendlyLabels = {
+    usia: 'Usia',
+    kelamin: 'Jenis Kelamin',
+    diagnosa: 'Diagnosis',
+    gangguanKognitif: 'Gangguan Kognitif',
+    faktorLingkungan: 'Faktor Lingkungan',
+    responBedah: 'Respon terhadap Operasi / Sedasi / Anestesi',
+    penggunaanObat: 'Penggunaan Obat-obatan'
+  }
+
+  return Object.keys(details).map(key => ({
+    title: friendlyLabels[key] || key,
+    items: [{
+      label: 'Penilaian',
+      value: getValStr(details[key])
+    }]
+  }))
+}
+
 const mappedItems = computed(() => {
   return storeUlang.itemsJatuh.map(item => {
     let detailsArr = []
+    let parsed = null
     if (item.details) {
-      const parsed = typeof item.details === 'string' ? JSON.parse(item.details) : item.details
-      if (Array.isArray(parsed)) {
-        detailsArr = parsed
-      } else if (typeof parsed === 'object') {
-        detailsArr = Object.keys(parsed).map(k => ({
-          label: k,
-          value: parsed[k]?.label ?? parsed[k]?.value ?? '-',
-          skor: parsed[k]?.skor ?? 0
-        }))
+      parsed = typeof item.details === 'string' ? JSON.parse(item.details) : item.details
+      if (parsed && typeof parsed === 'object') {
+        if (item.metode === 'ontario') {
+          detailsArr = mapOntario(parsed)
+        } else if (item.metode === 'morse') {
+          detailsArr = mapMorse(parsed)
+        } else if (item.metode === 'humpty') {
+          detailsArr = mapHumpty(parsed)
+        } else {
+          detailsArr = [{
+            title: 'Rincian',
+            items: Object.keys(parsed).map(k => ({
+              label: k,
+              value: `${parsed[k]?.value ?? parsed[k]?.label ?? '-'} (Skor: ${parsed[k]?.skor ?? 0})`
+            }))
+          }]
+        }
       }
     }
     return {
       id: item.id,
+      kdpegsimrs: item.kdpegsimrs,
       tanggal: item.created_at || item.tanggal,
       petugas: item.pegawai?.nama || item.kdpegsimrs || 'Petugas',
       metode: item.metode,
       skor: item.skor,
       kategori: item.kategori,
       kuning: !!item.kuning,
-      details: detailsArr
+      details: detailsArr,
+      detailsRaw: parsed
     }
   })
 })
 
-const openSkoringJatuh = computed(() => {
-  let open = null
+const openSkoringJatuh = ref(null)
+
+function setSkoringOtomatis() {
   if (store.usia >= 60) {
-    open = 'ontario'
+    openSkoringJatuh.value = 'ontario'
   } else if (store.usia >= 18 && store.usia < 60) {
-    open = 'morse'
+    openSkoringJatuh.value = 'morse'
   } else if (store.usia < 18) {
-    open = 'humpty'
+    openSkoringJatuh.value = 'humpty'
   }
-  return open
-})
+}
 
 function bukaForm() {
-  store.initReset(props.pasien)
+  editId.value = null
+  setSkoringOtomatis()
+  let targetData = null
+
+  // 1. Cek history Asesmen Ulang Jatuh terakhir
+  if (storeUlang.itemsJatuh && storeUlang.itemsJatuh.length > 0) {
+    const latestHistory = storeUlang.itemsJatuh[0]
+    
+    let parsedDetails = latestHistory.details
+    if (typeof parsedDetails === 'string') {
+      try { parsedDetails = JSON.parse(parsedDetails) } catch(e) { parsedDetails = {} }
+    }
+
+    // Map ke format yang diharapkan oleh store.initReset
+    const mappedDetails = {}
+    if (parsedDetails && typeof parsedDetails === 'object') {
+      Object.keys(parsedDetails).forEach(key => {
+        const val = parsedDetails[key]
+        mappedDetails[key] = {
+          label: val.value ?? val.label ?? '',
+          skor: val.skor ?? 0
+        }
+      })
+    }
+
+    // Buat mock objek Penilaian
+    const mockPenilaian = {
+      id: null,
+      barthel: null,
+      norton: null,
+      humpty_dumpty: latestHistory.metode === 'humpty' ? JSON.stringify(mappedDetails) : null,
+      morse_fall: latestHistory.metode === 'morse' ? JSON.stringify(mappedDetails) : null,
+      ontario: latestHistory.metode === 'ontario' ? JSON.stringify(mappedDetails) : null
+    }
+    
+    targetData = mockPenilaian
+  } 
+  // 2. Jika tidak ada history, ambil dari Penilaian awal terbaru
+  else {
+    const excludes = ['POL014', 'PEN001']
+    const dataPenilaian = props.pasien?.penilaian?.length
+      ? [...props.pasien.penilaian]
+          .filter(a => !excludes.includes(a?.kdruang))
+          .sort((a, b) => b.id - a.id) // Urutkan ID terbesar (terbaru) dahulu
+      : []
+    
+    if (dataPenilaian.length > 0) {
+      targetData = dataPenilaian[0]
+    }
+  }
+
+  // 3. Panggil initReset
+  store.initReset(props.pasien, targetData)
   dialogForm.value = true
 }
 
@@ -324,6 +583,7 @@ async function simpanPenilaian() {
   }
 
   const payload = {
+    id: editId.value,
     noreg: props.pasien?.noreg,
     norm: props.pasien?.norm,
     kdruang: props.pasien?.kdruangan,
@@ -339,10 +599,78 @@ async function simpanPenilaian() {
     dialogForm.value = false
   }
 }
+
+function bukaEdit(item) {
+  editId.value = item.id
+  openSkoringJatuh.value = item.metode
+
+  // Map ke format yang diharapkan oleh store.initReset
+  const mappedDetails = {}
+  const parsedDetails = item.detailsRaw
+  if (parsedDetails && typeof parsedDetails === 'object') {
+    Object.keys(parsedDetails).forEach(key => {
+      const val = parsedDetails[key]
+      mappedDetails[key] = {
+        label: val.value ?? val.label ?? '',
+        skor: val.skor ?? 0
+      }
+    })
+  }
+
+  // Buat mock objek Penilaian
+  const mockPenilaian = {
+    id: null,
+    barthel: null,
+    norton: null,
+    humpty_dumpty: item.metode === 'humpty' ? JSON.stringify(mappedDetails) : null,
+    morse_fall: item.metode === 'morse' ? JSON.stringify(mappedDetails) : null,
+    ontario: item.metode === 'ontario' ? JSON.stringify(mappedDetails) : null
+  }
+  
+  store.initReset(props.pasien, mockPenilaian)
+  dialogForm.value = true
+}
+
+function hapusItem(item) {
+  $q.dialog({
+    title: 'Konfirmasi Hapus',
+    message: 'Apakah Anda yakin ingin menghapus data riwayat asesmen jatuh ini?',
+    cancel: {
+      flat: true,
+      color: 'grey'
+    },
+    ok: {
+      flat: true,
+      color: 'negative',
+      label: 'Hapus'
+    },
+    persistent: true
+  }).onOk(() => {
+    storeUlang.hapusJatuh(props.pasien, item.id)
+  })
+}
 </script>
 
 <style scoped>
 .border-b {
   border-bottom: 1px solid #ddd;
+}
+.transition-bg {
+  transition: background-color 0.3s ease;
+}
+@keyframes blink-yellow {
+  0%, 100% {
+    background-color: #fffde7; /* kuning sangat muda */
+  }
+  50% {
+    background-color: #fff176; /* kuning menyala */
+  }
+}
+.blink-yellow-bg {
+  animation: blink-yellow 1.5s infinite ease-in-out;
+  border: 2px solid #fbc02d; /* border kuning gelap agar kontras */
+}
+.min-height-auto {
+  min-height: auto !important;
 }
 </style>

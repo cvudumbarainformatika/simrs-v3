@@ -115,21 +115,16 @@ export const usePengunjungRanapStore = defineStore('pengunjung-ranap', {
       this.getData()
     },
     bukaLayanan(val, pasien) {
-      console.log('--- DEBUG FRONTEND: pengunjung.js bukaLayanan DI-TRIGGER ---')
       this.pageLayanan = val
       this.loadingLayanan = true
       const form = { noreg: pasien?.noreg }
 
       return new Promise((resolve, reject) => {
-        console.time('TIMER: API POST v1/simrs/ranap/ruangan/bukalayanan')
         api.post('v1/simrs/ranap/ruangan/bukalayanan', form)
           .then(resp => {
-            console.timeEnd('TIMER: API POST v1/simrs/ranap/ruangan/bukalayanan')
             this.loadingLayanan = false
             
-            console.time('TIMER: pengunjung.js setPasien() execution')
             this.setPasien(pasien, resp.data)
-            console.timeEnd('TIMER: pengunjung.js setPasien() execution')
             
             const indexPasien = this.pasiens.findIndex(x => x.noreg === pasien.noreg)
 
@@ -142,7 +137,6 @@ export const usePengunjungRanapStore = defineStore('pengunjung-ranap', {
             resolve(this.pasiens[indexPasien])
           })
           .catch(err => {
-            console.timeEnd('TIMER: API POST v1/simrs/ranap/ruangan/bukalayanan')
             this.loadingLayanan = false
             reject(err)
           })

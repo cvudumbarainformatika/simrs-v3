@@ -107,31 +107,14 @@ const { filterredMenus, menu, store, nakes, menuDiganti } = useLayanan(props.pas
 const emit = defineEmits(['layanan-closed'])
 
 const onShow = () => {
-  console.log('--- DEBUG FRONTEND: PageLayananRanap.vue onShow DI-TRIGGER ---')
-  console.time('TIMER: PageLayananRanap.onShow TOTAL TIME')
-  
-  console.time('TIMER: API anamnesis.getRiwayatKehamilan')
-  const p1 = anamnesis.getRiwayatKehamilan(props.pasien).then(() => {
-    console.timeEnd('TIMER: API anamnesis.getRiwayatKehamilan')
-  })
-  
-  console.time('TIMER: API history.historyIgdBefore')
-  const p2 = history.historyIgdBefore(props.pasien).then(() => {
-    console.timeEnd('TIMER: API history.historyIgdBefore')
-  })
-
-  Promise.all([p1, p2]).then(() => {
-    console.timeEnd('TIMER: PageLayananRanap.onShow TOTAL TIME')
-    console.log('--- DEBUG FRONTEND: PageLayananRanap.vue onShow SELESAI ---')
-  })
+  Promise.all([
+    anamnesis.getRiwayatKehamilan(props.pasien),
+    history.historyIgdBefore(props.pasien)
+  ])
 }
 
 function onHide() {
-  console.log('--- DEBUG FRONTEND: PageLayananRanap.vue onHide DI-TRIGGER ---')
-  console.time('TIMER: PageLayananRanap.onHide (Tutup Dialog)')
   emit('layanan-closed')
-  console.timeEnd('TIMER: PageLayananRanap.onHide (Tutup Dialog)')
-  console.log('--- DEBUG FRONTEND: PageLayananRanap.vue onHide SELESAI ---')
 }
 
 function historyPasien() {

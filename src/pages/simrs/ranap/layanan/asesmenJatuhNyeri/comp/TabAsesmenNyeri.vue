@@ -51,17 +51,27 @@
                 </q-item-section>
 
                 <q-item-section side>
-                  <div class="row items-center q-gutter-x-md">
-                    <div class="text-right">
-                      <div class="text-subtitle2 text-weight-bold">
-                        Skor: <span class="text-accent">{{ item.skor }}</span>
-                      </div>
-                      <div class="text-caption text-grey-8">
-                        Keterangan: <span class="text-weight-bold text-negative">{{ item.ket }}</span>
-                      </div>
-                    </div>
-                    <q-icon v-if="item.icon" :name="item.icon" size="md" color="teal" />
-                    <q-badge color="primary" outline class="text-capitalize">{{ item.metode }}</q-badge>
+                  <div class="row items-center q-gutter-x-sm">
+                    <q-icon v-if="item.icon" :name="item.icon" size="sm" color="teal" />
+                    <q-badge 
+                      color="teal-6" 
+                      text-color="white" 
+                      class="q-pa-sm text-weight-bold text-subtitle2"
+                    >
+                      {{ item.ket }} - Skor: {{ item.skor }}
+                    </q-badge>
+                    <q-btn 
+                      v-if="String(currentUserPegawai) === String(item.kdpegsimrs) || currentUserPegawai === 'sa'"
+                      flat round dense color="primary" 
+                      icon="icon-mat-edit" size="sm" 
+                      @click.stop="bukaEdit(item)" 
+                    />
+                    <q-btn 
+                      v-if="String(currentUserPegawai) === String(item.kdpegsimrs) || currentUserPegawai === 'sa'"
+                      flat round dense color="negative" 
+                      icon="icon-mat-delete" size="sm" 
+                      @click.stop="hapusItem(item)" 
+                    />
                   </div>
                 </q-item-section>
               </template>
@@ -222,7 +232,10 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
+import { useQuasar } from 'quasar'
 import { useAsesmenJatuhNyeriStore } from 'src/stores/simrs/ranap/asesmenJatuhNyeri.js'
+import { useAuthStore } from 'src/stores/auth'
+import * as storage from 'src/modules/storage'
 
 const props = defineProps({
   pasien: {
@@ -235,8 +248,17 @@ const props = defineProps({
   }
 })
 
+const $q = useQuasar()
 const storeUlang = useAsesmenJatuhNyeriStore()
+const authStore = useAuthStore()
+
+const currentUserPegawai = computed(() => {
+  const userObj = authStore.user || storage.getUser()
+  return userObj?.pegawai?.kdpegsimrs || null
+})
+
 const dialogForm = ref(false)
+const editId = ref(null)
 
 // Kajian Nyeri selection options
 const pilihanNyeri = [
@@ -409,11 +431,10 @@ onMounted(() => {
 const mappedItems = computed(() => {
   return storeUlang.itemsNyeri.map(item => {
     let detailsArr = []
+    let parsed = null
     if (item.details) {
-      const parsed = typeof item.details === 'string' ? JSON.parse(item.details) : item.details
-      if (Array.isArray(parsed)) {
-        detailsArr = parsed
-      } else if (typeof parsed === 'object') {
+      parsed = typeof item.details === 'string' ? JSON.parse(item.details) : item.details
+      if (parsed && typeof parsed === 'object') {
         detailsArr = Object.keys(parsed).map(k => ({
           label: parsed[k]?.label ?? k,
           value: parsed[k]?.value ?? '-',
@@ -423,13 +444,15 @@ const mappedItems = computed(() => {
     }
     return {
       id: item.id,
+      kdpegsimrs: item.kdpegsimrs,
       tanggal: item.created_at || item.tanggal,
       petugas: item.pegawai?.nama || item.kdpegsimrs || 'Petugas',
       metode: item.metode,
       skor: item.skor,
       ket: item.ket,
       icon: getIconForScore(item.metode, item.skor),
-      details: detailsArr
+      details: detailsArr,
+      detailsRaw: parsed
     }
   })
 })
@@ -445,14 +468,15 @@ function getIconForScore(metode, score) {
 }
 
 function bukaForm() {
-  skorWongBaker.value = 0
+  editId.value = null
   
+  // Reset ke default dahulu
+  skorWongBaker.value = 0
   bpsForm.value = {
     ekspresiWajah: formNyeris[0].values[0],
     gerakanTangan: formNyeris[1].values[0],
     kebutuhanVentilasi: formNyeris[2].values[0]
   }
-
   nipsForm.value = {
     ekspresiWajah: formNyeriNeonatals[0].values[0],
     menangis: formNyeriNeonatals[1].values[0],
@@ -460,6 +484,100 @@ function bukaForm() {
     lengan: formNyeriNeonatals[3].values[0],
     kaki: formNyeriNeonatals[4].values[0],
     keadaanRangsangan: formNyeriNeonatals[5].values[0]
+  }
+
+  // 1. Cek dari riwayat Asesmen Ulang Nyeri terakhir
+  if (storeUlang.itemsNyeri && storeUlang.itemsNyeri.length > 0) {
+    const latest = storeUlang.itemsNyeri[0]
+    kajianNyeri.value = latest.metode
+
+    const parsedDetails = latest.detailsRaw
+    if (parsedDetails && typeof parsedDetails === 'object') {
+      if (latest.metode === 'Wong Baker Face Scale') {
+        skorWongBaker.value = latest.skor
+      } else if (latest.metode === 'Behavioral Pain Scale (BPS)') {
+        Object.keys(bpsForm.value).forEach(key => {
+          const val = parsedDetails[key]
+          const field = formNyeris.find(x => x.kode === key)
+          if (field && val) {
+            const matched = field.values.find(v => v.skor === val.skor || v.text === val.value)
+            if (matched) bpsForm.value[key] = matched
+          }
+        })
+      } else if (latest.metode === 'Neonatal Infant Pain Scale (NIPS)') {
+        Object.keys(nipsForm.value).forEach(key => {
+          const val = parsedDetails[key]
+          const field = formNyeriNeonatals.find(x => x.kode === key)
+          if (field && val) {
+            const matched = field.values.find(v => v.skor === val.skor || v.text === val.value)
+            if (matched) nipsForm.value[key] = matched
+          }
+        })
+      }
+    }
+  }
+  // 2. Jika tidak ada history, ambil dari keluhan nyeri awal / CPPT (dari relation anamnesis)
+  else {
+    const sortedAnamnesis = props.pasien?.anamnesis?.length
+      ? [...props.pasien.anamnesis].sort((a, b) => b.id - a.id)
+      : []
+    const latestAnamnesis = sortedAnamnesis.find(a => a.keluhannyeri)
+    if (latestAnamnesis && latestAnamnesis.keluhannyeri) {
+      const kn = latestAnamnesis.keluhannyeri
+      
+      let activeObj = null
+      let activeMetode = null
+      
+      const parsedDewasa = typeof kn.dewasa === 'string' ? JSON.parse(kn.dewasa) : kn.dewasa
+      const parsedNeonatal = typeof kn.neonatal === 'string' ? JSON.parse(kn.neonatal) : kn.neonatal
+      const parsedPediatrik = typeof kn.pediatrik === 'string' ? JSON.parse(kn.pediatrik) : kn.pediatrik
+      const parsedKebidanan = typeof kn.kebidanan === 'string' ? JSON.parse(kn.kebidanan) : kn.kebidanan
+      
+      if (parsedDewasa) { activeObj = parsedDewasa; activeMetode = parsedDewasa.kajianNyeri }
+      else if (parsedPediatrik) { activeObj = parsedPediatrik; activeMetode = parsedPediatrik.kajianNyeri }
+      else if (parsedKebidanan) { activeObj = parsedKebidanan; activeMetode = parsedKebidanan.kajianNyeri }
+      else if (parsedNeonatal) { activeObj = parsedNeonatal; activeMetode = parsedNeonatal.kajianNyeri || 'Neonatal Infant Pain Scale (NIPS)' }
+      
+      if (activeMetode) {
+        kajianNyeri.value = activeMetode
+      } else {
+        setSkoringOtomatis()
+      }
+
+      if (kajianNyeri.value === 'Wong Baker Face Scale') {
+        skorWongBaker.value = kn.skor ?? 0
+      } else if (kajianNyeri.value === 'Behavioral Pain Scale (BPS)') {
+        const formObj = activeObj?.form || activeObj
+        if (formObj && typeof formObj === 'object') {
+          Object.keys(bpsForm.value).forEach(key => {
+            const val = formObj[key]
+            const field = formNyeris.find(x => x.kode === key)
+            if (field && val) {
+              const valSkor = typeof val === 'object' ? val.skor : null
+              const valText = typeof val === 'object' ? val.text : (typeof val === 'string' ? val : null)
+              const matched = field.values.find(v => (valSkor !== null && v.skor === valSkor) || (valText !== null && v.text === valText))
+              if (matched) bpsForm.value[key] = matched
+            }
+          })
+        }
+      } else if (kajianNyeri.value === 'Neonatal Infant Pain Scale (NIPS)') {
+        const formObj = activeObj?.form || activeObj
+        if (formObj && typeof formObj === 'object') {
+          Object.keys(nipsForm.value).forEach(key => {
+            const val = formObj[key]
+            const field = formNyeriNeonatals.find(x => x.kode === key)
+            if (field && val) {
+              const valSkor = typeof val === 'object' ? val.skor : null
+              const valText = typeof val === 'object' ? val.text : (typeof val === 'string' ? val : null)
+              const matched = field.values.find(v => (valSkor !== null && v.skor === valSkor) || (valText !== null && v.text === valText))
+              if (matched) nipsForm.value[key] = matched
+            }
+          })
+        }
+      }
+    } else {
+      setSkoringOtomatis()
+    }
   }
 
   dialogForm.value = true
@@ -506,6 +624,7 @@ async function simpanPenilaian() {
   }
 
   const payload = {
+    id: editId.value,
     noreg: props.pasien?.noreg,
     norm: props.pasien?.norm,
     kdruang: props.pasien?.kdruangan,
@@ -519,6 +638,57 @@ async function simpanPenilaian() {
   if (success) {
     dialogForm.value = false
   }
+}
+
+function bukaEdit(item) {
+  editId.value = item.id
+  kajianNyeri.value = item.metode
+
+  const parsedDetails = item.detailsRaw
+  if (parsedDetails && typeof parsedDetails === 'object') {
+    if (item.metode === 'Wong Baker Face Scale') {
+      skorWongBaker.value = item.skor
+    } else if (item.metode === 'Behavioral Pain Scale (BPS)') {
+      Object.keys(bpsForm.value).forEach(key => {
+        const val = parsedDetails[key]
+        const field = formNyeris.find(x => x.kode === key)
+        if (field && val) {
+          const matched = field.values.find(v => v.skor === val.skor || v.text === val.value)
+          if (matched) bpsForm.value[key] = matched
+        }
+      })
+    } else if (item.metode === 'Neonatal Infant Pain Scale (NIPS)') {
+      Object.keys(nipsForm.value).forEach(key => {
+        const val = parsedDetails[key]
+        const field = formNyeriNeonatals.find(x => x.kode === key)
+        if (field && val) {
+          const matched = field.values.find(v => v.skor === val.skor || v.text === val.value)
+          if (matched) nipsForm.value[key] = matched
+        }
+      })
+    }
+  }
+
+  dialogForm.value = true
+}
+
+function hapusItem(item) {
+  $q.dialog({
+    title: 'Konfirmasi Hapus',
+    message: 'Apakah Anda yakin ingin menghapus data riwayat asesmen nyeri ini?',
+    cancel: {
+      flat: true,
+      color: 'grey'
+    },
+    ok: {
+      flat: true,
+      color: 'negative',
+      label: 'Hapus'
+    },
+    persistent: true
+  }).onOk(() => {
+    storeUlang.hapusNyeri(props.pasien, item.id)
+  })
 }
 </script>
 

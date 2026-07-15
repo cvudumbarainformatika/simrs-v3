@@ -200,40 +200,21 @@ function stopTimer() {
 startTimer()
 
 function bukaLayananPage(item) {
-  console.log('--- DEBUG FRONTEND: ListPengunjung.vue bukaLayananPage DI-TRIGGER ---')
-  console.time('TIMER: ListPengunjung.bukaLayananPage TOTAL TIME')
-  
-  // Set data awal pasien agar dialog langsung terbuka
   pasien.value = item
   
-  console.time('TIMER: API store.bukaLayanan')
   store.bukaLayanan(true, item)
     .then((val) => {
-      console.timeEnd('TIMER: API store.bukaLayanan')
-      
-      console.time('TIMER: Reactivity update (setting pasien.value & store.pasien)')
       pasien.value = val
       store.pasien = val
-      console.timeEnd('TIMER: Reactivity update (setting pasien.value & store.pasien)')
 
-      // Pause timer saat layanan terbuka (hemat re-render background)
       stopTimer()
 
-      // ambil data igd (triage)
-      console.time('TIMER: API dataIgd.getDataTriage')
       const dataIgd = useTriageIgd()
       Promise.all([
         dataIgd.getDataTriage(val?.noreg).then(() => {
-          console.timeEnd('TIMER: API dataIgd.getDataTriage')
           store.pasien.triageIgd = dataIgd?.items
         })
-      ]).then(() => {
-        console.timeEnd('TIMER: ListPengunjung.bukaLayananPage TOTAL TIME')
-        console.log('--- DEBUG FRONTEND: ListPengunjung.vue bukaLayananPage SELESAI ---')
-      })
-    })
-    .catch((err) => {
-      console.error('--- DEBUG FRONTEND: ERROR in store.bukaLayanan ---', err)
+      ])
     })
 }
 

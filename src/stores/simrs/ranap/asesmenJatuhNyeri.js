@@ -45,6 +45,23 @@ export const useAsesmenJatuhNyeriStore = defineStore('asesmen-jatuh-nyeri-store'
       return false
     },
 
+    async hapusJatuh(pasien, id) {
+      this.loading = true
+      try {
+        const resp = await api.post('v1/simrs/ranap/layanan/asesmenulang/hapus-jatuh', { id })
+        if (resp.status === 200) {
+          notifSuccess('Hapus Asesmen Jatuh Berhasil')
+          this.getData(pasien)
+          return true
+        }
+      } catch (err) {
+        console.log(err)
+      } finally {
+        this.loading = false
+      }
+      return false
+    },
+
     async simpanNyeri(pasien, payload) {
       this.loadingSave = true
       try {
@@ -58,6 +75,23 @@ export const useAsesmenJatuhNyeriStore = defineStore('asesmen-jatuh-nyeri-store'
         console.log(err)
       } finally {
         this.loadingSave = false
+      }
+      return false
+    },
+
+    async hapusNyeri(pasien, id) {
+      this.loading = true
+      try {
+        const resp = await api.post('v1/simrs/ranap/layanan/asesmenulang/hapus-nyeri', { id })
+        if (resp.status === 200) {
+          notifSuccess('Hapus Asesmen Nyeri Berhasil')
+          this.getData(pasien)
+          return true
+        }
+      } catch (err) {
+        console.log(err)
+      } finally {
+        this.loading = false
       }
       return false
     }
