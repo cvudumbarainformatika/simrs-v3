@@ -4,7 +4,7 @@
       <div class="row justify-between items-center">
         <div>
           <div class="f-20">
-            LIST ASESSMENT ULANG
+            LIST CPPT
           </div>
           <div class="caption text-grey-4">
             Sebagai Catatan Perkembangan Pasien
@@ -18,8 +18,8 @@
       </div>
     </div>
     <div class="col full-height">
-      <ListSoap :pasien="pasien" :kasus="kasusComputed" :nakes="nakesComputed" :items="store.items" :notasis="store.notasis"
-        :store="store" />
+      <ListSoap :pasien="pasien" :kasus="kasusComputed" :nakes="nakesComputed" :items="store.items"
+        :notasis="store.notasis" :store="store" />
     </div>
 
     <DialogForm v-model="settings.isForm" :pasien="pasien" :kasus="kasusComputed" :nakes="nakesComputed"

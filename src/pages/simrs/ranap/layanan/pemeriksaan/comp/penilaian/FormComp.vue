@@ -351,7 +351,9 @@ const openSkoringJatuh = computed(() => {
 // console.log('humppp', store.humptys)
 
 onMounted(async () => {
-  store.initReset(props?.pasien)
+  if (!props.ulang) {
+    store.initReset(props?.pasien)
+  }
 })
 
 </script>

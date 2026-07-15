@@ -107,31 +107,45 @@ export const usePenilaianRanapStore = defineStore('penilaian-ranap-store', {
       const usia = this.usia
       // console.log('usia from store', usia)
 
+      const parseJson = (val) => {
+        if (!val) return null
+        if (typeof val === 'string') {
+          try {
+            return JSON.parse(val)
+          } catch (e) {
+            return null
+          }
+        }
+        return val
+      }
+
       this.form = {
         id: data?.id ?? null
       }
 
-      // const barthels = []
+      const barthelData = parseJson(data?.barthel)
       const formBarthel = {}
-      // if (this.barthels?.form?.length > 0) {
       for (let i = 0; i < this.barthels?.form?.length; i++) {
         const el = this.barthels.form[i]
-        if (data?.barthel) {
-          formBarthel[el.kode] = el?.categories?.find(item => item.skor === data?.barthel[el.kode]?.skor) ?? el.categories[el.categories?.length - 1] ?? null
+        if (barthelData && barthelData[el.kode]) {
+          formBarthel[el.kode] = el?.categories?.find(item => item.skor === barthelData[el.kode]?.skor) ?? el.categories[el.categories?.length - 1] ?? null
         }
         else {
           formBarthel[el.kode] = el.categories[el.categories?.length - 1] ?? null
         }
       }
-      // formBarthel['kode'] = usia
       this.formBarthel = formBarthel
 
       // norton
       const formNorton = {}
+      const nortonData = parseJson(data?.norton)
       for (let i = 0; i < this.nortons?.form?.length; i++) {
         const el = this.nortons.form[i]
-        formNorton[el.kode] = el.categories[0]
-        // this.formNorton = { ...this.formNorton, [el?.kode]: el.categories[el.categories?.length - 1] }
+        if (nortonData && nortonData[el.kode]) {
+          formNorton[el.kode] = el.categories?.find(x => x.skor === nortonData[el.kode]?.skor || x.label === nortonData[el.kode]?.label) ?? el.categories[0]
+        } else {
+          formNorton[el.kode] = el.categories[0]
+        }
       }
       this.formNorton = formNorton
 
@@ -141,17 +155,16 @@ export const usePenilaianRanapStore = defineStore('penilaian-ranap-store', {
       else if (usia > 7 && usia <= 12) cat = 2
       else if (usia >= 13) cat = 1
 
-      // console.log('humptys', this.humptys)
-      // console.log('humptys pasien', pasien?.kelamin)
+      // humpty dumpty
       let formHumpty = {}
-      if (data?.humpty_dumpty) {
-        formHumpty = { ...data?.humpty_dumpty }
-
+      const humptyData = parseJson(data?.humpty_dumpty)
+      if (humptyData) {
+        formHumpty = { ...humptyData }
         Object.keys(formHumpty).forEach(key => {
-          // console.log('key humpty', key)
-          formHumpty[key] = this.humptys?.form?.find(x => x.kode === key)?.categories?.find(x => x?.skor === formHumpty[key]?.skor) ?? null
+          if (key !== 'skorHumpty') {
+            formHumpty[key] = this.humptys?.form?.find(x => x.kode === key)?.categories?.find(x => x?.skor === humptyData[key]?.skor) ?? null
+          }
         })
-        // console.log('formHumpty', formHumpty)
       }
       else {
         for (let i = 0; i < this.humptys?.form?.length; i++) {
@@ -168,41 +181,57 @@ export const usePenilaianRanapStore = defineStore('penilaian-ranap-store', {
         }
       }
       this.formHumpty = formHumpty
-      // console.log('formHumpty', this.formHumpty)
 
       // morse-fall
       const formMorse = {}
+      const morseData = parseJson(data?.morse_fall)
       for (let i = 0; i < this.morses?.form?.length; i++) {
         const el = this.morses.form[i]
-        formMorse[el.kode] = el.categories[0]
+        if (morseData && morseData[el.kode]) {
+          formMorse[el.kode] = el.categories?.find(x => x.skor === morseData[el.kode]?.skor || x.label === morseData[el.kode]?.label) ?? el.categories[0]
+        } else {
+          formMorse[el.kode] = el.categories[0]
+        }
       }
       this.formMorse = formMorse
 
       // ontario
       const formOntario = {}
+      const ontarioData = parseJson(data?.ontario)
       for (let i = 0; i < this.ontarios?.form?.length; i++) {
         const el = this.ontarios.form[i]
         if (el.submenu?.length) {
           for (let n = 0; n < el.submenu?.length; n++) {
             const sub = el.submenu[n]
-            formOntario[sub.kode] = sub.categories?.find(x => x?.skor === 0)
+            if (ontarioData && ontarioData[sub.kode]) {
+              formOntario[sub.kode] = sub.categories?.find(x => x.skor === ontarioData[sub.kode]?.skor || x.label === ontarioData[sub.kode]?.label) ?? sub.categories?.find(x => x?.skor === 0)
+            } else {
+              formOntario[sub.kode] = sub.categories?.find(x => x?.skor === 0)
+            }
           }
         }
         else {
-          formOntario[el.kode] = el.categories?.find(x => x?.skor === 0)
+          if (ontarioData && ontarioData[el.kode]) {
+            formOntario[el.kode] = el.categories?.find(x => x.skor === ontarioData[el.kode]?.skor || x.label === ontarioData[el.kode]?.label) ?? el.categories?.find(x => x?.skor === 0)
+          } else {
+            formOntario[el.kode] = el.categories?.find(x => x?.skor === 0)
+          }
         }
       }
       this.formOntario = formOntario
 
       // downscore
       const formDownscore = {}
+      const downscoreData = parseJson(data?.downscore)
       for (let i = 0; i < this.downscores?.form?.length; i++) {
         const el = this.downscores.form[i]
-        formDownscore[el?.kode] = el?.categories?.find(x => x?.skor === 0)
+        if (downscoreData && downscoreData[el?.kode]) {
+          formDownscore[el?.kode] = el?.categories?.find(x => x?.skor === downscoreData[el?.kode]?.skor || x?.label === downscoreData[el?.kode]?.label) ?? el?.categories?.find(x => x?.skor === 0)
+        } else {
+          formDownscore[el?.kode] = el?.categories?.find(x => x?.skor === 0)
+        }
       }
       this.formDownScore = formDownscore
-
-      // console.log('formDownscore', this.formDownScore)
 
       this.hitungSkorBarthel()
       this.hitungSkorNorton()
@@ -210,8 +239,6 @@ export const usePenilaianRanapStore = defineStore('penilaian-ranap-store', {
       this.hitungSkorMorse()
       this.hitungSkorOntario()
       this.hitungSkorDownscore()
-
-      // console.log('form', this.formHumpty)
     },
 
     hitungSkorBarthel() {
