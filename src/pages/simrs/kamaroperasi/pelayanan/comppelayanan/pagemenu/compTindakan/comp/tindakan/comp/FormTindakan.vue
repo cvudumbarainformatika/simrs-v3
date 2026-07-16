@@ -35,16 +35,38 @@ onMounted(() => {
 })
 
 const filterArrayTindakan = (arr, pasien) => {
-  // console.log('pasien', pasien)
-  const val = arr?.filter(x => x.kdpoli?.includes(pasien?.rs13))
-  // console.log('tindakans', val);
-
-  // let val = arr
-  // if (pasien?.kodepoli === 'POL041') val = arr
-  // else val = arr?.filter(x => x.kdpoli?.includes(pasien?.kdgroup_ruangan))
-  // console.log('onMounted formTindakan', val)
-  // return val
-  return val
+  if (!arr?.length) return []
+  
+  const roomCode = pasien?.kdgroup_ruangan || pasien?.rs13 || ''
+  
+  // 1. Ambil tindakan yang sesuai dengan ruangan pasien
+  const tindakanRuangan = arr.filter(x => x.kdpoli?.includes(roomCode))
+  
+  // 2. Ambil tindakan yang TIDAK ada di ruangan pasien
+  const tindakanLuarRuangan = arr.filter(x => !x.kdpoli?.includes(roomCode))
+  
+  // 3. Saring tindakan luar ruangan agar nama tindakannya unik (tidak duplikat)
+  const uniqueTindakanLuar = []
+  const seenNames = new Set()
+  
+  tindakanRuangan.forEach(x => {
+    if (x.tindakan) {
+      seenNames.add(x.tindakan.toLowerCase().trim())
+    }
+  })
+  
+  tindakanLuarRuangan.forEach(x => {
+    if (x.tindakan) {
+      const nameKey = x.tindakan.toLowerCase().trim()
+      if (!seenNames.has(nameKey)) {
+        seenNames.add(nameKey)
+        uniqueTindakanLuar.push(x)
+      }
+    }
+  })
+  
+  // 4. Gabungkan tindakan ruangan dengan tindakan luar ruangan yang unik
+  return [...tindakanRuangan, ...uniqueTindakanLuar]
 }
 
 const onSubmit = () => {
@@ -78,9 +100,7 @@ function filterFn (val, update, abort) {
 
   update(() => {
     const needle = val.toLowerCase()
-    // const arr = props.pasien.kodepoli === 'POL041' ? store.listTindakan : store.listTindakan?.filter(x => x?.kdpoli?.includes(props.pasien?.kdgroup_ruangan))
-    const arr = store.listTindakan?.filter(x => x?.kdpoli?.includes(props.pasien?.rs13))
-    // console.log('arr', arr, props.pasien)
+    const arr = filterArrayTindakan(store.listTindakan, props.pasien)
     const filter = ['kdtindakan', 'tindakan', 'icd9']
     const multiFilter = (data = [], filterKeys = [], value = '') =>
       data.filter((item) => filterKeys.some(
