@@ -125,6 +125,8 @@ export const useAnamnesisRanapStore = defineStore('anamnesis-ranap-store', {
       // ini untuk 4.3
       crMasuk: null,
       asalMasuk: null,
+      namaibu: null,
+      namaayah: null,
       penanggungJawab: null,
       noHpPj: null,
       alamatPj: null,
@@ -731,6 +733,8 @@ export const useAnamnesisRanapStore = defineStore('anamnesis-ranap-store', {
         crMasuk: null,
         asalMasuk: null,
         penanggungJawab: null,
+        namaibu: null,
+        namaayah: null,
         noHpPj: null,
         alamatPj: null,
         hubPj: null,
