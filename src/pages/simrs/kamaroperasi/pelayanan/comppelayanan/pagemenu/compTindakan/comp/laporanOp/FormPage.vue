@@ -5,8 +5,8 @@
         Form Laporan Operasi
       </div>
     </div>
-    <div v-if="pasien?.manytindakanop?.length == 0" class="col full-height relative-position"><app-maintenance
-        text="Belum ada Input Tondakan Operasi Belum bisa dibuatkan laporan" /> </div>
+    <div v-if="availableTindakans?.length === 0" class="col full-height relative-position"><app-maintenance
+        text="Belum ada Input Tindakan Operasi / Kanulasi Vena Sentral. Belum bisa dibuatkan laporan" /> </div>
     <div v-else class="col scroll relative-position q-pa-sm q-pb-md">
       <div class="row items-center q-my-xs">
         <div class="col-4">Tanggal </div>
@@ -19,10 +19,10 @@
         <div class="col-4">Tindakan Operasi</div>
         <div class="col-8">
           <!-- {{ pasien?.tindakanop?.mastertindakanoperasi?.rs2 }} -->
-          <app-autocomplete v-model="store.form.nota" :source="pasien?.manytindakanop" option-value="rs2"
+          <app-autocomplete v-model="store.form.nota" :source="availableTindakans" option-value="rs2"
             option-label="nama" outlined label="" @update:model-value="(val) => {
               store.resetForm()
-              const tindakanNya = pasien?.manytindakanop?.find(t => t.rs2 == val)
+              const tindakanNya = availableTindakans.value?.find(t => t.rs2 == val)
               //  console.log('val tindakan', val, tindakanNya);
               store.setForm('tindakan', tindakanNya?.id)
               store.setForm('nota', val)
@@ -145,9 +145,9 @@
 
       </div>
     </div>
-    <div v-if="pasien?.manytindakanop?.length > 0" class="col-auto bg-grey-2 q-pa-sm border-top">
+    <div v-if="availableTindakans?.length > 0" class="col-auto bg-grey-2 q-pa-sm border-top">
       <div class="row justify-end q-col-gutter-x-md">
-        <app-btn label="Simpan" :loading="store.loading" :disable="store.loading || pasien?.manytindakanop?.length == 0"
+        <app-btn label="Simpan" :loading="store.loading" :disable="store.loading || availableTindakans?.length === 0"
           @click="simpan()" />
       </div>
     </div>
@@ -159,7 +159,7 @@ import { formatDouble } from 'src/modules/formatter'
 import { notifErrVue } from 'src/modules/utils'
 import { useAplikasiStore } from 'src/stores/app/aplikasi'
 import { useLaporanOperasiStore } from 'src/stores/simrs/kamaroperasi/laporanOperasi'
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 
 
 const props = defineProps({
@@ -170,6 +170,44 @@ const props = defineProps({
 })
 const store = useLaporanOperasiStore()
 const app = useAplikasiStore()
+
+const availableTindakans = computed(() => {
+  const list = []
+  
+  // 1. Masukkan semua tindakan operasi dari manytindakanop
+  if (props.pasien?.manytindakanop?.length > 0) {
+    props.pasien.manytindakanop.forEach(item => {
+      list.push({
+        id: item.id,
+        rs2: item.rs2, // nota
+        nama: item.mastertindakanoperasi?.rs2 || item.nama || 'Tindakan Operasi',
+        source: 'manytindakanop',
+        raw: item
+      })
+    })
+  }
+  
+  // 2. Masukkan tindakan "Kanulasi Vena Sentral..." dari tindakan umum (rs73)
+  if (props.pasien?.tindakan?.length > 0) {
+    props.pasien.tindakan.forEach(item => {
+      const namaTindakan = item.mastertindakan?.rs2 || item.tindakan || ''
+      if (namaTindakan.toLowerCase().startsWith('kanulasi vena sentral')) {
+        if (!list.some(x => x.rs2 === item.rs2)) {
+          list.push({
+            id: item.id,
+            rs2: item.rs2,
+            nama: namaTindakan,
+            source: 'tindakan',
+            raw: item
+          })
+        }
+      }
+    })
+  }
+  
+  return list
+})
+
 const options = ref([])
 const tindakan = ref(null)
 function setNumber (key, val) {
