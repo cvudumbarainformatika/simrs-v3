@@ -58,7 +58,7 @@
 
     <div class="section">
       <div class="section-title">Identitas: </div>
-      <table border="0" style="border: none !important; margin-left: 10px; margin-top: -5px;">
+      <table class="tablex">
         <tbody>
           <tr style="border: none !important; padding: 0px !important;">
             <td style="border: none !important; padding: 0px !important; width:20%;">- Nama Ibu</td>
@@ -158,7 +158,7 @@
       </div>
 
       <div class="section-title" style="margin-top: 5px;">Riwayat Kehamilan: </div>
-      <table border="0" style="border: none !important; margin-left: 10px; margin-top: -5px;">
+      <table class="tablex">
         <tbody>
           <tr style="border: none !important; padding: 0px !important;">
             <td style="border: none !important; padding: 0px !important; width:20%;">- G / P / A</td>
@@ -197,7 +197,7 @@
       </table>
 
       <div class="section-title" style="margin-top: 5px;">Riwayat Kelahiran: </div>
-      <table border="0" style="border: none !important; margin-left: 10px; margin-top: -5px;">
+      <table class="tablex">
         <tbody>
           <tr style="border: none !important; padding: 0px !important;">
             <td style="border: none !important; padding: 0px !important; width:20%;">- Cara Kelahiran</td>
@@ -229,7 +229,7 @@
 
 
       <div class="section-title" style="margin-top: 5px;">Riwayat Lainnya: </div>
-      <table border="0" style="border: none !important; margin-left: 10px; margin-top: -5px;">
+      <table class="tablex">
         <tbody>
           <tr style="border: none !important; padding: 0px !important;">
             <td style="border: none !important; padding: 0px !important; width:20%;">- Transfusi Darah</td>
@@ -257,7 +257,7 @@
         <div class="data-item">Keadaan Umum: Baik / Sedang / Buruk</div>
         <div class="data-item">Keadaan Gizi: Baik / Sedang / Buruk</div>
       </div> -->
-      <table border="0" style="border: none !important; margin-left: 10px; margin-top: -5px;">
+      <table class="tablex">
         <tbody>
           <tr style="border: none !important; padding: 0px !important;">
             <td style="border: none !important; padding: 0px !important; width:15%;"> - Kesadaran</td>
@@ -330,7 +330,7 @@
         <div class="data-item">Keadaan Umum: Baik / Sedang / Buruk</div>
         <div class="data-item">Keadaan Gizi: Baik / Sedang / Buruk</div>
       </div> -->
-      <table border="0" style="border: none !important; margin-left: 10px; margin-top: -5px;">
+      <table class="tablex">
         <tbody>
           <tr style="border: none !important; padding: 0px !important;">
             <td style="border: none !important; padding: 0px !important; width:15%;"> - Penyebab Penyakit</td>
@@ -352,7 +352,7 @@
         </tbody>
       </table>
       <div class="section-title" style="margin-top: 5px;">Pemeriksaan Psikologis, Sosial Ekonomi, Spiritual : </div>
-      <table border="0" style="border: none !important; margin-left: 10px; margin-top: -5px;">
+      <table class="tablex">
         <tbody>
           <tr style="border: none !important; padding: 0px !important;">
             <td style="border: none !important; padding: 0px !important; width:15%;"> - Status Sosial</td>
@@ -397,7 +397,7 @@
       </table>
 
       <div class="section-title" style="margin-top: 5px;">Form 4.3 Neonatal : </div>
-      <table border="0" style="border: none !important; margin-left: 10px; margin-top: -5px;">
+      <table class="tablex">
         <tbody>
           <tr style="border: none !important; padding: 0px !important;">
             <td style="border: none !important; padding: 0px !important;"> - Appearance (Warna Kulit)</td>
@@ -576,7 +576,7 @@
 
 
     <div class="section">
-      <table border="0" style="border: none !important; margin-left: 10px; margin-top: -5px;">
+      <table class="tabelx">
         <tbody>
           <tr style="border: none !important; padding: 0px !important;">
             <td style="border: none !important; padding: 0px !important; width: 35%">
@@ -614,7 +614,7 @@
 
 
     <div class="section">
-      <table border="0" style="border: none !important; margin-left: 10px; margin-top: -5px;">
+      <table>
         <tbody>
           <tr style="border: none !important; padding: 0px !important;">
             <td style="border: none !important; padding: 0px !important; width: 17%">
@@ -628,7 +628,7 @@
       </table>
     </div>
     <div class="section">
-      <table border="0" style="border: none !important; margin-left: 10px; margin-top: -5px;">
+      <table>
         <tbody>
           <tr style="border: none !important; padding: 0px !important;">
             <td style="border: none !important; padding: 0px !important; width: 20%">
@@ -643,7 +643,7 @@
     </div>
 
     <div class="section">
-      <table border="0" style="border: none !important; margin-left: 10px; margin-top: -5px;">
+      <table>
         <tbody>
           <tr style="border: none !important; padding: 0px !important;">
             <td style="border: none !important; padding: 0px !important; width: 17%">
@@ -658,7 +658,7 @@
     </div>
 
     <div class="section">
-      <table border="0" style="border: none !important; margin-left: 10px; margin-top: -5px;">
+      <table>
         <tbody>
           <tr style="border: none !important; padding: 0px !important;">
             <td style="border: none !important; padding: 0px !important; width: 17%">
@@ -680,7 +680,7 @@
     </div>
 
     <div class="section">
-      <table border="0" style="border: none !important; margin-left: 10px; margin-top: -5px;">
+      <table>
         <tbody>
           <tr style="border: none !important; padding: 0px !important;">
             <td style="border: none !important; padding: 0px !important; width: 17%">
@@ -694,7 +694,7 @@
     </div>
 
     <div class="section">
-      <table border="0" style="border: none !important; margin-left: 10px; margin-top: -5px;">
+      <table>
         <tbody>
           <tr style="border: none !important; padding: 0px !important;">
             <td style="border: none !important; padding: 0px !important; width: 17%">
@@ -944,8 +944,32 @@ th {
   background-color: #f2f2f2;
 }
 
+.tablex {
+  border: none;
+  border-collapse: collapse !important;
+  border-spacing: 0 !important;
+  width: 100%;
+  margin-top: -5px;
+  margin-left: 10px;
+  line-height: 1.1 !important;
+}
 
+.tablex tr {
+  height: auto !important;
+}
 
+.tablex td {
+  border: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  line-height: 1.5 !important;
+  vertical-align: top;
+}
+
+.tablex tbody tr td {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
 
 .print-page {
   // width: 100%;
