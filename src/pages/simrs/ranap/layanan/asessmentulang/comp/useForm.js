@@ -7,9 +7,11 @@ import { useAnamnesisRanapStore } from 'src/stores/simrs/ranap/anamnesis'
 import { useAsessmentUlangRanapStore } from 'src/stores/simrs/ranap/asessmentulang'
 import { usePemeriksaanUmumRanapStore } from 'src/stores/simrs/ranap/pemeriksaanumum'
 import { usePenilaianRanapStore } from 'src/stores/simrs/ranap/penilaian'
+import { usePengunjungRanapStore } from 'src/stores/simrs/ranap/pengunjung'
 import { reactive, watch, watchEffect } from 'vue'
 
 export default function useForm (pasien) {
+  const storePengunjung = usePengunjungRanapStore()
   const storeAnamnesis = useAnamnesisRanapStore()
   const storePemeriksaanUmum = usePemeriksaanUmumRanapStore()
   const storePenilaian = usePenilaianRanapStore()
@@ -333,7 +335,10 @@ export default function useForm (pasien) {
     return new Promise((resolve, reject) => {
       api.post('v1/simrs/ranap/layanan/cppt/updateosambung', payload)
         .then(resp => {
-          // console.log('resp update', resp)
+          if (target) {
+            storePengunjung.injectDataPasien(pasien?.noreg, target, 'cppt')
+          }
+          notifSuccess(resp)
           resolve(resp)
         })
         .catch(err => {
@@ -359,7 +364,10 @@ export default function useForm (pasien) {
     return new Promise((resolve, reject) => {
       api.post('v1/simrs/ranap/layanan/cppt/updatessambung', payload)
         .then(resp => {
-          // console.log('resp update', resp)
+          if (target) {
+            storePengunjung.injectDataPasien(pasien?.noreg, target, 'cppt')
+          }
+          notifSuccess(resp)
           resolve(resp)
         })
         .catch(err => {
@@ -368,11 +376,11 @@ export default function useForm (pasien) {
     })
   }
 
-  watch(() => pasien?.cppt, (val, old) => {
-    // console.log('watch cppt new', val)
-    // console.log('watch cppt old', old)
-    store.getCppt(val)
-  }, { deep: true })
+  watch(() => pasien?.noreg, (val) => {
+    if (val) {
+      store.getCppt(pasien?.cppt)
+    }
+  }, { immediate: true })
 
   watchEffect(() => {
     // console.log('watchEffect cppt', pasien?.cppt)
