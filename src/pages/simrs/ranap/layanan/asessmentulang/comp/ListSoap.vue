@@ -3,7 +3,7 @@
     <div v-if="!items?.length" class="q-pa-md column full-height flex-center">
       <div>Belum Ada Data Tersimpan</div>
     </div>
-    <q-card v-else v-for="(item, n) in items" :key="n" flat bordered rouunded class="full-width q-mb-sm">
+    <q-card v-else v-for="(item, n) in items" :key="item.id" flat bordered rouunded class="full-width q-mb-sm">
       <q-list bordered class="rounded-borders">
         <q-expansion-item>
           <template #header>
@@ -122,10 +122,7 @@
                         </div>
                       </div>
                       <q-input v-else ref="refInputSsambung" v-model="item.s_sambung" :readonly="item?.kdruang === 'PEN001'" outlined type="textarea"
-                        stack-label standout="bg-yellow-3" :lazy-rules="true" rows="8" hide-bottom-space @blur="(val) => {
-                          const valuex = val?.target?.value
-                          updateSsambung(item, valuex, 's_sambung')
-                        }" />
+                        stack-label standout="bg-yellow-3" :lazy-rules="true" rows="8" hide-bottom-space @blur="updateSsambung(item, item.s_sambung, 's_sambung')" />
                     </q-card-section>
                   </q-card>
                 </div>
@@ -202,10 +199,7 @@
                         </div>
                       </div>
                       <q-input ref="refInputOsambung" v-model="item.o_sambung" :readonly="item?.kdruang === 'PEN001'" outlined type="textarea" stack-label
-                        standout="bg-yellow-3" :lazy-rules="true" rows="5" hide-bottom-space @blur="(val) => {
-                          const valuex = val?.target?.value
-                          updateOsambung(item, valuex, 'o_sambung')
-                        }" />
+                        standout="bg-yellow-3" :lazy-rules="true" rows="5" hide-bottom-space @blur="updateOsambung(item, item.o_sambung, 'o_sambung')" />
                     </q-card-section>
                   </q-card>
                 </div>
@@ -405,7 +399,7 @@
 
 <script setup>
 import { dateFullFormat, jamTnpDetik, dateFilter } from 'src/modules/formatter'
-import { computed, defineAsyncComponent, ref } from 'vue'
+import { computed, defineAsyncComponent, ref, watch } from 'vue'
 import useForm from './useForm'
 import { notifBottomVue } from 'src/modules/utils'
 import { useQuasar } from 'quasar'
@@ -486,10 +480,11 @@ const handleOpenNotasiDPJP = (item) => {
 
 }
 
-const items = computed(() => {
+const items = ref([])
+watch([() => store.items, () => store.items?.length], () => {
   const cppt = store.items
-  return cppt?.sort((a, b) => b?.id - a?.id)
-})
+  items.value = cppt ? [...cppt].sort((a, b) => b?.id - a?.id) : []
+}, { immediate: true })
 
 // console.log('props', items.value)
 

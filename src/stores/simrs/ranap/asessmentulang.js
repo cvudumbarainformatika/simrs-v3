@@ -1,6 +1,7 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
 // eslint-disable-next-line no-unused-vars
 import { api } from 'src/boot/axios'
+import { notifSuccess } from 'src/modules/utils'
 import { useAnamnesisRanapStore } from './anamnesis'
 // eslint-disable-next-line no-unused-vars
 import { usePengunjungRanapStore } from './pengunjung'
@@ -394,6 +395,13 @@ export const useAsessmentUlangRanapStore = defineStore('asesment-ulang-ranap-sto
           .then((resp) => {
             const storeRanap = usePengunjungRanapStore()
             storeRanap.hapusDataInjectan(pasien, id, 'cppt')
+
+            const indx = this.items.findIndex(x => x?.id === id)
+            if (indx > -1) {
+              this.items.splice(indx, 1)
+            }
+
+            notifSuccess(resp)
             resolve(resp)
           })
           .catch((err) => {
