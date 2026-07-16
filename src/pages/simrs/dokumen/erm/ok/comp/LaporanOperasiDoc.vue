@@ -261,13 +261,26 @@ const activeLaporanComputed = computed(() => {
 // Tindakan operasi yang bersesuaian dengan nota/rs2 laporan aktif
 const tindakanAktif = computed(() => {
   const nota = activeLaporanComputed.value?.rs2
-  if (!nota || !props.pasien?.manytindakanop?.length) return null
-  return props.pasien.manytindakanop.find((x) => x.rs2 === nota)
+  if (!nota) return null
+  
+  let found = props.pasien?.manytindakanop?.find((x) => x.rs2 === nota)
+  if (found) return found
+  
+  found = props.pasien?.tindakan?.find((x) => x.rs2 === nota)
+  if (found) return found
+  
+  return null
 })
 
 const tindakanOperasi = computed(() => {
   if (!tindakanAktif.value) return '-'
-  return tindakanAktif.value?.mastertindakanoperasi?.rs2 ?? tindakanAktif.value?.nama ?? '-'
+  if (tindakanAktif.value?.mastertindakanoperasi) {
+    return tindakanAktif.value?.mastertindakanoperasi?.rs2 ?? tindakanAktif.value?.nama ?? '-'
+  }
+  if (tindakanAktif.value?.mastertindakan) {
+    return tindakanAktif.value?.mastertindakan?.rs2 ?? tindakanAktif.value?.tindakan ?? '-'
+  }
+  return tindakanAktif.value?.nama || tindakanAktif.value?.tindakan || '-'
 })
 
 // Hitung lama operasi

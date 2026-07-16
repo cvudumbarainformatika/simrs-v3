@@ -234,34 +234,40 @@ const getFile = (val) => {
   return file
 }
 function cariNakes (val, w) {
-
-  const tindakan = props?.pasien?.manytindakanop?.find(x => x.rs2 === val?.rs2)
-  // console.log('nakes', val, tindakan)
+  let tindakan = props?.pasien?.manytindakanop?.find(x => x.rs2 === val?.rs2)
+  if (!tindakan) {
+    tindakan = props?.pasien?.tindakan?.find(x => x.rs2 === val?.rs2)
+  }
+  
   if (tindakan) {
     if (w == 'operator') return nakesnya(tindakan?.rs9)
-    else if (w == 'asisten op') return nakesnya(tindakan?.rs11)
+    else if (w == 'asisten op') return nakesnya(tindakan?.rs11 || tindakan?.rs8)
     else if (w == 'anastesi') return nakesnya(tindakan?.rs12)
-    else if (w == 'asisten an') return nakesnya(tindakan?.rs13)
+    else if (w == 'asisten an') return nakesnya(tindakan?.rs13 || tindakan?.rs23)
     else return 'nakes tidak ditemukan'
   } else return 'nakes tidak ditemukan'
-
-
 }
 function nakesnya (val) {
-
-  const dat = val?.split(';').filter(x => !!x)
+  if (!val) return ''
+  const dat = val.split(';').filter(x => !!x)
+  if (!dat?.length) return ''
   const nakes = []
   dat.forEach(x => {
     const nak = store.nakes.find(y => y.kdpegsimrs === x)
     if (nak) nakes.push(nak)
   })
-  // console.log('cari nakes', dat)
   return nakes.length > 0 ? nakes.map(x => x.nama).join(', ') : ''
 }
 function cariTindakan (val) {
-  const tindakan = props?.pasien?.manytindakanop?.find(x => x.rs2 === val?.rs2)
-  // console.log('cari tin', val, tindakan)
-  return tindakan?.mastertindakanoperasi?.rs2 ?? '-'
+  let tindakan = props?.pasien?.manytindakanop?.find(x => x.rs2 === val?.rs2)
+  if (tindakan) {
+    return tindakan?.mastertindakanoperasi?.rs2 ?? '-'
+  }
+  tindakan = props?.pasien?.tindakan?.find(x => x.rs2 === val?.rs2)
+  if (tindakan) {
+    return tindakan?.mastertindakan?.rs2 ?? tindakan?.tindakan ?? '-'
+  }
+  return '-'
 }
 
 </script>
