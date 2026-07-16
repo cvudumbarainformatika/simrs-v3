@@ -151,6 +151,12 @@ const menus = ref([
     comp: shallowRef(defineAsyncComponent(() => import('src/pages/simrs/ranap/layanan/edukasi/IndexPage.vue')))
   },
   {
+    name: 'pembatalan-operasi',
+    label: 'Pembatalan Operasi',
+    icon: 'cancel',
+    comp: shallowRef(defineAsyncComponent(() => import('./comppelayanan/pagemenu/compPembatalan/IndexPage.vue')))
+  },
+  {
     name: 'dokumen',
     label: 'Dokumnen',
     icon: 'email',

@@ -167,6 +167,13 @@ const documents = ref([
   {
     icon: 'icon-mat-email',
     color: 'primary',
+    jenis: 'BATAL-OP',
+    label: 'Pembatalan Pelayanan Operasi',
+    value: 'PembatalanPelayanan'
+  },
+  {
+    icon: 'icon-mat-email',
+    color: 'primary',
     jenis: 'ASK-PERI',
     label: 'Asuhan Keperawatan Perioperatif',
     value: 'Askepperioperatif'
@@ -284,6 +291,7 @@ const comp = [
   { nama: 'AsesmenPraAnestesia', page: defineAsyncComponent(() => import('src/pages/simrs/dokumen/erm/poli/AsesmenPraAnestesia.vue')) },
   { nama: 'AsesmenPraBedah', page: defineAsyncComponent(() => import('src/pages/simrs/dokumen/erm/poli/AssesmentPraBedah.vue')) },
   { nama: 'SurgicalSafety', page: defineAsyncComponent(() => import('src/pages/simrs/dokumen/erm/ok/comp/DokumenSurgicalSafety.vue')) },
+  { nama: 'PembatalanPelayanan', page: defineAsyncComponent(() => import('./comp/DokumenPembatalanPelayanan.vue')) },
   { nama: 'Askepperioperatif', page: defineAsyncComponent(() => import('./comp/AsuhanKeperawatanPerioperatif.vue')) },
   { nama: 'Askepanestesi', page: defineAsyncComponent(() => import('./comp/AsuhanPenataAnastesi.vue')) },
   { nama: 'Prainduksi', page: defineAsyncComponent(() => import('./comp/PraInduksiDoc.vue')) },
