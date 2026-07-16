@@ -17,14 +17,8 @@
     </div>
 
     <!-- List Data -->
-    <div class="col q-pa-md scroll">
-      <div v-if="storeUlang.loading" class="fit flex flex-center bg-white"
-        style="border-radius: 8px; border: 1px solid #ddd; min-height: 350px;">
-        <q-spinner color="primary" size="3em" />
-        <div class="text-grey-6 q-ml-md">Memuat data riwayat....</div>
-      </div>
-
-      <div v-else-if="!mappedItems.length" class="fit flex flex-center bg-white"
+    <div class="col q-pa-md scroll relative-position">
+      <div v-if="!mappedItems.length" class="fit flex flex-center bg-white"
         style="border-radius: 8px; border: 1px solid #ddd; min-height: 350px;">
         <div class="text-center">
           <q-icon name="icon-my-personal_injury" size="80px" color="grey-4" />
@@ -49,20 +43,36 @@
                     <span class="text-weight-bold text-dark">PPA</span>
                     <span class="text-grey-7">- {{ item.petugas }}</span>
                   </div>
-                  <div class="text-caption text-grey-6">{{ item.tanggal }}</div>
                 </q-item-section>
 
                 <q-item-section side>
                   <div class="row items-center q-gutter-x-sm">
-                    <q-badge :color="item.kuning ? 'yellow-9' : 'grey-5'" :text-color="item.kuning ? 'black' : 'white'"
-                      class="q-pa-sm text-weight-bold text-subtitle2">
-                      {{ item.kategori }} - Skor: {{ item.skor }}
-                    </q-badge>
                     <q-btn v-if="String(currentUserPegawai) === String(item.kdpegsimrs) || currentUserPegawai === 'sa'"
                       flat round dense color="primary" icon="icon-mat-edit" size="sm" @click.stop="bukaEdit(item)" />
                     <q-btn v-if="String(currentUserPegawai) === String(item.kdpegsimrs) || currentUserPegawai === 'sa'"
                       flat round dense color="negative" icon="icon-mat-delete" size="sm"
                       @click.stop="hapusItem(item)" />
+                    <q-badge :color="item.kuning ? 'yellow-9' : 'grey-5'" :text-color="item.kuning ? 'black' : 'white'"
+                      class="q-pa-sm text-weight-bold text-subtitle2">
+                      {{ item.kategori }} - Skor: {{ item.skor }}
+                    </q-badge>
+                  </div>
+                </q-item-section>
+
+                <q-item-section side class="q-pl-md border-left">
+                  <div class="text-right">
+                    <div class="text-grey-8" style="font-size: 11px;">
+                      <span class="text-weight-bold">Tgl</span> <em class="text-weight-medium">{{ dateFullFormat(item.tanggal) }}</em>
+                    </div>
+                    <div class="text-grey-8 q-mt-xs">
+                      <q-badge class="q-px-sm q-py-xs" outline color="primary">
+                        <div class="flex q-gutter-xs" style="font-size: 10px;">
+                          <div>Jam</div>
+                          <div>:</div>
+                          <div class="text-weight-bold">{{ jamTnpDetik(item.tanggal) }}</div>
+                        </div>
+                      </q-badge>
+                    </div>
                   </div>
                 </q-item-section>
               </template>
@@ -99,6 +109,11 @@
           </q-list>
         </q-card>
       </div>
+
+      <!-- Loading overlay yang halus -->
+      <q-inner-loading :showing="storeUlang.loading" class="bg-white-5">
+        <q-spinner-dots size="50px" color="primary" />
+      </q-inner-loading>
     </div>
 
     <!-- Dialog Input Form -->
@@ -228,6 +243,7 @@ import { usePenilaianRanapStore } from 'src/stores/simrs/ranap/penilaian.js'
 import { useAsesmenJatuhNyeriStore } from 'src/stores/simrs/ranap/asesmenJatuhNyeri.js'
 import { useAuthStore } from 'src/stores/auth'
 import * as storage from 'src/modules/storage'
+import { dateFullFormat, jamTnpDetik } from 'src/modules/formatter'
 
 const props = defineProps({
   pasien: {
@@ -246,8 +262,24 @@ const storeUlang = useAsesmenJatuhNyeriStore()
 const authStore = useAuthStore()
 
 const currentUserPegawai = computed(() => {
-  const userObj = authStore.user || storage.getUser()
-  return userObj?.pegawai?.kdpegsimrs || null
+  const userFromStorage = storage.getUser()
+  if (userFromStorage?.pegawai?.kdpegsimrs) {
+    return userFromStorage.pegawai.kdpegsimrs
+  }
+  if (userFromStorage?.kdpegsimrs) {
+    return userFromStorage.kdpegsimrs
+  }
+  
+  const userFromAuth = authStore.user
+  if (userFromAuth && typeof userFromAuth === 'object') {
+    if (userFromAuth?.pegawai?.kdpegsimrs) {
+      return userFromAuth.pegawai.kdpegsimrs
+    }
+    if (userFromAuth?.kdpegsimrs) {
+      return userFromAuth.kdpegsimrs
+    }
+  }
+  return null
 })
 
 const dialogForm = ref(false)
@@ -687,5 +719,8 @@ function hapusItem(item) {
 
 .min-height-auto {
   min-height: auto !important;
+}
+.border-left {
+  border-left: 1px solid #ddd;
 }
 </style>

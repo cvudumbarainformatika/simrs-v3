@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white full-height column scroll q-mb-xl">
+  <div class="bg-white full-height column">
     <div class="col-auto bg-primary text-white">
       <div class="q-pa-sm">
         Form Laporan Operasi
@@ -7,7 +7,7 @@
     </div>
     <div v-if="pasien?.manytindakanop?.length == 0" class="col full-height relative-position"><app-maintenance
         text="Belum ada Input Tondakan Operasi Belum bisa dibuatkan laporan" /> </div>
-    <div v-else class="col full-height relative-position">
+    <div v-else class="col scroll relative-position q-pa-sm q-pb-md">
       <div class="row items-center q-my-xs">
         <div class="col-4">Tanggal </div>
         <div class="col-8">
@@ -144,7 +144,9 @@
         </div>
 
       </div>
-      <div class="row q-ma-sm q-pb-xl q-mr-xl justify-end">
+    </div>
+    <div v-if="pasien?.manytindakanop?.length > 0" class="col-auto bg-grey-2 q-pa-sm border-top">
+      <div class="row justify-end q-col-gutter-x-md">
         <app-btn label="Simpan" :loading="store.loading" :disable="store.loading || pasien?.manytindakanop?.length == 0"
           @click="simpan()" />
       </div>

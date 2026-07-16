@@ -52,7 +52,7 @@ export const useUploadDokStoreIgd = defineStore('upload-dok-igd', {
       this.form.ruangan = 'POL014'
 
       const data = new FormData()
-      for (let i = 0; i < this.form.dokumen; i++) {
+      for (let i = 0; i < this.form.dokumen.length; i++) {
         const images = this.form.dokumen[i]
         data.append(`dokumen[${i}]`, images)
       }
@@ -62,7 +62,7 @@ export const useUploadDokStoreIgd = defineStore('upload-dok-igd', {
       this.loadingSave = true
       // console.log(data)
       return new Promise((resolve, reject) => {
-        api.post('v1/simrs/pelayanan/dokumenupload/igd/store', this.form, {
+        api.post('v1/simrs/pelayanan/dokumenupload/igd/store', data, {
           headers: {
             'Content-Type': 'multipart/form-data'
           }

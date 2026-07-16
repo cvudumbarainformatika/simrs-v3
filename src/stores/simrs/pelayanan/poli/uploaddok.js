@@ -55,7 +55,7 @@ export const useUploadDokStore = defineStore('upload-dok-poli', {
       this.form.isRanap = isRanap
 
       const data = new FormData()
-      for (let i = 0; i < this.form.dokumen; i++) {
+      for (let i = 0; i < this.form.dokumen.length; i++) {
         const images = this.form.dokumen[i]
         data.append(`dokumen[${i}]`, images)
       }
@@ -65,7 +65,7 @@ export const useUploadDokStore = defineStore('upload-dok-poli', {
       this.loadingSave = true
       // console.log(data)
       return new Promise((resolve, reject) => {
-        api.post('v1/simrs/pelayanan/dokumenupload/store', this.form, {
+        api.post('v1/simrs/pelayanan/dokumenupload/store', data, {
           headers: {
             'Content-Type': 'multipart/form-data'
           }

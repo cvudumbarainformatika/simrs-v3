@@ -134,7 +134,7 @@ export default function useLayanan(pasien, mpp) {
       name: 'upload-page',
       label: 'Upload Dokumen Luar',
       icon: 'icon-mat-cloud_upload',
-      nakes: ['1', '2', '3', '4', '5', '6'],
+      nakes: ['1', '2', '3', '4', '5', '6', 'rekammedik'],
       comp: shallowRef(defineAsyncComponent(() => import('./upload/IndexPage.vue')))
     },
     {

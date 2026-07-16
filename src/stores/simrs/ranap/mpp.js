@@ -52,7 +52,24 @@ export const useMppRanapStore = defineStore('mpp-ranap-store', {
         kdruang: pasien?.kdruangan,
         
         // 1. Skrining (Form A)
-        skrining: formData.skrining,
+        skrining: {
+          usia: formData.usia,
+          kognitif_rendah: formData.kognitif_rendah,
+          resiko_tinggi: formData.resiko_tinggi,
+          potensi_komplain: formData.potensi_komplain,
+          kasus_penyakit: formData.kasus_penyakit,
+          keterbatasan_adl: formData.keterbatasan_adl,
+          pakai_alat_medis: formData.pakai_alat_medis,
+          riwayatalat_medis: formData.riwayatalat_medis,
+          riwayat_psikologis: formData.riwayat_psikologis,
+          readmisi: formData.readmisi,
+          biaya_tinggi: formData.biaya_tinggi,
+          pembiayaan_komplek: formData.pembiayaan_komplek,
+          melebihi_los: formData.melebihi_los,
+          transfer_rujukan: formData.transfer_rujukan,
+          kerjasama_sektor: formData.kerjasama_sektor,
+          kontinuitas_pelayanan: formData.kontinuitas_pelayanan
+        },
         
         // 2. Asesmen (Form A)
         asesmen: {

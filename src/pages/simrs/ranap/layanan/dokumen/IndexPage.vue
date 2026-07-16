@@ -183,9 +183,17 @@ const menus = ref([
     label: 'DOKUMEN MPP',
     title: 'MANAJEMEN PELAYANAN PASIEN (MPP)',
     desc: 'Formulir A & Formulir B Manajemen Pelayanan Pasien',
-    icon: 'icon-my-file_sign',
     nakes: ['1', '2', '3'],
     comp: shallowRef(defineAsyncComponent(() => import('./mpp/IndexPage.vue')))
+  },
+  {
+    name: 'asesmen-jatuh-document',
+    label: 'ASESMEN ULANG RISIKO JATUH',
+    title: 'ASESMEN ULANG RISIKO JATUH',
+    desc: 'Dokumen Asesmen Ulang Risiko Jatuh (Humpty Dumpty, Morse, Ontario)',
+    icon: 'icon-my-file_sign',
+    nakes: ['1', '2', '3'],
+    comp: shallowRef(defineAsyncComponent(() => import('./asesmenJatuh/IndexPage.vue')))
   }
 ])
 
@@ -225,3 +233,15 @@ onMounted(() => {
 })
 
 </script>
+
+<style lang="scss" scoped>
+:deep(.q-tabs) {
+  height: auto !important;
+}
+:deep(.q-tabs__content) {
+  overflow: visible !important;
+}
+:deep(.q-tabs__arrows) {
+  display: none !important;
+}
+</style>

@@ -2,6 +2,7 @@ import { acceptHMRUpdate, defineStore } from 'pinia'
 import { date } from 'quasar'
 import { api } from 'src/boot/axios'
 import { notifErrVue, notifSuccess } from 'src/modules/utils'
+import { useAplikasiStore } from 'src/stores/app/aplikasi'
 
 export const usePengembalianPinjamanStore = defineStore('pengembalian_pinjaman', {
   state: () => ({
@@ -69,7 +70,13 @@ export const usePengembalianPinjamanStore = defineStore('pengembalian_pinjaman',
       })
     },
     getNopenerimaans () {
-      const param = { params: this.params }
+      const apps = useAplikasiStore()
+      const param = {
+        params: {
+          ...this.params,
+          kdruang: apps?.user?.kdruangansim
+        }
+      }
       return new Promise(resolve => {
         this.loadingNoper = true
         api.get('v1/simrs/penunjang/farmasinew/pengembalian/get-noper', param)
@@ -88,7 +95,8 @@ export const usePengembalianPinjamanStore = defineStore('pengembalian_pinjaman',
       console.log('item simpan', item)
       if (!item?.jml_dikembalikan) return notifErrVue('Jumlah Dikembalikan belum di isi')
       item.loading = true
-      const form = { ...this.form, ...item }
+      const apps = useAplikasiStore()
+      const form = { ...this.form, ...item, kdruang: apps?.user?.kdruangansim }
       return new Promise((resolve) => {
         api.post('v1/simrs/penunjang/farmasinew/pengembalian/simpan', form)
           .then(resp => {

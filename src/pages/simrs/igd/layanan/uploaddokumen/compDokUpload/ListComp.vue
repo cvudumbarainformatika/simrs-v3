@@ -8,7 +8,7 @@
             <div class="row items-center justify-between">
               <q-btn class="gt-xs" size="md" color="yellow" flat dense round icon="icon-mat-visibility"
                 :href="pathImg + file.url" target="_blank" />
-              <q-btn class="gt-xs" size="md" color="negative" flat dense round icon="icon-mat-delete"
+              <q-btn v-if="!isMppOrRm" class="gt-xs" size="md" color="negative" flat dense round icon="icon-mat-delete"
                 @click="emits('hapus', file)" />
             </div>
           </div>
@@ -20,7 +20,15 @@
 
 <script setup>
 import { pathImg } from 'src/boot/axios'
+import { computed } from 'vue'
+import { useRoute } from 'vue-router'
 // import { get } from 'src/modules/wacom/newFile';
+
+const route = useRoute()
+const isMppOrRm = computed(() => {
+  const pathSegments = route.path.split('/').filter(Boolean)
+  return pathSegments.includes('rekammedik') || pathSegments.includes('mpp')
+})
 
 defineProps({
   items: {

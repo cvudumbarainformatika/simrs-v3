@@ -6,7 +6,7 @@
         Tindakan Operasi tersimpan
       </div>
     </div>
-    <div class="col full-height relative-position">
+    <div class="col scroll relative-position q-pa-sm q-pb-md">
       <div v-if="pasien?.manytindakanop?.length > 0">
         <div v-for="tindakanop in pasien?.manytindakanop" :key="tindakanop">
           <div class="row q-mt-sm">
