@@ -37,7 +37,7 @@
       <div class="q-pa-sm">
         <div class="row q-py-xs">
           <div class="col-6">
-            <q-input v-model="store.inputForm.waktu" valid label="Waktu" dense outlined mask="##:##" />
+            <q-input v-model="store.inputForm.waktu" valid label="Jam Mulai" dense outlined mask="##:##" />
           </div>
           <div class="col-6">
             <app-input v-model="store.inputForm.konversi_anastesi" valid label="Konversi Anestesi" outlined />
@@ -121,6 +121,7 @@
     @add-log="handleNewLog" @close="showInputForm = false" />
 </template>
 <script setup>
+import { api } from 'src/boot/axios'
 import { useMonitoringSaatStore } from 'src/stores/simrs/kamaroperasi/assasement/monitoringSaat'
 import { useLaporanOperasiStore } from 'src/stores/simrs/kamaroperasi/laporanOperasi'
 import { ref, computed, onMounted, nextTick, defineAsyncComponent } from 'vue'
@@ -702,15 +703,24 @@ function syncLabels () {
   }, 200)
 }
 onMounted(async () => {
-  // Kita berikan sedikit delay agar ApexCharts selesai me-render total
-  // nextTick(() => {
-  //   syncLabels()
-  // })
-  // console.log('gas', allRows.value.map(name => gasKeys.includes(name) ? 3 : 0))
-
   if (laporanOp.nakes.length == 0) laporanOp.getNakes()
   try {
     await store.getMonitoringSelama(props.pasien)
+
+    // Pre-fill Jam Mulai dari Asuhan Penata Anestesi jika di form Monitoring belum terisi
+    if (!store.inputForm?.waktu) {
+      try {
+        const param = { params: { noreg: props.pasien?.noreg, nota: props.pasien?.rs2, norm: props.pasien?.norm } }
+        const asuhanResp = await api.get('v1/simrs/penunjang/ok/asuhan/anastesi/getdata', param)
+        const asuhanData = asuhanResp?.data?.data
+        if (asuhanData?.intra_jam_mulai_anestesi) {
+          store.inputForm.waktu = asuhanData.intra_jam_mulai_anestesi.substring(0, 5)
+        }
+      } catch (err) {
+        // abaikan jika tidak ada data
+      }
+    }
+
     const charts = document.querySelectorAll('.vue-apexcharts')
     charts.forEach(el => el.style.pointerEvents = 'none')
     await nextTick()
@@ -722,9 +732,7 @@ onMounted(async () => {
     }, 500)
   } catch (e) {
     console.log('gagal memuat data monitoring', e)
-
   }
-
 })
 </script>
 <style scoped>

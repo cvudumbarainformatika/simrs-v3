@@ -48,7 +48,7 @@
             </thead>
             <tbody>
               <tr>
-                <td width="25%" class="text-weight-bold">Waktu Observasi</td>
+                <td width="25%" class="text-weight-bold">Jam Mulai</td>
                 <td width="25%">{{ store.inputForm?.waktu || '-' }}</td>
                 <td width="25%" class="text-weight-bold">Konversi Anestesi</td>
                 <td width="25%">{{ store.inputForm?.konversi_anastesi || '-' }}</td>

@@ -135,6 +135,7 @@ export const useMonitoringSaatStore = defineStore('monitoring_saat', {
           nota: pasien.rs2,
           norm: pasien.norm
         }
+
         this.data.sort((a, b) => a.time - b.time)
         return resp?.data
       } catch (e) {
