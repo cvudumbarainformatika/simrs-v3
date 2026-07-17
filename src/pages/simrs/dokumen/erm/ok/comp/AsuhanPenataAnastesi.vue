@@ -49,7 +49,7 @@
             <tbody>
               <tr>
                 <td width="30%">Diagnosa Pra Anestesi</td>
-                <td>{{ store.form?.pra_diagnosa || '-' }}</td>
+                <td>{{ store.form?.pra_diagnosa || props.pasien?.rs4 || '-' }}</td>
               </tr>
               <tr>
                 <td>Tindakan Operasi</td>
