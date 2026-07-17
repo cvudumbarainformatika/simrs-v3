@@ -40,7 +40,7 @@
 
         <div class="dokumen-content q-mb-md">
           <!-- TABLE 1: KONDISI MASUK RR & MONITORING PARAMETERS -->
-          <table class="doc-table">
+          <table class="doc-table q-mb-md">
             <thead>
               <tr>
                 <th colspan="4" class="text-weight-bold title-th bg-grey-3">KONDISI MASUK RUANG PEMULIHAN (RR)</th>
@@ -73,35 +73,6 @@
             </tbody>
           </table>
 
-          <!-- TABLE 2: INSTRUKSI PASCA ANESTESI -->
-          <table class="doc-table">
-            <thead>
-              <tr>
-                <th colspan="4" class="text-weight-bold title-th bg-grey-3">INSTRUKSI PASCA ANESTESI</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td width="25%" class="text-weight-bold">Infus</td>
-                <td width="25%">{{ store.inputFormPasca?.infus || '-' }}</td>
-                <td width="25%" class="text-weight-bold">Antibiotika</td>
-                <td width="25%">{{ store.inputFormPasca?.antibiotika || '-' }}</td>
-              </tr>
-              <tr>
-                <td class="text-weight-bold">Bila Mual / Muntah</td>
-                <td>{{ store.inputFormPasca?.obat_mual || '-' }}</td>
-                <td class="text-weight-bold">Bila Kesakitan</td>
-                <td>{{ store.inputFormPasca?.obat_sakit || '-' }}</td>
-              </tr>
-              <tr>
-                <td class="text-weight-bold">Minum / Makan</td>
-                <td>{{ store.inputFormPasca?.makan_minum || '-' }}</td>
-                <td class="text-weight-bold">Lain-lain</td>
-                <td>{{ store.inputFormPasca?.lain_lain || '-' }}</td>
-              </tr>
-            </tbody>
-          </table>
-
           <!-- VISUAL CHART -->
           <div class="anesthesia-chart-container bg-white q-mb-md">
             <div class="vital-signs-container flex no-wrap items-center q-mt-md">
@@ -129,8 +100,8 @@
             </div>
           </div>
 
-          <!-- TABLE 3: LOG MONITORING RR -->
-          <table class="doc-table">
+          <!-- TABLE 2: LOG MONITORING RR -->
+          <table class="doc-table q-mb-md">
             <thead>
               <tr>
                 <th colspan="7" class="text-weight-bold title-th bg-grey-3">LOG MONITORING RUANG PEMULIHAN (RR)</th>
@@ -161,6 +132,35 @@
                 <td class="text-center">{{ log.temp || '-' }}</td>
                 <td class="text-center">{{ log.spo2 || '-' }}</td>
                 <td>{{ log.obat_cairan || log.keterangan || '-' }}</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- TABLE 3: INSTRUKSI PASCA ANESTESI -->
+          <table class="doc-table">
+            <thead>
+              <tr>
+                <th colspan="4" class="text-weight-bold title-th bg-grey-3">INSTRUKSI PASCA ANESTESI</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td width="25%" class="text-weight-bold">Infus</td>
+                <td width="25%">{{ store.inputFormPasca?.infus || '-' }}</td>
+                <td width="25%" class="text-weight-bold">Antibiotika</td>
+                <td width="25%">{{ store.inputFormPasca?.antibiotika || '-' }}</td>
+              </tr>
+              <tr>
+                <td class="text-weight-bold">Bila Mual / Muntah</td>
+                <td>{{ store.inputFormPasca?.obat_mual || '-' }}</td>
+                <td class="text-weight-bold">Bila Kesakitan</td>
+                <td>{{ store.inputFormPasca?.obat_sakit || '-' }}</td>
+              </tr>
+              <tr>
+                <td class="text-weight-bold">Minum / Makan</td>
+                <td>{{ store.inputFormPasca?.makan_minum || '-' }}</td>
+                <td class="text-weight-bold">Lain-lain</td>
+                <td>{{ store.inputFormPasca?.lain_lain || '-' }}</td>
               </tr>
             </tbody>
           </table>
