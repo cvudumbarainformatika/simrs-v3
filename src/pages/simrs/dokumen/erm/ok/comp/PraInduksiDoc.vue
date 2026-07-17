@@ -86,7 +86,8 @@
                 <td colspan="3">
                   {{ dataInduksi?.persiapan_transfusi || '-' }}
                   <span v-if="dataInduksi?.persiapan_transfusi === 'Ya'">
-                    | Jenis: {{ dataInduksi?.jenis_transfusi || '-' }} | Jumlah: {{ dataInduksi?.jumlah_transfusi || '-' }} Kolf/Unit
+                    | Jenis: {{ dataInduksi?.jenis_transfusi || '-' }} | Jumlah: {{ dataInduksi?.jumlah_transfusi || '-'
+                    }} Kolf/Unit
                   </span>
                 </td>
               </tr>
@@ -104,10 +105,10 @@
               <tr>
                 <td width="25%" class="text-weight-bold">Vital Sign</td>
                 <td colspan="3">
-                  Kesadaran/Sens: {{ dataInduksi?.vit_sens || '-' }} | 
-                  TD: {{ dataInduksi?.vit_td_sistole || '-' }}/{{ dataInduksi?.vit_td_diastole || '-' }} mmHg | 
-                  Nadi: {{ dataInduksi?.vit_nadi || '-' }} x/menit | 
-                  RR: {{ dataInduksi?.vit_rr || '-' }} x/menit | 
+                  Kesadaran/Sens: {{ dataInduksi?.vit_sens || '-' }} |
+                  TD: {{ dataInduksi?.vit_td_sistole || '-' }}/{{ dataInduksi?.vit_td_diastole || '-' }} mmHg |
+                  Nadi: {{ dataInduksi?.vit_nadi || '-' }} x/menit |
+                  RR: {{ dataInduksi?.vit_rr || '-' }} x/menit |
                   Suhu: {{ dataInduksi?.vit_suhu || '-' }} °C
                 </td>
               </tr>
@@ -140,7 +141,8 @@
           <table class="doc-table">
             <thead>
               <tr>
-                <th colspan="4" class="text-weight-bold title-th bg-grey-3">PEMERIKSAAN PENUNJANG & RENCANA ANESTESI</th>
+                <th colspan="4" class="text-weight-bold title-th bg-grey-3">PEMERIKSAAN PENUNJANG & RENCANA ANESTESI
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -166,7 +168,7 @@
                 <td class="text-weight-bold">Rencana Anestesi</td>
                 <td colspan="3">
                   {{ dataInduksi?.renc_anastesi || '-' }}
-                  <span v-if="dataInduksi?.renc_anastesi === 'Regional' && dataInduksi?.region_anas">
+                  <span v-if="dataInduksi?.region_anas">
                     ({{ dataInduksi?.region_anas }})
                   </span>
                 </td>
@@ -335,7 +337,8 @@ onMounted(() => {
   margin-bottom: 15px;
   font-size: 11px;
 
-  th, td {
+  th,
+  td {
     border: 1px solid #000;
     padding: 6px 10px;
     vertical-align: top;

@@ -326,18 +326,23 @@
             <div class="row items-center">
               <div class="col-4">
                 <q-option-group v-model="store.formInduksi.renc_anastesi" :options="RenAnasOptions" inline dense
-                  @update:model-value="clearJenis($event, 'region_anas', 'Umum')" />
+                  @update:model-value="() => {
+                    clearJenis($event, 'region_anas', 'Regional')
+                    clearJenis($event, 'region_anas', 'Umum')
+                  }" />
               </div>
               <div class="col-6">
 
               </div>
             </div>
             <div class="row items-center q-my-xs">
-              <div class="col-1">
+              <div v-if="store.formInduksi.renc_anastesi == 'Regional'" class="col-1">
               </div>
               <div class="col-10 q-ml-xs">
                 <q-option-group v-if="store.formInduksi.renc_anastesi == 'Regional'"
                   v-model="store.formInduksi.region_anas" :options="RegionAnasOptions" inline dense />
+                <q-option-group v-if="store.formInduksi.renc_anastesi == 'Umum'" v-model="store.formInduksi.region_anas"
+                  :options="UmumAnasOptions" inline dense />
               </div>
             </div>
           </div>
@@ -516,9 +521,10 @@
           @set-model="(val) => {
             store.formInduksi.jam = val
           }" /></div>
-      <div class="col-4"><app-autocomplete v-model="store.formInduksi.dokter_anastesi" :key="laporanOp.nakes?.length || 0"
-          label="Dokter Anestesi" outlined dense :source="laporanOp.nakes?.filter(y => y?.kdgroupnakes == '1')"
-          option-label="nama" option-value="kdpegsimrs" hide-dropdown-icon /></div>
+      <div class="col-4"><app-autocomplete v-model="store.formInduksi.dokter_anastesi"
+          :key="laporanOp.nakes?.length || 0" label="Dokter Anestesi" outlined dense
+          :source="laporanOp.nakes?.filter(y => y?.kdgroupnakes == '1')" option-label="nama" option-value="kdpegsimrs"
+          hide-dropdown-icon /></div>
     </div>
     <div class="row justify-end q-my-lg q-mr-md">
       <q-btn label="Simpan" no-caps color="primary" glossy :loading="store.loadingInduksi"
@@ -592,6 +598,8 @@ const RegionAnasOptions = ref([
     label: 'Blok Syaraf',
     value: 'Blok Syaraf'
   },
+])
+const UmumAnasOptions = ref([
   {
     label: 'Intubasi',
     value: 'Intubasi'
