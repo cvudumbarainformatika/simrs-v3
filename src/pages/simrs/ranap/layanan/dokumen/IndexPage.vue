@@ -194,6 +194,15 @@ const menus = ref([
     icon: 'icon-my-file_sign',
     nakes: ['1', '2', '3'],
     comp: shallowRef(defineAsyncComponent(() => import('./asesmenJatuh/IndexPage.vue')))
+  },
+  {
+    name: 'asesmen-nyeri-document',
+    label: 'ASESMEN ULANG RISIKO NYERI',
+    title: 'ASESMEN ULANG RISIKO NYERI',
+    desc: 'Dokumen Asesmen Ulang Risiko Nyeri (Wong Baker, BPS, NIPS)',
+    icon: 'icon-my-file_sign',
+    nakes: ['1', '2', '3'],
+    comp: shallowRef(defineAsyncComponent(() => import('./asesmenNyeri/IndexPage.vue')))
   }
 ])
 
