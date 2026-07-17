@@ -16,8 +16,9 @@
               :options="['Sadar', 'Belum Sadar', 'Reflek (-)', 'Reflek (+)', 'Panas', 'Syok']" label="Keadaan Umum"
               dense outlined bg-color="white" multiple use-chips />
           </div>
-          <div class="col-md-2 col-xs-4">
-            <q-input v-model="store.inputFormPasca.pernapasan" label="Pernapasan" dense outlined bg-color="white" />
+          <div class="col-md-3 col-xs-6">
+            <q-select v-model="store.inputFormPasca.pernapasan" :options="['Spontan', 'Kontrol']" label="Pernapasan"
+              dense outlined bg-color="white" behavior="menu" />
           </div>
         </div>
       </q-card-section>
@@ -66,10 +67,15 @@
               mask="##:##" />
           </div>
           <div class="col-md-4">
-            <q-input v-model="store.inputFormPasca.monitor_selama" label="Selama (Jam/Menit)" dense outlined />
+            <q-select v-model="store.inputFormPasca.monitor_setiap"
+              :options="[{ label: '15 Menit', value: '15' }, { label: '30 Menit', value: '30' }]"
+              label="Setiap (Menit)" dense outlined emit-value map-options behavior="menu"
+              :disable="logs.length > 0">
+              <q-tooltip v-if="logs.length > 0">Interval terkunci karena data log observasi sudah ada</q-tooltip>
+            </q-select>
           </div>
           <div class="col-md-4">
-            <q-input v-model="store.inputFormPasca.monitor_setiap" label="Setiap (Menit)" dense outlined />
+            <q-input v-model="store.inputFormPasca.monitor_selama" label="Selama (Otomatis)" dense outlined readonly bg-color="grey-2" />
           </div>
 
           <div class="col-md-6 q-mt-sm">
@@ -86,11 +92,14 @@
             <q-input v-model="store.inputFormPasca.obat_sakit" label="Bila Kesakitan" dense outlined />
           </div>
           <div class="col-md-4 q-mt-sm">
-            <q-input v-model="store.inputFormPasca.makan_minum" label="Minum / Makan" dense outlined />
+            <q-input v-model="store.inputFormPasca.obat_lain" label="Obat Lain-lain" dense outlined />
           </div>
 
-          <div class="col-md-12 q-mt-sm">
-            <q-input v-model="store.inputFormPasca.lain_lain" label="Lain-lain" dense outlined />
+          <div class="col-md-6 q-mt-sm">
+            <q-input v-model="store.inputFormPasca.makan_minum" label="Minum / Makan" dense outlined />
+          </div>
+          <div class="col-md-6 q-mt-sm">
+            <q-input v-model="store.inputFormPasca.lain_lain" label="Lain-lain / Instruksi Lain" dense outlined />
           </div>
         </div>
 
@@ -102,7 +111,7 @@
 
     <!-- FAB BUTTON UNTUK TAMBAH LOG -->
     <q-page-sticky position="bottom-right" :offset="[18, 18]">
-      <q-btn fab icon="add_chart" color="secondary" @click="showInputLog = true">
+      <q-btn fab icon="add_chart" color="secondary" @click="openInputLogDialog">
         <q-tooltip anchor="top left" self="bottom right" :offset="[10, 10]">Input Data Observasi Pasca</q-tooltip>
       </q-btn>
     </q-page-sticky>
@@ -166,12 +175,26 @@
 <script setup>
 import { useMonitoringSaatStore } from 'src/stores/simrs/kamaroperasi/assasement/monitoringSaat'
 import { ref, computed, onMounted, nextTick, watch } from 'vue'
+import { useQuasar } from 'quasar'
 
 const props = defineProps({
   pasien: { type: Object, default: () => ({}) }
 })
 
 const store = useMonitoringSaatStore()
+const $q = useQuasar()
+
+function openInputLogDialog () {
+  if (!store.inputFormPasca?.monitor_setiap) {
+    $q.notify({
+      type: 'warning',
+      message: 'Silakan pilih interval "Setiap (Menit)" (15 atau 30 menit) terlebih dahulu!',
+      position: 'top'
+    })
+    return
+  }
+  showInputLog.value = true
+}
 
 // --- DATA FORM STATE ---
 const formInstruksi = ref({ monitor_mulai: '', monitor_selama: '', monitor_setiap: '', infus: '', antibiotika: '', obat_mual: '', obat_sakit: '', makan_minum: '', lain_lain: '' })
@@ -416,18 +439,18 @@ function formatSelectTime (val, waktuStr) {
   return `${resH}:${resM} (Menit ke-${val})`
 }
 
-// 1. GENERATE OPSI MENIT (Kelipatan 5 menit)
+// 1. GENERATE OPSI MENIT (Berdasarkan monitor_setiap: 15 atau 30 menit)
 const minuteOptions = computed(() => {
+  const step = parseInt(store.inputFormPasca?.monitor_setiap || '15', 10) || 15
   const lastTime = logs.value.length > 0
     ? Math.max(...logs.value.map(l => l.time))
     : 0
 
-  // Batas atas minimal 120 menit untuk RR (Recovery Room), atau + 30 menit dari log terakhir
-  const limit = Math.max(145, lastTime + 30)
-  const length = Math.floor(limit / 5) + 1
+  const limit = Math.max(145, lastTime + step * 2)
+  const length = Math.floor(limit / step) + 1
 
   return Array.from({ length }, (_, i) => {
-    const val = i * 5
+    const val = i * step
     return {
       label: formatSelectTime(val, store.inputFormPasca?.monitor_mulai),
       value: val
@@ -437,14 +460,21 @@ const minuteOptions = computed(() => {
 
 // 2. FUNGSI KETIKA DIALOG MUNCUL
 function onDialogShow () {
+  const step = parseInt(store.inputFormPasca?.monitor_setiap || '15', 10) || 15
   const lastTime = logs.value.length > 0
     ? Math.max(...logs.value.map(l => l.time))
-    : -5 // Default awal agar mulai dari 0 jika belum ada log
+    : -step
 
-  // Asumsi observasi pasca anestesi biasanya tiap 15 menit,
-  // Anda bisa ganti "lastTime + 5" jika ingin interval 5 menit.
-  formDialogLog.value.time = lastTime + 5
+  formDialogLog.value.time = lastTime + step
 }
+
+// Watcher untuk otomatis menghitung dan mengisikan `monitor_selama` dari log paling akhir
+watch(() => logs.value, (newLogs) => {
+  if (newLogs && newLogs.length > 0) {
+    const maxTime = Math.max(...newLogs.map(l => l.time))
+    store.inputFormPasca.monitor_selama = `${maxTime} Menit`
+  }
+}, { deep: true, immediate: true })
 
 // 3. WATCHER UNTUK AUTO-LOAD DATA (EDIT MODE)
 watch(() => formDialogLog.value.time, (newTime) => {
@@ -473,20 +503,14 @@ watch(() => formDialogLog.value.time, (newTime) => {
 
 // 4. MODIFIKASI FUNGSI SIMPAN (Bisa Insert & Update)
 async function tambahLog () {
-  // Cek apakah data di menit tersebut sudah ada
-  // const index = logs.value.findIndex(l => l.time === formDialogLog.value.time)
-
-  // if (index !== -1) {
-  //   // UPDATE DATA JIKA SUDAH ADA
-  //   logs.value[index] = { ...formDialogLog.value }
-  // } else {
-  //   // INSERT DATA BARU JIKA BELUM ADA
-  //   logs.value.push({ ...formDialogLog.value })
-  // }
-
-  // // Opsional: Urutkan array logs berdasarkan waktu agar garis grafik tidak zig-zag
-  // logs.value.sort((a, b) => a.time - b.time)
   await store.simpanLogPasca(props.pasien, formDialogLog.value)
+
+  if (logs.value.length > 0) {
+    const maxTime = Math.max(...logs.value.map(l => l.time))
+    store.inputFormPasca.monitor_selama = `${maxTime} Menit`
+  }
+  // Otomatis simpan medikasi pasca ke DB agar monitor_selama dan monitor_setiap tersimpan
+  await store.simpanMedikasiPasca()
 
   showInputLog.value = false
   syncLabels()

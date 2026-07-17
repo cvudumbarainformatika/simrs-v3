@@ -157,10 +157,14 @@
                 <td>{{ store.inputFormPasca?.obat_sakit || '-' }}</td>
               </tr>
               <tr>
+                <td class="text-weight-bold">Obat Lain-lain</td>
+                <td>{{ store.inputFormPasca?.obat_lain || '-' }}</td>
                 <td class="text-weight-bold">Minum / Makan</td>
                 <td>{{ store.inputFormPasca?.makan_minum || '-' }}</td>
-                <td class="text-weight-bold">Lain-lain</td>
-                <td>{{ store.inputFormPasca?.lain_lain || '-' }}</td>
+              </tr>
+              <tr>
+                <td class="text-weight-bold">Lain-lain / Instruksi Lain</td>
+                <td colspan="3">{{ store.inputFormPasca?.instruksi_lain || store.inputFormPasca?.lain_lain || '-' }}</td>
               </tr>
             </tbody>
           </table>
@@ -404,13 +408,13 @@ function formatKeadaanUmum (val) {
 }
 
 const penataAnestesi = computed(() => {
-  const code = store.inputFormPasca?.penata_anastesi || store.inputFormPasca?.penata_anestesi || store.formKeluar?.penata_anastesi || props.pasien?.nakes || ''
+  const code = store.inputFormPasca?.penata_anastesi || store.inputFormPasca?.penata_anestesi || store.inputFormPasca?.dokter_anastesi || store.formKeluar?.penata_anastesi || props.pasien?.nakes || ''
   if (!code) return null
   return laporanOp.nakes?.find(x => x.kdpegsimrs === code) || { nama: code, nip: '-' }
 })
 
 const dokterAnestesi = computed(() => {
-  const code = store.inputFormPasca?.dokter_anastesi || store.inputFormPasca?.dokter_anestesi || props.pasien?.pra_induksi?.dokter_anastesi || store.formKeluar?.dokter_anastesi || ''
+  const code = props.pasien?.pra_induksi?.dokter_anastesi || store.formKeluar?.dokter_anastesi || props.pasien?.laporan_operasi?.dokter_anastesi || props.pasien?.anastesi?.dokter_anastesi || ''
   if (!code) return null
   return laporanOp.nakes?.find(x => x.kdpegsimrs === code) || { nama: code, nip: '-' }
 })
