@@ -91,9 +91,21 @@
         <div class="row q-col-gutter-sm">
           <div class="col-md-2 col-xs-6">
             <q-input v-model="store.formKeluar.jam_masuk" label="Jam Masuk" dense outlined mask="##:##" />
+            <div class="text-caption text-primary q-mt-xs" v-if="estimasiMasukRR">
+              ℹ️ Est. Masuk RR (Selesai Bedah + 5m): <strong>{{ estimasiMasukRR }}</strong>
+            </div>
+            <div class="text-caption text-grey-6 q-mt-xs" v-else>
+              ℹ️ Est. Masuk RR: Belum diisi
+            </div>
           </div>
           <div class="col-md-2 col-xs-6">
             <q-input v-model="store.formKeluar.jam_keluar" label="Jam Keluar" dense outlined mask="##:##" />
+            <div class="text-caption text-primary q-mt-xs" v-if="estimasiKeluarRR">
+              ℹ️ Est. Keluar RR (Masuk RR + Durasi Log): <strong>{{ estimasiKeluarRR }}</strong>
+            </div>
+            <div class="text-caption text-grey-6 q-mt-xs" v-else>
+              ℹ️ Est. Keluar RR: Belum diisi
+            </div>
           </div>
           <div class="col-md-5 col-xs-12">
             <div class="row q-col-gutter-xs">
@@ -213,7 +225,7 @@
 <script setup>
 import { useMonitoringSaatStore } from 'src/stores/simrs/kamaroperasi/assasement/monitoringSaat'
 import { useLaporanOperasiStore } from 'src/stores/simrs/kamaroperasi/laporanOperasi'
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 
 const props = defineProps({
   pasien: {
@@ -318,10 +330,70 @@ function hapusAldrete (index) {
   store.hapusSkorAldrete({ id: index.id })
   // store.aldreteLogs.splice(index, 1)
 }
-onMounted(() => {
+function addMinutesToTime (timeStr, mins) {
+  if (!timeStr || typeof timeStr !== 'string' || !timeStr.includes(':')) return ''
+  const parts = timeStr.split(':')
+  const h = parseInt(parts[0], 10)
+  const m = parseInt(parts[1], 10)
+  if (isNaN(h) || isNaN(m)) return ''
+  const addedMins = parseInt(mins, 10) || 0
+  let totalMin = h * 60 + m + addedMins
+  if (totalMin < 0) totalMin = 0
+  const finalH = Math.floor((totalMin / 60) % 24).toString().padStart(2, '0')
+  const finalM = Math.floor(totalMin % 60).toString().padStart(2, '0')
+  return `${finalH}:${finalM}`
+}
 
+const lapOpSelesai = computed(() => {
+  const lap = props.pasien?.laporanop
+  if (Array.isArray(lap) && lap.length > 0) {
+    const item = lap.find(x => x.rs12) || lap[0]
+    return item?.rs12 ? item.rs12.substring(0, 5) : ''
+  } else if (lap && typeof lap === 'object') {
+    return lap.rs12 ? lap.rs12.substring(0, 5) : ''
+  }
+  return ''
+})
+
+const estimasiMasukRR = computed(() => {
+  if (!lapOpSelesai.value) return ''
+  return addMinutesToTime(lapOpSelesai.value, 5)
+})
+
+const maxLogMinute = computed(() => {
+  const logs = store.dataPasca || []
+  if (!logs.length) return 0
+  const times = logs.map(l => parseInt(l.time, 10)).filter(t => !isNaN(t))
+  return times.length ? Math.max(...times) : 0
+})
+
+const estimasiKeluarRR = computed(() => {
+  const jamMasuk = store.formKeluar?.jam_masuk || estimasiMasukRR.value
+  if (!jamMasuk) return ''
+  return addMinutesToTime(jamMasuk, maxLogMinute.value)
+})
+
+watch(estimasiMasukRR, (newVal) => {
+  if (newVal && !store.formKeluar?.jam_masuk) {
+    store.formKeluar.jam_masuk = newVal
+  }
+}, { immediate: true })
+
+watch([() => store.formKeluar?.jam_masuk, maxLogMinute], ([masuk, mins]) => {
+  if (masuk && mins > 0 && !store.formKeluar?.jam_keluar) {
+    store.formKeluar.jam_keluar = addMinutesToTime(masuk, mins)
+  }
+}, { immediate: true })
+
+onMounted(async () => {
   if (!laporanOp.nakes?.length) laporanOp.getNakes()
   store.getKamars()
-  store.getSkorAldrete(props.pasien)
+  await store.getSkorAldrete(props.pasien)
+  if (estimasiMasukRR.value && !store.formKeluar?.jam_masuk) {
+    store.formKeluar.jam_masuk = estimasiMasukRR.value
+  }
+  if (store.formKeluar?.jam_masuk && maxLogMinute.value > 0 && !store.formKeluar?.jam_keluar) {
+    store.formKeluar.jam_keluar = addMinutesToTime(store.formKeluar.jam_masuk, maxLogMinute.value)
+  }
 })
 </script>

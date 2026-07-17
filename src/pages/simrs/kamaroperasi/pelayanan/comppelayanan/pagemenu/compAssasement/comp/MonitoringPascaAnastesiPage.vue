@@ -10,6 +10,12 @@
           <div class="col-md-2 col-xs-6">
             <q-input v-model="store.inputFormPasca.jam_masuk" label="Masuk Jam" dense outlined bg-color="white"
               mask="##:##" />
+            <div class="text-caption text-primary q-mt-xs" v-if="estimasiMasukRR">
+              ℹ️ Est. Masuk RR (Selesai Bedah + 5m): <strong>{{ estimasiMasukRR }}</strong>
+            </div>
+            <div class="text-caption text-grey-6 q-mt-xs" v-else>
+              ℹ️ Est. Masuk RR: Belum diisi
+            </div>
           </div>
           <div class="col-md-4 col-xs-6">
             <q-select v-model="store.inputFormPasca.keadaan_umum"
@@ -543,6 +549,20 @@ const simpanData = () => {
   store.simpanMedikasiPasca()
 }
 
+function addMinutesToTime (timeStr, mins) {
+  if (!timeStr || typeof timeStr !== 'string' || !timeStr.includes(':')) return ''
+  const parts = timeStr.split(':')
+  const h = parseInt(parts[0], 10)
+  const m = parseInt(parts[1], 10)
+  if (isNaN(h) || isNaN(m)) return ''
+  const addedMins = parseInt(mins, 10) || 0
+  let totalMin = h * 60 + m + addedMins
+  if (totalMin < 0) totalMin = 0
+  const finalH = Math.floor((totalMin / 60) % 24).toString().padStart(2, '0')
+  const finalM = Math.floor(totalMin % 60).toString().padStart(2, '0')
+  return `${finalH}:${finalM}`
+}
+
 const lapOpSelesai = computed(() => {
   const lap = props.pasien?.laporanop
   if (Array.isArray(lap) && lap.length > 0) {
@@ -554,9 +574,41 @@ const lapOpSelesai = computed(() => {
   return ''
 })
 
+const estimasiMasukRR = computed(() => {
+  if (!lapOpSelesai.value) return ''
+  return addMinutesToTime(lapOpSelesai.value, 5)
+})
+
+const maxLogMinute = computed(() => {
+  if (!logs.value || !logs.value.length) return 0
+  const times = logs.value.map(l => parseInt(l.time, 10)).filter(t => !isNaN(t))
+  return times.length ? Math.max(...times) : 0
+})
+
+const estimasiKeluarRR = computed(() => {
+  const jamMasuk = store.inputFormPasca?.jam_masuk || store.formKeluar?.jam_masuk || estimasiMasukRR.value
+  if (!jamMasuk) return ''
+  return addMinutesToTime(jamMasuk, maxLogMinute.value)
+})
+
 watch(lapOpSelesai, (newVal) => {
   if (newVal && !store.inputFormPasca?.monitor_mulai) {
     store.inputFormPasca.monitor_mulai = newVal
+  }
+}, { immediate: true })
+
+watch(estimasiMasukRR, (newVal) => {
+  if (newVal && !store.inputFormPasca?.jam_masuk) {
+    store.inputFormPasca.jam_masuk = newVal
+  }
+  if (newVal && !store.formKeluar?.jam_masuk) {
+    store.formKeluar.jam_masuk = newVal
+  }
+}, { immediate: true })
+
+watch([() => store.inputFormPasca?.jam_masuk, maxLogMinute], ([masuk, mins]) => {
+  if (masuk && mins > 0 && !store.formKeluar?.jam_keluar) {
+    store.formKeluar.jam_keluar = addMinutesToTime(masuk, mins)
   }
 }, { immediate: true })
 
@@ -564,6 +616,15 @@ onMounted(async () => {
   await store.getMonitoringPasca(props.pasien)
   if (lapOpSelesai.value && !store.inputFormPasca.monitor_mulai) {
     store.inputFormPasca.monitor_mulai = lapOpSelesai.value
+  }
+  if (estimasiMasukRR.value && !store.inputFormPasca.jam_masuk) {
+    store.inputFormPasca.jam_masuk = estimasiMasukRR.value
+  }
+  if (estimasiMasukRR.value && !store.formKeluar?.jam_masuk) {
+    store.formKeluar.jam_masuk = estimasiMasukRR.value
+  }
+  if (store.inputFormPasca?.jam_masuk && maxLogMinute.value > 0 && !store.formKeluar?.jam_keluar) {
+    store.formKeluar.jam_keluar = addMinutesToTime(store.inputFormPasca.jam_masuk, maxLogMinute.value)
   }
   nextTick(() => {
     if (typeof syncLabels === 'function') syncLabels()
