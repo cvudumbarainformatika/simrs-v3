@@ -136,7 +136,7 @@
                 <th colspan="7" class="text-weight-bold title-th bg-grey-3">LOG MONITORING RUANG PEMULIHAN (RR)</th>
               </tr>
               <tr class="bg-grey-2">
-                <th width="12%" class="text-center">Waktu (Menit)</th>
+                <th width="12%" class="text-center">{{ store.inputFormPasca?.monitor_mulai ? 'Jam' : 'Waktu (Menit)' }}</th>
                 <th width="15%" class="text-center">TD (mmHg)</th>
                 <th width="12%" class="text-center">Nadi (x/mnt)</th>
                 <th width="12%" class="text-center">RR (x/mnt)</th>
@@ -150,7 +150,9 @@
                 <td colspan="7" class="text-center text-grey">Tidak ada data log monitoring RR</td>
               </tr>
               <tr v-else v-for="(log, idx) in store.dataPasca" :key="idx">
-                <td class="text-center text-weight-bold">{{ log.time }}'</td>
+                <td class="text-center text-weight-bold">
+                  {{ formatLogTime(log.time, store.inputFormPasca?.monitor_mulai) }}
+                </td>
                 <td class="text-center">
                   {{ log.td_sistolik && log.td_diastolik ? log.td_sistolik + '/' + log.td_diastolik : '-' }}
                 </td>
@@ -282,14 +284,7 @@ const lowerChartOptions = computed(() => ({
       offsetY: 0,
       style: { fontSize: '10px' },
       rotate: -45,
-      formatter: (val) => {
-        if (val % 15 === 0) {
-          const jam = Math.floor(val / 60).toString().padStart(2, '0')
-          const menit = (val % 60).toString().padStart(2, '0')
-          return `${jam}:${menit}`
-        }
-        return ''
-      }
+      formatter: (val) => formatXAxisTime(val, store.inputFormPasca?.monitor_mulai)
     },
     axisTicks: { show: false }
   },
@@ -441,6 +436,41 @@ const qrDokter = computed(() => {
   if (!code) return ''
   return generateQRUrl(props.pasien?.noreg, 'Monitoring Pasca Anestesi - Dokter', code, 'PENUNJANG')
 })
+
+function formatXAxisTime (val, waktuStr) {
+  if (val % 15 !== 0) return ''
+  let startHour = 0
+  let startMin = 0
+  if (waktuStr && typeof waktuStr === 'string' && waktuStr.includes(':')) {
+    const parts = waktuStr.split(':')
+    const h = parseInt(parts[0], 10)
+    const m = parseInt(parts[1], 10)
+    if (!isNaN(h)) startHour = h
+    if (!isNaN(m)) startMin = m
+  }
+  const totalMinutes = (startHour * 60 + startMin) + val
+  const h = Math.floor((totalMinutes / 60) % 24).toString().padStart(2, '0')
+  const m = Math.floor(totalMinutes % 60).toString().padStart(2, '0')
+  return `${h}:${m}`
+}
+
+function formatLogTime (val, waktuStr) {
+  if (!waktuStr || typeof waktuStr !== 'string' || !waktuStr.includes(':')) {
+    return `${val}'`
+  }
+  let startHour = 0
+  let startMin = 0
+  const parts = waktuStr.split(':')
+  const h = parseInt(parts[0], 10)
+  const m = parseInt(parts[1], 10)
+  if (!isNaN(h)) startHour = h
+  if (!isNaN(m)) startMin = m
+
+  const totalMinutes = (startHour * 60 + startMin) + (parseInt(val, 10) || 0)
+  const resH = Math.floor((totalMinutes / 60) % 24).toString().padStart(2, '0')
+  const resM = Math.floor(totalMinutes % 60).toString().padStart(2, '0')
+  return `${resH}:${resM}`
+}
 
 const printObj = {
   id: 'pdfDoc',

@@ -249,14 +249,7 @@ const lowerChartOptions = computed(() => ({
       offsetY: 0,
       style: { fontSize: '10px' },
       rotate: -45,
-      formatter: (val) => {
-        if (val % 15 === 0) {
-          const jam = Math.floor(val / 60).toString().padStart(2, '0')
-          const menit = (val % 60).toString().padStart(2, '0')
-          return `${jam}:${menit}`
-        }
-        return ''
-      }
+      formatter: (val) => formatXAxisTime(val, store.inputFormPasca?.monitor_mulai)
     },
     axisTicks: { show: false }
   },
@@ -388,6 +381,41 @@ function syncLabels () {
 
 // ... (kode formKondisi dan logs yang sudah ada sebelumnya) ...
 
+function formatXAxisTime (val, waktuStr) {
+  if (val % 15 !== 0) return ''
+  let startHour = 0
+  let startMin = 0
+  if (waktuStr && typeof waktuStr === 'string' && waktuStr.includes(':')) {
+    const parts = waktuStr.split(':')
+    const h = parseInt(parts[0], 10)
+    const m = parseInt(parts[1], 10)
+    if (!isNaN(h)) startHour = h
+    if (!isNaN(m)) startMin = m
+  }
+  const totalMinutes = (startHour * 60 + startMin) + val
+  const h = Math.floor((totalMinutes / 60) % 24).toString().padStart(2, '0')
+  const m = Math.floor(totalMinutes % 60).toString().padStart(2, '0')
+  return `${h}:${m}`
+}
+
+function formatSelectTime (val, waktuStr) {
+  if (!waktuStr || typeof waktuStr !== 'string' || !waktuStr.includes(':')) {
+    return `Menit ke-${val}`
+  }
+  let startHour = 0
+  let startMin = 0
+  const parts = waktuStr.split(':')
+  const h = parseInt(parts[0], 10)
+  const m = parseInt(parts[1], 10)
+  if (!isNaN(h)) startHour = h
+  if (!isNaN(m)) startMin = m
+
+  const totalMinutes = (startHour * 60 + startMin) + val
+  const resH = Math.floor((totalMinutes / 60) % 24).toString().padStart(2, '0')
+  const resM = Math.floor(totalMinutes % 60).toString().padStart(2, '0')
+  return `${resH}:${resM} (Menit ke-${val})`
+}
+
 // 1. GENERATE OPSI MENIT (Kelipatan 5 menit)
 const minuteOptions = computed(() => {
   const lastTime = logs.value.length > 0
@@ -401,7 +429,7 @@ const minuteOptions = computed(() => {
   return Array.from({ length }, (_, i) => {
     const val = i * 5
     return {
-      label: `Menit ke-${val}`,
+      label: formatSelectTime(val, store.inputFormPasca?.monitor_mulai),
       value: val
     }
   })
