@@ -279,7 +279,7 @@ const lowerChartOptions = computed(() => ({
       fontWeight: 'bold', offsetY: -10,
       colors: [
         function ({ seriesIndex }) {
-          const colors = ['#2E7D32', '#f44336', '#2196f3', '#ff9800', '#000', '#000', '#000', '#000', '#000', '#000', '#000']
+          const colors = ['#000000', '#000000', '#F44336', '#000000', '#000', '#000', '#000', '#000', '#000', '#000', '#000']
           return colors[seriesIndex] || '#000'
         }
       ]
@@ -324,13 +324,13 @@ const lowerChartOptions = computed(() => ({
       // Logika penentuan simbol dan warna berdasarkan nama series
       switch (seriesName) {
         case 'Sistolik':
-          symbol = '∨'; color = '#2E7D32'; break // Hijau
+          symbol = '∨'; color = '#000000'; break // Hitam
         case 'Diastolik':
-          symbol = '∧'; color = '#f44336'; break // Merah
+          symbol = '∧'; color = '#000000'; break // Hitam
         case 'Nadi':
-          symbol = '●'; color = '#2196f3'; break // Biru
+          symbol = '●'; color = '#F44336'; break // Merah
         case 'Respirasi':
-          symbol = '✱'; color = '#ff9800'; break // Orange
+          symbol = '✱'; color = '#000000'; break // Hitam
         case 'Intubasi':
           symbol = '↑'; color = '#000000'; break // Hitam
         case 'Ekstubasi':
@@ -469,6 +469,14 @@ const lowerSeries = computed(() => [
 // Konfigurasi Chart Atas (Obat/Cairan)
 
 const upperChartOptions = computed(() => ({
+  colors: allRows.value.map(name => {
+    if (name === 'o2') return '#2E7D32'        // Hijau untuk Oksigen (O2)
+    if (name === 'n2o') return '#1976D2'       // Biru untuk N2O
+    if (name === 'halothan') return '#D32F2F'  // Merah untuk Halothan
+    if (name === 'isoflurane') return '#7B1FA2' // Ungu untuk Isoflurane
+    if (name === 'sevoflurane') return '#F57C00'// Orange untuk Sevoflurane
+    return '#1565C0'                            // Default untuk Obat & Cairan
+  }),
   chart: {
     id: 'meds',
     group: 'anesthesia2', // Sinkron dengan lower chart
@@ -530,7 +538,17 @@ const upperChartOptions = computed(() => ({
     formatter: (val, opt) => {
       return opt.w.config.series[opt.seriesIndex].data[opt.dataPointIndex].markerLabel || ''
     },
-    style: { fontSize: '9px', colors: ['#000'] },
+    style: {
+      fontSize: '9px',
+      colors: allRows.value.map(name => {
+        if (name === 'o2') return '#2E7D32'        // Hijau untuk Oksigen (O)
+        if (name === 'n2o') return '#1976D2'       // Biru untuk N2O (N)
+        if (name === 'halothan') return '#D32F2F'  // Merah untuk Halothan (H)
+        if (name === 'isoflurane') return '#7B1FA2' // Ungu untuk Isoflurane (I)
+        if (name === 'sevoflurane') return '#F57C00'// Orange untuk Sevoflurane (S)
+        return '#000000'                            // Hitam untuk Obat & Cairan
+      })
+    },
     offsetY: -5
   },
   markers: {

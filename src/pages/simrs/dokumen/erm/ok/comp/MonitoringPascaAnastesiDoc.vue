@@ -319,7 +319,7 @@ const lowerChartOptions = computed(() => ({
       offsetY: -10,
       colors: [
         function ({ seriesIndex }) {
-          const colors = ['#2E7D32', '#f44336', '#2196f3', '#ff9800', '#fe9000']
+          const colors = ['#000000', '#000000', '#F44336', '#000000', '#2196F3']
           return colors[seriesIndex] || '#000'
         }
       ]
@@ -341,11 +341,11 @@ const lowerChartOptions = computed(() => ({
       let symbol = ''
       let color = ''
       switch (seriesName) {
-        case 'Sistolik': symbol = '∨'; color = '#2E7D32'; break
-        case 'Diastolik': symbol = '∧'; color = '#f44336'; break
-        case 'Nadi': symbol = '●'; color = '#2196f3'; break
-        case 'Respirasi': symbol = '✱'; color = '#ff9800'; break
-        case 'Suhu': symbol = '△'; color = '#fe9000'; break
+        case 'Sistolik': symbol = '∨'; color = '#000000'; break
+        case 'Diastolik': symbol = '∧'; color = '#000000'; break
+        case 'Nadi': symbol = '●'; color = '#F44336'; break
+        case 'Respirasi': symbol = '✱'; color = '#000000'; break
+        case 'Suhu': symbol = '△'; color = '#2196F3'; break
         default: symbol = '•'; color = '#999'
       }
       return `
@@ -355,7 +355,7 @@ const lowerChartOptions = computed(() => ({
       </div>`
     }
   },
-  colors: ['#2E7D32', '#f44336', '#2196F3', '#FFA000', '#fe9000'],
+  colors: ['#000000', '#000000', '#F44336', '#000000', '#2196F3'],
   tooltip: {
     enabled: true,
     shared: true,
