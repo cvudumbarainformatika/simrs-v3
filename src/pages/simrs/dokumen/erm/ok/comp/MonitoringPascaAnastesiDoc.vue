@@ -39,7 +39,7 @@
         </div>
 
         <div class="dokumen-content q-mb-md">
-          <!-- TABLE 1: KONDISI MASUK RR & MONITORING PARAMETERS -->
+          <!-- TABLE 1: KONDISI MASUK RR -->
           <table class="doc-table q-mb-md">
             <thead>
               <tr>
@@ -58,17 +58,21 @@
                 <td colspan="3">{{ store.inputFormPasca?.pernapasan || '-' }}</td>
               </tr>
               <tr class="bg-grey-1 text-weight-bold">
-                <td colspan="4">PARAMETER MONITORING</td>
+                <td colspan="4">TANDA VITAL AWAL MASUK (MENIT KE-0)</td>
               </tr>
               <tr>
-                <td class="text-weight-bold">Mulai Jam</td>
-                <td>{{ store.inputFormPasca?.monitor_mulai || '-' }}</td>
-                <td class="text-weight-bold">Selama</td>
-                <td>{{ store.inputFormPasca?.monitor_selama || '-' }}</td>
+                <td class="text-weight-bold">Tekanan Darah (TD)</td>
+                <td>
+                  {{ log0?.td_sistolik && log0?.td_diastolik ? log0.td_sistolik + '/' + log0.td_diastolik + ' mmHg' : '-' }}
+                </td>
+                <td class="text-weight-bold">Nadi</td>
+                <td>{{ log0?.nadi ? log0.nadi + ' x/menit' : '-' }}</td>
               </tr>
               <tr>
-                <td class="text-weight-bold">Setiap (Menit)</td>
-                <td colspan="3">{{ store.inputFormPasca?.monitor_setiap ? store.inputFormPasca?.monitor_setiap + ' Menit' : '-' }}</td>
+                <td class="text-weight-bold">Respirasi (RR)</td>
+                <td>{{ log0?.resp ? log0.resp + ' x/menit' : '-' }}</td>
+                <td class="text-weight-bold">Suhu</td>
+                <td>{{ log0?.temp ? log0.temp + ' °C' : '-' }}</td>
               </tr>
             </tbody>
           </table>
@@ -136,19 +140,35 @@
             </tbody>
           </table>
 
-          <!-- TABLE 3: INSTRUKSI PASCA ANESTESI -->
+          <!-- TABLE 3: PARAMETER MONITORING & INSTRUKSI PASCA ANESTESI -->
           <table class="doc-table">
             <thead>
               <tr>
-                <th colspan="4" class="text-weight-bold title-th bg-grey-3">INSTRUKSI PASCA ANESTESI</th>
+                <th colspan="4" class="text-weight-bold title-th bg-grey-3">PARAMETER MONITORING & INSTRUKSI PASCA ANESTESI</th>
               </tr>
             </thead>
             <tbody>
+              <tr class="bg-grey-1 text-weight-bold">
+                <td colspan="4">PARAMETER MONITORING</td>
+              </tr>
               <tr>
-                <td width="25%" class="text-weight-bold">Infus</td>
-                <td width="25%">{{ store.inputFormPasca?.infus || '-' }}</td>
-                <td width="25%" class="text-weight-bold">Antibiotika</td>
-                <td width="25%">{{ store.inputFormPasca?.antibiotika || '-' }}</td>
+                <td width="25%" class="text-weight-bold">Mulai Jam</td>
+                <td width="25%">{{ store.inputFormPasca?.monitor_mulai || '-' }}</td>
+                <td width="25%" class="text-weight-bold">Selama</td>
+                <td width="25%">{{ store.inputFormPasca?.monitor_selama || '-' }}</td>
+              </tr>
+              <tr>
+                <td class="text-weight-bold">Setiap (Menit)</td>
+                <td colspan="3">{{ store.inputFormPasca?.monitor_setiap ? store.inputFormPasca?.monitor_setiap + ' Menit' : '-' }}</td>
+              </tr>
+              <tr class="bg-grey-1 text-weight-bold">
+                <td colspan="4">INSTRUKSI PASCA ANESTESI</td>
+              </tr>
+              <tr>
+                <td class="text-weight-bold">Infus</td>
+                <td>{{ store.inputFormPasca?.infus || '-' }}</td>
+                <td class="text-weight-bold">Antibiotika</td>
+                <td>{{ store.inputFormPasca?.antibiotika || '-' }}</td>
               </tr>
               <tr>
                 <td class="text-weight-bold">Bila Mual / Muntah</td>
@@ -236,6 +256,10 @@ const refPrint = ref()
 
 // Logic chart dari MonitoringPascaAnastesiPage
 const logs = computed(() => store.dataPasca)
+const log0 = computed(() => {
+  if (!store.dataPasca || !store.dataPasca.length) return null
+  return store.dataPasca.find(l => parseInt(l.time, 10) === 0) || null
+})
 const scaleN = (val) => {
   if (!val) return val
   return 40 + ((val - 60) * (160 - 40)) / (180 - 60)

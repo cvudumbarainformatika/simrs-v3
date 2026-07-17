@@ -21,6 +21,17 @@
               dense outlined bg-color="white" behavior="menu" />
           </div>
         </div>
+
+        <!-- TANDA VITAL AWAL MASUK (LOG MENIT 0) -->
+        <div class="q-mt-sm bg-blue-1 q-pa-xs rounded-borders" v-if="log0">
+          <div class="text-caption text-weight-bold text-primary">Tanda Vital Awal Masuk (Log Menit ke-0):</div>
+          <div class="row q-col-gutter-xs text-caption text-weight-bold text-dark">
+            <div class="col-md-3 col-xs-6">TD: {{ log0.td_sistolik && log0.td_diastolik ? log0.td_sistolik + '/' + log0.td_diastolik + ' mmHg' : '-' }}</div>
+            <div class="col-md-3 col-xs-6">Nadi: {{ log0.nadi ? log0.nadi + ' x/mnt' : '-' }}</div>
+            <div class="col-md-3 col-xs-6">RR: {{ log0.resp ? log0.resp + ' x/mnt' : '-' }}</div>
+            <div class="col-md-3 col-xs-6">Suhu: {{ log0.temp ? log0.temp + ' °C' : '-' }}</div>
+          </div>
+        </div>
       </q-card-section>
     </q-card>
 
@@ -210,6 +221,10 @@ const formDialogLog = ref({ time: 0, td_sistolik: '', td_diastolik: '', nadi: ''
 //   { time: 30, td_sistolik: 120, td_diastolik: 80, nadi: 75, resp: 16, temp: 36.5 }
 // ])
 const logs = computed(() => store.dataPasca)
+const log0 = computed(() => {
+  if (!logs.value || !logs.value.length) return null
+  return logs.value.find(l => parseInt(l.time, 10) === 0) || null
+})
 // --- FUNGSI SCALE (SAMA PERSIS DENGAN KODINGAN ANDA) ---
 const scaleN = (val) => {
   if (!val) return val
