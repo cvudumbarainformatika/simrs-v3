@@ -107,6 +107,27 @@
 
 <script setup>
 import { ref, reactive, watch, computed } from 'vue'
+import { useMonitoringSaatStore } from 'src/stores/simrs/kamaroperasi/assasement/monitoringSaat'
+
+const store = useMonitoringSaatStore()
+
+function formatXAxisTime (val, waktuStr) {
+  if (!waktuStr || typeof waktuStr !== 'string' || !waktuStr.includes(':')) {
+    return `Menit ke-${val}`
+  }
+  let startHour = 0
+  let startMin = 0
+  const parts = waktuStr.split(':')
+  const h = parseInt(parts[0], 10)
+  const m = parseInt(parts[1], 10)
+  if (!isNaN(h)) startHour = h
+  if (!isNaN(m)) startMin = m
+
+  const totalMinutes = (startHour * 60 + startMin) + val
+  const resH = Math.floor((totalMinutes / 60) % 24).toString().padStart(2, '0')
+  const resM = Math.floor(totalMinutes % 60).toString().padStart(2, '0')
+  return `${resH}:${resM} (Menit ke-${val})`
+}
 
 const props = defineProps({
   logs: {
@@ -115,10 +136,7 @@ const props = defineProps({
   }
 })
 const emit = defineEmits(['update:modelValue', 'add-log', 'close'])
-// const minuteOptions = Array.from({ length: 30 }, (_, i) => ({
-//   label: `Menit ke-${i * 5}`,
-//   value: i * 5
-// }))
+
 const minuteOptions = computed(() => {
   // 1. Cari menit tertinggi yang sudah ada di data
   const lastTime = props.logs.length > 0
@@ -134,7 +152,7 @@ const minuteOptions = computed(() => {
   return Array.from({ length }, (_, i) => {
     const val = i * 5
     return {
-      label: `Menit ke-${val}`,
+      label: formatXAxisTime(val, store.inputForm?.waktu),
       value: val
     }
   })
