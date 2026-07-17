@@ -39,7 +39,88 @@
         </div>
 
         <div class="dokumen-content q-mb-md">
-          <!-- TABLE 1: DETAIL MEDIKASI & CAIRAN -->
+          <!-- VISUAL CHART -->
+          <div class="anesthesia-chart-container bg-white q-mb-md">
+            <div class="chart-section upper-section">
+              <div class="chart-wrapper" style="width: 100%;">
+                <apexchart type="scatter" height="300" width="100%" :key="'upper-' + logs.length"
+                  :options="upperChartOptions" :series="upperSeries" />
+              </div>
+            </div>
+
+            <div class="vital-signs-container flex no-wrap items-center q-mt-md">
+              <div class="custom-y-labels q-ml-sm text-center">
+                <div class="label-row flex no-wrap text-weight-bold">
+                  <span class="label-col">R</span>
+                  <span class="label-col">N</span>
+                  <span class="label-col">TD</span>
+                </div>
+                <div v-for="label in medicalYLabels" :key="label.grid" class="label-row flex no-wrap"
+                  :style="{ height: labelRowHeight + 'px' }">
+                  <span class="label-col">{{ label.r }}</span>
+                  <span class="label-col">{{ label.n }}</span>
+                  <span class="label-col">{{ label.td }}</span>
+                </div>
+              </div>
+
+              <div class="chart-wrapper flex-grow" style="width: 100%;">
+                <apexchart ref="chartWrapperRef" type="line" :key="'lower-' + logs.length" :options="lowerChartOptions"
+                  :series="lowerSeries" height="400px" width="100%" />
+              </div>
+            </div>
+          </div>
+
+          <!-- TABLE 1: LOG MONITORING SELAMA ANESTESI -->
+          <table class="doc-table q-mb-md">
+            <thead>
+              <tr>
+                <th colspan="12" class="text-weight-bold title-th bg-grey-3">LOG MONITORING SELAMA ANESTESI</th>
+              </tr>
+              <tr class="bg-grey-2">
+                <th width="8%" rowspan="2" class="text-center vertical-middle">
+                  {{ store.inputForm?.waktu ? 'Jam' : 'Waktu (Mnt)' }}
+                </th>
+                <th width="15%" colspan="2" class="text-center">Tanda Vital</th>
+                <th width="8%" rowspan="2" class="text-center vertical-middle">RR</th>
+                <th colspan="5" class="text-center">Gas Anestesi</th>
+                <th width="15%" rowspan="2" class="text-center vertical-middle">Milestone</th>
+                <th width="20%" rowspan="2" class="text-center vertical-middle">Obat & Cairan</th>
+              </tr>
+              <tr class="bg-grey-2">
+                <th class="text-center">TD (S/D)</th>
+                <th class="text-center">Nadi</th>
+                <th class="text-center">O₂</th>
+                <th class="text-center">N₂O</th>
+                <th class="text-center">Hal.</th>
+                <th class="text-center">Iso.</th>
+                <th class="text-center">Sev.</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-if="!store.data?.length">
+                <td colspan="12" class="text-center text-grey">Tidak ada data log monitoring</td>
+              </tr>
+              <tr v-else v-for="(log, idx) in store.data" :key="idx">
+                <td class="text-center text-weight-bold">
+                  {{ formatLogTime(log.time, store.inputForm?.waktu) }}
+                </td>
+                <td class="text-center">
+                  {{ log.td_sistolik && log.td_diastolik ? log.td_sistolik + '/' + log.td_diastolik : '-' }}
+                </td>
+                <td class="text-center">{{ log.nadi || '-' }}</td>
+                <td class="text-center">{{ log.resp || '-' }}</td>
+                <td class="text-center">{{ log.o2 || '-' }}</td>
+                <td class="text-center">{{ log.n2o || '-' }}</td>
+                <td class="text-center">{{ log.halothan || '-' }}</td>
+                <td class="text-center">{{ log.isoflurane || '-' }}</td>
+                <td class="text-center">{{ log.sevoflurane || '-' }}</td>
+                <td>{{ formatMilestone(log) }}</td>
+                <td>{{ formatObatDanCairan(log) }}</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- TABLE 2: DETAIL MEDIKASI & CAIRAN -->
           <table class="doc-table">
             <thead>
               <tr>
@@ -88,82 +169,6 @@
               <tr>
                 <td class="text-weight-bold">Catatan / Instruksi</td>
                 <td colspan="3">{{ store.inputForm?.catatan || '-' }}</td>
-              </tr>
-            </tbody>
-          </table>
-
-          <!-- VISUAL CHART -->
-          <div class="anesthesia-chart-container bg-white q-mb-md">
-            <div class="chart-section upper-section">
-              <div class="chart-wrapper" style="width: 100%;">
-                <apexchart type="scatter" height="300" width="100%" :key="'upper-' + logs.length"
-                  :options="upperChartOptions" :series="upperSeries" />
-              </div>
-            </div>
-
-            <div class="vital-signs-container flex no-wrap items-center q-mt-md">
-              <div class="custom-y-labels q-ml-sm text-center">
-                <div class="label-row flex no-wrap text-weight-bold">
-                  <span class="label-col">R</span>
-                  <span class="label-col">N</span>
-                  <span class="label-col">TD</span>
-                </div>
-                <div v-for="label in medicalYLabels" :key="label.grid" class="label-row flex no-wrap" :style="{ height: labelRowHeight + 'px' }">
-                  <span class="label-col">{{ label.r }}</span>
-                  <span class="label-col">{{ label.n }}</span>
-                  <span class="label-col">{{ label.td }}</span>
-                </div>
-              </div>
-
-              <div class="chart-wrapper flex-grow" style="width: 100%;">
-                <apexchart ref="chartWrapperRef" type="line" :key="'lower-' + logs.length" :options="lowerChartOptions"
-                  :series="lowerSeries" height="400px" width="100%" />
-              </div>
-            </div>
-          </div>
-
-          <!-- TABLE 2: LOG MONITORING SELAMA ANESTESI -->
-          <table class="doc-table">
-            <thead>
-              <tr>
-                <th colspan="12" class="text-weight-bold title-th bg-grey-3">LOG MONITORING SELAMA ANESTESI</th>
-              </tr>
-              <tr class="bg-grey-2">
-                <th width="8%" rowspan="2" class="text-center vertical-middle">Waktu (Mnt)</th>
-                <th width="15%" colspan="2" class="text-center">Tanda Vital</th>
-                <th width="8%" rowspan="2" class="text-center vertical-middle">RR</th>
-                <th colspan="5" class="text-center">Gas Anestesi</th>
-                <th width="15%" rowspan="2" class="text-center vertical-middle">Milestone</th>
-                <th width="20%" rowspan="2" class="text-center vertical-middle">Obat & Cairan</th>
-              </tr>
-              <tr class="bg-grey-2">
-                <th class="text-center">TD (S/D)</th>
-                <th class="text-center">Nadi</th>
-                <th class="text-center">O₂</th>
-                <th class="text-center">N₂O</th>
-                <th class="text-center">Hal.</th>
-                <th class="text-center">Iso.</th>
-                <th class="text-center">Sev.</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-if="!store.data?.length">
-                <td colspan="12" class="text-center text-grey">Tidak ada data log monitoring</td>
-              </tr>
-              <tr v-else v-for="(log, idx) in store.data" :key="idx">
-                <td class="text-center text-weight-bold">{{ log.time }}'</td>
-                <td class="text-center">
-                  {{ log.td_sistolik && log.td_diastolik ? log.td_sistolik + '/' + log.td_diastolik : '-' }}
-                </td>
-                <td class="text-center">{{ log.nadi || '-' }}</td>
-                <td class="text-center">{{ log.resp || '-' }}</td>
-                <td class="text-center">{{ log.o2 || '-' }}</td>
-                <td class="text-center">{{ log.n2o || '-' }}</td>
-                <td class="text-center">{{ log.halothan || '-' }}</td>
-                <td class="text-center">{{ log.isoflurane || '-' }}</td>
-                <td class="text-center">{{ log.sevoflurane || '-' }}</td>
-                <td>{{ formatMilestone(log) }}</td>
-                <td>{{ formatObatDanCairan(log) }}</td>
               </tr>
             </tbody>
           </table>
@@ -287,14 +292,7 @@ const lowerChartOptions = computed(() => ({
       offsetY: 0,
       style: { fontSize: '10px' },
       rotate: -45,
-      formatter: (val) => {
-        if (val % 15 === 0) {
-          const jam = Math.floor(val / 60).toString().padStart(2, '0')
-          const menit = (val % 60).toString().padStart(2, '0')
-          return `${jam}:${menit}`
-        }
-        return ''
-      }
+      formatter: (val) => formatXAxisTime(val, store.inputForm?.waktu)
     },
     axisTicks: { show: false }
   },
@@ -526,14 +524,7 @@ const upperChartOptions = computed(() => ({
       offsetY: 0,
       style: { fontSize: '10px' },
       rotate: -45,
-      formatter: (val) => {
-        if (val % 15 === 0) {
-          const jam = Math.floor(val / 60).toString().padStart(2, '0')
-          const menit = (val % 60).toString().padStart(2, '0')
-          return `${jam}:${menit}`
-        }
-        return ''
-      }
+      formatter: (val) => formatXAxisTime(val, store.inputForm?.waktu)
     },
   },
   yaxis: {
@@ -683,6 +674,41 @@ function syncLabels () {
   }, 200)
 }
 
+function formatXAxisTime (val, waktuStr) {
+  if (val % 15 !== 0) return ''
+  let startHour = 0
+  let startMin = 0
+  if (waktuStr && typeof waktuStr === 'string' && waktuStr.includes(':')) {
+    const parts = waktuStr.split(':')
+    const h = parseInt(parts[0], 10)
+    const m = parseInt(parts[1], 10)
+    if (!isNaN(h)) startHour = h
+    if (!isNaN(m)) startMin = m
+  }
+  const totalMinutes = (startHour * 60 + startMin) + val
+  const h = Math.floor((totalMinutes / 60) % 24).toString().padStart(2, '0')
+  const m = Math.floor(totalMinutes % 60).toString().padStart(2, '0')
+  return `${h}:${m}`
+}
+
+function formatLogTime (val, waktuStr) {
+  if (!waktuStr || typeof waktuStr !== 'string' || !waktuStr.includes(':')) {
+    return `${val}'`
+  }
+  let startHour = 0
+  let startMin = 0
+  const parts = waktuStr.split(':')
+  const h = parseInt(parts[0], 10)
+  const m = parseInt(parts[1], 10)
+  if (!isNaN(h)) startHour = h
+  if (!isNaN(m)) startMin = m
+
+  const totalMinutes = (startHour * 60 + startMin) + (parseInt(val, 10) || 0)
+  const resH = Math.floor((totalMinutes / 60) % 24).toString().padStart(2, '0')
+  const resM = Math.floor(totalMinutes % 60).toString().padStart(2, '0')
+  return `${resH}:${resM}`
+}
+
 function formatMilestone (log) {
   const milestone = []
   if (log.mulai_op) milestone.push('Mulai Operasi')
@@ -822,7 +848,8 @@ onMounted(async () => {
   margin-bottom: 15px;
   font-size: 10px;
 
-  th, td {
+  th,
+  td {
     border: 1px solid #000;
     padding: 4px 6px;
     vertical-align: top;

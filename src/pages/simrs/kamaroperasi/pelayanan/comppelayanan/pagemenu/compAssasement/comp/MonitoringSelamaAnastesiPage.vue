@@ -46,7 +46,7 @@
         <div class="row items-center">
           <div class="col-2">Respirasi</div>
           <div class="col-10">
-            <app-input v-model="store.inputForm.respirasi" valid label="Respirasi" outlined />
+            <app-autocomplete v-model="store.inputForm.respirasi" valid label="Pilih Respirasi" outlined dense :source="['Spontan', 'Kontrol']" clearable />
           </div>
         </div>
         <div class="row text-weight-bold q-mt-sm"> Jumlah Cairan / transfusi </div>
@@ -222,15 +222,7 @@ const lowerChartOptions = computed(() => ({
       offsetY: 0,
       style: { fontSize: '10px' },
       rotate: -45,
-      formatter: (val) => {
-        // Tampilkan label tiap 15 atau 30 menit saja agar tidak penuh sesak
-        if (val % 15 === 0) {
-          const jam = Math.floor(val / 60).toString().padStart(2, '0')
-          const menit = (val % 60).toString().padStart(2, '0')
-          return `${jam}:${menit}`
-        }
-        return ''
-      }
+      formatter: (val) => formatXAxisTime(val, store.inputForm?.waktu)
     },
     axisTicks: { show: false } // Hilangkan 'tanda petik' di sumbu X agar lebih bersih
 
@@ -492,15 +484,7 @@ const upperChartOptions = computed(() => ({
       offsetY: 0,
       style: { fontSize: '10px' },
       rotate: -45,
-      formatter: (val) => {
-        // Tampilkan label tiap 15 atau 30 menit saja agar tidak penuh sesak
-        if (val % 15 === 0) {
-          const jam = Math.floor(val / 60).toString().padStart(2, '0')
-          const menit = (val % 60).toString().padStart(2, '0')
-          return `${jam}:${menit}`
-        }
-        return ''
-      }
+      formatter: (val) => formatXAxisTime(val, store.inputForm?.waktu)
     },
 
     // labels: { show: false } // Sembunyikan karena sudah ada di chart bawah
@@ -702,6 +686,23 @@ function syncLabels () {
     }
   }, 200)
 }
+function formatXAxisTime (val, waktuStr) {
+  if (val % 15 !== 0) return ''
+  let startHour = 0
+  let startMin = 0
+  if (waktuStr && typeof waktuStr === 'string' && waktuStr.includes(':')) {
+    const parts = waktuStr.split(':')
+    const h = parseInt(parts[0], 10)
+    const m = parseInt(parts[1], 10)
+    if (!isNaN(h)) startHour = h
+    if (!isNaN(m)) startMin = m
+  }
+  const totalMinutes = (startHour * 60 + startMin) + val
+  const h = Math.floor((totalMinutes / 60) % 24).toString().padStart(2, '0')
+  const m = Math.floor(totalMinutes % 60).toString().padStart(2, '0')
+  return `${h}:${m}`
+}
+
 onMounted(async () => {
   if (laporanOp.nakes.length == 0) laporanOp.getNakes()
   try {
