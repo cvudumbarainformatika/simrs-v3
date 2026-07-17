@@ -220,7 +220,7 @@ const formDialogLog = ref({ time: 0, td_sistolik: '', td_diastolik: '', nadi: ''
 //   { time: 15, td_sistolik: 130, td_diastolik: 80, nadi: 80, resp: 18, temp: 36.2 },
 //   { time: 30, td_sistolik: 120, td_diastolik: 80, nadi: 75, resp: 16, temp: 36.5 }
 // ])
-const logs = computed(() => store.dataPasca)
+const logs = computed(() => store.dataPasca || [])
 const log0 = computed(() => {
   if (!logs.value || !logs.value.length) return null
   return logs.value.find(l => parseInt(l.time, 10) === 0) || null
@@ -295,7 +295,7 @@ const lowerChartOptions = computed(() => ({
     min: 20, max: 220, tickAmount: 10, labels: { show: false }
   },
   stroke: {
-    width: [0, 0, 0, 0],
+    width: [0, 0, 0, 0, 0],
     curve: 'straight',
     connectNulls: true
   },
@@ -390,7 +390,7 @@ const lowerSeries = computed(() => [
 function syncLabels () {
   if (!chartWrapperRef.value) return
   setTimeout(() => {
-    const gridElement = chartWrapperRef.value.$el.querySelector('.apexcharts-grid')
+    const gridElement = chartWrapperRef.value?.$el?.querySelector?.('.apexcharts-grid')
     if (gridElement) {
       const totalHeight = gridElement.getBoundingClientRect().height
       if (totalHeight > 0) {

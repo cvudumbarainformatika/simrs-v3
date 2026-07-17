@@ -188,6 +188,112 @@
               </tr>
             </tbody>
           </table>
+
+          <!-- TABLE 4: MATRIKS PENILAIAN SKOR ALDRETE -->
+          <table class="doc-table q-mt-md">
+            <thead>
+              <tr>
+                <th colspan="100" class="text-weight-bold title-th bg-grey-3">MATRIKS PENILAIAN SKOR ALDRETE</th>
+              </tr>
+              <tr class="bg-grey-2">
+                <th width="30%">Kriteria Penilaian</th>
+                <th v-for="(log, idx) in store.aldreteLogs" :key="'h-' + idx" class="text-center">
+                  Waktu: {{ log.waktu }}
+                </th>
+                <th v-if="!store.aldreteLogs?.length" class="text-center text-grey">Belum Ada Data Penilaian</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-if="store.aldreteLogs?.length">
+                <td class="text-weight-bold">Oksigenasi</td>
+                <td v-for="(log, idx) in store.aldreteLogs" :key="'oks-' + idx" class="text-center">
+                  {{ log.oksigenasi }}
+                </td>
+              </tr>
+              <tr v-if="store.aldreteLogs?.length">
+                <td class="text-weight-bold">Aktifitas</td>
+                <td v-for="(log, idx) in store.aldreteLogs" :key="'akt-' + idx" class="text-center">
+                  {{ log.aktifitas }}
+                </td>
+              </tr>
+              <tr v-if="store.aldreteLogs?.length">
+                <td class="text-weight-bold">Pernafasan</td>
+                <td v-for="(log, idx) in store.aldreteLogs" :key="'nap-' + idx" class="text-center">
+                  {{ log.pernafasan }}
+                </td>
+              </tr>
+              <tr v-if="store.aldreteLogs?.length">
+                <td class="text-weight-bold">Sirkulasi</td>
+                <td v-for="(log, idx) in store.aldreteLogs" :key="'sir-' + idx" class="text-center">
+                  {{ log.sirkulasi }}
+                </td>
+              </tr>
+              <tr v-if="store.aldreteLogs?.length">
+                <td class="text-weight-bold">Kesadaran</td>
+                <td v-for="(log, idx) in store.aldreteLogs" :key="'kes-' + idx" class="text-center">
+                  {{ log.kesadaran }}
+                </td>
+              </tr>
+              <tr v-if="store.aldreteLogs?.length" class="bg-yellow-1 text-weight-bold">
+                <td>TOTAL SKOR ALDRETE</td>
+                <td v-for="(log, idx) in store.aldreteLogs" :key="'tot-' + idx" class="text-center text-primary">
+                  {{ log.total }}
+                </td>
+              </tr>
+              <tr v-else>
+                <td colspan="100" class="text-center text-grey q-pa-sm">Tidak ada log data Aldrete yang tercatat</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- CRITERIA BANNER (MEDICALLY FORMAL) -->
+          <div class="q-mb-md border-box q-pa-xs bg-grey-1" style="border: 1px solid #000; font-size: 10px;">
+            <div class="text-weight-bold">Kriteria Pemindahan Pasca Anestesi:</div>
+            <ul class="q-my-none q-pl-md">
+              <li>Skor 7 - 10: Pasien diperbolehkan dipindahkan ke ruang perawatan semula.</li>
+              <li>Skor 6 ke bawah: Pasien dipindahkan ke ruang Intensive Care Unit (ICU).</li>
+              <li>Maksimal waktu pemantauan di Ruang Pemulihan (RR) adalah selama 2 jam.</li>
+            </ul>
+          </div>
+
+          <!-- TABLE 5: DATA KELUAR RUANG PEMULIHAN -->
+          <table class="doc-table">
+            <thead>
+              <tr>
+                <th colspan="4" class="text-weight-bold title-th bg-grey-3">PARAMETER KELUAR RUANG PEMULIHAN</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td width="25%" class="text-weight-bold">Jam Keluar RR</td>
+                <td colspan="3">{{ store.formKeluar?.jam_keluar || '-' }}</td>
+              </tr>
+              <tr>
+                <td width="25%" class="text-weight-bold">Tekanan Darah Keluar</td>
+                <td width="25%">
+                  {{ store.formKeluar?.td_sistolik && store.formKeluar?.td_diastolik ? store.formKeluar.td_sistolik + '/' + store.formKeluar.td_diastolik + ' mmHg' : '-' }}
+                </td>
+                <td class="text-weight-bold">Nadi / HR Keluar</td>
+                <td>{{ store.formKeluar?.nadi ? store.formKeluar.nadi + ' x/menit' : '-' }}</td>
+              </tr>
+              <tr>
+                <td class="text-weight-bold">Respirasi (RR) Keluar</td>
+                <td>{{ store.formKeluar?.rr ? store.formKeluar.rr + ' x/menit' : '-' }}</td>
+                <td class="text-weight-bold">Infus</td>
+                <td>{{ store.formKeluar?.infus || '-' }}</td>
+              </tr>
+              <tr>
+                <td class="text-weight-bold">Urine</td>
+                <td>{{ store.formKeluar?.urine || '-' }}</td>
+                <td class="text-weight-bold">Muntah</td>
+                <td>{{ store.formKeluar?.muntah || '-' }}</td>
+              </tr>
+              <tr>
+                <td class="text-weight-bold">Dipindahkan Ke</td>
+                <td colspan="3">{{ formatDipindahKe() }}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
 
         <!-- Signature Section -->
@@ -255,7 +361,7 @@ const laporanOp = useLaporanOperasiStore()
 const refPrint = ref()
 
 // Logic chart dari MonitoringPascaAnastesiPage
-const logs = computed(() => store.dataPasca)
+const logs = computed(() => store.dataPasca || [])
 const log0 = computed(() => {
   if (!store.dataPasca || !store.dataPasca.length) return null
   return store.dataPasca.find(l => parseInt(l.time, 10) === 0) || null
@@ -500,6 +606,22 @@ function formatLogTime (val, waktuStr) {
   return `${resH}:${resM}`
 }
 
+const namaRuangan = computed(() => {
+  const code = store.formKeluar?.ruangan
+  if (!code) return ''
+  const room = store.kamars?.find(k => k.rs1 === code)
+  return room ? room.rs2 : code
+})
+
+function formatDipindahKe () {
+  const dest = store.formKeluar?.dipindah_ke
+  if (!dest) return '-'
+  if (dest === 'Ruangan' && namaRuangan.value) {
+    return `${dest} (${namaRuangan.value})`
+  }
+  return dest
+}
+
 const printObj = {
   id: 'pdfDoc',
   previewTitle: 'MONITORING PASCA ANESTESI',
@@ -512,6 +634,10 @@ onMounted(async () => {
   }
   try {
     await store.getMonitoringPasca(props.pasien)
+    await store.getSkorAldrete(props.pasien)
+    if (!store.kamars || !store.kamars.length) {
+      store.getKamars()
+    }
     const charts = document.querySelectorAll('.vue-apexcharts')
     charts.forEach(el => el.style.pointerEvents = 'none')
     await nextTick()

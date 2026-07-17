@@ -266,7 +266,7 @@ export const useMonitoringSaatStore = defineStore('monitoring_saat', {
       this.loadingAldrete = true
       const param = { params: { noreg: pasien.noreg, nota: pasien.rs2, norm: pasien.norm } }
       const resp = await api.get('v1/simrs/penunjang/ok/monitoring/aldrete/get', param)
-      this.aldreteLogs = resp?.data?.monitoring // Simpan di state terpisah
+      this.aldreteLogs = resp?.data?.monitoring || [] // Simpan di state terpisah
       this.formKeluar = resp?.data?.medikasi
       if (!resp?.data?.medikasi) this.formKeluar = {
         noreg: pasien.noreg,
