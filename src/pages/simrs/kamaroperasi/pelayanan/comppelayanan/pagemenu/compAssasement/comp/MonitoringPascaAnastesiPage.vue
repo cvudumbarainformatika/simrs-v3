@@ -76,6 +76,12 @@
           <div class="col-md-4">
             <q-input v-model="store.inputFormPasca.monitor_mulai" label="Monitor Mulai Jam" dense outlined
               mask="##:##" />
+            <div class="text-caption text-primary q-mt-xs" v-if="lapOpSelesai">
+              ℹ️ Jam Selesai Op (Lap. Op): <strong>{{ lapOpSelesai }}</strong>
+            </div>
+            <div class="text-caption text-grey-6 q-mt-xs" v-else>
+              ℹ️ Jam Selesai Op (Lap. Op): Belum diisi
+            </div>
           </div>
           <div class="col-md-4">
             <q-select v-model="store.inputFormPasca.monitor_setiap"
@@ -537,8 +543,28 @@ const simpanData = () => {
   store.simpanMedikasiPasca()
 }
 
-onMounted(() => {
-  store.getMonitoringPasca(props.pasien)
+const lapOpSelesai = computed(() => {
+  const lap = props.pasien?.laporanop
+  if (Array.isArray(lap) && lap.length > 0) {
+    const item = lap.find(x => x.rs12) || lap[0]
+    return item?.rs12 ? item.rs12.substring(0, 5) : ''
+  } else if (lap && typeof lap === 'object') {
+    return lap.rs12 ? lap.rs12.substring(0, 5) : ''
+  }
+  return ''
+})
+
+watch(lapOpSelesai, (newVal) => {
+  if (newVal && !store.inputFormPasca?.monitor_mulai) {
+    store.inputFormPasca.monitor_mulai = newVal
+  }
+}, { immediate: true })
+
+onMounted(async () => {
+  await store.getMonitoringPasca(props.pasien)
+  if (lapOpSelesai.value && !store.inputFormPasca.monitor_mulai) {
+    store.inputFormPasca.monitor_mulai = lapOpSelesai.value
+  }
   nextTick(() => {
     if (typeof syncLabels === 'function') syncLabels()
   })

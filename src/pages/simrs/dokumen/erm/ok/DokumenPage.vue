@@ -146,13 +146,6 @@ const documents = ref([
   {
     icon: 'icon-mat-email',
     color: 'primary',
-    jenis: 'ALDRETE',
-    label: 'Skor Aldrete',
-    value: 'Skoraldrete'
-  },
-  {
-    icon: 'icon-mat-email',
-    color: 'primary',
     jenis: 'LAP-OP',
     label: 'Laporan Operasi',
     value: 'Laporanoperasi'
@@ -297,7 +290,6 @@ const comp = [
   { nama: 'Prainduksi', page: defineAsyncComponent(() => import('./comp/PraInduksiDoc.vue')) },
   { nama: 'Monitoringselamaanestesi', page: defineAsyncComponent(() => import('./comp/MonitoringSelamaAnastesiDoc.vue')) },
   { nama: 'Monitoringpascaanestesi', page: defineAsyncComponent(() => import('./comp/MonitoringPascaAnastesiDoc.vue')) },
-  { nama: 'Skoraldrete', page: defineAsyncComponent(() => import('./comp/SkorAldreteDoc.vue')) },
   { nama: 'Laporanoperasi', page: defineAsyncComponent(() => import('./comp/LaporanOperasiDoc.vue')) },
   { nama: 'CPPT', page: defineAsyncComponent(() => import('src/pages/simrs/ranap/layanan/dokumen/cppt/IndexPage.vue')) },
   { nama: 'EDUKASI', page: defineAsyncComponent(() => import('src/pages/simrs/ranap/layanan/dokumen/edukasi/IndexPage.vue')) },

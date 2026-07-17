@@ -251,10 +251,22 @@
               <div class="col-xs-6 col-sm-3">
                 <q-input v-model="store.form.intra_jam_mulai_bedah" label="Jam Mulai Bedah" outlined dense mask="##:##"
                   placeholder="HH:mm" />
+                <div class="text-caption text-primary q-mt-xs" v-if="lapOpMulai">
+                  ℹ️ Jam Mulai (Lap. Op): <strong>{{ lapOpMulai }}</strong>
+                </div>
+                <div class="text-caption text-grey-6 q-mt-xs" v-else>
+                  ℹ️ Jam Mulai (Lap. Op): Belum diisi
+                </div>
               </div>
               <div class="col-xs-6 col-sm-3">
                 <q-input v-model="store.form.intra_jam_selesai_bedah" label="Jam Selesai Bedah" outlined dense
                   mask="##:##" placeholder="HH:mm" />
+                <div class="text-caption text-primary q-mt-xs" v-if="lapOpSelesai">
+                  ℹ️ Jam Selesai (Lap. Op): <strong>{{ lapOpSelesai }}</strong>
+                </div>
+                <div class="text-caption text-grey-6 q-mt-xs" v-else>
+                  ℹ️ Jam Selesai (Lap. Op): Belum diisi
+                </div>
               </div>
             </div>
 
@@ -434,7 +446,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, computed, watch } from 'vue'
 import { useQuasar } from 'quasar'
 import { useAsuhanAnastesiStore } from 'src/stores/simrs/kamaroperasi/asuhan/asuhanAnastesi'
 
@@ -508,8 +520,45 @@ function ambilTidakanOperasi (val) {
   return data
 }
 
-onMounted(() => {
-  store.getAsuhanAnastesi(props.pasien)
+const lapOpMulai = computed(() => {
+  const lap = props.pasien?.laporanop
+  if (Array.isArray(lap) && lap.length > 0) {
+    const item = lap.find(x => x.rs11) || lap[0]
+    return item?.rs11 ? item.rs11.substring(0, 5) : ''
+  } else if (lap && typeof lap === 'object') {
+    return lap.rs11 ? lap.rs11.substring(0, 5) : ''
+  }
+  return ''
+})
+
+const lapOpSelesai = computed(() => {
+  const lap = props.pasien?.laporanop
+  if (Array.isArray(lap) && lap.length > 0) {
+    const item = lap.find(x => x.rs12) || lap[0]
+    return item?.rs12 ? item.rs12.substring(0, 5) : ''
+  } else if (lap && typeof lap === 'object') {
+    return lap.rs12 ? lap.rs12.substring(0, 5) : ''
+  }
+  return ''
+})
+
+watch([lapOpMulai, lapOpSelesai], ([newMulai, newSelesai]) => {
+  if (newMulai && !store.form.intra_jam_mulai_bedah) {
+    store.form.intra_jam_mulai_bedah = newMulai
+  }
+  if (newSelesai && !store.form.intra_jam_selesai_bedah) {
+    store.form.intra_jam_selesai_bedah = newSelesai
+  }
+}, { immediate: true })
+
+onMounted(async () => {
+  await store.getAsuhanAnastesi(props.pasien)
+  if (lapOpMulai.value && !store.form.intra_jam_mulai_bedah) {
+    store.form.intra_jam_mulai_bedah = lapOpMulai.value
+  }
+  if (lapOpSelesai.value && !store.form.intra_jam_selesai_bedah) {
+    store.form.intra_jam_selesai_bedah = lapOpSelesai.value
+  }
 })
 </script>
 

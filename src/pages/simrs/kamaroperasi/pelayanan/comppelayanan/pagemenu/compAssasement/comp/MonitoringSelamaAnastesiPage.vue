@@ -38,6 +38,12 @@
         <div class="row q-py-xs">
           <div class="col-6">
             <q-input v-model="store.inputForm.waktu" valid label="Jam Mulai" dense outlined mask="##:##" />
+            <div class="text-caption text-primary q-mt-xs" v-if="lapOpMulai">
+              ℹ️ Jam Mulai (Lap. Op): <strong>{{ lapOpMulai }}</strong>
+            </div>
+            <div class="text-caption text-grey-6 q-mt-xs" v-else>
+              ℹ️ Jam Mulai (Lap. Op): Belum diisi
+            </div>
           </div>
           <div class="col-6">
             <app-input v-model="store.inputForm.konversi_anastesi" valid label="Konversi Anestesi" outlined />
@@ -92,10 +98,10 @@
           </div>
         </div>
         <div class="row q-mt-sm q-col-gutter-x-md">
-          <div class="col-6"><app-autocomplete v-model="store.inputForm.penata_anastesi" :key="laporanOp.nakes"
+          <div class="col-6"><app-autocomplete v-model="store.inputForm.penata_anastesi" :key="laporanOp.nakes?.length || 0"
               label="Penata Anestesi" outlined dense :source="laporanOp.nakes?.filter(y => y?.kdgroupnakes != '1')"
               option-label="nama" option-value="kdpegsimrs" hide-dropdown-icon /></div>
-          <div class="col-6"><app-autocomplete v-model="store.inputForm.dokter_anastesi" :key="laporanOp.nakes"
+          <div class="col-6"><app-autocomplete v-model="store.inputForm.dokter_anastesi" :key="laporanOp.nakes?.length || 0"
               label="Dokter Anestesi" outlined dense :source="laporanOp.nakes?.filter(y => y?.kdgroupnakes == '1')"
               option-label="nama" option-value="kdpegsimrs" hide-dropdown-icon /></div>
         </div>
@@ -124,7 +130,7 @@
 import { api } from 'src/boot/axios'
 import { useMonitoringSaatStore } from 'src/stores/simrs/kamaroperasi/assasement/monitoringSaat'
 import { useLaporanOperasiStore } from 'src/stores/simrs/kamaroperasi/laporanOperasi'
-import { ref, computed, onMounted, nextTick, defineAsyncComponent } from 'vue'
+import { ref, computed, onMounted, nextTick, defineAsyncComponent, watch } from 'vue'
 const props = defineProps({
   pasien: {
     type: Object,
@@ -721,22 +727,37 @@ function formatXAxisTime (val, waktuStr) {
   return `${h}:${m}`
 }
 
+const lapOpMulai = computed(() => {
+  const lap = props.pasien?.laporanop
+  if (Array.isArray(lap) && lap.length > 0) {
+    const item = lap.find(x => x.rs11) || lap[0]
+    return item?.rs11 ? item.rs11.substring(0, 5) : ''
+  } else if (lap && typeof lap === 'object') {
+    return lap.rs11 ? lap.rs11.substring(0, 5) : ''
+  }
+  return ''
+})
+
 onMounted(async () => {
   if (laporanOp.nakes.length == 0) laporanOp.getNakes()
   try {
     await store.getMonitoringSelama(props.pasien)
 
-    // Pre-fill Jam Mulai dari Asuhan Penata Anestesi jika di form Monitoring belum terisi
+    // Pre-fill Jam Mulai dari Laporan Operasi / Asuhan Penata Anestesi jika di form Monitoring belum terisi
     if (!store.inputForm?.waktu) {
-      try {
-        const param = { params: { noreg: props.pasien?.noreg, nota: props.pasien?.rs2, norm: props.pasien?.norm } }
-        const asuhanResp = await api.get('v1/simrs/penunjang/ok/asuhan/anastesi/getdata', param)
-        const asuhanData = asuhanResp?.data?.data
-        if (asuhanData?.intra_jam_mulai_anestesi) {
-          store.inputForm.waktu = asuhanData.intra_jam_mulai_anestesi.substring(0, 5)
+      if (lapOpMulai.value) {
+        store.inputForm.waktu = lapOpMulai.value
+      } else {
+        try {
+          const param = { params: { noreg: props.pasien?.noreg, nota: props.pasien?.rs2, norm: props.pasien?.norm } }
+          const asuhanResp = await api.get('v1/simrs/penunjang/ok/asuhan/anastesi/getdata', param)
+          const asuhanData = asuhanResp?.data?.data
+          if (asuhanData?.intra_jam_mulai_anestesi) {
+            store.inputForm.waktu = asuhanData.intra_jam_mulai_anestesi?.substring(0, 5)
+          }
+        } catch (err) {
+          // abaikan jika tidak ada data
         }
-      } catch (err) {
-        // abaikan jika tidak ada data
       }
     }
 
@@ -753,6 +774,12 @@ onMounted(async () => {
     console.log('gagal memuat data monitoring', e)
   }
 })
+
+watch(lapOpMulai, (newVal) => {
+  if (newVal && !store.inputForm?.waktu) {
+    store.inputForm.waktu = newVal
+  }
+}, { immediate: true })
 </script>
 <style scoped>
 .upper-section {

@@ -516,7 +516,7 @@
           @set-model="(val) => {
             store.formInduksi.jam = val
           }" /></div>
-      <div class="col-4"><app-autocomplete v-model="store.formInduksi.dokter_anastesi" :key="laporanOp.nakes"
+      <div class="col-4"><app-autocomplete v-model="store.formInduksi.dokter_anastesi" :key="laporanOp.nakes?.length || 0"
           label="Dokter Anestesi" outlined dense :source="laporanOp.nakes?.filter(y => y?.kdgroupnakes == '1')"
           option-label="nama" option-value="kdpegsimrs" hide-dropdown-icon /></div>
     </div>
@@ -544,7 +544,7 @@ const obatMedikasi = ref({})
 const inputObatMedikasi = ref({})
 function obatBaru (item, n) {
   // const baru = props.pasien?.pra_induksi?.obat_pre_medikasi?.find(el => el.obat_pre_medikasi === item.obat_pre_medikasi && el.dosis === item.dosis && el.jam === item.jam && el.pelaksana?.id === item.pelaksana?.id)
-  const baru = props.pasien?.pra_induksi?.obat_pre_medikasi[n]
+  const baru = props.pasien?.pra_induksi?.obat_pre_medikasi?.[n]
   console.log('obat bar', baru, item, props.pasien?.pra_induksi?.obat_pre_medikasi)
   if (!baru) return true
 
@@ -554,7 +554,7 @@ function addObatMedikasi () {
   if (!obatMedikasi.value?.obat_pre_medikasi) return notifErrVue('Obat pre medikasi tidak boleh kosong')
   else store.formInduksi.obat_pre_medikasi.push(obatMedikasi.value)
   obatMedikasi.value = {}
-  inputObatMedikasi.value.focus()
+  inputObatMedikasi.value?.focus?.()
 
 }
 const options = ref([
@@ -721,7 +721,7 @@ function clearJenis (evt, key, value) {
 
 }
 onMounted(() => {
-  if (laporanOp.nakes.length == 0) laporanOp.getNakes()
+  if (!laporanOp.nakes?.length) laporanOp.getNakes()
 })
 </script>
 

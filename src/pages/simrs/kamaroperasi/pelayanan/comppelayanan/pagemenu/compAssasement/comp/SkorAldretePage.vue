@@ -23,7 +23,7 @@
               </th>
             </tr>
           </thead>
-          <tbody :key="store.aldreteLogs">
+          <tbody :key="store.aldreteLogs?.length || 0">
             <template v-if="store.aldreteLogs.length <= 0">
               <tr>
                 <td :colspan="store.aldreteLogs.length + 1">
@@ -121,17 +121,17 @@
           </div>
           <div v-if="store.formKeluar.dipindah_ke == 'Ruangan'" class="col-md-3 col-xs-6">
             <q-select v-model="store.formKeluar.ruangan" option-label="rs2" option-value="rs1" :options="store.kamars"
-              :key="store.kamars" label="Pilih Ruangan" dense outlined map-options emit-value />
+              :key="store.kamars?.length || 0" label="Pilih Ruangan" dense outlined map-options emit-value />
           </div>
 
           <div class="col-md-6 col-xs-12">
-            <app-autocomplete v-model="store.formKeluar.penata_anastesi" :key="laporanOp.nakes" label="Penata Anestesi"
+            <app-autocomplete v-model="store.formKeluar.penata_anastesi" :key="laporanOp.nakes?.length || 0" label="Penata Anestesi"
               outlined dense :source="laporanOp.nakes?.filter(y => y?.kdgroupnakes != '1')" option-label="nama"
               option-value="kdpegsimrs" hide-dropdown-icon />
             <!-- <q-input v-model="store.formKeluar.penata_anestesi" label="Penata Anestesi" dense outlined /> -->
           </div>
           <div class="col-md-6 col-xs-12">
-            <app-autocomplete v-model="store.formKeluar.dokter_anastesi" :key="laporanOp.nakes" label="Dokter Anestesi"
+            <app-autocomplete v-model="store.formKeluar.dokter_anastesi" :key="laporanOp.nakes?.length || 0" label="Dokter Anestesi"
               outlined dense :source="laporanOp.nakes?.filter(y => y?.kdgroupnakes == '1')" option-label="nama"
               option-value="kdpegsimrs" hide-dropdown-icon />
             <!-- <q-input v-model="store.formKeluar.dokter_anestesi" label="Dokter Anestesi" dense outlined /> -->
@@ -296,9 +296,9 @@ const hitungTotalAldrete = computed(() => {
 
 async function simpanAldrete () {
   const payload = {
-    noreg: props.pasien.noreg,
-    nota: props.pasien.rs2,
-    norm: props.pasien.norm,
+    noreg: props.pasien?.noreg,
+    nota: props.pasien?.rs2,
+    norm: props.pasien?.norm,
     waktu: formAldrete.value.waktu,
     oksigenasi: formAldrete.value.oksigenasi || 0,
     aktifitas: formAldrete.value.aktifitas || 0,
@@ -320,7 +320,7 @@ function hapusAldrete (index) {
 }
 onMounted(() => {
 
-  if (laporanOp.nakes.length == 0) laporanOp.getNakes()
+  if (!laporanOp.nakes?.length) laporanOp.getNakes()
   store.getKamars()
   store.getSkorAldrete(props.pasien)
 })

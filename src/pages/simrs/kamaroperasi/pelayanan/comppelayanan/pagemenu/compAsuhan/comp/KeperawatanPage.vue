@@ -47,10 +47,22 @@
               <div class="col-xs-12 col-md-6">
                 <app-input-date :model="store.form.pengkajian_jam_mulai" label="Mulai Jam" :type-date="false" dense
                   outlined @set-model="(val) => { store.form.pengkajian_jam_mulai = val }" />
+                <div class="text-caption text-primary q-mt-xs" v-if="lapOpMulai">
+                  ℹ️ Jam Mulai (Lap. Op): <strong>{{ lapOpMulai }}</strong>
+                </div>
+                <div class="text-caption text-grey-6 q-mt-xs" v-else>
+                  ℹ️ Jam Mulai (Lap. Op): Belum diisi
+                </div>
               </div>
               <div class="col-xs-12 col-md-6">
                 <app-input-date :model="store.form.pengkajian_jam_selesai" label="Selesai Jam" :type-date="false" dense
                   outlined @set-model="(val) => { store.form.pengkajian_jam_selesai = val }" />
+                <div class="text-caption text-primary q-mt-xs" v-if="lapOpSelesai">
+                  ℹ️ Jam Selesai (Lap. Op): <strong>{{ lapOpSelesai }}</strong>
+                </div>
+                <div class="text-caption text-grey-6 q-mt-xs" v-else>
+                  ℹ️ Jam Selesai (Lap. Op): Belum diisi
+                </div>
               </div>
             </div>
           </q-card-section>
@@ -529,7 +541,7 @@
 
 <script setup>
 import { useAsuhanKeperawatanStore } from 'src/stores/simrs/kamaroperasi/asuhan/asuhanKeperawatan'
-import { onMounted } from 'vue'
+import { onMounted, computed, watch } from 'vue'
 
 const props = defineProps({
   pasien: {
@@ -550,8 +562,45 @@ function setNullIf (value, keyToSet, condition) {
   }
 }
 
-onMounted(() => {
-  store.getData(props.pasien)
+const lapOpMulai = computed(() => {
+  const lap = props.pasien?.laporanop
+  if (Array.isArray(lap) && lap.length > 0) {
+    const item = lap.find(x => x.rs11) || lap[0]
+    return item?.rs11 ? item.rs11.substring(0, 5) : ''
+  } else if (lap && typeof lap === 'object') {
+    return lap.rs11 ? lap.rs11.substring(0, 5) : ''
+  }
+  return ''
+})
+
+const lapOpSelesai = computed(() => {
+  const lap = props.pasien?.laporanop
+  if (Array.isArray(lap) && lap.length > 0) {
+    const item = lap.find(x => x.rs12) || lap[0]
+    return item?.rs12 ? item.rs12.substring(0, 5) : ''
+  } else if (lap && typeof lap === 'object') {
+    return lap.rs12 ? lap.rs12.substring(0, 5) : ''
+  }
+  return ''
+})
+
+watch([lapOpMulai, lapOpSelesai], ([newMulai, newSelesai]) => {
+  if (newMulai && !store.form.pengkajian_jam_mulai) {
+    store.form.pengkajian_jam_mulai = newMulai
+  }
+  if (newSelesai && !store.form.pengkajian_jam_selesai) {
+    store.form.pengkajian_jam_selesai = newSelesai
+  }
+}, { immediate: true })
+
+onMounted(async () => {
+  await store.getData(props.pasien)
+  if (lapOpMulai.value && !store.form.pengkajian_jam_mulai) {
+    store.form.pengkajian_jam_mulai = lapOpMulai.value
+  }
+  if (lapOpSelesai.value && !store.form.pengkajian_jam_selesai) {
+    store.form.pengkajian_jam_selesai = lapOpSelesai.value
+  }
 })
 </script>
 
