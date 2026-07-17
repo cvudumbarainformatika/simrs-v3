@@ -38,6 +38,34 @@
           </div>
         </div>
 
+        <!-- INFORMASI DIAGNOSA, TINDAKAN, TANGGAL & JAM OPERASI (2 Kolom) -->
+        <div v-if="!history" class="biodata-pasien q-my-md">
+          <div class="row q-col-gutter-md">
+            <!-- Kolom Kiri -->
+            <div class="col-6">
+              <div class="row no-wrap">
+                <div class="text-weight-bold" style="width: 90px;">DIAGNOSA</div>
+                <div class="col">: {{ pasien?.rs4 || '-' }}</div>
+              </div>
+              <div class="row no-wrap q-mt-xs">
+                <div class="text-weight-bold" style="width: 90px;">TINDAKAN</div>
+                <div class="col">: {{ getTindakanOp(pasien?.manytindakanop) }}</div>
+              </div>
+            </div>
+            <!-- Kolom Kanan -->
+            <div class="col-6">
+              <div class="row no-wrap">
+                <div class="text-weight-bold" style="width: 110px;">TGL OPERASI</div>
+                <div class="col">: {{ getTglLaporan(pasien?.laporanop) }}</div>
+              </div>
+              <div class="row no-wrap q-mt-xs">
+                <div class="text-weight-bold" style="width: 110px;">JAM OPERASI</div>
+                <div class="col">: {{ getJamLaporan(pasien?.laporanop) }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div class="dokumen-content q-mb-md">
           <!-- SIGN IN SECTION -->
           <div class="section-wrapper q-mb-lg">
@@ -60,7 +88,7 @@
                     <div
                       v-if="item?.adaInput && (Array.isArray(item?.jawab) ? item.jawab.includes('1') : item?.jawab === '1') && item?.input"
                       class="q-mt-xs">
-                      <div class="text-italic">{{ item?.input }}</div>
+                      <div class="text-italic" style="white-space: pre-line;" v-html="getNewLine(item?.input)"></div>
                     </div>
                   </div>
                 </div>
@@ -118,7 +146,7 @@
                     <div
                       v-if="item?.adaInput && (Array.isArray(item?.jawab) ? item.jawab.includes('1') : item?.jawab === '1') && item?.input"
                       class="q-mt-xs">
-                      <div class="text-italic">{{ item?.input }}</div>
+                      <div class="text-italic" style="white-space: pre-line;" v-html="getNewLine(item?.input)"></div>
                     </div>
                     <div
                       v-if="item?.adaInputArray && (Array.isArray(item?.jawab) ? item.jawab.includes('1') : item?.jawab === '1')"
@@ -126,7 +154,7 @@
                       <div v-for="(sub, subIdx) in item.inputArray" :key="subIdx" class="row q-col-gutter-md q-mb-xs">
                         <div class="col-3 f-11">{{ sub?.label }}</div>
                         <div class="col-9">
-                          <div class="text-italic">{{ sub?.input }}</div>
+                          <div class="text-italic" style="white-space: pre-line;" v-html="getNewLine(sub?.input)"></div>
                         </div>
                       </div>
                     </div>
@@ -186,7 +214,7 @@
                     <div
                       v-if="item?.adaInput && (Array.isArray(item?.jawab) ? item.jawab.includes('1') : item?.jawab === '1') && item?.input"
                       class="q-mt-xs">
-                      <div class="text-italic">{{ item?.input }}</div>
+                      <div class="text-italic" style="white-space: pre-line;" v-html="getNewLine(item?.input)"></div>
                     </div>
                   </div>
                 </div>
@@ -353,7 +381,7 @@
 <script setup>
 // import { useSurgicalSafetyStore } from 'src/stores/simrs/kamaroperasi/surgicalSafety'
 import { pathImg } from 'src/boot/axios'
-import { dateFullFormat } from 'src/modules/formatter'
+import { dateFullFormat, formatJam, getNewLine } from 'src/modules/formatter'
 import { useSurgicalSafetyStore } from 'src/stores/simrs/kamaroperasi/surgicalSafety'
 import { onMounted, ref, computed } from 'vue'
 
@@ -498,6 +526,26 @@ function formatRupiah (value) {
 function generateQRUrl (noreg, dokumen, petugas, asal) {
   const enc = btoa(`${noreg}|${dokumen}|${asal}|${petugas}`)
   return `https://rsud.probolinggokota.go.id/dokumen-simrs/legalitas/${enc}`
+}
+
+function getTindakanOp (val) {
+  if (!val || !val.length) return '-'
+  const list = val.map(x => x?.mastertindakanoperasi?.rs2 || x?.nama).filter(Boolean)
+  return list.length > 0 ? list.join(', ') : '-'
+}
+
+function getTglLaporan (lap) {
+  if (!lap) return '-'
+  const obj = Array.isArray(lap) ? (lap.length > 0 ? lap[0] : null) : lap
+  if (!obj || (!obj.rs3 && !obj.rs10)) return '-'
+  return obj.rs10 ? dateFullFormat(obj.rs10) : dateFullFormat(obj.rs3)
+}
+
+function getJamLaporan (lap) {
+  if (!lap) return '-'
+  const obj = Array.isArray(lap) ? (lap.length > 0 ? lap[0] : null) : lap
+  if (!obj || (!obj.rs3 && !obj.rs11)) return '-'
+  return obj.rs11 ? obj.rs11 : formatJam(obj.rs3)
 }
 
 onMounted(async () => {

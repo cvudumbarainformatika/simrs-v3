@@ -28,11 +28,10 @@
                       <q-option-group v-model="item.jawab" :options="item.options" color="primary" inline dense
                         @update:model-value="gantiJawaban(item)" />
                     </div>
-                    <span v-if="item.adaInput && item.jawab == '1'" class="q-ml-xs text-bold">{{ item?.input }} </span>
                     <span v-if="item.adaInput && item.jawab == '1' && item?.ket" class="q-ml-xs">{{ item?.ket }} </span>
                   </div>
                   <div v-if="item.adaInput && item.jawab == '1'" class="row">
-                    <q-input v-model="item.input" label=" " dense class="col-12" outlined />
+                    <q-input v-model="item.input" type="textarea" rows="2" label=" " class="col-12" outlined />
                   </div>
                 </div>
               </div>

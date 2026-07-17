@@ -11,7 +11,7 @@
       <div class="row">
         <div class="col-auto" style="width: 25%;">Diagnosa</div>
         <div class="col-auto" style="width: 5%;">:</div>
-        <div class="col-auto" style="width: 70%;">{{ memoDiag(pasien?.manymemo) }}</div>
+        <div class="col-auto" style="width: 70%;">{{ pasien?.rs4 || '-' }}</div>
       </div>
       <div class="row no-wrap">
         <div class="col-auto" style="width: 25%;">Tindakan</div>
