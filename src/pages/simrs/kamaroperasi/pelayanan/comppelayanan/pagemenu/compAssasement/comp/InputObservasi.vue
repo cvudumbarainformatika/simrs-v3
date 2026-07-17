@@ -168,9 +168,9 @@ const milestoneOptions = [
   { label: 'Extubasi', value: 'extubasi' },
   { label: 'e-N-o O.R.O', value: 'eno_oro' },
   { label: 'X-Ana-X', value: 'x_ana' },
-  { label: 'Ass. Resep', value: 'ass_resep' },
-  { label: 'Conrt Resep', value: 'cn_resp' },
-  { label: 'Spont Resep', value: 'sp_resp' },
+  { label: 'Assist. Resp (AR)', value: 'ass_resep' },
+  { label: 'Contr. Resp (CR)', value: 'cn_resp' },
+  { label: 'Spont. Resp (SR)', value: 'sp_resp' },
 ]
 const form = reactive({
   time: 0,

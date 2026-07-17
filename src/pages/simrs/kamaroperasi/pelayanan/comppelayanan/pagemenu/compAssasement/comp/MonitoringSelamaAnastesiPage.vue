@@ -339,16 +339,16 @@ const lowerChartOptions = computed(() => ({
           symbol = '→'; color = '#000000'; break // Hitam
         case 'Selesai Operasi':
           symbol = '←'; color = '#000000'; break // Hitam
-        case 'Ass. Resep':
+        case 'Assist. Resp':
           symbol = 'AR'; color = '#000000'; break // Teks AR
         case 'X-Ana-X':
           symbol = 'X'; color = '#000000'; break // Teks X
         case 'e-N-o O.R.O':
           symbol = 'E'; color = '#000000'; break // Teks X
-        case 'Conrt Resep':
-          symbol = 'CR'; color = '#000000'; break // Teks X
-        case 'Spont Resep':
-          symbol = 'SR'; color = '#000000'; break // Teks X
+        case 'Contr. Resp':
+          symbol = 'CR'; color = '#000000'; break // Teks CR
+        case 'Spont. Resp':
+          symbol = 'SR'; color = '#000000'; break // Teks SR
         default:
           symbol = '•'; color = '#999'
       }
@@ -450,17 +450,17 @@ const lowerSeries = computed(() => [
     data: logs.value.map(l => ({ x: l.time, y: l.eno_oro ? 25 : null, originalValue: l.eno_oro }))
   },
   {
-    name: 'Ass. Resep',
+    name: 'Assist. Resp',
     type: 'scatter',
     data: logs.value.map(l => ({ x: l.time, y: l.ass_resep ? 25 : null, originalValue: l.ass_resep }))
   },
   {
-    name: 'Conrt Resep',
+    name: 'Contr. Resp',
     type: 'scatter',
     data: logs.value.map(l => ({ x: l.time, y: l?.cn_resp ? 25 : null, originalValue: l?.cn_resp }))
   },
   {
-    name: 'Spont Resep',
+    name: 'Spont. Resp',
     type: 'scatter',
     data: logs.value.map(l => ({ x: l.time, y: l?.sp_resp ? 25 : null, originalValue: l?.sp_resp }))
   },

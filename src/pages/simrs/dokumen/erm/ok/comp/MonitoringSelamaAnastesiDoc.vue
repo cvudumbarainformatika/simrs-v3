@@ -39,7 +39,7 @@
         </div>
 
         <div class="dokumen-content q-mb-md">
-          <!-- VISUAL CHART -->
+          <!-- UPPER SECTION: UPPER CHART + LOG GAS & OBAT CAIRAN -->
           <div class="anesthesia-chart-container bg-white q-mb-md">
             <div class="chart-section upper-section">
               <div class="chart-wrapper" style="width: 100%;">
@@ -47,7 +47,59 @@
                   :options="upperChartOptions" :series="upperSeries" />
               </div>
             </div>
+          </div>
 
+          <!-- TABLE LOG UPPER CHART: GAS ANESTESI, OBAT & CAIRAN -->
+          <table class="doc-table q-mb-lg">
+            <thead>
+              <tr>
+                <th colspan="7" class="text-weight-bold title-th bg-grey-3">LOG GAS ANESTESI, OBAT & CAIRAN</th>
+              </tr>
+              <tr class="bg-grey-2">
+                <th width="10%" rowspan="2" class="text-center vertical-middle">
+                  {{ store.inputForm?.waktu ? 'Jam' : 'Waktu (Mnt)' }}
+                </th>
+                <th colspan="5" class="text-center">Gas Inhalasi</th>
+                <th width="35%" rowspan="2" class="text-center vertical-middle">Obat & Cairan Diberikan</th>
+              </tr>
+              <tr class="bg-grey-2">
+                <th class="text-center" width="9%">O₂</th>
+                <th class="text-center" width="9%">N₂O</th>
+                <th class="text-center" width="9%">Hal.</th>
+                <th class="text-center" width="9%">Iso.</th>
+                <th class="text-center" width="9%">Sev.</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-if="!store.data?.length">
+                <td colspan="7" class="text-center text-grey">Tidak ada data log gas, obat & cairan</td>
+              </tr>
+              <tr v-else v-for="(log, idx) in store.data" :key="'upper-log-' + idx">
+                <td class="text-center text-weight-bold">
+                  {{ formatLogTime(log.time, store.inputForm?.waktu) }}
+                </td>
+                <td class="text-center text-weight-bold" :class="log.o2 ? 'text-green-9' : 'text-grey-5'">
+                  {{ log.o2 ? '✓' : '-' }}
+                </td>
+                <td class="text-center text-weight-bold" :class="log.n2o ? 'text-blue-9' : 'text-grey-5'">
+                  {{ log.n2o ? '✓' : '-' }}
+                </td>
+                <td class="text-center text-weight-bold" :class="log.halothan ? 'text-red-9' : 'text-grey-5'">
+                  {{ log.halothan ? '✓' : '-' }}
+                </td>
+                <td class="text-center text-weight-bold" :class="log.isoflurane ? 'text-purple-9' : 'text-grey-5'">
+                  {{ log.isoflurane ? '✓' : '-' }}
+                </td>
+                <td class="text-center text-weight-bold" :class="log.sevoflurane ? 'text-orange-9' : 'text-grey-5'">
+                  {{ log.sevoflurane ? '✓' : '-' }}
+                </td>
+                <td>{{ formatObatDanCairan(log) }}</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- LOWER SECTION: LOWER CHART + LOG TANDA VITAL & MILESTONE -->
+          <div class="anesthesia-chart-container bg-white q-mb-md">
             <div class="vital-signs-container flex no-wrap items-center q-mt-md">
               <div class="custom-y-labels q-ml-sm text-center">
                 <div class="label-row flex no-wrap text-weight-bold">
@@ -70,37 +122,27 @@
             </div>
           </div>
 
-          <!-- TABLE 1: LOG MONITORING SELAMA ANESTESI -->
-          <table class="doc-table q-mb-md">
+          <!-- TABLE LOG LOWER CHART: TANDA VITAL & MILESTONE -->
+          <table class="doc-table q-mb-lg">
             <thead>
               <tr>
-                <th colspan="12" class="text-weight-bold title-th bg-grey-3">LOG MONITORING SELAMA ANESTESI</th>
+                <th colspan="5" class="text-weight-bold title-th bg-grey-3">LOG TANDA VITAL & MILESTONE ANESTESI</th>
               </tr>
               <tr class="bg-grey-2">
-                <th width="8%" rowspan="2" class="text-center vertical-middle">
+                <th width="12%" class="text-center">
                   {{ store.inputForm?.waktu ? 'Jam' : 'Waktu (Mnt)' }}
                 </th>
-                <th width="15%" colspan="2" class="text-center">Tanda Vital</th>
-                <th width="8%" rowspan="2" class="text-center vertical-middle">RR</th>
-                <th colspan="5" class="text-center">Gas Anestesi</th>
-                <th width="15%" rowspan="2" class="text-center vertical-middle">Milestone</th>
-                <th width="20%" rowspan="2" class="text-center vertical-middle">Obat & Cairan</th>
-              </tr>
-              <tr class="bg-grey-2">
-                <th class="text-center">TD (S/D)</th>
-                <th class="text-center">Nadi</th>
-                <th class="text-center">O₂</th>
-                <th class="text-center">N₂O</th>
-                <th class="text-center">Hal.</th>
-                <th class="text-center">Iso.</th>
-                <th class="text-center">Sev.</th>
+                <th width="18%" class="text-center">TD (Sistolik/Diastolik)</th>
+                <th width="15%" class="text-center">Nadi (x/mnt)</th>
+                <th width="15%" class="text-center">Respirasi (x/mnt)</th>
+                <th width="40%">Milestone / Penanda</th>
               </tr>
             </thead>
             <tbody>
               <tr v-if="!store.data?.length">
-                <td colspan="12" class="text-center text-grey">Tidak ada data log monitoring</td>
+                <td colspan="5" class="text-center text-grey">Tidak ada data log tanda vital & milestone</td>
               </tr>
-              <tr v-else v-for="(log, idx) in store.data" :key="idx">
+              <tr v-else v-for="(log, idx) in store.data" :key="'lower-log-' + idx">
                 <td class="text-center text-weight-bold">
                   {{ formatLogTime(log.time, store.inputForm?.waktu) }}
                 </td>
@@ -109,18 +151,12 @@
                 </td>
                 <td class="text-center">{{ log.nadi || '-' }}</td>
                 <td class="text-center">{{ log.resp || '-' }}</td>
-                <td class="text-center">{{ log.o2 || '-' }}</td>
-                <td class="text-center">{{ log.n2o || '-' }}</td>
-                <td class="text-center">{{ log.halothan || '-' }}</td>
-                <td class="text-center">{{ log.isoflurane || '-' }}</td>
-                <td class="text-center">{{ log.sevoflurane || '-' }}</td>
                 <td>{{ formatMilestone(log) }}</td>
-                <td>{{ formatObatDanCairan(log) }}</td>
               </tr>
             </tbody>
           </table>
 
-          <!-- TABLE 2: DETAIL MEDIKASI & CAIRAN -->
+          <!-- SUMMARY TABLE: DETAIL MEDIKASI & CAIRAN -->
           <table class="doc-table">
             <thead>
               <tr>
@@ -400,15 +436,15 @@ const lowerChartOptions = computed(() => ({
           symbol = '→'; color = '#000000'; break
         case 'Selesai Operasi':
           symbol = '←'; color = '#000000'; break
-        case 'Ass. Resep':
+        case 'Assist. Resp':
           symbol = 'AR'; color = '#000000'; break
         case 'X-Ana-X':
           symbol = 'X'; color = '#000000'; break
-        case 'e-N-o O.R.O':
+        case 'e-N-o O.R-O':
           symbol = 'E'; color = '#000000'; break
-        case 'Conrt Resep':
+        case 'Contr. Resp':
           symbol = 'CR'; color = '#000000'; break
-        case 'Spont Resep':
+        case 'Spont. Resp':
           symbol = 'SR'; color = '#000000'; break
         default:
           symbol = '•'; color = '#999'
@@ -493,17 +529,17 @@ const lowerSeries = computed(() => [
     data: logs.value.map(l => ({ x: l.time, y: l.eno_oro ? 25 : null, originalValue: l.eno_oro }))
   },
   {
-    name: 'Ass. Resep',
+    name: 'Assist. Resp',
     type: 'scatter',
     data: logs.value.map(l => ({ x: l.time, y: l.ass_resep ? 25 : null, originalValue: l.ass_resep }))
   },
   {
-    name: 'Conrt Resep',
+    name: 'Contr. Resp',
     type: 'scatter',
     data: logs.value.map(l => ({ x: l.time, y: l?.cn_resp ? 25 : null, originalValue: l?.cn_resp }))
   },
   {
-    name: 'Spont Resep',
+    name: 'Spont. Resp',
     type: 'scatter',
     data: logs.value.map(l => ({ x: l.time, y: l?.sp_resp ? 25 : null, originalValue: l?.sp_resp }))
   },
@@ -735,9 +771,9 @@ function formatMilestone (log) {
   if (log.extubasi) milestone.push('Ekstubasi')
   if (log.x_ana) milestone.push('X-Ana-X')
   if (log.eno_oro) milestone.push('e-N-o O.R.O')
-  if (log.ass_resep) milestone.push('Ass. Resep')
-  if (log.cn_resp) milestone.push('Conrt Resep')
-  if (log.sp_resp) milestone.push('Spont Resep')
+  if (log.ass_resep) milestone.push('Assist. Resp (AR)')
+  if (log.cn_resp) milestone.push('Contr. Resp (CR)')
+  if (log.sp_resp) milestone.push('Spont. Resp (SR)')
   return milestone.length ? milestone.join(', ') : '-'
 }
 
@@ -901,9 +937,8 @@ onMounted(async () => {
 }
 
 .upper-section {
-  border-bottom: 2px solid #444;
   background: white;
-  height: 350px;
+  height: auto;
 }
 
 :deep(.apexcharts-yaxis-label) {
@@ -921,7 +956,7 @@ onMounted(async () => {
 }
 
 .vital-signs-container {
-  height: 400px;
+  height: auto;
 }
 
 .custom-y-labels {
@@ -945,7 +980,7 @@ onMounted(async () => {
 .anesthesia-chart-container {
   width: 100%;
   max-width: 100%;
-  height: 800px;
+  height: auto;
   margin: auto;
   background: white;
 }
