@@ -352,7 +352,6 @@ import AppKopSuratStandard from 'src/components/~global/AppKopSuratStandard.vue'
 // Import Gambar Asset
 import imgWongBakerFaces from 'src/assets/images/wong_baker_faces.png'
 import imgNumericScale from 'src/assets/images/numeric_scale.png'
-import imgBpsGuide from 'src/assets/images/bps_guide.png'
 
 const props = defineProps({
   pasien: {
