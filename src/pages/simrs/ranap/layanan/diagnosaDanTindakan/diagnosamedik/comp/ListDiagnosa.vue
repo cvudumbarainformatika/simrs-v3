@@ -49,7 +49,7 @@ const enter = (el, done) => {
         <div class="bg-grey-4 q-pa-sm">
           <info-input-ranap :items="pasien?.diagnosamedis?.filter(x => x?.rs13 !== 'POL014')">
             <transition-group appear tag="div" @before-enter="beforeEnter" @enter="enter">
-              <div v-for="(item, i) in pasien?.diagnosamedis" :key="i" v-ripple
+              <div v-for="(item, i) in pasien?.diagnosamedis?.filter(x => x?.rs13 !== 'POL014')" :key="i" v-ripple
                 class="q-card q-pa-sm q-mb-sm cursor-pointer">
                 <q-item :key="i" class="list-move q-pa-none">
                   <q-item-section class="q-px-md q-py-sm">
