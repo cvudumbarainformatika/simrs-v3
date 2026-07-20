@@ -37,10 +37,10 @@
             {{ menu?.title }}
           </div>
           <div class="text-center text-bold">
-            RAWAT INAP
+            {{ kasus?.uraian.toUpperCase() }}
           </div>
           <div class="text-center text-bold">
-            {{ kasus?.uraian.toUpperCase() }}
+            RAWAT INAP
           </div>
         </div>
       </div>
@@ -136,7 +136,7 @@
 
     <div class="section">
 
-      <template v-if="anamnesisAwal?.kebidanan">
+      <!-- <template v-if="anamnesisAwal?.kebidanan">
         <div class="section-title" style="margin-top: 5px;">Riwayat KB: </div>
         <table class="tablex">
           <tbody>
@@ -336,7 +336,7 @@
             </tr>
           </tbody>
         </table>
-      </template>
+      </template> -->
 
 
       <template v-if="anamnesisAwal?.pediatrik">
@@ -588,8 +588,10 @@
 
         </tbody>
       </table>
-      <div class="section-title" style="margin-top: 5px;">Kultural : </div>
-      <!-- <div class="data">
+
+      <template v-if="!anamnesisAwal?.kebidanan">
+        <div class="section-title" style="margin-top: 5px;">Kultural : </div>
+        <!-- <div class="data">
         <div class="data-item">Kesadaran: ............................................</div>
         <div class="data-item">Tekanan Darah: ............................................ mmHg</div>
         <div class="data-item">Nadi: ............................................ x/menit</div>
@@ -598,70 +600,71 @@
         <div class="data-item">Keadaan Umum: Baik / Sedang / Buruk</div>
         <div class="data-item">Keadaan Gizi: Baik / Sedang / Buruk</div>
       </div> -->
-      <table class="tablex">
-        <tbody>
-          <tr style="border: none !important; padding: 0px !important;">
-            <td style="border: none !important; padding: 0px !important; width:15%;"> - Penyebab Penyakit</td>
-            <td style="border: none !important; padding: 0px !important; width: 35%;"> : {{
-              pemeriksaanUmum?.penyebabSakit || ' - ' }}</td>
-            <td style="border: none !important; padding: 0px !important; width: 15%;"> - Pola Komunikasi </td>
-            <td style="border: none !important; padding: 0px !important;">: {{ pemeriksaanUmum?.komunikasi || ' - ' }}
-            </td>
-          </tr>
-          <tr style="border: none !important; padding: 0px !important;">
-            <td style="border: none !important; padding: 0px !important; width:15%;"> - Makanan Pokok</td>
-            <td style="border: none !important; padding: 0px !important; width: 35%;"> : {{
-              pemeriksaanUmum?.makananPokok || ' - ' }}</td>
-            <td style="border: none !important; padding: 0px !important; width: 15%;"> - Pantangan Makanan </td>
-            <td style="border: none !important; padding: 0px !important;">: {{ pemeriksaanUmum?.pantanganMkanan || ' - '
-            }}
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <div class="section-title" style="margin-top: 5px;">Pemeriksaan Psikologis, Sosial Ekonomi, Spiritual : </div>
-      <table class="tablex">
-        <tbody>
-          <tr style="border: none !important; padding: 0px !important;">
-            <td style="border: none !important; padding: 0px !important; width:15%;"> - Status Sosial</td>
-            <td style="border: none !important; padding: 0px !important; width: 35%;"> : {{
-              pemeriksaanUmum?.sosial || ' - ' }}</td>
-            <td style="border: none !important; padding: 0px !important; width: 15%;"> - Spiritual </td>
-            <td style="border: none !important; padding: 0px !important;">: {{ pemeriksaanUmum?.spiritual || ' - ' }}
-            </td>
-          </tr>
-          <tr style="border: none !important; padding: 0px !important;">
-            <td style="border: none !important; padding: 0px !important; width:15%;"> - Status Kejiwaaan
-            </td>
-            <td style="border: none !important; padding: 0px !important; width: 35%;"> : {{
-              pemeriksaanUmum?.statusPsikologis || ' - ' }}</td>
-            <td style="border: none !important; padding: 0px !important; width: 15%;"> - Status Ekonomi </td>
-            <td style="border: none !important; padding: 0px !important;">: {{ pemeriksaanUmum?.ansuransi || ' - '
-            }} Asuransi
-            </td>
-          </tr>
-          <tr style="border: none !important; padding: 0px !important;">
-            <td colspan="4" style="border: none !important; padding: 0px !important; width:15%;"> - Edukasi :</td>
+        <table class="tablex">
+          <tbody>
+            <tr style="border: none !important; padding: 0px !important;">
+              <td style="border: none !important; padding: 0px !important; width:15%;"> - Penyebab Penyakit</td>
+              <td style="border: none !important; padding: 0px !important; width: 35%;"> : {{
+                pemeriksaanUmum?.penyebabSakit || ' - ' }}</td>
+              <td style="border: none !important; padding: 0px !important; width: 15%;"> - Pola Komunikasi </td>
+              <td style="border: none !important; padding: 0px !important;">: {{ pemeriksaanUmum?.komunikasi || ' - ' }}
+              </td>
+            </tr>
+            <tr style="border: none !important; padding: 0px !important;">
+              <td style="border: none !important; padding: 0px !important; width:15%;"> - Makanan Pokok</td>
+              <td style="border: none !important; padding: 0px !important; width: 35%;"> : {{
+                pemeriksaanUmum?.makananPokok || ' - ' }}</td>
+              <td style="border: none !important; padding: 0px !important; width: 15%;"> - Pantangan Makanan </td>
+              <td style="border: none !important; padding: 0px !important;">: {{ pemeriksaanUmum?.pantanganMkanan || '-'
+              }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="section-title" style="margin-top: 5px;">Pemeriksaan Psikologis, Sosial Ekonomi, Spiritual : </div>
+        <table class="tablex">
+          <tbody>
+            <tr style="border: none !important; padding: 0px !important;">
+              <td style="border: none !important; padding: 0px !important; width:15%;"> - Status Sosial</td>
+              <td style="border: none !important; padding: 0px !important; width: 35%;"> : {{
+                pemeriksaanUmum?.sosial || ' - ' }}</td>
+              <td style="border: none !important; padding: 0px !important; width: 15%;"> - Spiritual </td>
+              <td style="border: none !important; padding: 0px !important;">: {{ pemeriksaanUmum?.spiritual || ' - ' }}
+              </td>
+            </tr>
+            <tr style="border: none !important; padding: 0px !important;">
+              <td style="border: none !important; padding: 0px !important; width:15%;"> - Status Kejiwaaan
+              </td>
+              <td style="border: none !important; padding: 0px !important; width: 35%;"> : {{
+                pemeriksaanUmum?.statusPsikologis || ' - ' }}</td>
+              <td style="border: none !important; padding: 0px !important; width: 15%;"> - Status Ekonomi </td>
+              <td style="border: none !important; padding: 0px !important;">: {{ pemeriksaanUmum?.ansuransi || ' - '
+              }} Asuransi
+              </td>
+            </tr>
+            <tr style="border: none !important; padding: 0px !important;">
+              <td colspan="4" style="border: none !important; padding: 0px !important; width:15%;"> - Edukasi :</td>
 
-          </tr>
-          <tr style="border: none !important; padding: 0px !important;">
-            <td colspan="2"
-              style="border: none !important; padding-left: 10px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important; width:15%;">
-              Apakah pasien /
-              keluarga tahu mengenai penyakit dan perawatannya?</td>
-            <td colspan="2" style="border: none !important; padding: 0px !important; width: 35%;"> : {{
-              EDUKASI?.tahuPenanganan?.value || ' - ' }}</td>
-          </tr>
-          <tr style="border: none !important; padding: 0px !important;">
-            <td colspan="2"
-              style="border: none !important; padding-left: 10px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important; width:15%;">
-              Apakah membutuhkan
-              edukasi?</td>
-            <td colspan="2" style="border: none !important; padding: 0px !important; width: 35%;"> : {{
-              EDUKASI?.butuhEdukasi?.value || ' - ' }}</td>
-          </tr>
-        </tbody>
-      </table>
+            </tr>
+            <tr style="border: none !important; padding: 0px !important;">
+              <td colspan="2"
+                style="border: none !important; padding-left: 10px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important; width:15%;">
+                Apakah pasien /
+                keluarga tahu mengenai penyakit dan perawatannya?</td>
+              <td colspan="2" style="border: none !important; padding: 0px !important; width: 35%;"> : {{
+                EDUKASI?.tahuPenanganan?.value || ' - ' }}</td>
+            </tr>
+            <tr style="border: none !important; padding: 0px !important;">
+              <td colspan="2"
+                style="border: none !important; padding-left: 10px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important; width:15%;">
+                Apakah membutuhkan
+                edukasi?</td>
+              <td colspan="2" style="border: none !important; padding: 0px !important; width: 35%;"> : {{
+                EDUKASI?.butuhEdukasi?.value || ' - ' }}</td>
+            </tr>
+          </tbody>
+        </table>
+
+      </template>
 
       <!-- Skreening gizi Dewasa-->
       <div v-if="anamnesisAwal?.skreeninggizi?.dewasa" class="section">
@@ -704,7 +707,7 @@
         </table>
       </div>
       <!-- Skrining gizi Kebidanan-->
-      <div v-if="anamnesisAwal?.skreeninggizi?.kebidanan" class="section">
+      <!-- <div v-if="anamnesisAwal?.skreeninggizi?.kebidanan" class="section">
         <div class="section-title">Skrining Gizi Pasien Obstetric / Kehamilan / Nifas : </div>
         <table style="margin-top: -5px; margin-bottom: 5px;">
           <thead>
@@ -746,7 +749,7 @@
 
           </tbody>
         </table>
-      </div>
+      </div> -->
 
       <!-- Skreening gizi Pediatrik-->
       <div v-if="anamnesisAwal?.skreeninggizi?.pediatrik" class="section">
@@ -913,7 +916,7 @@
 
 
       <!-- PEMERIKSAAN KHUSUS -->
-      <div v-if="pemeriksaanUmum?.kebidanan" class="section-title" style="margin-top: 5px;">Pemeriksaan Khusus: </div>
+      <!-- <div v-if="pemeriksaanUmum?.kebidanan" class="section-title" style="margin-top: 5px;">Pemeriksaan Khusus: </div>
       <table class="tablex">
         <tbody>
           <tr style="border: none !important; padding: 0px !important;">
@@ -1077,13 +1080,13 @@
               pemeriksaanUmum?.kebidanan?.gynecologiInsVgnToucher || '-' }}</td>
           </tr>
         </tbody>
-      </table>
+      </table> -->
 
 
 
 
 
-      <template v-if="penilaian?.barthel">
+      <!-- <template v-if="penilaian?.barthel">
         <div class="section-title" style="margin-top: 5px;">Pengkajian fungsional menggunakan Indeks Barthel : </div>
         <table style="margin-top: -5px;">
           <thead>
@@ -1378,7 +1381,7 @@
           </tbody>
         </table>
 
-      </template>
+      </template> -->
 
     </div>
 

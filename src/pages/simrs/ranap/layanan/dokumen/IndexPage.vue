@@ -63,7 +63,7 @@ const menus = ref([
   },
   {
     name: 'asessment-awal-keperawatan',
-    label: 'ASS AWAL KEPERAWATAN / KEBIDANAN',
+    label: 'ASS KEPERAWATAN/KEBIDANAN',
     title: 'ASESSMENT AWAL',
     desc: 'Asessment Awal Keperawatan Pasien',
     icon: 'icon-my-file_sign',
@@ -247,9 +247,11 @@ onMounted(() => {
 :deep(.q-tabs) {
   height: auto !important;
 }
+
 :deep(.q-tabs__content) {
   overflow: visible !important;
 }
+
 :deep(.q-tabs__arrows) {
   display: none !important;
 }
