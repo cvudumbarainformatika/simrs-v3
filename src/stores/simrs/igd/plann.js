@@ -28,6 +28,7 @@ export const usePlannStore = defineStore('plann-store', {
     },
     fixednicu: false,
     fixediccu: false,
+    fixedicu: false,
     fixedhcu: false,
     selection: [],
     pilihatasx: ['Bayi yang memerlukan O2 < 60%', 'NKB 32-34 mg, kondisi stabil', 'BBL > 1500 gr', 'NKB 34-36 mg', 'kondisi stabil', 'reflek hisap lemah', 'Bayi yang dipuasakan / EKN',

@@ -25,6 +25,10 @@
           <Indikasimasuknicudaninter :judul="indikasinicu" :pasien="props?.pasien" :isi="isi" :kelas="kelas"
             :keterangan="keterangan" />
         </q-tab-panel>
+        <!-- <q-tab-panel name="Indikasi Masuk ICU" class="full-height q-pa-none">
+          <KriteriamasukIcu :judul="kriteriamasukicu" :pasien="props?.pasien" :isi="isi" :kelas="kelas"
+            :keterangan="keterangan" />
+        </q-tab-panel> -->
         <q-tab-panel name="Sep" class="full-height q-pa-none">
           <SepPage :judul="sep" :pasien="props?.pasien" />
         </q-tab-panel>
@@ -104,6 +108,7 @@ import PengkajianAwalKebidanan from './dokumenisi/PengkajianAwalKebidanan/Pengka
 import SerahTerimaRuangan from './dokumenisi/SerahTerimaRuangan/SerahTerimaRuangan.vue';
 import PasienPulang from './dokumenisi/PasienPulang/PasienPulang.vue';
 import SuratRanap from './dokumenisi/suratrencanainap/SuratRencanaInap.vue';
+// import KriteriamasukIcu from './dokumenisi/KriteriaMasukIcu/KriteriamasukIcu.vue';
 
 const AsesmenPraAnestesia = defineAsyncComponent(() => import('src/pages/simrs/dokumen/erm/poli/AsesmenPraAnestesia.vue'))
 const AsesmenPraBedah = defineAsyncComponent(() => import('src/pages/simrs/dokumen/erm/poli/AssesmentPraBedah.vue'))
@@ -114,6 +119,7 @@ const triase = ref('TRIASE')
 const suratkematian = ref('Surat Kematian')
 const indikasinicu = ref('Indikasi Pasien Masuk Ruang')
 const pasienpulang = ref('Surat Pernyataan Pulang')
+const kriteriamasukicu = ref('')
 const sep = ref('Sep')
 const store = useDokumenIgdStore()
 // const storex = usePlannStore()

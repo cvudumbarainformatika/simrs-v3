@@ -8,6 +8,7 @@ export const useDokumenIgdStore = defineStore('dokumen-igd-store', {
       { name: 'Triase', page: 'Triase' },
       { name: 'Surat Kematian', page: 'Surat Kematian' },
       { name: 'Indikasi Masuk Rawat Inap', page: 'Indikasi Masuk Rawat Inap' },
+      // { name: 'Indikasi Masuk ICU', page: 'Indikasi Masuk ICU' },
       { name: 'Sep', page: 'Sep' },
       { name: 'Billing Detail', page: 'Billing Detail' },
       { name: 'Farmasi', page: 'Farmasi' },
