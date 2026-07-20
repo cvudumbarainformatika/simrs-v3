@@ -266,9 +266,9 @@ export const useAsuhanAnastesiStore = defineStore('asuhan_anastesi', {
     async getAsuhanAnastesi (pasien) {
       const param = {
         params: {
-          noreg: pasien.noreg,
-          nota: pasien.rs2,
-          norm: pasien.norm
+          noreg: pasien?.noreg,
+          nota: pasien?.rs2,
+          norm: pasien?.norm
         }
       }
       try {
@@ -278,6 +278,9 @@ export const useAsuhanAnastesiStore = defineStore('asuhan_anastesi', {
           this.form = { ...data }
           delete this.form.created_at
           delete this.form.updated_at
+          if (!this.form.pra_diagnosa) {
+            this.form.pra_diagnosa = pasien?.rs4 || null
+          }
         } else {
           this.resetForm(pasien)
         }
@@ -308,7 +311,7 @@ export const useAsuhanAnastesiStore = defineStore('asuhan_anastesi', {
         noreg: pasien?.noreg,
         norm: pasien?.norm,
         nota: pasien?.rs2,
-        pra_diagnosa: null,
+        pra_diagnosa: pasien?.rs4 || null,
         pra_bb: null,
         pra_tb: null,
         pra_gol_darah: null,

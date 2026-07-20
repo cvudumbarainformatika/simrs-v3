@@ -35,7 +35,7 @@
               {{ menu?.title }}
             </div>
             <div class="text-center text-bold">
-              RAWAT INAP
+              {{ isOk ? 'KAMAR OPERASI' : 'RAWAT INAP' }}
             </div>
             <!-- <div class="text-center text-bold">
                       {{ kasus?.uraian.toUpperCase() }}
@@ -258,7 +258,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="item in EDUKASI" :key="item">
+            <tr v-for="item in EDUKASI" :key="item.id">
               <td class="t-vertical">
                 <div class="text-right">{{ humanDate(item?.tgl) }}</div>
                 <div class="text-right"> jam {{ jamTnpDetik(item?.tgl) }}</div>
@@ -274,7 +274,7 @@
                 </div>
               </td>
               <td valign="top">
-                <div v-if="!item?.petugas?.kdgroupnakes !== ''">
+                <div v-if="item?.petugas?.kdgroupnakes && item?.petugas?.kdgroupnakes !== ''">
                   <div>{{ jenisPPA(item?.petugas?.kdgroupnakes) }}</div>
                 </div>
               </td>
@@ -364,7 +364,8 @@ import { getNewLine, humanDate, jamTnpDetik } from 'src/modules/formatter';
 import { computed, onMounted } from 'vue';
 import { useImplementasiEdukasiRanapStore } from 'src/stores/simrs/ranap/implementasiEdukasi';
 import { pathImg } from 'src/boot/axios';
-import { imageToBase64 } from 'src/modules/imgBase64'
+import { imageToBase64 } from 'src/modules/imgBase64';
+import { useRoute } from 'vue-router';
 
 
 const props = defineProps({
@@ -383,6 +384,10 @@ const props = defineProps({
 })
 
 const store = useImplementasiEdukasiRanapStore()
+const route = useRoute()
+const isOk = computed(() => {
+  return props.pasien?.kodepoli === 'PEN001' || route?.path?.includes('kamaroperasi')
+})
 
 onMounted(() => {
   store.getList(props?.pasien)
@@ -436,7 +441,7 @@ const jenisPPA = (val) => {
 const qrPetugas = (user) => {
   const noreg = props?.pasien?.noreg// noreg
   const dok = 'KIE.png'
-  const asal = 'RANAP'
+  const asal = isOk.value ? 'PENUNJANG' : 'RANAP'
   const petugas = user?.kdpegsimrs ?? null
   const enc = btoa(`${noreg}|${dok}|${asal}|${petugas}`)
   return `https://rsud.probolinggokota.go.id/dokumen-simrs/legalitas/${enc}`
@@ -445,7 +450,7 @@ const qrPenerima = (ttd) => {
   console.log('ttd', ttd);
   const noreg = props?.pasien?.noreg// noreg
   const dok = 'KIE.png'
-  const asal = 'RANAP'
+  const asal = isOk.value ? 'PENUNJANG' : 'RANAP'
   const ttdPenerima = ttd ?? null
   const enc = btoa(`${noreg}|${dok}|${asal}|${ttdPenerima}`)
   return `https://rsud.probolinggokota.go.id/dokumen-simrs/legalitas/${enc}`

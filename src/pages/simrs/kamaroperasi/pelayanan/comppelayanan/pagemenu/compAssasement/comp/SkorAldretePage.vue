@@ -23,7 +23,7 @@
               </th>
             </tr>
           </thead>
-          <tbody :key="store.aldreteLogs">
+          <tbody :key="store.aldreteLogs?.length || 0">
             <template v-if="store.aldreteLogs.length <= 0">
               <tr>
                 <td :colspan="store.aldreteLogs.length + 1">
@@ -91,9 +91,21 @@
         <div class="row q-col-gutter-sm">
           <div class="col-md-2 col-xs-6">
             <q-input v-model="store.formKeluar.jam_masuk" label="Jam Masuk" dense outlined mask="##:##" />
+            <div class="text-caption text-primary q-mt-xs" v-if="estimasiMasukRR">
+              ℹ️ Est. Masuk RR (Selesai Bedah + 5m): <strong>{{ estimasiMasukRR }}</strong>
+            </div>
+            <div class="text-caption text-grey-6 q-mt-xs" v-else>
+              ℹ️ Est. Masuk RR: Belum diisi
+            </div>
           </div>
           <div class="col-md-2 col-xs-6">
             <q-input v-model="store.formKeluar.jam_keluar" label="Jam Keluar" dense outlined mask="##:##" />
+            <div class="text-caption text-primary q-mt-xs" v-if="estimasiKeluarRR">
+              ℹ️ Est. Keluar RR (Masuk RR + Durasi Log): <strong>{{ estimasiKeluarRR }}</strong>
+            </div>
+            <div class="text-caption text-grey-6 q-mt-xs" v-else>
+              ℹ️ Est. Keluar RR: Belum diisi
+            </div>
           </div>
           <div class="col-md-5 col-xs-12">
             <div class="row q-col-gutter-xs">
@@ -121,17 +133,17 @@
           </div>
           <div v-if="store.formKeluar.dipindah_ke == 'Ruangan'" class="col-md-3 col-xs-6">
             <q-select v-model="store.formKeluar.ruangan" option-label="rs2" option-value="rs1" :options="store.kamars"
-              :key="store.kamars" label="Pilih Ruangan" dense outlined map-options emit-value />
+              :key="store.kamars?.length || 0" label="Pilih Ruangan" dense outlined map-options emit-value />
           </div>
 
           <div class="col-md-6 col-xs-12">
-            <app-autocomplete v-model="store.formKeluar.penata_anastesi" :key="laporanOp.nakes" label="Penata Anestesi"
+            <app-autocomplete v-model="store.formKeluar.penata_anastesi" :key="laporanOp.nakes?.length || 0" label="Penata Anestesi"
               outlined dense :source="laporanOp.nakes?.filter(y => y?.kdgroupnakes != '1')" option-label="nama"
               option-value="kdpegsimrs" hide-dropdown-icon />
             <!-- <q-input v-model="store.formKeluar.penata_anestesi" label="Penata Anestesi" dense outlined /> -->
           </div>
           <div class="col-md-6 col-xs-12">
-            <app-autocomplete v-model="store.formKeluar.dokter_anastesi" :key="laporanOp.nakes" label="Dokter Anestesi"
+            <app-autocomplete v-model="store.formKeluar.dokter_anastesi" :key="laporanOp.nakes?.length || 0" label="Dokter Anestesi"
               outlined dense :source="laporanOp.nakes?.filter(y => y?.kdgroupnakes == '1')" option-label="nama"
               option-value="kdpegsimrs" hide-dropdown-icon />
             <!-- <q-input v-model="store.formKeluar.dokter_anestesi" label="Dokter Anestesi" dense outlined /> -->
@@ -213,7 +225,7 @@
 <script setup>
 import { useMonitoringSaatStore } from 'src/stores/simrs/kamaroperasi/assasement/monitoringSaat'
 import { useLaporanOperasiStore } from 'src/stores/simrs/kamaroperasi/laporanOperasi'
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 
 const props = defineProps({
   pasien: {
@@ -296,9 +308,9 @@ const hitungTotalAldrete = computed(() => {
 
 async function simpanAldrete () {
   const payload = {
-    noreg: props.pasien.noreg,
-    nota: props.pasien.rs2,
-    norm: props.pasien.norm,
+    noreg: props.pasien?.noreg,
+    nota: props.pasien?.rs2,
+    norm: props.pasien?.norm,
     waktu: formAldrete.value.waktu,
     oksigenasi: formAldrete.value.oksigenasi || 0,
     aktifitas: formAldrete.value.aktifitas || 0,
@@ -318,10 +330,70 @@ function hapusAldrete (index) {
   store.hapusSkorAldrete({ id: index.id })
   // store.aldreteLogs.splice(index, 1)
 }
-onMounted(() => {
+function addMinutesToTime (timeStr, mins) {
+  if (!timeStr || typeof timeStr !== 'string' || !timeStr.includes(':')) return ''
+  const parts = timeStr.split(':')
+  const h = parseInt(parts[0], 10)
+  const m = parseInt(parts[1], 10)
+  if (isNaN(h) || isNaN(m)) return ''
+  const addedMins = parseInt(mins, 10) || 0
+  let totalMin = h * 60 + m + addedMins
+  if (totalMin < 0) totalMin = 0
+  const finalH = Math.floor((totalMin / 60) % 24).toString().padStart(2, '0')
+  const finalM = Math.floor(totalMin % 60).toString().padStart(2, '0')
+  return `${finalH}:${finalM}`
+}
 
-  if (laporanOp.nakes.length == 0) laporanOp.getNakes()
+const lapOpSelesai = computed(() => {
+  const lap = props.pasien?.laporanop
+  if (Array.isArray(lap) && lap.length > 0) {
+    const item = lap.find(x => x.rs12) || lap[0]
+    return item?.rs12 ? item.rs12.substring(0, 5) : ''
+  } else if (lap && typeof lap === 'object') {
+    return lap.rs12 ? lap.rs12.substring(0, 5) : ''
+  }
+  return ''
+})
+
+const estimasiMasukRR = computed(() => {
+  if (!lapOpSelesai.value) return ''
+  return addMinutesToTime(lapOpSelesai.value, 5)
+})
+
+const maxLogMinute = computed(() => {
+  const logs = store.dataPasca || []
+  if (!logs.length) return 0
+  const times = logs.map(l => parseInt(l.time, 10)).filter(t => !isNaN(t))
+  return times.length ? Math.max(...times) : 0
+})
+
+const estimasiKeluarRR = computed(() => {
+  const jamMasuk = store.formKeluar?.jam_masuk || estimasiMasukRR.value
+  if (!jamMasuk) return ''
+  return addMinutesToTime(jamMasuk, maxLogMinute.value)
+})
+
+watch(estimasiMasukRR, (newVal) => {
+  if (newVal && !store.formKeluar?.jam_masuk) {
+    store.formKeluar.jam_masuk = newVal
+  }
+}, { immediate: true })
+
+watch([() => store.formKeluar?.jam_masuk, maxLogMinute], ([masuk, mins]) => {
+  if (masuk && mins > 0 && !store.formKeluar?.jam_keluar) {
+    store.formKeluar.jam_keluar = addMinutesToTime(masuk, mins)
+  }
+}, { immediate: true })
+
+onMounted(async () => {
+  if (!laporanOp.nakes?.length) laporanOp.getNakes()
   store.getKamars()
-  store.getSkolrAldrete(props.pasien)
+  await store.getSkorAldrete(props.pasien)
+  if (estimasiMasukRR.value && !store.formKeluar?.jam_masuk) {
+    store.formKeluar.jam_masuk = estimasiMasukRR.value
+  }
+  if (store.formKeluar?.jam_masuk && maxLogMinute.value > 0 && !store.formKeluar?.jam_keluar) {
+    store.formKeluar.jam_keluar = addMinutesToTime(store.formKeluar.jam_masuk, maxLogMinute.value)
+  }
 })
 </script>

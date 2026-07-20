@@ -1,15 +1,15 @@
 <template>
-  <div class="bg-white full-height column scroll q-pb-xl">
+  <div class="bg-white full-height column">
 
     <div class="col-auto bg-teal text-white">
       <div class="q-pa-sm">
         Laporan Operasi tersimpan
       </div>
     </div>
-    <div class="col full-height relative-position">
+    <div class="col scroll relative-position q-pa-sm q-pb-md">
       <!-- lap: {{ pasien?.laporanop }} -->
       <div v-if="store.pasien?.laporanop?.length > 0">
-        <div v-for="laporanop in pasien?.laporanop" :key="laporanop">
+        <div v-for="(laporanop, index) in pasien?.laporanop" :key="laporanop?.rs2 || index">
           <q-expansion-item v-model="laporanop.expand" :label="laporanop.rs2">
 
             <div class="cursor-pointer" @click="assignForm(laporanop)">
@@ -119,9 +119,7 @@
 
               <div class="row items-center q-my-xs">
                 <div class="col-4">Jenis / Jumlah Darah Yang Masuk</div>
-                <div class="col-8">{{ (laporanop?.jenis_darah_masuk ?? '-') + ' / ' +
-                  laporanop?.jd_masuk ??
-                  '-' }}
+                <div class="col-8">{{ (laporanop?.jenis_darah_masuk ?? '-') + ' / ' + (laporanop?.jd_masuk ?? '-') }}
                 </div>
               </div>
 
@@ -186,17 +184,21 @@ const props = defineProps({
   },
 })
 function SeriImplant (val) {
-  // console.log('implat ', val, ' seri ', store?.pasien, store?.pasien?.implant?.filter(x => !!x.seri)?.filter(x => x.nota == val.rs2), ' map  ', store?.pasien?.implant?.filter(x => !!x.seri)?.filter(x => x.nota == val.rs2)?.map(x => x.seri)?.join(', '))
-
-  return store?.pasien?.implant?.filter(x => !!x.seri)?.filter(x => x.nota == val.rs2)?.length > 0 ? store?.pasien?.implant?.filter(x => !!x.seri)?.filter(x => x.nota == val.rs2)?.map(x => x.seri)?.join(', ') : '-'
+  if (!val || !val.rs2) return '-'
+  const filtered = store?.pasien?.implant?.filter(x => !!x?.seri)?.filter(x => x?.nota === val?.rs2)
+  return filtered?.length > 0 ? filtered.map(x => x.seri).join(', ') : '-'
 }
-const surgical = props?.pasien?.surgical?.find(x => x.nota === props.pasien.rs2)
+const surgical = props?.pasien?.surgical?.find(x => x.nota === props.pasien?.rs2)
 function lamaOperasi (data) {
-  if (!data) return ''
+  if (!data) return '-'
   const awal = data?.rs11
   const akhir = data?.rs12
+  if (!awal || !akhir || typeof awal !== 'string' || typeof akhir !== 'string' || !awal.includes(':') || !akhir.includes(':')) {
+    return '-'
+  }
   const [jm, mm] = awal.split(':').map(Number)
   const [js, ms] = akhir.split(':').map(Number)
+  if (isNaN(jm) || isNaN(mm) || isNaN(js) || isNaN(ms)) return '-'
   const mulai = jm * 60 + mm
   let selesai = js * 60 + ms
 
@@ -216,11 +218,12 @@ function assignForm (data) {
   store.assignForm(data)
 }
 const getImg = (val) => {
-  const file = store.pasien?.implant_seri.find(x => x.nota == val?.rs2)?.url
+  const file = store.pasien?.implant_seri?.find(x => x.nota == val?.rs2)?.url
   // console.log('get img', file, val)
 
+  if (!file) return ''
   const spl = file?.split('.')
-  const ext = spl[spl?.length - 1]
+  const ext = spl?.length ? spl[spl.length - 1] : ''
 
   if (ext === 'pdf') {
     return new URL('../../../../../../../assets/images/PDF_file_icon.png', import.meta.url).href
@@ -230,38 +233,44 @@ const getImg = (val) => {
   }
 }
 const getFile = (val) => {
-  const file = store.pasien?.implant_seri.find(x => x.nota == val?.rs2)
+  const file = store.pasien?.implant_seri?.find(x => x.nota == val?.rs2)
   return file
 }
 function cariNakes (val, w) {
-
-  const tindakan = props?.pasien?.manytindakanop?.find(x => x.rs2 === val?.rs2)
-  // console.log('nakes', val, tindakan)
+  let tindakan = props?.pasien?.manytindakanop?.find(x => x.rs2 === val?.rs2)
+  if (!tindakan) {
+    tindakan = props?.pasien?.tindakan?.find(x => x.rs2 === val?.rs2)
+  }
+  
   if (tindakan) {
     if (w == 'operator') return nakesnya(tindakan?.rs9)
-    else if (w == 'asisten op') return nakesnya(tindakan?.rs11)
+    else if (w == 'asisten op') return nakesnya(tindakan?.rs11 || tindakan?.rs8)
     else if (w == 'anastesi') return nakesnya(tindakan?.rs12)
-    else if (w == 'asisten an') return nakesnya(tindakan?.rs13)
+    else if (w == 'asisten an') return nakesnya(tindakan?.rs13 || tindakan?.rs23)
     else return 'nakes tidak ditemukan'
   } else return 'nakes tidak ditemukan'
-
-
 }
 function nakesnya (val) {
-
-  const dat = val?.split(';').filter(x => !!x)
+  if (!val) return ''
+  const dat = val.split(';').filter(x => !!x)
+  if (!dat?.length) return ''
   const nakes = []
   dat.forEach(x => {
-    const nak = store.nakes.find(y => y.kdpegsimrs === x)
+    const nak = store.nakes?.find(y => y.kdpegsimrs === x)
     if (nak) nakes.push(nak)
   })
-  // console.log('cari nakes', dat)
   return nakes.length > 0 ? nakes.map(x => x.nama).join(', ') : ''
 }
 function cariTindakan (val) {
-  const tindakan = props?.pasien?.manytindakanop?.find(x => x.rs2 === val?.rs2)
-  // console.log('cari tin', val, tindakan)
-  return tindakan?.mastertindakanoperasi?.rs2 ?? '-'
+  let tindakan = props?.pasien?.manytindakanop?.find(x => x.rs2 === val?.rs2)
+  if (tindakan) {
+    return tindakan?.mastertindakanoperasi?.rs2 ?? '-'
+  }
+  tindakan = props?.pasien?.tindakan?.find(x => x.rs2 === val?.rs2)
+  if (tindakan) {
+    return tindakan?.mastertindakan?.rs2 ?? tindakan?.tindakan ?? '-'
+  }
+  return '-'
 }
 
 </script>

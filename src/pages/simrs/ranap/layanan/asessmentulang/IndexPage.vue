@@ -4,7 +4,7 @@
       <div class="row justify-between items-center">
         <div>
           <div class="f-20">
-            LIST ASESSMENT ULANG
+            LIST CPPT
           </div>
           <div class="caption text-grey-4">
             Sebagai Catatan Perkembangan Pasien

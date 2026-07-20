@@ -37,7 +37,13 @@
       <div class="q-pa-sm">
         <div class="row q-py-xs">
           <div class="col-6">
-            <q-input v-model="store.inputForm.waktu" valid label="Waktu" dense outlined mask="##:##" />
+            <q-input v-model="store.inputForm.waktu" valid label="Jam Mulai" dense outlined mask="##:##" />
+            <div class="text-caption text-primary q-mt-xs" v-if="lapOpMulai">
+              ℹ️ Jam Mulai (Lap. Op): <strong>{{ lapOpMulai }}</strong>
+            </div>
+            <div class="text-caption text-grey-6 q-mt-xs" v-else>
+              ℹ️ Jam Mulai (Lap. Op): Belum diisi
+            </div>
           </div>
           <div class="col-6">
             <app-input v-model="store.inputForm.konversi_anastesi" valid label="Konversi Anestesi" outlined />
@@ -46,7 +52,7 @@
         <div class="row items-center">
           <div class="col-2">Respirasi</div>
           <div class="col-10">
-            <app-input v-model="store.inputForm.respirasi" valid label="Respirasi" outlined />
+            <app-autocomplete v-model="store.inputForm.respirasi" valid label="Pilih Respirasi" outlined dense :source="['Spontan', 'Kontrol']" clearable />
           </div>
         </div>
         <div class="row text-weight-bold q-mt-sm"> Jumlah Cairan / transfusi </div>
@@ -92,10 +98,10 @@
           </div>
         </div>
         <div class="row q-mt-sm q-col-gutter-x-md">
-          <div class="col-6"><app-autocomplete v-model="store.inputForm.penata_anastesi" :key="laporanOp.nakes"
+          <div class="col-6"><app-autocomplete v-model="store.inputForm.penata_anastesi" :key="laporanOp.nakes?.length || 0"
               label="Penata Anestesi" outlined dense :source="laporanOp.nakes?.filter(y => y?.kdgroupnakes != '1')"
               option-label="nama" option-value="kdpegsimrs" hide-dropdown-icon /></div>
-          <div class="col-6"><app-autocomplete v-model="store.inputForm.dokter_anastesi" :key="laporanOp.nakes"
+          <div class="col-6"><app-autocomplete v-model="store.inputForm.dokter_anastesi" :key="laporanOp.nakes?.length || 0"
               label="Dokter Anestesi" outlined dense :source="laporanOp.nakes?.filter(y => y?.kdgroupnakes == '1')"
               option-label="nama" option-value="kdpegsimrs" hide-dropdown-icon /></div>
         </div>
@@ -121,9 +127,10 @@
     @add-log="handleNewLog" @close="showInputForm = false" />
 </template>
 <script setup>
+import { api } from 'src/boot/axios'
 import { useMonitoringSaatStore } from 'src/stores/simrs/kamaroperasi/assasement/monitoringSaat'
 import { useLaporanOperasiStore } from 'src/stores/simrs/kamaroperasi/laporanOperasi'
-import { ref, computed, onMounted, nextTick, defineAsyncComponent } from 'vue'
+import { ref, computed, onMounted, nextTick, defineAsyncComponent, watch } from 'vue'
 const props = defineProps({
   pasien: {
     type: Object,
@@ -221,15 +228,7 @@ const lowerChartOptions = computed(() => ({
       offsetY: 0,
       style: { fontSize: '10px' },
       rotate: -45,
-      formatter: (val) => {
-        // Tampilkan label tiap 15 atau 30 menit saja agar tidak penuh sesak
-        if (val % 15 === 0) {
-          const jam = Math.floor(val / 60).toString().padStart(2, '0')
-          const menit = (val % 60).toString().padStart(2, '0')
-          return `${jam}:${menit}`
-        }
-        return ''
-      }
+      formatter: (val) => formatXAxisTime(val, store.inputForm?.waktu)
     },
     axisTicks: { show: false } // Hilangkan 'tanda petik' di sumbu X agar lebih bersih
 
@@ -286,7 +285,7 @@ const lowerChartOptions = computed(() => ({
       fontWeight: 'bold', offsetY: -10,
       colors: [
         function ({ seriesIndex }) {
-          const colors = ['#2E7D32', '#f44336', '#2196f3', '#ff9800', '#000', '#000', '#000', '#000', '#000', '#000', '#000']
+          const colors = ['#000000', '#000000', '#F44336', '#000000', '#000', '#000', '#000', '#000', '#000', '#000', '#000']
           return colors[seriesIndex] || '#000'
         }
       ]
@@ -331,13 +330,13 @@ const lowerChartOptions = computed(() => ({
       // Logika penentuan simbol dan warna berdasarkan nama series
       switch (seriesName) {
         case 'Sistolik':
-          symbol = '∨'; color = '#2E7D32'; break // Hijau
+          symbol = '∨'; color = '#000000'; break // Hitam
         case 'Diastolik':
-          symbol = '∧'; color = '#f44336'; break // Merah
+          symbol = '∧'; color = '#000000'; break // Hitam
         case 'Nadi':
-          symbol = '●'; color = '#2196f3'; break // Biru
+          symbol = '●'; color = '#F44336'; break // Merah
         case 'Respirasi':
-          symbol = '✱'; color = '#ff9800'; break // Orange
+          symbol = '✱'; color = '#000000'; break // Hitam
         case 'Intubasi':
           symbol = '↑'; color = '#000000'; break // Hitam
         case 'Ekstubasi':
@@ -346,16 +345,16 @@ const lowerChartOptions = computed(() => ({
           symbol = '→'; color = '#000000'; break // Hitam
         case 'Selesai Operasi':
           symbol = '←'; color = '#000000'; break // Hitam
-        case 'Ass. Resep':
+        case 'Assist. Resp':
           symbol = 'AR'; color = '#000000'; break // Teks AR
         case 'X-Ana-X':
           symbol = 'X'; color = '#000000'; break // Teks X
         case 'e-N-o O.R.O':
           symbol = 'E'; color = '#000000'; break // Teks X
-        case 'Conrt Resep':
-          symbol = 'CR'; color = '#000000'; break // Teks X
-        case 'Spont Resep':
-          symbol = 'SR'; color = '#000000'; break // Teks X
+        case 'Contr. Resp':
+          symbol = 'CR'; color = '#000000'; break // Teks CR
+        case 'Spont. Resp':
+          symbol = 'SR'; color = '#000000'; break // Teks SR
         default:
           symbol = '•'; color = '#999'
       }
@@ -457,17 +456,17 @@ const lowerSeries = computed(() => [
     data: logs.value.map(l => ({ x: l.time, y: l.eno_oro ? 25 : null, originalValue: l.eno_oro }))
   },
   {
-    name: 'Ass. Resep',
+    name: 'Assist. Resp',
     type: 'scatter',
     data: logs.value.map(l => ({ x: l.time, y: l.ass_resep ? 25 : null, originalValue: l.ass_resep }))
   },
   {
-    name: 'Conrt Resep',
+    name: 'Contr. Resp',
     type: 'scatter',
     data: logs.value.map(l => ({ x: l.time, y: l?.cn_resp ? 25 : null, originalValue: l?.cn_resp }))
   },
   {
-    name: 'Spont Resep',
+    name: 'Spont. Resp',
     type: 'scatter',
     data: logs.value.map(l => ({ x: l.time, y: l?.sp_resp ? 25 : null, originalValue: l?.sp_resp }))
   },
@@ -476,6 +475,14 @@ const lowerSeries = computed(() => [
 // Konfigurasi Chart Atas (Obat/Cairan)
 
 const upperChartOptions = computed(() => ({
+  colors: allRows.value.map(name => {
+    if (name === 'o2') return '#2E7D32'        // Hijau untuk Oksigen (O2)
+    if (name === 'n2o') return '#1976D2'       // Biru untuk N2O
+    if (name === 'halothan') return '#D32F2F'  // Merah untuk Halothan
+    if (name === 'isoflurane') return '#7B1FA2' // Ungu untuk Isoflurane
+    if (name === 'sevoflurane') return '#F57C00'// Orange untuk Sevoflurane
+    return '#1565C0'                            // Default untuk Obat & Cairan
+  }),
   chart: {
     id: 'meds',
     group: 'anesthesia2', // Sinkron dengan lower chart
@@ -491,15 +498,7 @@ const upperChartOptions = computed(() => ({
       offsetY: 0,
       style: { fontSize: '10px' },
       rotate: -45,
-      formatter: (val) => {
-        // Tampilkan label tiap 15 atau 30 menit saja agar tidak penuh sesak
-        if (val % 15 === 0) {
-          const jam = Math.floor(val / 60).toString().padStart(2, '0')
-          const menit = (val % 60).toString().padStart(2, '0')
-          return `${jam}:${menit}`
-        }
-        return ''
-      }
+      formatter: (val) => formatXAxisTime(val, store.inputForm?.waktu)
     },
 
     // labels: { show: false } // Sembunyikan karena sudah ada di chart bawah
@@ -545,7 +544,17 @@ const upperChartOptions = computed(() => ({
     formatter: (val, opt) => {
       return opt.w.config.series[opt.seriesIndex].data[opt.dataPointIndex].markerLabel || ''
     },
-    style: { fontSize: '9px', colors: ['#000'] },
+    style: {
+      fontSize: '9px',
+      colors: allRows.value.map(name => {
+        if (name === 'o2') return '#2E7D32'        // Hijau untuk Oksigen (O)
+        if (name === 'n2o') return '#1976D2'       // Biru untuk N2O (N)
+        if (name === 'halothan') return '#D32F2F'  // Merah untuk Halothan (H)
+        if (name === 'isoflurane') return '#7B1FA2' // Ungu untuk Isoflurane (I)
+        if (name === 'sevoflurane') return '#F57C00'// Orange untuk Sevoflurane (S)
+        return '#000000'                            // Hitam untuk Obat & Cairan
+      })
+    },
     offsetY: -5
   },
   markers: {
@@ -701,16 +710,57 @@ function syncLabels () {
     }
   }, 200)
 }
-onMounted(async () => {
-  // Kita berikan sedikit delay agar ApexCharts selesai me-render total
-  // nextTick(() => {
-  //   syncLabels()
-  // })
-  // console.log('gas', allRows.value.map(name => gasKeys.includes(name) ? 3 : 0))
+function formatXAxisTime (val, waktuStr) {
+  if (val % 15 !== 0) return ''
+  let startHour = 0
+  let startMin = 0
+  if (waktuStr && typeof waktuStr === 'string' && waktuStr.includes(':')) {
+    const parts = waktuStr.split(':')
+    const h = parseInt(parts[0], 10)
+    const m = parseInt(parts[1], 10)
+    if (!isNaN(h)) startHour = h
+    if (!isNaN(m)) startMin = m
+  }
+  const totalMinutes = (startHour * 60 + startMin) + val
+  const h = Math.floor((totalMinutes / 60) % 24).toString().padStart(2, '0')
+  const m = Math.floor(totalMinutes % 60).toString().padStart(2, '0')
+  return `${h}:${m}`
+}
 
+const lapOpMulai = computed(() => {
+  const lap = props.pasien?.laporanop
+  if (Array.isArray(lap) && lap.length > 0) {
+    const item = lap.find(x => x.rs11) || lap[0]
+    return item?.rs11 ? item.rs11.substring(0, 5) : ''
+  } else if (lap && typeof lap === 'object') {
+    return lap.rs11 ? lap.rs11.substring(0, 5) : ''
+  }
+  return ''
+})
+
+onMounted(async () => {
   if (laporanOp.nakes.length == 0) laporanOp.getNakes()
   try {
     await store.getMonitoringSelama(props.pasien)
+
+    // Pre-fill Jam Mulai dari Laporan Operasi / Asuhan Penata Anestesi jika di form Monitoring belum terisi
+    if (!store.inputForm?.waktu) {
+      if (lapOpMulai.value) {
+        store.inputForm.waktu = lapOpMulai.value
+      } else {
+        try {
+          const param = { params: { noreg: props.pasien?.noreg, nota: props.pasien?.rs2, norm: props.pasien?.norm } }
+          const asuhanResp = await api.get('v1/simrs/penunjang/ok/asuhan/anastesi/getdata', param)
+          const asuhanData = asuhanResp?.data?.data
+          if (asuhanData?.intra_jam_mulai_anestesi) {
+            store.inputForm.waktu = asuhanData.intra_jam_mulai_anestesi?.substring(0, 5)
+          }
+        } catch (err) {
+          // abaikan jika tidak ada data
+        }
+      }
+    }
+
     const charts = document.querySelectorAll('.vue-apexcharts')
     charts.forEach(el => el.style.pointerEvents = 'none')
     await nextTick()
@@ -722,10 +772,14 @@ onMounted(async () => {
     }, 500)
   } catch (e) {
     console.log('gagal memuat data monitoring', e)
-
   }
-
 })
+
+watch(lapOpMulai, (newVal) => {
+  if (newVal && !store.inputForm?.waktu) {
+    store.inputForm.waktu = newVal
+  }
+}, { immediate: true })
 </script>
 <style scoped>
 .upper-section {

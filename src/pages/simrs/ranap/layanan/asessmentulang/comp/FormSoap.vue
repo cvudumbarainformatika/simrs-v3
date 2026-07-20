@@ -51,12 +51,8 @@ const {
 } = useForm(props.pasien)
 
 onMounted(() => {
-  storeAnamnesis.initReset(null)
-  storePemeriksaanUmum.initReset()
   storePenilaian.getUsia(props.pasien)
-  storePenilaian.initReset(props.pasien)
-
-  // console.log('asesment :ulang="true"', storePenilaian.humptys)
+  // initReset dipanggil dari getPreviousForm di parent component untuk memuat data riwayat sebelumnya
 })
 
 const jnsKasusKep = computed(() => {

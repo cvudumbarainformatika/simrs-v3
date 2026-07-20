@@ -156,7 +156,7 @@ const menus = ref([
     name: 'upload-dok-page',
     label: 'Upload Dokumen',
     icon: 'icon-mat-cloud_upload',
-    route: ['poli'],
+    route: ['poli', 'rekammedik'],
     comp: shallowRef(defineAsyncComponent(() => import('./comptindakan/pagemenu/UploadDokPage.vue')))
   },
   {

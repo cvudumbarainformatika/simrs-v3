@@ -125,9 +125,58 @@ const documents = ref([
   {
     icon: 'icon-mat-email',
     color: 'primary',
+    jenis: 'PRA-IND',
+    label: 'Pra Induksi',
+    value: 'Prainduksi'
+  },
+  {
+    icon: 'icon-mat-email',
+    color: 'primary',
+    jenis: 'MON-SEL',
+    label: 'Monitoring Selama Anestesi',
+    value: 'Monitoringselamaanestesi'
+  },
+  {
+    icon: 'icon-mat-email',
+    color: 'primary',
+    jenis: 'MON-PASCA',
+    label: 'Monitoring Pasca Anestesi',
+    value: 'Monitoringpascaanestesi'
+  },
+  {
+    icon: 'icon-mat-email',
+    color: 'primary',
+    jenis: 'LAP-OP',
+    label: 'Laporan Operasi',
+    value: 'Laporanoperasi'
+  },
+  {
+    icon: 'icon-mat-email',
+    color: 'primary',
     jenis: 'SURGICAL',
     label: 'Checklist Surgical Safety',
     value: 'SurgicalSafety'
+  },
+  {
+    icon: 'icon-mat-email',
+    color: 'primary',
+    jenis: 'BATAL-OP',
+    label: 'Pembatalan Pelayanan Operasi',
+    value: 'PembatalanPelayanan'
+  },
+  {
+    icon: 'icon-mat-email',
+    color: 'primary',
+    jenis: 'ASK-PERI',
+    label: 'Asuhan Keperawatan Perioperatif',
+    value: 'Askepperioperatif'
+  },
+  {
+    icon: 'icon-mat-email',
+    color: 'primary',
+    jenis: 'ASK-ANES',
+    label: 'Asuhan Penata Anestesi',
+    value: 'Askepanestesi'
   },
   {
     icon: 'icon-mat-email',
@@ -137,6 +186,15 @@ const documents = ref([
     value: 'CPPT',
     title: 'CATATAN PERKEMBANGAN PASIEN TERINTEGRASI',
     desc: 'Catatan Perkembangan Pasien Terintegrasi'
+  },
+  {
+    icon: 'icon-mat-email',
+    color: 'primary',
+    jenis: 'EDUKASI',
+    label: 'Edukasi Pasien KIE',
+    value: 'EDUKASI',
+    title: 'EDUKASI PASIEN',
+    desc: 'Edukasi KIE Pasien'
   },
   // {
   //   icon: 'icon-mat-email',
@@ -226,7 +284,15 @@ const comp = [
   { nama: 'AsesmenPraAnestesia', page: defineAsyncComponent(() => import('src/pages/simrs/dokumen/erm/poli/AsesmenPraAnestesia.vue')) },
   { nama: 'AsesmenPraBedah', page: defineAsyncComponent(() => import('src/pages/simrs/dokumen/erm/poli/AssesmentPraBedah.vue')) },
   { nama: 'SurgicalSafety', page: defineAsyncComponent(() => import('src/pages/simrs/dokumen/erm/ok/comp/DokumenSurgicalSafety.vue')) },
+  { nama: 'PembatalanPelayanan', page: defineAsyncComponent(() => import('./comp/DokumenPembatalanPelayanan.vue')) },
+  { nama: 'Askepperioperatif', page: defineAsyncComponent(() => import('./comp/AsuhanKeperawatanPerioperatif.vue')) },
+  { nama: 'Askepanestesi', page: defineAsyncComponent(() => import('./comp/AsuhanPenataAnastesi.vue')) },
+  { nama: 'Prainduksi', page: defineAsyncComponent(() => import('./comp/PraInduksiDoc.vue')) },
+  { nama: 'Monitoringselamaanestesi', page: defineAsyncComponent(() => import('./comp/MonitoringSelamaAnastesiDoc.vue')) },
+  { nama: 'Monitoringpascaanestesi', page: defineAsyncComponent(() => import('./comp/MonitoringPascaAnastesiDoc.vue')) },
+  { nama: 'Laporanoperasi', page: defineAsyncComponent(() => import('./comp/LaporanOperasiDoc.vue')) },
   { nama: 'CPPT', page: defineAsyncComponent(() => import('src/pages/simrs/ranap/layanan/dokumen/cppt/IndexPage.vue')) },
+  { nama: 'EDUKASI', page: defineAsyncComponent(() => import('src/pages/simrs/ranap/layanan/dokumen/edukasi/IndexPage.vue')) },
   { nama: 'SEP', page: defineAsyncComponent(() => import('src/pages/simrs/poli/dokumen/Sep/SepPage.vue')) },
   { nama: 'ERESEP', page: defineAsyncComponent(() => import('src/pages/simrs/igd/layanan/dokumen/dokumenisi/Farmasi/FarmasiPage.vue')) },
   { nama: 'Laborat', page: defineAsyncComponent(() => import('src/pages/simrs/igd/layanan/dokumen/dokumenisi/Laborat/LaboratPage.vue')) },

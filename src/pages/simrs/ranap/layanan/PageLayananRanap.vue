@@ -1,6 +1,6 @@
 <template>
   <q-dialog ref="refDialog" persistent :maximized="true" transition-show="slide-left" transition-hide="slide-right"
-    @show="onShow">
+    @show="onShow" @hide="onHide">
     <q-card square flat class="container-no-header">
       <q-layout view="lHr Lpr lFf" container class="shadow-2 rounded-borders z-top">
         <q-header elevated class="bg-primary">
@@ -10,25 +10,25 @@
         </q-header>
         <!-- LEFT DRAWER ======================================================================================-->
         <q-drawer v-model="drawer" elevated bordered show-if-above :width="230" :breakpoint="400">
-          <LeftDrawer :key="pasien" :pasien="pasien" :menus="filterredMenus" :menu="menu"
+          <LeftDrawer :key="pasien?.noreg" :pasien="pasien" :menus="filterredMenus" :menu="menu"
             @click-menu="(val) => menuDiganti(val)" @history-pasien="historyPasien" @log-activity="logActivity" />
         </q-drawer>
 
         <!-- RIGHT DRAWER ======================================================================================-->
         <q-drawer v-model="drawerRight" side="right" show-if-above overlay bordered :width="845" :breakpoint="500">
-          <RightDrawer :key="pasien" :pasien="pasien" @close="drawerRight = false" />
+          <RightDrawer :key="pasien?.noreg" :pasien="pasien" @close="drawerRight = false" />
         </q-drawer>
 
         <!-- LOG ACTIVITY DRAWER ===============================================================================-->
         <q-drawer v-model="drawerLog" side="right" show-if-above overlay bordered :width="drawerLogWidth" :breakpoint="500">
-          <LogActivityDrawer :key="pasien" :pasien="pasien" @close="drawerLog = false" />
+          <LogActivityDrawer :key="pasien?.noreg" :pasien="pasien" @close="drawerLog = false" />
         </q-drawer>
 
         <!-- CONTAINER ============================================================================================-->
         <q-page-container>
           <q-page class="contain bg-grey-3">
 
-            <div class="fit" v-if="loading && !pasien?.anamnesis">
+            <div class="fit" v-if="loading">
               <AppLoader />
             </div>
             <div v-else class="fit">
@@ -51,7 +51,7 @@
                   MAAF, HARAP TENTUKAN DAHULU JENIS KASUS PASIEN
                 </div>
               </div>
-              <component v-else :is="menu?.comp" :key="pasien" :pasien="pasien" :kasus="store?.jnsKasusPasien"
+              <component v-else :is="menu?.comp" :key="pasien?.noreg" :pasien="pasien" :kasus="store?.jnsKasusPasien"
                 :nakes="nakes" depo="rnp" />
             </div>
 
@@ -104,12 +104,17 @@ const props = defineProps({
 
 const { filterredMenus, menu, store, nakes, menuDiganti } = useLayanan(props.pasien)
 
+const emit = defineEmits(['layanan-closed'])
+
 const onShow = () => {
-  // console.log('pasien pageLayananRanap', props.pasien)
   Promise.all([
     anamnesis.getRiwayatKehamilan(props.pasien),
     history.historyIgdBefore(props.pasien)
   ])
+}
+
+function onHide() {
+  emit('layanan-closed')
 }
 
 function historyPasien() {

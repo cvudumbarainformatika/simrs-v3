@@ -1,6 +1,6 @@
 <template>
   <q-dialog persistent backdrop-filter="blur(4px)">
-    <q-card style="width: 95vw; max-width: 1400px; height: 95vh;">
+    <q-card style="width: 100%; max-width: 1700px; height: 95vh;">
       <q-layout view="lHh Lpr lFf" container class="shadow-2 rounded-borders">
         <q-header elevated>
           <q-bar class="bg-black text-white">
@@ -116,9 +116,9 @@
                   </div>
 
                   <div class="row justify-between full-width full-height ">
-                    <div class="row full-width" style="width:100%">
+                    <div class="full-width" style="width:100%">
 
-                      <table class="justify-center full-width">
+                      <table class="full-width">
                         <thead>
                           <tr style="height: 25px">
                             <th rowspan="2">
@@ -259,9 +259,9 @@
                   </div>
 
                   <div class="row justify-between full-width full-height ">
-                    <div class="row full-width" style="width:100%">
+                    <div class="full-width" style="width:100%">
 
-                      <table class="justify-center full-width">
+                      <table class="full-width">
                         <thead>
                           <tr class="text-bold text-center" style="height:50px">
                             <td class="text-center" colspan="2">REKENING</td>
@@ -561,7 +561,7 @@ td {
 }
 
 @page {
-  size: A4 landscape;
+  size: landscape;
   margin: 8mm;
 }
 

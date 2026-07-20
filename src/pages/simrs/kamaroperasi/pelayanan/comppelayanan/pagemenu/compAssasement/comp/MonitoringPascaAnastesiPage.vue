@@ -10,14 +10,32 @@
           <div class="col-md-2 col-xs-6">
             <q-input v-model="store.inputFormPasca.jam_masuk" label="Masuk Jam" dense outlined bg-color="white"
               mask="##:##" />
+            <div class="text-caption text-primary q-mt-xs" v-if="estimasiMasukRR">
+              ℹ️ Est. Masuk RR (Selesai Bedah + 5m): <strong>{{ estimasiMasukRR }}</strong>
+            </div>
+            <div class="text-caption text-grey-6 q-mt-xs" v-else>
+              ℹ️ Est. Masuk RR: Belum diisi
+            </div>
           </div>
           <div class="col-md-4 col-xs-6">
             <q-select v-model="store.inputFormPasca.keadaan_umum"
               :options="['Sadar', 'Belum Sadar', 'Reflek (-)', 'Reflek (+)', 'Panas', 'Syok']" label="Keadaan Umum"
               dense outlined bg-color="white" multiple use-chips />
           </div>
-          <div class="col-md-2 col-xs-4">
-            <q-input v-model="store.inputFormPasca.pernapasan" label="Pernapasan" dense outlined bg-color="white" />
+          <div class="col-md-3 col-xs-6">
+            <q-select v-model="store.inputFormPasca.pernapasan" :options="['Spontan', 'Kontrol']" label="Pernapasan"
+              dense outlined bg-color="white" behavior="menu" />
+          </div>
+        </div>
+
+        <!-- TANDA VITAL AWAL MASUK (LOG MENIT 0) -->
+        <div class="q-mt-sm bg-blue-1 q-pa-xs rounded-borders" v-if="log0">
+          <div class="text-caption text-weight-bold text-primary">Tanda Vital Awal Masuk (Log Menit ke-0):</div>
+          <div class="row q-col-gutter-xs text-caption text-weight-bold text-dark">
+            <div class="col-md-3 col-xs-6">TD: {{ log0.td_sistolik && log0.td_diastolik ? log0.td_sistolik + '/' + log0.td_diastolik + ' mmHg' : '-' }}</div>
+            <div class="col-md-3 col-xs-6">Nadi: {{ log0.nadi ? log0.nadi + ' x/mnt' : '-' }}</div>
+            <div class="col-md-3 col-xs-6">RR: {{ log0.resp ? log0.resp + ' x/mnt' : '-' }}</div>
+            <div class="col-md-3 col-xs-6">Suhu: {{ log0.temp ? log0.temp + ' °C' : '-' }}</div>
           </div>
         </div>
       </q-card-section>
@@ -64,12 +82,23 @@
           <div class="col-md-4">
             <q-input v-model="store.inputFormPasca.monitor_mulai" label="Monitor Mulai Jam" dense outlined
               mask="##:##" />
+            <div class="text-caption text-primary q-mt-xs" v-if="lapOpSelesai">
+              ℹ️ Jam Selesai Op (Lap. Op): <strong>{{ lapOpSelesai }}</strong>
+            </div>
+            <div class="text-caption text-grey-6 q-mt-xs" v-else>
+              ℹ️ Jam Selesai Op (Lap. Op): Belum diisi
+            </div>
           </div>
           <div class="col-md-4">
-            <q-input v-model="store.inputFormPasca.monitor_selama" label="Selama (Jam/Menit)" dense outlined />
+            <q-select v-model="store.inputFormPasca.monitor_setiap"
+              :options="[{ label: '15 Menit', value: '15' }, { label: '30 Menit', value: '30' }]"
+              label="Setiap (Menit)" dense outlined emit-value map-options behavior="menu"
+              :disable="logs.length > 0">
+              <q-tooltip v-if="logs.length > 0">Interval terkunci karena data log observasi sudah ada</q-tooltip>
+            </q-select>
           </div>
           <div class="col-md-4">
-            <q-input v-model="store.inputFormPasca.monitor_setiap" label="Setiap (Menit)" dense outlined />
+            <q-input v-model="store.inputFormPasca.monitor_selama" label="Selama (Otomatis)" dense outlined readonly bg-color="grey-2" />
           </div>
 
           <div class="col-md-6 q-mt-sm">
@@ -86,11 +115,14 @@
             <q-input v-model="store.inputFormPasca.obat_sakit" label="Bila Kesakitan" dense outlined />
           </div>
           <div class="col-md-4 q-mt-sm">
-            <q-input v-model="store.inputFormPasca.makan_minum" label="Minum / Makan" dense outlined />
+            <q-input v-model="store.inputFormPasca.obat_lain" label="Obat Lain-lain" dense outlined />
           </div>
 
-          <div class="col-md-12 q-mt-sm">
-            <q-input v-model="store.inputFormPasca.lain_lain" label="Lain-lain" dense outlined />
+          <div class="col-md-6 q-mt-sm">
+            <q-input v-model="store.inputFormPasca.makan_minum" label="Minum / Makan" dense outlined />
+          </div>
+          <div class="col-md-6 q-mt-sm">
+            <q-input v-model="store.inputFormPasca.lain_lain" label="Lain-lain / Instruksi Lain" dense outlined />
           </div>
         </div>
 
@@ -102,7 +134,7 @@
 
     <!-- FAB BUTTON UNTUK TAMBAH LOG -->
     <q-page-sticky position="bottom-right" :offset="[18, 18]">
-      <q-btn fab icon="add_chart" color="secondary" @click="showInputLog = true">
+      <q-btn fab icon="add_chart" color="secondary" @click="openInputLogDialog">
         <q-tooltip anchor="top left" self="bottom right" :offset="[10, 10]">Input Data Observasi Pasca</q-tooltip>
       </q-btn>
     </q-page-sticky>
@@ -166,12 +198,26 @@
 <script setup>
 import { useMonitoringSaatStore } from 'src/stores/simrs/kamaroperasi/assasement/monitoringSaat'
 import { ref, computed, onMounted, nextTick, watch } from 'vue'
+import { useQuasar } from 'quasar'
 
 const props = defineProps({
   pasien: { type: Object, default: () => ({}) }
 })
 
 const store = useMonitoringSaatStore()
+const $q = useQuasar()
+
+function openInputLogDialog () {
+  if (!store.inputFormPasca?.monitor_setiap) {
+    $q.notify({
+      type: 'warning',
+      message: 'Silakan pilih interval "Setiap (Menit)" (15 atau 30 menit) terlebih dahulu!',
+      position: 'top'
+    })
+    return
+  }
+  showInputLog.value = true
+}
 
 // --- DATA FORM STATE ---
 const formInstruksi = ref({ monitor_mulai: '', monitor_selama: '', monitor_setiap: '', infus: '', antibiotika: '', obat_mual: '', obat_sakit: '', makan_minum: '', lain_lain: '' })
@@ -186,7 +232,11 @@ const formDialogLog = ref({ time: 0, td_sistolik: '', td_diastolik: '', nadi: ''
 //   { time: 15, td_sistolik: 130, td_diastolik: 80, nadi: 80, resp: 18, temp: 36.2 },
 //   { time: 30, td_sistolik: 120, td_diastolik: 80, nadi: 75, resp: 16, temp: 36.5 }
 // ])
-const logs = computed(() => store.dataPasca)
+const logs = computed(() => store.dataPasca || [])
+const log0 = computed(() => {
+  if (!logs.value || !logs.value.length) return null
+  return logs.value.find(l => parseInt(l.time, 10) === 0) || null
+})
 // --- FUNGSI SCALE (SAMA PERSIS DENGAN KODINGAN ANDA) ---
 const scaleN = (val) => {
   if (!val) return val
@@ -249,14 +299,7 @@ const lowerChartOptions = computed(() => ({
       offsetY: 0,
       style: { fontSize: '10px' },
       rotate: -45,
-      formatter: (val) => {
-        if (val % 15 === 0) {
-          const jam = Math.floor(val / 60).toString().padStart(2, '0')
-          const menit = (val % 60).toString().padStart(2, '0')
-          return `${jam}:${menit}`
-        }
-        return ''
-      }
+      formatter: (val) => formatXAxisTime(val, store.inputFormPasca?.monitor_mulai)
     },
     axisTicks: { show: false }
   },
@@ -264,7 +307,7 @@ const lowerChartOptions = computed(() => ({
     min: 20, max: 220, tickAmount: 10, labels: { show: false }
   },
   stroke: {
-    width: [0, 0, 0, 0],
+    width: [0, 0, 0, 0, 0],
     curve: 'straight',
     connectNulls: true
   },
@@ -291,7 +334,7 @@ const lowerChartOptions = computed(() => ({
       offsetY: -10,
       colors: [
         function ({ seriesIndex }) {
-          const colors = ['#2E7D32', '#f44336', '#2196f3', '#ff9800', '#fe9000']
+          const colors = ['#000000', '#000000', '#F44336', '#000000', '#2196F3']
           return colors[seriesIndex] || '#000'
         }
       ]
@@ -313,11 +356,11 @@ const lowerChartOptions = computed(() => ({
       let symbol = ''
       let color = ''
       switch (seriesName) {
-        case 'Sistolik': symbol = '∨'; color = '#2E7D32'; break
-        case 'Diastolik': symbol = '∧'; color = '#f44336'; break
-        case 'Nadi': symbol = '●'; color = '#2196f3'; break
-        case 'Respirasi': symbol = '✱'; color = '#ff9800'; break
-        case 'Suhu': symbol = '△'; color = '#fe9000'; break
+        case 'Sistolik': symbol = '∨'; color = '#000000'; break
+        case 'Diastolik': symbol = '∧'; color = '#000000'; break
+        case 'Nadi': symbol = '●'; color = '#F44336'; break
+        case 'Respirasi': symbol = '✱'; color = '#000000'; break
+        case 'Suhu': symbol = '△'; color = '#2196F3'; break
         default: symbol = '•'; color = '#999'
       }
       return `
@@ -327,7 +370,7 @@ const lowerChartOptions = computed(() => ({
       </div>`
     }
   },
-  colors: ['#2E7D32', '#f44336', '#2196F3', '#FFA000'],
+  colors: ['#000000', '#000000', '#F44336', '#000000', '#2196F3'],
   tooltip: {
     enabled: true,
     shared: true,
@@ -359,7 +402,7 @@ const lowerSeries = computed(() => [
 function syncLabels () {
   if (!chartWrapperRef.value) return
   setTimeout(() => {
-    const gridElement = chartWrapperRef.value.$el.querySelector('.apexcharts-grid')
+    const gridElement = chartWrapperRef.value?.$el?.querySelector?.('.apexcharts-grid')
     if (gridElement) {
       const totalHeight = gridElement.getBoundingClientRect().height
       if (totalHeight > 0) {
@@ -388,20 +431,55 @@ function syncLabels () {
 
 // ... (kode formKondisi dan logs yang sudah ada sebelumnya) ...
 
-// 1. GENERATE OPSI MENIT (Kelipatan 5 menit)
+function formatXAxisTime (val, waktuStr) {
+  if (val % 15 !== 0) return ''
+  let startHour = 0
+  let startMin = 0
+  if (waktuStr && typeof waktuStr === 'string' && waktuStr.includes(':')) {
+    const parts = waktuStr.split(':')
+    const h = parseInt(parts[0], 10)
+    const m = parseInt(parts[1], 10)
+    if (!isNaN(h)) startHour = h
+    if (!isNaN(m)) startMin = m
+  }
+  const totalMinutes = (startHour * 60 + startMin) + val
+  const h = Math.floor((totalMinutes / 60) % 24).toString().padStart(2, '0')
+  const m = Math.floor(totalMinutes % 60).toString().padStart(2, '0')
+  return `${h}:${m}`
+}
+
+function formatSelectTime (val, waktuStr) {
+  if (!waktuStr || typeof waktuStr !== 'string' || !waktuStr.includes(':')) {
+    return `Menit ke-${val}`
+  }
+  let startHour = 0
+  let startMin = 0
+  const parts = waktuStr.split(':')
+  const h = parseInt(parts[0], 10)
+  const m = parseInt(parts[1], 10)
+  if (!isNaN(h)) startHour = h
+  if (!isNaN(m)) startMin = m
+
+  const totalMinutes = (startHour * 60 + startMin) + val
+  const resH = Math.floor((totalMinutes / 60) % 24).toString().padStart(2, '0')
+  const resM = Math.floor(totalMinutes % 60).toString().padStart(2, '0')
+  return `${resH}:${resM} (Menit ke-${val})`
+}
+
+// 1. GENERATE OPSI MENIT (Berdasarkan monitor_setiap: 15 atau 30 menit)
 const minuteOptions = computed(() => {
+  const step = parseInt(store.inputFormPasca?.monitor_setiap || '15', 10) || 15
   const lastTime = logs.value.length > 0
     ? Math.max(...logs.value.map(l => l.time))
     : 0
 
-  // Batas atas minimal 120 menit untuk RR (Recovery Room), atau + 30 menit dari log terakhir
-  const limit = Math.max(145, lastTime + 30)
-  const length = Math.floor(limit / 5) + 1
+  const limit = Math.max(145, lastTime + step * 2)
+  const length = Math.floor(limit / step) + 1
 
   return Array.from({ length }, (_, i) => {
-    const val = i * 5
+    const val = i * step
     return {
-      label: `Menit ke-${val}`,
+      label: formatSelectTime(val, store.inputFormPasca?.monitor_mulai),
       value: val
     }
   })
@@ -409,14 +487,21 @@ const minuteOptions = computed(() => {
 
 // 2. FUNGSI KETIKA DIALOG MUNCUL
 function onDialogShow () {
+  const step = parseInt(store.inputFormPasca?.monitor_setiap || '15', 10) || 15
   const lastTime = logs.value.length > 0
     ? Math.max(...logs.value.map(l => l.time))
-    : -5 // Default awal agar mulai dari 0 jika belum ada log
+    : -step
 
-  // Asumsi observasi pasca anestesi biasanya tiap 15 menit,
-  // Anda bisa ganti "lastTime + 5" jika ingin interval 5 menit.
-  formDialogLog.value.time = lastTime + 5
+  formDialogLog.value.time = lastTime + step
 }
+
+// Watcher untuk otomatis menghitung dan mengisikan `monitor_selama` dari log paling akhir
+watch(() => logs.value, (newLogs) => {
+  if (newLogs && newLogs.length > 0) {
+    const maxTime = Math.max(...newLogs.map(l => l.time))
+    store.inputFormPasca.monitor_selama = `${maxTime} Menit`
+  }
+}, { deep: true, immediate: true })
 
 // 3. WATCHER UNTUK AUTO-LOAD DATA (EDIT MODE)
 watch(() => formDialogLog.value.time, (newTime) => {
@@ -445,20 +530,14 @@ watch(() => formDialogLog.value.time, (newTime) => {
 
 // 4. MODIFIKASI FUNGSI SIMPAN (Bisa Insert & Update)
 async function tambahLog () {
-  // Cek apakah data di menit tersebut sudah ada
-  // const index = logs.value.findIndex(l => l.time === formDialogLog.value.time)
-
-  // if (index !== -1) {
-  //   // UPDATE DATA JIKA SUDAH ADA
-  //   logs.value[index] = { ...formDialogLog.value }
-  // } else {
-  //   // INSERT DATA BARU JIKA BELUM ADA
-  //   logs.value.push({ ...formDialogLog.value })
-  // }
-
-  // // Opsional: Urutkan array logs berdasarkan waktu agar garis grafik tidak zig-zag
-  // logs.value.sort((a, b) => a.time - b.time)
   await store.simpanLogPasca(props.pasien, formDialogLog.value)
+
+  if (logs.value.length > 0) {
+    const maxTime = Math.max(...logs.value.map(l => l.time))
+    store.inputFormPasca.monitor_selama = `${maxTime} Menit`
+  }
+  // Otomatis simpan medikasi pasca ke DB agar monitor_selama dan monitor_setiap tersimpan
+  await store.simpanMedikasiPasca()
 
   showInputLog.value = false
   syncLabels()
@@ -470,8 +549,83 @@ const simpanData = () => {
   store.simpanMedikasiPasca()
 }
 
-onMounted(() => {
-  store.getMonitoringPasca(props.pasien)
+function addMinutesToTime (timeStr, mins) {
+  if (!timeStr || typeof timeStr !== 'string' || !timeStr.includes(':')) return ''
+  const parts = timeStr.split(':')
+  const h = parseInt(parts[0], 10)
+  const m = parseInt(parts[1], 10)
+  if (isNaN(h) || isNaN(m)) return ''
+  const addedMins = parseInt(mins, 10) || 0
+  let totalMin = h * 60 + m + addedMins
+  if (totalMin < 0) totalMin = 0
+  const finalH = Math.floor((totalMin / 60) % 24).toString().padStart(2, '0')
+  const finalM = Math.floor(totalMin % 60).toString().padStart(2, '0')
+  return `${finalH}:${finalM}`
+}
+
+const lapOpSelesai = computed(() => {
+  const lap = props.pasien?.laporanop
+  if (Array.isArray(lap) && lap.length > 0) {
+    const item = lap.find(x => x.rs12) || lap[0]
+    return item?.rs12 ? item.rs12.substring(0, 5) : ''
+  } else if (lap && typeof lap === 'object') {
+    return lap.rs12 ? lap.rs12.substring(0, 5) : ''
+  }
+  return ''
+})
+
+const estimasiMasukRR = computed(() => {
+  if (!lapOpSelesai.value) return ''
+  return addMinutesToTime(lapOpSelesai.value, 5)
+})
+
+const maxLogMinute = computed(() => {
+  if (!logs.value || !logs.value.length) return 0
+  const times = logs.value.map(l => parseInt(l.time, 10)).filter(t => !isNaN(t))
+  return times.length ? Math.max(...times) : 0
+})
+
+const estimasiKeluarRR = computed(() => {
+  const jamMasuk = store.inputFormPasca?.jam_masuk || store.formKeluar?.jam_masuk || estimasiMasukRR.value
+  if (!jamMasuk) return ''
+  return addMinutesToTime(jamMasuk, maxLogMinute.value)
+})
+
+watch(lapOpSelesai, (newVal) => {
+  if (newVal && !store.inputFormPasca?.monitor_mulai) {
+    store.inputFormPasca.monitor_mulai = newVal
+  }
+}, { immediate: true })
+
+watch(estimasiMasukRR, (newVal) => {
+  if (newVal && !store.inputFormPasca?.jam_masuk) {
+    store.inputFormPasca.jam_masuk = newVal
+  }
+  if (newVal && !store.formKeluar?.jam_masuk) {
+    store.formKeluar.jam_masuk = newVal
+  }
+}, { immediate: true })
+
+watch([() => store.inputFormPasca?.jam_masuk, maxLogMinute], ([masuk, mins]) => {
+  if (masuk && mins > 0 && !store.formKeluar?.jam_keluar) {
+    store.formKeluar.jam_keluar = addMinutesToTime(masuk, mins)
+  }
+}, { immediate: true })
+
+onMounted(async () => {
+  await store.getMonitoringPasca(props.pasien)
+  if (lapOpSelesai.value && !store.inputFormPasca.monitor_mulai) {
+    store.inputFormPasca.monitor_mulai = lapOpSelesai.value
+  }
+  if (estimasiMasukRR.value && !store.inputFormPasca.jam_masuk) {
+    store.inputFormPasca.jam_masuk = estimasiMasukRR.value
+  }
+  if (estimasiMasukRR.value && !store.formKeluar?.jam_masuk) {
+    store.formKeluar.jam_masuk = estimasiMasukRR.value
+  }
+  if (store.inputFormPasca?.jam_masuk && maxLogMinute.value > 0 && !store.formKeluar?.jam_keluar) {
+    store.formKeluar.jam_keluar = addMinutesToTime(store.inputFormPasca.jam_masuk, maxLogMinute.value)
+  }
   nextTick(() => {
     if (typeof syncLabels === 'function') syncLabels()
   })

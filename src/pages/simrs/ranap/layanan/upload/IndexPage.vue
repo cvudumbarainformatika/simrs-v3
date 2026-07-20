@@ -1,10 +1,17 @@
 <script setup>
 // import { useTindakanRanapStore } from 'src/stores/simrs/ranap/tindakan'
-import { defineAsyncComponent, onMounted } from 'vue'
+import { defineAsyncComponent, onMounted, computed } from 'vue'
+import { useRoute } from 'vue-router'
 
 const BaseLayout = defineAsyncComponent(() => import('src/pages/simrs/ranap/layanan/components/BaseLayout.vue'))
 const FormUpload = defineAsyncComponent(() => import('./comp/FormUpload.vue'))
 const ListUpload = defineAsyncComponent(() => import('./comp/ListUpload.vue'))
+
+const route = useRoute()
+const isMppOrRm = computed(() => {
+  const pathSegments = route.path.split('/').filter(Boolean)
+  return pathSegments.includes('rekammedik') || pathSegments.includes('mpp')
+})
 
 const props = defineProps({
   pasien: {
@@ -33,7 +40,11 @@ onMounted(() => {
 </script>
 
 <template>
+  <div v-if="isMppOrRm" class="fit">
+    <ListUpload :pasien="props.pasien" />
+  </div>
   <BaseLayout
+    v-else
     :pasien="props.pasien" :kasus="props.kasus" :nakes="props.nakes" :split="60" nota
     title-before="UPLOAD DOKUMEN LUAR"
     title-after="List Upload"

@@ -135,6 +135,7 @@ export const useMonitoringSaatStore = defineStore('monitoring_saat', {
           nota: pasien.rs2,
           norm: pasien.norm
         }
+
         this.data.sort((a, b) => a.time - b.time)
         return resp?.data
       } catch (e) {
@@ -186,12 +187,26 @@ export const useMonitoringSaatStore = defineStore('monitoring_saat', {
     async getMonitoringPasca (pasien) {
       const param = { params: { noreg: pasien.noreg, nota: pasien.rs2, norm: pasien.norm } }
       const resp = await api.get('v1/simrs/penunjang/ok/monitoring/pasca/get', param)
-      this.dataPasca = resp?.data?.monitoring // Simpan di state terpisah
-      this.inputFormPasca = resp?.data?.medikasi
-      if (!resp?.data?.medikasi) this.inputFormPasca = {
-        noreg: pasien.noreg,
-        nota: pasien.rs2,
-        norm: pasien.norm
+      this.dataPasca = resp?.data?.monitoring || []
+      if (resp?.data?.medikasi) {
+        const med = { ...resp.data.medikasi }
+        if (typeof med.keadaan_umum === 'string' && med.keadaan_umum.includes(',')) {
+          med.keadaan_umum = med.keadaan_umum.split(',').map(s => s.trim())
+        } else if (typeof med.keadaan_umum === 'string' && med.keadaan_umum) {
+          med.keadaan_umum = [med.keadaan_umum]
+        } else if (!med.keadaan_umum && med.kesadaran) {
+          med.keadaan_umum = med.kesadaran.includes(',') ? med.kesadaran.split(',').map(s => s.trim()) : [med.kesadaran]
+        }
+        if (!med.lain_lain && med.instruksi_lain) {
+          med.lain_lain = med.instruksi_lain
+        }
+        this.inputFormPasca = med
+      } else {
+        this.inputFormPasca = {
+          noreg: pasien.noreg,
+          nota: pasien.rs2,
+          norm: pasien.norm
+        }
       }
       this.dataPasca.sort((a, b) => a.time - b.time)
       return resp?.data
@@ -214,10 +229,26 @@ export const useMonitoringSaatStore = defineStore('monitoring_saat', {
       return resp?.data
     },
     async simpanMedikasiPasca () {
+      this.loading = true
       try {
-        const resp = await api.post('v1/simrs/penunjang/ok/monitoring/pasca/simpan-medikasi', this.inputFormPasca)
+        const payload = { ...this.inputFormPasca }
+        if (Array.isArray(payload.keadaan_umum)) {
+          const joined = payload.keadaan_umum.join(', ')
+          payload.keadaan_umum = joined
+          payload.kesadaran = joined
+        } else if (payload.keadaan_umum) {
+          payload.kesadaran = payload.keadaan_umum
+        }
+        if (payload.lain_lain) {
+          payload.instruksi_lain = payload.lain_lain
+        }
+        const resp = await api.post('v1/simrs/penunjang/ok/monitoring/pasca/simpan-medikasi', payload)
         return resp?.data
-      } catch (e) { }
+      } catch (e) {
+        throw e
+      } finally {
+        this.loading = false
+      }
     },
     // ---- pasca anast end ---- //
     // ---- Aldrete start ---- //
@@ -231,11 +262,11 @@ export const useMonitoringSaatStore = defineStore('monitoring_saat', {
         return resp?.data
       } catch (e) { }
     },
-    async getSkolrAldrete (pasien) {
+    async getSkorAldrete (pasien) {
       this.loadingAldrete = true
       const param = { params: { noreg: pasien.noreg, nota: pasien.rs2, norm: pasien.norm } }
       const resp = await api.get('v1/simrs/penunjang/ok/monitoring/aldrete/get', param)
-      this.aldreteLogs = resp?.data?.monitoring // Simpan di state terpisah
+      this.aldreteLogs = resp?.data?.monitoring || [] // Simpan di state terpisah
       this.formKeluar = resp?.data?.medikasi
       if (!resp?.data?.medikasi) this.formKeluar = {
         noreg: pasien.noreg,

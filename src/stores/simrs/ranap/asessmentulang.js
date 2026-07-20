@@ -1,6 +1,7 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
 // eslint-disable-next-line no-unused-vars
 import { api } from 'src/boot/axios'
+import { notifSuccess } from 'src/modules/utils'
 import { useAnamnesisRanapStore } from './anamnesis'
 // eslint-disable-next-line no-unused-vars
 import { usePengunjungRanapStore } from './pengunjung'
@@ -100,8 +101,8 @@ export const useAsessmentUlangRanapStore = defineStore('asesment-ulang-ranap-sto
       const storePenilaian = usePenilaianRanapStore()
 
       const cekTerbaru = this.items?.length
-        ? this.items?.filter((a) => a?.nakes === nakes && !excludes.includes(a?.kdruang))?.length
-          ? this.items?.filter((a) => a?.nakes === nakes && !excludes.includes(a?.kdruang))[0]
+        ? this.items?.filter((a) => a?.nakes == nakes && !excludes.includes(a?.kdruang))?.length
+          ? this.items?.filter((a) => a?.nakes == nakes && !excludes.includes(a?.kdruang))[0]
           : null
         : null
       let dataSebelumnya = null
@@ -125,18 +126,10 @@ export const useAsessmentUlangRanapStore = defineStore('asesment-ulang-ranap-sto
         storePenilaian.initReset(pasien, dataAwal?.penilaian)
       }
       else {
-        if (nakes === '1') {
-          // dataSebelumnya = cekInputanSendiriTerbaru || cekTerbaru
-          dataSebelumnya = cekTerbaru
-          storeAnamnesis.initReset(dataSebelumnya?.anamnesis)
-          storePemeriksaan.initReset(dataSebelumnya?.pemeriksaan)
-          storePenilaian.initReset(pasien, dataSebelumnya?.penilaian)
-        } else {
-          dataSebelumnya = cekTerbaru
-          storeAnamnesis.initReset(dataSebelumnya?.anamnesis)
-          storePemeriksaan.initReset(dataSebelumnya?.pemeriksaan)
-          storePenilaian.initReset(pasien, dataSebelumnya?.penilaian)
-        }
+        dataSebelumnya = cekTerbaru
+        storeAnamnesis.initReset(dataSebelumnya?.anamnesis)
+        storePemeriksaan.initReset(dataSebelumnya?.pemeriksaan)
+        storePenilaian.initReset(pasien, dataSebelumnya?.penilaian)
       }
       this.previousData = dataSebelumnya
 
@@ -402,6 +395,13 @@ export const useAsessmentUlangRanapStore = defineStore('asesment-ulang-ranap-sto
           .then((resp) => {
             const storeRanap = usePengunjungRanapStore()
             storeRanap.hapusDataInjectan(pasien, id, 'cppt')
+
+            const indx = this.items.findIndex(x => x?.id === id)
+            if (indx > -1) {
+              this.items.splice(indx, 1)
+            }
+
+            notifSuccess(resp)
             resolve(resp)
           })
           .catch((err) => {

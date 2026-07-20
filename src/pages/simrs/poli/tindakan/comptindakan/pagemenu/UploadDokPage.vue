@@ -1,6 +1,19 @@
 <template>
   <div class="fit">
-    <div class="row full-height">
+    <div v-if="isMppOrRm" class="fit scroll q-pa-sm">
+      <div
+        v-if="!pasien?.dokumenluar?.length"
+        class="full-height column flex-center"
+      >
+        <div>Belum Ada Data Tersimpan ... 📋</div>
+      </div>
+      <ListComp
+        v-else
+        :items="pasien?.dokumenluar"
+        @hapus="hapusItem"
+      />
+    </div>
+    <div v-else class="row full-height">
       <div class="col-8 full-height">
         <q-form
           class="fit q-pa-sm"
@@ -68,8 +81,16 @@
 import FormComp from './compDokUpload/FormComp.vue'
 import ListComp from './compDokUpload/ListComp.vue'
 import { useUploadDokStore } from 'src/stores/simrs/pelayanan/poli/uploaddok'
-import { onMounted } from 'vue'
+import { onMounted, computed } from 'vue'
+import { useRoute } from 'vue-router'
 import { useQuasar } from 'quasar'
+
+const route = useRoute()
+const isMppOrRm = computed(() => {
+  const pathSegments = route.path.split('/').filter(Boolean)
+  return pathSegments.includes('rekammedik') || pathSegments.includes('mpp')
+})
+
 const store = useUploadDokStore()
 const $q = useQuasar()
 

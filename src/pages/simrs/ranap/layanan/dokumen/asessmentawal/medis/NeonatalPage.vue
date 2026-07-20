@@ -49,11 +49,67 @@
     <!-- Pasien -->
     <div class="flex justify-between kotak q-mt-xs q-pa-sm" style="gap:0 10px">
       <div class="col-auto">Nama : {{ pasien?.nama_panggil }}</div>
+      <div class="col-auto">No. RM : {{ pasien?.norm }}</div>
       <div class="col-auto">No. Register : {{ pasien?.noreg }}</div>
       <div class="col-auto">Tanggal : {{ dateFullFormat(pasien?.tglmasuk) }}</div>
       <div class="col-auto">Jam : {{ jamTnpDetik(pasien?.tglmasuk) }}</div>
     </div>
 
+
+    <div class="section">
+      <div class="section-title">Identitas: </div>
+      <table class="tablex">
+        <tbody>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td style="border: none !important; padding: 0px !important; width:20%;">- Nama Ibu</td>
+            <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
+              anamnesisAwal?.neonatal?.namaibu || '-' }}</td>
+            <td style="border: none !important; padding: 0px !important; width: 20%;">- Nama Ayah </td>
+            <td style="border: none !important; padding: 0px !important;">: {{ anamnesisAwal?.neonatal?.namaayah || '-'
+            }}</td>
+          </tr>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td style="border: none !important; padding: 0px !important; width: 20%;">- Nama Penanggungjawab</td>
+            <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
+              anamnesisAwal?.neonatal?.penanggungJawab || '-' }}</td>
+            <td style="border: none !important; padding: 0px !important; width: 20%;">- Hubungan dengan Pasien</td>
+            <td style="border: none !important; padding: 0px !important;">: {{ anamnesisAwal?.neonatal?.hubPj || '-' }}
+            </td>
+          </tr>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td style="border: none !important; padding: 0px !important; width: 20%;">- Alamat</td>
+            <td style="border: none !important; padding: 0px !important;"> : {{
+              anamnesisAwal?.neonatal?.alamatPj || '-' }}</td>
+          </tr>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td style="border: none !important; padding: 0px !important; width: 20%;">- Telepon</td>
+            <td style="border: none !important; padding: 0px !important;"> : {{
+              anamnesisAwal?.neonatal?.noHpPj || '-' }}</td>
+          </tr>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td style="border: none !important; padding: 0px !important; width: 20%;">- Gol. Darah Ibu</td>
+            <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
+              anamnesisAwal?.neonatal?.golDarahIbu || '-' }}</td>
+            <td style="border: none !important; padding: 0px !important; width: 20%;">- Gol. Darah Ayah</td>
+            <td style="border: none !important; padding: 0px !important;">: {{ anamnesisAwal?.neonatal?.golDarahAyah ||
+              '-' }}</td>
+          </tr>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td style="border: none !important; padding: 0px !important; width: 20%;">- Gol. Darah Bayi</td>
+            <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
+              anamnesisAwal?.neonatal?.golDarahBayi || '-' }}</td>
+          </tr>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td style="border: none !important; padding: 0px !important; width: 20%;">- Cara Masuk</td>
+            <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
+              anamnesisAwal?.neonatal?.crMasuk || '-' }}</td>
+            <td style="border: none !important; padding: 0px !important; width: 20%;">- Asal Masuk</td>
+            <td style="border: none !important; padding: 0px !important;">: {{ anamnesisAwal?.neonatal?.asalMasuk ||
+              '-' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     <!-- Anamnesis -->
 
     <div class="section">
@@ -99,51 +155,98 @@
             <div> - </div>
           </div>
         </div>
-
-
-        <div class="data-item flex">8. Form 4.3 (Neonatal) :
-          <div class="q-ml-sm">
-            <div class="text-bold">Informasi Bayi</div>
-            <div>- Cara Masuk : {{ anamnesisAwal?.neonatal?.crMasuk || '-' }}</div>
-            <div>- Asal Masuk : {{ anamnesisAwal?.neonatal?.asalMasuk || '-' }}</div>
-            <div>- Nama Penanggung Jawab : {{ anamnesisAwal?.neonatal?.hubPj || '-' }}</div>
-            <div>- Hubungan dengan Pasien : {{ anamnesisAwal?.neonatal?.penanggungJawab || '-' }}</div>
-            <div>- No HP/Telp Penanggung Jawab : {{ anamnesisAwal?.neonatal?.noHpPj || '-' }}</div>
-            <div>- Alamat : {{ anamnesisAwal?.neonatal?.alamatPj || '-' }}</div>
-
-            <div class="text-bold">Riwayat Kehamilan</div>
-            <div>- G/P/A : {{ anamnesisAwal?.neonatal?.g || '-' }}/{{ anamnesisAwal?.neonatal?.p || '-' }}/{{
-              anamnesisAwal?.neonatal?.a || '-' }}</div>
-            <div>- UG : {{ anamnesisAwal?.neonatal?.usiaGestasi || '-' }}</div>
-            <div>- Status Gizi Ibu : {{ anamnesisAwal?.neonatal?.sgIbu || '-' }}</div>
-            <div>- Obat Ibu Selama Hamil : {{ anamnesisAwal?.neonatal?.rwObat || '-' }}</div>
-            <div>- Kebiasaan Ibu : {{ anamnesisAwal?.neonatal?.kebiasaanIbu || '-' }}</div>
-            <div>- Riwayat Persalinan : {{ anamnesisAwal?.neonatal?.rwPersalinan || '-' }}</div>
-            <div>- Ketuban : {{ anamnesisAwal?.neonatal?.ketuban || '-' }}</div>
-            <div>- Volume : {{ anamnesisAwal?.neonatal?.volume || '-' }}</div>
-
-            <div class="text-bold">Golongan Darah</div>
-            <div>- Ayah : {{ anamnesisAwal?.neonatal?.golDarahAyah || '-' }}</div>
-            <div>- Ibu : {{ anamnesisAwal?.neonatal?.golDarahIbu || '-' }}</div>
-            <div>- Bayi : {{ anamnesisAwal?.neonatal?.golDarahBayi || '-' }}</div>
-
-            <div class="text-bold">Riwayat Kelahiran</div>
-            <div>- Cara Kelahiran : {{ anamnesisAwal?.neonatal?.crLahir || '-' }}</div>
-            <div>- APGAR Score : {{ anamnesisAwal?.neonatal?.apgarScore || '-' }}</div>
-            <div>- Volume Air Ketuban : {{ anamnesisAwal?.neonatal?.volumeKetuban || '-' }}</div>
-            <div>- Warna Air Ketuban : {{ anamnesisAwal?.neonatal?.warnaKetuban || '-' }}</div>
-            <div>- Ketuban Pecah dini : {{ anamnesisAwal?.neonatal?.pecahDini || '-' }}</div>
-
-            <div class="text-bold">Riwayat Lainnya</div>
-            <div>- Transfusi Darah : {{ anamnesisAwal?.neonatal?.rwTransDarah || '-' }}</div>
-            <div>- Reaksi Ketika Trnasfusi Darah : {{ anamnesisAwal?.neonatal?.reaksiTrans || '-' }}</div>
-            <div>- Riwayat Imunisasi : {{ anamnesisAwal?.neonatal?.rwImunisasi || '-' }}</div>
-          </div>
-        </div>
       </div>
-    </div>
 
-    <div class="section">
+      <div class="section-title" style="margin-top: 5px;">Riwayat Kehamilan: </div>
+      <table class="tablex">
+        <tbody>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td style="border: none !important; padding: 0px !important; width:20%;">- G / P / A</td>
+            <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{ anamnesisAwal?.neonatal?.g
+              || '-' }} / {{ anamnesisAwal?.neonatal?.p || '-' }} / {{ anamnesisAwal?.neonatal?.a || '-' }}</td>
+            <td style="border: none !important; padding: 0px !important; width: 20%;">- Usia Gestasi </td>
+            <td style="border: none !important; padding: 0px !important;">: {{ anamnesisAwal?.neonatal?.usiaGestasi ||
+              '-' }}</td>
+          </tr>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td style="border: none !important; padding: 0px !important; width: 20%;">- Riwayat Persalinan</td>
+            <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
+              anamnesisAwal?.neonatal?.rwPersalinan || '-' }}</td>
+            <td style="border: none !important; padding: 0px !important; width: 20%;">- Status Gizi Ibu</td>
+            <td style="border: none !important; padding: 0px !important;">: {{ anamnesisAwal?.neonatal?.sgIbu || '-' }}
+            </td>
+          </tr>
+
+          <tr style="border: none !important; padding: 0px !important;">
+            <td style="border: none !important; padding: 0px !important; width: 20%;">- Obat Ibu Selama Hamil</td>
+            <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
+              anamnesisAwal?.neonatal?.rwObat || '-' }}</td>
+            <td style="border: none !important; padding: 0px !important; width: 20%;">- Kebiasaan Ibu</td>
+            <td style="border: none !important; padding: 0px !important;">: {{ anamnesisAwal?.neonatal?.kebiasaanIbu ||
+              '-' }}</td>
+          </tr>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td style="border: none !important; padding: 0px !important; width: 20%;">- Ketuban</td>
+            <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
+              anamnesisAwal?.neonatal?.ketuban || '-' }}</td>
+            <td style="border: none !important; padding: 0px !important; width: 20%;">- Volume</td>
+            <td style="border: none !important; padding: 0px !important;">: {{ anamnesisAwal?.neonatal?.volume ||
+              '-' }}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="section-title" style="margin-top: 5px;">Riwayat Kelahiran: </div>
+      <table class="tablex">
+        <tbody>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td style="border: none !important; padding: 0px !important; width:20%;">- Cara Kelahiran</td>
+            <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
+              anamnesisAwal?.neonatal?.crLahir || '-' }}</td>
+            <td style="border: none !important; padding: 0px !important; width: 20%;">- Skor APGAR</td>
+            <td style="border: none !important; padding: 0px !important;">: {{ anamnesisAwal?.neonatal?.apgarScore ||
+              '-' }}</td>
+          </tr>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td style="border: none !important; padding: 0px !important; width: 20%;">- Volume Air Ketuban</td>
+            <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
+              anamnesisAwal?.neonatal?.volumeKetuban || '-' }}</td>
+            <td style="border: none !important; padding: 0px !important; width: 20%;">- Warna Air Ketuban</td>
+            <td style="border: none !important; padding: 0px !important;">: {{ anamnesisAwal?.neonatal?.warnaKetuban ||
+              '-' }}
+            </td>
+          </tr>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td style="border: none !important; padding: 0px !important; width: 20%;">- Ketuban Pecah dini</td>
+            <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
+              anamnesisAwal?.neonatal?.pecahDini || '-' }}</td>
+            <!-- <td style="border: none !important; padding: 0px !important; width: 20%;">Kebiasaan Ibu</td>
+            <td style="border: none !important; padding: 0px !important;">: {{ anamnesisAwal?.neonatal?.kebiasaanIbu ||
+              '-' }}</td> -->
+          </tr>
+        </tbody>
+      </table>
+
+
+      <div class="section-title" style="margin-top: 5px;">Riwayat Lainnya: </div>
+      <table class="tablex">
+        <tbody>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td style="border: none !important; padding: 0px !important; width:20%;">- Transfusi Darah</td>
+            <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
+              anamnesisAwal?.neonatal?.rwTransDarah || '-' }}</td>
+            <td style="border: none !important; padding: 0px !important; width: 20%;">- Reaksi Ketika Trnasfusi Darah
+            </td>
+            <td style="border: none !important; padding: 0px !important;">: {{ anamnesisAwal?.neonatal?.reaksiTrans ||
+              '-' }}</td>
+          </tr>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td style="border: none !important; padding: 0px !important; width: 20%;">- Riwayat Imunisasi</td>
+            <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
+              anamnesisAwal?.neonatal?.rwImunisasi || '-' }}</td>
+          </tr>
+        </tbody>
+      </table>
       <div class="section-title" style="margin-top: 5px;">Pemeriksaan Umum : </div>
       <!-- <div class="data">
         <div class="data-item">Kesadaran: ............................................</div>
@@ -154,7 +257,7 @@
         <div class="data-item">Keadaan Umum: Baik / Sedang / Buruk</div>
         <div class="data-item">Keadaan Gizi: Baik / Sedang / Buruk</div>
       </div> -->
-      <table border="0" style="border: none !important; margin-left: 10px; margin-top: -5px;">
+      <table class="tablex">
         <tbody>
           <tr style="border: none !important; padding: 0px !important;">
             <td style="border: none !important; padding: 0px !important; width:15%;"> - Kesadaran</td>
@@ -227,7 +330,7 @@
         <div class="data-item">Keadaan Umum: Baik / Sedang / Buruk</div>
         <div class="data-item">Keadaan Gizi: Baik / Sedang / Buruk</div>
       </div> -->
-      <table border="0" style="border: none !important; margin-left: 10px; margin-top: -5px;">
+      <table class="tablex">
         <tbody>
           <tr style="border: none !important; padding: 0px !important;">
             <td style="border: none !important; padding: 0px !important; width:15%;"> - Penyebab Penyakit</td>
@@ -249,7 +352,7 @@
         </tbody>
       </table>
       <div class="section-title" style="margin-top: 5px;">Pemeriksaan Psikologis, Sosial Ekonomi, Spiritual : </div>
-      <table border="0" style="border: none !important; margin-left: 10px; margin-top: -5px;">
+      <table class="tablex">
         <tbody>
           <tr style="border: none !important; padding: 0px !important;">
             <td style="border: none !important; padding: 0px !important; width:15%;"> - Status Sosial</td>
@@ -266,7 +369,7 @@
               pemeriksaanUmum?.statusPsikologis || ' - ' }}</td>
             <td style="border: none !important; padding: 0px !important; width: 15%;"> - Status Ekonomi </td>
             <td style="border: none !important; padding: 0px !important;">: {{ pemeriksaanUmum?.ansuransi || ' - '
-              }} Asuransi
+            }} Asuransi
             </td>
           </tr>
           <tr style="border: none !important; padding: 0px !important;">
@@ -276,7 +379,7 @@
           <tr style="border: none !important; padding: 0px !important;">
             <td colspan="2"
               style="border: none !important; padding-left: 10px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;  width:15%;">
-              - Apakah pasien /
+              Apakah pasien /
               keluarga tahu mengenai penyakit dan perawatannya?</td>
             <td colspan="2" style="border: none !important; padding: 0px !important; width: 35%;"> : {{
               EDUKASI?.tahuPenanganan?.value || ' - ' }}</td>
@@ -284,7 +387,7 @@
           <tr style="border: none !important; padding: 0px !important;">
             <td colspan="2"
               style="border: none !important; padding-left: 10px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;  width:15%;">
-              - Apakah membutuhkan
+              Apakah membutuhkan
               edukasi?</td>
             <td colspan="2" style="border: none !important; padding: 0px !important; width: 35%;"> : {{
               EDUKASI?.butuhEdukasi?.value || ' - ' }}, <span v-if="EDUKASI?.butuhEdukasi?.value === 'Ya'"> {{
@@ -294,7 +397,7 @@
       </table>
 
       <div class="section-title" style="margin-top: 5px;">Form 4.3 Neonatal : </div>
-      <table border="0" style="border: none !important; margin-left: 10px; margin-top: -5px;">
+      <table class="tablex">
         <tbody>
           <tr style="border: none !important; padding: 0px !important;">
             <td style="border: none !important; padding: 0px !important;"> - Appearance (Warna Kulit)</td>
@@ -326,8 +429,8 @@
       </table>
 
       <!-- Skreening gizi Neonatal-->
-      <div v-if="anamnesisAwal?.skreeninggizi?.neonatal" class="section">
-        <div class="section-title">Skrining Gizi Neonatal : </div>
+      <div v-if="anamnesisAwal?.skreeninggizi?.neonatal">
+        <div class="section-title" style="margin-top: 5px;">Skrining Gizi Neonatal : </div>
         <table style="margin-top: -5px; margin-bottom: 5px;">
           <thead>
             <tr>
@@ -378,7 +481,7 @@
 
 
 
-      <div class="section-title">Pemeriksaan Fisik : </div>
+      <div class="section-title" style="margin-top: 5px;">Pemeriksaan Fisik : </div>
       <table style="margin-top: -5px;">
         <thead>
           <tr>
@@ -473,7 +576,7 @@
 
 
     <div class="section">
-      <table border="0" style="border: none !important; margin-left: 10px; margin-top: -5px;">
+      <table class="tabelx">
         <tbody>
           <tr style="border: none !important; padding: 0px !important;">
             <td style="border: none !important; padding: 0px !important; width: 35%">
@@ -511,7 +614,7 @@
 
 
     <div class="section">
-      <table border="0" style="border: none !important; margin-left: 10px; margin-top: -5px;">
+      <table>
         <tbody>
           <tr style="border: none !important; padding: 0px !important;">
             <td style="border: none !important; padding: 0px !important; width: 17%">
@@ -525,7 +628,7 @@
       </table>
     </div>
     <div class="section">
-      <table border="0" style="border: none !important; margin-left: 10px; margin-top: -5px;">
+      <table>
         <tbody>
           <tr style="border: none !important; padding: 0px !important;">
             <td style="border: none !important; padding: 0px !important; width: 20%">
@@ -540,7 +643,7 @@
     </div>
 
     <div class="section">
-      <table border="0" style="border: none !important; margin-left: 10px; margin-top: -5px;">
+      <table>
         <tbody>
           <tr style="border: none !important; padding: 0px !important;">
             <td style="border: none !important; padding: 0px !important; width: 17%">
@@ -555,7 +658,7 @@
     </div>
 
     <div class="section">
-      <table border="0" style="border: none !important; margin-left: 10px; margin-top: -5px;">
+      <table>
         <tbody>
           <tr style="border: none !important; padding: 0px !important;">
             <td style="border: none !important; padding: 0px !important; width: 17%">
@@ -577,7 +680,7 @@
     </div>
 
     <div class="section">
-      <table border="0" style="border: none !important; margin-left: 10px; margin-top: -5px;">
+      <table>
         <tbody>
           <tr style="border: none !important; padding: 0px !important;">
             <td style="border: none !important; padding: 0px !important; width: 17%">
@@ -591,7 +694,7 @@
     </div>
 
     <div class="section">
-      <table border="0" style="border: none !important; margin-left: 10px; margin-top: -5px;">
+      <table>
         <tbody>
           <tr style="border: none !important; padding: 0px !important;">
             <td style="border: none !important; padding: 0px !important; width: 17%">
@@ -841,8 +944,32 @@ th {
   background-color: #f2f2f2;
 }
 
+.tablex {
+  border: none;
+  border-collapse: collapse !important;
+  border-spacing: 0 !important;
+  width: 100%;
+  margin-top: -5px;
+  margin-left: 10px;
+  line-height: 1.1 !important;
+}
 
+.tablex tr {
+  height: auto !important;
+}
 
+.tablex td {
+  border: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  line-height: 1.5 !important;
+  vertical-align: top;
+}
+
+.tablex tbody tr td {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
 
 .print-page {
   // width: 100%;
