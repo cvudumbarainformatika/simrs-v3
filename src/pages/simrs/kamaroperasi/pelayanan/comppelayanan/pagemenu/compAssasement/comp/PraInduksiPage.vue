@@ -331,7 +331,7 @@
                 <th class="q-pa-xs text-center text-primary">+</th>
                 <th class="q-pa-xs">
                   <app-autocomplete ref="inputObatMedikasi" v-model="obatMedikasi.obat_pre_medikasi" label="Pilih Obat" dense :source="store.obats"
-                    option-label="nama_obat" hide-dropdown-icon outlined bg-color="white" />
+                    option-label="nama_obat" option-value="nama_obat" hide-dropdown-icon outlined bg-color="white" />
                 </th>
                 <th class="q-pa-xs">
                   <q-input v-model="obatMedikasi.dosis" label="Dosis" dense outlined bg-color="white" />
@@ -640,6 +640,45 @@ const firstTindakanOp = computed(() => {
   return ''
 })
 
+const listObatPermintaan = computed(() => {
+  const names = new Set()
+
+  const addName = (n) => {
+    if (n && typeof n === 'string' && n.trim().length > 0) {
+      names.add(n.trim())
+    }
+  }
+
+  const extractFromList = (list) => {
+    if (!Array.isArray(list)) return
+    list.forEach(p => {
+      if (!p) return
+      addName(p?.obat?.nama_obat || p?.nama_obat || p?.namaobat || p?.masterobat?.nama_obat)
+
+      const rinci = p?.rinci || p?.rincian || p?.details || p?.permintaanresep || []
+      if (Array.isArray(rinci)) {
+        rinci.forEach(r => {
+          if (!r) return
+          addName(r?.obat?.nama_obat || r?.nama_obat || r?.namaobat || r?.masterobat?.nama_obat)
+        })
+      }
+    })
+  }
+
+  extractFromList(props.pasien?.permintaanobatoperasi)
+  extractFromList(props.pasien?.permintaanresep)
+  extractFromList(props.pasien?.resep)
+  extractFromList(props.pasien?.eresep)
+  extractFromList(props.pasien?.newapotekrajal)
+  extractFromList(props.pasien?.reseprajal)
+  extractFromList(props.pasien?.resepranap)
+
+  return Array.from(names).map(nama => ({
+    name: nama,
+    nama_obat: nama
+  }))
+})
+
 function formatNoZero (val) {
   if (val === null || val === undefined || val === '') return ''
   const str = String(val).trim().replace(',', '.')
@@ -672,6 +711,7 @@ watch(() => props.pasien, (newPasien) => {
     }
   }
   cleanFormVitalSigns()
+  store.obats = listObatPermintaan.value
   if (!store.formInduksi?.diagnosa && newPasien?.rs4) {
     store.formInduksi.diagnosa = newPasien.rs4
   }
@@ -689,6 +729,7 @@ onMounted(() => {
     }
   }
   cleanFormVitalSigns()
+  store.obats = listObatPermintaan.value
   if (!store.formInduksi?.diagnosa && props.pasien?.rs4) {
     store.formInduksi.diagnosa = props.pasien.rs4
   }
