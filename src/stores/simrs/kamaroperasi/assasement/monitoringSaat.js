@@ -94,7 +94,9 @@ export const useMonitoringSaatStore = defineStore('monitoring_saat', {
       dipindah_ke: '',
       ruangan: '',
       penata_anestesi: '',
-      dokter_anestesi: ''
+      dokter_anestesi: '',
+      penata_anastesi: '',
+      dokter_anastesi: ''
     },
     kamars: []
 
