@@ -77,10 +77,12 @@
       <q-card-section class="q-pa-sm bg-deep-orange text-white">
         <div class="text-subtitle2 font-weight-bold">INSTRUKSI PASCA ANESTESI</div>
       </q-card-section>
-      <div class="q-pa-sm">
-        <div class="row q-col-gutter-sm">
-          <div class="col-md-4">
-            <q-input v-model="store.inputFormPasca.monitor_mulai" label="Monitor Mulai Jam" dense outlined
+      <div class="q-pa-md">
+        <!-- Sub-section 1: Parameter Monitoring -->
+        <div class="row q-col-gutter-md q-mb-md">
+          <div class="col-xs-12 col-md-4">
+            <div class="text-caption text-weight-bold text-grey-8 q-mb-xs">Monitor Mulai Jam</div>
+            <q-input v-model="store.inputFormPasca.monitor_mulai" label="Monitor Mulai Jam" dense outlined bg-color="white"
               mask="##:##" />
             <div class="text-caption text-primary q-mt-xs" v-if="lapOpSelesai">
               ℹ️ Jam Selesai Op (Lap. Op): <strong>{{ lapOpSelesai }}</strong>
@@ -89,45 +91,171 @@
               ℹ️ Jam Selesai Op (Lap. Op): Belum diisi
             </div>
           </div>
-          <div class="col-md-4">
+          <div class="col-xs-12 col-md-4">
+            <div class="text-caption text-weight-bold text-grey-8 q-mb-xs">Setiap (Menit)</div>
             <q-select v-model="store.inputFormPasca.monitor_setiap"
               :options="[{ label: '5 Menit', value: '5' }, { label: '10 Menit', value: '10' }, { label: '15 Menit', value: '15' }, { label: '30 Menit', value: '30' }]"
-              label="Setiap (Menit)" dense outlined emit-value map-options behavior="menu"
+              label="Setiap (Menit)" dense outlined emit-value map-options behavior="menu" bg-color="white"
               :disable="logs.length > 0">
               <q-tooltip v-if="logs.length > 0">Interval terkunci karena data log observasi sudah ada</q-tooltip>
             </q-select>
           </div>
-          <div class="col-md-4">
+          <div class="col-xs-12 col-md-4">
+            <div class="text-caption text-weight-bold text-grey-8 q-mb-xs">Selama (Otomatis)</div>
             <q-input v-model="store.inputFormPasca.monitor_selama" label="Selama (Otomatis)" dense outlined readonly bg-color="grey-2" />
-          </div>
-
-          <div class="col-md-6 q-mt-sm">
-            <q-input v-model="store.inputFormPasca.infus" label="Infus" outlined type="textarea" rows="2" />
-          </div>
-          <div class="col-md-6 q-mt-sm">
-            <q-input v-model="store.inputFormPasca.antibiotika" label="Antibiotika" outlined type="textarea" rows="2" />
-          </div>
-
-          <div class="col-md-4 q-mt-sm">
-            <q-input v-model="store.inputFormPasca.obat_mual" label="Bila Mual / Muntah" dense outlined />
-          </div>
-          <div class="col-md-4 q-mt-sm">
-            <q-input v-model="store.inputFormPasca.obat_sakit" label="Bila Kesakitan" dense outlined />
-          </div>
-          <div class="col-md-4 q-mt-sm">
-            <q-input v-model="store.inputFormPasca.obat_lain" label="Obat Lain-lain" dense outlined />
-          </div>
-
-          <div class="col-md-6 q-mt-sm">
-            <q-input v-model="store.inputFormPasca.makan_minum" label="Minum / Makan" dense outlined />
-          </div>
-          <div class="col-md-6 q-mt-sm">
-            <q-input v-model="store.inputFormPasca.lain_lain" label="Lain-lain / Instruksi Lain" dense outlined />
           </div>
         </div>
 
+        <!-- Sub-section 2: Medikasi Utama (Infus & Antibiotika) -->
+        <div class="row q-col-gutter-md q-mb-md">
+          <!-- Infus -->
+          <div class="col-xs-12 col-md-6">
+            <div class="q-pa-sm bg-blue-1 rounded-borders border-blue full-height column justify-between">
+              <div>
+                <div class="text-subtitle2 text-weight-bold text-primary q-mb-xs">1. Infus Pasca Anestesi</div>
+                <!-- Quick Chips Infus -->
+                <div class="q-mb-sm">
+                  <div class="row items-center q-gutter-xs q-mb-xs">
+                    <span class="text-caption text-weight-bold text-grey-8">Quick Cairan:</span>
+                    <q-chip v-for="cairan in listCairan" :key="cairan" clickable
+                      color="primary" outline text-color="primary"
+                      size="sm" dense class="q-ma-none q-mr-xs" @click="appendCairan(cairan)">
+                      + {{ cairan }}
+                    </q-chip>
+                  </div>
+                  <div class="row items-center q-gutter-xs bg-white q-pa-xs rounded-borders border-blue">
+                    <span class="text-caption text-weight-bold text-teal-9">Quick TPM:</span>
+                    <q-chip v-for="tpm in listTpm" :key="tpm" clickable color="teal" text-color="white"
+                      size="sm" dense class="q-ma-none q-mr-xs" @click="appendTPM(tpm)">
+                      + {{ tpm }} TPM
+                    </q-chip>
+                  </div>
+                </div>
+              </div>
+              <q-input v-model="store.inputFormPasca.infus" label="Keterangan Infus" outlined type="textarea" rows="2" bg-color="white" />
+            </div>
+          </div>
+
+          <!-- Antibiotika -->
+          <div class="col-xs-12 col-md-6">
+            <div class="q-pa-sm bg-indigo-1 rounded-borders border-indigo full-height column justify-between">
+              <div>
+                <div class="text-subtitle2 text-weight-bold text-indigo-9 q-mb-xs">2. Antibiotika</div>
+                <div class="q-mb-sm">
+                  <span class="text-caption text-weight-bold text-grey-8 q-mr-xs">Quick Options:</span>
+                  <q-chip clickable color="indigo" text-color="white" size="sm" dense class="q-ma-none" @click="store.inputFormPasca.antibiotika = 'SESUAI ADVIS DPJP'">
+                    + SESUAI ADVIS DPJP
+                  </q-chip>
+                </div>
+              </div>
+              <q-input v-model="store.inputFormPasca.antibiotika" label="Keterangan Antibiotika" outlined type="textarea" rows="2" bg-color="white" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Sub-section 3: Penanganan Simptom (Mual, Nyeri/Sakit, Obat Lain) -->
+        <div class="row q-col-gutter-md q-mb-md">
+          <!-- Mual / Muntah -->
+          <div class="col-xs-12 col-md-4">
+            <div class="q-pa-sm bg-purple-1 rounded-borders border-purple full-height column justify-between">
+              <div>
+                <div class="text-caption text-weight-bold text-purple-9 q-mb-xs">3. Bila Mual / Muntah</div>
+                <div class="q-mb-xs">
+                  <div class="row items-center q-gutter-xs">
+                    <q-chip v-for="obat in listObatMual" :key="obat" clickable
+                      color="purple" outline text-color="purple"
+                      size="sm" dense class="q-ma-none q-mr-xs" @click="appendObatMual(obat)">
+                      + {{ obat }}
+                    </q-chip>
+                    <q-chip v-for="mg in listDosisMg" :key="mg" clickable color="purple-7" text-color="white"
+                      size="sm" dense class="q-ma-none q-mr-xs" @click="appendDosisMg(mg)">
+                      + {{ mg }} mg
+                    </q-chip>
+                    <q-chip clickable color="purple-9" text-color="white" size="sm" dense class="q-ma-none q-mr-xs" @click="appendDosisMg('')">
+                      + mg
+                    </q-chip>
+                  </div>
+                </div>
+              </div>
+              <q-input v-model="store.inputFormPasca.obat_mual" label="Obat Mual / Muntah" dense outlined bg-color="white" />
+            </div>
+          </div>
+
+          <!-- Kesakitan -->
+          <div class="col-xs-12 col-md-4">
+            <div class="q-pa-sm bg-orange-1 rounded-borders border-orange full-height column justify-between">
+              <div>
+                <div class="text-caption text-weight-bold text-deep-orange-9 q-mb-xs">4. Bila Kesakitan</div>
+                <div class="q-mb-xs">
+                  <div class="row items-center q-gutter-xs">
+                    <q-chip v-for="obat in listObatSakit" :key="obat" clickable
+                      color="deep-orange" outline text-color="deep-orange"
+                      size="sm" dense class="q-ma-none q-mr-xs" @click="appendObatSakit(obat)">
+                      + {{ obat }}
+                    </q-chip>
+                    <q-chip v-for="mg in listDosisMgSakit" :key="mg" clickable color="deep-orange-7" text-color="white"
+                      size="sm" dense class="q-ma-none q-mr-xs" @click="appendDosisMgSakit(mg)">
+                      + {{ mg }} mg
+                    </q-chip>
+                    <q-chip clickable color="deep-orange-9" text-color="white" size="sm" dense class="q-ma-none q-mr-xs" @click="appendDosisMgSakit('')">
+                      + mg
+                    </q-chip>
+                  </div>
+                </div>
+              </div>
+              <q-input v-model="store.inputFormPasca.obat_sakit" label="Obat Kesakitan" dense outlined bg-color="white" />
+            </div>
+          </div>
+
+          <!-- Obat Lain-lain -->
+          <div class="col-xs-12 col-md-4">
+            <div class="q-pa-sm bg-grey-1 rounded-borders border-grey full-height column justify-between">
+              <div>
+                <div class="text-caption text-weight-bold text-grey-9 q-mb-xs">5. Obat Lain-lain</div>
+                <div class="text-caption text-grey-6 q-mb-xs">Catatan obat tambahan pasca anestesi</div>
+              </div>
+              <q-input v-model="store.inputFormPasca.obat_lain" label="Obat Lain-lain" dense outlined bg-color="white" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Sub-section 4: Asupan & Instruksi Lain -->
+        <div class="row q-col-gutter-md q-mb-md">
+          <!-- Makan Minum -->
+          <div class="col-xs-12 col-md-6">
+            <div class="q-pa-sm bg-cyan-1 rounded-borders border-cyan full-height column justify-between">
+              <div>
+                <div class="text-caption text-weight-bold text-cyan-9 q-mb-xs">6. Minum / Makan</div>
+                <div class="q-mb-xs">
+                  <div class="row items-center q-gutter-xs">
+                    <span class="text-caption text-weight-bold text-grey-8">Quick Options:</span>
+                    <q-chip v-for="item in listMakanMinum" :key="item" clickable
+                      color="cyan-9" outline text-color="cyan-9"
+                      size="sm" dense class="q-ma-none q-mr-xs" @click="appendMakanMinum(item)">
+                      + {{ item }}
+                    </q-chip>
+                  </div>
+                </div>
+              </div>
+              <q-input v-model="store.inputFormPasca.makan_minum" label="Instruksi Minum / Makan" dense outlined bg-color="white" />
+            </div>
+          </div>
+
+          <!-- Lain-lain -->
+          <div class="col-xs-12 col-md-6">
+            <div class="q-pa-sm bg-grey-1 rounded-borders border-grey full-height column justify-between">
+              <div>
+                <div class="text-caption text-weight-bold text-grey-9 q-mb-xs">7. Lain-lain / Instruksi Lain</div>
+                <div class="text-caption text-grey-6 q-mb-xs">Instruksi penanganan khusus lainnya</div>
+              </div>
+              <q-input v-model="store.inputFormPasca.lain_lain" label="Instruksi Lain-lain" dense outlined bg-color="white" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Tombol Simpan Pasca Anestesi -->
         <div class="row justify-end q-mt-md">
-          <q-btn label="Simpan Pasca Anestesi" color="primary" glossy icon="save" @click="simpanData" />
+          <q-btn label="Simpan Pasca Anestesi" color="primary" glossy size="md" icon="save" class="q-px-xl" @click="simpanData" />
         </div>
       </div>
     </q-card>
@@ -214,8 +342,115 @@ function openInputLogDialog () {
   showInputLog.value = true
 }
 
-// --- DATA FORM STATE ---
-const formInstruksi = ref({ monitor_mulai: '', monitor_selama: '', monitor_setiap: '', infus: '', antibiotika: '', obat_mual: '', obat_sakit: '', makan_minum: '', lain_lain: '' })
+// --- INDEPENDENT QUICK CHIP INFUS STATE & METHODS ---
+const listCairan = ref(['RL', 'NaCl 0.9%', 'D5 1/2 NS', 'Gelofusal', 'KA-EN 3B', 'Asering'])
+const listTpm = ref(['7', '10', '15', '20', '28', '30'])
+
+function appendCairan (cairan) {
+  if (!store.inputFormPasca.infus || !store.inputFormPasca.infus.trim()) {
+    store.inputFormPasca.infus = cairan
+  } else {
+    const text = store.inputFormPasca.infus.trim()
+    if (text.endsWith(',') || text.endsWith(';')) {
+      store.inputFormPasca.infus = text + ' ' + cairan
+    } else {
+      store.inputFormPasca.infus = text + ', ' + cairan
+    }
+  }
+}
+
+function appendTPM (tpm) {
+  const tpmStr = `${tpm} TPM`
+  if (!store.inputFormPasca.infus || !store.inputFormPasca.infus.trim()) {
+    store.inputFormPasca.infus = tpmStr
+  } else {
+    const text = store.inputFormPasca.infus.trim()
+    if (/\d\s*TPM$/i.test(text) || text.endsWith(',') || text.endsWith(';')) {
+      const cleanText = text.replace(/[,;]\s*$/, '')
+      store.inputFormPasca.infus = cleanText + ', ' + tpmStr
+    } else {
+      store.inputFormPasca.infus = text + ' ' + tpmStr
+    }
+  }
+}
+
+// --- QUICK CHIP OBAT MUAL STATE & METHODS ---
+const listObatMual = ref(['Ondansetron'])
+const listDosisMg = ref(['4', '8', '2'])
+
+function appendObatMual (obat) {
+  if (!store.inputFormPasca.obat_mual || !store.inputFormPasca.obat_mual.trim()) {
+    store.inputFormPasca.obat_mual = obat
+  } else {
+    const text = store.inputFormPasca.obat_mual.trim()
+    if (text.endsWith(',') || text.endsWith(';')) {
+      store.inputFormPasca.obat_mual = text + ' ' + obat
+    } else {
+      store.inputFormPasca.obat_mual = text + ', ' + obat
+    }
+  }
+}
+
+function appendDosisMg (mg) {
+  const mgStr = mg ? `${mg} mg` : 'mg'
+  if (!store.inputFormPasca.obat_mual || !store.inputFormPasca.obat_mual.trim()) {
+    store.inputFormPasca.obat_mual = mgStr
+  } else {
+    const text = store.inputFormPasca.obat_mual.trim()
+    if (/\d\s*mg$/i.test(text) || text.endsWith(',') || text.endsWith(';')) {
+      const cleanText = text.replace(/[,;]\s*$/, '')
+      store.inputFormPasca.obat_mual = cleanText + ', ' + mgStr
+    } else {
+      store.inputFormPasca.obat_mual = text + ' ' + mgStr
+    }
+  }
+}
+
+// --- QUICK CHIP OBAT SAKIT STATE & METHODS ---
+const listObatSakit = ref(['Ketorolac', 'Metamizole'])
+const listDosisMgSakit = ref(['30', '1000', '500'])
+
+function appendObatSakit (obat) {
+  if (!store.inputFormPasca.obat_sakit || !store.inputFormPasca.obat_sakit.trim()) {
+    store.inputFormPasca.obat_sakit = obat
+  } else {
+    const text = store.inputFormPasca.obat_sakit.trim()
+    if (text.endsWith(',') || text.endsWith(';')) {
+      store.inputFormPasca.obat_sakit = text + ' ' + obat
+    } else {
+      store.inputFormPasca.obat_sakit = text + ', ' + obat
+    }
+  }
+}
+
+function appendDosisMgSakit (mg) {
+  const mgStr = mg ? `${mg} mg` : 'mg'
+  if (!store.inputFormPasca.obat_sakit || !store.inputFormPasca.obat_sakit.trim()) {
+    store.inputFormPasca.obat_sakit = mgStr
+  } else {
+    const text = store.inputFormPasca.obat_sakit.trim()
+    if (/\d\s*mg$/i.test(text) || text.endsWith(',') || text.endsWith(';')) {
+      const cleanText = text.replace(/[,;]\s*$/, '')
+      store.inputFormPasca.obat_sakit = cleanText + ', ' + mgStr
+    } else {
+      store.inputFormPasca.obat_sakit = text + ' ' + mgStr
+    }
+  }
+}
+
+// --- QUICK CHIP MAKAN MINUM STATE & METHODS ---
+const listMakanMinum = ref(['SADAR PENUH', 'TIDAK MUAL', 'MINUM SEDIKIT-SEDIKIT'])
+
+function appendMakanMinum (val) {
+  const currentVal = String(store.inputFormPasca.makan_minum || '').trim()
+  if (!currentVal) {
+    store.inputFormPasca.makan_minum = val
+  } else if (currentVal.endsWith(',') || currentVal.endsWith(';')) {
+    store.inputFormPasca.makan_minum = currentVal + ' ' + val
+  } else {
+    store.inputFormPasca.makan_minum = currentVal + ', ' + val
+  }
+}
 
 // --- DIALOG & LOG STATE ---
 const showInputLog = ref(false)
@@ -676,4 +911,11 @@ onMounted(async () => {
 .chart-wrapper {
   flex-grow: 1;
 }
+
+.border-blue { border: 1px solid #90caf9; }
+.border-indigo { border: 1px solid #9fa8da; }
+.border-purple { border: 1px solid #ce93d8; }
+.border-orange { border: 1px solid #ffcc80; }
+.border-cyan { border: 1px solid #80deea; }
+.border-grey { border: 1px solid #e0e0e0; }
 </style>

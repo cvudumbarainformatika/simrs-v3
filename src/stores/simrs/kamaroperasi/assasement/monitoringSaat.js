@@ -71,7 +71,8 @@ export const useMonitoringSaatStore = defineStore('monitoring_saat', {
     inputFormPasca: {
       jam_masuk: '',
       keadaan_umum: [],
-      monitor_setiap: '5'
+      monitor_setiap: '5',
+      antibiotika: ''
     },
     loadingPasca: false,
     dataPasca: [],
@@ -210,7 +211,8 @@ export const useMonitoringSaatStore = defineStore('monitoring_saat', {
           noreg: pasien.noreg,
           nota: pasien.rs2,
           norm: pasien.norm,
-          monitor_setiap: '5'
+          monitor_setiap: '5',
+          antibiotika: ''
         }
       }
       this.dataPasca.sort((a, b) => a.time - b.time)
