@@ -38,7 +38,7 @@
       <hr>
       <div class="contentx">
         <div class=" text-center text-bold q-mb-xs">
-          {{ menu?.desc }}
+          {{ menu?.title }}
         </div>
         <!-- <div class=" text-center text-bold q-mb-sm">
           <em>{{ menu?.title }}</em>

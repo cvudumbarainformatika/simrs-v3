@@ -109,7 +109,7 @@ const menus = ref([
   {
     name: 'summary-page',
     label: 'SURAT KONTROL',
-    title: 'SURAT KONTROL',
+    title: 'RINGKASAN PASIEN PULANG',
     desc: 'Surat Kontrol',
     icon: 'icon-my-file_sign',
     nakes: ['1', '2', '3'],
@@ -154,7 +154,7 @@ const menus = ref([
   {
     name: 'pulang-paksa',
     label: 'PULANG PAKSA',
-    title: 'SURAT PERNYATAAN PULANG PAKSA',
+    title: 'SURAT PERNYATAAN PULANG ATAS PERMINTAAN SENDIRI (PULANG PAKSA)',
     desc: 'Formulir Pulang Paksa',
     icon: 'icon-my-file_sign',
     nakes: ['1', '2', '3'],
