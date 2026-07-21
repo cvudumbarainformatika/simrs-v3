@@ -114,6 +114,8 @@ export default defineConfig((ctx) => {
       },
 
       extendViteConf (viteConf) {
+        if (!viteConf.server) viteConf.server = {}
+        viteConf.server.allowedHosts = true
         viteConf.build.chunkSizeWarningLimit = 5000
         viteConf.build.rollupOptions = {
           output: {
@@ -151,8 +153,8 @@ export default defineConfig((ctx) => {
       port: ctx.mode.spa
         ? 9001
         : (ctx.mode.pwa ? 9100 : 9200),
-      open: true // opens browser window automatically
-
+      open: true, // opens browser window automatically
+      allowedHosts: 'all'
     },
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-file#framework
