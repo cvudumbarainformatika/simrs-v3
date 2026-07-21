@@ -314,14 +314,14 @@
                 anamnesisAwal?.kebidanan?.kondisiMens || '-' }}</td>
               <td style="border: none !important; padding: 0px !important; width: 20%;">HPHT</td>
               <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
-                anamnesisAwal?.kebidanan?.hpht || '-' }}</td>
+                formatTanggalInt(anamnesisAwal?.kebidanan?.hpht) || '-' }}</td>
             </tr>
             <tr style="border: none !important; padding: 0px !important;">
               <td
                 style="border: none !important; padding-left: 20px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important; width: 20%;">
                 Tgl Perkiraan Persalinan</td>
               <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
-                anamnesisAwal?.kebidanan?.tglPerkPersalinan || '-' }}</td>
+                dateFullFormat(anamnesisAwal?.kebidanan?.tglPerkPersalinan) || '-' }}</td>
             </tr>
 
 
@@ -911,171 +911,177 @@
 
 
     <!-- PEMERIKSAAN KHUSUS -->
-    <div v-if="pemeriksaanUmum?.kebidanan" class="section-title" style="margin-top: 5px;">Pemeriksaan Khusus: </div>
-    <table class="tablex">
-      <tbody>
-        <tr style="border: none !important; padding: 0px !important;">
-          <td class="text-bold" style="border: none !important; padding: 0px !important; width:20%;">Hamil / Bersalin
-          </td>
-        </tr>
-        <tr style="border: none !important; padding: 0px !important;">
-          <td style="border: none !important; padding: 0px !important; width:20%;">- Inspeksi</td>
-          <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
-            pemeriksaanUmum?.kebidanan?.hmlInspeksi || '-' }}</td>
-          <td style="border: none !important; padding: 0px !important; width: 20%;">- Palpasi</td>
-          <td style="border: none !important; padding: 0px !important;">: Puka {{
-            pemeriksaanUmum?.kebidanan?.hmlTfuPuka || '-' }} cm, Puki {{ pemeriksaanUmum?.kebidanan?.hmlTfuPuki || '-'
-            }}
-            cm
-          </td>
-        </tr>
-        <tr style="border: none !important; padding: 0px !important;">
-          <td style="border: none !important; padding: 0px !important; width:20%;">- Presentasi</td>
-          <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
-            pemeriksaanUmum?.kebidanan?.hmlTfuPresentasi || '-' }}</td>
-          <td style="border: none !important; padding: 0px !important; width: 20%;">- Nyeri Tekan</td>
-          <td style="border: none !important; padding: 0px !important;">: {{
-            pemeriksaanUmum?.kebidanan?.hmlNyeri || '-' }}
-          </td>
-        </tr>
-        <tr style="border: none !important; padding: 0px !important;">
-          <td style="border: none !important; padding: 0px !important; width:20%;">- Osborn Test</td>
-          <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
-            pemeriksaanUmum?.kebidanan?.hmlOsborn || '-' }}</td>
-          <td style="border: none !important; padding: 0px !important; width: 20%;">- Cekungan pada Perut/Bandle</td>
-          <td style="border: none !important; padding: 0px !important;">: {{
-            pemeriksaanUmum?.kebidanan?.hmlCekung ||
-            '-' }}
-          </td>
-        </tr>
-        <tr style="border: none !important; padding: 0px !important;">
-          <td style="border: none !important; padding: 0px !important; width:20%;">- Auskultasi</td>
-          <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
-            pemeriksaanUmum?.kebidanan?.hmlAusTeratur || '-' }} kali/menit</td>
-          <td style="border: none !important; padding: 0px !important; width: 20%;">- His/Kontraksi</td>
-          <td style="border: none !important; padding: 0px !important;">: {{
-            pemeriksaanUmum?.kebidanan?.hmlAusDenyut ||
-            '-' }} kali/menit
-          </td>
-        </tr>
-        <tr style="border: none !important; padding: 0px !important;">
-          <td style="border: none !important; padding: 0px !important; width:20%;">- Pengeluaran per Vaginam</td>
-        </tr>
-        <tr style="border: none !important; padding: 0px !important;">
-          <td
-            style="border: none !important; padding-left: 20px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;  width:20%;">
-            Bentuk</td>
-          <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
-            pemeriksaanUmum?.kebidanan?.hmlVgnBentuk || '-' }}</td>
-          <td
-            style="border: none !important; padding-left: 20px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;  width: 20%;">
-            Jumlah</td>
-          <td style="border: none !important; padding: 0px !important;">: {{
-            pemeriksaanUmum?.kebidanan?.hmlVgnJml ||
-            '-' }}</td>
-        </tr>
-        <tr style="border: none !important; padding: 0px !important;">
-          <td
-            style="border: none !important; padding-left: 20px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;  width:20%;">
-            Air Ketuban</td>
-          <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
-            pemeriksaanUmum?.kebidanan?.hmlVgnKtuban || '-' }}</td>
-          <td
-            style="border: none !important; padding-left: 20px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;  width: 20%;">
-            Vagina Toucher</td>
-          <td style="border: none !important; padding: 0px !important;">: {{
-            pemeriksaanUmum?.kebidanan?.hmlVgnToucher ||
-            '-' }}</td>
-        </tr>
+    <template v-if="pemeriksaanUmum?.kebidanan">
+      <div class="section-title" style="margin-top: 5px;">Pemeriksaan Khusus:</div>
+      <table class="tablex">
+        <tbody>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td class="text-bold" style="border: none !important; padding: 0px !important; width:20%;">Hamil / Bersalin
+            </td>
+          </tr>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td style="border: none !important; padding: 0px !important; width:20%;">- Inspeksi</td>
+            <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
+              pemeriksaanUmum?.kebidanan?.hmlInspeksi || '-' }}</td>
+          </tr>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td style="border: none !important; padding: 0px !important; width: 20%;">- Palpasi</td>
+            <td style="border: none !important; padding: 0px !important;">: {{
+              pemeriksaanUmum?.kebidanan?.hmlTfuPuka || '-' }}</td>
+            <td style="border: none !important; padding: 0px !important; width:20%;">- Punggung</td>
+            <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
+              pemeriksaanUmum?.kebidanan?.hmlTfuPuki || '-' }}</td>
 
-        <tr style="border: none !important; padding: 0px !important;">
-          <td class="text-bold" style="border: none !important; padding: 0px !important; width:20%;">Nifas
-          </td>
-        </tr>
-        <tr style="border: none !important; padding: 0px !important;">
-          <td style="border: none !important; padding: 0px !important; width:20%;">- Tinggi Fundus Uteri</td>
-          <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
-            pemeriksaanUmum?.kebidanan?.nfsTfu || '-' }}</td>
-          <td style="border: none !important; padding: 0px !important; width: 20%;">- Kontraksi Uterus</td>
-          <td style="border: none !important; padding: 0px !important;">: {{
-            pemeriksaanUmum?.kebidanan?.nfsUterus || '-' }} </td>
-        </tr>
-        <tr style="border: none !important; padding: 0px !important;">
-          <td style="border: none !important; padding: 0px !important; width:20%;">- Pengeluaran per Vaginam</td>
-        </tr>
-        <tr style="border: none !important; padding: 0px !important;">
-          <td
-            style="border: none !important; padding-left: 20px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;  width:20%;">
-            Bentuk</td>
-          <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
-            pemeriksaanUmum?.kebidanan?.nfsVgnBentuk || '-' }}</td>
-          <td
-            style="border: none !important; padding-left: 20px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;  width: 20%;">
-            Jumlah</td>
-          <td style="border: none !important; padding: 0px !important;">: {{
-            pemeriksaanUmum?.kebidanan?.nfsVgnJml ||
-            '-' }}</td>
-        </tr>
-        <tr style="border: none !important; padding: 0px !important;">
-          <td
-            style="border: none !important; padding-left: 20px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;  width:20%;">
-            Lochea</td>
-          <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
-            pemeriksaanUmum?.kebidanan?.nfsVgnLochea || '-' }}</td>
-          <td
-            style="border: none !important; padding-left: 20px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;  width: 20%;">
-            Luka Jalan Lahir</td>
-          <td style="border: none !important; padding: 0px !important;">: {{
-            pemeriksaanUmum?.kebidanan?.nfsVgnLuka ||
-            '-' }}</td>
-        </tr>
-        <tr style="border: none !important; padding: 0px !important;">
-          <td
-            style="border: none !important; padding-left: 20px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;  width:20%;">
-            Derajat Luka</td>
-          <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
-            pemeriksaanUmum?.kebidanan?.nfsVgnDrjLuka || '-' }}</td>
-          <td
-            style="border: none !important; padding-left: 20px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;  width: 20%;">
-            Luka Post Sectio</td>
-          <td style="border: none !important; padding: 0px !important;">: {{
-            pemeriksaanUmum?.kebidanan?.nfsVgnLukaPost ||
-            '-' }}</td>
-        </tr>
-        <tr style="border: none !important; padding: 0px !important;">
-          <td class="text-bold" style="border: none !important; padding: 0px !important; width:20%;">Gynecologi
-          </td>
-        </tr>
-        <tr style="border: none !important; padding: 0px !important;">
-          <td style="border: none !important; padding: 0px !important; width:20%;">- Palpasi</td>
-          <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
-            pemeriksaanUmum?.kebidanan?.gynecologiPalpasi || '-' }}</td>
-        </tr>
-        <tr style="border: none !important; padding: 0px !important;">
-          <td style="border: none !important; padding: 0px !important; width:20%;">- Inspekulo</td>
-        </tr>
-        <tr style="border: none !important; padding: 0px !important;">
-          <td
-            style="border: none !important; padding-left: 20px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;  width:20%;">
-            Vagina</td>
-          <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
-            pemeriksaanUmum?.kebidanan?.gynecologiInsVgn || '-' }}</td>
-          <td
-            style="border: none !important; padding-left: 20px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;  width: 20%;">
-            Portio</td>
-          <td style="border: none !important; padding: 0px !important;">: {{
-            pemeriksaanUmum?.kebidanan?.gynecologiInsPortio ||
-            '-' }}</td>
-        </tr>
-        <tr style="border: none !important; padding: 0px !important;">
-          <td
-            style="border: none !important; padding-left: 20px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;  width:20%;">
-            Vagina Toucher</td>
-          <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
-            pemeriksaanUmum?.kebidanan?.gynecologiInsVgnToucher || '-' }}</td>
-        </tr>
-      </tbody>
-    </table>
+          </tr>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td style="border: none !important; padding: 0px !important; width:20%;">- Presentasi</td>
+            <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
+              pemeriksaanUmum?.kebidanan?.hmlTfuPresentasi || '-' }}</td>
+            <td style="border: none !important; padding: 0px !important; width: 20%;">- Nyeri Tekan</td>
+            <td style="border: none !important; padding: 0px !important;">: {{
+              pemeriksaanUmum?.kebidanan?.hmlNyeri || '-' }}
+            </td>
+          </tr>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td style="border: none !important; padding: 0px !important; width:20%;">- Osborn Test</td>
+            <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
+              pemeriksaanUmum?.kebidanan?.hmlOsborn || '-' }}</td>
+            <td style="border: none !important; padding: 0px !important; width: 20%;">- Cekungan pada Perut/Bandle</td>
+            <td style="border: none !important; padding: 0px !important;">: {{
+              pemeriksaanUmum?.kebidanan?.hmlCekung ||
+              '-' }}
+            </td>
+          </tr>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td style="border: none !important; padding: 0px !important; width:20%;">- Auskultasi</td>
+            <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
+              pemeriksaanUmum?.kebidanan?.hmlAusTeratur || '-' }} kali/menit</td>
+            <td style="border: none !important; padding: 0px !important; width: 20%;">- His/Kontraksi</td>
+            <td style="border: none !important; padding: 0px !important;">: {{
+              pemeriksaanUmum?.kebidanan?.hmlAusDenyut ||
+              '-' }} kali/menit
+            </td>
+          </tr>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td style="border: none !important; padding: 0px !important; width:20%;">- Pengeluaran per Vaginam</td>
+          </tr>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td
+              style="border: none !important; padding-left: 20px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;  width:20%;">
+              Bentuk</td>
+            <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
+              pemeriksaanUmum?.kebidanan?.hmlVgnBentuk || '-' }}</td>
+            <td
+              style="border: none !important; padding-left: 20px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;  width: 20%;">
+              Jumlah</td>
+            <td style="border: none !important; padding: 0px !important;">: {{
+              pemeriksaanUmum?.kebidanan?.hmlVgnJml ||
+              '-' }}</td>
+          </tr>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td
+              style="border: none !important; padding-left: 20px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;  width:20%;">
+              Air Ketuban</td>
+            <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
+              pemeriksaanUmum?.kebidanan?.hmlVgnKtuban || '-' }}</td>
+            <td
+              style="border: none !important; padding-left: 20px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;  width: 20%;">
+              Vagina Toucher</td>
+            <td style="border: none !important; padding: 0px !important;">: {{
+              pemeriksaanUmum?.kebidanan?.hmlVgnToucher ||
+              '-' }}</td>
+          </tr>
+
+          <tr style="border: none !important; padding: 0px !important;">
+            <td class="text-bold" style="border: none !important; padding: 0px !important; width:20%;">Nifas
+            </td>
+          </tr>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td style="border: none !important; padding: 0px !important; width:20%;">- Tinggi Fundus Uteri</td>
+            <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
+              pemeriksaanUmum?.kebidanan?.nfsTfu || '-' }}</td>
+            <td style="border: none !important; padding: 0px !important; width: 20%;">- Kontraksi Uterus</td>
+            <td style="border: none !important; padding: 0px !important;">: {{
+              pemeriksaanUmum?.kebidanan?.nfsUterus || '-' }} </td>
+          </tr>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td style="border: none !important; padding: 0px !important; width:20%;">- Pengeluaran per Vaginam</td>
+          </tr>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td
+              style="border: none !important; padding-left: 20px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;  width:20%;">
+              Bentuk</td>
+            <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
+              pemeriksaanUmum?.kebidanan?.nfsVgnBentuk || '-' }}</td>
+            <td
+              style="border: none !important; padding-left: 20px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;  width: 20%;">
+              Jumlah</td>
+            <td style="border: none !important; padding: 0px !important;">: {{
+              pemeriksaanUmum?.kebidanan?.nfsVgnJml ||
+              '-' }}</td>
+          </tr>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td
+              style="border: none !important; padding-left: 20px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;  width:20%;">
+              Lochea</td>
+            <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
+              pemeriksaanUmum?.kebidanan?.nfsVgnLochea || '-' }}</td>
+            <td
+              style="border: none !important; padding-left: 20px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;  width: 20%;">
+              Luka Jalan Lahir</td>
+            <td style="border: none !important; padding: 0px !important;">: {{
+              pemeriksaanUmum?.kebidanan?.nfsVgnLuka ||
+              '-' }}</td>
+          </tr>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td
+              style="border: none !important; padding-left: 20px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;  width:20%;">
+              Derajat Luka</td>
+            <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
+              pemeriksaanUmum?.kebidanan?.nfsVgnDrjLuka || '-' }}</td>
+            <td
+              style="border: none !important; padding-left: 20px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;  width: 20%;">
+              Luka Post Sectio</td>
+            <td style="border: none !important; padding: 0px !important;">: {{
+              pemeriksaanUmum?.kebidanan?.nfsVgnLukaPost ||
+              '-' }}</td>
+          </tr>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td class="text-bold" style="border: none !important; padding: 0px !important; width:20%;">Gynecologi
+            </td>
+          </tr>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td style="border: none !important; padding: 0px !important; width:20%;">- Palpasi</td>
+            <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
+              pemeriksaanUmum?.kebidanan?.gynecologiPalpasi || '-' }}</td>
+          </tr>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td style="border: none !important; padding: 0px !important; width:20%;">- Inspekulo</td>
+          </tr>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td
+              style="border: none !important; padding-left: 20px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;  width:20%;">
+              Vagina</td>
+            <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
+              pemeriksaanUmum?.kebidanan?.gynecologiInsVgn || '-' }}</td>
+            <td
+              style="border: none !important; padding-left: 20px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;  width: 20%;">
+              Portio</td>
+            <td style="border: none !important; padding: 0px !important;">: {{
+              pemeriksaanUmum?.kebidanan?.gynecologiInsPortio ||
+              '-' }}</td>
+          </tr>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td
+              style="border: none !important; padding-left: 20px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;  width:20%;">
+              Vagina Toucher</td>
+            <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
+              pemeriksaanUmum?.kebidanan?.gynecologiInsVgnToucher || '-' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </template>
+
 
 
     <!-- Pemeriksaan : Fisik -->
@@ -1725,7 +1731,7 @@
 
 
       <!-- Diagnosa keperawatan -->
-      <div v-if="pasien?.diagnosakebidanan" class="section">
+      <div v-if="pasien?.diagnosakebidanan.length > 0" class="section">
         <div class="section-title">Diagnosis Kebidanan</div>
         <table style="margin-top: -5px;">
           <thead>
@@ -2039,6 +2045,34 @@ const dischargeplanning = computed(() => [
   { label: 'Apakah pasien memerlukan latihan fisik', value: jawabdischargeplanning?.rs19, ket: jawabdischargeplanning?.rs19Ket }
 ])
 
+
+function formatTanggalInt(nilai) {
+  if (!nilai) return ''
+
+  nilai = String(nilai)
+
+  let hari, bulan, tahun
+
+  if (nilai.length === 7) {
+    hari = nilai.substring(0, 1).padStart(2, '0')
+    bulan = nilai.substring(1, 3)
+    tahun = nilai.substring(3)
+  } else if (nilai.length === 8) {
+    hari = nilai.substring(0, 2)
+    bulan = nilai.substring(2, 4)
+    tahun = nilai.substring(4)
+  } else {
+    return nilai
+  }
+
+  const tanggal = new Date(`${tahun}-${bulan}-${hari}`)
+
+  return tanggal.toLocaleDateString('id-ID', {
+    day: '2-digit',
+    month: 'long',
+    year: 'numeric'
+  })
+}
 </script>
 
 <style lang="scss" scoped>

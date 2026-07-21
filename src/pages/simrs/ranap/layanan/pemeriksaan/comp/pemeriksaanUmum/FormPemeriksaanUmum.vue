@@ -345,23 +345,23 @@
       <q-separator class="q-my-xs" />
       <q-card-section class="row q-col-gutter-xs q-px-sm q-py-none">
         <autocomplete-input v-model="store.formKebidanan.hmlInspeksi" :options="store.inspeksis" label="Inspeksi"
-          class="col-4" @set-model="(val) => store.formKebidanan.hmlInspeksi = val" />
-        <div class="col-8">
+          class="col-12" @set-model="(val) => store.formKebidanan.hmlInspeksi = val" />
+        <div class="col-12">
           <div class="row q-col-gutter-xs">
-            <div class="col-2 text-right">
+            <!-- <div class="col-2 text-right">
               Palpasi
-            </div>
-            <app-input-simrs label="Puka (cm)" class="col-3" v-model="store.formKebidanan.hmlTfuPuka" />
-            <app-input-simrs label="Puki (cm)" class="col-3" v-model="store.formKebidanan.hmlTfuPuki" />
+            </div> -->
+            <app-input-simrs label="Palpasi" class="col-4" v-model="store.formKebidanan.hmlTfuPuka" />
+            <app-input-simrs label="Punggung" class="col-4" v-model="store.formKebidanan.hmlTfuPuki" />
             <autocomplete-input v-model="store.formKebidanan.hmlTfuPresentasi" :options="store.presentasis"
               label="Presentasi" class="col-4" @set-model="(val) => store.formKebidanan.hmlTfuPresentasi = val" />
           </div>
         </div>
 
         <select-input v-model="store.formKebidanan.hmlNyeri" :options="store.adaTidaks" label="Nyeri Tekan"
-          class="col-3" />
+          class="col-4" />
         <select-input v-model="store.formKebidanan.hmlOsborn" :options="store.adaTidaks" label="Osborn Test"
-          class="col-3" />
+          class="col-4" />
         <select-input v-model="store.formKebidanan.hmlCekung" :options="store.adaTidaks" label="Cekungan pd Prt/Bandle"
           class="col-4" />
       </q-card-section>
