@@ -590,6 +590,26 @@ export const useAnamnesisRanapStore = defineStore('anamnesis-ranap-store', {
       }
     },
 
+    intToDate(val) {
+      if (!val) return null
+
+      val = String(val)
+
+      let hari, bulan, tahun
+
+      if (val.length === 7) {
+        hari = val.substring(0, 1).padStart(2, '0')
+        bulan = val.substring(1, 3)
+        tahun = val.substring(3)
+      } else {
+        hari = val.substring(0, 2)
+        bulan = val.substring(2, 4)
+        tahun = val.substring(4)
+      }
+
+      return `${tahun}-${bulan}-${hari}`
+    },
+
     initReset(data) {
       // console.log('data init reset', data)
       this.loadingSave = false
@@ -708,7 +728,11 @@ export const useAnamnesisRanapStore = defineStore('anamnesis-ranap-store', {
       if (data?.kebidanan) {
         Object.keys(this.formKebidanan).forEach(key => {
           if (key !== 'keluhannyeri' && key !== 'skreeninggizi') {
-            this.formKebidanan[key] = data?.kebidanan[key]
+            if (key === 'hpht') {
+              this.formKebidanan[key] = this.intToDate(data?.kebidanan[key])
+            } else {
+              this.formKebidanan[key] = data?.kebidanan[key]
+            }
           }
         })
       }

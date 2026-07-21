@@ -446,8 +446,11 @@
               <q-select v-model="store.formKebidanan.kondisiMens" dense standout="bg-yellow-3 text-black" outlined
                 label="Kondisi Mens" :options="store.kondisiMens" emit-value map-options input-class="ellipsis"
                 fill-input hide-bottom-space class="col-5" />
-              <app-input-simrs v-model="store.formKebidanan.hpht" label="HPHT (hr)" class="col-2"
-                :valid="{ number: true }" />
+              <!-- <app-input-simrs v-model="store.formKebidanan.hpht" label="HPHT (hr)" class="col-2"
+                :valid="{ number: true }" /> -->
+
+              <app-input-date v-model="store.formKebidanan.hpht" label="HPHT" outlined dense
+                @set-model="(val) => { store.formKebidanan.hpht = val }" valid class="col-3" />
               <app-input-date v-model="store.formKebidanan.tglPerkPersalinan" label="Tgl Prk. Persalinan" outlined dense
                 @set-model="(val) => { store.formKebidanan.tglPerkPersalinan = val }" valid class="col-3" />
 
@@ -1050,5 +1053,25 @@ function filterFn(val, update, abort, arr) {
     // eslint-disable-next-line dot-notation
     store['ketubans'] = k
   })
+}
+
+function intToDate(val) {
+  if (!val) return null
+
+  val = String(val)
+
+  let hari, bulan, tahun
+
+  if (val.length === 7) {
+    hari = val.substring(0, 1).padStart(2, '0')
+    bulan = val.substring(1, 3)
+    tahun = val.substring(3)
+  } else {
+    hari = val.substring(0, 2)
+    bulan = val.substring(2, 4)
+    tahun = val.substring(4)
+  }
+
+  return `${tahun}-${bulan}-${hari}`
 }
 </script>
