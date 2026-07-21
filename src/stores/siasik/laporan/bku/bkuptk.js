@@ -115,7 +115,7 @@ export const useLaporanBkuPtkStore = defineStore('laporan_bkuptk', {
             return {
               nonpd: x.nonpd,
               uraianNPD: x.kegiatanblud,
-              totalRincian: parseInt(x.total),
+              totalRincian: parseFloat(x.total),
               rincian: x.npdpjr_head?.length
                 ? x.npdpjr_head?.map((y) => {
                   return {
@@ -124,7 +124,7 @@ export const useLaporanBkuPtkStore = defineStore('laporan_bkuptk', {
                         return {
                           koderek50: z.koderek50,
                           rincianbelanja: z.rincianbelanja50,
-                          nilaiRincian: parseInt(z.totalpermintaanpanjar)
+                          nilaiRincian: parseFloat(z.totalpermintaanpanjar)
                         }
                       })
                       : []
@@ -165,7 +165,7 @@ export const useLaporanBkuPtkStore = defineStore('laporan_bkuptk', {
         const spjnyaPanjar = el[i].spj_rinci?.length
           ? el[i].spj_rinci?.map((x) => {
             return {
-              totalRincian: parseInt(x.jumlahbelanjapanjar),
+              totalRincian: parseFloat(x.jumlahbelanjapanjar),
               koderek50: x.koderek50,
               rincianbelanja: x.rincianbelanja50
             }
@@ -256,7 +256,7 @@ export const useLaporanBkuPtkStore = defineStore('laporan_bkuptk', {
         const sisapanjar = el[i].sisarinci?.length
           ? el[i].sisarinci?.map((x) => {
             return {
-              totalRincian: parseInt(x.sisapanjar),
+              totalRincian: parseFloat(x.sisapanjar),
               koderek50: x.koderek50,
               rincianbelanja: x.rincianbelanja50
             }
@@ -436,27 +436,27 @@ export const useLaporanBkuPtkStore = defineStore('laporan_bkuptk', {
     hitungNpdpanjar(arr) {
       return arr
         .map((x) => x.total)
-        .reduce((x, y) => parseInt(x) + parseInt(y), 0)
+        .reduce((x, y) => parseFloat(x) + parseFloat(y), 0)
     },
     hitungspjpanjar(arr) {
       return arr
         .map((x) => x.jumlahbelanjapanjar)
-        .reduce((x, y) => parseInt(x) + parseInt(y), 0)
+        .reduce((x, y) => parseFloat(x) + parseFloat(y), 0)
     },
     hitungpengembalianpjr(arr) {
       return arr
         .map((x) => x.sisapanjar)
-        .reduce((x, y) => parseInt(x) + parseInt(y), 0)
+        .reduce((x, y) => parseFloat(x) + parseFloat(y), 0)
     },
     hitungTotalNpd(arr) {
       return arr
         .map((x) => x.nominalpembayaran)
-        .reduce((x, y) => parseInt(x) + parseInt(y), 0)
+        .reduce((x, y) => parseFloat(x) + parseFloat(y), 0)
     },
     hitungpjr(arr) {
       return arr
         .map((x) => x.totalpermintaanpanjar)
-        .reduce((x, y) => parseInt(x) + parseInt(y), 0)
+        .reduce((x, y) => parseFloat(x) + parseFloat(y), 0)
     }
   }
 })
