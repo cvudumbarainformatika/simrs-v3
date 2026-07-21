@@ -159,7 +159,7 @@
               </tr>
               <tr>
                 <td class="text-weight-bold">Setiap (Menit)</td>
-                <td colspan="3">{{ store.inputFormPasca?.monitor_setiap ? store.inputFormPasca?.monitor_setiap + ' Menit' : '-' }}</td>
+                <td colspan="3">{{ (store.inputFormPasca?.monitor_setiap ? String(store.inputFormPasca.monitor_setiap).replace(/\s*Menit/i, '') : '5') + ' Menit' }}</td>
               </tr>
               <tr class="bg-grey-1 text-weight-bold">
                 <td colspan="4">INSTRUKSI PASCA ANESTESI</td>
