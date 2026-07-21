@@ -2306,7 +2306,20 @@ const loadDataToForm = (item) => {
   // 1. Skrining (Form A)
   if (item.skrining) {
     const sData = typeof item.skrining === 'string' ? JSON.parse(item.skrining) : item.skrining
-    Object.assign(form.skrining, sData)
+    const cleanSkrining = {}
+    if (sData && typeof sData === 'object') {
+      Object.keys(sData).forEach(key => {
+        const val = sData[key]
+        if (val === 1 || val === '1' || val === true || val === 'true') {
+          cleanSkrining[key] = true
+        } else if (val === 0 || val === '0' || val === false || val === 'false') {
+          cleanSkrining[key] = false
+        } else {
+          cleanSkrining[key] = val
+        }
+      })
+    }
+    Object.assign(form.skrining, cleanSkrining)
   }
   
   // 2. Asesmen (Form A)
@@ -2344,7 +2357,7 @@ const loadDataToForm = (item) => {
   if (item.monitoring) {
     const monData = typeof item.monitoring === 'string' ? JSON.parse(item.monitoring) : item.monitoring
     form.monitoring = monData.monitoring || []
-    form.monitoring_tgl = monData.monitoring_tgl || {}
+    form.monitoring_tgl = Array.isArray(monData.monitoring_tgl) ? {} : (monData.monitoring_tgl || {})
     form.monitoring_ppk_cp = monData.monitoring_ppk_cp || null
     form.monitoring_koding = monData.monitoring_koding || null
     form.monitoring_koding_ket = monData.monitoring_koding_ket || null
@@ -2354,22 +2367,22 @@ const loadDataToForm = (item) => {
   if (item.fasilitasi) {
     const fData = typeof item.fasilitasi === 'string' ? JSON.parse(item.fasilitasi) : item.fasilitasi
     form.fasilitasi = fData.fasilitasi || []
-    form.fasilitasi_tgl = fData.fasilitasi_tgl || {}
-    form.fasilitasi_ket = fData.fasilitasi_ket || {}
+    form.fasilitasi_tgl = Array.isArray(fData.fasilitasi_tgl) ? {} : (fData.fasilitasi_tgl || {})
+    form.fasilitasi_ket = Array.isArray(fData.fasilitasi_ket) ? {} : (fData.fasilitasi_ket || {})
   }
   
   // 8. Advokasi (Form B)
   if (item.advokasi) {
     const advData = typeof item.advokasi === 'string' ? JSON.parse(item.advokasi) : item.advokasi
     form.advokasi = advData.advokasi || []
-    form.advokasi_tgl = advData.advokasi_tgl || {}
+    form.advokasi_tgl = Array.isArray(advData.advokasi_tgl) ? {} : (advData.advokasi_tgl || {})
   }
   
   // 9. Hasil Pelayanan (Form B)
   if (item.hasil_pelayanan) {
     const hData = typeof item.hasil_pelayanan === 'string' ? JSON.parse(item.hasil_pelayanan) : item.hasil_pelayanan
     form.hasil = hData.hasil || []
-    form.hasil_ket = hData.hasil_ket || {}
+    form.hasil_ket = Array.isArray(hData.hasil_ket) ? {} : (hData.hasil_ket || {})
     form.level_hasil = hData.level_hasil || null
   }
   
@@ -2377,10 +2390,10 @@ const loadDataToForm = (item) => {
   if (item.terminasi) {
     const tData = typeof item.terminasi === 'string' ? JSON.parse(item.terminasi) : item.terminasi
     form.terminasi = tData.terminasi || []
-    form.terminasi_tgl = tData.terminasi_tgl || {}
+    form.terminasi_tgl = Array.isArray(tData.terminasi_tgl) ? {} : (tData.terminasi_tgl || {})
     form.cara_pulang_val = tData.cara_pulang_val || null
-    form.cara_pulang_ket = tData.cara_pulang_ket || {}
-    form.cara_pulang_tgl = tData.cara_pulang_tgl || {}
+    form.cara_pulang_ket = Array.isArray(tData.cara_pulang_ket) ? {} : (tData.cara_pulang_ket || {})
+    form.cara_pulang_tgl = Array.isArray(tData.cara_pulang_tgl) ? {} : (tData.cara_pulang_tgl || {})
     form.cara_pulang_jam = tData.cara_pulang_jam || null
   }
 }
