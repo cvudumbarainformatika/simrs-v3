@@ -70,7 +70,8 @@ export const useMonitoringSaatStore = defineStore('monitoring_saat', {
     ],
     inputFormPasca: {
       jam_masuk: '',
-      keadaan_umum: []
+      keadaan_umum: [],
+      monitor_setiap: '5'
     },
     loadingPasca: false,
     dataPasca: [],
@@ -200,12 +201,16 @@ export const useMonitoringSaatStore = defineStore('monitoring_saat', {
         if (!med.lain_lain && med.instruksi_lain) {
           med.lain_lain = med.instruksi_lain
         }
+        if (!med.monitor_setiap) {
+          med.monitor_setiap = '5'
+        }
         this.inputFormPasca = med
       } else {
         this.inputFormPasca = {
           noreg: pasien.noreg,
           nota: pasien.rs2,
-          norm: pasien.norm
+          norm: pasien.norm,
+          monitor_setiap: '5'
         }
       }
       this.dataPasca.sort((a, b) => a.time - b.time)
@@ -232,6 +237,9 @@ export const useMonitoringSaatStore = defineStore('monitoring_saat', {
       this.loading = true
       try {
         const payload = { ...this.inputFormPasca }
+        if (!payload.monitor_setiap) {
+          payload.monitor_setiap = '5'
+        }
         if (Array.isArray(payload.keadaan_umum)) {
           const joined = payload.keadaan_umum.join(', ')
           payload.keadaan_umum = joined

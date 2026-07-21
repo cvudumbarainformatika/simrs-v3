@@ -91,7 +91,7 @@
           </div>
           <div class="col-md-4">
             <q-select v-model="store.inputFormPasca.monitor_setiap"
-              :options="[{ label: '15 Menit', value: '15' }, { label: '30 Menit', value: '30' }]"
+              :options="[{ label: '5 Menit', value: '5' }, { label: '10 Menit', value: '10' }, { label: '15 Menit', value: '15' }, { label: '30 Menit', value: '30' }]"
               label="Setiap (Menit)" dense outlined emit-value map-options behavior="menu"
               :disable="logs.length > 0">
               <q-tooltip v-if="logs.length > 0">Interval terkunci karena data log observasi sudah ada</q-tooltip>
@@ -209,12 +209,7 @@ const $q = useQuasar()
 
 function openInputLogDialog () {
   if (!store.inputFormPasca?.monitor_setiap) {
-    $q.notify({
-      type: 'warning',
-      message: 'Silakan pilih interval "Setiap (Menit)" (15 atau 30 menit) terlebih dahulu!',
-      position: 'top'
-    })
-    return
+    store.inputFormPasca.monitor_setiap = '5'
   }
   showInputLog.value = true
 }
@@ -466,9 +461,9 @@ function formatSelectTime (val, waktuStr) {
   return `${resH}:${resM} (Menit ke-${val})`
 }
 
-// 1. GENERATE OPSI MENIT (Berdasarkan monitor_setiap: 15 atau 30 menit)
+// 1. GENERATE OPSI MENIT (Berdasarkan monitor_setiap: default 5 menit)
 const minuteOptions = computed(() => {
-  const step = parseInt(store.inputFormPasca?.monitor_setiap || '15', 10) || 15
+  const step = parseInt(store.inputFormPasca?.monitor_setiap || '5', 10) || 5
   const lastTime = logs.value.length > 0
     ? Math.max(...logs.value.map(l => l.time))
     : 0
@@ -487,7 +482,7 @@ const minuteOptions = computed(() => {
 
 // 2. FUNGSI KETIKA DIALOG MUNCUL
 function onDialogShow () {
-  const step = parseInt(store.inputFormPasca?.monitor_setiap || '15', 10) || 15
+  const step = parseInt(store.inputFormPasca?.monitor_setiap || '5', 10) || 5
   const lastTime = logs.value.length > 0
     ? Math.max(...logs.value.map(l => l.time))
     : -step
