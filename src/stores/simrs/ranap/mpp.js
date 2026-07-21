@@ -44,7 +44,8 @@ export const useMppRanapStore = defineStore('mpp-ranap-store', {
 
     async simpanData(pasien, customForm = null) {
       this.loading = true
-      const formData = customForm || this.form
+      const formData = customForm ? JSON.parse(JSON.stringify(customForm)) : this.form
+      const sData = formData.skrining || formData
       
       const payload = {
         noreg: pasien?.noreg,
@@ -53,22 +54,22 @@ export const useMppRanapStore = defineStore('mpp-ranap-store', {
         
         // 1. Skrining (Form A)
         skrining: {
-          usia: formData.usia,
-          kognitif_rendah: formData.kognitif_rendah,
-          resiko_tinggi: formData.resiko_tinggi,
-          potensi_komplain: formData.potensi_komplain,
-          kasus_penyakit: formData.kasus_penyakit,
-          keterbatasan_adl: formData.keterbatasan_adl,
-          pakai_alat_medis: formData.pakai_alat_medis,
-          riwayatalat_medis: formData.riwayatalat_medis,
-          riwayat_psikologis: formData.riwayat_psikologis,
-          readmisi: formData.readmisi,
-          biaya_tinggi: formData.biaya_tinggi,
-          pembiayaan_komplek: formData.pembiayaan_komplek,
-          melebihi_los: formData.melebihi_los,
-          transfer_rujukan: formData.transfer_rujukan,
-          kerjasama_sektor: formData.kerjasama_sektor,
-          kontinuitas_pelayanan: formData.kontinuitas_pelayanan
+          usia: sData.usia,
+          kognitif_rendah: sData.kognitif_rendah,
+          resiko_tinggi: sData.resiko_tinggi,
+          potensi_komplain: sData.potensi_komplain,
+          kasus_penyakit: sData.kasus_penyakit,
+          keterbatasan_adl: sData.keterbatasan_adl,
+          pakai_alat_medis: sData.pakai_alat_medis,
+          riwayatalat_medis: sData.riwayatalat_medis,
+          riwayat_psikologis: sData.riwayat_psikologis,
+          readmisi: sData.readmisi,
+          biaya_tinggi: sData.biaya_tinggi,
+          pembiayaan_komplek: sData.pembiayaan_komplek,
+          melebihi_los: sData.melebihi_los,
+          transfer_rujukan: sData.transfer_rujukan,
+          kerjasama_sektor: sData.kerjasama_sektor,
+          kontinuitas_pelayanan: sData.kontinuitas_pelayanan
         },
         
         // 2. Asesmen (Form A)
@@ -191,7 +192,20 @@ export const useMppRanapStore = defineStore('mpp-ranap-store', {
     editData(item) {
       // Parse skrining jika masih berupa JSON string
       const data = typeof item.skrining === 'string' ? JSON.parse(item.skrining) : item.skrining
-      Object.assign(this.form, data)
+      const cleanSkrining = {}
+      if (data && typeof data === 'object') {
+        Object.keys(data).forEach(key => {
+          const val = data[key]
+          if (val === 1 || val === '1' || val === true || val === 'true') {
+            cleanSkrining[key] = true
+          } else if (val === 0 || val === '0' || val === false || val === 'false') {
+            cleanSkrining[key] = false
+          } else {
+            cleanSkrining[key] = val
+          }
+        })
+      }
+      Object.assign(this.form, cleanSkrining)
       this.editingId = item.id
     },
 

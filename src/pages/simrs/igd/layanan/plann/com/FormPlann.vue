@@ -258,6 +258,7 @@
   </div>
   <form-plann-nicu />
   <form-plann-iccu />
+  <form-plann-icu />
   <form-plan-hcu />
 </template>
 <script setup>
@@ -266,9 +267,11 @@ import { api } from 'src/boot/axios'
 import { usePlannStore } from 'src/stores/simrs/igd/plann'
 import FormPlannNicu from './planpulang/FormPlannNicu.vue'
 import FormPlannIccu from './planpulang/FormPlannIccu.vue'
+import FormPlannIcu from './planpulang/FormPlanIcu.vue'
 import FormPlanHcu from './planpulang/FormPlanHcu.vue'
 import { ref } from 'vue'
 import { defineAsyncComponent } from 'vue'
+import { notifErr } from 'src/modules/utils.js'
 
 const store = usePlannStore()
 const refForm = ref()
@@ -375,10 +378,22 @@ const props = defineProps({
 })
 
 function onSubmit() {
-  store.savePlan(props.pasien).then(() => {
-    // console.log('s')
-    refForm.value.resetValidation()
-  })
+  if (store.form.rujuan === 'NICU' || store.form.rujuan === 'ICC' || store.form.rujuan === 'IC' || store.form.rujuan === 'HCU') {
+    if (store.form.isi.length === 0) {
+      notifErr('Isi Kriteria Pasien Dulu...!!')
+    } else {
+      store.savePlan(props.pasien).then(() => {
+        // console.log('s')
+        refForm.value.resetValidation()
+      })
+    }
+  } else {
+    store.savePlan(props.pasien).then(() => {
+      // console.log('s')
+      refForm.value.resetValidation()
+    })
+
+  }
 }
 
 function resetklutidak(val) {
@@ -477,11 +492,16 @@ function cekindikasi(val) {
   } else if (result[0].rs3 === 'ICC') {
     store.fixediccu = true
     store.resetdialog()
-    store.form.kelas = 'ICCU'
+    store.form.kelas = 'ICC'
+  } else if (result[0].rs3 === 'IC') {
+    store.form.kelas = 'IC'
+    store.fixedicu = true
+    // store.resetdialog()
   } else if (result[0].rs3 === 'HCU') {
     store.fixedhcu = true
     store.resetdialog()
     store.form.kelas = 'HCU'
+
   } else {
     store.form.kelas = 'null'
   }

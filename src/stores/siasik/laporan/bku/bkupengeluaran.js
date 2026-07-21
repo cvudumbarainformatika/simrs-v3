@@ -180,7 +180,7 @@ export const useLaporanBkuPengeluaranStore = defineStore(
             sisapanjar: null,
             uraian: el[i].uraian,
             uraianNPD: null,
-            penerimaan: parseInt(el[i].jumlahspp),
+            penerimaan: parseFloat(el[i].jumlahspp),
             pengeluaran: 0
           }
           spm.push(obj)
@@ -371,7 +371,7 @@ export const useLaporanBkuPengeluaranStore = defineStore(
           const spjnyaPanjar = el[i].spj_rinci?.length
             ? el[i].spj_rinci?.map((x) => {
               return {
-                totalRincian: parseInt(x.jumlahbelanjapanjar),
+                totalRincian: parseFloat(x.jumlahbelanjapanjar),
                 koderek50: x.koderek50,
                 rincianbelanja: x.rincianbelanja50
               }
@@ -464,7 +464,7 @@ export const useLaporanBkuPengeluaranStore = defineStore(
           const sisapanjar = el[i].sisarinci?.length
             ? el[i].sisarinci?.map((x) => {
               return {
-                totalRincian: parseInt(x.sisapanjar),
+                totalRincian: parseFloat(x.sisapanjar),
                 koderek50: x.koderek50,
                 rincianbelanja: x.rincianbelanja50
               }
@@ -621,7 +621,7 @@ export const useLaporanBkuPengeluaranStore = defineStore(
             sisapanjar: null,
             uraian: 'Contrapost',
             uraianNPD: null,
-            penerimaan: parseInt(el[i].nominalcontrapost),
+            penerimaan: parseFloat(el[i].nominalcontrapost),
             pengeluaran: 0
           }
           cp.push(obj)
@@ -645,7 +645,7 @@ export const useLaporanBkuPengeluaranStore = defineStore(
             sisapanjar: null,
             uraian: el[i].uraian,
             uraianNPD: null,
-            penerimaan: parseInt(el[i].jumlahspp),
+            penerimaan: parseFloat(el[i].jumlahspp),
             pengeluaran: 0
           }
           spmgu.push(obj)
@@ -669,7 +669,7 @@ export const useLaporanBkuPengeluaranStore = defineStore(
             uraian: 'Pengembalian Nihil',
             uraianNPD: null,
             penerimaan: 0,
-            pengeluaran: parseInt(el[i].jmlpengembalianreal)
+            pengeluaran: parseFloat(el[i].jmlpengembalianreal)
           }
           nihil.push(obj)
         }
@@ -735,32 +735,32 @@ export const useLaporanBkuPengeluaranStore = defineStore(
       hitungPergeseran(arr) {
         return arr
           .map((x) => x.jumlah)
-          .reduce((x, y) => parseInt(x) + parseInt(y), 0)
+          .reduce((x, y) => parseFloat(x) + parseFloat(y), 0)
       },
       hitungNpdpanjar(arr) {
         return arr
           .map((x) => x.totalpermintaanpanjar)
-          .reduce((x, y) => parseInt(x) + parseInt(y), 0)
+          .reduce((x, y) => parseFloat(x) + parseFloat(y), 0)
       },
       hitungspjpanjar(arr) {
         return arr
           .map((x) => x.jumlahbelanjapanjar)
-          .reduce((x, y) => parseInt(x) + parseInt(y), 0)
+          .reduce((x, y) => parseFloat(x) + parseFloat(y), 0)
       },
       hitungpengembalianpjr(arr) {
         return arr
           .map((x) => x.sisapanjar)
-          .reduce((x, y) => parseInt(x) + parseInt(y), 0)
+          .reduce((x, y) => parseFloat(x) + parseFloat(y), 0)
       },
       hitungTotalNpd(arr) {
         return arr
           .map((x) => x.nominalpembayaran)
-          .reduce((x, y) => parseInt(x) + parseInt(y), 0)
+          .reduce((x, y) => parseFloat(x) + parseFloat(y), 0)
       },
       hitungpjr(arr) {
         return arr
           .map((x) => x.totalpermintaanpanjar)
-          .reduce((x, y) => parseInt(x) + parseInt(y), 0)
+          .reduce((x, y) => parseFloat(x) + parseFloat(y), 0)
       }
     }
   }

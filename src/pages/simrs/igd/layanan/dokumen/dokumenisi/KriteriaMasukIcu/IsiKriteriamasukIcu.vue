@@ -1,18 +1,50 @@
 <template>
-  <!-- LOADING -->
-  <div v-if="props.loading">
-    <app-loading />
+  <!-- TIDAK ADA DATA -->
+  <div v-if="!props.keterangan && !props.loading">
+    <app-no-data />
   </div>
 
-  <!-- TIDAK ADA DATA -->
-  <div v-else-if="!props.kelas">
-    <app-no-data />
+  <!-- LOADING -->
+  <div v-else-if="props.loading">
+    <app-loading />
   </div>
 
   <!-- DOKUMEN -->
   <div v-else class="b full-height q-pa-sm">
-    <!-- ===================== ICCU ===================== -->
-    <template v-if="kelasNormalized === 'ICCU'">
+    <!-- DOKUMEN ICU -->
+    <template v-if="props.kelas === 'ICU'">
+      <div class="text-center text-weight-bold text-subtitle1 q-mb-md">
+        KRITERIA PASIEN MASUK ICU
+      </div>
+
+      <div v-for="kategori in kriteriaIcu" :key="kategori.kode" class="q-mb-md page-break">
+        <!-- JUDUL KATEGORI -->
+        <div class="row q-px-sm q-py-xs bg-grey-3">
+          <div class="col-12 text-weight-bold">
+            {{ kategori.kode }}. {{ kategori.nama }}
+          </div>
+        </div>
+
+        <!-- ITEM KRITERIA -->
+        <div v-for="(item, index) in kategori.items" :key="`${kategori.kode}-${index}`"
+          class="row no-wrap q-px-sm q-py-xs items-start">
+          <div class="col-auto q-mr-sm" style="width: 24px">
+            {{ isCheckedIcu(kategori.kode, index) ? '☑' : '☐' }}
+          </div>
+
+          <div class="col-auto q-mr-xs" style="width: 24px">
+            {{ index + 1 }}.
+          </div>
+
+          <div class="col">
+            {{ item }}
+          </div>
+        </div>
+      </div>
+    </template>
+
+    <!-- DOKUMEN ICCU -->
+    <template v-else-if="props.kelas === 'ICCU'">
       <div class="row q-px-sm q-pb-xs full-width">
         <div class="col-12 text-weight-bold">
           Prioritas I
@@ -22,7 +54,7 @@
       <div v-for="item in iccu" :key="item">
         <div class="row q-px-sm q-py-xs">
           <div class="col-auto" style="width: 24px">
-            {{ isChecked(item) ? '☑' : '☐' }}
+            {{ isCheckedText(item) ? '☑' : '☐' }}
           </div>
 
           <div class="col">
@@ -32,26 +64,26 @@
 
         <div v-if="item === 'Edema Paru Akut'" class="q-ml-xl q-mb-sm">
           <div>• Dyspnoe</div>
-          <div>• RR &gt; 28 x/mnt</div>
+          <div>• RR &gt; 28 x/menit</div>
           <div>• Ronkhi +</div>
-          <div>• Akral dingin, basah</div>
+          <div>• Akral dingin dan basah</div>
         </div>
       </div>
     </template>
 
-    <!-- ===================== NICU ===================== -->
-    <template v-else-if="kelasNormalized === 'NICU'">
+    <!-- DOKUMEN NICU -->
+    <template v-else-if="props.kelas === 'NICU'">
       <div class="row q-px-sm q-pb-xs full-width">
         <div class="col-12 text-weight-bold">
           Pasien yang membutuhkan perawatan NICU adalah semua bayi yang
-          memerlukan monitor / observasi ketat:
+          memerlukan monitor atau observasi ketat:
         </div>
       </div>
 
       <div v-for="item in nicu.a" :key="item">
         <div class="row q-px-sm q-py-xs">
           <div class="col-auto" style="width: 24px">
-            {{ isChecked(item) ? '☑' : '☐' }}
+            {{ isCheckedText(item) ? '☑' : '☐' }}
           </div>
 
           <div class="col">
@@ -69,39 +101,7 @@
       <div v-for="item in nicu.b" :key="item">
         <div class="row q-px-sm q-py-xs">
           <div class="col-auto" style="width: 24px">
-            {{ isChecked(item) ? '☑' : '☐' }}
-          </div>
-
-          <div class="col">
-            {{ item }}
-          </div>
-        </div>
-      </div>
-    </template>
-
-    <!-- ===================== ICU ===================== -->
-    <template v-else-if="kelasNormalized === 'ICU'">
-      <div class="text-center text-weight-bold text-subtitle1 q-mb-md">
-        KRITERIA PASIEN MASUK ICU
-      </div>
-
-      <div v-for="kategori in kriteriaIcu" :key="kategori.kode" class="q-mb-md page-break">
-        <!-- JUDUL KATEGORI -->
-        <div class="row q-px-sm q-py-xs bg-grey-3">
-          <div class="col-12 text-weight-bold">
-            {{ kategori.kode }}. {{ kategori.nama }}
-          </div>
-        </div>
-
-        <!-- DAFTAR KRITERIA -->
-        <div v-for="(item, index) in kategori.items" :key="`${kategori.kode}-${index}`"
-          class="row no-wrap q-px-sm q-py-xs items-start">
-          <div class="col-auto q-mr-sm" style="width: 24px">
-            {{ isCheckedIcu(kategori.kode, kategori.nama, item) ? '☑' : '☐' }}
-          </div>
-
-          <div class="col-auto q-mr-xs" style="width: 24px">
-            {{ index + 1 }}.
+            {{ isCheckedText(item) ? '☑' : '☐' }}
           </div>
 
           <div class="col">
@@ -122,7 +122,7 @@
       </div>
     </div>
 
-    <!-- ===================== TANDA TANGAN ===================== -->
+    <!-- TANDA TANGAN -->
     <div class="row q-pb-xs q-pt-sm justify-center full-width page-break">
       <div class="row" style="width: 98%">
         <table class="items-center full-width">
@@ -133,7 +133,8 @@
               </th>
 
               <th class="text-center">
-                Dokter Penanggung Jawab {{ kelasNormalized }}
+                Dokter Penanggung Jawab
+                {{ props.kelas }}
               </th>
 
               <th class="text-center">
@@ -153,7 +154,7 @@
               </td>
 
               <td class="text-center">
-                <span class="text-h7"></span>
+                <span class="text-h7" />
               </td>
 
               <td class="text-center">
@@ -207,49 +208,6 @@ const props = defineProps({
     default: false
   }
 })
-
-const kelasNormalized = computed(() => {
-  return String(props.kelas ?? '')
-    .trim()
-    .toUpperCase()
-})
-
-const iccu = [
-  'Sindrom Koroner Akut (UAP, NSTEMI, STEMI)',
-  'Edema Paru Akut',
-  'Gagal jantung akut',
-  'Aritmia maligna atau dengan gangguan hemodinamik',
-  'Syokkardiogenik : HR > 100 x per mnt, TDS < 100 mmHg',
-  'Pasca tindakan Invasive kardiologi, post pemasangan TPM/PPM',
-  'Miokarditis',
-  'Penyakit lain yang memerlukan pemantauan hemodinamik'
-]
-
-const nicu = {
-  a: [
-    'Memerlukan O2 > 60%',
-    'Memerlukan CPAP/Ventilator',
-    'NKB < 32 mg, BBL < 1500 gr',
-    'Asfiksia berat, syok, sering apnoe atau kejang, gangguan perdarahan',
-    'Mengalami masalah metabolic',
-    'Bayi dengan kelainan congenital berat'
-  ],
-
-  b: [
-    'Bayi yang baru keluar dari NICU, masih perlu monitor dan observasi',
-    'Bayi yang memerlukan O2 < 60%',
-    'NKB 32-34 mg, kondisi stabil, BBL > 1500 gr',
-    'NKB 34-36 mg, kondisi stabil, reflek hisap lemah',
-    'Bayi yang dipuasakan atau EKN',
-    'Bayi yang memerlukan tranfusi tukar',
-    'Bayi yang sering muntah',
-    'Bayi dengan kelainan kronik (CLD)',
-    'Bayi yang memerlukan foto terapi dengan masalah lain : dehidrasi, minum personde',
-    'Bayi dengan kelainan congenital ringan, missal celah bibir',
-    'Bayi dengan ibu DM',
-    'Bayi dengan asfiksia sesdang, nilai APGAR pada 5 menit < 7'
-  ]
-}
 
 const kriteriaIcu = [
   {
@@ -357,51 +315,76 @@ const kriteriaIcu = [
   }
 ]
 
-function normalizeText(value) {
-  return String(value ?? '')
-    .trim()
-    .replace(/\s+/g, ' ')
-    .toLowerCase()
+const iccu = [
+  'Sindrom Koroner Akut (UAP, NSTEMI, STEMI)',
+  'Edema Paru Akut',
+  'Gagal jantung akut',
+  'Aritmia maligna atau dengan gangguan hemodinamik',
+  'Syokkardiogenik : HR > 100 x per mnt, TDS < 100 mmHg',
+  'Pasca tindakan Invasive kardiologi, post pemasangan TPM/PPM',
+  'Miokarditis',
+  'Penyakit lain yang memerlukan pemantauan hemodinamik'
+]
+
+const nicu = {
+  a: [
+    'Memerlukan O2 > 60%',
+    'Memerlukan CPAP/Ventilator',
+    'NKB < 32 mg, BBL < 1500 gr',
+    'Asfiksia berat, syok, sering apnoe atau kejang, gangguan perdarahan',
+    'Mengalami masalah metabolic',
+    'Bayi dengan kelainan congenital berat'
+  ],
+
+  b: [
+    'Bayi yang baru keluar dari NICU, masih perlu monitor dan observasi',
+    'Bayi yang memerlukan O2 < 60%',
+    'NKB 32-34 mg, kondisi stabil, BBL > 1500 gr',
+    'NKB 34-36 mg, kondisi stabil, reflek hisap lemah',
+    'Bayi yang dipuasakan atau EKN',
+    'Bayi yang memerlukan tranfusi tukar',
+    'Bayi yang sering muntah',
+    'Bayi dengan kelainan kronik (CLD)',
+    'Bayi yang memerlukan foto terapi dengan masalah lain: dehidrasi, minum personde',
+    'Bayi dengan kelainan congenital ringan, misalnya celah bibir',
+    'Bayi dengan ibu DM',
+    'Bayi dengan asfiksia sedang, nilai APGAR pada 5 menit < 7'
+  ]
 }
 
 /**
- * Digunakan untuk data ICCU dan NICU lama,
- * yaitu data props.isi yang hanya berisi teks.
+ * Mengecek nilai ICU berdasarkan kode seperti A.1, B.2, C.6.
+ *
+ * Contoh isi:
+ * A.1 | Sistem Cardio Vasculair | Gagal jantung akut...
  */
-function isChecked(item) {
-  if (!Array.isArray(props.isi)) return false
+function isCheckedIcu(kodeKategori, index) {
+  const kodeItem = `${kodeKategori}.${index + 1}`
 
-  return props.isi.some((nilai) => {
-    if (typeof nilai !== 'string') return false
+  return props.isi?.some((nilai) => {
+    if (typeof nilai !== 'string') {
+      return false
+    }
 
-    return normalizeText(nilai) === normalizeText(item)
+    const kodeTersimpan = nilai
+      .split('|')[0]
+      ?.trim()
+
+    return kodeTersimpan === kodeItem
   })
 }
 
 /**
- * Format data ICU di database:
- *
- * A | Sistem Cardio Vasculair | Gagal jantung akut...
+ * Tetap mendukung data ICCU dan NICU lama
+ * yang hanya menyimpan teks indikasinya.
  */
-function isCheckedIcu(kodeKategori, namaKategori, itemKriteria) {
-  if (!Array.isArray(props.isi)) return false
+function isCheckedText(item) {
+  return props.isi?.some((nilai) => {
+    if (typeof nilai !== 'string') {
+      return false
+    }
 
-  return props.isi.some((nilai) => {
-    if (typeof nilai !== 'string') return false
-
-    const bagian = nilai
-      .split('|')
-      .map((bagianItem) => bagianItem.trim())
-
-    const kodeDb = bagian[0] ?? ''
-    const namaDb = bagian[1] ?? ''
-    const indikasiDb = bagian.slice(2).join(' | ')
-
-    return (
-      normalizeText(kodeDb) === normalizeText(kodeKategori) &&
-      normalizeText(namaDb) === normalizeText(namaKategori) &&
-      normalizeText(indikasiDb) === normalizeText(itemKriteria)
-    )
+    return nilai === item || nilai.includes(item)
   })
 }
 
@@ -425,7 +408,7 @@ const qrDokter = computed(() => {
   border-top: none;
 }
 
-.b-double {
+.b_double {
   border-bottom: 4px double rgb(30, 30, 30);
   border-left: none;
   border-right: none;

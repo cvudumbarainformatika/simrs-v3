@@ -151,7 +151,7 @@ export const useLaporanBukuTunaiStore = defineStore('laporan_bukutunai', {
             return {
               nonpd: x.nonpk,
               uraianNPD: x.keterangan,
-              nilai: parseInt(x.jumlah)
+              nilai: parseFloat(x.jumlah)
               // el[i].kasrinci?.length
               //   ? this.hitungPergeseran(el[i].kasrinci)
               //   : 0,
@@ -190,7 +190,7 @@ export const useLaporanBukuTunaiStore = defineStore('laporan_bukutunai', {
             return {
               nonpd: x.nonpd,
               uraianNPD: x.keterangan,
-              nilai: parseInt(x.jumlah)
+              nilai: parseFloat(x.jumlah)
               // el[i].kasrinci?.length
               //   ? this.hitungPergeseran(el[i].kasrinci)
               //   : 0,
@@ -276,7 +276,7 @@ export const useLaporanBukuTunaiStore = defineStore('laporan_bukutunai', {
         const sisapanjar = el[i].sisarinci?.length
           ? el[i].sisarinci?.map((x) => {
             return {
-              totalRincian: parseInt(x.sisapanjar),
+              totalRincian: parseFloat(x.sisapanjar),
               koderek50: x.koderek50,
               rincianbelanja: x.rincianbelanja50
             }
@@ -320,7 +320,7 @@ export const useLaporanBukuTunaiStore = defineStore('laporan_bukutunai', {
           sisapanjar: null,
           uraian: 'Contrapost',
           uraianNPD: null,
-          penerimaan: parseInt(el[i].nominalcontrapost),
+          penerimaan: parseFloat(el[i].nominalcontrapost),
           pengeluaran: 0
         }
         cp.push(obj)
@@ -381,22 +381,22 @@ export const useLaporanBukuTunaiStore = defineStore('laporan_bukutunai', {
     hitungTotalNpd(arr) {
       return arr
         .map((x) => x.totalpermintaanpanjar)
-        .reduce((x, y) => parseInt(x) + parseInt(y), 0)
+        .reduce((x, y) => parseFloat(x) + parseFloat(y), 0)
     },
     hitungPergeseran(arr) {
       return arr
         .map((x) => x.jumlah)
-        .reduce((x, y) => parseInt(x) + parseInt(y), 0)
+        .reduce((x, y) => parseFloat(x) + parseFloat(y), 0)
     },
     hitungpengembalianpjr(arr) {
       return arr
         .map((x) => x.sisapanjar)
-        .reduce((x, y) => parseInt(x) + parseInt(y), 0)
+        .reduce((x, y) => parseFloat(x) + parseFloat(y), 0)
     },
     hitungsisapjr(arr) {
       return arr
         .map((x) => x.sisapanjar)
-        .reduce((x, y) => parseInt(x) + parseInt(y), 0)
+        .reduce((x, y) => parseFloat(x) + parseFloat(y), 0)
     }
   }
 })
