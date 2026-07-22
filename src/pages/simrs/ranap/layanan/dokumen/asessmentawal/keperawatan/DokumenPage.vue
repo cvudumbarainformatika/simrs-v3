@@ -1001,7 +1001,8 @@
               Vagina Toucher</td>
             <td style="border: none !important; padding: 0px !important;">: {{
               pemeriksaanUmum?.kebidanan?.hmlVgnToucher ||
-              '-' }}</td>
+              '-' }}, <span v-if="pemeriksaanUmum?.kebidanan?.hmlVgnToucher === 'Ya'">Ket: {{
+                pemeriksaanUmum?.kebidanan?.hmlKeteranganVgnToucher }}</span></td>
           </tr>
 
           <tr style="border: none !important; padding: 0px !important;">
