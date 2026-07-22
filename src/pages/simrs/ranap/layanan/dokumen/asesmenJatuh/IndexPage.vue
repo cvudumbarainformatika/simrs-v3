@@ -110,7 +110,7 @@
                         • Diagnosis lain (1)
                       </td>
                       <td v-for="col in filteredItems" :key="col.id" class="text-center text-bold text-xs border-cell font-mono">
-                        {{ getHumptyDetail(col, 'diagnosa') }}
+                        {{ getHumptyDetail(col, 'aktivitas') }}
                       </td>
                     </tr>
                     <!-- Gangguan Kognitif -->
@@ -122,7 +122,7 @@
                         • Sadar kemampuan diri (1)
                       </td>
                       <td v-for="col in filteredItems" :key="col.id" class="text-center text-bold text-xs border-cell font-mono">
-                        {{ getHumptyDetail(col, 'gangguanKognitif') }}
+                        {{ getHumptyDetail(col, 'kognitif') }}
                       </td>
                     </tr>
                     <!-- Faktor Lingkungan -->
@@ -134,7 +134,7 @@
                         • Berada di tempat tidur (1)
                       </td>
                       <td v-for="col in filteredItems" :key="col.id" class="text-center text-bold text-xs border-cell font-mono">
-                        {{ getHumptyDetail(col, 'faktorLingkungan') }}
+                        {{ getHumptyDetail(col, 'lingkungan') }}
                       </td>
                     </tr>
                     <!-- Bedah / Sedasi / Anestesi -->
@@ -146,7 +146,7 @@
                         • &gt; 48 jam / tidak ada (1)
                       </td>
                       <td v-for="col in filteredItems" :key="col.id" class="text-center text-bold text-xs border-cell font-mono">
-                        {{ getHumptyDetail(col, 'responBedah') }}
+                        {{ getHumptyDetail(col, 'pembedahan') }}
                       </td>
                     </tr>
                     <!-- Penggunaan Obat -->
@@ -158,7 +158,7 @@
                         • Lainnya / tidak ada (1)
                       </td>
                       <td v-for="col in filteredItems" :key="col.id" class="text-center text-bold text-xs border-cell font-mono">
-                        {{ getHumptyDetail(col, 'penggunaanObat') }}
+                        {{ getHumptyDetail(col, 'pengobatan') }}
                       </td>
                     </tr>
                   </template>
@@ -173,7 +173,7 @@
                         • Tidak (0)
                       </td>
                       <td v-for="col in filteredItems" :key="col.id" class="text-center text-bold text-xs border-cell font-mono">
-                        {{ getMorseDetail(col, 'riwayatJatuh') }}
+                        {{ getMorseDetail(col, 'riwayatJth') }}
                       </td>
                     </tr>
                     <!-- Diagnosis Sekunder -->
@@ -184,7 +184,7 @@
                         • Tidak (0)
                       </td>
                       <td v-for="col in filteredItems" :key="col.id" class="text-center text-bold text-xs border-cell font-mono">
-                        {{ getMorseDetail(col, 'diagnosisSekunder') }}
+                        {{ getMorseDetail(col, 'diagnosis') }}
                       </td>
                     </tr>
                     <!-- Alat Bantu Jalan -->
@@ -207,7 +207,7 @@
                         • Tidak (0)
                       </td>
                       <td v-for="col in filteredItems" :key="col.id" class="text-center text-bold text-xs border-cell font-mono">
-                        {{ getMorseDetail(col, 'heparin') }}
+                        {{ getMorseDetail(col, 'infus') }}
                       </td>
                     </tr>
                     <!-- Gaya Berjalan -->
@@ -219,7 +219,7 @@
                         • Normal/imobilisasi/bedrest (0)
                       </td>
                       <td v-for="col in filteredItems" :key="col.id" class="text-center text-bold text-xs border-cell font-mono">
-                        {{ getMorseDetail(col, 'gayaBerjalan') }}
+                        {{ getMorseDetail(col, 'gayaJalan') }}
                       </td>
                     </tr>
                     <!-- Status Mental -->
@@ -230,7 +230,7 @@
                         • Sadar kemampuan sendiri (0)
                       </td>
                       <td v-for="col in filteredItems" :key="col.id" class="text-center text-bold text-xs border-cell font-mono">
-                        {{ getMorseDetail(col, 'statusMental') }}
+                        {{ getMorseDetail(col, 'mental') }}
                       </td>
                     </tr>
                   </template>

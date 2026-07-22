@@ -88,11 +88,8 @@
 import { date } from 'quasar'
 import LoadingList from './LoadingList.vue'
 import EmptyData from './EmptyData.vue'
-// import { dateFullFormat, formatJam } from 'src/modules/formatter'
-// import { notifErrVue } from 'src/modules/utils'
-// import { useSepBpjsStore } from 'src/stores/simrs/pendaftaran/kunjungan/bpjs/sep'
-// import { ref } from 'vue'
 import { usePermintaanOperasistore } from 'src/stores/simrs/kamaroperasi/permintaanoperasi'
+
 const emits = defineEmits(['pelayanan'])
 defineProps({
   items: {
@@ -116,18 +113,6 @@ defineProps({
     default: false
   }
 })
-
-// function getStatus(val) {
-//   // '' : 'Belum Terlayanani'
-//   // '1': 'Terlayani'
-//   // '2': 'Sudah diterima'
-//   // '3': Batal
-//   if (val === '1') {
-//     return 'BELUM TERLAYANI'
-//   } else {
-//     return 'TERLAYANI'
-//   }
-// }
 
 function labelLayanan (val) {
   if (val === '1') {
