@@ -97,6 +97,8 @@ const modelProp = computed({
 const bersihkan = val => {
   diModel.value = null
   emits('clear', val)
+  emits('on-select', '')
+  emits('set-model', '')
 }
 const selected = (val) => {
   diModel.value = val

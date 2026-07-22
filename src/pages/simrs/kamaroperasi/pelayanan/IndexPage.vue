@@ -89,6 +89,12 @@ const menus = ref([
     comp: shallowRef(defineAsyncComponent(() => import('./comppelayanan/pagemenu/PersiapanoperasiPage.vue')))
   },
   {
+    name: 'daftar-tilik',
+    label: 'Daftar Tilik',
+    icon: 'icon-fa-check-double-solid',
+    comp: shallowRef(defineAsyncComponent(() => import('./comppelayanan/pagemenu/compDaftarTilik/IndexPage.vue')))
+  },
+  {
     name: 'e-resep-page',
     label: 'EResep',
     icon: 'icon-mat-receipt',
@@ -189,10 +195,10 @@ onUnmounted(() => {
   fisik.setFullCanvasFalse()
 })
 
-function historyPasien () {
+function historyPasien() {
   drawerRight.value = !drawerRight.value
 }
-function getIcare () {
+function getIcare() {
   store.getDataIcare(props.pasien).then(resp => {
     if (resp) {
       console.log('anu', resp?.response?.url)
@@ -201,7 +207,7 @@ function getIcare () {
   })
 }
 
-function menuDiganti (val) {
+function menuDiganti(val) {
   menu.value = val
 }
 

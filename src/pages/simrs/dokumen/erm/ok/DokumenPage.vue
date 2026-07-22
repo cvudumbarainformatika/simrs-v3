@@ -196,6 +196,13 @@ const documents = ref([
     title: 'EDUKASI PASIEN',
     desc: 'Edukasi KIE Pasien'
   },
+  {
+    icon: 'icon-mat-email',
+    color: 'primary',
+    jenis: 'TILIK-OP',
+    label: 'Daftar Tilik Pre dan Paska Operasi',
+    value: 'DaftarTilikOp'
+  },
   // {
   //   icon: 'icon-mat-email',
   //   color: 'primary',
@@ -291,6 +298,7 @@ const comp = [
   { nama: 'Monitoringselamaanestesi', page: defineAsyncComponent(() => import('./comp/MonitoringSelamaAnastesiDoc.vue')) },
   { nama: 'Monitoringpascaanestesi', page: defineAsyncComponent(() => import('./comp/MonitoringPascaAnastesiDoc.vue')) },
   { nama: 'Laporanoperasi', page: defineAsyncComponent(() => import('./comp/LaporanOperasiDoc.vue')) },
+  { nama: 'DaftarTilikOp', page: defineAsyncComponent(() => import('src/pages/simrs/ranap/layanan/dokumen/daftartilik/IndexPage.vue')) },
   { nama: 'CPPT', page: defineAsyncComponent(() => import('src/pages/simrs/ranap/layanan/dokumen/cppt/IndexPage.vue')) },
   { nama: 'EDUKASI', page: defineAsyncComponent(() => import('src/pages/simrs/ranap/layanan/dokumen/edukasi/IndexPage.vue')) },
   { nama: 'SEP', page: defineAsyncComponent(() => import('src/pages/simrs/poli/dokumen/Sep/SepPage.vue')) },

@@ -67,7 +67,7 @@
           <div class="overflow-hidden bg-white relative-position"
             style="width: 100%; max-width: 100%; aspect-ratio: 1024/601; margin: 0 auto;">
             <!-- Background Template -->
-            <img src="~assets/human/anatomys/body-marker-irna37.png"
+            <img :src="bodyMarkerImg"
               style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain; z-index: 1;" />
 
             <!-- Coretan Merah -->
@@ -156,6 +156,7 @@ import { humanDate, jamTnpDetik } from 'src/modules/formatter'
 import { imageToBase64 } from 'src/modules/imgBase64'
 import AppKopSuratStandard from 'src/components/~global/AppKopSuratStandard.vue'
 import { onMounted } from 'vue'
+import bodyMarkerImg from 'src/assets/human/anatomys/body-marker-irna37.webp'
 
 const props = defineProps({
   item: {
