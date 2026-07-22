@@ -430,11 +430,26 @@
                 anamnesisAwal?.kebidanan?.bab || '-' }} kali/hari</td>
               <td
                 style="border: none !important;  padding-left: 20px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important; width: 20%;">
+                BAK</td>
+              <td style="border: none !important; padding: 0px !important;">: {{
+                anamnesisAwal?.kebidanan?.bak ||
+                '-' }} kali/hari
+              </td>
+            </tr>
+            <tr style="border: none !important; padding: 0px !important;">
+              <td
+                style="border: none !important;  padding-left: 20px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important; width: 20%;">
                 Konsistensi</td>
               <td style="border: none !important; padding: 0px !important;">: {{ anamnesisAwal?.kebidanan?.konsistensi
                 ||
                 '-' }}
               </td>
+              <td
+                style="border: none !important; padding-left: 20px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;  width:20%;">
+                Jumlah BAK</td>
+              <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
+                anamnesisAwal?.kebidanan?.jmlBak || '-' }} ml/hari</td>
+
             </tr>
             <tr style="border: none !important; padding: 0px !important;">
               <td
@@ -444,11 +459,27 @@
                 anamnesisAwal?.kebidanan?.warna || '-' }}</td>
               <td
                 style="border: none !important;  padding-left: 20px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important; width: 20%;">
+                Warna Urine</td>
+              <td style="border: none !important; padding: 0px !important;">: {{
+                anamnesisAwal?.kebidanan?.warnaUrine ||
+                '-' }}
+              </td>
+
+            </tr>
+            <tr style="border: none !important; padding: 0px !important;">
+              <td
+                style="border: none !important;  padding-left: 20px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important; width: 20%;">
                 Peristatik Usus</td>
               <td style="border: none !important; padding: 0px !important;">: {{
                 anamnesisAwal?.kebidanan?.peristatikUsus ||
                 '-' }} kali/menit
               </td>
+              <td
+                style="border: none !important; padding-left: 20px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;  width:20%;">
+                Terpasang Kateter</td>
+              <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
+                anamnesisAwal?.kebidanan?.kateter || '-' }}</td>
+
             </tr>
             <tr style="border: none !important; padding: 0px !important;">
               <td
@@ -458,53 +489,26 @@
                 anamnesisAwal?.kebidanan?.flatus || '-' }}</td>
               <td
                 style="border: none !important;  padding-left: 20px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important; width: 20%;">
-                BAK</td>
-              <td style="border: none !important; padding: 0px !important;">: {{
-                anamnesisAwal?.kebidanan?.bak ||
-                '-' }} kali/hari
-              </td>
-            </tr>
-            <tr style="border: none !important; padding: 0px !important;">
-              <td
-                style="border: none !important; padding-left: 20px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;  width:20%;">
-                Keluhan BAK</td>
-              <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
-                anamnesisAwal?.kebidanan?.keluhanBak || '-' }}</td>
-              <td
-                style="border: none !important;  padding-left: 20px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important; width: 20%;">
-                Keluhan</td>
-              <td style="border: none !important; padding: 0px !important;">: {{
-                anamnesisAwal?.kebidanan?.keluhan ||
-                '-' }}
-              </td>
-            </tr>
-            <tr style="border: none !important; padding: 0px !important;">
-              <td
-                style="border: none !important; padding-left: 20px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;  width:20%;">
-                Jumlah BAK</td>
-              <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
-                anamnesisAwal?.kebidanan?.jmlBak || '-' }} ml/hari</td>
-              <td
-                style="border: none !important;  padding-left: 20px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important; width: 20%;">
-                Warna Urine</td>
-              <td style="border: none !important; padding: 0px !important;">: {{
-                anamnesisAwal?.kebidanan?.warnaUrine ||
-                '-' }}
-              </td>
-            </tr>
-            <tr style="border: none !important; padding: 0px !important;">
-              <td
-                style="border: none !important; padding-left: 20px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;  width:20%;">
-                Terpasang Kateter</td>
-              <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
-                anamnesisAwal?.kebidanan?.kateter || '-' }}</td>
-              <td
-                style="border: none !important;  padding-left: 20px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important; width: 20%;">
                 Kateter Hari ke</td>
               <td style="border: none !important; padding: 0px !important;">: {{
                 anamnesisAwal?.kebidanan?.kttHrKe ||
                 '-' }}
               </td>
+
+            </tr>
+            <tr style="border: none !important; padding: 0px !important;">
+              <td
+                style="border: none !important;  padding-left: 20px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important; width: 20%;">
+                Keluhan BAB</td>
+              <td style="border: none !important; padding: 0px !important;">: {{
+                anamnesisAwal?.kebidanan?.keluhan ||
+                '-' }}
+              </td>
+              <td
+                style="border: none !important; padding-left: 20px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;  width:20%;">
+                Keluhan BAK</td>
+              <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
+                anamnesisAwal?.kebidanan?.keluhanBak?.length ? anamnesisAwal?.kebidanan?.keluhanBak : '-' }}</td>
             </tr>
           </tbody>
         </table>
@@ -955,11 +959,19 @@
           <tr style="border: none !important; padding: 0px !important;">
             <td style="border: none !important; padding: 0px !important; width:20%;">- Auskultasi</td>
             <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
-              pemeriksaanUmum?.kebidanan?.hmlAusTeratur || '-' }} kali/menit</td>
+              pemeriksaanUmum?.kebidanan?.hmlAusDenyut || '-' }} kali/menit</td>
             <td style="border: none !important; padding: 0px !important; width: 20%;">- His/Kontraksi</td>
             <td style="border: none !important; padding: 0px !important;">: {{
-              pemeriksaanUmum?.kebidanan?.hmlAusDenyut ||
-              '-' }} kali/menit
+              pemeriksaanUmum?.kebidanan?.hmlHisFrekuensi || '-' }}
+            </td>
+          </tr>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td style="border: none !important; padding: 0px !important; width:20%;">- Apakah Teratur ?</td>
+            <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
+              pemeriksaanUmum?.kebidanan?.hmlAusTeratur || '-' }}</td>
+            <td style="border: none !important; padding: 0px !important; width: 20%;">- Intensitas</td>
+            <td style="border: none !important; padding: 0px !important;">: {{
+              pemeriksaanUmum?.kebidanan?.hmlHisIntensitas || '-' }}
             </td>
           </tr>
           <tr style="border: none !important; padding: 0px !important;">
@@ -1973,12 +1985,12 @@ const qrPenerima = computed(() => {
   return `https://rsud.probolinggokota.go.id/dokumen-simrs/legalitas/${enc}`
 })
 function kepPlann(item) {
-  const inter = item?.intervensi?.filter(x => x?.masterintervensi?.group === 'plann')
+  const inter = item?.intervensi?.filter(x => x?.masterintervensi?.group?.trim()?.toLowerCase() === 'plann')
   // console.log('item    ccccc', item, inter)
   return inter
 }
 function kepInter(item) {
-  const inter = item?.intervensi?.filter(x => x?.masterintervensi?.group !== 'plann')
+  const inter = item?.intervensi?.filter(x => x?.masterintervensi?.group?.trim()?.toLowerCase() !== 'plann')
   // console.log('item', item, inter)
   return inter
 }

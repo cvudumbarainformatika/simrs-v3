@@ -49,6 +49,16 @@ export const usePergeseranAnggaranStore = defineStore('pergeseran-anggaran-store
       idpp: '',
       tglperubahan: date.formatDate(Date.now(), 'YYYY-MM-DD'),
     },
+    form_batasan: {
+      notrans: '',
+      pagu: '',
+      batasan: '',
+      koderek50: '',
+      uraian50: '',
+      kodekegiatanblud: '',
+      tahun: '',
+      kodebidang: ''
+    },
     params: {
       q: '',
       tahun: date.formatDate(Date.now(), 'YYYY'),
@@ -213,13 +223,19 @@ export const usePergeseranAnggaranStore = defineStore('pergeseran-anggaran-store
     },
 
     initModeEdit(result) {
-      this.form = result
+      if (this.form) {
+        this.form = result
 
-      const id = result?.id ?? null
-      const index = this.items.findIndex(item => item?.id === id)
-      if (index !== -1) {
-        this.items[index] = result
+        const id = result?.id ?? null
+        const index = this.items.findIndex(item => item?.id === id)
+        if (index !== -1) {
+          this.items[index] = result
+        }
       }
+      if (this.form_batasan) {
+        this.form_batasan.batasan = result.batasan
+      }
+      console.log('result batasan', this.form_batasan.batasan)
       // this.supplierSelected = result?.supplier ?? result?.suplier ?? result ?? null
       // this.maxRight = false
       // this.mode = 'edit'
@@ -272,6 +288,32 @@ export const usePergeseranAnggaranStore = defineStore('pergeseran-anggaran-store
       this.form.tglperubahan = val.tglperubahan
 
 
+    },
+
+    async simpanBatasan() {
+      this.loadingSave = true
+      try {
+        const resp = await api.post('v1/anggaran/pergeseran/rincian/simpanbatasan', this.form_batasan)
+        console.log('simpan batasan', resp)
+        const result = resp?.data?.data
+        if (resp.success === true) {
+
+          console.log('SUKSES SIMPAN', result)
+          this.initModeEdit(result)
+        }
+        // const allrinci = result?.penetapan || []
+        // const existingIds = new Set(this.rincians.map(r => r.id))
+        // const newRincians = allrinci.filter(r => !existingIds.has(r.id))
+        // this.rincians.unshift(...newRincians)
+
+        notifSuccessVue(resp?.data?.message)
+
+        // this.getData()
+        this.loadingSave = false
+      } catch (error) {
+        console.log(error)
+        this.loadingSave = false
+      }
     },
     async deleteData(payload) {
       this.loadingDelete = true
@@ -326,6 +368,7 @@ export const usePergeseranAnggaranStore = defineStore('pergeseran-anggaran-store
             if (resp.status === 200) {
               this.pergeseran = resp.data
               this.rincianpergeseran = resp.data.flatMap((x) => x.hasilpergeseran)
+              console.log('rincianpergeseran', this.rincianpergeseran)
               // this.setColumns(resp.data.data)
               // console.log(resp.data.data)
               this.mapingDatapergeseran()
@@ -355,6 +398,10 @@ export const usePergeseranAnggaranStore = defineStore('pergeseran-anggaran-store
       for (let i = 0; i < ar1.length; i++) {
         const el = ar1[i];
         const obj = {
+          notrans: this.rincianpergeseran.filter((x) => x.kode1 === el)[0].notrans,
+          tahun: this.rincianpergeseran.filter((x) => x.kode1 === el)[0].tahun,
+          kodekegiatanblud: this.rincianpergeseran.filter((x) => x.kode1 === el)[0].kodekegiatanblud,
+          kodebidang: this.rincianpergeseran.filter((x) => x.kode1 === el)[0].kodebidang,
           kode: this.rincianpergeseran.filter((x) => x.kode1 === el)[0].kode1,
           uraian: this.rincianpergeseran.filter((x) => x.kode1 === el)[0].uraian1,
           pagu: this.rincianpergeseran.filter((x) => x.kode1 === el).map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0),
@@ -370,6 +417,10 @@ export const usePergeseranAnggaranStore = defineStore('pergeseran-anggaran-store
       for (let i = 0; i < ar2.length; i++) {
         const el = ar2[i];
         const obj = {
+          notrans: this.rincianpergeseran.filter((x) => x.kode2 === el)[0].notrans,
+          tahun: this.rincianpergeseran.filter((x) => x.kode2 === el)[0].tahun,
+          kodekegiatanblud: this.rincianpergeseran.filter((x) => x.kode2 === el)[0].kodekegiatanblud,
+          kodebidang: this.rincianpergeseran.filter((x) => x.kode2 === el)[0].kodebidang,
           kode: this.rincianpergeseran.filter((x) => x.kode2 === el)[0].kode2,
           uraian: this.rincianpergeseran.filter((x) => x.kode2 === el)[0].uraian2,
           pagu: this.rincianpergeseran.filter((x) => x.kode2 === el).map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0),
@@ -385,6 +436,10 @@ export const usePergeseranAnggaranStore = defineStore('pergeseran-anggaran-store
       for (let i = 0; i < ar3.length; i++) {
         const el = ar3[i];
         const obj = {
+          notrans: this.rincianpergeseran.filter((x) => x.kode3 === el)[0].notrans,
+          tahun: this.rincianpergeseran.filter((x) => x.kode3 === el)[0].tahun,
+          kodekegiatanblud: this.rincianpergeseran.filter((x) => x.kode3 === el)[0].kodekegiatanblud,
+          kodebidang: this.rincianpergeseran.filter((x) => x.kode3 === el)[0].kodebidang,
           kode: this.rincianpergeseran.filter((x) => x.kode3 === el)[0].kode3,
           uraian: this.rincianpergeseran.filter((x) => x.kode3 === el)[0].uraian3,
           pagu: this.rincianpergeseran.filter((x) => x.kode3 === el).map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0),
@@ -400,6 +455,10 @@ export const usePergeseranAnggaranStore = defineStore('pergeseran-anggaran-store
       for (let i = 0; i < ar4.length; i++) {
         const el = ar4[i];
         const obj = {
+          notrans: this.rincianpergeseran.filter((x) => x.kode4 === el)[0].notrans,
+          tahun: this.rincianpergeseran.filter((x) => x.kode4 === el)[0].tahun,
+          kodekegiatanblud: this.rincianpergeseran.filter((x) => x.kode4 === el)[0].kodekegiatanblud,
+          kodebidang: this.rincianpergeseran.filter((x) => x.kode4 === el)[0].kodebidang,
           kode: this.rincianpergeseran.filter((x) => x.kode4 === el)[0].kode4,
           uraian: this.rincianpergeseran.filter((x) => x.kode4 === el)[0].uraian4,
           pagu: this.rincianpergeseran.filter((x) => x.kode4 === el).map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0),
@@ -414,6 +473,10 @@ export const usePergeseranAnggaranStore = defineStore('pergeseran-anggaran-store
       for (let i = 0; i < ar5.length; i++) {
         const el = ar5[i];
         const obj = {
+          notrans: this.rincianpergeseran.filter((x) => x.kode5 === el)[0].notrans,
+          tahun: this.rincianpergeseran.filter((x) => x.kode5 === el)[0].tahun,
+          kodekegiatanblud: this.rincianpergeseran.filter((x) => x.kode5 === el)[0].kodekegiatanblud,
+          kodebidang: this.rincianpergeseran.filter((x) => x.kode5 === el)[0].kodebidang,
           kode: this.rincianpergeseran.filter((x) => x.kode5 === el)[0].kode5,
           uraian: this.rincianpergeseran.filter((x) => x.kode5 === el)[0].uraian5,
           pagu: this.rincianpergeseran.filter((x) => x.kode5 === el).map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0),
@@ -429,6 +492,10 @@ export const usePergeseranAnggaranStore = defineStore('pergeseran-anggaran-store
       for (let i = 0; i < ar6.length; i++) {
         const el = ar6[i];
         const obj = {
+          notrans: this.rincianpergeseran.filter((x) => x.kode6 === el)[0].notrans,
+          tahun: this.rincianpergeseran.filter((x) => x.kode6 === el)[0].tahun,
+          kodekegiatanblud: this.rincianpergeseran.filter((x) => x.kode6 === el)[0].kodekegiatanblud,
+          kodebidang: this.rincianpergeseran.filter((x) => x.kode6 === el)[0].kodebidang,
           kode: this.rincianpergeseran.filter((x) => x.kode6 === el)[0].kode6,
           uraian: this.rincianpergeseran.filter((x) => x.kode6 === el)[0].uraian6,
           pagu: this.rincianpergeseran.filter((x) => x.kode6 === el).map((x) => parseFloat(x.total)).reduce((a, b) => a + b, 0),

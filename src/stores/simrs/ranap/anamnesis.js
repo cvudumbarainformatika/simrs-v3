@@ -261,7 +261,8 @@ export const useAnamnesisRanapStore = defineStore('anamnesis-ranap-store', {
     formRiwayatKehamilan: {},
     riwayatKehamilans: [],
     openDialogFormRiwayat: false,
-
+    pls: ['P', 'L'],
+    kelamin: [{ text: 'Laki-laki', value: 'L' }, { text: 'Perempuan', value: 'P' }],
     yaTidaks: ['Ya', 'Tidak'],
     adaTdk: ['Ada', 'Tidak Ada'],
     baikBuruks: ['Baik', 'Buruk'],

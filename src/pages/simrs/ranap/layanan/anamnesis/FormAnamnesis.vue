@@ -514,17 +514,11 @@
                 hide-bottom-space class="col-2" />
               <app-input-simrs v-model="store.formKebidanan.bak" label="BAK x/hr" class="col-2"
                 :valid="{ number: true }" />
-              <div class="col-12">
-                <q-separator class="q-my-sm" />
-                <div class="flex q-gutter-sm">
-                  <div>Keluhan BAK :</div>
-                  <q-checkbox dense size="sm" v-for="n in store.keluhanBaks" :key="n"
-                    v-model="store.formKebidanan.keluhanBak" :val="n" :label="n" />
-                </div>
-                <q-separator class="q-my-sm" />
+              <div class="col-12 q-pb-sm">
+
 
                 <div class="q-gutter-sm flex">
-                  <div>Keluhan :</div>
+                  <div>Keluhan BAB :</div>
                   <q-checkbox dense size="sm" v-for="n in store.keluhans" :key="n"
                     v-model="store.formKebidanan.keluhans" :val="n" :label="n" />
                 </div>
@@ -556,6 +550,13 @@
                 fill-input hide-bottom-space class="col-3" />
               <app-input-simrs v-if="store.formKebidanan.kateter === 'Ya'" v-model="store.formKebidanan.kttHrKe"
                 label="Ktt Hr ke-" class="col-2" :valid="{ number: true }" />
+
+              <div class="flex q-gutter-sm">
+                <div>Keluhan BAK :</div>
+                <q-checkbox dense size="sm" v-for="n in store.keluhanBaks" :key="n"
+                  v-model="store.formKebidanan.keluhanBak" :val="n" :label="n" />
+              </div>
+              <q-separator class="q-my-sm" />
             </div>
           </div>
         </q-card-section>

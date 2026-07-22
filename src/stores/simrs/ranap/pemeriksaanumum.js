@@ -97,6 +97,7 @@ export const usePemeriksaanUmumRanapStore = defineStore('pemeriksaan-umum-ranap-
       hmlVgnJml: null,
       hmlVgnKtuban: null,
       hmlVgnToucher: null,
+      hmlKeteranganVgnToucher: null,
 
       nfsTfu: null,
       nfsUterus: null,
@@ -335,7 +336,7 @@ export const usePemeriksaanUmumRanapStore = defineStore('pemeriksaan-umum-ranap-
     inspeksis: ['Membesar dengan arah memanjang', 'Melebar', 'Pelebaran Vena', 'Linea Alba', 'Line Nigra', 'Striae Lidivae', 'Striae Albican', 'Luka Bekas Operasi'],
     presentasis: ['Kepala', 'Bokong'],
     intensitas: ['Lemah', 'Sedang', 'Kuat'],
-    bentuks: ['lendir Darah', 'Darah'],
+    bentuks: ['Lendir Darah', 'Darah', 'Keputihan', 'Pus'],
     jumlahs: ['<250 cc', '250-500 cc', '>500 cc'],
     kontraksis: ['Lemah', 'Keras', 'Tidak Ada'],
     locheas: ['Rubra', 'Sanguinolenta', 'Serosa', 'Alba'],
@@ -529,6 +530,7 @@ export const usePemeriksaanUmumRanapStore = defineStore('pemeriksaan-umum-ranap-
         hmlVgnJml: null,
         hmlVgnKtuban: null,
         hmlVgnToucher: null,
+        hmlKeteranganVgnToucher: null,
 
         nfsTfu: null,
         nfsUterus: null,

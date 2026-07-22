@@ -387,12 +387,14 @@
           <em> Pengeluaran per-vaginam</em>
         </div>
         <select-input v-model="store.formKebidanan.hmlVgnBentuk" :options="store.bentuks" label="Bentuk"
-          class="col-3" />
-        <select-input v-model="store.formKebidanan.hmlVgnJml" :options="store.jumlahs" label="Jumlah" class="col-3" />
+          class="col-4" />
+        <select-input v-model="store.formKebidanan.hmlVgnJml" :options="store.jumlahs" label="Jumlah" class="col-4" />
         <select-input v-model="store.formKebidanan.hmlVgnKtuban" :options="store.yaTidaks" label="Air Ktuban"
-          class="col-3" />
+          class="col-4" />
         <select-input v-model="store.formKebidanan.hmlVgnToucher" :options="store.yaTidaks" label="Vgn Toucher"
-          class="col-3" />
+          class="col-4" />
+        <app-input-simrs v-if="store.formKebidanan.hmlVgnToucher === 'Ya'" label="Keterangan Vgn Toucher" class="col-8"
+          v-model="store.formKebidanan.hmlKeteranganVgnToucher" />
       </q-card-section>
       <q-separator class="q-my-xs" />
       <q-card-section class="q-px-sm q-py-none q-pt-sm">
@@ -415,7 +417,7 @@
         <select-input v-model="store.formKebidanan.nfsVgnJml" :options="store.jumlahs" label="Jumlah" class="col-3" />
         <select-input v-model="store.formKebidanan.nfsVgnLochea" :options="store.locheas" label="Lochea"
           class="col-3" />
-        <select-input v-model="store.formKebidanan.nfsVgnLuka" :options="store.locheas" label="Luka Jlr Lhr"
+        <select-input v-model="store.formKebidanan.nfsVgnLuka" :options="store.yaTidaks" label="Luka Jln Lhr"
           class="col-3" />
         <select-input v-model="store.formKebidanan.nfsVgnDrjLuka" :options="store.derajats" label="Derajat Luka"
           class="col-3" />
