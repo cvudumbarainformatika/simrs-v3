@@ -1,23 +1,29 @@
 const imageToBase64 = (url, callback) => {
-  fetch(url)
+  if (!url) {
+    if (typeof callback === 'function') callback(null)
+    return
+  }
+  if (typeof url === 'string' && url.startsWith('data:image')) {
+    if (typeof callback === 'function') callback(url)
+    return
+  }
+
+  const fetchUrl = url.includes('?') ? `${url}&_t=${Date.now()}` : `${url}?_t=${Date.now()}`
+  fetch(fetchUrl, { cache: 'no-store' })
     .then((response) => {
-      // console.log('response', response)
       return response.blob()
     })
     .then((blob) => {
-      // console.log('blob', blob)
-
       const reader = new FileReader()
       reader.readAsDataURL(blob)
       reader.onloadend = () => {
         const base64String = reader.result
-        // console.log('bisa', base64String)
-        callback(base64String)
+        if (typeof callback === 'function') callback(base64String)
       }
     })
     .catch((error) => {
       console.log('error base64 img', error)
-      callback(null)
+      if (typeof callback === 'function') callback(null)
     })
 }
 

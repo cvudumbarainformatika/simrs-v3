@@ -337,7 +337,7 @@ import { pathImg } from 'src/boot/axios'
 import { humanDate, jamTnpDetik } from 'src/modules/formatter'
 import { imageToBase64 } from 'src/modules/imgBase64'
 import AppKopSuratStandard from 'src/components/~global/AppKopSuratStandard.vue'
-import { onMounted } from 'vue'
+import { onMounted, watch } from 'vue'
 
 const props = defineProps({
   item: {
@@ -357,6 +357,12 @@ const props = defineProps({
 onMounted(() => {
   initImage(props.item)
 })
+
+watch(() => props.item, (val) => {
+  if (val) {
+    initImage(val)
+  }
+}, { deep: true })
 
 function initImage(item) {
   const ttdSaksiPasien = pathImg + item?.ttdSaksiPasien

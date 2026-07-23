@@ -646,14 +646,14 @@ export const useAnamnesisRanapStore = defineStore('anamnesis-ranap-store', {
       const formNyeri = {}
       for (let i = 0; i < this.formNyeris?.length; i++) {
         const el = this.formNyeris[i]
-        formNyeri[el?.kode] = el?.values?.find(x => x?.skor === data?.keluhannyeri?.dewasa?.form[el.kode]?.skor) ?? null
+        formNyeri[el?.kode] = el?.values?.find(x => x?.skor === data?.keluhannyeri?.dewasa?.form?.[el?.kode]?.skor) ?? null
       }
       this.form.keluhannyeri.form = formNyeri
 
       const formGizi = {}
       for (let i = 0; i < this.formGizis?.length; i++) {
         const el = this.formGizis[i]
-        formGizi[el?.kode] = el?.values?.find(x => x?.skor === data?.skreeninggizi?.dewasa?.form[el.kode]?.skor) ?? el?.values?.find(x => x?.skor === 0) ?? null
+        formGizi[el?.kode] = el?.values?.find(x => x?.skor === data?.skreeninggizi?.dewasa?.form?.[el?.kode]?.skor) ?? el?.values?.find(x => x?.skor === 0) ?? null
       }
       this.form.skreeninggizi.form = formGizi
 
@@ -741,14 +741,14 @@ export const useAnamnesisRanapStore = defineStore('anamnesis-ranap-store', {
       const kebidananNyeri = {}
       for (let i = 0; i < this.formNyeris?.length; i++) {
         const el = this.formNyeris[i]
-        kebidananNyeri[el?.kode] = el?.values?.find(x => x?.skor === data?.keluhannyeri?.kebidanan?.form[el.kode]?.skor) ?? el?.values?.find(x => x.skor === 1) ?? null
+        kebidananNyeri[el?.kode] = el?.values?.find(x => x?.skor === data?.keluhannyeri?.kebidanan?.form?.[el.kode]?.skor) ?? el?.values?.find(x => x.skor === 1) ?? null
       }
       this.formKebidanan.keluhannyeri.form = kebidananNyeri
 
       const formGiziObgyn = {}
       for (let i = 0; i < this.formGiziObgyns?.length; i++) {
         const el = this.formGiziObgyns[i]
-        formGiziObgyn[el?.kode] = el?.values?.find(x => x?.skor === data?.skreeninggizi?.kebidanan?.form[el.kode]?.skor) ?? el?.values?.find(x => x?.skor === 0) ?? null
+        formGiziObgyn[el?.kode] = el?.values?.find(x => x?.skor === data?.skreeninggizi?.kebidanan?.form?.[el.kode]?.skor) ?? el?.values?.find(x => x?.skor === 0) ?? null
       }
       this.formKebidanan.skreeninggizi.form = formGiziObgyn
 
@@ -838,14 +838,14 @@ export const useAnamnesisRanapStore = defineStore('anamnesis-ranap-store', {
       const neonatalNyeri = {}
       for (let i = 0; i < this.formNyeriNeonatals?.length; i++) {
         const el = this.formNyeriNeonatals[i]
-        neonatalNyeri[el?.kode] = el?.values?.find(x => x?.skor === data?.keluhannyeri?.neonatal?.form[el.kode]?.skor) ?? el.values?.find(x => x?.skor === 0) ?? null
+        neonatalNyeri[el?.kode] = el?.values?.find(x => x?.skor === data?.keluhannyeri?.neonatal?.form?.[el.kode]?.skor) ?? el.values?.find(x => x?.skor === 0) ?? null
       }
       this.formNeoNatal.keluhannyeri.form = neonatalNyeri
 
       const neonatalGizi = {}
       for (let i = 0; i < this.formGiziNeonatals?.length; i++) {
         const el = this.formGiziNeonatals[i]
-        neonatalGizi[el?.kode] = el?.values?.find(x => x?.skor === data?.skreeninggizi?.neonatal?.form[el.kode]?.skor) ?? el.values?.find(x => x?.skor === 0) ?? null
+        neonatalGizi[el?.kode] = el?.values?.find(x => x?.skor === data?.skreeninggizi?.neonatal?.form?.[el.kode]?.skor) ?? el.values?.find(x => x?.skor === 0) ?? null
       }
       this.formNeoNatal.skreeninggizi.form = neonatalGizi
 
@@ -923,7 +923,7 @@ export const useAnamnesisRanapStore = defineStore('anamnesis-ranap-store', {
       const formNyeriPediatrik = {}
       for (let i = 0; i < this.formNyeris?.length; i++) {
         const el = this.formNyeris[i]
-        formNyeriPediatrik[el?.kode] = el?.values?.find(x => x?.skor === data?.keluhannyeri?.pediatrik?.form[el.kode]?.skor) ?? el?.values?.find(x => x.skor === 1) ?? null
+        formNyeriPediatrik[el?.kode] = el?.values?.find(x => x?.skor === data?.keluhannyeri?.pediatrik?.form?.[el.kode]?.skor) ?? el?.values?.find(x => x.skor === 1) ?? null
       }
       this.formPediatrik.keluhannyeri.form = formNyeriPediatrik
 
@@ -932,7 +932,7 @@ export const useAnamnesisRanapStore = defineStore('anamnesis-ranap-store', {
       const formGiziPedia = {}
       for (let i = 0; i < this.formGiziPediatrik?.length; i++) {
         const el = this.formGiziPediatrik[i]
-        formGiziPedia[el?.kode] = el?.values?.find(x => x?.skor === data?.skreeninggizi?.pediatrik?.form[el.kode]?.skor) ?? el?.values?.find(x => x?.skor === 0) ?? null
+        formGiziPedia[el?.kode] = el?.values?.find(x => x?.skor === data?.skreeninggizi?.pediatrik?.form?.[el.kode]?.skor) ?? el?.values?.find(x => x?.skor === 0) ?? null
       }
       this.formPediatrik.skreeninggizi.form = formGiziPedia
 
@@ -951,9 +951,10 @@ export const useAnamnesisRanapStore = defineStore('anamnesis-ranap-store', {
     hitungSkorNyeri(jns) {
       let skor = 0
       if (jns === 'formNeoNatal') {
+        if (!this.formNeoNatal?.keluhannyeri?.form) return
         for (let i = 0; i < this.formNyeriNeonatals?.length; i++) {
           const el = this.formNyeriNeonatals[i]
-          skor += parseInt(this.formNeoNatal?.keluhannyeri?.form[el?.kode]?.skor)
+          skor += parseInt(this.formNeoNatal?.keluhannyeri?.form?.[el?.kode]?.skor ?? 0)
         }
 
         this.formNeoNatal.keluhannyeri.skorNyeri = skor
@@ -963,8 +964,9 @@ export const useAnamnesisRanapStore = defineStore('anamnesis-ranap-store', {
       }
       else if (jns === 'form' || jns === 'kebidanan' || jns === 'pediatrik') {
         const frm = jns === 'form' ? this.form : (jns === 'kebidanan' ? this.formKebidanan : this.formPediatrik)
+        if (!frm?.keluhannyeri) return
         if (frm.keluhannyeri.kajianNyeri === 'Wong Baker Face Scale') {
-          this.setKeteranganSkornyeri(frm.keluhannyeri.skorNyeri, jns)
+          this.setKeteranganSkornyeri(frm.keluhannyeri.skorNyeri ?? 0, jns)
           // frm.keluhannyeri.form = null
         }
         else {
@@ -984,10 +986,11 @@ export const useAnamnesisRanapStore = defineStore('anamnesis-ranap-store', {
         else if (val > 0 && val < 2) ket = 'Tidak nyaman'
         else if (val >= 2 && val <= 4) ket = 'Nyeri Ringan - Sedang'
         else if (val >= 5 && val <= 7) ket = 'Nyeri Sedang - Berat'
-        this.formNeoNatal.keluhannyeri.ket = ket
+        if (this.formNeoNatal?.keluhannyeri) this.formNeoNatal.keluhannyeri.ket = ket
       }
       else if (jns === 'form' || jns === 'kebidanan' || jns === 'pediatrik') {
         const frm = jns === 'form' ? this.form : (jns === 'kebidanan' ? this.formKebidanan : this.formPediatrik)
+        if (!frm?.keluhannyeri) return
         if (frm.keluhannyeri.kajianNyeri === 'Wong Baker Face Scale') {
           if (val === 0) ket = 'Tidak ada nyeri'
           else if (val > 0 && val <= 3) ket = 'Nyeri Ringan'
@@ -1008,25 +1011,28 @@ export const useAnamnesisRanapStore = defineStore('anamnesis-ranap-store', {
     },
 
     hitungSkorSgd() {
-      const skor = parseInt(this.form.skreeninggizi.form.bb.skor) + parseInt(this.form.skreeninggizi.form.am.skor) + parseInt(this.form.skreeninggizi.form.kk.skor)
+      if (!this.form?.skreeninggizi?.form?.bb) return
+      const skor = parseInt(this.form.skreeninggizi.form.bb?.skor ?? 0) + parseInt(this.form.skreeninggizi.form.am?.skor ?? 0) + parseInt(this.form.skreeninggizi.form.kk?.skor ?? 0)
       this.form.skreeninggizi.skor = skor
       this.form.skreeninggizi.ket = this.setSgdKet(skor)
       // this.form.sgdSkor = skor
       // this.form.sgdKet = this.setSgdKet(skor)
     },
     hitungSkorSgk() {
-      const skor = parseInt(this.formKebidanan?.skreeninggizi?.form?.am?.skor) + parseInt(this.formKebidanan?.skreeninggizi?.form?.bb?.skor) + parseInt(this.formKebidanan?.skreeninggizi?.form?.hb?.skor) + parseInt(this.formKebidanan?.skreeninggizi?.form?.metabolisme?.skor)
+      if (!this.formKebidanan?.skreeninggizi?.form?.am) return
+      const skor = parseInt(this.formKebidanan?.skreeninggizi?.form?.am?.skor ?? 0) + parseInt(this.formKebidanan?.skreeninggizi?.form?.bb?.skor ?? 0) + parseInt(this.formKebidanan?.skreeninggizi?.form?.hb?.skor ?? 0) + parseInt(this.formKebidanan?.skreeninggizi?.form?.metabolisme?.skor ?? 0)
       this.formKebidanan.skreeninggizi.skor = skor
       this.formKebidanan.skreeninggizi.ket = this.setSgdKet(skor)
       // console.log('wwooii', this.formKebidanan.sgkSkor)
     },
     hitungSkorSgn() {
+      if (!this.formNeoNatal?.skreeninggizi?.form) return
       // const skor = parseInt(this.formNeoNatal.sgn.am) + parseInt(this.formNeoNatal.sgn.km) + parseInt(this.formNeoNatal.sgn.fs) + parseInt(this.formNeoNatal.sgn.bb)
       // this.formNeoNatal.sgnSkor = skor
       let skor = 0
       for (let i = 0; i < this.formGiziNeonatals?.length; i++) {
         const el = this.formGiziNeonatals[i]
-        skor += parseInt(this.formNeoNatal?.skreeninggizi?.form[el.kode]?.skor)
+        skor += parseInt(this.formNeoNatal?.skreeninggizi?.form?.[el.kode]?.skor ?? 0)
       }
 
       this.formNeoNatal.skreeninggizi.skor = skor
@@ -1037,10 +1043,11 @@ export const useAnamnesisRanapStore = defineStore('anamnesis-ranap-store', {
       // console.log('wwooii', this.formKebidanan.sgkSkor)
     },
     hitungSkorSgp() {
+      if (!this.formPediatrik?.skreeninggizi?.form) return
       let skor = 0
       for (let i = 0; i < this.formGiziPediatrik?.length; i++) {
         const el = this.formGiziPediatrik[i]
-        skor += parseInt(this.formPediatrik?.skreeninggizi?.form[el.kode]?.skor)
+        skor += parseInt(this.formPediatrik?.skreeninggizi?.form?.[el.kode]?.skor ?? 0)
       }
 
       this.formPediatrik.skreeninggizi.skor = skor

@@ -191,7 +191,7 @@ export const useConcernOperasiInvasifRanapStore = defineStore('concern-operasi-i
         if (val && typeof val === 'string' && !val.startsWith('data:image')) {
           const fullUrl = pathImg + val
           imageToBase64(fullUrl, (base64Image) => {
-            if (base64Image) {
+            if (base64Image && (!this.form[field] || this.form[field] === val || !this.form[field]?.startsWith('data:image'))) {
               this.form[field] = base64Image
             }
           })

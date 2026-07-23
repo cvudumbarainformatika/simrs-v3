@@ -887,7 +887,7 @@ import { humanDate, jamTnpDetik } from 'src/modules/formatter'
 import { imageToBase64 } from 'src/modules/imgBase64'
 import { useConcernOperasiInvasifRanapStore } from 'src/stores/simrs/ranap/concernoperasiinvasif'
 import AppKopSuratStandard from 'src/components/~global/AppKopSuratStandard.vue'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 const store = useConcernOperasiInvasifRanapStore()
 
 const props = defineProps({
@@ -910,6 +910,13 @@ onMounted(() => {
   hubDgPas()
   initImage(props.item)
 })
+
+watch(() => props.item, (val) => {
+  if (val) {
+    hubDgPas()
+    initImage(val)
+  }
+}, { deep: true })
 
 function initImage(item) {
   const ttdPetugas = pathImg + item?.ttdPetugas
