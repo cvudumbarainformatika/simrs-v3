@@ -298,7 +298,7 @@ const laporan = {
       component: () => import('pages/simrs/laporan/farmasi/perencanaan/IndexPage.vue')
     },
     {
-      path: '/laporan/farmasi/deadstok',
+      path: '/laporan/farmasi/dead-stok',
       component: () => import('pages/simrs/laporan/farmasi/deadStok/IndexPage.vue')
     },
     {
