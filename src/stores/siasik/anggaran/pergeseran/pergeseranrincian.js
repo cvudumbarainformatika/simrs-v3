@@ -57,7 +57,8 @@ export const usePergeseranAnggaranStore = defineStore('pergeseran-anggaran-store
       uraian50: '',
       kodekegiatanblud: '',
       tahun: '',
-      kodebidang: ''
+      kodebidang: '',
+      flag: ''
     },
     params: {
       q: '',
