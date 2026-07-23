@@ -68,6 +68,13 @@ const tabsxx = [
     nakes: ['1', '2', '3'],
     // comp: defineAsyncComponent(() => import('./prabedah/IndexPage.vue'))
     comp: defineAsyncComponent(() => import('src/pages/simrs/kamaroperasi/pelayanan/comppelayanan/pagemenu/compAssasement/comp/PraBedahPage.vue'))
+  },
+  {
+    label: 'Daftar Tilik',
+    name: 'daftartilik',
+    icon: 'icon-fa-check-double-solid',
+    nakes: ['1', '2', '3'],
+    comp: defineAsyncComponent(() => import('./daftartilik/IndexPage.vue'))
   }
 ]
 

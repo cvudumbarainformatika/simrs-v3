@@ -154,16 +154,11 @@
                     label-always
                     :min="0"
                     :max="10"
-                    :step="2"
+                    :step="1"
                     style="width: 100%;"
                   />
-                  <div class="row justify-between text-caption text-grey-6 q-mt-sm">
-                    <div>0</div>
-                    <div>2</div>
-                    <div>4</div>
-                    <div>6</div>
-                    <div>8</div>
-                    <div>10</div>
+                  <div class="row justify-between text-caption text-grey-6 q-mt-sm q-px-xs">
+                    <div v-for="n in 11" :key="n-1">{{ n-1 }}</div>
                   </div>
                 </div>
                 
@@ -175,61 +170,182 @@
                   </div>
                 </div>
               </div>
+
+              <!-- Input Tambahan Wong Baker -->
+              <div class="row q-col-gutter-sm q-mt-md q-px-md">
+                <!-- Lokasi Nyeri -->
+                <div class="col-12 col-sm-6">
+                  <q-input
+                    v-model="formWongBaker.lokasi"
+                    label="Lokasi Nyeri"
+                    outlined
+                    dense
+                    placeholder="Contoh: Kaki kanan, Perut"
+                  />
+                </div>
+                <!-- Durasi Nyeri -->
+                <div class="col-12 col-sm-6">
+                  <q-input
+                    v-model="formWongBaker.durasi"
+                    label="Durasi Nyeri"
+                    outlined
+                    dense
+                    placeholder="Contoh: 5-10 menit, Terus-menerus"
+                  />
+                </div>
+                <!-- Faktor Pencetus -->
+                <div class="col-12">
+                  <q-input
+                    v-model="formWongBaker.pencetus"
+                    label="Faktor Pencetus / Presipitasi"
+                    outlined
+                    dense
+                    placeholder="Contoh: Diskontinuitas jaringan tulang, Gerakan"
+                  />
+                </div>
+                <!-- Kualitas Nyeri -->
+                <div class="col-12 col-sm-6">
+                  <q-select
+                    v-model="formWongBaker.kualitas"
+                    label="Kualitas Nyeri"
+                    :options="filteredKualitasOptions"
+                    outlined
+                    dense
+                    use-input
+                    hide-selected
+                    fill-input
+                    @input-value="(val) => { tempKualitas = val }"
+                    @blur="if (tempKualitas) { formWongBaker.kualitas = tempKualitas; tempKualitas = '' }"
+                    @filter="filterKualitas"
+                    @update:model-value="onSelectKualitas"
+                    placeholder="Pilih atau ketik bebas..."
+                  />
+                </div>
+                <!-- Pola Serangan -->
+                <div class="col-12 col-sm-6">
+                  <q-select
+                    v-model="formWongBaker.pola"
+                    label="Pola Serangan"
+                    :options="filteredPolaOptions"
+                    outlined
+                    dense
+                    use-input
+                    hide-selected
+                    fill-input
+                    @input-value="(val) => { tempPola = val }"
+                    @blur="if (tempPola) { formWongBaker.pola = tempPola; tempPola = '' }"
+                    @filter="filterPola"
+                    @update:model-value="onSelectPola"
+                    placeholder="Pilih atau ketik bebas..."
+                  />
+                </div>
+                <!-- Hal-hal yang menyebabkan Nyeri Hilang -->
+                <div class="col-12">
+                  <q-select
+                    ref="selectPenghilang"
+                    v-model="formWongBaker.penghilang"
+                    label="Hal-hal yang Menyebabkan Nyeri Hilang"
+                    :options="filteredPenghilangOptions"
+                    outlined
+                    multiple
+                    use-chips
+                    use-input
+                    @new-value="onNewValuePenghilang"
+                    @filter="filterPenghilang"
+                    @update:model-value="onSelectPenghilang"
+                    placeholder="Pilih beberapa atau ketik baru (Tekan Enter)"
+                  />
+                </div>
+              </div>
             </div>
 
             <!-- Behavioral Pain Scale (BPS) -->
             <div v-if="kajianNyeri === 'Behavioral Pain Scale (BPS)'" class="col-12">
               <q-separator class="q-mb-md" />
-              <div class="text-subtitle2 text-weight-bold text-primary q-mb-md">Behavioral Pain Scale (BPS)</div>
+              <div class="text-subtitle2 text-weight-bold text-primary q-mb-sm">Behavioral Pain Scale (BPS)</div>
               
-              <div class="q-gutter-y-md">
-                <!-- Kriteria BPS -->
-                <div v-for="obj in formNyeris" :key="obj.kode" class="border-b q-pb-sm">
-                  <div class="text-weight-bold text-grey-9 q-mb-xs">{{ obj.label }} :</div>
-                  <div class="column q-gutter-y-xs">
+              <div class="row q-col-gutter-sm">
+                <!-- Kriteria BPS (Grid 2 Kolom) -->
+                <div v-for="obj in formNyeris" :key="obj.kode" class="col-12 col-sm-6 border-b q-pb-xs">
+                  <div class="text-weight-bold text-grey-9 text-caption q-mb-none">{{ obj.label }} :</div>
+                  <div class="column q-gutter-y-none">
                     <q-radio
                       v-for="val in obj.values"
                       :key="val.text"
                       v-model="bpsForm[obj.kode]"
                       :val="val"
                       :label="`${val.text} (Skor: ${val.skor})`"
+                      dense
+                      class="text-caption q-my-xs"
                     />
                   </div>
                 </div>
+              </div>
 
-                <!-- Hasil BPS -->
-                <div class="bg-grey-3 q-pa-md rounded-borders flex justify-between items-center q-mt-md">
-                  <div class="text-h6 text-accent">Total Skor BPS: {{ totalSkorBps }}</div>
-                  <div class="text-h6 text-negative">Kategori: {{ bpsKeterangan }}</div>
-                </div>
+              <!-- Hasil BPS -->
+              <div class="bg-grey-3 q-pa-sm rounded-borders flex justify-between items-center q-mt-md">
+                <div class="text-subtitle1 text-weight-bold text-accent">Total Skor BPS: {{ totalSkorBps }}</div>
+                <div class="text-subtitle1 text-weight-bold text-negative">Kategori: {{ bpsKeterangan }}</div>
               </div>
             </div>
 
             <!-- NIPS (Neonatal Infant Pain Scale) -->
             <div v-if="kajianNyeri === 'Neonatal Infant Pain Scale (NIPS)'" class="col-12">
               <q-separator class="q-mb-md" />
-              <div class="text-subtitle2 text-weight-bold text-primary q-mb-md">Neonatal Infant Pain Scale (NIPS)</div>
+              <div class="text-subtitle2 text-weight-bold text-primary q-mb-sm">Neonatal Infant Pain Scale (NIPS)</div>
               
-              <div class="q-gutter-y-md">
-                <!-- Kriteria NIPS -->
-                <div v-for="obj in formNyeriNeonatals" :key="obj.kode" class="border-b q-pb-sm">
-                  <div class="text-weight-bold text-grey-9 q-mb-xs">{{ obj.label }} :</div>
-                  <div class="column q-gutter-y-xs">
+              <div class="row q-col-gutter-sm">
+                <!-- Kriteria NIPS (Grid 2 Kolom) -->
+                <div v-for="obj in formNyeriNeonatals" :key="obj.kode" class="col-12 col-sm-6 border-b q-pb-xs">
+                  <div class="text-weight-bold text-grey-9 text-caption q-mb-none">{{ obj.label }} :</div>
+                  <div class="column q-gutter-y-none">
                     <q-radio
                       v-for="val in obj.values"
                       :key="val.text"
                       v-model="nipsForm[obj.kode]"
                       :val="val"
                       :label="`${val.text} (Skor: ${val.skor})`"
+                      dense
+                      class="text-caption q-my-xs"
                     />
                   </div>
                 </div>
+              </div>
 
-                <!-- Hasil NIPS -->
-                <div class="bg-grey-3 q-pa-md rounded-borders flex justify-between items-center q-mt-md">
-                  <div class="text-h6 text-accent">Total Skor NIPS: {{ totalSkorNips }}</div>
-                  <div class="text-h6 text-negative">Kategori: {{ nipsKeterangan }}</div>
+              <!-- Hasil NIPS -->
+              <div class="bg-grey-3 q-pa-sm rounded-borders flex justify-between items-center q-mt-md">
+                <div class="text-subtitle1 text-weight-bold text-accent">Total Skor NIPS: {{ totalSkorNips }}</div>
+                <div class="text-subtitle1 text-weight-bold text-negative">Kategori: {{ nipsKeterangan }}</div>
+              </div>
+            </div>
+
+            <!-- FLACC Scale (1 - 3 Tahun) -->
+            <div v-if="kajianNyeri === 'FLACC Scale'" class="col-12">
+              <q-separator class="q-mb-md" />
+              <div class="text-subtitle2 text-weight-bold text-primary q-mb-sm">FLACC Pain Scale (Skor 0 - 10)</div>
+              
+              <div class="row q-col-gutter-sm">
+                <!-- Kriteria FLACC (Grid 2 Kolom) -->
+                <div v-for="obj in formFlaccs" :key="obj.kode" class="col-12 col-sm-6 border-b q-pb-xs">
+                  <div class="text-weight-bold text-grey-9 text-caption q-mb-none">{{ obj.label }} :</div>
+                  <div class="column q-gutter-y-none">
+                    <q-radio
+                      v-for="val in obj.values"
+                      :key="val.text"
+                      v-model="flaccForm[obj.kode]"
+                      :val="val"
+                      :label="`${val.text} (Skor: ${val.skor})`"
+                      dense
+                      class="text-caption q-my-xs"
+                    />
+                  </div>
                 </div>
+              </div>
+
+              <!-- Hasil FLACC -->
+              <div class="bg-grey-3 q-pa-sm rounded-borders flex justify-between items-center q-mt-md">
+                <div class="text-subtitle1 text-weight-bold text-accent">Total Skor FLACC: {{ totalSkorFlacc }}</div>
+                <div class="text-subtitle1 text-weight-bold text-negative">Kategori: {{ flaccKeterangan }}</div>
               </div>
             </div>
 
@@ -297,12 +413,23 @@ const editId = ref(null)
 const pilihanNyeri = [
   { label: 'Wong Baker Face Scale', value: 'Wong Baker Face Scale' },
   { label: 'Behavioral Pain Scale (BPS)', value: 'Behavioral Pain Scale (BPS)' },
-  { label: 'Neonatal Infant Pain Scale (NIPS)', value: 'Neonatal Infant Pain Scale (NIPS)' }
+  { label: 'Neonatal Infant Pain Scale (NIPS)', value: 'Neonatal Infant Pain Scale (NIPS)' },
+  { label: 'FLACC Scale', value: 'FLACC Scale' }
 ]
 const kajianNyeri = ref('Wong Baker Face Scale')
 
 // 1. Wong Baker state
 const skorWongBaker = ref(0)
+const formWongBaker = ref({
+  lokasi: '',
+  durasi: '',
+  pencetus: '',
+  kualitas: '',
+  pola: '',
+  penghilang: []
+})
+const tempKualitas = ref('')
+const tempPola = ref('')
 const wongBakerIcon = computed(() => {
   const val = skorWongBaker.value
   if (val < 2) return 'icon-my-emoticon-excited-outline'
@@ -448,6 +575,76 @@ const nipsKeterangan = computed(() => {
   return 'Nyeri Sedang - Berat'
 })
 
+// 4. FLACC state
+const formFlaccs = [
+  {
+    kode: 'ekspresiWajah',
+    label: 'Ekspresi Wajah',
+    values: [
+      { text: 'Tidak ada ekspresi tertentu/senyum', skor: 0 },
+      { text: 'Sesekali meringis / mengerutkan dahi, menarik diri, tidak tertarik', skor: 1 },
+      { text: 'Sering sampai konstan mengerutkan kening, rahang terkatup, dagu gemetaran', skor: 2 }
+    ]
+  },
+  {
+    kode: 'kaki',
+    label: 'Kaki',
+    values: [
+      { text: 'Normal posisi atau santai', skor: 0 },
+      { text: 'Tidak nyaman, cemas, gelisah, tegang', skor: 1 },
+      { text: 'Menendang atau menarik kaki', skor: 2 }
+    ]
+  },
+  {
+    kode: 'aktivitas',
+    label: 'Aktivitas',
+    values: [
+      { text: 'Berbaring dg tenang, posisi normal bergerak dg mudah', skor: 0 },
+      { text: 'Menggeliat, menggeser maju mundur, tegang', skor: 1 },
+      { text: 'Melengkung, kaku atau menyentak', skor: 2 }
+    ]
+  },
+  {
+    kode: 'menangis',
+    label: 'Menangis',
+    values: [
+      { text: 'Tdk ada teriakan (terjaga atau tertidur)', skor: 0 },
+      { text: 'Erangan atau rengekan, merintih, keluhan sesekali', skor: 1 },
+      { text: 'Menangis terus, teriakan atau isak tangis, keluhan sering', skor: 2 }
+    ]
+  },
+  {
+    kode: 'konsolabilitas',
+    label: 'Konsolabilitas / Respon',
+    values: [
+      { text: 'Tenang, santai, senang/puas', skor: 0 },
+      { text: 'Bisa disentuh sesekali memegang/memeluk, diajak bicara, dialihkan', skor: 1 },
+      { text: 'Sulit untuk dihibur/dibuat nyaman', skor: 2 }
+    ]
+  }
+]
+const flaccForm = ref({
+  ekspresiWajah: formFlaccs[0].values[0],
+  kaki: formFlaccs[1].values[0],
+  aktivitas: formFlaccs[2].values[0],
+  menangis: formFlaccs[3].values[0],
+  konsolabilitas: formFlaccs[4].values[0]
+})
+const totalSkorFlacc = computed(() => {
+  return parseInt(flaccForm.value.ekspresiWajah?.skor ?? 0) +
+         parseInt(flaccForm.value.kaki?.skor ?? 0) +
+         parseInt(flaccForm.value.aktivitas?.skor ?? 0) +
+         parseInt(flaccForm.value.menangis?.skor ?? 0) +
+         parseInt(flaccForm.value.konsolabilitas?.skor ?? 0)
+})
+const flaccKeterangan = computed(() => {
+  const val = totalSkorFlacc.value
+  if (val === 0) return 'TIDAK NYERI'
+  if (val >= 1 && val <= 3) return 'NYERI RINGAN'
+  if (val >= 4 && val <= 6) return 'NYERI SEDANG'
+  return 'NYERI BERAT'
+})
+
 onMounted(() => {
   const tgllahir = props.pasien?.tgllahir
   if (tgllahir) {
@@ -456,6 +653,8 @@ onMounted(() => {
     const diffMonth = today.getFullYear() * 12 + today.getMonth() - birthDate.getFullYear() * 12 - birthDate.getMonth()
     if (diffMonth < 1) {
       kajianNyeri.value = 'Neonatal Infant Pain Scale (NIPS)'
+    } else if (diffMonth >= 12 && diffMonth <= 36) {
+      kajianNyeri.value = 'FLACC Scale'
     }
   }
   storeUlang.getData(props.pasien)
@@ -518,6 +717,13 @@ function bukaForm() {
     kaki: formNyeriNeonatals[4].values[0],
     keadaanRangsangan: formNyeriNeonatals[5].values[0]
   }
+  flaccForm.value = {
+    ekspresiWajah: formFlaccs[0].values[0],
+    kaki: formFlaccs[1].values[0],
+    aktivitas: formFlaccs[2].values[0],
+    menangis: formFlaccs[3].values[0],
+    konsolabilitas: formFlaccs[4].values[0]
+  }
 
   // 1. Cek dari riwayat Asesmen Ulang Nyeri terakhir
   if (storeUlang.itemsNyeri && storeUlang.itemsNyeri.length > 0) {
@@ -528,6 +734,16 @@ function bukaForm() {
     if (parsedDetails && typeof parsedDetails === 'object') {
       if (latest.metode === 'Wong Baker Face Scale') {
         skorWongBaker.value = latest.skor
+        formWongBaker.value = {
+          lokasi: parsedDetails.lokasi?.value ?? '',
+          durasi: parsedDetails.durasi?.value ?? '',
+          pencetus: parsedDetails.pencetus?.value ?? '',
+          kualitas: parsedDetails.kualitas?.value ?? '',
+          pola: parsedDetails.pola?.value ?? '',
+          penghilang: Array.isArray(parsedDetails.penghilang?.value) 
+            ? parsedDetails.penghilang.value 
+            : (parsedDetails.penghilang?.value ? [parsedDetails.penghilang.value] : [])
+        }
       } else if (latest.metode === 'Behavioral Pain Scale (BPS)') {
         Object.keys(bpsForm.value).forEach(key => {
           const val = parsedDetails[key]
@@ -544,6 +760,15 @@ function bukaForm() {
           if (field && val) {
             const matched = field.values.find(v => v.skor === val.skor || v.text === val.value)
             if (matched) nipsForm.value[key] = matched
+          }
+        })
+      } else if (latest.metode === 'FLACC Scale') {
+        Object.keys(flaccForm.value).forEach(key => {
+          const val = parsedDetails[key]
+          const field = formFlaccs.find(x => x.kode === key)
+          if (field && val) {
+            const matched = field.values.find(v => v.skor === val.skor || v.text === val.value)
+            if (matched) flaccForm.value[key] = matched
           }
         })
       }
@@ -579,6 +804,14 @@ function bukaForm() {
 
       if (kajianNyeri.value === 'Wong Baker Face Scale') {
         skorWongBaker.value = kn.skor ?? 0
+        formWongBaker.value = {
+          lokasi: kn.lokasi || '',
+          durasi: kn.durasi || '',
+          pencetus: kn.pencetus || '',
+          kualitas: kn.kualitas || '',
+          pola: kn.pola || '',
+          penghilang: Array.isArray(kn.penghilang) ? kn.penghilang : (kn.penghilang ? [kn.penghilang] : [])
+        }
       } else if (kajianNyeri.value === 'Behavioral Pain Scale (BPS)') {
         const formObj = activeObj?.form || activeObj
         if (formObj && typeof formObj === 'object') {
@@ -607,6 +840,20 @@ function bukaForm() {
             }
           })
         }
+      } else if (kajianNyeri.value === 'FLACC Scale') {
+        const formObj = activeObj?.form || activeObj
+        if (formObj && typeof formObj === 'object') {
+          Object.keys(flaccForm.value).forEach(key => {
+            const val = formObj[key]
+            const field = formFlaccs.find(x => x.kode === key)
+            if (field && val) {
+              const valSkor = typeof val === 'object' ? val.skor : null
+              const valText = typeof val === 'object' ? val.text : (typeof val === 'string' ? val : null)
+              const matched = field.values.find(v => (valSkor !== null && v.skor === valSkor) || (valText !== null && v.text === valText))
+              if (matched) flaccForm.value[key] = matched
+            }
+          })
+        }
       }
     } else {
       setSkoringOtomatis()
@@ -626,7 +873,13 @@ async function simpanPenilaian() {
     ket = wongBakerKeterangan.value
     detailsObj = {
       kajian: { label: 'Metode Kajian', value: 'Wong Baker Face Scale', skor: null },
-      skorNyeri: { label: 'Skor Skala Nyeri', value: wongBakerKeterangan.value, skor: skorWongBaker.value }
+      skorNyeri: { label: 'Skor Skala Nyeri', value: wongBakerKeterangan.value, skor: skorWongBaker.value },
+      lokasi: { label: 'Lokasi Nyeri', value: formWongBaker.value.lokasi, skor: null },
+      durasi: { label: 'Durasi Nyeri', value: formWongBaker.value.durasi, skor: null },
+      pencetus: { label: 'Faktor Pencetus / Presipitasi', value: formWongBaker.value.pencetus, skor: null },
+      kualitas: { label: 'Kualitas Nyeri', value: formWongBaker.value.kualitas, skor: null },
+      pola: { label: 'Pola Serangan', value: formWongBaker.value.pola, skor: null },
+      penghilang: { label: 'Hal-hal yang Menyebabkan Nyeri Hilang', value: formWongBaker.value.penghilang, skor: null }
     }
   } else if (kajianNyeri.value === 'Behavioral Pain Scale (BPS)') {
     skor = totalSkorBps.value
@@ -654,6 +907,19 @@ async function simpanPenilaian() {
         }
       }
     })
+  } else if (kajianNyeri.value === 'FLACC Scale') {
+    skor = totalSkorFlacc.value
+    ket = flaccKeterangan.value
+    Object.keys(flaccForm.value).forEach(key => {
+      const field = formFlaccs.find(x => x.kode === key)
+      if (field && flaccForm.value[key]) {
+        detailsObj[key] = {
+          label: field.label,
+          value: flaccForm.value[key].text,
+          skor: flaccForm.value[key].skor
+        }
+      }
+    })
   }
 
   const payload = {
@@ -677,10 +943,30 @@ function bukaEdit(item) {
   editId.value = item.id
   kajianNyeri.value = item.metode
 
+  // Reset formWongBaker first
+  formWongBaker.value = {
+    lokasi: '',
+    durasi: '',
+    pencetus: '',
+    kualitas: '',
+    pola: '',
+    penghilang: []
+  }
+
   const parsedDetails = item.detailsRaw
   if (parsedDetails && typeof parsedDetails === 'object') {
     if (item.metode === 'Wong Baker Face Scale') {
       skorWongBaker.value = item.skor
+      formWongBaker.value = {
+        lokasi: parsedDetails.lokasi?.value ?? '',
+        durasi: parsedDetails.durasi?.value ?? '',
+        pencetus: parsedDetails.pencetus?.value ?? '',
+        kualitas: parsedDetails.kualitas?.value ?? '',
+        pola: parsedDetails.pola?.value ?? '',
+        penghilang: Array.isArray(parsedDetails.penghilang?.value) 
+          ? parsedDetails.penghilang.value 
+          : (parsedDetails.penghilang?.value ? [parsedDetails.penghilang.value] : [])
+      }
     } else if (item.metode === 'Behavioral Pain Scale (BPS)') {
       Object.keys(bpsForm.value).forEach(key => {
         const val = parsedDetails[key]
@@ -697,6 +983,15 @@ function bukaEdit(item) {
         if (field && val) {
           const matched = field.values.find(v => v.skor === val.skor || v.text === val.value)
           if (matched) nipsForm.value[key] = matched
+        }
+      })
+    } else if (item.metode === 'FLACC Scale') {
+      Object.keys(flaccForm.value).forEach(key => {
+        const val = parsedDetails[key]
+        const field = formFlaccs.find(x => x.kode === key)
+        if (field && val) {
+          const matched = field.values.find(v => v.skor === val.skor || v.text === val.value)
+          if (matched) flaccForm.value[key] = matched
         }
       })
     }
@@ -722,6 +1017,83 @@ function hapusItem(item) {
   }).onOk(() => {
     storeUlang.hapusNyeri(props.pasien, item.id)
   })
+}
+function setSkoringOtomatis() {
+  const tgllahir = props.pasien?.tgllahir
+  if (tgllahir) {
+    const birthDate = new Date(tgllahir)
+    const today = new Date()
+    const diffMonth = today.getFullYear() * 12 + today.getMonth() - birthDate.getFullYear() * 12 - birthDate.getMonth()
+    if (diffMonth < 1) {
+      kajianNyeri.value = 'Neonatal Infant Pain Scale (NIPS)'
+      return
+    }
+  }
+  kajianNyeri.value = 'Wong Baker Face Scale'
+}
+
+function onNewValuePenghilang(val, done) {
+  const cleanVal = val?.trim()
+  if (cleanVal) {
+    if (!Array.isArray(formWongBaker.value.penghilang)) {
+      formWongBaker.value.penghilang = []
+    }
+    done(cleanVal, 'add-unique')
+    onSelectPenghilang()
+  }
+}
+
+// Smart Filtering & Auto-Reset Combo Box
+const selectPenghilang = ref(null)
+const defaultPenghilangOptions = ['Istirahat', 'Panas', 'Dingin', 'Obat-obatan', 'Teknik relaksasi', 'Lain-lain']
+const filteredPenghilangOptions = ref([...defaultPenghilangOptions])
+
+function filterPenghilang(val, update) {
+  update(() => {
+    const needle = val.toLowerCase().trim()
+    filteredPenghilangOptions.value = defaultPenghilangOptions.filter(
+      v => v.toLowerCase().indexOf(needle) > -1
+    )
+  })
+}
+
+function onSelectPenghilang() {
+  if (selectPenghilang.value) {
+    selectPenghilang.value.updateInputValue('')
+    selectPenghilang.value.hidePopup()
+  }
+}
+
+const defaultKualitasOptions = ['Terbakar', 'Tumpul', 'Tertekan', 'Berat', 'Tajam', 'Kram']
+const filteredKualitasOptions = ref([...defaultKualitasOptions])
+
+function filterKualitas(val, update) {
+  update(() => {
+    const needle = val.toLowerCase().trim()
+    filteredKualitasOptions.value = defaultKualitasOptions.filter(
+      v => v.toLowerCase().indexOf(needle) > -1
+    )
+  })
+}
+
+function onSelectKualitas() {
+  tempKualitas.value = ''
+}
+
+const defaultPolaOptions = ['Menetap', 'Intermitten']
+const filteredPolaOptions = ref([...defaultPolaOptions])
+
+function filterPola(val, update) {
+  update(() => {
+    const needle = val.toLowerCase().trim()
+    filteredPolaOptions.value = defaultPolaOptions.filter(
+      v => v.toLowerCase().indexOf(needle) > -1
+    )
+  })
+}
+
+function onSelectPola() {
+  tempPola.value = ''
 }
 </script>
 

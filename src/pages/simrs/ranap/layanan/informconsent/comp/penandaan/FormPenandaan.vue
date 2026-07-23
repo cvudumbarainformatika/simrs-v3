@@ -150,7 +150,7 @@
 import { notifErrVue } from 'src/modules/utils'
 import { useConcernOperasiInvasifRanapStore } from 'src/stores/simrs/ranap/concernoperasiinvasif'
 import { onMounted, ref, watch } from 'vue'
-import bodyMarkerImg from 'src/assets/human/anatomys/body-marker-irna37.png'
+import bodyMarkerImg from 'src/assets/human/anatomys/body-marker-irna37.webp'
 
 const store = useConcernOperasiInvasifRanapStore()
 
@@ -283,10 +283,33 @@ watch(() => store.form.alternatif, (newVal) => {
   }
 })
 
+// Fungsi Cek Apakah Canvas Kosong
+const isCanvasBlank = (canvas) => {
+  if (!canvas) return true
+  const ctx = canvas.getContext('2d')
+  const pixelBuffer = new Uint32Array(
+    ctx.getImageData(0, 0, canvas.width, canvas.height).data.buffer
+  )
+  return !pixelBuffer.some(color => color !== 0)
+}
+
+// Fungsi Kompresi Canvas ke WebP 512x304 (Ukuran Super Ringan < 3-5 KB)
+const getCompressedCanvasBase64 = (canvas) => {
+  if (!canvas || isCanvasBlank(canvas)) return ''
+  
+  const tempCanvas = document.createElement('canvas')
+  tempCanvas.width = 512
+  tempCanvas.height = 304
+  const tempCtx = tempCanvas.getContext('2d')
+  tempCtx.drawImage(canvas, 0, 0, 512, 304)
+  
+  return tempCanvas.toDataURL('image/webp', 0.5)
+}
+
 function onSubmit() {
   const canvas = canvasRef.value
   if (canvas) {
-    store.form.alternatif = canvas.toDataURL('image/png')
+    store.form.alternatif = getCompressedCanvasBase64(canvas)
   }
 
   if (!store.form.kdDokter) {

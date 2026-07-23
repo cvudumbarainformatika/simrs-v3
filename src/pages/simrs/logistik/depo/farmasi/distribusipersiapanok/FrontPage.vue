@@ -136,7 +136,7 @@
       <template #cell-act="{ row }">
         <div class="row">
           <div v-if="row.flag === '2' || row.flag === '4'" class="row items-center justify-between"
-            :style="row.flag === '2' ? 'min-width: 200px;' : 'min-width: 100px;'">
+            :style="row.flag === '2' ? 'min-width: 200px;' : (apps?.user?.pegawai?.role_id === 1 ? 'min-width: 120px;' : 'min-width: 80px;')">
             <!-- print -->
             <div class="col-auto">
               <q-btn round icon="icon-mat-print" dense color="dark" size="sm" @click="toPrint(row)">
@@ -164,11 +164,17 @@
                 </q-tooltip>
               </q-btn>
             </div>
-            <div v-if="row.flag === '4'" class="col-auto">
+            <div v-if="row.flag === '4'" class="col-auto row items-center no-wrap">
               <q-btn flat icon="icon-mat-lock" dense color="negative">
                 <!-- @click="kunci(row)" -->
                 <q-tooltip class="primary" :offset="[10, 10]">
                   Sudah diterima
+                </q-tooltip>
+              </q-btn>
+              <q-btn v-if="apps?.user?.pegawai?.role_id === 1" flat icon="icon-mat-history" dense color="warning"
+                :loading="row.loading" :disable="row.loading" @click="kembalikan(row)">
+                <q-tooltip class="primary" :offset="[10, 10]">
+                  Kembalikan ke distribusi
                 </q-tooltip>
               </q-btn>
             </div>
@@ -198,14 +204,22 @@
           </div>
 
           <div v-if="row.flag === '3'">
-            <!-- pengembalian -->
-            <q-btn flat icon="icon-mat-move_to_inbox" dense color="primary"
-              :loading="store.loadingSimpan && row.loading" :disable="store.loadingSimpan && row.loading"
-              @click="teimaPengembalian(row)">
-              <q-tooltip class="primary" :offset="[10, 10]">
-                Terima Pengembalian
-              </q-tooltip>
-            </q-btn>
+            <div class="row items-center no-wrap">
+              <!-- pengembalian -->
+              <q-btn flat icon="icon-mat-move_to_inbox" dense color="primary"
+                :loading="store.loadingSimpan && row.loading" :disable="store.loadingSimpan && row.loading"
+                @click="teimaPengembalian(row)">
+                <q-tooltip class="primary" :offset="[10, 10]">
+                  Terima Pengembalian
+                </q-tooltip>
+              </q-btn>
+              <q-btn v-if="apps?.user?.pegawai?.role_id === 1" flat icon="icon-mat-history" dense color="warning"
+                :loading="row.loading" :disable="row.loading" @click="kembalikan(row)">
+                <q-tooltip class="primary" :offset="[10, 10]">
+                  Kembalikan ke distribusi
+                </q-tooltip>
+              </q-btn>
+            </div>
           </div>
           <div v-if="row.flag === ''">
             <!-- pengembalian -->
@@ -544,6 +558,28 @@ function batalOperasi (val) {
     store.batalOperasi(val)
   })
 }
+function kembalikan (val) {
+  val.expand = !val.expand
+  val.highlight = !val.highlight
+  Dialog.create({
+    title: 'Konfirmasi',
+    message: 'Apakah Anda yakin ingin mengembalikan status persiapan operasi ini ke didistribusikan?',
+    ok: {
+      'no-caps': true,
+      push: true,
+      color: 'warning',
+      label: 'Ya, Kembalikan'
+    },
+    cancel: {
+      'no-caps': true,
+      push: true,
+      color: 'dark',
+      label: 'Batal'
+    }
+  }).onOk(() => {
+    store.kembalikanKeDistribusi(val)
+  })
+}
 function hapusRincian (val) {
   val.expand = !val.expand
   val.highlight = !val.highlight
@@ -683,6 +719,7 @@ function hapus (val) {
 
 }
 function teimaPengembalian (val) {
+  if (store.loadingSimpan || val.loading) return
   val.expand = !val.expand
   val.highlight = !val.highlight
 

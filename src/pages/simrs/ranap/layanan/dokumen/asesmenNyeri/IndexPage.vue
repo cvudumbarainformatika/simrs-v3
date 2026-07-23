@@ -10,6 +10,7 @@
             <q-tab name="wong-baker" label="Wong Baker" />
             <q-tab name="bps" label="BPS (Tidak Sadar)" />
             <q-tab name="nips" label="NIPS (< 1 Tahun)" />
+            <q-tab name="flacc" label="FLACC (1 - 3 Tahun)" />
           </q-tabs>
 
           <q-badge color="indigo-10" outline class="q-ml-sm" v-if="filteredItems.some(x => !x.isEmpty)">
@@ -86,20 +87,67 @@
                   <tbody>
                     <!-- ── 1. WONG BAKER FACE SCALE ── -->
                     <template v-if="activeTab === 'wong-baker'">
+                      <!-- Lokasi -->
                       <tr>
                         <td class="text-left border-cell text-xxs font-weight-bold">
-                          Metode Kajian:
+                          Lokasi Nyeri:
                         </td>
-                        <td v-for="col in filteredItems" :key="col.id" class="text-center text-xxs border-cell font-mono">
-                          {{ col.isEmpty ? '' : 'Wong Baker' }}
+                        <td v-for="col in filteredItems" :key="col.id" class="text-center text-xxs border-cell">
+                          {{ getNyeriValue(col, 'lokasi') }}
                         </td>
                       </tr>
+                      <!-- Intensitas Skala 0-10 -->
                       <tr>
                         <td class="text-left border-cell text-xxs font-weight-bold">
-                          Skor Nyeri (0-10):
+                          Intensitas Skala (0-10):
                         </td>
                         <td v-for="col in filteredItems" :key="col.id" class="text-center text-bold text-xs border-cell font-mono">
                           {{ col.isEmpty ? '' : col.skor }}
+                        </td>
+                      </tr>
+                      <!-- Durasi Nyeri -->
+                      <tr>
+                        <td class="text-left border-cell text-xxs font-weight-bold">
+                          Durasi Nyeri:
+                        </td>
+                        <td v-for="col in filteredItems" :key="col.id" class="text-center text-xxs border-cell">
+                          {{ getNyeriValue(col, 'durasi') }}
+                        </td>
+                      </tr>
+                      <!-- Faktor Pencetus -->
+                      <tr>
+                        <td class="text-left border-cell text-xxs font-weight-bold">
+                          Faktor Pencetus / Presipitasi:
+                        </td>
+                        <td v-for="col in filteredItems" :key="col.id" class="text-center text-xxs border-cell">
+                          {{ getNyeriValue(col, 'pencetus') }}
+                        </td>
+                      </tr>
+                      <!-- Kualitas Nyeri -->
+                      <tr>
+                        <td class="text-left border-cell text-xxs font-weight-bold">
+                          Kualitas Nyeri:
+                        </td>
+                        <td v-for="col in filteredItems" :key="col.id" class="text-center text-xxs border-cell">
+                          {{ getNyeriValue(col, 'kualitas') }}
+                        </td>
+                      </tr>
+                      <!-- Pola Serangan -->
+                      <tr>
+                        <td class="text-left border-cell text-xxs font-weight-bold">
+                          Pola Serangan:
+                        </td>
+                        <td v-for="col in filteredItems" :key="col.id" class="text-center text-xxs border-cell">
+                          {{ getNyeriValue(col, 'pola') }}
+                        </td>
+                      </tr>
+                      <!-- Hal-hal yang menyebabkan Nyeri Hilang -->
+                      <tr>
+                        <td class="text-left border-cell text-xxs font-weight-bold">
+                          Hal-hal yang Menyebabkan Nyeri Hilang:
+                        </td>
+                        <td v-for="col in filteredItems" :key="col.id" class="text-center text-xxs border-cell">
+                          {{ Array.isArray(getNyeriValue(col, 'penghilang')) ? getNyeriValue(col, 'penghilang').join(', ') : getNyeriValue(col, 'penghilang') }}
                         </td>
                       </tr>
                     </template>
@@ -214,6 +262,70 @@
                         </td>
                         <td v-for="col in filteredItems" :key="col.id" class="text-center text-bold text-xxs border-cell font-mono">
                           {{ getNyeriDetail(col, 'keadaanRangsangan') }}
+                        </td>
+                      </tr>
+                    </template>
+
+                    <!-- ── 4. FLACC SCALE (1 - 3 TAHUN) ── -->
+                    <template v-if="activeTab === 'flacc'">
+                      <!-- Ekspresi Wajah -->
+                      <tr>
+                        <td class="text-left border-cell text-xxs" style="line-height: 1.2;">
+                          <strong>Ekspresi Wajah:</strong><br>
+                          • Tidak ada ekspresi tertentu/senyum (0)<br>
+                          • Sesekali meringis, mengerutkan dahi, menarik diri, tidak tertarik (1)<br>
+                          • Sering/konstan mengerutkan kening, rahang terkatup, dagu gemetaran (2)
+                        </td>
+                        <td v-for="col in filteredItems" :key="col.id" class="text-center text-bold text-xxs border-cell font-mono">
+                          {{ getNyeriDetail(col, 'ekspresiWajah') }}
+                        </td>
+                      </tr>
+                      <!-- Kaki -->
+                      <tr>
+                        <td class="text-left border-cell text-xxs" style="line-height: 1.2;">
+                          <strong>Kaki:</strong><br>
+                          • Normal posisi atau santai (0)<br>
+                          • Tidak nyaman, cemas, gelisah, tegang (1)<br>
+                          • Menendang atau menarik kaki (2)
+                        </td>
+                        <td v-for="col in filteredItems" :key="col.id" class="text-center text-bold text-xxs border-cell font-mono">
+                          {{ getNyeriDetail(col, 'kaki') }}
+                        </td>
+                      </tr>
+                      <!-- Aktivitas -->
+                      <tr>
+                        <td class="text-left border-cell text-xxs" style="line-height: 1.2;">
+                          <strong>Aktivitas:</strong><br>
+                          • Berbaring dg tenang, posisi normal bergerak dg mudah (0)<br>
+                          • Menggeliat, menggeser maju mundur, tegang (1)<br>
+                          • Melengkung, kaku atau menyentak (2)
+                        </td>
+                        <td v-for="col in filteredItems" :key="col.id" class="text-center text-bold text-xxs border-cell font-mono">
+                          {{ getNyeriDetail(col, 'aktivitas') }}
+                        </td>
+                      </tr>
+                      <!-- Menangis -->
+                      <tr>
+                        <td class="text-left border-cell text-xxs" style="line-height: 1.2;">
+                          <strong>Menangis:</strong><br>
+                          • Tdk ada teriakan (terjaga atau tertidur) (0)<br>
+                          • Erangan atau rengekan, merintih, keluhan sesekali (1)<br>
+                          • Menangis terus, teriakan atau isak tangis, keluhan sering (2)
+                        </td>
+                        <td v-for="col in filteredItems" :key="col.id" class="text-center text-bold text-xxs border-cell font-mono">
+                          {{ getNyeriDetail(col, 'menangis') }}
+                        </td>
+                      </tr>
+                      <!-- Konsolabilitas -->
+                      <tr>
+                        <td class="text-left border-cell text-xxs" style="line-height: 1.2;">
+                          <strong>Konsolabilitas / Respon:</strong><br>
+                          • Tenang, santai, senang/puas (0)<br>
+                          • Bisa disentuh sesekali memegang/memeluk, diajak bicara, dialihkan (1)<br>
+                          • Sulit untuk dihibur/dibuat nyaman (2)
+                        </td>
+                        <td v-for="col in filteredItems" :key="col.id" class="text-center text-bold text-xxs border-cell font-mono">
+                          {{ getNyeriDetail(col, 'konsolabilitas') }}
                         </td>
                       </tr>
                     </template>
@@ -335,6 +447,23 @@
                 </table>
               </div>
 
+              <!-- 4. FLACC Reference Table -->
+              <div v-if="activeTab === 'flacc'" class="column items-center q-gutter-y-xs">
+                <!-- Tabel Legenda Skor FLACC -->
+                <table class="legend-table text-xxs font-mono q-mt-xs" style="margin: 0 auto; border-collapse: collapse; border: 1px solid #000;">
+                  <tr>
+                    <td class="border-cell q-px-sm text-bold text-center" style="background-color: #f5f5f5; width: 80px;">Skor 0</td>
+                    <td class="border-cell q-px-sm" style="width: 140px;">TIDAK NYERI</td>
+                    <td class="border-cell q-px-sm text-bold text-center" style="background-color: #f5f5f5; width: 80px;">Skor 1 - 3</td>
+                    <td class="border-cell q-px-sm" style="width: 140px;">NYERI RINGAN</td>
+                    <td class="border-cell q-px-sm text-bold text-center" style="background-color: #f5f5f5; width: 80px;">Skor 4 - 6</td>
+                    <td class="border-cell q-px-sm" style="width: 140px;">NYERI SEDANG</td>
+                    <td class="border-cell q-px-sm text-bold text-center" style="background-color: #f5f5f5; width: 80px;">Skor 7 - 10</td>
+                    <td class="border-cell q-px-sm" style="width: 140px;">NYERI BERAT</td>
+                  </tr>
+                </table>
+              </div>
+
             </div>
 
           </div>
@@ -375,6 +504,7 @@ const autoSetTab = () => {
     if (m?.includes('wong')) activeTab.value = 'wong-baker'
     else if (m?.includes('bps') || m?.includes('behavioral')) activeTab.value = 'bps'
     else if (m?.includes('nips') || m?.includes('neonatal')) activeTab.value = 'nips'
+    else if (m?.includes('flacc')) activeTab.value = 'flacc'
     return
   }
 
@@ -386,6 +516,9 @@ const autoSetTab = () => {
     const diffMonth = today.getFullYear() * 12 + today.getMonth() - birthDate.getFullYear() * 12 - birthDate.getMonth()
     if (diffMonth < 1) {
       activeTab.value = 'nips'
+      return
+    } else if (diffMonth >= 12 && diffMonth <= 36) {
+      activeTab.value = 'flacc'
       return
     }
   }
@@ -419,6 +552,7 @@ const hasRealData = computed(() => {
     if (tabVal === 'wong-baker') return m?.includes('wong')
     if (tabVal === 'bps') return m?.includes('bps') || m?.includes('behavioral')
     if (tabVal === 'nips') return m?.includes('nips') || m?.includes('neonatal')
+    if (tabVal === 'flacc') return m?.includes('flacc')
     return false
   })
 })
@@ -427,6 +561,7 @@ function getMethodLabel(tab) {
   if (tab === 'wong-baker') return 'Wong Baker Face Scale'
   if (tab === 'bps') return 'Behavioral Pain Scale (BPS)'
   if (tab === 'nips') return 'Neonatal Infant Pain Scale (NIPS)'
+  if (tab === 'flacc') return 'FLACC Scale'
   return ''
 }
 
@@ -439,6 +574,8 @@ const documentHeader = computed(() => {
     methodLabel = '(BEHAVIORAL PAIN SCALE - BPS)'
   } else if (activeTab.value === 'nips') {
     methodLabel = '(NEONATAL INFANT PAIN SCALE - NIPS)'
+  } else if (activeTab.value === 'flacc') {
+    methodLabel = '(FLACC SCALE - 1 - 3 TAHUN)'
   }
   return ['REKAM MEDIS', 'ASESMEN ULANG RISIKO NYERI', methodLabel]
 })
@@ -454,6 +591,7 @@ const filteredItems = computed(() => {
       if (tabVal === 'wong-baker') return m?.includes('wong')
       if (tabVal === 'bps') return m?.includes('bps') || m?.includes('behavioral')
       if (tabVal === 'nips') return m?.includes('nips') || m?.includes('neonatal')
+      if (tabVal === 'flacc') return m?.includes('flacc')
       return false
     })
     .map(item => {
@@ -505,6 +643,11 @@ const filteredItems = computed(() => {
 const getNyeriDetail = (col, key) => {
   if (col.isEmpty) return ''
   return col.detailsRaw?.[key]?.skor !== undefined ? col.detailsRaw[key].skor : ''
+}
+
+const getNyeriValue = (col, key) => {
+  if (col.isEmpty) return ''
+  return col.detailsRaw?.[key]?.value !== undefined ? col.detailsRaw[key].value : ''
 }
 
 // Format Tanggal untuk kolom

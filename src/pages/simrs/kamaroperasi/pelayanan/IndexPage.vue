@@ -89,6 +89,12 @@ const menus = ref([
     comp: shallowRef(defineAsyncComponent(() => import('./comppelayanan/pagemenu/PersiapanoperasiPage.vue')))
   },
   {
+    name: 'daftar-tilik',
+    label: 'Daftar Tilik',
+    icon: 'icon-fa-check-double-solid',
+    comp: shallowRef(defineAsyncComponent(() => import('./comppelayanan/pagemenu/compDaftarTilik/IndexPage.vue')))
+  },
+  {
     name: 'e-resep-page',
     label: 'EResep',
     icon: 'icon-mat-receipt',
@@ -109,13 +115,13 @@ const menus = ref([
   },
   {
     name: 'assasement',
-    label: 'Assesement',
+    label: 'Asesemen',
     icon: 'icon-mat-analytics',
     comp: shallowRef(defineAsyncComponent(() => import('./comppelayanan/pagemenu/compAssasement/IndexPage.vue')))
   },
   { // diminta oleh dokter
     name: 'assasement_post_op',
-    label: 'Instruksi Post Operasi',
+    label: 'Instruksi Pasca Bedah',
     icon: 'icon-fa-book-medical-solid',
     comp: shallowRef(defineAsyncComponent(() => import('./comppelayanan/pagemenu/compAssPostOp/IndexPage.vue')))
   },
@@ -140,7 +146,7 @@ const menus = ref([
   },
   {
     name: 'konsultasi',
-    label: 'Konsult Spesialis',
+    label: 'Konsul Spesialis',
     icon: 'textsms',
     comp: shallowRef(defineAsyncComponent(() => import('./comppelayanan/pagemenu/konsul/IndexPage.vue')))
   },

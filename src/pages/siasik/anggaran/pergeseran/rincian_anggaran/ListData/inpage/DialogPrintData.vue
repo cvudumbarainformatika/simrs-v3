@@ -1,5 +1,6 @@
 <template>
-  <q-dialog persistent backdrop-filter="blur(4px)">
+  <q-dialog :model-value="modelValue" @update:model-value="emit('update:modelValue', $event)" persistent
+    backdrop-filter="blur(4px)">
     <q-card style="width: 100%; max-width: 1700px; height: 95vh;">
       <q-layout view="lHh Lpr lFf" container class="shadow-2 rounded-borders">
         <q-header elevated>
@@ -284,7 +285,7 @@
                         </thead>
                         <tbody>
                           <template v-for="it in store.datarkapergeseran" :key="it">
-                            <tr>
+                            <tr @click="bukaRincian(it)" class="cursor-pointer">
                               <td class="text-bold text-left q-py-md"> {{ it.kode }} </td>
                               <td class="text-bold text-left q-py-md" colspan="4"> {{ it.uraian }} </td>
                               <td class="text-right text-bold">
@@ -438,18 +439,32 @@
       </q-layout>
     </q-card>
   </q-dialog>
+  <input-batasan v-model="showRincian" :datas="selectedRincian" />
 </template>
 <script setup>
 import { useBukubesarStore } from 'src/stores/siasik/akuntansi/bukubesar/bukubesar'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, defineAsyncComponent } from 'vue'
 
 // eslint-disable-next-line no-unused-vars
 import { formatDenganRp, formatRpDouble, formattanpaRp } from 'src/modules/formatter'
 import { usePergeseranAnggaranStore } from 'src/stores/siasik/anggaran/pergeseran/pergeseranrincian'
+
+const InputBatasan = defineAsyncComponent(() => import('./DialogInputBatasan.vue'))
 // import listDatapergeseran from '../inpage/ListDataRKApergeseran.vue'
 // import listData from '../inpage/ListDataRKA.vue'
 
 
+const props = defineProps({
+  modelValue: {
+    type: Boolean,
+    default: false
+  },
+  datanpds: {
+    type: Object,
+    default: null
+  }
+})
+const emit = defineEmits(['update:modelValue'])
 const tt = useBukubesarStore()
 const store = usePergeseranAnggaranStore()
 onMounted(() => {
@@ -470,6 +485,19 @@ const printObj = {
   closeCallback(vue) {
     printed.value = false
     console.log('closePrint')
+  }
+}
+
+const showRincian = ref(false)
+const selectedRincian = ref(null)
+const bukaRincian = (item) => {
+  console.log('rincian', item)
+  console.log('store', props?.datanpds)
+  if (item?.rincian?.length > 0) {
+    selectedRincian.value = item
+    showRincian.value = true
+  } else {
+    showRincian.value = false
   }
 }
 

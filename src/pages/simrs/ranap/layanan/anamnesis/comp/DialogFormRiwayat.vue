@@ -13,29 +13,15 @@
 
         <q-card-section style="width:400px; max-height: 50vh" class="scroll">
           <div class="row q-mb-sm">
-            <div v-for="n in store.pls" :key="n">
-              <q-radio v-model="store.formRiwayatObsetri.pl" :val="n" :label="n" />
+            <div class="row items-center q-col-gutter-md">
+              <div>Jenis Kelamin Anak :</div>
+              <q-radio v-for="n in store.pls" :key="n" v-model="store.formRiwayatKehamilan.pl" :val="n" :label="n" />
             </div>
-            <app-input-simrs
-              v-model="store.formRiwayatKehamilan.umurAnak"
-              label="Umur Anak"
-              class-tambahan="col-12"
-            />
-            <app-input-simrs
-              v-model="store.formRiwayatKehamilan.kuAnak"
-              label="K/U Anak"
-              class-tambahan="col-12"
-            />
-            <app-input-simrs
-              v-model="store.formRiwayatKehamilan.bbl"
-              label="BBL"
-              class-tambahan="col-12"
-            />
-            <app-input-simrs
-              v-model="store.formRiwayatKehamilan.riwayatKehamilan"
-              label="Riwayat Kehamilan"
-              class-tambahan="col-12"
-            />
+            <app-input-simrs v-model="store.formRiwayatKehamilan.umurAnak" label="Umur Anak" class-tambahan="col-12" />
+            <app-input-simrs v-model="store.formRiwayatKehamilan.kuAnak" label="K/U Anak" class-tambahan="col-12" />
+            <app-input-simrs v-model="store.formRiwayatKehamilan.bbl" label="BBL" class-tambahan="col-12" />
+            <app-input-simrs v-model="store.formRiwayatKehamilan.riwayatKehamilan" label="Riwayat Kehamilan"
+              class-tambahan="col-12" />
           </div>
         </q-card-section>
 

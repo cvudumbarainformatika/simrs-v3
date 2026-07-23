@@ -87,71 +87,174 @@
         <q-separator class="q-mb-md" />
 
         <!-- Form Keputusan Keluar RR -->
-        <div class="text-subtitle2 text-primary q-mb-sm font-weight-bold">DATA KELUAR RUANG PEMULIHAN</div>
-        <div class="row q-col-gutter-sm">
-          <div class="col-md-2 col-xs-6">
-            <q-input v-model="store.formKeluar.jam_masuk" label="Jam Masuk" dense outlined mask="##:##" />
-            <div class="text-caption text-primary q-mt-xs" v-if="estimasiMasukRR">
-              ℹ️ Est. Masuk RR (Selesai Bedah + 5m): <strong>{{ estimasiMasukRR }}</strong>
-            </div>
-            <div class="text-caption text-grey-6 q-mt-xs" v-else>
-              ℹ️ Est. Masuk RR: Belum diisi
-            </div>
-          </div>
-          <div class="col-md-2 col-xs-6">
-            <q-input v-model="store.formKeluar.jam_keluar" label="Jam Keluar" dense outlined mask="##:##" />
-            <div class="text-caption text-primary q-mt-xs" v-if="estimasiKeluarRR">
-              ℹ️ Est. Keluar RR (Masuk RR + Durasi Log): <strong>{{ estimasiKeluarRR }}</strong>
-            </div>
-            <div class="text-caption text-grey-6 q-mt-xs" v-else>
-              ℹ️ Est. Keluar RR: Belum diisi
-            </div>
-          </div>
-          <div class="col-md-5 col-xs-12">
-            <div class="row q-col-gutter-xs">
-              <div class="col-3"><q-input v-model="store.formKeluar.td_sistolik" label="TD Sis" dense outlined />
+        <div class="text-subtitle2 text-primary q-mb-md font-weight-bold">DATA KELUAR RUANG PEMULIHAN</div>
+
+        <!-- Sub-section 1: Waktu & Tanda Vital Keluar -->
+        <div class="row q-col-gutter-md q-mb-md">
+          <!-- Waktu Pemulihan -->
+          <div class="col-xs-12 col-md-5">
+            <div class="q-pa-sm bg-blue-1 rounded-borders border-blue full-height column justify-between">
+              <div>
+                <div class="text-caption text-weight-bold text-primary q-mb-xs">1. Waktu Pemulihan</div>
+                <div class="row q-col-gutter-sm">
+                  <div class="col-6">
+                    <q-input v-model="store.formKeluar.jam_masuk" label="Jam Masuk RR" dense outlined bg-color="white" mask="##:##" />
+                    <div class="text-caption text-primary q-mt-xs" v-if="estimasiMasukRR">
+                      ℹ️ Est. Masuk: <strong>{{ estimasiMasukRR }}</strong>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <q-input v-model="store.formKeluar.jam_keluar" label="Jam Keluar RR" dense outlined bg-color="white" mask="##:##" />
+                    <div class="text-caption text-primary q-mt-xs" v-if="estimasiKeluarRR">
+                      ℹ️ Est. Keluar: <strong>{{ estimasiKeluarRR }}</strong>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div class="col-3"><q-input v-model="store.formKeluar.td_diastolik" label="TD Dia" dense outlined />
-              </div>
-              <div class="col-3"><q-input v-model="store.formKeluar.nadi" label="HR" dense outlined /></div>
-              <div class="col-3"><q-input v-model="store.formKeluar.rr" label="RR" dense outlined /></div>
             </div>
-          </div>
-          <div class="col-md-3 col-xs-12">
-            <q-input v-model="store.formKeluar.infus" label="Infus" dense outlined />
           </div>
 
-          <div class="col-md-3 col-xs-6">
-            <q-input v-model="store.formKeluar.urine" label="Urine" dense outlined />
-          </div>
-          <div class="col-md-3 col-xs-6">
-            <q-input v-model="store.formKeluar.muntah" label="Muntah" dense outlined />
-          </div>
-          <div :class="store.formKeluar.dipindah_ke == 'Ruangan' ? 'col-md-3 col-xs-6' : 'col-md-6 col-xs-12'">
-            <q-select v-model="store.formKeluar.dipindah_ke" :options="['Ruangan', 'ICU', 'Pulang']"
-              label="Dipindahkan ke" dense outlined />
-          </div>
-          <div v-if="store.formKeluar.dipindah_ke == 'Ruangan'" class="col-md-3 col-xs-6">
-            <q-select v-model="store.formKeluar.ruangan" option-label="rs2" option-value="rs1" :options="store.kamars"
-              :key="store.kamars?.length || 0" label="Pilih Ruangan" dense outlined map-options emit-value />
-          </div>
-
-          <div class="col-md-6 col-xs-12">
-            <app-autocomplete v-model="store.formKeluar.penata_anastesi" :key="laporanOp.nakes?.length || 0" label="Penata Anestesi"
-              outlined dense :source="laporanOp.nakes?.filter(y => y?.kdgroupnakes != '1')" option-label="nama"
-              option-value="kdpegsimrs" hide-dropdown-icon />
-            <!-- <q-input v-model="store.formKeluar.penata_anestesi" label="Penata Anestesi" dense outlined /> -->
-          </div>
-          <div class="col-md-6 col-xs-12">
-            <app-autocomplete v-model="store.formKeluar.dokter_anastesi" :key="laporanOp.nakes?.length || 0" label="Dokter Anestesi"
-              outlined dense :source="laporanOp.nakes?.filter(y => y?.kdgroupnakes == '1')" option-label="nama"
-              option-value="kdpegsimrs" hide-dropdown-icon />
-            <!-- <q-input v-model="store.formKeluar.dokter_anestesi" label="Dokter Anestesi" dense outlined /> -->
+          <!-- Tanda Vital Keluar -->
+          <div class="col-xs-12 col-md-7">
+            <div class="q-pa-sm bg-teal-1 rounded-borders border-teal full-height column justify-between">
+              <div>
+                <div class="text-caption text-weight-bold text-teal-9 q-mb-xs">2. Tanda Vital Saat Keluar</div>
+                <div class="row q-col-gutter-xs">
+                  <div class="col-3"><q-input v-model="store.formKeluar.td_sistolik" label="TD Sis" dense outlined bg-color="white" /></div>
+                  <div class="col-3"><q-input v-model="store.formKeluar.td_diastolik" label="TD Dia" dense outlined bg-color="white" /></div>
+                  <div class="col-3"><q-input v-model="store.formKeluar.nadi" label="HR (Nadi)" dense outlined bg-color="white" /></div>
+                  <div class="col-3"><q-input v-model="store.formKeluar.rr" label="RR (Nafas)" dense outlined bg-color="white" /></div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div class="row q-mt-lg q-mb-xl justify-end">
-          <q-btn color="primary" icon="save" label="Simpan " size="md" no-caps @click="store.simpanFormKeluar()" />
+        <!-- Sub-section 2: Infus, Urine & Muntah -->
+        <div class="row q-col-gutter-md q-mb-md">
+          <!-- Infus Saat Keluar -->
+          <div class="col-xs-12 col-md-5">
+            <div class="q-pa-sm bg-blue-1 rounded-borders border-blue full-height column justify-between">
+              <div>
+                <div class="text-caption text-weight-bold text-primary q-mb-xs">3. Infus Saat Keluar</div>
+                <div class="q-mb-xs">
+                  <div class="row items-center q-gutter-xs q-mb-xs">
+                    <span class="text-caption text-weight-bold text-grey-8">Quick Cairan:</span>
+                    <q-chip v-for="cairan in listCairan" :key="cairan" clickable
+                      color="primary" outline text-color="primary"
+                      size="sm" dense class="q-ma-none q-mr-xs" @click="appendCairan(cairan)">
+                      + {{ cairan }}
+                    </q-chip>
+                  </div>
+                  <div class="row items-center q-gutter-xs bg-white q-pa-xs rounded-borders border-blue">
+                    <span class="text-caption text-weight-bold text-teal-9">Quick TPM:</span>
+                    <q-chip v-for="tpm in listTpm" :key="tpm" clickable color="teal" text-color="white"
+                      size="sm" dense class="q-ma-none q-mr-xs" @click="appendTPM(tpm)">
+                      + {{ tpm }} TPM
+                    </q-chip>
+                  </div>
+                </div>
+              </div>
+              <q-input v-model="store.formKeluar.infus" label="Infus Saat Keluar" dense outlined bg-color="white" />
+            </div>
+          </div>
+
+          <!-- Status Urine -->
+          <div class="col-xs-12 col-md-3">
+            <div class="q-pa-sm bg-indigo-1 rounded-borders border-indigo full-height column justify-between">
+              <div>
+                <div class="text-caption text-weight-bold text-indigo-9 q-mb-xs">4. Status Urine</div>
+                <div class="q-mb-xs">
+                  <div class="row items-center q-gutter-xs">
+                    <q-chip v-for="item in listUrine" :key="item" clickable
+                      color="blue-8" outline text-color="blue-8"
+                      size="sm" dense class="q-ma-none q-mr-xs" @click="appendUrine(item)">
+                      + {{ item }}
+                    </q-chip>
+                  </div>
+                </div>
+              </div>
+              <q-input v-model="store.formKeluar.urine" label="Status Urine" dense outlined bg-color="white" />
+            </div>
+          </div>
+
+          <!-- Status Muntah -->
+          <div class="col-xs-12 col-md-4">
+            <div class="q-pa-sm bg-purple-1 rounded-borders border-purple full-height column justify-between">
+              <div>
+                <div class="text-caption text-weight-bold text-purple-9 q-mb-xs">5. Status Muntah</div>
+                <div class="q-mb-xs">
+                  <div class="row items-center q-gutter-xs">
+                    <q-chip v-for="item in listMuntahFix" :key="item" clickable
+                      color="purple-8" outline text-color="purple-8"
+                      size="sm" dense class="q-ma-none q-mr-xs" @click="appendMuntah(item)">
+                      + {{ item }}
+                    </q-chip>
+                    <q-chip v-for="obat in listObatMual" :key="obat" clickable
+                      color="purple" outline text-color="purple"
+                      size="sm" dense class="q-ma-none q-mr-xs" @click="appendMuntah(obat)">
+                      + {{ obat }}
+                    </q-chip>
+                    <q-chip v-for="mg in listDosisMg" :key="mg" clickable color="purple-7" text-color="white"
+                      size="sm" dense class="q-ma-none q-mr-xs" @click="appendDosisMgMuntah(mg)">
+                      + {{ mg }} mg
+                    </q-chip>
+                    <q-chip clickable color="purple-9" text-color="white" size="sm" dense class="q-ma-none q-mr-xs" @click="appendDosisMgMuntah('')">
+                      + mg
+                    </q-chip>
+                  </div>
+                </div>
+              </div>
+              <q-input v-model="store.formKeluar.muntah" label="Status Muntah" dense outlined bg-color="white" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Sub-section 3: Tujuan Pemindahan & Petugas Anestesi -->
+        <div class="row q-col-gutter-md q-mb-md">
+          <!-- Tujuan Pemindahan -->
+          <div class="col-xs-12 col-md-5">
+            <div class="q-pa-sm bg-cyan-1 rounded-borders border-cyan full-height column justify-between">
+              <div>
+                <div class="text-caption text-weight-bold text-cyan-9 q-mb-xs">6. Tujuan Pemindahan Pasien</div>
+                <div class="row q-col-gutter-xs">
+                  <div :class="store.formKeluar.dipindah_ke == 'Ruangan' ? 'col-6' : 'col-12'">
+                    <q-select v-model="store.formKeluar.dipindah_ke" :options="['Ruangan', 'ICU', 'Pulang']"
+                      label="Dipindahkan ke" dense outlined bg-color="white" />
+                  </div>
+                  <div v-if="store.formKeluar.dipindah_ke == 'Ruangan'" class="col-6">
+                    <q-select v-model="store.formKeluar.ruangan" option-label="rs2" option-value="rs1" :options="store.kamars"
+                      :key="store.kamars?.length || 0" label="Pilih Ruangan" dense outlined map-options emit-value bg-color="white" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Petugas Anestesi -->
+          <div class="col-xs-12 col-md-7">
+            <div class="q-pa-sm bg-grey-1 rounded-borders border-grey full-height column justify-between">
+              <div>
+                <div class="text-caption text-weight-bold text-grey-9 q-mb-xs">7. Petugas Anestesi Bertanggung Jawab</div>
+                <div class="row q-col-gutter-xs">
+                  <div class="col-6">
+                    <app-autocomplete v-model="store.formKeluar.penata_anastesi" :key="laporanOp.nakes?.length || 0" label="Penata Anestesi"
+                      outlined dense :source="laporanOp.nakes?.filter(y => y?.kdgroupnakes != '1')" option-label="nama"
+                      option-value="kdpegsimrs" hide-dropdown-icon bg-color="white" />
+                  </div>
+                  <div class="col-6">
+                    <app-autocomplete v-model="store.formKeluar.dokter_anastesi" :key="laporanOp.nakes?.length || 0" label="Dokter Anestesi"
+                      outlined dense :source="laporanOp.nakes?.filter(y => y?.kdgroupnakes == '1')" option-label="nama"
+                      option-value="kdpegsimrs" hide-dropdown-icon bg-color="white" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row q-mt-lg justify-end">
+          <q-btn color="primary" icon="save" label="Simpan Data Keluar RR" size="md" glossy class="q-px-xl" @click="store.simpanFormKeluar()" />
         </div>
       </q-card-section>
     </q-card>
@@ -251,15 +354,78 @@ const formAldrete = ref({
   kesadaran: null
 })
 
-// const store.formKeluar = ref({
-//   jam_keluar: '',
-//   td_sistolik: '',
-//   td_diastolik: '',
-//   nadi: '',
-//   rr: '',
-//   infus: '',
-//   urine: '',
-//   muntah: '',
+// --- QUICK CHIP INFUS KELUAR RR STATE & METHODS ---
+const listCairan = ref(['RL', 'NaCl 0.9%', 'D5 1/2 NS', 'Gelofusal', 'KA-EN 3B', 'Asering'])
+const listTpm = ref(['7', '10', '15', '20', '28', '30'])
+
+function appendCairan (cairan) {
+  if (!store.formKeluar.infus || !store.formKeluar.infus.trim()) {
+    store.formKeluar.infus = cairan
+  } else {
+    const text = store.formKeluar.infus.trim()
+    if (text.endsWith(',') || text.endsWith(';')) {
+      store.formKeluar.infus = text + ' ' + cairan
+    } else {
+      store.formKeluar.infus = text + ', ' + cairan
+    }
+  }
+}
+
+function appendTPM (tpm) {
+  const tpmStr = `${tpm} TPM`
+  if (!store.formKeluar.infus || !store.formKeluar.infus.trim()) {
+    store.formKeluar.infus = tpmStr
+  } else {
+    const text = store.formKeluar.infus.trim()
+    if (/\d\s*TPM$/i.test(text) || text.endsWith(',') || text.endsWith(';')) {
+      const cleanText = text.replace(/[,;]\s*$/, '')
+      store.formKeluar.infus = cleanText + ', ' + tpmStr
+    } else {
+      store.formKeluar.infus = text + ' ' + tpmStr
+    }
+  }
+}
+
+// --- QUICK CHIP URINE & MUNTAH STATE & METHODS ---
+const listUrine = ref(['TERPASANG KATETER', 'TIDAK TERPASANG KATETER'])
+const listMuntahFix = ref(['TIDAK MUNTAH'])
+const listObatMual = ref(['Ondansetron'])
+const listDosisMg = ref(['4', '8', '2'])
+
+function appendUrine (val) {
+  const currentVal = String(store.formKeluar.urine || '').trim()
+  if (!currentVal) {
+    store.formKeluar.urine = val
+  } else if (currentVal.endsWith(',') || currentVal.endsWith(';')) {
+    store.formKeluar.urine = currentVal + ' ' + val
+  } else {
+    store.formKeluar.urine = currentVal + ', ' + val
+  }
+}
+
+function appendMuntah (val) {
+  const currentVal = String(store.formKeluar.muntah || '').trim()
+  if (!currentVal) {
+    store.formKeluar.muntah = val
+  } else if (currentVal.endsWith(',') || currentVal.endsWith(';')) {
+    store.formKeluar.muntah = currentVal + ' ' + val
+  } else {
+    store.formKeluar.muntah = currentVal + ', ' + val
+  }
+}
+
+function appendDosisMgMuntah (mg) {
+  const mgStr = mg ? `${mg} mg` : 'mg'
+  const currentVal = String(store.formKeluar.muntah || '').trim()
+  if (!currentVal) {
+    store.formKeluar.muntah = mgStr
+  } else if (/\d\s*mg$/i.test(currentVal) || currentVal.endsWith(',') || currentVal.endsWith(';')) {
+    const cleanText = currentVal.replace(/[,;]\s*$/, '')
+    store.formKeluar.muntah = cleanText + ', ' + mgStr
+  } else {
+    store.formKeluar.muntah = currentVal + ' ' + mgStr
+  }
+}
 //   dipindah_ke: '',
 //   penata_anestesi: '',
 //   dokter_anestesi: ''
@@ -397,3 +563,12 @@ onMounted(async () => {
   }
 })
 </script>
+
+<style scoped>
+.border-blue { border: 1px solid #90caf9; }
+.border-teal { border: 1px solid #80cbc4; }
+.border-indigo { border: 1px solid #9fa8da; }
+.border-purple { border: 1px solid #ce93d8; }
+.border-cyan { border: 1px solid #80deea; }
+.border-grey { border: 1px solid #e0e0e0; }
+</style>

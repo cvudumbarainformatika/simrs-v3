@@ -34,10 +34,10 @@
             {{ menu?.title }}
           </div>
           <div class="text-center text-bold">
-            RAWAT INAP
+            {{ kasus?.uraian.toUpperCase() }}
           </div>
           <div class="text-center text-bold">
-            {{ kasus?.uraian.toUpperCase() }}
+            RAWAT INAP
           </div>
         </div>
       </div>
@@ -117,7 +117,7 @@
         </tbody>
       </table>
     </div>
-    <div class="section" v-if="!anamnesisAwal?.neonatal">
+    <!-- <div class="section" v-if="!anamnesisAwal?.neonatal">
       <div class="section-title">Pengkajian Keperawatan : </div>
       <table class="tablex">
         <tbody>
@@ -132,7 +132,7 @@
           </tr>
         </tbody>
       </table>
-    </div>
+    </div> -->
 
     <div class="section" v-if="anamnesisAwal?.neonatal">
       <div class="section-title" style="margin-top: 5px;">Anamnesis: </div>
@@ -212,7 +212,7 @@
     </div>
 
     <div class="section" v-if="!anamnesisAwal?.neonatal">
-      <div class="section-title" style="margin-top: 5px;">Riwayat Kesehatan: </div>
+      <div class="section-title" style="margin-top: 5px;">Anamnesis: </div>
       <table class="tablex">
         <tbody>
           <tr style="border: none !important; padding: 0px !important;">
@@ -257,9 +257,263 @@
             <td style="border: none !important; padding: 0px !important;"> : {{
               anamnesisAwal?.pediatrik?.rwImunisasi?.join(', ') || '-' }}</td>
           </tr>
+          <template v-if="anamnesisAwal?.kebidanan">
+            <tr style="border: none !important; padding: 0px !important;">
+              <td style="border: none !important; padding: 0px !important; width:20%;">- Riwayat KB</td>
+            </tr>
+            <tr style="border: none !important; padding: 0px !important;">
+              <td
+                style="border: none !important; padding-left: 20px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important; width:20%;">
+                Jenis KB</td>
+              <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
+                anamnesisAwal?.kebidanan?.rwKbJns || '-' }}
+              </td>
+              <td style="border: none !important; padding: 0px !important; width: 20%;">Lama KB</td>
+              <td style="border: none !important; padding: 0px !important;">: {{ anamnesisAwal?.kebidanan?.rwKbLama ||
+                '-' }}
+              </td>
+            </tr>
+            <tr style="border: none !important; padding: 0px !important;">
+              <td
+                style="border: none !important; padding-left: 20px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important; width: 20%;">
+                Keluhan KB</td>
+              <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
+                anamnesisAwal?.kebidanan?.rwKbKeluhan || '-' }}</td>
+            </tr>
 
+            <tr style="border: none !important; padding: 0px !important;">
+              <td style="border: none !important; padding: 0px !important; width:20%;">- Riwayat Menstruasi</td>
+            </tr>
+            <tr style="border: none !important; padding: 0px !important;">
+              <td
+                style="border: none !important; padding-left: 20px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important; width:20%;">
+                Menarche</td>
+              <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
+                anamnesisAwal?.kebidanan?.menarche || '-' }} thn
+              </td>
+              <td style="border: none !important; padding: 0px !important; width: 20%;">Siklus Hari</td>
+              <td style="border: none !important; padding: 0px !important;">: {{ anamnesisAwal?.kebidanan?.siklusHari ||
+                '-' }} Hari
+              </td>
+            </tr>
+            <tr style="border: none !important; padding: 0px !important;">
+              <td
+                style="border: none !important; padding-left: 20px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important; width: 20%;">
+                Siklus</td>
+              <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
+                anamnesisAwal?.kebidanan?.siklus || '-' }}</td>
+              <td style="border: none !important; padding: 0px !important; width: 20%;">Lama Menstruasi</td>
+              <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
+                anamnesisAwal?.kebidanan?.lamaMens || '-' }} hari</td>
+            </tr>
+            <tr style="border: none !important; padding: 0px !important;">
+              <td
+                style="border: none !important; padding-left: 20px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important; width: 20%;">
+                Kondisi Menstruasi</td>
+              <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
+                anamnesisAwal?.kebidanan?.kondisiMens || '-' }}</td>
+              <td style="border: none !important; padding: 0px !important; width: 20%;">HPHT</td>
+              <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
+                formatTanggalInt(anamnesisAwal?.kebidanan?.hpht) || '-' }}</td>
+            </tr>
+            <tr style="border: none !important; padding: 0px !important;">
+              <td
+                style="border: none !important; padding-left: 20px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important; width: 20%;">
+                Tgl Perkiraan Persalinan</td>
+              <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
+                dateFullFormat(anamnesisAwal?.kebidanan?.tglPerkPersalinan) || '-' }}</td>
+            </tr>
+
+
+
+            <tr style="border: none !important; padding: 0px !important;">
+              <td style="border: none !important; padding: 0px !important; width:20%;">- Riwayat Perkawinan</td>
+            </tr>
+            <tr style="border: none !important; padding: 0px !important;">
+              <td
+                style="border: none !important; padding-left: 20px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;  width:20%;">
+                Status</td>
+              <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
+                anamnesisAwal?.kebidanan?.rwKawinStatus || '-' }}
+              </td>
+              <td style="border: none !important; padding: 0px !important; width: 20%;">Perkawinan ke</td>
+              <td style="border: none !important; padding: 0px !important;">: {{ anamnesisAwal?.kebidanan?.kawinKe ||
+                '-' }}
+              </td>
+            </tr>
+            <tr style="border: none !important; padding: 0px !important;">
+              <td
+                style="border: none !important; padding-left: 20px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;  width: 20%;">
+                Nikah Umur</td>
+              <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
+                anamnesisAwal?.kebidanan?.nikahUmur || '-' }} thn</td>
+            </tr>
+
+
+            <tr style="border: none !important; padding: 0px !important;">
+              <td colspan="2" style="border: none !important; padding: 0px !important; width:20%;">- Riwayat Kehamilan,
+                Persalinan,
+                Nifas: </td>
+            </tr>
+            <tr style="border: none !important; padding: 0px !important;">
+              <td
+                style="border: none !important; padding-left: 20px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important; width:20%;">
+                G / P / Ab / Ah</td>
+              <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
+                anamnesisAwal?.kebidanan?.g || '-' }} / {{ anamnesisAwal?.kebidanan?.p || '-' }} / {{
+                  anamnesisAwal?.kebidanan?.ab || '-' }} / {{ anamnesisAwal?.kebidanan?.ah || '-' }}
+              </td>
+            </tr>
+            <tr style="border: none !important; padding: 0px !important;">
+              <td
+                style="border: none !important; padding-left: 20px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important; width: 20%;">
+                Imunisasi</td>
+              <td style="border: none !important; padding: 0px !important;">: {{ anamnesisAwal?.kebidanan?.imunisasi ||
+                '-' }}
+              </td>
+            </tr>
+          </template>
         </tbody>
       </table>
+
+
+      <template v-if="anamnesisAwal?.kebidanan">
+        <table class="q-mb-md" style="margin-top: 5px;">
+          <thead>
+            <tr>
+              <th width="3%">
+                No
+              </th>
+              <th width="3%">
+                P/L
+              </th>
+              <th width="10%">
+                Umur Anak
+              </th>
+              <th>K/U Anak</th>
+              <th>BBL</th>
+              <th>Riwayat Kehamilan</th>
+            </tr>
+          </thead>
+          <tbody v-if="store.riwayatKehamilans.length">
+            <tr v-for="(item, i) in store.riwayatKehamilans" :key="i">
+              <td>{{ i + 1 }}</td>
+              <td>{{ item?.pl }}</td>
+              <td>{{ item?.umurAnak }}</td>
+              <td>{{ item?.kuAnak }}</td>
+              <td>{{ item?.bbl }}</td>
+              <td>{{ item?.riwayatKehamilan }}</td>
+            </tr>
+          </tbody>
+          <tbody v-else>
+            <tr>
+              <td colspan="7">
+                <div class="flex flex-center">
+                  Belum ada riwayat Kehamilan
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- <div class="section-title" style="margin-top: 5px;">Pola Eliminasi: </div> -->
+        <table class="tablex">
+          <tbody>
+            <tr style="border: none !important; padding: 0px !important;">
+              <td style="border: none !important; padding: 0px !important; width:20%;">- Pola Eliminasi</td>
+            </tr>
+            <tr style="border: none !important; padding: 0px !important;">
+              <td
+                style="border: none !important; padding-left: 20px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;  width:20%;">
+                BAB</td>
+              <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
+                anamnesisAwal?.kebidanan?.bab || '-' }} kali/hari</td>
+              <td
+                style="border: none !important;  padding-left: 20px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important; width: 20%;">
+                BAK</td>
+              <td style="border: none !important; padding: 0px !important;">: {{
+                anamnesisAwal?.kebidanan?.bak ||
+                '-' }} kali/hari
+              </td>
+            </tr>
+            <tr style="border: none !important; padding: 0px !important;">
+              <td
+                style="border: none !important;  padding-left: 20px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important; width: 20%;">
+                Konsistensi</td>
+              <td style="border: none !important; padding: 0px !important;">: {{ anamnesisAwal?.kebidanan?.konsistensi
+                ||
+                '-' }}
+              </td>
+              <td
+                style="border: none !important; padding-left: 20px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;  width:20%;">
+                Jumlah BAK</td>
+              <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
+                anamnesisAwal?.kebidanan?.jmlBak || '-' }} ml/hari</td>
+
+            </tr>
+            <tr style="border: none !important; padding: 0px !important;">
+              <td
+                style="border: none !important; padding-left: 20px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;  width:20%;">
+                Warna</td>
+              <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
+                anamnesisAwal?.kebidanan?.warna || '-' }}</td>
+              <td
+                style="border: none !important;  padding-left: 20px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important; width: 20%;">
+                Warna Urine</td>
+              <td style="border: none !important; padding: 0px !important;">: {{
+                anamnesisAwal?.kebidanan?.warnaUrine ||
+                '-' }}
+              </td>
+
+            </tr>
+            <tr style="border: none !important; padding: 0px !important;">
+              <td
+                style="border: none !important;  padding-left: 20px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important; width: 20%;">
+                Peristatik Usus</td>
+              <td style="border: none !important; padding: 0px !important;">: {{
+                anamnesisAwal?.kebidanan?.peristatikUsus ||
+                '-' }} kali/menit
+              </td>
+              <td
+                style="border: none !important; padding-left: 20px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;  width:20%;">
+                Terpasang Kateter</td>
+              <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
+                anamnesisAwal?.kebidanan?.kateter || '-' }}</td>
+
+            </tr>
+            <tr style="border: none !important; padding: 0px !important;">
+              <td
+                style="border: none !important; padding-left: 20px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;  width:20%;">
+                Flatus</td>
+              <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
+                anamnesisAwal?.kebidanan?.flatus || '-' }}</td>
+              <td
+                style="border: none !important;  padding-left: 20px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important; width: 20%;">
+                Kateter Hari ke</td>
+              <td style="border: none !important; padding: 0px !important;">: {{
+                anamnesisAwal?.kebidanan?.kttHrKe ||
+                '-' }}
+              </td>
+
+            </tr>
+            <tr style="border: none !important; padding: 0px !important;">
+              <td
+                style="border: none !important;  padding-left: 20px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important; width: 20%;">
+                Keluhan BAB</td>
+              <td style="border: none !important; padding: 0px !important;">: {{
+                anamnesisAwal?.kebidanan?.keluhan ||
+                '-' }}
+              </td>
+              <td
+                style="border: none !important; padding-left: 20px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;  width:20%;">
+                Keluhan BAK</td>
+              <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
+                anamnesisAwal?.kebidanan?.keluhanBak?.length ? anamnesisAwal?.kebidanan?.keluhanBak : '-' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </template>
+
     </div>
     <!-- Kajian Nyeri Neonatal-->
     <div v-if="anamnesisAwal?.keluhannyeri?.neonatal" class="section">
@@ -660,9 +914,191 @@
     </div>
 
 
+    <!-- PEMERIKSAAN KHUSUS -->
+    <template v-if="pemeriksaanUmum?.kebidanan">
+      <div class="section-title" style="margin-top: 5px;">Pemeriksaan Khusus:</div>
+      <table class="tablex">
+        <tbody>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td class="text-bold" style="border: none !important; padding: 0px !important; width:20%;">Hamil / Bersalin
+            </td>
+          </tr>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td style="border: none !important; padding: 0px !important; width:20%;">- Inspeksi</td>
+            <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
+              pemeriksaanUmum?.kebidanan?.hmlInspeksi || '-' }}</td>
+          </tr>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td style="border: none !important; padding: 0px !important; width: 20%;">- Palpasi</td>
+            <td style="border: none !important; padding: 0px !important;">: {{
+              pemeriksaanUmum?.kebidanan?.hmlTfuPuka || '-' }}</td>
+            <td style="border: none !important; padding: 0px !important; width:20%;">- Punggung</td>
+            <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
+              pemeriksaanUmum?.kebidanan?.hmlTfuPuki || '-' }}</td>
+
+          </tr>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td style="border: none !important; padding: 0px !important; width:20%;">- Presentasi</td>
+            <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
+              pemeriksaanUmum?.kebidanan?.hmlTfuPresentasi || '-' }}</td>
+            <td style="border: none !important; padding: 0px !important; width: 20%;">- Nyeri Tekan</td>
+            <td style="border: none !important; padding: 0px !important;">: {{
+              pemeriksaanUmum?.kebidanan?.hmlNyeri || '-' }}
+            </td>
+          </tr>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td style="border: none !important; padding: 0px !important; width:20%;">- Osborn Test</td>
+            <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
+              pemeriksaanUmum?.kebidanan?.hmlOsborn || '-' }}</td>
+            <td style="border: none !important; padding: 0px !important; width: 20%;">- Cekungan pada Perut/Bandle</td>
+            <td style="border: none !important; padding: 0px !important;">: {{
+              pemeriksaanUmum?.kebidanan?.hmlCekung ||
+              '-' }}
+            </td>
+          </tr>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td style="border: none !important; padding: 0px !important; width:20%;">- Auskultasi</td>
+            <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
+              pemeriksaanUmum?.kebidanan?.hmlAusDenyut || '-' }} kali/menit</td>
+            <td style="border: none !important; padding: 0px !important; width: 20%;">- His/Kontraksi</td>
+            <td style="border: none !important; padding: 0px !important;">: {{
+              pemeriksaanUmum?.kebidanan?.hmlHisFrekuensi || '-' }}
+            </td>
+          </tr>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td style="border: none !important; padding: 0px !important; width:20%;">- Apakah Teratur ?</td>
+            <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
+              pemeriksaanUmum?.kebidanan?.hmlAusTeratur || '-' }}</td>
+            <td style="border: none !important; padding: 0px !important; width: 20%;">- Intensitas</td>
+            <td style="border: none !important; padding: 0px !important;">: {{
+              pemeriksaanUmum?.kebidanan?.hmlHisIntensitas || '-' }}
+            </td>
+          </tr>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td style="border: none !important; padding: 0px !important; width:20%;">- Pengeluaran per Vaginam</td>
+          </tr>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td
+              style="border: none !important; padding-left: 20px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;  width:20%;">
+              Bentuk</td>
+            <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
+              pemeriksaanUmum?.kebidanan?.hmlVgnBentuk || '-' }}</td>
+            <td
+              style="border: none !important; padding-left: 20px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;  width: 20%;">
+              Jumlah</td>
+            <td style="border: none !important; padding: 0px !important;">: {{
+              pemeriksaanUmum?.kebidanan?.hmlVgnJml ||
+              '-' }}</td>
+          </tr>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td
+              style="border: none !important; padding-left: 20px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;  width:20%;">
+              Air Ketuban</td>
+            <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
+              pemeriksaanUmum?.kebidanan?.hmlVgnKtuban || '-' }}</td>
+            <td
+              style="border: none !important; padding-left: 20px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;  width: 20%;">
+              Vagina Toucher</td>
+            <td style="border: none !important; padding: 0px !important;">: {{
+              pemeriksaanUmum?.kebidanan?.hmlVgnToucher ||
+              '-' }}, <span v-if="pemeriksaanUmum?.kebidanan?.hmlVgnToucher === 'Ya'">Ket: {{
+                pemeriksaanUmum?.kebidanan?.hmlKeteranganVgnToucher }}</span></td>
+          </tr>
+
+          <tr style="border: none !important; padding: 0px !important;">
+            <td class="text-bold" style="border: none !important; padding: 0px !important; width:20%;">Nifas
+            </td>
+          </tr>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td style="border: none !important; padding: 0px !important; width:20%;">- Tinggi Fundus Uteri</td>
+            <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
+              pemeriksaanUmum?.kebidanan?.nfsTfu || '-' }}</td>
+            <td style="border: none !important; padding: 0px !important; width: 20%;">- Kontraksi Uterus</td>
+            <td style="border: none !important; padding: 0px !important;">: {{
+              pemeriksaanUmum?.kebidanan?.nfsUterus || '-' }} </td>
+          </tr>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td style="border: none !important; padding: 0px !important; width:20%;">- Pengeluaran per Vaginam</td>
+          </tr>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td
+              style="border: none !important; padding-left: 20px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;  width:20%;">
+              Bentuk</td>
+            <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
+              pemeriksaanUmum?.kebidanan?.nfsVgnBentuk || '-' }}</td>
+            <td
+              style="border: none !important; padding-left: 20px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;  width: 20%;">
+              Jumlah</td>
+            <td style="border: none !important; padding: 0px !important;">: {{
+              pemeriksaanUmum?.kebidanan?.nfsVgnJml ||
+              '-' }}</td>
+          </tr>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td
+              style="border: none !important; padding-left: 20px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;  width:20%;">
+              Lochea</td>
+            <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
+              pemeriksaanUmum?.kebidanan?.nfsVgnLochea || '-' }}</td>
+            <td
+              style="border: none !important; padding-left: 20px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;  width: 20%;">
+              Luka Jalan Lahir</td>
+            <td style="border: none !important; padding: 0px !important;">: {{
+              pemeriksaanUmum?.kebidanan?.nfsVgnLuka ||
+              '-' }}</td>
+          </tr>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td
+              style="border: none !important; padding-left: 20px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;  width:20%;">
+              Derajat Luka</td>
+            <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
+              pemeriksaanUmum?.kebidanan?.nfsVgnDrjLuka || '-' }}</td>
+            <td
+              style="border: none !important; padding-left: 20px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;  width: 20%;">
+              Luka Post Sectio</td>
+            <td style="border: none !important; padding: 0px !important;">: {{
+              pemeriksaanUmum?.kebidanan?.nfsVgnLukaPost ||
+              '-' }}</td>
+          </tr>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td class="text-bold" style="border: none !important; padding: 0px !important; width:20%;">Gynecologi
+            </td>
+          </tr>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td style="border: none !important; padding: 0px !important; width:20%;">- Palpasi</td>
+            <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
+              pemeriksaanUmum?.kebidanan?.gynecologiPalpasi || '-' }}</td>
+          </tr>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td style="border: none !important; padding: 0px !important; width:20%;">- Inspekulo</td>
+          </tr>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td
+              style="border: none !important; padding-left: 20px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;  width:20%;">
+              Vagina</td>
+            <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
+              pemeriksaanUmum?.kebidanan?.gynecologiInsVgn || '-' }}</td>
+            <td
+              style="border: none !important; padding-left: 20px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;  width: 20%;">
+              Portio</td>
+            <td style="border: none !important; padding: 0px !important;">: {{
+              pemeriksaanUmum?.kebidanan?.gynecologiInsPortio ||
+              '-' }}</td>
+          </tr>
+          <tr style="border: none !important; padding: 0px !important;">
+            <td
+              style="border: none !important; padding-left: 20px !important; padding-right: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;  width:20%;">
+              Vagina Toucher</td>
+            <td style="border: none !important; padding: 0px !important; width: 30%;"> : {{
+              pemeriksaanUmum?.kebidanan?.gynecologiInsVgnToucher || '-' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </template>
+
+
 
     <!-- Pemeriksaan : Fisik -->
-    <div class="section">
+    <div v-if="!anamnesisAwal?.kebidanan" class="section">
       <div class="section-title">Pemeriksaan Fisik : </div>
       <table style="margin-top: -3px">
         <thead>
@@ -1268,7 +1704,7 @@
       </div>
 
       <!-- Diagnosa keperawatan -->
-      <div class="section">
+      <div v-if="pasien?.diagnosakeperawatan && !pasien?.diagnosakebidanan" class="section">
         <div class="section-title">Diagnosis Keperawatan</div>
         <table style="margin-top: -5px;">
           <thead>
@@ -1304,9 +1740,48 @@
             </template>
           </tbody>
         </table>
-
       </div>
 
+
+      <!-- Diagnosa keperawatan -->
+      <div v-if="pasien?.diagnosakebidanan.length > 0" class="section">
+        <div class="section-title">Diagnosis Kebidanan</div>
+        <table style="margin-top: -5px;">
+          <thead>
+            <tr>
+              <th>DIAGNOSA KEBIDANAN</th>
+              <th>PLANN</th>
+              <th>INTERVENSI</th>
+            </tr>
+          </thead>
+          <tbody>
+            <template v-for="(item, i) in pasien?.diagnosakebidanan" :key="i">
+              <tr>
+                <td>
+                  <div> - {{ item?.nama }}</div>
+                </td>
+                <td>
+                  <div v-for="plann in kepPlann(item)" :key="plann">
+                    <div class="row no-wrap">
+                      <div class="col-auto q-mr-xs">-</div>
+                      <div class="col-auto">{{ plann?.masterintervensi?.nama }}</div>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <div v-for="plann in kepInter(item)" :key="plann">
+                    <div class="row no-wrap">
+                      <div class="col-auto q-mr-xs">-</div>
+                      <div class="col-auto">{{ plann?.masterintervensi?.nama }}</div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </template>
+          </tbody>
+        </table>
+
+      </div>
 
       <!-- Discharge Planning -->
       <div class="section">
@@ -1425,6 +1900,7 @@ import { dateFullFormat, getNewLine, jamTnpDetik } from 'src/modules/formatter'
 import { useImplementasiEdukasiRanapStore } from 'src/stores/simrs/ranap/implementasiEdukasi'
 import { imageToBase64 } from 'src/modules/imgBase64';
 import { computed, onMounted, ref } from 'vue'
+import { useAnamnesisRanapStore } from 'src/stores/simrs/ranap/anamnesis';
 
 const props = defineProps({
   pasien: {
@@ -1447,8 +1923,10 @@ const props = defineProps({
 
 // const dpjp = ref(null)
 const impEdukasi = useImplementasiEdukasiRanapStore()
+const store = useAnamnesisRanapStore()
 onMounted(async () => {
   // await getDpjpData()
+  console.log('pasien', props?.pasien)
   await impEdukasi.getList(props.pasien)
 
   if (penerimanEdu.value) {
@@ -1508,12 +1986,12 @@ const qrPenerima = computed(() => {
   return `https://rsud.probolinggokota.go.id/dokumen-simrs/legalitas/${enc}`
 })
 function kepPlann(item) {
-  const inter = item?.intervensi?.filter(x => x?.masterintervensi?.group === 'plann')
-  // console.log('item', item, inter)
+  const inter = item?.intervensi?.filter(x => x?.masterintervensi?.group?.trim()?.toLowerCase() === 'plann')
+  // console.log('item    ccccc', item, inter)
   return inter
 }
 function kepInter(item) {
-  const inter = item?.intervensi?.filter(x => x?.masterintervensi?.group !== 'plann')
+  const inter = item?.intervensi?.filter(x => x?.masterintervensi?.group?.trim()?.toLowerCase() !== 'plann')
   // console.log('item', item, inter)
   return inter
 }
@@ -1580,6 +2058,34 @@ const dischargeplanning = computed(() => [
   { label: 'Apakah pasien memerlukan latihan fisik', value: jawabdischargeplanning?.rs19, ket: jawabdischargeplanning?.rs19Ket }
 ])
 
+
+function formatTanggalInt(nilai) {
+  if (!nilai) return ''
+
+  nilai = String(nilai)
+
+  let hari, bulan, tahun
+
+  if (nilai.length === 7) {
+    hari = nilai.substring(0, 1).padStart(2, '0')
+    bulan = nilai.substring(1, 3)
+    tahun = nilai.substring(3)
+  } else if (nilai.length === 8) {
+    hari = nilai.substring(0, 2)
+    bulan = nilai.substring(2, 4)
+    tahun = nilai.substring(4)
+  } else {
+    return nilai
+  }
+
+  const tanggal = new Date(`${tahun}-${bulan}-${hari}`)
+
+  return tanggal.toLocaleDateString('id-ID', {
+    day: '2-digit',
+    month: 'long',
+    year: 'numeric'
+  })
+}
 </script>
 
 <style lang="scss" scoped>

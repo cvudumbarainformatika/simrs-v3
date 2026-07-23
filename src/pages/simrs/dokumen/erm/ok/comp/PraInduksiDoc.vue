@@ -106,10 +106,10 @@
                 <td width="25%" class="text-weight-bold">Vital Sign</td>
                 <td colspan="3">
                   Kesadaran/Sens: {{ dataInduksi?.vit_sens || '-' }} |
-                  TD: {{ dataInduksi?.vit_td_sistole || '-' }}/{{ dataInduksi?.vit_td_diastole || '-' }} mmHg |
-                  Nadi: {{ dataInduksi?.vit_nadi || '-' }} x/menit |
-                  RR: {{ dataInduksi?.vit_rr || '-' }} x/menit |
-                  Suhu: {{ dataInduksi?.vit_suhu || '-' }} °C
+                  TD: {{ formatNoZero(dataInduksi?.vit_td_sistole) }}/{{ formatNoZero(dataInduksi?.vit_td_diastole) }} mmHg |
+                  Nadi: {{ formatNoZero(dataInduksi?.vit_nadi) }} x/menit |
+                  RR: {{ formatNoZero(dataInduksi?.vit_rr) }} x/menit |
+                  Suhu: {{ formatNoZero(dataInduksi?.vit_suhu) }} °C
                 </td>
               </tr>
               <tr>
@@ -260,6 +260,15 @@ const props = defineProps({
 const store = useAssasementPraBedahStore()
 const laporanOp = useLaporanOperasiStore()
 const refPrint = ref()
+
+function formatNoZero (val) {
+  if (val === null || val === undefined || val === '') return '-'
+  const str = String(val).trim().replace(',', '.')
+  if (isNaN(str)) return str
+  const num = parseFloat(str)
+  if (isNaN(num)) return str
+  return String(num)
+}
 
 const dataInduksi = computed(() => {
   return props.pasien?.pra_induksi || {}

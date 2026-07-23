@@ -151,41 +151,41 @@ export const usePengunjungRanapStore = defineStore('pengunjung-ranap', {
         // Data ini hanya dibaca (display), tidak perlu deep reactive
         datax.dataigd = data?.dataigd ? markRaw(data.dataigd) : null
         datax.newapotekrajal = markRaw(data?.newapotekrajal ?? [])
-        datax.diagnosa = markRaw(data?.diagnosa ?? [])
-        datax.anamnesis = markRaw(data?.anamnesis ?? []) // wes
-        datax.pemeriksaan = markRaw(data?.pemeriksaan ?? []) // wes
-        datax.penilaian = markRaw(data?.penilaian ?? []) // wes
-        datax.diagnosamedis = markRaw(data?.diagnosamedis ?? [])
-        datax.tindakan = markRaw(data?.tindakan ?? [])
-        datax.diagnosakeperawatan = markRaw(data?.diagnosakeperawatan ?? [])
-        datax.diagnosakebidanan = markRaw(data?.diagnosakebidanan ?? [])
-        datax.diagnosagizi = markRaw(data?.diagnosagizi ?? [])
-        datax.cppt = markRaw(data?.cppt ?? [])
-        datax.laborats = markRaw(data?.laborats ?? [])
-        datax.laboratold = markRaw(data?.laboratold ?? [])
-        datax.hasilradiologi = markRaw(data?.hasilradiologi ?? [])
-        datax.radiologi = markRaw(data?.radiologi ?? [])
-        datax.fisio = markRaw(data?.fisio ?? [])
-        datax.operasi = markRaw(data?.operasi ?? [])
-        datax.bankdarah = markRaw(data?.bankdarah ?? [])
-        datax.apheresis = markRaw(data?.apheresis ?? [])
-        datax.cathlab = markRaw(data?.cathlab ?? [])
-        datax.penunjanglain = markRaw(data?.penunjanglain ?? [])
-        datax.permintaanambulan = markRaw(data?.permintaanambulan ?? [])
-        datax.perawatanjenazah = markRaw(data?.perawatanjenazah ?? [])
-        datax.hais = markRaw(data?.hais ?? [])
-        datax.konsultasi = markRaw(data?.konsultasi ?? [])
-        datax.edukasi = markRaw(data?.edukasi ?? [])
-        datax.dokumenluar = markRaw(data?.dokumenluar ?? [])
-        datax.informconcern = markRaw(data?.informconcern ?? [])
-        datax.dischargeplanning = markRaw(data?.dischargeplanning ?? [])
-        datax.skriningdischargeplannings = markRaw(data?.skriningdischargeplannings ?? [])
-        datax.summarydischargeplannings = markRaw(data?.summarydischargeplannings ?? [])
-        datax.statuscovid = markRaw(data?.statuscovid ?? [])
-        datax.procedure = markRaw(data?.procedure ?? [])
-        datax.keterangantindakan = markRaw(data?.keterangantindakan ?? [])
+        datax.diagnosa = markRaw(data?.diagnosa ?? []) // tetep markRaw karena master list sangat besar
+        datax.anamnesis = data?.anamnesis ?? [] // wes
+        datax.pemeriksaan = data?.pemeriksaan ?? [] // wes
+        datax.penilaian = data?.penilaian ?? [] // wes
+        datax.diagnosamedis = data?.diagnosamedis ?? []
+        datax.tindakan = data?.tindakan ?? []
+        datax.diagnosakeperawatan = data?.diagnosakeperawatan ?? []
+        datax.diagnosakebidanan = data?.diagnosakebidanan ?? []
+        datax.diagnosagizi = data?.diagnosagizi ?? []
+        datax.cppt = data?.cppt ?? []
+        datax.laborats = data?.laborats ?? []
+        datax.laboratold = data?.laboratold ?? []
+        datax.hasilradiologi = data?.hasilradiologi ?? []
+        datax.radiologi = data?.radiologi ?? []
+        datax.fisio = data?.fisio ?? []
+        datax.operasi = data?.operasi ?? []
+        datax.bankdarah = data?.bankdarah ?? []
+        datax.apheresis = data?.apheresis ?? []
+        datax.cathlab = data?.cathlab ?? []
+        datax.penunjanglain = data?.penunjanglain ?? []
+        datax.permintaanambulan = data?.permintaanambulan ?? []
+        datax.perawatanjenazah = data?.perawatanjenazah ?? []
+        datax.hais = data?.hais ?? []
+        datax.konsultasi = data?.konsultasi ?? []
+        datax.edukasi = data?.edukasi ?? []
+        datax.dokumenluar = data?.dokumenluar ?? []
+        datax.informconcern = data?.informconcern ?? []
+        datax.dischargeplanning = data?.dischargeplanning ?? []
+        datax.skriningdischargeplannings = data?.skriningdischargeplannings ?? []
+        datax.summarydischargeplannings = data?.summarydischargeplannings ?? []
+        datax.statuscovid = data?.statuscovid ?? []
+        datax.procedure = data?.procedure ?? []
+        datax.keterangantindakan = data?.keterangantindakan ?? []
         datax.planningdokter = data?.planningdokter ?? null
-        datax.serah_terima = markRaw(data?.serah_terima ?? [])
+        datax.serah_terima = data?.serah_terima ?? []
 
         // data sementara
         datax.diagnosaKeperawatanUlangSementara = []
@@ -458,6 +458,9 @@ export const usePengunjungRanapStore = defineStore('pengunjung-ranap', {
           data[kode] = val
         }
         else {
+          if (!data[kode]) {
+            data[kode] = []
+          }
           const target = data[kode]?.find(x => x.id === val?.id) ?? null
           // console.log('inject target pasien', target, kode, val, data)
           // console.log('inject kode pasien', kode)

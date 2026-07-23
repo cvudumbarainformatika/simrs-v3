@@ -7,7 +7,7 @@
             LIST CPPT
           </div>
           <div class="caption text-grey-4">
-            Sebagai Catatan Perkembangan Pasien
+            Sebagai Catatan Perkembangan Pasien Terintegrasi
           </div>
         </div>
         <div>

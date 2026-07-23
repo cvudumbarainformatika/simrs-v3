@@ -1,542 +1,424 @@
 <template>
-  <div class="q-pa-sm">
-    <div class="row items-center">
-      <div class="col-auto depan ">Keluhan Utama</div>
-      <div class="col-auto dua">:</div>
-      <div class="col-auto belakang">
-        <q-input v-model="store.formInduksi.keluhan_utama" label="" type="textarea" />
-      </div>
-    </div>
+  <div class="q-pa-md bg-grey-2 style-form">
+    <!-- SECTION 1: ANAMNESIS & PERSIAPAN PRA INDUKSI -->
+    <q-card flat bordered class="bg-white q-mb-md rounded-borders shadow-1 overflow-hidden">
+      <q-card-section class="q-pa-sm bg-primary text-white row items-center">
+        <q-icon name="assignment_ind" size="sm" class="q-mr-sm" />
+        <div class="text-subtitle2 text-weight-bold">1. ANAMNESIS & PERSIAPAN PRA INDUKSI</div>
+      </q-card-section>
 
-    <div class="row items-center">
-      <div class="col-auto depan ">Diagnosa</div>
-      <div class="col-auto dua">:</div>
-      <div class="col-auto belakang">
-        <q-input ref="refDiagnosa" v-model="store.formInduksi.diagnosa" label="" :rules="[
-          val => (!val || val?.length <= 255) || 'Maksimal 255 karakter'
-        ]" />
-      </div>
-    </div>
+      <q-card-section class="q-pa-md">
+        <div class="row q-col-gutter-md">
+          <!-- Keluhan Utama -->
+          <div class="col-xs-12 col-md-6">
+            <div class="text-caption text-weight-bold text-grey-8 q-mb-xs">
+              Keluhan Utama
+              <q-badge v-if="isFilled(store.formInduksi.keluhan_utama)" color="primary" label="✓ Terisi" class="q-ml-xs" />
+            </div>
+            <q-input v-model="store.formInduksi.keluhan_utama" label="Masukkan Keluhan Utama" type="textarea" outlined rows="2" :bg-color="isFilled(store.formInduksi.keluhan_utama) ? 'blue-1' : 'white'" />
+          </div>
 
-    <div class="row items-center">
-      <div class="col-auto depan ">Rencana Pembedahan</div>
-      <div class="col-auto dua">:</div>
-      <div class="col-auto belakang">
-        <q-input v-model="store.formInduksi.rencana_bedah" label="" type="textarea" />
-      </div>
-    </div>
-
-    <div class="row items-center q-py-xs">
-      <div class="col-auto depan ">Riwayat Anestesi</div>
-      <div class="col-auto dua">:</div>
-      <div class="col-auto belakang">
-        <q-option-group v-model="store.formInduksi.riwayat_anastesi" :options="options" inline dense
-          @update:model-value="clearJenis($event, 'jenis_riwayat_anastesi', 'Tidak')" />
-        <q-input v-if="store?.formInduksi?.riwayat_anastesi == 'Ya'" v-model="store.formInduksi.jenis_riwayat_anastesi"
-          label="Jenis Anestesi" :rules="[
-            val => (!val || val?.length <= 255) || 'Maksimal 255 karakter'
-          ]" />
-      </div>
-    </div>
-
-    <div class="row items-center q-py-xs">
-      <div class="col-auto depan ">Riwayat Merokok</div>
-      <div class="col-auto dua">:</div>
-      <div class="col-auto belakang">
-        <q-option-group v-model="store.formInduksi.riwayat_merokok" :options="options" inline dense />
-      </div>
-    </div>
-
-    <div class="row items-center q-py-xs">
-      <div class="col-auto depan ">Alkoholik</div>
-      <div class="col-auto dua">:</div>
-      <div class="col-auto belakang">
-        <q-option-group v-model="store.formInduksi.alkohol" :options="options" inline dense />
-      </div>
-    </div>
-
-    <div class="row items-center q-py-xs">
-      <div class="col-auto depan ">Riwayat Alergi</div>
-      <div class="col-auto dua">:</div>
-      <div class="col-auto belakang">
-        <q-option-group v-model="store.formInduksi.riwayat_alergi" :options="options" inline dense
-          @update:model-value="clearJenis($event, 'jenis_alergi', 'Tidak')" />
-        <q-input v-if="store?.formInduksi?.riwayat_alergi == 'Ya'" v-model="store.formInduksi.jenis_alergi"
-          label="Jenis Alergi" dense :rules="[
-            val => (!val || val?.length <= 255) || 'Maksimal 255 karakter'
-          ]" />
-      </div>
-    </div>
-
-    <div class="row items-center q-py-xs">
-      <div class="col-auto depan ">Persiapan Transfusi</div>
-      <div class="col-auto dua">:</div>
-      <div class="col-auto belakang">
-        <q-option-group v-model="store.formInduksi.persiapan_transfusi" :options="options" inline dense
-          @update:model-value="(val) => {
-            clearJenis(val, 'jenis_transfusi', 'Tidak')
-            clearJenis(val, 'jumlah_transfusi', 'Tidak')
-          }" />
-        <div v-if="store?.formInduksi?.persiapan_transfusi == 'Ya'" class="row q-col-gutter-x-sm">
-          <div class="col-6">
-            <q-input v-model="store.formInduksi.jenis_transfusi" label="Jenis Transfusi" dense :rules="[
+          <!-- Diagnosa -->
+          <div class="col-xs-12 col-md-6">
+            <div class="text-caption text-weight-bold text-grey-8 q-mb-xs">
+              Diagnosa
+              <q-badge v-if="isFilled(store.formInduksi.diagnosa)" color="primary" label="✓ Terisi" class="q-ml-xs" />
+            </div>
+            <q-input ref="refDiagnosa" v-model="store.formInduksi.diagnosa" label="Diagnosa Pra-Induksi" outlined dense :bg-color="isFilled(store.formInduksi.diagnosa) ? 'blue-1' : 'white'" :rules="[
               val => (!val || val?.length <= 255) || 'Maksimal 255 karakter'
             ]" />
+            <div class="text-caption text-primary q-mt-xs" v-if="props.pasien?.rs4">
+              ℹ️ Diagnosa Permintaan: <strong>{{ props.pasien?.rs4 }}</strong>
+            </div>
+            <div class="text-caption text-grey-6 q-mt-xs" v-else>
+              ℹ️ Diagnosa Permintaan: Belum diisi
+            </div>
           </div>
-          <div class="col-6">
-            <div class="row no-wrap items-center">
-              <div class="col-10">
-                <q-input v-model="store.formInduksi.jumlah_transfusi" label="Jumlah Transfusi" dense :rules="[
-                  val => (!val || /^-?\d*[.,]?\d*$/.test(val)) || 'Format angka tidak valid'
+
+          <!-- Rencana Pembedahan -->
+          <div class="col-xs-12">
+            <div class="text-caption text-weight-bold text-grey-8 q-mb-xs">
+              Rencana Pembedahan
+              <q-badge v-if="isFilled(store.formInduksi.rencana_bedah)" color="primary" label="✓ Terisi" class="q-ml-xs" />
+            </div>
+            <q-input v-model="store.formInduksi.rencana_bedah" label="Rencana Pembedahan / Prosedur" type="textarea" outlined rows="2" :bg-color="isFilled(store.formInduksi.rencana_bedah) ? 'blue-1' : 'white'" />
+            <div class="text-caption text-primary q-mt-xs" v-if="allTindakanOp">
+              ℹ️ Tindakan Operasi: <strong>{{ allTindakanOp }}</strong>
+            </div>
+            <div class="text-caption text-grey-6 q-mt-xs" v-else>
+              ℹ️ Tindakan Operasi: Belum diisi
+            </div>
+          </div>
+
+          <!-- Riwayat-Riwayat Pasien (Grid 2 Kolom) -->
+          <div class="col-xs-12 col-md-6">
+            <div class="q-pa-sm rounded-borders transition-generic" :class="isFilled(store.formInduksi.riwayat_anastesi) ? 'bg-blue-1 border-blue' : 'bg-grey-1 border-grey'">
+              <div class="text-caption text-weight-bold text-primary q-mb-xs">
+                Riwayat Anestesi
+                <q-badge v-if="isFilled(store.formInduksi.riwayat_anastesi)" color="primary" label="✓ Terisi" class="q-ml-xs" />
+              </div>
+              <q-option-group v-model="store.formInduksi.riwayat_anastesi" :options="options" inline dense color="primary"
+                @update:model-value="clearJenis($event, 'jenis_riwayat_anastesi', 'Tidak')" />
+              <q-input v-if="store?.formInduksi?.riwayat_anastesi == 'Ya'" v-model="store.formInduksi.jenis_riwayat_anastesi"
+                label="Sebutkan Jenis Anestesi" outlined dense class="q-mt-sm bg-white" :rules="[
+                  val => (!val || val?.length <= 255) || 'Maksimal 255 karakter'
+                ]" />
+            </div>
+          </div>
+
+          <div class="col-xs-12 col-md-6">
+            <div class="q-pa-sm rounded-borders transition-generic" :class="isFilled(store.formInduksi.riwayat_alergi) ? 'bg-blue-1 border-blue' : 'bg-grey-1 border-grey'">
+              <div class="text-caption text-weight-bold text-primary q-mb-xs">
+                Riwayat Alergi
+                <q-badge v-if="isFilled(store.formInduksi.riwayat_alergi)" color="primary" label="✓ Terisi" class="q-ml-xs" />
+              </div>
+              <q-option-group v-model="store.formInduksi.riwayat_alergi" :options="options" inline dense color="primary"
+                @update:model-value="clearJenis($event, 'jenis_alergi', 'Tidak')" />
+              <q-input v-if="store?.formInduksi?.riwayat_alergi == 'Ya'" v-model="store.formInduksi.jenis_alergi"
+                label="Sebutkan Jenis Alergi" outlined dense class="q-mt-sm bg-white" :rules="[
+                  val => (!val || val?.length <= 255) || 'Maksimal 255 karakter'
+                ]" />
+            </div>
+          </div>
+
+          <div class="col-xs-12 col-md-4">
+            <div class="q-pa-sm rounded-borders transition-generic" :class="isFilled(store.formInduksi.riwayat_merokok) ? 'bg-blue-1 border-blue' : 'bg-grey-1 border-grey'">
+              <div class="text-caption text-weight-bold text-grey-9 q-mb-xs">
+                Riwayat Merokok
+                <q-badge v-if="isFilled(store.formInduksi.riwayat_merokok)" color="primary" label="✓ Terisi" class="q-ml-xs" />
+              </div>
+              <q-option-group v-model="store.formInduksi.riwayat_merokok" :options="options" inline dense color="primary" />
+            </div>
+          </div>
+
+          <div class="col-xs-12 col-md-4">
+            <div class="q-pa-sm rounded-borders transition-generic" :class="isFilled(store.formInduksi.alkohol) ? 'bg-blue-1 border-blue' : 'bg-grey-1 border-grey'">
+              <div class="text-caption text-weight-bold text-grey-9 q-mb-xs">
+                Alkoholik
+                <q-badge v-if="isFilled(store.formInduksi.alkohol)" color="primary" label="✓ Terisi" class="q-ml-xs" />
+              </div>
+              <q-option-group v-model="store.formInduksi.alkohol" :options="options" inline dense color="primary" />
+            </div>
+          </div>
+
+          <div class="col-xs-12 col-md-4">
+            <div class="q-pa-sm rounded-borders transition-generic" :class="isFilled(store.formInduksi.persiapan_transfusi) ? 'bg-blue-1 border-blue' : 'bg-grey-1 border-grey'">
+              <div class="text-caption text-weight-bold text-grey-9 q-mb-xs">
+                Persiapan Transfusi
+                <q-badge v-if="isFilled(store.formInduksi.persiapan_transfusi)" color="primary" label="✓ Terisi" class="q-ml-xs" />
+              </div>
+              <q-option-group v-model="store.formInduksi.persiapan_transfusi" :options="options" inline dense color="primary"
+                @update:model-value="(val) => {
+                  clearJenis(val, 'jenis_transfusi', 'Tidak')
+                  clearJenis(val, 'jumlah_transfusi', 'Tidak')
+                }" />
+              <div v-if="store?.formInduksi?.persiapan_transfusi == 'Ya'" class="row q-col-gutter-x-xs q-mt-xs">
+                <div class="col-7">
+                  <q-input v-model="store.formInduksi.jenis_transfusi" label="Jenis Transfusi" outlined dense class="bg-white" :rules="[
+                    val => (!val || val?.length <= 255) || 'Maksimal 255 karakter'
+                  ]" />
+                </div>
+                <div class="col-5">
+                  <q-input v-model="store.formInduksi.jumlah_transfusi" label="Jumlah (Kolf)" outlined dense class="bg-white" :rules="[
+                    val => (!val || /^-?\d*[.,]?\d*$/.test(val)) || 'Harus angka'
+                  ]" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </q-card-section>
+    </q-card>
+
+    <!-- SECTION 2: PENGUKURAN VITAL SIGN -->
+    <q-card flat bordered class="bg-white q-mb-md rounded-borders shadow-1 overflow-hidden">
+      <q-card-section class="q-pa-sm bg-teal-8 text-white row items-center">
+        <q-icon name="monitor_heart" size="sm" class="q-mr-sm" />
+        <div class="text-subtitle2 text-weight-bold">2. PENGUKURAN VITAL SIGN</div>
+      </q-card-section>
+
+      <q-card-section class="q-pa-md">
+        <div class="row q-col-gutter-md">
+          <div class="col-xs-12 col-sm-4 col-md-3">
+            <div class="text-caption text-weight-bold text-grey-8 q-mb-xs">Kesadaran (Sens)</div>
+            <q-select v-model="store.formInduksi.vit_sens" label="Pilih Kesadaran" :options="optionKesadaran" outlined dense emit-value map-options clearable :bg-color="isFilled(store.formInduksi.vit_sens) ? 'teal-1' : 'white'" />
+          </div>
+          <div class="col-xs-12 col-sm-4 col-md-3">
+            <div class="text-caption text-weight-bold text-grey-8 q-mb-xs">Tekanan Darah (TD)</div>
+            <div class="row items-center no-wrap">
+              <q-input v-model="store.formInduksi.vit_td_sistole" label="Sis" outlined dense class="col" :bg-color="isFilled(store.formInduksi.vit_td_sistole) ? 'teal-1' : 'white'" />
+              <span class="q-px-xs text-weight-bold text-grey-7">/</span>
+              <q-input v-model="store.formInduksi.vit_td_diastole" label="Dia" outlined dense class="col" :bg-color="isFilled(store.formInduksi.vit_td_diastole) ? 'teal-1' : 'white'" />
+              <span class="q-ml-xs text-caption text-grey-7">mmHg</span>
+            </div>
+          </div>
+          <div class="col-xs-12 col-sm-4 col-md-2">
+            <div class="text-caption text-weight-bold text-grey-8 q-mb-xs">Nadi</div>
+            <q-input v-model="store.formInduksi.vit_nadi" label="Nadi" outlined dense :bg-color="isFilled(store.formInduksi.vit_nadi) ? 'teal-1' : 'white'" suffix="x/mnt" />
+          </div>
+          <div class="col-xs-12 col-sm-6 col-md-2">
+            <div class="text-caption text-weight-bold text-grey-8 q-mb-xs">Respirasi (RR)</div>
+            <q-input v-model="store.formInduksi.vit_rr" label="RR" outlined dense :bg-color="isFilled(store.formInduksi.vit_rr) ? 'teal-1' : 'white'" suffix="x/mnt" />
+          </div>
+          <div class="col-xs-12 col-sm-6 col-md-3">
+            <div class="text-caption text-weight-bold text-grey-8 q-mb-xs">Suhu</div>
+            <q-input v-model="store.formInduksi.vit_suhu" label="Suhu" outlined dense :bg-color="isFilled(store.formInduksi.vit_suhu) ? 'teal-1' : 'white'" suffix="°C" />
+          </div>
+        </div>
+      </q-card-section>
+    </q-card>
+
+    <!-- SECTION 3: PEMERIKSAAN FISIK & PENUNJANG -->
+    <q-card flat bordered class="bg-white q-mb-md rounded-borders shadow-1 overflow-hidden">
+      <q-card-section class="q-pa-sm bg-deep-orange-7 text-white row items-center">
+        <q-icon name="clinical_notes" size="sm" class="q-mr-sm" />
+        <div class="text-subtitle2 text-weight-bold">3. PEMERIKSAAN FISIK & PENUNJANG</div>
+      </q-card-section>
+
+      <q-card-section class="q-pa-md">
+        <div class="row q-col-gutter-md">
+          <!-- Sub 1: Jalan Napas & Mulut -->
+          <div class="col-xs-12 col-md-6">
+            <div class="q-pa-sm bg-orange-1 rounded-borders border-orange">
+              <div class="text-weight-bold text-deep-orange-9 q-mb-sm">Organ & Jalan Napas</div>
+              <div class="q-mb-xs">
+                <span class="text-caption text-weight-bold text-grey-9">Jalan Napas (Kesulitan Intubasi):</span>
+                <q-option-group v-model="store.formInduksi.fis_jalan_napas" :options="options" inline dense color="primary" class="q-ml-sm" />
+              </div>
+              <div class="q-mb-xs">
+                <span class="text-caption text-weight-bold text-grey-9">Mulut:</span>
+                <q-option-group v-model="store.formInduksi.fis_mulut" :options="options" inline dense color="primary" class="q-ml-sm" />
+              </div>
+              <div class="q-mb-xs">
+                <span class="text-caption text-weight-bold text-grey-9">Tenggorokan:</span>
+                <q-option-group v-model="store.formInduksi.fis_tenggorokan" :options="options" inline dense color="primary" class="q-ml-sm" />
+              </div>
+              <div class="q-mt-sm">
+                <div class="text-caption text-weight-bold text-grey-9 q-mb-xs">Skor Mallampati:</div>
+                <q-option-group v-model="store.formInduksi.fis_skor_mallapati" :options="optionMallapatis" inline dense color="primary" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Sub 2: Sistemik & Abdomen -->
+          <div class="col-xs-12 col-md-6">
+            <div class="q-pa-sm bg-orange-1 rounded-borders border-orange full-height column justify-between">
+              <div>
+                <div class="text-weight-bold text-deep-orange-9 q-mb-sm">Pemeriksaan Sistemik</div>
+                <div class="q-mb-xs">
+                  <span class="text-caption text-weight-bold text-grey-9">Kelainan Tulang Belakang:</span>
+                  <q-option-group v-model="store.formInduksi.fis_kel_tul_bel" :options="options" inline dense color="primary" class="q-ml-sm" />
+                </div>
+                <div class="q-mb-xs">
+                  <span class="text-caption text-weight-bold text-grey-9">Kelainan Jantung / Paru-paru:</span>
+                  <q-option-group v-model="store.formInduksi.fis_kel_jan_par" :options="options" inline dense color="primary" class="q-ml-sm" />
+                </div>
+              </div>
+              <div class="q-mt-sm">
+                <div class="text-caption text-weight-bold text-grey-9 q-mb-xs">Abdomen:</div>
+                <q-input v-model="store.formInduksi.fis_abdomen" label="Keterangan Abdomen" outlined dense :bg-color="isFilled(store.formInduksi.fis_abdomen) ? 'orange-1' : 'white'" :rules="[
+                  val => (!val || val?.length <= 255) || 'Maksimal 255 karakter'
                 ]" />
               </div>
-              <div class="col-2 f-14">
-                Kolf/Unit
+            </div>
+          </div>
+
+          <!-- Sub 3: Pemeriksaan Penunjang -->
+          <div class="col-xs-12">
+            <div class="text-weight-bold text-grey-9 q-mb-xs">Pemeriksaan Penunjang</div>
+            <div class="row q-col-gutter-sm">
+              <div class="col-xs-12 col-sm-3">
+                <q-input v-model="store.formInduksi.fis_penj_lab" label="Laboratorium" outlined dense :bg-color="isFilled(store.formInduksi.fis_penj_lab) ? 'orange-1' : 'white'" />
+              </div>
+              <div class="col-xs-12 col-sm-3">
+                <q-input v-model="store.formInduksi.fis_penj_ekg" label="EKG" outlined dense :bg-color="isFilled(store.formInduksi.fis_penj_ekg) ? 'orange-1' : 'white'" />
+              </div>
+              <div class="col-xs-12 col-sm-3">
+                <q-input v-model="store.formInduksi.fis_penj_thorax" label="Thorax" outlined dense :bg-color="isFilled(store.formInduksi.fis_penj_thorax) ? 'orange-1' : 'white'" />
+              </div>
+              <div class="col-xs-12 col-sm-3">
+                <q-input v-model="store.formInduksi.fis_penj_lain" label="Lain-lain" outlined dense :bg-color="isFilled(store.formInduksi.fis_penj_lain) ? 'orange-1' : 'white'" />
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </div>
+      </q-card-section>
+    </q-card>
 
-    <div class="row items-center">
-      <div class="col-auto depan ">Pengukuran Vital Sign</div>
-      <div class="col-auto dua">:</div>
-      <div class="col-auto belakang">
-        <div class="row q-col-gutter-x-lg">
-          <div class="col-6">
-            <div class="row items-center">
-              <div class="col-2">Sens :</div>
-              <div class="col-10">
-                <q-input v-model="store.formInduksi.vit_sens" label="" dense />
+    <!-- SECTION 4: EVALUASI RISIKO & RENCANA ANESTESI -->
+    <q-card flat bordered class="bg-white q-mb-md rounded-borders shadow-1 overflow-hidden">
+      <q-card-section class="q-pa-sm bg-indigo-7 text-white row items-center">
+        <q-icon name="medical_services" size="sm" class="q-mr-sm" />
+        <div class="text-subtitle2 text-weight-bold">4. EVALUASI RISIKO & RENCANA ANESTESI</div>
+      </q-card-section>
+
+      <q-card-section class="q-pa-md">
+        <div class="row q-col-gutter-md">
+          <!-- Skor Nyeri & ASA -->
+          <div class="col-xs-12 col-md-6">
+            <div class="q-pa-sm rounded-borders transition-generic" :class="isFilled(store.formInduksi.ket_skor_nyeri) ? 'bg-indigo-1 border-indigo' : 'bg-grey-1 border-grey'">
+              <div class="text-caption text-weight-bold text-indigo-9 q-mb-xs">
+                Skor Nyeri
+                <q-badge v-if="isFilled(store.formInduksi.ket_skor_nyeri)" color="indigo" label="✓ Terisi" class="q-ml-xs" />
               </div>
+              <q-option-group v-model="store.formInduksi.ket_skor_nyeri" :options="SkorNyeriOptions" inline dense color="primary" />
             </div>
           </div>
 
-          <div class="col-6">
-            <div class="row items-center">
-              <div class="col-2">TD :</div>
-              <div class="col-3">
-                <q-input v-model="store.formInduksi.vit_td_sistole" label="" dense />
+          <div class="col-xs-12 col-md-6">
+            <div class="q-pa-sm rounded-borders transition-generic" :class="isFilled(store.formInduksi.klasifikasi_asa) ? 'bg-indigo-1 border-indigo' : 'bg-grey-1 border-grey'">
+              <div class="text-caption text-weight-bold text-indigo-9 q-mb-xs">
+                Klasifikasi ASA
+                <q-badge v-if="isFilled(store.formInduksi.klasifikasi_asa)" color="indigo" label="✓ Terisi" class="q-ml-xs" />
               </div>
-              <div class="col-2 text-center">/</div>
-              <div class="col-3">
-                <q-input v-model="store.formInduksi.vit_td_diastole" label="" dense />
-              </div>
-              <div class="col-2">mmHg</div>
+              <q-option-group v-model="store.formInduksi.klasifikasi_asa" :options="KlasifikasiAsaOptions" inline dense color="primary" />
             </div>
           </div>
 
-          <div class="col-6">
-            <div class="row items-center">
-              <div class="col-2">Nadi :</div>
-              <div class="col-8">
-                <q-input v-model="store.formInduksi.vit_nadi" label="" dense />
+          <!-- Rencana Anestesi & Teknik -->
+          <div class="col-xs-12">
+            <div class="q-pa-md bg-grey-1 rounded-borders border-grey">
+              <div class="row items-center q-mb-sm">
+                <div class="text-subtitle2 text-weight-bold text-primary q-mr-md">Rencana Anestesi:</div>
+                <q-option-group v-model="store.formInduksi.renc_anastesi" :options="RenAnasOptions" inline dense color="primary"
+                  @update:model-value="() => { store.formInduksi.region_anas = null }" />
               </div>
-              <div class="col-2">x/mnt</div>
-            </div>
-          </div>
-
-          <div class="col-6">
-            <div class="row items-center">
-              <div class="col-2">RR :</div>
-              <div class="col-8">
-                <q-input v-model="store.formInduksi.vit_rr" label="" dense />
-              </div>
-              <div class="col-2">x/mnt</div>
-            </div>
-          </div>
-
-          <div class="col-6">
-            <div class="row items-center">
-              <div class="col-2">Suhu :</div>
-              <div class="col-8">
-                <q-input v-model="store.formInduksi.vit_suhu" label="" dense />
-              </div>
-              <div class="col-2">
-                °C
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-    <div class="row text-weight-bold f-14">Pemeriksaan Fisik :</div>
-    <div class="row items-start">
-      <div class="col-auto" style="width: 2%;">
-        1.
-      </div>
-      <div class="col-auto" style="width: 98%;">
-        <div class="row items-center q-mb-xs">
-          <div class="col-auto depan">Jalan Napas (Kesulitan Intubasi)</div>
-          <div class="col-auto dua">:</div>
-          <div class="col-auto belakang">
-            <q-option-group v-model="store.formInduksi.fis_jalan_napas" :options="options" inline dense />
-          </div>
-        </div>
-
-        <div class="row items-center q-my-xs">
-          <div class="col-auto depan">Mulut</div>
-          <div class="col-auto dua">:</div>
-          <div class="col-auto belakang">
-            <q-option-group v-model="store.formInduksi.fis_mulut" :options="options" inline dense />
-          </div>
-        </div>
-
-        <div class="row items-center q-my-xs">
-          <div class="col-auto depan">Tenggorokan</div>
-          <div class="col-auto dua">:</div>
-          <div class="col-auto belakang">
-            <q-option-group v-model="store.formInduksi.fis_tenggorokan" :options="options" inline dense />
-          </div>
-        </div>
-
-        <div class="row items-center q-my-xs">
-          <div class="col-auto depan">Skor Mallampati</div>
-          <div class="col-auto dua">:</div>
-          <div class="col-auto belakang">
-            <q-option-group v-model="store.formInduksi.fis_skor_mallapati" :options="optionMallapatis" inline dense />
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="row items-start">
-      <div class="col-auto" style="width: 2%;">
-        2.
-      </div>
-      <div class="col-auto" style="width: 98%;">
-        <div class="row items-center q-mb-xs">
-          <div class="col-auto depan">Kelainan Tulang Belakang</div>
-          <div class="col-auto dua">:</div>
-          <div class="col-auto belakang">
-            <q-option-group v-model="store.formInduksi.fis_kel_tul_bel" :options="options" inline dense />
-          </div>
-        </div>
-
-        <div class="row items-center q-my-xs">
-          <div class="col-auto depan">Kelainan Jantung / Paru-paru</div>
-          <div class="col-auto dua">:</div>
-          <div class="col-auto belakang">
-            <q-option-group v-model="store.formInduksi.fis_kel_jan_par" :options="options" inline dense />
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="row q-my-xs">
-      <div class="col-auto" style="width: 2%;">
-        3.
-      </div>
-      <div class="col-auto" style="width: 98%;">
-        <div class="row items-start">
-          <div class="col-auto depan ">Abdomen</div>
-          <div class="col-auto dua">:</div>
-          <div class="col-auto belakang">
-            <q-input v-model="store.formInduksi.fis_abdomen" label="" :rules="[
-              val => (!val || val?.length <= 255) || 'Maksimal 255 karakter'
-            ]" dense />
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="row q-my-xs">
-      <div class="col-auto" style="width: 2%;">
-        4.
-      </div>
-      <div class="col-auto" style="width: 98%;">
-        <div class="row items-start">Pemeriksaan Penunjang</div>
-        <div class="row items-center">
-          <div class="col-auto depan ">Laboratorium</div>
-          <div class="col-auto dua">:</div>
-          <div class="col-auto belakang">
-            <q-input v-model="store.formInduksi.fis_penj_lab" label="" :rules="[
-              val => (!val || val?.length <= 255) || 'Maksimal 255 karakter'
-            ]" dense />
-          </div>
-        </div>
-        <div class="row items-center">
-          <div class="col-auto depan ">EKG</div>
-          <div class="col-auto dua">:</div>
-          <div class="col-auto belakang">
-            <q-input v-model="store.formInduksi.fis_penj_ekg" label="" :rules="[
-              val => (!val || val?.length <= 255) || 'Maksimal 255 karakter'
-            ]" dense />
-          </div>
-        </div>
-        <div class="row items-center">
-          <div class="col-auto depan ">Thorak</div>
-          <div class="col-auto dua">:</div>
-          <div class="col-auto belakang">
-            <q-input v-model="store.formInduksi.fis_penj_thorax" label="" :rules="[
-              val => (!val || val?.length <= 255) || 'Maksimal 255 karakter'
-            ]" dense />
-          </div>
-        </div>
-        <div class="row items-center">
-          <div class="col-auto depan ">Lain-lain</div>
-          <div class="col-auto dua">:</div>
-          <div class="col-auto belakang">
-            <q-input v-model="store.formInduksi.fis_penj_lain" label="" :rules="[
-              val => (!val || val?.length <= 255) || 'Maksimal 255 karakter'
-            ]" dense />
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="row q-my-xs">
-      <div class="col-auto" style="width: 2%;">
-        5.
-      </div>
-      <div class="col-auto" style="width: 98%;">
-        <div class="row items-start q-mm-xs">
-          <div class="col-auto depan">Skor Nyeri</div>
-          <div class="col-auto dua">:</div>
-          <div class="col-auto belakang">
-            <q-option-group v-model="store.formInduksi.ket_skor_nyeri" :options="SkorNyeriOptions" inline dense />
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="row q-my-xs">
-      <div class="col-auto" style="width: 2%;">
-        6.
-      </div>
-      <div class="col-auto" style="width: 98%;">
-        <div class="row items-start q-mm-xs">
-          <div class="col-auto depan">Klasifikasi Asa</div>
-          <div class="col-auto dua">:</div>
-          <div class="col-auto belakang">
-            <q-option-group v-model="store.formInduksi.klasifikasi_asa" :options="KlasifikasiAsaOptions" inline dense />
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="row q-my-xs">
-      <div class="col-auto" style="width: 2%;">
-        7.
-      </div>
-      <div class="col-auto" style="width: 98%;">
-        <div class="row items-start q-mm-xs">
-          <div class="col-auto depan">Rencana Anestesi</div>
-          <div class="col-auto dua">:</div>
-          <div class="col-auto belakang">
-            <div class="row items-center">
-              <div class="col-4">
-                <q-option-group v-model="store.formInduksi.renc_anastesi" :options="RenAnasOptions" inline dense
-                  @update:model-value="() => {
-                    clearJenis($event, 'region_anas', 'Regional')
-                    clearJenis($event, 'region_anas', 'Umum')
-                  }" />
-              </div>
-              <div class="col-6">
-
-              </div>
-            </div>
-            <div class="row items-center q-my-xs">
-              <div v-if="store.formInduksi.renc_anastesi == 'Regional'" class="col-1">
-              </div>
-              <div class="col-10 q-ml-xs">
+              <div v-if="store.formInduksi.renc_anastesi" class="q-mt-sm q-pl-md border-left-primary">
+                <div class="text-caption text-weight-bold text-grey-8 q-mb-xs">Teknik {{ store.formInduksi.renc_anastesi }}:</div>
                 <q-option-group v-if="store.formInduksi.renc_anastesi == 'Regional'"
-                  v-model="store.formInduksi.region_anas" :options="RegionAnasOptions" inline dense />
+                  v-model="store.formInduksi.region_anas" :options="RegionAnasOptions" inline dense color="primary" />
                 <q-option-group v-if="store.formInduksi.renc_anastesi == 'Umum'" v-model="store.formInduksi.region_anas"
-                  :options="UmumAnasOptions" inline dense />
+                  :options="UmumAnasOptions" inline dense color="primary" />
               </div>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
-    <div class="row q-my-xs">
-      <div class="col-auto" style="width: 2%;">
-        8.
-      </div>
-      <div class="col-auto" style="width: 98%;">
-        <div class="row items-start q-mm-xs">
-          <div class="col-auto depan">Rencana Pemulihan Pasca Anestesi</div>
-          <div class="col-auto dua">:</div>
-          <div class="col-auto belakang">
-            <q-option-group v-model="store.formInduksi.renc_pemulihan_pasca_anas"
-              :options="RencPemulihanPascaAnaOptions" inline dense />
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="row q-my-xs">
-      <div class="col-auto" style="width: 2%;">
-        9.
-      </div>
-      <div class="col-auto" style="width: 98%;">
-        <div class="row items-start q-mm-xs">
-          <div class="col-auto depan">Rencana Management Nyeri</div>
-          <div class="col-auto dua">:</div>
-          <div class="col-auto belakang">
-            <q-option-group v-model="store.formInduksi.renc_management_nyeri" :options="RencManagementNyesiOptions"
-              inline dense />
-          </div>
-        </div>
-      </div>
-    </div>
 
-    <div class="row q-my-xs">
-      <div class="col-auto" style="width: 2%;">
-        10.
-      </div>
-      <div class="col-auto" style="width: 98%;">
-        <div class="row items-start q-mm-xs">
-          <div class="col-auto depan">Pemberian Obat pre-medikasi</div>
-          <div class="col-auto dua">:</div>
-          <div class="col-auto belakang">
+          <!-- Rencana Pemulihan & Management Nyeri -->
+          <div class="col-xs-12 col-md-6">
+            <div class="text-caption text-weight-bold text-grey-8 q-mb-xs">Rencana Pemulihan Pasca Anestesi</div>
+            <q-option-group v-model="store.formInduksi.renc_pemulihan_pasca_anas" :options="RencPemulihanPascaAnaOptions" inline dense color="primary" />
+          </div>
+
+          <div class="col-xs-12 col-md-6">
+            <div class="text-caption text-weight-bold text-grey-8 q-mb-xs">Rencana Management Nyeri</div>
+            <q-option-group v-model="store.formInduksi.renc_management_nyeri" :options="RencManagementNyesiOptions" inline dense color="primary" />
           </div>
         </div>
-        <div class="row">
-          <table style="width: calc(80vw + 10px); margin-bottom: 10px;">
-            <thead class="my-sticky-header-table">
-              <tr>
-                <th width="5%" class="q-pa-xs">No</th>
-                <th class="q-pa-xs">Obat Pre-Medikasi</th>
-                <th class="q-pa-xs">Dosis</th>
-                <th class="q-pa-xs">Jam</th>
-                <th class="q-pa-xs">Pelaksana</th>
-                <th class="q-pa-xs">#</th>
+      </q-card-section>
+    </q-card>
+
+    <!-- SECTION 5: LOG PEMBERIAN OBAT PRE-MEDIKASI -->
+    <q-card flat bordered class="bg-white q-mb-md rounded-borders shadow-1 overflow-hidden">
+      <q-card-section class="q-pa-sm bg-purple-7 text-white row items-center">
+        <q-icon name="medication" size="sm" class="q-mr-sm" />
+        <div class="text-subtitle2 text-weight-bold">5. LOG PEMBERIAN OBAT PRE-MEDIKASI</div>
+      </q-card-section>
+
+      <q-card-section class="q-pa-sm">
+        <div class="responsive-table-box scroll">
+          <table class="doc-table-styled full-width">
+            <thead>
+              <tr class="bg-purple-1 text-purple-10 text-left">
+                <th width="5%" class="q-pa-xs text-center">No</th>
+                <th width="35%" class="q-pa-xs">Obat Pre-Medikasi</th>
+                <th width="20%" class="q-pa-xs">Dosis</th>
+                <th width="15%" class="q-pa-xs">Jam</th>
+                <th width="20%" class="q-pa-xs">Pelaksana</th>
+                <th width="5%" class="q-pa-xs text-center">Aksi</th>
               </tr>
-              <tr>
-                <th colspan="2" class="q-pa-xs">
-
-                  <app-autocomplete v-model="obatMedikasi.obat_pre_medikasi" label="" dense :source="store.obats"
-                    option-label="nama_obat" hide-dropdown-icon :filled="false" />
-                  <!-- <q-input ref="inputObatMedikasi" v-model="obatMedikasi.obat_pre_medikasi" label="" dense /> -->
+              <!-- Row Add New Obat -->
+              <tr class="bg-grey-2">
+                <th class="q-pa-xs text-center text-primary">+</th>
+                <th class="q-pa-xs">
+                  <app-autocomplete ref="inputObatMedikasi" v-model="obatMedikasi.obat_pre_medikasi" label="Pilih Obat" dense :source="store.obats"
+                    option-label="nama_obat" option-value="nama_obat" hide-dropdown-icon outlined bg-color="white" />
                 </th>
-                <th class="q-pa-xs"><q-input v-model="obatMedikasi.dosis" label="" dense /></th>
-                <th class="q-pa-xs"><q-input v-model="obatMedikasi.jam" label="" dense /></th>
-                <th class="q-pa-xs" @keyup.enter="() => {
-                  // console.log('enter');
-                  addObatMedikasi()
-                }">
-                  <app-autocomplete v-model="obatMedikasi.pelaksana" label="" dense :source="laporanOp.nakes"
-                    option-label="nama" hide-dropdown-icon :filled="false" />
+                <th class="q-pa-xs">
+                  <q-input v-model="obatMedikasi.dosis" label="Dosis" dense outlined bg-color="white" />
                 </th>
-                <th class="q-pa-xs"><q-btn icon="add" @click="addObatMedikasi" dense color="primary" rounded /></th>
+                <th class="q-pa-xs">
+                  <q-input v-model="obatMedikasi.jam" label="HH:mm" dense outlined mask="##:##" bg-color="white" />
+                </th>
+                <th class="q-pa-xs" @keyup.enter="addObatMedikasi">
+                  <app-autocomplete v-model="obatMedikasi.pelaksana" label="Pilih Nakes" dense :source="laporanOp.nakes"
+                    option-label="nama" hide-dropdown-icon outlined bg-color="white" />
+                </th>
+                <th class="q-pa-xs text-center">
+                  <q-btn icon="add" @click="addObatMedikasi" dense color="primary" round size="sm" />
+                </th>
               </tr>
             </thead>
             <tbody>
               <template v-if="store.loadingInduksi">
                 <tr>
-                  <td>
-                    <app-loading />
-                  </td>
+                  <td colspan="6" class="text-center q-pa-md"><app-loading /></td>
                 </tr>
               </template>
               <template v-else-if="!store.formInduksi?.obat_pre_medikasi?.length">
                 <tr>
-                  <td colspan="6">
-                    <app-no-data />
-                  </td>
+                  <td colspan="6" class="text-center q-pa-md text-grey-6">Belum ada obat pre-medikasi ditambahkan</td>
                 </tr>
               </template>
               <template v-else>
-                <template v-for="(item, n) in store.formInduksi?.obat_pre_medikasi" :key="n">
-                  <tr
-                    :class="item.delete ? 'obat-hapus' : (obatBaru(item, n) ? 'obat-baru' : (n % 2 === 0 ? 'even' : 'odd'))">
-                    <td width="5%">
-                      <div class="row items-center">
-                        {{ n + 1 }}
-                      </div>
-                    </td>
-                    <td style="white-space: normal;">
-                      <div class="row items-center">
-                        <div class="col-auto">
-                          {{ item?.obat_pre_medikasi?.nama_obat }}
-                        </div>
-                      </div>
-                    </td>
-                    <td style="white-space: normal;">
-                      <div class="row items-center">
-                        <div class="col-auto">
-                          {{ item?.dosis }}
-                        </div>
-                      </div>
-                    </td>
-                    <td style="white-space: normal;">
-                      <div class="row items-center">
-                        <div class="col-auto">
-                          {{ item?.jam }}
-                        </div>
-                      </div>
-                    </td>
-                    <td style="white-space: normal;">
-                      <div class="row items-center">
-                        <div class="col-auto">
-                          {{ item?.pelaksana?.nama }}
-                        </div>
-                      </div>
-                    </td>
-                    <td style="white-space: normal;">
-                      <div class="row justify-center">
-                        <div class="col-auto text-center">
-                          <q-btn v-if="!item.delete" icon="delete_sweep" color="negative" dense flat @click="() => {
-                            if (obatBaru(item, n)) store.formInduksi.obat_pre_medikasi.splice(n, 1)
-                            else item.delete = true
-                          }" />
-                          <div v-if="obatBaru(item, n)">
-                            <div class="row">
-                              klik simpan
-                            </div>
-                            <div class="row">
-                              untuk tambah
-                            </div>
-                            <div class="row">
-                              permanen data
-                            </div>
-                          </div>
-                          <div v-if="item.delete && !obatBaru(item, n)">
-                            <div class="row">
-                              klik simpan
-                            </div>
-                            <div class="row">
-                              untuk hapus
-                            </div>
-                            <div class="row">
-                              permanen data
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </td>
-                  </tr>
-                </template>
+                <tr v-for="(item, n) in store.formInduksi?.obat_pre_medikasi" :key="n"
+                  :class="item.delete ? 'bg-red-1 text-negative' : (n % 2 === 0 ? 'bg-white' : 'bg-grey-1')">
+                  <td class="text-center text-weight-bold">{{ n + 1 }}</td>
+                  <td>{{ item?.obat_pre_medikasi?.nama_obat || item?.obat_pre_medikasi || '-' }}</td>
+                  <td>{{ item?.dosis || '-' }}</td>
+                  <td>{{ item?.jam || '-' }}</td>
+                  <td>{{ item?.pelaksana?.nama || '-' }}</td>
+                  <td class="text-center">
+                    <q-btn v-if="!item.delete" icon="delete" color="negative" dense flat round size="sm" @click="() => {
+                      if (obatBaru(item, n)) store.formInduksi.obat_pre_medikasi.splice(n, 1)
+                      else item.delete = true
+                    }">
+                      <q-tooltip>Hapus Obat</q-tooltip>
+                    </q-btn>
+                  </td>
+                </tr>
               </template>
             </tbody>
           </table>
         </div>
-      </div>
-    </div>
-    <div class="row q-my-sm q-col-gutter-x-sm">
-      <div class="col-4"><app-input-date :model="store.formInduksi.tgl" label="Tanggal" dense outlined @set-model="(val) => {
-        store.formInduksi.tgl = val
-      }" /></div>
-      <div class="col-4"><app-input-date :model="store.formInduksi.jam" label="Jam" :type-date="false" dense outlined
-          @set-model="(val) => {
-            store.formInduksi.jam = val
-          }" /></div>
-      <div class="col-4"><app-autocomplete v-model="store.formInduksi.dokter_anastesi"
-          :key="laporanOp.nakes?.length || 0" label="Dokter Anestesi" outlined dense
-          :source="laporanOp.nakes?.filter(y => y?.kdgroupnakes == '1')" option-label="nama" option-value="kdpegsimrs"
-          hide-dropdown-icon /></div>
-    </div>
-    <div class="row justify-end q-my-lg q-mr-md">
-      <q-btn label="Simpan" no-caps color="primary" glossy :loading="store.loadingInduksi"
-        :disable="store.loadingInduksi" @click="store.simpanFormInduksi(props.pasien)" />
-    </div>
+      </q-card-section>
+    </q-card>
+
+    <!-- SECTION 6: PENETAPAN DOKTER & ACTION BUTTONS -->
+    <q-card flat bordered class="bg-white q-mb-md rounded-borders shadow-1">
+      <q-card-section class="q-pa-md">
+        <div class="row q-col-gutter-md items-center">
+          <div class="col-xs-12 col-sm-4">
+            <app-input-date :model="store.formInduksi.tgl" label="Tanggal Pelaksanaan" dense outlined @set-model="(val) => {
+              store.formInduksi.tgl = val
+            }" />
+          </div>
+          <div class="col-xs-12 col-sm-4">
+            <app-input-date :model="store.formInduksi.jam" label="Jam Pelaksanaan" :type-date="false" dense outlined
+              @set-model="(val) => {
+                store.formInduksi.jam = val
+              }" />
+          </div>
+          <div class="col-xs-12 col-sm-4">
+            <app-autocomplete v-model="store.formInduksi.dokter_anastesi"
+              :key="laporanOp.nakes?.length || 0" label="Dokter Anestesi Penanggung Jawab" outlined dense
+              :source="laporanOp.nakes?.filter(y => y?.kdgroupnakes == '1')" option-label="nama" option-value="kdpegsimrs"
+              hide-dropdown-icon />
+          </div>
+        </div>
+
+        <div class="row justify-end q-mt-lg">
+          <q-btn label="Simpan Pra Induksi" icon="save" no-caps color="primary" glossy size="md" class="q-px-xl" :loading="store.loadingInduksi"
+            :disable="store.loadingInduksi" @click="handleSimpan" />
+        </div>
+      </q-card-section>
+    </q-card>
   </div>
 </template>
 
 <script setup>
 import { notifErrVue } from 'src/modules/utils'
 import { useAssasementPraBedahStore } from 'src/stores/simrs/kamaroperasi/assasement/praBedah'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch, computed } from 'vue'
 import { useLaporanOperasiStore } from 'src/stores/simrs/kamaroperasi/laporanOperasi'
 
 
@@ -553,15 +435,17 @@ function obatBaru (item, n) {
   const baru = props.pasien?.pra_induksi?.obat_pre_medikasi?.[n]
   console.log('obat bar', baru, item, props.pasien?.pra_induksi?.obat_pre_medikasi)
   if (!baru) return true
-
+  return false
 }
 function addObatMedikasi () {
   console.log('add', inputObatMedikasi.value)
   if (!obatMedikasi.value?.obat_pre_medikasi) return notifErrVue('Obat pre medikasi tidak boleh kosong')
-  else store.formInduksi.obat_pre_medikasi.push(obatMedikasi.value)
+  if (!Array.isArray(store.formInduksi.obat_pre_medikasi)) {
+    store.formInduksi.obat_pre_medikasi = []
+  }
+  store.formInduksi.obat_pre_medikasi.push(obatMedikasi.value)
   obatMedikasi.value = {}
   inputObatMedikasi.value?.focus?.()
-
 }
 const options = ref([
   {
@@ -679,6 +563,15 @@ const KlasifikasiAsaOptions = ref([
   },
 ])
 
+const optionKesadaran = ref([
+  { value: 'Compos Mentis', label: 'Compos Mentis' },
+  { value: 'Apatis', label: 'Apatis' },
+  { value: 'Samnolen', label: 'Samnolen' },
+  { value: 'Sopor', label: 'Sopor' },
+  { value: 'Delirium', label: 'Delirium' },
+  { value: 'Coma', label: 'Coma' }
+])
+
 const RencPemulihanPascaAnaOptions = ref([
   {
     label: 'ICU',
@@ -689,8 +582,8 @@ const RencPemulihanPascaAnaOptions = ref([
     value: 'HCU'
   },
   {
-    label: 'Rercovery Room',
-    value: 'Rercovery Room'
+    label: 'Recovery Room',
+    value: 'Recovery Room'
   },
 ])
 
@@ -721,167 +614,157 @@ const store = useAssasementPraBedahStore()
 const laporanOp = useLaporanOperasiStore()
 
 const refDiagnosa = ref(null)
-function clearJenis (evt, key, value) {
-  // console.log('clear', evt, key, value)
-  if (evt == value) {
-    store.formInduksi[key] = null
+function isFilled (val) {
+  if (val === null || val === undefined) return false
+  if (typeof val === 'string') return val.trim().length > 0
+  if (typeof val === 'number') return !isNaN(val)
+  if (Array.isArray(val)) return val.length > 0
+  if (typeof val === 'object') return Object.keys(val).length > 0
+  return !!val
+}
+const allTindakanOp = computed(() => {
+  const list = props.pasien?.manytindakanop
+  if (Array.isArray(list) && list.length > 0) {
+    const names = list.map(v => v?.mastertindakanoperasi?.rs2 || v?.rs2 || v?.nama).filter(Boolean)
+    return names.length ? names.join(', ') : ''
+  }
+  return ''
+})
+
+const firstTindakanOp = computed(() => {
+  const list = props.pasien?.manytindakanop
+  if (Array.isArray(list) && list.length > 0) {
+    const item = list[0]
+    return item?.mastertindakanoperasi?.rs2 || item?.rs2 || item?.nama || ''
+  }
+  return ''
+})
+
+const listObatPermintaan = computed(() => {
+  const names = new Set()
+
+  const addName = (n) => {
+    if (n && typeof n === 'string' && n.trim().length > 0) {
+      names.add(n.trim())
+    }
   }
 
+  const extractFromList = (list) => {
+    if (!Array.isArray(list)) return
+    list.forEach(p => {
+      if (!p) return
+      addName(p?.obat?.nama_obat || p?.nama_obat || p?.namaobat || p?.masterobat?.nama_obat)
+
+      const rinci = p?.rinci || p?.rincian || p?.details || p?.permintaanresep || []
+      if (Array.isArray(rinci)) {
+        rinci.forEach(r => {
+          if (!r) return
+          addName(r?.obat?.nama_obat || r?.nama_obat || r?.namaobat || r?.masterobat?.nama_obat)
+        })
+      }
+    })
+  }
+
+  extractFromList(props.pasien?.permintaanobatoperasi)
+  extractFromList(props.pasien?.permintaanresep)
+  extractFromList(props.pasien?.resep)
+  extractFromList(props.pasien?.eresep)
+  extractFromList(props.pasien?.newapotekrajal)
+  extractFromList(props.pasien?.reseprajal)
+  extractFromList(props.pasien?.resepranap)
+
+  return Array.from(names).map(nama => ({
+    name: nama,
+    nama_obat: nama
+  }))
+})
+
+function formatNoZero (val) {
+  if (val === null || val === undefined || val === '') return ''
+  const str = String(val).trim().replace(',', '.')
+  if (isNaN(str)) return str
+  const num = parseFloat(str)
+  if (isNaN(num)) return str
+  return String(num)
 }
+
+function cleanFormVitalSigns () {
+  if (store.formInduksi) {
+    if (store.formInduksi.vit_td_sistole) store.formInduksi.vit_td_sistole = formatNoZero(store.formInduksi.vit_td_sistole)
+    if (store.formInduksi.vit_td_diastole) store.formInduksi.vit_td_diastole = formatNoZero(store.formInduksi.vit_td_diastole)
+    if (store.formInduksi.vit_nadi) store.formInduksi.vit_nadi = formatNoZero(store.formInduksi.vit_nadi)
+    if (store.formInduksi.vit_rr) store.formInduksi.vit_rr = formatNoZero(store.formInduksi.vit_rr)
+    if (store.formInduksi.vit_suhu) store.formInduksi.vit_suhu = formatNoZero(store.formInduksi.vit_suhu)
+  }
+}
+
+function handleSimpan () {
+  cleanFormVitalSigns()
+  store.simpanFormInduksi(props.pasien)
+}
+
+watch(() => props.pasien, (newPasien) => {
+  if (newPasien?.pra_induksi && Object.keys(newPasien.pra_induksi).length > 0) {
+    store.formInduksi = { ...newPasien.pra_induksi }
+    if (!Array.isArray(store.formInduksi.obat_pre_medikasi)) {
+      store.formInduksi.obat_pre_medikasi = []
+    }
+  }
+  cleanFormVitalSigns()
+  store.obats = listObatPermintaan.value
+  if (!store.formInduksi?.diagnosa && newPasien?.rs4) {
+    store.formInduksi.diagnosa = newPasien.rs4
+  }
+  if (!store.formInduksi?.rencana_bedah && firstTindakanOp.value) {
+    store.formInduksi.rencana_bedah = firstTindakanOp.value
+  }
+}, { immediate: true, deep: true })
+
 onMounted(() => {
   if (!laporanOp.nakes?.length) laporanOp.getNakes()
+  if (props.pasien?.pra_induksi && Object.keys(props.pasien.pra_induksi).length > 0) {
+    store.formInduksi = { ...props.pasien.pra_induksi }
+    if (!Array.isArray(store.formInduksi.obat_pre_medikasi)) {
+      store.formInduksi.obat_pre_medikasi = []
+    }
+  }
+  cleanFormVitalSigns()
+  store.obats = listObatPermintaan.value
+  if (!store.formInduksi?.diagnosa && props.pasien?.rs4) {
+    store.formInduksi.diagnosa = props.pasien.rs4
+  }
+  if (!store.formInduksi?.rencana_bedah && firstTindakanOp.value) {
+    store.formInduksi.rencana_bedah = firstTindakanOp.value
+  }
 })
 </script>
 
 
 <style lang="scss" scoped>
-.obat-baru {
-  background-color: #0fd30fdc;
-  color: #fff
+.style-form {
+  max-width: 1400px;
+  margin: 0 auto;
 }
-
-.obat-hapus {
-  background-color: #d30f0fb6;
-  color: #fff
+.border-blue {
+  border: 1px solid #90caf9;
 }
-
-.depan {
-  width: 20%;
+.border-grey {
+  border: 1px solid #e0e0e0;
 }
-
-.dua {
-  width: 1%;
+.border-orange {
+  border: 1px solid #ffcc80;
 }
-
-.belakang {
-  width: 79%;
+.border-indigo {
+  border: 1px solid #c5cae9;
 }
-
-.hv:hover {
-  background-color: #0D5A86;
-  color: #fff
+.border-left-primary {
+  border-left: 3px solid #1976d2;
 }
-
-.gt {
-  border-top: 1px solid black;
-}
-
-.gka {
-  border-right: 1px solid black;
-}
-
-.gki {
-  border-left: 1px solid black;
-}
-
-.gb {
-  border-bottom: 1px solid black;
-}
-
-//
-.head {
-  border: 1px solid rgb(44, 43, 43);
-  padding-left: 10px;
-  background-color: rgba(0, 0, 0, 0.9);
-  color: white;
-}
-
-.child {
-  border-bottom: 1px solid rgb(44, 43, 43);
-  border-left: 1px solid rgb(44, 43, 43);
-  border-right: 1px solid rgb(44, 43, 43);
-  padding-left: 10px;
-}
-
-.text-end {
-  text-align: end;
-}
-
-/* Standard Tables */
-
-table {
-  // margin: 1em 0;
+.doc-table-styled {
   border-collapse: collapse;
-  border: 1px solid #d6d6d6;
   width: 100%;
-  margin-bottom: 50px;
-}
-
-thead {
-  border: 1px solid black;
-
-  tr {
-    th {
-      border: 1px solid black;
-      vertical-align: center !important;
-      background-color: white;
-      color: black;
-    }
+  th, td {
+    border: 1px solid #e0e0e0;
   }
-}
-
-.odd {
-  background-color: rgba(255, 255, 255, 0.05);
-}
-
-.even {
-  background-color: rgba(0, 0, 0, 0.05);
-}
-
-td {
-
-  text-align: left;
-  text-indent: 2px;
-  border: 1px solid black;
-  vertical-align: center;
-  border: 1px solid black;
-}
-
-tr:nth-child(even) th[scope=row] {
-  background-color: #f2f2f2;
-}
-
-tr:nth-child(odd) th[scope=row] {
-  background-color: #fff;
-}
-
-th {
-  position: -webkit-sticky;
-  position: sticky;
-  top: 0;
-  z-index: 5;
-  border: inherit;
-}
-
-th[scope=row] {
-  position: -webkit-sticky;
-  position: sticky;
-  left: 0;
-  z-index: 1;
-  border: inherit;
-}
-
-th[scope=row] {
-  vertical-align: top;
-  color: inherit;
-  background-color: inherit;
-  background: linear-gradient(90deg, transparent 0%, transparent calc(100% - .05em), #d6d6d6 calc(100% - .05em), #d6d6d6 100%);
-  border: inherit;
-}
-
-table:nth-of-type(2) th:not([scope=row]):first-child {
-  left: 0;
-  z-index: 3;
-  background: linear-gradient(90deg, #666 0%, #666 calc(100% - .05em), #ccc calc(100% - .05em), #ccc 100%);
-}
-
-/* Strictly for making the scrolling happen. */
-
-th[scope=row]+td {
-  min-width: 24em;
-}
-
-th[scope=row] {
-  min-width: 20em;
 }
 </style>

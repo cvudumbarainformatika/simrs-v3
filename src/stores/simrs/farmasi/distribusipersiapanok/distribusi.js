@@ -212,6 +212,24 @@ export const useDistribusiPersiapanOperasiStore = defineStore('distribusi_persia
             delete val.loading
           })
       })
+    },
+    kembalikanKeDistribusi (val) {
+      val.loading = true
+      const form = {
+        id: val.id
+      }
+      return new Promise(resolve => {
+        api.post('v1/simrs/penunjang/farmasinew/obatoperasi/kembalikan-ke-distribusi', form)
+          .then(resp => {
+            val.loading = false
+            notifSuccess(resp)
+            this.getPermintaan()
+            resolve(resp)
+          })
+          .catch(() => {
+            val.loading = false
+          })
+      })
     }
   }
 })
