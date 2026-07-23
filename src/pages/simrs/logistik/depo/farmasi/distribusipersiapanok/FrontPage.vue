@@ -719,6 +719,7 @@ function hapus (val) {
 
 }
 function teimaPengembalian (val) {
+  if (store.loadingSimpan || val.loading) return
   val.expand = !val.expand
   val.highlight = !val.highlight
 
