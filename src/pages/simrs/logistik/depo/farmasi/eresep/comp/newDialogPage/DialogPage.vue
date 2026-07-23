@@ -268,6 +268,16 @@
         </q-btn>
       </div>
     </div>
+    <div v-else-if="apps?.user?.kdruangansim === 'Gd-05010101'" class="row justify-end q-ma-sm ">
+      <div class="col-auto q-px-sm">
+        <q-btn no-caps dense class="f-10 q-mb-xs" color="indigo" text-color="white" label="Print Semua Etiket Rajal"
+          icon="icon-mat-print" :loading="loadingPrintAll" @click="printAllEtiketRajal()">
+          <q-tooltip class="primary" :offset="[10, 10]">
+            Print Semua Etiket Rajal secara berurutan
+          </q-tooltip>
+        </q-btn>
+      </div>
+    </div>
     <div class="column q-pa-sm " :style="`height: calc(100vh - ${tinggiDetailPas + 125}px);`">
       <q-scroll-area style="height: 100%;">
         <div v-if="store?.resep?.asalpermintaanresep?.length && !openIter" class="q-mt-sm">
@@ -1408,6 +1418,7 @@ const openHistory = ref(false)
 const openHistoryEresep = ref(false)
 
 const openIter = ref(false)
+const loadingPrintAll = ref(false)
 
 const SudahAdaCopy = defineAsyncComponent(() => import('..//SudahAdaCopy.vue'))
 const HistoryResepIter = defineAsyncComponent(() => import('..//HistoryResepIter.vue'))
@@ -1425,6 +1436,39 @@ function openRajal (val) {
   setTimeout(() => {
     refEtiketRajal.value.printPage()
   }, 200)
+}
+async function printAllEtiketRajal () {
+  const itemsToPrint = []
+  if (store?.resep?.permintaanresep?.length) {
+    itemsToPrint.push(...store.resep.permintaanresep)
+  }
+  if (store?.resep?.rincianracik?.length) {
+    itemsToPrint.push(...store.resep.rincianracik)
+  }
+
+  if (itemsToPrint.length === 0) {
+    notifErrVue('Tidak ada etiket yang bisa dicetak')
+    return
+  }
+
+  loadingPrintAll.value = true
+  for (const item of itemsToPrint) {
+    rajalRinc.value = item
+    rajalOpen.value = true
+
+    await new Promise((resolve) => {
+      setTimeout(() => {
+        if (refEtiketRajal.value) {
+          refEtiketRajal.value.printPage()
+        }
+        setTimeout(() => {
+          rajalOpen.value = false
+          resolve()
+        }, 1200)
+      }, 300)
+    })
+  }
+  loadingPrintAll.value = false
 }
 function obatKeluar (rinc) {
   const rincian = store.resep?.rincian?.find(p => p?.kdobat === rinc?.kdobat)
