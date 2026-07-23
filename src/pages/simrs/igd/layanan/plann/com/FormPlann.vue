@@ -374,7 +374,7 @@ const props = defineProps({
   tooltip: {
     type: String,
     default: 'History Pasien'
-  }
+  },
 })
 
 function onSubmit() {

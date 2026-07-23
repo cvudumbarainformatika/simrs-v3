@@ -128,12 +128,12 @@
         <table class="items-center full-width">
           <thead>
             <tr>
-              <th class="text-center">
-                Nama Dokter
-              </th>
 
               <th class="text-center">
                 Dokter Penanggung Jawab {{ kelasNormalized }}
+                <div class="text-subtitle2">
+                  {{ props.pasien?.planheder[0]?.planranap?.dokumentransfer?.dokter?.nama }}
+                </div>
               </th>
 
               <th class="text-center">
@@ -148,12 +148,20 @@
 
           <tbody class="align-middle q-pl-sm">
             <tr>
-              <td class="text-center text-italic">
-                Tanda Tangan
-              </td>
-
               <td class="text-center">
-                <span class="text-h7"></span>
+                <div class="column flex-center">
+                  <div v-if="props.pasien?.planheder[0]?.planranap?.dokumentransfer?.dokter" class="q-pt-xs"
+                    style="width: 80px">
+                    <vue-qrcode :value="qrDokterpenerima" tag="svg" :options="{
+                      errorCorrectionLevel: 'Q',
+                      color: {
+                        dark: '#000000',
+                        light: '#ffffff'
+                      },
+                      margin: 0
+                    }" />
+                  </div>
+                </div>
               </td>
 
               <td class="text-center">
@@ -405,9 +413,20 @@ function isCheckedIcu(kodeKategori, namaKategori, itemKriteria) {
   })
 }
 
+const qrDokterpenerima = computed(() => {
+  const noreg = props.pasien?.noreg ?? ''
+  const dok = 'RAWAT JALAN.png'
+  const asal = 'RAWAT JALAN'
+  const petugas = props.pasien?.planheder[0]?.planranap?.dokumentransfer?.dokter?.kdpegsimrs ?? ''
+
+  const enc = btoa(`${noreg}|${dok}|${asal}|${petugas}`)
+
+  return `https://rsud.probolinggokota.go.id/dokumen-simrs/legalitas/${enc}`
+})
+
 const qrDokter = computed(() => {
   const noreg = props.pasien?.noreg ?? ''
-  const dok = 'Indikasi Masuk Rawat Inap.png'
+  const dok = 'RAWAT JALAN.png'
   const asal = 'RAWAT JALAN'
   const petugas = props.pasien?.kodedokter ?? ''
 

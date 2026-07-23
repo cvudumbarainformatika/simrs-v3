@@ -1,30 +1,12 @@
 <template>
   <div class="full-height full-width">
     <div class="row full-height ">
-      <q-card
-        flat
-        bordered
-        square
-        class="col-6 full-height"
-      >
-        <FormPlann
-          :key="props.pasien"
-          :pasien="props.pasien"
-          :ruangranap="props.ruangranap"
-          tooltip="History Pasien (Shift + H)"
-        />
+      <q-card flat bordered square class="col-6 full-height">
+        <FormPlann :key="props.pasien" :pasien="props.pasien" :ruangranap="props.ruangranap"
+          tooltip="History Pasien (Shift + H)" />
       </q-card>
-      <q-card
-        flat
-        bordered
-        square
-        class="col-6 full-height"
-      >
-        <ListPlann
-          :key="props.pasien"
-          :pasien="props.pasien"
-          :loadingaja="loadingaja"
-        />
+      <q-card flat bordered square class="col-6 full-height">
+        <ListPlann :key="props.pasien" :pasien="props.pasien" :loadingaja="loadingaja" />
       </q-card>
     </div>
   </div>
@@ -51,7 +33,7 @@ const props = defineProps({
   loadingaja: {
     type: Boolean,
     default: false
-  }
+  },
 
 })
 
@@ -59,7 +41,6 @@ onMounted(() => {
   // console.log(text.value)
   document.addEventListener('keypress', handleKeypress, false)
 })
-
 onUnmounted(() => {
   document.removeEventListener('keypress', handleKeypress, true)
 })

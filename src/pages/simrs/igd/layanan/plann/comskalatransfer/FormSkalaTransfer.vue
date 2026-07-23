@@ -137,6 +137,10 @@ const props = defineProps({
   tooltip: {
     type: String,
     default: 'History Pasien'
+  },
+  datadpjp: {
+    type: Array,
+    default: () => []
   }
 })
 

@@ -56,6 +56,11 @@
             </q-card-section>
           </q-card>
         </div>
+        <q-select label="Dokter Penerima" :options="options" v-model="store.form.dokterpenerima" outlined dense
+          option-label="nama" option-value="kdpegsimrs" clearable use-input @filter="filterOptions" emit-value
+          map-options lazy-rules :rules="[
+            val => !!val || 'Dokter penerima wajib dipilih'
+          ]" />
       </q-card-section>
 
       <q-separator />
@@ -67,7 +72,7 @@
         </div>
 
         <q-btn unelevated label="Batal" color="negative" icon="close" @click="tutupDialog" />
-        <q-btn unelevated label="Simpan" color="negative" icon="close" @click="tutupDialog" />
+        <q-btn unelevated label="Simpan" color="negative" icon="close" @click="simpan" />
 
         <!-- <q-btn unelevated label="Simpan" color="primary" icon="save" :disable="!store.form.isi?.length"
           @click="simpanIndikasi" /> -->
@@ -77,9 +82,40 @@
 </template>
 
 <script setup>
+import { useQuasar } from 'quasar'
+import { api } from 'src/boot/axios'
 import { usePlannStore } from 'src/stores/simrs/igd/plann'
+import { ref } from 'vue'
 
+const $q = useQuasar()
 const store = usePlannStore()
+const options = ref([])
+
+async function filterOptions(val, update) {
+  if (!val) {
+    update(() => {
+      options.value = []
+    })
+    return
+  }
+  const params = {
+    params: {
+      q: val
+    }
+  }
+  // console.log('q :', val)
+  const resp = await api.get('/v1/settings/appmenu/cari_dokter', params)
+  console.log('cari', resp)
+  update(
+    () => (options.value = resp.data),
+    ref => {
+      if (val !== '' && ref.options?.length) {
+        ref.setOptionIndex(-1)
+        ref.moveOptionSelection(1, true)
+      }
+    }
+  )
+}
 
 const kriteriaIcu = [
   {
@@ -180,6 +216,21 @@ const kriteriaIcu = [
 
 function tutupDialog() {
   store.fixedicu = false
+}
+
+const simpan = () => {
+  if (!store.form.dokterpenerima) {
+    $q.notify({
+      type: 'negative',
+      message: 'Dokter penerima wajib dipilih',
+      position: 'top-right'
+    })
+    return
+  }
+
+  // proses simpan...
+
+  store.fixedicu = false // tutup dialog setelah valid
 }
 
 // function simpanIndikasi() {

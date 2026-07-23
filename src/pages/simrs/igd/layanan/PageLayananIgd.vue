@@ -77,6 +77,14 @@ const props = defineProps({
 //   }
 // })
 
+const dataDpjp = ref(null)
+function handleGantiDpjp(val) {
+  dataDpjp.value = val
+
+  // Tetap jalankan proses store bila diperlukan
+  store.gantiDpjp(val, pasien)
+}
+
 const menus = ref([
   {
     name: 'TriagePage',

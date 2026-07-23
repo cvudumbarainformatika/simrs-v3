@@ -1,49 +1,17 @@
 <template>
-  <div
-    class="column full-height q-ma-sm"
-    style="overflow: hidden;"
-  >
+  <div class="column full-height q-ma-sm" style="overflow: hidden;">
     <div class="column full-height">
       <div class="col-auto bg-grey-4 shadow-2 text-grey-8 ">
-        <q-tabs
-          v-model="store.tab"
-          no-caps
-          inline-label
-          rounded
-          class=" bg-grey-4 shadow-2 text-grey-8"
-          align="left"
-          dense
-          active-color="yellow"
-          active-bg-color="primary"
-          @update:model-value="cekPanel"
-        >
-          <q-tab
-            v-for="(item, i) in store.tabs"
-            :key="i"
-            :name="item.page"
-            :label="item.name"
-            style="border-top-left-radius: 100px;border-bottom-right-radius: 100px;width: 100%;"
-          />
+        <q-tabs v-model="store.tab" no-caps inline-label rounded class=" bg-grey-4 shadow-2 text-grey-8" align="left"
+          dense active-color="yellow" active-bg-color="primary" @update:model-value="cekPanel">
+          <q-tab v-for="(item, i) in store.tabs" :key="i" :name="item.page" :label="item.name"
+            style="border-top-left-radius: 100px;border-bottom-right-radius: 100px;width: 100%;" />
         </q-tabs>
       </div>
       <div class="col-grow bg-yellow">
-        <q-tab-panels
-          v-model="store.tab"
-          animated
-          class="full-height"
-        >
-          <q-tab-panel
-            v-for="(panel, n) in store.tabs"
-            :key="n"
-            :name="panel.page"
-            class="full-height q-pa-none"
-          >
-            <component
-              :is="cekPanel()"
-              :key="props.pasien"
-              :pasien="props.pasien"
-              :ruangranap="props.ruangranap"
-            />
+        <q-tab-panels v-model="store.tab" animated class="full-height">
+          <q-tab-panel v-for="(panel, n) in store.tabs" :key="n" :name="panel.page" class="full-height q-pa-none">
+            <component :is="cekPanel()" :key="props.pasien" :pasien="props.pasien" :ruangranap="props.ruangranap" />
           </q-tab-panel>
         </q-tab-panels>
       </div>
@@ -74,7 +42,7 @@ const props = defineProps({
   loadingaja: {
     type: Boolean,
     default: false
-  }
+  },
 })
 
 const comp = [

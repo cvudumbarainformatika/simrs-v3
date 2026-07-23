@@ -133,7 +133,16 @@ const isi = computed(() => {
 })
 
 const kelas = computed(() => {
-  return props.pasien?.planheder?.[0]?.planranap?.dokumentransfer?.kelas
+  if (props.pasien?.planheder?.[0]?.planranap?.dokumentransfer?.kelas === 'IC') {
+    return 'ICU'
+  } else if (props.pasien?.planheder?.[0]?.planranap?.dokumentransfer?.kelas === 'ICC') {
+    return 'ICCU'
+  } else if (props.pasien?.planheder?.[0]?.planranap?.dokumentransfer?.kelas === 'HCU') {
+    return 'HCU'
+  } else if (props.pasien?.planheder?.[0]?.planranap?.dokumentransfer?.kelas === 'NICU') {
+    return 'NICU'
+  }
+
 })
 
 const keterangan = computed(() => {
