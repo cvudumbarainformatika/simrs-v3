@@ -115,13 +115,13 @@ const menus = ref([
   },
   {
     name: 'assasement',
-    label: 'Assesement',
+    label: 'Asesemen',
     icon: 'icon-mat-analytics',
     comp: shallowRef(defineAsyncComponent(() => import('./comppelayanan/pagemenu/compAssasement/IndexPage.vue')))
   },
   { // diminta oleh dokter
     name: 'assasement_post_op',
-    label: 'Instruksi Post Operasi',
+    label: 'Instruksi Pasca Bedah',
     icon: 'icon-fa-book-medical-solid',
     comp: shallowRef(defineAsyncComponent(() => import('./comppelayanan/pagemenu/compAssPostOp/IndexPage.vue')))
   },
@@ -146,7 +146,7 @@ const menus = ref([
   },
   {
     name: 'konsultasi',
-    label: 'Konsult Spesialis',
+    label: 'Konsul Spesialis',
     icon: 'textsms',
     comp: shallowRef(defineAsyncComponent(() => import('./comppelayanan/pagemenu/konsul/IndexPage.vue')))
   },
@@ -195,10 +195,10 @@ onUnmounted(() => {
   fisik.setFullCanvasFalse()
 })
 
-function historyPasien() {
+function historyPasien () {
   drawerRight.value = !drawerRight.value
 }
-function getIcare() {
+function getIcare () {
   store.getDataIcare(props.pasien).then(resp => {
     if (resp) {
       console.log('anu', resp?.response?.url)
@@ -207,7 +207,7 @@ function getIcare() {
   })
 }
 
-function menuDiganti(val) {
+function menuDiganti (val) {
   menu.value = val
 }
 

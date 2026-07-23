@@ -176,7 +176,7 @@
                   <div>{{ cppt?.petugas?.nama ?? '-' }}</div>
                   <div v-if="cppt?.kdruang === 'PEN001'" class="text-deep-purple text-bold q-mt-xs f-10"
                     style="font-size: 9px; line-height: 1.1;">
-                    Instruksi Post Op
+                    Instruksi Pasca Bedah
                   </div>
                 </td>
                 <td class="text-left f-12" style="vertical-align:top">

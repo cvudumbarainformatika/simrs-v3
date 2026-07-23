@@ -18,7 +18,7 @@
                 <span class="text-weight-bold">PPA</span> <span class="text-weight-medium">- {{ item?.petugas?.nama
                   }}</span>
                 <span v-if="item?.kdruang === 'PEN001'" class="q-ml-sm">
-                  <q-badge color="deep-purple" text-color="white" label="Instruksi Post Op" />
+                  <q-badge color="deep-purple" text-color="white" label="Instruksi Pasca Bedah" />
                 </span>
               </div>
             </q-item-section>
