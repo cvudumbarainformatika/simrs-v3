@@ -43,6 +43,10 @@
                           item?.planranap?.dokumentransfer?.isi
                         }}</span></q-item-label>
                   </div>
+                  <div v-if="item?.planranap?.dokumentransfer !== null">
+                    <q-item-label>Dokter Penerima : <span class="text-weight-bold">{{
+                      item?.planranap?.dokumentransfer?.dokter?.nama }}</span></q-item-label>
+                  </div>
                   <!-- <div v-else>
                     wew
                   </div> -->

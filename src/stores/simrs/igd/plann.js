@@ -24,6 +24,7 @@ export const usePlannStore = defineStore('plann-store', {
     form: {
       panel: 'Rawat Inap',
       kelas: '',
+      dokterpenerima: '',
       isi: ([])
     },
     fixednicu: false,
@@ -49,6 +50,7 @@ export const usePlannStore = defineStore('plann-store', {
       formamb.kodedokter = pasien?.kodedokter
       formamb.kodesistembayar = pasien?.kodesistembayar
       formamb.koderuang = pasien?.kodepoli
+      formamb.dokterpenerima = this.form.dokterpenerima
       formamb.isi = this.form.isi
       try {
         const resp = await api.post('v1/simrs/planing/igd/simpanranap', formamb)
@@ -105,6 +107,7 @@ export const usePlannStore = defineStore('plann-store', {
       this.form.kelas = ''
     },
     resetdialog() {
+      this.form.dokterpenerima = ''
       this.form.isi = []
     },
     async suratkematian(pasien) {

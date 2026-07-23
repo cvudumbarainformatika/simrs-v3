@@ -21,26 +21,69 @@
         <q-checkbox v-model="store.form.isi" val="Miokarditis" label="Miokarditis" color="teal" /> <br>
         <q-checkbox v-model="store.form.isi" val="Penyakit lain yang memerlukan pemantauan hemodinamik"
           label="Penyakit lain yang memerlukan pemantauan hemodinamik" color="teal" /> <br>
+        <q-select label="Dokter Penerima" :options="options" v-model="store.form.dokterpenerima" outlined dense
+          option-label="nama" option-value="kdpegsimrs" clearable use-input @filter="filterOptions" emit-value
+          map-options lazy-rules :rules="[
+            val => !!val || 'Dokter penerima wajib dipilih'
+          ]" />
       </q-card-section>
       <q-separator />
 
       <q-card-actions align="right">
         <q-btn label="CLOSE" color="red" v-close-popup />
-        <q-btn label="SIMPAN" color="primary" v-close-popup />
+        <q-btn label="SIMPAN" color="primary" @click="simpan" />
       </q-card-actions>
     </q-card>
   </q-dialog>
 </template>
 <script setup>
+import { useQuasar } from 'quasar';
+import { api } from 'src/boot/axios';
 import { usePlannStore } from 'src/stores/simrs/igd/plann';
+import { ref } from 'vue';
 
+const $q = useQuasar()
 const store = usePlannStore();
+const options = ref([])
 
-// function updateSelection(val) {
-//   store.setForm('isi', val.join(', '))
-// }
+async function filterOptions(val, update) {
+  if (!val) {
+    update(() => {
+      options.value = []
+    })
+    return
+  }
+  const params = {
+    params: {
+      q: val
+    }
+  }
+  // console.log('q :', val)
+  const resp = await api.get('/v1/settings/appmenu/cari_dokter', params)
+  console.log('cari', resp)
+  update(
+    () => (options.value = resp.data),
+    ref => {
+      if (val !== '' && ref.options?.length) {
+        ref.setOptionIndex(-1)
+        ref.moveOptionSelection(1, true)
+      }
+    }
+  )
+}
 
-// function updateSelectionx(val) {
-//   store.setForm('isix', val.join(', '))
-// }
+const simpan = () => {
+  if (!store.form.dokterpenerima) {
+    $q.notify({
+      type: 'negative',
+      message: 'Dokter penerima wajib dipilih',
+      position: 'top-right'
+    })
+    return
+  }
+
+  // proses simpan...
+
+  store.fixediccu = false // tutup dialog setelah valid
+}
 </script>
