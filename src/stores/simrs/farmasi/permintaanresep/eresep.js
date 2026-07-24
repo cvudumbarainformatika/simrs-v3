@@ -1,4 +1,6 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
+import { toRaw } from 'vue'
+import { usePengunjungPoliStore } from 'src/stores/simrs/pelayanan/poli/pengunjung'
 import { api } from 'src/boot/axios'
 import { useKasirRajalListKunjunganStore } from '../../kasir/rajal/kunjungan'
 import { notifErrVue, notifSuccess } from 'src/modules/utils'
@@ -77,6 +79,8 @@ export const usePermintaanEResepStore = defineStore('permintaan_e_resep', {
     historys: [],
     statusCopied: [],
     statusCopiedRacik: [],
+    loadingCopied: [],
+    loadingCopiedRacik: [],
     checkKdObat: [],
     messageCopied: [],
     pemberianObatCek: [],
@@ -314,6 +318,20 @@ export const usePermintaanEResepStore = defineStore('permintaan_e_resep', {
         this.noreseps.unshift(resep?.noresep)
       })
       this.noreseps.unshift('BARU')
+    },
+    updateNewApotekRajal (newapotekrajal) {
+      if (!this.pasien) return
+
+      const rawPasien = toRaw(this.pasien)
+      if (rawPasien) {
+        rawPasien.newapotekrajal = newapotekrajal
+      }
+
+      const pengunjungStore = usePengunjungPoliStore()
+      const p = pengunjungStore.items?.find(x => x.noreg === this.pasien.noreg || x.rs1 === this.pasien.noreg)
+      if (p) {
+        p.newapotekrajal = newapotekrajal
+      }
     },
     setResep (val) {
       this.setForm('noresep', '')
@@ -567,7 +585,7 @@ export const usePermintaanEResepStore = defineStore('permintaan_e_resep', {
                 this.noreseps.push(resp?.data?.nota)
                 this.noresep = resp?.data?.nota
               }
-              this.pasien.newapotekrajal = resp?.data?.newapotekrajal
+              this.updateNewApotekRajal(resp?.data?.newapotekrajal)
               this.indexRacikan = this.pasien.newapotekrajal.findIndex(x => x.noresep === resp?.data?.nota)
 
               // console.log('NORESEP2', this.noresep)
@@ -656,7 +674,7 @@ export const usePermintaanEResepStore = defineStore('permintaan_e_resep', {
           // console.log('resp hapus', resp?.data)
           // hapus list
           this.hapusList(resp?.data?.obat)
-          this.pasien.newapotekrajal = resp?.data?.newapotekrajal
+          this.updateNewApotekRajal(resp?.data?.newapotekrajal)
           this.indexRacikan = this.pasien.newapotekrajal.findIndex(x => x.noresep === resp?.data?.obat?.noresep)
 
           if (this.indexRacikan === -1) this.setForm('noresep', '')
@@ -739,6 +757,9 @@ export const usePermintaanEResepStore = defineStore('permintaan_e_resep', {
 
     // BARU PUTRA DEV
     cekObat (val, obat, indexlist, tipe) {
+      if (!this.form.tiperesep || this.form.tiperesep === '') {
+        this.form.tiperesep = val?.tiperesep || 'normal'
+      }
       this.loadingObat = true
       let kdobatArray = ''
       let batas = 0
@@ -984,7 +1005,7 @@ export const usePermintaanEResepStore = defineStore('permintaan_e_resep', {
             if (newapotekrajal?.length) {
               const lastIndex = newapotekrajal?.length - 1
               const lastItem = newapotekrajal[lastIndex]
-              this.pasien.newapotekrajal = lastItem
+              this.updateNewApotekRajal(lastItem)
               this.indexRacikan = this.pasien.newapotekrajal.findIndex(x => x.noresep === nota[0])
               if (this.indexRacikan !== -1) { this.setResep(this.noresep) }
             }
@@ -1205,7 +1226,7 @@ export const usePermintaanEResepStore = defineStore('permintaan_e_resep', {
             if (newapotekrajal?.length) {
               const lastIndex = newapotekrajal?.length - 1
               const lastItem = newapotekrajal[lastIndex]
-              this.pasien.newapotekrajal = lastItem
+              this.updateNewApotekRajal(lastItem)
               this.indexRacikan = this.pasien.newapotekrajal.findIndex(x => x.noresep === nota[0])
               if (this.indexRacikan !== -1) { this.setResep(this.noresep) }
             }
@@ -1290,6 +1311,346 @@ export const usePermintaanEResepStore = defineStore('permintaan_e_resep', {
         .onOk(() => {
           this.simpanCopyResepKonfirmasi(permintaanResepDuplicate, tipe, indexlist)
         })
+    },
+    async simpanCopyResepBaru (val, kirimResep, flag_dari, indexlist, tipe, customKirimObat = null) {
+      const depo = this.depos.find(pa => pa.value === val?.depo)
+      const data = {
+        kirimResep,
+        groupsistembayar: this.form.groupsistembayar,
+        kddepo: depo?.value,
+        noresep_asal: val?.noresep,
+        noresep: this.form.noresep ?? null,
+        flag_dari
+      }
+
+      this.loading = true
+      try {
+        const resp = await api.post('v1/simrs/pelayanan/copiresep-baru', data)
+        this.loading = false
+        notifSuccess(resp)
+
+        const nota = resp?.data?.nota
+        this.noreseps.push(nota)
+        this.noresep = nota
+
+        const newapotekrajal = resp?.data?.newapotekrajal
+        if (newapotekrajal?.length) {
+          this.updateNewApotekRajal(newapotekrajal)
+          this.indexRacikan = this.pasien.newapotekrajal.findIndex(x => x.noresep === nota)
+          if (this.indexRacikan !== -1) {
+            this.setResep(this.noresep)
+          }
+        }
+
+        this.resetForm()
+        this.setForm('noresep', nota)
+
+        if (tipe === 'racik') {
+          kirimResep.forEach(dt => {
+            this.statusCopiedRacik[`${indexlist}-${dt?.kdobat}`] = true
+            this.pemberianObatCek[`${indexlist}-${dt?.kdobat}`] = []
+          })
+        } else {
+          kirimResep.forEach(dt => {
+            this.statusCopied[`${indexlist}-${dt?.kodeobat}`] = true
+          })
+        }
+
+        this.cariObat()
+        return resp
+      } catch (error) {
+        this.loading = false
+        if (tipe === 'racik') {
+          this.loadingCopiedRacik[indexlist] = false
+        } else {
+          this.loadingCopied[indexlist] = false
+        }
+
+        console.error('Error in simpanCopyResepBaru:', error)
+
+        if (error.response && error.response.status === 422) {
+          const resData = error.response.data
+          const errList = resData.custom_errors || []
+
+          if (Array.isArray(errList)) {
+            errList.forEach(err => {
+              if (tipe === 'racik') {
+                this.statusCopiedRacik[`${indexlist}-${err.kdobat}`] = false
+                this.messageCopied[`${indexlist}-${err.kdobat}`] = err.message
+                if (err.message === 'Cek Konsumsi') {
+                  this.pemberianObatCek[`${indexlist}-${err.kdobat}`] = err.cek
+                  this.permintaanResepDuplicate[`${indexlist}-${err.kdobat}`] = kirimResep.find(o => o.kodeobat === err.kdobat)
+                }
+              } else {
+                this.statusCopied[`${indexlist}-${err.kdobat}`] = false
+                this.messageCopied[`${indexlist}-${err.kdobat}`] = err.message
+                if (err.message === 'Cek Konsumsi') {
+                  this.pemberianObatCek[`${indexlist}-${err.kdobat}`] = err.cek
+                  this.permintaanResepDuplicate[`${indexlist}-${err.kdobat}`] = kirimResep.find(o => o.kodeobat === err.kdobat)
+                }
+              }
+
+              // Set the error on customKirimObat if present (for Edit & Duplicate modal)
+              if (customKirimObat) {
+                const findObat = customKirimObat.find(x => x.kodeobat === err.kdobat)
+                if (findObat) {
+                  findObat.error = err.message === 'Cek Konsumsi' ? 'Batas konsumsi terlampaui' : err.message
+                }
+              }
+            })
+          } else if (resData.errors && typeof resData.errors === 'object') {
+            Object.keys(resData.errors).forEach(kdobat => {
+              const messages = resData.errors[kdobat]
+              const msg = Array.isArray(messages) ? messages[0] : messages
+              if (customKirimObat) {
+                const findObat = customKirimObat.find(x => x.kodeobat === kdobat)
+                if (findObat) {
+                  findObat.error = msg
+                }
+              }
+            })
+          }
+        } else {
+          notifErrVue(error.response?.data?.message || 'Terjadi kesalahan sistem saat menduplikasi resep.')
+        }
+        throw error
+      }
+    },
+    cekObatBaru (val, obat, indexlist, tipe, flag_dari = '2', customKirimObat = null) {
+      if (!this.form.tiperesep || this.form.tiperesep === '') {
+        this.form.tiperesep = val?.tiperesep || 'normal'
+      }
+      this.loadingObat = true
+      let kdobatArray = ''
+      let batas = 0
+
+      if (tipe === 'nonRacik') {
+        const panjang = val?.permintaanresep.filter(fi => fi.checked)
+
+        val?.permintaanresep.forEach((pa, indexs) => {
+          if (pa?.mobat?.jenis_perbekalan.toLowerCase() === 'obat') {
+            if (val?.permintaanresep?.length > 5) {
+              batas = pa.batas
+            }
+          }
+        })
+
+        if (panjang?.length <= 0 && batas > 0 && !customKirimObat) {
+          this.loading = false
+          notifErrVue('silahkan pilih obat yang diperlukan maksimal ' + batas + ' Obat!!!')
+          return Promise.reject(new Error('Validation failed'))
+        }
+      }
+ 
+      if (obat?.length) {
+        kdobatArray = obat.map(item => item?.kdobat)
+      }
+ 
+      const depo = this.depos.filter(pa => pa.value === val?.depo)
+ 
+      if (depo[0]?.value === 'Gd-05010101') {
+        if (this.form?.tiperesep !== 'normal') {
+          this.loading = false
+          notifErrVue('Maaf tidak bisa duplicate resep selain tipe resep normal!!!')
+          return Promise.reject(new Error('Validation failed'))
+        }
+      }
+ 
+      if (this.pasien.groups !== val?.sistembayar?.groups) {
+        this.loading = false
+        notifErrVue('Maaf sistem bayar pasien, tidak sama dengan sistem bayar resep yang diduplicate!!!')
+        return Promise.reject(new Error('Validation failed'))
+      }
+ 
+      if (this.form.groupsistembayarlain !== val?.sistembayar?.groups) {
+        this.loading = false
+        notifErrVue('Maaf sistem bayar yang dipilih, tidak sama dengan sistem bayar resep yang diduplicate!!!')
+        return Promise.reject(new Error('Validation failed'))
+      }
+ 
+      if (depo?.length) {
+        this.dpPar = depo[0]?.value
+      }
+      else {
+        notifErrVue('depo tujuan tidak ditemukan')
+        return Promise.reject(new Error('Validation failed'))
+      }
+      const param = {
+        groups: this?.pasien?.groups,
+        kdruang: this.dpPar,
+        q: kdobatArray,
+        tiperesep: this.form.tiperesep
+      }
+
+      const params = { params: param }
+      return new Promise((resolve, reject) => {
+        api.get('v1/simrs/pelayanan/lihatstokobateresepBydokter', params)
+          .then(resp => {
+            this.loadingObat = false
+            this.nonFilteredObat = resp.data?.dataobat
+            this.Obats = val?.length ? this.nonFilteredObat.filter(nfil => nfil?.namaobat.toLowerCase().includes(val?.toLowerCase())) : this.nonFilteredObat
+
+            let kirimResep = []
+
+            if (customKirimObat) {
+              kirimResep = customKirimObat.map(res => {
+                const obats = resp.data?.dataobat.find(ob => ob?.kdobat === res?.kodeobat)
+                return {
+                  ...res,
+                  forkit: obats?.forkit,
+                  fornas: obats?.fornas,
+                  generik: obats?.generik,
+                  kandungan: obats?.kandungan,
+                  kode50: obats?.kode50,
+                  kode108: obats?.kode108,
+                  stokalokasi: obats?.alokasi,
+                  uraian50: obats?.uraian50,
+                  uraian108: obats?.uraian108,
+                }
+              })
+            } else {
+              const resep = []
+              const panjangRes = val?.permintaanresep.filter(fi => fi.checked)
+              let batasRes = 0
+              const indexss = []
+
+              val?.permintaanresep.forEach((pa, indexs) => {
+                if (pa?.mobat?.jenis_perbekalan.toLowerCase() === 'obat') {
+                  if (val?.permintaanresep?.length > 5) {
+                    batasRes = pa.batas
+                    if (pa.checked && panjangRes?.length <= pa.batas) {
+                      indexss.push(indexs)
+                      resep.push(pa)
+                    }
+                  }
+                  else {
+                    indexss.push(indexs)
+                    resep.push(pa)
+                  }
+                }
+                else {
+                  indexss.push(indexs)
+                  resep.push(pa)
+                }
+              })
+
+              if (panjangRes?.length > batasRes) {
+                this.loading = false
+                notifErrVue('Maaf duplicate resep maksimal ' + batasRes + ' Obat, silahkan pilih obat yang diperlukan maksimal ' + batasRes + ' Obat!!!')
+                return Promise.reject(new Error('Validation failed'))
+              }
+
+              const racik = val?.permintaanracikan
+              const rinracik = val?.rincianracik
+
+              if (tipe === 'nonRacik') {
+                if (resep?.length) {
+                  resep.forEach(res => {
+                    const obats = resp.data?.dataobat.find(ob => ob?.kdobat === res?.kdobat)
+                    kirimResep.push({
+                      noreg: this.form.noreg,
+                      norm: this.form.norm,
+                      groupsistembayar: this.form.groupsistembayar,
+                      sistembayar: this.form.sistembayar,
+                      dokter: this.form.dokter,
+                      diagnosa: this.form.diagnosa,
+                      noresep: this.form.noresep ?? null,
+                      tiperesep: this.form.tiperesep,
+                      kodeincbg: this.form.kodeincbg,
+                      uraianinacbg: this.form.uraianinacbg,
+                      tarifina: this.form.tarifina,
+                      kdruangan: this.form.kdruangan,
+                      tagihanrs: this.form.tagihanrs,
+                      kodeobat: res?.kdobat,
+                      forkit: obats?.forkit,
+                      fornas: obats?.fornas,
+                      generik: obats?.generik,
+                      kandungan: obats?.kandungan,
+                      kode50: obats?.kode50,
+                      kode108: obats?.kode108,
+                      stokalokasi: obats?.alokasi,
+                      uraian50: obats?.uraian50,
+                      uraian108: obats?.uraian108,
+                      jenis_perbekalan: res?.mobat?.jenis_perbekalan,
+                      aturan: res?.aturan,
+                      jumlah_diminta: res?.jumlah,
+                      jumlahdosis: res?.jumlah,
+                      jumlah: res?.jumlah,
+                      keterangan: res?.keterangan,
+                      konsumsi: res?.konsumsi,
+                      satuan_kcl: res?.mobat?.satuan_k,
+                      kodedepo: depo[0]?.value,
+                      iter_jml: val?.iter_jml,
+                      jenisresep: 'nonRacikan',
+                      tiperacikan: '',
+                      lanjuTr: ''
+                    })
+                  })
+                }
+              } else {
+                if (rinracik?.length) {
+                  rinracik.forEach(racikan => {
+                    const obats = resp.data?.dataobat.find(ob => ob?.kdobat === racikan?.kdobat)
+                    const rac = racik.find(ob => ob?.kdobat === racikan?.kdobat)
+                    kirimResep.push({
+                      noreg: this.form.noreg,
+                      norm: this.form.norm,
+                      groupsistembayar: this.form.groupsistembayar,
+                      sistembayar: this.form.sistembayar,
+                      dokter: this.form.dokter,
+                      diagnosa: this.form.diagnosa,
+                      noresep: this.form.noresep ?? null,
+                      tiperesep: this.form.tiperesep,
+                      kodeincbg: this.form.kodeincbg,
+                      uraianinacbg: this.form.uraianinacbg,
+                      tarifina: this.form.tarifina,
+                      kdruangan: this.form.kdruangan,
+                      tagihanrs: this.form.tagihanrs,
+                      kodeobat: rac?.kdobat,
+                      forkit: obats?.forkit,
+                      fornas: obats?.fornas,
+                      generik: obats?.generik,
+                      kandungan: obats?.kandungan,
+                      kode50: obats?.kode50,
+                      kode108: obats?.kode108,
+                      stokalokasi: obats?.alokasi,
+                      uraian50: obats?.uraian50,
+                      uraian108: obats?.uraian108,
+                      jenis_perbekalan: rac?.mobat?.jenis_perbekalan,
+                      namaracikan: rac?.namaracikan,
+                      tiperacikan: rac?.tiperacikan,
+                      jumlahdibutuhkan: rac?.jumlahdibutuhkan,
+                      aturan: rac?.aturan,
+                      konsumsi: rac?.konsumsi,
+                      keterangan: rac?.keterangan,
+                      dosismaksimum: rac?.dosismaksimum,
+                      dosisobat: rac?.dosisobat,
+                      jumlah: racikan?.jumlah,
+                      satuan_racik: rac?.satuan_racik,
+                      keteranganx: rac?.keteranganx,
+                      jenisresep: 'Racikan',
+                      jumlahdiminta: rac?.jumlah,
+                      jumlahdosis: rac?.jumlah,
+                      kodedepo: depo[0]?.value,
+                      satuan_kcl: rac?.mobat?.satuan_k,
+                      lanjuTr: ''
+                    })
+                  })
+                }
+              }
+            }
+
+            this.simpanCopyResepBaru(val, kirimResep, flag_dari, indexlist, tipe, customKirimObat)
+              .then(resolve)
+              .catch(reject)
+          })
+          .catch(error => {
+            this.loading = false
+            this.loadingObat = false
+            this.Obats = []
+            reject(error)
+          })
+      })
     },
     kirimPermintaanRetur (val) {
       val.loading = true

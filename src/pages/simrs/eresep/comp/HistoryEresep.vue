@@ -60,6 +60,13 @@
                         Duplicate resep
                       </q-tooltip>
                     </q-btn>
+                    <q-btn rounded push label="Edit & Duplicate" class="f-12 q-mr-sm" color="indigo" text-color="white"
+                      icon="icon-mat-edit_note" :disable="store.loading || store.loadingkirim" :loading="store.loading"
+                      @click="openEditDuplicate(store?.historys[index], index, 'nonRacik')">
+                      <q-tooltip class="primary" :offset="[10, 10]" anchor="top right" self="top left">
+                        Edit jumlah & aturan pakai sebelum diduplikasi
+                      </q-tooltip>
+                    </q-btn>
                   </div>
                 </div>
                 <q-list separator bordered>
@@ -168,6 +175,13 @@
                       @click="copyResep(store?.historys[index], index, 'racik')">
                       <q-tooltip class="primary" :offset="[10, 10]" anchor="top right" self="top left">
                         Duplicate resep
+                      </q-tooltip>
+                    </q-btn>
+                    <q-btn rounded push label="Edit & Duplicate" class="f-12 q-mr-sm" color="indigo" text-color="white"
+                      icon="icon-mat-edit_note" :disable="store.loading || store.loadingkirim" :loading="store.loading"
+                      @click="openEditDuplicate(store?.historys[index], index, 'racik')">
+                      <q-tooltip class="primary" :offset="[10, 10]" anchor="top right" self="top left">
+                        Edit jumlah & aturan pakai sebelum diduplikasi
                       </q-tooltip>
                     </q-btn>
                   </div>
@@ -302,6 +316,70 @@
       </div>
     </div>
   </div>
+
+  <q-dialog v-model="dialogEditVisible" backdrop-filter="blur(4px) saturate(150%)" persistent>
+    <q-card style="width: 700px; max-width: 90vw;">
+      <q-card-section class="row items-center q-pb-none">
+        <div class="text-h6 text-indigo text-weight-bold">Edit Sebelum Duplicate</div>
+        <q-space />
+        <q-btn icon="icon-mat-close" flat round dense v-close-popup />
+      </q-card-section>
+
+      <q-card-section class="q-pa-md" style="max-height: 60vh; overflow-y: auto;">
+        <q-list separator bordered>
+          <q-item v-for="(item, idx) in editItems" :key="idx" class="q-py-md">
+            <q-item-section>
+              <div class="row q-col-gutter-sm items-center">
+                <!-- Info Obat -->
+                <div class="col-12">
+                  <div class="text-weight-bold text-indigo">{{ item.nama_obat }}</div>
+                  <div class="text-caption text-grey-7">{{ item.kodeobat }} ({{ item.satuan }})</div>
+                </div>
+
+                <!-- Input Jumlah -->
+                <div class="col-4" v-if="item.jenisresep === 'nonRacikan'">
+                  <q-input v-model.number="item.jumlah_diminta" type="number" label="Jumlah" outlined dense />
+                </div>
+                <div class="col-4" v-else>
+                  <q-input v-model.number="item.jumlah" type="number" label="Jumlah Kandungan" outlined dense />
+                </div>
+
+                <!-- Input Aturan -->
+                <div class="col-8">
+                  <q-input v-model="item.aturan" label="Aturan Pakai" outlined dense />
+                </div>
+
+                <!-- Input Keterangan & Jml Racikan -->
+                <div class="col-4" v-if="item.jenisresep === 'Racikan'">
+                  <q-input v-model.number="item.jumlahdibutuhkan" type="number" label="Jml Racikan" outlined dense />
+                </div>
+                <div :class="item.jenisresep === 'Racikan' ? 'col-8' : 'col-12'">
+                  <q-input v-model="item.keterangan" label="Keterangan" outlined dense />
+                </div>
+
+                <!-- Tampilkan pesan error jika ada -->
+                <div v-if="item.error" class="col-12 text-negative text-caption q-mt-xs">
+                  {{ item.error }}
+                </div>
+              </div>
+            </q-item-section>
+
+            <!-- Hapus Item -->
+            <q-item-section side>
+              <q-btn round flat color="negative" icon="icon-mat-delete" @click="removeEditItem(idx)">
+                <q-tooltip>Hapus obat dari resep ini</q-tooltip>
+              </q-btn>
+            </q-item-section>
+          </q-item>
+        </q-list>
+      </q-card-section>
+
+      <q-card-actions align="right" class="q-pa-md bg-grey-2">
+        <q-btn flat label="Batal" color="dark" v-close-popup />
+        <q-btn label="Simpan & Kirim" color="indigo" :loading="store.loading" @click="submitEditDuplicate" />
+      </q-card-actions>
+    </q-card>
+  </q-dialog>
 </template>
 
 <script setup>
@@ -312,7 +390,7 @@ import { usePermintaanEResepStore } from 'src/stores/simrs/farmasi/permintaanres
 import { humanDate } from 'src/modules/formatter'
 // import { pathImg } from 'src/boot/axios'
 // import { useAplikasiStore } from 'src/stores/app/aplikasi'
-// import { notifErrVue } from 'src/modules/utils'
+import { notifErrVue } from 'src/modules/utils'
 
 // eslint-disable-next-line no-unused-vars
 const cekobats = ref([])
@@ -356,11 +434,120 @@ function copyResep (val, indexlist, tipe) {
 
   if (tipe === 'nonRacik') {
     console.log('VAVAL', val)
-    store.cekObat(val, permintaan, indexlist, tipe)
+    store.cekObatBaru(val, permintaan, indexlist, tipe, '2')
   }
   else {
-    store.cekObat(val, permintaanracik, indexlist, tipe)
+    store.cekObatBaru(val, permintaanracik, indexlist, tipe, '2')
   }
+}
+
+const dialogEditVisible = ref(false)
+const editItems = ref([])
+const editSourceRecipe = ref(null)
+const editIndexList = ref(-1)
+const editTipe = ref('')
+
+function openEditDuplicate (val, indexlist, tipe) {
+  editSourceRecipe.value = val
+  editIndexList.value = indexlist
+  editTipe.value = tipe
+
+  if (tipe === 'nonRacik') {
+    editItems.value = val.permintaanresep.map(res => ({
+      kodeobat: res.kdobat,
+      nama_obat: res.mobat?.nama_obat || '',
+      satuan: res.mobat?.satuan_k || '',
+      jumlah_diminta: res.jumlah,
+      aturan: res.aturan,
+      keterangan: res.keterangan || '',
+      konsumsi: res.konsumsi || 0,
+      jenisresep: 'nonRacikan',
+      forkit: res.forkit,
+      fornas: res.fornas,
+      generik: res.generik,
+      kandungan: res.kandungan,
+      kode50: res.kode50,
+      kode108: res.kode108,
+      stokalokasi: res.stokalokasi,
+      uraian50: res.uraian50,
+      uraian108: res.uraian108,
+      noreg: store.form.noreg,
+      norm: store.form.norm,
+      groupsistembayar: store.form.groupsistembayar,
+      sistembayar: store.form.sistembayar,
+      dokter: store.form.dokter,
+      diagnosa: store.form.diagnosa,
+      kdruangan: store.form.kdruangan,
+      tagihanrs: store.form.tagihanrs,
+      tarifina: store.form.tarifina,
+      uraianinacbg: store.form.uraianinacbg,
+      kodeincbg: store.form.kodeincbg,
+    }))
+  } else {
+    editItems.value = val.rincianracik.map((racikan, i) => {
+      const parent = val.permintaanracikan.find(o => o.kdobat === racikan.kdobat) || val.permintaanracikan[i] || {}
+      return {
+        kodeobat: racikan.kdobat,
+        nama_obat: racikan.mobat?.nama_obat || '',
+        satuan: racikan.mobat?.satuan_k || '',
+        jumlah: racikan.jumlah,
+        aturan: parent.aturan,
+        keterangan: parent.keterangan || '',
+        konsumsi: parent.konsumsi || 0,
+        jenisresep: 'Racikan',
+        namaracikan: parent.namaracikan,
+        tiperacikan: parent.tiperacikan,
+        jumlahdibutuhkan: parent.jumlahdibutuhkan,
+        dosismaksimum: parent.dosismaksimum,
+        dosisobat: parent.dosisobat,
+        satuan_racik: parent.satuan_racik,
+        keteranganx: parent.keteranganx,
+        forkit: parent.forkit,
+        fornas: parent.fornas,
+        generik: parent.generik,
+        kandungan: parent.kandungan,
+        kode50: parent.kode50,
+        kode108: parent.kode108,
+        stokalokasi: parent.stokalokasi,
+        uraian50: parent.uraian50,
+        uraian108: parent.uraian108,
+        noreg: store.form.noreg,
+        norm: store.form.norm,
+        groupsistembayar: store.form.groupsistembayar,
+        sistembayar: store.form.sistembayar,
+        dokter: store.form.dokter,
+        diagnosa: store.form.diagnosa,
+        kdruangan: store.form.kdruangan,
+        tagihanrs: store.form.tagihanrs,
+        tarifina: store.form.tarifina,
+        uraianinacbg: store.form.uraianinacbg,
+        kodeincbg: store.form.kodeincbg,
+      }
+    })
+  }
+
+  dialogEditVisible.value = true
+}
+
+function removeEditItem (idx) {
+  editItems.value.splice(idx, 1)
+}
+
+function submitEditDuplicate () {
+  if (editItems.value.length === 0) {
+    notifErrVue('Tidak ada obat dalam daftar resep.')
+    return
+  }
+
+  store.loading = true
+  const listObatMap = editItems.value.map(item => ({ kdobat: item.kodeobat }))
+
+  store.cekObatBaru(editSourceRecipe.value, listObatMap, editIndexList.value, editTipe.value, '3', editItems.value)
+    .then(() => {
+      dialogEditVisible.value = false
+    })
+    .catch(() => {
+    })
 }
 
 function checked (evt, val, index) {
