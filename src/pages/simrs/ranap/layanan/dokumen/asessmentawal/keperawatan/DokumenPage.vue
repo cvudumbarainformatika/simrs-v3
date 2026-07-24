@@ -1704,7 +1704,7 @@
       </div>
 
       <!-- Diagnosa keperawatan -->
-      <div v-if="pasien?.diagnosakeperawatan && !pasien?.diagnosakebidanan" class="section">
+      <div v-if="pasien?.diagnosakeperawatan?.length > 0" class="section">
         <div class="section-title">Diagnosis Keperawatan</div>
         <table style="margin-top: -5px;">
           <thead>

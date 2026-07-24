@@ -122,15 +122,24 @@ export const useAsessmentUlangRanapStore = defineStore('asesment-ulang-ranap-sto
       if (!cekTerbaru) {
         dataSebelumnya = dataAwal
         storeAnamnesis.initReset(dataAwal?.anamnesis)
-        storePemeriksaan.initReset(dataAwal?.pemeriksaan)
-        storePenilaian.initReset(pasien, dataAwal?.penilaian)
       }
       else {
         dataSebelumnya = cekTerbaru
         storeAnamnesis.initReset(dataSebelumnya?.anamnesis)
-        storePemeriksaan.initReset(dataSebelumnya?.pemeriksaan)
-        storePenilaian.initReset(pasien, dataSebelumnya?.penilaian)
       }
+
+      // HANYA UNTUK DATA OBJECTIVE: Ambil pemeriksaan & penilaian TTV terbaru yang valid khusus dari CPPT Dokter/Perawat/Bidan (nakes '1', '2', atau '3'), jika tidak ada baru dari dataAwal
+      const nakesTtv = ['1', '2', '3']
+      const cekPemeriksaanTerbaru = this.items?.length
+        ? this.items?.find((a) => nakesTtv.includes(a?.nakes?.toString()) && a?.pemeriksaan && (a?.pemeriksaan?.keadaanUmum || a?.pemeriksaan?.sistole) && !excludes.includes(a?.kdruang)) || null
+        : null
+
+      const dataPemeriksaanSebelumnya = cekPemeriksaanTerbaru?.pemeriksaan || dataAwal?.pemeriksaan
+      const dataPenilaianSebelumnya = cekPemeriksaanTerbaru?.penilaian || dataAwal?.penilaian
+
+      storePemeriksaan.initReset(dataPemeriksaanSebelumnya)
+      storePenilaian.initReset(pasien, dataPenilaianSebelumnya)
+
       this.previousData = dataSebelumnya
 
       // console.log('data sebelumnya', dataSebelumnya)

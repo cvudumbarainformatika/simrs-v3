@@ -62,6 +62,13 @@ const tabsxx = [
     comp: defineAsyncComponent(() => import('./praanestesi/IndexPage.vue'))
   },
   {
+    label: 'Pra Sedasi',
+    name: 'prasedasi',
+    icon: 'icon-mat-health_and_safety',
+    nakes: ['1', '2', '3'],
+    comp: defineAsyncComponent(() => import('./prasedasi/IndexPage.vue'))
+  },
+  {
     label: 'Pra Bedah',
     name: 'prabedah',
     icon: 'icon-mat-health_and_safety',

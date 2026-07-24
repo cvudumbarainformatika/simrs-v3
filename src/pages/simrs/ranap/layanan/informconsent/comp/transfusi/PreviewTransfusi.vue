@@ -312,7 +312,7 @@ import { humanDate, jamTnpDetik } from 'src/modules/formatter'
 import { imageToBase64 } from 'src/modules/imgBase64'
 import { useConcernOperasiInvasifRanapStore } from 'src/stores/simrs/ranap/concernoperasiinvasif'
 import AppKopSuratStandard from 'src/components/~global/AppKopSuratStandard.vue'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 
 const store = useConcernOperasiInvasifRanapStore()
 
@@ -334,6 +334,12 @@ const props = defineProps({
 onMounted(() => {
   initImage(props.item)
 })
+
+watch(() => props.item, (val) => {
+  if (val) {
+    initImage(val)
+  }
+}, { deep: true })
 
 function initImage(item) {
   const ttdSaksiPasien = pathImg + item?.ttdSaksiPasien

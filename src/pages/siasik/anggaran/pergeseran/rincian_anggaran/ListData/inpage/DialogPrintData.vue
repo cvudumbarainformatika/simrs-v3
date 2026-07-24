@@ -439,21 +439,23 @@
       </q-layout>
     </q-card>
   </q-dialog>
-  <input-batasan v-model="showRincian" :datas="selectedRincian" />
+  <input-batasan v-if="user === 'sa'" v-model="showRincian" :datas="selectedRincian" />
 </template>
 <script setup>
 import { useBukubesarStore } from 'src/stores/siasik/akuntansi/bukubesar/bukubesar'
-import { onMounted, ref, defineAsyncComponent } from 'vue'
+import { onMounted, ref, defineAsyncComponent, computed } from 'vue'
 
 // eslint-disable-next-line no-unused-vars
 import { formatDenganRp, formatRpDouble, formattanpaRp } from 'src/modules/formatter'
 import { usePergeseranAnggaranStore } from 'src/stores/siasik/anggaran/pergeseran/pergeseranrincian'
+import { useAplikasiStore } from 'src/stores/app/aplikasi.js'
 
 const InputBatasan = defineAsyncComponent(() => import('./DialogInputBatasan.vue'))
 // import listDatapergeseran from '../inpage/ListDataRKApergeseran.vue'
 // import listData from '../inpage/ListDataRKA.vue'
 
-
+const auth = useAplikasiStore()
+const user = computed(() => auth.user?.pegawai?.kdpegsimrs)
 const props = defineProps({
   modelValue: {
     type: Boolean,

@@ -179,6 +179,15 @@ const menus = ref([
     comp: shallowRef(defineAsyncComponent(() => import('src/pages/simrs/dokumen/erm/poli/AsesmenPraAnestesia.vue')))
   },
   {
+    name: 'AsesmenPraSedasi',
+    label: 'ASESMEN PRA SEDASI',
+    title: 'ASESMEN PRA SEDASI',
+    desc: 'Dokumen Asesmen Pra Sedasi Pasien',
+    icon: 'icon-my-file_sign',
+    nakes: ['1', '2', '3'],
+    comp: shallowRef(defineAsyncComponent(() => import('./prasedasi/IndexPage.vue')))
+  },
+  {
     name: 'AsesmenPraBedah',
     label: 'ASESMEN PRA BEDAH',
     title: 'ASESMEN PRA BEDAH',

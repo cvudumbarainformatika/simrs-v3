@@ -27,6 +27,9 @@
                   standout="bg-yellow-3" outlined dense style="width: 50%" />
                 <app-input-simrs label="Batasan Realisasi" v-model="store.form_batasan.batasan" standout="bg-yellow-3"
                   outlined dense style="width: 50%" />
+                <q-select v-model="store.form_batasan.flag" outlined standout="bg-yellow-3" dense emit-value map-options
+                  option-value="value" label="Status" class="ellipsis-2-lines" :options="optionsAktif"
+                  option-label="label" :disable="store.loadingSave" :loading="store.loadingSave" />
 
               </div>
               <div class="row flex justify-end q-pt-sm">
@@ -77,7 +80,10 @@ const store = usePergeseranAnggaranStore()
 const emits = defineEmits(['update:modelValue'])
 
 const close = () => emits('update:modelValue', false)
-
+const optionsAktif = [
+  { label: 'Aktif', value: '1' },
+  { label: 'Non Aktif', value: '' }
+]
 
 // onMounted(() => {
 //   console.log('batasan', store.form_batasan?.batasan)
