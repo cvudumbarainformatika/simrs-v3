@@ -6,6 +6,13 @@
         @mouseover="onHoverred = index" @mouseleave="onHoverred = -1" @click="emits('details', item)">
         <q-card class="card-masonry">
           <app-avatar-pasien :pasien="item" width="100%" class="full-width relative-position">
+            <div v-if="item?.is_geriatri === 1 || item?.is_geriatri === '1'" class="absolute-left z-top"
+              style="top: 160px; left: 10px;">
+              <div class="bg-red text-white text-center q-px-xs text-weight-bold"
+                style="font-size: 10px; border-radius: 3px; line-height: 1.2;">
+                GERIATRI
+              </div>
+            </div>
             <div class="absolute-right">
               <div class="text-right">
                 <div>{{ date.formatDate(item.tgl_kunjungan, 'MMM DD, YYYY') }}</div>
