@@ -15,10 +15,10 @@
                 <div class="col-2 text-center text-weight-bold">Dari</div>
                 <div class="col-6">
                   <app-autocomplete v-model="store.params.dari_bulan" label="Bulan" autocomplete="nama"
-                    option-label="nama" option-value="value" outlined :source="store.bulans" :loading="store.loading" />
+                    option-label="nama" option-value="value" outlined :source="store.bulans" :loading="store.loading" :disable="store.loading" />
                 </div>
                 <div class="col-4">
-                  <app-input v-model="store.params.dari_tahun" label="Tahun" outlined :loading="store.loading" />
+                  <app-input v-model="store.params.dari_tahun" label="Tahun" outlined :loading="store.loading" :disable="store.loading" />
                 </div>
               </div>
             </div>
@@ -27,17 +27,17 @@
                 <div class="col-2 text-center text-weight-bold">S/D</div>
                 <div class="col-6">
                   <app-autocomplete v-model="store.params.sampai_bulan" label="Bulan" autocomplete="nama"
-                    option-label="nama" option-value="value" outlined :source="store.bulans" :loading="store.loading" />
+                    option-label="nama" option-value="value" outlined :source="store.bulans" :loading="store.loading" :disable="store.loading" />
                 </div>
                 <div class="col-4">
-                  <app-input v-model="store.params.sampai_tahun" label="Tahun" outlined :loading="store.loading" />
+                  <app-input v-model="store.params.sampai_tahun" label="Tahun" outlined :loading="store.loading" :disable="store.loading" />
                 </div>
               </div>
             </div>
 
             <div class="col-2">
               <app-autocomplete v-model="store.params.kode_ruang" label="Pilih Gudang / Depo" autocomplete="nama"
-                option-label="nama" option-value="value" outlined :source="store.gudangs" :loading="store.loading" />
+                option-label="nama" option-value="value" outlined :source="store.gudangs" :loading="store.loading" :disable="store.loading" />
             </div>
             <div class="col-2">
               <app-btn label="Ambil Data" :disable="store.loading" :loading="store.loading" @click="store.getData()" />
@@ -46,7 +46,7 @@
         </div>
         <div class="col-auto q-mr-md">
           <div class="row items-center">
-            <q-btn ref="refPrint" v-print="printObj" unelevated color="dark" round size="sm" icon="icon-mat-print">
+            <q-btn ref="refPrint" v-print="printObj" unelevated color="dark" round size="sm" icon="icon-mat-print" :disable="store.loading">
               <q-tooltip class="primary" :offset="[10, 10]">
                 Print
               </q-tooltip>
@@ -67,7 +67,7 @@
                   icon="icon-mat-download"
                   push
                   :loading="store.loadingDownload"
-                  :disable="store.loadingDownload"
+                  :disable="store.loadingDownload || store.loading"
                 >
                   <q-tooltip>Download Excel</q-tooltip>
                 </q-btn>
