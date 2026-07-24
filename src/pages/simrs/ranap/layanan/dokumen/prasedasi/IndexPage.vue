@@ -51,9 +51,8 @@
                 <div class="col-3 text-right"><strong>TGL LAHIR</strong> : {{ pasien?.tgllahir || '....................' }}</div>
               </div>
               <div class="row q-pt-xs">
-                <div class="col-3"><strong>J. Kelamin</strong> : {{ pasien?.kelamin || 'L / P' }}</div>
-                <div class="col-5"><strong>Alamat</strong> : {{ pasien?.alamat || '........................................' }}</div>
-                <div class="col-4 text-right"><strong>Dokter Anestesi</strong> : {{ item?.dokter || '................................' }}</div>
+                <div class="col-4"><strong>J. Kelamin</strong> : {{ pasien?.kelamin || 'L / P' }}</div>
+                <div class="col-8 text-right"><strong>Dokter Anestesi</strong> : {{ item?.dokter || '................................' }}</div>
               </div>
             </div>
 
@@ -66,98 +65,98 @@
                 <tr>
                   <td width="30%">Hilangnya Gigi</td>
                   <td width="20%">
-                    <q-checkbox :model-value="parseJSON(item?.kajian_sistem)?.hilangnyaGigi === 'Ya'" size="xs" label="Ya" dense disable color="black" class="q-mr-xs" />
+                    <q-checkbox :model-value="parseJSON(item?.kajian_sistem)?.hilangnyaGigi === 'Ya'" size="xs" label="Ya" dense disable color="black" class="q-mr-sm" />
                     <q-checkbox :model-value="parseJSON(item?.kajian_sistem)?.hilangnyaGigi === 'Tidak'" size="xs" label="Tidak" dense disable color="black" />
                   </td>
                   <td width="30%">Muntah</td>
                   <td width="20%">
-                    <q-checkbox :model-value="parseJSON(item?.kajian_sistem)?.muntah === 'Ya'" size="xs" label="Ya" dense disable color="black" class="q-mr-xs" />
+                    <q-checkbox :model-value="parseJSON(item?.kajian_sistem)?.muntah === 'Ya'" size="xs" label="Ya" dense disable color="black" class="q-mr-sm" />
                     <q-checkbox :model-value="parseJSON(item?.kajian_sistem)?.muntah === 'Tidak'" size="xs" label="Tidak" dense disable color="black" />
                   </td>
                 </tr>
                 <tr>
                   <td>Masalah mobilisasi leher</td>
                   <td>
-                    <q-checkbox :model-value="parseJSON(item?.kajian_sistem)?.masalahMobilisasiLeher === 'Ya'" size="xs" label="Ya" dense disable color="black" class="q-mr-xs" />
+                    <q-checkbox :model-value="parseJSON(item?.kajian_sistem)?.masalahMobilisasiLeher === 'Ya'" size="xs" label="Ya" dense disable color="black" class="q-mr-sm" />
                     <q-checkbox :model-value="parseJSON(item?.kajian_sistem)?.masalahMobilisasiLeher === 'Tidak'" size="xs" label="Tidak" dense disable color="black" />
                   </td>
                   <td>Pingsan</td>
                   <td>
-                    <q-checkbox :model-value="parseJSON(item?.kajian_sistem)?.pingsan === 'Ya'" size="xs" label="Ya" dense disable color="black" class="q-mr-xs" />
+                    <q-checkbox :model-value="parseJSON(item?.kajian_sistem)?.pingsan === 'Ya'" size="xs" label="Ya" dense disable color="black" class="q-mr-sm" />
                     <q-checkbox :model-value="parseJSON(item?.kajian_sistem)?.pingsan === 'Tidak'" size="xs" label="Tidak" dense disable color="black" />
                   </td>
                 </tr>
                 <tr>
                   <td>Leher Pendek</td>
                   <td>
-                    <q-checkbox :model-value="parseJSON(item?.kajian_sistem)?.leherPendek === 'Ya'" size="xs" label="Ya" dense disable color="black" class="q-mr-xs" />
+                    <q-checkbox :model-value="parseJSON(item?.kajian_sistem)?.leherPendek === 'Ya'" size="xs" label="Ya" dense disable color="black" class="q-mr-sm" />
                     <q-checkbox :model-value="parseJSON(item?.kajian_sistem)?.leherPendek === 'Tidak'" size="xs" label="Tidak" dense disable color="black" />
                   </td>
                   <td>Stroke</td>
                   <td>
-                    <q-checkbox :model-value="parseJSON(item?.kajian_sistem)?.stroke === 'Ya'" size="xs" label="Ya" dense disable color="black" class="q-mr-xs" />
+                    <q-checkbox :model-value="parseJSON(item?.kajian_sistem)?.stroke === 'Ya'" size="xs" label="Ya" dense disable color="black" class="q-mr-sm" />
                     <q-checkbox :model-value="parseJSON(item?.kajian_sistem)?.stroke === 'Tidak'" size="xs" label="Tidak" dense disable color="black" />
                   </td>
                 </tr>
                 <tr>
                   <td>Batuk</td>
                   <td>
-                    <q-checkbox :model-value="parseJSON(item?.kajian_sistem)?.batuk === 'Ya'" size="xs" label="Ya" dense disable color="black" class="q-mr-xs" />
+                    <q-checkbox :model-value="parseJSON(item?.kajian_sistem)?.batuk === 'Ya'" size="xs" label="Ya" dense disable color="black" class="q-mr-sm" />
                     <q-checkbox :model-value="parseJSON(item?.kajian_sistem)?.batuk === 'Tidak'" size="xs" label="Tidak" dense disable color="black" />
                   </td>
                   <td>Kejang</td>
                   <td>
-                    <q-checkbox :model-value="parseJSON(item?.kajian_sistem)?.kejang === 'Ya'" size="xs" label="Ya" dense disable color="black" class="q-mr-xs" />
+                    <q-checkbox :model-value="parseJSON(item?.kajian_sistem)?.kejang === 'Ya'" size="xs" label="Ya" dense disable color="black" class="q-mr-sm" />
                     <q-checkbox :model-value="parseJSON(item?.kajian_sistem)?.kejang === 'Tidak'" size="xs" label="Tidak" dense disable color="black" />
                   </td>
                 </tr>
                 <tr>
                   <td>Sesak Nafas</td>
                   <td>
-                    <q-checkbox :model-value="parseJSON(item?.kajian_sistem)?.sesakNafas === 'Ya'" size="xs" label="Ya" dense disable color="black" class="q-mr-xs" />
+                    <q-checkbox :model-value="parseJSON(item?.kajian_sistem)?.sesakNafas === 'Ya'" size="xs" label="Ya" dense disable color="black" class="q-mr-sm" />
                     <q-checkbox :model-value="parseJSON(item?.kajian_sistem)?.sesakNafas === 'Tidak'" size="xs" label="Tidak" dense disable color="black" />
                   </td>
                   <td>Sedang Hamil</td>
                   <td>
-                    <q-checkbox :model-value="parseJSON(item?.kajian_sistem)?.sedangHamil === 'Ya'" size="xs" label="Ya" dense disable color="black" class="q-mr-xs" />
+                    <q-checkbox :model-value="parseJSON(item?.kajian_sistem)?.sedangHamil === 'Ya'" size="xs" label="Ya" dense disable color="black" class="q-mr-sm" />
                     <q-checkbox :model-value="parseJSON(item?.kajian_sistem)?.sedangHamil === 'Tidak'" size="xs" label="Tidak" dense disable color="black" />
                   </td>
                 </tr>
                 <tr>
                   <td>Baru saja menderita infeksi</td>
                   <td>
-                    <q-checkbox :model-value="parseJSON(item?.kajian_sistem)?.baruSajaInfeksi === 'Ya'" size="xs" label="Ya" dense disable color="black" class="q-mr-xs" />
+                    <q-checkbox :model-value="parseJSON(item?.kajian_sistem)?.baruSajaInfeksi === 'Ya'" size="xs" label="Ya" dense disable color="black" class="q-mr-sm" />
                     <q-checkbox :model-value="parseJSON(item?.kajian_sistem)?.baruSajaInfeksi === 'Tidak'" size="xs" label="Tidak" dense disable color="black" />
                   </td>
                   <td>Kelainan tulang belakang</td>
                   <td>
-                    <q-checkbox :model-value="parseJSON(item?.kajian_sistem)?.kelainanTulangBelakang === 'Ya'" size="xs" label="Ya" dense disable color="black" class="q-mr-xs" />
+                    <q-checkbox :model-value="parseJSON(item?.kajian_sistem)?.kelainanTulangBelakang === 'Ya'" size="xs" label="Ya" dense disable color="black" class="q-mr-sm" />
                     <q-checkbox :model-value="parseJSON(item?.kajian_sistem)?.kelainanTulangBelakang === 'Tidak'" size="xs" label="Tidak" dense disable color="black" />
                   </td>
                 </tr>
                 <tr>
                   <td>Saluran nafas atas sakit dada</td>
                   <td>
-                    <q-checkbox :model-value="parseJSON(item?.kajian_sistem)?.saluranNafasSakitDada === 'Ya'" size="xs" label="Ya" dense disable color="black" class="q-mr-xs" />
+                    <q-checkbox :model-value="parseJSON(item?.kajian_sistem)?.saluranNafasSakitDada === 'Ya'" size="xs" label="Ya" dense disable color="black" class="q-mr-sm" />
                     <q-checkbox :model-value="parseJSON(item?.kajian_sistem)?.saluranNafasSakitDada === 'Tidak'" size="xs" label="Tidak" dense disable color="black" />
                   </td>
                   <td>Obesitas</td>
                   <td>
-                    <q-checkbox :model-value="parseJSON(item?.kajian_sistem)?.obesitas === 'Ya'" size="xs" label="Ya" dense disable color="black" class="q-mr-xs" />
+                    <q-checkbox :model-value="parseJSON(item?.kajian_sistem)?.obesitas === 'Ya'" size="xs" label="Ya" dense disable color="black" class="q-mr-sm" />
                     <q-checkbox :model-value="parseJSON(item?.kajian_sistem)?.obesitas === 'Tidak'" size="xs" label="Tidak" dense disable color="black" />
                   </td>
                 </tr>
                 <tr>
                   <td>Denyut Jantung tidak normal</td>
                   <td>
-                    <q-checkbox :model-value="parseJSON(item?.kajian_sistem)?.denyutJantungTidakNormal === 'Ya'" size="xs" label="Ya" dense disable color="black" class="q-mr-xs" />
+                    <q-checkbox :model-value="parseJSON(item?.kajian_sistem)?.denyutJantungTidakNormal === 'Ya'" size="xs" label="Ya" dense disable color="black" class="q-mr-sm" />
                     <q-checkbox :model-value="parseJSON(item?.kajian_sistem)?.denyutJantungTidakNormal === 'Tidak'" size="xs" label="Tidak" dense disable color="black" />
                   </td>
                   <td></td>
                   <td></td>
                 </tr>
                 <tr>
-                  <td colspan="4" class="py-tight">
+                  <td colspan="4" class="py-tight q-pt-xs">
                     <strong>Keterangan</strong> : <span class="dotted-text">{{ item?.keterangan_kajian_sistem || '................................................................................................................................................................' }}</span>
                   </td>
                 </tr>
@@ -165,7 +164,7 @@
             </table>
 
             <!-- 2. PEMERIKSAAN FISIK -->
-            <div class="section-title q-mt-xs">PEMERIKSAAN FISIK</div>
+            <div class="section-title">PEMERIKSAAN FISIK</div>
             <div class="row py-tight">
               <div class="col-12">
                 Tinggi : <span class="dotted-val">{{ item?.tinggi || '........' }}</span> cm &nbsp;&nbsp;&nbsp;&nbsp;
@@ -177,10 +176,10 @@
             </div>
 
             <!-- 3. KEADAAN UMUM -->
-            <div class="section-title q-mt-xs">KEADAAN UMUM</div>
+            <div class="section-title">KEADAAN UMUM</div>
             <div class="row py-tight">
-              <div class="col-7">Skor Mallampati : <span class="dotted-val">{{ item?.skor_mallampati || '................................................' }}</span></div>
-              <div class="col-5">Gigi Palsu : <span class="dotted-val">{{ item?.gigi_palsu || '................................................' }}</span></div>
+              <div class="col-6">Skor Mallampati : <span class="dotted-val">{{ item?.skor_mallampati || '................................................' }}</span></div>
+              <div class="col-6">Gigi Palsu : <span class="dotted-val">{{ item?.gigi_palsu || '................................................' }}</span></div>
               <div class="col-12">Jantung : <span class="dotted-val">{{ item?.jantung || '................................................................................................................................' }}</span></div>
               <div class="col-12">Paru-paru : <span class="dotted-val">{{ item?.paru_paru || '................................................................................................................................' }}</span></div>
               <div class="col-12">Abdomen : <span class="dotted-val">{{ item?.abdomen || '................................................................................................................................' }}</span></div>
@@ -191,7 +190,7 @@
             </div>
 
             <!-- 4. LABORATORIUM -->
-            <div class="section-title q-mt-xs">LABORATORIUM (bila tersedia)</div>
+            <div class="section-title">LABORATORIUM (bila tersedia)</div>
             <table class="full-width table-tight">
               <tbody>
                 <tr>
@@ -263,7 +262,7 @@
             </table>
 
             <!-- 5. DIAGNOSIS & 6. ASA CLASSIFICATION -->
-            <div class="row q-col-gutter-x-md q-col-gutter-y-none q-mt-xs">
+            <div class="row q-col-gutter-x-md q-col-gutter-y-none">
               <div class="col-6">
                 <div class="section-title">DIAGNOSIS (ICD X)</div>
                 <div class="py-tight">1. <span class="dotted-val">{{ parseJSON(item?.diagnosis)?.[0] || '................................................................' }}</span></div>
@@ -287,7 +286,7 @@
             </div>
 
             <!-- 7. PENYULIT SEDASI LAIN & 8. CATATAN TINDAK LANJUT -->
-            <div class="row q-col-gutter-x-md q-col-gutter-y-none q-mt-xs">
+            <div class="row q-col-gutter-x-md q-col-gutter-y-none">
               <div class="col-6">
                 <div class="section-title">PENYULIT SEDASI LAIN :</div>
                 <div class="py-tight">1. <span class="dotted-val">{{ parseJSON(item?.penyulit_sedasi_lain)?.[0] || '................................................................' }}</span></div>
@@ -300,7 +299,7 @@
             </div>
 
             <!-- 9. PERENCANAAN SEDASI -->
-            <div class="section-title q-mt-xs">PERENCANAAN SEDASI</div>
+            <div class="section-title">PERENCANAAN SEDASI</div>
             <div class="py-tight">Teknik Sedasi : <span class="dotted-val">{{ item?.teknik_sedasi || '................................................' }}</span></div>
             <div class="py-tight">
               Teknik Khusus :
@@ -318,7 +317,7 @@
               <span class="dotted-val">{{ item?.teknik_khusus_lain || '................................................................................' }}</span>
             </div>
 
-            <div class="py-tight q-mt-xs">Perawatan pasca Sedasi :</div>
+            <div class="py-tight">Perawatan pasca Sedasi :</div>
             <div class="py-tight q-ml-lg">
               <q-checkbox :model-value="item?.perawatan_pasca_sedasi === 'Rawat Inap'" size="xs" label="Rawat Inap" dense disable color="black" /><br>
               <q-checkbox :model-value="item?.perawatan_pasca_sedasi === 'Rawat Jalan'" size="xs" label="Rawat Jalan" dense disable color="black" /><br>
@@ -332,25 +331,34 @@
               <span class="dotted-val">{{ item?.aps_ket || '................................................................................' }}</span>
             </div>
 
-            <!-- 10. PERSIAPAN PRA SEDASI -->
-            <div class="section-title q-mt-xs">PERSIAPAN PRA SEDASI</div>
-            <div class="row py-tight">
-              <div class="col-6">Puasa mulai : Jam <span class="dotted-val">{{ item?.puasa_mulai_jam || '................' }}</span> &nbsp;&nbsp;&nbsp;&nbsp; Tanggal : <span class="dotted-val">{{ item?.puasa_mulai_tgl || '................' }}</span></div>
-              <div class="col-6">Pre medikasi : Jam <span class="dotted-val">{{ item?.pre_medikasi_jam || '................' }}</span> &nbsp;&nbsp;&nbsp;&nbsp; Tanggal : <span class="dotted-val">{{ item?.pre_medikasi_tgl || '................' }}</span></div>
-              <div class="col-6">Mulai sedasi : Jam <span class="dotted-val">{{ item?.mulai_sedasi_jam || '................' }}</span> &nbsp;&nbsp;&nbsp;&nbsp; Tanggal : <span class="dotted-val">{{ item?.mulai_sedasi_tgl || '................' }}</span></div>
+            <!-- 10. PERSIAPAN PRA SEDASI (3 KOLOM SEJAJAR RAPI) -->
+            <div class="section-title">PERSIAPAN PRA SEDASI</div>
+            <div class="row py-tight q-col-gutter-x-sm">
+              <div class="col-4">
+                Puasa mulai : Jam <span class="dotted-val">{{ item?.puasa_mulai_jam || '...........' }}</span> &nbsp;
+                Tgl : <span class="dotted-val">{{ item?.puasa_mulai_tgl || '...........' }}</span>
+              </div>
+              <div class="col-4">
+                Pre medikasi : Jam <span class="dotted-val">{{ item?.pre_medikasi_jam || '...........' }}</span> &nbsp;
+                Tgl : <span class="dotted-val">{{ item?.pre_medikasi_tgl || '...........' }}</span>
+              </div>
+              <div class="col-4">
+                Mulai sedasi : Jam <span class="dotted-val">{{ item?.mulai_sedasi_jam || '...........' }}</span> &nbsp;
+                Tgl : <span class="dotted-val">{{ item?.mulai_sedasi_tgl || '...........' }}</span>
+              </div>
             </div>
 
-            <div class="section-title q-mt-xs">CATATAN PERSIAPAN PRA SEDASI :</div>
+            <div class="section-title">CATATAN PERSIAPAN PRA SEDASI :</div>
             <div class="py-tight dotted-text">
               {{ item?.catatan_persiapan_pra_sedasi || '................................................................................................................................................................' }}
             </div>
 
-            <!-- DOKTER ANESTESI SIGNATURE WITH QR CODE (BOTTOM RIGHT) -->
-            <div class="row justify-end q-mt-sm">
+            <!-- DOKTER ANESTESI SIGNATURE WITH ENLARGED QR CODE (BOTTOM RIGHT) -->
+            <div class="row justify-end q-mt-xs">
               <div class="col-5 text-center">
                 <div class="text-bold">Dokter Anestesi</div>
                 <div class="flex flex-center q-my-xs">
-                  <div style="width: 48px; height: 48px;">
+                  <div style="width: 58px; height: 58px;">
                     <vue-qrcode
                       v-if="item?.kddokter || item?.kdpegsimrs"
                       :value="qrUrl(item?.kddokter || item?.kdpegsimrs)"
@@ -447,7 +455,7 @@ const qrUrl = (kdpeg) => {
 .pra-sedasi-doc {
   font-family: Arial, Helvetica, sans-serif;
   font-size: 10px;
-  line-height: 1.25;
+  line-height: 1.2;
   color: #000;
 
   .table-tight {
@@ -467,14 +475,14 @@ const qrUrl = (kdpeg) => {
   .section-title {
     font-weight: bold;
     text-decoration: underline;
-    font-size: 10.5px;
+    font-size: 10px;
     margin-top: 3px;
     margin-bottom: 1px;
   }
 
   .py-tight {
-    padding-top: 1px;
-    padding-bottom: 1px;
+    padding-top: 0px;
+    padding-bottom: 0px;
   }
 
   .border-bottom-dark {
@@ -491,14 +499,14 @@ const qrUrl = (kdpeg) => {
     display: inline-block;
     width: 100%;
     border-bottom: 1px dotted #000;
-    min-height: 14px;
+    min-height: 12px;
   }
 }
 
 @media print {
   @page {
     size: A4 portrait;
-    margin: 5mm 8mm;
+    margin: 4mm 6mm;
   }
 
   body * {
@@ -516,7 +524,7 @@ const qrUrl = (kdpeg) => {
     width: 100%;
     padding: 0;
     font-size: 9.5px !important;
-    line-height: 1.2 !important;
+    line-height: 1.15 !important;
   }
 
   .no-print {
