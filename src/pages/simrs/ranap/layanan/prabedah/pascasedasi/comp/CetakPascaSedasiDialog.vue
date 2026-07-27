@@ -648,7 +648,27 @@ function getLastTime(item) {
 }
 
 function getPascaMonitoringRows(item) {
-  return parseJSON(item?.monitoring_pasca)
+  let res = parseJSON(item?.monitoring_pasca)
+  if ((!res || !res.length) && item?.catatan) {
+    try {
+      const cDec = typeof item.catatan === 'string' ? JSON.parse(item.catatan) : item.catatan
+      if (cDec && cDec.monitoring_pasca) {
+        res = cDec.monitoring_pasca
+      }
+    } catch (e) {}
+  }
+  return res
+}
+
+function displayCatatan(item) {
+  if (!item?.catatan) return '-'
+  try {
+    const cDec = typeof item.catatan === 'string' ? JSON.parse(item.catatan) : item.catatan
+    if (cDec && typeof cDec === 'object' && cDec.teks !== undefined) {
+      return cDec.teks || '-'
+    }
+  } catch (e) {}
+  return item.catatan
 }
 
 function getPascaTimeCols(item) {

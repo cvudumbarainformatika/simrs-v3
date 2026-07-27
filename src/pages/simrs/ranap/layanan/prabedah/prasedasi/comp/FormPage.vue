@@ -6,7 +6,7 @@
         <q-card-section class="bg-primary text-white q-py-sm flex items-center justify-between">
           <div class="text-subtitle1 text-bold flex items-center">
             <q-icon name="icon-mat-assignment" size="22px" class="q-mr-sm" />
-            FORM ASESMEN PRA SEDASI (RM IRNA - 38d)
+            FORM ASESMEN PRA SEDASI
           </div>
           <div class="text-caption bg-white text-primary q-px-sm rounded-borders text-bold">
             DIISI OLEH DOKTER ANESTESI
@@ -16,24 +16,14 @@
         <q-card-section class="q-pa-md">
           <div class="row q-col-gutter-md items-center">
             <div class="col-12 col-md-6">
-              <app-autocomplete-new
-                v-model="store.form.kddokter"
-                label="Dokter Anestesi"
-                autocomplete="nama"
-                option-value="kdpegsimrs"
-                option-label="nama"
-                outlined
-                dense
-                :source="storeDokters"
-                @on-select="(val) => {
+              <app-autocomplete-new v-model="store.form.kddokter" label="Dokter Anestesi" autocomplete="nama"
+                option-value="kdpegsimrs" option-label="nama" outlined dense :source="storeDokters" @on-select="(val) => {
                   store.form.kddokter = val
                   store.form.dokter = storeDokters?.find(item => item.kdpegsimrs === val)?.nama
-                }"
-                @clear="() => {
+                }" @clear="() => {
                   store.form.kddokter = null
                   store.form.dokter = null
-                }"
-              />
+                }" />
             </div>
           </div>
         </q-card-section>
@@ -52,11 +42,14 @@
             <div class="col-12 col-md-6">
               <q-card flat bordered class="bg-grey-1">
                 <q-card-section class="q-pa-xs">
-                  <div v-for="(item, idx) in kajianCol1" :key="idx" class="row items-center justify-between q-pa-xs border-bottom-light">
+                  <div v-for="(item, idx) in kajianCol1" :key="idx"
+                    class="row items-center justify-between q-pa-xs border-bottom-light">
                     <div class="col-7 text-caption text-bold text-dark">{{ item.label }}</div>
                     <div class="col-5 text-right no-wrap">
-                      <q-radio dense v-model="store.form.kajian_sistem[item.key]" val="Ya" label="Ya" color="teal" class="q-mr-md" />
-                      <q-radio dense v-model="store.form.kajian_sistem[item.key]" val="Tidak" label="Tidak" color="negative" />
+                      <q-radio dense v-model="store.form.kajian_sistem[item.key]" val="Ya" label="Ya" color="teal"
+                        class="q-mr-md" />
+                      <q-radio dense v-model="store.form.kajian_sistem[item.key]" val="Tidak" label="Tidak"
+                        color="negative" />
                     </div>
                   </div>
                 </q-card-section>
@@ -67,11 +60,14 @@
             <div class="col-12 col-md-6">
               <q-card flat bordered class="bg-grey-1">
                 <q-card-section class="q-pa-xs">
-                  <div v-for="(item, idx) in kajianCol2" :key="idx" class="row items-center justify-between q-pa-xs border-bottom-light">
+                  <div v-for="(item, idx) in kajianCol2" :key="idx"
+                    class="row items-center justify-between q-pa-xs border-bottom-light">
                     <div class="col-7 text-caption text-bold text-dark">{{ item.label }}</div>
                     <div class="col-5 text-right no-wrap">
-                      <q-radio dense v-model="store.form.kajian_sistem[item.key]" val="Ya" label="Ya" color="teal" class="q-mr-md" />
-                      <q-radio dense v-model="store.form.kajian_sistem[item.key]" val="Tidak" label="Tidak" color="negative" />
+                      <q-radio dense v-model="store.form.kajian_sistem[item.key]" val="Ya" label="Ya" color="teal"
+                        class="q-mr-md" />
+                      <q-radio dense v-model="store.form.kajian_sistem[item.key]" val="Tidak" label="Tidak"
+                        color="negative" />
                     </div>
                   </div>
                 </q-card-section>
@@ -79,15 +75,8 @@
             </div>
 
             <div class="col-12 q-mt-xs">
-              <q-input
-                v-model="store.form.keterangan_kajian_sistem"
-                label="Keterangan Kajian Sistem"
-                outlined
-                type="textarea"
-                rows="3"
-                standout="bg-yellow-2"
-                style="min-height: 85px;"
-              />
+              <q-input v-model="store.form.keterangan_kajian_sistem" label="Keterangan Kajian Sistem" outlined
+                type="textarea" rows="3" standout="bg-yellow-2" style="min-height: 85px;" />
             </div>
           </div>
         </q-card-section>
@@ -153,15 +142,8 @@
               <app-input-simrs v-model="store.form.neurologi" label="Neurologi (bila dapat diperiksa)" />
             </div>
             <div class="col-12">
-              <q-input
-                v-model="store.form.keterangan_keadaan_umum"
-                label="Keterangan Keadaan Umum"
-                outlined
-                type="textarea"
-                rows="3"
-                standout="bg-yellow-2"
-                style="min-height: 85px;"
-              />
+              <q-input v-model="store.form.keterangan_keadaan_umum" label="Keterangan Keadaan Umum" outlined
+                type="textarea" rows="3" standout="bg-yellow-2" style="min-height: 85px;" />
             </div>
           </div>
         </q-card-section>
@@ -179,66 +161,81 @@
             <div class="col-12 col-md-6">
               <div class="row items-center q-mb-xs">
                 <q-checkbox v-model="store.form.laboratorium.hbHtCheck" label="Hb/Ht :" dense class="col-4 text-bold" />
-                <div class="col-8"><app-input-simrs v-model="store.form.laboratorium.hbHt" label="Hasil Hb/Ht" :disable="!store.form.laboratorium.hbHtCheck" /></div>
+                <div class="col-8"><app-input-simrs v-model="store.form.laboratorium.hbHt" label="Hasil Hb/Ht"
+                    :disable="!store.form.laboratorium.hbHtCheck" /></div>
               </div>
               <div class="row items-center q-mb-xs">
                 <q-checkbox v-model="store.form.laboratorium.ptCheck" label="PT :" dense class="col-4 text-bold" />
-                <div class="col-8"><app-input-simrs v-model="store.form.laboratorium.pt" label="Hasil PT" :disable="!store.form.laboratorium.ptCheck" /></div>
+                <div class="col-8"><app-input-simrs v-model="store.form.laboratorium.pt" label="Hasil PT"
+                    :disable="!store.form.laboratorium.ptCheck" /></div>
               </div>
               <div class="row items-center q-mb-xs">
-                <q-checkbox v-model="store.form.laboratorium.glukosaDarahCheck" label="Glukosa Darah :" dense class="col-4 text-bold" />
-                <div class="col-8"><app-input-simrs v-model="store.form.laboratorium.glukosaDarah" label="Hasil Glukosa Darah" :disable="!store.form.laboratorium.glukosaDarahCheck" /></div>
+                <q-checkbox v-model="store.form.laboratorium.glukosaDarahCheck" label="Glukosa Darah :" dense
+                  class="col-4 text-bold" />
+                <div class="col-8"><app-input-simrs v-model="store.form.laboratorium.glukosaDarah"
+                    label="Hasil Glukosa Darah" :disable="!store.form.laboratorium.glukosaDarahCheck" /></div>
               </div>
               <div class="row items-center q-mb-xs">
-                <q-checkbox v-model="store.form.laboratorium.tesKehamilanCheck" label="Tes Kehamilan :" dense class="col-4 text-bold" />
-                <div class="col-8"><app-input-simrs v-model="store.form.laboratorium.tesKehamilan" label="Hasil Tes Kehamilan" :disable="!store.form.laboratorium.tesKehamilanCheck" /></div>
+                <q-checkbox v-model="store.form.laboratorium.tesKehamilanCheck" label="Tes Kehamilan :" dense
+                  class="col-4 text-bold" />
+                <div class="col-8"><app-input-simrs v-model="store.form.laboratorium.tesKehamilan"
+                    label="Hasil Tes Kehamilan" :disable="!store.form.laboratorium.tesKehamilanCheck" /></div>
               </div>
               <div class="row items-center q-mb-xs">
-                <q-checkbox v-model="store.form.laboratorium.kaliumCheck" label="Kalium :" dense class="col-4 text-bold" />
-                <div class="col-8"><app-input-simrs v-model="store.form.laboratorium.kalium" label="Hasil Kalium" :disable="!store.form.laboratorium.kaliumCheck" /></div>
+                <q-checkbox v-model="store.form.laboratorium.kaliumCheck" label="Kalium :" dense
+                  class="col-4 text-bold" />
+                <div class="col-8"><app-input-simrs v-model="store.form.laboratorium.kalium" label="Hasil Kalium"
+                    :disable="!store.form.laboratorium.kaliumCheck" /></div>
               </div>
               <div class="row items-center q-mb-xs">
-                <q-checkbox v-model="store.form.laboratorium.ureumCheck" label="Ureum :" dense class="col-4 text-bold" />
-                <div class="col-8"><app-input-simrs v-model="store.form.laboratorium.ureum" label="Hasil Ureum" :disable="!store.form.laboratorium.ureumCheck" /></div>
+                <q-checkbox v-model="store.form.laboratorium.ureumCheck" label="Ureum :" dense
+                  class="col-4 text-bold" />
+                <div class="col-8"><app-input-simrs v-model="store.form.laboratorium.ureum" label="Hasil Ureum"
+                    :disable="!store.form.laboratorium.ureumCheck" /></div>
               </div>
             </div>
             <!-- Right Col -->
             <div class="col-12 col-md-6">
               <div class="row items-center q-mb-xs">
-                <q-checkbox v-model="store.form.laboratorium.leukositCheck" label="Leukosit :" dense class="col-4 text-bold" />
-                <div class="col-8"><app-input-simrs v-model="store.form.laboratorium.leukosit" label="Hasil Leukosit" :disable="!store.form.laboratorium.leukositCheck" /></div>
+                <q-checkbox v-model="store.form.laboratorium.leukositCheck" label="Leukosit :" dense
+                  class="col-4 text-bold" />
+                <div class="col-8"><app-input-simrs v-model="store.form.laboratorium.leukosit" label="Hasil Leukosit"
+                    :disable="!store.form.laboratorium.leukositCheck" /></div>
               </div>
               <div class="row items-center q-mb-xs">
-                <q-checkbox v-model="store.form.laboratorium.trombositCheck" label="Trombosit :" dense class="col-4 text-bold" />
-                <div class="col-8"><app-input-simrs v-model="store.form.laboratorium.trombosit" label="Hasil Trombosit" :disable="!store.form.laboratorium.trombositCheck" /></div>
+                <q-checkbox v-model="store.form.laboratorium.trombositCheck" label="Trombosit :" dense
+                  class="col-4 text-bold" />
+                <div class="col-8"><app-input-simrs v-model="store.form.laboratorium.trombosit" label="Hasil Trombosit"
+                    :disable="!store.form.laboratorium.trombositCheck" /></div>
               </div>
               <div class="row items-center q-mb-xs">
-                <q-checkbox v-model="store.form.laboratorium.rontgenDadaCheck" label="Rontgen Dada :" dense class="col-4 text-bold" />
-                <div class="col-8"><app-input-simrs v-model="store.form.laboratorium.rontgenDada" label="Hasil Rontgen Dada" :disable="!store.form.laboratorium.rontgenDadaCheck" /></div>
+                <q-checkbox v-model="store.form.laboratorium.rontgenDadaCheck" label="Rontgen Dada :" dense
+                  class="col-4 text-bold" />
+                <div class="col-8"><app-input-simrs v-model="store.form.laboratorium.rontgenDada"
+                    label="Hasil Rontgen Dada" :disable="!store.form.laboratorium.rontgenDadaCheck" /></div>
               </div>
               <div class="row items-center q-mb-xs">
-                <q-checkbox v-model="store.form.laboratorium.ekgCheck" label="EKG (>= 40 thn) :" dense class="col-4 text-bold" />
-                <div class="col-8"><app-input-simrs v-model="store.form.laboratorium.ekg" label="Hasil EKG" :disable="!store.form.laboratorium.ekgCheck" /></div>
+                <q-checkbox v-model="store.form.laboratorium.ekgCheck" label="EKG (>= 40 thn) :" dense
+                  class="col-4 text-bold" />
+                <div class="col-8"><app-input-simrs v-model="store.form.laboratorium.ekg" label="Hasil EKG"
+                    :disable="!store.form.laboratorium.ekgCheck" /></div>
               </div>
               <div class="row items-center q-mb-xs">
-                <q-checkbox v-model="store.form.laboratorium.naClCheck" label="Na / Cl :" dense class="col-4 text-bold" />
-                <div class="col-8"><app-input-simrs v-model="store.form.laboratorium.naCl" label="Hasil Na/Cl" :disable="!store.form.laboratorium.naClCheck" /></div>
+                <q-checkbox v-model="store.form.laboratorium.naClCheck" label="Na / Cl :" dense
+                  class="col-4 text-bold" />
+                <div class="col-8"><app-input-simrs v-model="store.form.laboratorium.naCl" label="Hasil Na/Cl"
+                    :disable="!store.form.laboratorium.naClCheck" /></div>
               </div>
               <div class="row items-center q-mb-xs">
-                <q-checkbox v-model="store.form.laboratorium.kreatininCheck" label="Kreatinin :" dense class="col-4 text-bold" />
-                <div class="col-8"><app-input-simrs v-model="store.form.laboratorium.kreatinin" label="Hasil Kreatinin" :disable="!store.form.laboratorium.kreatininCheck" /></div>
+                <q-checkbox v-model="store.form.laboratorium.kreatininCheck" label="Kreatinin :" dense
+                  class="col-4 text-bold" />
+                <div class="col-8"><app-input-simrs v-model="store.form.laboratorium.kreatinin" label="Hasil Kreatinin"
+                    :disable="!store.form.laboratorium.kreatininCheck" /></div>
               </div>
             </div>
             <div class="col-12 q-mt-xs">
-              <q-input
-                v-model="store.form.keterangan_laboratorium"
-                label="Keterangan Laboratorium"
-                outlined
-                type="textarea"
-                rows="3"
-                standout="bg-yellow-2"
-                style="min-height: 85px;"
-              />
+              <q-input v-model="store.form.keterangan_laboratorium" label="Keterangan Laboratorium" outlined
+                type="textarea" rows="3" standout="bg-yellow-2" style="min-height: 85px;" />
             </div>
           </div>
         </q-card-section>
@@ -265,7 +262,8 @@
               </div>
               <div class="bg-grey-1 q-pa-sm rounded-borders">
                 <div v-for="asa in store.asaOptions" :key="asa.value" class="q-mb-xs">
-                  <q-radio v-model="store.form.asa_classification" :val="asa.value" :label="asa.label" dense color="teal" />
+                  <q-radio v-model="store.form.asa_classification" :val="asa.value" :label="asa.label" dense
+                    color="teal" />
                 </div>
               </div>
             </div>
@@ -283,7 +281,8 @@
                 7. PENYULIT SEDASI LAIN
               </div>
               <div class="bg-grey-1 q-pa-sm rounded-borders">
-                <app-input-simrs v-model="store.form.penyulit_sedasi_lain[0]" label="1. Penyulit Sedasi 1" class="q-mb-sm" />
+                <app-input-simrs v-model="store.form.penyulit_sedasi_lain[0]" label="1. Penyulit Sedasi 1"
+                  class="q-mb-sm" />
                 <app-input-simrs v-model="store.form.penyulit_sedasi_lain[1]" label="2. Penyulit Sedasi 2" />
               </div>
             </div>
@@ -293,15 +292,8 @@
                 8. CATATAN TINDAK LANJUT
               </div>
               <div class="bg-grey-1 q-pa-sm rounded-borders">
-                <q-input
-                  v-model="store.form.catatan_tindak_lanjut"
-                  label="Catatan Tindak Lanjut"
-                  outlined
-                  type="textarea"
-                  rows="3"
-                  standout="bg-yellow-2"
-                  style="min-height: 85px;"
-                />
+                <q-input v-model="store.form.catatan_tindak_lanjut" label="Catatan Tindak Lanjut" outlined
+                  type="textarea" rows="3" standout="bg-yellow-2" style="min-height: 85px;" />
               </div>
             </div>
           </div>
@@ -322,15 +314,8 @@
             <div class="col-12">
               <div class="text-caption text-bold q-mb-xs">Teknik Khusus :</div>
               <div class="row q-gutter-sm items-center">
-                <q-checkbox
-                  v-for="opt in store.teknikKhususOptions"
-                  :key="opt"
-                  v-model="store.form.teknik_khusus"
-                  :val="opt"
-                  :label="opt"
-                  dense
-                  color="teal"
-                />
+                <q-checkbox v-for="opt in store.teknikKhususOptions" :key="opt" v-model="store.form.teknik_khusus"
+                  :val="opt" :label="opt" dense color="teal" />
               </div>
               <div v-if="store.form.teknik_khusus.includes('Lain-lain')" class="q-mt-sm">
                 <app-input-simrs v-model="store.form.teknik_khusus_lain" label="Sebutkan Teknik Khusus Lainnya" />
@@ -340,52 +325,24 @@
             <div class="col-12 q-mt-sm">
               <div class="text-caption text-bold q-mb-xs">Perawatan Pasca Sedasi :</div>
               <div class="row q-gutter-md items-center">
-                <q-radio
-                  v-for="opt in store.perawatanPascaSedasiOptions"
-                  :key="opt"
-                  v-model="store.form.perawatan_pasca_sedasi"
-                  :val="opt"
-                  :label="opt"
-                  dense
-                  color="teal"
-                />
+                <q-radio v-for="opt in store.perawatanPascaSedasiOptions" :key="opt"
+                  v-model="store.form.perawatan_pasca_sedasi" :val="opt" :label="opt" dense color="teal" />
               </div>
               <!-- Sub Options for Rawat Khusus -->
-              <div v-if="store.form.perawatan_pasca_sedasi === 'Rawat Khusus'" class="q-ml-md q-mt-sm bg-blue-1 q-pa-sm rounded-borders">
+              <div v-if="store.form.perawatan_pasca_sedasi === 'Rawat Khusus'"
+                class="q-ml-md q-mt-sm bg-blue-1 q-pa-sm rounded-borders">
                 <div class="text-caption text-bold q-mb-xs">Pilih Rawat Khusus:</div>
                 <div class="row q-gutter-sm items-center">
-                  <q-radio
-                    v-for="rk in store.rawatKhususOptions"
-                    :key="rk"
-                    v-model="store.form.rawat_khusus_opt"
-                    :val="rk"
-                    :label="rk"
-                    dense
-                    color="indigo"
-                  />
+                  <q-radio v-for="rk in store.rawatKhususOptions" :key="rk" v-model="store.form.rawat_khusus_opt"
+                    :val="rk" :label="rk" dense color="indigo" />
                 </div>
-                <q-input
-                  v-if="store.form.rawat_khusus_opt === 'Lain-lain'"
-                  v-model="store.form.rawat_khusus_lain"
-                  label="Keterangan Rawat Khusus Lainnya"
-                  outlined
-                  type="textarea"
-                  rows="3"
-                  standout="bg-yellow-2"
-                  class="q-mt-xs"
-                  style="min-height: 85px;"
-                />
+                <q-input v-if="store.form.rawat_khusus_opt === 'Lain-lain'" v-model="store.form.rawat_khusus_lain"
+                  label="Keterangan Rawat Khusus Lainnya" outlined type="textarea" rows="3" standout="bg-yellow-2"
+                  class="q-mt-xs" style="min-height: 85px;" />
               </div>
               <div v-if="store.form.perawatan_pasca_sedasi === 'APS'" class="q-ml-md q-mt-sm">
-                <q-input
-                  v-model="store.form.aps_ket"
-                  label="Keterangan APS"
-                  outlined
-                  type="textarea"
-                  rows="3"
-                  standout="bg-yellow-2"
-                  style="min-height: 85px;"
-                />
+                <q-input v-model="store.form.aps_ket" label="Keterangan APS" outlined type="textarea" rows="3"
+                  standout="bg-yellow-2" style="min-height: 85px;" />
               </div>
             </div>
           </div>
@@ -405,7 +362,8 @@
               <app-input-simrs v-model="store.form.puasa_mulai_jam" label="Puasa Mulai (Jam e.g. 08:00)" />
             </div>
             <div class="col-12 col-sm-6">
-              <app-input-date :model="store.form.puasa_mulai_tgl" label="Puasa Mulai (Tanggal)" outlined dense @set-model="val => store.form.puasa_mulai_tgl = val" />
+              <app-input-date :model="store.form.puasa_mulai_tgl" label="Puasa Mulai (Tanggal)" outlined dense
+                @set-model="val => store.form.puasa_mulai_tgl = val" />
             </div>
 
             <!-- Pre Medikasi -->
@@ -413,7 +371,8 @@
               <app-input-simrs v-model="store.form.pre_medikasi_jam" label="Pre Medikasi (Jam)" />
             </div>
             <div class="col-12 col-sm-6">
-              <app-input-date :model="store.form.pre_medikasi_tgl" label="Pre Medikasi (Tanggal)" outlined dense @set-model="val => store.form.pre_medikasi_tgl = val" />
+              <app-input-date :model="store.form.pre_medikasi_tgl" label="Pre Medikasi (Tanggal)" outlined dense
+                @set-model="val => store.form.pre_medikasi_tgl = val" />
             </div>
 
             <!-- Mulai Sedasi -->
@@ -421,20 +380,14 @@
               <app-input-simrs v-model="store.form.mulai_sedasi_jam" label="Mulai Sedasi (Jam)" />
             </div>
             <div class="col-12 col-sm-6">
-              <app-input-date :model="store.form.mulai_sedasi_tgl" label="Mulai Sedasi (Tanggal)" outlined dense @set-model="val => store.form.mulai_sedasi_tgl = val" />
+              <app-input-date :model="store.form.mulai_sedasi_tgl" label="Mulai Sedasi (Tanggal)" outlined dense
+                @set-model="val => store.form.mulai_sedasi_tgl = val" />
             </div>
 
             <!-- Catatan Persiapan Pra Sedasi -->
             <div class="col-12 q-mt-xs">
-              <q-input
-                v-model="store.form.catatan_persiapan_pra_sedasi"
-                label="CATATAN PERSIAPAN PRA SEDASI"
-                outlined
-                type="textarea"
-                rows="3"
-                standout="bg-yellow-2"
-                style="min-height: 85px;"
-              />
+              <q-input v-model="store.form.catatan_persiapan_pra_sedasi" label="CATATAN PERSIAPAN PRA SEDASI" outlined
+                type="textarea" rows="3" standout="bg-yellow-2" style="min-height: 85px;" />
             </div>
           </div>
         </q-card-section>
@@ -442,7 +395,8 @@
         <!-- BOTTOM ACTIONS -->
         <q-card-section class="bg-grey-2 q-pa-sm flex justify-between items-center">
           <q-btn label="Reset Form" color="negative" outline icon="icon-mat-refresh" @click="store.initForm()" />
-          <q-btn label="Simpan Pra Sedasi" color="primary" icon="icon-mat-save" :loading="store.loadingSave" type="submit" />
+          <q-btn label="Simpan Pra Sedasi" color="primary" icon="icon-mat-save" :loading="store.loadingSave"
+            type="submit" />
         </q-card-section>
       </q-card>
     </q-form>

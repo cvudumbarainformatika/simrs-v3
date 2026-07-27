@@ -46,26 +46,15 @@ function hapusData(val) {
 </script>
 
 <template>
-  <BaseLayout
-    :pasien="props.pasien"
-    :kasus="props.kasus"
-    :nakes="props.nakes"
-    :split="60"
-    title-before="FORM PRA SEDASI (RM IRNA - 38d)"
-    title-after="List Pra Sedasi"
-  >
+  <BaseLayout :pasien="props.pasien" :kasus="props.kasus" :nakes="props.nakes" :split="60"
+    title-before="FORM PRA SEDASI" title-after="List Pra Sedasi">
     <template #form>
       <FormPage :pasien="props.pasien" :kasus="props.kasus" />
     </template>
     <template #list>
       <div class="fit">
-        <ListPage
-          :key="pasien"
-          :pasien="pasien"
-          :items="store.items"
-          @hapus="(val) => hapusData(val)"
-          @edit="(val) => lihat(val)"
-        />
+        <ListPage :key="pasien" :pasien="pasien" :items="store.items" @hapus="(val) => hapusData(val)"
+          @edit="(val) => lihat(val)" />
       </div>
     </template>
   </BaseLayout>
