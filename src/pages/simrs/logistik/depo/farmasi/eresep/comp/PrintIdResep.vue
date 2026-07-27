@@ -35,6 +35,7 @@
         </div>
         <div class="f-12">
           {{ item?.norm }} - {{ item?.datapasien?.noka ?? 'tidak ada no BPJs' }} - {{ item?.datapasien?.nama }}
+          <span v-if="item?.is_geriatri" class="text-weight-bold q-ml-xs text-black" style="border: 1px solid black; padding: 0px 4px; border-radius: 2px; font-size: 10px; display: inline-block; vertical-align: middle;">GERIATRI</span>
         </div>
         <div class="f-12">
           {{ item?.sep?.rs8 ?? '-' }}
