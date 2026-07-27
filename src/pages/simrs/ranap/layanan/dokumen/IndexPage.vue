@@ -188,6 +188,15 @@ const menus = ref([
     comp: shallowRef(defineAsyncComponent(() => import('./prasedasi/IndexPage.vue')))
   },
   {
+    name: 'AsesmenPascaSedasi',
+    label: 'STATUS SEDASI',
+    title: 'STATUS SEDASI',
+    desc: 'Dokumen Status Sedasi Pasien',
+    icon: 'icon-my-file_sign',
+    nakes: ['1', '2', '3'],
+    comp: shallowRef(defineAsyncComponent(() => import('./pascasedasi/IndexPage.vue')))
+  },
+  {
     name: 'AsesmenPraBedah',
     label: 'ASESMEN PRA BEDAH',
     title: 'ASESMEN PRA BEDAH',
