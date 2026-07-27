@@ -307,112 +307,150 @@
             </div>
           </div>
 
-          <!-- INTERACTIVE BUTTON TOGGLES FOR ALDRETE CRITERIA -->
-          <div class="column q-gutter-y-sm">
-            <!-- 1. KESADARAN -->
-            <div class="bg-indigo-1 rounded-borders q-pa-sm">
-              <div class="text-caption text-bold text-primary q-mb-xs">1. Kesadaran:</div>
-              <q-btn-toggle
-                v-model.number="form.aldrete_kesadaran"
-                spread
+          <!-- TABEL PEMANTAUAN VITAL SIGNS PASCA SEDASI (15 MENIT DI RUANG PULIH) -->
+          <div class="q-my-md bg-grey-1 rounded-borders border-bordered q-pa-sm">
+            <div class="row justify-between items-center q-mb-xs">
+              <div class="text-subtitle2 text-bold text-primary flex items-center">
+                <q-icon name="icon-mat-timer" class="q-mr-xs" />
+                Pemantauan Vital Signs Pasca Sedasi (Tiap 15 Menit di Ruang Pulih)
+              </div>
+              <q-btn
+                label="Tambah Waktu (15m)"
+                icon="icon-mat-add"
+                color="primary"
+                size="xs"
                 no-caps
                 dense
-                rounded
-                unelevated
-                toggle-color="primary"
-                color="white"
-                text-color="dark"
-                :options="[
-                  { label: '2 - Sadar Penuh', value: 2 },
-                  { label: '1 - Mengantuk / Tdk Sadar', value: 1 },
-                  { label: '0 - Tdk Ada Reaksi Rangsangan', value: 0 }
-                ]"
+                class="q-px-sm text-weight-bold"
+                @click="store.addMonitoringPascaRow()"
               />
             </div>
 
-            <!-- 2. PERNAFASAN -->
-            <div class="bg-indigo-1 rounded-borders q-pa-sm">
-              <div class="text-caption text-bold text-primary q-mb-xs">2. Pernafasan:</div>
-              <q-btn-toggle
-                v-model.number="form.aldrete_pernafasan"
-                spread
-                no-caps
-                dense
-                rounded
-                unelevated
-                toggle-color="primary"
-                color="white"
-                text-color="dark"
-                :options="[
-                  { label: '2 - Teratur Kuat / Batuk', value: 2 },
-                  { label: '1 - Nafas Berat Dyspnea', value: 1 },
-                  { label: '0 - Nafas Dibantu', value: 0 }
-                ]"
-              />
-            </div>
+            <q-markup-table flat borderless dense class="bg-white">
+              <thead class="bg-indigo-1 text-primary font-8">
+                <tr>
+                  <th width="5%">No</th>
+                  <th width="18%">Waktu (15m)</th>
+                  <th width="16%">SpO2 (%)</th>
+                  <th width="16%">Nadi (x/m)</th>
+                  <th width="24%">Tensi (Sis / Dis)</th>
+                  <th width="16%">Fr (Nafas)</th>
+                  <th width="5%">Hapus</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(pRow, pIdx) in form.monitoring_pasca" :key="pIdx">
+                  <td class="text-center text-bold font-9">{{ pIdx + 1 }}</td>
+                  <td>
+                    <q-input
+                      v-model="pRow.waktu"
+                      dense
+                      outlined
+                      color="primary"
+                      mask="##:##"
+                      placeholder="14:56"
+                      input-class="text-center text-bold font-9"
+                    />
+                  </td>
+                  <td>
+                    <q-input v-model.number="pRow.spo2" type="number" dense outlined color="primary" input-class="text-center" />
+                  </td>
+                  <td>
+                    <q-input v-model.number="pRow.nadi" type="number" dense outlined color="primary" input-class="text-center" />
+                  </td>
+                  <td>
+                    <div class="row items-center no-wrap q-gutter-x-xs">
+                      <q-input v-model.number="pRow.sis" type="number" dense outlined input-class="text-center" style="width: 55px;" placeholder="Sis" />
+                      <div class="text-bold text-grey-7">/</div>
+                      <q-input v-model.number="pRow.dis" type="number" dense outlined input-class="text-center" style="width: 55px;" placeholder="Dis" />
+                    </div>
+                  </td>
+                  <td>
+                    <q-input v-model.number="pRow.fr" type="number" dense outlined color="primary" input-class="text-center" />
+                  </td>
+                  <td class="text-center">
+                    <q-btn icon="icon-mat-delete" size="xs" color="negative" flat round @click="store.removeMonitoringPascaRow(pIdx)" />
+                  </td>
+                </tr>
+              </tbody>
+            </q-markup-table>
+          </div>
 
-            <!-- 3. TENSI -->
-            <div class="bg-indigo-1 rounded-borders q-pa-sm">
-              <div class="text-caption text-bold text-primary q-mb-xs">3. Tensi (Tekanan Darah):</div>
-              <q-btn-toggle
-                v-model.number="form.aldrete_tensi"
-                spread
-                no-caps
-                dense
-                rounded
-                unelevated
-                toggle-color="primary"
-                color="white"
-                text-color="dark"
-                :options="[
-                  { label: '2 - Sama Nilai Awal ± 20%', value: 2 },
-                  { label: '1 - Berbeda 20 - 30% Awal', value: 1 },
-                  { label: '0 - Berbeda > 30% Awal', value: 0 }
-                ]"
-              />
-            </div>
+          <!-- INTERACTIVE DENSE RADIO LIST FOR ALDRETE CRITERIA -->
+          <div class="q-my-sm">
+            <div class="text-subtitle2 text-bold text-primary q-mb-xs">Penilaian Kriteria Skor Aldrete:</div>
+            
+            <q-list dense bordered separator class="rounded-borders bg-white shadow-1">
+              <!-- 1. KESADARAN -->
+              <q-item class="q-py-xs bg-grey-1">
+                <q-item-section class="col-12 col-md-3 text-bold text-indigo-9">
+                  1. Kesadaran
+                </q-item-section>
+                <q-item-section class="col-12 col-md-9">
+                  <div class="row q-gutter-x-md items-center">
+                    <q-radio v-model.number="form.aldrete_kesadaran" :val="2" label="2 - Sadar Penuh" dense color="primary" />
+                    <q-radio v-model.number="form.aldrete_kesadaran" :val="1" label="1 - Mengantuk / Tdk Sadar" dense color="warning" />
+                    <q-radio v-model.number="form.aldrete_kesadaran" :val="0" label="0 - Tdk Ada Reaksi" dense color="negative" />
+                  </div>
+                </q-item-section>
+              </q-item>
 
-            <!-- 4. PERGERAKAN -->
-            <div class="bg-indigo-1 rounded-borders q-pa-sm">
-              <div class="text-caption text-bold text-primary q-mb-xs">4. Pergerakan:</div>
-              <q-btn-toggle
-                v-model.number="form.aldrete_pergerakan"
-                spread
-                no-caps
-                dense
-                rounded
-                unelevated
-                toggle-color="primary"
-                color="white"
-                text-color="dark"
-                :options="[
-                  { label: '2 - Gerak Terkendali', value: 2 },
-                  { label: '1 - Ada Reaksi Rangsangan', value: 1 },
-                  { label: '0 - Gerak Tak Terkendali', value: 0 }
-                ]"
-              />
-            </div>
+              <!-- 2. PERNAFASAN -->
+              <q-item class="q-py-xs bg-white">
+                <q-item-section class="col-12 col-md-3 text-bold text-indigo-9">
+                  2. Pernafasan
+                </q-item-section>
+                <q-item-section class="col-12 col-md-9">
+                  <div class="row q-gutter-x-md items-center">
+                    <q-radio v-model.number="form.aldrete_pernafasan" :val="2" label="2 - Teratur Kuat / Batuk" dense color="primary" />
+                    <q-radio v-model.number="form.aldrete_pernafasan" :val="1" label="1 - Nafas Berat Dyspnea" dense color="warning" />
+                    <q-radio v-model.number="form.aldrete_pernafasan" :val="0" label="0 - Nafas Dibantu" dense color="negative" />
+                  </div>
+                </q-item-section>
+              </q-item>
 
-            <!-- 5. WARNA KULIT -->
-            <div class="bg-indigo-1 rounded-borders q-pa-sm">
-              <div class="text-caption text-bold text-primary q-mb-xs">5. Warna Kulit:</div>
-              <q-btn-toggle
-                v-model.number="form.aldrete_warna_kulit"
-                spread
-                no-caps
-                dense
-                rounded
-                unelevated
-                toggle-color="primary"
-                color="white"
-                text-color="dark"
-                :options="[
-                  { label: '2 - Merah', value: 2 },
-                  { label: '1 - Pucat', value: 1 },
-                  { label: '0 - Cyanosis', value: 0 }
-                ]"
-              />
-            </div>
+              <!-- 3. TENSI -->
+              <q-item class="q-py-xs bg-grey-1">
+                <q-item-section class="col-12 col-md-3 text-bold text-indigo-9">
+                  3. Sirkulasi / Tensi
+                </q-item-section>
+                <q-item-section class="col-12 col-md-9">
+                  <div class="row q-gutter-x-md items-center">
+                    <q-radio v-model.number="form.aldrete_tensi" :val="2" label="2 - Sama Nilai Awal ± 20%" dense color="primary" />
+                    <q-radio v-model.number="form.aldrete_tensi" :val="1" label="1 - Berbeda 20 - 30%" dense color="warning" />
+                    <q-radio v-model.number="form.aldrete_tensi" :val="0" label="0 - Berbeda > 30%" dense color="negative" />
+                  </div>
+                </q-item-section>
+              </q-item>
+
+              <!-- 4. PERGERAKAN -->
+              <q-item class="q-py-xs bg-white">
+                <q-item-section class="col-12 col-md-3 text-bold text-indigo-9">
+                  4. Pergerakan
+                </q-item-section>
+                <q-item-section class="col-12 col-md-9">
+                  <div class="row q-gutter-x-md items-center">
+                    <q-radio v-model.number="form.aldrete_pergerakan" :val="2" label="2 - Gerak Terkendali" dense color="primary" />
+                    <q-radio v-model.number="form.aldrete_pergerakan" :val="1" label="1 - Ada Reaksi Rangsangan" dense color="warning" />
+                    <q-radio v-model.number="form.aldrete_pergerakan" :val="0" label="0 - Gerak Tak Terkendali" dense color="negative" />
+                  </div>
+                </q-item-section>
+              </q-item>
+
+              <!-- 5. WARNA KULIT -->
+              <q-item class="q-py-xs bg-grey-1">
+                <q-item-section class="col-12 col-md-3 text-bold text-indigo-9">
+                  5. Warna Kulit
+                </q-item-section>
+                <q-item-section class="col-12 col-md-9">
+                  <div class="row q-gutter-x-md items-center">
+                    <q-radio v-model.number="form.aldrete_warna_kulit" :val="2" label="2 - Merah" dense color="primary" />
+                    <q-radio v-model.number="form.aldrete_warna_kulit" :val="1" label="1 - Pucat" dense color="warning" />
+                    <q-radio v-model.number="form.aldrete_warna_kulit" :val="0" label="0 - Cyanosis" dense color="negative" />
+                  </div>
+                </q-item-section>
+              </q-item>
+            </q-list>
           </div>
         </q-card-section>
       </q-card>
@@ -453,64 +491,50 @@
             </div>
           </div>
 
-          <!-- ROW 2: TOGGLE BUTTONS (3 EQUAL COLUMNS) -->
-          <div class="row q-col-gutter-md">
-            <div class="col-12 col-md-4">
-              <div class="text-caption text-bold text-primary q-mb-xs">Mual / Muntah:</div>
-              <q-btn-toggle
-                v-model="form.mual_muntah"
-                spread
-                no-caps
-                dense
-                rounded
-                unelevated
-                toggle-color="primary"
-                color="grey-2"
-                text-color="dark"
-                :options="[
-                  { label: 'Ada', value: 'Ada' },
-                  { label: 'Tidak Ada', value: 'Tidak Ada' }
-                ]"
-              />
-            </div>
+          <!-- INTERACTIVE DENSE RADIO LIST FOR DISCHARGE CRITERIA -->
+          <div class="q-mt-md">
+            <div class="text-subtitle2 text-bold text-primary q-mb-xs">Kriteria Kelayakan Pulih (Discharge):</div>
 
-            <div class="col-12 col-md-4">
-              <div class="text-caption text-bold text-primary q-mb-xs">Perdarahan:</div>
-              <q-btn-toggle
-                v-model="form.perdarahan"
-                spread
-                no-caps
-                dense
-                rounded
-                unelevated
-                toggle-color="primary"
-                color="grey-2"
-                text-color="dark"
-                :options="[
-                  { label: 'Ada', value: 'Ada' },
-                  { label: 'Tidak Ada', value: 'Tidak Ada' }
-                ]"
-              />
-            </div>
+            <q-list dense bordered separator class="rounded-borders bg-white shadow-1">
+              <!-- MUAL / MUNTAH -->
+              <q-item class="q-py-xs bg-grey-1">
+                <q-item-section class="col-12 col-md-3 text-bold text-indigo-9">
+                  Mual / Muntah
+                </q-item-section>
+                <q-item-section class="col-12 col-md-9">
+                  <div class="row q-gutter-x-md items-center">
+                    <q-radio v-model="form.mual_muntah" val="Tidak Ada" label="Tidak Ada" dense color="primary" />
+                    <q-radio v-model="form.mual_muntah" val="Ada" label="Ada" dense color="warning" />
+                  </div>
+                </q-item-section>
+              </q-item>
 
-            <div class="col-12 col-md-4">
-              <div class="text-caption text-bold text-primary q-mb-xs">Ambulasi:</div>
-              <q-btn-toggle
-                v-model="form.ambulasi"
-                spread
-                no-caps
-                dense
-                rounded
-                unelevated
-                toggle-color="primary"
-                color="grey-2"
-                text-color="dark"
-                :options="[
-                  { label: 'Mandiri', value: 'Mandiri' },
-                  { label: 'Dibantu', value: 'Dibantu' }
-                ]"
-              />
-            </div>
+              <!-- PERDARAHAN -->
+              <q-item class="q-py-xs bg-white">
+                <q-item-section class="col-12 col-md-3 text-bold text-indigo-9">
+                  Perdarahan
+                </q-item-section>
+                <q-item-section class="col-12 col-md-9">
+                  <div class="row q-gutter-x-md items-center">
+                    <q-radio v-model="form.perdarahan" val="Tidak Ada" label="Tidak Ada" dense color="primary" />
+                    <q-radio v-model="form.perdarahan" val="Ada" label="Ada" dense color="warning" />
+                  </div>
+                </q-item-section>
+              </q-item>
+
+              <!-- AMBULASI -->
+              <q-item class="q-py-xs bg-grey-1">
+                <q-item-section class="col-12 col-md-3 text-bold text-indigo-9">
+                  Ambulasi
+                </q-item-section>
+                <q-item-section class="col-12 col-md-9">
+                  <div class="row q-gutter-x-md items-center">
+                    <q-radio v-model="form.ambulasi" val="Mandiri" label="Mandiri" dense color="primary" />
+                    <q-radio v-model="form.ambulasi" val="Dibantu" label="Dibantu" dense color="warning" />
+                  </div>
+                </q-item-section>
+              </q-item>
+            </q-list>
           </div>
         </q-card-section>
       </q-card>

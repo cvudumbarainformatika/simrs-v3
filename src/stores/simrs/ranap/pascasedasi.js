@@ -187,6 +187,16 @@ export const usePascaSedasiRanapStore = defineStore('pasca-sedasi-ranap-store', 
         ],
 
         jam_pulih: date.formatDate(Date.now(), 'HH:mm'),
+        monitoring_pasca: [
+          {
+            waktu: date.formatDate(Date.now(), 'HH:mm'),
+            spo2: 98,
+            nadi: 80,
+            sis: 120,
+            dis: 80,
+            fr: 18
+          }
+        ],
         aldrete_kesadaran: 2,
         aldrete_pernafasan: 2,
         aldrete_tensi: 2,
@@ -241,6 +251,33 @@ export const usePascaSedasiRanapStore = defineStore('pasca-sedasi-ranap-store', 
         ]
       }
 
+      let parsedMonitoringPasca = item.monitoring_pasca
+      if (typeof parsedMonitoringPasca === 'string') {
+        try { parsedMonitoringPasca = JSON.parse(parsedMonitoringPasca) } catch (e) { parsedMonitoringPasca = [] }
+      }
+      if (!Array.isArray(parsedMonitoringPasca) || parsedMonitoringPasca.length === 0) {
+        if (item.catatan) {
+          try {
+            const cDec = JSON.parse(item.catatan)
+            if (cDec && cDec.monitoring_pasca) {
+              parsedMonitoringPasca = cDec.monitoring_pasca
+            }
+          } catch (e) {}
+        }
+      }
+      if (!Array.isArray(parsedMonitoringPasca) || parsedMonitoringPasca.length === 0) {
+        parsedMonitoringPasca = [
+          {
+            waktu: item.jam_pulih || date.formatDate(Date.now(), 'HH:mm'),
+            spo2: 98,
+            nadi: 80,
+            sis: 120,
+            dis: 80,
+            fr: 18
+          }
+        ]
+      }
+
       this.form = {
         id: item.id || null,
         noreg: item.noreg || null,
@@ -282,6 +319,7 @@ export const usePascaSedasiRanapStore = defineStore('pasca-sedasi-ranap-store', 
         monitoring_intra: parsedMonitoringIntra,
 
         jam_pulih: item.jam_pulih || item.jam_masuk_ruang_pulih || date.formatDate(Date.now(), 'HH:mm'),
+        monitoring_pasca: parsedMonitoringPasca,
         aldrete_kesadaran: Number(item.aldrete_kesadaran ?? 2),
         aldrete_pernafasan: Number(item.aldrete_pernafasan ?? 2),
         aldrete_tensi: Number(item.aldrete_tensi ?? 2),
@@ -324,6 +362,42 @@ export const usePascaSedasiRanapStore = defineStore('pasca-sedasi-ranap-store', 
     removeMonitoringRow(idx) {
       if (this.form.monitoring_intra.length > 1) {
         this.form.monitoring_intra.splice(idx, 1)
+      }
+    },
+
+    addMonitoringPascaRow() {
+      if (!Array.isArray(this.form.monitoring_pasca)) {
+        this.form.monitoring_pasca = []
+      }
+      const last = this.form.monitoring_pasca[this.form.monitoring_pasca.length - 1]
+      let nextTime = date.formatDate(Date.now(), 'HH:mm')
+      if (last && last.waktu) {
+        try {
+          const parts = last.waktu.split(':')
+          if (parts.length === 2) {
+            let h = parseInt(parts[0], 10)
+            let m = parseInt(parts[1], 10) + 15
+            if (m >= 60) {
+              h = (h + Math.floor(m / 60)) % 24
+              m = m % 60
+            }
+            nextTime = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`
+          }
+        } catch (e) {}
+      }
+      this.form.monitoring_pasca.push({
+        waktu: nextTime,
+        spo2: last ? last.spo2 : 98,
+        nadi: last ? last.nadi : 80,
+        sis: last ? last.sis : 120,
+        dis: last ? last.dis : 80,
+        fr: last ? last.fr : 18
+      })
+    },
+
+    removeMonitoringPascaRow(idx) {
+      if (this.form.monitoring_pasca.length > 1) {
+        this.form.monitoring_pasca.splice(idx, 1)
       }
     },
 

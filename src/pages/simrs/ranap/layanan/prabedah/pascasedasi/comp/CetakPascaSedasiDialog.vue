@@ -386,16 +386,17 @@
             <div class="section-title" style="margin-top: 0;">6. Pemantauan Pasca Sedasi (Jam Masuk Ruang Pulih: {{ item?.jam_pulih || item?.jam_masuk_ruang_pulih || '-' }})</div>
             
             <div class="row q-col-gutter-x-sm q-my-xs items-stretch">
-              <!-- LEFT GRID VITAL SIGNS PASCA SEDASI -->
+              <!-- LEFT GRID VITAL SIGNS PASCA SEDASI (GRID TIME-SERIES 15 MENIT PRESISI SEPERTI DOKUMEN MANUAL) -->
               <div class="col-6">
                 <table class="full-width table-grid-chart text-center fit">
                   <thead>
                     <tr class="bg-grey-3 font-9">
-                      <th>Fr</th>
-                      <th>Nadi</th>
-                      <th>TD</th>
-                      <th>Waktu (15m)</th>
-                      <th>Plot Nilai</th>
+                      <th width="8%">Fr</th>
+                      <th width="8%">Nadi</th>
+                      <th width="8%">TD</th>
+                      <th v-for="(tCol, tIdx) in getPascaTimeCols(item)" :key="tIdx" class="font-8 font-bold">
+                        {{ tCol }}
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
@@ -403,19 +404,35 @@
                       <td class="font-bold">{{ level.fr }}</td>
                       <td class="font-bold">{{ level.nadi }}</td>
                       <td class="font-bold">{{ level.td }}</td>
-                      <td class="font-8">{{ item?.jam_pulih || item?.jam_masuk_ruang_pulih || '-' }}</td>
-                      <td class="font-bold text-primary">{{ getPascaGridCellContent(level) }}</td>
+                      <td v-for="(tCol, tIdx) in getPascaTimeCols(item)" :key="tIdx" class="cell-plot font-bold">
+                        {{ getPascaGridCellContent(level, tIdx) }}
+                      </td>
                     </tr>
                   </tbody>
                 </table>
               </div>
 
-              <!-- MIDDLE VAS PAIN SCALE ICON BOX -->
-              <div class="col-3 border-bordered text-center flex flex-center column bg-grey-1 rounded-borders">
-                <div class="font-bold font-10 text-primary q-mb-xs">SKALA NYERI (VAS)</div>
-                <div class="text-h3 text-bold text-primary">{{ item?.nyeri_vas || item?.nyeri_vas_discharge || '0' }}</div>
-                <div class="font-9 text-grey-7 q-mt-xs">VAS / FLACC / FACES</div>
-                <div class="font-8 text-grey-6">(Skala 0 - 10)</div>
+              <!-- MIDDLE WONG-BAKER FACES PAIN SCALE BOX -->
+              <div class="col-3 border-bordered text-center flex flex-center column bg-grey-1 rounded-borders q-pa-xs">
+                <div class="font-bold font-9 text-primary q-mb-xs">VAS / FLACC / FACES</div>
+                
+                <div class="row items-center justify-center no-wrap q-gutter-x-xs q-my-xs">
+                  <div v-for="face in facesList" :key="face.score" class="column items-center">
+                    <div
+                      class="flex flex-center font-11"
+                      :class="Number(item?.nyeri_vas || 0) === face.score ? 'bg-amber-4 text-bold rounded-full border-solid' : 'opacity-70'"
+                      style="width: 20px; height: 20px; border-radius: 50%;"
+                    >
+                      {{ face.icon }}
+                    </div>
+                    <div class="font-7 text-bold q-mt-3" :class="Number(item?.nyeri_vas || 0) === face.score ? 'text-primary font-bold' : 'text-grey-7'">
+                      {{ face.score }}
+                    </div>
+                  </div>
+                </div>
+
+                <div class="text-h4 text-bold text-primary q-my-xs">{{ item?.nyeri_vas || item?.nyeri_vas_discharge || '0' }}</div>
+                <div class="font-8 text-grey-7">(Skala Nyeri 0 - 10)</div>
               </div>
 
               <!-- RIGHT ALDRETE SCORE SUMMARY BOX -->
@@ -437,41 +454,71 @@
               </div>
             </div>
 
-            <!-- TABEL URAIAN KRITERIA ALDRETE -->
+            <!-- TABEL URAIAN KRITERIA ALDRETE DENGAN PENANDA LINGKARAN HITAM (①, ②, ⓪) PRESISI SESUAI DOKUMEN ASLI -->
             <div class="section-title q-mt-xs">Tabel Uraian Kriteria Skor Aldrete</div>
             <table class="full-width table-bordered q-my-xs font-10">
               <thead>
                 <tr class="bg-grey-2">
-                  <th width="25%">URAIAN</th>
-                  <th width="60%">KRITERIA</th>
+                  <th width="22%">URAIAN</th>
+                  <th width="63%">KRITERIA</th>
                   <th width="15%">NILAI</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td><strong>Kesadaran</strong></td>
-                  <td>Sadar Penuh (2) / Tidak Sadar (1) / Tdk Ada Reaksi (0)</td>
-                  <td class="text-center font-bold">{{ item?.aldrete_kesadaran ?? 2 }}</td>
+                  <td>
+                    <span :class="{ 'text-bold text-primary': (item?.aldrete_kesadaran ?? 2) === 2 }">Sadar Penuh</span> ({{ (item?.aldrete_kesadaran ?? 2) === 2 ? '②' : '2' }}) / 
+                    <span :class="{ 'text-bold text-primary': (item?.aldrete_kesadaran ?? 2) === 1 }">Tidak Sadar</span> ({{ (item?.aldrete_kesadaran ?? 2) === 1 ? '①' : '1' }}) / 
+                    <span :class="{ 'text-bold text-primary': (item?.aldrete_kesadaran ?? 2) === 0 }">Tdk Ada Reaksi</span> ({{ (item?.aldrete_kesadaran ?? 2) === 0 ? '⓪' : '0' }})
+                  </td>
+                  <td class="text-center font-bold font-11 text-primary">
+                    {{ getCircledNum(item?.aldrete_kesadaran ?? 2) }}
+                  </td>
                 </tr>
                 <tr>
                   <td><strong>Pernafasan</strong></td>
-                  <td>Teratur Kuat / Batuk (2) / Nafas Berat Dyspnea (1) / Nafas dibantu (0)</td>
-                  <td class="text-center font-bold">{{ item?.aldrete_pernafasan ?? 2 }}</td>
+                  <td>
+                    <span :class="{ 'text-bold text-primary': (item?.aldrete_pernafasan ?? 2) === 2 }">Teratur Kuat / Batuk</span> ({{ (item?.aldrete_pernafasan ?? 2) === 2 ? '②' : '2' }}) / 
+                    <span :class="{ 'text-bold text-primary': (item?.aldrete_pernafasan ?? 2) === 1 }">Nafas Berat Dyspnea</span> ({{ (item?.aldrete_pernafasan ?? 2) === 1 ? '①' : '1' }}) / 
+                    <span :class="{ 'text-bold text-primary': (item?.aldrete_pernafasan ?? 2) === 0 }">Nafas dibantu</span> ({{ (item?.aldrete_pernafasan ?? 2) === 0 ? '⓪' : '0' }})
+                  </td>
+                  <td class="text-center font-bold font-11 text-primary">
+                    {{ getCircledNum(item?.aldrete_pernafasan ?? 2) }}
+                  </td>
                 </tr>
                 <tr>
                   <td><strong>Tensi</strong></td>
-                  <td>Sama dengan nilai awal ± 20% (2) / Berbeda 20-30% (1) / Berbeda > 30% (0)</td>
-                  <td class="text-center font-bold">{{ item?.aldrete_tensi ?? 2 }}</td>
+                  <td>
+                    <span :class="{ 'text-bold text-primary': (item?.aldrete_tensi ?? 2) === 2 }">Sama dengan nilai awal ± 20%</span> ({{ (item?.aldrete_tensi ?? 2) === 2 ? '②' : '2' }}) / 
+                    <span :class="{ 'text-bold text-primary': (item?.aldrete_tensi ?? 2) === 1 }">Berbeda 20-30%</span> ({{ (item?.aldrete_tensi ?? 2) === 1 ? '①' : '1' }}) / 
+                    <span :class="{ 'text-bold text-primary': (item?.aldrete_tensi ?? 2) === 0 }">Berbeda > 30%</span> ({{ (item?.aldrete_tensi ?? 2) === 0 ? '⓪' : '0' }})
+                  </td>
+                  <td class="text-center font-bold font-11 text-primary">
+                    {{ getCircledNum(item?.aldrete_tensi ?? 2) }}
+                  </td>
                 </tr>
                 <tr>
                   <td><strong>Pergerakan</strong></td>
-                  <td>Gerak terkendali (2) / Ada reaksi rangsangan (1) / Gerak tak terkendali (0)</td>
-                  <td class="text-center font-bold">{{ item?.aldrete_pergerakan ?? 2 }}</td>
+                  <td>
+                    <span :class="{ 'text-bold text-primary': (item?.aldrete_pergerakan ?? 2) === 2 }">Gerak terkendali</span> ({{ (item?.aldrete_pergerakan ?? 2) === 2 ? '②' : '2' }}) / 
+                    <span :class="{ 'text-bold text-primary': (item?.aldrete_pergerakan ?? 2) === 1 }">Ada reaksi rangsangan</span> ({{ (item?.aldrete_pergerakan ?? 2) === 1 ? '①' : '1' }}) / 
+                    <span :class="{ 'text-bold text-primary': (item?.aldrete_pergerakan ?? 2) === 0 }">Gerak tak terkendali</span> ({{ (item?.aldrete_pergerakan ?? 2) === 0 ? '⓪' : '0' }})
+                  </td>
+                  <td class="text-center font-bold font-11 text-primary">
+                    {{ getCircledNum(item?.aldrete_pergerakan ?? 2) }}
+                  </td>
                 </tr>
                 <tr>
                   <td><strong>Warna Kulit</strong></td>
-                  <td>Merah (2) / Pucat (1) / Cyanosis (0)</td>
-                  <td class="text-center font-bold">{{ item?.aldrete_warna_kulit ?? 2 }}</td>
+                  <td>
+                    <span :class="{ 'text-bold text-primary': (item?.aldrete_warna_kulit ?? 2) === 2 }">Merah</span> ({{ (item?.aldrete_warna_kulit ?? 2) === 2 ? '②' : '2' }}) / 
+                    <span :class="{ 'text-bold text-primary': (item?.aldrete_warna_kulit ?? 2) === 1 }">Pucat</span> ({{ (item?.aldrete_warna_kulit ?? 2) === 1 ? '①' : '1' }}) / 
+                    <span :class="{ 'text-bold text-primary': (item?.aldrete_warna_kulit ?? 2) === 0 }">Cyanosis</span> ({{ (item?.aldrete_warna_kulit ?? 2) === 0 ? '⓪' : '0' }})
+                  </td>
+                  <td class="text-center font-bold font-11 text-primary">
+                    {{ getCircledNum(item?.aldrete_warna_kulit ?? 2) }}
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -563,6 +610,15 @@ const emit = defineEmits(['update:modelValue'])
 // Y-AXIS TICKS (0 Sampai 240 dengan Interval 20)
 const yTicks = [240, 220, 200, 180, 160, 140, 120, 100, 80, 60, 40, 20, 0]
 
+const facesList = [
+  { score: 0, icon: '😊' },
+  { score: 2, icon: '🙂' },
+  { score: 4, icon: '😐' },
+  { score: 6, icon: '🙁' },
+  { score: 8, icon: '😢' },
+  { score: 10, icon: '😭' }
+]
+
 const isOpen = computed({
   get: () => props.modelValue,
   set: (val) => emit('update:modelValue', val)
@@ -589,6 +645,54 @@ function getLastTime(item) {
   const rows = getRows(item?.monitoring_intra)
   const activeRows = rows ? rows.filter(r => r.waktu || r.nadi || r.sis) : []
   return activeRows && activeRows.length ? activeRows[activeRows.length - 1].waktu : '-'
+}
+
+function getPascaMonitoringRows(item) {
+  return parseJSON(item?.monitoring_pasca)
+}
+
+function getPascaTimeCols(item) {
+  const pRows = getPascaMonitoringRows(item)
+  if (pRows && pRows.length) {
+    const timeCols = pRows.map(r => r.waktu || '-').filter(w => w !== '-')
+    if (timeCols.length) {
+      while (timeCols.length < 6) {
+        timeCols.push('-')
+      }
+      return timeCols.slice(0, 6)
+    }
+  }
+
+  const startTime = item?.jam_pulih || item?.jam_masuk_ruang_pulih || '14:56'
+  const cols = [startTime]
+  try {
+    const parts = startTime.split(':')
+    if (parts.length === 2) {
+      let h = parseInt(parts[0], 10)
+      let m = parseInt(parts[1], 10)
+      for (let i = 1; i < 6; i++) {
+        m += 15
+        if (m >= 60) {
+          h = (h + Math.floor(m / 60)) % 24
+          m = m % 60
+        }
+        const sh = String(h).padStart(2, '0')
+        const sm = String(m).padStart(2, '0')
+        cols.push(`${sh}:${sm}`)
+      }
+    }
+  } catch (e) {
+    return [startTime, '-', '-', '-', '-', '-']
+  }
+  return cols
+}
+
+function getCircledNum(val) {
+  const num = Number(val)
+  if (num === 2) return '②'
+  if (num === 1) return '①'
+  if (num === 0) return '⓪'
+  return val !== null && val !== undefined ? String(val) : '②'
 }
 
 function hasCheck(rawVal, checkVal) {
@@ -707,16 +811,35 @@ function getGridCellContent(row, level) {
   return marks.join(' ')
 }
 
-function getPascaGridCellContent(level) {
+function getPascaGridCellContent(level, colIdx = 0) {
   const item = props.item
   if (!item) return ''
+  const pRows = getPascaMonitoringRows(item)
+  let targetRow = null
+  
+  if (pRows && pRows.length && pRows[colIdx]) {
+    targetRow = pRows[colIdx]
+  } else if (colIdx === 0) {
+    targetRow = {
+      fr: item.fr_pra || item.assesmen_pra_sedasi_fr || 18,
+      nadi: item.nadi_pra || item.assesmen_pra_sedasi_nadi || 80,
+      sis: 120,
+      dis: 80
+    }
+  }
+  
+  if (!targetRow) return ''
+
   const marks = []
-  
-  const fr = Number(item.fr_pra || item.assesmen_pra_sedasi_fr) || 18
-  const nadi = Number(item.nadi_pra || item.assesmen_pra_sedasi_nadi) || 80
-  
-  if (Math.abs(fr - level.fr) <= 3) marks.push(`R:${fr}`)
-  if (Math.abs(nadi - level.nadi) <= 10) marks.push(`N:${nadi}`)
+  const fr = targetRow.fr !== null && targetRow.fr !== undefined ? Number(targetRow.fr) : null
+  const nadi = targetRow.nadi !== null && targetRow.nadi !== undefined ? Number(targetRow.nadi) : null
+  const sis = targetRow.sis !== null && targetRow.sis !== undefined ? Number(targetRow.sis) : null
+  const dis = targetRow.dis !== null && targetRow.dis !== undefined ? Number(targetRow.dis) : null
+
+  if (fr !== null && Math.abs(fr - level.fr) <= 3) marks.push(`R:${fr}`)
+  if (nadi !== null && Math.abs(nadi - level.nadi) <= 10) marks.push(`N:${nadi}`)
+  if (sis !== null && Math.abs(sis - level.td) <= 10) marks.push(`v${sis}`)
+  if (dis !== null && Math.abs(dis - level.td) <= 10) marks.push(`^${dis}`)
 
   return marks.join(' ')
 }
