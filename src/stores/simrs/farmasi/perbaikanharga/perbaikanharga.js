@@ -60,106 +60,176 @@ export const usePerbaikanHargaFarmasiStore = defineStore('perbaikan_harga_farmas
       this.setParams('q', payload)
       this.getData()
     },
-    metaniData (data) {
-      // console.log('data', data)
+    mapSingleDrug (item, data) {
+      item.beda = false
+      const penerimaan = data?.penerimaan?.filter(a => a.kdobat === item.kd_obat) ?? []
+      const awal = data?.awal?.filter(a => a.kdobat === item.kd_obat) ?? []
+      const stok = data?.stok?.filter(a => a.kdobat === item.kd_obat) ?? []
+      const mutasi = data?.mutasi?.filter(a => a.kdobat === item.kd_obat) ?? []
+      const mutasikeluar = data?.mutasikeluar?.filter(a => a.kdobat === item.kd_obat) ?? []
+      const opname = data?.opname?.filter(a => a.kdobat === item.kd_obat) ?? []
+      const racikan = data?.racikan?.filter(a => a.kdobat === item.kd_obat) ?? []
+      const resep = data?.resep?.filter(a => a.kdobat === item.kd_obat) ?? []
+      const retur = data?.retur?.filter(a => a.kdobat === item.kd_obat) ?? []
 
+      item.data = {
+        stok,
+        mutasi,
+        mutasikeluar,
+        opname,
+        racikan,
+        resep,
+        retur,
+        penerimaan,
+        awal
+      }
+
+      item.stok = stok?.reduce((a, b) => a + parseFloat(b.jumlah), 0) ?? 0
+      item.mutasi = mutasi?.reduce((a, b) => a + parseFloat(b.jumlah), 0) ?? 0
+      item.mutasi_keluar = mutasikeluar?.reduce((a, b) => a + parseFloat(b.jumlah), 0) ?? 0
+      item.opname = opname?.reduce((a, b) => a + parseFloat(b.jumlah), 0) ?? 0
+      item.racikan = racikan?.reduce((a, b) => a + parseFloat(b.jumlah), 0) ?? 0
+      item.resep = resep?.reduce((a, b) => a + parseFloat(b.jumlah), 0) ?? 0
+      item.retur = retur?.reduce((a, b) => a + parseFloat(b.jumlah), 0) ?? 0
+
+      // Calculate total outgoing per batch
+      const outgoingSums = {}
+      const addOutgoing = (noper, batch, qty) => {
+        const k = `${noper}_${batch}`
+        outgoingSums[k] = (outgoingSums[k] || 0) + parseFloat(qty || 0)
+      }
+      resep?.forEach(r => addOutgoing(r.nopenerimaan, r.nobatch, r.jumlah))
+      racikan?.forEach(r => addOutgoing(r.nopenerimaan, r.nobatch, r.jumlah))
+      mutasikeluar?.forEach(m => addOutgoing(m.nopenerimaan, m.nobatch, m.jumlah))
+      retur?.forEach(r => addOutgoing(r.nopenerimaan, r.nobatch, -parseFloat(r.jumlah || 0)))
+
+      // Decorate master receipt batches with metrics
+      penerimaan?.forEach(p => {
+        const k = `${p.nopenerimaan}_${p.nobatch}`
+        p.incoming_qty = parseFloat(p.jumlah || 0)
+        p.outgoing_qty = outgoingSums[k] || 0
+        const stokRelForBatch = stok?.filter(s => s.nopenerimaan === p.nopenerimaan && s.nobatch === p.nobatch) ?? []
+        p.remaining_qty = stokRelForBatch.reduce((sum, s) => sum + parseFloat(s.jumlah || 0), 0)
+        const opnameForBatch = opname?.filter(o => o.nopenerimaan === p.nopenerimaan && o.nobatch === p.nobatch) ?? []
+        p.opname_qty = opnameForBatch.reduce((sum, o) => sum + parseFloat(o.jumlah || 0), 0)
+      })
+
+      awal?.forEach(a => {
+        const k = `${a.nopenerimaan}_${a.nobatch}`
+        a.incoming_qty = parseFloat(a.jumlah || 0)
+        a.outgoing_qty = outgoingSums[k] || 0
+        const stokRelForBatch = stok?.filter(s => s.nopenerimaan === a.nopenerimaan && s.nobatch === a.nobatch) ?? []
+        a.remaining_qty = stokRelForBatch.reduce((sum, s) => sum + parseFloat(s.jumlah || 0), 0)
+        const opnameForBatch = opname?.filter(o => o.nopenerimaan === a.nopenerimaan && o.nobatch === a.nobatch) ?? []
+        a.opname_qty = opnameForBatch.reduce((sum, o) => sum + parseFloat(o.jumlah || 0), 0)
+      })
+
+      // Helper to do Solusi 1 intelligent match
+      const checkAndMatch = (st) => {
+        let trm = null
+        if (st?.nopenerimaan?.includes('awal')) {
+          trm = awal?.find(a => a.nopenerimaan === st.nopenerimaan)
+        } else {
+          const matches = penerimaan?.filter(a => a.nopenerimaan === st.nopenerimaan) ?? []
+          if (st.nobatch == null || st.nobatch === '') {
+            // Solusi 1: Search for batch with same price
+            const priceMatch = matches.find(m => parseFloat(m.harga) === parseFloat(st.harga))
+            if (priceMatch) {
+              st.nobatch = priceMatch.nobatch
+              trm = priceMatch
+            } else {
+              trm = matches[0] // fallback to first batch
+            }
+          } else {
+            trm = matches.find(m => m.nobatch === st.nobatch)
+          }
+        }
+        return trm
+      }
+
+      // 1. Stok
+      stok?.forEach(st => {
+        const trm = checkAndMatch(st)
+        if (trm) {
+          if (parseFloat(trm.harga) !== parseFloat(st.harga)) st.beda = true
+          if (dateDbFormat(st?.tglpenerimaan) !== (dateDbFormat(trm?.tglpenerimaan ?? trm?.header?.tglpenerimaan))) st.beda = true
+        }
+      })
+
+      // 2. Mutasi
+      mutasi?.forEach(st => {
+        const trm = checkAndMatch(st)
+        if (trm) {
+          if (parseFloat(trm?.harga) !== parseFloat(st.harga)) {
+            st.beda = true
+            item.beda = true
+          }
+          if (dateDbFormat(st?.tglpenerimaan) !== (dateDbFormat(trm?.tglpenerimaan ?? trm?.header?.tglpenerimaan))) {
+            st.beda = true
+            item.beda = true
+          }
+        }
+      })
+
+      // 3. Mutasi Keluar
+      mutasikeluar?.forEach(st => {
+        const trm = checkAndMatch(st)
+        if (trm) {
+          if (parseFloat(trm?.harga) !== parseFloat(st.harga)) {
+            st.beda = true
+            item.beda = true
+          }
+        }
+      })
+
+      // 4. Opname
+      opname?.forEach(st => {
+        const trm = checkAndMatch(st)
+        if (trm) {
+          if (parseFloat(trm?.harga) !== parseFloat(st.harga)) {
+            st.beda = true
+            item.beda = true
+          }
+        }
+      })
+
+      // 5. Racikan
+      racikan?.forEach(st => {
+        const trm = checkAndMatch(st)
+        if (trm) {
+          if (parseFloat(trm?.harga) !== parseFloat(st.harga)) {
+            st.beda = true
+            item.beda = true
+          }
+        }
+      })
+
+      // 6. Resep
+      resep?.forEach(st => {
+        const trm = checkAndMatch(st)
+        if (trm) {
+          if (parseFloat(trm?.harga) !== parseFloat(st.harga)) {
+            st.beda = true
+            item.beda = true
+          }
+        }
+      })
+
+      // 7. Retur
+      retur?.forEach(st => {
+        const trm = checkAndMatch(st)
+        if (trm) {
+          if (parseFloat(trm?.harga) !== parseFloat(st.harga)) {
+            st.beda = true
+            item.beda = true
+          }
+        }
+      })
+    },
+    metaniData (data) {
       if (this.semuas?.length) {
         this.semuas?.forEach(item => {
-          item.beda = false
-          const penerimaan = data?.penerimaan?.filter(a => a.kdobat === item.kd_obat) ?? []
-          const awal = data?.awal?.filter(a => a.kdobat === item.kd_obat) ?? []
-          const stok = data?.stok?.filter(a => a.kdobat === item.kd_obat) ?? []
-          const mutasi = data?.mutasi?.filter(a => a.kdobat === item.kd_obat) ?? []
-          const mutasikeluar = data?.mutasikeluar?.filter(a => a.kdobat === item.kd_obat) ?? []
-          const opname = data?.opname?.filter(a => a.kdobat === item.kd_obat) ?? []
-          const racikan = data?.racikan?.filter(a => a.kdobat === item.kd_obat) ?? []
-          const resep = data?.resep?.filter(a => a.kdobat === item.kd_obat) ?? []
-          const retur = data?.retur?.filter(a => a.kdobat === item.kd_obat) ?? []
-          item.data = {
-            stok,
-            mutasi,
-            mutasikeluar,
-            opname,
-            racikan,
-            resep,
-            retur,
-            penerimaan,
-            awal
-          }
-
-          item.stok = stok?.reduce((a, b) => a + parseFloat(b.jumlah), 0) ?? 0
-          item.mutasi = mutasi?.reduce((a, b) => a + parseFloat(b.jumlah), 0) ?? 0
-          item.mutasi_keluar = mutasikeluar?.reduce((a, b) => a + parseFloat(b.jumlah), 0) ?? 0
-          item.opname = opname?.reduce((a, b) => a + parseFloat(b.jumlah), 0) ?? 0
-          item.racikan = racikan?.reduce((a, b) => a + parseFloat(b.jumlah), 0) ?? 0
-          item.resep = resep?.reduce((a, b) => a + parseFloat(b.jumlah), 0) ?? 0
-          item.retur = retur?.reduce((a, b) => a + parseFloat(b.jumlah), 0) ?? 0
-
-          stok?.forEach(st => {
-            const trm = st?.nopenerimaan?.includes('awal') ? (awal?.find(a => a.kdobat === item.kdobat && a.nopenerimaan === st.nopenerimaan)) : (penerimaan?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan && a.nobatch === st.nobatch))
-            if (trm) {
-              if (trm.harga !== st.harga) st.beda = true
-              if (dateDbFormat(st?.tglpenerimaan) !== (dateDbFormat(trm?.tglpenerimaan ?? trm?.tglpenerimaan))) st.beda = true // ini belum tentu ada header
-            }
-          })
-          mutasi?.forEach(st => {
-            const trm = st?.nopenerimaan?.includes('awal') ? (awal?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan)) : (penerimaan?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan && a.nobatch === st.nobatch))
-            if (trm) {
-              if (trm?.harga !== st.harga) {
-                st.beda = true
-                item.beda = true
-              }
-              if (dateDbFormat(st?.tglpenerimaan) !== (dateDbFormat(trm?.tglpenerimaan ?? trm?.tglpenerimaan))) {
-                st.beda = true
-                item.beda = true
-              }
-            }
-          })
-          mutasikeluar?.forEach(st => {
-            const trm = st?.nopenerimaan?.includes('awal') ? (awal?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan)) : (penerimaan?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan && a.nobatch === st.nobatch))
-            if (trm) {
-              if (trm?.harga !== st.harga) {
-                st.beda = true
-                item.beda = true
-              }
-            }
-          })
-          opname?.forEach(st => {
-            const trm = st?.nopenerimaan?.includes('awal') ? (awal?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan)) : (penerimaan?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan && a.nobatch === st.nobatch))
-            if (trm) {
-              if (trm?.harga !== st.harga) {
-                st.beda = true
-                item.beda = true
-              }
-            }
-          })
-          racikan?.forEach(st => {
-            const trm = st?.nopenerimaan?.includes('awal') ? (awal?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan)) : (st.nobatch == null ? penerimaan?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan) : penerimaan?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan && a.nobatch === st.nobatch))
-            if (trm) {
-              if (trm?.harga !== st.harga) {
-                st.beda = true
-                item.beda = true
-              }
-            }
-          })
-          resep?.forEach(st => {
-            const trm = st?.nopenerimaan?.includes('awal') ? (awal?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan)) : (st.nobatch == null ? penerimaan?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan) : penerimaan?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan && a.nobatch === st.nobatch))
-            if (trm) {
-              if (trm?.harga !== st.harga) {
-                st.beda = true
-                item.beda = true
-              }
-            }
-          })
-          retur?.forEach(st => {
-            const trm = st?.nopenerimaan?.includes('awal') ? (awal?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan)) : (st.nobatch == null ? penerimaan?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan) : penerimaan?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan && a.nobatch === st.nobatch))
-            if (trm) {
-              if (trm?.harga !== st.harga) {
-                st.beda = true
-                item.beda = true
-              }
-            }
-          })
+          this.mapSingleDrug(item, data)
         })
         if (this.params.pilihan === 'semua') {
           this.items = this.semuas
@@ -170,112 +240,13 @@ export const usePerbaikanHargaFarmasiStore = defineStore('perbaikan_harga_farmas
         else if (this.params.pilihan === 'tidak') {
           this.items = this.semuas.filter(fi => !fi.beda === true)
         }
-        // console.log('items', this.items)
       }
     },
     metaniSatuData (data) {
       const kode = data?.kode[0]
       const item = this.semuas.find(f => f.kd_obat === kode)
-      // console.log('data', data, item, kode)
       if (item) {
-        item.beda = false
-        const penerimaan = data?.penerimaan?.filter(a => a.kdobat === item.kd_obat) ?? []
-        const awal = data?.awal?.filter(a => a.kdobat === item.kd_obat) ?? []
-        const stok = data?.stok?.filter(a => a.kdobat === item.kd_obat) ?? []
-        const mutasi = data?.mutasi?.filter(a => a.kdobat === item.kd_obat) ?? []
-        const mutasikeluar = data?.mutasikeluar?.filter(a => a.kdobat === item.kd_obat) ?? []
-        const opname = data?.opname?.filter(a => a.kdobat === item.kd_obat) ?? []
-        const racikan = data?.racikan?.filter(a => a.kdobat === item.kd_obat) ?? []
-        const resep = data?.resep?.filter(a => a.kdobat === item.kd_obat) ?? []
-        const retur = data?.retur?.filter(a => a.kdobat === item.kd_obat) ?? []
-        item.data = {
-          stok,
-          mutasi,
-          mutasikeluar,
-          opname,
-          racikan,
-          resep,
-          retur,
-          penerimaan,
-          awal
-        }
-
-        item.stok = stok?.reduce((a, b) => a + parseFloat(b.jumlah), 0) ?? 0
-        item.mutasi = mutasi?.reduce((a, b) => a + parseFloat(b.jumlah), 0) ?? 0
-        item.mutasi_keluar = mutasikeluar?.reduce((a, b) => a + parseFloat(b.jumlah), 0) ?? 0
-        item.opname = opname?.reduce((a, b) => a + parseFloat(b.jumlah), 0) ?? 0
-        item.racikan = racikan?.reduce((a, b) => a + parseFloat(b.jumlah), 0) ?? 0
-        item.resep = resep?.reduce((a, b) => a + parseFloat(b.jumlah), 0) ?? 0
-        item.retur = retur?.reduce((a, b) => a + parseFloat(b.jumlah), 0) ?? 0
-
-        stok?.forEach(st => {
-          const trm = st?.nopenerimaan?.includes('awal') ? (awal?.find(a => a.kdobat === item.kdobat && a.nopenerimaan === st.nopenerimaan)) : (penerimaan?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan && a.nobatch === st.nobatch))
-          if (trm) {
-            if (trm.harga !== st.harga) st.beda = true
-            if (dateDbFormat(st?.tglpenerimaan) !== (dateDbFormat(trm?.tglpenerimaan ?? trm?.tglpenerimaan))) st.beda = true // ini belum tentu ada header
-          }
-        })
-        mutasi?.forEach(st => {
-          const trm = st?.nopenerimaan?.includes('awal') ? (awal?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan)) : (penerimaan?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan && a.nobatch === st.nobatch))
-          if (trm) {
-            if (trm?.harga !== st.harga) {
-              st.beda = true
-              item.beda = true
-            }
-            if (dateDbFormat(st?.tglpenerimaan) !== (dateDbFormat(trm?.tglpenerimaan ?? trm?.tglpenerimaan))) {
-              st.beda = true
-              item.beda = true
-            }
-          }
-        })
-        mutasikeluar?.forEach(st => {
-          const trm = st?.nopenerimaan?.includes('awal') ? (awal?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan)) : (penerimaan?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan && a.nobatch === st.nobatch))
-          if (trm) {
-            if (trm?.harga !== st.harga) {
-              st.beda = true
-              item.beda = true
-            }
-          }
-        })
-        opname?.forEach(st => {
-          const trm = st?.nopenerimaan?.includes('awal') ? (awal?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan)) : (penerimaan?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan))
-          if (trm) {
-            if (trm?.harga !== st.harga) {
-              st.beda = true
-              item.beda = true
-            }
-          }
-        })
-        racikan?.forEach(st => {
-          const trm = st?.nopenerimaan?.includes('awal') ? (awal?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan)) : (st.nobatch == null ? penerimaan?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan) : penerimaan?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan && a.nobatch === st.nobatch))
-          if (trm) {
-            if (trm?.harga !== st.harga) {
-              st.beda = true
-              item.beda = true
-            }
-          }
-        })
-        resep?.forEach(st => {
-          const trm = st?.nopenerimaan?.includes('awal') ? (awal?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan)) : (st.nobatch == null ? penerimaan?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan) : penerimaan?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan && a.nobatch === st.nobatch))
-          if (trm) {
-            if (trm?.harga !== st.harga) {
-              st.beda = true
-              item.beda = true
-            }
-          }
-        })
-        retur?.forEach(st => {
-          const trm = st?.nopenerimaan?.includes('awal') ? (awal?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan)) : (st.nobatch == null ? penerimaan?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan) : penerimaan?.find(a => a.kdobat === st.kdobat && a.nopenerimaan === st.nopenerimaan && a.nobatch === st.nobatch))
-          if (trm) {
-            if (trm?.harga !== st.harga) {
-              st.beda = true
-              item.beda = true
-            }
-          }
-        })
-
-        const item2 = this.items.find(f => f.kd_obat === item.kd_obat)
-        // console.log('item2', item2)
+        this.mapSingleDrug(item, data)
       }
     },
     getData (val) {
