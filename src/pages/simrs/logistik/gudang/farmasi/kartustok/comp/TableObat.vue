@@ -93,6 +93,12 @@ const bulans = ref(['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Jul
 const tahuns = ref([])
 const app = useAplikasiStore()
 const keteranganStok = ref('Stok Sekarang')
+
+function formatDecimal (val) {
+  if (val === null || val === undefined || isNaN(val)) return '0.00'
+  return parseFloat(val).toFixed(2)
+}
+
 const columnsx = [
   {
     name: 'nama_obat',
@@ -103,15 +109,16 @@ const columnsx = [
     key: 'nama_obat',
     field: 'nama_obat'
   },
-  { name: 'saldo_awal', label: 'Saldo Awal', align: 'right', field: (row) => hitungSaldoAwal(row?.saldoawal), key: 'saldo_awal' },
+  { name: 'saldo_awal', label: 'Saldo Awal', align: 'right', field: (row) => hitungSaldoAwal(row?.saldoawal), key: 'saldo_awal', format: (val) => formatDecimal(val) },
   {
     name: 'masuk',
     label: 'Stok Masuk',
     align: 'right',
     field: (row) => (
-      hitungPenerimaan(row?.penerimaanrinci) + hitungMutasiMasuk(row?.mutasimasuk) + newReturResep(row?.returpenjualan) +
+      hitungPenerimaan(row?.penerimaanrinci) + hitungMutasiMasuk(row?.mutasimusuk) + newReturResep(row?.returpenjualan) +
       hitungPenyesuaianMasuk(row?.penyesuaian) + hitungReturDistribusi(row?.persiapanretur) + hitungReturGudang(row?.returgudang)
-    )
+    ),
+    format: (val) => formatDecimal(val)
   },
   {
     name: 'keluar',
@@ -120,25 +127,29 @@ const columnsx = [
     field: (row) => (hitungMutasiKeluar(row?.mutasikeluar) + hitungResepKeluar(row?.resepkeluar, row?.distribusipersiapan) +
       hitungResepRacikanKeluar(row?.resepkeluarracikan) + hitungPenyesuaianKeluar(row?.penyesuaian) + hitungDistribusi(row?.distribusipersiapan) +
       hitungBarangRusak(row?.barangrusak) + hitungReturDepo(row?.returdepo) + returPbf(row?.returpbf) + pengembalian(row?.pengembalianrincififo)
-    )
+    ),
+    format: (val) => formatDecimal(val)
   },
   {
     name: 'stok_akhir',
     label: 'Stok Akhir',
     field: (row) => hitungTotal(row),
-    align: 'right'
+    align: 'right',
+    format: (val) => formatDecimal(val)
   },
   {
     name: 'stok_sekarang',
     label: keteranganStok.value,
     field: (row) => stokSekarang(row),
-    align: 'right'
+    align: 'right',
+    format: (val) => formatDecimal(val)
   },
   {
     name: 'stok_fisik',
     label: 'Stok Fisik',
     field: (row) => stokFisik(row),
-    align: 'right'
+    align: 'right',
+    format: (val) => formatDecimal(val)
   }
 ]
 

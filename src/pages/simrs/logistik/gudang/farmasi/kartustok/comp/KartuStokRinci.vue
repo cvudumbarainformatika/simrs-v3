@@ -77,7 +77,7 @@
                     <b>Saldo Awal</b>
                   </td>
                   <td class="text-end ">
-                    <b>{{ saldoAwal }}</b>
+                    <b>{{ formatDouble(saldoAwal, 2) }}</b>
                   </td>
                 </tr>
                 <template v-if="bentukArrBaru?.length">
@@ -91,13 +91,13 @@
                       {{ rinci?.keterangan }}
                     </td>
                     <td class="text-end">
-                      {{ formatDouble((rinci?.masuk ?? 0), 1) }}
+                      {{ formatDouble((rinci?.masuk ?? 0), 2) }}
                     </td>
                     <td class="text-end">
-                      {{ formatDouble((rinci?.keluar ?? 0), 1) }}
+                      {{ formatDouble((rinci?.keluar ?? 0), 2) }}
                     </td>
                     <td class="text-end">
-                      {{ formatDouble((cariHasilAkhirArray(n) ?? 0), 1) }}
+                      {{ formatDouble((cariHasilAkhirArray(n) ?? 0), 2) }}
                     </td>
                   </tr>
                   <tr>
@@ -106,7 +106,7 @@
                     </td>
                     <td class="text-end">
                       <div style="min-height: 30px;" class="f-14">
-                        <b>{{ formatDouble((cariHasilAkhirArray(bentukArrBaru?.length) ?? 0), 1) }}</b>
+                        <b>{{ formatDouble((cariHasilAkhirArray(bentukArrBaru?.length) ?? 0), 2) }}</b>
                       </div>
                     </td>
                   </tr>
@@ -166,7 +166,7 @@ function fetch () {
     temp.keterangan = item.keterangan
     temp.masuk = item.masuk
     temp.keluar = item.keluar
-    temp.stok = formatDouble((cariHasilAkhirArray(i) ?? 0), 1)
+    temp.stok = formatDouble((cariHasilAkhirArray(i) ?? 0), 2)
 
 
     data.push(temp)
@@ -177,7 +177,7 @@ function fetch () {
     keterangan: ' ',
     masuk: '',
     keluar: '',
-    stok: formatDouble((cariHasilAkhirArray(bentukArrBaru?.value?.length) ?? 0), 1)
+    stok: formatDouble((cariHasilAkhirArray(bentukArrBaru?.value?.length) ?? 0), 2)
   })
   return data
 }
