@@ -371,7 +371,7 @@
                 Op
               </div>
             </div>
-            <div v-for="(mut,i) in data?.data?.data?.penLeb" :key="i">
+            <div v-for="(mut,i) in data?.data?.data?.penKur" :key="i">
               <div class="row items-center" :class="i%2==0?'bg-grey-2':'bg-grey-4'">
                 <div class="col-auto" style="width: 7%;">
                   {{ i+1 }}
@@ -417,7 +417,7 @@
                 Op
               </div>
             </div>
-            <div v-for="(mut,i) in data?.data?.data?.penKur" :key="i">
+            <div v-for="(mut,i) in data?.data?.data?.penLeb" :key="i">
               <div class="row items-center" :class="i%2==0?'bg-grey-2':'bg-grey-4'">
                 <div class="col-auto" style="width: 7%;">
                   {{ i+1 }}
@@ -512,7 +512,7 @@
                 Op
               </div>
             </div>
-            <div v-for="(mut,i) in data?.data?.data?.penLeb" :key="i">
+            <div v-for="(mut,i) in data?.data?.data?.penKur" :key="i">
               <div class="row items-center" :class="i%2==0?'bg-grey-2':'bg-grey-4'">
                 <div class="col-auto" style="width: 7%;">
                   {{ i+1 }}
@@ -558,7 +558,7 @@
                 Op
               </div>
             </div>
-            <div v-for="(mut,i) in data?.data?.data?.penKur" :key="i">
+            <div v-for="(mut,i) in data?.data?.data?.penLeb" :key="i">
               <div class="row items-center" :class="i%2==0?'bg-grey-2':'bg-grey-4'">
                 <div class="col-auto" style="width: 7%;">
                   {{ i+1 }}

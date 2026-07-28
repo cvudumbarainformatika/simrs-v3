@@ -74,7 +74,9 @@ export const usePerbaikanDataFarmasiStore = defineStore('perbaikan_data_farmasi'
         ...this.params
       }
       try {
-        const resp = await api.post('/v1/simrs/farmasinew/stok/fr-perbaikan-data-depo', params)
+        // OLD ENDPOINT: /v1/simrs/farmasinew/stok/fr-perbaikan-data-depo
+        // Redirected to V2 to support Smart Greedy & Minimum Split calculations
+        const resp = await api.post('/v1/simrs/farmasinew/stok/fr-perbaikan-data-depo-v2', params)
         console.log(resp?.data)
         if (resp.status === 200) {
           const data = resp.data?.kdobat
@@ -198,7 +200,9 @@ export const usePerbaikanDataFarmasiStore = defineStore('perbaikan_data_farmasi'
     getData (data) {
       this.loadingGetData = true
       return new Promise((resolve, reject) => {
-        api.post('/v1/simrs/farmasinew/stok/fr-perbaikan-data', data).then(resp => {
+        // OLD ENDPOINT: /v1/simrs/farmasinew/stok/fr-perbaikan-data
+        // Redirected to V2 to support Smart Greedy & Minimum Split calculations
+        api.post('/v1/simrs/farmasinew/stok/fr-perbaikan-data-v2', data).then(resp => {
           this.loadingGetData = false
           const item = this.items.find(f => f.kd_obat === data?.kdobat)
           const sem = this.semuas.find(f => f.kd_obat === data?.kdobat)
@@ -236,6 +240,8 @@ export const usePerbaikanDataFarmasiStore = defineStore('perbaikan_data_farmasi'
       console.log('resp opname', payload)
       this.loadingFixOpname = true
       return new Promise(resolve => {
+        // OLD ENDPOINT: /v1/simrs/farmasinew/stok/fr-perbaikan-data-opname
+        // Redirected to V2 to support Smart Greedy & Minimum Split calculations
         api.post('/v1/simrs/farmasinew/stok/fr-perbaikan-data-opname', payload).then(resp => {
           this.loadingFixOpname = false
           console.log('resp opname', resp?.data)
