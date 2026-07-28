@@ -84,6 +84,7 @@ import { date, exportFile, useQuasar } from 'quasar'
 import { useAplikasiStore } from 'src/stores/app/aplikasi'
 import { useKartuStokFarmasiStore } from 'src/stores/simrs/farmasi/katustok'
 import { onMounted, ref } from 'vue'
+import { api } from 'src/boot/axios'
 
 const store = useKartuStokFarmasiStore()
 const $q = useQuasar()
@@ -357,38 +358,35 @@ function hitungTotal (row) {
 }
 
 function exportTable () {
-  // naive encoding to csv format
-  const content = [columns.value.map(col => wrapCsvValue(col.label))].concat(
-    store.items?.map(row => columns.value.map(col => wrapCsvValue(
-      typeof col.field === 'function'
-        ? col.field(row)
-        // eslint-disable-next-line no-void
-        : row[col.field === void 0 ? col.name : col.field],
-      col.format,
-      row
-    )).join(','))
-  ).join('\r\n')
+  $q.loading.show({
+    message: 'Harap tunggu... sedang menyiapkan data ekspor seluruh obat'
+  })
 
-  // console.log('content', content)
-
-  const status = exportFile(
-    `kartu-stok-${store.params.bulan}-${store.params.tahun}.csv`,
-    content,
-    // 'text/csv'
-    {
-      encoding: 'utf-8',
-      mimeType: 'text/csv',
-      byteOrderMark: '\uFEFF'
-    }
-  )
-
-  if (status !== true) {
+  api.get('v1/simrs/farmasinew/kartustok/export-excel', {
+    params: {
+      koderuangan: store.params.koderuangan,
+      bulan: store.params.bulan,
+      tahun: store.params.tahun
+    },
+    responseType: 'blob'
+  }).then(response => {
+    $q.loading.hide()
+    const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }))
+    const link = document.createElement('a')
+    link.href = url
+    link.setAttribute('download', `kartu-stok-${store.params.bulan}-${store.params.tahun}.xlsx`)
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+  }).catch(err => {
+    $q.loading.hide()
+    console.error(err)
     $q.notify({
-      message: 'Browser denied file download...',
+      message: 'Gagal mengunduh kartu stok...',
       color: 'negative',
       icon: 'warning'
     })
-  }
+  })
 }
 
 function wrapCsvValue (val, formatFn, row) {
