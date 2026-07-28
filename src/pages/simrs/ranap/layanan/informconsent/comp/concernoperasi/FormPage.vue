@@ -224,7 +224,9 @@ const TtdWacom = defineAsyncComponent(() => {
 
 // const wacomRef = ref(null)
 onMounted(() => {
-  store.initReset(props?.pasien)
+  if (!store.form?.id) {
+    store.initReset(props?.pasien)
+  }
   cekHubunganPasien()
 })
 

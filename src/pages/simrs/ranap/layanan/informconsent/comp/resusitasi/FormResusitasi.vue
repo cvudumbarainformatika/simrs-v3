@@ -178,10 +178,9 @@ const props = defineProps({
 const myForm = ref(null)
 
 onMounted(() => {
-  store.initReset(props?.pasien)
-  // Paksa menuTab di-set ke Resusitasi dan panggil reset ulang agar values default terisi
-  store.menuTab = 'Resusitasi'
-  store.initReset(props?.pasien)
+  if (!store.form?.id) {
+    store.initReset(props?.pasien, 'Resusitasi')
+  }
   cekHubunganPasien()
 })
 

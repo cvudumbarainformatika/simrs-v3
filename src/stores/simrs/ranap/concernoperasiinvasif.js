@@ -143,7 +143,7 @@ export const useConcernOperasiInvasifRanapStore = defineStore('concern-operasi-i
           notifSuccess(resp)
           this.loadingSave = false
           this.loadingOrder = false
-          this.initReset()
+          this.initReset(pasien, jns, true)
         }
         this.loadingSave = false
         this.loadingOrder = false
@@ -172,6 +172,9 @@ export const useConcernOperasiInvasifRanapStore = defineStore('concern-operasi-i
           // storePasien.hapusDataFisio(pasien, id)
           storeRanap.hapusDataInjectan(pasien, id, 'informconcern')
           notifSuccess(resp)
+          if (this.form?.id === id) {
+            this.initReset(pasien, null, true)
+          }
         }
       }
       catch (error) {
@@ -181,7 +184,8 @@ export const useConcernOperasiInvasifRanapStore = defineStore('concern-operasi-i
     },
 
     editForm(item) {
-      this.menuTab = item?.jenis
+      if (!item) return
+      this.menuTab = item?.jenis || this.menuTab
       this.form = { ...item }
 
       // Convert existing sign paths to base64 images so they are not deleted during saveData payload sanitization
@@ -242,7 +246,11 @@ export const useConcernOperasiInvasifRanapStore = defineStore('concern-operasi-i
       this.nonNakes = pengunjung?.nonNakes
     },
 
-    initReset(pasien) {
+    initReset(pasien, menuName = null, force = false) {
+      if (!force && this.form?.id) {
+        return Promise.resolve()
+      }
+      const targetMenu = menuName || this.menuTab
       const hariIni = date.formatDate(Date.now(), 'YYYY-MM-DD')
       this.form = {
         tanggal: hariIni,
