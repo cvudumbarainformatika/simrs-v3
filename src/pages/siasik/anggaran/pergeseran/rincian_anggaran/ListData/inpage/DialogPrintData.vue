@@ -508,13 +508,14 @@ const bukaRincian = async (item) => {
   }
 
   selectedRincian.value = item
-  console.log('iteeem', item)
 
   try {
 
     await store.getDataBatasan(item)
 
     store.form_batasan.flag = store.databatasan?.flag
+    store.form_batasan.batasan = store.databatasan?.batasan ?? 0
+
     showRincian.value = true
   } catch (err) {
     console.error(err)

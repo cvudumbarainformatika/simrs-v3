@@ -52,7 +52,7 @@ export const usePergeseranAnggaranStore = defineStore('pergeseran-anggaran-store
     form_batasan: {
       notrans: '',
       pagu: '',
-      batasan: '',
+      batasan: 0,
       koderek50: '',
       uraian50: '',
       kodekegiatanblud: '',
@@ -220,7 +220,12 @@ export const usePergeseranAnggaranStore = defineStore('pergeseran-anggaran-store
         idpp: '',
         tglperubahan: date.formatDate(Date.now(), 'YYYY-MM-DD'),
       }
-      this.rincians = []
+      this.form_batasan = {
+        notrans: '',
+
+        batasan: 0,
+      },
+        this.rincians = []
       this.disabled = false
       this.loadingHapus = false
     },
