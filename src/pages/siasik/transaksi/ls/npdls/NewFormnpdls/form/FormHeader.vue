@@ -206,6 +206,7 @@ function pilihPTK(val) {
 function pilihKegiatan(val) {
   const arr = store.kegiatans
   const obj = arr?.length ? arr.find(x => x.kegiatan === val) : null
+  console.log('obj kegatan', obj)
   store.form.kegiatanblud = obj?.kegiatan ?? ''
   store.form.kodekegiatanblud = obj?.kodekegiatan ?? ''
   // Mengosongkan Rincian Belanja setelah milih ulang kegiatan

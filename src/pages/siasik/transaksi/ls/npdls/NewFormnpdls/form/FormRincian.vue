@@ -159,6 +159,8 @@ function pilihRekening50(val) {
     return;
   }
 
+  store.form.notrans = obj?.notrans
+
   // Reset nilai sebelumnya
   store.rinci = {
     ...store.rinci,
@@ -176,7 +178,6 @@ function pilihRekening50(val) {
     totalls: 0,
     nominalpembayaran: 0
   };
-
   store.reqs.rekening50 = val;
   store.filterItemBelanja();
 }
@@ -212,6 +213,7 @@ function saveNpd() {
     // const subtotal = arr.map((x) => x.jumlah).reduce((x, y) => x + y, 0)
     // store.reqs.subtotal = subtotal
   }
+  console.log('save', store.form)
   store.simpanNpdls(props.data).then(() => {
     store.rinci.koderek50 = ''
     store.rinci.itembelanja = ''
