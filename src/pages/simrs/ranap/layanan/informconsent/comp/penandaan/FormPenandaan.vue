@@ -171,7 +171,9 @@ const context = ref(null)
 const isDrawing = ref(false)
 
 onMounted(() => {
-  store.initReset(props?.pasien, 'PenandaanLokasiOperasi')
+  if (!store.form?.id) {
+    store.initReset(props?.pasien, 'PenandaanLokasiOperasi')
+  }
   cekHubunganPasien()
   setTimeout(() => {
     initCanvas()

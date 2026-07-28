@@ -186,10 +186,9 @@ const komplikasiOptions = [
 ]
 
 onMounted(() => {
-  store.initReset(props?.pasien)
-  // Paksa menuTab di-set ke Restrain dan panggil reset ulang agar values default terisi
-  store.menuTab = 'Restrain'
-  store.initReset(props?.pasien)
+  if (!store.form?.id) {
+    store.initReset(props?.pasien, 'Restrain')
+  }
   cekHubunganPasien()
 })
 
