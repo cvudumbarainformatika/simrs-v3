@@ -123,7 +123,9 @@
         <div class="col-1 text-right">
           Stok Opname
         </div>
-        <div class="col-1 text-center" />
+        <div class="col-1 text-right">
+          Selisih
+        </div>
         <div class="col-1 text-center">
           Status Opname
         </div>
@@ -158,7 +160,12 @@
             {{ formatDouble(parseFloat(item?.data?.data?.tts), 2) }}
           </div>
           <div class="col-1 text-right"
-            :class="parseFloat(item?.data?.data?.sisa).toFixed(2) !== parseFloat(item?.data?.data?.tts).toFixed(2) ? 'bg-negative' : ''" />
+            :class="parseFloat(item?.data?.data?.sisa).toFixed(2) !== parseFloat(item?.data?.data?.tts).toFixed(2) ? 'bg-negative text-white' : ''">
+            {{ formatDouble(parseFloat(item?.data?.data?.sisa) - parseFloat(item?.data?.data?.tts), 2) }}
+            <div class="f-10" :class="parseFloat(item?.data?.data?.sisa).toFixed(2) !== parseFloat(item?.data?.data?.tts).toFixed(2) ? 'text-white' : 'text-grey-6'">
+              Rp {{ formatDouble(hitungSelisihNominal(item), 0) }}
+            </div>
+          </div>
           <div class="col-1 text-center"
             :class="parseFloat(item?.data?.data?.sisa).toFixed(2) !== parseFloat(item?.data?.data?.tts).toFixed(2) ? 'bg-negative' : ''">
             <q-chip size="sm" :color="item?.opnameJml && item?.opnameTrx ? 'green' : 'negative'" text-color="white">
@@ -227,6 +234,37 @@ function openDetail (item) {
   isOpen.value = true
   data.value = item
   console.log('item', item, isOpen.value)
+}
+
+function hitungSelisihNominal (item) {
+  const data = item?.data?.data
+  if (!data) return 0
+  
+  let totalNominalDiff = 0
+  const penLeb = data.penLeb || []
+  const penKur = data.penKur || []
+  const allDiffs = [...penLeb, ...penKur]
+  
+  const penerimaan = data.cekOpname?.penerimaan || []
+  const awal = data.saldoAwalRinci || []
+  
+  allDiffs.forEach(diff => {
+    let price = 0
+    const matchPen = penerimaan.find(p => p.nopenerimaan === diff.noper)
+    if (matchPen) {
+      price = parseFloat(matchPen.harga_netto_kecil || matchPen.harga || 0)
+    } else {
+      const matchAwal = awal.find(a => a.nopenerimaan === diff.noper)
+      if (matchAwal) {
+        price = parseFloat(matchAwal.harga || 0)
+      }
+    }
+    
+    const qtyDiff = parseFloat(diff.sts || 0) // Calculated Sisa - Stok Opname
+    totalNominalDiff += qtyDiff * price
+  })
+  
+  return totalNominalDiff
 }
 const pilihanBermasalahs = ref([
   { value: 'semua', label: 'Semua' },

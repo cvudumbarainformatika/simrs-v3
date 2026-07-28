@@ -1,6 +1,9 @@
 import { defineStore } from 'pinia'
 import { api } from 'src/boot/axios'
 import { notifErrVue } from 'src/modules/utils'
+import { date } from 'quasar'
+
+const lastMonth = date.subtractFromDate(new Date(), { months: 1 })
 
 export const usePerbaikanDataFarmasiStore = defineStore('perbaikan_data_farmasi', {
   state: () => ({
@@ -14,15 +17,13 @@ export const usePerbaikanDataFarmasiStore = defineStore('perbaikan_data_farmasi'
     tidakBermasalahs: [],
     meta: { total: 2700 },
     params: {
-      // q: '0000367-FAR',
       q: '',
       page: 1,
-      tahun: '2024',
-      bulan: '06',
+      tahun: date.formatDate(lastMonth, 'YYYY'),
+      bulan: date.formatDate(lastMonth, 'MM'),
       per_page: 100,
       pilihan: 'semua',
       kdruang: ''
-      // kdruang: 'Gd-04010103'
     },
     form: {},
     gudangs: [
